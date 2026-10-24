@@ -339,10 +339,8 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
   #home{min-height:72px}
   h1{font-size:18px}
 }
-@media (prefers-reduced-motion:reduce){
-  /* decorative loops stop; movements that carry the explanation keep their pace */
-  .ring,.dots i,.rv *{animation-duration:.01ms!important;animation-iteration-count:1!important}
-}
+/* Motion stays on in the site embed. Collapsing every duration here
+   froze the keyframes whenever the browser reported reduced motion. */
 
 </style>
 </head>
@@ -366,7 +364,8 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
             <svg width="132" height="116" viewBox="-6 -4 132 116">
               <polygon points="40,70 70,70 70,100 40,100" fill="#4338ca" fill-opacity=".14" stroke="#4338ca" stroke-width="1.5"/>
               <polygon points="40,30 40,70 0,70 0,30" fill="#d97706" fill-opacity=".16" stroke="#d97706" stroke-width="1.5"/>
-              <polygon points="40,30 70,70 110,40 80,0" fill="#e11d63" fill-opacity=".13" stroke="#e11d63" stroke-width="1.5"/>
+              <polygon points="40,30 70,70 110,40 80,0" fill="#e11d63" fill-opacity=".13" stroke="#fff" stroke-width="1.8"/>
+              <polygon points="40,30 70,70 110,40 80,0" fill="none" stroke="#1e1b4b" stroke-width="1.8" stroke-dasharray="4 3"/>
               <polygon points="40,30 70,70 40,70" fill="#fff" stroke="#1e1b4b" stroke-width="2"/>
               <polyline points="46,70 46,64 40,64" fill="none" stroke="#1e1b4b" stroke-width="1.4"/>
               <line x1="40" y1="70" x2="70" y2="70" stroke="#4338ca" stroke-width="3"/>
@@ -491,8 +490,7 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
 .rv-tilt{animation:rvTilt 2.4s ease-in-out infinite}
 .rv-twinkle{animation:rvTwinkle 1.4s ease-in-out infinite}
 .rv-twinkle2{animation:rvTwinkle 1.4s ease-in-out .5s infinite}
-.rv text{display:none}
-@media (prefers-reduced-motion:reduce){.rv *{animation:none!important}}</style>
+.rv text{display:none}</style>
 
 
 <g id="rivo-idle" class="rv" transform="translate(20 20)"><title>ריבו — רגיל</title><ellipse cx="60" cy="123" rx="30" ry="5" fill="#1F2A37" opacity="0.12"></ellipse><g class="rv-bob"><rect x="35" y="98" width="17" height="18" rx="8.5" fill="#1F2A37"></rect><rect x="68" y="98" width="17" height="18" rx="8.5" fill="#1F2A37"></rect><clipPath id="clip-idle"><rect x="16" y="14" width="88" height="88" rx="24"></rect></clipPath><g clip-path="url(#clip-idle)"><rect x="16" y="14" width="55" height="55" fill="#6EDDD0"></rect><rect x="71" y="14" width="33" height="55" fill="#FFD84D"></rect><rect x="16" y="69" width="55" height="33" fill="#FFD84D"></rect><rect x="71" y="69" width="33" height="33" fill="#FF9B7D"></rect><path d="M71 14V102M16 69H104" stroke="#FFFFFF" stroke-width="2" opacity="0.8"></path></g><rect x="16" y="14" width="88" height="88" rx="24" fill="none" stroke="#1F2A37" stroke-width="4"></rect><ellipse cx="30" cy="72" rx="6" ry="4" fill="#FF5C8A" opacity="0.35"></ellipse><ellipse cx="92" cy="72" rx="6" ry="4" fill="#FF5C8A" opacity="0.35"></ellipse><g class="rv-blink"><ellipse cx="45" cy="48" rx="12.5" ry="14.5" fill="#FFFFFF" stroke="#1F2A37" stroke-width="3"></ellipse><ellipse cx="77" cy="48" rx="12.5" ry="14.5" fill="#FFFFFF" stroke="#1F2A37" stroke-width="3"></ellipse><g><g class="rv-glance"><circle cx="46" cy="50" r="6.5" fill="#1F2A37"></circle><circle cx="78" cy="50" r="6.5" fill="#1F2A37"></circle><circle cx="48.5" cy="47" r="2.2" fill="#FFFFFF"></circle><circle cx="80.5" cy="47" r="2.2" fill="#FFFFFF"></circle></g></g></g><path d="M52 79Q61 87 70 79" fill="none" stroke="#1F2A37" stroke-width="4" stroke-linecap="round"></path></g><text x="60" y="160" text-anchor="middle" font-family="Rubik, sans-serif" font-size="15" font-weight="700" fill="#1F2A37">רגיל · idle</text></g>
@@ -524,7 +522,7 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
         { t: 'גובה', f: 'גובה הוא קו פנימי. ' + m('c') + ' היא צלע של המשולש.' },
         { t: 'היקף', f: 'היקף הוא סכום כל הצלעות, לא צלע.' }],
       hints: ['חפש את הצלע שמול סימון 90°.', 'היתר הוא הצלע הארוכה ביותר — תמיד מול הזווית הישרה.'] },
-    { mode: 'proof', tA: 'הוכחה בעיניים', sub: '5 צעדים קצרים. אתה קובע את הקצב.', tip: 'זה ריבוע גדול, עם צלע ' + m('a + b') + '. אני מניח בתוכו 4 עותקים של אותו משולש.', btn: 'לנוסחה ←', cue: 'קרא, ואז לחץ "הצעד הבא"', cueDone: 'ראית את ההוכחה! אפשר להמשיך ←' },
+    { mode: 'proof', tA: 'הוכחה בעיניים', sub: '5 צעדים קצרים. אתה קובע את הקצב.', tip: 'זה ריבוע גדול, עם צלע ' + m('a + b') + '. אני מניח בתוכו 4 עותקים של המשולש שלך.', btn: 'לנוסחה ←', cue: 'קרא, ואז לחץ "הצעד הבא"', cueDone: 'ראית את ההוכחה! אפשר להמשיך ←' },
     { mode: 'quiz', kind: 'formula', tA: 'אז מהי הנוסחה?', sub: 'מה ראינו בהוכחה?', tip: 'על כל צלע בונים ריבוע — השטח של הריבוע הוא הצלע בריבוע.', btn: 'בדיקה עם מספרים ←', win: 'בינגו! הוכחת את פיתגורס בעצמך.', wrongSay: 'חבר שטחים, לא צלעות. נסה שוב.',
       opts: [
         { t: 'a² + b² = c²', c: true, f: 'בדיוק! השטחים על הניצבים שווים לשטח על היתר.' },
@@ -558,20 +556,6 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
     + '<rect x="16" y="14" width="88" height="88" rx="24" fill="none" stroke="#1F2A37" stroke-width="4"/>'
     + '<path d="M40 40q8 7 16 0M64 40q8 7 16 0" fill="none" stroke="#1F2A37" stroke-width="3" stroke-linecap="round" opacity=".28"/>'
     + '<circle cx="11" cy="34" r="9" fill="#1F2A37"/><circle cx="109" cy="34" r="9" fill="#1F2A37"/></svg>';
-  /* Eliyahu impatient: lowered brows, tight mouth, little steam puffs */
-  const ANGRY_SVG = '<svg viewBox="0 0 120 130" width="100%" height="100%"><ellipse cx="60" cy="123" rx="30" ry="5" fill="#1F2A37" opacity=".12"/>'
-    + '<rect x="35" y="98" width="17" height="18" rx="8.5" fill="#1F2A37"/><rect x="68" y="98" width="17" height="18" rx="8.5" fill="#1F2A37"/>'
-    + '<clipPath id="clip-angry"><rect x="16" y="14" width="88" height="88" rx="24"/></clipPath><g clip-path="url(#clip-angry)">'
-    + '<rect x="16" y="14" width="55" height="55" fill="#6EDDD0"/><rect x="71" y="14" width="33" height="55" fill="#FFD84D"/>'
-    + '<rect x="16" y="69" width="55" height="33" fill="#FFD84D"/><rect x="71" y="69" width="33" height="33" fill="#FF9B7D"/>'
-    + '<path d="M71 14V102M16 69H104" stroke="#fff" stroke-width="2" opacity=".8"/></g>'
-    + '<rect x="16" y="14" width="88" height="88" rx="24" fill="none" stroke="#1F2A37" stroke-width="4"/>'
-    + '<ellipse cx="30" cy="70" rx="7" ry="4.5" fill="#FF3B5C" opacity=".45"/><ellipse cx="92" cy="70" rx="7" ry="4.5" fill="#FF3B5C" opacity=".45"/>'
-    + '<ellipse cx="45" cy="52" rx="12" ry="12" fill="#fff" stroke="#1F2A37" stroke-width="3"/><ellipse cx="77" cy="52" rx="12" ry="12" fill="#fff" stroke="#1F2A37" stroke-width="3"/>'
-    + '<circle cx="47" cy="54" r="5.5" fill="#1F2A37"/><circle cx="75" cy="54" r="5.5" fill="#1F2A37"/>'
-    + '<path d="M30 33L57 43M92 33L65 43" fill="none" stroke="#1F2A37" stroke-width="5.5" stroke-linecap="round"/>'
-    + '<path d="M49 87Q61 78 73 87" fill="none" stroke="#1F2A37" stroke-width="4.5" stroke-linecap="round"/>'
-    + '<path d="M6 10q5-7 9 0M105 6q5-7 9 0M2 24q4-5 8 0" fill="none" stroke="#e11d63" stroke-width="3" stroke-linecap="round"/></svg>';
   function mathNode(text) {
     const bd = document.createElement('bdi');
     bd.className = 'math'; bd.dir = 'ltr'; bd.textContent = text;
@@ -631,12 +615,12 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
     state: { idx: 0, a: 3, b: 4, dragged: false, dragging: false, done: false, ord: null, wrong: [], hint: 0, fb: null, mood: 'idle', trans: null, msg: '', msgId: 0, typing: false, attn: false, sound: true, target: 'home', below: false, above: false, res: {}, retry: false, flash: null, flashN: 0, proofCfg: 0, proofBusy: false, proofSeen: false, pa: 3, pb: 4, checkOn: false, checkDone: false, triplesSeen: false, mg: 2, ng: 1, pBeat: 0, tBeat: 0 },
     props: { idleNudgeSec: 9, bubbleShape: 'cycle', wordsPerLine: 4 },
     timers: [], anims: [], wrongN: 0, px: null, py: null, rv: null, _vb: null, _lbl: {},
-    get rmDeco() { return !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches); },
+    // false on purpose: reduced motion must not skip the lesson tweens
     get rm() { return false; },
     later(fn, ms) { const t = setTimeout(fn, this.rm ? Math.min(ms, 40) : ms); this.timers.push(t); return t; },
     q(sel) { return $('app').querySelector(sel); },
     an(el, k, o) {
-      if (!el || !el.animate || this.rmDeco) return null;
+      if (!el || !el.animate || this.rm) return null;
       try { const a = el.animate(k, o); this.anims.push(a); return a; } catch (e) { return null; }
     },
     setState(patch) {
@@ -860,12 +844,11 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       return { x: fallback.x, y: fallback.y, above: false, below: false, clear: false };
     },
     /* ---------- actor: Eliyahu leaves his spot and works inside the drawing ---------- */
-    wait(ms) { return new Promise((res) => this.later(res, ms * 1.3)); },
+    wait(ms) { return new Promise((res) => this.later(res, ms)); },
     tween(ms, fn) {
       const tok = this._tok;
       return new Promise((res) => {
         if (this.rm || ms <= 1) { fn(1); res(); return; }
-        ms *= 1.7;
         const t0 = performance.now();
         const st = (now) => {
           if (tok !== this._tok) return;
@@ -890,8 +873,7 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       d.id = 'actor'; d.setAttribute('aria-hidden', 'true');
       d.style.cssText = 'position:absolute;left:0;top:0;width:54px;height:58px;z-index:70;pointer-events:none;will-change:transform;display:none';
       d.innerHTML = '<div id="actorSay" dir="rtl" style="position:absolute;bottom:62px;left:50%;transform:translateX(-50%);white-space:nowrap;background:#fff;border:2px solid #8a7ff0;border-radius:12px;padding:3px 10px;font:800 13.5px Heebo,sans-serif;color:#1e1b4b;box-shadow:0 3px 8px rgba(67,56,202,.18);display:none"></div>'
-        + '<div id="actorIn" style="width:54px;height:58px;transform-origin:50% 100%"><div id="actorFront" style="width:54px;height:58px"></div><div id="actorBack" style="width:54px;height:58px;display:none">' + BACK_SVG + '</div><div id="actorAngry" style="width:54px;height:58px;display:none">' + ANGRY_SVG + '</div></div>'
-        + '<div id="actorHand" style="position:absolute;font-size:24px;line-height:1;display:none">👉</div>';
+        + '<div id="actorIn" style="width:54px;height:58px;transform-origin:50% 100%"><div id="actorFront" style="width:54px;height:58px"></div><div id="actorBack" style="width:54px;height:58px;display:none">' + BACK_SVG + '</div></div>';
       $('card').appendChild(d);
       const tpl = $('rivo-tpl');
       if (tpl) {
@@ -909,30 +891,15 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
     },
     actorFace(f) {
       if (!this.act) return;
-      $('actorFront').style.display = (f === 'back' || f === 'angry') ? 'none' : 'block';
+      $('actorFront').style.display = f === 'back' ? 'none' : 'block';
       $('actorBack').style.display = f === 'back' ? 'block' : 'none';
-      $('actorAngry').style.display = f === 'angry' ? 'block' : 'none';
       if (this.actSvg) this.actSvg.setAttribute('viewBox', f === 'happy' ? VB.happy : f === 'think' ? VB.think : VB.idle);
     },
-    actorSay(text, below) {
-      const sEl = $('actorSay'); if (!sEl) return;
-      if (!text) { sEl.style.display = 'none'; return; }
-      sEl.textContent = text; sEl.style.display = 'block';
-      sEl.style.bottom = below ? 'auto' : '62px'; sEl.style.top = below ? '62px' : 'auto';
-    },
-    actorPoint(dir) {
-      const h = $('actorHand'); if (!h) return;
-      if (!dir) { h.style.display = 'none'; return; }
-      h.style.display = 'block';
-      const P = { up: 'left:15px;top:-24px;transform:rotate(-90deg)', left: 'left:-24px;top:16px;transform:scaleX(-1)', diag: 'left:46px;top:40px;transform:rotate(40deg)' }[dir];
-      h.style.cssText = 'position:absolute;font-size:24px;line-height:1;display:block;' + P;
-      this.an(h, [{ translate: '0 0' }, { translate: dir === 'up' ? '0 -5px' : dir === 'left' ? '-5px 0' : '4px 4px' }, { translate: '0 0' }], { duration: 420, iterations: 5, easing: 'ease-in-out' });
-    },
+    actorSay(text) { const sEl = $('actorSay'); if (!sEl) return; if (text) { sEl.textContent = text; sEl.style.display = 'block'; } else sEl.style.display = 'none'; },
     actorHide() {
       if (this.act) this.act.style.display = 'none';
       const rh = $('rivoHost'); if (rh) rh.style.opacity = '1';
       const sEl = $('actorSay'); if (sEl) sEl.style.display = 'none';
-      const hEl = $('actorHand'); if (hEl) hEl.style.display = 'none';
       this._actOut = false;
     },
     async actorOut() {
@@ -974,77 +941,138 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       await this.actorPat();
     },
     /* he walks into the triangle and asks about what the question is about */
+    /* He stands in the empty corner outside the right angle — never on the drawing — and points with his hands:
+       at both legs at once; for the hypotenuse, an arrow stretches from the right angle to the side opposite it. */
     async actorAsk() {
       const S = STEPS[this.state.idx], tok = this._tok;
+      const ok = () => tok === this._tok && !this.state.done;
       if (S.mode !== 'quiz' || (S.kind !== 'legs' && S.kind !== 'hyp')) return;
-      const run = this._askRun = (this._askRun || 0) + 1;
-      const ok = () => tok === this._tok && run === this._askRun && !this.state.done;
       await this.wait(1500); if (!ok()) return;
       const a = this.state.a, b = this.state.b, root = $('triRoot');
-      const pt = S.kind === 'legs' ? this.svgPt(root, Math.min(a, b) * .32, Math.min(a, b) * .32) : this.svgPt(root, a / 2, b / 2);
+      const O = this.svgPt(root, 0, 0), A = this.svgPt(root, a, 0), B = this.svgPt(root, 0, b);
+      const C = [O[0] - 40, O[1] - 40];
       await this.actorOut();
-      await this.actorHop(pt[0], pt[1] - 6, 560); if (!ok()) { if (run === this._askRun && tok === this._tok) this.actorHide(); return; }
+      await this.actorHop(C[0], C[1], 620); if (!ok()) { this.actorHide(); this.pointClear(); return; }
       await this.actorPat();
       this.actorFace('think');
-      this.actorSay(S.kind === 'legs' ? 'נווו… מה אלה?' : 'ומה זאת?');
-      this.setState((x) => ({ flash: S.kind === 'legs' ? 'legs' : 'hyp', flashN: x.flashN + 1 }));
-      await this.wait(2600);
-      if (tok !== this._tok || run !== this._askRun) return;
-      if (this.state.flash) this.setState({ flash: null });
-      await this.actorHome();
-    },
-    /* wrong answer: he flies in annoyed, points right at the side and demands its name */
-    async actorNag() {
-      const S = STEPS[this.state.idx], tok = this._tok;
-      if (S.mode !== 'quiz' || (S.kind !== 'legs' && S.kind !== 'hyp')) return;
-      const run = this._askRun = (this._askRun || 0) + 1;
-      const mine = () => tok === this._tok && run === this._askRun;
-      const ok = () => mine() && !this.state.done;
-      await this.wait(1900); if (!ok()) return;
-      const a = this.state.a, b = this.state.b, c = Math.hypot(a, b), root = $('triRoot'), d = 40 / this.triGeom(a, b).k;
-      const stops = S.kind === 'legs'
-        ? [[a / 2, d, 'legA', 'נוווו, איך קוראים לזה??', 'up'], [d, b / 2, 'legB', 'ולזה??', 'left']]
-        : [[a / 2 - b / c * d, b / 2 - a / c * d, 'hyp', 'נוווו, ואיך קוראים לזאת??', 'diag']];
-      await this.actorOut(); this.actorSay(''); this.actorPoint(''); this.actorFace('angry');
-      for (const s of stops) {
-        if (!ok()) break;
-        const p = this.svgPt(root, s[0], s[1]);
-        await this.actorHop(p[0], p[1], 380); if (!ok()) break;
-        this.actorPoint(s[4]); this.actorSay(s[3], true);
-        this.setState((x) => ({ flash: s[2], flashN: x.flashN + 1 }));
-        this.an($('actorIn'), [{ transform: 'translateX(0)' }, { transform: 'translateX(-3px) rotate(-5deg)' }, { transform: 'translateX(3px) rotate(5deg)' }, { transform: 'translateX(0)' }], { duration: 260, iterations: 3 });
-        this.sfx('tick');
-        await this.wait(2400);
+      const cl = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+      if (S.kind === 'legs') {
+        const la = A[0] - O[0], lb = B[1] - O[1];
+        const hA = [O[0] + cl(la * .32, 20, 46), O[1] - 11], hB = [O[0] - 11, O[1] + cl(lb * .32, 20, 46)];
+        this.drawArms([
+          { from: [C[0] + 18, C[1] + 4], ctrl: [hA[0] - 8, C[1] + 4], to: hA, ang: Math.atan2(11, O[0] + la / 2 - hA[0]) },
+          { from: [C[0] + 4, C[1] + 20], ctrl: [C[0] + 4, hB[1] - 8], to: hB, ang: Math.atan2(O[1] + lb / 2 - hB[1], 11) }
+        ]);
+        this.actorSay('נווו… מה אלה?');
+        this.setState((x) => ({ flash: 'legs', flashN: x.flashN + 1 }));
+        await this.wait(3400);
+      } else {
+        const M = this.svgPt(root, a / 2, b / 2), ang = Math.atan2(M[1] - O[1], M[0] - O[0]);
+        this.drawArms([{ from: [C[0] + 14, C[1] + 14], ctrl: [O[0] - 16, O[1] - 6], to: [O[0] - 4, O[1] - 4], ang }]);
+        await this.wait(350);
+        if (ok()) await this.hypArrow(tok);
+        if (ok()) {
+          this.actorSay('ומה זאת?');
+          this.setState((x) => ({ flash: 'hyp', flashN: x.flashN + 1 }));
+          await this.wait(3400);
+        }
       }
-      if (!mine()) return;
-      this.actorPoint(''); this.actorSay('');
+      if (tok !== this._tok) return;
       if (this.state.flash) this.setState({ flash: null });
+      this.pointClear();
       await this.actorHome();
     },
-    /* he shows once how a handle is dragged */
+    /* a card-pixel point → the triangle drawing's own units */
+    cardToVb(x, y) {
+      const m = $('triSvg').getScreenCTM(), c = $('card').getBoundingClientRect();
+      if (!m) return [x, y];
+      const inv = m.inverse(), X = c.left + x, Y = c.top + y;
+      return [inv.a * X + inv.c * Y + inv.e, inv.b * X + inv.d * Y + inv.f];
+    },
+    /* Eliyahu's arms, each ending in a white-gloved pointing hand */
+    drawArms(list) {
+      const g = $('pointArms'); if (!g) return;
+      const r = $('triSvg').getBoundingClientRect(), s = 402 / (r.width || 402);
+      const V = (p) => this.cardToVb(p[0], p[1]), f = (v) => (v * s).toFixed(2), xy = (p) => p[0].toFixed(1) + ' ' + p[1].toFixed(1);
+      let h = '';
+      list.forEach((q) => { h += '<path d="M' + xy(V(q.from)) + ' Q' + xy(V(q.ctrl)) + ' ' + xy(V(q.to)) + '" fill="none" stroke="#1F2A37" stroke-width="' + f(3.2) + '" stroke-linecap="round"></path>'; });
+      list.forEach((q) => {
+        const to = V(q.to), tip = V([q.to[0] + Math.cos(q.ang) * 10, q.to[1] + Math.sin(q.ang) * 10]), mid = V([q.to[0] + Math.cos(q.ang) * 3, q.to[1] + Math.sin(q.ang) * 3]);
+        h += '<line x1="' + to[0].toFixed(1) + '" y1="' + to[1].toFixed(1) + '" x2="' + tip[0].toFixed(1) + '" y2="' + tip[1].toFixed(1) + '" stroke="#1F2A37" stroke-width="' + f(6.6) + '" stroke-linecap="round"></line>';
+        h += '<line x1="' + mid[0].toFixed(1) + '" y1="' + mid[1].toFixed(1) + '" x2="' + tip[0].toFixed(1) + '" y2="' + tip[1].toFixed(1) + '" stroke="#fff" stroke-width="' + f(2.6) + '" stroke-linecap="round"></line>';
+        h += '<circle cx="' + to[0].toFixed(1) + '" cy="' + to[1].toFixed(1) + '" r="' + f(5.6) + '" fill="#fff" stroke="#1F2A37" stroke-width="' + f(2.2) + '"></circle>';
+      });
+      g.innerHTML = h;
+      void g.getBoundingClientRect();
+      g.style.opacity = '1';
+    },
+    pointClear() {
+      const g = $('pointArms'); if (!g) return;
+      g.style.opacity = '0';
+      setTimeout(() => { if (g.style.opacity === '0') g.innerHTML = ''; }, 400);
+    },
+    /* an arrow grows slowly from the right angle to the side facing it, then "מול הזווית" is written there */
+    async hypArrow(tok) {
+      const g = $('hypArrow'); if (!g) return;
+      const st = this.state, a = st.a, b = st.b, c = Math.hypot(a, b), G = this.triGeom(a, b);
+      const L = (x, y) => [G.tx + G.k * x, G.ty + G.k * y], r = $('triSvg').getBoundingClientRect(), s = 402 / (r.width || 402);
+      const dir = [a / c, b / c], n = [b / c, a / c], gap = .11 / (2 * a * b / (c * c)) + 2.5 * s / G.k;
+      const p0 = L(dir[0] * .25, dir[1] * .25), p1 = L(a / 2 - dir[0] * gap, b / 2 - dir[1] * gap);
+      // the words sit right under the letter c, starting at its left edge, so they never cross the hypotenuse
+      const fs = Math.max(.62, 13.5 / G.k), cl = L(a / 2 + n[0] * .75, b / 2 + n[1] * .75), cPx = fs * G.k;
+      const lp = [cl[0] - cPx * .32, cl[1] + cPx * .5 + 11 * s];
+      const angDeg = Math.atan2(dir[1], dir[0]) * 180 / Math.PI, w = (2.6 * s).toFixed(2), hd = 7 * s;
+      g.innerHTML = '<line id="haLine" x1="' + p0[0].toFixed(1) + '" y1="' + p0[1].toFixed(1) + '" x2="' + p0[0].toFixed(1) + '" y2="' + p0[1].toFixed(1) + '" stroke="' + INK + '" stroke-width="' + w + '" stroke-linecap="round"></line>'
+        + '<polygon id="haHead" points="0,0 ' + (-hd * 1.6).toFixed(2) + ',' + (-hd).toFixed(2) + ' ' + (-hd * 1.6).toFixed(2) + ',' + hd.toFixed(2) + '" fill="' + INK + '" transform="translate(' + p0[0].toFixed(1) + ' ' + p0[1].toFixed(1) + ') rotate(' + angDeg.toFixed(1) + ')"></polygon>'
+        + '<text id="haLab" x="' + lp[0].toFixed(1) + '" y="' + lp[1].toFixed(1) + '" text-anchor="middle" dominant-baseline="central" direction="rtl" style="font-family:Heebo,sans-serif;font-weight:800;font-size:' + (14 * s).toFixed(1) + 'px;fill:' + INK + ';stroke:#fff;stroke-width:' + (4 * s).toFixed(1) + 'px;stroke-linejoin:round;paint-order:stroke;opacity:0;transition:opacity .5s ease">מול הזווית</text>';
+      this._hypArrow = true;
+      const line = $('haLine'), head = $('haHead'), lab = $('haLab');
+      try { lab.setAttribute('x', (lp[0] + lab.getComputedTextLength() / 2).toFixed(1)); } catch (e) {}
+      await this.tween(this.rm ? 1 : 2000, (l) => {
+        const e = ez(l), x = p0[0] + (p1[0] - p0[0]) * e, y = p0[1] + (p1[1] - p0[1]) * e;
+        line.setAttribute('x2', x.toFixed(1)); line.setAttribute('y2', y.toFixed(1));
+        head.setAttribute('transform', 'translate(' + x.toFixed(1) + ' ' + y.toFixed(1) + ') rotate(' + angDeg.toFixed(1) + ')');
+      });
+      if (tok !== this._tok) return;
+      $('haLab').style.opacity = '1';
+      this.sfx('tick');
+    },
+    /* he shows once how a handle is dragged: a slow, continuous glide with his hand on the handle */
     async actorDemoDrag() {
       if (this._demoDone) return;
       const tok = this._tok, ok = () => tok === this._tok && !this.drag && !this.state.dragged && STEPS[this.state.idx].mode === 'explore';
       await this.wait(2600); if (!ok()) return;
       this._demoDone = true;
       await this.actorOut(); this.actorFace('back');
-      let p = this.elPt($('hA')); await this.actorHop(p[0], p[1] - 4, 560);
+      const p = this.elPt($('hA')); await this.actorHop(p[0], p[1] - 4, 560);
+      if (!ok()) { if (tok === this._tok && !this.drag) await this.actorHome(); return; }
       this.actorSay('גוררים ככה');
-      for (const v of [4, 5, 4, 3]) {
-        if (!ok()) break;
-        this.setState({ a: v }); this.sfx('tick');
-        p = this.elPt($('hA')); await this.actorHop(p[0], p[1] - 4, 300);
-        await this.wait(260);
+      this.settleStop();
+      const v = this.dv = this.triView(), a0 = this.state.a, a1 = Math.min(8, a0 + 2);
+      const svg = $('triSvg'); svg.style.overflow = 'hidden';
+      const glide = (from, to) => this.tween(1300, (l) => {
+        if (!ok() || this.dv !== v) return;
+        v.a = from + (to - from) * ez(l);
+        this.triPlace(v);
+        if (this.dragCommit()) this.sfx('tick');
+        const q = this.elPt($('hA'));
+        this.actorSet(q[0], q[1] - 4, 'rotate(' + (Math.sin(l * Math.PI * 4) * 4).toFixed(1) + 'deg)');
+      });
+      await glide(a0, a1);
+      if (ok()) await this.wait(280);
+      if (ok()) await glide(a1, a0);
+      if (tok !== this._tok) return;
+      if (this.dv === v && !this.drag) { this.dv = null; svg.style.overflow = ''; this.setState({}); }
+      if (ok()) {
+        this.actorSay('עכשיו אתה!'); this.actorFace('front');
+        await this.wait(900);
+        if (tok !== this._tok) return;
       }
-      if (tok !== this._tok) return;
-      this.actorSay('עכשיו אתה!'); this.actorFace('front');
-      await this.wait(900);
-      if (tok !== this._tok) return;
       await this.actorHome();
     },
     /* ---------- effects & sound ---------- */
     burst(n, big) {
-      if (this.rmDeco) return; const L = $('conf'); if (!L) return;
+      if (this.rm) return; const L = $('conf'); if (!L) return;
       const W = L.clientWidth || 320, H = L.clientHeight || 400;
       const cols = [IND, ROSE, '#f59e0b', '#7c74ec'].concat(big ? ['#1e1b4b'] : []);
       for (let k = 0; k < n; k++) {
@@ -1111,11 +1139,16 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
     /* ---------- step flow ---------- */
     goStep(i) {
       this.clearAll(); this._enter = true; this.wrongN = 0; this.drag = null; this.setGaze(0, 0);
+      this.settleStop(); cancelAnimationFrame(this._dragRaf); this._dragRaf = 0; this.dv = null;
+      const pa = $('pointArms'); if (pa) { pa.style.opacity = '0'; pa.innerHTML = ''; }
+      const ha = $('hypArrow'); if (ha) ha.innerHTML = '';
+      this._hypArrow = false;
+      const tsv = $('triSvg'); if (tsv) tsv.style.overflow = '';
       this.px = null;
       const patch = { idx: i, dragged: false, dragging: false, done: false, ord: null, wrong: [], hint: 0, fb: null, mood: 'idle', trans: null, flash: null, attn: false, typing: false, msg: '', target: 'home', triplesSeen: false };
       if (STEPS[i].mode === 'quiz') patch.ord = shuffle([0, 1, 2, 3]);
       if (i === 0) Object.assign(patch, { a: 3, b: 4, res: {}, retry: false, checkOn: false, checkDone: false, mg: 2, ng: 1, proofSeen: false, proofCfg: 0 });
-      if (i === 4) { let qa = this.state.a, qb = this.state.b; if (Math.min(qa, qb) / Math.max(qa, qb) > .72) { qa = 3; qb = 5; } /* never a near-symmetric picture: the proof must not look like a special case */ Object.assign(patch, { pa: qa, pb: qb, proofCfg: 0, proofBusy: false, pBeat: 0 }); }
+      if (i === 4) Object.assign(patch, { pa: this.state.a, pb: this.state.b, proofCfg: 0, proofBusy: false, pBeat: 0 });
       if (i === 6) Object.assign(patch, { checkOn: false, checkDone: false });
       if (i === 7) patch.tBeat = 0;
       if (i === 8) patch.retry = false;
@@ -1158,7 +1191,6 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
         this.an(btn, [{ transform: 'translateX(0)' }, { transform: 'translateX(-7px)' }, { transform: 'translateX(7px)' }, { transform: 'translateX(-4px)' }, { transform: 'translateX(0)' }], { duration: 400 });
         this.say(S.wrongSay + (o.show ? ' סימנתי לך במשולש.' : ''));
         if (o.show) this.later(() => this.setState({ flash: null }), 1750);
-        this.actorNag();
         if (this.wrongN >= 2 && this.state.hint < 2) this.later(() => { if (!this.state.done && this.state.hint < 2) this.point('hint', 'אולי אתה רוצה רמז?'); }, 4200);
       }
     },
@@ -1175,6 +1207,7 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       h += '<polygon id="sqA" stroke-linejoin="round"></polygon>';
       h += '<polygon id="sqB" stroke-linejoin="round"></polygon>';
       h += '<polygon id="sqC" stroke-linejoin="round"></polygon>';
+      h += '<polygon id="sqCd" fill="none" stroke-linejoin="round"></polygon>';
       h += '<polygon id="triBody"></polygon>';
       h += '<line id="legA" stroke-linecap="round"></line>';
       h += '<line id="legB" stroke-linecap="round"></line>';
@@ -1190,6 +1223,8 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       h += '<g id="hA" data-handle="a" style="cursor:grab"><circle class="ring" r=".62" fill="none" stroke="' + IND + '" stroke-width=".09"></circle><circle class="knob" r=".5" fill="#fff" stroke="' + INK + '" stroke-width=".1"></circle><circle class="dot" r=".17" fill="' + IND + '"></circle><circle r="1.1" fill="transparent"></circle></g>';
       h += '<g id="hB" data-handle="b" style="cursor:grab"><circle class="ring" r=".62" fill="none" stroke="' + AMB + '" stroke-width=".09"></circle><circle class="knob" r=".5" fill="#fff" stroke="' + INK + '" stroke-width=".1"></circle><circle class="dot" r=".17" fill="' + AMB + '"></circle><circle r="1.1" fill="transparent"></circle></g>';
       h += '</g>';
+      // Eliyahu's arms when he points from outside the drawing, and the "opposite the angle" arrow (drawing units)
+      h += '<g id="hypArrow" style="pointer-events:none"></g><g id="pointArms" style="opacity:0;transition:opacity .35s ease;pointer-events:none"></g>';
       svg.innerHTML = h;
       svg.addEventListener('pointermove', (e) => app.onMove(e));
       svg.addEventListener('pointerup', () => app.onUp());
@@ -1203,103 +1238,59 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       const tx = W / 2 - k * (a / 2), ty = H / 2 - k * (b / 2);
       return { k, tx, ty };
     },
+    /* the drawing's view: whole numbers at rest; during a drag (and the glide after it) a live, continuous view */
+    triView() {
+      if (this.dv) return this.dv;
+      const st = this.state, g = this.triGeom(st.a, st.b);
+      return { a: st.a, b: st.b, k: g.k, tx: g.tx, ty: g.ty };
+    },
     renderTri() {
       const st = this.state, S = STEPS[st.idx];
-      const a = st.a, b = st.b, c2 = a * a + b * b, c = Math.sqrt(c2), cInt = Number.isInteger(c);
-      const g = this.triGeom(a, b);
       const root = $('triRoot'); if (!root) return;
-      root.setAttribute('transform', 'translate(' + g.tx.toFixed(2) + ' ' + g.ty.toFixed(2) + ') scale(' + g.k.toFixed(4) + ')');
       const isExp = S.mode === 'explore', isQ = S.mode === 'quiz', isF = S.kind === 'formula';
-      const u = (v) => v.toFixed(3);
-      const fs = Math.max(.62, 13.5 / g.k) / 1;
-      const fsBig = Math.max(.72, 16 / g.k) / 1;
       // squares
-      const sqA = $('sqA'), sqB = $('sqB'), sqC = $('sqC');
-      sqA.setAttribute('points', '0,0 ' + u(a) + ',0 ' + u(a) + ',' + u(-a) + ' 0,' + u(-a));
-      sqB.setAttribute('points', '0,0 ' + u(-b) + ',0 ' + u(-b) + ',' + u(b) + ' 0,' + u(b));
-      sqC.setAttribute('points', u(a) + ',0 0,' + u(b) + ' ' + u(b) + ',' + u(a + b) + ' ' + u(a + b) + ',' + u(a));
       const sqOp = isExp ? '.2' : isF ? '.24' : '.13';
       const sqSW = isExp || isF ? .09 : .06;
-      [[sqA, IND], [sqB, AMB], [sqC, ROSE]].forEach((p) => {
+      [[$('sqA'), IND], [$('sqB'), AMB], [$('sqC'), ROSE]].forEach((p) => {
         p[0].style.fill = p[1]; p[0].style.fillOpacity = sqOp; p[0].style.stroke = p[1]; p[0].style.strokeWidth = sqSW; p[0].style.strokeOpacity = isExp || isF ? '.9' : '.45';
       });
+      // c² has the same black-and-white dashed frame on every screen
+      const sqCw = isExp || isF ? .1 : .075;
+      $('sqC').style.stroke = '#fff'; $('sqC').style.strokeOpacity = '1'; $('sqC').style.strokeWidth = sqCw;
+      const sqCd = $('sqCd'); sqCd.style.stroke = INK; sqCd.style.strokeWidth = sqCw; sqCd.style.strokeDasharray = '.3 .22'; sqCd.style.strokeOpacity = isExp || isF ? '.9' : '.65';
       // triangle
-      $('triBody').setAttribute('points', '0,0 ' + u(a) + ',0 0,' + u(b));
       $('triBody').style.fill = '#fff'; $('triBody').style.fillOpacity = '.92'; $('triBody').style.stroke = 'none';
       // edges
       const edgeW = isQ ? .16 : .11;
       const legEmp = isQ && S.kind === 'legs';
       const hypEmp = isQ && S.kind === 'hyp';
-      const setEdge = (id, x1, y1, x2, y2, col, w) => { const e = $(id); e.setAttribute('x1', x1); e.setAttribute('y1', y1); e.setAttribute('x2', x2); e.setAttribute('y2', y2); e.style.stroke = col; e.style.strokeWidth = w; };
-      setEdge('legA', 0, 0, a, 0, IND, legEmp ? .22 : edgeW);
-      setEdge('legB', 0, 0, 0, b, AMB, legEmp ? .22 : edgeW);
-      setEdge('hypE', a, 0, 0, b, ROSE, hypEmp ? .22 : edgeW);
+      [['legA', IND, legEmp ? .22 : edgeW], ['legB', AMB, legEmp ? .22 : edgeW], ['hypE', ROSE, hypEmp ? .22 : edgeW]].forEach((p) => { const e = $(p[0]); e.style.stroke = p[1]; e.style.strokeWidth = p[2]; });
       // right angle marker
-      const d = Math.min(a, b) * .18;
       const am = $('angleMk');
-      am.setAttribute('points', u(d) + ',0 ' + u(d) + ',' + u(d) + ' 0,' + u(d));
       am.style.stroke = INK; am.style.strokeWidth = .07; am.style.strokeOpacity = isQ ? '1' : '.8';
-      // letters
-      const lab = (id, x, y, txt, col, big) => { const t = $(id); t.setAttribute('x', u(x)); t.setAttribute('y', u(y)); t.style.fill = col; t.style.fontFamily = '"Secular One",sans-serif'; t.style.fontSize = (big ? fsBig : fs) + 'px'; t.textContent = txt; };
-      const off = .45;
-      lab('labA', a / 2, off, isExp ? 'a = ' + a : 'a', IND);
-      lab('labB', off, b / 2, isExp ? 'b = ' + b : 'b', AMB);
-      const nx = b / c, ny = a / c; // unit normal from hyp, away from O
-      const lcX = a / 2 + nx * (off + .3), lcY = b / 2 + ny * (off + .3);
-      const labCEl = $('labC'), barC = $('radBarC');
-      labCEl.setAttribute('x', u(lcX)); labCEl.setAttribute('y', u(lcY));
-      labCEl.style.fill = ROSE; labCEl.style.fontFamily = '"Secular One",sans-serif'; labCEl.style.fontSize = fs + 'px';
-      if (isExp && !cInt) {
-        labCEl.textContent = '';
-        const NS2 = 'http://www.w3.org/2000/svg';
-        const t1 = document.createElementNS(NS2, 'tspan'); t1.textContent = 'c = √';
-        const t2 = document.createElementNS(NS2, 'tspan'); t2.textContent = String(c2);
-        labCEl.append(t1, t2);
-        const L1 = t1.getComputedTextLength(), L2 = t2.getComputedTextLength();
-        const sx0 = lcX - (L1 + L2) / 2;
-        const by = lcY - fs * .45;
-        barC.setAttribute('x1', u(sx0 + L1)); barC.setAttribute('x2', u(sx0 + L1 + L2));
-        barC.setAttribute('y1', u(by)); barC.setAttribute('y2', u(by));
-        barC.style.display = ''; barC.style.stroke = ROSE; barC.style.strokeWidth = .06;
-      } else {
-        labCEl.textContent = isExp ? 'c = ' + c : 'c';
-        barC.style.display = 'none';
-      }
-      // square captions
-      const cap = (id, x, y, txt, col) => { const t = $(id); t.setAttribute('x', u(x)); t.setAttribute('y', u(y)); t.style.fill = col; t.style.fontFamily = '"Secular One",sans-serif'; t.style.fontSize = fs + 'px'; t.textContent = txt; };
+      // letters and square captions
+      [['labA', IND], ['labB', AMB], ['labC', ROSE], ['valA2', IND], ['valB2', AMB], ['valC2', ROSE]].forEach((p) => { const t = $(p[0]); t.style.fill = p[1]; t.style.fontFamily = '"Secular One",sans-serif'; });
       const showCaps = isExp || isF;
-      $('valA2').style.display = showCaps ? '' : 'none';
-      $('valB2').style.display = showCaps ? '' : 'none';
-      $('valC2').style.display = showCaps ? '' : 'none';
-      if (showCaps) {
-        let pA = [a / 2, -a / 2], pB = [-b / 2, b / 2], pC = [(a + b) / 2, (a + b) / 2];
-        if (a < 3) pA = [a / 2, -a - .62];
-        if (b < 3) pB = [-b - 1.7, b / 2];
-        if (c < 3.4) pC = [(a + b) / 2 + nx * (c / 2 + .8), (a + b) / 2 + ny * (c / 2 + .8)];
-        cap('valA2', pA[0], pA[1], isExp ? 'a² = ' + a * a : 'a²', IND);
-        cap('valB2', pB[0], pB[1], isExp ? 'b² = ' + b * b : 'b²', AMB);
-        cap('valC2', pC[0], pC[1], isExp ? 'c² = ' + c2 : 'c²', ROSE);
-      }
+      ['valA2', 'valB2', 'valC2'].forEach((id) => { $(id).style.display = showCaps ? '' : 'none'; });
       // handles
       const hA = $('hA'), hB = $('hB');
       hA.style.display = isExp ? '' : 'none';
       hB.style.display = isExp ? '' : 'none';
       if (isExp) {
-        hA.setAttribute('transform', 'translate(' + u(a) + ' 0)');
-        hB.setAttribute('transform', 'translate(0 ' + u(b) + ')');
-        hA.querySelector('.ring').style.display = st.dragged ? 'none' : '';
-        hB.querySelector('.ring').style.display = st.dragged ? 'none' : '';
         [hA, hB].forEach((hh) => {
           const ring = hh.querySelector('.ring');
+          ring.style.display = st.dragged ? 'none' : '';
           ring.style.transformBox = 'fill-box'; ring.style.transformOrigin = 'center'; ring.style.animation = 'ringPulse 1.2s ease-out infinite';
           hh.style.cursor = st.dragging ? 'grabbing' : 'grab';
         });
       }
       $('triSvg').style.touchAction = isExp ? 'none' : 'auto';
+      this.triPlace(this.triView());
+      this.triTexts();
       // wrong-answer flash
       const fl = st.flash, flName = st.flashN % 2 ? 'flashonA' : 'flashonB';
-      const flashMap = { angle: ['angleMk'], legs: ['legA', 'legB'], legA: ['legA'], legB: ['legB'], hyp: ['hypE'], squares: ['sqA', 'sqB', 'sqC'] };
-      ['angleMk', 'legA', 'legB', 'hypE', 'sqA', 'sqB', 'sqC'].forEach((id) => { $(id).classList.remove('flashonA'); $(id).classList.remove('flashonB'); });
+      const flashMap = { angle: ['angleMk'], legs: ['legA', 'legB'], hyp: ['hypE'], squares: ['sqA', 'sqB', 'sqC', 'sqCd'] };
+      ['angleMk', 'legA', 'legB', 'hypE', 'sqA', 'sqB', 'sqC', 'sqCd'].forEach((id) => { $(id).classList.remove('flashonA'); $(id).classList.remove('flashonB'); });
       if (fl && flashMap[fl]) {
         flashMap[fl].forEach((id) => {
           const el = $(id);
@@ -1309,25 +1300,104 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
         });
       }
     },
+    /* positions only: cheap enough for every animation frame of a drag */
+    triPlace(v) {
+      const root = $('triRoot'); if (!root) return;
+      const a = v.a, b = v.b, k = v.k, c = Math.hypot(a, b);
+      const u = (x) => x.toFixed(3);
+      root.setAttribute('transform', 'translate(' + v.tx.toFixed(2) + ' ' + v.ty.toFixed(2) + ') scale(' + k.toFixed(4) + ')');
+      const fs = Math.max(.62, 13.5 / k);
+      $('sqA').setAttribute('points', '0,0 ' + u(a) + ',0 ' + u(a) + ',' + u(-a) + ' 0,' + u(-a));
+      $('sqB').setAttribute('points', '0,0 ' + u(-b) + ',0 ' + u(-b) + ',' + u(b) + ' 0,' + u(b));
+      const cPts = u(a) + ',0 0,' + u(b) + ' ' + u(b) + ',' + u(a + b) + ' ' + u(a + b) + ',' + u(a);
+      $('sqC').setAttribute('points', cPts); $('sqCd').setAttribute('points', cPts);
+      $('triBody').setAttribute('points', '0,0 ' + u(a) + ',0 0,' + u(b));
+      const seg = (id, x1, y1, x2, y2) => { const e = $(id); e.setAttribute('x1', u(x1)); e.setAttribute('y1', u(y1)); e.setAttribute('x2', u(x2)); e.setAttribute('y2', u(y2)); };
+      seg('legA', 0, 0, a, 0); seg('legB', 0, 0, 0, b); seg('hypE', a, 0, 0, b);
+      const d = Math.min(a, b) * .18;
+      $('angleMk').setAttribute('points', u(d) + ',0 ' + u(d) + ',' + u(d) + ' 0,' + u(d));
+      const at = (id, x, y) => { const t = $(id); t.setAttribute('x', u(x)); t.setAttribute('y', u(y)); t.style.fontSize = fs + 'px'; };
+      const off = .45;
+      at('labA', a / 2, off);
+      at('labB', off, b / 2);
+      const nx = b / c, ny = a / c; // unit normal from hyp, away from O
+      const lcX = a / 2 + nx * (off + .3), lcY = b / 2 + ny * (off + .3);
+      at('labC', lcX, lcY);
+      let pA = [a / 2, -a / 2], pB = [-b / 2, b / 2], pC = [(a + b) / 2, (a + b) / 2];
+      if (a < 3) pA = [a / 2, -a - .62];
+      if (b < 3) pB = [-b - 1.7, b / 2];
+      if (c < 3.4) pC = [(a + b) / 2 + nx * (c / 2 + .8), (a + b) / 2 + ny * (c / 2 + .8)];
+      at('valA2', pA[0], pA[1]); at('valB2', pB[0], pB[1]); at('valC2', pC[0], pC[1]);
+      $('hA').setAttribute('transform', 'translate(' + u(a) + ' 0)');
+      $('hB').setAttribute('transform', 'translate(0 ' + u(b) + ')');
+      this._triV = { fs, lcX, lcY };
+      this.placeBarC();
+    },
+    /* the numbers on the drawing are whole numbers; the text is rewritten only when a number changes */
+    triTexts() {
+      const st = this.state, S = STEPS[st.idx], isExp = S.mode === 'explore';
+      const a = st.a, b = st.b, c2 = a * a + b * b, c = Math.sqrt(c2), cInt = Number.isInteger(c);
+      const key = st.idx + '|' + a + '|' + b;
+      if (this._triKey === key) return;
+      this._triKey = key;
+      $('labA').textContent = isExp ? 'a = ' + a : 'a';
+      $('labB').textContent = isExp ? 'b = ' + b : 'b';
+      const labCEl = $('labC');
+      this._barC = null;
+      if (isExp && !cInt) {
+        labCEl.textContent = '';
+        const NS2 = 'http://www.w3.org/2000/svg';
+        const t1 = document.createElementNS(NS2, 'tspan'); t1.textContent = 'c = √';
+        const t2 = document.createElementNS(NS2, 'tspan'); t2.textContent = String(c2);
+        labCEl.append(t1, t2);
+        const fs = (this._triV && this._triV.fs) || parseFloat(labCEl.style.fontSize) || 1;
+        this._barC = { l1: t1.getComputedTextLength() / fs, l2: t2.getComputedTextLength() / fs };
+      } else labCEl.textContent = isExp ? 'c = ' + c : 'c';
+      $('valA2').textContent = isExp ? 'a² = ' + a * a : 'a²';
+      $('valB2').textContent = isExp ? 'b² = ' + b * b : 'b²';
+      $('valC2').textContent = isExp ? 'c² = ' + c2 : 'c²';
+      this.placeBarC();
+    },
+    placeBarC() {
+      const barC = $('radBarC'), v = this._triV; if (!barC) return;
+      if (!this._barC || !v) { barC.style.display = 'none'; return; }
+      const u = (x) => x.toFixed(3);
+      const L1 = this._barC.l1 * v.fs, L2 = this._barC.l2 * v.fs;
+      const sx0 = v.lcX - (L1 + L2) / 2, by = v.lcY - v.fs * .45;
+      barC.setAttribute('x1', u(sx0 + L1)); barC.setAttribute('x2', u(sx0 + L1 + L2));
+      barC.setAttribute('y1', u(by)); barC.setAttribute('y2', u(by));
+      barC.style.display = ''; barC.style.stroke = ROSE; barC.style.strokeWidth = .06;
+    },
+    vbPt(inv, x, y) { return { x: inv.a * x + inv.c * y + inv.e, y: inv.b * x + inv.d * y + inv.f }; },
+    /* continuous drag: the drawing keeps its scale while the finger is down, so the handle stays under it */
     onDown(e, which) {
       if (STEPS[this.state.idx].mode !== 'explore') return;
-      const svg = $('triSvg'); try { svg.setPointerCapture(e.pointerId); } catch (_) {}
+      const svg = $('triSvg'), sm = svg.getScreenCTM(); if (!sm) return;
+      try { svg.setPointerCapture(e.pointerId); } catch (_) {}
       e.preventDefault();
-      this.drag = { which, x: e.clientX, y: e.clientY, moved: false };
+      this.settleStop();
+      if (!this.dv) this.dv = this.triView();
+      const inv = sm.inverse();
+      this.drag = { which, x: e.clientX, y: e.clientY, cx: e.clientX, cy: e.clientY, moved: false, inv, p0: this.vbPt(inv, e.clientX, e.clientY), a0: this.dv.a, b0: this.dv.b, gz: 0 };
+      svg.style.overflow = 'hidden';
       this.setState({ dragging: true }); this.armNudge(); this.goHome();
       if (!this.saidDrag) { this.saidDrag = true; this.say('יפה! עכשיו השווה: ' + m('a² + b²') + ' מול ' + m('c²') + '.'); }
     },
     onMove(e) {
-      if (!this.drag) return;
-      const root = $('triRoot'); const ctm = root && root.getScreenCTM(); if (!ctm) return;
-      const svg = $('triSvg');
-      const p = svg.createSVGPoint(); p.x = e.clientX; p.y = e.clientY; const qp = p.matrixTransform(ctm.inverse());
-      const st = this.state;
-      let na = st.a, nb = st.b;
-      if (this.drag.which === 'a') na = Math.max(2, Math.min(8, Math.round(qp.x)));
-      else nb = Math.max(2, Math.min(8, Math.round(qp.y)));
-      if (!this.drag.moved && Math.hypot(e.clientX - this.drag.x, e.clientY - this.drag.y) > 3) {
-        this.drag.moved = true;
+      const d = this.drag; if (!d) return;
+      d.cx = e.clientX; d.cy = e.clientY;
+      if (!this._dragRaf) this._dragRaf = requestAnimationFrame(() => { this._dragRaf = 0; this.dragFrame(); });
+    },
+    /* one update per animation frame, however many pointer events arrive */
+    dragFrame() {
+      const d = this.drag, v = this.dv; if (!d || !v) return;
+      const p = this.vbPt(d.inv, d.cx, d.cy), edge = .75 * v.k + 2;
+      if (d.which === 'a') v.a = Math.max(2, Math.min(8, Math.max(d.a0, (402 - edge - v.tx) / v.k), d.a0 + (p.x - d.p0.x) / v.k));
+      else v.b = Math.max(2, Math.min(8, Math.max(d.b0, (330 - edge - v.ty) / v.k), d.b0 + (p.y - d.p0.y) / v.k));
+      this.triPlace(v);
+      if (!d.moved && Math.hypot(d.cx - d.x, d.cy - d.y) > 3) {
+        d.moved = true;
+        const st = this.state;
         if (!st.dragged) {
           const res = Object.assign({}, st.res, { 1: { pts: 20, tries: 1, hints: 0, wrong: [] } });
           this.setState({ dragged: true, mood: 'happy', res });
@@ -1335,94 +1405,193 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
           this.later(() => this.an($('next'), [{ transform: 'scale(.95)' }, { transform: 'scale(1.04)' }, { transform: 'scale(1)' }], { duration: 450 }), 30);
         }
       }
-      if (na !== st.a || nb !== st.b) {
-        this.setState({ a: na, b: nb });
-        const c2 = na * na + nb * nb, c = Math.sqrt(c2);
-        const key = na + ',' + nb;
-        if (Number.isInteger(c) && this._lastTriple !== key && this.state.dragged) {
-          this._lastTriple = key;
-          this.say('שלשה פיתגורסית! ' + m('(' + na + ', ' + nb + ', ' + c + ')') + ' — כולם שלמים!', { mood: 'happy' });
-          this.sfx('tick');
-        }
+      this.dragCommit();
+      const now = performance.now();
+      if (now - d.gz > 150) { d.gz = now; const h = d.which === 'a' ? $('hA') : $('hB'); if (h) this.gazeAt(h); }
+    },
+    /* the numbers show the nearest whole value; nothing heavy runs unless that value changes */
+    dragCommit() {
+      const v = this.dv; if (!v) return false;
+      const st = this.state, na = Math.round(v.a), nb = Math.round(v.b);
+      if (na === st.a && nb === st.b) return false;
+      this.state = Object.assign({}, st, { a: na, b: nb });
+      this.triTexts();
+      this.paintExplore();
+      this.pulseVals();
+      const c = Math.sqrt(na * na + nb * nb), key = na + ',' + nb;
+      if (this.drag && Number.isInteger(c) && this._lastTriple !== key && this.state.dragged) {
+        this._lastTriple = key;
+        this.say('שלשה פיתגורסית! ' + m('(' + na + ', ' + nb + ', ' + c + ')') + ' — כולם שלמים!', { mood: 'happy' });
+        this.sfx('tick');
       }
-      const h = this.drag.which === 'a' ? $('hA') : $('hB'); if (h) this.gazeAt(h);
+      return true;
+    },
+    pulseVals() {
+      if (this.rm) return;
+      $('app').querySelectorAll('[data-val]').forEach((el) => { try { el.animate([{ transform: 'scale(1.25)' }, { transform: 'scale(1)' }], { duration: 220 }); } catch (e) {} });
     },
     onUp() {
       if (!this.drag) return;
+      if (this._dragRaf) { cancelAnimationFrame(this._dragRaf); this._dragRaf = 0; this.dragFrame(); }
       this.drag = null;
       this.setState({ dragging: false }); this.setGaze(0, 0); this.armNudge();
+      this.settle();
+    },
+    /* on release the handle glides to the nearest whole number while the drawing re-fits: one smooth move */
+    settle() {
+      const v = this.dv; if (!v) return;
+      const st = this.state, g = this.triGeom(st.a, st.b);
+      const from = { a: v.a, b: v.b, k: v.k, tx: v.tx, ty: v.ty }, to = { a: st.a, b: st.b, k: g.k, tx: g.tx, ty: g.ty };
+      const tok = this._settleTok = (this._settleTok || 0) + 1, D = this.rm ? 0 : 520, t0 = performance.now();
+      const step = (now) => {
+        if (tok !== this._settleTok || this.dv !== v) return;
+        const l = D ? Math.min(1, (now - t0) / D) : 1, e = ez(l);
+        ['a', 'b', 'k', 'tx', 'ty'].forEach((q) => { v[q] = from[q] + (to[q] - from[q]) * e; });
+        this.triPlace(v);
+        if (l < 1) this._settleRaf = requestAnimationFrame(step);
+        else this.settleEnd();
+      };
+      this._settleRaf = requestAnimationFrame(step);
+    },
+    settleStop() { this._settleTok = (this._settleTok || 0) + 1; cancelAnimationFrame(this._settleRaf); },
+    settleEnd() {
+      this.dv = null;
+      const svg = $('triSvg'); if (svg) svg.style.overflow = '';
+      if (STEPS[this.state.idx].mode === 'explore') this.renderTri();
     },
     /* ---------- proof: rearrangement ---------- */
-    buildProof() {
-      const st = this.state, a = st.pa, b = st.pb, L = a + b;
-      const W = 440, H = 372, padX = 34, padT = 40, padB = 26;
-      const k = Math.min((W - 2 * padX) / L, (H - padT - padB) / L);
-      const tx = (W - k * L) / 2, ty = padT + (H - padT - padB - k * L) / 2;
-      this._pk = { k, tx, ty, a, b, L };
-      const u = (v) => (v * 1).toFixed(3);
-      // config0 (c² in middle) triangles
-      const T = [
-        { pts: [[0, 0], [a, 0], [0, b]], C0: [a / 3, b / 3], C1: [a / 3, (2 * a + L) / 3], d: 0 },
-        { pts: [[a, 0], [L, 0], [L, a]], C0: [(a + 2 * L) / 3, a / 3], C1: [(2 * a + L) / 3, 2 * a / 3], d: 180 },
-        { pts: [[L, a], [L, L], [b, L]], C0: [(2 * L + b) / 3, (a + 2 * L) / 3], C1: [(a + 2 * L) / 3, a / 3], d: -90 },
-        { pts: [[b, L], [0, L], [0, b]], C0: [b / 3, (2 * L + b) / 3], C1: [2 * a / 3, (a + 2 * L) / 3], d: -90 }
-      ];
-      this._tris = T;
-      let h = '<g id="proofRoot" transform="translate(' + tx.toFixed(2) + ' ' + ty.toFixed(2) + ') scale(' + k.toFixed(4) + ')">';
-      h += '<rect id="pOuter" x="0" y="0" width="' + L + '" height="' + L + '" rx=".18" fill="#fff" stroke="' + INK + '" stroke-width=".09"></rect>';
-      // free-area overlays
-      h += '<polygon id="ovC" points="' + a + ',0 ' + L + ',' + a + ' ' + b + ',' + L + ' 0,' + b + '" style="transition:opacity .6s ease,fill-opacity .6s ease,stroke-opacity .6s ease"></polygon>';
-      h += '<g id="ovAB" style="transition:opacity .5s ease">';
-      h += '<rect id="ovA2" x="0" y="0" width="' + a + '" height="' + a + '"></rect>';
-      h += '<rect id="ovB2" x="' + a + '" y="' + a + '" width="' + b + '" height="' + b + '"></rect>';
+    /* One figure in its own units (0..L). p = id prefix: '' for the live figure, 'b_' for the "before" copy shown at the end. */
+    proofFigure(p) {
+      const P = this._pk, a = P.a, b = P.b, L = P.L, k = P.k, T = this._tris;
+      const u = (v) => (v * 1).toFixed(3), c = Math.hypot(a, b);
+      const cPts = a + ',0 ' + L + ',' + a + ' ' + b + ',' + L + ' 0,' + b;
+      const tile = (x, y, extra) => '<rect x="' + u(x - .44) + '" y="' + u(y - .44) + '" width=".88" height=".88" rx=".08"' + (extra || '') + '></rect>';
+      let h = '<rect id="' + p + 'pOuter" x="0" y="0" width="' + L + '" height="' + L + '" rx=".18" fill="#fff" stroke="' + INK + '" stroke-width=".09"></rect>';
+      // c² in the middle: red, with a black-and-white dashed frame (the same frame as c² everywhere in the lesson)
+      h += '<g id="' + p + 'ovC" style="transition:opacity .6s ease"><polygon id="' + p + 'ovCf" points="' + cPts + '"></polygon><polygon id="' + p + 'ovCd" points="' + cPts + '"></polygon></g>';
+      // small unit squares inside c², tilted with it (cut at the edge when c is not a whole number)
+      const e1 = [b / c, a / c], e2 = [-a / c, b / c], th = Math.atan2(e1[1], e1[0]) * 180 / Math.PI, nC = Math.ceil(c - 1e-9);
+      h += '<g id="' + p + 'gridC" style="opacity:0;transition:opacity .6s ease"><defs><clipPath id="' + p + 'clipC"><polygon points="' + cPts + '"></polygon></clipPath></defs><g clip-path="url(#' + p + 'clipC)" fill="' + ROSE + '" fill-opacity=".3">';
+      for (let i = 0; i < nC; i++) for (let j = 0; j < nC; j++) {
+        const cx = a + (i + .5) * e1[0] + (j + .5) * e2[0], cy = (i + .5) * e1[1] + (j + .5) * e2[1];
+        h += '<rect x="-.44" y="-.44" width=".88" height=".88" rx=".08" transform="translate(' + u(cx) + ' ' + u(cy) + ') rotate(' + th.toFixed(2) + ')"></rect>';
+      }
+      h += '</g></g>';
+      h += '<g id="' + p + 'ovAB" style="transition:opacity .5s ease">';
+      h += '<rect id="' + p + 'ovA2" x="0" y="0" width="' + a + '" height="' + a + '"></rect>';
+      h += '<rect id="' + p + 'ovB2" x="' + a + '" y="' + a + '" width="' + b + '" height="' + b + '"></rect>';
+      h += '</g>';
+      // small unit squares inside a² and b², red like c² so the eye follows the same area
+      h += '<g id="' + p + 'gridA" style="opacity:0;transition:opacity .6s ease" fill="' + ROSE + '" fill-opacity=".3">';
+      for (let i = 0; i < a; i++) for (let j = 0; j < a; j++) h += tile(i + .5, j + .5);
+      h += '</g><g id="' + p + 'gridB" style="opacity:0;transition:opacity .6s ease" fill="' + ROSE + '" fill-opacity=".3">';
+      for (let i = 0; i < b; i++) for (let j = 0; j < b; j++) h += tile(a + i + .5, a + j + .5);
       h += '</g>';
       // triangles
       T.forEach((t, i) => {
-        const ps = t.pts.map((p) => p[0] + ',' + p[1]).join(' ');
-        h += '<g id="ptri' + i + '"><polygon points="' + ps + '" stroke-linejoin="round"></polygon></g>';
+        const ps = t.pts.map((q) => q[0] + ',' + q[1]).join(' ');
+        h += '<g id="' + p + 'ptri' + i + '"><polygon points="' + ps + '" stroke-linejoin="round"></polygon></g>';
       });
       // overlay labels
-      h += '<text id="ovCLab" text-anchor="middle" dominant-baseline="central" x="' + (L / 2) + '" y="' + (L / 2) + '" style="transition:opacity .5s ease">c²</text>';
-      h += '<g id="ovABLab" style="transition:opacity .5s ease">';
-      h += '<text id="ovA2Lab" text-anchor="middle" dominant-baseline="central" x="' + (a / 2) + '" y="' + (a / 2) + '">a²</text>';
-      h += '<text id="ovB2Lab" text-anchor="middle" dominant-baseline="central" x="' + ((a + L) / 2) + '" y="' + ((a + L) / 2) + '">b²</text>';
+      h += '<text id="' + p + 'ovCLab" text-anchor="middle" dominant-baseline="central" x="' + (L / 2) + '" y="' + (L / 2) + '">c²</text>';
+      h += '<g id="' + p + 'ovABLab" style="transition:opacity .5s ease">';
+      h += '<text id="' + p + 'ovA2Lab" text-anchor="middle" dominant-baseline="central" x="' + (a / 2) + '" y="' + (a / 2) + '">a²</text>';
+      h += '<text id="' + p + 'ovB2Lab" text-anchor="middle" dominant-baseline="central" x="' + ((a + L) / 2) + '" y="' + ((a + L) / 2) + '">b²</text>';
       h += '</g>';
-      // 'c' on each edge of the inner square
-      [[(a + L) / 2, a / 2], [(L + b) / 2, (a + L) / 2], [b / 2, (L + b) / 2], [a / 2, b / 2]].forEach((p, i) => {
-        const dx = L / 2 - p[0], dy = L / 2 - p[1], dl = Math.hypot(dx, dy) || 1, off = Math.max(.5, 12 / k);
-        h += '<text id="pcLab' + i + '" text-anchor="middle" dominant-baseline="central" x="' + (p[0] + dx / dl * off).toFixed(3) + '" y="' + (p[1] + dy / dl * off).toFixed(3) + '" style="opacity:0;transition:opacity .45s ease">c</text>';
-      });
-      // side labels (top: a | b ; left: b | a)
-      const fl = Math.max(.68, 15 / k);
-      h += '<text id="sideT1" text-anchor="middle" x="' + (a / 2) + '" y="' + (-0.55) + '" style="font-size:' + fl + 'px">a</text>';
-      h += '<text id="sideT2" text-anchor="middle" x="' + (a + b / 2) + '" y="' + (-0.55) + '" style="font-size:' + fl + 'px">b</text>';
-      h += '<text id="sideL1" text-anchor="middle" x="' + (-0.62) + '" y="' + (b / 2) + '" dominant-baseline="central" style="font-size:' + fl + 'px">b</text>';
-      h += '<text id="sideL2" text-anchor="middle" x="' + (-0.62) + '" y="' + (b + a / 2) + '" dominant-baseline="central" style="font-size:' + fl + 'px">a</text>';
+      // where c² used to be — shown in the "after" picture at the end
+      const pw = Math.max(1.5, 60 / k), ph = Math.max(1, 40 / k);
+      h += '<g id="' + p + 'ghostC" style="opacity:0;transition:opacity .6s ease">';
+      h += '<polygon points="' + cPts + '" fill="' + ROSE + '" fill-opacity=".05" stroke="#fff" stroke-width=".11" stroke-linejoin="round"></polygon>';
+      h += '<polygon points="' + cPts + '" fill="none" stroke="' + INK + '" stroke-width=".11" stroke-dasharray=".32 .24" stroke-linejoin="round"></polygon>';
+      h += '<rect x="' + u(L / 2 - pw / 2) + '" y="' + u(L / 2 - ph / 2) + '" width="' + u(pw) + '" height="' + u(ph) + '" rx="' + u(ph * .3) + '" fill="#fff" stroke="' + INK + '" stroke-width=".05"></rect>';
+      h += '<text x="' + (L / 2) + '" y="' + (L / 2) + '" text-anchor="middle" dominant-baseline="central" style="font-family:\'Secular One\',sans-serif;font-size:' + u(Math.max(.7, 28 / k)) + 'px;fill:' + ROSE + '">c²</text>';
+      h += '</g>';
+      // c on every hypotenuse (upright; its place follows the triangle)
+      for (let i = 0; i < 4; i++) h += '<text id="' + p + 'hcLab' + i + '" text-anchor="middle" dominant-baseline="central">c</text>';
+      // side labels on all four sides (top: a | b ; left: b | a ; right: a | b ; bottom: b | a)
+      const fl = Math.max(.68, 15 / k), yB = L + .3 + 3 / k + .75 * fl;
+      h += '<text id="' + p + 'sideT1" text-anchor="middle" x="' + (a / 2) + '" y="' + (-0.55) + '" style="font-size:' + fl + 'px">a</text>';
+      h += '<text id="' + p + 'sideT2" text-anchor="middle" x="' + (a + b / 2) + '" y="' + (-0.55) + '" style="font-size:' + fl + 'px">b</text>';
+      h += '<text id="' + p + 'sideL1" text-anchor="middle" x="' + (-0.62) + '" y="' + (b / 2) + '" dominant-baseline="central" style="font-size:' + fl + 'px">b</text>';
+      h += '<text id="' + p + 'sideL2" text-anchor="middle" x="' + (-0.62) + '" y="' + (b + a / 2) + '" dominant-baseline="central" style="font-size:' + fl + 'px">a</text>';
+      h += '<text id="' + p + 'sideR1" text-anchor="middle" x="' + u(L + .62) + '" y="' + (a / 2) + '" dominant-baseline="central" style="font-size:' + fl + 'px">a</text>';
+      h += '<text id="' + p + 'sideR2" text-anchor="middle" x="' + u(L + .62) + '" y="' + (a + b / 2) + '" dominant-baseline="central" style="font-size:' + fl + 'px">b</text>';
+      h += '<text id="' + p + 'sideB1" text-anchor="middle" x="' + (b / 2) + '" y="' + u(yB) + '" style="font-size:' + fl + 'px">b</text>';
+      h += '<text id="' + p + 'sideB2" text-anchor="middle" x="' + (b + a / 2) + '" y="' + u(yB) + '" style="font-size:' + fl + 'px">a</text>';
       h += '<line x1="0" y1="-.3" x2="' + L + '" y2="-.3" stroke="' + INK + '" stroke-width=".045" opacity=".5"></line>';
       h += '<line x1="-.3" y1="0" x2="-.3" y2="' + L + '" stroke="' + INK + '" stroke-width=".045" opacity=".5"></line>';
+      h += '<line x1="' + u(L + .3) + '" y1="0" x2="' + u(L + .3) + '" y2="' + L + '" stroke="' + INK + '" stroke-width=".045" opacity=".5"></line>';
+      h += '<line x1="0" y1="' + u(L + .3) + '" x2="' + L + '" y2="' + u(L + .3) + '" stroke="' + INK + '" stroke-width=".045" opacity=".5"></line>';
       h += '<line x1="' + a + '" y1="-.42" x2="' + a + '" y2="-.18" stroke="' + INK + '" stroke-width=".05" opacity=".7"></line>';
-      h += '<line id="tickL" x1="-.42" y1="' + b + '" x2="-.18" y2="' + b + '" stroke="' + INK + '" stroke-width=".05" opacity=".7"></line>';
+      h += '<line id="' + p + 'tickL" x1="-.42" y1="' + b + '" x2="-.18" y2="' + b + '" stroke="' + INK + '" stroke-width=".05" opacity=".7"></line>';
+      h += '<line x1="' + u(L + .18) + '" y1="' + a + '" x2="' + u(L + .42) + '" y2="' + a + '" stroke="' + INK + '" stroke-width=".05" opacity=".7"></line>';
+      h += '<line id="' + p + 'tickB" x1="' + b + '" y1="' + u(L + .18) + '" x2="' + b + '" y2="' + u(L + .42) + '" stroke="' + INK + '" stroke-width=".05" opacity=".7"></line>';
+      return h;
+    },
+    proofStyle(p) {
+      const P = this._pk, k = P.k;
+      const strokes = [IND, '#0284c7', IND, '#0284c7'];
+      this._tris.forEach((t, i) => {
+        const q = $(p + 'ptri' + i).querySelector('polygon');
+        q.style.fill = this._triFills[i]; q.style.stroke = strokes[i]; q.style.strokeWidth = '.08'; q.style.transition = 'fill .6s ease';
+      });
+      $(p + 'ovCf').style.cssText = 'fill:' + ROSE + ';fill-opacity:.16;stroke:#fff;stroke-width:.11;stroke-linejoin:round';
+      $(p + 'ovCd').style.cssText = 'fill:none;stroke:' + INK + ';stroke-width:.11;stroke-dasharray:.32 .24;stroke-linejoin:round';
+      // a² and b² are red like c²: it is the same free area, just rearranged
+      $(p + 'ovA2').style.cssText = 'fill:' + ROSE + ';fill-opacity:.16;stroke:' + ROSE + ';stroke-width:.09;stroke-dasharray:.3 .18;transition:opacity .55s ease';
+      $(p + 'ovB2').style.cssText = 'fill:' + ROSE + ';fill-opacity:.16;stroke:' + ROSE + ';stroke-width:.09;stroke-dasharray:.3 .18;transition:opacity .55s ease';
+      const fsC = Math.max(.95, 24 / k), fsS = Math.max(.85, 19 / k), halo = 'stroke:#fff;stroke-width:' + Math.max(.1, 4 / k).toFixed(3) + ';stroke-linejoin:round;paint-order:stroke;';
+      $(p + 'ovCLab').style.cssText = 'font-family:"Secular One",sans-serif;font-size:' + fsC + 'px;fill:' + ROSE + ';' + halo + 'transition:opacity .5s ease';
+      $(p + 'ovA2Lab').style.cssText = 'font-family:"Secular One",sans-serif;font-size:' + fsS + 'px;fill:' + ROSE + ';' + halo + 'transition:opacity .55s ease';
+      $(p + 'ovB2Lab').style.cssText = 'font-family:"Secular One",sans-serif;font-size:' + fsS + 'px;fill:' + ROSE + ';' + halo + 'transition:opacity .55s ease';
+      for (let i = 0; i < 4; i++) {
+        $(p + 'hcLab' + i).style.cssText = 'font-family:"Secular One",sans-serif;font-size:' + Math.max(.7, 16 / k) + 'px;fill:' + ROSE + ';' + halo + 'opacity:0;transition:opacity .45s ease';
+        this.hcPlace(i, 0, p);
+      }
+      ['sideT1', 'sideL2', 'sideR1', 'sideB2'].forEach((id) => { $(p + id).style.fill = IND; $(p + id).style.fontFamily = '"Secular One",sans-serif'; });
+      ['sideT2', 'sideL1', 'sideR2', 'sideB1'].forEach((id) => { $(p + id).style.fill = AMB; $(p + id).style.fontFamily = '"Secular One",sans-serif'; });
+    },
+    buildProof() {
+      const st = this.state, a = st.pa, b = st.pb, L = a + b;
+      const W = 440, H = 372, padX = 34, padT = 40, padB = 48;
+      const k = Math.min((W - 2 * padX) / L, (H - padT - padB) / L);
+      const tx = (W - k * L) / 2, ty = padT + (H - padT - padB - k * L) / 2;
+      this._pk = { k, tx, ty, a, b, L };
+      // config0 (c² in middle) triangles; ra = the vertex with the right angle
+      const T = [
+        { pts: [[0, 0], [a, 0], [0, b]], ra: 0, C0: [a / 3, b / 3], C1: [a / 3, (2 * a + L) / 3], d: 0 },
+        { pts: [[a, 0], [L, 0], [L, a]], ra: 1, C0: [(a + 2 * L) / 3, a / 3], C1: [(2 * a + L) / 3, 2 * a / 3], d: 180 },
+        { pts: [[L, a], [L, L], [b, L]], ra: 1, C0: [(2 * L + b) / 3, (a + 2 * L) / 3], C1: [(a + 2 * L) / 3, a / 3], d: -90 },
+        { pts: [[b, L], [0, L], [0, b]], ra: 1, C0: [b / 3, (2 * L + b) / 3], C1: [2 * a / 3, (a + 2 * L) / 3], d: -90 }
+      ];
+      // the letter c of each hypotenuse sits on the side away from the right angle and travels with its triangle
+      const offC = Math.max(.5, 12 / k);
+      T.forEach((t) => {
+        const r = t.pts[t.ra], hp = t.pts.filter((_, j) => j !== t.ra);
+        const mx = (hp[0][0] + hp[1][0]) / 2, my = (hp[0][1] + hp[1][1]) / 2, dl = Math.hypot(mx - r[0], my - r[1]) || 1;
+        t.hc = [mx + (mx - r[0]) / dl * offC, my + (my - r[1]) / dl * offC];
+      });
+      this._tris = T;
+      this._triFills = ['#c7d2fe', '#bae6fd', '#c7d2fe', '#bae6fd'];
+      // at the last beat the live figure shrinks to the left ("after") and a copy of the start appears on the right ("before")
+      const S = 150, y0 = 110, f = S / (k * L), xA = 30, xB = W - 30 - S;
+      this._pCmp = { f, dx: xA - f * tx, dy: y0 - f * ty };
+      let h = '<g id="proofAfter">';
+      h += '<g id="proofRoot" transform="translate(' + tx.toFixed(2) + ' ' + ty.toFixed(2) + ') scale(' + k.toFixed(4) + ')">' + this.proofFigure('') + '</g></g>';
+      h += '<g id="proofBefore" style="opacity:0;transition:opacity .7s ease" transform="translate(' + xB + ' ' + y0 + ') scale(' + (S / L).toFixed(4) + ')">' + this.proofFigure('b_') + '</g>';
+      h += '<g id="proofCmp" style="opacity:0;transition:opacity .7s ease;font-family:Heebo,sans-serif">';
+      h += '<text x="' + (W / 2) + '" y="' + (y0 + S / 2) + '" text-anchor="middle" dominant-baseline="central" style="font-family:\'Secular One\',sans-serif;font-size:44px;fill:' + INK + '">=</text>';
+      h += '<text x="' + (xB + S / 2) + '" y="' + (y0 - 46) + '" text-anchor="middle" style="font-weight:800;font-size:17px;fill:' + ROSE + '">לפני</text>';
+      h += '<text x="' + (xA + S / 2) + '" y="' + (y0 - 46) + '" text-anchor="middle" style="font-weight:800;font-size:17px;fill:' + ROSE + '">אחרי</text>';
       h += '</g>';
       $('proofSvg').innerHTML = h;
-      // style triangles
-      const fills = ['#c7d2fe', '#bae6fd', '#c7d2fe', '#bae6fd'];
-      const strokes = [IND, '#0284c7', IND, '#0284c7'];
-      T.forEach((t, i) => {
-        const p = $('ptri' + i).querySelector('polygon');
-        p.style.fill = fills[i]; p.style.stroke = strokes[i]; p.style.strokeWidth = '.08';
-      });
-      // overlays style
-      const ovC = $('ovC');
-      ovC.style.fill = ROSE; ovC.style.fillOpacity = '.16'; ovC.style.stroke = ROSE; ovC.style.strokeWidth = '.09'; ovC.style.strokeDasharray = '.3 .18';
-      $('ovA2').style.cssText = 'fill:' + IND + ';fill-opacity:.15;stroke:' + IND + ';stroke-width:.09;stroke-dasharray:.3 .18;transition:opacity .55s ease';
-      $('ovB2').style.cssText = 'fill:' + AMB + ';fill-opacity:.18;stroke:' + AMB + ';stroke-width:.09;stroke-dasharray:.3 .18;transition:opacity .55s ease';
-      const fsC = Math.max(.95, 24 / k), fsS = Math.max(.85, 19 / k);
-      $('ovCLab').style.cssText = 'font-family:"Secular One",sans-serif;font-size:' + fsC + 'px;fill:' + ROSE + ';transition:opacity .5s ease';
-      $('ovA2Lab').style.cssText = 'font-family:"Secular One",sans-serif;font-size:' + fsS + 'px;fill:' + IND + ';transition:opacity .55s ease';
-      $('ovB2Lab').style.cssText = 'font-family:"Secular One",sans-serif;font-size:' + fsS + 'px;fill:' + AMB + ';transition:opacity .55s ease';
-      for (let i = 0; i < 4; i++) { const cl = $('pcLab' + i); cl.style.fontFamily = '"Secular One",sans-serif'; cl.style.fontSize = Math.max(.7, 16 / k) + 'px'; cl.style.fill = ROSE; }
-      ['sideT1', 'sideL2'].forEach((id) => { $(id).style.fill = IND; $(id).style.fontFamily = '"Secular One",sans-serif'; });
-      ['sideT2', 'sideL1'].forEach((id) => { $(id).style.fill = AMB; $(id).style.fontFamily = '"Secular One",sans-serif'; });
+      this.proofStyle('');
+      this.proofStyle('b_');
+      // the "before" copy is a still picture of the start: triangles, red c² with its unit squares, the letters
+      const onB = (id, v) => { const e = $('b_' + id); if (e) e.style.opacity = v ? '1' : '0'; };
+      ['ovC', 'gridC', 'ovCLab', 'hcLab0', 'hcLab1', 'hcLab2', 'hcLab3'].forEach((id) => onB(id, true));
+      ['ovAB', 'ovABLab', 'gridA', 'gridB', 'ghostC'].forEach((id) => onB(id, false));
+      this.proofSideLabels(0, 'b_');
       this.renderProof();
     },
     pose(t, p) {
@@ -1430,9 +1599,18 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       const ang = t.d * p;
       return 'translate(' + cx.toFixed(4) + ' ' + cy.toFixed(4) + ') rotate(' + ang.toFixed(3) + ') translate(' + (-t.C0[0]).toFixed(4) + ' ' + (-t.C0[1]).toFixed(4) + ')';
     },
-    proofSideLabels(p) {
+    /* the letter c of triangle i, at the same pose p as the triangle — but never rotated, so it stays readable */
+    hcPlace(i, p, pre) {
+      const t = this._tris && this._tris[i], el = $((pre || '') + 'hcLab' + i); if (!t || !el) return;
+      const cx = t.C0[0] + (t.C1[0] - t.C0[0]) * p, cy = t.C0[1] + (t.C1[1] - t.C0[1]) * p;
+      const ang = t.d * p * Math.PI / 180, dx = t.hc[0] - t.C0[0], dy = t.hc[1] - t.C0[1];
+      el.setAttribute('x', (cx + dx * Math.cos(ang) - dy * Math.sin(ang)).toFixed(3));
+      el.setAttribute('y', (cy + dx * Math.sin(ang) + dy * Math.cos(ang)).toFixed(3));
+    },
+    proofSideLabels(p, pre) {
       const P = this._pk; if (!P) return;
-      const l1 = $('sideL1'), l2 = $('sideL2'), tk = $('tickL');
+      pre = pre || '';
+      const l1 = $(pre + 'sideL1'), l2 = $(pre + 'sideL2'), tk = $(pre + 'tickL');
       if (!l1 || !l2) return;
       const topSeg = p ? P.a : P.b;
       l1.textContent = p ? 'a' : 'b';
@@ -1442,6 +1620,26 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       l2.setAttribute('y', String(topSeg + (p ? P.b : P.a) / 2));
       l2.style.fill = p ? AMB : IND;
       if (tk) { tk.setAttribute('y1', String(topSeg)); tk.setAttribute('y2', String(topSeg)); }
+      // bottom side: b | a before the move, a | b after it
+      const b1 = $(pre + 'sideB1'), b2 = $(pre + 'sideB2'), tb = $(pre + 'tickB');
+      if (!b1 || !b2) return;
+      const leftSeg = p ? P.a : P.b;
+      b1.textContent = p ? 'a' : 'b';
+      b1.setAttribute('x', String(leftSeg / 2));
+      b1.style.fill = p ? IND : AMB;
+      b2.textContent = p ? 'b' : 'a';
+      b2.setAttribute('x', String(leftSeg + (p ? P.b : P.a) / 2));
+      b2.style.fill = p ? AMB : IND;
+      if (tb) { tb.setAttribute('x1', String(leftSeg)); tb.setAttribute('x2', String(leftSeg)); }
+    },
+    /* the final side-by-side: e = 0 one big figure, e = 1 "after" on the left, "before" on the right */
+    proofCompare(e) {
+      const C = this._pCmp, g = $('proofAfter'); if (!C || !g) return;
+      if (e <= 0) g.removeAttribute('transform');
+      else {
+        const f = 1 + (C.f - 1) * e;
+        g.setAttribute('transform', 'translate(' + (C.dx * e).toFixed(2) + ' ' + (C.dy * e).toFixed(2) + ') scale(' + f.toFixed(4) + ')');
+      }
     },
     renderProof() {
       const st = this.state;
@@ -1449,16 +1647,24 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       const n = st.pBeat, cfg = n >= 3 ? 1 : 0;
       const on = (id, v) => { const e = $(id); if (e) e.style.opacity = v ? '1' : '0'; };
       if (!st.proofBusy) {
-        this._tris.forEach((t, i) => { const g = $('ptri' + i); g.setAttribute('transform', this.pose(t, cfg)); g.style.opacity = n >= 1 ? '1' : '0'; });
-        on('ovC', n === 2); on('ovCLab', n === 2);
-        for (let i = 0; i < 4; i++) on('pcLab' + i, n === 2);
-        on('ovAB', n >= 4); on('ovABLab', n >= 4);
-        on('ovA2', n >= 4); on('ovA2Lab', n >= 4); on('ovB2', n >= 4); on('ovB2Lab', n >= 4);
+        this._tris.forEach((t, i) => {
+          const g = $('ptri' + i); g.setAttribute('transform', this.pose(t, cfg)); g.style.opacity = n >= 1 ? '1' : '0';
+          // once a triangle has been moved it turns white: only the free area stays coloured
+          g.querySelector('polygon').style.fill = cfg ? '#fff' : this._triFills[i];
+          // after the move two triangles share each hypotenuse, so one c per line
+          this.hcPlace(i, cfg); on('hcLab' + i, n >= 1 && (cfg === 0 || i === 1 || i === 3));
+        });
+        on('ovC', n === 2); on('ovCLab', n === 2); on('gridC', n === 2);
+        on('ovAB', n >= 4); on('ovABLab', n >= 3);
+        on('ovA2', n >= 4); on('ovA2Lab', n >= 3); on('ovB2', n >= 4); on('ovB2Lab', n >= 3);
+        on('gridA', n >= 4); on('gridB', n >= 4);
+        on('ghostC', n >= 5); on('proofBefore', n >= 5); on('proofCmp', n >= 5);
+        this.proofCompare(n >= 5 ? 1 : 0);
         this.proofSideLabels(cfg);
       }
       const caps = ['', 'ריבוע גדול · צלע ' + m('a + b'), 'השטח הפנוי: ' + m('c²'), 'רק מזיזים — השטח לא משתנה', 'השטח הפנוי: ' + m('a² + b²'), m('c² = a² + b²')];
       fillRich($('proofCap'), caps[n] || '');
-      $('proofCap').style.color = n >= 4 ? IND : n === 2 ? ROSE : INK;
+      $('proofCap').style.color = n >= 4 ? ROSE : n === 2 ? ROSE : INK;
       $('proofCap').style.fontFamily = 'Heebo,sans-serif';
       const pbtn = $('proofToggleBtn');
       pbtn.textContent = st.proofBusy ? 'רגע…' : n >= 5 ? '🔁 מההתחלה' : 'הצעד הבא ▸';
@@ -1486,8 +1692,13 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       const fin = () => { if (!ok()) return; this.setState({ proofBusy: false }); this.armNudge(13000); };
       this.setState({ pBeat: n, proofBusy: true });
       if (n === 1) {
-        this._tris.forEach((t, i) => { const g = $('ptri' + i); g.style.transition = 'none'; g.style.opacity = '0'; g.setAttribute('transform', this.pose(t, 0)); });
-        ['ovC', 'ovCLab', 'ovAB', 'ovABLab', 'ovA2', 'ovA2Lab', 'ovB2', 'ovB2Lab', 'pcLab0', 'pcLab1', 'pcLab2', 'pcLab3'].forEach((id) => on(id, false));
+        this.proofCompare(0);
+        this._tris.forEach((t, i) => {
+          const g = $('ptri' + i), poly = g.querySelector('polygon');
+          g.style.transition = 'none'; g.style.opacity = '0'; g.setAttribute('transform', this.pose(t, 0)); this.hcPlace(i, 0);
+          poly.style.transition = 'none'; poly.style.fill = this._triFills[i]; void poly.getBoundingClientRect(); poly.style.transition = 'fill .6s ease';
+        });
+        ['ovC', 'ovCLab', 'gridC', 'ovAB', 'ovABLab', 'ovA2', 'ovA2Lab', 'ovB2', 'ovB2Lab', 'gridA', 'gridB', 'hcLab0', 'hcLab1', 'hcLab2', 'hcLab3', 'ghostC', 'proofBefore', 'proofCmp'].forEach((id) => on(id, false));
         this.proofSideLabels(0);
         void $('proofSvg').getBoundingClientRect();
         if (!quiet) this.say(STEPS[4].tip, { mood: 'idle' });
@@ -1497,41 +1708,54 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
           const g = $('ptri' + i), p = this.elPt(g);
           await this.actorHop(p[0], p[1] + 4, 480); if (!ok()) return;
           this.actorFace('back');
-          g.style.transition = 'opacity .4s ease'; g.style.opacity = '1'; this.sfx('tick');
+          g.style.transition = 'opacity .4s ease'; g.style.opacity = '1'; on('hcLab' + i, true); this.sfx('tick');
           await this.actorPat(); await this.wait(260); if (!ok()) return;
         }
+        this.actorFace('front');
+        this.say('בכל משולש: ניצבים ' + m('a') + ' ו־' + m('b') + ', ויתר ' + m('c') + '.', { mood: 'idle' });
+        await this.wait(700); if (!ok()) return;
         await this.actorHome(); fin();
       } else if (n === 2) {
         this.say('באמצע נשאר ריבוע. כל צלע שלו היא היתר ' + m('c') + ' — אז השטח שלו ' + m('c²') + '.', { mood: 'idle' });
-        on('ovC', true); on('ovCLab', true);
+        on('ovC', true); on('ovCLab', true); on('gridC', true);
         await this.wait(700); if (!ok()) return;
         await this.actorOut();
         const R = $('proofRoot'), P = this._pk, a = P.a, b = P.b, L = P.L;
-        const mids = [[(a + L) / 2, a / 2], [(L + b) / 2, (a + L) / 2], [b / 2, (L + b) / 2], [a / 2, b / 2]];
+        const mids = [[(a + L) / 2, a / 2], [(L + b) / 2, (a + L) / 2], [b / 2, (L + b) / 2], [a / 2, b / 2]], owner = [1, 2, 3, 0];
         for (let i = 0; i < 4; i++) {
           const p = this.svgPt(R, mids[i][0], mids[i][1]);
           await this.actorHop(p[0], p[1] - 8, 440); if (!ok()) return;
-          on('pcLab' + i, true); this.sfx('tick');
+          const cl = $('hcLab' + owner[i]);
+          if (cl) {
+            cl.style.opacity = '1'; cl.style.transformBox = 'fill-box'; cl.style.transformOrigin = 'center';
+            this.an(cl, [{ transform: 'scale(1)' }, { transform: 'scale(1.6)' }, { transform: 'scale(1)' }], { duration: 460, easing: 'ease-out' });
+          }
+          this.sfx('tick');
           await this.wait(240); if (!ok()) return;
         }
         await this.actorHome(); fin();
       } else if (n === 3) {
         this.say('עכשיו אני רק מזיז את המשולשים. לא מוסיף שטח ולא מוריד.', { mood: 'idle' });
-        on('ovC', false); on('ovCLab', false);
-        for (let i = 0; i < 4; i++) on('pcLab' + i, false);
+        on('ovC', false); on('ovCLab', false); on('gridC', false);
         await this.wait(1300); if (!ok()) return;
         await this.actorOut();
         for (const i of [0, 3, 1, 2]) {
           const t = this._tris[i], g = $('ptri' + i), poly = g.querySelector('polygon');
           const keepStroke = poly.style.stroke, keepW = poly.style.strokeWidth;
           poly.style.stroke = INK; poly.style.strokeWidth = '.2';
-          await this.actorCarry(g, 1400, (e) => g.setAttribute('transform', this.pose(t, e)));
+          await this.actorCarry(g, 1400, (e) => { g.setAttribute('transform', this.pose(t, e)); this.hcPlace(i, e); });
           if (!ok()) return;
           poly.style.stroke = keepStroke; poly.style.strokeWidth = keepW;
+          // in its new place the triangle turns white: what stays coloured is only the free area
+          poly.style.fill = '#fff';
+          // two triangles now share each hypotenuse: one letter c per line is enough
+          if (i === 3) on('hcLab0', false);
+          if (i === 2) on('hcLab2', false);
           this.sfx('tick'); this.actorFace('front');
           await this.wait(240); if (!ok()) return;
         }
         this.proofSideLabels(1);
+        on('ovABLab', true); on('ovA2Lab', true); on('ovB2Lab', true);
         await this.actorHome(); fin();
       } else if (n === 4) {
         this.say('מה נשאר פנוי עכשיו? שני ריבועים: ' + m('a²') + ' ו־' + m('b²') + '.', { mood: 'idle' });
@@ -1541,13 +1765,17 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
         for (const id of ['ovA2', 'ovB2']) {
           const p = this.elPt($(id));
           await this.actorHop(p[0], p[1] + 14, 520); if (!ok()) return;
-          on(id, true); on(id + 'Lab', true); this.sfx('tick');
+          on(id, true); on(id + 'Lab', true); on(id === 'ovA2' ? 'gridA' : 'gridB', true); this.sfx('tick');
           await this.actorPat(); await this.wait(650); if (!ok()) return;
         }
         this.actorFace('happy');
         await this.actorHome(); fin();
       } else {
         const firstTime = !this.state.proofSeen;
+        // side by side: the start ("before") next to now ("after"), with c² dashed where it used to be
+        await this.tween(this.rm ? 1 : 1100, (l) => this.proofCompare(ez(l)));
+        if (!ok()) return;
+        on('ghostC', true); on('proofBefore', true); on('proofCmp', true);
         this.setState({ proofSeen: true });
         if (firstTime) {
           this.burst(18); this.sfx('correct');
@@ -1580,6 +1808,7 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       h += '<polygon id="ckSqA" stroke-linejoin="round"></polygon>';
       h += '<polygon id="ckSqB" stroke-linejoin="round"></polygon>';
       h += '<polygon id="ckSqC" stroke-linejoin="round"></polygon>';
+      h += '<polygon id="ckSqCd" fill="none" stroke-linejoin="round"></polygon>';
       h += '<g id="ckSlots">';
       for (let i = 0; i < 121; i++) h += '<rect id="ckSlot' + i + '" x="-.44" y="-.44" width=".88" height=".88" rx=".1" fill="none" stroke="' + ROSE + '" stroke-width=".035" stroke-dasharray=".12 .1" opacity="0"/>';
       h += '</g>';
@@ -1590,6 +1819,10 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       h += '<polyline id="ckAng" fill="none"></polyline>';
       h += '<g id="ckTiles">';
       for (let i = 0; i < 128; i++) h += '<rect id="ckTile' + i + '" x="-.44" y="-.44" width=".88" height=".88" rx=".1" fill="#fff" stroke-width=".05" opacity="0"/>';
+      h += '</g>';
+      // pieces of broken squares, for when the hypotenuse is not a whole number
+      h += '<g id="ckSlivs">';
+      for (let i = 0; i < 25; i++) h += '<rect id="ckSliv' + i + '" x="-.5" y="-.5" width="1" height="1" opacity="0"/>';
       h += '</g>';
       h += '<text id="ckSqLabA" text-anchor="middle" dominant-baseline="central"></text>';
       h += '<text id="ckSqLabB" text-anchor="middle" dominant-baseline="central"></text>';
@@ -1616,7 +1849,8 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       const st = this.state;
       const root = $('chkRoot'); if (!root) return;
       const a = st.a, b = st.b, c2 = a * a + b * b, c = Math.sqrt(c2);
-      const gN = Math.max(2, Math.round(c));
+      // whole unit squares only: the pink square holds gN × gN of them, the rest is a thin strip
+      const gN = Math.max(2, Math.floor(c + 1e-9));
       const gm = this.chkGeom(a, b), u = (v) => v.toFixed(3);
       root.setAttribute('transform', 'translate(' + gm.tx.toFixed(2) + ' ' + gm.ty.toFixed(2) + ') scale(' + gm.k.toFixed(4) + ')');
       const fs = Math.max(.62, 13.5 / gm.k), fsBig = Math.max(.72, 16 / gm.k);
@@ -1627,6 +1861,11 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       [[sqA, IND], [sqB, AMB], [sqC, ROSE]].forEach((p) => {
         p[0].style.fill = p[1]; p[0].style.fillOpacity = '.1'; p[0].style.stroke = p[1]; p[0].style.strokeWidth = .08; p[0].style.strokeOpacity = '.9';
       });
+      // c²: black-and-white dashed frame, as everywhere
+      sqC.style.stroke = '#fff'; sqC.style.strokeWidth = .1;
+      const sqCd = $('ckSqCd');
+      sqCd.setAttribute('points', sqC.getAttribute('points'));
+      sqCd.style.stroke = INK; sqCd.style.strokeWidth = .1; sqCd.style.strokeDasharray = '.3 .22'; sqCd.style.strokeOpacity = '.9';
       $('ckTri').setAttribute('points', '0,0 ' + u(a) + ',0 0,' + u(b));
       $('ckTri').style.fill = '#fff'; $('ckTri').style.fillOpacity = '.92'; $('ckTri').style.stroke = 'none';
       const setE = (id, x1, y1, x2, y2, col) => { const e = $(id); e.setAttribute('x1', x1); e.setAttribute('y1', y1); e.setAttribute('x2', x2); e.setAttribute('y2', y2); e.style.stroke = col; e.style.strokeWidth = .12; };
@@ -1648,7 +1887,7 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       if (strip) strip.innerHTML = '<div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">' + pill('a = ' + a, IND) + pill('b = ' + b, AMB) + pill(cInt ? 'c = ' + c : 'c = √<span class="sqrt">' + c2 + '</span>', ROSE) + '</div>'
         + '<div style="font-size:16px;color:' + INK + '">' + (a * a) + ' + ' + (b * b) + ' = ' + c2 + (cInt ? ' = ' + c + '²' : '') + '</div>';
       const ux = -a / c, uy = b / c, vx = b / c, vy = a / c;
-      const stepC = c / gN, theta = Math.atan2(uy, ux) * 180 / Math.PI;
+      const stepC = 1, theta = Math.atan2(uy, ux) * 180 / Math.PI;
       for (let i = 0; i < 121; i++) {
         const sl = $('ckSlot' + i);
         if (i < gN * gN) {
@@ -1668,6 +1907,7 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
           t.setAttribute('opacity', '1');
         } else t.setAttribute('opacity', '0');
       }
+      for (let i = 0; i < 25; i++) { const sv = $('ckSliv' + i); if (sv) sv.setAttribute('opacity', '0'); }
       $('ckHA').setAttribute('transform', 'translate(' + u(a) + ' 0)');
       $('ckHB').setAttribute('transform', 'translate(0 ' + u(b) + ')');
       [$('ckHA'), $('ckHB')].forEach((hh) => {
@@ -1676,7 +1916,7 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
         hh.style.cursor = (this.chkDrag || this._chkRunning) ? 'grabbing' : 'grab';
       });
       $('checkSvg').style.touchAction = 'none';
-      this._chkN = { nA, nB, gN, c, theta, stepC, ux, uy, vx, vy };
+      this._chkN = { nA, nB, gN, c, theta, stepC, ux, uy, vx, vy, f: c - gN };
     },
     chkDown(e, which) {
       if (STEPS[this.state.idx].mode !== 'numeric' || this._chkRunning) return;
@@ -1735,28 +1975,37 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       const rm = this.rm, tok = this._tok;
       const ok = () => tok === this._tok && run === this._chkRun && STEPS[this.state.idx].mode === 'numeric';
       this.say('אני מעביר את המשבצות לריבוע הוורוד. קודם ' + m('a²') + ', אחר כך ' + m('b²') + '.', { mood: 'idle' });
-      const stag = rm ? 0 : Math.min(200, 5400 / Math.max(N.nA, N.nB, 1)), D = rm ? 1 : 780;
+      const stag = rm ? 0 : Math.min(130, 3200 / Math.max(N.nA, N.nB, 1)), D = rm ? 1 : 780;
       this._tilePos = [];
       for (let i = 0; i < total; i++) { const s0 = this.chkSrc(a, b, i); this._tilePos[i] = { x: s0.x, y: s0.y, r: 0, s: 1 }; }
+      // whole squares fill gN × gN; a thin L-shaped strip is left. The leftover squares break into
+      // slivers that fill it exactly: the same area, just not in whole squares.
+      const slv = this._slv = this.chkSlivers(a, N, total - fit);
+      const shards = [];
+      slv.forEach((sv, q) => { (shards[sv.t] = shards[sv.t] || []).push(q); });
+      const shardT = rm ? 1 : 460, shardStag = rm ? 0 : 70;
+      const maxShard = shards.reduce((mx, s) => Math.max(mx, s ? s.length : 0), 0);
       const fly = (from, to) => {
+        let extra = 0;
         for (let i = from; i < to; i++) {
-          const el = $('ckTile' + i), s = this.chkSrc(a, b, i);
+          const el = $('ckTile' + i), s = this.chkSrc(a, b, i), isShard = i >= fit;
+          if (isShard) extra = 200 + maxShard * shardStag + shardT;
           this.later(() => {
             if (!ok()) return;
-            if (i < fit) {
-              const dp = this.chkDst(i), th = N.theta, sc = N.stepC;
-              this.tween(D, (lin) => {
-                const e = ez(lin);
-                const cx = s.x + (dp.x - s.x) * e, cy = s.y + (dp.y - s.y) * e - Math.sin(Math.PI * e) * 1.1;
-                el.setAttribute('transform', 'translate(' + cx.toFixed(3) + ' ' + cy.toFixed(3) + ') rotate(' + (th * e).toFixed(2) + ') scale(' + (1 + (sc - 1) * e).toFixed(3) + ')');
-                if (lin >= 1) { this._tilePos[i] = { x: dp.x, y: dp.y, r: th, s: sc }; if (i % 4 === 0) this.sfx('tick'); }
-              });
-            } else {
-              this.tween(D, (lin) => el.setAttribute('transform', 'translate(' + s.x + ' ' + (s.y - Math.sin(Math.PI * lin) * .8) + ')'));
-            }
+            const dp = isShard ? this.chkShardDst(slv, shards[i - fit]) : this.chkDst(i), th = N.theta, sc = N.stepC;
+            this.tween(D, (lin) => {
+              const e = ez(lin);
+              const cx = s.x + (dp.x - s.x) * e, cy = s.y + (dp.y - s.y) * e - Math.sin(Math.PI * e) * 1.1;
+              el.setAttribute('transform', 'translate(' + cx.toFixed(3) + ' ' + cy.toFixed(3) + ') rotate(' + (th * e).toFixed(2) + ') scale(' + (1 + (sc - 1) * e).toFixed(3) + ')');
+              if (lin >= 1) {
+                this._tilePos[i] = { x: dp.x, y: dp.y, r: th, s: sc };
+                if (isShard) this.chkShatter(i, s.col, dp, shards[i - fit] || [], slv, shardT, shardStag, ok);
+                else if (i % 4 === 0) this.sfx('tick');
+              }
+            });
           }, (i - from) * stag);
         }
-        return (to - from) * stag + D;
+        return (to - from) * stag + D + extra;
       };
       const perch = () => { const r = $('ckSqC').getBoundingClientRect(), cr = $('card').getBoundingClientRect(); return [r.right - cr.left - 6, r.top - cr.top + r.height / 2]; };
       await this.wait(1000); if (!ok()) return;
@@ -1768,7 +2017,7 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
         const d = fly(grp[1], grp[2]);
         await this.wait(280); if (!ok()) return;
         const q = perch(); await this.actorHop(q[0], q[1], 720); if (!ok()) return;
-        await this.wait(Math.max(0, (d + D * .7) / 1.3 - 1200) + 300); if (!ok()) return;
+        await this.wait(Math.max(0, d - 1000) + 300); if (!ok()) return;
       }
       this._chkRunning = false;
       if (exact) {
@@ -1791,25 +2040,70 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
         return;
       }
       this.actorFace('think');
-      for (let i = total; i < slots; i++) {
-        const sl = $('ckSlot' + i);
-        if (sl) this.an(sl, [{ opacity: .3 }, { opacity: 1 }, { opacity: .3 }, { opacity: 1 }, { opacity: .3 }], { duration: 1500, easing: 'ease-in-out' });
-      }
+      // the broken pieces glow: the pink square is full, but only thanks to them
+      slv.forEach((sv, q) => { const sl = $('ckSliv' + q); if (sl) this.an(sl, [{ opacity: 1 }, { opacity: .35 }, { opacity: 1 }, { opacity: .35 }, { opacity: 1 }], { duration: 1600, easing: 'ease-in-out' }); });
       this.sfx('error');
       this._chkFails = (this._chkFails || 0) + 1;
-      this.say('השטחים שווים גם כאן: ' + m((a * a) + ' + ' + (b * b) + ' = ' + c2) + '. אבל היתר הוא ' + m('√' + c2) + ' — לא שלם, אז המשבצות לא מסתדרות.', { mood: 'think' });
+      const broken = total - fit;
+      this.say('השטחים שווים גם כאן: ' + m((a * a) + ' + ' + (b * b) + ' = ' + c2) + ' — הריבוע הוורוד התמלא. אבל רק אחרי ששברתי ' + (broken === 1 ? 'משבצת אחת' : broken + ' משבצות') + ' לחתיכות, כי היתר ' + m('√' + c2) + ' — לא מספר שלם.', { mood: 'think' });
       this.renderCheckBtn();
       await this.wait(1200); if (!ok()) return;
       await this.actorHome();
-      await this.wait(3200); if (!ok() || !this.state.checkOn || this.chkDrag) return;
+      await this.wait(4200); if (!ok() || !this.state.checkOn || this.chkDrag) return;
       await this.tilesBack(); if (!ok()) return;
       this.setState({ checkOn: false });
       if (this._chkFails >= 2) { this._chkFails = 0; await this.chkAutoHelp(); }
       else this.say('נסה ניצבים אחרים. חפש יתר שהוא מספר שלם!', { mood: 'idle' });
     },
-    /* the tiles walk back home instead of snapping */
+    /* the strip left after gN × gN whole squares: thin slivers along two sides plus a tiny corner.
+       Their total area is exactly the number of leftover squares (c² − gN²). */
+    chkSlivers(a, N, left) {
+      const out = []; if (left <= 0) return out;
+      const n = N.gN, f = N.c - n;
+      for (let j = 0; j < n; j++) out.push({ cu: n + f / 2, cv: j + .5, w: f, h: 1 });
+      out.push({ cu: n + f / 2, cv: n + f / 2, w: f, h: f });
+      for (let i = n - 1; i >= 0; i--) out.push({ cu: i + .5, cv: n + f / 2, w: 1, h: f });
+      let cum = 0;
+      out.forEach((sv) => {
+        const ar = sv.w * sv.h;
+        sv.t = Math.max(0, Math.min(left - 1, Math.floor(cum + ar / 2)));
+        cum += ar;
+        sv.x = a + sv.cu * N.ux + sv.cv * N.vx; sv.y = sv.cu * N.uy + sv.cv * N.vy;
+      });
+      return out.slice(0, 25);
+    },
+    chkShardDst(slv, list) {
+      let x = 0, y = 0, w = 0;
+      (list || []).forEach((q) => { const sv = slv[q], ar = sv.w * sv.h; x += sv.x * ar; y += sv.y * ar; w += ar; });
+      if (w) return { x: x / w, y: y / w };
+      return slv[0] ? { x: slv[0].x, y: slv[0].y } : { x: 0, y: 0 };
+    },
+    /* a leftover square reaches the strip and breaks: its pieces slide into the gaps */
+    chkShatter(i, col, dp, list, slv, T, stag, ok) {
+      const tile = $('ckTile' + i); if (tile) tile.setAttribute('opacity', '0');
+      const th = this._chkN.theta;
+      this._tilePos[i] = { x: dp.x, y: dp.y, r: th, s: 1, gone: true };
+      this.sfx('tick');
+      list.forEach((q, j) => {
+        const sv = slv[q], el = $('ckSliv' + q); if (!el) return;
+        const w = Math.max(sv.w * .72, sv.w - .1), h = Math.max(sv.h * .72, sv.h - .1);
+        el.style.fill = col;
+        this.later(() => {
+          if (!ok()) return;
+          el.setAttribute('opacity', '1');
+          this.tween(T, (lin) => {
+            const e = ez(lin);
+            const x = dp.x + (sv.x - dp.x) * e, y = dp.y + (sv.y - dp.y) * e;
+            const sx = .42 + (w - .42) * e, sy = .42 + (h - .42) * e;
+            el.setAttribute('transform', 'translate(' + x.toFixed(3) + ' ' + y.toFixed(3) + ') rotate(' + th.toFixed(2) + ') scale(' + sx.toFixed(3) + ' ' + sy.toFixed(3) + ')');
+          });
+        }, j * stag);
+      });
+    },
+    /* the tiles walk back home instead of snapping; broken squares become whole again on the way */
     async tilesBack() {
-      const a = this.state.a, b = this.state.b, P = this._tilePos || [];
+      const a = this.state.a, b = this.state.b, P = this._tilePos || [], slv = this._slv || [];
+      P.forEach((p, i) => { if (p && p.gone) { const el = $('ckTile' + i); if (el) el.setAttribute('opacity', '1'); } });
       await this.tween(this.rm ? 1 : 700, (lin) => {
         const e = ez(lin);
         P.forEach((p, i) => {
@@ -1817,7 +2111,9 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
           const s = this.chkSrc(a, b, i), el = $('ckTile' + i);
           el.setAttribute('transform', 'translate(' + (p.x + (s.x - p.x) * e).toFixed(3) + ' ' + (p.y + (s.y - p.y) * e).toFixed(3) + ') rotate(' + (p.r * (1 - e)).toFixed(2) + ') scale(' + (p.s + (1 - p.s) * e).toFixed(3) + ')');
         });
+        slv.forEach((sv, q) => { const el = $('ckSliv' + q); if (el) el.setAttribute('opacity', (1 - e).toFixed(3)); });
       });
+      this._slv = [];
     },
     /* after two misses Eliyahu sets the legs himself, so the step can always be finished */
     async chkAutoHelp() {
@@ -1865,7 +2161,8 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
         const xa = 88, xb = xa + sc.a * u + 34, xc = xb + sc.b * u + 34, yB = sc.yB;
         h += '<rect x="' + xa + '" y="' + (yB - sc.a * u) + '" width="' + sc.a * u + '" height="' + sc.a * u + '" rx="3" fill="' + IND + '" fill-opacity=".06" stroke="' + IND + '" stroke-width="1.2"/>';
         h += '<rect x="' + xb + '" y="' + (yB - sc.b * u) + '" width="' + sc.b * u + '" height="' + sc.b * u + '" rx="3" fill="' + AMB + '" fill-opacity=".06" stroke="' + AMB + '" stroke-width="1.2"/>';
-        h += '<rect x="' + xc + '" y="' + (yB - sc.c * u) + '" width="' + sc.c * u + '" height="' + sc.c * u + '" rx="3" fill="' + ROSE + '" fill-opacity=".04" stroke="' + ROSE + '" stroke-width="1.2" stroke-dasharray="4 3" opacity=".7"/>';
+        h += '<rect x="' + xc + '" y="' + (yB - sc.c * u) + '" width="' + sc.c * u + '" height="' + sc.c * u + '" rx="3" fill="' + ROSE + '" fill-opacity=".04" stroke="#fff" stroke-width="1.6"/>';
+        h += '<rect x="' + xc + '" y="' + (yB - sc.c * u) + '" width="' + sc.c * u + '" height="' + sc.c * u + '" rx="3" fill="none" stroke="' + INK + '" stroke-width="1.6" stroke-dasharray="4 3"/>';
         const lab = (x, y, txt, col) => { h += '<text x="' + u2(x) + '" y="' + u2(y) + '" text-anchor="middle" style="font-family:\'Secular One\',sans-serif;font-size:15px;fill:' + col + '">' + txt + '</text>'; };
         lab(xa + sc.a * u / 2, yB - sc.a * u - 7, sc.a + '²', IND);
         lab(xb + sc.b * u / 2, yB - sc.b * u - 7, sc.b + '²', AMB);
@@ -1915,12 +2212,12 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       const rm = this.rm, tok = this._tok, ok = () => tok === this._tok && STEPS[this.state.idx].mode === 'triples';
       const svg = $('triplesSvg');
       await this.wait(lead); if (!ok()) return false;
-      const popStag = rm ? 0 : 120;
+      const popStag = rm ? 0 : 80;
       S.cells.forEach((cd, idx) => this.later(() => {
         if (ok()) this.tween(190, (lin) => cd.el.setAttribute('transform', 'translate(' + cd.sx + ' ' + cd.sy + ') scale(' + (1 - Math.pow(1 - lin, 2)).toFixed(3) + ')'));
       }, idx * popStag));
-      await this.wait(S.cells.length * popStag / 1.3 + 700); if (!ok()) return false;
-      const flyStag = rm ? 0 : 190, D2 = rm ? 1 : 760;
+      await this.wait(S.cells.length * popStag + 700); if (!ok()) return false;
+      const flyStag = rm ? 0 : 110, D2 = rm ? 1 : 760;
       const fly = (from, to) => {
         for (let idx = from; idx < to; idx++) {
           const cd = S.cells[idx];
@@ -1944,7 +2241,7 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
         await this.wait(260); if (!ok()) return false;
         const q = this.svgPt(svg, S.cC[0], S.cC[1]);
         await this.actorHop(q[0], q[1], 700); if (!ok()) return false;
-        await this.wait(Math.max(0, (d + D2 * .7) / 1.3 - 1200) + 300); if (!ok()) return false;
+        await this.wait(Math.max(0, d - 960) + 300); if (!ok()) return false;
       }
       return true;
     },
@@ -2069,8 +2366,23 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
         fb.style.border = st.fb.ok ? '1.5px solid #9fd8b4' : '1.5px solid #f3a8b8';
         fb.style.color = st.fb.ok ? '#1d7a46' : '#c2234b';
       } else fb.hidden = true;
-      if (isExp) {
+      if (isExp) this.paintExplore();
+      this.paintQuiz(S, st, st.done);
+      if (isExp || isQuiz) this.renderTri();
+      if (md === 'proof') this.renderProof();
+      if (md === 'numeric') this.paintNumeric();
+      if (md === 'triples') this.tpBtn();
+      this.paintFinish();
+      this.paintBubble();
+      this.fitMath();
+    },
+    /* the numbers strip and the summary under the triangle (step 2); rebuilt only when a or b changes */
+    paintExplore() {
+      const st = this.state;
+      {
         const a = st.a, b = st.b, c2 = a * a + b * b, c = Math.sqrt(c2), cInt = Number.isInteger(c);
+        if (this._expKey === a + '|' + b) return;
+        this._expKey = a + '|' + b;
         const cells = [
           ['ניצב a', 'a = ' + a, IND], ['ניצב b', 'b = ' + b, AMB], ['יתר c', cInt ? 'c = ' + c : 'c = √<span class="sqrt">' + c2 + '</span>', ROSE],
           ['a²', String(a * a), IND], ['b²', String(b * b), AMB], ['c²', String(c2), ROSE]];
@@ -2091,14 +2403,6 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
           $('synth').append(d2);
         }
       }
-      this.paintQuiz(S, st, st.done);
-      if (isExp || isQuiz) this.renderTri();
-      if (md === 'proof') this.renderProof();
-      if (md === 'numeric') this.paintNumeric();
-      if (md === 'triples') this.tpBtn();
-      this.paintFinish();
-      this.paintBubble();
-      this.fitMath();
     },
     fitBox(el) {
       if (!el || el.clientWidth < 8) return;
@@ -2258,7 +2562,7 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
         if (S2.mode === 'explore' && !st.dragged) this.point('handle', 'שתי הידיות מחכות לך. נסה לגרור אחת מהן.');
         else if (S2.mode === 'quiz' && !st.done) {
           if (st.hint < 2) this.point('hint', 'אולי אתה רוצה רמז?');
-          else { this.say('חבר את מה שהרמזים אמרו. אתה קרוב.', { attn: true, mood: 'think' }); this.actorNag(); }
+          else this.say('חבר את מה שהרמזים אמרו. אתה קרוב.', { attn: true, mood: 'think' });
         }
         else if (S2.mode === 'proof' && st.pBeat < 5 && !st.proofBusy) this.point('proof', 'מוכן? לחץ "הצעד הבא" — ונמשיך.');
         else if (S2.mode === 'numeric' && !st.checkDone && !this._chkRunning) this.point('check', 'גרור את הידיות, ואז לחץ "שפוך" — וצפה במשבצות!');
@@ -2303,7 +2607,11 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       }
       requestAnimationFrame(() => this.place(false));
       this.later(() => this.place(false), 300);
-      if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { this.fitMath(); this.place(false); });
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => {
+        this._triKey = null; // re-measure the √ bar with the real font
+        const md = STEPS[this.state.idx].mode; if (md === 'explore' || md === 'quiz') this.renderTri();
+        this.fitMath(); this.place(false);
+      });
     }
   };
   window.__lesson = app;

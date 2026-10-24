@@ -44,6 +44,16 @@ describe('eliyahu pythagoras game page', () => {
     assert.ok(ratios.length > 0);
   });
 
+  it('keeps the lesson animations running inside the embed', () => {
+    assert.equal(page.includes('sandbox'), false);
+    assert.equal(page.includes('loading="lazy"'), false);
+    assert.equal(play.toLowerCase().includes('content-security-policy'), false);
+    assert.match(gameHtml, /get rm\(\) \{ return false; \}/);
+    assert.equal(gameHtml.includes('animation-duration:.01ms'), false);
+    assert.equal(gameHtml.includes('.rv *{animation:none'), false);
+    assert.match(page, /src=\{PYTHAGORAS_GAME_PLAY_PATH\}/);
+  });
+
   it('embeds the file without rewriting it', () => {
     assert.match(play, /eliyahu-pythagoras\.html\?raw/);
     assert.equal(play.includes('.replace('), false);
