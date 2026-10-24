@@ -98,6 +98,31 @@ describe('eliyahu pythagoras game page', () => {
     assert.equal(/\d+\s*\/\s*\d+/.test(beta), false);
   });
 
+  it('adds a new-formulas block under the Pythagoras promo', () => {
+    const card = readFileSync(fromTest('../src/components/GamePromoCard.astro'), 'utf8');
+    const kefelAt = card.indexOf('data-home-game-promo');
+    const betaAt = card.indexOf('id="pythagoras-promo"');
+    const formulasAt = card.indexOf('id="new-algebra-formulas"');
+    assert.ok(kefelAt > 0 && betaAt > kefelAt && formulasAt > betaAt);
+    const kefel = card.slice(kefelAt, betaAt);
+    assert.ok(kefel.includes('נסו את המשחק החדש!'));
+    assert.equal(kefel.includes('/binomial-square-grade-9'), false);
+    assert.equal(kefel.includes('id="new-algebra-formulas"'), false);
+    const beta = card.slice(betaAt, formulasAt);
+    assert.ok(beta.includes('משחק פיתגורס כבר כאן!'));
+    assert.equal(beta.includes('/difference-of-squares-grade-9'), false);
+    assert.ok(card.includes('href="/binomial-square-grade-9"'));
+    assert.ok(card.includes('href="/difference-of-squares-grade-9"'));
+    assert.ok(card.includes('דו־איבר בריבוע'));
+    assert.ok(card.includes('הפרש ריבועים'));
+    assert.ok(card.includes('(a+b)²'));
+    assert.ok(card.includes('a²−b²'));
+    assert.ok(card.includes('exact-new-pulse'));
+    assert.ok(card.includes('prefers-reduced-motion:reduce'));
+    const block = card.slice(formulasAt, card.indexOf('<style>'));
+    assert.equal(/\d+\s*\/\s*\d+/.test(block), false);
+  });
+
   it('is findable in search under the grade-8 Pythagoras catalog card', () => {
     const index = JSON.parse(readFileSync(fromTest('../src/data/search-index.v1.json'), 'utf8')) as SearchIndex;
     const doc = index.docs.find((item) => item.href === PYTHAGORAS_GAME_PATH);
