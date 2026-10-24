@@ -13,6 +13,13 @@ import { fileURLToPath } from 'node:url';
 import { loadCatalog } from '../src/lib/catalog/loadCatalog';
 import { collectBlogPostHrefs, listServedBlogPosts } from '../src/lib/blogPosts';
 import { loadAllTopicPages } from '../src/lib/topicPages';
+import {
+  PYTHAGORAS_GAME_CATALOG_GRADE,
+  PYTHAGORAS_GAME_CATALOG_TOPIC_ID,
+  PYTHAGORAS_GAME_DESCRIPTION,
+  PYTHAGORAS_GAME_H1,
+  PYTHAGORAS_GAME_PATH,
+} from '../src/lib/pythagorasGame';
 import { buildIndex, type TermsDecision } from '../src/lib/siteSearch/buildIndex';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -31,6 +38,13 @@ export function buildFromRepo() {
       description: p.description,
       catalogTopicIds: ctas.map((c) => c.catalogTopicId).filter((id): id is number => typeof id === 'number'),
     };
+  });
+  pages.push({
+    path: PYTHAGORAS_GAME_PATH,
+    grade: PYTHAGORAS_GAME_CATALOG_GRADE,
+    h1: PYTHAGORAS_GAME_H1,
+    description: PYTHAGORAS_GAME_DESCRIPTION,
+    catalogTopicIds: [PYTHAGORAS_GAME_CATALOG_TOPIC_ID],
   });
   const posts = listServedBlogPosts().map((p) => ({
     fileSlug: p.fileSlug,

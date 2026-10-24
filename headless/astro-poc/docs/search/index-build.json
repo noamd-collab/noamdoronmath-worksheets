@@ -881,6 +881,14 @@
       "reason": "links to the topic, same grade, shared title word"
     },
     {
+      "key": "page:/games/eliyahu-pythagoras",
+      "title": "משחק משפט פיתגורס עם אליהו",
+      "linkedTopic": "topic:8:11",
+      "linkedTitle": "פיתגורס",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
       "key": "post:annual-review-grade-7",
       "title": "חזרה שנתית לכיתה ז׳ | דפי עבודה חינם",
       "linkedTopic": "topic:7:49",
