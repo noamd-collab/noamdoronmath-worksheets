@@ -40,6 +40,10 @@ function runSuite(name, files) {
   const passMatch = output.match(/# pass (\d+)/);
   const failMatch = output.match(/# fail (\d+)/);
   const testsMatch = output.match(/# tests (\d+)/);
+  const outputLines = output.trim().split('\n');
+  const failureDetails = outputLines.flatMap((line, index) =>
+    /^\s*not ok\b/.test(line) ? outputLines.slice(index, index + 40) : []
+  ).join('\n');
   return {
     name,
     ok: r.status === 0,
@@ -47,7 +51,8 @@ function runSuite(name, files) {
     tests: testsMatch ? Number(testsMatch[1]) : null,
     pass: passMatch ? Number(passMatch[1]) : null,
     fail: failMatch ? Number(failMatch[1]) : null,
-    outputTail: output.trim().split('\n').slice(-30).join('\n'),
+    failureDetails,
+    outputTail: outputLines.slice(-30).join('\n'),
   };
 }
 
@@ -68,7 +73,7 @@ if (!onlyLive) {
     unit.ok ? 'PASS' : 'FAIL',
     `tests=${unit.tests} pass=${unit.pass} fail=${unit.fail}`
   );
-  if (!unit.ok) console.log(unit.outputTail);
+  if (!unit.ok) console.log(unit.failureDetails || unit.outputTail);
 }
 
 if (!onlyUnit) {
@@ -84,7 +89,7 @@ if (!onlyUnit) {
     live.ok ? 'PASS' : 'FAIL',
     `tests=${live.tests} pass=${live.pass} fail=${live.fail}`
   );
-  if (!live.ok) console.log(live.outputTail);
+  if (!live.ok) console.log(live.failureDetails || live.outputTail);
 }
 
 report.finishedAt = new Date().toISOString();
