@@ -4,8 +4,8 @@ Work on `main` through pull requests. Do not merge or publish without Noam's app
 
 ## Review
 
-1. DeepSeek code review.
-2. Qwen visual review, phone and desktop. Verify its claims.
+1. Run the relevant code, build, and link checks.
+2. Verify the UI on phone and desktop.
 3. Wix preview, built with `.env.local` only.
 
 ## Noam's rules
