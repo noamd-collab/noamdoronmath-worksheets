@@ -36,6 +36,7 @@ const NON_LANDING_PAGES = new Set([
   'blog/index.astro',
   'blog/categories/[slug].astro',
   'post/[...slug].astro',
+  'games/eliyahu-pythagoras/index.astro',
 ]);
 
 function astroPages(dir: string): string[] {

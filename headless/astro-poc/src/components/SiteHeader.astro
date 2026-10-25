@@ -7,9 +7,12 @@ import {
   type WorksheetsNavBand,
 } from '../lib/activeNav';
 import { PUBLIC_LESSON_PATH } from '../lib/publicLesson';
+import { PYTHAGORAS_GAME_PATH } from '../lib/pythagorasGame';
 interface Props { active?: ActiveNavKey | null; compactBrand?: boolean; }
 const active=Astro.props.active !== undefined ? Astro.props.active : resolveActiveNav(Astro.url.pathname);
-const onGame = normalizeNavPath(Astro.url.pathname) === PUBLIC_LESSON_PATH;
+const navPath = normalizeNavPath(Astro.url.pathname);
+const onGame = navPath === PUBLIC_LESSON_PATH;
+const onPythagorasGame = navPath === PYTHAGORAS_GAME_PATH;
 const worksheetsBand: WorksheetsNavBand | null =
   active === 'worksheets' ? resolveWorksheetsNavBand(Astro.url.pathname, Astro.url.searchParams) : null;
 ---
@@ -34,6 +37,7 @@ const worksheetsBand: WorksheetsNavBand | null =
           <div id="extras-menu" class="exact-nav-drop">
             <a aria-current={active === 'tools' ? 'page' : undefined} href="/math-tools">תוספים</a>
             <a class="exact-nav-game" aria-current={onGame ? 'page' : undefined} href={PUBLIC_LESSON_PATH}>משחק כפל מקוצר שנייה&nbsp;(beta)</a>
+            <a class="exact-nav-game" aria-current={onPythagorasGame ? 'page' : undefined} href={PYTHAGORAS_GAME_PATH}>משחק משפט פיתגורס</a>
           </div>
         </div>
         <a aria-current={active === 'highschool' ? 'page' : undefined} data-peek="hs" href="/high-school-math" style="padding:8px 12px;border-radius:999px;color:#22305a;" data-exact-hover="exact-hover-18">מתמטיקה לתיכון ↗</a>
