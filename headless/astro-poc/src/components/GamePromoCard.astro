@@ -1,5 +1,6 @@
 ---
 import { PUBLIC_LESSON_PATH } from '../lib/publicLesson';
+import { PYTHAGORAS_GAME_PATH } from '../lib/pythagorasGame';
 ---
 <section class="exact-game-promo">
   <a class="exact-game-promo__card" href={PUBLIC_LESSON_PATH} data-home-game-promo>
@@ -9,8 +10,6 @@ import { PUBLIC_LESSON_PATH } from '../lib/publicLesson';
         width="960"
         height="508"
         alt="ריבוע (a+b) מהמשחק, מחולק ל־a² בירוק, b² באדום ושני מלבני ab צהובים"
-        loading="lazy"
-        decoding="async"
       />
     </span>
     <span class="exact-game-promo__copy">
@@ -20,6 +19,57 @@ import { PUBLIC_LESSON_PATH } from '../lib/publicLesson';
       <span class="exact-game-promo__go">למשחק</span>
     </span>
   </a>
+  <div class="exact-game-promo__slot" id="pythagoras-promo" data-pop="160">
+    <a class="exact-game-promo__card exact-game-promo__card--beta" href={PYTHAGORAS_GAME_PATH} data-home-pythagoras-promo>
+      <span class="exact-game-promo__shot" aria-hidden="true">
+        <svg class="exact-game-promo__mark" viewBox="0 0 200 132" width="200" height="132">
+          <polygon points="28,108 28,28 168,108" fill="#f4e7c3" stroke="#22305a" stroke-width="3" stroke-linejoin="round"></polygon>
+          <path d="M28 92 H44 V108" fill="none" stroke="#22305a" stroke-width="2"></path>
+          <text x="14" y="72" fill="#1e605e" style="font:800 16px Heebo;">a</text>
+          <text x="90" y="124" fill="#1e605e" style="font:800 16px Heebo;">b</text>
+          <text x="104" y="62" fill="#e5735c" style="font:800 16px Heebo;">c</text>
+        </svg>
+      </span>
+      <span class="exact-game-promo__copy">
+        <span class="exact-game-promo__badge">בטא</span>
+        <h2 class="exact-game-promo__title">משחק פיתגורס כבר כאן!</h2>
+        <p class="exact-game-promo__text">גרסת בטא. שיעור קצר עם אליהו על משפט פיתגורס.</p>
+        <span class="exact-game-promo__go">למשחק</span>
+      </span>
+    </a>
+  </div>
+  <div class="exact-formula-new" id="new-algebra-formulas" data-pop="280">
+    <p class="exact-formula-new__lead">
+      <span class="exact-formula-new__badge">חדש!</span>
+      <span class="exact-formula-new__kicker">נוסחאות לכיתה ט׳</span>
+    </p>
+    <div class="exact-formula-new__links">
+      <a class="exact-formula-new__link" href="/binomial-square-grade-9">
+        <svg class="exact-formula-new__mark" viewBox="0 0 64 64" width="64" height="64" aria-hidden="true">
+          <rect x="8" y="8" width="48" height="48" fill="#f4e7c3" stroke="none"></rect>
+          <rect class="exact-formula-new__draw" x="8" y="8" width="48" height="48" fill="none" stroke="#22305a" stroke-width="2.5" pathLength="1"></rect>
+          <line class="exact-formula-new__fade" x1="8" y1="28" x2="56" y2="28" stroke="#2a7c7a" stroke-width="2"></line>
+          <line class="exact-formula-new__fade" x1="28" y1="8" x2="28" y2="56" stroke="#2a7c7a" stroke-width="2"></line>
+        </svg>
+        <span class="exact-formula-new__copy">
+          <span class="exact-formula-new__formula" dir="ltr">(a+b)²</span>
+          <span class="exact-formula-new__name">דו־איבר בריבוע</span>
+          <span class="exact-formula-new__hint">ריבוע הסכום וההפרש</span>
+        </span>
+      </a>
+      <a class="exact-formula-new__link" href="/difference-of-squares-grade-9">
+        <svg class="exact-formula-new__mark" viewBox="0 0 64 64" width="64" height="64" aria-hidden="true">
+          <rect x="6" y="6" width="52" height="52" fill="#cfe6e4" stroke="#22305a" stroke-width="2.5"></rect>
+          <rect class="exact-formula-new__fade" x="28" y="28" width="30" height="30" fill="#f6d0c8" stroke="#e5735c" stroke-width="2.5"></rect>
+        </svg>
+        <span class="exact-formula-new__copy">
+          <span class="exact-formula-new__formula" dir="ltr">a²−b²</span>
+          <span class="exact-formula-new__name">הפרש ריבועים</span>
+          <span class="exact-formula-new__hint">נוסחת הפרש הריבועים</span>
+        </span>
+      </a>
+    </div>
+  </div>
 </section>
 <style>
   .exact-game-promo{max-width:1200px;margin:0 auto;padding:0 24px 64px;}
@@ -51,10 +101,16 @@ import { PUBLIC_LESSON_PATH } from '../lib/publicLesson';
   .exact-game-promo__go{
     margin-top:6px;font-weight:700;font-size:16px;color:#1e605e;text-decoration:underline;text-underline-offset:4px;
   }
+  .exact-game-promo__slot{margin-top:18px;}
+  .exact-game-promo__card--beta .exact-game-promo__shot{
+    flex:0 0 220px;justify-content:center;padding:12px 8px;
+  }
+  .exact-game-promo__mark{display:block;width:min(200px,100%);height:auto;}
   @media(max-width:700px){
     .exact-game-promo{padding:0 14px 40px;}
     .exact-game-promo__card{flex-direction:column;}
     .exact-game-promo__shot{border-inline-end:0;border-bottom:2px solid #22305a;}
+    .exact-game-promo__card--beta .exact-game-promo__shot{flex-basis:auto;padding:14px 12px 8px;}
     .exact-game-promo__copy{padding:18px 16px 20px;}
     .exact-game-promo__text{font-size:17px;}
   }
@@ -66,4 +122,55 @@ import { PUBLIC_LESSON_PATH } from '../lib/publicLesson';
   html.noam-a11y-motion .exact-game-promo__card{transition:none;}
   html.nd-motion-off .exact-game-promo__card:hover,
   html.noam-a11y-motion .exact-game-promo__card:hover{transform:none;}
+  .exact-formula-new{
+    margin-top:18px;background:#fff;color:#22305a;
+    border:2px solid #22305a;border-radius:16px 6px 18px 8px / 8px 18px 6px 16px;
+    box-shadow:3px 3px 0 #e6a534;padding:14px 16px 16px;
+  }
+  .exact-formula-new__lead{display:flex;align-items:center;gap:10px;margin:0 0 12px;}
+  .exact-formula-new__badge{
+    display:inline-block;background:#e6a534;color:#22305a;border:1.5px solid #22305a;border-radius:999px;
+    padding:4px 12px;font-weight:800;font-size:15px;line-height:1.4;
+    animation:exact-new-pulse 2.4s ease-in-out infinite;
+  }
+  .exact-formula-new__kicker{font-family:'Secular One',sans-serif;font-weight:400;font-size:22px;line-height:1.2;}
+  .exact-formula-new__links{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .exact-formula-new__link{
+    display:flex;align-items:center;gap:12px;min-width:0;padding:8px 10px;border-radius:12px;
+    color:#22305a;text-decoration:none;background:#fbfaf5;
+  }
+  .exact-formula-new__link:hover{background:#f4e7c3;}
+  .exact-formula-new__link:focus-visible{outline:3px solid #2a7c7a;outline-offset:3px;}
+  .exact-formula-new__mark{flex:0 0 64px;width:64px;height:64px;}
+  .exact-formula-new__copy{min-width:0;display:flex;flex-direction:column;gap:2px;}
+  .exact-formula-new__formula{direction:ltr;unicode-bidi:isolate;font-weight:800;font-size:20px;line-height:1.2;}
+  .exact-formula-new__name{font-weight:700;font-size:16px;color:#1e605e;text-decoration:underline;text-underline-offset:3px;}
+  .exact-formula-new__hint{font-size:14px;line-height:1.4;color:#3d4870;}
+  .exact-formula-new__draw{stroke-dasharray:1;stroke-dashoffset:1;animation:exact-new-draw 1.1s ease .35s forwards;}
+  .exact-formula-new__fade{opacity:0;animation:exact-new-fade .6s ease .9s forwards;}
+  @keyframes exact-new-pulse{
+    0%,100%{transform:rotate(-2deg) scale(1);}
+    50%{transform:rotate(-2deg) scale(1.06);}
+  }
+  @keyframes exact-new-draw{to{stroke-dashoffset:0;}}
+  @keyframes exact-new-fade{to{opacity:1;}}
+  @media(max-width:700px){
+    .exact-formula-new__links{grid-template-columns:1fr;}
+    .exact-formula-new__kicker{font-size:20px;}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .exact-formula-new__badge,.exact-formula-new__draw,.exact-formula-new__fade{animation:none;}
+    .exact-formula-new__draw{stroke-dashoffset:0;}
+    .exact-formula-new__fade{opacity:1;}
+  }
+  html.nd-motion-off .exact-formula-new__badge,
+  html.noam-a11y-motion .exact-formula-new__badge,
+  html.nd-motion-off .exact-formula-new__draw,
+  html.noam-a11y-motion .exact-formula-new__draw,
+  html.nd-motion-off .exact-formula-new__fade,
+  html.noam-a11y-motion .exact-formula-new__fade{animation:none;}
+  html.nd-motion-off .exact-formula-new__draw,
+  html.noam-a11y-motion .exact-formula-new__draw{stroke-dashoffset:0;}
+  html.nd-motion-off .exact-formula-new__fade,
+  html.noam-a11y-motion .exact-formula-new__fade{opacity:1;}
 </style>

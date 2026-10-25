@@ -6,8 +6,6 @@
  *   npx tsx scripts/build-site-guide.ts
  *   npx tsx scripts/build-site-guide.ts --check
  */
-import { createHash } from 'node:crypto';
-import { buildSync } from 'esbuild';
 import { readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -16,6 +14,11 @@ import { buildGradeLoopPool, gradeLoopCopy } from '../src/lib/gradeLoopPools';
 import { cssLoopIdea, topicLandingLoop } from '../src/lib/landingLoops';
 import { PK } from '../src/lib/linkPeek';
 import { PUBLIC_LESSON_DESCRIPTION, PUBLIC_LESSON_PATH, PUBLIC_LESSON_TITLE } from '../src/lib/publicLesson';
+import {
+  PYTHAGORAS_GAME_DESCRIPTION,
+  PYTHAGORAS_GAME_PATH,
+  PYTHAGORAS_GAME_TITLE,
+} from '../src/lib/pythagorasGame';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const repo = join(root, '..', '..');
@@ -103,18 +106,6 @@ function demoLine(page: { slug: string; grade: number; catalogCta?: { catalogTop
       if (loop.variant === 'kite-construct') {
         return 'הדגמה: שטח דלתון — מהדלתון למלבן, ואחר כך בנייה בסרגל ומחוגה';
       }
-      if (loop.variant === 'distributive-area-model-grade-4') {
-        return 'הדגמה: 12 × 4 מתפרק ל־10 × 4 ועוד 2 × 4, ואז 40 + 8 = 48';
-      }
-      if (loop.variant === 'fraction-division-meaning-grade-6') {
-        return 'הדגמה: כמה פעמים נכנס החלק — שלושה רבעים חלקי רבע שווה 3, ו־2 חלקי חצי שווה 4';
-      }
-      if (loop.variant === 'grade-4-summary') {
-        return 'הדגמה: 2,847 + 1,675 — אומדים 4,500 ומחברים לעמודות עד 4,522';
-      }
-      if (loop.variant === 'measurement-geometry-synthesis-grade-6') {
-        return 'הדגמה: שטח צורת L — 60 ריבועי 1 ס״מ פחות פינה של 12 שווה 48';
-      }
       const copy = gradeLoopCopy(loop.variant);
       return 'הדגמה: ' + [copy.domain, copy.claim].filter(Boolean).join(' · ');
     }
@@ -179,6 +170,7 @@ function main() {
   const teachersHtml = readFileSync(join(root, 'public/teachers/index.html'), 'utf8');
   const learningHtml = readFileSync(join(root, 'public/learning.html'), 'utf8');
   const lessonHtml = readFileSync(join(root, 'src/public-lesson/lesson.html'), 'utf8');
+  const pythagorasHtml = readFileSync(join(root, 'src/games/eliyahu-pythagoras.html'), 'utf8');
   const viewerHow = [
     mustInclude(viewerHtml, 'הורדה / הדפסה'),
     mustInclude(viewerHtml, 'כלי PDF'),
@@ -430,6 +422,17 @@ function main() {
     contains: [PUBLIC_LESSON_DESCRIPTION, textOf(lessonHtml, /<title>([^<]+)<\/title>/)].join(' '),
     how: mustInclude(lessonHtml, 'שלב 1 מתוך 7'),
   });
+  push(records, {
+    id: 'game-pythagoras',
+    type: 'game',
+    title: PYTHAGORAS_GAME_TITLE,
+    href: PYTHAGORAS_GAME_PATH,
+    grade: 8,
+    gradeLabel: 'כיתה ח׳',
+    audience: 'כיתה ח׳ · כיתה ט׳',
+    contains: [PYTHAGORAS_GAME_DESCRIPTION, textOf(pythagorasHtml, /<title>([^<]+)<\/title>/)].join(' '),
+    how: mustInclude(pythagorasHtml, 'שלב 1 מתוך 9'),
+  });
   if (home.whatsapp && home.whatsapp.ctaHref) {
     push(records, {
       id: 'page-whatsapp',
@@ -470,18 +473,9 @@ function main() {
   };
   const body = JSON.stringify(guide);
   const dest = join(root, 'src/data/site-guide.v1.json');
-  // The browser needs only public navigation fields, never server configuration.
-  const navigationBody = JSON.stringify({ catalog: { grades: readJson(join(root, 'src/data/catalog.v1.json')).grades.map((g: any) => ({ grade: g.grade, label: g.label, groups: g.groups, topics: g.topics.map(({ id, parent, title, description, group }: any) => ({ id, parent, title, description, group })) })) }, records: records.map(({ id, type, title, href, grade, topic, levelLabel, terms }) => ({ id, type, title, href, grade, topic, levelLabel, terms })) });
-  const navigationDest = join(root, 'public/noam-navigation-guide.json');
-  const navigationScript = buildSync({entryPoints: [join(repo, 'noam-ai/site-companion/navigation.js')], bundle: true, format: 'esm', platform: 'browser', write: false}).outputFiles[0].text;
-  const scriptDest = join(root, 'public/noam-navigation.js');
-  const version = createHash('sha256').update(navigationBody).update(navigationScript).digest('hex').slice(0, 16);
-  const companionDest = join(root, 'public/noam-site-companion.js');
-  const companionCurrent = readFileSync(companionDest, 'utf8');
-  const companionBody = companionCurrent.replace(/(noam-navigation(?:-guide\.json|\.js)\?v=)[a-z0-9]+/g, (_match, prefix) => prefix + version);
   if (process.argv.includes('--check')) {
     const current = readFileSync(dest, 'utf8');
-    if (current !== body || readFileSync(navigationDest, 'utf8') !== navigationBody || readFileSync(scriptDest, 'utf8') !== navigationScript || companionCurrent !== companionBody) {
+    if (current !== body) {
       console.error('FAIL: src/data/site-guide.v1.json differs from a fresh build. Run: npx tsx scripts/build-site-guide.ts');
       process.exit(1);
     }
@@ -489,9 +483,6 @@ function main() {
     return;
   }
   writeFileSync(dest, body);
-  writeFileSync(navigationDest, navigationBody);
-  writeFileSync(scriptDest, navigationScript);
-  writeFileSync(companionDest, companionBody);
   console.log(JSON.stringify({ counts, records: records.length, manifestMatches: manifestHits, bytes: Buffer.byteLength(body) }));
 }
 

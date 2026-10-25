@@ -14,7 +14,7 @@ import {
 } from '../../../noam-ai/site-companion/endpoint.js';
 import { FALLBACK_TEXT, QWEN_MODEL, QWEN_TIMEOUT_MS, ROLE_TEXT } from '../../../noam-ai/site-companion/companion.js';
 import { RECAPTCHA_TIMEOUT_MS } from '../../../noam-ai/site-companion/bot-guard.js';
-import { labelsInText, parseClassifier, requestedPickCount, selectTeacherPicks } from '../../../noam-ai/site-companion/teacher-pick.js';
+import { parseClassifier, selectTeacherPicks } from '../../../noam-ai/site-companion/teacher-pick.js';
 
 const QWEN = 'qwen-test-key-xyz';
 const RECAPTCHA = 'recaptcha-test-secret-xyz';
@@ -255,8 +255,6 @@ describe('Noam AI headless endpoint', () => {
     assert.equal(client.includes('my-site-2'), false);
     assert.match(bot, /NOT_ACTIVE/);
     assert.match(config, /QWEN_API_KEY: envField.string\(\{ context: 'server', access: 'secret', optional: true \}\)/);
-    assert.match(config, /QWEN_BASE_URL: envField.string\(\{ context: 'server', access: 'secret', optional: true \}\)/);
-    assert.match(config, /QWEN_MODEL: envField.string\(\{ context: 'server', access: 'secret', optional: true \}\)/);
     assert.match(config, /NOAM_RECAPTCHA_SECRET_KEY: envField.string\(\{ context: 'server', access: 'secret', optional: true \}\)/);
     assert.equal(QWEN_SECRET_NAME, 'QWEN_API_KEY');
     assert.equal(NOAM_RECAPTCHA_SECRET_NAME, 'NOAM_RECAPTCHA_SECRET_KEY');
@@ -308,7 +306,7 @@ describe('Noam AI headless endpoint', () => {
 
   it('returns the calm unavailable text when reCAPTCHA or Qwen times out', async () => {
     assert.equal(RECAPTCHA_TIMEOUT_MS, 5_000);
-    assert.equal(QWEN_TIMEOUT_MS, 18_000);
+    assert.equal(QWEN_TIMEOUT_MS, 12_000);
     const hang = (_url: string, init?: { signal?: AbortSignal }) => new Promise(() => {
       // Stays pending. The timeout aborts the signal and wins the race.
       void init;
@@ -431,55 +429,5 @@ describe('Noam AI headless endpoint', () => {
       },
     });
     assert.equal(capped.status, 429);
-  });
-
-  it('batch-picks 15, 30, and 45 exercises with qwen3.8-flash and grounds every ID to the catalog', async () => {
-    assert.deepEqual(labelsInText('בחר 15 עם AI'), []);
-    assert.deepEqual(labelsInText('בחר 30 סעיפים'), []);
-    assert.equal(requestedPickCount({ message: 'בחר 15 עם AI' }), 15);
-    assert.equal(requestedPickCount({ message: 'בחר 30' }), 30);
-    assert.equal(requestedPickCount({ message: 'בחר 45' }), 45);
-    const fullQuestions = Array.from({ length: 69 }, (_, idx) => {
-      const q = Math.floor(idx / 3) + 1;
-      const part = ['א', 'ב', 'ג'][idx % 3];
-      return `${q}${part}`;
-    });
-    const fullSheet = {
-      ...middleSheet,
-      questions: fullQuestions,
-    };
-    for (const count of [15, 30, 45]) {
-      const calls: { url: string; body: string }[] = [];
-      const modelLabels = fullQuestions.slice(0, count - 2).concat(['99ת']);
-      const result = await post({
-        teacherIndex: [fullSheet],
-        fetch: mockFetch(
-          { grade: 9, topicQuery: 'פירוק לגורמים', level: 'a', exerciseLabels: modelLabels, wantsSheet: false },
-          calls
-        ),
-        payload: {
-          message: `בחר ${count} עם AI`,
-          page: { kind: 'teachers', path: '/teachers', title: 'למורים' },
-          teacher: { grade: '9', topic: '2', level: 'a', goal: 'practice', style: 'scaffold', note: '', count },
-          botVerification: { provider: 'recaptcha-v3', token: 'token-' + count },
-        },
-      });
-      assert.equal(result.status, 200);
-      const body = result.body as {
-        ok: boolean;
-        model: string;
-        exerciseIds: string[];
-      };
-      assert.equal(body.ok, true);
-      assert.equal(body.model, 'qwen3.8-flash');
-      assert.equal(body.exerciseIds.length, count);
-      assert.equal(new Set(body.exerciseIds).size, count);
-      assert.equal(body.exerciseIds.some((id) => id.endsWith(':99ת')), false);
-      const qwenCall = calls.find((call) => call.url.includes('chat/completions'));
-      assert.ok(qwenCall);
-      const sent = JSON.parse(qwenCall.body);
-      assert.equal(sent.model, 'qwen3.8-flash');
-      assert.match(sent.messages[1].content, new RegExp(`כמות מבוקשת לבחירה: ${count}`));
-    }
   });
 });

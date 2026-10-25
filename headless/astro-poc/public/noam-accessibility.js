@@ -85,12 +85,11 @@
         animation:none!important; animation-play-state:paused!important; transition:none!important;
       }
       @media print { #noam-accessibility { display:none!important; } }
-      /* Reserve the corner on pages that still scroll the window.
-         exact-site phones zero this padding and scroll .exact-frame. */
+      /* Reserve the corner. The window stays the scroller. */
       @media (max-width: 800px) {
         html.noam-a11y-pad body {
-          padding-bottom: calc(128px + env(safe-area-inset-bottom, 0px));
-          scroll-padding-bottom: calc(128px + env(safe-area-inset-bottom, 0px));
+          padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px));
+          scroll-padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px));
         }
       }
       @media (min-width: 801px) {
@@ -150,12 +149,6 @@
         }
         #stop-anim { border-radius:18px 6px 20px 8px / 8px 20px 6px 18px; }
         #stop-anim[aria-pressed="true"] { background:#a84434; border-color:#22305a; color:#fff; }
-        /* Worksheet tools stay secondary to the question-level Ramzi controls. */
-        :host-context(body.exact-viewer) #launch {
-          width:44px; height:44px; padding:9px; border:1px solid #aab6c5;
-          border-radius:12px; background:#fbfaf5; color:#1e605e; box-shadow:none;
-        }
-        :host-context(body.exact-viewer) #launch svg { width:24px; height:24px; }
         dialog { direction:rtl; position:fixed; inset:auto 14px calc(140px + env(safe-area-inset-bottom)) auto; margin:0; width:min(330px,calc(100vw - 28px)); max-height:calc(100dvh - 165px); overflow:auto; background:#fbfaf5; color:#22305a; border:2px solid #22305a; border-radius:22px 8px 26px 10px / 10px 26px 8px 22px; padding:16px; box-shadow:6px 6px 0 #e6a534; font:16px/1.5 Heebo,Arial,sans-serif; }
         dialog::backdrop { background:rgba(34,48,90,0.35); }
         header { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px; }
@@ -245,12 +238,6 @@
     function settleLauncher() {
       if (!astroShell || !host.isConnected || dialog.open) return;
       var metrics = launcherMetrics();
-      /* Phone: stay in the bottom dock, opposite the chat launcher.
-         Climbing the screen parks the button on the headline or בס״ד. */
-      if (docked()) {
-        applyHostBox('left', metrics.edge, 8, metrics.size);
-        return;
-      }
       var rects = obstacleRects();
       var maxBottom = Math.max(8, Math.round(window.innerHeight * 0.75));
       var bottoms = [8, 0];

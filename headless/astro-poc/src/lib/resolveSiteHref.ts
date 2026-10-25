@@ -22,6 +22,8 @@ const LOCAL_SITE_PATHS = new Set([
   '/worksheets',
   '/learning.html',
   '/worksheet-viewer-noam.html',
+  '/games/eliyahu-pythagoras',
+  '/games/eliyahu-pythagoras/play',
 ]);
 // Old paths such as /high-school-math-1, /page and /equations-grade-7 are not pages:
 // the middleware answers them with a 301 (src/data/redirects.json), and links to them

@@ -152,3 +152,36 @@ export function worksheetsStateEqual(a: WorksheetsUrlState, b: WorksheetsUrlStat
     a.topic === b.topic
   );
 }
+
+type TrackCatalog = {
+  groups: ReadonlyArray<{ key: string; reducedProgram?: boolean }>;
+  topics: ReadonlyArray<{ id: number; group: string }>;
+};
+
+/**
+ * Grade 9: a pinned `topic=` is shown only on its own track. Topic pages link to
+ * `/worksheets?grade=9&topic=33` without `track=red`, so a topic from a reduced-program
+ * group (ספטמבר / אוקטובר) must open on that track or its card is not rendered at all.
+ * Data-driven (group.reducedProgram), not a list of topic ids.
+ */
+export function trackForPinnedTopic(state: WorksheetsUrlState, catalogGrade: TrackCatalog | undefined): TrackMode {
+  if (state.grade !== 9 || state.topic == null || !catalogGrade) return state.track;
+  const topic = catalogGrade.topics.find((t) => t.id === state.topic);
+  if (!topic) return state.track;
+  const group = catalogGrade.groups.find((g) => g.key === topic.group);
+  return group?.reducedProgram ? 'red' : 'reg';
+}
+
+/**
+ * Subtopics (catalog `parent`) are listed inside their parent's card, never as a
+ * card of their own, so a pinned subtopic (`?topic=41` in grade 9) shows the
+ * parent card instead of an empty list.
+ */
+export function pinnedCardTopicId(
+  topicId: number | null,
+  catalogGrade: { topics: ReadonlyArray<{ id: number; parent?: number }> } | undefined
+): number | null {
+  if (topicId == null || !catalogGrade) return topicId;
+  const topic = catalogGrade.topics.find((t) => t.id === topicId);
+  return topic?.parent ?? topicId;
+}

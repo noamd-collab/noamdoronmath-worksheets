@@ -1,0 +1,258 @@
+{
+  "timing": "ESTIMATE ONLY — spread by word count over an unmeasured duration. Not a final SRT. Re-time against the rendered video before upload.",
+  "estTotalSeconds": 92.4,
+  "segments": [
+    {
+      "id": "hook",
+      "estStart": 0,
+      "estEnd": 7.8,
+      "cues": [
+        {
+          "text": "התרגיל ⁦8 + 2 × 3⁩ נראה קצר, אבל הוא יכול",
+          "estStart": 0,
+          "estEnd": 4.8
+        },
+        {
+          "text": "להוביל לשתי תשובות שונות:",
+          "estStart": 4.8,
+          "estEnd": 6.5
+        },
+        {
+          "text": "30 או 14.",
+          "estStart": 6.5,
+          "estEnd": 7.8
+        }
+      ]
+    },
+    {
+      "id": "trap",
+      "estStart": 7.8,
+      "estEnd": 12.7,
+      "cues": [
+        {
+          "text": "מי שמחשב משמאל לימין מקבל 30.",
+          "estStart": 7.8,
+          "estEnd": 10.5
+        },
+        {
+          "text": "אבל התשובה הנכונה היא 14.",
+          "estStart": 10.5,
+          "estEnd": 12.7
+        }
+      ]
+    },
+    {
+      "id": "rule",
+      "estStart": 12.7,
+      "estEnd": 20.5,
+      "cues": [
+        {
+          "text": "יש סדר קבוע. קודם סוגריים.",
+          "estStart": 12.7,
+          "estEnd": 14.8
+        },
+        {
+          "text": "אחר כך חזקות ושורשים, אם יש.",
+          "estStart": 14.8,
+          "estEnd": 17.2
+        },
+        {
+          "text": "אחר כך כפל וחילוק, ורק בסוף חיבור וחיסור.",
+          "estStart": 17.2,
+          "estEnd": 20.5
+        }
+      ]
+    },
+    {
+      "id": "solve",
+      "estStart": 20.5,
+      "estEnd": 29.2,
+      "cues": [
+        {
+          "text": "בתרגיל שלנו אין סוגריים ואין חזקות, אז",
+          "estStart": 20.5,
+          "estEnd": 23.6
+        },
+        {
+          "text": "מתחילים בכפל: ⁦2 × 3 = 6⁩.",
+          "estStart": 23.6,
+          "estEnd": 26.6
+        },
+        {
+          "text": "ואז ⁦8 + 6 = 14⁩.",
+          "estStart": 26.6,
+          "estEnd": 29.2
+        }
+      ]
+    },
+    {
+      "id": "brackets",
+      "estStart": 29.2,
+      "estEnd": 41.1,
+      "cues": [
+        {
+          "text": "סוגריים אומרים לנו: עצרו רגע, וטפלו קודם",
+          "estStart": 29.2,
+          "estEnd": 32.1
+        },
+        {
+          "text": "בחלק הזה. בתרגיל ⁦5 × (7 − 3)⁩ מתחילים",
+          "estStart": 32.1,
+          "estEnd": 36
+        },
+        {
+          "text": "בסוגריים: ⁦7 − 3 = 4⁩. ואז ⁦5 × 4 = 20⁩.",
+          "estStart": 36,
+          "estEnd": 41.1
+        }
+      ]
+    },
+    {
+      "id": "brackets-trap",
+      "estStart": 41.1,
+      "estEnd": 49.3,
+      "cues": [
+        {
+          "text": "טעות נפוצה היא להכפיל קודם 5 ב־7, ורק אז",
+          "estStart": 41.1,
+          "estEnd": 44.8
+        },
+        {
+          "text": "להחסיר 3. זו לא הדרך, כי הסוגריים משנים את",
+          "estStart": 44.8,
+          "estEnd": 48.5
+        },
+        {
+          "text": "סדר החישוב.",
+          "estStart": 48.5,
+          "estEnd": 49.3
+        }
+      ]
+    },
+    {
+      "id": "same-rank",
+      "estStart": 49.3,
+      "estEnd": 57.5,
+      "cues": [
+        {
+          "text": "ועוד דבר שחשוב לזכור: כפל וחילוק נמצאים",
+          "estStart": 49.3,
+          "estEnd": 52.2
+        },
+        {
+          "text": "באותה דרגה, וגם חיבור וחיסור.",
+          "estStart": 52.2,
+          "estEnd": 54.2
+        },
+        {
+          "text": "כשיש שתי פעולות מאותה דרגה, מתקדמים משמאל",
+          "estStart": 54.2,
+          "estEnd": 57.1
+        },
+        {
+          "text": "לימין.",
+          "estStart": 57.1,
+          "estEnd": 57.5
+        }
+      ]
+    },
+    {
+      "id": "division",
+      "estStart": 57.5,
+      "estEnd": 69.4,
+      "cues": [
+        {
+          "text": "ומכאן מלכודת נפוצה: לחשוב שכפל תמיד קודם",
+          "estStart": 57.5,
+          "estEnd": 60.7
+        },
+        {
+          "text": "לחילוק. בתרגיל ⁦24 : 4 × 3⁩ מתחילים משמאל:",
+          "estStart": 60.7,
+          "estEnd": 64.8
+        },
+        {
+          "text": "⁦24 : 4 = 6⁩, ו־⁦6 × 3 = 18⁩.",
+          "estStart": 64.8,
+          "estEnd": 69.4
+        }
+      ]
+    },
+    {
+      "id": "parents",
+      "estStart": 69.4,
+      "estEnd": 78.4,
+      "cues": [
+        {
+          "text": "הורים ומורים יכולים לעזור בלי לפתור במקום",
+          "estStart": 69.4,
+          "estEnd": 72.3
+        },
+        {
+          "text": "התלמיד. במקום לומר מיד את התשובה, שואלים:",
+          "estStart": 72.3,
+          "estEnd": 75.2
+        },
+        {
+          "text": "מה הפעולה הראשונה שאתה רואה?",
+          "estStart": 75.2,
+          "estEnd": 77.2
+        },
+        {
+          "text": "יש כאן סוגריים?",
+          "estStart": 77.2,
+          "estEnd": 78.4
+        }
+      ]
+    },
+    {
+      "id": "check",
+      "estStart": 78.4,
+      "estEnd": 87.9,
+      "cues": [
+        {
+          "text": "ולפני שמגישים, בדיקה קצרה:",
+          "estStart": 78.4,
+          "estEnd": 80.1
+        },
+        {
+          "text": "הסוגריים חושבו ראשונים?",
+          "estStart": 80.1,
+          "estEnd": 81.3
+        },
+        {
+          "text": "פעולות מאותה דרגה חושבו משמאל לימין?",
+          "estStart": 81.3,
+          "estEnd": 83.8
+        },
+        {
+          "text": "והתוצאה הגיונית? שלב ביניים אחד כתוב יכול",
+          "estStart": 83.8,
+          "estEnd": 86.7
+        },
+        {
+          "text": "למנוע טעות שלמה.",
+          "estStart": 86.7,
+          "estEnd": 87.9
+        }
+      ]
+    },
+    {
+      "id": "cta",
+      "estStart": 87.9,
+      "estEnd": 92.4,
+      "cues": [
+        {
+          "text": "בפוסט המלא יש עוד דוגמאות, ושיטה מסודרת",
+          "estStart": 87.9,
+          "estEnd": 90.8
+        },
+        {
+          "text": "לתרגיל ארוך. הקישור בתיאור.",
+          "estStart": 90.8,
+          "estEnd": 92.4
+        }
+      ]
+    }
+  ]
+}

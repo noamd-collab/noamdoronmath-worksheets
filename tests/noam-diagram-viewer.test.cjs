@@ -21,7 +21,6 @@ function fixture(){
   const thread={hintIndex:2,history:[],messages:[{role:"user",text:"אפשר רמז 2?",kind:"רמז 2"},message]};
   const calls=[],statusCalls=[],notices=[],renders=[];
   const context={manifest:{sourceSha256:"source-v1",exercises:[exercise]},pdf:"public-pdf-id",
-    noamStripMarkdownEmphasis:text=>text,
     selectedExercise:exercise,threads:{[exercise.id]:thread},busy:false,noamDrafts:{},
     API:"https://api.test/_functions",g:8,lv:"a",LEVEL:{a:"A"},ttl:"משולשים",
     ownerKey:"owner-key-1234567890",STATUS_POLL_MS:0,ASYNC_JOB_MAX_WAIT:1000,
@@ -129,10 +128,9 @@ function scrollFixture(figureHeight=180){
   const figure={getBoundingClientRect:()=>({height:figureHeight}),
     querySelector:selector=>selector===".noam-geometry-svg"?svg:null,
     scrollIntoView:options=>scrolled.push({target:"figure",options})};
-  const expand={scrollIntoView:options=>scrolled.push({target:"expand",options})};
   const retry={scrollIntoView:options=>scrolled.push({target:"retry",options})};
   const row={isConnected:true,
-    querySelector:selector=>selector===".noam-geometry"?figure:selector===".noam-diagram-expand"?expand:retry,
+    querySelector:selector=>selector===".noam-geometry"?figure:retry,
     scrollIntoView:options=>scrolled.push({target:"row",options})};
   const transcript={clientHeight:260,children:[{},row]};
   f.ctx.document.getElementById=id=>id==="noamTranscript"?transcript:null;
@@ -151,11 +149,11 @@ test("a completed diagram reveals its figure after layout instead of the long an
   ],"target the diagram and cancel the transcript's competing smooth scroll");
 });
 
-test("a figure taller than the visible transcript reveals expansion, while a failure reveals retry",()=>{
+test("a figure taller than the visible transcript reveals the SVG, while a failure reveals retry",()=>{
   const f=scrollFixture(500);
   f.ctx.noamDiagramRefresh(f.exercise,f.thread,f.message,true);
   f.frames.shift()();
-  assert.equal(f.scrolled[0].target,"expand");
+  assert.equal(f.scrolled[0].target,"svg");
   f.message.diagramError="לא הצלחתי להכין את השרטוט כרגע.";
   f.ctx.noamDiagramRefresh(f.exercise,f.thread,f.message,true);
   f.frames.shift()();

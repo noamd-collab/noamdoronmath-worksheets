@@ -7,9 +7,12 @@ import {
   type WorksheetsNavBand,
 } from '../lib/activeNav';
 import { PUBLIC_LESSON_PATH } from '../lib/publicLesson';
+import { PYTHAGORAS_GAME_PATH } from '../lib/pythagorasGame';
 interface Props { active?: ActiveNavKey | null; compactBrand?: boolean; }
 const active=Astro.props.active !== undefined ? Astro.props.active : resolveActiveNav(Astro.url.pathname);
-const onGame = normalizeNavPath(Astro.url.pathname) === PUBLIC_LESSON_PATH;
+const navPath = normalizeNavPath(Astro.url.pathname);
+const onGame = navPath === PUBLIC_LESSON_PATH;
+const onPythagorasGame = navPath === PYTHAGORAS_GAME_PATH;
 const worksheetsBand: WorksheetsNavBand | null =
   active === 'worksheets' ? resolveWorksheetsNavBand(Astro.url.pathname, Astro.url.searchParams) : null;
 ---
@@ -33,14 +36,16 @@ const worksheetsBand: WorksheetsNavBand | null =
           <div id="extras-menu" class="exact-nav-drop">
             <a aria-current={active === 'tools' ? 'page' : undefined} href="/math-tools">תוספים</a>
             <a class="exact-nav-game" aria-current={onGame ? 'page' : undefined} href={PUBLIC_LESSON_PATH}>משחק כפל מקוצר שנייה&nbsp;(beta)</a>
+            <a class="exact-nav-game" aria-current={onPythagorasGame ? 'page' : undefined} href={PYTHAGORAS_GAME_PATH}>משחק משפט פיתגורס</a>
           </div>
         </div>
         <a aria-current={active === 'highschool' ? 'page' : undefined} data-peek="hs" href="/high-school-math" style="padding:8px 12px;border-radius:999px;color:#22305a;" data-exact-hover="exact-hover-18">מתמטיקה לתיכון ↗</a>
         <a class="exact-nav-teachers" aria-current={active === 'teachers' ? 'page' : undefined} aria-label="למורים, חדש" data-peek="teachers" href="/teachers" style="padding:8px 12px;border-radius:999px;color:#22305a;" data-exact-hover="exact-hover-15">למורים<span class="exact-nav-new" aria-hidden="true">חדש</span></a>
+        <a class="exact-nav-search-mobile" aria-current={active === 'search' ? 'page' : undefined} href="/search" style="padding:8px 12px;border-radius:999px;color:#22305a;" data-exact-hover="exact-hover-13">חיפוש באתר</a>
         <a class="exact-nav-learn-mobile" aria-current={active === 'learning' ? 'page' : undefined} data-peek="learn" href="/learning.html" style="padding:8px 12px;border-radius:999px;color:#22305a;font-weight:700;" data-exact-hover="exact-hover-13">הלמידה שלי</a>
       </nav>
       <a class="exact-header__learn" aria-current={active === 'learning' ? 'page' : undefined} data-peek="learn" href="/learning.html" style="display:flex;align-items:center;gap:8px;padding:9px 18px;background:#fff;border:2px solid #22305a;border-radius:18px 6px 20px 8px / 8px 20px 6px 18px;box-shadow:3px 3px 0 #22305a;color:#22305a;font-weight:700;font-size:15px;" data-exact-hover="exact-hover-19">הלמידה שלי</a>
-      <span data-basad style="font-size:12px;color:#5a6588;">בס״ד</span>
+      <span style="font-size:12px;color:#5a6588;">בס״ד</span>
     </div>
   </header>
 

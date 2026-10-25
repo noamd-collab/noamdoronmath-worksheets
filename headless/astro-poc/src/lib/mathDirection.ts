@@ -21,15 +21,19 @@ function isCore(ch: string): boolean {
   return '−+×÷=≠<>≤≥±√∞%*'.includes(ch);
 }
 
-/**
- * Symbols that may sit inside a math run (parentheses, en dash, …).
- * The colon and the em dash are not here. A colon joins a run only as
- * division (see mathSpanEnd). An em dash is Hebrew punctuation, so it stays
- * outside the isolate with the label colon.
- */
+/** Symbols that may sit inside a math run (parentheses, degree, dashes, …). */
 function isMathSymbol(ch: string): boolean {
   if (isCore(ch)) return true;
-  return '()[]{}|∥⊥∠^/~·∙′″⁄–+⟨⟩¦'.includes(ch) || ch === '-';
+  return '()[]{}|∥⊥∠^/~·∙′″°⁄–—:+'.includes(ch) || ch === '-';
+}
+
+/** Symbols that may open a run (a run never starts with ":" or a dash used as punctuation). */
+const OPENERS = new Set(['(', '[', '{', '|', '∠', '√', '−', '-', '+', '±', '~']);
+/** Symbols that may close a run (a run never ends with ":" or a dash). */
+const CLOSERS = new Set([')', ']', '}', '|', '°', '′', '″', '%', '!']);
+
+function isHebrewLetter(ch: string | undefined): boolean {
+  return !!ch && ch >= '\u05D0' && ch <= '\u05EA';
 }
 
 function isGlue(ch: string): boolean {
@@ -47,7 +51,20 @@ function isDecimalPoint(text: string, i: number): boolean {
 }
 
 function isMathAt(text: string, i: number): boolean {
+  // "ל-180°", "ב-40" — a hyphen after a Hebrew prefix letter is a maqaf, not a minus.
+  if (text[i] === '-' && isHebrewLetter(text[i - 1])) return false;
   return isMathSymbol(text[i]!) || isDecimalPoint(text, i);
+}
+
+/** Shrink [start, end) so the run starts and ends on core math, not on ":" or a dash. */
+function trimRun(text: string, start: number, end: number): [number, number] {
+  let a = start;
+  let b = end;
+  const edge = (ch: string, allowed: Set<string>) => isCore(ch) || allowed.has(ch) || isGlue(ch);
+  while (a < b && !edge(text[a]!, OPENERS)) a += 1;
+  while (a < b && isGlue(text[a]!)) a += 1;
+  while (b > a && (!edge(text[b - 1]!, CLOSERS) || isGlue(text[b - 1]!))) b -= 1;
+  return [a, b];
 }
 
 /**
@@ -74,20 +91,16 @@ export function isolateMathRuns(input: string): string {
       continue;
     }
     const end = mathSpanEnd(text, i);
-    const slice = text.slice(i, end);
-    if ([...slice].some(isCore)) out += LRI + slice + PDI;
-    else out += slice;
+    const [a, b] = trimRun(text, i, end);
+    const slice = text.slice(a, b);
+    if (slice && [...slice].some(isCore)) out += text.slice(i, a) + LRI + slice + PDI + text.slice(b, end);
+    else out += text.slice(i, end);
     i = end;
   }
   return out;
 }
 
-/**
- * End index (exclusive) of the math span that starts at `start`.
- * A colon stays inside only as division: tight `(180−40):2` or spaced
- * `84 : 6`. A colon glued to the run and followed by a space is a label
- * (`1,512: 56 × 7`), so the run ends before it.
- */
+/** End index (exclusive) of the math span that starts at `start`. */
 function mathSpanEnd(text: string, start: number): number {
   let j = start;
   while (j < text.length) {
@@ -95,21 +108,9 @@ function mathSpanEnd(text: string, start: number): number {
       j += 1;
       continue;
     }
-    if (text[j] === ':' && j > start && j + 1 < text.length && isMathAt(text, j + 1)) {
-      j += 1;
-      continue;
-    }
     if (isGlue(text[j]!)) {
       let k = j;
       while (k < text.length && isGlue(text[k]!)) k += 1;
-      if (text[k] === ':') {
-        let m = k + 1;
-        while (m < text.length && isGlue(text[m]!)) m += 1;
-        if (m < text.length && isMathAt(text, m)) {
-          j = m;
-          continue;
-        }
-      }
       if (k < text.length && isMathAt(text, k)) {
         j = k;
         continue;
