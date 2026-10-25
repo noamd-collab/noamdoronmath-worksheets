@@ -247,12 +247,12 @@ describe('teacher catalog picker', () => {
       fromPicker.map((sheet) => [sheet.grade, sheet.topicId, sheet.level, sheet.pdfId]),
       expectedPicker.map((sheet) => [sheet.grade, sheet.topicId, sheet.level, sheet.pdfId])
     );
-    assert.deepEqual(index.grades.map((grade) => grade.grade), [1, 2, 3, 4, 5, 6, 7, 8, 9]);
+    assert.deepEqual(index.grades.map((grade: { grade: number }) => grade.grade), [1, 2, 3, 4, 5, 6, 7, 8, 9]);
     for (const grade of [1, 2, 3, 4, 5, 6]) {
-      assert.equal(index.grades.find((item) => item.grade === grade).band, 'elementary');
+      assert.equal(index.grades.find((item: { grade: number; band: string }) => item.grade === grade).band, 'elementary');
     }
     for (const grade of [7, 8, 9]) {
-      assert.equal(index.grades.find((item) => item.grade === grade).band, 'middle');
+      assert.equal(index.grades.find((item: { grade: number; band: string }) => item.grade === grade).band, 'middle');
     }
     for (const sheet of fromPicker) {
       if (sheet.grade <= 6) assert.equal(sheet.mode, 'sheet');

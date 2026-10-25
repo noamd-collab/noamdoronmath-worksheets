@@ -51,9 +51,9 @@ describe('triangle angle-sum vertex descent film', () => {
   it('shows angles and a live sum that add to exactly 180 at every 0.01s', () => {
     const DURATION = 20;
     const G = { ax: 128, bx: 1608, cx: 708, baseY: 442, startH: 420, endH: 0.122 };
-    const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
-    const smooth = (x) => 0.5 - 0.5 * Math.cos(Math.PI * clamp(x, 0, 1));
-    function mathAt(t) {
+    const clamp = (x: number, a: number, b: number) => Math.max(a, Math.min(b, x));
+    const smooth = (x: number) => 0.5 - 0.5 * Math.cos(Math.PI * clamp(x, 0, 1));
+    function mathAt(t: number) {
       t = clamp(t, 0, DURATION);
       let h;
       if (t < 2.5) h = G.startH;

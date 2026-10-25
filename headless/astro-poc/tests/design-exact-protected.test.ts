@@ -32,9 +32,9 @@ const read = (file: string) => readFileSync(join(root, file), 'utf8');
 const protectedFiles: Record<string, string> = {
   // Optional server secrets QWEN_API_KEY and NOAM_RECAPTCHA_SECRET_KEY were
   // added so the headless Noam AI route can read Wix Secrets Manager.
-  // Adapter, output, and integrations are unchanged. The other two Astro
-  // configs (preview, open07-verify) are not in this fence.
-  'astro.config.mjs': 'c63c0e1646e6198757b32ca085cda16091a3168adf0017ce9e3ce74b91b8f451',
+  // wix({ robots: false }): Wix's injected /robots.txt was replacing ours and
+  // warning at build. Reviewed for the cut-over; ConceptLoop is untouched.
+  'astro.config.mjs': 'e761aaf9985f3041850fb86e7e1ecdfdcc82f6dd9c6384f6034c41e588bae9d2',
   // G9 PDF v2, G8 PDF v2 (two c2 levels), and G7 PDF v2.
   // Packages-120: replaced student PDF ids and added G9-T46 (דלתון) in the geometry group.
   'src/data/catalog.v1.json': '4c5ccc34149a798f47c4f261744f132b36d7ff083dc4d0052c81a53219639fb6',
@@ -46,10 +46,12 @@ const protectedFiles: Record<string, string> = {
   'src/components/ConceptLoop.astro': 'd0b71bb4153302694c5ba797bce046d7290999c9e923ab4663c60cb58cb54246',
   // HeroLoop.astro is the homepage shell (which loops are emitted). The engine
   // above stays byte-identical; the home hero may lazy-load existing loops.
-  'src/components/TriangleAreaExplorer.astro': '9f68cbd1c15d95be86bdccd58ef6bed0c51d967a7f00731744a34d03524068f9',
+  // One readout line only: S = (a · h) : 2 school notation, PR #40 via PR #41.
+  'src/components/TriangleAreaExplorer.astro': 'b2760424b5735dcf4340e5fe95aa306d19e2dd7043e841c5d12092c0fa6a01b6',
   'src/lib/homePage.ts': '26a884245860716a5b6dd3aa6189c9d07fcd99e21dc50fca8cf70116a3ba67fb',
   'src/data/home-page.json': 'af14191d863d623cfb95e65f28ca258663d4b8be01a1ef07d520c8b1e47ff73b',
-  'public/learning.html': 'ced06f94814182e633bc9b356a8262ecebd14513c5b74c7e2515e4e09ee62524',
+  // Head favicon/manifest/theme-color tags (b7eab08, PR #34) + noam-site-companion.js (20d0ad0f, PR #82).
+  'public/learning.html': 'e0ba9a8743a1422e5d3bfeafdee4a4a01e1736422a4cb3777e962078f1c61ffb',
   'public/noam-learning-config.js': '90228359e65a99300b7d5017ddc58edce650b0b1a403a13b40c22608330f4ca7',
   // Lazy Supabase: guest learning no longer downloads the SDK. Google sign-in
   // and an existing session still load it, then recreate the engine.
@@ -72,8 +74,11 @@ describe('exact-design protected live-baseline boundaries', () => {
   it('preserves the shared head exactly, including SEO, canonical, fonts and robots', () => {
     const head = read('src/layouts/BaseLayout.astro').match(/<head(?:\s[^>]*)?>[\s\S]*?<\/head>/i)?.[0];
     assert.ok(head, 'BaseLayout must retain its head');
-    // Self-hosted Heebo + Secular One preloads replace the Google Fonts stylesheet.
-    assert.equal(sha256(head), '6426393d0bb12eba064470d7016f44154fd0d02ff5f2164a4a071069c32fa798');
+    // SEO cut-over (issue): one title/description/canonical, full OG+Twitter,
+    // and a wider Wix-duplicate strip. Reviewed on purpose; not a design tweak.
+    // SEO stage 4: title/description/OG/breadcrumb read approvedSeoProposal(seoPath)
+    // (only rows with approved: true). Reviewed on purpose; not a design tweak.
+    assert.equal(sha256(head), '97ad7597489241c3478c4e978ee84dc0d3ca081fc5488e06eb43aba838ae9435');
   });
 
   it('preserves viewer head and every existing script, including AI answers and storage', () => {

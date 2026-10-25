@@ -25,12 +25,16 @@ const frameSrc = `${src}?embed=1`;
 </div>
 
 <script>
-  function boot(root) {
-    const frame = root.querySelector('[data-cointerior-frame]');
-    if (!frame) return;
+  type CointeriorScene = { isPlaying?: () => boolean; pause: () => void };
+  type CointeriorWindow = Window & { mathScene?: CointeriorScene };
+
+  function boot(root: HTMLElement) {
+    const foundFrame = root.querySelector<HTMLIFrameElement>('[data-cointerior-frame]');
+    if (!foundFrame) return;
+    const frame: HTMLIFrameElement = foundFrame;
 
     function fit() {
-      let doc;
+      let doc: Document | null = null;
       try { doc = frame.contentDocument; } catch { return; }
       const main = doc?.querySelector('main');
       if (!main) return;
@@ -46,16 +50,17 @@ const frameSrc = `${src}?embed=1`;
     function holdStill() {
       if (!motionOff()) return;
       try {
-        const player = frame.contentWindow;
+        const player = frame.contentWindow as CointeriorWindow | null;
+        const inner = frame.contentDocument?.getElementById('film') as HTMLIFrameElement | null;
         const s = player?.mathScene
-          ?? frame.contentDocument?.getElementById('film')?.contentWindow?.mathScene;
+          ?? (inner?.contentWindow as CointeriorWindow | null)?.mathScene;
         if (s?.isPlaying?.()) s.pause();
       } catch { return; }
     }
 
     let watching = false;
     function onReady() {
-      let doc;
+      let doc: Document | null = null;
       try { doc = frame.contentDocument; } catch { return; }
       if (!doc?.querySelector('main')) return;
       fit();
@@ -76,7 +81,7 @@ const frameSrc = `${src}?embed=1`;
     });
   }
 
-  document.querySelectorAll('[data-cointerior-loop]').forEach(boot);
+  document.querySelectorAll<HTMLElement>('[data-cointerior-loop]').forEach(boot);
 </script>
 
 <style>

@@ -89,24 +89,28 @@ describe('landing loop coverage', () => {
   });
 
   it('powers-grade-7 gets the exponent loop, and existing films stay films', () => {
+    const loopVariantOf = (slug: string) => {
+      const loop = topicLandingLoop(loadTopicPage(slug));
+      return loop.kind === 'film' ? loop.marker : loop.variant;
+    };
     assert.deepEqual(topicLandingLoop(loadTopicPage('powers-grade-7')), {
       kind: 'css',
       variant: 'powers',
       marker: 'powers',
     });
     assert.equal(topicLandingLoop(loadTopicPage('pythagorean-theorem-grade-8')).kind, 'concept');
-    assert.equal(topicLandingLoop(loadTopicPage('pythagorean-theorem-grade-8')).variant, 'pythagoras');
-    assert.equal(topicLandingLoop(loadTopicPage('triangle-area-grade-7')).variant, 'triangle-area');
-    assert.equal(topicLandingLoop(loadTopicPage('square-root-grade-7')).variant, 'roots');
-    assert.equal(topicLandingLoop(loadTopicPage('exponent-rules-grade-9')).variant, 'exp-rules');
-    assert.equal(topicLandingLoop(loadTopicPage('multiplying-signed-numbers-grade-7')).variant, 'signed-mul');
+    assert.equal(loopVariantOf('pythagorean-theorem-grade-8'), 'pythagoras');
+    assert.equal(loopVariantOf('triangle-area-grade-7'), 'triangle-area');
+    assert.equal(loopVariantOf('square-root-grade-7'), 'roots');
+    assert.equal(loopVariantOf('exponent-rules-grade-9'), 'exp-rules');
+    assert.equal(loopVariantOf('multiplying-signed-numbers-grade-7'), 'signed-mul');
     assert.deepEqual(topicLandingLoop(loadTopicPage('parallel-lines-angles-grade-8')), {
       kind: 'film',
       marker: 'parallel-cointerior-angles',
       src: '/loops/parallel-cointerior-angles.html',
     });
-    assert.equal(topicLandingLoop(loadTopicPage('geometric-proof-grade-8')).variant, 'proof');
-    assert.equal(topicLandingLoop(loadTopicPage('transition-to-high-school-grade-9')).variant, 'quad-factor');
+    assert.equal(loopVariantOf('geometric-proof-grade-8'), 'proof');
+    assert.equal(loopVariantOf('transition-to-high-school-grade-9'), 'quad-factor');
     assert.equal(marketingLandingLoop('high-school-math'), 'parabola');
   });
 
