@@ -2079,6 +2079,9 @@ function answerBox(items, questionNumber, part) {
         if (!sameSheet(glyph)) return;
         const token = String(glyph.str || '').trim();
         if (!token || /^[()\[\]{}]$/.test(token)) return;
+        const gx = glyph.x || 0;
+        const gw = glyph.w || 0;
+        if (gx + gw < left - 4 || gx > right + 12) return;
         const gy = glyph.y || 0;
         if (gy <= label.y + 6 || gy > label.y + 22) return;
         if (prevLineY == null || gy < prevLineY) prevLineY = gy;
@@ -2091,8 +2094,8 @@ function answerBox(items, questionNumber, part) {
           && (glyph.x || 0) + (glyph.w || 0) > left - 4
           && (glyph.x || 0) < right + 4
         ));
-        const capTop = prevTall ? prevLineY - 6.0 : prevLineY - 2.2;
-        if (top >= capTop - 0.5 && capTop > label.y + 7) {
+        const capTop = prevTall ? prevLineY - 6.2 : prevLineY - 2.2;
+        if (top >= capTop - 0.5 && capTop > label.y + 5.5) {
           top = Math.min(top, capTop);
           tightTop = true;
         }
