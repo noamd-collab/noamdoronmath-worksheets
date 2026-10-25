@@ -65,6 +65,13 @@
       Math.max(0, options.networkRetryDelayMs) : 650;
     var configPromise = null;
     var scriptPromise = null;
+    var loadedHost = "";
+    var currentScript = null;
+    var verificationStage = "config";
+    var RECAPTCHA_HOSTS = [
+      "https://www.google.com/recaptcha/api.js?render=",
+      "https://www.recaptcha.net/recaptcha/api.js?render="
+    ];
 
     // The deadline covers response parsing too. It still rejects on browsers
     // without AbortController; an expired operation can never send an AI call.
@@ -120,115 +127,170 @@
       return configPromise;
     }
 
-    function loadRecaptcha(siteKey) {
-      if (options.loadRecaptcha) { return options.loadRecaptcha(siteKey); }
-      if (!scriptPromise) {
-        scriptPromise = new Promise(function (resolve, reject) {
-          if (!doc || !doc.head) { reject(makeError(VERIFY_MESSAGE, "BOT_CLIENT_UNAVAILABLE")); return; }
-          // Official Google hosts only. Fallback does not skip execute/token.
-          var hosts = [
-            "https://www.google.com/recaptcha/api.js?render=",
-            "https://www.recaptcha.net/recaptcha/api.js?render="
-          ];
-          var hostIndex = 0;
-          var script = null;
-          var finished = false;
-          var timer = setTimeout(function () {
-            cleanupScript();
-            fail();
-          }, verificationTimeout);
-          function cleanupScript() {
-            if (!script) { return; }
-            script.onload = null;
-            script.onerror = null;
-            if (script.parentNode) { script.parentNode.removeChild(script); }
-            script = null;
-          }
-          function fail() {
-            if (finished) { return; }
-            finished = true;
-            clearTimeout(timer);
-            cleanupScript();
-            reject(makeError(VERIFY_MESSAGE, "BOT_CLIENT_UNAVAILABLE"));
-          }
-          function succeed(api) {
-            if (finished) { return; }
-            finished = true;
-            clearTimeout(timer);
-            if (script) {
-              script.onload = null;
-              script.onerror = null;
-            }
-            resolve(api);
-          }
-          function finish(ok) {
-            if (finished) { return; }
-            // api.js can finish before Google's secondary bundle adds execute.
-            // Wait for ready before checking that API, under the same deadline.
-            if (ok && win.grecaptcha && typeof win.grecaptcha.ready === "function") {
-              succeed(win.grecaptcha);
-              return;
-            }
-            cleanupScript();
-            if (hostIndex < hosts.length - 1) {
-              hostIndex += 1;
-              loadNext();
-              return;
-            }
-            fail();
-          }
-          function loadNext() {
-            if (finished) { return; }
-            script = doc.createElement("script");
-            script.src = hosts[hostIndex] + encodeURIComponent(siteKey);
-            script.async = true;
-            script.onload = function () { finish(true); };
-            script.onerror = function () { finish(false); };
-            doc.head.appendChild(script);
-          }
-          loadNext();
-        }).catch(function (error) { scriptPromise = null; throw error; });
+    function clearLoadedRecaptcha() {
+      scriptPromise = null;
+      loadedHost = "";
+      if (currentScript) {
+        currentScript.onload = null;
+        currentScript.onerror = null;
+        if (currentScript.parentNode) { currentScript.parentNode.removeChild(currentScript); }
+        currentScript = null;
       }
+      try { delete win.grecaptcha; } catch (error) { win.grecaptcha = undefined; }
+    }
+
+    function canFallbackHost(error, state) {
+      if (state && state.expired) { return false; }
+      var code = error && error.code;
+      return code !== "NOT_ACTIVE" && code !== "BOT_CONFIG_UNAVAILABLE" &&
+        code !== "BOT_VERIFICATION_TIMEOUT" && code !== "BOT_ROUTE_UNSUPPORTED";
+    }
+
+    function hostBudgetMs() {
+      return Math.max(20, Math.floor(verificationTimeout / 2));
+    }
+
+    function withHostDeadline(promise, state) {
+      return new Promise(function (resolve, reject) {
+        var done = false;
+        var timer = setTimeout(function () {
+          if (done || (state && state.expired)) { return; }
+          done = true;
+          reject(makeError(VERIFY_MESSAGE, "BOT_CLIENT_UNAVAILABLE"));
+        }, hostBudgetMs());
+        promise.then(function (value) {
+          if (done) { return; }
+          done = true;
+          clearTimeout(timer);
+          resolve(value);
+        }, function (error) {
+          if (done) { return; }
+          done = true;
+          clearTimeout(timer);
+          reject(error);
+        });
+      });
+    }
+
+    function loadRecaptcha(siteKey, hostPrefix) {
+      if (options.loadRecaptcha) { return options.loadRecaptcha(siteKey); }
+      hostPrefix = hostPrefix || RECAPTCHA_HOSTS[0];
+      if (scriptPromise && loadedHost === hostPrefix) { return scriptPromise; }
+      if (scriptPromise && loadedHost !== hostPrefix) { clearLoadedRecaptcha(); }
+      loadedHost = hostPrefix;
+      scriptPromise = new Promise(function (resolve, reject) {
+        if (!doc || !doc.head) { reject(makeError(VERIFY_MESSAGE, "BOT_CLIENT_UNAVAILABLE")); return; }
+        var finished = false;
+        var timer = setTimeout(function () {
+          if (finished) { return; }
+          finished = true;
+          if (currentScript) {
+            currentScript.onload = null;
+            currentScript.onerror = null;
+            if (currentScript.parentNode) { currentScript.parentNode.removeChild(currentScript); }
+            currentScript = null;
+          }
+          reject(makeError(VERIFY_MESSAGE, "BOT_CLIENT_UNAVAILABLE"));
+        }, hostBudgetMs());
+        function finish(ok) {
+          if (finished) { return; }
+          finished = true;
+          clearTimeout(timer);
+          if (currentScript) {
+            currentScript.onload = null;
+            currentScript.onerror = null;
+          }
+          // api.js can finish before Google's secondary bundle adds execute.
+          if (ok && win.grecaptcha && typeof win.grecaptcha.ready === "function") {
+            resolve(win.grecaptcha);
+            return;
+          }
+          if (currentScript && currentScript.parentNode) { currentScript.parentNode.removeChild(currentScript); }
+          currentScript = null;
+          reject(makeError(VERIFY_MESSAGE, "BOT_CLIENT_UNAVAILABLE"));
+        }
+        currentScript = doc.createElement("script");
+        currentScript.src = hostPrefix + encodeURIComponent(siteKey);
+        currentScript.async = true;
+        currentScript.onload = function () { finish(true); };
+        currentScript.onerror = function () { finish(false); };
+        doc.head.appendChild(currentScript);
+      }).catch(function (error) {
+        if (loadedHost === hostPrefix) {
+          scriptPromise = null;
+          loadedHost = "";
+        }
+        throw error;
+      });
       return scriptPromise;
     }
 
+    function executeRecaptcha(recaptcha, siteKey, action, state) {
+      verificationStage = "ready";
+      return new Promise(function (resolve, reject) {
+        recaptcha.ready(function () {
+          Promise.resolve().then(function () {
+            checkActive(state);
+            if (typeof recaptcha.execute !== "function") {
+              throw makeError(VERIFY_MESSAGE, "BOT_CLIENT_UNAVAILABLE");
+            }
+            // Send only the public site key and fixed action to Google.
+            // Execute once per AI request; tokens are never cached.
+            verificationStage = "execute";
+            return recaptcha.execute(siteKey, { action: action });
+          }).then(resolve, reject);
+        });
+      });
+    }
+
+    function tokenFromHost(siteKey, action, hostPrefix, state) {
+      verificationStage = "script";
+      return loadRecaptcha(siteKey, hostPrefix).then(function (recaptcha) {
+        checkActive(state);
+        return executeRecaptcha(recaptcha, siteKey, action, state);
+      }).then(function (token) {
+        checkActive(state);
+        verificationStage = "token";
+        if (typeof token !== "string" || !token || token.length > 8192) {
+          throw makeError(VERIFY_MESSAGE, "BOT_VERIFICATION_FAILED");
+        }
+        return token;
+      });
+    }
+
     function getVerification(action) {
-      var stage = "config";
+      verificationStage = "config";
       return timed(function (state) {
         return getConfig(state).then(function (config) {
           checkActive(state);
-          stage = "script";
-          return Promise.resolve().then(function () { return loadRecaptcha(config.siteKey); })
-            .then(function (recaptcha) {
-              checkActive(state);
-              stage = "ready";
-              return new Promise(function (resolve, reject) {
-                recaptcha.ready(function () {
-                  Promise.resolve().then(function () {
-                    checkActive(state);
-                    if (typeof recaptcha.execute !== "function") {
-                      throw makeError(VERIFY_MESSAGE, "BOT_CLIENT_UNAVAILABLE");
-                    }
-                    // Send only the public site key and fixed action to Google.
-                    // Execute once per AI request; tokens are never cached.
-                    stage = "execute";
-                    return recaptcha.execute(config.siteKey, { action: action });
-                  }).then(resolve, reject);
-                });
+          var hostIndex = 0;
+          function attemptHost() {
+            checkActive(state);
+            return withHostDeadline(
+              tokenFromHost(config.siteKey, action, RECAPTCHA_HOSTS[hostIndex], state),
+              state
+            ).catch(function (error) {
+                if (!canFallbackHost(error, state) || hostIndex >= RECAPTCHA_HOSTS.length - 1) {
+                  throw error;
+                }
+                hostIndex += 1;
+                clearLoadedRecaptcha();
+                return attemptHost();
               });
-            });
-        }).then(function (token) {
-          checkActive(state);
-          stage = "token";
-          if (typeof token !== "string" || !token || token.length > 8192) {
-            throw makeError(VERIFY_MESSAGE, "BOT_VERIFICATION_FAILED");
           }
-          return { provider: "recaptcha-v3", token: token };
+          return attemptHost().then(function (token) {
+            return { provider: "recaptcha-v3", token: token };
+          });
         });
       }, verificationTimeout, "BOT_VERIFICATION_TIMEOUT", VERIFY_MESSAGE).catch(function (error) {
         // A fetch implementation may not honor abort. Allow a later user action
         // to fetch config again instead of retaining an unresolved promise.
-        if (error && error.code === "BOT_VERIFICATION_TIMEOUT") { configPromise = null; }
+        if (error && (error.code === "BOT_VERIFICATION_TIMEOUT" ||
+            error.code === "BOT_CLIENT_UNAVAILABLE" ||
+            error.code === "BOT_VERIFICATION_FAILED")) {
+          configPromise = error.code === "BOT_VERIFICATION_TIMEOUT" ? null : configPromise;
+          clearLoadedRecaptcha();
+        }
         // Trace where verification stopped without logging Google's exception,
         // the public key, the response token, or any worksheet/chat content.
         if (win.console && typeof win.console.warn === "function") {
@@ -237,11 +299,11 @@
             "BOT_VERIFICATION_TIMEOUT", "BOT_VERIFICATION_FAILED", "NOT_ACTIVE"];
           win.console.warn("NOAM_VERIFICATION_FAILED", JSON.stringify({
             action: action,
-            stage: stage,
+            stage: verificationStage,
             code: knownCodes.indexOf(code) >= 0 ? code : "BOT_VERIFICATION_FAILED"
           }));
         }
-        if (isProtectionError(error)) { throw error; }
+        if (isProtectionError(error) || (error && error.code === "NOT_ACTIVE")) { throw error; }
         throw makeError(VERIFY_MESSAGE, "BOT_VERIFICATION_FAILED");
       });
     }

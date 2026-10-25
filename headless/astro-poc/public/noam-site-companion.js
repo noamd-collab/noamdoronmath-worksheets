@@ -1140,7 +1140,7 @@
     paintChrome(true);
   });
   function botClientSrc() {
-    var versioned = "noam-bot-client.js?v=20260921-diagnostics1";
+    var versioned = "noam-bot-client.js?v=20261025-host-execute-fallback";
     var nodes = document.getElementsByTagName("script");
     for (var i = 0; i < nodes.length; i++) {
       var src = nodes[i].getAttribute("src") || "";

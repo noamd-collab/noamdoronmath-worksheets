@@ -19,7 +19,17 @@ function harness(file, options = {}) {
   const requests = [], scripts = [], warnings = [], actions = [];
   const recaptcha = options.recaptcha || {
     ready(callback) { callback(); },
-    async execute(_key, details) { actions.push(details.action); return "test-verification-token"; }
+    async execute(_key, details) {
+      const last = scripts[scripts.length - 1];
+      if (options.executeFailHost && last && String(last.src || "").includes(options.executeFailHost)) {
+        throw options.executeError || new Error("execute blocked");
+      }
+      if (options.emptyTokenHost && last && String(last.src || "").includes(options.emptyTokenHost)) {
+        return "";
+      }
+      actions.push(details.action);
+      return "test-verification-token";
+    }
   };
   const win = { console: { warn(...args) { warnings.push(args); } } };
   const document = {
@@ -32,7 +42,10 @@ function harness(file, options = {}) {
           if (options.failHost && String(script.src || "").includes(options.failHost)) {
             script.onerror(new Error("host blocked"));
           } else if (options.scriptError) { script.onerror(options.scriptError); }
-          else { win.grecaptcha = recaptcha; script.onload(); }
+          else {
+            win.grecaptcha = recaptcha;
+            script.onload();
+          }
         });
       },
       removeChild(script) { script.parentNode = null; }
@@ -146,8 +159,37 @@ for (const file of ["noam-bot-client.js", "headless/astro-poc/public/noam-bot-cl
     } });
     await assert.rejects(h.client.postJson(`${api}/noamImageSolve`, { question: privateText }));
     assertDiagnostic(h, "execute", "BOT_VERIFICATION_FAILED");
+    assert.equal(h.scripts.length, 2);
     assert.equal(JSON.stringify(h.warnings).includes(privateText), false);
     assert.equal(JSON.stringify(h.warnings).includes(config.siteKey), false);
+  });
+
+  test(`${file}: execute failure on google.com falls back to recaptcha.net without skipping the token`, async () => {
+    const h = harness(file, { executeFailHost: "google.com/recaptcha" });
+    assert.equal((await h.client.postJson(`${api}/noamImageSolve`, { exerciseId: "synthetic-exercise" })).answer, "רמז");
+    assert.equal(h.scripts.length, 2);
+    assert.equal(h.scripts[0].src, "https://www.google.com/recaptcha/api.js?render=public-test-key");
+    assert.equal(h.scripts[1].src, "https://www.recaptcha.net/recaptcha/api.js?render=public-test-key");
+    assert.equal(JSON.parse(h.modelCalls()[0].request.body).botVerification.token, "test-verification-token");
+    assert.deepEqual(h.warnings, []);
+  });
+
+  test(`${file}: a later request reloads after execute failed on both hosts`, async () => {
+    let pass = 0;
+    const h = harness(file, { recaptcha: {
+      ready(callback) { callback(); },
+      async execute() {
+        pass += 1;
+        if (pass <= 2) { throw new Error("first pass blocked"); }
+        return "retry-token";
+      }
+    } });
+    await assert.rejects(h.client.postJson(`${api}/noamImageSolve`, {}), { code: "BOT_VERIFICATION_FAILED" });
+    assert.equal(h.modelCalls().length, 0);
+    assert.equal((await h.client.postJson(`${api}/noamImageSolve`, { exerciseId: "synthetic-exercise" })).answer, "רמז");
+    assert.equal(h.scripts.length, 3);
+    assert.equal(h.scripts[2].src, "https://www.google.com/recaptcha/api.js?render=public-test-key");
+    assert.equal(JSON.parse(h.modelCalls()[0].request.body).botVerification.token, "retry-token");
   });
 
   test(`${file}: an empty token is rejected before any model call`, async () => {
@@ -157,6 +199,7 @@ for (const file of ["noam-bot-client.js", "headless/astro-poc/public/noam-bot-cl
     } });
     await assert.rejects(h.client.postJson(`${api}/noamImageSolve`, {}), { code: "BOT_VERIFICATION_FAILED" });
     assertDiagnostic(h, "token", "BOT_VERIFICATION_FAILED");
+    assert.equal(h.scripts.length, 2);
   });
 
   test(`${file}: server denial is still enforced once after successful Google verification`, async () => {
