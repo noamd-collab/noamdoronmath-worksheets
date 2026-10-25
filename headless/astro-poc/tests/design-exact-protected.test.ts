@@ -56,7 +56,9 @@ const protectedFiles: Record<string, string> = {
   // at its region and model without another code change.
   // OTTERLY_API_KEY was added for the AI-crawler log webhook. Adapter, output,
   // and integrations are unchanged. The other Astro configs are not in this fence.
-  'astro.config.mjs': 'c4c09d4d24b65fb25f956c91e0eeaf3407afd499dba34713e074f41c24203b92',
+  // PR223-on-233: wix({ robots: false }) so Wix does not overwrite
+  // src/pages/robots.txt.ts. Explicit SEO cut-over, not a silent regen.
+  'astro.config.mjs': 'c002156d52b10040396ba30e6fc01106bf866fb639a204eddc13c79fadcb2fab',
   // G9 PDF v2, G8 PDF v2 (two c2 levels), and G7 PDF v2.
   // Packages-120: replaced student PDF ids and added G9-T46 (דלתון) in the geometry group.
   // 2026-10-18: Noam-approved text-only wording migration (סינתזה → סיכום/שילוב); IDs, URLs, levels, and PDF mappings remain unchanged.
@@ -103,7 +105,10 @@ describe('exact-design protected live-baseline boundaries', () => {
     const head = read('src/layouts/BaseLayout.astro').match(/<head(?:\s[^>]*)?>[\s\S]*?<\/head>/i)?.[0];
     assert.ok(head, 'BaseLayout must retain its head');
     // Self-hosted Heebo + Secular One preloads replace the Google Fonts stylesheet.
-    assert.equal(sha256(head), '6426393d0bb12eba064470d7016f44154fd0d02ff5f2164a4a071069c32fa798');
+    // PR223-on-233: title/description resolve through approvedSeoProposal.
+    // Head tags, fonts, canonical, and Wix-dupe strip stay in place.
+    // Explicit SEO cut-over, not a silent regen.
+    assert.equal(sha256(head), '97ad7597489241c3478c4e978ee84dc0d3ca081fc5488e06eb43aba838ae9435');
   });
 
   it('preserves viewer head and every existing script, including AI answers and storage', () => {

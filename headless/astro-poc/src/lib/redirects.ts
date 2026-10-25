@@ -37,6 +37,14 @@ export function redirectTargetFor(path: string): string | undefined {
   return byFrom.get(path);
 }
 
+/** Keep a hash in the JSON target behind the query string. */
+function withSearchAndHash(target: string, search: string): string {
+  const hashAt = target.indexOf('#');
+  const path = hashAt === -1 ? target : target.slice(0, hashAt);
+  const hash = hashAt === -1 ? '' : target.slice(hashAt);
+  return encodeURI(path) + (search || '') + hash;
+}
+
 /** Returns the absolute-path redirect target (with the original query), or null. */
 export function resolveRedirect(pathname: string, search = ''): string | null {
   let path: string;
@@ -49,5 +57,5 @@ export function resolveRedirect(pathname: string, search = ''): string | null {
   const bare = path.length > 1 && path.endsWith('/') ? path.replace(/\/+$/, '') || '/' : path;
   const target = byFrom.get(bare) ?? (bare !== path ? bare : null);
   if (!target || target === path) return null;
-  return encodeURI(target) + (search || '');
+  return withSearchAndHash(target, search);
 }

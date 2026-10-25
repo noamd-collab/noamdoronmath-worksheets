@@ -7,7 +7,7 @@ import { dirname, join } from 'node:path';
 import { describe, it } from 'node:test';
 import { fileURLToPath } from 'node:url';
 import { loadAllTopicPages, loadTopicPage } from '../src/lib/topicPages.ts';
-import { classifyTopicFamily } from '../src/lib/topicFamilies.ts';
+import { classifyTopicFamily, nextGradeRelatedTopics } from '../src/lib/topicFamilies.ts';
 import { resolveSiteHrefString } from '../src/lib/resolveSiteHref.ts';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -72,6 +72,13 @@ describe('topic family classification', () => {
     assert.equal(geometry.relatedTopics[0].path, '/grade-9');
     assert.equal(graphs.relatedTopics[0].path, '/grade-9');
     assert.equal(loadTopicPage('transition-to-high-school-grade-9').relatedTopics[0].path, '/grade-9');
+  });
+
+  it('links the same family in the next grade and stops after grade 9', () => {
+    const next = nextGradeRelatedTopics('triangle-area-grade-7', 7);
+    assert.equal(next[0]?.path, '/grade-8');
+    assert.ok(next.some((row) => row.path === '/triangle-congruence-grade-8'));
+    assert.deepEqual(nextGradeRelatedTopics('/quadratic-function-grade-9', 9), []);
   });
 
   it('difference-of-squares is algebra, not the square geometry set', () => {
