@@ -16,6 +16,11 @@ import { buildGradeLoopPool, gradeLoopCopy } from '../src/lib/gradeLoopPools';
 import { cssLoopIdea, topicLandingLoop } from '../src/lib/landingLoops';
 import { PK } from '../src/lib/linkPeek';
 import { PUBLIC_LESSON_DESCRIPTION, PUBLIC_LESSON_PATH, PUBLIC_LESSON_TITLE } from '../src/lib/publicLesson';
+import {
+  PYTHAGORAS_GAME_DESCRIPTION,
+  PYTHAGORAS_GAME_PATH,
+  PYTHAGORAS_GAME_TITLE,
+} from '../src/lib/pythagorasGame';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const repo = join(root, '..', '..');
@@ -179,6 +184,7 @@ function main() {
   const teachersHtml = readFileSync(join(root, 'public/teachers/index.html'), 'utf8');
   const learningHtml = readFileSync(join(root, 'public/learning.html'), 'utf8');
   const lessonHtml = readFileSync(join(root, 'src/public-lesson/lesson.html'), 'utf8');
+  const pythagorasHtml = readFileSync(join(root, 'src/games/eliyahu-pythagoras.html'), 'utf8');
   const viewerHow = [
     mustInclude(viewerHtml, 'הורדה / הדפסה'),
     mustInclude(viewerHtml, 'כלי PDF'),
@@ -429,6 +435,17 @@ function main() {
     href: PUBLIC_LESSON_PATH,
     contains: [PUBLIC_LESSON_DESCRIPTION, textOf(lessonHtml, /<title>([^<]+)<\/title>/)].join(' '),
     how: mustInclude(lessonHtml, 'שלב 1 מתוך 7'),
+  });
+  push(records, {
+    id: 'game-pythagoras',
+    type: 'game',
+    title: PYTHAGORAS_GAME_TITLE,
+    href: PYTHAGORAS_GAME_PATH,
+    grade: 8,
+    gradeLabel: 'כיתה ח׳',
+    audience: 'כיתה ח׳ · כיתה ט׳',
+    contains: [PYTHAGORAS_GAME_DESCRIPTION, textOf(pythagorasHtml, /<title>([^<]+)<\/title>/)].join(' '),
+    how: mustInclude(pythagorasHtml, 'שלב 1 מתוך 9'),
   });
   if (home.whatsapp && home.whatsapp.ctaHref) {
     push(records, {

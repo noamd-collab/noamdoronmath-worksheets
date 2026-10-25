@@ -163,6 +163,11 @@
       "path": "/square-grade-9",
       "label": "ריבוע",
       "productionHref": "https://www.noamdoronmath.co.il/square-grade-9"
+    },
+    {
+      "path": "/games/eliyahu-pythagoras",
+      "label": "משחק משפט פיתגורס עם אליהו",
+      "productionHref": "https://www.noamdoronmath.co.il/games/eliyahu-pythagoras"
     }
   ],
   "catalogCta": {

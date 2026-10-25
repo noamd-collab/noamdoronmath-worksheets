@@ -1,0 +1,144 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import {
+  PYTHAGORAS_GAME_DESCRIPTION,
+  PYTHAGORAS_GAME_H1,
+  PYTHAGORAS_GAME_PLAY_PATH,
+  PYTHAGORAS_GAME_TITLE,
+} from '../../../lib/pythagorasGame';
+
+export const prerender = false;
+---
+<BaseLayout
+  title={PYTHAGORAS_GAME_TITLE}
+  description={PYTHAGORAS_GAME_DESCRIPTION}
+  activeNav="tools"
+  skipHref="#eliyahu-game"
+>
+  <main id="eliyahu-game" class="eliyahu-game">
+    <h1>{PYTHAGORAS_GAME_H1}</h1>
+    <p class="eliyahu-game__links">
+      <a href="/pythagorean-theorem-grade-8">משפט פיתגורס לכיתה ח׳</a>
+      <span aria-hidden="true"> · </span>
+      <a href="/pythagorean-theorem-grade-9">משפט פיתגורס לכיתה ט׳</a>
+    </p>
+    <div class="eliyahu-game__frame">
+      <iframe title={PYTHAGORAS_GAME_H1} src={PYTHAGORAS_GAME_PLAY_PATH}></iframe>
+    </div>
+    <div class="eliyahu-game__dock" data-eliyahu-dock></div>
+  </main>
+</BaseLayout>
+<style>
+  .eliyahu-game {
+    max-width: 1200px;
+    margin-inline: auto;
+    padding: 12px 16px 0;
+    color: #22305a;
+  }
+  .eliyahu-game h1 {
+    margin: 0 0 6px;
+    font-family: 'Secular One', sans-serif;
+    font-weight: 400;
+    font-size: clamp(26px, 4vw, 40px);
+    line-height: 1.2;
+  }
+  .eliyahu-game__links {
+    margin: 0 0 10px;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .eliyahu-game__links a {
+    color: #1e605e;
+    font-weight: 700;
+  }
+  .eliyahu-game__links a:focus-visible {
+    outline: 3px solid #2a7c7a;
+    outline-offset: 3px;
+  }
+  .eliyahu-game__frame {
+    min-height: 320px;
+  }
+  .eliyahu-game__frame iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 2px solid #22305a;
+    border-radius: 18px 6px 20px 8px / 8px 20px 6px 18px;
+    background: #fbfaf5;
+  }
+  .eliyahu-game__dock {
+    position: relative;
+    height: calc(76px + env(safe-area-inset-bottom, 0px));
+  }
+  /* Closed launchers live in the dock, under the iframe, and scroll with it. */
+  :global(html:not(.noam-ai-engaged) .eliyahu-game__dock #noam-accessibility) {
+    position: absolute !important;
+    left: 8px !important;
+    right: auto !important;
+    bottom: 8px !important;
+    top: auto !important;
+  }
+  :global(html:not(.noam-ai-engaged) .eliyahu-game__dock #noam-site-companion) {
+    position: absolute !important;
+    right: 8px !important;
+    left: auto !important;
+    bottom: 8px !important;
+    top: auto !important;
+  }
+  @media (max-width: 800px) {
+    .eliyahu-game { padding: 10px 12px 0; }
+  }
+</style>
+<script is:inline>
+  function fitEliyahuGame() {
+    var frame = document.querySelector('.eliyahu-game__frame');
+    var dock = document.querySelector('[data-eliyahu-dock]');
+    var iframe = frame && frame.querySelector('iframe');
+    if (!frame || !dock) return;
+    var dockH = dock.getBoundingClientRect().height || 76;
+    var top = frame.getBoundingClientRect().top;
+    if (top < 0) top = 0;
+    var viewportH = Math.max(320, Math.round(window.innerHeight - top - dockH));
+    var h = viewportH;
+    // On a phone the stacked card is taller than the leftover viewport.
+    // Grow the frame to the game document so the page scrolls and the
+    // launcher dock stays under the card instead of clipping it.
+    if (window.innerWidth <= 800 && iframe && iframe.contentDocument) {
+      var card = iframe.contentDocument.querySelector('#card');
+      var inner = card
+        ? Math.ceil(card.getBoundingClientRect().bottom) + 24
+        : iframe.contentDocument.documentElement.scrollHeight;
+      if (inner > viewportH && inner < 1400) h = inner;
+    }
+    frame.style.height = h + 'px';
+  }
+  function parkEliyahuLaunchers() {
+    var dock = document.querySelector('[data-eliyahu-dock]');
+    if (!dock) return;
+    var a11y = document.getElementById('noam-accessibility');
+    var buddy = document.getElementById('noam-site-companion');
+    if (a11y && a11y.parentElement !== dock) dock.appendChild(a11y);
+    if (buddy && buddy.parentElement !== dock) dock.appendChild(buddy);
+    fitEliyahuGame();
+  }
+  parkEliyahuLaunchers();
+  fitEliyahuGame();
+  window.addEventListener('resize', fitEliyahuGame);
+  window.addEventListener('load', function () {
+    parkEliyahuLaunchers();
+    fitEliyahuGame();
+  });
+  var gameFrame = document.querySelector('.eliyahu-game__frame iframe');
+  if (gameFrame) {
+    gameFrame.addEventListener('load', function () {
+      fitEliyahuGame();
+      setTimeout(fitEliyahuGame, 200);
+      setTimeout(fitEliyahuGame, 800);
+    });
+  }
+  if (typeof MutationObserver === 'function') {
+    var mo = new MutationObserver(parkEliyahuLaunchers);
+    mo.observe(document.body, { childList: true });
+    setTimeout(function () { mo.disconnect(); }, 4000);
+  }
+</script>

@@ -134,7 +134,7 @@ describe('Noam AI site manual', () => {
     assert.equal(kite && kite.topic, 'דלתון');
     assert.equal(guide.counts.hub, 9);
     assert.equal(guide.counts.blog, 68);
-    assert.equal(guide.counts.game, 1);
+    assert.equal(guide.counts.game, 2);
     assert.ok(guide.counts.page >= 10);
     assert.equal(typeof guide.manifestMatches, 'number');
     const level = factoringLevelA();
@@ -160,6 +160,7 @@ describe('Noam AI site manual', () => {
     assert.match(teachers.how, /כיתה, נושא ומטרת השיעור/);
     assert.match(teachers.audience, /מרחב למורה/);
     assert.ok(guide.records.some((row) => row.type === 'game' && row.href === '/games/kefel-mekutsar-2'));
+    assert.ok(guide.records.some((row) => row.type === 'game' && row.href === '/games/eliyahu-pythagoras'));
   });
 
   it('fails when the committed guide differs from a fresh build', () => {
