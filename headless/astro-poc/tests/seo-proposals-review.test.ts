@@ -1,5 +1,5 @@
 /**
- * Regression tests for the PR 46 content review of the SEO proposals.
+ * Regression tests for the PR 46 content review of the SEO proposals (390 rows).
  * Each block maps to a review finding or one of the seven review criteria.
  */
 import assert from 'node:assert/strict';
@@ -51,20 +51,20 @@ describe('seo proposals – generator and coverage', () => {
     assert.deepEqual(proposals, committed);
   });
 
-  it('all generated rows exist once: live topic pages, leftover catalog topics, 60 posts; none approved', () => {
-    assert.equal(committed.length, 389);
+  it('all 390 rows exist once: 235 catalog topics, 95 topic pages, 60 posts; none approved', () => {
+    assert.equal(committed.length, 390);
     const count = (kind: string) => committed.filter((item) => item.kind === kind).length;
-    assert.equal(count('catalog-topic'), 66);
-    assert.equal(count('topic-page'), 263);
+    assert.equal(count('catalog-topic'), 235);
+    assert.equal(count('topic-page'), 95);
     assert.equal(count('blog-post'), 60);
-    assert.equal(new Set(committed.map((item) => item.path)).size, 389);
+    assert.equal(new Set(committed.map((item) => item.path)).size, 390);
     assert.equal(committed.filter((item) => item.approved !== false).length, 0);
   });
 
   it('CSV has one line per row and the decision column', () => {
     const csv = readFileSync(new URL('../seo-review.csv', import.meta.url), 'utf8');
     assert.match(csv, /^נתיב,סוג,כותרת נוכחית,כותרת מוצעת,תיאור נוכחי,תיאור מוצע,מאושר,מקור,החלטה נדרשת\n/);
-    assert.equal(csv.trim().split('\n').length, 390);
+    assert.equal(csv.trim().split('\n').length, 391);
   });
 });
 
@@ -116,7 +116,7 @@ describe('seo proposals – helpers never clip', () => {
   });
 });
 
-describe('seo proposals – review criteria on all generated rows', () => {
+describe('seo proposals – review criteria on all 390 rows', () => {
   it('criterion 3: title ≤ 60 and description ≤ 155 (code points)', () => {
     for (const item of committed) {
       assert.ok(item.title && len(item.title) <= 60, `${item.path} title ${len(item.title)}`);
@@ -184,10 +184,10 @@ describe('seo proposals – review criteria on all generated rows', () => {
       assert.doesNotMatch(text, /[÷/*]/u, `${item.path} division slash or ÷`);
       assert.doesNotMatch(item.title, /\.\s*\|/u, `${item.path} period before brand`);
     }
-    assert.match(byPath('/measuring-length-cm-m-grade-3').title, /ס״מ/);
-    assert.match(byPath('/capacity-ml-l-m3-grade-6').title, /סמ״ק/);
-    assert.match(byPath('/number-bonds-10-20-grade-2').title, /10 ו־20/);
-    assert.match(byPath('/grade-4-summary').title, /^דף סיכום אינטגרטיבי לכיתה ד׳/);
+    assert.match(byPath('/worksheets?grade=3&topic=22').title, /ס״מ/);
+    assert.match(byPath('/worksheets?grade=6&topic=15').title, /סמ״ק, ליטר ומ״ק/);
+    assert.match(byPath('/worksheets?grade=2&topic=1').title, /10 ו־20/);
+    assert.match(byPath('/worksheets?grade=4&topic=31').title, /^דף סיכום אינטגרטיבי לכיתה ד׳/);
     assert.match(byPath('/worksheets?grade=9&topic=22').title, /^משולש שווה־צלעות — העמקה ורשות לכיתה ט׳/);
   });
 
@@ -201,8 +201,7 @@ describe('seo proposals – review criteria on all generated rows', () => {
       assert.ok(!descriptions.has(item.description), `description ${item.path} = ${descriptions.get(item.description)}`);
       descriptions.set(item.description, item.path);
     }
-    assert.equal(committed.some((item) => item.path === '/angles-grade-7'), false);
-    assert.ok(byPath('/adjacent-vertical-angles-grade-7').title);
+    assert.notEqual(byPath('/angles-grade-7').title, byPath('/adjacent-vertical-angles-grade-7').title);
     assert.notEqual(
       titleKey(byPath('/coordinate-plane-quadrants-grade-7').title),
       titleKey(byPath('/coordinate-plane-four-quadrants-grade-7').title)
@@ -218,7 +217,7 @@ describe('seo proposals – review criteria on all generated rows', () => {
     for (const item of committed) {
       assert.doesNotMatch(item.title, /שטחים ב׳ חלק/u, `${item.path} internal unit label in title`);
     }
-    assert.match(byPath('/counting-grade-1').title, /מונים בלי לפספס/);
+    assert.match(byPath('/worksheets?grade=1&topic=1').title, /^ספירה ומנייה/);
     assert.match(byPath('/worksheets?grade=8&topic=33').title, /^בעיות תנועה/);
   });
 
@@ -230,21 +229,16 @@ describe('seo proposals – review criteria on all generated rows', () => {
       assert.equal(row.description, row.currentDescription.replace(/\s+/g, ' ').trim(), path);
     }
     const triangle = byPath('/triangle-area-grade-7');
-    assert.match(triangle.currentTitle, /שטח משולש לכיתה ז׳/);
-    assert.match(triangle.title, /שטח משולש לכיתה ז׳/);
-    assert.doesNotMatch(triangle.title, /מפשטים ואז פותרים/);
+    assert.match(triangle.currentTitle, /מפשטים ואז פותרים/);
+    assert.equal(triangle.title, 'שטח משולש לכיתה ז׳ | נועם דורון');
   });
 
   it('open questions stay with Noam: grade 1 topics 4, 19, 23 are flagged, unchanged and unapproved', () => {
     const flagged = committed.filter((item) => item.needsDecision).map((item) => item.path).sort();
     assert.deepEqual(flagged, Object.keys(NEEDS_DECISION).sort());
-    assert.deepEqual(flagged, [
-      '/compose-decompose-10-grade-1',
-      '/compose-decompose-grade-1',
-      '/shapes-compose-decompose-grade-1',
-    ]);
-    assert.match(byPath('/compose-decompose-grade-1').title, /מרכיבים ומפרקים לכיתה א׳/);
-    assert.match(byPath('/shapes-compose-decompose-grade-1').title, /הרכבה ופירוק לכיתה א׳/);
+    assert.deepEqual(flagged, ['/worksheets?grade=1&topic=19', '/worksheets?grade=1&topic=23', '/worksheets?grade=1&topic=4']);
+    assert.equal(byPath('/worksheets?grade=1&topic=19').title, 'מרכיבים ומפרקים לכיתה א׳ | נועם דורון');
+    assert.equal(byPath('/worksheets?grade=1&topic=23').title, 'הרכבה ופירוק לכיתה א׳ | נועם דורון');
     for (const path of flagged) assert.equal(byPath(path).approved, false);
   });
 });

@@ -1,5 +1,3 @@
-import { wizardPrefillFromSearch } from './wizard-prefill.js';
-
 /* Teacher picker for every catalog sheet.
    Grades 7–9: choose existing exercises across sheets.
    Grades 1–6: choose a sheet by topic and level.
@@ -90,16 +88,12 @@ let state = {
   topic: '2',
   level: 'all',
   wizard: 'grade',
-  lastAiPickCount: 0,
 };
 let history = [];
 let rendering = false;
 let printMode = 'marked';
 let printOpener = null;
 let loadToken = 0;
-let topicLoadPromise = null;
-let aiPickPending = 0;
-let teacherBotClientPromise = null;
 
 function exKey(pdfId, id) {
   return 'ex:' + pdfId + ':' + id;
@@ -109,174 +103,10 @@ function sheetKey(pdfId) {
   return 'sheet:' + pdfId;
 }
 
-function ensureTeacherBotClient() {
-  if (teacherBotClientPromise) return teacherBotClientPromise;
-  teacherBotClientPromise = new Promise((resolve, reject) => {
-    function finish(ok) {
-      if (ok && window.NoamBotClient && typeof window.NoamBotClient.create === 'function') {
-        resolve(window.NoamBotClient.create({ api: '/api', enabled: true, modelTimeoutMs: 25000 }));
-        return;
-      }
-      reject(new Error('BOT_CLIENT_UNAVAILABLE'));
-    }
-    if (window.NoamBotClient) {
-      finish(true);
-      return;
-    }
-    const loader = document.createElement('script');
-    loader.src = '/noam-bot-client.js?v=20261025-execute-ready-guard';
-    loader.async = true;
-    loader.onload = () => finish(true);
-    loader.onerror = () => finish(false);
-    document.head.appendChild(loader);
-  }).catch((error) => {
-    teacherBotClientPromise = null;
-    throw error;
-  });
-  return teacherBotClientPromise;
-}
-
-function smartExercisePick(pool, count, scenario, style, seedKeys) {
-  if (!Array.isArray(pool) || !pool.length) return [];
-  const entries = pool.map((question, index) => ({
-    key: exKey(question.source.pdfId, question.id),
-    question,
-    index,
-  }));
-  const target = Math.min(Math.max(1, Number(count) || 15), entries.length);
-  const byKey = new Map(entries.map((entry) => [entry.key, entry]));
-  const chosen = [];
-  const used = new Set();
-  const addEntry = (entry) => {
-    if (!entry || used.has(entry.key) || chosen.length >= target) return;
-    used.add(entry.key);
-    chosen.push(entry);
-  };
-  (seedKeys || []).forEach((key) => addEntry(byKey.get(key)));
-  if (chosen.length < target) {
-    let ordered = entries.slice();
-    if (scenario === 'spiral') {
-      const step = Math.max(1, Math.floor(entries.length / 15));
-      ordered = [];
-      for (let offset = 0; offset < step; offset += 1) {
-        for (let i = offset; i < entries.length; i += step) ordered.push(entries[i]);
-      }
-    } else if (scenario === 'exam') {
-      const cut = Math.floor(entries.length * 0.25);
-      ordered = entries.slice(cut).concat(entries.slice(0, cut));
-    } else if (scenario === 'practice') {
-      const cut = Math.min(Math.floor(entries.length * 0.08), 4);
-      ordered = entries.slice(cut).concat(entries.slice(0, cut));
-    }
-    const remaining = ordered.filter((entry) => !used.has(entry.key));
-    const needed = target - chosen.length;
-    if (remaining.length <= needed) {
-      remaining.forEach(addEntry);
-    } else if (scenario === 'spiral' || scenario === 'other' || style === 'creative') {
-      for (let i = 0; i < needed; i += 1) {
-        const idx = Math.min(remaining.length - 1, Math.floor((i * remaining.length) / needed));
-        addEntry(remaining[idx]);
-      }
-      remaining.forEach(addEntry);
-    } else {
-      remaining.slice(0, needed).forEach(addEntry);
-    }
-  }
-  chosen.sort((a, b) => a.index - b.index);
-  return chosen.map((entry) => entry.key);
-}
-
-async function pickWithAi(rawCount) {
-  const count = Number(rawCount);
-  if (!Number.isInteger(count) || count <= 0 || band() === 'elementary' || aiPickPending) return [];
-  const pool = currentExercises();
-  if (!pool.length) return [];
-  const target = Math.min(count, pool.length);
-  aiPickPending = count;
-  paintAiPickButtons();
-  const status = $('ai-suggest-status');
-  if (status) status.textContent = `נועם AI בוחר ${target} סעיפים…`;
-  const gradeEl = $('grade');
-  const topicEl = $('topic');
-  const payload = {
-    message: `בחר ${count} עם AI`,
-    page: { kind: 'teachers', path: location.pathname + location.search, title: document.title },
-    teacher: {
-      grade: String(state.grade),
-      gradeLabel: gradeEl && gradeEl.selectedOptions[0] ? gradeEl.selectedOptions[0].textContent.trim() : '',
-      topic: String(state.topic),
-      topicLabel: topicEl && topicEl.selectedOptions[0] ? topicEl.selectedOptions[0].textContent.trim() : '',
-      level: String(state.level || 'all'),
-      goal: String(state.scenario),
-      goalLabel: (SCENARIOS[state.scenario] && SCENARIOS[state.scenario].label) || 'אחר',
-      style: String(state.style),
-      styleLabel: (STYLES[state.style] && STYLES[state.style].label) || '',
-      note: $('teacher-note') ? String($('teacher-note').value || '').trim().slice(0, 400) : '',
-      count,
-      candidates: pool.slice(0, 100).map((question) => ({
-        id: (question.source && question.source.level ? question.source.level + ':' : '') + question.id,
-        label: question.id,
-        text: String(question.text || '').slice(0, 80),
-      })),
-    },
-  };
-  let remoteIds = [];
-  let fromModel = false;
-  try {
-    const client = await ensureTeacherBotClient();
-    const result = await client.postJson('/api/noamSiteCompanion', payload);
-    if (result && Array.isArray(result.exerciseIds) && result.exerciseIds.length) {
-      const visible = new Set(visibleSelectionKeys());
-      remoteIds = result.exerciseIds.filter((key) => visible.has(key));
-      fromModel = result.source === 'classifier' && Boolean(result.model);
-    }
-  } catch (error) {
-    remoteIds = [];
-  } finally {
-    aiPickPending = 0;
-  }
-  const finalPicked = smartExercisePick(pool, target, state.scenario, state.style, remoteIds);
-  const before = selectionKey();
-  snapshot();
-  state.selected = finalPicked;
-  state.lastAiPickCount = count;
-  state.expanded = true;
-  if (selectionKey() !== before) clearPreparedPrint();
-  render();
-  const msg = fromModel
-    ? `נבחרו ${finalPicked.length} סעיפים עם AI.`
-    : `נבחרו ${finalPicked.length} סעיפים מתוך הדף.`;
-  if (status) status.textContent = msg;
-  announce(msg);
-  return finalPicked;
-}
-
-function paintAiPickButtons() {
-  const group = $('ai-pick-group');
-  if (!group) return;
-  const elementary = band() === 'elementary';
-  group.hidden = elementary;
-  const total = elementary ? 0 : currentExercises().length;
-  group.querySelectorAll('[data-ai-pick]').forEach((btn) => {
-    const count = Number(btn.dataset.aiPick);
-    const busy = aiPickPending === count;
-    const baseLabel = count === 15 ? 'בחר 15 עם AI' : `בחר ${count}`;
-    btn.textContent = busy ? `בוחר ${count}…` : baseLabel;
-    btn.disabled = elementary || total === 0 || aiPickPending > 0;
-    const active = !elementary && total > 0 && state.lastAiPickCount === count && state.selected.length === Math.min(count, total);
-    btn.setAttribute('aria-pressed', active ? 'true' : 'false');
-    if (busy) btn.setAttribute('aria-busy', 'true');
-    else btn.removeAttribute('aria-busy');
-  });
-}
-
 function installSuggest() {
   window.NoamTeacherSuggest = {
     enabled: false,
-    batchPick: true,
-    model: 'qwen3.8-flash',
     classifier: 'qwen-flash',
-    pickCount: pickWithAi,
     async classifyRequest() {
       return { enabled: false, intent: null };
     },
@@ -305,31 +135,13 @@ function band() {
 }
 
 function pilotOn() {
-  return band() === 'middle' && String(state.grade) === '9' && String(state.topic) === '2' && (state.level === 'all' || state.level === 'a') && sheets.has(FACTORING_PDF);
+  return band() === 'middle' && String(state.grade) === '9' && String(state.topic) === '2' && sheets.has(FACTORING_PDF);
 }
 
 function topicSheets() {
   const topic = currentTopic();
   if (!topic) return [];
-  if (state.level === 'all') return topic.sheets;
-  const matching = topic.sheets.filter((sheet) => sheet.level === state.level);
-  return matching.length ? matching : topic.sheets;
-}
-
-function syncLevels() {
-  const topic = currentTopic();
-  const levels = new Set((topic ? topic.sheets : []).map((sheet) => sheet.level));
-  const hasSpecific = ['a', 'b', 'c'].some((lvl) => levels.has(lvl));
-  if (state.level !== 'all' && (!hasSpecific || !levels.has(state.level))) {
-    state.level = 'all';
-  }
-  document.querySelectorAll('[name=level]').forEach((el) => {
-    if (el.value === 'all') {
-      el.disabled = false;
-      return;
-    }
-    el.disabled = !hasSpecific || !levels.has(el.value);
-  });
+  return topic.sheets.filter((sheet) => state.level === 'all' || sheet.level === state.level);
 }
 
 function visibleSelectionKeys() {
@@ -424,7 +236,6 @@ function fillTopics() {
   }
   $('topic').innerHTML = topics.map((topic) => `<option value="${topic.id}">${escapeHTML(topic.title)}</option>`).join('');
   if (state.topic) $('topic').value = String(state.topic);
-  syncLevels();
 }
 
 function shownQuestions(pool) {
@@ -482,7 +293,6 @@ function render() {
   $('other-banner').hidden = state.scenario !== 'other';
   $('grade').value = String(state.grade);
   if ($('topic').value !== String(state.topic) && state.topic) $('topic').value = String(state.topic);
-  syncLevels();
   document.querySelectorAll('[name=scenario]').forEach((el) => { el.checked = el.value === state.scenario; });
   document.querySelectorAll('[name=style]').forEach((el) => { el.checked = el.value === state.style; });
   document.querySelectorAll('[name=level]').forEach((el) => { el.checked = el.value === state.level; });
@@ -534,7 +344,6 @@ function render() {
   const pdfs = new Set(state.selected.map((key) => key.split(':')[1]).filter(Boolean));
   $('selection-composition').textContent = pdfs.size ? 'מתוך ' + pdfs.size + (pdfs.size === 1 ? ' דף מקור' : ' דפי מקור') : '';
   $('undo').disabled = history.length === 0;
-  paintAiPickButtons();
   paintSourceLine();
   if (!elementary) paintThumbs();
   applyWizard();
@@ -657,9 +466,7 @@ async function paintThumb(canvas) {
 function levelAllows(source) {
   if (!source) return true;
   if (state.level === 'all') return true;
-  if (!source.level || source.level === 'one' || source.level === state.level) return true;
-  const topic = currentTopic();
-  return !(topic && topic.sheets.some((sheet) => sheet.level === state.level));
+  return !source.level || source.level === state.level;
 }
 
 function clearPreparedPrint() {
@@ -672,7 +479,6 @@ function selectKey(key, on) {
   if (!key) return;
   const before = selectionKey();
   snapshot();
-  state.lastAiPickCount = 0;
   if (on && !state.selected.includes(key)) state.selected.push(key);
   if (!on) state.selected = state.selected.filter((item) => item !== key);
   if (selectionKey() !== before) clearPreparedPrint();
@@ -724,31 +530,11 @@ async function attachTeacherNote(root, note) {
   sheet.insertAdjacentHTML('beforeend', html);
 }
 
-function selectionMarkBox(question) {
-  const box = question.box;
-  if (!box || ![box.x, box.y, box.w, box.h].every(Number.isFinite)
-      || box.x < 0 || box.y < 0 || box.w <= 0 || box.h <= 0) return null;
-  // The old selection rectangle includes the start of the sentence. Put a
-  // small check beside its right edge, never over the original PDF text.
-  const x = box.x + box.w + 0.006;
-  const w = Math.min(0.014, 0.995 - x);
-  if (w < 0.006) return null;
-  const line = question.labelLine;
-  const lineCenter = line && line.page === question.page
-    && Number.isFinite(line.y) && Number.isFinite(line.h) && line.h > 0
-    ? line.y + line.h / 2 : NaN;
-  const center = lineCenter >= box.y && lineCenter <= box.y + box.h
-    ? lineCenter : box.y + box.h / 2;
-  const h = Math.min(0.01, box.h * 0.5);
-  return { x, y: Math.max(0, Math.min(1 - h, center - h / 2)), w, h };
-}
-
 function sheetHTML(pageNumber, questions) {
   const marked = questions.filter((question) => question.box);
   const marks = marked.map((question) => {
-    const box = selectionMarkBox(question);
-    if (!box) return '';
-    return `<span class="source-mark" data-question="${escapeHTML(question.id)}" style="left:${box.x * 100}%;top:${box.y * 100}%;width:${box.w * 100}%;height:${box.h * 100}%" role="img" aria-label="${escapeHTML(question.label)} — נבחר" title="${escapeHTML(question.label)}"><svg viewBox="0 0 16 16" preserveAspectRatio="none" aria-hidden="true"><path d="M 2 8 L 6 12 L 14 3"/></svg></span>`;
+    const box = question.box;
+    return `<span class="source-mark" data-question="${escapeHTML(question.id)}" style="left:${box.x * 100}%;top:${box.y * 100}%;width:${box.w * 100}%;height:${box.h * 100}%" title="${escapeHTML(question.label)}"></span>`;
   }).join('');
   const names = marked.map((question) => question.label).join(' · ');
   const caption = names
@@ -767,15 +553,14 @@ function bakeMarks(canvas, stage) {
     const w = (parseFloat(mark.style.width) / 100) * width;
     const h = (parseFloat(mark.style.height) / 100) * height;
     ctx.save();
-    ctx.strokeStyle = '#21645f';
-    ctx.lineWidth = Math.min(w, h) * 0.15;
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-    ctx.beginPath();
-    ctx.moveTo(x + w * 2 / 16, y + h * 8 / 16);
-    ctx.lineTo(x + w * 6 / 16, y + h * 12 / 16);
-    ctx.lineTo(x + w * 14 / 16, y + h * 3 / 16);
-    ctx.stroke();
+    ctx.globalCompositeOperation = 'multiply';
+    ctx.fillStyle = 'rgba(255,214,90,0.55)';
+    ctx.fillRect(x, y, w, h);
+    ctx.restore();
+    ctx.save();
+    ctx.strokeStyle = '#c47d00';
+    ctx.lineWidth = Math.max(2, width * 0.0025);
+    ctx.strokeRect(x, y, w, h);
     ctx.restore();
   });
 }
@@ -1933,7 +1718,6 @@ function applyScenario(value, options) {
   const before = selectionKey();
   if (!quiet) snapshot();
   state.scenario = value;
-  state.lastAiPickCount = 0;
   state.expanded = false;
   state.filter = 'all';
   if (value !== 'other') {
@@ -1991,22 +1775,18 @@ async function loadCurrentTopic() {
   const token = ++loadToken;
   const topic = currentTopic();
   if (!topic) return;
-  const run = (async () => {
-    if (band() === 'middle') {
-      await Promise.all(topic.sheets.filter((sheet) => sheet.mode === 'exercise').map((sheet) => loadExerciseSheet(sheet.pdfId)));
-    }
-    if (token !== loadToken) return;
-    if (sheets.has(FACTORING_PDF)) {
-      const known = new Set(sheets.get(FACTORING_PDF).questions.map((question) => question.id));
-      Object.values(SCENARIOS).forEach((cfg) => {
-        [...cfg.selected, ...cfg.essential, ...cfg.deepen, cfg.suggestion].forEach((id) => {
-          if (!known.has(id)) throw new Error('MISSING_' + id);
-        });
+  if (band() === 'middle') {
+    await Promise.all(topic.sheets.filter((sheet) => sheet.mode === 'exercise').map((sheet) => loadExerciseSheet(sheet.pdfId)));
+  }
+  if (token !== loadToken) return;
+  if (sheets.has(FACTORING_PDF)) {
+    const known = new Set(sheets.get(FACTORING_PDF).questions.map((question) => question.id));
+    Object.values(SCENARIOS).forEach((cfg) => {
+      [...cfg.selected, ...cfg.essential, ...cfg.deepen, cfg.suggestion].forEach((id) => {
+        if (!known.has(id)) throw new Error('MISSING_' + id);
       });
-    }
-  })();
-  topicLoadPromise = run;
-  await run;
+    });
+  }
 }
 
 const WIZARD_ORDER = ['grade', 'topic', 'level', 'scenario', 'style', 'pick', 'result'];
@@ -2091,16 +1871,10 @@ function bind() {
     if (!el.checked) return;
     state.level = el.value;
     state.expanded = false;
-    let next = keepVisible(state.selected, visibleSelectionKeys());
-    if (!next.length && state.scenario !== 'other') {
-      if (pilotOn() && SCENARIOS[state.scenario]) next = SCENARIOS[state.scenario].selected.map((id) => exKey(FACTORING_PDF, id));
-      else if (band() === 'elementary') next = elementaryPreset(state.scenario);
-      else next = exercisePreset(state.scenario);
-    }
+    const next = keepVisible(state.selected, visibleSelectionKeys());
     if (next.join('\n') !== selectionKey()) {
       snapshot();
       state.selected = next;
-      state.lastAiPickCount = 0;
       clearPreparedPrint();
     }
     render();
@@ -2119,30 +1893,22 @@ function bind() {
   });
   $('topic').addEventListener('change', async () => {
     state.topic = $('topic').value;
-    state.level = 'all';
     state.expanded = false;
     state.selected = [];
     history = [];
     clearPreparedPrint();
-    syncLevels();
     await loadCurrentTopic();
     if (state.scenario === 'other') render();
     else applyScenario(state.scenario, { quiet: true });
   });
   $('filter-all').addEventListener('click', () => { state.filter = 'all'; $('filter-all').setAttribute('aria-pressed', 'true'); $('filter-selected').setAttribute('aria-pressed', 'false'); render(); });
   $('filter-selected').addEventListener('click', () => { state.filter = 'selected'; $('filter-selected').setAttribute('aria-pressed', 'true'); $('filter-all').setAttribute('aria-pressed', 'false'); render(); });
-  document.querySelectorAll('[data-ai-pick]').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      pickWithAi(Number(btn.dataset.aiPick));
-    });
-  });
   $('show-more').addEventListener('click', () => { state.expanded = true; render(); });
   $('undo').addEventListener('click', () => {
     const previous = history.pop();
     if (!previous) return;
     const before = selectionKey();
     state.selected = previous;
-    state.lastAiPickCount = 0;
     if (selectionKey() !== before) clearPreparedPrint();
     render();
   });
@@ -2165,14 +1931,6 @@ function bind() {
   if ($('wizard-next')) $('wizard-next').addEventListener('click', async () => {
     const index = WIZARD_ORDER.indexOf(state.wizard || 'grade');
     state.wizard = WIZARD_ORDER[Math.min(WIZARD_ORDER.length - 1, index + 1)];
-    if (state.wizard === 'pick') {
-      if (topicLoadPromise) await topicLoadPromise;
-      if (!state.selected.length && state.scenario !== 'other') {
-        applyScenario(state.scenario, { quiet: true });
-        return;
-      }
-      render();
-    }
     applyWizard();
     if (state.wizard === 'result') await showWizardResult();
   });
@@ -2202,38 +1960,6 @@ function bind() {
     input.checked = true;
     applyScenario(goal);
   });
-  document.addEventListener('noam-teacher-prefill', (event) => {
-    const detail = event.detail || {};
-    const prefill = detail.exerciseIds ? detail : wizardPrefillFromSearch(detail.href || '');
-    applyWizardPrefill(prefill);
-  });
-}
-
-function applyWizardPrefill(prefill) {
-  if (!prefill || !prefill.grade || !prefill.topic) return;
-  state.grade = String(prefill.grade);
-  state.topic = String(prefill.topic);
-  state.level = prefill.level || 'all';
-  state.scenario = 'other';
-  state.expanded = true;
-  fillGrades();
-  fillTopics();
-  return loadCurrentTopic().then(() => {
-    const allow = new Set(visibleSelectionKeys());
-    const ids = prefill.exerciseIds || [];
-    state.selected = ids.filter((id) => allow.has(id));
-    const note = $('teacher-note');
-    if (note && prefill.minutes && !note.value) note.value = 'אורך שיעור: ' + prefill.minutes + ' דקות';
-    render();
-    state.wizard = 'pick';
-    applyWizard();
-    announce('הבחירה מנועם AI נטענה לאשף.');
-    const picked = document.querySelector('#questions input:checked');
-    const card = picked && picked.closest('.q-card');
-    if (card && typeof card.scrollIntoView === 'function') {
-      card.scrollIntoView({ block: 'start', inline: 'nearest' });
-    }
-  });
 }
 
 async function start() {
@@ -2242,14 +1968,9 @@ async function start() {
   if (!response.ok) throw new Error('CATALOG');
   CATALOG = await response.json();
   indexCatalog();
-  bind();
-  const prefill = wizardPrefillFromSearch(location.search);
-  if (prefill) {
-    await applyWizardPrefill(prefill);
-    return;
-  }
   fillGrades();
   fillTopics();
+  bind();
   await loadCurrentTopic();
   applyScenario(state.scenario, { quiet: true });
 }

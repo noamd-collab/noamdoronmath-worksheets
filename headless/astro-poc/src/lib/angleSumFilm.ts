@@ -38,8 +38,9 @@ export function bootAngleSumFilm(root: HTMLElement): void {
   if (host.dataset.angleSumReady === '1') return;
   host.dataset.angleSumReady = '1';
 
-  const frame = root.querySelector<HTMLIFrameElement>('[data-angle-sum-frame]');
-  if (!frame) return;
+  const foundFrame = root.querySelector<HTMLIFrameElement>('[data-angle-sum-frame]');
+  if (!foundFrame) return;
+  const frame: HTMLIFrameElement = foundFrame;
 
   const queued: Array<() => void> = [];
   function whenReady(fn: () => void) {

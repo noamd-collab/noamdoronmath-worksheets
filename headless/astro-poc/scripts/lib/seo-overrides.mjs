@@ -1,5 +1,5 @@
 /**
- * Reviewed point fixes for the SEO proposals (PR 46 content review, remapped onto 233).
+ * Reviewed point fixes for the SEO proposals (PR 46 content review, 390 rows).
  * Used only where no safe general rule exists. Paths are decoded (Hebrew slugs readable).
  * The general rules live in seo-copy.mjs; the build fails if an entry here is unused or stale.
  */
@@ -90,6 +90,19 @@ export const TWIN_NAMES = {
 
 /** Exact reviewed copy where the rules cannot produce it. Omitted field = rule output. */
 export const EXACT = {
+  // התיאור משתמש במונח החיפוש בלבד
+  "/worksheets?grade=1&topic=1": {
+    description: "דפי עבודה במתמטיקה בנושא ספירה ומנייה לכיתה א׳. בחינם וללא הרשמה.",
+  },
+  // "דפי עבודה בנושא דף סיכום" מסורבל
+  "/worksheets?grade=4&topic=31": {
+    description: "דף סיכום אינטגרטיבי במתמטיקה לכיתה ד׳ – חזרה משולבת על נושאי השנה. בחינם וללא הרשמה.",
+  },
+  // כותרת זהה ל/adjacent-vertical-angles-grade-7; נוסח מובחן לפי הפתיח ושם הקטלוג
+  "/angles-grade-7": {
+    title: "יחסים בין זוויות לכיתה ז׳ – דפי עבודה | נועם דורון",
+    description: "יחסים בין זוויות לכיתה ז׳: צמודות על קו ישר, קודקודיות, משלימות ונשלמות וחוצה זווית. דפי עבודה בשלוש רמות, בחינם וללא הרשמה.",
+  },
   // תיאור קיים חורג/פתיח קטוע – נוסח מהביקורת
   "/multiplying-signed-numbers-grade-7": {
     description: "דפי עבודה בכפל מספרים מכוונים לכיתה ז׳ בשלוש רמות, בחינם וללא הרשמה: חוקי הסימנים בכפל ומכפלה של כמה גורמים.",
@@ -252,9 +265,10 @@ export const KEEP_CURRENT = [
 ];
 
 /**
- * Scope of the PR 46 / PR 52 SEO proposal review. 233 already has topic pages
- * for the old catalog-query rows, so this batch follows those live paths.
- * Posts added after the cut-over review stay excluded until a separate batch.
+ * Scope of the PR 46 / PR 52 SEO proposal review (390 rows: 328 catalog topics +
+ * 2 shared-id topic pages + 60 blog posts). Pages/posts added to the baseline
+ * after the cut-over review (#90, #104, #105) have their own reviewed meta and
+ * are excluded until a separate proposal batch is commissioned.
  */
 export const EXCLUDED_FROM_PROPOSAL_BATCH = new Set([
   '/kite-grade-9',
@@ -273,7 +287,7 @@ export const EXCLUDED_FROM_PROPOSAL_BATCH = new Set([
  */
 const SIMILAR_G1 = 'שלושה נושאים כמעט זהים בכיתה א׳ (4 "מרכיבים ומפרקים עד 10", 19 "מרכיבים ומפרקים", 23 "הרכבה ופירוק") באותה קבוצה ועם אותו אייקון. אין בקטלוג מידע שמבדיל ביניהם – נדרשת החלטת נועם (להבדיל בשם או לאחד).';
 export const NEEDS_DECISION = {
-  '/compose-decompose-10-grade-1': SIMILAR_G1,
-  '/compose-decompose-grade-1': SIMILAR_G1,
-  '/shapes-compose-decompose-grade-1': SIMILAR_G1,
+  '/worksheets?grade=1&topic=4': SIMILAR_G1,
+  '/worksheets?grade=1&topic=19': SIMILAR_G1,
+  '/worksheets?grade=1&topic=23': SIMILAR_G1,
 };

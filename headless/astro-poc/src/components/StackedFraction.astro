@@ -18,12 +18,9 @@ interface Props {
   ok?: boolean;
   /** Narrower bar. Used only by tenth-cell, where the stack sits in a tight gap. */
   tight?: boolean;
-  /** HTML mode only. False when a parent row already names the fraction. */
-  labelled?: boolean;
 }
 
-const { n, d, x, y, anchor = 'start', small = false, el, hidden = false, ok = false, tight = false, labelled = true } = Astro.props;
-const fractionLabel = `${n} חלקי ${d}`;
+const { n, d, x, y, anchor = 'start', small = false, el, hidden = false, ok = false, tight = false } = Astro.props;
 const svg = x != null && y != null;
 const font = small ? 12 : 15;
 const charW = (ch: string) => (ch === '1' ? 0.56 : 0.62) * font;
@@ -49,15 +46,9 @@ const numY = barY - 1.5;
       <text class:list={['cl-t', 'cl-num', small && 'cl-small']} x={cx} y={denY} text-anchor="middle">{d}</text>
     </g>
   ) : (
-    <span
-      class:list={['cl-frac', tight && 'cl-frac--tight']}
-      dir="ltr"
-      role={labelled ? 'img' : undefined}
-      aria-label={labelled ? fractionLabel : undefined}
-      aria-hidden={labelled ? undefined : 'true'}
-    >
-      <span class="cl-frac__n" aria-hidden="true">{n}</span>
-      <span class="cl-frac__d" aria-hidden="true">{d}</span>
+    <span class:list={['cl-frac', tight && 'cl-frac--tight']} dir="ltr">
+      <span class="cl-frac__n">{n}</span>
+      <span class="cl-frac__d">{d}</span>
     </span>
   )
 }

@@ -32,9 +32,9 @@ describe('M35 ndGate fixture-only', () => {
 </head><body><main>fixture</main><script>${gateJs}</script></body></html>`
     );
     const chrome = [process.env.CHROME_PATH, '/usr/bin/google-chrome-stable', '/usr/bin/google-chrome'].find(
-      (path): path is string => !!path && existsSync(path),
+      (path): path is string => !!path && existsSync(path)
     );
-    assert.ok(chrome);
+    assert.ok(chrome, 'no Chrome/Chromium found: set CHROME_PATH');
     const browser = await puppeteer.launch({
       executablePath: chrome,
       headless: true,

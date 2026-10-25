@@ -9,19 +9,18 @@ import {
   MISSING_TEXT,
   QUESTION_GAP,
   QWEN_MODEL,
-  resolveQwenTarget,
   RAMZI_TEXT,
   handleCompanionTurn,
+  isRoleQuestion,
   isWorksheetSolveRequest,
+  roleAnswer,
 } from "./companion.js";
-import { resolveDeterministicTurn } from "./guide-flow.js";
 import {
   corsHeadersFor,
   guardCompanionRequest,
   isAllowedOrigin,
   isHeadlessPreviewHost,
   isOutboundTimeout,
-  takeCompanionRate,
 } from "./bot-guard.js";
 import {
   classifyTeacherRequest,
@@ -31,8 +30,6 @@ import {
 } from "./teacher-pick.js";
 
 export const QWEN_SECRET_NAME = "QWEN_API_KEY";
-export const QWEN_BASE_URL_NAME = "QWEN_BASE_URL";
-export const QWEN_MODEL_NAME = "QWEN_MODEL";
 export const NOAM_RECAPTCHA_SECRET_NAME = "NOAM_RECAPTCHA_SECRET_KEY";
 /** Public site key already served by the live bot config. Not a secret. */
 export const PUBLIC_RECAPTCHA_SITE_KEY = "6LdPhawtAAAAAIqCGLcShp8J1XO16Z9lVGTYuwgq";
@@ -149,10 +146,11 @@ function missingTeacher() {
 
 export async function runCompanionTurn(payload, deps) {
   const settings = deps || {};
-  const guided = resolveDeterministicTurn(payload, settings);
-  if (guided) return guided;
   const page = payload && payload.page && typeof payload.page === "object" ? payload.page : {};
   const message = String((payload && payload.message) || "");
+  if (isRoleQuestion(message)) {
+    return withIds(Object.assign({ active: true }, roleAnswer(payload)), [], []);
+  }
   if (isWorksheetSolveRequest("worksheet", message)) {
     const text = page.kind === "worksheet" ? RAMZI_TEXT : "נועם AI לא פותר שאלה ולא ממציא תרגיל. הבחירה היא רק מתוך מה שכבר קיים באתר.";
     return withIds(
@@ -176,35 +174,22 @@ export async function runCompanionTurn(payload, deps) {
   }
   if (page.kind === "teachers") {
     let classification = null;
-    let classificationFailure = "MODEL_RESPONSE_FAILED";
     try {
       classification = await classifyTeacherRequest(payload, {
         apiKey: settings.qwenKey,
-        baseUrl: settings.qwenBaseUrl,
-        model: settings.qwenModel,
         fetch: settings.fetch,
         timeoutMs: settings.qwenTimeoutMs,
-        log: settings.log,
-        teacherIndex: settings.teacherIndex,
       });
     } catch (error) {
       if (isOutboundTimeout(error)) throw error;
       classification = null;
-      classificationFailure = ["MODEL_AUTH_FAILED", "MODEL_HTTP", "QWEN_CONFIG_REJECTED"].includes(error.code) ? error.code : "MODEL_RESPONSE_FAILED";
     }
     const pick = selectTeacherPicks(settings.teacherIndex, payload, classification);
-    if (!pick.sheets.length) {
-      const missing = missingTeacher();
-      return classification ? missing : Object.assign(missing, { source: "fallback", model: null, code: classificationFailure });
-    }
+    if (!pick.sheets.length) return missingTeacher();
     const body = teacherAnswer(pick, settings.catalog);
-    if (classification) body.model = resolveQwenTarget({model: settings.qwenModel, baseUrl: settings.qwenBaseUrl}).model;
     if (!classification) {
       body.model = null;
-      body.source = "fallback";
-      body.code = classificationFailure;
-      body.answer = "החיבור למודל לא הצליח. הנה בחירה בסיסית מהמאגר: " + body.answer;
-      body.text = body.answer;
+      body.source = "catalog";
     }
     return body;
   }
@@ -212,11 +197,8 @@ export async function runCompanionTurn(payload, deps) {
     catalog: settings.catalog,
     guide: settings.guide,
     apiKey: settings.qwenKey,
-    baseUrl: settings.qwenBaseUrl,
-    model: settings.qwenModel,
     fetch: settings.fetch,
     timeoutMs: settings.qwenTimeoutMs,
-    log: settings.log,
   });
   return withIds(Object.assign({ active: true }, result), [], []);
 }
@@ -298,39 +280,6 @@ function jsonResponse(status, body, origin) {
   return { status, headers: responseHeaders(origin), body };
 }
 
-function requestHostFrom(request, settings) {
-  if (settings && settings.requestHost) return String(settings.requestHost).trim();
-  const raw = request && typeof request.url === "string" ? request.url : "";
-  try {
-    return new URL(raw).hostname;
-  } catch (error) {
-    return "";
-  }
-}
-
-function denied(guard, origin) {
-  const fail = withIds(
-    {
-      ok: false,
-      active: true,
-      code: guard.code,
-      source: "fallback",
-      error: FALLBACK_TEXT,
-      text: FALLBACK_TEXT,
-      answer: FALLBACK_TEXT,
-      options: [],
-      links: [],
-      essential: [],
-    },
-    [],
-    []
-  );
-  if (guard.code === "BOT_VERIFICATION_FAILED" && guard.siteverify) {
-    fail.siteverify = guard.siteverify;
-  }
-  return { status: guard.status || 403, headers: responseHeaders(origin), body: fail };
-}
-
 function readJson(payload) {
   if (!payload || typeof payload !== "object" || Array.isArray(payload)) return {};
   return payload;
@@ -367,61 +316,54 @@ export async function handleNoamSiteCompanion(request, deps) {
   if (!originAllowed) {
     return { status: 403, headers: { Vary: "Origin" }, body: "" };
   }
-  const requestHost = requestHostFrom(request, settings);
-  const store = settings.store || defaultStore;
-  // Fixed answers skip reCAPTCHA. They still take the same 12/min slot.
-  const limited = await takeCompanionRate(
-    {
-      clientIp: settings.clientIp,
-      botVerification: payload.botVerification,
-      now: settings.now,
-    },
-    { store, noIpGlobalMax: settings.noIpGlobalMax, rateBackend: settings.rateBackend }
-  );
-  if (!limited.ok) {
-    const fail = denied(limited, origin);
-    if (payload.rateProbe === true && isHeadlessPreviewHost(requestHost) && fail.body && typeof fail.body === "object") {
-      fail.body.backend = limited.backend || "memory";
-      if (limited.wixError) fail.body.wixError = String(limited.wixError).slice(0, 300);
-    }
-    return fail;
+  // A greeting has no model call and no cost. Answer it before the guard.
+  if (isRoleQuestion(payload.message)) {
+    return jsonResponse(200, await runCompanionTurn(payload, settings), origin);
   }
-  if (payload.rateProbe === true) {
-    const probe = { ok: true, active: true, probe: true, code: "RATE_OK" };
-    if (isHeadlessPreviewHost(requestHost)) {
-      probe.backend = limited.backend || "memory";
-      if (limited.wixError) probe.wixError = String(limited.wixError).slice(0, 300);
-    }
-    return jsonResponse(200, probe, origin);
-  }
-  // Guide, topic order, and lesson picking do not call the model.
-  // Answer them before reCAPTCHA so a failed check does not block a real visitor.
-  const guided = resolveDeterministicTurn(payload, settings);
-  if (guided) return jsonResponse(200, guided, origin);
   const guard = await guardCompanionRequest(
     {
       origin,
-      requestHost,
       clientIp: settings.clientIp,
       message: payload.message,
       botVerification: payload.botVerification,
       now: settings.now,
     },
     {
-      store,
-      skipRateLimit: true,
+      store: settings.store || defaultStore,
       secret: settings.recaptchaSecret,
       fetch: settings.fetch,
       extraOrigins: isHeadlessPreviewOrigin(origin) ? [origin] : [],
       recaptchaTimeoutMs: settings.recaptchaTimeoutMs,
       noIpGlobalMax: settings.noIpGlobalMax,
-      recaptchaBypass: settings.recaptchaBypass,
     }
   );
   if (!guard.ok && guard.code === "UNAVAILABLE") {
     return jsonResponse(200, unavailableBody(), origin);
   }
-  if (!guard.ok) return denied(guard, origin);
+  if (!guard.ok) {
+    const fail = withIds(
+      {
+        ok: false,
+        active: true,
+        code: guard.code,
+        source: "fallback",
+        error: FALLBACK_TEXT,
+        text: FALLBACK_TEXT,
+        answer: FALLBACK_TEXT,
+        options: [],
+        links: [],
+        essential: [],
+      },
+      [],
+      []
+    );
+    if (guard.code === "BOT_VERIFICATION_FAILED" && guard.siteverify) {
+      fail.siteverify = guard.siteverify;
+    }
+    const cors = corsHeadersFor(origin);
+    if (!cors) return { status: 403, headers: { Vary: "Origin" }, body: "" };
+    return { status: guard.status, headers: cors, body: fail };
+  }
   try {
     const result = await runCompanionTurn(payload, settings);
     return jsonResponse(200, result, origin);

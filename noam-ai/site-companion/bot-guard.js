@@ -6,7 +6,6 @@
  * SITE_ORIGINS and RECAPTCHA_SECRET_NAME must match the private
  * noamDiagramPlan / noamBotConfig backend. See docs/noam-ai-golive-checklist.md.
  */
-import { createHash, timingSafeEqual } from "node:crypto";
 export const SITE_ORIGINS = [
   "https://www.noamdoronmath.co.il",
   "https://noamdoronmath.co.il",
@@ -95,89 +94,8 @@ export function isHeadlessPreviewHost(hostname) {
   return PREVIEW_HOST.test(String(hostname || "").trim().toLowerCase());
 }
 
-/**
- * The public host for a preview probe.
- * request.url on the Wix runtime can be an internal host, so a preview
- * x-forwarded-host or Host is used when the URL itself is neither the
- * preview nor the production site. A production URL is never replaced.
- */
-export function publicRequestHost(requestUrl, forwardedHost, hostHeader) {
-  const urlHost = requestHostName(requestUrl);
-  const forwarded = requestHostName(String(forwardedHost || "").split(",")[0]);
-  const host = requestHostName(String(hostHeader || "").split(",")[0]);
-  if (isHeadlessPreviewHost(urlHost) || isProductionRecaptchaHost(urlHost)) return urlHost;
-  if (isHeadlessPreviewHost(forwarded) || isProductionRecaptchaHost(forwarded)) return forwarded;
-  if (isHeadlessPreviewHost(host) || isProductionRecaptchaHost(host)) return host;
-  return urlHost || forwarded || host;
-}
-
 export function isAllowedRecaptchaHostname(hostname) {
   return isProductionRecaptchaHost(hostname) || isHeadlessPreviewHost(hostname);
-}
-
-export function isProductionSiteOrigin(origin) {
-  if (typeof origin !== "string" || !origin) return false;
-  try {
-    const url = new URL(origin);
-    return url.hostname === "www.noamdoronmath.co.il" || url.hostname === "noamdoronmath.co.il";
-  } catch (error) {
-    return false;
-  }
-}
-
-/** Hostname only. A full URL is accepted so callers can pass request.url. */
-export function requestHostName(value) {
-  const raw = String(value || "").trim().toLowerCase();
-  if (!raw) return "";
-  if (raw.includes("://")) {
-    try {
-      return new URL(raw).hostname;
-    } catch (error) {
-      return "";
-    }
-  }
-  return raw.split("/")[0].split(":")[0];
-}
-
-function bypassHostAllowed(requestHost) {
-  const host = requestHostName(requestHost);
-  return isHeadlessPreviewHost(host) && !isProductionRecaptchaHost(host);
-}
-
-/**
- * Dev/test bypass. The browser never receives this token.
- * On only when the flag is exactly "1", the token is at least 24 characters,
- * NODE_ENV is not production, and the request's own host is a preview host.
- * The client Origin header is not a host. Production hosts stay off even
- * when NODE_ENV is unset.
- */
-export function recaptchaBypassFromEnv(env, requestHost) {
-  const source = env || {};
-  const nodeEnv = String(source.NODE_ENV || "");
-  const blocked = { enabled: false, token: "", nodeEnv };
-  if (nodeEnv === "production") return blocked;
-  if (String(source.NOAM_RECAPTCHA_BYPASS || "") !== "1") return blocked;
-  const token = String(source.NOAM_RECAPTCHA_BYPASS_TOKEN || "");
-  if (token.length < 24) return blocked;
-  if (!bypassHostAllowed(requestHost)) return blocked;
-  return { enabled: true, token, nodeEnv };
-}
-
-function sameSecret(provided, expected) {
-  const left = createHash("sha256").update(String(provided), "utf8").digest();
-  const right = createHash("sha256").update(String(expected), "utf8").digest();
-  return timingSafeEqual(left, right);
-}
-
-export function acceptDevBypass(verification, bypass, requestHost) {
-  if (!bypass || bypass.enabled !== true) return false;
-  if (bypass.nodeEnv === "production") return false;
-  if (!bypassHostAllowed(requestHost)) return false;
-  const expected = typeof bypass.token === "string" ? bypass.token : "";
-  if (expected.length < 24) return false;
-  const provided = verification && verification.provider === "dev-bypass" ? verification.token : "";
-  if (typeof provided !== "string" || provided.length < 24) return false;
-  return sameSecret(provided, expected);
 }
 
 /**
@@ -222,29 +140,6 @@ export function takeRateSlot(key, now, store, max) {
   bucket.push(when);
   store.set(key, bucket);
   return true;
-}
-
-/**
- * One bucket map shared by every caller that receives this object.
- * A module-level Map is not shared across Wix instances.
- */
-export function memoryRateBackend(buckets) {
-  const store = buckets || new Map();
-  return {
-    async take(key, now, max, windowMs) {
-      const when = typeof now === "number" ? now : Date.now();
-      const limit = typeof max === "number" ? max : RATE_LIMIT_MAX;
-      const span = typeof windowMs === "number" ? windowMs : RATE_LIMIT_WINDOW_MS;
-      const fresh = (store.get(key) || []).filter((stamp) => when - stamp < span);
-      if (fresh.length >= limit) {
-        store.set(key, fresh);
-        return false;
-      }
-      fresh.push(when);
-      store.set(key, fresh);
-      return true;
-    },
-  };
 }
 
 export function siteverifyFields(data) {
@@ -306,80 +201,29 @@ export async function verifyRecaptcha({ token, secret, fetch, action, timeoutMs 
   return { passed, siteverify: siteverifyFields(data) };
 }
 
-function rateErrorText(error) {
-  const message = String(error && error.message ? error.message : error || "");
-  return message.replace(/\s+/g, " ").trim().slice(0, 300);
-}
-
-/** One 12/min slot. A boolean result is the shared counter. An object may name the backend. */
-async function takeOnBackend(backend, key, now, max) {
-  const result = await backend.take(key, now, max, RATE_LIMIT_WINDOW_MS);
-  if (result && typeof result === "object") {
-    return {
-      allowed: result.ok === true,
-      backend: result.backend || "wix",
-      error: result.error ? rateErrorText(result.error) : "",
-    };
-  }
-  return { allowed: result === true, backend: "wix", error: "" };
-}
-
-export async function takeCompanionRate(input, deps) {
-  const verification = (input && input.botVerification) || {};
-  const token = typeof verification.token === "string" ? verification.token : "";
-  const identity = rateIdentity(input && input.clientIp, token);
-  const now = input && typeof input.now === "number" ? input.now : Date.now();
-  const globalMax = deps && typeof deps.noIpGlobalMax === "number" ? deps.noIpGlobalMax : RATE_LIMIT_NO_IP_GLOBAL_MAX;
-  const backend = deps && deps.rateBackend;
-  let wixError = "";
-  if (backend && typeof backend.take === "function") {
-    try {
-      const first = await takeOnBackend(backend, identity.key, now, RATE_LIMIT_MAX);
-      if (!first.allowed) {
-        return { ok: false, status: 429, code: "RATE_LIMIT", backend: first.backend, wixError: first.error };
-      }
-      if (identity.mode !== "ip") {
-        const global = await takeOnBackend(backend, NO_IP_GLOBAL_KEY, now, globalMax);
-        if (!global.allowed) {
-          return { ok: false, status: 429, code: "RATE_LIMIT", backend: global.backend, wixError: global.error };
-        }
-      }
-      return { ok: true, status: 200, backend: first.backend, wixError: first.error };
-    } catch (error) {
-      wixError = rateErrorText(error);
-      console.warn("NOAM_RATE_STORE_UNAVAILABLE " + wixError);
-    }
-  }
-  const store = deps && deps.store;
-  if (!store || typeof store.get !== "function") {
-    return { ok: false, status: 403, code: "BOT_VERIFICATION_FAILED" };
-  }
-  if (identity.mode === "ip") {
-    if (!takeRateSlot(identity.key, now, store)) return { ok: false, status: 429, code: "RATE_LIMIT", backend: "memory", wixError };
-  } else if (!takeRateSlot(identity.key, now, store) || !takeRateSlot(NO_IP_GLOBAL_KEY, now, store, globalMax)) {
-    return { ok: false, status: 429, code: "RATE_LIMIT", backend: "memory", wixError };
-  }
-  return { ok: true, status: 200, backend: "memory", wixError };
-}
-
 export async function guardCompanionRequest(input, deps) {
   const origin = input && input.origin ? String(input.origin) : "";
   const extra = deps && Array.isArray(deps.extraOrigins) ? deps.extraOrigins : [];
   if (!isAllowedOrigin(origin) && extra.indexOf(origin) === -1) {
     return { ok: false, status: 403, code: "ORIGIN_NOT_ALLOWED" };
   }
+  const store = deps && deps.store;
+  if (!store || typeof store.get !== "function") {
+    return { ok: false, status: 403, code: "BOT_VERIFICATION_FAILED" };
+  }
   const verification = input.botVerification || {};
   const token = verification.provider === "recaptcha-v3" ? verification.token : "";
-  if (!deps || deps.skipRateLimit !== true) {
-    const limited = await takeCompanionRate(input, deps);
-    if (!limited.ok) return limited;
+  const identity = rateIdentity(input.clientIp, token);
+  const now = typeof input.now === "number" ? input.now : Date.now();
+  const globalMax = deps && typeof deps.noIpGlobalMax === "number" ? deps.noIpGlobalMax : RATE_LIMIT_NO_IP_GLOBAL_MAX;
+  if (identity.mode === "ip") {
+    if (!takeRateSlot(identity.key, now, store)) return { ok: false, status: 429, code: "RATE_LIMIT" };
+  } else if (!takeRateSlot(identity.key, now, store) || !takeRateSlot(NO_IP_GLOBAL_KEY, now, store, globalMax)) {
+    return { ok: false, status: 429, code: "RATE_LIMIT" };
   }
   const message = input.message;
   if (typeof message !== "string" || !message.trim() || message.length > MAX_MESSAGE_CHARS) {
     return { ok: false, status: 400, code: "MESSAGE_LENGTH" };
-  }
-  if (acceptDevBypass(verification, deps.recaptchaBypass, input.requestHost)) {
-    return { ok: true, status: 200, bypass: true };
   }
   let check = { passed: false, siteverify: siteverifyFields(null) };
   try {

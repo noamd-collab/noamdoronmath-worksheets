@@ -16,7 +16,7 @@ export const prerender = false;
 
 export const GET: APIRoute = () => {
   const bytes = decodeBase64Bytes(PREVIEW_PNG_BASE64);
-  return new Response(bytes, {
+  return new Response(new Uint8Array(bytes).buffer as ArrayBuffer, {
     status: 200,
     headers: {
       'content-type': 'image/png',

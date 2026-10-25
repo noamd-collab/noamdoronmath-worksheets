@@ -2,9 +2,9 @@ import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import { consoleMood, motionIsOff, type MotionSnapshot } from '../src/components/ramzi/ramzi-mood.ts';
 
-function snap(partial: Partial<MotionSnapshot> & { storage?: Record<string, string> }): MotionSnapshot {
-  const bag = partial.storage || {};
-  const classes = new Set(partial.classList ? [] : []);
+function snap(partial: Omit<Partial<MotionSnapshot>, 'storage'> & { storage?: Record<string, string> }): MotionSnapshot {
+  const bag: Record<string, string> = partial.storage || {};
+  const classes = new Set<string>();
   return {
     hidden: partial.hidden ?? false,
     reduced: partial.reduced ?? false,
