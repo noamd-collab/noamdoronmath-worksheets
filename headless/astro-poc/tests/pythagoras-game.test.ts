@@ -44,6 +44,17 @@ describe('eliyahu pythagoras game page', () => {
     assert.ok(ratios.length > 0);
   });
 
+  it('clips only the stray c² edge out of the after diagram', () => {
+    const figure = gameHtml.slice(gameHtml.indexOf('proofFigure(p)'), gameHtml.indexOf('proofStyle(p)'));
+    assert.match(figure, /if \(!p\) \{/);
+    assert.match(figure, /id="clipGhost"/);
+    assert.match(figure, /clip-rule="evenodd"/);
+    assert.equal(figure.includes('b_clipGhost'), false);
+    assert.match(figure, /ghostClip = ' clip-path="url\(#clipGhost\)"'/);
+    assert.equal((figure.match(/<polygon' \+ ghostClip/g) || []).length, 2);
+    assert.match(figure, /hcLab/);
+  });
+
   it('keeps the lesson animations running inside the embed', () => {
     assert.equal(page.includes('sandbox'), false);
     assert.equal(page.includes('loading="lazy"'), false);
