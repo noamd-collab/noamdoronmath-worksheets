@@ -1068,7 +1068,12 @@ function isolateRelatedLabel(rel: FamilyRelatedTopic): FamilyRelatedTopic {
 function presentRelatedTopics(data: TopicPageContent): FamilyRelatedTopic[] {
   const classified = familyRelatedTopics(data.slug, data.grade);
   const rows = classified.length ? classified : data.relatedTopics || [];
-  return rows.map(isolateRelatedLabel);
+  // Family blocks replace captured related links. Keep an explicit game link
+  // from the page JSON so it still renders on the theorem pages.
+  const extra = (data.relatedTopics || []).filter(
+    (rel) => rel.path.startsWith('/games/') && !rows.some((row) => row.path === rel.path)
+  );
+  return [...rows, ...extra].map(isolateRelatedLabel);
 }
 
 function isolateJsonLdFaq(jsonLd: Record<string, unknown>): Record<string, unknown> {

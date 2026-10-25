@@ -91,6 +91,11 @@
       "path": "/geometric-proof-grade-8",
       "label": "הוכחה גאומטרית",
       "productionHref": "https://www.noamdoronmath.co.il/geometric-proof-grade-8"
+    },
+    {
+      "path": "/games/eliyahu-pythagoras",
+      "label": "משחק משפט פיתגורס עם אליהו",
+      "productionHref": "https://www.noamdoronmath.co.il/games/eliyahu-pythagoras"
     }
   ],
   "catalogCta": {

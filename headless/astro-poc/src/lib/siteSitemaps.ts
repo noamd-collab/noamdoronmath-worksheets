@@ -8,6 +8,7 @@
 import redirectsMap from '../data/redirects.json';
 import { BLOG_SITEMAP_PATH } from './blogSitemap';
 import { PUBLIC_LESSON_PATH } from './publicLesson';
+import { PYTHAGORAS_GAME_PATH } from './pythagorasGame';
 import { REDIRECT_RULES } from './redirects';
 import { SITE_CANONICAL_ORIGIN } from './siteSeo';
 
@@ -48,7 +49,7 @@ export function listMainPagePaths(pageModuleKeys: readonly string[]): string[] {
   const paths = pathsFromAstroModuleKeys(pageModuleKeys);
   // These public HTML endpoints sit outside the top-level .astro glob. Blog
   // posts/archives stay in their existing dedicated child map, not this list.
-  for (const publicPath of [PUBLIC_LESSON_PATH, '/blog']) {
+  for (const publicPath of [PUBLIC_LESSON_PATH, PYTHAGORAS_GAME_PATH, '/blog']) {
     if (!excludePath(publicPath) && !paths.includes(publicPath)) paths.push(publicPath);
   }
   return paths.sort((a, b) => a.localeCompare(b));

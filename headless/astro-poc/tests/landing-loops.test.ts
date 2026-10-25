@@ -32,6 +32,7 @@ const read = (file: string) => readFileSync(join(root, file), 'utf8');
 const NON_LANDING_PAGES = new Set([
   '404.astro',
   'worksheets.astro',
+  'games/eliyahu-pythagoras/index.astro', // Full interactive game, not a landing-loop page.
   'dev-loops.astro',
   'loop-compare.astro',
   'hero-loops/[variant].astro',
