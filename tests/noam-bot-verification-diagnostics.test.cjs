@@ -27,6 +27,12 @@ function harness(file, options = {}) {
       if (options.executeHangHost && last && String(last.src || "").includes(options.executeHangHost)) {
         return new Promise(() => {});
       }
+      if (options.slowExecuteHost && last && String(last.src || "").includes(options.slowExecuteHost)) {
+        return new Promise(resolve => setTimeout(() => {
+          actions.push(details.action);
+          resolve("test-verification-token");
+        }, options.slowExecuteMs || 0));
+      }
       if (options.emptyTokenHost && last && String(last.src || "").includes(options.emptyTokenHost)) {
         return "";
       }
@@ -53,7 +59,11 @@ function harness(file, options = {}) {
           if (options.holdHost && String(script.src || "").includes(options.holdHost)) {
             return;
           }
-          if (options.failHost && String(script.src || "").includes(options.failHost)) {
+          if (options.failHostOnce && String(script.src || "").includes(options.failHostOnce) &&
+              !options._failedHostOnce) {
+            options._failedHostOnce = true;
+            script.onerror(new Error("host blocked"));
+          } else if (options.failHost && String(script.src || "").includes(options.failHost)) {
             script.onerror(new Error("host blocked"));
           } else if (options.scriptError) { script.onerror(options.scriptError); }
           else {
@@ -249,13 +259,63 @@ for (const file of ["noam-bot-client.js", "headless/astro-poc/public/noam-bot-cl
     assert.equal(JSON.parse(h.modelCalls()[0].request.body).botVerification.token, "test-verification-token");
   });
 
-  test(`${file}: a hanging google.com execute falls back to recaptcha.net without skipping the token`, async () => {
+  test(`${file}: a hanging google.com execute uses the remaining overall budget instead of a second widget`, async () => {
     const h = harness(file, { timeout: 150, executeHangHost: "google.com/recaptcha" });
+    await assert.rejects(h.client.postJson(`${api}/noamImageSolve`, {}), { code: "BOT_VERIFICATION_TIMEOUT" });
+    assertDiagnostic(h, "execute", "BOT_VERIFICATION_TIMEOUT");
+    assert.equal(h.scripts.length, 1);
+    assert.equal(h.modelCalls().length, 0);
+  });
+
+  test(`${file}: a slow first-host execute after the host cap still sends a token without recaptcha.net`, async () => {
+    const h = harness(file, {
+      timeout: 250,
+      slowExecuteHost: "google.com/recaptcha",
+      slowExecuteMs: 120
+    });
+    assert.equal((await h.client.postJson(`${api}/noamImageSolve`, { exerciseId: "synthetic-exercise" })).answer, "רמז");
+    assert.equal(h.scripts.length, 1);
+    assert.equal(h.scripts[0].src, "https://www.google.com/recaptcha/api.js?render=public-test-key");
+    assert.equal(JSON.parse(h.modelCalls()[0].request.body).botVerification.token, "test-verification-token");
+    assert.deepEqual(h.warnings, []);
+  });
+
+  test(`${file}: a stalled google.com ready falls back to recaptcha.net without skipping the token`, async () => {
+    const h = harness(file, {
+      timeout: 150,
+      recaptcha: {
+        ready(callback) {
+          const last = h.scripts[h.scripts.length - 1];
+          if (last && String(last.src || "").includes("google.com/recaptcha")) {
+            return;
+          }
+          callback();
+        },
+        async execute(_key, details) {
+          h.actions.push(details.action);
+          return "test-verification-token";
+        }
+      }
+    });
     assert.equal((await h.client.postJson(`${api}/noamImageSolve`, { exerciseId: "synthetic-exercise" })).answer, "רמז");
     assert.equal(h.scripts.length, 2);
     assert.equal(h.scripts[1].src, "https://www.recaptcha.net/recaptcha/api.js?render=public-test-key");
     assert.equal(JSON.parse(h.modelCalls()[0].request.body).botVerification.token, "test-verification-token");
     assert.equal(h.modelCalls().length, 1);
+    assert.deepEqual(h.warnings, []);
+  });
+
+  test(`${file}: a consecutive request after recaptcha.net success still proceeds on google.com ready`, async () => {
+    const h = harness(file, { failHostOnce: "google.com/recaptcha" });
+    assert.equal((await h.client.postJson(`${api}/noamImageSolve`, { exerciseId: "synthetic-exercise" })).answer, "רמז");
+    assert.equal(h.scripts.length, 2);
+    assert.equal(h.scripts[1].src, "https://www.recaptcha.net/recaptcha/api.js?render=public-test-key");
+    assert.equal((await h.client.postJson(`${api}/noamImageSolve`, { exerciseId: "synthetic-exercise" })).answer, "רמז");
+    assert.equal(h.scripts.length, 3);
+    assert.equal(h.scripts[2].src, "https://www.google.com/recaptcha/api.js?render=public-test-key");
+    assert.equal(h.modelCalls().length, 2);
+    assert.equal(JSON.parse(h.modelCalls()[1].request.body).botVerification.token, "test-verification-token");
+    assert.deepEqual(h.warnings, []);
   });
 
   test(`${file}: a later request reloads after execute failed on both hosts`, async () => {
