@@ -1,8 +1,8 @@
 # דוח אינטגרציה — SEO 43–49 ותיקוני Claude 52–59
 
-תאריך: 21.10.2026  
+תאריך: 25.10.2026  
 ענף אינטגרציה: `cursor/seo-claude-cutover-integration-9e0a`  
-בסיס: `headless/astro-poc-baseline` ב-`9eb9e25eec79be067f9e51e9aec93b35a149e235`  
+בסיס: `headless/astro-poc-baseline` ב-`5094bed672bd2ff087d92d54ca225e1e22bfa381` (כולל גם PR #229 ו-PR #221 מעל `9eb9e25eec79be067f9e51e9aec93b35a149e235`)  
 קומיט תיקוני האינטגרציה (לפני קומיט הדוח הזה): `e790102ccca22fbb529f6610bd842653e05e05da`  
 לא מוזג לבסיס ולא ל-`main`. ענפי המקור לא שונו. לא בוצעו release, פריסה לייצור, שינוי DNS, סודות או הגדרות ייצור.
 

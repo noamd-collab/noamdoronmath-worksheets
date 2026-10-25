@@ -541,10 +541,24 @@ function knownPaths(au) {
   }
   const pagesDir = path.join(au.root, P.pages);
   if (fs.existsSync(pagesDir)) {
-    for (const f of fs.readdirSync(pagesDir)) {
-      const m = /^([^[].*)\.(astro|ts)$/.exec(f);
-      if (m && m[1] !== 'index') paths.add('/' + m[1].replace(/\.xml$/, '.xml'));
-    }
+    const walkPages = (dir, prefix) => {
+      for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+        if (entry.name.startsWith('_') || entry.name.includes('[')) continue;
+        const full = path.join(dir, entry.name);
+        if (entry.isDirectory()) {
+          walkPages(full, `${prefix}/${entry.name}`);
+          continue;
+        }
+        const m = /^(.+)\.(astro|ts)$/.exec(entry.name);
+        if (!m) continue;
+        if (m[1] === 'index') {
+          paths.add(prefix || '/');
+        } else {
+          paths.add(`${prefix}/${m[1].replace(/\.xml$/, '.xml')}`);
+        }
+      }
+    };
+    walkPages(pagesDir, '');
   }
   const sp = path.join(au.root, P.sitePages);
   if (fs.existsSync(sp)) {
