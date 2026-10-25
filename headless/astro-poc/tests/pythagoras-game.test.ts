@@ -138,6 +138,10 @@ describe('eliyahu pythagoras game page', () => {
     assert.ok(card.includes('b·(a−b) = 8'));
     assert.ok(card.includes('exact-ring'));
     assert.ok(card.includes('c²'));
+    assert.ok(beta.includes('168,96 264,168 336,72 240,0'));
+    assert.ok(beta.includes('exact-pyth-a'));
+    assert.ok(beta.includes('exact-pyth-b'));
+    assert.ok(beta.includes('exact-pyth-c'));
     const motion = card.slice(card.indexOf('prefers-reduced-motion:reduce'));
     assert.equal(motion.includes('animation:none'), false);
     assert.match(motion, /animation-duration:3\.1s/);
