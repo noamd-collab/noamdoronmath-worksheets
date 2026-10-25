@@ -67,6 +67,8 @@
     var scriptPromise = null;
     var loadedHost = "";
     var currentScript = null;
+    var recaptchaAttempt = 0;
+    var discardedRecaptcha = null;
     var verificationStage = "config";
     var RECAPTCHA_HOSTS = [
       "https://www.google.com/recaptcha/api.js?render=",
@@ -78,7 +80,11 @@
     function timed(operation, milliseconds, timeoutCode, timeoutMessage) {
       var Controller = options.AbortController || win.AbortController;
       var controller = Controller ? new Controller() : null;
-      var state = { expired: false, signal: controller ? controller.signal : undefined };
+      var state = {
+        expired: false,
+        signal: controller ? controller.signal : undefined,
+        deadline: Date.now() + milliseconds
+      };
       return new Promise(function (resolve, reject) {
         var timer = setTimeout(function () {
           state.expired = true;
@@ -128,15 +134,23 @@
     }
 
     function clearLoadedRecaptcha() {
+      recaptchaAttempt += 1;
       scriptPromise = null;
       loadedHost = "";
-      if (currentScript) {
-        currentScript.onload = null;
-        currentScript.onerror = null;
-        if (currentScript.parentNode) { currentScript.parentNode.removeChild(currentScript); }
-        currentScript = null;
+      var script = currentScript;
+      currentScript = null;
+      if (script) {
+        script.onload = null;
+        script.onerror = null;
+        if (script.parentNode) { script.parentNode.removeChild(script); }
       }
-      try { delete win.grecaptcha; } catch (error) { win.grecaptcha = undefined; }
+      if (win.grecaptcha) { discardedRecaptcha = win.grecaptcha; }
+      try { win.grecaptcha = undefined; } catch (error) {}
+      try { delete win.grecaptcha; } catch (error) {
+        try { win.grecaptcha = undefined; } catch (ignored) {}
+      }
+      try { win.___grecaptcha_cfg = undefined; } catch (error) {}
+      try { delete win.___grecaptcha_cfg; } catch (error) {}
     }
 
     function canFallbackHost(error, state) {
@@ -146,18 +160,36 @@
         code !== "BOT_VERIFICATION_TIMEOUT" && code !== "BOT_ROUTE_UNSUPPORTED";
     }
 
-    function hostBudgetMs() {
-      return Math.max(20, Math.floor(verificationTimeout / 2));
+    function remainingMs(state) {
+      if (!state || state.expired) { return 0; }
+      return Math.max(0, (state.deadline || 0) - Date.now());
     }
 
-    function withHostDeadline(promise, state) {
+    function hostBudgetMs(state, isLastHost) {
+      var left = remainingMs(state);
+      if (left <= 0) { return 0; }
+      var slack = 20;
+      var usable = left > slack ? left - slack : left;
+      if (isLastHost) { return Math.max(20, usable); }
+      var cap = Math.max(20, Math.floor(verificationTimeout * 0.4));
+      return Math.max(20, Math.min(cap, usable));
+    }
+
+    function withHostDeadline(promise, state, isLastHost) {
       return new Promise(function (resolve, reject) {
         var done = false;
-        var timer = setTimeout(function () {
+        function fail() {
           if (done || (state && state.expired)) { return; }
           done = true;
+          clearLoadedRecaptcha();
           reject(makeError(VERIFY_MESSAGE, "BOT_CLIENT_UNAVAILABLE"));
-        }, hostBudgetMs());
+        }
+        var budget = hostBudgetMs(state, isLastHost);
+        if (budget <= 0) {
+          fail();
+          return;
+        }
+        var timer = setTimeout(fail, budget);
         promise.then(function (value) {
           if (done) { return; }
           done = true;
@@ -172,51 +204,56 @@
       });
     }
 
-    function loadRecaptcha(siteKey, hostPrefix) {
+    function loadRecaptcha(siteKey, hostPrefix, state, isLastHost) {
       if (options.loadRecaptcha) { return options.loadRecaptcha(siteKey); }
       hostPrefix = hostPrefix || RECAPTCHA_HOSTS[0];
       if (scriptPromise && loadedHost === hostPrefix) { return scriptPromise; }
       if (scriptPromise && loadedHost !== hostPrefix) { clearLoadedRecaptcha(); }
       loadedHost = hostPrefix;
+      var attempt = recaptchaAttempt;
+      var script = null;
       scriptPromise = new Promise(function (resolve, reject) {
         if (!doc || !doc.head) { reject(makeError(VERIFY_MESSAGE, "BOT_CLIENT_UNAVAILABLE")); return; }
         var finished = false;
+        function dropScript() {
+          if (!script) { return; }
+          script.onload = null;
+          script.onerror = null;
+          if (script.parentNode) { script.parentNode.removeChild(script); }
+          if (currentScript === script) { currentScript = null; }
+        }
         var timer = setTimeout(function () {
-          if (finished) { return; }
+          if (finished || attempt !== recaptchaAttempt) { return; }
           finished = true;
-          if (currentScript) {
-            currentScript.onload = null;
-            currentScript.onerror = null;
-            if (currentScript.parentNode) { currentScript.parentNode.removeChild(currentScript); }
-            currentScript = null;
-          }
+          dropScript();
           reject(makeError(VERIFY_MESSAGE, "BOT_CLIENT_UNAVAILABLE"));
-        }, hostBudgetMs());
+        }, hostBudgetMs(state, isLastHost));
         function finish(ok) {
-          if (finished) { return; }
+          if (finished || attempt !== recaptchaAttempt) { return; }
           finished = true;
           clearTimeout(timer);
-          if (currentScript) {
-            currentScript.onload = null;
-            currentScript.onerror = null;
+          if (script) {
+            script.onload = null;
+            script.onerror = null;
           }
           // api.js can finish before Google's secondary bundle adds execute.
-          if (ok && win.grecaptcha && typeof win.grecaptcha.ready === "function") {
-            resolve(win.grecaptcha);
+          var api = win.grecaptcha;
+          if (ok && api && api !== discardedRecaptcha && typeof api.ready === "function") {
+            resolve(api);
             return;
           }
-          if (currentScript && currentScript.parentNode) { currentScript.parentNode.removeChild(currentScript); }
-          currentScript = null;
+          dropScript();
           reject(makeError(VERIFY_MESSAGE, "BOT_CLIENT_UNAVAILABLE"));
         }
-        currentScript = doc.createElement("script");
-        currentScript.src = hostPrefix + encodeURIComponent(siteKey);
-        currentScript.async = true;
-        currentScript.onload = function () { finish(true); };
-        currentScript.onerror = function () { finish(false); };
-        doc.head.appendChild(currentScript);
+        script = doc.createElement("script");
+        currentScript = script;
+        script.src = hostPrefix + encodeURIComponent(siteKey);
+        script.async = true;
+        script.onload = function () { finish(true); };
+        script.onerror = function () { finish(false); };
+        doc.head.appendChild(script);
       }).catch(function (error) {
-        if (loadedHost === hostPrefix) {
+        if (attempt === recaptchaAttempt && loadedHost === hostPrefix) {
           scriptPromise = null;
           loadedHost = "";
         }
@@ -225,11 +262,17 @@
       return scriptPromise;
     }
 
-    function executeRecaptcha(recaptcha, siteKey, action, state) {
+    function executeRecaptcha(recaptcha, siteKey, action, state, attempt) {
       verificationStage = "ready";
       return new Promise(function (resolve, reject) {
         recaptcha.ready(function () {
+          if (attempt !== recaptchaAttempt || (state && state.expired)) {
+            return;
+          }
           Promise.resolve().then(function () {
+            if (attempt !== recaptchaAttempt) {
+              return;
+            }
             checkActive(state);
             if (typeof recaptcha.execute !== "function") {
               throw makeError(VERIFY_MESSAGE, "BOT_CLIENT_UNAVAILABLE");
@@ -238,16 +281,24 @@
             // Execute once per AI request; tokens are never cached.
             verificationStage = "execute";
             return recaptcha.execute(siteKey, { action: action });
-          }).then(resolve, reject);
+          }).then(function (token) {
+            if (attempt !== recaptchaAttempt || (state && state.expired)) {
+              return;
+            }
+            resolve(token);
+          }, function (error) {
+            if (attempt !== recaptchaAttempt) { return; }
+            reject(error);
+          });
         });
       });
     }
 
-    function tokenFromHost(siteKey, action, hostPrefix, state) {
+    function tokenFromHost(siteKey, action, hostPrefix, state, isLastHost) {
       verificationStage = "script";
-      return loadRecaptcha(siteKey, hostPrefix).then(function (recaptcha) {
+      return loadRecaptcha(siteKey, hostPrefix, state, isLastHost).then(function (recaptcha) {
         checkActive(state);
-        return executeRecaptcha(recaptcha, siteKey, action, state);
+        return executeRecaptcha(recaptcha, siteKey, action, state, recaptchaAttempt);
       }).then(function (token) {
         checkActive(state);
         verificationStage = "token";
@@ -266,11 +317,13 @@
           var hostIndex = 0;
           function attemptHost() {
             checkActive(state);
+            var isLastHost = hostIndex >= RECAPTCHA_HOSTS.length - 1;
             return withHostDeadline(
-              tokenFromHost(config.siteKey, action, RECAPTCHA_HOSTS[hostIndex], state),
-              state
+              tokenFromHost(config.siteKey, action, RECAPTCHA_HOSTS[hostIndex], state, isLastHost),
+              state,
+              isLastHost
             ).catch(function (error) {
-                if (!canFallbackHost(error, state) || hostIndex >= RECAPTCHA_HOSTS.length - 1) {
+                if (!canFallbackHost(error, state) || isLastHost) {
                   throw error;
                 }
                 hostIndex += 1;

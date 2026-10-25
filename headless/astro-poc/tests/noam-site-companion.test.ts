@@ -506,7 +506,7 @@ describe('Noam AI starters and client guard', () => {
     assert.ok(client.includes('font-family:" + SITE_FONT + "'));
     assert.ok(client.includes('#noam-site-companion-answer,#noam-site-companion-details,#noam-site-companion-chips{font-family:" + SITE_FONT + "}"'));
     assert.ok(client.includes('#noam-site-companion,#noam-site-companion *,#noam-site-companion-panel,#noam-site-companion-panel *{font-family:" + SITE_FONT + " !important}"'));
-    assert.ok(client.includes('noam-bot-client.js?v=20261025-host-execute-fallback'));
+    assert.ok(client.includes('noam-bot-client.js?v=20261025-host-attempt-guard'));
     assert.ok(client.includes('function answerKind(result)'));
     assert.ok(client.includes('data-answer-kind'));
     assert.ok(client.includes('data-response-error'));

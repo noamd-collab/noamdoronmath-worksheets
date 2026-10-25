@@ -124,7 +124,7 @@ function ensureTeacherBotClient() {
       return;
     }
     const loader = document.createElement('script');
-    loader.src = '/noam-bot-client.js?v=20261025-host-execute-fallback';
+    loader.src = '/noam-bot-client.js?v=20261025-host-attempt-guard';
     loader.async = true;
     loader.onload = () => finish(true);
     loader.onerror = () => finish(false);
