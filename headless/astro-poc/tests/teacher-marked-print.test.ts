@@ -724,7 +724,8 @@ describe('teacher catalog picker', () => {
     edgeInk(14, 36, 30, 46);
     const edgeBitmap = { width: trimW, height: trimH, getContext: () => ({ getImageData: () => ({ data: edgeData }) }) };
     const noLetter = trimApi.trimPieceBox({ kind: 'answer', page: 12, box: { x: 0, y: 0, w: 1, h: 0.2 } }, edgeBitmap);
-    assert.ok(noLetter.box.x > 0.1, String(noLetter.box.x));
+    assert.ok(noLetter.box.x < 0.05, 'the edge token stays in the answer ' + String(noLetter.box.x));
+    assert.ok(noLetter.box.x + noLetter.box.w > 0.85, 'the rest of the answer stays ' + String(noLetter.box.w));
     const sheet = preview.slice(preview.indexOf('async function paintAllShort'), preview.indexOf('function markedHTML'));
     assert.equal(sheet.includes('headerCrop'), false);
     assert.match(sheet, /paintWorksheet/);
@@ -1262,25 +1263,26 @@ describe('teacher catalog picker', () => {
     assert.ok(scale(40, 12) <= 1);
     assert.ok(Math.abs(scale(40, 12) - 72 / 12) > 1);
     const flowed = pack.flowAnswers([
-      { slice: { kind: 'answer' }, dh: 28, dw: 220 },
-      { slice: { kind: 'answer' }, dh: 30, dw: 240 },
-      { slice: { kind: 'answer' }, dh: 26, dw: 200 },
-      { slice: { kind: 'answer' }, dh: 40, dw: 800 },
+      { slice: { kind: 'answer', gap: 8 }, dh: 28, dw: 220 },
+      { slice: { kind: 'answer', gap: 8 }, dh: 30, dw: 240 },
+      { slice: { kind: 'answer', gap: 8 }, dh: 26, dw: 200 },
+      { slice: { kind: 'answer', gap: 8 }, dh: 40, dw: 800 },
     ]);
-    assert.equal(flowed[0].slice.kind, 'answer-row');
-    assert.equal(flowed[0].cells && flowed[0].cells.length, 3);
-    assert.equal(flowed[0].dh, 30);
-    assert.equal(flowed[1].cells && flowed[1].cells.length, 1);
+    assert.equal(flowed.length, 4);
+    assert.ok(flowed.every((row) => row.slice.kind === 'answer-row' && row.cells && row.cells.length === 1));
+    assert.equal(flowed[0].dh, 28);
+    assert.equal(flowed[3].dh, 40);
     const natural = pack.packWorksheet([
-      { slice: { kind: 'row', gap: 4 }, dh: 1200 },
+      { slice: { kind: 'row', gap: 4 }, dh: 1100 },
       { slice: { kind: 'answers-head', gap: 8 }, dh: 34 },
-      { slice: { kind: 'answer', gap: 4 }, dh: 28, dw: 220 },
-      { slice: { kind: 'answer', gap: 4 }, dh: 30, dw: 240 },
-      { slice: { kind: 'answer', gap: 4 }, dh: 26, dw: 200 },
+      { slice: { kind: 'answer', gap: 8 }, dh: 28, dw: 220 },
+      { slice: { kind: 'answer', gap: 8 }, dh: 30, dw: 240 },
+      { slice: { kind: 'answer', gap: 8 }, dh: 26, dw: 200 },
     ], 0);
     assert.equal(natural.length, 1);
-    const row = natural[0].items.find((item) => item.slice.kind === 'answer-row');
-    assert.ok(row && row.cells && row.cells.length === 3);
+    const rows = natural[0].items.filter((item) => item.slice.kind === 'answer-row');
+    assert.equal(rows.length, 3);
+    assert.ok(rows.every((row) => row.cells && row.cells.length === 1));
     // An answer key is never shrunk to join the previous page.
     const pulled = pack.packWorksheet([
       { slice: { kind: 'row', gap: 4 }, dh: 1000 },

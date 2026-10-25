@@ -88,6 +88,25 @@ const sheets = new Map();
 const library = new Map();
 const pdfDocs = new Map();
 const pageBitmaps = new Map();
+const cropManifests = new Map();
+
+async function loadCropManifest(pdfId) {
+  if (!pdfId) return null;
+  if (cropManifests.has(pdfId)) return cropManifests.get(pdfId);
+  try {
+    const response = await fetch(new URL('./crop-manifest/' + pdfId + '.json', import.meta.url));
+    if (!response.ok) {
+      cropManifests.set(pdfId, null);
+      return null;
+    }
+    const data = await response.json();
+    cropManifests.set(pdfId, data);
+    return data;
+  } catch (error) {
+    cropManifests.set(pdfId, null);
+    return null;
+  }
+}
 let state = {
   scenario: 'first',
   style: 'scaffold',
@@ -2113,7 +2132,7 @@ function answerBox(items, questionNumber, part) {
           slot = {
             left: 0,
             right: 0,
-            lineBottom: Math.max(label.y - descent, continuationTop + 0.6),
+            lineBottom: Math.max(label.y - descent, continuationTop + 1.2),
             lineTop: label.y + Math.max(label.h || 0, 11) + 2,
           };
         }
@@ -2351,7 +2370,44 @@ function clipForeignLabels(items, box, part) {
   return { ...box, x: x0, y: y0, w: x1 - x0, h: y1 - y0 };
 }
 
+function manifestAnswerList(pages, question) {
+  const found = [];
+  (pages || []).forEach((sheet) => {
+    const manifest = sheet && sheet.manifest;
+    const entry = manifest && manifest.pages && manifest.pages[String(sheet.page)];
+    (entry && entry.answers || []).forEach((box) => {
+      if (Number(box.q) !== Number(question.q) || !box.part) return;
+      found.push({
+        page: sheet.page,
+        part: box.part,
+        box: { x: box.x, y: box.y, w: box.w, h: box.h, locked: true },
+      });
+    });
+  });
+  return found;
+}
+
+function manifestAnswer(pages, question) {
+  const part = question.part || '';
+  if (!part) return null;
+  for (let index = 0; index < pages.length; index += 1) {
+    const sheet = pages[index];
+    const manifest = sheet && sheet.manifest;
+    const entry = manifest && manifest.pages && manifest.pages[String(sheet.page)];
+    if (!entry || !entry.answers) continue;
+    const hit = entry.answers.find((box) => Number(box.q) === Number(question.q) && box.part === part);
+    if (!hit) continue;
+    return {
+      page: sheet.page,
+      box: { x: hit.x, y: hit.y, w: hit.w, h: hit.h, locked: true },
+    };
+  }
+  return null;
+}
+
 function answerSliceFor(pages, question) {
+  const fromManifest = manifestAnswer(pages, question);
+  if (fromManifest) return fromManifest;
   const part = question.part || '';
   for (let index = 0; index < pages.length; index += 1) {
     const sheet = pages[index];
@@ -2429,6 +2485,15 @@ function answerSliceFor(pages, question) {
   return null;
 }
 
+function answerRowGap(prev) {
+  if (!prev) return 10;
+  // The heading must clear the first answer. A two-line answer needs air above the next label.
+  if (prev.kind === 'answers-head') return 26;
+  const height = prev.box && prev.box.h;
+  if (height > 0.022) return 16;
+  return 10;
+}
+
 async function answerSlices(chosen) {
   const ordered = worksheetOrder(chosen);
   const slices = [{ kind: 'answers-head', text: 'תשובות', gap: 20, block: 'answers' }];
@@ -2442,7 +2507,29 @@ async function answerSlices(chosen) {
     let pages = source ? cache.get(source.pdfId) : [];
     if (source && !cache.has(source.pdfId)) {
       pages = await answerPages(source);
+      const manifest = await loadCropManifest(source.pdfId);
+      (pages || []).forEach((sheet) => {
+        sheet.manifest = manifest;
+      });
       cache.set(source.pdfId, pages);
+    }
+    // A question with no part letter still has א ב ג ד on the key. Each one is its own row.
+    const listed = !question.part && pages && pages.length ? manifestAnswerList(pages, question) : [];
+    if (listed.length > 1) {
+      listed.forEach((hit) => {
+        slices.push({
+          kind: 'answer',
+          text: label + ' סעיף ' + hit.part,
+          page: hit.page,
+          box: hit.box,
+          gap: answerRowGap(slices[slices.length - 1]),
+          block: 'answers',
+          source,
+          questionId: String(question.q) + hit.part,
+          clip: sourceClip(source, hit.page, 'answer'),
+        });
+      });
+      continue;
     }
     const found = pages && pages.length ? answerSliceFor(pages, question) : null;
     if (!found) {
@@ -2458,7 +2545,7 @@ async function answerSlices(chosen) {
         text: label,
         page: found.page,
         box: found.box,
-        gap: 8,
+        gap: answerRowGap(slices[slices.length - 1]),
         block: 'answers',
         source,
         questionId: question.id,
@@ -2738,6 +2825,8 @@ function answerEdgeSpan(bitmap, box, yTop, yBot) {
 function trimPieceBox(slice, bitmap) {
   const box = slice.box;
   if (!box || !bitmap) return slice;
+  // A manifest box is already the part's own glyphs and drawings.
+  if (box.locked || box.whole) return slice;
   let y = box.y;
   let y2 = box.y + box.h;
   const source = slice.source;
@@ -3187,9 +3276,9 @@ function answerCellSize(text, naturalW, naturalH) {
   let stack = false;
   let dw = labelW + gap + imageW;
   let dh = Math.max(18, labelBaseline + 4, imageY + imageH);
-  if (dw > maxW * 0.72) {
+  if (dw > maxW) {
     stack = true;
-    dw = Math.min(maxW, Math.max(labelW, imageW));
+    dw = maxW;
     dh = Math.max(dh, 18 + imageH);
   }
   return { scale, imageW, imageH, imageY, labelBaseline, labelW, dw, dh, stack };
@@ -3911,7 +4000,10 @@ function layoutQuestionCrops(model) {
   rows.forEach((row) => noteHeader(row.y, row.text));
   items.forEach((item) => noteHeader(item.y, item.str));
   const keepFigure = (figure) => {
-    if (!figure || figure.y1 - figure.y0 < 0.018 || figure.x1 - figure.x0 < 0.02) return false;
+    if (!figure) return false;
+    const minH = figure.whole ? 0.004 : 0.018;
+    const minW = figure.whole ? 0.012 : 0.02;
+    if (figure.y1 - figure.y0 < minH || figure.x1 - figure.x0 < minW) return false;
     if (headerBottom && figure.y1 < headerBottom + 0.008) return false;
     // A drawing that ends in the previous question is that question's, not a shared figure.
     if (earlierEnd > 0.02 && figure.y1 <= earlierEnd + 0.008) return false;
@@ -3973,9 +4065,11 @@ function layoutQuestionCrops(model) {
     let y1 = y0 + h;
     // The next question's number can sit beside a drawing. Clip the text, not the ink.
     const beside = segment === 'figure' && y0 < ceiling - 0.008 && y1 > ceiling + 0.006;
-    if (!beside) y1 = Math.min(ceiling, y1);
+    // A manifest drawing is already one object. Clipping it to the next question
+    // number opens the shape and leaves the cut piece as a floating stub.
+    if (!beside && !(figure && figure.whole)) y1 = Math.min(ceiling, y1);
     // Running בס״ד sits in the top margin. A tall crop must not start inside it.
-    if (y0 < 0.046 && y1 > 0.08) y0 = 0.046;
+    if (!(figure && figure.whole) && y0 < 0.046 && y1 > 0.08) y0 = 0.046;
     if (headerBottom && y0 < headerBottom) {
       // Padding above a drawing must not pull in the title bar under the header.
       if (y1 < headerBottom + 0.012) return;
@@ -3985,7 +4079,7 @@ function layoutQuestionCrops(model) {
       if (y0 >= footerTop - 0.006) return;
       y1 = footerTop;
     }
-    if (y1 - y0 < 0.008) return;
+    if (y1 - y0 < (figure && figure.whole ? 0.004 : 0.008)) return;
     let x0 = Math.max(0, x);
     let width = w;
     if (segment !== 'figure' && x0 < 0.05) {
@@ -4019,6 +4113,7 @@ function layoutQuestionCrops(model) {
       segment,
     };
     if (figure) box.figure = figure;
+    if (figure && figure.whole) box.whole = true;
     const kind = segment === 'stem' ? 'stem' : 'row';
     segments.push({ kind, page, box, figures });
   };
@@ -4208,6 +4303,11 @@ function layoutQuestionCrops(model) {
   }
   const drawnFigures = [];
   figures.forEach((figure) => {
+    if (figure.whole) {
+      drawnFigures.push(figure);
+      pushBox('figure', Math.max(0, figure.x0 - 0.004), Math.max(0, figure.y0 - 0.006), figure.x1 - figure.x0 + 0.008, figure.y1 - figure.y0 + 0.012, figure);
+      return;
+    }
     // A long line that starts inside a blob and keeps going is the question, not the drawing.
     let drawnRight = figure.x1;
     let contentRight = figure.x1;
@@ -4324,7 +4424,14 @@ function layoutQuestionCrops(model) {
   return segments;
 }
 
-function rebuildQuestionGroup(group, texts) {
+function manifestPage(manifests, source, page) {
+  if (!manifests || !source || !source.pdfId) return null;
+  const manifest = manifests.get(source.pdfId);
+  if (!manifest || !manifest.pages) return null;
+  return manifest.pages[String(page)] || null;
+}
+
+function rebuildQuestionGroup(group, texts, manifests) {
   const sample = group[0];
   const slice = sample && sample.slice;
   if (!slice || !slice.source || !sample.bitmap) return null;
@@ -4415,7 +4522,17 @@ function rebuildQuestionGroup(group, texts) {
   const headerBottom = header && Number(header.page) === Number(page) ? (header.y || 0) + (header.h || 0) : 0;
   const footerTop = sourceFooterTop(slice.source, pageItems);
   if (searchBot > footerTop) searchBot = footerTop;
-  const figures = leftFigureBoxes(sample.bitmap, Math.max(0, searchTop - 0.008), Math.min(figureScanBot, footerTop))
+  const manifestEntry = manifestPage(manifests, slice.source, page);
+  const manifestFigures = manifestEntry
+    ? (manifestEntry.figures || []).concat(manifestEntry.callouts || []).filter((figure) => Number(figure.q) === q).map((figure) => ({
+      x0: figure.x,
+      x1: figure.x + figure.w,
+      y0: figure.y,
+      y1: figure.y + figure.h,
+      whole: true,
+    }))
+    : null;
+  const figures = manifestFigures || leftFigureBoxes(sample.bitmap, Math.max(0, searchTop - 0.008), Math.min(figureScanBot, footerTop))
     .filter((figure) => !figureIsSentence(figure, rows))
     .filter((figure) => {
       if (earlierEnd > 0.02 && figure.y1 <= earlierEnd + 0.008) return false;
@@ -4438,20 +4555,22 @@ function rebuildQuestionGroup(group, texts) {
       return tail || yCap - figure.y0 < 0.02 ? null : { ...figure, y0: figure.y0, y1: yCap };
     })
     .filter((figure) => figure && figure.y1 - figure.y0 >= 0.02);
-  onPage.forEach((part) => {
-    const fig = part.figure;
-    if (!fig || !(fig.y1 > fig.y0 + 0.018) || !(fig.x1 > fig.x0 + 0.02)) return;
-    let replaced = false;
-    figures.forEach((have, index) => {
-      const overlapX = Math.min(have.x1, fig.x1) - Math.max(have.x0, fig.x0);
-      const overlapY = Math.min(have.y1, fig.y1) - Math.max(have.y0, fig.y0);
-      if (!(overlapX > 0.015 && overlapY > 0.015)) return;
-      replaced = true;
-      // The tagged box is the drawing. Keep a bottom the next question's number had cut off.
-      if (fig.y1 > have.y1 + 0.006) figures[index] = { ...have, y1: fig.y1, y0: Math.min(have.y0, fig.y0) };
+  if (!manifestFigures) {
+    onPage.forEach((part) => {
+      const fig = part.figure;
+      if (!fig || !(fig.y1 > fig.y0 + 0.018) || !(fig.x1 > fig.x0 + 0.02)) return;
+      let replaced = false;
+      figures.forEach((have, index) => {
+        const overlapX = Math.min(have.x1, fig.x1) - Math.max(have.x0, fig.x0);
+        const overlapY = Math.min(have.y1, fig.y1) - Math.max(have.y0, fig.y0);
+        if (!(overlapX > 0.015 && overlapY > 0.015)) return;
+        replaced = true;
+        // The tagged box is the drawing. Keep a bottom the next question's number had cut off.
+        if (fig.y1 > have.y1 + 0.006) figures[index] = { ...have, y1: fig.y1, y0: Math.min(have.y0, fig.y0) };
+      });
+      if (!replaced) figures.push({ x0: fig.x0, x1: fig.x1, y0: fig.y0, y1: fig.y1 });
     });
-    if (!replaced) figures.push({ x0: fig.x0, x1: fig.x1, y0: fig.y0, y1: fig.y1 });
-  });
+  }
   const labels = partMarks(pageItems);
   const boxes = layoutQuestionCrops({
     page,
@@ -4608,7 +4727,7 @@ function polishQuestionCrops(measured, texts) {
   });
 }
 
-function enrichQuestionCrops(measured, texts) {
+function enrichQuestionCrops(measured, texts, manifests) {
   const out = [];
   let index = 0;
   while (index < measured.length) {
@@ -4630,7 +4749,7 @@ function enrichQuestionCrops(measured, texts) {
       end += 1;
     }
     const group = measured.slice(index, end);
-    const replaced = rebuildQuestionGroup(group, texts);
+    const replaced = rebuildQuestionGroup(group, texts, manifests);
     if (replaced) replaced.forEach((made) => out.push(made));
     else group.forEach((made) => out.push(made));
     index = end;
@@ -4669,7 +4788,7 @@ async function measureWorksheet(slices) {
   for (let index = 0; index < slices.length; index += 1) {
     const slice = slices[index];
     if (slice.kind === 'level' || slice.kind === 'answers-head') {
-      measured.push({ slice, dh: 34 });
+      measured.push({ slice, dh: slice.kind === 'answers-head' ? 46 : 34 });
     } else if (slice.kind === 'missing') {
       measured.push({ slice, dh: 26 });
     } else if (slice.kind === 'answer' || slice.kind === 'row' || slice.kind === 'stem') {
@@ -4718,7 +4837,13 @@ async function measureWorksheet(slices) {
       texts.set(key, []);
     }
   }
-  const polished = polishQuestionCrops(enrichQuestionCrops(measured, texts), texts);
+  const manifests = new Map();
+  for (let index = 0; index < measured.length; index += 1) {
+    const source = measured[index] && measured[index].slice && measured[index].slice.source;
+    if (!source || !source.pdfId || manifests.has(source.pdfId)) continue;
+    manifests.set(source.pdfId, await loadCropManifest(source.pdfId));
+  }
+  const polished = polishQuestionCrops(enrichQuestionCrops(measured, texts, manifests), texts);
   bakeMeasuredClips(polished);
   releasePageBitmaps();
   return polished;
@@ -4892,7 +5017,7 @@ function bakeMeasuredClips(measured) {
     canvas.height = sh;
     const ctx = canvas.getContext('2d');
     ctx.drawImage(bitmap, sx, sy, sw, sh, 0, 0, sw, sh);
-    if (bitmap.getContext) {
+    if (bitmap.getContext && !box.locked && !box.whole) {
       let dashes = dashCache.get(bitmap);
       if (!dashes) {
         try {
@@ -4954,33 +5079,20 @@ function measureNote(note) {
 }
 
 function flowAnswers(items) {
-  const maxW = 1000 - 56;
-  const gutter = 14;
   const out = [];
-  let index = 0;
-  while (index < items.length) {
-    const item = items[index];
+  items.forEach((item) => {
     if (!item.slice || item.slice.kind !== 'answer' || !(item.dw > 0)) {
       out.push(item);
-      index += 1;
-      continue;
+      return;
     }
-    const cells = [];
-    let used = 0;
-    while (index < items.length && items[index].slice && items[index].slice.kind === 'answer' && items[index].dw > 0) {
-      const next = items[index];
-      const add = (cells.length ? gutter : 0) + next.dw;
-      if (cells.length && used + add > maxW) break;
-      cells.push(next);
-      used += add;
-      index += 1;
-    }
+    // Each answer keeps its own key line. A 3px gap on an ink-tight crop is
+    // about 56–60 device pixels at 300 DPI, so a short leftover fits the page above.
     out.push({
-      slice: { kind: 'answer-row', gap: 4, block: 'answers' },
-      dh: Math.max.apply(null, cells.map((cell) => cell.dh)),
-      cells,
+      slice: { kind: 'answer-row', gap: 3, block: 'answers' },
+      dh: item.dh,
+      cells: [item],
     });
-  }
+  });
   return out;
 }
 
@@ -5030,9 +5142,16 @@ function packWorksheet(measured, noteHeight) {
     }
     if (!page.length && top > CONT_TOP && !fits(page, chunk, top) && fits(page, chunk, CONT_TOP)) top = CONT_TOP;
     if (!fits(page, chunk, top)) {
-      const lead = page.length && chunk.length ? (chunk[0].slice.gap || 0) : 0;
-      const room = PAGE_H - top - FOOT - contentHeight(page) - lead;
-      chunk = scalePiece(chunk, Math.max(1, room));
+      const answerChunk = chunk.length && chunk.every((item) => item.slice && (item.slice.kind === 'answer' || item.slice.kind === 'answer-row' || item.slice.kind === 'missing' || item.slice.kind === 'answers-head'));
+      if (answerChunk) {
+        if (page.length) pages.push({ top, items: page });
+        page = [];
+        top = CONT_TOP;
+      } else {
+        const lead = page.length && chunk.length ? (chunk[0].slice.gap || 0) : 0;
+        const room = PAGE_H - top - FOOT - contentHeight(page) - lead;
+        chunk = scalePiece(chunk, Math.max(1, room));
+      }
     }
     page = page.concat(chunk);
   });
@@ -5187,6 +5306,27 @@ function clearGreyRules(ctx, width, height) {
     }
   }
   if (changed) ctx.putImageData(image, 0, 0);
+}
+
+function coverWholeFigures(ctx, item, destX, destY, destW, destH) {
+  const box = item && item.slice && item.slice.box;
+  const figures = item && item.slice && item.slice.figures;
+  if (!box || box.segment === 'figure' || !figures || !figures.length || !(box.w > 0) || !(box.h > 0)) return;
+  ctx.fillStyle = '#fff';
+  figures.forEach((figure) => {
+    if (!figure || !figure.whole) return;
+    const x0 = Math.max(box.x, figure.x0);
+    const y0 = Math.max(box.y, figure.y0);
+    const x1 = Math.min(box.x + box.w, figure.x1);
+    const y1 = Math.min(box.y + box.h, figure.y1);
+    if (x1 - x0 < 0.004 || y1 - y0 < 0.004) return;
+    ctx.fillRect(
+      destX + ((x0 - box.x) / box.w) * destW,
+      destY + ((y0 - box.y) / box.h) * destH,
+      ((x1 - x0) / box.w) * destW,
+      ((y1 - y0) / box.h) * destH,
+    );
+  });
 }
 
 function answerInkCanvas(bitmap, sx, sy, sw, sh, box) {
@@ -5408,6 +5548,7 @@ function paintWorksheetPage(canvas, page, index, count, title, note) {
       ctx.drawImage(item.bitmap, sx, sy, sw, sh, destX, y, destW, item.dh);
       printTraceElement(item.slice, index, destX * scale, y * scale, destW * scale, item.dh * scale, sw, sh);
       if (!item.slice.box.segment) fillSliceMasks(ctx, item.slice.box, y, item.dh, destW);
+      coverWholeFigures(ctx, item, destX, y, destW, item.dh);
     }
     y += item.dh;
   });
