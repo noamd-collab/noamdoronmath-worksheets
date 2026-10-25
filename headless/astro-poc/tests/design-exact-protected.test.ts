@@ -185,9 +185,9 @@ describe('exact-design protected live-baseline boundaries', () => {
     // 2026-10-23: local constructed visuals get the same enlarge control as
     // generated diagrams; Pythagoras "הריבוע של" stays numeric. Cursor/cache
     // query only. No auth, keys, score, worker or storage changes.
-    // 2026-10-25: bot-client cache query for host-attempt isolation on fallback.
+    // 2026-10-25: bot-client cache query for execute-ready host guard.
     // Token, siteverify, keys, score, worker and storage unchanged.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), 'f7ed14a74ac749c4bda8a30ba2f7dc5087a5d1b3a7c7da4f188cd6b303407b3c');
+    assert.equal(sha256(JSON.stringify(releasedScripts)), '6f82874b2b4baccc133b1d63f040cc4952cfe5fa257ef94ac1703b48ee622a35');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {
