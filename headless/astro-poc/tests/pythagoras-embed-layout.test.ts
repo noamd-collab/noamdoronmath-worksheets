@@ -94,5 +94,6 @@ it('fits every game step on desktop and phone, including later content growth an
   } finally {
     await browser?.close();
     server.close();
+    server.closeAllConnections();
   }
 });
