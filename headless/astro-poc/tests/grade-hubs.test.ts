@@ -181,7 +181,13 @@ describe('grade hub routes (HEADLESS-MIGRATION-16/17)', () => {
     );
 
     const reversed = orderQuadrilateralLinks(
-      [...sectionQuads].reverse().concat([{ label: 'דמיון משולשים', path: '/similar-triangles-grade-9' }]),
+      [...sectionQuads].reverse().concat([
+        {
+          label: 'דמיון משולשים',
+          path: '/similar-triangles-grade-9',
+          productionHref: 'https://www.noamdoronmath.co.il/similar-triangles-grade-9',
+        },
+      ]),
       titles
     );
     assert.deepEqual(

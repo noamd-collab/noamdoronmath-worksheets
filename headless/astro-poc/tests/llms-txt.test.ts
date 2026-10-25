@@ -1,8 +1,12 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { describe, it } from 'node:test';
+import { renderLlmsTxt } from '../src/lib/llmsTxt';
+import { PUBLIC_LESSON_PATH } from '../src/lib/publicLesson';
+import { PYTHAGORAS_GAME_PATH } from '../src/lib/pythagorasGame';
 const content=readFileSync('src/data/site-llms.md','utf8');
 const route=readFileSync('src/pages/llms.txt.ts','utf8');
+const served=renderLlmsTxt(content);
 describe('educational llms.txt',()=>{
  it('names the real author/site rather than a platform prototype',()=>{
   assert.match(content,/Noam Doron Math — נועם דורון מתמטיקה/);
@@ -26,8 +30,17 @@ describe('educational llms.txt',()=>{
  });
  it('bundles text rather than accessing files or changing crawler policy at runtime',()=>{
   assert.match(route,/site-llms\.md\?raw/);
-  assert.match(route,/text\/plain; charset=utf-8/);
+  assert.match(route,/renderLlmsTxt/);
+  assert.match(route,/text\/plain; charset=utf-8/i);
   assert.doesNotMatch(route,/node:fs|readFile|GPTBot|Google-Extended|robotsContent/);
   assert.ok(content.endsWith('\n'));
+ });
+ it('keeps every live-guide URL and adds the 233 Pythagoras game path',()=>{
+  const liveLinks=[...content.matchAll(/\]\((https:[^)]+)\)/g)].map(x=>x[1]);
+  assert.ok(liveLinks.length>10);
+  for (const link of liveLinks) assert.ok(served.includes(link), link);
+  assert.match(served, new RegExp(`${PYTHAGORAS_GAME_PATH.replaceAll('/','\\/')}`));
+  assert.match(served, new RegExp(`${PUBLIC_LESSON_PATH.replaceAll('/','\\/')}`));
+  assert.equal(served.startsWith(content.trimEnd()), true);
  });
 });

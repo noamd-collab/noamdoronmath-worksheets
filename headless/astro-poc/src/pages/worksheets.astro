@@ -5,6 +5,7 @@ import { loadCatalog } from '../lib/catalog/loadCatalog';
 import { topicPageHrefByCatalogTopic } from '../lib/elementaryTopicNav';
 import { familyOf, resolveWorksheetsGrade, worksheetsHref, type GradeNum } from '../lib/grades';
 import { parseWorksheetsUrlState } from '../lib/worksheetsUrlState';
+import { educationalLevelForGrade, learningResourceJsonLd } from '../lib/structuredData';
 
 export const prerender = false;
 
@@ -17,6 +18,8 @@ const invalid = parsed.invalid || !parsed.grade;
 const grade = parsed.grade;
 const gradeEntry = !invalid && grade ? catalog.grades.find((g) => g.grade === grade) : undefined;
 const missingEntry = !invalid && !!grade && !gradeEntry;
+// The explicit error page keeps its copy, but answers 404 so `?grade=12` is not a soft 404.
+if (invalid || missingEntry) Astro.response.status = 404;
 const familyGrades =
   gradeEntry && grade
     ? familyOf(grade).map((g) => {
@@ -75,9 +78,30 @@ const initialUrlState = {
   ) : (
     <BaseLayout
       title={`דפי עבודה · ${gradeEntry!.label}`}
+      crumbs={[
+        { name: 'בית', path: '/' },
+        { name: 'דפי עבודה', path: '/worksheets' },
+        { name: gradeEntry!.label, path: `/worksheets?grade=${grade}` },
+      ]}
+      seoPath={
+        highlightTopicId
+          ? `/worksheets?grade=${grade}&topic=${highlightTopicId}`
+          : `/worksheets?grade=${grade}`
+      }
       activeNav="worksheets"
       compactBrand={true}
     >
+      <script
+        type="application/ld+json"
+        set:html={JSON.stringify(
+          learningResourceJsonLd({
+            name: `דפי עבודה · ${gradeEntry!.label}`,
+            path: `/worksheets?grade=${grade}`,
+            description: `דפי עבודה במתמטיקה ל${gradeEntry!.label}, בחינם וללא הרשמה.`,
+            educationalLevel: educationalLevelForGrade(grade!),
+          })
+        )}
+      />
       <main>
         <WorksheetsClient
           client:load

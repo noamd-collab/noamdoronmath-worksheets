@@ -32,15 +32,35 @@ import {
 import { starterLinksFor } from '../../../noam-ai/site-companion/starters.js';
 import { runCompanionTurn } from '../../../noam-ai/site-companion/endpoint.js';
 import { didacticSequence } from '../../../noam-ai/site-companion/topic-order.js';
+import type { CatalogV1 } from '../src/lib/catalog/types.ts';
 import { loadGradeHub } from '../src/lib/gradeHubs.ts';
 import { bareTopicTitle, catalogQuadrilateralTitles } from '../src/lib/gradeHubQuadrilaterals.ts';
 
+type GuideRecord = {
+  id: string;
+  type: string;
+  grade?: number;
+  topic?: string;
+  title?: string;
+  href: string;
+  pdfId?: string;
+  levelLabel?: string;
+  how: string;
+  contains: string;
+  audience: string;
+};
+type SiteGuideData = {
+  records: GuideRecord[];
+  counts: Record<string, number>;
+  manifestMatches: number;
+};
+
 const catalog = JSON.parse(
   readFileSync(new URL('../src/data/catalog.v1.json', import.meta.url), 'utf8')
-);
+) as CatalogV1;
 const guide = JSON.parse(
   readFileSync(new URL('../src/data/site-guide.v1.json', import.meta.url), 'utf8')
-);
+) as SiteGuideData;
 
 describe('Noam AI panel size', () => {
   it('uses a 360×225 right-anchored box on 1440×900, exactly 1/16', () => {
@@ -89,8 +109,8 @@ describe('Noam AI catalog grounding', () => {
   });
 });
 
-function catalogPdfIds(source) {
-  const ids = [];
+function catalogPdfIds(source: CatalogV1) {
+  const ids: string[] = [];
   for (const grade of source.grades || []) {
     for (const topic of grade.topics || []) {
       for (const level of topic.levels || []) {
@@ -103,9 +123,9 @@ function catalogPdfIds(source) {
 }
 
 function factoringLevelA() {
-  const grade = catalog.grades.find((item) => item.grade === 9);
-  const topic = grade.topics.find((item) => item.id === 2 && item.title === 'פירוק לגורמים');
-  return topic.levels.find((level) => level.key === 'a');
+  const grade = catalog.grades.find((item) => item.grade === 9)!;
+  const topic = grade.topics.find((item) => item.id === 2 && item.title === 'פירוק לגורמים')!;
+  return topic.levels.find((level) => level.key === 'a')!;
 }
 
 describe('Noam AI site manual', () => {
@@ -152,11 +172,11 @@ describe('Noam AI site manual', () => {
     assert.match(sheet.contains, new RegExp(manifest.questionCount + ' שאלות'));
     assert.match(sheet.contains, new RegExp(manifest.exerciseCount + ' תרגילים'));
     assert.match(sheet.contains, new RegExp(manifest.pageCount + ' עמודים'));
-    const topic = guide.records.find((row) => row.href === '/factoring-grade-9');
+    const topic = guide.records.find((row) => row.href === '/factoring-grade-9')!;
     assert.match(topic.contains, /בדקו את עצמכם/);
     assert.match(topic.how, /רמה א׳ היא רמת התרגול הרגילה וברירת המחדל/);
     assert.equal(topic.contains.includes('(x−3)(x+3)'), false);
-    const teachers = guide.records.find((row) => row.href === '/teachers');
+    const teachers = guide.records.find((row) => row.href === '/teachers')!;
     assert.match(teachers.how, /כיתה, נושא ומטרת השיעור/);
     assert.match(teachers.audience, /מרחב למורה/);
     assert.ok(guide.records.some((row) => row.type === 'game' && row.href === '/games/kefel-mekutsar-2'));
@@ -175,7 +195,7 @@ describe('Noam AI site manual', () => {
 
   it('retrieves a real factoring page and lets the model clarify unfamiliar wording', async () => {
     const pdfId = factoringLevelA().pdfId;
-    const rows = retrieveGuide(guide, 'כיתה ט׳ פירוק לגורמים', 6);
+    const rows = retrieveGuide(guide, 'כיתה ט׳ פירוק לגורמים', 6) as GuideRecord[];
     assert.ok(rows.length > 0);
     assert.ok(rows.every((row) => row.grade === 9));
     assert.ok(rows.some((row) => row.href.includes(pdfId) || row.href === '/factoring-grade-9'));
@@ -236,12 +256,12 @@ describe('Noam AI model role', () => {
       {
         catalog,
         apiKey: 'server-side',
-        fetch: async (url, init) => {
+        fetch: async (url: unknown, init: { body?: unknown; headers?: Record<string, string> }) => {
           called += 1;
           assert.match(String(url), /qwen3\.8-flash|compatible-mode/);
           const sent = JSON.parse(String(init.body));
           assert.equal(sent.model, 'qwen3.8-flash');
-          assert.equal(String(init.headers.Authorization).startsWith('Bearer '), true);
+          assert.equal(String(init.headers?.Authorization).startsWith('Bearer '), true);
           return {
             ok: true,
             json: async () => ({
@@ -263,6 +283,7 @@ describe('Noam AI model role', () => {
     assert.equal(called, 1);
     assert.equal(result.source, 'model');
     assert.equal(result.model, 'qwen3.8-flash');
+    assert.ok(result.primary);
     assert.equal(result.primary.href, allowed.href);
     assert.equal(result.chips.length, 2);
     assert.equal(result.chips[0].id, records[1].id);
@@ -475,10 +496,10 @@ describe('Noam AI model role', () => {
 
 describe('Noam AI starters and client guard', () => {
   it('does not offer the current page, and home does not offer בית', () => {
-    const home = starterLinksFor('home', '/', (path) => path);
+    const home = starterLinksFor('home', '/', (path: string) => path);
     assert.equal(home.some((item) => item.label === 'בית' || item.href === '/'), false);
     assert.ok(home.some((item) => item.href === '/worksheets'));
-    const topic = starterLinksFor('topic', '/factoring-grade-9', (path) => path);
+    const topic = starterLinksFor('topic', '/factoring-grade-9', (path: string) => path);
     assert.equal(topic.some((item) => item.href === '/factoring-grade-9'), false);
     assert.ok(topic.some((item) => item.href === '/grade-9' && item.label === 'כיתה ט׳'));
   });
@@ -613,9 +634,9 @@ describe('Noam AI page context and topic order', () => {
       'כיתה ט׳ · הטרפז',
     ]);
     assert.equal(new Set(titles).size, titles.length);
-    assert.equal(result.chips.find((chip) => chip.label.endsWith('דלתון'))?.href, '/kite-grade-9');
-    const quadrilaterals = parentTopics(9, 'geo').filter((title) => !title.includes('משולש'));
-    assert.deepEqual(result.chips.map((chip) => chip.label.split(' · ')[1]), quadrilaterals);
+    assert.equal(result.chips.find((chip: { label: string; href: string }) => chip.label.endsWith('דלתון'))?.href, '/kite-grade-9');
+    const quadrilaterals = parentTopics(9, 'geo').filter((title: string) => !title.includes('משולש'));
+    assert.deepEqual(result.chips.map((chip: { label: string }) => chip.label.split(' · ')[1]), quadrilaterals);
     assert.deepEqual(quadrilaterals, catalogQuadrilateralTitles(catalog, 9));
     const section = loadGradeHub(9).topicSections.find((item) => item.heading === 'מרובעים ומשולשים');
     const pageQuads = (section?.links || [])
@@ -648,9 +669,10 @@ describe('Noam AI page context and topic order', () => {
       records,
       { page: { kind: 'topic', path: '/kite-grade-9', title: 'דלתון' } }
     );
+    assert.ok(result.primary);
     const labels = [result.primary.label, ...result.chips.map((chip) => chip.label)];
     assert.equal(new Set(labels).size, labels.length);
-    assert.equal(result.chips.some((chip) => chip.label === result.primary.label), false);
+    assert.equal(result.chips.some((chip) => chip.label === result.primary!.label), false);
   });
 });
 
