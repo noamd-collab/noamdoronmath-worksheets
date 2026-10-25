@@ -44,7 +44,7 @@ describe('eliyahu pythagoras game page', () => {
     assert.ok(ratios.length > 0);
   });
 
-  it('clips only the stray c² edge out of the after diagram', () => {
+  it('drops the stray bottom-left diagonal and its c from the after diagram', () => {
     const figure = gameHtml.slice(gameHtml.indexOf('proofFigure(p)'), gameHtml.indexOf('proofStyle(p)'));
     assert.match(figure, /if \(!p\) \{/);
     assert.match(figure, /id="clipGhost"/);
@@ -52,7 +52,16 @@ describe('eliyahu pythagoras game page', () => {
     assert.equal(figure.includes('b_clipGhost'), false);
     assert.match(figure, /ghostClip = ' clip-path="url\(#clipGhost\)"'/);
     assert.equal((figure.match(/<polygon' \+ ghostClip/g) || []).length, 2);
-    assert.match(figure, /hcLab/);
+    assert.match(figure, /id="hypCoverBL"/);
+    assert.equal(figure.includes('b_hypCoverBL'), false);
+    assert.equal(figure.includes('clipHypBL'), false);
+    const render = gameHtml.slice(gameHtml.indexOf('renderProof()'), gameHtml.indexOf('proofGo()'));
+    assert.match(render, /i === 3 && n < 5/);
+    assert.match(render, /on\('hypCoverBL', n >= 5\)/);
+    const beat = gameHtml.slice(gameHtml.indexOf('async proofBeat(n, quiet)'), gameHtml.indexOf('chkGeom(a, b)'));
+    assert.match(beat, /on\('hypCoverBL', true\)/);
+    assert.match(beat, /on\('hcLab3', false\)/);
+    assert.match(beat, /'hypCoverBL'/);
   });
 
   it('keeps the lesson animations running inside the embed', () => {

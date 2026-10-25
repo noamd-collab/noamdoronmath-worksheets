@@ -1512,6 +1512,9 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       h += '<rect x="' + u(L / 2 - pw / 2) + '" y="' + u(L / 2 - ph / 2) + '" width="' + u(pw) + '" height="' + u(ph) + '" rx="' + u(ph * .3) + '" fill="#fff" stroke="' + INK + '" stroke-width=".05"></rect>';
       h += '<text x="' + (L / 2) + '" y="' + (L / 2) + '" text-anchor="middle" dominant-baseline="central" style="font-family:\'Secular One\',sans-serif;font-size:' + u(Math.max(.7, 28 / k)) + 'px;fill:' + ROSE + '">c²</text>';
       h += '</g>';
+      // After the move, the bottom-left white rectangle is two triangles on one hypotenuse.
+      // In the אחרי picture that shared edge is painted white. The other edges stay.
+      if (!p) h += '<line id="hypCoverBL" x1="' + a + '" y1="' + a + '" x2="0" y2="' + L + '" stroke="#fff" stroke-width=".2" stroke-linecap="butt" style="opacity:0"></line>';
       // c on every hypotenuse (upright; its place follows the triangle)
       for (let i = 0; i < 4; i++) h += '<text id="' + p + 'hcLab' + i + '" text-anchor="middle" dominant-baseline="central">c</text>';
       // side labels on all four sides (top: a | b ; left: b | a ; right: a | b ; bottom: b | a)
@@ -1657,14 +1660,16 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
           const g = $('ptri' + i); g.setAttribute('transform', this.pose(t, cfg)); g.style.opacity = n >= 1 ? '1' : '0';
           // once a triangle has been moved it turns white: only the free area stays coloured
           g.querySelector('polygon').style.fill = cfg ? '#fff' : this._triFills[i];
-          // after the move two triangles share each hypotenuse, so one c per line
-          this.hcPlace(i, cfg); on('hcLab' + i, n >= 1 && (cfg === 0 || i === 1 || i === 3));
+          // after the move two triangles share each hypotenuse, so one c per line.
+          // The אחרי picture leaves the bottom-left shared edge blank, so its c stays off.
+          this.hcPlace(i, cfg); on('hcLab' + i, n >= 1 && (cfg === 0 || i === 1 || (i === 3 && n < 5)));
         });
         on('ovC', n === 2); on('ovCLab', n === 2); on('gridC', n === 2);
         on('ovAB', n >= 4); on('ovABLab', n >= 3);
         on('ovA2', n >= 4); on('ovA2Lab', n >= 3); on('ovB2', n >= 4); on('ovB2Lab', n >= 3);
         on('gridA', n >= 4); on('gridB', n >= 4);
         on('ghostC', n >= 5); on('proofBefore', n >= 5); on('proofCmp', n >= 5);
+        on('hypCoverBL', n >= 5);
         this.proofCompare(n >= 5 ? 1 : 0);
         this.proofSideLabels(cfg);
       }
@@ -1704,7 +1709,7 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
           g.style.transition = 'none'; g.style.opacity = '0'; g.setAttribute('transform', this.pose(t, 0)); this.hcPlace(i, 0);
           poly.style.transition = 'none'; poly.style.fill = this._triFills[i]; void poly.getBoundingClientRect(); poly.style.transition = 'fill .6s ease';
         });
-        ['ovC', 'ovCLab', 'gridC', 'ovAB', 'ovABLab', 'ovA2', 'ovA2Lab', 'ovB2', 'ovB2Lab', 'gridA', 'gridB', 'hcLab0', 'hcLab1', 'hcLab2', 'hcLab3', 'ghostC', 'proofBefore', 'proofCmp'].forEach((id) => on(id, false));
+        ['ovC', 'ovCLab', 'gridC', 'ovAB', 'ovABLab', 'ovA2', 'ovA2Lab', 'ovB2', 'ovB2Lab', 'gridA', 'gridB', 'hcLab0', 'hcLab1', 'hcLab2', 'hcLab3', 'ghostC', 'proofBefore', 'proofCmp', 'hypCoverBL'].forEach((id) => on(id, false));
         this.proofSideLabels(0);
         void $('proofSvg').getBoundingClientRect();
         if (!quiet) this.say(STEPS[4].tip, { mood: 'idle' });
@@ -1778,7 +1783,10 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
         await this.actorHome(); fin();
       } else {
         const firstTime = !this.state.proofSeen;
-        // side by side: the start ("before") next to now ("after"), with c² dashed where it used to be
+        // side by side: the start ("before") next to now ("after"), with c² dashed where it used to be.
+        // The shared hypotenuse inside the bottom-left white rectangle is not part of that picture.
+        on('hypCoverBL', true);
+        on('hcLab3', false);
         await this.tween(this.rm ? 1 : 1100, (l) => this.proofCompare(ez(l)));
         if (!ok()) return;
         on('ghostC', true); on('proofBefore', true); on('proofCmp', true);
