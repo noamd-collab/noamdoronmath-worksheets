@@ -2427,7 +2427,7 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
     },
     paintQuiz(S, st, done) {
       const box = $('opts');
-      if (!S.opts) { box.innerHTML = ''; return; }
+      if (!S.opts) { box.innerHTML = ''; delete box.dataset.stamp; return; }
       const stamp = (st.ord || []).join('');
       if (box.dataset.stamp !== stamp) {
         box.dataset.stamp = stamp;

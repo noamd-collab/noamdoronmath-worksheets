@@ -56,9 +56,18 @@ it('fits every game step on desktop and phone, including later content growth an
       await page.goto(`http://127.0.0.1:${address.port}`, { waitUntil: 'load' });
       const frame = page.frames().find(frame => frame.url().endsWith('/play'))!;
       await frame.waitForFunction(() => !!(window as any).__lesson);
+      // Repeated answer orders must still rebuild the quiz after the proof
+      // clears its buttons. Make that otherwise intermittent path deterministic.
+      await frame.evaluate(() => { Math.random = () => 0.5; });
       for (let step = 0; step < 9; step++) {
         await frame.evaluate(step => (window as any).__lesson.goStep(step), step);
         await fits(page, `${width}×${height}, step ${step + 1}`);
+        if ([2, 3, 5].includes(step)) {
+          assert.equal(await frame.$$eval('#opts button', buttons => buttons.length), 4);
+          await frame.click('#opt0');
+          assert.equal(await frame.evaluate(() => (window as any).__lesson.state.done), true);
+          await fits(page, `${width}×${height}, step ${step + 1} answered`);
+        }
         if (step === 1) {
           await frame.waitForFunction(() => !(window as any).__lesson.state.typing);
           await new Promise(resolve => setTimeout(resolve, 100));
