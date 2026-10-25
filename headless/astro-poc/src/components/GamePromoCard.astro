@@ -22,12 +22,27 @@ import { PYTHAGORAS_GAME_PATH } from '../lib/pythagorasGame';
   <div class="exact-game-promo__slot" id="pythagoras-promo" data-pop="160">
     <a class="exact-game-promo__card exact-game-promo__card--beta" href={PYTHAGORAS_GAME_PATH} data-home-pythagoras-promo>
       <span class="exact-game-promo__shot" aria-hidden="true">
-        <svg class="exact-game-promo__mark" viewBox="0 0 200 132" width="200" height="132">
-          <polygon points="28,108 28,28 168,108" fill="#f4e7c3" stroke="#22305a" stroke-width="3" stroke-linejoin="round"></polygon>
-          <path d="M28 92 H44 V108" fill="none" stroke="#22305a" stroke-width="2"></path>
-          <text x="14" y="72" fill="#1e605e" style="font:800 16px Heebo;">a</text>
-          <text x="90" y="124" fill="#1e605e" style="font:800 16px Heebo;">b</text>
-          <text x="104" y="62" fill="#e5735c" style="font:800 16px Heebo;">c</text>
+        <svg class="exact-game-promo__mark exact-pyth" viewBox="0 0 420 370" width="420" height="370">
+          <g class="exact-live-pop exact-pyth-a">
+            <rect class="exact-pyth-glow" x="80" y="147" width="78" height="78" fill="none" stroke="#15756f" stroke-width="12"></rect>
+            <rect x="80" y="147" width="78" height="78" rx="4" fill="#15756f" stroke="#22305a" stroke-width="2.5"></rect>
+            <text x="119" y="186" fill="#fff">a²</text>
+          </g>
+          <g class="exact-live-pop exact-pyth-b">
+            <rect class="exact-pyth-glow" x="158" y="225" width="104" height="104" fill="none" stroke="#c44e3a" stroke-width="14"></rect>
+            <rect x="158" y="225" width="104" height="104" rx="4" fill="#c44e3a" stroke="#22305a" stroke-width="2.5"></rect>
+            <text x="210" y="277" fill="#fff">b²</text>
+          </g>
+          <g class="exact-live-pop exact-pyth-c">
+            <polygon class="exact-pyth-glow" points="158,147 262,225 340,121 236,43" fill="none" stroke="#e6a534" stroke-width="14"></polygon>
+            <polygon points="158,147 262,225 340,121 236,43" fill="#f0b429" stroke="#22305a" stroke-width="2.5" stroke-linejoin="round"></polygon>
+            <text x="249" y="134" fill="#17233f">c²</text>
+          </g>
+          <polygon points="158,225 158,147 262,225" fill="#fff6df" stroke="#22305a" stroke-width="3.5" stroke-linejoin="round"></polygon>
+          <polyline points="158,211 172,211 172,225" fill="none" stroke="#22305a" stroke-width="2.5"></polyline>
+          <text x="176" y="190" fill="#0f5f58">a</text>
+          <text x="214" y="216" fill="#a84434">b</text>
+          <text x="196" y="196" fill="#8a5a00">c</text>
         </svg>
       </span>
       <span class="exact-game-promo__copy">
@@ -45,12 +60,60 @@ import { PYTHAGORAS_GAME_PATH } from '../lib/pythagorasGame';
     </p>
     <div class="exact-formula-new__links">
       <a class="exact-formula-new__link" href="/binomial-square-grade-9">
-        <svg class="exact-formula-new__mark" viewBox="0 0 64 64" width="64" height="64" aria-hidden="true">
-          <rect x="8" y="8" width="48" height="48" fill="#f4e7c3" stroke="none"></rect>
-          <rect class="exact-formula-new__draw" x="8" y="8" width="48" height="48" fill="none" stroke="#22305a" stroke-width="2.5" pathLength="1"></rect>
-          <line class="exact-formula-new__fade" x1="8" y1="28" x2="56" y2="28" stroke="#2a7c7a" stroke-width="2"></line>
-          <line class="exact-formula-new__fade" x1="28" y1="8" x2="28" y2="56" stroke="#2a7c7a" stroke-width="2"></line>
-        </svg>
+        <span class="exact-formula-new__art">
+          <svg class="exact-formula-new__svg" viewBox="0 0 348 336" width="348" height="336" aria-hidden="true" focusable="false">
+            <text x="210" y="16" fill="#22305a">a+b=10</text>
+            <line x1="80" y1="30" x2="340" y2="30" stroke="#22305a" stroke-width="2"></line>
+            <line x1="80" y1="24" x2="80" y2="36" stroke="#22305a" stroke-width="2"></line>
+            <line x1="340" y1="24" x2="340" y2="36" stroke="#22305a" stroke-width="2"></line>
+            <text x="158" y="48" fill="#15756f">a=6</text>
+            <text x="290" y="48" fill="#a84434">b=4</text>
+            <line x1="80" y1="58" x2="236" y2="58" stroke="#15756f" stroke-width="2.5"></line>
+            <line x1="236" y1="58" x2="340" y2="58" stroke="#c44e3a" stroke-width="2.5"></line>
+            <line x1="80" y1="52" x2="80" y2="64" stroke="#15756f" stroke-width="2.5"></line>
+            <line x1="236" y1="52" x2="236" y2="64" stroke="#22305a" stroke-width="2"></line>
+            <line x1="340" y1="52" x2="340" y2="64" stroke="#c44e3a" stroke-width="2.5"></line>
+            <text x="16" y="194" fill="#22305a" transform="rotate(-90 16 194)">a+b=10</text>
+            <line x1="34" y1="64" x2="34" y2="324" stroke="#22305a" stroke-width="2"></line>
+            <line x1="28" y1="64" x2="40" y2="64" stroke="#22305a" stroke-width="2"></line>
+            <line x1="28" y1="324" x2="40" y2="324" stroke="#22305a" stroke-width="2"></line>
+            <text x="54" y="142" fill="#15756f" transform="rotate(-90 54 142)">a=6</text>
+            <text x="54" y="274" fill="#a84434" transform="rotate(-90 54 274)">b=4</text>
+            <line x1="70" y1="64" x2="70" y2="236" stroke="#15756f" stroke-width="2.5"></line>
+            <line x1="70" y1="236" x2="70" y2="324" stroke="#c44e3a" stroke-width="2.5"></line>
+            <line x1="64" y1="64" x2="76" y2="64" stroke="#15756f" stroke-width="2.5"></line>
+            <line x1="64" y1="236" x2="76" y2="236" stroke="#22305a" stroke-width="2"></line>
+            <line x1="64" y1="324" x2="76" y2="324" stroke="#c44e3a" stroke-width="2.5"></line>
+            <rect x="80" y="64" width="260" height="260" rx="8" fill="#fff" stroke="#22305a" stroke-width="3"></rect>
+            <g class="exact-live-pop" style="transform-origin:100% 100%;animation-delay:.05s">
+              <rect class="exact-pyth-glow" x="84" y="68" width="148" height="148" fill="none" stroke="#15756f" stroke-width="10"></rect>
+              <rect x="84" y="68" width="148" height="148" rx="6" fill="#15756f"></rect>
+              <text class="exact-tile-label" x="158" y="142" fill="#fff">a² = 36</text>
+            </g>
+            <g class="exact-live-pop" style="transform-origin:0% 100%;animation-delay:.22s">
+              <rect class="exact-pyth-glow" x="240" y="68" width="96" height="148" fill="none" stroke="#e6a534" stroke-width="10"></rect>
+              <rect x="240" y="68" width="96" height="148" rx="6" fill="#f0b429"></rect>
+              <text class="exact-tile-label exact-tile-label--mid" x="288" y="142" fill="#17233f">ba = 24</text>
+            </g>
+            <g class="exact-live-pop" style="transform-origin:100% 0%;animation-delay:.4s">
+              <rect class="exact-pyth-glow" x="84" y="220" width="148" height="96" fill="none" stroke="#e6a534" stroke-width="10"></rect>
+              <rect x="84" y="220" width="148" height="96" rx="6" fill="#f0b429"></rect>
+              <text class="exact-tile-label exact-tile-label--mid" x="158" y="268" fill="#17233f">ab = 24</text>
+            </g>
+            <g class="exact-live-pop" style="transform-origin:0% 0%;animation-delay:.58s">
+              <rect class="exact-pyth-glow" x="240" y="220" width="96" height="96" fill="none" stroke="#c44e3a" stroke-width="10"></rect>
+              <rect x="240" y="220" width="96" height="96" rx="6" fill="#c44e3a"></rect>
+              <text class="exact-tile-label" x="288" y="268" fill="#fff">b² = 16</text>
+            </g>
+            <g class="exact-handle" transform="translate(236 218)">
+              <circle class="exact-ring" r="16" fill="none" stroke="#15756f" stroke-width="3"></circle>
+              <circle class="exact-ring exact-ring--b" r="16" fill="none" stroke="#15756f" stroke-width="2"></circle>
+              <circle cy="2.5" r="16" fill="rgba(23,35,63,.18)"></circle>
+              <circle r="15" fill="#fff" stroke="#17233f" stroke-width="4"></circle>
+              <circle r="5.5" fill="#15756f"></circle>
+            </g>
+          </svg>
+        </span>
         <span class="exact-formula-new__copy">
           <span class="exact-formula-new__formula" dir="ltr">(a+b)²</span>
           <span class="exact-formula-new__name">דו־איבר בריבוע</span>
@@ -58,10 +121,48 @@ import { PYTHAGORAS_GAME_PATH } from '../lib/pythagorasGame';
         </span>
       </a>
       <a class="exact-formula-new__link" href="/difference-of-squares-grade-9">
-        <svg class="exact-formula-new__mark" viewBox="0 0 64 64" width="64" height="64" aria-hidden="true">
-          <rect x="6" y="6" width="52" height="52" fill="#cfe6e4" stroke="#22305a" stroke-width="2.5"></rect>
-          <rect class="exact-formula-new__fade" x="28" y="28" width="30" height="30" fill="#f6d0c8" stroke="#e5735c" stroke-width="2.5"></rect>
-        </svg>
+        <span class="exact-formula-new__art">
+          <svg class="exact-formula-new__svg" viewBox="0 0 348 336" width="348" height="336" aria-hidden="true" focusable="false">
+            <text x="210" y="16" fill="#22305a">a=6</text>
+            <line x1="80" y1="30" x2="340" y2="30" stroke="#22305a" stroke-width="2"></line>
+            <line x1="80" y1="24" x2="80" y2="36" stroke="#22305a" stroke-width="2"></line>
+            <line x1="340" y1="24" x2="340" y2="36" stroke="#22305a" stroke-width="2"></line>
+            <text x="16" y="194" fill="#22305a" transform="rotate(-90 16 194)">a=6</text>
+            <line x1="34" y1="64" x2="34" y2="324" stroke="#22305a" stroke-width="2"></line>
+            <line x1="28" y1="64" x2="40" y2="64" stroke="#22305a" stroke-width="2"></line>
+            <line x1="28" y1="324" x2="40" y2="324" stroke="#22305a" stroke-width="2"></line>
+            <text x="54" y="108" fill="#15756f" transform="rotate(-90 54 108)">a−b=2</text>
+            <text x="54" y="238" fill="#a84434" transform="rotate(-90 54 238)">b=4</text>
+            <line x1="70" y1="64" x2="70" y2="151" stroke="#15756f" stroke-width="2.5"></line>
+            <line x1="70" y1="151" x2="70" y2="324" stroke="#c44e3a" stroke-width="2.5"></line>
+            <line x1="64" y1="64" x2="76" y2="64" stroke="#15756f" stroke-width="2.5"></line>
+            <line x1="64" y1="151" x2="76" y2="151" stroke="#22305a" stroke-width="2"></line>
+            <line x1="64" y1="324" x2="76" y2="324" stroke="#c44e3a" stroke-width="2.5"></line>
+            <rect x="80" y="64" width="260" height="260" rx="8" fill="#fff" stroke="#22305a" stroke-width="3"></rect>
+            <g class="exact-live-pop" style="transform-origin:33% 100%;animation-delay:.08s">
+              <rect class="exact-pyth-glow" x="84" y="68" width="252" height="79" fill="none" stroke="#15756f" stroke-width="10"></rect>
+              <rect x="84" y="68" width="252" height="79" rx="6" fill="#15756f"></rect>
+              <text class="exact-tile-label exact-tile-label--mid" x="210" y="108" fill="#fff">a·(a−b) = 12</text>
+            </g>
+            <g class="exact-live-pop" style="transform-origin:100% 0%;animation-delay:.28s">
+              <rect class="exact-pyth-glow" x="84" y="155" width="79" height="165" fill="none" stroke="#e6a534" stroke-width="10"></rect>
+              <rect x="84" y="155" width="79" height="165" rx="6" fill="#f0b429"></rect>
+              <text class="exact-tile-label exact-tile-label--mid" x="124" y="238" fill="#17233f" transform="rotate(-90 124 238)">b·(a−b) = 8</text>
+            </g>
+            <g class="exact-live-pop" style="transform-origin:0% 0%;animation-delay:.48s">
+              <rect class="exact-pyth-glow" x="171" y="155" width="165" height="165" fill="none" stroke="#c44e3a" stroke-width="10"></rect>
+              <rect x="171" y="155" width="165" height="165" rx="6" fill="#c44e3a"></rect>
+              <text class="exact-tile-label" x="254" y="238" fill="#fff">b² = 16</text>
+            </g>
+            <g class="exact-handle" transform="translate(167 151)">
+              <circle class="exact-ring" r="16" fill="none" stroke="#15756f" stroke-width="3"></circle>
+              <circle class="exact-ring exact-ring--b" r="16" fill="none" stroke="#15756f" stroke-width="2"></circle>
+              <circle cy="2.5" r="16" fill="rgba(23,35,63,.18)"></circle>
+              <circle r="15" fill="#fff" stroke="#17233f" stroke-width="4"></circle>
+              <circle r="5.5" fill="#15756f"></circle>
+            </g>
+          </svg>
+        </span>
         <span class="exact-formula-new__copy">
           <span class="exact-formula-new__formula" dir="ltr">a²−b²</span>
           <span class="exact-formula-new__name">הפרש ריבועים</span>
@@ -103,9 +204,44 @@ import { PYTHAGORAS_GAME_PATH } from '../lib/pythagorasGame';
   }
   .exact-game-promo__slot{margin-top:18px;}
   .exact-game-promo__card--beta .exact-game-promo__shot{
-    flex:0 0 220px;justify-content:center;padding:12px 8px;
+    flex:1 1 48%;min-width:0;justify-content:center;align-items:center;padding:14px 12px;
+    background:
+      radial-gradient(120px 90px at 18% 28%, rgba(21,117,111,.16), transparent 70%),
+      radial-gradient(140px 110px at 78% 76%, rgba(196,78,58,.13), transparent 72%),
+      radial-gradient(110px 80px at 62% 16%, rgba(240,180,41,.22), transparent 70%),
+      #fbfaf5;
   }
-  .exact-game-promo__mark{display:block;width:min(200px,100%);height:auto;}
+  .exact-game-promo__mark{display:block;width:min(100%,400px);height:auto;max-width:100%;}
+  .exact-pyth text,.exact-formula-new__svg text{
+    font-family:'Secular One',Heebo,sans-serif;font-weight:800;font-size:16px;
+    text-anchor:middle;dominant-baseline:central;
+  }
+  .exact-pyth-a text{font-size:26px;}
+  .exact-pyth-b text,.exact-pyth-c text{font-size:30px;}
+  .exact-pyth > text{font-size:16px;}
+  .exact-live-pop{transform-box:fill-box;transform-origin:center;animation:exact-live-in .95s cubic-bezier(.22,.82,.2,1) both;}
+  .exact-pyth-a{transform-origin:100% 50%;animation-delay:.08s;}
+  .exact-pyth-b{transform-origin:50% 0%;animation-delay:.32s;}
+  .exact-pyth-c{transform-origin:28.6% 78.6%;animation-delay:.56s;}
+  .exact-pyth-glow{opacity:.2;animation:exact-pyth-glow 2.8s ease-in-out infinite;}
+  .exact-ring{
+    transform-box:fill-box;transform-origin:center;
+    animation:exact-ring 1.7s ease-out infinite;
+  }
+  .exact-ring--b{animation-delay:.85s;}
+  .exact-handle{pointer-events:none;}
+  @keyframes exact-live-in{
+    from{transform:scale(0);opacity:.15;}
+    to{transform:scale(1);opacity:1;}
+  }
+  @keyframes exact-pyth-glow{
+    0%,100%{opacity:.14;}
+    50%{opacity:.55;}
+  }
+  @keyframes exact-ring{
+    0%{transform:scale(1);opacity:.7;}
+    100%{transform:scale(2.2);opacity:0;}
+  }
   @media(max-width:700px){
     .exact-game-promo{padding:0 14px 40px;}
     .exact-game-promo__card{flex-direction:column;}
@@ -125,7 +261,7 @@ import { PYTHAGORAS_GAME_PATH } from '../lib/pythagorasGame';
   .exact-formula-new{
     margin-top:18px;background:#fff;color:#22305a;
     border:2px solid #22305a;border-radius:16px 6px 18px 8px / 8px 18px 6px 16px;
-    box-shadow:3px 3px 0 #e6a534;padding:14px 16px 16px;
+    box-shadow:3px 3px 0 #e6a534;padding:14px 16px 16px;overflow:hidden;
   }
   .exact-formula-new__lead{display:flex;align-items:center;gap:10px;margin:0 0 12px;}
   .exact-formula-new__badge{
@@ -134,43 +270,46 @@ import { PYTHAGORAS_GAME_PATH } from '../lib/pythagorasGame';
     animation:exact-new-pulse 2.4s ease-in-out infinite;
   }
   .exact-formula-new__kicker{font-family:'Secular One',sans-serif;font-weight:400;font-size:22px;line-height:1.2;}
-  .exact-formula-new__links{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .exact-formula-new__links{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;}
   .exact-formula-new__link{
-    display:flex;align-items:center;gap:12px;min-width:0;padding:8px 10px;border-radius:12px;
-    color:#22305a;text-decoration:none;background:#fbfaf5;
+    display:flex;flex-direction:column;align-items:stretch;gap:8px;min-width:0;
+    padding:8px 8px 12px;border-radius:12px;
+    color:#22305a;text-decoration:none;background:#fbfaf5;overflow:hidden;
   }
   .exact-formula-new__link:hover{background:#f4e7c3;}
   .exact-formula-new__link:focus-visible{outline:3px solid #2a7c7a;outline-offset:3px;}
-  .exact-formula-new__mark{flex:0 0 64px;width:64px;height:64px;}
-  .exact-formula-new__copy{min-width:0;display:flex;flex-direction:column;gap:2px;}
+  .exact-formula-new__art{display:block;width:100%;max-width:min(100%,380px);min-width:0;margin-inline:auto;}
+  .exact-formula-new__svg{display:block;width:100%;max-width:100%;height:auto;}
+  .exact-formula-new__svg text{font-size:16px;}
+  .exact-formula-new__svg .exact-tile-label{font-size:22px;}
+  .exact-formula-new__svg .exact-tile-label--mid{font-size:16px;}
+  .exact-formula-new__copy{min-width:0;display:flex;flex-direction:column;align-items:center;text-align:center;gap:2px;padding-inline:6px;}
   .exact-formula-new__formula{direction:ltr;unicode-bidi:isolate;font-weight:800;font-size:20px;line-height:1.2;}
   .exact-formula-new__name{font-weight:700;font-size:16px;color:#1e605e;text-decoration:underline;text-underline-offset:3px;}
   .exact-formula-new__hint{font-size:14px;line-height:1.4;color:#3d4870;}
-  .exact-formula-new__draw{stroke-dasharray:1;stroke-dashoffset:1;animation:exact-new-draw 1.1s ease .35s forwards;}
-  .exact-formula-new__fade{opacity:0;animation:exact-new-fade .6s ease .9s forwards;}
   @keyframes exact-new-pulse{
     0%,100%{transform:rotate(-2deg) scale(1);}
     50%{transform:rotate(-2deg) scale(1.06);}
   }
-  @keyframes exact-new-draw{to{stroke-dashoffset:0;}}
-  @keyframes exact-new-fade{to{opacity:1;}}
+  @media(min-width:760px){
+    .exact-formula-new__links{grid-template-columns:minmax(0,1fr) minmax(0,1fr);}
+  }
   @media(max-width:700px){
-    .exact-formula-new__links{grid-template-columns:1fr;}
     .exact-formula-new__kicker{font-size:20px;}
   }
+  /* Reduced motion slows the drawings. It does not remove them. */
   @media(prefers-reduced-motion:reduce){
-    .exact-formula-new__badge,.exact-formula-new__draw,.exact-formula-new__fade{animation:none;}
-    .exact-formula-new__draw{stroke-dashoffset:0;}
-    .exact-formula-new__fade{opacity:1;}
+    .exact-live-pop{animation-duration:3.1s;}
+    .exact-pyth-glow{animation-duration:8s;}
+    .exact-ring{animation-duration:4.8s;}
+    .exact-formula-new__badge{animation-duration:7.2s;}
   }
+  html.nd-motion-off .exact-live-pop,
+  html.noam-a11y-motion .exact-live-pop{animation-duration:3.1s;}
+  html.nd-motion-off .exact-pyth-glow,
+  html.noam-a11y-motion .exact-pyth-glow,
+  html.nd-motion-off .exact-ring,
+  html.noam-a11y-motion .exact-ring,
   html.nd-motion-off .exact-formula-new__badge,
-  html.noam-a11y-motion .exact-formula-new__badge,
-  html.nd-motion-off .exact-formula-new__draw,
-  html.noam-a11y-motion .exact-formula-new__draw,
-  html.nd-motion-off .exact-formula-new__fade,
-  html.noam-a11y-motion .exact-formula-new__fade{animation:none;}
-  html.nd-motion-off .exact-formula-new__draw,
-  html.noam-a11y-motion .exact-formula-new__draw{stroke-dashoffset:0;}
-  html.nd-motion-off .exact-formula-new__fade,
-  html.noam-a11y-motion .exact-formula-new__fade{opacity:1;}
+  html.noam-a11y-motion .exact-formula-new__badge{animation-duration:8s;}
 </style>
