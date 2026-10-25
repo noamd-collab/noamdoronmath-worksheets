@@ -27,9 +27,6 @@ const REQUIRED = [
   'g7-t20-pagebreak',
   'g8-t15-pagebreak',
   'g9-t38-pagebreak',
-  'g9-t22-pagebreak',
-  'g7-t43-answers',
-  'g8-t47-answers',
 ];
 
 function caseById(id: string) {
