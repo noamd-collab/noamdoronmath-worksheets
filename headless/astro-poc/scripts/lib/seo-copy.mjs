@@ -153,13 +153,10 @@ export function buildProposals(root) {
   function finish(row, title, description) {
     if (!title.value) errors.push(`${row.path}: no title fits ${TITLE_MAX} without clipping – add a point fix`);
     if (!description.value) errors.push(`${row.path}: no whole-sentence description fits ${DESC_MAX} – add a point fix`);
-    const keepLive = KEEP_CURRENT.includes(decoded(row.path));
-    const titleValue = title.value && !keepLive ? normalizeHebrew(title.value) : (title.value || '');
-    const descriptionValue = description.value && !keepLive ? normalizeHebrew(description.value) : (description.value || '');
     const item = {
       ...row,
-      title: titleValue,
-      description: descriptionValue,
+      title: title.value || '',
+      description: description.value || '',
       approved: false,
       source: `title:${title.from}|description:${description.from}`,
     };
@@ -179,7 +176,7 @@ export function buildProposals(root) {
     const title = pick(page.path, 'title',
       isValidLiveTitle(page.title)
         ? { value: clean(page.title), from: 'current' }
-        : { value: withBrand(normalizeHebrew(page.h1)), from: 'page-h1' });
+        : { value: withBrand(page.h1), from: 'page-h1' });
     const description = pick(page.path, 'description',
       isValidLiveDescription(page.description)
         ? { value: clean(page.description), from: 'current' }

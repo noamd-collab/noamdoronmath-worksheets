@@ -59,6 +59,8 @@ function renderedLinks(markup) {
 }
 
 test("approved middle-school level mappings cannot silently disappear or change PDF", () => {
+  // Grade 9 is 127: 66f916b removed topic 21 (127 -> 124), and 5c417899 (#104)
+  // added topic 46 דלתון (3 levels, 124 -> 127).
   assert.deepEqual(approved.expectedLinkCounts, { 7: 148, 8: 177, 9: 127 });
   for (const [grade, topics] of Object.entries(approved.grades)) {
     const count = topics.reduce((total, topic) => total + Object.keys(topic.links).length, 0);

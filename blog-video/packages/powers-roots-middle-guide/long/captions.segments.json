@@ -1,0 +1,282 @@
+{
+  "timing": "ESTIMATE ONLY — spread by word count over an unmeasured duration. Not a final SRT. Re-time against the rendered video before upload.",
+  "estTotalSeconds": 99.5,
+  "segments": [
+    {
+      "id": "hook",
+      "estStart": 0,
+      "estEnd": 7.4,
+      "cues": [
+        {
+          "text": "חזקות ושורשים נראים פשוטים בשיעור הראשון.",
+          "estStart": 0,
+          "estEnd": 2.8
+        },
+        {
+          "text": "ואז מגיעה טעות נפוצה: לחשוב ש־⁦3⁴⁩ שווה ל־⁦3",
+          "estStart": 2.8,
+          "estEnd": 6.5
+        },
+        {
+          "text": "× 4⁩.",
+          "estStart": 6.5,
+          "estEnd": 7.4
+        }
+      ]
+    },
+    {
+      "id": "terms",
+      "estStart": 7.4,
+      "estEnd": 12.4,
+      "cues": [
+        {
+          "text": "בביטוי ⁦3⁴⁩, המספר 3 הוא הבסיס, והמספר 4 הוא",
+          "estStart": 7.4,
+          "estEnd": 11.9
+        },
+        {
+          "text": "המעריך.",
+          "estStart": 11.9,
+          "estEnd": 12.4
+        }
+      ]
+    },
+    {
+      "id": "meaning",
+      "estStart": 12.4,
+      "estEnd": 24.8,
+      "cues": [
+        {
+          "text": "חזקה היא קיצור לכפל חוזר.",
+          "estStart": 12.4,
+          "estEnd": 14.5
+        },
+        {
+          "text": "המעריך אומר כמה פעמים הבסיס מופיע בכפל:",
+          "estStart": 14.5,
+          "estEnd": 17.5
+        },
+        {
+          "text": "⁦3 × 3 × 3 × 3 = 81⁩. כלומר החזקה היא לא כפל",
+          "estStart": 17.5,
+          "estEnd": 23.5
+        },
+        {
+          "text": "בין הבסיס למעריך.",
+          "estStart": 23.5,
+          "estEnd": 24.8
+        }
+      ]
+    },
+    {
+      "id": "second",
+      "estStart": 24.8,
+      "estEnd": 37.2,
+      "cues": [
+        {
+          "text": "עוד דוגמה: ⁦2⁵⁩. כותבים את הכפל המלא:",
+          "estStart": 24.8,
+          "estEnd": 28
+        },
+        {
+          "text": "⁦2 × 2 × 2 × 2 × 2 = 32⁩.",
+          "estStart": 28,
+          "estEnd": 33
+        },
+        {
+          "text": "רק אחרי שהמשמעות ברורה, עוברים לחוקים",
+          "estStart": 33,
+          "estEnd": 35.8
+        },
+        {
+          "text": "שמקצרים את הדרך.",
+          "estStart": 35.8,
+          "estEnd": 37.2
+        }
+      ]
+    },
+    {
+      "id": "minus-intro",
+      "estStart": 37.2,
+      "estEnd": 41.7,
+      "cues": [
+        {
+          "text": "ועכשיו מקום שבו טעות קטנה משנה את כל",
+          "estStart": 37.2,
+          "estEnd": 40.5
+        },
+        {
+          "text": "התשובה: מינוס וסוגריים.",
+          "estStart": 40.5,
+          "estEnd": 41.7
+        }
+      ]
+    },
+    {
+      "id": "minus-inside",
+      "estStart": 41.7,
+      "estEnd": 47.9,
+      "cues": [
+        {
+          "text": "כשהמינוס בתוך הסוגריים, ⁦−3⁩ כולו מועלה",
+          "estStart": 41.7,
+          "estEnd": 44.8
+        },
+        {
+          "text": "בריבוע: ⁦(−3) × (−3) = 9⁩.",
+          "estStart": 44.8,
+          "estEnd": 47.9
+        }
+      ]
+    },
+    {
+      "id": "minus-outside",
+      "estStart": 47.9,
+      "estEnd": 57,
+      "cues": [
+        {
+          "text": "אבל כשאין סוגריים, קודם מחשבים את החזקה,",
+          "estStart": 47.9,
+          "estEnd": 51.1
+        },
+        {
+          "text": "ורק אחר כך מתייחסים למינוס שלפניה.",
+          "estStart": 51.1,
+          "estEnd": 53.8
+        },
+        {
+          "text": "⁦3² = 9⁩, ולכן התוצאה היא ⁦−9⁩.",
+          "estStart": 53.8,
+          "estEnd": 57
+        }
+      ]
+    },
+    {
+      "id": "brackets-matter",
+      "estStart": 57,
+      "estEnd": 60.7,
+      "cues": [
+        {
+          "text": "הסוגריים אינם קישוט. הם מגדירים מה בדיוק",
+          "estStart": 57,
+          "estEnd": 59.9
+        },
+        {
+          "text": "מועלה בחזקה.",
+          "estStart": 59.9,
+          "estEnd": 60.7
+        }
+      ]
+    },
+    {
+      "id": "parity",
+      "estStart": 60.7,
+      "estEnd": 67.3,
+      "cues": [
+        {
+          "text": "ועוד כלל שעוזר לבדוק: מספר שלילי בחזקה",
+          "estStart": 60.7,
+          "estEnd": 63.6
+        },
+        {
+          "text": "זוגית נותן תוצאה חיובית, ובחזקה אי־זוגית",
+          "estStart": 63.6,
+          "estEnd": 66.1
+        },
+        {
+          "text": "התוצאה נשארת שלילית.",
+          "estStart": 66.1,
+          "estEnd": 67.3
+        }
+      ]
+    },
+    {
+      "id": "root",
+      "estStart": 67.3,
+      "estEnd": 79.7,
+      "cues": [
+        {
+          "text": "ושורש ריבועי הוא הפעולה ההפוכה לחזקה",
+          "estStart": 67.3,
+          "estEnd": 70.3
+        },
+        {
+          "text": "שנייה. הוא שואל: איזה מספר, כשנכפול אותו",
+          "estStart": 70.3,
+          "estEnd": 73.7
+        },
+        {
+          "text": "בעצמו, ייתן את המספר הנתון?",
+          "estStart": 73.7,
+          "estEnd": 76.2
+        },
+        {
+          "text": "⁦√49 = 7⁩, כי ⁦7² = 49⁩.",
+          "estStart": 76.2,
+          "estEnd": 79.7
+        }
+      ]
+    },
+    {
+      "id": "squares",
+      "estStart": 79.7,
+      "estEnd": 87.9,
+      "cues": [
+        {
+          "text": "וכדאי להכיר היטב את הריבועים של המספרים",
+          "estStart": 79.7,
+          "estEnd": 82.6
+        },
+        {
+          "text": "אחת עד חמש עשרה לפחות.",
+          "estStart": 82.6,
+          "estEnd": 84.6
+        },
+        {
+          "text": "זה חוסך זמן, ועוזר לזהות מהר ריבוע מושלם.",
+          "estStart": 84.6,
+          "estEnd": 87.9
+        }
+      ]
+    },
+    {
+      "id": "habit",
+      "estStart": 87.9,
+      "estEnd": 95,
+      "cues": [
+        {
+          "text": "וכשתרגיל נראה מסובך, כתבו כל שלב בשורה",
+          "estStart": 87.9,
+          "estEnd": 90.8
+        },
+        {
+          "text": "נפרדת. כך רואים בדיוק היכן התחלפה פעולה או",
+          "estStart": 90.8,
+          "estEnd": 94.1
+        },
+        {
+          "text": "נשמטו סוגריים.",
+          "estStart": 94.1,
+          "estEnd": 95
+        }
+      ]
+    },
+    {
+      "id": "cta",
+      "estStart": 95,
+      "estEnd": 99.5,
+      "cues": [
+        {
+          "text": "בפוסט המלא תמצאו את חוקי החזקות, ותרגילים",
+          "estStart": 95,
+          "estEnd": 97.8
+        },
+        {
+          "text": "בשלוש דרגות. הקישור בתיאור.",
+          "estStart": 97.8,
+          "estEnd": 99.5
+        }
+      ]
+    }
+  ]
+}

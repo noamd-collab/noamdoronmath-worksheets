@@ -58,7 +58,6 @@ test("shrinking the page width keeps the reader halfway through page four", () =
   assert.equal(before.fraction, .5);
 
   f.scroll.clientWidth = 390;
-  f.ctx.pdfZoom = .7;
   f.ctx.resetPdfRendering();
 
   const after = f.ctx.capturePdfPosition();
@@ -89,7 +88,12 @@ test("missing or detached page anchors leave scroll position unchanged", () => {
 });
 
 
-test("fit width reserves both feedback and AI gutters before document scaling", () => {
+// Phones now fit the page at the default 70% zoom, not at 100%: Noam's
+// 7496453 "Fix mobile PDF worksheet and Noam preview" (origin/main) changed
+// getPdfPageWidth to divide by .7 on phones and rewrote this test the same way;
+// 8a09802 ported that viewer code here without the test. The 1e-9 tolerance is
+// Noam's, for the /.7 float division (e.g. 1024px gives 907.9999999999999).
+test("phone PDF fills the available width at 70% while buttons keep their fixed gutter", () => {
   const f = fixture();
   const desktopGutter = Number(viewer.match(/margin-right:(\d+)px;/)[1]);
   const mobileGutter = Number(viewer.match(/\.pdf-page\{width:calc\(100vw - \d+px\);min-height:0;margin-right:(\d+)px/)[1]);
@@ -97,25 +101,19 @@ test("fit width reserves both feedback and AI gutters before document scaling", 
     f.ctx.mobileLayout.matches = mobile;
     const gutter = mobile ? mobileGutter : desktopGutter;
     const containerInset = mobile ? 12 : 34;
+    // Desktop math is exact; only the phone /.7 division needs float tolerance.
+    const same = (actual, expected, message) => mobile
+      ? assert.ok(Math.abs(actual - expected) < 1e-9, message)
+      : assert.equal(actual, expected, message);
     for (const width of [280, 320, 380, 664, 1024]) {
       f.scroll.clientWidth = width;
-      f.ctx.pdfZoom = f.ctx.getPdfFitZoom();
+      f.ctx.pdfZoom = mobile ? .7 : 1;
       const fitted = f.ctx.getPdfPageWidth();
-      assert.ok(fitted + gutter + containerInset <= width, "fit and both controls stay inside the viewport");
-      const fitZoom = f.ctx.pdfZoom;
-      f.ctx.pdfZoom = fitZoom * 2;
-      assert.equal(f.ctx.getPdfPageWidth(), fitted * 2, "document zoom does not scale button gutter");
+      same(fitted + gutter + containerInset, width, "the fitted PDF and buttons fill the viewport");
+      f.ctx.pdfZoom = .7;
+      assert.ok(f.ctx.getPdfPageWidth() + gutter + containerInset <= width + (mobile ? 1e-9 : 0), "default zoom keeps both targets visible");
+      f.ctx.pdfZoom = mobile ? .85 : 2;
+      same(f.ctx.getPdfPageWidth(), fitted * (mobile ? .85 / .7 : 2), "changing zoom scales the PDF, not the button gutter");
     }
-  }
-});
-
-test("phone reading size stays legible independently of viewport width", () => {
-  const f = fixture();
-  for (const width of [320,375,390,430,844]) {
-    f.scroll.clientWidth = width;
-    f.ctx.pdfZoom = 1;
-    assert.equal(f.ctx.getPdfPageWidth(),600);
-    f.ctx.pdfZoom = f.ctx.getPdfFitZoom();
-    assert.ok(f.ctx.getPdfPageWidth()+66 <= width+.01);
   }
 });

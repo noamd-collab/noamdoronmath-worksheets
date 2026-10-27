@@ -328,6 +328,9 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
 @keyframes flashB{0%{opacity:0}15%,70%{opacity:1}100%{opacity:0}}
 .flashonA{animation:flashA 1.7s ease forwards}
 .flashonB{animation:flashB 1.7s ease forwards}
+@media (min-width:900px){
+  #card{max-height:min(100dvh - 16px,780px)}
+}
 @media (max-height:760px) and (min-width:900px){
   #app{padding:6px}
   #card{padding:8px 14px 10px;gap:8px}
@@ -2427,7 +2430,7 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
     },
     paintQuiz(S, st, done) {
       const box = $('opts');
-      if (!S.opts) { box.innerHTML = ''; delete box.dataset.stamp; return; }
+      if (!S.opts) { box.innerHTML = ''; return; }
       const stamp = (st.ord || []).join('');
       if (box.dataset.stamp !== stamp) {
         box.dataset.stamp = stamp;

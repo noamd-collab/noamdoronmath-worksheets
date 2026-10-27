@@ -1,4 +1,3 @@
-import { sitePrefersReducedMotion } from './motionPreference.js';
 /**
  * KIMI-LOOPS-K3 — engine for the ConceptLoop film loops.
  *
@@ -13,17 +12,10 @@ import { sitePrefersReducedMotion } from './motionPreference.js';
  *   - after 4 laps the loop parks on the completed state
  *   - explicit site a11y (html.nd-motion-off / html.noam-a11y-motion):
  *     completed state, fully static, toggle hidden. OS
- *     prefers-reduced-motion parks the loop unless the visitor explicitly enables motion on this site.
+ *     prefers-reduced-motion does not park the loop.
  */
 
 import { renderKiteArea } from './kiteAreaFilm';
-import { draw, lerp, move, op, ph, q, qa, r2, shift } from './loopHelpers';
-import { FILM as distribFilm } from './topicFilms/distributive-area-model-grade-4';
-import { FILM as fracDivFilm } from './topicFilms/fraction-division-meaning-grade-6';
-import { FILM as grade4SummaryFilm } from './topicFilms/grade-4-summary';
-import { FILM as measureFilm } from './topicFilms/measurement-geometry-synthesis-grade-6';
-
-export { EASE, lerp, ph } from './loopHelpers';
 
 type LoopRoot = HTMLElement & { __loop?: LoopDebug };
 
@@ -33,6 +25,59 @@ interface LoopDebug {
   play: () => void;
   state: () => { t: number; playing: boolean; laps: number; done: boolean; static: boolean };
 }
+
+/* ——— easing: exact cubic-bezier(.16,1,.3,1) via Newton–Raphson ——— */
+function cubicBezier(x1: number, y1: number, x2: number, y2: number) {
+  const cx = 3 * x1;
+  const bx = 3 * (x2 - x1) - cx;
+  const ax = 1 - cx - bx;
+  const cy = 3 * y1;
+  const by = 3 * (y2 - y1) - cy;
+  const ay = 1 - cy - by;
+  const sx = (t: number) => ((ax * t + bx) * t + cx) * t;
+  const sy = (t: number) => ((ay * t + by) * t + cy) * t;
+  const sd = (t: number) => (3 * ax * t + 2 * bx) * t + cx;
+  return (x: number) => {
+    if (x <= 0) return 0;
+    if (x >= 1) return 1;
+    let t = x;
+    for (let i = 0; i < 8; i++) {
+      const err = sx(t) - x;
+      if (Math.abs(err) < 1e-6) break;
+      const d = sd(t);
+      if (Math.abs(d) < 1e-6) break;
+      t = Math.min(1, Math.max(0, t - err / d));
+    }
+    return sy(t);
+  };
+}
+const EASE = cubicBezier(0.16, 1, 0.3, 1);
+export { EASE };
+
+/** eased progress of t inside [a,b] */
+const ph = (t: number, a: number, b: number) => EASE(Math.min(1, Math.max(0, (t - a) / (b - a))));
+const lerp = (a: number, b: number, p: number) => a + (b - a) * p;
+export { ph, lerp };
+const r2 = (n: number) => Math.round(n * 100) / 100;
+
+type El = SVGElement | HTMLElement;
+const q = (root: LoopRoot, name: string) =>
+  root.querySelector(`[data-el="${name}"]`) as El;
+const qa = (root: LoopRoot, sel: string) =>
+  Array.from(root.querySelectorAll(sel)) as El[];
+
+const op = (el: El | null, v: number) => {
+  if (el) el.style.opacity = String(r2(Math.min(1, Math.max(0, v))));
+};
+const draw = (el: El | null, p: number) => {
+  if (el) el.style.strokeDashoffset = String(r2(1 - Math.min(1, Math.max(0, p))));
+};
+const move = (el: El | null, x: number, y: number, rot = 0) => {
+  if (el) el.setAttribute('transform', `translate(${r2(x)} ${r2(y)}) rotate(${r2(rot)})`);
+};
+const shift = (el: El | null, dx: number, dy: number) => {
+  if (el) el.setAttribute('transform', `translate(${r2(dx)} ${r2(dy)})`);
+};
 
 /* ═══════════════ variant A — triangle area (D = 10 s) ═══════════════
    corrected script (Noam, K3 fix): the 6×4 rectangle is 24, a diagonal
@@ -841,47 +886,15 @@ function renderTransform(root: LoopRoot, t: number) {
 }
 const TRANS_HOLD = 6.8;
 
-/* ═══════════════ L02 — para-rect: parallelogram shears into a rectangle (D = 10 s) ═══════════════
-   Base b stays on the bottom edge. Height is the perpendicular between the
-   two bases: a dashed altitude with a right-angle mark while the shape is a
-   parallelogram, then an outside bracket once that altitude would lie on the
-   rectangle's left side. Lap length and hold are unchanged. */
+/* ═══════════════ L02 — para-rect: parallelogram shears into a rectangle (D = 10 s) ═══════════════ */
 
 function renderParaRect(root: LoopRoot, t: number) {
   const flat = ph(t, 1.3, 2.7) - ph(t, 8.1, 9.3);
   const s = 72 * (1 - flat);
-  const hx = 160 + s;
   const shape = q(root, 'shape');
-  if (shape) shape.setAttribute('points', `160,240 400,240 ${r2(400 + s)},128 ${r2(hx)},128`);
-
-  const height = q(root, 'height');
-  if (height) {
-    height.setAttribute('x1', String(r2(hx)));
-    height.setAttribute('x2', String(r2(hx)));
-    height.setAttribute('y1', '128');
-    height.setAttribute('y2', '240');
-  }
-  const sq = q(root, 'h-sq');
-  if (sq) sq.setAttribute('d', `M${r2(hx)} 226 L${r2(hx + 14)} 226 L${r2(hx + 14)} 240`);
-  const brk = q(root, 'h-brk');
-  if (brk) brk.setAttribute('d', `M${r2(hx)} 128 L142 128 L142 240 L160 240`);
-
-  // 0 while the altitude is clearly inside the parallelogram, 1 on the rectangle.
-  const edge = Math.min(1, Math.max(0, (28 - s) / 28));
-  op(height, 1 - edge);
-  op(sq, 1);
-  op(brk, edge);
-
-  const labels = ph(t, 0.6, 1.0);
-  const lh = q(root, 'lbl-h');
-  if (lh) {
-    lh.setAttribute('x', String(r2(lerp(hx + 16, 124, edge))));
-    lh.setAttribute('y', '190');
-    lh.setAttribute('text-anchor', 'middle');
-  }
-  op(lh, labels);
-  op(q(root, 'b-brk'), labels);
-  op(q(root, 'lbl-b'), labels);
+  if (shape) shape.setAttribute('points', `160,240 400,240 ${r2(400 + s)},128 ${r2(160 + s)},128`);
+  op(q(root, 'height'), 1);
+  op(q(root, 'lbl-h'), ph(t, 0.6, 1.0));
   op(q(root, 'lbl-same'), ph(t, 2.8, 3.3) * (1 - ph(t, 8.0, 8.6)));
   const fxs = qa(root, '[data-fx]');
   op(fxs[0], ph(t, 3.3, 3.7) * (1 - ph(t, 8.0, 8.6)));
@@ -950,10 +963,6 @@ function renderSlope(root: LoopRoot, t: number) {
   const fxs = qa(root, '[data-fx]');
   op(fxs[0], ph(t, 4.6, 5.0) * (1 - ph(t, 8.0, 8.6)));
   op(fxs[1], ph(t, 5.0, 5.4) * (1 - ph(t, 8.0, 8.6)));
-  // Grid, ticks, dots and pairs are added on the existing drawing.
-  // They are on screen from the start and leave with the same fade.
-  op(q(root, 'pts'), fade);
-  op(q(root, 'pairs'), fade);
 }
 const SLOPE_HOLD = 6.2;
 
@@ -1348,128 +1357,20 @@ function renderPrimeRect(root: LoopRoot, t: number) {
 }
 const PRIME_RECT_HOLD = 5.4;
 
-/* ═══════════════ L19 — sas-snap: SAS marks, then the triangles meet (D = 10 s) ═══════════════
-   Acute scalene triangle (included angle ≈ 53°). Home vertices are the
-   overlapped pose in the middle of the 560×340 card. Each copy starts 136px
-   apart so both are fully on the card, then they slide together. The copy
-   stays dashed so both outlines remain visible on top of each other.
-   The moving group is sas-copy, not copy: catalog.css hides every
-   [data-el='copy'] (the transform film) at opacity 0.
-   Marks: one tick, then two ticks, then the included arc — each pair with
-   its own caption. "המשולשים חופפים" starts only after the slide has
-   finished, and the formula follows it. The lap never blanks the card:
-   both outlines stay drawn, then slide apart again so the seam matches
-   the start. */
-
-const SAS_A = { x: 155, y: 280 };
-const SAS_B = { x: 400, y: 210 };
-const SAS_C = { x: 250, y: 28 };
-const SAS_APART = 136;
-
-function placeSasTicks(
-  group: SVGElement | HTMLElement | null,
-  x1: number,
-  y1: number,
-  x2: number,
-  y2: number,
-  count: 1 | 2,
-) {
-  if (!group) return;
-  const lines = group.querySelectorAll('line');
-  const dx = x2 - x1;
-  const dy = y2 - y1;
-  const len = Math.hypot(dx, dy) || 1;
-  const ux = dx / len;
-  const uy = dy / len;
-  const px = -uy;
-  const py = ux;
-  const half = 9;
-  const gap = 6;
-  const offsets = count === 1 ? [0] : [-gap / 2, gap / 2];
-  const mx = (x1 + x2) / 2;
-  const my = (y1 + y2) / 2;
-  offsets.forEach((off, i) => {
-    const line = lines[i];
-    if (!line) return;
-    const cx = mx + ux * off;
-    const cy = my + uy * off;
-    line.setAttribute('x1', String(r2(cx - px * half)));
-    line.setAttribute('y1', String(r2(cy - py * half)));
-    line.setAttribute('x2', String(r2(cx + px * half)));
-    line.setAttribute('y2', String(r2(cy + py * half)));
-  });
-}
-
-/** Minor arc inside ∠BAC, radius measured from A along AB and AC. */
-function placeSasArc(
-  path: SVGElement | HTMLElement | null,
-  ax: number,
-  ay: number,
-  bx: number,
-  by: number,
-  cx: number,
-  cy: number,
-  radius: number,
-) {
-  if (!path) return;
-  const abx = bx - ax;
-  const aby = by - ay;
-  const acx = cx - ax;
-  const acy = cy - ay;
-  const lab = Math.hypot(abx, aby) || 1;
-  const lac = Math.hypot(acx, acy) || 1;
-  const ux = abx / lab;
-  const uy = aby / lab;
-  const vx = acx / lac;
-  const vy = acy / lac;
-  const cross = ux * vy - uy * vx;
-  const sweep = cross > 0 ? 1 : 0;
-  path.setAttribute(
-    'd',
-    `M${r2(ax + ux * radius)} ${r2(ay + uy * radius)} A${r2(radius)} ${r2(radius)} 0 0 ${sweep} ${r2(ax + vx * radius)} ${r2(ay + vy * radius)}`,
-  );
-}
+/* ═══════════════ L19 — sas-snap: two marked triangles coincide (D = 10 s) ═══════════════ */
 
 function renderSasSnap(root: LoopRoot, t: number) {
-  // Captions leave before the reset. The triangles stay opaque and slide
-  // back apart, so the homepage hero and the grade player never show an
-  // empty peach panel.
-  const endFade = 1 - ph(t, 8.2, 8.9);
-  const together = ph(t, 4.2, 4.9) * (1 - ph(t, 8.5, 9.4));
-  shift(q(root, 'orig'), -SAS_APART * (1 - together), 0);
-  const sasCopy = q(root, 'sas-copy');
-  shift(sasCopy, SAS_APART * (1 - together), 0);
-  op(sasCopy, 1);
-  op(q(root, 'triA'), 1);
-  op(q(root, 'triB'), 1);
-
-  placeSasTicks(q(root, 'm1a'), SAS_A.x, SAS_A.y, SAS_B.x, SAS_B.y, 1);
-  placeSasTicks(q(root, 'm1b'), SAS_A.x, SAS_A.y, SAS_B.x, SAS_B.y, 1);
-  placeSasTicks(q(root, 'm2a'), SAS_A.x, SAS_A.y, SAS_C.x, SAS_C.y, 2);
-  placeSasTicks(q(root, 'm2b'), SAS_A.x, SAS_A.y, SAS_C.x, SAS_C.y, 2);
-  placeSasArc(q(root, 'm3a'), SAS_A.x, SAS_A.y, SAS_B.x, SAS_B.y, SAS_C.x, SAS_C.y, 36);
-  placeSasArc(q(root, 'm3b'), SAS_A.x, SAS_A.y, SAS_B.x, SAS_B.y, SAS_C.x, SAS_C.y, 36);
-
-  const m1 = ph(t, 0.45, 0.9) * endFade;
-  const m2 = ph(t, 1.6, 2.05) * endFade;
-  const m3 = ph(t, 2.75, 3.2) * endFade;
-  op(q(root, 'm1a'), m1);
-  op(q(root, 'm1b'), m1);
-  op(q(root, 'm2a'), m2);
-  op(q(root, 'm2b'), m2);
-  op(q(root, 'm3a'), m3);
-  op(q(root, 'm3b'), m3);
-
-  op(q(root, 'cap1'), ph(t, 0.5, 0.85) * (1 - ph(t, 1.45, 1.7)) * endFade);
-  op(q(root, 'cap2'), ph(t, 1.65, 2.0) * (1 - ph(t, 2.6, 2.85)) * endFade);
-  op(q(root, 'cap3'), ph(t, 2.8, 3.15) * (1 - ph(t, 3.75, 4.0)) * endFade);
-  op(q(root, 'congruent'), ph(t, 5.2, 5.55) * endFade);
-
+  const p = ph(t, 1.2, 2.6) - ph(t, 8.2, 9.3);
+  const g = q(root, 'copy');
+  if (g) g.setAttribute('transform', `translate(${r2(190 * (1 - p))} ${r2(-16 * (1 - p))})`);
+  op(q(root, 'ghost'), (1 - p) * (1 - ph(t, 8.6, 9.2)));
+  const show = ph(t, 2.8, 3.2) * (1 - ph(t, 8.0, 8.6));
+  op(q(root, 'same'), show);
   const fxs = qa(root, '[data-fx]');
-  op(fxs[0], ph(t, 5.75, 6.1) * endFade);
-  op(fxs[1], ph(t, 6.2, 6.55) * endFade);
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 3.2, 3.6) * (1 - ph(t, 8.0, 8.6)));
 }
-const SAS_SNAP_HOLD = 6.7;
+const SAS_SNAP_HOLD = 5.2;
 
 /* ═══════════════ L20 — obtuse-ht: height meets the base extension (D = 10 s) ═══════════════ */
 
@@ -2354,48 +2255,15 @@ const SPECS = {
     hold: KITE_AREA_END + KITE_HOLD,
     render: renderKiteShow,
   },
-  // Topic films from anim-drop 2026-10-18. Duration and hold stay the film's.
-  'distributive-area-model-grade-4': {
-    duration: distribFilm.duration,
-    hold: distribFilm.hold,
-    render: renderDistribFilm,
-  },
-  'fraction-division-meaning-grade-6': {
-    duration: fracDivFilm.duration,
-    hold: fracDivFilm.hold,
-    render: renderFracDivFilm,
-  },
-  'grade-4-summary': {
-    duration: grade4SummaryFilm.duration,
-    hold: grade4SummaryFilm.hold,
-    render: renderGrade4SummaryFilm,
-  },
-  'measurement-geometry-synthesis-grade-6': {
-    duration: measureFilm.duration,
-    hold: measureFilm.hold,
-    render: renderMeasureFilm,
-  },
 } as const;
-
-function renderDistribFilm(root: LoopRoot, t: number) {
-  distribFilm.render(root, t);
-}
-function renderFracDivFilm(root: LoopRoot, t: number) {
-  fracDivFilm.render(root, t);
-}
-function renderGrade4SummaryFilm(root: LoopRoot, t: number) {
-  grade4SummaryFilm.render(root, t);
-}
-function renderMeasureFilm(root: LoopRoot, t: number) {
-  measureFilm.render(root, t);
-}
 
 const MAX_LAPS = 4;
 
 function motionOff(): boolean {
   const html = document.documentElement;
-  return html.classList.contains('noam-a11y-motion') || html.classList.contains('nd-motion-off')
-    || sitePrefersReducedMotion();
+  // Only an explicit menu choice parks the film. OS reduced motion used to
+  // take this same path and left every grade demo on the final frame.
+  return html.classList.contains('noam-a11y-motion') || html.classList.contains('nd-motion-off');
 }
 
 /** The kite card parks on its finished frame when the OS asks for less motion.
@@ -2487,9 +2355,10 @@ function setupLoop(root: LoopRoot) {
       t = 0;
       lap = 1;
       done = false;
+      userPaused = false;
       drawFrame();
       if (toggle) toggle.style.display = '';
-      if (inView && !userPaused) play();
+      if (inView) play();
       else setToggle('המשך ההדגמה', true);
     }
   }
@@ -2525,12 +2394,10 @@ function setupLoop(root: LoopRoot) {
     }
   });
 
-  window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', applyMotionPrefs);
-
   // react to the site's accessibility menu toggle (class on <html>)
   new MutationObserver(applyMotionPrefs).observe(document.documentElement, {
     attributes: true,
-    attributeFilter: ['class', 'data-nd-motion'],
+    attributeFilter: ['class'],
   });
   if (variant === 'kite-construct') {
     new MutationObserver(applyMotionPrefs).observe(root, {

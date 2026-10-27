@@ -16,6 +16,8 @@ import {
   PYTHAGORAS_GAME_TITLE,
 } from '../src/lib/pythagorasGame';
 import { isLocallyServedPath, resolveSiteHrefString, PROD_ORIGIN } from '../src/lib/resolveSiteHref';
+import { prepareIndex, search } from '../src/lib/siteSearch/engine';
+import type { SearchIndex } from '../src/lib/siteSearch/types';
 import { listMainPagePaths } from '../src/lib/siteSitemaps';
 import { loadTopicPage } from '../src/lib/topicPages';
 
@@ -147,17 +149,17 @@ describe('eliyahu pythagoras game page', () => {
     assert.equal(/\d+\s*\/\s*\d+/.test(block), false);
   });
 
-  it('draws a true square on the hypotenuse of the 3-4-5 triangle', () => {
-    const card = readFileSync(fromTest('../src/components/GamePromoCard.astro'), 'utf8');
-    const points = card.match(/<polygon class="exact-pyth-glow" points="([^"]+)"/)![1]
-      .split(' ').map(point => point.split(',').map(Number));
-    const edges = points.map((p, i) => [points[(i + 1) % 4][0] - p[0], points[(i + 1) % 4][1] - p[1]]);
-    assert.equal(points.length, 4);
-    for (let i = 0; i < 4; i++) {
-      const edge = edges[i], next = edges[(i + 1) % 4];
-      assert.equal(edge[0] ** 2 + edge[1] ** 2, 120 ** 2);
-      assert.equal(edge[0] * next[0] + edge[1] * next[1], 0);
-    }
-    assert.equal(72 ** 2 + 96 ** 2, 120 ** 2);
+  it('is findable in search under the grade-8 Pythagoras catalog card', () => {
+    const index = JSON.parse(readFileSync(fromTest('../src/data/search-index.v1.json'), 'utf8')) as SearchIndex;
+    const doc = index.docs.find((item) => item.href === PYTHAGORAS_GAME_PATH);
+    assert.ok(doc);
+    assert.equal(doc.kind, 'page');
+    assert.equal(doc.grade, PYTHAGORAS_GAME_CATALOG_GRADE);
+    assert.equal(doc.topicKey, `topic:${PYTHAGORAS_GAME_CATALOG_GRADE}:${PYTHAGORAS_GAME_CATALOG_TOPIC_ID}`);
+    assert.equal(doc.title, PYTHAGORAS_GAME_H1);
+    const result = search(prepareIndex(index), 'פיתגורס', { grade: 8 });
+    assert.equal(result.results[0]?.key, 'topic:8:11');
+    const card = result.results.find((item) => item.key === 'topic:8:11');
+    assert.ok(card?.explainers.some((item) => item.href === PYTHAGORAS_GAME_PATH && item.title === PYTHAGORAS_GAME_H1));
   });
 });

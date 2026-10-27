@@ -4,17 +4,11 @@
   function init() {
     if (document.getElementById('noam-accessibility')) return;
     const defaults = { text: 100, contrast: false, links: false, motion: false };
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-    let prefs = { ...defaults, motionChosen: false, stopAnim: false, stopAnimChosen: false };
+    let prefs = { ...defaults };
     try {
       const saved = JSON.parse(localStorage.getItem('noam-accessibility-v1') || '{}');
       prefs.text = [100,110,120,130,140,150].includes(saved.text) ? saved.text : 100;
       for (const key of ['contrast','links','motion']) prefs[key] = saved[key] === true;
-      prefs.motionChosen = saved.motionChosen === true || saved.motion === true;
-      if (typeof saved.stopAnim === 'boolean') {
-        prefs.stopAnim = saved.stopAnim;
-        prefs.stopAnimChosen = true;
-      }
     } catch (_) { /* Preferences still work when storage is unavailable. */ }
 
     const style = document.createElement('style');
@@ -47,12 +41,6 @@
         button:disabled { opacity:.45; cursor:default; }
         #launch { width:48px; height:48px; padding:8px; border-radius:50%; background:#075e57; color:white; border:2px solid white; box-shadow:0 2px 8px #14213d66; display:grid; place-items:center; }
         #launch svg { width:28px; height:28px; }
-        /* Worksheet tools stay secondary to the question-level Ramzi controls. */
-        :host-context(body.exact-viewer) #launch {
-          width:44px; height:44px; padding:9px; border:1px solid #aab6c5;
-          border-radius:12px; background:#fbfaf5; color:#1e605e; box-shadow:none;
-        }
-        :host-context(body.exact-viewer) #launch svg { width:24px; height:24px; }
         dialog { direction:rtl; position:fixed; inset:auto 14px calc(140px + env(safe-area-inset-bottom)) auto; margin:0; width:min(330px,calc(100vw - 28px)); max-height:calc(100dvh - 165px); overflow:auto; background:#fff; color:#14213d; border:2px solid #14213d; border-radius:18px; padding:16px; box-shadow:0 8px 30px #14213d40; font:16px/1.5 Arial,sans-serif; }
         dialog::backdrop { background:#14213d26; }
         header { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px; }
@@ -124,40 +112,23 @@
       }
       if (prefs.text === 100) original.clear();
     }
-    function motionReduced() {
-      return prefs.motionChosen ? prefs.motion : reducedMotion.matches;
-    }
     function apply(save) {
-      const reduceOn = motionReduced();
-      const stopOn = prefs.stopAnim === true;
-      document.documentElement.classList.toggle('nd-motion-enabled', prefs.motionChosen && !reduceOn && !stopOn);
-      document.documentElement.classList.toggle('nd-motion-off', stopOn);
       for (const key of ['contrast','links','motion']) {
-        const on = key === 'motion' ? reduceOn || stopOn : prefs[key];
-        document.documentElement.classList.toggle('noam-a11y-'+key,on);
-        root.querySelector('[data-pref="'+key+'"]').setAttribute('aria-pressed',String(key === 'motion' ? reduceOn : on));
+        document.documentElement.classList.toggle('noam-a11y-'+key,prefs[key]);
+        root.querySelector('[data-pref="'+key+'"]').setAttribute('aria-pressed',String(prefs[key]));
       }
       root.getElementById('size').textContent = prefs.text+'%';
       root.getElementById('increase').disabled = prefs.text >= 150;
       root.getElementById('decrease').disabled = prefs.text <= 100;
       scaleText();
-      if (save) try {
-        const stored = { text:prefs.text, contrast:prefs.contrast, links:prefs.links, motion:prefs.motion, motionChosen:prefs.motionChosen };
-        if (prefs.stopAnimChosen) stored.stopAnim = stopOn;
-        localStorage.setItem('noam-accessibility-v1',JSON.stringify(stored));
-      } catch (_) {}
-      window.dispatchEvent(new CustomEvent('nd:motion-off', { detail: { off: reduceOn || stopOn } }));
+      if (save) try { localStorage.setItem('noam-accessibility-v1',JSON.stringify(prefs)); } catch (_) {}
     }
     root.getElementById('increase').addEventListener('click', () => { prefs.text = Math.min(150,prefs.text+10); apply(true); });
     root.getElementById('decrease').addEventListener('click', () => { prefs.text = Math.max(100,prefs.text-10); apply(true); });
     root.querySelectorAll('[data-pref]').forEach(button => button.addEventListener('click', () => {
-      const key = button.dataset.pref;
-      if (key === 'motion') { prefs.motion = !motionReduced(); prefs.motionChosen = true; }
-      else prefs[key] = !prefs[key];
-      apply(true);
+      const key = button.dataset.pref; prefs[key] = !prefs[key]; apply(true);
     }));
-    root.getElementById('reset').addEventListener('click', () => { prefs = {...defaults, motionChosen:false, stopAnim:false, stopAnimChosen:false}; apply(true); });
-    reducedMotion.addEventListener('change', () => apply(false));
+    root.getElementById('reset').addEventListener('click', () => { prefs = {...defaults}; apply(true); });
     let scheduled = false;
     new MutationObserver(() => {
       if (prefs.text === 100 || scheduled) return;

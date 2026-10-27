@@ -65,26 +65,13 @@
       Math.max(0, options.networkRetryDelayMs) : 650;
     var configPromise = null;
     var scriptPromise = null;
-    var loadedHost = "";
-    var currentScript = null;
-    var recaptchaAttempt = 0;
-    var discardedRecaptcha = null;
-    var verificationStage = "config";
-    var RECAPTCHA_HOSTS = [
-      "https://www.google.com/recaptcha/api.js?render=",
-      "https://www.recaptcha.net/recaptcha/api.js?render="
-    ];
 
     // The deadline covers response parsing too. It still rejects on browsers
     // without AbortController; an expired operation can never send an AI call.
     function timed(operation, milliseconds, timeoutCode, timeoutMessage) {
       var Controller = options.AbortController || win.AbortController;
       var controller = Controller ? new Controller() : null;
-      var state = {
-        expired: false,
-        signal: controller ? controller.signal : undefined,
-        deadline: Date.now() + milliseconds
-      };
+      var state = { expired: false, signal: controller ? controller.signal : undefined };
       return new Promise(function (resolve, reject) {
         var timer = setTimeout(function () {
           state.expired = true;
@@ -136,239 +123,71 @@
       return configPromise;
     }
 
-    function clearLoadedRecaptcha() {
-      recaptchaAttempt += 1;
-      scriptPromise = null;
-      loadedHost = "";
-      var script = currentScript;
-      currentScript = null;
-      if (script) {
-        script.onload = null;
-        script.onerror = null;
-        if (script.parentNode) { script.parentNode.removeChild(script); }
-      }
-      if (win.grecaptcha) { discardedRecaptcha = win.grecaptcha; }
-      try { win.grecaptcha = undefined; } catch (error) {}
-      try { delete win.grecaptcha; } catch (error) {
-        try { win.grecaptcha = undefined; } catch (ignored) {}
-      }
-      try { win.___grecaptcha_cfg = undefined; } catch (error) {}
-      try { delete win.___grecaptcha_cfg; } catch (error) {}
-    }
-
-    function canFallbackHost(error, state) {
-      if (state && state.expired) { return false; }
-      var code = error && error.code;
-      return code !== "NOT_ACTIVE" && code !== "BOT_CONFIG_UNAVAILABLE" &&
-        code !== "BOT_VERIFICATION_TIMEOUT" && code !== "BOT_ROUTE_UNSUPPORTED";
-    }
-
-    function remainingMs(state) {
-      if (!state || state.expired) { return 0; }
-      return Math.max(0, (state.deadline || 0) - Date.now());
-    }
-
-    function hostBudgetMs(state, isLastHost) {
-      var left = remainingMs(state);
-      if (left <= 0) { return 0; }
-      var slack = 20;
-      var usable = left > slack ? left - slack : left;
-      if (isLastHost) { return Math.max(20, usable); }
-      var cap = Math.max(20, Math.floor(verificationTimeout * 0.4));
-      return Math.max(20, Math.min(cap, usable));
-    }
-
-    function withHostDeadline(promise, state, isLastHost) {
-      return new Promise(function (resolve, reject) {
-        var done = false;
-        function fail() {
-          if (done || (state && state.expired)) { return; }
-          done = true;
-          clearLoadedRecaptcha();
-          reject(makeError(VERIFY_MESSAGE, "BOT_CLIENT_UNAVAILABLE"));
-        }
-        var budget = hostBudgetMs(state, isLastHost);
-        if (budget <= 0) {
-          fail();
-          return;
-        }
-        var timer = setTimeout(fail, budget);
-        promise.then(function (value) {
-          if (done) { return; }
-          done = true;
-          clearTimeout(timer);
-          resolve(value);
-        }, function (error) {
-          if (done) { return; }
-          done = true;
-          clearTimeout(timer);
-          reject(error);
-        });
-      });
-    }
-
-    function loadRecaptcha(siteKey, hostPrefix, state, isLastHost) {
+    function loadRecaptcha(siteKey) {
       if (options.loadRecaptcha) { return options.loadRecaptcha(siteKey); }
-      hostPrefix = hostPrefix || RECAPTCHA_HOSTS[0];
-      if (scriptPromise && loadedHost === hostPrefix) { return scriptPromise; }
-      if (scriptPromise && loadedHost !== hostPrefix) { clearLoadedRecaptcha(); }
-      loadedHost = hostPrefix;
-      var attempt = recaptchaAttempt;
-      var script = null;
-      scriptPromise = new Promise(function (resolve, reject) {
-        if (!doc || !doc.head) { reject(makeError(VERIFY_MESSAGE, "BOT_CLIENT_UNAVAILABLE")); return; }
-        var finished = false;
-        function dropScript() {
-          if (!script) { return; }
-          script.onload = null;
-          script.onerror = null;
-          if (script.parentNode) { script.parentNode.removeChild(script); }
-          if (currentScript === script) { currentScript = null; }
-        }
-        var timer = setTimeout(function () {
-          if (finished || attempt !== recaptchaAttempt) { return; }
-          finished = true;
-          dropScript();
-          reject(makeError(VERIFY_MESSAGE, "BOT_CLIENT_UNAVAILABLE"));
-        }, hostBudgetMs(state, isLastHost));
-        function finish(ok) {
-          if (finished || attempt !== recaptchaAttempt) { return; }
-          finished = true;
-          clearTimeout(timer);
-          if (script) {
+      if (!scriptPromise) {
+        scriptPromise = new Promise(function (resolve, reject) {
+          if (!doc || !doc.head) { reject(makeError(VERIFY_MESSAGE, "BOT_CLIENT_UNAVAILABLE")); return; }
+          var script = doc.createElement("script");
+          var timer = setTimeout(function () { finish(false); }, verificationTimeout);
+          var finished = false;
+          function finish(ok) {
+            if (finished) { return; }
+            finished = true;
+            clearTimeout(timer);
             script.onload = null;
             script.onerror = null;
+            // api.js can finish before Google's secondary bundle adds execute.
+            // Wait for ready before checking that API, under the same deadline.
+            if (ok && win.grecaptcha && typeof win.grecaptcha.ready === "function") {
+              resolve(win.grecaptcha);
+            } else {
+              if (script.parentNode) { script.parentNode.removeChild(script); }
+              reject(makeError(VERIFY_MESSAGE, "BOT_CLIENT_UNAVAILABLE"));
+            }
           }
-          // api.js can finish before Google's secondary bundle adds execute.
-          var api = win.grecaptcha;
-          if (ok && api && api !== discardedRecaptcha && typeof api.ready === "function") {
-            resolve(api);
-            return;
-          }
-          dropScript();
-          reject(makeError(VERIFY_MESSAGE, "BOT_CLIENT_UNAVAILABLE"));
-        }
-        script = doc.createElement("script");
-        currentScript = script;
-        script.src = hostPrefix + encodeURIComponent(siteKey);
-        script.async = true;
-        script.onload = function () { finish(true); };
-        script.onerror = function () { finish(false); };
-        doc.head.appendChild(script);
-      }).catch(function (error) {
-        if (attempt === recaptchaAttempt && loadedHost === hostPrefix) {
-          scriptPromise = null;
-          loadedHost = "";
-        }
-        throw error;
-      });
+          script.src = "https://www.google.com/recaptcha/api.js?render=" + encodeURIComponent(siteKey);
+          script.async = true;
+          script.onload = function () { finish(true); };
+          script.onerror = function () { finish(false); };
+          doc.head.appendChild(script);
+        }).catch(function (error) { scriptPromise = null; throw error; });
+      }
       return scriptPromise;
     }
 
-    function executeRecaptcha(recaptcha, siteKey, action, state, attempt) {
-      return new Promise(function (resolve, reject) {
-        Promise.resolve().then(function () {
-          if (attempt !== recaptchaAttempt) {
-            return;
-          }
-          checkActive(state);
-          if (typeof recaptcha.execute !== "function") {
-            throw makeError(VERIFY_MESSAGE, "BOT_CLIENT_UNAVAILABLE");
-          }
-          // Send only the public site key and fixed action to Google.
-          // Execute once per AI request; tokens are never cached.
-          verificationStage = "execute";
-          return recaptcha.execute(siteKey, { action: action });
-        }).then(function (token) {
-          if (attempt !== recaptchaAttempt || (state && state.expired)) {
-            return;
-          }
-          resolve(token);
-        }, function (error) {
-          if (attempt !== recaptchaAttempt) { return; }
-          reject(error);
-        });
-      });
-    }
-
-    function tokenFromHost(siteKey, action, hostPrefix, state, isLastHost) {
-      verificationStage = "script";
-      // Bound script+ready per host. Do not switch hosts after execute starts.
-      return withHostDeadline(
-        loadRecaptcha(siteKey, hostPrefix, state, isLastHost).then(function (recaptcha) {
-          checkActive(state);
-          verificationStage = "ready";
-          // loadRecaptcha may increment recaptchaAttempt synchronously on host switch.
-          var attempt = recaptchaAttempt;
-          return new Promise(function (resolve) {
-            recaptcha.ready(function () {
-              if (attempt !== recaptchaAttempt || (state && state.expired)) {
-                return;
-              }
-              resolve(recaptcha);
-            });
-          });
-        }),
-        state,
-        isLastHost
-      ).then(function (recaptcha) {
-        checkActive(state);
-        return executeRecaptcha(recaptcha, siteKey, action, state, recaptchaAttempt);
-      }).then(function (token) {
-        checkActive(state);
-        verificationStage = "token";
-        if (typeof token !== "string" || !token || token.length > 8192) {
-          throw makeError(VERIFY_MESSAGE, "BOT_VERIFICATION_FAILED");
-        }
-        return token;
-      });
-    }
-
     function getVerification(action) {
-      verificationStage = "config";
       return timed(function (state) {
         return getConfig(state).then(function (config) {
           checkActive(state);
-          var hostIndex = 0;
-          function attemptHost() {
-            checkActive(state);
-            var isLastHost = hostIndex >= RECAPTCHA_HOSTS.length - 1;
-            return tokenFromHost(
-              config.siteKey, action, RECAPTCHA_HOSTS[hostIndex], state, isLastHost
-            ).catch(function (error) {
-                if (!canFallbackHost(error, state) || isLastHost) {
-                  throw error;
-                }
-                hostIndex += 1;
-                clearLoadedRecaptcha();
-                return attemptHost();
+          return Promise.resolve().then(function () { return loadRecaptcha(config.siteKey); })
+            .then(function (recaptcha) {
+              checkActive(state);
+              return new Promise(function (resolve, reject) {
+                recaptcha.ready(function () {
+                  Promise.resolve().then(function () {
+                    checkActive(state);
+                    if (typeof recaptcha.execute !== "function") {
+                      throw makeError(VERIFY_MESSAGE, "BOT_CLIENT_UNAVAILABLE");
+                    }
+                    // Send only the public site key and fixed action to Google.
+                    // Execute once per AI request; tokens are never cached.
+                    return recaptcha.execute(config.siteKey, { action: action });
+                  }).then(resolve, reject);
+                });
               });
+            });
+        }).then(function (token) {
+          checkActive(state);
+          if (typeof token !== "string" || !token || token.length > 8192) {
+            throw makeError(VERIFY_MESSAGE, "BOT_VERIFICATION_FAILED");
           }
-          return attemptHost().then(function (token) {
-            return { provider: "recaptcha-v3", token: token };
-          });
+          return { provider: "recaptcha-v3", token: token };
         });
       }, verificationTimeout, "BOT_VERIFICATION_TIMEOUT", VERIFY_MESSAGE).catch(function (error) {
         // A fetch implementation may not honor abort. Allow a later user action
         // to fetch config again instead of retaining an unresolved promise.
-        if (error && (error.code === "BOT_VERIFICATION_TIMEOUT" ||
-            error.code === "BOT_CLIENT_UNAVAILABLE" ||
-            error.code === "BOT_VERIFICATION_FAILED")) {
-          configPromise = error.code === "BOT_VERIFICATION_TIMEOUT" ? null : configPromise;
-          clearLoadedRecaptcha();
-        }
-        // Trace where verification stopped without logging Google's exception,
-        // the public key, the response token, or any worksheet/chat content.
-        if (win.console && typeof win.console.warn === "function") {
-          var code = error && error.code;
-          var knownCodes = ["BOT_CONFIG_UNAVAILABLE", "BOT_CLIENT_UNAVAILABLE",
-            "BOT_VERIFICATION_TIMEOUT", "BOT_VERIFICATION_FAILED", "NOT_ACTIVE"];
-          win.console.warn("NOAM_VERIFICATION_FAILED", JSON.stringify({
-            action: action,
-            stage: verificationStage,
-            code: knownCodes.indexOf(code) >= 0 ? code : "BOT_VERIFICATION_FAILED"
-          }));
-        }
+        if (error && error.code === "BOT_VERIFICATION_TIMEOUT") { configPromise = null; }
         if (isProtectionError(error) || (error && error.code === "NOT_ACTIVE")) { throw error; }
         throw makeError(VERIFY_MESSAGE, "BOT_VERIFICATION_FAILED");
       });

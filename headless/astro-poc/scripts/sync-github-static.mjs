@@ -42,22 +42,8 @@ function sha256File(path) {
   return createHash('sha256').update(readFileSync(path)).digest('hex');
 }
 
-/**
- * Hidden practice sheets (src/data/hidden-practice.v1.json) are not catalog
- * topics, but their manifests must be synced like any viewer worksheet so the
- * Noam AI buttons work. They are never listed anywhere public.
- */
-function collectHiddenPdfIds() {
-  const p = join(pocRoot, 'src', 'data', 'hidden-practice.v1.json');
-  if (!existsSync(p)) return [];
-  const data = JSON.parse(readFileSync(p, 'utf8'));
-  const pilotPath = join(pocRoot, 'src', 'data', 'worksheet-pilot.v1.json');
-  const pilot = existsSync(pilotPath) ? JSON.parse(readFileSync(pilotPath, 'utf8')) : { sheets: [] };
-  return [...(data.sheets || []), ...(pilot.sheets || [])].map((s) => String(s.pdfId).toLowerCase());
-}
-
 function collectViewerPdfIds(catalog) {
-  const ids = new Set(collectHiddenPdfIds());
+  const ids = new Set();
   for (const g of catalog.grades || []) {
     for (const t of g.topics || []) {
       if (!t.routing?.usesViewer) continue;
@@ -116,7 +102,7 @@ function writeProvenance(pdfIds, files, extras = {}) {
       note: 'Canonical bytes live in the repo; GitHub Pages serves the same tree. PDFs stay on Wix Media.',
     },
     selection: {
-      rule: 'catalog.v1.json topics with routing.usesViewer (+ siblingPdfQuery) + hidden-practice.v1.json sheets',
+      rule: 'catalog.v1.json topics with routing.usesViewer (+ siblingPdfQuery)',
       catalogPath: 'src/data/catalog.v1.json',
       count: pdfIds.length,
     },
