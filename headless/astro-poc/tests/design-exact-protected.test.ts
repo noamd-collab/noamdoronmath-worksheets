@@ -223,7 +223,12 @@ describe('exact-design protected live-baseline boundaries', () => {
     // native/source-crop/race tests cover these authorized behavior changes.
     // The local visual import is versioned 20261027-native1 to invalidate cached
     // imperative-request parsing; endpoint, bot protection and rate limits stay fixed.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '91e29e982a2b8d11a821ca7b448abb34ca6bc6ce2b8ae8eceb55dffcdb636f6e');
+    // Noam, 2026-10-27: actual drawing buttons retain explicit drawCurrentStep
+    // intent. The diagram request includes exact selected native text/object
+    // identities while retaining its original crop for printed marks. Dedicated
+    // drawing-intent-source tests cover scope, source identity and old requests.
+    // Version the successful-plan cache for the changed payload; no auth change.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), '187587b7ed617b84428b52f3857008ef9590435b04026b323bd58725d7f16a65');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {

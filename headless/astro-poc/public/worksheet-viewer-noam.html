@@ -5820,7 +5820,7 @@ function addTranscriptBubble(container, role, text, kind, visual, message, threa
     setNoamDiagramButtonLabel(drawButton,drawingPending?"מכין שרטוט…":message.visual&&message.visual.type==="source-crop"?"נסו ליצור המחשה נוספת":message.diagramError?"השרטוט לא הופיע — נסו שוב":"לא הופיע שרטוט להמחשה? לחצו כאן",!drawingPending);
     drawButton.disabled=drawingPending;
     drawButton.addEventListener("click",function(){
-      requestNoamDiagram(drawingExercise,thread,message);
+      requestNoamDiagram(drawingExercise,thread,message,Object.assign({},noamMessageVisualOptions(thread,message),{drawCurrentStep:true}));
     });
     bubble.appendChild(drawButton);
     if (message.diagramError){
@@ -6200,7 +6200,7 @@ function renderNoamChat(){
 
   document.getElementById("noamDraw").addEventListener("click",function(){
     if(busy||!drawingAnswer||noamDiagramRuntime().messages.has(drawingAnswer)){return;}
-    requestNoamDiagram(selectedExercise,thread,drawingAnswer);
+    requestNoamDiagram(selectedExercise,thread,drawingAnswer,Object.assign({},noamMessageVisualOptions(thread,drawingAnswer),{drawCurrentStep:true}));
   });
   document.getElementById("noamOverview").addEventListener("click",function(){ askNoam("overview","תן לי הסבר כללי קצר על הרעיון הדרוש כאן, בלי לפתור ובלי לגלות את התשובה."); });
   hintButton.addEventListener("click",function(){ askNoam("hint","תן לי רמז אחד בלבד. אל תגלה את התשובה הסופית, ואל תבצע את הצעד במקומי."); });
@@ -7207,7 +7207,7 @@ function noamSourceVisualIdentity(exercise){
 function noamSourceVisualOptions(options){
   options=options||{};
   return {answer:String(options.answer||'').slice(0,4000),studentMessage:String(options.studentMessage||'').slice(0,700),
-    helpKind:String(options.helpKind||'').slice(0,30),hintIndex:Number(options.hintIndex)||0,progress:Number(options.progress)||0,focusKey:String(options.focusKey||'').slice(0,100)};
+    helpKind:String(options.helpKind||'').slice(0,30),hintIndex:Number(options.hintIndex)||0,progress:Number(options.progress)||0,focusKey:String(options.focusKey||'').slice(0,100),drawCurrentStep:options.drawCurrentStep===true};
 }
 function noamLoadSourceVisual(exercise){
   var url=noamNativeDataUrl(exercise);if(!url){return Promise.resolve(null);}
@@ -8741,17 +8741,53 @@ function noamSourceGivens(exercise){
   });
 }
 
-function noamDiagramSourceInput(exercise){
-  // Vision and planning belong to the same background job. This keeps both
-  // model calls outside Wix's short request window and preserves one source.
-  if (exercise.requiresVision||exercise.needsVision){
-    return cropExerciseImage(exercise).then(function(imageDataUrl){
-      return {questionText:String(exercise.prompt||"").slice(0,12000),imageDataUrl:imageDataUrl};
+function noamNativeDiagramContext(exercise){
+  if(!window.NoamNativeVisual||!noamNativeDataUrl(exercise)){return Promise.resolve(null);}
+  var identity=noamSourceVisualIdentity(exercise);
+  return noamLoadSourceVisual(exercise).then(function(source){
+    if(!source||identity!==noamSourceVisualIdentity(exercise)){return null;}
+    var validated=window.NoamNativeVisual.resolve(source.data,exercise,{studentMessage:'הראה את השרטוט המקורי',helpKind:'free_question'},source.svgText);
+    if(!validated||validated.kind!=='source-context'){return null;}
+    var question=(source.data.questions||[]).find(function(q){return q.id===exercise.nativeQuestionId;});
+    var part=question&&(question.items||[]).find(function(item){return item.id===exercise.nativeItemId&&item.label===exercise.part;});
+    var figure=part&&(source.data.figures||[]).find(function(f){return f.id===part.figure_id&&f.id===exercise.nativeFigureId;});
+    var model=figure&&figure.visual_model;
+    if(!part||!model){return null;}
+    var points=[],strokes=[];
+    (model.objects||[]).forEach(function(o){
+      if(!o||o.display!=='initial'||o.role==='answer'||o.role==='to_prove'){return;}
+      var name=String(o.name||'');
+      if(o.type==='point'&&/^[A-Z]$/.test(name)&&points.indexOf(name)<0){points.push(name);}
+      if(/^(segment|line|ray)$/.test(o.type)&&/^[A-Z]{2}$/.test(name)){
+        var stroke=o.type+':'+name;if(strokes.indexOf(stroke)<0){strokes.push(stroke);}
+      }
     });
-  }
-  return getExerciseAnalysis(exercise,true).then(function(analysis){
-    var cleanAnalysis=noamDiagramAnalysis(analysis);
-    return {questionText:noamDiagramQuestionText(exercise,cleanAnalysis),imageDataUrl:""};
+    // These are identities already present in this exact source figure. Keep
+    // the original crop for printed marks and vision validation; do not invent
+    // world coordinates, collinearity, equality or perpendicularity from SVG.
+    return [
+      'מקור מאומת לשאלה '+String(exercise.q||exercise.nativeQuestionId)+'; סעיף '+String(exercise.part||'')+'.',
+      'פתיח השאלה: '+String(question.text||'').slice(0,3000),
+      'הסעיף הנבחר: '+String(part.text||'').slice(0,2000),
+      'זהויות אובייקטים גלויים בשרטוט המקורי: נקודות '+points.slice(0,24).join(', ')+'. קטעים/ישרים/קרניים '+strokes.slice(0,40).join(', ')+'.',
+      'זהויות אלה אינן תוצאות או יחסים מתמטיים. סמנים מודפסים ויחסים נוספים יש לקרוא מתמונת המקור, בלי להסיק נתונים חסרים.'
+    ].join('\n');
+  }).catch(function(){return null;});
+}
+
+function noamDiagramSourceInput(exercise){
+  // Vision and planning remain one background job. Native source context adds
+  // the exact printed scope and visible identities; the crop retains its marks.
+  return noamNativeDiagramContext(exercise).then(function(nativeContext){
+    if (exercise.requiresVision||exercise.needsVision){
+      return cropExerciseImage(exercise).then(function(imageDataUrl){
+        return {questionText:String(nativeContext||exercise.prompt||'').slice(0,12000),imageDataUrl:imageDataUrl};
+      });
+    }
+    return getExerciseAnalysis(exercise,true).then(function(analysis){
+      var cleanAnalysis=noamDiagramAnalysis(analysis);
+      return {questionText:nativeContext||noamDiagramQuestionText(exercise,cleanAnalysis),imageDataUrl:''};
+    });
   });
 }
 
@@ -8814,7 +8850,7 @@ function requestNoamDiagram(exercise,thread,message,providedOptions){
   var options=providedOptions||noamMessageVisualOptions(thread,message);
   options={answer:String(options.answer||"").slice(0,4000),studentMessage:String(options.studentMessage||"").slice(0,700),
     helpKind:String(options.helpKind||""),hintIndex:Number(options.hintIndex)||0,
-    progress:Number(options.progress)||0,focusKey:String(options.focusKey||"")};
+    progress:Number(options.progress)||0,focusKey:String(options.focusKey||""),drawCurrentStep:options.drawCurrentStep===true};
   message.diagramOptions=options;
   var local=noamConstructedVisual(exercise,options)||(typeof noamParsedLocalVisual==="function"?noamParsedLocalVisual(exercise):null);
   if (local){
@@ -8832,7 +8868,7 @@ function requestNoamDiagram(exercise,thread,message,providedOptions){
   delete message.diagramError;
   delete message.diagramErrorCode;
   var sourceIdentity=noamDiagramSourceIdentity(exercise);
-  var key=JSON.stringify(["diagram-v2-plural-relations",sourceIdentity,options.answer,options.studentMessage]);
+  var key=JSON.stringify(["diagram-v3-native-source-intent",sourceIdentity,options.answer,options.studentMessage,options.drawCurrentStep]);
   var job=runtime.cache.has(key)?Promise.resolve(runtime.cache.get(key)):runtime.jobs.get(key);
   // Reuse a validated saved transcript result after reload, but only for an
   // identical worksheet version, question, student request, and current hint.
@@ -8851,7 +8887,8 @@ function requestNoamDiagram(exercise,thread,message,providedOptions){
         parts[0].sourceGivens=parts[1];return parts[0];
       });
     }).then(function(source){
-      var context={questionText:source.questionText,hintText:options.answer,studentMessage:options.studentMessage};
+      var drawingMessage=options.drawCurrentStep?String(options.studentMessage||"").slice(0,600)+"\nהצג המחשה של השלב ברמז הנוכחי בלבד. אל תפתור את התרגיל ואל תוסיף נתונים.":options.studentMessage;
+      var context={questionText:source.questionText,hintText:options.answer,studentMessage:drawingMessage};
       return postJson(API+"/noamDiagramPlan",{
         exerciseId:exercise.id,grade:g,level:LEVEL[lv],topic:String(ttl||"").slice(0,180),
         studentMessage:context.studentMessage,currentHint:context.hintText,
