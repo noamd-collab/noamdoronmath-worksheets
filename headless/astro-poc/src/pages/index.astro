@@ -18,13 +18,13 @@ const midGrades = home.grades.slice(6).map((grade,i)=>({...grade,l:letters[i+6],
     <main id="home-main" class="exact-home" data-family="home" data-home-page data-screen-label="בית">
 
       <!-- HERO -->
-      <section style="position:relative;max-width:1200px;margin:0 auto;padding:64px 24px 80px;display:flex;flex-direction:row-reverse;flex-wrap:wrap;gap:48px;align-items:center;">
+      <section class="exact-hero">
 
         <div data-doodle="kite" style="position:absolute;top:18px;left:47%;width:120px;pointer-events:none;z-index:1;"><button type="button" class="exact-doodle-btn" aria-label="הנפשת השרבוט"><img src="/design-exact/assets/doodles/kite.webp" alt="" width="400" height="400" loading="eager" fetchpriority="high" decoding="async" style="width:100%;height:auto;display:block;mix-blend-mode:multiply;pointer-events:auto;cursor:pointer;"></button></div>
         <div data-trail="snail" aria-hidden="true" style="position:absolute;bottom:14px;right:calc(30% - 4px);width:98px;height:7px;z-index:0;pointer-events:none;transform-origin:left center;transform:scaleX(0);border-radius:6px 999px 999px 6px;background:linear-gradient(180deg,rgba(255,255,255,.75) 0 25%,rgba(168,214,140,.55) 45%,rgba(112,178,98,.45) 100%);box-shadow:0 0 0 1px rgba(112,178,98,.25),0 1px 3px rgba(112,178,98,.35);filter:blur(.3px);"></div>
         <div data-doodle="snail" style="position:absolute;bottom:8px;right:30%;width:110px;z-index:1;"><button type="button" class="exact-doodle-btn" aria-label="הנפשת השרבוט"><img src="/design-exact/assets/doodles/snail.webp" alt="" width="400" height="400" loading="eager" decoding="async" style="width:100%;height:auto;display:block;mix-blend-mode:multiply;cursor:pointer;"></button></div>
 
-        <div style="position:relative;z-index:2;flex:1 1 440px;min-width:0;">
+        <div class="exact-hero__panel">
           <div data-exact-hero-panel data-landing-loop="hero" style={`background:${heroPanel(HERO_DEFAULT.gradeNum)};border-radius:28px;padding:56px 28px 20px;`}>
             <HeroLoop />
             <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px;">
@@ -36,10 +36,20 @@ const midGrades = home.grades.slice(6).map((grade,i)=>({...grade,l:letters[i+6],
           </div>
         </div>
 
-        <div style="position:relative;z-index:2;flex:1 1 360px;min-width:0;">
+        <div class="exact-hero__copy">
           <div data-pop="0" style="font-family:'Amatic SC','Amatic SC Fallback',cursive;font-size:30px;color:#2a7c7a;margin-bottom:4px;">מאגר המשימות של נועם דורון</div>
           <h1 data-pop="120" data-lcp style="font-family:'Secular One','Secular One Fallback',sans-serif;font-weight:400;font-size:clamp(40px,5.4vw,68px);line-height:1.05;margin:0 0 20px;text-wrap:balance;">דפי עבודה שעושים <span style="position:relative;display:inline-block;">חשק<svg viewBox="0 0 200 20" preserveAspectRatio="none" style="position:absolute;right:-4%;bottom:-10px;width:108%;height:16px;overflow:visible;"><path data-draw="700" data-dur="700" pathLength="1" d="M4 12 C 50 4, 120 18, 196 8" fill="none" stroke="#e5735c" stroke-width="5" stroke-linecap="round" stroke-dasharray="1"></path></svg></span> לפתור</h1>
-          <p data-pop="240" style="font-size:20px;line-height:1.55;color:#3d4870;margin:0 0 32px;max-width:32ch;">מתרגלים עכשיו ומשפרים את הישגי המתמטיקה בקלות ובצורה חופשית</p>
+          <p class="exact-hero__lede" data-pop="240" style="font-size:20px;line-height:1.55;color:#3d4870;max-width:32ch;">מתרגלים עכשיו ומשפרים את הישגי המתמטיקה בקלות ובצורה חופשית</p>
+          <a class="exact-hero-teachers" href="/teachers" data-peek="teachers">
+            <svg class="exact-hero-teachers__mark" viewBox="0 0 48 48" width="42" height="42" aria-hidden="true" focusable="false">
+              <path d="M13 9h15l8 8v21a3 3 0 0 1-3 3H13a3 3 0 0 1-3-3V12a3 3 0 0 1 3-3z" fill="#eaf4f3" stroke="#22305a" stroke-width="2.4" stroke-linejoin="round"></path>
+              <path d="M28 9v8h8" fill="#fdf1d8" stroke="#22305a" stroke-width="2.4" stroke-linejoin="round"></path>
+              <path d="M16 27h14M16 33h9" fill="none" stroke="#2a7c7a" stroke-width="2.2" stroke-linecap="round"></path>
+            </svg>
+            <span class="exact-hero-teachers__kicker">למורים ולמורים פרטיים</span>
+            <span class="exact-hero-teachers__lead">דפי עבודה מוכנים להדפסה</span>
+            <span class="exact-hero-teachers__cta">לאזור המורים</span>
+          </a>
           <div data-pop="360" style="display:flex;gap:12px;flex-wrap:wrap;">
             <a data-home-search-cta href={home.hero.searchCta.href} data-peek="ws"  style="padding:14px 26px;background:#22305a;color:#fbfaf5;font-weight:700;font-size:17px;border:2px solid #22305a;border-radius:18px 6px 20px 8px / 8px 20px 6px 18px;box-shadow:4px 4px 0 #e6a534;" data-exact-hover="exact-hover-2">למציאת משימת תרגול</a>
             <a href="/worksheets?grade=1" data-peek="elem"  style="padding:14px 22px;background:#fff;color:#22305a;font-weight:700;font-size:17px;border:2px solid #22305a;border-radius:6px 18px 8px 20px / 20px 8px 18px 6px;" data-exact-hover="exact-hover-3">יסודי א׳–ו׳</a>
