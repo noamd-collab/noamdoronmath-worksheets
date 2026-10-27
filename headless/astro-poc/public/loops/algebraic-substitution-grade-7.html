@@ -287,17 +287,19 @@ body.embed .long-example .formula-stage{min-height:64px}
   const svgNS = 'http://www.w3.org/2000/svg';
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   function motionOff() {
-    if (reducedMotion.matches) return true;
     const roots = [document.documentElement];
     try {
       if (window.parent && window.parent !== window) roots.push(window.parent.document.documentElement);
     } catch { /* cross-origin parent */ }
-    return roots.some((html) => html.classList.contains('nd-motion-off') || html.classList.contains('noam-a11y-motion'));
+    if (roots.some(html => html.classList.contains('nd-motion-off') || html.classList.contains('noam-a11y-motion') || html.dataset.ndMotion === 'off')) return true;
+    return reducedMotion.matches && !roots.some(html => html.classList.contains('nd-motion-enabled'));
   }
+
   const state = {index: 0, x: examples[0].defaultX, timeline: null, phase: -1,
     completed: false, history: examples.map(() => []), stepTimes: [0, 7.2, 13.8, 20.4],
     suppressCommit: false, ready: false};
   let userPaused = false;
+  let inView = false;
   let resizeFrame = 0;
 
   const current = () => examples[state.index];
@@ -633,18 +635,23 @@ body.embed .long-example .formula-stage{min-height:64px}
         if (!state.timeline) return;
         const time = state.timeline.time(); const playing = !state.timeline.paused(); const completed = state.completed;
         fitMath(); buildTimeline(); state.suppressCommit = true; state.timeline.time(time, false); state.suppressCommit = false;
-        state.completed = completed; if (playing) state.timeline.play(); updatePlay();
+        state.completed = completed; if (playing && !motionOff()) state.timeline.play(); updatePlay();
       });
     });
-    reducedMotion.addEventListener('change', event => { if (event.matches && state.timeline) { state.timeline.pause(); updatePlay(); } });
+    reducedMotion.addEventListener('change', syncMotion);
     const watchMotion = (html) => {
       if (!html) return;
-      new MutationObserver(() => {
-        if (motionOff() && state.timeline && !state.timeline.paused()) { state.timeline.pause(); updatePlay(); }
-      }).observe(html, {attributes: true, attributeFilter: ['class']});
+      new MutationObserver(syncMotion).observe(html, {attributes: true, attributeFilter: ['class', 'data-nd-motion']});
     };
     watchMotion(document.documentElement);
     try { if (window.parent && window.parent !== window) watchMotion(window.parent.document.documentElement); } catch { /* cross-origin parent */ }
+  }
+
+  function syncMotion() {
+    if (motionOff()) {
+      if (state.timeline && !state.timeline.paused()) state.timeline.pause();
+      updatePlay();
+    } else startIfVisible(inView);
   }
 
   function startIfVisible(visible) {
@@ -656,10 +663,10 @@ body.embed .long-example .formula-stage{min-height:64px}
   }
   function watchInView() {
     const target = document.querySelector('main') || document.body;
-    if (!('IntersectionObserver' in window)) { startIfVisible(true); return; }
+    if (!('IntersectionObserver' in window)) { inView = true; startIfVisible(true); return; }
     new IntersectionObserver((entries) => {
-      const visible = entries.some((entry) => entry.isIntersecting);
-      if (visible) startIfVisible(visible);
+      inView = entries.some((entry) => entry.isIntersecting);
+      if (inView) startIfVisible(inView);
     }, { threshold: 0.15 }).observe(target);
   }
 

@@ -139,6 +139,7 @@ body.embed .masthead,body.embed .footer-note{display:none}body.embed .page{paddi
     let resumeAfterSeek = false;
     let initialized = false;
     let wasPlaying = null;
+    let policyHeld = motionOff();
     let currentChapter = -2;
     let shownCaption = null;
 
@@ -147,12 +148,12 @@ body.embed .masthead,body.embed .footer-note{display:none}body.embed .page{paddi
       fitReadability();
     }
     function motionOff() {
-      if (reducedMotion.matches) return true;
       const roots = [document.documentElement];
       try {
         if (window.parent && window.parent !== window) roots.push(window.parent.document.documentElement);
       } catch { /* cross-origin parent */ }
-      return roots.some((html) => html.classList.contains('nd-motion-off') || html.classList.contains('noam-a11y-motion'));
+      if (roots.some(html => html.classList.contains('nd-motion-off') || html.classList.contains('noam-a11y-motion') || html.dataset.ndMotion === 'off')) return true;
+      return reducedMotion.matches && !roots.some(html => html.classList.contains('nd-motion-enabled'));
     }
     function scheduledCaption(doc, time) {
       const nodes = [...doc.querySelectorAll('.caption')];
@@ -308,7 +309,7 @@ body.embed .masthead,body.embed .footer-note{display:none}body.embed .page{paddi
       else {
         if (api.getTime() >= duration - .02) { api.seek(0); fitReadability(); }
         applySpeed();
-        api.play();
+        if (!motionOff()) api.play();
       }
       syncPlaybackButton(api.isPlaying());
     }
@@ -328,7 +329,7 @@ body.embed .masthead,body.embed .footer-note{display:none}body.embed .page{paddi
       seeking = false;
       if (resumeAfterSeek) {
         applySpeed();
-        api.play();
+        if (!motionOff()) api.play();
       }
       resumeAfterSeek = false;
       showTime(api.getTime());
@@ -342,7 +343,7 @@ body.embed .masthead,body.embed .footer-note{display:none}body.embed .page{paddi
       api.seek(0);
       fitReadability();
       applySpeed();
-      api.play();
+      if (!motionOff()) api.play();
       showTime(0);
       announce('הסרטון התחיל מחדש.');
     });
@@ -356,7 +357,7 @@ body.embed .masthead,body.embed .footer-note{display:none}body.embed .page{paddi
         api.seek(time);
         fitReadability();
         applySpeed();
-        api.play();
+        if (!motionOff()) api.play();
         showTime(time);
         syncPlaybackButton(api.isPlaying());
         announce(`עברנו לפרק: ${button.dataset.title}.`);
@@ -392,22 +393,20 @@ body.embed .masthead,body.embed .footer-note{display:none}body.embed .page{paddi
       event.preventDefault();
       togglePlayback();
     });
-    reducedMotion.addEventListener('change', event => {
-      if (event.matches && api) {
-        resumeAfterSeek = false;
-        api.pause();
-        syncPlaybackButton(false);
+    function syncMotion() {
+      const off = motionOff();
+      if (off) {
+        if (!api || api.isPlaying()) policyHeld = true;
+        if (api) { api.pause(); syncPlaybackButton(false); }
+      } else if (policyHeld && api) {
+        policyHeld = false;
+        if (!seeking) { api.play(); syncPlaybackButton(api.isPlaying()); }
       }
-    });
+    }
+    reducedMotion.addEventListener('change', syncMotion);
     const watchMotion = (html) => {
       if (!html) return;
-      new MutationObserver(() => {
-        if (motionOff() && api?.isPlaying?.()) {
-          resumeAfterSeek = false;
-          api.pause();
-          syncPlaybackButton(false);
-        }
-      }).observe(html, {attributes: true, attributeFilter: ['class']});
+      new MutationObserver(syncMotion).observe(html, {attributes: true, attributeFilter: ['class', 'data-nd-motion']});
     };
     watchMotion(document.documentElement);
     try { if (window.parent && window.parent !== window) watchMotion(window.parent.document.documentElement); } catch { /* cross-origin parent */ }

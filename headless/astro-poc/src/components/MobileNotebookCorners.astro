@@ -112,7 +112,7 @@ const scatter = selectNotebookScatter(seed, motifs, {
     }
   }
   @media (prefers-reduced-motion: reduce) {
-    .mobile-nb-corner--motion {
+    :global(html:not(.nd-motion-enabled)) .mobile-nb-corner--motion {
       animation: none;
     }
   }

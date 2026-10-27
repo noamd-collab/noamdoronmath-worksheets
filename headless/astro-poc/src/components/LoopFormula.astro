@@ -308,7 +308,7 @@ const odd = POWERS_ROWS[2];
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .ll-row, .ll-late, .ll-hot, .ll-cell { opacity: 1 !important; animation: none !important; }
+    :global(html:not(.nd-motion-enabled)) .ll-row, :global(html:not(.nd-motion-enabled)) .ll-late, :global(html:not(.nd-motion-enabled)) .ll-hot, :global(html:not(.nd-motion-enabled)) .ll-cell { opacity: 1 !important; animation: none !important; }
   }
   :global(html.nd-motion-off) .ll-row,
   :global(html.nd-motion-off) .ll-late,

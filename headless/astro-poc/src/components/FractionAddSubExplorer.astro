@@ -361,9 +361,9 @@ const step = (k: 'a' | 'b' | 'c' | 'd', dir: 1 | -1) => !canStep(V, op, k, dir);
     transform: none;
   }
   @media (prefers-reduced-motion: reduce) {
-    .fs-svg :global(.ph1),
-    .fs-svg :global(.ph2),
-    .fs-svg :global(.ph3) {
+    :global(html:not(.nd-motion-enabled)) .fs-svg :global(.ph1),
+    :global(html:not(.nd-motion-enabled)) .fs-svg :global(.ph2),
+    :global(html:not(.nd-motion-enabled)) .fs-svg :global(.ph3) {
       transition: none;
       opacity: 1;
       transform: none;

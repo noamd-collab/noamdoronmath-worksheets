@@ -83,6 +83,7 @@ const topics = {
 <script type="application/json" data-exact-hero-topics set:html={JSON.stringify(topics)} />
 <script type="application/json" data-hero-rotation set:html={JSON.stringify(HERO_ROTATION)} />
 <script>
+  import { sitePrefersReducedMotion } from '../lib/motionPreference.js';
   import { bootAngleSumFilm, parkAngleSumFilm, resumeAngleSumFilm } from '../lib/angleSumFilm';
   import { initConceptLoops } from '../lib/conceptLoops';
   import { HERO_PLAY_S, HERO_RETURN_KEY, createHeroRotation, heroDwellMs, heroReturnVariant } from '../lib/heroRotation';
@@ -379,7 +380,7 @@ const topics = {
     describe();
     const queueSync = () => queueMicrotask(syncActiveCard);
     const preferenceObserver = new MutationObserver(queueSync);
-    preferenceObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    preferenceObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class', 'data-nd-motion'] });
     window.addEventListener('nd:motion-off', queueSync);
     let viewObserver: IntersectionObserver | undefined;
     if ('IntersectionObserver' in window) {
@@ -393,7 +394,7 @@ const topics = {
     // OS reduced motion and the site's motion class both keep the chip put.
     // The shuffle button still changes the film.
     function reducedMotion() {
-      return reduced.matches || document.documentElement.classList.contains('noam-a11y-motion');
+      return sitePrefersReducedMotion() || document.documentElement.classList.contains('noam-a11y-motion');
     }
     function tickClock() {
       syncActiveCard();

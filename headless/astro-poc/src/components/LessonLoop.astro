@@ -126,6 +126,6 @@ const faces = [
   @keyframes highlight {0%,25% {opacity:1;} 35%,100% {opacity:.65;} }
   @keyframes fold {0%,25%,85%,100% {transform:scaleX(1);opacity:1;} 45%,65% {transform:scaleX(-1);opacity:.45;} }
 
-  @media(prefers-reduced-motion:reduce) {*,*::before,*::after {animation:none!important;} }
+  @media(prefers-reduced-motion:reduce) {:global(html:not(.nd-motion-enabled)) *,:global(html:not(.nd-motion-enabled)) *::before,:global(html:not(.nd-motion-enabled)) *::after {animation:none!important;} }
   @media(max-width:480px) {.lesson{padding:14px 10px;} .step {padding:8px;gap:6px;} .step p{font-size:15px;}.steps--large{gap:12px;}}
 </style>

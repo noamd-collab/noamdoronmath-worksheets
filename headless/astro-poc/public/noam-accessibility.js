@@ -15,14 +15,15 @@
   function init() {
     if (document.getElementById('noam-accessibility')) return;
     const defaults = { text: 100, contrast: false, links: false, motion: false };
-    // OS prefers-reduced-motion must not flip "עצירת אנימציות" on. Grade
-    // demos (and every other rAF loop) keep playing until the visitor
-    // presses that control. A saved choice still wins.
-    let prefs = { ...defaults, stopAnim: false, stopAnimChosen: false };
+    // Follow the device until the visitor explicitly chooses motion for this
+    // site. Legacy saved false values are not evidence of that choice.
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let prefs = { ...defaults, motionChosen: false, stopAnim: false, stopAnimChosen: false };
     try {
       const saved = JSON.parse(localStorage.getItem('noam-accessibility-v1') || '{}');
       prefs.text = [100,110,120,130,140,150].includes(saved.text) ? saved.text : 100;
       for (const key of ['contrast','links','motion']) prefs[key] = saved[key] === true;
+      prefs.motionChosen = saved.motionChosen === true || saved.motion === true;
       if (saved.stopAnim === true || saved.stopAnim === false) {
         prefs.stopAnim = saved.stopAnim;
         prefs.stopAnimChosen = true;
@@ -355,13 +356,19 @@
       }
       if (prefs.text === 100) original.clear();
     }
+    function motionReduced() {
+      return prefs.motionChosen ? prefs.motion : reducedMotion.matches;
+    }
     function apply(save) {
       var stopOn = prefs.stopAnim === true;
+      var reduceOn = motionReduced();
+      // This explicit opt-in also releases CSS rules that honor the OS default.
+      document.documentElement.classList.toggle('nd-motion-enabled', prefs.motionChosen && !reduceOn && !stopOn);
       for (const key of ['contrast','links','motion']) {
         var on = prefs[key] === true;
-        if (key === 'motion') on = on || stopOn;
+        if (key === 'motion') on = reduceOn || stopOn;
         document.documentElement.classList.toggle('noam-a11y-'+key, on);
-        root.querySelector('[data-pref="'+key+'"]').setAttribute('aria-pressed', String(prefs[key] === true));
+        root.querySelector('[data-pref="'+key+'"]').setAttribute('aria-pressed', String(key === 'motion' ? reduceOn : prefs[key] === true));
       }
       document.documentElement.classList.toggle('nd-motion-off', stopOn);
       root.getElementById('stop-anim').setAttribute('aria-pressed', String(stopOn));
@@ -375,16 +382,20 @@
       if (save) {
         try {
           var stored = { text: prefs.text, contrast: prefs.contrast, links: prefs.links, motion: prefs.motion };
+          if (prefs.motionChosen) stored.motionChosen = true;
           if (prefs.stopAnimChosen) stored.stopAnim = stopOn;
           localStorage.setItem('noam-accessibility-v1', JSON.stringify(stored));
         } catch (_) {}
       }
-      window.dispatchEvent(new CustomEvent('nd:motion-off', { detail: { off: stopOn } }));
+      window.dispatchEvent(new CustomEvent('nd:motion-off', { detail: { off: stopOn || reduceOn } }));
     }
     root.getElementById('increase').addEventListener('click', () => { prefs.text = Math.min(150,prefs.text+10); apply(true); });
     root.getElementById('decrease').addEventListener('click', () => { prefs.text = Math.max(100,prefs.text-10); apply(true); });
     root.querySelectorAll('[data-pref]').forEach(button => button.addEventListener('click', () => {
-      const key = button.dataset.pref; prefs[key] = !prefs[key]; apply(true);
+      const key = button.dataset.pref;
+      if (key === 'motion') { prefs.motion = !motionReduced(); prefs.motionChosen = true; }
+      else prefs[key] = !prefs[key];
+      apply(true);
     }));
     root.getElementById('stop-anim').addEventListener('click', () => {
       prefs.stopAnim = prefs.stopAnim !== true;
@@ -392,9 +403,10 @@
       apply(true);
     });
     root.getElementById('reset').addEventListener('click', () => {
-      prefs = { ...defaults, stopAnim: false, stopAnimChosen: false };
+      prefs = { ...defaults, motionChosen: false, stopAnim: false, stopAnimChosen: false };
       apply(true);
     });
+    reducedMotion.addEventListener('change', () => apply(false));
     let scheduled = false;
     new MutationObserver(() => {
       if (prefs.text === 100 || scheduled) return;

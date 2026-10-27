@@ -32,7 +32,7 @@ describe('algebraic substitution grade 7 film', () => {
     assert.match(film, /function startIfVisible\(visible\)/);
     assert.match(film, /if \(!visible \|\| userPaused \|\| motionOff\(\) \|\| !state\.timeline\) return/);
     assert.match(film, /new IntersectionObserver\(\(entries\) => \{/);
-    assert.match(film, /if \(visible\) startIfVisible\(visible\)/);
+    assert.match(film, /if \(inView\) startIfVisible\(inView\)/);
     assert.match(film, /\{ threshold: 0\.15 \}\)/);
     assert.match(film, /userPaused = true; tl\.pause\(\)/);
     assert.match(film, /else \{ userPaused = false; tl\.play\(\); \}/);

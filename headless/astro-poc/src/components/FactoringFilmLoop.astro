@@ -38,28 +38,14 @@ const frameSrc = `${src}?embed=1`;
       if (h > 200 && Math.abs(frame.clientHeight - h) > 2) frame.style.height = `${h}px`;
     }
 
-    function motionOff() {
-      const html = document.documentElement;
-      return html.classList.contains('nd-motion-off') || html.classList.contains('noam-a11y-motion');
-    }
-
-    function holdStill() {
-      if (!motionOff()) return;
-      try {
-        const player = frame.contentWindow;
-        const s = player?.mathScene
-          ?? frame.contentDocument?.getElementById('film')?.contentWindow?.mathScene;
-        if (s?.isPlaying?.()) s.pause();
-      } catch { return; }
-    }
-
+    // The embedded player owns policy pause/resume and observes this page.
+    // Pausing its API here would erase whether policy or the visitor paused it.
     let watching = false;
     function onReady() {
       let doc;
       try { doc = frame.contentDocument; } catch { return; }
       if (!doc?.querySelector('main')) return;
       fit();
-      holdStill();
       if (watching || !('ResizeObserver' in window)) return;
       watching = true;
       const observer = new ResizeObserver(fit);
@@ -69,11 +55,6 @@ const frameSrc = `${src}?embed=1`;
 
     frame.addEventListener('load', onReady);
     onReady();
-
-    new MutationObserver(holdStill).observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['class'],
-    });
   }
 
   document.querySelectorAll('[data-factoring-loop]').forEach(boot);
