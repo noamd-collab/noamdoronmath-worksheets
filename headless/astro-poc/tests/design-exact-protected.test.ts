@@ -239,7 +239,7 @@ describe('exact-design protected live-baseline boundaries', () => {
     // native version joins the cache identity and rehydration revalidates plans.
     // Domain/source-scope and legacy-protocol tests cover this intentional change;
     // bot/auth/quota behavior and the conversation namespace remain unchanged.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), 'af4a74e910c40565dc2b8d2389ef73753d5205b6f647cb04c778f89f371bec31');
+    assert.equal(sha256(JSON.stringify(releasedScripts)), '37067ecf8bca16c3e5b2678d60088a646cf7b7ed19cd8ab7c0559482cd884d41');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {

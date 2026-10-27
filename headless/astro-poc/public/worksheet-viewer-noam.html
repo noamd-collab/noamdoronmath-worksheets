@@ -7543,7 +7543,7 @@ function noamSourceVertexAid(data,exercise){
 }
 
 function noamAppendSourceDiagramHelp(container,exercise,message){
-  var legacy="עדיין לא הצלחתי להכין המחשה מדויקת לשלב הזה. אפשר לכתוב מה תרצו להמחיש מתוך הנתונים בשאלה.";
+  var legacy="עדיין לא הצלחתי להכין המחשה מדויקת לשלב הזה. אפשר לכתוב אילו קטעים או זוויות להדגיש.";
   if(!exercise||!message||message.answerError||message.role!=="assistant"||
       !(message.diagramErrorCode==="DIAGRAM_UNSUPPORTED"||(!message.diagramErrorCode&&message.diagramError===legacy))){return;}
   // Old unsupported conversations get an explicitly labelled source aid, not a
