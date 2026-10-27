@@ -7543,7 +7543,7 @@ function noamSourceVertexAid(data,exercise){
 }
 
 function noamAppendSourceDiagramHelp(container,exercise,message){
-  var legacy="עדיין לא הצלחתי להכין המחשה מדויקת לשלב הזה. אפשר לכתוב אילו קטעים או זוויות להדגיש.";
+  var legacy="עדיין לא הצלחתי להכין המחשה מדויקת לשלב הזה. אפשר לכתוב מה תרצו להמחיש מתוך הנתונים בשאלה.";
   if(!exercise||!message||message.answerError||message.role!=="assistant"||
       !(message.diagramErrorCode==="DIAGRAM_UNSUPPORTED"||(!message.diagramErrorCode&&message.diagramError===legacy))){return;}
   // Old unsupported conversations get an explicitly labelled source aid, not a
@@ -8729,7 +8729,7 @@ function noamRenderAiDiagram(visual){
 function noamDiagramError(error){
   if (isBotProtectionError(error)){return String(error.message||"לא הצלחנו לאמת את הבקשה. נסו שוב בעוד רגע.").slice(0,220);}
   if (error&&error.code==="DIAGRAM_UNSUPPORTED"){
-    return "עדיין לא הצלחתי להכין המחשה מדויקת לשלב הזה. אפשר לכתוב אילו קטעים או זוויות להדגיש.";
+    return "עדיין לא הצלחתי להכין המחשה מדויקת לשלב הזה. אפשר לכתוב מה תרצו להמחיש מתוך הנתונים בשאלה.";
   }
   return "לא הצלחתי להכין את השרטוט כרגע. אפשר לנסות שוב.";
 }
