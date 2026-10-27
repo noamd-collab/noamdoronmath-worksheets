@@ -55,3 +55,16 @@ it('corrected geometry refreshes cached manifests and OCR while retaining conver
     assert.match(viewer, /THREAD_STORAGE_KEY = "noam-static-threads-v1:"/);
   }
 });
+
+it('teacher source crops follow the same repaired PDF geometry and retain subsection identities', () => {
+  for (const row of repairs.files) {
+    const manifest = read(`noam-ai/manifests/${row.pdfId}.json`);
+    const sheet = read(`teachers/sheets/${row.pdfId}.json`);
+    assert.equal(sheet.sourceSha256, manifest.sourceSha256);
+    assert.deepEqual(sheet.questions.map((q: any) => [q.q, q.part, q.text]), manifest.exercises.map((e: any) => [e.q, e.part, e.text]));
+  }
+  const question = read('teachers/sheets/d7eaeb9328c44b029e283beb206d3c67.json').questions.find((q: any) => q.id === '12ג');
+  assert.equal(question.page, 11);
+  assert.ok(question.row.y <= .533696 && question.row.y + question.row.h >= 479.7 / 841.8897705078125);
+  assert.ok(question.stem.y <= 49 / 841.8897705078125 && question.stem.y + question.stem.h >= 285 / 841.8897705078125);
+});
