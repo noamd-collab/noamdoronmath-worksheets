@@ -372,7 +372,14 @@
     }
     points.forEach(function (p) {
       var pos = xy(p); svg.appendChild(element(document, "circle", { cx: pos[0], cy: pos[1], r: 5, fill: "#1769aa", "data-role": "explicit-point" }));
-      svg.appendChild(element(document, "text", { x: pos[0] + 9, y: pos[1] - 9, "font-size": 13, direction: "ltr", "text-anchor": "start" }, "(" + p.join(", ") + ")"));
+      // Place the complete tuple away from both axes so tick labels cannot
+      // obscure a sign or digit, including in the expanded diagram clone.
+      var label = "(" + p.join(", ") + ")", anchor = p[0] < 0 ? "end" : "start";
+      var labelWidth = label.length * 13 * .65, labelX = pos[0] + (p[0] < 0 ? -9 : 9);
+      // At the far canvas edges shift only the label inward, leaving the
+      // coordinate system and the plotted point unchanged.
+      labelX = anchor === "end" ? Math.max(4 + labelWidth, Math.min(w - 4, labelX)) : Math.max(4, Math.min(w - 4 - labelWidth, labelX));
+      svg.appendChild(element(document, "text", { x: labelX, y: pos[1] + (p[1] < 0 ? 20 : -9), "font-size": 13, direction: "ltr", "text-anchor": anchor }, label));
     });
     return svg;
   }

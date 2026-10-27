@@ -238,6 +238,55 @@ it('hint points can be plotted without connecting them or computing the requeste
   assert.doesNotMatch(figure.textContent, /y=5x-9/);
 });
 
+it('the actual W34 given tuples keep labels away from both axes, including expanded clones', () => {
+  const f = fixture('G7-T09', 'q3', 'א', 'b');
+  const figure = render(f, typed('סמן במערכת צירים רק את הנקודות הנתונות E(-1,-1), F(3,-1), G(3,3), ללא חיבור ביניהן.'));
+  const given = [[-1, -1], [3, -1], [3, 3]];
+  for (const rendered of [figure, figure.cloneNode(true)]) {
+    assert.equal(rendered.getAttribute('data-visual-kind'), 'coordinate-illustration');
+    const points = Array.from(rendered.querySelectorAll('[data-role="explicit-point"]')) as any[];
+    assert.equal(points.length, 3, 'only the three given points are plotted; no computed fourth vertex');
+    assert.equal(rendered.querySelectorAll('path,image').length, 0);
+    given.forEach(([x, y], i) => {
+      const label = Array.from(rendered.querySelectorAll('text')).find((node: any) => node.textContent === `(${x}, ${y})`) as any;
+      assert.ok(label, 'the literal coordinate pair is preserved');
+      const pointX = Number(points[i].getAttribute('cx')), pointY = Number(points[i].getAttribute('cy'));
+      assert.equal(label.getAttribute('text-anchor'), x < 0 ? 'end' : 'start');
+      assert.ok(x < 0 ? Number(label.getAttribute('x')) < pointX : Number(label.getAttribute('x')) > pointX, 'the label extends away from the vertical axis');
+      assert.ok(y < 0 ? Number(label.getAttribute('y')) > pointY + 13 : Number(label.getAttribute('y')) < pointY, 'the whole text height stays away from the horizontal axis');
+    });
+  }
+});
+
+it('explicit point label directions cover every quadrant without changing the plotted values', () => {
+  const figure = render(fixture('G7-T09', 'q3', 'א', 'b'), typed('סמן את הנקודות (-2,2), (2,2), (-2,-2), (2,-2)'));
+  const points = Array.from(figure.querySelectorAll('[data-role="explicit-point"]')) as any[];
+  assert.equal(points.length, 4);
+  [[-2, 2], [2, 2], [-2, -2], [2, -2]].forEach(([x, y], i) => {
+    const label = Array.from(figure.querySelectorAll('text')).find((node: any) => node.textContent === `(${x}, ${y})`) as any;
+    assert.ok(label);
+    assert.equal(label.getAttribute('text-anchor'), x < 0 ? 'end' : 'start');
+    assert.equal(Math.sign(Number(label.getAttribute('x')) - Number(points[i].getAttribute('cx'))), Math.sign(x));
+    assert.equal(Math.sign(Number(label.getAttribute('y')) - Number(points[i].getAttribute('cy'))), -Math.sign(y));
+  });
+});
+
+it('far-left and far-right tuples stay inside the existing canvas without moving points or axes', () => {
+  const figure = render(fixture('G7-T09', 'q3', 'א', 'b'), typed('סמן את הנקודות (-100,-100), (100,-100)'));
+  assert.equal(figure.querySelector('svg').getAttribute('viewBox'), '0 0 440 340');
+  const points = Array.from(figure.querySelectorAll('[data-role="explicit-point"]')) as any[];
+  assert.equal(points.length, 2);
+  [-100, 100].forEach((x, i) => {
+    const label = Array.from(figure.querySelectorAll('text')).find((node: any) => node.textContent === `(${x}, -100)`) as any;
+    const labelX = Number(label.getAttribute('x')), width = label.textContent.length * 13 * .65;
+    const left = labelX - (label.getAttribute('text-anchor') === 'end' ? width : 0);
+    const right = labelX + (label.getAttribute('text-anchor') === 'start' ? width : 0);
+    assert.ok(left >= 4 && right <= 436, 'the complete numeric text has a conservative margin within the original viewBox');
+    assert.equal(Number(points[i].getAttribute('cx')), 42 + (x + 101) * (440 - 84) / 202, 'given x coordinates retain the original transform');
+    assert.equal(Number(points[i].getAttribute('cy')), 340 - 42 - (1 * (340 - 84) / 106), 'given y coordinates retain the original transform');
+  });
+});
+
 it('source identity, exact selected item and SVG coordinate space are validated', () => {
   const f = fixture();
   assert.equal(api.resolve(f.data, { ...f.exercise, nativeItemId: 'q1b' }, hint('נקודה A'), f.svg), null);
