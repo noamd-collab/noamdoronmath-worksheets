@@ -132,6 +132,40 @@ it('explicit formulas produce a new coordinate graph; unsupported expressions ne
   assert.equal(resolve(existingCurve, typed('שרטט גרף y=x/2')), null);
 });
 
+it('formula captions keep the full expression in one LTR island, including expanded clones', () => {
+  const f = fixture('G8-T15', 'q2');
+  for (const expression of ['y=x^2-4', 'y=2x+3', 'y=-2.5x^2+3']) {
+    const options = typed('שרטט ' + expression), figure = render(f, options);
+    for (const rendered of [figure, figure.cloneNode(true)]) {
+      const caption = rendered.querySelector('figcaption'), token = caption.querySelector('bdi');
+      assert.equal(caption.textContent, resolve(f, options).caption);
+      assert.equal(caption.querySelectorAll('bdi').length, 1);
+      assert.equal(token.textContent, expression);
+      assert.equal(token.getAttribute('dir'), 'ltr');
+      assert.equal(token.style.direction, 'ltr');
+      assert.equal(token.style.unicodeBidi, 'isolate');
+      assert.equal(token.style.whiteSpace, 'nowrap');
+      assert.equal(token.childNodes.length, 1, 'math must remain one text run, including powers and signs');
+      assert.equal(token.firstChild.nodeType, 3);
+      assert.equal(caption.firstChild.nodeType, 3, 'Hebrew prose remains available to the glossary');
+    }
+  }
+});
+
+it('source-focus captions isolate existing Latin names and angle notation without changing their text', () => {
+  for (const [f, options, expected] of [
+    [fixture(), hint('התבוננו בנקודה A.'), 'A'],
+    [fixture('G8-T15', 'q2'), hint('התבונן בנקודה (0,-9) ובציר y.'), 'y'],
+    [fixture('G8-T39', 'q2', 'ד'), typed('הראה את הזווית ABC'), '∠ABC'],
+  ] as const) {
+    const caption = render(f, options).querySelector('figcaption');
+    assert.equal(caption.textContent, resolve(f, options).caption);
+    assert.ok(Array.from(caption.querySelectorAll('bdi')).some((node: any) =>
+      node.textContent === expected && node.getAttribute('dir') === 'ltr'));
+    assert.ok(Array.from(caption.childNodes).some((node: any) => node.nodeType === 3 && /[א-ת]/.test(node.textContent)));
+  }
+});
+
 it('hint points can be plotted without connecting them or computing the requested function', () => {
   const f = fixture('G8-T15', 'q2');
   // No figure/metadata simulates a native text-only task with explicit point givens.
