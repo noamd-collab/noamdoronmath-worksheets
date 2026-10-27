@@ -112,7 +112,14 @@ describe('exact-design protected live-baseline boundaries', () => {
   });
 
   it('preserves viewer head and every existing script, including AI answers and storage', () => {
-    const viewer = read('public/worksheet-viewer-noam.html');
+    // Noam requested preview-to-production navigation on 2026-10-27.
+    // Its early guard has a dedicated behavioral suite. Exclude only that
+    // addition so the original head/script hashes continue protecting the
+    // unchanged viewer, AI answers, authentication and storage.
+    const viewer = read('public/worksheet-viewer-noam.html').replace(
+      /<script id="noam-preview-viewer-redirect">[\s\S]*?<\/script>\n/,
+      '',
+    );
     const head = viewer.match(/<head(?:\s[^>]*)?>[\s\S]*?<\/head>/i)?.[0];
     assert.ok(head, 'Viewer must retain its head');
     // Phone reading intentionally changes the inline CSS in this head.
