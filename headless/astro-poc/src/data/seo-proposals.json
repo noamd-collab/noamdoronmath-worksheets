@@ -3414,6 +3414,18 @@
       "source": "title:catalog-title|description:catalog-title"
     },
     {
+      "path": "/worksheets?grade=8&topic=66",
+      "kind": "catalog-topic",
+      "grade": 8,
+      "catalogTopicId": 66,
+      "currentTitle": "",
+      "currentDescription": "",
+      "title": "שני מקורות מידע לכיתה ח׳ | נועם דורון",
+      "description": "דפי עבודה במתמטיקה בנושא שני מקורות מידע לכיתה ח׳. בחינם וללא הרשמה.",
+      "approved": false,
+      "source": "title:catalog-title|description:catalog-title"
+    },
+    {
       "path": "/distributive-law-grade-9",
       "kind": "topic-page",
       "grade": 9,

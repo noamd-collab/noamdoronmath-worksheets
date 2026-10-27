@@ -62,10 +62,14 @@ const protectedFiles: Record<string, string> = {
   // G9 PDF v2, G8 PDF v2 (two c2 levels), and G7 PDF v2.
   // Packages-120: replaced student PDF ids and added G9-T46 (דלתון) in the geometry group.
   // 2026-10-18: Noam-approved text-only wording migration (סינתזה → סיכום/שילוב); IDs, URLs, levels, and PDF mappings remain unchanged.
-  'src/data/catalog.v1.json': 'de6c6af05b1eff2a205c87014fd7ac735b439c45c2bd456180fb64bb654ddda4',
+  // Noam, 2026-10-27: release reviewed native worksheet packages sitewide,
+  // including the explicit grade-9 reuse map. catalog-native-release.test.ts
+  // verifies every PDF, level bundle, exact manifest and subsection figure.
+  'src/data/catalog.v1.json': '8e3ca43a19f3d2b46f7e768b8ccb050182d29541454331720420716b0e0b7aa5',
   'src/lib/catalog/loadCatalog.ts': '1a5e54a4c19c016046202f3e0b9bb95203e58fe983dab5a27e6f261abfbc9d95',
   // Viewer links forward the c2 sibling as pc2.
-  'src/lib/worksheetLinks.ts': '6bfa7fe86ff7d02a87c2f7533c6eabae1c34a372c2c68b2a92519e8c4790f531',
+  // The same authorized release forwards canonical PDFs and all sibling levels.
+  'src/lib/worksheetLinks.ts': '06bfbaa4b9b778d171ca9d8802eed0ce3fb6c6f15d7d7bff3807dd1f80ce0770',
   // kite-construct film added for /kite-grade-9 (explicit content, not a design regen).
   // 2026-10-18 topic films added; easing helpers now live in loopHelpers.ts.
   // PR169: preserve new topic films and honor OS reduced motion.
@@ -85,7 +89,9 @@ const protectedFiles: Record<string, string> = {
   'public/noam-learning-config.js': '90228359e65a99300b7d5017ddc58edce650b0b1a403a13b40c22608330f4ca7',
   // Lazy Supabase: guest learning no longer downloads the SDK. Google sign-in
   // and an existing session still load it, then recreate the engine.
-  'public/noam-learning.js': '50866c6d2e8824b8dd89e5e8b00c2e55c0f1636d4a56dbed2e73928c7eef9a18',
+  // Noam, 2026-10-27: learning opens that same reviewed catalog package; no
+  // auth/session change. Exact worksheet/level parity has dedicated coverage.
+  'public/noam-learning.js': 'c6d55b6c39e0a5c5d99ae7b14d5a53fecaf92ad21e80e86ecd5d71013a39cdba',
   'public/noam-learning-boot.js': '8a4976b19a32a4e1820b4c8aa391004973988a3126337fe2b3355406220d8cd1',
   'public/noam-learning-auth-redirect.js': '8fcd0ee6ef88a5816bb220b5a23b63821b65d0b3574dbcbfdcda6fc73cc34147',
   'public/noam-learning-core.js': 'dcdf50b7448ca7e106ae6e433787018dab7ba9c55fe4d4118dfb71f85584f0b7',
@@ -121,9 +127,30 @@ describe('exact-design protected live-baseline boundaries', () => {
     const rawViewer = read('public/worksheet-viewer-noam.html');
     const robotsLine = '<meta name="robots" content="noindex,follow">\n';
     assert.equal(rawViewer.split(robotsLine).length - 1, 1, 'viewer carries exactly one noindex,follow robots line');
-    const viewer = rawViewer
+    const viewerWithNativeRelease = rawViewer
       .replace(/<script id="noam-preview-viewer-redirect">[\s\S]*?<\/script>\n/, '')
       .replace(robotsLine, '');
+    // Noam, 2026-10-27: exactly two early migration assets keep old shared URLs
+    // on their complete reviewed package; the source consumer resolves the
+    // selected native item. The reviewed source and typed compiler dependencies are exempt
+    // from the original head/import fence. Their routing/geometry behavior is
+    // tested by catalog-native-migration and ramzi-native-visual suites.
+    const nativeAdditions = [
+      '<script src="/noam-ai/catalog-migrations.js?v=20261027-native1"></script>',
+      '<script src="/noam-catalog-migration.js?v=20261027-native1"></script>',
+      '<script src="noam-native-visual.js?v=20261027-source5"></script>',
+      '<script src="noam-authored-geometry.js?v=20261027-authored1"></script>',
+      '<script src="noam-authored-visual.js?v=20261027-authored1"></script>',
+      '<script src="noam-visual-data.js?v=20261027-typed2"></script>',
+      '<script src="noam-visual-plan.js?v=20261027-typed2"></script>',
+    ];
+    const allScripts = [...viewerWithNativeRelease.matchAll(/<script\b[^>]*>[\s\S]*?<\/script>/gi)].map(match => match[0]);
+    assert.equal(allScripts.length, 23, 'The release adds only its seven exact dependencies');
+    assert.deepEqual(allScripts.slice(7,12),nativeAdditions.slice(2),'Typed compilers follow their native source consumer in dependency order');
+    assert.deepEqual(allScripts.slice(0, 2), nativeAdditions.slice(0, 2), 'Old URLs migrate before worksheet scripts run');
+    assert.equal(allScripts[7], nativeAdditions[2], 'Native consumer follows the existing local visual engine');
+    for (const addition of nativeAdditions) assert.equal(allScripts.filter(script => script === addition).length, 1);
+    const viewer = nativeAdditions.reduce((html, script) => html.replace(script + '\n', ''), viewerWithNativeRelease);
     const head = viewer.match(/<head(?:\s[^>]*)?>[\s\S]*?<\/head>/i)?.[0];
     assert.ok(head, 'Viewer must retain its head');
     assert.ok(rawViewer.indexOf(robotsLine) < rawViewer.indexOf('</head>'), 'robots line sits in the head');
@@ -199,7 +226,25 @@ describe('exact-design protected live-baseline boundaries', () => {
     // query only. No auth, keys, score, worker or storage changes.
     // 2026-10-25: bot-client cache query for execute-ready host guard.
     // Token, siteverify, keys, score, worker and storage unchanged.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '6f82874b2b4baccc133b1d63f040cc4952cfe5fa257ef94ac1703b48ee622a35');
+    // Noam, 2026-10-27: exact source/item visual resolution, explicitly scoped
+    // construction, safe source-crop aids for reviewed legacy PDFs, and model
+    // context from the selected source item. New source visuals persist intent
+    // and revalidate against current manifests; errors retain retry. Dedicated
+    // native/source-crop/race tests cover these authorized behavior changes.
+    // The local visual import is versioned 20261027-native1 to invalidate cached
+    // imperative-request parsing; endpoint, bot protection and rate limits stay fixed.
+    // Noam, 2026-10-27: actual drawing buttons retain explicit drawCurrentStep
+    // intent. The diagram request includes exact selected native text/object
+    // identities while retaining its original crop for printed marks. Dedicated
+    // drawing-intent-source tests cover scope, source identity and old requests.
+    // Version the successful-plan cache for the changed payload; no auth change.
+    // 2026-10-27: refresh corrected PDF crop manifests and discard OCR cached
+    // from obsolete blank crops; preserve the existing conversation namespace.
+    // Noam, 2026-10-27: typed visual families consume exact selected native data;
+    // native version joins the cache identity and rehydration revalidates plans.
+    // Domain/source-scope and legacy-protocol tests cover this intentional change;
+    // bot/auth/quota behavior and the conversation namespace remain unchanged.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), '37067ecf8bca16c3e5b2678d60088a646cf7b7ed19cd8ab7c0559482cd884d41');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {

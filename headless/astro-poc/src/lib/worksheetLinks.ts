@@ -84,14 +84,14 @@ export function buildWorksheetHref(input: WorksheetLinkInput): string {
 
   if (!usesViewer) return pdfDirect;
 
-  const viewerLevel = level.key === 'one' ? 'b' : level.key;
+  const viewerLevel = level.viewerLevel || (level.key === 'one' ? 'b' : level.key);
   const base = viewerDocumentBase();
   const viewerUrl = new URL(catalog.config.viewer.path, base);
-  viewerUrl.searchParams.set('g', String(grade));
-  viewerUrl.searchParams.set('x', String(prefix));
+  viewerUrl.searchParams.set('g', String(topic.routing.sourceGrade || grade));
+  viewerUrl.searchParams.set('x', String(topic.routing.sourcePrefix || prefix));
   viewerUrl.searchParams.set('lv', viewerLevel);
   viewerUrl.searchParams.set('pdf', level.pdfId);
-  viewerUrl.searchParams.set('t', topic.title);
+  viewerUrl.searchParams.set('t', topic.routing.sourceTitle || topic.title);
 
   const siblings = topic.routing.siblingPdfQuery || {};
   for (const key of ['pa', 'pb', 'pc', 'pc2'] as const) {

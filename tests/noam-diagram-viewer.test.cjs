@@ -6,8 +6,11 @@ const vm=require("node:vm");
 const path=require("node:path");
 const html=fs.readFileSync(path.join(__dirname,"../worksheet-viewer-noam.html"),"utf8");
 const helpers=html.slice(html.indexOf("function noamGeometryContext(text){"),html.indexOf("function postJson(endpoint,payload){"));
-const local=html.slice(html.indexOf("function tryNoamLocalVisual(studentMessage){"),html.indexOf("function insertNoamMath(kind){"));
+const local=html.slice(html.indexOf("function noamParsedLocalVisual(exercise){"),html.indexOf("function insertNoamMath(kind){"));
 const drawing=html.slice(html.indexOf("function setNoamDiagramButtonLabel("),html.indexOf("function ensureNoamGlossaryPopover("));
+// Include the real source guards in this protected-generation harness. Its
+// unseen/unreviewed fixture must still reach generation and never become a crop.
+const sourceGuards=html.slice(html.indexOf("var noamSourceCropCache=new Map();"),html.indexOf("function noamNativeFigure("));
 const plan={version:1,status:"ok",points:{A:[0,0],B:[4,0],C:[1,3]},
   segments:[["A","B"],["B","C"],["C","A"]],highlights:[{from:"A",to:"B",color:"blue",label:"AB"}],
   angles:[],equalGroups:[],rightAngles:[],evidence:[]};
@@ -36,7 +39,7 @@ function fixture(){
   vm.createContext(context);
   for(const name of ["noam-geometry.js","noam-diagram-plan.js"]){vm.runInContext(fs.readFileSync(path.join(__dirname,"..",name),"utf8"),context);}
   context.NoamLocalVisual={wantsDrawing:()=>true,wantsVisualSupport:()=>true,parseFactoredQuadraticInequality:()=>null,render:()=>null};
-  vm.runInContext(helpers+local+drawing,context);
+  vm.runInContext(sourceGuards+helpers+local+drawing,context);
   context.pollNoamDiagramJob=async jobId=>{statusCalls.push(jobId);return {ok:true,plan};};
   // Mock HTTP JSON deserialization inside the same realm as the browser.
   const inspect=context.NoamDiagramPlan.inspect,compile=context.NoamDiagramPlan.compile;
