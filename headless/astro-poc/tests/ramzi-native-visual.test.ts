@@ -104,6 +104,66 @@ it('a combined focus is rejected when one named object is unresolved, including 
   assert.equal(resolve(f, hint('התבונן ב-BH וב-CH המאונכים')), null);
 });
 
+it('the actual G8-T50 hint about בנוסחת focuses AC instead of treating it as בנו', () => {
+  const f = fixture('G8-T50', 'q3', 'ד', 'c');
+  const result = resolve(f, hint('כדי למצוא את אורך האלכסון AC, השתמשו בנוסחת המרחק בין שתי נקודות במערכת הצירים.'));
+  assert.equal(result.kind, 'source-focus');
+  assert.ok(result.objectIds.includes('seg-AC'));
+  assert.equal(resolve(f, typed('בנו מעגל חדש דרך A ו-C')), null);
+  assert.equal(resolve(f, typed('שרטט ישר מקביל ל-AC דרך B')), null);
+});
+
+it('a real draw-button request can plot the sole authored formula without revealing the requested input', () => {
+  const f = fixture('G8-T12', 'q1', 'א', 'b');
+  const options = hint('התבוננו בטבלה וחפשו את הפלט המבוקש.');
+  assert.equal(resolve(f, options), null, 'automatic hints must not invent a drawing request');
+  const drawn = resolve(f, { ...options, drawCurrentStep: true });
+  assert.equal(drawn.kind, 'coordinate-illustration');
+  assert.equal(drawn.formula.expression, 'y=2x-6');
+  assert.equal(drawn.points.length, 0, 'the answer x=5 must not become a plotted point');
+  assert.equal(render(f, { ...options, drawCurrentStep: true }).querySelectorAll('[data-role="given-function"]').length, 1);
+  f.item.text += ' השוו גם לפונקציה y=x+1.';
+  assert.equal(resolve(f, { ...options, drawCurrentStep: true }), null, 'two authored functions need a specific request');
+});
+
+it('a generic draw action cannot substitute source context for a hypothetical or new construction', () => {
+  const f = fixture('G8-T12', 'q1', 'א', 'b');
+  for (const request of ['בנו מעגל חדש', 'תן דוגמה נגדית', 'הראה גרף אחר', 'נניח שהפונקציה שונה']) {
+    assert.equal(resolve(f, { ...typed(request), drawCurrentStep: true }), null, request);
+  }
+  const source = fixture();
+  assert.equal(resolve(source, { ...hint('נסו לחשוב על דוגמה נגדית דרך A.'), drawCurrentStep: true }), null);
+  assert.equal(resolve(f, typed('הראה גרף אחר y=x^2-4')).formula.expression, 'y=x^2-4', 'an explicitly supplied formula defines its own plot');
+});
+
+it('W03 q5d honors the selected counterexample task when the real hint omits that word', () => {
+  const f = fixture('G9-3060', 'q5', 'ד', 'c');
+  f.exercise.id = f.exercise.id.replace('G9-3060-', 'G9-T37-');
+  const actual = hint('חשבו על משולש שיש בו זווית של 30° אך הוא אינו ישר-זווית, ובדקו האם הצלע שמול הזווית עדיין שווה למחצית הצלע הארוכה ביותר.');
+  assert.doesNotMatch(actual.answer, /דוגמה נגדית/);
+  assert.equal(resolve(f, actual), null);
+  assert.equal(resolve(f, { ...actual, drawCurrentStep: true }), null);
+  assert.equal(resolve(f, typed('הראה את השרטוט המקורי')).kind, 'source-context', 'explicit source viewing stays honest and available');
+  assert.equal(resolve(f, { ...typed('שרטט y=x^2-4'), drawCurrentStep: true }).formula.expression, 'y=x^2-4');
+  const sibling = fixture('G9-3060', 'q5', 'א', 'c');
+  assert.equal(resolve(sibling, hint('התבוננו בקטע AF.')).kind, 'source-focus', 'counterexample intent must not leak to another part');
+});
+
+it('only the two approved one-level packages map site B identities to native a', () => {
+  for (const [pkg, pdf] of [['G8-T01', '8adcec2943024c2ab1c55a9153263c63'], ['G8-T35', '0b35039ff7184b488eb37f1c0e37b493']]) {
+    const manifest = json(`noam-ai/manifests/${pdf}.json`);
+    const exercise = manifest.exercises.find((e: any) => e.nativeFigureUrl);
+    const f = fixture(pkg, exercise.nativeQuestionId, exercise.part);
+    f.exercise = exercise;
+    assert.match(f.exercise.id, /-B-Q/);
+    assert.equal(resolve(f, typed('הראה את השרטוט המקורי')).kind, 'source-context');
+    assert.equal(api.resolve(f.data, { ...f.exercise, nativeFigureUrl: f.exercise.nativeFigureUrl.replace('/a/', '/b/') }, typed('הראה את השרטוט המקורי'), f.svg), null);
+  }
+  const other = fixture('G8-T15', 'q2');
+  other.exercise.id = other.exercise.id.replace('-A-Q', '-B-Q');
+  assert.equal(resolve(other, typed('הראה את השרטוט המקורי')), null);
+});
+
 it('plain source-context is explicitly labeled and does not claim a newly generated drawing', () => {
   const f = fixture(), figure = render(f, typed('הראה את השרטוט המקורי'));
   assert.equal(figure.getAttribute('data-visual-kind'), 'source-context');

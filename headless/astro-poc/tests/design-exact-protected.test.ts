@@ -134,7 +134,7 @@ describe('exact-design protected live-baseline boundaries', () => {
     const nativeAdditions = [
       '<script src="/noam-ai/catalog-migrations.js?v=20261027-native1"></script>',
       '<script src="/noam-catalog-migration.js?v=20261027-native1"></script>',
-      '<script src="noam-native-visual.js?v=20261027-source2"></script>',
+      '<script src="noam-native-visual.js?v=20261027-source3"></script>',
     ];
     const allScripts = [...viewerWithNativeRelease.matchAll(/<script\b[^>]*>[\s\S]*?<\/script>/gi)].map(match => match[0]);
     assert.equal(allScripts.length, 19, 'The release adds only its three exact dependencies');
@@ -228,7 +228,9 @@ describe('exact-design protected live-baseline boundaries', () => {
     // identities while retaining its original crop for printed marks. Dedicated
     // drawing-intent-source tests cover scope, source identity and old requests.
     // Version the successful-plan cache for the changed payload; no auth change.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '30bf96d9065d68eb927caee832b4dcb88044906412057891785528b121481a18');
+    // 2026-10-27: refresh corrected PDF crop manifests and discard OCR cached
+    // from obsolete blank crops; preserve the existing conversation namespace.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), '323343ef27acd7333e362783450488971289d54c1c697f194ad08568d1f3d6a7');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {
