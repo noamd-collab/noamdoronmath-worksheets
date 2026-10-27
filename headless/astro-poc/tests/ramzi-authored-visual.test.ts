@@ -34,6 +34,37 @@ it('draws original proposed intervals without repairing the answer', () => {
   assert.match(card.textContent, /לא תוקנה/); assert.doesNotMatch(card.textContent, /20\.5/);
   assert.equal(resolve(f, typed('מה התשובה?')), null); assert.equal(resolve(f, typed('הראה את השאלה המקורית')), null);
 });
+it('draws the actual singular class declarations without sorting the given observations', () => {
+  const f = fixture('G8-T28', 'b', 'q15', 'א');
+  const options = { ...draw, answer: 'האם המילה סרטים מתייחסת לדבר אחד בודד או לקבוצה שלמה?' };
+  assert.equal(resolve(f, { ...options, drawCurrentStep: false }), null, 'An unrelated first hint does not automatically attach class ranges');
+  const scene = resolve(f, options);
+  assert.equal(scene.kind, 'authored-intervals');
+  assert.deepEqual(plain(scene.intervals), [{ start: 3, end: 7, closedStart: true, closedEnd: false }, { start: 7, end: 10, closedStart: true, closedEnd: true }]);
+  const card = render(scene); assert.equal(card.querySelectorAll('[data-role="given-interval"]').length, 2);
+  assert.doesNotMatch(card.textContent, /3\.5|6\.2|8\.1|9\.5/, 'The requested classification is not performed');
+  assert.equal(resolve(f, typed('הראה את השאלה המקורית')), null);
+});
+it('singular class detection still rejects unknown endpoints and incidental word fragments', () => {
+  const f = fixture('G8-T28', 'b', 'q15', 'א');
+  for (const text of ['המחלקה מ־3 עד7.', 'מחלקה מ־7 עד3 כולל.', 'מחלקה מ־3 עד10001 כולל.', 'מחלקתי מ־3 עד7 כולל.']) {
+    f.q.text = text; assert.equal(resolve(f), null, text);
+  }
+});
+it('rejects partial interval sets with unknown or unsupported bounds in either order', () => {
+  for (const declaration of ['מחלקה', 'מחלקות']) {
+    const f = fixture('G8-T28', 'b', 'q15', 'א');
+    for (const text of [
+      `${declaration} מ־3 עדm כולל, ומחלקה מ־7 עד10 כולל.`,
+      `${declaration} מ־7 עד10 כולל, ומחלקה מ־3 עדm כולל.`,
+      `${declaration}: m-7 כולל, 8-10 כולל.`,
+      `${declaration}: 8-10 כולל, 3-∞ כולל.`,
+      `${declaration}: 3 עד 7/2 כולל, 8 עד10 כולל.`,
+      `${declaration}: 3 עד7x, 8 עד10. כל הקצוות כלולים.`,
+      `${declaration}abc מ־3 עד7 כולל.`,
+    ]) { f.q.text = text; assert.equal(resolve(f), null, text); }
+  }
+});
 it('shows rational input operation without forbidden input or computed output', () => {
   const scene = resolve(fixture('G8-T11', 'b', 'q14', 'א'));
   assert.equal(scene.kind, 'authored-input-machine'); assert.equal(scene.expression, '8/(x-2)');
