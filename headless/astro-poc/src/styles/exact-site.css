@@ -170,6 +170,133 @@ html.noam-a11y-motion .exact-home h1[data-lcp] {
 .exact-footer a:hover {color:#fff!important;}
 .exact-footer .exact-social:hover {background:#fff!important;color:#22305a!important;}
 .exact-site [data-exact-hero-topic]:hover {color:#e5735c!important;}
+/* Teacher door in the hero gap (headline on the right, animation on the left).
+   Narrow screens keep the same link under the subtitle, in normal flow. */
+.exact-hero {
+  --hero-gap: 28px;
+  --hero-teachers: 214px;
+  position: relative;
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-block: 64px 80px;
+  padding-inline: 24px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) var(--hero-teachers) minmax(0, 1.15fr);
+  column-gap: var(--hero-gap);
+  align-items: center;
+}
+.exact-hero__copy,
+.exact-hero__panel {
+  position: relative;
+  z-index: 2;
+  min-width: 0;
+}
+.exact-hero__copy { grid-column: 1; grid-row: 1; }
+.exact-hero__panel { grid-column: 3; grid-row: 1; }
+.exact-hero__lede { margin: 0 0 32px; }
+.exact-hero-teachers {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  box-sizing: border-box;
+  width: min(100%, var(--hero-teachers));
+  padding: 16px 16px 14px;
+  background: #fff;
+  color: #22305a;
+  border: 2px solid #22305a;
+  border-radius: 18px 6px 20px 8px / 8px 20px 6px 18px;
+  box-shadow: 4px 4px 0 #e6a534;
+  text-align: start;
+  text-decoration: none;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.exact-hero-teachers__mark { display: block; width: 42px; height: 42px; }
+.exact-hero-teachers__kicker {
+  font: 700 13px/1.35 Heebo, 'Heebo Fallback', sans-serif;
+  color: #1f6462;
+}
+.exact-hero-teachers__lead {
+  font-family: 'Secular One', 'Secular One Fallback', sans-serif;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 1.15;
+  color: #22305a;
+  text-wrap: balance;
+}
+.exact-hero-teachers__cta {
+  display: inline-flex;
+  align-items: center;
+  margin-block-start: 2px;
+  padding: 7px 14px;
+  background: #22305a;
+  color: #fbfaf5;
+  font: 700 15px/1.2 Heebo, 'Heebo Fallback', sans-serif;
+  border-radius: 999px;
+}
+.exact-hero-teachers:focus-visible {
+  outline: 3px solid #22305a;
+  outline-offset: 6px;
+}
+@media (hover: hover) {
+  .exact-hero-teachers:hover {
+    transform: translateY(-4px);
+    box-shadow: 6px 6px 0 #e5735c;
+    color: #22305a;
+  }
+}
+.exact-hero-teachers:active {
+  transform: translateY(1px);
+  box-shadow: 2px 2px 0 #e6a534;
+}
+@media (min-width: 981px) {
+  .exact-hero-teachers {
+    position: absolute;
+    z-index: 3;
+    inset-inline-end: calc(-1 * (var(--hero-teachers) + var(--hero-gap)));
+    inset-block-start: 84px;
+    width: var(--hero-teachers);
+  }
+}
+@media (max-width: 980px) {
+  .exact-hero {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 28px;
+  }
+  .exact-hero__panel { grid-column: 1; grid-row: 1; }
+  .exact-hero__copy { grid-column: 1; grid-row: 2; }
+  .exact-hero__lede { margin-block-end: 14px; }
+  .exact-hero-teachers {
+    position: static;
+    width: 100%;
+    inset: auto;
+    margin-block-end: 18px;
+  }
+}
+/* Same contract as the published motion policy: explicit on-site motion wins
+   over the device, and Stop / the accessibility switch always wins. */
+@media (prefers-reduced-motion: reduce) {
+  html:not(.nd-motion-enabled):not([data-nd-motion="full"]):not([data-nd-motion="relaxed"]):not([data-nd-motion="calm"]) .exact-hero-teachers {
+    transition: none;
+  }
+  html:not(.nd-motion-enabled):not([data-nd-motion="full"]):not([data-nd-motion="relaxed"]):not([data-nd-motion="calm"]) .exact-hero-teachers:hover,
+  html:not(.nd-motion-enabled):not([data-nd-motion="full"]):not([data-nd-motion="relaxed"]):not([data-nd-motion="calm"]) .exact-hero-teachers:active {
+    transform: none;
+  }
+}
+html.nd-motion-off .exact-hero-teachers,
+html.noam-a11y-motion .exact-hero-teachers,
+html[data-nd-motion="off"] .exact-hero-teachers {
+  transition: none;
+}
+html.nd-motion-off .exact-hero-teachers:hover,
+html.noam-a11y-motion .exact-hero-teachers:hover,
+html[data-nd-motion="off"] .exact-hero-teachers:hover,
+html.nd-motion-off .exact-hero-teachers:active,
+html.noam-a11y-motion .exact-hero-teachers:active,
+html[data-nd-motion="off"] .exact-hero-teachers:active {
+  transform: none;
+}
 .exact-site [data-exact-shuffle]:hover {background:#fdf1d8!important;}
 /* Off uses the existing accessibility contract, not another animation engine. */
 html.nd-motion-off .exact-frame *,html.noam-a11y-motion .exact-frame * {scroll-behavior:auto!important;}

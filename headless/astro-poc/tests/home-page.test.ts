@@ -154,6 +154,22 @@ describe('homepage Harmony parity (HEADLESS-MIGRATION-31)', () => {
     assert.match(html, /<nav id="primary-nav"[^>]*data-nav-panel/);
   });
 
+  it('hero links teachers with the menu URL and does not add a heading', () => {
+    const index = readFileSync(join(root, 'src', 'pages', 'index.astro'), 'utf8');
+    const css = readFileSync(join(root, 'src', 'styles', 'exact-site.css'), 'utf8');
+    assert.equal((index.match(/<h1\b/g) || []).length, 1);
+    assert.match(index, /class="exact-hero-teachers"[^>]*href="\/teachers"/);
+    assert.match(index, /למורים ולמורים פרטיים/);
+    assert.match(index, /דפי עבודה מוכנים להדפסה/);
+    assert.match(index, /לאזור המורים/);
+    assert.doesNotMatch(index, /לחצו כאן/);
+    assert.match(css, /html\.nd-motion-off \.exact-hero-teachers/);
+    assert.match(css, /html\.noam-a11y-motion \.exact-hero-teachers/);
+    assert.match(css, /html\[data-nd-motion="off"\] \.exact-hero-teachers/);
+    assert.match(css, /html:not\(\.nd-motion-enabled\)/);
+    assert.match(css, /@media \(max-width: 980px\)/);
+  });
+
   it('required href set is complete for gate scripts', () => {
     const hrefs = homePageRequiredHrefs(home);
     for (const g of [1, 2, 3, 4, 5, 6, 7, 8, 9]) {
