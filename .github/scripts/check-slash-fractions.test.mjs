@@ -39,6 +39,19 @@ describe('findSlashFractions', () => {
     }
   });
 
+  it('recognizes complete authored source keys without hiding nearby fractions or partial lookalikes', () => {
+    for (const key of ['G7-T22/a/q21', 'G8-TWOSRC/b/q2', 'G9-T13/a/q17']) {
+      assert.deepEqual(findSlashFractions(key), [], key);
+      assert.deepEqual(findSlashFractions(key + ' 3/4').map(hit => hit.text), ['3/4'], key);
+      assert.deepEqual(scanSource('headless/astro-poc/public/example.js',
+        'const sourceKey = "' + key + '"; const shown = "3/4";', []).map(hit => hit.text), ['3/4'], key);
+    }
+    for (const text of ['G7-T22/a', 'G7-T22/a/q21/2', 'x/a/q21', 'G7-T22/d/q21', 'G7-T22/a/q0']) {
+      assert.ok(findSlashFractions(text).length > 0, text);
+    }
+    assert.deepEqual(findSlashFractions('a/q21 + T22/a').map(hit => hit.text), ['a/q21', 'T22/a']);
+  });
+
   it('keeps real fractions that look a bit like dates', () => {
     assert.equal(findSlashFractions('1/2')[0].text, '1/2');
     assert.equal(findSlashFractions('11/12')[0].text, '11/12');
