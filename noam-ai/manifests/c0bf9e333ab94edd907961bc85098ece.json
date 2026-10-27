@@ -2997,8 +2997,8 @@
       "requiresVision": true,
       "nativeQuestionId": "q20",
       "nativeItemId": "q20a",
-      "nativeFigureId": "q20_head",
-      "nativeFigureUrl": "/noam-ai/native/G8-T29/c/figures/q20_head.svg"
+      "nativeFigureId": "q20_head_2",
+      "nativeFigureUrl": "/noam-ai/native/G8-T29/c/figures/q20_head_2.svg"
     },
     {
       "id": "G8-T29-E-Q20ב",
@@ -3067,8 +3067,8 @@
       "requiresVision": true,
       "nativeQuestionId": "q20",
       "nativeItemId": "q20c",
-      "nativeFigureId": "q20_head",
-      "nativeFigureUrl": "/noam-ai/native/G8-T29/c/figures/q20_head.svg"
+      "nativeFigureId": "q20_head_2",
+      "nativeFigureUrl": "/noam-ai/native/G8-T29/c/figures/q20_head_2.svg"
     },
     {
       "id": "G8-T29-E-Q20ד",
@@ -3108,5 +3108,5 @@
   ],
   "nativeExportUrl": "/noam-ai/native/G8-T29/c/noam-ai.json",
   "nativeLevel": "c",
-  "nativeExportSha256": "92574df9f831e2fa46e42f306006024bfb1ffd86836a1242dde8397068305a42"
+  "nativeExportSha256": "0268fc08fd2b4d1ad5d29821d029015c0c5b9b519e9c173d104fe0353e980dfb"
 }
