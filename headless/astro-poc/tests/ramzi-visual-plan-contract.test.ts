@@ -12,6 +12,13 @@ for (const file of ['noam-native-visual.js', 'noam-authored-geometry.js', 'noam-
   runInNewContext(readFileSync(new URL(file, pub), 'utf8'), runtime, { filename: file });
 }
 const api = runtime.NoamVisualPlan;
+it('instructs the planner to quote a complete authored operation span and preserve its structure', () => {
+  assert.match(api.PROMPT_SCHEMA, /complete authored equation or expression by default/);
+  assert.match(api.PROMPT_SCHEMA, /including both sides of an equation/);
+  assert.match(api.PROMPT_SCHEMA, /same ordered subtree occurs in the current hint/);
+  assert.match(api.PROMPT_SCHEMA, /quote the entire containing authored expression or equation/);
+  assert.match(api.PROMPT_SCHEMA, /never simplify, rearrange, solve or evaluate/);
+});
 const clone = (value: any) => JSON.parse(JSON.stringify(value));
 function authored(pkg: string, level: string, questionId: string, itemId: string) {
   const native = JSON.parse(readFileSync(new URL(`noam-ai/native/${pkg}/${level}/noam-ai.json`, pub), 'utf8'));
