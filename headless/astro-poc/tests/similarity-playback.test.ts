@@ -3,6 +3,7 @@ import {readFileSync} from 'node:fs';
 import {runInNewContext} from 'node:vm';
 import ts from 'typescript';
 import {it} from 'node:test';
+const policy=readFileSync(new URL('../src/lib/motionPreference.js',import.meta.url),'utf8').replace('export function','function');
 const source=readFileSync(new URL('../src/components/SimilarityLoop.astro',import.meta.url),'utf8').split('<script>')[1].split('</script>')[0];
 // Execute the shipped controller with a deterministic animation-frame clock.
 function player(){
@@ -12,8 +13,8 @@ function player(){
   const chapters=[0,1,2,3,4,5,6].map(n=>button({chapter:String(n)})),details=[0,2].map(n=>button({sasBeat:String(n)}));
   const media={matches:false,addEventListener(){}};
   const film={dataset:{phase:'0',beat:'0'} as Record<string,string>,isConnected:true,closest:()=>({classList:{contains:(c:string)=>classes.has(c)}}),querySelectorAll:(q:string)=>q==='[data-chapter]'?chapters:details,style:{setProperty:(k:string,v:string)=>{values[k]=v;}},toggleAttribute:(k:string,on:boolean)=>on?attributes.add(k):attributes.delete(k),hasAttribute:(k:string)=>attributes.has(k),removeAttribute:(k:string)=>attributes.delete(k)};
-  const document={hidden:false,querySelectorAll:()=>[film],documentElement:{classList:{contains:()=>false}},addEventListener(){}};
-  runInNewContext(ts.transpile(source,{target:ts.ScriptTarget.ES2022}),{document,window:{matchMedia:()=>media},requestAnimationFrame:(fn:(time:number)=>void)=>{frame=fn;}});
+  const document={hidden:false,querySelectorAll:()=>[film],documentElement:{dataset:{},classList:{contains:(name:string)=>classes.has(name)}},addEventListener(){}};
+  runInNewContext(policy + ts.transpile(source.replace(/^\s*import[^;]+;\s*/m,''),{target:ts.ScriptTarget.ES2022}),{document,window:{matchMedia:()=>media},requestAnimationFrame:(fn:(time:number)=>void)=>{frame=fn;}});
   let now=10;frame(now);
   const advance=(ms:number)=>{for(let n=0;n<ms;n+=10){now+=10;frame(now);}};
   return {film,chapters,details,media,document,classes,values,advance};
@@ -52,4 +53,18 @@ it('shows AA numeric pairs after the angles, and dedicates all of SSS to side ra
   p.chapters[2].click();
   for(const ms of [3000,2200,2200]){p.advance(ms);assert.equal(p.film.dataset.phase,'2');}
   p.advance(2600);assert.equal(p.film.dataset.phase,'3');
+});
+
+
+it('site opt-in starts the sequence under OS reduce while explicit stop and visitor pause remain authoritative',()=>{
+  const p=player();p.media.matches=true;p.advance(10000);
+  assert.equal(p.film.dataset.phase,'0');
+  p.classes.add('nd-motion-enabled');p.advance(10000);
+  assert.equal(p.film.dataset.phase,'1');
+  p.classes.add('nd-motion-off');const progress=p.values['--progress'];p.advance(10000);
+  assert.equal(p.film.dataset.phase,'1');assert.equal(p.values['--progress'],progress);
+  p.classes.delete('nd-motion-off');p.classes.add('ll--paused');p.advance(10000);
+  assert.equal(p.film.dataset.phase,'1');
+  p.classes.delete('ll--paused');p.advance(10000);
+  assert.equal(p.film.dataset.phase,'2');
 });

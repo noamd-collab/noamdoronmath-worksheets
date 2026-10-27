@@ -1,3 +1,4 @@
+import { sitePrefersReducedMotion } from './motionPreference.js';
 /**
  * Lesson films for topic pages that have no old ConceptLoop.
  * Same card, easing, and lap rules as the protected engine. The engine file
@@ -589,7 +590,7 @@ const SPECS: Record<string, Spec> = {
 function motionOff() {
   const root = document.documentElement;
   return (
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+    sitePrefersReducedMotion() ||
     root.classList.contains('nd-motion-off') ||
     root.classList.contains('noam-a11y-motion')
   );
@@ -665,10 +666,9 @@ function setup(root: Root, spec: Spec) {
       t = 0;
       lap = 1;
       done = false;
-      userPaused = false;
       spec.render(root, 0);
       if (toggle) toggle.style.display = '';
-      if (inView) play();
+      if (inView && !userPaused) play();
       else setToggle('הפעלת ההדגמה', true);
     }
   };
@@ -711,7 +711,7 @@ function setup(root: Root, spec: Spec) {
   window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', applyMotion);
   new MutationObserver(applyMotion).observe(document.documentElement, {
     attributes: true,
-    attributeFilter: ['class'],
+    attributeFilter: ['class', 'data-nd-motion'],
   });
   applyMotion();
   if (!isStatic && !playing) setToggle('הפעלת ההדגמה', true);

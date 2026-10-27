@@ -135,6 +135,7 @@ const sumPos = sum(4, 0);
 </div>
 
 <script>
+  import { sitePrefersReducedMotion } from '../lib/motionPreference.js';
   import { ph } from '../lib/conceptLoops';
 
   const DURATION = 18;
@@ -169,7 +170,7 @@ const sumPos = sum(4, 0);
   function motionOff() {
     const root = document.documentElement;
     return (
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+      sitePrefersReducedMotion() ||
       root.classList.contains('nd-motion-off') ||
       root.classList.contains('noam-a11y-motion')
     );
@@ -304,10 +305,9 @@ const sumPos = sum(4, 0);
         t = 0;
         lap = 1;
         done = false;
-        userPaused = false;
         render(root, 0);
         if (toggle) toggle.style.display = '';
-        if (inView) play();
+        if (inView && !userPaused) play();
         else setToggle('הפעלת ההדגמה', true);
       }
     };
@@ -351,7 +351,7 @@ const sumPos = sum(4, 0);
     window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', applyMotion);
     new MutationObserver(applyMotion).observe(document.documentElement, {
       attributes: true,
-      attributeFilter: ['class'],
+      attributeFilter: ['class', 'data-nd-motion'],
     });
     applyMotion();
     if (!isStatic && !playing) setToggle('הפעלת ההדגמה', true);

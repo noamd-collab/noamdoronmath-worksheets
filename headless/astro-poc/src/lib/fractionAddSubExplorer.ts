@@ -1,3 +1,4 @@
+import { sitePrefersReducedMotion } from './motionPreference.js';
 /**
  * Engine for the fraction add / subtract explorer on two grade-5 topic pages
  * (component: ../components/FractionAddSubExplorer.astro).
@@ -322,7 +323,7 @@ function announce(root: HTMLElement, value: string) {
 
 function reducedMotion(): boolean {
   return (
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+    sitePrefersReducedMotion() ||
     document.documentElement.classList.contains('noam-a11y-motion')
   );
 }

@@ -27,6 +27,7 @@ const frameSrc = `${src}?embed=1`;
 </div>
 
 <script>
+  import { sitePrefersReducedMotion } from '../lib/motionPreference.js';
   function boot(root) {
     const frame = root.querySelector('[data-substitution-frame]');
     if (!frame) return;
@@ -42,7 +43,7 @@ const frameSrc = `${src}?embed=1`;
 
     function motionOff() {
       const html = document.documentElement;
-      return window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      return sitePrefersReducedMotion()
         || html.classList.contains('nd-motion-off')
         || html.classList.contains('noam-a11y-motion');
     }
@@ -71,7 +72,7 @@ const frameSrc = `${src}?embed=1`;
 
     new MutationObserver(() => { holdStill(); fit(); }).observe(document.documentElement, {
       attributes: true,
-      attributeFilter: ['class'],
+      attributeFilter: ['class', 'data-nd-motion'],
     });
   }
 

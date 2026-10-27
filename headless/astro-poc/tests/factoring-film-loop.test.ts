@@ -83,7 +83,12 @@ describe('common-factor grade 9 film', () => {
     assert.match(topic, /FactoringFilmLoop src=\{landingLoop\.src\} marker=\{landingLoop\.marker\}/);
     assert.match(shell, /\$\{src\}\?embed=1/);
     assert.match(shell, /title="גורם משותף ומינוס לפני סוגריים"/);
-    assert.match(shell, /s\?\.isPlaying\?\.\(\)\) s\.pause\(\)/);
+    // The embedded controller must see playback before policy pauses it;
+    // the outer wrapper owns sizing, never a competing playback controller.
+    assert.doesNotMatch(shell, /mathScene|\.pause\(|\.play\(/);
+    assert.match(shell, /new ResizeObserver\(fit\)/);
+    assert.match(film, /watchMotion\(window\.parent\.document\.documentElement\)/);
+    assert.match(film, /new MutationObserver\(syncMotion\)/);
     assert.equal(worksheets.includes('common-factor-minus-parentheses'), false);
   });
 });

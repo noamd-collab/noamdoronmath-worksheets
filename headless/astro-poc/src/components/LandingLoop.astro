@@ -56,13 +56,9 @@ const isLessonFilm = (LESSON_FILM_VARIANTS as readonly string[]).includes(varian
     });
     button.disabled = false;
   });
-  const root = document.documentElement;
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const stopped =
-    reduce ||
-    root.classList.contains('nd-motion-off') ||
-    root.classList.contains('noam-a11y-motion');
-  if (!stopped && 'IntersectionObserver' in window) {
+  // Visibility tracking is independent of policy; CSS handles motion-off.
+  // This observer must also exist when the visitor opts in after page load.
+  if ('IntersectionObserver' in window) {
     const io = new IntersectionObserver((entries) => {
       for (const entry of entries) {
         entry.target.classList.toggle('ll--off', !entry.isIntersecting);
@@ -94,7 +90,7 @@ const isLessonFilm = (LESSON_FILM_VARIANTS as readonly string[]).includes(varian
   .ll-pause { display:block; margin:8px 8px 0 auto; min-height:44px; min-width:64px; border:1px solid #22305a; border-radius:10px; background:white; color:#22305a; font:700 14px Heebo,sans-serif; pointer-events:auto; cursor:pointer; }
   .ll-pause:focus-visible {outline:3px solid #e6a534;outline-offset:2px;}
   .ll--paused :global(*) {animation-play-state:paused!important;}
-  @media(prefers-reduced-motion:reduce) {.ll-pause {display:none;}}
+  @media(prefers-reduced-motion:reduce) {:global(html:not(.nd-motion-enabled)) .ll-pause {display:none;}}
   :global(html.nd-motion-off) .ll-pause, :global(html.noam-a11y-motion) .ll-pause {display:none;}
 
   .ll :global(.ll-math) {
@@ -106,8 +102,8 @@ const isLessonFilm = (LESSON_FILM_VARIANTS as readonly string[]).includes(varian
   .ll--off :global(*) { animation-play-state: paused !important; }
 
   @media (prefers-reduced-motion: reduce) {
-    .ll,
-    .ll :global(*) { animation: none !important; }
+    :global(html:not(.nd-motion-enabled)) .ll,
+    :global(html:not(.nd-motion-enabled)) .ll :global(*) { animation: none !important; }
   }
   :global(html.nd-motion-off) .ll,
   :global(html.nd-motion-off) .ll :global(*),

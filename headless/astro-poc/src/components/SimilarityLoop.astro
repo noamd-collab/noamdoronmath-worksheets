@@ -81,6 +81,7 @@ const gridId = `similarity-${crypto.randomUUID()}`;
   </div>
 </section>
 <script>
+  import { sitePrefersReducedMotion } from '../lib/motionPreference.js';
   document.querySelectorAll<HTMLElement>('.similarity-film').forEach(film => {
     if(film.dataset.ready) return;
     film.dataset.ready='true';
@@ -121,8 +122,8 @@ const gridId = `similarity-${crypto.randomUUID()}`;
     const tick=(now:number)=>{
       if(!film.isConnected) return;
       const root=document.documentElement;
-      film.toggleAttribute('data-static',reduced.matches || ['nd-motion-off','noam-a11y-motion','noam-a11y-no-motion'].some(c=>root.classList.contains(c)));
-      const stopped=reduced.matches || document.hidden || shell?.classList.contains('ll--paused') || shell?.classList.contains('ll--off') || ['nd-motion-off','noam-a11y-motion','noam-a11y-no-motion'].some(c=>root.classList.contains(c));
+      film.toggleAttribute('data-static',sitePrefersReducedMotion() || ['nd-motion-off','noam-a11y-motion','noam-a11y-no-motion'].some(c=>root.classList.contains(c)));
+      const stopped=sitePrefersReducedMotion() || document.hidden || shell?.classList.contains('ll--paused') || shell?.classList.contains('ll--off') || ['nd-motion-off','noam-a11y-motion','noam-a11y-no-motion'].some(c=>root.classList.contains(c));
       if(!stopped && film.hasAttribute('data-inspect')) film.removeAttribute('data-inspect');
       if(!stopped && previous) {
         elapsed+=Math.min(now-previous,100);
@@ -250,6 +251,6 @@ const gridId = `similarity-${crypto.randomUUID()}`;
   [data-static] *{animation:none!important;}
   [data-inspect] *{animation:none!important;}
   [data-hidden] *{animation-play-state:paused!important;}
-  @media(prefers-reduced-motion:reduce){*{animation:none!important;}.growing-copy,.area-growing{display:none;}.unit-grid{opacity:1;}}
+  @media(prefers-reduced-motion:reduce){:global(html:not(.nd-motion-enabled)) *{animation:none!important;}:global(html:not(.nd-motion-enabled)) .growing-copy,:global(html:not(.nd-motion-enabled)) .area-growing{display:none;}:global(html:not(.nd-motion-enabled)) .unit-grid{opacity:1;}}
   :global(html.nd-motion-off) *, :global(html.noam-a11y-motion) *, :global(html.noam-a11y-no-motion) *{animation:none!important;}
 </style>

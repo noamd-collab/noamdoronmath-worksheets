@@ -4,11 +4,17 @@
   function init() {
     if (document.getElementById('noam-accessibility')) return;
     const defaults = { text: 100, contrast: false, links: false, motion: false };
-    let prefs = { ...defaults };
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let prefs = { ...defaults, motionChosen: false, stopAnim: false, stopAnimChosen: false };
     try {
       const saved = JSON.parse(localStorage.getItem('noam-accessibility-v1') || '{}');
       prefs.text = [100,110,120,130,140,150].includes(saved.text) ? saved.text : 100;
       for (const key of ['contrast','links','motion']) prefs[key] = saved[key] === true;
+      prefs.motionChosen = saved.motionChosen === true || saved.motion === true;
+      if (typeof saved.stopAnim === 'boolean') {
+        prefs.stopAnim = saved.stopAnim;
+        prefs.stopAnimChosen = true;
+      }
     } catch (_) { /* Preferences still work when storage is unavailable. */ }
 
     const style = document.createElement('style');
@@ -118,23 +124,40 @@
       }
       if (prefs.text === 100) original.clear();
     }
+    function motionReduced() {
+      return prefs.motionChosen ? prefs.motion : reducedMotion.matches;
+    }
     function apply(save) {
+      const reduceOn = motionReduced();
+      const stopOn = prefs.stopAnim === true;
+      document.documentElement.classList.toggle('nd-motion-enabled', prefs.motionChosen && !reduceOn && !stopOn);
+      document.documentElement.classList.toggle('nd-motion-off', stopOn);
       for (const key of ['contrast','links','motion']) {
-        document.documentElement.classList.toggle('noam-a11y-'+key,prefs[key]);
-        root.querySelector('[data-pref="'+key+'"]').setAttribute('aria-pressed',String(prefs[key]));
+        const on = key === 'motion' ? reduceOn || stopOn : prefs[key];
+        document.documentElement.classList.toggle('noam-a11y-'+key,on);
+        root.querySelector('[data-pref="'+key+'"]').setAttribute('aria-pressed',String(key === 'motion' ? reduceOn : on));
       }
       root.getElementById('size').textContent = prefs.text+'%';
       root.getElementById('increase').disabled = prefs.text >= 150;
       root.getElementById('decrease').disabled = prefs.text <= 100;
       scaleText();
-      if (save) try { localStorage.setItem('noam-accessibility-v1',JSON.stringify(prefs)); } catch (_) {}
+      if (save) try {
+        const stored = { text:prefs.text, contrast:prefs.contrast, links:prefs.links, motion:prefs.motion, motionChosen:prefs.motionChosen };
+        if (prefs.stopAnimChosen) stored.stopAnim = stopOn;
+        localStorage.setItem('noam-accessibility-v1',JSON.stringify(stored));
+      } catch (_) {}
+      window.dispatchEvent(new CustomEvent('nd:motion-off', { detail: { off: reduceOn || stopOn } }));
     }
     root.getElementById('increase').addEventListener('click', () => { prefs.text = Math.min(150,prefs.text+10); apply(true); });
     root.getElementById('decrease').addEventListener('click', () => { prefs.text = Math.max(100,prefs.text-10); apply(true); });
     root.querySelectorAll('[data-pref]').forEach(button => button.addEventListener('click', () => {
-      const key = button.dataset.pref; prefs[key] = !prefs[key]; apply(true);
+      const key = button.dataset.pref;
+      if (key === 'motion') { prefs.motion = !motionReduced(); prefs.motionChosen = true; }
+      else prefs[key] = !prefs[key];
+      apply(true);
     }));
-    root.getElementById('reset').addEventListener('click', () => { prefs = {...defaults}; apply(true); });
+    root.getElementById('reset').addEventListener('click', () => { prefs = {...defaults, motionChosen:false, stopAnim:false, stopAnimChosen:false}; apply(true); });
+    reducedMotion.addEventListener('change', () => apply(false));
     let scheduled = false;
     new MutationObserver(() => {
       if (prefs.text === 100 || scheduled) return;

@@ -1,3 +1,4 @@
+import { sitePrefersReducedMotion } from './motionPreference.js';
 /**
  * Engine for the percent-of-quantity explorer (topic page).
  *
@@ -15,7 +16,7 @@ const q = (root: HTMLElement, name: string) => root.querySelector(`[data-el="${n
 
 function motionOff(): boolean {
   return (
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+    sitePrefersReducedMotion() ||
     document.documentElement.classList.contains('noam-a11y-motion')
   );
 }
@@ -41,6 +42,7 @@ function setup(root: PctRoot) {
   let quantity = Number(root.dataset.q) || 200;
   let p = Number(root.dataset.p) || 0;
   let demoRaf = 0;
+  let demoDone = false;
   let liveTimer = 0;
 
   function render(announce: boolean) {
@@ -69,6 +71,7 @@ function setup(root: PctRoot) {
   }
 
   function stopDemo() {
+    demoDone = true;
     if (demoRaf) cancelAnimationFrame(demoRaf);
     demoRaf = 0;
   }
@@ -118,25 +121,41 @@ function setup(root: PctRoot) {
 
   render(false);
 
-  if (motionOff() || !('IntersectionObserver' in window)) return;
+  if (!('IntersectionObserver' in window)) return;
   const target = p;
-  const io = new IntersectionObserver(
-    (entries) => {
-      if (!entries.some((en) => en.isIntersecting)) return;
-      io.disconnect();
-      const t0 = performance.now();
-      const step = (now: number) => {
-        const t = Math.min(1, (now - t0) / DEMO_MS);
-        const eased = 1 - (1 - t) ** 3;
-        setP(target * eased, false);
-        demoRaf = t < 1 ? requestAnimationFrame(step) : 0;
-      };
-      setP(0, false);
-      demoRaf = requestAnimationFrame(step);
-    },
-    { threshold: 0.5 },
-  );
+  let inView = false;
+  function syncDemo() {
+    if (motionOff()) {
+      if (demoRaf) {
+        cancelAnimationFrame(demoRaf);
+        demoRaf = 0;
+        demoDone = false;
+        setP(target, false);
+      }
+      return;
+    }
+    if (!inView || demoDone) return;
+    demoDone = true;
+    const t0 = performance.now();
+    const step = (now: number) => {
+      const t = Math.min(1, Math.max(0, (now - t0) / DEMO_MS));
+      const eased = 1 - (1 - t) ** 3;
+      setP(target * eased, false);
+      demoRaf = t < 1 ? requestAnimationFrame(step) : 0;
+    };
+    setP(0, false);
+    demoRaf = requestAnimationFrame(step);
+  }
+  const io = new IntersectionObserver((entries) => {
+    inView = entries.some((en) => en.isIntersecting);
+    syncDemo();
+  }, { threshold: 0.5 });
   io.observe(root);
+  window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', syncDemo);
+  new MutationObserver(syncDemo).observe(document.documentElement, {
+    attributes: true, attributeFilter: ['class', 'data-nd-motion'],
+  });
+
 }
 
 export function initPercentExplorers() {

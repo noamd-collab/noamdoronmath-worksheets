@@ -383,7 +383,7 @@ describe('GradeLoopPlayer render contract', () => {
     assert.match(rule('.grade-loop__math :global(bdi)'), /unicode-bidi: isolate;/);
     assert.match(rule('.grade-loop__link'), /min-block-size: 44px;[\s\S]*color: #1e605e;/);
     assert.match(rule('.grade-loop__link:hover'), /color: #e5735c;/);
-    assert.match(css, /@media \(prefers-reduced-motion: reduce\) \{\s*\.grade-loop__progress-fill \{\s*transition: none;/);
+    assert.match(css, /@media \(prefers-reduced-motion: reduce\) \{\s*:global\(html:not\(\.nd-motion-enabled\)\) \.grade-loop__progress-fill \{\s*transition: none;/);
     assert.doesNotMatch(css, /\b(margin|padding)-(left|right)\b|\b(left|right):/, 'logical properties only');
   });
 

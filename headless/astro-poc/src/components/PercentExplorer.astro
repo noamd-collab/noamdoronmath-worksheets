@@ -176,7 +176,7 @@ const cells = Array.from({ length: 100 }, (_, i) => i);
     background: transparent;
   }
   @media (prefers-reduced-motion: reduce) {
-    .pct-cell {
+    :global(html:not(.nd-motion-enabled)) .pct-cell {
       transition: none;
     }
   }

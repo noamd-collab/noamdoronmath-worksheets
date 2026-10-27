@@ -812,26 +812,26 @@ a {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .card,
-  .grade-tab,
-  .lvl,
-  .chip,
-  .jump-btn,
-  .cta,
-  .lane,
-  .home-hero__copy,
-  .hero-art__books,
-  .hero-art__tools {
+  html:not(.nd-motion-enabled) .card,
+  html:not(.nd-motion-enabled) .grade-tab,
+  html:not(.nd-motion-enabled) .lvl,
+  html:not(.nd-motion-enabled) .chip,
+  html:not(.nd-motion-enabled) .jump-btn,
+  html:not(.nd-motion-enabled) .cta,
+  html:not(.nd-motion-enabled) .lane,
+  html:not(.nd-motion-enabled) .home-hero__copy,
+  html:not(.nd-motion-enabled) .hero-art__books,
+  html:not(.nd-motion-enabled) .hero-art__tools {
     transition: none;
     animation: none !important;
   }
-  .card:hover,
-  .grade-tab:hover,
-  .lvl:hover,
-  .chip:hover,
-  .jump-btn:hover,
-  .cta:hover,
-  .lane:hover {
+  html:not(.nd-motion-enabled) .card:hover,
+  html:not(.nd-motion-enabled) .grade-tab:hover,
+  html:not(.nd-motion-enabled) .lvl:hover,
+  html:not(.nd-motion-enabled) .chip:hover,
+  html:not(.nd-motion-enabled) .jump-btn:hover,
+  html:not(.nd-motion-enabled) .cta:hover,
+  html:not(.nd-motion-enabled) .lane:hover {
     transform: none;
   }
 }
@@ -3179,23 +3179,23 @@ html.noam-a11y-motion::view-transition-new(*) {
       html.noam-a11y-motion). Line-draw paths must end FULLY DRAWN
       (dashoffset: 0) when motion is off — never invisible. */
 @media (prefers-reduced-motion: reduce) {
-  .poc-reveal {
+  html:not(.nd-motion-enabled) .poc-reveal {
     opacity: 1;
     transform: none;
     transition: none;
   }
-  .hero-draw {
+  html:not(.nd-motion-enabled) .hero-draw {
     animation: none;
     stroke-dashoffset: 0;
   }
-  .home-grade,
-  .home-value,
-  .blog-archive__card,
-  .grade-hub__topic-list a,
-  .topic-page__section,
-  .topic-page__faq-item,
-  .blog-post__figure,
-  .site-page__figure {
+  html:not(.nd-motion-enabled) .home-grade,
+  html:not(.nd-motion-enabled) .home-value,
+  html:not(.nd-motion-enabled) .blog-archive__card,
+  html:not(.nd-motion-enabled) .grade-hub__topic-list a,
+  html:not(.nd-motion-enabled) .topic-page__section,
+  html:not(.nd-motion-enabled) .topic-page__faq-item,
+  html:not(.nd-motion-enabled) .blog-post__figure,
+  html:not(.nd-motion-enabled) .site-page__figure {
     transition: none;
     animation: none !important;
   }
@@ -3619,9 +3619,9 @@ html.noam-a11y-motion .hero-draw {
 /* reduced motion / a11y menu: no demo, static completed frame (JS-driven),
    toggle hidden; drag/slider keep working */
 @media (prefers-reduced-motion: reduce) {
-  .concept-loop__toggle { display: none; }
-  .tri-explorer__hint { transition: none; }
-  .tri-explorer .te-handle { transition: none; }
+  html:not(.nd-motion-enabled) .concept-loop__toggle { display: none; }
+  html:not(.nd-motion-enabled) .tri-explorer__hint { transition: none; }
+  html:not(.nd-motion-enabled) .tri-explorer .te-handle { transition: none; }
 }
 html.noam-a11y-motion .concept-loop__toggle { display: none; }
 html.noam-a11y-motion .tri-explorer__hint,
@@ -3886,7 +3886,7 @@ body {
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .site-nav[data-open] {
+  html:not(.nd-motion-enabled) .site-nav[data-open] {
     animation: none;
   }
 }

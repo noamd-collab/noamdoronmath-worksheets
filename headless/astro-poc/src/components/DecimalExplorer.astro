@@ -254,7 +254,7 @@ const cells = Array.from({ length: 100 }, (_, i) => ({ row: Math.floor(i / 10), 
     font-size: 1.2em;
   }
   @media (prefers-reduced-motion: reduce) {
-    .de-cell {
+    :global(html:not(.nd-motion-enabled)) .de-cell {
       transition: none;
     }
   }

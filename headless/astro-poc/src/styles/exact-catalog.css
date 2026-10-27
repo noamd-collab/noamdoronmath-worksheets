@@ -342,7 +342,7 @@
 html.nd-motion-off .exact-catalog .card,
 html.noam-a11y-motion .exact-catalog .card { transition: none; }
 @media (prefers-reduced-motion: reduce) {
-  .exact-catalog .card { transition: none; }
+  html:not(.nd-motion-enabled) .exact-catalog .card { transition: none; }
 }
 
 @media (max-width: 600px) {

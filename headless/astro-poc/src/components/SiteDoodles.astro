@@ -120,7 +120,7 @@ const placements =
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .site-doodle--float {
+    :global(html:not(.nd-motion-enabled)) .site-doodle--float {
       animation: none;
     }
   }

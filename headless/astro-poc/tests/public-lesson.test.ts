@@ -34,6 +34,7 @@ describe('public lesson menu page', () => {
     assert.match(html, /id="bubbleName">אליהו</);
     assert.match(html, /בוא נחקור ←/);
     assert.match(html, /<script src="\/noam-site-companion\.js" defer><\/script>/);
+    assert.match(html, /<script src="\/noam-accessibility\.js" defer><\/script>/);
     assert.equal(html.includes('__OG_'), false);
     assert.equal(html.includes('noindex'), false);
   });
