@@ -91,7 +91,7 @@ Object.keys(DATA).forEach(function(gk){
     if (!L){ errors.push('כיתה ' + g + ' נושא ' + t.id + ' ("' + t.t + '"): אין רשומת links תואמת (יתום)'); return; }
     if (L.one !== undefined){
       linkCount += 1;
-      allHex.push({ hex:L.one, where:'כיתה ' + g + ' נושא ' + t.id + '/one' });
+      allHex.push({ hex:L.one, where:'כיתה ' + g + ' נושא ' + t.id + '/one', grade:g, prefix:t.x, level:'one', sourceGrade:L.sourceGrade, sourcePrefix:L.sourcePrefix });
     } else {
       var levelKeys = ['a','b','c'];
       if (t.parent !== undefined){
@@ -100,7 +100,7 @@ Object.keys(DATA).forEach(function(gk){
       }
       levelKeys.forEach(function(k){
         if (L[k] === undefined) warnings.push('כיתה ' + g + ' נושא ' + t.id + ' ("' + t.t + '"): חסר קישור רמה "' + k + '"');
-        else { linkCount += 1; allHex.push({ hex:L[k], where:'כיתה ' + g + ' נושא ' + t.id + '/' + k }); }
+        else { linkCount += 1; allHex.push({ hex:L[k], where:'כיתה ' + g + ' נושא ' + t.id + '/' + k, grade:g, prefix:t.x, level:k, sourceGrade:L.sourceGrade, sourcePrefix:L.sourcePrefix }); }
       });
     }
   });
@@ -116,8 +116,12 @@ var hexRe = /^[0-9a-f]{32}$/;
 var seen = {};
 allHex.forEach(function(e){
   if (!hexRe.test(e.hex)) errors.push(e.where + ': מזהה "' + e.hex + '" לא תואם תבנית hex32');
-  if (seen[e.hex]) errors.push('מזהה PDF כפול: ' + e.hex + '  (' + seen[e.hex] + '  <->  ' + e.where + ')');
-  else seen[e.hex] = e.where;
+  if (seen[e.hex]) {
+    var original = seen[e.hex];
+    if (!(e.sourceGrade === original.grade && e.sourcePrefix === original.prefix && e.level === original.level)) {
+      errors.push('מזהה PDF כפול: ' + e.hex + '  (' + original.where + '  <->  ' + e.where + ')');
+    }
+  } else seen[e.hex] = e;
 });
 
 Object.keys(SEARCH_TERMS || {}).forEach(function(gk){

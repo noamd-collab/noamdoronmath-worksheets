@@ -35,6 +35,8 @@ const FILES = [
   'noam-learning-core.js',
   'noam-learning.js',
   'noam-local-visual.js',
+  'noam-native-visual.js',
+  'noam-catalog-migration.js',
   'noam-learning.css',
 ];
 

@@ -51,7 +51,7 @@ test('a successful geometry hint exposes drawing without special user wording; f
     window: { NoamLocalVisual: { wantsVisualSupport: () => false } },
     ttl: 'דלתון', localVisualExerciseSource: () => 'מרובע וצלעות', noamRecentThreadText: () => '',
     noamGeometryContext: (text: string) => /דלתון/.test(text),
-    noamNativeFocusUrl: () => null,
+    noamNativeDataUrl: () => null,
     noamRenderAiDiagram: () => ({}), noamRenderGeometryGuide: () => ({}),
   });
   const user = { role: 'user', kind: 'רמז 1', text: 'אפשר רמז 1?' };
@@ -60,6 +60,7 @@ test('a successful geometry hint exposes drawing without special user wording; f
   assert.equal(api.noamCanOfferDrawing({ id: 'kite' }, thread, answer), true);
   assert.equal(api.noamCanOfferDrawing({ id: 'kite' }, thread, { ...answer, answerError: true }), false);
   assert.equal(api.noamCanOfferDrawing({ id: 'kite' }, thread, { ...answer, visual: { type: 'ai-diagram' } }), false);
+  assert.equal(api.noamCanOfferDrawing({ id: 'kite' }, thread, { ...answer, visual: { type: 'source-crop' } }), true, 'viewing the original still permits a new illustration');
   assert.equal(api.noamCanOfferDrawing({ id: 'kite' }, { messages: [{ ...user, kind: '', text: 'שלום' }, answer] }, answer), false);
 });
 

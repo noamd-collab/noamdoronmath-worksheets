@@ -116,7 +116,9 @@ test('a requested level B sheet is not replaced by level A', () => {
   assert.match(r.primary.label, /רמה ב׳/);
   assert.match(r.primary.href, /lv=b/);
   assert.doesNotMatch(r.primary.href, /lv=a/);
-  assert.equal(r.primary.href.includes('5cb3894def5f410193accc77e67b6a89'), true);
+  const factoringB = guide.records.find((record: any) => record.id === 'g9-t2-b');
+  assert.ok(factoringB);
+  assert.equal(r.primary.href, factoringB.href);
   const hrefs = [r.primary, ...r.chips].filter(Boolean).map((link) => link.href);
   assert.ok(hrefs.includes('/factoring-grade-9'));
   assert.equal(hrefs.some((href) => href.includes('lv=a')), false);

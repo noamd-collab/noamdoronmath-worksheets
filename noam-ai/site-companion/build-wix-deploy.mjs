@@ -11,6 +11,27 @@ const root = join(here, "../..");
 const out = join(here, "DEPLOY_WIX/backend");
 mkdirSync(out, { recursive: true });
 
+const catalog = readFileSync(join(root, "headless/astro-poc/src/data/catalog.v1.json"), "utf8");
+JSON.parse(catalog);
+writeFileSync(
+  join(out, "noam-site-catalog.js"),
+  "/** Verified page catalog. Do not replace this object with an empty list. */\nexport const catalog = " +
+    catalog.trim() +
+    ";\n"
+);
+
+// Catalog-only refresh updates the link builder and leaves the reviewed engine intact.
+if (process.argv.includes("--catalog-only")) {
+  const source = readFileSync(join(here, "retrieve.js"), "utf8");
+  const deployedPath = join(out, "noam-site-companion-retrieve.js");
+  const deployed = readFileSync(deployedPath, "utf8");
+  const pattern = /(?:export )?function worksheetHref\([\s\S]*?\n}\n/;
+  const builder = source.match(pattern)?.[0];
+  if (!builder || !pattern.test(deployed)) throw new Error("worksheet link builder missing");
+  writeFileSync(deployedPath, deployed.replace(pattern, builder));
+  process.exit(0);
+}
+
 const core = readFileSync(join(here, "companion.js"), "utf8").replace(
   'from "./retrieve.js"',
   "from 'backend/noam-site-companion-retrieve'"
@@ -22,14 +43,6 @@ writeFileSync(join(out, "noam-site-companion-core.js"), core);
 writeFileSync(join(out, "noam-site-companion-retrieve.js"), readFileSync(join(here, "retrieve.js")));
 writeFileSync(join(out, "noam-site-companion-guard.js"), readFileSync(join(here, "bot-guard.js")));
 
-const catalog = readFileSync(join(root, "headless/astro-poc/src/data/catalog.v1.json"), "utf8");
-JSON.parse(catalog);
-writeFileSync(
-  join(out, "noam-site-catalog.js"),
-  "/** Verified page catalog. Do not replace this object with an empty list. */\nexport const catalog = " +
-    catalog.trim() +
-    ";\n"
-);
 
 const handler = `/**
  * backend/noam-site-companion.js

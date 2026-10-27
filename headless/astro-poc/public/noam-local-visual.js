@@ -13,7 +13,9 @@
   }
 
   function wantsVisualSupport(text){
-    return wantsDrawing(text)||/(?:איזו?|איפה|היכן)\s+(?:היא\s+)?(?:ה)?זווית|קשה\s+לי\s+לזהות|לא\s+(?:רואה|מזהה)|סמ(?:ן|ני)\s+לי|תראה\s+לי/i.test(String(text||""));
+    var request=String(text||"");
+    return wantsDrawing(request)||/(?:איזו?|איפה|היכן)\s+(?:היא\s+)?(?:ה)?זווית|קשה\s+לי\s+לזהות|לא\s+(?:רואה|מזהה)|סמ(?:ן|ני)\s+לי|תראה\s+לי/i.test(request)||
+      /(?:^|[\s.,!?])(?:סמן|סמני|סמנו|הדגש|הדגישי|הדגישו|תדגיש|תדגישי|הראה|הראי|הראו|תראה|תראי|הצג|הציגי|הציגו)(?:[\s:]+|$)/.test(request);
   }
 
   function compactLatinLetters(value){
