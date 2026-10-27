@@ -91,6 +91,14 @@ it('ordinary rectangle givens render without computing area or reinterpreting a 
   assert.equal(engine.resolve({...c,questionText:'אורך המלבן גדול ב-$10$ ס״מ מרוחבו. רוחב המלבן $x$.'},options),null);
 });
 
+it('whole-catalog counterexamples do not turn a sequence index, wire length or second prism into a side', () => {
+  for(const [pkg,level,q,item] of [['G7-T21','b','q15','q15a'],['G7-T23','c','q7','q7a'],['G7-T48','b','q19','q19a']]) {
+    const context=authored(pkg,level,q,item);
+    if(Array.isArray(context.questionText)) context.questionText=context.questionText.join('\n');
+    assert.equal(engine.resolve(context,options),null,pkg+' '+q);
+  }
+});
+
 it('only explicit drawing intent and exact nonfigure authored content can create these diagrams', () => {
   for(const c of Object.values(fixtures)) {
     assert.equal(engine.resolve(c,{studentMessage:'אפשר רמז 1?',helpKind:'hint',answer:'האם תוכל לחשב?'}),null);

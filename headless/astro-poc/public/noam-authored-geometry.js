@@ -51,7 +51,7 @@
   }
   function prism(text) {
     var s = clean(text);
-    if (!/מנסר/.test(s) || !/בסיס/.test(s) || !/ישר(?:י)?-?\s*זווית/.test(s)) return null;
+    if (!/מנסר/.test(s) || !/בסיס/.test(s) || !/ישר(?:י)?-?\s*זווית/.test(s) || /(?:שתי|לשתי|זוג)\s+מנסרות|בסיס\s+ב(?=\s|$)/.test(s)) return null;
     var triple = s.match(/(?:בעל(?:י|ת)?\s+)?צלעות\s+(\d+(?:\.\d+)?)\s*,\s*(\d+(?:\.\d+)?)\s*,\s*(\d+(?:\.\d+)?)/);
     var legs = s.match(/ניצבים\s+(\d+(?:\.\d+)?)\s*,\s*(\d+(?:\.\d+)?)/);
     var hyp = s.match(/(?:צלע\s+שלישית|יתר)\s+(\d+(?:\.\d+)?)/);
@@ -102,10 +102,14 @@
     var s = clean(text);
     if (!/מלבן/.test(s) || /ריבוע|מנסר|תיבה|משולש|אותו היקף/.test(s)) return null;
     var raw = String(text).split(/היקף|שטח/)[0];
-    if (!/אורכו|אורך|רוחבו|רוחב|צלעות/.test(raw)) return null;
-    var values = math(raw);
-    if (values.length !== 2 || values.some(function (v) { return !expr(v); })) return null;
     if (/גדול|קטן|יותר|פחות|פי\s/.test(clean(raw))) return null;
+    // A number occurring near a rectangle is not necessarily a side: it may
+    // be a wire perimeter, tile count or sequence index. Bind both dimensions
+    // to explicit length/width clauses or an explicit pair of rectangle sides.
+    var length = raw.match(/(?:אורכו|אורך(?:\s+המלבן)?)\s+(?:(?:של|הוא)\s+)?\$([^$]+)\$/);
+    var width = raw.match(/(?:רוחבו|רוחב(?:\s+המלבן)?)\s+(?:(?:של|הוא)\s+)?\$([^$]+)\$/);
+    var values = length && width ? [length[1], width[1]] : /צלעות(?:\s+המלבן)?\s+(?:הן|של|באורכים)/.test(raw) ? math(raw) : [];
+    if (values.length !== 2 || values.some(function (v) { return !expr(v); })) return null;
     return scene("authored-rectangle", { width: expr(values[0]), height: expr(values[1]), perimeter: perimeter(s), unit: unit(s) });
   }
   function resolve(context, options) {
