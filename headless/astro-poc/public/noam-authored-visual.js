@@ -151,15 +151,26 @@
     if (!request(options, /מחלק|תחום|מספרים|ציר|בין|קצוות|חפיפה/)) return null;
     var part=prose(context.partText);
     var newPartition=/(?:^|[^א-ת])(?:בנו|תקנו|הציעו)(?:$|[^א-ת])|חלוקתכם|מחלקות שבחרתם|בתיקון שלכם/.test(part);
-    var text = prose(context.questionText), declaration=/(?:^|[^א-ת])(?:ו?[בלכמ]?ה?)מחלק(?:ה|ות)(?=$|[^א-ת])/.exec(text);
+    var text = prose(context.questionText), declaration=/(?:^|[^א-תA-Za-z0-9_])(?:ו?[בלכמ]?ה?)מחלק(?:ה|ות)(?=$|[^א-תA-Za-z0-9_])/.exec(text);
     if(!declaration)return null;
-    var source=text.slice(declaration.index+declaration[0].length), ranges = [], re = /(?:מ[־-]?)?\s*([+-]?\d+(?:\.\d+)?)\s*(?:עד|-)\s*([+-]?\d+(?:\.\d+)?)(\s*(?:לא כולל|כולל))?/g, m;
+    var source=text.slice(declaration.index+declaration[0].length), ranges = [], covered = [], re = /(?:מ[־-]?)?\s*([+-]?\d+(?:\.\d+)?)\s*(?:עד|-)\s*([+-]?\d+(?:\.\d+)?)(\s*(?:לא כולל|כולל)(?=$|[^א-תA-Za-z0-9_]))?/g, m;
     while ((m = re.exec(source))) {
       var start = Number(m[1]), end = Number(m[2]);
       if (!(start < end) || Math.abs(start) > 10000 || Math.abs(end) > 10000) return null;
+      if(/[A-Za-z0-9+*/^).}\\-]$/.test(source.slice(0,m.index).trim())||/^(?:[A-Za-z0-9+*/^({\\-]|\.\d)/.test(source.slice(re.lastIndex).trim()))return null;
       var closedEnd=/כל הקצוות כלולים/.test(text)||!!m[3]&&!/לא/.test(m[3]);
       if(!/כל הקצוות כלולים/.test(text)&&!m[3])return null;
       ranges.push({ start: start, end: end, closedStart: true, closedEnd: closedEnd });
+      covered.push([m.index,re.lastIndex]);
+    }
+    // Every range connector must belong to one fully accepted interval. An
+    // unknown bound must not disappear while another class still renders.
+    var connector, connectors=/עד|-/g;
+    while((connector=connectors.exec(source))){
+      var at=connector.index, before=source.slice(0,at).trim().slice(-1), after=source.slice(at+connector[0].length).trim().charAt(0);
+      if(connector[0]==='עד'&&(/[א-ת]/.test(source.charAt(at-1))||/[א-ת]/.test(source.charAt(at+2))))continue;
+      if(connector[0]==='-'&&!/[0-9A-Za-z∞]/.test(before+after))continue;
+      if(!covered.some(function(span){return at>=span[0]&&at+connector[0].length<=span[1];}))return null;
     }
     if (ranges.length < 1 || ranges.length > 6) return null;
     if(newPartition){

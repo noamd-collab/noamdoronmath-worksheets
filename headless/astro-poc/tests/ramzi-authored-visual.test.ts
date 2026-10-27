@@ -51,6 +51,20 @@ it('singular class detection still rejects unknown endpoints and incidental word
     f.q.text = text; assert.equal(resolve(f), null, text);
   }
 });
+it('rejects partial interval sets with unknown or unsupported bounds in either order', () => {
+  for (const declaration of ['מחלקה', 'מחלקות']) {
+    const f = fixture('G8-T28', 'b', 'q15', 'א');
+    for (const text of [
+      `${declaration} מ־3 עדm כולל, ומחלקה מ־7 עד10 כולל.`,
+      `${declaration} מ־7 עד10 כולל, ומחלקה מ־3 עדm כולל.`,
+      `${declaration}: m-7 כולל, 8-10 כולל.`,
+      `${declaration}: 8-10 כולל, 3-∞ כולל.`,
+      `${declaration}: 3 עד 7/2 כולל, 8 עד10 כולל.`,
+      `${declaration}: 3 עד7x, 8 עד10. כל הקצוות כלולים.`,
+      `${declaration}abc מ־3 עד7 כולל.`,
+    ]) { f.q.text = text; assert.equal(resolve(f), null, text); }
+  }
+});
 it('shows rational input operation without forbidden input or computed output', () => {
   const scene = resolve(fixture('G8-T11', 'b', 'q14', 'א'));
   assert.equal(scene.kind, 'authored-input-machine'); assert.equal(scene.expression, '8/(x-2)');
