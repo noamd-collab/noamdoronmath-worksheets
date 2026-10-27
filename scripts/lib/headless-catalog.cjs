@@ -148,13 +148,14 @@ const ORDERS = {
     'levels',
     'routing',
   ],
-  level: ['key', 'label', 'pdfId', 'labelSource'],
+  level: ['key', 'label', 'pdfId', 'labelSource', 'viewerLevel'],
   routing: [
     'resolvedNoamPrefix',
     'aiHintShown',
     'usesViewer',
     'viewerPath',
     'siblingPdfQuery',
+    'sourceGrade', 'sourcePrefix', 'sourceTitle',
   ],
 };
 
@@ -257,6 +258,7 @@ function buildLevels(topic, linkRow, levelDefaults) {
         label: row.oneLabel || DEFAULT_ONE_LABEL,
         pdfId: row.one,
         labelSource: row.oneLabel ? 'link.oneLabel' : 'default',
+        ...(row.viewerLevel ? { viewerLevel: row.viewerLevel } : {}),
       },
     ];
   }
@@ -371,6 +373,7 @@ function buildCatalog(raw) {
         usesViewer,
         viewerPath: usesViewer ? raw.VIEWER.path : null,
         siblingPdfQuery: usesViewer ? siblingPdfParams(linkRow) : {},
+        ...(linkRow.sourceGrade ? { sourceGrade: linkRow.sourceGrade, sourcePrefix: linkRow.sourcePrefix, sourceTitle: linkRow.sourceTitle } : {}),
       };
 
       return topic;
@@ -597,7 +600,7 @@ function validateCatalog(catalog, raw) {
             );
           }
           if (!hexRe.test(cl.pdfId)) errors.push(key + '/' + cl.key + ' bad pdfId ' + cl.pdfId);
-          allPdf.push({ hex: cl.pdfId, where: key + '/' + cl.key });
+          allPdf.push({ hex: cl.pdfId, where: key + '/' + cl.key, grade: g.grade, prefix: expectedPrefix, level: cl.key, sourceGrade: linkRow.sourceGrade, sourcePrefix: linkRow.sourcePrefix });
         }
       }
     }
@@ -668,9 +671,11 @@ function validateCatalog(catalog, raw) {
   const seen = {};
   for (const e of allPdf) {
     if (seen[e.hex]) {
-      errors.push('duplicate pdfId ' + e.hex + ' (' + seen[e.hex] + ' <-> ' + e.where + ')');
+      const source = seen[e.hex];
+      const declaredReuse = e.sourceGrade === source.grade && e.sourcePrefix === source.prefix && e.level === source.level;
+      if (!declaredReuse) errors.push('duplicate pdfId ' + e.hex + ' (' + source.where + ' <-> ' + e.where + ')');
     } else {
-      seen[e.hex] = e.where;
+      seen[e.hex] = e;
     }
   }
 

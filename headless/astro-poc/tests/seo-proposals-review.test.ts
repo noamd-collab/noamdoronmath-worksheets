@@ -52,19 +52,19 @@ describe('seo proposals – generator and coverage', () => {
   });
 
   it('all generated rows exist once: live topic pages, leftover catalog topics, 60 posts; none approved', () => {
-    assert.equal(committed.length, 389);
+    assert.equal(committed.length, 390);
     const count = (kind: string) => committed.filter((item) => item.kind === kind).length;
-    assert.equal(count('catalog-topic'), 66);
+    assert.equal(count('catalog-topic'), 67);
     assert.equal(count('topic-page'), 263);
     assert.equal(count('blog-post'), 60);
-    assert.equal(new Set(committed.map((item) => item.path)).size, 389);
+    assert.equal(new Set(committed.map((item) => item.path)).size, 390);
     assert.equal(committed.filter((item) => item.approved !== false).length, 0);
   });
 
   it('CSV has one line per row and the decision column', () => {
     const csv = readFileSync(new URL('../seo-review.csv', import.meta.url), 'utf8');
     assert.match(csv, /^נתיב,סוג,כותרת נוכחית,כותרת מוצעת,תיאור נוכחי,תיאור מוצע,מאושר,מקור,החלטה נדרשת\n/);
-    assert.equal(csv.trim().split('\n').length, 390);
+    assert.equal(csv.trim().split('\n').length, 391);
   });
 });
 

@@ -85,6 +85,10 @@ test('the actual ask path binds scope to the requested part even if selection ch
     exerciseLabel: () => 'שאלה 1 סעיף ג',
     noamDidacticGuide: () => null, noamDidacticPrompt: () => '', noamDidacticResponse: () => null,
     getExerciseAnalysis: () => new Promise(resolve => { finishAnalysis = resolve; }),
+    noamEnrichSourceAnalysis: async (exercise: any, analysis: any) => {
+      assert.equal(exercise.id, partC.id, 'source enrichment remains bound to the requested part');
+      return analysis;
+    },
     postJson: (_url: string, payload: any) => { sent = payload; return new Promise(() => {}); },
     ttl: 'חפיפת משולשים', g: 8, lv: 'a', LEVEL: { a: 'רמה א׳' }, API: '/test',
   });

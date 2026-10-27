@@ -10,6 +10,8 @@ const prefix = 'noam-ai/native/';
 export const staticNoamRules = [
   '/noam-ai/manifests/*',
   '/noam-ai/sync-provenance.json',
+  '/noam-ai/catalog-migrations.json',
+  '/noam-ai/catalog-migrations.js',
   '/noam-ai/native/*/noam-ai.json',
 ];
 export const sha256 = (bytes) => createHash('sha256').update(bytes).digest('hex');

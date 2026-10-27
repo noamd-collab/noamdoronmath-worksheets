@@ -5,6 +5,9 @@ import { it } from 'node:test';
 import { parseHTML } from 'linkedom';
 const source=readFileSync(new URL('../public/worksheet-viewer-noam.html',import.meta.url),'utf8');
 const helper='function noamNativeFigure'+source.split('function noamNativeFigure')[1].split('function noamSourceVertexAid')[0];
+// Exercise the existing segment fallback with the new source eligibility guard
+// present. The generalized native consumer has its own integration suite.
+const sourceCrop='var noamSourceCropCache=new Map();'+source.split('var noamSourceCropCache=new Map();')[1].split('// Resolve every illustration')[0];
 const request='function requestNoamDiagram'+source.split('function requestNoamDiagram')[1].split('function noamVisualAnswer')[0];
 const data=JSON.parse(readFileSync(new URL('../public/noam-ai/native/G8-T39/a/noam-ai.json',import.meta.url),'utf8'));
 const manifest=JSON.parse(readFileSync(new URL('../public/noam-ai/manifests/9448157f4ecb463489417696230f0e57.json',import.meta.url),'utf8'));
@@ -18,7 +21,7 @@ function fixture(payload:any=data,ex:any=exercise){
   fetch:async(url:string)=>{calls.push(url);return{ok:true,json:async()=>payload};},
   noamDiagramRuntime:()=>runtime,noamConstructedVisual:()=>null,saveNoamState:()=>{},noamDiagramRefresh:()=>{},
   noamDiagramError:(e:any)=>e.message,Map,WeakSet,Promise};
- runInNewContext(helper+'\n'+request,context);
+ runInNewContext(sourceCrop+'\n'+helper+'\n'+request,context);
  return {document,context,calls,make:(answer=hint)=>context.noamPrepareNativeFocus(ex,{answer,helpKind:"hint",studentMessage:"אפשר רמז 1?"})};
 }
 it('actual Q2d draws only BC on the approved source, without model/auth calls or an EF answer',async()=>{

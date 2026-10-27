@@ -5,7 +5,7 @@
 
 const PDF_CDN = "https://static.wixstatic.com/ugd/d8e7ad_";
 
-function worksheetHref(catalog, grade, topic, level) {
+export function worksheetHref(catalog, grade, topic, level) {
   const pdfDirect = PDF_CDN + level.pdfId + ".pdf";
   const viewerEnabled = !!(catalog.config && catalog.config.viewer && catalog.config.viewer.enabled);
   const middle = ((catalog.config && catalog.config.middleGrades) || []).map(Number);
@@ -17,15 +17,15 @@ function worksheetHref(catalog, grade, topic, level) {
     !!(topic.routing && topic.routing.usesViewer);
   if (!usesViewer) return pdfDirect;
 
-  const viewerLevel = level.key === "one" ? "b" : level.key;
+  const viewerLevel = level.viewerLevel || (level.key === "one" ? "b" : level.key);
   const params = new URLSearchParams();
-  params.set("g", String(grade.grade));
-  params.set("x", String(prefix));
+  params.set("g", String(topic.routing.sourceGrade || grade.grade));
+  params.set("x", String(topic.routing.sourcePrefix || prefix));
   params.set("lv", viewerLevel);
   params.set("pdf", level.pdfId);
-  params.set("t", topic.title);
+  params.set("t", topic.routing.sourceTitle || topic.title);
   const siblings = (topic.routing && topic.routing.siblingPdfQuery) || {};
-  for (const key of ["pa", "pb", "pc"]) {
+  for (const key of ["pa", "pb", "pc", "pc2"]) {
     if (siblings[key]) params.set(key, siblings[key]);
   }
   const topicParam = topic.parent !== undefined ? topic.parent : topic.id;

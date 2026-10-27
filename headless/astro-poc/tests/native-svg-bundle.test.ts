@@ -58,7 +58,7 @@ test('adapter narrowing retains unrelated rules and keeps manifests/native JSON 
   const result = narrowNativeRoutes(originalRoutes);
   assert.deepEqual(result.include, originalRoutes.include);
   assert.deepEqual(result.exclude.filter((rule: string) => !rule.startsWith('/noam-ai/')), originalRoutes.exclude.filter((rule) => !rule.startsWith('/noam-ai/')));
-  for (const path of ['/noam-ai/native/G9-T40/a/noam-ai.json', '/noam-ai/native/G7-ASSESS1/c/noam-ai.json', '/noam-ai/manifests/123.json', '/noam-ai/sync-provenance.json']) {
+  for (const path of ['/noam-ai/native/G9-T40/a/noam-ai.json', '/noam-ai/native/G7-ASSESS1/c/noam-ai.json', '/noam-ai/manifests/123.json', '/noam-ai/sync-provenance.json', '/noam-ai/catalog-migrations.json', '/noam-ai/catalog-migrations.js']) {
     assert.ok(result.exclude.some((rule: string) => matchesRoute(rule, path)), path);
   }
   assert.ok(!result.exclude.some((rule: string) => matchesRoute(rule, '/noam-ai/native/G9-T40/a/figures/fig1.svg')));
