@@ -99,6 +99,16 @@ it('whole-catalog counterexamples do not turn a sequence index, wire length or s
   }
 });
 
+it('a selected new shape or independent algebra example does not inherit the earlier geometry', () => {
+  for(const [pkg,level,q,item] of [['G9-T15','c','q20','q20b'],['G9-T15','c','q20','q20c'],['G7-T29','a','q5','q5d']]) {
+    assert.equal(engine.resolve(authored(pkg,level,q,item),options),null,pkg+' '+item);
+  }
+  assert.equal(engine.resolve(authored('G9-T15','c','q20','q20a'),options).kind,'authored-triangle-sides','the original triangle remains available in the original subsection');
+  assert.equal(engine.resolve(authored('G7-T29','a','q5','q5b'),options).kind,'authored-rectangle','the original whole rectangle remains available');
+  const changed={...fixtures.algebra,partText:'למשולש החדש יש צלעות באורכים $7$ ס״מ, $9$ ס״מ ו-$12$ ס״מ.'};
+  assert.deepEqual(engine.resolve(changed,options).data.sides,['7','9','12'],'explicit selected-part givens can define the replacement shape');
+});
+
 it('only explicit drawing intent and exact nonfigure authored content can create these diagrams', () => {
   for(const c of Object.values(fixtures)) {
     assert.equal(engine.resolve(c,{studentMessage:'אפשר רמז 1?',helpKind:'hint',answer:'האם תוכל לחשב?'}),null);

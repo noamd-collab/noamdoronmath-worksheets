@@ -112,11 +112,19 @@
     if (values.length !== 2 || values.some(function (v) { return !expr(v); })) return null;
     return scene("authored-rectangle", { width: expr(values[0]), height: expr(values[1]), perimeter: perimeter(s), unit: unit(s) });
   }
+  function replacesCommonGeometry(part) {
+    var s = clean(part);
+    // A later subsection may change the object or move to an independent
+    // algebraic example. The original stem then cannot supply its dimensions.
+    return /(?:משולש|מלבן|ריבוע|מנסרה|צורה|גוף)\s+(?:ה)?(?:חדש|חדשה|אחר|אחרת|שונה)/.test(s) ||
+      /(?:^|[^א-ת])(?:משנים|משנות|שנו|הגדילו|הקטינו|מחליפים|החליפו)(?=$|[^א-ת])/.test(s) ||
+      /(?:פתחו|פשטו|פרקו)\s+(?:את\s+)?(?:הסוגריים|סוגריים|הביטוי|הביטויים)/.test(s);
+  }
   function resolve(context, options) {
     if (!context || context.hasFigure !== false || typeof context.questionText !== "string" || typeof context.partText !== "string" || !request(options, context)) return null;
     // Do not read parent given arrays or sibling parts. Family data must occur
     // in the printed common stem, or in a self-contained selected subsection.
-    var sources = [context.questionText, context.partText];
+    var sources = replacesCommonGeometry(context.partText) ? [context.partText] : [context.questionText, context.partText];
     for (var i = 0; i < sources.length; i++) {
       var text = sources[i];
       if (!text || text.length > 6000 || /(?:^|[.!?])\s*(?:האם|אילו|נניח|אם\s)|דוגמה\s+נגדית/.test(clean(text))) continue;
