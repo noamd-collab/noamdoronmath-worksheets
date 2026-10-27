@@ -94,6 +94,11 @@ it('AST matching keeps evidence quotes literal, fully quoted and bound to the se
   assert.equal(compiler.inspect(op('12+9+21=7x',other.partText),other).ok,false,'a hint from another subsection cannot introduce its expression');
   const scoped={questionText:'נתון $12 + 9 + 21 = 7x$.',partText:'עתה פתרו $40 - 4 - 12 = 6x$.',hintText:c.hintText};
   assert.equal(compiler.inspect(op('12+9+21=7*x',scoped.questionText,'question'),scoped).reason,'selected-part-scope');
+  for(const partText of ['x+9=30','פתרו x + 9 = 30']) {
+    const plainPart={questionText:'נתון $x+2=8$.',partText,hintText:'בדקו $x+2=8$.'};
+    assert.equal(compiler.inspect(op('x + 2 = 8',plainPart.questionText,'question'),plainPart).reason,'selected-part-scope','plain selected-part equation supersedes the parent');
+    assert.equal(compiler.inspect(op('x + 9 = 30',partText),plainPart).ok,true,'the actual plain selected equation remains supported');
+  }
 });
 
 it('unsupported or executable expression syntax is rejected rather than evaluated',()=>{

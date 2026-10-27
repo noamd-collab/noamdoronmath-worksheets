@@ -156,7 +156,7 @@
       var matches = plan.evidence.map(function (e) { return { source: e.source, proof: givenExpression(tree, e.source === 'part' ? context.partText : context.questionText, e.quote, context.hintText) }; }).filter(function (match) { return match.proof; });
       if (!matches.length) return fail('expression-not-given');
       var inPart = matches.some(function (e) { return e.source === 'part'; });
-      if (!inPart && (newScope(context.partText) || mathSpans(context.partText).some(function (v) { return expression(v) !== null; }))) return fail('selected-part-scope');
+      if (!inPart && (newScope(context.partText) || completeExpressions(context.partText).some(function (v) { return expression(v) !== null; }))) return fail('selected-part-scope');
       var selected = matches.find(function (match) { return match.source === 'part'; }) || matches[0];
       scene.expression = selected.proof.expression; scene.tree = selected.proof.tree;
     } else {
