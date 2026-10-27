@@ -28,8 +28,8 @@ function fixture(data:any, manifest:any, ex:any) {
  runInNewContext(label+'\n'+helpers+'\n'+zoom,context);
  return {document,window,context,calls};
 }
-it('all 79 real subsection-specific figures open their own original after unsupported generation',async()=>{
- assert.equal(alternate.length,79);
+it('all 85 real subsection-specific figures open their own original after unsupported generation',async()=>{
+ assert.equal(alternate.length,85);
  for (const {data,manifest,ex} of alternate) {
   const f=fixture(data,manifest,ex), message={role:'assistant',text:'בדקו את נתוני הסעיף.',diagramErrorCode:'DIAGRAM_UNSUPPORTED',diagramError:'unsupported'};
   f.context.noamAppendSourceDiagramHelp(f.document.getElementById('bubble'),ex,message);
