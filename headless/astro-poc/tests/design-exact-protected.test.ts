@@ -223,7 +223,9 @@ describe('exact-design protected live-baseline boundaries', () => {
     // native/source-crop/race tests cover these authorized behavior changes.
     // The local visual import is versioned 20261027-native1 to invalidate cached
     // imperative-request parsing; endpoint, bot protection and rate limits stay fixed.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '91e29e982a2b8d11a821ca7b448abb34ca6bc6ce2b8ae8eceb55dffcdb636f6e');
+    // 2026-10-27: refresh corrected PDF crop manifests and discard OCR cached
+    // from obsolete blank crops; preserve the existing conversation namespace.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), '6bae598fd90976f3073721d5ef4c86b7b23baf64aa7ee4aba7fff8d193763019');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {
