@@ -83,6 +83,13 @@ it('compiles the actual assessment numberline with the two given points', () => 
   const { figure } = compiled(plan('numberline', numberline), numberline);
   assert.match(figure.textContent, /P/); assert.match(figure.textContent, /Q/);
 });
+it('compiles the exact singular class declarations without completing their membership', () => {
+  const context = authored('G8-T28', 'b', 'q15', 'q15a');
+  const { scene, figure } = compiled(plan('numberline', context), context);
+  assert.deepEqual(clone(scene.intervals), [{ start: 3, end: 7, closedStart: true, closedEnd: false }, { start: 7, end: 10, closedStart: true, closedEnd: true }]);
+  assert.equal(figure.querySelectorAll('[data-role="given-interval"]').length, 2);
+  assert.doesNotMatch(figure.textContent, /3\.5|6\.2|8\.1|9\.5/);
+});
 it('compiles an actual prism scaffold and leaves the uncomputed axial length unknown', () => {
   const { figure } = compiled(plan('given-geometry', prism), prism);
   assert.match(figure.textContent, /\?/);

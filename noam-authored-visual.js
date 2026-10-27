@@ -151,9 +151,9 @@
     if (!request(options, /מחלק|תחום|מספרים|ציר|בין|קצוות|חפיפה/)) return null;
     var part=prose(context.partText);
     var newPartition=/(?:^|[^א-ת])(?:בנו|תקנו|הציעו)(?:$|[^א-ת])|חלוקתכם|מחלקות שבחרתם|בתיקון שלכם/.test(part);
-    var text = prose(context.questionText), index=text.indexOf('מחלקות');
-    if(index<0)return null;
-    var source=text.slice(index+6), ranges = [], re = /(?:מ[־-]?)?\s*([+-]?\d+(?:\.\d+)?)\s*(?:עד|-)\s*([+-]?\d+(?:\.\d+)?)(\s*(?:לא כולל|כולל))?/g, m;
+    var text = prose(context.questionText), declaration=/(?:^|[^א-ת])(?:ו?[בלכמ]?ה?)מחלק(?:ה|ות)(?=$|[^א-ת])/.exec(text);
+    if(!declaration)return null;
+    var source=text.slice(declaration.index+declaration[0].length), ranges = [], re = /(?:מ[־-]?)?\s*([+-]?\d+(?:\.\d+)?)\s*(?:עד|-)\s*([+-]?\d+(?:\.\d+)?)(\s*(?:לא כולל|כולל))?/g, m;
     while ((m = re.exec(source))) {
       var start = Number(m[1]), end = Number(m[2]);
       if (!(start < end) || Math.abs(start) > 10000 || Math.abs(end) > 10000) return null;
