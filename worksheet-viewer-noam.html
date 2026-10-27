@@ -6644,6 +6644,7 @@ function noamSourcePanelModuleMissing(exercise,source){
 }
 function noamSourcePanelBlocksFallback(exercise){
   if(noamSourcePanelReviewed(exercise)){return true;}
+  if(!window.NoamSourcePanels&&/_head(?:_[0-9]+)?$/.test(String(exercise.nativeFigureId||''))){return true;}
   var entry=noamSourceVisualPackages[JSON.stringify([noamNativeDataUrl(exercise),manifest&&manifest.nativeExportSha256||''])];
   var primary=entry&&entry.figures[String(exercise.nativeFigureUrl||'')];
   return noamSourcePanelModuleMissing(exercise,primary&&primary.value);

@@ -80,10 +80,10 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
  });
  it(prefix+': missing/malformed secondary SVG or unchecked/out-of-bounds/incomplete crops never fall through to primary focus',async()=>{
   const fail='/noam-ai/native/G8-TWOSRC/a/figures/q3_head_2.svg';
-  for(const mode of ['missing','malformed','module','unapproved','bounds','sibling','wrong-item','wrong-pdf']){
-   const hooks=mode==='missing'?{fail}:mode==='malformed'?{svg:(u:string,b:string)=>u===fail?'<svg viewBox="0 0 1 1"></svg>':b}:{};
+  for(const mode of ['missing','malformed','module','module-and-package','unapproved','bounds','sibling','wrong-item','wrong-pdf']){
+   const hooks=mode==='module-and-package'?{fail:'/noam-ai/native/G8-TWOSRC/a/noam-ai.json'}:mode==='missing'?{fail}:mode==='malformed'?{svg:(u:string,b:string)=>u===fail?'<svg viewBox="0 0 1 1"></svg>':b}:{};
    const f=fixture(v,undefined,undefined,undefined,hooks);
-   if(mode==='module')f.window.NoamSourcePanels=undefined;if(mode==='unapproved')f.manifest.pdfHash='0'.repeat(32);if(mode==='bounds')f.exercise.crops[0].w=2;if(mode==='sibling')f.exercise.crops=[f.exercise.crop];if(mode==='wrong-item')f.exercise.nativeItemId='q4a';if(mode==='wrong-pdf')f.manifest.sourceSha256='unverified';
+   if(mode==='module'||mode==='module-and-package')f.window.NoamSourcePanels=undefined;if(mode==='unapproved')f.manifest.pdfHash='0'.repeat(32);if(mode==='bounds')f.exercise.crops[0].w=2;if(mode==='sibling')f.exercise.crops=[f.exercise.crop];if(mode==='wrong-item')f.exercise.nativeItemId='q4a';if(mode==='wrong-pdf')f.manifest.sourceSha256='unverified';
    assert.equal(await f.c.noamAttachSourceHint(f.exercise,f.thread,f.message,opts),null,mode);assert.equal(f.message.visual,undefined,mode);assert.equal(f.c.noamTypedVisualContext(f.exercise,{}),null,mode);
    await f.c.noamRequestSourceFirst(f.exercise,f.thread,f.message,opts);assert.equal(f.fallback.length,0,mode);assert.equal(f.message.visual,undefined,mode);assert.equal(f.message.diagramErrorCode,'DIAGRAM_UNAVAILABLE',mode);assert.match(f.message.diagramError,/אפשר לנסות שוב/,mode);
   }
