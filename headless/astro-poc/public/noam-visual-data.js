@@ -33,36 +33,44 @@
   }
   // This parser only groups supplied symbols. It has no evaluator, variable
   // substitution, property access, executable strings or external references.
-  function expression(raw, allowLeaf) {
+  function expression(raw, allowLeaf, spellings) {
     if (typeof raw !== 'string' || !raw || raw.length > 200) return null;
     if (raw.includes('=')) {
       var sides = raw.split('=');
       if (sides.length !== 2 || !sides[0].trim() || !sides[1].trim()) return null;
-      var a = expression(sides[0], true), b = expression(sides[1], true);
+      var a = expression(sides[0], true, spellings), b = expression(sides[1], true, spellings);
       if (!a || !b) return null;
       var combined = { type: 'operator', value: '=', children: [a, b] }, total = 0, maxDepth = 0;
       (function visit(n, d) { total++; maxDepth = Math.max(maxDepth, d); n.children.forEach(function (child) { visit(child, d + 1); }); })(combined, 1);
-      return total <= 31 && maxDepth <= 7 ? combined : null;
+      if (total > 31 || maxDepth > 7) return null;
+      if (spellings) spellings.set(combined, raw.trim());
+      return combined;
     }
     var text = plain(raw).replace(/\\(?:left|right)/g, '').replace(/\\(?:cdot|times)/g, '*').replace(/\\div/g, '/')
       .replace(/\\f(?=\{)/g, '\\frac').replace(/[×·]/g, '*').replace(/[÷:]/g, '/').replace(/²/g, '^2').replace(/³/g, '^3');
     if (/[^0-9A-Za-z+*/^().{}\\\s-]/.test(text) || /[A-Za-z]{2}/.test(text.replace(/\\frac/g, '')) || /[fghFGH]\s*\(/.test(text) || /\d[eE][+-]?\d/.test(text)) return null;
-    var index = 0, count = 0, groups = 0;
+    var index = 0, count = 0, groups = 0, starts = spellings ? new Map() : null;
     function skip() { while (index < text.length && /\s/.test(text[index])) index++; }
-    function node(type, value, children) { if (++count > 31) throw Error('large'); return { type: type, value: value, children: children || [] }; }
+    function node(type, value, children, start) {
+      if (++count > 31) throw Error('large');
+      var n = { type: type, value: value, children: children || [] };
+      if (spellings) { if (start === undefined) start = starts.get(n.children[0]); starts.set(n, start); spellings.set(n, text.slice(start, index).trim()); }
+      return n;
+    }
     function group(open, close) {
-      skip(); if (text[index++] !== open || ++groups > 6) throw Error('group');
-      var value = add(); skip(); if (text[index++] !== close) throw Error('group'); groups--; return value;
+      skip(); var start = index; if (text[index++] !== open || ++groups > 6) throw Error('group');
+      var value = add(); skip(); if (text[index++] !== close) throw Error('group'); groups--;
+      if (spellings) { starts.set(value, start); spellings.set(value, text.slice(start, index).trim()); } return value;
     }
     function atom() {
-      skip();
-      if (text.slice(index, index + 5) === '\\frac') { index += 5; return node('operator', '÷', [group('{', '}'), group('{', '}')]); }
+      skip(); var start = index;
+      if (text.slice(index, index + 5) === '\\frac') { index += 5; return node('operator', '÷', [group('{', '}'), group('{', '}')], start); }
       if (text[index] === '(') return group('(', ')');
       if (text[index] === '{') return group('{', '}');
-      if (/[A-Za-z]/.test(text[index] || '')) return node('symbol', text[index++]);
+      if (/[A-Za-z]/.test(text[index] || '')) return node('symbol', text[index++], [], start);
       var match = text.slice(index).match(/^(?:\d+(?:\.\d+)?|\.\d+)/);
       if (!match || !Number.isFinite(Number(match[0])) || Number(match[0]) > 10000) throw Error('number');
-      index += match[0].length; return node('number', match[0]);
+      index += match[0].length; return node('number', match[0], [], start);
     }
     function power() {
       var left = atom(); skip();
@@ -73,7 +81,7 @@
       }
       return left;
     }
-    function unary() { skip(); if (text[index] === '+' || text[index] === '-') return node('operator', text[index++] === '-' ? '−' : '+', [unary()]); return power(); }
+    function unary() { skip(); var start = index; if (text[index] === '+' || text[index] === '-') return node('operator', text[index++] === '-' ? '−' : '+', [unary()], start); return power(); }
     function multiply() {
       var left = unary();
       while (true) {
@@ -85,30 +93,37 @@
     }
     function add() { var left = multiply(); while (true) { skip(); var token = text[index]; if (token !== '+' && token !== '-') return left; index++; left = node('operator', token === '+' ? '+' : '−', [left, multiply()]); } }
     function depth(tree) { return 1 + Math.max.apply(null, [0].concat(tree.children.map(depth))); }
-    try { var tree = add(); skip(); return index === text.length && (allowLeaf || tree.type === 'operator') && depth(tree) <= 7 ? tree : null; } catch (_error) { return null; }
+    try { var tree = add(); skip(); if (index !== text.length || !(allowLeaf || tree.type === 'operator') || depth(tree) > 7) return null; if (spellings) spellings.set(tree, raw.trim()); return tree; } catch (_error) { return null; }
   }
   function mathSpans(text) {
     var spans = [], re = /\$([^$\n]+)\$|\\\(([^\n]+?)\\\)/g, m;
     while ((m = re.exec(text))) spans.push(m[1] || m[2]);
     return spans;
   }
-  function exactMath(raw, quote) {
-    if (!quote.includes(raw)) return false;
-    var spans = mathSpans(quote);
-    if (spans.length) return spans.some(function (span) { return span.trim() === raw.trim(); });
-    var at = quote.indexOf(raw), before = quote[at - 1] || '', after = quote[at + raw.length] || '';
-    return !/[0-9A-Za-z+*/^().{}\\-]/.test(before) && !/[0-9A-Za-z+*/^().{}\\-]/.test(after);
+  function completeExpressions(text) {
+    var spans = mathSpans(text);
+    if (spans.length) return spans;
+    // Consume complete mathematical runs, not candidate-sized substrings. A
+    // partial number or an operand sliced from a larger token cannot be proof.
+    return (String(text || '').match(/[0-9A-Za-z+*/^().{}\\\s−–×·÷:=²³-]+/g) || []).map(function (span) { return span.trim(); }).filter(Boolean);
   }
-  function givenExpression(raw, source, hint) {
-    if (exactMath(raw, source)) return true;
-    // A focus may select an actual subtree, never an arbitrary token slice.
-    // Its current-hint occurrence chooses focus; the authored AST still
-    // supplies every symbol. No hint-only expression is admitted.
-    if (!exactMath(raw, String(hint || ''))) return false;
-    var target = expression(raw); if (!target) return false;
+  function givenExpression(target, source, quote, hint) {
     var expected = JSON.stringify(target);
-    function contains(n) { return !!n && (JSON.stringify(n) === expected || n.children.some(contains)); }
-    return mathSpans(source).some(function (span) { return span.includes(raw) && contains(expression(span)); });
+    function find(n) { if (!n) return null; if (JSON.stringify(n) === expected) return n; for (var child of n.children) { var found = find(child); if (found) return found; } return null; }
+    var hintFocus = null;
+    for (var span of completeExpressions(source)) {
+      // Evidence stays literal. It must quote the entire authored expression
+      // containing a focus, even when the candidate uses another spelling.
+      if (!quote.includes(span)) continue;
+      var spellings = new Map(), tree = expression(span, false, spellings), selected = find(tree);
+      if (!selected) continue;
+      if (selected !== tree) {
+        if (hintFocus === null) hintFocus = completeExpressions(hint).some(function (value) { return !!find(expression(value)); });
+        if (!hintFocus) continue;
+      }
+      return { expression: spellings.get(selected) || span, tree: selected };
+    }
+    return null;
   }
   function newScope(text) { return /(?:משולש|מלבן|ריבוע|מנסרה|צורה|גוף|טבלה)\s+(?:ה)?(?:חדש|חדשה|אחר|אחרת|שונה)|(?:^|[^א-ת])(?:משנים|שנו|הגדילו|הקטינו|מחליפים|החליפו)(?=$|[^א-ת])/.test(text); }
   function cell(value) {
@@ -137,12 +152,13 @@
     var scene = { version: 2, kind: 'typed-' + plan.family, caption: CAPTIONS[plan.family] };
     if (plan.family === 'operations') {
       if (Object.prototype.hasOwnProperty.call(plan, 'tableSource') || typeof plan.expression !== 'string') return fail('invalid-operations');
-      var matches = plan.evidence.filter(function (e) { return e.quote.includes(plan.expression) && givenExpression(plan.expression, e.source === 'part' ? context.partText : context.questionText, context.hintText); });
+      var tree = expression(plan.expression); if (!tree) return fail('unsupported-expression');
+      var matches = plan.evidence.map(function (e) { return { source: e.source, proof: givenExpression(tree, e.source === 'part' ? context.partText : context.questionText, e.quote, context.hintText) }; }).filter(function (match) { return match.proof; });
       if (!matches.length) return fail('expression-not-given');
       var inPart = matches.some(function (e) { return e.source === 'part'; });
       if (!inPart && (newScope(context.partText) || mathSpans(context.partText).some(function (v) { return expression(v) !== null; }))) return fail('selected-part-scope');
-      var tree = expression(plan.expression); if (!tree) return fail('unsupported-expression');
-      scene.expression = plan.expression; scene.tree = tree;
+      var selected = matches.find(function (match) { return match.source === 'part'; }) || matches[0];
+      scene.expression = selected.proof.expression; scene.tree = selected.proof.tree;
     } else {
       if (Object.prototype.hasOwnProperty.call(plan, 'expression') || !/^(?:question|part)$/.test(plan.tableSource || '') || !plan.evidence.some(function (e) { return e.source === plan.tableSource; })) return fail('invalid-table-source');
       if (plan.tableSource === 'question' && (context.partTable || newScope(context.partText))) return fail('selected-part-scope');
