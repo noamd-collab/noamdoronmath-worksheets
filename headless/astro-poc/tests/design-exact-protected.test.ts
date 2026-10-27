@@ -128,16 +128,21 @@ describe('exact-design protected live-baseline boundaries', () => {
     );
     // Noam, 2026-10-27: exactly two early migration assets keep old shared URLs
     // on their complete reviewed package; the source consumer resolves the
-    // selected native item. Only these three reviewed dependencies are exempt
+    // selected native item. The reviewed source and typed compiler dependencies are exempt
     // from the original head/import fence. Their routing/geometry behavior is
     // tested by catalog-native-migration and ramzi-native-visual suites.
     const nativeAdditions = [
       '<script src="/noam-ai/catalog-migrations.js?v=20261027-native1"></script>',
       '<script src="/noam-catalog-migration.js?v=20261027-native1"></script>',
-      '<script src="noam-native-visual.js?v=20261027-source3"></script>',
+      '<script src="noam-native-visual.js?v=20261027-source4"></script>',
+      '<script src="noam-authored-geometry.js?v=20261027-authored1"></script>',
+      '<script src="noam-authored-visual.js?v=20261027-authored1"></script>',
+      '<script src="noam-visual-data.js?v=20261027-typed1"></script>',
+      '<script src="noam-visual-plan.js?v=20261027-typed1"></script>',
     ];
     const allScripts = [...viewerWithNativeRelease.matchAll(/<script\b[^>]*>[\s\S]*?<\/script>/gi)].map(match => match[0]);
-    assert.equal(allScripts.length, 19, 'The release adds only its three exact dependencies');
+    assert.equal(allScripts.length, 23, 'The release adds only its seven exact dependencies');
+    assert.deepEqual(allScripts.slice(7,12),nativeAdditions.slice(2),'Typed compilers follow their native source consumer in dependency order');
     assert.deepEqual(allScripts.slice(0, 2), nativeAdditions.slice(0, 2), 'Old URLs migrate before worksheet scripts run');
     assert.equal(allScripts[7], nativeAdditions[2], 'Native consumer follows the existing local visual engine');
     for (const addition of nativeAdditions) assert.equal(allScripts.filter(script => script === addition).length, 1);
@@ -230,7 +235,11 @@ describe('exact-design protected live-baseline boundaries', () => {
     // Version the successful-plan cache for the changed payload; no auth change.
     // 2026-10-27: refresh corrected PDF crop manifests and discard OCR cached
     // from obsolete blank crops; preserve the existing conversation namespace.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '323343ef27acd7333e362783450488971289d54c1c697f194ad08568d1f3d6a7');
+    // Noam, 2026-10-27: typed visual families consume exact selected native data;
+    // native version joins the cache identity and rehydration revalidates plans.
+    // Domain/source-scope and legacy-protocol tests cover this intentional change;
+    // bot/auth/quota behavior and the conversation namespace remain unchanged.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), '1dacd533a025f9cc1956a3ccfeb1e2b9c58c826b404f67399690dfa66ee19be1');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {

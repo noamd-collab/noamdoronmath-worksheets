@@ -59,16 +59,18 @@
   function selected(data, exercise, source) {
     if (!data || !exercise || !Array.isArray(data.questions)) return null;
     var levelCode = { a: "A", b: "B", c: "E" }[data.level];
-    // These two approved one-level releases use the site's B exercise IDs
-    // while their exact native package is authored as level a.
-    if (data.level === "a" && /^(?:G8-T01|G8-T35)$/.test(data.package || "") &&
-        String(exercise.id || "").indexOf(data.package + "-B-Q") === 0) levelCode = "B";
+    // Verified canonical PDF/native registry aliases retain legacy exercise IDs.
+    // This is an exact package+level allowlist, never a general level fallback.
+    var publishedLevelAliases = { "G8-T01:a": "B", "G8-T35:a": "B", "G8-T26:a": "B", "G8-T27:a": "B", "G7-T16:a": "B", "G8-T56:c": "A", "G8-T57:c": "A" };
+    var alias = publishedLevelAliases[data.package + ":" + data.level];
+    if (alias && String(exercise.id || "").indexOf(data.package + "-" + alias + "-Q") === 0) levelCode = alias;
     var exercisePackage = String(exercise.id || "").split("-" + levelCode + "-Q")[0];
     if (!/^G[789]-(?:T[0-9]+|ASSESS1|CIRCLE|INTERP|TWOSRC|3060|KITE|SIDEANG|TRAP)$/.test(data.package || "") || !levelCode ||
         canonicalPackage(exercisePackage) !== canonicalPackage(data.package)) return null;
     var q = data.questions.find(function (q) { return q.id === exercise.nativeQuestionId; });
     var part = q && Array.isArray(q.items) && q.items.find(function (p) { return p.id === exercise.nativeItemId && p.label === exercise.part; });
-    if (!q || !part) return null;
+    var selectedId = String(exercise.id || "").match(/-Q0*(\d+)([א-ת])$/);
+    if (!q || !part || !selectedId || q.id !== "q" + Number(selectedId[1]) || part.label !== selectedId[2]) return null;
     var url = String(exercise.nativeFigureUrl || ""), match = url.match(NATIVE);
     if (url && (!match || canonicalPackage(match[1]) !== canonicalPackage(data.package) || match[2] !== data.level)) return null;
     var f = (data.figures || []).find(function (f) { return f.id === part.figure_id; });
@@ -424,5 +426,13 @@
     figure.appendChild(captionNode(document, spec));
     return figure;
   }
-  return { resolve: resolve, render: render, coordinates: coordinates, formula: formula };
+  function authoredContext(data, exercise, svgText) {
+    var ctx = selected(data, exercise, svgText ? svgShapes(svgText) : null);
+    if (!ctx) return null;
+    function sourceText(value) { return (Array.isArray(value) ? value.join("\n") : typeof value === "string" ? value : "").slice(0, 12000); }
+    return { questionText: sourceText(ctx.q.text), partText: sourceText(ctx.part.text),
+      questionId: ctx.q.id, itemId: ctx.part.id, exerciseId: exercise.id, hasFigure: !!ctx.figure,
+      questionTable: ctx.q.table ? JSON.parse(JSON.stringify(ctx.q.table)) : null, partTable: ctx.part.table ? JSON.parse(JSON.stringify(ctx.part.table)) : null };
+  }
+  return { resolve: resolve, render: render, coordinates: coordinates, formula: formula, authoredContext: authoredContext };
 });
