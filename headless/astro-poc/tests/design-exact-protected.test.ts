@@ -135,14 +135,15 @@ describe('exact-design protected live-baseline boundaries', () => {
       '<script src="/noam-ai/catalog-migrations.js?v=20261027-native1"></script>',
       '<script src="/noam-catalog-migration.js?v=20261027-native1"></script>',
       '<script src="noam-native-visual.js?v=20261028-source6"></script>',
+      '<script src="noam-source-panels.js?v=20261028-panels1"></script>',
       '<script src="noam-authored-geometry.js?v=20261027-authored1"></script>',
       '<script src="noam-authored-visual.js?v=20261028-authored2"></script>',
       '<script src="noam-visual-data.js?v=20261027-typed2"></script>',
-      '<script src="noam-visual-plan.js?v=20261027-typed2"></script>',
+      '<script src="noam-visual-plan.js?v=20261028-panels1"></script>',
     ];
     const allScripts = [...viewerWithNativeRelease.matchAll(/<script\b[^>]*>[\s\S]*?<\/script>/gi)].map(match => match[0]);
-    assert.equal(allScripts.length, 23, 'The release adds only its seven exact dependencies');
-    assert.deepEqual(allScripts.slice(7,12),nativeAdditions.slice(2),'Typed compilers follow their native source consumer in dependency order');
+    assert.equal(allScripts.length, 24, 'The release adds only its eight exact dependencies');
+    assert.deepEqual(allScripts.slice(7,13),nativeAdditions.slice(2),'Typed compilers follow their native source consumer in dependency order');
     assert.deepEqual(allScripts.slice(0, 2), nativeAdditions.slice(0, 2), 'Old URLs migrate before worksheet scripts run');
     assert.equal(allScripts[7], nativeAdditions[2], 'Native consumer follows the existing local visual engine');
     for (const addition of nativeAdditions) assert.equal(allScripts.filter(script => script === addition).length, 1);
@@ -239,7 +240,13 @@ describe('exact-design protected live-baseline boundaries', () => {
     // native version joins the cache identity and rehydration revalidates plans.
     // Domain/source-scope and legacy-protocol tests cover this intentional change;
     // bot/auth/quota behavior and the conversation namespace remain unchanged.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '37067ecf8bca16c3e5b2678d60088a646cf7b7ed19cd8ab7c0559482cd884d41');
+    // 2026-10-28: only the manifest cache key changes, so multi-panel items that
+    // now name their own source panel never pair a cached manifest with a newer
+    // package digest. ramzi-multi-panel-source tests cover the remapped sections.
+    // 2026-10-28: verified multi-panel source groups retain full reviewed PDF
+    // captions and all source SVGs, including rehydration and clone-only zoom.
+    // Dedicated group tests bind every panel/crop; auth/storage namespaces stay fixed.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), '810648927c2cc502be11593e424a6a44b80db1c19eb6fe85d0f9d441bc772711');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {

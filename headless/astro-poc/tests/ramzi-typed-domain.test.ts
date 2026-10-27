@@ -41,7 +41,7 @@ it('actual viewer formula route cannot bypass strict authored guards with the ol
   const viewer=readFileSync(new URL('../public/worksheet-viewer-noam.html',import.meta.url),'utf8');
   function fn(name:string){const chunk=viewer.slice(viewer.indexOf('function '+name+'('));return chunk.slice(0,chunk.indexOf('\nfunction ',1));}
   const c:any={window:scope,document,noamNativeDataUrl:()=>'/noam-ai/native/G8-T11/b/noam-ai.json'};
-  runInNewContext(fn('noamSourcePresentation')+'\n'+fn('noamParsedLocalVisual'),c);
+  runInNewContext(['noamSourcePanelReviewed','noamSourcePanelModuleMissing','noamSourcePresentation','noamParsedLocalVisual'].map(fn).join('\n'),c);
   assert.equal(c.noamSourcePresentation({data:native,svgText:''},exercise,options),null);
   c.window.NoamLocalVisual={parseShiftedParabolaExample:()=>{throw Error('legacy parser reached');}};
   assert.equal(c.noamParsedLocalVisual(exercise),null);

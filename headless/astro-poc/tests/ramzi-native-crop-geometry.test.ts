@@ -50,7 +50,7 @@ it('W07 q12c image includes the actual introduction, graph and selected text ins
 it('corrected geometry refreshes cached manifests and OCR while retaining conversation history', () => {
   for (const url of [new URL('../public/worksheet-viewer-noam.html', import.meta.url), new URL('../../../worksheet-viewer-noam.html', import.meta.url)]) {
     const viewer = readFileSync(url, 'utf8');
-    assert.match(viewer, /MANIFEST_PATH = [^\n]+\.json\?v=20261027-typed-source/);
+    assert.match(viewer, /MANIFEST_PATH = [^\n]+\.json\?v=20261028-panel-source/);
     assert.match(viewer, /ANALYSIS_STORAGE_KEY = "noam-static-analysis-v2-crop-geometry:"/);
     assert.match(viewer, /THREAD_STORAGE_KEY = "noam-static-threads-v1:"/);
   }

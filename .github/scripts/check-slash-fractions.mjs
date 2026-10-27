@@ -206,6 +206,9 @@ function inUrlOrPath(text, start, end) {
   if (tok.startsWith('/') || tok.startsWith('./') || tok.startsWith('../') || tok.includes('../')) return true;
   if (/\.(?:astro|tsx?|jsx?|mjs|cjs|css|json|html|svg|png|jpe?g|webp|gif|woff2?)$/i.test(tok)) return true;
   if (/^(?:src|public|headless|node_modules)\//.test(tok)) return true;
+  // Complete authored worksheet keys identify source package/level/question.
+  // Partial keys and arbitrary algebraic slash expressions stay in the scan.
+  if (/^G[789]-(?:T[0-9]+|TWOSRC)\/[abc]\/q[1-9][0-9]*$/.test(tok)) return true;
   return false;
 }
 

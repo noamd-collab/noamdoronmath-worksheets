@@ -2675,10 +2675,11 @@ html.nd-motion-off .exact-viewer *,html.noam-a11y-motion .exact-viewer *{scroll-
 <script src="noam-diagram-plan.js?v=20261021-plural-relations1"></script>
 <script src="noam-local-visual.js?v=20261027-native1"></script>
 <script src="noam-native-visual.js?v=20261028-source6"></script>
+<script src="noam-source-panels.js?v=20261028-panels1"></script>
 <script src="noam-authored-geometry.js?v=20261027-authored1"></script>
 <script src="noam-authored-visual.js?v=20261028-authored2"></script>
 <script src="noam-visual-data.js?v=20261027-typed2"></script>
-<script src="noam-visual-plan.js?v=20261027-typed2"></script>
+<script src="noam-visual-plan.js?v=20261028-panels1"></script>
 <script src="noam-glossary-curriculum.js?v=20260927-concepts2"></script>
 <script src="noam-glossary.js?v=20260927-concepts2"></script>
 <script>
@@ -4646,7 +4647,7 @@ var mathKeyboardOpen = false;
 var analysisCache = {};
 var exercisePreviewCache = {};
 var exercisePreviewOrder = [];
-var MANIFEST_PATH = HEADLESS_MANIFEST_BASE + pdf + ".json?v=20261027-typed-source";
+var MANIFEST_PATH = HEADLESS_MANIFEST_BASE + pdf + ".json?v=20261028-panel-source";
 var THREAD_STORAGE_KEY = "noam-static-threads-v1:" + pdf;
 var ANALYSIS_STORAGE_KEY = "noam-static-analysis-v2-crop-geometry:" + pdf;
 var threads = {};
@@ -6630,6 +6631,107 @@ function noamSourceVisualOptions(options){
   return {answer:String(options.answer||'').slice(0,4000),studentMessage:String(options.studentMessage||'').slice(0,700),
     helpKind:String(options.helpKind||'').slice(0,30),hintIndex:Number(options.hintIndex)||0,progress:Number(options.progress)||0,focusKey:String(options.focusKey||'').slice(0,100),drawCurrentStep:options.drawCurrentStep===true};
 }
+// Multi-panel views are original source aids. A group is shown only after every
+// reviewed panel and the unchanged, complete question crop have been validated.
+var noamSourcePanelGroups=new Map();
+function noamSourcePanelReviewed(exercise){
+  return !!(window.NoamSourcePanels&&window.NoamSourcePanels.isReviewed(exercise));
+}
+function noamSourcePanelModuleMissing(exercise,source){
+  if(window.NoamSourcePanels||!source||!source.data||!Array.isArray(source.data.figures)){return false;}
+  var qid=String(exercise.nativeQuestionId||'');if(!/^q[0-9]+$/.test(qid)){return false;}
+  return source.data.figures.filter(function(f){return f&&f.question===qid&&new RegExp('^'+qid+'_head(?:_[0-9]+)?$').test(f.id||'');}).length>1;
+}
+function noamSourcePanelBlocksFallback(exercise){
+  if(noamSourcePanelReviewed(exercise)){return true;}
+  if(!window.NoamSourcePanels&&/_head(?:_[0-9]+)?$/.test(String(exercise.nativeFigureId||''))){return true;}
+  var entry=noamSourceVisualPackages[JSON.stringify([noamNativeDataUrl(exercise),manifest&&manifest.nativeExportSha256||''])];
+  var primary=entry&&entry.figures[String(exercise.nativeFigureUrl||'')];
+  return noamSourcePanelModuleMissing(exercise,primary&&primary.value);
+}
+function noamSourcePanelIdentity(exercise,group){
+  return JSON.stringify([noamSourceVisualIdentity(exercise),group.sourceKey,group.panelIds]);
+}
+function noamSourcePanelCropExercise(exercise,source,group){
+  if(!manifest||! /^[a-f0-9]{64}$/i.test(String(manifest.sourceSha256||''))||
+      ! /^[a-f0-9]{64}$/i.test(String(manifest.nativeExportSha256||''))||!window.NoamSourcePanels){return null;}
+  var current=(manifest.exercises||[]).find(function(ex){return ex.id===exercise.id;});
+  if(!current||noamSourceVisualIdentity(current)!==noamSourceVisualIdentity(exercise)||
+      !window.NoamSourcePanels.resolve(source.data,current,source.sourcePanelSvgById)||group.exerciseId!==current.id){return null;}
+  // The independent PDF review is bound to this exact source and crop array.
+  // Some old manifests retain a template review flag or count exercise pages
+  // rather than the final PDF page number; neither substitutes for this proof.
+  var approval=window.NoamSourcePanels.approvedCrop&&window.NoamSourcePanels.approvedCrop(manifest,current);
+  if(!approval){return null;}
+  var crops=Array.isArray(current.crops)&&current.crops.length?current.crops:[current.crop],pages=Number(approval.pageCount);
+  if(!Number.isInteger(pages)||pages<1||!crops.length||crops.length>12||!crops.every(function(c){
+    return c&&Number.isInteger(c.page)&&c.page>=1&&c.page<=pages&&['x','y','w','h'].every(function(k){return Number.isFinite(c[k]);})&&
+      c.x>=0&&c.y>=0&&c.w>0&&c.h>0&&c.x+c.w<=1.000001&&c.y+c.h<=1.000001;
+  })){return null;}
+  // Published geometry crops cover the whole question, shared by its items.
+  // A differing sibling crop cannot silently be treated as the full overview.
+  var siblings=(manifest.exercises||[]).filter(function(ex){return ex.q===current.q;});
+  if(!siblings.length||!siblings.every(function(ex){return ex.nativeQuestionId===current.nativeQuestionId&&
+    JSON.stringify(Array.isArray(ex.crops)&&ex.crops.length?ex.crops:[ex.crop])===JSON.stringify(crops);})){return null;}
+  return current;
+}
+function noamLoadSourcePanels(exercise,source){
+  if(noamSourcePanelModuleMissing(exercise,source)){return Promise.resolve(null);}
+  if(!source||!noamSourcePanelReviewed(exercise)){return Promise.resolve(source);}
+  var identity=noamSourceVisualIdentity(exercise),api=window.NoamSourcePanels;
+  var refs=api.references(source.data,exercise,source.svgText);
+  if(!refs){return Promise.resolve(null);}
+  var groupIdentity=noamSourcePanelIdentity(exercise,refs),entry=noamSourcePanelGroups.get(groupIdentity);
+  if(entry){return entry.promise;}
+  entry={value:null,promise:null};noamSourcePanelGroups.set(groupIdentity,entry);
+  entry.promise=Promise.all(refs.panels.map(function(panel){
+    return panel.id===exercise.nativeFigureId?Promise.resolve(source.svgText):
+      fetch(panel.url,{cache:'no-cache'}).then(function(r){return r.ok?r.text():null;}).catch(function(){return null;});
+  })).then(function(texts){
+    if(identity!==noamSourceVisualIdentity(exercise)||texts.some(function(text){return typeof text!=='string';})){return null;}
+    var svgById={};refs.panels.forEach(function(panel,i){svgById[panel.id]=texts[i];});
+    var group=api.resolve(source.data,exercise,svgById);if(!group||groupIdentity!==noamSourcePanelIdentity(exercise,group)){return null;}
+    var loaded=Object.assign({},source,{sourcePanelGroup:group,sourcePanelSvgById:svgById});
+    var current=noamSourcePanelCropExercise(exercise,loaded,group);if(!current){return null;}
+    return cropExerciseCanvas(current,{exactSourceCrops:true}).then(function(canvas){
+      if(identity!==noamSourceVisualIdentity(exercise)||!noamSourcePanelCropExercise(exercise,loaded,group)||!canvas||canvas.width<1||canvas.height<1){return null;}
+      var dataUrl=canvas.toDataURL('image/png');if(!/^data:image\/png;base64,[A-Za-z0-9+/=]+$/.test(dataUrl)){return null;}
+      loaded.sourcePanelCrop=dataUrl;entry.value=loaded;return loaded;
+    });
+  }).catch(function(){return null;}).then(function(loaded){
+    if(!loaded&&noamSourcePanelGroups.get(groupIdentity)===entry){noamSourcePanelGroups.delete(groupIdentity);}return loaded;
+  });
+  while(noamSourcePanelGroups.size>8){noamSourcePanelGroups.delete(noamSourcePanelGroups.keys().next().value);}
+  return entry.promise;
+}
+function noamSourcePanelContext(exercise,source){
+  if(!source||!source.sourcePanelGroup||!window.NoamSourcePanels){return null;}
+  var group=window.NoamSourcePanels.resolve(source.data,exercise,source.sourcePanelSvgById);
+  var context=group&&window.NoamNativeVisual.authoredContext(source.data,exercise,source.svgText);
+  if(!context){return null;}
+  return ['הקשר מקור מאומת: בשאלה זו כמה לוחות מקור נפרדים.',
+    group.requiresPrintedRoleContext?'הלוחות כוללים הקשר של דוגמה פתורה ותרגול. אין לראות נתוני דוגמה כנתוני הסעיף הנבחר; כיתובי תמונת השאלה המקורית קובעים את תפקיד הלוחות, ולא סדר הלוחות או המזהים שלהם.':'זהו הקשר השאלה המקורית כולה; כיתובי המקור קובעים את תפקידו של כל לוח.',
+    'פתיח השאלה: '+String(context.questionText||'').slice(0,2500),
+    'הסעיף הנבחר: '+String(context.partText||'').slice(0,1600),
+    'זהויות גלויות בכל לוח בנפרד: '+JSON.stringify(window.NoamSourcePanels.metadata(group)).slice(0,1800),
+    'אין לאחד נקודות בעלות שם זהה מלוחות שונים. אין לבחור לוח כתשובה, או להסיק מזהה לוח, מיקום, שם אדם או שלב. כיתובי הלוחות והיחסים המודפסים נשמרים בתמונת השאלה המקורית.'].join('\n');
+}
+function noamRenderSourcePanels(source,exercise){
+  var api=window.NoamSourcePanels,group=api&&api.resolve(source.data,exercise,source.sourcePanelSvgById);
+  if(!group||!source.sourcePanelCrop||!noamSourcePanelCropExercise(exercise,source,group)){return null;}
+  var panels=api.render(document,source.data,exercise,source.sourcePanelSvgById);if(!panels){return null;}
+  var figure=document.createElement('figure'),caption=document.createElement('figcaption'),overview=document.createElement('img');
+  figure.className='noam-source-panel-group noam-geometry';figure.dataset.visualType='source-panel-group';
+  figure.style.cssText='margin:12px 0;min-width:0;max-width:100%';
+  caption.textContent='לוחות המקור של השאלה — צילום השאלה שומר את הכיתובים המקוריים; כל לוח מוצג גם בנפרד. לא נוצר שרטוט חדש ולא נבחר לוח כתשובה.';
+  caption.style.cssText='margin:0 0 12px;line-height:1.6';
+  overview.src=source.sourcePanelCrop;overview.className='noam-source-panel-overview';overview.alt='השאלה המקורית במלואה, עם כיתובי לוחות המקור';
+  overview.style.cssText='display:block;width:100%;max-width:100%;height:auto;background:white';
+  panels.style.cssText='display:flex;flex-direction:column;gap:16px;min-width:0;max-width:100%;margin-top:16px';
+  panels.querySelectorAll('.noam-geometry-svg').forEach(function(svg){svg.style.maxHeight='none';svg.style.minHeight='0';});
+  overview.addEventListener('error',function(){figure.hidden=true;noamSourcePanelGroups.delete(noamSourcePanelIdentity(exercise,group));});
+  figure.appendChild(caption);figure.appendChild(overview);figure.appendChild(panels);return figure;
+}
 function noamLoadSourceVisual(exercise){
   var url=noamNativeDataUrl(exercise);if(!url){return Promise.resolve(null);}
   var svg=String(exercise.nativeFigureUrl||'');
@@ -6653,17 +6755,23 @@ function noamLoadSourceVisual(exercise){
         return figureEntry.value;
       });
   }
-  return entry.figures[svg].promise;
+  return entry.figures[svg].promise.then(function(source){return noamLoadSourcePanels(exercise,source);});
 }
 function noamCachedSourceVisual(exercise){
   var entry=noamSourceVisualPackages[JSON.stringify([noamNativeDataUrl(exercise),manifest&&manifest.nativeExportSha256||''])];
-  return entry&&entry.figures[String(exercise.nativeFigureUrl||'')]&&entry.figures[String(exercise.nativeFigureUrl||'')].value;
+  var source=entry&&entry.figures[String(exercise.nativeFigureUrl||'')]&&entry.figures[String(exercise.nativeFigureUrl||'')].value;
+  if(noamSourcePanelModuleMissing(exercise,source)){return null;}
+  if(!source||!noamSourcePanelReviewed(exercise)){return source;}
+  var refs=window.NoamSourcePanels.references(source.data,exercise,source.svgText);
+  var group=refs&&noamSourcePanelGroups.get(noamSourcePanelIdentity(exercise,refs));return group&&group.value;
 }
 function noamEnrichSourceAnalysis(exercise,analysis){
   if(!analysis||typeof analysis!=='object'||!window.NoamNativeVisual||!noamNativeDataUrl(exercise)){return Promise.resolve(analysis);}
   var identity=noamSourceVisualIdentity(exercise);
   return noamLoadSourceVisual(exercise).then(function(source){
     if(!source||identity!==noamSourceVisualIdentity(exercise)){return analysis;}
+    var panelContext=noamSourcePanelContext(exercise,source);
+    if(panelContext){return Object.assign({},analysis,{diagram_description:(panelContext+'\n\n'+String(analysis.diagram_description||'')).slice(0,6000)});}
     var validated=window.NoamNativeVisual.resolve(source.data,exercise,{studentMessage:'הראה את השרטוט המקורי',helpKind:'free_question'},source.svgText);
     if(!validated||validated.kind!=='source-context'){return analysis;}
     var question=(source.data.questions||[]).find(function(q){return q.id===exercise.nativeQuestionId;});
@@ -6700,6 +6808,11 @@ function noamEnrichSourceAnalysis(exercise,analysis){
 }
 
 function noamSourcePresentation(source,exercise,options){
+  if(noamSourcePanelModuleMissing(exercise,source)){return null;}
+  if(noamSourcePanelReviewed(exercise)){
+    var groupFigure=noamRenderSourcePanels(source,exercise);
+    return groupFigure?{kind:'source-context',figure:groupFigure,sourcePanelGroup:true,panelIds:source.sourcePanelGroup.panelIds}:null;
+  }
   var native=window.NoamNativeVisual,authored=window.NoamAuthoredVisual;
   var spec=native.resolve(source.data,exercise,options,source.svgText),figure;
   // Formula plots use the complete-expression/domain compiler when available.
@@ -6724,7 +6837,9 @@ function noamPrepareSourceVisual(exercise,options){
     if(!source||!window.NoamNativeVisual||identity!==noamSourceVisualIdentity(exercise)){return null;}
     var presentation=noamSourcePresentation(source,exercise,safe);
     if(!presentation){return null;}
-    return {type:'native-source-visual',exerciseId:exercise.id,sourceIdentity:identity,options:safe,presentation:presentation.kind};
+    var visual={type:'native-source-visual',exerciseId:exercise.id,sourceIdentity:identity,options:safe,presentation:presentation.kind};
+    if(presentation.sourcePanelGroup){visual.sourcePanelGroup=true;visual.panelIds=presentation.panelIds.slice();visual.sourcePanelIdentity=noamSourcePanelIdentity(exercise,source.sourcePanelGroup);}
+    return visual;
   });
 }
 function noamRenderSourceVisual(visual){
@@ -6743,6 +6858,10 @@ function noamRenderSourceVisual(visual){
     }
     return null;
   }
+  if(noamSourcePanelReviewed(exercise)&&(!visual.sourcePanelGroup||!source.sourcePanelGroup||
+      JSON.stringify(visual.panelIds)!==JSON.stringify(source.sourcePanelGroup.panelIds)||
+      visual.sourcePanelIdentity!==noamSourcePanelIdentity(exercise,source.sourcePanelGroup))){return null;}
+  if(visual.sourcePanelGroup&&!noamSourcePanelReviewed(exercise)){return null;}
   var presentation=noamSourcePresentation(source,exercise,noamSourceVisualOptions(visual.options));
   return presentation?presentation.figure:null;
 }
@@ -6754,10 +6873,19 @@ function noamRequestSourceFirst(exercise,thread,message,providedOptions){
   var completion=noamPrepareSourceVisual(exercise,options).catch(function(){return null;}).then(function(visual){
     runtime.messages.delete(message);
     if((thread.messages||[]).indexOf(message)<0||requestSourceIdentity!==noamSourceVisualIdentity(exercise)){return null;}
-    if(!visual){return requestNoamDiagram(exercise,thread,message,Object.assign({},options,{nativeAttempted:true}));}
+    if(!visual){
+      if(noamSourcePanelBlocksFallback(exercise)){
+        delete message.visual;
+        message.diagramError='לא הצלחנו לטעון את כל לוחות המקור של השאלה. אפשר לנסות שוב.';
+        message.diagramErrorCode='DIAGRAM_UNAVAILABLE';
+        if(message.diagramTyped){message.text='לוחות המקור של השאלה עדיין לא נטענו.';}
+        saveNoamState();noamDiagramRefresh(exercise,thread,message,true);return null;
+      }
+      return requestNoamDiagram(exercise,thread,message,Object.assign({},options,{nativeAttempted:true}));
+    }
     message.visual=visual;delete message.diagramError;delete message.diagramErrorCode;
     if(message.diagramTyped){
-      message.text=visual.presentation==='source-context'?'הנה השרטוט המקורי של הסעיף. לא נוספה אליו בנייה חדשה.':'הנה המחשה של השלב שעליו שאלת.';
+      message.text=visual.sourcePanelGroup?'הנה לוחות המקור וצילום השאלה עם הכיתובים המקוריים. לא נוצר שרטוט חדש ולא נבחר לוח כתשובה.':visual.presentation==='source-context'?'הנה השרטוט המקורי של הסעיף. לא נוספה אליו בנייה חדשה.':'הנה המחשה של השלב שעליו שאלת.';
       thread.history.push({role:'user',content:options.studentMessage},{role:'assistant',content:message.text});
       thread.history=thread.history.slice(-8);delete message.diagramTyped;
     }
@@ -6768,8 +6896,8 @@ function noamRequestSourceFirst(exercise,thread,message,providedOptions){
 function noamAttachSourceHint(exercise,thread,message,options){
   if(!window.NoamNativeVisual||!noamNativeDataUrl(exercise)){return Promise.resolve(null);}
   return noamPrepareSourceVisual(exercise,options).then(function(visual){
-    if(!visual||visual.presentation==='source-context'||message.visual||message.answerError||
-      (thread.messages||[]).indexOf(message)<0||noamDiagramRuntime().messages.has(message)){return null;}
+    if(!visual||(visual.presentation==='source-context'&&!visual.sourcePanelGroup)||message.visual||message.answerError||
+      (thread.messages||[]).indexOf(message)<0||visual.sourceIdentity!==noamSourceVisualIdentity(exercise)||noamDiagramRuntime().messages.has(message)){return null;}
     message.visual=visual;saveNoamState();noamDiagramRefresh(exercise,thread,message,false);return visual;
   }).catch(function(){return null;});
 }
@@ -7634,7 +7762,7 @@ function noamAddDiagramExpansion(container,figure){
   var expand=document.createElement("button");
   expand.type="button";
   expand.className="noam-draw-action noam-diagram-expand";
-  expand.textContent=figure.classList.contains("noam-source-crop")?"הגדלת השאלה המקורית":"הגדלת השרטוט";
+  expand.textContent=figure.classList.contains("noam-source-panel-group")?"הגדלת לוחות המקור":figure.classList.contains("noam-source-crop")?"הגדלת השאלה המקורית":"הגדלת השרטוט";
   expand.setAttribute("aria-haspopup","dialog");
   expand.addEventListener("click",function(){
     var dialog=document.createElement("dialog");
@@ -7648,7 +7776,7 @@ function noamAddDiagramExpansion(container,figure){
     var title=document.createElement("h2");
     title.id="noamDiagramDialogTitle";
     title.className="noam-diagram-dialog-title";
-    title.textContent=figure.classList.contains("noam-source-crop")?"השאלה המקורית מהדף":"שרטוט להמחשה";
+    title.textContent=figure.classList.contains("noam-source-panel-group")?"לוחות המקור של השאלה":figure.classList.contains("noam-source-crop")?"השאלה המקורית מהדף":"שרטוט להמחשה";
     heading.appendChild(blessing);heading.appendChild(title);
     var close=document.createElement("button");
     close.type="button";
@@ -7661,7 +7789,7 @@ function noamAddDiagramExpansion(container,figure){
     content.className="noam-diagram-dialog-content";
     content.tabIndex=0;
     content.setAttribute("role","region");
-    content.setAttribute("aria-label","השרטוט והסבר הסימונים");
+    content.setAttribute("aria-label",figure.classList.contains("noam-source-panel-group")?"השאלה המקורית וכל לוחות המקור":"השרטוט והסבר הסימונים");
     // Reuse the rendered result: no regeneration, model request or transcript mutation.
     var copy=figure.cloneNode(true);
     // Glossary buttons in the transcript have listeners; a cloned button does not.
@@ -7725,7 +7853,12 @@ function noamDiagramQuestionText(exercise,analysis){
 function noamTypedVisualContext(exercise,context){
   var source=noamCachedSourceVisual(exercise);
   var authored=source&&window.NoamNativeVisual&&window.NoamNativeVisual.authoredContext(source.data,exercise,source.svgText);
-  return authored?Object.assign({},authored,{hintText:String(context&&context.hintText||''),studentMessage:String(context&&context.studentMessage||'')}):null;
+  if(!authored){return null;}
+  if(window.NoamSourcePanels&&noamSourcePanelReviewed(exercise)){
+    var group=window.NoamSourcePanels.resolve(source.data,exercise,source.sourcePanelSvgById);if(!group){return null;}
+    authored=Object.assign({},authored,{sourcePanels:window.NoamSourcePanels.metadata(group)});
+  }
+  return Object.assign({},authored,{hintText:String(context&&context.hintText||''),studentMessage:String(context&&context.studentMessage||'')});
 }
 function noamInspectVisualPlan(plan,context,exercise){
   if(plan&&plan.version===2){
@@ -7738,11 +7871,35 @@ function noamRenderVisualPlan(plan,checked){
   return plan&&plan.version===2?window.NoamVisualPlan&&window.NoamVisualPlan.render(document,checked.scene):window.NoamGeometry.render(document,checked.scene);
 }
 function noamRenderAiDiagram(visual){
-  if (!visual||!window.NoamDiagramPlan||!window.NoamGeometry||!manifest){return null;}
+  if (!visual||!manifest){return null;}
   var exercise=(manifest.exercises||[]).find(function(item){return item.id===visual.exerciseId;});
   if (!exercise||visual.sourceIdentity!==noamDiagramSourceIdentity(exercise)){return null;}
+  if(visual.plan&&visual.plan.version===2&&visual.nativeSourceIdentity!==noamSourceVisualIdentity(exercise)){return null;}
+  // Old generic plans may refer to only the primary heading. Rehydrate the
+  // current original group instead; never compile that plan as a new diagram.
+  if(window.NoamSourcePanels&&noamSourcePanelReviewed(exercise)){
+    var groupSource=noamCachedSourceVisual(exercise);
+    if(!groupSource){
+      if(!noamRenderAiDiagram.groupPending){noamRenderAiDiagram.groupPending=new WeakSet();}
+      if(!noamRenderAiDiagram.groupPending.has(visual)){
+        noamRenderAiDiagram.groupPending.add(visual);
+        var groupIdentity=noamSourceVisualIdentity(exercise);
+        noamLoadSourceVisual(exercise).then(function(loaded){
+          noamRenderAiDiagram.groupPending.delete(visual);
+          if(loaded&&groupIdentity===noamSourceVisualIdentity(exercise)&&selectedExercise&&selectedExercise.id===exercise.id){renderNoamChat();}
+        },function(){noamRenderAiDiagram.groupPending.delete(visual);});
+      }
+      return null;
+    }
+    var groupFigure=noamRenderSourcePanels(groupSource,exercise);
+    if(groupFigure){visual.presentation='source-context';}
+    return groupFigure;
+  }
+  // A saved heading plan cannot establish single-panel scope while the group
+  // registry is unavailable. Its retry can reload and validate current source.
+  if(!window.NoamSourcePanels&&/_head(?:_[0-9]+)?$/.test(String(exercise.nativeFigureId||''))){return null;}
+  if(!window.NoamDiagramPlan||!window.NoamGeometry){return null;}
   if(visual.plan&&visual.plan.version===2){
-    if(visual.nativeSourceIdentity!==noamSourceVisualIdentity(exercise)){return null;}
     if(!noamCachedSourceVisual(exercise)){
       if(!noamRenderAiDiagram.typedPending){noamRenderAiDiagram.typedPending=new WeakSet();}
       if(!noamRenderAiDiagram.typedPending.has(visual)){
@@ -7804,6 +7961,7 @@ function noamNativeDiagramContext(exercise){
   var identity=noamSourceVisualIdentity(exercise);
   return noamLoadSourceVisual(exercise).then(function(source){
     if(!source||identity!==noamSourceVisualIdentity(exercise)){return null;}
+    var panelContext=window.NoamSourcePanels&&noamSourcePanelContext(exercise,source);if(panelContext){return panelContext;}
     var validated=window.NoamNativeVisual.resolve(source.data,exercise,{studentMessage:'הראה את השרטוט המקורי',helpKind:'free_question'},source.svgText);
     if(!validated||validated.kind!=='source-context'){return null;}
     var question=(source.data.questions||[]).find(function(q){return q.id===exercise.nativeQuestionId;});

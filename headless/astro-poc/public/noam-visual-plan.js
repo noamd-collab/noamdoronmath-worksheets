@@ -34,6 +34,11 @@
     try{
       if(!safe(plan,0)||!exactKeys(plan,['version','status','family','evidence','expression','tableSource'])||plan.version!==2||plan.status!=='ok'||FAMILIES.indexOf(plan.family)<0)return fail('invalid_typed_plan');
       if(!context||typeof context.questionText!=='string'||typeof context.partText!=='string')return fail('missing_authored_source');
+      // Shared original panels require their complete source context and printed
+      // roles. No current typed family carries a panel-aware source contract.
+      // Presence also rejects malformed/empty metadata instead of silently
+      // erasing group ownership and compiling a standalone primary-only scene.
+      if('sourcePanels' in context)return fail('source_panel_context_only');
       var quotes=evidence(plan,context);if(!quotes)return fail('evidence_not_in_selected_source');
       if(plan.expression!==undefined&&plan.family!=='operations'||plan.tableSource!==undefined&&!['table','bar-chart'].includes(plan.family))return fail('unexpected_family_field');
       var all=clean(context.questionText+' '+context.partText),hint=String(context.hintText||''),student=String(context.studentMessage||''),a=root.NoamAuthoredVisual;
