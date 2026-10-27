@@ -13,3 +13,5 @@ The viewer sends an opaque source reference only after its exact native context 
 Release ordering: deploy the opt-in worker first, preserving its existing `verify_jwt:false` plus HMAC gate; old clients continue v1. Publish this frontend afterward. A frontend rollback remains compatible with the new worker. Do not deploy the frontend alone and interpret unsupported v2 as model coverage.
 
 Validation includes real source fixtures outside the120-case acceptance sample, every canonical no-SVG exercise identity, exact evidence/tampering tests, both root and public viewer request paths, cache/rehydration/race tests, and server routing/source verification. Compiler coverage is an upper bound; it is not a measurement of live model selection or diagram usefulness. Live desktop/phone and native Brave acceptance are separate release checks.
+
+Legacy PDF slots without a native package remain on the original OCR/geometry path. The shared integration is available sitewide, but v2 does not treat unverified OCR as authored evidence and does not imply every exercise has a useful supported diagram.
