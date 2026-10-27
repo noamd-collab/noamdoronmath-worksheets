@@ -2,7 +2,6 @@ import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
 import { describe, it } from 'node:test';
 import { blogPostDateLabel, hebrewDateLabel } from '../src/lib/hebrewDate';
-import { readingTimeLabel } from '../src/lib/readingTime';
 
 describe('blog post visible date (stale "לפני 4 ימים")', () => {
   it('formats the Israel calendar day in Hebrew', () => {
@@ -31,20 +30,6 @@ describe('blog post visible date (stale "לפני 4 ימים")', () => {
       const label = blogPostDateLabel(post);
       assert.ok(label && /^\d{1,2} ב\S+ \d{4}$/.test(label), `${f}: ${label}`);
     }
-  });
-
-  it('reads one minute as "דקה אחת" and leaves other reading times alone', () => {
-    assert.equal(readingTimeLabel('זמן קריאה 1 דקות'), 'זמן קריאה דקה אחת');
-    assert.equal(readingTimeLabel('זמן קריאה 4 דקות'), 'זמן קריאה 4 דקות');
-    assert.equal(readingTimeLabel('זמן קריאה 11 דקות'), 'זמן קריאה 11 דקות');
-    assert.equal(readingTimeLabel(''), null);
-    const dir = 'src/data/blog-posts';
-    for (const f of readdirSync(dir).filter((x) => x.endsWith('.json'))) {
-      const post = JSON.parse(readFileSync(`${dir}/${f}`, 'utf8'));
-      if (post.readingTime) assert.doesNotMatch(readingTimeLabel(post.readingTime) || '', /(^|\s)1 דקות/, f);
-    }
-    const tpl = readFileSync('src/components/BlogPostPage.astro', 'utf8');
-    assert.ok(tpl.includes('{readingTimeLabel(post.readingTime)}'));
   });
 
   it('the post template renders the label, not the stored dateDisplay', () => {

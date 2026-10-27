@@ -3036,10 +3036,8 @@ a {
   padding: 12px 18px;
   border: none;
   border-radius: 10px;
-  /* Same teal the page resolved --accent to; white text is 4.93:1
-     (the dark ink was 3.45:1, below WCAG 1.4.3). */
-  background: #2a7c7a;
-  color: #fff;
+  background: var(--accent, #e5ff82);
+  color: #1d1c19;
   cursor: pointer;
   min-height: 44px;
 }

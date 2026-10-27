@@ -12,6 +12,14 @@ interface Props {
 const { slug } = Astro.props;
 const page = loadSitePage(slug);
 
+// The contact form does not deliver messages yet (dry-run / mock). Real
+// visitors get the e-mail link only; preview and local hosts keep the form for
+// tests. Copy that points at the form switches with the same condition.
+const contactBlock = page.blocks.find((b) => b.type === 'contact');
+const contactMode = (contactBlock?.type === 'contact' && contactBlock.wixForm?.submitMode) || 'dry-run';
+const contactFormInactive = contactMode === 'dry-run' || contactMode === 'mock';
+const contactFormHidden = !!contactBlock && contactFormInactive && !isPreviewHost(Astro.url.hostname);
+
 const footerLinks = [
   { href: '/conditionforfreeworksheets', label: 'תקנון שימוש בדפי עבודה חינמיים' },
   { href: '/terms', label: 'תנאי השימוש' },
@@ -168,12 +176,14 @@ const marketingLoop = marketingLandingLoop(page.slug);
                 </p>
               );
             }
+            const text =
+              contactFormHidden && block.textWhenContactFormHidden ? block.textWhenContactFormHidden : block.text;
             return block.dir === 'ltr' ? (
               <p>
-                <span dir="ltr">{block.text}</span>
+                <span dir="ltr">{text}</span>
               </p>
             ) : (
-              <p>{block.text}</p>
+              <p>{text}</p>
             );
           }
           if (block.type === 'ul' || block.type === 'ol') {
@@ -228,9 +238,7 @@ const marketingLoop = marketingLandingLoop(page.slug);
             const wf = block.wixForm;
             const mode = wf?.submitMode || 'dry-run';
             const formInactive = mode === 'dry-run' || mode === 'mock';
-            // The form does not deliver messages yet. Real visitors get the
-            // e-mail link only; preview and local hosts keep the form for tests.
-            if (formInactive && !isPreviewHost(Astro.url.hostname)) {
+            if (contactFormHidden) {
               return (
                 <div
                   class="site-page__contact"

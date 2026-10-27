@@ -66,8 +66,14 @@ describe('M24 site / policy pages', () => {
   it('aboutus shows only the e-mail link outside preview hosts while the form is inactive', () => {
     const tpl = readFileSync('src/components/SitePage.astro', 'utf8');
     assert.ok(tpl.includes("import { isPreviewHost } from '../lib/siteSeo';"));
+    assert.ok(tpl.includes("const contactFormInactive = contactMode === 'dry-run' || contactMode === 'mock';"));
+    assert.ok(
+      tpl.includes(
+        'const contactFormHidden = !!contactBlock && contactFormInactive && !isPreviewHost(Astro.url.hostname);',
+      ),
+    );
+    assert.ok(tpl.includes('if (contactFormHidden) {'));
     assert.ok(tpl.includes("const formInactive = mode === 'dry-run' || mode === 'mock';"));
-    assert.ok(tpl.includes('if (formInactive && !isPreviewHost(Astro.url.hostname)) {'));
     const start = tpl.indexOf('data-contact-unavailable');
     const end = tpl.indexOf('data-contact-form', start);
     assert.ok(start > 0 && end > start, 'fallback block precedes the form block');
@@ -78,6 +84,29 @@ describe('M24 site / policy pages', () => {
     assert.ok(!fallback.includes('במצב בדיקה'));
     // The test-mode sentence renders only while the form is inactive.
     assert.match(tpl, /\{formInactive && \(\s*<p class="site-page__contact-note">/);
+  });
+
+  it('aboutus asks for e-mail only where the form is hidden, and keeps the form wording on preview', () => {
+    const page = loadSitePage('aboutus');
+    const intro = page.blocks.find((b) => b.type === 'p' && b.text.includes('אשמח לשמוע מכם'));
+    assert.ok(intro && intro.type === 'p');
+    if (intro && intro.type === 'p') {
+      // Preview and local hosts still show the form, so the default wording stays.
+      assert.ok(intro.text.endsWith('– מלאו את הפרטים ואחזור אליכם בהקדם.'));
+      // Noam-approved wording (27.10.2026) for hosts where the form is hidden.
+      assert.ok(intro.textWhenContactFormHidden?.endsWith('– כתבו לי בדוא״ל ואחזור אליכם בהקדם.'));
+      assert.equal(
+        intro.textWhenContactFormHidden?.replace('כתבו לי בדוא״ל', 'מלאו את הפרטים'),
+        intro.text,
+        'only the call to action changes',
+      );
+    }
+    const tpl = readFileSync('src/components/SitePage.astro', 'utf8');
+    assert.ok(
+      tpl.includes(
+        'contactFormHidden && block.textWhenContactFormHidden ? block.textWhenContactFormHidden : block.text;',
+      ),
+    );
   });
 
   it('site entry gate uses production copy with combined privacy href', () => {

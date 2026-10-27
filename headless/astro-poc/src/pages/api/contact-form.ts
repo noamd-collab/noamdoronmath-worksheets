@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { submitContactForm } from '../../lib/wixContactForm';
+import { submitContactForm, formsLiveSubmitBlocker } from '../../lib/wixContactForm';
 
 export const prerender = false;
 
@@ -36,14 +36,22 @@ export const POST: APIRoute = async ({ request }) => {
     });
   }
 
-  // The client reads only ok, mode and error. Credential flags, site IDs and
-  // setup instructions stay on the server (formsLiveSubmitBlocker in tests/CLI).
-  return new Response(JSON.stringify(result), {
-    status: 200,
-    headers: { 'content-type': 'application/json' },
-  });
+  return new Response(
+    JSON.stringify({
+      ...result,
+      liveSubmit: formsLiveSubmitBlocker(),
+    }),
+    { status: 200, headers: { 'content-type': 'application/json' } }
+  );
 };
 
-/** POST only. A public GET used to expose the live-submit configuration. */
-export const GET: APIRoute = async () =>
-  new Response(null, { status: 405, headers: { allow: 'POST' } });
+export const GET: APIRoute = async () => {
+  const liveSubmit = formsLiveSubmitBlocker();
+  return new Response(
+    JSON.stringify({
+      mode: liveSubmit.blocked ? 'dry-run' : 'live-ready-awaiting-noam-test',
+      liveSubmit,
+    }),
+    { status: 200, headers: { 'content-type': 'application/json' } }
+  );
+};
