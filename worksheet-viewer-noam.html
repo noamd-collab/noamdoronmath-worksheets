@@ -2,6 +2,18 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="utf-8">
+<script id="noam-preview-viewer-redirect">
+(function () {
+  "use strict";
+  var page = window.location;
+  // Preview hosts cannot call Ramzi's production API. Keep the exact worksheet
+  // URL, and replace this history entry so Back cannot return to a broken copy.
+  if (/^[a-z0-9]{6}-noam-math-astro-poc-amiramnoam-130a\.wix-site-host\.com$/i.test(page.hostname) &&
+      page.pathname === "/worksheet-viewer-noam.html") {
+    page.replace("https://www.noamdoronmath.co.il" + page.pathname + page.search + page.hash);
+  }
+}());
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 
 <title>דף עבודה · מתמטיקה · נועם דורון</title>
