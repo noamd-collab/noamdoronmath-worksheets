@@ -20,6 +20,9 @@ for(const file of ['public/worksheet-viewer-noam.html','../../worksheet-viewer-n
  const helpers=extract(source,'var noamSourceCropCache=new Map();','// Resolve every illustration');
  const crops=extract(source,'function cropExerciseCanvasFromPdf','function cropExerciseCanvasFromView');
  const identity=extract(source,'function noamDiagramSourceIdentity','function noamDiagramAnalysis');
+ const nativeIdentity=['noamNativeDataUrl','noamSourceVisualIdentity'].map(name=>{
+  const text=source.slice(source.indexOf('function '+name+'('));return text.slice(0,text.indexOf('\nfunction ',1));
+ }).join('\n');
  const request=extract(source,'function requestNoamDiagram','function noamVisualAnswer');
  const typed=extract(source,'function tryNoamLocalVisual','function insertNoamMath');
  const offer=extract(source,'function noamCanOfferDrawing','function noamManualVisual');
@@ -38,10 +41,10 @@ for(const file of ['public/worksheet-viewer-noam.html','../../worksheet-viewer-n
    stitchCropSegments:(segments:any[])=>{calls.push({stitched:segments.length});return{width:900,height:420,toDataURL:(type:string)=>{assert.equal(type,'image/png');return 'data:image/png;base64,YQ==';}};},
    noamManifestOcrUnreliable:()=>true,noamRebuildSelectedPartExpression:()=>{throw new Error('source crops must not be rebuilt');},
    noamDiagramRuntime:()=>runtime,noamSourceVisualOptions:(o:any)=>({...o}),noamMessageVisualOptions:()=>message.diagramOptions||{},
-   noamNativeDataUrl:()=>null,noamConstructedVisual:()=>null,noamPrepareNativeFocus:async()=>null,noamSourceGivens:async()=>null,
+   noamConstructedVisual:()=>null,noamPrepareNativeFocus:async()=>null,noamSourceGivens:async()=>null,
    noamDiagramSourceInput:async()=>{calls.push('generation');throw new Error('protected route reached');},
    noamDiagramError:()=> 'unavailable',fetch:()=>{throw new Error('source crops must not fetch a generated image');}};
-  runInNewContext(helpers+'\n'+identity+'\n'+crops+'\n'+zoom+'\n'+label+'\n'+offer+'\n'+request,context);
+  runInNewContext(helpers+'\n'+identity+'\n'+nativeIdentity+'\n'+crops+'\n'+zoom+'\n'+label+'\n'+offer+'\n'+request,context);
   return {document,window,context,calls,ex,message,thread,runtime,container:document.getElementById('bubble')!};
  }
  it(file+': G9-T41 q1a displays every reviewed crop, preserving unsupported state and generation retry',async()=>{

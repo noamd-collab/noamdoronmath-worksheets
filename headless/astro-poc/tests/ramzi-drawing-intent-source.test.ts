@@ -42,7 +42,7 @@ for (const file of ['worksheet-viewer-noam.html', 'headless/astro-poc/public/wor
       noamDiagramError: () => 'unsupported', busy: false, drawingAnswer: message,
     };
     const sourceHelpers = html.slice(html.indexOf('var noamSourceVisualPackages='), html.indexOf('function noamNativeFigure('));
-    runInNewContext(nativeModule + '\n' + sourceHelpers + '\n' + ['noamMessageVisualOptions', 'noamNativeDiagramContext', 'noamDiagramSourceInput', 'requestNoamDiagram'].map(fn).join('\n'), c);
+    runInNewContext(nativeModule + '\n' + sourceHelpers + '\n' + ['noamMessageVisualOptions', 'noamNativeDiagramContext', 'noamTypedVisualContext', 'noamInspectVisualPlan', 'noamRenderVisualPlan', 'noamDiagramSourceInput', 'requestNoamDiagram'].map(fn).join('\n'), c);
     window.NoamNativeVisual = c.NoamNativeVisual;
     window.NoamDiagramPlan = { inspect: () => ({ ok: false, reason: 'unsupported' }) };
     return { c, calls, data, exercise, manifest, message, thread, runtime };

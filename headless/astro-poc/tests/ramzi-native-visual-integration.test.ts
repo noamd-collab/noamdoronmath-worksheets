@@ -6,6 +6,7 @@ import { parseHTML } from 'linkedom';
 
 const viewer = readFileSync(new URL('../public/worksheet-viewer-noam.html', import.meta.url), 'utf8');
 const sourceModule = readFileSync(new URL('../public/noam-native-visual.js', import.meta.url), 'utf8');
+const authoredModule = readFileSync(new URL('../public/noam-authored-visual.js', import.meta.url), 'utf8');
 const helper = 'var noamSourceVisualPackages=' + viewer.split('var noamSourceVisualPackages=')[1].split('function noamNativeFigure(')[0];
 function fn(name: string) {
   const text = viewer.slice(viewer.indexOf('function ' + name + '('));
@@ -233,4 +234,30 @@ it('rehydration pending guard clears after failure so a later render retries', a
 it('source helper blocks are identical in root and released viewer', () => {
   const root = readFileSync(new URL('../../../worksheet-viewer-noam.html', import.meta.url), 'utf8');
   assert.equal('var noamSourceVisualPackages=' + root.split('var noamSourceVisualPackages=')[1].split('function noamNativeFigure(')[0], helper);
+});
+
+it('generic draw action resolves authored intervals without protected generation, and rehydrates intent', async () => {
+  const packageData=JSON.parse(readFileSync(new URL('../public/noam-ai/native/G8-T28/b/noam-ai.json',import.meta.url),'utf8'));
+  const f=fixture(async()=>({ok:true,json:async()=>packageData}));
+  Object.assign(f.exercise,{id:'G8-T28-B-Q08ב',part:'ב',nativeQuestionId:'q8',nativeItemId:'q8b'});
+  delete (f.exercise as any).nativeFigureId;delete (f.exercise as any).nativeFigureUrl;
+  f.c.manifest.nativeExportUrl='/noam-ai/native/G8-T28/b/noam-ai.json';
+  runInNewContext(authoredModule,f.c);f.c.window.NoamAuthoredVisual=f.c.NoamAuthoredVisual;
+  const options={...opts,answer:'האם יש מספרים בין 20 ל-21 שאינם נכללים במחלקה?',drawCurrentStep:true};
+  const result=await f.c.noamRequestSourceFirst(f.exercise,f.thread,f.message,options);
+  assert.equal(result.presentation,'authored-intervals');assert.equal(f.fallback.length,0);assert.equal(f.calls.length,1);
+  assert.equal(result.options.drawCurrentStep,true);assert.equal(result.expression,undefined);assert.equal(result.intervals,undefined);
+  assert.equal(f.c.noamRenderSourceVisual(result).querySelectorAll('[data-role="given-interval"]').length,2);
+  result.intervals=[{start:0,end:999}];
+  assert.doesNotMatch(f.c.noamRenderSourceVisual(result).textContent,/999/);
+  f.c.manifest.nativeExportSha256='changed';assert.equal(f.c.noamRenderSourceVisual(result),null);
+});
+it('auto authored aid requires a matching focus and does not attach to an unrelated hint', async()=>{
+  const packageData=JSON.parse(readFileSync(new URL('../public/noam-ai/native/G8-T28/b/noam-ai.json',import.meta.url),'utf8'));
+  const f=fixture(async()=>({ok:true,json:async()=>packageData}));Object.assign(f.exercise,{id:'G8-T28-B-Q08ב',part:'ב',nativeQuestionId:'q8',nativeItemId:'q8b'});
+  delete (f.exercise as any).nativeFigureId;delete (f.exercise as any).nativeFigureUrl;f.c.manifest.nativeExportUrl='/noam-ai/native/G8-T28/b/noam-ai.json';
+  runInNewContext(authoredModule,f.c);f.c.window.NoamAuthoredVisual=f.c.NoamAuthoredVisual;
+  assert.equal(await f.c.noamAttachSourceHint(f.exercise,f.thread,f.message,{...opts,answer:'קראו את המשפט הראשון.'}),null);
+  const visual=await f.c.noamAttachSourceHint(f.exercise,f.thread,f.message,{...opts,answer:'האם יש מספרים בין 20 ל-21 שאינם נכללים במחלקה?'});
+  assert.equal(visual.presentation,'authored-intervals');assert.equal(f.fallback.length,0);
 });
