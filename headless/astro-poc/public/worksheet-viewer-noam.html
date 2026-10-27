@@ -7228,6 +7228,12 @@ function noamSourcePanelModuleMissing(exercise,source){
   var qid=String(exercise.nativeQuestionId||'');if(!/^q[0-9]+$/.test(qid)){return false;}
   return source.data.figures.filter(function(f){return f&&f.question===qid&&new RegExp('^'+qid+'_head(?:_[0-9]+)?$').test(f.id||'');}).length>1;
 }
+function noamSourcePanelBlocksFallback(exercise){
+  if(noamSourcePanelReviewed(exercise)){return true;}
+  var entry=noamSourceVisualPackages[JSON.stringify([noamNativeDataUrl(exercise),manifest&&manifest.nativeExportSha256||''])];
+  var primary=entry&&entry.figures[String(exercise.nativeFigureUrl||'')];
+  return noamSourcePanelModuleMissing(exercise,primary&&primary.value);
+}
 function noamSourcePanelIdentity(exercise,group){
   return JSON.stringify([noamSourceVisualIdentity(exercise),group.sourceKey,group.panelIds]);
 }
@@ -7452,7 +7458,16 @@ function noamRequestSourceFirst(exercise,thread,message,providedOptions){
   var completion=noamPrepareSourceVisual(exercise,options).catch(function(){return null;}).then(function(visual){
     runtime.messages.delete(message);
     if((thread.messages||[]).indexOf(message)<0||requestSourceIdentity!==noamSourceVisualIdentity(exercise)){return null;}
-    if(!visual){return requestNoamDiagram(exercise,thread,message,Object.assign({},options,{nativeAttempted:true}));}
+    if(!visual){
+      if(noamSourcePanelBlocksFallback(exercise)){
+        delete message.visual;
+        message.diagramError='לא הצלחנו לטעון את כל לוחות המקור של השאלה. אפשר לנסות שוב.';
+        message.diagramErrorCode='DIAGRAM_UNAVAILABLE';
+        if(message.diagramTyped){message.text='לוחות המקור של השאלה עדיין לא נטענו.';}
+        saveNoamState();noamDiagramRefresh(exercise,thread,message,true);return null;
+      }
+      return requestNoamDiagram(exercise,thread,message,Object.assign({},options,{nativeAttempted:true}));
+    }
     message.visual=visual;delete message.diagramError;delete message.diagramErrorCode;
     if(message.diagramTyped){
       message.text=visual.sourcePanelGroup?'הנה לוחות המקור וצילום השאלה עם הכיתובים המקוריים. לא נוצר שרטוט חדש ולא נבחר לוח כתשובה.':visual.presentation==='source-context'?'הנה השרטוט המקורי של הסעיף. לא נוספה אליו בנייה חדשה.':'הנה המחשה של השלב שעליו שאלת.';
@@ -8783,11 +8798,35 @@ function noamRenderVisualPlan(plan,checked){
   return plan&&plan.version===2?window.NoamVisualPlan&&window.NoamVisualPlan.render(document,checked.scene):window.NoamGeometry.render(document,checked.scene);
 }
 function noamRenderAiDiagram(visual){
-  if (!visual||!window.NoamDiagramPlan||!window.NoamGeometry||!manifest){return null;}
+  if (!visual||!manifest){return null;}
   var exercise=(manifest.exercises||[]).find(function(item){return item.id===visual.exerciseId;});
   if (!exercise||visual.sourceIdentity!==noamDiagramSourceIdentity(exercise)){return null;}
+  if(visual.plan&&visual.plan.version===2&&visual.nativeSourceIdentity!==noamSourceVisualIdentity(exercise)){return null;}
+  // Old generic plans may refer to only the primary heading. Rehydrate the
+  // current original group instead; never compile that plan as a new diagram.
+  if(window.NoamSourcePanels&&noamSourcePanelReviewed(exercise)){
+    var groupSource=noamCachedSourceVisual(exercise);
+    if(!groupSource){
+      if(!noamRenderAiDiagram.groupPending){noamRenderAiDiagram.groupPending=new WeakSet();}
+      if(!noamRenderAiDiagram.groupPending.has(visual)){
+        noamRenderAiDiagram.groupPending.add(visual);
+        var groupIdentity=noamSourceVisualIdentity(exercise);
+        noamLoadSourceVisual(exercise).then(function(loaded){
+          noamRenderAiDiagram.groupPending.delete(visual);
+          if(loaded&&groupIdentity===noamSourceVisualIdentity(exercise)&&selectedExercise&&selectedExercise.id===exercise.id){renderNoamChat();}
+        },function(){noamRenderAiDiagram.groupPending.delete(visual);});
+      }
+      return null;
+    }
+    var groupFigure=noamRenderSourcePanels(groupSource,exercise);
+    if(groupFigure){visual.presentation='source-context';}
+    return groupFigure;
+  }
+  // A saved heading plan cannot establish single-panel scope while the group
+  // registry is unavailable. Its retry can reload and validate current source.
+  if(!window.NoamSourcePanels&&/_head(?:_[0-9]+)?$/.test(String(exercise.nativeFigureId||''))){return null;}
+  if(!window.NoamDiagramPlan||!window.NoamGeometry){return null;}
   if(visual.plan&&visual.plan.version===2){
-    if(visual.nativeSourceIdentity!==noamSourceVisualIdentity(exercise)){return null;}
     if(!noamCachedSourceVisual(exercise)){
       if(!noamRenderAiDiagram.typedPending){noamRenderAiDiagram.typedPending=new WeakSet();}
       if(!noamRenderAiDiagram.typedPending.has(visual)){

@@ -21,7 +21,7 @@ function fixture(v:string,path='G8-TWOSRC/a',qid='q3',part='ג',hooks:any={}){
  fetch:async(url:string)=>{calls.push(url);if(hooks.wait)await hooks.wait;if(hooks.fail===url)return {ok:false};const body=readFileSync(new URL(url.slice(1),root),'utf8');return {ok:true,json:async()=>JSON.parse(body),text:async()=>hooks.svg?hooks.svg(url,body):body};},
  requestNoamDiagram:async(...args:any[])=>{fallback.push(args);return 'protected-fallback';}};
  const helper='var noamSourceVisualPackages='+v.split('var noamSourceVisualPackages=')[1].split('function noamNativeFigure(')[0];
- runInNewContext(native+'\n'+panels+'\n'+fn(v,'noamDiagramSourceIdentity')+'\n'+helper+'\n'+['noamDiagramCurrent','noamDiagramRefresh','noamTypedVisualContext','noamAddDiagramExpansion'].map(n=>fn(v,n)).join('\n'),c);
+ runInNewContext(native+'\n'+panels+'\n'+fn(v,'noamDiagramSourceIdentity')+'\n'+helper+'\n'+['noamDiagramCurrent','noamDiagramRefresh','noamTypedVisualContext','noamAddDiagramExpansion','noamRenderAiDiagram'].map(n=>fn(v,n)).join('\n'),c);
  window.NoamNativeVisual=c.NoamNativeVisual;window.NoamSourcePanels=c.NoamSourcePanels;
  return {c,manifest,exercise,message,thread,calls,crops,fallback,runtime,document,window};
 }
@@ -85,8 +85,28 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
    const f=fixture(v,undefined,undefined,undefined,hooks);
    if(mode==='module')f.window.NoamSourcePanels=undefined;if(mode==='unapproved')f.manifest.pdfHash='0'.repeat(32);if(mode==='bounds')f.exercise.crops[0].w=2;if(mode==='sibling')f.exercise.crops=[f.exercise.crop];if(mode==='wrong-item')f.exercise.nativeItemId='q4a';if(mode==='wrong-pdf')f.manifest.sourceSha256='unverified';
    assert.equal(await f.c.noamAttachSourceHint(f.exercise,f.thread,f.message,opts),null,mode);assert.equal(f.message.visual,undefined,mode);assert.equal(f.c.noamTypedVisualContext(f.exercise,{}),null,mode);
-   await f.c.noamRequestSourceFirst(f.exercise,f.thread,f.message,opts);assert.equal(f.fallback.length,1,mode);assert.equal(f.message.visual,undefined,mode);
+   await f.c.noamRequestSourceFirst(f.exercise,f.thread,f.message,opts);assert.equal(f.fallback.length,0,mode);assert.equal(f.message.visual,undefined,mode);assert.equal(f.message.diagramErrorCode,'DIAGRAM_UNAVAILABLE',mode);assert.match(f.message.diagramError,/אפשר לנסות שוב/,mode);
   }
+ });
+ it(prefix+': saved v1 and v2 generic plans resolve only the complete current original group, including cold reload',async()=>{
+  for(const version of [1,2]){
+   const f=fixture(v,'G8-T17/a','q9','ב');
+   f.window.NoamDiagramPlan={compile(){throw new Error('Old primary-only plan compiled');}};f.window.NoamGeometry={render(){throw new Error('Old geometry rendered');}};
+   f.window.NoamVisualPlan={inspect(){throw new Error('Typed primary-only plan inspected');}};
+   const data=JSON.parse(readFileSync(new URL('noam-ai/native/G8-T17/a/noam-ai.json',root),'utf8'));
+   const visual:any={type:'ai-diagram',exerciseId:f.exercise.id,sourceIdentity:f.c.noamDiagramSourceIdentity(f.exercise),nativeSourceIdentity:f.c.noamSourceVisualIdentity(f.exercise),plan:{version,status:'ok',family:'function',evidence:[{source:'question',quote:data.questions.find((q:any)=>q.id==='q9').text}]},context:{hintText:'התבוננו בגרפים.',studentMessage:'הצג המחשה'}};
+   assert.equal(f.c.noamRenderAiDiagram(visual),null);await settled();
+   const figure=f.c.noamRenderAiDiagram(visual);assert.ok(figure);assert.equal(figure.dataset.visualType,'source-panel-group');assert.equal(figure.querySelectorAll('svg image').length,2);assert.equal(figure.querySelectorAll('[data-role="given-function"]').length,0);assert.equal(visual.presentation,'source-context');
+   const bad=clone(visual);if(version===2)bad.nativeSourceIdentity='stale-package';else bad.sourceIdentity='wrong-pdf';assert.equal(f.c.noamRenderAiDiagram(bad),null);
+  }
+ });
+ it(prefix+': failed saved generic group loads never compile a primary plan and can be retried without a model call',async()=>{
+  const hooks:any={fail:'/noam-ai/native/G8-T17/a/figures/q9_head_2.svg'},f=fixture(v,'G8-T17/a','q9','ב',hooks);
+  f.window.NoamDiagramPlan={compile(){throw new Error('Old primary-only compile');}};f.window.NoamGeometry={render(){throw new Error('Old geometry');}};
+  const visual={type:'ai-diagram',exerciseId:f.exercise.id,sourceIdentity:f.c.noamDiagramSourceIdentity(f.exercise),plan:{version:1},context:{}};
+  assert.equal(f.c.noamRenderAiDiagram(visual),null);await settled();assert.equal(f.c.noamRenderAiDiagram(visual),null);await settled();assert.equal(f.c.renderCount,0);
+  f.message.visual=visual;await f.c.noamRequestSourceFirst(f.exercise,f.thread,f.message,opts);assert.equal(f.fallback.length,0);assert.equal(f.message.visual,undefined);assert.equal(f.message.diagramErrorCode,'DIAGRAM_UNAVAILABLE');assert.equal(f.runtime.messages.size,0);
+  delete hooks.fail;const retried=await f.c.noamRequestSourceFirst(f.exercise,f.thread,f.message,opts);assert.equal(retried.sourcePanelGroup,true);assert.equal(retried.presentation,'source-context');assert.equal(f.message.diagramError,undefined);assert.equal(f.fallback.length,0);
  });
  it(prefix+': grouped model context keeps identities separate, preserves OCR, and requires all panels',async()=>{
   const f=fixture(v);assert.equal(f.c.noamTypedVisualContext(f.exercise,{}),null);const original={readable:true,diagram_description:'תיאור מודפס מאומת'};
