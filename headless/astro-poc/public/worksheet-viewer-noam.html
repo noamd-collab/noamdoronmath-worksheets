@@ -8779,14 +8779,20 @@ function noamDiagramSourceInput(exercise){
   // Vision and planning remain one background job. Native source context adds
   // the exact printed scope and visible identities; the crop retains its marks.
   return noamNativeDiagramContext(exercise).then(function(nativeContext){
+    function withNativeContext(text){
+      // Keep the existing authored/parsed source facts first. Native identities
+      // supplement them; they cannot replace printed numeric or equality marks.
+      var original=String(text||'').slice(0,12000);
+      return (original+(nativeContext?'\n\n'+nativeContext:'')).slice(0,12000);
+    }
     if (exercise.requiresVision||exercise.needsVision){
       return cropExerciseImage(exercise).then(function(imageDataUrl){
-        return {questionText:String(nativeContext||exercise.prompt||'').slice(0,12000),imageDataUrl:imageDataUrl};
+        return {questionText:withNativeContext(exercise.prompt),imageDataUrl:imageDataUrl};
       });
     }
     return getExerciseAnalysis(exercise,true).then(function(analysis){
       var cleanAnalysis=noamDiagramAnalysis(analysis);
-      return {questionText:nativeContext||noamDiagramQuestionText(exercise,cleanAnalysis),imageDataUrl:''};
+      return {questionText:withNativeContext(noamDiagramQuestionText(exercise,cleanAnalysis)),imageDataUrl:''};
     });
   });
 }

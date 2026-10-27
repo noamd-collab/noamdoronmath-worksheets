@@ -228,7 +228,7 @@ describe('exact-design protected live-baseline boundaries', () => {
     // identities while retaining its original crop for printed marks. Dedicated
     // drawing-intent-source tests cover scope, source identity and old requests.
     // Version the successful-plan cache for the changed payload; no auth change.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '187587b7ed617b84428b52f3857008ef9590435b04026b323bd58725d7f16a65');
+    assert.equal(sha256(JSON.stringify(releasedScripts)), '30bf96d9065d68eb927caee832b4dcb88044906412057891785528b121481a18');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {

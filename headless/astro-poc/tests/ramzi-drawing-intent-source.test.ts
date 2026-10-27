@@ -32,7 +32,7 @@ for (const file of ['worksheet-viewer-noam.html', 'headless/astro-poc/public/wor
       fetch: async (url: string) => ({ ok: true, json: async () => data, text: async () => originalSvg }),
       cropExerciseImage: async () => { calls.push('original-crop'); return 'data:image/png;base64,ORIGINAL'; },
       getExerciseAnalysis: async () => { calls.push('analysis'); return { transcription: 'legacy analysis' }; },
-      noamDiagramAnalysis: (a: any) => a, noamDiagramQuestionText: () => 'legacy source',
+      noamDiagramAnalysis: (a: any) => a, noamDiagramQuestionText: (e: any, a: any) => [e.prompt, a.transcription, a.diagram_description].filter(Boolean).join('\n'),
       noamDiagramRefresh() {}, saveNoamState() {}, noamSourceCropRequested: () => false,
       noamConstructedVisual: () => null, noamParsedLocalVisual: () => null, noamPrepareNativeFocus: async () => null,
       noamSourceGivens: async () => [], noamRenderAiDiagram: () => null,
@@ -78,10 +78,26 @@ for (const file of ['worksheet-viewer-noam.html', 'headless/astro-poc/public/wor
     assert.match(source.questionText, /הסעיף הנבחר: מצאו בדיוק את האלכסון/);
     assert.match(source.questionText, /segment:AC/);
     assert.match(source.questionText, /נקודות A, B, C, D, E/);
-    for (const excluded of ['FORBIDDEN_PARENT_GIVEN_9876', 'סעיף קודם', '247.71', 'svg_xy', 'DIAGRAM_FACTS_JSON']) {
+    assert.ok(source.questionText.startsWith(f.exercise.prompt + '\n\n'));
+    for (const excluded of ['FORBIDDEN_PARENT_GIVEN_9876', '247.71', 'svg_xy', 'DIAGRAM_FACTS_JSON']) {
       assert.ok(!source.questionText.includes(excluded), excluded);
     }
     assert.match(source.questionText, /סמנים מודפסים.*תמונת המקור/);
+  });
+
+  it(file + ': parsed factual marks survive native enrichment without an image and keep precedence under the payload bound', async () => {
+    const f = fixture(); f.exercise.requiresVision = false; f.exercise.needsVision = false;
+    f.c.getExerciseAnalysis = async () => ({ transcription: 'נתון AB=CD.', diagram_description: 'מודפס סימון זווית ABC בת 90 מעלות.' });
+    const source = await f.c.noamDiagramSourceInput(f.exercise);
+    assert.match(source.questionText, /נתון AB=CD/);
+    assert.match(source.questionText, /זווית ABC בת 90/);
+    assert.match(source.questionText, /segment:AC/);
+    assert.equal(source.imageDataUrl, '');
+    assert.equal(f.calls.length, 0);
+    const longSource = 'printed-facts-'.repeat(1000);
+    f.c.noamDiagramQuestionText = () => longSource;
+    const bounded = await f.c.noamDiagramSourceInput(f.exercise);
+    assert.equal(bounded.questionText, longSource.slice(0,12000));
   });
 
   it(file + ': native source mismatch or replacement never crosses into another selected part', async () => {
