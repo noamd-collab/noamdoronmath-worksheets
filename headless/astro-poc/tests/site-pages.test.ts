@@ -63,6 +63,23 @@ describe('M24 site / policy pages', () => {
     assert.ok(client.includes('ההודעה לא נמסרה לבעל האתר'));
   });
 
+  it('aboutus shows only the e-mail link outside preview hosts while the form is inactive', () => {
+    const tpl = readFileSync('src/components/SitePage.astro', 'utf8');
+    assert.ok(tpl.includes("import { isPreviewHost } from '../lib/siteSeo';"));
+    assert.ok(tpl.includes("const formInactive = mode === 'dry-run' || mode === 'mock';"));
+    assert.ok(tpl.includes('if (formInactive && !isPreviewHost(Astro.url.hostname)) {'));
+    const start = tpl.indexOf('data-contact-unavailable');
+    const end = tpl.indexOf('data-contact-form', start);
+    assert.ok(start > 0 && end > start, 'fallback block precedes the form block');
+    const fallback = tpl.slice(start, end);
+    assert.ok(fallback.includes('<a href={block.mailto}>{block.mailtoLabel}</a>'));
+    assert.ok(!fallback.includes('<form'));
+    assert.ok(!fallback.includes('nd-contact-form.js'));
+    assert.ok(!fallback.includes('במצב בדיקה'));
+    // The test-mode sentence renders only while the form is inactive.
+    assert.match(tpl, /\{formInactive && \(\s*<p class="site-page__contact-note">/);
+  });
+
   it('site entry gate uses production copy with combined privacy href', () => {
     assert.ok(existsSync('public/nd-site-gate.js'));
     const gate = readFileSync('public/nd-site-gate.js', 'utf8');

@@ -10,6 +10,7 @@ import {
 import { isolateBlogPostDisplay } from '../lib/mathDirection';
 import { articleJsonLd, jsonLdTypes } from '../lib/structuredData';
 import { storedImageDimensions } from '../lib/blogSeo';
+import { blogPostDateLabel } from '../lib/hebrewDate';
 
 interface Props {
   post: BlogPostContent;
@@ -32,6 +33,7 @@ const articleFallback =
         dateModified: post.dateModified,
       });
 const coverSize = storedImageDimensions(post.jsonLd, post.coverImage);
+const dateLabel = blogPostDateLabel(post);
 const postCrumbs = [
   { name: 'בית', path: '/' },
   { name: 'בלוג', path: '/blog' },
@@ -112,14 +114,14 @@ const hasRecent = !!(post.recentPosts?.items && post.recentPosts.items.length > 
             )
           }
           {
-            (post.datePublished || post.dateDisplay) && (
+            dateLabel && (
               <>
                 {post.author && <span aria-hidden="true"> · </span>}
                 <time
                   data-blog-date
                   datetime={post.datePublished || undefined}
                 >
-                  {post.dateDisplay || post.datePublished}
+                  {dateLabel}
                 </time>
               </>
             )
@@ -127,7 +129,7 @@ const hasRecent = !!(post.recentPosts?.items && post.recentPosts.items.length > 
           {
             post.readingTime && (
               <>
-                {(post.author || post.datePublished || post.dateDisplay) && (
+                {(post.author || dateLabel) && (
                   <span aria-hidden="true"> · </span>
                 )}
                 <span class="blog-post__reading-time" data-blog-reading-time>

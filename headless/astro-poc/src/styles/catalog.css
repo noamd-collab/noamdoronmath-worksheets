@@ -3396,6 +3396,9 @@ html.noam-a11y-motion .hero-draw {
 .cl-tc-c { fill: #ea580c; color: #ea580c; }
 .cl-tc-d { fill: #4b5563; color: #4b5563; }
 .cl-tc-ok, .cl-ok { fill: var(--green); color: var(--green); }
+/* Caption text on the white card: var(--green) is 3.45:1, below WCAG 1.4.3.
+   #1f7a42 is 5.36:1. Text color only; SVG fills keep var(--green). */
+.concept-loop__caption .cl-ok { color: #1f7a42; }
 
 .concept-loop .cl-tile { stroke: var(--navy); stroke-width: 1.5; }
 .concept-loop .cl-tile-a { fill: rgba(30, 136, 229, 0.38); }

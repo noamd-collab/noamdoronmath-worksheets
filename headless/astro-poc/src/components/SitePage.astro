@@ -4,6 +4,7 @@ import LineArtDoodles from './LineArtDoodles.astro';
 import LandingLoop from './LandingLoop.astro';
 import { marketingLandingLoop } from '../lib/landingLoops';
 import { loadSitePage, localizeSiteHref, type SitePageBlock } from '../lib/sitePages';
+import { isPreviewHost } from '../lib/siteSeo';
 
 interface Props {
   slug: string;
@@ -226,6 +227,23 @@ const marketingLoop = marketingLandingLoop(page.slug);
           if (block.type === 'contact') {
             const wf = block.wixForm;
             const mode = wf?.submitMode || 'dry-run';
+            const formInactive = mode === 'dry-run' || mode === 'mock';
+            // The form does not deliver messages yet. Real visitors get the
+            // e-mail link only; preview and local hosts keep the form for tests.
+            if (formInactive && !isPreviewHost(Astro.url.hostname)) {
+              return (
+                <div
+                  class="site-page__contact"
+                  data-contact-unavailable
+                  data-note={block.note}
+                  data-submit-mode={mode}
+                >
+                  <p>
+                    <a href={block.mailto}>{block.mailtoLabel}</a>
+                  </p>
+                </div>
+              );
+            }
             return (
               <div
                 class="site-page__contact"
@@ -260,9 +278,11 @@ const marketingLoop = marketingLandingLoop(page.slug);
                   <button type="submit">שליחה</button>
                 </form>
                 <p class="site-page__contact-status" data-contact-status role="status" aria-live="polite" />
-                <p class="site-page__contact-note">
-                  בתצוגה זו הטופס במצב בדיקה בלבד וההודעה אינה נמסרת לבעל האתר. אפשר גם לפנות ישירות:
-                </p>
+                {formInactive && (
+                  <p class="site-page__contact-note">
+                    בתצוגה זו הטופס במצב בדיקה בלבד וההודעה אינה נמסרת לבעל האתר. אפשר גם לפנות ישירות:
+                  </p>
+                )}
                 <p>
                   <a href={block.mailto}>{block.mailtoLabel}</a>
                 </p>

@@ -116,12 +116,17 @@ describe('exact-design protected live-baseline boundaries', () => {
     // Its early guard has a dedicated behavioral suite. Exclude only that
     // addition so the original head/script hashes continue protecting the
     // unchanged viewer, AI answers, authentication and storage.
-    const viewer = read('public/worksheet-viewer-noam.html').replace(
-      /<script id="noam-preview-viewer-redirect">[\s\S]*?<\/script>\n/,
-      '',
-    );
+    // Noam approved noindex for the viewer on 2026-10-27 (SEO audit ג-4): the
+    // robots line is asserted on its own and excluded from the head hash below.
+    const rawViewer = read('public/worksheet-viewer-noam.html');
+    const robotsLine = '<meta name="robots" content="noindex,follow">\n';
+    assert.equal(rawViewer.split(robotsLine).length - 1, 1, 'viewer carries exactly one noindex,follow robots line');
+    const viewer = rawViewer
+      .replace(/<script id="noam-preview-viewer-redirect">[\s\S]*?<\/script>\n/, '')
+      .replace(robotsLine, '');
     const head = viewer.match(/<head(?:\s[^>]*)?>[\s\S]*?<\/head>/i)?.[0];
     assert.ok(head, 'Viewer must retain its head');
+    assert.ok(rawViewer.indexOf(robotsLine) < rawViewer.indexOf('</head>'), 'robots line sits in the head');
     // Phone reading intentionally changes the inline CSS in this head.
     // Metadata, fonts, canonical and robots are unchanged.
     // 2026-10-19: Help marks replace repeated robots; expanded source previews scroll

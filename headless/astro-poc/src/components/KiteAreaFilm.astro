@@ -3,7 +3,7 @@
     <div class="ka-film" data-el="kite-area-film">
 <div id="ka-composition" class="ka-composition" data-ka="composition" data-composition-id="ka-kite-area" data-start="0" data-duration="84" data-width="1920" data-height="1080" data-track-index="0">
 <div class="scene-content">
-<header class="topbar"><div class="title-wrap" data-ka="title-wrap"><h1>שטח דלתון</h1><p>משכפלים, מסובבים — ומבינים את הנוסחה</p></div><div class="brand" data-ka="brand">נועם דורון <small>· מתמטיקה</small></div></header>
+<header class="topbar"><div class="title-wrap" data-ka="title-wrap"><div class="ka-title">שטח דלתון</div><p>משכפלים, מסובבים — ומבינים את הנוסחה</p></div><div class="brand" data-ka="brand">נועם דורון <small>· מתמטיקה</small></div></header>
 <div class="proof-row"><div class="diagram-wrap"><svg id="ka-geometry" data-ka="geometry" xmlns="http://www.w3.org/2000/svg" viewBox="135 -12 850 790" role="img" aria-labelledby="ka-diagram-title ka-diagram-desc">
 <title id="ka-diagram-title" data-ka="diagram-title">שכפול ארבעת משולשי הדלתון יוצר מלבן</title>
 <desc id="ka-diagram-desc" data-ka="diagram-desc">הדלתון ABCD מחולק בארבעת המשולשים שנוצרים מחיתוך האלכסונים המאונכים AC ו-BD בנקודה O. כל עותק מסתובב בחצי סיבוב סביב אמצע צלע הדלתון וממלא פינה של מלבן שגובהו AC ורוחבו BD.</desc>
@@ -105,7 +105,10 @@
     border-bottom: 1px solid #d6dbd7;
     direction: rtl;
   }
-  .title-wrap h1 {
+  /* Film title, not a page heading: the topic page owns the only h1.
+     Same look as the old h1, which took Secular One from design-v2.css. */
+  .title-wrap .ka-title {
+    font-family: 'Secular One', 'Secular One Fallback', 'Heebo', 'Heebo Fallback', Arial, sans-serif;
     font-size: 56px;
     line-height: 1.12;
     font-weight: 850;
@@ -415,7 +418,7 @@
     }
     .scene-content { padding: 24px 28px 20px; gap: 16px; }
     .topbar { height: 90px; padding-bottom: 12px; }
-    .title-wrap h1 { font-size: 45px; }
+    .title-wrap .ka-title { font-size: 45px; }
     .title-wrap p { font-size: 24px; }
     .brand { font-size: 24px; }
     .brand small { font-size: 22px; }
