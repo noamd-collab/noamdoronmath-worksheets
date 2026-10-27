@@ -102,7 +102,9 @@ it('AST matching keeps evidence quotes literal, fully quoted and bound to the se
 });
 
 it('unsupported or punctuated selected equations still prevent an unrelated parent expression from taking over',()=>{
-  for(const partText of ['פתרו x + 9 = 30.','פתרו x + 9 = 30:','פתרו את $x$ במשוואה x + 9 = 30','פתרו $\\sqrt{x}=9$','פתרו $x^{10}+9=30$','פשטו $\\sqrt{x}+9$']) {
+  const unsupportedParts=['פתרו x + 9 = 30.','פתרו x + 9 = 30:','פתרו את $x$ במשוואה x + 9 = 30',String.raw`פתרו $\sqrt{x}=9$`,'פתרו $x^{10}+9=30$',String.raw`פשטו $\sqrt{x}+9$`];
+  assert.ok(unsupportedParts[3].includes('\\sqrt'),'LaTeX backslash is present in the runtime fixture');
+  for(const partText of unsupportedParts) {
     const c={questionText:'נתון $x+2=8$.',partText,hintText:'נתבונן ב-$x+2=8$.'};
     assert.equal(compiler.inspect(op('x+2=8',c.questionText,'question'),c).reason,'selected-part-scope',partText);
   }
@@ -111,9 +113,19 @@ it('unsupported or punctuated selected equations still prevent an unrelated pare
     assert.equal(compiler.inspect(op('x + 2 = 8',c.questionText,'question'),c).ok,true,'an instruction or lone variable does not replace the parent expression');
   }
   const mixed={questionText:'נתון $x+2=8$.',partText:'פתרו את $x$ במשוואה x + 9 = 30',hintText:'בדקו $x+9=30$.'};
-  assert.equal(compiler.inspect(op('x+9=30',mixed.partText),mixed).ok,true,'mixed delimiters do not hide the actual plain selected equation');
+  assert.equal(compiler.inspect(op('x+9=30',mixed.partText),mixed).ok,false,'mixed plaintext is not promoted into source proof after removing marked math');
   const invalid={questionText:'',partText:'פתרו $x+9=30.$',hintText:'בדקו $x+9=30$.'};
   assert.equal(compiler.inspect(op('x+9=30',invalid.partText),invalid).ok,false,'a malformed authored math span is never trimmed into proof');
+});
+
+it('mixed math boundaries cannot manufacture a complete expression from either side of a delimiter',()=>{
+  for(const [partText,candidate] of [['$x$+2','+2'],['$x$-2','-2'],['$x$ + 2 = 8','+2=8'],['2+$x$','2+'],['$12$+9=7x','9=7x'],['$x$=2','=2'],['$12+9$+21','12+9'],['x$+2$','+2'],['1+$x+2$','x+2'],['$x+2$:3','x+2'],['$x+2$·3','x+2'],['$x+2$²','x+2']]) {
+    const c={questionText:'נתון $z+1=6$.',partText,hintText:'נתבונן בביטוי.'};
+    assert.equal(compiler.inspect(op(candidate,partText),c).ok,false,partText+' must not authorize '+candidate);
+    assert.equal(compiler.inspect(op('z+1=6',c.questionText,'question'),c).reason,'selected-part-scope','unsupported mixed math still owns selected scope');
+  }
+  const c={questionText:'',partText:'נתון $12 + 9 + 21 = 7x$.',hintText:'האם $12+9$+21 הוא האגף השמאלי?'};
+  assert.equal(compiler.inspect(op('12+9',c.partText),c).ok,false,'a partial hinted math span is not a complete hint AST proof');
 });
 
 it('unsupported or executable expression syntax is rejected rather than evaluated',()=>{

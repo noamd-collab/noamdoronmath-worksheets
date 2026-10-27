@@ -103,6 +103,30 @@
     // partial number or an operand sliced from a larger token cannot be proof.
     return spans.concat((rest.match(/[0-9A-Za-z+*/^().{}\\\s−–×·÷:=²³-]+/g) || []).map(function (span) { return span.trim(); }).filter(Boolean));
   }
+  function proofExpressions(text) {
+    text = String(text || '');
+    var spans = [], marked = false, re = /\$([^$\n]+)\$|\\\(([^\n]+?)\\\)/g, match;
+    function adjacentMath(index, direction) {
+      while (index >= 0 && index < text.length && /\s/.test(text[index])) index += direction;
+      var c = text[index] || '';
+      // A Hebrew prefix such as ב- before a delimited formula is prose. A
+      // separately written minus is still an arithmetic continuation.
+      if (c === '-' && direction < 0 && /[א-ת]/.test(text[index - 1] || '')) return false;
+      if (c === ':') {
+        index += direction; while (index >= 0 && index < text.length && /\s/.test(text[index])) index += direction;
+        return /[0-9A-Za-z$\\(){}]/.test(text[index] || '');
+      }
+      if (c === '.') return /[0-9]/.test(text[index + direction] || '');
+      return /[0-9A-Za-z$+*/^=(){}\[\]\\×·÷−–%²³<>≤≥≠±_\-]/.test(c);
+    }
+    while ((match = re.exec(text))) {
+      marked = true;
+      if (!adjacentMath(match.index - 1, -1) && !adjacentMath(match.index + match[0].length, 1)) spans.push(match[1] || match[2]);
+    }
+    // Mixed text is still inspected broadly for scope, but proof never joins
+    // or slices the plaintext left after removing a marked math expression.
+    return marked ? spans : completeExpressions(text);
+  }
   function selectedMathScope(text) {
     // Recognizing a selected mathematical task is broader than rendering it.
     // An unsupported root/power/equality still owns its scope. Never trim it
@@ -116,14 +140,14 @@
     var expected = JSON.stringify(target);
     function find(n) { if (!n) return null; if (JSON.stringify(n) === expected) return n; for (var child of n.children) { var found = find(child); if (found) return found; } return null; }
     var hintFocus = null;
-    for (var span of completeExpressions(source)) {
+    for (var span of proofExpressions(source)) {
       // Evidence stays literal. It must quote the entire authored expression
       // containing a focus, even when the candidate uses another spelling.
       if (!quote.includes(span)) continue;
       var spellings = new Map(), tree = expression(span, false, spellings), selected = find(tree);
       if (!selected) continue;
       if (selected !== tree) {
-        if (hintFocus === null) hintFocus = completeExpressions(hint).some(function (value) { return !!find(expression(value)); });
+        if (hintFocus === null) hintFocus = proofExpressions(hint).some(function (value) { return !!find(expression(value)); });
         if (!hintFocus) continue;
       }
       return { expression: spellings.get(selected) || span, tree: selected };
