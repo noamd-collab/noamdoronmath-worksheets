@@ -6704,12 +6704,62 @@ function noamLoadSourcePanels(exercise,source){
   while(noamSourcePanelGroups.size>8){noamSourcePanelGroups.delete(noamSourcePanelGroups.keys().next().value);}
   return entry.promise;
 }
+function noamSourcePanelDotFacts(source,group,context){
+  // Describe only complete, visible source arrays. SVG positions are used to
+  // verify rows, never as mathematical coordinates or an inferred stage rule.
+  if(!source||!group||group.requiresPrintedRoleContext||!context||
+      !/נקודות/.test(context.questionText)||!/תבנית|שלב/.test(context.questionText)||
+      !window.DOMParser){return null;}
+  var facts=[];
+  for(var panel of group.panels){
+    var figure=(source.data.figures||[]).find(function(f){return f.id===panel.id;});
+    var model=figure&&figure.visual_model,objects=model&&model.objects;
+    if(!model||model.kind!=='plane_geometry'||!Array.isArray(objects)||objects.length<4||objects.length>400||
+        objects.some(function(o){return o.type!=='point'||o.display!=='initial'||
+          ['context','given'].indexOf(o.role)<0||o.name||!o.svg_id||!Array.isArray(o.svg_xy)||o.svg_xy.length!==2;})){return null;}
+    var doc=new window.DOMParser().parseFromString(source.sourcePanelSvgById[panel.id],'image/svg+xml');
+    var svg=doc.documentElement,nodes=svg&&Array.from(svg.querySelectorAll('*'));
+    if(!svg||svg.localName!=='svg'||svg.getAttribute('xmlns')!=='http://www.w3.org/2000/svg'||!nodes||nodes.length!==objects.length||
+        Array.from(svg.attributes).some(function(a){return ['xmlns','width','height','viewBox','data-fig'].indexOf(a.name)<0;})||
+        nodes.some(function(n){return n.localName!=='circle'||n.parentNode!==svg;})){return null;}
+    var circles=Object.create(null),positions=[],radius=null;
+    for(var circle of nodes){
+      if(Array.from(circle.attributes).some(function(a){return ['id','cx','cy','r','fill','stroke'].indexOf(a.name)<0;})){return null;}
+      var id=circle.getAttribute('id'),x=Number(circle.getAttribute('cx')),y=Number(circle.getAttribute('cy')),r=Number(circle.getAttribute('r'));
+      if(!id||circles[id]||!['cx','cy','r'].every(function(k){return circle.hasAttribute(k);})||
+          ![x,y,r].every(Number.isFinite)||r<=0||!/^(?:#(?:000|111|222|333|000000|111111|222222|333333)|black)$/i.test(circle.getAttribute('fill')||'')||
+          !/^(?:none)?$/.test(circle.getAttribute('stroke')||'')||x-r<0||y-r<0||x+r>panel.width||y+r>panel.height||
+          (radius!==null&&r!==radius)){return null;}
+      radius=r;circles[id]=[x,y];positions.push([x,y]);
+    }
+    var seen=Object.create(null);
+    for(var object of objects){
+      var position=circles[object.svg_id];
+      if(!position||seen[object.svg_id]||object.svg_xy.some(function(n,i){return !Number.isFinite(n)||Math.abs(n-position[i])>.01;})){return null;}
+      seen[object.svg_id]=true;
+    }
+    var xs=Array.from(new Set(positions.map(function(p){return p[0];}))).sort(function(a,b){return a-b;}),
+      ys=Array.from(new Set(positions.map(function(p){return p[1];}))).sort(function(a,b){return a-b;});
+    if(xs.length<2||ys.length<2||xs.length*ys.length!==positions.length||
+        new Set(positions.map(function(p){return p.join(',');})).size!==positions.length||
+        [xs,ys].some(function(axis){return axis.slice(1).some(function(n,i){return n-axis[i]<=2*radius;});})){return null;}
+    facts.push({id:panel.id,dots:positions.length,rows:ys.length,dotsPerRow:xs.length});
+  }
+  return facts;
+}
 function noamSourcePanelContext(exercise,source){
   if(!source||!source.sourcePanelGroup||!window.NoamSourcePanels){return null;}
   var group=window.NoamSourcePanels.resolve(source.data,exercise,source.sourcePanelSvgById);
   var context=group&&window.NoamNativeVisual.authoredContext(source.data,exercise,source.svgText);
   if(!context){return null;}
-  return ['הקשר מקור מאומת: בשאלה זו כמה לוחות מקור נפרדים.',
+  var dots=noamSourcePanelDotFacts(source,group,context);
+  var evidence=dots?[
+    'נתונים גלויים מאומתים מהמקור לבדיקה פנימית של הרמז; עדיפים על השערת OCR:',
+    'הסעיף הנבחר: '+String(context.partText||'').slice(0,200),
+    dots.map(function(p){return 'לוח '+p.id+': '+p.dots+' נקודות; '+p.rows+' שורות, '+p.dotsPerRow+' נקודות בכל שורה.';}).join('\n'),
+    'אל תחליף את המבנה הזה בדגם אחר. אין להסיק מספר שלב משם לוח או מסדר הרשימה; השתמש בכיתובי המקור. אל תחשוף ספירה, כלל או תשובה שהתלמיד צריך למצוא.'
+  ].join('\n')+'\n\n':'';
+  return evidence+['הקשר מקור מאומת: בשאלה זו כמה לוחות מקור נפרדים.',
     group.requiresPrintedRoleContext?'הלוחות כוללים הקשר של דוגמה פתורה ותרגול. אין לראות נתוני דוגמה כנתוני הסעיף הנבחר; כיתובי תמונת השאלה המקורית קובעים את תפקיד הלוחות, ולא סדר הלוחות או המזהים שלהם.':'זהו הקשר השאלה המקורית כולה; כיתובי המקור קובעים את תפקידו של כל לוח.',
     'פתיח השאלה: '+String(context.questionText||'').slice(0,2500),
     'הסעיף הנבחר: '+String(context.partText||'').slice(0,1600),
