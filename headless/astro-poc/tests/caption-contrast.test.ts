@@ -15,4 +15,17 @@ describe('loop caption green text contrast (SEO audit ב-4)', () => {
     const ratio = (lum('#ffffff') + 0.05) / (lum('#1f7a42') + 0.05);
     assert.ok(ratio >= 4.5, String(ratio));
   });
+
+  it('contact submit button text passes 4.5:1', () => {
+    const css = readFileSync('src/styles/catalog.css', 'utf8');
+    const rule = css.match(/\.site-page__contact-form button\[type='submit'\] \{[\s\S]*?\}/)?.[0] || '';
+    assert.ok(rule.includes('background: #2a7c7a;'));
+    assert.ok(rule.includes('color: #fff;'));
+    const lum = (hex: string) => {
+      const c = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255);
+      const [r, g, b] = c.map((x) => (x <= 0.03928 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4));
+      return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+    };
+    assert.ok((lum('#ffffff') + 0.05) / (lum('#2a7c7a') + 0.05) >= 4.5);
+  });
 });

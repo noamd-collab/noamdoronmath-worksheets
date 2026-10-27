@@ -46,6 +46,13 @@ describe('public lesson menu page', () => {
     assert.equal((html.match(/<h1\b/g) || []).length, 1);
   });
 
+  it('lets phone users pinch-zoom while double-tap stays a tap (WCAG 1.4.4)', () => {
+    const html = renderPublicLesson(lesson, 'www.noamdoronmath.co.il');
+    assert.ok(html.includes('<meta name="viewport" content="width=device-width, initial-scale=1">'));
+    assert.doesNotMatch(html, /maximum-scale|user-scalable/);
+    assert.ok(html.includes('html{-webkit-text-size-adjust:100%;text-size-adjust:100%;touch-action:manipulation}'));
+  });
+
   it('stays noindex on a preview host, like the other public pages', () => {
     const html = renderPublicLesson(lesson, '127.0.0.1');
     assert.match(html, /content="noindex,nofollow"/);

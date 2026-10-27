@@ -11,6 +11,7 @@ import { isolateBlogPostDisplay } from '../lib/mathDirection';
 import { articleJsonLd, jsonLdTypes } from '../lib/structuredData';
 import { storedImageDimensions } from '../lib/blogSeo';
 import { blogPostDateLabel } from '../lib/hebrewDate';
+import { readingTimeLabel } from '../lib/readingTime';
 
 interface Props {
   post: BlogPostContent;
@@ -133,7 +134,7 @@ const hasRecent = !!(post.recentPosts?.items && post.recentPosts.items.length > 
                   <span aria-hidden="true"> · </span>
                 )}
                 <span class="blog-post__reading-time" data-blog-reading-time>
-                  {post.readingTime}
+                  {readingTimeLabel(post.readingTime)}
                 </span>
               </>
             )
