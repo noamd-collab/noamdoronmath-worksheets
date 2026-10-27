@@ -372,7 +372,9 @@
     }
     points.forEach(function (p) {
       var pos = xy(p); svg.appendChild(element(document, "circle", { cx: pos[0], cy: pos[1], r: 5, fill: "#1769aa", "data-role": "explicit-point" }));
-      svg.appendChild(element(document, "text", { x: pos[0] + 9, y: pos[1] - 9, "font-size": 13, direction: "ltr", "text-anchor": "start" }, "(" + p.join(", ") + ")"));
+      // Place the complete tuple away from both axes so tick labels cannot
+      // obscure a sign or digit, including in the expanded diagram clone.
+      svg.appendChild(element(document, "text", { x: pos[0] + (p[0] < 0 ? -9 : 9), y: pos[1] + (p[1] < 0 ? 20 : -9), "font-size": 13, direction: "ltr", "text-anchor": p[0] < 0 ? "end" : "start" }, "(" + p.join(", ") + ")"));
     });
     return svg;
   }
