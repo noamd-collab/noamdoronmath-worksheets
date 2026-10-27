@@ -271,6 +271,22 @@ it('explicit point label directions cover every quadrant without changing the pl
   });
 });
 
+it('far-left and far-right tuples stay inside the existing canvas without moving points or axes', () => {
+  const figure = render(fixture('G7-T09', 'q3', 'א', 'b'), typed('סמן את הנקודות (-100,-100), (100,-100)'));
+  assert.equal(figure.querySelector('svg').getAttribute('viewBox'), '0 0 440 340');
+  const points = Array.from(figure.querySelectorAll('[data-role="explicit-point"]')) as any[];
+  assert.equal(points.length, 2);
+  [-100, 100].forEach((x, i) => {
+    const label = Array.from(figure.querySelectorAll('text')).find((node: any) => node.textContent === `(${x}, -100)`) as any;
+    const labelX = Number(label.getAttribute('x')), width = label.textContent.length * 13 * .65;
+    const left = labelX - (label.getAttribute('text-anchor') === 'end' ? width : 0);
+    const right = labelX + (label.getAttribute('text-anchor') === 'start' ? width : 0);
+    assert.ok(left >= 4 && right <= 436, 'the complete numeric text has a conservative margin within the original viewBox');
+    assert.equal(Number(points[i].getAttribute('cx')), 42 + (x + 101) * (440 - 84) / 202, 'given x coordinates retain the original transform');
+    assert.equal(Number(points[i].getAttribute('cy')), 340 - 42 - (1 * (340 - 84) / 106), 'given y coordinates retain the original transform');
+  });
+});
+
 it('source identity, exact selected item and SVG coordinate space are validated', () => {
   const f = fixture();
   assert.equal(api.resolve(f.data, { ...f.exercise, nativeItemId: 'q1b' }, hint('נקודה A'), f.svg), null);
