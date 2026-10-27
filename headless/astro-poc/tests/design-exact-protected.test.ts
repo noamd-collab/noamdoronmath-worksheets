@@ -134,7 +134,7 @@ describe('exact-design protected live-baseline boundaries', () => {
     const nativeAdditions = [
       '<script src="/noam-ai/catalog-migrations.js?v=20261027-native1"></script>',
       '<script src="/noam-catalog-migration.js?v=20261027-native1"></script>',
-      '<script src="noam-native-visual.js?v=20261027-source1"></script>',
+      '<script src="noam-native-visual.js?v=20261027-source2"></script>',
     ];
     const allScripts = [...viewerWithNativeRelease.matchAll(/<script\b[^>]*>[\s\S]*?<\/script>/gi)].map(match => match[0]);
     assert.equal(allScripts.length, 19, 'The release adds only its three exact dependencies');

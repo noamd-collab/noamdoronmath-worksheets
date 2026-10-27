@@ -348,6 +348,30 @@
     });
     return svg;
   }
+  function captionNode(document, spec) {
+    var caption = document.createElement("figcaption"), text = spec.caption;
+    function isolated(value) {
+      var token = document.createElement("bdi"); token.setAttribute("dir", "ltr");
+      token.style.cssText = "direction:ltr;unicode-bidi:isolate;white-space:nowrap";
+      token.textContent = value; caption.appendChild(token);
+    }
+    var expression = spec.formula && spec.formula.expression, at = expression ? text.indexOf(expression) : -1;
+    if (at >= 0) {
+      // Keep powers and signs in one LTR island, including after dialog cloning.
+      // The viewer's reading/glossary passes retain ordinary Hebrew text nodes.
+      caption.appendChild(document.createTextNode(text.slice(0, at)));
+      isolated(expression);
+      caption.appendChild(document.createTextNode(text.slice(at + expression.length)));
+    } else {
+      var re = /∠?[A-Za-z]+/g, match, cursor = 0;
+      while ((match = re.exec(text))) {
+        caption.appendChild(document.createTextNode(text.slice(cursor, match.index)));
+        isolated(match[0]); cursor = match.index + match[0].length;
+      }
+      caption.appendChild(document.createTextNode(text.slice(cursor)));
+    }
+    return caption;
+  }
   function render(document, data, exercise, options, svgText) {
     var spec = resolve(data, exercise, options, svgText); if (!spec) return null;
     var figure = document.createElement("figure"); figure.className = "noam-native-figure noam-geometry";
@@ -371,7 +395,7 @@
     }
     svg.style.cssText = "display:block;width:100%;height:auto;max-height:480px;background:white";
     figure.appendChild(svg);
-    var caption = document.createElement("figcaption"); caption.textContent = spec.caption; figure.appendChild(caption);
+    figure.appendChild(captionNode(document, spec));
     return figure;
   }
   return { resolve: resolve, render: render, coordinates: coordinates, formula: formula };
