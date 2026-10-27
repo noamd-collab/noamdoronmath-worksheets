@@ -74,6 +74,44 @@ it('an angle is identified from its two existing source sides without asserting 
   assert.doesNotMatch(figure.textContent, /שוות|שווים/);
 });
 
+it('actual W04-Q1 right-triangle wording highlights the source triangle and A without inventing angle ABC', () => {
+  const f = fixture('G7-T48', 'q20', 'א', 'b');
+  const options = hint('הבסיס הוא משולש ישר־זווית ABC עם זווית ישרה בנקודה A.');
+  const result = resolve(f, options);
+  assert.equal(result.kind, 'source-focus');
+  assert.deepEqual(Array.from(result.objectIds).sort(), ['pt-A', 'seg-AB', 'seg-AC', 'seg-BC']);
+  assert.equal(result.arcs.length, 0, 'ABC names the triangle, not an angle with vertex B');
+  assert.deepEqual(Array.from(result.markers[0]), [49.98, 264.15]);
+  assert.match(result.caption, /ABC, A/);
+  assert.doesNotMatch(result.caption, /∠/);
+  const figure = render(f, options);
+  assert.equal(figure.querySelectorAll('line').length, 3);
+  assert.equal(figure.querySelectorAll('path').length, 0);
+  assert.equal(figure.querySelectorAll('[data-role="focus-point"]').length, 1);
+});
+
+it('triangle angle adjectives do not turn the following polygon name into an angle', () => {
+  const f = fixture('G7-T48', 'q20', 'א', 'b');
+  for (const adjective of ['ישר־זווית', 'ישר-זווית', 'ישר זווית', 'ישר־הזווית', 'חד־זווית', 'קהה־זווית']) {
+    const result = resolve(f, hint(`התבונן במשולש ${adjective} ABC.`));
+    assert.equal(result.kind, 'source-focus', adjective);
+    assert.equal(result.arcs.length, 0, adjective);
+    assert.deepEqual(Array.from(result.objectIds).sort(), ['seg-AB', 'seg-AC', 'seg-BC']);
+    assert.doesNotMatch(result.caption, /∠/);
+  }
+});
+
+it('an explicit angle ABC still focuses vertex B even after a right-triangle description', () => {
+  const f = fixture('G7-T48', 'q20', 'א', 'b');
+  for (const request of ['הראה את הזווית ABC', 'הראה את ∠ABC', 'במשולש ישר־זווית ABC, הראה את ∠ABC']) {
+    const result = resolve(f, typed(request));
+    assert.equal(result.kind, 'source-focus', request);
+    assert.equal(result.arcs.length, 1, request);
+    assert.deepEqual(Array.from(result.arcs[0][1]), [30.81, 283.32], 'explicit angle ABC has vertex B');
+    assert.match(result.caption, /∠ABC/);
+  }
+});
+
 it('trusted source polygons, circles, chart sectors and function curves are highlighted as existing objects', () => {
   for (const [pkg, q, level, request, id] of [
     ['G7-T08', 'q8', 'b', 'הדגש את המשולש ABC', 'poly-ABC'],

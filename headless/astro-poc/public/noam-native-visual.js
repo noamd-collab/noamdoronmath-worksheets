@@ -226,7 +226,12 @@
     if (duplicatePoint) return null;
     // Explicit three-letter angle requests are scoped to their two existing rays.
     var angleNames = [], am, ar = /(?:∠|זווית\s+(?:ה)?|זוויות\s+)([A-Z]{3})/g;
-    while ((am = ar.exec(focus))) angleNames.push(am[1]);
+    while ((am = ar.exec(focus))) {
+      // In "משולש ישר־זווית ABC", ABC names the triangle. The adjective
+      // must not invent an angle at B; an explicit ∠ABC remains an angle.
+      if (am[0].charAt(0) !== "∠" && /(?:^|[^א-ת])(?:ישר|חד|קהה)[\s־-]+ה?$/.test(focus.slice(0, am.index))) continue;
+      angleNames.push(am[1]);
+    }
     angleNames.forEach(function (name) {
       var exact = objects.find(function (o) { return o.type === "angle" && o.name === name; });
       if (exact) { select(exact, "∠" + name); return; }
