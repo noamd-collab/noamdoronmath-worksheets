@@ -59,6 +59,10 @@
   function selected(data, exercise, source) {
     if (!data || !exercise || !Array.isArray(data.questions)) return null;
     var levelCode = { a: "A", b: "B", c: "E" }[data.level];
+    // These two approved one-level releases use the site's B exercise IDs
+    // while their exact native package is authored as level a.
+    if (data.level === "a" && /^(?:G8-T01|G8-T35)$/.test(data.package || "") &&
+        String(exercise.id || "").indexOf(data.package + "-B-Q") === 0) levelCode = "B";
     var exercisePackage = String(exercise.id || "").split("-" + levelCode + "-Q")[0];
     if (!/^G[789]-(?:T[0-9]+|ASSESS1|CIRCLE|INTERP|TWOSRC|3060|KITE|SIDEANG|TRAP)$/.test(data.package || "") || !levelCode ||
         canonicalPackage(exercisePackage) !== canonicalPackage(data.package)) return null;
@@ -165,16 +169,24 @@
   }
   function illustration(ctx, options, focus) {
     var typed = !standardHint(options), requested = coordinates(focus), given = coordinates(ctx.part.text);
-    var explicitDraw = /שרטט|צייר|הצג|הראה|סמן|גרף|המח|מערכת|נקוד/.test(focus);
-    var sourceFormula = formula(ctx.part.text) || formula(ctx.q.text);
+    var drawCurrentStep = options.drawCurrentStep === true && !construction(focus);
+    var explicitDraw = drawCurrentStep || /שרטט|צייר|הצג|הראה|סמן|גרף|המח|מערכת|נקוד/.test(focus);
+    // A generic drawing button may use one authored formula from the current
+    // question/item. Multiple formulas and parent relation arrays are ambiguous.
+    var sourceFormula = formula(String(ctx.q.text || "") + " " + String(ctx.part.text || ""));
     // A formula the task asks to discover is never inferred from its points.
     var plotFormula = typed && explicitDraw ? formula(focus) : null;
-    if (!plotFormula && sourceFormula && /גרף|פונקצי|ישר|פרבול/.test(focus)) plotFormula = sourceFormula;
+    if (!plotFormula && sourceFormula && !construction(focus) && (drawCurrentStep || /גרף|פונקצי|ישר|פרבול/.test(focus))) plotFormula = sourceFormula;
     var points = requested.filter(function (p) { return typed && explicitDraw || given.some(function (g) { return near(g, p, .00001); }); });
     if (!points.length && !plotFormula && !ctx.figure && explicitDraw) points = given;
     if (!points.length && !plotFormula) return null;
     return { kind: "coordinate-illustration", points: points, formula: plotFormula,
       caption: plotFormula ? "המחשה של הפונקציה שנכתבה במפורש: " + plotFormula.expression + "." : "המחשה במערכת צירים של הנקודות שנכתבו במפורש. לא נוספו משוואה או חיבור בין הנקודות." };
+  }
+  function construction(text) {
+    // Hebrew letters are not JavaScript word characters. Explicit boundaries
+    // prevent the imperative בנו from matching ordinary prose such as בנוסחת.
+    return /(?:^|[^א-תA-Za-z0-9])(?:בנה|בני|בנו|בניית|הוסף|הוסיפו|הוסיפי|הארך|האריכו|האריכי|חדש(?:ה|ים|ות)?|נוסף(?:ת|ים|ות)?|שקף|שקפו|שקפי|שיקוף|הזז|הזיזו|הזיזי|סובב|סובבו|סובבי|שרטט(?:ו|י)?\s+(?:גובה|תיכון|אנך|חוצה))(?=$|[^א-תA-Za-z0-9])/.test(text);
   }
   function resolve(data, exercise, options, svgText) {
     options = options || {};
@@ -182,7 +194,12 @@
     if (!ctx || !focus) return null;
     // A requested new constrained construction must not become a highlight of
     // whichever old objects happen to be mentioned in that construction.
-    if (/(?:שרטט|צייר|העבר|צור|בנה|בנו).{0,100}(?:מקביל|אנך|מאונך|חוצה|תיכון|גובה)/.test(focus)) return null;
+    if (/(?:^|[^א-תA-Za-z0-9])(?:שרטט|צייר|העבר|צור|בנה|בנו)(?=$|[^א-תA-Za-z0-9]).{0,100}(?:מקביל|אנך|מאונך|חוצה|תיכון|גובה)/.test(focus)) return null;
+    // Showing the existing source cannot demonstrate a different hypothetical
+    // case. Only an explicitly supplied supported formula defines a new plot.
+    if (/דוגמה\s+נגדית|דוגמה\s+אחרת|נניח\s+ש|אילו\s+ה|אם\s+היינו|גרף\s+(?:אחר|חדש)/.test(focus)) {
+      return !standardHint(options) && formula(focus) ? illustration(ctx, Object.assign({}, options, { drawCurrentStep: false }), focus) : null;
+    }
     // Explicit formula requests own the graph. Do not substitute the existing
     // source curve when the requested expression is outside our numeric grammar.
     if (!standardHint(options) && /(?:\b[a-z]\(x\)|\by)\s*=/.test(focus)) return illustration(ctx, options, focus);
@@ -262,7 +279,7 @@
       var family = /מעגל|עיגול/.test(focus) ? /^(circle|build_circle)$/ : /גרף|עקומה|פונקצי|פרבול/.test(focus) ? /^(curve|data_series)$/ : /דיאגרמ|תרשים/.test(focus) ? /^(data_series|pie|sector)$/ : null;
       if (family) objects.filter(function (o) { return family.test(o.type); }).forEach(function (o) { select(o); });
     }
-    var constructing = /(?:בנה|בנו|בניית|הוסף|הוסיפ|הארך|האריכ|חדש|נוסף|שקף|שיקוף|הזז|סובב|שרטט\s+(?:גובה|תיכון|אנך|חוצה))/.test(focus);
+    var constructing = construction(focus);
     if (constructing || unknown && !selectedObjects.length && !arcs.length) return illustration(ctx, options, focus);
     // A combined focus must be complete even for a standard hint. Showing CH
     // alone for a request naming BH and CH would misrepresent the requested step.
