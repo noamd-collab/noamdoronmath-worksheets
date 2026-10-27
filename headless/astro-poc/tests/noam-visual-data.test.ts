@@ -101,6 +101,21 @@ it('AST matching keeps evidence quotes literal, fully quoted and bound to the se
   }
 });
 
+it('unsupported or punctuated selected equations still prevent an unrelated parent expression from taking over',()=>{
+  for(const partText of ['פתרו x + 9 = 30.','פתרו x + 9 = 30:','פתרו את $x$ במשוואה x + 9 = 30','פתרו $\\sqrt{x}=9$','פתרו $x^{10}+9=30$','פשטו $\\sqrt{x}+9$']) {
+    const c={questionText:'נתון $x+2=8$.',partText,hintText:'נתבונן ב-$x+2=8$.'};
+    assert.equal(compiler.inspect(op('x+2=8',c.questionText,'question'),c).reason,'selected-part-scope',partText);
+  }
+  for(const partText of ['פתרו את המשוואה.','מצאו את $x$ במשוואה הנתונה.','הסבירו את דרך הפתרון.']) {
+    const c={questionText:'נתון $x+2=8$.',partText,hintText:'נתבונן באגף השמאלי.'};
+    assert.equal(compiler.inspect(op('x + 2 = 8',c.questionText,'question'),c).ok,true,'an instruction or lone variable does not replace the parent expression');
+  }
+  const mixed={questionText:'נתון $x+2=8$.',partText:'פתרו את $x$ במשוואה x + 9 = 30',hintText:'בדקו $x+9=30$.'};
+  assert.equal(compiler.inspect(op('x+9=30',mixed.partText),mixed).ok,true,'mixed delimiters do not hide the actual plain selected equation');
+  const invalid={questionText:'',partText:'פתרו $x+9=30.$',hintText:'בדקו $x+9=30$.'};
+  assert.equal(compiler.inspect(op('x+9=30',invalid.partText),invalid).ok,false,'a malformed authored math span is never trimmed into proof');
+});
+
 it('unsupported or executable expression syntax is rejected rather than evaluated',()=>{
   for(const expression of ['globalThis.alert(1)','x.constructor','x[0]','f(x)','sin(x)','1e3+2','x^99','x^x','2=2=2','2 3','2+','1'.repeat(210)+'+1','((((((((x+2))))))))']) {
     const c={questionText:'',partText:`$${expression}$`};assert.equal(compiler.inspect(op(expression,c.partText),c).ok,false,expression);

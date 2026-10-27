@@ -95,17 +95,22 @@
     function depth(tree) { return 1 + Math.max.apply(null, [0].concat(tree.children.map(depth))); }
     try { var tree = add(); skip(); if (index !== text.length || !(allowLeaf || tree.type === 'operator') || depth(tree) > 7) return null; if (spellings) spellings.set(tree, raw.trim()); return tree; } catch (_error) { return null; }
   }
-  function mathSpans(text) {
-    var spans = [], re = /\$([^$\n]+)\$|\\\(([^\n]+?)\\\)/g, m;
-    while ((m = re.exec(text))) spans.push(m[1] || m[2]);
-    return spans;
-  }
   function completeExpressions(text) {
-    var spans = mathSpans(text);
-    if (spans.length) return spans;
+    var spans = [], rest = String(text || '').replace(/\$([^$\n]+)\$|\\\(([^\n]+?)\\\)/g, function (_whole, dollar, inline) {
+      spans.push(dollar || inline); return ' ';
+    });
     // Consume complete mathematical runs, not candidate-sized substrings. A
     // partial number or an operand sliced from a larger token cannot be proof.
-    return (String(text || '').match(/[0-9A-Za-z+*/^().{}\\\s−–×·÷:=²³-]+/g) || []).map(function (span) { return span.trim(); }).filter(Boolean);
+    return spans.concat((rest.match(/[0-9A-Za-z+*/^().{}\\\s−–×·÷:=²³-]+/g) || []).map(function (span) { return span.trim(); }).filter(Boolean));
+  }
+  function selectedMathScope(text) {
+    // Recognizing a selected mathematical task is broader than rendering it.
+    // An unsupported root/power/equality still owns its scope. Never trim it
+    // into a renderable prefix, nor use an unrelated common-stem expression.
+    return completeExpressions(text).some(function (value) {
+      if (expression(value)) return true;
+      return /[0-9A-Za-z]/.test(value) && (/[=+*/^×÷−–-]/.test(value) || /\\(?:sqrt|frac|f)\s*\{/.test(value));
+    });
   }
   function givenExpression(target, source, quote, hint) {
     var expected = JSON.stringify(target);
@@ -156,7 +161,7 @@
       var matches = plan.evidence.map(function (e) { return { source: e.source, proof: givenExpression(tree, e.source === 'part' ? context.partText : context.questionText, e.quote, context.hintText) }; }).filter(function (match) { return match.proof; });
       if (!matches.length) return fail('expression-not-given');
       var inPart = matches.some(function (e) { return e.source === 'part'; });
-      if (!inPart && (newScope(context.partText) || completeExpressions(context.partText).some(function (v) { return expression(v) !== null; }))) return fail('selected-part-scope');
+      if (!inPart && (newScope(context.partText) || selectedMathScope(context.partText))) return fail('selected-part-scope');
       var selected = matches.find(function (match) { return match.source === 'part'; }) || matches[0];
       scene.expression = selected.proof.expression; scene.tree = selected.proof.tree;
     } else {
