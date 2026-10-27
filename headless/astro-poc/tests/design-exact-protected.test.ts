@@ -239,7 +239,10 @@ describe('exact-design protected live-baseline boundaries', () => {
     // native version joins the cache identity and rehydration revalidates plans.
     // Domain/source-scope and legacy-protocol tests cover this intentional change;
     // bot/auth/quota behavior and the conversation namespace remain unchanged.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '37067ecf8bca16c3e5b2678d60088a646cf7b7ed19cd8ab7c0559482cd884d41');
+    // 2026-10-28: only the manifest cache key changes, so multi-panel items that
+    // now name their own source panel never pair a cached manifest with a newer
+    // package digest. ramzi-multi-panel-source tests cover the remapped sections.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), '9697420fd4018e872dbe125cb001cfce4bc84ce9ce044e993247f94d27520605');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {

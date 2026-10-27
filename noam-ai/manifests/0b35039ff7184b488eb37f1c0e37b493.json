@@ -1337,8 +1337,8 @@
       "requiresVision": true,
       "nativeQuestionId": "q7",
       "nativeItemId": "q7d",
-      "nativeFigureId": "q7_head",
-      "nativeFigureUrl": "/noam-ai/native/G8-T35/a/figures/q7_head.svg"
+      "nativeFigureId": "q7_head_2",
+      "nativeFigureUrl": "/noam-ai/native/G8-T35/a/figures/q7_head_2.svg"
     },
     {
       "id": "G8-T35-B-Q07ה",
@@ -3282,6 +3282,6 @@
     }
   ],
   "nativeExportUrl": "/noam-ai/native/G8-T35/a/noam-ai.json",
-  "nativeExportSha256": "49ba175925bd80e18285467cb879c0e69dc18e2876f95b7755b434ffda4a98e6",
+  "nativeExportSha256": "8821e429f754839e40e34cfc2918d391333179b87baa8dd03e33f142ada394e4",
   "nativeLevel": "a"
 }
