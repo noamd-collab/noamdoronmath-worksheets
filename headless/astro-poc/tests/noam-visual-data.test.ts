@@ -55,6 +55,79 @@ it('authored equations show both exact sides without solving and only an actual 
   assert.equal(compiler.inspect(op('42',c.questionText,'question'),{...c,hintText:'הסכום 42'}).ok,false,'a computed hint result is not source evidence');
 });
 
+it('actual W08-Q1 accepts only representation changes of the complete selected equation and restores authored spelling',()=>{
+  const c=context('G7-T36','b','q8','q8c');
+  assert.equal(c.partText,'$12 + 9 + 21 = 7x$');
+  for(const candidate of ['12+9+21=7x','12 + 9 + 21 = 7*x','12+9+21=7×x','(12+9)+21=7*(x)']) {
+    const result=compiler.inspect(op(candidate,c.partText),c);assert.equal(result.ok,true,candidate);
+    assert.equal(result.scene.expression,'12 + 9 + 21 = 7x','display retains authored terms and spelling');
+    assert.equal(result.scene.tree.value,'=');
+    const figure=render(result.scene);assert.ok(figure.querySelector('svg'));assert.match(figure.textContent,/פתרון: \?/);
+    assert.doesNotMatch(figure.textContent,/42|x\s*=\s*6/);
+  }
+});
+
+it('W08 current-hint whole equation can focus a complete source subtree, including implicit multiplication formatting',()=>{
+  const authored=context('G7-T36','b','q8','q8c');
+  for(const hintText of ['התבונן באגף השמאלי של $12+9+21=7*x$.','התבונן ב-\\(12 + 9 + 21 = 7x\\).','התבונן במשוואה 12+9+21=7x ושאל מהו הסכום.']) {
+    const c={...authored,hintText},sum=compiler.inspect(op('12+9+21',c.partText),c);
+    assert.equal(sum.ok,true,hintText);assert.equal(sum.scene.expression,'12 + 9 + 21');assert.equal(sum.scene.tree.value,'+');assert.ok(render(sum.scene));
+    const product=compiler.inspect(op('7*x',c.partText),c);assert.equal(product.ok,true);assert.equal(product.scene.expression,'7x');assert.ok(render(product.scene));
+  }
+  assert.equal(compiler.inspect(op('12+9+21',authored.partText),{...authored,hintText:'חברו את המספרים.'}).ok,false,'a subtree still needs explicit current-hint AST support');
+});
+
+it('AST proof does not admit calculation, changed operands, order, grouping, or sliced numeric tokens',()=>{
+  const c={...context('G7-T36','b','q8','q8c'),hintText:'בדקו $12+9+21=7x$.'};
+  for(const candidate of ['42=7x','x=6','12+30=7x','2+9','12+9+2','9+12+21=7x','12+(9+21)=7x','12+9+21=x*7','7x=12+9+21','12+9+21=7.0x']) {
+    const result=compiler.inspect(op(candidate,c.partText),{...c,hintText:c.hintText+' חשבו $'+candidate+'$.'});
+    assert.equal(result.ok,false,candidate);assert.equal(result.scene,null);
+  }
+});
+
+it('AST matching keeps evidence quotes literal, fully quoted and bound to the selected subsection',()=>{
+  const c={...context('G7-T36','b','q8','q8c'),hintText:'בדקו $12+9+21=7x$.'};
+  assert.equal(compiler.inspect(op('12+9+21=7x','$12+9+21=7x$'),c).reason,'evidence-mismatch','cosmetic normalization applies to expression, never evidence');
+  assert.equal(compiler.inspect(op('12+9+21','12 + 9 + 21'),c).ok,false,'the full authored expression must be quoted to establish its subtree');
+  assert.equal(compiler.inspect(op('13+13+9=5x','$13 + 13 + 9 = 5x$'),c).reason,'evidence-mismatch','a sibling item is not current source evidence');
+  const other={...context('G7-T36','b','q8','q8b'),hintText:c.hintText};
+  assert.equal(compiler.inspect(op('12+9+21=7x',other.partText),other).ok,false,'a hint from another subsection cannot introduce its expression');
+  const scoped={questionText:'נתון $12 + 9 + 21 = 7x$.',partText:'עתה פתרו $40 - 4 - 12 = 6x$.',hintText:c.hintText};
+  assert.equal(compiler.inspect(op('12+9+21=7*x',scoped.questionText,'question'),scoped).reason,'selected-part-scope');
+  for(const partText of ['x+9=30','פתרו x + 9 = 30']) {
+    const plainPart={questionText:'נתון $x+2=8$.',partText,hintText:'בדקו $x+2=8$.'};
+    assert.equal(compiler.inspect(op('x + 2 = 8',plainPart.questionText,'question'),plainPart).reason,'selected-part-scope','plain selected-part equation supersedes the parent');
+    assert.equal(compiler.inspect(op('x + 9 = 30',partText),plainPart).ok,true,'the actual plain selected equation remains supported');
+  }
+});
+
+it('unsupported or punctuated selected equations still prevent an unrelated parent expression from taking over',()=>{
+  const unsupportedParts=['פתרו x + 9 = 30.','פתרו x + 9 = 30:','פתרו את $x$ במשוואה x + 9 = 30',String.raw`פתרו $\sqrt{x}=9$`,'פתרו $x^{10}+9=30$',String.raw`פשטו $\sqrt{x}+9$`];
+  assert.ok(unsupportedParts[3].includes('\\sqrt'),'LaTeX backslash is present in the runtime fixture');
+  for(const partText of unsupportedParts) {
+    const c={questionText:'נתון $x+2=8$.',partText,hintText:'נתבונן ב-$x+2=8$.'};
+    assert.equal(compiler.inspect(op('x+2=8',c.questionText,'question'),c).reason,'selected-part-scope',partText);
+  }
+  for(const partText of ['פתרו את המשוואה.','מצאו את $x$ במשוואה הנתונה.','הסבירו את דרך הפתרון.']) {
+    const c={questionText:'נתון $x+2=8$.',partText,hintText:'נתבונן באגף השמאלי.'};
+    assert.equal(compiler.inspect(op('x + 2 = 8',c.questionText,'question'),c).ok,true,'an instruction or lone variable does not replace the parent expression');
+  }
+  const mixed={questionText:'נתון $x+2=8$.',partText:'פתרו את $x$ במשוואה x + 9 = 30',hintText:'בדקו $x+9=30$.'};
+  assert.equal(compiler.inspect(op('x+9=30',mixed.partText),mixed).ok,false,'mixed plaintext is not promoted into source proof after removing marked math');
+  const invalid={questionText:'',partText:'פתרו $x+9=30.$',hintText:'בדקו $x+9=30$.'};
+  assert.equal(compiler.inspect(op('x+9=30',invalid.partText),invalid).ok,false,'a malformed authored math span is never trimmed into proof');
+});
+
+it('mixed math boundaries cannot manufacture a complete expression from either side of a delimiter',()=>{
+  for(const [partText,candidate] of [['$x$+2','+2'],['$x$-2','-2'],['$x$ + 2 = 8','+2=8'],['2+$x$','2+'],['$12$+9=7x','9=7x'],['$x$=2','=2'],['$12+9$+21','12+9'],['x$+2$','+2'],['1+$x+2$','x+2'],['$x+2$:3','x+2'],['$x+2$·3','x+2'],['$x+2$²','x+2']]) {
+    const c={questionText:'נתון $z+1=6$.',partText,hintText:'נתבונן בביטוי.'};
+    assert.equal(compiler.inspect(op(candidate,partText),c).ok,false,partText+' must not authorize '+candidate);
+    assert.equal(compiler.inspect(op('z+1=6',c.questionText,'question'),c).reason,'selected-part-scope','unsupported mixed math still owns selected scope');
+  }
+  const c={questionText:'',partText:'נתון $12 + 9 + 21 = 7x$.',hintText:'האם $12+9$+21 הוא האגף השמאלי?'};
+  assert.equal(compiler.inspect(op('12+9',c.partText),c).ok,false,'a partial hinted math span is not a complete hint AST proof');
+});
+
 it('unsupported or executable expression syntax is rejected rather than evaluated',()=>{
   for(const expression of ['globalThis.alert(1)','x.constructor','x[0]','f(x)','sin(x)','1e3+2','x^99','x^x','2=2=2','2 3','2+','1'.repeat(210)+'+1','((((((((x+2))))))))']) {
     const c={questionText:'',partText:`$${expression}$`};assert.equal(compiler.inspect(op(expression,c.partText),c).ok,false,expression);

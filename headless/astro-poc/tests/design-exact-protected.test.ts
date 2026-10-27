@@ -137,8 +137,8 @@ describe('exact-design protected live-baseline boundaries', () => {
       '<script src="noam-native-visual.js?v=20261027-source4"></script>',
       '<script src="noam-authored-geometry.js?v=20261027-authored1"></script>',
       '<script src="noam-authored-visual.js?v=20261027-authored1"></script>',
-      '<script src="noam-visual-data.js?v=20261027-typed1"></script>',
-      '<script src="noam-visual-plan.js?v=20261027-typed1"></script>',
+      '<script src="noam-visual-data.js?v=20261027-typed2"></script>',
+      '<script src="noam-visual-plan.js?v=20261027-typed2"></script>',
     ];
     const allScripts = [...viewerWithNativeRelease.matchAll(/<script\b[^>]*>[\s\S]*?<\/script>/gi)].map(match => match[0]);
     assert.equal(allScripts.length, 23, 'The release adds only its seven exact dependencies');
