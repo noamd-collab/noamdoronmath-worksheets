@@ -136,6 +136,19 @@ it('a generic draw action cannot substitute source context for a hypothetical or
   assert.equal(resolve(f, typed('הראה גרף אחר y=x^2-4')).formula.expression, 'y=x^2-4', 'an explicitly supplied formula defines its own plot');
 });
 
+it('W03 q5d honors the selected counterexample task when the real hint omits that word', () => {
+  const f = fixture('G9-3060', 'q5', 'ד', 'c');
+  f.exercise.id = f.exercise.id.replace('G9-3060-', 'G9-T37-');
+  const actual = hint('חשבו על משולש שיש בו זווית של 30° אך הוא אינו ישר-זווית, ובדקו האם הצלע שמול הזווית עדיין שווה למחצית הצלע הארוכה ביותר.');
+  assert.doesNotMatch(actual.answer, /דוגמה נגדית/);
+  assert.equal(resolve(f, actual), null);
+  assert.equal(resolve(f, { ...actual, drawCurrentStep: true }), null);
+  assert.equal(resolve(f, typed('הראה את השרטוט המקורי')).kind, 'source-context', 'explicit source viewing stays honest and available');
+  assert.equal(resolve(f, { ...typed('שרטט y=x^2-4'), drawCurrentStep: true }).formula.expression, 'y=x^2-4');
+  const sibling = fixture('G9-3060', 'q5', 'א', 'c');
+  assert.equal(resolve(sibling, hint('התבוננו בקטע AF.')).kind, 'source-focus', 'counterexample intent must not leak to another part');
+});
+
 it('only the two approved one-level packages map site B identities to native a', () => {
   for (const [pkg, pdf] of [['G8-T01', '8adcec2943024c2ab1c55a9153263c63'], ['G8-T35', '0b35039ff7184b488eb37f1c0e37b493']]) {
     const manifest = json(`noam-ai/manifests/${pdf}.json`);

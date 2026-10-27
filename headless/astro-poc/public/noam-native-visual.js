@@ -188,6 +188,12 @@
     // prevent the imperative בנו from matching ordinary prose such as בנוסחת.
     return /(?:^|[^א-תA-Za-z0-9])(?:בנה|בני|בנו|בניית|הוסף|הוסיפו|הוסיפי|הארך|האריכו|האריכי|חדש(?:ה|ים|ות)?|נוסף(?:ת|ים|ות)?|שקף|שקפו|שקפי|שיקוף|הזז|הזיזו|הזיזי|סובב|סובבו|סובבי|שרטט(?:ו|י)?\s+(?:גובה|תיכון|אנך|חוצה))(?=$|[^א-תA-Za-z0-9])/.test(text);
   }
+  function asksCounterexample(part) {
+    return /דוגמה\s+נגדית|הטענה\s+(?:אינה|לא)\s+נכונה\s+תמיד/.test(clean(part.text)) ||
+      (Array.isArray(part.to_prove) ? part.to_prove : []).some(function (target) {
+        return target && target.type === "find" && /דוגמה\s+נגדית/.test(clean(target.what));
+      });
+  }
   function resolve(data, exercise, options, svgText) {
     options = options || {};
     var source = svgText ? svgShapes(svgText) : null, ctx = selected(data, exercise, source), focus = focusText(options);
@@ -203,6 +209,9 @@
     // Explicit formula requests own the graph. Do not substitute the existing
     // source curve when the requested expression is outside our numeric grammar.
     if (!standardHint(options) && /(?:\b[a-z]\(x\)|\by)\s*=/.test(focus)) return illustration(ctx, options, focus);
+    // The authored selected item can require a counterexample even when its
+    // hint omits that word. Its original figure cannot represent the new case.
+    if ((standardHint(options) || options.drawCurrentStep === true) && asksCounterexample(ctx.part)) return null;
     if (!ctx.figure) return illustration(ctx, options, focus);
     var objects = ctx.model.objects.filter(safeInitial), selectedObjects = [], markers = [], arcs = [], names = [], unknown = false;
     function select(o, label) { if (selectedObjects.indexOf(o) < 0) selectedObjects.push(o); if (label) names.push(label); }
