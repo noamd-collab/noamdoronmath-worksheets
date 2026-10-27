@@ -189,3 +189,18 @@ it('exact selected native tables are copied without exposing another item or mut
   const wrong = { ...exercise, nativeItemId: 'q99a' };
   assert.equal(runtime.NoamNativeVisual.authoredContext(native, wrong, ''), null);
 });
+
+it('an otherwise valid authored function cannot replace a complete reviewed source-panel group',()=>{
+ const source=authored('G8-T17','a','q9','q9b'),candidate=plan('function',source);
+ assert.equal(inspect(candidate,source).ok,true);
+ for(const sourcePanels of [[{id:'q9_head',kind:'function_graph',visibleNames:['f']},{id:'q9_head_2',kind:'function_graph',visibleNames:['g']}],[],null,{},'q9_head',false]){
+  const result=inspect(candidate,{...source,sourcePanels});assert.equal(result.ok,false);assert.equal(result.reason,'source_panel_context_only');assert.equal(result.scene,null);
+ }
+ assert.equal(api.inspect(candidate,{...source,sourcePanels:undefined}).reason,'source_panel_context_only');
+ const inherited=Object.assign(Object.create({sourcePanels:[]}),source);assert.equal(api.inspect(candidate,inherited).reason,'source_panel_context_only');
+});
+it('source-panel ownership also blocks operations and table routes before family dispatch',()=>{
+ for(const[candidate,source]of [[plan('table',blankTable,{tableSource:'question'}),blankTable],[plan('operations',algebra,{expression:'11(x+6)'}),algebra]]){
+  const result=inspect(candidate,{...source,sourcePanels:[]});assert.equal(result.ok,false);assert.equal(result.reason,'source_panel_context_only');
+ }
+});
