@@ -707,6 +707,22 @@
       if(/^[\s\u00a0\u200e\u200f]+(?:ה?(?:מקוננת|נפרדת|גאומטרית|גיאומטרית)|של[\s\u00a0]+ה?(?:משולש|מצולע|צורה|שרטוט))(?![א-ת])/.test(expansionAfter)){
         return false;
       }
+      // "כל הרחבה" may refer back/forward to that same named geometric
+      // extension. Do not let the shorter alias replace the rejected long one.
+      // Fraction language in this occurrence's own sentence remains explicit;
+      // context from another paragraph cannot determine its sense.
+      var expansionBefore=String(source||"").slice(Math.max(0,index-80),index).replace(/[*_`]/g,"");
+      if(/(?:^|[^א-ת])ב?כל[\s\u00a0\u200e\u200f]+$/.test(expansionBefore)){
+        var paragraphStart=String(source||"").lastIndexOf("\n",index-1)+1;
+        var paragraphEnd=String(source||"").indexOf("\n",end);
+        if(paragraphEnd<0){paragraphEnd=String(source||"").length;}
+        var expansionContext=String(source||"").slice(Math.max(paragraphStart,index-120),Math.min(paragraphEnd,end+160)).replace(/[*_`]/g,"");
+        var expansionSentence=expansionBefore.split(/[.!?;\n]/).pop()+expansionAfter.split(/[.!?;\n]/)[0];
+        var fractionSentence=/(?:^|[^א-ת])[ובלהכמש]{0,2}(?:שבר(?:ים)?|מונ(?:ה|ים)|מכנ(?:ה|ים))(?![א-ת])/.test(expansionSentence);
+        if(!fractionSentence&&/הרחבה[\s\u00a0]+(?:ה?(?:מקוננת|גאומטרית|גיאומטרית)|של[\s\u00a0]+ה?(?:משולש|מצולע|צורה|שרטוט))(?![א-ת])/.test(expansionContext)){
+          return false;
+        }
+      }
     }
     if(entry.id==="square"){
       return squareSense(source,index,end)==="geometric";

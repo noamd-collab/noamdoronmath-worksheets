@@ -37,6 +37,19 @@ test("actual W15-Q1 nested geometric extension is not fraction expansion", () =>
   assert.deepEqual(expansion("השבר מופיע בצד; בהרחבה המקוננת הוכיחו דמיון."), []);
 });
 
+test("the complete authored W15 part does not fall back to bare כל הרחבה", () => {
+  const source = "כתבו את ההוכחה של כל הרחבה. בהרחבה המקוננת כתבו שרשרת בת חמישה שלבים: נתון, שתי טענות זווית מנומקות, דמיון, ולבסוף פרופורציה.";
+  assert.deepEqual(expansion(source), []);
+  assert.deepEqual(expansion("בהרחבה המקוננת הוכיחו דמיון; נמקו כל הרחבה."), []);
+  assert.deepEqual(expansion("הוכיחו כל הרחבה. תארו הרחבה של המשולש."), []);
+  for (const text of [
+    "בהרחבה המקוננת הוכיחו דמיון. בדקו כל הרחבה של השבר.",
+    "בכל הרחבה כופלים מונה ומכנה באותו מספר. בהרחבה המקוננת הוכיחו דמיון.",
+    "תארו הרחבה מקוננת. ודאו שמכנים שווים לאחר כל הרחבה.",
+    "בהרחבה המקוננת הוכיחו דמיון.\nבדקו כל הרחבה."
+  ]) assert.equal(expansion(text).length, 1, text);
+});
+
 test("genuine fraction expansion and standalone glossary lookup retain exact spans", () => {
   for (const text of ["הרחבה", "בהרחבה של השבר כופלים מונה ומכנה באותו מספר.", "הרחבה למכנה משותף", "הרחבה פי 3", "הרחבה של שברים", "המשולש מוצג ליד השבר. בהרחבה שלו כופלים מונה ומכנה."]){
     const matches = expansion(text);
