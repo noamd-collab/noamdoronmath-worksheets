@@ -5218,6 +5218,7 @@ function setNoamDiagramButtonLabel(button,label,showBeta){
 function noamVisualCanExpand(visual){
   return !!visual&&(
     visual.type==="source-crop"||
+    visual.type==="native-original-table"||
     visual.type==="native-source-visual"||
     visual.type==="native-source-focus"||
     visual.type==="ai-diagram"||
@@ -5254,12 +5255,13 @@ function addTranscriptBubble(container, role, text, kind, visual, message, threa
     retry.textContent=noamRetryActionLabel(message);
     retry.addEventListener("click",function(){ retryLastNoamHelp(); });
     bubble.appendChild(retry);
+    if(typeof noamAppendOriginalTableRecovery==="function"){noamAppendOriginalTableRecovery(bubble,selectedExercise,thread,message);}
   }
   // Old unverified question-image replies stay suppressed. Reviewed source-crop
   // aids are separate from a generated illustration and revalidate on display.
   if (visual&&visual.type==="question-image"){visual=null;}
   if (visual){
-    var visualElement=visual.type==="source-crop" ? noamRenderSourceCrop(visual) : visual.type==="native-source-visual" ? noamRenderSourceVisual(visual) : visual.type==="ai-diagram" ? noamRenderAiDiagram(visual) : visual.type==="geometry-guide"
+    var visualElement=visual.type==="native-original-table" ? noamRenderOriginalTable(visual) : visual.type==="source-crop" ? noamRenderSourceCrop(visual) : visual.type==="native-source-visual" ? noamRenderSourceVisual(visual) : visual.type==="ai-diagram" ? noamRenderAiDiagram(visual) : visual.type==="geometry-guide"
       ? noamRenderGeometryGuide(visual)
       : window.NoamLocalVisual&&window.NoamLocalVisual.render(document,visual);
     if (visualElement){
@@ -6886,6 +6888,61 @@ function noamSourceSegmentLabelFacts(source,exercise,model){
   if(!labels.length||labels.length>12||labels.some(function(label){return !segments[label.for];})){return null;}
   return labels.map(function(label){return {text:label.text,direction:segments[label.for]};});
 }
+function noamOriginalTableFigure(source,exercise){
+  var native=window.NoamNativeVisual,dataVisual=window.NoamSourceDataVisual;
+  if(!source||source.sourcePanelGroup||!native||!dataVisual||noamSourcePanelReviewed(exercise)){return null;}
+  var context=native.authoredContext(source.data,exercise,source.svgText);
+  if(!context||context.hasFigure!==false||'sourcePanels' in context){return null;}
+  var options={drawCurrentStep:true,studentMessage:'שרטוט להמחשה'};
+  var scene=dataVisual.resolve(context,options);
+  return scene&&scene.kind==='typed-table'?dataVisual.render(document,context,options):null;
+}
+function noamTableRecoveryAllowed(exercise,thread,message){
+  return !!(exercise&&thread&&message&&message.role==='assistant'&&message.answerError===true&&
+    message.answerErrorCode==='QUESTION_IMAGE_UNREADABLE'&&message.sourceRecoveryAllowed===true&&
+    message.sourceRecoveryExerciseId===exercise.id&&selectedExercise&&selectedExercise.id===exercise.id&&
+    (thread.messages||[]).indexOf(message)>=0&&thread===exerciseThread(exercise.id)&&
+    !isBotProtectionError({code:message.answerErrorCode,message:message.text})&&
+    !(typeof currentAttachments==='function'&&currentAttachments().length)&&
+    window.NoamNativeVisual&&window.NoamSourceDataVisual&&noamNativeDataUrl(exercise));
+}
+function noamAppendOriginalTableRecovery(bubble,exercise,thread,message){
+  if(!noamTableRecoveryAllowed(exercise,thread,message)||message.visual){return;}
+  var identity=noamSourceVisualIdentity(exercise);
+  // Public source bytes only. This action never enters the image, solve or
+  // diagram request routes, including when the source cannot be read.
+  noamLoadSourceVisual(exercise).then(function(source){
+    if(!bubble.isConnected||identity!==noamSourceVisualIdentity(exercise)||
+        !noamTableRecoveryAllowed(exercise,thread,message)||message.visual||!noamOriginalTableFigure(source,exercise)){return;}
+    var button=document.createElement('button');button.type='button';button.className='noam-retry-action noam-source-table-recovery';
+    button.textContent='הצגת הטבלה המקורית';
+    button.addEventListener('click',function(){
+      if(identity!==noamSourceVisualIdentity(exercise)||!noamTableRecoveryAllowed(exercise,thread,message)||
+          message.visual||!noamOriginalTableFigure(source,exercise)){return;}
+      message.visual={type:'native-original-table',exerciseId:exercise.id,sourceIdentity:identity};
+      saveNoamState();renderNoamChat();
+      announceNoam('הוצגה הטבלה המקורית. קריאת השאלה עדיין לא הושלמה.');
+    });
+    bubble.appendChild(button);
+  }).catch(function(){/* Keep the original read error and its retry action. */});
+}
+function noamRenderOriginalTable(visual){
+  if(!visual||visual.type!=='native-original-table'||!manifest||
+      Object.keys(visual).some(function(k){return ['type','exerciseId','sourceIdentity'].indexOf(k)<0;})){return null;}
+  var exercise=(manifest.exercises||[]).find(function(ex){return ex.id===visual.exerciseId;});
+  if(!exercise||visual.sourceIdentity!==noamSourceVisualIdentity(exercise)){return null;}
+  var source=noamCachedSourceVisual(exercise);
+  if(source){return noamOriginalTableFigure(source,exercise);}
+  if(!noamRenderOriginalTable.pending){noamRenderOriginalTable.pending=new WeakSet();}
+  if(!noamRenderOriginalTable.pending.has(visual)){
+    noamRenderOriginalTable.pending.add(visual);
+    noamLoadSourceVisual(exercise).then(function(loaded){
+      noamRenderOriginalTable.pending.delete(visual);
+      if(loaded&&selectedExercise&&selectedExercise.id===exercise.id&&visual.sourceIdentity===noamSourceVisualIdentity(exercise)){renderNoamChat();}
+    },function(){noamRenderOriginalTable.pending.delete(visual);});
+  }
+  return null;
+}
 function noamEnrichSourceAnalysis(exercise,analysis){
   if(!analysis||typeof analysis!=='object'||!window.NoamNativeVisual||!noamNativeDataUrl(exercise)){return Promise.resolve(analysis);}
   var identity=noamSourceVisualIdentity(exercise);
@@ -8430,7 +8487,9 @@ function askNoam(helpKind,studentMessage){
         text:errorMessage,
         kind:"",
         answerError:true,
-        answerErrorCode:String(error&&error.code||"")
+        answerErrorCode:String(error&&error.code||""),
+        sourceRecoveryAllowed:!attachments.length&&String(error&&error.code||"")==="QUESTION_IMAGE_UNREADABLE"&&!isBotProtectionError(error),
+        sourceRecoveryExerciseId:exercise.id
       });
       saveNoamState();setNoamBusy(false);renderNoamChat();
       announceNoam(exerciseLabel(exercise) + ". " + errorMessage);

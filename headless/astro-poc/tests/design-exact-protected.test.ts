@@ -260,7 +260,9 @@ describe('exact-design protected live-baseline boundaries', () => {
     // compilers from exact native source; no answer data or new math family.
     // Verified initial numeric labels on flat source nets enrich the existing hint request;
     // cached OCR, conversations, auth and model-call count remain unchanged.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '2596f97bfd0c8728c9a1d7bd9ff79e71cc493993e112da5664accd37b01e098e');
+    // Exact worksheet-image read errors may offer an independently validated original table.
+    // This source-only recovery retains the error and never invokes a protected endpoint.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), '1c0d32e193e36153f69d950e141a64c3d6e83e619a35a0975b5546d9ce158a01');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {
