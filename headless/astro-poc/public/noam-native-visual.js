@@ -15,7 +15,7 @@
   function clean(value) {
     return String(value || "").slice(0, 6000).replace(/[\u200e\u200f\u202a-\u202e\u2066-\u2069]/g, "")
       .replace(/[−–—]/g, "-").replace(/\\(?:left|right|text|mathrm|operatorname)/g, "")
-      .replace(/\\[()[\]]/g, "").replace(/[${}]/g, "").replace(/\s+/g, " ").trim();
+      .replace(/\\angle\b\s*/g, "∠").replace(/\\[()[\]]/g, "").replace(/[${}]/g, "").replace(/\s+/g, " ").trim();
   }
   function point(p) { return Array.isArray(p) && p.length === 2 && p.every(Number.isFinite); }
   function near(a, b, tolerance) { return point(a) && point(b) && Math.hypot(a[0] - b[0], a[1] - b[1]) <= (tolerance || .25); }
@@ -54,7 +54,20 @@
       out.push(shape);
       if (a.id) { if (ids[a.id]) return null; ids[a.id] = shape; }
     }
-    return { shapes: out, ids: ids, box: box };
+    // Older exports attach semantic IDs to a group whose line has no ID.
+    // Keep those exact group memberships for angle-ray verification only.
+    var groups = Object.create(null), stack = [], groupIds = Object.create(null), gr = /<(\/?g|line)\b([^>]*?)(?:\/\s*>|>)/gi;
+    while ((m = gr.exec(text))) {
+      var tag = m[1].toLowerCase(), ga = attrs(m[2]);
+      if (tag === "/g") { if (!stack.length) return null; stack.pop(); }
+      else if (tag === "g") {
+        var group = [];
+        if (ga.id) { if (ids[ga.id] || groupIds[ga.id]) return null; groupIds[ga.id] = true; groups[ga.id] = group; }
+        if (!/\/\s*>$/.test(m[0])) stack.push(group);
+      } else { stack.forEach(function (group) { group.push({ tag: "line", attrs: ga }); }); }
+    }
+    if (stack.length) return null;
+    return { shapes: out, ids: ids, groups: groups, box: box, transformedGroups: /<(?:svg|g)\b[^>]*\btransform\s*=/i.test(text) };
   }
   function selected(data, exercise, source) {
     if (!data || !exercise || !Array.isArray(data.questions)) return null;
@@ -224,8 +237,56 @@
       namedPoints[o.name] = o;
     } });
     if (duplicatePoint) return null;
+    // Names alone cannot authorize a new edge or a wider parent line.
+    // Verify subsegments and angle rays against the actual source line.
+    function covers(shape, a, b) {
+      if (source.transformedGroups || !shape || shape.attrs.transform) return false;
+      var xy = lineXY(shape); if (!xy || !point(a) || !point(b) || near(a, b, .01)) return false;
+      var dx = xy[1][0] - xy[0][0], dy = xy[1][1] - xy[0][1], len = Math.hypot(dx, dy);
+      if (len < .01) return false;
+      return [a, b].every(function (p) {
+        var x = p[0] - xy[0][0], y = p[1] - xy[0][1], along = (x * dx + y * dy) / len;
+        return Math.abs(x * dy - y * dx) / len <= .15 && along >= -.15 && along <= len + .15;
+      });
+    }
+    function boundedPart(part, owner) {
+      var span = part.span;
+      if (!Array.isArray(span) || span.length !== 2 || span[0] === span[1] ||
+          !namedPoints[span[0]] || !namedPoints[span[1]]) return null;
+      var a = namedPoints[span[0]].svg_xy, b = namedPoints[span[1]].svg_xy;
+      if (!covers(source.ids[part.svg_id], a, b)) return null;
+      // A composite authored segment may have several smaller spans, but no
+      // span may extend beyond the requested segment or polygon boundary.
+      var name = owner.name || "", edges = [];
+      if (/^(segment|ray|line)$/.test(owner.type) && /^[A-Z]{2}$/.test(name)) edges.push(name);
+      if (owner.type === "polygon" && /^[A-Z]{3,8}$/.test(name)) {
+        for (var i = 0; i < name.length; i++) edges.push(name[i] + name[(i + 1) % name.length]);
+      }
+      if (edges.length && !edges.some(function (edge) {
+        var u = namedPoints[edge[0]], v = namedPoints[edge[1]];
+        return u && v && covers({ tag: "line", attrs: { x1: u.svg_xy[0], y1: u.svg_xy[1], x2: v.svg_xy[0], y2: v.svg_xy[1] } }, a, b);
+      })) return null;
+      return { tag: "line", attrs: { x1: a[0], y1: a[1], x2: b[0], y2: b[1] } };
+    }
+    function verifiedSide(u, v, exact) {
+      var a = namedPoints[u], b = namedPoints[v]; if (!a || !b) return false;
+      var edges = objects.filter(function (o) { return /^(segment|ray|line)$/.test(o.type) && (o.name === u + v || o.name === v + u); });
+      if (exact) edges.push(exact);
+      return edges.some(function (o) { return objectIds(o).some(function (id) {
+        if (covers(source.ids[id], a.svg_xy, b.svg_xy)) return true;
+        // A group reference must belong to the named authored edge, with
+        // matching endpoints and one unambiguous covering source primitive.
+        if (!/^(segment|ray|line)$/.test(o.type) || !Array.isArray(o.svg_xy) || o.svg_xy.length !== 2 ||
+            !(near(o.svg_xy[0], a.svg_xy, .15) && near(o.svg_xy[1], b.svg_xy, .15) ||
+              near(o.svg_xy[1], a.svg_xy, .15) && near(o.svg_xy[0], b.svg_xy, .15))) return false;
+        var candidates = (source.groups[id] || []).filter(function (s) { return covers(s, a.svg_xy, b.svg_xy); });
+        if (!candidates.length) return false;
+        var first = JSON.stringify(candidates[0].attrs);
+        return candidates.every(function (s) { return JSON.stringify(s.attrs) === first; });
+      }); });
+    }
     // Explicit three-letter angle requests are scoped to their two existing rays.
-    var angleNames = [], am, ar = /(?:∠|זווית\s+(?:ה)?|זוויות\s+)([A-Z]{3})/g;
+    var angleNames = [], am, ar = /(?:∠\s*|זווית\s+(?:ה)?|זוויות\s+)([A-Z]{3})(?![A-Za-z0-9])/g;
     while ((am = ar.exec(focus))) {
       // In "משולש ישר־זווית ABC", ABC names the triangle. The adjective
       // must not invent an angle at B; an explicit ∠ABC remains an angle.
@@ -234,10 +295,8 @@
     }
     angleNames.forEach(function (name) {
       var exact = objects.find(function (o) { return o.type === "angle" && o.name === name; });
-      if (exact) { select(exact, "∠" + name); return; }
       var a = namedPoints[name[0]], v = namedPoints[name[1]], b = namedPoints[name[2]];
-      function side(u, w) { return objects.some(function (o) { return /^(segment|ray|line)$/.test(o.type) && (o.name === u + w || o.name === w + u); }); }
-      if (!a || !v || !b || !side(name[0], name[1]) || !side(name[1], name[2])) { unknown = true; return; }
+      if (!a || !v || !b || !verifiedSide(name[0], name[1], exact) || !verifiedSide(name[1], name[2], exact)) { unknown = true; return; }
       var u = [a.svg_xy[0] - v.svg_xy[0], a.svg_xy[1] - v.svg_xy[1]], w = [b.svg_xy[0] - v.svg_xy[0], b.svg_xy[1] - v.svg_xy[1]];
       if (Math.abs(u[0] * w[1] - u[1] * w[0]) < .01) { unknown = true; return; }
       arcs.push([a.svg_xy, v.svg_xy, b.svg_xy]); names.push("∠" + name);
@@ -307,17 +366,26 @@
       return { kind: "source-context", url: ctx.url, width: source.box[2], height: source.box[3], shapes: [], markers: [], arcs: [],
         caption: "השרטוט המקורי מהדף. לא נוספה הדגשה לשלב הזה." };
     }
-    var highlighted = [], seen = Object.create(null);
+    var highlighted = [], seen = Object.create(null), invalidSpan = false;
     selectedObjects.forEach(function (o) {
       if (/^(point|mark)$/.test(o.type) && point(o.svg_xy)) { markers.push(o.svg_xy.slice()); return; }
       var ids = objectIds(o);
-      ids.forEach(function (id) { var s = source.ids[id]; if (s && SHAPES.indexOf(s.tag) >= 0 && !seen[id]) { highlighted.push(s); seen[id] = true; } });
+      var parts = Array.isArray(o.parts) ? o.parts : [], refs = parts.slice();
+      if (o.svg_id && !parts.some(function (p) { return p.svg_id === o.svg_id; })) refs.unshift({ svg_id: o.svg_id });
+      refs.forEach(function (part) {
+        var id = part.svg_id, shape = source.ids[id], key = id;
+        if (Object.prototype.hasOwnProperty.call(part, "span")) {
+          shape = boundedPart(part, o); if (!shape) { invalidSpan = true; return; }
+          key += "@" + part.span.join(":");
+        }
+        if (shape && SHAPES.indexOf(shape.tag) >= 0 && !seen[key]) { highlighted.push(shape); seen[key] = true; }
+      });
       // Some old source SVGs have semantic geometry but no element IDs.
       if (!ids.some(function (id) { return source.ids[id]; }) && /^(segment|line|ray)$/.test(o.type) && Array.isArray(o.svg_xy) && o.svg_xy.length === 2 && o.svg_xy.every(point)) {
         highlighted.push({ tag: "line", attrs: { x1: o.svg_xy[0][0], y1: o.svg_xy[0][1], x2: o.svg_xy[1][0], y2: o.svg_xy[1][1] } });
       }
     });
-    if (!highlighted.length && !markers.length && !arcs.length) return null;
+    if (invalidSpan || !highlighted.length && !markers.length && !arcs.length) return null;
     return { kind: "source-focus", url: ctx.url, width: source.box[2], height: source.box[3], shapes: highlighted, markers: markers, arcs: arcs,
       objectIds: selectedObjects.map(function (o) { return o.id; }), caption: "הדגשה על השרטוט המקורי" + (names.length ? ": " + uniq(names).join(", ") : "") + ". הצבע מסמן את המוקד שביקשת, ללא הוספת נתונים או מסקנות." };
   }

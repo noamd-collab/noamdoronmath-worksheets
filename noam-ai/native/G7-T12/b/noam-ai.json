@@ -2271,7 +2271,7 @@
      "id": "q14b",
      "label": "ב",
      "text": "בדקו חלוקה ל־$20$ חלקים.",
-     "figure_id": "q14_head",
+     "figure_id": null,
      "given": [],
      "to_prove": [
       {
@@ -2288,7 +2288,7 @@
      "id": "q14c",
      "label": "ג",
      "text": "מצאו את כל מספרי החלקים השלמים בין $10$ ל־$15$, כולל הקצוות, שנותנים מידה שלמה.",
-     "figure_id": "q14_head",
+     "figure_id": null,
      "given": [],
      "to_prove": [
       {
@@ -2305,7 +2305,7 @@
      "id": "q14d",
      "label": "ד",
      "text": "הסבירו בדיקה כללית בלי לצייר את כל החלקים.",
-     "figure_id": "q14_head",
+     "figure_id": null,
      "given": [],
      "to_prove": [
       {
@@ -12318,8 +12318,10 @@
      ],
      "highlight": [],
      "show_aux": []
-    }
-   }
+    },
+    "item": "q14a"
+   },
+   "item": "q14a"
   },
   {
    "id": "q15_head",

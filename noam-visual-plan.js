@@ -50,9 +50,12 @@
         if(/טבעי|מספרים שלמים|קלטים שלמים|כללים שבחרתם|פונקציות שבחרתם|(?:הזיזו|הזזה|מוזז|מוזזת|פרבולה חדשה)/.test(all))return fail('function_domain_or_construction_unspecified');
         var quoted=a.formulas(quotes.join('\n')),authored=a.formulas(context.questionText+'\n'+context.partText);
         if(quoted.invalid||authored.invalid||!quoted.length||quoted.length>4)return fail('incomplete_explicit_function');
-        if(!a.functionSources||!a.functionSources(context))return fail('ambiguous_function_scope');
+        // Compare with the selected sources: replaced stem declarations and
+        // equation constants are not part of the set a plan may draw.
+        var selectedSources=a.functionSources&&a.functionSources(context);
+        if(!selectedSources)return fail('ambiguous_function_scope');
         var signature=function(f){return JSON.stringify(f.ast);},sig=quoted.map(signature);
-        if(authored.length!==quoted.length||authored.some(function(f){return sig.indexOf(signature(f))<0;}))return fail('partial_function_set');
+        if(selectedSources.length!==quoted.length||selectedSources.some(function(f){return sig.indexOf(signature(f))<0;}))return fail('partial_function_set');
         return {ok:true,reason:null,scene:{kind:'authored-function',expressions:quoted.map(function(f){return {expression:f.expression,label:f.label};}),expression:quoted[0].expression,caption:'גרף של הנוסחאות שנכתבו במפורש. לא סומנו פתרונות או נקודות שהתבקשת למצוא.'}};
       }
       if(plan.family==='coordinates'){
@@ -84,7 +87,7 @@
       var quotedScene=a.fromContext(quotedContext,opts);
       if(!scene||!quotedScene||JSON.stringify(scene)!==JSON.stringify(quotedScene))return fail('incomplete_family_evidence');
       if(plan.family==='numberline'&&scene&&['authored-number-line','authored-intervals'].includes(scene.kind))return {ok:true,scene:scene,reason:null};
-      if(plan.family==='given-geometry'&&scene&&/^authored-(?:triangular-prism|triangle-sides|rectangle|equal-perimeter|correspondence)$/.test(scene.kind))return {ok:true,scene:scene,reason:null};
+      if(plan.family==='given-geometry'&&scene&&/^authored-(?:triangular-prism|triangle-sides|rectangle|equal-perimeter|correspondence|square-construction)$/.test(scene.kind))return {ok:true,scene:scene,reason:null};
       return fail('unsupported_authored_family');
     }catch(_error){return fail('invalid_typed_plan');}
   }

@@ -40,6 +40,7 @@ const FILES = [
   'noam-authored-visual.js',
   'noam-visual-data.js',
   'noam-visual-plan.js',
+  'noam-source-data-visual.js',
   'noam-catalog-migration.js',
   'noam-learning.css',
 ];

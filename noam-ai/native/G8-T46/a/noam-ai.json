@@ -3110,24 +3110,7 @@
    "label": 20,
    "text": "בדיקת תיקי הוכחה. בכל סעיף קבעו אם הטענה נכונה ונמקו; האיור מתייחס רק לסעיף האחרון.",
    "figure_id": "q20_head",
-   "given": [
-    {
-     "text": "∠BAC = ∠DAE",
-     "type": "equal_angle",
-     "of": [
-      "BAC",
-      "DAE"
-     ]
-    },
-    {
-     "text": "∠ABC = ∠ADE",
-     "type": "equal_angle",
-     "of": [
-      "ABC",
-      "ADE"
-     ]
-    }
-   ],
+   "given": [],
    "to_prove": [],
    "to_construct": [],
    "items": [
@@ -3135,7 +3118,7 @@
      "id": "q20a",
      "label": "א",
      "text": "הוכחת דמיון לפי זוויות קובעת תמיד גם גורם מספרי.",
-     "figure_id": "q20_head",
+     "figure_id": null,
      "given": [],
      "to_prove": [
       {
@@ -3152,7 +3135,7 @@
      "id": "q20b",
      "label": "ב",
      "text": "אפשר לחשב יחס שטחים על ידי ריבוע יחס אורכים מתאים.",
-     "figure_id": "q20_head",
+     "figure_id": null,
      "given": [],
      "to_prove": [
       {
@@ -3169,7 +3152,7 @@
      "id": "q20c",
      "label": "ג",
      "text": "אם יחס של חלק לשארית הוא אחת, יחס אותו חלק לשלם הוא גם אחת.",
-     "figure_id": "q20_head",
+     "figure_id": null,
      "given": [],
      "to_prove": [
       {
@@ -3186,7 +3169,7 @@
      "id": "q20d",
      "label": "ד",
      "text": "שורה חסרה בהוכחה מחייבת שהמסקנה עצמה שגויה.",
-     "figure_id": "q20_head",
+     "figure_id": null,
      "given": [],
      "to_prove": [
       {
@@ -3204,7 +3187,24 @@
      "label": "ה",
      "text": "באיור, כתבו דמיון שמתחיל ב־$△BCA$ והצדיקו את הסדר מהקשתות.",
      "figure_id": "q20_head",
-     "given": [],
+     "given": [
+      {
+       "text": "∠BAC = ∠DAE",
+       "type": "equal_angle",
+       "of": [
+        "BAC",
+        "DAE"
+       ]
+      },
+      {
+       "text": "∠ABC = ∠ADE",
+       "type": "equal_angle",
+       "of": [
+        "ABC",
+        "ADE"
+       ]
+      }
+     ],
      "to_prove": [
       {
        "type": "find",
@@ -27299,46 +27299,6 @@
       "highlight": "hl-equal_angle-A-B-C-D-E-2"
      },
      {
-      "id": "r-find",
-      "type": "find",
-      "role": "to_prove",
-      "item": "q20a",
-      "quantity": "value",
-      "what": "הוכחת דמיון לפי זוויות קובעת תמיד גם גורם מספרי.",
-      "text": "הערך הוכחת דמיון לפי זוויות קובעת תמיד גם גורם מספרי.",
-      "objects": []
-     },
-     {
-      "id": "r-find-2",
-      "type": "find",
-      "role": "to_prove",
-      "item": "q20b",
-      "quantity": "value",
-      "what": "אפשר לחשב יחס שטחים על ידי ריבוע יחס אורכים מתאים.",
-      "text": "הערך אפשר לחשב יחס שטחים על ידי ריבוע יחס אורכים מתאים.",
-      "objects": []
-     },
-     {
-      "id": "r-find-3",
-      "type": "find",
-      "role": "to_prove",
-      "item": "q20c",
-      "quantity": "value",
-      "what": "אם יחס של חלק לשארית הוא אחת, יחס אותו חלק לשלם הוא גם אחת.",
-      "text": "הערך אם יחס של חלק לשארית הוא אחת, יחס אותו חלק לשלם הוא גם אחת.",
-      "objects": []
-     },
-     {
-      "id": "r-find-4",
-      "type": "find",
-      "role": "to_prove",
-      "item": "q20d",
-      "quantity": "value",
-      "what": "שורה חסרה בהוכחה מחייבת שהמסקנה עצמה שגויה.",
-      "text": "הערך שורה חסרה בהוכחה מחייבת שהמסקנה עצמה שגויה.",
-      "objects": []
-     },
-     {
       "id": "r-find-BCA",
       "type": "find",
       "role": "to_prove",
@@ -27368,8 +27328,10 @@
       "r-equal_angle-A-B-C-D-E-2"
      ],
      "show_aux": []
-    }
-   }
+    },
+    "item": "q20e"
+   },
+   "item": "q20e"
   }
  ],
  "visuals": [

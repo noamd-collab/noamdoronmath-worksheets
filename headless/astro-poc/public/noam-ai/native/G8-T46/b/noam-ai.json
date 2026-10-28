@@ -3108,24 +3108,7 @@
    "label": 20,
    "text": "בדקו כל טענה בנפרד. האיור של שני המשולשים ישרי־הזווית משמש רק בסעיף האחרון.",
    "figure_id": "q20_head",
-   "given": [
-    {
-     "text": "AB ⊥ AC",
-     "type": "perpendicular",
-     "of": [
-      "AB",
-      "AC"
-     ]
-    },
-    {
-     "text": "DE ⊥ DF",
-     "type": "perpendicular",
-     "of": [
-      "DE",
-      "DF"
-     ]
-    }
-   ],
+   "given": [],
    "to_prove": [],
    "to_construct": [],
    "items": [
@@ -3133,7 +3116,7 @@
      "id": "q20a",
      "label": "א",
      "text": "זוויות שוות בשני משולשים מבטיחות צלעות שוות.",
-     "figure_id": "q20_head",
+     "figure_id": null,
      "given": [],
      "to_prove": [
       {
@@ -3150,7 +3133,7 @@
      "id": "q20b",
      "label": "ב",
      "text": "לאחר הוכחת דמיון אפשר להשתמש בכל שני אורכים כדי לקבוע גורם.",
-     "figure_id": "q20_head",
+     "figure_id": null,
      "given": [],
      "to_prove": [
       {
@@ -3167,7 +3150,7 @@
      "id": "q20c",
      "label": "ג",
      "text": "חוסר שורת נימוק מוכיח בהכרח שהמסקנה הגאומטרית שגויה.",
-     "figure_id": "q20_head",
+     "figure_id": null,
      "given": [],
      "to_prove": [
       {
@@ -3184,7 +3167,7 @@
      "id": "q20d",
      "label": "ד",
      "text": "במשולש ובחתך מקביל בתוכו, חלק לשארית וחלק לשלם הם אותו יחס.",
-     "figure_id": "q20_head",
+     "figure_id": null,
      "given": [],
      "to_prove": [
       {
@@ -3202,7 +3185,24 @@
      "label": "ה",
      "text": "באיור מסומנות רק הזוויות הישרות. הוסיפו שוויון זוויות חדות מסוים שיספיק לדמיון.",
      "figure_id": "q20_head",
-     "given": [],
+     "given": [
+      {
+       "text": "AB ⊥ AC",
+       "type": "perpendicular",
+       "of": [
+        "AB",
+        "AC"
+       ]
+      },
+      {
+       "text": "DE ⊥ DF",
+       "type": "perpendicular",
+       "of": [
+        "DE",
+        "DF"
+       ]
+      }
+     ],
      "to_prove": [
       {
        "type": "find",
@@ -25172,46 +25172,6 @@
       "highlight": "hl-perpendicular-D-E-F"
      },
      {
-      "id": "r-find",
-      "type": "find",
-      "role": "to_prove",
-      "item": "q20a",
-      "quantity": "value",
-      "what": "זוויות שוות בשני משולשים מבטיחות צלעות שוות.",
-      "text": "הערך זוויות שוות בשני משולשים מבטיחות צלעות שוות.",
-      "objects": []
-     },
-     {
-      "id": "r-find-2",
-      "type": "find",
-      "role": "to_prove",
-      "item": "q20b",
-      "quantity": "value",
-      "what": "לאחר הוכחת דמיון אפשר להשתמש בכל שני אורכים כדי לקבוע גורם.",
-      "text": "הערך לאחר הוכחת דמיון אפשר להשתמש בכל שני אורכים כדי לקבוע גורם.",
-      "objects": []
-     },
-     {
-      "id": "r-find-3",
-      "type": "find",
-      "role": "to_prove",
-      "item": "q20c",
-      "quantity": "value",
-      "what": "חוסר שורת נימוק מוכיח בהכרח שהמסקנה הגאומטרית שגויה.",
-      "text": "הערך חוסר שורת נימוק מוכיח בהכרח שהמסקנה הגאומטרית שגויה.",
-      "objects": []
-     },
-     {
-      "id": "r-find-4",
-      "type": "find",
-      "role": "to_prove",
-      "item": "q20d",
-      "quantity": "value",
-      "what": "במשולש ובחתך מקביל בתוכו, חלק לשארית וחלק לשלם הם אותו יחס.",
-      "text": "הערך במשולש ובחתך מקביל בתוכו, חלק לשארית וחלק לשלם הם אותו יחס.",
-      "objects": []
-     },
-     {
       "id": "r-find-5",
       "type": "find",
       "role": "to_prove",
@@ -25241,8 +25201,10 @@
       "r-perpendicular-D-E-F"
      ],
      "show_aux": []
-    }
-   }
+    },
+    "item": "q20e"
+   },
+   "item": "q20e"
   }
  ],
  "visuals": [

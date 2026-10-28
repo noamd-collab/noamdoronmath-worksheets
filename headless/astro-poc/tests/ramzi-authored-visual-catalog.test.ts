@@ -89,7 +89,7 @@ it('every no-SVG selected subsection in all412 canonical PDFs has a safe exact c
       }
     }
   }
-  assert.equal(sheets, 412); assert.equal(sections, 16275);
+  assert.equal(sheets, 412); assert.equal(sections, 16290); // Includes fifteen parts explicitly outside their question figure scope.
   assert.ok(arrays > 0, 'actual array-valued question text must be exercised');
   assert.deepEqual(failures, [], 'valid historical IDs must not disable entire released sheets');
 });

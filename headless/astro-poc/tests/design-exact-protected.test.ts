@@ -134,16 +134,17 @@ describe('exact-design protected live-baseline boundaries', () => {
     const nativeAdditions = [
       '<script src="/noam-ai/catalog-migrations.js?v=20261027-native1"></script>',
       '<script src="/noam-catalog-migration.js?v=20261027-native1"></script>',
-      '<script src="noam-native-visual.js?v=20261028-source6"></script>',
+      '<script src="noam-native-visual.js?v=20261028-source7"></script>',
       '<script src="noam-source-panels.js?v=20261028-panels1"></script>',
-      '<script src="noam-authored-geometry.js?v=20261027-authored1"></script>',
-      '<script src="noam-authored-visual.js?v=20261028-scope3"></script>',
-      '<script src="noam-visual-data.js?v=20261027-typed2"></script>',
-      '<script src="noam-visual-plan.js?v=20261028-scope2"></script>',
+      '<script src="noam-authored-geometry.js?v=20261028-square1"></script>',
+      '<script src="noam-authored-visual.js?v=20261028-source5"></script>',
+      '<script src="noam-visual-data.js?v=20261028-source3"></script>',
+      '<script src="noam-visual-plan.js?v=20261028-source3"></script>',
+      '<script src="noam-source-data-visual.js?v=20261028-source-data3"></script>',
     ];
     const allScripts = [...viewerWithNativeRelease.matchAll(/<script\b[^>]*>[\s\S]*?<\/script>/gi)].map(match => match[0]);
-    assert.equal(allScripts.length, 24, 'The release adds only its eight exact dependencies');
-    assert.deepEqual(allScripts.slice(7,13),nativeAdditions.slice(2),'Typed compilers follow their native source consumer in dependency order');
+    assert.equal(allScripts.length, 25, 'The release adds only its nine exact dependencies');
+    assert.deepEqual(allScripts.slice(7,14),nativeAdditions.slice(2),'Typed compilers follow their native source consumer in dependency order');
     assert.deepEqual(allScripts.slice(0, 2), nativeAdditions.slice(0, 2), 'Old URLs migrate before worksheet scripts run');
     assert.equal(allScripts[7], nativeAdditions[2], 'Native consumer follows the existing local visual engine');
     for (const addition of nativeAdditions) assert.equal(allScripts.filter(script => script === addition).length, 1);
@@ -249,7 +250,15 @@ describe('exact-design protected live-baseline boundaries', () => {
     // 2026-10-28: ordinary hint context now starts with verified visible dot-array
     // counts/rows from complete source groups. No stage, formula or answer is
     // inferred; source bytes, model calls, auth and storage remain unchanged.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), 'bf7bf5b84fe0dae0a206a7ab8a25b06afe91d98b09df5549686948b244405265');
+    // 2026-10-28: fit each source panel vertically; explicit zoom scales its cap.
+    // No source math, network, security or conversation behavior changes.
+    // 2026-10-28: four printed part-only illustration scopes correct 15 links;
+    // only those PDFs rotate OCR, while chat keys and PDF/SVG bytes stay fixed.
+
+
+    // Noam, 2026-10-28: explicit drawing can invoke existing operation/table
+    // compilers from exact native source; no answer data or new math family.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), '2ed241bb1265903ab81a21433be04237e3efc0f20183fb9c5e26b38fc0e17bb3');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {

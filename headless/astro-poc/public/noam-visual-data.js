@@ -48,7 +48,7 @@
     }
     var text = plain(raw).replace(/\\(?:left|right)/g, '').replace(/\\(?:cdot|times)/g, '*').replace(/\\div/g, '/')
       .replace(/\\f(?=\{)/g, '\\frac').replace(/[×·]/g, '*').replace(/[÷:]/g, '/').replace(/²/g, '^2').replace(/³/g, '^3');
-    if (/[^0-9A-Za-z+*/^().{}\\\s-]/.test(text) || /[A-Za-z]{2}/.test(text.replace(/\\frac/g, '')) || /[fghFGH]\s*\(/.test(text) || /\d[eE][+-]?\d/.test(text)) return null;
+    if (/[^0-9A-Za-z+*/^().{}\[\]\\\s-]/.test(text) || /[A-Za-z]{2}/.test(text.replace(/\\frac/g, '')) || /[fghFGH]\s*\(/.test(text) || /[A-Za-z]\s*\[/.test(text) || /\d[eE][+-]?\d/.test(text)) return null;
     var index = 0, count = 0, groups = 0, starts = spellings ? new Map() : null;
     function skip() { while (index < text.length && /\s/.test(text[index])) index++; }
     function node(type, value, children, start) {
@@ -66,6 +66,7 @@
       skip(); var start = index;
       if (text.slice(index, index + 5) === '\\frac') { index += 5; return node('operator', '÷', [group('{', '}'), group('{', '}')], start); }
       if (text[index] === '(') return group('(', ')');
+      if (text[index] === '[') return group('[', ']');
       if (text[index] === '{') return group('{', '}');
       if (/[A-Za-z]/.test(text[index] || '')) return node('symbol', text[index++], [], start);
       var match = text.slice(index).match(/^(?:\d+(?:\.\d+)?|\.\d+)/);
@@ -87,7 +88,7 @@
       while (true) {
         skip(); var token = text[index];
         if (token === '*' || token === '/') { index++; left = node('operator', token === '*' ? '×' : '÷', [left, unary()]); }
-        else if (token && (/[A-Za-z]/.test(token) || token === '(' || token === '{' || token === '\\')) left = node('operator', '×', [left, unary()]);
+        else if (token && (/[A-Za-z]/.test(token) || token === '(' || token === '[' || token === '{' || token === '\\')) left = node('operator', '×', [left, unary()]);
         else return left;
       }
     }
@@ -101,7 +102,7 @@
     });
     // Consume complete mathematical runs, not candidate-sized substrings. A
     // partial number or an operand sliced from a larger token cannot be proof.
-    return spans.concat((rest.match(/[0-9A-Za-z+*/^().{}\\\s−–×·÷:=²³-]+/g) || []).map(function (span) { return span.trim(); }).filter(Boolean));
+    return spans.concat((rest.match(/[0-9A-Za-z+*/^().{}\[\]\\\s−–×·÷:=²³-]+/g) || []).map(function (span) { return span.trim(); }).filter(Boolean));
   }
   function proofExpressions(text) {
     text = String(text || '');
@@ -114,7 +115,7 @@
       if (c === '-' && direction < 0 && /[א-ת]/.test(text[index - 1] || '')) return false;
       if (c === ':') {
         index += direction; while (index >= 0 && index < text.length && /\s/.test(text[index])) index += direction;
-        return /[0-9A-Za-z$\\(){}]/.test(text[index] || '');
+        return /[0-9A-Za-z$\\(){}\[\]]/.test(text[index] || '');
       }
       if (c === '.') return /[0-9]/.test(text[index + direction] || '');
       return /[0-9A-Za-z$+*/^=(){}\[\]\\×·÷−–%²³<>≤≥≠±_\-]/.test(c);
@@ -126,6 +127,87 @@
     // Mixed text is still inspected broadly for scope, but proof never joins
     // or slices the plaintext left after removing a marked math expression.
     return marked ? spans : completeExpressions(text);
+  }
+  // 'פתרו את המערכת השנייה' / 'המשוואה הראשונה' selects one of several printed
+  // stem equations without quoting it. A stem quote belongs to that selection
+  // only when the stem prints it under the same ordinal label ('המשוואה
+  // הראשונה: $9x=0$', 'בשנייה $y=x^2-2$ ו־$y=2x+1$'); otherwise keep the source.
+  // Each ordinal belongs to the noun right before it, or, after 'ו/את/גם' only,
+  // to the noun of the ordinal before it ('המערכת הראשונה ואת השנייה'): a
+  // system ordinal selects systems, an equation ordinal selects equations
+  // inside the selected systems ('במערכת השנייה, בדקו את המשוואה הראשונה').
+  var NOUN = /^[ובלהמש]{0,3}(?:(מערכת|מערכות|בדיקה|בדיקות)|(משוואה|משוואות|נוסחה|נוסחאות)|(פונקציה|פונקציות|גרף|גרפים))$/;
+  var ORDINAL = /^[ובלהמש]{0,3}(ראשו(?:ן|נה|נים|נות)|שני(?:יה|ה|ים|ות)?|שלישי(?:ת|ים|ות)?|רביעי(?:ת|ים|ות)?)$/;
+  var ORDER = ['ראש', 'שני', 'שלי', 'רבי'];
+  // An ordinal after another definite noun describes that noun ('התשובה
+  // השנייה', 'צעד ראשון'); only a definite ordinal after a construct word stands
+  // for the last noun ('מקדמי הראשונה', 'של הראשונה'). 'שני האגפים', 'בשני
+  // משתנים' are numbers, not ordinals.
+  function boundOrdinals(text) {
+    var out = [], noun = null, chain = false, words = [], re = /[א-ת]+/g, m;
+    while ((m = re.exec(text))) words.push({ word: m[0], at: m.index });
+    words.forEach(function (w, i) {
+      var kind = NOUN.exec(w.word), ordinal = !kind && ORDINAL.exec(w.word), next = words[i + 1], prev = words[i - 1];
+      if (ordinal && /^[ובלהמש]{0,3}שני$/.test(w.word) && next && /^ה|(?:ים|ות)$/.test(next.word)) ordinal = null;
+      if (kind) { noun = kind[1] ? 'system' : kind[2] ? 'equation' : 'other'; chain = true; }
+      else if (ordinal) {
+        var elliptic = /^[ובלמשכ]{0,2}ה/.test(w.word) && !(prev && /^ה[א-ת]{2,}/.test(prev.word));
+        out.push({ root: ordinal[1].slice(0, 3), noun: chain || elliptic ? noun : null, at: w.at });
+        chain = true;
+      }
+      else if (!/^(?:ו|את|ואת|גם|וגם|או)$/.test(w.word)) chain = false;
+    });
+    return out;
+  }
+  // The check applies to where the drawn expression itself is printed, not to
+  // where its quote starts: a quote may begin in the selected equation and run
+  // on into the next one. Every printed occurrence must be inside the selection.
+  function outsideOrdinalSelection(context, quote, span) {
+    var part = plain(context.partText).replace(/[$]/g, ''), stem = String(context.questionText);
+    var equations = (stem.match(/\$[^$]*=[^$]*\$/g) || []).length, bound = boundOrdinals(part);
+    if (equations < 2 || !bound.some(function (o) { return o.noun; })) return false;
+    var roots = function (noun) { return bound.filter(function (o) { return o.noun === noun; }).map(function (o) { return o.root; }); };
+    var systems = roots('system'), selected = roots('equation'), other = bound.map(function (o) { return o.root; });
+    // 'באילו מהמערכות…', 'בכל מערכת' select every system; 'בכל משוואה', 'בכל
+    // אחת מן המשוואות' every equation inside the selected systems (all, when no
+    // system is named). A count selects all only when it is every labelled
+    // system or printed equation; 'בשתי המערכות הראשונות' selects the first two.
+    // A possessive ('בשתי המשוואות שלה') stays inside the selected system.
+    var own = '(?!\\s+(?:שלה|שלו|שלהן|שלהם|שבה|שבו))', labelled = boundOrdinals(plain(stem));
+    var systemTotal = labelled.filter(function (o, i, list) { return o.noun === 'system' && list.findIndex(function (p) { return p.noun === 'system' && p.root === o.root; }) === i; }).length;
+    function every(nouns) { return new RegExp('(?:^|[^א-ת])[בל]?(?:אילו|איזו|איזה)\\s+(?:מ|מן\\s+)?ה?(?:' + nouns + ')' + own + '|(?:^|[^א-ת])[בל]?כל\\s+(?:אחת\\s+(?:מ|מן\\s+)?)?ה?(?:' + nouns + ')(?=$|[^א-ת])' + own).test(part); }
+    function counted(nouns, total) {
+      var m = new RegExp('(?:^|[^א-ת])[בלו]?(שתי|שני|שלוש|שלושת|ארבע|ארבעת)\\s+ה(?:' + nouns + ')(\\s+הראשונ(?:ות|ים))?(?=$|[^א-ת])' + own).exec(part);
+      if (!m) return null;
+      var n = /^ש(?:תי|ני)$/.test(m[1]) ? 2 : /^שלוש/.test(m[1]) ? 3 : 4;
+      return m[2] ? ORDER.slice(0, n) : total && n >= total ? 'all' : null;
+    }
+    var systemCount = counted('מערכות|בדיקות', systemTotal), equationCount = counted('משוואות|נוסחאות', equations);
+    var allSystems = !Array.isArray(systemCount) && (every('מערכת|מערכות|בדיקה|בדיקות') || systemCount === 'all');
+    var allEquations = every('משוואה|משוואות|נוסחה|נוסחאות') || equationCount === 'all';
+    if (Array.isArray(systemCount)) systems = systems.concat(systemCount);
+    if (Array.isArray(equationCount)) selected = selected.concat(equationCount);
+    var positions = [];
+    for (var q = stem.indexOf(quote); q >= 0; q = stem.indexOf(quote, q + 1))
+      for (var s = quote.indexOf(span); s >= 0; s = quote.indexOf(span, s + 1)) positions.push(q + s);
+    if (!span || !positions.length) return true;
+    return positions.some(function (at) {
+      var before = plain(stem.slice(0, at)), labels = boundOrdinals(before), label = labels[labels.length - 1];
+      var index = ((label ? before.slice(label.at) : before).match(/\$[^$]*=[^$]*\$/g) || []).length;
+      var equationOk = allEquations || !selected.length || selected.indexOf(ORDER[index]) >= 0;
+      if (label && label.noun === 'system') return !(allSystems || systems.indexOf(label.root) >= 0) || !equationOk;
+      // 'מערכת שנייה: המשוואה הראשונה $x+4=7$': an equation (or graph) label
+      // nested under a system label also needs that enclosing system selected.
+      var enclosing = labels.filter(function (o) { return o.noun === 'system'; }).pop();
+      var systemOk = !enclosing || allSystems || systems.indexOf(enclosing.root) >= 0;
+      if (label && label.noun === 'equation') return !systemOk || !(allEquations || selected.indexOf(label.root) >= 0);
+      if (label) return !systemOk || !allSystems && !allEquations && other.indexOf(label.root) < 0;
+      // Unlabelled 'שתי משוואות: $A$ ו־$B$': 'המשוואה השנייה' / 'הגרף השני' is the
+      // second printed formula. A system has no such single order, so it stays unclear.
+      if (allSystems) return false;
+      var ordered = selected.concat(roots('other'));
+      return !(allEquations || ordered.length && ordered.indexOf(ORDER[index]) >= 0);
+    });
   }
   function selectedMathScope(text) {
     // Recognizing a selected mathematical task is broader than rendering it.
@@ -150,7 +232,7 @@
         if (hintFocus === null) hintFocus = proofExpressions(hint).some(function (value) { return !!find(expression(value)); });
         if (!hintFocus) continue;
       }
-      return { expression: spellings.get(selected) || span, tree: selected };
+      return { expression: spellings.get(selected) || span, tree: selected, span: span };
     }
     return null;
   }
@@ -182,10 +264,11 @@
     if (plan.family === 'operations') {
       if (Object.prototype.hasOwnProperty.call(plan, 'tableSource') || typeof plan.expression !== 'string') return fail('invalid-operations');
       var tree = expression(plan.expression); if (!tree) return fail('unsupported-expression');
-      var matches = plan.evidence.map(function (e) { return { source: e.source, proof: givenExpression(tree, e.source === 'part' ? context.partText : context.questionText, e.quote, context.hintText) }; }).filter(function (match) { return match.proof; });
+      var matches = plan.evidence.map(function (e) { return { source: e.source, quote: e.quote, proof: givenExpression(tree, e.source === 'part' ? context.partText : context.questionText, e.quote, context.hintText) }; }).filter(function (match) { return match.proof; });
       if (!matches.length) return fail('expression-not-given');
       var inPart = matches.some(function (e) { return e.source === 'part'; });
       if (!inPart && (newScope(context.partText) || selectedMathScope(context.partText))) return fail('selected-part-scope');
+      if (!inPart && matches.some(function (m) { return m.source === 'question' && outsideOrdinalSelection(context, m.quote, m.proof.span); })) return fail('ambiguous_function_scope');
       var selected = matches.find(function (match) { return match.source === 'part'; }) || matches[0];
       scene.expression = selected.proof.expression; scene.tree = selected.proof.tree;
     } else {

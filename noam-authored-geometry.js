@@ -11,7 +11,8 @@
     "authored-triangle-sides": "המחשה של אורכי הצלעות וההיקף שנכתבו בשאלה. לא נבחרה משוואה ולא חושב ערך הנעלם.",
     "authored-rectangle": "המחשה של מידות המלבן שנכתבו בשאלה. לא חושבו מידות או שטחים חדשים.",
     "authored-equal-perimeter": "המחשה סכמטית של הצורות בעלות ההיקף השווה. סימן שאלה מציין אורך שלא ניתן. הגדלים בציור אינם השוואת שטחים.",
-    "authored-correspondence": "סקיצה של שני המשולשים החופפים לפי הנתון. לא נוספו מידות, סימוני התאמה או תשובות לסעיף."
+    "authored-correspondence": "סקיצה של שני המשולשים החופפים לפי הנתון. לא נוספו מידות, סימוני התאמה או תשובות לסעיף.",
+    "authored-square-construction": "סקיצה של הבנייה שנדרשה בשאלה, לפי הנתונים המפורשים בלבד. לא חושבו אורכים, שטחים או תשובות."
   };
   function clean(text) {
     return String(text || "").slice(0, 6000).replace(/[\u200e\u200f\u202a-\u202e\u2066-\u2069]/g, "")
@@ -120,8 +121,26 @@
       /(?:^|[^א-ת])(?:משנים|משנות|שנו|הגדילו|הקטינו|מחליפים|החליפו)(?=$|[^א-ת])/.test(s) ||
       /(?:פתחו|פשטו|פרקו)\s+(?:את\s+)?(?:הסוגריים|סוגריים|הביטוי|הביטויים)/.test(s);
   }
+  function squareConstruction(context) {
+    // These complete printed instructions specify the construction itself.
+    // No parent to_construct/given arrays, derived values, or guessed vertex
+    // names may supply missing source data.
+    var text = clean(context.questionText), part = clean(context.partText), m, data;
+    m = text.match(/^שרטטו ריבוע ששטחו ([1-9][0-9]{0,3}) סמ״ר\. סמנו ([A-Z])\s*,\s*([A-Z]) באמצעי שתי צלעות סמוכות וצרפו אותם\.$/);
+    if (m && m[2] !== m[3]) data = { variant: "adjacent-midpoints", measure: m[1], midpointNames: [m[2], m[3]] };
+    m = text.match(/^שרטטו סקיצה של מגרש ריבועי שאלכסונו ([1-9][0-9]{0,3}\\sqrt\{2\}) מטרים\. סמנו את שני האלכסונים ואת נקודת המפגש\.$/);
+    if (m) data = { variant: "diagonals", measure: m[1], midpointNames: [] };
+    if (!data || replacesCommonGeometry(part) || /[0-9]|דוגמה\s+נגדית|נניח|אילו|במקום|(?:^|[^א-ת])אם(?:$|[^א-ת])/.test(part) ||
+        /(?:^|[^א-ת])(?:שרטטו|סמנו|בנו|צרו|הוסיפו|האריכו|העבירו|חברו|צרפו|שקפו|הזיזו)(?=$|[^א-ת])/.test(part)) return null;
+    // In particular, an unnamed square does not establish an ABC triangle in
+    // a later part. Preserve only the midpoint names explicitly printed above.
+    var names = part.match(/[A-Za-z]+/g) || [];
+    if (names.some(function (name) { return Array.from(name).some(function (letter) { return data.midpointNames.indexOf(letter) < 0; }); })) return null;
+    return scene("authored-square-construction", data);
+  }
   function resolve(context, options) {
     if (!context || context.hasFigure !== false || typeof context.questionText !== "string" || typeof context.partText !== "string" || !request(options, context)) return null;
+    var square = squareConstruction(context); if (square) return square;
     // Do not read parent given arrays or sibling parts. Family data must occur
     // in the printed common stem, or in a self-contained selected subsection.
     var sources = replacesCommonGeometry(context.partText) ? [context.partText] : [context.questionText, context.partText];
@@ -149,6 +168,9 @@
     if (!safeTree(s, 0) || !keys(s, ["version", "kind", "caption", "data"]) || s.version !== 1 || s.caption !== CAPTIONS[s.kind]) return false;
     var d = s.data, dim = function (v) { return typeof v === "string" && expr(v, true) === v; };
     var un = function () { return /^(?:ס״מ|מ״מ|מטרים|יחידות אורך)$/.test(d.unit); };
+    if (s.kind === "authored-square-construction") return keys(d, ["variant", "measure", "midpointNames"]) && typeof d.measure === "string" && Array.isArray(d.midpointNames) &&
+      (d.variant === "adjacent-midpoints" && /^[1-9][0-9]{0,3}$/.test(d.measure) && d.midpointNames.length === 2 && d.midpointNames.every(function (n) { return typeof n === "string" && /^[A-Z]$/.test(n); }) && d.midpointNames[0] !== d.midpointNames[1] ||
+       d.variant === "diagonals" && /^[1-9][0-9]{0,3}\\sqrt\{2\}$/.test(d.measure) && d.midpointNames.length === 0);
     if (s.kind === "authored-triangular-prism") {
       if (!keys(d, ["sides", "length", "volume", "unit"]) || !Array.isArray(d.sides) || d.sides.length !== 3 || !d.sides.every(number) || !dim(d.length) || !(d.volume === null || number(d.volume)) || !un()) return false;
       var n = d.sides.map(Number); return Math.abs(n[0] * n[0] + n[1] * n[1] - n[2] * n[2]) < .000001 * n[2] * n[2];
@@ -175,7 +197,23 @@
     figure.style.cssText = "margin:12px 0;padding:12px;border:1px solid #d8e4ef;border-radius:14px;background:white";
     var d = spec.data, svg;
     if (d.unit) block(doc, figure, "מידות ב" + d.unit + " · שרטוט סכמטי, ללא קנה מידה");
-    if (spec.kind === "authored-triangular-prism") {
+    if (spec.kind === "authored-square-construction") {
+      block(doc,figure,"שרטוט סכמטי, ללא קנה מידה");
+      var measure=doc.createElement("div"),mathLabel=doc.createElement("bdi");
+      measure.setAttribute("dir","rtl");measure.style.cssText="text-align:center;font-size:17px;line-height:1.6";
+      measure.appendChild(doc.createTextNode(d.variant==="adjacent-midpoints"?"שטח הריבוע הנתון: ":"אורך האלכסון הנתון: "));
+      mathLabel.setAttribute("dir","ltr");mathLabel.setAttribute("data-role","given-measure");
+      mathLabel.textContent=d.measure.replace(/\\sqrt\{2\}$/, "√2");measure.appendChild(mathLabel);
+      measure.appendChild(doc.createTextNode(d.variant==="adjacent-midpoints"?" סמ״ר":" מטרים"));figure.appendChild(measure);
+      svg=canvas(doc,figure,350);var corners=[[90,45],[350,45],[350,305],[90,305]];polygon(doc,svg,corners,"#f4f8fc");
+      if(d.variant==="adjacent-midpoints"){
+        var midpoints=[[220,45],[350,175]];line(doc,svg,midpoints[0],midpoints[1],BLUE);
+        midpoints.forEach(function(p,i){svg.appendChild(el(doc,"circle",{cx:p[0],cy:p[1],r:4,fill:BLUE,"data-role":"given-midpoint"}));label(doc,svg,p[0]+(i?24:0),p[1]+(i?7:-16),d.midpointNames[i],false,"vertex-label");});
+      }else{
+        line(doc,svg,corners[0],corners[2],BLUE);line(doc,svg,corners[1],corners[3],BLUE);
+        svg.appendChild(el(doc,"circle",{cx:220,cy:175,r:4,fill:INK,"data-role":"given-diagonal-intersection"}));
+      }
+    } else if (spec.kind === "authored-triangular-prism") {
       if (d.volume) block(doc, figure, "נפח נתון: " + d.volume + (d.unit === "ס״מ" ? " סמ״ק" : " יחידות נפח"));
       svg = canvas(doc, figure, 350);
       var ratio = Number(d.sides[0]) / Number(d.sides[1]), front = [[75,270],[260,270],[75,270-185*ratio]], back = front.map(function (p) { return [p[0]+105,p[1]-60]; });
