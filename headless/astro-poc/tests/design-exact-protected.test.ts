@@ -134,11 +134,11 @@ describe('exact-design protected live-baseline boundaries', () => {
     const nativeAdditions = [
       '<script src="/noam-ai/catalog-migrations.js?v=20261027-native1"></script>',
       '<script src="/noam-catalog-migration.js?v=20261027-native1"></script>',
-      '<script src="noam-native-visual.js?v=20261028-source6"></script>',
+      '<script src="noam-native-visual.js?v=20261028-source7"></script>',
       '<script src="noam-source-panels.js?v=20261028-panels1"></script>',
       '<script src="noam-authored-geometry.js?v=20261028-square1"></script>',
-      '<script src="noam-authored-visual.js?v=20261028-source4"></script>',
-      '<script src="noam-visual-data.js?v=20261028-source1"></script>',
+      '<script src="noam-authored-visual.js?v=20261028-source5"></script>',
+      '<script src="noam-visual-data.js?v=20261028-source2"></script>',
       '<script src="noam-visual-plan.js?v=20261028-source3"></script>',
       '<script src="noam-source-data-visual.js?v=20261028-source-data2"></script>',
     ];
