@@ -48,7 +48,7 @@
     }
     var text = plain(raw).replace(/\\(?:left|right)/g, '').replace(/\\(?:cdot|times)/g, '*').replace(/\\div/g, '/')
       .replace(/\\f(?=\{)/g, '\\frac').replace(/[×·]/g, '*').replace(/[÷:]/g, '/').replace(/²/g, '^2').replace(/³/g, '^3');
-    if (/[^0-9A-Za-z+*/^().{}\\\s-]/.test(text) || /[A-Za-z]{2}/.test(text.replace(/\\frac/g, '')) || /[fghFGH]\s*\(/.test(text) || /\d[eE][+-]?\d/.test(text)) return null;
+    if (/[^0-9A-Za-z+*/^().{}\[\]\\\s-]/.test(text) || /[A-Za-z]{2}/.test(text.replace(/\\frac/g, '')) || /[fghFGH]\s*\(/.test(text) || /[A-Za-z]\s*\[/.test(text) || /\d[eE][+-]?\d/.test(text)) return null;
     var index = 0, count = 0, groups = 0, starts = spellings ? new Map() : null;
     function skip() { while (index < text.length && /\s/.test(text[index])) index++; }
     function node(type, value, children, start) {
@@ -66,6 +66,7 @@
       skip(); var start = index;
       if (text.slice(index, index + 5) === '\\frac') { index += 5; return node('operator', '÷', [group('{', '}'), group('{', '}')], start); }
       if (text[index] === '(') return group('(', ')');
+      if (text[index] === '[') return group('[', ']');
       if (text[index] === '{') return group('{', '}');
       if (/[A-Za-z]/.test(text[index] || '')) return node('symbol', text[index++], [], start);
       var match = text.slice(index).match(/^(?:\d+(?:\.\d+)?|\.\d+)/);
@@ -87,7 +88,7 @@
       while (true) {
         skip(); var token = text[index];
         if (token === '*' || token === '/') { index++; left = node('operator', token === '*' ? '×' : '÷', [left, unary()]); }
-        else if (token && (/[A-Za-z]/.test(token) || token === '(' || token === '{' || token === '\\')) left = node('operator', '×', [left, unary()]);
+        else if (token && (/[A-Za-z]/.test(token) || token === '(' || token === '[' || token === '{' || token === '\\')) left = node('operator', '×', [left, unary()]);
         else return left;
       }
     }
@@ -101,7 +102,7 @@
     });
     // Consume complete mathematical runs, not candidate-sized substrings. A
     // partial number or an operand sliced from a larger token cannot be proof.
-    return spans.concat((rest.match(/[0-9A-Za-z+*/^().{}\\\s−–×·÷:=²³-]+/g) || []).map(function (span) { return span.trim(); }).filter(Boolean));
+    return spans.concat((rest.match(/[0-9A-Za-z+*/^().{}\[\]\\\s−–×·÷:=²³-]+/g) || []).map(function (span) { return span.trim(); }).filter(Boolean));
   }
   function proofExpressions(text) {
     text = String(text || '');
