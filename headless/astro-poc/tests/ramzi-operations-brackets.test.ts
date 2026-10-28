@@ -38,6 +38,8 @@ it('each opening bracket needs its matching closer, bounded nesting and a comple
 
 it('plaintext bracket runs and mixed math boundaries cannot supply partial source proof',()=>{
   assert.equal(check('2+[3*4]','חשבו 2+[3*4]').ok,true);
+  assert.equal(check('[2+3]:[4+5]').ok,true);
+  for(const [partText,expression] of [['$2+3$ : [4+5]','2+3'],['[2+3] : $4+5$','4+5']])assert.equal(api.inspect(op(expression,partText),{questionText:'',partText,hintText:''}).ok,false,partText);
   for(const partText of ['חשבו [2+3','חשבו 2+3]','חשבו [2+3)*4','$x$[2+3]','[2+$3$]','$2+3$[4+5]']){
     assert.equal(api.inspect(op('2+3',partText),{questionText:'',partText,hintText:''}).ok,false,partText);
   }

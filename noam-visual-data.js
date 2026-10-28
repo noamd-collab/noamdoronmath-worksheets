@@ -115,7 +115,7 @@
       if (c === '-' && direction < 0 && /[א-ת]/.test(text[index - 1] || '')) return false;
       if (c === ':') {
         index += direction; while (index >= 0 && index < text.length && /\s/.test(text[index])) index += direction;
-        return /[0-9A-Za-z$\\(){}]/.test(text[index] || '');
+        return /[0-9A-Za-z$\\(){}\[\]]/.test(text[index] || '');
       }
       if (c === '.') return /[0-9]/.test(text[index + direction] || '');
       return /[0-9A-Za-z$+*/^=(){}\[\]\\×·÷−–%²³<>≤≥≠±_\-]/.test(c);
