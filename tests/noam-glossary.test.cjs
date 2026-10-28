@@ -152,6 +152,22 @@ test("פינה glossary text labels side vs vertex clearly", () => {
   assert.ok(glossary.findTerms("באיזה פינה", 8).some((m) => m.id === "curriculum-de3686967d"));
 });
 
+test("corresponding angles cover polygon vertices and a transversal without unconditional equality", () => {
+  const entry = glossary.get("corresponding-angles");
+  assert.match(entry.short, /בשני מצולעים: זוויות בקודקודים שמותאמים זה לזה/);
+  assert.match(entry.short, /בשני ישרים וחותך: זוויות בשתי נקודות החיתוך, באותו צד של החותך/);
+  assert.doesNotMatch(entry.short, /שוות/);
+  assert.match(entry.detail, /^התאמה לבדה אינה אומרת שהזוויות שוות\./);
+  assert.match(entry.detail, /מנתון או מחפיפה או דמיון שכבר הוכחו/);
+  assert.match(entry.detail, /שוות כשהישרים מקבילים, ורק אז/);
+  assert.doesNotMatch(entry.example, /MN|∥/);
+  // G9-T46-B-Q03ב: the congruence hint links this entry next to vertices K and M.
+  const hint = "האם זכית בחפיפה בין המשולשים בסעיף א׳, ואיזה זוויות מתאימות נמצאות בקודקודים K ו־M בהתאמה?";
+  assert.ok(glossary.findTerms(hint, 9, 6).some((m) => m.id === "corresponding-angles"));
+  const publicCopy = fs.readFileSync(path.join(__dirname, "../headless/astro-poc/public/noam-glossary.js"), "utf8");
+  assert.equal(publicCopy, fs.readFileSync(path.join(__dirname, "../noam-glossary.js"), "utf8"));
+});
+
 test("Hebrew word boundaries avoid highlighting a term inside an unrelated word", () => {
   assert.equal(glossary.findTerms("הריבועית", 9, 6).some(match => match.id === "square"), false);
   assert.equal(glossary.findTerms("ריבוע", 9, 6)[0].id, "square");
