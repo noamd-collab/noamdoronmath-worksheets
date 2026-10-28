@@ -131,44 +131,77 @@
   // stem equations without quoting it. A stem quote belongs to that selection
   // only when the stem prints it under the same ordinal label ('המשוואה
   // הראשונה: $9x=0$', 'בשנייה $y=x^2-2$ ו־$y=2x+1$'); otherwise keep the source.
-  var ORDINAL_WORD = /(?:^|[^א-ת])[ובלהמש]{0,3}(ראשו(?:ן|נה)|שני(?:יה|ה)?|שלישי(?:ת)?|רביעי(?:ת)?)(?=$|[^א-ת])/g;
-  function ordinalRoots(text) {
-    var roots = [], m; ORDINAL_WORD.lastIndex = 0;
-    while ((m = ORDINAL_WORD.exec(text))) roots.push(m[1].slice(0, 3));
-    return roots;
+  // Each ordinal belongs to the noun right before it, or, after 'ו/את/גם' only,
+  // to the noun of the ordinal before it ('המערכת הראשונה ואת השנייה'): a
+  // system ordinal selects systems, an equation ordinal selects equations
+  // inside the selected systems ('במערכת השנייה, בדקו את המשוואה הראשונה').
+  var NOUN = /^[ובלהמש]{0,3}(?:(מערכת|מערכות|בדיקה|בדיקות)|(משוואה|משוואות|נוסחה|נוסחאות)|(פונקציה|פונקציות|גרף|גרפים))$/;
+  var ORDINAL = /^[ובלהמש]{0,3}(ראשו(?:ן|נה|נים|נות)|שני(?:יה|ה|ים|ות)?|שלישי(?:ת|ים|ות)?|רביעי(?:ת|ים|ות)?)$/;
+  var ORDER = ['ראש', 'שני', 'שלי', 'רבי'];
+  // An ordinal after another definite noun describes that noun ('התשובה
+  // השנייה', 'צעד ראשון'); only a definite ordinal after a construct word stands
+  // for the last noun ('מקדמי הראשונה', 'של הראשונה'). 'שני האגפים', 'בשני
+  // משתנים' are numbers, not ordinals.
+  function boundOrdinals(text) {
+    var out = [], noun = null, chain = false, words = [], re = /[א-ת]+/g, m;
+    while ((m = re.exec(text))) words.push({ word: m[0], at: m.index });
+    words.forEach(function (w, i) {
+      var kind = NOUN.exec(w.word), ordinal = !kind && ORDINAL.exec(w.word), next = words[i + 1], prev = words[i - 1];
+      if (ordinal && /^[ובלהמש]{0,3}שני$/.test(w.word) && next && /^ה|(?:ים|ות)$/.test(next.word)) ordinal = null;
+      if (kind) { noun = kind[1] ? 'system' : kind[2] ? 'equation' : 'other'; chain = true; }
+      else if (ordinal) {
+        var elliptic = /^[ובלמשכ]{0,2}ה/.test(w.word) && !(prev && /^ה[א-ת]{2,}/.test(prev.word));
+        out.push({ root: ordinal[1].slice(0, 3), noun: chain || elliptic ? noun : null, at: w.at });
+        chain = true;
+      }
+      else if (!/^(?:ו|את|ואת|גם|וגם|או)$/.test(w.word)) chain = false;
+    });
+    return out;
   }
   // The check applies to where the drawn expression itself is printed, not to
   // where its quote starts: a quote may begin in the selected equation and run
   // on into the next one. Every printed occurrence must be inside the selection.
   function outsideOrdinalSelection(context, quote, span) {
     var part = plain(context.partText).replace(/[$]/g, ''), stem = String(context.questionText);
-    var equations = (stem.match(/\$[^$]*=[^$]*\$/g) || []).length;
-    if (equations < 2 || !/(?:מערכת|משוואה|נוסחה|בדיקה|פונקציה|גרף)\s+(?:ה)?(?:ראשו(?:ן|נה)|שני(?:יה|ה)?|שלישי(?:ת)?|רביעי(?:ת)?)(?=$|[^א-תA-Za-z0-9])|(?:מערכות|משוואות)\s+(?:ה)?ראשונות(?=$|[^א-ת])/.test(part)) return false;
-    // 'באילו מהמערכות…', 'בכל מערכת', 'בכל אחת מן המשוואות' select every printed
-    // system/equation; inside them 'המשוואה השנייה' names an equation of each
-    // system, not one system. 'בשלוש המערכות' selects all only when that is
-    // every labelled system (or 'בשתי המשוואות' every printed equation);
-    // 'בשתי המערכות הראשונות' selects the first two. A possessive ('בשתי
-    // המשוואות שלה') stays inside the one selected system.
-    var own = '(?!\\s+(?:שלה|שלו|שלהן|שלהם|שבה|שבו))', ORDER = ['ראש', 'שני', 'שלי', 'רבי'], wanted = ordinalRoots(part), positions = [];
-    var universal = new RegExp('(?:^|[^א-ת])[בל]?(?:אילו|איזו|איזה)\\s+(?:מ|מן\\s+)?ה?(?:מערכות|משוואות)' + own + '|(?:^|[^א-ת])[בל]?כל\\s+(?:אחת\\s+(?:מ|מן\\s+)?)?ה?(?:מערכת|מערכות|משוואה|משוואות)(?=$|[^א-ת])' + own).test(part);
-    var plural = new RegExp('(?:^|[^א-ת])[בלו]?(שתי|שני|שלוש|שלושת|ארבע|ארבעת)\\s+ה(מערכות|משוואות)(\\s+הראשונות)?(?=$|[^א-ת])' + own).exec(part);
-    var n = plural ? (/^ש(?:תי|ני)$/.test(plural[1]) ? 2 : /^שלוש/.test(plural[1]) ? 3 : 4) : 0;
-    var total = plural ? (plural[2] === 'משוואות' ? equations : ordinalRoots(plain(stem)).filter(function (r, i, list) { return list.indexOf(r) === i; }).length) : 0;
-    // An explicit 'first N' wins over a following 'כל מערכת' that refers to them.
-    if (plural && plural[3]) wanted = wanted.concat(ORDER.slice(0, n));
-    else if (universal || plural && total && n >= total) return false;
+    var equations = (stem.match(/\$[^$]*=[^$]*\$/g) || []).length, bound = boundOrdinals(part);
+    if (equations < 2 || !bound.some(function (o) { return o.noun; })) return false;
+    var roots = function (noun) { return bound.filter(function (o) { return o.noun === noun; }).map(function (o) { return o.root; }); };
+    var systems = roots('system'), selected = roots('equation'), other = bound.map(function (o) { return o.root; });
+    // 'באילו מהמערכות…', 'בכל מערכת' select every system; 'בכל משוואה', 'בכל
+    // אחת מן המשוואות' every equation inside the selected systems (all, when no
+    // system is named). A count selects all only when it is every labelled
+    // system or printed equation; 'בשתי המערכות הראשונות' selects the first two.
+    // A possessive ('בשתי המשוואות שלה') stays inside the selected system.
+    var own = '(?!\\s+(?:שלה|שלו|שלהן|שלהם|שבה|שבו))', labelled = boundOrdinals(plain(stem));
+    var systemTotal = labelled.filter(function (o, i, list) { return o.noun === 'system' && list.findIndex(function (p) { return p.noun === 'system' && p.root === o.root; }) === i; }).length;
+    function every(nouns) { return new RegExp('(?:^|[^א-ת])[בל]?(?:אילו|איזו|איזה)\\s+(?:מ|מן\\s+)?ה?(?:' + nouns + ')' + own + '|(?:^|[^א-ת])[בל]?כל\\s+(?:אחת\\s+(?:מ|מן\\s+)?)?ה?(?:' + nouns + ')(?=$|[^א-ת])' + own).test(part); }
+    function counted(nouns, total) {
+      var m = new RegExp('(?:^|[^א-ת])[בלו]?(שתי|שני|שלוש|שלושת|ארבע|ארבעת)\\s+ה(?:' + nouns + ')(\\s+הראשונ(?:ות|ים))?(?=$|[^א-ת])' + own).exec(part);
+      if (!m) return null;
+      var n = /^ש(?:תי|ני)$/.test(m[1]) ? 2 : /^שלוש/.test(m[1]) ? 3 : 4;
+      return m[2] ? ORDER.slice(0, n) : total && n >= total ? 'all' : null;
+    }
+    var systemCount = counted('מערכות|בדיקות', systemTotal), equationCount = counted('משוואות|נוסחאות', equations);
+    var allSystems = !Array.isArray(systemCount) && (every('מערכת|מערכות|בדיקה|בדיקות') || systemCount === 'all');
+    var allEquations = every('משוואה|משוואות|נוסחה|נוסחאות') || equationCount === 'all';
+    if (Array.isArray(systemCount)) systems = systems.concat(systemCount);
+    if (Array.isArray(equationCount)) selected = selected.concat(equationCount);
+    var positions = [];
     for (var q = stem.indexOf(quote); q >= 0; q = stem.indexOf(quote, q + 1))
       for (var s = quote.indexOf(span); s >= 0; s = quote.indexOf(span, s + 1)) positions.push(q + s);
     if (!span || !positions.length) return true;
     return positions.some(function (at) {
-      var labels = ordinalRoots(plain(stem.slice(0, at)));
-      if (labels.length) return wanted.indexOf(labels[labels.length - 1]) < 0;
-      // Unlabelled 'שתי משוואות: $A$ ו־$B$': 'המשוואה השנייה' is the second printed
-      // equation. A system has no such single-equation order, so it stays unclear.
-      if (!/(?:משוואה|נוסחה)\s+(?:ה)?(?:ראשו|שני|שליש|רביע)/.test(part)) return true;
-      var index = (stem.slice(0, at).match(/\$[^$]*=[^$]*\$/g) || []).length;
-      return wanted.indexOf(ORDER[index]) < 0;
+      var before = plain(stem.slice(0, at)), labels = boundOrdinals(before), label = labels[labels.length - 1];
+      var index = ((label ? before.slice(label.at) : before).match(/\$[^$]*=[^$]*\$/g) || []).length;
+      var equationOk = allEquations || !selected.length || selected.indexOf(ORDER[index]) >= 0;
+      if (label && label.noun === 'system') return !(allSystems || systems.indexOf(label.root) >= 0) || !equationOk;
+      if (label && label.noun === 'equation') return !(allEquations || selected.indexOf(label.root) >= 0);
+      if (label) return !allSystems && !allEquations && other.indexOf(label.root) < 0;
+      // Unlabelled 'שתי משוואות: $A$ ו־$B$': 'המשוואה השנייה' / 'הגרף השני' is the
+      // second printed formula. A system has no such single order, so it stays unclear.
+      if (allSystems) return false;
+      var ordered = selected.concat(roots('other'));
+      return !(allEquations || ordered.length && ordered.indexOf(ORDER[index]) >= 0);
     });
   }
   function selectedMathScope(text) {

@@ -190,10 +190,44 @@ it('explicitly selecting several or all systems keeps every selected system and 
     assert.equal(ask(partText, 'y=2x').ok, true, partText); assert.equal(ask(partText, 'y=3x').ok, true, partText);
     assert.equal(ask(partText, 'y=4x').reason, 'ambiguous_function_scope', partText + ' leaves out the third');
   }
-  for (const partText of ['בכל מערכת פתרו את המשוואה השנייה.', 'בשלוש המערכות בדקו את המשוואה הראשונה.', 'באילו מהמערכות המשוואה השנייה היא כפולה של הראשונה?'])
+  for (const partText of ['בכל מערכת פתרו את המשוואה השנייה.', 'באילו מהמערכות המשוואה השנייה היא כפולה של הראשונה?'])
     assert.equal(ask(partText, 'y=4x').ok, true, partText);
+  // Every system, but only its first equation.
+  assert.equal(ask('בשלוש המערכות בדקו את המשוואה הראשונה.', 'y=x+3').ok, true);
+  assert.equal(ask('בשלוש המערכות בדקו את המשוואה הראשונה.', 'y=4x').reason, 'ambiguous_function_scope');
   // 'שתי המערכות' of three names no specific pair: the single selection rule still applies.
   assert.equal(ask('בשתי המערכות פתרו את המערכת השנייה.', 'y=4x').reason, 'ambiguous_function_scope');
   assert.equal(plans.inspect(plan('3x + 4y = 27'), section('G8-T07/b', 4, 'ג').typed()).reason, 'ambiguous_function_scope');
   assert.equal(plans.inspect(plan('y=x−3'), section('G9-T13/a', 17, 'ב').typed()).reason, 'ambiguous_function_scope');
+});
+
+it('equation scope inside a selected system never widens to the other systems', () => {
+  const plan = (expression: string) => inVm({ version: 2, status: 'ok', family: 'operations', expression, evidence: [{ source: 'question', quote: '$' + expression + '$' }] });
+  const stem = 'מערכת ראשונה: $y=x+1$ ו־$y=2x$. מערכת שנייה: $y=x+2$ ו־$y=3x$. מערכת שלישית: $y=x+3$ ו־$y=4x$.';
+  const ask = (partText: string, expression: string) => plans.inspect(plan(expression), inVm({ questionText: stem, partText, hintText: '', studentMessage: '' }));
+  for (const partText of ['פתרו את המערכת השנייה.', 'במערכת השנייה, בדקו כל משוואה.', 'פתרו את המערכת השנייה. השוו את המקדמים בכל משוואה.',
+    'במערכת השנייה, בדקו את המשוואה הראשונה ואת המשוואה השנייה.', 'במערכת השנייה, בדקו בשתי המשוואות שלה את המקדמים.']) {
+    assert.equal(ask(partText, 'y=3x').ok, true, partText);
+    assert.equal(ask(partText, 'y=2x').reason, 'ambiguous_function_scope', partText + ' / first system');
+    assert.equal(ask(partText, 'y=4x').reason, 'ambiguous_function_scope', partText + ' / third system');
+  }
+  // An equation ordinal inside the selected system selects that equation only.
+  assert.equal(ask('במערכת השנייה, בדקו את המשוואה הראשונה.', 'y=x+2').ok, true);
+  assert.equal(ask('במערכת השנייה, בדקו את המשוואה הראשונה.', 'y=3x').reason, 'ambiguous_function_scope');
+  for (const partText of ['פתרו את המערכת הראשונה ואת השנייה.', 'בשתי המערכות הראשונות פתרו כל מערכת.']) {
+    assert.equal(ask(partText, 'y=2x').ok, true, partText); assert.equal(ask(partText, 'y=3x').ok, true, partText);
+    assert.equal(ask(partText, 'y=4x').reason, 'ambiguous_function_scope', partText);
+  }
+  // Unlabelled stems: 'הגרף הראשון … הגרף השני' names both printed formulas;
+  // 'רק את המשוואה הראשונה' only the first; 'בשני משתנים' is a number.
+  const graphs = section('G9-T06/c', 11, 'ג');
+  for (const expression of ['y = x²', 'y = (x + 8)²']) assert.equal(plans.inspect(plan(expression), graphs.typed()).ok, true, expression);
+  const onlyFirst = section('G8-T07/b', 16, 'ג');
+  assert.equal(plans.inspect(plan('2x + 3y = 22'), onlyFirst.typed()).ok, true);
+  assert.equal(plans.inspect(plan('x − 3y = −7'), onlyFirst.typed()).reason, 'ambiguous_function_scope');
+  for (const [pkg, q, part, expression] of [['G9-T12/c', 15, 'א', 'y=x ^2−3x+1'], ['G8-T06/a', 3, 'א', 'y=−x+5'], ['G8-T25/c', 15, 'ג', '20 · 121 = 2420']] as const)
+    assert.equal(plans.inspect(plan(expression), section(pkg, q, part).typed()).ok, true, `${pkg} q${q}${part} has no ordinal selection`);
+  // The actual all-systems item keeps all six equations.
+  const all = section('G8-T07/c', 12, 'א');
+  for (const m of all.context.questionText.matchAll(/\$([^$]+)\$/g)) assert.equal(plans.inspect(plan(m[1]), all.typed()).ok, true, m[1]);
 });
