@@ -84,7 +84,7 @@
       var quotedScene=a.fromContext(quotedContext,opts);
       if(!scene||!quotedScene||JSON.stringify(scene)!==JSON.stringify(quotedScene))return fail('incomplete_family_evidence');
       if(plan.family==='numberline'&&scene&&['authored-number-line','authored-intervals'].includes(scene.kind))return {ok:true,scene:scene,reason:null};
-      if(plan.family==='given-geometry'&&scene&&/^authored-(?:triangular-prism|triangle-sides|rectangle|equal-perimeter|correspondence)$/.test(scene.kind))return {ok:true,scene:scene,reason:null};
+      if(plan.family==='given-geometry'&&scene&&/^authored-(?:triangular-prism|triangle-sides|rectangle|equal-perimeter|correspondence|square-construction)$/.test(scene.kind))return {ok:true,scene:scene,reason:null};
       return fail('unsupported_authored_family');
     }catch(_error){return fail('invalid_typed_plan');}
   }
