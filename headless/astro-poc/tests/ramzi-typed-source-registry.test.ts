@@ -35,7 +35,7 @@ it('every canonical native manifest has exact root/public source bytes and a com
 it('the viewer refreshes manifests when typed source digests are introduced without resetting conversations',()=>{
  for(const base of [root,new URL('public/',app)]){
   const viewer=readFileSync(new URL('worksheet-viewer-noam.html',base),'utf8');
-  assert.match(viewer,/MANIFEST_PATH = [^\n]+\.json\?v=20261028-panel-source/);
+  assert.match(viewer,/MANIFEST_PATH = [^\n]+\.json\?v=20261028-item-figure-scope/);
   assert.match(viewer,/THREAD_STORAGE_KEY = "noam-static-threads-v1:"/);
  }
 });

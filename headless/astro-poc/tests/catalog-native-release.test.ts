@@ -62,7 +62,7 @@ test('ordinary catalog reaches every reviewed PDF with its matching native manif
   assert.equal(reached.size, 412);
   assert.deepEqual([...reached].sort(), rows.map(row => row.key).sort());
   assert.equal(subsections, 30972);
-  assert.equal(figures, 14697);
+  assert.equal(figures, 14682); // Fifteen explicit sibling-only figure links were removed.
 });
 
 test('old PDF migrations preserve exact old identity and select a complete reachable replacement', () => {

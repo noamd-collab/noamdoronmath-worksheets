@@ -251,7 +251,9 @@ describe('exact-design protected live-baseline boundaries', () => {
     // inferred; source bytes, model calls, auth and storage remain unchanged.
     // 2026-10-28: fit each source panel vertically; explicit zoom scales its cap.
     // No source math, network, security or conversation behavior changes.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '03002aef75e8c352e27e36b30d723a9bdb85b30da2882b2112e0f740b2aeae63');
+    // 2026-10-28: four printed part-only illustration scopes correct 15 links;
+    // only those PDFs rotate OCR, while chat keys and PDF/SVG bytes stay fixed.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), '018bc29ae0e20844c7a9888e3e8307a5ba5845bcc9a8cbaa7984c9f92b2d102d');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {

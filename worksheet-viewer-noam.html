@@ -4647,9 +4647,11 @@ var mathKeyboardOpen = false;
 var analysisCache = {};
 var exercisePreviewCache = {};
 var exercisePreviewOrder = [];
-var MANIFEST_PATH = HEADLESS_MANIFEST_BASE + pdf + ".json?v=20261028-panel-source";
+var MANIFEST_PATH = HEADLESS_MANIFEST_BASE + pdf + ".json?v=20261028-item-figure-scope";
 var THREAD_STORAGE_KEY = "noam-static-threads-v1:" + pdf;
 var ANALYSIS_STORAGE_KEY = "noam-static-analysis-v2-crop-geometry:" + pdf;
+// Only these four corrected source scopes invalidate OCR that included sibling givens.
+if (["e6bad05438cb48f4ab5f7d894727625f", "1447b1c93a0f481abbd1eccbef8a7551", "7b2d78cef1f44268ba9265392320ad26", "162e9a4cd15e41c5bb68cc6a1b600e81"].indexOf(pdf)>=0){ANALYSIS_STORAGE_KEY+=":item-figure-scope-20261028";}
 var threads = {};
 
 try{

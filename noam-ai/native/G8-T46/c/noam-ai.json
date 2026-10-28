@@ -3010,16 +3010,7 @@
    "label": 20,
    "text": "בדקו את גבולות השימוש במשפטי הדמיון. האיור מתייחס רק לסעיף האחרון.",
    "figure_id": "q20_head",
-   "given": [
-    {
-     "text": "AB ∥ CD",
-     "type": "parallel",
-     "of": [
-      "AB",
-      "CD"
-     ]
-    }
-   ],
+   "given": [],
    "to_prove": [],
    "to_construct": [],
    "items": [
@@ -3027,7 +3018,7 @@
      "id": "q20a",
      "label": "א",
      "text": "האם שוויון יחס היקפים ויחס צלע אחת מוכיח דמיון? נמקו.",
-     "figure_id": "q20_head",
+     "figure_id": null,
      "given": [],
      "to_prove": [
       {
@@ -3044,7 +3035,7 @@
      "id": "q20b",
      "label": "ב",
      "text": "אם שתי מנות צלעות שוות בקינון על אותן שתי קרניים, האם חסרה תמיד זווית נתונה?",
-     "figure_id": "q20_head",
+     "figure_id": null,
      "given": [],
      "to_prove": [
       {
@@ -3061,7 +3052,7 @@
      "id": "q20c",
      "label": "ג",
      "text": "מדוע שורש של יחס שטחים חייב להיבחר חיובי כשמשחזרים גורם אורכים?",
-     "figure_id": "q20_head",
+     "figure_id": null,
      "given": [],
      "to_prove": [
       {
@@ -3078,7 +3069,7 @@
      "id": "q20d",
      "label": "ד",
      "text": "מה יש לדרוש לפני שמחסרים שטח פנימי מן השלם?",
-     "figure_id": "q20_head",
+     "figure_id": null,
      "given": [],
      "to_prove": [
       {
@@ -3096,7 +3087,16 @@
      "label": "ה",
      "text": "באיור $AB∥CD$. כתבו דמיון המתחיל ב־$△BAO$, ונמקו את הסדר.",
      "figure_id": "q20_head",
-     "given": [],
+     "given": [
+      {
+       "text": "AB ∥ CD",
+       "type": "parallel",
+       "of": [
+        "AB",
+        "CD"
+       ]
+      }
+     ],
      "to_prove": [
       {
        "type": "find",
@@ -26123,46 +26123,6 @@
       "highlight": "hl-parallel-A-B-C-D"
      },
      {
-      "id": "r-find",
-      "type": "find",
-      "role": "to_prove",
-      "item": "q20a",
-      "quantity": "value",
-      "what": "האם שוויון יחס היקפים ויחס צלע אחת מוכיח דמיון? נמקו.",
-      "text": "הערך האם שוויון יחס היקפים ויחס צלע אחת מוכיח דמיון? נמקו.",
-      "objects": []
-     },
-     {
-      "id": "r-find-2",
-      "type": "find",
-      "role": "to_prove",
-      "item": "q20b",
-      "quantity": "value",
-      "what": "אם שתי מנות צלעות שוות בקינון על אותן שתי קרניים, האם חסרה תמיד זווית נתונה?",
-      "text": "הערך אם שתי מנות צלעות שוות בקינון על אותן שתי קרניים, האם חסרה תמיד זווית נתונה?",
-      "objects": []
-     },
-     {
-      "id": "r-find-3",
-      "type": "find",
-      "role": "to_prove",
-      "item": "q20c",
-      "quantity": "value",
-      "what": "מדוע שורש של יחס שטחים חייב להיבחר חיובי כשמשחזרים גורם אורכים?",
-      "text": "הערך מדוע שורש של יחס שטחים חייב להיבחר חיובי כשמשחזרים גורם אורכים?",
-      "objects": []
-     },
-     {
-      "id": "r-find-4",
-      "type": "find",
-      "role": "to_prove",
-      "item": "q20d",
-      "quantity": "value",
-      "what": "מה יש לדרוש לפני שמחסרים שטח פנימי מן השלם?",
-      "text": "הערך מה יש לדרוש לפני שמחסרים שטח פנימי מן השלם?",
-      "objects": []
-     },
-     {
       "id": "r-find-ABCDBAO",
       "type": "find",
       "role": "to_prove",
@@ -26190,8 +26150,10 @@
       "r-parallel-A-B-C-D"
      ],
      "show_aux": []
-    }
-   }
+    },
+    "item": "q20e"
+   },
+   "item": "q20e"
   }
  ],
  "visuals": [
