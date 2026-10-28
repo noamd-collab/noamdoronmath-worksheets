@@ -262,7 +262,10 @@ describe('exact-design protected live-baseline boundaries', () => {
     // cached OCR, conversations, auth and model-call count remain unchanged.
     // Exact worksheet-image read errors may offer an independently validated original table.
     // This source-only recovery retains the error and never invokes a protected endpoint.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '454bec86c7e326d068c801ec1f6dd19c1c82678f565e51c2057011d07313de75');
+    // The reviewed glossary distinguishes shapes, powers and pronouns; refresh its asset only.
+    assert.match(viewerWithNativeRelease, /noam-glossary\.js\?v=20261028-context3/);
+    assert.match(readFileSync(join(root, '../../worksheet-viewer-noam.html'), 'utf8'), /noam-glossary\.js\?v=20261028-context3/);
+    assert.equal(sha256(JSON.stringify(releasedScripts)), '272668f57453a3ce24b53bd157ef95adb1e25e070fe250f3cffa7fb63e949c8d');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {
