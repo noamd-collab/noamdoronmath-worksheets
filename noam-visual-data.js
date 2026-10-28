@@ -186,6 +186,10 @@
       if (!matches.length) return fail('expression-not-given');
       var inPart = matches.some(function (e) { return e.source === 'part'; });
       if (!inPart && (newScope(context.partText) || selectedMathScope(context.partText))) return fail('selected-part-scope');
+      // 'פתרו את המערכת השנייה' selects one of several stem formulas without
+      // quoting it, so a stem quote cannot show it belongs to the selected one.
+      var authored = typeof globalThis !== 'undefined' && globalThis.NoamAuthoredVisual;
+      if (!inPart && authored && authored.selectsStemSubset && authored.selectsStemSubset(context)) return fail('ambiguous_function_scope');
       var selected = matches.find(function (match) { return match.source === 'part'; }) || matches[0];
       scene.expression = selected.proof.expression; scene.tree = selected.proof.tree;
     } else {

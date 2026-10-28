@@ -83,22 +83,40 @@
     if (ast.type === 'pow') return '(' + expressionText(ast.left) + ')^' + ast.value;
     return '(' + expressionText(ast.left) + ({ add: '+', sub: '-', mul: '×', div: '÷' })[ast.type] + expressionText(ast.right) + ')';
   }
+  // Authoring macros (\f{a}{b}, \frac{a}{b}) are shown as a written fraction.
+  function displayExpression(value) {
+    var text = String(value), m, re = /\\f(?:rac)?\{([^{}]*)\}\{([^{}]*)\}/, guard = 0;
+    function side(s) { s = s.trim(); return /^[0-9A-Za-z.]+$/.test(s) ? s : '(' + s + ')'; }
+    while ((m = re.exec(text)) && guard++ < 20) {
+      var fraction = side(m[1]) + '/' + side(m[2]), next = text.charAt(m.index + m[0].length);
+      text = text.slice(0, m.index) + (/[0-9A-Za-z(\\]/.test(next) ? '(' + fraction + ')' : fraction) + text.slice(m.index + m[0].length);
+    }
+    return text;
+  }
   function contains(ast, type) { return !!ast && (ast.type === type || contains(ast.left, type) || contains(ast.right, type)); }
+  // Wording directly before a constant that makes it an equation, a substitution
+  // or a value condition ('הקלט שעבורו f(x)=4', 'הציבו y=0', 'פתרו f(x)=0',
+  // 'בדרישה y=0'), not a newly declared function. Lines such as 'הישר y=6' or
+  // 'פלט קבוע y=-8' remain declarations.
+  var CONDITION = /(?:^|\s)(?:[ובלהכמש]{0,3}(?:עבור[והםן]|פתרו|לפתור|פתרון|פתרונות|משוואה|משוואות|הציבו|להציב|מציבים|הצבה|הצבת|כאשר|דרישה|מתקבל|מתקבלת|יהיה|תהיה|להתקיים|תתקיים|מתקיים|מתקיימת)|שבה|שבהן|שבהם|שבו)(?:\s+(?:של|את|גם|הגובה|הפלט))?\s*[:,]?\s*$/;
   function formulas(text) {
-    var out = [], invalid = false, input = clean(text), chunks = [], m, math = /\$([^$]+)\$/g;
-    while ((m = math.exec(input))) chunks.push(m[1]);
+    var out = [], invalid = false, input = clean(text), chunks = [], m, math = /\$([^$]+)\$/g, previous = null;
+    while ((m = math.exec(input))) chunks.push({ text: m[1], start: m.index + 1 });
     // A vertical-line equation or separate x assignment is not part of this
     // explicit-function contract; do not silently drop it from a source system.
     if(/(?:^|[^A-Za-z0-9])x\s*=/.test(input))invalid=true;
-    if (!chunks.length) chunks = [input];
-    chunks.forEach(function (chunk) {
-      var matches = Array.from(chunk.matchAll(/(?:^|[^A-Za-z])((?:[fgh]\(x\)|y))\s*=\s*/g));
+    if (!chunks.length) chunks = [{ text: input, start: 0 }];
+    chunks.forEach(function (part) {
+      var chunk = part.text, matches = Array.from(chunk.matchAll(/(?:^|[^A-Za-z])((?:[fgh]\(x\)|y))\s*=\s*/g));
       matches.forEach(function (match, i) {
-        if(!/^[\s;,]*(?:[fgh]\(x\)|y)\s*=/.test(match[0])){invalid=true;return;}
+        // 'ו-y=' / 'ו־y=' is the Hebrew conjunction before a second formula,
+        // not a minus sign; 'x-y=4' still belongs to one left-hand side.
+        var conjunction = /^[-־]/.test(match[0]) && chunk.charAt(match.index - 1) === 'ו' && (match.index < 2 || /[\s$,;(]/.test(chunk.charAt(match.index - 2)));
+        if(!conjunction&&!/^[\s;,]*(?:[fgh]\(x\)|y)\s*=/.test(match[0])){invalid=true;return;}
         var before=chunk.slice(i?matches[i-1].index+matches[i-1][0].length:0,match.index).trim();
         if(i===0&&/[A-Za-z0-9=+*/^()\\-]/.test(before)){invalid=true;return;}
         // A coefficient directly before y belongs to the left-hand side.
-        if(match.index>0&&/[A-Za-z0-9+*/^()-]/.test(chunk.charAt(match.index))){invalid=true;return;}
+        if(!conjunction&&match.index>0&&/[A-Za-z0-9+*/^()-]/.test(chunk.charAt(match.index))){invalid=true;return;}
         var expression = chunk.slice(match.index + match[0].length, i + 1 < matches.length ? matches[i + 1].index : chunk.length).trim();
         // Prose outside math delimiters terminates a formula; arbitrary latin
         // symbols/operators do not, so malformed formulas cannot become prefixes.
@@ -106,22 +124,70 @@
         if(stop>=0&&/[A-Za-z0-9+*/^\\]/.test(expression.slice(stop))){invalid=true;return;}
         expression = expression.split(/[א-ת\n;?!]/)[0].replace(/[.,:]\s*$/, '').trim();
         var ast = parseExpression(expression);
-        if (ast) out.push({ expression: expression, label: match[1], ast: ast }); else invalid=true;
+        if (!ast) { invalid=true; return; }
+        var at = part.start + match.index + match[0].indexOf(match[1]), end = part.start + match.index + match[0].length + expression.length;
+        var lead = input.slice(Math.max(0, at - 60), at).replace(/[$]/g, ' ').replace(/\s+/g, ' ');
+        // A constant listed right after a condition ('המשוואות f(x)=2, f(x)=4')
+        // shares that condition.
+        var condition = !contains(ast, 'x') && (CONDITION.test(lead) ||
+          !!previous && previous.condition && /^[\s$,،]*(?:ו[־-]?|או|וגם)?[\s$,]*$/.test(input.slice(previous.end, at)));
+        previous = { end: end, condition: condition };
+        if (!condition) out.push({ expression: expression, label: match[1], ast: ast });
       });
     });
     if(invalid){var empty=[];empty.invalid=true;return empty;}
     return out.filter(function (f, i) { return out.findIndex(function (g) { return JSON.stringify(g.ast) === JSON.stringify(f.ast); }) === i; });
   }
+  function sameFormula(f, g) { return JSON.stringify(f.ast) === JSON.stringify(g.ast); }
+  // An ordinal selects one authored system/function, not every declaration
+  // in a shared stem. Head declarations absent from this part must not be
+  // imported into that selected set. Keep the validated original figure
+  // instead of inferring formula membership from text or panel order.
+  function selectsStemSubset(context, question, part) {
+    question = question || formulas(context.questionText); part = part || formulas(context.partText);
+    return question.length>1&&/(?:מערכת|בדיקה|פונקציה|גרף)\s+(?:ה)?(?:ראשו(?:ן|נה)|שני(?:יה|ה)?|שלישי(?:ת)?|רביעי(?:ת)?)(?=$|[^א-תA-Za-z0-9])/.test(prose(context.partText))&&
+      question.some(function(f){return !part.some(function(g){return sameFormula(g,f);});});
+  }
+  function anchors(text) {
+    return (text.match(/[א-ת]{3,}|[A-Z](?![A-Za-z])/g) || []).filter(function (w) { return !/^(?:אבל|כעת|עכשיו|מעתה|גם|של|את|על|עם|הוא|היא|הם|כל|זה|זו|אשר|כאשר|נתון|נתונה)$/.test(w); });
+  }
+  // A part that changes the state now (כעת/עכשיו/מעתה) replaces the stem
+  // declaration it names: the ordinal one ('ערוץ שני'), or the single one with
+  // the same label and the same anchor words. Unclear replacement -> null.
+  function superseded(context, question, part) {
+    var text = prose(context.partText), now = /(?:^|[^א-ת])(?:כעת|עכשיו|מעתה)(?=$|[^א-ת])/.exec(text), out = [];
+    if (!now || !part.length) return out;
+    var head = text.slice(0, now.index + now[0].length), stem = prose(context.questionText);
+    var labels = part.map(function (f) { return f.label; }).filter(function (l, i, list) { return list.indexOf(l) === i; });
+    for (var label of labels) {
+      var same = question.filter(function (f) { return f.label === label; }), open = same.filter(function (f) { return !part.some(function (g) { return sameFormula(g, f); }); });
+      if (!open.length) continue;
+      var ordinal = /(?:^|[^א-ת])ה?(ראשו(?:ן|נה)|שני(?:יה|ה)?|שלישי(?:ת)?|רביעי(?:ת)?)(?=$|[^א-ת])/.exec(head);
+      if (ordinal && same.length > 1) {
+        var n = /^ראש/.test(ordinal[1]) ? 0 : /^שני/.test(ordinal[1]) ? 1 : /^שליש/.test(ordinal[1]) ? 2 : 3;
+        if (!same[n]) return null;
+        if (open.indexOf(same[n]) >= 0) out.push(same[n]);
+        continue;
+      }
+      if (open.length !== 1) return null;
+      var at = stem.indexOf(open[0].label + ' = ' + open[0].expression) >= 0 ? stem.indexOf(open[0].label + ' = ' + open[0].expression) : stem.indexOf(open[0].label + '=' + open[0].expression);
+      var mine = anchors(head), theirs = anchors(stem.slice(Math.max(0, at - 60), Math.max(0, at)));
+      if (at < 0 || !mine.some(function (w) { return theirs.indexOf(w) >= 0; })) return null;
+      out.push(open[0]);
+    }
+    return out;
+  }
   function authoredRule(context) {
     var part = formulas(context.partText), question = formulas(context.questionText);
     if(part.invalid||question.invalid)return null;
-    // An ordinal selects one authored system/function, not every declaration
-    // in a shared stem. Head declarations absent from this part must not be
-    // imported into that selected set. Keep the validated original figure
-    // instead of inferring formula membership from text or panel order.
-    if(question.length>1&&/(?:מערכת|בדיקה|פונקציה|גרף)\s+(?:ה)?(?:ראשו(?:ן|נה)|שני(?:יה|ה)?|שלישי(?:ת)?|רביעי(?:ת)?)(?=$|[^א-תA-Za-z0-9])/.test(prose(context.partText))&&
-        question.some(function(f){return !part.some(function(g){return JSON.stringify(g.ast)===JSON.stringify(f.ast);});}))return null;
-    var all=question.concat(part).filter(function(f,i,list){return list.findIndex(function(g){return JSON.stringify(g.ast)===JSON.stringify(f.ast);})===i;});
+    if(selectsStemSubset(context, question, part))return null;
+    // A constant cannot redefine a label the stem already declares with x
+    // ('פתרו f(x)=0' after f(x)=(x+4)^2-1): that is an equation to solve.
+    part = part.filter(function (f) { return contains(f.ast, 'x') || f.label === 'y' || !question.some(function (g) { return g.label === f.label && contains(g.ast, 'x'); }); });
+    var replaced = superseded(context, question, part);
+    if (!replaced) return null;
+    question = question.filter(function (f) { return replaced.indexOf(f) < 0; });
+    var all=question.concat(part).filter(function(f,i,list){return list.findIndex(function(g){return sameFormula(g,f);})===i;});
     return all.length>=1&&all.length<=4?all:null;
   }
   function proseRule(context) {
@@ -183,7 +249,10 @@
       var hint=focus(options),mentioned=ranges.flatMap(function(r){return [r.start,r.end];}).filter(function(v,i,list){return list.indexOf(v)===i&&new RegExp('(^|[^0-9.])'+String(v).replace('.', '\\.')+'(?=$|[^0-9.])').test(hint);});
       if(!standard(options)||!/בין|קצוות|רווח|חפיפה/.test(hint)||mentioned.length<2)return null;
     }
-    var discrete=/שלם|שלמים|בדיד|לספירת/.test(part+' '+text)&&!/מסות|ק״ג|קילוגר|רציפ/.test(part);
+    // 'יכולים להיות לא שלמים' says the values are continuous; it is not an
+    // integer-only requirement for any part of that question.
+    var negatedInteger=/(?:^|[^א-ת])(?:ש?(?:לא|אינם|אינן|אינו|אינה)(?:\s+(?:בהכרח|רק))?|לאו\s+דווקא)\s+(?:מספרים\s+)?שלמ(?:ים|ות|ה)?(?=$|[^א-ת])/.test(part+' '+text);
+    var discrete=!negatedInteger&&/שלם|שלמים|בדיד|לספירת/.test(part+' '+text)&&!/מסות|ק״ג|קילוגר|רציפ/.test(part);
     if(discrete&&ranges.some(function(r){return !Number.isInteger(r.start)||!Number.isInteger(r.end)||r.end-r.start>50;}))return null;
     return { kind: 'authored-intervals', intervals: ranges, discrete:discrete,
       caption: discrete?'המחלקות הנתונות, עם המספרים השלמים בלבד כפי שנדרש בסעיף. החלוקה לא תוקנה.':'המחלקות כפי שהוצעו בשאלה, על ציר מספרים. החלוקה לא תוקנה.' };
@@ -338,7 +407,7 @@
       if (!path) return null;
       c.svg.appendChild(svgNode(document, 'path', { d: path.trim(), fill: 'none', stroke: colors[a], 'stroke-width': 2.5, 'data-role': 'given-function' }));
       var entry=scene.expressions&&scene.expressions[a]||{expression:scene.expression,label:'y'};
-      var formula = document.createElement('bdi'); formula.dir = 'ltr'; formula.textContent = entry.label+'='+entry.expression; formula.style.color=colors[a]; c.caption.appendChild(document.createElement('br')); c.caption.appendChild(formula);
+      var formula = document.createElement('bdi'); formula.dir = 'ltr'; formula.textContent = entry.label+'='+displayExpression(entry.expression); formula.style.color=colors[a]; c.caption.appendChild(document.createElement('br')); c.caption.appendChild(formula);
     }
     return c.figure;
   }
@@ -356,5 +425,5 @@
     }
     return root.NoamAuthoredGeometry && typeof root.NoamAuthoredGeometry.render === 'function' ? root.NoamAuthoredGeometry.render(document, scene) : null;
   }
-  return { restrictedFunctionDomain:restrictedFunctionDomain, functionSources:authoredRule, resolve: resolve, fromContext: fromContext, render: render, parseExpression: parseExpression, evaluate: evaluate, formulas: formulas, range: range };
+  return { restrictedFunctionDomain:restrictedFunctionDomain, functionSources:authoredRule, selectsStemSubset:selectsStemSubset, displayExpression:displayExpression, resolve: resolve, fromContext: fromContext, render: render, parseExpression: parseExpression, evaluate: evaluate, formulas: formulas, range: range };
 });

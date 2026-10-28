@@ -1,0 +1,108 @@
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { runInNewContext } from 'node:vm';
+import { it } from 'node:test';
+import { parseHTML } from 'linkedom';
+
+const root = new URL('../public/', import.meta.url);
+const read = (path: string) => readFileSync(new URL(path.replace(/^\//, ''), root), 'utf8');
+const { document } = parseHTML('<html><body></body></html>');
+const c: any = { document }; c.window = c;
+for (const file of ['noam-native-visual.js', 'noam-authored-geometry.js', 'noam-authored-visual.js', 'noam-visual-data.js', 'noam-visual-plan.js']) runInNewContext(read(file), c, { filename: file });
+const native = c.NoamNativeVisual, authored = c.NoamAuthoredVisual, plans = c.NoamVisualPlan;
+const draw = { studentMessage: 'אפשר רמז 1?', helpKind: 'hint', answer: 'התבוננו בגרף ובכלל הנתון.', drawCurrentStep: true };
+const inVm = (value: any) => runInNewContext('JSON.parse(' + JSON.stringify(JSON.stringify(value)) + ')', c);
+const exprs = (list: any) => list ? Array.from(list, (f: any) => f.label + '=' + f.expression) : null;
+const manifests: Record<string, any> = {};
+for (const grade of JSON.parse(readFileSync(new URL('../src/data/catalog.v1.json', import.meta.url), 'utf8')).grades)
+  for (const topic of grade.topics) for (const level of topic.levels) {
+    try { const m = JSON.parse(read(`noam-ai/manifests/${level.pdfId}.json`)); if (m.nativeExportUrl) manifests[m.nativeExportUrl] = m; } catch {}
+  }
+function section(pkg: string, q: number, part: string) {
+  const manifest = manifests[`/noam-ai/native/${pkg}/noam-ai.json`], exercise = manifest.exercises.find((e: any) => e.q === q && e.part === part);
+  const data = JSON.parse(read(manifest.nativeExportUrl)), svg = exercise.nativeFigureUrl ? read(exercise.nativeFigureUrl) : '';
+  const context = native.authoredContext(data, exercise, svg); assert.ok(context, `${pkg} q${q}${part} context`);
+  return { data, exercise, svg, context, typed: (hint = '', student = '') => inVm({ ...context, hintText: hint, studentMessage: student }) };
+}
+const functionPlan = (quotes: Array<[string, string]>) => inVm({ version: 2, status: 'ok', family: 'function', evidence: quotes.map(([source, quote]) => ({ source, quote })) });
+
+it('q17ב: an operations plan cannot import either system from the shared stem', () => {
+  const f = section('G9-T13/a', 17, 'ב'), context = f.typed('פתרו את המערכת השנייה.');
+  for (const quote of ['$y=x−3$', '$y=x ^2−5x+2$', '$y=x ^2−2$', '$y=2x+1$']) {
+    assert.ok(f.context.questionText.includes(quote), quote + ' is printed in the stem');
+    const plan = inVm({ version: 2, status: 'ok', family: 'operations', expression: quote.slice(1, -1), evidence: [{ source: 'question', quote }] });
+    assert.deepEqual({ ...plans.inspect(plan, context), scene: null }, { ok: false, scene: null, reason: 'ambiguous_function_scope' }, quote);
+  }
+  // Ordinary operations plans keep working.
+  const plain = inVm({ questionText: 'נתון הביטוי $8/(x-2)$.', partText: 'התבוננו בסדר הפעולות.', hasFigure: false, hintText: '', studentMessage: '' });
+  const ok = plans.inspect(inVm({ version: 2, status: 'ok', family: 'operations', expression: '8/(x-2)', evidence: [{ source: 'question', quote: plain.questionText }] }), plain);
+  assert.equal(ok.ok, true); assert.equal(ok.scene.kind, 'typed-operations');
+});
+
+it('equation, substitution and input conditions are not new functions', () => {
+  // 'רשמו את הקלט שעבורו f(x)=4' with no formula given: keep the original graph.
+  assert.equal(authored.functionSources(section('G8-T16/a', 1, 'ב').context), null);
+  assert.equal(authored.fromContext(section('G8-T16/a', 1, 'ב').context, draw), null);
+  // 'הציבו y = 0 במשוואת הפונקציה' and three equations on a piecewise graph.
+  assert.equal(authored.functionSources(section('G9-T34/b', 8, 'ג').context), null);
+  assert.equal(authored.functionSources(section('G9-T12/b', 5, 'ג').context), null);
+  assert.deepEqual(exprs(authored.functionSources(section('G9-T34/a', 8, 'ב').context)), ['y=6x − 54'.replace('−', '-')]);
+  // 'פתרו f(x)=0' keeps only the declared f, and a plan cannot draw y=0 as f.
+  const q23 = section('G9-T12/b', 23, 'ב');
+  assert.deepEqual(exprs(authored.functionSources(q23.context)), ['f(x)=(x+4) ^2-1']);
+  const scene = authored.fromContext(q23.context, draw); assert.equal(scene.expressions.length, 1);
+  assert.equal(authored.render(document, scene).querySelectorAll('[data-role="given-function"]').length, 1);
+  const stem = q23.context.questionText.match(/\$f\(x\)=[^$]+\$/)![0];
+  assert.equal(plans.inspect(functionPlan([['question', stem], ['part', '$f(x)=0$']]), q23.typed()).reason, 'partial_function_set');
+  assert.equal(plans.inspect(functionPlan([['question', stem]]), q23.typed()).ok, true);
+  assert.deepEqual(exprs(authored.formulas('כמה פתרונות יש למשוואות $f(x)=2$, $f(x)=4$ ו־$f(x)=−3$?')), []);
+  assert.deepEqual(exprs(authored.formulas('בדקו בהצבה של $y = 1$.')), []);
+  assert.deepEqual(exprs(authored.formulas('קו אופקי נתון על ידי $y=7$. מתכנת טוען שהצבת $y=0$ מספיקה.')), ['y=7']);
+});
+
+it('real constant lines and student formulas remain functions', () => {
+  assert.deepEqual(exprs(authored.formulas('שלושת הישרים בשרטוט הם $f(x)=x$, $g(x)=-x+6$ ו־$h(x)=2$.')), ['f(x)=x', 'g(x)=-x+6', 'h(x)=2']);
+  assert.deepEqual(exprs(authored.formulas('שני שבילים אופקיים הם $y=-2$ ו־$y=10$.')), ['y=-2', 'y=10']);
+  assert.deepEqual(exprs(authored.formulas('כמה מפגשים יהיו עם הישר $y = 6$ בכל תוצאה?')), ['y=6']);
+  const f = section('G9-T13/a', 17, 'ב'), own = authored.resolve(f.data, f.exercise, { studentMessage: 'שרטט y=3', helpKind: 'free_question' }, f.svg);
+  assert.deepEqual(Array.from(own.expressions, (e: any) => e.expression), ['3']);
+  assert.deepEqual(Array.from(authored.fromContext(section('G9-T12/a', 24, 'א').context, draw).expressions, (e: any) => e.expression), ['-(x+3) ^2+16']);
+});
+
+it('a part that replaces a stem declaration no longer draws the replaced curve', () => {
+  const q22 = section('G9-T31/a', 22, 'ג');
+  assert.deepEqual(exprs(authored.functionSources(q22.context)), ['y=x^{2} + 6x + 1', 'y=-8', 'y=-10']);
+  const quote = (text: string, re: RegExp) => text.match(re)![0];
+  const first = quote(q22.context.questionText, /\$y = x\^\{2\} \+ 6x \+ 1\$/), second = quote(q22.context.questionText, /\$y = 2x \+ 13\$/);
+  const minus8 = quote(q22.context.partText, /\$y = −8\$/), minus10 = quote(q22.context.partText, /\$y = −10\$/);
+  assert.equal(plans.inspect(functionPlan([['question', first], ['part', minus8], ['part', minus10]]), q22.typed()).ok, true);
+  assert.equal(plans.inspect(functionPlan([['question', first], ['question', second], ['part', minus8], ['part', minus10]]), q22.typed()).reason, 'partial_function_set');
+  // The other parts still work with both channels.
+  for (const part of ['א', 'ב', 'ד']) assert.deepEqual(exprs(authored.functionSources(section('G9-T31/a', 22, part).context)), ['y=x^{2} + 6x + 1', 'y=2x + 13'], part);
+  assert.deepEqual(exprs(authored.functionSources(section('G9-T08/c', 11, 'ה').context)), ['y=5']);
+  // An unclear replacement keeps the original instead of guessing.
+  assert.equal(authored.functionSources({ questionText: 'נתונים $y=x+1$ ו־$y=2x$.', partText: 'כעת $y=3$. כמה מפגשים יש?' }), null);
+});
+
+it('two typed formulas joined by ו- or ו־ are both drawn, without weakening the minus guard', () => {
+  const f = section('G9-T13/a', 17, 'ב');
+  for (const message of ['שרטט y=x^2-2 ו-y=2x+1', 'שרטט $y=x^2-2$ ו־$y=2x+1$', 'שרטט y=x^2-2 וגם y=2x+1']) {
+    const scene = authored.resolve(f.data, f.exercise, { studentMessage: message, helpKind: 'free_question' }, f.svg);
+    assert.equal(scene.kind, 'authored-function', message);
+    assert.deepEqual(Array.from(scene.expressions, (e: any) => e.expression), ['x^2-2', '2x+1'], message);
+  }
+  for (const text of ['x-y=4 ו-y=2', '2x-y=3', '3-y=x']) assert.equal(authored.formulas(text).invalid, true, text);
+});
+
+it('"לא שלמים" is continuous, integer requirements stay discrete, and fractions read as fractions', () => {
+  const waiting = authored.fromContext(section('G8-T28/a', 4, 'א').context, draw);
+  assert.equal(waiting.kind, 'authored-intervals'); assert.equal(waiting.discrete, false); assert.doesNotMatch(waiting.caption, /שלמים/);
+  assert.equal(authored.fromContext(section('G8-T28/a', 4, 'ד').context, draw).discrete, false);
+  assert.equal(authored.fromContext(section('G8-T28/a', 18, 'א').context, draw).discrete, true);
+  for (const [raw, shown] of [['\\f{x}{2}', 'x/2'], ['-\\f{x}{2}+6', '-x/2+6'], ['2(2-\\f{x}{2})', '2(2-x/2)'], ['\\f{11}{8}x', '(11/8)x'], ['\\f{x+1}{3}', '(x+1)/3'], ['x^2-2', 'x^2-2']])
+    assert.equal(authored.displayExpression(raw), shown, raw);
+  const lines = authored.fromContext(section('G8-T06/a', 8, 'א').context, draw), figure = authored.render(document, lines);
+  assert.equal(figure.querySelectorAll('[data-role="given-function"]').length, 2);
+  const legend = Array.from(figure.querySelectorAll('bdi'), (b: any) => b.textContent);
+  assert.ok(legend.some((text: string) => /x\/2/.test(text)), legend.join(' | ')); assert.doesNotMatch(legend.join(' '), /\\f/);
+});
