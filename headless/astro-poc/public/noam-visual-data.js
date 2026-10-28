@@ -195,8 +195,12 @@
       var index = ((label ? before.slice(label.at) : before).match(/\$[^$]*=[^$]*\$/g) || []).length;
       var equationOk = allEquations || !selected.length || selected.indexOf(ORDER[index]) >= 0;
       if (label && label.noun === 'system') return !(allSystems || systems.indexOf(label.root) >= 0) || !equationOk;
-      if (label && label.noun === 'equation') return !(allEquations || selected.indexOf(label.root) >= 0);
-      if (label) return !allSystems && !allEquations && other.indexOf(label.root) < 0;
+      // 'מערכת שנייה: המשוואה הראשונה $x+4=7$': an equation (or graph) label
+      // nested under a system label also needs that enclosing system selected.
+      var enclosing = labels.filter(function (o) { return o.noun === 'system'; }).pop();
+      var systemOk = !enclosing || allSystems || systems.indexOf(enclosing.root) >= 0;
+      if (label && label.noun === 'equation') return !systemOk || !(allEquations || selected.indexOf(label.root) >= 0);
+      if (label) return !systemOk || !allSystems && !allEquations && other.indexOf(label.root) < 0;
       // Unlabelled 'שתי משוואות: $A$ ו־$B$': 'המשוואה השנייה' / 'הגרף השני' is the
       // second printed formula. A system has no such single order, so it stays unclear.
       if (allSystems) return false;

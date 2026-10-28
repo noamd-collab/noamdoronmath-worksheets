@@ -227,6 +227,14 @@ it('equation scope inside a selected system never widens to the other systems', 
   assert.equal(plans.inspect(plan('x − 3y = −7'), onlyFirst.typed()).reason, 'ambiguous_function_scope');
   for (const [pkg, q, part, expression] of [['G9-T12/c', 15, 'א', 'y=x ^2−3x+1'], ['G8-T06/a', 3, 'א', 'y=−x+5'], ['G8-T25/c', 15, 'ג', '20 · 121 = 2420']] as const)
     assert.equal(plans.inspect(plan(expression), section(pkg, q, part).typed()).ok, true, `${pkg} q${q}${part} has no ordinal selection`);
+  // Equation labels nested under system labels also need their enclosing system.
+  const nested = 'מערכת ראשונה: המשוואה הראשונה $x+1=2$. המשוואה השנייה $y+1=3$. מערכת שנייה: המשוואה הראשונה $x+4=7$. המשוואה השנייה $y+5=9$.';
+  const inNested = (partText: string, expression: string) => plans.inspect(inVm({ version: 2, status: 'ok', family: 'operations', expression, evidence: [{ source: 'question', quote: nested }] }), inVm({ questionText: nested, partText, hintText: '', studentMessage: '' }));
+  for (const [expression, ok] of [['x+1=2', false], ['y+1=3', false], ['x+4=7', true], ['y+5=9', false]] as const)
+    assert.equal(inNested('במערכת השנייה, בדקו את המשוואה הראשונה.', expression).ok, ok, 'nested ' + expression);
+  for (const expression of ['x+1=2', 'x+4=7']) assert.equal(inNested('בכל מערכת בדקו את המשוואה הראשונה.', expression).ok, true, 'every system ' + expression);
+  assert.equal(inNested('בכל מערכת בדקו את המשוואה הראשונה.', 'y+5=9').ok, false);
+  assert.equal(inNested('בדקו את המשוואה הראשונה.', 'x+4=7').ok, false, 'no system named: unclear');
   // The actual all-systems item keeps all six equations.
   const all = section('G8-T07/c', 12, 'א');
   for (const m of all.context.questionText.matchAll(/\$([^$]+)\$/g)) assert.equal(plans.inspect(plan(m[1]), all.typed()).ok, true, m[1]);
