@@ -265,7 +265,8 @@ describe('exact-design protected live-baseline boundaries', () => {
     // The reviewed glossary distinguishes shapes, powers and pronouns; refresh its asset only.
     assert.match(viewerWithNativeRelease, /noam-glossary\.js\?v=20261028-context3/);
     assert.match(readFileSync(join(root, '../../worksheet-viewer-noam.html'), 'utf8'), /noam-glossary\.js\?v=20261028-context3/);
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '272668f57453a3ce24b53bd157ef95adb1e25e070fe250f3cffa7fb63e949c8d');
+    // Privately verified source facts add a bounded priority/no-disclosure instruction to the existing request.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), 'd9fd59a1a6425c03958129e822addaa0c993a04fef988d60cc1899b9ebeb6113');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {

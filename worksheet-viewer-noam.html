@@ -6647,6 +6647,8 @@ function noamAppendSourceCropHelp(container,exercise,message){
 // Resolve every illustration against the current published question and item.
 // Saved conversations contain intent only, never trusted SVG markup or coordinates.
 var noamSourceVisualPackages={};
+// Runtime provenance only: OCR properties and persisted/cloned analysis cannot authorize source priority.
+var noamVerifiedSourceAnalyses=new WeakMap();
 function noamNativeDataUrl(exercise){
   if(!exercise||!/^q[0-9]+$/.test(String(exercise.nativeQuestionId||''))||!exercise.nativeItemId){return null;}
   var url=String(manifest&&manifest.nativeExportUrl||noamNativeFocusUrl(exercise)||'');
@@ -6950,7 +6952,15 @@ function noamEnrichSourceAnalysis(exercise,analysis){
   return noamLoadSourceVisual(exercise).then(function(source){
     if(!source||identity!==noamSourceVisualIdentity(exercise)){return analysis;}
     var panelContext=noamSourcePanelContext(exercise,source);
-    if(panelContext){return Object.assign({},analysis,{diagram_description:(panelContext+'\n\n'+String(analysis.diagram_description||'')).slice(0,6000)});}
+    if(panelContext){
+      var panelAnalysis=Object.assign({},analysis,{diagram_description:(panelContext+'\n\n'+String(analysis.diagram_description||'')).slice(0,6000)});
+      var panelGroup=window.NoamSourcePanels.resolve(source.data,exercise,source.sourcePanelSvgById);
+      var panelAuthored=window.NoamNativeVisual.authoredContext(source.data,exercise,source.svgText);
+      if(noamSourcePanelDotFacts(source,panelGroup,panelAuthored)){
+        noamVerifiedSourceAnalyses.set(panelAnalysis,{identity:identity,description:panelAnalysis.diagram_description});
+      }
+      return panelAnalysis;
+    }
     var validated=window.NoamNativeVisual.resolve(source.data,exercise,{studentMessage:'הראה את השרטוט המקורי',helpKind:'free_question'},source.svgText);
     if(!validated||validated.kind!=='source-context'){return analysis;}
     var question=(source.data.questions||[]).find(function(q){return q.id===exercise.nativeQuestionId;});
@@ -6989,6 +6999,7 @@ function noamEnrichSourceAnalysis(exercise,analysis){
     ].join('\n');
     var enriched=Object.assign({},analysis);
     enriched.diagram_description=(scope+'\n\n'+String(analysis.diagram_description||'')).slice(0,4000);
+    if(printedLabels){noamVerifiedSourceAnalyses.set(enriched,{identity:identity,description:enriched.diagram_description});}
     return enriched;
   }).catch(function(){return analysis;});
 }
@@ -7806,7 +7817,15 @@ function noamDidacticResponse(exercise,helpKind,hintIndex,studentMessage,progres
   }
 }
 
-function noamSolverMessage(studentMessage,thread,topic,guidePrompt,analysis){
+function noamSourcePriorityInstruction(analysis,exercise){
+  if(!analysis||!exercise||typeof noamVerifiedSourceAnalyses==='undefined'||
+      (typeof currentAttachments==='function'&&currentAttachments().length)){return '';}
+  var proof=noamVerifiedSourceAnalyses.get(analysis);
+  if(!proof||proof.identity!==noamSourceVisualIdentity(exercise)||proof.description!==analysis.diagram_description){return '';}
+  return 'העדף את נתוני המקור המאומתים בתחילת תיאור השרטוט על פענוח תמונה סותר. אל תחשוף תשובה.';
+}
+
+function noamSolverMessage(studentMessage,thread,topic,guidePrompt,analysis,exercise){
   var budget=Math.max(0,SOLVER_MESSAGE_MAX-MATH_OUTPUT_INSTRUCTION.length);
   var current=String(studentMessage||"").trim();
   var recent=noamRecentThreadText(thread,220);
@@ -7839,8 +7858,11 @@ function noamSolverMessage(studentMessage,thread,topic,guidePrompt,analysis){
   var currentBudget=Math.min(current.length,Math.max(90,Math.floor(budget*(verified ? .24 : .42))));
   var currentText=current.slice(0,currentBudget);
   var prefixBudget=Math.max(0,budget-label.length-currentText.length-2);
-  var prefix=guard.length<=prefixBudget?guard:
-    (guard.slice(0,Math.max(0,prefixBudget-145))+" … "+guard.slice(-140)).slice(0,prefixBudget);
+  var sourcePriority=noamSourcePriorityInstruction(analysis,exercise);
+  var guardBudget=Math.max(0,prefixBudget-sourcePriority.length-(sourcePriority?1:0));
+  var boundedGuard=guard.length<=guardBudget?guard:
+    (guard.slice(0,Math.max(0,guardBudget-145))+" … "+guard.slice(-140)).slice(0,guardBudget);
+  var prefix=sourcePriority+(sourcePriority&&boundedGuard?'\n':'')+boundedGuard;
   var contextRoom=Math.max(0,prefixBudget-prefix.length-(prefix?1:0));
   if (contextRoom>45&&(thread.history||[]).length){
     var context="הקשר קודם, שעשוי לכלול טעות: "+noamRecentThreadText(thread,contextRoom-34);
@@ -8433,7 +8455,7 @@ function askNoam(helpKind,studentMessage){
     .then(function(analysis){return attachments.length?analysis:noamEnrichSourceAnalysis(exercise,analysis);})
     .then(function(analysis){
       requestAnalysis=analysis;
-      var solverMessage=noamSolverMessage(studentMessage,thread,ttl,guidePrompt,analysis);
+      var solverMessage=noamSolverMessage(studentMessage,thread,ttl,guidePrompt,analysis,exercise);
       requestPayload={
         exerciseId:exercise.id,
         grade:g,

@@ -11,7 +11,7 @@ function fixture(v:string){
  const exercise=manifest.exercises.find((e:any)=>e.nativeItemId==='q7b');
  const source:any={data:JSON.parse(readFileSync(new URL(manifest.nativeExportUrl.slice(1),pub),'utf8')),svgText:readFileSync(new URL(exercise.nativeFigureUrl.slice(1),pub),'utf8')};
  const {document,window}=parseHTML('<html><body></body></html>');
- const c:any={document,window,manifest,selectedExercise:exercise,pdf:manifest.pdfHash,Promise,noamNativeDataUrl:()=>manifest.nativeExportUrl,
+ const c:any={document,window,manifest,selectedExercise:exercise,pdf:manifest.pdfHash,Promise,noamVerifiedSourceAnalyses:new WeakMap(),noamNativeDataUrl:()=>manifest.nativeExportUrl,
   noamSourceVisualIdentity:()=> 'same-selected-source',noamLoadSourceVisual:async()=>source,noamSourcePanelContext:()=>null};
  runInNewContext(native+'\n'+fn(v,'noamSourceSegmentLabelFacts')+'\n'+fn(v,'noamEnrichSourceAnalysis'),c);window.NoamNativeVisual=c.NoamNativeVisual;
  return {c,source,exercise,model:source.data.figures.find((f:any)=>f.id==='q7_head').visual_model};

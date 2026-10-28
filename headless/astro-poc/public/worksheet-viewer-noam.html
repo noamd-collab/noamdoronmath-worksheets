@@ -7233,6 +7233,8 @@ function noamAppendSourceCropHelp(container,exercise,message){
 // Resolve every illustration against the current published question and item.
 // Saved conversations contain intent only, never trusted SVG markup or coordinates.
 var noamSourceVisualPackages={};
+// Runtime provenance only: OCR properties and persisted/cloned analysis cannot authorize source priority.
+var noamVerifiedSourceAnalyses=new WeakMap();
 function noamNativeDataUrl(exercise){
   if(!exercise||!/^q[0-9]+$/.test(String(exercise.nativeQuestionId||''))||!exercise.nativeItemId){return null;}
   var url=String(manifest&&manifest.nativeExportUrl||noamNativeFocusUrl(exercise)||'');
@@ -7536,7 +7538,15 @@ function noamEnrichSourceAnalysis(exercise,analysis){
   return noamLoadSourceVisual(exercise).then(function(source){
     if(!source||identity!==noamSourceVisualIdentity(exercise)){return analysis;}
     var panelContext=noamSourcePanelContext(exercise,source);
-    if(panelContext){return Object.assign({},analysis,{diagram_description:(panelContext+'\n\n'+String(analysis.diagram_description||'')).slice(0,6000)});}
+    if(panelContext){
+      var panelAnalysis=Object.assign({},analysis,{diagram_description:(panelContext+'\n\n'+String(analysis.diagram_description||'')).slice(0,6000)});
+      var panelGroup=window.NoamSourcePanels.resolve(source.data,exercise,source.sourcePanelSvgById);
+      var panelAuthored=window.NoamNativeVisual.authoredContext(source.data,exercise,source.svgText);
+      if(noamSourcePanelDotFacts(source,panelGroup,panelAuthored)){
+        noamVerifiedSourceAnalyses.set(panelAnalysis,{identity:identity,description:panelAnalysis.diagram_description});
+      }
+      return panelAnalysis;
+    }
     var validated=window.NoamNativeVisual.resolve(source.data,exercise,{studentMessage:'הראה את השרטוט המקורי',helpKind:'free_question'},source.svgText);
     if(!validated||validated.kind!=='source-context'){return analysis;}
     var question=(source.data.questions||[]).find(function(q){return q.id===exercise.nativeQuestionId;});
@@ -7565,7 +7575,7 @@ function noamEnrichSourceAnalysis(exercise,analysis){
       printedLabels.map(function(label){return 'על קטע '+label.direction+' מודפס '+label.text;}).join('; ')+'.',
       'אל תחליף תווית מודפסת בערך מהפתיח ואל תתאר אותה כחסרה. אלה נתוני מקור, לא חישוב. אל תחשוף חישוב או תשובה שהתלמיד צריך למצוא.'
     ].join('\n')+'\n\n':'';
-    var scope=labelContext+[
+   var scope=labelContext+[
       'הקשר חזותי מאומת לסעיף הנבחר בלבד:',
       'שאלה '+String(exercise.q||exercise.nativeQuestionId)+'; סעיף '+String(exercise.part||'')+'. סוג השרטוט: '+String(model.kind||'').slice(0,40)+'.',
       'פתיח השאלה: '+String(question.text||'').slice(0,900),
@@ -7575,6 +7585,7 @@ function noamEnrichSourceAnalysis(exercise,analysis){
     ].join('\n');
     var enriched=Object.assign({},analysis);
     enriched.diagram_description=(scope+'\n\n'+String(analysis.diagram_description||'')).slice(0,4000);
+    if(printedLabels){noamVerifiedSourceAnalyses.set(enriched,{identity:identity,description:enriched.diagram_description});}
     return enriched;
   }).catch(function(){return analysis;});
 }
@@ -7757,7 +7768,7 @@ function noamNativeSegmentFocus(data,exercise,hint){
     // Preserve all three printed lengths for an original-state comparison.
     // Never reuse a shared original figure for a later or changed construction.
     if(q.items[0]!==part||(part.given||[]).length||(part.to_construct||[]).length||(q.to_construct||[]).length){return null;}
-    var scope=[q.text,part.text,hint].join(' ').replace(/(?:לבדוק|בדקו|קבעו|הכריעו)\s+אם\s/g,' ');
+   var scope=[q.text,part.text,hint].join(' ').replace(/(?:לבדוק|בדקו|קבעו|הכריעו)\s+אם\s/g,' ');
     if(/(?:^|[^א-ת])(?:אם|אילו|נניח|בהנחה|כאשר)(?=$|[^א-ת])|החל[ףפ]|החליפ|יוחלף|הוחלף|תחליפ|מחליפ|שינוי|משנים|שנו|הכפיל|הגדיל|הקטינ|האריכ|הארכה|קצרו|הוסיפ|הוספה|הסר|בנו|בניית|בנייה/.test(scope)){return null;}
     var vertices=Object.keys(pointMap),edges=segments.filter(function(s){return s&&s.kind==='segment'&&s.role==='edge';});
     if(vertices.length!==3||edges.length!==3||segments.length!==3){return null;}
@@ -8668,6 +8679,14 @@ function noamSelectedPartDirective(exercise,analysis){
     " התמקד רק במטרה זו. יתר הסעיפים בתמונה הם הקשר; אל תחזור להוכחה שהסעיף מניח שכבר הושלמה.";
 }
 
+function noamSourcePriorityInstruction(analysis,exercise){
+  if(!analysis||!exercise||typeof noamVerifiedSourceAnalyses==='undefined'||
+      (typeof currentAttachments==='function'&&currentAttachments().length)){return '';}
+  var proof=noamVerifiedSourceAnalyses.get(analysis);
+  if(!proof||proof.identity!==noamSourceVisualIdentity(exercise)||proof.description!==analysis.diagram_description){return '';}
+  return 'העדף את נתוני המקור המאומתים בתחילת תיאור השרטוט על פענוח תמונה סותר. אל תחשוף תשובה.';
+}
+
 function noamSolverMessage(studentMessage,thread,topic,guidePrompt,analysis,exercise){
   var budget=Math.max(0,SOLVER_MESSAGE_MAX-MATH_OUTPUT_INSTRUCTION.length);
   var current=String(studentMessage||"").trim();
@@ -8701,11 +8720,16 @@ function noamSolverMessage(studentMessage,thread,topic,guidePrompt,analysis,exer
   var currentBudget=Math.min(current.length,Math.max(90,Math.floor(budget*(verified ? .24 : .42))));
   var currentText=current.slice(0,currentBudget);
   var prefixBudget=Math.max(0,budget-label.length-currentText.length-2);
-  var scope=noamSelectedPartDirective(exercise,analysis).slice(0,prefixBudget);
-  var guardBudget=Math.max(0,prefixBudget-scope.length-(scope?1:0));
+  var sourcePriority=noamSourcePriorityInstruction(analysis,exercise);
+  // Reserve the verified-source instruction before fitting other context into
+  // the server's existing 700-character message cap. No source means no change.
+  var scopeBudget=Math.max(0,prefixBudget-sourcePriority.length-(sourcePriority?1:0));
+  var scope=noamSelectedPartDirective(exercise,analysis).slice(0,scopeBudget);
+  var scopedPrefix=sourcePriority+(sourcePriority&&scope?'\n':'')+scope;
+  var guardBudget=Math.max(0,prefixBudget-scopedPrefix.length-(scopedPrefix?1:0));
   var boundedGuard=guard.length<=guardBudget?guard:
     (guard.slice(0,Math.max(0,guardBudget-145))+" … "+guard.slice(-140)).slice(0,guardBudget);
-  var prefix=scope+(scope&&boundedGuard?"\n":"")+boundedGuard;
+  var prefix=scopedPrefix+(scopedPrefix&&boundedGuard?"\n":"")+boundedGuard;
   var contextRoom=Math.max(0,prefixBudget-prefix.length-(prefix?1:0));
   if (contextRoom>45&&(thread.history||[]).length){
     var context="הקשר קודם, שעשוי לכלול טעות: "+noamRecentThreadText(thread,contextRoom-34);
