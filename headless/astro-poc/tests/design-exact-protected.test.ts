@@ -140,10 +140,11 @@ describe('exact-design protected live-baseline boundaries', () => {
       '<script src="noam-authored-visual.js?v=20261028-scope3"></script>',
       '<script src="noam-visual-data.js?v=20261027-typed2"></script>',
       '<script src="noam-visual-plan.js?v=20261028-square1"></script>',
+      '<script src="noam-source-data-visual.js?v=20261028-source-data1"></script>',
     ];
     const allScripts = [...viewerWithNativeRelease.matchAll(/<script\b[^>]*>[\s\S]*?<\/script>/gi)].map(match => match[0]);
-    assert.equal(allScripts.length, 24, 'The release adds only its eight exact dependencies');
-    assert.deepEqual(allScripts.slice(7,13),nativeAdditions.slice(2),'Typed compilers follow their native source consumer in dependency order');
+    assert.equal(allScripts.length, 25, 'The release adds only its nine exact dependencies');
+    assert.deepEqual(allScripts.slice(7,14),nativeAdditions.slice(2),'Typed compilers follow their native source consumer in dependency order');
     assert.deepEqual(allScripts.slice(0, 2), nativeAdditions.slice(0, 2), 'Old URLs migrate before worksheet scripts run');
     assert.equal(allScripts[7], nativeAdditions[2], 'Native consumer follows the existing local visual engine');
     for (const addition of nativeAdditions) assert.equal(allScripts.filter(script => script === addition).length, 1);
@@ -253,7 +254,11 @@ describe('exact-design protected live-baseline boundaries', () => {
     // No source math, network, security or conversation behavior changes.
     // 2026-10-28: four printed part-only illustration scopes correct 15 links;
     // only those PDFs rotate OCR, while chat keys and PDF/SVG bytes stay fixed.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '018bc29ae0e20844c7a9888e3e8307a5ba5845bcc9a8cbaa7984c9f92b2d102d');
+
+
+    // Noam, 2026-10-28: explicit drawing can invoke existing operation/table
+    // compilers from exact native source; no answer data or new math family.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), 'f16d996ba811af79a2b732c6436617df1c30479eba8f09c9db9d11d487a85b51');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {

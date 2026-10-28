@@ -2680,6 +2680,7 @@ html.nd-motion-off .exact-viewer *,html.noam-a11y-motion .exact-viewer *{scroll-
 <script src="noam-authored-visual.js?v=20261028-scope3"></script>
 <script src="noam-visual-data.js?v=20261027-typed2"></script>
 <script src="noam-visual-plan.js?v=20261028-square1"></script>
+<script src="noam-source-data-visual.js?v=20261028-source-data1"></script>
 <script src="noam-glossary-curriculum.js?v=20260927-concepts2"></script>
 <script src="noam-glossary.js?v=20260927-concepts2"></script>
 <script>
@@ -6879,6 +6880,12 @@ function noamSourcePresentation(source,exercise,options){
   if(authored&&typeof authored.resolve==='function'&&typeof authored.render==='function'){
     var scene=authored.resolve(source.data,exercise,options,source.svgText);
     if(scene){figure=authored.render(document,scene);if(figure){return {kind:scene.kind,figure:figure};}}
+  }
+  var sourceData=window.NoamSourceDataVisual;
+  if(sourceData&&typeof sourceData.resolve==='function'&&typeof sourceData.render==='function'){
+    var exactContext=native.authoredContext(source.data,exercise,source.svgText);
+    var dataScene=sourceData.resolve(exactContext,options);
+    if(dataScene){figure=sourceData.render(document,exactContext,options);if(figure){return {kind:dataScene.kind==='typed-table'?'source-context':dataScene.kind,figure:figure};}}
   }
   if(spec){figure=native.render(document,source.data,exercise,options,source.svgText);if(figure){return {kind:spec.kind,figure:figure};}}
   return null;
