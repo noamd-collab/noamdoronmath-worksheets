@@ -42,7 +42,7 @@ for(const name of ['worksheet-viewer-noam.html','headless/astro-poc/public/works
   it(name+': only the19 affected PDFs refresh analysis, while conversation history remains',()=>{
     const i=html.indexOf('var NOAM_NUMBER_SUMMARY_PDFS'),end=html.indexOf('var threads =',i),block=html.slice(i,end);
     const c:any={pdf,HEADLESS_MANIFEST_BASE:'/noam-ai/manifests/'};runInNewContext(block,c);assert.equal(c.NOAM_NUMBER_SUMMARY_PDFS.length,19);assert.ok(c.NOAM_NUMBER_SUMMARY_PDFS.includes(pdf));
-    for(const id of [...c.NOAM_NUMBER_SUMMARY_PDFS,'ddfdb423c2dc4e9d925ee5be56971195']){const ctx:any={pdf:id,HEADLESS_MANIFEST_BASE:'/noam-ai/manifests/'};runInNewContext(block,ctx);assert.equal(ctx.ANALYSIS_STORAGE_KEY.endsWith(':number-summary-v1'),c.NOAM_NUMBER_SUMMARY_PDFS.includes(id));assert.equal(ctx.THREAD_STORAGE_KEY,'noam-static-threads-v1:'+id);assert.match(ctx.MANIFEST_PATH,/20261028-number-summary/);}
+    for(const id of [...c.NOAM_NUMBER_SUMMARY_PDFS,'ddfdb423c2dc4e9d925ee5be56971195']){const ctx:any={pdf:id,HEADLESS_MANIFEST_BASE:'/noam-ai/manifests/'};runInNewContext(block,ctx);assert.equal(ctx.ANALYSIS_STORAGE_KEY.endsWith(':number-summary-v1'),c.NOAM_NUMBER_SUMMARY_PDFS.includes(id));assert.equal(ctx.THREAD_STORAGE_KEY,'noam-static-threads-v1:'+id);assert.match(ctx.MANIFEST_PATH,/20261028-item-figure-scope-number-summary/);}
   });
 }
 it('all412 canonical manifests pass the source-bound regeneration guard and retain all762 native summaries',()=>{

@@ -76,7 +76,7 @@ it('all canonical questions with these explicit source restrictions use the revi
 for(const relative of ['worksheet-viewer-noam.html','../../../worksheet-viewer-noam.html']){
  const viewer=relative.startsWith('../')?readFileSync(new URL(relative,import.meta.url),'utf8'):read(relative),prefix=relative.startsWith('../')?'root':'public';
  it(prefix+': only the four corrected PDFs rotate OCR caches, while conversation keys stay unchanged',()=>{
-  const source=viewer.slice(viewer.indexOf('var MANIFEST_PATH ='),viewer.indexOf('try{',viewer.indexOf('var MANIFEST_PATH =')));
+  const source=viewer.slice(viewer.indexOf('var NOAM_NUMBER_SUMMARY_PDFS ='),viewer.indexOf('try{',viewer.indexOf('var NOAM_NUMBER_SUMMARY_PDFS =')));
   for(const pdf of [...specs.map(s=>s.pdf),'unrelated-pdf']){
    const c:any={pdf,HEADLESS_MANIFEST_BASE:'/noam-ai/manifests/'};runInNewContext(source,c);
    assert.equal(c.ANALYSIS_STORAGE_KEY,'noam-static-analysis-v2-crop-geometry:'+pdf+(pdf==='unrelated-pdf'?'':':item-figure-scope-20261028'));
