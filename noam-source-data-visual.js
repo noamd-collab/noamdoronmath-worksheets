@@ -1,5 +1,16 @@
 (function(root,factory){'use strict';var api=factory(root||{});if(typeof module==='object'&&module.exports)module.exports=api;if(root)root.NoamSourceDataVisual=api;})(typeof globalThis!=='undefined'?globalThis:this,function(root){
   'use strict';
+  function givenRowTable(context){
+    if(context.partTable||context.questionText!=='בטבלה מפרקים כל תרגיל לשני חלקים: סימן המנה וגודל המנה. השורה הראשונה מולאה כדוגמה.')return false;
+    var selected=context.partText.match(/^מלאו את השורה (השנייה|השלישית|הרביעית)\.$/),table=context.questionTable;
+    if(!selected||!table||JSON.stringify(table.head)!==JSON.stringify(['התרגיל','סימן המנה','גודל המנה','המנה'])||
+       !Array.isArray(table.rows)||table.rows.length!==5||!table.rows.every(function(row){return Array.isArray(row)&&row.length===4&&row.every(function(cell){return typeof cell==='string';});}))return false;
+    // The complete first row is explicitly a printed example. The requested
+    // row supplies its exercise only; never fill its sign/magnitude/quotient.
+    return table.rows[0].every(function(cell){return !!cell.trim();})&&
+      table.rows.slice(1,4).every(function(row){return !!row[0].trim()&&row.slice(1).every(function(cell){return cell==='';});})&&
+      table.rows[4].every(function(cell){return cell==='';});
+  }
   // This fallback selects existing typed compilers. It neither interprets a
   // model answer nor evaluates an expression or completes a source table.
   function plan(context,options){
@@ -24,6 +35,7 @@
       if(target&&target[1]===match[1]){expression=match[1]+'='+match[2];source='question';}
     }
     if(expression)return {version:2,status:'ok',family:'operations',expression:expression,evidence:[{source:source,quote:source==='part'?p:q}]};
+    if(givenRowTable(context))return {version:2,status:'ok',family:'table',tableSource:'question',evidence:[{source:'question',quote:q}]};
     // An error-checking exercise can show the original worked rows without
     // asserting that those rows are correct. It cannot generate a solution.
     var table=context.questionTable,worked=q.match(/^([א-ת]+) פתר(?:ה)? את המשוואה \$[^$\n]+\$ וכתב(?:ה)? שלוש שורות\. אחת מהן שגויה\.$/);
@@ -56,7 +68,7 @@
     }
     if(figure&&scene.kind==='typed-table'){
       var caption=figure.querySelector('figcaption');
-      if(caption)caption.textContent+=' זו טבלת השלבים המקורית לבדיקה; לא נקבע אילו שורות נכונות.';
+      if(caption)caption.textContent+=givenRowTable(context)?' השורה הראשונה נשמרה כדוגמה המקורית; תאים ריקים לא הושלמו.':' זו טבלת השלבים המקורית לבדיקה; לא נקבע אילו שורות נכונות.';
     }
     return figure;
   }
