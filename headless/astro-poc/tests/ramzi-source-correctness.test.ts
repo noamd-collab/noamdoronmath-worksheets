@@ -175,3 +175,25 @@ it('fraction display keeps the value across spaces, coefficients, powers and sig
     }
   }
 });
+
+it('explicitly selecting several or all systems keeps every selected system and still rejects the rest', () => {
+  const plan = (expression: string, quote = '$' + expression + '$') => inVm({ version: 2, status: 'ok', family: 'operations', expression, evidence: [{ source: 'question', quote }] });
+  // 'באילו מהמערכות… בכל מערכת כזאת': every printed system, including the third.
+  const all = section('G8-T07/c', 12, 'א');
+  for (const expression of ['4x + 10y = 14', '6x + 15y = 21', 'x − 4y = 3', '3x − 12y = 8', '5x + 2y = 11', '10x + 3y = 19']) {
+    assert.ok(all.context.questionText.includes('$' + expression + '$'), expression);
+    assert.equal(plans.inspect(plan(expression), all.typed()).ok, true, expression);
+  }
+  const stem = 'מערכת ראשונה: $y=x+1$ ו־$y=2x$. מערכת שנייה: $y=x+2$ ו־$y=3x$. מערכת שלישית: $y=x+3$ ו־$y=4x$.';
+  const ask = (partText: string, expression: string) => plans.inspect(plan(expression), inVm({ questionText: stem, partText, hintText: '', studentMessage: '' }));
+  for (const partText of ['פתרו את המערכת הראשונה ואת השנייה.', 'בשתי המערכות הראשונות פתרו כל מערכת.']) {
+    assert.equal(ask(partText, 'y=2x').ok, true, partText); assert.equal(ask(partText, 'y=3x').ok, true, partText);
+    assert.equal(ask(partText, 'y=4x').reason, 'ambiguous_function_scope', partText + ' leaves out the third');
+  }
+  for (const partText of ['בכל מערכת פתרו את המשוואה השנייה.', 'בשלוש המערכות בדקו את המשוואה הראשונה.', 'באילו מהמערכות המשוואה השנייה היא כפולה של הראשונה?'])
+    assert.equal(ask(partText, 'y=4x').ok, true, partText);
+  // 'שתי המערכות' of three names no specific pair: the single selection rule still applies.
+  assert.equal(ask('בשתי המערכות פתרו את המערכת השנייה.', 'y=4x').reason, 'ambiguous_function_scope');
+  assert.equal(plans.inspect(plan('3x + 4y = 27'), section('G8-T07/b', 4, 'ג').typed()).reason, 'ambiguous_function_scope');
+  assert.equal(plans.inspect(plan('y=x−3'), section('G9-T13/a', 17, 'ב').typed()).reason, 'ambiguous_function_scope');
+});

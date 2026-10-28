@@ -143,8 +143,21 @@
   function outsideOrdinalSelection(context, quote, span) {
     var part = plain(context.partText).replace(/[$]/g, ''), stem = String(context.questionText);
     var equations = (stem.match(/\$[^$]*=[^$]*\$/g) || []).length;
-    if (equations < 2 || !/(?:מערכת|משוואה|נוסחה|בדיקה|פונקציה|גרף)\s+(?:ה)?(?:ראשו(?:ן|נה)|שני(?:יה|ה)?|שלישי(?:ת)?|רביעי(?:ת)?)(?=$|[^א-תA-Za-z0-9])/.test(part)) return false;
-    var wanted = ordinalRoots(part), positions = [];
+    if (equations < 2 || !/(?:מערכת|משוואה|נוסחה|בדיקה|פונקציה|גרף)\s+(?:ה)?(?:ראשו(?:ן|נה)|שני(?:יה|ה)?|שלישי(?:ת)?|רביעי(?:ת)?)(?=$|[^א-תA-Za-z0-9])|(?:מערכות|משוואות)\s+(?:ה)?ראשונות(?=$|[^א-ת])/.test(part)) return false;
+    // 'באילו מהמערכות…', 'בכל מערכת', 'בכל אחת מן המשוואות' select every printed
+    // system/equation; inside them 'המשוואה השנייה' names an equation of each
+    // system, not one system. 'בשלוש המערכות' selects all only when that is
+    // every labelled system (or 'בשתי המשוואות' every printed equation);
+    // 'בשתי המערכות הראשונות' selects the first two. A possessive ('בשתי
+    // המשוואות שלה') stays inside the one selected system.
+    var own = '(?!\\s+(?:שלה|שלו|שלהן|שלהם|שבה|שבו))', ORDER = ['ראש', 'שני', 'שלי', 'רבי'], wanted = ordinalRoots(part), positions = [];
+    var universal = new RegExp('(?:^|[^א-ת])[בל]?(?:אילו|איזו|איזה)\\s+(?:מ|מן\\s+)?ה?(?:מערכות|משוואות)' + own + '|(?:^|[^א-ת])[בל]?כל\\s+(?:אחת\\s+(?:מ|מן\\s+)?)?ה?(?:מערכת|מערכות|משוואה|משוואות)(?=$|[^א-ת])' + own).test(part);
+    var plural = new RegExp('(?:^|[^א-ת])[בלו]?(שתי|שני|שלוש|שלושת|ארבע|ארבעת)\\s+ה(מערכות|משוואות)(\\s+הראשונות)?(?=$|[^א-ת])' + own).exec(part);
+    var n = plural ? (/^ש(?:תי|ני)$/.test(plural[1]) ? 2 : /^שלוש/.test(plural[1]) ? 3 : 4) : 0;
+    var total = plural ? (plural[2] === 'משוואות' ? equations : ordinalRoots(plain(stem)).filter(function (r, i, list) { return list.indexOf(r) === i; }).length) : 0;
+    // An explicit 'first N' wins over a following 'כל מערכת' that refers to them.
+    if (plural && plural[3]) wanted = wanted.concat(ORDER.slice(0, n));
+    else if (universal || plural && total && n >= total) return false;
     for (var q = stem.indexOf(quote); q >= 0; q = stem.indexOf(quote, q + 1))
       for (var s = quote.indexOf(span); s >= 0; s = quote.indexOf(span, s + 1)) positions.push(q + s);
     if (!span || !positions.length) return true;
@@ -155,7 +168,7 @@
       // equation. A system has no such single-equation order, so it stays unclear.
       if (!/(?:משוואה|נוסחה)\s+(?:ה)?(?:ראשו|שני|שליש|רביע)/.test(part)) return true;
       var index = (stem.slice(0, at).match(/\$[^$]*=[^$]*\$/g) || []).length;
-      return wanted.indexOf(['ראש', 'שני', 'שלי', 'רבי'][index]) < 0;
+      return wanted.indexOf(ORDER[index]) < 0;
     });
   }
   function selectedMathScope(text) {
