@@ -72,6 +72,13 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
   for(const change of [{sourceIdentity:'stale'},{exerciseId:'unknown'},{scene:{kind:'typed-table',rows:[['42']]}},{options:{answer:'42'}}])assert.equal(f.c.noamRenderOriginalTable({...saved,...change}),null);
   const g=fixture(v);assert.equal(g.c.noamRenderOriginalTable(saved),null);await settled();const figure=g.c.noamRenderOriginalTable(saved);assert.ok(figure);assert.equal((figure.textContent.match(/\?/g)||[]).length,3);
  });
+ it(name+': saved original tables cannot read a warm or cold source belonging to another selected exercise',async()=>{
+  const f=fixture(v),row=f.bubble();await settled();row.querySelector('.noam-source-table-recovery').click();const saved=clone(f.message.visual);
+  f.c.selectedExercise=f.manifest.exercises.find((e:any)=>e.id!==f.exercise.id);const count=f.fetches.length;
+  assert.equal(f.c.noamRenderOriginalTable(saved),null);await settled();assert.equal(f.fetches.length,count);
+  const cold=fixture(v);cold.c.selectedExercise=cold.manifest.exercises.find((e:any)=>e.id!==cold.exercise.id);
+  assert.equal(cold.c.noamRenderOriginalTable(saved),null);await settled();assert.equal(cold.fetches.length,0);
+ });
  it(name+': actual failed hint records recovery authorization only for worksheet read errors without attachments',async()=>{
   for(const [code,attachments] of [['QUESTION_IMAGE_UNREADABLE',false],['QUESTION_IMAGE_UNREADABLE',true],['BOT_RISK_REJECTED',false],['UNKNOWN',false]] as const){
    const f=fixture(v);f.thread.messages=[];const error=Object.assign(new Error('read failed'),{code});f.c.currentAttachments=()=>attachments?[{}]:[];

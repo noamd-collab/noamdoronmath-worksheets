@@ -262,7 +262,7 @@ describe('exact-design protected live-baseline boundaries', () => {
     // cached OCR, conversations, auth and model-call count remain unchanged.
     // Exact worksheet-image read errors may offer an independently validated original table.
     // This source-only recovery retains the error and never invokes a protected endpoint.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '1c0d32e193e36153f69d950e141a64c3d6e83e619a35a0975b5546d9ce158a01');
+    assert.equal(sha256(JSON.stringify(releasedScripts)), '05039a5c1e9b5d2a19c65acf29671e493af08def0c7053d8ec18deb1ffeda19c');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {

@@ -6927,7 +6927,7 @@ function noamAppendOriginalTableRecovery(bubble,exercise,thread,message){
   }).catch(function(){/* Keep the original read error and its retry action. */});
 }
 function noamRenderOriginalTable(visual){
-  if(!visual||visual.type!=='native-original-table'||!manifest||
+  if(!visual||visual.type!=='native-original-table'||!manifest||!selectedExercise||selectedExercise.id!==visual.exerciseId||
       Object.keys(visual).some(function(k){return ['type','exerciseId','sourceIdentity'].indexOf(k)<0;})){return null;}
   var exercise=(manifest.exercises||[]).find(function(ex){return ex.id===visual.exerciseId;});
   if(!exercise||visual.sourceIdentity!==noamSourceVisualIdentity(exercise)){return null;}
