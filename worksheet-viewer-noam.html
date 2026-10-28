@@ -4648,9 +4648,33 @@ var mathKeyboardOpen = false;
 var analysisCache = {};
 var exercisePreviewCache = {};
 var exercisePreviewOrder = [];
-var MANIFEST_PATH = HEADLESS_MANIFEST_BASE + pdf + ".json?v=20261028-item-figure-scope";
+// Only these source-bound manifest prompts dropped synthesized number bags.
+// Keep conversation history; refresh cached OCR/semantics for these PDFs only.
+var NOAM_NUMBER_SUMMARY_PDFS = [
+  "00eaed3ffa30496ab6f4217f4364f10c",
+  "025d5bf773214ac187d51f2734d2975f",
+  "06bedbe78b3b4730b5d41c52a2a95741",
+  "2662239f4d044fae91a5392184264c3a",
+  "3422bed5e0164d6688e894e0382a8d06",
+  "34f8cf3e66654c26a75f6fb78e94d802",
+  "3a171e594a9c4c419309c320255d86b3",
+  "3fc18fcf47e444f29e23d5833ebd11cf",
+  "45ab1aedeacb4ed5b8b40b4fec71af5b",
+  "496d0753176643c0adc6be3523cedf99",
+  "5de437cdcb37465bac3fe9ab206a4c2e",
+  "74ab03626ac843c0bb8e98e194379fba",
+  "8ae1af12f69f4d4db7def05d45160c2b",
+  "9f53c69dc96e4c419bf11205be72851e",
+  "abeb9b55a19846d98a209f8158ee6f41",
+  "b7244cbaf9d04ba88740070ecb06e0eb",
+  "cb58f1eed5014be086fd0ce42935ebf5",
+  "de181fdb99b547c887627213597b7a84",
+  "ea229f9253c34ce1a0cb841e83e27a55"
+];
+var MANIFEST_PATH = HEADLESS_MANIFEST_BASE + pdf + ".json?v=20261028-item-figure-scope-number-summary";
 var THREAD_STORAGE_KEY = "noam-static-threads-v1:" + pdf;
-var ANALYSIS_STORAGE_KEY = "noam-static-analysis-v2-crop-geometry:" + pdf;
+var ANALYSIS_STORAGE_KEY = "noam-static-analysis-v2-crop-geometry:" + pdf +
+  (NOAM_NUMBER_SUMMARY_PDFS.indexOf(pdf)>=0?":number-summary-v1":"");
 // Only these four corrected source scopes invalidate OCR that included sibling givens.
 if (["e6bad05438cb48f4ab5f7d894727625f", "1447b1c93a0f481abbd1eccbef8a7551", "7b2d78cef1f44268ba9265392320ad26", "162e9a4cd15e41c5bb68cc6a1b600e81"].indexOf(pdf)>=0){ANALYSIS_STORAGE_KEY+=":item-figure-scope-20261028";}
 var threads = {};
