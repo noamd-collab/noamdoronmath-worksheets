@@ -7489,6 +7489,7 @@ function noamTableRecoveryAllowed(exercise,thread,message){
     message.sourceRecoveryExerciseId===exercise.id&&selectedExercise&&selectedExercise.id===exercise.id&&
     (thread.messages||[]).indexOf(message)>=0&&thread===exerciseThread(exercise.id)&&
     !isBotProtectionError({code:message.answerErrorCode,message:message.text})&&
+    !/בדיקת האבטחה|לאמת את הבקשה/.test(String(message.text||''))&&
     !(typeof currentAttachments==='function'&&currentAttachments().length)&&
     window.NoamNativeVisual&&window.NoamSourceDataVisual&&noamNativeDataUrl(exercise));
 }

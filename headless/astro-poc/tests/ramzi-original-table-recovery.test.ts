@@ -14,13 +14,13 @@ function fixture(v:string){
  const thread:any={messages:[{role:'user',text:'אפשר רמז 1?',kind:'רמז 1'},message],hintIndex:0,history:[]},fetches:string[]=[],announcements:string[]=[];
  const c:any={document,window,manifest,selectedExercise:exercise,pdf:manifest.pdfHash,Map,WeakSet,Promise,
   noamNativeFocusUrl:()=>manifest.nativeExportUrl,exerciseThread:()=>thread,currentAttachments:()=>[],
-  noamStripMarkdownEmphasis:(s:string)=>s,isBotProtectionError:(e:any)=>/BOT_|429|בדיקת האבטחה/.test(String(e.code)+' '+String(e.message)),
+  noamStripMarkdownEmphasis:(s:string)=>s,
   noamCanOfferDrawing:()=>false,retryLastNoamHelp(){},saveNoamState(){},renderNoamChat(){},announceNoam:(s:string)=>announcements.push(s),
   noamAddDiagramExpansion:(container:any)=>{const b=document.createElement('button');b.textContent='הגדלת הטבלה';container.append(b);},
   postJson:()=>{throw Error('protected request forbidden');},requestNoamDiagram:()=>{throw Error('diagram request forbidden');},
   fetch:async(url:string)=>{assert.equal(url,manifest.nativeExportUrl);fetches.push(url);const body=readFileSync(new URL(url.slice(1),pub),'utf8');return {ok:true,json:async()=>JSON.parse(body)};}};
  const helpers='var noamSourceVisualPackages='+v.split('var noamSourceVisualPackages=')[1].split('function noamNativeFigure(')[0];
- runInNewContext(modules+'\n'+fn(v,'noamDiagramSourceIdentity')+'\n'+helpers+'\n'+['noamVisualCanExpand','noamRetryActionLabel','addTranscriptBubble'].map(n=>fn(v,n)).join('\n'),c);
+ runInNewContext(modules+'\n'+readFileSync(new URL('noam-bot-client.js',pub),'utf8')+'\n'+fn(v,'isBotProtectionError')+'\n'+fn(v,'noamDiagramSourceIdentity')+'\n'+helpers+'\n'+['noamVisualCanExpand','noamRetryActionLabel','addTranscriptBubble'].map(n=>fn(v,n)).join('\n'),c);
  for(const k of Object.keys(c))if(k.startsWith('Noam'))window[k]=c[k];
  function bubble(){return c.addTranscriptBubble(document.querySelector('main'),'assistant',message.text,'',message.visual||null,message,thread);}
  return {c,manifest,exercise,message,thread,fetches,announcements,bubble};
@@ -39,13 +39,23 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
   const again=f.bubble();await settled();assert.equal(again.querySelectorAll('.noam-source-table-recovery').length,0);assert.ok(again.querySelector('figure'));assert.match(again.textContent,/הגדלת הטבלה/);
  });
  it(name+': unknown/security/rate errors, attachments and unbound error records never fetch or offer recovery',async()=>{
-  for(const mode of ['unknown','empty-code','BOT_RISK_REJECTED','BOT_VERIFICATION_TIMEOUT','RATE_LIMITED','untrusted-flag','wrong-exercise','attachments','security-message','not-error','deleted','switched']){
+  for(const mode of ['unknown','empty-code','BOT_RISK_REJECTED','BOT_VERIFICATION_TIMEOUT','RATE_LIMITED','untrusted-flag','wrong-exercise','attachments','security-message','verify-message','not-error','deleted','switched']){
    const f=fixture(v);
    if(['unknown','empty-code','BOT_RISK_REJECTED','BOT_VERIFICATION_TIMEOUT','RATE_LIMITED'].includes(mode))f.message.answerErrorCode=mode==='empty-code'?'':mode;
    if(mode==='untrusted-flag')delete f.message.sourceRecoveryAllowed;if(mode==='wrong-exercise')f.message.sourceRecoveryExerciseId='q16a';
-   if(mode==='attachments')f.c.currentAttachments=()=>[{}];if(mode==='security-message')f.message.text='בדיקת האבטחה נכשלה';if(mode==='not-error')f.message.answerError=false;
+   if(mode==='attachments')f.c.currentAttachments=()=>[{}];if(mode==='security-message')f.message.text='בדיקת האבטחה נכשלה';if(mode==='verify-message')f.message.text='לא הצלחנו לאמת את הבקשה';if(mode==='not-error')f.message.answerError=false;
    if(mode==='deleted')f.thread.messages=[];if(mode==='switched')f.c.selectedExercise={id:'other'};
    const row=f.bubble();await settled();assert.equal(f.fetches.length,0,mode);assert.equal(row.querySelector('.noam-source-table-recovery'),null,mode);
+  }
+ });
+ it(name+': actual security classifiers and conflicting persisted metadata cannot enable source recovery',async()=>{
+  for(const loaded of [true,false]){
+   const f=fixture(v);if(!loaded)f.c.window.NoamBotClient=null;
+   assert.equal(f.c.isBotProtectionError({code:'BOT_RISK_REJECTED'}),true);assert.equal(f.c.isBotProtectionError({status:429}),true);
+   const error={code:'QUESTION_IMAGE_UNREADABLE',message:'בדיקת האבטחה נכשלה'};
+   assert.equal(f.c.isBotProtectionError(error),false,'classifier intentionally reads code/status, not prose');
+   f.message.text=error.message;assert.equal(f.c.noamTableRecoveryAllowed(f.exercise,f.thread,f.message),false);
+   const row=f.bubble();await settled();assert.equal(f.fetches.length,0);assert.equal(row.querySelector('.noam-source-table-recovery'),null);
   }
  });
  it(name+': source failure, wrong item, malformed/unsupported selected table and source-panel scope cannot fall through to a model',async()=>{
