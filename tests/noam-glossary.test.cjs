@@ -227,6 +227,40 @@ test("Pythagoras 'הריבוע של הצלעות' is numeric even next to the wo
   assert.equal(singular.find(match => match.id === "numeric-square").text, "הריבוע");
 });
 
+test("a square that owns a side, area or vertex names is the shape even beside ניצב/יתר", () => {
+  const squareIds = (text) => glossary.findTerms(text, 9, 6)
+    .filter(match => match.id === "square" || match.id === "numeric-square")
+    .map(match => `${match.id}:${match.text}`);
+  // W16-Q1 (G9-T20-B-Q03א) live hint.
+  assert.deepEqual(squareIds("האם הצלע של הריבוע היא גם ניצב במשולש הפינה, או שהניצבים הם חלקים ממנה?"), ["square:הריבוע"]);
+  assert.deepEqual(squareIds("שרטטו ריבוע ששטחו 36 סמ״ר. מצאו את הצלע ואת שני הניצבים במשולש הפינה."), ["square:ריבוע"]);
+  assert.deepEqual(squareIds("מצאו את שטח הריבוע שהיה נבנה על היתר."), ["square:הריבוע"]);
+  assert.deepEqual(squareIds("מצאו את היתר בלי לחזור לחישוב שטחי הריבועים בנפרד."), ["square:הריבועים"]);
+  assert.deepEqual(squareIds("הצלע של כל ריבוע ארוכה מהיתר"), ["square:ריבוע"]);
+  assert.deepEqual(squareIds("וריבוע ששטחו S, והיתר במשולש"), ["square:וריבוע"]);
+  assert.deepEqual(squareIds("בריבוע ABCD הניצב AB"), ["square:בריבוע"]);
+});
+
+test("powers of lengths and numbers stay numeric squares", () => {
+  const squareIds = (text) => glossary.findTerms(text, 9, 6)
+    .filter(match => match.id === "square" || match.id === "numeric-square")
+    .map(match => `${match.id}:${match.text}`);
+  assert.deepEqual(squareIds("חשבו את השטח ואת ריבוע האלכסון."), ["numeric-square:ריבוע"]);
+  assert.deepEqual(squareIds("חשבו את ריבוע המרחק של האמצע מראשית הצירים."), ["numeric-square:ריבוע"]);
+  assert.deepEqual(squareIds("בדק את השוויון 60 בריבוע ועוד 61 בריבוע"), ["numeric-square:בריבוע"]);
+  assert.deepEqual(squareIds("x בריבוע ועוד 1"), ["numeric-square:בריבוע"]);
+  // "בריבוע" after a word is "squared", never "in the square" by the side-owner rule.
+  assert.deepEqual(squareIds("הצלע בריבוע שווה ל־25, והניצב"), ["numeric-square:בריבוע"]);
+  assert.deepEqual(squareIds("לכל מספר, השורש של הריבוע שלו שווה למספר עצמו."), ["numeric-square:הריבוע"]);
+  assert.deepEqual(squareIds("השלימו את סכום הריבועים הדרוש לאלכסון."), ["numeric-square:הריבועים"]);
+  assert.deepEqual(squareIds("חשבו את הריבוע של 7."), ["numeric-square:הריבוע"]);
+});
+
+test("a square with conflicting nearby cues stays unlinked rather than mislabeled", () => {
+  const matches = glossary.findTerms("בנו מרובע אחר בעל אלכסונים ניצבים שאינו ריבוע.", 8, 6);
+  assert.equal(matches.some(match => match.id === "square" || match.id === "numeric-square"), false);
+});
+
 test("the viewer exposes hover, focus, tap and a free detailed explanation tab", () => {
   assert.match(viewer, /noam-glossary-curriculum\.js\?v=[^<]+<\/script>\s*<script src="noam-glossary\.js/);
   assert.match(viewer, /noam-glossary\.js\?v=/);
