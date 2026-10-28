@@ -173,6 +173,21 @@ test("Hebrew word boundaries avoid highlighting a term inside an unrelated word"
   assert.equal(glossary.findTerms("ריבוע", 9, 6)[0].id, "square");
 });
 
+test("the pronoun ממנה never links the quotient מנה", () => {
+  const quotient = glossary.entries.find(entry => entry.term === "מנה");
+  assert.ok(quotient);
+  const linksQuotient = (text) => glossary.findTerms(text, 9, 6).filter(match => match.id === quotient.id).map(match => match.text);
+  // W16-Q1 (G9-T20-B-Q03א) live hint.
+  assert.deepEqual(linksQuotient("האם הצלע של הריבוע היא גם ניצב במשולש הפינה, או שהניצבים הם חלקים ממנה?"), []);
+  assert.deepEqual(linksQuotient("רשמו את המשוואה ומצאו ממנה את התשובה."), []);
+  assert.deepEqual(linksQuotient("הוא גבוה ממנה, וממנה יוצא הקטע."), []);
+  assert.deepEqual(linksQuotient("המנה של 12 ו־3 היא 4."), ["המנה"]);
+  assert.deepEqual(linksQuotient("במכפלה או במנה, החזקה חלה על כל גורם."), ["במנה"]);
+  assert.deepEqual(linksQuotient("כתבו את היחס כמנה מצומצמת."), ["כמנה"]);
+  assert.deepEqual(linksQuotient("המחולק שלילי, והמנה בין 0 ל־1."), ["והמנה"]);
+  assert.deepEqual(linksQuotient("גבוה ממנה, אבל המנה של 8 ו־2 היא 4."), ["המנה"]);
+});
+
 test("approved Sheet aliases extend an existing definition without replacing it", () => {
   const before = glossary.get("right-triangle");
   assert.equal(glossary.mergeAliases([{ conceptId: "right-triangle", phrase: "משולש עם זווית ישרה" }]), 1);

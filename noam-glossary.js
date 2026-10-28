@@ -683,6 +683,8 @@
   // Pythagoras "ריבועים" is a², not the quadrilateral.
   function contextAllowsMatch(entry,source,index,end){
     if(!entry){return true;}
+    // "ממנה" is the pronoun "from it/her", not מ־ + the quotient "מנה".
+    if(/^ו?ממנה$/.test(canonicalizeGlossaryText(source.slice(index,end)))){return false;}
     if(entry.id==="ratio"){
       var matched=canonicalizeGlossaryText(source.slice(index,end)).toLocaleLowerCase("he");
       if(!/(^|ו)ביחס$/.test(matched)){return true;}
