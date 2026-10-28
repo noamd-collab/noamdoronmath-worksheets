@@ -116,9 +116,11 @@
     var part = formulas(context.partText), question = formulas(context.questionText);
     if(part.invalid||question.invalid)return null;
     // An ordinal selects one authored system/function, not every declaration
-    // in a shared stem. Without formulas in this part, their membership is not
-    // proved by text or by panel order: keep the validated original figure.
-    if(!part.length&&question.length>1&&/(?:מערכת|בדיקה|פונקציה|גרף)\s+(?:ה)?(?:ראשו(?:ן|נה)|שני(?:יה|ה)?|שלישי(?:ת)?|רביעי(?:ת)?)(?=$|[^א-תA-Za-z0-9])/.test(prose(context.partText)))return null;
+    // in a shared stem. Head declarations absent from this part must not be
+    // imported into that selected set. Keep the validated original figure
+    // instead of inferring formula membership from text or panel order.
+    if(question.length>1&&/(?:מערכת|בדיקה|פונקציה|גרף)\s+(?:ה)?(?:ראשו(?:ן|נה)|שני(?:יה|ה)?|שלישי(?:ת)?|רביעי(?:ת)?)(?=$|[^א-תA-Za-z0-9])/.test(prose(context.partText))&&
+        question.some(function(f){return !part.some(function(g){return JSON.stringify(g.ast)===JSON.stringify(f.ast);});}))return null;
     var all=question.concat(part).filter(function(f,i,list){return list.findIndex(function(g){return JSON.stringify(g.ast)===JSON.stringify(f.ast);})===i;});
     return all.length>=1&&all.length<=4?all:null;
   }

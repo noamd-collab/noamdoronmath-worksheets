@@ -44,6 +44,14 @@ it('ordinal selection spelling does not become a formula-to-panel assignment',()
   assert.equal(f.c.NoamVisualPlan.inspect(plan(context),context).ok,false,partText);
  }
 });
+it('an explicit selected pair never imports the other system from its shared stem',()=>{
+ const f=fixture();
+ const context={...f.context,partText:'פתרו את המערכת השנייה: $y=x^2-2$ ו־$y=2x+1$.'};
+ assert.equal(f.c.NoamAuthoredVisual.fromContext(context,draw),null);
+ const evidence=[{source:'question',quote:context.questionText},{source:'part',quote:context.partText}];
+ const checked=f.c.NoamVisualPlan.inspect({version:2,status:'ok',family:'function',evidence},context);
+ assert.equal(checked.ok,false);assert.equal(checked.reason,'ambiguous_function_scope');
+});
 it('ordinary shared comparisons and exact current-part declarations retain all authored functions',()=>{
  const f=fixture(),api=f.c.NoamAuthoredVisual;
  for(const context of [
