@@ -2233,6 +2233,10 @@ function answerBox(items, questionNumber, part) {
   }
   if (top - bottom < 6 || right - left < 6) return null;
   const box = { page: marker.page, x: left, y: bottom, w: right - left, h: top - bottom };
+  const peel = slot && slot.right > slot.left + 6
+    ? answerAffixHints(items, slot.left, slot.right, slot.lineBottom, slot.lineTop)
+    : answerAffixHints(items, left, right, bottom, top);
+  if (peel.length) box.peel = peel;
   if (slot) box.slot = slot;
   if (covers.length) box.covers = covers;
   if (answerContinues) box.continues = true;
@@ -2352,6 +2356,39 @@ function clipAnswerAffixes(items, left, right, bottom, top) {
     if (!moved) break;
   }
   return { left, right };
+}
+
+// A mark glued to the answer run ("ד. הוכחה", "נכונה ·") cannot be cut from the
+// text layer alone: run widths only estimate where a letter ends. Record where
+// the mark should end, and let the pixel pass cut there only at a blank gap.
+function answerAffixHints(items, left, right, bottom, top) {
+  const hints = [];
+  (items || []).forEach((glyph) => {
+    const text = String(glyph.str || '');
+    if (!text.trim() || answerAffixText(text)) return;
+    const gy = glyph.y || 0;
+    const gh = Math.max(glyph.h || 0, 8);
+    if (gy + gh < bottom + 0.5 || gy > top - 0.5) return;
+    const gx = glyph.x || 0;
+    const gr = gx + Math.max(glyph.w || 0, 2);
+    if (gr < left - 0.5 || gx > right + 0.5) return;
+    const visible = glyphOverlapSpan(glyph, left - 3, right + 3);
+    if (!visible) return;
+    const span = answerKeptSpan(text.slice(visible.start, visible.end));
+    if (!span || span.end <= span.start) return;
+    const kept = answerSliceBox(glyph, visible.start + span.start, visible.start + span.end);
+    const keptR = kept.x + kept.w;
+    const slack = 4;
+    const y0 = gy - gh * 0.3;
+    const y1 = gy + gh;
+    if (gr >= right - slack && keptR < Math.min(right, gr) - 0.3) {
+      hints.push({ side: 'right', x: keptR, markW: Math.min(right, gr) - keptR, y0, y1 });
+    }
+    if (gx <= left + slack && kept.x > Math.max(left, gx) + 0.3) {
+      hints.push({ side: 'left', x: kept.x, markW: kept.x - Math.max(left, gx), y0, y1 });
+    }
+  });
+  return hints;
 }
 
 function markerNumber(item, items) {
@@ -2646,6 +2683,13 @@ function answerSliceFor(pages, question) {
         tightTop: Boolean(raw.tightTop),
         tightBottom: Boolean(raw.tightBottom),
         masks: masks.length ? masks : undefined,
+        peel: raw.peel ? raw.peel.map((hint) => ({
+          side: hint.side,
+          x: hint.x / sheet.width,
+          markW: hint.markW / sheet.width,
+          y0: (sheet.height - hint.y1) / sheet.height,
+          y1: (sheet.height - hint.y0) / sheet.height,
+        })) : undefined,
       },
     };
   }
@@ -3037,6 +3081,94 @@ function dropMaskedAnswerBand(piece) {
   return { ...piece, box: placedBox(box, box.y + box.h * cut, h) };
 }
 
+// Cut a glued mark at the blank gap nearest the estimate. A gap narrower than a
+// space is the space between two letters of a word, so the mark stays instead.
+function peelAnswerAffixes(bitmap, hints, left, right, top, bot) {
+  const out = { left, right, masks: [] };
+  if (!bitmap || !hints || !hints.length || typeof bitmap.getContext !== 'function') return out;
+  const W = bitmap.width;
+  const H = bitmap.height;
+  const x0 = Math.max(0, Math.floor(left));
+  const x1 = Math.min(W, Math.ceil(right));
+  const y0 = Math.max(0, Math.floor(top));
+  const y1 = Math.min(H, Math.ceil(bot));
+  if (x1 - x0 < 8 || y1 - y0 < 3) return out;
+  let data;
+  try {
+    data = bitmap.getContext('2d').getImageData(x0, y0, x1 - x0, y1 - y0).data;
+  } catch (error) {
+    return out;
+  }
+  const rw = x1 - x0;
+  const dark = (x, y) => {
+    const i = ((y - y0) * rw + (x - x0)) * 4;
+    return data[i] < 242 || data[i + 1] < 242 || data[i + 2] < 242;
+  };
+  const colInk = (x, ra, rb) => {
+    for (let y = ra; y < rb; y += 1) if (dark(x, y)) return true;
+    return false;
+  };
+  hints.forEach((hint) => {
+    const ra = Math.max(y0, Math.floor(hint.y0 * H));
+    const rb = Math.min(y1, Math.ceil(hint.y1 * H));
+    if (rb - ra < 4) return;
+    const lo = Math.max(x0, Math.ceil(out.left));
+    const hi = Math.min(x1, Math.floor(out.right));
+    if (hi - lo < 8) return;
+    const ink = [];
+    for (let x = lo; x < hi; x += 1) ink.push(colInk(x, ra, rb));
+    let first = ink.indexOf(true);
+    let last = ink.lastIndexOf(true);
+    if (first < 0) return;
+    const minGap = Math.max(4, Math.round((rb - ra) * 0.1));
+    const est = Math.round(hint.x * W) - lo;
+    const markPx = Math.max(2, hint.markW * W);
+    const tol = Math.max(10, markPx * 0.6);
+    const runs = [];
+    let start = -1;
+    for (let i = first; i <= last + 1; i += 1) {
+      const blank = i <= last && !ink[i];
+      if (blank && start < 0) start = i;
+      if (!blank && start >= 0) {
+        if (i - start >= minGap) runs.push({ a: start, b: i });
+        start = -1;
+      }
+    }
+    let best = null;
+    let bestD = Infinity;
+    runs.forEach((run) => {
+      const d = est < run.a ? run.a - est : (est > run.b ? est - run.b : 0);
+      if (d > tol) return;
+      const markInk = hint.side === 'right' ? last + 1 - run.b : run.a - first;
+      if (markInk > markPx * 1.6 + minGap * 2) return;
+      if (d < bestD) {
+        bestD = d;
+        best = run;
+      }
+    });
+    if (!best) return;
+    const otherRows = (from, to) => {
+      for (let x = from; x < to; x += 1) {
+        for (let y = y0; y < y1; y += 1) {
+          if (y >= ra && y < rb) continue;
+          if (dark(x, y)) return true;
+        }
+      }
+      return false;
+    };
+    if (hint.side === 'right') {
+      const cut = lo + best.a + 1;
+      if (!otherRows(cut, x1)) out.right = Math.min(out.right, cut);
+      else out.masks.push({ x0: cut, x1: lo + last + 2, y0: ra, y1: rb });
+    } else {
+      const cut = lo + best.b - 1;
+      if (!otherRows(x0, cut)) out.left = Math.max(out.left, cut);
+      else out.masks.push({ x0: lo + first - 1, x1: cut, y0: ra, y1: rb });
+    }
+  });
+  return out;
+}
+
 function trimPieceBox(slice, bitmap) {
   const box = slice.box;
   if (!box || !bitmap) return slice;
@@ -3156,7 +3288,13 @@ function trimPieceBox(slice, bitmap) {
       left = Math.max(0, snapped.minX - hPad);
       right = Math.min(pageW, snapped.maxX + 1 + hPad);
     }
+    const peeled = peelAnswerAffixes(bitmap, clipped.peel, left, right, top, bot);
+    if (peeled.right - peeled.left > 8) {
+      left = peeled.left;
+      right = peeled.right;
+    }
     const next = placedBox(clipped, top / pageH, Math.max(0.004, (bot - top) / pageH));
+    delete next.peel;
     if (right - left > 4) {
       const kept = [];
       const remember = (mask) => {
@@ -3171,6 +3309,18 @@ function trimPieceBox(slice, bitmap) {
       };
       if (next.mask) remember(next.mask);
       (next.masks || []).forEach(remember);
+      peeled.masks.forEach((rect) => {
+        const low = Math.max(rect.y0, top);
+        const high = Math.min(rect.y1, bot);
+        if (high - low < 1) return;
+        kept.push({
+          role: 'answer-affix',
+          absX: rect.x0 / pageW,
+          absW: (rect.x1 - rect.x0) / pageW,
+          y: (low - top) / (bot - top),
+          h: (high - low) / (bot - top),
+        });
+      });
       next.x = left / pageW;
       next.w = (right - left) / pageW;
       const masks = kept.map((mask) => {
