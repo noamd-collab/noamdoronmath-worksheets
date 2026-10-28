@@ -11,6 +11,13 @@
       table.rows.slice(1,4).every(function(row){return !!row[0].trim()&&row.slice(1).every(function(cell){return cell==='';});})&&
       table.rows[4].every(function(cell){return cell==='';});
   }
+  function workedTable(context){
+    var table=context.questionTable,q=context.questionText,p=context.partText;
+    var worked=q.match(/^([א-ת]+) פתר(?:ה)? את המשוואה \$[^$\n]+\$ וכתב(?:ה)? שלוש שורות\. אחת מהן שגויה\.$/);
+    var checking=p.match(/^אם מסתכלים רק על המעבר משורה לשורה, האם השורה השנייה והשלישית של ([א-ת]+) נכונות\?$/);
+    return !context.partTable&&table&&Array.isArray(table.head)&&table.head.length===2&&table.head[0]==='השורה'&&/^מה כתב(?:ה)?\s+[א-ת]+$/.test(table.head[1])&&
+      worked&&checking&&worked[1]===checking[1]&&table.head[1].split(/\s+/).pop()===worked[1];
+  }
   // This fallback selects existing typed compilers. It neither interprets a
   // model answer nor evaluates an expression or completes a source table.
   function plan(context,options){
@@ -22,13 +29,23 @@
     if(typeof q!=='string'||typeof p!=='string'||q.length>2000||p.length>1000)return null;
     q=q.trim();p=p.trim();
     var expression,source,match;
+    // An entire selected math span already owns its source scope. The existing
+    // compiler must consume it whole; no formula is extracted from prose or a
+    // sibling, and its evidence is never normalized or replaced with hint math.
+    if(!context.questionTable&&!context.partTable&&((match=p.match(/^\$([^$\n]+)\$$/))||(match=p.match(/^\\\(([^\n]+)\\\)$/)))){
+      // Relational spans may be intentionally false printed claims. The
+      // general fallback only draws non-relational expressions; existing
+      // narrowly scoped equation routes below keep their own contract.
+      if(/[=<>≤≥≠]/.test(match[1]))return null;
+      expression=match[1];source='part';
+    }
     // A direct simplification task with a complete, unambiguous local span.
     // Formula-bearing stems, examples and separately chosen systems cannot
     // silently donate another expression to this selected part.
     var simpleStem=/^(?:פשטו(?:\s+(?:כל\s+ביטוי|את\s+הביטויים))?(?:,\s*ואז\s+בדקו\s+את\s+הקשר\s+בין\s+התוצאות)?|חשבו)\s*[.:]?$/;
-    if(!context.questionTable&&!context.partTable&&simpleStem.test(q)&&(match=p.match(/^פשטו\s+\$([^$\n]+)\$\s*[.]?$/))){
+    if(!expression&&!context.questionTable&&!context.partTable&&simpleStem.test(q)&&(match=p.match(/^פשטו\s+\$([^$\n]+)\$\s*[.]?$/))){
       expression=match[1];source='part';
-    }else if(!context.questionTable&&!context.partTable&&(match=q.match(/^נתון\s+\$([A-Za-z])=([^$\n]+)\$\s*[.]?$/))){
+    }else if(!expression&&!context.questionTable&&!context.partTable&&(match=q.match(/^נתון\s+\$([A-Za-z])=([^$\n]+)\$\s*[.]?$/))){
       // The selected target must be the exact assigned symbol. Do not use a
       // sibling result, a requested substitution or a different expression.
       var target=p.match(/^מצאו\s+את\s+\$([A-Za-z])\$\s*[.]?$/);
@@ -38,13 +55,16 @@
     if(givenRowTable(context))return {version:2,status:'ok',family:'table',tableSource:'question',evidence:[{source:'question',quote:q}]};
     // An error-checking exercise can show the original worked rows without
     // asserting that those rows are correct. It cannot generate a solution.
-    var table=context.questionTable,worked=q.match(/^([א-ת]+) פתר(?:ה)? את המשוואה \$[^$\n]+\$ וכתב(?:ה)? שלוש שורות\. אחת מהן שגויה\.$/);
-    var checking=p.match(/^אם מסתכלים רק על המעבר משורה לשורה, האם השורה השנייה והשלישית של ([א-ת]+) נכונות\?$/);
-    if(!context.partTable&&table&&Array.isArray(table.head)&&table.head.length===2&&table.head[0]==='השורה'&&/^מה כתב(?:ה)?\s+[א-ת]+$/.test(table.head[1])&&
-       worked&&checking&&worked[1]===checking[1]&&table.head[1].split(/\s+/).pop()===worked[1]){
+    if(workedTable(context)){
       return {version:2,status:'ok',family:'table',tableSource:'question',evidence:[{source:'question',quote:q}]};
     }
-    return null;
+    // Showing the supplied table is source context, not a newly constructed
+    // table. A selected table owns its scope; an invalid one never falls back
+    // to the parent. The existing inspector retains new-table/scope limits.
+    if(/משלכם|משלכן|משלך|בעצמכם|בעצמך|שבחרתם|שיצרתם|שבניתם|המתוק(?:ן|נת|נים|נות)|(?:לאחר|אחרי)\s+התיקון|שתיקנתם|שהשלמתם|הטבלה\s+המלאה/.test(p))return null;
+    source=context.partTable!==undefined&&context.partTable!==null?'part':context.questionTable?'question':null;
+    if(!source||(source==='part'?!p:!q))return null;
+    return {version:2,status:'ok',family:'table',tableSource:source,evidence:[{source:source,quote:source==='part'?p:q}]};
   }
   function resolve(context,options){
     var candidate=plan(context,options),compiler=root.NoamVisualPlan;
@@ -68,7 +88,7 @@
     }
     if(figure&&scene.kind==='typed-table'){
       var caption=figure.querySelector('figcaption');
-      if(caption)caption.textContent+=givenRowTable(context)?' השורה הראשונה נשמרה כדוגמה המקורית; תאים ריקים לא הושלמו.':' זו טבלת השלבים המקורית לבדיקה; לא נקבע אילו שורות נכונות.';
+      if(caption)caption.textContent='הטבלה המקורית כפי שהודפסה. לא מולאו תאים ריקים ולא תוקנו ערכים; לא נקבע אילו שורות נכונות.'+(givenRowTable(context)?' השורה הראשונה נשמרה כדוגמה המקורית; תאים ריקים לא הושלמו.':workedTable(context)?' זו טבלת השלבים המקורית לבדיקה.':'');
     }
     return figure;
   }
