@@ -7428,6 +7428,50 @@ function noamCachedSourceVisual(exercise){
   var refs=window.NoamSourcePanels.references(source.data,exercise,source.svgText);
   var group=refs&&noamSourcePanelGroups.get(noamSourcePanelIdentity(exercise,refs));return group&&group.value;
 }
+function noamSourceSegmentLabelFacts(source,exercise,model){
+  // Printed labels on flat nets only. Pixel endpoints establish the visible
+  // segment direction, never a mathematical length or a computed answer.
+  if(!source||source.sourcePanelGroup||!model||model.kind!=='net_2d'||
+      model.id!==exercise.nativeFigureId||model.question!==exercise.nativeQuestionId||!window.DOMParser){return null;}
+  var objects=model.objects;
+  if(!Array.isArray(objects)||objects.length<2||objects.length>80||objects.some(function(o){
+    return !o||['segment','label'].indexOf(o.type)<0||o.display!=='initial'||['context','given'].indexOf(o.role)<0;
+  })){return null;}
+  var doc=new window.DOMParser().parseFromString(source.svgText,'image/svg+xml'),svg=doc.documentElement;
+  if(!svg||svg.localName!=='svg'||svg.getAttribute('xmlns')!=='http://www.w3.org/2000/svg'||
+      Array.from(svg.attributes).some(function(a){return ['xmlns','width','height','viewBox','data-fig'].indexOf(a.name)<0;})){return null;}
+  var box=String(svg.getAttribute('viewBox')||'').trim().split(/\s+/).map(Number),nodes=Array.from(svg.querySelectorAll('*'));
+  if(box.length!==4||box.some(function(n){return !Number.isFinite(n);})||box[0]!==0||box[1]!==0||box[2]<=0||box[3]<=0||
+      nodes.length!==objects.length||nodes.some(function(n){return n.parentNode!==svg||['line','text'].indexOf(n.localName)<0;})){return null;}
+  var byId=Object.create(null),segments=Object.create(null),labels=[],seen=Object.create(null);
+  function finitePoint(p){return Array.isArray(p)&&p.length===2&&p.every(Number.isFinite)&&p[0]>=0&&p[0]<=box[2]&&p[1]>=0&&p[1]<=box[3];}
+  function samePoint(a,b){return finitePoint(a)&&finitePoint(b)&&a.every(function(n,i){return Math.abs(n-b[i])<=.02;});}
+  for(var node of nodes){var id=node.getAttribute('id');if(!id||byId[id]){return null;}byId[id]=node;}
+  for(var object of objects){
+    var node=byId[object.svg_id];if(!node||seen[object.svg_id]||object.id!==object.svg_id){return null;}seen[object.svg_id]=true;
+    if(object.type==='segment'){
+      if(node.localName!=='line'||Array.from(node.attributes).some(function(a){return ['id','x1','y1','x2','y2','stroke','stroke-width'].indexOf(a.name)<0;})||
+          !['x1','y1','x2','y2'].every(function(k){return node.hasAttribute(k);})||
+          !/^(?:#(?:111|111111|000|000000)|black)$/i.test(node.getAttribute('stroke')||'')||
+          !(Number(node.getAttribute('stroke-width'))>0)||!Array.isArray(object.svg_xy)||object.svg_xy.length!==2){return null;}
+      var a=[Number(node.getAttribute('x1')),Number(node.getAttribute('y1'))],b=[Number(node.getAttribute('x2')),Number(node.getAttribute('y2'))];
+      if(!samePoint(a,object.svg_xy[0])||!samePoint(b,object.svg_xy[1])||samePoint(a,b)){return null;}
+      segments[object.id]=Math.abs(a[0]-b[0])<=.02?'אנכי':Math.abs(a[1]-b[1])<=.02?'אופקי':'אלכסוני';
+    }else{
+      var text=String(object.text||'');
+      if(node.localName!=='text'||node.children.length||node.textContent!==text||!/^[-−]?\d{1,4}(?:\.\d{1,3})?$/.test(text)||
+          object.part!=='value'||typeof object.for!=='string'||object.id!=='lbl-'+object.for||
+          Array.from(node.attributes).some(function(a){return ['id','x','y','font-family','font-size','text-anchor','fill'].indexOf(a.name)<0;})||
+          !['x','y'].every(function(k){return node.hasAttribute(k);})||
+          !/^(?:#(?:111|111111|000|000000)|black)$/i.test(node.getAttribute('fill')||'')||
+          !(Number(node.getAttribute('font-size'))>0)||Number(node.getAttribute('font-size'))>40||
+          !samePoint([Number(node.getAttribute('x')),Number(node.getAttribute('y'))],object.svg_xy)){return null;}
+      labels.push({text:text,for:object.for});
+    }
+  }
+  if(!labels.length||labels.length>12||labels.some(function(label){return !segments[label.for];})){return null;}
+  return labels.map(function(label){return {text:label.text,direction:segments[label.for]};});
+}
 function noamEnrichSourceAnalysis(exercise,analysis){
   if(!analysis||typeof analysis!=='object'||!window.NoamNativeVisual||!noamNativeDataUrl(exercise)){return Promise.resolve(analysis);}
   var identity=noamSourceVisualIdentity(exercise);
@@ -7456,7 +7500,14 @@ function noamEnrichSourceAnalysis(exercise,analysis){
     // The parent given/relations arrays can include other subsections. Include
     // only the printed question introduction, selected item and visible names;
     // never source coordinates, answer targets, inferred values or formulas.
-    var scope=[
+    var printedLabels=noamSourceSegmentLabelFacts(source,exercise,model);
+    var labelContext=printedLabels?[
+      'תוויות מספריות מודפסות שאומתו בשרטוט המקור, לבדיקה פנימית של הרמז:',
+      'הסעיף הנבחר: '+String(part.text||'').slice(0,200),
+      printedLabels.map(function(label){return 'על קטע '+label.direction+' מודפס '+label.text;}).join('; ')+'.',
+      'אל תחליף תווית מודפסת בערך מהפתיח ואל תתאר אותה כחסרה. אלה נתוני מקור, לא חישוב. אל תחשוף חישוב או תשובה שהתלמיד צריך למצוא.'
+    ].join('\n')+'\n\n':'';
+    var scope=labelContext+[
       'הקשר חזותי מאומת לסעיף הנבחר בלבד:',
       'שאלה '+String(exercise.q||exercise.nativeQuestionId)+'; סעיף '+String(exercise.part||'')+'. סוג השרטוט: '+String(model.kind||'').slice(0,40)+'.',
       'פתיח השאלה: '+String(question.text||'').slice(0,900),

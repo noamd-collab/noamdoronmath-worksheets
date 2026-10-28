@@ -258,7 +258,9 @@ describe('exact-design protected live-baseline boundaries', () => {
 
     // Noam, 2026-10-28: explicit drawing can invoke existing operation/table
     // compilers from exact native source; no answer data or new math family.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '2ed241bb1265903ab81a21433be04237e3efc0f20183fb9c5e26b38fc0e17bb3');
+    // Verified initial numeric labels on flat source nets enrich the existing hint request;
+    // cached OCR, conversations, auth and model-call count remain unchanged.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), '2596f97bfd0c8728c9a1d7bd9ff79e71cc493993e112da5664accd37b01e098e');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {
