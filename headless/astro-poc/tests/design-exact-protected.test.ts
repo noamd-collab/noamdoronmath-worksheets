@@ -249,7 +249,9 @@ describe('exact-design protected live-baseline boundaries', () => {
     // 2026-10-28: ordinary hint context now starts with verified visible dot-array
     // counts/rows from complete source groups. No stage, formula or answer is
     // inferred; source bytes, model calls, auth and storage remain unchanged.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), 'bf7bf5b84fe0dae0a206a7ab8a25b06afe91d98b09df5549686948b244405265');
+    // 2026-10-28: fit each source panel vertically; explicit zoom scales its cap.
+    // No source math, network, security or conversation behavior changes.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), '03002aef75e8c352e27e36b30d723a9bdb85b30da2882b2112e0f740b2aeae63');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {

@@ -7364,7 +7364,7 @@ function noamRenderSourcePanels(source,exercise){
   overview.src=source.sourcePanelCrop;overview.className='noam-source-panel-overview';overview.alt='השאלה המקורית במלואה, עם כיתובי לוחות המקור';
   overview.style.cssText='display:block;width:100%;max-width:100%;height:auto;background:white';
   panels.style.cssText='display:flex;flex-direction:column;gap:16px;min-width:0;max-width:100%;margin-top:16px';
-  panels.querySelectorAll('.noam-geometry-svg').forEach(function(svg){svg.style.maxHeight='none';svg.style.minHeight='0';});
+  panels.querySelectorAll('.noam-geometry-svg').forEach(function(svg){svg.style.maxHeight='min(480px, 58dvh)';svg.style.minHeight='0';});
   overview.addEventListener('error',function(){figure.hidden=true;noamSourcePanelGroups.delete(noamSourcePanelIdentity(exercise,group));});
   figure.appendChild(caption);figure.appendChild(overview);figure.appendChild(panels);return figure;
 }
@@ -8741,6 +8741,10 @@ function noamAddDiagramExpansion(container,figure){
     function setScale(value){
       scale=Math.max(fittedScale,Math.min(250,value));
       if(canvas){canvas.style.width=scale+"%";}
+      // Keep each complete source panel in view at fit size; explicit zoom scales it.
+      if(sourceGroup){copy.querySelectorAll('[data-source-panel-id] .noam-geometry-svg').forEach(function(panel){
+        panel.style.maxHeight='min('+(480*scale/100)+'px, '+(58*scale/100)+'dvh)';
+      });}
       amount.textContent=scale+"%";minus.disabled=scale===fittedScale;plus.disabled=scale===250;
       if(viewport&&scale<=100){viewport.scrollLeft=0;}
     }
