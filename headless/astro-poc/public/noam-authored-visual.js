@@ -86,20 +86,24 @@
   // Authoring macros (\f{a}{b}, \frac{a}{b}) are shown as a written fraction.
   function displayExpression(value) {
     var text = String(value), m, re = /\\f(?:rac)?\{([^{}]*)\}\{([^{}]*)\}/, guard = 0;
-    function side(s) { s = s.trim(); return /^[0-9A-Za-z.]+$/.test(s) ? s : '(' + s + ')'; }
+    function side(s) { s = s.trim(); return /^(?:\d+(?:\.\d+)?|[A-Za-z])$/.test(s) ? s : '(' + s + ')'; }
     while ((m = re.exec(text)) && guard++ < 20) {
-      var fraction = side(m[1]) + '/' + side(m[2]), next = text.charAt(m.index + m[0].length);
-      text = text.slice(0, m.index) + (/[0-9A-Za-z(\\]/.test(next) ? '(' + fraction + ')' : fraction) + text.slice(m.index + m[0].length);
+      // A coefficient before, or a product/power after, keeps the fraction whole.
+      var fraction = side(m[1]) + '/' + side(m[2]), prev = text.charAt(m.index - 1), next = text.charAt(m.index + m[0].length);
+      text = text.slice(0, m.index) + (/[0-9A-Za-z)]/.test(prev) || /[0-9A-Za-z(\\^]/.test(next) ? '(' + fraction + ')' : fraction) + text.slice(m.index + m[0].length);
     }
     return text;
   }
   function contains(ast, type) { return !!ast && (ast.type === type || contains(ast.left, type) || contains(ast.right, type)); }
   // Wording directly before a constant that makes it an equation, a substitution
   // or a value condition ('הקלט שעבורו f(x)=4', 'הציבו y=0', 'פתרו f(x)=0',
-  // 'בדרישה y=0'), not a newly declared function. Lines such as 'הישר y=6' or
-  // 'פלט קבוע y=-8' remain declarations.
-  var CONDITION = /(?:^|\s)(?:[ובלהכמש]{0,3}(?:עבור[והםן]|פתרו|לפתור|פתרון|פתרונות|משוואה|משוואות|הציבו|להציב|מציבים|הצבה|הצבת|כאשר|דרישה|מתקבל|מתקבלת|יהיה|תהיה|להתקיים|תתקיים|מתקיים|מתקיימת)|שבה|שבהן|שבהם|שבו)(?:\s+(?:של|את|גם|הגובה|הפלט))?\s*[:,]?\s*$/;
-  function formulas(text) {
+  // 'בדרישה y=0', 'הפלט y=21 נשמר'), not a newly declared function. Lines such
+  // as 'הישר y=6', 'פלט קבוע y=-8' or 'המשוואה y=-2 של ישר' remain declarations;
+  // 'המשוואה f(x)=2' is an equation only in function notation.
+  var CONDITION = /(?:^|\s)(?:[ובלהכמש]{0,3}(?:עבור[והםן]|פתרו|לפתור|פתרון|פתרונות|הציבו|להציב|מציבים|הצבה|הצבת|כאשר|דרישה|מתקבל|מתקבלת|יהיה|תהיה|להתקיים|תתקיים|מתקיים|מתקיימת)|שבה|שבהן|שבהם|שבו|ש?הפלט(?:\s+שלו)?(?:\s+הוא)?)(?:\s+(?:של|את|גם|הגובה|הפלט))?\s*[:,]?\s*$/;
+  var EQUATION = /(?:^|\s)[ובלהכמש]{0,3}משווא(?:ה|ות)\s*[:,]?\s*$/;
+  // A student's own request is not filtered: 'שרטט את המשוואה y=3' draws y=3.
+  function formulas(text, typed) {
     var out = [], invalid = false, input = clean(text), chunks = [], m, math = /\$([^$]+)\$/g, previous = null;
     while ((m = math.exec(input))) chunks.push({ text: m[1], start: m.index + 1 });
     // A vertical-line equation or separate x assignment is not part of this
@@ -129,10 +133,10 @@
         var lead = input.slice(Math.max(0, at - 60), at).replace(/[$]/g, ' ').replace(/\s+/g, ' ');
         // A constant listed right after a condition ('המשוואות f(x)=2, f(x)=4')
         // shares that condition.
-        var condition = !contains(ast, 'x') && (CONDITION.test(lead) ||
+        var condition = !typed && !contains(ast, 'x') && (CONDITION.test(lead) || match[1] !== 'y' && EQUATION.test(lead) ||
           !!previous && previous.condition && /^[\s$,،]*(?:ו[־-]?|או|וגם)?[\s$,]*$/.test(input.slice(previous.end, at)));
         previous = { end: end, condition: condition };
-        if (!condition) out.push({ expression: expression, label: match[1], ast: ast });
+        if (!condition) out.push({ expression: expression, label: match[1], ast: ast, at: at });
       });
     });
     if(invalid){var empty=[];empty.invalid=true;return empty;}
@@ -151,28 +155,35 @@
   function anchors(text) {
     return (text.match(/[א-ת]{3,}|[A-Z](?![A-Za-z])/g) || []).filter(function (w) { return !/^(?:אבל|כעת|עכשיו|מעתה|גם|של|את|על|עם|הוא|היא|הם|כל|זה|זו|אשר|כאשר|נתון|נתונה)$/.test(w); });
   }
+  var NOW = /(?:^|[^א-ת])(?:כעת|עכשיו|מעתה)(?=$|[^א-ת])/;
+  var ORDINAL = '(ראשו(?:ן|נה)|שני(?:יה|ה)?|שלישי(?:ת)?|רביעי(?:ת)?)';
   // A part that changes the state now (כעת/עכשיו/מעתה) replaces the stem
-  // declaration it names: the ordinal one ('ערוץ שני'), or the single one with
-  // the same label and the same anchor words. Unclear replacement -> null.
+  // declaration it names. 'ערוץ שני מחזיר כעת' names the stem formula printed
+  // after its own ordinal ('והשני y=2x+13'); otherwise only the single stem
+  // declaration of that label, with the same function name or at least two
+  // shared subject words ('הקודקוד C נמצא'). Anything unclear -> null.
   function superseded(context, question, part) {
-    var text = prose(context.partText), now = /(?:^|[^א-ת])(?:כעת|עכשיו|מעתה)(?=$|[^א-ת])/.exec(text), out = [];
+    var text = prose(context.partText), now = NOW.exec(text), out = [];
     if (!now || !part.length) return out;
-    var head = text.slice(0, now.index + now[0].length), stem = prose(context.questionText);
+    var head = text.slice(0, now.index + now[0].length), stem = clean(context.questionText);
+    var subject = new RegExp('[א-ת]{2,}\\s+ה?' + ORDINAL + '(?:\\s+[א-ת]+)?\\s+(?:כעת|עכשיו|מעתה)').exec(head);
     var labels = part.map(function (f) { return f.label; }).filter(function (l, i, list) { return list.indexOf(l) === i; });
     for (var label of labels) {
       var same = question.filter(function (f) { return f.label === label; }), open = same.filter(function (f) { return !part.some(function (g) { return sameFormula(g, f); }); });
       if (!open.length) continue;
-      var ordinal = /(?:^|[^א-ת])ה?(ראשו(?:ן|נה)|שני(?:יה|ה)?|שלישי(?:ת)?|רביעי(?:ת)?)(?=$|[^א-ת])/.exec(head);
-      if (ordinal && same.length > 1) {
-        var n = /^ראש/.test(ordinal[1]) ? 0 : /^שני/.test(ordinal[1]) ? 1 : /^שליש/.test(ordinal[1]) ? 2 : 3;
-        if (!same[n]) return null;
-        if (open.indexOf(same[n]) >= 0) out.push(same[n]);
+      if (subject) {
+        var named = same.filter(function (f) {
+          var before = stem.slice(Math.max(0, f.at - 30), f.at), re = new RegExp('(?:^|[^א-ת])ו?ה?' + ORDINAL + '(?=$|[^א-ת])', 'g'), m, last = null;
+          while ((m = re.exec(before))) last = m[1];
+          return !!last && last.slice(0, 3) === subject[1].slice(0, 3);
+        });
+        if (named.length !== 1) return null;
+        if (open.indexOf(named[0]) >= 0) out.push(named[0]);
         continue;
       }
-      if (open.length !== 1) return null;
-      var at = stem.indexOf(open[0].label + ' = ' + open[0].expression) >= 0 ? stem.indexOf(open[0].label + ' = ' + open[0].expression) : stem.indexOf(open[0].label + '=' + open[0].expression);
-      var mine = anchors(head), theirs = anchors(stem.slice(Math.max(0, at - 60), Math.max(0, at)));
-      if (at < 0 || !mine.some(function (w) { return theirs.indexOf(w) >= 0; })) return null;
+      if (same.length !== 1) return null;
+      var mine = anchors(head), theirs = anchors(stem.slice(Math.max(0, open[0].at - 60), open[0].at).replace(/[$]/g, ' '));
+      if (label === 'y' && mine.filter(function (w, i) { return mine.indexOf(w) === i && theirs.indexOf(w) >= 0; }).length < 2) return null;
       out.push(open[0]);
     }
     return out;
@@ -182,8 +193,14 @@
     if(part.invalid||question.invalid)return null;
     if(selectsStemSubset(context, question, part))return null;
     // A constant cannot redefine a label the stem already declares with x
-    // ('פתרו f(x)=0' after f(x)=(x+4)^2-1): that is an equation to solve.
-    part = part.filter(function (f) { return contains(f.ast, 'x') || f.label === 'y' || !question.some(function (g) { return g.label === f.label && contains(g.ast, 'x'); }); });
+    // ('פתרו f(x)=0' after f(x)=(x+4)^2-1): that is an equation to solve,
+    // unless the part says the function changes now.
+    if (!NOW.test(prose(context.partText)))
+      part = part.filter(function (f) { return contains(f.ast, 'x') || f.label === 'y' || !question.some(function (g) { return g.label === f.label && contains(g.ast, 'x'); }); });
+    // 'מציבים ערכים שונים באות y בביטוי 8−6y': each part's y=c is a value to
+    // substitute, not a line.
+    var substituted = /(?:מציבים|מציב|הציבו|להציב|הצבה|הצבת)[^.?!]{0,40}?(?:^|[^A-Za-z])y(?![A-Za-z(=\s]*=)/.test(prose(context.questionText));
+    if (substituted) part = part.filter(function (f) { return contains(f.ast, 'x') || f.label !== 'y'; });
     var replaced = superseded(context, question, part);
     if (!replaced) return null;
     question = question.filter(function (f) { return replaced.indexOf(f) < 0; });
@@ -208,7 +225,7 @@
   function functionScene(context, options) {
     if (!request(options, /גרף|פונקצי|קלט|פלט|כלל|מכנה|ציר|פרבול|\b[fgh]\(x\)\s*=|\by\s*=/)) return null;
     var scope=prose(context.questionText+' '+context.partText);
-    var text = focus(options), typed = !standard(options), own = typed && /(?:\b[fgh]\(x\)|\by)\s*=/.test(text) ? formulas(text) : [];
+    var text = focus(options), typed = !standard(options), own = typed && /(?:\b[fgh]\(x\)|\by)\s*=/.test(text) ? formulas(text, true) : [];
     if (typed && /(?:\b[fgh]\(x\)|\by)\s*=/.test(text) && (!own.length || own.length > 4)) return null;
     if((!own.length&&restrictedFunctionDomain(scope))||restrictedFunctionDomain(text))return null;
     if(!own.length&&/טבעי|מספרים שלמים|קלטים שלמים|הסיפור שלכם|הסיפור שבחרתם|כללים שבחרתם|פונקציות שבחרתם|(?:הזיזו|הזזה|מוזז|מוזזת|פרבולה חדשה)/.test(scope)){return null;}
@@ -425,5 +442,5 @@
     }
     return root.NoamAuthoredGeometry && typeof root.NoamAuthoredGeometry.render === 'function' ? root.NoamAuthoredGeometry.render(document, scene) : null;
   }
-  return { restrictedFunctionDomain:restrictedFunctionDomain, functionSources:authoredRule, selectsStemSubset:selectsStemSubset, displayExpression:displayExpression, resolve: resolve, fromContext: fromContext, render: render, parseExpression: parseExpression, evaluate: evaluate, formulas: formulas, range: range };
+  return { restrictedFunctionDomain:restrictedFunctionDomain, functionSources:authoredRule, displayExpression:displayExpression, resolve: resolve, fromContext: fromContext, render: render, parseExpression: parseExpression, evaluate: evaluate, formulas: formulas, range: range };
 });

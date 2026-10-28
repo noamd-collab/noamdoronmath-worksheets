@@ -26,12 +26,17 @@ function section(pkg: string, q: number, part: string) {
 }
 const functionPlan = (quotes: Array<[string, string]>) => inVm({ version: 2, status: 'ok', family: 'function', evidence: quotes.map(([source, quote]) => ({ source, quote })) });
 
-it('q17ב: an operations plan cannot import either system from the shared stem', () => {
+const operations = (quote: string) => inVm({ version: 2, status: 'ok', family: 'operations', expression: quote.slice(1, -1), evidence: [{ source: 'question', quote }] });
+it('q17ב: an operations plan cannot import the other system from the shared stem', () => {
   const f = section('G9-T13/a', 17, 'ב'), context = f.typed('פתרו את המערכת השנייה.');
-  for (const quote of ['$y=x−3$', '$y=x ^2−5x+2$', '$y=x ^2−2$', '$y=2x+1$']) {
+  for (const quote of ['$y=x−3$', '$y=x ^2−5x+2$']) {
     assert.ok(f.context.questionText.includes(quote), quote + ' is printed in the stem');
-    const plan = inVm({ version: 2, status: 'ok', family: 'operations', expression: quote.slice(1, -1), evidence: [{ source: 'question', quote }] });
-    assert.deepEqual({ ...plans.inspect(plan, context), scene: null }, { ok: false, scene: null, reason: 'ambiguous_function_scope' }, quote);
+    assert.deepEqual({ ...plans.inspect(operations(quote), context), scene: null }, { ok: false, scene: null, reason: 'ambiguous_function_scope' }, quote);
+  }
+  // The second system is printed under 'בשנייה', so its own formulas remain usable.
+  for (const quote of ['$y=x ^2−2$', '$y=2x+1$']) {
+    const own = plans.inspect(operations(quote), context);
+    assert.equal(own.ok, true, quote); assert.equal(own.scene.kind, 'typed-operations');
   }
   // Ordinary operations plans keep working.
   const plain = inVm({ questionText: 'נתון הביטוי $8/(x-2)$.', partText: 'התבוננו בסדר הפעולות.', hasFigure: false, hintText: '', studentMessage: '' });
@@ -105,4 +110,37 @@ it('"לא שלמים" is continuous, integer requirements stay discrete, and fra
   assert.equal(figure.querySelectorAll('[data-role="given-function"]').length, 2);
   const legend = Array.from(figure.querySelectorAll('bdi'), (b: any) => b.textContent);
   assert.ok(legend.some((text: string) => /x\/2/.test(text)), legend.join(' | ')); assert.doesNotMatch(legend.join(' '), /\\f/);
+});
+
+it('ordinal parts over printed equation lists reject other equations and keep the labelled own one', () => {
+  for (const [pkg, q, part, other, own] of [['G8-T07/b', 4, 'ג', '$3x + 4y = 27$', '$2x + 3y = 18$'], ['G7-T33/a', 3, 'א', '$5x = 8$', '$9x = 0$']] as const) {
+    const f = section(pkg, q, part); assert.ok(f.context.questionText.includes(other) && f.context.questionText.includes(own), `${pkg} quotes`);
+    assert.equal(plans.inspect(operations(other), f.typed()).reason, 'ambiguous_function_scope', `${pkg} q${q}${part} other`);
+    assert.equal(plans.inspect(operations(own), f.typed()).ok, true, `${pkg} q${q}${part} own`);
+  }
+});
+
+it('substituted values and output conditions are not lines; typed requests and printed line equations are', () => {
+  assert.equal(authored.functionSources(section('G7-T23/a', 2, 'א').context), null);
+  assert.equal(authored.fromContext(section('G7-T23/a', 2, 'ד').context, draw), null);
+  assert.equal(authored.functionSources(section('G8-T15/b', 1, 'ג').context), null);
+  assert.deepEqual(exprs(authored.functionSources(section('G8-T15/b', 14, 'ב').context)), ['y=5x - 10']);
+  assert.deepEqual(exprs(authored.formulas('נתונה המשוואה $y=-2$ של ישר אופקי.')), ['y=-2']);
+  assert.deepEqual(exprs(authored.formulas('נתונות המשוואות $y=3$ ו־$y=2x+1$.')), ['y=3', 'y=2x+1']);
+  const f = section('G9-T13/a', 17, 'ב');
+  for (const [message, expected] of [['שרטט את המשוואה y=3', ['3']], ['שרטט את y=x^2 ואת הישר שבו y=5', ['x^2', '5']], ['שרטט את המשוואות y=4 ו-y=x^2', ['4', 'x^2']]] as const) {
+    const scene = authored.resolve(f.data, f.exercise, { studentMessage: message, helpKind: 'free_question' }, f.svg);
+    assert.deepEqual(Array.from(scene.expressions, (e: any) => e.expression), expected, message);
+  }
+});
+
+it('replacement needs a named target; otherwise the original figure stays', () => {
+  const sources = (questionText: string, partText: string) => exprs(authored.functionSources({ questionText, partText }));
+  assert.deepEqual(sources('שני ערוצים: הראשון מחזיר $y=x^2+1$, והשני $y =2x+1$.', 'ערוץ שני מחזיר כעת $y=3$.'), ['y=x^2+1', 'y=3']);
+  assert.equal(sources('נתונה הפרבולה $y=x^2-4$.', 'הפרבולה נחתכת כעת בישר $y=5$. כמה מפגשים?'), null);
+  assert.equal(sources('שני ערוצים: הראשון מחזיר $y=x^2+1$, והשני $y=2x+1$.', 'שני הערוצים מחזירים כעת $y=3$.'), null);
+  assert.equal(sources('נתונים $y=x^2$ ו־$y=x+2$.', 'בשלב השני מוסיפים כעת $y=4$.'), null);
+  assert.deepEqual(sources('נתונה הפונקציה $f(x)=x^2$.', 'הפונקציה מוגדרת כעת $f(x)=5$.'), ['f(x)=5']);
+  for (const [raw, shown] of [['2\\f{1}{x}', '2(1/x)'], ['x+2\\f{1}{2}', 'x+2(1/2)'], ['\\f{x}{2}^2', '(x/2)^2'], ['\\f{1}{2x}', '1/(2x)'], ['x\\f{1}{2}', 'x(1/2)']])
+    assert.equal(authored.displayExpression(raw), shown, raw);
 });

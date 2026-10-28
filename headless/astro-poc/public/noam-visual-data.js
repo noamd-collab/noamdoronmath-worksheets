@@ -127,6 +127,28 @@
     // or slices the plaintext left after removing a marked math expression.
     return marked ? spans : completeExpressions(text);
   }
+  // 'פתרו את המערכת השנייה' / 'המשוואה הראשונה' selects one of several printed
+  // stem equations without quoting it. A stem quote belongs to that selection
+  // only when the stem prints it under the same ordinal label ('המשוואה
+  // הראשונה: $9x=0$', 'בשנייה $y=x^2-2$ ו־$y=2x+1$'); otherwise keep the source.
+  var ORDINAL_WORD = /(?:^|[^א-ת])[ובלהמש]{0,3}(ראשו(?:ן|נה)|שני(?:יה|ה)?|שלישי(?:ת)?|רביעי(?:ת)?)(?=$|[^א-ת])/g;
+  function ordinalRoots(text) {
+    var roots = [], m; ORDINAL_WORD.lastIndex = 0;
+    while ((m = ORDINAL_WORD.exec(text))) roots.push(m[1].slice(0, 3));
+    return roots;
+  }
+  function outsideOrdinalSelection(context, quote) {
+    var part = plain(context.partText).replace(/[$]/g, ''), stem = String(context.questionText);
+    var equations = (stem.match(/\$[^$]*=[^$]*\$/g) || []).length;
+    if (equations < 2 || !/(?:מערכת|משוואה|נוסחה|בדיקה|פונקציה|גרף)\s+(?:ה)?(?:ראשו(?:ן|נה)|שני(?:יה|ה)?|שלישי(?:ת)?|רביעי(?:ת)?)(?=$|[^א-תA-Za-z0-9])/.test(part)) return false;
+    var at = stem.indexOf(quote), labels = at < 0 ? [] : ordinalRoots(plain(stem.slice(0, at))), wanted = ordinalRoots(part);
+    if (labels.length) return wanted.indexOf(labels[labels.length - 1]) < 0;
+    // Unlabelled 'שתי משוואות: $A$ ו־$B$': 'המשוואה השנייה' is the second printed
+    // equation. A system has no such single-equation order, so it stays unclear.
+    if (at < 0 || !/(?:משוואה|נוסחה)\s+(?:ה)?(?:ראשו|שני|שליש|רביע)/.test(part)) return true;
+    var index = (stem.slice(0, at).match(/\$[^$]*=[^$]*\$/g) || []).length;
+    return wanted.indexOf(['ראש', 'שני', 'שלי', 'רבי'][index]) < 0;
+  }
   function selectedMathScope(text) {
     // Recognizing a selected mathematical task is broader than rendering it.
     // An unsupported root/power/equality still owns its scope. Never trim it
@@ -186,10 +208,7 @@
       if (!matches.length) return fail('expression-not-given');
       var inPart = matches.some(function (e) { return e.source === 'part'; });
       if (!inPart && (newScope(context.partText) || selectedMathScope(context.partText))) return fail('selected-part-scope');
-      // 'פתרו את המערכת השנייה' selects one of several stem formulas without
-      // quoting it, so a stem quote cannot show it belongs to the selected one.
-      var authored = typeof globalThis !== 'undefined' && globalThis.NoamAuthoredVisual;
-      if (!inPart && authored && authored.selectsStemSubset && authored.selectsStemSubset(context)) return fail('ambiguous_function_scope');
+      if (!inPart && plan.evidence.some(function (e) { return e.source === 'question' && outsideOrdinalSelection(context, e.quote); })) return fail('ambiguous_function_scope');
       var selected = matches.find(function (match) { return match.source === 'part'; }) || matches[0];
       scene.expression = selected.proof.expression; scene.tree = selected.proof.tree;
     } else {
