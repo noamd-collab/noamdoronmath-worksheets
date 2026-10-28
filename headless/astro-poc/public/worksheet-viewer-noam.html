@@ -7575,7 +7575,7 @@ function noamEnrichSourceAnalysis(exercise,analysis){
       printedLabels.map(function(label){return 'על קטע '+label.direction+' מודפס '+label.text;}).join('; ')+'.',
       'אל תחליף תווית מודפסת בערך מהפתיח ואל תתאר אותה כחסרה. אלה נתוני מקור, לא חישוב. אל תחשוף חישוב או תשובה שהתלמיד צריך למצוא.'
     ].join('\n')+'\n\n':'';
-   var scope=labelContext+[
+    var scope=labelContext+[
       'הקשר חזותי מאומת לסעיף הנבחר בלבד:',
       'שאלה '+String(exercise.q||exercise.nativeQuestionId)+'; סעיף '+String(exercise.part||'')+'. סוג השרטוט: '+String(model.kind||'').slice(0,40)+'.',
       'פתיח השאלה: '+String(question.text||'').slice(0,900),
@@ -7768,7 +7768,7 @@ function noamNativeSegmentFocus(data,exercise,hint){
     // Preserve all three printed lengths for an original-state comparison.
     // Never reuse a shared original figure for a later or changed construction.
     if(q.items[0]!==part||(part.given||[]).length||(part.to_construct||[]).length||(q.to_construct||[]).length){return null;}
-   var scope=[q.text,part.text,hint].join(' ').replace(/(?:לבדוק|בדקו|קבעו|הכריעו)\s+אם\s/g,' ');
+    var scope=[q.text,part.text,hint].join(' ').replace(/(?:לבדוק|בדקו|קבעו|הכריעו)\s+אם\s/g,' ');
     if(/(?:^|[^א-ת])(?:אם|אילו|נניח|בהנחה|כאשר)(?=$|[^א-ת])|החל[ףפ]|החליפ|יוחלף|הוחלף|תחליפ|מחליפ|שינוי|משנים|שנו|הכפיל|הגדיל|הקטינ|האריכ|הארכה|קצרו|הוסיפ|הוספה|הסר|בנו|בניית|בנייה/.test(scope)){return null;}
     var vertices=Object.keys(pointMap),edges=segments.filter(function(s){return s&&s.kind==='segment'&&s.role==='edge';});
     if(vertices.length!==3||edges.length!==3||segments.length!==3){return null;}

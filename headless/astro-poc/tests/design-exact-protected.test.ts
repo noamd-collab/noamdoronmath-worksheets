@@ -266,7 +266,7 @@ describe('exact-design protected live-baseline boundaries', () => {
     assert.match(viewerWithNativeRelease, /noam-glossary\.js\?v=20261028-context3/);
     assert.match(readFileSync(join(root, '../../worksheet-viewer-noam.html'), 'utf8'), /noam-glossary\.js\?v=20261028-context3/);
     // Privately verified source facts add a bounded priority/no-disclosure instruction to the existing request.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), 'd9fd59a1a6425c03958129e822addaa0c993a04fef988d60cc1899b9ebeb6113');
+    assert.equal(sha256(JSON.stringify(releasedScripts)), '0ef801b236b4093fcf31bcc3d54780c6080a3515c925ff0010f1c133eb6e5df3');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {
