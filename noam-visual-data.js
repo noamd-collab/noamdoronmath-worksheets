@@ -137,17 +137,26 @@
     while ((m = ORDINAL_WORD.exec(text))) roots.push(m[1].slice(0, 3));
     return roots;
   }
-  function outsideOrdinalSelection(context, quote) {
+  // The check applies to where the drawn expression itself is printed, not to
+  // where its quote starts: a quote may begin in the selected equation and run
+  // on into the next one. Every printed occurrence must be inside the selection.
+  function outsideOrdinalSelection(context, quote, span) {
     var part = plain(context.partText).replace(/[$]/g, ''), stem = String(context.questionText);
     var equations = (stem.match(/\$[^$]*=[^$]*\$/g) || []).length;
     if (equations < 2 || !/(?:מערכת|משוואה|נוסחה|בדיקה|פונקציה|גרף)\s+(?:ה)?(?:ראשו(?:ן|נה)|שני(?:יה|ה)?|שלישי(?:ת)?|רביעי(?:ת)?)(?=$|[^א-תA-Za-z0-9])/.test(part)) return false;
-    var at = stem.indexOf(quote), labels = at < 0 ? [] : ordinalRoots(plain(stem.slice(0, at))), wanted = ordinalRoots(part);
-    if (labels.length) return wanted.indexOf(labels[labels.length - 1]) < 0;
-    // Unlabelled 'שתי משוואות: $A$ ו־$B$': 'המשוואה השנייה' is the second printed
-    // equation. A system has no such single-equation order, so it stays unclear.
-    if (at < 0 || !/(?:משוואה|נוסחה)\s+(?:ה)?(?:ראשו|שני|שליש|רביע)/.test(part)) return true;
-    var index = (stem.slice(0, at).match(/\$[^$]*=[^$]*\$/g) || []).length;
-    return wanted.indexOf(['ראש', 'שני', 'שלי', 'רבי'][index]) < 0;
+    var wanted = ordinalRoots(part), positions = [];
+    for (var q = stem.indexOf(quote); q >= 0; q = stem.indexOf(quote, q + 1))
+      for (var s = quote.indexOf(span); s >= 0; s = quote.indexOf(span, s + 1)) positions.push(q + s);
+    if (!span || !positions.length) return true;
+    return positions.some(function (at) {
+      var labels = ordinalRoots(plain(stem.slice(0, at)));
+      if (labels.length) return wanted.indexOf(labels[labels.length - 1]) < 0;
+      // Unlabelled 'שתי משוואות: $A$ ו־$B$': 'המשוואה השנייה' is the second printed
+      // equation. A system has no such single-equation order, so it stays unclear.
+      if (!/(?:משוואה|נוסחה)\s+(?:ה)?(?:ראשו|שני|שליש|רביע)/.test(part)) return true;
+      var index = (stem.slice(0, at).match(/\$[^$]*=[^$]*\$/g) || []).length;
+      return wanted.indexOf(['ראש', 'שני', 'שלי', 'רבי'][index]) < 0;
+    });
   }
   function selectedMathScope(text) {
     // Recognizing a selected mathematical task is broader than rendering it.
@@ -172,7 +181,7 @@
         if (hintFocus === null) hintFocus = proofExpressions(hint).some(function (value) { return !!find(expression(value)); });
         if (!hintFocus) continue;
       }
-      return { expression: spellings.get(selected) || span, tree: selected };
+      return { expression: spellings.get(selected) || span, tree: selected, span: span };
     }
     return null;
   }
@@ -204,11 +213,11 @@
     if (plan.family === 'operations') {
       if (Object.prototype.hasOwnProperty.call(plan, 'tableSource') || typeof plan.expression !== 'string') return fail('invalid-operations');
       var tree = expression(plan.expression); if (!tree) return fail('unsupported-expression');
-      var matches = plan.evidence.map(function (e) { return { source: e.source, proof: givenExpression(tree, e.source === 'part' ? context.partText : context.questionText, e.quote, context.hintText) }; }).filter(function (match) { return match.proof; });
+      var matches = plan.evidence.map(function (e) { return { source: e.source, quote: e.quote, proof: givenExpression(tree, e.source === 'part' ? context.partText : context.questionText, e.quote, context.hintText) }; }).filter(function (match) { return match.proof; });
       if (!matches.length) return fail('expression-not-given');
       var inPart = matches.some(function (e) { return e.source === 'part'; });
       if (!inPart && (newScope(context.partText) || selectedMathScope(context.partText))) return fail('selected-part-scope');
-      if (!inPart && plan.evidence.some(function (e) { return e.source === 'question' && outsideOrdinalSelection(context, e.quote); })) return fail('ambiguous_function_scope');
+      if (!inPart && matches.some(function (m) { return m.source === 'question' && outsideOrdinalSelection(context, m.quote, m.proof.span); })) return fail('ambiguous_function_scope');
       var selected = matches.find(function (match) { return match.source === 'part'; }) || matches[0];
       scene.expression = selected.proof.expression; scene.tree = selected.proof.tree;
     } else {

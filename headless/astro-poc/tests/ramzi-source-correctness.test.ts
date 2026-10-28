@@ -144,3 +144,34 @@ it('replacement needs a named target; otherwise the original figure stays', () =
   for (const [raw, shown] of [['2\\f{1}{x}', '2(1/x)'], ['x+2\\f{1}{2}', 'x+2(1/2)'], ['\\f{x}{2}^2', '(x/2)^2'], ['\\f{1}{2x}', '1/(2x)'], ['x\\f{1}{2}', 'x(1/2)']])
     assert.equal(authored.displayExpression(raw), shown, raw);
 });
+
+it('an ordinal check follows the drawn expression inside the quote, not where the quote starts', () => {
+  const plan = (expression: string, quote: string) => inVm({ version: 2, status: 'ok', family: 'operations', expression, evidence: [{ source: 'question', quote }] });
+  const first = section('G7-T33/a', 3, 'א'), stem = first.context.questionText;
+  const from = (start: string, end: string) => stem.slice(stem.indexOf(start), stem.indexOf(end) + end.length);
+  for (const [expression, quote] of [['x + 4 = x + 7', from('$9x = 0$', '$x + 4 = x + 7$')], ['5x = 8', from('$9x = 0$', '$5x = 8$')], ['5x = 8', stem]])
+    assert.equal(plans.inspect(plan(expression, quote), first.typed()).reason, 'ambiguous_function_scope', expression + ' in a long quote');
+  // The selected equation stays usable inside the same long quote.
+  assert.equal(plans.inspect(plan('9x = 0', from('$9x = 0$', '$5x = 8$')), first.typed()).ok, true);
+  const second = section('G8-T07/b', 4, 'ג'), s2 = second.context.questionText, span = (a: string, b: string) => s2.slice(s2.indexOf(a), s2.indexOf(b) + b.length);
+  assert.equal(plans.inspect(plan('5x − 4y = 13', span('$3x + 4y = 27$', '$5x − 4y = 13$')), second.typed()).reason, 'ambiguous_function_scope');
+  for (const expression of ['−2x + 5y = 14', '2x + 3y = 18'])
+    assert.equal(plans.inspect(plan(expression, span('$3x + 4y = 27$', '$2x + 3y = 18$')), second.typed()).ok, true, expression + ' is printed under the second system');
+  const synthetic = inVm({ questionText: 'מערכת ראשונה: $y=x+1$. מערכת שנייה: $y=x+2$. מערכת שלישית: $y=x+3$.', partText: 'פתרו את המערכת השנייה.', hintText: '', studentMessage: '' });
+  assert.equal(plans.inspect(plan('y=x+3', synthetic.questionText), synthetic).reason, 'ambiguous_function_scope');
+  assert.equal(plans.inspect(plan('y=x+2', synthetic.questionText), synthetic).ok, true);
+});
+
+it('fraction display keeps the value across spaces, coefficients, powers and signs', () => {
+  for (const [raw, shown] of [['\\f{x}{2} ^2', '(x/2) ^2'], ['\\f{11}{8} x', '(11/8) x'], ['2 \\f{1}{x}', '2 (1/x)'], ['\\f{x+1}{2} ^2', '((x+1)/2) ^2'], ['-\\f{x}{2} ^2', '-(x/2) ^2'], ['1/\\f{x}{2}', '1/(x/2)']])
+    assert.equal(authored.displayExpression(raw), shown, raw);
+  const cases = ['\\f{x}{2} ^2', '\\f{11}{8} x', '2 \\f{1}{x}', '\\f{x+1}{2} ^2', '\\f{x}{2}^2', '-\\f{x}{2}', '-\\f{x}{2} ^2', '\\f{-x}{2}', '-2 \\f{1}{x}', 'x-\\f{1}{2} x', '\\f{x}{2}-\\f{1}{2}', '3-\\f{x+1}{2}', '2(2-\\f{x}{2})', '1/\\f{x}{2}', '\\f{\\f{x}{2}}{3}'];
+  for (const raw of cases) {
+    const original = authored.parseExpression(raw), shown = authored.parseExpression(authored.displayExpression(raw));
+    assert.ok(original && shown, raw + ' parses before and after display');
+    for (const x of [-3, -0.5, 1, 2.5, 4]) {
+      const a = authored.evaluate(original, x), b = authored.evaluate(shown, x);
+      assert.ok(Number.isNaN(a) ? Number.isNaN(b) : Math.abs(a - b) < 1e-9, `${raw} at x=${x}: ${a} vs ${b}`);
+    }
+  }
+});

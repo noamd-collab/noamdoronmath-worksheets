@@ -88,9 +88,10 @@
     var text = String(value), m, re = /\\f(?:rac)?\{([^{}]*)\}\{([^{}]*)\}/, guard = 0;
     function side(s) { s = s.trim(); return /^(?:\d+(?:\.\d+)?|[A-Za-z])$/.test(s) ? s : '(' + s + ')'; }
     while ((m = re.exec(text)) && guard++ < 20) {
-      // A coefficient before, or a product/power after, keeps the fraction whole.
-      var fraction = side(m[1]) + '/' + side(m[2]), prev = text.charAt(m.index - 1), next = text.charAt(m.index + m[0].length);
-      text = text.slice(0, m.index) + (/[0-9A-Za-z)]/.test(prev) || /[0-9A-Za-z(\\^]/.test(next) ? '(' + fraction + ')' : fraction) + text.slice(m.index + m[0].length);
+      // A coefficient or divisor before, or a product/power after, keeps the
+      // fraction whole, also across spaces ('\f{x}{2} ^2', '2 \f{1}{x}').
+      var fraction = side(m[1]) + '/' + side(m[2]), prev = text.slice(0, m.index).replace(/\s+$/, '').slice(-1), next = text.slice(m.index + m[0].length).replace(/^\s+/, '').charAt(0);
+      text = text.slice(0, m.index) + (/[0-9A-Za-z)}\/÷^]/.test(prev) || /[0-9A-Za-z(\\^{]/.test(next) ? '(' + fraction + ')' : fraction) + text.slice(m.index + m[0].length);
     }
     return text;
   }
