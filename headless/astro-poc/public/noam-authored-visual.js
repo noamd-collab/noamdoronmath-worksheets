@@ -115,6 +115,12 @@
   function authoredRule(context) {
     var part = formulas(context.partText), question = formulas(context.questionText);
     if(part.invalid||question.invalid)return null;
+    // An ordinal selects one authored system/function, not every declaration
+    // in a shared stem. Head declarations absent from this part must not be
+    // imported into that selected set. Keep the validated original figure
+    // instead of inferring formula membership from text or panel order.
+    if(question.length>1&&/(?:מערכת|בדיקה|פונקציה|גרף)\s+(?:ה)?(?:ראשו(?:ן|נה)|שני(?:יה|ה)?|שלישי(?:ת)?|רביעי(?:ת)?)(?=$|[^א-תA-Za-z0-9])/.test(prose(context.partText))&&
+        question.some(function(f){return !part.some(function(g){return JSON.stringify(g.ast)===JSON.stringify(f.ast);});}))return null;
     var all=question.concat(part).filter(function(f,i,list){return list.findIndex(function(g){return JSON.stringify(g.ast)===JSON.stringify(f.ast);})===i;});
     return all.length>=1&&all.length<=4?all:null;
   }
@@ -350,5 +356,5 @@
     }
     return root.NoamAuthoredGeometry && typeof root.NoamAuthoredGeometry.render === 'function' ? root.NoamAuthoredGeometry.render(document, scene) : null;
   }
-  return { restrictedFunctionDomain:restrictedFunctionDomain, resolve: resolve, fromContext: fromContext, render: render, parseExpression: parseExpression, evaluate: evaluate, formulas: formulas, range: range };
+  return { restrictedFunctionDomain:restrictedFunctionDomain, functionSources:authoredRule, resolve: resolve, fromContext: fromContext, render: render, parseExpression: parseExpression, evaluate: evaluate, formulas: formulas, range: range };
 });

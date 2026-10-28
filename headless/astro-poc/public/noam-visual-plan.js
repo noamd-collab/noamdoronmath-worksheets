@@ -50,6 +50,7 @@
         if(/טבעי|מספרים שלמים|קלטים שלמים|כללים שבחרתם|פונקציות שבחרתם|(?:הזיזו|הזזה|מוזז|מוזזת|פרבולה חדשה)/.test(all))return fail('function_domain_or_construction_unspecified');
         var quoted=a.formulas(quotes.join('\n')),authored=a.formulas(context.questionText+'\n'+context.partText);
         if(quoted.invalid||authored.invalid||!quoted.length||quoted.length>4)return fail('incomplete_explicit_function');
+        if(!a.functionSources||!a.functionSources(context))return fail('ambiguous_function_scope');
         var signature=function(f){return JSON.stringify(f.ast);},sig=quoted.map(signature);
         if(authored.length!==quoted.length||authored.some(function(f){return sig.indexOf(signature(f))<0;}))return fail('partial_function_set');
         return {ok:true,reason:null,scene:{kind:'authored-function',expressions:quoted.map(function(f){return {expression:f.expression,label:f.label};}),expression:quoted[0].expression,caption:'גרף של הנוסחאות שנכתבו במפורש. לא סומנו פתרונות או נקודות שהתבקשת למצוא.'}};

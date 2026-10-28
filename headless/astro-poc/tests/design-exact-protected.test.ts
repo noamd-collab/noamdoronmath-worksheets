@@ -137,9 +137,9 @@ describe('exact-design protected live-baseline boundaries', () => {
       '<script src="noam-native-visual.js?v=20261028-source6"></script>',
       '<script src="noam-source-panels.js?v=20261028-panels1"></script>',
       '<script src="noam-authored-geometry.js?v=20261027-authored1"></script>',
-      '<script src="noam-authored-visual.js?v=20261028-authored2"></script>',
+      '<script src="noam-authored-visual.js?v=20261028-scope3"></script>',
       '<script src="noam-visual-data.js?v=20261027-typed2"></script>',
-      '<script src="noam-visual-plan.js?v=20261028-panels1"></script>',
+      '<script src="noam-visual-plan.js?v=20261028-scope2"></script>',
     ];
     const allScripts = [...viewerWithNativeRelease.matchAll(/<script\b[^>]*>[\s\S]*?<\/script>/gi)].map(match => match[0]);
     assert.equal(allScripts.length, 24, 'The release adds only its eight exact dependencies');
@@ -246,7 +246,10 @@ describe('exact-design protected live-baseline boundaries', () => {
     // 2026-10-28: verified multi-panel source groups retain full reviewed PDF
     // captions and all source SVGs, including rehydration and clone-only zoom.
     // Dedicated group tests bind every panel/crop; auth/storage namespaces stay fixed.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '810648927c2cc502be11593e424a6a44b80db1c19eb6fe85d0f9d441bc772711');
+    // 2026-10-28: ordinary hint context now starts with verified visible dot-array
+    // counts/rows from complete source groups. No stage, formula or answer is
+    // inferred; source bytes, model calls, auth and storage remain unchanged.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), 'bf7bf5b84fe0dae0a206a7ab8a25b06afe91d98b09df5549686948b244405265');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {
