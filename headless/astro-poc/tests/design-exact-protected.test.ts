@@ -258,7 +258,15 @@ describe('exact-design protected live-baseline boundaries', () => {
 
     // Noam, 2026-10-28: explicit drawing can invoke existing operation/table
     // compilers from exact native source; no answer data or new math family.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '2ed241bb1265903ab81a21433be04237e3efc0f20183fb9c5e26b38fc0e17bb3');
+    // Verified initial numeric labels on flat source nets enrich the existing hint request;
+    // cached OCR, conversations, auth and model-call count remain unchanged.
+    // Exact worksheet-image read errors may offer an independently validated original table.
+    // This source-only recovery retains the error and never invokes a protected endpoint.
+    // The reviewed glossary distinguishes shapes, powers and pronouns; refresh its asset only.
+    assert.match(viewerWithNativeRelease, /noam-glossary\.js\?v=20261028-context3/);
+    assert.match(readFileSync(join(root, '../../worksheet-viewer-noam.html'), 'utf8'), /noam-glossary\.js\?v=20261028-context3/);
+    // Privately verified source facts add a bounded priority/no-disclosure instruction to the existing request.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), '0ef801b236b4093fcf31bcc3d54780c6080a3515c925ff0010f1c133eb6e5df3');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {

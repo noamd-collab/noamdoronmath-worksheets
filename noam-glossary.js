@@ -515,9 +515,9 @@
     },
     {
       id:"corresponding-angles",term:"זוויות מתאימות",aliases:["זוויות מתאימות","זווית מתאימה"],grades:[7,8,9],kind:"הגדרה",
-      short:"זוג זוויות בשתי נקודות חיתוך של חותך עם שני ישרים, הנמצאות באותו צד של החותך ובמיקום מתאים.",
-      detail:"כאשר הישרים מקבילים, זוויות מתאימות שוות. אין להחליף בין ״מתאימות״ לבין ״מתחלפות״: ההבדל הוא האם הזוויות באותו צד של החותך או בצדדים מנוגדים.",
-      example:"אם MN ∥ AC והחותך הוא AB, אז ∠BMN ו־∠BAC יכולות להיות זוויות מתאימות.",prerequisite:"ישרים מקבילים וישר חותך.",
+      short:"בשני מצולעים: זוויות בקודקודים שמותאמים זה לזה. בשני ישרים וחותך: זוויות בשתי נקודות החיתוך, באותו צד של החותך, ושתיהן מעל הישר שלהן או שתיהן מתחתיו.",
+      detail:"התאמה לבדה אינה אומרת שהזוויות שוות. במצולעים, סדר הקודקודים בכתיבת חפיפה או דמיון קובע איזו זווית מתאימה לאיזו; השוויון צריך לבוא מנתון או מחפיפה או דמיון שכבר הוכחו. בישרים וחותך, זוויות מתאימות שוות כשהישרים מקבילים, ורק אז. אין לבלבל עם זוויות מתחלפות, שנמצאות בצדדים מנוגדים של החותך.",
+      example:"אם △ABC ≅ △DEF, הקודקוד B מתאים ל־E, ולכן ∠B ו־∠E הן זוויות מתאימות. בישרים וחותך: הזווית שמעל הישר העליון ומימין לחותך מתאימה לזווית שמעל הישר התחתון ומימין לחותך.",prerequisite:"התאמת קודקודים בין מצולעים; ישרים וישר חותך.",
       question:"מתי משתמשים בזוויות מתאימות כדי להוכיח מקבילות?"
     },
     {
@@ -646,11 +646,45 @@
     return /הגדר(?:ה|ת)\s+של\s+ריבוע|מרובע|אלכסון|מלבן|מעוין|זוויות?\s+ישר(?:ה|ות)|ארבע\s+צלעות|צלעות(?:יו)?\s+שוות|כצורה|גאומטר/.test(around);
   }
 
+  // A number has no side, area, corner or vertex names: "הצלע של הריבוע",
+  // "שטחי הריבועים", "ריבוע ששטחו", "בריבוע ABCD" are the shape even next to "ניצב".
+  function squareShapeOwnerContext(source,index,end){
+    var matched=canonicalizeGlossaryText(source.slice(index,end)).toLocaleLowerCase("he");
+    var after=String(source||"").slice(end);
+    if(/^[\s\u00a0\u200e\u200f]*[A-Z]{4}(?![A-Za-z0-9])/.test(after)){return true;}
+    // Only bare/definite forms: "הצלע בריבוע" is "the side squared".
+    if(!/^ו?ה?ריבוע(?:ים)?$/.test(matched)){return false;}
+    if(/^[\s\u00a0\u200e\u200f]*ש(?:צלע|שטח|היקפ|אלכסונ|קודקוד)/.test(after)){return true;}
+    var before=String(source||"").slice(Math.max(0,index-24),index);
+    return /(?:^|[^א-ת])[ובלמהשכ]{0,3}(?:צלע(?:ות|ו|ותיו)?|קודקוד(?:י|ים|יו)?|פינ(?:ה|ת|ות|ותיו)|היקף|היקפו|שטח(?:ו|י)?|אלכסונ(?:ו|י|ים|יו)|אלכסון|מרכזו?)[\s\u00a0]+(?:של[\s\u00a0]+)?(?:(?:כל|שני|שלושה|שלושת|ארבעה|ארבעת)[\s\u00a0]+)?$/.test(before);
+  }
+
+  // "numeric", "geometric", or null when nearby cues point both ways: an
+  // ambiguous "ריבוע" stays unlinked rather than showing the wrong definition.
+  function squareSense(source,index,end){
+    var matched=canonicalizeGlossaryText(source.slice(index,end)).toLocaleLowerCase("he");
+    var after=String(source||"").slice(end);
+    if(/סכום\s*ריבוע|ריבועי\s*(?:ה)?(?:ניצב|יתר|צלע)|בעזרת\s*ריבוע/.test(matched)){return "numeric";}
+    if(squareShapeOwnerContext(source,index,end)){return "geometric";}
+    // "סכום הריבועים" is a sum of powers.
+    if(/(?:^|[^א-ת])[ובלה]{0,2}סכום[\s\u00a0]+$/.test(String(source||"").slice(Math.max(0,index-12),index))){return "numeric";}
+    // "ריבוע האלכסון", "ריבוע הצלע": the square of a length.
+    if(/^ו?ריבוע$/.test(matched)&&/^[\s\u00a0]+ה?(?:אלכסון|צלע|ניצב|יתר|אורך|מרחק)(?![א-ת])/.test(after)){return "numeric";}
+    // "5 בריבוע", "x בריבוע", "(a+b) בריבוע" are powers.
+    if(/^ו?בריבוע$/.test(matched)&&/[0-9A-Za-z)\]²][\s\u00a0\u200e\u200f]*$/.test(String(source||"").slice(Math.max(0,index-8),index))){return "numeric";}
+    var numeric=numericSquareContext(source,index,end);
+    var geometric=geometricSquareContext(source,index,end);
+    if(numeric&&geometric&&!/^[\s\u00a0\u200e\u200f]*של/.test(after)){return null;}
+    return numeric?"numeric":"geometric";
+  }
+
   // "ביחס ל…" is positional Hebrew ("with respect to"), not the numeric ratio concept.
   // Keep bare "יחס" / "היחס" / "יחס בין…" linkable.
   // Pythagoras "ריבועים" is a², not the quadrilateral.
   function contextAllowsMatch(entry,source,index,end){
     if(!entry){return true;}
+    // "ממנה" is the pronoun "from it/her", not מ־ + the quotient "מנה".
+    if(/^ו?ממנה$/.test(canonicalizeGlossaryText(source.slice(index,end)))){return false;}
     if(entry.id==="ratio"){
       var matched=canonicalizeGlossaryText(source.slice(index,end)).toLocaleLowerCase("he");
       if(!/(^|ו)ביחס$/.test(matched)){return true;}
@@ -661,11 +695,10 @@
       return true;
     }
     if(entry.id==="square"){
-      return !(numericSquareContext(source,index,end)&&!geometricSquareContext(source,index,end));
+      return squareSense(source,index,end)==="geometric";
     }
     if(entry.id==="numeric-square"){
-      if(geometricSquareContext(source,index,end)&&!numericSquareContext(source,index,end)){return false;}
-      return numericSquareContext(source,index,end);
+      return squareSense(source,index,end)==="numeric";
     }
     return true;
   }
