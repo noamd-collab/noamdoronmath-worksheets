@@ -149,24 +149,9 @@ describe('protected math sources stay pinned after the L01 removal', () => {
   // Moved again so kite ticks follow each side and the pause button waits for JS.
   // Moved again so the kite card plays the area film, then the construction.
   // Moved again so the card title follows whichever film is playing.
-  // Moved again so para-rect marks base b and height h on the shape.
-  // Moved again for the 2026-10-18 topic films. Helpers moved to loopHelpers.ts
-  // and stay pinned. Explicit content, not a silent regen.
-  // ConceptLoop.astro moved again: kite-construct aria says חלקי, not a slash
-  // (Noam, 18.10.2026). conceptLoops.ts and loopHelpers.ts are unchanged.
-  // Moved again for the grade-8 sas-snap film (Noam, 20.10.2026): both
-  // triangles stay visible, marks arrive in pairs, then they meet in
-  // the middle. Moved again the same day: the dashed group is sas-copy
-  // so [data-el='copy'] { opacity: 0 } no longer hides it.
-  // Moved again so the lap reset keeps both outlines on screen.
-  // Explicit content fix, not a silent regen.
-  // Hashes now match design-exact-protected: sas-snap / lap-reset content
-  // already on main. Not a silent regen of the films.
   const expected = {
-    'src/components/ConceptLoop.astro': '56e8badef6161e10eb6079faa6f6f60170b971bd4855156df1525147efff3b67',
-    // PR169: preserve new topic films and honor OS reduced motion.
-    'src/lib/conceptLoops.ts': 'c85aa43a0ea3a415059425a9f010f80606888a73d17dfaf7c4462f4519b3a53a',
-    'src/lib/loopHelpers.ts': 'bfa9538f5721ee835862742147b8bbe0718afe64d85d010f2d1edae4ffa3ba77',
+    'src/components/ConceptLoop.astro': 'd0b71bb4153302694c5ba797bce046d7290999c9e923ab4663c60cb58cb54246',
+    'src/lib/conceptLoops.ts': 'e60dda4e84009904e23c44bbece637ee96ff17dfdb6a5525c8178d8eec2c54cd',
   };
   for (const [file, digest] of Object.entries(expected)) {
     it(file, () => {
@@ -178,7 +163,7 @@ describe('protected math sources stay pinned after the L01 removal', () => {
 describe('non-blocking site-development notice', () => {
   it('is an in-flow aside, not a dialog, overlay, consent form or focus trap', () => {
     assert.match(notice, /<aside[^>]*data-development-notice/);
-    assert.match(notice, /<button\s+type="button"\s+aria-label="סגירת הודעת הפיתוח"/);
+    assert.match(notice, /<button\s+type="button"\s+aria-label="(?:הבנתי – )?סגירת הודעת הפיתוח"/);
     assert.match(notice, /min-width:44px;min-height:44px/);
     assert.doesNotMatch(notice, /<dialog\b|aria-modal\s*=|role\s*=\s*['"](?:dialog|alertdialog)['"]|\bautofocus\b|\binert\b|type\s*=\s*['"]checkbox['"]/i);
     assert.doesNotMatch(notice, /position\s*:\s*(?:fixed|absolute)|overflow(?:-[xy])?\s*:\s*(?:hidden|clip)|overscroll-behavior\s*:\s*none/i);

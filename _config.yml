@@ -1,4 +1,0 @@
-# GitHub Pages serves the static root viewer. Astro source is published by Wix.
-# Its front matter is JavaScript, not Jekyll YAML.
-exclude:
-  - headless

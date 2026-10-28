@@ -28,7 +28,7 @@
   var raw=item.pdf,full=/^https:\/\//.test(raw)?raw:'https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_'+raw+'.pdf';
   if(item.g<7||!item.x)return full;
   var u=new URL('worksheet-viewer-noam.html',location.href),p=u.searchParams;
-  p.set('g',item.sourceGrade||item.g);p.set('x',item.sourcePrefix||item.x);p.set('lv',item.viewerLevel||(item.l==='one'?'b':item.l));p.set('pdf',raw);p.set('t',item.sourceTitle||item.title);p.set('topic',item.parent);p.set('back',new URL('learning.html',location.href).pathname);
+  p.set('g',item.g);p.set('x',item.x);p.set('lv',item.l==='one'?'b':item.l);p.set('pdf',raw);p.set('t',item.title);p.set('topic',item.parent);p.set('back',new URL('learning.html',location.href).pathname);
   catalog.filter(function(x){return x.g===item.g&&x.t===item.t;}).forEach(function(x){if(x.l!=='one')p.set('p'+x.l,x.pdf);});return u.href;
  }
  function controls(item){var box=el('div',undefined,'nl-controls');box.dataset.learningId=item.id;box.setAttribute('role','group');box.setAttribute('aria-label',item.title+' — '+item.label+' — מצב עבודה');

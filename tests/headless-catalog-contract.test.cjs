@@ -46,17 +46,17 @@ test('parity with index.html: grades, topics, levels, PDF ids, parents, groups, 
 
   const s = result.stats;
   assert.equal(s.grades, 9);
-  assert.equal(s.topics, 330);
-  assert.equal(s.levels, 964);
-  assert.equal(s.uniquePdfIds, 933);
+  assert.equal(s.topics, 329);
+  assert.equal(s.levels, 961);
+  assert.equal(s.uniquePdfIds, 961);
   assert.equal(s.childTopics, 3);
   // G9-T46 (דלתון) adds a topic, three levels, and a search entry (118 → 119).
-  assert.equal(s.withNoamTopicId, 157);
+  assert.equal(s.withNoamTopicId, 155);
   assert.equal(s.searchEntries, 119);
   assert.equal(s.iconKeys, 80);
 
   // Exact per-grade topic counts from DATA
-  const expected = { 1: 23, 2: 29, 3: 25, 4: 30, 5: 35, 6: 27, 7: 50, 8: 66, 9: 45 };
+  const expected = { 1: 23, 2: 29, 3: 25, 4: 30, 5: 35, 6: 27, 7: 50, 8: 65, 9: 45 };
   for (const g of catalog.grades) {
     assert.equal(g.topics.length, expected[g.grade], 'grade ' + g.grade + ' topic count');
   }

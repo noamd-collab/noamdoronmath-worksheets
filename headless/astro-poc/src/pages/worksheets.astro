@@ -2,9 +2,8 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { WorksheetsClient } from '../components/WorksheetsClient';
 import { loadCatalog } from '../lib/catalog/loadCatalog';
-import { topicPageHrefByCatalogTopic } from '../lib/elementaryTopicNav';
 import { familyOf, resolveWorksheetsGrade, worksheetsHref, type GradeNum } from '../lib/grades';
-import { parseWorksheetsUrlState } from '../lib/worksheetsUrlState';
+import { parseWorksheetsUrlState, trackForPinnedTopic } from '../lib/worksheetsUrlState';
 import { educationalLevelForGrade, learningResourceJsonLd } from '../lib/structuredData';
 
 export const prerender = false;
@@ -28,14 +27,13 @@ const familyGrades =
         return entry;
       })
     : [];
-const topicPageHrefs = topicPageHrefByCatalogTopic();
 const urlState = parseWorksheetsUrlState(Astro.url.searchParams, grade || 7);
 const highlightTopicId = urlState.topic;
 const initialUrlState = {
   q: urlState.q,
   group: urlState.group,
   cross: urlState.cross,
-  track: urlState.track,
+  track: trackForPinnedTopic(urlState, gradeEntry),
 };
 ---
 
@@ -111,7 +109,6 @@ const initialUrlState = {
           familyGrades={familyGrades}
           highlightTopicId={highlightTopicId}
           initialUrlState={initialUrlState}
-          topicPageHrefs={topicPageHrefs}
         />
       </main>
     </BaseLayout>

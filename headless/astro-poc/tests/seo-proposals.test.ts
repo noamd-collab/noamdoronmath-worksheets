@@ -28,8 +28,9 @@ describe('seo proposals', () => {
   it('triangle-area proposal follows the page h1, not the mismatched live title', () => {
     const row = items.find((item) => item.path === '/triangle-area-grade-7');
     assert.ok(row?.currentTitle);
-    assert.match(row.title, /שטח משולש/);
+    assert.match(row.currentTitle, /מפשטים ואז פותרים/);
     assert.doesNotMatch(row.title, /מפשטים ואז פותרים/);
+    assert.match(row.title, /שטח משולש/);
     assert.equal(row.approved, false);
   });
 

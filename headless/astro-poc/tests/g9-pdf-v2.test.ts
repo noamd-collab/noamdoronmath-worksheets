@@ -11,8 +11,6 @@ import { loadCatalog } from '../src/lib/catalog/loadCatalog';
 import { countRenderedTopicCards } from '../src/lib/catalog/renderedCards';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
-const migrations = JSON.parse(readFileSync(join(root, 'public/noam-ai/catalog-migrations.json'), 'utf8')).byPdf;
-const currentPdf = (id: string) => migrations[id]?.pdfId || id;
 const pairs = JSON.parse(
   readFileSync(join(root, 'tests/fixtures/g9-pdf-v2-replace.json'), 'utf8')
 ) as Array<{ package_id: string; level: string; old_media_id: string; new_media_id: string }>;
@@ -24,7 +22,7 @@ describe('grade 9 PDF v2 replacements', () => {
   it('puts every reviewed new media id in the catalog and drops the old id', () => {
     assert.equal(pairs.length, 56);
     for (const row of pairs) {
-      assert.ok(text.includes(currentPdf(row.new_media_id)), `${row.package_id} ${row.level} missing ${row.new_media_id}`);
+      assert.ok(text.includes(row.new_media_id), `${row.package_id} ${row.level} missing ${row.new_media_id}`);
       assert.equal(text.includes(row.old_media_id), false, `${row.package_id} ${row.level} still has ${row.old_media_id}`);
     }
   });
@@ -34,7 +32,7 @@ describe('grade 9 PDF v2 replacements', () => {
     assert.ok(grade);
     const topic = grade.topics.find((entry) => entry.noamTopicId === 'G9-T15');
     assert.ok(topic);
-    assert.equal(topic.title, 'משולש שווה שוקיים');
+    assert.equal(topic.title, 'משולש שווה־שוקיים');
     assert.match(topic.description || '', /הקדמה לדלתון/);
     assert.match(catalog.searchTerms['9']['4'], /דלתון/);
     assert.match(catalog.searchTerms['9']['4'], /kite/);
@@ -42,7 +40,7 @@ describe('grade 9 PDF v2 replacements', () => {
     assert.ok(rhombus);
     assert.equal(
       rhombus.levels.find((level) => level.key === 'b')?.pdfId,
-      currentPdf('e091562d859a4059abca94dfddc17bfa')
+      'e091562d859a4059abca94dfddc17bfa'
     );
   });
 

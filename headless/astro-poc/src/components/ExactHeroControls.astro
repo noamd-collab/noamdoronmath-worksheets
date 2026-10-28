@@ -83,10 +83,9 @@ const topics = {
 <script type="application/json" data-exact-hero-topics set:html={JSON.stringify(topics)} />
 <script type="application/json" data-hero-rotation set:html={JSON.stringify(HERO_ROTATION)} />
 <script>
-  import { sitePrefersReducedMotion } from '../lib/motionPreference.js';
   import { bootAngleSumFilm, parkAngleSumFilm, resumeAngleSumFilm } from '../lib/angleSumFilm';
   import { initConceptLoops } from '../lib/conceptLoops';
-  import { HERO_PLAY_S, HERO_RETURN_KEY, createHeroRotation, heroDwellMs, heroReturnVariant } from '../lib/heroRotation';
+  import { HERO_PLAY_S, createHeroRotation, heroDwellMs } from '../lib/heroRotation';
 
   type LoopState = { playing: boolean; done: boolean; static: boolean };
   type Loop = HTMLElement & {
@@ -107,11 +106,15 @@ const topics = {
 
   function bootHeroControls() {
     const hero = document.querySelector<HTMLElement>('[data-hero-loop]');
-    const current = hero?.querySelector<HTMLElement>('[data-hero-loop-current]');
-    const button = document.querySelector<HTMLButtonElement>('[data-exact-shuffle]');
+    const currentHost = hero?.querySelector<HTMLElement>('[data-hero-loop-current]');
+    const shuffleButton = document.querySelector<HTMLButtonElement>('[data-exact-shuffle]');
     const label = document.querySelector<HTMLElement>('[data-exact-hero-label]');
     const link = document.querySelector<HTMLAnchorElement>('[data-exact-hero-topic]');
-    if (!hero || !current || !button || hero.dataset.exactControls === 'ready') return;
+    if (!hero || !currentHost || !shuffleButton || hero.dataset.exactControls === 'ready') return;
+    // Typed as checked: the hoisted function declarations below do not inherit
+    // TypeScript's narrowing of the null check above.
+    const current: HTMLElement = currentHost;
+    const button: HTMLButtonElement = shuffleButton;
     hero.dataset.exactControls = 'ready';
 
     let topics: TopicMap = {};
@@ -380,7 +383,7 @@ const topics = {
     describe();
     const queueSync = () => queueMicrotask(syncActiveCard);
     const preferenceObserver = new MutationObserver(queueSync);
-    preferenceObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class', 'data-nd-motion'] });
+    preferenceObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
     window.addEventListener('nd:motion-off', queueSync);
     let viewObserver: IntersectionObserver | undefined;
     if ('IntersectionObserver' in window) {
@@ -394,7 +397,7 @@ const topics = {
     // OS reduced motion and the site's motion class both keep the chip put.
     // The shuffle button still changes the film.
     function reducedMotion() {
-      return sitePrefersReducedMotion() || document.documentElement.classList.contains('noam-a11y-motion');
+      return reduced.matches || document.documentElement.classList.contains('noam-a11y-motion');
     }
     function tickClock() {
       syncActiveCard();
@@ -411,14 +414,12 @@ const topics = {
     const onReduce = () => queueSync();
     reduced.addEventListener('change', onReduce);
     stopHeroListeners();
-    let returnTimer = 0;
     stopHeroListeners = () => {
       document.removeEventListener('visibilitychange', onVisible);
       window.removeEventListener('nd:motion-off', queueSync);
       reduced.removeEventListener('change', onReduce);
       preferenceObserver.disconnect();
       viewObserver?.disconnect();
-      window.clearTimeout(returnTimer);
     };
     document.addEventListener('visibilitychange', onVisible);
     // One handle. A second boot, a restored page, or a view transition
@@ -433,26 +434,6 @@ const topics = {
       if (!reducedMotion()) startFilm(activeLoop());
     }));
     startHeroClock();
-    // First paint stays the server film (no fetch before that paint).
-    // A returning visitor then swaps to the film chosen on the previous visit,
-    // before this film's dwell would swap on its own. Reduced motion keeps
-    // the painted frame. The next visit's opener is chosen now, and it is
-    // never the film on screen at choice time.
-    const pool = rotation.map((entry) => entry.variant);
-    const showing = activeLoop()?.dataset.loop || pool[0] || '';
-    let saved = '';
-    try { saved = sessionStorage.getItem(HERO_RETURN_KEY) || ''; } catch { /* Optional. */ }
-    const opener = saved && saved !== showing && pool.includes(saved) ? saved : '';
-    const upcoming = heroReturnVariant(pool, opener || showing);
-    if (upcoming) {
-      try { sessionStorage.setItem(HERO_RETURN_KEY, upcoming); } catch { /* Optional. */ }
-    }
-    if (opener) {
-      returnTimer = window.setTimeout(() => {
-        if (reducedMotion() || busy) return;
-        swapTo(opener);
-      }, 0);
-    }
   }
 
   if (document.documentElement.dataset.heroClockBound !== '1') {

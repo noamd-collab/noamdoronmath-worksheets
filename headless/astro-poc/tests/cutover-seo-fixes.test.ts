@@ -48,23 +48,6 @@ describe('redirect map reflects what production serves', () => {
   });
 });
 
-describe('sitemap.xml aliases the live index and does not replace child maps', () => {
-  it('calls the same index helper as sitemap-index.xml and leaves sitemap-pages on its own route', () => {
-    const index = read('src/pages/sitemap-index.xml.ts');
-    const pages = read('src/pages/sitemap-pages.xml.ts');
-    const alias = read('src/pages/sitemap.xml.ts');
-    const robots = read('src/pages/robots.txt.ts');
-    const seo = read('src/lib/siteSeo.ts');
-    assert.match(index, /renderSitemapIndexXml/);
-    assert.match(alias, /renderSitemapIndexXml/);
-    assert.doesNotMatch(alias, /renderPagesSitemapXml|listMainPagePaths/);
-    assert.match(pages, /renderPagesSitemapXml|listMainPagePaths/);
-    assert.match(robots, /sitemap-index\.xml/);
-    assert.match(seo, /Sitemap: \$\{SITE_CANONICAL_ORIGIN\}\/sitemap-index\.xml/);
-    assert.doesNotMatch(seo, /Sitemap: \$\{SITE_CANONICAL_ORIGIN\}\/sitemap\.xml/);
-  });
-});
-
 describe('breadcrumb JSON-LD uses the canonical URL', () => {
   it('the last crumb is built from the canonical, not the raw query', () => {
     const layout = read('src/layouts/BaseLayout.astro');

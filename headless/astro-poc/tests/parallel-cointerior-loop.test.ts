@@ -81,6 +81,7 @@ describe('parallel co-interior angles film', () => {
       'exterior-angle-triangle-grade-8',
       'geometric-proof-grade-8',
       'isosceles-triangle-grade-8',
+      'angles-grade-7',
     ]) {
       assert.notEqual(topicLandingLoop(loadTopicPage(slug)).marker, 'parallel-cointerior-angles', slug);
     }
@@ -97,12 +98,9 @@ describe('parallel co-interior angles film', () => {
     assert.match(shell, /calc\(\(100cqi - 26px\) \* 9 \/ 16 \+ 144px\)/);
     assert.match(shell, /@container \(max-width: 354px\)/);
     assert.match(shell, /@container \(410px < width < 428px\)/);
-    // Parent policy is observed inside the player so its pause/resume state
-    // cannot race a second controller in this sizing-only wrapper.
-    assert.doesNotMatch(shell, /mathScene|\.pause\(|\.play\(/);
-    assert.match(shell, /new ResizeObserver\(fit\)/);
-    assert.match(film, /watchMotion\(window\.parent\.document\.documentElement\)/);
-    assert.match(film, /new MutationObserver\(syncMotion\)/);
+    assert.match(shell, /player\?\.mathScene/);
+    assert.match(shell, /getElementById\('film'\)/);
+    assert.match(shell, /s\?\.isPlaying\?\.\(\)\) s\.pause\(\)/);
     assert.equal(shell.includes('השהי'), false);
     assert.equal(shell.includes('display:none'), false);
     assert.equal(shell.includes('.controls'), false);

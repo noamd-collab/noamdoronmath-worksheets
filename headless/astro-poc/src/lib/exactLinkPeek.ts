@@ -1,4 +1,3 @@
-import { sitePrefersReducedMotion } from './motionPreference.js';
 import { PKS, resolvePeek, type PeekEntry } from './linkPeek';
 import { EXACT_PEEK_BLOCKS } from './exactLinkPeekBlocks';
 
@@ -57,7 +56,7 @@ export function renderExactPeek(key: string, data: PeekLiveData = EMPTY_DATA): s
     const style = Object.entries(PKS[kind] || {}).map(([k,v]) => `${k.replace(/[A-Z]/g,m=>'-'+m.toLowerCase())}:${v}`).join(';');
     return `<span data-pk style="position:absolute;left:${x*12}px;top:${y*12}px;width:${w*12}px;height:${h*12}px;box-sizing:border-box;${style}"></span>`;
   }).join('');
-  const ai = entry.ai ? `<div class="exact-peek-ai"><span class="exact-peek-ai-icon"><span data-ai="ring"></span><span>AI</span></span><span class="exact-peek-ai-copy"><strong>מנווט AI זמין בכל דף</strong><span><span data-ai="type">מסביר צעד אחר צעד</span><span class="exact-peek-dots"><i data-ai="dot"></i><i data-ai="dot"></i><i data-ai="dot"></i></span></span></span></div>` : '';
+  const ai = entry.ai ? `<div class="exact-peek-ai"><span class="exact-peek-ai-icon"><span data-ai="ring"></span><span>AI</span></span><span class="exact-peek-ai-copy"><strong>נועם AI זמין בכל דף</strong><span><span data-ai="type">מסביר צעד אחר צעד</span><span class="exact-peek-dots"><i data-ai="dot"></i><i data-ai="dot"></i><i data-ai="dot"></i></span></span></span></div>` : '';
   return `<div class="exact-peek-preview" dir="ltr" aria-hidden="true">${blocks}${specialPreview(key,data)}</div><div class="exact-peek-heading"><strong>${escape(entry.title)}</strong><span>${escape(entry.tag)}</span></div><p>${escape(entry.desc)}</p>${ai}`;
 }
 
@@ -91,7 +90,7 @@ export function initExactLinkPeek(data: PeekLiveData = EMPTY_DATA): () => void {
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
   const hover=window.matchMedia('(hover: hover)');
   const html=document.documentElement;
-  const blocked=()=>peekMotionBlocked({hidden:document.hidden,reduced:sitePrefersReducedMotion(),stopped:eventOff||html.classList.contains('nd-motion-off')||html.classList.contains('noam-a11y-motion'),mode:html.dataset.ndMotion||html.dataset.motion});
+  const blocked=()=>peekMotionBlocked({hidden:document.hidden,reduced:reduced.matches,stopped:eventOff||html.classList.contains('nd-motion-off')||html.classList.contains('noam-a11y-motion'),mode:html.dataset.ndMotion||html.dataset.motion});
   function listen(target:EventTarget,type:string,fn:EventListener,options?:AddEventListenerOptions){target.addEventListener(type,fn,options);listeners.push(()=>target.removeEventListener(type,fn,options));}
   function animate(el:Element,frames:Keyframe[],options:KeyframeAnimationOptions){
     if(blocked()||!el.animate)return null;

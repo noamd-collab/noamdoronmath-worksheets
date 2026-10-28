@@ -19,7 +19,7 @@ import { homePageJsonLd, loadHomePage } from '../src/lib/homePage.ts';
 import { renderLlmsTxt } from '../src/lib/llmsTxt.ts';
 import { REDIRECT_RULES } from '../src/lib/redirects.ts';
 import { resolveSiteHref } from '../src/lib/resolveSiteHref.ts';
-import { renderPagesSitemapXml, renderSitemapIndexXml } from '../src/lib/siteSitemaps.ts';
+import { listMainPagePaths, renderPagesSitemapXml, renderSitemapIndexXml } from '../src/lib/siteSitemaps.ts';
 import { SITE_CANONICAL_ORIGIN, renderRobotsTxt } from '../src/lib/siteSeo.ts';
 import {
   breadcrumbList,
@@ -91,29 +91,9 @@ describe('seo audit', () => {
     const pageLocs = locs(renderPagesSitemapXml(pageGlobKeysFromDisk()));
     const pagePaths = new Set(pageLocs.map((loc) => loc.slice(SITE_CANONICAL_ORIGIN.length) || '/'));
     for (const hub of loadAllGradeHubs()) assert.ok(pagePaths.has(hub.path), hub.path);
-    const flaggedFrom = new Set(
-      (
-        JSON.parse(readFileSync(fromTest('../src/data/redirects.json'), 'utf8')) as {
-          flaggedDoNotAutoRedirect?: Array<{ from: string }>;
-        }
-      ).flaggedDoNotAutoRedirect?.map((row) => row.from) ?? [],
-    );
-    for (const page of loadAllTopicPages()) {
-      const redirected = REDIRECT_RULES.find((rule) => rule.from === page.path);
-      if (redirected || flaggedFrom.has(page.path)) {
-        assert.equal(pagePaths.has(page.path), false, page.path);
-        if (!redirected) continue;
-        const targetPath = new URL(redirected.to, SITE_CANONICAL_ORIGIN).pathname.replace(/\/+$/, '') || '/';
-        if (targetPath.startsWith('/blog') || targetPath.startsWith('/post/')) continue;
-        assert.ok(pagePaths.has(targetPath), `${page.path} -> ${targetPath}`);
-        continue;
-      }
-      assert.ok(pagePaths.has(page.path), page.path);
-    }
+    for (const page of loadAllTopicPages()) assert.ok(pagePaths.has(page.path), page.path);
     assert.ok(pagePaths.has('/worksheets'));
     assert.ok(pagePaths.has('/aboutus'));
-    assert.ok(pagePaths.has('/games/eliyahu-pythagoras'));
-    assert.ok(pagePaths.has('/games/kefel-mekutsar-2'));
     assert.equal(pagePaths.has('/404'), false);
     assert.equal(pagePaths.has('/dev-loops'), false);
     for (const rule of REDIRECT_RULES) assert.equal(pagePaths.has(rule.from), false, rule.from);
@@ -237,9 +217,8 @@ describe('seo audit', () => {
     assert.equal(existsSync(fromTest('../public/llms.txt')), false);
 
     assert.match(renderRobotsTxt(true), /# https:\/\/www\.noamdoronmath\.co\.il\/llms\.txt/);
-    const liveGuide = readFileSync(fromTest('../src/data/site-llms.md'), 'utf8');
-    const text = renderLlmsTxt(liveGuide);
-    assert.match(text, /^# Noam Doron Math — נועם דורון מתמטיקה/u);
+    const text = renderLlmsTxt();
+    assert.match(text, /^# נועם דורון מתמטיקה/u);
     assert.equal(text.includes('wix-site-host'), false);
     for (const hub of loadAllGradeHubs()) {
       assert.ok(text.includes(`${SITE_CANONICAL_ORIGIN}${hub.path}`), hub.path);
@@ -248,9 +227,6 @@ describe('seo audit', () => {
       assert.ok(text.includes(`${SITE_CANONICAL_ORIGIN}${page.path}`), page.path);
     }
     assert.ok(text.includes(`${SITE_CANONICAL_ORIGIN}/blog`));
-    assert.ok(text.includes(`${SITE_CANONICAL_ORIGIN}/games/eliyahu-pythagoras`));
-    assert.ok(text.includes(`${SITE_CANONICAL_ORIGIN}/games/kefel-mekutsar-2`));
-    assert.equal(text.startsWith(liveGuide.trimEnd()), true);
     assert.equal((text.match(/https:\/\/www\.noamdoronmath\.co\.il\/grade-[1-9]/g) || []).length >= 9, true);
   });
 });

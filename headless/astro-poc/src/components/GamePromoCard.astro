@@ -10,8 +10,6 @@ import { PYTHAGORAS_GAME_PATH } from '../lib/pythagorasGame';
         width="960"
         height="508"
         alt="ריבוע (a+b) מהמשחק, מחולק ל־a² בירוק, b² באדום ושני מלבני ab צהובים"
-        loading="lazy"
-        decoding="async"
       />
     </span>
     <span class="exact-game-promo__copy">
@@ -288,8 +286,8 @@ import { PYTHAGORAS_GAME_PATH } from '../lib/pythagorasGame';
     .exact-game-promo__text{font-size:17px;}
   }
   @media(prefers-reduced-motion:reduce){
-    :global(html:not(.nd-motion-enabled)) .exact-game-promo__card{transition:none;}
-    :global(html:not(.nd-motion-enabled)) .exact-game-promo__card:hover{transform:none;}
+    .exact-game-promo__card{transition:none;}
+    .exact-game-promo__card:hover{transform:none;}
   }
   html.nd-motion-off .exact-game-promo__card,
   html.noam-a11y-motion .exact-game-promo__card{transition:none;}
@@ -339,10 +337,10 @@ import { PYTHAGORAS_GAME_PATH } from '../lib/pythagorasGame';
   }
   /* Reduced motion slows the drawings. It does not remove them. */
   @media(prefers-reduced-motion:reduce){
-    :global(html:not(.nd-motion-enabled)) .exact-live-pop{animation-duration:3.1s;}
-    :global(html:not(.nd-motion-enabled)) .exact-pyth-glow{animation-duration:8s;}
-    :global(html:not(.nd-motion-enabled)) .exact-ring{animation-duration:4.8s;}
-    :global(html:not(.nd-motion-enabled)) .exact-formula-new__badge{animation-duration:7.2s;}
+    .exact-live-pop{animation-duration:3.1s;}
+    .exact-pyth-glow{animation-duration:8s;}
+    .exact-ring{animation-duration:4.8s;}
+    .exact-formula-new__badge{animation-duration:7.2s;}
   }
   html.nd-motion-off .exact-live-pop,
   html.noam-a11y-motion .exact-live-pop{animation-duration:3.1s;}

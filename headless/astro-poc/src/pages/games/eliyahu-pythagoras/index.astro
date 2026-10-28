@@ -60,7 +60,6 @@ export const prerender = false;
   }
   .eliyahu-game__frame iframe {
     display: block;
-    box-sizing: border-box;
     width: 100%;
     height: 100%;
     border: 2px solid #22305a;
@@ -91,15 +90,6 @@ export const prerender = false;
   }
 </style>
 <script is:inline>
-  var eliyahuFitRaf = 0;
-  var eliyahuCardObserver;
-  function scheduleEliyahuFit() {
-    if (eliyahuFitRaf) return;
-    eliyahuFitRaf = requestAnimationFrame(function () {
-      eliyahuFitRaf = 0;
-      fitEliyahuGame();
-    });
-  }
   function fitEliyahuGame() {
     var frame = document.querySelector('.eliyahu-game__frame');
     var dock = document.querySelector('[data-eliyahu-dock]');
@@ -110,34 +100,17 @@ export const prerender = false;
     if (top < 0) top = 0;
     var viewportH = Math.max(320, Math.round(window.innerHeight - top - dockH));
     var h = viewportH;
-    // Size to the card at every width so the outer page can scroll.
-    // Its height is intrinsic; its bottom position depends on the iframe
-    // viewport because #app centers the card, causing a resize feedback loop.
-    if (iframe && iframe.contentDocument) {
+    // On a phone the stacked card is taller than the leftover viewport.
+    // Grow the frame to the game document so the page scrolls and the
+    // launcher dock stays under the card instead of clipping it.
+    if (window.innerWidth <= 800 && iframe && iframe.contentDocument) {
       var card = iframe.contentDocument.querySelector('#card');
-      var app = iframe.contentDocument.querySelector('#app');
-      if (card && app) {
-        var appStyle = iframe.contentWindow.getComputedStyle(app);
-        var frameStyle = window.getComputedStyle(iframe);
-        var inner = card.getBoundingClientRect().height
-          + parseFloat(appStyle.paddingTop) + parseFloat(appStyle.paddingBottom)
-          + parseFloat(frameStyle.borderTopWidth) + parseFloat(frameStyle.borderBottomWidth);
-        h = Math.max(viewportH, Math.ceil(inner));
-      }
+      var inner = card
+        ? Math.ceil(card.getBoundingClientRect().bottom) + 24
+        : iframe.contentDocument.documentElement.scrollHeight;
+      if (inner > viewportH && inner < 1400) h = inner;
     }
-    if (frame.style.height !== h + 'px') frame.style.height = h + 'px';
-  }
-  function observeEliyahuGame() {
-    if (eliyahuCardObserver) eliyahuCardObserver.disconnect();
-    var iframe = document.querySelector('.eliyahu-game__frame iframe');
-    var doc = iframe && iframe.contentDocument;
-    var card = doc && doc.querySelector('#card');
-    if (card && typeof ResizeObserver === 'function') {
-      eliyahuCardObserver = new ResizeObserver(scheduleEliyahuFit);
-      eliyahuCardObserver.observe(card);
-    }
-    if (doc && doc.fonts) doc.fonts.ready.then(scheduleEliyahuFit);
-    scheduleEliyahuFit();
+    frame.style.height = h + 'px';
   }
   function parkEliyahuLaunchers() {
     var dock = document.querySelector('[data-eliyahu-dock]');
@@ -150,15 +123,18 @@ export const prerender = false;
   }
   parkEliyahuLaunchers();
   fitEliyahuGame();
-  window.addEventListener('resize', scheduleEliyahuFit);
+  window.addEventListener('resize', fitEliyahuGame);
   window.addEventListener('load', function () {
     parkEliyahuLaunchers();
-    observeEliyahuGame();
+    fitEliyahuGame();
   });
   var gameFrame = document.querySelector('.eliyahu-game__frame iframe');
   if (gameFrame) {
-    gameFrame.addEventListener('load', observeEliyahuGame);
-    observeEliyahuGame();
+    gameFrame.addEventListener('load', function () {
+      fitEliyahuGame();
+      setTimeout(fitEliyahuGame, 200);
+      setTimeout(fitEliyahuGame, 800);
+    });
   }
   if (typeof MutationObserver === 'function') {
     var mo = new MutationObserver(parkEliyahuLaunchers);

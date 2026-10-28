@@ -10,8 +10,6 @@ export interface CatalogLevel {
   label: string;
   pdfId: string;
   labelSource: string;
-  /** Published manifest level; single-sheet releases use `one`. */
-  viewerLevel?: 'a' | 'b' | 'c' | 'c2' | 'one';
 }
 
 export interface CatalogRouting {
@@ -20,10 +18,6 @@ export interface CatalogRouting {
   usesViewer: boolean;
   viewerPath: string | null;
   siblingPdfQuery: Record<string, string>;
-  /** Explicit reuse of a complete worksheet from another grade. */
-  sourceGrade?: number;
-  sourcePrefix?: string;
-  sourceTitle?: string;
 }
 
 export interface CatalogTopic {

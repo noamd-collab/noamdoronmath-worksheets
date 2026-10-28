@@ -1,0 +1,77 @@
+# HEADLESS-MIGRATION-25 blog pilot manifest
+# Checked-in classification record. reports/ is gitignored, so a fresh checkout
+# had no local capture and tests/blog-posts.test.ts failed with ENOENT.
+# Facts below are taken from the committed post fixtures and BLOG_POST_M25_PILOT_PATHS.
+# This file was not produced by a new live browser capture.
+
+# Classified 63 blog URLs: 1 index + 3 categories + 59 posts; 0 redirects; 0 HTTP errors.
+# Pilot = 8 posts, one per distinct feature cluster. The other 51 posts were not bulk-imported in M25.
+
+## Classification summary
+- blog-index: 1 (/blog) — NOT in pilot
+- blog-category: 3 — NOT in pilot
+- blog-post: 59 live — 8 selected for pilot gate
+- redirects: 0
+
+## Pilot posts (8)
+1. /post/annual-review-grade-7
+   decoded: annual-review-grade-7
+   file: annual-review-grade-7.json
+   feature: alt+author+captions+date+h2+h3+images+lists+many-links+medium-body+related+schema
+   blocks=13 related=3
+   h1: חזרה שנתית לכיתה ז׳ — דפי עבודה
+
+2. /post/%D7%90%D7%99%D7%9A-%D7%9C%D7%AA%D7%A8%D7%92%D7%9C-%D7%92%D7%90%D7%95%D7%9E%D7%98%D7%A8%D7%99%D7%94-%D7%9C%D7%9B%D7%99%D7%AA%D7%94-%D7%95-%D7%95%D7%9C%D7%94%D7%A6%D7%9C%D7%99%D7%97-%D7%91%D7%9E%D7%91%D7%97%D7%A0%D7%99%D7%9D
+   decoded: איך-לתרגל-גאומטריה-לכיתה-ו-ולהצליח-במבחנים
+   file: geometry-grade-6-exams.json
+   feature: alt+author+captions+date+h2+images+lists+many-links+medium-body+schema
+   blocks=17 related=0
+   h1: איך לתרגל גאומטריה לכיתה ו׳ ולהצליח במבחנים
+
+3. /post/%D7%90%D7%99%D7%9A-%D7%A4%D7%95%D7%AA%D7%A8%D7%99%D7%9D-%D7%A1%D7%93%D7%A8-%D7%A4%D7%A2%D7%95%D7%9C%D7%95%D7%AA-%D7%97%D7%A9%D7%91%D7%95%D7%9F-%D7%91%D7%9C%D7%99-%D7%9C%D7%94%D7%AA%D7%91%D7%9C%D7%91%D7%9C
+   decoded: איך-פותרים-סדר-פעולות-חשבון-בלי-להתבלבל
+   file: order-of-operations-guide.json
+   feature: alt+author+captions+date+h2+h3+images+long-body+schema
+   blocks=64 related=0
+   h1: איך פותרים סדר פעולות חשבון בלי להתבלבל?
+
+4. /post/%D7%93%D7%A4%D7%99-%D7%A2%D7%91%D7%95%D7%93%D7%94-%D7%91%D7%9E%D7%AA%D7%9E%D7%98%D7%99%D7%A7%D7%94-%D7%9C%D7%9C%D7%90-%D7%94%D7%A8%D7%A9%D7%9E%D7%94-%D7%9C%D7%9B%D7%9C-%D7%9B%D7%99%D7%AA%D7%94-%D7%95%D7%A0%D7%95%D7%A9%D7%90
+   decoded: דפי-עבודה-במתמטיקה-ללא-הרשמה-לכל-כיתה-ונושא
+   file: worksheets-no-registration.json
+   feature: alt+author+captions+date+h2+h3+images+lists+long-body+schema
+   blocks=27 related=0
+   h1: דפי עבודה במתמטיקה ללא הרשמה לכל כיתה ונושא
+
+5. /post/%D7%91%D7%99%D7%A0%D7%94-%D7%97%D7%99%D7%A0%D7%95%D7%9B%D7%99%D7%AA-%D7%A9%D7%9E%D7%A7%D7%93%D7%9E%D7%AA-%D7%9B%D7%9C-%D7%AA%D7%9C%D7%9E%D7%99%D7%93-%D7%91%D7%9E%D7%AA%D7%9E%D7%98%D7%99%D7%A7%D7%94
+   decoded: בינה-חינוכית-שמקדמת-כל-תלמיד-במתמטיקה
+   file: educational-ai-math.json
+   feature: alt+author+captions+date+h2+images+long-body+schema
+   blocks=28 related=0
+   h1: בינה חינוכית שמקדמת כל תלמיד במתמטיקה
+
+6. /post/%D7%91%D7%A2%D7%99%D7%95%D7%AA-%D7%9E%D7%99%D7%9C%D7%95%D7%9C%D7%99%D7%95%D7%AA-%D7%91%D7%9E%D7%AA%D7%9E%D7%98%D7%99%D7%A7%D7%94-%D7%A4%D7%95%D7%AA%D7%A8%D7%99%D7%9D-%D7%A9%D7%9C%D7%91-%D7%90%D7%97%D7%A8-%D7%A9%D7%9C%D7%91
+   decoded: בעיות-מילוליות-במתמטיקה-פותרים-שלב-אחר-שלב
+   file: word-problems-step-by-step.json
+   feature: alt+author+captions+date+h2+h3+images+lists+long-body+many-links+schema
+   blocks=41 related=0
+   h1: בעיות מילוליות במתמטיקה פותרים שלב אחר שלב
+
+7. /post/%D7%9E%D7%93%D7%A8%D7%99%D7%9A-%D7%9C%D7%A7%D7%A8%D7%99%D7%90%D7%AA-%D7%92%D7%A8%D7%A4%D7%99%D7%9D-%D7%9C%D7%99%D7%9C%D7%93%D7%99%D7%9D-%D7%91%D7%A6%D7%95%D7%A8%D7%94-%D7%A4%D7%A9%D7%95%D7%98%D7%94
+   decoded: מדריך-לקריאת-גרפים-לילדים-בצורה-פשוטה
+   file: reading-graphs-for-kids.json
+   feature: alt+author+captions+date+h2+images+lists+long-body+schema
+   blocks=36 related=0
+   h1: מדריך לקריאת גרפים לילדים בצורה פשוטה
+
+8. /post/%D7%AA%D7%A8%D7%92%D7%95%D7%9C-%D7%97%D7%A9%D7%99%D7%91%D7%94-%D7%9E%D7%AA%D7%9E%D7%98%D7%99%D7%AA-%D7%9C%D7%99%D7%9C%D7%93%D7%99%D7%9D-%D7%A9%D7%91%D7%95%D7%A0%D7%94-%D7%91%D7%99%D7%98%D7%97%D7%95%D7%9F
+   decoded: תרגול-חשיבה-מתמטית-לילדים-שבונה-ביטחון
+   file: math-thinking-practice.json
+   feature: alt+author+captions+date+h2+images+lists+long-body+many-links+schema
+   blocks=27 related=0
+   h1: תרגול חשיבה מתמטית לילדים שבונה ביטחון
+
+## Deferred
+- At M25: /blog index and 3 category pages, plus the remaining 51 of the 59 posts. No bulk import of all 63 URLs.
+- Later batches, recorded here so the deferral is not mistaken for the current tree: M26 served the 4 archives. M27–M29 served the rest of the 59 posts. OPEN-07 added 1 post. BLOG_M25_DEFERRED is empty. Served locally now: 60 posts + 4 archives.
+- aboutus contact mailto-only. The aboutus contact block renders mailto:noamd@noamdoronmath.co.il. The Wix form on that block is submitMode dry-run, not a live form. aboutus is not one of the 63 blog URLs.
+- terms is a separate site page (src/data/site-pages/terms.json), not one of the 63 blog URLs.

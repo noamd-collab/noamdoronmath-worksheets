@@ -11,8 +11,6 @@ import { fileURLToPath } from 'node:url';
 import { loadCatalog } from '../src/lib/catalog/loadCatalog';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
-const migrations = JSON.parse(readFileSync(join(root, 'public/noam-ai/catalog-migrations.json'), 'utf8')).byPdf;
-const currentPdf = (id: string) => migrations[id]?.pdfId || id;
 const pairs = JSON.parse(
   readFileSync(join(root, 'tests/fixtures/g7-pdf-v2-replace.json'), 'utf8')
 ) as Array<{ package_id: string; level: string; old_media_id: string | null; new_media_id: string }>;
@@ -24,24 +22,23 @@ describe('grade 7 PDF v2 replacements', () => {
   it('puts every reviewed new media id in the catalog and drops replaced ids', () => {
     assert.equal(pairs.length, 127);
     for (const row of pairs) {
-      assert.ok(text.includes(currentPdf(row.new_media_id)), `${row.package_id} ${row.level} missing ${row.new_media_id}`);
+      assert.ok(text.includes(row.new_media_id), `${row.package_id} ${row.level} missing ${row.new_media_id}`);
       if (row.old_media_id) {
         assert.equal(text.includes(row.old_media_id), false, `${row.package_id} ${row.level} still has ${row.old_media_id}`);
       }
     }
   });
 
-  it('keeps the G7-T16 single-sheet label and routes its reviewed native release', () => {
+  it('shows G7-T16 as level a with an AI hint', () => {
     const grade = catalog.grades.find((entry) => entry.grade === 7);
     assert.ok(grade);
     const topic = grade.topics.find((entry) => entry.noamTopicId === 'G7-T16');
     assert.ok(topic);
     assert.equal(topic.title, 'משולש שווה־צלעות — העמקה ורשות');
     assert.equal(topic.levels.length, 1);
-    assert.equal(topic.levels[0].key, 'one');
-    assert.equal(topic.levels[0].viewerLevel, 'one');
+    assert.equal(topic.levels[0].key, 'a');
     assert.equal(topic.levels[0].label, 'העמקה ורשות');
-    assert.equal(topic.levels[0].pdfId, currentPdf('2462413929e84600b5e47e24ca1340c1'));
+    assert.equal(topic.levels[0].pdfId, '2462413929e84600b5e47e24ca1340c1');
     assert.equal(topic.routing.aiHintShown, true);
   });
 
