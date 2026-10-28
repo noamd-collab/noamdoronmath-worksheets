@@ -46,7 +46,7 @@ describe('astro-poc buildWorksheetHref parity (representative)', () => {
     assert.ok(!href.includes('127.0.0.1'));
   });
 
-  it('viewer-routed single sheets use their published manifest level', () => {
+  it('viewer-routed one-level uses lv=b while catalog key stays one', () => {
     // G7-T16 is level a after the grade-7 PDF v2 swap. Other grades still have one-level sheets.
     const found = catalog.grades
       .map((grade) => ({
@@ -61,7 +61,7 @@ describe('astro-poc buildWorksheetHref parity (representative)', () => {
     assert.equal(topic.levels[0].key, 'one');
     const href = buildWorksheetHref({ catalog, grade: found.grade, topic, levelKey: 'one' });
     const u = new URL(href, 'https://www.noamdoronmath.co.il');
-    assert.equal(u.searchParams.get('lv'), topic.levels[0].viewerLevel || 'b');
+    assert.equal(u.searchParams.get('lv'), 'b');
     assert.equal(u.searchParams.get('pdf'), topic.levels[0].pdfId);
     assert.equal(
       u.searchParams.get('topic'),
@@ -95,7 +95,7 @@ describe('astro-poc buildWorksheetHref parity (representative)', () => {
     const u = new URL(href, 'https://www.noamdoronmath.co.il');
     assert.equal(u.searchParams.get('g'), '9');
     assert.equal(u.searchParams.get('x'), topic.routing.resolvedNoamPrefix);
-    if (level.key === 'one') assert.equal(u.searchParams.get('lv'), topic.levels[0].viewerLevel || 'b');
+    if (level.key === 'one') assert.equal(u.searchParams.get('lv'), 'b');
     else assert.equal(u.searchParams.get('lv'), level.key);
   });
 

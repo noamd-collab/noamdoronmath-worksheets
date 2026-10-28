@@ -49,13 +49,13 @@ const html=`<style>${fs.readFileSync(path.join(__dirname,'device.css'),'utf8')}<
 <main class="calculator-page" aria-label="מחשבון מדעי">
 <div class="device-stage"><section id="sci-calc" class="device-shell" dir="ltr" aria-label="מחשבון מדעי מתקדם">
  ${definitions}
- <header class="device-brand"><div class="brand-name">נועם דורון מתמטיקה</div></header>
+ <header class="device-brand"><div class="brand-name">noamdoronmath</div></header>
  <div class="lcd-bezel"><div class="lcd" aria-label="מסך המחשבון"><div id="lcd-status" aria-live="off">D <span>Math</span></div><input id="lcd-input" type="text" inputmode="none" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="ביטוי לחישוב" dir="ltr"><div id="lcd-expression" aria-label="ביטוי מתמטי"></div><div id="lcd-result" aria-label="תוצאה">0</div><div id="lcd-menu" hidden></div></div></div>
  <div class="control-row"><svg class="panel-seam" viewBox="0 0 100 43" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0V20Q0 29 13 30L29 32Q34 33 36 37Q40 43 50 43Q60 43 64 37Q66 33 71 32L87 30Q100 29 100 20V0"/></svg><div class="control-pair"><button type="button" class="round-control shift-control" data-key="shift" aria-label="SHIFT" aria-pressed="false"><span>SHIFT</span><i></i></button><button type="button" class="round-control alpha-control" data-key="alpha" aria-label="ALPHA" aria-pressed="false"><span>ALPHA</span><i></i></button></div><div class="replay-pad" role="group" aria-label="חיצי עריכה"><button data-key="up" aria-label="למעלה והיסטוריה" class="arrow up">▲</button><button data-key="left" aria-label="שמאלה" class="arrow left">◀</button><div class="replay-center" aria-hidden="true">●</div><button data-key="right" aria-label="ימינה" class="arrow right">▶</button><button data-key="down" aria-label="למטה והיסטוריה" class="arrow down">▼</button></div><div class="control-pair"><button type="button" class="round-control mode-control" data-key="mode" aria-label="MODE SETUP"><span>MODE <b>SETUP</b></span><i></i></button><button type="button" class="round-control on-control" data-key="on" aria-label="ON הפעלה"><span>ON</span><i></i></button></div></div>
  <div class="science-keypad" role="group" aria-label="מקשי מדע וזיכרון">${keys.map(key).join('')}</div>
  <div class="number-keypad" role="group" aria-label="מקשי ספרות וחשבון">${numbers.map(key).join('')}</div>
 </section></div>
-<p class="device-caption" dir="rtl">מחשבון מדעי מתקדם</p>
+<p class="device-caption" dir="rtl">מחשבון מדעי מתקדם · נועם דורון</p>
 <details class="device-help" dir="rtl"><summary>עזרה בהפעלה</summary><p>לחצו על המקשים כמו במחשבון מדעי: SHIFT לפעולות המשניות, ALPHA לאותיות, MODE לבחירת מצב ו־SHIFT ואז MODE להגדרות. אפשר גם להקליד מהמקלדת ולחשב עם Enter.</p><p>זהו כלי תרגול עצמאי בדפדפן. החיצים מזיזים את הסמן בתוך הביטוי ומחזירים חישובים קודמים. F↔D מחליף בין תצוגה מדויקת לעשרונית.</p></details>
 <div id="calc-announcer" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true"></div>
 </main>`;

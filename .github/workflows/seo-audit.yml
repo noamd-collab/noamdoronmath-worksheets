@@ -1,0 +1,45 @@
+name: seo-audit
+
+# SEO cut-over checks for the Astro headless app.
+# Does not run `wix build` — that needs Wix credentials which are not in this repo.
+# The suite audits the page data, sitemap, links, JSON-LD, and llms.txt the build ships.
+
+on:
+  pull_request:
+    paths:
+      - 'headless/astro-poc/**'
+      - '.github/workflows/seo-audit.yml'
+  push:
+    branches:
+      - headless/astro-poc-baseline
+    paths:
+      - 'headless/astro-poc/**'
+      - '.github/workflows/seo-audit.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  seo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: headless/astro-poc
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: headless/astro-poc/package-lock.json
+
+      - name: Install
+        run: npm ci --ignore-scripts
+
+      - name: SEO audit
+        run: npx tsx --test tests/seo-audit.test.ts

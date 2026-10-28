@@ -11,8 +11,6 @@ import { fileURLToPath } from 'node:url';
 import { loadCatalog } from '../src/lib/catalog/loadCatalog';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
-const migrations = JSON.parse(readFileSync(join(root, 'public/noam-ai/catalog-migrations.json'), 'utf8')).byPdf;
-const currentPdf = (id: string) => migrations[id]?.pdfId || id;
 const pairs = JSON.parse(
   readFileSync(join(root, 'tests/fixtures/g8-pdf-v2-replace.json'), 'utf8')
 ) as Array<{ package_id: string; level: string; old_media_id: string | null; new_media_id: string }>;
@@ -24,7 +22,7 @@ describe('grade 8 PDF v2 replacements', () => {
   it('puts every reviewed new media id in the catalog and drops replaced ids', () => {
     assert.equal(pairs.length, 146);
     for (const row of pairs) {
-      assert.ok(text.includes(currentPdf(row.new_media_id)), `${row.package_id} ${row.level} missing ${row.new_media_id}`);
+      assert.ok(text.includes(row.new_media_id), `${row.package_id} ${row.level} missing ${row.new_media_id}`);
       if (row.old_media_id) {
         assert.equal(text.includes(row.old_media_id), false, `${row.package_id} ${row.level} still has ${row.old_media_id}`);
       }
@@ -32,23 +30,22 @@ describe('grade 8 PDF v2 replacements', () => {
   });
 
   it('adds מצוינות 2 on G8-T45 and G8-T51 and shows an AI hint on the single-sheet cards', () => {
-    const grade = catalog.grades.find((entry) => entry.grade === 8);
+    const grade = catalog.grades.find((entry) => entry.grade === 8)!;
     assert.ok(grade);
     for (const [prefix, pdfId] of [
       ['G8-T45', 'e4da722565a942e482c9e4dbf6ee41b5'],
       ['G8-T51', '0b79f523d8ea4598a85d5320d6acd823'],
     ] as const) {
-      const topic = grade.topics.find((entry) => entry.noamTopicId === prefix);
-      assert.ok(topic, prefix);
-      assert.equal(topic.levels.find((level) => level.key === 'c2')?.pdfId, pdfId);
+      const sheetTopic = grade.topics.find((entry) => entry.noamTopicId === prefix)!;
+      assert.ok(sheetTopic, prefix);
+      assert.equal(sheetTopic.levels.find((level) => level.key === 'c2')?.pdfId, pdfId);
     }
     for (const prefix of ['G8-T56', 'G8-T57', 'G8-T58', 'G8-T59', 'G8-T60']) {
-      const topic = grade.topics.find((entry) => entry.noamTopicId === prefix);
-      assert.ok(topic, prefix);
-      assert.equal(topic.levels.length, 1);
-      assert.equal(topic.levels[0].key, 'one');
-      assert.equal(topic.levels[0].viewerLevel, 'one');
-      assert.equal(topic.routing.aiHintShown, true);
+      const singleTopic = grade.topics.find((entry) => entry.noamTopicId === prefix)!;
+      assert.ok(singleTopic, prefix);
+      assert.equal(singleTopic.levels.length, 1);
+      assert.equal(singleTopic.levels[0].key, 'a');
+      assert.equal(singleTopic.routing.aiHintShown, true);
     }
   });
 

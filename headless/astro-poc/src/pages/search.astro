@@ -1,0 +1,28 @@
+---
+/**
+ * /search — site search over catalog topics, explainer pages and blog posts.
+ * Works without JavaScript (GET form, plain links, server-rendered answer);
+ * with JavaScript the island searches as you type after loading the index.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SiteSearch } from '../components/SiteSearch';
+import indexData from '../data/search-index.v1.json';
+import { prepareIndex, search } from '../lib/siteSearch/engine';
+import type { SearchIndex } from '../lib/siteSearch/types';
+import { parseSearchUrl } from '../lib/siteSearch/url';
+
+export const prerender = false;
+
+const prepared = prepareIndex(indexData as SearchIndex);
+const state = parseSearchUrl(Astro.url.searchParams);
+const initial = search(prepared, state.q, { grade: state.grade });
+// Result lists are not pages of their own for search engines.
+Astro.response.headers.set('X-Robots-Tag', 'noindex, follow');
+const title = state.q.trim() ? `חיפוש: ${state.q.trim()} | נועם דורון מתמטיקה` : 'חיפוש באתר | נועם דורון מתמטיקה';
+---
+
+<BaseLayout title={title} description="חיפוש דפי עבודה, הסברים ומאמרים במתמטיקה לכיתות א׳–ט׳." activeNav="search" skipHref="#search-main">
+  <main id="search-main">
+    <SiteSearch client:idle initial={initial} initialState={state} gradeLabels={(indexData as SearchIndex).gradeLabels} />
+  </main>
+</BaseLayout>

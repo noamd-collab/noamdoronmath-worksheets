@@ -1,0 +1,1958 @@
+{
+ "about": "Search benchmark written before the search implementation (commit order is the evidence). expected = acceptable result keys (topic:G:T catalog topic, page:/path topic page, post:fileSlug); a query passes when one of the top 3 results is in expected. grade = binding grade (explicit in the query or selected); context.grade = grade selected in the UI. dev cases may be used to tune; validation cases are only measured.",
+ "queries": [
+  {
+   "id": "Q001",
+   "set": "dev",
+   "query": "חיבור עד 10 כיתה א",
+   "context": {},
+   "grade": 1,
+   "kind": "grade-explicit",
+   "answerable": true,
+   "expected": [
+    "topic:1:5"
+   ],
+   "evidence": "1:5 \"חיבור בתחום 10\""
+  },
+  {
+   "id": "Q002",
+   "set": "validation",
+   "query": "חיסור בתחום 20",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:1:9"
+   ],
+   "evidence": "1:9 \"חיסור בתחום 20\""
+  },
+  {
+   "id": "Q003",
+   "set": "dev",
+   "query": "שעון לכיתה א",
+   "context": {},
+   "grade": 1,
+   "kind": "parent-phrasing",
+   "answerable": true,
+   "expected": [
+    "topic:1:20"
+   ],
+   "evidence": "1:20 \"שעה שלמה\"; search terms \"שעון מחוגים שעות זמן\""
+  },
+  {
+   "id": "Q004",
+   "set": "validation",
+   "query": "לוח המאה",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:1:12"
+   ],
+   "evidence": "1:12 \"חוקרים את לוח המאה\""
+  },
+  {
+   "id": "Q005",
+   "set": "dev",
+   "query": "דפוסים וסדרות",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:1:11"
+   ],
+   "evidence": "1:11 \"דפוסים וסדרות\""
+  },
+  {
+   "id": "Q006",
+   "set": "validation",
+   "query": "מצולעים לכיתה א",
+   "context": {},
+   "grade": 1,
+   "kind": "grade-explicit",
+   "answerable": true,
+   "expected": [
+    "topic:1:17"
+   ],
+   "evidence": "1:17 \"מצולעים\""
+  },
+  {
+   "id": "Q007",
+   "set": "dev",
+   "query": "בעיות מילוליות פשוטות",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:1:22",
+    "topic:1:14"
+   ],
+   "evidence": "1:22 \"בעיות מילוליות פשוטות\"; 1:14 \"בעיות מילוליות בציור ובמספר\""
+  },
+  {
+   "id": "Q008",
+   "set": "validation",
+   "query": "מודדים אורך",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:1:15",
+    "topic:2:23",
+    "topic:3:22",
+    "topic:4:21"
+   ],
+   "evidence": "1:15 \"מודדים ומשווים אורך\"; 2:23 \"מדידת אורך\"; 3:22 \"מדידות אורך סמ ומטר\"; 4:21 \"יחידות אורך והמרות\""
+  },
+  {
+   "id": "Q009",
+   "set": "dev",
+   "query": "פירמידות מספרים",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:1:13"
+   ],
+   "evidence": "1:13 \"שרשראות ופירמידות מספרים\""
+  },
+  {
+   "id": "Q010",
+   "set": "validation",
+   "query": "תרגילי חיבור וחיסור לכיתה א",
+   "context": {},
+   "grade": 1,
+   "kind": "parent-phrasing",
+   "answerable": true,
+   "expected": [
+    "topic:1:5",
+    "topic:1:6",
+    "topic:1:8",
+    "topic:1:9",
+    "post:addition-subtraction-grade-1"
+   ],
+   "evidence": "grade 1 addition/subtraction topics; post \"תרגילי חיבור וחיסור לכיתה א׳\""
+  },
+  {
+   "id": "Q011",
+   "set": "dev",
+   "query": "חיבור דו ספרתי עם המרה",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:2:6"
+   ],
+   "evidence": "2:6 \"חיבור דו ספרתי עם המרה\""
+  },
+  {
+   "id": "Q012",
+   "set": "validation",
+   "query": "חיסור עם פריטה כיתה ב",
+   "context": {},
+   "grade": 2,
+   "kind": "grade-explicit",
+   "answerable": true,
+   "expected": [
+    "topic:2:8"
+   ],
+   "evidence": "2:8 \"חיסור דו ספרתי עם פריטה\""
+  },
+  {
+   "id": "Q013",
+   "set": "dev",
+   "query": "חצי ורבע",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:2:26"
+   ],
+   "evidence": "2:26 \"חצי ורבע\""
+  },
+  {
+   "id": "Q014",
+   "set": "validation",
+   "query": "זוגי ואי זוגי",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:2:21",
+    "topic:2:22"
+   ],
+   "evidence": "2:21/22 \"זוגי אי זוגי וסדרות\""
+  },
+  {
+   "id": "Q015",
+   "set": "dev",
+   "query": "כפל בקבוצות שוות",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:2:16",
+    "topic:2:20"
+   ],
+   "evidence": "2:16 \"כפל קבוצות שוות ומערכים\"; 2:20 \"פי בקבוצות שוות\""
+  },
+  {
+   "id": "Q016",
+   "set": "validation",
+   "query": "חילוק לחלקים שווים",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:2:18"
+   ],
+   "evidence": "2:18 \"חילוק לחלקים שווים\""
+  },
+  {
+   "id": "Q017",
+   "set": "dev",
+   "query": "סימטריה",
+   "context": {},
+   "grade": null,
+   "kind": "spelling-variant",
+   "answerable": true,
+   "expected": [
+    "topic:2:29",
+    "topic:4:26"
+   ],
+   "evidence": "2:29 \"סימטרייה שיקופית אינטואיטיבית\"; 4:26 \"סימטריה שיקופית וסיבובית\""
+  },
+  {
+   "id": "Q018",
+   "set": "validation",
+   "query": "כסף כיתה ב",
+   "context": {},
+   "grade": 2,
+   "kind": "grade-explicit",
+   "answerable": true,
+   "expected": [
+    "topic:2:11",
+    "topic:2:24"
+   ],
+   "evidence": "2:11 \"בעיות מילוליות וכסף\"; 2:24 \"בעיות מילוליות וכסף פשוט\""
+  },
+  {
+   "id": "Q019",
+   "set": "dev",
+   "query": "שעון ומשך זמן",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:2:25"
+   ],
+   "evidence": "2:25 \"שעון ומשך זמן\""
+  },
+  {
+   "id": "Q020",
+   "set": "validation",
+   "query": "מאות עשרות ויחידות",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:2:13"
+   ],
+   "evidence": "2:13 \"מאות עשרות ויחידות\""
+  },
+  {
+   "id": "Q021",
+   "set": "dev",
+   "query": "ערך מקום כיתה ג",
+   "context": {},
+   "grade": 3,
+   "kind": "grade-explicit",
+   "answerable": true,
+   "expected": [
+    "topic:3:1"
+   ],
+   "evidence": "3:1 \"ערך מקום\""
+  },
+  {
+   "id": "Q022",
+   "set": "validation",
+   "query": "חיבור בטור",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:3:6",
+    "topic:4:3"
+   ],
+   "evidence": "3:6 \"חיבור בטור עם המרה\"; 4:3 \"חיבור רב ספרתי בטור\""
+  },
+  {
+   "id": "Q023",
+   "set": "dev",
+   "query": "שברי יחידה",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:3:11"
+   ],
+   "evidence": "3:11 \"שברי יחידה וחלק משלם\""
+  },
+  {
+   "id": "Q024",
+   "set": "validation",
+   "query": "סוגי זוויות",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:3:12",
+    "topic:4:19"
+   ],
+   "evidence": "3:12 \"זווית וסוגי זוויות\"; 4:19 \"סוגי זוויות\""
+  },
+  {
+   "id": "Q025",
+   "set": "dev",
+   "query": "היקף מצולעים",
+   "context": {},
+   "grade": null,
+   "kind": "math-distinction",
+   "answerable": true,
+   "expected": [
+    "topic:3:15",
+    "topic:7:44"
+   ],
+   "evidence": "3:15 \"היקף מצולעים\"; 7:44 \"חישובי היקף — צורות מורכבות\" (perimeter, not area)"
+  },
+  {
+   "id": "Q026",
+   "set": "validation",
+   "query": "מיון משולשים",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:3:16",
+    "topic:4:20",
+    "topic:4:28"
+   ],
+   "evidence": "3:16/4:20 \"מיון משולשים\"; 4:28 \"משולשים מיון ובנייה\""
+  },
+  {
+   "id": "Q027",
+   "set": "dev",
+   "query": "דיאגרמה כיתה ג",
+   "context": {},
+   "grade": 3,
+   "kind": "grade-explicit",
+   "answerable": true,
+   "expected": [
+    "topic:3:20"
+   ],
+   "evidence": "3:20 \"קוראים דיאגרמה\""
+  },
+  {
+   "id": "Q028",
+   "set": "validation",
+   "query": "רבבה",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:3:4"
+   ],
+   "evidence": "3:4 \"אל הרבבה\""
+  },
+  {
+   "id": "Q029",
+   "set": "dev",
+   "query": "חילוק ובדיקה בכפל",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:3:21"
+   ],
+   "evidence": "3:21 \"חילוק ובדיקה בכפל\""
+  },
+  {
+   "id": "Q030",
+   "set": "validation",
+   "query": "כסף לכיתה ג׳",
+   "context": {},
+   "grade": 3,
+   "kind": "grade-explicit",
+   "answerable": true,
+   "expected": [
+    "topic:3:25"
+   ],
+   "evidence": "3:25 \"כסף\""
+  },
+  {
+   "id": "Q031",
+   "set": "dev",
+   "query": "חילוק ארוך",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:4:10",
+    "topic:5:4"
+   ],
+   "evidence": "4:10 \"חילוק ארוך ושארית\"; 5:4 \"חילוק מאונך ושארית\""
+  },
+  {
+   "id": "Q032",
+   "set": "validation",
+   "query": "מספרים ראשוניים",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:4:15",
+    "topic:5:5"
+   ],
+   "evidence": "4:15 \"מספרים ראשוניים ופריקים\"; 5:5 \"גורמים ראשוניים ופריקים\""
+  },
+  {
+   "id": "Q033",
+   "set": "dev",
+   "query": "שברים שקולים",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:4:13",
+    "topic:4:11",
+    "topic:5:9"
+   ],
+   "evidence": "4:13 \"שברים שקולים…\"; 4:11 \"שבר ייצוגים ושמות שקולים\"; 5:9 \"הרחבה וצמצום שברים שקולים\""
+  },
+  {
+   "id": "Q034",
+   "set": "validation",
+   "query": "שטח והיקף של מלבן",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:4:22",
+    "topic:5:25"
+   ],
+   "evidence": "4:22 \"שטח והיקף של מלבן וריבוע\"; 5:25 \"שטח והיקף של מלבנים וריבועים\""
+  },
+  {
+   "id": "Q035",
+   "set": "dev",
+   "query": "סדר פעולות חשבון לכיתה ד",
+   "context": {},
+   "grade": 4,
+   "kind": "grade-explicit",
+   "answerable": true,
+   "expected": [
+    "topic:4:7"
+   ],
+   "evidence": "4:7 \"סדר פעולות חשבון\""
+  },
+  {
+   "id": "Q036",
+   "set": "validation",
+   "query": "כפל רב ספרתי",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:4:9",
+    "topic:5:3"
+   ],
+   "evidence": "4:9 \"כפל רב ספרתי\"; 5:3 \"כפל רב ספרתי ובדיקת סבירות\""
+  },
+  {
+   "id": "Q037",
+   "set": "dev",
+   "query": "תרגילי אתגר לכיתה ד",
+   "context": {},
+   "grade": 4,
+   "kind": "parent-phrasing",
+   "answerable": true,
+   "expected": [
+    "post:challenge-exercises-grade-4",
+    "topic:4:31"
+   ],
+   "evidence": "post \"תרגילי אתגר במתמטיקה לכיתה ד׳\"; 4:31 \"דף סיכום אינטגרטיבי\""
+  },
+  {
+   "id": "Q038",
+   "set": "validation",
+   "query": "שברים לכיתה ד",
+   "context": {},
+   "grade": 4,
+   "kind": "grade-explicit",
+   "answerable": true,
+   "expected": [
+    "topic:4:11",
+    "topic:4:12",
+    "topic:4:13",
+    "post:fractions-practice-grade-4"
+   ],
+   "evidence": "grade 4 fraction topics; post \"תרגול שברים לכיתה ד׳\""
+  },
+  {
+   "id": "Q039",
+   "set": "dev",
+   "query": "מקבילים ומאונכים",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:4:16",
+    "topic:5:22"
+   ],
+   "evidence": "4:16 \"מקבילים ומאונכים בצורות\"; 5:22 \"…קווים מקבילים מאונכים\""
+  },
+  {
+   "id": "Q040",
+   "set": "validation",
+   "query": "סימטריה סיבובית",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:4:26"
+   ],
+   "evidence": "4:26 \"סימטריה שיקופית וסיבובית\""
+  },
+  {
+   "id": "Q041",
+   "set": "dev",
+   "query": "מספרים עשרוניים כיתה ה",
+   "context": {},
+   "grade": 5,
+   "kind": "grade-explicit",
+   "answerable": true,
+   "expected": [
+    "topic:5:28",
+    "topic:5:29",
+    "topic:5:30"
+   ],
+   "evidence": "5:28/29/30 decimal topics"
+  },
+  {
+   "id": "Q042",
+   "set": "validation",
+   "query": "מכנה משותף",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:5:10",
+    "topic:5:11"
+   ],
+   "evidence": "5:10 \"מכנה משותף בחירה יעילה\"; 5:11 \"חיבור וחיסור שברים במכנים שונים\""
+  },
+  {
+   "id": "Q043",
+   "set": "dev",
+   "query": "מספרים מעורבים",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:5:13",
+    "topic:5:14",
+    "topic:6:4"
+   ],
+   "evidence": "5:13/14, 6:4 \"כפל מספרים מעורבים\""
+  },
+  {
+   "id": "Q044",
+   "set": "validation",
+   "query": "שטח משולש כיתה ה",
+   "context": {},
+   "grade": 5,
+   "kind": "grade-explicit",
+   "answerable": true,
+   "expected": [
+    "topic:5:31"
+   ],
+   "evidence": "5:31 \"שטח משולש בסיס וגובה\""
+  },
+  {
+   "id": "Q045",
+   "set": "dev",
+   "query": "שטח מקבילית",
+   "context": {},
+   "grade": null,
+   "kind": "math-distinction",
+   "answerable": true,
+   "expected": [
+    "topic:5:27",
+    "topic:7:45",
+    "topic:9:28",
+    "page:/area-parallelogram-trapezoid-composite-grade-7",
+    "page:/parallelogram-trapezoid-area-grade-9"
+   ],
+   "evidence": "5:27 \"שטח מקבילית והקשר למלבן\"; 7:45/9:28 \"שטחים ב׳ חלק 1 — מקבילית וטרפז\""
+  },
+  {
+   "id": "Q046",
+   "set": "validation",
+   "query": "ממוצע",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:5:33",
+    "topic:8:23"
+   ],
+   "evidence": "5:33 \"ממוצע וחקר נתונים\"; 8:23 \"הממוצע\""
+  },
+  {
+   "id": "Q047",
+   "set": "dev",
+   "query": "הכנה למבחן כיתה ה",
+   "context": {},
+   "grade": 5,
+   "kind": "parent-phrasing",
+   "answerable": true,
+   "expected": [
+    "post:exam-prep-grade-5-7-days"
+   ],
+   "evidence": "post \"הכנה למבחן במתמטיקה לכיתה ה׳ ב-7 ימים\""
+  },
+  {
+   "id": "Q048",
+   "set": "validation",
+   "query": "גובה במשולש",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:5:23",
+    "topic:5:24"
+   ],
+   "evidence": "5:23 \"גובה במשולש חד זווית וישר זווית\"; 5:24 \"גובה במשולש קהה ובמקבילית\""
+  },
+  {
+   "id": "Q049",
+   "set": "dev",
+   "query": "שיקוף סיבוב והזזה",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:5:35"
+   ],
+   "evidence": "5:35 \"שיקוף סיבוב והזזה\""
+  },
+  {
+   "id": "Q050",
+   "set": "validation",
+   "query": "חלק מכמות",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:5:12",
+    "topic:6:2",
+    "topic:6:19"
+   ],
+   "evidence": "5:12 \"חלק מכמות\"; 6:2 \"כפל כחלק מכמות ושטח\"; 6:19 \"אחוז כחלק מכמות\""
+  },
+  {
+   "id": "Q051",
+   "set": "dev",
+   "query": "חילוק שברים",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:6:6",
+    "topic:6:7",
+    "topic:6:8"
+   ],
+   "evidence": "6:6 \"משמעות חילוק שברים\"; 6:7 \"אלגוריתם חילוק שברים והופכי\"; 6:8"
+  },
+  {
+   "id": "Q052",
+   "set": "validation",
+   "query": "נפח תיבה",
+   "context": {},
+   "grade": null,
+   "kind": "math-distinction",
+   "answerable": true,
+   "expected": [
+    "topic:6:14",
+    "topic:7:20"
+   ],
+   "evidence": "6:14 \"נפח תיבה ומבנים\"; 7:20 \"תיבה וקובייה\" (volume & surface)"
+  },
+  {
+   "id": "Q053",
+   "set": "dev",
+   "query": "שטח פנים של תיבה",
+   "context": {},
+   "grade": null,
+   "kind": "math-distinction",
+   "answerable": true,
+   "expected": [
+    "topic:6:13",
+    "topic:7:20"
+   ],
+   "evidence": "6:13 \"שטח פנים של תיבה\"; 7:20 \"תיבה וקובייה\"; NOT 6:14 volume"
+  },
+  {
+   "id": "Q054",
+   "set": "validation",
+   "query": "אחוזים כיתה ו",
+   "context": {},
+   "grade": 6,
+   "kind": "grade-explicit",
+   "answerable": true,
+   "expected": [
+    "topic:6:18",
+    "topic:6:19",
+    "topic:6:20",
+    "post:when-learn-percentages-grade-6"
+   ],
+   "evidence": "6:18/19/20 percent topics; post \"מתי לומדים אחוזים … בכיתה ו׳\""
+  },
+  {
+   "id": "Q055",
+   "set": "dev",
+   "query": "יחס",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:6:21",
+    "topic:8:4"
+   ],
+   "evidence": "6:21 \"יחס משמעות ייצוג…\"; 8:4 \"יחס ופרופורציה\""
+  },
+  {
+   "id": "Q056",
+   "set": "validation",
+   "query": "קנה מידה",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:6:22",
+    "topic:8:5",
+    "topic:7:8"
+   ],
+   "evidence": "6:22 \"קנה מידה במפות\"; 8:5 \"קנה מידה\"; 7:8 \"מערכת צירים — היכרות וקנה מידה\""
+  },
+  {
+   "id": "Q057",
+   "set": "dev",
+   "query": "כפל מספרים עשרוניים",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:6:9"
+   ],
+   "evidence": "6:9 \"כפל מספרים עשרוניים\""
+  },
+  {
+   "id": "Q058",
+   "set": "validation",
+   "query": "גאומטריה כיתה ו",
+   "context": {},
+   "grade": 6,
+   "kind": "grade-explicit",
+   "answerable": true,
+   "expected": [
+    "post:geometry-grade-6-exams",
+    "topic:6:17",
+    "topic:6:11",
+    "topic:6:16"
+   ],
+   "evidence": "post \"איך לתרגל גאומטריה לכיתה ו׳\"; 6:17 \"דף סינתזה מדידות גאומטריה\"; 6:11 גופים; 6:16 מרובעים"
+  },
+  {
+   "id": "Q059",
+   "set": "dev",
+   "query": "ליטר וסמ״ק",
+   "context": {},
+   "grade": null,
+   "kind": "spelling-variant",
+   "answerable": true,
+   "expected": [
+    "topic:6:15"
+   ],
+   "evidence": "6:15 \"קיבול סמק ליטר ומק\" (gershayim normalisation)"
+  },
+  {
+   "id": "Q060",
+   "set": "validation",
+   "query": "קיבול",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:6:15"
+   ],
+   "evidence": "6:15 \"קיבול …\""
+  },
+  {
+   "id": "Q061",
+   "set": "dev",
+   "query": "מספרים מכוונים",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:7:1",
+    "topic:7:2",
+    "topic:7:3",
+    "topic:7:4",
+    "topic:7:5",
+    "page:/signed-numbers-grade-7",
+    "page:/number-line-absolute-value-grade-7",
+    "page:/multiplying-signed-numbers-grade-7",
+    "page:/dividing-signed-numbers-grade-7",
+    "page:/order-of-operations-signed-numbers-grade-7"
+   ],
+   "evidence": "7:1–5 \"…מספרים מכוונים\""
+  },
+  {
+   "id": "Q062",
+   "set": "validation",
+   "query": "ערך מוחלט",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:7:1",
+    "page:/number-line-absolute-value-grade-7"
+   ],
+   "evidence": "7:1 \"מספרים מכוונים — ישר המספרים וערך מוחלט\""
+  },
+  {
+   "id": "Q063",
+   "set": "dev",
+   "query": "זוויות צמודות",
+   "context": {},
+   "grade": null,
+   "kind": "math-distinction",
+   "answerable": true,
+   "expected": [
+    "topic:7:12",
+    "page:/adjacent-vertical-angles-grade-7",
+    "page:/angles-grade-7"
+   ],
+   "evidence": "7:12 \"זוויות חלק 2 — יחסים ופעולות\" (search terms צמודות קודקודיות sit on 7:13: SEARCH_TERMS_MISPLACED); pages \"זוויות צמודות וקודקודיות\""
+  },
+  {
+   "id": "Q064",
+   "set": "validation",
+   "query": "זוויות קודקודיות",
+   "context": {},
+   "grade": null,
+   "kind": "math-distinction",
+   "answerable": true,
+   "expected": [
+    "topic:7:12",
+    "page:/adjacent-vertical-angles-grade-7",
+    "page:/angles-grade-7"
+   ],
+   "evidence": "same evidence as זוויות צמודות"
+  },
+  {
+   "id": "Q065",
+   "set": "dev",
+   "query": "שורש ריבועי כיתה ז",
+   "context": {},
+   "grade": 7,
+   "kind": "math-distinction",
+   "answerable": true,
+   "expected": [
+    "topic:7:7",
+    "page:/square-root-grade-7"
+   ],
+   "evidence": "7:7 \"שורש ריבועי\"; NOT 7:6 חזקות"
+  },
+  {
+   "id": "Q066",
+   "set": "validation",
+   "query": "חזקות לכיתה ז׳",
+   "context": {},
+   "grade": 7,
+   "kind": "math-distinction",
+   "answerable": true,
+   "expected": [
+    "topic:7:6",
+    "page:/powers-grade-7"
+   ],
+   "evidence": "7:6 \"חזקות עם מעריך טבעי\"; NOT 7:7"
+  },
+  {
+   "id": "Q067",
+   "set": "dev",
+   "query": "משוואות דו שלביות",
+   "context": {},
+   "grade": null,
+   "kind": "spelling-variant",
+   "answerable": true,
+   "expected": [
+    "topic:7:35",
+    "post:two-step-equations-grade-7",
+    "page:/equations-basics-grade-7"
+   ],
+   "evidence": "7:35 \"משוואות דו־שלביות\" (maqaf vs space)"
+  },
+  {
+   "id": "Q068",
+   "set": "validation",
+   "query": "הנעלם בשני האגפים",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:7:39",
+    "page:/equations-both-sides-word-problems-grade-7",
+    "post:unknown-on-both-sides-grade-7"
+   ],
+   "evidence": "7:39 \"הנעלם בשני האגפים\""
+  },
+  {
+   "id": "Q069",
+   "set": "dev",
+   "query": "פיתגורס כיתה ז",
+   "context": {},
+   "grade": 7,
+   "kind": "grade-explicit",
+   "answerable": true,
+   "expected": [
+    "topic:7:42",
+    "topic:7:43",
+    "page:/pythagorean-theorem-grade-7",
+    "page:/pythagoras-applications-grade-7"
+   ],
+   "evidence": "7:42/43 \"פיתגורס חלק 1/2\""
+  },
+  {
+   "id": "Q070",
+   "set": "validation",
+   "query": "הסתברות כיתה ז",
+   "context": {},
+   "grade": 7,
+   "kind": "grade-explicit",
+   "answerable": true,
+   "expected": [
+    "topic:7:28",
+    "post:probability-introduction-grade-7"
+   ],
+   "evidence": "7:28 \"הסתברות — היכרות\""
+  },
+  {
+   "id": "Q071",
+   "set": "dev",
+   "query": "שכיחות יחסית",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:7:26",
+    "topic:7:27",
+    "post:relative-frequency-introduction-grade-7",
+    "post:relative-frequency-experiments-grade-7"
+   ],
+   "evidence": "7:26/27 \"שכיחות יחסית חלק 1/2\""
+  },
+  {
+   "id": "Q072",
+   "set": "validation",
+   "query": "מנסרה משולשת שטח פנים",
+   "context": {},
+   "grade": null,
+   "kind": "math-distinction",
+   "answerable": true,
+   "expected": [
+    "topic:7:48",
+    "topic:9:31",
+    "page:/triangular-prism-surface-area-grade-9",
+    "post:triangular-prism-surface-area-grade-7"
+   ],
+   "evidence": "7:48/9:31 \"מנסרה משולשת חלק 2 — שטח פנים\"; NOT volume"
+  },
+  {
+   "id": "Q073",
+   "set": "dev",
+   "query": "מנסרה נפח",
+   "context": {},
+   "grade": null,
+   "kind": "math-distinction",
+   "answerable": true,
+   "expected": [
+    "topic:7:47",
+    "topic:9:30",
+    "page:/triangular-prism-volume-grade-9",
+    "post:triangular-prism-volume-grade-7"
+   ],
+   "evidence": "7:47/9:30 \"מנסרה משולשת חלק 1 — מבנה ונפח\""
+  },
+  {
+   "id": "Q074",
+   "set": "validation",
+   "query": "היקף צורות מורכבות",
+   "context": {},
+   "grade": null,
+   "kind": "math-distinction",
+   "answerable": true,
+   "expected": [
+    "topic:7:44",
+    "topic:4:23",
+    "post:perimeter-complex-shapes-algebra-grade-7"
+   ],
+   "evidence": "7:44 \"חישובי היקף — צורות מורכבות\"; 4:23 \"שטח והיקף של צורות מורכבות\"; NOT 7:46 (area only)"
+  },
+  {
+   "id": "Q075",
+   "set": "dev",
+   "query": "שטח משולש לכיתה ז",
+   "context": {},
+   "grade": 7,
+   "kind": "grade-explicit",
+   "answerable": true,
+   "expected": [
+    "topic:7:19",
+    "page:/triangle-area-grade-7"
+   ],
+   "evidence": "7:19 \"שטח משולש — העמקה\""
+  },
+  {
+   "id": "Q076",
+   "set": "validation",
+   "query": "ביטויים אלגבריים",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:7:22",
+    "topic:7:23",
+    "page:/algebraic-expressions-grade-7",
+    "post:variables-and-algebraic-modeling-grade-7",
+    "post:substitution-in-algebraic-expressions-grade-7"
+   ],
+   "evidence": "7:22 \"משתנים וביטויים אלגבריים\"; 7:23 \"הצבה בביטויים אלגבריים\""
+  },
+  {
+   "id": "Q077",
+   "set": "dev",
+   "query": "כינוס איברים",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:7:29",
+    "page:/combining-like-terms-grade-7"
+   ],
+   "evidence": "7:29 \"שוויון ביטויים חלק 1 — כינוס ופילוג\""
+  },
+  {
+   "id": "Q078",
+   "set": "validation",
+   "query": "מערכת צירים כיתה ז",
+   "context": {},
+   "grade": 7,
+   "kind": "grade-explicit",
+   "answerable": true,
+   "expected": [
+    "topic:7:8",
+    "topic:7:9",
+    "topic:7:10",
+    "page:/coordinate-plane-scale-grade-7",
+    "page:/coordinate-plane-four-quadrants-grade-7",
+    "page:/coordinate-plane-quadrants-grade-7",
+    "page:/coordinate-plane-applications-grade-7"
+   ],
+   "evidence": "7:8/9/10 coordinate-plane topics"
+  },
+  {
+   "id": "Q079",
+   "set": "dev",
+   "query": "רביע ראשון",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:7:31",
+    "post:first-quadrant-graph-points-grade-7"
+   ],
+   "evidence": "7:31 \"נקודות על גרף ברביע הראשון\""
+  },
+  {
+   "id": "Q080",
+   "set": "validation",
+   "query": "חזרה שנתית כיתה ז",
+   "context": {},
+   "grade": 7,
+   "kind": "grade-explicit",
+   "answerable": true,
+   "expected": [
+    "topic:7:49",
+    "post:annual-review-grade-7"
+   ],
+   "evidence": "7:49 \"חזרה שנתית\""
+  },
+  {
+   "id": "Q081",
+   "set": "dev",
+   "query": "משוואות ליניאריות",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:8:2",
+    "page:/linear-equations-grade-8"
+   ],
+   "evidence": "8:2 \"משוואות ליניאריות\""
+  },
+  {
+   "id": "Q082",
+   "set": "validation",
+   "query": "אחוזים כיתה ח",
+   "context": {},
+   "grade": 8,
+   "kind": "grade-explicit",
+   "answerable": true,
+   "expected": [
+    "topic:8:6",
+    "topic:8:7",
+    "topic:8:8",
+    "topic:8:9",
+    "page:/percentage-problems-grade-8"
+   ],
+   "evidence": "8:6–9 percent topics"
+  },
+  {
+   "id": "Q083",
+   "set": "dev",
+   "query": "גליל נפח",
+   "context": {},
+   "grade": null,
+   "kind": "math-distinction",
+   "answerable": true,
+   "expected": [
+    "topic:8:14",
+    "page:/cylinder-volume-grade-8"
+   ],
+   "evidence": "8:14 \"גליל — נפח\"; NOT 8:13"
+  },
+  {
+   "id": "Q084",
+   "set": "validation",
+   "query": "שטח פנים גליל",
+   "context": {},
+   "grade": null,
+   "kind": "math-distinction",
+   "answerable": true,
+   "expected": [
+    "topic:8:13",
+    "page:/cylinder-surface-area-grade-8"
+   ],
+   "evidence": "8:13 \"גליל — שטח פנים\"; NOT 8:14"
+  },
+  {
+   "id": "Q085",
+   "set": "dev",
+   "query": "חרוט",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:8:15",
+    "page:/cone-grade-8"
+   ],
+   "evidence": "8:15 \"חרוט\""
+  },
+  {
+   "id": "Q086",
+   "set": "validation",
+   "query": "חפיפת משולשים",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:8:36",
+    "topic:8:37",
+    "topic:8:65",
+    "page:/triangle-congruence-grade-8",
+    "page:/triangle-congruence-proofs-grade-8",
+    "page:/congruence-theorems-grade-8"
+   ],
+   "evidence": "8:36 \"חפיפת משולשים\"; 8:37 \"משפטי חפיפה\"; 8:65 \"הוכחות בחפיפת משולשים\""
+  },
+  {
+   "id": "Q087",
+   "set": "dev",
+   "query": "דמיון משולשים כיתה ח",
+   "context": {},
+   "grade": 8,
+   "kind": "grade-explicit",
+   "answerable": true,
+   "expected": [
+    "topic:8:43",
+    "topic:8:44",
+    "topic:8:45",
+    "page:/similar-triangles-grade-8",
+    "page:/triangle-similarity-proof-grade-8",
+    "page:/similar-triangles-area-ratio-grade-8"
+   ],
+   "evidence": "8:43/44/45 similarity topics"
+  },
+  {
+   "id": "Q088",
+   "set": "validation",
+   "query": "פונקציה קווית לכיתה ח",
+   "context": {},
+   "grade": 8,
+   "kind": "grade-explicit",
+   "answerable": true,
+   "expected": [
+    "topic:8:29",
+    "page:/linear-function-grade-8"
+   ],
+   "evidence": "8:29 \"פונקציה קווית\"; NOT 9:34"
+  },
+  {
+   "id": "Q089",
+   "set": "dev",
+   "query": "מערכות משוואות",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:8:47",
+    "topic:8:48",
+    "topic:8:49",
+    "topic:9:8",
+    "page:/systems-of-equations-grade-8",
+    "page:/quadratic-inequalities-systems-grade-9"
+   ],
+   "evidence": "8:47/48/49 \"מערכות — …\"; 9:8 \"…ומערכות משוואות\""
+  },
+  {
+   "id": "Q090",
+   "set": "validation",
+   "query": "חציון",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:8:24"
+   ],
+   "evidence": "8:24 \"החציון\""
+  },
+  {
+   "id": "Q091",
+   "set": "dev",
+   "query": "דיאגרמת עוגה",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:8:18"
+   ],
+   "evidence": "8:18 \"דיאגרמת עוגה\""
+  },
+  {
+   "id": "Q092",
+   "set": "validation",
+   "query": "מעגל ועיגול היקף ושטח",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:8:63",
+    "page:/circle-area-circumference-grade-8"
+   ],
+   "evidence": "8:63 \"מעגל ועיגול — היקף ושטח\""
+  },
+  {
+   "id": "Q093",
+   "set": "dev",
+   "query": "זווית חיצונית",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:8:39",
+    "page:/exterior-angle-triangle-grade-8"
+   ],
+   "evidence": "8:39 \"זווית חיצונית\""
+  },
+  {
+   "id": "Q094",
+   "set": "validation",
+   "query": "אי שוויון כיתה ח",
+   "context": {},
+   "grade": 8,
+   "kind": "spelling-variant",
+   "answerable": true,
+   "expected": [
+    "topic:8:52",
+    "topic:8:53",
+    "page:/inequalities-grade-8"
+   ],
+   "evidence": "8:52 \"אי־שוויון\"; 8:53 \"אי־שוויון גרפי\" (maqaf vs space)"
+  },
+  {
+   "id": "Q095",
+   "set": "dev",
+   "query": "שיפוע",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:8:28"
+   ],
+   "evidence": "8:28 \"שיפוע וישר y=mx\""
+  },
+  {
+   "id": "Q096",
+   "set": "validation",
+   "query": "פירוק לגורמים",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:9:2",
+    "topic:9:41",
+    "topic:9:42",
+    "topic:9:43",
+    "page:/factoring-grade-9"
+   ],
+   "evidence": "9:2 \"פירוק לגורמים\" (+ subtopics 41–43)"
+  },
+  {
+   "id": "Q097",
+   "set": "dev",
+   "query": "הפרש ריבועים",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:9:45",
+    "page:/difference-of-squares-grade-9"
+   ],
+   "evidence": "9:45 \"הפרש ריבועים\""
+  },
+  {
+   "id": "Q098",
+   "set": "validation",
+   "query": "נוסחת השורשים",
+   "context": {},
+   "grade": null,
+   "kind": "math-distinction",
+   "answerable": true,
+   "expected": [
+    "topic:9:6",
+    "page:/quadratic-equations-grade-9"
+   ],
+   "evidence": "9:6 \"משוואות ריבועיות ונוסחת השורשים\"; NOT 9:17 שורשים"
+  },
+  {
+   "id": "Q099",
+   "set": "dev",
+   "query": "פונקציה ריבועית",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:9:5",
+    "page:/quadratic-function-grade-9"
+   ],
+   "evidence": "9:5 \"הפונקציה הריבועית\""
+  },
+  {
+   "id": "Q100",
+   "set": "validation",
+   "query": "חוקי חזקות",
+   "context": {},
+   "grade": null,
+   "kind": "math-distinction",
+   "answerable": true,
+   "expected": [
+    "topic:9:16",
+    "page:/exponent-rules-grade-9"
+   ],
+   "evidence": "9:16 \"חוקי חזקות\"; NOT 9:17"
+  },
+  {
+   "id": "Q101",
+   "set": "dev",
+   "query": "שורשים כיתה ט",
+   "context": {},
+   "grade": 9,
+   "kind": "math-distinction",
+   "answerable": true,
+   "expected": [
+    "topic:9:17",
+    "page:/square-roots-grade-9"
+   ],
+   "evidence": "9:17 \"שורשים\"; NOT 9:16"
+  },
+  {
+   "id": "Q102",
+   "set": "validation",
+   "query": "משולש 30 60 90",
+   "context": {},
+   "grade": null,
+   "kind": "spelling-variant",
+   "answerable": true,
+   "expected": [
+    "topic:9:37",
+    "page:/triangle-30-60-90-grade-9"
+   ],
+   "evidence": "9:37 \"משולש ישר זווית 30-60-90\" (hyphen vs space)"
+  },
+  {
+   "id": "Q103",
+   "set": "dev",
+   "query": "טרפז כיתה ט",
+   "context": {},
+   "grade": 9,
+   "kind": "grade-explicit",
+   "answerable": true,
+   "expected": [
+    "topic:9:39",
+    "topic:9:28",
+    "page:/trapezoid-grade-9",
+    "page:/parallelogram-trapezoid-area-grade-9"
+   ],
+   "evidence": "9:39 \"הטרפז\"; 9:28 \"…מקבילית וטרפז\""
+  },
+  {
+   "id": "Q104",
+   "set": "validation",
+   "query": "מעוין",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:9:13",
+    "page:/rhombus-grade-9"
+   ],
+   "evidence": "9:13 \"המעוין\""
+  },
+  {
+   "id": "Q105",
+   "set": "dev",
+   "query": "הסתברות לכיתה ט",
+   "context": {},
+   "grade": 9,
+   "kind": "grade-explicit",
+   "answerable": true,
+   "expected": [
+    "topic:9:10",
+    "page:/probability-grade-9"
+   ],
+   "evidence": "9:10 \"הסתברות\""
+  },
+  {
+   "id": "Q106",
+   "set": "validation",
+   "query": "מעבר לתיכון",
+   "context": {},
+   "grade": null,
+   "kind": "synonym",
+   "answerable": true,
+   "expected": [
+    "topic:9:20",
+    "page:/transition-to-high-school-grade-9"
+   ],
+   "evidence": "9:20 \"מעבר לחטיבה העליונה\" (תיכון = חטיבה עליונה)"
+  },
+  {
+   "id": "Q107",
+   "set": "dev",
+   "query": "דו איבר בריבוע",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:9:44",
+    "page:/binomial-square-grade-9"
+   ],
+   "evidence": "9:44 \"דו איבר בריבוע\""
+  },
+  {
+   "id": "Q108",
+   "set": "validation",
+   "query": "פיטגורס",
+   "context": {},
+   "grade": null,
+   "kind": "typo",
+   "answerable": true,
+   "expected": [
+    "topic:7:42",
+    "topic:7:43",
+    "topic:8:11",
+    "topic:8:12",
+    "topic:8:54",
+    "topic:9:24",
+    "topic:9:25",
+    "topic:9:35"
+   ],
+   "evidence": "typo of פיתגורס"
+  },
+  {
+   "id": "Q109",
+   "set": "dev",
+   "query": "משואות",
+   "context": {},
+   "grade": null,
+   "kind": "typo",
+   "answerable": true,
+   "expected": [
+    "topic:7:32",
+    "topic:7:33",
+    "topic:7:34",
+    "topic:7:35",
+    "topic:7:36",
+    "topic:7:37",
+    "topic:7:39",
+    "topic:7:40",
+    "topic:7:41",
+    "topic:8:2",
+    "topic:8:47",
+    "topic:8:48",
+    "topic:8:49",
+    "topic:9:6",
+    "topic:9:8"
+   ],
+   "evidence": "typo of משוואות; any equations topic"
+  },
+  {
+   "id": "Q110",
+   "set": "validation",
+   "query": "שברים עשרוניים",
+   "context": {},
+   "grade": null,
+   "kind": "synonym",
+   "answerable": true,
+   "expected": [
+    "topic:5:28",
+    "topic:5:29",
+    "topic:5:30",
+    "topic:6:9",
+    "topic:6:10",
+    "topic:6:18",
+    "post:decimals-practice-grade-6"
+   ],
+   "evidence": "synonym of מספרים עשרוניים; 6:18 \"שבר עשרוני ואחוז\""
+  },
+  {
+   "id": "Q111",
+   "set": "dev",
+   "query": "גיאומטריה אנליטית",
+   "context": {},
+   "grade": null,
+   "kind": "spelling-variant",
+   "answerable": true,
+   "expected": [
+    "topic:9:15",
+    "page:/analytic-geometry-grade-9"
+   ],
+   "evidence": "9:15 \"גיאומטריה אנליטית\"; page \"גאומטריה אנליטית\""
+  },
+  {
+   "id": "Q112",
+   "set": "validation",
+   "query": "שטח הטרפז",
+   "context": {},
+   "grade": null,
+   "kind": "math-distinction",
+   "answerable": true,
+   "expected": [
+    "topic:7:45",
+    "topic:9:28",
+    "topic:9:39",
+    "page:/area-parallelogram-trapezoid-composite-grade-7",
+    "page:/parallelogram-trapezoid-area-grade-9",
+    "page:/trapezoid-grade-9"
+   ],
+   "evidence": "7:45/9:28 \"…מקבילית וטרפז\"; 9:39 \"הטרפז\" page shows trapezoid area"
+  },
+  {
+   "id": "Q113",
+   "set": "dev",
+   "query": "לוח הכפל",
+   "context": {},
+   "grade": null,
+   "kind": "synonym",
+   "answerable": true,
+   "expected": [
+    "post:multiplication-table-worksheets",
+    "topic:3:9",
+    "topic:2:19",
+    "topic:2:16"
+   ],
+   "evidence": "post \"דפי עבודה ללוח הכפל\"; 3:9 \"כפל עובדות ומבנים\"; 2:19 \"משפחת כפל וחילוק\"; 2:16"
+  },
+  {
+   "id": "Q114",
+   "set": "validation",
+   "query": "הילד שלי מתקשה בשברים כיתה ה",
+   "context": {},
+   "grade": 5,
+   "kind": "parent-phrasing",
+   "answerable": true,
+   "expected": [
+    "topic:5:7",
+    "topic:5:8",
+    "topic:5:9",
+    "topic:5:10",
+    "topic:5:11",
+    "topic:5:12",
+    "topic:5:13",
+    "topic:5:14",
+    "topic:5:15",
+    "topic:5:32"
+   ],
+   "evidence": "grade 5 fraction topics 5:7–15, 5:32"
+  },
+  {
+   "id": "Q115",
+   "set": "dev",
+   "query": "תרגול לפני מבחן בגאומטריה כיתה ו",
+   "context": {},
+   "grade": 6,
+   "kind": "parent-phrasing",
+   "answerable": true,
+   "expected": [
+    "post:geometry-grade-6-exams",
+    "topic:6:17"
+   ],
+   "evidence": "post \"איך לתרגל גאומטריה לכיתה ו׳ ולהצליח במבחנים\""
+  },
+  {
+   "id": "Q116",
+   "set": "validation",
+   "query": "איך פותרים משוואה",
+   "context": {},
+   "grade": null,
+   "kind": "parent-phrasing",
+   "answerable": true,
+   "expected": [
+    "topic:7:32",
+    "topic:7:33",
+    "topic:7:34",
+    "topic:7:35",
+    "page:/equations-basics-grade-7",
+    "post:what-is-an-equation-solution-grade-7",
+    "post:equations-grade-8-practice",
+    "post:one-step-equations-grade-7",
+    "post:two-step-equations-grade-7"
+   ],
+   "evidence": "7:32 \"מהו פתרון של משוואה\"; 7:33 \"משוואות ופתרונן חלק 1 — מבוא\"; posts on solving equations"
+  },
+  {
+   "id": "Q117",
+   "set": "dev",
+   "query": "נקודות על גרף",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:7:31",
+    "post:first-quadrant-graph-points-grade-7"
+   ],
+   "evidence": "7:31 \"נקודות על גרף ברביע הראשון\""
+  },
+  {
+   "id": "Q118",
+   "set": "validation",
+   "query": "y=mx",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:8:28"
+   ],
+   "evidence": "8:28 \"שיפוע וישר y=mx\""
+  },
+  {
+   "id": "Q119",
+   "set": "dev",
+   "query": "כיתה ט׳ סטטיסטיקה",
+   "context": {},
+   "grade": 9,
+   "kind": "grade-explicit",
+   "answerable": true,
+   "expected": [
+    "topic:9:9",
+    "page:/statistics-grade-9"
+   ],
+   "evidence": "9:9 \"סטטיסטיקה\""
+  },
+  {
+   "id": "Q120",
+   "set": "validation",
+   "query": "אחוזים",
+   "context": {},
+   "grade": null,
+   "kind": "topic-name",
+   "answerable": true,
+   "expected": [
+    "topic:6:18",
+    "topic:6:19",
+    "topic:6:20",
+    "topic:8:6",
+    "topic:8:7",
+    "topic:8:8",
+    "topic:8:9",
+    "page:/percentage-problems-grade-8",
+    "post:percentages-exercises-grade-7",
+    "post:when-learn-percentages-grade-6"
+   ],
+   "evidence": "percent topics in grades 6 and 8; posts on percentages"
+  },
+  {
+   "id": "Q121",
+   "set": "dev",
+   "query": "שברים",
+   "context": {
+    "grade": 5
+   },
+   "grade": 5,
+   "kind": "context-grade",
+   "answerable": true,
+   "expected": [
+    "topic:5:7",
+    "topic:5:8",
+    "topic:5:9",
+    "topic:5:10",
+    "topic:5:11",
+    "topic:5:12",
+    "topic:5:13",
+    "topic:5:14",
+    "topic:5:15",
+    "topic:5:29",
+    "topic:5:32"
+   ],
+   "evidence": "grade 5 selected: fraction topics only"
+  },
+  {
+   "id": "Q122",
+   "set": "validation",
+   "query": "פיתגורס",
+   "context": {
+    "grade": 8
+   },
+   "grade": 8,
+   "kind": "context-grade",
+   "answerable": true,
+   "expected": [
+    "topic:8:11",
+    "topic:8:12",
+    "topic:8:54",
+    "page:/pythagorean-theorem-grade-8",
+    "page:/advanced-pythagoras-grade-8",
+    "page:/pythagoras-in-space-grade-8"
+   ],
+   "evidence": "grade 8 selected: 8:11 \"פיתגורס\", 8:12, 8:54"
+  },
+  {
+   "id": "Q123",
+   "set": "dev",
+   "query": "שעון",
+   "context": {
+    "grade": 2
+   },
+   "grade": 2,
+   "kind": "context-grade",
+   "answerable": true,
+   "expected": [
+    "topic:2:25"
+   ],
+   "evidence": "grade 2 selected: 2:25 \"שעון ומשך זמן\""
+  },
+  {
+   "id": "Q124",
+   "set": "validation",
+   "query": "שטח משולש",
+   "context": {
+    "grade": 9
+   },
+   "grade": 9,
+   "kind": "context-grade",
+   "answerable": true,
+   "expected": [
+    "topic:9:27",
+    "page:/triangle-area-grade-9"
+   ],
+   "evidence": "grade 9 selected: 9:27 \"שטח משולש — העמקה — לכיתה ט׳\""
+  },
+  {
+   "id": "Q125",
+   "set": "dev",
+   "query": "חזקות כיתה ט",
+   "context": {
+    "grade": 7
+   },
+   "grade": 9,
+   "kind": "grade-explicit",
+   "answerable": true,
+   "expected": [
+    "topic:9:16",
+    "page:/exponent-rules-grade-9"
+   ],
+   "evidence": "explicit grade 9 overrides the selected grade 7"
+  },
+  {
+   "id": "Q126",
+   "set": "validation",
+   "query": "טריגונומטריה",
+   "context": {},
+   "grade": null,
+   "kind": "no-answer",
+   "answerable": false,
+   "expected": [],
+   "evidence": "no trigonometry in catalog, pages or posts"
+  },
+  {
+   "id": "Q127",
+   "set": "dev",
+   "query": "נגזרת",
+   "context": {},
+   "grade": null,
+   "kind": "no-answer",
+   "answerable": false,
+   "expected": [],
+   "evidence": "no derivatives"
+  },
+  {
+   "id": "Q128",
+   "set": "validation",
+   "query": "מטריצות",
+   "context": {},
+   "grade": null,
+   "kind": "no-answer",
+   "answerable": false,
+   "expected": [],
+   "evidence": "no matrices"
+  },
+  {
+   "id": "Q129",
+   "set": "dev",
+   "query": "מספרים מרוכבים",
+   "context": {},
+   "grade": null,
+   "kind": "no-answer",
+   "answerable": false,
+   "expected": [],
+   "evidence": "no complex numbers"
+  },
+  {
+   "id": "Q130",
+   "set": "validation",
+   "query": "דפי עבודה באנגלית",
+   "context": {},
+   "grade": null,
+   "kind": "no-answer",
+   "answerable": false,
+   "expected": [],
+   "evidence": "site has no English worksheets"
+  },
+  {
+   "id": "Q131",
+   "set": "dev",
+   "query": "לוגריתמים",
+   "context": {},
+   "grade": null,
+   "kind": "no-answer",
+   "answerable": false,
+   "expected": [],
+   "evidence": "no logarithms"
+  },
+  {
+   "id": "Q132",
+   "set": "validation",
+   "query": "שטח כדור",
+   "context": {},
+   "grade": null,
+   "kind": "no-answer",
+   "answerable": false,
+   "expected": [],
+   "evidence": "no sphere topic (only כדורגל in a post body)"
+  },
+  {
+   "id": "Q133",
+   "set": "dev",
+   "query": "משוואות כיתה ג",
+   "context": {},
+   "grade": 3,
+   "kind": "no-answer",
+   "answerable": false,
+   "expected": [],
+   "evidence": "grade 3 has no equations topic: expect no grade-3 result and an offer to search other grades"
+  }
+ ]
+}

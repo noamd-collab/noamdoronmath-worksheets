@@ -20,7 +20,8 @@ export type ActiveNavKey =
   | 'blog'
   | 'tools'
   | 'highschool'
-  | 'teachers';
+  | 'teachers'
+  | 'search';
 
 /** Which of the two worksheets nav items should be `aria-current`. */
 export type WorksheetsNavBand = SchoolLevelParam;
@@ -54,6 +55,7 @@ export function resolveActiveNav(pathname: string): ActiveNavKey | null {
   if (path === '/') return 'home';
   if (path === '/aboutus') return 'about';
   if (path === '/math-tools' || path === '/games/kefel-mekutsar-2' || path === '/games/eliyahu-pythagoras') return 'tools';
+  if (path === '/search') return 'search';
   if (path === '/high-school-math' || path === '/high-school-math-1') {
     return 'highschool';
   }

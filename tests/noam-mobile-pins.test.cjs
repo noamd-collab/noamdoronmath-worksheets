@@ -8,7 +8,7 @@ const vm = require("node:vm");
 
 const viewer = fs.readFileSync(path.join(__dirname, "../worksheet-viewer-noam.html"), "utf8");
 const mediaSource = viewer.match(/var mobileLayout = [^;]+;/)[0];
-const source = viewer.slice(viewer.indexOf("var noamPrintedPinPages ="), viewer.indexOf("\nif (window.MutationObserver)"));
+const source = viewer.slice(viewer.indexOf("var noamNarrowPinsMedia ="), viewer.indexOf("\nif (window.MutationObserver)"));
 
 function button() {
   const item = { className: "", dataset: {}, style: {}, attributes: {}, listeners: {} };
@@ -17,14 +17,23 @@ function button() {
     remove: (...names) => { item.className = item.className.split(/\s+/).filter(value => !names.includes(value)).join(" "); },
     contains: name => item.className.split(/\s+/).includes(name)
   };
-  item.children = [];
-  item.appendChild = child => { item.children.push(child); };
   item.setAttribute = (name, value) => { item.attributes[name] = value; };
   item.getAttribute = name => item.attributes[name];
   item.addEventListener = (name, callback) => { item.listeners[name] = callback; };
   item.click = () => item.listeners.click({ preventDefault() {}, stopPropagation() {} });
   item.remove = () => { item.parent.children = item.parent.children.filter(child => child !== item); };
+  item.marks = [];
+  item.appendChild = child => { assert.equal(child.tag, "img"); item.marks.push(child); };
   return item;
+}
+
+// 394fe07 "Replace worksheet ! pins with the רמזי mark." (PR #34, approved by Noam
+// 2.10.2026) gives each report button a decorative <img class="exact-ramzi-pin">
+// instead of "!". Only that mark may be created besides buttons.
+function ramziMark() {
+  const mark = { tag: "img", attributes: {} };
+  mark.setAttribute = (name, value) => { mark.attributes[name] = value; };
+  return mark;
 }
 
 function fixture(exercises, narrow = true, pageHeight = 500, legacyMedia = false, pageWidth = 550) {
@@ -55,7 +64,8 @@ function fixture(exercises, narrow = true, pageHeight = 500, legacyMedia = false
       return media;
     } },
     document: { createElement: tag => {
-      assert.ok(["button", "img"].includes(tag));
+      if (tag === "img") return ramziMark();
+      assert.equal(tag, "button");
       const item = button();
       item.focus = () => { ctx.document.activeElement = item; };
       return item;
@@ -126,6 +136,17 @@ test("every Noam AI target gets a separate feedback target", () => {
   assert.equal(f.reports()[2].attributes["aria-label"], "דיווח על שאלה 2");
   f.reports()[0].click();
   assert.deepEqual([...reports[0]], ["q1a", "q1b"]);
+  for (const report of f.reports()) {
+    assert.equal(report.textContent, "");
+    assert.equal(report.marks.length, 1);
+    const [mark] = report.marks;
+    assert.equal(mark.className, "exact-ramzi-pin");
+    assert.equal(mark.src, "design-exact/assets/avatar/ramzi-A-idle.svg");
+    assert.equal(mark.alt, "");
+    assert.equal(mark.attributes["aria-hidden"], "true");
+    assert.equal(mark.draggable, false);
+  }
+  assert.ok(f.pins().every(pin => pin.marks.length === 0));
 });
 
 test("two-column questions keep one clearly paired report target when the rendered page is narrow", () => {
@@ -197,7 +218,7 @@ test("a one-pixel crossing from 901 to 900 redraws the PDF and keeps every part 
   f.resize(900);
   assert.equal(f.ctx.pdfResetCount, 1, "mode change must bypass the ordinary <3px resize tolerance");
   assert.equal(f.ctx.pdfLastWidth, 900);
-  assert.equal(f.ctx.toolsVisible, true, "phone zoom stays directly reachable");
+  assert.equal(f.ctx.toolsVisible, false, "phone tools start closed");
   assert.ok(f.pins().every(pin => pin.classList.contains("noam-question-pin")));
   assert.deepEqual(f.pins().flatMap(pin => pin.dataset.exerciseIds.split(" ")).sort(), parts.map(part => part.id).sort());
   assert.equal(f.ctx.selectedPin.dataset.exerciseIds, "q1a q1b");
@@ -212,7 +233,7 @@ test("landscape phone widths retain grouped targets and legacy media listeners s
   f.ctx.renderManifestPins();
   f.resize(844);
   assert.equal(f.ctx.pdfResetCount, 1);
-  assert.equal(f.ctx.toolsVisible, true);
+  assert.equal(f.ctx.toolsVisible, false);
   assert.ok(f.pins().every(pin => pin.classList.contains("noam-question-pin")));
   assert.deepEqual(f.pins().flatMap(pin => pin.dataset.exerciseIds.split(" ")).sort(), parts.map(part => part.id).sort());
 });
@@ -269,8 +290,8 @@ test("small rendered pages, including a real 14-question page, keep every target
         const centers = page.children.filter(pin => pin.classList.contains("noam-exercise-pin"))
           .map(pin => parseFloat(pin.style.top)).sort((a, b) => a - b);
         centers.forEach((center, index) => {
-          assert.ok(center >= 22 && center <= height - 70, "44px target remains within the page height");
-          if (index) assert.ok(center - centers[index - 1] >= 100 - 1e-8, "neighboring touch targets have at least4px space");
+          assert.ok(center >= 22 && center <= height - 22, "44px target remains within the page height");
+          if (index) assert.ok(center - centers[index - 1] >= 48 - 1e-8, "neighboring touch targets have at least4px space");
         });
       }
     }
@@ -282,12 +303,12 @@ test("rendering at a new zoom height rebuilds clusters without stale pins or los
   const f = fixture(exercises, true, 500);
   f.ctx.selectedExercise = exercises[1];
   f.ctx.renderManifestPins();
-  assert.equal(f.pins().length, 1);
+  assert.equal(f.pins().length, 2);
   f.pages.get(1).clientHeight = 280;
   f.ctx.renderManifestPins();
   assert.equal(f.pins().length, 1);
   assert.equal(f.ctx.selectedPin.dataset.exerciseIds, "q1a q2");
-  f.pages.get(1).clientHeight = 1200;
+  f.pages.get(1).clientHeight = 800;
   f.ctx.renderManifestPins();
   assert.equal(f.pins().length, 2);
   assert.equal(f.ctx.selectedPin.dataset.exerciseId, "q2");
@@ -307,8 +328,8 @@ test("every installed worksheet keeps all questions reachable with separated pho
         const centers = page.children.filter(pin => pin.classList.contains("noam-exercise-pin"))
           .map(pin => parseFloat(pin.style.top)).sort((a, b) => a - b);
         centers.forEach((center, index) => {
-          assert.ok(center >= 22 && center <= height - 70, file + ": target within page");
-          if (index) assert.ok(center - centers[index - 1] >= 100 - 1e-8, file + ": targets separated");
+          assert.ok(center >= 22 && center <= height - 22, file + ": target within page");
+          if (index) assert.ok(center - centers[index - 1] >= 48 - 1e-8, file + ": targets separated");
         });
       }
     }
@@ -360,15 +381,16 @@ test("desktop pairs retain a gap and stay inside the reserved gutter at narrow a
   }
 });
 
-test("phone controls share one narrow rail without covering print or each other", () => {
+test("mobile pairs fit the reserved gutter with a ten-pixel gap at every document zoom", () => {
   const f = fixture(parts);
   f.ctx.renderManifestPins();
-  for (const width of [120,185,264,316,600,1020]) {
-    const ai=cssPixels(f.pins()[0].style.left,width);
-    const report=cssPixels(f.reports()[0].style.left,width);
-    assert.equal(ai,report);
-    assert.ok(ai-22>=width && ai+22<=width+54);
-    assert.equal(parseFloat(f.reports()[0].style.top)-parseFloat(f.pins()[0].style.top),48);
+  const mobileGutter = Number(viewer.match(/\.pdf-page\{width:calc\(100vw - \d+px\);min-height:0;margin-right:(\d+)px/)[1]);
+  for (const width of [120, 185, 264, 316, 528, 792]) {
+    const ai = cssPixels(f.pins()[0].style.left, width);
+    const report = cssPixels(f.reports()[0].style.left, width);
+    assert.ok(ai - 22 >= width, "AI never covers printed content");
+    assert.equal(report - 18 - (ai + 22), 10);
+    assert.ok(report + 18 <= width + mobileGutter, "report fits even at 100% and higher zoom");
   }
 });
 

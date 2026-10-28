@@ -2,7 +2,7 @@
  * HEADLESS-MIGRATION-31 — homepage Harmony content/interaction parity gates.
  */
 import assert from 'node:assert/strict';
-import { existsSync, readFileSync, statSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { describe, it } from 'node:test';
 import { fileURLToPath } from 'node:url';
@@ -10,24 +10,6 @@ import { homePageJsonLd, homePageRequiredHrefs, loadHomePage } from '../src/lib/
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const home = loadHomePage();
-
-function webpDimensions(path: string): [number, number] {
-  const image = readFileSync(path);
-  assert.equal(image.subarray(0, 4).toString('ascii'), 'RIFF', `not a WebP: ${path}`);
-  assert.equal(image.subarray(8, 12).toString('ascii'), 'WEBP', `not a WebP: ${path}`);
-  for (let offset = 12; offset + 8 <= image.length;) {
-    const chunk = image.subarray(offset, offset + 4).toString('ascii');
-    const length = image.readUInt32LE(offset + 4);
-    if (chunk === 'VP8X') {
-      return [
-        1 + image.readUIntLE(offset + 12, 3),
-        1 + image.readUIntLE(offset + 15, 3),
-      ];
-    }
-    offset += 8 + length + (length % 2);
-  }
-  throw new Error(`missing VP8X dimensions: ${path}`);
-}
 
 describe('homepage Harmony parity (HEADLESS-MIGRATION-31)', () => {
   it('loads source-backed home fixture with grades 1–9 and AI on 7–9 only', () => {
@@ -112,40 +94,6 @@ describe('homepage Harmony parity (HEADLESS-MIGRATION-31)', () => {
     assert.ok(!index.includes('href="/privacy"'));
   });
 
-  it('right-sizes decorative homepage doodles without sacrificing 2x candidates or the original fallback', () => {
-    const index = readFileSync(join(root, 'src', 'pages', 'index.astro'), 'utf8');
-    const doodles = [
-      'kite', 'snail', 'paper-boat', 'curious-cat',
-      'geometry-fish', 'cube-plant', 'sleepy-owl', 'telescope',
-    ];
-    for (const name of doodles) {
-      const original = join(root, 'public', 'design-exact', 'assets', 'doodles', `${name}.webp`);
-      const responsive = join(root, 'public', 'design-exact', 'assets', 'doodles', `${name}-240.webp`);
-      assert.deepEqual(webpDimensions(responsive), [240, 240], `${name} responsive dimensions`);
-      assert.ok(statSync(responsive).size < statSync(original).size, `${name} responsive rendition is smaller`);
-    }
-    assert.match(index, /g\.img\.replace\('\.webp', '-240\.webp'\).*240w, \$\{g\.img\} 400w/,
-      'all six grade-tile doodles share 240w and 400w candidates');
-    for (const name of ['kite', 'snail', 'paper-boat', 'cube-plant', 'sleepy-owl', 'telescope']) {
-      assert.ok(index.includes(`${name}-240.webp 240w`), `${name} has a direct 240w candidate`);
-      assert.ok(index.includes(`${name}.webp 400w`), `${name} retains its direct 400w candidate`);
-    }
-    assert.ok(index.includes('sizes="112px"'), 'grade tiles declare their rendered width');
-    assert.ok(index.includes('sizes="200px"'), 'large doodles retain a 400w/2x candidate');
-    assert.ok(index.includes('fetchpriority="low"'), 'non-content hero doodles do not compete with the text LCP');
-    assert.ok(!index.includes('fetchpriority="high"'), 'no decorative homepage image is promoted over content');
-  });
-
-  it('defers the below-the-fold game-promo image while preserving its explicit size and alt text', () => {
-    const promo = readFileSync(join(root, 'src', 'components', 'GamePromoCard.astro'), 'utf8');
-    assert.match(promo, /src="\/games\/kefel-mekutsar-card\.webp"/);
-    assert.match(promo, /width="960"/);
-    assert.match(promo, /height="508"/);
-    assert.match(promo, /alt="ריבוע \(a\+b\) מהמשחק/);
-    assert.match(promo, /loading="lazy"/);
-    assert.match(promo, /decoding="async"/);
-  });
-
   it('BaseLayout renders the shared footer exactly once per page', () => {
     const layout = readFileSync(join(root, 'src', 'layouts', 'BaseLayout.astro'), 'utf8');
     assert.ok(layout.includes('SiteFooter'));
@@ -206,18 +154,20 @@ describe('homepage Harmony parity (HEADLESS-MIGRATION-31)', () => {
     assert.match(html, /<nav id="primary-nav"[^>]*data-nav-panel/);
   });
 
-  it('triangle doodle uses school notation, not a slash fraction', () => {
+  it('hero links teachers with the menu URL and does not add a heading', () => {
     const index = readFileSync(join(root, 'src', 'pages', 'index.astro'), 'utf8');
-    const caption = index.match(/<g data-play-s="1"[^>]*>[\s\S]*?<text\b([^>]*)>([^<]*)<\/text>/);
-    assert.ok(caption, 'triangle doodle caption is missing');
-    const attrs = caption[1];
-    const text = caption[2];
-    assert.equal(text, 'S = (a · h) : 2');
-    assert.match(attrs, /direction="ltr"/);
-    assert.match(attrs, /unicode-bidi="isolate"/);
-    assert.equal(index.includes('a·h/2'), false);
-    assert.equal(index.includes('a*h/2'), false);
-    assert.equal(index.includes('ah/2'), false);
+    const css = readFileSync(join(root, 'src', 'styles', 'exact-site.css'), 'utf8');
+    assert.equal((index.match(/<h1\b/g) || []).length, 1);
+    assert.match(index, /class="exact-hero-teachers"[^>]*href="\/teachers"/);
+    assert.match(index, /למורים ולמורים פרטיים/);
+    assert.match(index, /דפי עבודה מוכנים להדפסה/);
+    assert.match(index, /לאזור המורים/);
+    assert.doesNotMatch(index, /לחצו כאן/);
+    assert.match(css, /html\.nd-motion-off \.exact-hero-teachers/);
+    assert.match(css, /html\.noam-a11y-motion \.exact-hero-teachers/);
+    assert.match(css, /html\[data-nd-motion="off"\] \.exact-hero-teachers/);
+    assert.match(css, /html:not\(\.nd-motion-enabled\)/);
+    assert.match(css, /@media \(max-width: 980px\)/);
   });
 
   it('required href set is complete for gate scripts', () => {

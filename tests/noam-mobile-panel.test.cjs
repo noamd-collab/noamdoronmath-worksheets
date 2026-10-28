@@ -81,18 +81,22 @@ test("opening and closing phone help restores worksheet access and the triggerin
   assert.equal(ctx.document.activeElement, robot);
 });
 
-test("phone help preserves the reader's zoom while desktop keeps its panel zoom", () => {
-  const phone = fixture();
-  phone.ctx.pdfZoom = 1.3;
-  phone.ctx.openNoamPanel();
-  phone.ctx.closeNoamPanel();
-  assert.equal(phone.ctx.pdfZoom,1.3);
-  assert.deepEqual(phone.ctx.zoomCalls,[]);
-  const desktop = fixture();
-  desktop.ctx.mobileLayout.matches=false;
-  desktop.ctx.openNoamPanel();
-  desktop.ctx.closeNoamPanel();
-  assert.deepEqual(desktop.ctx.zoomCalls,[.85,.7]);
+test("Noam AI uses 85 percent while open and restores 70 percent when closed", () => {
+  const first = fixture();
+  first.ctx.openNoamPanel();
+  assert.equal(first.ctx.pdfZoom, .85);
+  assert.deepEqual(first.ctx.zoomCalls, [.85]);
+  first.ctx.closeNoamPanel();
+  assert.equal(first.ctx.pdfZoom, .7);
+  assert.deepEqual(first.ctx.zoomCalls, [.85, .7]);
+
+  const second = fixture();
+  second.ctx.pdfZoom = .92;
+  second.ctx.openNoamPanel();
+  assert.equal(second.ctx.pdfZoom, .85);
+  second.ctx.closeNoamPanel();
+  assert.equal(second.ctx.pdfZoom, .7);
+  assert.deepEqual(second.ctx.zoomCalls, [.85, .7]);
 });
 
 test("expanding to desktop releases the background while leaving help open", () => {

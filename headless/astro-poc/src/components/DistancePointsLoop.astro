@@ -51,13 +51,20 @@ const frameSrc = `${src}?capture=1&t=0`;
 </div>
 
 <script>
-  import { sitePrefersReducedMotion } from '../lib/motionPreference.js';
   const PAUSE_KEY = 'k3-pause:distance-between-points';
 
-  function boot(root) {
-    const frame = root.querySelector('[data-distance-frame]');
-    const button = root.querySelector('[data-distance-pause]');
+  type DistanceWindow = Window & {
+    currentTime?: number;
+    animationDuration?: number;
+    renderAt?: (t: number) => void;
+  };
+
+  function boot(root: HTMLElement) {
+    const frame = root.querySelector<HTMLIFrameElement>('[data-distance-frame]');
+    const button = root.querySelector<HTMLButtonElement>('[data-distance-pause]');
     if (!frame || !button) return;
+    const frameEl: HTMLIFrameElement = frame;
+    const buttonEl: HTMLButtonElement = button;
 
     let userPaused = false;
     try { userPaused = sessionStorage.getItem(PAUSE_KEY) === '1'; } catch { /* optional */ }
@@ -68,15 +75,15 @@ const frameSrc = `${src}?capture=1&t=0`;
     const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     function motionOff() {
       const html = document.documentElement;
-      return sitePrefersReducedMotion()
+      return motionQuery.matches
         || html.classList.contains('nd-motion-off')
         || html.classList.contains('noam-a11y-motion');
     }
-    function win() {
-      try { return frame.contentWindow; } catch { return null; }
+    function win(): DistanceWindow | null {
+      try { return frameEl.contentWindow as DistanceWindow | null; } catch { return null; }
     }
     function doc() {
-      try { return frame.contentDocument; } catch { return null; }
+      try { return frameEl.contentDocument; } catch { return null; }
     }
     function playBtn() { return doc()?.getElementById('playButton'); }
     function replayBtn() { return doc()?.getElementById('replayButton'); }
@@ -91,7 +98,7 @@ const frameSrc = `${src}?capture=1&t=0`;
     }
     function showFinal() {
       const w = win();
-      const seek = doc()?.getElementById('seek');
+      const seek = doc()?.getElementById('seek') as HTMLInputElement | null;
       if (!w || !seek || typeof w.renderAt !== 'function') return;
       if (isPlaying()) playBtn()?.click();
       if (typeof w.currentTime === 'number' && w.currentTime >= (w.animationDuration || 19) - 0.001) return;
@@ -104,11 +111,11 @@ const frameSrc = `${src}?capture=1&t=0`;
       const next = off ? 'off' : playing ? 'playing' : 'paused';
       if (next === shown) return;
       shown = next;
-      button.hidden = off;
-      button.dataset.state = playing ? 'playing' : 'paused';
+      buttonEl.hidden = off;
+      buttonEl.dataset.state = playing ? 'playing' : 'paused';
       const paused = !playing;
-      button.setAttribute('aria-pressed', paused ? 'true' : 'false');
-      button.setAttribute('aria-label', paused ? 'הפעלת הנפשה' : 'השהיית הנפשה');
+      buttonEl.setAttribute('aria-pressed', paused ? 'true' : 'false');
+      buttonEl.setAttribute('aria-label', paused ? 'הפעלת הנפשה' : 'השהיית הנפשה');
     }
     function onReady() {
       if (booted) return;
@@ -119,7 +126,7 @@ const frameSrc = `${src}?capture=1&t=0`;
       d.documentElement.style.overflow = 'hidden';
       d.body.style.overflow = 'hidden';
       d.body.classList.add('capture');
-      const controls = d.querySelector('.controls');
+      const controls = d.querySelector<HTMLElement>('.controls');
       if (controls) controls.style.setProperty('display', 'none', 'important');
       // The phone slot is a few hundred pixels wide. contain:paint keeps the
       // 1920×1080 SVG from promoting a full-size layer. Timing is untouched.
@@ -131,7 +138,7 @@ const frameSrc = `${src}?capture=1&t=0`;
       syncButton();
     }
 
-    frame.addEventListener('load', onReady);
+    frameEl.addEventListener('load', onReady);
     // A tiny static file can finish loading before this module runs.
     onReady();
 
@@ -142,7 +149,7 @@ const frameSrc = `${src}?capture=1&t=0`;
       io.observe(root);
     }
 
-    button.addEventListener('click', () => {
+    buttonEl.addEventListener('click', () => {
       if (motionOff()) return;
       // Before the film is ready, toggle the wish. After that, a click
       // pauses when it is moving and resumes when it is stopped.
@@ -173,11 +180,11 @@ const frameSrc = `${src}?capture=1&t=0`;
     motionQuery.addEventListener('change', () => { shown = ''; });
     new MutationObserver(() => { shown = ''; }).observe(document.documentElement, {
       attributes: true,
-      attributeFilter: ['class', 'data-nd-motion'],
+      attributeFilter: ['class'],
     });
   }
 
-  document.querySelectorAll('[data-distance-loop]').forEach(boot);
+  document.querySelectorAll<HTMLElement>('[data-distance-loop]').forEach(boot);
 </script>
 
 <style>
@@ -243,7 +250,7 @@ const frameSrc = `${src}?capture=1&t=0`;
     display: none;
   }
   @media (prefers-reduced-motion: reduce) {
-    :global(html:not(.nd-motion-enabled)) .distance-loop__pause { display: none; }
+    .distance-loop__pause { display: none; }
   }
   :global(html.nd-motion-off) .distance-loop__pause,
   :global(html.noam-a11y-motion) .distance-loop__pause {
