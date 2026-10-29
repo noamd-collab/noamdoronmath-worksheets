@@ -103,12 +103,15 @@ describe('kite interactive handoff (JSXGraph pilot)', () => {
     assert.match(cmp, /data-ix-cue/);
     assert.match(cmp, /kite-ix-pulse 2\.6s ease-out 1/);
     assert.match(cmp, /kite-ix-nudge 2\.6s ease-in-out 1/);
-    // stops on the first pointer contact; reduced motion hides it entirely
+    // stops on the first pointer contact; the site motion controls hide it,
+    // the OS reduced-motion setting alone does not
     assert.match(ix, /addEventListener\('pointerdown', stop, \{ once: true \}\)/);
     assert.match(ix, /cueDone/);
-    assert.match(ix, /prefers-reduced-motion:\s*reduce/);
+    assert.match(ix, /if \(sitePrefersReducedMotion\(\)\) return;/);
+    assert.doesNotMatch(ix, /matchMedia\('\(prefers-reduced-motion/);
     assert.match(ix, /!isStatic\(\)\) showCueOnce/);
-    assert.match(cmp, /@media \(prefers-reduced-motion:\s*reduce\)\s*\{\s*\.kite-ix__cue\s*\{\s*display:\s*none/);
+    assert.match(cmp, /:global\(html\.nd-motion-off\) \.kite-ix__cue,\s*:global\(html\.noam-a11y-motion\) \.kite-ix__cue\s*\{\s*display:\s*none/);
+    assert.doesNotMatch(cmp, /@media \(prefers-reduced-motion:\s*reduce\)\s*\{\s*\.kite-ix__cue/);
     // hidden cue must not defeat the hidden attribute
     assert.match(cmp, /\.kite-ix__cue\[hidden\]\s*\{\s*display:\s*none/);
   });

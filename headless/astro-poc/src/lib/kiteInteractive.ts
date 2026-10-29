@@ -12,6 +12,8 @@
  * Units are cm with a 0.5 snap, so the default 8 × 6 kite shows S = 24.
  */
 
+import { sitePrefersReducedMotion } from './motionPreference.js';
+
 interface LoopState {
   t: number;
   playing: boolean;
@@ -287,7 +289,7 @@ type KiteIxHook = {
 /** One-shot attention cue: pulse + nudge on B, gone on first touch or end. */
 function showCueOnce(boardEl: HTMLElement, cueEl: HTMLElement | null): void {
   if (!cueEl) return;
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (sitePrefersReducedMotion()) return;
   const hook = (boardEl as HTMLElement & { __kiteIx?: KiteIxHook }).__kiteIx;
   if (!hook) return;
   const [bx, by] = hook.screenOf(hook.points.B);

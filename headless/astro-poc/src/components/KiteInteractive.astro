@@ -170,10 +170,9 @@
       opacity: 0;
     }
   }
-  @media (prefers-reduced-motion: reduce) {
-    .kite-ix__cue {
-      display: none;
-    }
+  :global(html.nd-motion-off) .kite-ix__cue,
+  :global(html.noam-a11y-motion) .kite-ix__cue {
+    display: none;
   }
   .kite-ix__board :global(.JXGtext) {
     font-family: Heebo, 'Heebo Fallback', sans-serif;
