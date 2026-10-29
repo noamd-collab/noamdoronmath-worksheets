@@ -10,7 +10,7 @@ import { createHash } from 'node:crypto';
 import { mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { existsSync, readFileSync } from 'node:fs';
 import { dirname, join, relative, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { gzipSync, gunzipSync } from 'node:zlib';
 
 export const projectRoot = fileURLToPath(new URL('../', import.meta.url));
@@ -187,49 +187,78 @@ export function matchesRoute(pattern, path) {
 
 const FIGURE_PROBE = '/noam-ai/native/G7-T08/a/figures/q1_head.svg';
 
-/** Rebuild excludes from the files that actually ship. The adapter's own list
- * is truncated at 99 rules once the figure route stops /noam-ai/* from collapsing,
- * which drops fonts, teachers, Ramzi and the other static directories.
+export function routeSample(route) {
+  return route.replace(/\[\.\.\.[^\]]+\]/g, 'x').replace(/\[[^\]]+\]/g, 'x');
+}
+
+/** Rebuild excludes from the files that actually ship. A directory wildcard is
+ * used only when it cannot hide a server route. games/ and _wix/ have both.
  */
-export function staticExcludeRules(publicFiles, distFiles = []) {
+export function staticExcludeRules(publicFiles, distFiles = [], serverRoutes = []) {
+  const samples = serverRoutes.map(routeSample);
+  const wildcardHidesRoute = (rule) => samples.some((path) => matchesRoute(rule, path));
   const rules = [];
-  const dirs = new Set();
+  const dirs = new Map();
   const roots = [];
   for (const file of publicFiles) {
     if (file.split('/').some((part) => part === '.' || part === '..')) throw new Error(`Bad public path: ${file}`);
     const slash = file.indexOf('/');
     if (slash < 0) roots.push('/' + file);
-    else dirs.add(file.slice(0, slash));
+    else {
+      const dir = file.slice(0, slash);
+      if (!dirs.has(dir)) dirs.set(dir, []);
+      dirs.get(dir).push(file);
+    }
   }
-  for (const dir of [...dirs].sort()) {
+  for (const dir of [...dirs.keys()].sort()) {
     if (dir === 'noam-ai') continue;
-    rules.push(`/${dir}/*`);
+    const wild = `/${dir}/*`;
+    if (wildcardHidesRoute(wild)) {
+      for (const file of dirs.get(dir).sort()) rules.push('/' + file);
+    } else rules.push(wild);
   }
   rules.push(...staticNoamRules);
   for (const file of roots.sort()) rules.push(file);
-  for (const rule of ['/_astro/*', '/_wix/*']) if (!rules.includes(rule)) rules.push(rule);
+  if (!rules.includes('/_astro/*') && !wildcardHidesRoute('/_astro/*')) rules.push('/_astro/*');
   for (const file of distFiles) {
     if (file.startsWith('_worker.js/') || ['_worker.js', '_routes.json', '_redirects', '_headers'].includes(file)) continue;
     const url = '/' + file;
     if (rules.some((rule) => matchesRoute(rule, url))) continue;
     const wild = file.includes('/') ? `/${file.split('/')[0]}/*` : url;
-    if (!rules.includes(wild)) rules.push(wild);
+    const exact = wildcardHidesRoute(wild) ? url : wild;
+    if (wildcardHidesRoute(exact)) continue;
+    if (!rules.includes(exact)) rules.push(exact);
   }
   return rules;
 }
 
-export function routesForDeploy(original, publicFiles, distFiles = []) {
+export function routesForDeploy(original, publicFiles, distFiles = [], serverRoutes = []) {
   if (original.version !== 1 || !Array.isArray(original.include)) throw new Error('Unsupported adapter route configuration');
-  const exclude = staticExcludeRules(publicFiles, distFiles);
+  const exclude = staticExcludeRules(publicFiles, distFiles, serverRoutes);
   for (const file of publicFiles) {
     const url = '/' + file;
     if (!exclude.some((rule) => matchesRoute(rule, url))) throw new Error(`Static file lost its CDN route: ${url}`);
   }
   if (exclude.some((rule) => matchesRoute(rule, FIGURE_PROBE))) throw new Error('Native SVG would stay on the static CDN');
+  for (const route of serverRoutes) {
+    if (exclude.some((rule) => matchesRoute(rule, routeSample(route)))) {
+      throw new Error(`Server route excluded from the worker: ${route}`);
+    }
+  }
   if (original.include.length + exclude.length > 100) {
     throw new Error(`Too many adapter route rules: ${original.include.length + exclude.length}`);
   }
   return { ...original, exclude };
+}
+
+async function serverRoutesFromDist(root, distFiles) {
+  const manifests = distFiles.filter((file) => /^_worker\.js\/manifest_[^/]+\.mjs$/.test(file));
+  if (manifests.length !== 1) throw new Error('Expected one built Astro manifest');
+  const { manifest } = await import(pathToFileURL(join(root, 'dist', manifests[0])).href);
+  return manifest.routes
+    .map((route) => route.routeData)
+    .filter((route) => route && route.prerender === false && typeof route.route === 'string')
+    .map((route) => route.route);
 }
 
 async function findRoutesFile(root) {
@@ -254,7 +283,8 @@ export async function finalizeNativeSvg(root = projectRoot) {
   const original = JSON.parse(await readFile(routesPath, 'utf8'));
   const publicFiles = await filesBelow(join(root, 'public'));
   const distFiles = await filesBelow(join(root, 'dist'));
-  const routes = routesForDeploy(original, publicFiles, distFiles);
+  const serverRoutes = await serverRoutesFromDist(root, distFiles);
+  const routes = routesForDeploy(original, publicFiles, distFiles, serverRoutes);
   const descriptor = JSON.parse(await readFile(join(root, 'src/generated/native-svg-bundles.json'), 'utf8'));
   const probe = Object.keys(descriptor.files).find((rel) => rel.startsWith('G7-'))
     || Object.keys(descriptor.files)[0];

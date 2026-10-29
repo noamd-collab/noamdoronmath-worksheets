@@ -94,7 +94,16 @@ it('route rebuild keeps fonts and teachers on the CDN even when the adapter trun
     descriptor.bundles.G8.bundlePath.slice(1),
     descriptor.bundles.G9.bundlePath.slice(1),
   ];
-  const routes = routesForDeploy(original, publicFiles, ['_astro/page.css', '_wix/pages.json']);
+  const serverRoutes = [
+    '/games/eliyahu-pythagoras',
+    '/games/eliyahu-pythagoras/play',
+    '/games/kefel-mekutsar-2',
+    '/games/kefel-mekutsar-2/preview.png',
+    '/_wix/extensions/backoffice/[compid]',
+    '/noam-ai/native/[pkg]/[level]/figures/[...file]',
+    '/teachers',
+  ];
+  const routes = routesForDeploy(original, [...publicFiles, 'games/kefel-mekutsar-card.webp'], ['_astro/page.css', '_wix/pages.json'], serverRoutes);
   assert.deepEqual(routes.include, original.include);
   assert.equal(routes.exclude.includes('/noam-ai/*'), false);
   for (const rule of staticNoamRules) assert.ok(routes.exclude.includes(rule), rule);
@@ -102,6 +111,12 @@ it('route rebuild keeps fonts and teachers on the CDN even when the adapter trun
     assert.equal(routes.exclude.some((rule: string) => matchesRoute(rule, path)), true, path);
   }
   const figure = '/noam-ai/native/G8-T15/a/figures/q2a.svg';
+  assert.equal(routes.exclude.includes('/games/*'), false);
+  assert.equal(routes.exclude.includes('/_wix/*'), false);
+  assert.equal(routes.exclude.some((rule: string) => matchesRoute(rule, '/games/kefel-mekutsar-card.webp')), true);
+  assert.equal(routes.exclude.some((rule: string) => matchesRoute(rule, '/games/eliyahu-pythagoras')), false);
+  assert.equal(routes.exclude.some((rule: string) => matchesRoute(rule, '/games/kefel-mekutsar-2/preview.png')), false);
+  assert.equal(routes.exclude.some((rule: string) => matchesRoute(rule, '/_wix/extensions/backoffice/x')), false);
   assert.equal(routes.exclude.some((rule: string) => matchesRoute(rule, figure)), false);
   assert.equal(routes.exclude.some((rule: string) => matchesRoute(rule, '/noam-ai/native/G8-T15/a/noam-ai.json')), true);
   assert.ok(routes.include.length + routes.exclude.length <= 100);
@@ -115,7 +130,7 @@ it('route rebuild keeps fonts and teachers on the CDN even when the adapter trun
     }
     return out;
   }
-  const real = routesForDeploy({ version: 1, include: ['/*'], exclude: truncated }, walk(join(projectRoot, 'public')));
+  const real = routesForDeploy({ version: 1, include: ['/*'], exclude: truncated }, walk(join(projectRoot, 'public')), [], serverRoutes);
   assert.ok(real.include.length + real.exclude.length <= 100, `rules ${real.exclude.length}`);
   assert.equal(real.exclude.some((rule: string) => matchesRoute(rule, '/fonts/site-fonts.css')), true);
   assert.equal(real.exclude.some((rule: string) => matchesRoute(rule, '/teachers/index.html')), true);
