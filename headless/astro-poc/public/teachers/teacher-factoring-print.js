@@ -6672,6 +6672,9 @@ function paintWorksheetPage(canvas, page, index, count, title, note) {
   ctx.font = '700 22px Heebo, Arial, sans-serif';
   ctx.textAlign = 'right';
   ctx.fillText('בס״ד', OUT_W - 28, 32);
+  // Logical boxes of what was drawn, read by the print layout check.
+  const drawn = [];
+  canvas.printBoxes = drawn;
   if (index === 0) {
     ctx.font = '700 28px Heebo, Arial, sans-serif';
     ctx.textAlign = 'center';
@@ -6763,6 +6766,14 @@ function paintWorksheetPage(canvas, page, index, count, title, note) {
             drawW = Math.max(1, imageW * fit);
           }
           const strips = cell.wraps || 1;
+          drawn.push({
+            kind: 'key',
+            text: String(cell.slice.text || ''),
+            row: { y, h: item.dh },
+            label: { x: right - drawnLabel, y: textY - 12 * cellScale, w: drawnLabel, h: 16 * cellScale, base: textY },
+            image: { x: imageX, y: y + imageY, w: drawW, h: drawH },
+            wraps: strips,
+          });
           if (strips > 1 && ink.width > 2) {
             const natW = cell.answerNaturalW || imageW;
             const lead = cell.wrapLead || 0;
@@ -6810,6 +6821,13 @@ function paintWorksheetPage(canvas, page, index, count, title, note) {
       const destX = item.dx || 0;
       ctx.drawImage(item.bitmap, sx, sy, sw, sh, destX, y, destW, item.dh);
       if (!item.slice.box.segment) fillSliceMasks(ctx, item.slice.box, y, item.dh, destW);
+      drawn.push({
+        kind: kind || 'piece',
+        segment: item.slice.box && item.slice.box.segment,
+        question: item.slice.question ? item.slice.question.id : item.slice.id,
+        source: { page: item.slice.page, box: item.slice.box && { x: item.slice.box.x, y: item.slice.box.y, w: item.slice.box.w, h: item.slice.box.h } },
+        image: { x: destX, y, w: destW, h: item.dh },
+      });
     }
     y += item.dh;
   });
