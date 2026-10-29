@@ -40,8 +40,14 @@ const midGrades = home.grades.slice(6).map((grade,i)=>({...grade,l:letters[i+6],
           <div data-pop="0" style="font-family:'Amatic SC','Amatic SC Fallback',cursive;font-size:30px;color:#2a7c7a;margin-bottom:4px;">מאגר המשימות של נועם דורון</div>
           <h1 data-pop="120" data-lcp style="font-family:'Secular One','Secular One Fallback',sans-serif;font-weight:400;font-size:clamp(40px,5.4vw,68px);line-height:1.05;margin:0 0 20px;text-wrap:balance;">דפי עבודה שעושים <span style="position:relative;display:inline-block;">חשק<svg viewBox="0 0 200 20" preserveAspectRatio="none" style="position:absolute;right:-4%;bottom:-10px;width:108%;height:16px;overflow:visible;"><path data-draw="700" data-dur="700" pathLength="1" d="M4 12 C 50 4, 120 18, 196 8" fill="none" stroke="#e5735c" stroke-width="5" stroke-linecap="round" stroke-dasharray="1"></path></svg></span> לפתור</h1>
           <p class="exact-hero__lede" data-pop="240" style="font-size:20px;line-height:1.55;color:#3d4870;max-width:32ch;">מתרגלים עכשיו ומשפרים את הישגי המתמטיקה בקלות ובצורה חופשית</p>
-          <a class="exact-hero-teachers" href="/teachers" data-peek="teachers">
-            <svg class="exact-hero-teachers__mark" viewBox="0 0 48 48" width="42" height="42" aria-hidden="true" focusable="false">
+          <a class="exact-hero-teachers" id="for-teachers" href="/teachers" data-peek="teachers">
+            <span class="exact-hero-teachers__ribbon">
+              <svg class="exact-hero-teachers__star" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+                <path d="M12 2.4 14.3 8.4h6.4l-5.2 4 2 6.2L12 14.9 6.5 18.6l2-6.2-5.2-4h6.4z" fill="#22305a"></path>
+              </svg>
+              <span>במיוחד בשבילכם<span class="exact-hero-teachers__bang" aria-hidden="true">!!!</span></span>
+            </span>
+            <svg class="exact-hero-teachers__mark" viewBox="0 0 48 48" width="46" height="46" aria-hidden="true" focusable="false">
               <path d="M13 9h15l8 8v21a3 3 0 0 1-3 3H13a3 3 0 0 1-3-3V12a3 3 0 0 1 3-3z" fill="#eaf4f3" stroke="#22305a" stroke-width="2.4" stroke-linejoin="round"></path>
               <path d="M28 9v8h8" fill="#fdf1d8" stroke="#22305a" stroke-width="2.4" stroke-linejoin="round"></path>
               <path d="M16 27h14M16 33h9" fill="none" stroke="#2a7c7a" stroke-width="2.2" stroke-linecap="round"></path>

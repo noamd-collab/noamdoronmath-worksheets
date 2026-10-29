@@ -1,4 +1,5 @@
 import { wizardPrefillFromSearch } from './wizard-prefill.js';
+import { expandToWholeQuestionKeys, groupWholeQuestions, mulberry32, pickWholeQuestions, randomSeed } from './teacher-question-pick.js';
 
 /* Teacher picker for every catalog sheet.
    Grades 7–9: choose existing exercises across sheets.
@@ -90,7 +91,9 @@ let state = {
   topic: '2',
   level: 'all',
   wizard: 'grade',
-  lastAiPickCount: 0,
+  lastQuestionCount: 5,
+  pickMode: 'ai',
+  pickNote: '',
 };
 let history = [];
 let rendering = false;
@@ -98,9 +101,6 @@ let printMode = 'marked';
 let printOpener = null;
 let loadToken = 0;
 let topicLoadPromise = null;
-let aiPickPending = 0;
-let teacherBotClientPromise = null;
-
 function exKey(pdfId, id) {
   return 'ex:' + pdfId + ':' + id;
 }
@@ -109,174 +109,85 @@ function sheetKey(pdfId) {
   return 'sheet:' + pdfId;
 }
 
-function ensureTeacherBotClient() {
-  if (teacherBotClientPromise) return teacherBotClientPromise;
-  teacherBotClientPromise = new Promise((resolve, reject) => {
-    function finish(ok) {
-      if (ok && window.NoamBotClient && typeof window.NoamBotClient.create === 'function') {
-        resolve(window.NoamBotClient.create({ api: '/api', enabled: true, modelTimeoutMs: 25000 }));
-        return;
-      }
-      reject(new Error('BOT_CLIENT_UNAVAILABLE'));
-    }
-    if (window.NoamBotClient) {
-      finish(true);
-      return;
-    }
-    const loader = document.createElement('script');
-    loader.src = '/noam-bot-client.js?v=20261025-execute-ready-guard';
-    loader.async = true;
-    loader.onload = () => finish(true);
-    loader.onerror = () => finish(false);
-    document.head.appendChild(loader);
-  }).catch((error) => {
-    teacherBotClientPromise = null;
-    throw error;
-  });
-  return teacherBotClientPromise;
+function assignWholeQuestions(count, random) {
+  const result = pickWholeQuestions(currentExercises(), count, random || Math.random);
+  state.lastQuestionCount = count;
+  state.pickNote = result.note;
+  return result.keys;
 }
 
-function smartExercisePick(pool, count, scenario, style, seedKeys) {
-  if (!Array.isArray(pool) || !pool.length) return [];
-  const entries = pool.map((question, index) => ({
-    key: exKey(question.source.pdfId, question.id),
-    question,
-    index,
-  }));
-  const target = Math.min(Math.max(1, Number(count) || 15), entries.length);
-  const byKey = new Map(entries.map((entry) => [entry.key, entry]));
-  const chosen = [];
-  const used = new Set();
-  const addEntry = (entry) => {
-    if (!entry || used.has(entry.key) || chosen.length >= target) return;
-    used.add(entry.key);
-    chosen.push(entry);
-  };
-  (seedKeys || []).forEach((key) => addEntry(byKey.get(key)));
-  if (chosen.length < target) {
-    let ordered = entries.slice();
-    if (scenario === 'spiral') {
-      const step = Math.max(1, Math.floor(entries.length / 15));
-      ordered = [];
-      for (let offset = 0; offset < step; offset += 1) {
-        for (let i = offset; i < entries.length; i += step) ordered.push(entries[i]);
-      }
-    } else if (scenario === 'exam') {
-      const cut = Math.floor(entries.length * 0.25);
-      ordered = entries.slice(cut).concat(entries.slice(0, cut));
-    } else if (scenario === 'practice') {
-      const cut = Math.min(Math.floor(entries.length * 0.08), 4);
-      ordered = entries.slice(cut).concat(entries.slice(0, cut));
-    }
-    const remaining = ordered.filter((entry) => !used.has(entry.key));
-    const needed = target - chosen.length;
-    if (remaining.length <= needed) {
-      remaining.forEach(addEntry);
-    } else if (scenario === 'spiral' || scenario === 'other' || style === 'creative') {
-      for (let i = 0; i < needed; i += 1) {
-        const idx = Math.min(remaining.length - 1, Math.floor((i * remaining.length) / needed));
-        addEntry(remaining[idx]);
-      }
-      remaining.forEach(addEntry);
-    } else {
-      remaining.slice(0, needed).forEach(addEntry);
-    }
-  }
-  chosen.sort((a, b) => a.index - b.index);
-  return chosen.map((entry) => entry.key);
-}
-
-async function pickWithAi(rawCount) {
-  const count = Number(rawCount);
-  if (!Number.isInteger(count) || count <= 0 || band() === 'elementary' || aiPickPending) return [];
-  const pool = currentExercises();
-  if (!pool.length) return [];
-  const target = Math.min(count, pool.length);
-  aiPickPending = count;
-  paintAiPickButtons();
-  const status = $('ai-suggest-status');
-  if (status) status.textContent = `נועם AI בוחר ${target} סעיפים…`;
-  const gradeEl = $('grade');
-  const topicEl = $('topic');
-  const payload = {
-    message: `בחר ${count} עם AI`,
-    page: { kind: 'teachers', path: location.pathname + location.search, title: document.title },
-    teacher: {
-      grade: String(state.grade),
-      gradeLabel: gradeEl && gradeEl.selectedOptions[0] ? gradeEl.selectedOptions[0].textContent.trim() : '',
-      topic: String(state.topic),
-      topicLabel: topicEl && topicEl.selectedOptions[0] ? topicEl.selectedOptions[0].textContent.trim() : '',
-      level: String(state.level || 'all'),
-      goal: String(state.scenario),
-      goalLabel: (SCENARIOS[state.scenario] && SCENARIOS[state.scenario].label) || 'אחר',
-      style: String(state.style),
-      styleLabel: (STYLES[state.style] && STYLES[state.style].label) || '',
-      note: $('teacher-note') ? String($('teacher-note').value || '').trim().slice(0, 400) : '',
-      count,
-      candidates: pool.slice(0, 100).map((question) => ({
-        id: (question.source && question.source.level ? question.source.level + ':' : '') + question.id,
-        label: question.id,
-        text: String(question.text || '').slice(0, 80),
-      })),
-    },
-  };
-  let remoteIds = [];
-  let fromModel = false;
-  try {
-    const client = await ensureTeacherBotClient();
-    const result = await client.postJson('/api/noamSiteCompanion', payload);
-    if (result && Array.isArray(result.exerciseIds) && result.exerciseIds.length) {
-      const visible = new Set(visibleSelectionKeys());
-      remoteIds = result.exerciseIds.filter((key) => visible.has(key));
-      fromModel = result.source === 'classifier' && Boolean(result.model);
-    }
-  } catch (error) {
-    remoteIds = [];
-  } finally {
-    aiPickPending = 0;
-  }
-  const finalPicked = smartExercisePick(pool, target, state.scenario, state.style, remoteIds);
+function pickQuestionCount(count) {
+  if (band() === 'elementary') return [];
+  const result = pickWholeQuestions(currentExercises(), count, mulberry32(randomSeed()));
   const before = selectionKey();
   snapshot();
-  state.selected = finalPicked;
-  state.lastAiPickCount = count;
+  state.selected = result.keys;
+  state.lastQuestionCount = count;
+  state.pickNote = result.note;
   state.expanded = true;
   if (selectionKey() !== before) clearPreparedPrint();
   render();
-  const msg = fromModel
-    ? `נבחרו ${finalPicked.length} סעיפים עם AI.`
-    : `נבחרו ${finalPicked.length} סעיפים מתוך הדף.`;
-  if (status) status.textContent = msg;
+  const msg = result.note || `נבחרו ${result.questionCount} שאלות שלמות.`;
   announce(msg);
-  return finalPicked;
+  return result.keys;
 }
 
-function paintAiPickButtons() {
-  const group = $('ai-pick-group');
-  if (!group) return;
+function paintQuestionCountButtons() {
   const elementary = band() === 'elementary';
-  group.hidden = elementary;
-  const total = elementary ? 0 : currentExercises().length;
-  group.querySelectorAll('[data-ai-pick]').forEach((btn) => {
-    const count = Number(btn.dataset.aiPick);
-    const busy = aiPickPending === count;
-    const baseLabel = count === 15 ? 'בחר 15 עם AI' : `בחר ${count}`;
-    btn.textContent = busy ? `בוחר ${count}…` : baseLabel;
-    btn.disabled = elementary || total === 0 || aiPickPending > 0;
-    const active = !elementary && total > 0 && state.lastAiPickCount === count && state.selected.length === Math.min(count, total);
+  const manual = !elementary && state.pickMode === 'manual';
+  const modes = $('pick-mode-group');
+  if (modes) {
+    modes.hidden = elementary;
+    modes.querySelectorAll('[data-pick-mode]').forEach((btn) => {
+      btn.setAttribute('aria-pressed', btn.dataset.pickMode === state.pickMode ? 'true' : 'false');
+    });
+  }
+  const group = $('question-count-group');
+  if (group) group.hidden = elementary || manual;
+  const browseAll = document.getElementById('filter-all');
+  const browse = browseAll && browseAll.parentElement;
+  if (browse) browse.hidden = !(elementary || manual);
+  const heading = document.querySelector('.list-header > span');
+  if (heading) heading.textContent = elementary ? 'דפים' : (manual ? 'בחירה ידנית של שאלות שלמות' : 'המערכת בוחרת שאלות שלמות');
+  const note = $('pick-shortfall');
+  if (note) {
+    note.hidden = elementary || manual || !state.pickNote;
+    note.textContent = state.pickNote || '';
+  }
+  if (!group) return;
+  const total = elementary ? 0 : groupWholeQuestions(currentExercises()).length;
+  group.querySelectorAll('[data-question-count]').forEach((btn) => {
+    const count = Number(btn.dataset.questionCount);
+    btn.disabled = elementary || manual || total === 0;
+    const active = !elementary && !manual && state.lastQuestionCount === count && state.selected.length > 0;
     btn.setAttribute('aria-pressed', active ? 'true' : 'false');
-    if (busy) btn.setAttribute('aria-busy', 'true');
-    else btn.removeAttribute('aria-busy');
   });
+}
+
+function toggleWholeQuestion(groupKey, on) {
+  const group = groupWholeQuestions(currentExercises()).find((item) => item.key === groupKey);
+  if (!group) return;
+  const keys = group.questions.map((question) => exKey(question.source.pdfId, question.id));
+  const before = selectionKey();
+  snapshot();
+  state.pickNote = '';
+  if (on) {
+    keys.forEach((key) => {
+      if (!state.selected.includes(key)) state.selected.push(key);
+    });
+  } else {
+    const drop = new Set(keys);
+    state.selected = state.selected.filter((key) => !drop.has(key));
+  }
+  if (selectionKey() !== before) clearPreparedPrint();
+  render();
 }
 
 function installSuggest() {
   window.NoamTeacherSuggest = {
     enabled: false,
-    batchPick: true,
-    model: 'qwen3.8-flash',
+    batchPick: false,
     classifier: 'qwen-flash',
-    pickCount: pickWithAi,
     async classifyRequest() {
       return { enabled: false, intent: null };
     },
@@ -450,14 +361,36 @@ function thumbAria(question) {
   return String(question.text || question.label || '');
 }
 
-function exerciseCard(question) {
-  const key = exKey(question.source.pdfId, question.id);
-  const level = question.source.levelLabel ? `<span class="q-page" style="display:block">${escapeHTML(question.source.levelLabel)} · עמוד ${question.page}</span>` : `<span class="q-page" style="display:block">עמוד ${question.page} בדף המקור</span>`;
-  const badge = pilotOn() ? `<span class="badge ${tier(question)}">${TIERS[tier(question)]}</span>` : '';
-  const body = needsThumb(question)
-    ? `<canvas class="q-thumb" data-thumb="${escapeHTML(key)}" aria-label="${escapeHTML(thumbAria(question))}"></canvas>`
-    : `<span class="q-desc" dir="rtl">${questionTextHTML(question.text)}</span>`;
-  return `<label class="q-card"><input type="checkbox" data-question="${escapeHTML(key)}" ${state.selected.includes(key) ? 'checked' : ''} aria-label="בחירת ${escapeHTML(question.label)}"><span class="q-content"><span class="q-title-line"><span class="q-title">${escapeHTML(question.label)}</span>${badge}</span>${body}${level}</span></label>`;
+function wholeQuestionMarkup(group, control) {
+  const question = group.questions[0];
+  const parts = group.questions.map((part) => part.part || part.id).join(' · ');
+  const pages = [...new Set(group.questions.map((part) => part.page).filter(Boolean))];
+  const pageLabel = pages.length ? (pages.length === 1 ? 'עמוד ' + pages[0] : 'עמודים ' + pages.join(', ')) : '';
+  const level = question.source && question.source.levelLabel ? question.source.levelLabel : '';
+  const meta = [level, pageLabel].filter(Boolean).join(' · ');
+  const thumb = needsThumb(question)
+    ? `<canvas class="q-thumb" data-thumb="${escapeHTML(exKey(question.source.pdfId, question.id))}" aria-label="${escapeHTML(thumbAria(question))}"></canvas>`
+    : '';
+  return `${control}<span class="q-content"><span class="q-title-line"><span class="q-title">שאלה ${escapeHTML(String(group.number))}</span><span class="badge extra">שאלה שלמה</span></span>${thumb}<span class="q-desc" dir="rtl">חלקים: ${escapeHTML(parts)}</span><span class="q-page" style="display:block">${escapeHTML(meta)}</span></span>`;
+}
+
+function wholeQuestionCards(keys) {
+  const items = keys.map((key) => library.get(key)).filter(Boolean);
+  return groupWholeQuestions(items).map((group) => `<article class="q-card q-card-whole">${wholeQuestionMarkup(group, '')}</article>`).join('');
+}
+
+function wholeQuestionPickCards(pool) {
+  const selected = new Set(state.selected);
+  const groups = state.filter === 'selected'
+    ? pool.filter((group) => group.questions.some((question) => selected.has(exKey(question.source.pdfId, question.id))))
+    : pool;
+  if (!groups.length) return '<p class="empty">עדיין אין שאלות מסומנות. סמנו שאלה שלמה מהרשימה.</p>';
+  return groups.map((group) => {
+    const keys = group.questions.map((question) => exKey(question.source.pdfId, question.id));
+    const on = keys.length > 0 && keys.every((key) => selected.has(key));
+    const control = `<input type="checkbox" data-whole-question="${escapeHTML(group.key)}" ${on ? 'checked' : ''} aria-label="בחירת שאלה ${escapeHTML(String(group.number))} בשלמותה">`;
+    return `<label class="q-card q-card-whole q-card-pick">${wholeQuestionMarkup(group, control)}</label>`;
+  }).join('');
 }
 
 function sheetCard(meta) {
@@ -474,9 +407,9 @@ function render() {
   const elementary = band() === 'elementary';
   $('result-title').textContent = ok ? (state.scenario === 'other' ? 'מרכיבים את הבחירה שלכם' : (pilotOn() ? cfg.title : cfg.label)) : 'בוחרים כיתה ונושא';
   $('result-summary').textContent = ok
-    ? (pilotOn() ? cfg.summary : (elementary ? 'בחירה לפי דף, נושא ורמה. ההדפסה מציגה את עמודי המקור כמו שהם.' : 'סעיפים שכבר קיימים בדפי הנושא. אפשר לבחור מכמה דפים.'))
+    ? (elementary ? 'בחירה לפי דף, נושא ורמה. ההדפסה מציגה את עמודי המקור כמו שהם.' : 'המערכת בוחרת 5, 10, 15 או 20 שאלות שלמות, או שאתם מסמנים שאלות שלמות בעצמכם.')
     : 'בוחרים כיתה ונושא מתוך הקטלוג.';
-  $('rationale').textContent = ok ? (pilotOn() ? cfg.rationale : (elementary ? 'ביסודי בוחרים דף שלם לפי נושא ורמה.' : 'בחטיבה בוחרים סעיפים מתוך הדפים שכבר באתר.')) : '';
+  $('rationale').textContent = ok ? (elementary ? 'ביסודי בוחרים דף שלם לפי נושא ורמה.' : 'בחטיבה אין בחירה של סעיף בודד. שאלה נבחרת רק בשלמותה.') : '';
   $('pedagogy-details').textContent = ok ? (pilotOn() ? cfg.details : (elementary ? 'ההדפסה מציגה את עמודי המקור, בלי מסגרת על הכותרת.' : 'ההדפסה מסמנת על עמוד המקור, או חותכת ממנו דף מצומצם. לא מנוסח דף חדש.')) : '';
   $('style-help').textContent = STYLES[state.style].help;
   $('other-banner').hidden = state.scenario !== 'other';
@@ -491,7 +424,7 @@ function render() {
     const topic = currentTopic();
     hint.textContent = elementary
       ? `${gradeRecord(state.grade).label} · ${topic.title}. בוחרים דף לפי רמה.`
-      : `${gradeRecord(state.grade).label} · ${topic.title}. ${currentExercises().length} סעיפים בדפי הנושא.`;
+      : `${gradeRecord(state.grade).label} · ${topic.title}. ${groupWholeQuestions(currentExercises()).length} שאלות שלמות בדפי הנושא.`;
   }
   const shortBtn = $('prepare-short');
   if (shortBtn) shortBtn.hidden = elementary;
@@ -511,30 +444,26 @@ function render() {
       ? pool.map(sheetCard).join('')
       : '<p class="empty">אין דף ברמה הזו. אפשר לחזור ל״הכל״.</p>';
     $('show-more').hidden = true;
-    $('suggestion').hidden = true;
+    if ($('suggestion')) $('suggestion').hidden = true;
   } else {
-    const ordered = state.filter === 'selected'
-      ? state.selected.map((key) => library.get(key)).filter(Boolean)
-      : orderedQuestions();
-    const visible = shownQuestions(ordered);
-    $('available-count').textContent = currentExercises().length + ' סעיפים בדפי הנושא';
-    $('questions').innerHTML = visible.length
-      ? visible.map(exerciseCard).join('')
-      : '<p class="empty">עדיין לא נבחרו שאלות. אפשר לעבור ל״כל ההצעות״ ולסמן.</p>';
-    const hidden = Math.max(0, ordered.length - visible.length);
-    $('show-more').hidden = hidden === 0;
-    $('more-count').textContent = hidden ? String(hidden) : '';
-    const suggestionId = pilotOn() && state.scenario !== 'other' ? cfg.suggestion : '';
-    const suggestion = suggestionId ? library.get(exKey(FACTORING_PDF, suggestionId)) : null;
-    const showSuggestion = !!(suggestion && !state.selected.includes(exKey(FACTORING_PDF, suggestionId)));
-    $('suggestion').hidden = !showSuggestion;
-    $('suggestion-text').textContent = showSuggestion ? `${suggestion.label}: ${cfg.suggestionText}` : '';
+    const chosen = state.selected.filter((key) => key.startsWith('ex:'));
+    const availableGroups = groupWholeQuestions(currentExercises());
+    $('available-count').textContent = availableGroups.length + ' שאלות שלמות בדפי הנושא';
+    $('questions').innerHTML = state.pickMode === 'manual'
+      ? wholeQuestionPickCards(availableGroups)
+      : (chosen.length
+        ? wholeQuestionCards(chosen)
+        : '<p class="empty">בחרו 5, 10, 15 או 20 שאלות, או עברו לבחירה ידנית.</p>');
+    $('show-more').hidden = true;
+    $('more-count').textContent = '';
+    if ($('suggestion')) $('suggestion').hidden = true;
   }
-  $('selection-count').textContent = state.selected.length + ' נבחרו';
+  const chosenQuestions = elementary ? state.selected.length : groupWholeQuestions(state.selected.map((key) => library.get(key)).filter(Boolean)).length;
+  $('selection-count').textContent = elementary ? state.selected.length + ' נבחרו' : chosenQuestions + ' שאלות';
   const pdfs = new Set(state.selected.map((key) => key.split(':')[1]).filter(Boolean));
   $('selection-composition').textContent = pdfs.size ? 'מתוך ' + pdfs.size + (pdfs.size === 1 ? ' דף מקור' : ' דפי מקור') : '';
   $('undo').disabled = history.length === 0;
-  paintAiPickButtons();
+  paintQuestionCountButtons();
   paintSourceLine();
   if (!elementary) paintThumbs();
   applyWizard();
@@ -670,11 +599,18 @@ function clearPreparedPrint() {
 
 function selectKey(key, on) {
   if (!key) return;
+  const keys = key.startsWith('ex:') ? expandToWholeQuestionKeys(currentExercises(), [key]) : [key];
   const before = selectionKey();
   snapshot();
-  state.lastAiPickCount = 0;
-  if (on && !state.selected.includes(key)) state.selected.push(key);
-  if (!on) state.selected = state.selected.filter((item) => item !== key);
+  state.pickNote = '';
+  if (on) {
+    keys.forEach((item) => {
+      if (!state.selected.includes(item)) state.selected.push(item);
+    });
+  } else {
+    const drop = new Set(keys);
+    state.selected = state.selected.filter((item) => !drop.has(item));
+  }
   if (selectionKey() !== before) clearPreparedPrint();
   render();
 }
@@ -1910,16 +1846,6 @@ async function prepare(mode) {
   }
 }
 
-function exercisePreset(value) {
-  const list = currentExercises();
-  if (!list.length) return [];
-  let picked = list.slice(0, 6);
-  if (value === 'spiral') picked = list.filter((_, index) => index % 4 === 0).slice(0, 5);
-  if (value === 'practice') picked = list.slice(0, 10);
-  if (value === 'exam') picked = list.slice(-5);
-  return picked.map((question) => exKey(question.source.pdfId, question.id));
-}
-
 function elementaryPreset(value) {
   const sheetsHere = topicSheets();
   const want = { first: ['a', 'one'], spiral: ['a', 'b'], practice: ['b'], exam: ['c'] }[value] || ['a', 'one'];
@@ -1933,13 +1859,14 @@ function applyScenario(value, options) {
   const before = selectionKey();
   if (!quiet) snapshot();
   state.scenario = value;
-  state.lastAiPickCount = 0;
   state.expanded = false;
   state.filter = 'all';
-  if (value !== 'other') {
-    if (pilotOn() && SCENARIOS[value]) state.selected = SCENARIOS[value].selected.map((id) => exKey(FACTORING_PDF, id));
-    else if (band() === 'elementary') state.selected = elementaryPreset(value);
-    else state.selected = exercisePreset(value);
+    if (value !== 'other') {
+    if (band() === 'elementary') state.selected = elementaryPreset(value);
+    else if (state.pickMode !== 'manual') state.selected = assignWholeQuestions(state.lastQuestionCount || 5);
+    else state.pickNote = '';
+  } else {
+    state.pickNote = '';
   }
   if (selectionKey() !== before) clearPreparedPrint();
   render();
@@ -2027,7 +1954,7 @@ function applyWizard() {
     level: 'רמה',
     scenario: 'מה קורה בשיעור?',
     style: 'איך ניגשים לתרגול?',
-    pick: 'בחירת סעיפים',
+    pick: band() === 'elementary' ? 'בחירת דף' : 'כמה שאלות?',
     result: 'הדף להדפסה',
   };
   $('wizard-label').textContent = labels[step];
@@ -2076,7 +2003,7 @@ async function showWizardResult() {
 function bind() {
   $('questions').addEventListener('change', (event) => {
     const box = event.target;
-    if (box.matches('[data-question]')) selectKey(box.dataset.question, box.checked);
+    if (box.matches('[data-whole-question]')) toggleWholeQuestion(box.dataset.wholeQuestion, box.checked);
     if (box.matches('[data-sheet]')) selectKey(box.dataset.sheet, box.checked);
   });
   document.querySelectorAll('[name=scenario]').forEach((el) => el.addEventListener('change', () => {
@@ -2093,14 +2020,14 @@ function bind() {
     state.expanded = false;
     let next = keepVisible(state.selected, visibleSelectionKeys());
     if (!next.length && state.scenario !== 'other') {
-      if (pilotOn() && SCENARIOS[state.scenario]) next = SCENARIOS[state.scenario].selected.map((id) => exKey(FACTORING_PDF, id));
-      else if (band() === 'elementary') next = elementaryPreset(state.scenario);
-      else next = exercisePreset(state.scenario);
+      if (band() === 'elementary') next = elementaryPreset(state.scenario);
+      else if (state.pickMode !== 'manual') next = assignWholeQuestions(state.lastQuestionCount || 5);
+    } else if (band() !== 'elementary') {
+      next = expandToWholeQuestionKeys(currentExercises(), next);
     }
     if (next.join('\n') !== selectionKey()) {
       snapshot();
       state.selected = next;
-      state.lastAiPickCount = 0;
       clearPreparedPrint();
     }
     render();
@@ -2131,9 +2058,17 @@ function bind() {
   });
   $('filter-all').addEventListener('click', () => { state.filter = 'all'; $('filter-all').setAttribute('aria-pressed', 'true'); $('filter-selected').setAttribute('aria-pressed', 'false'); render(); });
   $('filter-selected').addEventListener('click', () => { state.filter = 'selected'; $('filter-selected').setAttribute('aria-pressed', 'true'); $('filter-all').setAttribute('aria-pressed', 'false'); render(); });
-  document.querySelectorAll('[data-ai-pick]').forEach((btn) => {
+  document.querySelectorAll('[data-pick-mode]').forEach((btn) => {
     btn.addEventListener('click', () => {
-      pickWithAi(Number(btn.dataset.aiPick));
+      state.pickMode = btn.dataset.pickMode === 'manual' ? 'manual' : 'ai';
+      if (state.pickMode === 'manual') state.pickNote = '';
+      render();
+    });
+  });
+  document.querySelectorAll('[data-question-count]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      state.pickMode = 'ai';
+      pickQuestionCount(Number(btn.dataset.questionCount));
     });
   });
   $('show-more').addEventListener('click', () => { state.expanded = true; render(); });
@@ -2142,13 +2077,12 @@ function bind() {
     if (!previous) return;
     const before = selectionKey();
     state.selected = previous;
-    state.lastAiPickCount = 0;
+    state.pickNote = '';
     if (selectionKey() !== before) clearPreparedPrint();
     render();
   });
-  $('add-suggestion').addEventListener('click', () => {
-    const cfg = SCENARIOS[state.scenario];
-    if (pilotOn() && cfg && cfg.suggestion) selectKey(exKey(FACTORING_PDF, cfg.suggestion), true);
+  if ($('add-suggestion')) $('add-suggestion').addEventListener('click', () => {
+    announce('בוחרים שאלה שלמה, לא סעיף בודד.');
   });
   $('return-demo').addEventListener('click', async () => {
     state.grade = '9';
@@ -2221,7 +2155,8 @@ function applyWizardPrefill(prefill) {
   return loadCurrentTopic().then(() => {
     const allow = new Set(visibleSelectionKeys());
     const ids = prefill.exerciseIds || [];
-    state.selected = ids.filter((id) => allow.has(id));
+    state.selected = expandToWholeQuestionKeys(currentExercises(), ids.filter((id) => allow.has(id)));
+    state.pickNote = '';
     const note = $('teacher-note');
     if (note && prefill.minutes && !note.value) note.value = 'אורך שיעור: ' + prefill.minutes + ' דקות';
     render();
