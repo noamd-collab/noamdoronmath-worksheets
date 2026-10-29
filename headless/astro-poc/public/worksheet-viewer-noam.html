@@ -3237,8 +3237,9 @@ html.noam-a11y-motion .exact-viewer .panel-head .exact-ramzi-avatar ramzi-avatar
 <script src="noam-visual-data.js?v=20261028-source3"></script>
 <script src="noam-visual-plan.js?v=20261028-source3"></script>
 <script src="noam-source-data-visual.js?v=20261028-source-data3"></script>
+<script src="noam-source-scaffold.js?v=20261029-scaffold1"></script>
 <script src="noam-glossary-curriculum.js?v=20261018-fracbar"></script>
-<script src="noam-glossary.js?v=20261028-context3"></script>
+<script src="noam-glossary.js?v=20261029-context4"></script>
 <script>
 (function(){
 
@@ -6284,7 +6285,7 @@ function renderNoamChat(){
 }
 
 function localVisualExerciseSource(exercise){
-  var analysis=analysisCache[exercise.id]||{};
+  var analysis=(typeof noamCanonicalAnalysisFor==='function'&&noamCanonicalAnalysisFor(exercise))||analysisCache[exercise.id]||{};
   return [
     exercise.text,exercise.prompt,exercise.context,
     analysis.transcription,analysis.problem_statement,analysis.math_content
@@ -7534,6 +7535,7 @@ function noamRenderOriginalTable(visual){
 }
 function noamEnrichSourceAnalysis(exercise,analysis){
   if(!analysis||typeof analysis!=='object'||!window.NoamNativeVisual||!noamNativeDataUrl(exercise)){return Promise.resolve(analysis);}
+  if(analysis.content_type==='native_source_canonical'&&typeof noamCanonicalProofValid==='function'&&noamCanonicalProofValid(analysis,exercise)){return Promise.resolve(analysis);}
   var identity=noamSourceVisualIdentity(exercise);
   return noamLoadSourceVisual(exercise).then(function(source){
     if(!source||identity!==noamSourceVisualIdentity(exercise)){return analysis;}
@@ -7590,6 +7592,228 @@ function noamEnrichSourceAnalysis(exercise,analysis){
   }).catch(function(){return analysis;});
 }
 
+// Printed panel captions read from the original PDF text layer, never from SVG
+// order or IDs. A caption is bound to the panel whose measured dot grid it sits
+// under, and is used only while the PDF, source and native hashes all match.
+var NOAM_VERIFIED_PANEL_CAPTIONS={
+  // 2026-10-29, local PDF (sha256 1fe136d6…) page 11: each caption is 23.4pt
+  // under its dot cluster, horizontally offset by at most 3.3pt.
+  "8474535578894a669c6847e57a83dc30:q21":{
+    source:"1fe136d605336f197c7dc4033fc55c4bacac65ee8633b349bea1ab18c47ca86a",
+    native:"65fc10803880c36c80172ae170e0bcbbe3d69a93674f8cfa7f8b2602241d4881",
+    captions:[{grid:[3,3],text:"שלב 1"},{grid:[3,6],text:"שלב 2"},{grid:[3,9],text:"שלב 3"}]
+  }
+};
+function noamVerifiedPanelCaptions(exercise,facts){
+  var key=String(manifest&&manifest.pdfHash||'')+':'+String(exercise&&exercise.nativeQuestionId||'');
+  var record=Object.prototype.hasOwnProperty.call(NOAM_VERIFIED_PANEL_CAPTIONS,key)&&NOAM_VERIFIED_PANEL_CAPTIONS[key];
+  if(!record||!Array.isArray(facts)||manifest.sourceSha256!==record.source||manifest.nativeExportSha256!==record.native||
+      facts.length!==record.captions.length){return null;}
+  var result=[],used=Object.create(null);
+  for(var fact of facts){
+    var hits=record.captions.filter(function(c){return c.grid[0]===fact.rows&&c.grid[1]===fact.dotsPerRow;});
+    if(hits.length!==1||used[hits[0].text]||fact.rows*fact.dotsPerRow!==fact.dots){return null;}
+    used[hits[0].text]=true;result.push({id:fact.id,caption:hits[0].text,rows:fact.rows,dotsPerRow:fact.dotsPerRow});
+  }
+  return result;
+}
+
+// A question analysis built only from the printed source and verified data,
+// for image-read questions whose every visual aid is fully verified. It replaces
+// image OCR for the hint request, so no OCR field can contradict the source.
+var NOAM_CANONICAL_ANALYSIS='native_source_canonical';
+var noamCanonicalAnalyses=new Map(),noamVerifiedNativePackages=new Map();
+function noamSourceText(value){return String(value||'').replace(/\s+/g,' ').trim();}
+// Printed text is a string or a list of lines; anything else is not printed source.
+function noamPrintedText(value){
+  if(typeof value==='string'){return value.trim();}
+  return Array.isArray(value)&&value.every(function(line){return typeof line==='string';})?value.map(function(line){return line.trim();}).filter(Boolean).join('\n'):null;
+}
+// The canonical route trusts only native bytes whose SHA-256 matches the
+// manifest, parsed from those exact bytes; the shared package cache is not proof.
+function noamVerifiedNativeData(exercise){
+  var url=noamNativeDataUrl(exercise),expected=String(manifest&&manifest.nativeExportSha256||'');
+  var subtle=window.crypto&&window.crypto.subtle;
+  if(!url||!/^[0-9a-f]{64}$/.test(expected)||!subtle||typeof TextDecoder!=='function'){return Promise.resolve(null);}
+  var key=url+'#'+expected,entry=noamVerifiedNativePackages.get(key);
+  if(entry){return entry;}
+  entry=fetch(url,{cache:'no-cache'}).then(function(r){return r.ok?r.arrayBuffer():null;}).then(function(bytes){
+    if(!bytes){return null;}
+    return subtle.digest('SHA-256',bytes).then(function(digest){
+      var hex=Array.from(new Uint8Array(digest)).map(function(b){return b.toString(16).padStart(2,'0');}).join('');
+      return hex===expected?noamDeepFreeze(JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(bytes))):null;
+    });
+  }).catch(function(){return null;}).then(function(data){
+    if(!data&&noamVerifiedNativePackages.get(key)===entry){noamVerifiedNativePackages.delete(key);}
+    return data;
+  });
+  noamVerifiedNativePackages.set(key,entry);
+  while(noamVerifiedNativePackages.size>8){noamVerifiedNativePackages.delete(noamVerifiedNativePackages.keys().next().value);}
+  return entry;
+}
+function noamCanonicalProofValid(analysis,exercise){
+  var proof=analysis&&typeof noamVerifiedSourceAnalyses!=='undefined'&&noamVerifiedSourceAnalyses.get(analysis);
+  return !!(proof&&proof.canonical&&exercise&&proof.identity===noamSourceVisualIdentity(exercise)&&
+    Object.isFrozen(analysis)&&proof.snapshot===JSON.stringify(analysis));
+}
+function noamCanonicalAnalysisFor(exercise){
+  var entry=exercise&&noamCanonicalAnalyses.get(exercise.id);
+  return entry&&noamCanonicalProofValid(entry.analysis,exercise)?entry.analysis:null;
+}
+function noamDeepFreeze(value){
+  if(value&&typeof value==='object'&&!Object.isFrozen(value)){Object.freeze(value);Object.keys(value).forEach(function(k){noamDeepFreeze(value[k]);});}
+  return value;
+}
+function noamPartLabels(text,items){
+  // "סעיף א׳", "בסעיפים א׳ ו־ב׳", "בסעיפים א׳, ב׳ וג׳", "בסעיפים א׳–ג׳". Any other
+  // plural form returns null, so the analysis falls back instead of dropping it.
+  var known=items.map(function(i){return i.label;}),labels=[],match;
+  function add(label){if(known.indexOf(label)<0){return false;}if(labels.indexOf(label)<0){labels.push(label);}return true;}
+  var single=/סעיף\s+([א-ת])(?:['׳"]|(?![א-ת]))/g;
+  while((match=single.exec(text))){if(!add(match[1])){return null;}}
+  var plural=/סעיפים/g;
+  while((match=plural.exec(text))){
+    // A label is one letter followed by a geresh or a separator; a leading "ו" is "and".
+    var token=/\s*(,|–|-|עד)?\s*(?:ו[־-]?(?=[א-ת](?:['׳"]|\s|$|[,.?!:;])))?([א-ת])(?:['׳"]|(?=\s*(?:,|–|-|עד\s|$|[.?!:;])))/y,found=[],t;
+    var end=token.lastIndex=match.index+match[0].length;
+    while((t=token.exec(text))){found.push({sep:t[1]||'',letter:t[2]});end=token.lastIndex;}
+    // The whole list must be consumed: an unread continuation ("וכן ג׳") is not a partial list.
+    if(!found.length||/^\s*(?:,|–|-|עד\s|וכן\s|וגם\s|ו[־-]?)\s*[א-ת](?:['׳"]|\s*(?:,|–|-|$|[.?!:;]))/.test(text.slice(end))){return null;}
+    if(found.some(function(f,i){return i&&['–','-','עד'].indexOf(f.sep)>=0;})){
+      var from=known.indexOf(found[0].letter),to=found.length===2?known.indexOf(found[1].letter):-1;
+      if(from<0||to<from){return null;}
+      known.slice(from,to+1).forEach(add);
+    }else if(found.some(function(f){return !add(f.letter);})){return null;}
+  }
+  return labels;
+}
+function noamCanonicalEarlierParts(question,item){
+  var items=question.items||[],index=items.indexOf(item),text=noamPrintedText(item.text);
+  if(text===null){return null;}
+  var labels=noamPartLabels(text,items);if(!labels){return null;}
+  if(/(?:ב|מ|ל)?ה?סעיף הקודם/.test(text)){
+    if(index<1){return null;}
+    if(labels.indexOf(items[index-1].label)<0){labels.push(items[index-1].label);}
+  }
+  // A dependency on earlier work must name the part it depends on.
+  if(!labels.length&&/שמצאתם|שכתבתם|שחישבתם|שקיבלתם|שבניתם|ששרטטתם|שסרטטתם|שהשלמתם|סעיפים הקודמים|לעיל/.test(text)){return null;}
+  var parts=[];
+  for(var label of labels){
+    var found=items.filter(function(other){return other.label===label;});
+    if(found.length!==1||items.indexOf(found[0])>=index){return null;}
+    parts.push(found[0]);
+  }
+  // A referenced part that itself depends on unnamed or other parts falls back.
+  for(var part of parts.slice()){
+    var nested=noamCanonicalEarlierParts(question,part);
+    if(!nested||nested.some(function(p){return parts.indexOf(p)<0;})){return null;}
+  }
+  return parts.sort(function(a,b){return items.indexOf(a)-items.indexOf(b);});
+}
+function noamCanonicalAnalysisFromSource(exercise,source){
+  var data=source&&source.data,native=window.NoamNativeVisual;
+  // Only image-read exercises change route; text-only rows keep their manifest analysis.
+  if(!data||!native||!Array.isArray(data.questions)||!Array.isArray(data.figures)||!(exercise.requiresVision||exercise.needsVision)){return null;}
+  var question=data.questions.find(function(q){return q&&q.id===exercise.nativeQuestionId;});
+  var item=question&&(question.items||[]).find(function(i){return i&&i.id===exercise.nativeItemId;});
+  var itemText=item&&noamPrintedText(item.text);
+  if(!item||item.label!==exercise.part||!itemText){return null;}
+  // Identity: the manifest row must quote the same printed question and part.
+  var stemText=question.text==null?'':noamPrintedText(question.text);if(stemText===null){return null;}
+  var stemParts=stemText?stemText.split('\n'):[];
+  var context=noamSourceText(exercise.context);
+  if(stemParts.some(function(t){return context.indexOf(noamSourceText(t))<0;})||(!stemParts.length&&context)||
+      noamSourceText(exercise.text)!==noamSourceText(itemText)){return null;}
+  var authored=native.authoredContext(data,exercise,source.svgText);
+  if(!authored||authored.questionId!==question.id||authored.itemId!==item.id||noamSourceText(authored.partText)!==noamSourceText(itemText)){return null;}
+  var earlier=noamCanonicalEarlierParts(question,item);if(!earlier){return null;}
+  var scoped=[question].concat(earlier,[item]);
+  if(earlier.some(function(part){return part.table;})||
+      (data.visuals||[]).some(function(v){return v&&v.question===question.id&&v.kind!=='table';})){return null;}
+  var figureIds=[];
+  scoped.forEach(function(part){if(part.figure_id&&figureIds.indexOf(part.figure_id)<0){figureIds.push(part.figure_id);}});
+  var questionFigures=data.figures.filter(function(f){return f&&f.question===question.id;});
+  // A figure that no printed part points to cannot be shown to be irrelevant.
+  var pointed=[question].concat(question.items||[]).map(function(part){return part&&part.figure_id;});
+  if(questionFigures.some(function(f){return pointed.indexOf(f.id)<0&&!(source.sourcePanelGroup&&figureIds.length);})){return null;}
+  var facts=[],haveFigure=false,haveTable=false;
+  if(figureIds.length){
+    if(source.sourcePanelGroup){
+      var group=window.NoamSourcePanels&&window.NoamSourcePanels.resolve(data,exercise,source.sourcePanelSvgById);
+      var dots=group&&noamSourcePanelDotFacts(source,group,authored);
+      var captions=dots&&dots.length===questionFigures.length&&noamVerifiedPanelCaptions(exercise,dots);
+      if(!captions||figureIds.some(function(id){return !captions.some(function(c){return c.id===id;});})){return null;}
+      facts.push('לוחות הנקודות שבשרטוט, כל אחד עם הכיתוב המודפס מתחתיו:');
+      captions.forEach(function(c){facts.push('לוח עם הכיתוב "'+c.caption+'": '+c.rows+' שורות, '+c.dotsPerRow+' נקודות בכל שורה.');});
+    }else{
+      var figure=figureIds.length===1&&questionFigures.length===1&&questionFigures[0].id===figureIds[0]&&
+        figureIds[0]===exercise.nativeFigureId&&questionFigures[0];
+      var labels=figure&&noamSourceSegmentLabelFacts(source,exercise,figure.visual_model);
+      if(!labels){return null;}
+      facts.push('תוויות מספריות שמודפסות על קטעי השרטוט: '+labels.map(function(label){return 'על קטע '+label.direction+' מודפס '+label.text;}).join('; ')+'.');
+      facts.push('מספר שמופיע בפתיח שייך לעצם שהפתיח מתאר, ולא לתווית שבשרטוט.');
+    }
+    haveFigure=true;
+  }
+  var tables=[authored.questionTable,authored.partTable].filter(Boolean);
+  if(tables.length>1||(question.table&&!authored.questionTable)){return null;}
+  if(tables.length){
+    var scene=window.NoamSourceDataVisual&&window.NoamSourceDataVisual.resolve(authored,{drawCurrentStep:true,studentMessage:'שרטוט להמחשה'});
+    var table=scene&&scene.kind==='typed-table'&&scene.table;
+    if(!table||!Array.isArray(table.head)||!Array.isArray(table.rows)||!table.rows.length){return null;}
+    facts.push('הטבלה המקורית, כפי שהודפסה (? מציין תא ריק):');
+    [table.head].concat(table.rows).forEach(function(row){facts.push(row.map(function(cell){return String(cell);}).join(' | '));});
+    haveTable=true;
+  }
+  // The printed text must not depend on an aid this analysis cannot provide.
+  var printed=stemParts.concat(scoped.slice(1).map(function(part){return noamPrintedText(part.text)||'';})).join('\n');
+  if(/גרף|גרפים|צירים|ציר ה|ישר המספרים/.test(printed)||
+      (/טבל/.test(printed)&&!haveTable)||
+      (/שרטוט|סרטוט|איור|ציור|תרשים|מצויר|מסומנ|מוצג|בתמונה|ברשת|לוח/.test(printed)&&!haveFigure)){return null;}
+  // No exported aid does not prove the printed page has none.
+  if(!facts.length){return null;}
+  // An unnamed earlier part that introduces a number may carry a given the
+  // selected part relies on ("קופסה רביעית ובה 4"): fall back rather than omit it.
+  var known=(printed+'\n'+facts.join('\n')).match(/\d+(?:\.\d+)?/g)||[];
+  if((question.items||[]).slice(0,(question.items||[]).indexOf(item)).some(function(part){
+    return earlier.indexOf(part)<0&&(String(noamPrintedText(part.text)||'').match(/\d+(?:\.\d+)?/g)||[]).some(function(n){return known.indexOf(n)<0;});
+  })){return null;}
+  var header='שאלה '+String(exercise.q)+', סעיף '+String(exercise.part)+'.';
+  var lines=[header].concat(stemParts);
+  earlier.forEach(function(part){lines.push('הקשר מסעיף '+part.label+'׳ (סעיף קודם; אינו המשימה ואינו נתון חדש): '+noamPrintedText(part.text));});
+  lines.push('הסעיף הנבחר: '+itemText);
+  var transcription=lines.join('\n');
+  var description=['נתוני מקור מאומתים — נקראו מקובץ המקור של השאלה, לא מפענוח תמונה:'].concat(facts).join('\n');
+  // The solver clips these fields (3000 / 8000 characters); a complete source must fit whole.
+  if(description.length>3000||transcription.length>3000||itemText.length>8000){return null;}
+  return {readable:true,readability_confidence:1,content_type:NOAM_CANONICAL_ANALYSIS,
+    transcription:transcription,math_content:itemText,problem_statement:transcription,
+    diagram_description:description,student_work:'',
+    extracted_entities:{numbers:[],expressions:[],labels:[],units:[]},uncertain_parts:[],
+    complexity:'medium',complexity_reasons:['verified native source']};
+}
+function noamCanonicalSourceAnalysis(exercise){
+  if(!exercise||!window.NoamNativeVisual||!noamNativeDataUrl(exercise)||
+      (typeof currentAttachments==='function'&&currentAttachments().length)){return Promise.resolve(null);}
+  var identity=noamSourceVisualIdentity(exercise);
+  return Promise.all([noamLoadSourceVisual(exercise),noamVerifiedNativeData(exercise)]).then(function(loaded){
+    var source=loaded[0],verified=loaded[1];
+    // A changed selection or source falls back to the existing reader.
+    if(!source||!verified||identity!==noamSourceVisualIdentity(exercise)||!selectedExercise||selectedExercise.id!==exercise.id||
+        (typeof currentAttachments==='function'&&currentAttachments().length)){return null;}
+    var analysis=noamCanonicalAnalysisFromSource(exercise,Object.assign({},source,{data:verified}));
+    if(!analysis){return null;}
+    noamDeepFreeze(analysis);
+    noamVerifiedSourceAnalyses.set(analysis,{identity:identity,description:analysis.diagram_description,canonical:true,snapshot:JSON.stringify(analysis)});
+    noamCanonicalAnalyses.delete(exercise.id);noamCanonicalAnalyses.set(exercise.id,{analysis:analysis});
+    while(noamCanonicalAnalyses.size>32){noamCanonicalAnalyses.delete(noamCanonicalAnalyses.keys().next().value);}
+    return analysis;
+  }).catch(function(){return null;});
+}
+function noamQuestionAnalysis(exercise){
+  return noamCanonicalSourceAnalysis(exercise).then(function(canonical){return canonical||getExerciseAnalysis(exercise);});
+}
+
 function noamSourcePresentation(source,exercise,options){
   if(noamSourcePanelModuleMissing(exercise,source)){return null;}
   if(noamSourcePanelReviewed(exercise)){
@@ -7610,6 +7834,13 @@ function noamSourcePresentation(source,exercise,options){
   if(authored&&typeof authored.resolve==='function'&&typeof authored.render==='function'){
     var scene=authored.resolve(source.data,exercise,options,source.svgText);
     if(scene){figure=authored.render(document,scene);if(figure){return {kind:scene.kind,figure:figure};}}
+  }
+  // Instructional scaffolds are explicit drawing aids, never automatic hints.
+  // Resolve from the selected source before falling back to its original table.
+  var scaffold=window.NoamSourceScaffold;
+  if(options&&options.drawCurrentStep===true&&scaffold&&typeof scaffold.resolve==='function'&&typeof scaffold.render==='function'){
+    var scaffoldSpec=scaffold.resolve(source.data,exercise,options,source.svgText);
+    if(scaffoldSpec){figure=scaffold.render(document,source.data,exercise,options,source.svgText);if(figure){return {kind:scaffoldSpec.kind,figure:figure};}}
   }
   var sourceData=window.NoamSourceDataVisual;
   if(sourceData&&typeof sourceData.resolve==='function'&&typeof sourceData.render==='function'){
@@ -7685,7 +7916,7 @@ function noamRequestSourceFirst(exercise,thread,message,providedOptions){
 function noamAttachSourceHint(exercise,thread,message,options){
   if(!window.NoamNativeVisual||!noamNativeDataUrl(exercise)){return Promise.resolve(null);}
   return noamPrepareSourceVisual(exercise,options).then(function(visual){
-    if(!visual||(visual.presentation==='source-context'&&!visual.sourcePanelGroup)||message.visual||message.answerError||
+    if(!visual||/^source-scaffold-/.test(visual.presentation)||(visual.presentation==='source-context'&&!visual.sourcePanelGroup)||message.visual||message.answerError||
       (thread.messages||[]).indexOf(message)<0||visual.sourceIdentity!==noamSourceVisualIdentity(exercise)||noamDiagramRuntime().messages.has(message)){return null;}
     message.visual=visual;saveNoamState();noamDiagramRefresh(exercise,thread,message,false);return visual;
   }).catch(function(){return null;});
@@ -8684,6 +8915,7 @@ function noamSourcePriorityInstruction(analysis,exercise){
       (typeof currentAttachments==='function'&&currentAttachments().length)){return '';}
   var proof=noamVerifiedSourceAnalyses.get(analysis);
   if(!proof||proof.identity!==noamSourceVisualIdentity(exercise)||proof.description!==analysis.diagram_description){return '';}
+  if(proof.canonical){return typeof noamCanonicalProofValid==='function'&&noamCanonicalProofValid(analysis,exercise)?'ניתוח השאלה נבנה מהטקסט המודפס ומנתוני המקור המאומתים, בלי פענוח תמונה. הסתמך עליהם בלבד ואל תחשוף תשובה.':'';}
   return 'העדף את נתוני המקור המאומתים בתחילת תיאור השרטוט על פענוח תמונה סותר. אל תחשוף תשובה.';
 }
 
@@ -9466,7 +9698,7 @@ function askNoam(helpKind,studentMessage){
     return;
   }
 
-  getExerciseAnalysis(exercise)
+  (typeof noamQuestionAnalysis==='function'?noamQuestionAnalysis:getExerciseAnalysis)(exercise)
     .then(function(analysis){return attachments.length?analysis:noamEnrichSourceAnalysis(exercise,analysis);})
     .then(function(analysis){
       requestAnalysis=analysis;

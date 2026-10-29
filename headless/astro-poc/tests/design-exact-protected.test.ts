@@ -141,10 +141,11 @@ describe('exact-design protected live-baseline boundaries', () => {
       '<script src="noam-visual-data.js?v=20261028-source3"></script>',
       '<script src="noam-visual-plan.js?v=20261028-source3"></script>',
       '<script src="noam-source-data-visual.js?v=20261028-source-data3"></script>',
+      '<script src="noam-source-scaffold.js?v=20261029-scaffold1"></script>',
     ];
     const allScripts = [...viewerWithNativeRelease.matchAll(/<script\b[^>]*>[\s\S]*?<\/script>/gi)].map(match => match[0]);
-    assert.equal(allScripts.length, 25, 'The release adds only its nine exact dependencies');
-    assert.deepEqual(allScripts.slice(7,14),nativeAdditions.slice(2),'Typed compilers follow their native source consumer in dependency order');
+    assert.equal(allScripts.length, 26, 'The release adds only its ten exact dependencies');
+    assert.deepEqual(allScripts.slice(7,15),nativeAdditions.slice(2),'Typed compilers follow their native source consumer in dependency order');
     assert.deepEqual(allScripts.slice(0, 2), nativeAdditions.slice(0, 2), 'Old URLs migrate before worksheet scripts run');
     assert.equal(allScripts[7], nativeAdditions[2], 'Native consumer follows the existing local visual engine');
     for (const addition of nativeAdditions) assert.equal(allScripts.filter(script => script === addition).length, 1);
@@ -263,10 +264,14 @@ describe('exact-design protected live-baseline boundaries', () => {
     // Exact worksheet-image read errors may offer an independently validated original table.
     // This source-only recovery retains the error and never invokes a protected endpoint.
     // The reviewed glossary distinguishes shapes, powers and pronouns; refresh its asset only.
-    assert.match(viewerWithNativeRelease, /noam-glossary\.js\?v=20261028-context3/);
-    assert.match(readFileSync(join(root, '../../worksheet-viewer-noam.html'), 'utf8'), /noam-glossary\.js\?v=20261028-context3/);
+    assert.match(viewerWithNativeRelease, /noam-glossary\.js\?v=20261029-context4/);
+    assert.match(readFileSync(join(root, '../../worksheet-viewer-noam.html'), 'utf8'), /noam-glossary\.js\?v=20261029-context4/);
     // Privately verified source facts add a bounded priority/no-disclosure instruction to the existing request.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '0ef801b236b4093fcf31bcc3d54780c6080a3515c925ff0010f1c133eb6e5df3');
+    // 2026-10-29: image-read hints with fully verified native aids send a canonical source
+    // analysis instead of OCR; the endpoint, auth, cache and request count are unchanged.
+    // The ten requested source scaffolds join the explicit drawing path; glossary wording is versioned.
+    // Automatic hints, original source assets and endpoint security retain their existing contracts.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), '6f0e7925e1d395da0b7eb2787297794c85b9ed1ced5f3a9af46637d1c1d7a4a0');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {
