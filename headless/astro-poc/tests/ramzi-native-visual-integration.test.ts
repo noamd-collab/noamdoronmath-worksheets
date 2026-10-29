@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { readPublicText } from './read-native-public';
 import { runInNewContext } from 'node:vm';
 import { it } from 'node:test';
 import { parseHTML } from 'linkedom';
@@ -14,7 +15,7 @@ function fn(name: string) {
 }
 const refresh = fn('noamDiagramCurrent') + '\n' + fn('noamDiagramRefresh');
 const data = JSON.parse(readFileSync(new URL('../public/noam-ai/native/G8-T15/a/noam-ai.json', import.meta.url), 'utf8'));
-const svg = readFileSync(new URL('../public/noam-ai/native/G8-T15/a/figures/q2a.svg', import.meta.url), 'utf8');
+const svg = readPublicText(new URL('../public/noam-ai/native/G8-T15/a/figures/q2a.svg', import.meta.url));
 const opts = { answer: 'שים לב לנקודה (0,-9) ולציר y.', studentMessage: 'אפשר רמז 1?', helpKind: 'hint' };
 const ex = { id: 'G8-T15-A-Q02א', part: 'א', nativeQuestionId: 'q2', nativeItemId: 'q2a', nativeFigureId: 'q2a',
   nativeFigureUrl: '/noam-ai/native/G8-T15/a/figures/q2a.svg' };

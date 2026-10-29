@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import {readFileSync,readdirSync} from 'node:fs';
+import { readPublicText } from './read-native-public';
 import {runInNewContext} from 'node:vm';
 import {it} from 'node:test';
 import {parseHTML} from 'linkedom';
@@ -9,14 +10,14 @@ const api=context.NoamSourcePanels,json=(path:string)=>JSON.parse(readFileSync(n
 const manifests=readdirSync(new URL('noam-ai/manifests/',root)).filter(f=>f.endsWith('.json')).map(f=>json('noam-ai/manifests/'+f));
 function fixture(pkg='G7-T22',level='a',q='q21',part='א'){
  const path=`noam-ai/native/${pkg}/${level}/noam-ai.json`,data=json(path),manifest=manifests.find(m=>m.nativeExportUrl==='/'+path);
- const exercise=manifest.exercises.find((e:any)=>e.nativeQuestionId===q&&e.part===part),primary=readFileSync(new URL(exercise.nativeFigureUrl.slice(1),root),'utf8');
- const refs=api.references(data,exercise,primary),svgs=Object.fromEntries((refs?.panels||[]).map((p:any)=>[p.id,readFileSync(new URL(p.url.slice(1),root),'utf8')]));return{data,exercise,primary,refs,svgs,manifest};
+ const exercise=manifest.exercises.find((e:any)=>e.nativeQuestionId===q&&e.part===part),primary=readPublicText(new URL(exercise.nativeFigureUrl.slice(1),root));
+ const refs=api.references(data,exercise,primary),svgs=Object.fromEntries((refs?.panels||[]).map((p:any)=>[p.id,readPublicText(new URL(p.url.slice(1),root))]));return{data,exercise,primary,refs,svgs,manifest};
 }
 it('52 reviewed questions expose 111 printed panels across 181 group subsections',()=>{
  const groups=new Map(),failed=[];let parts=0;
  for(const m of manifests){if(!m.nativeExportUrl)continue;let data:any;
   for(const e of m.exercises){if(!api.isReviewed(e))continue;data ||=json(m.nativeExportUrl.slice(1));
-   const primary=readFileSync(new URL(e.nativeFigureUrl.slice(1),root),'utf8'),refs=api.references(data,e,primary),svgs=Object.fromEntries((refs?.panels||[]).map((p:any)=>[p.id,readFileSync(new URL(p.url.slice(1),root),'utf8')])),result=api.resolve(data,e,svgs);
+   const primary=readPublicText(new URL(e.nativeFigureUrl.slice(1),root)),refs=api.references(data,e,primary),svgs=Object.fromEntries((refs?.panels||[]).map((p:any)=>[p.id,readPublicText(new URL(p.url.slice(1),root))])),result=api.resolve(data,e,svgs);
    if(!result){failed.push(e.id);continue;}groups.set(result.sourceKey,result.panelIds);parts++;
   }
  }assert.deepEqual(failed,[]);assert.equal(groups.size,52);assert.equal([...groups.values()].reduce((n,a)=>n+a.length,0),111);assert.equal(parts,181);

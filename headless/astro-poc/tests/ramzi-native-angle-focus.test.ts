@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { readPublicText } from './read-native-public';
 import { runInNewContext } from 'node:vm';
 import { it } from 'node:test';
 import { parseHTML } from 'linkedom';
@@ -15,7 +16,7 @@ function fixture(pkg: string, level: string, q: string, part = 'א') {
   const figure = data.figures.find((x: any) => x.id === item.figure_id);
   const exercise: any = { id: `${pkg}-${({ a: 'A', b: 'B', c: 'E' } as any)[level]}-Q${q.slice(1).padStart(2, '0')}${part}`, part,
     nativeQuestionId: q, nativeItemId: item.id, nativeFigureId: figure.id, nativeFigureUrl: `/noam-ai/native/${pkg}/${level}/${figure.svg}` };
-  const svg = readFileSync(new URL('../public' + exercise.nativeFigureUrl, import.meta.url), 'utf8');
+  const svg = readPublicText(new URL('../public' + exercise.nativeFigureUrl, import.meta.url));
   return { data, exercise, svg };
 }
 const hint = (answer: string) => ({ answer, studentMessage: 'אפשר רמז 1?', helpKind: 'hint' });

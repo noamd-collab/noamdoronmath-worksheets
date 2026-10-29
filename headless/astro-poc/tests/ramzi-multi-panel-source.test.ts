@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { readdirSync, readFileSync } from 'node:fs';
+import { readPublicText } from './read-native-public';
 import { runInNewContext } from 'node:vm';
 import { it } from 'node:test';
 
@@ -7,7 +8,7 @@ const context: any = {};
 runInNewContext(readFileSync(new URL('../public/noam-native-visual.js', import.meta.url), 'utf8'), context);
 const api = context.NoamNativeVisual;
 const json = (path: string) => JSON.parse(readFileSync(new URL('../public/' + path, import.meta.url), 'utf8'));
-const svgText = (url: string) => readFileSync(new URL('../public' + url, import.meta.url), 'utf8');
+const svgText = (url: string) => readPublicText(new URL('../public' + url, import.meta.url));
 const labels = (svg: string) => [...svg.matchAll(/<text\b[^>]*>([^<]*)<\/text>/g)].map((m) => m[1].trim()).filter(Boolean);
 const show = { studentMessage: 'הראה את השרטוט המקורי', helpKind: 'free_question' };
 

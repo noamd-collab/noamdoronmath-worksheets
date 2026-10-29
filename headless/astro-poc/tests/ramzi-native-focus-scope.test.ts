@@ -1,10 +1,11 @@
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
+import { readPublicText } from './read-native-public';
 import {runInNewContext} from 'node:vm';
 import {it} from 'node:test';
 import {parseHTML} from 'linkedom';
 const pub=new URL('../public/',import.meta.url),c:any={};runInNewContext(readFileSync(new URL('noam-native-visual.js',pub),'utf8'),c);const api=c.NoamNativeVisual;
-function fixture(pdf:string,q:number,part:string){const m=JSON.parse(readFileSync(new URL('noam-ai/manifests/'+pdf+'.json',pub),'utf8')),d=JSON.parse(readFileSync(new URL(m.nativeExportUrl.slice(1),pub),'utf8')),e=m.exercises.find((e:any)=>e.q===q&&e.part===part),f=d.figures.find((f:any)=>f.id===e.nativeFigureId),svg=readFileSync(new URL(e.nativeFigureUrl.slice(1),pub),'utf8');return{d,e,f,svg};}
+function fixture(pdf:string,q:number,part:string){const m=JSON.parse(readFileSync(new URL('noam-ai/manifests/'+pdf+'.json',pub),'utf8')),d=JSON.parse(readFileSync(new URL(m.nativeExportUrl.slice(1),pub),'utf8')),e=m.exercises.find((e:any)=>e.q===q&&e.part===part),f=d.figures.find((f:any)=>f.id===e.nativeFigureId),svg=readPublicText(new URL(e.nativeFigureUrl.slice(1),pub));return{d,e,f,svg};}
 const triangle=()=>fixture('a51eaa62e9da4001aa3c8604cee3fa26',17,'ב'),kite=()=>fixture('46cba3a6ac9a4726aa21d0976d92661b',3,'ב'),extended=()=>fixture('ddfdb423c2dc4e9d925ee5be56971195',18,'א');
 const hint=(answer:string)=>({answer,studentMessage:'אפשר רמז 1?',helpKind:'hint'}),resolve=(f:any,answer:string)=>api.resolve(f.d,f.e,hint(answer),f.svg),plain=(v:any)=>JSON.parse(JSON.stringify(v));
 function horizontal(s:any){return plain(s.shapes).filter((x:any)=>x.tag==='line'&&Number(x.attrs.y1)===88.81&&Number(x.attrs.y2)===88.81).map((x:any)=>[Number(x.attrs.x1),Number(x.attrs.x2)].sort((a,b)=>a-b)).sort((a:any,b:any)=>a[0]-b[0]);}

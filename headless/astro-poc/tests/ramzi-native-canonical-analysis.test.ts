@@ -1,10 +1,11 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { readPublicText } from './read-native-public';
 import { runInNewContext } from 'node:vm';
 import { it } from 'node:test';
 import { parseHTML } from 'linkedom';
 import { createHash } from 'node:crypto';
-const pub=new URL('../public/',import.meta.url),read=(p:string)=>readFileSync(new URL(p,pub),'utf8');
+const pub=new URL('../public/',import.meta.url),read=(p:string)=>readPublicText(new URL(p,pub));
 const modules=['noam-native-visual','noam-source-panels','noam-authored-geometry','noam-authored-visual','noam-visual-data','noam-visual-plan','noam-source-data-visual','noam-source-scaffold'].map(n=>read(n+'.js')).join('\n');
 const clone=(v:any)=>JSON.parse(JSON.stringify(v));
 function fn(v:string,n:string){const s=v.slice(v.indexOf('function '+n+'('));assert.ok(s.startsWith('function '+n+'('));return s.slice(0,s.indexOf('\nfunction ',1));}

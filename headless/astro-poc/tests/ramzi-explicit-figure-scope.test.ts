@@ -1,11 +1,12 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { readPublicText } from './read-native-public';
 import { createHash } from 'node:crypto';
 import { runInNewContext } from 'node:vm';
 import { it } from 'node:test';
 
 const pub=new URL('../public/',import.meta.url),root=new URL('../../../',import.meta.url);
-const read=(path:string,base=pub)=>readFileSync(new URL(path,base),'utf8'),json=(path:string,base=pub)=>JSON.parse(read(path,base));
+const read=(path:string,base=pub)=>base===pub?readPublicText(new URL(path,base)):readFileSync(new URL(path,base),'utf8'),json=(path:string,base=pub)=>JSON.parse(read(path,base));
 const sha=(value:string)=>createHash('sha256').update(value).digest('hex'),clone=(v:any)=>JSON.parse(JSON.stringify(v));
 const specs=[
  {path:'G7-T12/b',q:'q14',part:'א',pdf:'e6bad05438cb48f4ab5f7d894727625f',

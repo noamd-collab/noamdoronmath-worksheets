@@ -1,11 +1,12 @@
 import assert from 'node:assert/strict';
-import { readdirSync, readFileSync } from 'node:fs';
+import { readdirSync } from 'node:fs';
+import { readPublicText } from './read-native-public';
 import { runInNewContext } from 'node:vm';
 import { it } from 'node:test';
 import { parseHTML } from 'linkedom';
 
 const root = new URL('../public/', import.meta.url);
-const read = (path: string) => readFileSync(new URL(path.replace(/^\//, ''), root), 'utf8');
+const read = (path: string) => readPublicText(new URL(path.replace(/^\//, ''), root));
 const { document } = parseHTML('<html><body></body></html>');
 const c: any = { document }; c.window = c;
 for (const file of ['noam-native-visual.js', 'noam-authored-geometry.js', 'noam-authored-visual.js', 'noam-visual-data.js', 'noam-visual-plan.js']) runInNewContext(read(file), c, { filename: file });

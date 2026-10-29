@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { readPublicText } from './read-native-public';
 import { runInNewContext } from 'node:vm';
 import { it } from 'node:test';
 import { parseHTML } from 'linkedom';
@@ -9,7 +10,7 @@ function fn(v:string,n:string){const s=v.slice(v.indexOf('function '+n+'('));ass
 function fixture(v:string){
  const manifest=JSON.parse(readFileSync(new URL('noam-ai/manifests/c5910c37949b48a488ec5e3732c48601.json',pub),'utf8'));
  const exercise=manifest.exercises.find((e:any)=>e.nativeItemId==='q7b');
- const source:any={data:JSON.parse(readFileSync(new URL(manifest.nativeExportUrl.slice(1),pub),'utf8')),svgText:readFileSync(new URL(exercise.nativeFigureUrl.slice(1),pub),'utf8')};
+ const source:any={data:JSON.parse(readFileSync(new URL(manifest.nativeExportUrl.slice(1),pub),'utf8')),svgText:readPublicText(new URL(exercise.nativeFigureUrl.slice(1),pub))};
  const {document,window}=parseHTML('<html><body></body></html>');
  const c:any={document,window,manifest,selectedExercise:exercise,pdf:manifest.pdfHash,Promise,noamVerifiedSourceAnalyses:new WeakMap(),noamNativeDataUrl:()=>manifest.nativeExportUrl,
   noamSourceVisualIdentity:()=> 'same-selected-source',noamLoadSourceVisual:async()=>source,noamSourcePanelContext:()=>null};

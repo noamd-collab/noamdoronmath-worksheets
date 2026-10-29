@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
+import { readPublicText } from './read-native-public';
 import { runInNewContext } from 'node:vm';
 import { it } from 'node:test';
 import { parseHTML } from 'linkedom';
@@ -18,7 +19,7 @@ function fixture(v:string,path='G8-TWOSRC/a',qid='q3',part='ג',hooks:any={}){
  noamNativeFocusUrl:()=>manifest.nativeExportUrl,noamDiagramRuntime:()=>runtime,noamMessageVisualOptions:()=>opts,exerciseThread:()=>thread,
  renderCount:0,savedCount:0,renderNoamChat(){c.renderCount++;},saveNoamState(){c.savedCount++;},announceNoam(){},
  cropExerciseCanvas:async(e:any,o:any)=>{crops.push({exercise:clone(e),options:clone(o)});return {width:640,height:1200,toDataURL:()=> 'data:image/png;base64,QUJD'};},
- fetch:async(url:string)=>{calls.push(url);if(hooks.wait)await hooks.wait;if(hooks.fail===url)return {ok:false};const body=readFileSync(new URL(url.slice(1),root),'utf8');return {ok:true,json:async()=>JSON.parse(body),text:async()=>hooks.svg?hooks.svg(url,body):body};},
+ fetch:async(url:string)=>{calls.push(url);if(hooks.wait)await hooks.wait;if(hooks.fail===url)return {ok:false};const body=readPublicText(new URL(url.slice(1),root));return {ok:true,json:async()=>JSON.parse(body),text:async()=>hooks.svg?hooks.svg(url,body):body};},
  requestNoamDiagram:async(...args:any[])=>{fallback.push(args);return 'protected-fallback';}};
  const helper='var noamSourceVisualPackages='+v.split('var noamSourceVisualPackages=')[1].split('function noamNativeFigure(')[0];
  runInNewContext(native+'\n'+panels+'\n'+fn(v,'noamDiagramSourceIdentity')+'\n'+helper+'\n'+['noamDiagramCurrent','noamDiagramRefresh','noamTypedVisualContext','noamAddDiagramExpansion','noamRenderAiDiagram'].map(n=>fn(v,n)).join('\n'),c);

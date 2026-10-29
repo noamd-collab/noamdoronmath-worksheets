@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { readPublicText } from './read-native-public';
 import { runInNewContext } from 'node:vm';
 import { it } from 'node:test';
 import { parseHTML } from 'linkedom';
@@ -12,7 +13,7 @@ function fixture(part='ב',viewer='../public/worksheet-viewer-noam.html'){
  const manifest=JSON.parse(readFileSync(new URL('noam-ai/manifests/e10786e0b31e4de894b0778da9d12495.json',root),'utf8'));
  const exercise=manifest.exercises.find((e:any)=>e.q===17&&e.part===part);
  const data=JSON.parse(readFileSync(new URL(manifest.nativeExportUrl.slice(1),root),'utf8'));
- const svgText=readFileSync(new URL(exercise.nativeFigureUrl.slice(1),root),'utf8'),source={data,svgText};
+ const svgText=readPublicText(new URL(exercise.nativeFigureUrl.slice(1),root)),source={data,svgText};
  const {document}=parseHTML('<html><body></body></html>'),c:any={document,manifest,selectedExercise:exercise};c.window=c;
  for(const file of files)runInNewContext(readFileSync(new URL(file,root),'utf8'),c,{filename:file});
  const context=c.NoamNativeVisual.authoredContext(data,exercise,svgText);assert.ok(context);

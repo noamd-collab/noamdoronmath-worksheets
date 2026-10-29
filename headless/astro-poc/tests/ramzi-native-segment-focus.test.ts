@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { readPublicText } from './read-native-public';
 import { runInNewContext } from 'node:vm';
 import { it } from 'node:test';
 import { parseHTML } from 'linkedom';
@@ -120,7 +121,7 @@ it('side-length comparison preserves the approved triangle, all three values and
   assert.match(fig.querySelector('figcaption').textContent,/השרטוט המקורי עם שלושת אורכי הצלעות הנתונים/);
   assert.match(svg.getAttribute('aria-label'),/שלושת אורכי הצלעות הנתונים/);
   assert.doesNotMatch(fig.textContent,/הארוכה|זווית ישרה|שהוזכרו ברמז/);
-  const original=readFileSync(new URL('../public'+ex.nativeFigureUrl,import.meta.url),'utf8');
+  const original=readPublicText(new URL('../public'+ex.nativeFigureUrl,import.meta.url));
   for(const value of sample.values)assert.match(original,new RegExp('>'+value+'</text>'));
   const sourceFigure=sample.data.figures.find((a:any)=>a.id===ex.nativeFigureId);
   for(const line of lines){

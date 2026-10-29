@@ -1,9 +1,10 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { readPublicText } from './read-native-public';
 import { runInNewContext } from 'node:vm';
 import { it } from 'node:test';
 import { parseHTML } from 'linkedom';
-const pub=new URL('../public/',import.meta.url),read=(p:string)=>readFileSync(new URL(p,pub),'utf8');
+const pub=new URL('../public/',import.meta.url),read=(p:string)=>readPublicText(new URL(p,pub));
 const legacy=JSON.parse(readFileSync(new URL('./fixtures/ramzi-source-priority-legacy-messages.json',import.meta.url),'utf8'));
 const clone=(v:any)=>JSON.parse(JSON.stringify(v));
 function fn(v:string,n:string){const s=v.slice(v.indexOf('function '+n+'('));assert.ok(s.startsWith('function '+n+'('));return s.slice(0,s.indexOf('\nfunction ',1));}

@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
+import { readPublicText } from './read-native-public';
 import { runInNewContext } from 'node:vm';
 import { it } from 'node:test';
 import { parseHTML } from 'linkedom';
@@ -17,7 +18,7 @@ function fixture(v:string,path='G7-T22/a',qid='q21',part='ד',mutate?:(url:strin
  const c:any={document,window,manifest,selectedExercise:exercise,pdf:manifest.pdfHash,Map,WeakSet,Promise,
   noamNativeFocusUrl:()=>manifest.nativeExportUrl,exerciseThread:()=>thread,renderNoamChat(){},saveNoamState(){},announceNoam(){},
   cropExerciseCanvas:async(e:any)=>{crops.push(clone(e.crops));return {width:640,height:1200,toDataURL:()=> 'data:image/png;base64,QUJD'};},
-  fetch:async(url:string)=>{calls.push(url);const original=readFileSync(new URL(url.slice(1),root),'utf8'),body=mutate?mutate(url,original):original;return {ok:body!==null,json:async()=>JSON.parse(body!),text:async()=>body,arrayBuffer:async()=>new TextEncoder().encode(body!).buffer};},TextDecoder};
+  fetch:async(url:string)=>{calls.push(url);const original=readPublicText(new URL(url.slice(1),root)),body=mutate?mutate(url,original):original;return {ok:body!==null,json:async()=>JSON.parse(body!),text:async()=>body,arrayBuffer:async()=>new TextEncoder().encode(body!).buffer};},TextDecoder};
  const helper='var noamSourceVisualPackages='+v.split('var noamSourceVisualPackages=')[1].split('function noamNativeFigure(')[0];
  runInNewContext(native+'\n'+panels+'\n'+fn(v,'noamDiagramSourceIdentity')+'\n'+helper,c);
  window.NoamNativeVisual=c.NoamNativeVisual;window.NoamSourcePanels=c.NoamSourcePanels;
