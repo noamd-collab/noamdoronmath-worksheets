@@ -111,8 +111,8 @@ test('hover timing, child transitions, hover persistence and Escape preserve the
   f.document.emit('pointerover',{target:f.anchor,pointerType:'mouse'});f.advance(300);assert.equal(tip.hidden,true);cleanup();assert.equal(f.state.timers.size,0);
 }));
 
-test('keyboard previews remain available without hover and stop immediately under reduced motion',()=>fixture(f=>{
-  f.hover.matches=false;f.reduce.matches=true;const cleanup=initExactLinkPeek(live);
+test('keyboard previews remain available without hover and stop immediately under the site reduced-motion choice',()=>fixture(f=>{
+  f.hover.matches=false;f.reduce.matches=true;f.flags.add('noam-a11y-motion');const cleanup=initExactLinkPeek(live);
   f.document.emit('pointerover',{target:f.anchor,pointerType:'touch'});f.advance(300);assert.equal(f.state.created.length,0);
   f.document.activeElement=f.anchor;f.document.emit('focusin',{target:f.anchor});f.advance(220);assert.equal(f.state.created[0].hidden,false);assert.equal(f.state.animations.length,0);
   f.document.emit('pointerout',{target:f.anchor,relatedTarget:null});f.advance(300);assert.equal(f.state.created[0].hidden,false);
