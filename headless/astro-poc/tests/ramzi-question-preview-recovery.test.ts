@@ -1,6 +1,7 @@
+import { runVisualCompilerInNewContext } from './helpers/visual-compiler-vm';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { runInNewContext } from 'node:vm';
+
 import { test } from 'node:test';
 import { parseHTML } from 'linkedom';
 
@@ -12,7 +13,7 @@ test('a failed chat keeps the original question and source figure accessible, wi
   const panelBody = document.querySelector('#panel')!;
   const selectedExercise = { id: 'g7-t19-a-q1b', q: 1, part: 'ב', text: 'העבירו גובה במשולש', crop: {} };
   const thread = { messages: [{ role: 'assistant', text: 'בדיקת האבטחה נכשלה', answerError: true }], history: [], hintIndex: 0 };
-  const api = runInNewContext(section('showExercisePreview', 'renderExercisePreview') + section('renderNoamChat', 'localVisualExerciseSource') + `
+  const api = runVisualCompilerInNewContext(section('showExercisePreview', 'renderExercisePreview') + section('renderNoamChat', 'localVisualExerciseSource') + `
     function renderExercisePreview(exercise){showExercisePreview(exercise,'data:image/png;base64,original-question');}
     ({renderNoamChat})`, {
     document, window, panelBody, selectedExercise, panelBack: document.querySelector('#back'),
@@ -62,7 +63,7 @@ test('switching parts clears the previous announcement and cancels its queued li
   const { document } = parseHTML('<html><body><div id="noamAnnouncements">שאלה 1 סעיף א: שגיאה</div><div id="panel"></div></body></html>');
   const pending = new Map<number, () => void>();
   let nextTimer = 0;
-  const api = runInNewContext(section('clearNoamAnnouncement', 'restoreNoamChatFocus') + section('selectManifestExercise', 'renderExercisePicker') + '\n({announceNoam,selectManifestExercise})', {
+  const api = runVisualCompilerInNewContext(section('clearNoamAnnouncement', 'restoreNoamChatFocus') + section('selectManifestExercise', 'renderExercisePicker') + '\n({announceNoam,selectManifestExercise})', {
     document, noamAnnouncementTimer: null, selectedExercise: { id: 'q1a' }, selectedPin: null,
     panelBody: document.getElementById('panel'), exerciseThread() {}, openNoamPanel() {}, renderNoamChat() {},
     setTimeout(fn: () => void) { const id = ++nextTimer; pending.set(id, fn); return id; },
@@ -99,7 +100,7 @@ test('a late answer or failure does not announce the old part after the student 
       ttl: '', g: 7, lv: 'a', LEVEL: { a: 'א׳' }, API: '/test', MIN_WAIT: 0,
       setTimeout: (fn: () => void) => { fn(); },
     };
-    runInNewContext(section('askNoam', 'noamRetryActionLabel') + '\naskNoam("hint", "");', context);
+    runVisualCompilerInNewContext(section('askNoam', 'noamRetryActionLabel') + '\naskNoam("hint", "");', context);
     context.selectedExercise = { id: 'q1b' };
     finishAnalysis({ readable: true });
     await new Promise(resolve => setImmediate(resolve));

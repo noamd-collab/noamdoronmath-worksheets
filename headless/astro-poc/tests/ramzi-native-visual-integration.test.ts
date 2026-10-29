@@ -1,6 +1,7 @@
+import { runVisualCompilerInNewContext } from './helpers/visual-compiler-vm';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { runInNewContext } from 'node:vm';
+
 import { it } from 'node:test';
 import { parseHTML } from 'linkedom';
 
@@ -31,7 +32,7 @@ function fixture(fetcher?: (url: string, fallback: () => any) => any) {
     fetch: async (url: string) => { calls.push(url); const result = () => ({ ok: true, json: async () => data, text: async () => svg }); return fetcher ? fetcher(url, result) : result(); },
     requestNoamDiagram: async (...args: any[]) => { fallback.push(args); return 'protected-fallback'; }
   };
-  runInNewContext(sourceModule + '\n' + helper + '\n' + refresh, c);
+  runVisualCompilerInNewContext(sourceModule + '\n' + helper + '\n' + refresh, c);
   window.NoamNativeVisual = c.NoamNativeVisual;
   return { c, calls, fallback, exercise, message, thread, runtime };
 }
@@ -52,7 +53,7 @@ it('typed Send path creates transcript and completes the native request from an 
   f.c.busy = false; f.c.noamDrafts = {}; f.c.noamConstructedVisual = () => null; f.c.noamParsedLocalVisual = () => null;
   f.c.noamSourceCropRequested = () => false;
   const local = readFileSync(new URL('../public/noam-local-visual.js', import.meta.url), 'utf8');
-  runInNewContext(local + '\n' + fn('noamMessageVisualOptions') + '\n' + fn('tryNoamLocalVisual') + '\n' + fn('requestNoamDiagram'), f.c);
+  runVisualCompilerInNewContext(local + '\n' + fn('noamMessageVisualOptions') + '\n' + fn('tryNoamLocalVisual') + '\n' + fn('requestNoamDiagram'), f.c);
   f.c.window.NoamLocalVisual = f.c.NoamLocalVisual; f.c.window.NoamDiagramPlan = {};
   assert.equal(f.c.tryNoamLocalVisual('תראה לי את הנקודה (0,-9) ואת ציר y'), true);
   assert.equal(f.thread.messages.length, 2);
@@ -64,7 +65,7 @@ it('typed Send path creates transcript and completes the native request from an 
 
 it('direct highlight/show imperatives route visually without intercepting ordinary mathematical questions', () => {
   const c: any = {};
-  runInNewContext(readFileSync(new URL('../public/noam-local-visual.js', import.meta.url), 'utf8'), c);
+  runVisualCompilerInNewContext(readFileSync(new URL('../public/noam-local-visual.js', import.meta.url), 'utf8'), c);
   for (const request of ['סמן את A', 'סמני את הנקודה B', 'הדגש את ציר y', 'הראה את הזווית ABC', 'בבקשה הצג את הקטע AB']) {
     assert.equal(c.NoamLocalVisual.wantsVisualSupport(request), true, request);
   }
@@ -176,7 +177,7 @@ it('actual askNoam hint-button prompt uses the displayed hint scope for automati
     noamClarifySignedAddLanguage: (text: string) => text, noamResponseVisual: () => null,
     noamVisualAnswer: (_student: string, answer: string) => answer, setTimeout: (callback: any) => callback()
   });
-  runInNewContext(fn('askNoam'), f.c);
+  runVisualCompilerInNewContext(fn('askNoam'), f.c);
   f.c.askNoam('hint', 'תן לי רמז אחד בלבד. אל תגלה את התשובה הסופית, ואל תבצע את הצעד במקומי.');
   for (let i = 0; i < 60; i++) await Promise.resolve();
   assert.equal(f.thread.messages[0].text, 'אפשר רמז 1?');
@@ -203,7 +204,7 @@ it('student attachment solve skips worksheet source enrichment and automatic sou
     noamClarifySignedAddLanguage: (text: string) => text, noamResponseVisual: () => null,
     noamVisualAnswer: (_student: string, answer: string) => answer, setTimeout: (callback: any) => callback()
   });
-  runInNewContext(fn('askNoam'), f.c);
+  runVisualCompilerInNewContext(fn('askNoam'), f.c);
   f.c.askNoam('hint', 'תן לי רמז אחד בלבד.');
   for (let i = 0; i < 60; i++) await Promise.resolve();
   assert.equal(solveAnalysis, attached); assert.equal(f.calls.length, 0);
@@ -242,7 +243,7 @@ it('generic draw action resolves authored intervals without protected generation
   Object.assign(f.exercise,{id:'G8-T28-B-Q08ב',part:'ב',nativeQuestionId:'q8',nativeItemId:'q8b'});
   delete (f.exercise as any).nativeFigureId;delete (f.exercise as any).nativeFigureUrl;
   f.c.manifest.nativeExportUrl='/noam-ai/native/G8-T28/b/noam-ai.json';
-  runInNewContext(authoredModule,f.c);f.c.window.NoamAuthoredVisual=f.c.NoamAuthoredVisual;
+  runVisualCompilerInNewContext(authoredModule,f.c);f.c.window.NoamAuthoredVisual=f.c.NoamAuthoredVisual;
   const options={...opts,answer:'האם יש מספרים בין 20 ל-21 שאינם נכללים במחלקה?',drawCurrentStep:true};
   const result=await f.c.noamRequestSourceFirst(f.exercise,f.thread,f.message,options);
   assert.equal(result.presentation,'authored-intervals');assert.equal(f.fallback.length,0);assert.equal(f.calls.length,1);
@@ -256,7 +257,7 @@ it('auto authored aid requires a matching focus and does not attach to an unrela
   const packageData=JSON.parse(readFileSync(new URL('../public/noam-ai/native/G8-T28/b/noam-ai.json',import.meta.url),'utf8'));
   const f=fixture(async()=>({ok:true,json:async()=>packageData}));Object.assign(f.exercise,{id:'G8-T28-B-Q08ב',part:'ב',nativeQuestionId:'q8',nativeItemId:'q8b'});
   delete (f.exercise as any).nativeFigureId;delete (f.exercise as any).nativeFigureUrl;f.c.manifest.nativeExportUrl='/noam-ai/native/G8-T28/b/noam-ai.json';
-  runInNewContext(authoredModule,f.c);f.c.window.NoamAuthoredVisual=f.c.NoamAuthoredVisual;
+  runVisualCompilerInNewContext(authoredModule,f.c);f.c.window.NoamAuthoredVisual=f.c.NoamAuthoredVisual;
   assert.equal(await f.c.noamAttachSourceHint(f.exercise,f.thread,f.message,{...opts,answer:'קראו את המשפט הראשון.'}),null);
   const visual=await f.c.noamAttachSourceHint(f.exercise,f.thread,f.message,{...opts,answer:'האם יש מספרים בין 20 ל-21 שאינם נכללים במחלקה?'});
   assert.equal(visual.presentation,'authored-intervals');assert.equal(f.fallback.length,0);

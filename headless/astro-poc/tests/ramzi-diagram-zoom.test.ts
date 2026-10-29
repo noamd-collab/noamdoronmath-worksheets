@@ -1,6 +1,7 @@
+import { runVisualCompilerInNewContext } from './helpers/visual-compiler-vm';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { runInNewContext } from 'node:vm';
+
 import { it } from 'node:test';
 import { parseHTML } from 'linkedom';
 const source=readFileSync(new URL('../public/worksheet-viewer-noam.html',import.meta.url),'utf8');
@@ -10,7 +11,7 @@ it('zooms only a copy, bounds the scale, resets, closes and restores focus witho
  const create=document.createElement.bind(document);
  document.createElement=(name:string)=>{const el=create(name);if(name==='dialog'){el.showModal=()=>el.setAttribute('open','');el.close=()=>el.dispatchEvent(new window.Event('close'));}return el;};
  const row=document.getElementById('row')!,figure=row.querySelector('figure')!;
- runInNewContext(helper+';noamAddDiagramExpansion(row,figure);',{document,window,row,figure});
+ runVisualCompilerInNewContext(helper+';noamAddDiagramExpansion(row,figure);',{document,window,row,figure});
  const before=figure.outerHTML;
  const trigger=row.querySelector('button')!;let focused=false;trigger.focus=()=>{focused=true;};trigger.click();
  const dialog=document.querySelector('dialog')!,zoom=dialog.querySelector('.noam-diagram-zoom')!;
@@ -50,7 +51,7 @@ it('fits a tall source figure to the available height as well as width and refit
   return el;
  };
  const row=document.getElementById('row')!,figure=row.querySelector('figure')!;
- runInNewContext(helper+';noamAddDiagramExpansion(row,figure);',{document,window,row,figure});
+ runVisualCompilerInNewContext(helper+';noamAddDiagramExpansion(row,figure);',{document,window,row,figure});
  row.querySelector('button')!.click();
  const dialog=document.querySelector('dialog')!;
  const [minus,plus,fit]=dialog.querySelectorAll('.noam-diagram-zoom button');

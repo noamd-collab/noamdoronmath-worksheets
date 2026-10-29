@@ -1,12 +1,13 @@
+import { runVisualCompilerInNewContext } from './helpers/visual-compiler-vm';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
 import { createHash } from 'node:crypto';
-import { runInNewContext } from 'node:vm';
+
 import { it } from 'node:test';
 import { parseHTML } from 'linkedom';
 
 const pub=new URL('../public/',import.meta.url),c:any={};c.window=c;
-for(const f of ['noam-native-visual.js','noam-authored-geometry.js','noam-authored-visual.js','noam-visual-plan.js'])runInNewContext(readFileSync(new URL(f,pub),'utf8'),c);
+for(const f of ['noam-native-visual.js','noam-authored-geometry.js','noam-authored-visual.js','noam-visual-plan.js'])runVisualCompilerInNewContext(readFileSync(new URL(f,pub),'utf8'),c);
 const manifest=JSON.parse(readFileSync(new URL('noam-ai/manifests/9f4807731eac489881c7eefd54b52cab.json',pub),'utf8'));
 const bytes=readFileSync(new URL(manifest.nativeExportUrl.slice(1),pub)),data=JSON.parse(bytes.toString());
 const draw={studentMessage:'אפשר רמז 1?',helpKind:'hint',drawCurrentStep:true,answer:'התבוננו בנתונים שבשאלה.'};
@@ -67,7 +68,7 @@ it('v2 requires the whole construction evidence and renderer rejects altered sce
   assert.equal(c.NoamVisualPlan.inspect(p,context).ok,false);
  }
  for(const mutate of [(s:any)=>s.data.measure='Math.sqrt(36)',(s:any)=>s.data.midpointNames=['A','A'],(s:any)=>s.data.url='https://example.test',(s:any)=>s.caption='answer',(s:any)=>s.data.variant='chosen-square']){
-  c.__sceneJson=JSON.stringify(scene);const copy=runInNewContext('JSON.parse(__sceneJson)',c);mutate(copy);assert.equal(render(copy),null);
+  c.__sceneJson=JSON.stringify(scene);const copy=runVisualCompilerInNewContext('JSON.parse(__sceneJson)',c);mutate(copy);assert.equal(render(copy),null);
  }
  assert.equal(render(scene).querySelectorAll('script,image,foreignObject').length,0);
 });
@@ -79,7 +80,7 @@ it('drawing intent and unrelated typed requests retain their existing restrictio
 for(const path of ['../public/worksheet-viewer-noam.html','../../../worksheet-viewer-noam.html'])it(path+': actual source presentation uses the typed square renderer for the two failing exercises',()=>{
  const html=readFileSync(new URL(path,import.meta.url),'utf8'),start=html.indexOf('function noamSourcePresentation('),tail=html.slice(start),code=tail.slice(0,tail.indexOf('\nfunction ',1));
  const {document}=parseHTML('<html><body></body></html>'),scope:any={...c,document,noamSourcePanelModuleMissing:()=>false,noamSourcePanelReviewed:()=>false};scope.window=scope;
- runInNewContext(code,scope);
+ runVisualCompilerInNewContext(code,scope);
  for(const [q,part] of [[3,'א'],[7,'ג']] as const){const f=fixture(q,part),presentation=scope.noamSourcePresentation({data,svgText:''},f.exercise,draw);
   assert.equal(presentation.kind,'authored-square-construction');assert.equal(presentation.figure.querySelectorAll('polygon').length,1);
   assert.equal(presentation.figure.querySelectorAll('image,script').length,0);assert.match(presentation.figure.textContent,/לא חושבו/);

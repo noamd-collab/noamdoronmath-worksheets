@@ -1,7 +1,8 @@
+import { runVisualCompilerInNewContext } from './helpers/visual-compiler-vm';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
-import { runInNewContext } from 'node:vm';
+
 import { it } from 'node:test';
 
 const pub=new URL('../public/',import.meta.url),root=new URL('../../../',import.meta.url);
@@ -17,7 +18,7 @@ const specs=[
  {path:'G8-T46/c',q:'q20',part:'ה',pdf:'162e9a4cd15e41c5bb68cc6a1b600e81',
   svg:'ea78687e3d6c48a9798f55e5aa6971f3e68d4afaa2a1fe7c333fa4d714656a7d',pdfSha:'77fadbb315b5c9f58b4afe1863b830bfb4aa466376f2b877bd17cccb994cf005',given:['AB ∥ CD']},
 ];
-const native:any={};runInNewContext(read('noam-native-visual.js'),native);
+const native:any={};runVisualCompilerInNewContext(read('noam-native-visual.js'),native);
 function fixture(s:typeof specs[number]){
  const manifest=json('noam-ai/manifests/'+s.pdf+'.json'),data=json('noam-ai/native/'+s.path+'/noam-ai.json');
  const question=data.questions.find((q:any)=>q.id===s.q),figure=data.figures.find((f:any)=>f.id===question.figure_id);
@@ -78,13 +79,13 @@ for(const relative of ['worksheet-viewer-noam.html','../../../worksheet-viewer-n
  it(prefix+': only the four corrected PDFs rotate OCR caches, while conversation keys stay unchanged',()=>{
   const source=viewer.slice(viewer.indexOf('var NOAM_NUMBER_SUMMARY_PDFS ='),viewer.indexOf('try{',viewer.indexOf('var NOAM_NUMBER_SUMMARY_PDFS =')));
   for(const pdf of [...specs.map(s=>s.pdf),'unrelated-pdf']){
-   const c:any={pdf,HEADLESS_MANIFEST_BASE:'/noam-ai/manifests/'};runInNewContext(source,c);
+   const c:any={pdf,HEADLESS_MANIFEST_BASE:'/noam-ai/manifests/'};runVisualCompilerInNewContext(source,c);
    assert.equal(c.ANALYSIS_STORAGE_KEY,'noam-static-analysis-v2-crop-geometry:'+pdf+(pdf==='unrelated-pdf'?'':':item-figure-scope-20261028'));
    assert.equal(c.THREAD_STORAGE_KEY,'noam-static-threads-v1:'+pdf);assert.match(c.MANIFEST_PATH,/item-figure-scope/);
   }
  });
  it(prefix+': the ordinary hint semantic payload starts with the corrected selected-part restriction',()=>{
-  const c:any={};for(const n of ['noamManifestOcrUnreliable','noamExerciseSectionLabel','noamScopedExerciseSemantic','syntheticAnalysis'])runInNewContext(fn(viewer,n),c);
+  const c:any={};for(const n of ['noamManifestOcrUnreliable','noamExerciseSectionLabel','noamScopedExerciseSemantic','syntheticAnalysis'])runVisualCompilerInNewContext(fn(viewer,n),c);
   for(const s of specs){const {manifest,question}=fixture(s);
    for(const ex of manifest.exercises.filter((e:any)=>e.nativeQuestionId===question.id&&e.part!==s.part)){
     const semantic=c.noamScopedExerciseSemantic(ex),analysis=c.syntheticAnalysis(ex);
@@ -99,9 +100,9 @@ for(const relative of ['worksheet-viewer-noam.html','../../../worksheet-viewer-n
   let cacheReads=0;
   const c:any={manifest,pdf:manifest.pdfHash,selectedExercise:exercise,window:{NoamNativeVisual:native.NoamNativeVisual},
    noamCachedSourceVisual:()=>{cacheReads++;throw new Error('passed identity guard');}};
-  for(const n of ['noamDiagramSourceIdentity','noamNativeDataUrl','noamSourceVisualIdentity','noamRenderSourceVisual','noamRenderAiDiagram'])runInNewContext(fn(viewer,n),c);
+  for(const n of ['noamDiagramSourceIdentity','noamNativeDataUrl','noamSourceVisualIdentity','noamRenderSourceVisual','noamRenderAiDiagram'])runVisualCompilerInNewContext(fn(viewer,n),c);
   // Only the public adapter has the older native-focus persistence route.
-  if(viewer.includes('function noamNativeFocusIdentity('))for(const n of ['noamNativeFocusIdentity','noamRenderNativeFocus'])runInNewContext(fn(viewer,n),c);
+  if(viewer.includes('function noamNativeFocusIdentity('))for(const n of ['noamNativeFocusIdentity','noamRenderNativeFocus'])runVisualCompilerInNewContext(fn(viewer,n),c);
   const stale=clone(exercise);stale.nativeFigureId=figure.id;stale.nativeFigureUrl='/noam-ai/native/G8-T46/c/'+figure.svg;stale.context+='\nAB ∥ CD';stale.prompt+='\nAB ∥ CD';
   const oldSource=c.noamSourceVisualIdentity(stale),oldDiagram=c.noamDiagramSourceIdentity(stale);
   assert.notEqual(oldSource,c.noamSourceVisualIdentity(exercise));assert.notEqual(oldDiagram,c.noamDiagramSourceIdentity(exercise));

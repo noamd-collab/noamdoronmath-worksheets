@@ -1,6 +1,7 @@
+import { runVisualCompilerInNewContext } from './helpers/visual-compiler-vm';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { runInNewContext } from 'node:vm';
+
 import { it } from 'node:test';
 import { parseHTML } from 'linkedom';
 import { createHash } from 'node:crypto';
@@ -47,9 +48,9 @@ function fixture(v:string,key:string,edit?:(data:any,manifest:any,exercise:any)=
   noamNativeFocusUrl:()=>manifest.nativeExportUrl,exerciseThread:()=>thread,saveNoamState(){},renderNoamChat(){},announceNoam(){},analysisCache:{},
   cropExerciseCanvas:async()=>({width:640,height:1200,toDataURL:()=> 'data:image/png;base64,QUJD'}),
   fetch:async(url:string)=>{calls.push(url);const body=url===manifest.nativeExportUrl?nativeBody:read(url.slice(1));return {ok:true,json:async()=>JSON.parse(body),text:async()=>body,arrayBuffer:async()=>new TextEncoder().encode(body).buffer};},TextDecoder};
- runInNewContext(modules,c);for(const k of Object.keys(c))if(k.startsWith('Noam'))window[k]=c[k];
+ runVisualCompilerInNewContext(modules,c);for(const k of Object.keys(c))if(k.startsWith('Noam'))window[k]=c[k];
  const helpers='var noamSourceVisualPackages='+v.split('var noamSourceVisualPackages=')[1].split('function noamNativeFigure(')[0];
- runInNewContext(v.slice(v.indexOf('var SOLVER_MESSAGE_MAX ='),v.indexOf('var GRADE_NAME ='))+'\n'+fn(v,'noamDiagramSourceIdentity')+'\n'+fn(v,'noamManifestOcrUnreliable')+'\n'+fn(v,'noamExerciseSectionLabel')+'\n'+fn(v,'localVisualExerciseSource')+'\n'+helpers+'\n'+v.slice(v.indexOf('function noamGeometryContext(text){'),v.indexOf('function postJson(endpoint,payload){')),c);
+ runVisualCompilerInNewContext(v.slice(v.indexOf('var SOLVER_MESSAGE_MAX ='),v.indexOf('var GRADE_NAME ='))+'\n'+fn(v,'noamDiagramSourceIdentity')+'\n'+fn(v,'noamManifestOcrUnreliable')+'\n'+fn(v,'noamExerciseSectionLabel')+'\n'+fn(v,'localVisualExerciseSource')+'\n'+helpers+'\n'+v.slice(v.indexOf('function noamGeometryContext(text){'),v.indexOf('function postJson(endpoint,payload){')),c);
  return {c,exercise,manifest,data,calls,attachments,thread};
 }
 function wireHint(f:any,analysis:any=contradictory()){
@@ -79,7 +80,7 @@ function wireSnapshotReader(f:any,v:string){
   postJson:async(url:string,payload:any)=>{requests.push({url,payload});return url.endsWith('/noamImageAnalyze')
    ?{ok:true,analysis:{readable:true,transcription:'student photograph',problem_statement:'student photograph',student_work:'student work'}}
    :{ok:true,answer:'בדקו את הנתונים המודפסים.'};}});
- runInNewContext(['attachmentsFor','currentAttachments','clearNoamAttachments','exerciseImageWithAttachments','getExerciseAnalysis'].map(n=>fn(v,n)).join('\n'),f.c);
+ runVisualCompilerInNewContext(['attachmentsFor','currentAttachments','clearNoamAttachments','exerciseImageWithAttachments','getExerciseAnalysis'].map(n=>fn(v,n)).join('\n'),f.c);
  return {requests};
 }
 function unreadable(){return Object.assign(new Error('לא הצלחנו לקרוא את תמונת השאלה.'),{code:'QUESTION_IMAGE_UNREADABLE'});}

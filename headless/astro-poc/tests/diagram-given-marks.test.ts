@@ -1,3 +1,4 @@
+import { runVisualCompilerInNewContext } from './helpers/visual-compiler-vm';
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
@@ -166,7 +167,7 @@ describe('viewer reads source givens from the approved package data', () => {
   function run(url: string, qid: string) {
     assert.ok(fn, 'noamSourceGivens');
     const sandbox: any = { fetch: async (u: string) => ({ ok: true, json: async () => JSON.parse(readFileSync(join(root, 'public', u), 'utf8')) }) };
-    vm.runInNewContext(fn + '\nresult=noamSourceGivens({nativeFigureUrl:' + JSON.stringify(url) + ',nativeQuestionId:' + JSON.stringify(qid) + '});', sandbox);
+    runVisualCompilerInNewContext(fn + '\nresult=noamSourceGivens({nativeFigureUrl:' + JSON.stringify(url) + ',nativeQuestionId:' + JSON.stringify(qid) + '});', sandbox);
     return sandbox.result;
   }
   it('G9-T46 A q1: PQ=PS one tick, RQ=RS two ticks', async () => {
@@ -272,7 +273,7 @@ describe('restored drawings acquire source givens without another AI call', () =
     const sandbox: any = { manifest: { exercises: [exercise] }, selectedExercise: exercise, document: documentStub(),
       NoamDiagramPlan: Plan, NoamGeometry: Geometry, noamDiagramSourceIdentity: (e: any) => e.identity,
       noamSourceGivens: () => { fetches++; return pending; }, renderNoamChat: () => renders++, saveNoamState: () => saves++ };
-    sandbox.window = sandbox; vm.runInNewContext(fn, sandbox);
+    sandbox.window = sandbox; runVisualCompilerInNewContext(fn, sandbox);
     return { sandbox, visual, resolve, count: () => ({ fetches, renders, saves }) };
   }
   it('hides the legacy rectangle then repairs and renders it, fetching once', async () => {
