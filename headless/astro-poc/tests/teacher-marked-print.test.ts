@@ -339,7 +339,6 @@ describe('teacher catalog picker', () => {
     assert.match(html, /\.skip\{display:none!important\}/);
     assert.match(html, /\.q-thumb\{[^}]*max-height:120px/);
     assert.match(html, /unicode-bidi:isolate/);
-    assert.match(preview, /function levelAllows/);
     assert.equal(preview.slice(0, preview.indexOf('function selectionMarkBox')).includes('aria-hidden="true"'), false);
     assert.equal(preview.includes('function readingOrder'), false);
     assert.equal(preview.includes('function paintExtract'), false);

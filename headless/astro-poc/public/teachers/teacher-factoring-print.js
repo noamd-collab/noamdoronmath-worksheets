@@ -140,6 +140,7 @@ function ensureTeacherBotClient() {
 
 const QUESTION_ROLES = { basis: 'ביסוס', review: 'חזרה', creative: 'יצירתית' };
 const AI_QUESTION_COUNTS = [5, 10, 15];
+const AI_CANDIDATE_LIMIT = 90;
 
 function questionKey(pdfId, number) {
   return 'q:' + pdfId + ':' + number;
@@ -206,6 +207,19 @@ function interleaveSheets(list) {
   return out;
 }
 
+// Every question, most wanted first for this lesson goal and style.
+function planOrder(groups, scenario, style) {
+  const plan = rolePlan(scenario, style);
+  const lane = (role) => interleaveSheets(groups.filter((group) => group.role === role));
+  if (plan[0] !== 'mix') return plan.flatMap(lane);
+  const lanes = ['basis', 'review', 'creative'].map(lane);
+  const out = [];
+  for (let round = 0; lanes.some((list) => round < list.length); round += 1) {
+    lanes.forEach((list) => { if (round < list.length) out.push(list[round]); });
+  }
+  return out;
+}
+
 function smartQuestionPick(groups, count, scenario, style, seedKeys) {
   if (!Array.isArray(groups) || !groups.length) return [];
   const target = Math.min(Math.max(1, Number(count) || 5), groups.length);
@@ -239,6 +253,7 @@ async function pickWithAi(rawCount) {
   const groups = currentQuestions();
   if (!groups.length) return [];
   const target = Math.min(count, groups.length);
+  const scope = [state.grade, state.topic, state.level].join('|');
   aiPickPending = count;
   paintAiPickButtons();
   const status = $('ai-suggest-status');
@@ -260,8 +275,9 @@ async function pickWithAi(rawCount) {
       styleLabel: (STYLES[state.style] && STYLES[state.style].label) || '',
       note: $('teacher-note') ? String($('teacher-note').value || '').trim().slice(0, 400) : '',
       count,
-      candidates: groups.slice(0, 100).map((group) => ({
-        id: (group.source && group.source.level ? group.source.level + ':' : '') + group.parts[0].id,
+      // The model prompt lists at most 90 candidates; the most wanted questions go first.
+      candidates: planOrder(groups, state.scenario, state.style).slice(0, AI_CANDIDATE_LIMIT).map((group) => ({
+        id: (/^[abc]$/.test(String(group.source && group.source.level)) ? group.source.level + ':' : '') + group.parts[0].id,
         label: group.parts[0].id,
         text: [QUESTION_ROLES[group.role], group.source.levelLabel, 'שאלה ' + group.q, group.parts.length + ' סעיפים'].filter(Boolean).join(' · ').slice(0, 80),
       })),
@@ -272,16 +288,25 @@ async function pickWithAi(rawCount) {
   try {
     const client = await ensureTeacherBotClient();
     const result = await client.postJson('/api/noamSiteCompanion', payload);
-    if (result && Array.isArray(result.exerciseIds) && result.exerciseIds.length) {
+    fromModel = Boolean(result && result.source === 'classifier' && result.model);
+    if (fromModel && Array.isArray(result.exerciseIds) && result.exerciseIds.length) {
+      // The server pads short answers with sections by position. Keep only questions that fit the
+      // lesson plan, so padding never pushes ביסוס into a creative lesson.
       const owner = new Map();
-      groups.forEach((group) => group.keys.forEach((key) => owner.set(key, group.key)));
-      seedKeys = Array.from(new Set(result.exerciseIds.map((key) => owner.get(key)).filter(Boolean)));
-      fromModel = result.source === 'classifier' && Boolean(result.model);
+      groups.forEach((group) => group.keys.forEach((key) => owner.set(key, group)));
+      const plan = rolePlan(state.scenario, state.style);
+      const fits = (group) => plan[0] === 'mix' || group.role === plan[0];
+      seedKeys = Array.from(new Set(result.exerciseIds.map((key) => owner.get(key)).filter((group) => group && fits(group)).map((group) => group.key)));
     }
   } catch (error) {
     seedKeys = [];
   } finally {
     aiPickPending = 0;
+  }
+  if ([state.grade, state.topic, state.level].join('|') !== scope) {
+    paintAiPickButtons();
+    if (status) status.textContent = 'הנושא או הרמה השתנו בזמן הבחירה. אפשר לבקש שוב.';
+    return [];
   }
   const pickedGroups = smartQuestionPick(groups, target, state.scenario, state.style, seedKeys);
   const finalPicked = keysOfQuestions(pickedGroups, groups);
@@ -424,7 +449,28 @@ function keySheet(key) {
 function otherTopicKeys() {
   const topic = currentTopic();
   const here = new Set((topic ? topic.sheets : []).map((sheet) => sheet.pdfId));
-  return state.selected.filter((key) => !here.has(keySheet(key)));
+  const current = band();
+  return state.selected.filter((key) => {
+    const meta = byPdf.get(keySheet(key));
+    return !here.has(keySheet(key)) && (!meta || meta.band === current);
+  });
+}
+
+function sameBand(keys) {
+  const current = band();
+  return keys.filter((key) => {
+    const meta = byPdf.get(keySheet(key));
+    return !meta || meta.band === current;
+  });
+}
+
+// Whole questions for any loaded sheet that has a pick, with roles from the full sheet.
+function pickedGroupsAll() {
+  const chosen = new Set(state.selected);
+  const pdfs = Array.from(new Set(state.selected.map(keySheet)));
+  const pool = [];
+  pdfs.forEach((pdfId) => { const source = sheets.get(pdfId); if (source) source.questions.forEach((question) => pool.push(question)); });
+  return questionGroups(pool).filter((group) => group.keys.some((key) => chosen.has(key)));
 }
 
 function questionCountOf(keys) {
@@ -561,15 +607,17 @@ function render() {
     $('suggestion').hidden = true;
   } else {
     const groups = currentQuestions();
-    const picked = new Set(pickedQuestions(groups).map((group) => group.key));
-    const list = state.filter === 'selected' ? groups.filter((group) => picked.has(group.key)) : groups;
+    const pickedAll = state.filter === 'selected' ? pickedGroupsAll() : [];
+    const picked = new Set(pickedQuestions(groups).map((group) => group.key).concat(pickedAll.map((group) => group.key)));
+    const list = state.filter === 'selected' ? pickedAll : groups;
     const visible = shownGroups(list, picked);
     const multiSheet = new Set(visible.map((group) => group.pdfId)).size > 1;
+    const multiTopic = new Set(visible.map((group) => group.source.topic)).size > 1;
     $('available-count').textContent = groups.length + ' שאלות בדפי הנושא';
     $('questions').innerHTML = visible.length
       ? visible.map((group, index) => {
         const head = multiSheet && (index === 0 || visible[index - 1].pdfId !== group.pdfId)
-          ? `<h4 class="level-head">${escapeHTML(group.source.levelLabel || group.source.title || '')}</h4>`
+          ? `<h4 class="level-head">${escapeHTML((multiTopic ? [group.source.topic, group.source.levelLabel] : [group.source.levelLabel || group.source.title]).filter(Boolean).join(' · '))}</h4>`
           : '';
         return head + questionCard(group, picked.has(group.key));
       }).join('')
@@ -624,14 +672,6 @@ function paintSourceLine() {
   line.innerHTML = `<span>${escapeHTML(title)}</span>${links}`;
 }
 
-function levelAllows(source) {
-  if (!source) return true;
-  if (state.level === 'all') return true;
-  if (!source.level || source.level === 'one' || source.level === state.level) return true;
-  const topic = currentTopic();
-  return !(topic && topic.sheets.some((sheet) => sheet.level === state.level));
-}
-
 function clearPreparedPrint() {
   const area = $('print-area');
   if (!area || area.querySelector('.print-unprepared')) return;
@@ -650,7 +690,7 @@ function selectKey(key, on) {
 }
 
 function selectQuestion(key, on) {
-  const group = currentQuestions().find((item) => item.key === key);
+  const group = currentQuestions().find((item) => item.key === key) || pickedGroupsAll().find((item) => item.key === key);
   if (!group) return;
   const before = selectionKey();
   snapshot();
@@ -2148,7 +2188,7 @@ function bind() {
     const previous = history.pop();
     if (!previous) return;
     const before = selectionKey();
-    state.selected = previous;
+    state.selected = sameBand(previous);
     state.lastAiPickCount = 0;
     if (selectionKey() !== before) clearPreparedPrint();
     render();
@@ -2220,6 +2260,8 @@ function bind() {
 
 function applyWizardPrefill(prefill) {
   if (!prefill || !prefill.grade || !prefill.topic) return;
+  const beforeBand = CATALOG ? band() : '';
+  if (state.selected.length) snapshot();
   state.grade = String(prefill.grade);
   state.topic = String(prefill.topic);
   state.level = prefill.level || 'all';
@@ -2230,7 +2272,9 @@ function applyWizardPrefill(prefill) {
   return loadCurrentTopic().then(() => {
     const allow = new Set(visibleSelectionKeys());
     const ids = prefill.exerciseIds || [];
+    if (beforeBand && band() !== beforeBand) history = [];
     state.selected = wholeQuestions(ids.filter((id) => allow.has(id)));
+    state.lastAiPickCount = 0;
     const note = $('teacher-note');
     if (note && prefill.minutes && !note.value) note.value = 'אורך שיעור: ' + prefill.minutes + ' דקות';
     render();

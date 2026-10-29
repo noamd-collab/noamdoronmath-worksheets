@@ -808,7 +808,7 @@
   }
 
   function phoneAnswerHit(mine) {
-    var nodes = document.querySelectorAll("#questions .q-thumb, #questions .q-desc");
+    var nodes = document.querySelectorAll("#questions .q-thumb, #questions .q-desc, #questions .q-page");
     for (var i = 0; i < nodes.length; i++) {
       var box = nodes[i].getBoundingClientRect();
       if (box.width < 1 || box.height < 1 || box.bottom <= 0 || box.top >= window.innerHeight) continue;
@@ -843,6 +843,9 @@
     var desc = node.querySelector(".q-desc");
     var descBox = desc ? desc.getBoundingClientRect() : null;
     if (descBox && descBox.height > 1) return { top: descBox.top, bottom: descBox.bottom, height: descBox.height };
+    var meta = node.querySelector(".q-page");
+    var metaBox = meta ? meta.getBoundingClientRect() : null;
+    if (metaBox && metaBox.height > 1) return { top: metaBox.top, bottom: metaBox.bottom, height: metaBox.height };
     var rect = node.getBoundingClientRect();
     return { top: rect.top, bottom: rect.bottom, height: Math.max(1, rect.height) };
   }
@@ -889,7 +892,7 @@
   function nextCardHidden(mine, card) {
     var next = followingCard(card);
     if (!next) return false;
-    return contentHit(mine, next.querySelector(".q-title")) || contentHit(mine, next.querySelector("input")) || contentHit(mine, next.querySelector(".q-thumb")) || contentHit(mine, next.querySelector(".q-desc"));
+    return contentHit(mine, next.querySelector(".q-title")) || contentHit(mine, next.querySelector("input")) || contentHit(mine, next.querySelector(".q-thumb")) || contentHit(mine, next.querySelector(".q-desc")) || contentHit(mine, next.querySelector(".q-page"));
   }
 
   function fitAbove(bottom) {
@@ -907,7 +910,7 @@
   function blockerBottom(card, includeChrome) {
     var bottom = cardExtent(card).bottom;
     if (!includeChrome) return bottom;
-    var nodes = [card.querySelector(".q-title"), card.querySelector("input"), card.querySelector(".q-thumb"), card.querySelector(".q-desc")];
+    var nodes = [card.querySelector(".q-title"), card.querySelector("input"), card.querySelector(".q-thumb"), card.querySelector(".q-desc"), card.querySelector(".q-page")];
     for (var i = 0; i < nodes.length; i++) {
       if (!nodes[i]) continue;
       var box = nodes[i].getBoundingClientRect();
