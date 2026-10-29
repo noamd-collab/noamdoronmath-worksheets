@@ -324,10 +324,11 @@ describe('teacher catalog picker', () => {
     assert.deepEqual(keepVisible(['ex:a:1ב', 'ex:b:3ב', 'sheet:c'], ['ex:b:3ב']), ['ex:b:3ב']);
     const topicHandler = preview.slice(preview.indexOf("$('topic').addEventListener"), preview.indexOf("$('filter-all')"));
     // Moving to another topic keeps earlier picks so one sheet can mix topics.
-    assert.match(topicHandler, /if \(!state\.addingTopic\) \{\s*state\.selected = \[\];/);
+    // Untouched suggestions reset with the topic; the teacher's own picks stay for a mixed sheet.
+    assert.match(topicHandler, /if \(!state\.touched && !state\.addingTopic\) \{\s*state\.selected = \[\];/);
     assert.match(topicHandler, /state\.selected\.length\) render\(\)/);
     assert.match(topicHandler, /applyScenario/);
-    assert.match(preview, /const allow = new Set\(visibleSelectionKeys\(\)\.concat\(otherTopicKeys\(\)\)\)/);
+    assert.match(preview, /const allow = new Set\(sameBand\(state\.selected\)\)/);
     const levelHandler = preview.slice(preview.indexOf("document.querySelectorAll('[name=level]')"), preview.indexOf("$('grade').addEventListener"));
     assert.match(levelHandler, /wholeQuestions\(keepVisible\(state\.selected, visibleSelectionKeys\(\)\)\)/);
     const resolve = preview.slice(preview.indexOf('async function resolveChosen'), preview.indexOf('async function updatePrint'));
@@ -581,8 +582,8 @@ describe('teacher catalog picker', () => {
     assert.match(printer, /return matching\.length \? matching : topic\.sheets/);
     assert.match(printer, /state\.level === 'all' \|\| state\.level === 'a'/);
     const levelHandler = printer.slice(printer.indexOf("document.querySelectorAll('[name=level]')"), printer.indexOf("$('grade').addEventListener"));
-    assert.match(levelHandler, /if \(!next\.length && !others\.length && state\.scenario !== 'other'\)/);
-    assert.match(levelHandler, /next = others\.concat\(next\)/);
+    assert.match(levelHandler, /if \(state\.touched\) \{\s*render\(\);\s*return;\s*\}/);
+    assert.match(levelHandler, /if \(!next\.length && state\.scenario !== 'other'\)/);
     assert.match(levelHandler, /exercisePreset\(state\.scenario\)/);
   });
 });
