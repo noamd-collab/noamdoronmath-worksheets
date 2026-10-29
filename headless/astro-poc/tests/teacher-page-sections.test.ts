@@ -90,6 +90,17 @@ describe('teacher page sections', () => {
     assert.match(printer, /state\.wizard = 'topic'/);
     assert.match(printer, /data-block-kind/);
     assert.match(html, /id="page-blocks"/);
+    assert.match(printer, /data-block-remove/);
+    assert.match(printer, /function carriedKeys\(\)/);
+    assert.match(printer, /השאלה כבר בדף, בנושא שנשמר קודם\./);
+  });
+
+  it('keeps the new page-builder styles out of <head>', () => {
+    const [head, body] = html.split('</head>');
+    for (const rule of ['.section-kind-group{', '.more-topic{', '.page-block{', '.q-preview{']) {
+      assert.equal(head.includes(rule), false, rule);
+      assert.ok(body.includes(rule), rule);
+    }
   });
 
   it('keeps the demo copy of the sections module in step with the site', () => {

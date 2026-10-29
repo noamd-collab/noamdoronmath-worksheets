@@ -206,7 +206,7 @@ function paintPageBuilder() {
   if (!list) return;
   list.hidden = !(middle && state.blocks.length);
   list.innerHTML = state.blocks.map((block, index) => (
-    `<div class="page-block" data-page-block="${index}"><strong>${escapeHTML(block.title)} · ${questionCountText(blockQuestionCount(block.keys))}</strong>${sectionToggleHTML(block.kind, 'data-block-kind')}</div>`
+    `<div class="page-block" data-page-block="${index}"><strong>${escapeHTML(block.title)} · ${questionCountText(blockQuestionCount(block.keys))}</strong>${sectionToggleHTML(block.kind, 'data-block-kind')}<button type="button" class="text-btn" data-block-remove aria-label="${escapeHTML('הסרת ' + block.title + ' מהדף')}">הסרה מהדף</button></div>`
   )).join('');
 }
 
@@ -232,6 +232,16 @@ function addAnotherTopic() {
   if (select && select.focus) select.focus();
 }
 
+function dropBlocksOnElementary() {
+  if (band() !== 'elementary' || !state.blocks.length) return;
+  state.blocks = [];
+  announce('ביסודי בוחרים דף שלם, ולכן הנושאים שנשמרו הוסרו מהדף.');
+}
+
+function pageNeedsSections() {
+  return band() !== 'elementary' && (state.blocks.length > 0 || state.sectionKind === 'test');
+}
+
 function pageBlocks() {
   const blocks = state.blocks.map((block) => ({
     kind: sectionKind(block.kind),
@@ -241,10 +251,19 @@ function pageBlocks() {
   return blocks;
 }
 
+function carriedKeys() {
+  return new Set(state.blocks.flatMap((block) => block.keys));
+}
+
 function toggleWholeQuestion(groupKey, on) {
   const group = groupWholeQuestions(currentExercises()).find((item) => item.key === groupKey);
   if (!group) return;
   const keys = group.questions.map((question) => exKey(question.source.pdfId, question.id));
+  if (on && keys.some((key) => carriedKeys().has(key))) {
+    announce('השאלה כבר בדף, בנושא שנשמר קודם.');
+    render();
+    return;
+  }
   const before = selectionKey();
   snapshot();
   state.pickNote = '';
@@ -1995,9 +2014,10 @@ async function updatePrint() {
     printArea.innerHTML = PRINT_UNPREPARED;
     return;
   }
-  const current = await resolveChosen();
   const carried = band() === 'elementary' ? [] : pageBlocks();
-  const chosen = carried.flatMap((block) => block.questions).concat(current.filter((question) => !carried.some((block) => block.questions.includes(question))));
+  const onPage = new Set(carried.flatMap((block) => block.questions));
+  const current = (await resolveChosen()).filter((question) => !onPage.has(question));
+  const chosen = [...onPage].concat(current);
   const blocks = carried.length || state.sectionKind === 'test'
     ? carried.concat(current.length ? [{ kind: sectionKind(state.sectionKind), title: currentTopic() ? currentTopic().title : '', questions: current }] : [])
     : null;
@@ -2029,6 +2049,10 @@ async function prepare(mode) {
   if (!state.selected.length && !state.blocks.length) {
     announce(band() === 'elementary' ? 'עדיין לא נבחר דף.' : 'עדיין לא נבחרו שאלות.');
     return;
+  }
+  if (mode === 'marked' && pageNeedsSections()) {
+    mode = 'short';
+    announce('דף עם קטע מבחן או עם כמה נושאים נבנה כדף מצומצם מהמקור.');
   }
   printMode = mode;
   rendering = true;
@@ -2251,9 +2275,9 @@ function bind() {
     state.level = 'all';
     state.expanded = false;
     state.selected = [];
-    state.blocks = [];
     state.moreDismissed = false;
     state.topic = '';
+    dropBlocksOnElementary();
     history = [];
     clearPreparedPrint();
     fillTopics();
@@ -2290,11 +2314,20 @@ function bind() {
     });
   });
   if ($('page-blocks')) $('page-blocks').addEventListener('click', (event) => {
+    const remove = event.target.closest('[data-block-remove]');
     const btn = event.target.closest('[data-block-kind]');
-    const row = btn && btn.closest('[data-page-block]');
+    const row = (remove || btn) && (remove || btn).closest('[data-page-block]');
     if (!row) return;
-    const block = state.blocks[Number(row.dataset.pageBlock)];
+    const index = Number(row.dataset.pageBlock);
+    const block = state.blocks[index];
     if (!block) return;
+    if (remove) {
+      state.blocks.splice(index, 1);
+      clearPreparedPrint();
+      render();
+      announce('הנושא הוסר מהדף.');
+      return;
+    }
     block.kind = sectionKind(btn.dataset.blockKind);
     clearPreparedPrint();
     render();
@@ -2389,6 +2422,7 @@ function applyWizardPrefill(prefill) {
   state.level = prefill.level || 'all';
   state.scenario = 'other';
   state.expanded = true;
+  dropBlocksOnElementary();
   fillGrades();
   fillTopics();
   return loadCurrentTopic().then(() => {
