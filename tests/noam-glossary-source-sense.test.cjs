@@ -68,6 +68,14 @@ test("an arithmetic answer box is not linked to the cuboid definition", () => {
     assert.equal(boxes(text).length, 1, text);
 });
 
+test("the observed coordinate-direction verb is not an algebraic-variable link", () => {
+  const variables = text => glossary.findTerms(text, 7, 30).filter(match => match.id === "variable");
+  for (const text of ["האם אחד מהם משתנה רק בכיוון אופקי?", "הוא משתנה בכיוון אנכי", "היא משתנה רק בכיוון אופקי"])
+    assert.deepEqual(variables(text), [], text);
+  for (const text of ["משתנה", "מצאו את המשתנה", "משתנה x מייצג את המחיר", "יש שני משתנים במשוואה"])
+    assert.equal(variables(text).length, 1, text);
+});
+
 test("published glossary mirror includes the exact reviewed sense rules", () => {
   assert.equal(fs.readFileSync(path.join(__dirname, "../noam-glossary.js"), "utf8"),
     fs.readFileSync(path.join(__dirname, "../headless/astro-poc/public/noam-glossary.js"), "utf8"));

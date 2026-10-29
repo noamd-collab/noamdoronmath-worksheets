@@ -264,8 +264,8 @@ describe('exact-design protected live-baseline boundaries', () => {
     // Exact worksheet-image read errors may offer an independently validated original table.
     // This source-only recovery retains the error and never invokes a protected endpoint.
     // The reviewed glossary distinguishes shapes, powers and pronouns; refresh its asset only.
-    assert.match(viewerWithNativeRelease, /noam-glossary\.js\?v=20261029-context5/);
-    assert.match(readFileSync(join(root, '../../worksheet-viewer-noam.html'), 'utf8'), /noam-glossary\.js\?v=20261029-context5/);
+    assert.match(viewerWithNativeRelease, /noam-glossary\.js\?v=20261029-context6/);
+    assert.match(readFileSync(join(root, '../../worksheet-viewer-noam.html'), 'utf8'), /noam-glossary\.js\?v=20261029-context6/);
     // Privately verified source facts add a bounded priority/no-disclosure instruction to the existing request.
     // 2026-10-29: image-read hints with fully verified native aids send a canonical source
     // analysis instead of OCR; the endpoint, auth, cache and request count are unchanged.
@@ -273,7 +273,7 @@ describe('exact-design protected live-baseline boundaries', () => {
     // Automatic hints, original source assets and endpoint security retain their existing contracts.
     // 2026-10-29: explicit printed last-part-only figure scope proves independent canonical text.
     // The whole reviewed framing must match; any extra scope qualification keeps the image reader.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '4701be9c79fdf7b8c19b88c252032661ff80c64e5959a327858c224e036698f1');
+    assert.equal(sha256(JSON.stringify(releasedScripts)), '938d3f583f9c5500c0942be286bfb624ec04ef4aeecfdc48870b8aa964a4ab9f');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {
