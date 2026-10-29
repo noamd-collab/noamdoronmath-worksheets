@@ -134,6 +134,15 @@
     let frozenTime = 0;
     let initialized = false;
     let wasPlaying = null;
+    let policyHeld = motionOff();
+    function motionOff() {
+      const roots = [document.documentElement];
+      try {
+        if (window.parent && window.parent !== window) roots.push(window.parent.document.documentElement);
+      } catch { /* cross-origin parent */ }
+      if (roots.some(html => html.classList.contains('nd-motion-off') || html.classList.contains('noam-a11y-motion') || html.dataset.ndMotion === 'off')) return true;
+      return reducedMotion.matches && !roots.some(html => html.classList.contains('nd-motion-enabled'));
+    }
 
     function resizeFrame() {
       frame.style.transform = `scale(${stage.clientWidth / 1920})`;
@@ -180,7 +189,7 @@
       if (api.isPlaying()) api.pause();
       else {
         if (api.getTime() >= duration - .02) api.seek(0);
-        api.play();
+        if (!motionOff()) api.play();
       }
       syncPlaybackButton(api.isPlaying());
     }
@@ -207,7 +216,7 @@
       exploring = false;
       api.resumeFilm();
       applySpeed();
-      api.play();
+      if (!motionOff()) api.play();
       syncMode();
       playButton.focus({preventScroll:true});
       announce('חזרנו לסרטון.');
@@ -218,7 +227,7 @@
       if (!api || exploring) return;
       api.pause();
       api.seek(0);
-      api.play();
+      if (!motionOff()) api.play();
       announce('הסרטון התחיל מחדש.');
     });
     speed.addEventListener('change', applySpeed);
@@ -252,9 +261,23 @@
       event.preventDefault();
       togglePlayback();
     });
-    reducedMotion.addEventListener('change', event => {
-      if (event.matches && api && !exploring) api.pause();
-    });
+    function syncMotion() {
+      const off = motionOff();
+      if (off) {
+        if (!api || api.isPlaying()) policyHeld = true;
+        if (api) { api.pause(); syncPlaybackButton(false); }
+      } else if (policyHeld && api) {
+        policyHeld = false;
+        if (!exploring) { api.play(); syncPlaybackButton(api.isPlaying()); }
+      }
+    }
+    reducedMotion.addEventListener('change', syncMotion);
+    const watchMotion = (html) => {
+      if (!html) return;
+      new MutationObserver(syncMotion).observe(html, {attributes: true, attributeFilter: ['class', 'data-nd-motion']});
+    };
+    watchMotion(document.documentElement);
+    try { if (window.parent && window.parent !== window) watchMotion(window.parent.document.documentElement); } catch { /* cross-origin parent */ }
     function tick() {
       if (api) {
         const t = exploring ? frozenTime : clamp(Number(api.getTime()) || 0, 0, duration);
@@ -281,7 +304,7 @@
       byId('loading').hidden = true;
       exploreButton.disabled = false;
       syncMode();
-      if (!reducedMotion.matches) api.play();
+      if (!motionOff()) api.play();
       tick();
     }
     frame.addEventListener('load', connect);

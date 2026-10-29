@@ -34,7 +34,8 @@ const protectedFiles: Record<string, string> = {
   // added so the headless Noam AI route can read Wix Secrets Manager.
   // wix({ robots: false }): Wix's injected /robots.txt was replacing ours and
   // warning at build. Reviewed for the cut-over; ConceptLoop is untouched.
-  'astro.config.mjs': 'e761aaf9985f3041850fb86e7e1ecdfdcc82f6dd9c6384f6034c41e588bae9d2',
+  // OTTERLY_API_KEY added to the env schema (optional secret, read from env only).
+  'astro.config.mjs': '5276a89c5bbb0e31795d97e00c9071ec4fddfcf822e0cfd4ead4bd60502a1a04',
   // G9 PDF v2, G8 PDF v2 (two c2 levels), and G7 PDF v2.
   // Packages-120: replaced student PDF ids and added G9-T46 (דלתון) in the geometry group.
   'src/data/catalog.v1.json': '4c5ccc34149a798f47c4f261744f132b36d7ff083dc4d0052c81a53219639fb6',
@@ -43,7 +44,8 @@ const protectedFiles: Record<string, string> = {
   'src/lib/worksheetLinks.ts': '6bfa7fe86ff7d02a87c2f7533c6eabae1c34a372c2c68b2a92519e8c4790f531',
   // kite-construct film added for /kite-grade-9 (explicit content, not a design regen).
   'src/lib/conceptLoops.ts': 'e60dda4e84009904e23c44bbece637ee96ff17dfdb6a5525c8178d8eec2c54cd',
-  'src/components/ConceptLoop.astro': 'd0b71bb4153302694c5ba797bce046d7290999c9e923ab4663c60cb58cb54246',
+  // Brave motion: site opt-in overrides prefers-reduced-motion inside the film.
+  'src/components/ConceptLoop.astro': 'c7eb6b250a46f3986186b5e113ab4e29a51dc5c17eefcd49f6dcade0ab367be4',
   // HeroLoop.astro is the homepage shell (which loops are emitted). The engine
   // above stays byte-identical; the home hero may lazy-load existing loops.
   // One readout line only: S = (a · h) : 2 school notation, PR #40 via PR #41.
@@ -82,11 +84,50 @@ describe('exact-design protected live-baseline boundaries', () => {
   });
 
   it('preserves viewer head and every existing script, including AI answers and storage', () => {
-    const viewer = read('public/worksheet-viewer-noam.html');
+    // Noam requested preview-to-production navigation on 2026-10-27.
+    // Its early guard has a dedicated behavioral suite. Exclude only that
+    // addition so the original head/script hashes continue protecting the
+    // unchanged viewer, AI answers, authentication and storage.
+    const viewerWithNativeRelease = read('public/worksheet-viewer-noam.html').replace(
+      /<script id="noam-preview-viewer-redirect">[\s\S]*?<\/script>\n/,
+      '',
+    );
+    // Noam, 2026-10-27: exactly two early migration assets keep old shared URLs
+    // on their complete reviewed package; the source consumer resolves the
+    // selected native item. The reviewed source and typed compiler dependencies are exempt
+    // from the original head/import fence. Their routing/geometry behavior is
+    // tested by catalog-native-migration and ramzi-native-visual suites.
+    const nativeAdditions = [
+      '<script src="/noam-ai/catalog-migrations.js?v=20261027-native1"></script>',
+      '<script src="/noam-catalog-migration.js?v=20261027-native1"></script>',
+      '<script src="noam-native-visual.js?v=20261029-angles1"></script>',
+      '<script src="noam-source-panels.js?v=20261028-panels1"></script>',
+      '<script src="noam-authored-geometry.js?v=20261028-square1"></script>',
+      '<script src="noam-authored-visual.js?v=20261028-source5"></script>',
+      '<script src="noam-visual-data.js?v=20261028-source3"></script>',
+      '<script src="noam-visual-plan.js?v=20261028-source3"></script>',
+      '<script src="noam-source-data-visual.js?v=20261028-source-data3"></script>',
+      '<script src="noam-source-scaffold.js?v=20261029-scaffold1"></script>',
+    ];
+    const allScripts = [...viewerWithNativeRelease.matchAll(/<script\b[^>]*>[\s\S]*?<\/script>/gi)].map(match => match[0]);
+    assert.equal(allScripts.length, 26, 'The release adds only its ten exact dependencies');
+    assert.deepEqual(allScripts.slice(7,15),nativeAdditions.slice(2),'Typed compilers follow their native source consumer in dependency order');
+    assert.deepEqual(allScripts.slice(0, 2), nativeAdditions.slice(0, 2), 'Old URLs migrate before worksheet scripts run');
+    assert.equal(allScripts[7], nativeAdditions[2], 'Native consumer follows the existing local visual engine');
+    for (const addition of nativeAdditions) assert.equal(allScripts.filter(script => script === addition).length, 1);
+    const viewer = nativeAdditions.reduce((html, script) => html.replace(script + '\n', ''), viewerWithNativeRelease);
     const head = viewer.match(/<head(?:\s[^>]*)?>[\s\S]*?<\/head>/i)?.[0];
     assert.ok(head, 'Viewer must retain its head');
-    // Google Fonts link removed; Heebo woff2 is preloaded from /fonts.
-    assert.equal(sha256(head), '8c842de3e2b55e15a454fd1fabbc31794baeffaaf8b939d3a1bccd7cc586b462');
+    // Phone reading intentionally changes the inline CSS in this head.
+    // Metadata, fonts, canonical and robots are unchanged.
+    // 2026-10-19: Help marks replace repeated robots; expanded source previews scroll
+    // so the original SVG disclosure is reachable on desktop as well as phone.
+    // PR197: reviewed full-width phone diagrams, fullscreen modal and bounded zoom.
+    // PR212: Noam-approved height-aware diagram fit, vertical scroll chaining,
+    // and opt-in question zoom; manually checked at 390x844 and 1280x800.
+    // Only presentation CSS changed in this head; metadata/SEO/fonts stay fixed.
+    // 2026-10-23: pointer cursor on expandable local visuals. Metadata unchanged.
+    assert.equal(sha256(head), 'c10ecfc705406e89dc0a5b78f57c7d9bd8fa6cb970352c16a24c714d09590e27');
     const scripts = [...viewer.matchAll(/<script\b[^>]*>[\s\S]*?<\/script>/gi)].map((match) => match[0]);
     const adapters = scripts.filter((script) => /^<script id="exact-viewer-adapter">/.test(script));
     const companion = scripts.filter((script) => /noam-site-companion\.js/.test(script));
@@ -100,8 +141,106 @@ describe('exact-design protected live-baseline boundaries', () => {
     assert.equal(scripts.at(-1), companion[0], 'The companion script follows the adapter and does not replace it');
     const releasedScripts = scripts.slice(0, -2);
     assert.equal(releasedScripts.length, 14);
-    // c2 (מצוינות 2) is a real viewer level, so the released level script changed.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '71c61d6861c76294e299ae7353f598be1a532ab193be4065cc914ae6a71bde92');
+    // Phone reading deliberately adds readable zoom, fit controls and a single
+    // touch-target rail; mobile layout/panel/pin tests cover these changes.
+    // PR124 intentionally updates the shared viewer to anchor Ramzi to printed
+    // question markers. Dedicated printed-pin fixtures cover that behavior.
+    // Glossary text and the fraction key use a horizontal bar (Noam, 18.10.2026).
+    // A pure equation such as a/b = c/d is wrapped in dir=ltr. A mixed Hebrew
+    // sentence is not, so 15 מתוך 20 = 3/4 keeps its reading order.
+    // PR185, Noam-authorized worksheet integration: original native SVG disclosure,
+    // exact unlisted back link, and lv=one diagnostic support. The existing AI
+    // solve/auth/rate-limit/storage code remains unchanged. Behavior and URL guards
+    // are exercised by worksheet-pilot.test.ts; all other fence hashes stay fixed.
+    // 2026-10-19: A modal clone expands generated diagrams without changing models,
+    // source geometry, authentication or persistence; covered by diagram-expansion tests.
+    // Next batches: single-sheet label and five exact return paths; G8-T26 stays diagnostic.
+    // Auth, solve protocol and sibling isolation are unchanged and covered separately.
+    // Remaining101: nine exact semantic native SVG namespaces and a sixth exact back path.
+    // Combined with reviewed PR194 UI expansion; auth, geometry, and AI protocol unchanged.
+    // PR197: reviewed clone-only zoom and original-figure expansion; no solve/auth/storage changes.
+    // Noam 2026-10-19: selected-part task priority and explicit drawing action after
+    // a successful geometry hint. Regression tests cover scope, errors and request races.
+    // Only this script fence changes; authentication and original worksheet bytes do not.
+    // Noam 2026-10-19: pin label wording only ('העזר ברמזי' / '· רמזי'); no logic change.
+    // Noam 2026-10-19 20:46: Ramzi panel wording ('נועם AI' → 'רמזי'); text only.
+    // Noam 2026-10-19 22:13: the explicit drawing keeps the source figure's given
+    // equality ticks (package data, separate from focus). Solve/auth/storage unchanged.
+    // Noam's reported rectangle: revalidate a source-given kite coordinate repair before display.
+    // Noam 2026-10-20: unsupported diagram replies keep their error and may show the
+    // approved source figure (עזר מהדף), highlighting only a side named in a standard hint.
+    // Auth, solve protocol, storage and the other 13 released scripts are unchanged.
+    // 2026-10-20: acknowledge an actually loaded source aid without claiming a
+    // generated diagram succeeded; failure history, retry and auth remain unchanged.
+    // 2026-10-21: exact subsection sources, original SVG coordinate units,
+    // native chart drawing actions and truthful visible source fallback.
+    // PR212: keep original question access after errors, fit cloned diagrams,
+    // clear stale section announcements, and omit understanding buttons on errors.
+    // Dedicated recovery/zoom tests cover these intentional behavior changes.
+    // No auth protocol, original PDF/SVG, catalogue or storage format changed.
+    // PR212 follow-up: version the plural-relation compiler and its saved plan cache.
+    // PR214: verified native triangle length comparisons preserve their original
+    // SVG/values, including saved drawings and shared metadata fetches. Covered
+    // by ramzi-native-segment-focus.test.ts; no auth, model or storage changes.
+    // 2026-10-22: four live-check client fixes — recaptcha host fallback,
+    // labeled shifted-parabola example, union-area language, numeric-square sense.
+    // No auth, keys, score thresholds, worker or storage changes.
+    // 2026-10-23: local constructed visuals get the same enlarge control as
+    // generated diagrams; Pythagoras "הריבוע של" stays numeric. Cursor/cache
+    // query only. No auth, keys, score, worker or storage changes.
+    // 2026-10-25: bot-client cache query for execute-ready host guard.
+    // Token, siteverify, keys, score, worker and storage unchanged.
+    // Noam, 2026-10-27: exact source/item visual resolution, explicitly scoped
+    // construction, safe source-crop aids for reviewed legacy PDFs, and model
+    // context from the selected source item. New source visuals persist intent
+    // and revalidate against current manifests; errors retain retry. Dedicated
+    // native/source-crop/race tests cover these authorized behavior changes.
+    // The local visual import is versioned 20261027-native1 to invalidate cached
+    // imperative-request parsing; endpoint, bot protection and rate limits stay fixed.
+    // Noam, 2026-10-27: actual drawing buttons retain explicit drawCurrentStep
+    // intent. The diagram request includes exact selected native text/object
+    // identities while retaining its original crop for printed marks. Dedicated
+    // drawing-intent-source tests cover scope, source identity and old requests.
+    // Version the successful-plan cache for the changed payload; no auth change.
+    // 2026-10-27: refresh corrected PDF crop manifests and discard OCR cached
+    // from obsolete blank crops; preserve the existing conversation namespace.
+    // Noam, 2026-10-27: typed visual families consume exact selected native data;
+    // native version joins the cache identity and rehydration revalidates plans.
+    // Domain/source-scope and legacy-protocol tests cover this intentional change;
+    // bot/auth/quota behavior and the conversation namespace remain unchanged.
+    // 2026-10-28: only the manifest cache key changes, so multi-panel items that
+    // now name their own source panel never pair a cached manifest with a newer
+    // package digest. ramzi-multi-panel-source tests cover the remapped sections.
+    // 2026-10-28: verified multi-panel source groups retain full reviewed PDF
+    // captions and all source SVGs, including rehydration and clone-only zoom.
+    // Dedicated group tests bind every panel/crop; auth/storage namespaces stay fixed.
+    // 2026-10-28: ordinary hint context now starts with verified visible dot-array
+    // counts/rows from complete source groups. No stage, formula or answer is
+    // inferred; source bytes, model calls, auth and storage remain unchanged.
+    // 2026-10-28: fit each source panel vertically; explicit zoom scales its cap.
+    // No source math, network, security or conversation behavior changes.
+    // 2026-10-28: four printed part-only illustration scopes correct 15 links;
+    // only those PDFs rotate OCR, while chat keys and PDF/SVG bytes stay fixed.
+
+
+    // Noam, 2026-10-28: explicit drawing can invoke existing operation/table
+    // compilers from exact native source; no answer data or new math family.
+    // Verified initial numeric labels on flat source nets enrich the existing hint request;
+    // cached OCR, conversations, auth and model-call count remain unchanged.
+    // Exact worksheet-image read errors may offer an independently validated original table.
+    // This source-only recovery retains the error and never invokes a protected endpoint.
+    // The reviewed glossary distinguishes shapes, powers and pronouns; refresh its asset only.
+    assert.match(viewerWithNativeRelease, /noam-glossary\.js\?v=20261029-context6/);
+    assert.match(readFileSync(join(root, '../../worksheet-viewer-noam.html'), 'utf8'), /noam-glossary\.js\?v=20261029-context6/);
+    // Privately verified source facts add a bounded priority/no-disclosure instruction to the existing request.
+    // 2026-10-29: image-read hints with fully verified native aids send a canonical source
+    // analysis instead of OCR; the endpoint, auth, cache and request count are unchanged.
+    // The ten requested source scaffolds join the explicit drawing path; glossary wording is versioned.
+    // Automatic hints, original source assets and endpoint security retain their existing contracts.
+    // 2026-10-29: explicit printed last-part-only figure scope proves independent canonical text.
+    // The whole reviewed framing must match; any extra scope qualification keeps the image reader.
+    // The attachment-origin flag and reader use one request snapshot; cleanup retains newly added photos.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), '4ba806e38320769fa2c2239379e3be12a0da2af1a51b462f9fcbd6b8fc7db7b7');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {

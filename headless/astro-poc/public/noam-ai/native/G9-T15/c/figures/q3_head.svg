@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 145" width="260" height="145">
+<g data-layer="lines">
+<line id="e0001" data-line="AK" x1="109.33" y1="26.28" x2="12" y2="26.28" stroke="#000000" stroke-width="1.5"/>
+<line id="e0002" data-line="BN" x1="81.33" y1="118.72" x2="248" y2="118.72" stroke="#000000" stroke-width="1.5"/>
+<line id="e0003" data-seg="AP" x1="95.33" y1="26.28" x2="153.77" y2="80.77" stroke="#000000" stroke-width="1"/>
+<line id="e0004" data-seg="BP" x1="95.33" y1="118.72" x2="153.77" y2="80.77" stroke="#000000" stroke-width="1"/>
+</g>
+<g data-layer="marks">
+<path id="e0005" data-mark="arc NBP" d="M 110.66 118.72 L 110.63 117.74 L 110.53 116.76 L 110.38 115.8 L 110.16 114.84 L 109.88 113.9 L 109.54 112.98 L 109.15 112.08 L 108.69 111.21 L 108.19 110.37" fill="none" stroke="#000000" stroke-width="1"/>
+</g>
+<g data-layer="points">
+<circle id="e0006" data-pt="A" cx="95.33" cy="26.28" r="2" fill="#000000" stroke="none"/>
+<circle id="e0007" data-pt="B" cx="95.33" cy="118.72" r="2" fill="#000000" stroke="none"/>
+<circle id="e0008" data-pt="K" cx="26" cy="26.28" r="2" fill="#000000" stroke="none"/>
+<circle id="e0009" data-pt="N" cx="234" cy="118.72" r="2" fill="#000000" stroke="none"/>
+<circle id="e0010" data-pt="P" cx="153.77" cy="80.77" r="2" fill="#000000" stroke="none"/>
+</g>
+<g data-layer="labels">
+<text id="e0011" data-for="ang NBP" x="124.99" y="115.14" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">33°</text>
+<text id="e0012" data-for="A" x="95.33" y="21.78" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">A</text>
+<text id="e0013" data-for="B" x="95.33" y="132.09" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">B</text>
+<text id="e0014" data-for="K" x="26" y="21.78" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">K</text>
+<text id="e0015" data-for="N" x="234" y="132.09" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">N</text>
+<text id="e0016" data-for="P" x="162.41" y="85.96" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">P</text>
+</g>
+</svg>

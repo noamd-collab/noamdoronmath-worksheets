@@ -2,12 +2,13 @@
 /**
  * POC motion system (branch poc-animations-fix) — scroll reveal for
  * below-the-fold content + hover re-draw for the line art.
- * Rendered by BaseLayout right after <slot />. Inline on purpose: no
- * extra request, runs on every full page load (MPA).
+ * Legacy standalone motion component. The processed script shares the
+ * same site motion policy as the current layout animation engines.
  */
 ---
 
-<script is:inline>
+<script>
+  import { sitePrefersReducedMotion } from '../lib/motionPreference.js';
   (function () {
     'use strict';
     var REVEAL_SEL = [
@@ -31,7 +32,7 @@
     function motionAllowed() {
       var html = document.documentElement;
       return (
-        !window.matchMedia('(prefers-reduced-motion: reduce)').matches &&
+        !sitePrefersReducedMotion() &&
         !html.classList.contains('noam-a11y-motion') &&
         !html.classList.contains('nd-motion-off')
       );

@@ -59,6 +59,7 @@
     "@wix/astro-pages": "^2.0.4",
     "@wix/astro-wix-hosting-adapter": "^2.0.0",
     "@wix/cli": "^1.1.92",
+    "linkedom": "^0.18.12",
     "pdfjs-dist": "3.11.174",
     "puppeteer-core": "^25.12.0",
     "tsx": "^4.23.15"

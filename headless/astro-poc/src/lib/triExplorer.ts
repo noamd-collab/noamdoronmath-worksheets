@@ -1,3 +1,4 @@
+import { sitePrefersReducedMotion } from './motionPreference.js';
 /**
  * KIMI-LOOPS-K3 — engine for the triangle-area explorer (topic page).
  *
@@ -25,7 +26,7 @@ const q = (root: HTMLElement, name: string) => root.querySelector(`[data-el="${n
 
 function motionOff(): boolean {
   return (
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+    sitePrefersReducedMotion() ||
     document.documentElement.classList.contains('noam-a11y-motion')
   );
 }
@@ -120,6 +121,7 @@ function setup(root: TriRoot) {
   let dragging = false;
   hit.addEventListener('pointerdown', (ev) => {
     dragging = true;
+    demoDone = true;
     hit.setPointerCapture(ev.pointerId);
     handle.classList.add('is-held');
     if (demoRaf) {
@@ -147,7 +149,12 @@ function setup(root: TriRoot) {
   hit.addEventListener('pointercancel', endDrag);
 
   /* ——— keyboard / SR: the synced range input ——— */
-  range.addEventListener('input', () => setApex(parseFloat(range.value)));
+  range.addEventListener('input', () => {
+    demoDone = true;
+    if (demoRaf) cancelAnimationFrame(demoRaf);
+    demoRaf = 0;
+    setApex(parseFloat(range.value));
+  });
   range.addEventListener('change', () => setApex(u, true));
 
   /* ——— demo trigger: once per session, in view, motion allowed ——— */
@@ -157,23 +164,31 @@ function setup(root: TriRoot) {
   } catch {
     seen = false;
   }
-  if (motionOff() || seen) {
-    demoDone = true;
-    showHint();
-  } else if ('IntersectionObserver' in window) {
-    const io = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && !demoDone) {
-          io.disconnect();
-          runDemo();
-        }
-      },
-      { threshold: 0.5 }
-    );
-    io.observe(root);
-  } else {
-    runDemo();
+  demoDone = seen;
+  let inView = !('IntersectionObserver' in window);
+  function syncDemo() {
+    if (motionOff()) {
+      if (demoRaf) {
+        cancelAnimationFrame(demoRaf);
+        demoRaf = 0;
+        demoDone = false;
+      }
+      showHint();
+    } else if (inView && !demoDone) runDemo();
   }
+  if (seen) showHint();
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      inView = entries[0].isIntersecting;
+      syncDemo();
+    }, { threshold: 0.5 });
+    io.observe(root);
+  }
+  window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', syncDemo);
+  new MutationObserver(syncDemo).observe(document.documentElement, {
+    attributes: true, attributeFilter: ['class', 'data-nd-motion'],
+  });
+  syncDemo();
 
   setApex(u);
   root.__tri = { setApex, state: () => u };

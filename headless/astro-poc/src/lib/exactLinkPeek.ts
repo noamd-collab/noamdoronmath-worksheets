@@ -1,3 +1,4 @@
+import { sitePrefersReducedMotion } from './motionPreference.js';
 import { PKS, resolvePeek, type PeekEntry } from './linkPeek';
 import { EXACT_PEEK_BLOCKS } from './exactLinkPeekBlocks';
 
@@ -90,7 +91,7 @@ export function initExactLinkPeek(data: PeekLiveData = EMPTY_DATA): () => void {
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
   const hover=window.matchMedia('(hover: hover)');
   const html=document.documentElement;
-  const blocked=()=>peekMotionBlocked({hidden:document.hidden,reduced:reduced.matches,stopped:eventOff||html.classList.contains('nd-motion-off')||html.classList.contains('noam-a11y-motion'),mode:html.dataset.ndMotion||html.dataset.motion});
+  const blocked=()=>peekMotionBlocked({hidden:document.hidden,reduced:sitePrefersReducedMotion(),stopped:eventOff||html.classList.contains('nd-motion-off')||html.classList.contains('noam-a11y-motion'),mode:html.dataset.ndMotion||html.dataset.motion});
   function listen(target:EventTarget,type:string,fn:EventListener,options?:AddEventListenerOptions){target.addEventListener(type,fn,options);listeners.push(()=>target.removeEventListener(type,fn,options));}
   function animate(el:Element,frames:Keyframe[],options:KeyframeAnimationOptions){
     if(blocked()||!el.animate)return null;

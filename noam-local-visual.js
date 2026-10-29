@@ -13,7 +13,9 @@
   }
 
   function wantsVisualSupport(text){
-    return wantsDrawing(text)||/(?:איזו?|איפה|היכן)\s+(?:היא\s+)?(?:ה)?זווית|קשה\s+לי\s+לזהות|לא\s+(?:רואה|מזהה)|סמ(?:ן|ני)\s+לי|תראה\s+לי/i.test(String(text||""));
+    var request=String(text||"");
+    return wantsDrawing(request)||/(?:איזו?|איפה|היכן)\s+(?:היא\s+)?(?:ה)?זווית|קשה\s+לי\s+לזהות|לא\s+(?:רואה|מזהה)|סמ(?:ן|ני)\s+לי|תראה\s+לי/i.test(request)||
+      /(?:^|[\s.,!?])(?:סמן|סמני|סמנו|הדגש|הדגישי|הדגישו|תדגיש|תדגישי|הראה|הראי|הראו|תראה|תראי|הצג|הציגי|הציגו)(?:[\s:]+|$)/.test(request);
   }
 
   function compactLatinLetters(value){
@@ -71,6 +73,31 @@
     };
   }
 
+  // Fixed pedagogical example for the family y=x²+c with c<0.
+  // Never copy question data (including 26/13/169) into the drawing.
+  var SHIFTED_PARABOLA_EXAMPLE={
+    type:"shifted-parabola-example",
+    equation:"y=x²−4",
+    shift:-4,
+    roots:[-2,2],
+    vertex:[0,-4]
+  };
+
+  function parseShiftedParabolaExample(source){
+    var text=String(source||"").replace(/–|—/g,"−");
+    if(parseFactoredQuadraticInequality(text)){return null;}
+    var family=/y\s*=\s*x\s*(?:\^2|²)\s*\+\s*c|משפח(?:ה|ת)\s+(?:ה)?פרבול|מזיזים\s+אותה/.test(text);
+    var twoIntercepts=/חותכת את ציר|שתי נקודות|נקודות האפס|קודקוד.{0,24}מתחת|c\s*[<＜]\s*0|c\s+שלילי/.test(text);
+    if(!family||!twoIntercepts){return null;}
+    return {
+      type:SHIFTED_PARABOLA_EXAMPLE.type,
+      equation:SHIFTED_PARABOLA_EXAMPLE.equation,
+      shift:SHIFTED_PARABOLA_EXAMPLE.shift,
+      roots:SHIFTED_PARABOLA_EXAMPLE.roots.slice(),
+      vertex:SHIFTED_PARABOLA_EXAMPLE.vertex.slice()
+    };
+  }
+
   function describe(spec){
     if(!spec){return "";}
     if(spec.type==="labeled-triangle"){
@@ -81,6 +108,9 @@
     if(spec.type==="question-image"){
       return String(spec.label||"השרטוט מתוך השאלה");
     }
+    if(spec.type==="shifted-parabola-example"){
+      return "דוגמה להמחשה — לא נתוני השאלה. גרף "+spec.equation+" : קודקוד מתחת לציר x ושתי נקודות חיתוך.";
+    }
     if(spec.type!=="factored-quadratic-inequality"){return "";}
     var inclusive=spec.relation==="≥"||spec.relation==="≤";
     var position=spec.relation==="≥"||spec.relation===">"?"מעל ציר x":"מתחת לציר x";
@@ -88,6 +118,9 @@
   }
 
   function assistantText(spec){
+    if(spec&&spec.type==="shifted-parabola-example"){
+      return "זו דוגמה להמחשה — לא נתוני השאלה. כאשר מזיזים את y=x² כלפי מטה, הקודקוד יורד מתחת לציר x ומופיעות שתי נקודות חיתוך.";
+    }
     var inclusive=spec.relation==="≥"||spec.relation==="≤";
     var position=spec.relation==="≥"||spec.relation===">"?"מעל ציר x":"מתחת לציר x";
     return "הנה המחשה. סמנו תחילה את שני השורשים, ואז עקבו אחרי החלקים המודגשים שבהם הפרבולה נמצאת "+position+(inclusive?" או עליו.":".")+" נסו לתרגם את ההדגשה לתחומים על ציר x.";
@@ -350,10 +383,66 @@
     return card;
   }
 
+  function renderShiftedParabolaExample(documentRef,spec){
+    var card=documentRef.createElement("figure");
+    card.className="noam-visual-card noam-shifted-parabola-example";
+    card.setAttribute("dir","rtl");
+    var title=documentRef.createElement("figcaption");
+    title.className="noam-visual-title";
+    title.textContent="דוגמה להמחשה — לא נתוני השאלה";
+    card.appendChild(title);
+
+    var svg=svgElement(documentRef,"svg",{
+      class:"noam-visual-svg",viewBox:"0 0 360 220",role:"img",
+      "aria-label":describe(spec),preserveAspectRatio:"xMidYMid meet"
+    });
+    svg.appendChild(svgElement(documentRef,"title",{},describe(spec)));
+
+    var left=Number(spec.roots[0]),right=Number(spec.roots[1]),shift=Number(spec.shift);
+    if(!Number.isFinite(left)||!Number.isFinite(right)||!Number.isFinite(shift)||left>=right||shift>=0){return null;}
+    var xmin=-4,xmax=4;
+    var plot={x:28,y:18,w:304,h:150};
+    function value(x){return x*x+shift;}
+    function px(x){return plot.x+(x-xmin)/(xmax-xmin)*plot.w;}
+    var samples=[];
+    var minY=shift,maxY=value(xmax);
+    for(var i=0;i<=96;i++){
+      var x=xmin+(xmax-xmin)*i/96;
+      var y=value(x);
+      minY=Math.min(minY,y);maxY=Math.max(maxY,y);
+      samples.push({x:x,y:y});
+    }
+    var yPad=Math.max(0.8,(maxY-minY)*.1);
+    minY-=yPad;maxY+=yPad;
+    function py(y){return plot.y+(maxY-y)/(maxY-minY)*plot.h;}
+    var axisY=py(0);
+    svg.appendChild(svgElement(documentRef,"line",{class:"noam-visual-axis",x1:plot.x,y1:axisY,x2:plot.x+plot.w,y2:axisY}));
+    svg.appendChild(svgElement(documentRef,"line",{class:"noam-visual-axis noam-visual-y-axis",x1:px(0),y1:plot.y,x2:px(0),y2:plot.y+plot.h}));
+    svg.appendChild(svgElement(documentRef,"text",{class:"noam-visual-axis-label",x:plot.x+plot.w-2,y:axisY-7},"x"));
+    svg.appendChild(svgElement(documentRef,"path",{
+      class:"noam-visual-curve-active",
+      d:samples.map(function(point,index){return (index?"L":"M")+px(point.x).toFixed(2)+" "+py(point.y).toFixed(2);}).join(" ")
+    }));
+    [left,right].forEach(function(root){
+      svg.appendChild(svgElement(documentRef,"circle",{class:"noam-visual-root",cx:px(root),cy:axisY,r:4.5}));
+      svg.appendChild(svgElement(documentRef,"text",{class:"noam-visual-number",x:px(root),y:axisY+18},formatNumber(root)));
+    });
+    svg.appendChild(svgElement(documentRef,"circle",{class:"noam-visual-vertex",cx:px(0),cy:py(shift),r:4}));
+    svg.appendChild(svgElement(documentRef,"text",{class:"noam-visual-number",x:px(0)+18,y:py(shift)+4},"קודקוד"));
+    svg.appendChild(svgElement(documentRef,"text",{class:"noam-visual-axis-label",x:plot.x+8,y:plot.y+14},spec.equation));
+    card.appendChild(svg);
+    var note=documentRef.createElement("p");
+    note.className="noam-visual-note";
+    note.textContent="כאשר c שלילי הקודקוד מתחת לציר x, ולכן יש שתי נקודות חיתוך. המספרים בדוגמה אינם נתוני השאלה.";
+    card.appendChild(note);
+    return card;
+  }
+
   function render(documentRef,spec){
     if(!documentRef||!spec){return null;}
     if(spec.type==="question-image"){return renderQuestionImage(documentRef,spec);}
     if(spec.type==="labeled-triangle"){return renderLabeledTriangle(documentRef,spec);}
+    if(spec.type==="shifted-parabola-example"){return renderShiftedParabolaExample(documentRef,spec);}
     if(spec.type!=="factored-quadratic-inequality"){return null;}
     var left=Number(spec.roots[0]),right=Number(spec.roots[1]);
     if(!Number.isFinite(left)||!Number.isFinite(right)||left>=right){return null;}
@@ -469,6 +558,7 @@
     wantsVisualSupport:wantsVisualSupport,
     parseLabeledTriangle:parseLabeledTriangle,
     parseFactoredQuadraticInequality:parseFactoredQuadraticInequality,
+    parseShiftedParabolaExample:parseShiftedParabolaExample,
     normalizeQuestionFocus:normalizeQuestionFocus,
     focusAngleGeometry:focusAngleGeometry,
     assistantText:assistantText,

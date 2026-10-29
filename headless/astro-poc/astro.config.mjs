@@ -36,6 +36,8 @@ export default defineConfig({
       // Names must match Secrets Manager on Noam Math Astro POC.
       QWEN_API_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
       NOAM_RECAPTCHA_SECRET_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
+      // OtterlyAI Agent Analytics webhook. Optional until the secret is saved.
+      OTTERLY_API_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
     },
   },
 });

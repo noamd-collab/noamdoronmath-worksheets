@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 154" width="300" height="154">
+<g data-layer="lines">
+<line id="e0001" data-line="EG" x1="91.15" y1="26.35" x2="288" y2="26.35" stroke="#000000" stroke-width="1.5"/>
+<line id="e0002" data-line="FH" x1="12" y1="127.65" x2="288" y2="127.65" stroke="#000000" stroke-width="1.5"/>
+<line id="e0003" data-seg="EF" x1="105.15" y1="26.35" x2="26" y2="127.65" stroke="#000000" stroke-width="1.5"/>
+<line id="e0004" data-seg="ET" x1="105.15" y1="26.35" x2="129.86" y2="77" stroke="#000000" stroke-width="1"/>
+<line id="e0005" data-seg="FT" x1="26" y1="127.65" x2="129.86" y2="77" stroke="#000000" stroke-width="1"/>
+</g>
+<g data-layer="marks">
+<path id="e0006" data-mark="arc EFT" d="M 35.85 115.04 L 36.65 115.71 L 37.4 116.42 L 38.1 117.18 L 38.75 117.99 L 39.35 118.84 L 39.9 119.72 L 40.38 120.64" fill="none" stroke="#000000" stroke-width="1"/>
+<path id="e0007" data-mark="arc HFT" d="M 47 127.65 L 46.96 126.29 L 46.82 124.94 L 46.6 123.59 L 46.3 122.27 L 45.91 120.96 L 45.43 119.69 L 44.88 118.45" fill="none" stroke="#000000" stroke-width="1"/>
+<path id="e0008" data-mark="arc2 GET" d="M 117.55 26.35 L 117.52 27.21 L 117.43 28.08 L 117.28 28.93 L 117.07 29.77 L 116.8 30.59 L 116.48 31.39 L 116.1 32.17 L 115.66 32.92 L 115.18 33.64 L 114.65 34.32 L 114.07 34.96 L 113.45 35.56 L 112.78 36.12 L 112.08 36.63 L 111.35 37.09 L 110.59 37.49" fill="none" stroke="#000000" stroke-width="1"/>
+<path id="e0009" data-mark="arc2 GET" d="M 120.55 26.35 L 120.51 27.42 L 120.4 28.49 L 120.21 29.55 L 119.95 30.59 L 119.62 31.62 L 119.22 32.61 L 118.75 33.58 L 118.21 34.51 L 117.61 35.4 L 116.95 36.25 L 116.23 37.05 L 115.45 37.79 L 114.63 38.48 L 113.76 39.12 L 112.85 39.68 L 111.9 40.19" fill="none" stroke="#000000" stroke-width="1"/>
+<path id="e0010" data-mark="arc2 FET" d="M 92.59 42.42 L 93.67 43.21 L 94.81 43.93 L 95.98 44.57 L 97.2 45.13 L 98.45 45.62 L 99.73 46.01 L 101.03 46.33 L 102.35 46.56 L 103.69 46.7 L 105.03 46.75 L 106.37 46.71 L 107.7 46.59 L 109.02 46.38 L 110.33 46.08 L 111.61 45.7 L 112.87 45.23 L 114.09 44.68" fill="none" stroke="#000000" stroke-width="1"/>
+<path id="e0011" data-mark="arc2 FET" d="M 90.74 44.79 L 91.99 45.69 L 93.28 46.52 L 94.63 47.25 L 96.03 47.9 L 97.46 48.45 L 98.93 48.91 L 100.43 49.27 L 101.94 49.53 L 103.47 49.69 L 105.01 49.75 L 106.54 49.71 L 108.07 49.56 L 109.59 49.32 L 111.09 48.98 L 112.56 48.54 L 114.01 48.01 L 115.41 47.38" fill="none" stroke="#000000" stroke-width="1"/>
+</g>
+<g data-layer="points">
+<circle id="e0012" data-pt="E" cx="105.15" cy="26.35" r="2" fill="#000000" stroke="none"/>
+<circle id="e0013" data-pt="F" cx="26" cy="127.65" r="2" fill="#000000" stroke="none"/>
+<circle id="e0014" data-pt="G" cx="274" cy="26.35" r="2" fill="#000000" stroke="none"/>
+<circle id="e0015" data-pt="H" cx="274" cy="127.65" r="2" fill="#000000" stroke="none"/>
+<circle id="e0016" data-pt="T" cx="129.86" cy="77" r="2" fill="#000000" stroke="none"/>
+</g>
+<g data-layer="labels">
+<text id="e0017" data-for="E" x="105.15" y="21.85" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">E</text>
+<text id="e0018" data-for="F" x="26" y="142.52" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">F</text>
+<text id="e0019" data-for="G" x="274" y="21.85" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">G</text>
+<text id="e0020" data-for="H" x="274" y="142.52" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">H</text>
+<text id="e0021" data-for="T" x="138.93" y="84.56" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">T</text>
+</g>
+</svg>

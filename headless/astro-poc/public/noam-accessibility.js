@@ -15,14 +15,15 @@
   function init() {
     if (document.getElementById('noam-accessibility')) return;
     const defaults = { text: 100, contrast: false, links: false, motion: false };
-    // OS prefers-reduced-motion must not flip "עצירת אנימציות" on. Grade
-    // demos (and every other rAF loop) keep playing until the visitor
-    // presses that control. A saved choice still wins.
-    let prefs = { ...defaults, stopAnim: false, stopAnimChosen: false };
+    // Follow the device until the visitor explicitly chooses motion for this
+    // site. Legacy saved false values are not evidence of that choice.
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let prefs = { ...defaults, motionChosen: false, stopAnim: false, stopAnimChosen: false };
     try {
       const saved = JSON.parse(localStorage.getItem('noam-accessibility-v1') || '{}');
       prefs.text = [100,110,120,130,140,150].includes(saved.text) ? saved.text : 100;
       for (const key of ['contrast','links','motion']) prefs[key] = saved[key] === true;
+      prefs.motionChosen = saved.motionChosen === true || saved.motion === true;
       if (saved.stopAnim === true || saved.stopAnim === false) {
         prefs.stopAnim = saved.stopAnim;
         prefs.stopAnimChosen = true;
@@ -85,11 +86,12 @@
         animation:none!important; animation-play-state:paused!important; transition:none!important;
       }
       @media print { #noam-accessibility { display:none!important; } }
-      /* Reserve the corner. The window stays the scroller. */
+      /* Reserve the corner on pages that still scroll the window.
+         exact-site phones zero this padding and scroll .exact-frame. */
       @media (max-width: 800px) {
         html.noam-a11y-pad body {
-          padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px));
-          scroll-padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px));
+          padding-bottom: calc(128px + env(safe-area-inset-bottom, 0px));
+          scroll-padding-bottom: calc(128px + env(safe-area-inset-bottom, 0px));
         }
       }
       @media (min-width: 801px) {
@@ -149,6 +151,12 @@
         }
         #stop-anim { border-radius:18px 6px 20px 8px / 8px 20px 6px 18px; }
         #stop-anim[aria-pressed="true"] { background:#a84434; border-color:#22305a; color:#fff; }
+        /* Worksheet tools stay secondary to the question-level Ramzi controls. */
+        :host-context(body.exact-viewer) #launch {
+          width:44px; height:44px; padding:9px; border:1px solid #aab6c5;
+          border-radius:12px; background:#fbfaf5; color:#1e605e; box-shadow:none;
+        }
+        :host-context(body.exact-viewer) #launch svg { width:24px; height:24px; }
         dialog { direction:rtl; position:fixed; inset:auto 14px calc(140px + env(safe-area-inset-bottom)) auto; margin:0; width:min(330px,calc(100vw - 28px)); max-height:calc(100dvh - 165px); overflow:auto; background:#fbfaf5; color:#22305a; border:2px solid #22305a; border-radius:22px 8px 26px 10px / 10px 26px 8px 22px; padding:16px; box-shadow:6px 6px 0 #e6a534; font:16px/1.5 Heebo,Arial,sans-serif; }
         dialog::backdrop { background:rgba(34,48,90,0.35); }
         header { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px; }
@@ -238,6 +246,12 @@
     function settleLauncher() {
       if (!astroShell || !host.isConnected || dialog.open) return;
       var metrics = launcherMetrics();
+      /* Phone: stay in the bottom dock, opposite the chat launcher.
+         Climbing the screen parks the button on the headline or בס״ד. */
+      if (docked()) {
+        applyHostBox('left', metrics.edge, 8, metrics.size);
+        return;
+      }
       var rects = obstacleRects();
       var maxBottom = Math.max(8, Math.round(window.innerHeight * 0.75));
       var bottoms = [8, 0];
@@ -342,13 +356,19 @@
       }
       if (prefs.text === 100) original.clear();
     }
+    function motionReduced() {
+      return prefs.motionChosen ? prefs.motion : reducedMotion.matches;
+    }
     function apply(save) {
       var stopOn = prefs.stopAnim === true;
+      var reduceOn = motionReduced();
+      // This explicit opt-in also releases CSS rules that honor the OS default.
+      document.documentElement.classList.toggle('nd-motion-enabled', prefs.motionChosen && !reduceOn && !stopOn);
       for (const key of ['contrast','links','motion']) {
         var on = prefs[key] === true;
-        if (key === 'motion') on = on || stopOn;
+        if (key === 'motion') on = reduceOn || stopOn;
         document.documentElement.classList.toggle('noam-a11y-'+key, on);
-        root.querySelector('[data-pref="'+key+'"]').setAttribute('aria-pressed', String(prefs[key] === true));
+        root.querySelector('[data-pref="'+key+'"]').setAttribute('aria-pressed', String(key === 'motion' ? reduceOn : prefs[key] === true));
       }
       document.documentElement.classList.toggle('nd-motion-off', stopOn);
       root.getElementById('stop-anim').setAttribute('aria-pressed', String(stopOn));
@@ -362,16 +382,20 @@
       if (save) {
         try {
           var stored = { text: prefs.text, contrast: prefs.contrast, links: prefs.links, motion: prefs.motion };
+          if (prefs.motionChosen) stored.motionChosen = true;
           if (prefs.stopAnimChosen) stored.stopAnim = stopOn;
           localStorage.setItem('noam-accessibility-v1', JSON.stringify(stored));
         } catch (_) {}
       }
-      window.dispatchEvent(new CustomEvent('nd:motion-off', { detail: { off: stopOn } }));
+      window.dispatchEvent(new CustomEvent('nd:motion-off', { detail: { off: stopOn || reduceOn } }));
     }
     root.getElementById('increase').addEventListener('click', () => { prefs.text = Math.min(150,prefs.text+10); apply(true); });
     root.getElementById('decrease').addEventListener('click', () => { prefs.text = Math.max(100,prefs.text-10); apply(true); });
     root.querySelectorAll('[data-pref]').forEach(button => button.addEventListener('click', () => {
-      const key = button.dataset.pref; prefs[key] = !prefs[key]; apply(true);
+      const key = button.dataset.pref;
+      if (key === 'motion') { prefs.motion = !motionReduced(); prefs.motionChosen = true; }
+      else prefs[key] = !prefs[key];
+      apply(true);
     }));
     root.getElementById('stop-anim').addEventListener('click', () => {
       prefs.stopAnim = prefs.stopAnim !== true;
@@ -379,9 +403,10 @@
       apply(true);
     });
     root.getElementById('reset').addEventListener('click', () => {
-      prefs = { ...defaults, stopAnim: false, stopAnimChosen: false };
+      prefs = { ...defaults, motionChosen: false, stopAnim: false, stopAnimChosen: false };
       apply(true);
     });
+    reducedMotion.addEventListener('change', () => apply(false));
     let scheduled = false;
     new MutationObserver(() => {
       if (prefs.text === 100 || scheduled) return;

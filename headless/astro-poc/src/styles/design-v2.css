@@ -543,10 +543,10 @@ html.js-anim [data-out].is-out {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html.js-anim [data-pop],
-  html.js-anim [data-grow],
-  html.js-anim [data-fly],
-  html.js-anim [data-draw] {
+  html:not(.nd-motion-enabled).js-anim [data-pop],
+  html:not(.nd-motion-enabled).js-anim [data-grow],
+  html:not(.nd-motion-enabled).js-anim [data-fly],
+  html:not(.nd-motion-enabled).js-anim [data-draw] {
     opacity: 1 !important;
     animation: none !important;
     transform: none !important;
@@ -615,7 +615,7 @@ html.noam-a11y-motion .site-brand__logo {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .site-brand__logo {
+  html:not(.nd-motion-enabled) .site-brand__logo {
     animation: none !important;
   }
 }

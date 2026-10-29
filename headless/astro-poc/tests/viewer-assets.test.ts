@@ -11,9 +11,12 @@ import { fileURLToPath } from 'node:url';
 const pub = join(dirname(fileURLToPath(import.meta.url)), '..', 'public');
 
 describe('copied viewer assets (HEADLESS-MIGRATION-12)', () => {
-  it('mobile getPdfPageWidth matches live GitHub (÷ 0.7 at 70% zoom)', () => {
+  it('mobile getPdfPageWidth starts at a readable paper width, with fit as an explicit overview', () => {
     const html = readFileSync(join(pub, 'worksheet-viewer-noam.html'), 'utf8');
-    assert.ok(html.includes('pdfZoom / .7'));
+    // Ramzi phone reading (main): a phone starts at 600px times the zoom.
+    // Fit is a separate overview, not a silent 0.7 scale of the gutter width.
+    assert.ok(html.includes('if (mobileLayout.matches){return 600 * pdfZoom;}'));
+    assert.ok(html.includes('function getPdfFitZoom()'));
     assert.ok(
       !html.includes(
         'pdfScroll.clientWidth - (mobileLayout.matches ? 116 : 78)) * pdfZoom;'

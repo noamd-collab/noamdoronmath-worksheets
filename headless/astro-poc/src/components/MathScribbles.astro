@@ -201,11 +201,11 @@ const FORMULAS = ['a²+b²=c²', 'πr²', 'y=mx+b'] as const;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .math-scribble--motion,
-    .math-scribble--draw .math-scribble__formula-svg {
+    :global(html:not(.nd-motion-enabled)) .math-scribble--motion,
+    :global(html:not(.nd-motion-enabled)) .math-scribble--draw .math-scribble__formula-svg {
       animation: none;
     }
-    .math-scribble--draw .math-scribble__formula-svg {
+    :global(html:not(.nd-motion-enabled)) .math-scribble--draw .math-scribble__formula-svg {
       clip-path: none;
     }
   }

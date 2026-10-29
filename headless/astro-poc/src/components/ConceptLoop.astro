@@ -3008,17 +3008,19 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
 
 {
   variant === 'kite-construct' && (
-    <script is:inline>
+    <script>
+      import { sitePrefersReducedMotion } from '../lib/motionPreference.js';
       (function () {
         var mq = window.matchMedia('(prefers-reduced-motion: reduce)');
         function sync() {
           document.querySelectorAll('[data-loop="kite-construct"]').forEach(function (el) {
-            if (mq.matches) el.setAttribute('data-os-reduce', '');
+            if (sitePrefersReducedMotion()) el.setAttribute('data-os-reduce', '');
             else el.removeAttribute('data-os-reduce');
           });
         }
         if (typeof mq.addEventListener === 'function') mq.addEventListener('change', sync);
         else mq.addListener(sync);
+        new MutationObserver(sync).observe(document.documentElement, { attributes: true, attributeFilter: ['class', 'data-nd-motion'] });
         if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', sync);
         sync();
       })();
@@ -3136,7 +3138,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
       });
       new MutationObserver(function () {
         applyGlobal(ndOff());
-      }).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+      }).observe(document.documentElement, { attributes: true, attributeFilter: ['class', 'data-nd-motion'] });
 
       // our own visibility tracking: re-entering view must not resume a
       // manually (or globally) paused card
@@ -3201,10 +3203,10 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
   }
   /* static frame (reduced-motion / a11y menu): no pause affordance */
   @media (prefers-reduced-motion: reduce) {
-    .concept-loop__card {
+    :global(html:not(.nd-motion-enabled)) .concept-loop__card {
       cursor: default;
     }
-    .concept-loop .concept-loop__card .concept-loop__toggle {
+    :global(html:not(.nd-motion-enabled)) .concept-loop .concept-loop__card .concept-loop__toggle {
       display: none;
     }
   }

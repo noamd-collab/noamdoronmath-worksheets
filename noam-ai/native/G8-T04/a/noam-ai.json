@@ -1,0 +1,4591 @@
+{
+ "schema_version": "noam-ai/v1",
+ "package": "G8-T04",
+ "level": "a",
+ "curriculum": {
+  "grade": "8",
+  "track": "ח",
+  "topic": "inequalities",
+  "unit": "אי-שוויונות",
+  "allowed_tools": [
+   {
+    "id": "g7.coordinate_system.1",
+    "name": "מערכת צירים והרחבתה"
+   },
+   {
+    "id": "g7.directed_numbers.1",
+    "name": "הכרה"
+   },
+   {
+    "id": "g7.directed_numbers.2",
+    "name": "חיבור"
+   },
+   {
+    "id": "g7.directed_numbers.3",
+    "name": "חיסור"
+   },
+   {
+    "id": "g7.directed_numbers.4",
+    "name": "כפל וחילוק"
+   },
+   {
+    "id": "g7.angles.1",
+    "name": "סימון"
+   },
+   {
+    "id": "g7.angles.2",
+    "name": "מדידה"
+   },
+   {
+    "id": "g7.angles.3",
+    "name": "חוצה זווית"
+   },
+   {
+    "id": "g7.angles.4",
+    "name": "סכום והפרש"
+   },
+   {
+    "id": "g7.angles.5",
+    "name": "צמודות וקודקודיות"
+   },
+   {
+    "id": "g7.angles.6",
+    "name": "זוויות במשולש ובמרובע"
+   },
+   {
+    "id": "g7.transformations.1",
+    "name": "צורות חופפות במישור וטרנספורמציות"
+   },
+   {
+    "id": "g7.powers_roots.1",
+    "name": "חזקות עם מעריך טבעי ושורש ריבועי חיובי"
+   },
+   {
+    "id": "g7.areas.1",
+    "name": "שטחים א׳"
+   },
+   {
+    "id": "g7.areas.2",
+    "name": "ב׳"
+   },
+   {
+    "id": "g7.areas.3",
+    "name": "חישוב היקפים"
+   },
+   {
+    "id": "g7.algebraic_expressions.1",
+    "name": "משתנים וביטויים אלגבריים"
+   },
+   {
+    "id": "g7.algebraic_expressions.2",
+    "name": "זהות"
+   },
+   {
+    "id": "g7.algebraic_expressions.3",
+    "name": "כינוס איברים דומים"
+   },
+   {
+    "id": "g7.algebraic_expressions.4",
+    "name": "חוק הפילוג"
+   },
+   {
+    "id": "g7.solids.1",
+    "name": "גופים במרחב: קובייה"
+   },
+   {
+    "id": "g7.solids.2",
+    "name": "תיבה"
+   },
+   {
+    "id": "g7.solids.3",
+    "name": "מנסרה משולשת"
+   },
+   {
+    "id": "g7.data_frequency.1",
+    "name": "איסוף"
+   },
+   {
+    "id": "g7.data_frequency.2",
+    "name": "ייצוג וקריאת מידע"
+   },
+   {
+    "id": "g7.data_frequency.3",
+    "name": "שכיחות"
+   },
+   {
+    "id": "g7.data_frequency.4",
+    "name": "שכיחות יחסית"
+   },
+   {
+    "id": "g7.data_frequency.5",
+    "name": "הסתברות בהקשר של שכיחות יחסית"
+   },
+   {
+    "id": "g7.pythagoras.1",
+    "name": "משפט פיתגורס ושימושיו"
+   },
+   {
+    "id": "g7.equations.1",
+    "name": "משוואות ממעלה ראשונה ופתרונן"
+   },
+   {
+    "id": "g7.word_problems.1",
+    "name": "שאלות בהקשרים בעזרת משוואה ממעלה ראשונה"
+   },
+   {
+    "id": "g7.points_on_graph.1",
+    "name": "נקודות על גרף ברביע I"
+   },
+   {
+    "id": "g8.ratio_scale.1",
+    "name": "יחס"
+   },
+   {
+    "id": "g8.ratio_scale.2",
+    "name": "פרופורציה וקנה מידה"
+   },
+   {
+    "id": "g8.pythagoras.1",
+    "name": "משפט פיתגורס"
+   },
+   {
+    "id": "g8.percentages.1",
+    "name": "אחוזים"
+   },
+   {
+    "id": "g8.cylinder_cone.1",
+    "name": "גליל"
+   },
+   {
+    "id": "g8.cylinder_cone.2",
+    "name": "חרוט"
+   },
+   {
+    "id": "g8.data_center.1",
+    "name": "איסוף מידע"
+   },
+   {
+    "id": "g8.data_center.2",
+    "name": "שכיחות"
+   },
+   {
+    "id": "g8.data_center.3",
+    "name": "שכיחות יחסית"
+   },
+   {
+    "id": "g8.data_center.4",
+    "name": "טווח ומדדי מרכז"
+   },
+   {
+    "id": "g8.data_center.5",
+    "name": "שני מקורות מידע"
+   },
+   {
+    "id": "g8.transformations.1",
+    "name": "טרנספורמציות וצורות חופפות"
+   },
+   {
+    "id": "g8.functions_intro.1",
+    "name": "מבוא לפונקציות"
+   },
+   {
+    "id": "g8.functions_intro.2",
+    "name": "ייצוגים"
+   },
+   {
+    "id": "g8.functions_intro.3",
+    "name": "עלייה וירידה"
+   },
+   {
+    "id": "g8.functions_intro.4",
+    "name": "גרפים לינאריים"
+   },
+   {
+    "id": "g8.slope_linear.1",
+    "name": "קצב שינוי"
+   },
+   {
+    "id": "g8.slope_linear.2",
+    "name": "שיפוע"
+   },
+   {
+    "id": "g8.slope_linear.3",
+    "name": "ייצוג אלגברי של פונקציה ליניארית"
+   },
+   {
+    "id": "g8.word_problems_eq.1",
+    "name": "שאלות מילוליות בעזרת משוואות"
+   },
+   {
+    "id": "g8.congruence.1",
+    "name": "חפיפת משולשים"
+   },
+   {
+    "id": "g8.inter_extrapolation.1",
+    "name": "אינטרפולציה"
+   },
+   {
+    "id": "g8.inter_extrapolation.2",
+    "name": "אקסטרפולציה"
+   },
+   {
+    "id": "g8.triangle_parts.1",
+    "name": "צלעות במשולש"
+   },
+   {
+    "id": "g8.triangle_parts.2",
+    "name": "תיכון"
+   },
+   {
+    "id": "g8.triangle_parts.3",
+    "name": "זווית חיצונית"
+   },
+   {
+    "id": "g8.triangle_parts.4",
+    "name": "שווה שוקיים"
+   },
+   {
+    "id": "g8.triangle_parts.5",
+    "name": "משפטים הפוכים"
+   },
+   {
+    "id": "g8.systems_basic.1",
+    "name": "מערכות משוואות (רמה בסיסית)"
+   },
+   {
+    "id": "g8.similarity.1",
+    "name": "דמיון משולשים"
+   },
+   {
+    "id": "g8.probability.1",
+    "name": "הסתברות א"
+   },
+   {
+    "id": "g8.probability.2",
+    "name": "הסתברות ב"
+   },
+   {
+    "id": "g8.pythagoras_3d.1",
+    "name": "משפט פיתגורס במרחב"
+   },
+   {
+    "id": "g8.inequalities.1",
+    "name": "אי-שוויונות"
+   },
+   {
+    "id": "thm.adjacent_angles",
+    "name": "זוויות צמודות (סכומן 180°)"
+   },
+   {
+    "id": "thm.vertical_angles",
+    "name": "זוויות קודקודיות שוות"
+   },
+   {
+    "id": "thm.angle_bisector",
+    "name": "חוצה זווית"
+   },
+   {
+    "id": "thm.alternate_angles",
+    "name": "זוויות מתחלפות בין ישרים מקבילים"
+   },
+   {
+    "id": "thm.corresponding_angles",
+    "name": "זוויות מתאימות בין ישרים מקבילים"
+   },
+   {
+    "id": "thm.triangle_angle_sum",
+    "name": "סכום הזוויות במשולש 180°"
+   },
+   {
+    "id": "thm.quad_angle_sum",
+    "name": "סכום הזוויות במרובע 360°"
+   },
+   {
+    "id": "frm.area_rectangle",
+    "name": "שטח מלבן = אורך × רוחב"
+   },
+   {
+    "id": "frm.area_triangle",
+    "name": "שטח משולש = צלע × גובה : 2"
+   },
+   {
+    "id": "frm.area_parallelogram",
+    "name": "שטח מקבילית = צלע × גובה"
+   },
+   {
+    "id": "frm.area_trapezoid",
+    "name": "שטח טרפז = (סכום בסיסים) × גובה : 2"
+   },
+   {
+    "id": "frm.perimeter",
+    "name": "היקף מצולע"
+   },
+   {
+    "id": "frm.box_volume",
+    "name": "נפח תיבה"
+   },
+   {
+    "id": "frm.box_surface",
+    "name": "שטח פנים של תיבה"
+   },
+   {
+    "id": "thm.pythagoras",
+    "name": "משפט פיתגורס"
+   },
+   {
+    "id": "thm.pythagoras_converse",
+    "name": "המשפט ההפוך למשפט פיתגורס"
+   },
+   {
+    "id": "thm.pythagoras_3d",
+    "name": "משפט פיתגורס במרחב"
+   },
+   {
+    "id": "thm.congruence_sas",
+    "name": "משפט חפיפה צ.ז.צ"
+   },
+   {
+    "id": "thm.congruence_asa",
+    "name": "משפט חפיפה ז.צ.ז"
+   },
+   {
+    "id": "thm.congruence_sss",
+    "name": "משפט חפיפה צ.צ.צ"
+   },
+   {
+    "id": "thm.congruence_ssa",
+    "name": "משפט חפיפה צ.צ.ז"
+   },
+   {
+    "id": "thm.congruent_parts",
+    "name": "במשולשים חופפים צלעות וזוויות מתאימות שוות"
+   },
+   {
+    "id": "thm.exterior_angle",
+    "name": "זווית חיצונית למשולש"
+   },
+   {
+    "id": "thm.isosceles_base_angles",
+    "name": "במשולש שווה שוקיים זוויות הבסיס שוות"
+   },
+   {
+    "id": "thm.isosceles_special_lines",
+    "name": "במשולש שווה שוקיים חוצה זווית הראש, התיכון והגובה לבסיס מתלכדים"
+   },
+   {
+    "id": "thm.triangle_inequality",
+    "name": "אי-שוויון המשולש"
+   },
+   {
+    "id": "thm.similarity_aa",
+    "name": "משפט דמיון ז.ז"
+   },
+   {
+    "id": "thm.similarity_sas",
+    "name": "משפט דמיון צ.ז.צ"
+   },
+   {
+    "id": "thm.similarity_sss",
+    "name": "משפט דמיון צ.צ.צ"
+   },
+   {
+    "id": "mth.distributive",
+    "name": "חוק הפילוג"
+   },
+   {
+    "id": "mth.first_degree_eq",
+    "name": "פתרון משוואה ממעלה ראשונה"
+   }
+  ],
+  "not_yet_allowed": [
+   {
+    "id": "g9.alg_technique.1",
+    "name": "חוק הפילוג המורחב"
+   },
+   {
+    "id": "g9.alg_technique.2",
+    "name": "פישוט ביטויים בעזרת חוק הפילוג המורחב"
+   },
+   {
+    "id": "g9.alg_technique.3",
+    "name": "פתרון משוואות בעזרת חוק הפילוג המורחב"
+   },
+   {
+    "id": "g9.alg_technique.4",
+    "name": "שאלות השוואת שטחים בעזרת חוק הפילוג"
+   },
+   {
+    "id": "g9.alg_technique.5",
+    "name": "נוסחאות הכפל המקוצר"
+   },
+   {
+    "id": "g9.alg_technique.6",
+    "name": "פירוק לגורמים: הוצאת גורם משותף"
+   },
+   {
+    "id": "g9.alg_technique.7",
+    "name": "פירוק תלת-איבר ריבועי (מקדם 1)"
+   },
+   {
+    "id": "g9.alg_technique.8",
+    "name": "פירוק בעזרת נוסחאות הכפל המקוצר"
+   },
+   {
+    "id": "g9.alg_technique.9",
+    "name": "פתרון משוואות ריבועיות בסיסיות באמצעות פירוק לגורמים"
+   },
+   {
+    "id": "g9.alg_technique.10",
+    "name": "צמצום שברים אלגבריים"
+   },
+   {
+    "id": "g9.alg_technique.11",
+    "name": "כפל וחילוק שברים אלגבריים"
+   },
+   {
+    "id": "g9.kite.1",
+    "name": "הכרת הדלתון"
+   },
+   {
+    "id": "g9.kite.2",
+    "name": "זוויות בדלתון"
+   },
+   {
+    "id": "g9.kite.3",
+    "name": "האלכסון הראשי בדלתון"
+   },
+   {
+    "id": "g9.isosceles_converse.1",
+    "name": "משפטים הפוכים להוכחה כי משולש הוא שווה שוקיים"
+   },
+   {
+    "id": "g9.quad_func_and_eq.1",
+    "name": "היכרות עם הגרף והביטוי האלגברי"
+   },
+   {
+    "id": "g9.quad_func_and_eq.2",
+    "name": "תכונות הפונקציה הריבועית (התייחסות איכותנית): קיצון, עלייה וירידה, חיתוך עם הצירים, חיוביות ושליליות"
+   },
+   {
+    "id": "g9.quad_func_and_eq.3",
+    "name": "הזזה אנכית"
+   },
+   {
+    "id": "g9.quad_func_and_eq.4",
+    "name": "הזזה אופקית"
+   },
+   {
+    "id": "g9.quad_func_and_eq.5",
+    "name": "שילוב הזזה אופקית ואנכית"
+   },
+   {
+    "id": "g9.quad_func_and_eq.6",
+    "name": "הצגת פונקציה ריבועית כמכפלה"
+   },
+   {
+    "id": "g9.quad_func_and_eq.7",
+    "name": "הצגה סטנדרטית"
+   },
+   {
+    "id": "g9.quad_func_and_eq.8",
+    "name": "פתרון משוואות ריבועיות בעזרת נוסחת השורשים"
+   },
+   {
+    "id": "g9.quad_func_and_eq.9",
+    "name": "סרטוט גרף על סמך ייצוג סטנדרטי"
+   },
+   {
+    "id": "g9.side_angle_relations.1",
+    "name": "מול הצלע הגדולה ממוקמת הזווית הגדולה"
+   },
+   {
+    "id": "g9.side_angle_relations.2",
+    "name": "מול הזווית הגדולה ממוקמת הצלע הגדולה"
+   },
+   {
+    "id": "g9.right_triangle_30_60_90.1",
+    "name": "הניצב מול זווית 30° שווה למחצית היתר"
+   },
+   {
+    "id": "g9.right_triangle_30_60_90.2",
+    "name": "משפט הפוך: ניצב השווה למחצית היתר ⇒ הזווית שמולו 30°"
+   },
+   {
+    "id": "g9.parallels_trapezoid.1",
+    "name": "תכונות של הקבלה או אי-הקבלה"
+   },
+   {
+    "id": "g9.parallels_trapezoid.2",
+    "name": "משפט הפוך לישרים מקבילים"
+   },
+   {
+    "id": "g9.parallels_trapezoid.3",
+    "name": "הכרת הטרפז"
+   },
+   {
+    "id": "g9.parallels_trapezoid.4",
+    "name": "טרפז שווה שוקיים"
+   },
+   {
+    "id": "g9.parallels_trapezoid.5",
+    "name": "הוכחה שמרובע הוא טרפז"
+   },
+   {
+    "id": "g9.parallels_trapezoid.6",
+    "name": "שטח והיקף טרפז"
+   },
+   {
+    "id": "g9.quad_eq_applications.1",
+    "name": "כולל שימוש בטכניקה אלגברית"
+   },
+   {
+    "id": "g9.quad_inequalities.1",
+    "name": "פתרון אי-שוויון ריבועי בהקשר של פונקציה ריבועית"
+   },
+   {
+    "id": "g9.parallelogram.1",
+    "name": "הגדרת מקבילית"
+   },
+   {
+    "id": "g9.parallelogram.2",
+    "name": "תכונות צלעות, זוויות ואלכסונים"
+   },
+   {
+    "id": "g9.parallelogram.3",
+    "name": "משפטים הפוכים"
+   },
+   {
+    "id": "g9.rational_equations.1",
+    "name": "פתרון משוואות עם פירוק לגורמים במכנה"
+   },
+   {
+    "id": "g9.rational_equations.2",
+    "name": "תחום הצבה"
+   },
+   {
+    "id": "g9.rational_equations.3",
+    "name": "משוואות שבהן אחד הפתרונות אינו קביל"
+   },
+   {
+    "id": "g9.rectangle.1",
+    "name": "הגדרה"
+   },
+   {
+    "id": "g9.rectangle.2",
+    "name": "תכונות צלעות, זוויות, אלכסונים"
+   },
+   {
+    "id": "g9.rectangle.3",
+    "name": "משפטים הפוכים"
+   },
+   {
+    "id": "g9.probability.1",
+    "name": "מהי הסתברות, מושגים בסיסיים (כולל השלמה של ח׳)"
+   },
+   {
+    "id": "g9.probability.2",
+    "name": "חישובי הסתברות והקשר לשכיחות יחסית"
+   },
+   {
+    "id": "g9.probability.3",
+    "name": "מאורע משלים"
+   },
+   {
+    "id": "g9.probability.4",
+    "name": "מאורעות דו-שלביים"
+   },
+   {
+    "id": "g9.probability.5",
+    "name": "ייצוגים שונים: טבלה, דיאגרמת עץ, מודל השטח"
+   },
+   {
+    "id": "g9.integrative_literacy.1",
+    "name": "שילוב אלגברה וגיאומטריה בהקשר מהעולם האמיתי"
+   },
+   {
+    "id": "g9.system_degree_2.1",
+    "name": "משמעות אלגברית ומשמעות גרפית של פתרון מערכת משוואות"
+   },
+   {
+    "id": "g9.function_properties.1",
+    "name": "תכונות של גרף: חיתוך עם הצירים, תחומי חיוביות ושליליות, נקודות קיצון, תחומי עלייה וירידה"
+   },
+   {
+    "id": "g9.function_properties.2",
+    "name": "הקשר בין משוואות לגרף של פונקציה"
+   },
+   {
+    "id": "g9.function_properties.3",
+    "name": "הזזה אנכית, הזזה אופקית"
+   },
+   {
+    "id": "g9.function_properties.4",
+    "name": "שיקוף ביחס לציר ה-x"
+   },
+   {
+    "id": "g9.rhombus.1",
+    "name": "הגדרה"
+   },
+   {
+    "id": "g9.rhombus.2",
+    "name": "תכונות הצלעות, הזוויות והאלכסונים"
+   },
+   {
+    "id": "g9.rhombus.3",
+    "name": "משפטים הפוכים"
+   },
+   {
+    "id": "g9.square.1",
+    "name": "הגדרה"
+   },
+   {
+    "id": "g9.square.2",
+    "name": "תכונות הצלעות, הזוויות והאלכסונים"
+   },
+   {
+    "id": "g9.square.3",
+    "name": "משפטים הפוכים"
+   },
+   {
+    "id": "g9.right_triangle_median.1",
+    "name": "התיכון ליתר"
+   },
+   {
+    "id": "g9.right_triangle_median.2",
+    "name": "תרגול המשפט בשילוב מרובעים"
+   },
+   {
+    "id": "g9.powers.1",
+    "name": "חוקי חזקות מעריך טבעי או אפס"
+   },
+   {
+    "id": "g9.powers.2",
+    "name": "חוקי שורש ריבועי"
+   },
+   {
+    "id": "g9.word_problems.1",
+    "name": "שאלות מילוליות הנדסיות וכלליות (לרבות משוואה ריבועית או מערכת משוואות)"
+   },
+   {
+    "id": "g9.word_problems.2",
+    "name": "שאלות תנועה"
+   },
+   {
+    "id": "g9.word_problems.3",
+    "name": "שילוב אחוזים"
+   },
+   {
+    "id": "g9.word_problems.4",
+    "name": "שאלות אוריינות"
+   },
+   {
+    "id": "g9.similarity.1",
+    "name": "יחסי שטחים במשולשים דומים"
+   },
+   {
+    "id": "g9m.graph_reading.1",
+    "name": "תופעות המיוצגות באמצעות גרף במערכת צירים"
+   },
+   {
+    "id": "g9m.graph_reading.2",
+    "name": "קריאת מידע מהגרף ומענה על שאלות"
+   },
+   {
+    "id": "g9m.computational_triangle.1",
+    "name": "סכום זוויות במשולש"
+   },
+   {
+    "id": "g9m.computational_triangle.2",
+    "name": "שטח והיקף משולש"
+   },
+   {
+    "id": "g9m.computational_triangle.3",
+    "name": "קטעים מיוחדים במשולש"
+   },
+   {
+    "id": "g9m.computational_triangle.4",
+    "name": "שילוב עם מערכת צירים"
+   },
+   {
+    "id": "g9m.linear_function.1",
+    "name": "משמעות השיפוע כקצב שינוי, בשילוב אוריינות"
+   },
+   {
+    "id": "g9m.linear_function.2",
+    "name": "ייצוג אלגברי וגרפי והתאמה ביניהם"
+   },
+   {
+    "id": "g9m.linear_function.3",
+    "name": "נקודה על ישר ומשמעותה"
+   },
+   {
+    "id": "g9m.linear_function.4",
+    "name": "חיתוך עם הצירים"
+   },
+   {
+    "id": "g9m.linear_function.5",
+    "name": "ישרים מקבילים"
+   },
+   {
+    "id": "g9m.linear_function.6",
+    "name": "שטחים והיקפים במערכת צירים"
+   },
+   {
+    "id": "g9m.alg_technique_basic.1",
+    "name": "חוק הפילוג וחוק הפילוג המורחב"
+   },
+   {
+    "id": "g9m.alg_technique_basic.2",
+    "name": "פתרון משוואות פשוטות בעזרת חוק הפילוג"
+   },
+   {
+    "id": "g9m.pythagoras.1",
+    "name": "חישובי צלעות במשולשים"
+   },
+   {
+    "id": "g9m.pythagoras.2",
+    "name": "חישובי צלעות בצורות מורכבות"
+   },
+   {
+    "id": "g9m.pythagoras.3",
+    "name": "חישובי היקפים ושטחים"
+   },
+   {
+    "id": "g9m.kite_and_isosceles.1",
+    "name": "קווים מיוחדים במשולש שווה שוקיים"
+   },
+   {
+    "id": "g9m.kite_and_isosceles.2",
+    "name": "זוויות במשולש שווה שוקיים"
+   },
+   {
+    "id": "g9m.kite_and_isosceles.3",
+    "name": "משפטים הפוכים"
+   },
+   {
+    "id": "g9m.kite_and_isosceles.4",
+    "name": "תכונות הדלתון"
+   },
+   {
+    "id": "g9m.kite_and_isosceles.5",
+    "name": "חישובי שטחים והיקפים"
+   },
+   {
+    "id": "g9m.statistics.1",
+    "name": "איסוף וארגון נתונים בטבלה, ברשימה ובדיאגרמות"
+   },
+   {
+    "id": "g9m.statistics.2",
+    "name": "שכיחות ושכיחות יחסית"
+   },
+   {
+    "id": "g9m.statistics.3",
+    "name": "טווח נתונים"
+   },
+   {
+    "id": "g9m.statistics.4",
+    "name": "ממוצע, שכיח וחציון"
+   },
+   {
+    "id": "g9m.percentages.1",
+    "name": "החלק היחסי משלם"
+   },
+   {
+    "id": "g9m.percentages.2",
+    "name": "הגדלה והקטנה"
+   },
+   {
+    "id": "g9m.percentages.3",
+    "name": "שאלות מילוליות פשוטות ואורייניות"
+   },
+   {
+    "id": "g9m.similarity.1",
+    "name": "המושג דומים"
+   },
+   {
+    "id": "g9m.similarity.2",
+    "name": "הגדלה או הקטנה של צורות"
+   },
+   {
+    "id": "g9m.similarity.3",
+    "name": "צלעות פרופורציונליות"
+   },
+   {
+    "id": "g9m.similarity.4",
+    "name": "משפט ז.ז"
+   },
+   {
+    "id": "g9m.similarity.5",
+    "name": "חישובי צלעות וזוויות במשולשים דומים"
+   },
+   {
+    "id": "g9m.similarity.6",
+    "name": "שאלות אוריינות"
+   },
+   {
+    "id": "g9m.equations.1",
+    "name": "פתרון משוואות ממעלה ראשונה עם מכנה מספרי"
+   },
+   {
+    "id": "g9m.parallels_and_parallelogram.1",
+    "name": "חזרה על ישרים מקבילים"
+   },
+   {
+    "id": "g9m.parallels_and_parallelogram.2",
+    "name": "הגדרת המקבילית"
+   },
+   {
+    "id": "g9m.parallels_and_parallelogram.3",
+    "name": "תכונות הצלעות, הזוויות והאלכסונים"
+   },
+   {
+    "id": "g9m.parallels_and_parallelogram.4",
+    "name": "זיהוי מקבילית"
+   },
+   {
+    "id": "g9m.probability.1",
+    "name": "מהי הסתברות"
+   },
+   {
+    "id": "g9m.probability.2",
+    "name": "מושגים בסיסיים"
+   },
+   {
+    "id": "g9m.probability.3",
+    "name": "חישובי הסתברות והקשר לשכיחות יחסית"
+   },
+   {
+    "id": "g9m.probability.4",
+    "name": "מאורע משלים"
+   },
+   {
+    "id": "g9m.quad_partial.1",
+    "name": "הצבת ערכי x בביטוי של פונקציה ריבועית וחישוב ערך ה-y"
+   },
+   {
+    "id": "g9m.quad_partial.2",
+    "name": "מפונקציה ריבועית לפתרון משוואה ריבועית"
+   },
+   {
+    "id": "g9m.quad_partial.3",
+    "name": "פתרון משוואות ריבועיות ע״י נוסחת השורשים"
+   },
+   {
+    "id": "g9m.rectangle.1",
+    "name": "הגדרה של מלבן"
+   },
+   {
+    "id": "g9m.rectangle.2",
+    "name": "תכונות צלעות, זוויות ואלכסונים"
+   },
+   {
+    "id": "g9m.word_problems.1",
+    "name": "שאלות מילוליות ושאלות אוריינות בנושאים שונים, כולל שימוש במשוואה ריבועית"
+   },
+   {
+    "id": "g9m.rhombus.1",
+    "name": "הגדרה של מעוין"
+   },
+   {
+    "id": "g9m.rhombus.2",
+    "name": "תכונות צלעות, זוויות ואלכסונים"
+   },
+   {
+    "id": "g9m.square.1",
+    "name": "הגדרה של ריבוע"
+   },
+   {
+    "id": "g9m.square.2",
+    "name": "תכונות צלעות, זוויות ואלכסונים"
+   },
+   {
+    "id": "g9m.word_problems_integrative.1",
+    "name": "שאלות מילוליות ואוריינות בנושאים שונים"
+   },
+   {
+    "id": "g9m.trapezoid.1",
+    "name": "הגדרה של טרפז"
+   },
+   {
+    "id": "g9m.trapezoid.2",
+    "name": "תכונות צלעות, זוויות ואלכסונים"
+   },
+   {
+    "id": "g9m.areas_and_perimeters.1",
+    "name": "שאלות אוריינות אינטגרטיביות כולל מעגל — היקף ושטח"
+   },
+   {
+    "id": "thm.co_interior_angles",
+    "name": "זוויות חד-צדדיות בין ישרים מקבילים"
+   },
+   {
+    "id": "thm.isosceles_converse",
+    "name": "משפטים הפוכים: הוכחה שמשולש שווה שוקיים"
+   },
+   {
+    "id": "thm.side_angle_order",
+    "name": "מול הצלע הגדולה הזווית הגדולה (וההפך)"
+   },
+   {
+    "id": "thm.similar_area_ratio",
+    "name": "יחס השטחים הוא ריבוע יחס הדמיון"
+   },
+   {
+    "id": "thm.kite_main_diagonal",
+    "name": "בדלתון האלכסון הראשי חוצה את המשני, מאונך לו וחוצה את זוויות הראש"
+   },
+   {
+    "id": "thm.30_60_90",
+    "name": "במשולש ישר זווית הניצב מול 30° שווה למחצית היתר"
+   },
+   {
+    "id": "thm.parallel_converse",
+    "name": "משפטים הפוכים לישרים מקבילים"
+   },
+   {
+    "id": "thm.isosceles_trapezoid",
+    "name": "טרפז שווה שוקיים: זוויות בסיס ואלכסונים"
+   },
+   {
+    "id": "thm.parallelogram_props",
+    "name": "במקבילית צלעות נגדיות שוות, זוויות נגדיות שוות, האלכסונים חוצים זה את זה"
+   },
+   {
+    "id": "thm.parallelogram_converse",
+    "name": "משפטים הפוכים: הוכחה שמרובע מקבילית"
+   },
+   {
+    "id": "thm.rectangle_props",
+    "name": "במלבן כל הזוויות ישרות והאלכסונים שווים"
+   },
+   {
+    "id": "thm.rectangle_converse",
+    "name": "משפטים הפוכים: מקבילית עם זווית ישרה או עם אלכסונים שווים היא מלבן"
+   },
+   {
+    "id": "thm.rhombus_props",
+    "name": "במעוין כל הצלעות שוות, האלכסונים מאונכים וחוצי זוויות"
+   },
+   {
+    "id": "thm.rhombus_converse",
+    "name": "משפטים הפוכים: הוכחה שמרובע מעוין"
+   },
+   {
+    "id": "thm.square_props",
+    "name": "ריבוע: מלבן שהוא גם מעוין"
+   },
+   {
+    "id": "thm.right_triangle_median",
+    "name": "התיכון ליתר שווה למחצית היתר"
+   },
+   {
+    "id": "frm.area_rhombus_diagonals",
+    "name": "שטח מעוין / דלתון = מכפלת האלכסונים : 2"
+   },
+   {
+    "id": "thm.midsegment",
+    "name": "קטע אמצעים במשולש ובטרפז"
+   },
+   {
+    "id": "frm.short_multiplication",
+    "name": "נוסחאות הכפל המקוצר"
+   },
+   {
+    "id": "mth.factoring",
+    "name": "פירוק לגורמים"
+   },
+   {
+    "id": "frm.quadratic_formula",
+    "name": "נוסחת השורשים"
+   }
+  ]
+ },
+ "questions": [
+  {
+   "id": "q1",
+   "label": 1,
+   "text": "מכונה מאשרת ערך כאשר $2x+1<9$.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "מכונה מאשרת ערך כאשר $2x+1<9$."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "variables": [
+    "x",
+    "k",
+    "t",
+    "y"
+   ],
+   "items": [
+    {
+     "id": "q1a",
+     "label": "א",
+     "text": "בדקו בהצבה את הערכים $0,2,5$ וציינו אילו מאושרים.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "בדקו בהצבה את הערכים וציינו אילו מאושרים.",
+       "text": "הערך בדקו בהצבה את הערכים וציינו אילו מאושרים."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q1b",
+     "label": "ב",
+     "text": "כתבו את כל הערכים המאושרים, והסבירו מדוע הרשימה בסעיף הקודם אינה כל הפתרון.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "כתבו את כל הערכים המאושרים, והסבירו מדוע הרשימה בסעיף הקודם אינה כל הפתרון.",
+       "text": "הערך כתבו את כל הערכים המאושרים, והסבירו מדוע הרשימה בסעיף הקודם אינה כל הפתרון."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q1c",
+     "label": "ג",
+     "text": "שרטטו את קבוצת הפתרונות על ישר מספרים.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "שרטטו את קבוצת הפתרונות על ישר מספרים.",
+       "text": "הערך שרטטו את קבוצת הפתרונות על ישר מספרים."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q1d",
+     "label": "ד",
+     "text": "כפלו את שני אגפי התנאי המקורי במספר שלילי לבחירתכם, וכתבו תנאי שקול.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "כפלו את שני אגפי התנאי המקורי במספר שלילי לבחירתכם, וכתבו תנאי שקול.",
+       "text": "הערך כפלו את שני אגפי התנאי המקורי במספר שלילי לבחירתכם, וכתבו תנאי שקול."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q2",
+   "label": 2,
+   "text": "קבוצת מספרים מוצגת בשרטוט. קראו ממנו את הנתונים.",
+   "figure_id": "q2_head",
+   "given": [
+    {
+     "text": "קבוצת מספרים מוצגת בשרטוט. קראו ממנו את הנתונים."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "variables": [
+    "x",
+    "k",
+    "t",
+    "y"
+   ],
+   "items": [
+    {
+     "id": "q2a",
+     "label": "א",
+     "text": "תארו את הקבוצה במילים ובאי־שוויון.",
+     "figure_id": "q2_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "תארו את הקבוצה במילים ובאי־שוויון.",
+       "text": "הערך תארו את הקבוצה במילים ובאי־שוויון."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q2b",
+     "label": "ב",
+     "text": "תנו מספר שלם ומספר שאינו שלם מתוך הקבוצה.",
+     "figure_id": "q2_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "תנו מספר שלם ומספר שאינו שלם מתוך הקבוצה.",
+       "text": "הערך תנו מספר שלם ומספר שאינו שלם מתוך הקבוצה."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q2c",
+     "label": "ג",
+     "text": "טענה: כל מספר שלילי נמצא בקבוצה. הכריעו והביאו ראיה.",
+     "figure_id": "q2_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "טענה: כל מספר שלילי נמצא בקבוצה. הכריעו והביאו ראיה.",
+       "text": "הערך טענה: כל מספר שלילי נמצא בקבוצה. הכריעו והביאו ראיה."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q2d",
+     "label": "ד",
+     "text": "מה יש לשנות בשרטוט אם רוצים להוציא רק את נקודת הגבול?",
+     "figure_id": "q2_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "מה יש לשנות בשרטוט אם רוצים להוציא רק את נקודת הגבול?",
+       "text": "הערך מה יש לשנות בשרטוט אם רוצים להוציא רק את נקודת הגבול?"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q3",
+   "label": 3,
+   "text": "השוואה אחת היא $−3<2$. בצעו כל פעולה בשני אגפיה.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "השוואה אחת היא $−3<2$. בצעו כל פעולה בשני אגפיה."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "variables": [
+    "x",
+    "k",
+    "t",
+    "y"
+   ],
+   "items": [
+    {
+     "id": "q3a",
+     "label": "א",
+     "text": "הוסיפו $−5$ וכתבו השוואה נכונה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "הוסיפו וכתבו השוואה נכונה.",
+       "text": "הערך הוסיפו וכתבו השוואה נכונה."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q3b",
+     "label": "ב",
+     "text": "כפלו ב־$−4$ וכתבו השוואה נכונה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "כפלו ב־ וכתבו השוואה נכונה.",
+       "text": "הערך כפלו ב־ וכתבו השוואה נכונה."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q3c",
+     "label": "ג",
+     "text": "חלקו ב־$2$ וכתבו השוואה נכונה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "חלקו ב־ וכתבו השוואה נכונה.",
+       "text": "הערך חלקו ב־ וכתבו השוואה נכונה."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q3d",
+     "label": "ד",
+     "text": "הסבירו מדוע סימן שלילי שהוספנו אינו פועל כמו מספר שלילי שכפלנו בו.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "הסבירו מדוע סימן שלילי שהוספנו אינו פועל כמו מספר שלילי שכפלנו בו.",
+       "text": "הערך הסבירו מדוע סימן שלילי שהוספנו אינו פועל כמו מספר שלילי שכפלנו בו."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q4",
+   "label": 4,
+   "text": "בפתרון $11−3x\\leq −1$ נכתבו השורות $−3x\\leq −12$ ואז $x\\leq 4$.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "בפתרון $11−3x\\leq −1$ נכתבו השורות $−3x\\leq −12$ ואז $x\\leq 4$."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "variables": [
+    "x",
+    "k",
+    "t",
+    "y"
+   ],
+   "items": [
+    {
+     "id": "q4a",
+     "label": "א",
+     "text": "איזו שורה ראשונה אינה שקולה לקודמתה? נמקו.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "איזו שורה ראשונה אינה שקולה לקודמתה? נמקו.",
+       "text": "הערך איזו שורה ראשונה אינה שקולה לקודמתה? נמקו."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q4b",
+     "label": "ב",
+     "text": "תקנו את התוצאה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "תקנו את התוצאה.",
+       "text": "הערך תקנו את התוצאה."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q4c",
+     "label": "ג",
+     "text": "בחרו ערך שעובר את הבדיקה השגויה אך נכשל בתנאי המקורי, והציבו.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "בחרו ערך שעובר את הבדיקה השגויה אך נכשל בתנאי המקורי, והציבו.",
+       "text": "הערך בחרו ערך שעובר את הבדיקה השגויה אך נכשל בתנאי המקורי, והציבו."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q4d",
+     "label": "ד",
+     "text": "מדוע ערך הגבול לבדו אינו מבחין בין שתי התוצאות?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "מדוע ערך הגבול לבדו אינו מבחין בין שתי התוצאות?",
+       "text": "הערך מדוע ערך הגבול לבדו אינו מבחין בין שתי התוצאות?"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q5",
+   "label": 5,
+   "text": "מתכננים ערב לשמונה משתתפים, עם ערכה לכל משתתף. דמי הכנה הם $21$ ש״ח וכל ערכה עולה $7$ ש״ח. יש $80$ ש״ח, ומתוכם רוצים להשאיר לפחות $10$ ש״ח כרזרבה.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "מתכננים ערב לשמונה משתתפים, עם ערכה לכל משתתף. דמי הכנה הם $21$ ש״ח וכל ערכה עולה $7$ ש״ח. יש $80$ ש״ח, ומתוכם רוצים להשאיר לפחות $10$ ש״ח כרזרבה."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "variables": [
+    "x",
+    "k",
+    "t",
+    "y"
+   ],
+   "items": [
+    {
+     "id": "q5a",
+     "label": "א",
+     "text": "סמנו את מספר הערכות ב־$x$. כתבו גם מגבלת תקציב עם רזרבה וגם דרישה הנובעת ממספר המשתתפים.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "סמנו את מספר הערכות ב־. כתבו גם מגבלת תקציב עם רזרבה וגם דרישה הנובעת ממספר המשתתפים.",
+       "text": "הערך סמנו את מספר הערכות ב־. כתבו גם מגבלת תקציב עם רזרבה וגם דרישה הנובעת ממספר המשתתפים."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q5b",
+     "label": "ב",
+     "text": "פתרו את תנאי התקציב, והכריעו אם אפשר לעמוד בשתי הדרישות יחד.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "פתרו את תנאי התקציב, והכריעו אם אפשר לעמוד בשתי הדרישות יחד.",
+       "text": "הערך פתרו את תנאי התקציב, והכריעו אם אפשר לעמוד בשתי הדרישות יחד."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q5c",
+     "label": "ג",
+     "text": "כמה ערכות אפשר לרכוש לכל היותר תוך שמירת הרזרבה, ולכמה משתתפים תחסר ערכה?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "כמה ערכות אפשר לרכוש לכל היותר תוך שמירת הרזרבה, ולכמה משתתפים תחסר ערכה?",
+       "text": "הערך כמה ערכות אפשר לרכוש לכל היותר תוך שמירת הרזרבה, ולכמה משתתפים תחסר ערכה?"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q5d",
+     "label": "ד",
+     "text": "מה התקציב הקטן ביותר שיאפשר את הערב המתוכנן תוך שמירת הרזרבה?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "מה התקציב הקטן ביותר שיאפשר את הערב המתוכנן תוך שמירת הרזרבה?",
+       "text": "הערך מה התקציב הקטן ביותר שיאפשר את הערב המתוכנן תוך שמירת הרזרבה?"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q5e",
+     "label": "ה",
+     "text": "האם תוספת של $2$ ש״ח לתקציב המקורי פותרת את הבעיה? נמקו.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "האם תוספת של ש״ח לתקציב המקורי פותרת את הבעיה? נמקו.",
+       "text": "הערך האם תוספת של ש״ח לתקציב המקורי פותרת את הבעיה? נמקו."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q6",
+   "label": 6,
+   "text": "שתי בדיקות נראות שונות: $4(x−2)>12$ וכן $2x−3>7$.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "שתי בדיקות נראות שונות: $4(x−2)>12$ וכן $2x−3>7$."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "variables": [
+    "x",
+    "k",
+    "t",
+    "y"
+   ],
+   "items": [
+    {
+     "id": "q6a",
+     "label": "א",
+     "text": "פתרו את הבדיקה הראשונה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "פתרו את הבדיקה הראשונה.",
+       "text": "הערך פתרו את הבדיקה הראשונה."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q6b",
+     "label": "ב",
+     "text": "פתרו את הבדיקה השנייה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "פתרו את הבדיקה השנייה.",
+       "text": "הערך פתרו את הבדיקה השנייה."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q6c",
+     "label": "ג",
+     "text": "האם כל ערך שמקיים אחת מקיים גם את האחרת? נמקו בלי להסתפק בהצבות.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "האם כל ערך שמקיים אחת מקיים גם את האחרת? נמקו בלי להסתפק בהצבות.",
+       "text": "הערך האם כל ערך שמקיים אחת מקיים גם את האחרת? נמקו בלי להסתפק בהצבות."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q6d",
+     "label": "ד",
+     "text": "שנו רק את סימן הבדיקה השנייה כך שנקודת הגבול תיכלל, וכתבו את הקבוצה החדשה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "שנו רק את סימן הבדיקה השנייה כך שנקודת הגבול תיכלל, וכתבו את הקבוצה החדשה.",
+       "text": "הערך שנו רק את סימן הבדיקה השנייה כך שנקודת הגבול תיכלל, וכתבו את הקבוצה החדשה."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q7",
+   "label": 7,
+   "text": "מנת הניקוד היא $\\f{x−2}{3}$. הדרישה היא שהמנה תהיה גדולה מ־$−4$.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "מנת הניקוד היא $\\f{x−2}{3}$. הדרישה היא שהמנה תהיה גדולה מ־$−4$."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "variables": [
+    "x",
+    "k",
+    "t",
+    "y"
+   ],
+   "items": [
+    {
+     "id": "q7a",
+     "label": "א",
+     "text": "כתבו את אי־השוויון ופתרו אותו.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "כתבו את אי־השוויון ופתרו אותו.",
+       "text": "הערך כתבו את אי־השוויון ופתרו אותו."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q7b",
+     "label": "ב",
+     "text": "מה קרה לכיוון הסימן כאשר ביטלתם את המכנה? נמקו.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "מה קרה לכיוון הסימן כאשר ביטלתם את המכנה? נמקו.",
+       "text": "הערך מה קרה לכיוון הסימן כאשר ביטלתם את המכנה? נמקו."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q7c",
+     "label": "ג",
+     "text": "בחרו מספר שלם שאינו עומד בדרישה ובדקו אותו.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "בחרו מספר שלם שאינו עומד בדרישה ובדקו אותו.",
+       "text": "הערך בחרו מספר שלם שאינו עומד בדרישה ובדקו אותו."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q7d",
+     "label": "ד",
+     "text": "הפכו את הדרישה לקטנה או שווה, בלי לשנות את המנה. כתבו את הקבוצה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "הפכו את הדרישה לקטנה או שווה, בלי לשנות את המנה. כתבו את הקבוצה.",
+       "text": "הערך הפכו את הדרישה לקטנה או שווה, בלי לשנות את המנה. כתבו את הקבוצה."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q8",
+   "label": 8,
+   "text": "בתנאי $−2(x+4)<10$ יש סוגריים ומכפיל שלילי.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "בתנאי $−2(x+4)<10$ יש סוגריים ומכפיל שלילי."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "variables": [
+    "x",
+    "k",
+    "t",
+    "y"
+   ],
+   "items": [
+    {
+     "id": "q8a",
+     "label": "א",
+     "text": "פתרו באמצעות פילוג.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "פתרו באמצעות פילוג.",
+       "text": "הערך פתרו באמצעות פילוג."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q8b",
+     "label": "ב",
+     "text": "פתרו שוב, הפעם התחילו בחלוקה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "פתרו שוב, הפעם התחילו בחלוקה.",
+       "text": "הערך פתרו שוב, הפעם התחילו בחלוקה."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q8c",
+     "label": "ג",
+     "text": "הסבירו היכן מתהפך הסימן בכל דרך.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "הסבירו היכן מתהפך הסימן בכל דרך.",
+       "text": "הערך הסבירו היכן מתהפך הסימן בכל דרך."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q8d",
+     "label": "ד",
+     "text": "בחרו ערך פנימי, ערך חיצוני ואת הגבול, ובדקו כל אחד בתנאי המקורי. האם שלוש הבדיקות מוכיחות שקילות?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "בחרו ערך פנימי, ערך חיצוני ואת הגבול, ובדקו כל אחד בתנאי המקורי. האם שלוש הבדיקות מוכיחות שקילות?",
+       "text": "הערך בחרו ערך פנימי, ערך חיצוני ואת הגבול, ובדקו כל אחד בתנאי המקורי. האם שלוש הבדיקות מוכיחות שקילות?"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q9",
+   "label": 9,
+   "text": "שלט קבלה אומר: המספר גדול מ־$−6$ אך אינו חייב להיות שלם.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "שלט קבלה אומר: המספר גדול מ־$−6$ אך אינו חייב להיות שלם."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "variables": [
+    "x",
+    "k",
+    "t",
+    "y"
+   ],
+   "items": [
+    {
+     "id": "q9a",
+     "label": "א",
+     "text": "רשמו את התנאי בסימנים.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "רשמו את התנאי בסימנים.",
+       "text": "הערך רשמו את התנאי בסימנים."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q9b",
+     "label": "ב",
+     "text": "תנו שתי דוגמאות שאינן שלמות ומתאימות.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "תנו שתי דוגמאות שאינן שלמות ומתאימות.",
+       "text": "הערך תנו שתי דוגמאות שאינן שלמות ומתאימות."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q9c",
+     "label": "ג",
+     "text": "שרטטו את התנאי והסבירו כיצד נראה הגבול.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "שרטטו את התנאי והסבירו כיצד נראה הגבול.",
+       "text": "הערך שרטטו את התנאי והסבירו כיצד נראה הגבול."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q9d",
+     "label": "ד",
+     "text": "טענה: יש מספר קטן ביותר שמקיים את התנאי. הכריעו ונמקו.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "טענה: יש מספר קטן ביותר שמקיים את התנאי. הכריעו ונמקו.",
+       "text": "הערך טענה: יש מספר קטן ביותר שמקיים את התנאי. הכריעו ונמקו."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q10",
+   "label": 10,
+   "text": "בטבלה חסרים ייצוגים של אותן קבוצות.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "בטבלה חסרים ייצוגים של אותן קבוצות."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "variables": [
+    "x",
+    "k",
+    "t",
+    "y"
+   ],
+   "table": {
+    "head": [
+     "שורה",
+     "סימון",
+     "מילים"
+    ],
+    "rows": [
+     [
+      "א",
+      "$x\\geq 1$",
+      "___"
+     ],
+     [
+      "ב",
+      "___",
+      "מספרים הקטנים מ־$−4$"
+     ]
+    ]
+   },
+   "items": [
+    {
+     "id": "q10a",
+     "label": "א",
+     "text": "השלימו את התיאור המילולי בשורה א.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "השלימו את התיאור המילולי בשורה א.",
+       "text": "הערך השלימו את התיאור המילולי בשורה א."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q10b",
+     "label": "ב",
+     "text": "השלימו אי־שוויון בשורה ב.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "השלימו אי־שוויון בשורה ב.",
+       "text": "הערך השלימו אי־שוויון בשורה ב."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q10c",
+     "label": "ג",
+     "text": "ציירו ייצוג גרפי לכל שורה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "ציירו ייצוג גרפי לכל שורה.",
+       "text": "הערך ציירו ייצוג גרפי לכל שורה."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q10d",
+     "label": "ד",
+     "text": "האם יש מספר השייך לשתי הקבוצות? הסבירו.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "האם יש מספר השייך לשתי הקבוצות? הסבירו.",
+       "text": "הערך האם יש מספר השייך לשתי הקבוצות? הסבירו."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q11",
+   "label": 11,
+   "text": "לפני צמצום מתקבל $5x+6\\leq 2x−9$.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "לפני צמצום מתקבל $5x+6\\leq 2x−9$."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "variables": [
+    "x",
+    "k",
+    "t",
+    "y"
+   ],
+   "items": [
+    {
+     "id": "q11a",
+     "label": "א",
+     "text": "פתרו את אי־השוויון.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "פתרו את אי־השוויון.",
+       "text": "הערך פתרו את אי־השוויון."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q11b",
+     "label": "ב",
+     "text": "בחרו ערך מתאים וערך שאינו מתאים ובדקו במקור.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "בחרו ערך מתאים וערך שאינו מתאים ובדקו במקור.",
+       "text": "הערך בחרו ערך מתאים וערך שאינו מתאים ובדקו במקור."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q11c",
+     "label": "ג",
+     "text": "כתבו במילים מה פירוש התשובה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "כתבו במילים מה פירוש התשובה.",
+       "text": "הערך כתבו במילים מה פירוש התשובה."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q11d",
+     "label": "ד",
+     "text": "אילו מהשלבים בפתרון שומרים סדר, ומדוע?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "אילו מהשלבים בפתרון שומרים סדר, ומדוע?",
+       "text": "הערך אילו מהשלבים בפתרון שומרים סדר, ומדוע?"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q12",
+   "label": 12,
+   "text": "ציר נתון הוא הקלט למשימה הבאה.",
+   "figure_id": "q12_head",
+   "given": [
+    {
+     "text": "ציר נתון הוא הקלט למשימה הבאה."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "variables": [
+    "x",
+    "k",
+    "t",
+    "y"
+   ],
+   "items": [
+    {
+     "id": "q12a",
+     "label": "א",
+     "text": "כתבו תנאי בסימנים המתאים לציר.",
+     "figure_id": "q12_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "כתבו תנאי בסימנים המתאים לציר.",
+       "text": "הערך כתבו תנאי בסימנים המתאים לציר."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q12b",
+     "label": "ב",
+     "text": "תנו דוגמה של מספר מתאים שקטן מ־$2$.",
+     "figure_id": "q12_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "תנו דוגמה של מספר מתאים שקטן מ־.",
+       "text": "הערך תנו דוגמה של מספר מתאים שקטן מ־."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q12c",
+     "label": "ג",
+     "text": "בחרו מספר שאינו מופיע כשנתה בשרטוט והסבירו כיצד קובעים אם הוא בקבוצה.",
+     "figure_id": "q12_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "בחרו מספר שאינו מופיע כשנתה בשרטוט והסבירו כיצד קובעים אם הוא בקבוצה.",
+       "text": "הערך בחרו מספר שאינו מופיע כשנתה בשרטוט והסבירו כיצד קובעים אם הוא בקבוצה."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q12d",
+     "label": "ד",
+     "text": "שרטטו את קבוצת המספרים שאינם בקבוצה הנתונה.",
+     "figure_id": "q12_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "שרטטו את קבוצת המספרים שאינם בקבוצה הנתונה.",
+       "text": "הערך שרטטו את קבוצת המספרים שאינם בקבוצה הנתונה."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q13",
+   "label": 13,
+   "text": "הביטוי $8−\\f{x}{2}$ צריך להיות לפחות $11$.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "הביטוי $8−\\f{x}{2}$ צריך להיות לפחות $11$."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "variables": [
+    "x",
+    "k",
+    "t",
+    "y"
+   ],
+   "items": [
+    {
+     "id": "q13a",
+     "label": "א",
+     "text": "פתרו את התנאי.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "פתרו את התנאי.",
+       "text": "הערך פתרו את התנאי."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q13b",
+     "label": "ב",
+     "text": "הציעו דרך לבטל את המכנה לפני העברת איברים.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "הציעו דרך לבטל את המכנה לפני העברת איברים.",
+       "text": "הערך הציעו דרך לבטל את המכנה לפני העברת איברים."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q13c",
+     "label": "ג",
+     "text": "בחרו ערך מתאים, בדקו את המספר ההפוך בסימנו, ובדקו גם את הגבול בתנאי המקורי.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "בחרו ערך מתאים, בדקו את המספר ההפוך בסימנו, ובדקו גם את הגבול בתנאי המקורי.",
+       "text": "הערך בחרו ערך מתאים, בדקו את המספר ההפוך בסימנו, ובדקו גם את הגבול בתנאי המקורי."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q13d",
+     "label": "ד",
+     "text": "מה יקרה לסימן אם נכפול את התנאי המקורי ב־$−2$? כתבו את התנאי החדש.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "מה יקרה לסימן אם נכפול את התנאי המקורי ב־? כתבו את התנאי החדש.",
+       "text": "הערך מה יקרה לסימן אם נכפול את התנאי המקורי ב־? כתבו את התנאי החדש."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q14",
+   "label": 14,
+   "text": "בפתרון $3(x−4)\\geq 6$ נכתב בטעות $3x−4\\geq 6$.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "בפתרון $3(x−4)\\geq 6$ נכתב בטעות $3x−4\\geq 6$."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "variables": [
+    "x",
+    "k",
+    "t",
+    "y"
+   ],
+   "items": [
+    {
+     "id": "q14a",
+     "label": "א",
+     "text": "הסבירו מה חסר בפילוג.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "הסבירו מה חסר בפילוג.",
+       "text": "הערך הסבירו מה חסר בפילוג."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q14b",
+     "label": "ב",
+     "text": "פתרו גם את התנאי המקורי וגם את השורה השגויה, והשוו את הקבוצות.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "פתרו גם את התנאי המקורי וגם את השורה השגויה, והשוו את הקבוצות.",
+       "text": "הערך פתרו גם את התנאי המקורי וגם את השורה השגויה, והשוו את הקבוצות."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q14c",
+     "label": "ג",
+     "text": "הראו שהערך $4$ חושף את הטעות בעזרת בדיקתו בשתי השורות הראשונות.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "הראו שהערך חושף את הטעות בעזרת בדיקתו בשתי השורות הראשונות.",
+       "text": "הערך הראו שהערך חושף את הטעות בעזרת בדיקתו בשתי השורות הראשונות."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q14d",
+     "label": "ד",
+     "text": "כיצד הייתם בודקים פילוג לפני שממשיכים לפתור?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "כיצד הייתם בודקים פילוג לפני שממשיכים לפתור?",
+       "text": "הערך כיצד הייתם בודקים פילוג לפני שממשיכים לפתור?"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q15",
+   "label": 15,
+   "text": "שלושה תנאים מוצעים: $x+7>3$, $−x<4$, $2x>−8$.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "שלושה תנאים מוצעים: $x+7>3$, $−x<4$, $2x>−8$."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "variables": [
+    "x",
+    "k",
+    "t",
+    "y"
+   ],
+   "items": [
+    {
+     "id": "q15a",
+     "label": "א",
+     "text": "פתרו את התנאי הראשון.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "פתרו את התנאי הראשון.",
+       "text": "הערך פתרו את התנאי הראשון."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q15b",
+     "label": "ב",
+     "text": "פתרו את שני התנאים האחרים.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "פתרו את שני התנאים האחרים.",
+       "text": "הערך פתרו את שני התנאים האחרים."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q15c",
+     "label": "ג",
+     "text": "איזה תנאי מחייב היפוך סימן בעת בידוד הנעלם? נמקו.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "איזה תנאי מחייב היפוך סימן בעת בידוד הנעלם? נמקו.",
+       "text": "הערך איזה תנאי מחייב היפוך סימן בעת בידוד הנעלם? נמקו."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q15d",
+     "label": "ד",
+     "text": "האם בדיקה של $x=0$ בלבד הייתה מספיקה להוכיח שכולם מגדירים אותה קבוצה?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "האם בדיקה של בלבד הייתה מספיקה להוכיח שכולם מגדירים אותה קבוצה?",
+       "text": "הערך האם בדיקה של בלבד הייתה מספיקה להוכיח שכולם מגדירים אותה קבוצה?"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q16",
+   "label": 16,
+   "text": "גובה מדידה $x$ נדרש להיות קטן מ־$2.5$ יחידות אורך.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "גובה מדידה $x$ נדרש להיות קטן מ־$2.5$ יחידות אורך."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "variables": [
+    "x",
+    "k",
+    "t",
+    "y"
+   ],
+   "items": [
+    {
+     "id": "q16a",
+     "label": "א",
+     "text": "כתבו את התנאי המתמטי.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "כתבו את התנאי המתמטי.",
+       "text": "הערך כתבו את התנאי המתמטי."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q16b",
+     "label": "ב",
+     "text": "האם $2.49$ מתאים? והאם $2.5$ מתאים? נמקו.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "האם מתאים? והאם מתאים? נמקו.",
+       "text": "הערך האם מתאים? והאם מתאים? נמקו."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q16c",
+     "label": "ג",
+     "text": "שרטטו ישר מספרים עם שנתות של חצי יחידה וסמנו את הקבוצה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "שרטטו ישר מספרים עם שנתות של חצי יחידה וסמנו את הקבוצה.",
+       "text": "הערך שרטטו ישר מספרים עם שנתות של חצי יחידה וסמנו את הקבוצה."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q16d",
+     "label": "ד",
+     "text": "אם המדידה מתארת אורך ממשי, איזה אילוץ נוסף יש לציין?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "אם המדידה מתארת אורך ממשי, איזה אילוץ נוסף יש לציין?",
+       "text": "הערך אם המדידה מתארת אורך ממשי, איזה אילוץ נוסף יש לציין?"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q17",
+   "label": 17,
+   "text": "סיסמת כניסה מספרית היא מספר שלם. התנאי הוא $4−5x<19$.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "סיסמת כניסה מספרית היא מספר שלם. התנאי הוא $4−5x<19$."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "variables": [
+    "x",
+    "k",
+    "t",
+    "y"
+   ],
+   "items": [
+    {
+     "id": "q17a",
+     "label": "א",
+     "text": "פתרו מעל כל המספרים הממשיים.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "פתרו מעל כל המספרים הממשיים.",
+       "text": "הערך פתרו מעל כל המספרים הממשיים."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q17b",
+     "label": "ב",
+     "text": "מה המספר השלם הקטן ביותר המותר?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "מה המספר השלם הקטן ביותר המותר?",
+       "text": "הערך מה המספר השלם הקטן ביותר המותר?"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q17c",
+     "label": "ג",
+     "text": "האם יש מספר ממשי קטן ביותר בתחום? הסבירו את ההבדל מהתשובה הקודמת.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "האם יש מספר ממשי קטן ביותר בתחום? הסבירו את ההבדל מהתשובה הקודמת.",
+       "text": "הערך האם יש מספר ממשי קטן ביותר בתחום? הסבירו את ההבדל מהתשובה הקודמת."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q17d",
+     "label": "ד",
+     "text": "רשמו שלוש סיסמאות מותרות, שאחת מהן חיובית.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "רשמו שלוש סיסמאות מותרות, שאחת מהן חיובית.",
+       "text": "הערך רשמו שלוש סיסמאות מותרות, שאחת מהן חיובית."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q18",
+   "label": 18,
+   "text": "בכל טענה קבעו אם היא נכונה תמיד ונמקו או תנו דוגמה נגדית.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "בכל טענה קבעו אם היא נכונה תמיד ונמקו או תנו דוגמה נגדית."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "variables": [
+    "x",
+    "k",
+    "t",
+    "y"
+   ],
+   "items": [
+    {
+     "id": "q18a",
+     "label": "א",
+     "text": "הוספת אותו מספר שלילי לאגפי אי־שוויון מחייבת היפוך סימן.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "הוספת אותו מספר שלילי לאגפי אי־שוויון מחייבת היפוך סימן.",
+       "text": "הערך הוספת אותו מספר שלילי לאגפי אי־שוויון מחייבת היפוך סימן."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q18b",
+     "label": "ב",
+     "text": "אם מספר אינו פתרון, כל מספר קטן ממנו גם אינו פתרון.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "אם מספר אינו פתרון, כל מספר קטן ממנו גם אינו פתרון.",
+       "text": "הערך אם מספר אינו פתרון, כל מספר קטן ממנו גם אינו פתרון."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q18c",
+     "label": "ג",
+     "text": "אי־שוויון חזק יכול לכלול מספרים שאינם שלמים.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "אי־שוויון חזק יכול לכלול מספרים שאינם שלמים.",
+       "text": "הערך אי־שוויון חזק יכול לכלול מספרים שאינם שלמים."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q18d",
+     "label": "ד",
+     "text": "שינוי נקודה פתוחה למלאה מוסיף אינסוף מספרים.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "שינוי נקודה פתוחה למלאה מוסיף אינסוף מספרים.",
+       "text": "הערך שינוי נקודה פתוחה למלאה מוסיף אינסוף מספרים."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q19",
+   "label": 19,
+   "text": "נדרשת בדיקת קבלה ל־$2(3x−1)\\leq 4x+10$.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "נדרשת בדיקת קבלה ל־$2(3x−1)\\leq 4x+10$."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "variables": [
+    "x",
+    "k",
+    "t",
+    "y"
+   ],
+   "items": [
+    {
+     "id": "q19a",
+     "label": "א",
+     "text": "פתרו והציגו את שלב הפילוג.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "פתרו והציגו את שלב הפילוג.",
+       "text": "הערך פתרו והציגו את שלב הפילוג."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q19b",
+     "label": "ב",
+     "text": "האם גבול הקבוצה נכלל? נמקו מתוך הסימן ובדקו במקור.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "האם גבול הקבוצה נכלל? נמקו מתוך הסימן ובדקו במקור.",
+       "text": "הערך האם גבול הקבוצה נכלל? נמקו מתוך הסימן ובדקו במקור."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q19c",
+     "label": "ג",
+     "text": "תנו דוגמה נגדית לטענה שכל מספר חיובי מתקבל.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "תנו דוגמה נגדית לטענה שכל מספר חיובי מתקבל.",
+       "text": "הערך תנו דוגמה נגדית לטענה שכל מספר חיובי מתקבל."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q19d",
+     "label": "ד",
+     "text": "שרטטו את הקבוצה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "שרטטו את הקבוצה.",
+       "text": "הערך שרטטו את הקבוצה."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q20",
+   "label": 20,
+   "text": "משלוח ציוד עולה $13$ ש״ח ועוד $4$ ש״ח לכל קילוגרם. מחיר המשלוח צריך להיות פחות מ־$38$ ש״ח.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "משלוח ציוד עולה $13$ ש״ח ועוד $4$ ש״ח לכל קילוגרם. מחיר המשלוח צריך להיות פחות מ־$38$ ש״ח."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "variables": [
+    "x",
+    "k",
+    "t",
+    "y"
+   ],
+   "items": [
+    {
+     "id": "q20a",
+     "label": "א",
+     "text": "כתבו תנאי למשקל $x$ ופתרו.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "כתבו תנאי למשקל ופתרו.",
+       "text": "הערך כתבו תנאי למשקל ופתרו."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q20b",
+     "label": "ב",
+     "text": "האם משלוח שמשקלו $6$ ק״ג עומד בתנאי? חשבו.",
+     "figure_id": null,
+     "given": [
+      {
+       "text": "לבדיקה נבחר משלוח שמשקלו $6$ ק״ג."
+      }
+     ],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "האם משלוח שמשקלו ק״ג עומד בתנאי? חשבו.",
+       "text": "הערך האם משלוח שמשקלו ק״ג עומד בתנאי? חשבו."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q20c",
+     "label": "ג",
+     "text": "האם קיים משקל מרבי כאשר מותר כל משקל ממשי? נמקו.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "האם קיים משקל מרבי כאשר מותר כל משקל ממשי? נמקו.",
+       "text": "הערך האם קיים משקל מרבי כאשר מותר כל משקל ממשי? נמקו."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q20d",
+     "label": "ד",
+     "text": "אם שולחים רק ארגזים של קילוגרם שלם, כמה ארגזים אפשר לכל היותר?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "אם שולחים רק ארגזים של קילוגרם שלם, כמה ארגזים אפשר לכל היותר?",
+       "text": "הערך אם שולחים רק ארגזים של קילוגרם שלם, כמה ארגזים אפשר לכל היותר?"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q20e",
+     "label": "ה",
+     "text": "מה ההבדל בין משקל החבילה לבין מחיר המשלוח מבחינת היחידות?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "מה ההבדל בין משקל החבילה לבין מחיר המשלוח מבחינת היחידות?",
+       "text": "הערך מה ההבדל בין משקל החבילה לבין מחיר המשלוח מבחינת היחידות?"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  }
+ ],
+ "figures": [
+  {
+   "id": "q2_head",
+   "svg": "figures/q2_head.svg",
+   "question": "q2",
+   "view": {
+    "width_px": 419.8,
+    "height_px": 26.51,
+    "unit_px": 1.0,
+    "viewbox": [
+     419.8,
+     26.51
+    ],
+    "rotate": 0
+   },
+   "objects": {
+    "points": [
+     {
+      "svg_id": "pt-m2",
+      "kind": "point",
+      "role": "marker",
+      "name": "m2",
+      "svg_xy": [
+       210.61,
+       7.33
+      ]
+     }
+    ],
+    "segments": [
+     {
+      "svg_id": "seg-axis",
+      "kind": "segment",
+      "role": "data",
+      "name": "axis",
+      "svg_xy": [
+       [
+        12.1,
+        7.33
+       ],
+       [
+        409.13,
+        7.33
+       ]
+      ]
+     }
+    ],
+    "marks": [
+     {
+      "svg_id": "tick-k0",
+      "kind": "ticks",
+      "role": "data",
+      "name": "k0",
+      "svg_xy": [
+       [
+        19.1,
+        4.4
+       ],
+       [
+        19.1,
+        10.27
+       ]
+      ]
+     },
+     {
+      "svg_id": "tick-k1",
+      "kind": "ticks",
+      "role": "data",
+      "name": "k1",
+      "svg_xy": [
+       [
+        57.4,
+        4.4
+       ],
+       [
+        57.4,
+        10.27
+       ]
+      ]
+     },
+     {
+      "svg_id": "tick-k10",
+      "kind": "ticks",
+      "role": "data",
+      "name": "k10",
+      "svg_xy": [
+       [
+        402.13,
+        4.4
+       ],
+       [
+        402.13,
+        10.27
+       ]
+      ]
+     },
+     {
+      "svg_id": "tick-k2",
+      "kind": "ticks",
+      "role": "data",
+      "name": "k2",
+      "svg_xy": [
+       [
+        95.7,
+        4.4
+       ],
+       [
+        95.7,
+        10.27
+       ]
+      ]
+     },
+     {
+      "svg_id": "tick-k3",
+      "kind": "ticks",
+      "role": "data",
+      "name": "k3",
+      "svg_xy": [
+       [
+        134.01,
+        4.4
+       ],
+       [
+        134.01,
+        10.27
+       ]
+      ]
+     },
+     {
+      "svg_id": "tick-k4",
+      "kind": "ticks",
+      "role": "data",
+      "name": "k4",
+      "svg_xy": [
+       [
+        172.31,
+        4.4
+       ],
+       [
+        172.31,
+        10.27
+       ]
+      ]
+     },
+     {
+      "svg_id": "tick-k5",
+      "kind": "ticks",
+      "role": "data",
+      "name": "k5",
+      "svg_xy": [
+       [
+        210.61,
+        4.4
+       ],
+       [
+        210.61,
+        10.27
+       ]
+      ]
+     },
+     {
+      "svg_id": "tick-k6",
+      "kind": "ticks",
+      "role": "data",
+      "name": "k6",
+      "svg_xy": [
+       [
+        248.92,
+        4.4
+       ],
+       [
+        248.92,
+        10.27
+       ]
+      ]
+     },
+     {
+      "svg_id": "tick-k7",
+      "kind": "ticks",
+      "role": "data",
+      "name": "k7",
+      "svg_xy": [
+       [
+        287.22,
+        4.4
+       ],
+       [
+        287.22,
+        10.27
+       ]
+      ]
+     },
+     {
+      "svg_id": "tick-k8",
+      "kind": "ticks",
+      "role": "data",
+      "name": "k8",
+      "svg_xy": [
+       [
+        325.53,
+        4.4
+       ],
+       [
+        325.53,
+        10.27
+       ]
+      ]
+     },
+     {
+      "svg_id": "tick-k9",
+      "kind": "ticks",
+      "role": "data",
+      "name": "k9",
+      "svg_xy": [
+       [
+        363.83,
+        4.4
+       ],
+       [
+        363.83,
+        10.27
+       ]
+      ]
+     }
+    ],
+    "labels": [
+     {
+      "svg_id": "lbl-0",
+      "kind": "label",
+      "role": "data",
+      "name": "0",
+      "text": "0",
+      "for": "tick-k7",
+      "svg_xy": [
+       287.22,
+       19.95
+      ]
+     },
+     {
+      "svg_id": "lbl-1",
+      "kind": "label",
+      "role": "data",
+      "name": "1",
+      "text": "1",
+      "for": "tick-k8",
+      "svg_xy": [
+       325.53,
+       19.95
+      ]
+     },
+     {
+      "svg_id": "lbl-2",
+      "kind": "label",
+      "role": "data",
+      "name": "2",
+      "text": "2",
+      "for": "tick-k9",
+      "svg_xy": [
+       363.83,
+       19.95
+      ]
+     },
+     {
+      "svg_id": "lbl-3",
+      "kind": "label",
+      "role": "data",
+      "name": "3",
+      "text": "3",
+      "for": "tick-k10",
+      "svg_xy": [
+       402.13,
+       19.95
+      ]
+     },
+     {
+      "svg_id": "lbl-m1",
+      "kind": "label",
+      "role": "data",
+      "name": "m1",
+      "text": "−1",
+      "for": "tick-k6",
+      "svg_xy": [
+       248.92,
+       19.95
+      ]
+     },
+     {
+      "svg_id": "lbl-m2",
+      "kind": "label",
+      "role": "data",
+      "name": "m2",
+      "text": "−2",
+      "for": "tick-k5",
+      "svg_xy": [
+       210.61,
+       19.95
+      ]
+     },
+     {
+      "svg_id": "lbl-m3",
+      "kind": "label",
+      "role": "data",
+      "name": "m3",
+      "text": "−3",
+      "for": "tick-k4",
+      "svg_xy": [
+       172.31,
+       19.95
+      ]
+     },
+     {
+      "svg_id": "lbl-m4",
+      "kind": "label",
+      "role": "data",
+      "name": "m4",
+      "text": "−4",
+      "for": "tick-k3",
+      "svg_xy": [
+       134.01,
+       19.95
+      ]
+     },
+     {
+      "svg_id": "lbl-m5",
+      "kind": "label",
+      "role": "data",
+      "name": "m5",
+      "text": "−5",
+      "for": "tick-k2",
+      "svg_xy": [
+       95.7,
+       19.95
+      ]
+     },
+     {
+      "svg_id": "lbl-m6",
+      "kind": "label",
+      "role": "data",
+      "name": "m6",
+      "text": "−6",
+      "for": "tick-k1",
+      "svg_xy": [
+       57.4,
+       19.95
+      ]
+     },
+     {
+      "svg_id": "lbl-m7",
+      "kind": "label",
+      "role": "data",
+      "name": "m7",
+      "text": "−7",
+      "for": "tick-k0",
+      "svg_xy": [
+       19.1,
+       19.95
+      ]
+     }
+    ]
+   },
+   "constraints": [],
+   "visual_model": {
+    "schema_version": "visual-model/v1",
+    "id": "q2_head",
+    "kind": "number_line",
+    "visual_support": "full",
+    "question": "q2",
+    "svg": "figures/q2_head.svg",
+    "view": {
+     "viewbox": [
+      419.8,
+      26.51
+     ],
+     "rotate": 0
+    },
+    "objects": [
+     {
+      "id": "seg-axis",
+      "svg_id": "seg-axis",
+      "type": "segment",
+      "part": "data",
+      "name": "axis",
+      "svg_xy": [
+       [
+        12.1,
+        7.33
+       ],
+       [
+        409.13,
+        7.33
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "tick-k0",
+      "svg_id": "tick-k0",
+      "type": "ticks",
+      "part": "data",
+      "name": "k0",
+      "svg_xy": [
+       [
+        19.1,
+        4.4
+       ],
+       [
+        19.1,
+        10.27
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "tick-k1",
+      "svg_id": "tick-k1",
+      "type": "ticks",
+      "part": "data",
+      "name": "k1",
+      "svg_xy": [
+       [
+        57.4,
+        4.4
+       ],
+       [
+        57.4,
+        10.27
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "tick-k10",
+      "svg_id": "tick-k10",
+      "type": "ticks",
+      "part": "data",
+      "name": "k10",
+      "svg_xy": [
+       [
+        402.13,
+        4.4
+       ],
+       [
+        402.13,
+        10.27
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "tick-k2",
+      "svg_id": "tick-k2",
+      "type": "ticks",
+      "part": "data",
+      "name": "k2",
+      "svg_xy": [
+       [
+        95.7,
+        4.4
+       ],
+       [
+        95.7,
+        10.27
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "tick-k3",
+      "svg_id": "tick-k3",
+      "type": "ticks",
+      "part": "data",
+      "name": "k3",
+      "svg_xy": [
+       [
+        134.01,
+        4.4
+       ],
+       [
+        134.01,
+        10.27
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "tick-k4",
+      "svg_id": "tick-k4",
+      "type": "ticks",
+      "part": "data",
+      "name": "k4",
+      "svg_xy": [
+       [
+        172.31,
+        4.4
+       ],
+       [
+        172.31,
+        10.27
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "tick-k5",
+      "svg_id": "tick-k5",
+      "type": "ticks",
+      "part": "data",
+      "name": "k5",
+      "svg_xy": [
+       [
+        210.61,
+        4.4
+       ],
+       [
+        210.61,
+        10.27
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "tick-k6",
+      "svg_id": "tick-k6",
+      "type": "ticks",
+      "part": "data",
+      "name": "k6",
+      "svg_xy": [
+       [
+        248.92,
+        4.4
+       ],
+       [
+        248.92,
+        10.27
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "tick-k7",
+      "svg_id": "tick-k7",
+      "type": "ticks",
+      "part": "data",
+      "name": "k7",
+      "svg_xy": [
+       [
+        287.22,
+        4.4
+       ],
+       [
+        287.22,
+        10.27
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "tick-k8",
+      "svg_id": "tick-k8",
+      "type": "ticks",
+      "part": "data",
+      "name": "k8",
+      "svg_xy": [
+       [
+        325.53,
+        4.4
+       ],
+       [
+        325.53,
+        10.27
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "tick-k9",
+      "svg_id": "tick-k9",
+      "type": "ticks",
+      "part": "data",
+      "name": "k9",
+      "svg_xy": [
+       [
+        363.83,
+        4.4
+       ],
+       [
+        363.83,
+        10.27
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-0",
+      "svg_id": "lbl-0",
+      "type": "label",
+      "part": "data",
+      "name": "0",
+      "text": "0",
+      "svg_xy": [
+       287.22,
+       19.95
+      ],
+      "for": "tick-k7",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-1",
+      "svg_id": "lbl-1",
+      "type": "label",
+      "part": "data",
+      "name": "1",
+      "text": "1",
+      "svg_xy": [
+       325.53,
+       19.95
+      ],
+      "for": "tick-k8",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-2",
+      "svg_id": "lbl-2",
+      "type": "label",
+      "part": "data",
+      "name": "2",
+      "text": "2",
+      "svg_xy": [
+       363.83,
+       19.95
+      ],
+      "for": "tick-k9",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-3",
+      "svg_id": "lbl-3",
+      "type": "label",
+      "part": "data",
+      "name": "3",
+      "text": "3",
+      "svg_xy": [
+       402.13,
+       19.95
+      ],
+      "for": "tick-k10",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-m1",
+      "svg_id": "lbl-m1",
+      "type": "label",
+      "part": "data",
+      "name": "m1",
+      "text": "−1",
+      "svg_xy": [
+       248.92,
+       19.95
+      ],
+      "for": "tick-k6",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-m2",
+      "svg_id": "lbl-m2",
+      "type": "label",
+      "part": "data",
+      "name": "m2",
+      "text": "−2",
+      "svg_xy": [
+       210.61,
+       19.95
+      ],
+      "for": "tick-k5",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-m3",
+      "svg_id": "lbl-m3",
+      "type": "label",
+      "part": "data",
+      "name": "m3",
+      "text": "−3",
+      "svg_xy": [
+       172.31,
+       19.95
+      ],
+      "for": "tick-k4",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-m4",
+      "svg_id": "lbl-m4",
+      "type": "label",
+      "part": "data",
+      "name": "m4",
+      "text": "−4",
+      "svg_xy": [
+       134.01,
+       19.95
+      ],
+      "for": "tick-k3",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-m5",
+      "svg_id": "lbl-m5",
+      "type": "label",
+      "part": "data",
+      "name": "m5",
+      "text": "−5",
+      "svg_xy": [
+       95.7,
+       19.95
+      ],
+      "for": "tick-k2",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-m6",
+      "svg_id": "lbl-m6",
+      "type": "label",
+      "part": "data",
+      "name": "m6",
+      "text": "−6",
+      "svg_xy": [
+       57.4,
+       19.95
+      ],
+      "for": "tick-k1",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-m7",
+      "svg_id": "lbl-m7",
+      "type": "label",
+      "part": "data",
+      "name": "m7",
+      "text": "−7",
+      "svg_xy": [
+       19.1,
+       19.95
+      ],
+      "for": "tick-k0",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "pt-m2",
+      "svg_id": "pt-m2",
+      "type": "point",
+      "part": "marker",
+      "name": "m2",
+      "svg_xy": [
+       210.61,
+       7.33
+      ],
+      "role": "context",
+      "display": "initial"
+     }
+    ],
+    "relations": [
+     {
+      "id": "r-statement",
+      "type": "statement",
+      "role": "given",
+      "text": "קבוצת מספרים מוצגת בשרטוט. קראו ממנו את הנתונים.",
+      "objects": []
+     },
+     {
+      "id": "r-find",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q2a",
+      "quantity": "value",
+      "what": "תארו את הקבוצה במילים ובאי־שוויון.",
+      "text": "הערך תארו את הקבוצה במילים ובאי־שוויון.",
+      "objects": []
+     },
+     {
+      "id": "r-find-2",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q2b",
+      "quantity": "value",
+      "what": "תנו מספר שלם ומספר שאינו שלם מתוך הקבוצה.",
+      "text": "הערך תנו מספר שלם ומספר שאינו שלם מתוך הקבוצה.",
+      "objects": []
+     },
+     {
+      "id": "r-find-3",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q2c",
+      "quantity": "value",
+      "what": "טענה: כל מספר שלילי נמצא בקבוצה. הכריעו והביאו ראיה.",
+      "text": "הערך טענה: כל מספר שלילי נמצא בקבוצה. הכריעו והביאו ראיה.",
+      "objects": []
+     },
+     {
+      "id": "r-find-4",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q2d",
+      "quantity": "value",
+      "what": "מה יש לשנות בשרטוט אם רוצים להוציא רק את נקודת הגבול?",
+      "text": "הערך מה יש לשנות בשרטוט אם רוצים להוציא רק את נקודת הגבול?",
+      "objects": []
+     }
+    ],
+    "highlight_given": [],
+    "aux": [],
+    "actions": {
+     "allowed": [
+      "show",
+      "highlight",
+      "show_aux"
+     ],
+     "show": [
+      "q2_head"
+     ],
+     "highlight": [],
+     "show_aux": []
+    }
+   }
+  },
+  {
+   "id": "q12_head",
+   "svg": "figures/q12_head.svg",
+   "question": "q12",
+   "view": {
+    "width_px": 419.8,
+    "height_px": 26.51,
+    "unit_px": 1.0,
+    "viewbox": [
+     419.8,
+     26.51
+    ],
+    "rotate": 0
+   },
+   "objects": {
+    "points": [
+     {
+      "svg_id": "pt-1",
+      "kind": "point",
+      "role": "marker",
+      "name": "1",
+      "svg_xy": [
+       184.5,
+       7.33
+      ]
+     }
+    ],
+    "segments": [
+     {
+      "svg_id": "seg-axis",
+      "kind": "segment",
+      "role": "data",
+      "name": "axis",
+      "svg_xy": [
+       [
+        4.53,
+        7.33
+       ],
+       [
+        407.7,
+        7.33
+       ]
+      ]
+     }
+    ],
+    "marks": [
+     {
+      "svg_id": "tick-k0",
+      "kind": "ticks",
+      "role": "data",
+      "name": "k0",
+      "svg_xy": [
+       [
+        11.53,
+        4.4
+       ],
+       [
+        11.53,
+        10.27
+       ]
+      ]
+     },
+     {
+      "svg_id": "tick-k1",
+      "kind": "ticks",
+      "role": "data",
+      "name": "k1",
+      "svg_xy": [
+       [
+        54.77,
+        4.4
+       ],
+       [
+        54.77,
+        10.27
+       ]
+      ]
+     },
+     {
+      "svg_id": "tick-k2",
+      "kind": "ticks",
+      "role": "data",
+      "name": "k2",
+      "svg_xy": [
+       [
+        98.02,
+        4.4
+       ],
+       [
+        98.02,
+        10.27
+       ]
+      ]
+     },
+     {
+      "svg_id": "tick-k3",
+      "kind": "ticks",
+      "role": "data",
+      "name": "k3",
+      "svg_xy": [
+       [
+        141.26,
+        4.4
+       ],
+       [
+        141.26,
+        10.27
+       ]
+      ]
+     },
+     {
+      "svg_id": "tick-k4",
+      "kind": "ticks",
+      "role": "data",
+      "name": "k4",
+      "svg_xy": [
+       [
+        184.5,
+        4.4
+       ],
+       [
+        184.5,
+        10.27
+       ]
+      ]
+     },
+     {
+      "svg_id": "tick-k5",
+      "kind": "ticks",
+      "role": "data",
+      "name": "k5",
+      "svg_xy": [
+       [
+        227.74,
+        4.4
+       ],
+       [
+        227.74,
+        10.27
+       ]
+      ]
+     },
+     {
+      "svg_id": "tick-k6",
+      "kind": "ticks",
+      "role": "data",
+      "name": "k6",
+      "svg_xy": [
+       [
+        270.98,
+        4.4
+       ],
+       [
+        270.98,
+        10.27
+       ]
+      ]
+     },
+     {
+      "svg_id": "tick-k7",
+      "kind": "ticks",
+      "role": "data",
+      "name": "k7",
+      "svg_xy": [
+       [
+        314.22,
+        4.4
+       ],
+       [
+        314.22,
+        10.27
+       ]
+      ]
+     },
+     {
+      "svg_id": "tick-k8",
+      "kind": "ticks",
+      "role": "data",
+      "name": "k8",
+      "svg_xy": [
+       [
+        357.46,
+        4.4
+       ],
+       [
+        357.46,
+        10.27
+       ]
+      ]
+     },
+     {
+      "svg_id": "tick-k9",
+      "kind": "ticks",
+      "role": "data",
+      "name": "k9",
+      "svg_xy": [
+       [
+        400.7,
+        4.4
+       ],
+       [
+        400.7,
+        10.27
+       ]
+      ]
+     }
+    ],
+    "labels": [
+     {
+      "svg_id": "lbl-0",
+      "kind": "label",
+      "role": "data",
+      "name": "0",
+      "text": "0",
+      "for": "tick-k3",
+      "svg_xy": [
+       141.26,
+       19.95
+      ]
+     },
+     {
+      "svg_id": "lbl-1",
+      "kind": "label",
+      "role": "data",
+      "name": "1",
+      "text": "1",
+      "for": "tick-k4",
+      "svg_xy": [
+       184.5,
+       19.95
+      ]
+     },
+     {
+      "svg_id": "lbl-2",
+      "kind": "label",
+      "role": "data",
+      "name": "2",
+      "text": "2",
+      "for": "tick-k5",
+      "svg_xy": [
+       227.74,
+       19.95
+      ]
+     },
+     {
+      "svg_id": "lbl-3",
+      "kind": "label",
+      "role": "data",
+      "name": "3",
+      "text": "3",
+      "for": "tick-k6",
+      "svg_xy": [
+       270.98,
+       19.95
+      ]
+     },
+     {
+      "svg_id": "lbl-4",
+      "kind": "label",
+      "role": "data",
+      "name": "4",
+      "text": "4",
+      "for": "tick-k7",
+      "svg_xy": [
+       314.22,
+       19.95
+      ]
+     },
+     {
+      "svg_id": "lbl-5",
+      "kind": "label",
+      "role": "data",
+      "name": "5",
+      "text": "5",
+      "for": "tick-k8",
+      "svg_xy": [
+       357.46,
+       19.95
+      ]
+     },
+     {
+      "svg_id": "lbl-6",
+      "kind": "label",
+      "role": "data",
+      "name": "6",
+      "text": "6",
+      "for": "tick-k9",
+      "svg_xy": [
+       400.7,
+       19.95
+      ]
+     },
+     {
+      "svg_id": "lbl-m1",
+      "kind": "label",
+      "role": "data",
+      "name": "m1",
+      "text": "−1",
+      "for": "tick-k2",
+      "svg_xy": [
+       98.02,
+       19.95
+      ]
+     },
+     {
+      "svg_id": "lbl-m2",
+      "kind": "label",
+      "role": "data",
+      "name": "m2",
+      "text": "−2",
+      "for": "tick-k1",
+      "svg_xy": [
+       54.77,
+       19.95
+      ]
+     },
+     {
+      "svg_id": "lbl-m3",
+      "kind": "label",
+      "role": "data",
+      "name": "m3",
+      "text": "−3",
+      "for": "tick-k0",
+      "svg_xy": [
+       11.53,
+       19.95
+      ]
+     }
+    ]
+   },
+   "constraints": [],
+   "visual_model": {
+    "schema_version": "visual-model/v1",
+    "id": "q12_head",
+    "kind": "number_line",
+    "visual_support": "full",
+    "question": "q12",
+    "svg": "figures/q12_head.svg",
+    "view": {
+     "viewbox": [
+      419.8,
+      26.51
+     ],
+     "rotate": 0
+    },
+    "objects": [
+     {
+      "id": "seg-axis",
+      "svg_id": "seg-axis",
+      "type": "segment",
+      "part": "data",
+      "name": "axis",
+      "svg_xy": [
+       [
+        4.53,
+        7.33
+       ],
+       [
+        407.7,
+        7.33
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "tick-k0",
+      "svg_id": "tick-k0",
+      "type": "ticks",
+      "part": "data",
+      "name": "k0",
+      "svg_xy": [
+       [
+        11.53,
+        4.4
+       ],
+       [
+        11.53,
+        10.27
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "tick-k1",
+      "svg_id": "tick-k1",
+      "type": "ticks",
+      "part": "data",
+      "name": "k1",
+      "svg_xy": [
+       [
+        54.77,
+        4.4
+       ],
+       [
+        54.77,
+        10.27
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "tick-k2",
+      "svg_id": "tick-k2",
+      "type": "ticks",
+      "part": "data",
+      "name": "k2",
+      "svg_xy": [
+       [
+        98.02,
+        4.4
+       ],
+       [
+        98.02,
+        10.27
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "tick-k3",
+      "svg_id": "tick-k3",
+      "type": "ticks",
+      "part": "data",
+      "name": "k3",
+      "svg_xy": [
+       [
+        141.26,
+        4.4
+       ],
+       [
+        141.26,
+        10.27
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "tick-k4",
+      "svg_id": "tick-k4",
+      "type": "ticks",
+      "part": "data",
+      "name": "k4",
+      "svg_xy": [
+       [
+        184.5,
+        4.4
+       ],
+       [
+        184.5,
+        10.27
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "tick-k5",
+      "svg_id": "tick-k5",
+      "type": "ticks",
+      "part": "data",
+      "name": "k5",
+      "svg_xy": [
+       [
+        227.74,
+        4.4
+       ],
+       [
+        227.74,
+        10.27
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "tick-k6",
+      "svg_id": "tick-k6",
+      "type": "ticks",
+      "part": "data",
+      "name": "k6",
+      "svg_xy": [
+       [
+        270.98,
+        4.4
+       ],
+       [
+        270.98,
+        10.27
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "tick-k7",
+      "svg_id": "tick-k7",
+      "type": "ticks",
+      "part": "data",
+      "name": "k7",
+      "svg_xy": [
+       [
+        314.22,
+        4.4
+       ],
+       [
+        314.22,
+        10.27
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "tick-k8",
+      "svg_id": "tick-k8",
+      "type": "ticks",
+      "part": "data",
+      "name": "k8",
+      "svg_xy": [
+       [
+        357.46,
+        4.4
+       ],
+       [
+        357.46,
+        10.27
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "tick-k9",
+      "svg_id": "tick-k9",
+      "type": "ticks",
+      "part": "data",
+      "name": "k9",
+      "svg_xy": [
+       [
+        400.7,
+        4.4
+       ],
+       [
+        400.7,
+        10.27
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-0",
+      "svg_id": "lbl-0",
+      "type": "label",
+      "part": "data",
+      "name": "0",
+      "text": "0",
+      "svg_xy": [
+       141.26,
+       19.95
+      ],
+      "for": "tick-k3",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-1",
+      "svg_id": "lbl-1",
+      "type": "label",
+      "part": "data",
+      "name": "1",
+      "text": "1",
+      "svg_xy": [
+       184.5,
+       19.95
+      ],
+      "for": "tick-k4",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-2",
+      "svg_id": "lbl-2",
+      "type": "label",
+      "part": "data",
+      "name": "2",
+      "text": "2",
+      "svg_xy": [
+       227.74,
+       19.95
+      ],
+      "for": "tick-k5",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-3",
+      "svg_id": "lbl-3",
+      "type": "label",
+      "part": "data",
+      "name": "3",
+      "text": "3",
+      "svg_xy": [
+       270.98,
+       19.95
+      ],
+      "for": "tick-k6",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-4",
+      "svg_id": "lbl-4",
+      "type": "label",
+      "part": "data",
+      "name": "4",
+      "text": "4",
+      "svg_xy": [
+       314.22,
+       19.95
+      ],
+      "for": "tick-k7",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-5",
+      "svg_id": "lbl-5",
+      "type": "label",
+      "part": "data",
+      "name": "5",
+      "text": "5",
+      "svg_xy": [
+       357.46,
+       19.95
+      ],
+      "for": "tick-k8",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-6",
+      "svg_id": "lbl-6",
+      "type": "label",
+      "part": "data",
+      "name": "6",
+      "text": "6",
+      "svg_xy": [
+       400.7,
+       19.95
+      ],
+      "for": "tick-k9",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-m1",
+      "svg_id": "lbl-m1",
+      "type": "label",
+      "part": "data",
+      "name": "m1",
+      "text": "−1",
+      "svg_xy": [
+       98.02,
+       19.95
+      ],
+      "for": "tick-k2",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-m2",
+      "svg_id": "lbl-m2",
+      "type": "label",
+      "part": "data",
+      "name": "m2",
+      "text": "−2",
+      "svg_xy": [
+       54.77,
+       19.95
+      ],
+      "for": "tick-k1",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-m3",
+      "svg_id": "lbl-m3",
+      "type": "label",
+      "part": "data",
+      "name": "m3",
+      "text": "−3",
+      "svg_xy": [
+       11.53,
+       19.95
+      ],
+      "for": "tick-k0",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "pt-1",
+      "svg_id": "pt-1",
+      "type": "point",
+      "part": "marker",
+      "name": "1",
+      "svg_xy": [
+       184.5,
+       7.33
+      ],
+      "role": "context",
+      "display": "initial"
+     }
+    ],
+    "relations": [
+     {
+      "id": "r-statement",
+      "type": "statement",
+      "role": "given",
+      "text": "ציר נתון הוא הקלט למשימה הבאה.",
+      "objects": []
+     },
+     {
+      "id": "r-find",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q12a",
+      "quantity": "value",
+      "what": "כתבו תנאי בסימנים המתאים לציר.",
+      "text": "הערך כתבו תנאי בסימנים המתאים לציר.",
+      "objects": []
+     },
+     {
+      "id": "r-find-2",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q12b",
+      "quantity": "value",
+      "what": "תנו דוגמה של מספר מתאים שקטן מ־.",
+      "text": "הערך תנו דוגמה של מספר מתאים שקטן מ־.",
+      "objects": []
+     },
+     {
+      "id": "r-find-3",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q12c",
+      "quantity": "value",
+      "what": "בחרו מספר שאינו מופיע כשנתה בשרטוט והסבירו כיצד קובעים אם הוא בקבוצה.",
+      "text": "הערך בחרו מספר שאינו מופיע כשנתה בשרטוט והסבירו כיצד קובעים אם הוא בקבוצה.",
+      "objects": []
+     },
+     {
+      "id": "r-find-4",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q12d",
+      "quantity": "value",
+      "what": "שרטטו את קבוצת המספרים שאינם בקבוצה הנתונה.",
+      "text": "הערך שרטטו את קבוצת המספרים שאינם בקבוצה הנתונה.",
+      "objects": []
+     }
+    ],
+    "highlight_given": [],
+    "aux": [],
+    "actions": {
+     "allowed": [
+      "show",
+      "highlight",
+      "show_aux"
+     ],
+     "show": [
+      "q12_head"
+     ],
+     "highlight": [],
+     "show_aux": []
+    }
+   }
+  }
+ ],
+ "visuals": [
+  {
+   "schema_version": "visual-model/v1",
+   "id": "q10_table",
+   "kind": "table",
+   "visual_support": "partial",
+   "question": "q10",
+   "objects": [
+    {
+     "id": "q10_table-r1c1",
+     "type": "cell",
+     "row": 1,
+     "col": 1,
+     "value": "שורה",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q10_table-r1c2",
+     "type": "cell",
+     "row": 1,
+     "col": 2,
+     "value": "סימון",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q10_table-r1c3",
+     "type": "cell",
+     "row": 1,
+     "col": 3,
+     "value": "מילים",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q10_table-r2c1",
+     "type": "cell",
+     "row": 2,
+     "col": 1,
+     "value": "א",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q10_table-r2c2",
+     "type": "cell",
+     "row": 2,
+     "col": 2,
+     "value": "$x\\geq 1$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q10_table-r2c3",
+     "type": "cell",
+     "row": 2,
+     "col": 3,
+     "value": "___",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q10_table-r3c1",
+     "type": "cell",
+     "row": 3,
+     "col": 1,
+     "value": "ב",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q10_table-r3c2",
+     "type": "cell",
+     "row": 3,
+     "col": 2,
+     "value": "___",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q10_table-r3c3",
+     "type": "cell",
+     "row": 3,
+     "col": 3,
+     "value": "מספרים הקטנים מ־$−4$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    }
+   ],
+   "relations": [],
+   "highlight_given": [],
+   "aux": [],
+   "actions": {
+    "allowed": [
+     "show",
+     "highlight",
+     "show_aux"
+    ],
+    "show": [
+     "q10_table"
+    ],
+    "highlight": [],
+    "show_aux": []
+   },
+   "svg": null
+  }
+ ]
+}

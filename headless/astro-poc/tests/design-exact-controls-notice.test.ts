@@ -149,8 +149,9 @@ describe('protected math sources stay pinned after the L01 removal', () => {
   // Moved again so kite ticks follow each side and the pause button waits for JS.
   // Moved again so the kite card plays the area film, then the construction.
   // Moved again so the card title follows whichever film is playing.
+  // Brave motion opt-in inside the film (sitePrefersReducedMotion). Not a design regen.
   const expected = {
-    'src/components/ConceptLoop.astro': 'd0b71bb4153302694c5ba797bce046d7290999c9e923ab4663c60cb58cb54246',
+    'src/components/ConceptLoop.astro': 'c7eb6b250a46f3986186b5e113ab4e29a51dc5c17eefcd49f6dcade0ab367be4',
     'src/lib/conceptLoops.ts': 'e60dda4e84009904e23c44bbece637ee96ff17dfdb6a5525c8178d8eec2c54cd',
   };
   for (const [file, digest] of Object.entries(expected)) {
