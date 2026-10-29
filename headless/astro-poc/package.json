@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "wix dev",
-    "prebuild": "tsx scripts/build-site-guide.ts",
+    "prebuild": "tsx scripts/build-site-guide.ts && node scripts/bundle-native-svg.mjs generate",
     "build": "wix build",
     "check:site-guide": "tsx scripts/build-site-guide.ts --check",
     "preview": "wix preview",
@@ -36,7 +36,9 @@
     "release": "wix release",
     "generate": "wix generate",
     "env": "wix env",
-    "skills": "wix skills"
+    "skills": "wix skills",
+    "postbuild": "node scripts/bundle-native-svg.mjs finalize",
+    "predev": "node scripts/bundle-native-svg.mjs generate"
   },
   "dependencies": {
     "@astrojs/node": "^9.5.5",
