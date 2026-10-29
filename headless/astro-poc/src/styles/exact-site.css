@@ -174,7 +174,7 @@ html.noam-a11y-motion .exact-home h1[data-lcp] {
    Narrow screens keep the same link under the subtitle, in normal flow. */
 .exact-hero {
   --hero-gap: 28px;
-  --hero-teachers: 214px;
+  --hero-teachers: 252px;
   position: relative;
   max-width: 1200px;
   margin-inline: auto;
@@ -201,25 +201,45 @@ html.noam-a11y-motion .exact-home h1[data-lcp] {
   gap: 8px;
   box-sizing: border-box;
   width: min(100%, var(--hero-teachers));
-  padding: 16px 16px 14px;
+  padding: 14px 16px 16px;
   background: #fff;
   color: #22305a;
-  border: 2px solid #22305a;
+  border: 3px solid #22305a;
   border-radius: 18px 6px 20px 8px / 8px 20px 6px 18px;
-  box-shadow: 4px 4px 0 #e6a534;
+  box-shadow: 5px 5px 0 #2a7c7a, 10px 10px 0 #e6a534;
   text-align: start;
   text-decoration: none;
+  scroll-margin-top: 140px;
   transition: transform .2s ease, box-shadow .2s ease;
 }
-.exact-hero-teachers__mark { display: block; width: 42px; height: 42px; }
+.exact-hero-teachers__ribbon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  align-self: stretch;
+  margin-block-end: 2px;
+  padding: 6px 10px 7px;
+  background: #e6a534;
+  color: #22305a;
+  font: 800 16px/1.25 Heebo, 'Heebo Fallback', sans-serif;
+  text-align: center;
+  border: 2px solid #22305a;
+  border-radius: 10px 4px 12px 6px;
+  box-shadow: 3px 3px 0 #a84434;
+  transform: rotate(-1.25deg);
+  transform-origin: center;
+}
+.exact-hero-teachers__star { display: block; flex: none; width: 18px; height: 18px; }
+.exact-hero-teachers__mark { display: block; width: 46px; height: 46px; }
 .exact-hero-teachers__kicker {
-  font: 700 13px/1.35 Heebo, 'Heebo Fallback', sans-serif;
+  font: 700 14px/1.35 Heebo, 'Heebo Fallback', sans-serif;
   color: #1f6462;
 }
 .exact-hero-teachers__lead {
   font-family: 'Secular One', 'Secular One Fallback', sans-serif;
   font-weight: 400;
-  font-size: 24px;
+  font-size: 26px;
   line-height: 1.15;
   color: #22305a;
   text-wrap: balance;
@@ -228,33 +248,33 @@ html.noam-a11y-motion .exact-home h1[data-lcp] {
   display: inline-flex;
   align-items: center;
   margin-block-start: 2px;
-  padding: 7px 14px;
+  padding: 8px 16px;
   background: #22305a;
   color: #fbfaf5;
-  font: 700 15px/1.2 Heebo, 'Heebo Fallback', sans-serif;
+  font: 700 16px/1.2 Heebo, 'Heebo Fallback', sans-serif;
   border-radius: 999px;
 }
 .exact-hero-teachers:focus-visible {
   outline: 3px solid #22305a;
-  outline-offset: 6px;
+  outline-offset: 4px;
 }
 @media (hover: hover) {
   .exact-hero-teachers:hover {
     transform: translateY(-4px);
-    box-shadow: 6px 6px 0 #e5735c;
+    box-shadow: 7px 9px 0 #2a7c7a, 12px 14px 0 #e5735c;
     color: #22305a;
   }
 }
 .exact-hero-teachers:active {
   transform: translateY(1px);
-  box-shadow: 2px 2px 0 #e6a534;
+  box-shadow: 2px 2px 0 #2a7c7a, 4px 4px 0 #e6a534;
 }
 @media (min-width: 981px) {
   .exact-hero-teachers {
     position: absolute;
     z-index: 3;
     inset-inline-end: calc(-1 * (var(--hero-teachers) + var(--hero-gap)));
-    inset-block-start: 84px;
+    inset-block-start: 108px;
     width: var(--hero-teachers);
   }
 }
@@ -265,19 +285,38 @@ html.noam-a11y-motion .exact-home h1[data-lcp] {
   }
   .exact-hero__panel { grid-column: 1; grid-row: 1; }
   .exact-hero__copy { grid-column: 1; grid-row: 2; }
-  .exact-hero__lede { margin-block-end: 14px; }
+  .exact-hero__lede { margin-block-end: 16px; }
   .exact-hero-teachers {
-    position: static;
-    width: 100%;
+    position: relative;
+    width: min(100%, 26rem);
     inset: auto;
     margin-block-end: 18px;
   }
 }
-/* Same contract as the published motion policy: explicit on-site motion wins
-   over the device, and Stop / the accessibility switch always wins. */
+/* Ribbon nod is transform-only. Explicit on-site motion wins over the
+   device; Stop and the accessibility switch always win. */
+@keyframes exact-teachers-hello {
+  0%, 68%, 100% { transform: rotate(-1.25deg); }
+  78% { transform: rotate(1.1deg) translateY(-2px); }
+  88% { transform: rotate(-1.25deg); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .exact-hero-teachers__ribbon {
+    animation: exact-teachers-hello 4.2s ease-in-out infinite;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
+  html.nd-motion-enabled .exact-hero-teachers__ribbon,
+  html[data-nd-motion="full"] .exact-hero-teachers__ribbon,
+  html[data-nd-motion="relaxed"] .exact-hero-teachers__ribbon,
+  html[data-nd-motion="calm"] .exact-hero-teachers__ribbon {
+    animation: exact-teachers-hello 4.2s ease-in-out infinite;
+  }
   html:not(.nd-motion-enabled):not([data-nd-motion="full"]):not([data-nd-motion="relaxed"]):not([data-nd-motion="calm"]) .exact-hero-teachers {
     transition: none;
+  }
+  html:not(.nd-motion-enabled):not([data-nd-motion="full"]):not([data-nd-motion="relaxed"]):not([data-nd-motion="calm"]) .exact-hero-teachers__ribbon {
+    animation: none;
   }
   html:not(.nd-motion-enabled):not([data-nd-motion="full"]):not([data-nd-motion="relaxed"]):not([data-nd-motion="calm"]) .exact-hero-teachers:hover,
   html:not(.nd-motion-enabled):not([data-nd-motion="full"]):not([data-nd-motion="relaxed"]):not([data-nd-motion="calm"]) .exact-hero-teachers:active {
@@ -288,6 +327,11 @@ html.nd-motion-off .exact-hero-teachers,
 html.noam-a11y-motion .exact-hero-teachers,
 html[data-nd-motion="off"] .exact-hero-teachers {
   transition: none;
+}
+html.nd-motion-off .exact-hero-teachers__ribbon,
+html.noam-a11y-motion .exact-hero-teachers__ribbon,
+html[data-nd-motion="off"] .exact-hero-teachers__ribbon {
+  animation: none;
 }
 html.nd-motion-off .exact-hero-teachers:hover,
 html.noam-a11y-motion .exact-hero-teachers:hover,
