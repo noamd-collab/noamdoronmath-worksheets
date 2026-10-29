@@ -5132,7 +5132,8 @@ function layoutQuestionCrops(model) {
       });
       if (fence > x0 + 0.02) {
         // A sentence that already starts in the text column stays. Only the drawing's edge labels are cut.
-        const limit = x0 >= 0.30 ? x0 : 0.32;
+        // x0 carries the 0.008 pad, so a line printed from 0.30 begins at 0.292 here.
+        const limit = x0 >= 0.29 ? x0 : 0.32;
         const cut = Math.min(fence + 0.012, limit);
         if (cut > x0 + 0.02 && x0 + width - cut > 0.12) {
           width -= cut - x0;
