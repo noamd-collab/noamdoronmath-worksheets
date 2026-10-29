@@ -8,7 +8,13 @@ const pub=new URL('../public/',import.meta.url),read=(p:string)=>readFileSync(ne
 const modules=['noam-native-visual','noam-source-panels','noam-authored-geometry','noam-authored-visual','noam-visual-data','noam-visual-plan','noam-source-data-visual','noam-source-scaffold'].map(n=>read(n+'.js')).join('\n');
 const clone=(v:any)=>JSON.parse(JSON.stringify(v));
 function fn(v:string,n:string){const s=v.slice(v.indexOf('function '+n+'('));assert.ok(s.startsWith('function '+n+'('));return s.slice(0,s.indexOf('\nfunction ',1));}
-async function settled(){for(let i=0;i<12;i++){await new Promise(r=>setImmediate(r));for(let j=0;j<160;j++)await Promise.resolve();}}
+// Hash verification may complete on a worker thread. A fixed number of event-loop
+// turns is not completion under CI load; wait for the existing request lifecycle.
+async function settled(c:any){
+ const deadline=Date.now()+5000;
+ while(c.busy&&Date.now()<deadline)await new Promise(r=>setTimeout(r,5));
+ assert.equal(c.busy,false,'the hint lifecycle must finish before checking its requests');
+}
 const CASES:any={
  W15A:{pdf:'1447b1c93a0f481abbd1eccbef8a7551',item:'q20d'},
  W15B:{pdf:'7b2d78cef1f44268ba9265392320ad26',item:'q20d'},
@@ -70,7 +76,7 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
 
  it(name+': W15 independent conceptual part uses its printed text and an explicit generic scaffold',async()=>{
   const f=fixture(v,'W15'),{requests,counter}=wireHint(f,unreadable());
-  f.c.askNoam('hint','תן לי רמז אחד בלבד.');await settled();
+  f.c.askNoam('hint','תן לי רמז אחד בלבד.');await settled(f.c);
   assert.equal(counter.analysis,0);assert.equal(requests.length,1);assert.equal(f.thread.hintIndex,1);
   assert.equal(f.thread.messages[1].answerError,undefined);
   const a=requests[0].payload.imageAnalysis;assertCanonicalShape(a,f.exercise);
@@ -145,7 +151,7 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
   ];
   for(const [label,change] of changes){
    const f=fixture(v,'W15',(d,m,e)=>{const q=d.questions.find((q:any)=>q.id==='q20');q.text=change(q.text);e.context=q.text;});
-   const {requests,counter}=wireHint(f);f.c.askNoam('hint','תן לי רמז אחד בלבד.');await settled();
+   const {requests,counter}=wireHint(f);f.c.askNoam('hint','תן לי רמז אחד בלבד.');await settled(f.c);
    assert.equal(counter.analysis,1,label+' must retain the image reader');
    assert.equal(requests.length,1,label+' must preserve the solve request count');
    assert.equal(requests[0].payload.imageAnalysis.content_type,undefined,label);
@@ -154,14 +160,14 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
 
  it(name+': final figure part and student-designed proof keep the existing image route',async()=>{
   for(const key of ['W15final','W15construction']){
-   const f=fixture(v,key),{requests,counter}=wireHint(f);f.c.askNoam('hint','תן לי רמז אחד בלבד.');await settled();
+   const f=fixture(v,key),{requests,counter}=wireHint(f);f.c.askNoam('hint','תן לי רמז אחד בלבד.');await settled(f.c);
    assert.equal(counter.analysis,1,key);assert.equal(requests.length,1,key);assert.equal(requests[0].payload.imageAnalysis.content_type,undefined,key);
   }
  });
 
  it(name+': W11 table question is answered from the printed source without reading the image',async()=>{
   const f=fixture(v,'W11'),{requests,counter}=wireHint(f,unreadable());
-  f.c.askNoam('hint','תן לי רמז אחד בלבד.');await settled();
+  f.c.askNoam('hint','תן לי רמז אחד בלבד.');await settled(f.c);
   assert.equal(counter.analysis,0);assert.equal(requests.length,1);assert.equal(requests[0].url,'/model/noamImageSolve');
   assert.equal(f.thread.messages[1].answerError,undefined);assert.equal(f.thread.messages[1].text,'בדקו את הנתונים המודפסים.');
   const a=requests[0].payload.imageAnalysis;assertCanonicalShape(a,f.exercise);
@@ -174,7 +180,7 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
 
  it(name+': W04 printed strip labels and the opening base altitude stay separate sources',async()=>{
   const f=fixture(v,'W04'),{requests,counter}=wireHint(f);
-  f.c.askNoam('hint','תן לי רמז אחד בלבד.');await settled();
+  f.c.askNoam('hint','תן לי רמז אחד בלבד.');await settled(f.c);
   assert.equal(counter.analysis,0);assert.equal(requests.length,1);const a=requests[0].payload.imageAnalysis;assertCanonicalShape(a,f.exercise);
   assert.match(a.transcription,/וגובהו לצלע הארוכה \$5\$ ס״מ/);assert.match(a.transcription,/הסעיף הנבחר: חשבו את סכום שטחי המלבנים\./);
   assert.match(a.diagram_description,/על קטע אנכי מודפס 2/);assert.equal((a.diagram_description.match(/על קטע אופקי מודפס 13/g)||[]).length,2);
@@ -184,7 +190,7 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
 
  it(name+': MP02 uses verified printed captions bound to measured grids, never SVG order, and drops contradictory OCR',async()=>{
   const f=fixture(v,'MP02'),{requests,counter}=wireHint(f);
-  f.c.askNoam('hint','תן לי רמז אחד בלבד.');await settled();
+  f.c.askNoam('hint','תן לי רמז אחד בלבד.');await settled(f.c);
   assert.equal(counter.analysis,0);const a=requests[0].payload.imageAnalysis;assertCanonicalShape(a,f.exercise);
   for(const [caption,columns] of [['שלב 1',3],['שלב 2',6],['שלב 3',9]])assert.ok(a.diagram_description.includes(`לוח עם הכיתוב "${caption}": 3 שורות, ${columns} נקודות בכל שורה.`));
   assert.doesNotMatch(JSON.stringify(a),/16|25|(?:9|18|27) נקודות(?! בכל שורה)|q21_head|9\s*n|ריבוע/);
@@ -227,7 +233,7 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
   for(const [key,mode,edit] of modes){
    const f=fixture(v,key,edit),{requests,counter}=wireHint(f);
    assert.equal(await f.c.noamCanonicalSourceAnalysis(f.exercise),null,mode);
-   f.c.askNoam('hint','רמז');await settled();assert.equal(counter.analysis,1,mode);assert.equal(requests[0].payload.imageAnalysis.content_type,undefined,mode);
+   f.c.askNoam('hint','רמז');await settled(f.c);assert.equal(counter.analysis,1,mode);assert.equal(requests[0].payload.imageAnalysis.content_type,undefined,mode);
   }
   for(const mode of ['attachments','selection-change','identity-change','source-fails']){
    const f=fixture(v,'W11'),load=f.c.noamLoadSourceVisual;
@@ -262,7 +268,7 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
   const edit=(d:any)=>{d.questions.find((q:any)=>q.id==='q16').table.rows[0][1]='999';};
   const tampered=fixture(v,'W11',edit,true),{requests,counter}=wireHint(tampered);
   assert.equal(await tampered.c.noamCanonicalSourceAnalysis(tampered.exercise),null);
-  tampered.c.askNoam('hint','רמז');await settled();assert.equal(counter.analysis,1);assert.doesNotMatch(JSON.stringify(requests[0].payload.imageAnalysis),/999/);
+  tampered.c.askNoam('hint','רמז');await settled(tampered.c);assert.equal(counter.analysis,1);assert.doesNotMatch(JSON.stringify(requests[0].payload.imageAnalysis),/999/);
   const rehashed=fixture(v,'W11',edit);assert.match((await rehashed.c.noamCanonicalSourceAnalysis(rehashed.exercise)).diagram_description,/999/);
   // A poisoned shared package cache is not trusted: canonical data comes from the verified bytes.
   const poisoned=fixture(v,'W11'),load=poisoned.c.noamLoadSourceVisual;
