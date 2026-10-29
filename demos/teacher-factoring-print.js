@@ -3762,9 +3762,18 @@ function answerGlyphBaseline(bitmap, box, imageH) {
           if (count > peak) peak = count;
         }
         if (peak >= 8) {
+          // The baseline is where the ink drops off hardest. Under it only
+          // descenders and the tails of tall parentheses remain.
           let baseRow = -1;
+          let bestDrop = 0;
           for (let y = Math.floor(band.h * 0.35); y < band.h; y += 1) {
-            if (rowCounts[y] >= peak * 0.25) baseRow = y;
+            if (rowCounts[y] < peak * 0.25) continue;
+            const below = Math.max(y + 1 < band.h ? rowCounts[y + 1] : 0, y + 2 < band.h ? rowCounts[y + 2] : 0);
+            const drop = rowCounts[y] - below;
+            if (drop >= bestDrop) {
+              bestDrop = drop;
+              baseRow = y;
+            }
           }
           if (baseRow >= 0) px = band.y + baseRow;
         }
