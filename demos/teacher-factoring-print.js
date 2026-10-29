@@ -3110,6 +3110,135 @@ function snapAnswerClusters(bitmap, box, yTop, yBot) {
   return { minX, maxX };
 }
 
+/**
+ * Ink in an answer crop that is not the answer: the pale gray rule between
+ * question blocks, and the cut tips of the neighbour line's tall parentheses
+ * parked on a tight edge. Returns white rects and the ink span left without them.
+ */
+function answerDebris(bitmap, left, right, top, bot, tightTop, tightBottom) {
+  const rw = Math.round(right - left);
+  const rh = Math.round(bot - top);
+  if (!bitmap || typeof bitmap.getContext !== 'function' || rw < 8 || rh < 4) return null;
+  let image;
+  try {
+    image = bitmap.getContext('2d').getImageData(Math.round(left), Math.round(top), rw, rh);
+  } catch (error) {
+    return null;
+  }
+  const data = image.data;
+  if (!data || data.length < rw * rh * 4) return null;
+  const lum = (x, y) => {
+    const i = (y * rw + x) * 4;
+    return Math.min(data[i], data[i + 1], data[i + 2]);
+  };
+  const cut = new Uint8Array(rw * rh);
+  const rects = [];
+  const paleRow = new Uint8Array(rh);
+  const darkRow = new Uint8Array(rh);
+  for (let y = 0; y < rh; y += 1) {
+    let pale = 0;
+    let black = 0;
+    for (let x = 0; x < rw; x += 1) {
+      const v = lum(x, y);
+      if (v >= 180 && v < 242) pale += 1;
+      else if (v < 180) black += 1;
+    }
+    paleRow[y] = pale >= rw * 0.4 ? 1 : 0;
+    darkRow[y] = black >= rw * 0.25 ? 1 : 0;
+  }
+  // The antialiased edge of a fraction bar is pale too. It hugs a dark row.
+  for (let y = 0; y < rh; y += 1) {
+    if (paleRow[y] && ((y > 0 && darkRow[y - 1]) || (y + 1 < rh && darkRow[y + 1]))) paleRow[y] = 0;
+  }
+  for (let y = 0; y < rh; y += 1) {
+    if (!paleRow[y]) continue;
+    let y0 = y;
+    let y1 = y;
+    while (y0 > 0 && paleRow[y0 - 1]) y0 -= 1;
+    while (y1 < rh - 1 && paleRow[y1 + 1]) y1 += 1;
+    // A gray fill behind the answer is many rows deep. A rule is one or two.
+    if (y1 - y0 > 2) continue;
+    let run = -1;
+    for (let x = 0; x <= rw; x += 1) {
+      const v = x < rw ? lum(x, y) : 255;
+      if (v >= 180 && v < 242) {
+        if (run < 0) run = x;
+        continue;
+      }
+      if (run >= 0 && x - run >= 6) {
+        for (let k = run; k < x; k += 1) cut[y * rw + k] = 1;
+        // Scaling the crop smears the rule into its neighbour rows.
+        rects.push({ x0: left + run, x1: left + x, y0: top + Math.max(0, y - 1), y1: top + Math.min(rh, y + 2) });
+      }
+      run = -1;
+    }
+  }
+  const dark = (x, y) => !cut[y * rw + x] && lum(x, y) < 242;
+  const seen = new Uint8Array(rw * rh);
+  const maxH = Math.max(2, rh * 0.15);
+  const edgeRows = [];
+  if (tightTop) edgeRows.push(0);
+  if (tightBottom) edgeRows.push(rh - 1);
+  edgeRows.forEach((edge) => {
+    for (let sx = 0; sx < rw; sx += 1) {
+      if (seen[edge * rw + sx] || !dark(sx, edge)) continue;
+      const stack = [edge * rw + sx];
+      seen[edge * rw + sx] = 1;
+      let x0 = sx;
+      let x1 = sx;
+      let y0 = edge;
+      let y1 = edge;
+      while (stack.length) {
+        const p = stack.pop();
+        const px = p % rw;
+        const py = (p - px) / rw;
+        if (px < x0) x0 = px;
+        if (px > x1) x1 = px;
+        if (py < y0) y0 = py;
+        if (py > y1) y1 = py;
+        for (let dy = -1; dy <= 1; dy += 1) {
+          for (let dx = -1; dx <= 1; dx += 1) {
+            const nx = px + dx;
+            const ny = py + dy;
+            if (nx < 0 || ny < 0 || nx >= rw || ny >= rh) continue;
+            const q = ny * rw + nx;
+            if (seen[q] || !dark(nx, ny)) continue;
+            seen[q] = 1;
+            stack.push(q);
+          }
+        }
+      }
+      if (y1 - y0 + 1 > maxH || x1 - x0 + 1 > maxH * 2) continue;
+      for (let y = y0; y <= y1; y += 1) {
+        for (let x = x0; x <= x1; x += 1) cut[y * rw + x] = 1;
+      }
+      rects.push({ x0: left + x0, x1: left + x1 + 1, y0: top + y0, y1: top + y1 + 1 });
+    }
+  });
+  if (!rects.length) return null;
+  let minX = rw;
+  let maxX = -1;
+  let minY = rh;
+  let maxY = -1;
+  for (let y = 0; y < rh; y += 1) {
+    for (let x = 0; x < rw; x += 1) {
+      if (!dark(x, y)) continue;
+      if (x < minX) minX = x;
+      if (x > maxX) maxX = x;
+      if (y < minY) minY = y;
+      if (y > maxY) maxY = y;
+    }
+  }
+  if (maxX < 0) return null;
+  return {
+    rects,
+    left: left + minX,
+    right: left + maxX + 1,
+    top: top + minY,
+    bot: top + maxY + 1,
+  };
+}
+
 function dropMaskedAnswerBand(piece) {
   const box = piece && piece.box;
   const masks = box && box.masks;
@@ -3310,8 +3439,8 @@ function trimPieceBox(slice, bitmap) {
     }
     const topPad = clipped.tightTop ? 0 : pad;
     const botPad = clipped.tightBottom ? 0 : pad;
-    const top = Math.max(clipped.tightTop ? winTop : 0, ink.y0 + bands[0].y - topPad);
-    const bot = Math.min(clipped.tightBottom ? winBot : pageH, ink.y0 + bands[bands.length - 1].y + bands[bands.length - 1].h + botPad);
+    let top = Math.max(clipped.tightTop ? winTop : 0, ink.y0 + bands[0].y - topPad);
+    let bot = Math.min(clipped.tightBottom ? winBot : pageH, ink.y0 + bands[bands.length - 1].y + bands[bands.length - 1].h + botPad);
     const pageW = ink.width;
     let inkMin = bands[0].minX == null ? ink.minX : bands[0].minX;
     let inkMax = bands[0].maxX == null ? ink.maxX : bands[0].maxX;
@@ -3341,6 +3470,14 @@ function trimPieceBox(slice, bitmap) {
     if (peeled.right - peeled.left > 8) {
       left = peeled.left;
       right = peeled.right;
+    }
+    const debris = answerDebris(bitmap, left, right, top, bot, clipped.tightTop || top <= winTop + 1, clipped.tightBottom || bot >= winBot - 1);
+    if (debris) {
+      left = Math.max(left, debris.left - hPad);
+      right = Math.min(right, debris.right + hPad);
+      if (!clipped.tightTop) top = Math.max(top, debris.top - pad);
+      if (!clipped.tightBottom) bot = Math.min(bot, debris.bot + pad);
+      debris.rects.forEach((rect) => peeled.masks.push(rect));
     }
     const next = placedBox(clipped, top / pageH, Math.max(0.004, (bot - top) / pageH));
     delete next.peel;
