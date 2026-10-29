@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 203.65 182.75" width="203.65" height="182.75">
+<g data-layer="wedges">
+<path id="e0001" d="M 127.65 106.74 L 127.65 34.74 A 72 72 0 0 1 196.13 84.49 A 72 72 0 0 1 169.97 164.99 Z" fill="#f2f2f2" stroke="#000000" stroke-width="1" stroke-linejoin="round" data-pie="wedge" data-for="sector:qs:a"/>
+<path id="e0002" d="M 127.65 106.74 L 169.97 164.99 A 72 72 0 0 1 105.4 175.22 A 72 72 0 0 1 59.17 128.99 Z" fill="#cccccc" stroke="#000000" stroke-width="1" stroke-linejoin="round" data-pie="wedge" data-for="sector:qs:b"/>
+<path id="e0003" d="M 127.65 106.74 L 59.17 128.99 A 72 72 0 0 1 85.33 48.49 Z" fill="#e3e3e3" stroke="#000000" stroke-width="1" stroke-linejoin="round" data-pie="wedge" data-for="sector:qs:c"/>
+<path id="e0004" d="M 127.65 106.74 L 85.33 48.49 A 72 72 0 0 1 127.65 34.74 Z" fill="#b3b3b3" stroke="#000000" stroke-width="1" stroke-linejoin="round" data-pie="wedge" data-for="sector:qs:d"/>
+</g>
+<g data-layer="lines">
+<circle id="e0005" cx="127.65" cy="106.74" r="72" fill="none" stroke="#000000" stroke-width="1" data-pie="outline" data-for="pie:qs"/>
+<path id="e0006" d="M 78.35 90.72 L 41.66 75.08" fill="none" stroke="#000000" stroke-width="0.8" stroke-linecap="round" data-pie="leader" data-for="sector:qs:c"/>
+<path id="e0007" d="M 111.63 57.44 L 100.12 27.88" fill="none" stroke="#000000" stroke-width="0.8" stroke-linecap="round" data-pie="leader" data-for="sector:qs:d"/>
+</g>
+<g data-layer="labels">
+<text id="e0008" x="165.31" y="92.38" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" direction="ltr" unicode-bidi="bidi-override" data-pie="name" data-for="sector:qs:a">םיקחשמ</text>
+<text id="e0009" x="165.31" y="105.41" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" data-pie="val" data-for="sector:qs:a">144°</text>
+<text id="e0010" x="114.3" y="146.9" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" direction="ltr" unicode-bidi="bidi-override" data-pie="name" data-for="sector:qs:b">תועדוה</text>
+<text id="e0011" x="114.3" y="157.53" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" data-pie="val" data-for="sector:qs:b">108°</text>
+<text id="e0012" x="26.84" y="73.06" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" direction="ltr" unicode-bidi="bidi-override" data-pie="name" data-for="sector:qs:c">םינוטרס</text>
+<text id="e0013" x="26.84" y="83.68" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" data-pie="val" data-for="sector:qs:c">72°</text>
+<text id="e0014" x="97.98" y="15.4" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" direction="ltr" unicode-bidi="bidi-override" data-pie="name" data-for="sector:qs:d">םידומיל</text>
+<text id="e0015" x="97.98" y="26.03" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" data-pie="val" data-for="sector:qs:d">36°</text>
+</g>
+</svg>

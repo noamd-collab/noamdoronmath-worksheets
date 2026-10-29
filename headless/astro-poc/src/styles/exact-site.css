@@ -160,7 +160,7 @@ button.exact-doodle-btn--fill {
   animation: exact-lcp-rise 520ms cubic-bezier(.2,.8,.3,1.2) 120ms both;
 }
 @media (prefers-reduced-motion: reduce) {
-  .exact-home h1[data-lcp] { animation: none; }
+  html:not(.nd-motion-enabled) .exact-home h1[data-lcp] { animation: none; }
 }
 html.nd-motion-off .exact-home h1[data-lcp],
 html.noam-a11y-motion .exact-home h1[data-lcp] {

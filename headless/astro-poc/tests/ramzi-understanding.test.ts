@@ -260,7 +260,7 @@ describe('Ramzi understanding checks', () => {
     assert.match(adapter, /ramzi-line/);
     assert.match(adapter, /querySelectorAll\('\.ramzi-check'\)\.forEach/);
     assert.match(adapter, /!rowQualifies\(last\)/);
-    assert.match(adapter, /ramziSoftened/);
+    assert.match(adapter, /preserveFailedReplies/);
     assert.match(adapter, /removeChild\(node\)/);
     assert.match(adapter, /noam-retry-action/);
     assert.match(adapter, /openingFor/);

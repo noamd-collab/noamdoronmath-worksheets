@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 190 144" width="190" height="144">
+<g data-layer="lines">
+<line id="e0001" data-seg="AB" x1="95" y1="26" x2="26" y2="118" stroke="#000000" stroke-width="1.5"/>
+<line id="e0002" data-seg="AC" x1="95" y1="26" x2="164" y2="118" stroke="#000000" stroke-width="1.5"/>
+<line id="e0003" data-seg="AD" x1="95" y1="26" x2="95" y2="118" stroke="#000000" stroke-width="1"/>
+<line id="e0004" data-seg="BC" x1="26" y1="118" x2="164" y2="118" stroke="#000000" stroke-width="1.5"/>
+</g>
+<g data-layer="marks">
+<line id="e0005" data-mark="tick AB" x1="63.7" y1="74.4" x2="57.3" y2="69.6" stroke="#000000" stroke-width="1"/>
+<line id="e0006" data-mark="tick AC" x1="132.7" y1="69.6" x2="126.3" y2="74.4" stroke="#000000" stroke-width="1"/>
+<polyline id="e0007" data-mark="right ADB" points="95,110 87,110 87,118" fill="none" stroke="#000000" stroke-width="1"/>
+</g>
+<g data-layer="points">
+<circle id="e0008" data-pt="A" cx="95" cy="26" r="0.75" fill="#000000" stroke="none"/>
+<circle id="e0009" data-pt="B" cx="26" cy="118" r="0.75" fill="#000000" stroke="none"/>
+<circle id="e0010" data-pt="C" cx="164" cy="118" r="0.75" fill="#000000" stroke="none"/>
+<circle id="e0011" data-pt="D" cx="95" cy="118" r="2" fill="#000000" stroke="none"/>
+</g>
+<g data-layer="labels">
+<text id="e0012" data-for="seg AB" x="50.61" y="68.32" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">15</text>
+<text id="e0013" data-for="seg BC" x="95" y="130.47" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">18</text>
+<text id="e0014" data-for="A" x="95" y="21.5" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">A</text>
+<text id="e0015" data-for="B" x="17.11" y="126.88" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">B</text>
+<text id="e0016" data-for="C" x="172.99" y="126.93" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">C</text>
+<text id="e0017" data-for="D" x="105.44" y="116.41" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">D</text>
+</g>
+</svg>

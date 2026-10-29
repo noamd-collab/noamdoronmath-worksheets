@@ -328,9 +328,6 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
 @keyframes flashB{0%{opacity:0}15%,70%{opacity:1}100%{opacity:0}}
 .flashonA{animation:flashA 1.7s ease forwards}
 .flashonB{animation:flashB 1.7s ease forwards}
-@media (min-width:900px){
-  #card{max-height:min(100dvh - 16px,780px)}
-}
 @media (max-height:760px) and (min-width:900px){
   #app{padding:6px}
   #card{padding:8px 14px 10px;gap:8px}
@@ -1836,7 +1833,7 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       h += '</g>';
       // pieces of broken squares, for when the hypotenuse is not a whole number
       h += '<g id="ckSlivs">';
-      for (let i = 0; i < 25; i++) h += '<rect id="ckSliv' + i + '" x="-.5" y="-.5" width="1" height="1" opacity="0"/>';
+      for (let i = 0; i < 25; i++) h += '<rect id="ckSliv' + i + '" x="-.5" y="-.5" width="1" height="1" rx=".08" opacity="0"/>';
       h += '</g>';
       h += '<text id="ckSqLabA" text-anchor="middle" dominant-baseline="central"></text>';
       h += '<text id="ckSqLabB" text-anchor="middle" dominant-baseline="central"></text>';
@@ -1897,11 +1894,13 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       sqLab('ckSqLabB', -b / 2 - chipR * .45, b / 2, 'b² = ' + b * b, AMB, b);
       sqLab('ckSqLabC', (a + b) / 2, (a + b) / 2, 'c² = ' + c2, ROSE, c);
       const cInt = Number.isInteger(c), pill = (txt, col) => '<span style="padding:3px 12px;border-radius:999px;border:2px solid ' + col + ';color:' + col + ';background:#fff;font-size:15px;white-space:nowrap">' + txt + '</span>';
-      const strip = $('ckStrip');
+      const strip = $('ckStrip'), fitSlots = gN * gN, remTiles = c2 - fitSlots;
       if (strip) strip.innerHTML = '<div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">' + pill('a = ' + a, IND) + pill('b = ' + b, AMB) + pill(cInt ? 'c = ' + c : 'c = √<span class="sqrt">' + c2 + '</span>', ROSE) + '</div>'
-        + '<div style="font-size:16px;color:' + INK + '">' + (a * a) + ' + ' + (b * b) + ' = ' + c2 + (cInt ? ' = ' + c + '²' : '') + '</div>';
+        + '<div dir="rtl" style="font-size:15.5px;color:' + INK + '"><bdi class="math" dir="ltr">' + (a * a) + ' + ' + (b * b) + ' = ' + c2 + (cInt ? ' = ' + c + '²' : '') + '</bdi>'
+        + (cInt ? '' : ' <span style="font-size:13.5px;color:#6b6a8a">(' + fitSlots + ' שלמות של <bdi class="math" dir="ltr">' + gN + '×' + gN + '</bdi> + ' + remTiles + ' בשוליים)</span>') + '</div>';
       const ux = -a / c, uy = b / c, vx = b / c, vy = a / c;
-      const stepC = 1, theta = Math.atan2(uy, ux) * 180 / Math.PI;
+      const fVis = cInt ? 0 : Math.max(c - gN, .42);
+      const stepC = cInt ? 1 : (c - fVis) / gN, theta = Math.atan2(uy, ux) * 180 / Math.PI;
       for (let i = 0; i < 121; i++) {
         const sl = $('ckSlot' + i);
         if (i < gN * gN) {
@@ -1930,7 +1929,7 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
         hh.style.cursor = (this.chkDrag || this._chkRunning) ? 'grabbing' : 'grab';
       });
       $('checkSvg').style.touchAction = 'none';
-      this._chkN = { nA, nB, gN, c, theta, stepC, ux, uy, vx, vy, f: c - gN };
+      this._chkN = { nA, nB, gN, c, theta, stepC, ux, uy, vx, vy, f: c - gN, fVis };
     },
     chkDown(e, which) {
       if (STEPS[this.state.idx].mode !== 'numeric' || this._chkRunning) return;
@@ -2059,7 +2058,7 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       this.sfx('error');
       this._chkFails = (this._chkFails || 0) + 1;
       const broken = total - fit;
-      this.say('השטחים שווים גם כאן: ' + m((a * a) + ' + ' + (b * b) + ' = ' + c2) + ' — הריבוע הוורוד התמלא. אבל רק אחרי ששברתי ' + (broken === 1 ? 'משבצת אחת' : broken + ' משבצות') + ' לחתיכות, כי היתר ' + m('√' + c2) + ' — לא מספר שלם.', { mood: 'think' });
+      this.say('השטחים שווים גם כאן: ' + m((a * a) + ' + ' + (b * b) + ' = ' + c2) + '. ברשת נכנסו ' + m(N.gN + '×' + N.gN + ' = ' + slots) + ' משבצות שלמות, ועוד ' + (broken === 1 ? 'משבצת אחת נשברה' : broken + ' משבצות נשברו') + ' לרצועות בשוליים — כי היתר ' + m('√' + c2) + ' לא מספר שלם.', { mood: 'think' });
       this.renderCheckBtn();
       await this.wait(1200); if (!ok()) return;
       await this.actorHome();
@@ -2073,14 +2072,14 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
        Their total area is exactly the number of leftover squares (c² − gN²). */
     chkSlivers(a, N, left) {
       const out = []; if (left <= 0) return out;
-      const n = N.gN, f = N.c - n;
-      for (let j = 0; j < n; j++) out.push({ cu: n + f / 2, cv: j + .5, w: f, h: 1 });
-      out.push({ cu: n + f / 2, cv: n + f / 2, w: f, h: f });
-      for (let i = n - 1; i >= 0; i--) out.push({ cu: i + .5, cv: n + f / 2, w: 1, h: f });
+      const n = N.gN, f = N.c - n, sc = N.stepC, span = n * sc, fv = N.fVis || f;
+      for (let j = 0; j < n; j++) out.push({ cu: span + fv * .5, cv: (j + .5) * sc, w: f, h: 1, vw: fv, vh: sc });
+      out.push({ cu: span + fv * .5, cv: span + fv * .5, w: f, h: f, vw: fv, vh: fv });
+      for (let i = n - 1; i >= 0; i--) out.push({ cu: (i + .5) * sc, cv: span + fv * .5, w: 1, h: f, vw: sc, vh: fv });
       let cum = 0;
       out.forEach((sv) => {
         const ar = sv.w * sv.h;
-        sv.t = Math.max(0, Math.min(left - 1, Math.floor(cum + ar / 2)));
+        sv.t = Math.max(0, Math.min(left - 1, Math.floor(cum + ar * .5)));
         cum += ar;
         sv.x = a + sv.cu * N.ux + sv.cv * N.vx; sv.y = sv.cu * N.uy + sv.cv * N.vy;
       });
@@ -2100,8 +2099,9 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       this.sfx('tick');
       list.forEach((q, j) => {
         const sv = slv[q], el = $('ckSliv' + q); if (!el) return;
-        const w = Math.max(sv.w * .72, sv.w - .1), h = Math.max(sv.h * .72, sv.h - .1);
-        el.style.fill = col;
+        const vw = sv.vw || sv.w, vh = sv.vh || sv.h;
+        const w = Math.max(vw * .82, vw - .06), h = Math.max(vh * .82, vh - .06);
+        el.style.fill = col; el.style.stroke = '#fff'; el.style.strokeWidth = '.04';
         this.later(() => {
           if (!ok()) return;
           el.setAttribute('opacity', '1');
@@ -2444,7 +2444,7 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
     },
     paintQuiz(S, st, done) {
       const box = $('opts');
-      if (!S.opts) { box.innerHTML = ''; return; }
+      if (!S.opts) { box.innerHTML = ''; delete box.dataset.stamp; return; }
       const stamp = (st.ord || []).join('');
       if (box.dataset.stamp !== stamp) {
         box.dataset.stamp = stamp;

@@ -12,7 +12,11 @@ import { resolveSiteHref } from '../src/lib/resolveSiteHref';
 
 const pageExists = (p: string) => {
   const path = p.split('#')[0]?.split('?')[0] || p;
-  return path === '/' || existsSync(new URL(`../src/pages${path}.astro`, import.meta.url));
+  return (
+    path === '/' ||
+    (path.endsWith('.html') && existsSync(new URL(`../public${path}`, import.meta.url))) ||
+    existsSync(new URL(`../src/pages${path}.astro`, import.meta.url))
+  );
 };
 
 describe('OPEN-15 redirects', () => {
@@ -36,6 +40,10 @@ describe('OPEN-15 redirects', () => {
       ['/equations-grade-7', '/equations-basics-grade-7'],
       ['/equations-both-sides-word-problems-grade-7-1', '/equations-both-sides-word-problems-grade-7'],
       ['/inequalities-grade-8-1', '/inequalities-grade-8'],
+      ['/about', '/aboutus'],
+      ['/contact', '/aboutus'],
+      ['/learning', '/learning.html'],
+      ['/worksheet-viewer', '/worksheet-viewer-noam.html'],
       ['/privacy', '/accessibilityadaptation#privacy-policy'],
       ['/privacy/', '/accessibilityadaptation#privacy-policy'],
     ];

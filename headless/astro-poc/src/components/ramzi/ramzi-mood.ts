@@ -1,3 +1,4 @@
+import { sitePrefersReducedMotion } from '../../lib/motionPreference.js';
 export const RAMZI_MOODS = ['idle', 'thinking', 'hint', 'success', 'error'] as const;
 export type RamziMood = (typeof RAMZI_MOODS)[number];
 
@@ -53,8 +54,7 @@ export function consoleMood(input: ConsoleMoodInput): RamziMood {
 
 export function readBrowserMotionOff(eventOff: boolean): boolean {
   if (typeof document === 'undefined') return true;
-  const reduced =
-    typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const reduced = sitePrefersReducedMotion();
   let storage: Storage | null = null;
   try {
     storage = window.localStorage;

@@ -1,0 +1,2385 @@
+{
+  "schemaVersion": 2,
+  "pdfHash": "d11f2f0d17b3432a92571f3b2bb805d4",
+  "aliases": [],
+  "grade": 9,
+  "topicId": 4,
+  "prefix": "G9-T15",
+  "topic": "משולש שווה שוקיים",
+  "level": "b",
+  "levelCode": "B",
+  "pageCount": 12,
+  "exercisePageCount": 12,
+  "questionCount": 22,
+  "exerciseCount": 56,
+  "parserConfidence": 1,
+  "reviewRequired": false,
+  "issues": [],
+  "sourceSha256": "865b534dac8da0513d798cfc4a180ba833edd465f52ced23d32ee12112486bab",
+  "questions": [
+    {
+      "q": 1,
+      "page": 1,
+      "parts": [
+        "א",
+        "ב",
+        "ג"
+      ]
+    },
+    {
+      "q": 2,
+      "page": 2,
+      "parts": [
+        "א",
+        "ב"
+      ]
+    },
+    {
+      "q": 3,
+      "page": 2,
+      "parts": [
+        "א",
+        "ב",
+        "ג"
+      ]
+    },
+    {
+      "q": 4,
+      "page": 3,
+      "parts": [
+        "א",
+        "ב",
+        "ג"
+      ]
+    },
+    {
+      "q": 5,
+      "page": 3,
+      "parts": [
+        "א",
+        "ב"
+      ]
+    },
+    {
+      "q": 6,
+      "page": 4,
+      "parts": [
+        "א",
+        "ב"
+      ]
+    },
+    {
+      "q": 7,
+      "page": 4,
+      "parts": [
+        "א",
+        "ב",
+        "ג"
+      ]
+    },
+    {
+      "q": 8,
+      "page": 5,
+      "parts": [
+        "א",
+        "ב",
+        "ג"
+      ]
+    },
+    {
+      "q": 9,
+      "page": 5,
+      "parts": [
+        "א",
+        "ב",
+        "ג"
+      ]
+    },
+    {
+      "q": 10,
+      "page": 6,
+      "parts": [
+        "א",
+        "ב",
+        "ג"
+      ]
+    },
+    {
+      "q": 11,
+      "page": 6,
+      "parts": [
+        "א",
+        "ב"
+      ]
+    },
+    {
+      "q": 12,
+      "page": 7,
+      "parts": [
+        "א",
+        "ב"
+      ]
+    },
+    {
+      "q": 13,
+      "page": 7,
+      "parts": [
+        "א",
+        "ב",
+        "ג"
+      ]
+    },
+    {
+      "q": 14,
+      "page": 8,
+      "parts": [
+        "א",
+        "ב",
+        "ג"
+      ]
+    },
+    {
+      "q": 15,
+      "page": 8,
+      "parts": [
+        "א",
+        "ב"
+      ]
+    },
+    {
+      "q": 16,
+      "page": 9,
+      "parts": [
+        "א",
+        "ב"
+      ]
+    },
+    {
+      "q": 17,
+      "page": 9,
+      "parts": [
+        "א",
+        "ב",
+        "ג"
+      ]
+    },
+    {
+      "q": 18,
+      "page": 10,
+      "parts": [
+        "א",
+        "ב"
+      ]
+    },
+    {
+      "q": 19,
+      "page": 10,
+      "parts": [
+        "א",
+        "ב",
+        "ג"
+      ]
+    },
+    {
+      "q": 20,
+      "page": 11,
+      "parts": [
+        "א",
+        "ב"
+      ]
+    },
+    {
+      "q": 21,
+      "page": 11,
+      "parts": [
+        "א",
+        "ב",
+        "ג"
+      ]
+    },
+    {
+      "q": 22,
+      "page": 12,
+      "parts": [
+        "א",
+        "ב"
+      ]
+    }
+  ],
+  "exercises": [
+    {
+      "id": "G9-T15-B-Q01א",
+      "q": 1,
+      "part": "א",
+      "pin": {
+        "page": 1,
+        "x": 0.827418,
+        "y": 0.634025
+      },
+      "crop": {
+        "page": 1,
+        "x": 0,
+        "y": 0.304455,
+        "w": 1,
+        "h": 0.662286
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0,
+          "y": 0.304455,
+          "w": 1,
+          "h": 0.662286
+        },
+        {
+          "page": 2,
+          "x": 0,
+          "y": 0.032071,
+          "w": 1,
+          "h": 0.017755
+        }
+      ],
+      "context": "הישרים $DG$ ו־$HW$ מקבילים, והישר $EF$ חותך אותם בנקודות $E$ ו־$F$. נתון $\\angle{GEF} = 58°$.\n∠GEF = 58°\nE על DG\nF על HW\nDG ∥ HW",
+      "text": "חשבו את $\\angle{EFH}$, ורשמו מה סוג הזוג $\\angle{GEF}$ ו־$\\angle{EFH}$.",
+      "prompt": "שאלה 1, סעיף א.\nהישרים $DG$ ו־$HW$ מקבילים, והישר $EF$ חותך אותם בנקודות $E$ ו־$F$. נתון $\\angle{GEF} = 58°$.\n∠GEF = 58°\nE על DG\nF על HW\nDG ∥ HW\nהסעיף הנבחר: חשבו את $\\angle{EFH}$, ורשמו מה סוג הזוג $\\angle{GEF}$ ו־$\\angle{EFH}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q1",
+      "nativeItemId": "q1a",
+      "nativeFigureId": "q1_head",
+      "nativeFigureUrl": "/noam-ai/native/G9-T15/b/figures/q1_head.svg"
+    },
+    {
+      "id": "G9-T15-B-Q01ב",
+      "q": 1,
+      "part": "ב",
+      "pin": {
+        "page": 1,
+        "x": 0.830148,
+        "y": 0.708312
+      },
+      "crop": {
+        "page": 1,
+        "x": 0,
+        "y": 0.304455,
+        "w": 1,
+        "h": 0.662286
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0,
+          "y": 0.304455,
+          "w": 1,
+          "h": 0.662286
+        },
+        {
+          "page": 2,
+          "x": 0,
+          "y": 0.032071,
+          "w": 1,
+          "h": 0.017755
+        }
+      ],
+      "context": "הישרים $DG$ ו־$HW$ מקבילים, והישר $EF$ חותך אותם בנקודות $E$ ו־$F$. נתון $\\angle{GEF} = 58°$.\n∠GEF = 58°\nE על DG\nF על HW\nDG ∥ HW\nסעיף קודם א: חשבו את $\\angle{EFH}$, ורשמו מה סוג הזוג $\\angle{GEF}$ ו־$\\angle{EFH}$.",
+      "text": "חשבו את $\\angle{EFW}$.",
+      "prompt": "שאלה 1, סעיף ב.\nהישרים $DG$ ו־$HW$ מקבילים, והישר $EF$ חותך אותם בנקודות $E$ ו־$F$. נתון $\\angle{GEF} = 58°$.\n∠GEF = 58°\nE על DG\nF על HW\nDG ∥ HW\nסעיף קודם א: חשבו את $\\angle{EFH}$, ורשמו מה סוג הזוג $\\angle{GEF}$ ו־$\\angle{EFH}$.\nהסעיף הנבחר: חשבו את $\\angle{EFW}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q1",
+      "nativeItemId": "q1b",
+      "nativeFigureId": "q1_head",
+      "nativeFigureUrl": "/noam-ai/native/G9-T15/b/figures/q1_head.svg"
+    },
+    {
+      "id": "G9-T15-B-Q01ג",
+      "q": 1,
+      "part": "ג",
+      "pin": {
+        "page": 1,
+        "x": 0.832727,
+        "y": 0.787351
+      },
+      "crop": {
+        "page": 1,
+        "x": 0,
+        "y": 0.304455,
+        "w": 1,
+        "h": 0.662286
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0,
+          "y": 0.304455,
+          "w": 1,
+          "h": 0.662286
+        },
+        {
+          "page": 2,
+          "x": 0,
+          "y": 0.032071,
+          "w": 1,
+          "h": 0.017755
+        }
+      ],
+      "context": "הישרים $DG$ ו־$HW$ מקבילים, והישר $EF$ חותך אותם בנקודות $E$ ו־$F$. נתון $\\angle{GEF} = 58°$.\n∠GEF = 58°\nE על DG\nF על HW\nDG ∥ HW\nסעיף קודם א: חשבו את $\\angle{EFH}$, ורשמו מה סוג הזוג $\\angle{GEF}$ ו־$\\angle{EFH}$.\nסעיף קודם ב: חשבו את $\\angle{EFW}$.",
+      "text": "נתון גם $\\angle{EFW} = (2y + 4)°$. מצאו את $y$.",
+      "prompt": "שאלה 1, סעיף ג.\nהישרים $DG$ ו־$HW$ מקבילים, והישר $EF$ חותך אותם בנקודות $E$ ו־$F$. נתון $\\angle{GEF} = 58°$.\n∠GEF = 58°\nE על DG\nF על HW\nDG ∥ HW\nסעיף קודם א: חשבו את $\\angle{EFH}$, ורשמו מה סוג הזוג $\\angle{GEF}$ ו־$\\angle{EFH}$.\nסעיף קודם ב: חשבו את $\\angle{EFW}$.\nהסעיף הנבחר: נתון גם $\\angle{EFW} = (2y + 4)°$. מצאו את $y$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q1",
+      "nativeItemId": "q1c",
+      "nativeFigureId": "q1_head",
+      "nativeFigureUrl": "/noam-ai/native/G9-T15/b/figures/q1_head.svg"
+    },
+    {
+      "id": "G9-T15-B-Q02א",
+      "q": 2,
+      "part": "א",
+      "pin": {
+        "page": 2,
+        "x": 0.827418,
+        "y": 0.231997
+      },
+      "crop": {
+        "page": 2,
+        "x": 0,
+        "y": 0.051014,
+        "w": 1,
+        "h": 0.319106
+      },
+      "crops": [
+        {
+          "page": 2,
+          "x": 0,
+          "y": 0.051014,
+          "w": 1,
+          "h": 0.319106
+        }
+      ],
+      "context": "ב־$\\tri RST$ השוקיים $RS$ ו־$RT$ שוות, וזווית הראש $\\angle{SRT} = 38°$. מאריכים את הבסיס $TS$ מעבר ל־$S$ עד לנקודה $U$.\n∠SRT = 38°\nRS = RT\nS על TU",
+      "text": "חשבו את $\\angle{RST}$ ואת $\\angle{RTS}$.",
+      "prompt": "שאלה 2, סעיף א.\nב־$\\tri RST$ השוקיים $RS$ ו־$RT$ שוות, וזווית הראש $\\angle{SRT} = 38°$. מאריכים את הבסיס $TS$ מעבר ל־$S$ עד לנקודה $U$.\n∠SRT = 38°\nRS = RT\nS על TU\nהסעיף הנבחר: חשבו את $\\angle{RST}$ ואת $\\angle{RTS}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q2",
+      "nativeItemId": "q2a",
+      "nativeFigureId": "q2_head",
+      "nativeFigureUrl": "/noam-ai/native/G9-T15/b/figures/q2_head.svg"
+    },
+    {
+      "id": "G9-T15-B-Q02ב",
+      "q": 2,
+      "part": "ב",
+      "pin": {
+        "page": 2,
+        "x": 0.830148,
+        "y": 0.306284
+      },
+      "crop": {
+        "page": 2,
+        "x": 0,
+        "y": 0.051014,
+        "w": 1,
+        "h": 0.319106
+      },
+      "crops": [
+        {
+          "page": 2,
+          "x": 0,
+          "y": 0.051014,
+          "w": 1,
+          "h": 0.319106
+        }
+      ],
+      "context": "ב־$\\tri RST$ השוקיים $RS$ ו־$RT$ שוות, וזווית הראש $\\angle{SRT} = 38°$. מאריכים את הבסיס $TS$ מעבר ל־$S$ עד לנקודה $U$.\n∠SRT = 38°\nRS = RT\nS על TU\nסעיף קודם א: חשבו את $\\angle{RST}$ ואת $\\angle{RTS}$.",
+      "text": "חשבו את $\\angle{RSU}$.",
+      "prompt": "שאלה 2, סעיף ב.\nב־$\\tri RST$ השוקיים $RS$ ו־$RT$ שוות, וזווית הראש $\\angle{SRT} = 38°$. מאריכים את הבסיס $TS$ מעבר ל־$S$ עד לנקודה $U$.\n∠SRT = 38°\nRS = RT\nS על TU\nסעיף קודם א: חשבו את $\\angle{RST}$ ואת $\\angle{RTS}$.\nהסעיף הנבחר: חשבו את $\\angle{RSU}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q2",
+      "nativeItemId": "q2b",
+      "nativeFigureId": "q2_head",
+      "nativeFigureUrl": "/noam-ai/native/G9-T15/b/figures/q2_head.svg"
+    },
+    {
+      "id": "G9-T15-B-Q03א",
+      "q": 3,
+      "part": "א",
+      "pin": {
+        "page": 2,
+        "x": 0.827418,
+        "y": 0.560156
+      },
+      "crop": {
+        "page": 2,
+        "x": 0,
+        "y": 0.051014,
+        "w": 1,
+        "h": 0.319106
+      },
+      "crops": [
+        {
+          "page": 2,
+          "x": 0,
+          "y": 0.051014,
+          "w": 1,
+          "h": 0.319106
+        },
+        {
+          "page": 2,
+          "x": 0,
+          "y": 0.371307,
+          "w": 1,
+          "h": 0.595434
+        },
+        {
+          "page": 3,
+          "x": 0,
+          "y": 0.032071,
+          "w": 1,
+          "h": 0.017755
+        }
+      ],
+      "context": "$RK ∥ ST$. הקטע $PQ$ מחבר נקודה $P$ שעל $RK$ עם נקודה $Q$ שעל $ST$, ו־$\\angle{RPQ} = 118°$.\n∠RPQ = 118°\nP על KR\nQ על ST\nKR ∥ ST",
+      "text": "חשבו את $\\angle{PQT}$ ונמקו.",
+      "prompt": "שאלה 3, סעיף א.\n$RK ∥ ST$. הקטע $PQ$ מחבר נקודה $P$ שעל $RK$ עם נקודה $Q$ שעל $ST$, ו־$\\angle{RPQ} = 118°$.\n∠RPQ = 118°\nP על KR\nQ על ST\nKR ∥ ST\nהסעיף הנבחר: חשבו את $\\angle{PQT}$ ונמקו.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q3",
+      "nativeItemId": "q3a",
+      "nativeFigureId": "q3_head",
+      "nativeFigureUrl": "/noam-ai/native/G9-T15/b/figures/q3_head.svg"
+    },
+    {
+      "id": "G9-T15-B-Q03ב",
+      "q": 3,
+      "part": "ב",
+      "pin": {
+        "page": 2,
+        "x": 0.830148,
+        "y": 0.634444
+      },
+      "crop": {
+        "page": 2,
+        "x": 0,
+        "y": 0.051014,
+        "w": 1,
+        "h": 0.319106
+      },
+      "crops": [
+        {
+          "page": 2,
+          "x": 0,
+          "y": 0.051014,
+          "w": 1,
+          "h": 0.319106
+        },
+        {
+          "page": 2,
+          "x": 0,
+          "y": 0.371307,
+          "w": 1,
+          "h": 0.595434
+        },
+        {
+          "page": 3,
+          "x": 0,
+          "y": 0.032071,
+          "w": 1,
+          "h": 0.017755
+        }
+      ],
+      "context": "$RK ∥ ST$. הקטע $PQ$ מחבר נקודה $P$ שעל $RK$ עם נקודה $Q$ שעל $ST$, ו־$\\angle{RPQ} = 118°$.\n∠RPQ = 118°\nP על KR\nQ על ST\nKR ∥ ST\nסעיף קודם א: חשבו את $\\angle{PQT}$ ונמקו.",
+      "text": "חשבו את $\\angle{PQS}$.",
+      "prompt": "שאלה 3, סעיף ב.\n$RK ∥ ST$. הקטע $PQ$ מחבר נקודה $P$ שעל $RK$ עם נקודה $Q$ שעל $ST$, ו־$\\angle{RPQ} = 118°$.\n∠RPQ = 118°\nP על KR\nQ על ST\nKR ∥ ST\nסעיף קודם א: חשבו את $\\angle{PQT}$ ונמקו.\nהסעיף הנבחר: חשבו את $\\angle{PQS}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q3",
+      "nativeItemId": "q3b",
+      "nativeFigureId": "q3_head",
+      "nativeFigureUrl": "/noam-ai/native/G9-T15/b/figures/q3_head.svg"
+    },
+    {
+      "id": "G9-T15-B-Q03ג",
+      "q": 3,
+      "part": "ג",
+      "pin": {
+        "page": 2,
+        "x": 0.832727,
+        "y": 0.713483
+      },
+      "crop": {
+        "page": 2,
+        "x": 0,
+        "y": 0.051014,
+        "w": 1,
+        "h": 0.319106
+      },
+      "crops": [
+        {
+          "page": 2,
+          "x": 0,
+          "y": 0.051014,
+          "w": 1,
+          "h": 0.319106
+        },
+        {
+          "page": 2,
+          "x": 0,
+          "y": 0.371307,
+          "w": 1,
+          "h": 0.595434
+        },
+        {
+          "page": 3,
+          "x": 0,
+          "y": 0.032071,
+          "w": 1,
+          "h": 0.017755
+        }
+      ],
+      "context": "$RK ∥ ST$. הקטע $PQ$ מחבר נקודה $P$ שעל $RK$ עם נקודה $Q$ שעל $ST$, ו־$\\angle{RPQ} = 118°$.\n∠RPQ = 118°\nP על KR\nQ על ST\nKR ∥ ST\nסעיף קודם א: חשבו את $\\angle{PQT}$ ונמקו.\nסעיף קודם ב: חשבו את $\\angle{PQS}$.",
+      "text": "נתון $\\angle{KPQ} = (5x + 2)°$. מצאו את $x$.",
+      "prompt": "שאלה 3, סעיף ג.\n$RK ∥ ST$. הקטע $PQ$ מחבר נקודה $P$ שעל $RK$ עם נקודה $Q$ שעל $ST$, ו־$\\angle{RPQ} = 118°$.\n∠RPQ = 118°\nP על KR\nQ על ST\nKR ∥ ST\nסעיף קודם א: חשבו את $\\angle{PQT}$ ונמקו.\nסעיף קודם ב: חשבו את $\\angle{PQS}$.\nהסעיף הנבחר: נתון $\\angle{KPQ} = (5x + 2)°$. מצאו את $x$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q3",
+      "nativeItemId": "q3c",
+      "nativeFigureId": "q3_head",
+      "nativeFigureUrl": "/noam-ai/native/G9-T15/b/figures/q3_head.svg"
+    },
+    {
+      "id": "G9-T15-B-Q04א",
+      "q": 4,
+      "part": "א",
+      "pin": {
+        "page": 3,
+        "x": 0.827418,
+        "y": 0.113235
+      },
+      "crop": {
+        "page": 3,
+        "x": 0,
+        "y": 0.051014,
+        "w": 1,
+        "h": 0.386895
+      },
+      "crops": [
+        {
+          "page": 3,
+          "x": 0,
+          "y": 0.051014,
+          "w": 1,
+          "h": 0.386895
+        }
+      ],
+      "context": "ב־$\\tri DEF$ השוקיים $DE$ ו־$DF$ שוות, וזווית הבסיס $\\angle{DEF} = 73°$. מן הקודקוד $D$ יורד אל הבסיס $EF$ חוצה הזווית $DG$.\n∠DEF = 73°\n∠EDG = ∠GDF\nDE = DF\nG על EF",
+      "text": "חשבו את $\\angle{DFE}$ ונמקו.",
+      "prompt": "שאלה 4, סעיף א.\nב־$\\tri DEF$ השוקיים $DE$ ו־$DF$ שוות, וזווית הבסיס $\\angle{DEF} = 73°$. מן הקודקוד $D$ יורד אל הבסיס $EF$ חוצה הזווית $DG$.\n∠DEF = 73°\n∠EDG = ∠GDF\nDE = DF\nG על EF\nהסעיף הנבחר: חשבו את $\\angle{DFE}$ ונמקו.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q4",
+      "nativeItemId": "q4a",
+      "nativeFigureId": "q4_head",
+      "nativeFigureUrl": "/noam-ai/native/G9-T15/b/figures/q4_head.svg"
+    },
+    {
+      "id": "G9-T15-B-Q04ב",
+      "q": 4,
+      "part": "ב",
+      "pin": {
+        "page": 3,
+        "x": 0.830148,
+        "y": 0.295035
+      },
+      "crop": {
+        "page": 3,
+        "x": 0,
+        "y": 0.051014,
+        "w": 1,
+        "h": 0.386895
+      },
+      "crops": [
+        {
+          "page": 3,
+          "x": 0,
+          "y": 0.051014,
+          "w": 1,
+          "h": 0.386895
+        }
+      ],
+      "context": "ב־$\\tri DEF$ השוקיים $DE$ ו־$DF$ שוות, וזווית הבסיס $\\angle{DEF} = 73°$. מן הקודקוד $D$ יורד אל הבסיס $EF$ חוצה הזווית $DG$.\n∠DEF = 73°\n∠EDG = ∠GDF\nDE = DF\nG על EF\nסעיף קודם א: חשבו את $\\angle{DFE}$ ונמקו.",
+      "text": "חשבו את $\\angle{EDF}$.",
+      "prompt": "שאלה 4, סעיף ב.\nב־$\\tri DEF$ השוקיים $DE$ ו־$DF$ שוות, וזווית הבסיס $\\angle{DEF} = 73°$. מן הקודקוד $D$ יורד אל הבסיס $EF$ חוצה הזווית $DG$.\n∠DEF = 73°\n∠EDG = ∠GDF\nDE = DF\nG על EF\nסעיף קודם א: חשבו את $\\angle{DFE}$ ונמקו.\nהסעיף הנבחר: חשבו את $\\angle{EDF}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q4",
+      "nativeItemId": "q4b",
+      "nativeFigureId": "q4_head",
+      "nativeFigureUrl": "/noam-ai/native/G9-T15/b/figures/q4_head.svg"
+    },
+    {
+      "id": "G9-T15-B-Q04ג",
+      "q": 4,
+      "part": "ג",
+      "pin": {
+        "page": 3,
+        "x": 0.832727,
+        "y": 0.374074
+      },
+      "crop": {
+        "page": 3,
+        "x": 0,
+        "y": 0.051014,
+        "w": 1,
+        "h": 0.386895
+      },
+      "crops": [
+        {
+          "page": 3,
+          "x": 0,
+          "y": 0.051014,
+          "w": 1,
+          "h": 0.386895
+        }
+      ],
+      "context": "ב־$\\tri DEF$ השוקיים $DE$ ו־$DF$ שוות, וזווית הבסיס $\\angle{DEF} = 73°$. מן הקודקוד $D$ יורד אל הבסיס $EF$ חוצה הזווית $DG$.\n∠DEF = 73°\n∠EDG = ∠GDF\nDE = DF\nG על EF\nסעיף קודם א: חשבו את $\\angle{DFE}$ ונמקו.\nסעיף קודם ב: חשבו את $\\angle{EDF}$.",
+      "text": "חשבו את $\\angle{EDG}$.",
+      "prompt": "שאלה 4, סעיף ג.\nב־$\\tri DEF$ השוקיים $DE$ ו־$DF$ שוות, וזווית הבסיס $\\angle{DEF} = 73°$. מן הקודקוד $D$ יורד אל הבסיס $EF$ חוצה הזווית $DG$.\n∠DEF = 73°\n∠EDG = ∠GDF\nDE = DF\nG על EF\nסעיף קודם א: חשבו את $\\angle{DFE}$ ונמקו.\nסעיף קודם ב: חשבו את $\\angle{EDF}$.\nהסעיף הנבחר: חשבו את $\\angle{EDG}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q4",
+      "nativeItemId": "q4c",
+      "nativeFigureId": "q4_head",
+      "nativeFigureUrl": "/noam-ai/native/G9-T15/b/figures/q4_head.svg"
+    },
+    {
+      "id": "G9-T15-B-Q05א",
+      "q": 5,
+      "part": "א",
+      "pin": {
+        "page": 3,
+        "x": 0.827418,
+        "y": 0.501318
+      },
+      "crop": {
+        "page": 3,
+        "x": 0,
+        "y": 0.439097,
+        "w": 1,
+        "h": 0.527645
+      },
+      "crops": [
+        {
+          "page": 3,
+          "x": 0,
+          "y": 0.439097,
+          "w": 1,
+          "h": 0.527645
+        },
+        {
+          "page": 4,
+          "x": 0,
+          "y": 0.032071,
+          "w": 1,
+          "h": 0.017755
+        }
+      ],
+      "context": "ב־$\\tri KLM$ השוקיים $KL$ ו־$KM$ שוות. זוויות הבסיס הן $\\angle{KLM} = (2x + 11)°$ ו־$\\angle{KML} = (x + 30)°$.\nKL = KM\n∠KLM = 2x + 11°\n∠KML = x + 30°",
+      "text": "כתבו משוואה ומצאו את $x$.",
+      "prompt": "שאלה 5, סעיף א.\nב־$\\tri KLM$ השוקיים $KL$ ו־$KM$ שוות. זוויות הבסיס הן $\\angle{KLM} = (2x + 11)°$ ו־$\\angle{KML} = (x + 30)°$.\nKL = KM\n∠KLM = 2x + 11°\n∠KML = x + 30°\nהסעיף הנבחר: כתבו משוואה ומצאו את $x$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q5",
+      "nativeItemId": "q5a",
+      "nativeFigureId": "q5_head",
+      "nativeFigureUrl": "/noam-ai/native/G9-T15/b/figures/q5_head.svg"
+    },
+    {
+      "id": "G9-T15-B-Q05ב",
+      "q": 5,
+      "part": "ב",
+      "pin": {
+        "page": 3,
+        "x": 0.830148,
+        "y": 0.598487
+      },
+      "crop": {
+        "page": 3,
+        "x": 0,
+        "y": 0.439097,
+        "w": 1,
+        "h": 0.527645
+      },
+      "crops": [
+        {
+          "page": 3,
+          "x": 0,
+          "y": 0.439097,
+          "w": 1,
+          "h": 0.527645
+        },
+        {
+          "page": 4,
+          "x": 0,
+          "y": 0.032071,
+          "w": 1,
+          "h": 0.017755
+        }
+      ],
+      "context": "ב־$\\tri KLM$ השוקיים $KL$ ו־$KM$ שוות. זוויות הבסיס הן $\\angle{KLM} = (2x + 11)°$ ו־$\\angle{KML} = (x + 30)°$.\nKL = KM\n∠KLM = 2x + 11°\n∠KML = x + 30°\nסעיף קודם א: כתבו משוואה ומצאו את $x$.",
+      "text": "מצאו את הזוויות של $\\tri KLM$.",
+      "prompt": "שאלה 5, סעיף ב.\nב־$\\tri KLM$ השוקיים $KL$ ו־$KM$ שוות. זוויות הבסיס הן $\\angle{KLM} = (2x + 11)°$ ו־$\\angle{KML} = (x + 30)°$.\nKL = KM\n∠KLM = 2x + 11°\n∠KML = x + 30°\nסעיף קודם א: כתבו משוואה ומצאו את $x$.\nהסעיף הנבחר: מצאו את הזוויות של $\\tri KLM$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q5",
+      "nativeItemId": "q5b",
+      "nativeFigureId": "q5_head",
+      "nativeFigureUrl": "/noam-ai/native/G9-T15/b/figures/q5_head.svg"
+    },
+    {
+      "id": "G9-T15-B-Q06א",
+      "q": 6,
+      "part": "א",
+      "pin": {
+        "page": 4,
+        "x": 0.827418,
+        "y": 0.113235
+      },
+      "crop": {
+        "page": 4,
+        "x": 0,
+        "y": 0.051014,
+        "w": 1,
+        "h": 0.303402
+      },
+      "crops": [
+        {
+          "page": 4,
+          "x": 0,
+          "y": 0.051014,
+          "w": 1,
+          "h": 0.303402
+        }
+      ],
+      "context": "ב־$\\tri PQR$ השוקיים $PQ$ ו־$PR$ שוות. מאריכים את $QP$ מעבר לקודקוד $P$ עד לנקודה $S$, ו־$\\angle{SPR} = 122°$.\n∠SPR = 122°\nPQ = PR\nP על QS",
+      "text": "חשבו את $\\angle{QPR}$.",
+      "prompt": "שאלה 6, סעיף א.\nב־$\\tri PQR$ השוקיים $PQ$ ו־$PR$ שוות. מאריכים את $QP$ מעבר לקודקוד $P$ עד לנקודה $S$, ו־$\\angle{SPR} = 122°$.\n∠SPR = 122°\nPQ = PR\nP על QS\nהסעיף הנבחר: חשבו את $\\angle{QPR}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q6",
+      "nativeItemId": "q6a",
+      "nativeFigureId": "q6_head",
+      "nativeFigureUrl": "/noam-ai/native/G9-T15/b/figures/q6_head.svg"
+    },
+    {
+      "id": "G9-T15-B-Q06ב",
+      "q": 6,
+      "part": "ב",
+      "pin": {
+        "page": 4,
+        "x": 0.830148,
+        "y": 0.290581
+      },
+      "crop": {
+        "page": 4,
+        "x": 0,
+        "y": 0.051014,
+        "w": 1,
+        "h": 0.303402
+      },
+      "crops": [
+        {
+          "page": 4,
+          "x": 0,
+          "y": 0.051014,
+          "w": 1,
+          "h": 0.303402
+        }
+      ],
+      "context": "ב־$\\tri PQR$ השוקיים $PQ$ ו־$PR$ שוות. מאריכים את $QP$ מעבר לקודקוד $P$ עד לנקודה $S$, ו־$\\angle{SPR} = 122°$.\n∠SPR = 122°\nPQ = PR\nP על QS\nסעיף קודם א: חשבו את $\\angle{QPR}$.",
+      "text": "חשבו את $\\angle{PQR}$ ואת $\\angle{PRQ}$.",
+      "prompt": "שאלה 6, סעיף ב.\nב־$\\tri PQR$ השוקיים $PQ$ ו־$PR$ שוות. מאריכים את $QP$ מעבר לקודקוד $P$ עד לנקודה $S$, ו־$\\angle{SPR} = 122°$.\n∠SPR = 122°\nPQ = PR\nP על QS\nסעיף קודם א: חשבו את $\\angle{QPR}$.\nהסעיף הנבחר: חשבו את $\\angle{PQR}$ ואת $\\angle{PRQ}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q6",
+      "nativeItemId": "q6b",
+      "nativeFigureId": "q6_head",
+      "nativeFigureUrl": "/noam-ai/native/G9-T15/b/figures/q6_head.svg"
+    },
+    {
+      "id": "G9-T15-B-Q07א",
+      "q": 7,
+      "part": "א",
+      "pin": {
+        "page": 4,
+        "x": 0.827418,
+        "y": 0.591707
+      },
+      "crop": {
+        "page": 4,
+        "x": 0,
+        "y": 0.355604,
+        "w": 1,
+        "h": 0.611138
+      },
+      "crops": [
+        {
+          "page": 4,
+          "x": 0,
+          "y": 0.355604,
+          "w": 1,
+          "h": 0.611138
+        },
+        {
+          "page": 5,
+          "x": 0,
+          "y": 0.032071,
+          "w": 1,
+          "h": 0.017755
+        }
+      ],
+      "context": "הישרים $CD$ ו־$EF$ מקבילים, והנקודה $P$ נמצאת ביניהם. דרך $P$ עובר הישר $PG$, המקביל ל־$CD$. נתון $\\angle{DCP} = 29°$ ו־$\\angle{FEP} = 44°$.\n∠DCP = 29°\n∠FEP = 44°\nCD ∥ EF\nGP ∥ CD",
+      "text": "חשבו את $\\angle{CPG}$.",
+      "prompt": "שאלה 7, סעיף א.\nהישרים $CD$ ו־$EF$ מקבילים, והנקודה $P$ נמצאת ביניהם. דרך $P$ עובר הישר $PG$, המקביל ל־$CD$. נתון $\\angle{DCP} = 29°$ ו־$\\angle{FEP} = 44°$.\n∠DCP = 29°\n∠FEP = 44°\nCD ∥ EF\nGP ∥ CD\nהסעיף הנבחר: חשבו את $\\angle{CPG}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q7",
+      "nativeItemId": "q7a",
+      "nativeFigureId": "q7_head",
+      "nativeFigureUrl": "/noam-ai/native/G9-T15/b/figures/q7_head.svg"
+    },
+    {
+      "id": "G9-T15-B-Q07ב",
+      "q": 7,
+      "part": "ב",
+      "pin": {
+        "page": 4,
+        "x": 0.830148,
+        "y": 0.665995
+      },
+      "crop": {
+        "page": 4,
+        "x": 0,
+        "y": 0.355604,
+        "w": 1,
+        "h": 0.611138
+      },
+      "crops": [
+        {
+          "page": 4,
+          "x": 0,
+          "y": 0.355604,
+          "w": 1,
+          "h": 0.611138
+        },
+        {
+          "page": 5,
+          "x": 0,
+          "y": 0.032071,
+          "w": 1,
+          "h": 0.017755
+        }
+      ],
+      "context": "הישרים $CD$ ו־$EF$ מקבילים, והנקודה $P$ נמצאת ביניהם. דרך $P$ עובר הישר $PG$, המקביל ל־$CD$. נתון $\\angle{DCP} = 29°$ ו־$\\angle{FEP} = 44°$.\n∠DCP = 29°\n∠FEP = 44°\nCD ∥ EF\nGP ∥ CD\nסעיף קודם א: חשבו את $\\angle{CPG}$.",
+      "text": "חשבו את $\\angle{EPG}$.",
+      "prompt": "שאלה 7, סעיף ב.\nהישרים $CD$ ו־$EF$ מקבילים, והנקודה $P$ נמצאת ביניהם. דרך $P$ עובר הישר $PG$, המקביל ל־$CD$. נתון $\\angle{DCP} = 29°$ ו־$\\angle{FEP} = 44°$.\n∠DCP = 29°\n∠FEP = 44°\nCD ∥ EF\nGP ∥ CD\nסעיף קודם א: חשבו את $\\angle{CPG}$.\nהסעיף הנבחר: חשבו את $\\angle{EPG}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q7",
+      "nativeItemId": "q7b",
+      "nativeFigureId": "q7_head",
+      "nativeFigureUrl": "/noam-ai/native/G9-T15/b/figures/q7_head.svg"
+    },
+    {
+      "id": "G9-T15-B-Q07ג",
+      "q": 7,
+      "part": "ג",
+      "pin": {
+        "page": 4,
+        "x": 0.832727,
+        "y": 0.745034
+      },
+      "crop": {
+        "page": 4,
+        "x": 0,
+        "y": 0.355604,
+        "w": 1,
+        "h": 0.611138
+      },
+      "crops": [
+        {
+          "page": 4,
+          "x": 0,
+          "y": 0.355604,
+          "w": 1,
+          "h": 0.611138
+        },
+        {
+          "page": 5,
+          "x": 0,
+          "y": 0.032071,
+          "w": 1,
+          "h": 0.017755
+        }
+      ],
+      "context": "הישרים $CD$ ו־$EF$ מקבילים, והנקודה $P$ נמצאת ביניהם. דרך $P$ עובר הישר $PG$, המקביל ל־$CD$. נתון $\\angle{DCP} = 29°$ ו־$\\angle{FEP} = 44°$.\n∠DCP = 29°\n∠FEP = 44°\nCD ∥ EF\nGP ∥ CD\nסעיף קודם א: חשבו את $\\angle{CPG}$.\nסעיף קודם ב: חשבו את $\\angle{EPG}$.",
+      "text": "חשבו את $\\angle{CPE}$.",
+      "prompt": "שאלה 7, סעיף ג.\nהישרים $CD$ ו־$EF$ מקבילים, והנקודה $P$ נמצאת ביניהם. דרך $P$ עובר הישר $PG$, המקביל ל־$CD$. נתון $\\angle{DCP} = 29°$ ו־$\\angle{FEP} = 44°$.\n∠DCP = 29°\n∠FEP = 44°\nCD ∥ EF\nGP ∥ CD\nסעיף קודם א: חשבו את $\\angle{CPG}$.\nסעיף קודם ב: חשבו את $\\angle{EPG}$.\nהסעיף הנבחר: חשבו את $\\angle{CPE}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q7",
+      "nativeItemId": "q7c",
+      "nativeFigureId": "q7_head",
+      "nativeFigureUrl": "/noam-ai/native/G9-T15/b/figures/q7_head.svg"
+    },
+    {
+      "id": "G9-T15-B-Q08א",
+      "q": 8,
+      "part": "א",
+      "pin": {
+        "page": 5,
+        "x": 0.827418,
+        "y": 0.113235
+      },
+      "crop": {
+        "page": 5,
+        "x": 0,
+        "y": 0.051014,
+        "w": 1,
+        "h": 0.309391
+      },
+      "crops": [
+        {
+          "page": 5,
+          "x": 0,
+          "y": 0.051014,
+          "w": 1,
+          "h": 0.309391
+        }
+      ],
+      "context": "ב־$\\tri XYZ$ השוקיים $XY$ ו־$XZ$ שוות, ו־$\\angle{XYZ} = 57°$. הקטע $XW$, שקצהו $W$ על הבסיס $YZ$, הוא חוצה זווית הראש.\n∠XYZ = 57°\n∠YXW = ∠WXZ\nXY = XZ\nW על YZ",
+      "text": "חשבו את $\\angle{YXZ}$.",
+      "prompt": "שאלה 8, סעיף א.\nב־$\\tri XYZ$ השוקיים $XY$ ו־$XZ$ שוות, ו־$\\angle{XYZ} = 57°$. הקטע $XW$, שקצהו $W$ על הבסיס $YZ$, הוא חוצה זווית הראש.\n∠XYZ = 57°\n∠YXW = ∠WXZ\nXY = XZ\nW על YZ\nהסעיף הנבחר: חשבו את $\\angle{YXZ}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q8",
+      "nativeItemId": "q8a",
+      "nativeFigureId": "q8_head",
+      "nativeFigureUrl": "/noam-ai/native/G9-T15/b/figures/q8_head.svg"
+    },
+    {
+      "id": "G9-T15-B-Q08ב",
+      "q": 8,
+      "part": "ב",
+      "pin": {
+        "page": 5,
+        "x": 0.830148,
+        "y": 0.217531
+      },
+      "crop": {
+        "page": 5,
+        "x": 0,
+        "y": 0.051014,
+        "w": 1,
+        "h": 0.309391
+      },
+      "crops": [
+        {
+          "page": 5,
+          "x": 0,
+          "y": 0.051014,
+          "w": 1,
+          "h": 0.309391
+        }
+      ],
+      "context": "ב־$\\tri XYZ$ השוקיים $XY$ ו־$XZ$ שוות, ו־$\\angle{XYZ} = 57°$. הקטע $XW$, שקצהו $W$ על הבסיס $YZ$, הוא חוצה זווית הראש.\n∠XYZ = 57°\n∠YXW = ∠WXZ\nXY = XZ\nW על YZ\nסעיף קודם א: חשבו את $\\angle{YXZ}$.",
+      "text": "חשבו את $\\angle{YXW}$.",
+      "prompt": "שאלה 8, סעיף ב.\nב־$\\tri XYZ$ השוקיים $XY$ ו־$XZ$ שוות, ו־$\\angle{XYZ} = 57°$. הקטע $XW$, שקצהו $W$ על הבסיס $YZ$, הוא חוצה זווית הראש.\n∠XYZ = 57°\n∠YXW = ∠WXZ\nXY = XZ\nW על YZ\nסעיף קודם א: חשבו את $\\angle{YXZ}$.\nהסעיף הנבחר: חשבו את $\\angle{YXW}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q8",
+      "nativeItemId": "q8b",
+      "nativeFigureId": "q8_head",
+      "nativeFigureUrl": "/noam-ai/native/G9-T15/b/figures/q8_head.svg"
+    },
+    {
+      "id": "G9-T15-B-Q08ג",
+      "q": 8,
+      "part": "ג",
+      "pin": {
+        "page": 5,
+        "x": 0.832727,
+        "y": 0.29657
+      },
+      "crop": {
+        "page": 5,
+        "x": 0,
+        "y": 0.051014,
+        "w": 1,
+        "h": 0.309391
+      },
+      "crops": [
+        {
+          "page": 5,
+          "x": 0,
+          "y": 0.051014,
+          "w": 1,
+          "h": 0.309391
+        }
+      ],
+      "context": "ב־$\\tri XYZ$ השוקיים $XY$ ו־$XZ$ שוות, ו־$\\angle{XYZ} = 57°$. הקטע $XW$, שקצהו $W$ על הבסיס $YZ$, הוא חוצה זווית הראש.\n∠XYZ = 57°\n∠YXW = ∠WXZ\nXY = XZ\nW על YZ\nסעיף קודם א: חשבו את $\\angle{YXZ}$.\nסעיף קודם ב: חשבו את $\\angle{YXW}$.",
+      "text": "חשבו את $\\angle{XWY}$.",
+      "prompt": "שאלה 8, סעיף ג.\nב־$\\tri XYZ$ השוקיים $XY$ ו־$XZ$ שוות, ו־$\\angle{XYZ} = 57°$. הקטע $XW$, שקצהו $W$ על הבסיס $YZ$, הוא חוצה זווית הראש.\n∠XYZ = 57°\n∠YXW = ∠WXZ\nXY = XZ\nW על YZ\nסעיף קודם א: חשבו את $\\angle{YXZ}$.\nסעיף קודם ב: חשבו את $\\angle{YXW}$.\nהסעיף הנבחר: חשבו את $\\angle{XWY}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q8",
+      "nativeItemId": "q8c",
+      "nativeFigureId": "q8_head",
+      "nativeFigureUrl": "/noam-ai/native/G9-T15/b/figures/q8_head.svg"
+    },
+    {
+      "id": "G9-T15-B-Q09א",
+      "q": 9,
+      "part": "א",
+      "pin": {
+        "page": 5,
+        "x": 0.827418,
+        "y": 0.616404
+      },
+      "crop": {
+        "page": 5,
+        "x": 0,
+        "y": 0.361593,
+        "w": 1,
+        "h": 0.605149
+      },
+      "crops": [
+        {
+          "page": 5,
+          "x": 0,
+          "y": 0.361593,
+          "w": 1,
+          "h": 0.605149
+        },
+        {
+          "page": 6,
+          "x": 0,
+          "y": 0.032071,
+          "w": 1,
+          "h": 0.017755
+        }
+      ],
+      "context": "בתוך $\\tri ABC$ משורטט קטע $DE$ המקביל לצלע $BC$; הקצה $D$ על הצלע $AB$ והקצה $E$ על הצלע $AC$. ליד הקטע נמדדו $\\angle{ADE} = 71°$ ו־$\\angle{DEC} = 133°$.\n∠ADE = 71°\n∠DEC = 133°\nD על AB\nE על AC\nDE ∥ BC",
+      "text": "חשבו את $\\angle{ABC}$ ונמקו.",
+      "prompt": "שאלה 9, סעיף א.\nבתוך $\\tri ABC$ משורטט קטע $DE$ המקביל לצלע $BC$; הקצה $D$ על הצלע $AB$ והקצה $E$ על הצלע $AC$. ליד הקטע נמדדו $\\angle{ADE} = 71°$ ו־$\\angle{DEC} = 133°$.\n∠ADE = 71°\n∠DEC = 133°\nD על AB\nE על AC\nDE ∥ BC\nהסעיף הנבחר: חשבו את $\\angle{ABC}$ ונמקו.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q9",
+      "nativeItemId": "q9a",
+      "nativeFigureId": "q9_head",
+      "nativeFigureUrl": "/noam-ai/native/G9-T15/b/figures/q9_head.svg"
+    },
+    {
+      "id": "G9-T15-B-Q09ב",
+      "q": 9,
+      "part": "ב",
+      "pin": {
+        "page": 5,
+        "x": 0.830148,
+        "y": 0.690692
+      },
+      "crop": {
+        "page": 5,
+        "x": 0,
+        "y": 0.361593,
+        "w": 1,
+        "h": 0.605149
+      },
+      "crops": [
+        {
+          "page": 5,
+          "x": 0,
+          "y": 0.361593,
+          "w": 1,
+          "h": 0.605149
+        },
+        {
+          "page": 6,
+          "x": 0,
+          "y": 0.032071,
+          "w": 1,
+          "h": 0.017755
+        }
+      ],
+      "context": "בתוך $\\tri ABC$ משורטט קטע $DE$ המקביל לצלע $BC$; הקצה $D$ על הצלע $AB$ והקצה $E$ על הצלע $AC$. ליד הקטע נמדדו $\\angle{ADE} = 71°$ ו־$\\angle{DEC} = 133°$.\n∠ADE = 71°\n∠DEC = 133°\nD על AB\nE על AC\nDE ∥ BC\nסעיף קודם א: חשבו את $\\angle{ABC}$ ונמקו.",
+      "text": "חשבו את $\\angle{ACB}$ ונמקו.",
+      "prompt": "שאלה 9, סעיף ב.\nבתוך $\\tri ABC$ משורטט קטע $DE$ המקביל לצלע $BC$; הקצה $D$ על הצלע $AB$ והקצה $E$ על הצלע $AC$. ליד הקטע נמדדו $\\angle{ADE} = 71°$ ו־$\\angle{DEC} = 133°$.\n∠ADE = 71°\n∠DEC = 133°\nD על AB\nE על AC\nDE ∥ BC\nסעיף קודם א: חשבו את $\\angle{ABC}$ ונמקו.\nהסעיף הנבחר: חשבו את $\\angle{ACB}$ ונמקו.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q9",
+      "nativeItemId": "q9b",
+      "nativeFigureId": "q9_head",
+      "nativeFigureUrl": "/noam-ai/native/G9-T15/b/figures/q9_head.svg"
+    },
+    {
+      "id": "G9-T15-B-Q09ג",
+      "q": 9,
+      "part": "ג",
+      "pin": {
+        "page": 5,
+        "x": 0.832727,
+        "y": 0.76973
+      },
+      "crop": {
+        "page": 5,
+        "x": 0,
+        "y": 0.361593,
+        "w": 1,
+        "h": 0.605149
+      },
+      "crops": [
+        {
+          "page": 5,
+          "x": 0,
+          "y": 0.361593,
+          "w": 1,
+          "h": 0.605149
+        },
+        {
+          "page": 6,
+          "x": 0,
+          "y": 0.032071,
+          "w": 1,
+          "h": 0.017755
+        }
+      ],
+      "context": "בתוך $\\tri ABC$ משורטט קטע $DE$ המקביל לצלע $BC$; הקצה $D$ על הצלע $AB$ והקצה $E$ על הצלע $AC$. ליד הקטע נמדדו $\\angle{ADE} = 71°$ ו־$\\angle{DEC} = 133°$.\n∠ADE = 71°\n∠DEC = 133°\nD על AB\nE על AC\nDE ∥ BC\nסעיף קודם א: חשבו את $\\angle{ABC}$ ונמקו.\nסעיף קודם ב: חשבו את $\\angle{ACB}$ ונמקו.",
+      "text": "חשבו את $\\angle{BAC}$.",
+      "prompt": "שאלה 9, סעיף ג.\nבתוך $\\tri ABC$ משורטט קטע $DE$ המקביל לצלע $BC$; הקצה $D$ על הצלע $AB$ והקצה $E$ על הצלע $AC$. ליד הקטע נמדדו $\\angle{ADE} = 71°$ ו־$\\angle{DEC} = 133°$.\n∠ADE = 71°\n∠DEC = 133°\nD על AB\nE על AC\nDE ∥ BC\nסעיף קודם א: חשבו את $\\angle{ABC}$ ונמקו.\nסעיף קודם ב: חשבו את $\\angle{ACB}$ ונמקו.\nהסעיף הנבחר: חשבו את $\\angle{BAC}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q9",
+      "nativeItemId": "q9c",
+      "nativeFigureId": "q9_head",
+      "nativeFigureUrl": "/noam-ai/native/G9-T15/b/figures/q9_head.svg"
+    },
+    {
+      "id": "G9-T15-B-Q10א",
+      "q": 10,
+      "part": "א",
+      "pin": {
+        "page": 6,
+        "x": 0.827418,
+        "y": 0.113235
+      },
+      "crop": {
+        "page": 6,
+        "x": 0,
+        "y": 0.051014,
+        "w": 1,
+        "h": 0.359279
+      },
+      "crops": [
+        {
+          "page": 6,
+          "x": 0,
+          "y": 0.051014,
+          "w": 1,
+          "h": 0.359279
+        }
+      ],
+      "context": "ב־$\\tri KLM$ השוקיים $KL$ ו־$KM$ שוות. הקטע $PR$ מקביל לבסיס $LM$, וקצותיו על השוקיים: $P$ על $KL$ ו־$R$ על $KM$. ידוע ש־$\\angle{LPR} = 114°$.\n∠LPR = 114°\nKL = KM\nP על KL\nR על KM\nPR ∥ LM",
+      "text": "חשבו את $\\angle{KLM}$.",
+      "prompt": "שאלה 10, סעיף א.\nב־$\\tri KLM$ השוקיים $KL$ ו־$KM$ שוות. הקטע $PR$ מקביל לבסיס $LM$, וקצותיו על השוקיים: $P$ על $KL$ ו־$R$ על $KM$. ידוע ש־$\\angle{LPR} = 114°$.\n∠LPR = 114°\nKL = KM\nP על KL\nR על KM\nPR ∥ LM\nהסעיף הנבחר: חשבו את $\\angle{KLM}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q10",
+      "nativeItemId": "q10a",
+      "nativeFigureId": "q10_head",
+      "nativeFigureUrl": "/noam-ai/native/G9-T15/b/figures/q10_head.svg"
+    },
+    {
+      "id": "G9-T15-B-Q10ב",
+      "q": 10,
+      "part": "ב",
+      "pin": {
+        "page": 6,
+        "x": 0.830148,
+        "y": 0.267419
+      },
+      "crop": {
+        "page": 6,
+        "x": 0,
+        "y": 0.051014,
+        "w": 1,
+        "h": 0.359279
+      },
+      "crops": [
+        {
+          "page": 6,
+          "x": 0,
+          "y": 0.051014,
+          "w": 1,
+          "h": 0.359279
+        }
+      ],
+      "context": "ב־$\\tri KLM$ השוקיים $KL$ ו־$KM$ שוות. הקטע $PR$ מקביל לבסיס $LM$, וקצותיו על השוקיים: $P$ על $KL$ ו־$R$ על $KM$. ידוע ש־$\\angle{LPR} = 114°$.\n∠LPR = 114°\nKL = KM\nP על KL\nR על KM\nPR ∥ LM\nסעיף קודם א: חשבו את $\\angle{KLM}$.",
+      "text": "חשבו את $\\angle{LKM}$.",
+      "prompt": "שאלה 10, סעיף ב.\nב־$\\tri KLM$ השוקיים $KL$ ו־$KM$ שוות. הקטע $PR$ מקביל לבסיס $LM$, וקצותיו על השוקיים: $P$ על $KL$ ו־$R$ על $KM$. ידוע ש־$\\angle{LPR} = 114°$.\n∠LPR = 114°\nKL = KM\nP על KL\nR על KM\nPR ∥ LM\nסעיף קודם א: חשבו את $\\angle{KLM}$.\nהסעיף הנבחר: חשבו את $\\angle{LKM}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q10",
+      "nativeItemId": "q10b",
+      "nativeFigureId": "q10_head",
+      "nativeFigureUrl": "/noam-ai/native/G9-T15/b/figures/q10_head.svg"
+    },
+    {
+      "id": "G9-T15-B-Q10ג",
+      "q": 10,
+      "part": "ג",
+      "pin": {
+        "page": 6,
+        "x": 0.832727,
+        "y": 0.346457
+      },
+      "crop": {
+        "page": 6,
+        "x": 0,
+        "y": 0.051014,
+        "w": 1,
+        "h": 0.359279
+      },
+      "crops": [
+        {
+          "page": 6,
+          "x": 0,
+          "y": 0.051014,
+          "w": 1,
+          "h": 0.359279
+        }
+      ],
+      "context": "ב־$\\tri KLM$ השוקיים $KL$ ו־$KM$ שוות. הקטע $PR$ מקביל לבסיס $LM$, וקצותיו על השוקיים: $P$ על $KL$ ו־$R$ על $KM$. ידוע ש־$\\angle{LPR} = 114°$.\n∠LPR = 114°\nKL = KM\nP על KL\nR על KM\nPR ∥ LM\nסעיף קודם א: חשבו את $\\angle{KLM}$.\nסעיף קודם ב: חשבו את $\\angle{LKM}$.",
+      "text": "חשבו את $\\angle{PRM}$.",
+      "prompt": "שאלה 10, סעיף ג.\nב־$\\tri KLM$ השוקיים $KL$ ו־$KM$ שוות. הקטע $PR$ מקביל לבסיס $LM$, וקצותיו על השוקיים: $P$ על $KL$ ו־$R$ על $KM$. ידוע ש־$\\angle{LPR} = 114°$.\n∠LPR = 114°\nKL = KM\nP על KL\nR על KM\nPR ∥ LM\nסעיף קודם א: חשבו את $\\angle{KLM}$.\nסעיף קודם ב: חשבו את $\\angle{LKM}$.\nהסעיף הנבחר: חשבו את $\\angle{PRM}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q10",
+      "nativeItemId": "q10c",
+      "nativeFigureId": "q10_head",
+      "nativeFigureUrl": "/noam-ai/native/G9-T15/b/figures/q10_head.svg"
+    },
+    {
+      "id": "G9-T15-B-Q11א",
+      "q": 11,
+      "part": "א",
+      "pin": {
+        "page": 6,
+        "x": 0.827418,
+        "y": 0.519246
+      },
+      "crop": {
+        "page": 6,
+        "x": 0,
+        "y": 0.411481,
+        "w": 1,
+        "h": 0.555261
+      },
+      "crops": [
+        {
+          "page": 6,
+          "x": 0,
+          "y": 0.411481,
+          "w": 1,
+          "h": 0.555261
+        },
+        {
+          "page": 7,
+          "x": 0,
+          "y": 0.032071,
+          "w": 1,
+          "h": 0.017755
+        }
+      ],
+      "context": "החזית של אוהל היא משולש $\\tri ABC$ שבו $AB = AC$, והצלע $BC$ מונחת על הקרקע. מוט התמיכה $AD$ מאונך לקרקע ($AD ⊥ BC$), והנקודה $D$ על $BC$. הדופן $AB$ יוצרת עם הקרקע זווית $\\angle{ABC} = 63°$.\n∠ABC = 63°\nAB = AC\nD על BC\nAD ⊥ BC",
+      "text": "חשבו את הזווית בראש האוהל, $\\angle{BAC}$.",
+      "prompt": "שאלה 11, סעיף א.\nהחזית של אוהל היא משולש $\\tri ABC$ שבו $AB = AC$, והצלע $BC$ מונחת על הקרקע. מוט התמיכה $AD$ מאונך לקרקע ($AD ⊥ BC$), והנקודה $D$ על $BC$. הדופן $AB$ יוצרת עם הקרקע זווית $\\angle{ABC} = 63°$.\n∠ABC = 63°\nAB = AC\nD על BC\nAD ⊥ BC\nהסעיף הנבחר: חשבו את הזווית בראש האוהל, $\\angle{BAC}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q11",
+      "nativeItemId": "q11a",
+      "nativeFigureId": "q11_head",
+      "nativeFigureUrl": "/noam-ai/native/G9-T15/b/figures/q11_head.svg"
+    },
+    {
+      "id": "G9-T15-B-Q11ב",
+      "q": 11,
+      "part": "ב",
+      "pin": {
+        "page": 6,
+        "x": 0.830148,
+        "y": 0.619868
+      },
+      "crop": {
+        "page": 6,
+        "x": 0,
+        "y": 0.411481,
+        "w": 1,
+        "h": 0.555261
+      },
+      "crops": [
+        {
+          "page": 6,
+          "x": 0,
+          "y": 0.411481,
+          "w": 1,
+          "h": 0.555261
+        },
+        {
+          "page": 7,
+          "x": 0,
+          "y": 0.032071,
+          "w": 1,
+          "h": 0.017755
+        }
+      ],
+      "context": "החזית של אוהל היא משולש $\\tri ABC$ שבו $AB = AC$, והצלע $BC$ מונחת על הקרקע. מוט התמיכה $AD$ מאונך לקרקע ($AD ⊥ BC$), והנקודה $D$ על $BC$. הדופן $AB$ יוצרת עם הקרקע זווית $\\angle{ABC} = 63°$.\n∠ABC = 63°\nAB = AC\nD על BC\nAD ⊥ BC\nסעיף קודם א: חשבו את הזווית בראש האוהל, $\\angle{BAC}$.",
+      "text": "חשבו את הזווית בין המוט לדופן, $\\angle{BAD}$.",
+      "prompt": "שאלה 11, סעיף ב.\nהחזית של אוהל היא משולש $\\tri ABC$ שבו $AB = AC$, והצלע $BC$ מונחת על הקרקע. מוט התמיכה $AD$ מאונך לקרקע ($AD ⊥ BC$), והנקודה $D$ על $BC$. הדופן $AB$ יוצרת עם הקרקע זווית $\\angle{ABC} = 63°$.\n∠ABC = 63°\nAB = AC\nD על BC\nAD ⊥ BC\nסעיף קודם א: חשבו את הזווית בראש האוהל, $\\angle{BAC}$.\nהסעיף הנבחר: חשבו את הזווית בין המוט לדופן, $\\angle{BAD}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q11",
+      "nativeItemId": "q11b",
+      "nativeFigureId": "q11_head",
+      "nativeFigureUrl": "/noam-ai/native/G9-T15/b/figures/q11_head.svg"
+    },
+    {
+      "id": "G9-T15-B-Q12א",
+      "q": 12,
+      "part": "א",
+      "pin": {
+        "page": 7,
+        "x": 0.827418,
+        "y": 0.311181
+      },
+      "crop": {
+        "page": 7,
+        "x": 0,
+        "y": 0.051014,
+        "w": 1,
+        "h": 0.447726
+      },
+      "crops": [
+        {
+          "page": 7,
+          "x": 0,
+          "y": 0.051014,
+          "w": 1,
+          "h": 0.447726
+        }
+      ],
+      "context": "$AB ∥ CD$, והקטע $GH$ עובר דרך $E$ שעל $AB$ ודרך $F$ שעל $CD$. ידוע ש־$\\angle{GEB} = (4x + 3)°$ ו־$\\angle{EFD} = (2x + 37)°$.\n∠GEB = 4x + 3°\n∠EFD = 2x + 37°\nE על AB\nE על GH\nF על CD\nF על GH\nAB ∥ CD",
+      "text": "באיזה סוג זוויות מדובר? כתבו משוואה ומצאו את $x$.",
+      "prompt": "שאלה 12, סעיף א.\n$AB ∥ CD$, והקטע $GH$ עובר דרך $E$ שעל $AB$ ודרך $F$ שעל $CD$. ידוע ש־$\\angle{GEB} = (4x + 3)°$ ו־$\\angle{EFD} = (2x + 37)°$.\n∠GEB = 4x + 3°\n∠EFD = 2x + 37°\nE על AB\nE על GH\nF על CD\nF על GH\nAB ∥ CD\nהסעיף הנבחר: באיזה סוג זוויות מדובר? כתבו משוואה ומצאו את $x$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q12",
+      "nativeItemId": "q12a",
+      "nativeFigureId": "q12_head",
+      "nativeFigureUrl": "/noam-ai/native/G9-T15/b/figures/q12_head.svg"
+    },
+    {
+      "id": "G9-T15-B-Q12ב",
+      "q": 12,
+      "part": "ב",
+      "pin": {
+        "page": 7,
+        "x": 0.830148,
+        "y": 0.385468
+      },
+      "crop": {
+        "page": 7,
+        "x": 0,
+        "y": 0.051014,
+        "w": 1,
+        "h": 0.447726
+      },
+      "crops": [
+        {
+          "page": 7,
+          "x": 0,
+          "y": 0.051014,
+          "w": 1,
+          "h": 0.447726
+        }
+      ],
+      "context": "$AB ∥ CD$, והקטע $GH$ עובר דרך $E$ שעל $AB$ ודרך $F$ שעל $CD$. ידוע ש־$\\angle{GEB} = (4x + 3)°$ ו־$\\angle{EFD} = (2x + 37)°$.\n∠GEB = 4x + 3°\n∠EFD = 2x + 37°\nE על AB\nE על GH\nF על CD\nF על GH\nAB ∥ CD\nסעיף קודם א: באיזה סוג זוויות מדובר? כתבו משוואה ומצאו את $x$.",
+      "text": "חשבו את $\\angle{BEF}$.",
+      "prompt": "שאלה 12, סעיף ב.\n$AB ∥ CD$, והקטע $GH$ עובר דרך $E$ שעל $AB$ ודרך $F$ שעל $CD$. ידוע ש־$\\angle{GEB} = (4x + 3)°$ ו־$\\angle{EFD} = (2x + 37)°$.\n∠GEB = 4x + 3°\n∠EFD = 2x + 37°\nE על AB\nE על GH\nF על CD\nF על GH\nAB ∥ CD\nסעיף קודם א: באיזה סוג זוויות מדובר? כתבו משוואה ומצאו את $x$.\nהסעיף הנבחר: חשבו את $\\angle{BEF}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q12",
+      "nativeItemId": "q12b",
+      "nativeFigureId": "q12_head",
+      "nativeFigureUrl": "/noam-ai/native/G9-T15/b/figures/q12_head.svg"
+    },
+    {
+      "id": "G9-T15-B-Q13א",
+      "q": 13,
+      "part": "א",
+      "pin": {
+        "page": 7,
+        "x": 0.827418,
+        "y": 0.695943
+      },
+      "crop": {
+        "page": 7,
+        "x": 0,
+        "y": 0.499928,
+        "w": 1,
+        "h": 0.466814
+      },
+      "crops": [
+        {
+          "page": 7,
+          "x": 0,
+          "y": 0.499928,
+          "w": 1,
+          "h": 0.466814
+        },
+        {
+          "page": 8,
+          "x": 0,
+          "y": 0.032071,
+          "w": 1,
+          "h": 0.017755
+        }
+      ],
+      "context": "ב־$\\tri ABC$ השוקיים $AB$ ו־$AC$ שוות, ו־$\\angle{ABC} = 38°$. על הבסיס $BC$ בוחרים נקודה $D$ שמרחקה מ־$A$ שווה למרחקה מ־$C$: $DA = DC$.\n∠ABC = 38°\nAB = AC\nDA = DC\nD על BC",
+      "text": "חשבו את $\\angle{DAC}$.",
+      "prompt": "שאלה 13, סעיף א.\nב־$\\tri ABC$ השוקיים $AB$ ו־$AC$ שוות, ו־$\\angle{ABC} = 38°$. על הבסיס $BC$ בוחרים נקודה $D$ שמרחקה מ־$A$ שווה למרחקה מ־$C$: $DA = DC$.\n∠ABC = 38°\nAB = AC\nDA = DC\nD על BC\nהסעיף הנבחר: חשבו את $\\angle{DAC}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q13",
+      "nativeItemId": "q13a",
+      "nativeFigureId": "q13_head",
+      "nativeFigureUrl": "/noam-ai/native/G9-T15/b/figures/q13_head.svg"
+    },
+    {
+      "id": "G9-T15-B-Q13ב",
+      "q": 13,
+      "part": "ב",
+      "pin": {
+        "page": 7,
+        "x": 0.830148,
+        "y": 0.77023
+      },
+      "crop": {
+        "page": 7,
+        "x": 0,
+        "y": 0.499928,
+        "w": 1,
+        "h": 0.466814
+      },
+      "crops": [
+        {
+          "page": 7,
+          "x": 0,
+          "y": 0.499928,
+          "w": 1,
+          "h": 0.466814
+        },
+        {
+          "page": 8,
+          "x": 0,
+          "y": 0.032071,
+          "w": 1,
+          "h": 0.017755
+        }
+      ],
+      "context": "ב־$\\tri ABC$ השוקיים $AB$ ו־$AC$ שוות, ו־$\\angle{ABC} = 38°$. על הבסיס $BC$ בוחרים נקודה $D$ שמרחקה מ־$A$ שווה למרחקה מ־$C$: $DA = DC$.\n∠ABC = 38°\nAB = AC\nDA = DC\nD על BC\nסעיף קודם א: חשבו את $\\angle{DAC}$.",
+      "text": "חשבו את $\\angle{ADB}$.",
+      "prompt": "שאלה 13, סעיף ב.\nב־$\\tri ABC$ השוקיים $AB$ ו־$AC$ שוות, ו־$\\angle{ABC} = 38°$. על הבסיס $BC$ בוחרים נקודה $D$ שמרחקה מ־$A$ שווה למרחקה מ־$C$: $DA = DC$.\n∠ABC = 38°\nAB = AC\nDA = DC\nD על BC\nסעיף קודם א: חשבו את $\\angle{DAC}$.\nהסעיף הנבחר: חשבו את $\\angle{ADB}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q13",
+      "nativeItemId": "q13b",
+      "nativeFigureId": "q13_head",
+      "nativeFigureUrl": "/noam-ai/native/G9-T15/b/figures/q13_head.svg"
+    },
+    {
+      "id": "G9-T15-B-Q13ג",
+      "q": 13,
+      "part": "ג",
+      "pin": {
+        "page": 7,
+        "x": 0.832727,
+        "y": 0.849269
+      },
+      "crop": {
+        "page": 7,
+        "x": 0,
+        "y": 0.499928,
+        "w": 1,
+        "h": 0.466814
+      },
+      "crops": [
+        {
+          "page": 7,
+          "x": 0,
+          "y": 0.499928,
+          "w": 1,
+          "h": 0.466814
+        },
+        {
+          "page": 8,
+          "x": 0,
+          "y": 0.032071,
+          "w": 1,
+          "h": 0.017755
+        }
+      ],
+      "context": "ב־$\\tri ABC$ השוקיים $AB$ ו־$AC$ שוות, ו־$\\angle{ABC} = 38°$. על הבסיס $BC$ בוחרים נקודה $D$ שמרחקה מ־$A$ שווה למרחקה מ־$C$: $DA = DC$.\n∠ABC = 38°\nAB = AC\nDA = DC\nD על BC\nסעיף קודם א: חשבו את $\\angle{DAC}$.\nסעיף קודם ב: חשבו את $\\angle{ADB}$.",
+      "text": "חשבו את $\\angle{BAD}$.",
+      "prompt": "שאלה 13, סעיף ג.\nב־$\\tri ABC$ השוקיים $AB$ ו־$AC$ שוות, ו־$\\angle{ABC} = 38°$. על הבסיס $BC$ בוחרים נקודה $D$ שמרחקה מ־$A$ שווה למרחקה מ־$C$: $DA = DC$.\n∠ABC = 38°\nAB = AC\nDA = DC\nD על BC\nסעיף קודם א: חשבו את $\\angle{DAC}$.\nסעיף קודם ב: חשבו את $\\angle{ADB}$.\nהסעיף הנבחר: חשבו את $\\angle{BAD}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q13",
+      "nativeItemId": "q13c",
+      "nativeFigureId": "q13_head",
+      "nativeFigureUrl": "/noam-ai/native/G9-T15/b/figures/q13_head.svg"
+    },
+    {
+      "id": "G9-T15-B-Q14א",
+      "q": 14,
+      "part": "א",
+      "pin": {
+        "page": 8,
+        "x": 0.827418,
+        "y": 0.293363
+      },
+      "crop": {
+        "page": 8,
+        "x": 0,
+        "y": 0.051014,
+        "w": 1,
+        "h": 0.459512
+      },
+      "crops": [
+        {
+          "page": 8,
+          "x": 0,
+          "y": 0.051014,
+          "w": 1,
+          "h": 0.459512
+        }
+      ],
+      "context": "$UA ∥ BZ$, והקטע $AB$ מחבר ביניהם; $\\angle{UAB} = 84°$. $C$ היא נקודה על הישר $BZ$, ו־$B$ בין $C$ ל־$Z$, כך ש־$AC$ חוצה את $\\angle{UAB}$.\n∠UAB = 84°\n∠UAC = ∠CAB\nB על CZ\nAU ∥ BZ",
+      "text": "חשבו את $\\angle{ACB}$.",
+      "prompt": "שאלה 14, סעיף א.\n$UA ∥ BZ$, והקטע $AB$ מחבר ביניהם; $\\angle{UAB} = 84°$. $C$ היא נקודה על הישר $BZ$, ו־$B$ בין $C$ ל־$Z$, כך ש־$AC$ חוצה את $\\angle{UAB}$.\n∠UAB = 84°\n∠UAC = ∠CAB\nB על CZ\nAU ∥ BZ\nהסעיף הנבחר: חשבו את $\\angle{ACB}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q14",
+      "nativeItemId": "q14a",
+      "nativeFigureId": "q14_head",
+      "nativeFigureUrl": "/noam-ai/native/G9-T15/b/figures/q14_head.svg"
+    },
+    {
+      "id": "G9-T15-B-Q14ב",
+      "q": 14,
+      "part": "ב",
+      "pin": {
+        "page": 8,
+        "x": 0.830148,
+        "y": 0.367651
+      },
+      "crop": {
+        "page": 8,
+        "x": 0,
+        "y": 0.051014,
+        "w": 1,
+        "h": 0.459512
+      },
+      "crops": [
+        {
+          "page": 8,
+          "x": 0,
+          "y": 0.051014,
+          "w": 1,
+          "h": 0.459512
+        }
+      ],
+      "context": "$UA ∥ BZ$, והקטע $AB$ מחבר ביניהם; $\\angle{UAB} = 84°$. $C$ היא נקודה על הישר $BZ$, ו־$B$ בין $C$ ל־$Z$, כך ש־$AC$ חוצה את $\\angle{UAB}$.\n∠UAB = 84°\n∠UAC = ∠CAB\nB על CZ\nAU ∥ BZ\nסעיף קודם א: חשבו את $\\angle{ACB}$.",
+      "text": "חשבו את $\\angle{ABC}$.",
+      "prompt": "שאלה 14, סעיף ב.\n$UA ∥ BZ$, והקטע $AB$ מחבר ביניהם; $\\angle{UAB} = 84°$. $C$ היא נקודה על הישר $BZ$, ו־$B$ בין $C$ ל־$Z$, כך ש־$AC$ חוצה את $\\angle{UAB}$.\n∠UAB = 84°\n∠UAC = ∠CAB\nB על CZ\nAU ∥ BZ\nסעיף קודם א: חשבו את $\\angle{ACB}$.\nהסעיף הנבחר: חשבו את $\\angle{ABC}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q14",
+      "nativeItemId": "q14b",
+      "nativeFigureId": "q14_head",
+      "nativeFigureUrl": "/noam-ai/native/G9-T15/b/figures/q14_head.svg"
+    },
+    {
+      "id": "G9-T15-B-Q14ג",
+      "q": 14,
+      "part": "ג",
+      "pin": {
+        "page": 8,
+        "x": 0.832727,
+        "y": 0.44669
+      },
+      "crop": {
+        "page": 8,
+        "x": 0,
+        "y": 0.051014,
+        "w": 1,
+        "h": 0.459512
+      },
+      "crops": [
+        {
+          "page": 8,
+          "x": 0,
+          "y": 0.051014,
+          "w": 1,
+          "h": 0.459512
+        }
+      ],
+      "context": "$UA ∥ BZ$, והקטע $AB$ מחבר ביניהם; $\\angle{UAB} = 84°$. $C$ היא נקודה על הישר $BZ$, ו־$B$ בין $C$ ל־$Z$, כך ש־$AC$ חוצה את $\\angle{UAB}$.\n∠UAB = 84°\n∠UAC = ∠CAB\nB על CZ\nAU ∥ BZ\nסעיף קודם א: חשבו את $\\angle{ACB}$.\nסעיף קודם ב: חשבו את $\\angle{ABC}$.",
+      "text": "הוכיחו: $BA = BC$.",
+      "prompt": "שאלה 14, סעיף ג.\n$UA ∥ BZ$, והקטע $AB$ מחבר ביניהם; $\\angle{UAB} = 84°$. $C$ היא נקודה על הישר $BZ$, ו־$B$ בין $C$ ל־$Z$, כך ש־$AC$ חוצה את $\\angle{UAB}$.\n∠UAB = 84°\n∠UAC = ∠CAB\nB על CZ\nAU ∥ BZ\nסעיף קודם א: חשבו את $\\angle{ACB}$.\nסעיף קודם ב: חשבו את $\\angle{ABC}$.\nהסעיף הנבחר: הוכיחו: $BA = BC$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q14",
+      "nativeItemId": "q14c",
+      "nativeFigureId": "q14_head",
+      "nativeFigureUrl": "/noam-ai/native/G9-T15/b/figures/q14_head.svg"
+    },
+    {
+      "id": "G9-T15-B-Q15א",
+      "q": 15,
+      "part": "א",
+      "pin": {
+        "page": 8,
+        "x": 0.827418,
+        "y": 0.784341
+      },
+      "crop": {
+        "page": 8,
+        "x": 0,
+        "y": 0.511713,
+        "w": 1,
+        "h": 0.455028
+      },
+      "crops": [
+        {
+          "page": 8,
+          "x": 0,
+          "y": 0.511713,
+          "w": 1,
+          "h": 0.455028
+        },
+        {
+          "page": 9,
+          "x": 0,
+          "y": 0.032071,
+          "w": 1,
+          "h": 0.017755
+        }
+      ],
+      "context": "ב־$\\tri KLM$ ידוע ש־$\\angle{KML} = 58°$. חוצה הזווית הזאת הוא הקטע $MN$, ש־$N$ על הצלע $KL$. מ־$N$ יוצא הקטע $NP$, מקביל ל־$LM$, ו־$P$ על $KM$.\n∠KML = 58°\n∠KMN = ∠NML\nN על KL\nP על KM\nNP ∥ LM",
+      "text": "חשבו את $\\angle{PNM}$ ונמקו.",
+      "prompt": "שאלה 15, סעיף א.\nב־$\\tri KLM$ ידוע ש־$\\angle{KML} = 58°$. חוצה הזווית הזאת הוא הקטע $MN$, ש־$N$ על הצלע $KL$. מ־$N$ יוצא הקטע $NP$, מקביל ל־$LM$, ו־$P$ על $KM$.\n∠KML = 58°\n∠KMN = ∠NML\nN על KL\nP על KM\nNP ∥ LM\nהסעיף הנבחר: חשבו את $\\angle{PNM}$ ונמקו.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q15",
+      "nativeItemId": "q15a",
+      "nativeFigureId": "q15_head",
+      "nativeFigureUrl": "/noam-ai/native/G9-T15/b/figures/q15_head.svg"
+    },
+    {
+      "id": "G9-T15-B-Q15ב",
+      "q": 15,
+      "part": "ב",
+      "pin": {
+        "page": 8,
+        "x": 0.830148,
+        "y": 0.858629
+      },
+      "crop": {
+        "page": 8,
+        "x": 0,
+        "y": 0.511713,
+        "w": 1,
+        "h": 0.455028
+      },
+      "crops": [
+        {
+          "page": 8,
+          "x": 0,
+          "y": 0.511713,
+          "w": 1,
+          "h": 0.455028
+        },
+        {
+          "page": 9,
+          "x": 0,
+          "y": 0.032071,
+          "w": 1,
+          "h": 0.017755
+        }
+      ],
+      "context": "ב־$\\tri KLM$ ידוע ש־$\\angle{KML} = 58°$. חוצה הזווית הזאת הוא הקטע $MN$, ש־$N$ על הצלע $KL$. מ־$N$ יוצא הקטע $NP$, מקביל ל־$LM$, ו־$P$ על $KM$.\n∠KML = 58°\n∠KMN = ∠NML\nN על KL\nP על KM\nNP ∥ LM\nסעיף קודם א: חשבו את $\\angle{PNM}$ ונמקו.",
+      "text": "הוכיחו: $PN = PM$.",
+      "prompt": "שאלה 15, סעיף ב.\nב־$\\tri KLM$ ידוע ש־$\\angle{KML} = 58°$. חוצה הזווית הזאת הוא הקטע $MN$, ש־$N$ על הצלע $KL$. מ־$N$ יוצא הקטע $NP$, מקביל ל־$LM$, ו־$P$ על $KM$.\n∠KML = 58°\n∠KMN = ∠NML\nN על KL\nP על KM\nNP ∥ LM\nסעיף קודם א: חשבו את $\\angle{PNM}$ ונמקו.\nהסעיף הנבחר: הוכיחו: $PN = PM$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q15",
+      "nativeItemId": "q15b",
+      "nativeFigureId": "q15_head",
+      "nativeFigureUrl": "/noam-ai/native/G9-T15/b/figures/q15_head.svg"
+    },
+    {
+      "id": "G9-T15-B-Q16א",
+      "q": 16,
+      "part": "א",
+      "pin": {
+        "page": 9,
+        "x": 0.827418,
+        "y": 0.239852
+      },
+      "crop": {
+        "page": 9,
+        "x": 0,
+        "y": 0.051014,
+        "w": 1,
+        "h": 0.327862
+      },
+      "crops": [
+        {
+          "page": 9,
+          "x": 0,
+          "y": 0.051014,
+          "w": 1,
+          "h": 0.327862
+        }
+      ],
+      "context": "$T$ היא נקודת החיתוך של הקטעים $PS$ ו־$QR$. ידוע ש־$TP = TQ$, ש־$TR = TS$ וש־$\\angle{PTQ} = 42°$.\n∠PTQ = 42°\nTP = TQ\nTR = TS\nT על PS\nT על QR",
+      "text": "חשבו את $\\angle{TPQ}$ ואת $\\angle{TSR}$.",
+      "prompt": "שאלה 16, סעיף א.\n$T$ היא נקודת החיתוך של הקטעים $PS$ ו־$QR$. ידוע ש־$TP = TQ$, ש־$TR = TS$ וש־$\\angle{PTQ} = 42°$.\n∠PTQ = 42°\nTP = TQ\nTR = TS\nT על PS\nT על QR\nהסעיף הנבחר: חשבו את $\\angle{TPQ}$ ואת $\\angle{TSR}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q16",
+      "nativeItemId": "q16a",
+      "nativeFigureId": "q16_head",
+      "nativeFigureUrl": "/noam-ai/native/G9-T15/b/figures/q16_head.svg"
+    },
+    {
+      "id": "G9-T15-B-Q16ב",
+      "q": 16,
+      "part": "ב",
+      "pin": {
+        "page": 9,
+        "x": 0.830148,
+        "y": 0.31414
+      },
+      "crop": {
+        "page": 9,
+        "x": 0,
+        "y": 0.051014,
+        "w": 1,
+        "h": 0.327862
+      },
+      "crops": [
+        {
+          "page": 9,
+          "x": 0,
+          "y": 0.051014,
+          "w": 1,
+          "h": 0.327862
+        }
+      ],
+      "context": "$T$ היא נקודת החיתוך של הקטעים $PS$ ו־$QR$. ידוע ש־$TP = TQ$, ש־$TR = TS$ וש־$\\angle{PTQ} = 42°$.\n∠PTQ = 42°\nTP = TQ\nTR = TS\nT על PS\nT על QR\nסעיף קודם א: חשבו את $\\angle{TPQ}$ ואת $\\angle{TSR}$.",
+      "text": "הוכיחו: $PQ ∥ RS$.",
+      "prompt": "שאלה 16, סעיף ב.\n$T$ היא נקודת החיתוך של הקטעים $PS$ ו־$QR$. ידוע ש־$TP = TQ$, ש־$TR = TS$ וש־$\\angle{PTQ} = 42°$.\n∠PTQ = 42°\nTP = TQ\nTR = TS\nT על PS\nT על QR\nסעיף קודם א: חשבו את $\\angle{TPQ}$ ואת $\\angle{TSR}$.\nהסעיף הנבחר: הוכיחו: $PQ ∥ RS$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q16",
+      "nativeItemId": "q16b",
+      "nativeFigureId": "q16_head",
+      "nativeFigureUrl": "/noam-ai/native/G9-T15/b/figures/q16_head.svg"
+    },
+    {
+      "id": "G9-T15-B-Q17א",
+      "q": 17,
+      "part": "א",
+      "pin": {
+        "page": 9,
+        "x": 0.827418,
+        "y": 0.54574
+      },
+      "crop": {
+        "page": 9,
+        "x": 0,
+        "y": 0.380064,
+        "w": 1,
+        "h": 0.586677
+      },
+      "crops": [
+        {
+          "page": 9,
+          "x": 0,
+          "y": 0.380064,
+          "w": 1,
+          "h": 0.586677
+        },
+        {
+          "page": 10,
+          "x": 0,
+          "y": 0.032071,
+          "w": 1,
+          "h": 0.060065
+        }
+      ],
+      "context": "$M$ היא אמצע הקטע $KL$, ו־$N$ היא נקודה מחוץ לקטע שמרחקה מ־$M$ שווה ל־$MK$. ידוע ש־$\\angle{MLN} = 23°$.\n∠MLN = 23°\nMN = MK\nM אמצע KL",
+      "text": "חשבו את $\\angle{MNL}$.",
+      "prompt": "שאלה 17, סעיף א.\n$M$ היא אמצע הקטע $KL$, ו־$N$ היא נקודה מחוץ לקטע שמרחקה מ־$M$ שווה ל־$MK$. ידוע ש־$\\angle{MLN} = 23°$.\n∠MLN = 23°\nMN = MK\nM אמצע KL\nהסעיף הנבחר: חשבו את $\\angle{MNL}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q17",
+      "nativeItemId": "q17a",
+      "nativeFigureId": "q17_head",
+      "nativeFigureUrl": "/noam-ai/native/G9-T15/b/figures/q17_head.svg"
+    },
+    {
+      "id": "G9-T15-B-Q17ב",
+      "q": 17,
+      "part": "ב",
+      "pin": {
+        "page": 9,
+        "x": 0.830148,
+        "y": 0.620028
+      },
+      "crop": {
+        "page": 9,
+        "x": 0,
+        "y": 0.380064,
+        "w": 1,
+        "h": 0.586677
+      },
+      "crops": [
+        {
+          "page": 9,
+          "x": 0,
+          "y": 0.380064,
+          "w": 1,
+          "h": 0.586677
+        },
+        {
+          "page": 10,
+          "x": 0,
+          "y": 0.032071,
+          "w": 1,
+          "h": 0.060065
+        }
+      ],
+      "context": "$M$ היא אמצע הקטע $KL$, ו־$N$ היא נקודה מחוץ לקטע שמרחקה מ־$M$ שווה ל־$MK$. ידוע ש־$\\angle{MLN} = 23°$.\n∠MLN = 23°\nMN = MK\nM אמצע KL\nסעיף קודם א: חשבו את $\\angle{MNL}$.",
+      "text": "חשבו את $\\angle{MNK}$.",
+      "prompt": "שאלה 17, סעיף ב.\n$M$ היא אמצע הקטע $KL$, ו־$N$ היא נקודה מחוץ לקטע שמרחקה מ־$M$ שווה ל־$MK$. ידוע ש־$\\angle{MLN} = 23°$.\n∠MLN = 23°\nMN = MK\nM אמצע KL\nסעיף קודם א: חשבו את $\\angle{MNL}$.\nהסעיף הנבחר: חשבו את $\\angle{MNK}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q17",
+      "nativeItemId": "q17b",
+      "nativeFigureId": "q17_head",
+      "nativeFigureUrl": "/noam-ai/native/G9-T15/b/figures/q17_head.svg"
+    },
+    {
+      "id": "G9-T15-B-Q17ג",
+      "q": 17,
+      "part": "ג",
+      "pin": {
+        "page": 9,
+        "x": 0.832727,
+        "y": 0.699067
+      },
+      "crop": {
+        "page": 9,
+        "x": 0,
+        "y": 0.380064,
+        "w": 1,
+        "h": 0.586677
+      },
+      "crops": [
+        {
+          "page": 9,
+          "x": 0,
+          "y": 0.380064,
+          "w": 1,
+          "h": 0.586677
+        },
+        {
+          "page": 10,
+          "x": 0,
+          "y": 0.032071,
+          "w": 1,
+          "h": 0.060065
+        }
+      ],
+      "context": "$M$ היא אמצע הקטע $KL$, ו־$N$ היא נקודה מחוץ לקטע שמרחקה מ־$M$ שווה ל־$MK$. ידוע ש־$\\angle{MLN} = 23°$.\n∠MLN = 23°\nMN = MK\nM אמצע KL\nסעיף קודם א: חשבו את $\\angle{MNL}$.\nסעיף קודם ב: חשבו את $\\angle{MNK}$.",
+      "text": "חשבו את $\\angle{KNL}$.",
+      "prompt": "שאלה 17, סעיף ג.\n$M$ היא אמצע הקטע $KL$, ו־$N$ היא נקודה מחוץ לקטע שמרחקה מ־$M$ שווה ל־$MK$. ידוע ש־$\\angle{MLN} = 23°$.\n∠MLN = 23°\nMN = MK\nM אמצע KL\nסעיף קודם א: חשבו את $\\angle{MNL}$.\nסעיף קודם ב: חשבו את $\\angle{MNK}$.\nהסעיף הנבחר: חשבו את $\\angle{KNL}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q17",
+      "nativeItemId": "q17c",
+      "nativeFigureId": "q17_head",
+      "nativeFigureUrl": "/noam-ai/native/G9-T15/b/figures/q17_head.svg"
+    },
+    {
+      "id": "G9-T15-B-Q18א",
+      "q": 18,
+      "part": "א",
+      "pin": {
+        "page": 10,
+        "x": 0.827418,
+        "y": 0.155545
+      },
+      "crop": {
+        "page": 10,
+        "x": 0,
+        "y": 0.093323,
+        "w": 1,
+        "h": 0.390393
+      },
+      "crops": [
+        {
+          "page": 10,
+          "x": 0,
+          "y": 0.093323,
+          "w": 1,
+          "h": 0.390393
+        }
+      ],
+      "context": "יואב אומר: „אם אחת הזוויות של משולש שווה־שוקיים היא $40°$, אז שתי הזוויות האחרות הן $70°$ ו־$70°$.“\nמשולש שווה־שוקיים שאחת מזוויותיו 40°; טענה: האחרות 70° ו־70°",
+      "text": "האם זה בהכרח כך? מצאו את כל האפשרויות לזוויות המשולש, וסרטטו סקיצה לכל אפשרות.",
+      "prompt": "שאלה 18, סעיף א.\nיואב אומר: „אם אחת הזוויות של משולש שווה־שוקיים היא $40°$, אז שתי הזוויות האחרות הן $70°$ ו־$70°$.“\nמשולש שווה־שוקיים שאחת מזוויותיו 40°; טענה: האחרות 70° ו־70°\nהסעיף הנבחר: האם זה בהכרח כך? מצאו את כל האפשרויות לזוויות המשולש, וסרטטו סקיצה לכל אפשרות.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q18",
+      "nativeItemId": "q18a"
+    },
+    {
+      "id": "G9-T15-B-Q18ב",
+      "q": 18,
+      "part": "ב",
+      "pin": {
+        "page": 10,
+        "x": 0.830148,
+        "y": 0.229832
+      },
+      "crop": {
+        "page": 10,
+        "x": 0,
+        "y": 0.093323,
+        "w": 1,
+        "h": 0.390393
+      },
+      "crops": [
+        {
+          "page": 10,
+          "x": 0,
+          "y": 0.093323,
+          "w": 1,
+          "h": 0.390393
+        }
+      ],
+      "context": "יואב אומר: „אם אחת הזוויות של משולש שווה־שוקיים היא $40°$, אז שתי הזוויות האחרות הן $70°$ ו־$70°$.“\nמשולש שווה־שוקיים שאחת מזוויותיו 40°; טענה: האחרות 70° ו־70°\nסעיף קודם א: האם זה בהכרח כך? מצאו את כל האפשרויות לזוויות המשולש, וסרטטו סקיצה לכל אפשרות.",
+      "text": "ואם אחת הזוויות של משולש שווה־שוקיים היא $100°$? כמה אפשרויות יש עכשיו? נמקו.",
+      "prompt": "שאלה 18, סעיף ב.\nיואב אומר: „אם אחת הזוויות של משולש שווה־שוקיים היא $40°$, אז שתי הזוויות האחרות הן $70°$ ו־$70°$.“\nמשולש שווה־שוקיים שאחת מזוויותיו 40°; טענה: האחרות 70° ו־70°\nסעיף קודם א: האם זה בהכרח כך? מצאו את כל האפשרויות לזוויות המשולש, וסרטטו סקיצה לכל אפשרות.\nהסעיף הנבחר: ואם אחת הזוויות של משולש שווה־שוקיים היא $100°$? כמה אפשרויות יש עכשיו? נמקו.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q18",
+      "nativeItemId": "q18b"
+    },
+    {
+      "id": "G9-T15-B-Q19א",
+      "q": 19,
+      "part": "א",
+      "pin": {
+        "page": 10,
+        "x": 0.827418,
+        "y": 0.524805
+      },
+      "crop": {
+        "page": 10,
+        "x": 0,
+        "y": 0.484904,
+        "w": 1,
+        "h": 0.481837
+      },
+      "crops": [
+        {
+          "page": 10,
+          "x": 0,
+          "y": 0.484904,
+          "w": 1,
+          "h": 0.481837
+        },
+        {
+          "page": 11,
+          "x": 0,
+          "y": 0.032071,
+          "w": 1,
+          "h": 0.017755
+        }
+      ],
+      "context": "שלט חתוך בצורת משולש ישר־זווית, וניצביו ארוכים $15$ ס״מ ו־$20$ ס״מ.\nמשולש ישר־זווית: ניצבים 15 ס״מ ו־20 ס״מ",
+      "text": "סרטטו סקיצה של השלט. מה אורך היתר?",
+      "prompt": "שאלה 19, סעיף א.\nשלט חתוך בצורת משולש ישר־זווית, וניצביו ארוכים $15$ ס״מ ו־$20$ ס״מ.\nמשולש ישר־זווית: ניצבים 15 ס״מ ו־20 ס״מ\nהסעיף הנבחר: סרטטו סקיצה של השלט. מה אורך היתר?\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q19",
+      "nativeItemId": "q19a"
+    },
+    {
+      "id": "G9-T15-B-Q19ב",
+      "q": 19,
+      "part": "ב",
+      "pin": {
+        "page": 10,
+        "x": 0.830148,
+        "y": 0.599092
+      },
+      "crop": {
+        "page": 10,
+        "x": 0,
+        "y": 0.484904,
+        "w": 1,
+        "h": 0.481837
+      },
+      "crops": [
+        {
+          "page": 10,
+          "x": 0,
+          "y": 0.484904,
+          "w": 1,
+          "h": 0.481837
+        },
+        {
+          "page": 11,
+          "x": 0,
+          "y": 0.032071,
+          "w": 1,
+          "h": 0.017755
+        }
+      ],
+      "context": "שלט חתוך בצורת משולש ישר־זווית, וניצביו ארוכים $15$ ס״מ ו־$20$ ס״מ.\nמשולש ישר־זווית: ניצבים 15 ס״מ ו־20 ס״מ\nסעיף קודם א: סרטטו סקיצה של השלט. מה אורך היתר?",
+      "text": "מהו שטח השלט?",
+      "prompt": "שאלה 19, סעיף ב.\nשלט חתוך בצורת משולש ישר־זווית, וניצביו ארוכים $15$ ס״מ ו־$20$ ס״מ.\nמשולש ישר־זווית: ניצבים 15 ס״מ ו־20 ס״מ\nסעיף קודם א: סרטטו סקיצה של השלט. מה אורך היתר?\nהסעיף הנבחר: מהו שטח השלט?\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q19",
+      "nativeItemId": "q19b"
+    },
+    {
+      "id": "G9-T15-B-Q19ג",
+      "q": 19,
+      "part": "ג",
+      "pin": {
+        "page": 10,
+        "x": 0.832727,
+        "y": 0.678131
+      },
+      "crop": {
+        "page": 10,
+        "x": 0,
+        "y": 0.484904,
+        "w": 1,
+        "h": 0.481837
+      },
+      "crops": [
+        {
+          "page": 10,
+          "x": 0,
+          "y": 0.484904,
+          "w": 1,
+          "h": 0.481837
+        },
+        {
+          "page": 11,
+          "x": 0,
+          "y": 0.032071,
+          "w": 1,
+          "h": 0.017755
+        }
+      ],
+      "context": "שלט חתוך בצורת משולש ישר־זווית, וניצביו ארוכים $15$ ס״מ ו־$20$ ס״מ.\nמשולש ישר־זווית: ניצבים 15 ס״מ ו־20 ס״מ\nסעיף קודם א: סרטטו סקיצה של השלט. מה אורך היתר?\nסעיף קודם ב: מהו שטח השלט?",
+      "text": "מה אורך הגובה ליתר? היעזרו בשטח.",
+      "prompt": "שאלה 19, סעיף ג.\nשלט חתוך בצורת משולש ישר־זווית, וניצביו ארוכים $15$ ס״מ ו־$20$ ס״מ.\nמשולש ישר־זווית: ניצבים 15 ס״מ ו־20 ס״מ\nסעיף קודם א: סרטטו סקיצה של השלט. מה אורך היתר?\nסעיף קודם ב: מהו שטח השלט?\nהסעיף הנבחר: מה אורך הגובה ליתר? היעזרו בשטח.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q19",
+      "nativeItemId": "q19c"
+    },
+    {
+      "id": "G9-T15-B-Q20א",
+      "q": 20,
+      "part": "א",
+      "pin": {
+        "page": 11,
+        "x": 0.827418,
+        "y": 0.114137
+      },
+      "crop": {
+        "page": 11,
+        "x": 0,
+        "y": 0.051014,
+        "w": 1,
+        "h": 0.224116
+      },
+      "crops": [
+        {
+          "page": 11,
+          "x": 0,
+          "y": 0.051014,
+          "w": 1,
+          "h": 0.224116
+        }
+      ],
+      "context": "ב־$\\tri ABC$ השוקיים $AB$ ו־$AC$ שוות, $AB = 15$ ס״מ ו־$BC = 18$ ס״מ. $AD$ הוא הגובה לבסיס ($AD ⊥ BC$).\nAB = AC\nAB = 15 ס״מ\nBC = 18 ס״מ\nD על BC\nAD ⊥ BC",
+      "text": "מה אורך הגובה $AD$? פרטו את כל שלבי החישוב.",
+      "prompt": "שאלה 20, סעיף א.\nב־$\\tri ABC$ השוקיים $AB$ ו־$AC$ שוות, $AB = 15$ ס״מ ו־$BC = 18$ ס״מ. $AD$ הוא הגובה לבסיס ($AD ⊥ BC$).\nAB = AC\nAB = 15 ס״מ\nBC = 18 ס״מ\nD על BC\nAD ⊥ BC\nהסעיף הנבחר: מה אורך הגובה $AD$? פרטו את כל שלבי החישוב.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q20",
+      "nativeItemId": "q20a",
+      "nativeFigureId": "q20_head",
+      "nativeFigureUrl": "/noam-ai/native/G9-T15/b/figures/q20_head.svg"
+    },
+    {
+      "id": "G9-T15-B-Q20ב",
+      "q": 20,
+      "part": "ב",
+      "pin": {
+        "page": 11,
+        "x": 0.830148,
+        "y": 0.211295
+      },
+      "crop": {
+        "page": 11,
+        "x": 0,
+        "y": 0.051014,
+        "w": 1,
+        "h": 0.224116
+      },
+      "crops": [
+        {
+          "page": 11,
+          "x": 0,
+          "y": 0.051014,
+          "w": 1,
+          "h": 0.224116
+        }
+      ],
+      "context": "ב־$\\tri ABC$ השוקיים $AB$ ו־$AC$ שוות, $AB = 15$ ס״מ ו־$BC = 18$ ס״מ. $AD$ הוא הגובה לבסיס ($AD ⊥ BC$).\nAB = AC\nAB = 15 ס״מ\nBC = 18 ס״מ\nD על BC\nAD ⊥ BC\nסעיף קודם א: מה אורך הגובה $AD$? פרטו את כל שלבי החישוב.",
+      "text": "מהו שטח $\\tri ABC$?",
+      "prompt": "שאלה 20, סעיף ב.\nב־$\\tri ABC$ השוקיים $AB$ ו־$AC$ שוות, $AB = 15$ ס״מ ו־$BC = 18$ ס״מ. $AD$ הוא הגובה לבסיס ($AD ⊥ BC$).\nAB = AC\nAB = 15 ס״מ\nBC = 18 ס״מ\nD על BC\nAD ⊥ BC\nסעיף קודם א: מה אורך הגובה $AD$? פרטו את כל שלבי החישוב.\nהסעיף הנבחר: מהו שטח $\\tri ABC$?\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q20",
+      "nativeItemId": "q20b",
+      "nativeFigureId": "q20_head",
+      "nativeFigureUrl": "/noam-ai/native/G9-T15/b/figures/q20_head.svg"
+    },
+    {
+      "id": "G9-T15-B-Q21א",
+      "q": 21,
+      "part": "א",
+      "pin": {
+        "page": 11,
+        "x": 0.827418,
+        "y": 0.338539
+      },
+      "crop": {
+        "page": 11,
+        "x": 0,
+        "y": 0.276318,
+        "w": 1,
+        "h": 0.690424
+      },
+      "crops": [
+        {
+          "page": 11,
+          "x": 0,
+          "y": 0.276318,
+          "w": 1,
+          "h": 0.690424
+        },
+        {
+          "page": 12,
+          "x": 0,
+          "y": 0.032071,
+          "w": 1,
+          "h": 0.017755
+        }
+      ],
+      "context": "מעצבת מתכננת דגלים בצורת משולש שווה־שוקיים. לכל דגם היא רושמת את זווית הראש ואת זוויות הבסיס.\nדגמים של משולש שווה־שוקיים לפי זוויות",
+      "text": "דגם 1: זווית הראש $96°$, וכל זווית בסיס $42°$. האם הדגם אפשרי? נמקו.",
+      "prompt": "שאלה 21, סעיף א.\nמעצבת מתכננת דגלים בצורת משולש שווה־שוקיים. לכל דגם היא רושמת את זווית הראש ואת זוויות הבסיס.\nדגמים של משולש שווה־שוקיים לפי זוויות\nהסעיף הנבחר: דגם 1: זווית הראש $96°$, וכל זווית בסיס $42°$. האם הדגם אפשרי? נמקו.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q21",
+      "nativeItemId": "q21a"
+    },
+    {
+      "id": "G9-T15-B-Q21ב",
+      "q": 21,
+      "part": "ב",
+      "pin": {
+        "page": 11,
+        "x": 0.830148,
+        "y": 0.412827
+      },
+      "crop": {
+        "page": 11,
+        "x": 0,
+        "y": 0.276318,
+        "w": 1,
+        "h": 0.690424
+      },
+      "crops": [
+        {
+          "page": 11,
+          "x": 0,
+          "y": 0.276318,
+          "w": 1,
+          "h": 0.690424
+        },
+        {
+          "page": 12,
+          "x": 0,
+          "y": 0.032071,
+          "w": 1,
+          "h": 0.017755
+        }
+      ],
+      "context": "מעצבת מתכננת דגלים בצורת משולש שווה־שוקיים. לכל דגם היא רושמת את זווית הראש ואת זוויות הבסיס.\nדגמים של משולש שווה־שוקיים לפי זוויות\nסעיף קודם א: דגם 1: זווית הראש $96°$, וכל זווית בסיס $42°$. האם הדגם אפשרי? נמקו.",
+      "text": "דגם 2: זווית הראש $84°$, וכל זווית בסיס $47°$. האם הדגם אפשרי? נמקו.",
+      "prompt": "שאלה 21, סעיף ב.\nמעצבת מתכננת דגלים בצורת משולש שווה־שוקיים. לכל דגם היא רושמת את זווית הראש ואת זוויות הבסיס.\nדגמים של משולש שווה־שוקיים לפי זוויות\nסעיף קודם א: דגם 1: זווית הראש $96°$, וכל זווית בסיס $42°$. האם הדגם אפשרי? נמקו.\nהסעיף הנבחר: דגם 2: זווית הראש $84°$, וכל זווית בסיס $47°$. האם הדגם אפשרי? נמקו.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q21",
+      "nativeItemId": "q21b"
+    },
+    {
+      "id": "G9-T15-B-Q21ג",
+      "q": 21,
+      "part": "ג",
+      "pin": {
+        "page": 11,
+        "x": 0.832727,
+        "y": 0.491866
+      },
+      "crop": {
+        "page": 11,
+        "x": 0,
+        "y": 0.276318,
+        "w": 1,
+        "h": 0.690424
+      },
+      "crops": [
+        {
+          "page": 11,
+          "x": 0,
+          "y": 0.276318,
+          "w": 1,
+          "h": 0.690424
+        },
+        {
+          "page": 12,
+          "x": 0,
+          "y": 0.032071,
+          "w": 1,
+          "h": 0.017755
+        }
+      ],
+      "context": "מעצבת מתכננת דגלים בצורת משולש שווה־שוקיים. לכל דגם היא רושמת את זווית הראש ואת זוויות הבסיס.\nדגמים של משולש שווה־שוקיים לפי זוויות\nסעיף קודם א: דגם 1: זווית הראש $96°$, וכל זווית בסיס $42°$. האם הדגם אפשרי? נמקו.\nסעיף קודם ב: דגם 2: זווית הראש $84°$, וכל זווית בסיס $47°$. האם הדגם אפשרי? נמקו.",
+      "text": "בדגם 3 כל זווית בסיס $57°$. מה צריכה להיות זווית הראש? סרטטו סקיצה של הדגם.",
+      "prompt": "שאלה 21, סעיף ג.\nמעצבת מתכננת דגלים בצורת משולש שווה־שוקיים. לכל דגם היא רושמת את זווית הראש ואת זוויות הבסיס.\nדגמים של משולש שווה־שוקיים לפי זוויות\nסעיף קודם א: דגם 1: זווית הראש $96°$, וכל זווית בסיס $42°$. האם הדגם אפשרי? נמקו.\nסעיף קודם ב: דגם 2: זווית הראש $84°$, וכל זווית בסיס $47°$. האם הדגם אפשרי? נמקו.\nהסעיף הנבחר: בדגם 3 כל זווית בסיס $57°$. מה צריכה להיות זווית הראש? סרטטו סקיצה של הדגם.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q21",
+      "nativeItemId": "q21c"
+    },
+    {
+      "id": "G9-T15-B-Q22א",
+      "q": 22,
+      "part": "א",
+      "pin": {
+        "page": 12,
+        "x": 0.827418,
+        "y": 0.113235
+      },
+      "crop": {
+        "page": 12,
+        "x": 0,
+        "y": 0.051014,
+        "w": 1,
+        "h": 0.915728
+      },
+      "crops": [
+        {
+          "page": 12,
+          "x": 0,
+          "y": 0.051014,
+          "w": 1,
+          "h": 0.915728
+        }
+      ],
+      "context": "במשולש שווה־שוקיים זווית בסיס אחת היא $52°$. נועה חישבה את זווית הראש כך: $(180 − 52) : 2 = 64$, ולכן זווית הראש $64°$.\nמשולש שווה־שוקיים, זווית בסיס 52°; חישוב שגוי של זווית הראש",
+      "text": "מה הטעות של נועה? הסבירו בעזרת משפט זוויות הבסיס.",
+      "prompt": "שאלה 22, סעיף א.\nבמשולש שווה־שוקיים זווית בסיס אחת היא $52°$. נועה חישבה את זווית הראש כך: $(180 − 52) : 2 = 64$, ולכן זווית הראש $64°$.\nמשולש שווה־שוקיים, זווית בסיס 52°; חישוב שגוי של זווית הראש\nהסעיף הנבחר: מה הטעות של נועה? הסבירו בעזרת משפט זוויות הבסיס.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q22",
+      "nativeItemId": "q22a"
+    },
+    {
+      "id": "G9-T15-B-Q22ב",
+      "q": 22,
+      "part": "ב",
+      "pin": {
+        "page": 12,
+        "x": 0.830148,
+        "y": 0.187523
+      },
+      "crop": {
+        "page": 12,
+        "x": 0,
+        "y": 0.051014,
+        "w": 1,
+        "h": 0.915728
+      },
+      "crops": [
+        {
+          "page": 12,
+          "x": 0,
+          "y": 0.051014,
+          "w": 1,
+          "h": 0.915728
+        }
+      ],
+      "context": "במשולש שווה־שוקיים זווית בסיס אחת היא $52°$. נועה חישבה את זווית הראש כך: $(180 − 52) : 2 = 64$, ולכן זווית הראש $64°$.\nמשולש שווה־שוקיים, זווית בסיס 52°; חישוב שגוי של זווית הראש\nסעיף קודם א: מה הטעות של נועה? הסבירו בעזרת משפט זוויות הבסיס.",
+      "text": "חשבו נכון את זווית הראש.",
+      "prompt": "שאלה 22, סעיף ב.\nבמשולש שווה־שוקיים זווית בסיס אחת היא $52°$. נועה חישבה את זווית הראש כך: $(180 − 52) : 2 = 64$, ולכן זווית הראש $64°$.\nמשולש שווה־שוקיים, זווית בסיס 52°; חישוב שגוי של זווית הראש\nסעיף קודם א: מה הטעות של נועה? הסבירו בעזרת משפט זוויות הבסיס.\nהסעיף הנבחר: חשבו נכון את זווית הראש.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q22",
+      "nativeItemId": "q22b"
+    }
+  ],
+  "nativeExportUrl": "/noam-ai/native/G9-T15/b/noam-ai.json",
+  "nativeExportSha256": "0e4e43ca71eedf0daf91788f48ea717c7d14f0ba449127aee5975974dbb3bd59",
+  "nativeLevel": "b"
+}

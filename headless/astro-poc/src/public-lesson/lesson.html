@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
+<script>
+// Restore the site's explicit motion choice before the lesson's first paint.
+try {
+  const saved = JSON.parse(localStorage.getItem('noam-accessibility-v1') || '{}');
+  const html = document.documentElement;
+  html.classList.toggle('nd-motion-off', saved.stopAnim === true);
+  html.classList.toggle('noam-a11y-motion', saved.motion === true || saved.stopAnim === true);
+  html.classList.toggle('nd-motion-enabled', saved.motionChosen === true && saved.motion === false && saved.stopAnim !== true);
+} catch { /* Device preference remains the default when storage is unavailable. */ }
+</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta name="robots" content="noindex, nofollow">
@@ -115,7 +125,7 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
   h1{font-size:18px}
 }
 @media (prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  html:not(.nd-motion-enabled) *,html:not(.nd-motion-enabled) *::before,html:not(.nd-motion-enabled) *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
 </style>
 </head>
@@ -234,7 +244,7 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
 .rv-twinkle{animation:rvTwinkle 1.4s ease-in-out infinite}
 .rv-twinkle2{animation:rvTwinkle 1.4s ease-in-out .5s infinite}
 .rv text{display:none}
-@media (prefers-reduced-motion:reduce){.rv *{animation:none!important}}</style>
+@media (prefers-reduced-motion:reduce){html:not(.nd-motion-enabled) .rv *{animation:none!important}}</style>
 
 
 <g id="rivo-idle" class="rv" transform="translate(20 20)"><title>ריבו — רגיל</title><ellipse cx="60" cy="123" rx="30" ry="5" fill="#1F2A37" opacity="0.12"></ellipse><g class="rv-bob"><rect x="35" y="98" width="17" height="18" rx="8.5" fill="#1F2A37"></rect><rect x="68" y="98" width="17" height="18" rx="8.5" fill="#1F2A37"></rect><clipPath id="clip-idle"><rect x="16" y="14" width="88" height="88" rx="24"></rect></clipPath><g clip-path="url(#clip-idle)"><rect x="16" y="14" width="55" height="55" fill="#6EDDD0"></rect><rect x="71" y="14" width="33" height="55" fill="#FFD84D"></rect><rect x="16" y="69" width="55" height="33" fill="#FFD84D"></rect><rect x="71" y="69" width="33" height="33" fill="#FF9B7D"></rect><path d="M71 14V102M16 69H104" stroke="#FFFFFF" stroke-width="2" opacity="0.8"></path></g><rect x="16" y="14" width="88" height="88" rx="24" fill="none" stroke="#1F2A37" stroke-width="4"></rect><ellipse cx="30" cy="72" rx="6" ry="4" fill="#FF5C8A" opacity="0.35"></ellipse><ellipse cx="92" cy="72" rx="6" ry="4" fill="#FF5C8A" opacity="0.35"></ellipse><g class="rv-blink"><ellipse cx="45" cy="48" rx="12.5" ry="14.5" fill="#FFFFFF" stroke="#1F2A37" stroke-width="3"></ellipse><ellipse cx="77" cy="48" rx="12.5" ry="14.5" fill="#FFFFFF" stroke="#1F2A37" stroke-width="3"></ellipse><g><g class="rv-glance"><circle cx="46" cy="50" r="6.5" fill="#1F2A37"></circle><circle cx="78" cy="50" r="6.5" fill="#1F2A37"></circle><circle cx="48.5" cy="47" r="2.2" fill="#FFFFFF"></circle><circle cx="80.5" cy="47" r="2.2" fill="#FFFFFF"></circle></g></g></g><path d="M52 79Q61 87 70 79" fill="none" stroke="#1F2A37" stroke-width="4" stroke-linecap="round"></path></g><text x="60" y="160" text-anchor="middle" font-family="Rubik, sans-serif" font-size="15" font-weight="700" fill="#1F2A37">רגיל · idle</text></g>
@@ -349,7 +359,11 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
     state: { idx: 0, split: 150, dragged: false, dragging: false, done: false, wrong: [], hint: 0, fb: null, mood: 'idle', trans: null, msg: '', msgId: 0, typing: false, attn: false, flash: null, flashN: 0, sound: true, target: 'home', below: false, above: false, res: {}, retry: false, demo: null, demoJoined: false, demoDone: false, revealed: [] },
     props: { startStep: 1, idleNudgeSec: 9, objectFeedback: true, bubbleShape: 'cycle', wordsPerLine: 4 },
     timers: [], anims: [], demoAnims: [], wrongN: 0, px: null, py: null, rv: null, _vb: null, _lbl: {},
-    get rm() { return !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches); },
+    get rm() {
+      const html = document.documentElement;
+      if (html.classList.contains('nd-motion-off') || html.classList.contains('noam-a11y-motion')) return true;
+      return !html.classList.contains('nd-motion-enabled') && !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+    },
     later(fn, ms) { const t = setTimeout(fn, this.rm ? Math.min(ms, 40) : ms); this.timers.push(t); return t; },
     q(sel) { return $('app').querySelector(sel); },
     an(el, k, o) {
@@ -1252,6 +1266,26 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
   };
   window.__lesson = app;
   app.boot();
+  const policyPaused = new Set();
+  const policyTweens = new Set();
+  function syncMotion() {
+    if (app.rm) {
+      document.getAnimations().forEach(animation => {
+        if (animation.playState === 'running') { policyPaused.add(animation); animation.pause(); }
+      });
+      if (typeof gsap !== 'undefined') gsap.globalTimeline.getChildren(false, true, true).forEach(tween => {
+        if (!tween.paused() && tween.progress() < 1) { policyTweens.add(tween); tween.pause(); }
+      });
+    } else {
+      policyPaused.forEach(animation => { if (animation.playState === 'paused') animation.play(); });
+      policyTweens.forEach(tween => { if (tween.paused()) tween.play(); });
+      policyPaused.clear(); policyTweens.clear();
+    }
+  }
+  window.addEventListener('nd:motion-off', syncMotion);
+  matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', syncMotion);
+  new MutationObserver(syncMotion).observe(document.documentElement, {attributes:true, attributeFilter:['class']});
+  syncMotion();
 })();
 </script>
 </body>

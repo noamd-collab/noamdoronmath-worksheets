@@ -506,7 +506,7 @@ const isCatalog = defaultEntry.href.startsWith('/worksheets');
 
     // Explicit site a11y ("עצירת אנימציות" / "הפחתת תנועה") shows the static
     // completed frame; "ללולאה הבאה" still steps between those frames. OS
-    // prefers-reduced-motion does not. A one-shot "▶ פעם אחת" stays deferred
+    // reduced motion does too, unless the visitor enables site animations. A one-shot "▶ פעם אחת" stays deferred
     // until the engine can play while static.
     pauseButton?.addEventListener('click', () => {
       const loop = activeLoop();
@@ -536,7 +536,7 @@ const isCatalog = defaultEntry.href.startsWith('/worksheets');
       syncActiveCard();
       syncControls();
     });
-    new MutationObserver(queueSync).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    new MutationObserver(queueSync).observe(document.documentElement, { attributes: true, attributeFilter: ['class', 'data-nd-motion'] });
     window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', queueSync);
     window.addEventListener('nd:motion-off', queueSync);
     syncControls();
@@ -751,7 +751,7 @@ const isCatalog = defaultEntry.href.startsWith('/worksheets');
   /* OS reduced motion only drops the progress-bar transition. The demo
      still autoplays; pause stays available. Explicit a11y classes hide ▶. */
   @media (prefers-reduced-motion: reduce) {
-    .grade-loop__progress-fill {
+    :global(html:not(.nd-motion-enabled)) .grade-loop__progress-fill {
       transition: none;
     }
   }

@@ -12,11 +12,33 @@
  * the bundled HTML body instead so the browser URL (and location.search) stay.
  */
 import { defineMiddleware } from 'astro:middleware';
+import { OTTERLY_API_KEY } from 'astro:env/server';
 import { redirectTargetForSiteUgdPath } from './lib/wixMedia';
 import { resolveRedirect } from './lib/redirects';
 import { PUBLIC_HTML_SHELLS } from './lib/publicHtmlShells';
+import { secretFromEnv } from './lib/noamSecrets';
+import { OTTERLY_API_KEY_NAME, scheduleOtterlyPageLog } from './lib/otterlyAiLogs';
 
 export const onRequest = defineMiddleware(async (context, next) => {
+  // AI-crawler log only. waitUntil on Cloudflare, otherwise a detached promise.
+  // A secret or logging failure must not change the page response.
+  try {
+    scheduleOtterlyPageLog({
+      method: context.request.method,
+      pathname: context.url.pathname,
+      search: context.url.search,
+      requestUrl: context.request.url,
+      forwardedUrl: context.request.headers.get('x-wix-forwarded-url'),
+      userAgent: context.request.headers.get('user-agent'),
+      referer: context.request.headers.get('referer'),
+      clientIp: context.request.headers.get('true-client-ip'),
+      secFetchDest: context.request.headers.get('sec-fetch-dest'),
+      apiKey: secretFromEnv(OTTERLY_API_KEY_NAME, OTTERLY_API_KEY),
+      locals: context.locals,
+    });
+  } catch {
+    console.error('Otterly AI log skipped');
+  }
   const path = context.url.pathname;
   const target = redirectTargetForSiteUgdPath(path, context.url.search);
   if (target) {

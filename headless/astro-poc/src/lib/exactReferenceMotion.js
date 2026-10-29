@@ -1,5 +1,6 @@
 // Presentation animations copied from the supplied design, with a DOM adapter.
 // HeroLoop, ConceptLoop and conceptLoops.ts are deliberately unchanged.
+import { sitePrefersReducedMotion } from './motionPreference.js';
 export class ExactReferenceMotion {
   rootRef = { current: document.querySelector('.exact-frame') };
   zigRef = { current: document.querySelector('[data-exact-zig]') };
@@ -12,7 +13,7 @@ export class ExactReferenceMotion {
   motion() {
     const h = document.documentElement;
     const mode = h.dataset.ndMotion;
-    if (this.eventOff || (this.reducedMotion || matchMedia('(prefers-reduced-motion: reduce)')).matches || h.classList.contains('nd-motion-off') || h.classList.contains('noam-a11y-motion') || mode === 'off') return 'כבוי';
+    if (this.eventOff || sitePrefersReducedMotion()) return 'כבוי';
     return mode === 'relaxed' || mode === 'calm' ? 'רגוע' : 'שובב';
   }
   blocked() { return this.dead || document.hidden || this.motion() === 'כבוי'; }
@@ -151,18 +152,26 @@ export class ExactReferenceMotion {
       [dot(), dot(), dot(), dot(), dot(), dot(), dot()]
     ];
     const OP = [[1, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0], [1, 1, 1, 1, 1, 0, 0], [1, 0, 1, 1, 1, 1, 1], [1, 1, 1, 0, 0, 1, 0]], LAST = S.length - 1;
-    let y = null, v = 0, lastS = scrollY, rot = 0, st = 1, draw = 0, sp = null, t0 = performance.now();
+    let y = null, v = 0, lastS = scrollY, rot = 0, st = 1, draw = 0, sp = null, t0 = 0;
+    let elapsed = 0, lastFrame = null;
     const ss = x => x * x * (3 - 2 * x);
-    const tick = (now, staticFrame = false) => {
+    const tick = (frameTime, staticFrame = false) => {
       this.zigRaf = null;
       if (this.dead || (!staticFrame && this.blocked())) return;
+      // RAF timestamps can precede performance.now() from a resume handler.
+      // Advance one animation clock using only RAF deltas, excluding paused time.
+      if (!staticFrame && Number.isFinite(frameTime)) {
+        if (lastFrame != null) elapsed += Math.max(0, frameTime - lastFrame);
+        lastFrame = Math.max(lastFrame ?? frameTime, frameTime);
+      }
+      const now = elapsed;
       const off = this.motion() === 'כבוי', narrow = innerWidth < 760;
       el.style.display = narrow ? 'none' : 'block';
       const max = Math.max(1, document.documentElement.scrollHeight - innerHeight);
-      const ST = 1500, C = 5 * ST + 900 + 3200; if (this.zc0 == null) this.zc0 = now;
-      const tt = off ? 5 * ST + 2000 : (now - this.zc0) % C;
+      const ST = 1500, C = 5 * ST + 900 + 3200;
+      const tt = off ? 5 * ST + 2000 : now % C;
       if (!off && tt < (this.ztt ?? 0)) { sp = 0; t0 = now; }
-      this.ztt = tt;
+      if (!off) this.ztt = tt;
       const prog = Math.min(1, tt / (5 * ST)), botOp = tt > 5 * ST + 900 ? Math.min(1, (tt - 5 * ST - 900) / 400) : 0;
       const hd = document.querySelector('header'), hb = hd ? Math.max(0, hd.getBoundingClientRect().bottom) : 0;
       const cl = Math.max(24, (innerWidth - 1200) / 2 + 24), zs = Math.max(1.4, Math.min(2, innerWidth / 720)), bw = 96 * zs, bh = 120 * zs, bx = Math.max(6, (cl - bw) / 2);
@@ -182,10 +191,11 @@ export class ExactReferenceMotion {
         const vel = Math.max(-40, Math.min(40, dS));
         rot += ((-vel * 0.5) - rot) * 0.15;
         st += ((1 + Math.min(0.35, Math.abs(vel) / 90)) - st) * 0.18;
-        draw = Math.min(1, (now - t0) / 1100);
+        draw = Math.min(1, Math.max(0, (now - t0) / 1100));
         sp += (prog - sp) * 0.18;
       }
-      const q = Math.min(LAST - 1e-4, sp * LAST), i = Math.floor(q), f = ss(Math.min(1, Math.max(0, (q - i - 0.3) / 0.4))), j = Math.min(LAST, i + 1);
+      const progress = Number.isFinite(sp) ? Math.max(0, Math.min(1, sp)) : 0;
+      const q = Math.min(LAST - 1e-4, progress * LAST), i = Math.floor(q), f = ss(Math.min(1, Math.max(0, (q - i - 0.3) / 0.4))), j = Math.min(LAST, i + 1);
       if (j === LAST) { S[LAST] = playTri(now, off); play.setAttribute('transform', `translate(${(S[LAST][1][0][0] - 60).toFixed(1)} 0)`); }
       play.setAttribute('opacity', (i === LAST - 1 ? f : 0).toFixed(3)); playS.setAttribute('opacity', (i === LAST - 1 ? f : 0).toFixed(3));
       paths.forEach((p, n) => {
@@ -215,19 +225,14 @@ export class ExactReferenceMotion {
     this.syncZig = () => {
       if (this.blocked()) {
         cancelAnimationFrame(this.zigRaf); this.zigRaf = null;
-        if (this.zigPausedAt == null) this.zigPausedAt = performance.now();
-        if (!document.hidden && this.motion() === 'כבוי') tick(performance.now(), true);
+        lastFrame = null;
+        if (!document.hidden && this.motion() === 'כבוי') tick(elapsed, true);
       } else if (this.zigRaf == null) {
-        if (this.zigPausedAt != null) {
-          const pausedFor = performance.now() - this.zigPausedAt;
-          if (this.zc0 != null) this.zc0 += pausedFor;
-          t0 += pausedFor; this.zigPausedAt = null;
-        }
         this.zigRaf = requestAnimationFrame(tick);
       }
     };
     this.syncZig();
-    this.redrawZig = () => { t0 = performance.now(); };
+    this.redrawZig = () => { t0 = elapsed; };
   }
 
   zFree(x, y, w, hh) {

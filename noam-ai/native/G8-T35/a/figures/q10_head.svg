@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 372 196.83" width="372" height="196.83">
+<g data-layer="wedges">
+<path id="e0001" d="M 284 88 L 284 4 A 84 84 0 0 1 351.96 38.63 A 84 84 0 0 1 363.89 113.96 Z" fill="#f2f2f2" stroke="#000000" stroke-width="1" stroke-linejoin="round" data-pie="wedge" data-for="sector:qju:a"/>
+<path id="e0002" d="M 284 88 L 363.89 113.96 A 84 84 0 0 1 270.86 170.97 A 84 84 0 0 1 200 88 Z" fill="#cccccc" stroke="#000000" stroke-width="1" stroke-linejoin="round" data-pie="wedge" data-for="sector:qju:b"/>
+<path id="e0003" d="M 284 88 L 200 88 A 84 84 0 0 1 284 4 Z" fill="#e3e3e3" stroke="#000000" stroke-width="1" stroke-linejoin="round" data-pie="wedge" data-for="sector:qju:c"/>
+<path id="e0004" d="M 88 88 L 88 4 A 84 84 0 0 1 155.96 38.63 A 84 84 0 0 1 167.89 113.96 Z" fill="#f2f2f2" stroke="#000000" stroke-width="1" stroke-linejoin="round" data-pie="wedge" data-for="sector:qjv:a"/>
+<path id="e0005" d="M 88 88 L 167.89 113.96 A 84 84 0 0 1 74.86 170.97 A 84 84 0 0 1 4 88 Z" fill="#cccccc" stroke="#000000" stroke-width="1" stroke-linejoin="round" data-pie="wedge" data-for="sector:qjv:b"/>
+<path id="e0006" d="M 88 88 L 4 88 A 84 84 0 0 1 88 4 Z" fill="#e3e3e3" stroke="#000000" stroke-width="1" stroke-linejoin="round" data-pie="wedge" data-for="sector:qjv:c"/>
+</g>
+<g data-layer="lines">
+<circle id="e0007" cx="284" cy="88" r="84" fill="none" stroke="#000000" stroke-width="1" data-pie="outline" data-for="pie:qju"/>
+<circle id="e0008" cx="88" cy="88" r="84" fill="none" stroke="#000000" stroke-width="1" data-pie="outline" data-for="pie:qjv"/>
+</g>
+<g data-layer="labels">
+<text id="e0009" x="324.77" y="57.45" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" data-pie="name" data-for="sector:qju:a">A</text>
+<text id="e0010" x="324.77" y="68.07" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" data-pie="val" data-for="sector:qju:a">30%</text>
+<text id="e0011" x="276.12" y="136.86" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" data-pie="name" data-for="sector:qju:b">B</text>
+<text id="e0012" x="276.12" y="147.48" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" data-pie="val" data-for="sector:qju:b">45%</text>
+<text id="e0013" x="248.36" y="51.44" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" data-pie="name" data-for="sector:qju:c">C</text>
+<text id="e0014" x="248.36" y="62.06" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" data-pie="val" data-for="sector:qju:c">25%</text>
+<text id="e0015" x="284" y="189.4" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" direction="ltr" unicode-bidi="bidi-override" data-pie="cap" data-for="pie:qju">ןטק םגדמ</text>
+<text id="e0016" x="128.77" y="57.45" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" data-pie="name" data-for="sector:qjv:a">A</text>
+<text id="e0017" x="128.77" y="68.07" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" data-pie="val" data-for="sector:qjv:a">30%</text>
+<text id="e0018" x="80.12" y="136.86" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" data-pie="name" data-for="sector:qjv:b">B</text>
+<text id="e0019" x="80.12" y="147.48" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" data-pie="val" data-for="sector:qjv:b">45%</text>
+<text id="e0020" x="52.36" y="51.44" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" data-pie="name" data-for="sector:qjv:c">C</text>
+<text id="e0021" x="52.36" y="62.06" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" data-pie="val" data-for="sector:qjv:c">25%</text>
+<text id="e0022" x="88" y="189.4" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" direction="ltr" unicode-bidi="bidi-override" data-pie="cap" data-for="pie:qjv">לודג םגדמ</text>
+</g>
+</svg>

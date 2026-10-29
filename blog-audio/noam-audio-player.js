@@ -17,7 +17,10 @@
  */
 
 (function () {
-  var API = 'https://www.noamdoronmath.co.il/_functions/blogAudioInfo';
+  // Since the domain moved to Headless, www.noamdoronmath.co.il has no Velo code
+  // and /_functions/* answers 404 there. The classic site keeps answering at its
+  // free wixsite.com address (same default as src/lib/blogAudio.ts).
+  var API = 'https://amiramnoam.wixsite.com/my-site/_functions/blogAudioInfo';
   var RATE_KEY = 'noam-audio-rate';
   var MIN_RATE = 0.5;
   var MAX_RATE = 2;

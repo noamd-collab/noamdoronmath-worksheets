@@ -182,4 +182,10 @@ describe('eliyahu pythagoras game page', () => {
     const card = result.results.find((item) => item.key === 'topic:8:11');
     assert.ok(card?.explainers.some((item) => item.href === PYTHAGORAS_GAME_PATH && item.title === PYTHAGORAS_GAME_H1));
   });
+
+  it('keeps non-integer hypotenuse slivers visible and explains the gN×gN whole-square grid in step 7', () => {
+    assert.ok(gameHtml.includes('const fVis = cInt ? 0 : Math.max(c - gN, .42);'));
+    assert.ok(gameHtml.includes("שלמות של <bdi class=\"math\" dir=\"ltr\">' + gN + '×' + gN"));
+    assert.ok(gameHtml.includes("ברשת נכנסו ' + m(N.gN + '×' + N.gN + ' = ' + slots) + ' משבצות שלמות"));
+  });
 });

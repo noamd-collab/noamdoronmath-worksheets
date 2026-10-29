@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 190 207" width="190" height="207">
+<g data-layer="lines">
+<line id="e0001" data-seg="KL" x1="95" y1="26.01" x2="26" y2="180.99" stroke="#000000" stroke-width="1.5"/>
+<line id="e0002" data-seg="KM" x1="95" y1="26.01" x2="164" y2="180.99" stroke="#000000" stroke-width="1.5"/>
+<line id="e0003" data-seg="LM" x1="26" y1="180.99" x2="164" y2="180.99" stroke="#000000" stroke-width="1.5"/>
+<line id="e0004" data-seg="PR" x1="66.02" y1="91.1" x2="123.98" y2="91.1" stroke="#000000" stroke-width="1"/>
+</g>
+<g data-layer="marks">
+<polyline id="e0005" data-mark="par LM" points="90.67,183.49 95,180.99 90.67,178.49" fill="none" stroke="#000000" stroke-width="1"/>
+<polyline id="e0006" data-mark="par PR" points="90.67,93.6 95,91.1 90.67,88.6" fill="none" stroke="#000000" stroke-width="1"/>
+<path id="e0007" data-mark="arc LPR" d="M 60.83 102.75 L 61.64 103.08 L 62.48 103.35 L 63.32 103.56 L 64.18 103.72 L 65.05 103.81 L 65.93 103.85 L 66.8 103.83 L 67.67 103.74 L 68.54 103.6 L 69.39 103.4 L 70.22 103.14 L 71.04 102.82 L 71.83 102.45 L 72.59 102.03 L 73.33 101.55 L 74.03 101.02 L 74.69 100.45 L 75.31 99.84 L 75.89 99.18 L 76.42 98.48 L 76.9 97.75 L 77.33 96.99 L 77.71 96.2 L 78.03 95.39 L 78.29 94.56 L 78.5 93.71 L 78.65 92.84 L 78.74 91.97 L 78.77 91.1" fill="none" stroke="#000000" stroke-width="1"/>
+<line id="e0008" data-mark="tick KL" x1="64.15" y1="105.13" x2="56.85" y2="101.87" stroke="#000000" stroke-width="1"/>
+<line id="e0009" data-mark="tick KM" x1="133.15" y1="101.87" x2="125.85" y2="105.13" stroke="#000000" stroke-width="1"/>
+</g>
+<g data-layer="points">
+<circle id="e0010" data-pt="K" cx="95" cy="26.01" r="0.75" fill="#000000" stroke="none"/>
+<circle id="e0011" data-pt="L" cx="26" cy="180.99" r="0.75" fill="#000000" stroke="none"/>
+<circle id="e0012" data-pt="M" cx="164" cy="180.99" r="0.75" fill="#000000" stroke="none"/>
+<circle id="e0013" data-pt="P" cx="66.02" cy="91.1" r="2" fill="#000000" stroke="none"/>
+<circle id="e0014" data-pt="R" cx="123.98" cy="91.1" r="2" fill="#000000" stroke="none"/>
+</g>
+<g data-layer="labels">
+<text id="e0015" data-for="ang LPR" x="80.1" y="116.52" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">114°</text>
+<text id="e0016" data-for="K" x="95" y="21.51" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">K</text>
+<text id="e0017" data-for="L" x="17.48" y="190.96" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">L</text>
+<text id="e0018" data-for="M" x="173.72" y="191.74" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">M</text>
+<text id="e0019" data-for="P" x="57.09" y="91.56" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">P</text>
+<text id="e0020" data-for="R" x="133.28" y="91.39" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">R</text>
+</g>
+</svg>
