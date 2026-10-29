@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>בוחרים מה לתרגל | מרחב למורה</title>
-<meta name="description" content="מרחב למורה: בחירה מכל דפי הכיתות א׳–ט׳. ביסודי לפי דף ורמה, בחטיבה לפי סעיפים. סימון על דף המקור, או דף מצומצם שנחתך מהמקור.">
+<meta name="description" content="מרחב למורה: בחירה מכל דפי הכיתות א׳–ט׳. ביסודי לפי דף ורמה, בחטיבה לפי שאלות שלמות. סימון על דף המקור, או דף מצומצם שנחתך מהמקור.">
 <meta name="robots" content="noindex, nofollow">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <!--
@@ -195,6 +195,11 @@ nav[data-nav-panel] a:hover{background:rgba(42,124,122,.1)}
 .badge.essential{color:var(--teal-dark);background:var(--mint)}
 .badge.additional{color:var(--ink);background:var(--cream)}
 .badge.deepen{color:#fff;background:var(--ink)}
+.badge.role-basis{color:var(--teal-dark);background:var(--mint)}
+.badge.role-review{color:var(--ink);background:var(--cream)}
+.badge.role-creative{color:#fff;background:var(--ink)}
+.level-head{grid-column:1 / -1;margin:8px 0 0;font-size:17px;font-weight:700;color:var(--ink);border-bottom:2px solid var(--ink);padding-bottom:4px}
+.add-topic{margin-top:10px}
 .q-desc{font-size:15px;line-height:1.5;color:var(--muted);margin-top:4px;direction:rtl;unicode-bidi:isolate}.q-desc bdi.math{white-space:nowrap;direction:ltr;unicode-bidi:isolate}
 .q-thumb{display:block;width:auto;max-width:100%;height:auto;max-height:120px;margin-top:6px;background:#fff;border:1px solid #d5dae5;border-radius:6px}
 .q-page{font-size:13px;color:var(--quiet);margin-top:4px}
@@ -480,7 +485,7 @@ body[data-wizard="result"] .wizard-result{scroll-margin-top:164px}
 </header>
 <main class="wrap">
 <div class="wizard-bar" id="wizard-bar"><button type="button" class="text-btn" id="wizard-back" hidden>חזרה</button><p class="wizard-label" id="wizard-label">כיתה</p><button type="button" class="primary" id="wizard-next">המשך</button></div>
-<div class="intro"><div><p class="eyebrow">מתכננים את התרגול</p><h1>בוחרים מה לתרגל.</h1><p class="subtitle">כיתה, נושא ומטרת השיעור. מכאן בוחרים דפים וסעיפים שכבר באתר, ומדפיסים את דף המקור עם סימון.</p><p class="head-meta"><span>מהדפים הקיימים, לשיעור שלכם</span><span class="demo-tag">כיתות א׳–ט׳</span><span class="brand-kicker">מתמטיקה • מרחב למורה</span></p></div><p class="intro-note">יסודי: בחירה לפי דף, נושא ורמה. חטיבת ביניים: בחירת סעיפים מתוך הדפים.<br>ההדפסה מסמנת על דף המקור המלא, או חותכת דף מצומצם מאותו מקור. הצעות נועם AI כבויות.</p></div>
+<div class="intro"><div><p class="eyebrow">מתכננים את התרגול</p><h1>בוחרים מה לתרגל.</h1><p class="subtitle">כיתה, נושא ומטרת השיעור. מכאן בוחרים דפים ושאלות שכבר באתר, ומדפיסים את דף המקור עם סימון.</p><p class="head-meta"><span>מהדפים הקיימים, לשיעור שלכם</span><span class="demo-tag">כיתות א׳–ט׳</span><span class="brand-kicker">מתמטיקה • מרחב למורה</span></p></div><p class="intro-note">יסודי: בחירה לפי דף, נושא ורמה. חטיבת ביניים: בוחרים שאלות, וכל הסעיפים של כל שאלה נכנסים איתה.<br>ההדפסה מסמנת על דף המקור המלא, או חותכת דף מצומצם מאותו מקור. הצעות נועם AI כבויות.</p></div>
 <div class="workspace">
 <aside class="panel setup" id="setup-panel" aria-label="הגדרות השיעור">
 <h2 class="step-title wiz-extra"><span class="step-num">1</span> מתחילים מהכיתה</h2>
@@ -506,10 +511,10 @@ body[data-wizard="result"] .wizard-result{scroll-margin-top:164px}
 <div id="available-content"><p class="logic-note"><svg aria-hidden="true"><use href="#i-bulb"/></svg><span id="rationale">תחילה גורם מספרי, אחר כך סימנים וגורם משתנה. אין צורך להתחיל מכל הדף.</span></p>
 <div class="other-note-banner" id="other-banner" hidden><strong>בחירה ידנית עם הערת מורה</strong><p>הרצף האחרון נשאר כפי שהוא. אפשר לבחור שאלות ולצרף את ההערה לתוכנית.</p></div>
 <div class="toolbar"><h3>הפניות לשאלות <span class="toolbar-meta" id="available-count"></span></h3><button class="text-btn" id="undo" disabled><svg aria-hidden="true"><use href="#i-undo"/></svg>ביטול שינוי</button></div>
-<div class="list-header"><span>הסימון ניתן לשינוי</span><div class="filter ai-pick-group" id="ai-pick-group" role="group" aria-label="בחירה מהירה עם AI"><button type="button" class="ai-pick-btn" id="ai-pick-15" data-ai-pick="15" aria-pressed="false">בחר 15 עם AI</button><button type="button" class="ai-pick-btn" id="ai-pick-30" data-ai-pick="30" aria-pressed="false" aria-label="בחר 30 עם AI">בחר 30</button><button type="button" class="ai-pick-btn" id="ai-pick-45" data-ai-pick="45" aria-pressed="false" aria-label="בחר 45 עם AI">בחר 45</button></div><div class="filter" aria-label="סינון תצוגת השאלות"><button type="button" id="filter-all" aria-pressed="true">כל ההצעות</button><button type="button" id="filter-selected" aria-pressed="false">רק הבחירה שלי</button></div></div>
-<div class="question-list" id="questions"></div><button class="text-btn show-more" id="show-more">הצגת שאלות נוספות <span class="count-dot" id="more-count"></span></button>
+<div class="list-header"><span>הסימון ניתן לשינוי</span><div class="filter ai-pick-group" id="ai-pick-group" role="group" aria-label="בחירה מהירה עם AI"><button type="button" class="ai-pick-btn" id="ai-pick-5" data-ai-pick="5" aria-pressed="false">בחר 5 שאלות עם AI</button><button type="button" class="ai-pick-btn" id="ai-pick-10" data-ai-pick="10" aria-pressed="false" aria-label="בחר 10 שאלות עם AI">בחר 10</button><button type="button" class="ai-pick-btn" id="ai-pick-15" data-ai-pick="15" aria-pressed="false" aria-label="בחר 15 שאלות עם AI">בחר 15</button></div><div class="filter" aria-label="סינון תצוגת השאלות"><button type="button" id="filter-all" aria-pressed="true">כל ההצעות</button><button type="button" id="filter-selected" aria-pressed="false">רק הבחירה שלי</button></div></div>
+<div class="question-list" id="questions"></div><button class="text-btn show-more" id="show-more">הצגת שאלות נוספות <span class="count-dot" id="more-count"></span></button><button type="button" class="text-btn add-topic" id="add-topic">+ הוספת שאלות מנושא נוסף לאותו דף</button><button type="button" class="text-btn" id="clear-sheet">התחלת דף חדש</button>
 <div class="suggestion" id="suggestion"><svg aria-hidden="true"><use href="#i-bulb"/></svg><div class="suggestion-copy"><strong>נשאר מקום לעוד צעד?</strong><p id="suggestion-text">אפשר להוסיף סעיף עם שלושה איברים.</p></div><button type="button" id="add-suggestion">הוספה לבחירה</button></div>
-<details class="details"><summary>מה עומד מאחורי ההצעה?</summary><div class="details-body"><p id="pedagogy-details"></p><p style="margin-top:8px">חיוני = בסיס לרצף המוצע; נוסף = חיזוק לבחירתכם; העמקה = אתגר אפשרי. אלו תיוגים פדגוגיים של ההדגמה, לא תיוגי המחבר.</p><p style="margin-top:8px">ההפניות מתארות בקצרה שאלות קיימות. בעבודה עם המקור יש לשמור על הוראות משותפות, סעיפים תלויים, נוסח ותרשימים.</p></div></details>
+<details class="details"><summary>מה עומד מאחורי ההצעה?</summary><div class="details-body"><p id="pedagogy-details"></p><p style="margin-top:8px">ביסוס = שאלות מתחילת דף הרמה; חזרה = שאלות מאמצע הדף; יצירתית = שאלות מסוף הדף. התיוג לפי מקום השאלה בדף המדורג, לא תיוג המחבר.</p><p style="margin-top:8px">בוחרים שאלות שלמות. כל שאלה נכנסת לדף עם כל הסעיפים שלה, ההוראה המשותפת והתרשים.</p></div></details>
 <details class="details"><summary>ומה לגבי הדפסת דף התלמיד?</summary><div class="details-body"><p>שתי דרכי הדפסה, שתיהן מתוך דף המקור:</p><div class="future-modes"><div class="future-mode"><b>הדף המלא, עם סימון</b><span>השאלות שנבחרו מסומנות על גבי דף המקור.</span><br><span class="future-label">המקרה הזה</span></div><div class="future-mode"><b>דף מצומצם מהמקור</b><span>רק הבחירה שלכם, חתוכה מהמקור עם ההוראה, הנוסח והתרשים.</span><br><span class="future-label">המקרה הזה</span></div></div><p>הדף המצומצם אינו ניסוח חדש. כל קטע הוא חיתוך של דף המקור.</p></div></details>
 <div class="prepare-bar"><div class="selection-total" aria-live="polite" aria-atomic="true"><strong id="selection-count">0 נבחרו</strong><span id="selection-composition"></span></div><button type="button" class="primary" id="prepare"><svg aria-hidden="true"><use href="#i-print"/></svg>הצגת הדף המסומן</button><button type="button" class="text-btn" id="prepare-short"><svg aria-hidden="true"><use href="#i-print"/></svg>הצגת הדף המצומצם</button></div><p class="prepare-hint" id="prepare-hint">דף מלא עם סימון, או דף מצומצם שנחתך מהמקור</p></div>
 <div id="unavailable" class="empty" hidden><h3>אין דפים להצגה בכיתה הזו</h3><p style="margin-top:8px">אפשר לחזור לפירוק לגורמים לכיתה ט׳.</p><button type="button" class="text-btn" id="return-demo">חזרה לפירוק לגורמים</button></div>

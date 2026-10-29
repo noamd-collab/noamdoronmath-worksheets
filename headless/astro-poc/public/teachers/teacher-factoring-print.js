@@ -1,7 +1,10 @@
 import { wizardPrefillFromSearch } from './wizard-prefill.js';
 
 /* Teacher picker for every catalog sheet.
-   Grades 7–9: choose existing exercises across sheets.
+   Grades 7–9: choose whole questions across sheets; every section of a
+   chosen question comes with it. The teacher's own picks are never dropped
+   by changing level, topic, goal or style, so one printed sheet can mix
+   topics; automatic suggestions are replaced until the teacher picks.
    Grades 1–6: choose a sheet by topic and level.
    Print reuses the pilot path: marks on the original PDF page, or a short
    sheet cropped from that page, plus the teacher note. */
@@ -68,7 +71,6 @@ const STYLES = {
   blended: { label: 'משולבת', help: 'חלק מהסעיפים בכיתה, והשאר לתרגול עצמאי.', plan: 'דרך עבודה משולבת: חלק בכיתה וחלק עצמאי.' },
 };
 
-const TIERS = { essential: 'חיוני', deepen: 'העמקה', extra: 'נוסף' };
 const PRINT_UNPREPARED = '<p class="print-unprepared">כדי להדפיס, פותחים קודם את תצוגת ההדפסה.</p>';
 
 const $ = (id) => document.getElementById(id);
@@ -85,7 +87,9 @@ let state = {
   style: 'scaffold',
   selected: [],
   filter: 'all',
-  expanded: false,
+  expanded: true,
+  addingTopic: false,
+  touched: false,
   grade: '9',
   topic: '2',
   level: 'all',
@@ -136,70 +140,130 @@ function ensureTeacherBotClient() {
   return teacherBotClientPromise;
 }
 
-function smartExercisePick(pool, count, scenario, style, seedKeys) {
-  if (!Array.isArray(pool) || !pool.length) return [];
-  const entries = pool.map((question, index) => ({
-    key: exKey(question.source.pdfId, question.id),
-    question,
-    index,
-  }));
-  const target = Math.min(Math.max(1, Number(count) || 15), entries.length);
-  const byKey = new Map(entries.map((entry) => [entry.key, entry]));
+const QUESTION_ROLES = { basis: 'ביסוס', review: 'חזרה', creative: 'יצירתית' };
+const AI_QUESTION_COUNTS = [5, 10, 15];
+const AI_CANDIDATE_LIMIT = 90;
+
+function questionKey(pdfId, number) {
+  return 'q:' + pdfId + ':' + number;
+}
+
+function questionNumber(question) {
+  const number = Number(question.q);
+  if (Number.isInteger(number) && number > 0) return number;
+  const match = String(question.id || '').match(/^(\d{1,3})/);
+  return match ? Number(match[1]) : String(question.id || '');
+}
+
+/* Whole questions, in sheet order. Each level sheet is graded: ביסוס at the
+   start, חזרה in the middle, creative questions at the end. */
+function questionGroups(pool) {
+  const groups = [];
+  const byKey = new Map();
+  (pool || []).forEach((question) => {
+    const pdfId = question.source.pdfId;
+    const number = questionNumber(question);
+    const key = questionKey(pdfId, number);
+    let group = byKey.get(key);
+    if (!group) {
+      group = { key, pdfId, q: number, source: question.source, parts: [], keys: [], index: groups.length };
+      byKey.set(key, group);
+      groups.push(group);
+    }
+    group.parts.push(question);
+    group.keys.push(exKey(pdfId, question.id));
+  });
+  const perSheet = new Map();
+  groups.forEach((group) => {
+    if (!perSheet.has(group.pdfId)) perSheet.set(group.pdfId, []);
+    perSheet.get(group.pdfId).push(group);
+  });
+  perSheet.forEach((list) => {
+    list.forEach((group, rank) => {
+      const at = rank / list.length;
+      group.role = at < 1 / 3 ? 'basis' : at < 2 / 3 ? 'review' : 'creative';
+    });
+  });
+  return groups;
+}
+
+function rolePlan(scenario, style) {
+  if (style === 'creative') return ['creative', 'review', 'basis'];
+  if (style === 'blended' || scenario === 'other') return ['mix'];
+  if (scenario === 'spiral') return ['review', 'basis', 'creative'];
+  if (scenario === 'exam') return ['review', 'creative', 'basis'];
+  return ['basis', 'review', 'creative'];
+}
+
+function interleaveSheets(list) {
+  const lanes = new Map();
+  list.forEach((group) => {
+    if (!lanes.has(group.pdfId)) lanes.set(group.pdfId, []);
+    lanes.get(group.pdfId).push(group);
+  });
+  const queues = Array.from(lanes.values());
+  const out = [];
+  for (let round = 0; out.length < list.length; round += 1) {
+    queues.forEach((queue) => { if (round < queue.length) out.push(queue[round]); });
+  }
+  return out;
+}
+
+// Every question, most wanted first for this lesson goal and style.
+function planOrder(groups, scenario, style) {
+  const plan = rolePlan(scenario, style);
+  const lane = (role) => interleaveSheets(groups.filter((group) => group.role === role));
+  if (plan[0] !== 'mix') return plan.flatMap(lane);
+  const lanes = ['basis', 'review', 'creative'].map(lane);
+  const out = [];
+  for (let round = 0; lanes.some((list) => round < list.length); round += 1) {
+    lanes.forEach((list) => { if (round < list.length) out.push(list[round]); });
+  }
+  return out;
+}
+
+function smartQuestionPick(groups, count, scenario, style, seedKeys) {
+  if (!Array.isArray(groups) || !groups.length) return [];
+  const target = Math.min(Math.max(1, Number(count) || 5), groups.length);
+  const byKey = new Map(groups.map((group) => [group.key, group]));
   const chosen = [];
   const used = new Set();
-  const addEntry = (entry) => {
-    if (!entry || used.has(entry.key) || chosen.length >= target) return;
-    used.add(entry.key);
-    chosen.push(entry);
+  const addGroup = (group) => {
+    if (!group || used.has(group.key) || chosen.length >= target) return;
+    used.add(group.key);
+    chosen.push(group);
   };
-  (seedKeys || []).forEach((key) => addEntry(byKey.get(key)));
-  if (chosen.length < target) {
-    let ordered = entries.slice();
-    if (scenario === 'spiral') {
-      const step = Math.max(1, Math.floor(entries.length / 15));
-      ordered = [];
-      for (let offset = 0; offset < step; offset += 1) {
-        for (let i = offset; i < entries.length; i += step) ordered.push(entries[i]);
-      }
-    } else if (scenario === 'exam') {
-      const cut = Math.floor(entries.length * 0.25);
-      ordered = entries.slice(cut).concat(entries.slice(0, cut));
-    } else if (scenario === 'practice') {
-      const cut = Math.min(Math.floor(entries.length * 0.08), 4);
-      ordered = entries.slice(cut).concat(entries.slice(0, cut));
+  (seedKeys || []).forEach((key) => addGroup(byKey.get(key)));
+  const plan = rolePlan(scenario, style);
+  const lane = (role) => interleaveSheets(groups.filter((group) => group.role === role && !used.has(group.key)));
+  if (plan[0] === 'mix') {
+    const lanes = ['basis', 'review', 'creative'].map(lane);
+    for (let round = 0; chosen.length < target && lanes.some((list) => round < list.length); round += 1) {
+      lanes.forEach((list) => addGroup(list[round]));
     }
-    const remaining = ordered.filter((entry) => !used.has(entry.key));
-    const needed = target - chosen.length;
-    if (remaining.length <= needed) {
-      remaining.forEach(addEntry);
-    } else if (scenario === 'spiral' || scenario === 'other' || style === 'creative') {
-      for (let i = 0; i < needed; i += 1) {
-        const idx = Math.min(remaining.length - 1, Math.floor((i * remaining.length) / needed));
-        addEntry(remaining[idx]);
-      }
-      remaining.forEach(addEntry);
-    } else {
-      remaining.slice(0, needed).forEach(addEntry);
-    }
+  } else {
+    plan.forEach((role) => lane(role).forEach(addGroup));
   }
+  groups.forEach(addGroup);
   chosen.sort((a, b) => a.index - b.index);
-  return chosen.map((entry) => entry.key);
+  return chosen.map((group) => group.key);
 }
 
 async function pickWithAi(rawCount) {
   const count = Number(rawCount);
   if (!Number.isInteger(count) || count <= 0 || band() === 'elementary' || aiPickPending) return [];
-  const pool = currentExercises();
-  if (!pool.length) return [];
-  const target = Math.min(count, pool.length);
+  const groups = currentQuestions();
+  if (!groups.length) return [];
+  const target = Math.min(count, groups.length);
+  const scope = [state.grade, state.topic, state.level].join('|');
   aiPickPending = count;
   paintAiPickButtons();
   const status = $('ai-suggest-status');
-  if (status) status.textContent = `נועם AI בוחר ${target} סעיפים…`;
+  if (status) status.textContent = `נועם AI בוחר ${target} שאלות…`;
   const gradeEl = $('grade');
   const topicEl = $('topic');
   const payload = {
-    message: `בחר ${count} עם AI`,
+    message: `בחר ${count} שאלות שלמות עם AI. כל מזהה ברשימה הוא שאלה שלמה עם כל הסעיפים שלה. בכל רמה: ביסוס בהתחלה, חזרה באמצע, שאלות יצירתיות בסוף.`,
     page: { kind: 'teachers', path: location.pathname + location.search, title: document.title },
     teacher: {
       grade: String(state.grade),
@@ -213,39 +277,51 @@ async function pickWithAi(rawCount) {
       styleLabel: (STYLES[state.style] && STYLES[state.style].label) || '',
       note: $('teacher-note') ? String($('teacher-note').value || '').trim().slice(0, 400) : '',
       count,
-      candidates: pool.slice(0, 100).map((question) => ({
-        id: (question.source && question.source.level ? question.source.level + ':' : '') + question.id,
-        label: question.id,
-        text: String(question.text || '').slice(0, 80),
+      // The model prompt lists at most 90 candidates; the most wanted questions go first.
+      candidates: planOrder(groups, state.scenario, state.style).slice(0, AI_CANDIDATE_LIMIT).map((group) => ({
+        id: (/^[abc]$/.test(String(group.source && group.source.level)) ? group.source.level + ':' : '') + group.parts[0].id,
+        label: group.parts[0].id,
+        text: [QUESTION_ROLES[group.role], group.source.levelLabel, 'שאלה ' + group.q, group.parts.length + ' סעיפים'].filter(Boolean).join(' · ').slice(0, 80),
       })),
     },
   };
-  let remoteIds = [];
+  let seedKeys = [];
   let fromModel = false;
   try {
     const client = await ensureTeacherBotClient();
     const result = await client.postJson('/api/noamSiteCompanion', payload);
-    if (result && Array.isArray(result.exerciseIds) && result.exerciseIds.length) {
-      const visible = new Set(visibleSelectionKeys());
-      remoteIds = result.exerciseIds.filter((key) => visible.has(key));
-      fromModel = result.source === 'classifier' && Boolean(result.model);
+    fromModel = Boolean(result && result.source === 'classifier' && result.model);
+    if (fromModel && Array.isArray(result.exerciseIds) && result.exerciseIds.length) {
+      // The server pads short answers with sections by position. Keep only questions that fit the
+      // lesson plan, so padding never pushes ביסוס into a creative lesson.
+      const owner = new Map();
+      groups.forEach((group) => group.keys.forEach((key) => owner.set(key, group)));
+      const plan = rolePlan(state.scenario, state.style);
+      const fits = (group) => plan[0] === 'mix' || group.role === plan[0];
+      seedKeys = Array.from(new Set(result.exerciseIds.map((key) => owner.get(key)).filter((group) => group && fits(group)).map((group) => group.key)));
     }
   } catch (error) {
-    remoteIds = [];
+    seedKeys = [];
   } finally {
     aiPickPending = 0;
   }
-  const finalPicked = smartExercisePick(pool, target, state.scenario, state.style, remoteIds);
+  if ([state.grade, state.topic, state.level].join('|') !== scope) {
+    paintAiPickButtons();
+    if (status) status.textContent = 'הנושא או הרמה השתנו בזמן הבחירה. אפשר לבקש שוב.';
+    return [];
+  }
+  const pickedGroups = smartQuestionPick(groups, target, state.scenario, state.style, seedKeys);
+  const finalPicked = keysOfQuestions(pickedGroups, groups);
   const before = selectionKey();
   snapshot();
-  state.selected = finalPicked;
+  state.selected = hiddenKeys().concat(finalPicked);
+  state.touched = true;
   state.lastAiPickCount = count;
   state.expanded = true;
   if (selectionKey() !== before) clearPreparedPrint();
   render();
-  const msg = fromModel
-    ? `נבחרו ${finalPicked.length} סעיפים עם AI.`
-    : `נבחרו ${finalPicked.length} סעיפים מתוך הדף.`;
+  const what = `${pickedGroups.length} שאלות (${finalPicked.length} סעיפים)`;
+  const msg = fromModel && seedKeys.length ? `נבחרו ${what} עם AI.` : `נבחרו ${what} מתוך הדפים.`;
   if (status) status.textContent = msg;
   announce(msg);
   return finalPicked;
@@ -256,14 +332,16 @@ function paintAiPickButtons() {
   if (!group) return;
   const elementary = band() === 'elementary';
   group.hidden = elementary;
-  const total = elementary ? 0 : currentExercises().length;
+  const groups = elementary ? [] : currentQuestions();
+  const total = groups.length;
+  const picked = pickedQuestions(groups).length;
   group.querySelectorAll('[data-ai-pick]').forEach((btn) => {
     const count = Number(btn.dataset.aiPick);
     const busy = aiPickPending === count;
-    const baseLabel = count === 15 ? 'בחר 15 עם AI' : `בחר ${count}`;
+    const baseLabel = count === AI_QUESTION_COUNTS[0] ? `בחר ${count} שאלות עם AI` : `בחר ${count}`;
     btn.textContent = busy ? `בוחר ${count}…` : baseLabel;
     btn.disabled = elementary || total === 0 || aiPickPending > 0;
-    const active = !elementary && total > 0 && state.lastAiPickCount === count && state.selected.length === Math.min(count, total);
+    const active = !elementary && total > 0 && state.lastAiPickCount === count && picked === Math.min(count, total);
     btn.setAttribute('aria-pressed', active ? 'true' : 'false');
     if (busy) btn.setAttribute('aria-busy', 'true');
     else btn.removeAttribute('aria-busy');
@@ -352,46 +430,72 @@ function currentExercises() {
   return list;
 }
 
+function currentQuestions() {
+  return questionGroups(currentExercises());
+}
+
+function pickedQuestions(groups) {
+  const chosen = new Set(state.selected);
+  return groups.filter((group) => group.keys.some((key) => chosen.has(key)));
+}
+
+function keysOfQuestions(questionKeys, groups) {
+  const wanted = new Set(questionKeys);
+  return groups.filter((group) => wanted.has(group.key)).flatMap((group) => group.keys);
+}
+
+function keySheet(key) {
+  return String(key).split(':')[1] || '';
+}
+
+// Picks outside the current view (other topics, grades or levels); they stay until the teacher removes them.
+function hiddenKeys() {
+  const visible = new Set(visibleSelectionKeys());
+  return sameBand(state.selected).filter((key) => !visible.has(key));
+}
+
+function sameBand(keys) {
+  const current = band();
+  return keys.filter((key) => {
+    const meta = byPdf.get(keySheet(key));
+    return !meta || meta.band === current;
+  });
+}
+
+// Whole questions for any loaded sheet that has a pick, with roles from the full sheet.
+function pickedGroupsAll() {
+  const chosen = new Set(state.selected);
+  const pdfs = Array.from(new Set(state.selected.map(keySheet)));
+  const pool = [];
+  pdfs.forEach((pdfId) => { const source = sheets.get(pdfId); if (source) source.questions.forEach((question) => pool.push(question)); });
+  return questionGroups(pool).filter((group) => group.keys.some((key) => chosen.has(key)));
+}
+
+function questionCountOf(keys) {
+  const seen = new Set();
+  keys.forEach((key) => {
+    const question = library.get(key);
+    seen.add(question ? keySheet(key) + ':' + questionNumber(question) : key);
+  });
+  return seen.size;
+}
+
+// A question is never split: any chosen section brings the whole question.
+function wholeQuestions(keys) {
+  if (band() === 'elementary') return keys;
+  const chosen = new Set(keys);
+  return currentQuestions().filter((group) => group.keys.some((key) => chosen.has(key))).flatMap((group) => group.keys);
+}
+
 function available() {
   const topic = currentTopic();
   return !!(topic && topic.sheets.length);
-}
-
-function tier(question) {
-  if (!question || state.scenario === 'other' || !pilotOn() || !question.source || question.source.pdfId !== FACTORING_PDF) return 'extra';
-  const cfg = SCENARIOS[state.scenario] || SCENARIOS.first;
-  if (cfg.essential.includes(question.id)) return 'essential';
-  if (cfg.deepen.includes(question.id)) return 'deepen';
-  return 'extra';
-}
-
-function orderedQuestions() {
-  const pool = currentExercises();
-  if (!pilotOn() || state.scenario === 'other') return pool;
-  const cfg = SCENARIOS[state.scenario] || SCENARIOS.first;
-  const rank = new Map();
-  cfg.selected.forEach((id, index) => rank.set(id, index));
-  return pool.slice().sort((a, b) => {
-    const ar = a.source && a.source.pdfId === FACTORING_PDF && rank.has(a.id) ? rank.get(a.id) : 1000;
-    const br = b.source && b.source.pdfId === FACTORING_PDF && rank.has(b.id) ? rank.get(b.id) : 1000;
-    if (ar !== br) return ar - br;
-    return pool.indexOf(a) - pool.indexOf(b);
-  });
 }
 
 function escapeHTML(value) {
   return String(value || '').replace(/[&<>"']/g, (char) => ({
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
   })[char]);
-}
-
-function questionTextHTML(text) {
-  return String(text || '').split(/([^\u0590-\u05FF]+)/).map((part) => {
-    if (!part) return '';
-    if (/[\u0590-\u05FF]/.test(part) || !/[A-Za-z0-9]/.test(part)) return escapeHTML(part);
-    const [, lead, core, tail] = part.match(/^([\s.,?!:;]*)([\s\S]*?)([\s.,?!:;]*)$/);
-    return escapeHTML(lead) + `<bdi dir="ltr" class="math">${escapeHTML(core)}</bdi>` + escapeHTML(tail);
-  }).join('');
 }
 
 function selectionKey() {
@@ -427,37 +531,24 @@ function fillTopics() {
   syncLevels();
 }
 
-function shownQuestions(pool) {
-  if (state.expanded || state.filter === 'selected') return pool;
-  const picked = pool.filter((question) => state.selected.includes(exKey(question.source.pdfId, question.id)));
-  const rest = pool.filter((question) => !state.selected.includes(exKey(question.source.pdfId, question.id)));
-  const room = Math.max(0, 8 - picked.length);
-  const shown = new Set(picked.concat(rest.slice(0, room)).map((question) => exKey(question.source.pdfId, question.id)));
-  return pool.filter((question) => shown.has(exKey(question.source.pdfId, question.id)));
+function questionCard(group, picked) {
+  const parts = group.parts.map((question) => question.part || String(question.id).replace(/^\d+/, '')).filter(Boolean);
+  const partsText = parts.length > 1 ? `${parts.length} סעיפים (${parts.join(', ')})` : (parts.length === 1 ? 'סעיף אחד' : 'בלי סעיפים');
+  const pages = Array.from(new Set(group.parts.map((question) => question.page).filter(Boolean)));
+  const pageText = pages.length > 1 ? `עמודים ${pages[0]}–${pages[pages.length - 1]}` : (pages.length ? `עמוד ${pages[0]}` : '');
+  const levelLabel = group.source.levelLabel || '';
+  const meta = [levelLabel, partsText, pageText].filter(Boolean).join(' · ');
+  const role = QUESTION_ROLES[group.role] || '';
+  return `<label class="q-card q-group"><input type="checkbox" data-question="${escapeHTML(group.key)}" ${picked ? 'checked' : ''} aria-label="בחירת שאלה ${escapeHTML(group.q)}${levelLabel ? ' ' + escapeHTML(levelLabel) : ''}"><span class="q-content"><span class="q-title-line"><span class="q-title">שאלה ${escapeHTML(group.q)}</span>${role ? `<span class="badge role-${group.role}">${role}</span>` : ''}</span><span class="q-page" style="display:block">${escapeHTML(meta)}</span></span></label>`;
 }
 
-function labelOnly(question) {
-  const text = String(question.text || '').trim();
-  return !text || /^שאלה\s+\d+/.test(text);
-}
-
-function needsThumb(question) {
-  return labelOnly(question) || question.scrambled === true;
-}
-
-function thumbAria(question) {
-  if (question.scrambled) return question.label;
-  return String(question.text || question.label || '');
-}
-
-function exerciseCard(question) {
-  const key = exKey(question.source.pdfId, question.id);
-  const level = question.source.levelLabel ? `<span class="q-page" style="display:block">${escapeHTML(question.source.levelLabel)} · עמוד ${question.page}</span>` : `<span class="q-page" style="display:block">עמוד ${question.page} בדף המקור</span>`;
-  const badge = pilotOn() ? `<span class="badge ${tier(question)}">${TIERS[tier(question)]}</span>` : '';
-  const body = needsThumb(question)
-    ? `<canvas class="q-thumb" data-thumb="${escapeHTML(key)}" aria-label="${escapeHTML(thumbAria(question))}"></canvas>`
-    : `<span class="q-desc" dir="rtl">${questionTextHTML(question.text)}</span>`;
-  return `<label class="q-card"><input type="checkbox" data-question="${escapeHTML(key)}" ${state.selected.includes(key) ? 'checked' : ''} aria-label="בחירת ${escapeHTML(question.label)}"><span class="q-content"><span class="q-title-line"><span class="q-title">${escapeHTML(question.label)}</span>${badge}</span>${body}${level}</span></label>`;
+function shownGroups(list, picked) {
+  if (state.expanded || state.filter === 'selected') return list;
+  const chosen = list.filter((group) => picked.has(group.key));
+  const rest = list.filter((group) => !picked.has(group.key));
+  const room = Math.max(0, 12 - chosen.length);
+  const shown = new Set(chosen.concat(rest.slice(0, room)).map((group) => group.key));
+  return list.filter((group) => shown.has(group.key));
 }
 
 function sheetCard(meta) {
@@ -474,9 +565,9 @@ function render() {
   const elementary = band() === 'elementary';
   $('result-title').textContent = ok ? (state.scenario === 'other' ? 'מרכיבים את הבחירה שלכם' : (pilotOn() ? cfg.title : cfg.label)) : 'בוחרים כיתה ונושא';
   $('result-summary').textContent = ok
-    ? (pilotOn() ? cfg.summary : (elementary ? 'בחירה לפי דף, נושא ורמה. ההדפסה מציגה את עמודי המקור כמו שהם.' : 'סעיפים שכבר קיימים בדפי הנושא. אפשר לבחור מכמה דפים.'))
+    ? (pilotOn() ? cfg.summary : (elementary ? 'בחירה לפי דף, נושא ורמה. ההדפסה מציגה את עמודי המקור כמו שהם.' : 'שאלות שכבר קיימות בדפי הנושא. בכל רמה: ביסוס בהתחלה, חזרה באמצע, שאלות יצירתיות בסוף.'))
     : 'בוחרים כיתה ונושא מתוך הקטלוג.';
-  $('rationale').textContent = ok ? (pilotOn() ? cfg.rationale : (elementary ? 'ביסודי בוחרים דף שלם לפי נושא ורמה.' : 'בחטיבה בוחרים סעיפים מתוך הדפים שכבר באתר.')) : '';
+  $('rationale').textContent = ok ? (pilotOn() ? cfg.rationale : (elementary ? 'ביסודי בוחרים דף שלם לפי נושא ורמה.' : 'בחטיבה בוחרים שאלות. כל הסעיפים של שאלה נכנסים איתה לדף.')) : '';
   $('pedagogy-details').textContent = ok ? (pilotOn() ? cfg.details : (elementary ? 'ההדפסה מציגה את עמודי המקור, בלי מסגרת על הכותרת.' : 'ההדפסה מסמנת על עמוד המקור, או חותכת ממנו דף מצומצם. לא מנוסח דף חדש.')) : '';
   $('style-help').textContent = STYLES[state.style].help;
   $('other-banner').hidden = state.scenario !== 'other';
@@ -491,7 +582,7 @@ function render() {
     const topic = currentTopic();
     hint.textContent = elementary
       ? `${gradeRecord(state.grade).label} · ${topic.title}. בוחרים דף לפי רמה.`
-      : `${gradeRecord(state.grade).label} · ${topic.title}. ${currentExercises().length} סעיפים בדפי הנושא.`;
+      : `${gradeRecord(state.grade).label} · ${topic.title}. ${currentQuestions().length} שאלות בדפי הנושא.`;
   }
   const shortBtn = $('prepare-short');
   if (shortBtn) shortBtn.hidden = elementary;
@@ -513,30 +604,44 @@ function render() {
     $('show-more').hidden = true;
     $('suggestion').hidden = true;
   } else {
-    const ordered = state.filter === 'selected'
-      ? state.selected.map((key) => library.get(key)).filter(Boolean)
-      : orderedQuestions();
-    const visible = shownQuestions(ordered);
-    $('available-count').textContent = currentExercises().length + ' סעיפים בדפי הנושא';
+    const groups = currentQuestions();
+    const pickedAll = state.filter === 'selected' ? pickedGroupsAll() : [];
+    const picked = new Set(pickedQuestions(groups).map((group) => group.key).concat(pickedAll.map((group) => group.key)));
+    const list = state.filter === 'selected' ? pickedAll : groups;
+    const visible = shownGroups(list, picked);
+    const multiSheet = new Set(visible.map((group) => group.pdfId)).size > 1;
+    const multiTopic = new Set(visible.map((group) => group.source.topic)).size > 1;
+    $('available-count').textContent = groups.length + ' שאלות בדפי הנושא';
     $('questions').innerHTML = visible.length
-      ? visible.map(exerciseCard).join('')
+      ? visible.map((group, index) => {
+        const head = multiSheet && (index === 0 || visible[index - 1].pdfId !== group.pdfId)
+          ? `<h4 class="level-head">${escapeHTML((multiTopic ? [group.source.topic, group.source.levelLabel] : [group.source.levelLabel || group.source.title]).filter(Boolean).join(' · '))}</h4>`
+          : '';
+        return head + questionCard(group, picked.has(group.key));
+      }).join('')
       : '<p class="empty">עדיין לא נבחרו שאלות. אפשר לעבור ל״כל ההצעות״ ולסמן.</p>';
-    const hidden = Math.max(0, ordered.length - visible.length);
+    const hidden = Math.max(0, list.length - visible.length);
     $('show-more').hidden = hidden === 0;
     $('more-count').textContent = hidden ? String(hidden) : '';
-    const suggestionId = pilotOn() && state.scenario !== 'other' ? cfg.suggestion : '';
-    const suggestion = suggestionId ? library.get(exKey(FACTORING_PDF, suggestionId)) : null;
-    const showSuggestion = !!(suggestion && !state.selected.includes(exKey(FACTORING_PDF, suggestionId)));
-    $('suggestion').hidden = !showSuggestion;
-    $('suggestion-text').textContent = showSuggestion ? `${suggestion.label}: ${cfg.suggestionText}` : '';
+    $('suggestion').hidden = true;
   }
-  $('selection-count').textContent = state.selected.length + ' נבחרו';
   const pdfs = new Set(state.selected.map((key) => key.split(':')[1]).filter(Boolean));
-  $('selection-composition').textContent = pdfs.size ? 'מתוך ' + pdfs.size + (pdfs.size === 1 ? ' דף מקור' : ' דפי מקור') : '';
+  const fromSheets = pdfs.size ? 'מתוך ' + pdfs.size + (pdfs.size === 1 ? ' דף מקור' : ' דפי מקור') : '';
+  if (elementary) {
+    $('selection-count').textContent = state.selected.length + ' נבחרו';
+    $('selection-composition').textContent = fromSheets;
+  } else {
+    const kept = sameBand(state.selected);
+    const chosenGroups = questionCountOf(kept);
+    const topics = new Set(kept.map((key) => byPdf.get(keySheet(key))).filter(Boolean).map((meta) => meta.grade + ':' + meta.topicId));
+    $('selection-count').textContent = chosenGroups === 1 ? 'נבחרה שאלה אחת' : chosenGroups + ' שאלות נבחרו';
+    $('selection-composition').textContent = kept.length
+      ? [kept.length + ' סעיפים', topics.size > 1 ? 'מ־' + topics.size + ' נושאים' : fromSheets].filter(Boolean).join(' · ')
+      : '';
+  }
   $('undo').disabled = history.length === 0;
   paintAiPickButtons();
   paintSourceLine();
-  if (!elementary) paintThumbs();
   applyWizard();
 }
 
@@ -560,106 +665,20 @@ function paintSourceLine() {
   line.hidden = false;
   const grade = gradeRecord(state.grade);
   const topic = currentTopic();
+  const topics = [...new Set(chosen.map((meta) => meta.topic).filter(Boolean))];
+  const grades = [...new Set(chosen.map((meta) => meta.gradeLabel).filter(Boolean))];
+  const mixed = topics.length > 1;
   const levels = [...new Set(chosen.map((meta) => levelPrintName(meta.level, meta.levelLabel)))].join(' · ');
-  const title = `${topic ? topic.title : ''} · ${grade ? grade.label : ''} · ${levels}`;
-  const links = chosen.map((meta) => `<a href="${escapeHTML(meta.pdfUrl)}" target="_blank" rel="noopener noreferrer">${escapeHTML(chosen.length > 1 ? levelPrintName(meta.level, meta.levelLabel) : 'פתיחת דף המקור')} ↗</a>`).join('');
+  const title = mixed
+    ? `${topics.join(' · ')} · ${grades.join(' · ')}`
+    : `${topic ? topic.title : ''} · ${grade ? grade.label : ''} · ${levels}`;
+  const linkName = (meta) => {
+    if (chosen.length === 1) return 'פתיחת דף המקור';
+    const level = levelPrintName(meta.level, meta.levelLabel);
+    return mixed ? [meta.topic, level].filter(Boolean).join(' · ') : level;
+  };
+  const links = chosen.map((meta) => `<a href="${escapeHTML(meta.pdfUrl)}" target="_blank" rel="noopener noreferrer">${escapeHTML(linkName(meta))} ↗</a>`).join('');
   line.innerHTML = `<span>${escapeHTML(title)}</span>${links}`;
-}
-
-let thumbToken = 0;
-let thumbObserver = null;
-
-async function mapPool(items, limit, task) {
-  let cursor = 0;
-  const workers = Array.from({ length: Math.min(limit, items.length) }, async () => {
-    while (cursor < items.length) {
-      const index = cursor;
-      cursor += 1;
-      await task(items[index]);
-    }
-  });
-  await Promise.all(workers);
-}
-
-function paintThumbs() {
-  const token = ++thumbToken;
-  const nodes = [...document.querySelectorAll('.q-thumb')];
-  if (typeof IntersectionObserver !== 'function') {
-    paintSeen(nodes, token);
-    return;
-  }
-  if (thumbObserver) thumbObserver.disconnect();
-  thumbObserver = new IntersectionObserver((entries) => {
-    const seen = entries.filter((entry) => entry.isIntersecting).map((entry) => entry.target);
-    paintSeen(seen, token);
-  }, { rootMargin: '240px' });
-  nodes.forEach((node) => thumbObserver.observe(node));
-}
-
-function paintSeen(nodes, token) {
-  const pending = nodes.filter((node) => node.dataset.painted !== '1' && node.dataset.painting !== '1');
-  pending.forEach((node) => { node.dataset.painting = '1'; });
-  mapPool(pending, 4, async (node) => {
-    if (token !== thumbToken) return;
-    try {
-      await paintThumb(node);
-      if (token === thumbToken) node.dataset.painted = '1';
-    } catch (error) {
-      node.dataset.painting = '';
-    }
-  });
-}
-
-function thumbSlice(question, bitmap) {
-  const row = question.row;
-  const line = question.line > 0 ? question.line : Math.min(row.h || 0.03, 0.03);
-  const glyph = Math.max(8, line * 0.52 * bitmap.height);
-  const right = Math.min(0.98, (row.x || 0) + (row.w || 1));
-  const left = Math.max(row.x || 0, Math.min(0.45, right - 0.12));
-  const srcX = left * bitmap.width;
-  const srcW = Math.max(8, (right - left) * bitmap.width);
-  const band = Math.max(line * 1.8, line * 0.7 * 5.2);
-  const shown = Math.min(row.h, band);
-  const padTop = row.h > band ? line * 0.2 : Math.min(line * 0.08, 0.0015);
-  const padBottom = line * 0.2;
-  const y0 = Math.max(0, row.y - padTop);
-  const y1 = Math.min(1, row.y + shown + padBottom);
-  const srcY = y0 * bitmap.height;
-  const srcH = Math.max(8, (y1 - y0) * bitmap.height);
-  return { glyph, srcX, srcY, srcW, srcH };
-}
-
-async function paintThumb(canvas) {
-  const question = library.get(canvas.dataset.thumb);
-  const row = question && question.row;
-  if (!row || !levelAllows(question.source)) return;
-  const bitmap = await pageBitmap(row.page || question.page, question.source);
-  const slice = thumbSlice(question, bitmap);
-  const card = canvas.parentElement ? canvas.parentElement.clientWidth : 0;
-  const cardW = Math.max(180, Math.min(card || 320, 520));
-  let scale = cardW / slice.srcW;
-  if (slice.srcH * scale > 120) scale = 120 / slice.srcH;
-  const dpr = window.devicePixelRatio || 1;
-  const dw = Math.max(1, Math.round(slice.srcW * scale));
-  const dh = Math.max(1, Math.round(slice.srcH * scale));
-  canvas.width = Math.max(1, Math.round(dw * dpr));
-  canvas.height = Math.max(1, Math.round(dh * dpr));
-  canvas.style.width = dw + 'px';
-  canvas.style.height = dh + 'px';
-  canvas.style.maxWidth = '100%';
-  const ctx = canvas.getContext('2d');
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  ctx.fillStyle = '#fff';
-  ctx.fillRect(0, 0, dw, dh);
-  ctx.drawImage(bitmap, slice.srcX, slice.srcY, slice.srcW, slice.srcH, 0, 0, dw, dh);
-}
-
-function levelAllows(source) {
-  if (!source) return true;
-  if (state.level === 'all') return true;
-  if (!source.level || source.level === 'one' || source.level === state.level) return true;
-  const topic = currentTopic();
-  return !(topic && topic.sheets.some((sheet) => sheet.level === state.level));
 }
 
 function clearPreparedPrint() {
@@ -672,9 +691,23 @@ function selectKey(key, on) {
   if (!key) return;
   const before = selectionKey();
   snapshot();
+  state.touched = true;
   state.lastAiPickCount = 0;
   if (on && !state.selected.includes(key)) state.selected.push(key);
   if (!on) state.selected = state.selected.filter((item) => item !== key);
+  if (selectionKey() !== before) clearPreparedPrint();
+  render();
+}
+
+function selectQuestion(key, on) {
+  const group = currentQuestions().find((item) => item.key === key) || pickedGroupsAll().find((item) => item.key === key);
+  if (!group) return;
+  const before = selectionKey();
+  snapshot();
+  state.touched = true;
+  state.lastAiPickCount = 0;
+  if (on) group.keys.forEach((item) => { if (!state.selected.includes(item)) state.selected.push(item); });
+  else state.selected = state.selected.filter((item) => !group.keys.includes(item));
   if (selectionKey() !== before) clearPreparedPrint();
   render();
 }
@@ -1185,10 +1218,20 @@ function levelPrintName(level, label) {
 }
 
 function orderPrintQuestions(chosen) {
+  // Topics print in the order the teacher picked them; inside a topic, by level and question.
+  const topicRank = new Map();
+  chosen.forEach((question) => {
+    const source = question.source || {};
+    const topic = String(source.grade || '') + ':' + String(source.topicId || source.topic || '');
+    if (!topicRank.has(topic)) topicRank.set(topic, topicRank.size);
+  });
+  const topicOf = (source) => topicRank.get(String(source.grade || '') + ':' + String(source.topicId || source.topic || '')) || 0;
   return chosen.slice().sort((a, b) => {
     const rank = { a: 0, b: 1, c: 2, one: 3 };
     const sa = a.source || {};
     const sb = b.source || {};
+    const tr = topicOf(sa) - topicOf(sb);
+    if (tr) return tr;
     const lr = (rank[sa.level] ?? 9) - (rank[sb.level] ?? 9);
     if (lr) return lr;
     const qr = (Number(a.q) || 0) - (Number(b.q) || 0);
@@ -1507,6 +1550,8 @@ function worksheetTitle(chosen) {
     const topic = question.source && (question.source.topic || question.source.title);
     if (topic && !topics.includes(topic)) topics.push(topic);
   });
+  if (topics.length > 2) return topics.slice(0, 2).join(' · ') + ' ועוד';
+  if (topics.length === 2) return topics.join(' · ');
   return topics[0] || (SOURCE && SOURCE.topic) || 'דף תרגול';
 }
 
@@ -1534,7 +1579,12 @@ function paintPageChrome(ctx, width, pageIndex, pageCount, title) {
   ctx.textAlign = 'right';
   ctx.fillText('בס״ד', width - 28, 28);
   if (pageIndex !== 0) return SHEET_BASAD_H;
-  ctx.font = '28px Heebo, Arial, sans-serif';
+  let titleSize = 28;
+  ctx.font = titleSize + 'px Heebo, Arial, sans-serif';
+  while (titleSize > 16 && ctx.measureText(title).width > width - 56) {
+    titleSize -= 2;
+    ctx.font = titleSize + 'px Heebo, Arial, sans-serif';
+  }
   ctx.fillText(title, width - 28, 68);
   ctx.font = '20px Heebo, Arial, sans-serif';
   ctx.fillText('שם:', width - 28, 108);
@@ -1631,14 +1681,20 @@ async function paintShort(root, slices) {
   await paintPacked(root, measured, [], worksheetTitle([]));
 }
 
+// One group per source sheet, in first-pick order, so a page never prints twice.
 function groupsOf(chosen) {
   const groups = [];
+  const bySheet = new Map();
   chosen.forEach((question) => {
     const source = question.source;
     if (!source) return;
-    const last = groups[groups.length - 1];
-    if (last && last.source.pdfId === source.pdfId) last.questions.push(question);
-    else groups.push({ source, questions: [question] });
+    let group = bySheet.get(source.pdfId);
+    if (!group) {
+      group = { source, questions: [] };
+      bySheet.set(source.pdfId, group);
+      groups.push(group);
+    }
+    group.questions.push(question);
   });
   return groups;
 }
@@ -1720,6 +1776,8 @@ async function paintAllShort(root, chosen) {
   const ordered = orderPrintQuestions(chosen.filter((question) => question && question.source));
   const slices = [];
   const groups = [];
+  const topicKey = (source) => String(source.grade || '') + ':' + String(source.topicId || source.topic || '');
+  const multiTopic = new Set(ordered.map((question) => topicKey(question.source))).size > 1;
   let lastLevel = null;
   batchesOf(ordered).forEach((batch) => {
     const question = batch.questions[0];
@@ -1729,7 +1787,8 @@ async function paintAllShort(root, chosen) {
     const known = groups.find((group) => group.source.pdfId === question.source.pdfId);
     if (known) batch.questions.forEach((item) => known.questions.push(item));
     else groups.push({ source: question.source, questions: batch.questions.slice() });
-    if (question.source.level !== lastLevel) {
+    const heading = topicKey(question.source) + '|' + question.source.level;
+    if (heading !== lastLevel) {
       slices.push({
         page: part[0].page,
         pdfId: question.source.pdfId,
@@ -1737,9 +1796,9 @@ async function paintAllShort(root, chosen) {
         gap: 8,
         block: part[0].block,
         kind: 'level',
-        label: levelPrintName(question.source.level, question.source.levelLabel),
+        label: [multiTopic ? question.source.topic : '', levelPrintName(question.source.level, question.source.levelLabel)].filter(Boolean).join(' · '),
       });
-      lastLevel = question.source.level;
+      lastLevel = heading;
     }
     part.forEach((slice) => {
       slice.pdfId = slice.pdfId || question.source.pdfId;
@@ -1828,7 +1887,7 @@ async function materializeElementary(pdfId) {
 
 async function resolveChosen() {
   const chosen = [];
-  const allow = new Set(visibleSelectionKeys());
+  const allow = new Set(sameBand(state.selected));
   for (const key of state.selected) {
     if (!allow.has(key)) continue;
     if (key.startsWith('sheet:')) {
@@ -1911,13 +1970,9 @@ async function prepare(mode) {
 }
 
 function exercisePreset(value) {
-  const list = currentExercises();
-  if (!list.length) return [];
-  let picked = list.slice(0, 6);
-  if (value === 'spiral') picked = list.filter((_, index) => index % 4 === 0).slice(0, 5);
-  if (value === 'practice') picked = list.slice(0, 10);
-  if (value === 'exam') picked = list.slice(-5);
-  return picked.map((question) => exKey(question.source.pdfId, question.id));
+  const groups = currentQuestions();
+  if (!groups.length) return [];
+  return keysOfQuestions(smartQuestionPick(groups, AI_QUESTION_COUNTS[0], value, state.style, []), groups);
 }
 
 function elementaryPreset(value) {
@@ -1928,22 +1983,30 @@ function elementaryPreset(value) {
   return list.map((sheet) => sheetKey(sheet.pdfId));
 }
 
+function presetFor(value) {
+  if (pilotOn() && SCENARIOS[value]) return wholeQuestions(SCENARIOS[value].selected.map((id) => exKey(FACTORING_PDF, id)));
+  if (band() === 'elementary') return elementaryPreset(value);
+  return exercisePreset(value);
+}
+
+function setFilter(value) {
+  state.filter = value;
+  ['all', 'selected'].forEach((name) => $('filter-' + name).setAttribute('aria-pressed', value === name ? 'true' : 'false'));
+}
+
 function applyScenario(value, options) {
   const quiet = options && options.quiet;
   const before = selectionKey();
   if (!quiet) snapshot();
   state.scenario = value;
   state.lastAiPickCount = 0;
-  state.expanded = false;
-  state.filter = 'all';
-  if (value !== 'other') {
-    if (pilotOn() && SCENARIOS[value]) state.selected = SCENARIOS[value].selected.map((id) => exKey(FACTORING_PDF, id));
-    else if (band() === 'elementary') state.selected = elementaryPreset(value);
-    else state.selected = exercisePreset(value);
-  }
+  state.expanded = true;
+  setFilter('all');
+  // Suggestions follow the lesson goal until the teacher picks; after that the picks are theirs.
+  if (value !== 'other' && !state.touched) state.selected = presetFor(value);
   if (selectionKey() !== before) clearPreparedPrint();
   render();
-  if (!quiet) announce(value === 'other' ? 'אפשר להוסיף הערה ולבחור מהקטלוג.' : 'הוצגו פריטים שכבר קיימים בקטלוג.');
+  if (!quiet) announce(value === 'other' ? 'אפשר להוסיף הערה ולבחור מהקטלוג.' : (state.touched ? 'הבחירה שלכם נשמרה.' : 'הוצגו פריטים שכבר קיימים בקטלוג.'));
   if (!quiet && value === 'other') $('teacher-note').focus();
 }
 
@@ -2027,7 +2090,7 @@ function applyWizard() {
     level: 'רמה',
     scenario: 'מה קורה בשיעור?',
     style: 'איך ניגשים לתרגול?',
-    pick: 'בחירת סעיפים',
+    pick: 'בחירת שאלות',
     result: 'הדף להדפסה',
   };
   $('wizard-label').textContent = labels[step];
@@ -2076,7 +2139,7 @@ async function showWizardResult() {
 function bind() {
   $('questions').addEventListener('change', (event) => {
     const box = event.target;
-    if (box.matches('[data-question]')) selectKey(box.dataset.question, box.checked);
+    if (box.matches('[data-question]')) selectQuestion(box.dataset.question, box.checked);
     if (box.matches('[data-sheet]')) selectKey(box.dataset.sheet, box.checked);
   });
   document.querySelectorAll('[name=scenario]').forEach((el) => el.addEventListener('change', () => {
@@ -2085,15 +2148,21 @@ function bind() {
   document.querySelectorAll('[name=style]').forEach((el) => el.addEventListener('change', () => {
     if (!el.checked) return;
     state.style = el.value;
-    render();
+    if (!state.touched && band() === 'middle' && state.scenario !== 'other') applyScenario(state.scenario, { quiet: true });
+    else render();
   }));
   document.querySelectorAll('[name=level]').forEach((el) => el.addEventListener('change', () => {
     if (!el.checked) return;
     state.level = el.value;
-    state.expanded = false;
-    let next = keepVisible(state.selected, visibleSelectionKeys());
+    state.expanded = true;
+    // The level only changes what is shown. Picks the teacher made stay, and still print.
+    if (state.touched) {
+      render();
+      return;
+    }
+    let next = wholeQuestions(keepVisible(state.selected, visibleSelectionKeys()));
     if (!next.length && state.scenario !== 'other') {
-      if (pilotOn() && SCENARIOS[state.scenario]) next = SCENARIOS[state.scenario].selected.map((id) => exKey(FACTORING_PDF, id));
+      if (pilotOn() && SCENARIOS[state.scenario]) next = wholeQuestions(SCENARIOS[state.scenario].selected.map((id) => exKey(FACTORING_PDF, id)));
       else if (band() === 'elementary') next = elementaryPreset(state.scenario);
       else next = exercisePreset(state.scenario);
     }
@@ -2106,31 +2175,63 @@ function bind() {
     render();
   }));
   $('grade').addEventListener('change', async () => {
+    const before = band();
     state.grade = $('grade').value;
     state.level = 'all';
-    state.expanded = false;
-    state.selected = [];
+    state.expanded = true;
+    // Elementary sheets and middle-school questions print differently, so they never share one sheet.
+    if (band() !== before) {
+      state.selected = [];
+      state.touched = false;
+      state.addingTopic = false;
+      history = [];
+    } else if (!state.touched && !state.addingTopic) {
+      state.selected = [];
+      history = [];
+    }
+    setFilter('all');
     state.topic = '';
-    history = [];
     clearPreparedPrint();
     fillTopics();
     await loadCurrentTopic();
-    applyScenario(state.scenario === 'other' ? 'first' : state.scenario);
+    if (state.selected.length) render();
+    else applyScenario(state.scenario === 'other' ? 'first' : state.scenario);
   });
   $('topic').addEventListener('change', async () => {
     state.topic = $('topic').value;
     state.level = 'all';
-    state.expanded = false;
-    state.selected = [];
-    history = [];
+    state.expanded = true;
+    if (!state.touched && !state.addingTopic) {
+      state.selected = [];
+      history = [];
+    }
+    setFilter('all');
     clearPreparedPrint();
     syncLevels();
     await loadCurrentTopic();
-    if (state.scenario === 'other') render();
+    if (state.scenario === 'other' || state.selected.length) render();
     else applyScenario(state.scenario, { quiet: true });
   });
-  $('filter-all').addEventListener('click', () => { state.filter = 'all'; $('filter-all').setAttribute('aria-pressed', 'true'); $('filter-selected').setAttribute('aria-pressed', 'false'); render(); });
-  $('filter-selected').addEventListener('click', () => { state.filter = 'selected'; $('filter-selected').setAttribute('aria-pressed', 'true'); $('filter-all').setAttribute('aria-pressed', 'false'); render(); });
+  if ($('add-topic')) $('add-topic').addEventListener('click', () => {
+    state.addingTopic = true;
+    state.touched = true;
+    setFilter('all');
+    state.wizard = 'topic';
+    applyWizard();
+    announce('הבחירה נשמרת. בוחרים נושא נוסף.');
+  });
+  $('filter-all').addEventListener('click', () => { setFilter('all'); render(); });
+  $('filter-selected').addEventListener('click', () => { setFilter('selected'); render(); });
+  if ($('clear-sheet')) $('clear-sheet').addEventListener('click', () => {
+    if (!state.selected.length) return;
+    snapshot();
+    state.selected = [];
+    state.touched = false;
+    state.lastAiPickCount = 0;
+    clearPreparedPrint();
+    render();
+    announce('הבחירה נוקתה. אפשר להתחיל דף חדש, וגם לבטל.');
+  });
   document.querySelectorAll('[data-ai-pick]').forEach((btn) => {
     btn.addEventListener('click', () => {
       pickWithAi(Number(btn.dataset.aiPick));
@@ -2141,7 +2242,8 @@ function bind() {
     const previous = history.pop();
     if (!previous) return;
     const before = selectionKey();
-    state.selected = previous;
+    state.selected = sameBand(previous);
+    state.touched = true;
     state.lastAiPickCount = 0;
     if (selectionKey() !== before) clearPreparedPrint();
     render();
@@ -2165,7 +2267,9 @@ function bind() {
   if ($('wizard-next')) $('wizard-next').addEventListener('click', async () => {
     const index = WIZARD_ORDER.indexOf(state.wizard || 'grade');
     state.wizard = WIZARD_ORDER[Math.min(WIZARD_ORDER.length - 1, index + 1)];
+    if (state.addingTopic && (state.wizard === 'scenario' || state.wizard === 'style')) state.wizard = 'pick';
     if (state.wizard === 'pick') {
+      state.addingTopic = false;
       if (topicLoadPromise) await topicLoadPromise;
       if (!state.selected.length && state.scenario !== 'other') {
         applyScenario(state.scenario, { quiet: true });
@@ -2211,6 +2315,8 @@ function bind() {
 
 function applyWizardPrefill(prefill) {
   if (!prefill || !prefill.grade || !prefill.topic) return;
+  const beforeBand = CATALOG ? band() : '';
+  if (state.selected.length) snapshot();
   state.grade = String(prefill.grade);
   state.topic = String(prefill.topic);
   state.level = prefill.level || 'all';
@@ -2221,7 +2327,11 @@ function applyWizardPrefill(prefill) {
   return loadCurrentTopic().then(() => {
     const allow = new Set(visibleSelectionKeys());
     const ids = prefill.exerciseIds || [];
-    state.selected = ids.filter((id) => allow.has(id));
+    if (beforeBand && band() !== beforeBand) history = [];
+    state.selected = wholeQuestions(ids.filter((id) => allow.has(id)));
+    state.touched = true;
+    state.addingTopic = false;
+    state.lastAiPickCount = 0;
     const note = $('teacher-note');
     if (note && prefill.minutes && !note.value) note.value = 'אורך שיעור: ' + prefill.minutes + ' דקות';
     render();
