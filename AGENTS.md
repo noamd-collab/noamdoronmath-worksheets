@@ -17,6 +17,7 @@
 ## Branches
 
 - Never delete a local or remote branch, and never turn on auto branch deletion, without explicit approval that names the branch and the pull request.
+- Never force-push.
 
 ## Secrets
 
@@ -86,7 +87,7 @@
 - Do not show the pair after the closing message or after errors. There is nothing to answer there.
 - Use a warm opening.
 - Use feminine or neutral wording.
-- Drawing hints (רמז בשרטוט / sketch hints) may appear only on worksheet pages whose topic is geometry or analytic geometry. Algebra, arithmetic, fractions, equations, and every other topic show no drawing hint.
+- Drawing hints (רמז בשרטוט / sketch hints, including drawings, illustrations and graphics) may appear only on worksheet pages whose topic is geometry or analytic geometry. Algebra, arithmetic, fractions, equations, and every other topic show no drawing hint.
 - On other topics that includes saved drawings, automatic visuals, and explicit drawing requests. Textual hints and the original worksheet stay available.
 - Enforce the same topic policy in the viewer and the diagram services. Unknown topics deny drawings. Do not infer permission from a student's message.
 
@@ -110,11 +111,10 @@
 
 ```bash
 cd headless/astro-poc
-node scripts/bundle-native-svg.mjs generate
 npx astro dev --config astro.config.preview.mjs --host 127.0.0.1 --port 4321
 ```
 
-CI build, no Wix: `bash .github/scripts/build-servable.sh`, then `bash .github/scripts/serve-built-site.sh`.
+On `main` only: run `node scripts/bundle-native-svg.mjs generate` first, and the CI build without Wix is `bash .github/scripts/build-servable.sh`, then `bash .github/scripts/serve-built-site.sh`. These scripts are not on `headless/astro-poc-baseline`.
 
 Worksheet gate: `node tools/validate.js index.html`.
 
