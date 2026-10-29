@@ -4474,6 +4474,61 @@ function clipEmptyFigureTail(bitmap, box) {
   return { ...box, w: (right / width) - box.x };
 }
 
+/**
+ * A drawing under a section bar can start on the bar's bottom border.
+ * That rule runs on across the page past the drawing; a table's own border stops with the crop.
+ */
+function clipFigureHeadRule(bitmap, box) {
+  if (!bitmap || !box || box.segment !== 'figure' || typeof bitmap.getContext !== 'function') return box;
+  const width = bitmap.width;
+  const height = bitmap.height;
+  const x0 = Math.max(0, Math.floor((box.x || 0) * width));
+  const x1 = Math.min(width, Math.ceil(((box.x || 0) + (box.w || 0)) * width));
+  const y0 = Math.max(0, Math.floor((box.y || 0) * height));
+  const y1 = Math.min(height, Math.ceil(((box.y || 0) + (box.h || 0)) * height));
+  if (x1 - x0 < 16 || y1 - y0 < 24) return box;
+  let data;
+  try {
+    data = bitmap.getContext('2d').getImageData(0, y0, width, y1 - y0).data;
+  } catch (error) {
+    return box;
+  }
+  const inkAt = (x, y) => {
+    const i = (y * width + x) * 4;
+    return data[i] < 200 || data[i + 1] < 200 || data[i + 2] < 200;
+  };
+  const rowInk = (y, from, to) => {
+    let n = 0;
+    for (let x = from; x < to; x += 1) if (inkAt(x, y)) n += 1;
+    return n;
+  };
+  const rh = y1 - y0;
+  const limit = Math.min(rh - 1, Math.round(rh * 0.25));
+  let first = -1;
+  for (let y = 0; y <= limit; y += 1) {
+    if (rowInk(y, x0, x1) > 0) {
+      first = y;
+      break;
+    }
+  }
+  if (first < 0) return box;
+  let last = first;
+  while (last + 1 <= limit && rowInk(last + 1, x0, x1) > 0) last += 1;
+  if (last - first > Math.max(4, Math.round(height * 0.002))) return box;
+  let rule = false;
+  for (let y = first; y <= last && !rule; y += 1) {
+    const across = rowInk(y, x0, x1) >= (x1 - x0) * 0.85;
+    const beyond = rowInk(y, x1, Math.min(width, x1 + Math.round(width * 0.2))) >= width * 0.2 * 0.85;
+    rule = across && beyond;
+  }
+  if (!rule) return box;
+  let below = last + 1;
+  while (below < rh && rowInk(below, x0, x1) === 0) below += 1;
+  if (below - last < 6 || below >= rh - 8) return box;
+  const top = y0 + below - 2;
+  return { ...box, y: top / height, h: (box.y + box.h) - top / height };
+}
+
 function partMarks(items) {
   const marks = [];
   (items || []).forEach((item) => {
@@ -5666,7 +5721,7 @@ function rebuildQuestionGroup(group, texts) {
   for (let i = boxes.length - 1; i >= 0; i -= 1) {
     const entry = boxes[i];
     if (!entry.box || entry.box.segment !== 'figure' || entry.box.inquiry) continue;
-    const clipped = clipEmptyFigureTail(sample.bitmap, entry.box);
+    const clipped = clipEmptyFigureTail(sample.bitmap, clipFigureHeadRule(sample.bitmap, entry.box));
     if (!clipped) boxes.splice(i, 1);
     else entry.box = clipped;
   }
