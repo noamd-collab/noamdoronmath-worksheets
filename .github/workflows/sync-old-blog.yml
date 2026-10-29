@@ -1,0 +1,72 @@
+name: sync-old-blog
+
+# Pull new posts from the old public Wix blog into the headless archive.
+# Soro publishes most mornings (around 04:00 UTC). This runs after that.
+
+on:
+  schedule:
+    - cron: '30 4 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-old-blog
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+        with:
+          ref: headless/astro-poc-baseline
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: headless/astro-poc/package-lock.json
+
+      - name: Install
+        working-directory: headless/astro-poc
+        run: npm ci --ignore-scripts --no-audit --no-fund
+
+      - name: Sync posts
+        working-directory: headless/astro-poc
+        run: node scripts/sync-old-blog.mjs
+
+      - name: Commit new posts
+        id: commit
+        run: |
+          git config user.name "cursor-blog-sync"
+          git config user.email "cursor-blog-sync@users.noreply.github.com"
+          git add \
+            headless/astro-poc/src/data/blog-posts \
+            headless/astro-poc/src/data/blog-archives/blog-index.json \
+            headless/astro-poc/src/data/site-guide.v1.json \
+            headless/astro-poc/src/data/search-index.v1.json \
+            headless/astro-poc/src/lib/blogArchives.ts \
+            headless/astro-poc/docs/search/index-build.json
+          if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            git commit -m "Sync new posts from the old Wix blog"
+            git push
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Publish
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          WIX_CLI_API_KEY: ${{ secrets.WIX_CLI_API_KEY }}
+        run: |
+          if [ -z "${WIX_CLI_API_KEY}" ]; then
+            echo "WIX_CLI_API_KEY is not set. Posts are on the branch and were not published."
+            exit 0
+          fi
+          bash tools/release/release.sh "$(git rev-parse HEAD)"

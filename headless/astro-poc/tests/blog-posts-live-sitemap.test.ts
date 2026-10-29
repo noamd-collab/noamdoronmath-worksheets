@@ -5,7 +5,7 @@
  */
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
-import { BLOG_POST_CLASSIC_GAP_PATHS, BLOG_POST_SERVED_PATHS } from '../src/lib/blogPosts';
+import { BLOG_POST_CLASSIC_GAP_PATHS, BLOG_POST_SERVED_PATHS, BLOG_POST_SYNC_PATHS } from '../src/lib/blogPosts';
 
 const norm = (p: string) => decodeURIComponent(p.replace(/^https:\/\/www\.noamdoronmath\.co\.il/, '')).replace(/\/$/, '');
 
@@ -18,7 +18,7 @@ describe('OPEN-07-FIX live blog sitemap parity', () => {
     const served = new Set(BLOG_POST_SERVED_PATHS.map(norm));
     // Classic-site posts this POC already serves, which are not in the published
     // production blog-posts-sitemap.xml until the next release.
-    const allowedAhead = new Set(BLOG_POST_CLASSIC_GAP_PATHS.map(norm));
+    const allowedAhead = new Set([...BLOG_POST_CLASSIC_GAP_PATHS, ...BLOG_POST_SYNC_PATHS].map(norm));
     const missing = live.filter((p) => !served.has(p));
     const extra = [...served].filter((p) => !live.includes(p));
     const unexpected = extra.filter((p) => !allowedAhead.has(p));

@@ -32,6 +32,201 @@
   ],
   "cards": [
     {
+      "title": "סקירת עוזרי מתמטיקה שעוזרים ללמוד נכון",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%A1%D7%A7%D7%99%D7%A8%D7%AA-%D7%A2%D7%95%D7%96%D7%A8%D7%99-%D7%9E%D7%AA%D7%9E%D7%98%D7%99%D7%A7%D7%94-%D7%A9%D7%A2%D7%95%D7%96%D7%A8%D7%99%D7%9D-%D7%9C%D7%9C%D7%9E%D7%95%D7%93-%D7%A0%D7%9B%D7%95%D7%9F",
+      "excerpt": "סקירת עוזרי מתמטיקה להורים, מורים ותלמידים: כך בוחרים כלי שמסביר את הדרך, מחזק חשיבה עצמאית ומשתלב בתרגול חינמי לפי כיתה ורמה לכל צורך גם בבית ובכיתה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "29 באוק׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_754668494d5e4d14a55f5dd792ccbfdb~mv2.webp/v1/fill/w_305,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_754668494d5e4d14a55f5dd792ccbfdb~mv2.webp",
+      "imageAlt": "סקירת עוזרי מתמטיקה שעוזרים ללמוד נכון"
+    },
+    {
+      "title": "מתמטיקה בחינם לתלמידים שרוצים להתקדם",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%9E%D7%AA%D7%9E%D7%98%D7%99%D7%A7%D7%94-%D7%91%D7%97%D7%99%D7%A0%D7%9D-%D7%9C%D7%AA%D7%9C%D7%9E%D7%99%D7%93%D7%99%D7%9D-%D7%A9%D7%A8%D7%95%D7%A6%D7%99%D7%9D-%D7%9C%D7%94%D7%AA%D7%A7%D7%93%D7%9D",
+      "excerpt": "מתמטיקה בחינם לכיתות א׳-ט׳ עם דפי עבודה להדפסה, תרגול ממוקד לפי נושא ורמה, הכנה למבחנים והכוונה ברורה לתלמידים, הורים ומורים, ללא הרשמה וללא עלות כלל.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "28 באוק׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_a0ca4cb287134942a3f6c03e14002271~mv2.webp/v1/fill/w_305,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_a0ca4cb287134942a3f6c03e14002271~mv2.webp",
+      "imageAlt": "מתמטיקה בחינם לתלמידים שרוצים להתקדם"
+    },
+    {
+      "title": "סקירת כלים ללמידה: מה באמת עוזר במתמטיקה?",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%A1%D7%A7%D7%99%D7%A8%D7%AA-%D7%9B%D7%9C%D7%99%D7%9D-%D7%9C%D7%9C%D7%9E%D7%99%D7%93%D7%94-%D7%9E%D7%94-%D7%91%D7%90%D7%9E%D7%AA-%D7%A2%D7%95%D7%96%D7%A8-%D7%91%D7%9E%D7%AA%D7%9E%D7%98%D7%99%D7%A7%D7%94",
+      "excerpt": "סקירת כלים ללמידה במתמטיקה עוזרת לבחור דפי עבודה, תרגול מדורג, מעקב התקדמות ועזרה שלב אחר שלב - לפי הכיתה, הנושא והקצב של כל תלמיד בבית ובכיתה",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "27 באוק׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_285ac5d68d9043138408ad63a0874f2f~mv2.webp/v1/fill/w_305,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_285ac5d68d9043138408ad63a0874f2f~mv2.webp",
+      "imageAlt": "סקירת כלים ללמידה: מה באמת עוזר במתמטיקה?"
+    },
+    {
+      "title": "מספרים שליליים בחטיבה - להבין ולתרגל נכון",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%9E%D7%A1%D7%A4%D7%A8%D7%99%D7%9D-%D7%A9%D7%9C%D7%99%D7%9C%D7%99%D7%99%D7%9D-%D7%91%D7%97%D7%98%D7%99%D7%91%D7%94-%D7%9C%D7%94%D7%91%D7%99%D7%9F-%D7%95%D7%9C%D7%AA%D7%A8%D7%92%D7%9C-%D7%A0%D7%9B%D7%95%D7%9F",
+      "excerpt": "מספרים שליליים בחטיבה נעשים ברורים כשמחברים בין ציר המספרים, משמעות הפעולות ותרגול מדורג. מדריך להורים, למורים ולתלמידים. עם טעויות שכיחות ודרכי תיקון.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "26 באוק׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_9d0607a695f644dc8b0a7a90b02ad456~mv2.webp/v1/fill/w_305,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_9d0607a695f644dc8b0a7a90b02ad456~mv2.webp",
+      "imageAlt": "מספרים שליליים בחטיבה - להבין ולתרגל נכון"
+    },
+    {
+      "title": "חומרי הוראה במתמטיקה שבאמת מקדמים תרגול",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%97%D7%95%D7%9E%D7%A8%D7%99-%D7%94%D7%95%D7%A8%D7%90%D7%94-%D7%91%D7%9E%D7%AA%D7%9E%D7%98%D7%99%D7%A7%D7%94-%D7%A9%D7%91%D7%90%D7%9E%D7%AA-%D7%9E%D7%A7%D7%93%D7%9E%D7%99%D7%9D-%D7%AA%D7%A8%D7%92%D7%95%D7%9C",
+      "excerpt": "חומרי הוראה במתמטיקה לכיתות א׳–ט׳: כך בוחרים תרגול מדויק, מדפיסים במהירות ומקדמים ביטחון, הבנה והתקדמות בבית, בכיתה או בשיעור פרטי לכל תלמיד ותלמידה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "25 באוק׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_276a7acd66a14b6480f5eaac9b3208ee~mv2.webp/v1/fill/w_305,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_276a7acd66a14b6480f5eaac9b3208ee~mv2.webp",
+      "imageAlt": "חומרי הוראה במתמטיקה שבאמת מקדמים תרגול"
+    },
+    {
+      "title": "איך להתכונן למבחן גאומטריה בלי ללמוד בלחץ",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%90%D7%99%D7%9A-%D7%9C%D7%94%D7%AA%D7%9B%D7%95%D7%A0%D7%9F-%D7%9C%D7%9E%D7%91%D7%97%D7%9F-%D7%92%D7%90%D7%95%D7%9E%D7%98%D7%A8%D7%99%D7%94-%D7%91%D7%9C%D7%99-%D7%9C%D7%9C%D7%9E%D7%95%D7%93-%D7%91%D7%9C%D7%97%D7%A5",
+      "excerpt": "איך להתכונן למבחן גאומטריה? תכנית חזרה פשוטה לתלמידים ולהורים: מאתרים פערים, מתרגלים לפי רמה, בודקים טעויות ומגיעים רגועים ובטוחים למבחן הקרוב.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "24 באוק׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_a37da21ec2e449f0a2e128886ac28527~mv2.webp/v1/fill/w_305,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_a37da21ec2e449f0a2e128886ac28527~mv2.webp",
+      "imageAlt": "איך להתכונן למבחן גאומטריה בלי ללמוד בלחץ"
+    },
+    {
+      "title": "כלים לזיהוי קשיי למידה במתמטיקה בכיתה ובבית",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%9B%D7%9C%D7%99%D7%9D-%D7%9C%D7%96%D7%99%D7%94%D7%95%D7%99-%D7%A7%D7%A9%D7%99%D7%99-%D7%9C%D7%9E%D7%99%D7%93%D7%94-%D7%91%D7%9E%D7%AA%D7%9E%D7%98%D7%99%D7%A7%D7%94-%D7%91%D7%9B%D7%99%D7%AA%D7%94-%D7%95%D7%91%D7%91%D7%99%D7%AA",
+      "excerpt": "כלים לזיהוי קשיי למידה במתמטיקה: כך מזהים דפוסי טעות, בודקים פערים ובונים תרגול מדורג שמחזק ביטחון ומקדם תלמידים בכיתות א׳–ט׳, בבית ובכיתה בכל יום.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "23 באוק׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_d9011b65ace64ff7b1dbdd0a1bd16b60~mv2.webp/v1/fill/w_305,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_d9011b65ace64ff7b1dbdd0a1bd16b60~mv2.webp",
+      "imageAlt": "כלים לזיהוי קשיי למידה במתמטיקה בכיתה ובבית"
+    },
+    {
+      "title": "איך מחזקים ביטחון מתמטי בבית בלי להפוך תרגיל למאבק",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%90%D7%99%D7%9A-%D7%9E%D7%97%D7%96%D7%A7%D7%99%D7%9D-%D7%91%D7%99%D7%98%D7%97%D7%95%D7%9F-%D7%9E%D7%AA%D7%9E%D7%98%D7%99-%D7%91%D7%91%D7%99%D7%AA-%D7%91%D7%9C%D7%99-%D7%9C%D7%94%D7%A4%D7%95%D7%9A-%D7%AA%D7%A8%D7%92%D7%99%D7%9C-%D7%9C%D7%9E%D7%90%D7%91%D7%A7",
+      "excerpt": "איך מחזקים ביטחון מתמטי בבית? מדריך מעשי להורים: שגרת תרגול קצרה, טעויות שמלמדות, בחירת רמת קושי נכונה ושיחות שמחזירות לילד תחושת מסוגלות גם בבית, בקלות.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "22 באוק׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_a551a9ad7b8249798e9ac37d837af0c1~mv2.webp/v1/fill/w_305,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_a551a9ad7b8249798e9ac37d837af0c1~mv2.webp",
+      "imageAlt": "איך מחזקים ביטחון מתמטי בבית בלי להפוך תרגיל למאבק"
+    },
+    {
+      "title": "מקרה של למידה בקצב אישי במתמטיקה",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%9E%D7%A7%D7%A8%D7%94-%D7%A9%D7%9C-%D7%9C%D7%9E%D7%99%D7%93%D7%94-%D7%91%D7%A7%D7%A6%D7%91-%D7%90%D7%99%D7%A9%D7%99-%D7%91%D7%9E%D7%AA%D7%9E%D7%98%D7%99%D7%A7%D7%94",
+      "excerpt": "מקרה של למידה בקצב אישי במתמטיקה מראה איך מזהים פער, בוחרים תרגול נכון, בודקים התקדמות ומחזירים לתלמיד ביטחון בדרך ברורה, חינמית ומעשית. להורים ולמורים.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "21 באוק׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_ed266164b73b4536b8d19983ea9da28f~mv2.webp/v1/fill/w_305,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_ed266164b73b4536b8d19983ea9da28f~mv2.webp",
+      "imageAlt": "מקרה של למידה בקצב אישי במתמטיקה"
+    },
+    {
+      "title": "למה תלמידים חוששים ממתמטיקה ואיך מסייעים",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%9C%D7%9E%D7%94-%D7%AA%D7%9C%D7%9E%D7%99%D7%93%D7%99%D7%9D-%D7%97%D7%95%D7%A9%D7%A9%D7%99%D7%9D-%D7%9E%D7%9E%D7%AA%D7%9E%D7%98%D7%99%D7%A7%D7%94-%D7%95%D7%90%D7%99%D7%9A-%D7%9E%D7%A1%D7%99%D7%99%D7%A2%D7%99%D7%9D",
+      "excerpt": "למה תלמידים חוששים ממתמטיקה? הכירו את מקורות הפחד, הסימנים שכדאי לזהות ודרכים מעשיות בפועל לבניית ביטחון, תרגול עקבי והתקדמות בקצב מתאים לכל תלמיד ותלמידה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "20 באוק׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_54fdb80b3c5449619bce5cb9b2abde59~mv2.webp/v1/fill/w_305,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_54fdb80b3c5449619bce5cb9b2abde59~mv2.webp",
+      "imageAlt": "למה תלמידים חוששים ממתמטיקה ואיך מסייעים"
+    },
+    {
+      "title": "דפי תרגול מומלצים לפני מבחן לפי רמה ונושא",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%93%D7%A4%D7%99-%D7%AA%D7%A8%D7%92%D7%95%D7%9C-%D7%9E%D7%95%D7%9E%D7%9C%D7%A6%D7%99%D7%9D-%D7%9C%D7%A4%D7%A0%D7%99-%D7%9E%D7%91%D7%97%D7%9F-%D7%9C%D7%A4%D7%99-%D7%A8%D7%9E%D7%94-%D7%95%D7%A0%D7%95%D7%A9%D7%90",
+      "excerpt": "מחפשים דפי תרגול מומלצים לפני מבחן? בחרו לפי כיתה, נושא ורמת קושי, תרגלו באופן מדורג, זהו טעויות בזמן והגיעו למבחן רגועים ומוכנים יותר בבית ובשקט ממש.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "18 באוק׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_85e9c7bc9222458f942e3df36293e85c~mv2.webp/v1/fill/w_305,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_85e9c7bc9222458f942e3df36293e85c~mv2.webp",
+      "imageAlt": "דפי תרגול מומלצים לפני מבחן לפי רמה ונושא"
+    },
+    {
+      "title": "מדריך להמרת יחידות מידה בלי להתבלבל",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%9E%D7%93%D7%A8%D7%99%D7%9A-%D7%9C%D7%94%D7%9E%D7%A8%D7%AA-%D7%99%D7%97%D7%99%D7%93%D7%95%D7%AA-%D7%9E%D7%99%D7%93%D7%94-%D7%91%D7%9C%D7%99-%D7%9C%D7%94%D7%AA%D7%91%D7%9C%D7%91%D7%9C",
+      "excerpt": "מדריך להמרת יחידות מידה לתלמידי כיתות א׳–ט׳: כך בוחרים פעולה נכונה, משתמשים בטבלת המרה, נמנעים מטעויות ובודקים כל תשובה בביטחון בעזרת דוגמאות ברורות מאוד.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "16 באוק׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_2efe00acb9cd4473b0439b2c83356494~mv2.webp/v1/fill/w_305,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_2efe00acb9cd4473b0439b2c83356494~mv2.webp",
+      "imageAlt": "מדריך להמרת יחידות מידה בלי להתבלבל"
+    },
+    {
+      "title": "הוראה מתקנת במתמטיקה לסגירת פערים נכונה",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%94%D7%95%D7%A8%D7%90%D7%94-%D7%9E%D7%AA%D7%A7%D7%A0%D7%AA-%D7%91%D7%9E%D7%AA%D7%9E%D7%98%D7%99%D7%A7%D7%94-%D7%9C%D7%A1%D7%92%D7%99%D7%A8%D7%AA-%D7%A4%D7%A2%D7%A8%D7%99%D7%9D-%D7%A0%D7%9B%D7%95%D7%A0%D7%94",
+      "excerpt": "הוראה מתקנת במתמטיקה עוזרת לזהות פערים, לבנות ביטחון ולתרגל בדיוק את מה שצריך. כך בונים תהליך קצר, מדויק ומעודד בבית ובכיתה לתלמידים בכיתות א׳–ט׳ בקלות.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "14 באוק׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_22dd72143c7d41e7bcb8277da933df12~mv2.webp/v1/fill/w_305,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_22dd72143c7d41e7bcb8277da933df12~mv2.webp",
+      "imageAlt": "הוראה מתקנת במתמטיקה לסגירת פערים נכונה"
+    },
+    {
+      "title": "כלים חינמיים לחיזוק חשבון בבית ובכיתה",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%9B%D7%9C%D7%99%D7%9D-%D7%97%D7%99%D7%A0%D7%9E%D7%99%D7%99%D7%9D-%D7%9C%D7%97%D7%99%D7%96%D7%95%D7%A7-%D7%97%D7%A9%D7%91%D7%95%D7%9F-%D7%91%D7%91%D7%99%D7%AA-%D7%95%D7%91%D7%9B%D7%99%D7%AA%D7%94",
+      "excerpt": "כלים חינמיים לחיזוק חשבון עוזרים לתלמידים בכיתות א׳–ט׳ לתרגל בדיוק את מה שחסר: אבחון קצר, דפי עבודה, משחקי מספרים ומעקב פשוט בבית או בכיתה. בלי עומס.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "12 באוק׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_5a681721cf4f48b7bcda39bb4b505420~mv2.webp/v1/fill/w_305,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_5a681721cf4f48b7bcda39bb4b505420~mv2.webp",
+      "imageAlt": "כלים חינמיים לחיזוק חשבון בבית ובכיתה"
+    },
+    {
+      "title": "איך מתכוננים למבחן אלגברה בלי ללמוד בלחץ",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%90%D7%99%D7%9A-%D7%9E%D7%AA%D7%9B%D7%95%D7%A0%D7%A0%D7%99%D7%9D-%D7%9C%D7%9E%D7%91%D7%97%D7%9F-%D7%90%D7%9C%D7%92%D7%91%D7%A8%D7%94-%D7%91%D7%9C%D7%99-%D7%9C%D7%9C%D7%9E%D7%95%D7%93-%D7%91%D7%9C%D7%97%D7%A5",
+      "excerpt": "איך מתכוננים למבחן אלגברה? בונים תוכנית חזרה קצרה, מזהים טעויות, מתרגלים לפי רמה ומגיעים למבחן עם דרך עבודה ברורה וביטחון, גם כשנשאר מעט זמן ובשקט נפשי.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "10 באוק׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_c43196989d87489f8992b0e3ea97c977~mv2.webp/v1/fill/w_305,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_c43196989d87489f8992b0e3ea97c977~mv2.webp",
+      "imageAlt": "איך מתכוננים למבחן אלגברה בלי ללמוד בלחץ"
+    },
+    {
       "title": "איך מסבירים היקף ושטח בלי לבלבל בין השניים",
       "href": "https://www.noamdoronmath.co.il/post/%D7%90%D7%99%D7%9A-%D7%9E%D7%A1%D7%91%D7%99%D7%A8%D7%99%D7%9D-%D7%94%D7%99%D7%A7%D7%A3-%D7%95%D7%A9%D7%98%D7%97-%D7%91%D7%9C%D7%99-%D7%9C%D7%91%D7%9C%D7%91%D7%9C-%D7%91%D7%99%D7%9F-%D7%94%D7%A9%D7%A0%D7%99%D7%99%D7%9D",
       "excerpt": "איך מסבירים היקף ושטח לילדים? מדריך פשוט להבדיל בין קו מסביב למקום שבתוך הצורה, עם דוגמאות, שאלות ותרגול מדורג לבית ולכיתה ובקצב שמתאים לילד.",
@@ -860,8 +1055,8 @@
   "loadMore": null,
   "source": {
     "liveUrl": "https://amiramnoam.wixsite.com/my-site/blog",
-    "capturedAt": "2026-10-09T22:03:01.400Z",
-    "cardCount": 68,
-    "captureMethod": "ssr-html"
+    "capturedAt": "2026-10-29T05:29:50.728Z",
+    "cardCount": 83,
+    "captureMethod": "old-site-sync"
   }
 }

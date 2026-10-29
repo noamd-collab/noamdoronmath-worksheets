@@ -22,9 +22,9 @@ describe('M28 blog batch (18 of remaining 36)', () => {
     assert.equal(BLOG_POST_M25_PILOT_PATHS.length, 8);
     assert.equal(BLOG_POST_M27_PATHS.length, 15);
     assert.equal(BLOG_POST_M28_PATHS.length, 18);
-    assert.equal(BLOG_POST_SERVED_PATHS.length, 68);
+    assert.ok(BLOG_POST_SERVED_PATHS.length >= 68);
     assert.equal(listM28BlogPosts().length, 18);
-    assert.equal(listServedBlogPosts().length, 68);
+    assert.equal(listServedBlogPosts().length, BLOG_POST_SERVED_PATHS.length);
   });
 
   it('spans elementary, middle-school, and layout clusters', () => {
@@ -55,8 +55,10 @@ describe('M28 blog batch (18 of remaining 36)', () => {
     }
   });
 
-  it('all 68 served posts have LIVE_CHROME_BASELINE entries', () => {
-    for (const post of listServedBlogPosts()) {
+  it('all 68 frozen served posts have LIVE_CHROME_BASELINE entries', () => {
+    const frozen = listServedBlogPosts().filter((post) => post.batch !== 'old-site-sync');
+    assert.equal(frozen.length, 68);
+    for (const post of frozen) {
       assert.ok(LIVE_CHROME_BASELINE[post.fileSlug], post.fileSlug);
       assert.deepEqual(expectedChromeFlags(post), LIVE_CHROME_BASELINE[post.fileSlug], post.fileSlug);
     }
