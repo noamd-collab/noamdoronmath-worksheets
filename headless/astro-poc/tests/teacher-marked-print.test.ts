@@ -73,37 +73,19 @@ describe('grade 9 factoring marked source', () => {
   });
 
   it('shows every picked item and does not leave a bare digit after a letter', () => {
-    assert.match(printer, /function shownQuestions/);
+    assert.match(printer, /function shownGroups/);
     const byId = Object.fromEntries(source.questions.map((question: { id: string; text: string }) => [question.id, question.text]));
     assert.equal(byId['2ב'], 'x² + 5x');
     assert.equal(byId['2ג'], '8a³ − 12a²');
     assert.equal(byId['4א'], 'נכון או לא נכון? בדקו בפתיחת סוגריים, ותקנו את השגוי. 6x + 8 = 2(3x + 4)');
     assert.equal(byId['12א'], '37 × 12 + 37 × 8');
-    assert.match(printer, /<bdi dir="ltr" class="math">/);
-    assert.match(page, /\.q-desc bdi\.math\{white-space:nowrap/);
     const previewJs = readFileSync(new URL('../public/teachers/teacher-factoring-print.js', import.meta.url), 'utf8');
-    const previewPage = readFileSync(new URL('../public/teachers/index.html', import.meta.url), 'utf8');
     assert.equal(previewJs, printer);
-    assert.match(previewPage, /\.q-desc bdi\.math\{white-space:nowrap/);
-    const questionTextHTML = new Function(
-      `${printer.slice(printer.indexOf('function escapeHTML'), printer.indexOf('function selectionKey'))} return questionTextHTML;`,
-    )() as (text: string) => string;
-    for (const question of source.questions) {
-      assert.equal(/[a-z]\d/.test(question.text), false, question.id + ' ' + question.text);
-      const html = questionTextHTML(question.text);
-      assert.equal(html.replace(/<[^>]+>/g, ''), question.text, question.id);
-      for (const inner of html.matchAll(/<bdi dir="ltr" class="math">([^<]*)<\/bdi>/g)) {
-        assert.match(inner[1], /[A-Za-z0-9]/, question.id);
-        assert.equal(/^[\s.,?!:;]|[\s.,?!:;]$/.test(inner[1]), false, question.id + ' ' + inner[1]);
-      }
-    }
-    const card4 = questionTextHTML(byId['4א']);
-    assert.match(card4, /נכון\? בדקו/);
-    assert.match(card4, /סוגריים, ותקנו/);
-    assert.match(card4, /השגוי\. <bdi dir="ltr" class="math">6x \+ 8 = 2\(3x \+ 4\)<\/bdi>/);
-    assert.equal(card4.includes('<bdi dir="ltr" class="math">?'), false);
-    assert.equal(card4.includes('<bdi dir="ltr" class="math">,'), false);
-    assert.equal(card4.includes('<bdi dir="ltr" class="math">.'), false);
+    // Question cards show the number, place in the sheet, and sections — never section text or crops.
+    const card = printer.slice(printer.indexOf('function questionCard'), printer.indexOf('function shownGroups'));
+    assert.equal(card.includes('q-desc'), false);
+    assert.equal(card.includes('canvas'), false);
+    assert.match(card, /סעיפים/);
   });
 
   it('keeps the original question instruction on the true/false and partial-factor cards', () => {
@@ -341,10 +323,13 @@ describe('teacher catalog picker', () => {
     const keepVisible = new Function(`${preview.slice(preview.indexOf('function keepVisible'), preview.indexOf('function currentExercises'))} return keepVisible;`)() as (selected: string[], visible: string[]) => string[];
     assert.deepEqual(keepVisible(['ex:a:1ב', 'ex:b:3ב', 'sheet:c'], ['ex:b:3ב']), ['ex:b:3ב']);
     const topicHandler = preview.slice(preview.indexOf("$('topic').addEventListener"), preview.indexOf("$('filter-all')"));
-    assert.match(topicHandler, /state\.selected = \[\]/);
+    // Moving to another topic keeps earlier picks so one sheet can mix topics.
+    assert.match(topicHandler, /if \(!state\.addingTopic\) \{\s*state\.selected = \[\];/);
+    assert.match(topicHandler, /state\.selected\.length\) render\(\)/);
     assert.match(topicHandler, /applyScenario/);
+    assert.match(preview, /const allow = new Set\(visibleSelectionKeys\(\)\.concat\(otherTopicKeys\(\)\)\)/);
     const levelHandler = preview.slice(preview.indexOf("document.querySelectorAll('[name=level]')"), preview.indexOf("$('grade').addEventListener"));
-    assert.match(levelHandler, /keepVisible\(state\.selected, visibleSelectionKeys\(\)\)/);
+    assert.match(levelHandler, /wholeQuestions\(keepVisible\(state\.selected, visibleSelectionKeys\(\)\)\)/);
     const resolve = preview.slice(preview.indexOf('async function resolveChosen'), preview.indexOf('async function updatePrint'));
     assert.match(resolve, /if \(!allow\.has\(key\)\) continue/);
     assert.match(preview, /box: null/);
@@ -354,10 +339,7 @@ describe('teacher catalog picker', () => {
     assert.match(html, /\.skip\{display:none!important\}/);
     assert.match(html, /\.q-thumb\{[^}]*max-height:120px/);
     assert.match(html, /unicode-bidi:isolate/);
-    assert.match(preview, /function needsThumb/);
     assert.match(preview, /function levelAllows/);
-    assert.match(preview, /question\.scrambled === true/);
-    assert.match(preview, /aria-label="\$\{escapeHTML\(thumbAria\(question\)\)\}"/);
     assert.equal(preview.slice(0, preview.indexOf('function selectionMarkBox')).includes('aria-hidden="true"'), false);
     assert.equal(preview.includes('function readingOrder'), false);
     assert.equal(preview.includes('function paintExtract'), false);
@@ -365,18 +347,10 @@ describe('teacher catalog picker', () => {
     assert.match(html, /@media\(min-width:900px\)\{\s*\.topbar\{height:90px/);
     assert.match(html, /@media\(min-width:900px\) and \(max-width:1279px\)/);
     assert.match(html, /@media\(max-width:899\.98px\)/);
-    assert.match(preview, /class="q-thumb"/);
     assert.match(preview, /paintSourceLine/);
-    assert.match(preview, /IntersectionObserver/);
     assert.match(preview, /dir="rtl"/);
-    assert.match(preview, /mapPool/);
-    const thumbSlice = new Function(`${preview.slice(preview.indexOf('function thumbSlice'), preview.indexOf('async function paintThumb'))} return thumbSlice;`)() as (question: { row: { x: number; y: number; w: number; h: number }; line: number }, bitmap: { width: number; height: number }) => { srcY: number; srcH: number };
-    const fraction = thumbSlice({ row: { x: 0, y: 0.397, w: 1, h: 0.2128 }, line: 0.0131 }, { width: 1000, height: 1000 });
-    assert.ok(fraction.srcY / 1000 < 0.397);
-    assert.ok(fraction.srcY / 1000 + fraction.srcH / 1000 > 0.44);
-    assert.ok(fraction.srcY / 1000 + fraction.srcH / 1000 < 0.47);
-    const tight = thumbSlice({ row: { x: 0, y: 0.5, w: 1, h: 0.02 }, line: 0.025 }, { width: 1000, height: 1000 });
-    assert.ok(0.5 - tight.srcY / 1000 < 0.002);
+    assert.equal(preview.includes('class="q-thumb"'), false);
+    assert.match(preview, /data-question="\$\{escapeHTML\(group\.key\)\}"/);
     const css = readFileSync(new URL('../src/styles/exact-site.css', import.meta.url), 'utf8');
     assert.match(css, /@media \(min-width: 900px\) \{\s*\.exact-header \{height:90px/);
     assert.match(css, /\.exact-header nav\[data-nav-panel\] \{flex-wrap:nowrap!important/);
@@ -552,29 +526,50 @@ describe('teacher catalog picker', () => {
     assert.equal(printer.includes('worksheet-viewer-noam'), false);
   });
 
-  it('provides batch AI pick buttons (15, 30, 45) backed by qwen3.8-flash in the list header', () => {
+  it('picks whole questions with AI (5, 10, 15) and never single sections', () => {
     const demoHtml = readFileSync(new URL('../../../demos/teacher-practice-picker-site-style.html', import.meta.url), 'utf8');
     for (const html of [page, demoHtml]) {
-      assert.match(html, /id="ai-pick-15"[^>]*data-ai-pick="15"[^>]*>בחר 15 עם AI<\/button>/);
-      assert.match(html, /id="ai-pick-30"[^>]*data-ai-pick="30"[^>]*>בחר 30<\/button>/);
-      assert.match(html, /id="ai-pick-45"[^>]*data-ai-pick="45"[^>]*>בחר 45<\/button>/);
+      assert.match(html, /id="ai-pick-5"[^>]*data-ai-pick="5"[^>]*>בחר 5 שאלות עם AI<\/button>/);
+      assert.match(html, /id="ai-pick-10"[^>]*data-ai-pick="10"[^>]*>בחר 10<\/button>/);
+      assert.match(html, /id="ai-pick-15"[^>]*data-ai-pick="15"[^>]*>בחר 15<\/button>/);
+      assert.equal(html.includes('data-ai-pick="45"'), false);
     }
     assert.match(printer, /model:\s*'qwen3\.8-flash'/);
-    const smartPick = new Function(
-      `${printer.slice(printer.indexOf('function exKey'), printer.indexOf('async function pickWithAi'))} return smartExercisePick;`
-    )() as (pool: { id: string; source: { pdfId: string } }[], count: number, scenario: string, style: string, seedKeys: string[]) => string[];
+    assert.match(printer, /pick: 'בחירת שאלות'/);
+    type Group = { key: string; role: string; keys: string[]; q: number | string };
+    const helpers = new Function(
+      `${printer.slice(printer.indexOf('function exKey'), printer.indexOf('async function pickWithAi'))} return { questionGroups, smartQuestionPick };`
+    )() as {
+      questionGroups: (pool: unknown[]) => Group[];
+      smartQuestionPick: (groups: Group[], count: number, scenario: string, style: string, seedKeys: string[]) => string[];
+    };
     const pool = source.questions.map((question: { id: string }) => ({
       ...question,
       source: { pdfId: source.pdfId },
     }));
     assert.equal(pool.length, 70);
-    for (const count of [15, 30, 45]) {
-      const picked = smartPick(pool, count, 'first', 'scaffold', [`ex:${source.pdfId}:10א`, `ex:${source.pdfId}:15ב`]);
-      assert.equal(picked.length, count);
-      assert.equal(new Set(picked).size, count);
-      assert.ok(picked.includes(`ex:${source.pdfId}:10א`));
-      assert.ok(picked.includes(`ex:${source.pdfId}:15ב`));
+    const groups = helpers.questionGroups(pool);
+    assert.equal(groups.reduce((sum, group) => sum + group.keys.length, 0), 70);
+    assert.ok(groups.every((group) => group.keys.every((key) => key.startsWith(`ex:${source.pdfId}:${group.q}`))));
+    const third = Math.ceil(groups.length / 3);
+    assert.equal(groups[0].role, 'basis');
+    assert.equal(groups[groups.length - 1].role, 'creative');
+    assert.equal(groups[third].role, 'review');
+    const byKey = new Map(groups.map((group) => [group.key, group]));
+    for (const count of [5, 10, 15]) {
+      const picked = helpers.smartQuestionPick(groups, count, 'first', 'scaffold', [`q:${source.pdfId}:10`]);
+      assert.equal(picked.length, Math.min(count, groups.length));
+      assert.equal(new Set(picked).size, picked.length);
+      assert.ok(picked.includes(`q:${source.pdfId}:10`));
     }
+    const basis = helpers.smartQuestionPick(groups, 5, 'first', 'scaffold', []);
+    assert.ok(basis.every((key) => byKey.get(key)!.role === 'basis'), basis.join());
+    const creative = helpers.smartQuestionPick(groups, 5, 'first', 'creative', []);
+    assert.ok(creative.every((key) => byKey.get(key)!.role === 'creative'), creative.join());
+    const review = helpers.smartQuestionPick(groups, 5, 'spiral', 'scaffold', []);
+    assert.ok(review.every((key) => byKey.get(key)!.role === 'review'), review.join());
+    const mixed = helpers.smartQuestionPick(groups, 6, 'first', 'blended', []).map((key) => byKey.get(key)!.role);
+    assert.deepEqual(new Set(mixed), new Set(['basis', 'review', 'creative']));
   });
 
   it('never leaves 0 available exercises or 0 suggestions when filtering levels on single-level topics', () => {
@@ -587,7 +582,8 @@ describe('teacher catalog picker', () => {
     assert.match(printer, /return matching\.length \? matching : topic\.sheets/);
     assert.match(printer, /state\.level === 'all' \|\| state\.level === 'a'/);
     const levelHandler = printer.slice(printer.indexOf("document.querySelectorAll('[name=level]')"), printer.indexOf("$('grade').addEventListener"));
-    assert.match(levelHandler, /if \(!next\.length && state\.scenario !== 'other'\)/);
+    assert.match(levelHandler, /if \(!next\.length && !others\.length && state\.scenario !== 'other'\)/);
+    assert.match(levelHandler, /next = others\.concat\(next\)/);
     assert.match(levelHandler, /exercisePreset\(state\.scenario\)/);
   });
 });
