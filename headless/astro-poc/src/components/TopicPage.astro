@@ -7,6 +7,7 @@ import LandingLoop from './LandingLoop.astro';
 import DistancePointsLoop from './DistancePointsLoop.astro';
 import TriangleAngleSumLoop from './TriangleAngleSumLoop.astro';
 import ParallelCointeriorLoop from './ParallelCointeriorLoop.astro';
+import KiteInteractive from './KiteInteractive.astro';
 import { loadCatalog } from '../lib/catalog/loadCatalog';
 import { buildWorksheetHref } from '../lib/worksheetLinks';
 import { topicLandingLoop } from '../lib/landingLoops';
@@ -246,6 +247,7 @@ function faqHeadingId(groupIndex: number) {
             {landingLoop.kind === 'film' && landingLoop.marker === 'parallel-cointerior-angles' && (
               <ParallelCointeriorLoop src={landingLoop.src} marker={landingLoop.marker} />
             )}
+            {slug === 'kite-grade-9' && <KiteInteractive />}
           </div>
           <div class="exact-topic-copy">
             {heroUnits.map((unit) => {
