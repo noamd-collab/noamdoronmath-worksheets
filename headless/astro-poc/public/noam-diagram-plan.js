@@ -16,6 +16,7 @@
   PROMPT_SCHEMA += " Optional rays:[[M,A],[M,C]] are directed from the first point through the second. A ray must be explicitly called a ray in affirmative source text (Hebrew קרן/קרניים or English ray/rays). Its base segment is included automatically; repeating that point pair in segments is optional. Never convert a segment or line to a ray based on a student request. The renderer adds arrowheads beyond the named through-point. Preserve explicitly stated acute/obtuse angle classes; an approximate diagram description is not an exact degree measurement.";
   PROMPT_SCHEMA += " Angle-label examples: for {from:'E',vertex:'A',to:'D'} use label:'∠EAD' or label:''; for {from:'D',vertex:'A',to:'C'} use label:'∠DAC'. Write plain Unicode angle names, with the vertex in the middle. Never use alpha/beta, an equality such as EAD=DAC, explanatory words, or a computed angle value as a label. Identifying two angles does not mark or prove their equality.";
   PROMPT_SCHEMA += " Name-only or empty angle/segment labels identify objects; they need no evidence entry. Reserve evidence for factual markings and numeric values.";
+  PROMPT_SCHEMA += " An affirmative source relation to a list applies to EVERY named segment: PK מקביל לצלעות AB ו-CD requires both PK∥AB and PK∥CD. Satisfy all requiredRelations in a validator diagnostic together, preserving every other given. Never infer these relations from a question, negation, proof goal, or student assertion.";
 
   function fail(reason,constraint){throw Object.assign(new Error(reason),{reason:reason},constraint?{constraint:constraint}:{});}
   function object(value){return value&&typeof value==="object"&&!Array.isArray(value)&&(Object.getPrototypeOf(value)===Object.prototype||Object.getPrototypeOf(value)===null);}
@@ -322,9 +323,17 @@
   }
   var UNPROVEN=/(?:\?|הוכיחו|הוכח(?:ה|ת|ו)?(?=[^א-ת]|$)|להוכיח|להראות|הראו|הראה\s+(?:כי|ש)|האם|מדוע|למה|כדי|צריך|עליכם|עליך|מטר[הת]|רוצים|נרצה|ננסה|בדקו|בדוק|חפשו|מצאו|נשער|(?:^|[^א-ת])אם(?:[^א-ת]|$)|נניח|בהנחה|משערים|השערה|(?:^|[^א-ת])או(?:[^א-ת]|$)|אינ[הו]|טרם|עדיין|ייתכן|אולי|לא(?:[^א-ת]|$)|אינו|אינה|אין(?:[^א-ת]|$)|≠|prove|suppose|assum|hypothet|conjectur|\b(?:either|or)\b|not\b|false\b|unknown\b|whether\b|show\s+that)/i;
   function explicitRelationSymbols(sentence){
-    return String(sentence||"").replace(/⟂/g,"⊥").replace(
-      /([A-Z]{2})\s+(?:(?:הוא|הינו)\s+)?(מאונך|ניצב|מקביל)\s+ל[־-]?\s*(?:(?:אלכסון|ישר|צלע|קטע)\s+)?([A-Z]{2})(?![A-Z])/g,
-      function(_all,first,relation,second){return first+(relation==="מקביל"?"∥":"⊥")+second;});
+    // A named segment followed by a predicate or supported construction starts a new clause,
+    // even after a comma or ו-. It is not another operand of the earlier list.
+    var clauses=String(sentence||"").replace(/⟂/g,"⊥").replace(
+      /(?:,\s*(?:ו[־-]?\s*)?|\s+ו[־-]?\s*)(?=[A-Z]{2}(?![A-Za-z])\s*(?:(?:הוא|הינו|היא|הינה|ה?גובה|ה?תיכון)(?=\s|[.,;]|$)|(?:מאונך|ניצב|מקביל)\s+ל|is\s+(?:an?\s+)?(?:altitude|height)(?=\s|[.,;]|$)|[=∥⊥]))/gi,"; ");
+    return clauses.replace(
+      /([A-Z]{2})\s+(?:(?:הוא|הינו)\s+)?(מאונך|ניצב|מקביל)\s+ל[־-]?\s*(?:(?:אלכסו(?:ן|נים)|ישר(?:ים)?|צלע(?:ות)?|קטע(?:ים)?)\s+)?([A-Z]{2}(?:\s*(?:,\s*(?:ו[־-]?\s*)?|ו[־-]?\s*)[A-Z]{2})*)(?![A-Z])/g,
+      function(_all,first,relation,others){
+        // An explicit list states the relation to every named segment. Keep
+        // them separate so validation and the existing repair see all givens.
+        return others.match(/[A-Z]{2}/g).map(function(second){return first+(relation==="מקביל"?"∥":"⊥")+second;}).join("; ");
+      });
   }
   function sentences(value){return clean(value).split(/(?<=[.!?])(?=\s|$)|;/).map(function(v){return v.trim();}).filter(Boolean);}
   // Compile stated constructions to geometry, independent of worksheet IDs.
@@ -519,10 +528,36 @@
       });
       var groupLengths={};scene.equalGroups=list(plan.equalGroups,6).map(function(item,index){
         keys(item,["segments","count","color"]);var pairs=list(item.segments,8).map(pair);if(pairs.length<2||[1,2,3].indexOf(item.count)<0||pairs.some(function(p,i){return pairs.slice(0,i).some(function(other){return pairKey(p)===pairKey(other);});})){fail("invalid_equality");}
-        pairs.forEach(function(p){focused(p,false);});
+        // Preserved given data is separate from focus: an equality proven by an
+        // affirmative quote from the question itself (a given of the source
+        // figure) keeps its ticks even when the current hint focuses on other
+        // segments. It must still be drawn, proven and coordinate-consistent.
+        // Hint-sourced or unproven equalities stay limited to the current focus.
+        var givenEvidence=evidence["equalGroups."+index],preservedGiven=!!givenEvidence&&givenEvidence.source==="question";
+        pairs.forEach(function(p){if(preservedGiven){if(!isDrawn(p)){fail("undrawn_mark");}}else{focused(p,false);}});
         proof("equalGroups."+index,function(quote){return pairs.slice(1).every(function(p){return equalityIn(quote,pairs[0],p);});});
         var length=distance(points[pairs[0][0]],points[pairs[0][1]]);if(pairs.some(function(p){return !sameLength(length,distance(points[p[0]],points[p[1]]));})||(groupLengths[item.count]!==undefined&&!sameLength(length,groupLengths[item.count]))){fail("coordinate_contradiction");}groupLengths[item.count]=length;
         return {segments:pairs,count:item.count,color:color(item.color)};
+      });
+      // Source given-data marks (trusted worksheet package data, never model
+      // output) are preserved on every drawing, whether or not the model
+      // supplied them and independent of the current focus. A group is added
+      // only when all of its segments are drawn. The source tick count wins.
+      // Drawn coordinates must agree; equal lengths are never inferred from
+      // different tick counts, and nothing outside context.sourceGivens is added.
+      list(context.sourceGivens,6).forEach(function(item){
+        if(!object(item)||[1,2,3].indexOf(item.count)<0||!Array.isArray(item.segments)){return;}
+        var pairs=item.segments.slice(0,8).filter(function(p){return Array.isArray(p)&&p.length===2&&p.every(function(n){return typeof n==="string"&&Object.prototype.hasOwnProperty.call(points,n);})&&p[0]!==p[1];}).map(function(p){return p.slice();});
+        if(pairs.length<2||pairs.length!==item.segments.length||!pairs.every(isDrawn)){return;}
+        var keySet=pairs.map(pairKey).sort().join("|");
+        scene.equalGroups=scene.equalGroups.filter(function(group){return group.segments.map(pairKey).sort().join("|")!==keySet;});
+        scene.equalGroups.push({segments:pairs,count:item.count,color:"teal",given:true});
+      });
+      if(scene.equalGroups.length>6){fail("invalid_list");}
+      var givenLengths={};scene.equalGroups.forEach(function(group){
+        var length=distance(points[group.segments[0][0]],points[group.segments[0][1]]);
+        if(group.segments.some(function(p){return !sameLength(length,distance(points[p[0]],points[p[1]]));})||(givenLengths[group.count]!==undefined&&!sameLength(length,givenLengths[group.count]))){fail("source_coordinate_contradiction");}
+        givenLengths[group.count]=length;
       });
       scene.rightAngles=list(plan.rightAngles,8).map(function(item,index){var a=angle(item);focused(item,true);proof("rightAngles."+index,function(quote){return perpendicularIn(quote,item);});if(Math.abs(a.cosine)>EPS){fail("coordinate_contradiction");}return item.slice();});
       scene.angles=list(plan.angles,8).map(function(item,index){
@@ -547,7 +582,7 @@
         });
       }
       if(Object.keys(evidence).some(function(mark){return !usedEvidence[mark];})){fail("unused_evidence");}
-      if(!scene.highlights.length&&!scene.pointHighlights.length&&!scene.angles.length&&!scene.equalGroups.length&&!scene.rightAngles.length){fail("missing_focus");}
+      if(!scene.highlights.length&&!scene.pointHighlights.length&&!scene.angles.length&&!scene.equalGroups.some(function(group){return !group.given;})&&!scene.rightAngles.length){fail("missing_focus");}
       var xs=pointNames.map(function(n){return points[n][0];}),ys=pointNames.map(function(n){return points[n][1];});
       if(Math.max.apply(null,xs)-Math.min.apply(null,xs)<EPS||Math.max.apply(null,ys)-Math.min.apply(null,ys)<EPS){fail("flat_scene");}
       // A plain outline can contradict a given even without a false tick mark.
@@ -573,7 +608,15 @@
       }
       sentences(question+". "+hint+". "+constructionGivens(rawQuestion)).filter(function(s){return !UNPROVEN.test(s);}).forEach(function(sentence){
         var s=compact(explicitRelationSymbols(sentence)),match,re=/(?:^|[^A-Z0-9+*/=−-])([A-Z]{2})(=|∥|⊥)([A-Z]{2})(?=$|[^A-Z0-9+*/=−-])/g;
-        while((match=re.exec(s))){if(allPresent(match[1]+match[3])){var a=match[1].split(""),b=match[3].split("");if(match[2]==="="?!sameLength(distance(points[a[0]],points[a[1]]),distance(points[b[0]],points[b[1]])):!linesAgree(a,b,match[2])){fail("source_coordinate_contradiction",{type:"relation",first:a,second:b,relation:match[2]});}}}
+        var statedRelations=[];
+        while((match=re.exec(s))){if(allPresent(match[1]+match[3])){statedRelations.push({type:"relation",first:match[1].split(""),second:match[3].split(""),relation:match[2]});}}
+        statedRelations.forEach(function(constraint){
+          var a=constraint.first,b=constraint.second;
+          if(constraint.relation==="="?!sameLength(distance(points[a[0]],points[a[1]]),distance(points[b[0]],points[b[1]])):!linesAgree(a,b,constraint.relation)){
+            if(statedRelations.length>1){constraint.requiredRelations=statedRelations.slice(0,16).map(function(item){return item.first.join("")+item.relation+item.second.join("");});}
+            fail("source_coordinate_contradiction",constraint);
+          }
+        });
         re=/(?:^|[^A-Z0-9+*/=−-])∠?([A-Z]{3})=(\d+(?:\.\d+)?)°(?=$|[^A-Z0-9+*/=−-])/g;
         while((match=re.exec(s))){if(allPresent(match[1])){var anglePoints=match[1].split(""),expectedDegrees=Number(match[2]),actualDegrees=angle(anglePoints).degrees;if(Math.abs(actualDegrees-expectedDegrees)>.5){
           // Only parsed geometry values enter diagnostics; never source prose.
@@ -696,7 +739,52 @@
       return inspect(normalized,context).ok?normalized:null;
     }catch(_error){return null;}
   }
+  // Repair only a complete four-edge outline whose two adjacent-equality
+  // groups come from the approved package. No topology or teaching marks
+  // change. The full validator remains the acceptance authority.
+  function repairSourceKiteCoordinates(plan,context){
+    try{
+      var initial=inspect(plan,context);
+      if(initial.ok||initial.reason!=="source_coordinate_contradiction"){return null;}
+      // This layout repair is not a metric solver. The general inspector does
+      // not parse every prose length/ratio; leave such figures unsupported
+      // rather than silently changing an unlabelled numerical given.
+      var prose=sourceWithoutMachineMarkers(String(context.questionText||""))+" "+String(context.hintText||"");
+      prose=prose.replace(/שאלה\s+\d+(?=$|[^\d])/g,"");
+      if(/[0-9°∠]/.test(prose)||/(?:^|[^א-ת])(?:ה?אורך|אורכה|אורכו|אורכי|באורך|ה?היקף|ה?שטח|סנטימטר|ס״מ|ס"מ|ה?יחס|ביחס|ה?זווית|ה?זוויות)(?=$|[^א-ת])|\b(?:length|ratio|perimeter|area|degrees?|angles?)\b/i.test(prose)||/[A-Z]\s*[:÷\/×]/.test(prose)){return null;}
+      var names=Object.keys(plan.points||{}),groups=context&&context.sourceGivens;
+      if(names.length!==4||names.some(function(n){return !/^[A-Z]$/.test(n);})||!Array.isArray(groups)||groups.length!==2||!Array.isArray(plan.segments)||plan.segments.length!==4){return null;}
+      var pairs=[],heads=[],sides=[];
+      groups.forEach(function(group){
+        if(!group||[1,2,3].indexOf(group.count)<0||!Array.isArray(group.segments)||group.segments.length!==2){throw new Error("ambiguous givens");}
+        var edges=group.segments;
+        if(edges.some(function(e){return !Array.isArray(e)||e.length!==2||e[0]===e[1]||e.some(function(n){return names.indexOf(n)<0;});})){throw new Error("invalid endpoints");}
+        var shared=edges[0].filter(function(n){return edges[1].indexOf(n)>=0;});
+        if(shared.length!==1){throw new Error("not adjacent");}
+        heads.push(shared[0]);sides.push(edges.map(function(e){return e.filter(function(n){return n!==shared[0];})[0];}).sort());
+        pairs=pairs.concat(edges.map(pairKey));
+      });
+      // Equal tick classes could assert all four sides equal: do not choose
+      // a general kite for that case. Different classes do NOT assert unequal
+      // lengths; this is one illustrative layout, without an inequality mark.
+      if(groups[0].count===groups[1].count||heads[0]===heads[1]||sides[0].join("")!==sides[1].join("")||new Set(pairs).size!==4||plan.segments.some(function(e){return pairs.indexOf(pairKey(e))<0;})||new Set(plan.segments.map(pairKey)).size!==4){return null;}
+      var a=plan.points[heads[0]],b=plan.points[heads[1]],u=[b[0]-a[0],b[1]-a[1]],length=Math.hypot(u[0],u[1]);
+      if(!Number.isFinite(length)||length<1e-6){return null;}
+      var first=plan.points[sides[0][0]],second=plan.points[sides[0][1]],cross1=u[0]*(first[1]-a[1])-u[1]*(first[0]-a[0]),cross2=u[0]*(second[1]-a[1])-u[1]*(second[0]-a[0]);
+      if(!Number.isFinite(cross1)||!Number.isFinite(cross2)||cross1*cross2>=0){return null;}
+      var projections=[first,second].map(function(p){return ((p[0]-a[0])*u[0]+(p[1]-a[1])*u[1])/(length*length);});
+      if(projections.some(function(t){return !Number.isFinite(t)||t<=0||t>=1;})){return null;}
+      // Keep the original head-to-head axis and each side of it. A general
+      // exemplar avoids accidentally suggesting a rectangle or a rhombus.
+      // No diagonal, angle, length value or vertex-role answer is rendered.
+      var center=[a[0]+.4*u[0],a[1]+.4*u[1]],offset=[-.35*u[1],.35*u[0]],sign=cross1>0?1:-1;
+      var repaired=JSON.parse(JSON.stringify(plan));
+      repaired.points[sides[0][0]]=[center[0]+sign*offset[0],center[1]+sign*offset[1]];
+      repaired.points[sides[0][1]]=[center[0]-sign*offset[0],center[1]-sign*offset[1]];
+      return inspect(repaired,context).ok?repaired:null;
+    }catch(_error){return null;}
+  }
   function compile(plan,context){return inspect(plan,context).scene;}
   function render(doc,plan,context){var scene=compile(plan,context);return scene&&geometry&&typeof geometry.render==="function"?geometry.render(doc,scene):null;}
-  return {requestedParallelConstruction:requestedParallelConstruction,inspect:inspect,compile:compile,render:render,validateFocus:validateFocus,repairVerticalAngleFocus:repairVerticalAngleFocus,buildVerticalAnglePlan:buildVerticalAnglePlan,buildCollinearSegmentPlan:buildCollinearSegmentPlan,buildPerpendicularTrianglePlan:buildPerpendicularTrianglePlan,sourceRayNames:sourceRayNames,normalizeRayPresentation:normalizeRayPresentation,normalizeParallelAngleFocus:normalizeParallelAngleFocus,PROMPT_SCHEMA:PROMPT_SCHEMA};
+  return {requestedParallelConstruction:requestedParallelConstruction,inspect:inspect,compile:compile,render:render,validateFocus:validateFocus,repairVerticalAngleFocus:repairVerticalAngleFocus,buildVerticalAnglePlan:buildVerticalAnglePlan,buildCollinearSegmentPlan:buildCollinearSegmentPlan,buildPerpendicularTrianglePlan:buildPerpendicularTrianglePlan,sourceRayNames:sourceRayNames,normalizeRayPresentation:normalizeRayPresentation,normalizeParallelAngleFocus:normalizeParallelAngleFocus,repairSourceKiteCoordinates:repairSourceKiteCoordinates,PROMPT_SCHEMA:PROMPT_SCHEMA};
 });

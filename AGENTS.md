@@ -3,7 +3,8 @@
 ## How to start
 
 - Branch from `main`. Open the pull request against `main`. Never push to `main`.
-- `archive/old-main` and `headless/astro-poc-baseline` are frozen. Do not target them, including for CI.
+- The live website builds from `headless/astro-poc-baseline`. Merging to `main` does not publish the site. A change that must appear on the website also has to land on `headless/astro-poc-baseline`.
+- `archive/old-main` is frozen. Do not target it.
 
 ## Merge gate
 
@@ -25,24 +26,23 @@
 ## Publish
 
 - Publishing and deployment go only through `tools/release/release.sh`, after explicit approval for that pull request.
+- That script's `RELEASE_BRANCH` defaults to `headless/astro-poc-baseline`.
 - Never use a provider command, API, dashboard, or an old `release-NNN.sh` script.
 - Preview approval is not publish approval.
 - Build the Wix preview with `.env.local` only.
 
 ## Checks
 
-- PR 114 CI (`.github/workflows/astro-poc-pr.yml`) is planned. It is not current for `main`.
 - Node `>=22.12.0`. In `headless/astro-poc`: `npm ci`, `npm run build`, `npm test`.
 - Teacher print also runs `npx tsx --test tests/teacher-marked-print.test.ts` and the output is inspected for near-empty pages.
 - Record pass, fail, or blocked. A skipped check is not a pass.
-- The link checker is blocked until that workflow is on `main`.
-- AI comments are advisory. A skipped AI job does not satisfy the required DeepSeek or Qwen review.
+- DeepSeek and Qwen reviews are not required.
 
 ## Review
 
-- DeepSeek writes code and reviews code: `python tools/review/run_review.py` (needs `review.diff` and `CHINESE_MODELS_API_KEY`).
-- Qwen 3.8 Max does visual review only, phone and desktop. It does not write code: `python tools/review/run_qwen.py`.
-- Verify every Qwen claim yourself before you report it.
+- Run the relevant code, build, and link checks.
+- Verify the UI on phone and desktop.
+- Wix preview, built with `.env.local` only.
 - Local preview: `cd headless/astro-poc && npm run preview` (`.env.local` only).
 
 ## Reporting
@@ -93,3 +93,19 @@
 - `tools/release/release.sh` — the only publish path.
 - `docs/worksheets-tracker.md` — worksheet tracker.
 - Hub: `noamd-collab/noam-agent-hub`.
+
+## Local run
+
+`npm run dev` in `headless/astro-poc` is `wix dev` and stops without Wix secrets. The loopback server is:
+
+```bash
+cd headless/astro-poc
+node scripts/bundle-native-svg.mjs generate
+npx astro dev --config astro.config.preview.mjs --host 127.0.0.1 --port 4321
+```
+
+CI build, no Wix: `bash .github/scripts/build-servable.sh`, then `bash .github/scripts/serve-built-site.sh`.
+
+Worksheet gate: `node tools/validate.js index.html`.
+
+`npm run test:unit` skips the gitignored blog-capture check only when `CI=true`, same as GitHub Actions. Do not run `wix release` except through `tools/release/release.sh` after explicit publish approval.

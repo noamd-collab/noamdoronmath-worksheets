@@ -1,3 +1,4 @@
+import { sitePrefersReducedMotion } from './motionPreference.js';
 /**
  * Design v2 reveal engine — data-pop / data-draw / data-grow / data-fly / data-out.
  * Content stays visible without JS (only hidden under html.js-anim).
@@ -10,7 +11,7 @@ function motionAllowed(): boolean {
   if (typeof document === 'undefined') return false;
   const html = document.documentElement;
   return (
-    !window.matchMedia('(prefers-reduced-motion: reduce)').matches &&
+    !sitePrefersReducedMotion() &&
     !html.classList.contains('noam-a11y-motion') &&
     !html.classList.contains('nd-motion-off')
   );

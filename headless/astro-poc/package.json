@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "wix dev",
-    "prebuild": "tsx scripts/build-site-guide.ts",
+    "prebuild": "tsx scripts/build-site-guide.ts && node scripts/bundle-native-svg.mjs generate",
     "build": "wix build",
     "check:site-guide": "tsx scripts/build-site-guide.ts --check",
     "preview": "wix preview",
@@ -16,6 +16,7 @@
     "typecheck": "astro check",
     "test": "node scripts/run-tests.mjs",
     "test:unit": "node scripts/run-tests.mjs --unit",
+    "otterly:sample": "tsx scripts/otterly-log-sample.ts",
     "catalog:measure": "node scripts/build-teacher-catalog.mjs",
     "test:live-ssr": "node scripts/run-tests.mjs --live-ssr",
     "refresh:catalog": "node scripts/refresh-catalog-snapshot.mjs refresh",
@@ -31,7 +32,9 @@
     "release": "wix release",
     "generate": "wix generate",
     "env": "wix env",
-    "skills": "wix skills"
+    "skills": "wix skills",
+    "postbuild": "node scripts/bundle-native-svg.mjs finalize",
+    "predev": "node scripts/bundle-native-svg.mjs generate"
   },
   "dependencies": {
     "@astrojs/node": "^9.5.5",
@@ -39,6 +42,7 @@
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@wix/dashboard": "^1.3.43",
+    "@wix/data": "^1.0.527",
     "@wix/essentials": "^0.1.23",
     "@wix/sdk": "^1.15.23",
     "astro": "^5.18.2",
@@ -52,6 +56,9 @@
     "@wix/astro-pages": "^2.0.4",
     "@wix/astro-wix-hosting-adapter": "^2.0.0",
     "@wix/cli": "^1.1.92",
+    "esbuild": "0.27.7",
+    "linkedom": "^0.18.12",
+    "puppeteer-core": "^25.13.0",
     "tsx": "^4.23.15"
   },
   "allowScripts": {

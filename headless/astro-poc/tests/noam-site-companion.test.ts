@@ -18,6 +18,7 @@ import {
   handleCompanionTurn,
   isRoleQuestion,
   isWorksheetSolveRequest,
+  qwenChatUrlFrom,
   qwenRequestBody,
 } from '../../../noam-ai/site-companion/companion.js';
 import {
@@ -31,15 +32,35 @@ import {
 import { starterLinksFor } from '../../../noam-ai/site-companion/starters.js';
 import { runCompanionTurn } from '../../../noam-ai/site-companion/endpoint.js';
 import { didacticSequence } from '../../../noam-ai/site-companion/topic-order.js';
+import type { CatalogV1 } from '../src/lib/catalog/types.ts';
 import { loadGradeHub } from '../src/lib/gradeHubs.ts';
 import { bareTopicTitle, catalogQuadrilateralTitles } from '../src/lib/gradeHubQuadrilaterals.ts';
 
+type GuideRecord = {
+  id: string;
+  type: string;
+  grade?: number;
+  topic?: string;
+  title?: string;
+  href: string;
+  pdfId?: string;
+  levelLabel?: string;
+  how: string;
+  contains: string;
+  audience: string;
+};
+type SiteGuideData = {
+  records: GuideRecord[];
+  counts: Record<string, number>;
+  manifestMatches: number;
+};
+
 const catalog = JSON.parse(
   readFileSync(new URL('../src/data/catalog.v1.json', import.meta.url), 'utf8')
-);
+) as CatalogV1;
 const guide = JSON.parse(
   readFileSync(new URL('../src/data/site-guide.v1.json', import.meta.url), 'utf8')
-);
+) as SiteGuideData;
 
 describe('Noam AI panel size', () => {
   it('uses a 360×225 right-anchored box on 1440×900, exactly 1/16', () => {
@@ -67,12 +88,13 @@ describe('Noam AI catalog grounding', () => {
   it('returns real factoring worksheets and no Mishbetzet sheet', () => {
     const rows = retrieveRecords(catalog, 'כיתה ט׳ פירוק לגורמים', 6);
     assert.ok(rows.length > 0);
-    assert.ok(rows.some((row) => row.pdfId === 'dd5036296f084fb7ad7fc6c1bbb25088'));
+    // Reviewed native G9-T03/a package; PDF and manifest are promoted together.
+    assert.ok(rows.some((row) => row.pdfId === '40e46a64bcf0441bae36eba820884704'));
     const blob = JSON.stringify(rows);
     assert.equal(blob.includes('משבצת'), false);
     assert.equal(blob.includes('mishbetzet'), false);
     for (const row of rows) {
-      assert.match(row.href, /dd5036296f084fb7ad7fc6c1bbb25088|worksheet-viewer-noam\.html|static\.wixstatic\.com/);
+      assert.match(row.href, /40e46a64bcf0441bae36eba820884704|worksheet-viewer-noam\.html|static\.wixstatic\.com/);
     }
   });
 
@@ -88,8 +110,8 @@ describe('Noam AI catalog grounding', () => {
   });
 });
 
-function catalogPdfIds(source) {
-  const ids = [];
+function catalogPdfIds(source: CatalogV1) {
+  const ids: string[] = [];
   for (const grade of source.grades || []) {
     for (const topic of grade.topics || []) {
       for (const level of topic.levels || []) {
@@ -102,9 +124,9 @@ function catalogPdfIds(source) {
 }
 
 function factoringLevelA() {
-  const grade = catalog.grades.find((item) => item.grade === 9);
-  const topic = grade.topics.find((item) => item.id === 2 && item.title === 'פירוק לגורמים');
-  return topic.levels.find((level) => level.key === 'a');
+  const grade = catalog.grades.find((item) => item.grade === 9)!;
+  const topic = grade.topics.find((item) => item.id === 2 && item.title === 'פירוק לגורמים')!;
+  return topic.levels.find((level) => level.key === 'a')!;
 }
 
 describe('Noam AI site manual', () => {
@@ -117,20 +139,23 @@ describe('Noam AI site manual', () => {
     assert.deepEqual(guideIds, catalogIds);
     assert.equal(guide.counts.worksheet, catalogIds.length);
     for (const id of [
-      'dd5036296f084fb7ad7fc6c1bbb25088',
-      '073d5168d4b448dea8e2e69eda37dc48',
-      'b62b8ffe166e46a5ba3f8bea511bafb8',
+      '40e46a64bcf0441bae36eba820884704',
+      '8d23a741d56347aa9ff0747a47f0f92d',
+      'd5efea6959f4415a913565dec0994063',
     ]) {
       assert.ok(guideIds.includes(id), id);
     }
     assert.equal(guideIds.includes('6a37fe7160324a17ad107b3dbe43c1db'), false);
-    assert.equal(guide.counts.topic, 96);
+    assert.equal(guide.counts.topic, 264);
+    const counting = guide.records.find((row) => row.id === 'topic-counting-grade-1');
+    assert.equal(counting && counting.href, '/counting-grade-1');
+    assert.equal(counting && counting.topic, 'מונים בלי לפספס');
     const kite = guide.records.find((row) => row.id === 'topic-kite-grade-9');
     assert.equal(kite && kite.href, '/kite-grade-9');
     assert.equal(kite && kite.topic, 'דלתון');
     assert.equal(guide.counts.hub, 9);
     assert.equal(guide.counts.blog, 68);
-    assert.equal(guide.counts.game, 1);
+    assert.equal(guide.counts.game, 2);
     assert.ok(guide.counts.page >= 10);
     assert.equal(typeof guide.manifestMatches, 'number');
     const level = factoringLevelA();
@@ -148,14 +173,15 @@ describe('Noam AI site manual', () => {
     assert.match(sheet.contains, new RegExp(manifest.questionCount + ' שאלות'));
     assert.match(sheet.contains, new RegExp(manifest.exerciseCount + ' תרגילים'));
     assert.match(sheet.contains, new RegExp(manifest.pageCount + ' עמודים'));
-    const topic = guide.records.find((row) => row.href === '/factoring-grade-9');
+    const topic = guide.records.find((row) => row.href === '/factoring-grade-9')!;
     assert.match(topic.contains, /בדקו את עצמכם/);
-    assert.match(topic.how, /רמה א׳ מתאימה לביסוס/);
+    assert.match(topic.how, /רמה א׳ היא רמת התרגול הרגילה וברירת המחדל/);
     assert.equal(topic.contains.includes('(x−3)(x+3)'), false);
-    const teachers = guide.records.find((row) => row.href === '/teachers');
+    const teachers = guide.records.find((row) => row.href === '/teachers')!;
     assert.match(teachers.how, /כיתה, נושא ומטרת השיעור/);
     assert.match(teachers.audience, /מרחב למורה/);
     assert.ok(guide.records.some((row) => row.type === 'game' && row.href === '/games/kefel-mekutsar-2'));
+    assert.ok(guide.records.some((row) => row.type === 'game' && row.href === '/games/eliyahu-pythagoras'));
   });
 
   it('fails when the committed guide differs from a fresh build', () => {
@@ -168,19 +194,19 @@ describe('Noam AI site manual', () => {
     assert.equal(result.status, 0, (result.stderr || '') + (result.stdout || ''));
   });
 
-  it('retrieves a real factoring page and does not call the model when nothing matches', async () => {
+  it('retrieves a real factoring page and lets the model clarify unfamiliar wording', async () => {
     const pdfId = factoringLevelA().pdfId;
-    const rows = retrieveGuide(guide, 'כיתה ט׳ פירוק לגורמים', 6);
+    const rows = retrieveGuide(guide, 'כיתה ט׳ פירוק לגורמים', 6) as GuideRecord[];
     assert.ok(rows.length > 0);
     assert.ok(rows.every((row) => row.grade === 9));
     assert.ok(rows.some((row) => row.href.includes(pdfId) || row.href === '/factoring-grade-9'));
     let called = 0;
     const result = await handleCompanionTurn(
       { message: 'xxxxqqqq yyyywwww', page: { kind: 'home', path: '/', title: 'בית' } },
-      { guide, catalog, apiKey: 'test', fetch: async () => { called += 1; throw new Error('should not call'); } }
+      { guide, catalog, apiKey: 'test', fetch: async () => { called += 1; return {ok:true, json: async () => ({choices:[{message:{content:JSON.stringify({answer:'באיזו כיתה ובאיזה נושא לחפש?'})}}]})}; } }
     );
-    assert.equal(called, 0);
-    assert.equal(result.source, 'catalog-gap');
+    assert.equal(called, 1);
+    assert.equal(result.source, 'model');
     assert.equal(result.links.length, 0);
     assert.match(result.text, /באיזו כיתה/);
   });
@@ -196,7 +222,7 @@ describe('Noam AI model role', () => {
     assert.equal(body.model, QWEN_MODEL);
     assert.equal(body.enable_thinking, false);
     assert.equal(body.stream, false);
-    assert.equal(body.messages[0].content, SYSTEM_PROMPT);
+    assert.ok(body.messages[0].content.startsWith(SYSTEM_PROMPT));
     assert.match(SYSTEM_PROMPT, /אתה לא רמזי/);
     assert.match(SYSTEM_PROMPT, /אסור לך לתת רמז/);
     const huge = 'א'.repeat(5000);
@@ -231,12 +257,12 @@ describe('Noam AI model role', () => {
       {
         catalog,
         apiKey: 'server-side',
-        fetch: async (url, init) => {
+        fetch: async (url: unknown, init: { body?: unknown; headers?: Record<string, string> }) => {
           called += 1;
           assert.match(String(url), /qwen3\.8-flash|compatible-mode/);
           const sent = JSON.parse(String(init.body));
           assert.equal(sent.model, 'qwen3.8-flash');
-          assert.equal(String(init.headers.Authorization).startsWith('Bearer '), true);
+          assert.equal(String(init.headers?.Authorization).startsWith('Bearer '), true);
           return {
             ok: true,
             json: async () => ({
@@ -258,11 +284,12 @@ describe('Noam AI model role', () => {
     assert.equal(called, 1);
     assert.equal(result.source, 'model');
     assert.equal(result.model, 'qwen3.8-flash');
+    assert.ok(result.primary);
     assert.equal(result.primary.href, allowed.href);
-    assert.equal(result.chips.length, 1);
-    assert.equal(result.chips[0].id, records[3].id);
+    assert.equal(result.chips.length, 2);
+    assert.equal(result.chips[0].id, records[1].id);
     assert.equal(result.chips.some((chip) => chip.label === result.primary.label), false);
-    assert.equal(result.links.length, 2);
+    assert.equal(result.links.length, 3);
     assert.equal(result.essential.length, 0);
     assert.match(result.essentialNote, /לא ממציא שאלות/);
     assert.match(result.details, /לסמן את השאלות שנבחרו/);
@@ -333,14 +360,147 @@ describe('Noam AI model role', () => {
     assert.equal(result.chips.length, 0);
     assert.equal(result.links.length, 0);
   });
+
+  it('grounds a mocked provider answer on the requested level B sheet', async () => {
+    let called = 0;
+    const result = await handleCompanionTurn(
+      { message: 'אני מחפש דפים לכיתה ט׳ על פירוק לגורמים, רמה ב׳', page: { kind: 'home', path: '/', title: 'בית' } },
+      {
+        guide,
+        apiKey: 'server-side',
+        fetch: async (_url, init) => {
+          called += 1;
+          const sent = JSON.parse(String(init.body));
+          assert.equal(sent.model, 'qwen3.8-flash');
+          assert.match(sent.messages[1].content, /g9-t2-b/);
+          return {
+            ok: true,
+            status: 200,
+            json: async () => ({
+              choices: [{
+                message: {
+                  content: JSON.stringify({
+                    answer: 'הנה דף פירוק לגורמים ברמה ב׳',
+                    primaryRecordId: 'g9-t2-b',
+                    chipRecordIds: ['topic-factoring-grade-9'],
+                  }),
+                },
+              }],
+            }),
+          };
+        },
+      }
+    );
+    assert.equal(called, 1);
+    assert.equal(result.source, 'model');
+    assert.equal(result.model, 'qwen3.8-flash');
+    assert.match(result.primary.label, /רמה ב׳/);
+    assert.match(result.primary.href, /lv=b/);
+    assert.equal(result.primary.href.includes('lv=a'), false);
+    assert.equal(result.chips.some((chip) => chip.href === '/factoring-grade-9'), true);
+  });
+
+  it('sends a configured Model Studio base URL and model name', async () => {
+    let seen = '';
+    const result = await handleCompanionTurn(
+      { message: 'אני מחפש דפים לכיתה ט׳ על פירוק לגורמים, רמה ב׳', page: { kind: 'home', path: '/', title: 'בית' } },
+      {
+        guide,
+        apiKey: 'server-side',
+        baseUrl: 'https://dashscope-intl.aliyuncs.com/compatible-mode/v1',
+        model: 'qwen-plus',
+        fetch: async (url, init) => {
+          seen = String(url);
+          assert.equal(JSON.parse(String(init.body)).model, 'qwen-plus');
+          return {
+            ok: true,
+            status: 200,
+            json: async () => ({
+              choices: [{ message: { content: JSON.stringify({ answer: 'הנה רמה ב׳', primaryRecordId: 'g9-t2-b' }) } }],
+            }),
+          };
+        },
+      }
+    );
+    assert.equal(seen, 'https://dashscope-intl.aliyuncs.com/compatible-mode/v1/chat/completions');
+    assert.equal(result.source, 'model');
+    assert.equal(result.model, 'qwen-plus');
+    assert.match(result.primary.href, /lv=b/);
+  });
+
+  it('rejects an unknown base URL without a request or logging the rejected value', async () => {
+    const logs = [];
+    const leaked = 'sk-rejected-value-should-not-appear';
+    let seen = '';
+    await handleCompanionTurn(
+      { message: 'אני מחפש דפים לכיתה ט׳ על פירוק לגורמים, רמה ב׳', page: { kind: 'home', path: '/', title: 'בית' } },
+      {
+        guide,
+        apiKey: 'server-side',
+        baseUrl: 'https://evil.example/' + leaked,
+        model: 'not a model',
+        log: (entry) => logs.push(entry),
+        fetch: async (url) => {
+          seen = String(url);
+          return {
+            ok: true,
+            status: 200,
+            json: async () => ({
+              choices: [{ message: { content: JSON.stringify({ answer: 'הנה', primaryRecordId: 'g9-t2-b' }) } }],
+            }),
+          };
+        },
+      }
+    );
+    assert.equal(seen, '');
+    assert.equal(logs.some((entry) => entry.code === 'QWEN_CONFIG_REJECTED'), true);
+    assert.equal(JSON.stringify(logs).includes(leaked), false);
+    assert.equal(JSON.stringify(logs).includes('evil.example'), false);
+    assert.equal(qwenChatUrlFrom('https://dashscope.aliyuncs.com/compatible-mode/v1'), 'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions');
+    assert.equal(qwenChatUrlFrom('https://user:secret@dashscope-intl.aliyuncs.com/compatible-mode/v1'), '');
+  });
+
+  it('on provider 401 or 403 keeps level B and logs a key-free reason', async () => {
+    const secret = 'sk-live-should-not-leak';
+    for (const status of [401, 403]) {
+      const logs = [];
+      const result = await handleCompanionTurn(
+        { message: 'אני מחפש דפים לכיתה ט׳ על פירוק לגורמים, רמה ב׳', page: { kind: 'home', path: '/', title: 'בית' } },
+        {
+          guide,
+          apiKey: secret,
+          log: (entry) => logs.push(entry),
+          fetch: async () => ({
+            ok: false,
+            status,
+            json: async () => ({ error: { code: 'invalid_api_key', message: 'bad ' + secret } }),
+          }),
+        }
+      );
+      assert.equal(result.ok, false);
+      assert.equal(result.source, 'fallback');
+      assert.equal(result.code, 'MODEL_AUTH_FAILED');
+      assert.match(result.answer, /רמה ב׳/);
+      assert.doesNotMatch(result.answer, /רמה א/);
+      assert.match(result.primary.href, /lv=b/);
+      assert.equal(result.primary.href.includes('lv=a'), false);
+      assert.equal(result.links.some((link) => link.href === '/factoring-grade-9'), true);
+      assert.equal(JSON.stringify(result).includes(secret), false);
+      assert.equal(JSON.stringify(logs).includes(secret), false);
+      assert.equal(logs[0].status, status);
+      assert.equal(logs[0].code, 'MODEL_AUTH_FAILED');
+      assert.equal(logs[0].providerCode, 'invalid_api_key');
+      assert.match(logs[0].reason, /rejected the API key/);
+    }
+  });
 });
 
 describe('Noam AI starters and client guard', () => {
   it('does not offer the current page, and home does not offer בית', () => {
-    const home = starterLinksFor('home', '/', (path) => path);
+    const home = starterLinksFor('home', '/', (path: string) => path);
     assert.equal(home.some((item) => item.label === 'בית' || item.href === '/'), false);
     assert.ok(home.some((item) => item.href === '/worksheets'));
-    const topic = starterLinksFor('topic', '/factoring-grade-9', (path) => path);
+    const topic = starterLinksFor('topic', '/factoring-grade-9', (path: string) => path);
     assert.equal(topic.some((item) => item.href === '/factoring-grade-9'), false);
     assert.ok(topic.some((item) => item.href === '/grade-9' && item.label === 'כיתה ט׳'));
   });
@@ -368,7 +528,12 @@ describe('Noam AI starters and client guard', () => {
     assert.ok(client.includes('font-family:" + SITE_FONT + "'));
     assert.ok(client.includes('#noam-site-companion-answer,#noam-site-companion-details,#noam-site-companion-chips{font-family:" + SITE_FONT + "}"'));
     assert.ok(client.includes('#noam-site-companion,#noam-site-companion *,#noam-site-companion-panel,#noam-site-companion-panel *{font-family:" + SITE_FONT + " !important}"'));
-    assert.ok(client.includes('noam-bot-client.js?v=20260921-diagnostics1'));
+    assert.ok(client.includes('noam-bot-client.js?v=20261025-execute-ready-guard'));
+    assert.ok(client.includes('function answerKind(result)'));
+    assert.ok(client.includes('data-answer-kind'));
+    assert.ok(client.includes('data-response-error'));
+    assert.ok(client.includes('source === "model" || source === "classifier"'));
+    assert.ok(client.includes('source === "fallback" || source === "local-fallback"'));
     assert.ok(client.includes('setProperty("font-family", SITE_FONT, "important")'));
     assert.ok(client.includes('אחר'));
     assert.ok(client.includes('noam-teacher-option'));
@@ -402,7 +567,7 @@ describe('Noam AI starters and client guard', () => {
     assert.ok(client.includes('closer.textContent = window.innerWidth < 768 ? "סגירה" : "×"'));
     assert.ok(client.includes('revealLessonCard'));
     assert.ok(client.includes('.exact-topic-demo, .concept-loop__card, .ka-film'));
-    assert.ok(client.includes('html.noam-ai-engaged #noam-accessibility{top:auto!important;bottom:8px!important'));
+    assert.ok(client.includes('html.noam-ai-engaged #noam-accessibility{top:auto!important;bottom:calc(42dvh + 8px)!important'));
     assert.ok(client.includes('seen["label:" + label]'));
     const a11y = readFileSync(new URL('../public/noam-accessibility.js', import.meta.url), 'utf8');
     assert.match(a11y, /\.exact-topic-demo,\.concept-loop__card,\.ka-film/);
@@ -470,9 +635,9 @@ describe('Noam AI page context and topic order', () => {
       'כיתה ט׳ · הטרפז',
     ]);
     assert.equal(new Set(titles).size, titles.length);
-    assert.equal(result.chips.find((chip) => chip.label.endsWith('דלתון'))?.href, '/kite-grade-9');
-    const quadrilaterals = parentTopics(9, 'geo').filter((title) => !title.includes('משולש'));
-    assert.deepEqual(result.chips.map((chip) => chip.label.split(' · ')[1]), quadrilaterals);
+    assert.equal(result.chips.find((chip: { label: string; href: string }) => chip.label.endsWith('דלתון'))?.href, '/kite-grade-9');
+    const quadrilaterals = parentTopics(9, 'geo').filter((title: string) => !title.includes('משולש'));
+    assert.deepEqual(result.chips.map((chip: { label: string }) => chip.label.split(' · ')[1]), quadrilaterals);
     assert.deepEqual(quadrilaterals, catalogQuadrilateralTitles(catalog, 9));
     const section = loadGradeHub(9).topicSections.find((item) => item.heading === 'מרובעים ומשולשים');
     const pageQuads = (section?.links || [])
@@ -505,9 +670,10 @@ describe('Noam AI page context and topic order', () => {
       records,
       { page: { kind: 'topic', path: '/kite-grade-9', title: 'דלתון' } }
     );
+    assert.ok(result.primary);
     const labels = [result.primary.label, ...result.chips.map((chip) => chip.label)];
     assert.equal(new Set(labels).size, labels.length);
-    assert.equal(result.chips.some((chip) => chip.label === result.primary.label), false);
+    assert.equal(result.chips.some((chip) => chip.label === result.primary!.label), false);
   });
 });
 
@@ -620,7 +786,7 @@ describe('Noam AI bot guard', () => {
     assert.match(paste, /from 'backend\/noam-site-companion'/);
     assert.match(paste, /export function post_noamSiteCompanion/);
     assert.match(catalogJs, /export const catalog =/);
-    assert.match(catalogJs, /dd5036296f084fb7ad7fc6c1bbb25088/);
+    assert.match(catalogJs, /40e46a64bcf0441bae36eba820884704/);
     assert.equal(catalogJs.includes('export const catalog = []') || catalogJs.includes('export const catalog =[];'), false);
   });
 });

@@ -26,9 +26,12 @@ export function renderPublicLesson(lessonHtml: string, hostname: string): string
   const robots = robotsContent(hostname);
   const canonical = canonicalUrl(PUBLIC_LESSON_PATH);
   const image = publicLessonImageUrl();
-  const withCompanion = lessonHtml.includes('noam-site-companion.js')
+  const withAccessibility = lessonHtml.includes('noam-accessibility.js')
     ? lessonHtml
-    : lessonHtml.replace('</body>', '<script src="/noam-site-companion.js" defer></script>\n</body>');
+    : lessonHtml.replace('</body>', '<script src="/noam-accessibility.js" defer></script>\n</body>');
+  const withCompanion = withAccessibility.includes('noam-site-companion.js')
+    ? withAccessibility
+    : withAccessibility.replace('</body>', '<script src="/noam-site-companion.js" defer></script>\n</body>');
   return withCompanion
     .replaceAll('content="noindex, nofollow"', `content="${robots}"`)
     .replace(

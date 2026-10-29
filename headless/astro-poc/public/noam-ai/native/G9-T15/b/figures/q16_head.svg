@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 143" width="240" height="143">
+<g data-layer="lines">
+<line id="e0001" data-seg="PQ" x1="26" y1="26.4" x2="26" y2="116.6" stroke="#000000" stroke-width="1.5"/>
+<line id="e0002" data-seg="PS" x1="26" y1="26.4" x2="214" y2="98.56" stroke="#000000" stroke-width="1"/>
+<line id="e0003" data-seg="QR" x1="26" y1="116.6" x2="214" y2="44.44" stroke="#000000" stroke-width="1"/>
+<line id="e0004" data-seg="RS" x1="214" y1="44.44" x2="214" y2="98.56" stroke="#000000" stroke-width="1.5"/>
+</g>
+<g data-layer="marks">
+<path id="e0005" data-mark="arc PTQ" d="M 128.56 65.77 L 128.21 66.77 L 127.93 67.8 L 127.72 68.85 L 127.58 69.9 L 127.51 70.97 L 127.51 72.03 L 127.58 73.1 L 127.72 74.15 L 127.93 75.2 L 128.21 76.23 L 128.56 77.23" fill="none" stroke="#000000" stroke-width="1"/>
+<line id="e0006" data-mark="tick PT" x1="86.18" y1="45.22" x2="83.32" y2="52.68" stroke="#000000" stroke-width="1"/>
+<line id="e0007" data-mark="tick QT" x1="83.32" y1="90.32" x2="86.18" y2="97.78" stroke="#000000" stroke-width="1"/>
+<line id="e0008" data-mark="tick2 RT" x1="181.58" y1="61.17" x2="178.72" y2="53.7" stroke="#000000" stroke-width="1"/>
+<line id="e0009" data-mark="tick2 RT" x1="178.78" y1="62.24" x2="175.92" y2="54.77" stroke="#000000" stroke-width="1"/>
+<line id="e0010" data-mark="tick2 ST" x1="178.72" y1="89.3" x2="181.58" y2="81.83" stroke="#000000" stroke-width="1"/>
+<line id="e0011" data-mark="tick2 ST" x1="175.92" y1="88.23" x2="178.78" y2="80.76" stroke="#000000" stroke-width="1"/>
+</g>
+<g data-layer="points">
+<circle id="e0012" data-pt="P" cx="26" cy="26.4" r="2" fill="#000000" stroke="none"/>
+<circle id="e0013" data-pt="Q" cx="26" cy="116.6" r="2" fill="#000000" stroke="none"/>
+<circle id="e0014" data-pt="R" cx="214" cy="44.44" r="2" fill="#000000" stroke="none"/>
+<circle id="e0015" data-pt="S" cx="214" cy="98.56" r="2" fill="#000000" stroke="none"/>
+<circle id="e0016" data-pt="T" cx="143.5" cy="71.5" r="2" fill="#000000" stroke="none"/>
+</g>
+<g data-layer="labels">
+<text id="e0017" data-for="ang PTQ" x="114.9" y="75.23" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">42°</text>
+<text id="e0018" data-for="P" x="20.16" y="22.34" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">P</text>
+<text id="e0019" data-for="Q" x="20" y="129.77" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">Q</text>
+<text id="e0020" data-for="R" x="219.98" y="40.17" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">R</text>
+<text id="e0021" data-for="S" x="219.84" y="111.49" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">S</text>
+<text id="e0022" data-for="T" x="143.5" y="67" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">T</text>
+</g>
+</svg>

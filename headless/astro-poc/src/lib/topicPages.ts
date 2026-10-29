@@ -73,7 +73,6 @@ import kiteGrade9 from '../data/topic-pages/kite-grade-9.json';
 import similarTrianglesGrade9 from '../data/topic-pages/similar-triangles-grade-9.json';
 import triangle306090Grade9 from '../data/topic-pages/triangle-30-60-90-grade-9.json';
 
-import anglesGrade7 from '../data/topic-pages/angles-grade-7.json';
 import areaParallelogramTrapezoidCompositeGrade7 from '../data/topic-pages/area-parallelogram-trapezoid-composite-grade-7.json';
 import areaRectanglePerimeterGrade7 from '../data/topic-pages/area-rectangle-perimeter-grade-7.json';
 import compositePolygonsAreaGrade9 from '../data/topic-pages/composite-polygons-area-grade-9.json';
@@ -100,6 +99,175 @@ import triangleSidesAnglesGrade9 from '../data/topic-pages/triangle-sides-angles
 import triangleSimilarityAaGrade9 from '../data/topic-pages/triangle-similarity-aa-grade-9.json';
 import triangularPrismSurfaceAreaGrade9 from '../data/topic-pages/triangular-prism-surface-area-grade-9.json';
 import triangularPrismVolumeGrade9 from '../data/topic-pages/triangular-prism-volume-grade-9.json';
+import countingGrade1 from '../data/topic-pages/counting-grade-1.json';
+import numbersTo100Grade1 from '../data/topic-pages/numbers-to-100-grade-1.json';
+import numberNeighborsGrade1 from '../data/topic-pages/number-neighbors-grade-1.json';
+import composeDecompose10Grade1 from '../data/topic-pages/compose-decompose-10-grade-1.json';
+import additionTo10Grade1 from '../data/topic-pages/addition-to-10-grade-1.json';
+import subtractionTo10Grade1 from '../data/topic-pages/subtraction-to-10-grade-1.json';
+import making20Via10Grade1 from '../data/topic-pages/making-20-via-10-grade-1.json';
+import additionTo20Grade1 from '../data/topic-pages/addition-to-20-grade-1.json';
+import subtractionTo20Grade1 from '../data/topic-pages/subtraction-to-20-grade-1.json';
+import equalityMissingNumberGrade1 from '../data/topic-pages/equality-missing-number-grade-1.json';
+import patternsSequencesGrade1 from '../data/topic-pages/patterns-sequences-grade-1.json';
+import hundredChartGrade1 from '../data/topic-pages/hundred-chart-grade-1.json';
+import numberChainsPyramidsGrade1 from '../data/topic-pages/number-chains-pyramids-grade-1.json';
+import wordProblemsPictureGrade1 from '../data/topic-pages/word-problems-picture-grade-1.json';
+import composeDecomposeGrade1 from '../data/topic-pages/compose-decompose-grade-1.json';
+import dataGrade1 from '../data/topic-pages/data-grade-1.json';
+import wordProblemsSimpleGrade1 from '../data/topic-pages/word-problems-simple-grade-1.json';
+import shapesComposeDecomposeGrade1 from '../data/topic-pages/shapes-compose-decompose-grade-1.json';
+import measureCompareLengthGrade1 from '../data/topic-pages/measure-compare-length-grade-1.json';
+import equalGroupsRepeatedAdditionGrade1 from '../data/topic-pages/equal-groups-repeated-addition-grade-1.json';
+import polygonsGrade1 from '../data/topic-pages/polygons-grade-1.json';
+import squareRectangleGrade1 from '../data/topic-pages/square-rectangle-grade-1.json';
+import readingClockGrade1 from '../data/topic-pages/reading-clock-grade-1.json';
+import numberBonds1020Grade2 from '../data/topic-pages/number-bonds-10-20-grade-2.json';
+import tensAndOnesGrade2 from '../data/topic-pages/tens-and-ones-grade-2.json';
+import orderCompareNumberlineGrade2 from '../data/topic-pages/order-compare-numberline-grade-2.json';
+import equalityMissingNumberGrade2 from '../data/topic-pages/equality-missing-number-grade-2.json';
+import wordProblemsMoneyGrade2 from '../data/topic-pages/word-problems-money-grade-2.json';
+import tablesBarChartsGrade2 from '../data/topic-pages/tables-bar-charts-grade-2.json';
+import hundredsTensOnesGrade2 from '../data/topic-pages/hundreds-tens-ones-grade-2.json';
+import compareNumbersTo1000Grade2 from '../data/topic-pages/compare-numbers-to-1000-grade-2.json';
+import numbersTo1000Grade2 from '../data/topic-pages/numbers-to-1000-grade-2.json';
+import evenOddSequencesAGrade2 from '../data/topic-pages/even-odd-sequences-a-grade-2.json';
+import evenOddSequencesBGrade2 from '../data/topic-pages/even-odd-sequences-b-grade-2.json';
+import wordProblemsMoneySimpleGrade2 from '../data/topic-pages/word-problems-money-simple-grade-2.json';
+import reflectionSymmetryGrade2 from '../data/topic-pages/reflection-symmetry-grade-2.json';
+import numbersOperationsReviewGrade2 from '../data/topic-pages/numbers-operations-review-grade-2.json';
+import addingTensDecomposeGrade2 from '../data/topic-pages/adding-tens-decompose-grade-2.json';
+import additionTwoDigitNoCarryGrade2 from '../data/topic-pages/addition-two-digit-no-carry-grade-2.json';
+import additionTwoDigitCarryingGrade2 from '../data/topic-pages/addition-two-digit-carrying-grade-2.json';
+import subtractionTwoDigitNoBorrowGrade2 from '../data/topic-pages/subtraction-two-digit-no-borrow-grade-2.json';
+import subtractionTwoDigitBorrowingGrade2 from '../data/topic-pages/subtraction-two-digit-borrowing-grade-2.json';
+import calculationStrategiesGrade2 from '../data/topic-pages/calculation-strategies-grade-2.json';
+import multiplicationEqualGroupsGrade2 from '../data/topic-pages/multiplication-equal-groups-grade-2.json';
+import divisionMeasurementGrade2 from '../data/topic-pages/division-measurement-grade-2.json';
+import divisionEqualSharesGrade2 from '../data/topic-pages/division-equal-shares-grade-2.json';
+import multiplicationDivisionFamilyGrade2 from '../data/topic-pages/multiplication-division-family-grade-2.json';
+import timesEqualGroupsGrade2 from '../data/topic-pages/times-equal-groups-grade-2.json';
+import measuringLengthGrade2 from '../data/topic-pages/measuring-length-grade-2.json';
+import clockDurationGrade2 from '../data/topic-pages/clock-duration-grade-2.json';
+import halfAndQuarterGrade2 from '../data/topic-pages/half-and-quarter-grade-2.json';
+import shapesVsSolidsGrade2 from '../data/topic-pages/shapes-vs-solids-grade-2.json';
+import placeValueGrade3 from '../data/topic-pages/place-value-grade-3.json';
+import neighborsNumberlineGrade3 from '../data/topic-pages/neighbors-numberline-grade-3.json';
+import sequencesFindMistakeGrade3 from '../data/topic-pages/sequences-find-mistake-grade-3.json';
+import thousandsGrade3 from '../data/topic-pages/thousands-grade-3.json';
+import estimationCloseNumbersGrade3 from '../data/topic-pages/estimation-close-numbers-grade-3.json';
+import wordProblemsGrade3 from '../data/topic-pages/word-problems-grade-3.json';
+import anglesTypesGrade3 from '../data/topic-pages/angles-types-grade-3.json';
+import linesAnglesShapesGrade3 from '../data/topic-pages/lines-angles-shapes-grade-3.json';
+import perimeterPolygonsGrade3 from '../data/topic-pages/perimeter-polygons-grade-3.json';
+import classifyTrianglesGrade3 from '../data/topic-pages/classify-triangles-grade-3.json';
+import quadrilateralsPropertiesGrade3 from '../data/topic-pages/quadrilaterals-properties-grade-3.json';
+import readBarDiagramGrade3 from '../data/topic-pages/read-bar-diagram-grade-3.json';
+import collectingDataGrade3 from '../data/topic-pages/collecting-data-grade-3.json';
+import moneyGrade3 from '../data/topic-pages/money-grade-3.json';
+import columnAdditionCarryingGrade3 from '../data/topic-pages/column-addition-carrying-grade-3.json';
+import columnSubtractionBorrowingGrade3 from '../data/topic-pages/column-subtraction-borrowing-grade-3.json';
+import multiplicationFactsArraysGrade3 from '../data/topic-pages/multiplication-facts-arrays-grade-3.json';
+import divisionInverseMultiplicationGrade3 from '../data/topic-pages/division-inverse-multiplication-grade-3.json';
+import unitFractionsPartOfWholeGrade3 from '../data/topic-pages/unit-fractions-part-of-whole-grade-3.json';
+import polygonsSidesVerticesGrade3 from '../data/topic-pages/polygons-sides-vertices-grade-3.json';
+import shapesOnGridGrade3 from '../data/topic-pages/shapes-on-grid-grade-3.json';
+import timeWeightMeasuresGrade3 from '../data/topic-pages/time-weight-measures-grade-3.json';
+import divisionCheckMultiplicationGrade3 from '../data/topic-pages/division-check-multiplication-grade-3.json';
+import measuringLengthCmMGrade3 from '../data/topic-pages/measuring-length-cm-m-grade-3.json';
+import buildDecomposeShapesGrade3 from '../data/topic-pages/build-decompose-shapes-grade-3.json';
+import numbersToMillionGrade4 from '../data/topic-pages/numbers-to-million-grade-4.json';
+import orderRoundingMillionGrade4 from '../data/topic-pages/order-rounding-million-grade-4.json';
+import orderOfOperationsGrade4 from '../data/topic-pages/order-of-operations-grade-4.json';
+import distributiveAreaModelGrade4 from '../data/topic-pages/distributive-area-model-grade-4.json';
+import multiplicationMultiDigitGrade4 from '../data/topic-pages/multiplication-multi-digit-grade-4.json';
+import parallelPerpendicularShapesGrade4 from '../data/topic-pages/parallel-perpendicular-shapes-grade-4.json';
+import rectanglesSquaresGrade4 from '../data/topic-pages/rectangles-squares-grade-4.json';
+import angleTypesGrade4 from '../data/topic-pages/angle-types-grade-4.json';
+import classifyTrianglesGrade4 from '../data/topic-pages/classify-triangles-grade-4.json';
+import areaPerimeterRectangleGrade4 from '../data/topic-pages/area-perimeter-rectangle-grade-4.json';
+import areaPerimeterCompositeGrade4 from '../data/topic-pages/area-perimeter-composite-grade-4.json';
+import diagramsConclusionsGrade4 from '../data/topic-pages/diagrams-conclusions-grade-4.json';
+import symmetryReflectionRotationGrade4 from '../data/topic-pages/symmetry-reflection-rotation-grade-4.json';
+import anglesLinesPlaneGrade4 from '../data/topic-pages/angles-lines-plane-grade-4.json';
+import trianglesClassifyBuildGrade4 from '../data/topic-pages/triangles-classify-build-grade-4.json';
+import quadrilateralsClassifyGrade4 from '../data/topic-pages/quadrilaterals-classify-grade-4.json';
+import grade4Summary from '../data/topic-pages/grade-4-summary.json';
+import columnAdditionGrade4 from '../data/topic-pages/column-addition-grade-4.json';
+import multiDigitSubtractionGrade4 from '../data/topic-pages/multi-digit-subtraction-grade-4.json';
+import estimationMoneyProblemsGrade4 from '../data/topic-pages/estimation-money-problems-grade-4.json';
+import operationLawsTensGrade4 from '../data/topic-pages/operation-laws-tens-grade-4.json';
+import longDivisionRemainderGrade4 from '../data/topic-pages/long-division-remainder-grade-4.json';
+import fractionNamesEquivalentGrade4 from '../data/topic-pages/fraction-names-equivalent-grade-4.json';
+import fractionsNumberlineCompareGrade4 from '../data/topic-pages/fractions-numberline-compare-grade-4.json';
+import equivalentFractionsGrade4 from '../data/topic-pages/equivalent-fractions-grade-4.json';
+import divisibilityFactorsGrade4 from '../data/topic-pages/divisibility-factors-grade-4.json';
+import primeCompositeGrade4 from '../data/topic-pages/prime-composite-grade-4.json';
+import polygonsDiagonalsGrade4 from '../data/topic-pages/polygons-diagonals-grade-4.json';
+import lengthUnitsConversionGrade4 from '../data/topic-pages/length-units-conversion-grade-4.json';
+import timeAndWeightGrade4 from '../data/topic-pages/time-and-weight-grade-4.json';
+import bigNumbersRoundingGrade5 from '../data/topic-pages/big-numbers-rounding-grade-5.json';
+import multiplicationMultiDigitGrade5 from '../data/topic-pages/multiplication-multi-digit-grade-5.json';
+import orderOfOperationsGrade5 from '../data/topic-pages/order-of-operations-grade-5.json';
+import readTablesGrade5 from '../data/topic-pages/read-tables-grade-5.json';
+import readGraphsGrade5 from '../data/topic-pages/read-graphs-grade-5.json';
+import quadrilateralFamilyGrade5 from '../data/topic-pages/quadrilateral-family-grade-5.json';
+import quadrilateralDiagonalsGrade5 from '../data/topic-pages/quadrilateral-diagonals-grade-5.json';
+import perimeterParallelPerpendicularGrade5 from '../data/topic-pages/perimeter-parallel-perpendicular-grade-5.json';
+import triangleHeightAcuteRightGrade5 from '../data/topic-pages/triangle-height-acute-right-grade-5.json';
+import triangleHeightObtuseParallelogramGrade5 from '../data/topic-pages/triangle-height-obtuse-parallelogram-grade-5.json';
+import areaPerimeterRectanglesGrade5 from '../data/topic-pages/area-perimeter-rectangles-grade-5.json';
+import compositeAreaGrade5 from '../data/topic-pages/composite-area-grade-5.json';
+import parallelogramAreaGrade5 from '../data/topic-pages/parallelogram-area-grade-5.json';
+import triangleAreaGrade5 from '../data/topic-pages/triangle-area-grade-5.json';
+import missingNumberFractionsGrade5 from '../data/topic-pages/missing-number-fractions-grade-5.json';
+import meanDataInquiryGrade5 from '../data/topic-pages/mean-data-inquiry-grade-5.json';
+import frequencyChanceGrade5 from '../data/topic-pages/frequency-chance-grade-5.json';
+import transformationsGrade5 from '../data/topic-pages/transformations-grade-5.json';
+import numberSenseTensHundredsGrade5 from '../data/topic-pages/number-sense-tens-hundreds-grade-5.json';
+import longDivisionGrade5 from '../data/topic-pages/long-division-grade-5.json';
+import primeFactorsGrade5 from '../data/topic-pages/prime-factors-grade-5.json';
+import fractionMeaningGrade5 from '../data/topic-pages/fraction-meaning-grade-5.json';
+import fractionsNumberlineCompareGrade5 from '../data/topic-pages/fractions-numberline-compare-grade-5.json';
+import expandReduceFractionsGrade5 from '../data/topic-pages/expand-reduce-fractions-grade-5.json';
+import commonDenominatorGrade5 from '../data/topic-pages/common-denominator-grade-5.json';
+import addSubtractFractionsGrade5 from '../data/topic-pages/add-subtract-fractions-grade-5.json';
+import fractionOfQuantityGrade5 from '../data/topic-pages/fraction-of-quantity-grade-5.json';
+import fractionsMixedNumbersGrade5 from '../data/topic-pages/fractions-mixed-numbers-grade-5.json';
+import addSubtractMixedNumbersGrade5 from '../data/topic-pages/add-subtract-mixed-numbers-grade-5.json';
+import completingFractionsGrade5 from '../data/topic-pages/completing-fractions-grade-5.json';
+import buildClassifyShapesGrade5 from '../data/topic-pages/build-classify-shapes-grade-5.json';
+import unitConversionWeightGrade5 from '../data/topic-pages/unit-conversion-weight-grade-5.json';
+import decimalPlaceValueGrade5 from '../data/topic-pages/decimal-place-value-grade-5.json';
+import compareFractionsDecimalsGrade5 from '../data/topic-pages/compare-fractions-decimals-grade-5.json';
+import addSubtractDecimalsGrade5 from '../data/topic-pages/add-subtract-decimals-grade-5.json';
+import solidsExploreGrade6 from '../data/topic-pages/solids-explore-grade-6.json';
+import boxesNetsGrade6 from '../data/topic-pages/boxes-nets-grade-6.json';
+import boxSurfaceAreaGrade6 from '../data/topic-pages/box-surface-area-grade-6.json';
+import boxVolumeGrade6 from '../data/topic-pages/box-volume-grade-6.json';
+import quadrilateralsReviewGrade6 from '../data/topic-pages/quadrilaterals-review-grade-6.json';
+import measurementGeometrySynthesisGrade6 from '../data/topic-pages/measurement-geometry-synthesis-grade-6.json';
+import fractionDecimalPercentGrade6 from '../data/topic-pages/fraction-decimal-percent-grade-6.json';
+import percentOfQuantityGrade6 from '../data/topic-pages/percent-of-quantity-grade-6.json';
+import findTheWholeGrade6 from '../data/topic-pages/find-the-whole-grade-6.json';
+import numbersOperationsReviewGrade6 from '../data/topic-pages/numbers-operations-review-grade-6.json';
+import collectRepresentDataGrade6 from '../data/topic-pages/collect-represent-data-grade-6.json';
+import compareGroupsConclusionsGrade6 from '../data/topic-pages/compare-groups-conclusions-grade-6.json';
+import scalingDimensionsGrade6 from '../data/topic-pages/scaling-dimensions-grade-6.json';
+import patternsMultistepGrade6 from '../data/topic-pages/patterns-multistep-grade-6.json';
+import fractionTimesWholeGrade6 from '../data/topic-pages/fraction-times-whole-grade-6.json';
+import fractionPartQuantityAreaGrade6 from '../data/topic-pages/fraction-part-quantity-area-grade-6.json';
+import fractionTimesFractionGrade6 from '../data/topic-pages/fraction-times-fraction-grade-6.json';
+import multiplyMixedNumbersGrade6 from '../data/topic-pages/multiply-mixed-numbers-grade-6.json';
+import fractionMultiplicationApplyGrade6 from '../data/topic-pages/fraction-multiplication-apply-grade-6.json';
+import fractionDivisionMeaningGrade6 from '../data/topic-pages/fraction-division-meaning-grade-6.json';
+import fractionDivisionAlgorithmGrade6 from '../data/topic-pages/fraction-division-algorithm-grade-6.json';
+import fractionOperationsChooseGrade6 from '../data/topic-pages/fraction-operations-choose-grade-6.json';
+import multiplyDecimalsGrade6 from '../data/topic-pages/multiply-decimals-grade-6.json';
+import divideDecimalsGrade6 from '../data/topic-pages/divide-decimals-grade-6.json';
+import capacityMlLM3Grade6 from '../data/topic-pages/capacity-ml-l-m3-grade-6.json';
+import ratioGrade6 from '../data/topic-pages/ratio-grade-6.json';
+import scaleMapsGrade6 from '../data/topic-pages/scale-maps-grade-6.json';
 import { isolateMathRuns } from './mathDirection';
 import { familyRelatedTopics, type FamilyRelatedTopic } from './topicFamilies';
 
@@ -204,7 +372,6 @@ export const TOPIC_PAGE_M22_UNMIGRATED = [] as const;
 
 /** M23 batch — remaining audited live topic-SEO (25; see UNMIGRATED). */
 export const TOPIC_PAGE_M23_SLUGS = [
-  'angles-grade-7',
   'area-parallelogram-trapezoid-composite-grade-7',
   'area-rectangle-perimeter-grade-7',
   'composite-polygons-area-grade-9',
@@ -253,6 +420,216 @@ export const TOPIC_PAGE_M30_UNMIGRATED = [] as const;
 /** Grade-9 kite (G9-T46). Not a production capture; authored with the kite loop. */
 export const TOPIC_PAGE_KITE_SLUGS = ['kite-grade-9'] as const;
 
+/**
+ * Elementary topic pages (grades 1–6). Authored from catalog data + the real
+ * level-a PDF skill lists — production has no per-topic pages for these
+ * grades, so the parity gate skips them. Order follows the catalog order.
+ * Excluded until an animation family exists for them (docs/missing-animations.md):
+ * t15 מודדים ומשווים אורך, t16 קבוצות שוות וחיבור חוזר, t17 מצולעים,
+ * t18 ריבוע ומלבן, t20 שעה שלמה.
+ */
+export const TOPIC_PAGE_G1_SLUGS = [
+  'counting-grade-1',
+  'numbers-to-100-grade-1',
+  'number-neighbors-grade-1',
+  'compose-decompose-10-grade-1',
+  'addition-to-10-grade-1',
+  'subtraction-to-10-grade-1',
+  'making-20-via-10-grade-1',
+  'addition-to-20-grade-1',
+  'subtraction-to-20-grade-1',
+  'equality-missing-number-grade-1',
+  'patterns-sequences-grade-1',
+  'hundred-chart-grade-1',
+  'number-chains-pyramids-grade-1',
+  'word-problems-picture-grade-1',
+  'measure-compare-length-grade-1',
+  'equal-groups-repeated-addition-grade-1',
+  'polygons-grade-1',
+  'square-rectangle-grade-1',
+  'compose-decompose-grade-1',
+  'reading-clock-grade-1',
+  'data-grade-1',
+  'word-problems-simple-grade-1',
+  'shapes-compose-decompose-grade-1',
+] as const;
+
+/** Grade 2, catalog order. Only topics with an animation mapping ship. */
+/** Grade 3, catalog order. Only topics with an animation mapping ship. */
+/** Grade 4, catalog order. Only topics with an animation mapping ship. */
+/** Grade 5, catalog order. Only topics with an animation mapping ship. */
+/** Grade 6, catalog order. Only topics with an animation mapping ship. */
+export const TOPIC_PAGE_G6_SLUGS = [
+  'fraction-times-whole-grade-6',
+  'fraction-part-quantity-area-grade-6',
+  'fraction-times-fraction-grade-6',
+  'multiply-mixed-numbers-grade-6',
+  'fraction-multiplication-apply-grade-6',
+  'fraction-division-meaning-grade-6',
+  'fraction-division-algorithm-grade-6',
+  'fraction-operations-choose-grade-6',
+  'multiply-decimals-grade-6',
+  'divide-decimals-grade-6',
+  'solids-explore-grade-6',
+  'boxes-nets-grade-6',
+  'box-surface-area-grade-6',
+  'box-volume-grade-6',
+  'capacity-ml-l-m3-grade-6',
+  'quadrilaterals-review-grade-6',
+  'measurement-geometry-synthesis-grade-6',
+  'fraction-decimal-percent-grade-6',
+  'percent-of-quantity-grade-6',
+  'find-the-whole-grade-6',
+  'ratio-grade-6',
+  'scale-maps-grade-6',
+  'numbers-operations-review-grade-6',
+  'collect-represent-data-grade-6',
+  'compare-groups-conclusions-grade-6',
+  'scaling-dimensions-grade-6',
+  'patterns-multistep-grade-6',
+] as const;
+
+export const TOPIC_PAGE_G5_SLUGS = [
+  'big-numbers-rounding-grade-5',
+  'number-sense-tens-hundreds-grade-5',
+  'multiplication-multi-digit-grade-5',
+  'long-division-grade-5',
+  'prime-factors-grade-5',
+  'order-of-operations-grade-5',
+  'fraction-meaning-grade-5',
+  'fractions-numberline-compare-grade-5',
+  'expand-reduce-fractions-grade-5',
+  'common-denominator-grade-5',
+  'add-subtract-fractions-grade-5',
+  'fraction-of-quantity-grade-5',
+  'fractions-mixed-numbers-grade-5',
+  'add-subtract-mixed-numbers-grade-5',
+  'completing-fractions-grade-5',
+  'read-tables-grade-5',
+  'read-graphs-grade-5',
+  'quadrilateral-family-grade-5',
+  'quadrilateral-diagonals-grade-5',
+  'build-classify-shapes-grade-5',
+  'unit-conversion-weight-grade-5',
+  'perimeter-parallel-perpendicular-grade-5',
+  'triangle-height-acute-right-grade-5',
+  'triangle-height-obtuse-parallelogram-grade-5',
+  'area-perimeter-rectangles-grade-5',
+  'composite-area-grade-5',
+  'parallelogram-area-grade-5',
+  'triangle-area-grade-5',
+  'decimal-place-value-grade-5',
+  'compare-fractions-decimals-grade-5',
+  'add-subtract-decimals-grade-5',
+  'missing-number-fractions-grade-5',
+  'mean-data-inquiry-grade-5',
+  'frequency-chance-grade-5',
+  'transformations-grade-5',
+] as const;
+
+export const TOPIC_PAGE_G4_SLUGS = [
+  'numbers-to-million-grade-4',
+  'order-rounding-million-grade-4',
+  'column-addition-grade-4',
+  'multi-digit-subtraction-grade-4',
+  'estimation-money-problems-grade-4',
+  'operation-laws-tens-grade-4',
+  'order-of-operations-grade-4',
+  'distributive-area-model-grade-4',
+  'multiplication-multi-digit-grade-4',
+  'long-division-remainder-grade-4',
+  'fraction-names-equivalent-grade-4',
+  'fractions-numberline-compare-grade-4',
+  'equivalent-fractions-grade-4',
+  'divisibility-factors-grade-4',
+  'prime-composite-grade-4',
+  'parallel-perpendicular-shapes-grade-4',
+  'polygons-diagonals-grade-4',
+  'rectangles-squares-grade-4',
+  'angle-types-grade-4',
+  'classify-triangles-grade-4',
+  'length-units-conversion-grade-4',
+  'area-perimeter-rectangle-grade-4',
+  'area-perimeter-composite-grade-4',
+  'time-and-weight-grade-4',
+  'diagrams-conclusions-grade-4',
+  'symmetry-reflection-rotation-grade-4',
+  'angles-lines-plane-grade-4',
+  'triangles-classify-build-grade-4',
+  'quadrilaterals-classify-grade-4',
+  'grade-4-summary',
+] as const;
+
+export const TOPIC_PAGE_G3_SLUGS = [
+  'place-value-grade-3',
+  'neighbors-numberline-grade-3',
+  'sequences-find-mistake-grade-3',
+  'thousands-grade-3',
+  'estimation-close-numbers-grade-3',
+  'column-addition-carrying-grade-3',
+  'column-subtraction-borrowing-grade-3',
+  'multiplication-facts-arrays-grade-3',
+  'division-inverse-multiplication-grade-3',
+  'unit-fractions-part-of-whole-grade-3',
+  'word-problems-grade-3',
+  'angles-types-grade-3',
+  'lines-angles-shapes-grade-3',
+  'polygons-sides-vertices-grade-3',
+  'perimeter-polygons-grade-3',
+  'classify-triangles-grade-3',
+  'quadrilaterals-properties-grade-3',
+  'shapes-on-grid-grade-3',
+  'time-weight-measures-grade-3',
+  'read-bar-diagram-grade-3',
+  'division-check-multiplication-grade-3',
+  'measuring-length-cm-m-grade-3',
+  'build-decompose-shapes-grade-3',
+  'collecting-data-grade-3',
+  'money-grade-3',
+] as const;
+
+export const TOPIC_PAGE_G2_SLUGS = [
+  'number-bonds-10-20-grade-2',
+  'tens-and-ones-grade-2',
+  'order-compare-numberline-grade-2',
+  'adding-tens-decompose-grade-2',
+  'addition-two-digit-no-carry-grade-2',
+  'addition-two-digit-carrying-grade-2',
+  'subtraction-two-digit-no-borrow-grade-2',
+  'subtraction-two-digit-borrowing-grade-2',
+  'calculation-strategies-grade-2',
+  'equality-missing-number-grade-2',
+  'word-problems-money-grade-2',
+  'tables-bar-charts-grade-2',
+  'hundreds-tens-ones-grade-2',
+  'compare-numbers-to-1000-grade-2',
+  'numbers-to-1000-grade-2',
+  'multiplication-equal-groups-grade-2',
+  'division-measurement-grade-2',
+  'division-equal-shares-grade-2',
+  'multiplication-division-family-grade-2',
+  'times-equal-groups-grade-2',
+  'even-odd-sequences-a-grade-2',
+  'even-odd-sequences-b-grade-2',
+  'word-problems-money-simple-grade-2',
+  'measuring-length-grade-2',
+  'clock-duration-grade-2',
+  'half-and-quarter-grade-2',
+  'shapes-vs-solids-grade-2',
+  'reflection-symmetry-grade-2',
+  'numbers-operations-review-grade-2',
+] as const;
+
+/** Slugs with no production source; the parity fixture gate must skip them. */
+export const TOPIC_PAGE_AUTHORED_SLUGS = [
+  ...TOPIC_PAGE_G1_SLUGS,
+  ...TOPIC_PAGE_G2_SLUGS,
+  ...TOPIC_PAGE_G3_SLUGS,
+  ...TOPIC_PAGE_G4_SLUGS,
+  ...TOPIC_PAGE_G5_SLUGS,
+  ...TOPIC_PAGE_G6_SLUGS,
+] as const;
+
 export const TOPIC_PAGE_SLUGS = [
   ...TOPIC_PAGE_PILOT_SLUGS,
   ...TOPIC_PAGE_M19_SLUGS,
@@ -262,6 +639,12 @@ export const TOPIC_PAGE_SLUGS = [
   ...TOPIC_PAGE_M23_SLUGS,
   ...TOPIC_PAGE_M30_SLUGS,
   ...TOPIC_PAGE_KITE_SLUGS,
+  ...TOPIC_PAGE_G1_SLUGS,
+  ...TOPIC_PAGE_G2_SLUGS,
+  ...TOPIC_PAGE_G3_SLUGS,
+  ...TOPIC_PAGE_G4_SLUGS,
+  ...TOPIC_PAGE_G5_SLUGS,
+  ...TOPIC_PAGE_G6_SLUGS,
 ] as const;
 
 export type TopicPageSlug = (typeof TOPIC_PAGE_SLUGS)[number];
@@ -445,7 +828,6 @@ const BY_SLUG: Record<string, TopicPageContent> = {
   'trapezoid-grade-9': trapezoidGrade9 as TopicPageContent,
   'similar-triangles-grade-9': similarTrianglesGrade9 as TopicPageContent,
   'triangle-30-60-90-grade-9': triangle306090Grade9 as TopicPageContent,
-  'angles-grade-7': anglesGrade7 as TopicPageContent,
   'area-parallelogram-trapezoid-composite-grade-7': areaParallelogramTrapezoidCompositeGrade7 as TopicPageContent,
   'area-rectangle-perimeter-grade-7': areaRectanglePerimeterGrade7 as TopicPageContent,
   'composite-polygons-area-grade-9': compositePolygonsAreaGrade9 as TopicPageContent,
@@ -474,6 +856,181 @@ const BY_SLUG: Record<string, TopicPageContent> = {
   'special-triangles-grade-7-new': specialTrianglesGrade7New as TopicPageContent,
   'patterns-and-graphs-grade-7': patternsAndGraphsGrade7 as TopicPageContent,
   'kite-grade-9': kiteGrade9 as TopicPageContent,
+  // Elementary authored pages (G1, catalog order)
+  'counting-grade-1': countingGrade1 as TopicPageContent,
+  'numbers-to-100-grade-1': numbersTo100Grade1 as TopicPageContent,
+  'number-neighbors-grade-1': numberNeighborsGrade1 as TopicPageContent,
+  'compose-decompose-10-grade-1': composeDecompose10Grade1 as TopicPageContent,
+  'addition-to-10-grade-1': additionTo10Grade1 as TopicPageContent,
+  'subtraction-to-10-grade-1': subtractionTo10Grade1 as TopicPageContent,
+  'making-20-via-10-grade-1': making20Via10Grade1 as TopicPageContent,
+  'addition-to-20-grade-1': additionTo20Grade1 as TopicPageContent,
+  'subtraction-to-20-grade-1': subtractionTo20Grade1 as TopicPageContent,
+  'equality-missing-number-grade-1': equalityMissingNumberGrade1 as TopicPageContent,
+  'patterns-sequences-grade-1': patternsSequencesGrade1 as TopicPageContent,
+  'hundred-chart-grade-1': hundredChartGrade1 as TopicPageContent,
+  'number-chains-pyramids-grade-1': numberChainsPyramidsGrade1 as TopicPageContent,
+  'word-problems-picture-grade-1': wordProblemsPictureGrade1 as TopicPageContent,
+  'compose-decompose-grade-1': composeDecomposeGrade1 as TopicPageContent,
+  'data-grade-1': dataGrade1 as TopicPageContent,
+  'word-problems-simple-grade-1': wordProblemsSimpleGrade1 as TopicPageContent,
+  'shapes-compose-decompose-grade-1': shapesComposeDecomposeGrade1 as TopicPageContent,
+  'measure-compare-length-grade-1': measureCompareLengthGrade1 as TopicPageContent,
+  'equal-groups-repeated-addition-grade-1': equalGroupsRepeatedAdditionGrade1 as TopicPageContent,
+  'polygons-grade-1': polygonsGrade1 as TopicPageContent,
+  'square-rectangle-grade-1': squareRectangleGrade1 as TopicPageContent,
+  'reading-clock-grade-1': readingClockGrade1 as TopicPageContent,
+  // G2 (catalog order)
+  'number-bonds-10-20-grade-2': numberBonds1020Grade2 as TopicPageContent,
+  'tens-and-ones-grade-2': tensAndOnesGrade2 as TopicPageContent,
+  'order-compare-numberline-grade-2': orderCompareNumberlineGrade2 as TopicPageContent,
+  'equality-missing-number-grade-2': equalityMissingNumberGrade2 as TopicPageContent,
+  'word-problems-money-grade-2': wordProblemsMoneyGrade2 as TopicPageContent,
+  'tables-bar-charts-grade-2': tablesBarChartsGrade2 as TopicPageContent,
+  'hundreds-tens-ones-grade-2': hundredsTensOnesGrade2 as TopicPageContent,
+  'compare-numbers-to-1000-grade-2': compareNumbersTo1000Grade2 as TopicPageContent,
+  'numbers-to-1000-grade-2': numbersTo1000Grade2 as TopicPageContent,
+  'even-odd-sequences-a-grade-2': evenOddSequencesAGrade2 as TopicPageContent,
+  'even-odd-sequences-b-grade-2': evenOddSequencesBGrade2 as TopicPageContent,
+  'word-problems-money-simple-grade-2': wordProblemsMoneySimpleGrade2 as TopicPageContent,
+  'reflection-symmetry-grade-2': reflectionSymmetryGrade2 as TopicPageContent,
+  'numbers-operations-review-grade-2': numbersOperationsReviewGrade2 as TopicPageContent,
+  'adding-tens-decompose-grade-2': addingTensDecomposeGrade2 as TopicPageContent,
+  'addition-two-digit-no-carry-grade-2': additionTwoDigitNoCarryGrade2 as TopicPageContent,
+  'addition-two-digit-carrying-grade-2': additionTwoDigitCarryingGrade2 as TopicPageContent,
+  'subtraction-two-digit-no-borrow-grade-2': subtractionTwoDigitNoBorrowGrade2 as TopicPageContent,
+  'subtraction-two-digit-borrowing-grade-2': subtractionTwoDigitBorrowingGrade2 as TopicPageContent,
+  'calculation-strategies-grade-2': calculationStrategiesGrade2 as TopicPageContent,
+  'multiplication-equal-groups-grade-2': multiplicationEqualGroupsGrade2 as TopicPageContent,
+  'division-measurement-grade-2': divisionMeasurementGrade2 as TopicPageContent,
+  'division-equal-shares-grade-2': divisionEqualSharesGrade2 as TopicPageContent,
+  'multiplication-division-family-grade-2': multiplicationDivisionFamilyGrade2 as TopicPageContent,
+  'times-equal-groups-grade-2': timesEqualGroupsGrade2 as TopicPageContent,
+  'measuring-length-grade-2': measuringLengthGrade2 as TopicPageContent,
+  'clock-duration-grade-2': clockDurationGrade2 as TopicPageContent,
+  'half-and-quarter-grade-2': halfAndQuarterGrade2 as TopicPageContent,
+  'shapes-vs-solids-grade-2': shapesVsSolidsGrade2 as TopicPageContent,
+  // G3 (catalog order)
+  'place-value-grade-3': placeValueGrade3 as TopicPageContent,
+  'neighbors-numberline-grade-3': neighborsNumberlineGrade3 as TopicPageContent,
+  'sequences-find-mistake-grade-3': sequencesFindMistakeGrade3 as TopicPageContent,
+  'thousands-grade-3': thousandsGrade3 as TopicPageContent,
+  'estimation-close-numbers-grade-3': estimationCloseNumbersGrade3 as TopicPageContent,
+  'word-problems-grade-3': wordProblemsGrade3 as TopicPageContent,
+  'angles-types-grade-3': anglesTypesGrade3 as TopicPageContent,
+  'lines-angles-shapes-grade-3': linesAnglesShapesGrade3 as TopicPageContent,
+  'perimeter-polygons-grade-3': perimeterPolygonsGrade3 as TopicPageContent,
+  'classify-triangles-grade-3': classifyTrianglesGrade3 as TopicPageContent,
+  'quadrilaterals-properties-grade-3': quadrilateralsPropertiesGrade3 as TopicPageContent,
+  'read-bar-diagram-grade-3': readBarDiagramGrade3 as TopicPageContent,
+  'collecting-data-grade-3': collectingDataGrade3 as TopicPageContent,
+  'money-grade-3': moneyGrade3 as TopicPageContent,
+  'column-addition-carrying-grade-3': columnAdditionCarryingGrade3 as TopicPageContent,
+  'column-subtraction-borrowing-grade-3': columnSubtractionBorrowingGrade3 as TopicPageContent,
+  'multiplication-facts-arrays-grade-3': multiplicationFactsArraysGrade3 as TopicPageContent,
+  'division-inverse-multiplication-grade-3': divisionInverseMultiplicationGrade3 as TopicPageContent,
+  'unit-fractions-part-of-whole-grade-3': unitFractionsPartOfWholeGrade3 as TopicPageContent,
+  'polygons-sides-vertices-grade-3': polygonsSidesVerticesGrade3 as TopicPageContent,
+  'shapes-on-grid-grade-3': shapesOnGridGrade3 as TopicPageContent,
+  'time-weight-measures-grade-3': timeWeightMeasuresGrade3 as TopicPageContent,
+  'division-check-multiplication-grade-3': divisionCheckMultiplicationGrade3 as TopicPageContent,
+  'measuring-length-cm-m-grade-3': measuringLengthCmMGrade3 as TopicPageContent,
+  'build-decompose-shapes-grade-3': buildDecomposeShapesGrade3 as TopicPageContent,
+  // G4 (catalog order)
+  'numbers-to-million-grade-4': numbersToMillionGrade4 as TopicPageContent,
+  'order-rounding-million-grade-4': orderRoundingMillionGrade4 as TopicPageContent,
+  'order-of-operations-grade-4': orderOfOperationsGrade4 as TopicPageContent,
+  'distributive-area-model-grade-4': distributiveAreaModelGrade4 as TopicPageContent,
+  'multiplication-multi-digit-grade-4': multiplicationMultiDigitGrade4 as TopicPageContent,
+  'parallel-perpendicular-shapes-grade-4': parallelPerpendicularShapesGrade4 as TopicPageContent,
+  'rectangles-squares-grade-4': rectanglesSquaresGrade4 as TopicPageContent,
+  'angle-types-grade-4': angleTypesGrade4 as TopicPageContent,
+  'classify-triangles-grade-4': classifyTrianglesGrade4 as TopicPageContent,
+  'area-perimeter-rectangle-grade-4': areaPerimeterRectangleGrade4 as TopicPageContent,
+  'area-perimeter-composite-grade-4': areaPerimeterCompositeGrade4 as TopicPageContent,
+  'diagrams-conclusions-grade-4': diagramsConclusionsGrade4 as TopicPageContent,
+  'symmetry-reflection-rotation-grade-4': symmetryReflectionRotationGrade4 as TopicPageContent,
+  'angles-lines-plane-grade-4': anglesLinesPlaneGrade4 as TopicPageContent,
+  'triangles-classify-build-grade-4': trianglesClassifyBuildGrade4 as TopicPageContent,
+  'quadrilaterals-classify-grade-4': quadrilateralsClassifyGrade4 as TopicPageContent,
+  'grade-4-summary': grade4Summary as TopicPageContent,
+  'column-addition-grade-4': columnAdditionGrade4 as TopicPageContent,
+  'multi-digit-subtraction-grade-4': multiDigitSubtractionGrade4 as TopicPageContent,
+  'estimation-money-problems-grade-4': estimationMoneyProblemsGrade4 as TopicPageContent,
+  'operation-laws-tens-grade-4': operationLawsTensGrade4 as TopicPageContent,
+  'long-division-remainder-grade-4': longDivisionRemainderGrade4 as TopicPageContent,
+  'fraction-names-equivalent-grade-4': fractionNamesEquivalentGrade4 as TopicPageContent,
+  'fractions-numberline-compare-grade-4': fractionsNumberlineCompareGrade4 as TopicPageContent,
+  'equivalent-fractions-grade-4': equivalentFractionsGrade4 as TopicPageContent,
+  'divisibility-factors-grade-4': divisibilityFactorsGrade4 as TopicPageContent,
+  'prime-composite-grade-4': primeCompositeGrade4 as TopicPageContent,
+  'polygons-diagonals-grade-4': polygonsDiagonalsGrade4 as TopicPageContent,
+  'length-units-conversion-grade-4': lengthUnitsConversionGrade4 as TopicPageContent,
+  'time-and-weight-grade-4': timeAndWeightGrade4 as TopicPageContent,
+  // G5 (catalog order)
+  'big-numbers-rounding-grade-5': bigNumbersRoundingGrade5 as TopicPageContent,
+  'multiplication-multi-digit-grade-5': multiplicationMultiDigitGrade5 as TopicPageContent,
+  'order-of-operations-grade-5': orderOfOperationsGrade5 as TopicPageContent,
+  'read-tables-grade-5': readTablesGrade5 as TopicPageContent,
+  'read-graphs-grade-5': readGraphsGrade5 as TopicPageContent,
+  'quadrilateral-family-grade-5': quadrilateralFamilyGrade5 as TopicPageContent,
+  'quadrilateral-diagonals-grade-5': quadrilateralDiagonalsGrade5 as TopicPageContent,
+  'perimeter-parallel-perpendicular-grade-5': perimeterParallelPerpendicularGrade5 as TopicPageContent,
+  'triangle-height-acute-right-grade-5': triangleHeightAcuteRightGrade5 as TopicPageContent,
+  'triangle-height-obtuse-parallelogram-grade-5': triangleHeightObtuseParallelogramGrade5 as TopicPageContent,
+  'area-perimeter-rectangles-grade-5': areaPerimeterRectanglesGrade5 as TopicPageContent,
+  'composite-area-grade-5': compositeAreaGrade5 as TopicPageContent,
+  'parallelogram-area-grade-5': parallelogramAreaGrade5 as TopicPageContent,
+  'triangle-area-grade-5': triangleAreaGrade5 as TopicPageContent,
+  'missing-number-fractions-grade-5': missingNumberFractionsGrade5 as TopicPageContent,
+  'mean-data-inquiry-grade-5': meanDataInquiryGrade5 as TopicPageContent,
+  'frequency-chance-grade-5': frequencyChanceGrade5 as TopicPageContent,
+  'transformations-grade-5': transformationsGrade5 as TopicPageContent,
+  'number-sense-tens-hundreds-grade-5': numberSenseTensHundredsGrade5 as TopicPageContent,
+  'long-division-grade-5': longDivisionGrade5 as TopicPageContent,
+  'prime-factors-grade-5': primeFactorsGrade5 as TopicPageContent,
+  'fraction-meaning-grade-5': fractionMeaningGrade5 as TopicPageContent,
+  'fractions-numberline-compare-grade-5': fractionsNumberlineCompareGrade5 as TopicPageContent,
+  'expand-reduce-fractions-grade-5': expandReduceFractionsGrade5 as TopicPageContent,
+  'common-denominator-grade-5': commonDenominatorGrade5 as TopicPageContent,
+  'add-subtract-fractions-grade-5': addSubtractFractionsGrade5 as TopicPageContent,
+  'fraction-of-quantity-grade-5': fractionOfQuantityGrade5 as TopicPageContent,
+  'fractions-mixed-numbers-grade-5': fractionsMixedNumbersGrade5 as TopicPageContent,
+  'add-subtract-mixed-numbers-grade-5': addSubtractMixedNumbersGrade5 as TopicPageContent,
+  'completing-fractions-grade-5': completingFractionsGrade5 as TopicPageContent,
+  'build-classify-shapes-grade-5': buildClassifyShapesGrade5 as TopicPageContent,
+  'unit-conversion-weight-grade-5': unitConversionWeightGrade5 as TopicPageContent,
+  'decimal-place-value-grade-5': decimalPlaceValueGrade5 as TopicPageContent,
+  'compare-fractions-decimals-grade-5': compareFractionsDecimalsGrade5 as TopicPageContent,
+  'add-subtract-decimals-grade-5': addSubtractDecimalsGrade5 as TopicPageContent,
+  // G6 (catalog order)
+  'solids-explore-grade-6': solidsExploreGrade6 as TopicPageContent,
+  'boxes-nets-grade-6': boxesNetsGrade6 as TopicPageContent,
+  'box-surface-area-grade-6': boxSurfaceAreaGrade6 as TopicPageContent,
+  'box-volume-grade-6': boxVolumeGrade6 as TopicPageContent,
+  'quadrilaterals-review-grade-6': quadrilateralsReviewGrade6 as TopicPageContent,
+  'measurement-geometry-synthesis-grade-6': measurementGeometrySynthesisGrade6 as TopicPageContent,
+  'fraction-decimal-percent-grade-6': fractionDecimalPercentGrade6 as TopicPageContent,
+  'percent-of-quantity-grade-6': percentOfQuantityGrade6 as TopicPageContent,
+  'find-the-whole-grade-6': findTheWholeGrade6 as TopicPageContent,
+  'numbers-operations-review-grade-6': numbersOperationsReviewGrade6 as TopicPageContent,
+  'collect-represent-data-grade-6': collectRepresentDataGrade6 as TopicPageContent,
+  'compare-groups-conclusions-grade-6': compareGroupsConclusionsGrade6 as TopicPageContent,
+  'scaling-dimensions-grade-6': scalingDimensionsGrade6 as TopicPageContent,
+  'patterns-multistep-grade-6': patternsMultistepGrade6 as TopicPageContent,
+  'fraction-times-whole-grade-6': fractionTimesWholeGrade6 as TopicPageContent,
+  'fraction-part-quantity-area-grade-6': fractionPartQuantityAreaGrade6 as TopicPageContent,
+  'fraction-times-fraction-grade-6': fractionTimesFractionGrade6 as TopicPageContent,
+  'multiply-mixed-numbers-grade-6': multiplyMixedNumbersGrade6 as TopicPageContent,
+  'fraction-multiplication-apply-grade-6': fractionMultiplicationApplyGrade6 as TopicPageContent,
+  'fraction-division-meaning-grade-6': fractionDivisionMeaningGrade6 as TopicPageContent,
+  'fraction-division-algorithm-grade-6': fractionDivisionAlgorithmGrade6 as TopicPageContent,
+  'fraction-operations-choose-grade-6': fractionOperationsChooseGrade6 as TopicPageContent,
+  'multiply-decimals-grade-6': multiplyDecimalsGrade6 as TopicPageContent,
+  'divide-decimals-grade-6': divideDecimalsGrade6 as TopicPageContent,
+  'capacity-ml-l-m3-grade-6': capacityMlLM3Grade6 as TopicPageContent,
+  'ratio-grade-6': ratioGrade6 as TopicPageContent,
+  'scale-maps-grade-6': scaleMapsGrade6 as TopicPageContent,
 };
 
 function hasSelfCheckSection(sections: TopicPageSection[]): boolean {
@@ -511,7 +1068,12 @@ function isolateRelatedLabel(rel: FamilyRelatedTopic): FamilyRelatedTopic {
 function presentRelatedTopics(data: TopicPageContent): FamilyRelatedTopic[] {
   const classified = familyRelatedTopics(data.slug, data.grade);
   const rows = classified.length ? classified : data.relatedTopics || [];
-  return rows.map(isolateRelatedLabel);
+  // Family blocks replace captured related links. Keep an explicit game link
+  // from the page JSON so it still renders on the theorem pages.
+  const extra = (data.relatedTopics || []).filter(
+    (rel) => rel.path.startsWith('/games/') && !rows.some((row) => row.path === rel.path)
+  );
+  return [...rows, ...extra].map(isolateRelatedLabel);
 }
 
 function isolateJsonLdFaq(jsonLd: Record<string, unknown>): Record<string, unknown> {

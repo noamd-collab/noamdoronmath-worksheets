@@ -47,8 +47,8 @@ describe('grade 9 factoring marked source', () => {
     assert.match(page, /print-color-adjust:\s*exact/);
     assert.match(page, /-webkit-print-color-adjust:\s*exact/);
     assert.match(page, /integrity="sha384-/);
-    assert.match(page, /\.print-area \.source-mark\{[^}]*background:\s*transparent/);
-    assert.match(printer, /globalCompositeOperation = 'multiply'/);
+    assert.match(page, /\.print-area \.source-mark\{display:none/);
+    assert.match(printer, /function selectionMarkBox/);
     assert.match(printer, /clearPreparedPrint/);
     assert.match(page, /print-unprepared/);
     assert.match(page, /כדי להדפיס, פותחים קודם את תצוגת ההדפסה/);
@@ -201,51 +201,9 @@ describe('teacher catalog picker', () => {
   it('reaches every catalog sheet for every grade in the picker', () => {
     const fromCatalog = catalogSheets();
     const fromPicker = indexSheets();
-    // Grades 7–9 teacher sheets stay on the pre-v2 PDFs until the rebuild after PR 95.
-    // Grade 8 also drops the two new c2 sheets. Topics 56–60 stay one-sheet.
-    // G7-T16 stays the old single sheet.
-    const g8SingleLag: Record<number, string> = {
-      56: '2d8795a2be0241038adc0b4aab74680d',
-      57: '48a794452e1846119fddd0e5d91da524',
-      58: '11ca0a8bb1dd485d84bedd6de155e988',
-      59: 'db9c04190e124de1818dd41f9beb9258',
-      60: '6a752ec33aec46bd8480aaf98af5a4bb',
-    };
-    const oldByNew = (file: string) => new Map(
-      (JSON.parse(readFileSync(new URL(file, import.meta.url), 'utf8')) as Array<{
-        old_media_id: string | null;
-        new_media_id: string;
-      }>)
-        .filter((row) => row.old_media_id)
-        .map((row) => [row.new_media_id, row.old_media_id as string])
-    );
-    const g7OldByNew = oldByNew('./fixtures/g7-pdf-v2-replace.json');
-    const g8OldByNew = oldByNew('./fixtures/g8-pdf-v2-replace.json');
-    const g9OldByNew = oldByNew('./fixtures/g9-pdf-v2-replace.json');
-    const expectedPicker = fromCatalog.flatMap((sheet) => {
-      if (sheet.grade === 7) {
-        if (sheet.pdfId === '2462413929e84600b5e47e24ca1340c1') {
-          return [{ ...sheet, level: 'one', pdfId: '7d8f7aa1d3c743f896c9ddddb943355e' }];
-        }
-        const oldId = g7OldByNew.get(sheet.pdfId);
-        return [oldId ? { ...sheet, pdfId: oldId } : sheet];
-      }
-      if (sheet.grade === 8) {
-        if (sheet.level === 'c2') return [];
-        const lagged = g8SingleLag[sheet.topicId];
-        if (lagged && sheet.level === 'a') return [{ ...sheet, level: 'one', pdfId: lagged }];
-        const oldId = g8OldByNew.get(sheet.pdfId);
-        return [oldId ? { ...sheet, pdfId: oldId } : sheet];
-      }
-      if (sheet.grade === 9) {
-        const oldId = g9OldByNew.get(sheet.pdfId);
-        return [oldId ? { ...sheet, pdfId: oldId } : sheet];
-      }
-      return [sheet];
-    });
     assert.deepEqual(
       fromPicker.map((sheet) => [sheet.grade, sheet.topicId, sheet.level, sheet.pdfId]),
-      expectedPicker.map((sheet) => [sheet.grade, sheet.topicId, sheet.level, sheet.pdfId])
+      fromCatalog.map((sheet) => [sheet.grade, sheet.topicId, sheet.level, sheet.pdfId])
     );
     assert.deepEqual(index.grades.map((grade) => grade.grade), [1, 2, 3, 4, 5, 6, 7, 8, 9]);
     for (const grade of [1, 2, 3, 4, 5, 6]) {
@@ -400,7 +358,7 @@ describe('teacher catalog picker', () => {
     assert.match(preview, /function levelAllows/);
     assert.match(preview, /question\.scrambled === true/);
     assert.match(preview, /aria-label="\$\{escapeHTML\(thumbAria\(question\)\)\}"/);
-    assert.equal(preview.includes('aria-hidden="true"'), false);
+    assert.equal(preview.slice(0, preview.indexOf('function selectionMarkBox')).includes('aria-hidden="true"'), false);
     assert.equal(preview.includes('function readingOrder'), false);
     assert.equal(preview.includes('function paintExtract'), false);
     assert.equal(preview.includes('function hasHebrew'), false);
@@ -592,5 +550,44 @@ describe('teacher catalog picker', () => {
     assert.match(page, /data-noam-teacher-suggest="off"/);
     assert.match(page, /הצעות נועם AI כבויות/);
     assert.equal(printer.includes('worksheet-viewer-noam'), false);
+  });
+
+  it('provides batch AI pick buttons (15, 30, 45) backed by qwen3.8-flash in the list header', () => {
+    const demoHtml = readFileSync(new URL('../../../demos/teacher-practice-picker-site-style.html', import.meta.url), 'utf8');
+    for (const html of [page, demoHtml]) {
+      assert.match(html, /id="ai-pick-15"[^>]*data-ai-pick="15"[^>]*>בחר 15 עם AI<\/button>/);
+      assert.match(html, /id="ai-pick-30"[^>]*data-ai-pick="30"[^>]*>בחר 30<\/button>/);
+      assert.match(html, /id="ai-pick-45"[^>]*data-ai-pick="45"[^>]*>בחר 45<\/button>/);
+    }
+    assert.match(printer, /model:\s*'qwen3\.8-flash'/);
+    const smartPick = new Function(
+      `${printer.slice(printer.indexOf('function exKey'), printer.indexOf('async function pickWithAi'))} return smartExercisePick;`
+    )() as (pool: { id: string; source: { pdfId: string } }[], count: number, scenario: string, style: string, seedKeys: string[]) => string[];
+    const pool = source.questions.map((question: { id: string }) => ({
+      ...question,
+      source: { pdfId: source.pdfId },
+    }));
+    assert.equal(pool.length, 70);
+    for (const count of [15, 30, 45]) {
+      const picked = smartPick(pool, count, 'first', 'scaffold', [`ex:${source.pdfId}:10א`, `ex:${source.pdfId}:15ב`]);
+      assert.equal(picked.length, count);
+      assert.equal(new Set(picked).size, count);
+      assert.ok(picked.includes(`ex:${source.pdfId}:10א`));
+      assert.ok(picked.includes(`ex:${source.pdfId}:15ב`));
+    }
+  });
+
+  it('never leaves 0 available exercises or 0 suggestions when filtering levels on single-level topics', () => {
+    const catalogData = JSON.parse(readFileSync(new URL('../public/teachers/teacher-catalog.json', import.meta.url), 'utf8'));
+    const g8t26 = catalogData.grades.find((g: { grade: number }) => g.grade === 8).topics.find((t: { id: number }) => t.id === 26);
+    assert.deepEqual(g8t26.sheets.map((s: { level: string }) => s.level), ['one']);
+    const g9t43 = catalogData.grades.find((g: { grade: number }) => g.grade === 9).topics.find((t: { id: number }) => t.id === 43);
+    assert.deepEqual(g9t43.sheets.map((s: { level: string }) => s.level), ['c']);
+    assert.match(printer, /function syncLevels\(\)/);
+    assert.match(printer, /return matching\.length \? matching : topic\.sheets/);
+    assert.match(printer, /state\.level === 'all' \|\| state\.level === 'a'/);
+    const levelHandler = printer.slice(printer.indexOf("document.querySelectorAll('[name=level]')"), printer.indexOf("$('grade').addEventListener"));
+    assert.match(levelHandler, /if \(!next\.length && state\.scenario !== 'other'\)/);
+    assert.match(levelHandler, /exercisePreset\(state\.scenario\)/);
   });
 });

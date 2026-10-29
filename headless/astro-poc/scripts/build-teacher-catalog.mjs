@@ -5,8 +5,9 @@
  * Does not invent exercises. The grade-9 factoring level A file is copied
  * as-is so the pilot boxes stay the ones already checked.
  */
+import { createHash } from 'node:crypto';
 import { spawnSync } from 'node:child_process';
-import { existsSync, mkdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -319,6 +320,7 @@ export function sheetFromManifest(meta, manifest, gaps) {
     pdfUrl: meta.pdfUrl,
     title: meta.title,
     pageCount: manifest.pageCount,
+    sourceSha256: manifest.sourceSha256,
     mode: 'exercise',
     headerCrop: { page: 1, x: 0, y: 0, w: 1, h: round(headerH) },
     footerCrop: {
@@ -348,6 +350,7 @@ export function buildTeacherCatalog(catalog) {
         levelLabel: level.label,
         title: `${topic.title} · ${level.label}`,
         mode: elementary.has(grade.grade) ? 'sheet' : 'exercise',
+        ...(topic.routing?.sourceGrade ? { sourceGrade: topic.routing.sourceGrade, sourcePrefix: topic.routing.sourcePrefix, sourceTitle: topic.routing.sourceTitle } : {}),
       })),
     })),
   }));
@@ -449,17 +452,18 @@ async function writeOutputs() {
   const catalog = JSON.parse(readFileSync(catalogPath, 'utf8'));
   const rich = JSON.parse(readFileSync(richPath, 'utf8'));
   const index = buildTeacherCatalog(catalog);
-  rmSync(sheetDir, { recursive: true, force: true });
-  mkdirSync(sheetDir, { recursive: true });
-  writeFileSync(join(outDir, 'teacher-catalog.json'), JSON.stringify(index));
+  const outputs = new Map();
+  const seenPdfs = new Set();
   let exerciseSheets = 0;
   let questions = 0;
   const pending = [];
   for (const sheet of catalogSheets(index)) {
     if (sheet.mode !== 'exercise') continue;
+    if (seenPdfs.has(sheet.pdfId)) continue;
+    seenPdfs.add(sheet.pdfId);
     exerciseSheets += 1;
     if (sheet.pdfId === rich.pdfId) {
-      writeFileSync(join(sheetDir, sheet.pdfId + '.json'), readFileSync(richPath));
+      outputs.set(sheet.pdfId, readFileSync(richPath));
       questions += rich.questions.length;
       continue;
     }
@@ -469,6 +473,8 @@ async function writeOutputs() {
   const paths = await mapPool(pending, 12, (sheet) => ensureWorksheetPdf(sheet.pdfId));
   const jobs = pending.map((sheet, index) => {
     const manifest = JSON.parse(readFileSync(join(manifestDir, sheet.pdfId + '.json'), 'utf8'));
+    const actualSha = createHash('sha256').update(readFileSync(paths[index])).digest('hex');
+    if (manifest.sourceSha256 && actualSha !== manifest.sourceSha256) throw new Error(`PDF source mismatch: ${sheet.pdfId}`);
     const line = labelLineHeight(manifest.exercises || []);
     const pages = new Map();
     for (const exercise of manifest.exercises || []) {
@@ -498,8 +504,13 @@ async function writeOutputs() {
     }
     const source = sheetFromManifest(job.sheet, job.manifest, gaps);
     questions += source.questions.length;
-    writeFileSync(join(sheetDir, job.id + '.json'), JSON.stringify(source));
+    outputs.set(job.id, JSON.stringify(source));
   }
+  // Publish only after every PDF has been verified and every crop measured.
+  // Keep archived PDFs available for saved teacher selections.
+  mkdirSync(sheetDir, { recursive: true });
+  for (const [pdfId, data] of outputs) writeFileSync(join(sheetDir, pdfId + '.json'), data);
+  writeFileSync(join(outDir, 'teacher-catalog.json'), JSON.stringify(index));
   return { sheets: catalogSheets(index).length, exerciseSheets, questions, measuredTops, fallbacks };
 }
 

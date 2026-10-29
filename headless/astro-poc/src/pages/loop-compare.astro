@@ -1,0 +1,83 @@
+---
+/**
+ * Side-by-side: the old ConceptLoop film and the PR71 CSS loop.
+ * Not linked from nav, noindex, absent from the sitemap.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ConceptLoop from '../components/ConceptLoop.astro';
+import LandingLoop from '../components/LandingLoop.astro';
+import { topicCssVariant, topicLandingLoop, type FilmVariant } from '../lib/landingLoops';
+import { TOPIC_PAGE_SLUGS, loadTopicPage } from '../lib/topicPages';
+
+export const prerender = false;
+
+Astro.response.headers.set('X-Robots-Tag', 'noindex, nofollow');
+
+const pairs = TOPIC_PAGE_SLUGS.flatMap((slug) => {
+  const page = loadTopicPage(slug);
+  const loop = topicLandingLoop(page);
+  if (loop.kind !== 'concept') return [];
+  return [{ slug, path: page.path, film: loop.variant, css: topicCssVariant(page) }];
+});
+
+const keptCss = TOPIC_PAGE_SLUGS.flatMap((slug) => {
+  const page = loadTopicPage(slug);
+  const loop = topicLandingLoop(page);
+  if (loop.kind !== 'css') return [];
+  return [{ slug, path: page.path, variant: loop.variant }];
+});
+---
+
+<BaseLayout
+  title="השוואת לולאות"
+  description="השוואה בין סרט ישן ללולאת נחיתה"
+  activeNav={null}
+  robots="noindex, nofollow"
+>
+  <main class="cmp" dir="rtl">
+    <h1>השוואת לולאות</h1>
+    <p class="cmp-lead">ישן: סרט ConceptLoop. חדש: לולאת ה־CSS שנשארת בקוד להשוואה. העמוד עצמו מציג את הסרט הישן.</p>
+    {pairs.map((pair) => (
+      <section class="cmp-pair">
+        <h2><a href={pair.path}>{pair.path}</a> · {pair.film}</h2>
+        <div class="cmp-cols">
+          <figure>
+            <figcaption>ישן · {pair.film}</figcaption>
+            <ConceptLoop variant={pair.film as FilmVariant} />
+          </figure>
+          <figure>
+            <figcaption>חדש · {pair.css ?? 'אין לולאת CSS'}</figcaption>
+            {pair.css && <LandingLoop variant={pair.css} />}
+          </figure>
+        </div>
+        {pair.slug === 'parallel-lines-angles-grade-8' && (
+          <figure>
+            <figcaption>סרט שני · parallel-more</figcaption>
+            <LandingLoop variant="parallel-more" />
+          </figure>
+        )}
+      </section>
+    ))}
+    <h2>סרטים חדשים — אין סרט ישן מתאים</h2>
+    <p class="cmp-lead">כל עמוד למטה מציג את הסרט שרץ גם בעמוד עצמו. גאומטריה אנליטית נשארת על לולאת המרחק הדקה.</p>
+    {keptCss.map((item) => (
+      <section class="cmp-pair" id={item.slug}>
+        <h2><a href={item.path}>{item.path}</a> · {item.variant}</h2>
+        <LandingLoop variant={item.variant} />
+      </section>
+    ))}
+  </main>
+</BaseLayout>
+
+<style>
+  .cmp { max-width: 1100px; margin: 0 auto; padding: 24px 16px 64px; }
+  .cmp-lead { color: #5a6588; }
+  .cmp-pair { margin: 28px 0; padding-top: 12px; border-top: 2px solid #22305a; }
+  .cmp-pair h2 { font-size: 18px; }
+  .cmp-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .cmp figure { margin: 0; }
+  .cmp figcaption { font-weight: 800; margin-bottom: 8px; }
+  @media (max-width: 800px) {
+    .cmp-cols { grid-template-columns: 1fr; }
+  }
+</style>

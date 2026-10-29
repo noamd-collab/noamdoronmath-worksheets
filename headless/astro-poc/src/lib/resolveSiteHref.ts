@@ -22,6 +22,8 @@ const LOCAL_SITE_PATHS = new Set([
   '/worksheets',
   '/learning.html',
   '/worksheet-viewer-noam.html',
+  '/games/eliyahu-pythagoras',
+  '/games/eliyahu-pythagoras/play',
 ]);
 // Old paths such as /high-school-math-1, /page and /equations-grade-7 are not pages:
 // the middleware answers them with a 301 (src/data/redirects.json), and links to them
@@ -134,8 +136,15 @@ export function resolveSiteHref(href: string): ResolveSiteHrefResult {
     } catch {
       /* keep the raw path */
     }
-    const path = redirectTargetFor(decoded) ?? requested;
-    const suffix = `${u.search}${u.hash}`;
+    const mapped = redirectTargetFor(decoded);
+    let path = requested;
+    let mappedHash = '';
+    if (mapped) {
+      const hashAt = mapped.indexOf('#');
+      path = hashAt === -1 ? mapped : mapped.slice(0, hashAt);
+      mappedHash = hashAt === -1 ? '' : mapped.slice(hashAt);
+    }
+    const suffix = `${u.search}${u.hash || mappedHash}`;
 
     if (isLocallyServedPath(path)) {
       return { href: `${path === '/' ? '/' : path}${suffix}`, local: true, reason: 'local' };

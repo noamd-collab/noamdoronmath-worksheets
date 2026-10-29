@@ -10,7 +10,10 @@ import wixHosting from '@wix/astro-wix-hosting-adapter';
  * Adapter: Wix hosting (replaced local @astrojs/node after headless link).
  */
 export default defineConfig({
-  integrations: [react(), wix(), wixPages()],
+  // robots: false — do not register Wix's /robots.txt. That route overwrites
+  // src/pages/robots.txt.ts and Astro warns about the collision. Our route
+  // allows www and disallows preview hosts.
+  integrations: [react(), wix({ robots: false }), wixPages()],
   output: 'server',
   adapter: wixHosting(),
 
@@ -32,7 +35,12 @@ export default defineConfig({
       // Optional so `wix preview` / `wix build` succeed before Noam adds them.
       // Names must match Secrets Manager on Noam Math Astro POC.
       QWEN_API_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
+      // Optional. Empty keeps the Token Plan default. A Model Studio key needs the matching base URL and model.
+      QWEN_BASE_URL: envField.string({ context: 'server', access: 'secret', optional: true }),
+      QWEN_MODEL: envField.string({ context: 'server', access: 'secret', optional: true }),
       NOAM_RECAPTCHA_SECRET_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
+      // OtterlyAI Agent Analytics webhook. Optional until the secret is saved.
+      OTTERLY_API_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
     },
   },
 });

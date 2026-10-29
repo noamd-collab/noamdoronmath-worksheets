@@ -23,9 +23,9 @@
     transition: opacity 300ms ease;
   }
   @media (prefers-reduced-motion: reduce) {
-    html.doodles-ready [data-site-doodles],
-    html.doodles-ready [data-home-section-notebook],
-    html.doodles-ready [data-mobile-nb-corners] {
+    html:not(.nd-motion-enabled).doodles-ready [data-site-doodles],
+    html:not(.nd-motion-enabled).doodles-ready [data-home-section-notebook],
+    html:not(.nd-motion-enabled).doodles-ready [data-mobile-nb-corners] {
       transition: none;
     }
   }
