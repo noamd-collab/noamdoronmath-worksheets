@@ -2,8 +2,9 @@ name: publish-baseline
 
 # GitHub starts workflow_dispatch only from the default branch. This file is
 # on main so a manual run can release headless/astro-poc-baseline.
-# The first push of this file to main also releases once, because the token
-# that merges pull requests cannot call the dispatch API (Actions: write).
+# A push of this file to main also releases once, because the token that
+# merges pull requests cannot call the dispatch API (Actions: write).
+# Release script on baseline installs @wix/cli before login (see #275).
 
 on:
   workflow_dispatch:
