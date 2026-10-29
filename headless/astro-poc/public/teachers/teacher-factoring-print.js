@@ -1896,6 +1896,20 @@ function worksheetOrder(chosen) {
 }
 
 function answerBox(items, questionNumber, part) {
+  // A built fraction is two short items on one center, a line apart: 8 over 27.
+  // They are one answer, not the previous line and not a wrapped next line.
+  const stackedFraction = (item) => {
+    const text = String(item.str || '').trim();
+    if (!/^[\d−\-+a-zA-Z]{1,3}$/.test(text)) return false;
+    const cx = (item.x || 0) + (item.w || 0) / 2;
+    return (items || []).some((other) => {
+      if (other === item) return false;
+      if (!/^[\d−\-+a-zA-Z]{1,3}$/.test(String(other.str || '').trim())) return false;
+      const dy = Math.abs((other.y || 0) - (item.y || 0));
+      if (dy < 12 || dy > 17) return false;
+      return Math.abs((other.x || 0) + (other.w || 0) / 2 - cx) <= 4;
+    });
+  };
   /**
    * A part whose first line is only a word or two continues on the next line.
    * That next line is still this part until another part label or the next question.
@@ -1920,7 +1934,9 @@ function answerBox(items, questionNumber, part) {
       const y = item.y || 0;
       if (y > label.y - line * 0.55) return false;
       if (y < floor) return false;
-      return true;
+      // A tall parenthesis of this line starts a little under the label. It is not a next line.
+      if ((item.h || 0) > line * 1.5 && label.y - y <= line) return false;
+      return !(stackedFraction(item) && label.y - y <= 11);
     }).sort((a, b) => b.y - a.y);
     if (!following.length) return null;
     const taken = [];
@@ -2075,11 +2091,24 @@ function answerBox(items, questionNumber, part) {
         if (gx >= slotLeft0 - 6) left = Math.min(left, gx - 1);
         if (gx + gw <= slotRight0 + 6) right = Math.max(right, gx + gw + 1);
       });
+      let fractionBottom = null;
+      (items || []).forEach((glyph) => {
+        if (!sameSheet(glyph) || !stackedFraction(glyph)) return;
+        const gy = glyph.y || 0;
+        const off = Math.abs(gy - label.y);
+        if (off < 3 || off > 11) return;
+        const gx = glyph.x || 0;
+        const gw = glyph.w || 0;
+        if (Math.min(gx + gw, slotRight0) - Math.max(gx, slotLeft0) < Math.max(2, gw * 0.5)) return;
+        if (gy > label.y) top = Math.max(top, gy + Math.min(Math.max(glyph.h || 0, 10), 11) + 1.5);
+        else if (fractionBottom == null || gy - 1.5 < fractionBottom) fractionBottom = gy - 1.5;
+      });
       let prevLineY = null;
       (items || []).forEach((glyph) => {
         if (!sameSheet(glyph)) return;
         const token = String(glyph.str || '').trim();
         if (!token || /^[()\[\]{}]$/.test(token)) return;
+        if (stackedFraction(glyph) && Math.abs((glyph.y || 0) - label.y) <= 11) return;
         const gx = glyph.x || 0;
         const gw = glyph.w || 0;
         if (gx + gw < left - 4 || gx > right + 12) return;
@@ -2126,6 +2155,10 @@ function answerBox(items, questionNumber, part) {
       } else bottom = label.y - 28;
       // Keep the label's own ink, but do not step down into the next part.
       if (bottom > label.y - 4) bottom = nextInk != null ? Math.max(label.y - 6, nextInk) : label.y - 6;
+      if (fractionBottom != null && fractionBottom < bottom) {
+        bottom = fractionBottom;
+        tightBottom = false;
+      }
       const slotLeft = left;
       const slotRight = right;
       // A neighbour on this line already bounds the slot. The line below a short
