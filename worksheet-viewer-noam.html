@@ -5593,7 +5593,7 @@ function renderNoamChat(){
         '<div class="noam-input-actions" role="group" aria-label="עזרה מהירה">' +
           '<button type="button" class="noam-action" id="noamOverview">הסבר כללי</button>' +
           '<button type="button" class="noam-action primary" id="noamHint">רמז</button>' +
-          '<button type="button" class="noam-action" id="noamDraw"'+(drawingAnswer?'':' hidden')+'>'+(drawingPending?'מכין שרטוט…':'שרטוט להמחשה <small class="noam-draw-beta" dir="ltr">(Beta)</small>')+'</button>' +
+          '<button type="button" class="noam-action" id="noamDraw"'+(drawingAnswer?'':' hidden style="display:none"')+'>'+(drawingPending?'מכין שרטוט…':'שרטוט להמחשה <small class="noam-draw-beta" dir="ltr">(Beta)</small>')+'</button>' +
           '<button type="button" class="noam-action" id="noamMistake" hidden>טעות נפוצה</button>' +
           '<span class="noam-input-spacer" aria-hidden="true"></span>' +
           '<button type="button" class="noam-math-toggle" id="noamMathToggle" aria-label="פתיחת סימנים מתמטיים" title="סימנים מתמטיים" aria-controls="noamMathKeys" aria-expanded="'+mathKeyboardOpen+'">x²</button>' +

@@ -90,6 +90,7 @@ for (const viewer of ['worksheet-viewer-noam.html', 'headless/astro-poc/public/w
         const saved = JSON.stringify(f.thread);
         f.s.renderNoamChat();
         assert.equal(f.document.getElementById('noamDraw')!.hidden, true);
+        assert.equal(f.document.getElementById('noamDraw')!.style.display, 'none', 'explicit display defeats legacy button CSS overriding hidden');
         assert.equal(f.document.querySelector('#noamTranscript figure'), null);
         assert.equal(f.document.querySelector('.noam-diagram-expand'), null);
         assert.equal(JSON.stringify(f.thread), saved, 'saved visual remains stored but not displayed');

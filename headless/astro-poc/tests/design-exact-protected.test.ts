@@ -278,7 +278,7 @@ describe('exact-design protected live-baseline boundaries', () => {
     // Noam, 2026-10-29: Ramzi graphics are restricted by manifest/exercise identity
     // to geometry/analytic geometry. Text hints, canonical source reading and the
     // original PDF remain. Saved graphics are suppressed without deleting history.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '6fa253c04c4c69f61848c4ce4405deb48d6f082b118061a230f07c27fea95cad');
+    assert.equal(sha256(JSON.stringify(releasedScripts)), '067b8deea648b254a80a2e945f98c407020e8c520e2291e514fd802c4631b2be');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {
