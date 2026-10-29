@@ -171,9 +171,12 @@ nav[data-nav-panel] a:hover{background:rgba(42,124,122,.1)}
 .filter{display:flex;gap:6px;flex-wrap:wrap}
 .filter button{padding:6px 14px;border:2px solid rgba(34,48,90,.35);border-radius:999px;background:#fff;font-size:14px;font-weight:700;min-height:44px;color:var(--ink)}
 .filter button[aria-pressed="true"]{background:var(--ink);color:#fbfaf5;border-color:var(--ink)}
-.ai-pick-group .ai-pick-btn{border-color:var(--ink);background:var(--cream);color:var(--ink);box-shadow:2px 2px 0 var(--yellow)}
-.ai-pick-group .ai-pick-btn:hover:not(:disabled){background:var(--mint);box-shadow:3px 3px 0 var(--teal)}
-.ai-pick-group .ai-pick-btn[aria-pressed="true"]{background:var(--teal-dark);color:#fbfaf5;border-color:var(--ink);box-shadow:2px 2px 0 var(--yellow)}
+.question-count-group{display:flex;flex-wrap:wrap;gap:8px;max-width:100%}
+.question-count-btn{border:2px solid var(--ink);background:var(--cream);color:var(--ink);box-shadow:2px 2px 0 var(--yellow);border-radius:999px;font-weight:700;min-height:44px;min-width:44px;padding:8px 16px}
+.question-count-btn:hover:not(:disabled){background:var(--mint);box-shadow:3px 3px 0 var(--teal)}
+.question-count-btn[aria-pressed="true"]{background:var(--teal-dark);color:#fbfaf5;border-color:var(--ink);box-shadow:2px 2px 0 var(--yellow)}
+.pick-shortfall{flex:1 1 100%;margin:0;color:var(--ink);font-size:15px;line-height:1.45}
+.q-card-whole{cursor:default}
 .question-list{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .q-card{
   display:flex;align-items:flex-start;gap:10px;min-height:0;padding:14px;
@@ -349,6 +352,9 @@ dialog::backdrop{background:rgba(34,48,90,.46)}
   .show-more{width:calc(100% - 32px)}
   .prepare-bar{flex-direction:column;align-items:stretch}
   .primary{width:100%}
+  .wizard-bar{margin-top:18px;padding:12px 14px;background:#fff;border:2px solid var(--ink);border-radius:16px 6px 18px 8px / 8px 18px 6px 16px;box-shadow:3px 3px 0 var(--ink)}
+  .wizard-bar .primary{width:auto;min-height:44px;flex:0 0 auto}
+  .question-count-group{width:100%}
   .suggestion{flex-wrap:wrap}
   .suggestion button{width:100%}
   .list-header{align-items:flex-start}
@@ -425,7 +431,7 @@ dialog::backdrop{background:rgba(34,48,90,.46)}
 </div>
 </header>
 <main class="wrap">
-<div class="intro"><div><p class="eyebrow">מתכננים את התרגול</p><h1>בוחרים מה לתרגל.</h1><p class="subtitle">כיתה, נושא ומטרת השיעור. מכאן בוחרים דפים וסעיפים שכבר באתר, ומדפיסים את דף המקור עם סימון.</p><p class="head-meta"><span>מהדפים הקיימים, לשיעור שלכם</span><span class="demo-tag">כיתות א׳–ט׳</span><span class="brand-kicker">מתמטיקה • מרחב למורה</span></p></div><p class="intro-note">יסודי: בחירה לפי דף, נושא ורמה. חטיבת ביניים: בחירת סעיפים מתוך הדפים.<br>ההדפסה מסמנת על דף המקור המלא, או חותכת דף מצומצם מאותו מקור. הצעות נועם AI כבויות.</p></div>
+<div class="intro"><div><p class="eyebrow">מתכננים את התרגול</p><h1>בוחרים מה לתרגל.</h1><p class="subtitle">כיתה, נושא ומטרת השיעור. מכאן בוחרים כמה שאלות שלמות, ומדפיסים את דף המקור עם סימון.</p><p class="head-meta"><span>מהדפים הקיימים, לשיעור שלכם</span><span class="demo-tag">כיתות א׳–ט׳</span><span class="brand-kicker">מתמטיקה • מרחב למורה</span></p></div><p class="intro-note">יסודי: בחירה לפי דף, נושא ורמה. חטיבת ביניים: 5, 15 או 20 שאלות שלמות, בלי סעיף חתוך.<br>ההדפסה מסמנת על דף המקור המלא, או חותכת דף מצומצם מאותו מקור. הצעות נועם AI כבויות.</p></div>
 <div class="workspace">
 <aside class="panel setup" aria-label="הגדרות השיעור">
 <h2 class="step-title"><span class="step-num">1</span> מתחילים מהכיתה</h2>
@@ -451,7 +457,7 @@ dialog::backdrop{background:rgba(34,48,90,.46)}
 <div id="available-content"><p class="logic-note"><svg aria-hidden="true"><use href="#i-bulb"/></svg><span id="rationale">תחילה גורם מספרי, אחר כך סימנים וגורם משתנה. אין צורך להתחיל מכל הדף.</span></p>
 <div class="other-note-banner" id="other-banner" hidden><strong>בחירה ידנית עם הערת מורה</strong><p>הרצף האחרון נשאר כפי שהוא. אפשר לבחור שאלות ולצרף את ההערה לתוכנית.</p></div>
 <div class="toolbar"><h3>הפניות לשאלות <span class="toolbar-meta" id="available-count"></span></h3><button class="text-btn" id="undo" disabled><svg aria-hidden="true"><use href="#i-undo"/></svg>ביטול שינוי</button></div>
-<div class="list-header"><span>הסימון ניתן לשינוי</span><div class="filter ai-pick-group" id="ai-pick-group" role="group" aria-label="בחירה מהירה עם AI"><button type="button" class="ai-pick-btn" id="ai-pick-15" data-ai-pick="15" aria-pressed="false">בחר 15 עם AI</button><button type="button" class="ai-pick-btn" id="ai-pick-30" data-ai-pick="30" aria-pressed="false" aria-label="בחר 30 עם AI">בחר 30</button><button type="button" class="ai-pick-btn" id="ai-pick-45" data-ai-pick="45" aria-pressed="false" aria-label="בחר 45 עם AI">בחר 45</button></div><div class="filter" aria-label="סינון תצוגת השאלות"><button type="button" id="filter-all" aria-pressed="true">כל ההצעות</button><button type="button" id="filter-selected" aria-pressed="false">רק הבחירה שלי</button></div></div>
+<div class="list-header"><span>שאלות שלמות</span><div class="filter question-count-group" id="question-count-group" role="group" aria-label="כמה שאלות"><button type="button" class="question-count-btn" id="pick-count-5" data-question-count="5" aria-pressed="false">5 שאלות</button><button type="button" class="question-count-btn" id="pick-count-15" data-question-count="15" aria-pressed="false">15 שאלות</button><button type="button" class="question-count-btn" id="pick-count-20" data-question-count="20" aria-pressed="false">20 שאלות</button></div><p id="pick-shortfall" class="pick-shortfall" hidden></p><div class="filter" aria-label="סינון תצוגת השאלות"><button type="button" id="filter-all" aria-pressed="true">כל ההצעות</button><button type="button" id="filter-selected" aria-pressed="false">רק הבחירה שלי</button></div></div>
 <div class="question-list" id="questions"></div><button class="text-btn show-more" id="show-more">הצגת שאלות נוספות <span class="count-dot" id="more-count"></span></button>
 <div class="suggestion" id="suggestion"><svg aria-hidden="true"><use href="#i-bulb"/></svg><div class="suggestion-copy"><strong>נשאר מקום לעוד צעד?</strong><p id="suggestion-text">אפשר להוסיף סעיף עם שלושה איברים.</p></div><button type="button" id="add-suggestion">הוספה לבחירה</button></div>
 <details class="details"><summary>מה עומד מאחורי ההצעה?</summary><div class="details-body"><p id="pedagogy-details"></p><p style="margin-top:8px">חיוני = בסיס לרצף המוצע; נוסף = חיזוק לבחירתכם; העמקה = אתגר אפשרי. אלו תיוגים פדגוגיים של ההדגמה, לא תיוגי המחבר.</p><p style="margin-top:8px">ההפניות מתארות בקצרה שאלות קיימות. בעבודה עם המקור יש לשמור על הוראות משותפות, סעיפים תלויים, נוסח ותרשימים.</p></div></details>

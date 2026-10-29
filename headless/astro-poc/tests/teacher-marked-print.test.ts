@@ -552,29 +552,21 @@ describe('teacher catalog picker', () => {
     assert.equal(printer.includes('worksheet-viewer-noam'), false);
   });
 
-  it('provides batch AI pick buttons (15, 30, 45) backed by qwen3.8-flash in the list header', () => {
+  it('offers 5, 15 and 20 whole questions and does not call a live model to choose them', () => {
     const demoHtml = readFileSync(new URL('../../../demos/teacher-practice-picker-site-style.html', import.meta.url), 'utf8');
     for (const html of [page, demoHtml]) {
-      assert.match(html, /id="ai-pick-15"[^>]*data-ai-pick="15"[^>]*>בחר 15 עם AI<\/button>/);
-      assert.match(html, /id="ai-pick-30"[^>]*data-ai-pick="30"[^>]*>בחר 30<\/button>/);
-      assert.match(html, /id="ai-pick-45"[^>]*data-ai-pick="45"[^>]*>בחר 45<\/button>/);
+      assert.match(html, /id="pick-count-5"[^>]*data-question-count="5"[^>]*>5 שאלות<\/button>/);
+      assert.match(html, /id="pick-count-15"[^>]*data-question-count="15"[^>]*>15 שאלות<\/button>/);
+      assert.match(html, /id="pick-count-20"[^>]*data-question-count="20"[^>]*>20 שאלות<\/button>/);
+      assert.match(html, /min-height:44px/);
+      assert.match(html, /\.wizard-bar\{margin-top:18px/);
+      assert.equal(html.includes('data-ai-pick'), false);
     }
-    assert.match(printer, /model:\s*'qwen3\.8-flash'/);
-    const smartPick = new Function(
-      `${printer.slice(printer.indexOf('function exKey'), printer.indexOf('async function pickWithAi'))} return smartExercisePick;`
-    )() as (pool: { id: string; source: { pdfId: string } }[], count: number, scenario: string, style: string, seedKeys: string[]) => string[];
-    const pool = source.questions.map((question: { id: string }) => ({
-      ...question,
-      source: { pdfId: source.pdfId },
-    }));
-    assert.equal(pool.length, 70);
-    for (const count of [15, 30, 45]) {
-      const picked = smartPick(pool, count, 'first', 'scaffold', [`ex:${source.pdfId}:10א`, `ex:${source.pdfId}:15ב`]);
-      assert.equal(picked.length, count);
-      assert.equal(new Set(picked).size, count);
-      assert.ok(picked.includes(`ex:${source.pdfId}:10א`));
-      assert.ok(picked.includes(`ex:${source.pdfId}:15ב`));
-    }
+    assert.equal(printer.includes('pickWithAi'), false);
+    assert.equal(printer.includes('qwen3.8-flash'), false);
+    assert.equal(printer.includes('noam-bot-client'), false);
+    assert.match(printer, /pickWholeQuestions/);
+    assert.match(printer, /כמה שאלות\?/);
   });
 
   it('never leaves 0 available exercises or 0 suggestions when filtering levels on single-level topics', () => {
@@ -588,6 +580,6 @@ describe('teacher catalog picker', () => {
     assert.match(printer, /state\.level === 'all' \|\| state\.level === 'a'/);
     const levelHandler = printer.slice(printer.indexOf("document.querySelectorAll('[name=level]')"), printer.indexOf("$('grade').addEventListener"));
     assert.match(levelHandler, /if \(!next\.length && state\.scenario !== 'other'\)/);
-    assert.match(levelHandler, /exercisePreset\(state\.scenario\)/);
+    assert.match(levelHandler, /assignWholeQuestions\(state\.lastQuestionCount \|\| 5\)/);
   });
 });
