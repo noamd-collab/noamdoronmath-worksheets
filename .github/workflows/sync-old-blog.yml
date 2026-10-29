@@ -1,0 +1,90 @@
+name: sync-old-blog
+
+# Copies new posts from the old public Wix blog (amiramnoam.wixsite.com/my-site)
+# into the headless site on headless/astro-poc-baseline, and opens a pull request
+# with them. Posts are still written on the old site; the live site serves its
+# blog from files in the repo, so they only appear there after this sync.
+#
+# This file lives on main because GitHub runs scheduled workflows only from the
+# default branch. Nothing is merged or published here: merge the pull request,
+# then run `npm run release` in headless/astro-poc.
+#
+# No secrets: the script reads the old site's public sitemap, feed and post pages.
+
+on:
+  schedule:
+    # Posts on the old site go out around 02:15 and 03:50 UTC.
+    - cron: '30 4 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: sync-old-blog
+  cancel-in-progress: false
+
+env:
+  BASE_BRANCH: headless/astro-poc-baseline
+  SYNC_BRANCH: automation/old-blog-sync
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out the headless site
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.BASE_BRANCH }}
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: headless/astro-poc/package-lock.json
+
+      - name: Install
+        working-directory: headless/astro-poc
+        run: npm ci --ignore-scripts --no-audit --no-fund
+
+      - name: Sync posts
+        working-directory: headless/astro-poc
+        run: node scripts/sync-old-blog.mjs
+
+      # The branch is rebuilt from the base on every run, so a pull request that
+      # was not merged yet picks up the newer posts too.
+      - name: Open or update the pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git add \
+            headless/astro-poc/src/data/blog-posts \
+            headless/astro-poc/src/data/blog-archives/blog-index.json \
+            headless/astro-poc/src/data/site-guide.v1.json \
+            headless/astro-poc/src/data/search-index.v1.json \
+            headless/astro-poc/src/lib/blogArchives.ts \
+            headless/astro-poc/docs/search/index-build.json
+          if git diff --cached --quiet; then
+            echo "No new posts on the old blog."
+            exit 0
+          fi
+          added=$(git diff --cached --name-only --diff-filter=A -- headless/astro-poc/src/data/blog-posts | grep -c '\.json$' || true)
+          git config user.name "old-blog-sync"
+          git config user.email "old-blog-sync@users.noreply.github.com"
+          git switch -C "$SYNC_BRANCH"
+          git commit -m "Sync ${added} new posts from the old Wix blog"
+          git push --force origin "$SYNC_BRANCH"
+
+          body="New posts copied from the old Wix blog by the sync-old-blog workflow (run ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}).
+
+          To put them on the live site: review, merge, then run \`npm run release\` in headless/astro-poc."
+          existing=$(gh pr list --base "$BASE_BRANCH" --head "$SYNC_BRANCH" --state open --json number --jq '.[0].number // empty')
+          if [ -n "$existing" ]; then
+            echo "Updated pull request #${existing}."
+          elif ! gh pr create --base "$BASE_BRANCH" --head "$SYNC_BRANCH" --title "Sync new posts from the old Wix blog" --body "$body"; then
+            echo "::error::The posts are on branch ${SYNC_BRANCH}, but the pull request could not be opened. Allow GitHub Actions to create pull requests (Settings → Actions → General), or open it by hand: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/compare/${BASE_BRANCH}...${SYNC_BRANCH}"
+            exit 1
+          fi
