@@ -14,14 +14,14 @@ function fixture(v:string,kind='dots'){
  const c:any={document,window,manifest,selectedExercise:exercise,pdf:id,Promise,Map,WeakMap,WeakSet,currentAttachments:()=>attachments,
   noamNativeFocusUrl:()=>manifest.nativeExportUrl,exerciseThread:()=>thread,saveNoamState(){},renderNoamChat(){},announceNoam(){},
   cropExerciseCanvas:async()=>({width:640,height:1200,toDataURL:()=> 'data:image/png;base64,QUJD'}),
-  fetch:async(url:string)=>{calls.push(url);const body=read(url.slice(1));return {ok:true,json:async()=>JSON.parse(body),text:async()=>body};}};
+  fetch:async(url:string)=>{calls.push(url);const body=read(url.slice(1));return {ok:true,json:async()=>JSON.parse(body),text:async()=>body,arrayBuffer:async()=>new TextEncoder().encode(body).buffer};},TextDecoder};
  runInNewContext(read('noam-native-visual.js')+'\n'+read('noam-source-panels.js'),c);window.NoamNativeVisual=c.NoamNativeVisual;window.NoamSourcePanels=c.NoamSourcePanels;
  const helpers='var noamSourceVisualPackages='+v.split('var noamSourceVisualPackages=')[1].split('function noamNativeFigure(')[0];
  runInNewContext(v.slice(v.indexOf('var SOLVER_MESSAGE_MAX ='),v.indexOf('var GRADE_NAME ='))+'\n'+fn(v,'noamDiagramSourceIdentity')+'\n'+fn(v,'noamManifestOcrUnreliable')+'\n'+fn(v,'noamExerciseSectionLabel')+'\n'+helpers+'\n'+v.slice(v.indexOf('function noamGeometryContext(text){'),v.indexOf('function postJson(endpoint,payload){')),c);
  return {c,exercise,manifest,calls,attachments,thread};
 }
 function contradictory(){return {readable:true,transcription:'OCR: n²',math_content:'n²',problem_statement:'OCR square pattern',diagram_description:'OCR:9,16,25',extracted_entities:{expressions:['n²'],numbers:[9,16,25]}};}
-async function settled(){for(let i=0;i<120;i++)await Promise.resolve();}
+async function settled(){for(let i=0;i<12;i++){await new Promise(r=>setImmediate(r));for(let j=0;j<120;j++)await Promise.resolve();}}
 for(const relative of ['../public/worksheet-viewer-noam.html','../../../worksheet-viewer-noam.html']){
  const v=readFileSync(new URL(relative,import.meta.url),'utf8'),name=relative.includes('public')?'public':'root';
  it(name+': verified dots and printed labels receive private priority while conflicting OCR and cache remain intact',async()=>{
@@ -67,15 +67,20 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
  it(name+': no-source messages are byte-identical to the reviewed f786 baseline',()=>{
   const f=fixture(v);legacy.cases.forEach((row:any,i:number)=>assert.equal(f.c.noamSolverMessage(row.student,{history:row.history||[]},row.topic,row.guide||'',row.analysis,legacy.exercise),legacy.expected[name][i],row.name));
  });
- it(name+': actual hint sends priority in one existing solve request and skips it for student attachments',async()=>{
+ it(name+': actual hint sends the canonical source analysis in one existing solve request and skips it for student attachments',async()=>{
   for(const attachment of [false,true]){
-   const f=fixture(v),ocr=contradictory(),requests:any[]=[];if(attachment)f.attachments.push({name:'student.png'});
+   const f=fixture(v),ocr=contradictory(),requests:any[]=[];let analysisCalls=0;if(attachment)f.attachments.push({name:'student.png'});
    Object.assign(f.c,{busy:false,panelBody:f.c.document.body,noamDrafts:{},MIN_WAIT:0,API:'/model',g:7,lv:'a',LEVEL:{a:'רמה א׳'},ttl:'תבניות',
     setNoamBusy:(b:boolean)=>{f.c.busy=b;},restoreNoamChatFocus(){},exerciseLabel:()=> 'שאלה21ד',noamDidacticGuide:()=>null,noamDidacticPrompt:()=>'',noamDidacticResponse:()=>null,
-    getExerciseAnalysis:async()=>ocr,postJson:async(url:string,payload:any)=>{requests.push({url,payload});return {ok:true,answer:'בדקו את השורות והעמודות.'};},
+    getExerciseAnalysis:async()=>{analysisCalls++;return ocr;},postJson:async(url:string,payload:any)=>{requests.push({url,payload});return {ok:true,answer:'בדקו את השורות והעמודות.'};},
     noamGuardGeometryResult:(r:any)=>r,noamGuardSignedAddResult:(r:any)=>r,noamClarifySignedAddLanguage:(s:string)=>s,noamResponseVisual:()=>null,noamVisualAnswer:(_:string,s:string)=>s,noamAttachSourceHint(){},setTimeout:(cb:any)=>cb()});
    f.c.askNoam('hint','תן לי רמז אחד בלבד.');await settled();assert.equal(requests.length,1);assert.equal(requests[0].url,'/model/noamImageSolve');assert.equal(requests[0].payload.exerciseId,f.exercise.id);
-   assert.equal(requests[0].payload.studentMessage.includes('העדף את נתוני המקור המאומתים'),!attachment);assert.equal(f.calls.length>0,!attachment);assert.equal(ocr.diagram_description,'OCR:9,16,25');
+   const sent=requests[0].payload.imageAnalysis,text=JSON.stringify(sent);
+   assert.equal(requests[0].payload.studentMessage.includes('ניתוח השאלה נבנה מהטקסט המודפס ומנתוני המקור המאומתים'),!attachment);
+   assert.equal(requests[0].payload.studentMessage.includes('העדף את נתוני המקור המאומתים'),false);
+   assert.equal(sent.content_type==='native_source_canonical',!attachment);assert.equal(analysisCalls,attachment?1:0);
+   if(!attachment){assert.doesNotMatch(text,/OCR|16|25|n²/);assert.match(sent.diagram_description,/לוח עם הכיתוב "שלב 2": 3 שורות, 6 נקודות בכל שורה/);}
+   assert.equal(f.calls.length>0,!attachment);assert.equal(ocr.diagram_description,'OCR:9,16,25');
   }
  });
 }

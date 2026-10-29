@@ -17,13 +17,13 @@ function fixture(v:string,path='G7-T22/a',qid='q21',part='ד',mutate?:(url:strin
  const c:any={document,window,manifest,selectedExercise:exercise,pdf:manifest.pdfHash,Map,WeakSet,Promise,
   noamNativeFocusUrl:()=>manifest.nativeExportUrl,exerciseThread:()=>thread,renderNoamChat(){},saveNoamState(){},announceNoam(){},
   cropExerciseCanvas:async(e:any)=>{crops.push(clone(e.crops));return {width:640,height:1200,toDataURL:()=> 'data:image/png;base64,QUJD'};},
-  fetch:async(url:string)=>{calls.push(url);const original=readFileSync(new URL(url.slice(1),root),'utf8'),body=mutate?mutate(url,original):original;return {ok:body!==null,json:async()=>JSON.parse(body!),text:async()=>body};}};
+  fetch:async(url:string)=>{calls.push(url);const original=readFileSync(new URL(url.slice(1),root),'utf8'),body=mutate?mutate(url,original):original;return {ok:body!==null,json:async()=>JSON.parse(body!),text:async()=>body,arrayBuffer:async()=>new TextEncoder().encode(body!).buffer};},TextDecoder};
  const helper='var noamSourceVisualPackages='+v.split('var noamSourceVisualPackages=')[1].split('function noamNativeFigure(')[0];
  runInNewContext(native+'\n'+panels+'\n'+fn(v,'noamDiagramSourceIdentity')+'\n'+helper,c);
  window.NoamNativeVisual=c.NoamNativeVisual;window.NoamSourcePanels=c.NoamSourcePanels;
  return {c,manifest,exercise,crops,calls,thread};
 }
-async function settled(){for(let i=0;i<100;i++)await Promise.resolve();}
+async function settled(){for(let i=0;i<12;i++){await new Promise(r=>setImmediate(r));for(let j=0;j<100;j++)await Promise.resolve();}}
 function expectSourceFacts(value:string){
  for(const [id,total,columns] of [['q21_head',9,3],['q21_head_2',18,6],['q21_head_3',27,9]]){
   assert.ok(value.includes(`לוח ${id}: ${total} נקודות; 3 שורות, ${columns} נקודות בכל שורה.`),id as string);
@@ -52,7 +52,7 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
   await f.c.getExerciseAnalysis(f.exercise);
   assert.equal(captured.length,1);assert.equal(captured[0].crop.page,12);assert.deepEqual(captured[0].crops.map((c:any)=>c.page),[11,12]);
  });
- it(prefix+': the actual hint action sends all source dot arrays in its single existing solve request',async()=>{
+ it(prefix+': the actual hint action sends the canonical dot arrays with verified printed captions in its single existing solve request',async()=>{
   const f=fixture(v),cached={diagram_description:'original OCR'},requests:any[]=[];
   Object.assign(f.c,{busy:false,panelBody:f.c.document.body,noamDrafts:{},MIN_WAIT:0,API:'/model',g:7,lv:'a',LEVEL:{a:'רמה א׳'},ttl:'תבניות',
    setNoamBusy:(busy:boolean)=>{f.c.busy=busy;},restoreNoamChatFocus(){},exerciseLabel:()=> 'שאלה 21ד',
@@ -62,7 +62,11 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
    noamResponseVisual:()=>null,noamVisualAnswer:(_:string,s:string)=>s,setTimeout:(cb:any)=>cb()});
   runInNewContext(fn(v,'askNoam'),f.c);f.c.askNoam('hint','תן לי רמז אחד בלבד.');await settled();
   assert.equal(requests.length,1);assert.equal(requests[0].url,'/model/noamImageSolve');assert.equal(requests[0].payload.exerciseId,f.exercise.id);
-  expectSourceFacts(requests[0].payload.imageAnalysis.diagram_description.slice(0,3000).slice(0,800));
+  const sent=requests[0].payload.imageAnalysis,description=sent.diagram_description.slice(0,800);
+  assert.equal(sent.content_type,'native_source_canonical');assert.doesNotMatch(JSON.stringify(sent),/original OCR/);
+  for(const [caption,columns] of [['שלב 1',3],['שלב 2',6],['שלב 3',9]])assert.ok(description.includes(`לוח עם הכיתוב "${caption}": 3 שורות, ${columns} נקודות בכל שורה.`),caption as string);
+  assert.match(sent.transcription,/הסעיף הנבחר: האם יש שלב שבו בדיוק \$100\$ נקודות/);
+  assert.doesNotMatch(JSON.stringify(sent),/(?:9|18|27) נקודות[;.]|9\s*[*×]?\s*n|n\s*\^\s*2|ריבוע|אין שלב|לא קיים|q21_head/);
   assert.equal(cached.diagram_description,'original OCR');assert.equal(f.thread.messages[1].text,'השוו את מספר הנקודות בשורות.');
  });
  it(prefix+': incomplete groups, changed model dots, non-dot marks and hidden dots never become structural givens',async()=>{
