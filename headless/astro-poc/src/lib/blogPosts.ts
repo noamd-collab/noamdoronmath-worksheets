@@ -66,6 +66,7 @@ import wordProblemsWithEquationsGrade7 from '../data/blog-posts/word-problems-wi
 import workbooksVsPracticeSheets from '../data/blog-posts/workbooks-vs-practice-sheets.json';
 import worksheetsForTeachers from '../data/blog-posts/worksheets-for-teachers.json';
 import worksheetsNoRegistration from '../data/blog-posts/worksheets-no-registration.json';
+import { SYNCED_BLOG_POSTS } from '../data/blog-posts/synced-index';
 
 export type BlogInlineSegment =
   | { type: 'text'; text: string }
@@ -819,7 +820,10 @@ export const BLOG_POST_CLASSIC_GAP_PATHS = [
   '/post/%D7%AA%D7%95%D7%A6%D7%90%D7%95%D7%AA-%D7%9E%D7%AA%D7%A8%D7%92%D7%95%D7%9C-%D7%A2%D7%A7%D7%91%D7%99-%D7%91%D7%9E%D7%AA%D7%9E%D7%98%D7%99%D7%A7%D7%94-%D7%A9%D7%9E%D7%A8%D7%92%D7%99%D7%A9%D7%99%D7%9D-%D7%91%D7%9B%D7%99%D7%AA%D7%94',
 ] as const;
 
-/** All locally served blog post paths (M25–M29 = 59, + OPEN-07-FIX = 60, + classic gap = 68). */
+/** Posts imported from the old public Wix blog by scripts/sync-old-blog.mjs. */
+export const BLOG_POST_SYNC_PATHS: string[] = SYNCED_BLOG_POSTS.map((post) => post.path);
+
+/** Locally served blog post paths: the frozen 68, plus anything the old-site sync added. */
 export const BLOG_POST_SERVED_PATHS = [
   ...BLOG_POST_M25_PILOT_PATHS,
   ...BLOG_POST_M27_PATHS,
@@ -827,7 +831,8 @@ export const BLOG_POST_SERVED_PATHS = [
   ...BLOG_POST_M29_PATHS,
   ...BLOG_POST_OPEN07_PATHS,
   ...BLOG_POST_CLASSIC_GAP_PATHS,
-] as const;
+  ...BLOG_POST_SYNC_PATHS,
+];
 
 /** Covered in M26 (blog archives). Kept for docs/history. */
 export const BLOG_M25_DEFERRED = [] as const;
@@ -912,6 +917,7 @@ const ALL_POSTS: BlogPostContent[] = [
   workbooksVsPracticeSheets,
   worksheetsForTeachers,
   worksheetsNoRegistration,
+  ...(SYNCED_BLOG_POSTS as BlogPostContent[]),
 ] as BlogPostContent[];
 
 export function listPilotBlogPosts(): BlogPostContent[] {
@@ -968,6 +974,10 @@ export function listClassicGapBlogPosts(): BlogPostContent[] {
   });
 }
 
+export function listSyncedBlogPosts(): BlogPostContent[] {
+  return SYNCED_BLOG_POSTS as BlogPostContent[];
+}
+
 export function listServedBlogPosts(): BlogPostContent[] {
   return [
     ...listPilotBlogPosts(),
@@ -976,6 +986,7 @@ export function listServedBlogPosts(): BlogPostContent[] {
     ...listM29BlogPosts(),
     ...listOpen07BlogPosts(),
     ...listClassicGapBlogPosts(),
+    ...listSyncedBlogPosts(),
   ];
 }
 
