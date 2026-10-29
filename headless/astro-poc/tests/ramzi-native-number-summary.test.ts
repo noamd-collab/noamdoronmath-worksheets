@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {createRequire} from 'node:module';
-import {runInNewContext} from 'node:vm';
+import { runVisualCompilerInNewContext } from './helpers/visual-compiler-vm';
 import {fileURLToPath} from 'node:url';
 import {it} from 'node:test';
 const root=new URL('../../../',import.meta.url),require=createRequire(import.meta.url);
@@ -33,7 +33,7 @@ for(const name of ['worksheet-viewer-noam.html','headless/astro-poc/public/works
   const html=readFileSync(new URL(name,root),'utf8'),fn=(n:string)=>{const i=html.indexOf('function '+n+'(');assert.ok(i>=0);return html.slice(i,html.indexOf('\nfunction ',i+1));};
   it(name+': actual ordinary-hint and planner input functions use corrected authored prompts',async()=>{
     let calls=0;const c:any={Promise,JSON,Date,console,API:'offline',analysisCache:{},saveNoamState:()=>{},ensurePdfDocumentForCrop:()=>Promise.resolve(),noamRebuildSelectedPartExpression:()=>Promise.resolve(null),cropExerciseImage:()=>Promise.resolve('offline-image'),isBotProtectionError:()=>false,postJson:async()=>{calls++;return{ok:true,analysis:{readable:true,transcription:'Original crop',problem_statement:'Original crop'}};},manifest:m};c.window=c;
-    runInNewContext(['syntheticAnalysis','noamManifestOcrUnreliable','noamExerciseSectionLabel','noamScopedExerciseSemantic','noamExerciseNeedsLiveVision','getExerciseAnalysis','noamDiagramSourceInput'].map(fn).join('\n'),c);
+    runVisualCompilerInNewContext(['syntheticAnalysis','noamManifestOcrUnreliable','noamExerciseSectionLabel','noamScopedExerciseSemantic','noamExerciseNeedsLiveVision','getExerciseAnalysis','noamDiagramSourceInput'].map(fn).join('\n'),c);
     c.noamNativeDiagramContext=()=>Promise.resolve(null);c.noamNativeDataUrl=()=>m.nativeExportUrl;c.noamTypedVisualContext=()=>({});c.NoamVisualPlan={};
     for(const q of [4,12,20]){const e=ex(q,'א'),a=await c.getExerciseAnalysis(e),v=await c.noamDiagramSourceInput(e);assert.equal(c.noamScopedExerciseSemantic(e),e.prompt);assert.ok(a.transcription.startsWith(e.prompt));assert.ok(a.problem_statement.startsWith(e.prompt));assert.doesNotMatch(a.transcription,/הנתונים:/);assert.ok(v.questionText.includes(e.prompt));assert.doesNotMatch(v.questionText,/הנתונים:/);}
     assert.equal(calls,3);assert.ok(ex(4,'א').prompt.includes('$6, 9, 9$'));assert.ok(ex(4,'ב').prompt.includes('ובה $4$ עפרונות'));
@@ -41,14 +41,14 @@ for(const name of ['worksheet-viewer-noam.html','headless/astro-poc/public/works
   });
   it(name+': only the19 affected PDFs refresh analysis, while conversation history remains',()=>{
     const i=html.indexOf('var NOAM_NUMBER_SUMMARY_PDFS'),end=html.indexOf('var threads =',i),block=html.slice(i,end);
-    const c:any={pdf,HEADLESS_MANIFEST_BASE:'/noam-ai/manifests/'};runInNewContext(block,c);assert.equal(c.NOAM_NUMBER_SUMMARY_PDFS.length,19);assert.ok(c.NOAM_NUMBER_SUMMARY_PDFS.includes(pdf));
-    for(const id of [...c.NOAM_NUMBER_SUMMARY_PDFS,'ddfdb423c2dc4e9d925ee5be56971195']){const ctx:any={pdf:id,HEADLESS_MANIFEST_BASE:'/noam-ai/manifests/'};runInNewContext(block,ctx);assert.equal(ctx.ANALYSIS_STORAGE_KEY.endsWith(':number-summary-v1'),c.NOAM_NUMBER_SUMMARY_PDFS.includes(id));assert.equal(ctx.THREAD_STORAGE_KEY,'noam-static-threads-v1:'+id);assert.match(ctx.MANIFEST_PATH,/20261028-item-figure-scope-number-summary/);}
+    const c:any={pdf,HEADLESS_MANIFEST_BASE:'/noam-ai/manifests/'};runVisualCompilerInNewContext(block,c);assert.equal(c.NOAM_NUMBER_SUMMARY_PDFS.length,19);assert.ok(c.NOAM_NUMBER_SUMMARY_PDFS.includes(pdf));
+    for(const id of [...c.NOAM_NUMBER_SUMMARY_PDFS,'ddfdb423c2dc4e9d925ee5be56971195']){const ctx:any={pdf:id,HEADLESS_MANIFEST_BASE:'/noam-ai/manifests/'};runVisualCompilerInNewContext(block,ctx);assert.equal(ctx.ANALYSIS_STORAGE_KEY.endsWith(':number-summary-v1'),c.NOAM_NUMBER_SUMMARY_PDFS.includes(id));assert.equal(ctx.THREAD_STORAGE_KEY,'noam-static-threads-v1:'+id);assert.match(ctx.MANIFEST_PATH,/20261028-item-figure-scope-number-summary/);}
   });
 }
 it('all412 canonical manifests pass the source-bound regeneration guard and retain all762 native summaries',()=>{
   const r=scan(fileURLToPath(root));assert.equal(r.nativeManifests,412);assert.equal(r.mainQuestions,8178);assert.equal(r.strictSummaryEntries,762);assert.equal(r.affectedManifests,0);assert.equal(r.removedLineOccurrences,0);
 });
 it('typed native context still uses exact printed introduction/item/table and ignores generic given arrays',()=>{
-  const c:any={};runInNewContext(readFileSync(new URL('noam-native-visual.js',root),'utf8'),c);
+  const c:any={};runVisualCompilerInNewContext(readFileSync(new URL('noam-native-visual.js',root),'utf8'),c);
   for(const q of [4,12,20]){const e=ex(q,'א'),ctx=c.NoamNativeVisual.authoredContext(d,e,''),question=d.questions.find((x:any)=>x.id==='q'+q);assert.ok(question.given[0].text.startsWith('הנתונים:'));assert.equal(ctx.questionText,Array.isArray(question.text)?question.text.join('\n'):question.text);assert.equal(ctx.partText,question.items[0].text);assert.doesNotMatch(JSON.stringify(ctx),/הנתונים:/);if(q===12)assert.deepEqual(JSON.parse(JSON.stringify(ctx.questionTable)),question.table);}
 });
