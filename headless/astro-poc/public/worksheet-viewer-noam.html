@@ -5811,7 +5811,8 @@ function noamInterceptBlockedDrawing(studentMessage){
   // request. Do not use the broader wantsVisualSupport/graph-word heuristics.
   var requested=/(?:^|\s)(?:[סש]רטט[וי]?|ת[סש]רטט[וי]?|צייר[וי]?|תצייר[וי]?|אייר[וי]?|draw|sketch|plot|illustrate)(?:\s|$|[.!?])/i.test(text)||
     /(?:הראה|הראי|הראו|הצג|הציגי|תראה|תראי|תציג|תציגי|צור|תיצור|בנה|תבנה|הכן|תכין|show|display|create|make)(?:\s+(?:לי|לנו|את|a|me|the))*\s+(?:ה)?(?:[סש]רטוט|תרשים|ציור|איור|גרפיקה|גרף|סקיצה|המחשה|diagram|graph|sketch|illustration)/i.test(text)||
-    /^(?:אפשר\s+|בבקשה\s+)?(?:[סש]רטוט|תרשים|ציור|איור|גרפיקה|סקיצה|המחשה)(?:\s|[.!?]|$)/.test(text);
+    /^(?:(?:אפשר|בבקשה)\s+)*(?:לצייר|ל[סש]רטט|לאייר)(?:\s|[.!?]|$)/.test(text)||
+    /^(?:(?:אפשר|בבקשה)\s+)*(?:[סש]רטוט|תרשים|ציור|איור|גרפיקה|גרף|סקיצה|המחשה)(?:\s|[.!?]|$)/.test(text);
   if(!requested){return false;}
   var thread=exerciseThread(selectedExercise.id);
   var answer='בדף הזה רמזי מסביר בטקסט בלבד. אפשר לבקש רמז לצעד הבא.';

@@ -96,7 +96,7 @@ for (const viewer of ['worksheet-viewer-noam.html', 'headless/astro-poc/public/w
         f.document.getElementById('noamDraw')!.click();
         assert.equal(await f.s.requestNoamDiagram(f.exercise, f.thread, f.thread.messages[0], { drawCurrentStep: true }), null);
       }
-      for (const text of ['שרטט משולש ABC', 'סרטט פונקציה', 'הכן לי איור', 'אפשר סקיצה', 'הצג את השרטוט המקורי', 'plot y=x^2']) {
+      for (const text of ['שרטט משולש ABC', 'סרטט פונקציה', 'הכן לי איור', 'אפשר סקיצה', 'אפשר גרף?', 'גרף', 'אפשר לצייר לי?', 'בבקשה לשרטט גרף', 'אפשר בבקשה לאייר?', 'הצג את השרטוט המקורי', 'plot y=x^2']) {
         f.document.getElementById('noamQuestion')!.value = text;
         f.document.getElementById('noamSend')!.click();
         assert.match(f.thread.messages.at(-1).text, /בטקסט בלבד/);
@@ -123,7 +123,7 @@ for (const viewer of ['worksheet-viewer-noam.html', 'headless/astro-poc/public/w
   });
 
   it(viewer + ': textual help and original-question access never become a blocked drawing reply', async () => {
-    for (const text of ['תראה לי איך לפתור 2x+3=7', 'לא רואה את השאלה', 'הצג את השאלה המקורית', 'מהי פרבולה?']) {
+    for (const text of ['תראה לי איך לפתור 2x+3=7', 'לא רואה את השאלה', 'הצג את השאלה המקורית', 'מהי פרבולה?', 'אפשר הסבר על גרף?']) {
       const f = harness(viewer, 'canonicalTable'); f.s.renderNoamChat();
       assert.equal(f.s.noamInterceptBlockedDrawing(text), false, text);
       assert.equal(f.s.tryNoamLocalVisual(text), false, text);
