@@ -2,11 +2,21 @@ name: sync-old-blog
 
 # Pull new posts from the old public Wix blog into the headless archive.
 # Soro publishes most mornings (around 04:00 UTC). This runs after that.
+#
+# GitHub runs schedule and workflow_dispatch only when this file is on the
+# default branch (main). A copy that exists only on headless/astro-poc-baseline
+# never starts. The daily sync also does not release posts that are already
+# committed; set publish=true on a manual run to release the current branch.
 
 on:
   schedule:
     - cron: '30 4 * * *'
   workflow_dispatch:
+    inputs:
+      publish:
+        description: Release the branch even when this run imports no new posts
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -61,12 +71,12 @@ jobs:
           fi
 
       - name: Publish
-        if: steps.commit.outputs.changed == 'true'
+        if: steps.commit.outputs.changed == 'true' || inputs.publish == true
         env:
           WIX_CLI_API_KEY: ${{ secrets.WIX_CLI_API_KEY }}
         run: |
           if [ -z "${WIX_CLI_API_KEY}" ]; then
             echo "WIX_CLI_API_KEY is not set. Posts are on the branch and were not published."
-            exit 0
+            exit 1
           fi
           bash tools/release/release.sh "$(git rev-parse HEAD)"
