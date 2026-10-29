@@ -229,8 +229,8 @@ describe('seo proposals – review criteria on all 390 rows', () => {
       assert.equal(row.description, row.currentDescription.replace(/\s+/g, ' ').trim(), path);
     }
     const triangle = byPath('/triangle-area-grade-7');
-    assert.match(triangle.currentTitle, /מפשטים ואז פותרים/);
-    assert.equal(triangle.title, 'שטח משולש לכיתה ז׳ | נועם דורון');
+    assert.equal(triangle.currentTitle, 'שטח משולש לכיתה ז׳ | דפי עבודה חינם');
+    assert.equal(triangle.title, triangle.currentTitle);
   });
 
   it('open questions stay with Noam: grade 1 topics 4, 19, 23 are flagged, unchanged and unapproved', () => {

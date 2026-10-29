@@ -1,0 +1,34 @@
+---
+/**
+ * Topic prose. A stored fraction ⟨numerator¦denominator⟩ renders as a
+ * horizontal bar. The source never uses a slash for a fraction.
+ */
+import StackedFraction from './StackedFraction.astro';
+
+interface Props {
+  text: string;
+}
+
+const { text } = Astro.props;
+const pattern = /⟨([^⟨⟩¦]+)¦([^⟨⟩]+)⟩/g;
+type Piece = { kind: 'text'; text: string } | { kind: 'frac'; n: string; d: string };
+const pieces: Piece[] = [];
+let last = 0;
+for (const match of text.matchAll(pattern)) {
+  const index = match.index ?? 0;
+  if (index > last) pieces.push({ kind: 'text', text: text.slice(last, index) });
+  pieces.push({ kind: 'frac', n: match[1] ?? '', d: match[2] ?? '' });
+  last = index + match[0].length;
+}
+if (last < text.length || pieces.length === 0) pieces.push({ kind: 'text', text: text.slice(last) });
+---
+
+{
+  pieces.map((piece) =>
+    piece.kind === 'text' ? (
+      piece.text
+    ) : (
+      <StackedFraction n={piece.n} d={piece.d} />
+    ),
+  )
+}

@@ -1908,8 +1908,8 @@
       "catalogTopicId": 17,
       "currentTitle": "",
       "currentDescription": "",
-      "title": "דף סינתזה: מדידות, גאומטריה ופתרון רב־שלבי לכיתה ו׳",
-      "description": "דפי עבודה במתמטיקה בנושא דף סינתזה: מדידות, גאומטריה ופתרון רב־שלבי לכיתה ו׳. בחינם וללא הרשמה.",
+      "title": "דף סיכום: מדידות, גאומטריה ופתרון רב־שלבי לכיתה ו׳",
+      "description": "דפי עבודה במתמטיקה בנושא דף סיכום: מדידות, גאומטריה ופתרון רב־שלבי לכיתה ו׳. בחינם וללא הרשמה.",
       "approved": false,
       "source": "title:catalog-title|description:catalog-title"
     },
@@ -2242,12 +2242,12 @@
       "kind": "topic-page",
       "grade": 7,
       "catalogTopicId": 19,
-      "currentTitle": "מפשטים ואז פותרים לכיתה ז – שטח משולש | נועם דורון",
+      "currentTitle": "שטח משולש לכיתה ז׳ | דפי עבודה חינם",
       "currentDescription": "מפשטים ואז פותרים לכיתה ז עם הסבר ברור על שטח משולש ודפי עבודה חינמיים להדפסה. היכנסו והתחילו לתרגל עכשיו.",
-      "title": "שטח משולש לכיתה ז׳ | נועם דורון",
+      "title": "שטח משולש לכיתה ז׳ | דפי עבודה חינם",
       "description": "לומדים לחשב שטח משולש לפי בסיס וגובה, ולזהות את הגובה המאונך גם בשרטוטים שונים. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
       "approved": false,
-      "source": "title:page-h1|description:page-intro"
+      "source": "title:current|description:page-intro"
     },
     {
       "path": "/worksheets?grade=7&topic=22",

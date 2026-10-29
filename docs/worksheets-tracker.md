@@ -173,7 +173,7 @@ Columns: grade, topic, levels present, author, reviewed, live, PR.
 | כיתה ו׳ | נפח תיבה ומבנים (id 14) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ו׳ | קיבול סמק ליטר ומק (id 15) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ו׳ | מרובעים ויחסי הכלה חזרה מנומקת (id 16) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
-| כיתה ו׳ | דף סינתזה מדידות גאומטריה ופתרון רב שלבי (id 17) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
+| כיתה ו׳ | דף סיכום מדידות גאומטריה ופתרון רב שלבי (id 17) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ו׳ | שבר עשרוני ואחוז שלושה ייצוגים לאותו מספר (id 18) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ו׳ | אחוז כחלק מכמות (id 19) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ו׳ | מציאת השלם ויישומי אחוזים (id 20) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
@@ -288,7 +288,7 @@ Columns: grade, topic, levels present, author, reviewed, live, PR.
 | כיתה ח׳ | אי־שוויון (G8-T04) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | a unknown; b yes (#99); c yes (#99) | unknown | #99 (b,c) |
 | כיתה ח׳ | אי־שוויון גרפי (G8-T05) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
 | כיתה ח׳ | פיתגורס במרחב (G8-T51) | רמה א׳, רמה ב׳, רמת מצוינות, מצוינות 2 | unknown | yes (#99) | unknown | #99 |
-| כיתה ח׳ | סינתזה גאומטרית (G8-T55) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
+| כיתה ח׳ | שילוב גאומטרי (G8-T55) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
 | כיתה ח׳ | העמקה — בעיות לא שגרתיות (G8-T56) | העמקה | unknown | yes (#99) | unknown | #99 |
 | כיתה ח׳ | העמקה — חקר והכללה (G8-T57) | העמקה | unknown | yes (#99) | unknown | #99 |
 | כיתה ח׳ | חזרה מסכמת (G8-T58) | דף תלמיד | unknown | yes (#99) | unknown | #99 |
