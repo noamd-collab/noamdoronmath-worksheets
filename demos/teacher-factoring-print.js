@@ -1763,6 +1763,7 @@ function scalePlaced(item, factor) {
     ...item,
     dh: Math.max(1, Math.round(item.dh * factor)),
     slice: { ...item.slice, gap: scaledGap(item.slice.gap, factor) },
+    textScale: (item.textScale || 1) * factor,
   };
   if (item.dw) {
     next.dw = Math.max(1, Math.round(item.dw * factor));
@@ -6515,18 +6516,21 @@ function paintWorksheetPage(canvas, page, index, count, title, note) {
   page.items.forEach((item, itemIndex) => {
     if (itemIndex) y += item.slice.gap;
     const kind = item.slice.kind;
+    // A page merged back at a smaller scale shrinks its rows. The type shrinks with them.
+    const px = (size, part) => (size * ((part && part.textScale) || 1)).toFixed(2) + 'px';
+    const ts = item.textScale || 1;
     if (kind === 'level' || kind === 'answers-head') {
       ctx.fillStyle = '#1a2744';
-      ctx.font = kind === 'answers-head' ? '700 24px Heebo, Arial, sans-serif' : '700 18px Heebo, Arial, sans-serif';
+      ctx.font = kind === 'answers-head' ? `700 ${px(24, item)} Heebo, Arial, sans-serif` : `700 ${px(18, item)} Heebo, Arial, sans-serif`;
       ctx.textAlign = 'right';
       ctx.direction = 'rtl';
-      ctx.fillText(item.slice.text, OUT_W - 28, y + (kind === 'answers-head' ? 26 : 24));
+      ctx.fillText(item.slice.text, OUT_W - 28, y + (kind === 'answers-head' ? 26 : 24) * ts);
     } else if (kind === 'missing') {
       ctx.fillStyle = '#1a2744';
-      ctx.font = '16px Heebo, Arial, sans-serif';
+      ctx.font = `${px(16, item)} Heebo, Arial, sans-serif`;
       ctx.textAlign = 'right';
       ctx.direction = 'rtl';
-      ctx.fillText(item.slice.text, OUT_W - 28, y + 18);
+      ctx.fillText(item.slice.text, OUT_W - 28, y + 18 * ts);
     } else if (kind === 'answer' || kind === 'answer-row') {
       const cells = kind === 'answer-row' ? item.cells : [item];
       let right = OUT_W - 28;
@@ -6549,7 +6553,8 @@ function paintWorksheetPage(canvas, page, index, count, title, note) {
         const imageW = cell.imageW || Math.max(1, (cell.dw || 40) - labelW - 8);
         const imageH = cell.imageH || Math.max(1, cell.dh - (cell.stack ? 18 : 2));
         ctx.fillStyle = '#1a2744';
-        ctx.font = '15px Heebo, Arial, sans-serif';
+        const cellScale = cell.textScale || ts;
+        ctx.font = `${px(15, { textScale: cellScale })} Heebo, Arial, sans-serif`;
         ctx.textAlign = 'right';
         ctx.direction = 'rtl';
         const sx = cell.baked ? 0 : cell.slice.box.x * cell.bitmap.width;
@@ -6557,9 +6562,9 @@ function paintWorksheetPage(canvas, page, index, count, title, note) {
         const sw = cell.baked ? cell.bitmap.width : cell.sw;
         const sh = cell.baked ? cell.bitmap.height : cell.sh;
         if (cell.stack) {
-          ctx.fillText(cell.slice.text, right, y + 14);
+          ctx.fillText(cell.slice.text, right, y + 14 * cellScale);
           const ink = answerInkCanvas(cell.bitmap, sx, sy, sw, sh, cell.slice.box);
-          paintAnswer(ink, right - imageW, y + 18, imageW, imageH, false);
+          paintAnswer(ink, right - imageW, y + 18 * cellScale, imageW, imageH, false);
         } else {
           // The label baseline and the answer's first line share one row.
           // A later line of a wrapped or tall answer continues under that row.
