@@ -6815,8 +6815,15 @@ function removeNoamAttachment(index){
   setAttachmentNote("", false);
 }
 
-function clearNoamAttachments(exerciseId){
-  if (exerciseId){ noamAttachments[exerciseId] = []; }
+function clearNoamAttachments(exerciseId,processedAttachments){
+  if (exerciseId){
+    // Keep photos added or replaced while this request was in flight.
+    if(Array.isArray(processedAttachments)){
+      var list=attachmentsFor(exerciseId);
+      // Retain the list itself: a photo still being prepared may append to it.
+      for(var i=list.length-1;i>=0;i--){if(processedAttachments.indexOf(list[i])>=0){list.splice(i,1);}}
+    }else{noamAttachments[exerciseId]=[];}
+  }
   renderNoamAttachments();
 }
 
@@ -7824,15 +7831,16 @@ function noamCanonicalAnalysisFromSource(exercise,source){
     extracted_entities:{numbers:[],expressions:[],labels:[],units:[]},uncertain_parts:[],
     complexity:'medium',complexity_reasons:['verified native source']};
 }
-function noamCanonicalSourceAnalysis(exercise){
+function noamCanonicalSourceAnalysis(exercise,attachmentSnapshot){
+  var hasSnapshot=Array.isArray(attachmentSnapshot);
   if(!exercise||!window.NoamNativeVisual||!noamNativeDataUrl(exercise)||
-      (typeof currentAttachments==='function'&&currentAttachments().length)){return Promise.resolve(null);}
+      (hasSnapshot?attachmentSnapshot.length:(typeof currentAttachments==='function'&&currentAttachments().length))){return Promise.resolve(null);}
   var identity=noamSourceVisualIdentity(exercise);
   return Promise.all([noamLoadSourceVisual(exercise),noamVerifiedNativeData(exercise)]).then(function(loaded){
     var source=loaded[0],verified=loaded[1];
     // A changed selection or source falls back to the existing reader.
     if(!source||!verified||identity!==noamSourceVisualIdentity(exercise)||!selectedExercise||selectedExercise.id!==exercise.id||
-        (typeof currentAttachments==='function'&&currentAttachments().length)){return null;}
+        (hasSnapshot?attachmentSnapshot.length:(typeof currentAttachments==='function'&&currentAttachments().length))){return null;}
     var analysis=noamCanonicalAnalysisFromSource(exercise,Object.assign({},source,{data:verified}));
     if(!analysis){return null;}
     noamDeepFreeze(analysis);
@@ -7842,8 +7850,12 @@ function noamCanonicalSourceAnalysis(exercise){
     return analysis;
   }).catch(function(){return null;});
 }
-function noamQuestionAnalysis(exercise){
-  return noamCanonicalSourceAnalysis(exercise).then(function(canonical){return canonical||getExerciseAnalysis(exercise);});
+function noamQuestionAnalysis(exercise,attachmentSnapshot){
+  // Freeze this request's attachment membership before any asynchronous source load.
+  var attachments=Array.isArray(attachmentSnapshot)?attachmentSnapshot.slice():
+    (typeof currentAttachments==='function'?currentAttachments().slice():[]);
+  if(attachments.length){return getExerciseAnalysis(exercise,attachments);}
+  return noamCanonicalSourceAnalysis(exercise,attachments).then(function(canonical){return canonical||getExerciseAnalysis(exercise,attachments);});
 }
 
 function noamSourcePresentation(source,exercise,options){
@@ -8286,10 +8298,12 @@ function renderExercisePreview(exercise,attempt){
     });
 }
 
-function getExerciseAnalysis(exercise){
+function getExerciseAnalysis(exercise,attachmentSnapshot){
   // A student's own photo makes the image unique to this request: it is never
-  // served from the cache and is never written into it.
-  var attachments=arguments[1]===true?[]:(typeof currentAttachments==="function")?currentAttachments():[];
+  // served from the cache and is never written into it. The existing true flag
+  // still forces the original worksheet for an explicit drawing request.
+  var attachments=attachmentSnapshot===true?[]:Array.isArray(attachmentSnapshot)?attachmentSnapshot.slice():
+    (typeof currentAttachments==="function"?currentAttachments().slice():[]);
   if (attachments.length){
     return exerciseImageWithAttachments(exercise,attachments)
       .then(function(imageDataUrl){
@@ -9730,7 +9744,7 @@ function askNoam(helpKind,studentMessage){
     return;
   }
 
-  (typeof noamQuestionAnalysis==='function'?noamQuestionAnalysis:getExerciseAnalysis)(exercise)
+  (typeof noamQuestionAnalysis==='function'?noamQuestionAnalysis:getExerciseAnalysis)(exercise,attachments)
     .then(function(analysis){return attachments.length?analysis:noamEnrichSourceAnalysis(exercise,analysis);})
     .then(function(analysis){
       requestAnalysis=analysis;
@@ -9744,7 +9758,8 @@ function askNoam(helpKind,studentMessage){
         hintIndex:hintIndex,
         studentMessage:solverMessage,
         conversationHistory:thread.history,
-        imageAnalysis:analysis
+        imageAnalysis:analysis,
+        hasStudentAttachments:attachments.length>0
       };
       return postJson(API+"/noamImageSolve",requestPayload);
     })
@@ -9775,7 +9790,7 @@ function askNoam(helpKind,studentMessage){
       thread.history=thread.history.slice(-8);
       thread.messages=thread.messages.slice(-60);
       if (helpKind==="hint"){thread.hintIndex=Math.min(3,thread.hintIndex+1);}
-      if (attachments.length&&typeof clearNoamAttachments==="function"){clearNoamAttachments(exercise.id);}
+      if (attachments.length&&typeof clearNoamAttachments==="function"){clearNoamAttachments(exercise.id,attachments);}
       saveNoamState();setNoamBusy(false);renderNoamChat();
       if(helpKind==="hint"&&!attachments.length&&!visual){
         noamAttachSourceHint(exercise,thread,deliveredMessage,{answer:answer,studentMessage:visible,helpKind:helpKind,hintIndex:hintIndex});

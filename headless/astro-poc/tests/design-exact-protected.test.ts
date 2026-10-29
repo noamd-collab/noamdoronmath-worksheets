@@ -273,7 +273,8 @@ describe('exact-design protected live-baseline boundaries', () => {
     // Automatic hints, original source assets and endpoint security retain their existing contracts.
     // 2026-10-29: explicit printed last-part-only figure scope proves independent canonical text.
     // The whole reviewed framing must match; any extra scope qualification keeps the image reader.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '938d3f583f9c5500c0942be286bfb624ec04ef4aeecfdc48870b8aa964a4ab9f');
+    // The attachment-origin flag and reader use one request snapshot; cleanup retains newly added photos.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), '4ba806e38320769fa2c2239379e3be12a0da2af1a51b462f9fcbd6b8fc7db7b7');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {

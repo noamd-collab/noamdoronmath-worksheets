@@ -62,6 +62,26 @@ function wireHint(f:any,analysis:any=contradictory()){
   noamVisualAnswer:(_:string,s:string)=>s,noamAttachSourceHint(){},setTimeout:(cb:any)=>cb()});
  return {requests,counter};
 }
+// Invoke the exact on-click instruction, not the shorter visible user bubble.
+function actualHintInstruction(v:string){
+ const m=v.match(/hintButton\.addEventListener\("click",function\(\)\{ askNoam\("hint",("[^"\n]+")\);/);
+ assert.ok(m,'actual hint button instruction');return JSON.parse(m[1]);
+}
+// Exercise the real request, canonical loader, original/photo reader, image
+// compositor and cleanup. Only canvas encoding and HTTP transport are stubbed.
+function wireSnapshotReader(f:any,v:string){
+ const {requests}=wireHint(f);
+ Object.assign(f.c,{noamAttachments:{[f.exercise.id]:f.attachments},renderNoamAttachments(){},
+  cropExerciseCanvas:async()=>({marker:'original-question'}),
+  stackCanvases:(canvases:any[])=>({canvases}),encodeCropCanvas:(stack:any)=>JSON.stringify(stack.canvases.map((c:any)=>c.marker)),
+  noamExerciseNeedsLiveVision:()=>false,syntheticAnalysis:()=>({readable:true,content_type:'snapshot-test-original',transcription:'original worksheet'}),
+  noamScopedExerciseSemantic:()=>f.exercise.prompt,
+  postJson:async(url:string,payload:any)=>{requests.push({url,payload});return url.endsWith('/noamImageAnalyze')
+   ?{ok:true,analysis:{readable:true,transcription:'student photograph',problem_statement:'student photograph',student_work:'student work'}}
+   :{ok:true,answer:'בדקו את הנתונים המודפסים.'};}});
+ runInNewContext(['attachmentsFor','currentAttachments','clearNoamAttachments','exerciseImageWithAttachments','getExerciseAnalysis'].map(n=>fn(v,n)).join('\n'),f.c);
+ return {requests};
+}
 function unreadable(){return Object.assign(new Error('לא הצלחנו לקרוא את תמונת השאלה.'),{code:'QUESTION_IMAGE_UNREADABLE'});}
 function assertCanonicalShape(a:any,exercise:any){
  assert.equal(a.content_type,'native_source_canonical');assert.equal(a.readable,true);assert.deepEqual(clone(a.uncertain_parts),[]);
@@ -73,6 +93,97 @@ function assertCanonicalShape(a:any,exercise:any){
 
 for(const relative of ['../public/worksheet-viewer-noam.html','../../../worksheet-viewer-noam.html']){
  const v=readFileSync(new URL(relative,import.meta.url),'utf8'),name=relative.includes('public')?'public':'root';
+
+ it(name+': original hint sends false using the literal instruction from the real button',async()=>{
+  const f=fixture(v,'W11'),r=wireSnapshotReader(f,v);
+  f.c.askNoam('hint',actualHintInstruction(v));await settled(f.c);
+  assert.equal(r.requests.length,1);assert.equal(r.requests[0].url,'/model/noamImageSolve');
+  assert.equal(r.requests[0].payload.hasStudentAttachments,false);
+  assert.equal(r.requests[0].payload.imageAnalysis.content_type,'native_source_canonical');
+  assert.ok(r.requests[0].payload.studentMessage.includes(actualHintInstruction(v)));
+ });
+
+ it(name+': photos removed/replaced/added during crop cannot change the sent image or its flag',async()=>{
+  for(const change of ['remove','replace','add']){
+   const f=fixture(v,'W11'),a={name:'a.png',canvas:{marker:'photo-A'}},b={name:'b.png',canvas:{marker:'photo-B'}};
+   f.attachments.push(a);const r=wireSnapshotReader(f,v);let finishCrop:any;
+   f.c.cropExerciseCanvas=()=>new Promise(resolve=>{finishCrop=resolve;});
+   let sourceLoads=0;f.c.noamLoadSourceVisual=async()=>{sourceLoads++;throw Error('photo request must bypass canonical');};
+   f.c.askNoam('hint',actualHintInstruction(v));assert.equal(typeof finishCrop,'function');
+   if(change==='remove')f.attachments.splice(0);
+   if(change==='replace')f.attachments.splice(0,1,b);
+   if(change==='add')f.attachments.push(b);
+   finishCrop({marker:'original-question'});await settled(f.c);
+   assert.equal(sourceLoads,0);assert.equal(r.requests.length,2);
+   const [analyze,solve]=r.requests;assert.equal(analyze.url,'/model/noamImageAnalyze');
+   assert.deepEqual(JSON.parse(analyze.payload.imageDataUrl),['original-question','photo-A']);
+   assert.equal(solve.payload.hasStudentAttachments,true);
+   assert.match(solve.payload.imageAnalysis.transcription,/student photograph/);
+   assert.equal(solve.payload.imageAnalysis.content_type,undefined);
+   assert.deepEqual(clone(f.c.analysisCache),{},'never cache a photograph analysis');
+   assert.deepEqual(clone(f.c.currentAttachments()).map((x:any)=>x.name),change==='remove'?[]:['b.png']);
+  }
+ });
+
+ it(name+': a photo added during original canonical fetch remains for the next request',async()=>{
+  const f=fixture(v,'W11'),r=wireSnapshotReader(f,v),load=f.c.noamLoadSourceVisual;
+  let resume:any;const gate=new Promise(resolve=>{resume=resolve;});
+  f.c.noamLoadSourceVisual=async(e:any)=>{await gate;return load(e);};
+  f.c.askNoam('hint',actualHintInstruction(v));
+  f.attachments.push({name:'later.png',canvas:{marker:'new-photo'}});resume();await settled(f.c);
+  assert.equal(r.requests.length,1);assert.equal(r.requests[0].payload.hasStudentAttachments,false);
+  assert.equal(r.requests[0].payload.imageAnalysis.content_type,'native_source_canonical');
+  assert.equal(f.c.currentAttachments()[0].name,'later.png');
+ });
+
+ it(name+': original reader fallback uses the same empty snapshot after a photo is added',async()=>{
+  const f=fixture(v,'W15construction'),r=wireSnapshotReader(f,v);
+  let resume:any;const unavailable=new Promise(resolve=>{resume=()=>resolve(null);});f.c.noamLoadSourceVisual=()=>unavailable;
+  f.c.askNoam('hint',actualHintInstruction(v));
+  f.attachments.push({name:'later.png',canvas:{marker:'new-photo'}});resume();await settled(f.c);
+  assert.equal(r.requests.length,1);assert.equal(r.requests[0].payload.hasStudentAttachments,false);
+  assert.equal(r.requests[0].payload.imageAnalysis.content_type,'snapshot-test-original');
+  assert.equal(f.c.currentAttachments()[0].name,'later.png');
+ });
+
+ it(name+': legacy loader omission reads current photos while true and an empty array force original',async()=>{
+  const f=fixture(v,'W11'),r=wireSnapshotReader(f,v);f.attachments.push({name:'a.png',canvas:{marker:'photo-A'}});
+  const original={readable:true,transcription:'cached original'};f.c.analysisCache[f.exercise.id]=original;
+  assert.equal(await f.c.getExerciseAnalysis(f.exercise,true),original);
+  assert.equal(await f.c.getExerciseAnalysis(f.exercise,[]),original);
+  assert.equal(r.requests.length,0);
+  const a=await f.c.getExerciseAnalysis(f.exercise);
+  assert.match(a.transcription,/student photograph/);assert.equal(r.requests.length,1);
+  assert.equal(f.c.analysisCache[f.exercise.id],original,'photo cannot overwrite original cache');
+  const q=await f.c.noamQuestionAnalysis(f.exercise);
+  assert.match(q.transcription,/student photograph/);assert.equal(r.requests.length,2);
+ });
+
+ it(name+': legacy askNoam without the canonical wrapper still passes its photo snapshot',async()=>{
+  const f=fixture(v,'W11'),r=wireSnapshotReader(f,v);f.c.noamQuestionAnalysis=undefined;
+  f.attachments.push({name:'a.png',canvas:{marker:'photo-A'}});
+  f.c.askNoam('hint',actualHintInstruction(v));f.attachments.splice(0);await settled(f.c);
+  assert.equal(r.requests.length,2);assert.equal(r.requests[1].payload.hasStudentAttachments,true);
+  assert.deepEqual(JSON.parse(r.requests[0].payload.imageDataUrl),['original-question','photo-A']);
+ });
+
+ it(name+': explicit cleanup still clears all, snapshot cleanup removes only processed objects',()=>{
+  const f=fixture(v,'W11');wireSnapshotReader(f,v);
+  const a={name:'same.png'},replacement={name:'same.png'};f.attachments.push(a,replacement);
+  f.c.clearNoamAttachments(f.exercise.id,[a]);assert.equal(f.c.currentAttachments().length,1);
+  assert.equal(f.c.currentAttachments()[0],replacement);
+  assert.equal(f.c.currentAttachments(),f.attachments,'keep a pending file reader’s captured list alive');
+  f.attachments.push({name:'prepared-after-cleanup.png'});assert.equal(f.c.currentAttachments().length,2);
+  f.c.clearNoamAttachments(f.exercise.id);assert.equal(f.c.currentAttachments().length,0);
+ });
+
+ it(name+': failed photo analysis preserves attachments and sends no solve request',async()=>{
+  const f=fixture(v,'W11'),r=wireSnapshotReader(f,v);f.attachments.push({name:'a.png',canvas:{marker:'photo-A'}});
+  const post=f.c.postJson;f.c.postJson=async(url:string,p:any)=>url.endsWith('/noamImageAnalyze')?{ok:true,analysis:{readable:false}}:post(url,p);
+  f.c.askNoam('hint',actualHintInstruction(v));await settled(f.c);
+  assert.equal(r.requests.length,0);assert.equal(f.thread.messages[1].answerError,true);
+  assert.equal(f.c.currentAttachments().length,1);assert.deepEqual(clone(f.c.analysisCache),{});
+ });
 
  it(name+': W15 independent conceptual part uses its printed text and an explicit generic scaffold',async()=>{
   const f=fixture(v,'W15'),{requests,counter}=wireHint(f,unreadable());
