@@ -2455,15 +2455,22 @@ function markerNumber(item, items) {
   return dotted ? Number(text) : null;
 }
 
+// Advance widths relative to a Hebrew letter, measured on the source sheets.
+// Digits are as wide as letters there; under-counting them shifts every mark
+// that follows a number.
 function measureAnswerUnits(text) {
   let n = 0;
   const value = String(text || '');
   for (let i = 0; i < value.length; i += 1) {
     const ch = value[i];
-    if (/[\u0590-\u05FF]/.test(ch)) n += 1;
-    else if (/[0-9A-Za-z]/.test(ch)) n += 0.56;
-    else if (/[·•.]/.test(ch)) n += 0.62;
-    else n += 0.32;
+    if (/[\u05F3\u05F4\u05BE]/.test(ch)) n += 0.72;
+    else if (/[\u0590-\u05FF]/.test(ch)) n += 1;
+    else if (/[0-9A-Za-z]/.test(ch)) n += 1;
+    else if (/[—–\-−]/.test(ch)) n += 1;
+    else if (/[·•.]/.test(ch)) n += 0.65;
+    else if (/[,;:()[\]]/.test(ch)) n += 0.72;
+    else if (/\s/.test(ch)) n += 0.41;
+    else n += 0.8;
   }
   return n;
 }
