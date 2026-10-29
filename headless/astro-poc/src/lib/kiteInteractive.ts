@@ -332,7 +332,7 @@ export function initKiteInteractive(): void {
         const hook = (): LoopHook | null => loopRoot.__loop ?? null;
         const isStatic = (): boolean => hook()?.state().static ?? false;
 
-        async function openBoard(): Promise<void> {
+        const openBoard = async (): Promise<void> => {
           if (open) return;
           open = true;
           loopRoot.style.display = 'none';
@@ -347,14 +347,16 @@ export function initKiteInteractive(): void {
             if (!isStatic()) showCueOnce(boardEl, cueEl);
           }
           if (isStatic() && replayBtn) replayBtn.textContent = 'חזרה להדגמה';
-        }
+        };
 
-        function closeBoard(replay: boolean): void {
+        const closeBoard = (replay: boolean): void => {
           if (!open) return;
           open = false;
           ix.classList.remove('is-on');
           ix.hidden = true;
           loopRoot.style.display = '';
+          // A static film never parks, so the open button is the only way back.
+          if (isStatic() && openWrap) openWrap.hidden = false;
           if (!replay) return;
           const h = hook();
           if (!h || h.state().static) return;
@@ -363,7 +365,7 @@ export function initKiteInteractive(): void {
             const toggle = loopRoot.querySelector<HTMLButtonElement>('[data-el="toggle"]');
             toggle?.click();
           }
-        }
+        };
 
         // Auto handoff: the moment the film parks, the board takes the card.
         setInterval(() => {

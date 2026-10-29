@@ -112,6 +112,8 @@ describe('kite interactive handoff (JSXGraph pilot)', () => {
     assert.match(ix, /!isStatic\(\)\) showCueOnce/);
     assert.match(cmp, /:global\(html\.nd-motion-off\) \.kite-ix__cue,\s*:global\(html\.noam-a11y-motion\) \.kite-ix__cue\s*\{\s*display:\s*none/);
     assert.doesNotMatch(cmp, /@media \(prefers-reduced-motion:\s*reduce\)\s*\{\s*\.kite-ix__cue/);
+    // static film: closing the board brings the open button back
+    assert.match(ix, /if \(isStatic\(\) && openWrap\) openWrap\.hidden = false;/);
     // hidden cue must not defeat the hidden attribute
     assert.match(cmp, /\.kite-ix__cue\[hidden\]\s*\{\s*display:\s*none/);
   });
