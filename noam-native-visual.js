@@ -6,6 +6,8 @@
 })(typeof globalThis !== "undefined" ? globalThis : this, function () {
   "use strict";
   var NS = "http://www.w3.org/2000/svg";
+  // Highlight drawn over the original black-ink figure: a hue far from black.
+  var FOCUS = "#e8590c";
   var NATIVE = /^\/noam-ai\/native\/(G[789]-(?:T[0-9]+|ASSESS1|CIRCLE|INTERP|TWOSRC|3060|KITE|SIDEANG|TRAP))\/([abc])\/figures\/([a-zA-Z0-9_-]+\.svg)$/;
   var SHAPES = ["line", "path", "circle", "ellipse", "polygon", "polyline", "rect"];
   // Published legacy directory aliases contain these same native packages.
@@ -301,11 +303,55 @@
       if (Math.abs(u[0] * w[1] - u[1] * w[0]) < .01) { unknown = true; return; }
       arcs.push([a.svg_xy, v.svg_xy, b.svg_xy]); names.push("∠" + name);
     });
+    // Every angle reference is drawn as an angle, never as the sides around it.
+    // A vertex angle ("∠E", "זווית E", "הזוויות שליד השוק EH", "זוויות הטרפז EFGH")
+    // is the angle between the only two verified source sides meeting there;
+    // any other count is ambiguous and leaves the angle unmarked.
+    var angleTalk = /∠|זווי/.test(focus.replace(/(?:ישר|ישרי|ישרת|חד|חדי|קהה|קהי)[\s־-]+ה?זווית/g, ""));
+    var consumed = Object.create(null), namedPolygons = [], pm;
+    // "במשולש ישר־זווית ABC", "בטרפז EFGH": a named polygon fixes which angle a vertex means.
+    var polygonRe = /(?:משולש|מרובע|מלבן|ריבוע|מקבילית|דלתון|טרפז|מצולע)(?:[\s־-]+[א-ת"׳]+){0,2}[\s־-]+([A-Z]{3,8})(?![A-Za-z])/g;
+    while ((pm = polygonRe.exec(focus))) if (new Set(pm[1]).size === pm[1].length) namedPolygons.push(pm[1]);
+    function addVertexAngle(v) {
+      consumed[v] = true;
+      var c = namedPoints[v]; if (!c) { unknown = true; return; }
+      var ends = Object.keys(namedPoints).filter(function (p) { return p !== v && verifiedSide(v, p, null); });
+      var owners = namedPolygons.filter(function (n) { return n.indexOf(v) >= 0; }).map(function (n) {
+        var i = n.indexOf(v); return [n[(i + n.length - 1) % n.length], n[(i + 1) % n.length]].sort().join("");
+      });
+      if (owners.length && owners.every(function (o) { return o === owners[0]; })) {
+        ends = owners[0].split("");
+        if (!ends.every(function (p) { return verifiedSide(v, p, null); })) { unknown = true; return; }
+      }
+      if (ends.length !== 2) { unknown = true; return; }
+      if (angleNames.indexOf(ends[0] + v + ends[1]) >= 0 || angleNames.indexOf(ends[1] + v + ends[0]) >= 0) return;
+      var a = namedPoints[ends[0]].svg_xy, b = namedPoints[ends[1]].svg_xy;
+      var u = [a[0] - c.svg_xy[0], a[1] - c.svg_xy[1]], w = [b[0] - c.svg_xy[0], b[1] - c.svg_xy[1]];
+      if (Math.abs(u[0] * w[1] - u[1] * w[0]) < .01) { unknown = true; return; }
+      angleNames.push(ends[0] + v + ends[1]); arcs.push([a, c.svg_xy, b]); names.push("∠" + ends[0] + v + ends[1]);
+    }
+    if (angleTalk) {
+      var single = /(?:∠\s*|זווי(?:ת|ות)\s+(?:ה)?)([A-Z](?:\s*(?:,|ו[־-]?)\s*(?:∠\s*)?[A-Z])*)(?![A-Za-z])/g, sm;
+      while ((sm = single.exec(focus))) (sm[1].match(/[A-Z]/g) || []).forEach(addVertexAngle);
+      // "זווית ישרה בנקודה A", "הזווית שבקודקוד B", "זווית ב־C".
+      var at = /זווי(?:ת|ות)(?:\s+(?:ה)?(?:ישרה|חדה|קהה|ישרות|חדות|קהות))?\s+(?:ש)?ב(?:ה)?(?:נקודה|קודקוד|קדקוד)?\s*[־-]?\s*([A-Z])(?![A-Za-z])/g, sa;
+      while ((sa = at.exec(focus))) addVertexAngle(sa[1]);
+      // "הזוויות שליד השוק EH ושליד השוק FG": the angles at both ends of each named side,
+      // read only inside the clause that follows a plural angle word.
+      focus.split(/(?=זוויות)/).forEach(function (clause) {
+        if (!/^זוויות/.test(clause)) return;
+        clause = clause.split(/[.?!:;]/)[0];
+        var whole = clause.match(/^זוויות\s+(?:ה)?(?:משולש|מרובע|מלבן|ריבוע|מקבילית|דלתון|טרפז|מצולע)\s+([A-Z]{3,8})(?![A-Za-z])/);
+        if (whole) { consumed[whole[1]] = true; whole[1].split("").forEach(addVertexAngle); }
+        var side = /(?:ש|ו|וש)?(?:ליד|על|ה?צמוד(?:ות|ה)?\s+ל|ה?סמוכ(?:ות|ה)?\s+ל)\s*(?:ה)?(?:שוק|בסיס|צלע|קטע)\s+([A-Z]{2})(?![A-Za-z])/g, sd;
+        while ((sd = side.exec(clause))) { consumed[sd[1]] = true; sd[1].split("").forEach(addVertexAngle); }
+      });
+    }
     if (/משולש|מרובע|מלבן|ריבוע|מקבילית|דלתון|טרפז|מצולע/.test(focus)) {
       var polygons = focus.match(/(?:^|[^A-Za-z])[A-Z]{3,8}(?=$|[^A-Za-z])/g) || [];
       polygons.forEach(function (token) {
         var name = token.replace(/[^A-Z]/g, "");
-        if (angleNames.indexOf(name) >= 0) return;
+        if (angleNames.indexOf(name) >= 0 || consumed[name]) return;
         var polygon = objects.find(function (o) { return o.type === "polygon" && o.name === name; });
         if (polygon) { select(polygon, name); return; }
         var edges = [];
@@ -319,6 +365,8 @@
     }
     var tokens = focus.match(/(?:^|[^A-Za-z])([A-Z]{1,2})(?=$|[^A-Za-z])/g) || [];
     tokens.map(function (t) { return t.replace(/[^A-Z]/g, ""); }).forEach(function (name) {
+      // Names that only located an angle are not separate focus objects.
+      if (consumed[name]) return;
       var matches = objects.filter(function (o) {
         if (/^(label|ticks|parallel|right_angle|overlay_mark)$/.test(o.type)) return false;
         if (o.type === "circle" && !/מעגל|עיגול/.test(focus)) return false;
@@ -355,6 +403,9 @@
       if (family) objects.filter(function (o) { return family.test(o.type); }).forEach(function (o) { select(o); });
     }
     var constructing = construction(focus);
+    // An angle hint whose angle cannot be identified shows the source unmarked,
+    // instead of colouring nearby sides as if they were the requested angle.
+    if (angleTalk && !arcs.length && !constructing) { selectedObjects = []; markers = []; names = []; }
     if (constructing || unknown && !selectedObjects.length && !arcs.length) return illustration(ctx, options, focus);
     // A combined focus must be complete even for a standard hint. Showing CH
     // alone for a request naming BH and CH would misrepresent the requested step.
@@ -407,7 +458,7 @@
       a[key] = value;
     });
     if (!valid) return null;
-    a.fill = "none"; a.stroke = "#1769aa"; a["stroke-width"] = width; a["stroke-opacity"] = ".8";
+    a.fill = "none"; a.stroke = FOCUS; a["stroke-width"] = width; a["stroke-opacity"] = "1";
     a["stroke-linecap"] = "round"; a["stroke-linejoin"] = "round";
     return element(document, shape.tag, a);
   }
@@ -492,12 +543,12 @@
       var width = Math.max(1.8, Math.min(spec.width, spec.height) / 105);
       var overlays = 0;
       spec.shapes.forEach(function (s) { var node = shapeOverlay(document, s, width); if (node) { svg.appendChild(node); overlays++; } });
-      spec.markers.forEach(function (p) { svg.appendChild(element(document, "circle", { cx: p[0], cy: p[1], r: width * 2.5, fill: "none", stroke: "#1769aa", "stroke-width": width, "data-role": "focus-point" })); });
+      spec.markers.forEach(function (p) { svg.appendChild(element(document, "circle", { cx: p[0], cy: p[1], r: width * 2.5, fill: "none", stroke: FOCUS, "stroke-width": width, "data-role": "focus-point" })); });
       spec.arcs.forEach(function (a) {
         var u = [a[0][0] - a[1][0], a[0][1] - a[1][1]], v = [a[2][0] - a[1][0], a[2][1] - a[1][1]], lu = Math.hypot.apply(Math, u), lv = Math.hypot.apply(Math, v);
         if (lu < 1 || lv < 1) return;
         var r = Math.min(lu, lv) * .22, start = [a[1][0] + u[0] / lu * r, a[1][1] + u[1] / lu * r], end = [a[1][0] + v[0] / lv * r, a[1][1] + v[1] / lv * r];
-        svg.appendChild(element(document, "path", { d: "M" + start.join(" ") + " A" + r + " " + r + " 0 0 " + (u[0] * v[1] - u[1] * v[0] > 0 ? 1 : 0) + " " + end.join(" "), fill: "none", stroke: "#1769aa", "stroke-width": width }));
+        svg.appendChild(element(document, "path", { d: "M" + start.join(" ") + " A" + r + " " + r + " 0 0 " + (u[0] * v[1] - u[1] * v[0] > 0 ? 1 : 0) + " " + end.join(" "), fill: "none", stroke: FOCUS, "stroke-width": width * 1.2, "data-role": "focus-angle" }));
       });
       if (spec.kind === "source-focus" && !overlays && !spec.markers.length && !spec.arcs.length) return null;
     }
