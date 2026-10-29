@@ -7133,7 +7133,18 @@ function noamCanonicalOtherPartFigure(question,item,exercise,data,earlier){
       item.figure_id!==null||exercise.nativeFigureId||exercise.nativeFigureUrl||
       !Array.isArray(question.given)||question.given.length||!Array.isArray(item.given)||item.given.length){return null;}
   var last=items[items.length-1],matches=Array.from(text.matchAll(/(?:^|[.;]\s*)(האיור(?: של שני המשולשים ישרי[־-]הזווית)? (?:מתייחס רק לסעיף|משמש רק בסעיף) האחרון)(?=[.;]|$)/g));
-  if(matches.length!==1||last===item||last.figure_id!==figure||
+  // Recognize the whole reviewed printed framing, not just one sentence in it.
+  // Additional prose could qualify this exclusion even without saying "figure"
+  // again (for example, "also part d uses it"); unknown wording keeps OCR.
+  if(matches.length!==1){return null;}
+  var clause=matches[0][1],at=text.indexOf(clause),introductions=[
+    'בדיקת תיקי הוכחה. בכל סעיף קבעו אם הטענה נכונה ונמקו;',
+    'בדקו כל טענה בנפרד.',
+    'בדקו את גבולות השימוש במשפטי הדמיון.'
+  ];
+  if(introductions.indexOf(text.slice(0,at).trim())<0||
+      !/^[.;]?$/.test(text.slice(at+clause.length).trim())){return null;}
+  if(last===item||last.figure_id!==figure||
       items.some(function(part,index){return !part||!part.id||!part.label||
         items.filter(function(other){return other&&other.id===part.id;}).length!==1||
         items.filter(function(other){return other&&other.label===part.label;}).length!==1||

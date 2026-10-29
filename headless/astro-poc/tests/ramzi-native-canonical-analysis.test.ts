@@ -133,6 +133,25 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
   }
  });
 
+ it(name+': figure exclusion must be the whole recognized printed scope without qualifications',async()=>{
+  const changes:[string,(text:string)=>string][]=[
+   ['trailing-anaphoric-exception',text=>text+' גם סעיף ד נעזר בו.'],
+   ['leading-anaphoric-exception',text=>'גם סעיף ד נעזר בו. '+text],
+   ['inserted-anaphoric-exception',text=>text.replace(' האיור',' גם סעיף ד נעזר בו; האיור')],
+   ['same-clause-exception',text=>text.replace('האחרון.','האחרון, פרט לסעיף ד.')],
+   ['trailing-newline-exception',text=>text+'\nגם סעיף ד נעזר בו.'],
+   ['unknown-introduction',text=>text.replace('בדקו את גבולות השימוש במשפטי הדמיון.','בדקו את המקרים הבאים.')],
+   ['restriction-without-reviewed-introduction',text=>text.slice(text.indexOf('האיור'))]
+  ];
+  for(const [label,change] of changes){
+   const f=fixture(v,'W15',(d,m,e)=>{const q=d.questions.find((q:any)=>q.id==='q20');q.text=change(q.text);e.context=q.text;});
+   const {requests,counter}=wireHint(f);f.c.askNoam('hint','תן לי רמז אחד בלבד.');await settled();
+   assert.equal(counter.analysis,1,label+' must retain the image reader');
+   assert.equal(requests.length,1,label+' must preserve the solve request count');
+   assert.equal(requests[0].payload.imageAnalysis.content_type,undefined,label);
+  }
+ });
+
  it(name+': final figure part and student-designed proof keep the existing image route',async()=>{
   for(const key of ['W15final','W15construction']){
    const f=fixture(v,key),{requests,counter}=wireHint(f);f.c.askNoam('hint','תן לי רמז אחד בלבד.');await settled();
