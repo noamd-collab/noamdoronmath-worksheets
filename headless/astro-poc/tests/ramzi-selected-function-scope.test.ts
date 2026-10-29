@@ -1,6 +1,7 @@
+import { runVisualCompilerInNewContext } from './helpers/visual-compiler-vm';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { runInNewContext } from 'node:vm';
+
 import { it } from 'node:test';
 import { parseHTML } from 'linkedom';
 
@@ -14,14 +15,14 @@ function fixture(part='ב',viewer='../public/worksheet-viewer-noam.html'){
  const data=JSON.parse(readFileSync(new URL(manifest.nativeExportUrl.slice(1),root),'utf8'));
  const svgText=readFileSync(new URL(exercise.nativeFigureUrl.slice(1),root),'utf8'),source={data,svgText};
  const {document}=parseHTML('<html><body></body></html>'),c:any={document,manifest,selectedExercise:exercise};c.window=c;
- for(const file of files)runInNewContext(readFileSync(new URL(file,root),'utf8'),c,{filename:file});
+ for(const file of files)runVisualCompilerInNewContext(readFileSync(new URL(file,root),'utf8'),c,{filename:file});
  const context=c.NoamNativeVisual.authoredContext(data,exercise,svgText);assert.ok(context);
  const v=readFileSync(new URL(viewer,import.meta.url),'utf8');
  Object.assign(c,{noamCachedSourceVisual:()=>source,noamSourcePanelModuleMissing:()=>false,
   noamSourcePanelReviewed:(e:any)=>c.NoamSourcePanels.isReviewed(e),
   noamDiagramSourceIdentity:()=> 'current-pdf',noamSourceVisualIdentity:()=> 'current-native',
   noamSourceVisualOptions:(o:any)=>o});
- for(const name of ['noamSourcePresentation','noamTypedVisualContext','noamInspectVisualPlan','noamRenderVisualPlan','noamRenderAiDiagram','noamCanOfferDrawing','noamRenderSourceVisual'])runInNewContext(fn(v,name),c);
+ for(const name of ['noamSourcePresentation','noamTypedVisualContext','noamInspectVisualPlan','noamRenderVisualPlan','noamRenderAiDiagram','noamCanOfferDrawing','noamRenderSourceVisual'])runVisualCompilerInNewContext(fn(v,name),c);
  return {c,source,data,exercise,context,svgText};
 }
 function plan(context:any){return {version:2,status:'ok',family:'function',evidence:[{source:'question',quote:context.questionText}]};}

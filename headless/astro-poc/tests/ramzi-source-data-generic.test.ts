@@ -1,13 +1,14 @@
+import { runVisualCompilerInNewContext } from './helpers/visual-compiler-vm';
 import assert from 'node:assert/strict';
 import { readFileSync,readdirSync } from 'node:fs';
-import { runInNewContext } from 'node:vm';
+
 import { it } from 'node:test';
 import { parseHTML } from 'linkedom';
 const root=new URL('../../../',import.meta.url),pub=new URL('../public/',import.meta.url),c:any={};c.window=c;
-for(const name of ['noam-native-visual.js','noam-authored-geometry.js','noam-authored-visual.js','noam-visual-data.js','noam-visual-plan.js','noam-source-data-visual.js'])runInNewContext(readFileSync(new URL(name,root),'utf8'),c);
+for(const name of ['noam-native-visual.js','noam-authored-geometry.js','noam-authored-visual.js','noam-visual-data.js','noam-visual-plan.js','noam-source-data-visual.js'])runVisualCompilerInNewContext(readFileSync(new URL(name,root),'utf8'),c);
 const options={studentMessage:'שרטוט להמחשה',helpKind:'hint',drawCurrentStep:true,answer:'תשובה שלא משמשת כמקור.'};
 const manifests=readdirSync(new URL('noam-ai/manifests/',pub)).map(file=>JSON.parse(readFileSync(new URL('noam-ai/manifests/'+file,pub),'utf8')));
-function own(x:any){c.json=JSON.stringify(x);return runInNewContext('JSON.parse(json)',c);}
+function own(x:any){c.json=JSON.stringify(x);return runVisualCompilerInNewContext('JSON.parse(json)',c);}
 function fixture(pkg:string,level:string,q:number,part:string){const manifest=manifests.find(m=>m.nativeExportUrl===`/noam-ai/native/${pkg}/${level}/noam-ai.json`);assert.ok(manifest);const data=own(JSON.parse(readFileSync(new URL(manifest.nativeExportUrl.slice(1),pub),'utf8'))),exercise=manifest.exercises.find((e:any)=>e.q===q&&e.part===part);assert.ok(exercise);const context=c.NoamNativeVisual.authoredContext(data,exercise,'');assert.ok(context);assert.equal(context.hasFigure,false);return {manifest,data,exercise,context};}
 const resolve=(context:any,opt:any=options)=>c.NoamSourceDataVisual.resolve(context,opt),render=(context:any)=>c.NoamSourceDataVisual.render(parseHTML('<html/>').document,context,options),table={head:['x','y'],rows:[['1',''],['2','□']]};
 it('W33-Q3 shows the exact original table for all selected items without calculating the tenth step',()=>{
@@ -55,7 +56,7 @@ it('generic routes stay explicit, figure-free, group-free and revalidate instead
 for(const name of ['worksheet-viewer-noam.html','headless/astro-poc/public/worksheet-viewer-noam.html'])it(name+': actual viewer saves source-only tables and new operation trees with revalidated identity',async()=>{
  const html=readFileSync(new URL(name,root),'utf8'),fn=(n:string)=>{const i=html.indexOf('function '+n+'(');return html.slice(i,html.indexOf('\nfunction ',i+1));};
  for(const [f,kind] of [[fixture('G7-T12','a',4,'ד'),'source-context'],[fixture('G7-T05','a',5,'ג'),'typed-operations']] as const){const {document}=parseHTML('<html/>');let identity='exact-source',cache:any={data:f.data,svgText:''},refresh=0;
- const s:any={...c,document,manifest:f.manifest,selectedExercise:f.exercise,WeakSet,Promise,noamSourcePanelModuleMissing:()=>false,noamSourcePanelReviewed:()=>false,noamSourceVisualIdentity:()=>identity,noamLoadSourceVisual:async()=>{cache={data:f.data,svgText:''};return cache;},noamCachedSourceVisual:()=>cache,renderNoamChat:()=>refresh++};s.window=s;runInNewContext(['noamSourceVisualOptions','noamSourcePresentation','noamPrepareSourceVisual','noamRenderSourceVisual'].map(fn).join('\n'),s);
+ const s:any={...c,document,manifest:f.manifest,selectedExercise:f.exercise,WeakSet,Promise,noamSourcePanelModuleMissing:()=>false,noamSourcePanelReviewed:()=>false,noamSourceVisualIdentity:()=>identity,noamLoadSourceVisual:async()=>{cache={data:f.data,svgText:''};return cache;},noamCachedSourceVisual:()=>cache,renderNoamChat:()=>refresh++};s.window=s;runVisualCompilerInNewContext(['noamSourceVisualOptions','noamSourcePresentation','noamPrepareSourceVisual','noamRenderSourceVisual'].map(fn).join('\n'),s);
  const visual=await s.noamPrepareSourceVisual(f.exercise,options);assert.equal(visual.presentation,kind);assert.ok(s.noamRenderSourceVisual(JSON.parse(JSON.stringify(visual))));assert.equal(JSON.stringify(visual).includes('table'),false);assert.equal(JSON.stringify(visual).includes('tree'),false);
  cache=null;assert.equal(s.noamRenderSourceVisual(visual),null);await Promise.resolve();assert.equal(refresh,1);assert.ok(s.noamRenderSourceVisual(visual));identity='changed-source';assert.equal(s.noamRenderSourceVisual(visual),null);identity='exact-source';visual.options.drawCurrentStep=false;assert.equal(s.noamRenderSourceVisual(visual),null);
  }

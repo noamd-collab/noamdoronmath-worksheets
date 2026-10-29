@@ -1,6 +1,7 @@
+import { runVisualCompilerInNewContext } from './helpers/visual-compiler-vm';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
-import { runInNewContext } from 'node:vm';
+
 import { it } from 'node:test';
 import { parseHTML } from 'linkedom';
 const root=new URL('../public/',import.meta.url);
@@ -21,7 +22,7 @@ function fixture(v:string,path='G8-TWOSRC/a',qid='q3',part='ג',hooks:any={}){
  fetch:async(url:string)=>{calls.push(url);if(hooks.wait)await hooks.wait;if(hooks.fail===url)return {ok:false};const body=readFileSync(new URL(url.slice(1),root),'utf8');return {ok:true,json:async()=>JSON.parse(body),text:async()=>hooks.svg?hooks.svg(url,body):body};},
  requestNoamDiagram:async(...args:any[])=>{fallback.push(args);return 'protected-fallback';}};
  const helper='var noamSourceVisualPackages='+v.split('var noamSourceVisualPackages=')[1].split('function noamNativeFigure(')[0];
- runInNewContext(native+'\n'+panels+'\n'+fn(v,'noamDiagramSourceIdentity')+'\n'+helper+'\n'+['noamDiagramCurrent','noamDiagramRefresh','noamTypedVisualContext','noamAddDiagramExpansion','noamRenderAiDiagram'].map(n=>fn(v,n)).join('\n'),c);
+ runVisualCompilerInNewContext(native+'\n'+panels+'\n'+fn(v,'noamDiagramSourceIdentity')+'\n'+helper+'\n'+['noamDiagramCurrent','noamDiagramRefresh','noamTypedVisualContext','noamAddDiagramExpansion','noamRenderAiDiagram'].map(n=>fn(v,n)).join('\n'),c);
  window.NoamNativeVisual=c.NoamNativeVisual;window.NoamSourcePanels=c.NoamSourcePanels;
  return {c,manifest,exercise,message,thread,calls,crops,fallback,runtime,document,window};
 }
@@ -42,7 +43,7 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
   const f=fixture(v);f.message.diagramOptions=opts;
   f.c.noamSourceCropRequested=()=>false;f.c.noamStripMarkdownEmphasis=(text:string)=>text;
   f.c.postJson=()=>{throw new Error('Group overview must not request protected generation');};
-  runInNewContext(['setNoamDiagramButtonLabel','noamVisualCanExpand','noamCanOfferDrawing','addTranscriptBubble','requestNoamDiagram'].map(n=>fn(v,n)).join('\n'),f.c);
+  runVisualCompilerInNewContext(['setNoamDiagramButtonLabel','noamVisualCanExpand','noamCanOfferDrawing','addTranscriptBubble','requestNoamDiagram'].map(n=>fn(v,n)).join('\n'),f.c);
   const host=f.document.createElement('div');f.document.body.appendChild(host);
   f.c.addTranscriptBubble(host,'assistant',f.message.text,'',f.message.visual,f.message,f.thread);
   const button=host.querySelector('button.noam-draw-action:not(.noam-diagram-expand)') as any;
@@ -55,7 +56,7 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
   delete old.sourcePanelGroup;delete old.sourcePanelIdentity;delete old.panelIds;old.presentation='source-focus';f.message.visual=old;
   f.c.noamSourceCropRequested=()=>false;f.c.noamStripMarkdownEmphasis=(text:string)=>text;
   f.c.postJson=()=>{throw new Error('Saved group repair must not call generation');};
-  runInNewContext(['setNoamDiagramButtonLabel','noamVisualCanExpand','noamCanOfferDrawing','addTranscriptBubble','requestNoamDiagram'].map(n=>fn(v,n)).join('\n'),f.c);
+  runVisualCompilerInNewContext(['setNoamDiagramButtonLabel','noamVisualCanExpand','noamCanOfferDrawing','addTranscriptBubble','requestNoamDiagram'].map(n=>fn(v,n)).join('\n'),f.c);
   assert.equal(f.c.noamRenderSourceVisual(old),null);assert.equal(f.c.noamCanOfferDrawing(f.exercise,f.thread,f.message),true);
   const host=f.document.createElement('div');f.document.body.appendChild(host);f.c.addTranscriptBubble(host,'assistant',f.message.text,'',old,f.message,f.thread);
   assert.equal(host.querySelectorAll('svg image').length,0);const button=host.querySelector('button.noam-draw-action') as any;assert.equal(button.disabled,false);button.click();await f.runtime.messages.get(f.message);
@@ -136,7 +137,7 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
  });
 }
 it('all 181 reviewed items in 52 questions have complete matching sibling crops within PDF bounds',async()=>{
- const v=readFileSync(new URL('../public/worksheet-viewer-noam.html',import.meta.url),'utf8'),api:any={};runInNewContext(native+'\n'+panels,api);let count=0;const questions=new Set<string>();
+ const v=readFileSync(new URL('../public/worksheet-viewer-noam.html',import.meta.url),'utf8'),api:any={};runVisualCompilerInNewContext(native+'\n'+panels,api);let count=0;const questions=new Set<string>();
  for(const m of manifests)for(const ex of m.exercises){if(!api.NoamSourcePanels.isReviewed(ex))continue;const path=m.nativeExportUrl.split('/native/')[1].split('/noam-ai.json')[0],f=fixture(v,path,ex.nativeQuestionId,ex.part),visual=await f.c.noamPrepareSourceVisual(f.exercise,opts);assert.equal(visual?.sourcePanelGroup,true,ex.id);count++;questions.add(path+'/'+ex.nativeQuestionId);}
  assert.equal(count,181);assert.equal(questions.size,52);
 });

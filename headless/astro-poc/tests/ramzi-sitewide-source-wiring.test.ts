@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { runInNewContext } from 'node:vm';
+import { runVisualCompilerInNewContext } from './helpers/visual-compiler-vm';
 import { it } from 'node:test';
 import { parseHTML } from 'linkedom';
 const app = new URL('../', import.meta.url);
@@ -8,7 +8,7 @@ const read = (p:string) => readFileSync(new URL(p, app), 'utf8');
 const source = read('public/worksheet-viewer-noam.html');
 const helpers = 'function noamNativeFigure' + source.split('function noamNativeFigure')[1].split('function showExercisePreview')[0];
 const zoom = 'function noamAddDiagramExpansion' + source.split('function noamAddDiagramExpansion')[1].split('function noamDiagramRuntime')[0];
-const label = 'function setNoamDiagramButtonLabel' + source.split('function setNoamDiagramButtonLabel')[1].split('function addTranscriptBubble')[0];
+const label = 'function setNoamDiagramButtonLabel' + source.split('function setNoamDiagramButtonLabel')[1].split('function noamVisualsAllowed')[0];
 const rows = ['pilot','next-ten','second-ten','third-ten','fourth-ten','remaining-101'].flatMap(n => JSON.parse(read(`src/data/worksheet-${n}.v1.json`)).sheets);
 const alternate:any[] = [];
 for (const r of rows) {
@@ -25,7 +25,7 @@ function fixture(data:any, manifest:any, ex:any) {
  const context:any={document,window,manifest,selectedExercise:ex,exerciseLabel:()=>ex.id,
   noamDiagramSourceIdentity:(e:any)=>e.id,renderNoamChat:()=>{},
   fetch:async(url:string)=>{calls.push(url);return {ok:true,json:async()=>data};}};
- runInNewContext(label+'\n'+helpers+'\n'+zoom,context);
+ runVisualCompilerInNewContext(label+'\n'+helpers+'\n'+zoom,context);
  return {document,window,context,calls};
 }
 it('all 85 real subsection-specific figures open their own original after unsupported generation',async()=>{

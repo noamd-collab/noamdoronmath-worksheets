@@ -1,6 +1,7 @@
+import { runVisualCompilerInNewContext } from './helpers/visual-compiler-vm';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { runInNewContext } from 'node:vm';
+
 import { it } from 'node:test';
 import { parseHTML } from 'linkedom';
 
@@ -42,7 +43,7 @@ for (const file of ['worksheet-viewer-noam.html', 'headless/astro-poc/public/wor
       noamDiagramError: () => 'unsupported', busy: false, drawingAnswer: message,
     };
     const sourceHelpers = html.slice(html.indexOf('var noamSourceVisualPackages='), html.indexOf('function noamNativeFigure('));
-    runInNewContext(nativeModule + '\n' + sourceHelpers + '\n' + ['noamMessageVisualOptions', 'noamNativeDiagramContext', 'noamTypedVisualContext', 'noamInspectVisualPlan', 'noamRenderVisualPlan', 'noamDiagramSourceInput', 'requestNoamDiagram'].map(fn).join('\n'), c);
+    runVisualCompilerInNewContext(nativeModule + '\n' + sourceHelpers + '\n' + ['noamMessageVisualOptions', 'noamNativeDiagramContext', 'noamTypedVisualContext', 'noamInspectVisualPlan', 'noamRenderVisualPlan', 'noamDiagramSourceInput', 'requestNoamDiagram'].map(fn).join('\n'), c);
     window.NoamNativeVisual = c.NoamNativeVisual;
     window.NoamDiagramPlan = { inspect: () => ({ ok: false, reason: 'unsupported' }) };
     return { c, calls, data, exercise, manifest, message, thread, runtime };
@@ -53,7 +54,7 @@ for (const file of ['worksheet-viewer-noam.html', 'headless/astro-poc/public/wor
     f.c.requestNoamDiagram = (...args: any[]) => received.push(args);
     f.c.thread = f.thread;
     const start = html.indexOf('document.getElementById("noamDraw").addEventListener("click",function(){');
-    runInNewContext(html.slice(start, html.indexOf('\n  });', start) + 6), f.c);
+    runVisualCompilerInNewContext(html.slice(start, html.indexOf('\n  });', start) + 6), f.c);
     f.c.document.getElementById('noamDraw').click();
     assert.equal(received.length, 1);
     assert.equal(received[0][3].drawCurrentStep, true);
@@ -62,7 +63,7 @@ for (const file of ['worksheet-viewer-noam.html', 'headless/astro-poc/public/wor
     const button = f.c.document.createElement('button');
     Object.assign(f.c, { drawButton: button, drawingExercise: f.exercise, message: f.message });
     const inline = html.indexOf('drawButton.addEventListener("click",function(){');
-    runInNewContext(html.slice(inline, html.indexOf('\n    });', inline) + 8), f.c);
+    runVisualCompilerInNewContext(html.slice(inline, html.indexOf('\n    });', inline) + 8), f.c);
     button.click(); assert.equal(received.length, 2); assert.equal(received[1][3].drawCurrentStep, true);
     assert.equal(f.c.noamSourceVisualOptions({ drawCurrentStep: 'true' }).drawCurrentStep, false);
     assert.equal(f.c.noamSourceVisualOptions({ drawCurrentStep: true }).drawCurrentStep, true);

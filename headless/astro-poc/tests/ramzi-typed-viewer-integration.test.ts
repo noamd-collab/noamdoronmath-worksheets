@@ -1,7 +1,8 @@
+import { runVisualCompilerInNewContext } from './helpers/visual-compiler-vm';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
-import { runInNewContext } from 'node:vm';
+
 import { it } from 'node:test';
 import { parseHTML } from 'linkedom';
 
@@ -29,18 +30,18 @@ function fixture(file=viewers[1],legacy=false) {
     getExerciseAnalysis:async()=>({readable:true,transcription:legacy?exercise.text:question.text,diagram_description:''}),
     cropExerciseImage:async()=> 'data:image/png;base64,fixture',isBotProtectionError:(e:any)=>e.code==='BOT_BLOCKED'};
   c.window=c;
-  function clone(value:any){c.__clone=JSON.stringify(value);return runInNewContext('JSON.parse(__clone)',c);}
+  function clone(value:any){c.__clone=JSON.stringify(value);return runVisualCompilerInNewContext('JSON.parse(__clone)',c);}
   c.fetch=async(url:string)=>{fetches.push(url);return{ok:true,json:async()=>clone(sourceData)};};
   c.postJson=async(url:string,payload:any)=>{calls.push({url,payload});return{ok:true,accepted:true,jobId:'job-'+calls.length};};
   c.pollNoamDiagramJob=async()=>clone({ok:true,plan:legacy?legacyPlan:typedPlan,sourceSha256:sourceHash,validationQuestionText:legacy?exercise.text:'model text is not authoritative for typed plans'});
-  for(const name of modules)runInNewContext(readFileSync(new URL(name,pub),'utf8'),c,{filename:name});
+  for(const name of modules)runVisualCompilerInNewContext(readFileSync(new URL(name,pub),'utf8'),c,{filename:name});
   const sourceHelpers='var noamSourceVisualPackages='+html.split('var noamSourceVisualPackages=')[1].split('function noamNativeFigure(')[0];
   const names=['noamDiagramRuntime','noamDiagramSourceIdentity','noamDiagramAnalysis','noamDiagramQuestionText','noamTypedVisualContext','noamInspectVisualPlan','noamRenderVisualPlan','noamRenderAiDiagram','noamDiagramError','noamNativeDiagramContext','noamDiagramSourceInput','requestNoamDiagram'];
   // The released viewer retains earlier native-focus and printed-mark guards.
   // Include their real functions: these no-figure fixtures must pass through
   // them naturally, rather than mocking those production branches away.
   for(const name of ['noamPrepareNativeFocus','noamNativeLengthComparisonHint','noamLoadNativeFocus','noamNativeSegmentFocus','noamSourceGivens'])if(html.includes('function '+name+'('))names.push(name);
-  runInNewContext(sourceHelpers+'\n'+names.map(n=>fn(html,n)).join('\n'),c);
+  runVisualCompilerInNewContext(sourceHelpers+'\n'+names.map(n=>fn(html,n)).join('\n'),c);
   const options={studentMessage:'אפשר רמז 1?',answer:message.text,helpKind:'hint',hintIndex:1,drawCurrentStep:true};
   return{c,clone,exercise,message,thread,manifest,calls,fetches,renders,notices,options};
 }

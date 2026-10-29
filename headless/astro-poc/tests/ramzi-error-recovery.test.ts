@@ -1,6 +1,7 @@
+import { runVisualCompilerInNewContext } from './helpers/visual-compiler-vm';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { runInNewContext } from 'node:vm';
+
 import { test } from 'node:test';
 import { parseHTML } from 'linkedom';
 
@@ -18,7 +19,7 @@ test('security failure stays an error with its retry action through repeated dec
   const retry = document.querySelector('.noam-retry-action')! as any;
   let focusCount = 0;
   retry.focus = () => { focusCount++; };
-  const api = runInNewContext(functions + '\n({decorateConversation,submitUnderstanding})', {
+  const api = runVisualCompilerInNewContext(functions + '\n({decorateConversation,submitUnderstanding})', {
     document, window: {}, panelBody: document.querySelector('#panel'), pendingCheckFocus: false,
     schedule() {}, veilStudentPrompts() {}, replayLocalChecks() {}, prefixRetryLead() {}, isolateMath() {}, shapeReading() {},
     currentExerciseId() { throw new Error('failed reply must not advance or request a new explanation'); },
@@ -47,7 +48,7 @@ test('security failure stays an error with its retry action through repeated dec
 test('a successful geometry hint exposes drawing without special user wording; failure and existing drawings do not', () => {
   const start = viewer.indexOf('function noamCanOfferDrawing(');
   const end = viewer.indexOf('function noamConstructedVisual(');
-  const api = runInNewContext(viewer.slice(start, end) + '\n({noamCanOfferDrawing})', {
+  const api = runVisualCompilerInNewContext(viewer.slice(start, end) + '\n({noamCanOfferDrawing})', {
     window: { NoamLocalVisual: { wantsVisualSupport: () => false } },
     ttl: 'דלתון', localVisualExerciseSource: () => 'מרובע וצלעות', noamRecentThreadText: () => '',
     noamGeometryContext: (text: string) => /דלתון/.test(text),
@@ -70,7 +71,7 @@ test('decorating stable hint and overview failures does not retrigger the class 
       <div class="noam-row user"><div class="noam-bubble"><span class="noam-kind">${kind}</span></div></div>
       <div class="noam-row assistant" data-ramzi-confirmed="1"><div class="noam-bubble"><span>בדיקת האבטחה נכשלה</span><button class="noam-retry-action">נסו שוב</button></div></div>
     </div></div></body></html>`);
-    const api = runInNewContext(functions + '\n({decorateConversation})', {
+    const api = runVisualCompilerInNewContext(functions + '\n({decorateConversation})', {
       document, window: {}, panelBody: document.querySelector('#panel'), pendingCheckFocus: false,
       schedule() {}, veilStudentPrompts() {}, replayLocalChecks() {}, prefixRetryLead() {}, isolateMath() {}, shapeReading() {},
     });

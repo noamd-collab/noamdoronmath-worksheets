@@ -1,6 +1,7 @@
+import { runVisualCompilerInNewContext } from './helpers/visual-compiler-vm';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { runInNewContext } from 'node:vm';
+
 import { it } from 'node:test';
 import { parseHTML } from 'linkedom';
 const source=readFileSync(new URL('../public/worksheet-viewer-noam.html',import.meta.url),'utf8');
@@ -27,7 +28,7 @@ function fixture(payload:any=data,ex:any=exercise){
   fetch:async(url:string)=>{calls.push(url);return{ok:true,json:async()=>payload};},
   noamDiagramRuntime:()=>runtime,noamConstructedVisual:()=>null,saveNoamState:()=>{},noamDiagramRefresh:()=>{},
   noamDiagramError:(e:any)=>e.message,Map,WeakSet,Promise};
- runInNewContext(sourcePanels+'\n'+sourceCrop+'\n'+sourceIdentity+'\n'+helper+'\n'+request,context);
+ runVisualCompilerInNewContext(sourcePanels+'\n'+sourceCrop+'\n'+sourceIdentity+'\n'+helper+'\n'+request,context);
  window.NoamSourcePanels=context.NoamSourcePanels;
  return {document,context,calls,make:(answer=hint)=>context.noamPrepareNativeFocus(ex,{answer,helpKind:"hint",studentMessage:"אפשר רמז 1?"})};
 }
@@ -186,7 +187,7 @@ it('saved unlabelled outlines restore the original values without another model 
  f.context.window.NoamDiagramPlan={compile:(...args:any[])=>{compiled.push(args);return{};}};
  f.context.window.NoamGeometry={render:()=>f.document.createElement('figure')};
  let refreshes=0;f.context.renderNoamChat=()=>refreshes++;
- runInNewContext(renderer,f.context);
+ runVisualCompilerInNewContext(renderer,f.context);
  const visual={type:'ai-diagram',exerciseId:lengthExercise.id,sourceIdentity:f.context.noamDiagramSourceIdentity(lengthExercise),
   plan:{version:1,status:'ok',points:{A:[2,2],B:[0,0],C:[6,0]}},
   context:{hintText:lengthHint,studentMessage:'אפשר רמז 1?',sourceGivens:[]}};
@@ -206,7 +207,7 @@ it('a late saved length-aid lookup does not redraw another selected question',as
  f.context.window.NoamDiagramPlan={};f.context.window.NoamGeometry={};
  let refreshes=0;f.context.renderNoamChat=()=>refreshes++;
  const renderer='function noamRenderAiDiagram'+source.split('function noamRenderAiDiagram')[1].split('function noamDiagramError')[0];
- runInNewContext(renderer,f.context);
+ runVisualCompilerInNewContext(renderer,f.context);
  const visual={exerciseId:lengthExercise.id,sourceIdentity:f.context.noamDiagramSourceIdentity(lengthExercise),
   context:{hintText:lengthHint,studentMessage:'אפשר רמז 1?',sourceGivens:[]}};
  f.context.noamRenderAiDiagram(visual);f.context.selectedExercise={id:'different-part'};
@@ -219,7 +220,7 @@ it('two saved diagrams sharing a pending package refresh only the currently sele
  let resolve:any,fetches=0,refreshes=0;
  f.context.fetch=()=>{fetches++;return new Promise(r=>resolve=r);};f.context.renderNoamChat=()=>refreshes++;
  const renderer='function noamRenderAiDiagram'+source.split('function noamRenderAiDiagram')[1].split('function noamDiagramError')[0];
- runInNewContext(renderer,f.context);
+ runVisualCompilerInNewContext(renderer,f.context);
  function saved(ex:any){return{exerciseId:ex.id,sourceIdentity:f.context.noamDiagramSourceIdentity(ex),
   context:{hintText:lengthHint,studentMessage:'אפשר רמז 1?',sourceGivens:[]}};}
  f.context.noamRenderAiDiagram(saved(lengthExercise));f.context.selectedExercise=other;

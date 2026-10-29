@@ -1,5 +1,14 @@
 # Agents
 
+## Ramzi drawings — Noam's rule, 29 October 2026
+
+Visual hints (drawings, illustrations, sketches and graphics) are permitted only
+on geometry or analytic geometry worksheets. All other worksheets must show no
+Ramzi drawings, including saved drawings, automatic visuals and explicit drawing
+requests. Textual hints and the original worksheet remain available. Enforce the
+same worksheet policy in the viewer and diagram services; unknown topics deny
+drawings. Do not infer permission from a student's message.
+
 Work on `main` through pull requests. Do not merge or publish without Noam's approval.
 
 ## Review

@@ -1,10 +1,11 @@
+import { runVisualCompilerInNewContext } from './helpers/visual-compiler-vm';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { runInNewContext } from 'node:vm';
+
 import { it } from 'node:test';
 import { parseHTML } from 'linkedom';
 const scope:any={};
-for(const f of ['noam-native-visual.js','noam-authored-geometry.js','noam-authored-visual.js','noam-visual-data.js','noam-visual-plan.js'])runInNewContext(readFileSync(new URL('../public/'+f,import.meta.url),'utf8'),scope);
+for(const f of ['noam-native-visual.js','noam-authored-geometry.js','noam-authored-visual.js','noam-visual-data.js','noam-visual-plan.js'])runVisualCompilerInNewContext(readFileSync(new URL('../public/'+f,import.meta.url),'utf8'),scope);
 const options={studentMessage:'אפשר רמז 1?',helpKind:'hint',answer:'התבוננו בגרף הנתון.',drawCurrentStep:true};
 function plan(context:any){return {version:2,status:'ok',family:'function',evidence:[{source:'question',quote:context.questionText},{source:'part',quote:context.partText}]};}
 it('explicit function domains cannot silently become the default unrestricted plot',()=>{
@@ -41,7 +42,7 @@ it('actual viewer formula route cannot bypass strict authored guards with the ol
   const viewer=readFileSync(new URL('../public/worksheet-viewer-noam.html',import.meta.url),'utf8');
   function fn(name:string){const chunk=viewer.slice(viewer.indexOf('function '+name+'('));return chunk.slice(0,chunk.indexOf('\nfunction ',1));}
   const c:any={window:scope,document,noamNativeDataUrl:()=>'/noam-ai/native/G8-T11/b/noam-ai.json'};
-  runInNewContext(['noamSourcePanelReviewed','noamSourcePanelModuleMissing','noamSourcePresentation','noamParsedLocalVisual'].map(fn).join('\n'),c);
+  runVisualCompilerInNewContext(['noamSourcePanelReviewed','noamSourcePanelModuleMissing','noamSourcePresentation','noamParsedLocalVisual'].map(fn).join('\n'),c);
   assert.equal(c.noamSourcePresentation({data:native,svgText:''},exercise,options),null);
   c.window.NoamLocalVisual={parseShiftedParabolaExample:()=>{throw Error('legacy parser reached');}};
   assert.equal(c.noamParsedLocalVisual(exercise),null);

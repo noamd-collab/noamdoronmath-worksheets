@@ -1,12 +1,13 @@
+import { runVisualCompilerInNewContext } from './helpers/visual-compiler-vm';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { runInNewContext } from 'node:vm';
+
 import { it } from 'node:test';
 import { parseHTML } from 'linkedom';
 const source=readFileSync(new URL('../public/worksheet-viewer-noam.html',import.meta.url),'utf8');
 const helper='function noamNativeFigure'+source.split('function noamNativeFigure')[1].split('function showExercisePreview')[0];
 const zoom='function noamAddDiagramExpansion'+source.split('function noamAddDiagramExpansion')[1].split('function noamDiagramRuntime')[0];
-const label='function setNoamDiagramButtonLabel'+source.split('function setNoamDiagramButtonLabel')[1].split('function addTranscriptBubble')[0];
+const label='function setNoamDiagramButtonLabel'+source.split('function setNoamDiagramButtonLabel')[1].split('function noamVisualsAllowed')[0];
 const data=JSON.parse(readFileSync(new URL('../public/noam-ai/native/G8-T39/a/noam-ai.json',import.meta.url),'utf8'));
 const manifest=JSON.parse(readFileSync(new URL('../public/noam-ai/manifests/9448157f4ecb463489417696230f0e57.json',import.meta.url),'utf8'));
 const exercise=manifest.exercises.find((e:any)=>e.q===1&&e.part==='ג');
@@ -21,8 +22,8 @@ function fixture(payload:any=data, ex:any=exercise, msg:any=message){
  const context:any={document,window,exercise:ex,message:msg,selectedExercise:ex,exerciseLabel:()=> 'שאלה 1 · סעיף ג',
   noamDiagramSourceIdentity:(e:any)=>e.id+':'+(e.version||''),
   fetch:async(url:string)=>{calls.push(url);return{ok:true,json:async()=>payload};},container:document.getElementById('bubble')};
- runInNewContext(label+'\n'+helper+'\n'+zoom+';noamAppendSourceDiagramHelp(container,exercise,message);',context);
- return {document,window,context,calls,open:async()=>{const d=document.querySelector('details');if(d){d.open=true;d.dispatchEvent(new window.Event('toggle'));await new Promise(r=>setImmediate(r));}},aid:()=>runInNewContext('noamSourceVertexAid('+JSON.stringify(payload)+',exercise)',context)};
+ runVisualCompilerInNewContext(label+'\n'+helper+'\n'+zoom+';noamAppendSourceDiagramHelp(container,exercise,message);',context);
+ return {document,window,context,calls,open:async()=>{const d=document.querySelector('details');if(d){d.open=true;d.dispatchEvent(new window.Event('toggle'));await new Promise(r=>setImmediate(r));}},aid:()=>runVisualCompilerInNewContext('noamSourceVertexAid('+JSON.stringify(payload)+',exercise)',context)};
 }
 it('actual G8 saved unsupported reply offers separately labelled source and four unpaired vertices',async()=>{
  const before=JSON.stringify(message),f=fixture();

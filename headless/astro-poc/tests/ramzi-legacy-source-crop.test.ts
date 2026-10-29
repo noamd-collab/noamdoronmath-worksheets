@@ -1,6 +1,7 @@
+import { runVisualCompilerInNewContext } from './helpers/visual-compiler-vm';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { runInNewContext } from 'node:vm';
+
 import { it } from 'node:test';
 import { parseHTML } from 'linkedom';
 
@@ -27,7 +28,7 @@ for(const file of ['public/worksheet-viewer-noam.html','../../worksheet-viewer-n
  const typed=extract(source,'function tryNoamLocalVisual','function insertNoamMath');
  const offer=extract(source,'function noamCanOfferDrawing','function noamManualVisual');
  const zoom=extract(source,'function noamAddDiagramExpansion','function noamDiagramRuntime');
- const label=extract(source,'function setNoamDiagramButtonLabel','function addTranscriptBubble');
+ const label=extract(source,'function setNoamDiagramButtonLabel','function noamVisualsAllowed');
  function fixture(m:any=structuredClone(actual)){
   const {document,window}=parseHTML('<html><body><div id="bubble"><button class="noam-draw-action">retry</button><span class="noam-draw-error">unsupported</span></div></body></html>');
   const create=document.createElement.bind(document);
@@ -44,7 +45,7 @@ for(const file of ['public/worksheet-viewer-noam.html','../../worksheet-viewer-n
    noamConstructedVisual:()=>null,noamPrepareNativeFocus:async()=>null,noamSourceGivens:async()=>null,
    noamDiagramSourceInput:async()=>{calls.push('generation');throw new Error('protected route reached');},
    noamDiagramError:()=> 'unavailable',fetch:()=>{throw new Error('source crops must not fetch a generated image');}};
-  runInNewContext(helpers+'\n'+identity+'\n'+nativeIdentity+'\n'+crops+'\n'+zoom+'\n'+label+'\n'+offer+'\n'+request,context);
+  runVisualCompilerInNewContext(helpers+'\n'+identity+'\n'+nativeIdentity+'\n'+crops+'\n'+zoom+'\n'+label+'\n'+offer+'\n'+request,context);
   return {document,window,context,calls,ex,message,thread,runtime,container:document.getElementById('bubble')!};
  }
  it(file+': G9-T41 q1a displays every reviewed crop, preserving unsupported state and generation retry',async()=>{
@@ -110,7 +111,7 @@ for(const file of ['public/worksheet-viewer-noam.html','../../worksheet-viewer-n
  });
  it(file+': the real typed Send handler recognizes an original question request without a diagram engine',async()=>{
   const f=fixture();Object.assign(f.context,{busy:false,noamDrafts:{},exerciseThread:()=>f.thread});
-  runInNewContext(typed,f.context);
+  runVisualCompilerInNewContext(typed,f.context);
   assert.equal(f.context.tryNoamLocalVisual('אפשר לראות את השאלה המקורית'),true);
   const reply=f.thread.messages.at(-1)!;
   assert.equal(reply.text,'טוען את השאלה המקורית מהדף…');
