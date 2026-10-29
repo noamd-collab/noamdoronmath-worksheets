@@ -4018,6 +4018,11 @@ function leftFigureBoxes(bitmap, y0, y1) {
     let samples = 0;
     const left = Math.floor(width * 0.12);
     const right = Math.floor(width * 0.9);
+    // A guided box beside a drawing is grey too, but white paper separates the two.
+    // A section bar is one band, so the bar samples must form one run.
+    let run = 0;
+    let best = 0;
+    let miss = 0;
     for (let x = left; x < right; x += 3) {
       samples += 1;
       const i = (y * width + x) * 4;
@@ -4027,9 +4032,19 @@ function leftFigureBoxes(bitmap, y0, y1) {
       const mx = r > g ? (r > b ? r : b) : (g > b ? g : b);
       const mn = r < g ? (r < b ? r : b) : (g < b ? g : b);
       // A section bar is a full-width grey or black band. The raster is often light grey.
-      if (mx - mn < 18 && mx < 248 && (mx < 80 || mn > 160)) n += 1;
+      if (mx - mn < 18 && mx < 248 && (mx < 80 || mn > 160)) {
+        n += 1;
+        run += 1 + miss;
+        miss = 0;
+        if (run > best) best = run;
+      } else if (run > 0 && miss < 4) {
+        miss += 1;
+      } else {
+        run = 0;
+        miss = 0;
+      }
     }
-    return samples > 0 && n / samples > 0.72;
+    return samples > 0 && n / samples > 0.72 && best / samples > 0.72;
   };
   // A writing line is one or two rows of short dashes across the text column.
   // A graph axis is one long stroke, and a sentence is many rows tall. Following
