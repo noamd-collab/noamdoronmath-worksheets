@@ -1,0 +1,46 @@
+name: slash-fractions
+
+# Visible site text may not write a fraction with '/'. Blogs are excluded.
+# Does not deploy and does not run model reviews.
+
+on:
+  pull_request:
+    paths:
+      - 'headless/astro-poc/**'
+      - '.github/scripts/check-slash-fractions.mjs'
+      - '.github/scripts/check-slash-fractions.test.mjs'
+      - '.github/slash-fraction-allowlist.json'
+      - '.github/workflows/slash-fractions.yml'
+  push:
+    branches:
+      - headless/astro-poc-baseline
+    paths:
+      - 'headless/astro-poc/**'
+      - '.github/scripts/check-slash-fractions.mjs'
+      - '.github/scripts/check-slash-fractions.test.mjs'
+      - '.github/slash-fraction-allowlist.json'
+      - '.github/workflows/slash-fractions.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  slash-fractions:
+    name: astro-poc-slash-fractions
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Test the slash-fraction checker
+        run: node --test .github/scripts/check-slash-fractions.test.mjs
+
+      - name: Fail slash fractions in visible site text
+        run: node .github/scripts/check-slash-fractions.mjs

@@ -41,14 +41,16 @@ const protectedFiles: Record<string, string> = {
   'astro.config.mjs': 'c002156d52b10040396ba30e6fc01106bf866fb639a204eddc13c79fadcb2fab',
   // G9 PDF v2, G8 PDF v2 (two c2 levels), and G7 PDF v2.
   // Packages-120: replaced student PDF ids and added G9-T46 (דלתון) in the geometry group.
-  'src/data/catalog.v1.json': '4c5ccc34149a798f47c4f261744f132b36d7ff083dc4d0052c81a53219639fb6',
+  // Visible topic labels: סינתזה גאומטרית → שילוב גאומטרי, and the grade-6 synthesis sheet → סיכום.
+  'src/data/catalog.v1.json': 'd4ff9c4b71fe22c3e66a390431ae7b65360a0d48b7a10275c8e472a75c4259eb',
   'src/lib/catalog/loadCatalog.ts': '1a5e54a4c19c016046202f3e0b9bb95203e58fe983dab5a27e6f261abfbc9d95',
   // Viewer links forward the c2 sibling as pc2.
   'src/lib/worksheetLinks.ts': '6bfa7fe86ff7d02a87c2f7533c6eabae1c34a372c2c68b2a92519e8c4790f531',
   // kite-construct film added for /kite-grade-9 (explicit content, not a design regen).
   'src/lib/conceptLoops.ts': 'c0a46b28dd9610cd5b79b09f33a5ff60775bbb8e1859e07808e031e9bdc784f0',
   // Brave motion: site opt-in overrides prefers-reduced-motion inside the film.
-  'src/components/ConceptLoop.astro': 'c7eb6b250a46f3986186b5e113ab4e29a51dc5c17eefcd49f6dcade0ab367be4',
+  // Kite caption says חלקי 2 instead of a slash fraction.
+  'src/components/ConceptLoop.astro': '8fa8bd116ee7af1ea02bd7d580c140372f05a16772f4706876ced7ac9b3c66ef',
   // HeroLoop.astro is the homepage shell (which loops are emitted). The engine
   // above stays byte-identical; the home hero may lazy-load existing loops.
   // One readout line only: S = (a · h) : 2 school notation, PR #40 via PR #41.

@@ -180,7 +180,7 @@ describe('results', () => {
   });
   it('pages whose catalog link does not fit the page stay results of their own', () => {
     const page = index.docs.find((d) => d.key === 'page:/coordinate-plane-grade-8');
-    assert.ok(page && !page.topicKey, 'מערכת צירים is not attached to סינתזה גאומטרית');
+    assert.ok(page && !page.topicKey, 'מערכת צירים is not attached to שילוב גאומטרי');
     const stats = index.docs.find((d) => d.key === 'page:/statistics-grade-8');
     assert.ok(stats && !stats.topicKey);
   });

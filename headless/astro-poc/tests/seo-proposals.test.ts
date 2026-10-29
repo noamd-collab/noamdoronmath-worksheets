@@ -25,10 +25,10 @@ describe('seo proposals', () => {
     assert.equal(csv.trim().split('\n').length, items.length + 1);
   });
 
-  it('triangle-area proposal follows the page h1, not the mismatched live title', () => {
+  it('triangle-area title is the page title, without the old mismatched phrase', () => {
     const row = items.find((item) => item.path === '/triangle-area-grade-7');
     assert.ok(row?.currentTitle);
-    assert.match(row.currentTitle, /מפשטים ואז פותרים/);
+    assert.equal(row.currentTitle, 'שטח משולש לכיתה ז׳ | דפי עבודה חינם');
     assert.doesNotMatch(row.title, /מפשטים ואז פותרים/);
     assert.match(row.title, /שטח משולש/);
     assert.equal(row.approved, false);

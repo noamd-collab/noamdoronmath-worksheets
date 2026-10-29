@@ -19,6 +19,7 @@ import {
 import { localizeSiteHref } from '../lib/sitePages';
 import { gradeHubLabel, isGradeHubGrade } from '../lib/gradeHubs';
 import { resolveSiteHrefString } from '../lib/resolveSiteHref';
+import TopicInline from './TopicInline.astro';
 import { nextGradeRelatedTopics } from '../lib/topicFamilies';
 import {
   educationalLevelForGrade,
@@ -249,7 +250,7 @@ function faqHeadingId(groupIndex: number) {
           <div class="exact-topic-copy">
             {heroUnits.map((unit) => {
               if (unit.kind === 'intro') return (
-                <p class="topic-page__intro" data-flow="paragraph" data-role="intro">{unit.text}</p>
+                <p class="topic-page__intro" data-flow="paragraph" data-role="intro"><TopicInline text={unit.text} /></p>
               );
               if (unit.kind === 'cta') return (
                 <p class="topic-page__cta-row" data-flow="cta" data-catalog-ctas>
@@ -279,7 +280,7 @@ function faqHeadingId(groupIndex: number) {
             return (
               <p class="topic-page__intro" data-flow="paragraph" data-role="intro">
                 {textParts(unit.text).map((part) =>
-                  part.nowrap ? <span class="topic-math-nowrap">{part.text}</span> : part.text,
+                  part.nowrap ? <span class="topic-math-nowrap"><TopicInline text={part.text} /></span> : <TopicInline text={part.text} />,
                 )}
               </p>
             );
@@ -311,7 +312,7 @@ function faqHeadingId(groupIndex: number) {
                     return (
                       <p class={cls} data-flow="paragraph" data-role={block.role || 'body'}>
                         {textParts(block.text).map((part) =>
-                          part.nowrap ? <span class="topic-math-nowrap">{part.text}</span> : part.text,
+                          part.nowrap ? <span class="topic-math-nowrap"><TopicInline text={part.text} /></span> : <TopicInline text={part.text} />,
                         )}
                       </p>
                     );
@@ -343,7 +344,7 @@ function faqHeadingId(groupIndex: number) {
               return (
                 <p class={cls} data-flow="paragraph" data-role={block.role || 'body'}>
                   {textParts(block.text).map((part) =>
-                    part.nowrap ? <span class="topic-math-nowrap">{part.text}</span> : part.text,
+                    part.nowrap ? <span class="topic-math-nowrap"><TopicInline text={part.text} /></span> : <TopicInline text={part.text} />,
                   )}
                 </p>
               );
