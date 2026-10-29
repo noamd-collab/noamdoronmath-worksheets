@@ -2087,7 +2087,7 @@ function answerBox(items, questionNumber, part) {
         if (overlap < 4) return;
         // A "·" between answers is the next item's separator, not this answer.
         const token = String(glyph.str || '').trim();
-        if (/^[·•.]+$/.test(token) || /^[·•]\s*[אבגדהו]\.?\s*$/.test(token)) return;
+        if (/^[·•.;]+$/.test(token) || /^[·•;]\s*[אבגדהו]\.?\s*$/.test(token)) return;
         top = Math.max(top, glyphTop(glyph));
         // A digit the marker only grazes still belongs to this answer. The next part does not.
         if (gx >= slotLeft0 - 6) left = Math.min(left, gx - 1);
@@ -2286,10 +2286,11 @@ function answerAffixText(text) {
   const token = String(text || '').replace(/\s/g, '');
   if (!token) return false;
   // A trailing separator, a leading dot, or the source's own "ד." prefix.
-  if (/^[·•.]+$/.test(token)) return true;
+  // Some keys separate parts with ";" instead of "·".
+  if (/^[·•.;]+$/.test(token)) return true;
   if (/^[אבגדהו]\.$/.test(token)) return true;
   if (/^\.[אבגדהו]$/.test(token)) return true;
-  if (/^[·•][אבגדהו]\.?$/.test(token)) return true;
+  if (/^[·•;][אבגדהו]\.?$/.test(token)) return true;
   return false;
 }
 
@@ -2300,7 +2301,7 @@ function answerKeptSpan(text) {
   // A glued "ד. הוכחה", ". נימוק" or "נכונה ·" still carries the source mark.
   // A cut that lands inside the next part also leaves "· ד" on the end.
   const lead = /^(?:[\s]*[·•.]+[\s]*|[אבגדהו]\.\s*)/;
-  const trail = /(?:\s*[·•]+\s*[אבגדהו]\.?\s*|\s*[·•]+\s*)$/;
+  const trail = /(?:\s*[·•;]+\s*[אבגדהו]\.?\s*|\s*[·•;]+\s*)$/;
   let guard = 0;
   while (guard < 6 && start < end) {
     guard += 1;
@@ -3271,25 +3272,70 @@ function peelAnswerAffixes(bitmap, hints, left, right, top, bot) {
   const y0 = Math.max(0, Math.floor(top));
   const y1 = Math.min(H, Math.ceil(bot));
   if (x1 - x0 < 8 || y1 - y0 < 3) return out;
+  // Read a little past the window: the source mark may already sit outside it.
+  const reach = Math.round(W * 0.016);
+  const wx0 = Math.max(0, x0 - reach);
+  const wx1 = Math.min(W, x1 + reach);
   let data;
   try {
-    data = bitmap.getContext('2d').getImageData(x0, y0, x1 - x0, y1 - y0).data;
+    data = bitmap.getContext('2d').getImageData(wx0, y0, wx1 - wx0, y1 - y0).data;
   } catch (error) {
     return out;
   }
-  const rw = x1 - x0;
+  const rw = wx1 - wx0;
   const dark = (x, y) => {
-    const i = ((y - y0) * rw + (x - x0)) * 4;
+    const i = ((y - y0) * rw + (x - wx0)) * 4;
     return data[i] < 242 || data[i + 1] < 242 || data[i + 2] < 242;
   };
   const colInk = (x, ra, rb) => {
     for (let y = ra; y < rb; y += 1) if (dark(x, y)) return true;
     return false;
   };
+  // The first whole cluster past the window edge, skipping one the edge cuts through.
+  const outerCluster = (side, ra, rb) => {
+    const step = side === 'right' ? 1 : -1;
+    let x = side === 'right' ? x1 : x0 - 1;
+    const inRange = (v) => v >= wx0 && v < wx1;
+    while (inRange(x) && colInk(x, ra, rb)) x += step;
+    while (inRange(x) && !colInk(x, ra, rb)) x += step;
+    if (!inRange(x)) return null;
+    let blank = 0;
+    let top = Infinity;
+    let bottom = -Infinity;
+    let a = x;
+    let b = x;
+    while (inRange(x) && blank < 2) {
+      if (colInk(x, ra, rb)) {
+        blank = 0;
+        a = Math.min(a, x);
+        b = Math.max(b, x);
+        for (let y = ra; y < rb; y += 1) {
+          if (!dark(x, y)) continue;
+          if (y < top) top = y;
+          if (y > bottom) bottom = y;
+        }
+      } else blank += 1;
+      x += step;
+    }
+    return { w: b - a + 1, h: bottom - top + 1, top, bottom };
+  };
   hints.forEach((hint) => {
     const ra = Math.max(y0, Math.floor(hint.y0 * H));
     const rb = Math.min(y1, Math.ceil(hint.y1 * H));
     if (rb - ra < 4) return;
+    if (!hint.exact) {
+      // A whole-line text item only estimates where a mark sits, and digits inside
+      // Hebrew throw it off. When the mark is already past the edge ("·" to the
+      // left, the label's "." to the right), a cut here would eat the answer.
+      const span = rb - ra;
+      const mark = outerCluster(hint.side, ra, rb);
+      const small = mark && mark.w <= span * 0.3 && mark.h <= span * 0.6 && mark.top >= ra + span * 0.25;
+      // The hint band runs from the em top to 0.3 em under the baseline. A "." rests
+      // on the baseline; a "·" floats at mid-height. The next part's "·" sits left
+      // of the answer, and this label's "." sits right of it.
+      const low = mark && mark.bottom >= ra + span * 0.7;
+      if (small && mark.h <= span * 0.3 && (hint.side === 'left' ? !low : low)) return;
+    }
     const lo = Math.max(x0, Math.ceil(out.left));
     const hi = Math.min(x1, Math.floor(out.right));
     if (hi - lo < 8) return;
@@ -3346,6 +3392,80 @@ function peelAnswerAffixes(bitmap, hints, left, right, top, bot) {
       const cut = lo + best.b - 1;
       if (!otherRows(x0, cut)) out.left = Math.max(out.left, cut);
       else out.masks.push({ x0: lo + first - 1, x1: cut, y0: ra, y1: rb });
+    }
+  });
+  // A lone ".", "·", "," or ";" left on a marked edge is the separator, not the answer.
+  // Geresh and degree marks sit high and stay; a minus is flat and stays.
+  ['right', 'left'].forEach((side) => {
+    const hint = hints.find((item) => item.side === side);
+    if (!hint) return;
+    // Measure against the text em, not the tallest glyph: a root sign or a fraction
+    // makes a digit look small.
+    const ra = Math.max(y0, Math.floor(hint.y0 * H));
+    const rb = Math.min(y1, Math.ceil(hint.y1 * H));
+    const em = rb - ra;
+    if (em < 6) return;
+    for (let pass = 0; pass < 2; pass += 1) {
+      const lo = Math.max(x0, Math.ceil(out.left));
+      const hi = Math.min(x1, Math.floor(out.right));
+      if (hi - lo < 8) return;
+      const cols = [];
+      let lineTop = Infinity;
+      let lineBot = -Infinity;
+      for (let x = lo; x < hi; x += 1) {
+        let top = -1;
+        let bottom = -1;
+        for (let y = y0; y < y1; y += 1) {
+          if (!dark(x, y)) continue;
+          if (top < 0) top = y;
+          bottom = y;
+        }
+        cols.push(top < 0 ? null : { top, bottom });
+        if (top >= 0) {
+          if (top < lineTop) lineTop = top;
+          if (bottom > lineBot) lineBot = bottom;
+        }
+      }
+      const lineH = lineBot - lineTop + 1;
+      if (!(lineH > 6)) return;
+      const minGap = Math.max(3, Math.round((y1 - y0) * 0.08));
+      const clusters = [];
+      let start = -1;
+      let blank = 0;
+      for (let i = 0; i <= cols.length; i += 1) {
+        if (i < cols.length && cols[i]) {
+          if (start < 0) start = i;
+          blank = 0;
+        } else if (start >= 0) {
+          blank += 1;
+          if (i === cols.length || blank >= minGap) {
+            clusters.push({ a: start, b: i - blank + 1 });
+            start = -1;
+            blank = 0;
+          }
+        }
+      }
+      if (clusters.length < 2) return;
+      const edge = side === 'right' ? clusters[clusters.length - 1] : clusters[0];
+      let top = Infinity;
+      let bottom = -Infinity;
+      for (let i = edge.a; i < edge.b; i += 1) {
+        if (!cols[i]) continue;
+        if (cols[i].top < top) top = cols[i].top;
+        if (cols[i].bottom > bottom) bottom = cols[i].bottom;
+      }
+      const w = edge.b - edge.a;
+      const h = bottom - top + 1;
+      // A dot is about as wide as it is tall. „ and a minus are wider; letters are taller.
+      const punct = h <= em * 0.3 && w <= h * 1.2 + 1 && top >= ra + em * 0.35;
+      if (!punct) return;
+      if (side === 'right') {
+        const prev = clusters[clusters.length - 2];
+        out.right = lo + prev.b + Math.min(2, Math.floor((edge.a - prev.b) / 2));
+      } else {
+        const next = clusters[1];
+        out.left = lo + next.a - Math.min(2, Math.floor((next.a - edge.b) / 2));
+      }
     }
   });
   return out;
