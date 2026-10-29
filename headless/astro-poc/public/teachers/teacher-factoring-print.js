@@ -4210,12 +4210,15 @@ function leftFigureBoxes(bitmap, y0, y1) {
       } else if (++miss > gapPx) break;
     }
     maxX = last;
-    boxes.push({
+    const box = {
       x0: minX / width,
       x1: (maxX + 1) / width,
       y0: low / height,
       y1: (high + 1) / height,
-    });
+    };
+    // The stroke was still going at the scan limit. The drawing reaches into the text column.
+    if (last >= limitX - 1) box.runsOn = true;
+    boxes.push(box);
   };
   const barRow = new Uint8Array(bot - top + 1);
   for (let y = top; y <= bot; y += 1) {
@@ -5343,6 +5346,10 @@ function layoutQuestionCrops(model) {
     let drawnRight = figure.x1;
     let contentRight = figure.x1;
     let cutBySentence = false;
+    if (figure.cutAt) {
+      cutBySentence = true;
+      drawnRight = Math.min(drawnRight, figure.cutAt - 0.006);
+    }
     rows.forEach((row) => {
       if ((row.w || 0) < 0.18) return;
       const overlap = Math.min(row.y + (row.h || 0.014), figure.y1) - Math.max(row.y, figure.y0);
@@ -5576,6 +5583,52 @@ function layoutQuestionCrops(model) {
   return segments;
 }
 
+function inkOutsideBand(bitmap, x0, x1, y0, y1, band) {
+  if (!bitmap || typeof bitmap.getContext !== 'function') return true;
+  const width = bitmap.width;
+  const height = bitmap.height;
+  const px0 = Math.max(0, Math.floor(x0 * width));
+  const px1 = Math.min(width, Math.ceil(x1 * width));
+  const py0 = Math.max(0, Math.floor(y0 * height));
+  const py1 = Math.min(height, Math.ceil(y1 * height));
+  if (px1 - px0 < 2 || py1 - py0 < 2) return false;
+  let data;
+  try {
+    data = bitmap.getContext('2d').getImageData(px0, py0, px1 - px0, py1 - py0).data;
+  } catch (error) {
+    return true;
+  }
+  const rw = px1 - px0;
+  const rh = py1 - py0;
+  const b0 = band.y0 * height;
+  const b1 = band.y1 * height;
+  const counts = new Uint32Array(rh);
+  for (let y = 0; y < rh; y += 1) {
+    for (let x = 0; x < rw; x += 1) {
+      const i = (y * rw + x) * 4;
+      if (data[i] < 160 || data[i + 1] < 160 || data[i + 2] < 160) counts[y] += 1;
+    }
+  }
+  // A writing rule crosses the drawing as a line a few pixels thick. It is not the drawing.
+  const thin = Math.max(3, Math.round(height * 0.0012));
+  let n = 0;
+  for (let y = 0; y < rh; y += 1) {
+    const abs = py0 + y;
+    if (!counts[y] || (abs >= b0 && abs <= b1)) continue;
+    let a = y;
+    while (a > 0 && counts[a - 1]) a -= 1;
+    let b = y;
+    while (b + 1 < rh && counts[b + 1]) b += 1;
+    if (b - a + 1 <= thin) {
+      y = b;
+      continue;
+    }
+    n += counts[y];
+    if (n > 6) return true;
+  }
+  return false;
+}
+
 function rebuildQuestionGroup(group, texts) {
   const sample = group[0];
   const slice = sample && sample.slice;
@@ -5690,6 +5743,29 @@ function rebuildQuestionGroup(group, texts) {
       return tail || yCap - figure.y0 < 0.02 ? null : { ...figure, y0: figure.y0, y1: yCap };
     })
     .filter((figure) => figure && figure.y1 - figure.y0 >= 0.02);
+  // A graph in the middle of the page is not a left-column drawing. Slicing it as
+  // one would print its grid as stem lines, so the catalog crop stays whole.
+  const centered = figures.some((figure) => figure.runsOn && !rows.some((row) => {
+    if ((row.w || 0) < 0.2 || !/[א-ת]{4,}/.test(String(row.text || ''))) return false;
+    const y = row.y || 0;
+    return y + (row.h || 0.014) > figure.y0 && y < figure.y1 && (row.x || 0) + (row.w || 0) > 0.5;
+  }));
+  if (centered) return null;
+  // Following a stroke can run on into the stem line beside the drawing's top.
+  // When nothing but that line is inked right of its first word, the drawing ends there.
+  figures.forEach((figure, index) => {
+    rows.forEach((row) => {
+      if ((row.w || 0) < 0.2 || !/[א-ת]{4,}/.test(String(row.text || ''))) return;
+      const rx = row.x || 0;
+      const ry = row.y || 0;
+      const rh = Math.max(row.h || 0.014, 0.012);
+      if (rx < 0.28 || rx <= figure.x0 + 0.05 || rx >= figure.x1 || rx + row.w < figure.x1 + 0.05) return;
+      if (ry + rh < figure.y0 || ry > figure.y1) return;
+      const band = { y0: ry - rh * 0.4, y1: ry + rh * 1.5 };
+      if (inkOutsideBand(sample.bitmap, rx - 0.004, figure.x1, figure.y0, figure.y1, band)) return;
+      figures[index] = { ...figures[index], x1: Math.min(figures[index].x1, rx - 0.006), cutAt: rx };
+    });
+  });
   onPage.forEach((part) => {
     const fig = part.figure;
     if (!fig || !(fig.y1 > fig.y0 + 0.018) || !(fig.x1 > fig.x0 + 0.02)) return;
