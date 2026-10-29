@@ -40,7 +40,7 @@ it('offscreen, hidden and reduced-motion modes never advance the sequence',()=>{
     const p=player();
     if(condition==='offscreen')p.classes.add('ll--off');
     if(condition==='hidden')p.document.hidden=true;
-    if(condition==='reduced')p.media.matches=true;
+    if(condition==='reduced')p.classes.add('noam-a11y-motion');
     p.advance(40000);assert.equal(p.film.dataset.phase,'0');
     p.chapters[2].click();assert.equal(p.film.dataset.phase,'2');
     p.chapters[1].click();p.details[1].click();assert.equal(p.film.dataset.beat,'2');
@@ -56,15 +56,15 @@ it('shows AA numeric pairs after the angles, and dedicates all of SSS to side ra
 });
 
 
-it('site opt-in starts the sequence under OS reduce while explicit stop and visitor pause remain authoritative',()=>{
+it('the sequence plays under OS reduce while explicit stop and visitor pause remain authoritative',()=>{
   const p=player();p.media.matches=true;p.advance(10000);
-  assert.equal(p.film.dataset.phase,'0');
+  assert.equal(p.film.dataset.phase,'1','OS reduce alone does not hold the film');
   p.classes.add('nd-motion-enabled');p.advance(10000);
-  assert.equal(p.film.dataset.phase,'1');
-  p.classes.add('nd-motion-off');const progress=p.values['--progress'];p.advance(10000);
-  assert.equal(p.film.dataset.phase,'1');assert.equal(p.values['--progress'],progress);
-  p.classes.delete('nd-motion-off');p.classes.add('ll--paused');p.advance(10000);
-  assert.equal(p.film.dataset.phase,'1');
-  p.classes.delete('ll--paused');p.advance(10000);
   assert.equal(p.film.dataset.phase,'2');
+  p.classes.add('nd-motion-off');const progress=p.values['--progress'];const held=p.film.dataset.phase;p.advance(10000);
+  assert.equal(p.film.dataset.phase,held);assert.equal(p.values['--progress'],progress);
+  p.classes.delete('nd-motion-off');p.classes.add('ll--paused');p.advance(10000);
+  assert.equal(p.film.dataset.phase,held);
+  p.classes.delete('ll--paused');p.advance(10000);
+  assert.notEqual(p.film.dataset.phase,held,'resuming advances the film');
 });

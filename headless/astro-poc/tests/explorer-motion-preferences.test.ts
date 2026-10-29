@@ -33,15 +33,14 @@ function environment(markup: string) {
   };
 }
 
-it('percent demo waits for site opt-in and respects global stop and later manual input', async () => {
+it('percent demo plays by default and respects global stop and later manual input', async () => {
   const env = environment(`<div data-pct-explorer data-p="25" data-q="200"><div data-el="grid">${'<i></i>'.repeat(100)}</div><input data-el="range" value="25"></div>`);
   const { initPercentExplorers } = await import('../src/lib/percentExplorer');
   initPercentExplorers();
   const range = env.document.querySelector('input') as HTMLInputElement;
-  assert.equal(env.pending.size, 0);
-  assert.equal(range.value, '25');
+  assert.equal(env.pending.size, 1, 'the demo starts under OS reduce without an opt-in');
   await env.motion(true);
-  assert.equal(env.pending.size, 1, 'opt-in starts the deferred demo');
+  assert.equal(env.pending.size, 1, 'opt-in keeps the demo running');
   env.tick(250);
   assert.ok(Number(range.value) > 0 && Number(range.value) < 25, 'the demo advances');
   await env.motion(true, true);
@@ -58,14 +57,14 @@ it('percent demo waits for site opt-in and respects global stop and later manual
   assert.equal(range.value, '36');
 });
 
-it('triangle demo waits for site opt-in and leaves manual apex input intact across policy changes', async () => {
+it('triangle demo plays by default and leaves manual apex input intact across policy changes', async () => {
   const env = environment('<div data-tri-explorer><svg><polygon data-el="poly"></polygon><polygon data-el="poly-fill"></polygon><line data-el="height"></line><path data-el="ra"></path><text data-el="lbl-h"></text><circle data-el="hit"></circle><circle data-el="handle"></circle></svg><input data-el="range"><p data-el="hint"></p><p data-el="live"></p></div>');
   const { initTriExplorers } = await import('../src/lib/triExplorer');
   initTriExplorers();
   const root = env.document.querySelector('[data-tri-explorer]') as any;
   const range = env.document.querySelector('input') as HTMLInputElement;
   assert.equal(root.__tri.state(), 3);
-  assert.equal(env.pending.size, 0);
+  assert.equal(env.pending.size, 1, 'the demo starts under OS reduce without an opt-in');
   await env.motion(true);
   assert.equal(env.pending.size, 1);
   env.tick(400);

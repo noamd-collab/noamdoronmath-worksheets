@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { it } from 'node:test';
 import { parseHTML } from 'linkedom';
 
-it('parks an ordinary concept loop when reduced motion changes, and resumes when disabled', async () => {
+it('OS reduce alone keeps a concept loop moving; the site reduce choice parks it and resumes when cleared', async () => {
   const {document,window}=parseHTML('<html><body><div data-loop="para-rect"><button data-el="toggle"></button></div></body></html>');
   let reduce=true, change:()=>void=()=>{};
   window.matchMedia=()=>({get matches(){return reduce;},addEventListener(_event:string,fn:()=>void){change=fn;}}) as any;
@@ -10,13 +10,14 @@ it('parks an ordinary concept loop when reduced motion changes, and resumes when
   const {initConceptLoops}=await import('../src/lib/conceptLoops');
   initConceptLoops();
   const root=document.querySelector('[data-loop]') as any;
+  assert.equal(root.__loop.state().static,false,'Safari/macOS reduce motion alone must not freeze lessons');
+  document.documentElement.classList.add('noam-a11y-motion'); change();
+  await Promise.resolve();
   assert.equal(root.__loop.state().static,true);
   assert.equal(root.__loop.state().playing,false);
-  reduce=false; change();
+  document.documentElement.classList.remove('noam-a11y-motion'); reduce=false; change();
+  await Promise.resolve();
   assert.equal(root.__loop.state().static,false);
-  reduce=true; change();
-  assert.equal(root.__loop.state().static,true);
-  assert.equal(root.__loop.state().playing,false);
 });
 
 
@@ -38,8 +39,7 @@ it('site opt-in resumes an in-view loop while the OS still requests reduced moti
   initConceptLoops();
   const root=document.querySelector('[data-loop]') as any;
   const button=root.querySelector('[data-el="toggle"]') as HTMLButtonElement;
-  assert.equal(root.__loop.state().static,true);
-  assert.equal(button.style.display,'none');
+  assert.equal(root.__loop.state().static,false,'OS reduce alone does not park the loop');
   document.documentElement.classList.add('nd-motion-enabled');
   await Promise.resolve();
   assert.equal(root.__loop.state().static,false);
@@ -66,5 +66,5 @@ it('site opt-in resumes an in-view loop while the OS still requests reduced moti
   assert.equal(root.__loop.state().playing,false,'a manual pause survives policy stop and resume');
   document.documentElement.classList.remove('nd-motion-enabled');
   await Promise.resolve();
-  assert.equal(root.__loop.state().static,true,'returning to device preference parks the loop again');
+  assert.equal(root.__loop.state().static,false,'the device preference alone does not park the loop');
 });
