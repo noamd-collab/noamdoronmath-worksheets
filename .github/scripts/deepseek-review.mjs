@@ -5,7 +5,9 @@
  *   BASE_SHA=... GITHUB_TOKEN=... PR_NUMBER=... CHINESE_MODELS_API_KEY=... \
  *     node .github/scripts/deepseek-review.mjs
  */
-import { execFileSync } from 'node:child_process';
+import { spawn } from 'node:child_process';
+import { StringDecoder } from 'node:string_decoder';
+import { fileURLToPath } from 'node:url';
 import { upsertPullRequestComment } from './pr-comment.mjs';
 import { redactSecrets } from './redact.mjs';
 
@@ -13,6 +15,7 @@ const MARKER = '<!-- astro-poc-deepseek-review -->';
 const ENDPOINT = 'https://token-plan.maas.qwencloudapi.com/compatible-mode/v1/chat/completions';
 const MODELS = ['deepseek-v4-pro'];
 const DIFF_LIMIT = 100_000;
+const DIFF_ORDER = fileURLToPath(new URL('./deepseek-diff.order', import.meta.url));
 
 const SYSTEM = `You review a pull request diff for an Astro 5 site in headless/astro-poc.
 The site is Hebrew, RTL, and a math worksheet catalog.
@@ -26,13 +29,41 @@ Under Notes, list everything else worth a human look.
 If a section has nothing, write "אין".
 Do not repeat the diff and do not invent files that are not in it.`;
 
-function pullRequestDiff() {
-  const base = process.env.BASE_SHA;
+export async function captureDiffStream(stream, { limit = DIFF_LIMIT } = {}) {
+  const decoder = new StringDecoder('utf8');
+  let prefix = '', characters = 0, bytes = 0;
+  const consume = (text) => {
+    characters += text.length;
+    if (prefix.length < limit) prefix += text.slice(0, limit - prefix.length);
+  };
+  // Drain and count the entire diff, but never retain the generated payload.
+  for await (const chunk of stream) {
+    const buffer = typeof chunk === 'string' ? Buffer.from(chunk) : chunk;
+    bytes += buffer.length;
+    consume(decoder.write(buffer));
+  }
+  consume(decoder.end());
+  return { prefix, characters, bytes, truncated: characters > limit };
+}
+
+export async function pullRequestDiff({ base = process.env.BASE_SHA, cwd = process.cwd(), limit = DIFF_LIMIT } = {}) {
   if (!base) throw new Error('BASE_SHA is missing');
-  return execFileSync('git', ['diff', '--no-color', '--find-renames', base, 'HEAD'], {
-    encoding: 'utf8',
-    maxBuffer: 64 * 1024 * 1024,
+  // Order source/config code first; -O changes order, never the included paths.
+  const child = spawn('git', ['diff', '--no-color', '--find-renames', '-O', DIFF_ORDER, base, 'HEAD'], {
+    cwd, stdio: ['ignore', 'pipe', 'pipe'],
   });
+  let stderr = '';
+  child.stderr.on('data', (chunk) => {
+    if (stderr.length < 8_000) stderr += chunk.toString('utf8').slice(0, 8_000 - stderr.length);
+  });
+  const completed = new Promise((resolve, reject) => {
+    child.once('error', reject);
+    child.once('close', (code) => code === 0
+      ? resolve()
+      : reject(new Error(`git diff exited ${code}: ${stderr}`)));
+  });
+  const [captured] = await Promise.all([captureDiffStream(child.stdout, { limit }), completed]);
+  return { ...captured, order: 'code/config first; all changed paths included and counted' };
 }
 
 async function review(model, diff) {
@@ -73,19 +104,24 @@ function modelRejected(error) {
 }
 
 export async function runDeepSeekReview({ postComment = true, diffText, dryRun = false } = {}) {
+  const collect = () => diffText == null
+    ? pullRequestDiff()
+    : Promise.resolve({ prefix: diffText.slice(0, DIFF_LIMIT), characters: diffText.length,
+      bytes: Buffer.byteLength(diffText), truncated: diffText.length > DIFF_LIMIT, order: 'caller-supplied diffText' });
   if (dryRun) {
-    const original = diffText ?? pullRequestDiff();
-    return { dryRun: true, characters: original.length, truncated: original.length > DIFF_LIMIT };
+    const captured = await collect();
+    return { dryRun: true, characters: captured.characters, truncated: captured.truncated,
+      retainedCharacters: captured.prefix.length, bytes: captured.bytes, order: captured.order };
   }
   if (!process.env.CHINESE_MODELS_API_KEY) {
     console.log('CHINESE_MODELS_API_KEY is not set. Skipping DeepSeek review.');
     return { skipped: true };
   }
-  const original = diffText ?? pullRequestDiff();
-  const truncated = original.length > DIFF_LIMIT;
+  const captured = await collect();
+  const truncated = captured.truncated;
   const diff = truncated
-    ? `${original.slice(0, DIFF_LIMIT)}\n\n[diff truncated from ${original.length} characters]\n`
-    : original;
+    ? `${captured.prefix}\n\n[diff truncated from ${captured.characters} characters; retained ${captured.prefix.length}; ${captured.order}]\n`
+    : captured.prefix;
   let findings = '';
   let modelUsed = '';
   let failure = '';
@@ -108,7 +144,8 @@ export async function runDeepSeekReview({ postComment = true, diffText, dryRun =
     'This comment does not block the pull request. Blockers are the model’s judgment, not a required check.',
     '',
     `- Model: \`${modelUsed || 'unavailable'}\``,
-    `- Diff characters: ${original.length}${truncated ? ' (truncated before sending)' : ''}`,
+    `- Diff characters: ${captured.characters}${truncated ? ' (truncated before sending)' : ''}`,
+    `- Retained characters: ${captured.prefix.length}; ${captured.order}.`,
     '',
     findings || `The review did not complete.\n\n${failure || 'Unknown error.'}`,
     '',

@@ -262,6 +262,7 @@
   flex-direction: column;
   gap: 6px;
   height: 100%;
+  min-width: 0;
   padding: 18px 20px;
   background: #fff;
   border: 2px solid #22305a;
@@ -269,6 +270,7 @@
   color: #22305a;
   font-size: 18px;
   font-weight: 700;
+  overflow-wrap: anywhere;
   text-decoration: none;
   transition: transform .2s, box-shadow .2s;
 }
@@ -357,4 +359,16 @@
   .exact-grade .exact-grade__player .concept-loop__top { order: 1; }
   .exact-grade .exact-grade__player .concept-loop__formula { order: 2; }
   .exact-grade .exact-grade__player .concept-loop__caption { order: 3; }
+}
+
+.grade-hub__crumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-block: 12px 4px;
+  font-size: 14px;
+}
+.grade-hub__crumbs a {
+  color: #0d47a1;
+  font-weight: 800;
 }

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 238 238" width="238" height="238">
+<g data-layer="wedges">
+<path id="e0001" d="M 119 119 L 119 4 A 115 115 0 0 1 234 119 A 115 115 0 0 1 119 234 Z" fill="#f2f2f2" stroke="#000000" stroke-width="1" stroke-linejoin="round" data-pie="wedge" data-for="sector:qd:a"/>
+<path id="e0002" d="M 119 119 L 119 234 A 115 115 0 0 1 25.96 186.6 A 115 115 0 0 1 9.63 83.46 Z" fill="#cccccc" stroke="#000000" stroke-width="1" stroke-linejoin="round" data-pie="wedge" data-for="sector:qd:b"/>
+<path id="e0003" d="M 119 119 L 9.63 83.46 A 115 115 0 0 1 119 4 Z" fill="#e3e3e3" stroke="#000000" stroke-width="1" stroke-linejoin="round" data-pie="wedge" data-for="sector:qd:c"/>
+</g>
+<g data-layer="lines">
+<circle id="e0004" cx="119" cy="119" r="115" fill="none" stroke="#000000" stroke-width="1" data-pie="outline" data-for="pie:qd"/>
+</g>
+<g data-layer="labels">
+<text id="e0005" x="188" y="118.96" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" direction="ltr" unicode-bidi="bidi-override" data-pie="name" data-for="sector:qd:a">לוחכ</text>
+<text id="e0006" x="188" y="129.59" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" data-pie="val" data-for="sector:qd:a">50%</text>
+<text id="e0007" x="63.18" y="157.43" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" direction="ltr" unicode-bidi="bidi-override" data-pie="name" data-for="sector:qd:b">קורי</text>
+<text id="e0008" x="63.18" y="170.46" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" data-pie="val" data-for="sector:qd:b">30%</text>
+<text id="e0009" x="78.44" y="62.25" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" direction="ltr" unicode-bidi="bidi-override" data-pie="name" data-for="sector:qd:c">םותכ</text>
+<text id="e0010" x="78.44" y="72.88" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" data-pie="val" data-for="sector:qd:c">20%</text>
+</g>
+</svg>

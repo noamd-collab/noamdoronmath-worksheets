@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 190 115" width="190" height="115">
+<g data-layer="lines">
+<line id="e0001" data-seg="AB" x1="95" y1="26.44" x2="26" y2="88.56" stroke="#000000" stroke-width="1.5"/>
+<line id="e0002" data-seg="AC" x1="95" y1="26.44" x2="164" y2="88.56" stroke="#000000" stroke-width="1.5"/>
+<line id="e0003" data-seg="BC" x1="26" y1="88.56" x2="164" y2="88.56" stroke="#000000" stroke-width="1.5"/>
+</g>
+<g data-layer="marks">
+<path id="e0004" data-mark="arc ABC" d="M 37.89 77.85 L 38.58 78.67 L 39.21 79.53 L 39.78 80.43 L 40.29 81.36 L 40.74 82.33 L 41.12 83.33 L 41.44 84.35 L 41.68 85.38 L 41.86 86.43 L 41.96 87.49 L 42 88.56" fill="none" stroke="#000000" stroke-width="1"/>
+<path id="e0005" data-mark="arc ACB" d="M 152.11 77.85 L 151.42 78.67 L 150.79 79.53 L 150.22 80.43 L 149.71 81.36 L 149.26 82.33 L 148.88 83.33 L 148.56 84.35 L 148.32 85.38 L 148.14 86.43 L 148.04 87.49 L 148 88.56" fill="none" stroke="#000000" stroke-width="1"/>
+</g>
+<g data-layer="points">
+<circle id="e0006" data-pt="A" cx="95" cy="26.44" r="0.75" fill="#000000" stroke="none"/>
+<circle id="e0007" data-pt="B" cx="26" cy="88.56" r="0.75" fill="#000000" stroke="none"/>
+<circle id="e0008" data-pt="C" cx="164" cy="88.56" r="0.75" fill="#000000" stroke="none"/>
+</g>
+<g data-layer="labels">
+<text id="e0009" data-for="A" x="95" y="21.94" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">A</text>
+<text id="e0010" data-for="B" x="16.95" y="96.47" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">B</text>
+<text id="e0011" data-for="C" x="173.16" y="96.51" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">C</text>
+</g>
+</svg>

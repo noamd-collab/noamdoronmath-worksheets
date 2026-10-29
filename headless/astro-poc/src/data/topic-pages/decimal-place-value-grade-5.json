@@ -1,0 +1,265 @@
+{
+  "slug": "decimal-place-value-grade-5",
+  "path": "/decimal-place-value-grade-5",
+  "grade": 5,
+  "sourceUrl": "https://www.noamdoronmath.co.il/decimal-place-value-grade-5",
+  "fetchedAt": "2026-10-15T00:00:00.000Z",
+  "verifiedVia": "authored-elementary-g5-t28-grounded-pdf",
+  "title": "מספרים עשרוניים — ערך מקום וייצוגים לכיתה ה׳ | דפי עבודה במתמטיקה – נועם דורון",
+  "description": "מספרים עשרוניים — ערך מקום וייצוגים לכיתה ה׳: ערך המקום של כל ספרה במספר עשרוני, ודפי עבודה ברמות א׳, ב׳ ומצוינות. חינם וללא הרשמה.",
+  "h1": "מספרים עשרוניים — ערך מקום וייצוגים לכיתה ה׳",
+  "intro": "מנתחים מספרים עשרוניים לפי ערך המקום: עשיריות ומאיות. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "במספר עשרוני הספרה אחרי הנקודה היא עשיריות, ואחריה מאיות.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "ב־1.12 הספרה 1 הראשונה היא שלם אחד, והשנייה עשירית אחת.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "דוגמה: 0.25 זה 2 עשיריות ו־5 מאיות.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "טעות נפוצה היא לקרוא את הספרות אחרי הנקודה כמו שלמים. העשיריות והמאיות קטנות מ־1.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "בדקו את עצמכם: במספר 3.47 — מה ערך הספרה 4?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה היא 4 עשיריות.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "מנתחים מספרים עשרוניים לפי ערך המקום: עשיריות ומאיות. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=5&topic=28",
+      "catalogTopicId": 28
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "במספר עשרוני הספרה אחרי הנקודה היא עשיריות, ואחריה מאיות.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "ב־1.12 הספרה 1 הראשונה היא שלם אחד, והשנייה עשירית אחת.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "דוגמה: 0.25 זה 2 עשיריות ו־5 מאיות.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "טעות נפוצה היא לקרוא את הספרות אחרי הנקודה כמו שלמים. העשיריות והמאיות קטנות מ־1.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "בדקו את עצמכם: במספר 3.47 — מה ערך הספרה 4?",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "התשובה היא 4 עשיריות.",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 15.10.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "האם דפי העבודה בנושא מספרים עשרוניים — ערך מקום וייצוגים מתאימים לכיתה ה׳?",
+      "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ה׳ ומסודר לפי רמות קושי."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ היא רמת התרגול הרגילה וברירת המחדל. רמה ב׳ קלה יותר ומתאימה לביסוס ולתרגול מודרך. מצוינות היא הרמה הקשה יותר, להעמקה ולאתגר."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "authored",
+      "items": [
+        {
+          "question": "האם דפי העבודה בנושא מספרים עשרוניים — ערך מקום וייצוגים מתאימים לכיתה ה׳?",
+          "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ה׳ ומסודר לפי רמות קושי."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ היא רמת התרגול הרגילה וברירת המחדל. רמה ב׳ קלה יותר ומתאימה לביסוס ולתרגול מודרך. מצוינות היא הרמה הקשה יותר, להעמקה ולאתגר."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/grade-5",
+      "label": "כל דפי כיתה ה׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-5"
+    },
+    {
+      "path": "/grade-6",
+      "label": "דפי עבודה לכיתה ו׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-6"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=5&topic=28",
+    "source": "catalog-g5-t28",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=5&topic=28",
+    "catalogTopicId": 28,
+    "catalogTopicTitle": "מספרים עשרוניים — ערך מקום וייצוגים"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=5&topic=28",
+      "source": "catalog-g5-t28",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=5&topic=28",
+      "catalogTopicId": 28,
+      "catalogTopicTitle": "מספרים עשרוניים — ערך מקום וייצוגים"
+    }
+  ],
+  "gradeHubHref": "/grade-5",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/decimal-place-value-grade-5#webpage",
+        "url": "https://www.noamdoronmath.co.il/decimal-place-value-grade-5",
+        "name": "מספרים עשרוניים — ערך מקום וייצוגים לכיתה ה׳ | דפי עבודה במתמטיקה – נועם דורון",
+        "description": "מספרים עשרוניים — ערך מקום וייצוגים לכיתה ה׳: ערך המקום של כל ספרה במספר עשרוני, ודפי עבודה ברמות א׳, ב׳ ומצוינות. חינם וללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/decimal-place-value-grade-5#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/decimal-place-value-grade-5#learning-resource",
+        "name": "מספרים עשרוניים — ערך מקום וייצוגים לכיתה ה׳",
+        "url": "https://www.noamdoronmath.co.il/decimal-place-value-grade-5",
+        "description": "מספרים עשרוניים — ערך מקום וייצוגים לכיתה ה׳: ערך המקום של כל ספרה במספר עשרוני, ודפי עבודה ברמות א׳, ב׳ ומצוינות. חינם וללא הרשמה.",
+        "educationalLevel": "כיתה ה׳",
+        "learningResourceType": "דפי עבודה",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/decimal-place-value-grade-5#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "האם דפי העבודה בנושא מספרים עשרוניים — ערך מקום וייצוגים מתאימים לכיתה ה׳?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ה׳ ומסודר לפי רמות קושי."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ היא רמת התרגול הרגילה וברירת המחדל. רמה ב׳ קלה יותר ומתאימה לביסוס ולתרגול מודרך. מצוינות היא הרמה הקשה יותר, להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

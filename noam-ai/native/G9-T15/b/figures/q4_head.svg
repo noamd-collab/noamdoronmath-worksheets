@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 170 238" width="170" height="238">
+<g data-layer="lines">
+<line id="e0001" data-seg="DE" x1="85" y1="26" x2="28.13" y2="212" stroke="#000000" stroke-width="1.5"/>
+<line id="e0002" data-seg="DF" x1="85" y1="26" x2="141.87" y2="212" stroke="#000000" stroke-width="1.5"/>
+<line id="e0003" data-seg="DG" x1="85" y1="26" x2="85" y2="212" stroke="#000000" stroke-width="1"/>
+<line id="e0004" data-seg="EF" x1="28.13" y1="212" x2="141.87" y2="212" stroke="#000000" stroke-width="1.5"/>
+</g>
+<g data-layer="marks">
+<path id="e0005" data-mark="arc DEF" d="M 31.79 200.04 L 32.58 200.31 L 33.36 200.63 L 34.11 201.01 L 34.83 201.43 L 35.52 201.91 L 36.18 202.42 L 36.8 202.98 L 37.39 203.59 L 37.93 204.23 L 38.43 204.9 L 38.88 205.61 L 39.29 206.34 L 39.64 207.1 L 39.94 207.88 L 40.19 208.68 L 40.39 209.5 L 40.53 210.33 L 40.61 211.16 L 40.64 212" fill="none" stroke="#000000" stroke-width="1"/>
+<path id="e0006" data-mark="arc2 EDG" d="M 80.32 41.3 L 81.24 41.55 L 82.17 41.75 L 83.11 41.89 L 84.05 41.97 L 85 42" fill="none" stroke="#000000" stroke-width="1"/>
+<path id="e0007" data-mark="arc2 EDG" d="M 79.44 44.17 L 80.53 44.47 L 81.64 44.7 L 82.75 44.87 L 83.87 44.97 L 85 45" fill="none" stroke="#000000" stroke-width="1"/>
+<path id="e0008" data-mark="arc2 FDG" d="M 92.02 48.95 L 90.64 49.33 L 89.25 49.62 L 87.84 49.83 L 86.42 49.96 L 85 50" fill="none" stroke="#000000" stroke-width="1"/>
+<path id="e0009" data-mark="arc2 FDG" d="M 92.89 51.82 L 91.35 52.24 L 89.78 52.57 L 88.2 52.81 L 86.6 52.95 L 85 53" fill="none" stroke="#000000" stroke-width="1"/>
+<line id="e0010" data-mark="tick DE" x1="60.39" y1="120.17" x2="52.74" y2="117.83" stroke="#000000" stroke-width="1"/>
+<line id="e0011" data-mark="tick DF" x1="117.26" y1="117.83" x2="109.61" y2="120.17" stroke="#000000" stroke-width="1"/>
+</g>
+<g data-layer="points">
+<circle id="e0012" data-pt="D" cx="85" cy="26" r="0.75" fill="#000000" stroke="none"/>
+<circle id="e0013" data-pt="E" cx="28.13" cy="212" r="0.75" fill="#000000" stroke="none"/>
+<circle id="e0014" data-pt="F" cx="141.87" cy="212" r="0.75" fill="#000000" stroke="none"/>
+<circle id="e0015" data-pt="G" cx="85" cy="212" r="2" fill="#000000" stroke="none"/>
+</g>
+<g data-layer="labels">
+<text id="e0016" data-for="ang DEF" x="48.59" y="200.6" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">73°</text>
+<text id="e0017" data-for="D" x="85" y="21.5" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">D</text>
+<text id="e0018" data-for="E" x="19.9" y="222.53" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">E</text>
+<text id="e0019" data-for="F" x="150.06" y="222.5" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">F</text>
+<text id="e0020" data-for="G" x="85" y="225.37" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">G</text>
+</g>
+</svg>

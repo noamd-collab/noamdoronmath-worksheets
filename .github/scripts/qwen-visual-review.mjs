@@ -9,6 +9,10 @@
 import { execFileSync } from 'node:child_process';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { captureHomepageGameShots, shouldCaptureHomepageGameShots } from './qwen-homepage-extra-shots.mjs';
+import { captureGradeHubTopicShots, shouldCaptureGradeHubTopics } from './qwen-grade-hub-shots.mjs';
+import { captureParaRectFilmShots, shouldCaptureParaRectFilm } from './qwen-para-rect-shots.mjs';
+import { captureTeacherPrintShots, shouldCaptureTeacherPrintShots } from './qwen-teacher-shots.mjs';
 import { upsertPullRequestComment } from './pr-comment.mjs';
 import { pagesTouchedByDiff } from './pr-pages.mjs';
 import { redactSecrets } from './redact.mjs';
@@ -118,7 +122,7 @@ function imageContent(shots) {
     }
     const mime = 'image/png';
     parts.push({
-      label: `${shot.pageUrl} @ ${shot.viewport} ${shot.width}px status ${shot.status}`,
+      label: `${shot.pageUrl}${shot.coverage ? ` ${shot.coverage}` : ''} @ ${shot.viewport} ${shot.width}px status ${shot.status}`,
       mime,
       base64: bytes.toString('base64'),
     });
@@ -220,7 +224,8 @@ function commentBody({ selection, shots, review }) {
   const shotLines = shots.map((shot) => {
     const name = shot.file ? shot.file.split('/').pop() : 'missing';
     const problem = shot.error ? ` — ${shot.error}` : '';
-    return `- \`${name}\` ${shot.pageUrl} ${shot.viewport} HTTP ${shot.status || 'n/a'}${problem}`;
+    const coverage = shot.coverage ? ` (${shot.coverage})` : '';
+    return `- \`${name}\` ${shot.pageUrl}${coverage} ${shot.viewport} HTTP ${shot.status || 'n/a'}${problem}`;
   });
   const findings = review?.content
     ? review.content
@@ -256,6 +261,22 @@ export async function runQwenReview({ postComment = true } = {}) {
   const selection = pagesTouchedByDiff(changedFiles());
   console.log(`screenshot pages: ${selection.pages.join(', ')}`);
   const shots = await captureScreenshots({ baseUrl, pages: selection.pages, outDir });
+  if (shouldCaptureHomepageGameShots(changedFiles())) {
+    console.log('capturing scrolled below-fold GamePromoCard evidence');
+    shots.push(...await captureHomepageGameShots({ baseUrl, outDir }));
+  }
+  if (shouldCaptureParaRectFilm(changedFiles())) {
+    console.log('capturing homepage para-rect rectangle and parallelogram frames');
+    shots.push(...await captureParaRectFilmShots({ baseUrl, outDir }));
+  }
+  if (shouldCaptureGradeHubTopics(changedFiles())) {
+    console.log('capturing elementary grade-hub topic sections at 390 and 1280');
+    shots.push(...await captureGradeHubTopicShots({ baseUrl, outDir }));
+  }
+  if (shouldCaptureTeacherPrintShots(changedFiles())) {
+    console.log('capturing teacher printed worksheet pages at 390 and 1280');
+    shots.push(...await captureTeacherPrintShots({ baseUrl, outDir }));
+  }
   writeFileSync(join(outDir, 'manifest.json'), JSON.stringify({ selection, shots }, null, 2));
   const images = imageContent(shots);
   if (process.argv.includes('--screenshots-only')) {

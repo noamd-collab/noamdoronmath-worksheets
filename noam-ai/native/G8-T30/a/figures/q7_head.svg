@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 208.6 152" width="208.6" height="152">
+<g data-layer="wedges">
+<path id="e0001" d="M 76 76 L 76 4 A 72 72 0 0 1 140.15 43.31 A 72 72 0 0 1 134.25 118.32 Z" fill="#f2f2f2" stroke="#000000" stroke-width="1" stroke-linejoin="round" data-pie="wedge" data-for="sector:qg:a"/>
+<path id="e0002" d="M 76 76 L 134.25 118.32 A 72 72 0 0 1 76 148 Z" fill="#cccccc" stroke="#000000" stroke-width="1" stroke-linejoin="round" data-pie="wedge" data-for="sector:qg:b"/>
+<path id="e0003" d="M 76 76 L 76 148 A 72 72 0 0 1 4 76 Z" fill="#e3e3e3" stroke="#000000" stroke-width="1" stroke-linejoin="round" data-pie="wedge" data-for="sector:qg:c"/>
+<path id="e0004" d="M 76 76 L 4 76 A 72 72 0 0 1 76 4 Z" fill="#b3b3b3" stroke="#000000" stroke-width="1" stroke-linejoin="round" data-pie="wedge" data-for="sector:qg:d"/>
+</g>
+<g data-layer="lines">
+<circle id="e0005" cx="76" cy="76" r="72" fill="none" stroke="#000000" stroke-width="1" data-pie="outline" data-for="pie:qg"/>
+<path id="e0006" d="M 122.19 52.47 L 163.79 37.01" fill="none" stroke="#000000" stroke-width="0.8" stroke-linecap="round" data-pie="leader" data-for="sector:qg:a"/>
+</g>
+<g data-layer="labels">
+<text id="e0007" x="174.9" y="23.48" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" direction="ltr" unicode-bidi="bidi-override" data-pie="name" data-for="sector:qg:a">תואקתפרה</text>
+<text id="e0008" x="174.9" y="36.51" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" data-pie="val" data-for="sector:qg:a">35%</text>
+<text id="e0009" x="97.25" y="116.78" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" direction="ltr" unicode-bidi="bidi-override" data-pie="name" data-for="sector:qg:b">הריש</text>
+<text id="e0010" x="97.25" y="127.4" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" data-pie="val" data-for="sector:qg:b">15%</text>
+<text id="e0011" x="45.45" y="105.62" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" direction="ltr" unicode-bidi="bidi-override" data-pie="name" data-for="sector:qg:c">עדמ</text>
+<text id="e0012" x="45.45" y="116.25" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" data-pie="val" data-for="sector:qg:c">25%</text>
+<text id="e0013" x="45.45" y="43.33" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" direction="ltr" unicode-bidi="bidi-override" data-pie="name" data-for="sector:qg:d">סקימוק</text>
+<text id="e0014" x="45.45" y="56.36" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" data-pie="val" data-for="sector:qg:d">25%</text>
+</g>
+</svg>

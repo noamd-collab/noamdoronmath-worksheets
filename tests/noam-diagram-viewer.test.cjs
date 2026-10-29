@@ -6,8 +6,11 @@ const vm=require("node:vm");
 const path=require("node:path");
 const html=fs.readFileSync(path.join(__dirname,"../worksheet-viewer-noam.html"),"utf8");
 const helpers=html.slice(html.indexOf("function noamGeometryContext(text){"),html.indexOf("function postJson(endpoint,payload){"));
-const local=html.slice(html.indexOf("function tryNoamLocalVisual(studentMessage){"),html.indexOf("function insertNoamMath(kind){"));
+const local=html.slice(html.indexOf("function noamParsedLocalVisual(exercise){"),html.indexOf("function insertNoamMath(kind){"));
 const drawing=html.slice(html.indexOf("function setNoamDiagramButtonLabel("),html.indexOf("function ensureNoamGlossaryPopover("));
+// Include the real source guards in this protected-generation harness. Its
+// unseen/unreviewed fixture must still reach generation and never become a crop.
+const sourceGuards=html.slice(html.indexOf("var noamSourceCropCache=new Map();"),html.indexOf("function noamNativeFigure("));
 const plan={version:1,status:"ok",points:{A:[0,0],B:[4,0],C:[1,3]},
   segments:[["A","B"],["B","C"],["C","A"]],highlights:[{from:"A",to:"B",color:"blue",label:"AB"}],
   angles:[],equalGroups:[],rightAngles:[],evidence:[]};
@@ -21,6 +24,7 @@ function fixture(){
   const thread={hintIndex:2,history:[],messages:[{role:"user",text:"אפשר רמז 2?",kind:"רמז 2"},message]};
   const calls=[],statusCalls=[],notices=[],renders=[];
   const context={manifest:{sourceSha256:"source-v1",exercises:[exercise]},pdf:"public-pdf-id",
+    noamStripMarkdownEmphasis:text=>text,
     selectedExercise:exercise,threads:{[exercise.id]:thread},busy:false,noamDrafts:{},
     API:"https://api.test/_functions",g:8,lv:"a",LEVEL:{a:"A"},ttl:"משולשים",
     ownerKey:"owner-key-1234567890",STATUS_POLL_MS:0,ASYNC_JOB_MAX_WAIT:1000,
@@ -35,7 +39,7 @@ function fixture(){
   vm.createContext(context);
   for(const name of ["noam-geometry.js","noam-diagram-plan.js"]){vm.runInContext(fs.readFileSync(path.join(__dirname,"..",name),"utf8"),context);}
   context.NoamLocalVisual={wantsDrawing:()=>true,wantsVisualSupport:()=>true,parseFactoredQuadraticInequality:()=>null,render:()=>null};
-  vm.runInContext(helpers+local+drawing,context);
+  vm.runInContext(sourceGuards+helpers+local+drawing,context);
   context.pollNoamDiagramJob=async jobId=>{statusCalls.push(jobId);return {ok:true,plan};};
   // Mock HTTP JSON deserialization inside the same realm as the browser.
   const inspect=context.NoamDiagramPlan.inspect,compile=context.NoamDiagramPlan.compile;
@@ -128,9 +132,10 @@ function scrollFixture(figureHeight=180){
   const figure={getBoundingClientRect:()=>({height:figureHeight}),
     querySelector:selector=>selector===".noam-geometry-svg"?svg:null,
     scrollIntoView:options=>scrolled.push({target:"figure",options})};
+  const expand={scrollIntoView:options=>scrolled.push({target:"expand",options})};
   const retry={scrollIntoView:options=>scrolled.push({target:"retry",options})};
   const row={isConnected:true,
-    querySelector:selector=>selector===".noam-geometry"?figure:retry,
+    querySelector:selector=>selector===".noam-geometry"?figure:selector===".noam-diagram-expand"?expand:retry,
     scrollIntoView:options=>scrolled.push({target:"row",options})};
   const transcript={clientHeight:260,children:[{},row]};
   f.ctx.document.getElementById=id=>id==="noamTranscript"?transcript:null;
@@ -149,11 +154,11 @@ test("a completed diagram reveals its figure after layout instead of the long an
   ],"target the diagram and cancel the transcript's competing smooth scroll");
 });
 
-test("a figure taller than the visible transcript reveals the SVG, while a failure reveals retry",()=>{
+test("a figure taller than the visible transcript reveals expansion, while a failure reveals retry",()=>{
   const f=scrollFixture(500);
   f.ctx.noamDiagramRefresh(f.exercise,f.thread,f.message,true);
   f.frames.shift()();
-  assert.equal(f.scrolled[0].target,"svg");
+  assert.equal(f.scrolled[0].target,"expand");
   f.message.diagramError="לא הצלחתי להכין את השרטוט כרגע.";
   f.ctx.noamDiagramRefresh(f.exercise,f.thread,f.message,true);
   f.frames.shift()();

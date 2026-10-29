@@ -1,15 +1,7 @@
 # Pull requests into main.
 #
-# Blocking jobs: astro-poc-build, astro-poc-test, astro-poc-internal-links.
-# Advisory jobs: astro-poc-deepseek-review, astro-poc-qwen-visual-review.
-# Both call the QwenCloud Token Plan gateway
-# (https://token-plan.maas.qwencloudapi.com/compatible-mode/v1) with the shared
-# CHINESE_MODELS_API_KEY repo secret. Secrets are not allowed in job-level
-# `if:`, so each advisory job maps the secret to a job env flag (HAS_KEY) and
-# gates every step on it; the jobs skip cleanly when the secret is missing
-# (including fork pull requests) and use continue-on-error so a model failure
-# does not fail the workflow.
-#
+# Blocking jobs: astro-poc-build, astro-poc-test, astro-poc-internal-links,
+# astro-poc-slash-fractions.
 # This workflow never deploys. Do not add `wix release`, `wix preview`, or `wix env pull`.
 
 name: Astro POC PR
@@ -70,7 +62,7 @@ jobs:
           cache-dependency-path: headless/astro-poc/package-lock.json
 
       - name: Test the pull-request scripts
-        run: node --test .github/scripts/check-internal-links.test.mjs .github/scripts/pr-pages.test.mjs
+        run: node --test .github/scripts/check-internal-links.test.mjs .github/scripts/check-slash-fractions.test.mjs .github/scripts/wrap-equations.test.mjs .github/scripts/pr-pages.test.mjs .github/scripts/qwen-homepage-extra-shots.test.mjs .github/scripts/qwen-para-rect-shots.test.mjs .github/scripts/qwen-grade-hub-shots.test.mjs .github/scripts/qwen-teacher-shots.test.mjs
 
       - name: Install dependencies
         working-directory: headless/astro-poc
@@ -93,6 +85,22 @@ jobs:
           else
             echo "No test script in headless/astro-poc/package.json. Skipping."
           fi
+
+  slash-fractions:
+    name: astro-poc-slash-fractions
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Fail slash fractions in visible site text
+        run: node .github/scripts/check-slash-fractions.mjs
 
   internal-links:
     name: astro-poc-internal-links
@@ -128,114 +136,5 @@ jobs:
         with:
           name: internal-link-report
           path: /tmp/internal-links.json
-          retention-days: 7
-          if-no-files-found: ignore
-
-  deepseek-review:
-    name: astro-poc-deepseek-review
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    continue-on-error: true
-    env:
-      HAS_KEY: ${{ secrets.CHINESE_MODELS_API_KEY != '' }}
-      BASE_REF: ${{ github.base_ref }}
-      BASE_SHA: origin/${{ github.base_ref }}
-    permissions:
-      contents: read
-      pull-requests: write
-    steps:
-      - name: Skip when CHINESE_MODELS_API_KEY is not set
-        if: env.HAS_KEY != 'true'
-        run: echo "CHINESE_MODELS_API_KEY is not set; skipping the advisory review."
-
-      - uses: actions/checkout@v4
-        if: env.HAS_KEY == 'true'
-        with:
-          fetch-depth: 1
-
-      - name: Fetch the base branch
-        if: env.HAS_KEY == 'true'
-        run: git fetch --no-tags --depth=1 origin "$BASE_REF"
-
-      - name: Post the DeepSeek review
-        if: env.HAS_KEY == 'true'
-        env:
-          CHINESE_MODELS_API_KEY: ${{ secrets.CHINESE_MODELS_API_KEY }}
-          GITHUB_TOKEN: ${{ github.token }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-        run: node .github/scripts/deepseek-review.mjs
-
-  qwen-visual-review:
-    name: astro-poc-qwen-visual-review
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    needs: build
-    continue-on-error: true
-    if: needs.build.result == 'success'
-    env:
-      HAS_KEY: ${{ secrets.CHINESE_MODELS_API_KEY != '' }}
-      BASE_REF: ${{ github.base_ref }}
-      BASE_SHA: origin/${{ github.base_ref }}
-    permissions:
-      contents: read
-      pull-requests: write
-    steps:
-      - name: Skip when CHINESE_MODELS_API_KEY is not set
-        if: env.HAS_KEY != 'true'
-        run: echo "CHINESE_MODELS_API_KEY is not set; skipping the advisory review."
-
-      - uses: actions/checkout@v4
-        if: env.HAS_KEY == 'true'
-        with:
-          fetch-depth: 1
-
-      - name: Fetch the base branch
-        if: env.HAS_KEY == 'true'
-        run: git fetch --no-tags --depth=1 origin "$BASE_REF"
-
-      - uses: actions/setup-node@v4
-        if: env.HAS_KEY == 'true'
-        with:
-          node-version: '22'
-          cache: npm
-          cache-dependency-path: headless/astro-poc/package-lock.json
-
-      - name: Install dependencies
-        if: env.HAS_KEY == 'true'
-        working-directory: headless/astro-poc
-        run: npm ci
-
-      - name: Build the Astro site
-        if: env.HAS_KEY == 'true'
-        run: bash .github/scripts/build-servable.sh
-
-      - name: Install Playwright Chromium
-        if: env.HAS_KEY == 'true'
-        run: |
-          npm install --prefix /tmp/pw --no-audit --no-fund playwright
-          npx --prefix /tmp/pw playwright install --with-deps chromium
-
-      - name: Serve the built site
-        if: env.HAS_KEY == 'true'
-        run: bash .github/scripts/serve-built-site.sh
-
-      - name: Screenshot pages and post the Qwen review
-        if: env.HAS_KEY == 'true'
-        env:
-          CHINESE_MODELS_API_KEY: ${{ secrets.CHINESE_MODELS_API_KEY }}
-          GITHUB_TOKEN: ${{ github.token }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-          BASE_URL: http://127.0.0.1:4321
-          SCREENSHOT_DIR: /tmp/astro-poc-screenshots
-          PLAYWRIGHT_MODULE: /tmp/pw/node_modules/playwright/index.js
-        run: node .github/scripts/qwen-visual-review.mjs
-
-      - uses: actions/upload-artifact@v4
-        if: ${{ always() && env.HAS_KEY == 'true' }}
-        with:
-          name: qwen-visual-screenshots
-          path: /tmp/astro-poc-screenshots
           retention-days: 7
           if-no-files-found: ignore
