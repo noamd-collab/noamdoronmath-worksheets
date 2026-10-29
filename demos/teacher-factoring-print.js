@@ -3668,6 +3668,13 @@ function dropBlankForeign(measured) {
   });
 }
 
+function sharesColumns(a, b) {
+  if (!(a.w > 0) || !(b.w > 0)) return true;
+  const left = Math.max(a.x || 0, b.x || 0);
+  const right = Math.min((a.x || 0) + (a.w || 0), (b.x || 0) + (b.w || 0));
+  return right - left > 0.004;
+}
+
 function trimLineOverlaps(measured) {
   for (let i = 0; i < measured.length; i += 1) {
     const earlier = measured[i];
@@ -3684,6 +3691,8 @@ function trimLineOverlaps(measured) {
       if (later.slice.kind !== 'row' && later.slice.kind !== 'stem') continue;
       const laterPdf = later.slice.source && later.slice.source.pdfId;
       if (!earlierPdf || earlierPdf !== laterPdf) continue;
+      // A drawing beside the line shares its rows, not its ink. Its top label stays whole.
+      if (!sharesColumns(box, other)) continue;
       const overlapTop = Math.max(box.y, other.y);
       const overlapBot = Math.min(box.y + box.h, other.y + other.h);
       const overlap = overlapBot - overlapTop;
@@ -3711,6 +3720,7 @@ function sealOverlaps(measured) {
       const laterPdf = later.slice.source && later.slice.source.pdfId;
       // Page 1 of two worksheets is not the same page. Never white out either part.
       if (!earlierPdf || earlierPdf !== laterPdf) continue;
+      if (!sharesColumns(box, other)) continue;
       const top = Math.max(box.y, other.y);
       const bot = Math.min(box.y + box.h, other.y + other.h);
       if (bot - top < 0.016) continue;
