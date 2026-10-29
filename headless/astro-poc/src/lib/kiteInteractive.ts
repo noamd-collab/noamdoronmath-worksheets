@@ -329,6 +329,7 @@ export function initKiteInteractive(): void {
         let board: { reset: () => void } | null = null;
         let open = false;
         let cueDone = false;
+        let failed = false;
         const replayLabel = replayBtn.textContent ?? '';
 
         const hook = (): LoopHook | null => loopRoot.__loop ?? null;
@@ -342,13 +343,16 @@ export function initKiteInteractive(): void {
           requestAnimationFrame(() => ix.classList.add('is-on'));
           if (!board) {
             try {
+              boardEl.replaceChildren();
               board = await buildBoard(boardEl, readout);
+              failed = false;
             } catch {
+              failed = true;
               open = false;
               ix.classList.remove('is-on');
               ix.hidden = true;
               loopRoot.style.display = '';
-              if (isStatic() && openWrap) openWrap.hidden = false;
+              if (openWrap) openWrap.hidden = false;
               return;
             }
           }
@@ -381,7 +385,7 @@ export function initKiteInteractive(): void {
         // Auto handoff: the moment the film parks, the board takes the card.
         setInterval(() => {
           const h = hook();
-          if (!open && h && h.state().done && !h.state().static) void openBoard();
+          if (!open && !failed && h && h.state().done && !h.state().static) void openBoard();
         }, 400);
 
         // Reduced motion / static frame: no auto handoff, offer the board instead.
