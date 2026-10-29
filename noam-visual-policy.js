@@ -1,3 +1,4 @@
+/* global globalThis:readonly */
 /* Geometry worksheet visual policy. Explicitly reviewed worksheet identities only.
  * This gate controls Ramzi visual aids, not textual hints or the original PDF.
  * It does not replace exact exercise membership/source integrity validation.

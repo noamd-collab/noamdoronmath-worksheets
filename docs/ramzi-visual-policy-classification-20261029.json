@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "policyVersion": "20261029-geometry-only-v1",
-  "policySha256": "159d41eec15538d5396b6d2403a12c0451fb897db991288942d288b5a13f2a0d",
+  "policySha256": "6a6166f36314aa909d20117b9ecdd927dd5547a5bf7badb9d53dae292cdeb19a",
   "reviewBaseCommit": "dcb51c5b",
   "scope": "Ramzi visual aids only; original PDFs and textual hints are unchanged. Worksheet-level explicit permission; individual prompt/figure keywords never grant permission.",
   "default": "deny",
