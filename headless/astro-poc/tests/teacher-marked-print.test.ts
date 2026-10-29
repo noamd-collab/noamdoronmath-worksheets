@@ -552,15 +552,14 @@ describe('teacher catalog picker', () => {
     assert.equal(printer.includes('worksheet-viewer-noam'), false);
   });
 
-  it('offers 5, 15 and 20 whole questions and does not call a live model to choose them', () => {
+  it('lets the teacher tick any whole questions by eye and does not call a live model to choose them', () => {
     const demoHtml = readFileSync(new URL('../../../demos/teacher-practice-picker-site-style.html', import.meta.url), 'utf8');
     for (const html of [page, demoHtml]) {
-      assert.match(html, /id="pick-count-5"[^>]*data-question-count="5"[^>]*>5 שאלות<\/button>/);
-      assert.match(html, /id="pick-count-10"[^>]*data-question-count="10"[^>]*>10 שאלות<\/button>/);
-      assert.match(html, /id="pick-count-15"[^>]*data-question-count="15"[^>]*>15 שאלות<\/button>/);
-      assert.match(html, /id="pick-count-20"[^>]*data-question-count="20"[^>]*>20 שאלות<\/button>/);
-      assert.match(html, /id="pick-mode-ai"[^>]*data-pick-mode="ai"[^>]*>המערכת בוחרת<\/button>/);
-      assert.match(html, /id="pick-mode-manual"[^>]*data-pick-mode="manual"[^>]*>בחירה ידנית<\/button>/);
+      assert.equal(/data-question-count=/.test(html), false);
+      assert.equal(/data-pick-mode=/.test(html), false);
+      assert.equal(html.includes('המערכת בוחרת'), false);
+      assert.equal(/>\d+ שאלות<\/button>/.test(html), false);
+      assert.match(html, /\.q-preview\{display:block;width:100%/);
       assert.match(html, /min-height:44px/);
       assert.match(html, /\.wizard-bar\{margin-top:18px/);
       assert.equal(html.includes('data-ai-pick'), false);
@@ -571,8 +570,11 @@ describe('teacher catalog picker', () => {
     assert.equal(printer.includes('noam-bot-client'), false);
     assert.equal(/<input[^>]*data-question/.test(printer), false);
     assert.match(printer, /data-whole-question/);
-    assert.match(printer, /pickWholeQuestions/);
-    assert.match(printer, /כמה שאלות\?/);
+    assert.match(printer, /pickMode: 'manual'/);
+    assert.match(printer, /<canvas class="q-preview" data-preview="/);
+    assert.match(printer, /async function paintQuestionPreview\(canvas\)/);
+    assert.match(printer, /shortSlices\(group\.questions\)/);
+    assert.equal(printer.includes('כמה שאלות?'), false);
   });
 
   it('never leaves 0 available exercises or 0 suggestions when filtering levels on single-level topics', () => {
