@@ -556,15 +556,21 @@ describe('teacher catalog picker', () => {
     const demoHtml = readFileSync(new URL('../../../demos/teacher-practice-picker-site-style.html', import.meta.url), 'utf8');
     for (const html of [page, demoHtml]) {
       assert.match(html, /id="pick-count-5"[^>]*data-question-count="5"[^>]*>5 שאלות<\/button>/);
+      assert.match(html, /id="pick-count-10"[^>]*data-question-count="10"[^>]*>10 שאלות<\/button>/);
       assert.match(html, /id="pick-count-15"[^>]*data-question-count="15"[^>]*>15 שאלות<\/button>/);
       assert.match(html, /id="pick-count-20"[^>]*data-question-count="20"[^>]*>20 שאלות<\/button>/);
+      assert.match(html, /id="pick-mode-ai"[^>]*data-pick-mode="ai"[^>]*>המערכת בוחרת<\/button>/);
+      assert.match(html, /id="pick-mode-manual"[^>]*data-pick-mode="manual"[^>]*>בחירה ידנית<\/button>/);
       assert.match(html, /min-height:44px/);
       assert.match(html, /\.wizard-bar\{margin-top:18px/);
       assert.equal(html.includes('data-ai-pick'), false);
+      assert.equal(html.includes('אפשר להוסיף סעיף'), false);
     }
     assert.equal(printer.includes('pickWithAi'), false);
     assert.equal(printer.includes('qwen3.8-flash'), false);
     assert.equal(printer.includes('noam-bot-client'), false);
+    assert.equal(/<input[^>]*data-question/.test(printer), false);
+    assert.match(printer, /data-whole-question/);
     assert.match(printer, /pickWholeQuestions/);
     assert.match(printer, /כמה שאלות\?/);
   });

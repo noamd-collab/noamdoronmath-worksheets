@@ -34,7 +34,7 @@ describe('whole-question picker', () => {
   const pool = withSource(source.questions);
 
   it('offers counts 5, 15 and 20', () => {
-    assert.deepEqual(QUESTION_COUNTS, [5, 15, 20]);
+    assert.deepEqual(QUESTION_COUNTS, [5, 10, 15, 20]);
   });
 
   it('picks that many whole questions and keeps every sub-part', () => {

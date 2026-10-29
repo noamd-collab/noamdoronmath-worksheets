@@ -92,6 +92,7 @@ let state = {
   level: 'all',
   wizard: 'grade',
   lastQuestionCount: 5,
+  pickMode: 'ai',
   pickNote: '',
 };
 let history = [];
@@ -132,27 +133,54 @@ function pickQuestionCount(count) {
 }
 
 function paintQuestionCountButtons() {
-  const group = $('question-count-group');
   const elementary = band() === 'elementary';
-  if (group) group.hidden = elementary;
+  const manual = !elementary && state.pickMode === 'manual';
+  const modes = $('pick-mode-group');
+  if (modes) {
+    modes.hidden = elementary;
+    modes.querySelectorAll('[data-pick-mode]').forEach((btn) => {
+      btn.setAttribute('aria-pressed', btn.dataset.pickMode === state.pickMode ? 'true' : 'false');
+    });
+  }
+  const group = $('question-count-group');
+  if (group) group.hidden = elementary || manual;
   const browseAll = document.getElementById('filter-all');
   const browse = browseAll && browseAll.parentElement;
-  if (browse) browse.hidden = !elementary;
+  if (browse) browse.hidden = !(elementary || manual);
   const heading = document.querySelector('.list-header > span');
-  if (heading) heading.textContent = elementary ? 'דפים' : 'שאלות שלמות';
+  if (heading) heading.textContent = elementary ? 'דפים' : (manual ? 'בחירה ידנית של שאלות שלמות' : 'המערכת בוחרת שאלות שלמות');
   const note = $('pick-shortfall');
   if (note) {
-    note.hidden = elementary || !state.pickNote;
+    note.hidden = elementary || manual || !state.pickNote;
     note.textContent = state.pickNote || '';
   }
   if (!group) return;
   const total = elementary ? 0 : groupWholeQuestions(currentExercises()).length;
   group.querySelectorAll('[data-question-count]').forEach((btn) => {
     const count = Number(btn.dataset.questionCount);
-    btn.disabled = elementary || total === 0;
-    const active = !elementary && state.lastQuestionCount === count && state.selected.length > 0;
+    btn.disabled = elementary || manual || total === 0;
+    const active = !elementary && !manual && state.lastQuestionCount === count && state.selected.length > 0;
     btn.setAttribute('aria-pressed', active ? 'true' : 'false');
   });
+}
+
+function toggleWholeQuestion(groupKey, on) {
+  const group = groupWholeQuestions(currentExercises()).find((item) => item.key === groupKey);
+  if (!group) return;
+  const keys = group.questions.map((question) => exKey(question.source.pdfId, question.id));
+  const before = selectionKey();
+  snapshot();
+  state.pickNote = '';
+  if (on) {
+    keys.forEach((key) => {
+      if (!state.selected.includes(key)) state.selected.push(key);
+    });
+  } else {
+    const drop = new Set(keys);
+    state.selected = state.selected.filter((key) => !drop.has(key));
+  }
+  if (selectionKey() !== before) clearPreparedPrint();
+  render();
 }
 
 function installSuggest() {
@@ -333,27 +361,36 @@ function thumbAria(question) {
   return String(question.text || question.label || '');
 }
 
-function wholeQuestionCards(keys) {
-  const items = keys.map((key) => library.get(key)).filter(Boolean);
-  return groupWholeQuestions(items).map((group) => {
-    const first = group.questions[0];
-    const parts = group.questions.map((question) => question.part || question.id).join(' · ');
-    const pages = [...new Set(group.questions.map((question) => question.page).filter(Boolean))];
-    const pageLabel = pages.length ? (pages.length === 1 ? 'עמוד ' + pages[0] : 'עמודים ' + pages.join(', ')) : '';
-    const level = first.source && first.source.levelLabel ? first.source.levelLabel : '';
-    const meta = [level, pageLabel].filter(Boolean).join(' · ');
-    return `<article class="q-card q-card-whole"><span class="q-content"><span class="q-title-line"><span class="q-title">שאלה ${escapeHTML(String(group.number))}</span><span class="badge extra">שאלה שלמה</span></span><span class="q-desc" dir="rtl">סעיפים: ${escapeHTML(parts)}</span><span class="q-page" style="display:block">${escapeHTML(meta)}</span></span></article>`;
-  }).join('');
+function wholeQuestionMarkup(group, control) {
+  const question = group.questions[0];
+  const parts = group.questions.map((part) => part.part || part.id).join(' · ');
+  const pages = [...new Set(group.questions.map((part) => part.page).filter(Boolean))];
+  const pageLabel = pages.length ? (pages.length === 1 ? 'עמוד ' + pages[0] : 'עמודים ' + pages.join(', ')) : '';
+  const level = question.source && question.source.levelLabel ? question.source.levelLabel : '';
+  const meta = [level, pageLabel].filter(Boolean).join(' · ');
+  const thumb = needsThumb(question)
+    ? `<canvas class="q-thumb" data-thumb="${escapeHTML(exKey(question.source.pdfId, question.id))}" aria-label="${escapeHTML(thumbAria(question))}"></canvas>`
+    : '';
+  return `${control}<span class="q-content"><span class="q-title-line"><span class="q-title">שאלה ${escapeHTML(String(group.number))}</span><span class="badge extra">שאלה שלמה</span></span>${thumb}<span class="q-desc" dir="rtl">חלקים: ${escapeHTML(parts)}</span><span class="q-page" style="display:block">${escapeHTML(meta)}</span></span>`;
 }
 
-function exerciseCard(question) {
-  const key = exKey(question.source.pdfId, question.id);
-  const level = question.source.levelLabel ? `<span class="q-page" style="display:block">${escapeHTML(question.source.levelLabel)} · עמוד ${question.page}</span>` : `<span class="q-page" style="display:block">עמוד ${question.page} בדף המקור</span>`;
-  const badge = pilotOn() ? `<span class="badge ${tier(question)}">${TIERS[tier(question)]}</span>` : '';
-  const body = needsThumb(question)
-    ? `<canvas class="q-thumb" data-thumb="${escapeHTML(key)}" aria-label="${escapeHTML(thumbAria(question))}"></canvas>`
-    : `<span class="q-desc" dir="rtl">${questionTextHTML(question.text)}</span>`;
-  return `<label class="q-card"><input type="checkbox" data-question="${escapeHTML(key)}" ${state.selected.includes(key) ? 'checked' : ''} aria-label="בחירת ${escapeHTML(question.label)}"><span class="q-content"><span class="q-title-line"><span class="q-title">${escapeHTML(question.label)}</span>${badge}</span>${body}${level}</span></label>`;
+function wholeQuestionCards(keys) {
+  const items = keys.map((key) => library.get(key)).filter(Boolean);
+  return groupWholeQuestions(items).map((group) => `<article class="q-card q-card-whole">${wholeQuestionMarkup(group, '')}</article>`).join('');
+}
+
+function wholeQuestionPickCards(pool) {
+  const selected = new Set(state.selected);
+  const groups = state.filter === 'selected'
+    ? pool.filter((group) => group.questions.some((question) => selected.has(exKey(question.source.pdfId, question.id))))
+    : pool;
+  if (!groups.length) return '<p class="empty">עדיין אין שאלות מסומנות. סמנו שאלה שלמה מהרשימה.</p>';
+  return groups.map((group) => {
+    const keys = group.questions.map((question) => exKey(question.source.pdfId, question.id));
+    const on = keys.length > 0 && keys.every((key) => selected.has(key));
+    const control = `<input type="checkbox" data-whole-question="${escapeHTML(group.key)}" ${on ? 'checked' : ''} aria-label="בחירת שאלה ${escapeHTML(String(group.number))} בשלמותה">`;
+    return `<label class="q-card q-card-whole q-card-pick">${wholeQuestionMarkup(group, control)}</label>`;
+  }).join('');
 }
 
 function sheetCard(meta) {
@@ -370,9 +407,9 @@ function render() {
   const elementary = band() === 'elementary';
   $('result-title').textContent = ok ? (state.scenario === 'other' ? 'מרכיבים את הבחירה שלכם' : (pilotOn() ? cfg.title : cfg.label)) : 'בוחרים כיתה ונושא';
   $('result-summary').textContent = ok
-    ? (elementary ? 'בחירה לפי דף, נושא ורמה. ההדפסה מציגה את עמודי המקור כמו שהם.' : 'המערכת בוחרת שאלות שלמות באקראי. סעיפים של אותה שאלה נשארים יחד.')
+    ? (elementary ? 'בחירה לפי דף, נושא ורמה. ההדפסה מציגה את עמודי המקור כמו שהם.' : 'המערכת בוחרת 5, 10, 15 או 20 שאלות שלמות, או שאתם מסמנים שאלות שלמות בעצמכם.')
     : 'בוחרים כיתה ונושא מתוך הקטלוג.';
-  $('rationale').textContent = ok ? (elementary ? 'ביסודי בוחרים דף שלם לפי נושא ורמה.' : 'בחטיבה בוחרים כמה שאלות: 5, 15 או 20. אין בחירה של סעיף בודד.') : '';
+  $('rationale').textContent = ok ? (elementary ? 'ביסודי בוחרים דף שלם לפי נושא ורמה.' : 'בחטיבה אין בחירה של סעיף בודד. שאלה נבחרת רק בשלמותה.') : '';
   $('pedagogy-details').textContent = ok ? (pilotOn() ? cfg.details : (elementary ? 'ההדפסה מציגה את עמודי המקור, בלי מסגרת על הכותרת.' : 'ההדפסה מסמנת על עמוד המקור, או חותכת ממנו דף מצומצם. לא מנוסח דף חדש.')) : '';
   $('style-help').textContent = STYLES[state.style].help;
   $('other-banner').hidden = state.scenario !== 'other';
@@ -407,17 +444,19 @@ function render() {
       ? pool.map(sheetCard).join('')
       : '<p class="empty">אין דף ברמה הזו. אפשר לחזור ל״הכל״.</p>';
     $('show-more').hidden = true;
-    $('suggestion').hidden = true;
+    if ($('suggestion')) $('suggestion').hidden = true;
   } else {
     const chosen = state.selected.filter((key) => key.startsWith('ex:'));
-    const availableQuestions = groupWholeQuestions(currentExercises()).length;
-    $('available-count').textContent = availableQuestions + ' שאלות שלמות בדפי הנושא';
-    $('questions').innerHTML = chosen.length
-      ? wholeQuestionCards(chosen)
-      : '<p class="empty">בחרו 5, 15 או 20 שאלות. הסעיפים של כל שאלה נשארים יחד.</p>';
+    const availableGroups = groupWholeQuestions(currentExercises());
+    $('available-count').textContent = availableGroups.length + ' שאלות שלמות בדפי הנושא';
+    $('questions').innerHTML = state.pickMode === 'manual'
+      ? wholeQuestionPickCards(availableGroups)
+      : (chosen.length
+        ? wholeQuestionCards(chosen)
+        : '<p class="empty">בחרו 5, 10, 15 או 20 שאלות, או עברו לבחירה ידנית.</p>');
     $('show-more').hidden = true;
     $('more-count').textContent = '';
-    $('suggestion').hidden = true;
+    if ($('suggestion')) $('suggestion').hidden = true;
   }
   const chosenQuestions = elementary ? state.selected.length : groupWholeQuestions(state.selected.map((key) => library.get(key)).filter(Boolean)).length;
   $('selection-count').textContent = elementary ? state.selected.length + ' נבחרו' : chosenQuestions + ' שאלות';
@@ -1822,9 +1861,10 @@ function applyScenario(value, options) {
   state.scenario = value;
   state.expanded = false;
   state.filter = 'all';
-  if (value !== 'other') {
+    if (value !== 'other') {
     if (band() === 'elementary') state.selected = elementaryPreset(value);
-    else state.selected = assignWholeQuestions(state.lastQuestionCount || 5);
+    else if (state.pickMode !== 'manual') state.selected = assignWholeQuestions(state.lastQuestionCount || 5);
+    else state.pickNote = '';
   } else {
     state.pickNote = '';
   }
@@ -1963,7 +2003,7 @@ async function showWizardResult() {
 function bind() {
   $('questions').addEventListener('change', (event) => {
     const box = event.target;
-    if (box.matches('[data-question]')) selectKey(box.dataset.question, box.checked);
+    if (box.matches('[data-whole-question]')) toggleWholeQuestion(box.dataset.wholeQuestion, box.checked);
     if (box.matches('[data-sheet]')) selectKey(box.dataset.sheet, box.checked);
   });
   document.querySelectorAll('[name=scenario]').forEach((el) => el.addEventListener('change', () => {
@@ -1981,7 +2021,7 @@ function bind() {
     let next = keepVisible(state.selected, visibleSelectionKeys());
     if (!next.length && state.scenario !== 'other') {
       if (band() === 'elementary') next = elementaryPreset(state.scenario);
-      else next = assignWholeQuestions(state.lastQuestionCount || 5);
+      else if (state.pickMode !== 'manual') next = assignWholeQuestions(state.lastQuestionCount || 5);
     } else if (band() !== 'elementary') {
       next = expandToWholeQuestionKeys(currentExercises(), next);
     }
@@ -2018,8 +2058,16 @@ function bind() {
   });
   $('filter-all').addEventListener('click', () => { state.filter = 'all'; $('filter-all').setAttribute('aria-pressed', 'true'); $('filter-selected').setAttribute('aria-pressed', 'false'); render(); });
   $('filter-selected').addEventListener('click', () => { state.filter = 'selected'; $('filter-selected').setAttribute('aria-pressed', 'true'); $('filter-all').setAttribute('aria-pressed', 'false'); render(); });
+  document.querySelectorAll('[data-pick-mode]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      state.pickMode = btn.dataset.pickMode === 'manual' ? 'manual' : 'ai';
+      if (state.pickMode === 'manual') state.pickNote = '';
+      render();
+    });
+  });
   document.querySelectorAll('[data-question-count]').forEach((btn) => {
     btn.addEventListener('click', () => {
+      state.pickMode = 'ai';
       pickQuestionCount(Number(btn.dataset.questionCount));
     });
   });
@@ -2033,9 +2081,8 @@ function bind() {
     if (selectionKey() !== before) clearPreparedPrint();
     render();
   });
-  $('add-suggestion').addEventListener('click', () => {
-    const cfg = SCENARIOS[state.scenario];
-    if (pilotOn() && cfg && cfg.suggestion) selectKey(exKey(FACTORING_PDF, cfg.suggestion), true);
+  if ($('add-suggestion')) $('add-suggestion').addEventListener('click', () => {
+    announce('בוחרים שאלה שלמה, לא סעיף בודד.');
   });
   $('return-demo').addEventListener('click', async () => {
     state.grade = '9';

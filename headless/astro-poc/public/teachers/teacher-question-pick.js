@@ -1,6 +1,6 @@
 /* Local whole-question picker. No network and no model call. */
 
-export const QUESTION_COUNTS = [5, 15, 20];
+export const QUESTION_COUNTS = [5, 10, 15, 20];
 
 export function exerciseKey(question) {
   const pdfId = question && question.source && question.source.pdfId ? question.source.pdfId : '';
