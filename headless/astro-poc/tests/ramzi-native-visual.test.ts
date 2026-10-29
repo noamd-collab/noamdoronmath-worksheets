@@ -74,20 +74,21 @@ it('an angle is identified from its two existing source sides without asserting 
   assert.doesNotMatch(figure.textContent, /שוות|שווים/);
 });
 
-it('actual W04-Q1 right-triangle wording highlights the source triangle and A without inventing angle ABC', () => {
+it('actual W04-Q1 right-triangle wording highlights the source triangle and marks the right angle at A, never angle ABC', () => {
   const f = fixture('G7-T48', 'q20', 'א', 'b');
   const options = hint('הבסיס הוא משולש ישר־זווית ABC עם זווית ישרה בנקודה A.');
   const result = resolve(f, options);
   assert.equal(result.kind, 'source-focus');
-  assert.deepEqual(Array.from(result.objectIds).sort(), ['pt-A', 'seg-AB', 'seg-AC', 'seg-BC']);
-  assert.equal(result.arcs.length, 0, 'ABC names the triangle, not an angle with vertex B');
-  assert.deepEqual(Array.from(result.markers[0]), [49.98, 264.15]);
-  assert.match(result.caption, /ABC, A/);
-  assert.doesNotMatch(result.caption, /∠/);
+  assert.deepEqual(Array.from(result.objectIds).sort(), ['seg-AB', 'seg-AC', 'seg-BC']);
+  // "ישר־זווית ABC" names the triangle; "זווית ישרה בנקודה A" is the triangle's angle at A.
+  assert.equal(result.arcs.length, 1, 'one angle, at A');
+  assert.deepEqual(Array.from(result.arcs[0][1]), [49.98, 264.15]);
+  assert.match(result.caption, /∠BAC/);
+  assert.doesNotMatch(result.caption, /∠ABC|∠CBA/);
   const figure = render(f, options);
   assert.equal(figure.querySelectorAll('line').length, 3);
-  assert.equal(figure.querySelectorAll('path').length, 0);
-  assert.equal(figure.querySelectorAll('[data-role="focus-point"]').length, 1);
+  assert.equal(figure.querySelectorAll('path[data-role="focus-angle"]').length, 1);
+  assert.equal(figure.querySelectorAll('[data-role="focus-point"]').length, 0);
 });
 
 it('triangle angle adjectives do not turn the following polygon name into an angle', () => {

@@ -134,7 +134,7 @@ describe('exact-design protected live-baseline boundaries', () => {
     const nativeAdditions = [
       '<script src="/noam-ai/catalog-migrations.js?v=20261027-native1"></script>',
       '<script src="/noam-catalog-migration.js?v=20261027-native1"></script>',
-      '<script src="noam-native-visual.js?v=20261028-source7"></script>',
+      '<script src="noam-native-visual.js?v=20261029-angles1"></script>',
       '<script src="noam-source-panels.js?v=20261028-panels1"></script>',
       '<script src="noam-authored-geometry.js?v=20261028-square1"></script>',
       '<script src="noam-authored-visual.js?v=20261028-source5"></script>',
@@ -264,14 +264,17 @@ describe('exact-design protected live-baseline boundaries', () => {
     // Exact worksheet-image read errors may offer an independently validated original table.
     // This source-only recovery retains the error and never invokes a protected endpoint.
     // The reviewed glossary distinguishes shapes, powers and pronouns; refresh its asset only.
-    assert.match(viewerWithNativeRelease, /noam-glossary\.js\?v=20261029-context4/);
-    assert.match(readFileSync(join(root, '../../worksheet-viewer-noam.html'), 'utf8'), /noam-glossary\.js\?v=20261029-context4/);
+    assert.match(viewerWithNativeRelease, /noam-glossary\.js\?v=20261029-context6/);
+    assert.match(readFileSync(join(root, '../../worksheet-viewer-noam.html'), 'utf8'), /noam-glossary\.js\?v=20261029-context6/);
     // Privately verified source facts add a bounded priority/no-disclosure instruction to the existing request.
     // 2026-10-29: image-read hints with fully verified native aids send a canonical source
     // analysis instead of OCR; the endpoint, auth, cache and request count are unchanged.
     // The ten requested source scaffolds join the explicit drawing path; glossary wording is versioned.
     // Automatic hints, original source assets and endpoint security retain their existing contracts.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '6f0e7925e1d395da0b7eb2787297794c85b9ed1ced5f3a9af46637d1c1d7a4a0');
+    // 2026-10-29: explicit printed last-part-only figure scope proves independent canonical text.
+    // The whole reviewed framing must match; any extra scope qualification keeps the image reader.
+    // The attachment-origin flag and reader use one request snapshot; cleanup retains newly added photos.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), '4ba806e38320769fa2c2239379e3be12a0da2af1a51b462f9fcbd6b8fc7db7b7');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {

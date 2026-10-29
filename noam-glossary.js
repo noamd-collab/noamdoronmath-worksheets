@@ -691,6 +691,26 @@
     if(!entry){return true;}
     // "ממנה" is the pronoun "from it/her", not מ־ + the quotient "מנה".
     if(/^ו?ממנה$/.test(canonicalizeGlossaryText(source.slice(index,end)))){return false;}
+    if(entry.id==="variable"&&canonicalizeGlossaryText(source.slice(index,end))==="משתנה"){
+      var variableBefore=String(source||"").slice(Math.max(0,index-30),index).replace(/[*_`]/g,"");
+      var variableAfter=String(source||"").slice(end,end+40).replace(/[*_`]/g,"");
+      // "one of them changes in a direction" uses the verb, not an algebraic symbol.
+      if(/(?:הוא|היא|אחד מהם|אחת מהן)[\s\u00a0]+$/.test(variableBefore)&&
+          /^[\s\u00a0]+(?:רק[\s\u00a0]+)?בכיוון(?:[\s\u00a0]|$)/.test(variableAfter)){return false;}
+    }
+    if(entry.id==="curriculum-41fec703ca"){
+      // An empty answer box in arithmetic is not the geometric cuboid.
+      // Require an explicit substitution cue; ordinary solid-box usage and
+      // standalone dictionary lookup keep their geometric definition.
+      var boxBefore=String(source||"").slice(Math.max(0,index-80),index).replace(/[*_`]/g,"");
+      var boxAfter=String(source||"").slice(end,end+120).replace(/[*_`]/g,"");
+      if(/(?:במקום|לתוך)[\s\u00a0]+$/.test(boxBefore)&&/^[\s\u00a0]+מספר(?:[\s\u00a0]|[.!?;]|$)/.test(boxAfter)){
+        return false;
+      }
+      if(/^[\s\u00a0]+(?:נשארה[\s\u00a0]+)?ריקה[;,.][\s\u00a0]+(?:בכל[\s\u00a0]+)?הצבה/.test(boxAfter)){
+        return false;
+      }
+    }
     if(entry.id==="ratio"){
       var matched=canonicalizeGlossaryText(source.slice(index,end)).toLocaleLowerCase("he");
       if(!/(^|ו)ביחס$/.test(matched)){return true;}

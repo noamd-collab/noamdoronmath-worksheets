@@ -80,7 +80,7 @@ for (const viewer of ['worksheet-viewer-noam.html', 'headless/astro-poc/public/w
     assert.ok(scaffold > scripts.findIndex(x => x.startsWith('noam-native-visual.js?')));
     assert.ok(scaffold > scripts.findIndex(x => x.startsWith('noam-visual-data.js?')));
     assert.equal(scripts.filter(x => x.startsWith('noam-source-scaffold.js?')).length, 1);
-    assert.ok(scripts.includes('noam-glossary.js?v=20261029-context4'));
+    assert.ok(scripts.includes('noam-glossary.js?v=20261029-context6'));
   });
 
   it(`${viewer}: explicit draw uses all ten exact source aids before original-data fallback`, async () => {
