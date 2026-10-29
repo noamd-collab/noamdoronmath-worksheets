@@ -49,6 +49,15 @@ export function resolveDeterministicTurn(payload, deps) {
   const settings = deps || {};
   const message = String((payload && payload.message) || "");
   const page = payload && payload.page && typeof payload.page === "object" ? payload.page : {};
+  const teacher = payload && payload.teacher;
+  const pickCount = Number(teacher && teacher.count);
+  // The picker supplies an explicit request and its candidates. Do not interpret
+  // words in its prompt as a navigation question; the endpoint still applies its
+  // normal rate limit and bot verification before calling the teacher classifier.
+  if (page.kind === "teachers" && Number.isInteger(pickCount) && pickCount > 0 &&
+      Array.isArray(teacher && teacher.candidates) && teacher.candidates.length > 0) {
+    return null;
+  }
   if (isRoleQuestion(message)) {
     return Object.assign({ active: true, exerciseIds: [], sheetIds: [], intake: null, wizard: null }, roleAnswer(payload));
   }

@@ -40,7 +40,8 @@ describe('grade 9 factoring marked source', () => {
     assert.equal(page.includes('תוכנית בחירה'), false);
     assert.equal(page.includes('mishbetzet'), false);
     assert.match(printer, /source-mark/);
-    assert.match(printer, /SOURCE\.pdfUrl/);
+    assert.match(printer, /const active = source \|\| SOURCE/);
+    assert.match(printer, /getDocument\(\{ url: active\.pdfUrl/);
     assert.match(printer, /isEvalSupported:\s*false/);
     assert.match(printer, /bakeMarks/);
     assert.equal(printer.includes('plan-list'), false);
@@ -340,7 +341,8 @@ describe('teacher catalog picker', () => {
     assert.equal(slices[0].box.y, 0.0662);
     const keepVisible = new Function(`${preview.slice(preview.indexOf('function keepVisible'), preview.indexOf('function currentExercises'))} return keepVisible;`)() as (selected: string[], visible: string[]) => string[];
     assert.deepEqual(keepVisible(['ex:a:1ב', 'ex:b:3ב', 'sheet:c'], ['ex:b:3ב']), ['ex:b:3ב']);
-    const topicHandler = preview.slice(preview.indexOf("$('topic').addEventListener"), preview.indexOf("$('filter-all')"));
+    const topicStart = preview.indexOf("$('topic').addEventListener");
+    const topicHandler = preview.slice(topicStart, preview.indexOf("$('filter-all')", topicStart));
     assert.match(topicHandler, /state\.selected = \[\]/);
     assert.match(topicHandler, /applyScenario/);
     const levelHandler = preview.slice(preview.indexOf("document.querySelectorAll('[name=level]')"), preview.indexOf("$('grade').addEventListener"));
@@ -542,39 +544,35 @@ describe('teacher catalog picker', () => {
     assert.ok(edge.midDark > 20, JSON.stringify(edge));
   });
 
-  it('leaves Noam AI exercise suggestions disabled', () => {
+  it('keeps legacy suggestions disabled while enabling the guarded question-picker AI', () => {
     assert.match(printer, /NoamTeacherSuggest/);
     assert.match(printer, /enabled:\s*false/);
-    assert.match(printer, /classifier:\s*'qwen-flash'/);
+    assert.match(printer, /batchPick:\s*true/);
     assert.equal(/fetch\([^)]*(qwen|dashscope|compatible-mode)/.test(printer), false);
     assert.match(page, /data-noam-teacher-suggest="off"/);
-    assert.match(page, /הצעות נועם AI כבויות/);
-    assert.equal(printer.includes('worksheet-viewer-noam'), false);
+    for (const text of [page, printer]) assert.doesNotMatch(text, /הצעות נועם AI כבויות/);
+    assert.match(printer, /noam-bot-client/);
+    assert.match(printer, /postJson\('\/api\/noamSiteCompanion'/);
+    assert.match(printer, /result\.source === 'classifier'/);
   });
 
-  it('lets the teacher tick any whole questions by eye and does not call a live model to choose them', () => {
-    const demoHtml = readFileSync(new URL('../../../demos/teacher-practice-picker-site-style.html', import.meta.url), 'utf8');
-    for (const html of [page, demoHtml]) {
-      assert.equal(/data-question-count=/.test(html), false);
-      assert.equal(/data-pick-mode=/.test(html), false);
-      assert.equal(html.includes('המערכת בוחרת'), false);
-      assert.equal(/>\d+ שאלות<\/button>/.test(html), false);
-      assert.match(html, /\.q-preview\{display:block;width:100%/);
-      assert.match(html, /min-height:44px/);
-      assert.match(html, /\.wizard-bar\{margin-top:18px/);
-      assert.equal(html.includes('data-ai-pick'), false);
+  it('offers manual whole-question selection and AI counts 5, 10 and 15 with a visible status', () => {
+    const publicHtml = readFileSync(new URL('../public/teachers/index.html', import.meta.url), 'utf8');
+    for (const html of [page, publicHtml]) {
+      for (const count of [5, 10, 15]) {
+        assert.match(html, new RegExp(`id="ai-pick-${count}"[^>]*data-ai-pick="${count}"`));
+      }
+      assert.equal(html.includes('data-ai-pick="45"'), false);
       assert.equal(html.includes('אפשר להוסיף סעיף'), false);
+      assert.match(html, /id="ai-suggest-status"[^>]*role="status"/);
+      assert.match(html, /id="section-kind-test"/);
+      assert.match(html, /id="more-topic-yes"/);
     }
-    assert.equal(printer.includes('pickWithAi'), false);
-    assert.equal(printer.includes('qwen3.8-flash'), false);
-    assert.equal(printer.includes('noam-bot-client'), false);
-    assert.equal(/<input[^>]*data-question/.test(printer), false);
     assert.match(printer, /data-whole-question/);
     assert.match(printer, /pickMode: 'manual'/);
-    assert.match(printer, /<canvas class="q-preview" data-preview="/);
-    assert.match(printer, /async function paintQuestionPreview\(canvas\)/);
-    assert.match(printer, /shortSlices\(group\.questions\)/);
-    assert.equal(printer.includes('כמה שאלות?'), false);
+    assert.match(printer, /async function pickWithAi/);
+    assert.match(printer, /async function questionPreviewCanvas/);
+    assert.match(printer, /function questionPreviewSlices/);
   });
 
   it('never leaves 0 available exercises or 0 suggestions when filtering levels on single-level topics', () => {
