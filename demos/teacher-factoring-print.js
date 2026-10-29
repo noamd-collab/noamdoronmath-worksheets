@@ -2365,12 +2365,21 @@ function answerAffixHints(items, left, right, bottom, top) {
   const hints = [];
   (items || []).forEach((glyph) => {
     const text = String(glyph.str || '');
-    if (!text.trim() || answerAffixText(text)) return;
+    if (!text.trim()) return;
     const gy = glyph.y || 0;
     const gh = Math.max(glyph.h || 0, 8);
     if (gy + gh < bottom + 0.5 || gy > top - 0.5) return;
     const gx = glyph.x || 0;
     const gr = gx + Math.max(glyph.w || 0, 2);
+    if (answerAffixText(text)) {
+      // A mark just outside the window comes back when the crop finishes an
+      // edge cluster. Its own box is exact, so the cut may not wander.
+      const y0 = gy - gh * 0.3;
+      const y1 = gy + gh;
+      if (gx >= right - 0.5 && gx <= right + 4) hints.push({ side: 'right', x: gx, markW: gr - gx, edge: gr, exact: true, y0, y1 });
+      if (gr <= left + 0.5 && gr >= left - 4) hints.push({ side: 'left', x: gr, markW: gr - gx, edge: gx, exact: true, y0, y1 });
+      return;
+    }
     if (gr < left - 0.5 || gx > right + 0.5) return;
     const visible = glyphOverlapSpan(glyph, left - 3, right + 3);
     if (!visible) return;
@@ -2382,10 +2391,10 @@ function answerAffixHints(items, left, right, bottom, top) {
     const y0 = gy - gh * 0.3;
     const y1 = gy + gh;
     if (gr >= right - slack && keptR < Math.min(right, gr) - 0.3) {
-      hints.push({ side: 'right', x: keptR, markW: Math.min(right, gr) - keptR, y0, y1 });
+      hints.push({ side: 'right', x: keptR, markW: Math.min(right, gr) - keptR, edge: Math.min(right, gr), y0, y1 });
     }
     if (gx <= left + slack && kept.x > Math.max(left, gx) + 0.3) {
-      hints.push({ side: 'left', x: kept.x, markW: kept.x - Math.max(left, gx), y0, y1 });
+      hints.push({ side: 'left', x: kept.x, markW: kept.x - Math.max(left, gx), edge: Math.max(left, gx), y0, y1 });
     }
   });
   return hints;
@@ -2687,6 +2696,8 @@ function answerSliceFor(pages, question) {
           side: hint.side,
           x: hint.x / sheet.width,
           markW: hint.markW / sheet.width,
+          edge: hint.edge / sheet.width,
+          exact: Boolean(hint.exact),
           y0: (sheet.height - hint.y1) / sheet.height,
           y1: (sheet.height - hint.y0) / sheet.height,
         })) : undefined,
@@ -3123,7 +3134,9 @@ function peelAnswerAffixes(bitmap, hints, left, right, top, bot) {
     const minGap = Math.max(4, Math.round((rb - ra) * 0.1));
     const est = Math.round(hint.x * W) - lo;
     const markPx = Math.max(2, hint.markW * W);
-    const tol = Math.max(10, markPx * 0.6);
+    const tol = hint.exact ? Math.max(6, minGap * 1.5) : Math.max(10, markPx * 0.6);
+    // Ink past the window edge belongs to the next part, not to this mark.
+    const edgeIdx = Math.round(hint.edge * W) - lo;
     const runs = [];
     let start = -1;
     for (let i = first; i <= last + 1; i += 1) {
@@ -3139,8 +3152,10 @@ function peelAnswerAffixes(bitmap, hints, left, right, top, bot) {
     runs.forEach((run) => {
       const d = est < run.a ? run.a - est : (est > run.b ? est - run.b : 0);
       if (d > tol) return;
-      const markInk = hint.side === 'right' ? last + 1 - run.b : run.a - first;
-      if (markInk > markPx * 1.6 + minGap * 2) return;
+      const markInk = hint.side === 'right'
+        ? Math.min(last, edgeIdx + minGap) + 1 - run.b
+        : run.a - Math.max(first, edgeIdx - minGap);
+      if (markInk <= 0 || markInk > markPx * 1.6 + minGap * 2) return;
       if (d < bestD) {
         bestD = d;
         best = run;
