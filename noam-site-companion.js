@@ -200,7 +200,7 @@
     "html.noam-ai-engaged #noam-accessibility{left:8px!important;right:auto!important}",
     "}",
     "@media (prefers-reduced-motion:reduce){",
-    "html.noam-ai-engaged,html.noam-ai-engaged body,#noam-site-companion-panel{scroll-behavior:auto;transition:none;animation:none}",
+    "html:not(.nd-motion-enabled).noam-ai-engaged,html:not(.nd-motion-enabled).noam-ai-engaged body,html:not(.nd-motion-enabled) #noam-site-companion-panel{scroll-behavior:auto;transition:none;animation:none}",
     "}",
     "@media print{#noam-site-companion,#noam-site-companion-panel{display:none!important}html.noam-ai-engaged{display:block!important;height:auto!important;overflow:visible!important}html.noam-ai-engaged body{max-height:none!important;overflow:visible!important}}",
   ].join("");

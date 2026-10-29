@@ -12,9 +12,10 @@
  *   - after 4 laps the loop parks on the completed state
  *   - explicit site a11y (html.nd-motion-off / html.noam-a11y-motion):
  *     completed state, fully static, toggle hidden. OS
- *     prefers-reduced-motion does not park the loop.
+ *     prefers-reduced-motion parks the loop unless the visitor explicitly enables motion on this site.
  */
 
+import { sitePrefersReducedMotion } from './motionPreference.js';
 import { renderKiteArea } from './kiteAreaFilm';
 
 type LoopRoot = HTMLElement & { __loop?: LoopDebug };
@@ -2261,9 +2262,8 @@ const MAX_LAPS = 4;
 
 function motionOff(): boolean {
   const html = document.documentElement;
-  // Only an explicit menu choice parks the film. OS reduced motion used to
-  // take this same path and left every grade demo on the final frame.
-  return html.classList.contains('noam-a11y-motion') || html.classList.contains('nd-motion-off');
+  return html.classList.contains('noam-a11y-motion') || html.classList.contains('nd-motion-off')
+    || sitePrefersReducedMotion();
 }
 
 /** The kite card parks on its finished frame when the OS asks for less motion.
@@ -2355,10 +2355,9 @@ function setupLoop(root: LoopRoot) {
       t = 0;
       lap = 1;
       done = false;
-      userPaused = false;
       drawFrame();
       if (toggle) toggle.style.display = '';
-      if (inView) play();
+      if (inView && !userPaused) play();
       else setToggle('המשך ההדגמה', true);
     }
   }
@@ -2394,10 +2393,12 @@ function setupLoop(root: LoopRoot) {
     }
   });
 
+  window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', applyMotionPrefs);
+
   // react to the site's accessibility menu toggle (class on <html>)
   new MutationObserver(applyMotionPrefs).observe(document.documentElement, {
     attributes: true,
-    attributeFilter: ['class'],
+    attributeFilter: ['class', 'data-nd-motion'],
   });
   if (variant === 'kite-construct') {
     new MutationObserver(applyMotionPrefs).observe(root, {

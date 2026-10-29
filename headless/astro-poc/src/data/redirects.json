@@ -73,6 +73,11 @@
       "note": "fix 404: only -new page exists in Headless"
     },
     {
+      "from": "/angles-grade-7",
+      "to": "/adjacent-vertical-angles-grade-7",
+      "note": "duplicate of the canonical angles page (same H1, FAQ, worksheets topic 12)"
+    },
+    {
       "from": "/advanced-pythagoras-grade-8-worksheet",
       "to": "/advanced-pythagoras-grade-8",
       "note": "PPLX Check A gap 2026-09-26: live classic 301; needed in Headless map for cut-over (no page at -worksheet)."

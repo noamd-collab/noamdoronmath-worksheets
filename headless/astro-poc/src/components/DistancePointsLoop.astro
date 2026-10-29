@@ -51,6 +51,7 @@ const frameSrc = `${src}?capture=1&t=0`;
 </div>
 
 <script>
+  import { sitePrefersReducedMotion } from '../lib/motionPreference.js';
   const PAUSE_KEY = 'k3-pause:distance-between-points';
 
   type DistanceWindow = Window & {
@@ -75,7 +76,7 @@ const frameSrc = `${src}?capture=1&t=0`;
     const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     function motionOff() {
       const html = document.documentElement;
-      return motionQuery.matches
+      return sitePrefersReducedMotion()
         || html.classList.contains('nd-motion-off')
         || html.classList.contains('noam-a11y-motion');
     }
@@ -180,7 +181,7 @@ const frameSrc = `${src}?capture=1&t=0`;
     motionQuery.addEventListener('change', () => { shown = ''; });
     new MutationObserver(() => { shown = ''; }).observe(document.documentElement, {
       attributes: true,
-      attributeFilter: ['class'],
+      attributeFilter: ['class', 'data-nd-motion'],
     });
   }
 
@@ -250,7 +251,7 @@ const frameSrc = `${src}?capture=1&t=0`;
     display: none;
   }
   @media (prefers-reduced-motion: reduce) {
-    .distance-loop__pause { display: none; }
+    :global(html:not(.nd-motion-enabled)) .distance-loop__pause { display: none; }
   }
   :global(html.nd-motion-off) .distance-loop__pause,
   :global(html.noam-a11y-motion) .distance-loop__pause {
