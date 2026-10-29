@@ -59,6 +59,15 @@ test("genuine fraction expansion and standalone glossary lookup retain exact spa
   assert.equal(expansion("בהרחבה מקוננת אין כאן שבר. הרחבה של השבר היא פעולה אחרת.").length, 1);
 });
 
+test("an arithmetic answer box is not linked to the cuboid definition", () => {
+  const boxes = text => glossary.findTerms(text, 7, 30).filter(match => match.id === "curriculum-41fec703ca");
+  const caption = "זהו השוויון הנתון לבדיקה, לא קביעה שיש לו פתרון. התיבה נשארה ריקה; בכל הצבה יש לבדוק גם שהחילוק מוגדר.";
+  for (const text of [caption, "בכל סעיף השלימו במקום התיבה מספר מתאים.", "כתבו לתוך התיבה מספר."])
+    assert.deepEqual(boxes(text), [], text);
+  for (const text of ["תיבה", "נפח התיבה הוא 24", "התיבה ריקה. מצאו את שטח הפנים.", "התיבה נמצאת ליד מקום ריק להצבה."])
+    assert.equal(boxes(text).length, 1, text);
+});
+
 test("published glossary mirror includes the exact reviewed sense rules", () => {
   assert.equal(fs.readFileSync(path.join(__dirname, "../noam-glossary.js"), "utf8"),
     fs.readFileSync(path.join(__dirname, "../headless/astro-poc/public/noam-glossary.js"), "utf8"));

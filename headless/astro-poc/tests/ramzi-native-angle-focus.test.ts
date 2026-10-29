@@ -59,7 +59,14 @@ it('an angle hint whose angle cannot be identified shows the source unmarked ins
   assert.equal(generic.shapes.length + generic.arcs.length + generic.markers.length, 0);
   // E meets EF, EH and the diagonal EG: without a named polygon the angle is ambiguous.
   const diagonal = fixture('G9-T40', 'b', 'q4');
-  assert.equal(resolve(diagonal, 'האם ∠E שווה ל־∠G?'), null);
+  for (const text of ['∠E', 'האם ∠E שווה ל־∠G?', 'האם ∠E שווה ל־∠F?']) {
+    const ambiguous = resolve(diagonal, text);
+    assert.equal(ambiguous.kind, 'source-context');
+    assert.equal(ambiguous.shapes.length + ambiguous.arcs.length + ambiguous.markers.length, 0);
+    assert.match(ambiguous.caption, /אינה חד־משמעית/);
+    assert.ok(render(diagonal, text), 'the exact source remains renderable without generation');
+  }
+  assert.equal(resolve(diagonal, 'האם ∠E שווה ל־∠Z?'), null, 'an unknown vertex is still rejected');
   assert.deepEqual(angles(resolve(diagonal, 'במרובע EFGH, האם ∠E שווה ל־∠G?')), ['∠FEH', '∠FGH']);
 });
 

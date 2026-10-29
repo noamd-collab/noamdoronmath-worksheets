@@ -134,7 +134,7 @@ describe('exact-design protected live-baseline boundaries', () => {
     const nativeAdditions = [
       '<script src="/noam-ai/catalog-migrations.js?v=20261027-native1"></script>',
       '<script src="/noam-catalog-migration.js?v=20261027-native1"></script>',
-      '<script src="noam-native-visual.js?v=20261028-source7"></script>',
+      '<script src="noam-native-visual.js?v=20261029-angles1"></script>',
       '<script src="noam-source-panels.js?v=20261028-panels1"></script>',
       '<script src="noam-authored-geometry.js?v=20261028-square1"></script>',
       '<script src="noam-authored-visual.js?v=20261028-source5"></script>',
@@ -264,8 +264,8 @@ describe('exact-design protected live-baseline boundaries', () => {
     // Exact worksheet-image read errors may offer an independently validated original table.
     // This source-only recovery retains the error and never invokes a protected endpoint.
     // The reviewed glossary distinguishes shapes, powers and pronouns; refresh its asset only.
-    assert.match(viewerWithNativeRelease, /noam-glossary\.js\?v=20261029-context4/);
-    assert.match(readFileSync(join(root, '../../worksheet-viewer-noam.html'), 'utf8'), /noam-glossary\.js\?v=20261029-context4/);
+    assert.match(viewerWithNativeRelease, /noam-glossary\.js\?v=20261029-context5/);
+    assert.match(readFileSync(join(root, '../../worksheet-viewer-noam.html'), 'utf8'), /noam-glossary\.js\?v=20261029-context5/);
     // Privately verified source facts add a bounded priority/no-disclosure instruction to the existing request.
     // 2026-10-29: image-read hints with fully verified native aids send a canonical source
     // analysis instead of OCR; the endpoint, auth, cache and request count are unchanged.
@@ -273,7 +273,7 @@ describe('exact-design protected live-baseline boundaries', () => {
     // Automatic hints, original source assets and endpoint security retain their existing contracts.
     // 2026-10-29: explicit printed last-part-only figure scope proves independent canonical text.
     // The whole reviewed framing must match; any extra scope qualification keeps the image reader.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '3beb39e316679ddaedc81347a232e29b587ad3b85abcb254d8106669e85bc107');
+    assert.equal(sha256(JSON.stringify(releasedScripts)), '4701be9c79fdf7b8c19b88c252032661ff80c64e5959a327858c224e036698f1');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {

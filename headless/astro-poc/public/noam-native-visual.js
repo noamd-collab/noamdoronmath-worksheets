@@ -308,7 +308,7 @@
     // is the angle between the only two verified source sides meeting there;
     // any other count is ambiguous and leaves the angle unmarked.
     var angleTalk = /∠|זווי/.test(focus.replace(/(?:ישר|ישרי|ישרת|חד|חדי|קהה|קהי)[\s־-]+ה?זווית/g, ""));
-    var consumed = Object.create(null), namedPolygons = [], pm;
+    var consumed = Object.create(null), namedPolygons = [], ambiguousVertex = false, pm;
     // "במשולש ישר־זווית ABC", "בטרפז EFGH": a named polygon fixes which angle a vertex means.
     var polygonRe = /(?:משולש|מרובע|מלבן|ריבוע|מקבילית|דלתון|טרפז|מצולע)(?:[\s־-]+[א-ת"׳]+){0,2}[\s־-]+([A-Z]{3,8})(?![A-Za-z])/g;
     while ((pm = polygonRe.exec(focus))) if (new Set(pm[1]).size === pm[1].length) namedPolygons.push(pm[1]);
@@ -323,6 +323,7 @@
         ends = owners[0].split("");
         if (!ends.every(function (p) { return verifiedSide(v, p, null); })) { unknown = true; return; }
       }
+      if (ends.length > 2) { ambiguousVertex = true; return; }
       if (ends.length !== 2) { unknown = true; return; }
       if (angleNames.indexOf(ends[0] + v + ends[1]) >= 0 || angleNames.indexOf(ends[1] + v + ends[0]) >= 0) return;
       var a = namedPoints[ends[0]].svg_xy, b = namedPoints[ends[1]].svg_xy;
@@ -403,6 +404,13 @@
       if (family) objects.filter(function (o) { return family.test(o.type); }).forEach(function (o) { select(o); });
     }
     var constructing = construction(focus);
+    // The source and vertex are known, but a diagonal leaves several possible
+    // angles. Keep that exact source visible without choosing rays or invoking
+    // generation. Unknown objects and construction requests still fail closed.
+    if (ambiguousVertex && !unknown && !constructing) {
+      return { kind: "source-context", url: ctx.url, width: source.box[2], height: source.box[3], shapes: [], markers: [], arcs: [],
+        caption: "השרטוט המקורי מהדף. הזווית שנזכרה אינה חד־משמעית, ולכן לא נוספה הדגשה." };
+    }
     // An angle hint whose angle cannot be identified shows the source unmarked,
     // instead of colouring nearby sides as if they were the requested angle.
     if (angleTalk && !arcs.length && !constructing) { selectedObjects = []; markers = []; names = []; }
