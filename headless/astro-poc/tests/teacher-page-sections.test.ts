@@ -93,6 +93,8 @@ describe('teacher page sections', () => {
     assert.match(printer, /data-block-remove/);
     assert.match(printer, /function carriedKeys\(\)/);
     assert.match(printer, /השאלה כבר בדף, בנושא שנשמר קודם\./);
+    assert.match(printer, /const saved = carriedKeys\(\);\s*state\.selected = state\.selected\.filter\(\(key\) => !saved\.has\(key\)\);/);
+    assert.match(printer, /\.filter\(\(key\) => !saved\.has\(key\)\);\s*state\.pickNote = '';/);
   });
 
   it('keeps the new page-builder styles out of <head>', () => {

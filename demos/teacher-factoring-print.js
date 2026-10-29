@@ -211,6 +211,8 @@ function paintPageBuilder() {
 }
 
 function addAnotherTopic() {
+  const saved = carriedKeys();
+  state.selected = state.selected.filter((key) => !saved.has(key));
   if (!state.selected.length) return;
   const topic = currentTopic();
   state.blocks.push({
@@ -2428,7 +2430,8 @@ function applyWizardPrefill(prefill) {
   return loadCurrentTopic().then(() => {
     const allow = new Set(visibleSelectionKeys());
     const ids = prefill.exerciseIds || [];
-    state.selected = expandToWholeQuestionKeys(currentExercises(), ids.filter((id) => allow.has(id)));
+    const saved = carriedKeys();
+    state.selected = expandToWholeQuestionKeys(currentExercises(), ids.filter((id) => allow.has(id))).filter((key) => !saved.has(key));
     state.pickNote = '';
     const note = $('teacher-note');
     if (note && prefill.minutes && !note.value) note.value = 'אורך שיעור: ' + prefill.minutes + ' דקות';
