@@ -418,7 +418,7 @@ describe('GradeLoopPlayer render contract', () => {
     assert.match(player, /"▶ פעם אחת" stays deferred/);
     assert.doesNotMatch(css.split('@media')[0], /\.grade-loop__pause \{[^}]*display: none/);
     const engine = read('src/lib/conceptLoops.ts');
-    assert.doesNotMatch(engine, /matchMedia\('\(prefers-reduced-motion: reduce\)'\)/);
+    assert.match(engine, /matchMedia\('\(prefers-reduced-motion: reduce\)'\)/);
     assert.match(engine, /classList\.contains\('nd-motion-off'\)/);
     const a11y = read('public/noam-accessibility.js');
     assert.doesNotMatch(a11y, /stopAnim:\s*reduceQuery\.matches/);

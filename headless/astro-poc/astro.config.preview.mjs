@@ -23,6 +23,8 @@ export default defineConfig({
     schema: {
       BLOG_AUDIO_FUNCTIONS_BASE: envField.string({ context: 'server', access: 'public', optional: true }),
       QWEN_API_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
+      QWEN_BASE_URL: envField.string({ context: 'server', access: 'secret', optional: true }),
+      QWEN_MODEL: envField.string({ context: 'server', access: 'secret', optional: true }),
       NOAM_RECAPTCHA_SECRET_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
       // OtterlyAI Agent Analytics webhook. Optional until the secret is saved.
       OTTERLY_API_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),

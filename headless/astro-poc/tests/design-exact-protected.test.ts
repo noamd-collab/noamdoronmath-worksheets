@@ -17,6 +17,8 @@
  * They moved again so the kite card plays the area film first
  * («שטח דלתון — מהדלתון למלבן»), then the ruler-and-compass film.
  * They moved again so the card title follows the film that is playing.
+ * They moved again so OS prefers-reduced-motion parks a loop unless the
+ * visitor explicitly enables motion on this site.
  */
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
@@ -35,7 +37,8 @@ const protectedFiles: Record<string, string> = {
   // wix({ robots: false }): Wix's injected /robots.txt was replacing ours and
   // warning at build. Reviewed for the cut-over; ConceptLoop is untouched.
   // OTTERLY_API_KEY added to the env schema (optional secret, read from env only).
-  'astro.config.mjs': '5276a89c5bbb0e31795d97e00c9071ec4fddfcf822e0cfd4ead4bd60502a1a04',
+  // QWEN_BASE_URL and QWEN_MODEL are optional secrets for the Model Studio endpoint.
+  'astro.config.mjs': 'c002156d52b10040396ba30e6fc01106bf866fb639a204eddc13c79fadcb2fab',
   // G9 PDF v2, G8 PDF v2 (two c2 levels), and G7 PDF v2.
   // Packages-120: replaced student PDF ids and added G9-T46 (דלתון) in the geometry group.
   'src/data/catalog.v1.json': '4c5ccc34149a798f47c4f261744f132b36d7ff083dc4d0052c81a53219639fb6',
@@ -43,7 +46,7 @@ const protectedFiles: Record<string, string> = {
   // Viewer links forward the c2 sibling as pc2.
   'src/lib/worksheetLinks.ts': '6bfa7fe86ff7d02a87c2f7533c6eabae1c34a372c2c68b2a92519e8c4790f531',
   // kite-construct film added for /kite-grade-9 (explicit content, not a design regen).
-  'src/lib/conceptLoops.ts': 'e60dda4e84009904e23c44bbece637ee96ff17dfdb6a5525c8178d8eec2c54cd',
+  'src/lib/conceptLoops.ts': 'c0a46b28dd9610cd5b79b09f33a5ff60775bbb8e1859e07808e031e9bdc784f0',
   // Brave motion: site opt-in overrides prefers-reduced-motion inside the film.
   'src/components/ConceptLoop.astro': 'c7eb6b250a46f3986186b5e113ab4e29a51dc5c17eefcd49f6dcade0ab367be4',
   // HeroLoop.astro is the homepage shell (which loops are emitted). The engine

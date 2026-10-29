@@ -202,9 +202,8 @@ export const TOPIC_PAGE_M22_SLUGS = [
 /** Cleared in M30 — AA migrated with generic preH1Ctas (CTA before H1). */
 export const TOPIC_PAGE_M22_UNMIGRATED = [] as const;
 
-/** M23 batch — remaining audited live topic-SEO (25; see UNMIGRATED). */
+/** M23 batch — remaining audited live topic-SEO. /angles-grade-7 is a 301, not a page. */
 export const TOPIC_PAGE_M23_SLUGS = [
-  'angles-grade-7',
   'area-parallelogram-trapezoid-composite-grade-7',
   'area-rectangle-perimeter-grade-7',
   'composite-polygons-area-grade-9',

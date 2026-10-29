@@ -150,9 +150,10 @@ describe('protected math sources stay pinned after the L01 removal', () => {
   // Moved again so the kite card plays the area film, then the construction.
   // Moved again so the card title follows whichever film is playing.
   // Brave motion opt-in inside the film (sitePrefersReducedMotion). Not a design regen.
+  // conceptLoops.ts parks on OS reduced motion unless the site opts in.
   const expected = {
     'src/components/ConceptLoop.astro': 'c7eb6b250a46f3986186b5e113ab4e29a51dc5c17eefcd49f6dcade0ab367be4',
-    'src/lib/conceptLoops.ts': 'e60dda4e84009904e23c44bbece637ee96ff17dfdb6a5525c8178d8eec2c54cd',
+    'src/lib/conceptLoops.ts': 'c0a46b28dd9610cd5b79b09f33a5ff60775bbb8e1859e07808e031e9bdc784f0',
   };
   for (const [file, digest] of Object.entries(expected)) {
     it(file, () => {

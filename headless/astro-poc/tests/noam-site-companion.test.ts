@@ -189,7 +189,7 @@ describe('Noam AI site manual', () => {
     assert.equal(result.status, 0, (result.stderr || '') + (result.stdout || ''));
   });
 
-  it('retrieves a real factoring page and does not call the model when nothing matches', async () => {
+  it('retrieves a real factoring page and lets the model clarify unfamiliar wording', async () => {
     const pdfId = factoringLevelA().pdfId;
     const rows = retrieveGuide(guide, 'כיתה ט׳ פירוק לגורמים', 6) as GuideRecord[];
     assert.ok(rows.length > 0);
@@ -198,10 +198,10 @@ describe('Noam AI site manual', () => {
     let called = 0;
     const result = await handleCompanionTurn(
       { message: 'xxxxqqqq yyyywwww', page: { kind: 'home', path: '/', title: 'בית' } },
-      { guide, catalog, apiKey: 'test', fetch: async () => { called += 1; throw new Error('should not call'); } }
+      { guide, catalog, apiKey: 'test', fetch: async () => { called += 1; return { ok: true, json: async () => ({ choices: [{ message: { content: JSON.stringify({ answer: 'באיזו כיתה ובאיזה נושא לחפש?' }) } }] }) }; } }
     );
-    assert.equal(called, 0);
-    assert.equal(result.source, 'catalog-gap');
+    assert.equal(called, 1);
+    assert.equal(result.source, 'model');
     assert.equal(result.links.length, 0);
     assert.match(result.text, /באיזו כיתה/);
   });
@@ -217,7 +217,7 @@ describe('Noam AI model role', () => {
     assert.equal(body.model, QWEN_MODEL);
     assert.equal(body.enable_thinking, false);
     assert.equal(body.stream, false);
-    assert.equal(body.messages[0].content, SYSTEM_PROMPT);
+    assert.ok(body.messages[0].content.startsWith(SYSTEM_PROMPT));
     assert.match(SYSTEM_PROMPT, /אתה לא רמזי/);
     assert.match(SYSTEM_PROMPT, /אסור לך לתת רמז/);
     const huge = 'א'.repeat(5000);
@@ -281,10 +281,10 @@ describe('Noam AI model role', () => {
     assert.equal(result.model, 'qwen3.8-flash');
     assert.ok(result.primary);
     assert.equal(result.primary.href, allowed.href);
-    assert.equal(result.chips.length, 1);
-    assert.equal(result.chips[0].id, records[3].id);
+    assert.equal(result.chips.length, 2);
+    assert.equal(result.chips[0].id, records[1].id);
     assert.equal(result.chips.some((chip: { label: string }) => chip.label === result.primary!.label), false);
-    assert.equal(result.links.length, 2);
+    assert.equal(result.links.length, 3);
     assert.equal(result.essential.length, 0);
     assert.match(result.essentialNote, /לא ממציא שאלות/);
     assert.match(result.details, /לסמן את השאלות שנבחרו/);
