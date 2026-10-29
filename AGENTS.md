@@ -50,7 +50,7 @@
 - Run the relevant code, build, and link checks.
 - Verify the UI on phone and desktop.
 - Wix preview, built with `.env.local` only.
-- Local preview: `cd headless/astro-poc && npm run preview` (`.env.local` only).
+- Wix preview: `cd headless/astro-poc && npm run preview` runs `wix preview` and needs Wix credentials (`.env.local` only). For loopback checks use the command under Local run.
 
 ## Reporting
 
