@@ -7012,14 +7012,14 @@ function noamEnrichSourceAnalysis(exercise,analysis){
 var NOAM_VERIFIED_PANEL_CAPTIONS={
   // 2026-10-29, local PDF (sha256 1fe136d6…) page 11: each caption is 23.4pt
   // under its dot cluster, horizontally offset by at most 3.3pt.
-  "8474535578894a669c6847e57a83dc30/q21":{
+  "8474535578894a669c6847e57a83dc30:q21":{
     source:"1fe136d605336f197c7dc4033fc55c4bacac65ee8633b349bea1ab18c47ca86a",
     native:"65fc10803880c36c80172ae170e0bcbbe3d69a93674f8cfa7f8b2602241d4881",
     captions:[{grid:[3,3],text:"שלב 1"},{grid:[3,6],text:"שלב 2"},{grid:[3,9],text:"שלב 3"}]
   }
 };
 function noamVerifiedPanelCaptions(exercise,facts){
-  var key=String(manifest&&manifest.pdfHash||'')+'/'+String(exercise&&exercise.nativeQuestionId||'');
+  var key=String(manifest&&manifest.pdfHash||'')+':'+String(exercise&&exercise.nativeQuestionId||'');
   var record=Object.prototype.hasOwnProperty.call(NOAM_VERIFIED_PANEL_CAPTIONS,key)&&NOAM_VERIFIED_PANEL_CAPTIONS[key];
   if(!record||!Array.isArray(facts)||manifest.sourceSha256!==record.source||manifest.nativeExportSha256!==record.native||
       facts.length!==record.captions.length){return null;}

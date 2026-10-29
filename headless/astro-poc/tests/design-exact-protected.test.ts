@@ -271,7 +271,7 @@ describe('exact-design protected live-baseline boundaries', () => {
     // analysis instead of OCR; the endpoint, auth, cache and request count are unchanged.
     // The ten requested source scaffolds join the explicit drawing path; glossary wording is versioned.
     // Automatic hints, original source assets and endpoint security retain their existing contracts.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '04ccf7ee7dedc5be52e495efcba1e721ee9f574fd20c7cb9dfc3943fbe1abd8a');
+    assert.equal(sha256(JSON.stringify(releasedScripts)), '6f0e7925e1d395da0b7eb2787297794c85b9ed1ced5f3a9af46637d1c1d7a4a0');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {
