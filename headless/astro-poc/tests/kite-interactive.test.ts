@@ -116,5 +116,17 @@ describe('kite interactive handoff (JSXGraph pilot)', () => {
     assert.match(ix, /if \(isStatic\(\) && openWrap\) openWrap\.hidden = false;/);
     // hidden cue must not defeat the hidden attribute
     assert.match(cmp, /\.kite-ix__cue\[hidden\]\s*\{\s*display:\s*none/);
+    // the board fade follows the site motion controls, not the OS setting
+    assert.doesNotMatch(cmp, /prefers-reduced-motion/);
+    assert.match(cmp, /:global\(html\.nd-motion-off\) \.kite-ix,\s*:global\(html\.noam-a11y-motion\) \.kite-ix\s*\{\s*transition:\s*none/);
+    // a failed board load gives the film back
+    assert.match(ix, /board = await buildBoard\(boardEl, readout\);\s*\} catch \{\s*open = false;/);
+  });
+
+  it('keeps B strictly between A and C so the shape stays a convex kite', () => {
+    const ix = read('src/lib/kiteInteractive.ts');
+    assert.match(ix, /Math\.max\(LIMITS\.A\.min, B\.Y\(\) \+ SNAP\)/);
+    assert.match(ix, /Math\.min\(LIMITS\.C\.max, B\.Y\(\) - SNAP\)/);
+    assert.match(ix, /Math\.max\(LIMITS\.B\.yMin, C\.Y\(\) \+ SNAP\), Math\.min\(LIMITS\.B\.yMax, A\.Y\(\) - SNAP\)/);
   });
 });

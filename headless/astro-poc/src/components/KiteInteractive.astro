@@ -9,7 +9,7 @@
  *   the same card area.
  * - "הפעלת ההדגמה מחדש" fades the loop back in and clicks the engine's own
  *   toggle, so replay semantics (lap reset, play) stay engine-owned.
- * - Reduced motion / no-JS: no auto handoff. The static frame stays; a
+ * - Site motion off / no-JS: no auto handoff. The static frame stays; a
  *   separate "פתחו את הפעילות" button opens the board on demand.
  * - JSXGraph is bundled locally (npm dependency, dynamic import — the chunk
  *   loads only when the board first opens). No CDN, no runtime cost elsewhere.
@@ -224,10 +224,9 @@
     color: #22305a;
     box-shadow: 3px 3px 0 #e6a534;
   }
-  @media (prefers-reduced-motion: reduce) {
-    .kite-ix {
-      transition: none;
-    }
+  :global(html.nd-motion-off) .kite-ix,
+  :global(html.noam-a11y-motion) .kite-ix {
+    transition: none;
   }
   @media (max-width: 480px) {
     .kite-ix {

@@ -2,7 +2,7 @@
  * Kite interactive (JSXGraph) — controller + board for /kite-grade-9.
  *
  * The board opens only after the kite-construct film parks (its engine hook
- * reports done), or on demand under reduced motion / static mode. Replay
+ * reports done), or on demand when the site motion controls stop animations. Replay
  * forwards to the engine's own toggle, so the film's state machine stays
  * engine-owned and ConceptLoop.astro / conceptLoops.ts stay untouched.
  *
@@ -193,12 +193,13 @@ async function buildBoard(el: HTMLElement, readout: HTMLElement): Promise<{ rese
     label: { ...LABEL, offset: [-26, -6] },
   }) as IxPoint;
 
-  A.on('drag', () => A.moveTo([0, clamp(snap(A.Y()), LIMITS.A.min, LIMITS.A.max)]));
-  C.on('drag', () => C.moveTo([0, clamp(snap(C.Y()), LIMITS.C.min, LIMITS.C.max)]));
+  // B stays strictly between A and C so the shape is always a convex kite.
+  A.on('drag', () => A.moveTo([0, clamp(snap(A.Y()), Math.max(LIMITS.A.min, B.Y() + SNAP), LIMITS.A.max)]));
+  C.on('drag', () => C.moveTo([0, clamp(snap(C.Y()), LIMITS.C.min, Math.min(LIMITS.C.max, B.Y() - SNAP))]));
   B.on('drag', () =>
     B.moveTo([
       clamp(snap(B.X()), LIMITS.B.xMin, LIMITS.B.xMax),
-      clamp(snap(B.Y()), LIMITS.B.yMin, LIMITS.B.yMax),
+      clamp(snap(B.Y()), Math.max(LIMITS.B.yMin, C.Y() + SNAP), Math.min(LIMITS.B.yMax, A.Y() - SNAP)),
     ])
   );
 
@@ -328,6 +329,7 @@ export function initKiteInteractive(): void {
         let board: { reset: () => void } | null = null;
         let open = false;
         let cueDone = false;
+        const replayLabel = replayBtn.textContent ?? '';
 
         const hook = (): LoopHook | null => loopRoot.__loop ?? null;
         const isStatic = (): boolean => hook()?.state().static ?? false;
@@ -339,14 +341,23 @@ export function initKiteInteractive(): void {
           ix.hidden = false;
           requestAnimationFrame(() => ix.classList.add('is-on'));
           if (!board) {
-            board = await buildBoard(boardEl, readout);
+            try {
+              board = await buildBoard(boardEl, readout);
+            } catch {
+              open = false;
+              ix.classList.remove('is-on');
+              ix.hidden = true;
+              loopRoot.style.display = '';
+              if (isStatic() && openWrap) openWrap.hidden = false;
+              return;
+            }
           }
           if (!cueDone) {
             cueDone = true;
-            // No cue when the engine is static (OS reduce or the site motion menu).
+            // No cue when the engine is static (site motion menu or Stop Animations).
             if (!isStatic()) showCueOnce(boardEl, cueEl);
           }
-          if (isStatic() && replayBtn) replayBtn.textContent = 'חזרה להדגמה';
+          replayBtn.textContent = isStatic() ? 'חזרה להדגמה' : replayLabel;
         };
 
         const closeBoard = (replay: boolean): void => {
