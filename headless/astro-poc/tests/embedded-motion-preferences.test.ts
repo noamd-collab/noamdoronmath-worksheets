@@ -27,14 +27,14 @@ function html() {
 }
 
 for (const film of films) {
-  it(`${film}: inherited site choice overrides OS reduce, but either document's stop wins`, () => {
+  it(`${film}: plays under OS reduce, but either document's stop wins`, () => {
     const source=readFileSync(new URL(`../public/loops/${film}.html`,import.meta.url),'utf8');
     const own=html(), parent=html();
     const window={parent:{document:{documentElement:parent}}};
     const off=runInNewContext(`${functionSource(source,'motionOff')}; motionOff`, {
       window,document:{documentElement:own},reducedMotion:{matches:true},
     });
-    assert.equal(off(),true);
+    assert.equal(off(),false,'OS reduce alone does not freeze the embedded player');
     parent.classes.add('nd-motion-enabled');
     assert.equal(off(),false,'same-origin parent opt-in reaches the embedded player');
     own.classes.add('nd-motion-off');
@@ -47,7 +47,7 @@ for (const film of films) {
     assert.equal(off(),true);
     delete parent.dataset.ndMotion;
     parent.classes.delete('nd-motion-enabled');
-    assert.equal(off(),true,'return to the device preference restores static behavior');
+    assert.equal(off(),false,'the device preference alone keeps the player moving');
   });
 }
 

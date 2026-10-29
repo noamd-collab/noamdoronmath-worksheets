@@ -75,7 +75,9 @@ function restart(){pause();laps=1;draw(0);play()}
 el.play.addEventListener('click',()=>playing?pause():play());el.restart.addEventListener('click',restart);el.seek.addEventListener('input',()=>seek(Number(el.seek.value)));
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&playing)pause()});
 window.triangleDemo=Object.freeze({play,pause,restart,seek,mathAt,getState:()=>({...state,playing,duration:DURATION})});
-draw(0);updateControls();if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches||looping)play();
+function siteMotionOff(){const roots=[document.documentElement];try{if(window.parent&&window.parent!==window)roots.push(window.parent.document.documentElement)}catch(_){}return roots.some(h=>h.classList.contains('nd-motion-off')||h.classList.contains('noam-a11y-motion')||h.dataset.ndMotion==='off')}
+/* Plays by default; only the site's own motion controls keep it still (Safari reports macOS "Reduce motion"). */
+draw(0);updateControls();if(!siteMotionOff()||looping)play();
 })();
 </script>
 <!-- Font licenses are included below. No network requests or external runtime dependencies. -->

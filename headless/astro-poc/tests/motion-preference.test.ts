@@ -65,66 +65,64 @@ function menuFixture(source: URL, options: { reduced?: boolean; stored?: Record<
 }
 
 for (const [label, source, hasStopControl] of sources) describe(label, () => {
-  it('reflects the device default in its actual pressed state without silently opting in', () => {
+  it('plays animations by default even when the device (Safari/macOS) requests reduced motion', () => {
     const f = menuFixture(source);
-    assert.equal(f.pressed('[data-pref="motion"]'), 'true');
-    assert.equal(f.reduced(), true);
-    assert.equal(f.enabled(), false);
-    assert.deepEqual(f.stored(), {});
-    assert.equal(f.motionEvents.at(-1), true);
-    f.deviceReduced(false);
     assert.equal(f.pressed('[data-pref="motion"]'), 'false');
     assert.equal(f.reduced(), false);
-    assert.equal(f.enabled(), false, 'following the device is not an explicit site opt-in');
-  });
-
-  it('persists an explicit full-motion choice and restores it after reloading', () => {
-    const f = menuFixture(source);
-    f.click('[data-pref="motion"]');
-    assert.equal(f.pressed('[data-pref="motion"]'), 'false');
-    assert.equal(f.stored().motion, false);
-    assert.equal(f.stored().motionChosen, true);
-    assert.equal(f.enabled(), true);
-    assert.equal(f.reduced(), false);
+    assert.equal(f.enabled(), true, 'the default must release CSS rules that honor the OS setting');
+    assert.deepEqual(f.stored(), {}, 'the default is not saved as a visitor choice');
     assert.equal(f.motionEvents.at(-1), false);
-    const reload = menuFixture(source, { stored: f.stored() });
-    assert.equal(reload.pressed('[data-pref="motion"]'), 'false');
-    assert.equal(reload.enabled(), true);
-    assert.equal(reload.reduced(), false);
+    f.deviceReduced(false);
+    assert.equal(f.reduced(), false);
+    assert.equal(f.enabled(), true);
+    f.deviceReduced(true);
+    assert.equal(f.reduced(), false);
+    assert.equal(f.enabled(), true);
   });
 
-  it('does not turn contrast, links, text size, or a legacy saved false into motion consent', () => {
+  it('persists an explicit reduced-motion choice and restores it after reloading', () => {
+    const f = menuFixture(source, { reduced: false });
+    f.click('[data-pref="motion"]');
+    assert.equal(f.pressed('[data-pref="motion"]'), 'true');
+    assert.equal(f.stored().motion, true);
+    assert.equal(f.stored().motionChosen, true);
+    assert.equal(f.enabled(), false);
+    assert.equal(f.reduced(), true);
+    assert.equal(f.motionEvents.at(-1), true);
+    const reload = menuFixture(source, { reduced: false, stored: f.stored() });
+    assert.equal(reload.pressed('[data-pref="motion"]'), 'true');
+    assert.equal(reload.enabled(), false);
+    assert.equal(reload.reduced(), true);
+  });
+
+  it('does not turn contrast, links, text size, or a legacy saved false into a motion choice', () => {
     const f = menuFixture(source, { stored: { text: 100, motion: false, contrast: false } });
     for (const selector of ['[data-pref="contrast"]', '[data-pref="links"]', '#increase']) f.click(selector);
     assert.equal(f.stored().text, 110);
     assert.equal(f.stored().contrast, true);
     assert.equal(f.stored().links, true);
     assert.notEqual(f.stored().motionChosen, true);
-    assert.equal(f.enabled(), false);
-    assert.equal(f.pressed('[data-pref="motion"]'), 'true');
+    assert.equal(f.enabled(), true);
+    assert.equal(f.pressed('[data-pref="motion"]'), 'false');
     const reload = menuFixture(source, { stored: f.stored() });
-    assert.equal(reload.enabled(), false);
-    assert.equal(reload.reduced(), true);
+    assert.equal(reload.enabled(), true);
+    assert.equal(reload.reduced(), false);
   });
 
-  it('resets an explicit choice to the current OS default, including after another reload', () => {
+  it('resets an explicit choice back to playing animations, including after another reload', () => {
     const f = menuFixture(source);
     f.click('[data-pref="motion"]');
     if (hasStopControl) f.click('#stop-anim');
     f.click('#reset');
-    assert.equal(f.pressed('[data-pref="motion"]'), 'true');
-    assert.equal(f.enabled(), false);
+    assert.equal(f.pressed('[data-pref="motion"]'), 'false');
+    assert.equal(f.enabled(), true);
     assert.equal(f.stopped(), false);
     assert.notEqual(f.stored().motionChosen, true);
-    assert.equal(menuFixture(source, { stored: f.stored() }).reduced(), true);
-    f.deviceReduced(false);
-    assert.equal(f.reduced(), false);
-    assert.equal(f.pressed('[data-pref="motion"]'), 'false');
+    assert.equal(menuFixture(source, { stored: f.stored() }).reduced(), false);
   });
 
-  if (hasStopControl) it('gives stop-animations priority over a full-motion opt-in and resumes that choice when released', () => {
+  if (hasStopControl) it('gives stop-animations priority over playing motion and resumes when released', () => {
     const f = menuFixture(source);
-    f.click('[data-pref="motion"]');
     f.click('#stop-anim');
     assert.equal(f.enabled(), false);
     assert.equal(f.stopped(), true);
@@ -170,20 +168,20 @@ for (const [label, source, hasStopControl] of sources) describe(label, () => {
     assert.notEqual(otherMenu.stored().stopAnim, true);
   });
 
-  it('preserves both explicit on and explicit off choices when the OS setting changes', () => {
+  it('preserves both explicit off and explicit on choices when the OS setting changes', () => {
     const f = menuFixture(source);
-    f.click('[data-pref="motion"]');
-    for (const reduced of [false, true]) {
-      f.deviceReduced(reduced);
-      assert.equal(f.enabled(), true);
-      assert.equal(f.reduced(), false);
-    }
     f.click('[data-pref="motion"]');
     for (const reduced of [false, true]) {
       f.deviceReduced(reduced);
       assert.equal(f.enabled(), false);
       assert.equal(f.reduced(), true);
       assert.equal(f.pressed('[data-pref="motion"]'), 'true');
+    }
+    f.click('[data-pref="motion"]');
+    for (const reduced of [false, true]) {
+      f.deviceReduced(reduced);
+      assert.equal(f.enabled(), true);
+      assert.equal(f.reduced(), false);
     }
     const legacy = menuFixture(source, { reduced: false, stored: { motion: true } });
     assert.equal(legacy.reduced(), true, 'a legacy affirmative reduction remains an explicit choice');
@@ -202,8 +200,8 @@ function preferenceFixture(reduced: boolean) {
 }
 
 describe('shared motion preference used by animation engines', () => {
-  it('uses the OS default until the site has an explicit choice', () => {
-    assert.equal(preferenceFixture(true).readPreference(), true);
+  it('ignores the OS setting until the site has an explicit choice (Safari reports macOS Reduce motion)', () => {
+    assert.equal(preferenceFixture(true).readPreference(), false);
     assert.equal(preferenceFixture(false).readPreference(), false);
   });
 

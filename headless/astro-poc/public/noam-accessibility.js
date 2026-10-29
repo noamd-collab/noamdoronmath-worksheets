@@ -357,13 +357,16 @@
       if (prefs.text === 100) original.clear();
     }
     function motionReduced() {
-      return prefs.motionChosen ? prefs.motion : reducedMotion.matches;
+      // Lesson animations are the content, so they play unless the visitor
+      // turns motion off on this site. Safari reports the macOS "Reduce motion"
+      // setting, which otherwise left every animation static there.
+      return prefs.motionChosen ? prefs.motion : false;
     }
     function apply(save) {
       var stopOn = prefs.stopAnim === true;
       var reduceOn = motionReduced();
       // This explicit opt-in also releases CSS rules that honor the OS default.
-      document.documentElement.classList.toggle('nd-motion-enabled', prefs.motionChosen && !reduceOn && !stopOn);
+      document.documentElement.classList.toggle('nd-motion-enabled', !reduceOn && !stopOn);
       for (const key of ['contrast','links','motion']) {
         var on = prefs[key] === true;
         if (key === 'motion') on = reduceOn || stopOn;

@@ -153,7 +153,7 @@ body.embed .masthead,body.embed .footer-note{display:none}body.embed .page{paddi
         if (window.parent && window.parent !== window) roots.push(window.parent.document.documentElement);
       } catch { /* cross-origin parent */ }
       if (roots.some(html => html.classList.contains('nd-motion-off') || html.classList.contains('noam-a11y-motion') || html.dataset.ndMotion === 'off')) return true;
-      return reducedMotion.matches && !roots.some(html => html.classList.contains('nd-motion-enabled'));
+      return false; // plays by default; only the site's motion controls stop it
     }
     function scheduledCaption(doc, time) {
       const nodes = [...doc.querySelectorAll('.caption')];
