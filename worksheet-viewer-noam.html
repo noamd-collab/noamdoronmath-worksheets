@@ -7124,6 +7124,25 @@ function noamCanonicalEarlierParts(question,item){
   }
   return parts.sort(function(a,b){return items.indexOf(a)-items.indexOf(b);});
 }
+function noamCanonicalOtherPartFigure(question,item,exercise,data,earlier){
+  // A printed exclusion plus matching explicit item links can prove that this
+  // one illustration is not an aid for the current independent text task.
+  // A missing figure alone is never such a proof.
+  var text=noamPrintedText(question.text),items=question.items,figure=question.figure_id;
+  if(!text||!Array.isArray(items)||items.length<2||!figure||earlier.length||
+      item.figure_id!==null||exercise.nativeFigureId||exercise.nativeFigureUrl||
+      !Array.isArray(question.given)||question.given.length||!Array.isArray(item.given)||item.given.length){return null;}
+  var last=items[items.length-1],matches=Array.from(text.matchAll(/(?:^|[.;]\s*)(האיור(?: של שני המשולשים ישרי[־-]הזווית)? (?:מתייחס רק לסעיף|משמש רק בסעיף) האחרון)(?=[.;]|$)/g));
+  if(matches.length!==1||last===item||last.figure_id!==figure||
+      items.some(function(part,index){return !part||!part.id||!part.label||
+        items.filter(function(other){return other&&other.id===part.id;}).length!==1||
+        items.filter(function(other){return other&&other.label===part.label;}).length!==1||
+        (index<items.length-1&&part.figure_id!==null);})){return null;}
+  var figures=data.figures.filter(function(f){return f&&f.question===question.id;});
+  if(figures.length!==1||figures[0].id!==figure||figures[0].item!==last.id||
+      data.figures.filter(function(f){return f&&f.id===figure;}).length!==1){return null;}
+  return {clause:matches[0][1],label:last.label};
+}
 function noamCanonicalAnalysisFromSource(exercise,source){
   var data=source&&source.data,native=window.NoamNativeVisual;
   // Only image-read exercises change route; text-only rows keep their manifest analysis.
@@ -7144,13 +7163,14 @@ function noamCanonicalAnalysisFromSource(exercise,source){
   var scoped=[question].concat(earlier,[item]);
   if(earlier.some(function(part){return part.table;})||
       (data.visuals||[]).some(function(v){return v&&v.question===question.id&&v.kind!=='table';})){return null;}
+  var otherPartFigure=noamCanonicalOtherPartFigure(question,item,exercise,data,earlier);
   var figureIds=[];
-  scoped.forEach(function(part){if(part.figure_id&&figureIds.indexOf(part.figure_id)<0){figureIds.push(part.figure_id);}});
+  scoped.forEach(function(part){if(!(otherPartFigure&&part===question)&&part.figure_id&&figureIds.indexOf(part.figure_id)<0){figureIds.push(part.figure_id);}});
   var questionFigures=data.figures.filter(function(f){return f&&f.question===question.id;});
   // A figure that no printed part points to cannot be shown to be irrelevant.
   var pointed=[question].concat(question.items||[]).map(function(part){return part&&part.figure_id;});
   if(questionFigures.some(function(f){return pointed.indexOf(f.id)<0&&!(source.sourcePanelGroup&&figureIds.length);})){return null;}
-  var facts=[],haveFigure=false,haveTable=false;
+  var facts=otherPartFigure?['המקור מגביל את האיור לסעיף '+otherPartFigure.label+' בלבד; הוא אינו נתון של הסעיף הנבחר. הסעיף הנבחר מובא בטקסט המודפס.']:[],haveFigure=false,haveTable=false;
   if(figureIds.length){
     if(source.sourcePanelGroup){
       var group=window.NoamSourcePanels&&window.NoamSourcePanels.resolve(data,exercise,source.sourcePanelSvgById);
@@ -7181,9 +7201,10 @@ function noamCanonicalAnalysisFromSource(exercise,source){
   }
   // The printed text must not depend on an aid this analysis cannot provide.
   var printed=stemParts.concat(scoped.slice(1).map(function(part){return noamPrintedText(part.text)||'';})).join('\n');
-  if(/גרף|גרפים|צירים|ציר ה|ישר המספרים/.test(printed)||
-      (/טבל/.test(printed)&&!haveTable)||
-      (/שרטוט|סרטוט|איור|ציור|תרשים|מצויר|מסומנ|מוצג|בתמונה|ברשת|לוח/.test(printed)&&!haveFigure)){return null;}
+  var requiredAids=otherPartFigure?printed.replace(otherPartFigure.clause,''):printed;
+  if(/גרף|גרפים|צירים|ציר ה|ישר המספרים/.test(requiredAids)||
+      (/טבל/.test(requiredAids)&&!haveTable)||
+      (/שרטוט|סרטוט|איור|ציור|תרשים|מצויר|מסומנ|מוצג|בתמונה|ברשת|לוח/.test(requiredAids)&&!haveFigure)){return null;}
   // No exported aid does not prove the printed page has none.
   if(!facts.length){return null;}
   // An unnamed earlier part that introduces a number may carry a given the

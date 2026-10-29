@@ -5,11 +5,16 @@ import { it } from 'node:test';
 import { parseHTML } from 'linkedom';
 import { createHash } from 'node:crypto';
 const pub=new URL('../public/',import.meta.url),read=(p:string)=>readFileSync(new URL(p,pub),'utf8');
-const modules=['noam-native-visual','noam-source-panels','noam-authored-geometry','noam-authored-visual','noam-visual-data','noam-visual-plan','noam-source-data-visual'].map(n=>read(n+'.js')).join('\n');
+const modules=['noam-native-visual','noam-source-panels','noam-authored-geometry','noam-authored-visual','noam-visual-data','noam-visual-plan','noam-source-data-visual','noam-source-scaffold'].map(n=>read(n+'.js')).join('\n');
 const clone=(v:any)=>JSON.parse(JSON.stringify(v));
 function fn(v:string,n:string){const s=v.slice(v.indexOf('function '+n+'('));assert.ok(s.startsWith('function '+n+'('));return s.slice(0,s.indexOf('\nfunction ',1));}
 async function settled(){for(let i=0;i<12;i++){await new Promise(r=>setImmediate(r));for(let j=0;j<160;j++)await Promise.resolve();}}
 const CASES:any={
+ W15A:{pdf:'1447b1c93a0f481abbd1eccbef8a7551',item:'q20d'},
+ W15B:{pdf:'7b2d78cef1f44268ba9265392320ad26',item:'q20d'},
+ W15:{pdf:'162e9a4cd15e41c5bb68cc6a1b600e81',item:'q20d'},
+ W15final:{pdf:'162e9a4cd15e41c5bb68cc6a1b600e81',item:'q20e'},
+ W15construction:{pdf:'162e9a4cd15e41c5bb68cc6a1b600e81',item:'q5b'},
  W11:{pdf:'084c58836048405aa2a2f97ba4396553',item:'q16b'},
  W04:{pdf:'c5910c37949b48a488ec5e3732c48601',item:'q7b'},
  MP02:{pdf:'8474535578894a669c6847e57a83dc30',item:'q21d'},
@@ -62,6 +67,78 @@ function assertCanonicalShape(a:any,exercise:any){
 
 for(const relative of ['../public/worksheet-viewer-noam.html','../../../worksheet-viewer-noam.html']){
  const v=readFileSync(new URL(relative,import.meta.url),'utf8'),name=relative.includes('public')?'public':'root';
+
+ it(name+': W15 independent conceptual part uses its printed text and an explicit generic scaffold',async()=>{
+  const f=fixture(v,'W15'),{requests,counter}=wireHint(f,unreadable());
+  f.c.askNoam('hint','תן לי רמז אחד בלבד.');await settled();
+  assert.equal(counter.analysis,0);assert.equal(requests.length,1);assert.equal(f.thread.hintIndex,1);
+  assert.equal(f.thread.messages[1].answerError,undefined);
+  const a=requests[0].payload.imageAnalysis;assertCanonicalShape(a,f.exercise);
+  assert.equal(a.transcription,['שאלה 20, סעיף ד.','בדקו את גבולות השימוש במשפטי הדמיון. האיור מתייחס רק לסעיף האחרון.','הסעיף הנבחר: מה יש לדרוש לפני שמחסרים שטח פנימי מן השלם?'].join('\n'));
+  assert.match(a.diagram_description,/המקור מגביל את האיור לסעיף ה בלבד; הוא אינו נתון של הסעיף הנבחר/);
+  assert.doesNotMatch(JSON.stringify(a),/AB|CD|BAO|q20_head|שורש|היקפים|קינון|OCR|הכלה|מוכל/);
+  assert.match(requests[0].payload.studentMessage,/ניתוח השאלה נבנה מהטקסט המודפס/);
+  const scaffold=f.c.window.NoamSourceScaffold,source=await f.c.noamLoadSourceVisual(f.exercise);
+  assert.equal(scaffold.resolve(source.data,f.exercise,{studentMessage:'אפשר רמז 1?'},source.svgText),null);
+  const shown=f.c.noamSourcePresentation(source,f.exercise,{drawCurrentStep:true,studentMessage:'שרטוט להמחשה',answer:f.thread.messages[1].text});
+  assert.equal(shown.kind,'source-scaffold-area-comparison');
+  assert.match(shown.figure.textContent,/סכמות כלליות/);assert.doesNotMatch(shown.figure.textContent,/AB|CD|BAO|q20_head/);
+ });
+
+ it(name+': all three printed last-part-only scopes retain their exact independent text',async()=>{
+  let accepted=0;
+  for(const key of ['W15A','W15B','W15']){
+   const f=fixture(v,key),q=f.data.questions.find((q:any)=>q.id==='q20');
+   for(const part of q.items.slice(0,-1)){
+    const ex=f.manifest.exercises.find((e:any)=>e.nativeItemId===part.id);f.c.selectedExercise=ex;
+    const a=await f.c.noamCanonicalSourceAnalysis(ex);assert.ok(a,key+' '+part.id);accepted++;
+    assert.equal(a.transcription,['שאלה 20, סעיף '+part.label+'.',q.text,'הסעיף הנבחר: '+part.text].join('\n'));
+    assert.doesNotMatch(JSON.stringify(a),/AB|CD|BAO|BCA|DAE|DE|DF|q20_head/);
+   }
+  }
+  assert.equal(accepted,12);
+ });
+
+ it(name+': explicit exclusion is structural proof, not a no-figure shortcut',async()=>{
+  const edits:[string,(d:any,m:any,e:any)=>void][]=[
+   ['removed-clause',(d,m,e)=>{const q=d.questions.find((q:any)=>q.id==='q20');q.text='בדקו את גבולות השימוש במשפטי הדמיון.';e.context=q.text;}],
+   ['ambiguous-clause',(d,m,e)=>{const q=d.questions.find((q:any)=>q.id==='q20');q.text='בדקו את גבולות השימוש במשפטי הדמיון. האיור מתייחס לסעיף האחרון.';e.context=q.text;}],
+   ['two-clauses',(d,m,e)=>{const q=d.questions.find((q:any)=>q.id==='q20');q.text+=' האיור מתייחס רק לסעיף האחרון.';e.context=q.text;}],
+   ['missing-null',(d)=>{delete d.questions.find((q:any)=>q.id==='q20').items[3].figure_id;}],
+   ['other-null-missing',(d)=>{delete d.questions.find((q:any)=>q.id==='q20').items[0].figure_id;}],
+   ['wrong-final-link',(d)=>{d.questions.find((q:any)=>q.id==='q20').items[4].figure_id='q19_head';}],
+   ['missing-final-link',(d)=>{d.questions.find((q:any)=>q.id==='q20').items[4].figure_id=null;}],
+   ['multiple-figures',(d)=>{d.figures.push({...d.figures.find((x:any)=>x.id==='q20_head'),id:'q20_head_2'});}],
+   ['wrong-figure-item',(d)=>{d.figures.find((f:any)=>f.id==='q20_head').item='q20d';}],
+   ['missing-figure-item',(d)=>{delete d.figures.find((f:any)=>f.id==='q20_head').item;}],
+   ['foreign-duplicate-figure',(d)=>{d.figures.push({...d.figures.find((f:any)=>f.id==='q20_head'),question:'q19'});}],
+   ['malformed-givens',(d)=>{d.questions.find((q:any)=>q.id==='q20').given={};}],
+   ['duplicate-label',(d)=>{d.questions.find((q:any)=>q.id==='q20').items[4].label='ד';}],
+   ['common-given',(d)=>{d.questions.find((q:any)=>q.id==='q20').given=[{text:'AB ∥ CD'}];}],
+   ['selected-given',(d)=>{d.questions.find((q:any)=>q.id==='q20').items[3].given=[{text:'AB ∥ CD'}];}],
+   ['unmentioned-earlier-number',(d)=>{d.questions.find((q:any)=>q.id==='q20').items[0].text+=' נתון אורך 999.';}],
+   ['wrong-manifest-text',(_d,_m,e)=>{e.text='שאלה אחרת';}]
+  ];
+  for(const text of ['התייחסו לאיור.','התייחסו לטבלה.','התייחסו לגרף.','לפי סעיף א׳, מה יש לדרוש?','לפי מה שמצאתם, מה יש לדרוש?']){
+   edits.push([text,(d,m,e)=>{d.questions.find((q:any)=>q.id==='q20').items[3].text=text;e.text=text;}]);
+  }
+  for(const [label,edit] of edits){const f=fixture(v,'W15',edit);assert.equal(await f.c.noamCanonicalSourceAnalysis(f.exercise),null,label);}
+  const badHash=fixture(v,'W15',(d)=>{d.questions.find((q:any)=>q.id==='q20').items[3].text+=' changed';},true);
+  assert.equal(await badHash.c.noamCanonicalSourceAnalysis(badHash.exercise),null,'source hash mismatch');
+  for(const mode of ['attachments','selection-change','source-fails']){
+   const f=fixture(v,'W15');if(mode==='attachments')f.attachments.push({name:'student.png'});
+   if(mode==='selection-change')f.c.selectedExercise=f.manifest.exercises.find((x:any)=>x.nativeItemId==='q20e');
+   if(mode==='source-fails')f.c.noamLoadSourceVisual=async()=>null;
+   assert.equal(await f.c.noamCanonicalSourceAnalysis(f.exercise),null,mode);
+  }
+ });
+
+ it(name+': final figure part and student-designed proof keep the existing image route',async()=>{
+  for(const key of ['W15final','W15construction']){
+   const f=fixture(v,key),{requests,counter}=wireHint(f);f.c.askNoam('hint','תן לי רמז אחד בלבד.');await settled();
+   assert.equal(counter.analysis,1,key);assert.equal(requests.length,1,key);assert.equal(requests[0].payload.imageAnalysis.content_type,undefined,key);
+  }
+ });
 
  it(name+': W11 table question is answered from the printed source without reading the image',async()=>{
   const f=fixture(v,'W11'),{requests,counter}=wireHint(f,unreadable());
@@ -203,7 +280,7 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
  });
 
  it(name+': completeness boundaries without a fully verified aid keep the existing reader',async()=>{
-  for(const key of ['G8-T32/b q4d','G8-T46/c q20d','G7-T21/b q17a','G7-T40/c q18b','G9-T31/a q22b']){
+  for(const key of ['G8-T32/b q4d','G7-T21/b q17a','G7-T40/c q18b','G9-T31/a q22b']){
    const f=fixture(v,key);assert.equal(await f.c.noamCanonicalSourceAnalysis(f.exercise),null,key);
   }
   // An unnamed earlier part that introduces a number blocks the canonical route even with a verified table.
