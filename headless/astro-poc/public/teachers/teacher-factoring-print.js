@@ -5496,6 +5496,27 @@ function layoutQuestionCrops(model) {
     }
   });
   segments.sort((a, b) => a.box.y - b.box.y || b.box.x - a.box.x);
+  // A drawing in the left column can start above the question number beside it.
+  // Printed first, it reads as the end of the previous question.
+  const sideFigure = (box) => box.segment === 'figure' && box.x + box.w < 0.5;
+  for (let i = 0; i < segments.length && sideFigure(segments[i].box); i += 1) {
+    const fig = segments[i].box;
+    let after = -1;
+    for (let k = i + 1; k < segments.length; k += 1) {
+      const other = segments[k].box;
+      if (sideFigure(other)) continue;
+      if (other.y >= fig.y + fig.h) break;
+      if (other.segment === 'part') {
+        if (after < 0) after = k;
+        break;
+      }
+      after = k;
+    }
+    if (after < 0) break;
+    const [moved] = segments.splice(i, 1);
+    segments.splice(after, 0, moved);
+    i -= 1;
+  }
   return segments;
 }
 
