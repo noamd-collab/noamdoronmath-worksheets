@@ -2047,6 +2047,7 @@ function answerBox(items, questionNumber, part) {
   let answerContinues = false;
   let tightTop = false;
   let tightBottom = false;
+  let baselineY = marker.y;
   const covers = [];
   if (part) {
     const index = labels.findIndex((item) => item.part === part);
@@ -2073,6 +2074,7 @@ function answerBox(items, questionNumber, part) {
         else left = Math.min(left, label.x);
       }
       if (left > right - 6 && label.rest) left = Math.min(left, owned ? label.x : right - 8);
+      baselineY = label.y;
       top = label.y + Math.min(Math.max(label.h || 0, 10), 11) + 1.8;
       const slotLeft0 = left;
       const slotRight0 = right;
@@ -2276,6 +2278,7 @@ function answerBox(items, questionNumber, part) {
   if (answerContinues) box.continues = true;
   if (tightTop) box.tightTop = true;
   if (tightBottom) box.tightBottom = true;
+  if (baselineY != null) box.baselineY = baselineY;
   return box;
 }
 
@@ -2725,6 +2728,7 @@ function answerSliceFor(pages, question) {
         wrap: Boolean(raw.continues),
         tightTop: Boolean(raw.tightTop),
         tightBottom: Boolean(raw.tightBottom),
+        baseline: raw.baselineY != null ? (sheet.height - raw.baselineY) / sheet.height : undefined,
         masks: masks.length ? masks : undefined,
         peel: raw.peel ? raw.peel.map((hint) => ({
           side: hint.side,
@@ -3906,6 +3910,11 @@ function sealOverlaps(measured) {
 }
 
 function answerGlyphBaseline(bitmap, box, imageH) {
+  // The source typesets the answer on its label's baseline. Reuse that line.
+  if (box && box.baseline != null && box.h > 0 && imageH > 0) {
+    const at = (box.baseline - box.y) / box.h;
+    if (at > 0.2 && at < 0.98) return Math.max(12, Math.min(imageH - 2, Math.round(imageH * at)));
+  }
   const ink = sliceInkRows(bitmap, box);
   if (!ink || !ink.bands.length || !(ink.rh > 0) || !(imageH > 0)) return null;
   let band = ink.bands[0];
@@ -3920,13 +3929,24 @@ function answerGlyphBaseline(bitmap, box, imageH) {
       const image = bitmap.getContext('2d').getImageData(ink.x0 + (ink.minX || 0), ink.y0 + band.y, rw, band.h);
       const data = image && image.data;
       if (data && data.length >= rw * band.h * 4) {
+        // Masked ink is painted white on the page, so it has no baseline.
+        const left0 = ink.x0 + (ink.minX || 0);
+        const top0 = ink.y0 + band.y;
+        const masked = [box.mask].concat(box.masks || []).filter(Boolean).map((mask) => ({
+          x0: (box.x + mask.x * box.w) * bitmap.width - left0,
+          x1: (box.x + (mask.x + mask.w) * box.w) * bitmap.width - left0,
+          y0: (box.y + mask.y * box.h) * bitmap.height - top0,
+          y1: (box.y + (mask.y + mask.h) * box.h) * bitmap.height - top0,
+        }));
         const rowCounts = new Uint16Array(band.h);
         let peak = 0;
         for (let y = 0; y < band.h; y += 1) {
           let count = 0;
           for (let x = 0; x < rw; x += 1) {
             const i = (y * rw + x) * 4;
-            if (data[i] < 200 || data[i + 1] < 200 || data[i + 2] < 200) count += 1;
+            if (!(data[i] < 200 || data[i + 1] < 200 || data[i + 2] < 200)) continue;
+            if (masked.some((m) => x >= m.x0 && x < m.x1 && y >= m.y0 && y < m.y1)) continue;
+            count += 1;
           }
           rowCounts[y] = count;
           if (count > peak) peak = count;
@@ -3938,7 +3958,10 @@ function answerGlyphBaseline(bitmap, box, imageH) {
           let bestDrop = 0;
           for (let y = Math.floor(band.h * 0.35); y < band.h; y += 1) {
             if (rowCounts[y] < peak * 0.25) continue;
-            const below = Math.max(y + 1 < band.h ? rowCounts[y + 1] : 0, y + 2 < band.h ? rowCounts[y + 2] : 0);
+            // The crop edge is not a drop. Parenthesis tails often run into it.
+            if (y + 1 >= band.h && band.y + band.h >= ink.rh - 1) continue;
+            // Antialiasing spreads the baseline edge over two rows.
+            const below = y + 2 < band.h ? rowCounts[y + 2] : (y + 1 < band.h ? rowCounts[y + 1] : 0);
             const drop = rowCounts[y] - below;
             if (drop >= bestDrop) {
               bestDrop = drop;
