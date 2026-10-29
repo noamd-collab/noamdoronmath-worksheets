@@ -2,11 +2,13 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { gunzipSync } from 'node:zlib';
 import { test } from 'node:test';
 import { GET } from '../src/pages/api/teacherQuestionManifest.ts';
 
 const catalog = JSON.parse(readFileSync(new URL('../public/teachers/teacher-catalog.json', import.meta.url), 'utf8'));
-const previews = JSON.parse(readFileSync(new URL('../src/data/teacher-question-previews.json', import.meta.url), 'utf8'));
+const bundle = JSON.parse(readFileSync(new URL('../src/data/teacher-question-previews.json', import.meta.url), 'utf8'));
+const previews = JSON.parse(gunzipSync(Buffer.from(bundle.gzipBase64, 'base64')).toString('utf8'));
 const activeIds = [...new Set<string>(catalog.grades.flatMap((grade: any) => grade.topics.flatMap((topic: any) => topic.sheets.filter((sheet: any) => sheet.mode === 'exercise').map((sheet: any) => sheet.pdfId))))];
 const request = (query: string) => GET({ url: new URL('https://www.noamdoronmath.co.il/api/teacherQuestionManifest?' + query) } as Parameters<typeof GET>[0]);
 
@@ -21,6 +23,7 @@ test('serves the live factoring sheet even though it has no public manifest file
 
 test('preview geometry includes every active exercise sheet and no other sheet', () => {
   assert.equal(activeIds.length, 452);
+  assert.ok(bundle.gzipBase64.length < 1_000_000, 'geometry must fit in the Wix deployment request');
   assert.deepEqual(Object.keys(previews).sort(), [...activeIds].sort());
   for (const pdfId of activeIds) {
     const manifest = JSON.parse(readFileSync(new URL('../../../noam-ai/manifests/' + pdfId + '.json', import.meta.url), 'utf8'));
