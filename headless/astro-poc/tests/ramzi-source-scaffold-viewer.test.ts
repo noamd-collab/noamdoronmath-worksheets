@@ -20,7 +20,7 @@ const cases = [
   ['596c40e9ffb049e8b4e53a7960a9fef1', 'G7-T04-B-Q06ג', 'fraction-placeholder'],
   ['93d227a045fa4fdeb217597f630634eb', 'G9-T11-A-Q06ב', 'observed-future'],
 ];
-function fixture(row = cases[4]) {
+function fixture(row = cases[0]) {
   const manifest = JSON.parse(readFileSync(new URL(`noam-ai/manifests/${row[0]}.json`, pub), 'utf8'));
   const bytes = readFileSync(new URL(manifest.nativeExportUrl.slice(1), pub));
   assert.equal(createHash('sha256').update(bytes).digest('hex'), manifest.nativeExportSha256);
@@ -57,13 +57,13 @@ function harness(viewer: string, f = fixture()) {
     requestNoamDiagram: () => { calls.fallback++; return null; },
   };
   s.window = s;
-  for (const name of ['noam-native-visual', 'noam-source-panels', 'noam-authored-geometry', 'noam-authored-visual', 'noam-visual-data', 'noam-visual-plan', 'noam-source-data-visual', 'noam-source-scaffold']) {
+  for (const name of ['noam-visual-policy', 'noam-native-visual', 'noam-source-panels', 'noam-authored-geometry', 'noam-authored-visual', 'noam-visual-data', 'noam-visual-plan', 'noam-source-data-visual', 'noam-source-scaffold']) {
     runInNewContext(readFileSync(new URL(name + '.js', pub), 'utf8'), s, { filename: name });
   }
   const sourceData = s.NoamSourceDataVisual;
   s.NoamSourceDataVisual = { ...sourceData, resolve(...args: any[]) { calls.sourceData++; return sourceData.resolve(...args); } };
   runInNewContext([
-    'noamDiagramSourceIdentity', 'noamNativeDataUrl', 'noamSourceVisualIdentity',
+    'noamVisualsAllowed', 'noamDiagramSourceIdentity', 'noamNativeDataUrl', 'noamSourceVisualIdentity',
     'noamSourceVisualOptions', 'noamSourcePanelReviewed', 'noamSourcePanelModuleMissing',
     'noamSourcePanelBlocksFallback', 'noamLoadSourceVisual', 'noamCachedSourceVisual',
     'noamSourcePresentation', 'noamPrepareSourceVisual', 'noamRenderSourceVisual',
@@ -83,11 +83,15 @@ for (const viewer of ['worksheet-viewer-noam.html', 'headless/astro-poc/public/w
     assert.ok(scripts.includes('noam-glossary.js?v=20261029-context6'));
   });
 
-  it(`${viewer}: explicit draw uses all ten exact source aids before original-data fallback`, async () => {
+  it(`${viewer}: only geometry source aids remain reachable; excluded worksheet families do not load source`, async () => {
     for (const row of cases) {
       const { s, f, calls } = harness(viewer, fixture(row));
       const message: any = { role: 'assistant', text: 'רמז' }, thread = { messages: [message], history: [] };
       const visual = await s.noamRequestSourceFirst(f.exercise, thread, message, options);
+      if (!s.noamVisualsAllowed(f.exercise)) {
+        assert.equal(visual, null); assert.equal(message.visual, undefined);
+        assert.equal(calls.fetch, 0); assert.equal(calls.sourceData, 0); assert.equal(calls.fallback, 0); continue;
+      }
       assert.equal(visual?.presentation, 'source-scaffold-' + row[2], row[1]);
       assert.equal(message.visual, visual);
       assert.equal(calls.sourceData, 0, 'a recognized aid preempts the original table');
@@ -115,7 +119,7 @@ for (const viewer of ['worksheet-viewer-noam.html', 'headless/astro-poc/public/w
   it(`${viewer}: persisted intent is rederived through current source and exact identity after reload`, async () => {
     const { s, f, calls } = harness(viewer);
     const visual = await s.noamPrepareSourceVisual(f.exercise, options);
-    assert.equal(visual.presentation, 'source-scaffold-symbolic-rectangle');
+    assert.equal(visual.presentation, 'source-scaffold-proof-lanes');
     assert.equal(visual.sourceIdentity, s.noamSourceVisualIdentity(f.exercise));
     assert.equal(visual.scene, undefined);
     assert.equal(visual.svg, undefined);
@@ -123,7 +127,7 @@ for (const viewer of ['worksheet-viewer-noam.html', 'headless/astro-poc/public/w
     saved.scene = { variable: 'forged', extra: 9999 };
     saved.svg = '<svg><text>9999</text></svg>';
     const current = s.noamRenderSourceVisual(saved);
-    assert.match(current.textContent, /3 נוספים/);
+    assert.match(current.textContent, /לא איור מקורי ולא פתרון/);
     assert.doesNotMatch(current.textContent, /9999|forged/);
 
     s.noamSourceVisualPackages = {};
@@ -137,12 +141,12 @@ for (const viewer of ['worksheet-viewer-noam.html', 'headless/astro-poc/public/w
     assert.equal(s.noamRenderSourceVisual(saved), null, 'a different published export invalidates saved intent');
     f.manifest.nativeExportSha256 = nativeSha;
     const originalItemId = f.exercise.nativeItemId;
-    f.exercise.nativeItemId = 'q16a';
+    f.exercise.nativeItemId = 'q999a';
     assert.equal(s.noamRenderSourceVisual(saved), null, 'another selected item cannot borrow the saved aid');
     f.exercise.nativeItemId = originalItemId;
 
     const source = s.noamCachedSourceVisual(f.exercise);
-    const part = source.data.questions.find((q: any) => q.id === 'q16').items.find((p: any) => p.id === originalItemId);
+    const part = source.data.questions.find((q: any) => q.id === f.exercise.nativeQuestionId).items.find((p: any) => p.id === originalItemId);
     const originalPartId = part.id;
     part.id = 'unknown-selected-item';
     assert.equal(s.noamRenderSourceVisual(saved), null, 'even cached data must resolve the exact current q/item again');
@@ -152,17 +156,13 @@ for (const viewer of ['worksheet-viewer-noam.html', 'headless/astro-poc/public/w
     assert.equal(s.noamRenderSourceVisual(saved), null, 'saved data cannot create automatic scaffold intent');
   });
 
-  it(`${viewer}: absent scaffold keeps the original-table path and unrelated authored data working`, async () => {
-    const { s, f } = harness(viewer);
+  it(`${viewer}: arithmetic table and authored operations cannot bypass the worksheet policy`, async () => {
+    const { s, f, calls } = harness(viewer, fixture(cases[4]));
     s.NoamSourceScaffold = undefined;
-    const table = await s.noamPrepareSourceVisual(f.exercise, options);
-    assert.equal(table.presentation, 'source-context');
-    const figure = s.noamRenderSourceVisual(table);
-    assert.ok(figure.querySelector('table'));
-    assert.match(figure.textContent, /הטבלה המקורית כפי שהודפסה/);
+    assert.equal(await s.noamPrepareSourceVisual(f.exercise, options), null);
+    assert.equal(calls.fetch, 0);
     const expression = fixture(['8d3c20dc5ae444019c70ae8458e7273b', 'G9-T02-B-Q17ב']);
-    const result = s.noamSourcePresentation({ data: expression.data, svgText: '' }, expression.exercise, options);
-    assert.equal(result.kind, 'typed-operations');
-    assert.match(result.figure.textContent, /לא חושבה תוצאה/);
+    assert.equal(s.noamSourcePresentation({ data: expression.data, svgText: '' }, expression.exercise, options), null);
+    assert.equal(calls.sourceData, 0);
   });
 }

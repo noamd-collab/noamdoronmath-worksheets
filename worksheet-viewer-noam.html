@@ -2673,6 +2673,7 @@ html.nd-motion-off .exact-viewer *,html.noam-a11y-motion .exact-viewer *{scroll-
 <script src="noam-geometry.js?v=20260921-aux1"></script>
 <script src="noam-geometry-guides.js?v=20260920-1"></script>
 <script src="noam-diagram-plan.js?v=20261021-plural-relations1"></script>
+<script src="noam-visual-policy.js?v=20261029-geometry-only-v1"></script>
 <script src="noam-local-visual.js?v=20261027-native1"></script>
 <script src="noam-native-visual.js?v=20261029-angles1"></script>
 <script src="noam-source-panels.js?v=20261028-panels1"></script>
@@ -5163,6 +5164,7 @@ if (window.MutationObserver){
 
 function selectManifestExercise(exercise, pin){
   panelBody.classList.remove("is-previewing");
+  document.querySelectorAll(".noam-diagram-dialog").forEach(function(dialog){dialog.close();});
   selectedExercise = exercise;
   if (selectedPin){ selectedPin.classList.remove("is-active"); }
   selectedPin = pin || null;
@@ -5216,7 +5218,36 @@ function setNoamDiagramButtonLabel(button,label,showBeta){
   button.setAttribute("aria-label",label+(showBeta?" Beta":""));
 }
 
+// Visual eligibility comes only from the loaded worksheet manifest and its exact
+// selected exercise. URL titles, free text and persisted visual intent cannot opt in.
+function noamVisualsAllowed(exercise){
+  var policy=window.NoamVisualPolicy;
+  if(!manifest||!exercise||!policy||!Array.isArray(manifest.exercises)){return false;}
+  var current=manifest.exercises.find(function(item){return item.id===exercise.id;});
+  return !!(current&&policy.allowsWorksheet({grade:manifest.grade,prefix:manifest.prefix,exerciseId:current.id})&&
+    policy.allowsExerciseId(current.id));
+}
+
+function noamInterceptBlockedDrawing(studentMessage){
+  if(!selectedExercise||noamVisualsAllowed(selectedExercise)){return false;}
+  var text=String(studentMessage||'');
+  // A request for textual help or for the original question is not a drawing
+  // request. Do not use the broader wantsVisualSupport/graph-word heuristics.
+  var requested=/(?:^|\s)(?:[סש]רטט[וי]?|ת[סש]רטט[וי]?|צייר[וי]?|תצייר[וי]?|אייר[וי]?|draw|sketch|plot|illustrate)(?:\s|$|[.!?])/i.test(text)||
+    /(?:הראה|הראי|הראו|הצג|הציגי|תראה|תראי|תציג|תציגי|צור|תיצור|בנה|תבנה|הכן|תכין|show|display|create|make)(?:\s+(?:לי|לנו|את|a|me|the))*\s+(?:ה)?(?:[סש]רטוט|תרשים|ציור|איור|גרפיקה|גרף|סקיצה|המחשה|diagram|graph|sketch|illustration)/i.test(text)||
+    /^(?:אפשר\s+|בבקשה\s+)?(?:[סש]רטוט|תרשים|ציור|איור|גרפיקה|סקיצה|המחשה)(?:\s|[.!?]|$)/.test(text);
+  if(!requested){return false;}
+  var thread=exerciseThread(selectedExercise.id);
+  var answer='בדף הזה רמזי מסביר בטקסט בלבד. אפשר לבקש רמז לצעד הבא.';
+  thread.messages.push({role:'user',text:text,kind:''},{role:'assistant',text:answer,kind:''});
+  thread.history.push({role:'user',content:text},{role:'assistant',content:answer});
+  thread.messages=thread.messages.slice(-60);thread.history=thread.history.slice(-8);
+  delete noamDrafts[selectedExercise.id];
+  saveNoamState();renderNoamChat();announceNoam(answer);return true;
+}
+
 function noamVisualCanExpand(visual){
+  if(!noamVisualsAllowed(selectedExercise)){return false;}
   return !!visual&&(
     visual.type==="source-crop"||
     visual.type==="native-original-table"||
@@ -5249,6 +5280,10 @@ function addTranscriptBubble(container, role, text, kind, visual, message, threa
   bubble.appendChild(speaker);
   content.textContent = role === "assistant" ? noamStripMarkdownEmphasis(text) : text;
   bubble.appendChild(content);
+  if(message&&message.diagramErrorCode==="DIAGRAM_TOPIC_NOT_ALLOWED"&&message.text!==message.diagramError){
+    var policyNote=document.createElement("span");policyNote.className="noam-draw-policy-note";
+    policyNote.setAttribute("role","status");policyNote.textContent=message.diagramError;bubble.appendChild(policyNote);
+  }
   if (message && message.answerError){
     var retry=document.createElement("button");
     retry.type="button";
@@ -5260,7 +5295,7 @@ function addTranscriptBubble(container, role, text, kind, visual, message, threa
   }
   // Old unverified question-image replies stay suppressed. Reviewed source-crop
   // aids are separate from a generated illustration and revalidate on display.
-  if (visual&&visual.type==="question-image"){visual=null;}
+  if (!noamVisualsAllowed(selectedExercise)||(visual&&visual.type==="question-image")){visual=null;}
   if (visual){
     var visualElement=visual.type==="native-original-table" ? noamRenderOriginalTable(visual) : visual.type==="source-crop" ? noamRenderSourceCrop(visual) : visual.type==="native-source-visual" ? noamRenderSourceVisual(visual) : visual.type==="ai-diagram" ? noamRenderAiDiagram(visual) : visual.type==="geometry-guide"
       ? noamRenderGeometryGuide(visual)
@@ -5513,6 +5548,7 @@ function noamLatestDrawingAnswer(thread){
   for(var i=messages.length-1;i>=0;i--){
     var message=messages[i];
     if(!message||message.role!=="assistant"){continue;}
+    if(message.diagramErrorCode==="DIAGRAM_TOPIC_NOT_ALLOWED"){return null;}
     if(message.answerError||!String(message.text||"").trim()){return null;}
     if(!message.diagramOptions&&!message.diagramError&&/failed\s+to\s+fetch|לא\s+זמין|לא\s+(?:ניתן|הצלחנו)\s+(?:להשלים|לקבל)|נסו\s+שוב\s+בעוד/i.test(message.text)){return null;}
     return message;
@@ -5529,7 +5565,7 @@ function renderNoamChat(){
   panelBody.classList.add("is-chat");
   panelBack.hidden = false;
   var thread = exerciseThread(selectedExercise.id);
-  var drawingAnswer = noamLatestDrawingAnswer(thread);
+  var drawingAnswer = noamVisualsAllowed(selectedExercise)?noamLatestDrawingAnswer(thread):null;
   var drawingPending = !!(drawingAnswer&&noamDiagramRuntime().messages.has(drawingAnswer));
   var hasConversation = !!(thread.messages.length || thread.history.length || thread.hintIndex);
   var showQuestionPreview = !hasConversation;
@@ -5709,6 +5745,7 @@ function localVisualExerciseSource(exercise){
 }
 
 function noamParsedLocalVisual(exercise){
+  if(!noamVisualsAllowed(exercise)){return null;}
   var local=window.NoamLocalVisual;
   if(!local||!exercise){return null;}
   // Native worksheets use the strict authored source compiler. Do not let an
@@ -5726,6 +5763,8 @@ function noamParsedLocalVisual(exercise){
 }
 
 function tryNoamLocalVisual(studentMessage){
+  if(noamInterceptBlockedDrawing(studentMessage)){return true;}
+  if(!noamVisualsAllowed(selectedExercise)){return false;}
   var local=window.NoamLocalVisual;
   var previousThread=selectedExercise&&exerciseThread(selectedExercise.id);
   var previousAnswer=previousThread&&(previousThread.messages||[]).filter(function(item){return item.role==="assistant";}).slice(-1)[0];
@@ -6538,6 +6577,7 @@ function noamSourceCropIdentity(exercise){
   return JSON.stringify([manifest&&manifest.pdfHash||'',noamDiagramSourceIdentity(exercise)]);
 }
 function noamSourceCropExercise(exercise){
+  if(!noamVisualsAllowed(exercise)){return null;}
   if(!exercise||!manifest||manifest.reviewRequired!==false||! /^[a-f0-9]{64}$/i.test(String(manifest.sourceSha256||''))){return null;}
   var current=(manifest.exercises||[]).find(function(ex){return ex.id===exercise.id;});
   if(!current||current.nativeQuestionId||current.nativeFigureUrl||!(current.requiresVision||current.needsVision)||
@@ -6576,6 +6616,7 @@ function noamLoadSourceCrop(exercise){
   return entry.promise;
 }
 function noamRenderSourceCrop(visual){
+  if(!visual||!noamVisualsAllowed({id:visual.exerciseId})){return null;}
   if(!visual||visual.type!=='source-crop'||!manifest){return null;}
   var exercise=noamSourceCropExercise((manifest.exercises||[]).find(function(ex){return ex.id===visual.exerciseId;}));
   if(!exercise||!selectedExercise||selectedExercise.id!==exercise.id||visual.sourceIdentity!==noamSourceCropIdentity(exercise)){return null;}
@@ -6600,6 +6641,7 @@ function noamRenderSourceCrop(visual){
   figure.appendChild(image);figure.appendChild(caption);return figure;
 }
 function noamRequestSourceCrop(exercise,thread,message,options){
+  if(!noamVisualsAllowed(exercise)){return Promise.resolve(null);}
   var runtime=noamDiagramRuntime();if(runtime.messages.has(message)){return runtime.messages.get(message);}
   var identity=noamSourceCropIdentity(exercise),safe=noamSourceVisualOptions(options);
   message.diagramOptions=safe;
@@ -6908,6 +6950,7 @@ function noamOriginalTableFigure(source,exercise){
   return scene&&scene.kind==='typed-table'?dataVisual.render(document,context,options):null;
 }
 function noamTableRecoveryAllowed(exercise,thread,message){
+  if(!noamVisualsAllowed(exercise)){return false;}
   return !!(exercise&&thread&&message&&message.role==='assistant'&&message.answerError===true&&
     message.answerErrorCode==='QUESTION_IMAGE_UNREADABLE'&&message.sourceRecoveryAllowed===true&&
     message.sourceRecoveryExerciseId===exercise.id&&selectedExercise&&selectedExercise.id===exercise.id&&
@@ -6938,6 +6981,7 @@ function noamAppendOriginalTableRecovery(bubble,exercise,thread,message){
   }).catch(function(){/* Keep the original read error and its retry action. */});
 }
 function noamRenderOriginalTable(visual){
+  if(!visual||!noamVisualsAllowed({id:visual.exerciseId})){return null;}
   if(!visual||visual.type!=='native-original-table'||!manifest||!selectedExercise||selectedExercise.id!==visual.exerciseId||
       Object.keys(visual).some(function(k){return ['type','exerciseId','sourceIdentity'].indexOf(k)<0;})){return null;}
   var exercise=(manifest.exercises||[]).find(function(ex){return ex.id===visual.exerciseId;});
@@ -7273,6 +7317,7 @@ function noamQuestionAnalysis(exercise,attachmentSnapshot){
 }
 
 function noamSourcePresentation(source,exercise,options){
+  if(!noamVisualsAllowed(exercise)){return null;}
   if(noamSourcePanelModuleMissing(exercise,source)){return null;}
   if(noamSourcePanelReviewed(exercise)){
     var groupFigure=noamRenderSourcePanels(source,exercise);
@@ -7310,9 +7355,10 @@ function noamSourcePresentation(source,exercise,options){
   return null;
 }
 function noamPrepareSourceVisual(exercise,options){
+  if(!noamVisualsAllowed(exercise)){return Promise.resolve(null);}
   var identity=noamSourceVisualIdentity(exercise),safe=noamSourceVisualOptions(options);
   return noamLoadSourceVisual(exercise).then(function(source){
-    if(!source||!window.NoamNativeVisual||identity!==noamSourceVisualIdentity(exercise)){return null;}
+    if(!noamVisualsAllowed(exercise)||!source||!window.NoamNativeVisual||identity!==noamSourceVisualIdentity(exercise)){return null;}
     var presentation=noamSourcePresentation(source,exercise,safe);
     if(!presentation){return null;}
     var visual={type:'native-source-visual',exerciseId:exercise.id,sourceIdentity:identity,options:safe,presentation:presentation.kind};
@@ -7321,6 +7367,7 @@ function noamPrepareSourceVisual(exercise,options){
   });
 }
 function noamRenderSourceVisual(visual){
+  if(!visual||!noamVisualsAllowed({id:visual.exerciseId})){return null;}
   if(!visual||!window.NoamNativeVisual||!manifest){return null;}
   var exercise=(manifest.exercises||[]).find(function(ex){return ex.id===visual.exerciseId;});
   if(!exercise||visual.sourceIdentity!==noamSourceVisualIdentity(exercise)){return null;}
@@ -7344,13 +7391,14 @@ function noamRenderSourceVisual(visual){
   return presentation?presentation.figure:null;
 }
 function noamRequestSourceFirst(exercise,thread,message,providedOptions){
+  if(!noamVisualsAllowed(exercise)){return Promise.resolve(null);}
   var runtime=noamDiagramRuntime();if(runtime.messages.has(message)){return runtime.messages.get(message);}
   var options=noamSourceVisualOptions(providedOptions||noamMessageVisualOptions(thread,message));
   var requestSourceIdentity=noamSourceVisualIdentity(exercise);
   message.diagramOptions=options;
   var completion=noamPrepareSourceVisual(exercise,options).catch(function(){return null;}).then(function(visual){
     runtime.messages.delete(message);
-    if((thread.messages||[]).indexOf(message)<0||requestSourceIdentity!==noamSourceVisualIdentity(exercise)){return null;}
+    if(!noamVisualsAllowed(exercise)||(thread.messages||[]).indexOf(message)<0||requestSourceIdentity!==noamSourceVisualIdentity(exercise)){return null;}
     if(!visual){
       if(noamSourcePanelBlocksFallback(exercise)){
         delete message.visual;
@@ -7372,9 +7420,10 @@ function noamRequestSourceFirst(exercise,thread,message,providedOptions){
   runtime.messages.set(message,completion);saveNoamState();noamDiagramRefresh(exercise,thread,message,false);return completion;
 }
 function noamAttachSourceHint(exercise,thread,message,options){
+  if(!noamVisualsAllowed(exercise)){return Promise.resolve(null);}
   if(!window.NoamNativeVisual||!noamNativeDataUrl(exercise)){return Promise.resolve(null);}
   return noamPrepareSourceVisual(exercise,options).then(function(visual){
-    if(!visual||/^source-scaffold-/.test(visual.presentation)||(visual.presentation==='source-context'&&!visual.sourcePanelGroup)||message.visual||message.answerError||
+    if(!noamVisualsAllowed(exercise)||!visual||/^source-scaffold-/.test(visual.presentation)||(visual.presentation==='source-context'&&!visual.sourcePanelGroup)||message.visual||message.answerError||
       (thread.messages||[]).indexOf(message)<0||visual.sourceIdentity!==noamSourceVisualIdentity(exercise)||noamDiagramRuntime().messages.has(message)){return null;}
     message.visual=visual;saveNoamState();noamDiagramRefresh(exercise,thread,message,false);return visual;
   }).catch(function(){return null;});
@@ -8150,6 +8199,7 @@ function noamSolverMessage(studentMessage,thread,topic,guidePrompt,analysis,exer
 }
 
 function noamResponseVisual(exercise,thread,studentMessage,answer,helpKind,hintIndex,imageAnalysis){
+  if(!noamVisualsAllowed(exercise)){return null;}
   var visualContext=ttl+" "+String(imageAnalysis&&imageAnalysis.diagram_description||"");
   if (!exercise||!noamVisualNeed(studentMessage,answer,helpKind,hintIndex,visualContext)){return null;}
   return noamConstructedVisual(exercise,{
@@ -8159,6 +8209,8 @@ function noamResponseVisual(exercise,thread,studentMessage,answer,helpKind,hintI
 }
 
 function noamCanOfferDrawing(exercise,thread,message){
+  if(!noamVisualsAllowed(exercise)){return false;}
+  if(message&&message.diagramErrorCode==="DIAGRAM_TOPIC_NOT_ALLOWED"){return false;}
   if (!exercise||!thread||!message||message.role!=="assistant"||!String(message.text||"").trim()){
     return false;
   }
@@ -8188,6 +8240,7 @@ function noamCanOfferDrawing(exercise,thread,message){
 }
 
 function noamManualVisual(exercise,thread,message){
+  if(!noamVisualsAllowed(exercise)){return null;}
   if (!exercise||!thread||!window.NoamLocalVisual){return null;}
   var options=noamMessageVisualOptions(thread,message);
   var constructed=noamConstructedVisual(exercise,options);
@@ -8220,6 +8273,7 @@ function noamMessageVisualOptions(thread,message){
 }
 
 function noamConstructedVisual(exercise,options){
+  if(!noamVisualsAllowed(exercise)){return null;}
   var guides=window.NoamGeometryGuides;
   if (!exercise||!guides||typeof guides.resolve!=="function"){return null;}
   try{
@@ -8240,6 +8294,7 @@ function noamConstructedVisual(exercise,options){
 }
 
 function noamRenderGeometryGuide(visual){
+  if(!visual||!noamVisualsAllowed({id:visual.exerciseId})){return null;}
   var guides=window.NoamGeometryGuides,engine=window.NoamGeometry;
   if (!guides||!engine||!manifest){return null;}
   var exercise=(manifest.exercises||[]).find(function(item){return item.id===visual.exerciseId;});
@@ -8251,12 +8306,15 @@ function noamRenderGeometryGuide(visual){
 }
 
 function noamAddDiagramExpansion(container,figure){
+  var expansionExercise=selectedExercise;
+  if(!noamVisualsAllowed(expansionExercise)){return;}
   var expand=document.createElement("button");
   expand.type="button";
   expand.className="noam-draw-action noam-diagram-expand";
   expand.textContent=figure.classList.contains("noam-source-panel-group")?"הגדלת לוחות המקור":figure.classList.contains("noam-source-crop")?"הגדלת השאלה המקורית":"הגדלת השרטוט";
   expand.setAttribute("aria-haspopup","dialog");
   expand.addEventListener("click",function(){
+    if(!noamVisualsAllowed(expansionExercise)||!selectedExercise||selectedExercise.id!==expansionExercise.id){return;}
     var dialog=document.createElement("dialog");
     dialog.className="noam-diagram-dialog";
     dialog.setAttribute("aria-labelledby","noamDiagramDialogTitle");
@@ -8363,6 +8421,7 @@ function noamRenderVisualPlan(plan,checked){
   return plan&&plan.version===2?window.NoamVisualPlan&&window.NoamVisualPlan.render(document,checked.scene):window.NoamGeometry.render(document,checked.scene);
 }
 function noamRenderAiDiagram(visual){
+  if(!visual||!noamVisualsAllowed({id:visual.exerciseId})){return null;}
   if (!visual||!manifest){return null;}
   var exercise=(manifest.exercises||[]).find(function(item){return item.id===visual.exerciseId;});
   if (!exercise||visual.sourceIdentity!==noamDiagramSourceIdentity(exercise)){return null;}
@@ -8410,6 +8469,7 @@ function noamRenderAiDiagram(visual){
 }
 
 function noamDiagramError(error){
+  if(error&&error.code==="DIAGRAM_TOPIC_NOT_ALLOWED"){return "בדף הזה רמזי מסביר בטקסט בלבד.";}
   if (isBotProtectionError(error)){return String(error.message||"לא הצלחנו לאמת את הבקשה. נסו שוב בעוד רגע.").slice(0,220);}
   if (error&&error.code==="DIAGRAM_UNSUPPORTED"){
     return "עדיין לא הצלחתי להכין המחשה מדויקת לשלב הזה. אפשר לכתוב מה תרצו להמחיש מתוך הנתונים בשאלה.";
@@ -8418,7 +8478,7 @@ function noamDiagramError(error){
 }
 
 function noamDiagramCurrent(exercise,thread){
-  return !!(selectedExercise&&selectedExercise.id===exercise.id&&exerciseThread(exercise.id)===thread);
+  return !!(noamVisualsAllowed(exercise)&&selectedExercise&&selectedExercise.id===exercise.id&&exerciseThread(exercise.id)===thread);
 }
 
 function noamDiagramRefresh(exercise,thread,message,complete){
@@ -8484,6 +8544,7 @@ function noamNativeDiagramContext(exercise){
 }
 
 function noamDiagramSourceInput(exercise){
+  if(!noamVisualsAllowed(exercise)){return Promise.resolve(null);}
   // Vision and planning remain one background job. Native source context adds
   // the exact printed scope and visible identities; the crop retains its marks.
   return noamNativeDiagramContext(exercise).then(function(nativeContext){
@@ -8548,6 +8609,7 @@ function pollNoamDiagramJob(jobId){
         }
         setTimeout(check,STATUS_POLL_MS);
       }).catch(function(error){
+        if(error&&error.code==="DIAGRAM_TOPIC_NOT_ALLOWED"){reject(error);return;}
         errors+=1;
         if(errors>=3){reject(error);return;}
         setTimeout(check,STATUS_POLL_MS);
@@ -8558,6 +8620,8 @@ function pollNoamDiagramJob(jobId){
 }
 
 function requestNoamDiagram(exercise,thread,message,providedOptions){
+  if(!noamVisualsAllowed(exercise)){return Promise.resolve(null);}
+  if(message&&message.diagramErrorCode==="DIAGRAM_TOPIC_NOT_ALLOWED"){return Promise.resolve(null);}
   var cropOptions=providedOptions||noamMessageVisualOptions(thread,message);
   if(!(message.visual&&message.visual.type==="source-crop")&&noamSourceCropRequested(exercise,cropOptions)){
     return noamRequestSourceCrop(exercise,thread,message,cropOptions);
@@ -8602,10 +8666,12 @@ function requestNoamDiagram(exercise,thread,message,providedOptions){
       if (!window.NoamDiagramPlan){throw new Error("diagram compiler unavailable");}
       return noamDiagramSourceInput(exercise);
     }).then(function(source){
+      if(!noamVisualsAllowed(exercise)){return null;}
       var drawingMessage=options.drawCurrentStep?String(options.studentMessage||"").slice(0,600)+"\nהצג המחשה של השלב ברמז הנוכחי בלבד. אל תפתור את התרגיל ואל תוסיף נתונים.":options.studentMessage;
       var context={questionText:source.questionText,hintText:options.answer,studentMessage:drawingMessage};
       return postJson(API+"/noamDiagramPlan",{
         exerciseId:exercise.id,grade:g,level:LEVEL[lv],topic:String(ttl||"").slice(0,180),
+        manifestGrade:manifest.grade,manifestPrefix:manifest.prefix,
         studentMessage:context.studentMessage,currentHint:context.hintText,
         questionText:context.questionText,imageDataUrl:source.imageDataUrl,ownerKey:ownerKey,
         clientRequestId:(reviewRequested?"diagram-review-":"diagram-")+Date.now().toString(36)+"-"+Math.random().toString(36).slice(2,9)
@@ -8634,6 +8700,7 @@ function requestNoamDiagram(exercise,thread,message,providedOptions){
           plan:JSON.parse(JSON.stringify(result.plan)),context:validatedContext};
       });
     }).then(function(visual){
+      if(!visual){runtime.jobs.delete(key);return null;}
       runtime.cache.set(key,visual);
       while(runtime.cache.size>16){runtime.cache.delete(runtime.cache.keys().next().value);}
       runtime.jobs.delete(key);return visual;
@@ -8641,6 +8708,7 @@ function requestNoamDiagram(exercise,thread,message,providedOptions){
     runtime.jobs.set(key,job);
   }
   var completion=job.then(function(visual){
+    if(!noamVisualsAllowed(exercise)){return null;}
     if ((thread.messages||[]).indexOf(message)<0){return visual;}
     // A section switch does not cancel a useful result, but it cannot mutate
     // or redraw the new section's conversation.
@@ -8653,9 +8721,10 @@ function requestNoamDiagram(exercise,thread,message,providedOptions){
     }
     return visual;
   },function(error){
+    if(!noamVisualsAllowed(exercise)){return null;}
     message.diagramError=noamDiagramError(error);
-    message.diagramErrorCode=error&&error.code==="DIAGRAM_UNSUPPORTED"?"DIAGRAM_UNSUPPORTED":"DIAGRAM_UNAVAILABLE";
-    if (message.diagramTyped){message.text="השרטוט עדיין לא מוכן.";}
+    message.diagramErrorCode=error&&error.code==="DIAGRAM_TOPIC_NOT_ALLOWED"?"DIAGRAM_TOPIC_NOT_ALLOWED":error&&error.code==="DIAGRAM_UNSUPPORTED"?"DIAGRAM_UNSUPPORTED":"DIAGRAM_UNAVAILABLE";
+    if (message.diagramTyped){message.text=message.diagramErrorCode==="DIAGRAM_TOPIC_NOT_ALLOWED"?message.diagramError:"השרטוט עדיין לא מוכן.";}
     return null;
   }).then(function(visual){
     runtime.messages.delete(message);saveNoamState();noamDiagramRefresh(exercise,thread,message,true);return visual;
@@ -8680,6 +8749,7 @@ function noamVisualAnswer(studentMessage,answer,visual){
 
 function askNoam(helpKind,studentMessage){
   if (!selectedExercise||busy){return;}
+  if(helpKind==="free_question"&&noamInterceptBlockedDrawing(studentMessage)){return;}
   var requestFocusId = panelBody.contains(document.activeElement) ? document.activeElement.id : "";
   if (helpKind==="free_question"){delete noamDrafts[selectedExercise.id];}
   var exercise=selectedExercise;
