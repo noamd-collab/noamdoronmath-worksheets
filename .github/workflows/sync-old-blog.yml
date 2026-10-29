@@ -5,17 +5,23 @@ name: sync-old-blog
 # with them. Posts are still written on the old site; the live site serves its
 # blog from files in the repo, so they only appear there after this sync.
 #
-# This file lives on main because GitHub runs scheduled workflows only from the
-# default branch. Nothing is merged or published here: merge the pull request,
-# then run `npm run release` in headless/astro-poc.
+# This file lives on main because GitHub runs schedule and workflow_dispatch
+# only from the default branch. The scheduled run only opens a pull request.
+# A manual run with publish=true releases the current headless/astro-poc-baseline
+# through tools/release/release.sh and the WIX_CLI_API_KEY secret.
 #
-# No secrets: the script reads the old site's public sitemap, feed and post pages.
+# The sync itself reads the old site's public sitemap, feed and post pages.
 
 on:
   schedule:
     # Posts on the old site go out around 02:15 and 03:50 UTC.
     - cron: '30 4 * * *'
   workflow_dispatch:
+    inputs:
+      publish:
+        description: Release headless/astro-poc-baseline even when this run imports no new posts
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -32,7 +38,7 @@ env:
 jobs:
   sync:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 90
     steps:
       - name: Check out the headless site
         uses: actions/checkout@v4
@@ -88,3 +94,16 @@ jobs:
             echo "::error::The posts are on branch ${SYNC_BRANCH}, but the pull request could not be opened. Allow GitHub Actions to create pull requests (Settings → Actions → General), or open it by hand: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/compare/${BASE_BRANCH}...${SYNC_BRANCH}"
             exit 1
           fi
+
+      # publish is a string in some contexts and a boolean in others.
+      - name: Publish baseline
+        if: ${{ inputs.publish == true || inputs.publish == 'true' }}
+        env:
+          WIX_CLI_API_KEY: ${{ secrets.WIX_CLI_API_KEY }}
+        run: |
+          if [ -z "${WIX_CLI_API_KEY}" ]; then
+            echo "WIX_CLI_API_KEY is not set. The baseline was not published."
+            exit 1
+          fi
+          git fetch origin "$BASE_BRANCH"
+          bash tools/release/release.sh "$(git rev-parse "origin/${BASE_BRANCH}")"
