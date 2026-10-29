@@ -12,6 +12,9 @@ git fetch origin "$BRANCH" && git checkout --detach "$EXPECT" || exit 2
 git merge-base --is-ancestor "$EXPECT" "origin/$BRANCH" || { echo "commit not on $BRANCH"; exit 3; }
 cd headless/astro-poc || exit 4
 W="env -u CURSOR_AGENT -u CURSOR_TRACE_ID -u AI_AGENT"
+# The wix executable comes from @wix/cli. Install before login, or npx exits
+# with "could not determine executable to run" (release.sh exit 5).
+$W npm ci --no-audit --no-fund || exit 6
 # wix login --api-key works without a TTY. wix release does not: with no TTY, Ink
 # throws NonInteractiveTerminal before it uploads anything. A PTY lets a logged-in
 # headless release finish. Headless release publishes as soon as the preview exists.
@@ -30,7 +33,6 @@ if [ ! -f .env.local ]; then
   echo "No .env.local. Pulling Wix env so the build can read WIX_CLIENT_ID."
   $W npx wix env pull --json </dev/null || exit 8
 fi
-$W npm ci --no-audit --no-fund || exit 6
 $W npm run build </dev/null || exit 7
 release_rc=0
 run_release || release_rc=$?
