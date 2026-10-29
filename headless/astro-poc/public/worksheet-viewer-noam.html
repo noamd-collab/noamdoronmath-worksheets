@@ -3237,8 +3237,9 @@ html.noam-a11y-motion .exact-viewer .panel-head .exact-ramzi-avatar ramzi-avatar
 <script src="noam-visual-data.js?v=20261028-source3"></script>
 <script src="noam-visual-plan.js?v=20261028-source3"></script>
 <script src="noam-source-data-visual.js?v=20261028-source-data3"></script>
+<script src="noam-source-scaffold.js?v=20261029-scaffold1"></script>
 <script src="noam-glossary-curriculum.js?v=20261018-fracbar"></script>
-<script src="noam-glossary.js?v=20261028-context3"></script>
+<script src="noam-glossary.js?v=20261029-context4"></script>
 <script>
 (function(){
 
@@ -7611,6 +7612,13 @@ function noamSourcePresentation(source,exercise,options){
     var scene=authored.resolve(source.data,exercise,options,source.svgText);
     if(scene){figure=authored.render(document,scene);if(figure){return {kind:scene.kind,figure:figure};}}
   }
+  // Instructional scaffolds are explicit drawing aids, never automatic hints.
+  // Resolve from the selected source before falling back to its original table.
+  var scaffold=window.NoamSourceScaffold;
+  if(options&&options.drawCurrentStep===true&&scaffold&&typeof scaffold.resolve==='function'&&typeof scaffold.render==='function'){
+    var scaffoldSpec=scaffold.resolve(source.data,exercise,options,source.svgText);
+    if(scaffoldSpec){figure=scaffold.render(document,source.data,exercise,options,source.svgText);if(figure){return {kind:scaffoldSpec.kind,figure:figure};}}
+  }
   var sourceData=window.NoamSourceDataVisual;
   if(sourceData&&typeof sourceData.resolve==='function'&&typeof sourceData.render==='function'){
     var exactContext=native.authoredContext(source.data,exercise,source.svgText);
@@ -7685,7 +7693,7 @@ function noamRequestSourceFirst(exercise,thread,message,providedOptions){
 function noamAttachSourceHint(exercise,thread,message,options){
   if(!window.NoamNativeVisual||!noamNativeDataUrl(exercise)){return Promise.resolve(null);}
   return noamPrepareSourceVisual(exercise,options).then(function(visual){
-    if(!visual||(visual.presentation==='source-context'&&!visual.sourcePanelGroup)||message.visual||message.answerError||
+    if(!visual||/^source-scaffold-/.test(visual.presentation)||(visual.presentation==='source-context'&&!visual.sourcePanelGroup)||message.visual||message.answerError||
       (thread.messages||[]).indexOf(message)<0||visual.sourceIdentity!==noamSourceVisualIdentity(exercise)||noamDiagramRuntime().messages.has(message)){return null;}
     message.visual=visual;saveNoamState();noamDiagramRefresh(exercise,thread,message,false);return visual;
   }).catch(function(){return null;});
