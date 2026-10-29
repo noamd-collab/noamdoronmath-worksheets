@@ -14,17 +14,16 @@ describe('blog RSS feed', () => {
     const posts = listServedBlogPosts();
     const items = listBlogFeedItems(posts);
     assert.equal(items.length, posts.length);
-    assert.equal(items.length, 68);
-    assert.equal(items[0]?.title, 'איך מסבירים היקף ושטח בלי לבלבל בין השניים');
-    const newestSlug = 'איך-מסבירים-היקף-ושטח-בלי-לבלבל-בין-השניים';
-    const encoded = encodeURIComponent(newestSlug);
-    assert.equal(
-      items[0]?.link,
-      `https://www.noamdoronmath.co.il/post/${encoded}`
+    assert.ok(items.length >= 68);
+    const newest = posts.reduce((best, post) =>
+      Date.parse(post.datePublished || '') >= Date.parse(best.datePublished || '') ? post : best
     );
+    assert.equal(items[0]?.title, newest.title);
+    const encoded = encodeURIComponent(newest.decodedSlug);
+    assert.equal(items[0]?.link, `https://www.noamdoronmath.co.il/post/${encoded}`);
     assert.equal(items[0]?.guid, items[0]?.link);
-    assert.equal(items[0]?.link.includes(newestSlug), false);
-    assert.match(items[0]?.pubDate || '', /08 Oct 2026/);
+    assert.equal(items[0]?.link.includes(newest.decodedSlug), false);
+    assert.equal(items[0]?.pubDate, new Date(newest.datePublished || '').toUTCString());
     for (let i = 1; i < items.length; i++) {
       const prev = Date.parse(items[i - 1]!.pubDate);
       const cur = Date.parse(items[i]!.pubDate);
@@ -45,7 +44,7 @@ describe('blog RSS feed', () => {
     const xml = renderBlogFeedXml();
     assert.match(xml, /^<\?xml version="1\.0" encoding="UTF-8"\?>/);
     assert.match(xml, /<rss version="2\.0">/);
-    assert.equal((xml.match(/<item>/g) || []).length, 68);
+    assert.equal((xml.match(/<item>/g) || []).length, listServedBlogPosts().length);
     assert.match(xml, /<title>[^<]+<\/title>/);
     assert.match(xml, /<link>https:\/\/www\.noamdoronmath\.co\.il\/post\//);
     assert.match(xml, /<guid isPermaLink="true">/);

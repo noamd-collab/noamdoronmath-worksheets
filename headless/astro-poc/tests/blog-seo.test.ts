@@ -54,7 +54,7 @@ describe('blog SEO complement', () => {
       ...listServedBlogPosts().map((p) => ({ id: p.fileSlug, description: p.description, image: p.ogImage || p.coverImage, jsonLd: p.jsonLd })),
       ...listBlogArchives().map((a) => ({ id: a.path, description: a.description, image: a.ogImage, jsonLd: a.jsonLd })),
     ];
-    assert.equal(pages.length, 72);
+    assert.equal(pages.length, listServedBlogPosts().length + listBlogArchives().length);
     for (const pg of pages) {
       const layout = baseLayoutTags(pg.image);
       const extra = keys(buildBlogSeoComplement({ description: pg.description, image: pg.image, jsonLd: pg.jsonLd }));

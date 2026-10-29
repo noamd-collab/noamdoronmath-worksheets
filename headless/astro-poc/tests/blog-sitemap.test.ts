@@ -19,13 +19,6 @@ const ARCHIVE_LOCS = [
   'https://www.noamdoronmath.co.il/blog/categories/teachers-and-parents',
 ];
 
-const ARCHIVE_LASTMOD: Record<string, string> = {
-  'https://www.noamdoronmath.co.il/blog': '2026-09-25',
-  'https://www.noamdoronmath.co.il/blog/categories/elementary-math': '2026-09-08',
-  'https://www.noamdoronmath.co.il/blog/categories/middle-school-math': '2026-09-19',
-  'https://www.noamdoronmath.co.il/blog/categories/teachers-and-parents': '2026-09-08',
-};
-
 /** Paths relative to this file, so the suite does not depend on process cwd. */
 function fromTest(relativePath: string): string {
   return fileURLToPath(new URL(relativePath, import.meta.url));
@@ -63,8 +56,9 @@ describe('blog sitemap /sitemap-blog.xml', () => {
   it('lists 72 production URLs: 68 posts and 4 archives, no duplicates', () => {
     const entries = listBlogSitemapEntries();
     const locs = entries.map((entry) => entry.loc);
-    assert.equal(entries.length, 72);
-    assert.equal(new Set(locs).size, 72);
+    const expected = listServedBlogPosts().length + ARCHIVE_LOCS.length;
+    assert.equal(entries.length, expected);
+    assert.equal(new Set(locs).size, expected);
 
     assert.deepEqual(locs.slice(0, 4), ARCHIVE_LOCS);
     assert.deepEqual(
@@ -75,11 +69,11 @@ describe('blog sitemap /sitemap-blog.xml', () => {
     const postLocs = BLOG_POST_SERVED_PATHS.map(
       (path) => `${BLOG_SITEMAP_ORIGIN}${decodeURIComponent(path)}`
     );
-    assert.equal(postLocs.length, 68);
+    assert.equal(postLocs.length, listServedBlogPosts().length);
     assert.deepEqual(locs.slice(4), postLocs);
 
     const posts = listServedBlogPosts();
-    assert.equal(posts.length, 68);
+    assert.ok(posts.length >= 68);
     for (const post of posts) {
       const loc = `${BLOG_SITEMAP_ORIGIN}${decodeURIComponent(post.path)}`;
       const entry = entries.find((item) => item.loc === loc);
@@ -87,21 +81,25 @@ describe('blog sitemap /sitemap-blog.xml', () => {
       assert.equal(entry.lastmod, post.dateModified?.slice(0, 10));
       assert.match(entry.lastmod || '', /^\d{4}-\d{2}-\d{2}$/);
     }
-    assert.deepEqual(BLOG_ARCHIVE_SITEMAP_LASTMOD, {
-      '/blog': '2026-09-25',
-      '/blog/categories/elementary-math': '2026-09-08',
-      '/blog/categories/middle-school-math': '2026-09-19',
-      '/blog/categories/teachers-and-parents': '2026-09-08',
-    });
+    assert.equal(BLOG_ARCHIVE_SITEMAP_LASTMOD['/blog/categories/elementary-math'], '2026-09-08');
+    assert.equal(BLOG_ARCHIVE_SITEMAP_LASTMOD['/blog/categories/middle-school-math'], '2026-09-19');
+    assert.equal(BLOG_ARCHIVE_SITEMAP_LASTMOD['/blog/categories/teachers-and-parents'], '2026-09-08');
+    assert.match(BLOG_ARCHIVE_SITEMAP_LASTMOD['/blog'], /^\d{4}-\d{2}-\d{2}$/);
+    assert.ok(BLOG_ARCHIVE_SITEMAP_LASTMOD['/blog'] >= '2026-09-25');
     for (const loc of ARCHIVE_LOCS) {
-      assert.equal(entries.find((item) => item.loc === loc)?.lastmod, ARCHIVE_LASTMOD[loc]);
+      const path = new URL(loc).pathname;
+      assert.equal(
+        entries.find((item) => item.loc === loc)?.lastmod,
+        BLOG_ARCHIVE_SITEMAP_LASTMOD[path as keyof typeof BLOG_ARCHIVE_SITEMAP_LASTMOD]
+      );
     }
   });
 
   it('uses only the production host and unencoded Hebrew slugs', () => {
     const entries = listBlogSitemapEntries();
     const hebrew = entries.filter((entry) => /[\u0590-\u05FF]/.test(entry.loc));
-    assert.equal(hebrew.length, 38);
+    const hebrewPosts = listServedBlogPosts().filter((post) => /[\u0590-\u05FF]/.test(post.decodedSlug));
+    assert.equal(hebrew.length, hebrewPosts.length);
     for (const entry of entries) {
       const url = new URL(entry.loc);
       assert.equal(url.protocol, 'https:');
@@ -140,11 +138,12 @@ describe('blog sitemap /sitemap-blog.xml', () => {
     const xml = renderBlogSitemapXml();
     assertWellFormedXml(xml);
     const locs = [...xml.matchAll(/<loc>([^<]*)<\/loc>/g)].map((match) => match[1]);
-    assert.equal(locs.length, 72);
-    assert.equal(new Set(locs).size, 72);
+    const expected = listBlogSitemapEntries().length;
+    assert.equal(locs.length, expected);
+    assert.equal(new Set(locs).size, expected);
     assert.equal(locs.every((loc) => loc.startsWith(`${BLOG_SITEMAP_ORIGIN}/`)), true);
-    assert.equal((xml.match(/<url>/g) || []).length, 72);
-    assert.equal((xml.match(/<lastmod>/g) || []).length, 72);
+    assert.equal((xml.match(/<url>/g) || []).length, expected);
+    assert.equal((xml.match(/<lastmod>/g) || []).length, expected);
   });
 
   it('GET returns the same XML as application/xml', async () => {

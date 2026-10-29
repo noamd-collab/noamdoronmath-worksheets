@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { describe, it } from 'node:test';
 import { fileURLToPath } from 'node:url';
 import { companionPanelSize } from '../../../noam-ai/site-companion/panel-size.js';
@@ -149,7 +149,10 @@ describe('Noam AI site manual', () => {
     assert.equal(kite && kite.href, '/kite-grade-9');
     assert.equal(kite && kite.topic, 'דלתון');
     assert.equal(guide.counts.hub, 9);
-    assert.equal(guide.counts.blog, 68);
+    const blogFiles = readdirSync(fileURLToPath(new URL('../src/data/blog-posts', import.meta.url))).filter((name) =>
+      name.endsWith('.json')
+    );
+    assert.equal(guide.counts.blog, blogFiles.length);
     assert.equal(guide.counts.game, 2);
     assert.ok(guide.counts.page >= 10);
     assert.equal(typeof guide.manifestMatches, 'number');
