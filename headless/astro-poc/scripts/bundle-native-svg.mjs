@@ -185,16 +185,51 @@ export function matchesRoute(pattern, path) {
   return new RegExp(`^${pattern.split('*').map((part) => part.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('.*')}$`).test(path);
 }
 
-export function narrowNativeRoutes(routes) {
-  if (routes.version !== 1 || !Array.isArray(routes.include) || !Array.isArray(routes.exclude)) {
-    throw new Error('Unsupported adapter route configuration');
+const FIGURE_PROBE = '/noam-ai/native/G7-T08/a/figures/q1_head.svg';
+
+/** Rebuild excludes from the files that actually ship. The adapter's own list
+ * is truncated at 99 rules once the figure route stops /noam-ai/* from collapsing,
+ * which drops fonts, teachers, Ramzi and the other static directories.
+ */
+export function staticExcludeRules(publicFiles, distFiles = []) {
+  const rules = [];
+  const dirs = new Set();
+  const roots = [];
+  for (const file of publicFiles) {
+    if (file.split('/').some((part) => part === '.' || part === '..')) throw new Error(`Bad public path: ${file}`);
+    const slash = file.indexOf('/');
+    if (slash < 0) roots.push('/' + file);
+    else dirs.add(file.slice(0, slash));
   }
-  const exclude = routes.exclude.filter((path) => !path.startsWith('/noam-ai/'));
-  for (const rule of staticNoamRules) if (!exclude.includes(rule)) exclude.push(rule);
-  if (routes.include.length + exclude.length > 100) {
-    throw new Error(`Too many adapter route rules: ${routes.include.length + exclude.length}`);
+  for (const dir of [...dirs].sort()) {
+    if (dir === 'noam-ai') continue;
+    rules.push(`/${dir}/*`);
   }
-  return { ...routes, exclude };
+  rules.push(...staticNoamRules);
+  for (const file of roots.sort()) rules.push(file);
+  for (const rule of ['/_astro/*', '/_wix/*']) if (!rules.includes(rule)) rules.push(rule);
+  for (const file of distFiles) {
+    if (file.startsWith('_worker.js/') || ['_worker.js', '_routes.json', '_redirects', '_headers'].includes(file)) continue;
+    const url = '/' + file;
+    if (rules.some((rule) => matchesRoute(rule, url))) continue;
+    const wild = file.includes('/') ? `/${file.split('/')[0]}/*` : url;
+    if (!rules.includes(wild)) rules.push(wild);
+  }
+  return rules;
+}
+
+export function routesForDeploy(original, publicFiles, distFiles = []) {
+  if (original.version !== 1 || !Array.isArray(original.include)) throw new Error('Unsupported adapter route configuration');
+  const exclude = staticExcludeRules(publicFiles, distFiles);
+  for (const file of publicFiles) {
+    const url = '/' + file;
+    if (!exclude.some((rule) => matchesRoute(rule, url))) throw new Error(`Static file lost its CDN route: ${url}`);
+  }
+  if (exclude.some((rule) => matchesRoute(rule, FIGURE_PROBE))) throw new Error('Native SVG would stay on the static CDN');
+  if (original.include.length + exclude.length > 100) {
+    throw new Error(`Too many adapter route rules: ${original.include.length + exclude.length}`);
+  }
+  return { ...original, exclude };
 }
 
 async function findRoutesFile(root) {
@@ -217,9 +252,11 @@ export async function finalizeNativeSvg(root = projectRoot) {
   const routesPath = await findRoutesFile(root);
   if (!routesPath) throw new Error('Built _routes.json was not found. Wix hosting did not emit Cloudflare routes.');
   const original = JSON.parse(await readFile(routesPath, 'utf8'));
-  const routes = narrowNativeRoutes(original);
+  const publicFiles = await filesBelow(join(root, 'public'));
+  const distFiles = await filesBelow(join(root, 'dist'));
+  const routes = routesForDeploy(original, publicFiles, distFiles);
   const descriptor = JSON.parse(await readFile(join(root, 'src/generated/native-svg-bundles.json'), 'utf8'));
-  const probe = Object.keys(descriptor.files).find((rel) => rel.startsWith('G7-')) 
+  const probe = Object.keys(descriptor.files).find((rel) => rel.startsWith('G7-'))
     || Object.keys(descriptor.files)[0];
   const figurePath = `/noam-ai/native/${probe}`;
   const jsonPath = figurePath.replace(/\/figures\/[^/]+\.svg$/, '/noam-ai.json');
@@ -229,6 +266,9 @@ export async function finalizeNativeSvg(root = projectRoot) {
   if (!routes.exclude.some((rule) => matchesRoute(rule, jsonPath))) {
     throw new Error(`Native JSON lost its static route: ${jsonPath}`);
   }
+  for (const required of ['/fonts/site-fonts.css', '/teachers/index.html', '/teachers/sheets/425c4cfaa0834530abde0f5aa8347128.json', '/vendor/supabase-2.116.0.js', '/ramzi/ramzi-avatar.js', '/design-exact/assets/logo.webp']) {
+    if (!routes.exclude.some((rule) => matchesRoute(rule, required))) throw new Error(`Static asset lost its CDN route: ${required}`);
+  }
   for (const spec of Object.values(descriptor.bundles)) {
     if (!routes.exclude.some((rule) => matchesRoute(rule, spec.bundlePath))) {
       throw new Error(`SVG bundle is not static: ${spec.bundlePath}`);
@@ -237,8 +277,7 @@ export async function finalizeNativeSvg(root = projectRoot) {
     const distFile = existsSync(built) ? built : join(root, 'dist', spec.bundlePath);
     if (!existsSync(distFile)) throw new Error(`Built SVG bundle missing: ${spec.bundlePath}`);
   }
-  const publicCount = (await filesBelow(join(root, 'public'))).length;
-  const distFiles = await filesBelow(join(root, 'dist'));
+  const publicCount = publicFiles.length;
   const clientCount = distFiles.filter((path) => !path.startsWith('_worker.js/') && path !== '_worker.js').length;
   const straySvg = distFiles.filter((path) => /noam-ai\/native\/.*\.svg$/.test(path));
   if (straySvg.length) throw new Error(`Built output still has ${straySvg.length} native SVG files`);

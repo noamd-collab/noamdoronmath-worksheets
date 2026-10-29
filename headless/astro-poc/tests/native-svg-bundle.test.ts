@@ -4,7 +4,7 @@ import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { it } from 'node:test';
 import { createNativeSvgResponder } from '../src/lib/nativeSvgResponse';
-import { matchesRoute, narrowNativeRoutes, projectRoot, readBundledNativeSvg, sha256, staticNoamRules } from '../scripts/bundle-native-svg.mjs';
+import { matchesRoute, projectRoot, readBundledNativeSvg, routesForDeploy, sha256, staticNoamRules } from '../scripts/bundle-native-svg.mjs';
 
 const descriptor = JSON.parse(readFileSync(new URL('../src/generated/native-svg-bundles.json', import.meta.url), 'utf8'));
 const repoNative = new URL('../../../noam-ai/native/', import.meta.url);
@@ -75,19 +75,49 @@ it('the figure route returns the original SVG and rejects other paths', async ()
   }
 });
 
-it('route narrowing keeps JSON and bundles static and lets figure URLs reach the server', () => {
-  const original = { version: 1, include: ['/*'], exclude: ['/_astro/*', '/noam-ai/*', '/fonts/*', '/teachers/*'] };
-  const routes = narrowNativeRoutes(original);
+it('route rebuild keeps fonts and teachers on the CDN even when the adapter truncated them', () => {
+  const truncated = Array.from({ length: 99 }, (_, i) => `/noam-ai/native/G7-T${i}/a/noam-ai.json`);
+  const original = { version: 1, include: ['/*'], exclude: truncated };
+  const publicFiles = [
+    'fonts/site-fonts.css',
+    'teachers/index.html',
+    'teachers/sheets/425c4cfaa0834530abde0f5aa8347128.json',
+    'vendor/supabase-2.116.0.js',
+    'ramzi/ramzi-avatar.js',
+    'design-exact/assets/logo.webp',
+    'favicon.ico',
+    'noam-ai/manifests/abc.json',
+    'noam-ai/sync-provenance.json',
+    'noam-ai/catalog-migrations.js',
+    'noam-ai/native/G8-T15/a/noam-ai.json',
+    descriptor.bundles.G7.bundlePath.slice(1),
+    descriptor.bundles.G8.bundlePath.slice(1),
+    descriptor.bundles.G9.bundlePath.slice(1),
+  ];
+  const routes = routesForDeploy(original, publicFiles, ['_astro/page.css', '_wix/pages.json']);
   assert.deepEqual(routes.include, original.include);
-  assert.ok(routes.exclude.includes('/fonts/*'));
-  assert.ok(routes.exclude.includes('/teachers/*'));
   assert.equal(routes.exclude.includes('/noam-ai/*'), false);
   for (const rule of staticNoamRules) assert.ok(routes.exclude.includes(rule), rule);
+  for (const path of ['/fonts/site-fonts.css', '/teachers/index.html', '/teachers/sheets/425c4cfaa0834530abde0f5aa8347128.json', '/vendor/supabase-2.116.0.js', '/ramzi/ramzi-avatar.js', '/design-exact/assets/logo.webp', '/_astro/page.css', '/_wix/pages.json', '/favicon.ico']) {
+    assert.equal(routes.exclude.some((rule: string) => matchesRoute(rule, path)), true, path);
+  }
   const figure = '/noam-ai/native/G8-T15/a/figures/q2a.svg';
-  const json = '/noam-ai/native/G8-T15/a/noam-ai.json';
   assert.equal(routes.exclude.some((rule: string) => matchesRoute(rule, figure)), false);
-  assert.equal(routes.exclude.some((rule: string) => matchesRoute(rule, json)), true);
-  assert.equal(routes.exclude.some((rule: string) => matchesRoute(rule, '/noam-ai/manifests/abc.json')), true);
-  assert.equal(routes.exclude.some((rule: string) => matchesRoute(rule, descriptor.bundles.G7.bundlePath)), true);
+  assert.equal(routes.exclude.some((rule: string) => matchesRoute(rule, '/noam-ai/native/G8-T15/a/noam-ai.json')), true);
   assert.ok(routes.include.length + routes.exclude.length <= 100);
+  function walk(dir: string, prefix = ''): string[] {
+    const out: string[] = [];
+    for (const name of readdirSync(dir)) {
+      const rel = prefix ? `${prefix}/${name}` : name;
+      const path = join(dir, name);
+      if (statSync(path).isDirectory()) out.push(...walk(path, rel));
+      else out.push(rel);
+    }
+    return out;
+  }
+  const real = routesForDeploy({ version: 1, include: ['/*'], exclude: truncated }, walk(join(projectRoot, 'public')));
+  assert.ok(real.include.length + real.exclude.length <= 100, `rules ${real.exclude.length}`);
+  assert.equal(real.exclude.some((rule: string) => matchesRoute(rule, '/fonts/site-fonts.css')), true);
+  assert.equal(real.exclude.some((rule: string) => matchesRoute(rule, '/teachers/index.html')), true);
+  assert.equal(real.exclude.some((rule: string) => matchesRoute(rule, figure)), false);
 });
