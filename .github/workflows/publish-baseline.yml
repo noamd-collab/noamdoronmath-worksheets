@@ -1,0 +1,51 @@
+name: publish-baseline
+
+# GitHub starts workflow_dispatch only from the default branch. This file is
+# on main so a manual run can release headless/astro-poc-baseline.
+# The first push of this file to main also releases once, because the token
+# that merges pull requests cannot call the dispatch API (Actions: write).
+
+on:
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: Release headless/astro-poc-baseline
+        type: boolean
+        default: true
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/publish-baseline.yml
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    if: ${{ github.event_name == 'push' || inputs.publish == true || inputs.publish == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Check out the live branch
+        uses: actions/checkout@v4
+        with:
+          ref: headless/astro-poc-baseline
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: headless/astro-poc/package-lock.json
+
+      - name: Publish baseline
+        env:
+          WIX_CLI_API_KEY: ${{ secrets.WIX_CLI_API_KEY }}
+        run: |
+          if [ -z "${WIX_CLI_API_KEY}" ]; then
+            echo "WIX_CLI_API_KEY is not set. The baseline was not published."
+            exit 1
+          fi
+          git fetch origin headless/astro-poc-baseline
+          bash tools/release/release.sh "$(git rev-parse origin/headless/astro-poc-baseline)"
