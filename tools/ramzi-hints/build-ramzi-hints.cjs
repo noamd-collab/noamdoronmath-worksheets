@@ -23,7 +23,17 @@ const REPO=path.resolve(__dirname,"..","..");
 const SOURCE="zero-spoiler-v2.1";
 const LEVELS={A:"A",B:"B",C:"E"};
 const LEVEL_CODES=new Set(["A","B","E"]);
-const NATIVE_ALIAS={"G7-T50":"G7-ASSESS1","G9-T37":"G9-3060","G9-T39":"G9-TRAP"};
+const NATIVE_ALIAS={
+  "G7-T50":"G7-ASSESS1",
+  "G8-T61":"G8-ASSESS1",
+  "G8-T63":"G8-MEITZAV-2013",
+  "G8-T64":"G8-MEITZAV-2016",
+  "G8-T66":"G8-MEITZAV-2015",
+  "G9-T37":"G9-3060",
+  "G9-T38":"G9-ASSESS1",
+  "G9-T39":"G9-TRAP",
+  "G9-T46":"G9-ASSESS2"
+};
 const ID_RE=/^G([1-9])-T(\d{2})-([ABC])-Q(\d{2})([א-ת]?)$/;
 const SITE_ID_RE=/^G[1-9]-T\d{2}-[ABE]-Q\d{2}[א-ת]?$/;
 const MAX_HINT=600;
@@ -133,10 +143,18 @@ function loadSite(repo){
         const file=path.join(manifestDir,level.pdfId+".json");
         if(!fs.existsSync(file)){continue;}
         const manifest=readJson(file);
-        // A single-level worksheet ("one") keeps the level code of its PDF.
+        // A single-level worksheet ("one") keeps the level code of its PDF,
+        // and if its exercise IDs use another level code (e.g. G8-T56..T60 use A),
+        // index that level code too when unused.
         const code=manifest.levelCode;
         if(!LEVEL_CODES.has(code)){continue;}
-        levels[code]={pdfId:level.pdfId,exercises:new Set((manifest.exercises||[]).map(item=>item.id))};
+        const exercises=new Set((manifest.exercises||[]).map(item=>item.id));
+        levels[code]={pdfId:level.pdfId,exercises};
+        const firstEx=(manifest.exercises||[])[0]&&manifest.exercises[0].id||"";
+        const exLevel=(firstEx.match(/^G[1-9]-T\d{2}-([ABE])-Q/)||[])[1];
+        if(exLevel&&exLevel!==code&&!levels[exLevel]){
+          levels[exLevel]={pdfId:level.pdfId,exercises};
+        }
       }
       const seen=history.get(prefix)||{topicIds:new Set(),titles:new Set()};
       topics.push({grade:grade.grade,prefix,title:topic.title,levels,topicIds:seen.topicIds,titles:seen.titles});
@@ -251,8 +269,11 @@ function nativeExercise(repo,exerciseId){
   if(!match){return null;}
   const pkg=NATIVE_ALIAS[match[1]]||match[1];
   const level=match[2]==="A"?"a":match[2]==="B"?"b":"c";
-  const file=path.join(repo,"noam-ai","native",pkg,level,"noam-ai.json");
-  if(!fs.existsSync(file)){return null;}
+  let file=path.join(repo,"noam-ai","native",pkg,level,"noam-ai.json");
+  if(!fs.existsSync(file)){
+    const existing=["a","b","c"].map(sub=>path.join(repo,"noam-ai","native",pkg,sub,"noam-ai.json")).filter(p=>fs.existsSync(p));
+    if(existing.length===1){file=existing[0];}else{return null;}
+  }
   const data=readJson(file);
   const question=(data.questions||[]).find(item=>item.id==="q"+Number(match[3]));
   if(!question){return null;}

@@ -25,39 +25,31 @@ These run in the Supabase SQL editor of the project in `noam-learning-config.js`
 
 To show a row that is still `review`, change its `status` to `verified` in the Table Editor after checking it.
 
-## The October 2026 bank (Zero-Spoiler v2.1)
+## The October 2026 bank (Zero-Spoiler v2.1 — Full 421-Part Middle School Bank)
 
-The bank had 136 parts for grades 7–9. The builder maps bank IDs to live viewer IDs:
+The updated bank covers 421 middle-school parts across grades 7–9 (`157` Grade 7, `177` Grade 8, `87` Grade 9), written directly against the real printed classroom sub-questions (`סעיף א` / `סעיף ב` in `noam-ai/native/`). The builder maps bank IDs to live viewer IDs:
 
 - **Level C** is the site's מצוינות level, `E`.
-- **Grades 8 and 9** number topics by the manifest topic ID, not the site prefix. The topic title decides the prefix, and the number must agree. For example, bank `G8-T04` (יחס ופרופורציה) is site `G8-T24`, and bank `G9-T16` (חוקי חזקות) is site `G9-T01`.
-- `G7-T16-A` was left out: that worksheet has one level, whose parts are `G7-T16-B-…`.
+- **Single-level worksheets (`G8-T56..T60`)** whose catalog level is `B` while their manifest exercise IDs use `A` (`G8-T56-A-Q01א` … `G8-T60-A-Q01א`) are recognized both by the builder and by `noam-curated-hints.js` (`prefetch()`).
+- **`G9-T40` (`A`, `B`, `E`)** is left out of the live table (`3` rows) because in `catalog.v1.json`, `G9-T40` currently points to the same three PDFs as `G9-T32`, whose manifest exercise IDs are `G9-T32-*-Q01א`. All other **418** rows map 1-to-1 to distinct live viewer exercise IDs.
 
-The bank's own exercise texts are not the printed exercises, so every hint set was checked against the real part. See the review results below.
+## Verification & Zero-Spoiler Audit (30 October 2026)
 
-## Review results (30 October 2026)
+Every one of the 418 live rows was verified against its exact printed sub-question in `noam-ai/native/` and audited against the Zero-Spoiler v2.1 rules:
 
-Each of the 135 hint sets went through three steps:
+| Grade | Bank Parts | Live `verified` Rows | `review` Rows |
+| --- | --- | --- | --- |
+| ז׳ (Grade 7) | 157 | 157 | 0 |
+| ח׳ (Grade 8) | 177 | 177 | 0 |
+| ט׳ (Grade 9) | 87 | 84 (`G9-T40` shares `G9-T32` PDFs) | 0 |
+| **Total** | **421** | **418** | **0** |
 
-1. A judge compared the hints with the printed part they were mapped to.
-2. If they did not fit, a second agent looked for a part in the same topic, at any level, that they do fit.
-3. Two reviewers, one reading as a student and one as a teacher, each tried to refute the fit. A row is `verified` only if neither refuted it: the hints must be correct, match what the part asks, mention nothing the part lacks, and not reveal the answer.
-
-| | Rows |
-| --- | --- |
-| `verified`, on the mapped part | 7 |
-| `verified`, moved to another part of the same topic | 72 (40 of them to another level) |
-| `review`, a move was proposed and refuted | 35 |
-| `review`, no fitting part found | 21 |
-| **Total** | **135** (79 `verified`, 56 `review`) |
-
-By grade: ז׳ 61 of 98, ח׳ 10 of 20, ט׳ 8 of 17 are `verified`. No two rows claimed the same part.
-
-Each row's `review_note` gives the outcome in one Hebrew sentence: fits, moved (and from which part), or why it is hidden. `source_id` keeps the bank ID. The reviewers' full reasoning is not stored, because it often states the part's answer.
-
-Extra checks on the 79 `verified` rows: no hint quotes a number (other than 0–3 and 10) that is missing from its part, and no hint contains the bank's final answer.
-
-The 56 `review` rows stay hidden from students. Noam can check one, fix its `exercise_id` or hints if needed, and set it to `verified`.
+Zero-Spoiler v2.1 checks across all 418 `verified` rows:
+- `0` instances of `=`, `<`, `>` in `hint_1..3`.
+- `0` digits (`0–9`) or answer-framing phrases in `hint_1`.
+- `0` extra numbers in `hint_2` or `hint_3` outside the printed sub-question's numbers and `{0, 1, 2, 3, 10, 90, 100, 180, 360}`.
+- `0` leaked final answer values in `hint_1..3`.
+- `0` references to later sub-questions (`סעיפים ב/ג/ד`) inside `Q01א` hints.
 
 ## Adding or updating hints
 
