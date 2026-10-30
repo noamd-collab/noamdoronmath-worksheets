@@ -82,6 +82,15 @@
     manifest.exercises.forEach(function(exercise){
       if(exercise&&typeof exercise.id==="string"&&exercise.id.indexOf(worksheet+"-Q")===0){known[exercise.id]=true;}
     });
+    if(!Object.keys(known).length&&manifest.exercises[0]&&typeof manifest.exercises[0].id==="string"){
+      var alt=manifest.exercises[0].id.match(/^(G[1-9]-T\d{2}-[ABE])-Q/);
+      if(alt&&alt[1].indexOf(prefix+"-")===0){
+        worksheet=alt[1];
+        manifest.exercises.forEach(function(exercise){
+          if(exercise&&typeof exercise.id==="string"&&exercise.id.indexOf(worksheet+"-Q")===0){known[exercise.id]=true;}
+        });
+      }
+    }
     if(loaded[worksheet]){return loaded[worksheet];}
     loaded[worksheet]=(opts.config?Promise.resolve(opts.config):waitForConfig()).then(function(cfg){
       if(!cfg){return [];}
