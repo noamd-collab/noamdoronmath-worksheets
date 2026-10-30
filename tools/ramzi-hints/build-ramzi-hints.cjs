@@ -14,7 +14,12 @@
  *    title (and topicId) decide the site prefix, never the bank number alone.
  *
  * Usage:
- *   node tools/ramzi-hints/build-ramzi-hints.cjs <bank.txt> [--reviews reviews.json] [--packets dir]
+ *   node tools/ramzi-hints/build-ramzi-hints.cjs <bank.txt> [--keep rows.json] [--reviews reviews.json] [--packets dir]
+ *   node tools/ramzi-hints/build-ramzi-hints.cjs --rows rows.json [--keep rows.json] [--reviews reviews.json]
+ *
+ * --rows rebuilds from published rows (learning/ramzi-hints.json) when the
+ * bank file is not at hand. --keep adds rows from another published file for
+ * parts the input does not cover, so a new bank never drops checked hints.
  */
 const fs=require("fs");
 const path=require("path");
@@ -23,16 +28,17 @@ const REPO=path.resolve(__dirname,"..","..");
 const SOURCE="zero-spoiler-v2.1";
 const LEVELS={A:"A",B:"B",C:"E"};
 const LEVEL_CODES=new Set(["A","B","E"]);
+// Same package names as PACKAGE_ALIASES in headless/astro-poc/public/noam-native-visual.js.
 const NATIVE_ALIAS={
   "G7-T50":"G7-ASSESS1",
-  "G8-T61":"G8-ASSESS1",
-  "G8-T63":"G8-MEITZAV-2013",
-  "G8-T64":"G8-MEITZAV-2016",
-  "G8-T66":"G8-MEITZAV-2015",
+  "G8-T61":"G8-INTERP",
+  "G8-T63":"G8-CIRCLE",
+  "G8-T64":"G8-ASSESS1",
+  "G8-T66":"G8-TWOSRC",
   "G9-T37":"G9-3060",
-  "G9-T38":"G9-ASSESS1",
+  "G9-T38":"G9-SIDEANG",
   "G9-T39":"G9-TRAP",
-  "G9-T46":"G9-ASSESS2"
+  "G9-T46":"G9-KITE"
 };
 const ID_RE=/^G([1-9])-T(\d{2})-([ABC])-Q(\d{2})([א-ת]?)$/;
 const SITE_ID_RE=/^G[1-9]-T\d{2}-[ABE]-Q\d{2}[א-ת]?$/;
@@ -327,21 +333,58 @@ function publicRows(rows){
   }));
 }
 
+// Published rows (the shape of learning/ramzi-hints.json) back into builder rows.
+function loadRows(list,live){
+  const rows=[];
+  const rejected=[];
+  (Array.isArray(list)?list:[]).forEach(item=>{
+    const id=String(item&&item.exercise_id||"");
+    const hints=Array.isArray(item&&item.hints)?item.hints.map(clean):[];
+    if(!SITE_ID_RE.test(id)){rejected.push({exerciseId:id,reason:"bad exercise id"});return;}
+    if(live&&!live.has(id)){rejected.push({exerciseId:id,reason:"exercise is not in the live worksheet"});return;}
+    if(hints.length!==3||hints.some(hint=>!hint||hint.length>MAX_HINT)){rejected.push({exerciseId:id,reason:"needs three hints of 1-"+MAX_HINT+" characters"});return;}
+    rows.push({
+      exercise_id:id,
+      source:clean(item.source)||SOURCE,
+      source_id:clean(item.source_id)||id,
+      topic:clean(item.topic),
+      source_exercise_text:item.source_exercise_text==null?null:String(item.source_exercise_text),
+      hints,
+      status:item.status==="verified"?"verified":"review",
+      review_note:clean(item.review_note)
+    });
+  });
+  return {rows,rejected};
+}
+
+// Rows from `extra` join only for parts that `rows` does not cover.
+function mergeRows(rows,extra){
+  const taken=new Set(rows.map(row=>row.exercise_id));
+  const kept=extra.filter(row=>!taken.has(row.exercise_id)&&taken.add(row.exercise_id));
+  const out=rows.concat(kept).sort((a,b)=>a.exercise_id.localeCompare(b.exercise_id,"en"));
+  return {rows:out,kept:kept.length};
+}
+
 function main(argv){
   const args=argv.slice(2);
-  const bankFile=args[0];
-  if(!bankFile){
-    console.error("usage: build-ramzi-hints.cjs <bank.txt> [--reviews reviews.json] [--packets dir]");
+  const option=name=>{const at=args.indexOf(name);return at>=0?args[at+1]:"";};
+  const bankFile=args[0]&&!args[0].startsWith("--")?args[0]:"";
+  const rowsFile=option("--rows");
+  if(!bankFile===!rowsFile){
+    console.error("usage: build-ramzi-hints.cjs <bank.txt> | --rows rows.json [--keep rows.json] [--reviews reviews.json] [--packets dir]");
     process.exit(2);
   }
-  const option=name=>{const at=args.indexOf(name);return at>=0?args[at+1]:"";};
-  const parsed=parseBank(fs.readFileSync(bankFile,"utf8"));
   const site=loadSite(REPO);
-  const normalized=normalize(site,parsed);
+  const live=liveExercises(site);
+  const parsed=bankFile?parseBank(fs.readFileSync(bankFile,"utf8")):{entries:[],incomplete:[],conflicts:[]};
+  const normalized=bankFile?normalize(site,parsed):loadRows(readJson(rowsFile),live);
+  const keepFile=option("--keep");
+  const keep=keepFile?loadRows(readJson(keepFile),live):{rows:[],rejected:[]};
+  const merged=mergeRows(normalized.rows,keep.rows);
   const reviewsFile=option("--reviews");
   const applied=reviewsFile
-    ?applyReviews(normalized.rows,readJson(reviewsFile),liveExercises(site))
-    :{rows:normalized.rows,displaced:[]};
+    ?applyReviews(merged.rows,readJson(reviewsFile),live)
+    :{rows:merged.rows,displaced:[]};
   const rows=applied.rows;
   const packets=option("--packets");
   if(packets){
@@ -361,14 +404,15 @@ function main(argv){
     parsed:parsed.entries.length,
     incomplete:parsed.incomplete,
     duplicateConflicts:parsed.conflicts,
+    kept:merged.kept,
     rows:rows.length,
     verified,
     review:rows.length-verified,
-    rejected:normalized.rejected,
+    rejected:normalized.rejected.concat(keep.rejected),
     displaced:applied.displaced
   },null,1));
 }
 
 if(require.main===module){main(process.argv);}
 
-module.exports={parseBank,normalizeTitle,loadSite,normalize,applyReviews,liveExercises,toSql,nativeExercise,SITE_ID_RE,MAX_HINT};
+module.exports={parseBank,normalizeTitle,loadSite,normalize,applyReviews,liveExercises,loadRows,mergeRows,toSql,nativeExercise,SITE_ID_RE,MAX_HINT};
