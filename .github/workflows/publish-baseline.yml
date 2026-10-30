@@ -5,7 +5,7 @@ name: publish-baseline
 # A push of this file to main also releases once, because the token that
 # merges pull requests cannot call the dispatch API (Actions: write).
 # Release script on baseline installs @wix/cli before login (see #275).
-# Approved release: baseline PR #299 (9f80d224b; reviewed fb1708b8d), 2,791 static files; Ramzi deadline, Opus 5.5 medium PASS.
+# Approved release: baseline PR #304 (cb52c42d9; reviewed 0a7a5d62), 2,792 static files; source-first hints, Opus 5.5 medium PASS.
 
 on:
   workflow_dispatch:
