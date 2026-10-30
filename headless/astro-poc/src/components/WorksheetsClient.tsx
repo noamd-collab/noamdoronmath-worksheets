@@ -349,7 +349,7 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
         {topic.description ? <p className="exact-card-description">{topic.description}</p> : null}
         {topic.note ? <p className="note">{topic.note}</p> : null}
         {topic.routing.aiHintShown ? (
-          <span className="aihint">✦ נועם AI זמין בדף הזה</span>
+          <span className="aihint">✦ רמזי AI זמין בדף הזה</span>
         ) : null}
         <div className={`levels${children.length ? ' levels--bundle' : ''}`}>
           {children.length ? (
@@ -441,7 +441,7 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
         <p className="proto-note" data-pop="160">
           {family === 'elementary'
             ? 'יסודי — דפי עבודה, תרגול והסברים בדרך מהנה וברורה.'
-            : 'חטיבה — דפי עבודה וצופה (כולל נועם AI) במראה רגוע וברור.'}
+            : 'חטיבה — דפי עבודה וצופה (כולל רמזי AI) במראה רגוע וברור.'}
         </p>
       </header>
 
