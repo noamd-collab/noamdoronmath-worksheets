@@ -25,6 +25,7 @@ const appFor = new Function('pool', 'scope', 'groupWholeQuestions', `
   const render = () => {}, announce = () => {}, clearPreparedPrint = () => {}, paintAiPickButtons = () => {};
   const SCENARIOS = { first: { label: 'היכרות' } }, STYLES = { scaffold: { label: 'מדורגת' } };
   const QUESTION_ROLES = { basis: 'ביסוס', review: 'חזרה', creative: 'יצירתית' }, AI_QUESTION_COUNTS = [5, 10, 15];
+  const dismissTeacherHumanVerification = () => {};
   const ensureTeacherBotClient = async () => ({ postJson: async (path, payload) => {
     requests.push(payload);
     const chosen = currentQuestions().slice(-payload.teacher.count).map(group => group.keys[0]);
