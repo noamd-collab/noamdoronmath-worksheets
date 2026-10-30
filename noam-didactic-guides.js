@@ -177,8 +177,39 @@
     }
   };
 
+  // Curated three-step hints (public.noam_ramzi_hints, verified rows only) join
+  // the same hint and understanding flow. Authored guides above always win.
+  var curated=Object.create(null);
+  var CURATED_ID=/^G[1-9]-T\d{2}-[ABE]-Q\d{2}[\u05d0-\u05ea]?$/;
+  var CURATED_MAX=600;
+
   function get(exerciseId){
-    return guides[String(exerciseId||"")]||null;
+    var id=String(exerciseId||"");
+    if(Object.prototype.hasOwnProperty.call(guides,id)){return guides[id];}
+    return curated[id]||null;
+  }
+
+  function curatedHints(list){
+    if(!Array.isArray(list)||list.length!==3){return null;}
+    var hints=list.map(function(item){return typeof item==="string"?item.replace(/\s+/g," ").trim():"";});
+    return hints.every(function(item){return item&&item.length<=CURATED_MAX;})?hints:null;
+  }
+
+  function curatedPrompt(hints){
+    return [
+      "רמזים מאושרים לסעיף הזה, לפי הסדר:",
+      hints.map(function(item,index){return (index+1)+". "+item;}).join("\n"),
+      "כוון את התלמיד לפי הרמזים האלה בלבד: תן רק את הצעד הבא, אל תסתור אותם ואל תחשוף את התשובה הסופית."
+    ].join("\n");
+  }
+
+  function register(exerciseId,data){
+    var id=String(exerciseId||"");
+    if(!CURATED_ID.test(id)||Object.prototype.hasOwnProperty.call(guides,id)){return false;}
+    var hints=curatedHints(data&&data.hints);
+    if(!hints){return false;}
+    curated[id]={kind:"curated-hints",curated:true,hints:hints,modelPrompt:curatedPrompt(hints)};
+    return true;
   }
 
   function asksWhichAngle(text){
@@ -531,9 +562,11 @@
       rememberStep(understandingFor(exerciseId),body);
       if(note==="understood"){body=UNDERSTOOD_LEAD+"\n"+body;}
       if(note==="not-understood"){body=retryText(body,understandingFor(exerciseId));}
-      return {text:body,visual:"focus",focusKey:visual&&visual.key||"",source:"didactic-guide"};
+      return {text:body,visual:guide.visuals?"focus":null,focusKey:visual&&visual.key||"",source:"didactic-guide"};
     }
     pendingNote="";
+    // Curated hints carry text only: no drawings, angle aids or extra steps.
+    if(guide.curated){return null;}
     if(asksToEnlarge(message)){
       return {text:"הנה השרטוט המלא כשהחלק הגאומטרי מוגדל והזוויות הדרושות מסומנות.",visual:"focus",focusKey:visual&&visual.key||"",source:"didactic-guide"};
     }
@@ -566,6 +599,7 @@
 
   return {
     get:get,
+    register:register,
     respond:respond,
     prompt:prompt,
     resolveVisual:resolveVisual,

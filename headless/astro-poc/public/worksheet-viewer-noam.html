@@ -3225,7 +3225,7 @@ html.noam-a11y-motion .exact-viewer .panel-head .exact-ramzi-avatar ramzi-avatar
   </div>
 </dialog>
 
-<script src="noam-didactic-guides.js?v=20260927-hints1"></script>
+<script src="noam-didactic-guides.js?v=20261030-curated1"></script>
 <script src="noam-geometry.js?v=20260921-aux1"></script>
 <script src="noam-geometry-guides.js?v=20260920-1"></script>
 <script src="noam-diagram-plan.js?v=20261021-plural-relations1"></script>
@@ -3240,6 +3240,7 @@ html.noam-a11y-motion .exact-viewer .panel-head .exact-ramzi-avatar ramzi-avatar
 <script src="noam-source-scaffold.js?v=20261029-scaffold1"></script>
 <script src="noam-glossary-curriculum.js?v=20261018-fracbar"></script>
 <script src="noam-glossary.js?v=20261029-context6"></script>
+<script src="noam-curated-hints.js?v=20261030-curated1"></script>
 <script>
 (function(){
 
@@ -5423,6 +5424,10 @@ function loadStaticManifest(){
       manifestReady = true;
       fab.classList.remove("hidden");
       renderManifestPins();
+      // Verified curated hints for this exact PDF join the didactic guides.
+      if (window.NoamCuratedHints&&typeof window.NoamCuratedHints.prefetch==="function"){
+        window.NoamCuratedHints.prefetch(data);
+      }
       return data;
     })
     .catch(function(error){
