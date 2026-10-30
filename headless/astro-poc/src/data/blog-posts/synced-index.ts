@@ -14,5 +14,6 @@ import post11 from './soro-2026-10-26.json';
 import post12 from './soro-2026-10-27.json';
 import post13 from './soro-2026-10-28.json';
 import post14 from './soro-2026-10-29.json';
+import post15 from './soro-2026-10-30.json';
 
-export const SYNCED_BLOG_POSTS = [post0, post1, post2, post3, post4, post5, post6, post7, post8, post9, post10, post11, post12, post13, post14];
+export const SYNCED_BLOG_POSTS = [post0, post1, post2, post3, post4, post5, post6, post7, post8, post9, post10, post11, post12, post13, post14, post15];
