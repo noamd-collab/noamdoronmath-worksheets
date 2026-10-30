@@ -32,7 +32,7 @@
   background: #fff;
   color: #22305a;
   font-weight: 500;
-  font-size: 15px;
+  font-size: 16px;
   line-height: normal;
   text-decoration: none;
   box-shadow: none;
@@ -362,11 +362,15 @@
 .grade-hub__crumbs {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 8px;
   margin-block: 12px 4px;
-  font-size: 14px;
+  font-size: 16px;
 }
 .grade-hub__crumbs a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   color: #0d47a1;
   font-weight: 800;
 }

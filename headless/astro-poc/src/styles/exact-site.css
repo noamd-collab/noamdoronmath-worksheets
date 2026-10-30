@@ -167,6 +167,11 @@ html.noam-a11y-motion .exact-home h1[data-lcp] {
   animation: none;
 }
 .exact-footer ul {list-style:none;margin:0;padding:0;}
+.exact-footer a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
 .exact-footer a:hover {color:#fff!important;}
 .exact-footer .exact-social:hover {background:#fff!important;color:#22305a!important;}
 .exact-site [data-exact-hero-topic]:hover {color:#e5735c!important;}
