@@ -4,7 +4,7 @@ import { createServer } from 'node:http';
 import { once } from 'node:events';
 import { it } from 'node:test';
 import puppeteer, { type Browser, type Page } from 'puppeteer-core';
-import { chromiumExecutable } from './helpers/chromium.ts';
+import { resolveTestBrowser } from './helpers/chromium.ts';
 
 const read = (path: string) => readFileSync(new URL(path, import.meta.url), 'utf8');
 const pageSource = read('../src/pages/games/eliyahu-pythagoras/index.astro');
@@ -36,7 +36,7 @@ async function fits(page: Page, label: string) {
 }
 
 it('fits every game step on desktop and phone, including later content growth and shrinkage', { timeout: 90000 }, async () => {
-  const chrome = chromiumExecutable();
+  const chrome = resolveTestBrowser();
   const server = createServer((req, res) => {
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     res.end(req.url === '/play' ? game : wrapper);

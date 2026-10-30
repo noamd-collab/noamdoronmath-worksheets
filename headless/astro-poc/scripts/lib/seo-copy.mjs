@@ -115,7 +115,7 @@ export function titleKey(value) {
     .trim();
 }
 
-function readJsonDir(dir) {
+export function readJsonDir(dir) {
   return readdirSync(dir)
     .filter((name) => name.endsWith('.json'))
     .sort()

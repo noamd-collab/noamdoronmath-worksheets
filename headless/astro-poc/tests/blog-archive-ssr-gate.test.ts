@@ -12,7 +12,8 @@ import { listBlogArchives } from '../src/lib/blogArchives';
 
 describe('M26 live SSR archive card index', () => {
   // Reuse one fetched response for all assertions; failures are also shared.
-  const liveSnapshot = createLiveArchiveSnapshotReader();
+  // Pace distinct archive requests and stop the queue on a refusal.
+  const liveSnapshot = createLiveArchiveSnapshotReader({ minIntervalMs: 5000 });
   it('parseSsrCards returns every bundled post card from live /blog HTML', async () => {
     const live = await liveSnapshot('/blog');
     assert.equal(live.http.status, 200);

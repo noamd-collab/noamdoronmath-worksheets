@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { createLiveArchiveSnapshotReader, fetchLiveArchiveCardIndex } from '../scripts/lib/blog-archive-ssr.mjs';
 
-const html = '<section data-blog-archive-list><article data-blog-archive-card><h2><a data-blog-archive-card-link href="/post/example">כותרת בדיקה</a></h2></article></section>';
+const html = '<main data-blog-archive="blog-index"><section data-blog-archive-list><article data-blog-archive-card><h2><a data-blog-archive-card-link href="/post/example">כותרת בדיקה</a></h2></article></section></main>';
 const success = () => new Response(html, { headers: { 'content-type': 'text/html; charset=utf-8' } });
 
 test('one run shares the identical live snapshot across concurrent and sequential assertions, separately per path', async () => {
@@ -110,4 +110,29 @@ test('network, non-429 HTTP, non-HTML and empty archive failures are never retri
     }), message);
     assert.equal(requests, 1);
   }
+});
+
+
+test('snapshot reads pace distinct paths and retain a refusal for the rest of the run', async () => {
+  let now = 10000;
+  const events: string[] = [];
+  const reader = createLiveArchiveSnapshotReader({
+    minIntervalMs: 5000,
+    now: () => now,
+    sleep: async (ms: number) => { events.push(`wait:${ms}`); now += ms; },
+    fetchImpl: async (url: string) => { events.push(url); return success(); },
+  });
+  await Promise.all([reader('/blog'), reader('/blog/categories/elementary-math')]);
+  assert.equal(events.length, 3);
+  assert.equal(events[1], 'wait:5000');
+  assert.ok(events[0].endsWith('/blog'));
+  assert.ok(events[2].endsWith('/elementary-math'));
+  let requests = 0;
+  const refused = createLiveArchiveSnapshotReader({ fetchImpl: async () => {
+    requests++;
+    return new Response('rate limited', { status: 429 });
+  } });
+  await assert.rejects(refused('/blog'), /HTTP 429/);
+  await assert.rejects(refused('/blog/categories/elementary-math'), /HTTP 429/);
+  assert.equal(requests, 1);
 });

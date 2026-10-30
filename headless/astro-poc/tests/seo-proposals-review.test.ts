@@ -3,11 +3,15 @@
  * Each block maps to a review finding or one of the seven review criteria.
  */
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, mkdtempSync, writeFileSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { describe, it } from 'node:test';
 import {
   buildProposals,
   buildProposalsFromSources,
+  readJsonDir,
   clipSentences,
   isValidLiveTitle,
   loadProposalSources,
@@ -17,7 +21,7 @@ import {
   withBrand,
   withGrade,
 } from '../scripts/lib/seo-copy.mjs';
-import { KEEP_CURRENT, NEEDS_DECISION } from '../scripts/lib/seo-overrides.mjs';
+import { EXACT, KEEP_CURRENT, NEEDS_DECISION } from '../scripts/lib/seo-overrides.mjs';
 
 type Item = {
   path: string;
@@ -33,7 +37,7 @@ type Item = {
   needsDecision?: string;
 };
 
-const root = new URL('..', import.meta.url).pathname;
+const root = fileURLToPath(new URL('..', import.meta.url));
 const committed = JSON.parse(readFileSync(new URL('../src/data/seo-proposals.json', import.meta.url), 'utf8'))
   .items as Item[];
 const len = (s: string) => [...s].length;
@@ -103,6 +107,44 @@ describe('seo proposals – generator and coverage', () => {
       '/triangle-area-grade-7: reviewed topic page source is missing',
       `${post.path}: reviewed blog post source is missing`,
     ]) assert.ok(errors.includes(error), error);
+  });
+
+  it('later elementary landing pages and G8-T66 do not rewrite the frozen review batch', () => {
+    const { proposals, errors } = buildProposals(root);
+    assert.deepEqual(errors, []);
+    const authored = readJsonDir(join(root, 'src/data/topic-pages')).filter((page) => page.grade <= 6);
+    assert.ok(authored.some((page) => page.path === '/addition-to-10-grade-1'));
+    for (const page of authored) {
+      assert.ok(!proposals.some((row) => row.path === page.path), page.path);
+      assert.ok(proposals.some((row) => row.path === `/worksheets?grade=${page.grade}&topic=${page.catalogCta.catalogTopicId}`), page.path);
+    }
+    assert.ok(!proposals.some((row) => row.path === '/worksheets?grade=8&topic=66'));
+  });
+
+  it('an unused review override still fails instead of silently dropping a decision', () => {
+    const path = '/not-in-the-reviewed-source-batch';
+    const overrides = EXACT as Record<string, { title?: string; description?: string }>;
+    assert.equal(overrides[path], undefined);
+    overrides[path] = { title: 'כותרת בדיקה' };
+    try {
+      const { errors } = buildProposals(root);
+      assert.ok(errors.includes(`${path}: override for a path that is not generated`));
+    } finally {
+      delete overrides[path];
+    }
+  });
+
+  it('JSON source loading ignores scripts but rejects malformed JSON content', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'noam-seo-json-sources-'));
+    try {
+      writeFileSync(join(dir, 'a.json'), JSON.stringify({ path: '/source-a', description: 'משפט שלם.' }));
+      writeFileSync(join(dir, 'synced-index.ts'), '/** Generated index. */\nthrow new Error("must not execute");');
+      assert.deepEqual(readJsonDir(dir), [{ path: '/source-a', description: 'משפט שלם.' }]);
+      writeFileSync(join(dir, 'broken.json'), '{ invalid');
+      assert.throws(() => readJsonDir(dir), SyntaxError);
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
   });
 
   it('all 390 rows exist once: 235 catalog topics, 95 topic pages, 60 posts; none approved', () => {

@@ -39,7 +39,7 @@ test('empty Astro markup, unrelated articles and script strings cannot masquerad
   const script = `<script type="application/json">${JSON.stringify(astroCard(9))}</script>`;
   assert.deepEqual(parseSsrCards(astroArchive('') + astroCard(8) + script), []);
   assert.deepEqual(parseSsrCards('<article><h2><a href="/post/not-an-archive">פוסט אחר</a></h2></article>'), []);
-  assert.deepEqual(parseSsrCards(astroArchive(astroCard(1).replace('data-blog-archive-card-link href="/post/post-1"', 'data-blog-archive-card-link href="https://other.example/post/post-1"'))), []);
+  assert.throws(() => parseSsrCards(astroArchive(astroCard(1).replace('data-blog-archive-card-link href="/post/post-1"', 'data-blog-archive-card-link href="https://other.example/post/post-1"'))), /Invalid Astro SSR archive card/);
 });
 
 test('the parity gate still rejects truncation, duplicate replacement and changed card order', () => {

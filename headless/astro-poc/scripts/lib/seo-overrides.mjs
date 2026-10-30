@@ -266,6 +266,8 @@ export const KEEP_CURRENT = [
 
 /**
  * The complete PR 46 / PR 52 input scope is pinned in seo-review-scope.json.
+ * Restored elementary landing pages, G8-T66 and later synced posts retain their
+ * own page meta, as audited in PR 293; the manifest keeps them outside this batch.
  * Keep new pages/posts in their own review batch; do not grow an exclusion list here.
  */
 

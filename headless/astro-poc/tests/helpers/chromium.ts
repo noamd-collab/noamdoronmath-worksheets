@@ -1,37 +1,59 @@
-import { accessSync, constants } from 'node:fs';
-import { homedir } from 'node:os';
-import { join } from 'node:path';
+import { accessSync, constants, statSync } from 'node:fs';
+import { delimiter, join, win32 } from 'node:path';
 
-/** Find a browser binary without accessing an existing browser profile. */
-export function chromiumCandidates(
-  platform = process.platform,
-  home = homedir(),
-  env = process.env,
-): string[] {
-  if (env.CHROME_PATH) return [env.CHROME_PATH];
-  if (platform === 'darwin') {
-    return [
-      join(home, 'Applications/Google Chrome.app/Contents/MacOS/Google Chrome'),
-      '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
-      '/Applications/Chromium.app/Contents/MacOS/Chromium',
-      '/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge',
-    ];
-  }
-  if (platform === 'win32') {
-    return [env.PROGRAMFILES, env['PROGRAMFILES(X86)'], env.LOCALAPPDATA]
-      .filter((root): root is string => Boolean(root))
-      .flatMap(root => [
-        join(root, 'Google/Chrome/Application/chrome.exe'),
-        join(root, 'Microsoft/Edge/Application/msedge.exe'),
-      ]);
-  }
-  return ['/usr/bin/google-chrome-stable', '/usr/bin/google-chrome', '/usr/bin/chromium', '/usr/bin/chromium-browser'];
+interface BrowserLookupOptions {
+  env?: NodeJS.ProcessEnv;
+  platform?: NodeJS.Platform;
+  canExecute?: (path: string) => boolean;
 }
 
-export function chromiumExecutable(): string {
-  const executable = chromiumCandidates().find(path => {
-    try { accessSync(path, constants.X_OK); return true; } catch { return false; }
+function executableFile(path: string): boolean {
+  try {
+    accessSync(path, constants.X_OK);
+    return statSync(path).isFile();
+  } catch {
+    return false;
+  }
+}
+
+/** Find an installed browser for isolated headless fixtures; never use a user's profile. */
+export function resolveTestBrowser({
+  env = process.env,
+  platform = process.platform,
+  canExecute = executableFile,
+}: BrowserLookupOptions = {}): string {
+  const explicit = env.CHROME_PATH?.trim();
+  if (explicit) {
+    if (!canExecute(explicit)) throw new Error('CHROME_PATH must name an executable Chromium browser file');
+    return explicit;
+  }
+
+  const macApplications = ['Google Chrome', 'Chromium', 'Brave Browser', 'Brave Origin', 'Microsoft Edge'];
+  const macPaths = macApplications.flatMap((name) => {
+    const roots = ['/Applications', ...(env.HOME ? [join(env.HOME, 'Applications')] : [])];
+    return roots.map((root) => join(root, `${name}.app`, 'Contents', 'MacOS', name));
   });
-  if (!executable) throw new Error('No executable Chromium browser found. Set CHROME_PATH to its executable path.');
-  return executable;
+  const windowsRoots = [env.PROGRAMFILES, env['PROGRAMFILES(X86)'], env.LOCALAPPDATA].filter(
+    (path): path is string => !!path,
+  );
+  const windowsPaths = windowsRoots.flatMap((root) => [
+    win32.join(root, 'Google', 'Chrome', 'Application', 'chrome.exe'),
+    win32.join(root, 'Microsoft', 'Edge', 'Application', 'msedge.exe'),
+    win32.join(root, 'BraveSoftware', 'Brave-Browser', 'Application', 'brave.exe'),
+  ]);
+  const linuxPaths = [
+    '/usr/bin/google-chrome-stable', '/usr/bin/google-chrome',
+    '/usr/bin/chromium', '/usr/bin/chromium-browser', '/snap/bin/chromium',
+    '/usr/bin/brave-browser', '/usr/bin/brave-browser-stable',
+  ];
+  const candidates = platform === 'darwin' ? macPaths : platform === 'win32' ? windowsPaths : linuxPaths;
+  const names = platform === 'win32' ? ['chrome.exe', 'msedge.exe', 'chromium.exe', 'brave.exe']
+    : ['google-chrome-stable', 'google-chrome', 'chromium', 'chromium-browser', 'brave-browser', 'brave-browser-stable'];
+  const pathJoin = platform === 'win32' ? win32.join : join;
+  for (const directory of (env.PATH || '').split(platform === 'win32' ? ';' : delimiter).filter(Boolean)) {
+    for (const name of names) candidates.push(pathJoin(directory, name));
+  }
+  const browser = candidates.find(canExecute);
+  if (!browser) throw new Error('No Chromium browser found. Install Chrome, Chromium or Brave, or set CHROME_PATH to its executable.');
+  return browser;
 }

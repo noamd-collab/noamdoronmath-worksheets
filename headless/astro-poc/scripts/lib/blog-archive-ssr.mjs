@@ -1,10 +1,9 @@
 /**
  * Shared live-SSR blog archive card index (source of truth for M26 gates).
- * Parse the deployed Astro cards and the legacy Wix post-list-item markup.
- * Read server HTML so browser gallery virtualization cannot hide source cards.
+ * Read the current Astro archive, retaining the old Wix capture format for
+ * historical fixtures. Never infer cards from unrelated page links.
  */
 import { parseHTML } from 'linkedom';
-
 export const PROD = 'https://www.noamdoronmath.co.il';
 
 export const ARCHIVE_PATHS = [
@@ -66,40 +65,41 @@ export function pathnameOf(href) {
   }
 }
 
-function parseAstroSsrCards(html) {
-  const { document } = parseHTML(html);
-  return [...document.querySelectorAll('[data-blog-archive-list] [data-blog-archive-card]')].flatMap((card) => {
-    const link = card.querySelector('[data-blog-archive-card-link]');
-    const title = clean(link?.textContent);
-    let href;
-    try {
-      const url = new URL(link?.getAttribute('href') || '', PROD);
-      if (url.origin !== PROD || !url.pathname.startsWith('/post/')) return [];
-      href = normHref(url.href);
-    } catch {
-      return [];
-    }
-    if (title.length < 3) return [];
-    const text = (selector) => clean(card.querySelector(selector)?.textContent);
-    const avatar = card.querySelector('.blog-archive__card-avatar');
-    const categories = [...card.querySelectorAll('.blog-archive__card-cats a[href]')].map((item) => ({
-      text: clean(item.textContent), href: normHref(item.getAttribute('href')),
-    }));
-    return [{
-      title, href, excerpt: text('[data-blog-archive-card-excerpt]'),
-      authorAvatar: avatar?.getAttribute('src') ? { src: avatar.getAttribute('src'), alt: avatar.getAttribute('alt') || '' } : undefined,
-      author: text('[data-blog-archive-card-author]') || undefined,
-      date: text('[data-blog-archive-card-date]') || undefined,
-      categories: categories.length ? categories : undefined,
-    }];
-  });
+/** Parse explicit Astro cards in document order, or the historical Wix markup. */
+export function parseSsrCards(html) {
+  const document = parseHTML(html).document;
+  const archive = document.querySelector('main[data-blog-archive]');
+  if (archive) {
+    const list = archive.querySelector('[data-blog-archive-list]');
+    if (!list) return [];
+    return [...list.querySelectorAll('article[data-blog-archive-card]')].map((card, index) => {
+      const links = card.querySelectorAll('h2 [data-blog-archive-card-link]');
+      const link = links.length === 1 ? links[0] : null;
+      const title = clean(link?.textContent);
+      const href = normHref(link?.getAttribute('href') || '');
+      const url = new URL(href, PROD);
+      if (title.length < 3 || url.origin !== PROD || !/^\/post\/[^/]+\/?$/.test(url.pathname)) {
+        throw new Error(`Invalid Astro SSR archive card[${index}]: missing title or canonical post link`);
+      }
+      const avatar = card.querySelector('.blog-archive__card-avatar');
+      const categories = [...card.querySelectorAll('.blog-archive__card-cats a[href]')]
+        .map(a => ({ text: clean(a.textContent), href: normHref(a.getAttribute('href')) }));
+      return {
+        title,
+        href,
+        excerpt: clean(card.querySelector('[data-blog-archive-card-excerpt]')?.textContent),
+        authorAvatar: avatar ? { src: avatar.getAttribute('src'), alt: avatar.getAttribute('alt') || '' } : undefined,
+        author: clean(card.querySelector('[data-blog-archive-card-author]')?.textContent) || undefined,
+        date: clean(card.querySelector('[data-blog-archive-card-date]')?.textContent) || undefined,
+        categories: categories.length ? categories : undefined,
+      };
+    });
+  }
+  return parseLegacyWixCards(html);
 }
 
-/** Parse every SSR archive card in document order, without rendering JavaScript. */
-export function parseSsrCards(html) {
-  // The custom Astro archive replaced Wix's gallery when the site went live.
-  // Keep its semantic hooks distinct from unrelated article/recent-post links.
-  if (/data-blog-archive-list\b/i.test(html)) return parseAstroSsrCards(html);
+/** Historical Wix capture support. Current live archives use parseSsrCards above. */
+function parseLegacyWixCards(html) {
   const cards = [];
   const parts = html.split(/data-hook="post-list-item"/i);
   for (let i = 1; i < parts.length; i++) {
@@ -251,7 +251,7 @@ function retryAfterDelay(value, now) {
 /** Live SSR ordered title+href index; at most one server-directed, bounded retry. */
 export async function fetchLiveArchiveCardIndex(path, opts = {}) {
   const attempts = Math.min(2, Math.max(1, Number(opts.attempts) || 2));
-  const fetchImpl = opts.fetchImpl || fetch;
+  const fetchImpl = opts.fetchImpl || opts.fetch || fetch;
   const sleep = opts.sleep || ((ms) => new Promise((resolve) => setTimeout(resolve, ms)));
   const now = opts.now || Date.now;
   const ua = opts.userAgent || 'Mozilla/5.0 (compatible; m26-ssr-gate)';
@@ -264,7 +264,7 @@ export async function fetchLiveArchiveCardIndex(path, opts = {}) {
     const finalUrl = res.url || PROD + path;
     const contentType = res.headers.get('content-type') || '';
     const status = res.status;
-    if (!res.ok) {
+    if (status !== 200) {
       const retryAfter = res.headers.get('retry-after');
       const delay = retryAfterDelay(retryAfter, now());
       // Record normalized delay/status only, never arbitrary header or error-page text.
@@ -274,7 +274,8 @@ export async function fetchLiveArchiveCardIndex(path, opts = {}) {
         await sleep(delay);
         continue;
       }
-      const error = new Error(`HTTP ${status} for ${path}; no further retry; metadata=${JSON.stringify(retryMeta)}`);
+      const error = new Error(`HTTP ${status} for ${path}; retry-after=${delay === null ? 'unavailable' : delay / 1000}; no further retry; metadata=${JSON.stringify(retryMeta)}`);
+      error.status = status;
       error.http = retryMeta;
       throw error;
     }
@@ -310,8 +311,26 @@ export async function fetchLiveArchiveCardIndex(path, opts = {}) {
 /** One exact live snapshot per path and test run, including unavailable results. */
 export function createLiveArchiveSnapshotReader(opts = {}) {
   const snapshots = new Map();
+  const minIntervalMs = Math.max(0, Number(opts.minIntervalMs) || 0);
+  const now = opts.now || Date.now;
+  const sleep = opts.sleep || ((ms) => new Promise((resolve) => setTimeout(resolve, ms)));
+  let lastRequest = -Infinity;
+  let queue = Promise.resolve();
   return (path) => {
-    if (!snapshots.has(path)) snapshots.set(path, fetchLiveArchiveCardIndex(path, opts));
+    if (!snapshots.has(path)) {
+      const read = queue.then(async () => {
+        const delay = Math.max(0, minIntervalMs - (now() - lastRequest));
+        if (delay > 0) await sleep(delay);
+        lastRequest = now();
+        const snapshot = await fetchLiveArchiveCardIndex(path, opts);
+        lastRequest = now();
+        return snapshot;
+      });
+      snapshots.set(path, read);
+      queue = read.then(() => undefined);
+      // A refusal also blocks later paths in this run, without an unhandled rejection.
+      void queue.catch(() => {});
+    }
     return snapshots.get(path);
   };
 }
@@ -322,6 +341,9 @@ export function createLiveArchiveSnapshotReader(opts = {}) {
  */
 export function diffArchiveCardOrder(liveIndex, servedCards, label = 'served') {
   const issues = [];
+  if (!liveIndex.count || liveIndex.count !== liveIndex.cards.length) {
+    issues.push(`invalid or empty live SSR card index on ${liveIndex.path}`);
+  }
   const served = servedCards.map((c) => ({
     title: clean(c.title),
     pathname: pathnameOf(c.href),
@@ -355,6 +377,8 @@ export function diffArchiveCardOrder(liveIndex, servedCards, label = 'served') {
   // set completeness (catches omissions even if counts accidentally match via dupes)
   const liveSet = new Set(liveIndex.pathnames);
   const servedSet = new Set(served.map((c) => c.pathname));
+  if (liveSet.size !== liveIndex.cards.length) issues.push('duplicate live SSR href');
+  if (servedSet.size !== served.length) issues.push(`duplicate ${label} href`);
   for (const p of liveSet) {
     if (!servedSet.has(p)) issues.push(`omitted live href ${p}`);
   }

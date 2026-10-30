@@ -8,7 +8,7 @@ import { describe, it } from 'node:test';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import puppeteer from 'puppeteer-core';
-import { chromiumExecutable } from './helpers/chromium.ts';
+import { resolveTestBrowser } from './helpers/chromium.ts';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const fixtureDir = join(root, 'tests/fixtures/nd-gate');
@@ -33,7 +33,7 @@ describe('M35 ndGate fixture-only', () => {
 </head><body><main>fixture</main><script>${gateJs}</script></body></html>`
     );
     const browser = await puppeteer.launch({
-      executablePath: chromiumExecutable(),
+      executablePath: resolveTestBrowser(),
       headless: true,
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });

@@ -35,7 +35,7 @@ function listTests(kind) {
 
 function runSuite(name, files) {
   if (!files.length) {
-    return { name, ok: true, skipped: true, output: 'no files' };
+    return { name, ok: false, skipped: 0, tests: 0, pass: 0, fail: 0, cancelled: 0, output: 'Required suite has no test files; no passing suite is claimed' };
   }
   const patterns = files.map((f) => `tests/${f}`);
   // Keep the drawing harness isolated and cap every test process. Running the
@@ -51,11 +51,11 @@ function runSuite(name, files) {
   const output = `${r.stdout || ''}${r.stderr || ''}`;
   const logPath = join(outDir, `${name}.tap.log`);
   writeFileSync(logPath, output);
-  const passMatch = output.match(/# pass (\d+)/);
-  const failMatch = output.match(/# fail (\d+)/);
-  const testsMatch = output.match(/# tests (\d+)/);
-  const skippedMatch = output.match(/# skipped (\d+)/);
-  const cancelledMatch = output.match(/# cancelled (\d+)/);
+  const passMatch = output.match(/^# pass (\d+)$/m);
+  const failMatch = output.match(/^# fail (\d+)$/m);
+  const testsMatch = output.match(/^# tests (\d+)$/m);
+  const skippedMatch = output.match(/^# skipped (\d+)$/m);
+  const cancelledMatch = output.match(/^# cancelled (\d+)$/m);
   const completeSummary = Boolean(testsMatch && passMatch && failMatch && skippedMatch && cancelledMatch);
   return {
     name,
