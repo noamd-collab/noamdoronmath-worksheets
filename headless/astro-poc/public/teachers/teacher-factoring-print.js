@@ -2735,9 +2735,13 @@ function answerPieces(pageLines, mark, nextY, parts, region) {
   const owned = [];
   let carry = null;
   let rightmost = 0;
-  const partBox = (own, left, right, y, y2) => (
-    region ? answerInkPartBox(region.ink, answerPartBox(own, left, right, y, y2), left, right, region.em) : answerPartBox(own, left, right, y, y2, true)
-  );
+  // With the page's ink, a line's rows are already whole: a short line is
+  // not stretched over the next one.
+  const partBox = (own, left, right, y, y2) => {
+    if (!region) return answerPartBox(own, left, right, y, y2, true);
+    const box = answerInkPartBox(region.ink, answerPartBox(own, left, right, y, y2), left, right, region.em);
+    return box && { ...box, h: Math.max(0.004, y2 - y) };
+  };
   clusters.forEach((cluster) => {
     const labels = cluster.labels || answerLabels(cluster.glyphs, !region);
     const { y, y2 } = clusterSpan(cluster);
@@ -2784,7 +2788,8 @@ function answerPieces(pageLines, mark, nextY, parts, region) {
       const at = Math.max(0.02, cursor);
       cursor -= ANSWER_GAP;
       const [top, end] = rows || [y, y2];
-      pieces.push({ box: { ...box, y: top, w: width, h: Math.max(0.012, end - top) }, at });
+      const least = region && lines[lineIndex + 1] ? Math.min(0.012, lines[lineIndex + 1].y - top) : 0.012;
+      pieces.push({ box: { ...box, y: top, w: width, h: Math.max(least, end - top) }, at });
     };
     if (lineIndex === 0 && number) {
       const nx = Math.max(0.88, (number.x || mark.x) - 0.002);
