@@ -265,9 +265,10 @@ describe('exact-design protected live-baseline boundaries', () => {
     // client, security protocol, source assets and conversation storage stay fixed.
     // Noam, 2026-10-30: source-verified first-hint probes skip OCR only for a
     // server-authorized printed-text cue. SDK preparation overlaps source reads;
-    // warm worksheet cache is identity-bound and the whole-operation cap is25s.
+    // only the source phase uses25s; normal requests keep55s from the click.
+    // Canonical source retains priority over image/manifest caches.
     // Fast-hint/deadline tests preserve token checks, source scope and late fences.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), 'cd3e55fd566524e70f2700d010d3eb3b8999cb6f8d7554421f694190e9964952');
+    assert.equal(sha256(JSON.stringify(releasedScripts)), '10e91207a323c3bd5d441aa71195f6752725517f40c369c1f8294e0d2b420e5f');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {

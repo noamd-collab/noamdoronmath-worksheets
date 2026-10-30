@@ -38,9 +38,9 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
   assert.equal(f.thread.hintIndex,1);assert.equal(f.thread.messages.at(-1).visual,null);assert.match(f.thread.messages.at(-1).text,/איזו צלע/);
  });
  it(label+': attachments, attempts, prior conversation, later hints and nongemetry never probe',async()=>{
-  for(const mode of ['photo','attempt','history','later','topic','nongemetrytask']){
-   const f=setup(source);let message=standard,kind='hint';if(mode==='photo')f.photos.push({name:'work.png'});if(mode==='attempt'){kind='free_question';message='קיבלתי 16. זה נכון?';}if(mode==='history')f.thread.history.push({role:'user',content:'attempt'});if(mode==='later')f.thread.hintIndex=1;if(mode==='topic')f.c.noamPageAllowsDrawingHint=()=>false;if(mode==='nongemetrytask')f.exercise.text='חשבו את הסכום.';
-   f.c.askNoam(kind,message);await finish(f.c);assert.equal(f.calls.some(x=>x.payload?.sourceHintOnly),false,mode);assert.equal(f.counts.analysis,1,mode);
+  for(const mode of ['photo','attempt','history','later','topic','nongemetrytask','disjoint','repeat','noncorresponding']){
+   const f=setup(source);let message=standard,kind='hint';if(mode==='photo')f.photos.push({name:'work.png'});if(mode==='attempt'){kind='free_question';message='קיבלתי 16. זה נכון?';}if(mode==='history')f.thread.history.push({role:'user',content:'attempt'});if(mode==='later')f.thread.hintIndex=1;if(mode==='topic')f.c.noamPageAllowsDrawingHint=()=>false;if(mode==='nongemetrytask')f.exercise.text='חשבו את הסכום.';if(mode==='disjoint')f.exercise.text='הוכיחו ש־$△AFC≅△BED$.';if(mode==='repeat')f.exercise.text='הוכיחו ש־$△ABA≅△BAD$.';if(mode==='noncorresponding')f.exercise.text='הוכיחו ש־$△ABC≅△ADB$.';
+   f.c.askNoam(kind,message);await finish(f.c);assert.equal(f.calls.some(x=>x.payload?.sourceHintOnly),false,mode);assert.equal(f.calls.some(x=>x.method==='GET'),false,mode);assert.equal(f.counts.analysis,1,mode);
   }
  });
  it(label+': source unavailable/tampered, duplicate item and unsupported cue fall back explicitly to ordinary analysis',async()=>{
@@ -68,7 +68,7 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
  });
  it(label+': an expired source cue cannot append to or unlock the next request',async()=>{
   const f=setup(source),old=deferred(),next=deferred();let expire:any,probeStarted=false;
-  f.c.setTimeout=(cb:any,ms:number)=>{if(ms===25000){expire=cb;return 0;}return setTimeout(cb,ms);};
+  f.c.setTimeout=(cb:any,ms:number)=>{if(ms>1000&&ms<=25000){expire=cb;return 0;}return setTimeout(cb,ms);};
   f.c.postJson=async(_:string,payload:any)=>{if(payload.sourceHintOnly){probeStarted=true;return old.promise;}return next.promise;};
   f.c.askNoam('hint',standard);for(let i=0;i<100&&!probeStarted;i++)await new Promise(r=>setTimeout(r,5));assert.equal(probeStarted,true);
   expire();assert.equal(f.c.busy,false);assert.equal(f.thread.messages.at(-1).answerErrorCode,'HINT_REQUEST_TIMEOUT');
@@ -76,16 +76,15 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
   old.resolve(f.success());await drain();assert.equal(f.thread.messages.length,count);assert.equal(f.thread.hintIndex,0);assert.equal(f.c.busy,true);
   next.resolve({ok:true,answer:'הסבר'});await finish(f.c);assert.equal(f.thread.messages.at(-1).text,'הסבר');
  });
- it(label+': only a worksheet-origin cache with exact source/part/crop identity skips canonical preflight',async()=>{
-  const f=setup(source);f.load('noamCachedWorksheetAnalysis','noamQuestionAnalysis');f.c.noamCanonicalSourceAnalysis=async()=>{throw new Error('unexpected canonical preflight');};
-  const identity=JSON.stringify([f.exercise.id,f.exercise.part,f.manifest.nativeExportSha256,f.exercise.nativeQuestionId,f.exercise.nativeItemId,f.manifest.sourceSha256||'',f.c.pdf,f.exercise.crops||[f.exercise.crop]]),analysis={readable:true,transcription:'cached worksheet'};
-  f.c.analysisCache[f.exercise.id]=analysis;f.c.analysisCache['identity:'+f.exercise.id]=identity;f.c.analysisCache['worksheet:'+f.exercise.id]=identity;
-  assert.equal(await f.c.noamQuestionAnalysis(f.exercise,[]),analysis);
-  for(const mode of ['attachment','origin','sha','part','crop']){
-   const g=setup(source);g.load('noamCachedWorksheetAnalysis');g.c.analysisCache[f.exercise.id]=analysis;g.c.analysisCache['identity:'+f.exercise.id]=identity;g.c.analysisCache['worksheet:'+f.exercise.id]=identity;
-   if(mode==='origin')delete g.c.analysisCache['worksheet:'+f.exercise.id];if(mode==='sha')g.manifest.nativeExportSha256='0'.repeat(64);if(mode==='part')g.exercise.part='ג';if(mode==='crop')g.exercise.crops[0].x=.2;
-   assert.equal(g.c.noamCachedWorksheetAnalysis(g.exercise,mode==='attachment'?[{}]:[]),null,mode);
-  }
+ it(label+': a warm image or manifest cache cannot replace canonical source priority',async()=>{
+  const f=setup(source);f.load('noamQuestionAnalysis');let sourceReads=0,imageReads=0;
+  const cached={readable:true,transcription:'conflicting old OCR'},canonical={readable:true,transcription:'verified printed source'};
+  f.c.analysisCache[f.exercise.id]=cached;
+  f.c.noamCanonicalSourceAnalysis=async()=>{sourceReads++;return canonical;};
+  f.c.getExerciseAnalysis=async()=>{imageReads++;return cached;};
+  assert.equal(await f.c.noamQuestionAnalysis(f.exercise,[]),canonical);assert.equal(sourceReads,1);assert.equal(imageReads,0);
+  f.c.noamCanonicalSourceAnalysis=async()=>{sourceReads++;return null;};
+  assert.equal(await f.c.noamQuestionAnalysis(f.exercise,[]),cached);assert.equal(sourceReads,2);assert.equal(imageReads,1);
  });
  it(label+': visual loading reuses the same verified JSON bytes after the source-only probe',async()=>{
   const f=setup(source);await f.c.noamVerifiedNativeData(f.exercise);f.c.noamSourceVisualPackages={};f.c.noamLoadSourcePanels=(_:any,s:any)=>s;f.exercise.nativeFigureUrl='';f.load('noamLoadSourceVisual');await f.c.noamLoadSourceVisual(f.exercise);assert.equal(f.calls.length,1);

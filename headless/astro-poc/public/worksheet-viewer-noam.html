@@ -7911,8 +7911,6 @@ function noamQuestionAnalysis(exercise,attachmentSnapshot,operation){
   var attachments=Array.isArray(attachmentSnapshot)?attachmentSnapshot.slice():
     (typeof currentAttachments==='function'?currentAttachments().slice():[]);
   if(attachments.length){return getExerciseAnalysis(exercise,attachments,operation);}
-  var cached=typeof noamCachedWorksheetAnalysis==='function'&&noamCachedWorksheetAnalysis(exercise,attachments);
-  if(cached){return Promise.resolve(cached);}
   return noamCanonicalSourceAnalysis(exercise,attachments,operation).then(function(canonical){if(operation){operation.check();}return canonical||getExerciseAnalysis(exercise,attachments,operation);});
 }
 
@@ -8357,23 +8355,6 @@ function renderExercisePreview(exercise,attempt){
     });
 }
 
-function noamCachedWorksheetAnalysis(exercise,attachments){
-  if(!exercise||attachments.length||typeof analysisCache!=='object'){return null;}
-  var source=typeof manifest==='object'&&manifest?manifest:{};
-  var identity=JSON.stringify([String(exercise.id||''),String(exercise.part||''),String(source.nativeExportSha256||''),
-    String(exercise.nativeQuestionId||''),String(exercise.nativeItemId||''),String(source.sourceSha256||''),
-    typeof pdf==='string'?pdf:'',exercise.crops||[exercise.crop]]);
-  var analysis=analysisCache[exercise.id];
-  if(!analysis||analysis.readable!==true||analysisCache['identity:'+exercise.id]!==identity||
-      analysisCache['worksheet:'+exercise.id]!==identity){return null;}
-  if(noamManifestOcrUnreliable(exercise)&&(analysis.content_type==='static_manifest_exercise'||
-      (analysis.content_type==='vision_over_unreliable_ocr'&&!analysis.selected_part_expression))){return null;}
-  var proof=analysis.source_context;
-  if(proof&&(proof.exerciseId!==exercise.id||proof.selectedPart!==String(exercise.part||'')||proof.attachmentStatus!=='none'||
-      proof.sourceSha256!==source.nativeExportSha256||proof.questionId!==exercise.nativeQuestionId||proof.itemId!==exercise.nativeItemId)){return null;}
-  return analysis;
-}
-
 function getExerciseAnalysis(exercise,attachmentSnapshot,operation){
   if(operation){operation.check();}
   // A student's own photo makes the image unique to this request: it is never
@@ -8396,7 +8377,7 @@ function getExerciseAnalysis(exercise,attachmentSnapshot,operation){
   var identityKey="identity:"+exerciseId;
   function saveAnalysis(analysis){
     if(operation){operation.check();}
-    analysisCache[exerciseId]=analysis;analysisCache[identityKey]=cacheIdentity;analysisCache['worksheet:'+exerciseId]=cacheIdentity;saveNoamState();return analysis;
+    analysisCache[exerciseId]=analysis;analysisCache[identityKey]=cacheIdentity;saveNoamState();return analysis;
   }
   function analyzeRequest(imageDataUrl,prefix){
     return postJson(API+"/noamImageAnalyze",Object.assign({},requestContext,
@@ -9846,6 +9827,12 @@ function noamFirstSourceHint(exercise,attachments,helpKind,hintIndex,studentMess
   // task and the cue; neither the manifest nor raw figure relations are proof.
   var target=String(exercise.text||'').match(/[△Δ]\s*([A-Z]{3})\s*≅\s*[△Δ]\s*([A-Z]{3})/g);
   if(!target||target.length!==1){return Promise.resolve(null);}
+  var pair=target[0].match(/[△Δ]\s*([A-Z]{3})\s*≅\s*[△Δ]\s*([A-Z]{3})/),left=pair[1].split(''),right=pair[2].split('');
+  var shared=left.filter(function(name){return right.indexOf(name)>=0;});
+  if(new Set(left).size!==3||new Set(right).size!==3||shared.length!==2||
+      shared.map(function(name){return left.indexOf(name);}).sort().join(',')!==
+      shared.map(function(name){return right.indexOf(name);}).sort().join(',')){return Promise.resolve(null);}
+  operation.useFastDeadline();
   var id=String(exercise.id||''),part=String(exercise.part||''),sha=sourceIdentity.nativeSha256;
   return noamVerifiedNativeData(exercise,operation).then(function(data){
     operation.check();
@@ -9896,7 +9883,7 @@ function askNoam(helpKind,studentMessage){
   var started=Date.now();
   // One deadline owns the entire question, including source/PDF work before
   // HTTP. A closed generation cannot mutate a later request for the same item.
-  var operation={deadline:started+25000,done:false,cleanup:[],finalizers:[],client:null};
+  var operation={deadline:started+55000,done:false,cleanup:[],finalizers:[],client:null};
   var Controller=(typeof window==="object"&&window&&window.AbortController)||(typeof AbortController==="function"?AbortController:null);
   operation.controller=Controller?new Controller():null;
   function timeoutError(){var error=new Error("הבקשה ארכה יותר מדי. אפשר לנסות שוב; השיחה נשמרה.");error.code="HINT_REQUEST_TIMEOUT";return error;}
@@ -9941,9 +9928,26 @@ function askNoam(helpKind,studentMessage){
     if(selectedExercise&&selectedExercise.id===exercise.id){announceNoam(exerciseLabel(exercise)+". "+errorMessage);}
   }
   askNoam.activeRequest=operation;
-  var deadlineTimer=setTimeout(function(){failOperation(timeoutError());},25000);
-  // Tests/CLI may use Node timers; never keep their process alive for a UI timer.
-  if(deadlineTimer&&typeof deadlineTimer.unref==="function"){deadlineTimer.unref();}
+  var deadlineTimer;
+  function armDeadline(deadline){
+    operation.check();
+    operation.deadline=deadline;
+    if(typeof clearTimeout==="function"){clearTimeout(deadlineTimer);}
+    var remaining=deadline-Date.now();
+    if(remaining<=0){throw timeoutError();}
+    deadlineTimer=setTimeout(function(){
+      // A queued timer from the source phase cannot expire its normal fallback.
+      if(operation.deadline===deadline){failOperation(timeoutError());}
+    },remaining);
+    if(deadlineTimer&&typeof deadlineTimer.unref==="function"){deadlineTimer.unref();}
+  }
+  operation.useFastDeadline=function(){armDeadline(started+25000);};
+  operation.restoreNormalDeadline=function(){
+    operation.check();
+    // Both deadlines are measured from the original click, never from a miss.
+    if(operation.deadline!==started+55000){armDeadline(started+55000);}
+  };
+  armDeadline(started+55000);
   try{
 
   thread.messages.push({role:"user",text:visible,kind:kindLabel});
@@ -9994,6 +9998,7 @@ function askNoam(helpKind,studentMessage){
     thread.history,requestSourceIdentity,operation):Promise.resolve(null)).then(function(sourceHint){
     operation.check();
     if(sourceHint){sourceHintUsed=true;return sourceHint;}
+    operation.restoreNormalDeadline();
     return (typeof noamQuestionAnalysis==='function'?noamQuestionAnalysis:getExerciseAnalysis)(exercise,attachments,operation)
     .then(function(analysis){operation.check();return attachments.length?analysis:noamEnrichSourceAnalysis(exercise,analysis,operation);})
     .then(function(analysis){
