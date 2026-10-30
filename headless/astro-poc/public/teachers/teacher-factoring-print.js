@@ -1,3 +1,4 @@
+import { dismissTeacherHumanVerification, requestTeacherHumanVerification } from './teacher-human-verification.js?v=20261030-stepup-error-detail';
 import { wizardPrefillFromSearch } from './wizard-prefill.js';
 import { expandToWholeQuestionKeys, groupWholeQuestions, mulberry32, pickWholeQuestions, randomSeed } from './teacher-question-pick.js';
 import { PICK_HEADING, SECTION_KINDS, needsSectionHeadings, pointsLabel, scoreLabel, sectionKind, sectionTitle, shouldAskMoreTopic, testPoints, TEST_TOTAL_POINTS } from './teacher-page-sections.js';
@@ -120,18 +121,18 @@ function ensureTeacherBotClient() {
   if (teacherBotClientPromise) return teacherBotClientPromise;
   teacherBotClientPromise = new Promise((resolve, reject) => {
     function finish(ok) {
-      if (ok && window.NoamBotClient && window.NoamBotClient.version === '20261030-shared-prepare' && typeof window.NoamBotClient.create === 'function') {
+      if (ok && window.NoamBotClient && window.NoamBotClient.version === '20261030-stepup-error-detail' && typeof window.NoamBotClient.create === 'function') {
         resolve(window.NoamBotClient.create({ api: '/api', enabled: true, modelTimeoutMs: 25000 }));
         return;
       }
       reject(new Error('BOT_CLIENT_UNAVAILABLE'));
     }
-    if (window.NoamBotClient && window.NoamBotClient.version === '20261030-shared-prepare') {
+    if (window.NoamBotClient && window.NoamBotClient.version === '20261030-stepup-error-detail') {
       finish(true);
       return;
     }
     const loader = document.createElement('script');
-    loader.src = '/noam-bot-client.js?v=20261030-shared-prepare';
+    loader.src = '/noam-bot-client.js?v=20261030-stepup-error-detail';
     loader.async = true;
     loader.onload = () => finish(true);
     loader.onerror = () => finish(false);
@@ -282,6 +283,7 @@ function rememberTeacherPlans(result, context, groups) {
 async function pickWithAi(rawCount) {
   const count = Number(rawCount);
   if (!AI_QUESTION_COUNTS.includes(count) || aiPickPending) return [];
+  dismissTeacherHumanVerification(document);
   const saved = carriedKeys();
   const groups = currentQuestions().filter((group) => !group.keys.some((key) => saved.has(key)));
   if (!groups.length) return [];
@@ -324,14 +326,34 @@ async function pickWithAi(rawCount) {
   let seedKeys = [];
   let fromModel = false;
   let result = preparedPlan;
+  let requestError = null, awaitingHuman = false, humanWaitStartedAt = 0, humanWaitMs = 0;
+  const requestStillCurrent = () => {
+    const savedNow = carriedKeys();
+    const groupsNow = currentQuestions().filter((group) => !group.keys.some((key) => savedNow.has(key)));
+    return teacherAiContext(groupsNow, savedNow) === context && selectionKey() === beforeRequest && JSON.stringify(state.blocks) === beforeBlocks;
+  };
   const startedAt = Date.now();
   const timer = preparedPlan ? null : globalThis.setInterval(() => {
-    if (status) status.textContent = `נועם AI בוחר ${target} שאלות… (${Math.floor((Date.now() - startedAt) / 1000)} שניות)`;
+    if (status && !awaitingHuman) status.textContent = `נועם AI בוחר ${target} שאלות… (${Math.floor((Date.now() - startedAt - humanWaitMs) / 1000)} שניות)`;
   }, 1000);
   try {
     if (!preparedPlan) {
       const client = await ensureTeacherBotClient();
-      result = await client.postJson('/api/noamSiteCompanion', payload);
+      result = await client.postJson('/api/noamSiteCompanion', payload, {
+        onChallenge: (challenge) => {
+          awaitingHuman = true;
+          humanWaitStartedAt = Date.now();
+          if (status) status.textContent = 'נדרש אימות אנושי. הבחירה שלכם נשמרה.';
+          return requestTeacherHumanVerification({
+            challenge, client, anchor: status, isCurrent: requestStillCurrent,
+            onSubmitting: () => {
+              humanWaitMs += Date.now() - humanWaitStartedAt;
+              awaitingHuman = false;
+              if (status) status.textContent = 'האימות הושלם. נועם AI בוחר שאלות…';
+            },
+          });
+        },
+      });
     }
     fromModel = Boolean(result && ['classifier', 'mixed'].includes(result.source) && result.model);
     const modelIds = result && (Array.isArray(result.modelExerciseIds) ? result.modelExerciseIds : result.source === 'classifier' ? result.exerciseIds : []);
@@ -343,6 +365,7 @@ async function pickWithAi(rawCount) {
       seedKeys = Array.from(new Set(modelIds.map((key) => owner.get(key)).filter(Boolean).map((group) => group.key))).slice(0, target);
     }
   } catch (error) {
+    requestError = error;
     seedKeys = [];
   } finally {
     if (timer !== null) globalThis.clearInterval(timer);
@@ -353,6 +376,31 @@ async function pickWithAi(rawCount) {
   if (teacherAiContext(nowGroups, nowSaved) !== context || selectionKey() !== beforeRequest || JSON.stringify(state.blocks) !== beforeBlocks) {
     paintAiPickButtons();
     if (status) status.textContent = 'הנושא או הבחירה השתנו בזמן שה-AI עבד. הבחירה שלכם נשמרה; אפשר לבקש שוב.';
+    return [];
+  }
+  if (requestError) {
+    paintAiPickButtons();
+    const code = String(requestError.code || '');
+    const message = code === 'BOT_STEP_UP_REQUIRED'
+      ? 'נדרש אימות אנושי, אך הוא לא זמין כרגע. הבחירה שלכם נשמרה ואפשר להמשיך לבחור ידנית.'
+      : code === 'BOT_CHALLENGE_UNAVAILABLE'
+        ? 'בדיקת האבטחה של Google לא נטענה. הבחירה שלכם נשמרה; אפשר לעיין בפרטי התקלה בבדיקת האבטחה ולסגור אותה.'
+      : code === 'BOT_CHALLENGE_CANCELLED' || code === 'BOT_CHALLENGE_EXPIRED' || code === 'BOT_CHALLENGE_CONTEXT_CHANGED'
+        ? requestError.message
+        : requestError.status === 429 || requestError.httpStatus === 429
+          ? 'יש כרגע הגבלת בקשות. הבחירה שלכם נשמרה; נסו שוב מאוחר יותר.'
+          : requestError.status === 403 || requestError.httpStatus === 403 || /^BOT_/.test(code)
+            ? 'בדיקת האבטחה לא אישרה את בקשת ה-AI. הבחירה שלכם נשמרה ואפשר להמשיך לבחור ידנית.'
+            : 'לא התקבלה בחירת AI. הבחירה שלכם נשמרה; אפשר לנסות שוב או לבחור ידנית.';
+    if (status) status.textContent = message;
+    announce(message);
+    return [];
+  }
+  if (!fromModel || !seedKeys.length) {
+    paintAiPickButtons();
+    const message = 'לא התקבלה בחירת שאלות מה-AI. הבחירה שלכם נשמרה ואפשר לבחור ידנית.';
+    if (status) status.textContent = message;
+    announce(message);
     return [];
   }
   if (!preparedPlan) rememberTeacherPlans(result, context, groups);

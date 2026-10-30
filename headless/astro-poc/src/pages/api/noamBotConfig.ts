@@ -4,9 +4,11 @@
  * Without both secrets the body says the companion is not active.
  */
 import type { APIRoute } from 'astro';
-import { NOAM_RECAPTCHA_SECRET_KEY, QWEN_API_KEY } from 'astro:env/server';
+import { NOAM_RECAPTCHA_SECRET_KEY, NOAM_RECAPTCHA_V2_SITE_KEY, NOAM_RECAPTCHA_V2_SECRET_KEY, QWEN_API_KEY } from 'astro:env/server';
 import {
   NOAM_RECAPTCHA_SECRET_NAME,
+  NOAM_RECAPTCHA_V2_SITE_KEY_NAME,
+  NOAM_RECAPTCHA_V2_SECRET_NAME,
   QWEN_SECRET_NAME,
   handleNoamBotConfig,
 } from '../../../../../noam-ai/site-companion/endpoint.js';
@@ -18,6 +20,8 @@ export const GET: APIRoute = (context) => {
   return handleNoamBotConfig({
     qwenKey: secretFromEnv(QWEN_SECRET_NAME, QWEN_API_KEY),
     recaptchaSecret: secretFromEnv(NOAM_RECAPTCHA_SECRET_NAME, NOAM_RECAPTCHA_SECRET_KEY),
+    recaptchaV2SiteKey: secretFromEnv(NOAM_RECAPTCHA_V2_SITE_KEY_NAME, NOAM_RECAPTCHA_V2_SITE_KEY),
+    recaptchaV2Secret: secretFromEnv(NOAM_RECAPTCHA_V2_SECRET_NAME, NOAM_RECAPTCHA_V2_SECRET_KEY),
     origin: context.request.headers.get('origin') || '',
   }).then((result) => {
     const body = result.body === '' || result.body == null ? '' : JSON.stringify(result.body);

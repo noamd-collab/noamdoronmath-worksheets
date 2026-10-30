@@ -95,6 +95,7 @@ test('the actual ask path binds scope to the requested part even if selection ch
   vm.runInContext(html.slice(html.indexOf('function askNoam('), html.indexOf('function noamRetryActionLabel(')), ctx);
   ctx.askNoam('hint', '');
   ctx.selectedExercise = manifest.exercises[0];
+  await Promise.resolve(); // The source-only probe gate precedes the ordinary reader.
   finishAnalysis(broadAnalysis);
   await new Promise(resolve => setImmediate(resolve));
   assert.equal(sent.exerciseId, partC.id);

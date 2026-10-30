@@ -6869,7 +6869,8 @@ function noamLoadSourceVisual(exercise,operation){
   var entry=noamSourceVisualPackages[key];
   if(!entry){
     entry={data:null,figures:{},promise:null};noamSourceVisualPackages[key]=entry;
-    entry.promise=(operation?operation.fetch:fetch)(url,{cache:'no-cache'}).then(function(r){return r.ok?r.json():null;}).then(function(data){
+    var verified=typeof noamVerifiedNativePackages!=='undefined'&&noamVerifiedNativePackages.get(url+'#'+String(manifest&&manifest.nativeExportSha256||''));
+    entry.promise=(verified|| (operation?operation.fetch:fetch)(url,{cache:'no-cache'}).then(function(r){return r.ok?r.json():null;})).then(function(data){
       entry.data=data;
       if(!data&&noamSourceVisualPackages[key]===entry){delete noamSourceVisualPackages[key];}
       return data;
@@ -7302,7 +7303,8 @@ function noamCanonicalSourceAnalysis(exercise,attachmentSnapshot,operation){
   if(!exercise||!window.NoamNativeVisual||!noamNativeDataUrl(exercise)||
       (hasSnapshot?attachmentSnapshot.length:(typeof currentAttachments==='function'&&currentAttachments().length))){return Promise.resolve(null);}
   var identity=noamSourceVisualIdentity(exercise);
-  return Promise.all([noamLoadSourceVisual(exercise,operation),noamVerifiedNativeData(exercise,operation)]).then(function(loaded){
+  var verifiedData=noamVerifiedNativeData(exercise,operation);
+  return Promise.all([noamLoadSourceVisual(exercise,operation),verifiedData]).then(function(loaded){
     if(operation){operation.check();}
     var source=loaded[0],verified=loaded[1];
     // A changed selection or source falls back to the existing reader.
@@ -7624,7 +7626,7 @@ function getExerciseAnalysis(exercise,attachmentSnapshot,operation){
     return requestVisionAnalysis(true)
     .catch(function(error){
       if(operation){operation.check();}
-      if (isBotProtectionError(error)||error&&(/^(?:HINT_REQUEST_TIMEOUT|REQUEST_TIMEOUT)$/.test(error.code||""))){ throw error; }
+      if (isBotProtectionError(error)||error&&(/^(?:HINT_REQUEST_TIMEOUT|REQUEST_TIMEOUT|NETWORK_UNAVAILABLE)$/.test(error.code||""))){ throw error; }
       // One recovery pass after ensuring the crop document (covers clean-view races).
       console.warn("NOAM VISION RETRY AFTER CROP DOC:", exercise.id, error);
       cachedImage=null;
@@ -7661,7 +7663,7 @@ function getExerciseAnalysis(exercise,attachmentSnapshot,operation){
       // Security refusals must never trigger another paid request through the
       // synthetic-analysis fallback. Preserve them for the chat error message.
       if(operation){operation.check();}
-      if (isBotProtectionError(error)||error&&(/^(?:HINT_REQUEST_TIMEOUT|REQUEST_TIMEOUT)$/.test(error.code||""))){ throw error; }
+      if (isBotProtectionError(error)||error&&(/^(?:HINT_REQUEST_TIMEOUT|REQUEST_TIMEOUT|NETWORK_UNAVAILABLE)$/.test(error.code||""))){ throw error; }
       // These manifests deliberately carry no guessed OCR transcription.
       // Unreliable OCR must not fall back to the garbled static text either.
       if (exercise.requiresVision||ocrUnreliable){
@@ -8799,6 +8801,51 @@ function noamVisualAnswer(studentMessage,answer,visual){
   return "הנה המחשה של השלב שעליו שאלת.";
 }
 
+function noamFirstSourceHint(exercise,attachments,helpKind,hintIndex,studentMessage,history,sourceIdentity,operation){
+  var standard='תן לי רמז אחד בלבד. אל תגלה את התשובה הסופית, ואל תבצע את הצעד במקומי.';
+  if(!operation||helpKind!=='hint'||hintIndex!==0||studentMessage!==standard||attachments.length||
+      !Array.isArray(history)||history.length||!sourceIdentity||
+      typeof noamPageAllowsDrawingHint!=='function'||!noamPageAllowsDrawingHint()||
+      !/^[a-f0-9]{64}$/.test(sourceIdentity.nativeSha256)||
+      typeof noamVerifiedNativeData!=='function'){return Promise.resolve(null);}
+  // This only avoids probes for unrelated tasks. The server proves the printed
+  // task and the cue; neither the manifest nor raw figure relations are proof.
+  var target=String(exercise.text||'').match(/[△Δ]\s*([A-Z]{3})\s*≅\s*[△Δ]\s*([A-Z]{3})/g);
+  if(!target||target.length!==1){return Promise.resolve(null);}
+  var pair=target[0].match(/[△Δ]\s*([A-Z]{3})\s*≅\s*[△Δ]\s*([A-Z]{3})/),left=pair[1].split(''),right=pair[2].split('');
+  var shared=left.filter(function(name){return right.indexOf(name)>=0;});
+  if(new Set(left).size!==3||new Set(right).size!==3||shared.length!==2||
+      shared.map(function(name){return left.indexOf(name);}).sort().join(',')!==
+      shared.map(function(name){return right.indexOf(name);}).sort().join(',')){return Promise.resolve(null);}
+  operation.useFastDeadline();
+  var id=String(exercise.id||''),part=String(exercise.part||''),sha=sourceIdentity.nativeSha256;
+  return noamVerifiedNativeData(exercise,operation).then(function(data){
+    operation.check();
+    if(!data||String(manifest&&manifest.nativeExportSha256||'')!==sha||
+        data.package!==String(manifest.prefix||'')||data.level!==({A:'a',B:'b',E:'c'})[(id.match(/-([ABE])-Q/)||[])[1]]){return null;}
+    var questions=Array.isArray(data.questions)?data.questions:[];
+    var matches=questions.filter(function(q){return q&&q.id===sourceIdentity.questionId;});
+    if(matches.length!==1){return null;}
+    var question=matches[0],items=Array.isArray(question.items)?question.items:[];
+    var selected=items.filter(function(item){return item&&item.id===sourceIdentity.itemId;});
+    if(selected.length!==1||selected[0].label!==part||items.filter(function(item){return item&&item.label===part;}).length!==1||
+        noamSourceText(noamPrintedText(selected[0].text))!==noamSourceText(exercise.text)){return null;}
+    return postJson(API+'/noamImageSolve',{exerciseId:id,selectedPart:part,sourceIdentity:sourceIdentity,
+      sourceHintOnly:true,helpKind:'hint',hintIndex:0,hasStudentAttachments:false,
+      studentMessage:standard,conversationHistory:[]},operation).then(function(result){
+      operation.check();
+      if(result&&result.ok===true&&result.sourceHintAvailable===false&&!result.answer){return null;}
+      var proof=result&&result.sourceVerification;
+      if(result&&result.ok===true&&result.sourceHintAvailable===true&&typeof result.answer==='string'&&result.answer.trim()&&
+          result.answer.length<=2000&&proof&&proof.status==='verified'&&proof.sha256===sha&&
+          proof.visualStatus==='unverified'&&proof.verificationScope==='printed_text'&&
+          proof.exerciseId===id&&proof.selectedPart===part&&proof.questionId===sourceIdentity.questionId&&
+          proof.itemId===sourceIdentity.itemId){return result;}
+      var error=new Error('לא התקבל רמז מקור מאומת. אפשר לנסות שוב.');error.code='SOURCE_HINT_INVALID';throw error;
+    });
+  });
+}
+
 function askNoam(helpKind,studentMessage){
   if (!selectedExercise||busy){return;}
   var requestFocusId = panelBody.contains(document.activeElement) ? document.activeElement.id : "";
@@ -8866,9 +8913,26 @@ function askNoam(helpKind,studentMessage){
     if(selectedExercise&&selectedExercise.id===exercise.id){announceNoam(exerciseLabel(exercise)+". "+errorMessage);}
   }
   askNoam.activeRequest=operation;
-  var deadlineTimer=setTimeout(function(){failOperation(timeoutError());},55000);
-  // Tests/CLI may use Node timers; never keep their process alive for a UI timer.
-  if(deadlineTimer&&typeof deadlineTimer.unref==="function"){deadlineTimer.unref();}
+  var deadlineTimer;
+  function armDeadline(deadline){
+    operation.check();
+    operation.deadline=deadline;
+    if(typeof clearTimeout==="function"){clearTimeout(deadlineTimer);}
+    var remaining=deadline-Date.now();
+    if(remaining<=0){throw timeoutError();}
+    deadlineTimer=setTimeout(function(){
+      // A queued timer from the source phase cannot expire its normal fallback.
+      if(operation.deadline===deadline){failOperation(timeoutError());}
+    },remaining);
+    if(deadlineTimer&&typeof deadlineTimer.unref==="function"){deadlineTimer.unref();}
+  }
+  operation.useFastDeadline=function(){armDeadline(started+25000);};
+  operation.restoreNormalDeadline=function(){
+    operation.check();
+    // Both deadlines are measured from the original click, never from a miss.
+    if(operation.deadline!==started+55000){armDeadline(started+55000);}
+  };
+  armDeadline(started+55000);
   try{
 
   thread.messages.push({role:"user",text:visible,kind:kindLabel});
@@ -8883,6 +8947,7 @@ function askNoam(helpKind,studentMessage){
   var guidedResponse=attachments.length?null:noamDidacticResponse(exercise,helpKind,hintIndex,studentMessage,thread.hintIndex);
   var requestAnalysis=null;
   var requestPayload=null;
+  var sourceHintUsed=false;
 
   if (guidedResponse&&guidedResponse.text){
     var guidedAnswer=String(guidedResponse.text).trim();
@@ -8910,7 +8975,16 @@ function askNoam(helpKind,studentMessage){
     return;
   }
 
-  (typeof noamQuestionAnalysis==='function'?noamQuestionAnalysis:getExerciseAnalysis)(exercise,attachments,operation)
+  if(typeof noamPrepareOperationClient==='function'&&typeof ensureNoamBotClient==='function'){
+    // SDK/config work runs alongside source/PDF preparation; no paid prefetch.
+    noamPrepareOperationClient(operation).catch(function(){/* The protected action reports verification failure. */});
+  }
+  (typeof noamFirstSourceHint==='function'?noamFirstSourceHint(exercise,attachments,helpKind,hintIndex,studentMessage,
+    thread.history,requestSourceIdentity,operation):Promise.resolve(null)).then(function(sourceHint){
+    operation.check();
+    if(sourceHint){sourceHintUsed=true;return sourceHint;}
+    operation.restoreNormalDeadline();
+    return (typeof noamQuestionAnalysis==='function'?noamQuestionAnalysis:getExerciseAnalysis)(exercise,attachments,operation)
     .then(function(analysis){operation.check();return attachments.length?analysis:noamEnrichSourceAnalysis(exercise,analysis,operation);})
     .then(function(analysis){
       operation.check();
@@ -8931,14 +9005,15 @@ function askNoam(helpKind,studentMessage){
       };
       if(requestSourceIdentity){requestPayload.sourceIdentity=requestSourceIdentity;}
       return postJson(API+"/noamImageSolve",requestPayload,operation);
+    });
+  })
+    .then(function(result){
+      operation.check();
+      return sourceHintUsed?result:noamGuardGeometryResult(result,requestPayload,requestAnalysis,studentMessage,guide,guidePrompt,operation);
     })
     .then(function(result){
       operation.check();
-      return noamGuardGeometryResult(result,requestPayload,requestAnalysis,studentMessage,guide,guidePrompt,operation);
-    })
-    .then(function(result){
-      operation.check();
-      return noamGuardSignedAddResult(result,requestPayload,requestAnalysis,studentMessage,operation);
+      return sourceHintUsed?result:noamGuardSignedAddResult(result,requestPayload,requestAnalysis,studentMessage,operation);
     })
     .then(function(result){
       operation.check();
@@ -8955,7 +9030,7 @@ function askNoam(helpKind,studentMessage){
     .then(function(result){
       operation.check();
       var answer=String(result.answer||"").trim();
-      var visual=noamResponseVisual(exercise,thread,studentMessage,answer,helpKind,hintIndex,requestAnalysis);
+      var visual=sourceHintUsed?null:noamResponseVisual(exercise,thread,studentMessage,answer,helpKind,hintIndex,requestAnalysis);
       answer=noamVisualAnswer(studentMessage,answer,visual);
       var deliveredMessage={role:"assistant",text:answer,kind:"",visual:visual,confirmed:result.correct===true||result.confirmed===true||result.studentCorrect===true};
       thread.messages.push(deliveredMessage);
@@ -8965,7 +9040,7 @@ function askNoam(helpKind,studentMessage){
       if (helpKind==="hint"){thread.hintIndex=Math.min(3,thread.hintIndex+1);}
       if (attachments.length&&typeof clearNoamAttachments==="function"){clearNoamAttachments(exercise.id,attachments);}
       saveNoamState();operation.complete();renderNoamChat();
-      if(helpKind==="hint"&&!attachments.length&&!visual){
+      if(helpKind==="hint"&&!attachments.length&&!visual&&!sourceHintUsed){
         noamAttachSourceHint(exercise,thread,deliveredMessage,{answer:answer,studentMessage:visible,helpKind:helpKind,hintIndex:hintIndex});
       }
       announceNoam(exerciseLabel(exercise) + ". נועם AI: " + answer);
@@ -8991,20 +9066,28 @@ function noamRetryActionLabel(message){
   return "נסו שוב";
 }
 
+function noamOperationClient(operation){
+  if(!operation){return ensureNoamBotClient();}
+  operation.check();
+  if(!operation.clientPromise){
+    operation.clientPromise=ensureNoamBotClient().then(function(){
+      operation.check();
+      operation.client=window.NoamBotClient.create({api:API,enabled:BOT_GUARD_ENABLED,
+        modelTimeoutMs:TIMEOUT,fetch:operation.fetch});
+      return operation.client;
+    });
+  }
+  return operation.clientPromise;
+}
+function noamPrepareOperationClient(operation){
+  // Preparation loads public config and the SDK only. Each protected action
+  // still obtains its own fresh token through the unchanged shared client.
+  return noamOperationClient(operation).then(function(client){operation.check();return client.prepare();});
+}
 function postJson(endpoint,payload,operation){
   if(operation){operation.check();}
-  return ensureNoamBotClient().then(function(client){
-    if(operation){
-      operation.check();
-      // Keep the shared SDK/security implementation unchanged. The adapter
-      // checks this generation at the actual fetch, including after CAPTCHA
-      // and before the client's internal network retry.
-      if(!operation.client){
-        operation.client=window.NoamBotClient.create({api:API,enabled:BOT_GUARD_ENABLED,
-          modelTimeoutMs:TIMEOUT,fetch:operation.fetch});
-      }
-      client=operation.client;
-    }
+  return noamOperationClient(operation).then(function(client){
+    if(operation){operation.check();}
     return client.postJson(endpoint,payload);
   });
 }

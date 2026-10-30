@@ -44,12 +44,26 @@
       /failed to fetch|networkerror|network request failed|load failed/i.test(message);
   }
 
+  function validatedChallenge(value) {
+    if (!value || value.provider !== "recaptcha-v2" ||
+        typeof value.siteKey !== "string" || !/^[A-Za-z0-9_-]{10,200}$/.test(value.siteKey) ||
+        typeof value.requestToken !== "string" || !/^[A-Za-z0-9_.-]{20,8192}$/.test(value.requestToken) ||
+        typeof value.expiresAt !== "number" || !Number.isFinite(value.expiresAt) ||
+        value.expiresAt <= Date.now() || value.expiresAt > Date.now() + 5 * 60 * 1000) return null;
+    return Object.freeze({ provider: value.provider, siteKey: value.siteKey,
+      requestToken: value.requestToken, expiresAt: value.expiresAt });
+  }
+
   function responseError(response, data) {
     var detail = data && data.error;
     var message = typeof detail === "string" ? detail : detail && detail.message;
     var code = data && (data.code || data.errorCode || (detail && detail.code));
-    return makeError(message || "נועם AI לא זמין כרגע. נסו שוב בעוד רגע.",
+    var error = makeError(message || "נועם AI לא זמין כרגע. נסו שוב בעוד רגע.",
       code || (data ? "HTTP_ERROR" : "HTTP_ERROR_BODY_UNREADABLE"), response.status);
+    if (response.status === 403 && code === "BOT_STEP_UP_REQUIRED") {
+      error.challenge = validatedChallenge(data && data.challenge);
+    }
+    return error;
   }
 
   // All Noam clients on one page share Google's page-global SDK, but never tokens.
@@ -344,6 +358,12 @@
     }
 
     function getVerification(action, prepareOnly) {
+      // A new explicit protected action ends an older failed human task. A
+      // background prepare never removes the provider's visible error details.
+      var registry = win.__noamBotRecaptchaRuntime;
+      if (!prepareOnly && registry && typeof registry.failedChallenge === "function") {
+        registry.failedChallenge();
+      }
       var diagnosticState = null;
       return timed(function (requestState) {
         diagnosticState = requestState;
@@ -451,16 +471,117 @@
       });
     }
 
-    function postJson(endpoint, payload) {
+    // Explicit v2 rendering uses the same ready SDK as v3. Keep its queue lease
+    // until reset so another client cannot discard the SDK during a human task.
+    // Google contract: https://developers.google.com/recaptcha/docs/display
+    function completeChallenge(challenge, container, challengeOptions) {
+      var proof = validatedChallenge(challenge);
+      if (!enabled || !proof || !container) {
+        return Promise.reject(makeError("אימות האבטחה פג. אפשר לבקש שוב.", "BOT_CHALLENGE_EXPIRED"));
+      }
+      var signal = challengeOptions && challengeOptions.signal;
+      var previousRegistry = win.__noamBotRecaptchaRuntime;
+      if ((!signal || !signal.aborted) && previousRegistry && typeof previousRegistry.failedChallenge === "function") {
+        previousRegistry.failedChallenge();
+      }
+      var finished = false, disposed = false, retained = false, widgetApi = null, widgetId = null, expiryTimer, widgetRegistry = null;
+      var resolveDone, rejectDone;
+      var done = new Promise(function (resolve, reject) { resolveDone = resolve; rejectDone = reject; });
+      var releaseLease;
+      var lease = new Promise(function (resolve) { releaseLease = resolve; });
+      function resetWidget() {
+        if (widgetApi && widgetId !== null) {
+          var id = widgetId; widgetId = null;
+          try { widgetApi.reset(id); } catch (ignored) {}
+        }
+      }
+      function dispose() {
+        if (disposed) return;
+        disposed = true;
+        if (signal) signal.removeEventListener("abort", cancel);
+        resetWidget();
+        if (widgetRegistry && widgetRegistry.failedChallenge === dispose) delete widgetRegistry.failedChallenge;
+        releaseLease();
+        // UI cleanup is best effort and cannot retain the lease or reset twice.
+        if (retained && challengeOptions && typeof challengeOptions.onDispose === "function") {
+          try { challengeOptions.onDispose(); } catch (ignored) {}
+        }
+      }
+      function finish(error, token, keepWidget) {
+        if (finished) return;
+        finished = true;
+        clearTimeout(expiryTimer);
+        retained = keepWidget === true;
+        if (retained && widgetRegistry) widgetRegistry.failedChallenge = dispose;
+        else dispose();
+        if (error) rejectDone(error); else resolveDone(token);
+      }
+      function cancel() {
+        if (finished) dispose();
+        else finish(makeError("האימות בוטל. הבחירה שלכם נשמרה.", "BOT_CHALLENGE_CANCELLED"));
+      }
+      expiryTimer = setTimeout(function () {
+        finish(makeError("אימות האבטחה פג. אפשר לבקש שוב.", "BOT_CHALLENGE_EXPIRED"));
+      }, Math.max(1, proof.expiresAt - Date.now()));
+      if (signal) {
+        signal.addEventListener("abort", cancel, { once: true });
+        if (signal.aborted) cancel();
+      }
+      if (!finished) timed(getConfig, verificationTimeout, "BOT_VERIFICATION_TIMEOUT", VERIFY_MESSAGE).then(function (config) {
+        if (finished) return;
+        var runtime = sharedRuntime(win, config.siteKey);
+        widgetRegistry = runtime.registry;
+        var queued = runtime.registry.queue.then(function () {
+          if (finished) return;
+          var ready = timed(function (state) {
+            return loadRecaptcha(config.siteKey, runtime.loadedHost || RECAPTCHA_HOSTS[0], state, true, runtime).then(function (api) {
+              return new Promise(function (resolve, reject) {
+                api.ready(function () {
+                  try { checkActive(state); resolve(api); } catch (error) { reject(error); }
+                });
+              });
+            });
+          }, verificationTimeout, "BOT_VERIFICATION_TIMEOUT", VERIFY_MESSAGE);
+          return ready.then(function (api) {
+            if (finished) return;
+            if (typeof api.render !== "function" || typeof api.reset !== "function") {
+              throw makeError("אימות האבטחה לא נטען. אפשר לנסות שוב.", "BOT_CHALLENGE_UNAVAILABLE");
+            }
+            widgetApi = api;
+            widgetId = api.render(container, {
+              sitekey: proof.siteKey, size: win.innerWidth && win.innerWidth < 400 ? "compact" : "normal", tabindex: 0,
+              callback: function (token) {
+                if (proof.expiresAt <= Date.now()) {
+                  finish(makeError("אימות האבטחה פג. אפשר לבקש שוב.", "BOT_CHALLENGE_EXPIRED"));
+                } else if (typeof token !== "string" || !token || token.length > 8192) {
+                  finish(makeError(VERIFY_MESSAGE, "BOT_VERIFICATION_FAILED"));
+                } else finish(null, token);
+              },
+              "expired-callback": function () { finish(makeError("אימות האבטחה פג. אפשר לבקש שוב.", "BOT_CHALLENGE_EXPIRED")); },
+              "error-callback": function () { finish(makeError("בדיקת האבטחה של Google לא נטענה. הבחירה שלכם נשמרה.", "BOT_CHALLENGE_UNAVAILABLE"), null, true); }
+            });
+            if (disposed) resetWidget();
+          }).catch(function (error) { finish(error); }).then(function () { return lease; });
+        });
+        runtime.registry.queue = queued.then(function () {}, function () {});
+        return queued;
+      }).catch(function (error) { finish(error); });
+      return done;
+    }
+
+    function postJson(endpoint, payload, requestOptions) {
       var route = typeof endpoint === "string" ? endpoint.slice(api.length + 1) : "";
       var action = typeof endpoint === "string" && endpoint.indexOf(api + "/") === 0 &&
         Object.prototype.hasOwnProperty.call(ACTIONS, route) && ACTIONS[route];
       // Retired/unknown routes stay unavailable even before bot enforcement.
       if (!action) { return Promise.reject(makeError(VERIFY_MESSAGE, "BOT_ROUTE_UNSUPPORTED")); }
+      var onChallenge = requestOptions && requestOptions.onChallenge;
+      // A later UI edit cannot change the server-ticket-bound request.
+      var captured = typeof onChallenge === "function" ? JSON.parse(JSON.stringify(payload)) : payload;
       function attempt() {
-        if (!enabled) { return send(endpoint, payload); }
+        if (!enabled) { return send(endpoint, captured); }
         return getVerification(action).then(function (verification) {
-          var body = Object.assign({}, payload, { botVerification: verification });
+          var body = Object.assign({}, captured, { botVerification: verification });
           // Every attempt receives a fresh single-use verification token.
           return send(endpoint, body);
         });
@@ -474,6 +595,19 @@
           throw makeError("החיבור לנועם AI נקטע. בדקו את החיבור ונסו שוב בעוד רגע.",
             "NETWORK_UNAVAILABLE");
         });
+      }).catch(function (error) {
+        if (!enabled || !error || error.status !== 403 || error.code !== "BOT_STEP_UP_REQUIRED" ||
+            typeof onChallenge !== "function" || !validatedChallenge(error.challenge)) throw error;
+        var challenge = error.challenge;
+        return Promise.resolve().then(function () { return onChallenge(challenge); }).then(function (token) {
+          if (!validatedChallenge(challenge)) throw makeError("אימות האבטחה פג. אפשר לבקש שוב.", "BOT_CHALLENGE_EXPIRED");
+          if (typeof token !== "string" || !token || token.length > 8192) throw makeError(VERIFY_MESSAGE, "BOT_VERIFICATION_FAILED");
+          // One human response, one same-payload POST. This branch never retries
+          // a rejection/network error or obtains another v3 token automatically.
+          return send(endpoint, Object.assign({}, captured, { botVerification: {
+            provider: "recaptcha-v2", token: token, requestToken: challenge.requestToken
+          } }));
+        });
       });
     }
 
@@ -484,11 +618,11 @@
       return getVerification("prepare", true);
     }
 
-    return { postJson: postJson, prepare: prepare };
+    return { postJson: postJson, prepare: prepare, completeChallenge: completeChallenge };
   }
 
   return {
-    version: "20261030-shared-prepare",
+    version: "20261030-stepup-error-detail",
     create: create,
     isProtectionError: isProtectionError,
     isTransientNetworkError: isTransientNetworkError

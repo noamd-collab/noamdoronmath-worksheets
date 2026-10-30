@@ -6,7 +6,7 @@ const path = require("node:path");
 const vm = require("node:vm");
 const sdk = require("../noam-bot-client.js");
 const read = file => fs.readFileSync(path.join(__dirname, "..", file), "utf8");
-const version = "20261030-shared-prepare";
+const version = "20261030-stepup-error-detail";
 
 function loader(file, kind, initialSdk, keepOld = false) {
   const source = read(file), scripts = [];

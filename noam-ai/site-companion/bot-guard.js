@@ -302,8 +302,16 @@ export async function verifyRecaptcha({ token, secret, fetch, action, timeoutMs 
     data.score >= RECAPTCHA_MIN_SCORE &&
     isAllowedRecaptchaHostname(data.hostname)
   );
+  // Only a valid assessment whose sole failure is the score may request a
+  // human challenge. An invalid/expired token or wrong action/host cannot.
+  const stepUpEligible = !!(
+    data?.success === true && data.action === expected &&
+    Number.isFinite(data.score) && data.score >= 0 && data.score < RECAPTCHA_MIN_SCORE &&
+    isAllowedRecaptchaHostname(data.hostname) &&
+    (data["error-codes"] === undefined || (Array.isArray(data["error-codes"]) && data["error-codes"].length === 0))
+  );
   if (!passed) siteverifyLog(data);
-  return { passed, siteverify: siteverifyFields(data) };
+  return { passed, stepUpEligible, siteverify: siteverifyFields(data) };
 }
 
 function rateErrorText(error) {
@@ -400,6 +408,7 @@ export async function guardCompanionRequest(input, deps) {
       status: 403,
       code: "BOT_VERIFICATION_FAILED",
       siteverify: (check && check.siteverify) || siteverifyFields(null),
+      stepUpEligible: check?.stepUpEligible === true,
     };
   }
   return { ok: true, status: 200 };

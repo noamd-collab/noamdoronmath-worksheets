@@ -26,8 +26,40 @@ function setup(source:string){
  function thread(){return c.exerciseThread(c.selectedExercise.id);}
  return {c,load,advance,timers,requests,photos,thread,threads};
 }
+const sourceHintInstruction='תן לי רמז אחד בלבד. אל תגלה את התשובה הסופית, ואל תבצע את הצעד במקומי.';
+function fastSource(h:any){
+ const text='הוכיחו ש־$△ABC≅△BAD$.';Object.assign(h.c.selectedExercise,{text,nativeQuestionId:'q3',nativeItemId:'q3b'});
+ h.c.manifest={prefix:'G9-T39',nativeExportSha256:'a'.repeat(64)};h.c.noamPageAllowsDrawingHint=()=>true;
+ const data={package:'G9-T39',level:'c',questions:[{id:'q3',items:[{id:'q3b',label:'ב',text}]}]};
+ h.c.noamVerifiedNativeData=async()=>data;h.load('noamSourceText','noamPrintedText','noamFirstSourceHint');return data;
+}
 for(const path of ['../public/worksheet-viewer-noam.html','../../../worksheet-viewer-noam.html']){
  const source=readFileSync(new URL(path,import.meta.url),'utf8'),label=path.includes('public')?'public':'root';
+ it(label+': eligible fast source SHA preparation has its own25s deadline',async()=>{
+  const h=setup(source),pendingSource=deferred(),data=fastSource(h);h.c.noamVerifiedNativeData=()=>pendingSource.promise;
+  h.c.askNoam('hint',sourceHintInstruction);await h.advance(24999);assert.equal(h.c.busy,true);assert.equal(h.requests.length,0);
+  await h.advance(1);assert.equal(h.c.busy,false);assert.equal(h.thread().messages.at(-1).answerErrorCode,'HINT_REQUEST_TIMEOUT');
+  pendingSource.resolve(data);await h.advance(0);assert.equal(h.requests.length,0);assert.equal(h.thread().hintIndex,0);
+ });
+ it(label+': explicit source miss restores the original55s deadline and ignores the old phase timer',async()=>{
+  const h=setup(source),probe=deferred(),analysis=deferred();fastSource(h);h.c.noamQuestionAnalysis=()=>analysis.promise;
+  h.c.postJson=async(url:string,payload:any)=>{h.requests.push({url,payload});return payload.sourceHintOnly?probe.promise:{ok:true,answer:'normal hint'};};
+  h.c.askNoam('hint',sourceHintInstruction);await h.advance(0);const oldTimer=[...h.timers.values()].find(t=>t.at===25000)!.fn;
+  await h.advance(24000);probe.resolve({ok:true,sourceHintAvailable:false});await h.advance(0);assert.equal([...h.timers.values()].some(t=>t.at===55000),true);
+  oldTimer();assert.equal(h.c.busy,true);await h.advance(11000);analysis.resolve({readable:true});await h.advance(0);
+  assert.equal(h.c.busy,false);assert.equal(h.thread().messages.at(-1).text,'normal hint');assert.equal(h.thread().hintIndex,1);
+ });
+ it(label+': source miss does not grant a fresh55s budget to a stalled normal fallback',async()=>{
+  const h=setup(source),probe=deferred();fastSource(h);h.c.noamQuestionAnalysis=()=>new Promise(()=>{});h.c.postJson=()=>probe.promise;
+  h.c.askNoam('hint',sourceHintInstruction);await h.advance(20000);probe.resolve({ok:true,sourceHintAvailable:false});await h.advance(0);
+  await h.advance(34999);assert.equal(h.c.busy,true);await h.advance(1);assert.equal(h.c.busy,false);assert.equal(h.thread().messages.at(-1).answerErrorCode,'HINT_REQUEST_TIMEOUT');
+ });
+ it(label+': the fast phase still aborts a protected body after headers at25s',async()=>{
+  const h=setup(source),body=deferred();fastSource(h);let signal:AbortSignal|undefined;
+  h.c.fetch=async(_:any,options:any)=>{signal=options.signal;return {json:()=>body.promise};};h.c.postJson=(_:any,__:any,op:any)=>op.fetch('/probe',{method:'POST'}).then((r:any)=>r.json());
+  h.c.askNoam('hint',sourceHintInstruction);await h.advance(0);assert.equal(signal?.aborted,false);await h.advance(25000);assert.equal(signal?.aborted,true);assert.equal(h.c.busy,false);
+  body.resolve({ok:true,sourceHintAvailable:false});await h.advance(0);assert.equal(h.thread().hintIndex,0);
+ });
  it(label+': stalled source is bounded to55s and releases composer/new-chat controls',async()=>{
   const h=setup(source);h.c.noamQuestionAnalysis=()=>new Promise(()=>{});h.c.askNoam('hint','רמז');await h.advance(54999);assert.equal(h.c.busy,true);await h.advance(1);
   assert.equal(h.c.busy,false);assert.equal(h.thread().messages.at(-1).answerErrorCode,'HINT_REQUEST_TIMEOUT');assert.equal(h.thread().hintIndex,0);assert.equal(h.thread().history.length,0);assert.equal(h.requests.length,0);
@@ -46,7 +78,7 @@ for(const path of ['../public/worksheet-viewer-noam.html','../../../worksheet-vi
   for(const phase of ['captcha','retry']){
    const h=setup(source),ready=deferred(),late=deferred();let network=0;
    h.c.fetch=async()=>{network++;throw new Error('network');};h.c.window.NoamBotClient={create:(options:any)=>({postJson:async()=>{if(phase==='captcha')await late.promise;try{return await options.fetch('/model',{method:'POST'});}catch(error){if(phase!=='retry')throw error;await late.promise;return options.fetch('/model',{method:'POST'});}}})};
-   h.c.ensureNoamBotClient=async()=>({});h.load('postJson');h.c.noamQuestionAnalysis=()=>ready.promise;h.c.askNoam('hint','old');await h.advance(50000);ready.resolve({readable:true});await h.advance(0);assert.equal(network,phase==='retry'?1:0);
+   h.c.ensureNoamBotClient=async()=>({});h.load('noamOperationClient','postJson');h.c.noamQuestionAnalysis=()=>ready.promise;h.c.askNoam('hint','old');await h.advance(50000);ready.resolve({readable:true});await h.advance(0);assert.equal(network,phase==='retry'?1:0);
    await h.advance(5000);h.c.noamQuestionAnalysis=()=>new Promise(()=>{});h.c.askNoam('hint','new');late.resolve();await h.advance(0);assert.equal(network,phase==='retry'?1:0);assert.equal(h.c.busy,true);assert.equal(h.thread().hintIndex,0);
   }
  });
