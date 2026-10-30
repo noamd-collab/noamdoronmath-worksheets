@@ -1,5 +1,13 @@
 # Worksheet tracker
 
+## Teacher human verification recovery — 2026-10-30
+
+Follow-up to published PR 297 on live baseline `64933173`: preserve the teacher’s manual selection when AI verification fails, and offer an explicit human reCAPTCHA v2 checkbox step only after an otherwise valid v3 assessment is rejected solely for its low score. The existing v3 threshold, action, hostname, origin and rate checks stay enabled. A fresh v2 success must match a short-lived, signed request ticket and consume an insert-only persistent nonce before any model call; a missing configuration, expired challenge, changed selection or failed verification stays closed.
+
+The new optional Wix secrets are `NOAM_RECAPTCHA_V2_SITE_KEY` and `NOAM_RECAPTCHA_V2_SECRET_KEY`. They require a separately registered v2 checkbox key pair. They are not configured at this source revision, so human recovery and a new live AI success are still blocked. No secret values are recorded here. Existing verified model plans for five, ten and fifteen questions remain context-bound, and cancellation never silently substitutes local choices.
+
+The fresh production resource audit resumes the remaining 736 of 933 unique question files with one request at least every three seconds, halting on throttling or a mismatch. The catalog exposes 1,281 actual teacher UI scopes across all nine grades and 330 topics (c2 folds into c; single-level topics expose all). Source and client contract checks are recorded separately from actual live browser and model checks. The final test, preview, resource-audit, PR and release results will be added after completion. Noam has explicitly authorized this fix, tests and production publication; missing external configuration is not a request for renewed publication approval.
+
 ## Baseline validation repairs — 2026-10-30
 
 Follow-up to published PR 295 (`90e5d372`), integrated with concurrent PR 293 on current live baseline `4e613d9a`: repair all eleven remaining test failures without changing production content, teacher selection, reCAPTCHA or the geometry-only drawing policy. The live blog checks now read the current Astro cards and canonical blog sitemap; the SEO review retains its original independently recorded 390-row scope; viewer harnesses load the actual drawing policy and retain a complete script fingerprint with reviewed commit provenance; browser fixtures find installed macOS Chrome and wait for actual UI completion.
