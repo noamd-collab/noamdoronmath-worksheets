@@ -20,17 +20,18 @@ function definition(name: string) {
 }
 
 type Payload = { teacher: { count: number; candidates: { id: string; label: string }[] } };
-type State = { selected: string[]; blocks: { kind: string; title: string; keys: string[] }[]; sectionKind: string; pickMode: string; filter: string; lastAiPickCount: number };
+type State = { selected: string[]; blocks: { kind: string; title: string; keys: string[] }[]; sectionKind: string; pickMode: string; filter: string; lastAiPickCount: number; pickNote?: string };
 const successfulReply = (payload: Payload) => ({
   source: 'classifier', model: 'qwen3.8-flash',
   exerciseIds: payload.teacher.candidates.slice(-payload.teacher.count).map((candidate) => `ex:${source.pdfId}:${candidate.label}`),
 });
 
-function harness(reply: (payload: Payload, state: State) => unknown = successfulReply) {
-  return new Function('pool', 'groupWholeQuestions', 'savedKeys', 'reply', `
+function harness(reply: (payload: Payload, state: State) => unknown = successfulReply, options: { pool?: unknown[]; grade?: string; scenario?: string; style?: string; savedKeys?: string[] } = {}) {
+  return new Function('pool', 'groupWholeQuestions', 'savedKeys', 'reply', 'options', `
     let state = { grade: '9', topic: '2', level: 'a', scenario: 'other', style: 'blended',
       selected: [], blocks: [{ kind: 'test', title: 'נושא קודם', keys: savedKeys }],
-      sectionKind: 'review', lastAiPickCount: 0, pickMode: 'manual', filter: 'selected', expanded: false };
+      sectionKind: 'review', lastAiPickCount: 0, pickMode: 'manual', filter: 'selected', expanded: false,
+      ...Object.fromEntries(['grade', 'scenario', 'style'].filter(key => options[key] != null).map(key => [key, options[key]])) };
     let history = [];
     let aiPickPending = 0;
     const status = { textContent: '' };
@@ -59,14 +60,13 @@ function harness(reply: (payload: Payload, state: State) => unknown = successful
     const STYLES = { blended: { label: 'משולבת' } };
     const QUESTION_ROLES = { basis: 'ביסוס', review: 'חזרה', creative: 'יצירתית' };
     const AI_QUESTION_COUNTS = [5, 10, 15];
-    const AI_CANDIDATE_LIMIT = 90;
     const ensureTeacherBotClient = async () => ({ postJson: async (path, payload) => {
       requests.push({ path, payload });
       return await reply(payload, state);
     } });
     ${['exKey', 'questionPreviewGroup', 'currentQuestions', 'keysOfQuestions', 'rolePlan', 'interleaveSheets', 'planOrder', 'smartQuestionPick', 'carriedKeys', 'selectionKey', 'snapshot', 'pickWithAi'].map(definition).join('\n')}
     return { pick: pickWithAi, state, requests, status, attrs, announcements, renders: () => renderCount };
-  `)(source.questions, groupWholeQuestions, groupKeys(groups[0]), reply) as {
+  `)(options.pool || source.questions, groupWholeQuestions, options.savedKeys || groupKeys(groups[0]), reply, options) as {
     pick: (count: number) => Promise<string[]>;
     state: State;
     requests: { path: string; payload: Payload }[];
@@ -138,4 +138,102 @@ test('unsupported counts never send a model request', async () => {
   const app = harness();
   for (const count of [0, -1, 6, 20, NaN]) assert.deepEqual(await app.pick(count), []);
   assert.deepEqual(app.requests, []);
+});
+
+function numberedPool(count: number, pdfId = 'elementary-source') {
+  const sheet = { pdfId, level: 'a', levelLabel: 'רמה א׳' };
+  return Array.from({ length: count }, (_, index) => ({ id: String(index + 1), q: index + 1, page: Math.floor(index / 5) + 1, source: sheet }));
+}
+
+test('the excellence filter includes both c and c2 while keeping other levels separate', () => {
+  const topic = { sheets: ['a', 'b', 'c', 'c2'].map((level) => ({ level, pdfId: level })) };
+  const select = new Function('topic', `
+    const state = { level: 'c' };
+    const currentTopic = () => topic;
+    ${definition('topicSheets')}
+    ${definition('levelAllows')}
+    return () => topicSheets().filter(levelAllows);
+  `)(topic);
+  assert.deepEqual(select().map((sheet: { level: string }) => sheet.level), ['c', 'c2']);
+});
+
+for (const count of [5, 10, 15]) {
+  test(`the real AI ${count} button keeps c2 candidates and selections distinct from c`, async () => {
+    const c = numberedPool(20, 'c-source');
+    const c2 = numberedPool(20, 'c2-source');
+    c[0].source.level = 'c';
+    c2[0].source.level = 'c2';
+    const chosen = c2.slice(-count).map((question) => `ex:${question.source.pdfId}:${question.id}`);
+    const app = harness((payload) => {
+      const identifiers = payload.teacher.candidates.map((candidate) => candidate.id);
+      assert.equal(new Set(identifiers).size, 40);
+      assert.ok(identifiers.includes('c:20'));
+      assert.ok(identifiers.includes('c2:20'));
+      return { source: 'classifier', model: 'test-model', exerciseIds: chosen, modelExerciseIds: chosen };
+    }, { pool: [...c, ...c2], grade: '8', savedKeys: [] });
+    assert.deepEqual(await app.pick(count), chosen);
+    assert.equal(app.requests.length, 1);
+    assert.match(app.status.textContent, /עם AI/);
+    assert.doesNotMatch(app.status.textContent, /מקומית/);
+  });
+}
+
+for (const grade of ['1', '2', '3', '4', '5', '6', '7', '8', '9']) {
+  for (const count of [5, 10, 15]) {
+    test(`grade ${grade} accepts AI ${count} with numeric question labels and preserves every selected question`, async () => {
+      const pool = numberedPool(20, `grade-${grade}`);
+      const chosen = pool.slice(-count).map((question) => `ex:${question.source.pdfId}:${question.id}`);
+      const app = harness(() => ({ source: 'classifier', model: 'test-model', exerciseIds: chosen, modelExerciseIds: chosen }), { pool, grade, savedKeys: [], scenario: 'first', style: 'scaffold' });
+      assert.deepEqual(await app.pick(count), chosen);
+      assert.equal(app.requests[0].payload.teacher.candidates.length, 20);
+      assert.equal(app.state.filter, 'all');
+      assert.match(app.status.textContent, new RegExp(`^נבחרו ${count} שאלות.*עם AI\\.`));
+    });
+  }
+}
+
+test('all 120 questions reach the model and a teacher request for questions beyond 90 is retained', async () => {
+  const pool = numberedPool(120);
+  const chosen = pool.slice(-15).map((question) => `ex:${question.source.pdfId}:${question.id}`);
+  const app = harness((payload) => {
+    assert.equal(payload.teacher.candidates.length, 120);
+    assert.equal(new Set(payload.teacher.candidates.map((candidate) => candidate.id)).size, 120);
+    assert.ok(payload.teacher.candidates.some((candidate) => candidate.id === 'a:120'));
+    return { source: 'classifier', model: 'test-model', exerciseIds: chosen, modelExerciseIds: chosen };
+  }, { pool, savedKeys: [], scenario: 'first', style: 'scaffold' });
+  assert.deepEqual(await app.pick(15), chosen);
+});
+
+test('mixed selections keep model choices and identify local completion without crediting it to AI', async () => {
+  const pool = numberedPool(20);
+  const modelExerciseIds = ['ex:elementary-source:19', 'ex:elementary-source:20'];
+  const app = harness(() => ({ source: 'mixed', model: 'test-model', modelExerciseIds,
+    exerciseIds: [...modelExerciseIds, 'ex:elementary-source:1', 'ex:elementary-source:2', 'ex:elementary-source:3'] }), { pool, savedKeys: [] });
+  const result = await app.pick(5);
+  assert.equal(result.length, 5);
+  modelExerciseIds.forEach((key) => assert.ok(result.includes(key)));
+  assert.match(app.status.textContent, /2 עם AI, והשאר הושלמו בבחירה מקומית/);
+  assert.doesNotMatch(app.status.textContent, /סעיפים\) עם AI\./);
+});
+
+test('zero accepted model IDs are labelled local even when the response includes padded exercise IDs', async () => {
+  const pool = numberedPool(20);
+  const app = harness(() => ({ source: 'classifier', model: 'test-model', modelExerciseIds: [],
+    exerciseIds: pool.slice(0, 5).map((question) => `ex:${question.source.pdfId}:${question.id}`) }), { pool, savedKeys: [] });
+  assert.equal((await app.pick(5)).length, 5);
+  assert.match(app.status.textContent, /בחירה אוטומטית מקומית/);
+  assert.doesNotMatch(app.status.textContent, /עם AI\./);
+});
+
+test('requesting 15 from a topic with eight questions sends eight and explicitly explains the shortfall', async () => {
+  const pool = numberedPool(8);
+  const chosen = pool.map((question) => `ex:${question.source.pdfId}:${question.id}`);
+  const app = harness((payload) => {
+    assert.equal(payload.teacher.count, 8);
+    return { source: 'classifier', model: 'test-model', exerciseIds: chosen, modelExerciseIds: chosen };
+  }, { pool, grade: '1', savedKeys: [] });
+  assert.deepEqual(await app.pick(15), chosen);
+  assert.match(app.status.textContent, /^נבחרו 8 שאלות/);
+  assert.match(app.status.textContent, /התבקשו 15 שאלות, אך בנושא וברמה האלה זמינות רק 8; כולן נבחרו/);
+  assert.equal(new Set(app.state.selected).size, 8);
 });

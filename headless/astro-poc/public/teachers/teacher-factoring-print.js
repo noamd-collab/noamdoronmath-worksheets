@@ -2,9 +2,8 @@ import { wizardPrefillFromSearch } from './wizard-prefill.js';
 import { expandToWholeQuestionKeys, groupWholeQuestions, mulberry32, pickWholeQuestions, randomSeed } from './teacher-question-pick.js';
 import { PICK_HEADING, SECTION_KINDS, needsSectionHeadings, pointsLabel, scoreLabel, sectionKind, sectionTitle, shouldAskMoreTopic, testPoints, TEST_TOTAL_POINTS } from './teacher-page-sections.js';
 
-/* Teacher picker for every catalog sheet.
-   Grades 7–9: choose existing exercises across sheets.
-   Grades 1–6: choose a sheet by topic and level.
+/* Teacher picker for every catalog sheet, grades 1–9.
+   Choose complete source questions across topic and level sheets.
    Print reuses the pilot path: marks on the original PDF page, or a short
    sheet cropped from that page, plus the teacher note. */
 'use strict';
@@ -116,10 +115,6 @@ function exKey(pdfId, id) {
   return 'ex:' + pdfId + ':' + id;
 }
 
-function sheetKey(pdfId) {
-  return 'sheet:' + pdfId;
-}
-
 function ensureTeacherBotClient() {
   if (teacherBotClientPromise) return teacherBotClientPromise;
   teacherBotClientPromise = new Promise((resolve, reject) => {
@@ -149,13 +144,12 @@ function ensureTeacherBotClient() {
 
 const QUESTION_ROLES = { basis: 'ביסוס', review: 'חזרה', creative: 'יצירתית' };
 const AI_QUESTION_COUNTS = [5, 10, 15];
-const AI_CANDIDATE_LIMIT = 90;
 
 function questionPreviewGroup(group) {
   if (group.parts && group.source && group.q != null) return group;
   const parts = group.questions || [];
   return { ...group, q: group.number, source: parts[0] && parts[0].source,
-    parts, keys: parts.map((question) => exKey(question.source.pdfId, question.id)), index: group.order };
+    parts, keys: [...new Set(parts.map((question) => exKey(question.source.pdfId, question.id)))], index: group.order };
 }
 
 function currentQuestions() {
@@ -174,7 +168,7 @@ function currentQuestions() {
 
 function keysOfQuestions(keys, groups) {
   const wanted = new Set(keys);
-  return groups.filter((group) => wanted.has(group.key)).flatMap((group) => group.keys);
+  return [...new Set(groups.filter((group) => wanted.has(group.key)).flatMap((group) => group.keys))];
 }
 
 function rolePlan(scenario, style) {
@@ -242,7 +236,7 @@ function smartQuestionPick(groups, count, scenario, style, seedKeys) {
 
 async function pickWithAi(rawCount) {
   const count = Number(rawCount);
-  if (!AI_QUESTION_COUNTS.includes(count) || band() === 'elementary' || aiPickPending) return [];
+  if (!AI_QUESTION_COUNTS.includes(count) || aiPickPending) return [];
   const saved = carriedKeys();
   const groups = currentQuestions().filter((group) => !group.keys.some((key) => saved.has(key)));
   if (!groups.length) return [];
@@ -257,7 +251,7 @@ async function pickWithAi(rawCount) {
   const gradeEl = $('grade');
   const topicEl = $('topic');
   const payload = {
-    message: `בחר ${count} שאלות שלמות עם AI. כל מזהה ברשימה הוא שאלה שלמה עם כל הסעיפים שלה. בכל רמה: ביסוס בהתחלה, חזרה באמצע, שאלות יצירתיות בסוף.`,
+    message: `בחר ${target} שאלות שלמות עם AI. כל מזהה ברשימה הוא שאלה שלמה עם כל הסעיפים שלה. בכל רמה: ביסוס בהתחלה, חזרה באמצע, שאלות יצירתיות בסוף.`,
     page: { kind: 'teachers', path: location.pathname + location.search, title: document.title },
     teacher: {
       grade: String(state.grade),
@@ -270,33 +264,37 @@ async function pickWithAi(rawCount) {
       style: String(state.style),
       styleLabel: (STYLES[state.style] && STYLES[state.style].label) || '',
       note: $('teacher-note') ? String($('teacher-note').value || '').trim().slice(0, 400) : '',
-      count,
-      // The model prompt lists at most 90 candidates; the most wanted questions go first.
-      candidates: planOrder(groups, state.scenario, state.style).slice(0, AI_CANDIDATE_LIMIT).map((group) => ({
-        id: (/^[abc]$/.test(String(group.source && group.source.level)) ? group.source.level + ':' : '') + group.parts[0].id,
+      count: target,
+      // Include every available question; ordering guides the lesson without excluding candidates.
+      candidates: planOrder(groups, state.scenario, state.style).map((group) => ({
+        id: (/^(?:[abc]|c2)$/.test(String(group.source && group.source.level)) ? group.source.level + ':' : '') + group.parts[0].id,
         label: group.parts[0].id,
-        text: [QUESTION_ROLES[group.role], group.source.levelLabel, 'שאלה ' + group.q, group.parts.length + ' סעיפים'].filter(Boolean).join(' · ').slice(0, 80),
+        text: [QUESTION_ROLES[group.role], group.source.levelLabel, 'שאלה ' + group.q, group.keys.length + ' סעיפים'].filter(Boolean).join(' · ').slice(0, 80),
       })),
     },
   };
   let seedKeys = [];
   let fromModel = false;
+  const startedAt = Date.now();
+  const timer = globalThis.setInterval(() => {
+    if (status) status.textContent = `נועם AI בוחר ${target} שאלות… (${Math.floor((Date.now() - startedAt) / 1000)} שניות)`;
+  }, 1000);
   try {
     const client = await ensureTeacherBotClient();
     const result = await client.postJson('/api/noamSiteCompanion', payload);
-    fromModel = Boolean(result && result.source === 'classifier' && result.model);
-    if (fromModel && Array.isArray(result.exerciseIds) && result.exerciseIds.length) {
-      // The server pads short answers with sections by position. Keep only questions that fit the
-      // lesson plan, so padding never pushes ביסוס into a creative lesson.
+    fromModel = Boolean(result && ['classifier', 'mixed'].includes(result.source) && result.model);
+    const modelIds = result && (Array.isArray(result.modelExerciseIds) ? result.modelExerciseIds : result.source === 'classifier' ? result.exerciseIds : []);
+    if (fromModel && Array.isArray(modelIds) && modelIds.length) {
+      // The teacher's note may deliberately request another part of the sheet.
+      // Preserve valid model choices; never silently replace them with a role preset.
       const owner = new Map();
       groups.forEach((group) => group.keys.forEach((key) => owner.set(key, group)));
-      const plan = rolePlan(state.scenario, state.style);
-      const fits = (group) => plan[0] === 'mix' || group.role === plan[0];
-      seedKeys = Array.from(new Set(result.exerciseIds.map((key) => owner.get(key)).filter((group) => group && fits(group)).map((group) => group.key)));
+      seedKeys = Array.from(new Set(modelIds.map((key) => owner.get(key)).filter(Boolean).map((group) => group.key))).slice(0, target);
     }
   } catch (error) {
     seedKeys = [];
   } finally {
+    globalThis.clearInterval(timer);
     aiPickPending = 0;
   }
   if ([state.grade, state.topic, state.level].join('|') !== scope || selectionKey() !== beforeRequest || JSON.stringify(state.blocks) !== beforeBlocks) {
@@ -311,7 +309,7 @@ async function pickWithAi(rawCount) {
   state.selected = finalPicked;
   state.pickMode = 'manual';
   state.filter = 'all';
-  state.pickNote = groups.length < count ? `יש רק ${groups.length} שאלות זמינות; כולן נבחרו.` : '';
+  state.pickNote = groups.length < count ? `התבקשו ${count} שאלות, אך בנושא וברמה האלה זמינות רק ${groups.length}; כולן נבחרו.` : '';
   $('filter-all').setAttribute('aria-pressed', 'true');
   $('filter-selected').setAttribute('aria-pressed', 'false');
   state.lastAiPickCount = count;
@@ -319,7 +317,13 @@ async function pickWithAi(rawCount) {
   if (selectionKey() !== before) clearPreparedPrint();
   render();
   const what = `${pickedGroups.length} שאלות (${finalPicked.length} סעיפים)`;
-  const msg = fromModel && seedKeys.length ? `נבחרו ${what} עם AI.` : `נבחרו ${what} בבחירה אוטומטית מקומית. לא התקבלה בחירה מתאימה מה-AI.`;
+  const modelCount = fromModel ? seedKeys.length : 0;
+  const outcome = modelCount === pickedGroups.length
+    ? `נבחרו ${what} עם AI.`
+    : modelCount > 0
+      ? `נבחרו ${what}: ${modelCount} עם AI, והשאר הושלמו בבחירה מקומית.`
+      : `נבחרו ${what} בבחירה אוטומטית מקומית. לא התקבלה בחירה מתאימה מה-AI.`;
+  const msg = outcome + (state.pickNote ? ' ' + state.pickNote : '');
   if (status) status.textContent = msg;
   announce(msg);
   return finalPicked;
@@ -328,21 +332,27 @@ async function pickWithAi(rawCount) {
 function paintAiPickButtons() {
   const group = $('ai-pick-group');
   if (!group) return;
-  const elementary = band() === 'elementary';
-  group.hidden = elementary;
+  group.hidden = false;
   const status = $('ai-suggest-status');
-  if (status) status.hidden = elementary;
+  if (status) status.hidden = false;
   const saved = carriedKeys();
-  const groups = elementary ? [] : currentQuestions().filter((item) => !item.keys.some((key) => saved.has(key)));
+  const groups = currentQuestions().filter((item) => !item.keys.some((key) => saved.has(key)));
   const total = groups.length;
+  const availability = $('ai-available-note');
+  if (availability) {
+    availability.hidden = total >= 15 || total === 0;
+    availability.textContent = total > 0 && total < 15
+      ? `בנושא וברמה האלה זמינות ${total} שאלות לבחירה. בקשה לכמות גדולה יותר תבחר את כולן.` : '';
+  }
   const picked = groups.filter((item) => item.keys.every((key) => state.selected.includes(key))).length;
   group.querySelectorAll('[data-ai-pick]').forEach((btn) => {
     const count = Number(btn.dataset.aiPick);
     const busy = aiPickPending === count;
     const baseLabel = count === AI_QUESTION_COUNTS[0] ? `בחר ${count} שאלות עם AI` : `בחר ${count}`;
     btn.textContent = busy ? `בוחר ${count}…` : baseLabel;
-    btn.disabled = elementary || total === 0 || aiPickPending > 0;
-    const active = !elementary && total > 0 && state.lastAiPickCount === count && picked === Math.min(count, total);
+    btn.disabled = total === 0 || aiPickPending > 0;
+    btn.title = total > 0 && total < count ? `זמינות ${total} שאלות; כולן ייבחרו.` : `בחירת ${count} שאלות עם AI`;
+    const active = total > 0 && state.lastAiPickCount === count && picked === Math.min(count, total);
     btn.setAttribute('aria-pressed', active ? 'true' : 'false');
     if (busy) btn.setAttribute('aria-busy', 'true');
     else btn.removeAttribute('aria-busy');
@@ -357,7 +367,6 @@ function assignWholeQuestions(count, random) {
 }
 
 function pickQuestionCount(count) {
-  if (band() === 'elementary') return [];
   const result = pickWholeQuestions(currentExercises(), count, mulberry32(randomSeed()));
   const before = selectionKey();
   snapshot();
@@ -373,33 +382,32 @@ function pickQuestionCount(count) {
 }
 
 function paintQuestionCountButtons() {
-  const elementary = band() === 'elementary';
-  const manual = !elementary && state.pickMode === 'manual';
+  const manual = state.pickMode === 'manual';
   const modes = $('pick-mode-group');
   if (modes) {
-    modes.hidden = elementary;
+    modes.hidden = false;
     modes.querySelectorAll('[data-pick-mode]').forEach((btn) => {
       btn.setAttribute('aria-pressed', btn.dataset.pickMode === state.pickMode ? 'true' : 'false');
     });
   }
   const group = $('question-count-group');
-  if (group) group.hidden = elementary || manual;
+  if (group) group.hidden = manual;
   const browseAll = document.getElementById('filter-all');
   const browse = browseAll && browseAll.parentElement;
   if (browse) browse.hidden = false;
   const heading = document.querySelector('.list-header > span');
-  if (heading) heading.textContent = elementary ? 'דפים' : PICK_HEADING;
+  if (heading) heading.textContent = PICK_HEADING;
   const note = $('pick-shortfall');
   if (note) {
-    note.hidden = elementary || manual || !state.pickNote;
+    note.hidden = !state.pickNote;
     note.textContent = state.pickNote || '';
   }
   if (!group) return;
-  const total = elementary ? 0 : groupWholeQuestions(currentExercises()).length;
+  const total = groupWholeQuestions(currentExercises()).length;
   group.querySelectorAll('[data-question-count]').forEach((btn) => {
     const count = Number(btn.dataset.questionCount);
-    btn.disabled = elementary || manual || total === 0;
-    const active = !elementary && !manual && state.lastQuestionCount === count && state.selected.length > 0;
+    btn.disabled = manual || total === 0;
+    const active = !manual && state.lastQuestionCount === count && state.selected.length > 0;
     btn.setAttribute('aria-pressed', active ? 'true' : 'false');
   });
 }
@@ -426,10 +434,9 @@ function questionCountText(count) {
 }
 
 function paintPageBuilder() {
-  const middle = band() !== 'elementary';
   const group = $('section-kind-group');
   if (group) {
-    group.hidden = !middle;
+    group.hidden = false;
     group.querySelectorAll('[data-section-kind]').forEach((btn) => {
       btn.setAttribute('aria-pressed', btn.dataset.sectionKind === state.sectionKind ? 'true' : 'false');
     });
@@ -437,10 +444,10 @@ function paintPageBuilder() {
     if (help) help.textContent = SECTION_KINDS[sectionKind(state.sectionKind)].help;
   }
   const prompt = $('more-topic');
-  if (prompt) prompt.hidden = !(middle && shouldAskMoreTopic(blockQuestionCount(state.selected), state.moreDismissed));
+  if (prompt) prompt.hidden = !shouldAskMoreTopic(blockQuestionCount(state.selected), state.moreDismissed);
   const list = $('page-blocks');
   if (!list) return;
-  list.hidden = !(middle && state.blocks.length);
+  list.hidden = !state.blocks.length;
   list.innerHTML = state.blocks.map((block, index) => (
     `<div class="page-block" data-page-block="${index}"><strong>${escapeHTML(block.title)} · ${questionCountText(blockQuestionCount(block.keys))}</strong>${sectionToggleHTML(block.kind, 'data-block-kind')}<button type="button" class="text-btn" data-block-remove aria-label="${escapeHTML('הסרת ' + block.title + ' מהדף')}">הסרה מהדף</button></div>`
   )).join('');
@@ -470,21 +477,15 @@ function addAnotherTopic() {
   if (select && select.focus) select.focus();
 }
 
-function dropBlocksOnElementary() {
-  if (band() !== 'elementary' || !state.blocks.length) return;
-  state.blocks = [];
-  announce('ביסודי בוחרים דף שלם, ולכן הנושאים שנשמרו הוסרו מהדף.');
-}
-
 function pageNeedsSections() {
-  return band() !== 'elementary' && (state.blocks.length > 0 || state.sectionKind === 'test');
+  return state.blocks.length > 0 || state.sectionKind === 'test';
 }
 
 function pageBlocks() {
   const blocks = state.blocks.map((block) => ({
     kind: sectionKind(block.kind),
     title: block.title,
-    questions: block.keys.map((key) => library.get(key)).filter(Boolean),
+    questions: questionsForKeys(block.keys, block),
   }));
   return blocks;
 }
@@ -561,13 +562,13 @@ function topicSheets() {
   const topic = currentTopic();
   if (!topic) return [];
   if (state.level === 'all') return topic.sheets;
-  const matching = topic.sheets.filter((sheet) => sheet.level === state.level);
+  const matching = topic.sheets.filter((sheet) => sheet.level === state.level || (state.level === 'c' && sheet.level === 'c2'));
   return matching.length ? matching : topic.sheets;
 }
 
 function syncLevels() {
   const topic = currentTopic();
-  const levels = new Set((topic ? topic.sheets : []).map((sheet) => sheet.level));
+  const levels = new Set((topic ? topic.sheets : []).map((sheet) => sheet.level === 'c2' ? 'c' : sheet.level));
   const hasSpecific = ['a', 'b', 'c'].some((lvl) => levels.has(lvl));
   if (state.level !== 'all' && (!hasSpecific || !levels.has(state.level))) {
     state.level = 'all';
@@ -582,13 +583,12 @@ function syncLevels() {
 }
 
 function visibleSelectionKeys() {
-  if (band() === 'elementary') return topicSheets().map((meta) => sheetKey(meta.pdfId));
-  return currentExercises().map((question) => exKey(question.source.pdfId, question.id));
+  return [...new Set(currentExercises().map((question) => exKey(question.source.pdfId, question.id)))];
 }
 
 function keepVisible(selected, visible) {
   const allow = new Set(visible);
-  return selected.filter((key) => allow.has(key));
+  return [...new Set(selected.filter((key) => allow.has(key)))];
 }
 
 function currentExercises() {
@@ -701,7 +701,7 @@ function thumbAria(question) {
 
 function questionCard(group, picked) {
   group = questionPreviewGroup(group);
-  const parts = group.parts.map((question) => question.part || String(question.id).replace(/^\d+/, '')).filter(Boolean);
+  const parts = [...new Set(group.parts.map((question) => question.part || String(question.id).replace(/^\d+/, '')).filter(Boolean))];
   const partsText = parts.length > 1 ? `${parts.length} סעיפים (${parts.join(', ')})` : (parts.length === 1 ? 'סעיף אחד' : 'בלי סעיפים');
   const pages = Array.from(new Set(group.parts.flatMap((question) => [question.page, ...(question.rows || []).map((row) => row.page || question.page)]).filter(Boolean))).sort((a, b) => a - b);
   const pageText = pages.length > 1 ? `עמודים ${pages[0]}–${pages[pages.length - 1]}` : (pages.length ? `עמוד ${pages[0]}` : '');
@@ -729,6 +729,8 @@ function questionCard(group, picked) {
 function questionPreviewSlices(group, manifest) {
   group = questionPreviewGroup(group);
   const pages = new Map();
+  const exactWhole = Boolean(manifest.wholeQuestionGeometry || group.source.wholeQuestionGeometry);
+  const exactSlices = [];
   const exercises = (manifest.exercises || []).filter((item) => String(item.q) === String(group.q));
   const cropsOf = (item) => item.crops && item.crops.length ? item.crops : (item.crop ? [item.crop] : []);
   const crops = exercises.flatMap(cropsOf);
@@ -743,11 +745,19 @@ function questionPreviewSlices(group, manifest) {
   const ownCrops = crops.filter((crop) => pins.some((pin) => covers(crop, pin))
     || !earlier.some((item) => covers(crop, item.pin) && cropsOf(item).some((other) => sameCrop(crop, other))));
   const complete = pins.length && pins.every((pin) => ownCrops.some((crop) => covers(crop, pin)));
-  for (const crop of complete ? ownCrops : crops) {
+  for (const crop of exactWhole ? crops : complete ? ownCrops : crops) {
       const { page, x, y, w, h } = crop;
       if (!Number.isInteger(page) || page < 1 || ![x, y, w, h].every(Number.isFinite)
         || x < 0 || y < 0 || w <= 0 || h <= 0 || x + w > 1.001 || y + h > 1.001) {
         throw new Error('QUESTION_PREVIEW_BOUNDS');
+      }
+      if (exactWhole) {
+        // A shared legend and the question can be separated by other questions
+        // on the same page. Keep their exact crops instead of enclosing the gap.
+        if (!exactSlices.some((slice) => sameCrop({ ...slice.box, page: slice.page }, crop))) {
+          exactSlices.push({ page, pdfId: group.source.pdfId, block: group.key, kind: 'row', gap: 12, box: { x, y, w, h } });
+        }
+        continue;
       }
       const previous = pages.get(page);
       pages.set(page, previous ? {
@@ -755,6 +765,7 @@ function questionPreviewSlices(group, manifest) {
         right: Math.max(previous.right, x + w), bottom: Math.max(previous.bottom, y + h),
       } : { x, y, right: x + w, bottom: y + h });
   }
+  if (exactWhole) return exactSlices;
   return [...pages].sort(([a], [b]) => a - b).map(([page, box]) => ({
     page, pdfId: group.source.pdfId, block: group.key, kind: 'row', gap: 12,
     box: { x: box.x, y: box.y, w: Math.min(1, box.right) - box.x, h: Math.min(1, box.bottom) - box.y },
@@ -788,7 +799,7 @@ async function questionPreviewCanvas(group) {
   const manifest = await loadQuestionPreviewManifest(group.source);
   const slices = questionPreviewSlices(group, manifest);
   if (!slices.length) throw new Error('QUESTION_PREVIEW_EMPTY');
-  const measured = await measureSlices(slices);
+  const measured = await measureSlices(slices, { fullWidth: true });
   const canvas = document.createElement('canvas');
   canvas.width = 1000;
   canvas.height = Math.max(1, fittedHeight(measured, 1));
@@ -906,7 +917,7 @@ function wholeQuestionMarkup(group, control) {
 }
 
 function wholeQuestionCards(keys) {
-  const items = keys.map((key) => library.get(key)).filter(Boolean);
+  const items = questionsForKeys(keys);
   return groupWholeQuestions(items).map((group) => `<article class="q-card q-card-whole">${wholeQuestionMarkup(group, '')}</article>`).join('');
 }
 
@@ -922,25 +933,18 @@ function wholeQuestionPickCards(pool) {
   }).join('');
 }
 
-function sheetCard(meta) {
-  const key = sheetKey(meta.pdfId);
-  const topicName = meta.topic || (currentTopic() ? currentTopic().title : meta.title);
-  return `<label class="q-card"><input type="checkbox" data-sheet="${escapeHTML(key)}" ${state.selected.includes(key) ? 'checked' : ''} aria-label="בחירת ${escapeHTML(topicName + ' ' + meta.levelLabel)}"><span class="q-content"><span class="q-title-line"><span class="q-title">${escapeHTML(meta.levelLabel)}</span><span class="badge extra">דף</span></span><span class="q-desc" style="display:block">${escapeHTML(topicName)}</span><span class="q-page" style="display:block">הדף המלא מהמקור</span></span></label>`;
-}
-
 function render() {
   const focusedQuestion = document.activeElement && document.activeElement.dataset.wholeQuestion;
   const ok = available();
   $('available-content').hidden = !ok;
   $('unavailable').hidden = ok;
   const cfg = SCENARIOS[state.scenario] || SCENARIOS.first;
-  const elementary = band() === 'elementary';
   $('result-title').textContent = ok ? (state.scenario === 'other' ? 'מרכיבים את הבחירה שלכם' : (pilotOn() ? cfg.title : cfg.label)) : 'בוחרים כיתה ונושא';
   $('result-summary').textContent = ok
-    ? (elementary ? 'בחירה לפי דף, נושא ורמה. ההדפסה מציגה את עמודי המקור כמו שהם.' : 'רואים כל שאלה כפי שהיא בדף המקור ומסמנים את השאלות השלמות שמתאימות, בכל מספר. כל נושא בדף הוא קטע מבחן או בניית דף חזרה על חומר.')
+    ? 'רואים כל שאלה כפי שהיא בדף המקור ומסמנים את השאלות השלמות שמתאימות, בכל מספר. כל נושא בדף הוא קטע מבחן או בניית דף חזרה על חומר.'
     : 'בוחרים כיתה ונושא מתוך הקטלוג.';
-  $('rationale').textContent = ok ? (elementary ? 'ביסודי בוחרים דף שלם לפי נושא ורמה.' : 'בחטיבה אין בחירה של סעיף בודד. שאלה נבחרת רק בשלמותה.') : '';
-  $('pedagogy-details').textContent = ok ? (pilotOn() ? cfg.details : (elementary ? 'ההדפסה מציגה את עמודי המקור, בלי מסגרת על הכותרת.' : 'ההדפסה מסמנת על עמוד המקור, או חותכת ממנו דף מצומצם. לא מנוסח דף חדש.')) : '';
+  $('rationale').textContent = ok ? 'בוחרים שאלה שלמה עם כל הסעיפים שלה, בכל הכיתות.' : '';
+  $('pedagogy-details').textContent = ok ? (pilotOn() ? cfg.details : 'ההדפסה מסמנת על עמוד המקור, או חותכת ממנו דף מצומצם. לא מנוסח דף חדש.') : '';
   $('style-help').textContent = STYLES[state.style].help;
   $('other-banner').hidden = state.scenario !== 'other';
   $('grade').value = String(state.grade);
@@ -952,42 +956,28 @@ function render() {
   const hint = $('scope-hint');
   if (hint && ok) {
     const topic = currentTopic();
-    hint.textContent = elementary
-      ? `${gradeRecord(state.grade).label} · ${topic.title}. בוחרים דף לפי רמה.`
-      : `${gradeRecord(state.grade).label} · ${topic.title}. ${groupWholeQuestions(currentExercises()).length} שאלות שלמות בדפי הנושא.`;
+    hint.textContent = `${gradeRecord(state.grade).label} · ${topic.title}. ${groupWholeQuestions(currentExercises()).length} שאלות שלמות בדפי הנושא.`;
   }
   const shortBtn = $('prepare-short');
-  if (shortBtn) shortBtn.hidden = elementary;
+  if (shortBtn) shortBtn.hidden = false;
   const prepareHint = $('prepare-hint');
-  if (prepareHint) prepareHint.textContent = elementary ? 'הדף המלא מהמקור, בלי סימון.' : 'דף מלא עם סימון, או דף מצומצם שנחתך מהמקור';
+  if (prepareHint) prepareHint.textContent = 'דף מלא עם סימון, או דף מצומצם שנחתך מהמקור';
   if (!ok) {
     paintSourceLine();
     applyWizard();
     return;
   }
-  if (elementary) {
-    const pool = state.filter === 'selected'
-      ? state.selected.filter((key) => key.startsWith('sheet:')).map((key) => byPdf.get(key.slice(6))).filter(Boolean)
-      : topicSheets();
-    $('available-count').textContent = topicSheets().length + ' דפים';
-    $('questions').innerHTML = pool.length
-      ? pool.map(sheetCard).join('')
-      : '<p class="empty">אין דף ברמה הזו. אפשר לחזור ל״הכל״.</p>';
-    $('show-more').hidden = true;
-    if ($('suggestion')) $('suggestion').hidden = true;
-  } else {
-    const availableGroups = currentQuestions();
-    const previousPreviews = new Map(Array.from($('questions').querySelectorAll('[data-preview-key]'), (node) => [node.dataset.previewKey, node]));
-    $('available-count').textContent = availableGroups.length + ' שאלות שלמות בדפי הנושא';
-    $('questions').innerHTML = wholeQuestionPickCards(availableGroups);
-    mountQuestionPreviews(availableGroups, previousPreviews);
-    $('show-more').hidden = true;
-    $('more-count').textContent = '';
-    if ($('suggestion')) $('suggestion').hidden = true;
-  }
-  const pageKeys = elementary ? state.selected : allSelectedKeys();
-  const chosenQuestions = elementary ? state.selected.length : blockQuestionCount(pageKeys);
-  $('selection-count').textContent = elementary ? state.selected.length + ' נבחרו' : chosenQuestions + ' שאלות';
+  const availableGroups = currentQuestions();
+  const previousPreviews = new Map(Array.from($('questions').querySelectorAll('[data-preview-key]'), (node) => [node.dataset.previewKey, node]));
+  $('available-count').textContent = availableGroups.length + ' שאלות שלמות בדפי הנושא';
+  $('questions').innerHTML = wholeQuestionPickCards(availableGroups);
+  mountQuestionPreviews(availableGroups, previousPreviews);
+  $('show-more').hidden = true;
+  $('more-count').textContent = '';
+  if ($('suggestion')) $('suggestion').hidden = true;
+  const pageKeys = allSelectedKeys();
+  const chosenQuestions = blockQuestionCount(pageKeys);
+  $('selection-count').textContent = chosenQuestions + ' שאלות';
   const pdfs = new Set(pageKeys.map((key) => key.split(':')[1]).filter(Boolean));
   $('selection-composition').textContent = pdfs.size ? 'מתוך ' + pdfs.size + (pdfs.size === 1 ? ' דף מקור' : ' דפי מקור') : '';
   $('undo').disabled = history.length === 0;
@@ -1135,7 +1125,7 @@ async function paintThumb(canvas) {
 function levelAllows(source) {
   if (!source) return true;
   if (state.level === 'all') return true;
-  if (!source.level || source.level === 'one' || source.level === state.level) return true;
+  if (!source.level || source.level === 'one' || source.level === state.level || (state.level === 'c' && source.level === 'c2')) return true;
   const topic = currentTopic();
   return !(topic && topic.sheets.some((sheet) => sheet.level === state.level));
 }
@@ -1559,7 +1549,28 @@ function coverSharedFigure(question, box, laterSelected, selectedIds) {
   return boxWithMasks({ ...box, page }, top, end, masks);
 }
 
+function wholeQuestionSlices(chosen) {
+  const slices = [];
+  const seen = new Set();
+  chosen.forEach((question) => {
+    const source = question.source || SOURCE;
+    const block = source.pdfId + ':q' + question.q;
+    (question.rows && question.rows.length ? question.rows : [question.row]).forEach((box) => {
+      if (!box) return;
+      const page = box.page || question.page;
+      const key = [block, page, box.x, box.y, box.w, box.h].join(':');
+      if (seen.has(key)) return;
+      seen.add(key);
+      slices.push({ page, box: { ...box }, gap: 8, block, kind: 'row', pdfId: source.pdfId });
+    });
+  });
+  return slices;
+}
+
 function shortSlices(chosen) {
+  // These rows already enclose a complete original question and its context.
+  // Legacy per-part footer, ink and shared-drawing adjustments would clip them.
+  if (SOURCE && SOURCE.wholeQuestionGeometry) return wholeQuestionSlices(chosen);
   const ordered = chosen.slice().sort((a, b) => (
     a.page - b.page || (a.q - b.q) || partRank(a.part) - partRank(b.part) || SOURCE.questions.indexOf(a) - SOURCE.questions.indexOf(b)
   ));
@@ -2018,8 +2029,9 @@ function worksheetTitle(chosen) {
   return topics.join(' · ') || (SOURCE && SOURCE.topic) || 'דף תרגול';
 }
 
-async function measureSlices(slices) {
+async function measureSlices(slices, options) {
   const OUT_W = 1000;
+  const fullWidth = Boolean(options && options.fullWidth);
   const measured = [];
   for (const slice of slices) {
     if (slice.kind === 'level' || slice.kind === 'section' || slice.kind === 'points') {
@@ -2030,8 +2042,8 @@ async function measureSlices(slices) {
     const bitmap = await pageBitmap(slice.page, sheets.get(slice.pdfId) || SOURCE);
     const sw = Math.max(1, slice.box.w * bitmap.width);
     const sh = Math.max(1, slice.box.h * bitmap.height);
-    const dw = slice.box.w < 0.5 ? slice.box.w * OUT_W : OUT_W;
-    measured.push({ slice, bitmap, sw, sh, dh: Math.max(1, Math.round(dw * sh / sw)) });
+    const dw = !fullWidth && slice.box.w < 0.5 ? slice.box.w * OUT_W : OUT_W;
+    measured.push({ slice, bitmap, sw, sh, dh: Math.max(1, Math.round(dw * sh / sw)), fullWidth });
   }
   return measured;
 }
@@ -2150,7 +2162,7 @@ function paintMeasuredPage(ctx, items, top, scale) {
     } else {
       const sx = item.slice.box.x * item.bitmap.width;
       const sy = item.slice.box.y * item.bitmap.height;
-      const narrow = item.slice.box.w < 0.5;
+      const narrow = !item.fullWidth && item.slice.box.w < 0.5;
       const dx = x0 + (narrow ? item.slice.box.x * drawW : 0);
       const dw = narrow ? item.slice.box.w * drawW : drawW;
       ctx.drawImage(item.bitmap, sx, sy, item.sw, item.sh, dx, y, dw, dh);
@@ -2234,18 +2246,44 @@ async function sheetTextLines(source) {
   return lines;
 }
 
+function answerFallbackSlices(source) {
+  const start = Number(source.answerStartPage);
+  const end = Number(source.pageCount);
+  if (!Number.isInteger(start) || start < 1 || !Number.isInteger(end) || start > end) return [];
+  const slices = [{
+    page: start, pdfId: source.pdfId, gap: 8, kind: 'level',
+    block: 'answers-head:' + source.pdfId,
+    label: [levelPrintName(source.level, source.levelLabel), 'תשובות מדף המקור המלא'].filter(Boolean).join(' · '),
+  }];
+  for (let page = start; page <= end; page += 1) {
+    slices.push({ page, pdfId: source.pdfId, box: { x: 0, y: 0, w: 1, h: 1 },
+      gap: 6, block: 'answers-page:' + source.pdfId + ':' + page, kind: 'answer' });
+  }
+  return slices;
+}
+
 async function answerMeasured(groups) {
   const slices = [];
   for (const group of groups) {
+    if (group.source.answerGeometry === 'full-pages') {
+      // Outlined PDFs can contain a searchable overlay at unrelated positions.
+      // Use the verified source answer pages instead of those text coordinates.
+      slices.push(...answerFallbackSlices(group.source));
+      continue;
+    }
     let lines = [];
     try {
       lines = await sheetTextLines(group.source);
     } catch (error) {
-      continue;
+      // Some source PDFs have an outline but no extractable answer text.
+      // Their checked answer-page metadata preserves the original answers.
     }
     const wanted = group.questions.map((question) => ({ q: question.q, part: question.part || '' }));
     const crops = answerCropsFromLines(lines, wanted);
-    if (!crops.length) continue;
+    if (!crops.length) {
+      slices.push(...answerFallbackSlices(group.source));
+      continue;
+    }
     const head = lines.find((line) => {
       const text = String(line.text).replace(/\s/g, '');
       return text.startsWith('תשובות') && text.length < 24;
@@ -2395,57 +2433,39 @@ async function updateShortPrint(plan, printArea, chosen, note, cfg, blocks) {
   await attachTeacherNote(printArea, note);
 }
 
-function elementarySource(meta, pageCount) {
-  const questions = [];
-  for (let page = 1; page <= pageCount; page += 1) {
-    questions.push({
-      id: 'p' + page,
-      q: page,
-      part: '',
-      page,
-      label: meta.levelLabel + ' · עמוד ' + page,
-      text: meta.title,
-      box: null,
-      row: { page, x: 0.03, y: 0.04, w: 0.94, h: 0.92 },
-    });
-  }
-  const source = {
-    ...meta,
-    mode: 'sheet',
-    pageCount,
-    headerCrop: { page: 1, x: 0.04, y: 0.012, w: 0.92, h: 0.036 },
-    footerCrop: { page: pageCount, x: 0.04, y: 0.955, w: 0.92, h: 0.03 },
-    questions,
-  };
-  questions.forEach((question) => { question.source = source; });
-  return source;
+function sourceForContext(source, context) {
+  const grade = context && gradeRecord(context.grade);
+  const topic = grade && grade.topics.find((item) => String(item.id) === String(context.topic));
+  const meta = topic && topic.sheets.find((item) => item.pdfId === source.pdfId);
+  if (!meta) return source;
+  // PDF geometry is shared, but a saved section retains the grade/topic in which
+  // its questions were chosen. Never rewrite the cached original for a new scope.
+  const scoped = { ...source, ...meta, grade: grade.grade, gradeLabel: grade.label,
+    topic: topic.title, title: meta.title || source.title };
+  scoped.questions = source.questions.map((question) => ({ ...question, source: scoped }));
+  return scoped;
 }
 
-async function materializeElementary(pdfId) {
-  const cached = sheets.get(pdfId);
-  if (cached && cached.questions && cached.questions.length) return cached;
-  const meta = byPdf.get(pdfId);
-  if (!meta) return null;
-  const pdf = await loadPdf(meta);
-  const source = elementarySource(meta, pdf.numPages);
-  sheets.set(pdfId, source);
-  return source;
+function questionsForKeys(keys, context = state) {
+  const wanted = new Set(keys || []);
+  const pdfs = [...new Set([...wanted].map((key) => key.split(':')[1]))];
+  // Repeated legacy part IDs can denote more than one source region. Keep all
+  // source records for printing while the selected ID itself remains unique.
+  return pdfs.flatMap((pdfId) => {
+    const original = sheets.get(pdfId);
+    const source = original && sourceForContext(original, context);
+    return source ? source.questions.filter((question) => wanted.has(exKey(pdfId, question.id))) : [];
+  });
 }
 
 async function resolveChosen() {
-  const chosen = [];
   const allow = new Set(visibleSelectionKeys());
+  const keys = [];
   for (const key of state.selected) {
     if (!allow.has(key)) continue;
-    if (key.startsWith('sheet:')) {
-      const source = await materializeElementary(key.slice(6));
-      if (source) source.questions.forEach((question) => chosen.push(question));
-    } else {
-      const question = library.get(key);
-      if (question) chosen.push(question);
-    }
+    keys.push(key);
   }
-  return chosen;
+  return questionsForKeys(keys);
 }
 
 async function updatePrint() {
@@ -2456,15 +2476,16 @@ async function updatePrint() {
     printArea.innerHTML = PRINT_UNPREPARED;
     return;
   }
-  const carried = band() === 'elementary' ? [] : pageBlocks();
-  const onPage = new Set(carried.flatMap((block) => block.questions));
-  const current = (await resolveChosen()).filter((question) => !onPage.has(question));
-  const chosen = [...onPage].concat(current);
+  const carried = pageBlocks();
+  const savedQuestions = carried.flatMap((block) => block.questions);
+  const onPage = new Set(savedQuestions.map((question) => exKey(question.source.pdfId, question.id)));
+  const current = (await resolveChosen()).filter((question) => !onPage.has(exKey(question.source.pdfId, question.id)));
+  const chosen = savedQuestions.concat(current);
   const blocks = carried.length || state.sectionKind === 'test'
     ? carried.concat(current.length ? [{ kind: sectionKind(state.sectionKind), title: currentTopic() ? currentTopic().title : '', questions: current }] : [])
     : null;
   if (!chosen.length) {
-    plan.innerHTML = '<p>עדיין לא נבחרו שאלות או דפים מתוך הקטלוג.</p>';
+    plan.innerHTML = '<p>עדיין לא נבחרו שאלות מתוך הקטלוג.</p>';
     printArea.innerHTML = PRINT_UNPREPARED;
     return;
   }
@@ -2487,9 +2508,8 @@ async function updatePrint() {
 
 async function prepare(mode) {
   if (rendering) return;
-  if (mode === 'short' && band() === 'elementary') return;
   if (!state.selected.length && !state.blocks.length) {
-    announce(band() === 'elementary' ? 'עדיין לא נבחר דף.' : 'עדיין לא נבחרו שאלות.');
+    announce('עדיין לא נבחרו שאלות.');
     return;
   }
   if (mode === 'marked' && pageNeedsSections()) {
@@ -2526,14 +2546,6 @@ async function prepare(mode) {
   }
 }
 
-function elementaryPreset(value) {
-  const sheetsHere = topicSheets();
-  const want = { first: ['a', 'one'], spiral: ['a', 'b'], practice: ['b'], exam: ['c'] }[value] || ['a', 'one'];
-  const picked = sheetsHere.filter((sheet) => want.includes(sheet.level));
-  const list = picked.length ? picked : sheetsHere.slice(0, 1);
-  return list.map((sheet) => sheetKey(sheet.pdfId));
-}
-
 function applyScenario(value, options) {
   const quiet = options && options.quiet;
   const before = selectionKey();
@@ -2542,8 +2554,7 @@ function applyScenario(value, options) {
   state.expanded = false;
   state.filter = 'all';
     if (value !== 'other') {
-    if (band() === 'elementary') state.selected = elementaryPreset(value);
-    else if (state.pickMode !== 'manual') state.selected = assignWholeQuestions(state.lastQuestionCount || 5);
+    if (state.pickMode !== 'manual') state.selected = assignWholeQuestions(state.lastQuestionCount || 5);
     else state.pickNote = '';
   } else {
     state.pickNote = '';
@@ -2599,12 +2610,10 @@ async function loadCurrentTopic() {
   const topic = currentTopic();
   if (!topic) return;
   const run = (async () => {
-    if (band() === 'middle') {
-      await Promise.all(topic.sheets.filter((sheet) => sheet.mode === 'exercise').map(async (sheet) => {
-        const source = await loadExerciseSheet(sheet.pdfId);
-        await loadQuestionPreviewManifest(source).catch(() => null);
-      }));
-    }
+    await Promise.all(topic.sheets.map(async (sheet) => {
+      const source = await loadExerciseSheet(sheet.pdfId);
+      await loadQuestionPreviewManifest(source).catch(() => null);
+    }));
     if (token !== loadToken) return;
     if (sheets.has(FACTORING_PDF)) {
       const known = new Set(sheets.get(FACTORING_PDF).questions.map((question) => question.id));
@@ -2638,7 +2647,7 @@ function applyWizard() {
     level: 'רמה',
     scenario: 'מה קורה בשיעור?',
     style: 'איך ניגשים לתרגול?',
-    pick: band() === 'elementary' ? 'בחירת דף' : 'בוחרים שאלות',
+    pick: 'בוחרים שאלות',
     result: 'הדף להדפסה',
   };
   $('wizard-label').textContent = labels[step];
@@ -2667,13 +2676,13 @@ async function showWizardResult() {
   const preview = $('wizard-preview');
   if (!preview) return;
   if (!state.selected.length && !state.blocks.length) {
-    announce(band() === 'elementary' ? 'עדיין לא נבחר דף.' : 'עדיין לא נבחרו שאלות.');
+    announce('עדיין לא נבחרו שאלות.');
     state.wizard = 'pick';
     applyWizard();
     return;
   }
   preview.textContent = 'מכינים את הדף…';
-  printMode = band() === 'elementary' ? 'marked' : 'short';
+  printMode = 'short';
   try {
     await updatePrint();
     copyCanvases($('print-area'), preview);
@@ -2707,7 +2716,6 @@ function bind() {
   $('questions').addEventListener('change', (event) => {
     const box = event.target;
     if (box.matches('[data-whole-question]')) toggleWholeQuestion(box.dataset.wholeQuestion, box.checked);
-    if (box.matches('[data-sheet]')) selectKey(box.dataset.sheet, box.checked);
   });
   document.querySelectorAll('[name=scenario]').forEach((el) => el.addEventListener('change', () => {
     if (el.checked) applyScenario(el.value);
@@ -2723,9 +2731,8 @@ function bind() {
     state.expanded = false;
     let next = keepVisible(state.selected, visibleSelectionKeys());
     if (!next.length && state.scenario !== 'other') {
-      if (band() === 'elementary') next = elementaryPreset(state.scenario);
-      else if (state.pickMode !== 'manual') next = assignWholeQuestions(state.lastQuestionCount || 5);
-    } else if (band() !== 'elementary') {
+      if (state.pickMode !== 'manual') next = assignWholeQuestions(state.lastQuestionCount || 5);
+    } else {
       next = expandToWholeQuestionKeys(currentExercises(), next);
     }
     if (next.join('\n') !== selectionKey()) {
@@ -2742,7 +2749,6 @@ function bind() {
     state.selected = [];
     state.moreDismissed = false;
     state.topic = '';
-    dropBlocksOnElementary();
     history = [];
     clearPreparedPrint();
     fillTopics();
@@ -2887,12 +2893,13 @@ function applyWizardPrefill(prefill) {
   state.level = prefill.level || 'all';
   state.scenario = 'other';
   state.expanded = true;
-  dropBlocksOnElementary();
   fillGrades();
   fillTopics();
   return loadCurrentTopic().then(() => {
     const allow = new Set(visibleSelectionKeys());
-    const ids = prefill.exerciseIds || [];
+    const ids = (prefill.exerciseIds || []).flatMap((id) => id.startsWith('sheet:')
+      ? currentExercises().filter((question) => question.source.pdfId === id.slice(6)).map((question) => exKey(question.source.pdfId, question.id))
+      : [id]);
     const saved = carriedKeys();
     state.selected = expandToWholeQuestionKeys(currentExercises(), ids.filter((id) => allow.has(id))).filter((key) => !saved.has(key));
     state.pickNote = '';

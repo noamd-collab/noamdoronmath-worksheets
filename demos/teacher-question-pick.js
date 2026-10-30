@@ -117,7 +117,7 @@ export function pickWholeQuestions(pool, count, random = Math.random) {
   const shortfall = groups.length < requested;
   const target = Math.min(requested, groups.length);
   const chosen = spreadGroups(groups, target, random);
-  const keys = chosen.flatMap((group) => group.questions.map(exerciseKey));
+  const keys = [...new Set(chosen.flatMap((group) => group.questions.map(exerciseKey)))];
   return {
     keys,
     questionCount: chosen.length,
@@ -130,7 +130,7 @@ export function pickWholeQuestions(pool, count, random = Math.random) {
 
 export function expandToWholeQuestionKeys(pool, keys) {
   const wanted = new Set(keys || []);
-  return groupWholeQuestions(pool)
+  return [...new Set(groupWholeQuestions(pool)
     .filter((group) => group.questions.some((question) => wanted.has(exerciseKey(question))))
-    .flatMap((group) => group.questions.map(exerciseKey));
+    .flatMap((group) => group.questions.map(exerciseKey)))];
 }

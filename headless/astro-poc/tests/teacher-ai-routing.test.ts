@@ -10,7 +10,7 @@ const teacherIndex = JSON.parse(readFileSync(new URL('../src/data/teacher-pick-i
 const picker = readFileSync(new URL('../public/teachers/teacher-factoring-print.js', import.meta.url), 'utf8');
 const messageTemplate = picker.match(/message:\s*(`[^`]+`),\s*\n\s*page:/)?.[1];
 assert.ok(messageTemplate, 'Test the real button prompt, including words that can also match navigation intents');
-const pickerMessage = new Function('count', `return ${messageTemplate};`) as (count: number) => string;
+const pickerMessage = new Function('count', `const target = count; return ${messageTemplate};`) as (count: number) => string;
 const sheet = teacherIndex.find((item: { grade: number; topicId: string; level: string }) => item.grade === 9 && item.topicId === '2' && item.level === 'a');
 assert.ok(sheet);
 const candidates = (sheet.questions as string[]).filter((label) => /^\d+א$/.test(label)).map((label) => ({

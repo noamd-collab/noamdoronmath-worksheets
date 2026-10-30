@@ -237,13 +237,13 @@ describe('Noam AI headless endpoint', () => {
     assert.deepEqual(pick.sheetIds, []);
   });
 
-  it('indexes elementary sheets and middle-school exercises from the catalog', () => {
+  it('indexes mapped questions for every elementary and middle-school sheet', () => {
     const rows = JSON.parse(readFileSync(new URL('../src/data/teacher-pick-index.json', import.meta.url), 'utf8'));
     const elementary = rows.filter((row: { band: string }) => row.band === 'elementary');
     const middle = rows.filter((row: { band: string; questions: string[] }) => row.band === 'middle' && row.questions.length > 0);
     assert.ok(elementary.length > 100);
     assert.ok(middle.length > 100);
-    assert.equal(elementary.some((row: { questions: string[] }) => row.questions.length > 0), false);
+    assert.ok(elementary.every((row: { mode: string; questions: string[] }) => row.mode === 'exercise' && row.questions.length > 0), 'Every elementary PDF must have mapped questions in the generated index');
     assert.ok(middle.some((row: { topic: string; questions: string[] }) => row.topic.includes('פירוק') && row.questions.includes('1א')));
   });
 

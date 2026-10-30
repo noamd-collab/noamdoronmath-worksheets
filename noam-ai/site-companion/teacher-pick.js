@@ -1,8 +1,7 @@
 /**
  * Teacher requests: Qwen Flash only classifies the words the teacher used.
  * The ids and links that go back are taken from the site catalog after that.
- * Middle school (grades 7–9) returns individual exercises that already exist.
- * Elementary returns the matching sheet, topic, and level — not single items.
+ * Question choices in every grade are grounded in the mapped source exercises.
  */
 import { QWEN_MODEL, callQwen } from "./companion.js";
 import { resolveNavigationIntent } from "./intent.js";
@@ -23,8 +22,9 @@ export const CLASSIFIER_SYSTEM = [
   '{"grade":null,"topicQuery":"","level":null,"exerciseLabels":[],"wantsSheet":false}',
   "grade הוא מספר מ־1 עד 9, או null אם המורה לא אמר כיתה.",
   "level הוא a או b או c, או null.",
-  "exerciseLabels רק מספרים שהמורה כתב או ביקש מתוך הסעיפים הקיימים בדף, בצורת 1א או 2ב (או a:1א כשיש כמה רמות).",
-  "אם צוינה כמות מבוקשת לבחירה (כמו 15, 30 או 45), בחר מתוך רשימת הסעיפים הקיימים בדף את הסעיפים המתאימים ביותר למטרת השיעור, לסגנון ההוראה ולהערת המורה.",
+  "exerciseLabels הם מזהים מהרשימה בלבד: 1 או 16 לשאלה בלי סעיפים, 1א או 2ב לשאלה עם סעיפים, או a:16, b:1א ו־c2:1א כאשר המזהה כולל רמה. העתק את המזהה בדיוק כפי שהוא ברשימה.",
+  "אם צוינה כמות מבוקשת לבחירה, בחר בדיוק את הכמות המבוקשת מתוך רשימת השאלות הקיימות, בהתאם למטרת השיעור, לסגנון ההוראה ולהערת המורה. כל מזהה שניתן לך מייצג שאלה שלמה; אין לבחור מזהה שאינו ברשימה.",
+  "כאשר הערת המורה מבקשת שאלות מסוימות שקיימות ברשימה, כבד את הבחירה המפורשת ולא רק את סדר השאלות או סגנון השיעור.",
   "wantsSheet הוא true כשהמורה ביקש דף, נושא או רמה בלי סעיף מסוים.",
 ].join("\n");
 
@@ -39,13 +39,15 @@ function clip(value, max) {
 function sanitizeCandidates(raw) {
   if (!Array.isArray(raw)) return [];
   const out = [];
-  for (const item of raw.slice(0, 120)) {
+  const seen = new Set();
+  for (const item of raw) {
     if (!item || typeof item !== "object") continue;
-    const id = clip(item.id || item.label, 24).replace(/\s+/g, "");
-    const label = normalizeLabel(item.label || item.id);
-    if (!label) continue;
+    const id = normalizeScopedLabel(item.id || item.label);
+    const label = normalizeLabel(id);
+    if (!id || !label || seen.has(id)) continue;
+    seen.add(id);
     out.push({
-      id: id || label,
+      id,
       label,
       text: clip(item.text, 80),
     });
@@ -101,13 +103,13 @@ export function labelsInText(value) {
 
 export function normalizeLabel(value) {
   const text = String(value || "").replace(/\s+/g, "").replace(/['׳]/g, "");
-  const scoped = text.match(/^(?:[abc]:)?(\d{1,2})([\u05D0-\u05EA])$/i);
+  const scoped = text.match(/^(?:(?:[abc]|c2):)?([1-9]\d{0,2})([\u05D0-\u05EA]?)$/i);
   return scoped ? scoped[1] + scoped[2] : "";
 }
 
 function normalizeScopedLabel(value) {
   const text = String(value || "").replace(/\s+/g, "").replace(/['׳]/g, "");
-  const match = text.match(/^([abc]):(\d{1,2})([\u05D0-\u05EA])$/i);
+  const match = text.match(/^([abc]|c2):([1-9]\d{0,2})([\u05D0-\u05EA]?)$/i);
   if (match) return match[1].toLowerCase() + ":" + match[2] + match[3];
   const plain = normalizeLabel(text);
   return plain;
@@ -127,7 +129,7 @@ export function parseClassifier(content) {
     return {
       grade: grade >= 1 && grade <= 9 ? grade : null,
       topicQuery: clip(parsed.topicQuery, 80),
-      level: level === "a" || level === "b" || level === "c" ? level : null,
+      level: level === "a" || level === "b" || level === "c" || level === "c2" ? level : null,
       exerciseLabels: labels.map(normalizeLabel).filter(Boolean).slice(0, MAX_BATCH_PICK_EXERCISES),
       scopedExerciseLabels: labels.map(normalizeScopedLabel).filter(Boolean).slice(0, MAX_BATCH_PICK_EXERCISES),
       wantsSheet: parsed.wantsSheet === true,
@@ -153,32 +155,38 @@ export function classifierRequestBody(input, index) {
   ];
   if (count > 0) {
     lines.push("כמות מבוקשת לבחירה: " + count);
-    if (teacher.candidates.length) {
+    const matching = matchingTeacherSheets(index, teacher);
+    const knownIds = new Set();
+    for (const sheet of matching) {
+      for (const rawLabel of sheet.questions || []) {
+        const label = normalizeLabel(rawLabel);
+        if (!label) continue;
+        knownIds.add(label);
+        if (/^(?:[abc]|c2)$/.test(sheet.level)) knownIds.add(sheet.level + ":" + label);
+      }
+    }
+    const candidates = Array.isArray(index)
+      ? teacher.candidates.filter((candidate) => knownIds.has(candidate.id))
+      : teacher.candidates;
+    if (candidates.length) {
       lines.push(
-        "סעיפים קיימים בדף לבחירה: " +
-          teacher.candidates
-            .slice(0, 90)
+        "שאלות קיימות בדף לבחירה: " +
+          candidates
             .map((item) => (item.text ? `${item.id} (${item.text})` : item.id))
             .join(" | ")
       );
     } else if (Array.isArray(index) && index.length) {
-      const gradeNum = numberOrNull(teacher.grade);
-      const topicId = /^\d{1,6}$/.test(teacher.topic) ? String(teacher.topic) : "";
-      const lvl = levelOrEmpty(teacher.level);
-      const matching = index.filter((sheet) => {
-        if (gradeNum && Number(sheet.grade) !== gradeNum) return false;
-        if (topicId && String(sheet.topicId) !== topicId) return false;
-        if (lvl && String(sheet.level) !== lvl) return false;
-        return Array.isArray(sheet.questions) && sheet.questions.length > 0;
-      });
       const availableLabels = [];
+      const seen = new Set();
       for (const sheet of matching) {
-        const prefix = matching.length > 1 && sheet.level ? sheet.level + ":" : "";
+        const prefix = matching.length > 1 && /^(?:[abc]|c2)$/.test(sheet.level) ? sheet.level + ":" : "";
         for (const q of sheet.questions || []) {
-          availableLabels.push(prefix + q);
-          if (availableLabels.length >= 120) break;
+          const label = normalizeLabel(q);
+          const id = prefix + label;
+          if (!label || seen.has(id)) continue;
+          seen.add(id);
+          availableLabels.push(id);
         }
-        if (availableLabels.length >= 120) break;
       }
       if (availableLabels.length) {
         lines.push("סעיפים קיימים בדף לבחירה: " + availableLabels.join(", "));
@@ -200,6 +208,21 @@ export function classifierRequestBody(input, index) {
   };
 }
 
+function matchingTeacherSheets(index, teacher) {
+  const grade = numberOrNull(teacher.grade);
+  const topic = /^\d{1,6}$/.test(teacher.topic) ? String(teacher.topic) : "";
+  const level = levelOrEmpty(teacher.level);
+  // A page picker always identifies its grade and topic. An open-ended chat
+  // request is classified first; do not send the entire site as its candidate pool.
+  if (!grade || !topic) return [];
+  return (Array.isArray(index) ? index : []).filter((sheet) => {
+    if (grade && Number(sheet.grade) !== grade) return false;
+    if (topic && String(sheet.topicId) !== topic) return false;
+    if (!matchesTeacherLevel(sheet, level)) return false;
+    return Array.isArray(sheet.questions) && sheet.questions.length > 0;
+  });
+}
+
 function tokens(value) {
   return String(value || "")
     .toLowerCase()
@@ -214,7 +237,12 @@ function numberOrNull(value) {
 
 function levelOrEmpty(value) {
   const level = String(value || "").toLowerCase();
-  return level === "a" || level === "b" || level === "c" ? level : "";
+  return level === "a" || level === "b" || level === "c" || level === "c2" ? level : "";
+}
+
+function matchesTeacherLevel(sheet, level) {
+  return !level || String(sheet.level) === level || sheet.level === "one" ||
+    (level === "c" && sheet.level === "c2");
 }
 
 function sheetScore(sheet, queryTokens) {
@@ -248,22 +276,30 @@ function orderPoolByGoal(available, goal) {
   return available.slice();
 }
 
-export function selectBatchExercises(pool, count, goal, classified) {
+export function selectBatchExercises(pool, count, goal, classified, candidates) {
   const available = [];
+  const knownKeys = new Set();
+  const allowed = Array.isArray(candidates) && candidates.length
+    ? new Set(candidates.map((item) => item.id))
+    : null;
   let orderIndex = 0;
   for (const sheet of pool) {
     for (const rawLabel of sheet.questions || []) {
       const label = String(rawLabel);
+      const key = "ex:" + sheet.pdfId + ":" + label;
+      const scoped = /^(?:[abc]|c2)$/.test(String(sheet.level)) ? sheet.level + ":" + label : label;
+      if (knownKeys.has(key) || (allowed && !allowed.has(scoped) && !allowed.has(label))) continue;
+      knownKeys.add(key);
       available.push({
-        key: "ex:" + sheet.pdfId + ":" + label,
+        key,
         sheet,
         label,
-        scoped: String(sheet.level || "").toLowerCase() + ":" + label,
+        scoped,
         orderIndex: orderIndex++,
       });
     }
   }
-  if (!available.length) return { exerciseIds: [], sheets: [] };
+  if (!available.length) return { exerciseIds: [], modelExerciseIds: [], sheets: [], selectionSource: "fallback" };
   const target = Math.min(count, available.length);
   const chosen = [];
   const used = new Set();
@@ -279,12 +315,17 @@ export function selectBatchExercises(pool, count, goal, classified) {
       : [];
   for (const raw of scopedLabels) {
     const token = String(raw || "");
-    const match = token.includes(":")
-      ? available.find((item) => item.scoped === token && !used.has(item.key))
-      : available.find((item) => item.label === token && !used.has(item.key));
+    const matches = available.filter((item) => token.includes(":")
+      ? item.scoped === token
+      : item.label === token);
+    // A missing level must not silently become a choice of the first level.
+    // Match before excluding used keys so repeated labels cannot consume a
+    // different source question and be reported as additional model choices.
+    const match = matches.length === 1 ? matches[0] : null;
     if (match) addItem(match);
     if (chosen.length >= target) break;
   }
+  const modelExerciseIds = chosen.map((item) => item.key);
   if (chosen.length < target) {
     const ordered = orderPoolByGoal(available, goal);
     const remaining = ordered.filter((item) => !used.has(item.key));
@@ -306,7 +347,8 @@ export function selectBatchExercises(pool, count, goal, classified) {
   const pickedSheets = pool.filter((sheet) =>
     exerciseIds.some((id) => id.startsWith("ex:" + sheet.pdfId + ":"))
   );
-  return { exerciseIds, sheets: pickedSheets };
+  const selectionSource = modelExerciseIds.length === target ? "classifier" : modelExerciseIds.length ? "mixed" : "fallback";
+  return { exerciseIds, modelExerciseIds, sheets: pickedSheets, selectionSource };
 }
 
 export function selectTeacherPicks(index, input, classification) {
@@ -327,7 +369,7 @@ export function selectTeacherPicks(index, input, classification) {
   let pool = rows.filter((sheet) => {
     if (grade && Number(sheet.grade) !== grade) return false;
     if (topicId && String(sheet.topicId) !== topicId) return false;
-    if (level && String(sheet.level) !== level) return false;
+    if (!matchesTeacherLevel(sheet, level)) return false;
     return true;
   });
   if (!topicId) {
@@ -341,7 +383,7 @@ export function selectTeacherPicks(index, input, classification) {
     return { band: grade && grade <= 6 ? "elementary" : "middle", exerciseIds: [], sheetIds: [], sheets: [] };
   }
   const band = pool[0].band === "elementary" || Number(pool[0].grade) <= 6 ? "elementary" : "middle";
-  if (band === "elementary") {
+  if (band === "elementary" && !batchCount && !pool.some((sheet) => sheet.mode === "exercise" && sheet.questions?.length)) {
     const chosenSheets = pool.slice(0, MAX_PICKED_SHEETS);
     return {
       band,
@@ -351,10 +393,12 @@ export function selectTeacherPicks(index, input, classification) {
     };
   }
   if (batchCount > 0) {
-    const picked = selectBatchExercises(pool, batchCount, teacher.goal || "first", classified);
+    const picked = selectBatchExercises(pool, batchCount, teacher.goal || "first", classified, teacher.candidates);
     return {
       band,
       exerciseIds: picked.exerciseIds,
+      modelExerciseIds: picked.modelExerciseIds,
+      selectionSource: picked.selectionSource,
       sheetIds: [],
       sheets: picked.sheets,
     };
@@ -391,7 +435,12 @@ export function selectTeacherPicks(index, input, classification) {
 
 export function hrefForSheet(sheet, catalog) {
   const records = buildCatalogRecords(catalog || {});
-  const viewer = records.find((record) => record.pdfId === sheet.pdfId);
+  // The same original PDF can serve topics in more than one grade. Keep the
+  // requested catalog context; its viewer still uses the original source g/x.
+  const matching = records.filter((record) => record.pdfId === sheet.pdfId &&
+    (sheet.grade == null || Number(record.grade) === Number(sheet.grade)));
+  const sameTopic = matching.filter((record) => sheet.topicId == null || String(record.topicId) === String(sheet.topicId));
+  const viewer = sameTopic.find((record) => record.levelKey === sheet.level) || sameTopic[0] || matching[0];
   if (viewer && viewer.href) return viewer.href;
   return sheet.pdfUrl || "";
 }
@@ -402,7 +451,7 @@ export function describePicks(pick) {
   const place = sheets
     .map((sheet) => [sheet.gradeLabel, sheet.topic, sheet.levelLabel].filter(Boolean).join(" · "))
     .join(" ; ");
-  if (pick.band === "elementary") {
+  if (!(pick.exerciseIds || []).length && (pick.sheetIds || []).length) {
     return "הדף שכבר קיים באתר: " + place + ".";
   }
   const allLabels = (pick.exerciseIds || []).map((id) => String(id).split(":").pop());

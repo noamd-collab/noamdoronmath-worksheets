@@ -1,0 +1,77 @@
+{
+  "3d56bca1424241c29d27bdf2fda0daef": {
+    "sourceSha256": "2a187edaba7b1cd143df99419b13925b00f3df913cc706629f3fcfbbe6da3b85",
+    "questions": {
+      "16": {
+        "bottom": 286
+      },
+      "17": {
+        "top": 286
+      }
+    },
+    "reason": "Verified gap: Q16 fraction denominators end at283.437pt; Q17 first fraction ink begins at288.33pt."
+  },
+  "325dbe7b49a341aebe80b552c9cd80ec": {
+    "sourceSha256": "e41a374ce846471e8c0e83768a6200230528d617a6c40785847befae04d2e0fd",
+    "questions": {
+      "1": {
+        "right": 563.8
+      },
+      "7": {
+        "right": 573.7
+      }
+    },
+    "reason": "Complete original connected square patterns overflow the decorative card: Q7 ends572.196899pt in all levels; Q1A ends566.905518pt; Q1C ends562.275635pt. Retain all columns plus1.5pt margin."
+  },
+  "608ccf74446b420e8d28a36ba023e34d": {
+    "sourceSha256": "c8338ce12026b2cf283d6cc5416f4e112981aec03b15a2ff341513805dac5d8b",
+    "questions": {
+      "7": {
+        "right": 573.7
+      }
+    },
+    "reason": "Complete original connected square patterns overflow the decorative card: Q7 ends572.196899pt in all levels; Q1A ends566.905518pt; Q1C ends562.275635pt. Retain all columns plus1.5pt margin."
+  },
+  "79cc6db7432d4fd6a683ef45980d4299": {
+    "sourceSha256": "84829ac923de4bea8adc756a7e112ba534407a1c17f7587b65cafac47d4afff1",
+    "questions": {
+      "1": {
+        "right": 568.4
+      },
+      "7": {
+        "right": 573.7
+      }
+    },
+    "reason": "Complete original connected square patterns overflow the decorative card: Q7 ends572.196899pt in all levels; Q1A ends566.905518pt; Q1C ends562.275635pt. Retain all columns plus1.5pt margin."
+  },
+  "ce932ef443044f35a4c07f938bf954f0": {
+    "sourceSha256": "5777a39e20412220b238b9678d2b6ad5ed29eef557ae6ef3fe012cba7b6cb820",
+    "questions": {
+      "15": {
+        "bottom": 263
+      },
+      "16": {
+        "top": 263
+      },
+      "17": {
+        "bottom": 401
+      },
+      "18": {
+        "top": 401
+      }
+    },
+    "reason": "Verified physical white gaps: Q15 denominator ends260.397pt / Q16 numerator starts265.291pt; Q17 denominator ends398.198pt / Q18 text starts404.226pt."
+  },
+  "a0977442f65941728bdbb3e5f0a2ce83": {
+    "sourceSha256": "61aa53fc6779ca7ad83464db55e41dc852dc6df91fb83dddf880c3c6e4068be5",
+    "questions": {
+      "17": {
+        "bottom": 286
+      },
+      "18": {
+        "top": 286
+      }
+    },
+    "reason": "Verified physical white gap: Q17 denominators end283.437pt and Q18 numerator starts288.331pt."
+  }
+}

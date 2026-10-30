@@ -120,6 +120,7 @@ function teacherAnswer(pick, catalog) {
     essentialNote: QUESTION_GAP,
     exportNote: EXPORT_NOTE,
     exerciseIds: pick.exerciseIds,
+    modelExerciseIds: pick.modelExerciseIds || [],
     sheetIds: pick.sheetIds,
   };
 }
@@ -199,12 +200,21 @@ export async function runCompanionTurn(payload, deps) {
     }
     const body = teacherAnswer(pick, settings.catalog);
     if (classification) body.model = resolveQwenTarget({model: settings.qwenModel, baseUrl: settings.qwenBaseUrl}).model;
-    if (!classification) {
+    if (classification && pick.selectionSource) body.source = pick.selectionSource;
+    if (!classification || pick.selectionSource === "fallback") {
       body.model = null;
       body.source = "fallback";
-      body.code = classificationFailure;
-      body.answer = "החיבור למודל לא הצליח. הנה בחירה בסיסית מהמאגר: " + body.answer;
+      body.code = classification ? "MODEL_SELECTION_INVALID" : classificationFailure;
+      body.answer = (classification
+        ? "לא התקבלה מהמודל בחירה תקינה של שאלות. הנה בחירה בסיסית מהמאגר: "
+        : "החיבור למודל לא הצליח. הנה בחירה בסיסית מהמאגר: ") + body.answer;
       body.text = body.answer;
+      body.details = [body.answer, QUESTION_GAP, EXPORT_NOTE].filter(Boolean).join("\n");
+    } else if (pick.selectionSource === "mixed") {
+      body.code = "MODEL_SELECTION_PARTIAL";
+      body.answer = "המודל בחר חלק מהשאלות, והבחירה הושלמה מקומית: " + body.answer;
+      body.text = body.answer;
+      body.details = [body.answer, QUESTION_GAP, EXPORT_NOTE].filter(Boolean).join("\n");
     }
     return body;
   }
