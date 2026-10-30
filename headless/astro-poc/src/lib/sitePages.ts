@@ -16,6 +16,8 @@ export type SitePageBlock =
   | ({
       type: 'p';
       text: string;
+      /** Shown instead of text on hosts where the inactive contact form is hidden. */
+      textWhenContactFormHidden?: string;
       /** Isolate a math run so RTL does not reorder its symbols. */
       dir?: 'ltr';
       segments?: Array<{ type: 'text'; text: string } | { type: 'a'; text: string; href: string }>;

@@ -16,6 +16,7 @@ import {
 } from '../lib/search';
 import { countRenderedTopicCards } from '../lib/catalog/renderedCards';
 import { buildWorksheetHref } from '../lib/worksheetLinks';
+import { matchingTopicsLabel, resultCountLabel, topicCountLabel } from '../lib/catalog/topicCount';
 import {
   buildWorksheetsHref,
   parseWorksheetsUrlState,
@@ -301,22 +302,22 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
         return topicMatchesQuery(hay.get(t.id) || [], q);
       }).length;
     }
-    return other ? `יש עוד ${other} תוצאות בכיתות אחרות באותה שכבה` : '';
+    return other ? `יש עוד ${resultCountLabel(other)} בכיתות אחרות באותה שכבה` : '';
   }, [q, crossActive, grade, familyGrades, track, haystacksByGrade, topicAllowedByTrack]);
 
   const statusText = (() => {
     if (q.trim()) {
       if (!visibleCount) return 'לא נמצאו נושאים תואמים';
-      if (crossActive) return `${visibleCount} נושאים תואמים בחיפוש בין כיתות השכבה`;
-      return `${visibleCount} נושאים תואמים לחיפוש`;
+      if (crossActive) return `${matchingTopicsLabel(visibleCount)} בחיפוש בין כיתות השכבה`;
+      return `${matchingTopicsLabel(visibleCount)} לחיפוש`;
     }
     if (topicPin != null && !q.trim() && visibleCount) {
       return visibleCount === 1
         ? 'מוצג הנושא שנבחר מדף הנחיתה'
         : `${visibleCount} נושאים לפי בחירה מכתובת הנושא`;
     }
-    if (group === 'all') return `${visibleCount} נושאים בכיתה זו`;
-    return `${visibleCount} נושאים בקבוצה שנבחרה`;
+    if (group === 'all') return `${topicCountLabel(visibleCount)} בכיתה זו`;
+    return `${topicCountLabel(visibleCount)} בקבוצה שנבחרה`;
   })();
 
   function clearSearch() {
@@ -364,6 +365,9 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
     // Display the existing catalog identifier, not the prototype's sample data.
     const topicCode = topic.noamTopicId?.match(/T\d+$/)?.[0];
     const badgeColor = ({ m09: '#2a7c7a', m10: '#e5735c', m11: '#c98a1a' } as Record<string, string>)[topic.group] || '#22305a';
+    // White on coral/amber is 3.03:1 and 2.94:1 (WCAG 1.4.3 needs 4.5:1).
+    // Dark ink keeps the group colors and reads 5.63:1 and 5.79:1.
+    const badgeInk = ({ m10: '#1d1c19', m11: '#1d1c19' } as Record<string, string>)[topic.group];
     const pageHref = topicPageHrefs[`${gEntry.grade}:${topic.id}`];
     return (
       <article
@@ -376,7 +380,11 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
           <h3>
             {pageHref ? <a href={pageHref}>{topic.title}</a> : topic.title}
           </h3>
-          {topicCode ? <span className="exact-topic-code" style={{ background: badgeColor }}>{topicCode}</span> : null}
+          {topicCode ? (
+            <span className="exact-topic-code" style={badgeInk ? { background: badgeColor, color: badgeInk } : { background: badgeColor }}>
+              {topicCode}
+            </span>
+          ) : null}
         </div>
         {topic.description ? <p className="exact-card-description">{topic.description}</p> : null}
         {topic.note ? <p className="note">{topic.note}</p> : null}
@@ -425,7 +433,7 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
             <h2 id={`group-${gEntry.grade}-${g.key}`}>
               {g.label}
             </h2>
-            <span className="count">{listTopics.length} נושאים</span>
+            <span className="count">{topicCountLabel(listTopics.length)}</span>
           </div>
           <div className="exact-topic-grid">
             {listTopics.map((topic) => renderTopicCard(topic, gEntry))}
@@ -468,7 +476,7 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
         </div>
         <h1 data-pop="0">דפי עבודה ל{gradeLabel}</h1>
         <p data-pop="100">
-          {topLevelCount} נושאים לפי תכנית הלימודים. בחרו דף והוא ייפתח בלשונית חדשה.
+          {topicCountLabel(topLevelCount)} לפי תכנית הלימודים. בחרו דף והוא ייפתח בלשונית חדשה.
         </p>
         <p className="proto-note" data-pop="160">
           {family === 'elementary'
@@ -591,7 +599,7 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
                 <div className="grade-band">
                   <h2>{gEntry.label}</h2>
                   <span className="rule" aria-hidden="true" />
-                  <span className="count">{list.length} נושאים</span>
+                  <span className="count">{topicCountLabel(list.length)}</span>
                 </div>
               ) : (
                 <h2 className="sr-only">דפי העבודה</h2>
