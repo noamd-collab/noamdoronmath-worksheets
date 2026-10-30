@@ -185,11 +185,11 @@ test('every mapped source label in the active catalog can survive model selectio
 
 test('every actual grade/topic/level preserves model choices for 5, 10 and 15 whole questions', (t) => {
   const index = JSON.parse(readFileSync(new URL('../src/data/teacher-pick-index.json', import.meta.url), 'utf8'));
-  assert.equal(index.length, 959);
+  assert.equal(index.length, 964);
   assert.ok(index.every((row: any) => row.mode === 'exercise' && row.questions.length));
   const scopes = new Map<string, any[]>();
   for (const row of index) {
-    for (const level of new Set(['all', row.level])) {
+    for (const level of new Set(['all', row.level, ...(row.level === 'c2' ? ['c'] : [])])) {
       const key = [row.grade, row.topicId, level].join(':');
       if (!scopes.has(key)) scopes.set(key, []);
       scopes.get(key)!.push(row);
@@ -205,7 +205,7 @@ test('every actual grade/topic/level preserves model choices for 5, 10 and 15 wh
         if (seen.has(q)) return false;
         seen.add(q); return true;
       }).map((label: string) => ({
-        id: /^[abc]$/.test(row.level) ? `${row.level}:${label}` : label,
+        id: /^(?:[abc]|c2)$/.test(row.level) ? `${row.level}:${label}` : label,
         label, text: `שאלה ${parseInt(label, 10)}`, key: `ex:${row.pdfId}:${label}`,
       }));
     });

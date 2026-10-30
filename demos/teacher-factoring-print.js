@@ -267,7 +267,7 @@ async function pickWithAi(rawCount) {
       count: target,
       // Include every available question; ordering guides the lesson without excluding candidates.
       candidates: planOrder(groups, state.scenario, state.style).map((group) => ({
-        id: (/^[abc]$/.test(String(group.source && group.source.level)) ? group.source.level + ':' : '') + group.parts[0].id,
+        id: (/^(?:[abc]|c2)$/.test(String(group.source && group.source.level)) ? group.source.level + ':' : '') + group.parts[0].id,
         label: group.parts[0].id,
         text: [QUESTION_ROLES[group.role], group.source.levelLabel, 'שאלה ' + group.q, group.keys.length + ' סעיפים'].filter(Boolean).join(' · ').slice(0, 80),
       })),
@@ -562,13 +562,13 @@ function topicSheets() {
   const topic = currentTopic();
   if (!topic) return [];
   if (state.level === 'all') return topic.sheets;
-  const matching = topic.sheets.filter((sheet) => sheet.level === state.level);
+  const matching = topic.sheets.filter((sheet) => sheet.level === state.level || (state.level === 'c' && sheet.level === 'c2'));
   return matching.length ? matching : topic.sheets;
 }
 
 function syncLevels() {
   const topic = currentTopic();
-  const levels = new Set((topic ? topic.sheets : []).map((sheet) => sheet.level));
+  const levels = new Set((topic ? topic.sheets : []).map((sheet) => sheet.level === 'c2' ? 'c' : sheet.level));
   const hasSpecific = ['a', 'b', 'c'].some((lvl) => levels.has(lvl));
   if (state.level !== 'all' && (!hasSpecific || !levels.has(state.level))) {
     state.level = 'all';
@@ -1125,7 +1125,7 @@ async function paintThumb(canvas) {
 function levelAllows(source) {
   if (!source) return true;
   if (state.level === 'all') return true;
-  if (!source.level || source.level === 'one' || source.level === state.level) return true;
+  if (!source.level || source.level === 'one' || source.level === state.level || (state.level === 'c' && source.level === 'c2')) return true;
   const topic = currentTopic();
   return !(topic && topic.sheets.some((sheet) => sheet.level === state.level));
 }

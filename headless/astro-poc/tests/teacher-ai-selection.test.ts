@@ -145,6 +145,39 @@ function numberedPool(count: number, pdfId = 'elementary-source') {
   return Array.from({ length: count }, (_, index) => ({ id: String(index + 1), q: index + 1, page: Math.floor(index / 5) + 1, source: sheet }));
 }
 
+test('the excellence filter includes both c and c2 while keeping other levels separate', () => {
+  const topic = { sheets: ['a', 'b', 'c', 'c2'].map((level) => ({ level, pdfId: level })) };
+  const select = new Function('topic', `
+    const state = { level: 'c' };
+    const currentTopic = () => topic;
+    ${definition('topicSheets')}
+    ${definition('levelAllows')}
+    return () => topicSheets().filter(levelAllows);
+  `)(topic);
+  assert.deepEqual(select().map((sheet: { level: string }) => sheet.level), ['c', 'c2']);
+});
+
+for (const count of [5, 10, 15]) {
+  test(`the real AI ${count} button keeps c2 candidates and selections distinct from c`, async () => {
+    const c = numberedPool(20, 'c-source');
+    const c2 = numberedPool(20, 'c2-source');
+    c[0].source.level = 'c';
+    c2[0].source.level = 'c2';
+    const chosen = c2.slice(-count).map((question) => `ex:${question.source.pdfId}:${question.id}`);
+    const app = harness((payload) => {
+      const identifiers = payload.teacher.candidates.map((candidate) => candidate.id);
+      assert.equal(new Set(identifiers).size, 40);
+      assert.ok(identifiers.includes('c:20'));
+      assert.ok(identifiers.includes('c2:20'));
+      return { source: 'classifier', model: 'test-model', exerciseIds: chosen, modelExerciseIds: chosen };
+    }, { pool: [...c, ...c2], grade: '8', savedKeys: [] });
+    assert.deepEqual(await app.pick(count), chosen);
+    assert.equal(app.requests.length, 1);
+    assert.match(app.status.textContent, /עם AI/);
+    assert.doesNotMatch(app.status.textContent, /מקומית/);
+  });
+}
+
 for (const grade of ['1', '2', '3', '4', '5', '6', '7', '8', '9']) {
   for (const count of [5, 10, 15]) {
     test(`grade ${grade} accepts AI ${count} with numeric question labels and preserves every selected question`, async () => {

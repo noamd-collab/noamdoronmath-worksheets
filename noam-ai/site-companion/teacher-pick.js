@@ -22,7 +22,7 @@ export const CLASSIFIER_SYSTEM = [
   '{"grade":null,"topicQuery":"","level":null,"exerciseLabels":[],"wantsSheet":false}',
   "grade הוא מספר מ־1 עד 9, או null אם המורה לא אמר כיתה.",
   "level הוא a או b או c, או null.",
-  "exerciseLabels הם מזהים מהרשימה בלבד: 1 או 16 לשאלה בלי סעיפים, 1א או 2ב לשאלה עם סעיפים, או a:16 ו־b:1א כאשר המזהה כולל רמה. העתק את המזהה בדיוק כפי שהוא ברשימה.",
+  "exerciseLabels הם מזהים מהרשימה בלבד: 1 או 16 לשאלה בלי סעיפים, 1א או 2ב לשאלה עם סעיפים, או a:16, b:1א ו־c2:1א כאשר המזהה כולל רמה. העתק את המזהה בדיוק כפי שהוא ברשימה.",
   "אם צוינה כמות מבוקשת לבחירה, בחר בדיוק את הכמות המבוקשת מתוך רשימת השאלות הקיימות, בהתאם למטרת השיעור, לסגנון ההוראה ולהערת המורה. כל מזהה שניתן לך מייצג שאלה שלמה; אין לבחור מזהה שאינו ברשימה.",
   "כאשר הערת המורה מבקשת שאלות מסוימות שקיימות ברשימה, כבד את הבחירה המפורשת ולא רק את סדר השאלות או סגנון השיעור.",
   "wantsSheet הוא true כשהמורה ביקש דף, נושא או רמה בלי סעיף מסוים.",
@@ -103,13 +103,13 @@ export function labelsInText(value) {
 
 export function normalizeLabel(value) {
   const text = String(value || "").replace(/\s+/g, "").replace(/['׳]/g, "");
-  const scoped = text.match(/^(?:[abc]:)?([1-9]\d{0,2})([\u05D0-\u05EA]?)$/i);
+  const scoped = text.match(/^(?:(?:[abc]|c2):)?([1-9]\d{0,2})([\u05D0-\u05EA]?)$/i);
   return scoped ? scoped[1] + scoped[2] : "";
 }
 
 function normalizeScopedLabel(value) {
   const text = String(value || "").replace(/\s+/g, "").replace(/['׳]/g, "");
-  const match = text.match(/^([abc]):([1-9]\d{0,2})([\u05D0-\u05EA]?)$/i);
+  const match = text.match(/^([abc]|c2):([1-9]\d{0,2})([\u05D0-\u05EA]?)$/i);
   if (match) return match[1].toLowerCase() + ":" + match[2] + match[3];
   const plain = normalizeLabel(text);
   return plain;
@@ -129,7 +129,7 @@ export function parseClassifier(content) {
     return {
       grade: grade >= 1 && grade <= 9 ? grade : null,
       topicQuery: clip(parsed.topicQuery, 80),
-      level: level === "a" || level === "b" || level === "c" ? level : null,
+      level: level === "a" || level === "b" || level === "c" || level === "c2" ? level : null,
       exerciseLabels: labels.map(normalizeLabel).filter(Boolean).slice(0, MAX_BATCH_PICK_EXERCISES),
       scopedExerciseLabels: labels.map(normalizeScopedLabel).filter(Boolean).slice(0, MAX_BATCH_PICK_EXERCISES),
       wantsSheet: parsed.wantsSheet === true,
@@ -162,7 +162,7 @@ export function classifierRequestBody(input, index) {
         const label = normalizeLabel(rawLabel);
         if (!label) continue;
         knownIds.add(label);
-        if (/^[abc]$/.test(sheet.level)) knownIds.add(sheet.level + ":" + label);
+        if (/^(?:[abc]|c2)$/.test(sheet.level)) knownIds.add(sheet.level + ":" + label);
       }
     }
     const candidates = Array.isArray(index)
@@ -179,7 +179,7 @@ export function classifierRequestBody(input, index) {
       const availableLabels = [];
       const seen = new Set();
       for (const sheet of matching) {
-        const prefix = matching.length > 1 && /^[abc]$/.test(sheet.level) ? sheet.level + ":" : "";
+        const prefix = matching.length > 1 && /^(?:[abc]|c2)$/.test(sheet.level) ? sheet.level + ":" : "";
         for (const q of sheet.questions || []) {
           const label = normalizeLabel(q);
           const id = prefix + label;
@@ -218,7 +218,7 @@ function matchingTeacherSheets(index, teacher) {
   return (Array.isArray(index) ? index : []).filter((sheet) => {
     if (grade && Number(sheet.grade) !== grade) return false;
     if (topic && String(sheet.topicId) !== topic) return false;
-    if (level && String(sheet.level) !== level && sheet.level !== "one") return false;
+    if (!matchesTeacherLevel(sheet, level)) return false;
     return Array.isArray(sheet.questions) && sheet.questions.length > 0;
   });
 }
@@ -237,7 +237,12 @@ function numberOrNull(value) {
 
 function levelOrEmpty(value) {
   const level = String(value || "").toLowerCase();
-  return level === "a" || level === "b" || level === "c" ? level : "";
+  return level === "a" || level === "b" || level === "c" || level === "c2" ? level : "";
+}
+
+function matchesTeacherLevel(sheet, level) {
+  return !level || String(sheet.level) === level || sheet.level === "one" ||
+    (level === "c" && sheet.level === "c2");
 }
 
 function sheetScore(sheet, queryTokens) {
@@ -282,7 +287,7 @@ export function selectBatchExercises(pool, count, goal, classified, candidates) 
     for (const rawLabel of sheet.questions || []) {
       const label = String(rawLabel);
       const key = "ex:" + sheet.pdfId + ":" + label;
-      const scoped = /^[abc]$/.test(String(sheet.level)) ? sheet.level + ":" + label : label;
+      const scoped = /^(?:[abc]|c2)$/.test(String(sheet.level)) ? sheet.level + ":" + label : label;
       if (knownKeys.has(key) || (allowed && !allowed.has(scoped) && !allowed.has(label))) continue;
       knownKeys.add(key);
       available.push({
@@ -364,7 +369,7 @@ export function selectTeacherPicks(index, input, classification) {
   let pool = rows.filter((sheet) => {
     if (grade && Number(sheet.grade) !== grade) return false;
     if (topicId && String(sheet.topicId) !== topicId) return false;
-    if (level && String(sheet.level) !== level && sheet.level !== "one") return false;
+    if (!matchesTeacherLevel(sheet, level)) return false;
     return true;
   });
   if (!topicId) {
@@ -430,7 +435,12 @@ export function selectTeacherPicks(index, input, classification) {
 
 export function hrefForSheet(sheet, catalog) {
   const records = buildCatalogRecords(catalog || {});
-  const viewer = records.find((record) => record.pdfId === sheet.pdfId);
+  // The same original PDF can serve topics in more than one grade. Keep the
+  // requested catalog context; its viewer still uses the original source g/x.
+  const matching = records.filter((record) => record.pdfId === sheet.pdfId &&
+    (sheet.grade == null || Number(record.grade) === Number(sheet.grade)));
+  const sameTopic = matching.filter((record) => sheet.topicId == null || String(record.topicId) === String(sheet.topicId));
+  const viewer = sameTopic.find((record) => record.levelKey === sheet.level) || sameTopic[0] || matching[0];
   if (viewer && viewer.href) return viewer.href;
   return sheet.pdfUrl || "";
 }
