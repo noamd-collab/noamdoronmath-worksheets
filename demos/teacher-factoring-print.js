@@ -2778,10 +2778,13 @@ function answerPieces(pageLines, mark, nextY, parts, region) {
     else last.items.push(item);
   });
   const pieces = [];
+  // The number's foot can reach down beside the next line (a root drawn over
+  // that line takes the rows in between); that line then starts left of it.
+  let beside = null;
   lines.forEach((line, lineIndex) => {
     const y = Math.min(...line.items.map((item) => item.box.y));
     const y2 = Math.max(...line.items.map((item) => item.box.y + item.box.h));
-    let cursor = ANSWER_RIGHT;
+    let cursor = beside && beside.y2 > y ? beside.at - ANSWER_GAP : ANSWER_RIGHT;
     const place = (box, rows) => {
       const width = Math.min(box.w, Math.max(0.012, cursor - 0.02));
       cursor -= width;
@@ -2799,13 +2802,15 @@ function answerPieces(pageLines, mark, nextY, parts, region) {
       } else {
         // The number keeps its own ink rows too: it can sit on a note line
         // above the first picked part. Below, it stops where the next picked
-        // line starts.
+        // line starts, unless its own ink runs on.
         const own = answerInkRows(region.ink, number.y - 0.002, number.y2 + 0.002, number.x, number.x2, region.y, region.y2);
-        const rows = [Math.min(y, own[0]), Math.max(y2, lines.length > 1 ? Math.min(own[1], lines[1].y) : own[1])];
+        const low = lines.length > 1 && own[1] - Math.round(region.ink.height * 0.002) / region.ink.height > lines[1].y;
+        const rows = [Math.min(y, own[0]), Math.max(y2, lines.length > 1 && !low ? Math.min(own[1], lines[1].y) : own[1])];
         // A star printed between the number and the first label stays with it.
         const star = glyphs.filter((glyph) => '★☆'.includes(glyph.c) && glyph.x > rightmost && glyph.x < nx && glyph.y < rows[1] && glyph.y2 > rows[0]);
         const sx = Math.min(nx, ...star.map((glyph) => glyph.x - 0.0015));
         place({ x: sx, y: rows[0], w: Math.max(0.012, nx2 - sx), h: rows[1] - rows[0] }, rows);
+        if (low) beside = { at: pieces[pieces.length - 1].at, y2: rows[1] };
       }
     }
     line.items.forEach((item) => place(item.box));
@@ -2862,7 +2867,10 @@ function answerCropsFromLines(lines, wanted, inkPages) {
           if (last && !byNumber.has(n) && Number(n) === Number(last.n) + 1 && line.y > last.y) byNumber.set(n, markOf(line));
         });
     }
-    const marks = [...byNumber.values()].sort((a, b) => a.y - b.y);
+    // An answer that reads like a number ("0." of 0.3 with a bar) beside the
+    // real number in its row is no number.
+    const found = [...byNumber.values()].sort((a, b) => a.y - b.y);
+    const marks = ink ? found.filter((mark) => !found.some((other) => Math.abs(other.y - mark.y) < 0.006 && other.x > mark.x + 0.01)) : found;
     // The next answer's number can sit too low to be cropped; the answer
     // above it still ends where it starts.
     const tail = marks.length && pageLines.find((line) => (

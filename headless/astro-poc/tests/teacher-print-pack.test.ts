@@ -788,6 +788,17 @@ describe('teacher short worksheet pack', () => {
     assert.ok(twelve.pieces[1].box.y + twelve.pieces[1].box.h <= 0.7155, 'bar in part א ' + JSON.stringify(twelve.pieces[1].box));
     assert.ok(twelve.pieces[2].box.y <= 0.7155 && twelve.pieces[2].box.x + twelve.pieces[2].box.w >= 0.860, 'root cut ' + JSON.stringify(twelve.pieces[2].box));
     assert.ok(twelve.pieces[0].box.y <= 0.7005 && twelve.pieces[0].box.y + twelve.pieces[0].box.h >= 0.714, 'number cut ' + JSON.stringify(twelve.pieces[0].box));
+    // The number's foot runs down beside the bar: both stay whole, and the
+    // note starts left of the number.
+    const footInk = new Map([[8, page(
+      headInk, [0.7005, 0.7165, 0.907, 0.935], [0.7005, 0.710, 0.840, 0.881],
+      [0.722, 0.732, 0.800, 0.830], [0.7165, 0.732, 0.833, 0.835], [0.7155, 0.7165, 0.833, 0.860], [0.721, 0.732, 0.838, 0.858],
+    )]]);
+    const [foot] = api.answerCropsFromLines(rooted, [{ q: 12, part: 'א' }], footInk);
+    assert.equal(foot.pieces.length, 3, JSON.stringify(foot.pieces));
+    assert.ok(foot.pieces[0].box.y + foot.pieces[0].box.h >= 0.7165, 'number foot cut ' + JSON.stringify(foot.pieces[0].box));
+    assert.ok(foot.pieces[2].box.y <= 0.7155, 'root cut ' + JSON.stringify(foot.pieces[2].box));
+    assert.ok(foot.pieces[2].at + foot.pieces[2].box.w <= foot.pieces[0].at, 'note drawn over the number ' + JSON.stringify(foot.pieces));
 
     // (13) A line drawn under the answer, short of the number column, is no
     // fraction bar: (14) does not take (13)'s denominator.
@@ -833,6 +844,27 @@ describe('teacher short worksheet pack', () => {
     assert.equal(fifteenParts.pieces.length, 2, JSON.stringify(fifteenParts.pieces));
     const [second] = api.answerCropsFromLines(footed, [2], footedInk);
     assert.ok(second.box.y < 0.301 && second.box.y + second.box.h < 0.88, 'page number read as (2) ' + JSON.stringify(second.box));
+
+    // (16) א is 0.3 with a bar; its "0." sits in the number column, beside
+    // (16) and a hair higher. It is no answer number.
+    const decimal = [
+      head,
+      item(0.350, 0.360, 0.907, 0.935, '(15)'),
+      item(0.350, 0.360, 0.865, 0.881, 'א.'),
+      item(0.350, 0.360, 0.840, 0.856, '5'),
+      item(0.3995, 0.4095, 0.852, 0.865, '0.'),
+      item(0.3995, 0.4095, 0.845, 0.852, '3'),
+      item(0.400, 0.410, 0.898, 0.929, '(16)'),
+      item(0.400, 0.410, 0.868, 0.882, 'א.'),
+      item(0.450, 0.460, 0.898, 0.929, '(17)'),
+      item(0.450, 0.460, 0.865, 0.881, 'א.'),
+      item(0.450, 0.460, 0.840, 0.856, '7'),
+    ];
+    const decimalInk = new Map([[8, page(
+      headInk, [0.351, 0.360, 0.840, 0.935], [0.3965, 0.3975, 0.845, 0.852], [0.401, 0.410, 0.845, 0.929], [0.451, 0.460, 0.840, 0.929],
+    )]]);
+    const [sixteen] = api.answerCropsFromLines(decimal, [16], decimalInk);
+    assert.ok(sixteen.box.y <= 0.3965 && sixteen.box.y + sixteen.box.h >= 0.410, '(16) cut ' + JSON.stringify(sixteen.box));
   });
 
   it('reads answer ink on highlights and tints, and tells rules from number lines', () => {
