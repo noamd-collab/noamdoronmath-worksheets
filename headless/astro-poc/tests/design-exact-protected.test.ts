@@ -258,7 +258,10 @@ describe('exact-design protected live-baseline boundaries', () => {
     // Noam, 2026-10-30: הבנתי answers locally and never opens the next hint or asks the
     // model for the next step; לא הבנתי, «רמז», auth and storage are unchanged. The guides
     // asset is versioned 20261030-understood1; ramzi-understanding tests cover the flow.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '33cc9cb780408aa97130c9d5fdf5dcc7a27107cca34ec11940a007ccfb4c63fb');
+    // noamAnswerUnderstood adds the הבנתי exchange to the exercise thread in order and
+    // leaves the draft and attachments alone; no request is sent. The adapter reaches it
+    // through window.noamAnswerUnderstood, the main script's only new global.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), 'ba11e6f7f21fc61be57886aaa85e4653b397697a67f7df0ccb24abc1e20ec361');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {

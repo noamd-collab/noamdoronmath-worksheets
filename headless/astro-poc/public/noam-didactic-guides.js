@@ -458,11 +458,9 @@
   function applyReply(state,guide,intent){
     var hints=guide.hints||[];
     if(intent==="understood"){
-      if(state.closed||state.factsStarted||state.stepShown||state.cursor>=hints.length-1){
-        state.closed=true;
-        return checkReply(CLOSING_TEXT,"");
-      }
-      return checkReply(UNDERSTOOD_TEXT,"");
+      // No state change: a later לא הבנתי still walks the verified sub-steps.
+      var done=state.closed||state.factsStarted||state.stepShown||state.cursor>=hints.length-1;
+      return checkReply(done?CLOSING_TEXT:UNDERSTOOD_TEXT,"");
     }
     if(state.closed){return null;}
     if(state.cursor<hints.length-1){
@@ -512,16 +510,18 @@
   function planUnderstanding(exerciseId,intent,settings){
     var display=intent==="understood"?"הבנתי":"לא הבנתי";
     var guide=get(exerciseId);
+    if(intent==="understood"){
+      // הבנתי is answered in the thread itself: no hint, no model call, no composer.
+      pendingNote="";
+      var text=guide
+        ?applyReply(catchUpState(cloneState(understandingFor(exerciseId)),guide,settings),guide,intent).text
+        :(hintsDone(settings)?CLOSING_TEXT:UNDERSTOOD_TEXT);
+      return {action:"say",display:display,text:text};
+    }
     if(!guide){
-      // הבנתי is answered locally, without a model call or a new step.
-      return intent==="understood"
-        ?{action:"say",display:display,text:hintsDone(settings)?CLOSING_TEXT:UNDERSTOOD_TEXT}
-        :{action:"ai",prompt:AI_SIMPLER,display:display,fallback:offlineUnderstanding(intent,settings)};
+      return {action:"ai",prompt:AI_SIMPLER,display:display,fallback:offlineUnderstanding(intent,settings)};
     }
     var sim=catchUpState(cloneState(understandingFor(exerciseId)),guide,settings);
-    if(intent==="understood"){
-      return {action:"local",phrase:display,display:display,text:applyReply(sim,guide,intent).text};
-    }
     var hints=guide.hints||[];
     if(!sim.closed&&!sim.factsStarted&&!sim.stepShown&&sim.cursor<hints.length-1){
       return {action:"hint",hintsOpened:Math.min(3,sim.cursor+2),lead:false,display:display};
@@ -546,7 +546,7 @@
     var message=String(settings.studentMessage||"");
     var visual=resolveVisual(exerciseId,settings);
     var intent=understandingIntent(message);
-    if(intent){return replyToUnderstanding(guide,exerciseId,intent,settings);}
+    if(intent){pendingNote="";return replyToUnderstanding(guide,exerciseId,intent,settings);}
     if(helpKind==="hint"){
       var hintIndex=Math.max(0,Math.min(2,Number(settings.hintIndex)||0));
       catchUp(exerciseId,guide,{helpKind:"hint",hintIndex:hintIndex,progress:hintIndex+1});

@@ -9758,6 +9758,23 @@ function noamVisualAnswer(studentMessage,answer,visual){
   return "הנה המחשה של השלב שעליו שאלת.";
 }
 
+// Noam, 2026-10-30: הבנתי is answered in the exercise thread itself. It opens no
+// hint, makes no model call, and leaves the student's draft and attachments alone.
+function noamAnswerUnderstood(reply){
+  var text=String(reply||"").trim();
+  if (!selectedExercise||busy||!text){return false;}
+  var thread=exerciseThread(selectedExercise.id);
+  thread.messages.push({role:"user",text:"הבנתי",kind:""},{role:"assistant",text:text,kind:""});
+  thread.history.push({role:"user",content:"הבנתי"},{role:"assistant",content:text});
+  thread.history=thread.history.slice(-8);
+  thread.messages=thread.messages.slice(-60);
+  saveNoamState();renderNoamChat();
+  announceNoam(exerciseLabel(selectedExercise) + ". רמזי: " + text);
+  return true;
+}
+// The exact-viewer adapter is a separate script; this is its only entry point.
+window.noamAnswerUnderstood=noamAnswerUnderstood;
+
 function askNoam(helpKind,studentMessage){
   if (!selectedExercise||busy){return;}
   var requestFocusId = panelBody.contains(document.activeElement) ? document.activeElement.id : "";
@@ -10584,10 +10601,9 @@ function esc(s){
     }
     if(plan.action==='hint'){plan={action:'local',phrase:phrase};}
     if(plan.action==='say'){
-      // Noam, 2026-10-30: הבנתי keeps the student working. No hint opens and
-      // no model call is made; «רמז» still opens the next hint on request.
-      localChecks.push({id:id||'current',user:phrase,assistant:String(plan.text||'')});
-      schedule();
+      // Noam, 2026-10-30: הבנתי keeps the student working. The reply joins the
+      // thread in order; «רמז» still opens the next hint on request.
+      if(typeof window.noamAnswerUnderstood==='function'){window.noamAnswerUnderstood(plan.text);}
       return;
     }
     if(plan.action==='local'&&input&&send&&!send.disabled){

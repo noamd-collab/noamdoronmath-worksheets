@@ -66,7 +66,7 @@ describe('curated hint guides', () => {
     guides.resetUnderstanding(id);
     guides.respond(id, { helpKind: 'hint', hintIndex: 0, progress: 0 });
     const understood = guides.planUnderstanding(id, 'understood', { progress: 1 });
-    assert.equal(understood.action, 'local', 'הבנתי does not open the next curated hint');
+    assert.equal(understood.action, 'say', 'הבנתי does not open the next curated hint');
     assert.equal(understood.text, guides.understoodText);
     const plan = guides.planUnderstanding(id, 'not-understood', { progress: 1 });
     assert.equal(plan.action, 'hint');

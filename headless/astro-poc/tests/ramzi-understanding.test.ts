@@ -9,6 +9,7 @@ import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { describe, it } from 'node:test';
 import { fileURLToPath } from 'node:url';
+import { runInNewContext } from 'node:vm';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const require = createRequire(import.meta.url);
@@ -150,7 +151,7 @@ describe('Ramzi understanding checks', () => {
     reset();
     hint(0);
     const plan = guides.planUnderstanding(proof, 'understood', { progress: 1 });
-    assert.equal(plan.action, 'local');
+    assert.equal(plan.action, 'say');
     assert.equal(plan.display, 'הבנתי');
     assert.equal(plan.text, guides.understoodText);
     assert.equal(plan.prompt, undefined);
@@ -172,16 +173,42 @@ describe('Ramzi understanding checks', () => {
     assert.match(closing.text, /אפשר לעבור לסעיף הבא/);
     assert.doesNotMatch(closing.text, /נכון שצריך|שמח/, 'הבנתי does not reveal the guide next step');
     const stay = guides.planUnderstanding(proof, 'understood', { progress: 3, hintsDone: true });
-    assert.equal(stay.action, 'local');
+    assert.equal(stay.action, 'say');
     assert.equal(stay.text, guides.closingText);
     const again = guides.planUnderstanding(proof, 'not-understood', { progress: 3, hintsDone: true });
-    assert.equal(again.action, 'ai');
-    assert.equal(again.display, 'לא הבנתי');
-    assert.match(again.prompt ?? '', /הצעד האחרון/);
-    assert.match(again.prompt ?? '', /זווית אחרת/);
-    assert.equal((again.prompt ?? '').includes('תסבירו מחדש את הצעד האחרון'), true);
+    assert.equal(again.action, 'local', 'הבנתי does not close the verified sub-steps');
+    const step = guides.respond(proof, { helpKind: 'free_question', studentMessage: 'לא הבנתי', progress: 3 });
+    assert.match(step.text, /^זה בסדר גמור, בואו ננסה אחרת\.\n/);
+    assert.match(step.text, /E נמצאת על AB/);
     assert.equal(guides.needsCheck(guides.closingText, '', ''), true);
     assert.equal(guides.needsCheck(guides.understoodText, '', ''), true);
+  });
+
+  it('keeps the הבנתי exchange in the thread, in order, without touching the draft', () => {
+    const helper = viewer.slice(viewer.indexOf('function noamAnswerUnderstood('), viewer.indexOf('function askNoam('));
+    const thread = { hintIndex: 1, history: [] as unknown[], messages: [{ role: 'assistant', text: 'רמז 1' }] as any[] };
+    const drafts: Record<string, string> = { ex: 'טיוטה' };
+    let renders = 0;
+    const ctx = {
+      window: {} as Record<string, unknown>,
+      selectedExercise: { id: 'ex', q: 1, part: 'א' }, busy: false, noamDrafts: drafts,
+      exerciseThread: () => thread, saveNoamState() {}, renderNoamChat() { renders++; },
+      announceNoam() {}, exerciseLabel: () => 'שאלה 1 · סעיף א',
+    };
+    const api = runInNewContext(helper + '\n({noamAnswerUnderstood})', ctx);
+    assert.equal(ctx.window.noamAnswerUnderstood, api.noamAnswerUnderstood, 'the adapter reaches it through window');
+    assert.equal(api.noamAnswerUnderstood(guides.understoodText), true);
+    assert.deepEqual(thread.messages.slice(-2).map((m) => [m.role, m.text]), [['user', 'הבנתי'], ['assistant', guides.understoodText]]);
+    assert.equal(thread.history.length, 2);
+    assert.equal(thread.hintIndex, 1, 'no hint is opened');
+    assert.equal(drafts.ex, 'טיוטה');
+    assert.equal(renders, 1);
+    ctx.busy = true;
+    assert.equal(api.noamAnswerUnderstood(guides.understoodText), false);
+    const adapter = viewer.match(/<script id="exact-viewer-adapter">([\s\S]*?)<\/script>/)?.[1] || '';
+    const say = adapter.slice(adapter.indexOf("if(plan.action==='say')"), adapter.indexOf("if(plan.action==='local'"));
+    assert.match(say, /noamAnswerUnderstood\(plan\.text\)/);
+    assert.doesNotMatch(say, /localChecks|send\.click|input\.value/);
   });
 
   it('does not steal a longer question that merely contains the words', () => {
