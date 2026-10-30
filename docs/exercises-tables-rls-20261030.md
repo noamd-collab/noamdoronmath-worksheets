@@ -30,7 +30,7 @@ Nothing reads `exercises_elementary` with the publishable key. `askTutor` is a d
     order by table_name, ordinal_position;
    ```
 
-2. **Change the Wix backend** so `getExercisesMiddle` asks for those seven columns. After the script, `select=*` is refused, because the publishable key may no longer read every column. The change works before and after the script, so publish it first. In `my-site-2/src/backend/aModule.jsw`:
+2. **Change the Wix backend** so `getExercisesMiddle` asks for those seven columns. The change is in noamd-collab/my-site-2#29. After the script, `select=*` is refused, because the publishable key may no longer read every column. The change works before and after the script, so publish it first. In `my-site-2/src/backend/aModule.jsw`:
 
    ```js
    // The publishable key reads only these columns (learning/exercises-tables-rls.sql
