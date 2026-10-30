@@ -2892,7 +2892,13 @@ async function answerMeasured(groups) {
     }
     const wanted = group.questions.map((question) => ({ q: question.q, part: question.part || '' }));
     const inkPages = lines.length ? await answerInkPages(lines, group.source) : new Map();
-    const crops = answerCropsFromLines(lines, wanted, inkPages);
+    let crops;
+    try {
+      crops = answerCropsFromLines(lines, wanted, inkPages);
+    } catch (error) {
+      // A page whose ink cannot be read still gets the text-only crops.
+      crops = answerCropsFromLines(lines, wanted);
+    }
     if (!crops.length) {
       slices.push(...answerFallbackSlices(group.source));
       continue;
