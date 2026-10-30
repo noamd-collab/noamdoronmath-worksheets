@@ -36,6 +36,8 @@ export interface WorksheetsClientProps {
   highlightTopicId?: number | null;
   /** SSR-parsed URL state (q/group/cross/track) — client re-reads on popstate. */
   initialUrlState?: Partial<Omit<WorksheetsUrlState, 'grade'>>;
+  /** grade:topicId → topic page, when exactly one page exists. */
+  topicPageHrefs?: Record<string, string>;
 }
 
 function levelClass(key: string): string {
@@ -57,7 +59,7 @@ function readBrowserState(grade: GradeNum): WorksheetsUrlState {
 }
 
 export function WorksheetsClient(props: WorksheetsClientProps) {
-  const { catalog, grade, gradeEntry, familyGrades, highlightTopicId = null, initialUrlState } =
+  const { catalog, grade, gradeEntry, familyGrades, highlightTopicId = null, initialUrlState, topicPageHrefs = {} } =
     props;
 
   const boot = {
@@ -329,6 +331,7 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
     const children: CatalogTopic[] = childrenMap.get(topic.id) || [];
     // Display the existing catalog identifier, not the prototype's sample data.
     const topicCode = topic.noamTopicId?.match(/T\d+$/)?.[0];
+    const pageHref = topicPageHrefs[`${gEntry.grade}:${topic.id}`];
     const badgeColor = ({ m09: '#2a7c7a', m10: '#e5735c', m11: '#c98a1a' } as Record<string, string>)[topic.group] || '#22305a';
     return (
       <article
@@ -339,18 +342,14 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
       >
         <div className="exact-card-heading">
           <h3>
-            {topic.noamTopicId === 'G9-T46' ? (
-              <a href="/kite-grade-9">{topic.title}</a>
-            ) : (
-              topic.title
-            )}
+            {pageHref ? <a href={pageHref}>{topic.title}</a> : topic.title}
           </h3>
           {topicCode ? <span className="exact-topic-code" style={{ background: badgeColor }}>{topicCode}</span> : null}
         </div>
         {topic.description ? <p className="exact-card-description">{topic.description}</p> : null}
         {topic.note ? <p className="note">{topic.note}</p> : null}
         {topic.routing.aiHintShown ? (
-          <span className="aihint">✦ נועם AI זמין בדף הזה</span>
+          <span className="aihint">✦ רמזי AI זמין בדף הזה</span>
         ) : null}
         <div className={`levels${children.length ? ' levels--bundle' : ''}`}>
           {children.length ? (
@@ -442,7 +441,7 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
         <p className="proto-note" data-pop="160">
           {family === 'elementary'
             ? 'יסודי — דפי עבודה, תרגול והסברים בדרך מהנה וברורה.'
-            : 'חטיבה — דפי עבודה וצופה (כולל נועם AI) במראה רגוע וברור.'}
+            : 'חטיבה — דפי עבודה וצופה (כולל רמזי AI) במראה רגוע וברור.'}
         </p>
       </header>
 

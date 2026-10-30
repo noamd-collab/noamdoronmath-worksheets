@@ -49,7 +49,7 @@ function fixture(v:string,key:string,edit?:(data:any,manifest:any,exercise:any)=
   fetch:async(url:string)=>{calls.push(url);const body=url===manifest.nativeExportUrl?nativeBody:read(url.slice(1));return {ok:true,json:async()=>JSON.parse(body),text:async()=>body,arrayBuffer:async()=>new TextEncoder().encode(body).buffer};},TextDecoder};
  runInNewContext(modules,c);for(const k of Object.keys(c))if(k.startsWith('Noam'))window[k]=c[k];
  const helpers='var noamSourceVisualPackages='+v.split('var noamSourceVisualPackages=')[1].split('function noamNativeFigure(')[0];
- runInNewContext(v.slice(v.indexOf('var SOLVER_MESSAGE_MAX ='),v.indexOf('var GRADE_NAME ='))+'\n'+fn(v,'noamDiagramSourceIdentity')+'\n'+fn(v,'noamManifestOcrUnreliable')+'\n'+fn(v,'noamExerciseSectionLabel')+'\n'+fn(v,'localVisualExerciseSource')+'\n'+helpers+'\n'+v.slice(v.indexOf('function noamGeometryContext(text){'),v.indexOf('function postJson(endpoint,payload){')),c);
+ runInNewContext(v.slice(v.indexOf('var SOLVER_MESSAGE_MAX ='),v.indexOf('var GRADE_NAME ='))+'\n'+fn(v,'noamDiagramSourceIdentity')+'\n'+fn(v,'noamManifestOcrUnreliable')+'\n'+fn(v,'noamExerciseSectionLabel')+'\n'+fn(v,'localVisualExerciseSource')+'\n'+helpers+'\n'+v.slice(v.indexOf('function noamGeometryContext(text){'),v.indexOf('function postJson(')),c);
  return {c,exercise,manifest,data,calls,attachments,thread};
 }
 function wireHint(f:any,analysis:any=contradictory()){
@@ -59,7 +59,7 @@ function wireHint(f:any,analysis:any=contradictory()){
   getExerciseAnalysis:async()=>{counter.analysis++;if(analysis instanceof Error)throw analysis;return analysis;},
   postJson:async(url:string,payload:any)=>{requests.push({url,payload});return {ok:true,answer:'בדקו את הנתונים המודפסים.'};},
   noamGuardGeometryResult:(r:any)=>r,noamGuardSignedAddResult:(r:any)=>r,noamClarifySignedAddLanguage:(s:string)=>s,noamResponseVisual:()=>null,
-  noamVisualAnswer:(_:string,s:string)=>s,noamAttachSourceHint(){},setTimeout:(cb:any)=>cb()});
+  noamVisualAnswer:(_:string,s:string)=>s,noamAttachSourceHint(){},setTimeout:(cb:any,ms:number)=>{if(ms<55000)cb();return 0;}});
  return {requests,counter};
 }
 // Invoke the exact on-click instruction, not the shorter visible user bubble.
@@ -99,6 +99,8 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
   f.c.askNoam('hint',actualHintInstruction(v));await settled(f.c);
   assert.equal(r.requests.length,1);assert.equal(r.requests[0].url,'/model/noamImageSolve');
   assert.equal(r.requests[0].payload.hasStudentAttachments,false);
+  assert.equal(r.requests[0].payload.selectedPart,f.exercise.part);
+  assert.deepEqual(clone(r.requests[0].payload.sourceIdentity),{nativeSha256:f.manifest.nativeExportSha256,questionId:f.exercise.nativeQuestionId,itemId:f.exercise.nativeItemId});
   assert.equal(r.requests[0].payload.imageAnalysis.content_type,'native_source_canonical');
   assert.ok(r.requests[0].payload.studentMessage.includes(actualHintInstruction(v)));
  });
@@ -118,6 +120,9 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
    const [analyze,solve]=r.requests;assert.equal(analyze.url,'/model/noamImageAnalyze');
    assert.deepEqual(JSON.parse(analyze.payload.imageDataUrl),['original-question','photo-A']);
    assert.equal(solve.payload.hasStudentAttachments,true);
+   assert.equal(analyze.payload.selectedPart,f.exercise.part);
+   assert.equal(solve.payload.selectedPart,f.exercise.part);
+   assert.deepEqual(clone(solve.payload.sourceIdentity),clone(analyze.payload.sourceIdentity));
    assert.match(solve.payload.imageAnalysis.transcription,/student photograph/);
    assert.equal(solve.payload.imageAnalysis.content_type,undefined);
    assert.deepEqual(clone(f.c.analysisCache),{},'never cache a photograph analysis');
@@ -132,6 +137,8 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
   f.c.askNoam('hint',actualHintInstruction(v));
   f.attachments.push({name:'later.png',canvas:{marker:'new-photo'}});resume();await settled(f.c);
   assert.equal(r.requests.length,1);assert.equal(r.requests[0].payload.hasStudentAttachments,false);
+  assert.equal(r.requests[0].payload.selectedPart,f.exercise.part);
+  assert.deepEqual(clone(r.requests[0].payload.sourceIdentity),{nativeSha256:f.manifest.nativeExportSha256,questionId:f.exercise.nativeQuestionId,itemId:f.exercise.nativeItemId});
   assert.equal(r.requests[0].payload.imageAnalysis.content_type,'native_source_canonical');
   assert.equal(f.c.currentAttachments()[0].name,'later.png');
  });
@@ -148,7 +155,7 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
 
  it(name+': legacy loader omission reads current photos while true and an empty array force original',async()=>{
   const f=fixture(v,'W11'),r=wireSnapshotReader(f,v);f.attachments.push({name:'a.png',canvas:{marker:'photo-A'}});
-  const original={readable:true,transcription:'cached original'};f.c.analysisCache[f.exercise.id]=original;
+  const original=await f.c.getExerciseAnalysis(f.exercise,true);
   assert.equal(await f.c.getExerciseAnalysis(f.exercise,true),original);
   assert.equal(await f.c.getExerciseAnalysis(f.exercise,[]),original);
   assert.equal(r.requests.length,0);

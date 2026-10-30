@@ -12,14 +12,13 @@
  *   checks Hebrew RTL and that the page does not scroll sideways.
  */
 import assert from 'node:assert/strict';
-import { existsSync, readFileSync, readdirSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { after, before, describe, it } from 'node:test';
 import puppeteer, { type Browser, type Page } from 'puppeteer-core';
+import { resolveTestBrowser } from '../helpers/chromium';
 
 const BASE = process.env.JOURNEY_BASE_URL || '';
-const CHROME = [process.env.CHROME_PATH, '/usr/bin/google-chrome-stable', '/usr/bin/google-chrome'].find(
-  (path): path is string => !!path && existsSync(path)
-);
+
 
 type Level = { key: string; label: string; pdfId: string };
 type Topic = { id: number; title: string; group: string; parent?: number; levels: Level[] };
@@ -99,9 +98,9 @@ let browser: Browser;
 
 before(async () => {
   assert.ok(BASE, 'JOURNEY_BASE_URL is not set: run through `npm run test:journeys`');
-  assert.ok(CHROME, 'no Chrome/Chromium found: set CHROME_PATH');
+  const chrome = resolveTestBrowser();
   browser = await puppeteer.launch({
-    executablePath: CHROME,
+    executablePath: chrome,
     headless: true,
     args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
   });

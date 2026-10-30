@@ -16,7 +16,25 @@ for (const file of ['worksheet-viewer-noam.html', 'headless/astro-poc/public/wor
   function fn(name: string) {
     const start = html.indexOf('function ' + name + '(');
     const next = html.indexOf('\nfunction ', start + 1);
+    assert.ok(start >= 0 && next > start, 'Missing viewer function ' + name);
     return html.slice(start, next);
+  }
+  // A listener extracted from renderNoamChat still needs that render's policy
+  // snapshot. Execute its actual declaration and page policy rather than
+  // replacing the geometry gate with a permissive fixture value.
+  const pagePolicyStart = html.indexOf('var NOAM_DRAWING_HINT_GEOMETRY=');
+  const pagePolicyEnd = html.indexOf('function noamCanOfferDrawing(', pagePolicyStart);
+  assert.ok(pagePolicyStart >= 0 && pagePolicyEnd > pagePolicyStart);
+  const pagePolicy = html.slice(pagePolicyStart, pagePolicyEnd);
+  function bindComposerDrawing(f: ReturnType<typeof fixture>) {
+    f.c.thread = f.thread;
+    const render = fn('renderNoamChat');
+    const declarations = [...render.matchAll(/^  var drawingHintsAllowed=[^\n]+;$/gm)];
+    assert.equal(declarations.length, 1, 'The composer uses one current page-policy snapshot');
+    const start = render.indexOf('document.getElementById("noamDraw").addEventListener("click",function(){');
+    const end = render.indexOf('\n  });', start);
+    assert.ok(start >= 0 && end > start, 'Missing actual composer drawing listener');
+    runInNewContext(declarations[0][0] + '\n' + render.slice(start, end + 6), f.c);
   }
   function fixture() {
     const { document, window } = parseHTML('<html><body><button id="noamDraw"></button></body></html>');
@@ -42,7 +60,7 @@ for (const file of ['worksheet-viewer-noam.html', 'headless/astro-poc/public/wor
       noamDiagramError: () => 'unsupported', busy: false, drawingAnswer: message,
     };
     const sourceHelpers = html.slice(html.indexOf('var noamSourceVisualPackages='), html.indexOf('function noamNativeFigure('));
-    runInNewContext(nativeModule + '\n' + sourceHelpers + '\n' + ['noamMessageVisualOptions', 'noamNativeDiagramContext', 'noamTypedVisualContext', 'noamInspectVisualPlan', 'noamRenderVisualPlan', 'noamDiagramSourceInput', 'requestNoamDiagram'].map(fn).join('\n'), c);
+    runInNewContext(nativeModule + '\n' + sourceHelpers + '\n' + pagePolicy + '\n' + ['noamCanOfferDrawing', 'noamMessageVisualOptions', 'noamNativeDiagramContext', 'noamTypedVisualContext', 'noamInspectVisualPlan', 'noamRenderVisualPlan', 'noamDiagramSourceInput', 'requestNoamDiagram'].map(fn).join('\n'), c);
     window.NoamNativeVisual = c.NoamNativeVisual;
     window.NoamDiagramPlan = { inspect: () => ({ ok: false, reason: 'unsupported' }) };
     return { c, calls, data, exercise, manifest, message, thread, runtime };
@@ -51,9 +69,9 @@ for (const file of ['worksheet-viewer-noam.html', 'headless/astro-poc/public/wor
   it(file + ': actual composer and answer buttons mark explicit draw intent without altering hint scope', () => {
     const f = fixture(), received: any[] = [];
     f.c.requestNoamDiagram = (...args: any[]) => received.push(args);
-    f.c.thread = f.thread;
-    const start = html.indexOf('document.getElementById("noamDraw").addEventListener("click",function(){');
-    runInNewContext(html.slice(start, html.indexOf('\n  });', start) + 6), f.c);
+    bindComposerDrawing(f);
+    assert.equal(f.c.noamPageAllowsDrawingHint(), true);
+    assert.equal(f.c.drawingHintsAllowed, true);
     f.c.document.getElementById('noamDraw').click();
     assert.equal(received.length, 1);
     assert.equal(received[0][3].drawCurrentStep, true);
@@ -67,6 +85,55 @@ for (const file of ['worksheet-viewer-noam.html', 'headless/astro-poc/public/wor
     assert.equal(f.c.noamSourceVisualOptions({ drawCurrentStep: 'true' }).drawCurrentStep, false);
     assert.equal(f.c.noamSourceVisualOptions({ drawCurrentStep: true }).drawCurrentStep, true);
     assert.equal(f.c.noamMessageVisualOptions(f.thread, f.message).drawCurrentStep, undefined);
+  });
+
+  it(file + ': the actual composer and protected request reject non-geometry pages despite explicit drawing words', async () => {
+    for (const [prefix, title] of [
+      ['G1-T01', 'מונים בלי לפספס'],
+      ['G8-T02', 'משוואות ליניאריות'],
+      ['G7-T02', 'חיבור וחיסור מספרים מכוונים'],
+      ['G8-T15', 'פונקציה קווית'],
+      ['G8-T99', 'נושא לא מוכר'],
+      ['G9-T999', 'נושא לא מוכר'],
+      ['', 'נושא לא מוכר'],
+    ]) {
+      const f = fixture(), received: any[] = [];
+      f.manifest.prefix = prefix;
+      f.manifest.topic = title;
+      f.c.ttl = title;
+      const protectedRequest = f.c.requestNoamDiagram;
+      f.c.requestNoamDiagram = (...args: any[]) => received.push(args);
+      bindComposerDrawing(f);
+      assert.equal(f.c.noamPageAllowsDrawingHint(), false, prefix || 'unknown');
+      assert.equal(f.c.drawingHintsAllowed, false, prefix || 'unknown');
+      f.c.document.getElementById('noamDraw').click();
+      assert.equal(received.length, 0, prefix + ' composer must retain its policy guard');
+      // A saved drawing failure must not make an answer retry bypass the topic.
+      f.message.diagramError = 'previous drawing failed';
+      assert.equal(f.c.noamCanOfferDrawing(f.exercise, f.thread, f.message), false, prefix || 'unknown');
+      const result = await protectedRequest(f.exercise, f.thread, f.message, {
+        studentMessage: 'שרטוט ריבוע בגיאומטריה אנליטית', answer: f.message.text,
+        drawCurrentStep: true, nativeAttempted: true,
+      });
+      assert.equal(result, null);
+      assert.equal(f.calls.length, 0, prefix + ' must not read images or send a diagram request');
+      assert.equal(f.message.diagramOptions, undefined);
+      assert.equal(f.message.visual, undefined);
+    }
+  });
+
+  it(file + ': the actual composer policy still accepts analytic geometry', () => {
+    const f = fixture(), received: any[] = [];
+    f.manifest.prefix = 'G9-T08';
+    f.manifest.topic = 'גיאומטריה אנליטית';
+    f.c.ttl = f.manifest.topic;
+    f.c.requestNoamDiagram = (...args: any[]) => received.push(args);
+    bindComposerDrawing(f);
+    assert.equal(f.c.noamPageAllowsDrawingHint(), true);
+    assert.equal(f.c.drawingHintsAllowed, true);
+    f.c.document.getElementById('noamDraw').click();
+    assert.equal(received.length, 1);
+    assert.equal(received[0][3].drawCurrentStep, true);
   });
 
   it(file + ': native drawing payload keeps original image and only selected authored text and visible identities', async () => {

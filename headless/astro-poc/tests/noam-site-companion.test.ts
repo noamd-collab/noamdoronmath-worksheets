@@ -87,12 +87,12 @@ describe('Noam AI catalog grounding', () => {
   it('returns real factoring worksheets and no Mishbetzet sheet', () => {
     const rows = retrieveRecords(catalog, 'כיתה ט׳ פירוק לגורמים', 6);
     assert.ok(rows.length > 0);
-    assert.ok(rows.some((row) => row.pdfId === 'dd5036296f084fb7ad7fc6c1bbb25088'));
+    assert.ok(rows.some((row) => row.pdfId === '40e46a64bcf0441bae36eba820884704'));
     const blob = JSON.stringify(rows);
     assert.equal(blob.includes('משבצת'), false);
     assert.equal(blob.includes('mishbetzet'), false);
     for (const row of rows) {
-      assert.match(row.href, /dd5036296f084fb7ad7fc6c1bbb25088|worksheet-viewer-noam\.html|static\.wixstatic\.com/);
+      assert.match(row.href, /40e46a64bcf0441bae36eba820884704|worksheet-viewer-noam\.html|static\.wixstatic\.com/);
     }
   });
 
@@ -137,14 +137,14 @@ describe('Noam AI site manual', () => {
     assert.deepEqual(guideIds, catalogIds);
     assert.equal(guide.counts.worksheet, catalogIds.length);
     for (const id of [
-      'dd5036296f084fb7ad7fc6c1bbb25088',
-      '073d5168d4b448dea8e2e69eda37dc48',
-      'b62b8ffe166e46a5ba3f8bea511bafb8',
+      '40e46a64bcf0441bae36eba820884704',
+      '8d23a741d56347aa9ff0747a47f0f92d',
+      'd5efea6959f4415a913565dec0994063',
     ]) {
       assert.ok(guideIds.includes(id), id);
     }
     assert.equal(guideIds.includes('6a37fe7160324a17ad107b3dbe43c1db'), false);
-    assert.equal(guide.counts.topic, 96);
+    assert.equal(guide.counts.topic, 265, '96 preserved topic-data records plus 169 restored elementary pages');
     const kite = guide.records.find((row) => row.id === 'topic-kite-grade-9');
     assert.equal(kite && kite.href, '/kite-grade-9');
     assert.equal(kite && kite.topic, 'דלתון');
@@ -393,7 +393,7 @@ describe('Noam AI starters and client guard', () => {
     assert.ok(client.includes('font-family:" + SITE_FONT + "'));
     assert.ok(client.includes('#noam-site-companion-answer,#noam-site-companion-details,#noam-site-companion-chips{font-family:" + SITE_FONT + "}"'));
     assert.ok(client.includes('#noam-site-companion,#noam-site-companion *,#noam-site-companion-panel,#noam-site-companion-panel *{font-family:" + SITE_FONT + " !important}"'));
-    assert.ok(client.includes('noam-bot-client.js?v=20260921-diagnostics1'));
+    assert.ok(client.includes('noam-bot-client.js?v=20261030-human-stepup'));
     assert.ok(client.includes('setProperty("font-family", SITE_FONT, "important")'));
     assert.ok(client.includes('אחר'));
     assert.ok(client.includes('noam-teacher-option'));
@@ -646,7 +646,7 @@ describe('Noam AI bot guard', () => {
     assert.match(paste, /from 'backend\/noam-site-companion'/);
     assert.match(paste, /export function post_noamSiteCompanion/);
     assert.match(catalogJs, /export const catalog =/);
-    assert.match(catalogJs, /dd5036296f084fb7ad7fc6c1bbb25088/);
+    assert.match(catalogJs, /40e46a64bcf0441bae36eba820884704/);
     assert.equal(catalogJs.includes('export const catalog = []') || catalogJs.includes('export const catalog =[];'), false);
   });
 });

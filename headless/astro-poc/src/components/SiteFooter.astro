@@ -38,12 +38,12 @@ const socialLinks = [
  <div style="max-width:1200px;margin:0 auto;padding:56px 24px 28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:32px;">
   <div>
    <strong style="font-family:'Secular One',sans-serif;font-weight:400;font-size:22px;color:#fff;">{footer.brandName}</strong>
-   <p style="margin:10px 0 0;line-height:1.6;font-size:15px;color:#c3c9dc;">{footer.brandBlurb}</p>
+   <p style="margin:10px 0 0;line-height:1.6;font-size:16px;color:#c3c9dc;">{footer.brandBlurb}</p>
   </div>
   <div>
    <h3 style="margin:0 0 10px;font-size:16px;color:#fff;">{footer.contactHeading}</h3>
-   <p style="margin:0 0 6px;font-size:15px;color:#c3c9dc;">{footer.contactBody}</p>
-   <a href={'mailto:'+footer.email} style="color:#f2c46b;font-size:15px;">{footer.email}</a>
+   <p style="margin:0 0 6px;font-size:16px;color:#c3c9dc;">{footer.contactBody}</p>
+   <a href={'mailto:'+footer.email} style="color:#f2c46b;font-size:16px;">{footer.email}</a>
    {/* Keep verified real social destinations. Supplied YouTube/LinkedIn are placeholders, not new URLs. */}
       <ul style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;list-style:none;padding:0;" aria-label="רשתות חברתיות">
         {
@@ -104,14 +104,14 @@ const socialLinks = [
   </div>
   <nav aria-label={footer.quickNavHeading}>
    <h3 style="margin:0 0 10px;font-size:16px;color:#fff;">{footer.quickNavHeading}</h3>
-   <div style="display:flex;flex-direction:column;gap:6px;font-size:15px;">
+   <div style="display:flex;flex-direction:column;gap:0;font-size:16px;">
     {footer.quickNav.map(item=>(<a href={item.href} style="color:#c3c9dc;">{item.label}</a>))}
     <a href="/search" style="color:#c3c9dc;">חיפוש באתר</a>
    </div>
   </nav>
   <nav aria-label="מידע נוסף">
    <h3 style="margin:0 0 10px;font-size:16px;color:#fff;">מידע נוסף</h3>
-   <div style="display:flex;flex-direction:column;gap:6px;font-size:15px;">
+   <div style="display:flex;flex-direction:column;gap:0;font-size:16px;">
     {footer.legal.map(item=>item.href?(<a href={item.href} style="color:#c3c9dc;">{item.label}</a>):(<span>{item.label}</span>))}
    </div>
   </nav>

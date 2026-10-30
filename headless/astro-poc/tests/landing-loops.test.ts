@@ -21,6 +21,7 @@ import {
   powerMarkup,
   topicLandingLoop,
 } from '../src/lib/landingLoops.ts';
+import { isLessonLoop } from '../src/lib/lessonLoops.ts';
 import { GRADE_HUB_GRADES } from '../src/lib/gradeHubs.ts';
 import { TOPIC_PAGE_SLUGS, loadTopicPage } from '../src/lib/topicPages.ts';
 
@@ -180,7 +181,7 @@ describe('landing loop coverage', () => {
     assert.match(loop, /animation-play-state:\s*paused/);
     assert.doesNotMatch(scenes, /<video\b|lottie|gsap|bodymovin/i);
     for (const variant of CSS_LOOP_VARIANTS) {
-      assert.ok(scenes.includes(`variant === '${variant}'`), `missing scene ${variant}`);
+      assert.ok(isLessonLoop(variant) ? scenes.includes('isLessonLoop(variant)') : scenes.includes(`variant === '${variant}'`), `missing scene ${variant}`);
     }
   });
 
@@ -234,7 +235,7 @@ describe('landing loop coverage', () => {
       assert.ok(variant, slug);
       assert.equal(hebrew.test(CSS_LOOP_IDEAS[variant]), true, slug);
     }
-    assert.equal(cssPages, 71);
+    assert.equal(cssPages, 131);
     assert.equal(topicLandingLoop(loadTopicPage('analytic-geometry-grade-9')).kind, 'film');
     assert.equal(CSS_LOOP_IDEAS.t306090.includes('היתר'), true);
     assert.equal(CSS_LOOP_IDEAS.t306090.includes('המיתר'), false);

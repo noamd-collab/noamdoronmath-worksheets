@@ -112,4 +112,20 @@ describe('whole-question picker', () => {
     const keys = expandToWholeQuestionKeys(pool, [`ex:${source.pdfId}:1א`]);
     assert.deepEqual(questionIds(keys), source.questions.filter((item: { q: number }) => item.q === 1).map((item: { id: string }) => item.id));
   });
+
+  it('deduplicates selection IDs while retaining every source record for a repeated part', () => {
+    const repeated = withSource([
+      { id: '13א', q: 13, part: 'א', page: 1 },
+      { id: '13א', q: 13, part: 'א', page: 2 },
+      { id: '13ב', q: 13, part: 'ב', page: 2 },
+    ]);
+    const groups = groupWholeQuestions(repeated);
+    assert.equal(groups.length, 1);
+    assert.equal(groups[0].questions.length, 3, 'Both original regions must remain available to preview and print');
+    const result = pickWholeQuestions(repeated, 5, mulberry32(1));
+    assert.equal(result.questionCount, 1);
+    assert.equal(result.shortfall, true);
+    assert.deepEqual(questionIds(result.keys), ['13א', '13ב']);
+    assert.deepEqual(expandToWholeQuestionKeys(repeated, [result.keys[0], result.keys[0]]), result.keys);
+  });
 });

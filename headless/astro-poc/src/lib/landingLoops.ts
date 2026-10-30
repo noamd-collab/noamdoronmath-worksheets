@@ -7,6 +7,7 @@
  * triangle-area-grade-7 keeps its explorer; the explorer glides once, so it
  * still needs a real loop.
  */
+import { ELEMENTARY_LANDING_LOOPS, ELEMENTARY_CSS_IDEAS, type ElementaryConceptLoopVariant } from './elementaryLandingLoops';
 import topicFamilies from '../data/topicFamilies.json';
 import type { TopicPageContent } from './topicPages';
 
@@ -30,11 +31,56 @@ const SLUG_CONCEPT_OVERRIDE = {
 } as const;
 
 export type ConceptLoopVariant =
+  | ElementaryConceptLoopVariant
   | (typeof FAMILY_CONCEPT_LOOP)[keyof typeof FAMILY_CONCEPT_LOOP]
   | (typeof SLUG_CONCEPT_OVERRIDE)[keyof typeof SLUG_CONCEPT_OVERRIDE];
 
 /** CSS/SVG loops. Transform and opacity only. */
 export const CSS_LOOP_VARIANTS = [
+  'add-no-carry',
+  'add-tens',
+  'baseten-sub',
+  'bonds-10-20',
+  'box-net',
+  'capacity-units',
+  'col-mul',
+  'compare-groups',
+  'count-mark',
+  'data-mean',
+  'decimal-add',
+  'decimal-divide',
+  'decimal-multiply',
+  'divide-remainder',
+  'frac-recip',
+  'fraction-add',
+  'fraction-complete',
+  'fraction-count',
+  'fraction-decimal-compare',
+  'fraction-numberline',
+  'hundred-chart',
+  'long-division',
+  'long-mul',
+  'mixed-add',
+  'mixed-multiply',
+  'mixed-number',
+  'percent-quantity',
+  'percent-whole',
+  'prime-factorization',
+  'read-bars',
+  'read-linegraph',
+  'read-table',
+  'reflect-fold',
+  'round-large',
+  'shape-solid',
+  'split-ways',
+  'square-rectangle',
+  'sub-via-10',
+  'subtract-no-borrow',
+  'tri-square',
+  'triangle-angles',
+  'weight-units',
+  'distrib-area',
+  'frac-div',
   'powers',
   'exp-rules',
   'roots',
@@ -220,6 +266,10 @@ function familyOf(page: Pick<TopicPageContent, 'grade' | 'catalogCta'>): string 
 }
 
 export function topicLandingLoop(page: Pick<TopicPageContent, 'slug' | 'grade' | 'catalogCta'>): LandingLoop {
+  if (page.grade >= 1 && page.grade <= 6) {
+    const restored = ELEMENTARY_LANDING_LOOPS[page.slug as keyof typeof ELEMENTARY_LANDING_LOOPS];
+    if (restored) return restored;
+  }
   const film = FILM_LANDING_LOOPS[page.slug as FilmLandingSlug];
   if (film) return { kind: 'film', marker: film.marker, src: film.src };
   // A slug-level concept film wins over a slug CSS loop and over its family.
@@ -295,6 +345,10 @@ export function powerMarkup(row: PowerRow): string {
  * and listed in the pull request.
  */
 export const CSS_LOOP_IDEAS = {
+  ...ELEMENTARY_CSS_IDEAS,
+  'distrib-area': "מפרקים את 16 ל־10 ועוד 6 ומחברים את שני השטחים: 150 + 90 = 240",
+  'frac-div': "בכל שלם יש 4 רבעים, ולכן בשני שלמים יש 8 רבעים",
+
   powers: `סוגריים קובעים את הסימן: (${MINUS}3)² = 9, בלי סוגריים ${MINUS}3² = ${MINUS}9, וחזקה אי־זוגית (${MINUS}3)³ = ${MINUS}27`,
   'exp-rules': 'בכפל חזקות עם אותו בסיס מחברים מעריכים: 2³ × 2² = 2⁵',
   roots: 'השורש שואל איזה מספר בריבוע נותן את זה: 3² = 9 ולכן √9 = 3',
@@ -353,6 +407,7 @@ export const CSS_LOOP_IDEAS = {
 } as const satisfies Record<CssLoopVariant, string>;
 
 export const FORMULA_LOOP_VARIANTS = [
+  'frac-recip',
   'powers',
   'exp-rules',
   'roots',

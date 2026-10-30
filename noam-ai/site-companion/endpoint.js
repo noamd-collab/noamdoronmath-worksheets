@@ -15,6 +15,7 @@ import {
   isWorksheetSolveRequest,
 } from "./companion.js";
 import { resolveDeterministicTurn } from "./guide-flow.js";
+import { createTeacherStepUpChallenge, stepUpConfigured, verifyTeacherStepUp } from "./teacher-step-up.js";
 import {
   corsHeadersFor,
   guardCompanionRequest,
@@ -28,12 +29,15 @@ import {
   describePicks,
   hrefForSheet,
   selectTeacherPicks,
+  selectTeacherPlans,
 } from "./teacher-pick.js";
 
 export const QWEN_SECRET_NAME = "QWEN_API_KEY";
 export const QWEN_BASE_URL_NAME = "QWEN_BASE_URL";
 export const QWEN_MODEL_NAME = "QWEN_MODEL";
 export const NOAM_RECAPTCHA_SECRET_NAME = "NOAM_RECAPTCHA_SECRET_KEY";
+export const NOAM_RECAPTCHA_V2_SITE_KEY_NAME = "NOAM_RECAPTCHA_V2_SITE_KEY";
+export const NOAM_RECAPTCHA_V2_SECRET_NAME = "NOAM_RECAPTCHA_V2_SECRET_KEY";
 /** Public site key already served by the live bot config. Not a secret. */
 export const PUBLIC_RECAPTCHA_SITE_KEY = "6LdPhawtAAAAAIqCGLcShp8J1XO16Z9lVGTYuwgq";
 export const NOT_ACTIVE_TEXT = "נועם AI לא פעיל כרגע.";
@@ -66,7 +70,7 @@ function inactiveBody() {
   };
 }
 
-export function botConfigBody(qwenKey, recaptchaSecret) {
+export function botConfigBody(qwenKey, recaptchaSecret, settings = {}) {
   if (!secretsReady(qwenKey, recaptchaSecret)) return inactiveBody();
   return {
     ok: true,
@@ -74,6 +78,7 @@ export function botConfigBody(qwenKey, recaptchaSecret) {
     provider: "recaptcha-v3",
     siteKey: PUBLIC_RECAPTCHA_SITE_KEY,
     mode: "enforce",
+    ...(stepUpConfigured(settings) ? { stepUp: { provider: "recaptcha-v2", siteKey: settings.recaptchaV2SiteKey } } : {}),
   };
 }
 
@@ -120,6 +125,7 @@ function teacherAnswer(pick, catalog) {
     essentialNote: QUESTION_GAP,
     exportNote: EXPORT_NOTE,
     exerciseIds: pick.exerciseIds,
+    modelExerciseIds: pick.modelExerciseIds || [],
     sheetIds: pick.sheetIds,
   };
 }
@@ -199,12 +205,26 @@ export async function runCompanionTurn(payload, deps) {
     }
     const body = teacherAnswer(pick, settings.catalog);
     if (classification) body.model = resolveQwenTarget({model: settings.qwenModel, baseUrl: settings.qwenBaseUrl}).model;
-    if (!classification) {
+    if (classification && pick.selectionSource) body.source = pick.selectionSource;
+    if (!classification || pick.selectionSource === "fallback") {
       body.model = null;
       body.source = "fallback";
-      body.code = classificationFailure;
-      body.answer = "החיבור למודל לא הצליח. הנה בחירה בסיסית מהמאגר: " + body.answer;
+      body.code = classification ? "MODEL_SELECTION_INVALID" : classificationFailure;
+      body.answer = (classification
+        ? "לא התקבלה מהמודל בחירה תקינה של שאלות. הנה בחירה בסיסית מהמאגר: "
+        : "החיבור למודל לא הצליח. הנה בחירה בסיסית מהמאגר: ") + body.answer;
       body.text = body.answer;
+      body.details = [body.answer, QUESTION_GAP, EXPORT_NOTE].filter(Boolean).join("\n");
+    } else if (pick.selectionSource === "mixed") {
+      body.code = "MODEL_SELECTION_PARTIAL";
+      body.answer = "המודל בחר חלק מהשאלות, והבחירה הושלמה מקומית: " + body.answer;
+      body.text = body.answer;
+      body.details = [body.answer, QUESTION_GAP, EXPORT_NOTE].filter(Boolean).join("\n");
+    }
+    if (classification) {
+      const model = resolveQwenTarget({ model: settings.qwenModel, baseUrl: settings.qwenBaseUrl }).model;
+      const plans = selectTeacherPlans(settings.teacherIndex, payload, classification, model);
+      if (Object.keys(plans).length) body.teacherPlans = plans;
     }
     return body;
   }
@@ -338,7 +358,7 @@ function readJson(payload) {
 
 export async function handleNoamBotConfig(deps) {
   const settings = deps || {};
-  const body = botConfigBody(settings.qwenKey, settings.recaptchaSecret);
+  const body = botConfigBody(settings.qwenKey, settings.recaptchaSecret, settings);
   return jsonResponse(200, body, settings.origin || "");
 }
 
@@ -368,6 +388,7 @@ export async function handleNoamSiteCompanion(request, deps) {
     return { status: 403, headers: { Vary: "Origin" }, body: "" };
   }
   const requestHost = requestHostFrom(request, settings);
+  const stepUpSettings = { ...settings, requestHost, cookieHeader: request?.headers?.get?.("cookie") || "" };
   const store = settings.store || defaultStore;
   // Fixed answers skip reCAPTCHA. They still take the same 12/min slot.
   const limited = await takeCompanionRate(
@@ -386,7 +407,8 @@ export async function handleNoamSiteCompanion(request, deps) {
     }
     return fail;
   }
-  if (payload.rateProbe === true) {
+  const isStepUp = payload.botVerification?.provider === "recaptcha-v2";
+  if (payload.rateProbe === true && !isStepUp) {
     const probe = { ok: true, active: true, probe: true, code: "RATE_OK" };
     if (isHeadlessPreviewHost(requestHost)) {
       probe.backend = limited.backend || "memory";
@@ -396,9 +418,9 @@ export async function handleNoamSiteCompanion(request, deps) {
   }
   // Guide, topic order, and lesson picking do not call the model.
   // Answer them before reCAPTCHA so a failed check does not block a real visitor.
-  const guided = resolveDeterministicTurn(payload, settings);
+  const guided = isStepUp ? null : resolveDeterministicTurn(payload, settings);
   if (guided) return jsonResponse(200, guided, origin);
-  const guard = await guardCompanionRequest(
+  const guard = isStepUp ? await verifyTeacherStepUp(payload, stepUpSettings) : await guardCompanionRequest(
     {
       origin,
       requestHost,
@@ -421,7 +443,19 @@ export async function handleNoamSiteCompanion(request, deps) {
   if (!guard.ok && guard.code === "UNAVAILABLE") {
     return jsonResponse(200, unavailableBody(), origin);
   }
-  if (!guard.ok) return denied(guard, origin);
+  if (!guard.ok) {
+    if (guard.stepUpEligible === true && guard.siteverify?.hostname === requestHost) {
+      const stepUp = createTeacherStepUpChallenge(payload, stepUpSettings);
+      if (stepUp) {
+        const result = denied({ ...guard, code: "BOT_STEP_UP_REQUIRED" }, origin);
+        result.body.challenge = stepUp.challenge;
+        result.headers["Cache-Control"] = "no-store";
+        if (stepUp.sessionCookie) result.headers["Set-Cookie"] = stepUp.sessionCookie;
+        return result;
+      }
+    }
+    return denied(guard, origin);
+  }
   try {
     const result = await runCompanionTurn(payload, settings);
     return jsonResponse(200, result, origin);

@@ -1,7 +1,7 @@
 /**
  * Teacher picker data, from the site catalog only.
- * Middle-school sheets (grades 7–9) also get per-exercise crops from the
- * existing manifests. Elementary sheets stay sheet / level records.
+ * All grades get per-question crops from checked source manifests.
+ * Elementary geometry preserves complete original questions and card columns.
  * Does not invent exercises. The grade-9 factoring level A file is copied
  * as-is so the pilot boxes stay the ones already checked.
  */
@@ -248,7 +248,37 @@ export function pdfUrl(pdfId) {
   return PDF_BASE + pdfId + '.pdf';
 }
 
+/** Exact elementary crops include every original subpart and drawing. */
+function wholeQuestionSheet(meta, manifest) {
+  const questions = manifest.exercises.map((exercise) => {
+    const rows = (exercise.crops?.length ? exercise.crops : [exercise.crop]).map((box) => ({
+      page: box.page, x: round(box.x), y: round(box.y), w: round(box.w), h: round(box.h),
+    }));
+    return {
+      id: String(exercise.q), q: exercise.q, part: '', page: exercise.pin.page,
+      label: `שאלה ${exercise.q}`, text: exercise.text || `שאלה ${exercise.q}`,
+      box: markBox(exercise.pin), line: 0.02, inkTop: rows[0].y,
+      labelLine: { page: exercise.pin.page, y: rows[0].y, h: 0.02 },
+      row: rows[0], rows,
+    };
+  });
+  const first = questions[0];
+  return {
+    case: `catalog-${meta.grade}-${meta.topicId}-${meta.level}`,
+    grade: meta.grade, topicId: meta.topicId, topic: meta.topic,
+    level: meta.level, levelLabel: meta.levelLabel, pdfId: meta.pdfId,
+    pdfUrl: meta.pdfUrl, title: meta.title, pageCount: manifest.pageCount,
+    exercisePageCount: manifest.exercisePageCount, answerStartPage: manifest.answerStartPage ?? null,
+    answerGeometry: manifest.answerGeometry || 'text',
+    sourceSha256: manifest.sourceSha256, wholeQuestionGeometry: true, mode: 'exercise',
+    headerCrop: { page: 1, x: 0, y: 0, w: 1, h: Math.min(first?.row.y || 0.08, 0.42) },
+    footerCrop: { page: manifest.exercisePageCount, x: 0, y: 0.95, w: 1, h: 0.05 },
+    questions,
+  };
+}
+
 export function sheetFromManifest(meta, manifest, gaps) {
+  if (manifest.wholeQuestionGeometry) return wholeQuestionSheet(meta, manifest);
   const exercises = manifest.exercises || [];
   const first = exercises[0];
   const last = exercises[exercises.length - 1];
@@ -347,7 +377,8 @@ export function buildTeacherCatalog(catalog) {
         level: level.key,
         levelLabel: level.label,
         title: `${topic.title} · ${level.label}`,
-        mode: elementary.has(grade.grade) ? 'sheet' : 'exercise',
+        mode: 'exercise',
+        ...(topic.routing?.sourceGrade ? { sourceGrade: topic.routing.sourceGrade, sourcePrefix: topic.routing.sourcePrefix, sourceTitle: topic.routing.sourceTitle } : {}),
       })),
     })),
   }));
@@ -445,19 +476,46 @@ export function cropEdgeInk(pdfPath, crops) {
   return JSON.parse(result.stdout);
 }
 
-async function writeOutputs() {
+/** Preserve already-published middle sources when refreshing only elementary. */
+export function mergeElementaryCatalog(builtIndex, previous) {
+  const previousGrades = new Map(previous.grades.map((grade) => [grade.grade, grade]));
+  return {
+    ...builtIndex,
+    grades: builtIndex.grades.map((grade) => {
+      if (grade.band === 'elementary') return grade;
+      const published = previousGrades.get(grade.grade);
+      if (!published) throw new Error(`Missing published teacher catalog for grade ${grade.grade}`);
+      return published;
+    }),
+  };
+}
+
+async function writeOutputs({ elementaryOnly = false } = {}) {
   const catalog = JSON.parse(readFileSync(catalogPath, 'utf8'));
   const rich = JSON.parse(readFileSync(richPath, 'utf8'));
-  const index = buildTeacherCatalog(catalog);
-  rmSync(sheetDir, { recursive: true, force: true });
+  const builtIndex = buildTeacherCatalog(catalog);
+  // An elementary-only refresh must retain the published middle-school
+  // catalog as well as its sheets: the authoring catalog can contain newer
+  // middle-school PDF revisions that have not been mapped/published yet.
+  const previous = elementaryOnly
+    ? JSON.parse(readFileSync(join(outDir, 'teacher-catalog.json'), 'utf8')) : null;
+  const index = elementaryOnly ? mergeElementaryCatalog(builtIndex, previous) : builtIndex;
+  if (!elementaryOnly) rmSync(sheetDir, { recursive: true, force: true });
   mkdirSync(sheetDir, { recursive: true });
   writeFileSync(join(outDir, 'teacher-catalog.json'), JSON.stringify(index));
   let exerciseSheets = 0;
   let questions = 0;
   const pending = [];
   for (const sheet of catalogSheets(index)) {
-    if (sheet.mode !== 'exercise') continue;
+    if (sheet.mode !== 'exercise' || (elementaryOnly && sheet.band !== 'elementary')) continue;
     exerciseSheets += 1;
+    const manifest = JSON.parse(readFileSync(join(manifestDir, sheet.pdfId + '.json'), 'utf8'));
+    if (manifest.wholeQuestionGeometry) {
+      const source = sheetFromManifest(sheet, manifest);
+      writeFileSync(join(sheetDir, sheet.pdfId + '.json'), JSON.stringify(source));
+      questions += source.questions.length;
+      continue;
+    }
     if (sheet.pdfId === rich.pdfId) {
       writeFileSync(join(sheetDir, sheet.pdfId + '.json'), readFileSync(richPath));
       questions += rich.questions.length;
@@ -505,6 +563,6 @@ async function writeOutputs() {
 
 const isDirectRun = process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1];
 if (isDirectRun) {
-  const stats = await writeOutputs();
+  const stats = await writeOutputs({ elementaryOnly: process.argv.includes('--elementary-only') });
   console.log(JSON.stringify(stats));
 }

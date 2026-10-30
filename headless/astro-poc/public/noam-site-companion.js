@@ -668,11 +668,12 @@
     paintChrome(true);
   });
   function botClientSrc() {
-    var versioned = "noam-bot-client.js?v=20260921-diagnostics1";
+    var versioned = "noam-bot-client.js?v=20261030-human-stepup";
     var nodes = document.getElementsByTagName("script");
     for (var i = 0; i < nodes.length; i++) {
       var src = nodes[i].getAttribute("src") || "";
-      if (src.indexOf("noam-site-companion.js") !== -1) return src.replace("noam-site-companion.js", versioned);
+      var at = src.indexOf("noam-site-companion.js");
+      if (at !== -1) return src.slice(0, at) + versioned;
     }
     return "/" + versioned;
   }
@@ -681,13 +682,13 @@
     if (botClientPromise) return botClientPromise;
     botClientPromise = new Promise(function (resolve, reject) {
       function finish(ok) {
-        if (ok && window.NoamBotClient && typeof window.NoamBotClient.create === "function") {
+        if (ok && window.NoamBotClient && window.NoamBotClient.version === "20261030-human-stepup" && typeof window.NoamBotClient.create === "function") {
           resolve(window.NoamBotClient.create({ api: API_BASE, enabled: true, modelTimeoutMs: 20000 }));
           return;
         }
         reject(new Error(FALLBACK));
       }
-      if (window.NoamBotClient) { finish(true); return; }
+      if (window.NoamBotClient && window.NoamBotClient.version === "20261030-human-stepup") { finish(true); return; }
       var loader = document.createElement("script");
       loader.src = botClientSrc();
       loader.async = true;
