@@ -20,13 +20,15 @@ import {
   EXACT,
   KEEP_CURRENT,
   NEEDS_DECISION,
-  EXCLUDED_FROM_PROPOSAL_BATCH,
 } from './seo-overrides.mjs';
 
 export const TITLE_MAX = 60;
 export const DESC_MAX = 155;
 export const BRAND = ' | נועם דורון';
 const HE = 'א-ת';
+
+// Reviewed input identities, independent of the generated proposal output and git history.
+const REVIEW_SCOPE = JSON.parse(readFileSync(new URL('./seo-review-scope.json', import.meta.url), 'utf8'));
 
 export const len = (value) => [...value].length;
 
@@ -129,15 +131,38 @@ function pick(path, field, ruleValue) {
   return ruleValue;
 }
 
+/** Current source content; generated JS/type files are not content records. */
+export function loadProposalSources(root) {
+  return {
+    catalog: JSON.parse(readFileSync(join(root, 'src/data/catalog.v1.json'), 'utf8')),
+    topicPages: readJsonDir(join(root, 'src/data/topic-pages')),
+    posts: readJsonDir(join(root, 'src/data/blog-posts')),
+  };
+}
+
 export function buildProposals(root) {
-  const catalog = JSON.parse(readFileSync(join(root, 'src/data/catalog.v1.json'), 'utf8'));
-  const topicPages = readJsonDir(join(root, 'src/data/topic-pages')).filter(
-    (page) => !EXCLUDED_FROM_PROPOSAL_BATCH.has(decoded(page.path))
-  );
-  const posts = readdirSync(join(root, 'src/data/blog-posts'))
-    .filter((name) => name.endsWith('.json'))
-    .map((name) => JSON.parse(readFileSync(join(root, 'src/data/blog-posts', name), 'utf8')))
-    .filter((post) => !EXCLUDED_FROM_PROPOSAL_BATCH.has(decoded(post.path)));
+  return buildProposalsFromSources(loadProposalSources(root));
+}
+
+/** Regenerate the commissioned historical batch, never silently expand its review scope. */
+export function buildProposalsFromSources({ catalog, topicPages: allTopicPages, posts: allPosts }) {
+  const errors = [];
+  const reviewedTopics = new Set(REVIEW_SCOPE.topicPages);
+  const reviewedPosts = new Set(REVIEW_SCOPE.blogPosts);
+  const topicPages = allTopicPages.filter((page) => reviewedTopics.has(page.path));
+  const posts = allPosts.filter((post) => reviewedPosts.has(post.path));
+  const catalogTopics = new Map(catalog.grades.flatMap((grade) =>
+    grade.topics.map((topic) => [`${grade.grade}:${topic.id}`, { grade, topic }])
+  ));
+  for (const [kind, expected, present] of [
+    ['catalog topic', REVIEW_SCOPE.catalogTopics, new Set(catalogTopics.keys())],
+    ['topic page', REVIEW_SCOPE.topicPages, new Set(topicPages.map((page) => page.path))],
+    ['blog post', REVIEW_SCOPE.blogPosts, new Set(posts.map((post) => post.path))],
+  ]) {
+    for (const identity of expected) {
+      if (!present.has(identity)) errors.push(`${identity}: reviewed ${kind} source is missing`);
+    }
+  }
   const pages = new Map();
   for (const page of topicPages) {
     const id = page.catalogCta?.catalogTopicId;
@@ -146,7 +171,6 @@ export function buildProposals(root) {
   const gradeLabels = new Map(catalog.grades.map((grade) => [grade.grade, grade.label]));
   const postKeys = new Set(posts.map((post) => titleKey(post.h1 || post.title)));
 
-  const errors = [];
   const proposals = [];
   const seenPaths = new Set();
 
@@ -184,46 +208,39 @@ export function buildProposals(root) {
     finish(base, title, description);
   }
 
-  for (const grade of catalog.grades) {
-    // G9-T39 (trapezoid) was moved earlier in grade 9's topic array in #104;
-    // in PR 46/52 it sat at the end of grade 9 after topic 36.
-    const orderedTopics =
-      grade.grade === 9
-        ? [
-            ...grade.topics.filter((topic) => topic.id !== 39 && topic.id !== 46),
-            ...grade.topics.filter((topic) => topic.id === 39),
-          ]
-        : grade.topics;
-    for (const topic of orderedTopics) {
-      const page = pages.get(`${grade.grade}:${topic.id}`);
-      const path = page?.path || `/worksheets?grade=${grade.grade}&topic=${topic.id}`;
-      if (seenPaths.has(path)) continue;
-      seenPaths.add(path);
-      if (page) {
-        topicPageRow(page, grade.grade, topic.id);
-        continue;
-      }
-      const key = `${grade.grade}:${topic.id}`;
-      const rawName = normalizeHebrew(topic.title);
-      const isTwin = postKeys.has(titleKey(withGrade(rawName, grade.label)));
-      let name = CATALOG_TOPIC_NAMES[key] || rawName;
-      let headline = withGrade(name, grade.label);
-      let body = `דפי עבודה במתמטיקה בנושא ${headline}. בחינם וללא הרשמה.`;
-      if (isTwin) {
-        name = TWIN_NAMES[key] || name;
-        const threeLevels = (topic.levels || []).length === 3;
-        headline = `${withGrade(name, grade.label)} – ${threeLevels ? 'בחירת רמה' : 'דף העמקה ורשות'}`;
-        body = threeLevels
-          ? `דפי עבודה במתמטיקה בנושא ${withGrade(name, grade.label)}, ברמה א׳, רמה ב׳ ומצוינות. בחינם וללא הרשמה.`
-          : `דף העמקה ורשות במתמטיקה בנושא ${withGrade(name, grade.label)} – דף אחד לכל הרמות. בחינם וללא הרשמה.`;
-      }
-      const from = isTwin ? 'catalog-title-vs-blog' : 'catalog-title';
-      finish(
-        { path, kind: 'catalog-topic', grade: grade.grade, catalogTopicId: topic.id, currentTitle: '', currentDescription: '' },
-        pick(path, 'title', { value: withBrand(headline), from }),
-        pick(path, 'description', { value: clipSentences(body), from }),
-      );
+  // The manifest retains the review's catalog order even if navigation order changes.
+  for (const identity of REVIEW_SCOPE.catalogTopics) {
+    const source = catalogTopics.get(identity);
+    if (!source) continue;
+    const { grade, topic } = source;
+    const page = pages.get(`${grade.grade}:${topic.id}`);
+    const path = page?.path || `/worksheets?grade=${grade.grade}&topic=${topic.id}`;
+    if (seenPaths.has(path)) continue;
+    seenPaths.add(path);
+    if (page) {
+      topicPageRow(page, grade.grade, topic.id);
+      continue;
     }
+    const key = `${grade.grade}:${topic.id}`;
+    const rawName = normalizeHebrew(topic.title);
+    const isTwin = postKeys.has(titleKey(withGrade(rawName, grade.label)));
+    let name = CATALOG_TOPIC_NAMES[key] || rawName;
+    let headline = withGrade(name, grade.label);
+    let body = `דפי עבודה במתמטיקה בנושא ${headline}. בחינם וללא הרשמה.`;
+    if (isTwin) {
+      name = TWIN_NAMES[key] || name;
+      const threeLevels = (topic.levels || []).length === 3;
+      headline = `${withGrade(name, grade.label)} – ${threeLevels ? 'בחירת רמה' : 'דף העמקה ורשות'}`;
+      body = threeLevels
+        ? `דפי עבודה במתמטיקה בנושא ${withGrade(name, grade.label)}, ברמה א׳, רמה ב׳ ומצוינות. בחינם וללא הרשמה.`
+        : `דף העמקה ורשות במתמטיקה בנושא ${withGrade(name, grade.label)} – דף אחד לכל הרמות. בחינם וללא הרשמה.`;
+    }
+    const from = isTwin ? 'catalog-title-vs-blog' : 'catalog-title';
+    finish(
+      { path, kind: 'catalog-topic', grade: grade.grade, catalogTopicId: topic.id, currentTitle: '', currentDescription: '' },
+      pick(path, 'title', { value: withBrand(headline), from }),
+      pick(path, 'description', { value: clipSentences(body), from }),
+    );
   }
 
   for (const page of topicPages) {

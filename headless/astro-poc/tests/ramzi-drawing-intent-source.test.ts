@@ -16,7 +16,21 @@ for (const file of ['worksheet-viewer-noam.html', 'headless/astro-poc/public/wor
   function fn(name: string) {
     const start = html.indexOf('function ' + name + '(');
     const next = html.indexOf('\nfunction ', start + 1);
+    assert.ok(start >= 0 && next > start, name + ' must retain its viewer boundary');
     return html.slice(start, next);
+  }
+  const policyStart = html.indexOf('var NOAM_DRAWING_HINT_GEOMETRY=');
+  const policyEnd = html.indexOf('function noamCanOfferDrawing(', policyStart);
+  assert.ok(policyStart >= 0 && policyEnd > policyStart);
+  const topicPolicy = html.slice(policyStart, policyEnd);
+  function bindComposer(c: any) {
+    // The click listener closes over this value in renderNoamChat. Execute the
+    // real declaration and topic policy, rather than assuming drawing is allowed.
+    const declaration = html.indexOf('var drawingHintsAllowed=');
+    const start = html.indexOf('document.getElementById("noamDraw").addEventListener("click",function(){');
+    assert.ok(declaration >= 0 && start > declaration);
+    runInNewContext(html.slice(declaration, html.indexOf(';', declaration) + 1) + '\n' +
+      html.slice(start, html.indexOf('\n  });', start) + 6), c);
   }
   function fixture() {
     const { document, window } = parseHTML('<html><body><button id="noamDraw"></button></body></html>');
@@ -42,7 +56,7 @@ for (const file of ['worksheet-viewer-noam.html', 'headless/astro-poc/public/wor
       noamDiagramError: () => 'unsupported', busy: false, drawingAnswer: message,
     };
     const sourceHelpers = html.slice(html.indexOf('var noamSourceVisualPackages='), html.indexOf('function noamNativeFigure('));
-    runInNewContext(nativeModule + '\n' + sourceHelpers + '\n' + ['noamMessageVisualOptions', 'noamNativeDiagramContext', 'noamTypedVisualContext', 'noamInspectVisualPlan', 'noamRenderVisualPlan', 'noamDiagramSourceInput', 'requestNoamDiagram'].map(fn).join('\n'), c);
+    runInNewContext(nativeModule + '\n' + sourceHelpers + '\n' + topicPolicy + '\n' + ['noamCanOfferDrawing', 'noamMessageVisualOptions', 'noamNativeDiagramContext', 'noamTypedVisualContext', 'noamInspectVisualPlan', 'noamRenderVisualPlan', 'noamDiagramSourceInput', 'requestNoamDiagram'].map(fn).join('\n'), c);
     window.NoamNativeVisual = c.NoamNativeVisual;
     window.NoamDiagramPlan = { inspect: () => ({ ok: false, reason: 'unsupported' }) };
     return { c, calls, data, exercise, manifest, message, thread, runtime };
@@ -52,8 +66,8 @@ for (const file of ['worksheet-viewer-noam.html', 'headless/astro-poc/public/wor
     const f = fixture(), received: any[] = [];
     f.c.requestNoamDiagram = (...args: any[]) => received.push(args);
     f.c.thread = f.thread;
-    const start = html.indexOf('document.getElementById("noamDraw").addEventListener("click",function(){');
-    runInNewContext(html.slice(start, html.indexOf('\n  });', start) + 6), f.c);
+    bindComposer(f.c);
+    assert.equal(f.c.drawingHintsAllowed, true);
     f.c.document.getElementById('noamDraw').click();
     assert.equal(received.length, 1);
     assert.equal(received[0][3].drawCurrentStep, true);
@@ -67,6 +81,47 @@ for (const file of ['worksheet-viewer-noam.html', 'headless/astro-poc/public/wor
     assert.equal(f.c.noamSourceVisualOptions({ drawCurrentStep: 'true' }).drawCurrentStep, false);
     assert.equal(f.c.noamSourceVisualOptions({ drawCurrentStep: true }).drawCurrentStep, true);
     assert.equal(f.c.noamMessageVisualOptions(f.thread, f.message).drawCurrentStep, undefined);
+  });
+
+  it(file + ': composer, answer action and direct requests deny drawing on arithmetic, algebra and unknown topics', async () => {
+    for (const [prefix, title] of [
+      ['G1-T01', 'מונים בלי לפספס'],
+      ['G7-T02', 'חיבור וחיסור מספרים מכוונים'],
+      ['G8-T02', 'משוואות ליניאריות'],
+      ['G9-T999', 'נושא לא מוכר'],
+      ['', 'נושא לא מוכר'],
+    ]) {
+      const f = fixture(), received: any[] = [];
+      f.manifest.prefix = prefix;
+      f.manifest.topic = title;
+      f.c.ttl = title;
+      f.c.thread = f.thread;
+      const directRequest = f.c.requestNoamDiagram;
+      f.c.requestNoamDiagram = (...args: any[]) => received.push(args);
+      bindComposer(f.c);
+      assert.equal(f.c.drawingHintsAllowed, false, prefix || 'unknown');
+      f.c.document.getElementById('noamDraw').click();
+      assert.equal(received.length, 0, prefix);
+      // Even a saved drawing error or explicit request cannot bypass the topic.
+      f.message.diagramError = 'previous drawing failed';
+      assert.equal(f.c.noamCanOfferDrawing(f.exercise, f.thread, f.message), false, prefix);
+      assert.equal(await directRequest(f.exercise, f.thread, f.message,
+        { drawCurrentStep: true, studentMessage: 'אפשר רמז בשרטוט?', nativeAttempted: true }), null, prefix);
+      assert.equal(f.calls.length, 0, 'denied topics must not crop, analyze or request a diagram');
+    }
+  });
+
+  it(file + ': the actual composer policy still accepts analytic geometry', () => {
+    const f = fixture(), received: any[] = [];
+    f.manifest.prefix = 'G9-T08';
+    f.manifest.topic = 'גיאומטריה אנליטית';
+    f.c.thread = f.thread;
+    f.c.requestNoamDiagram = (...args: any[]) => received.push(args);
+    bindComposer(f.c);
+    assert.equal(f.c.drawingHintsAllowed, true);
+    f.c.document.getElementById('noamDraw').click();
+    assert.equal(received.length, 1);
+    assert.equal(received[0][3].drawCurrentStep, true);
   });
 
   it(file + ': native drawing payload keeps original image and only selected authored text and visible identities', async () => {

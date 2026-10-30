@@ -1,0 +1,18 @@
+{
+  "sourceMap": "LOOPS_MAP_73_v2.csv",
+  "sourceMapSha256": "da585bca6ebea78eaed1536d879c1c75ac2b543a948d405c6988c7fc7e4f2e26",
+  "amendments": {
+    "diff-sq": {
+      "source": "L14",
+      "originalQuestion": "25 − 9 = ?",
+      "question": "x² − y² = ?",
+      "mathLine": "x² − y² = (x − y) · (x + y)",
+      "durationSeconds": 22,
+      "holdSeconds": 20.5,
+      "commit": "de606a86f90f23f8fd90e936769bc082822a3208",
+      "pullRequest": "https://github.com/noamd-collab/noamdoronmath-worksheets/pull/97",
+      "date": "2026-10-11",
+      "reason": "Noam's Kimi L14 v6 script replaces the numeric example with a letters-only factorization film."
+    }
+  }
+}

@@ -249,7 +249,14 @@ describe('exact-design protected live-baseline boundaries', () => {
     // 2026-10-29: explicit printed last-part-only figure scope proves independent canonical text.
     // The whole reviewed framing must match; any extra scope qualification keeps the image reader.
     // The attachment-origin flag and reader use one request snapshot; cleanup retains newly added photos.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '4ba806e38320769fa2c2239379e3be12a0da2af1a51b462f9fcbd6b8fc7db7b7');
+    // Reviewed migrations after the 61152b5e fence: 3474fd6b enforces Noam's
+    // geometry-only drawing policy; 97fab974 binds analysis/solving and OCR cache
+    // identity to the selected published source. Only the inline viewer script
+    // changed; the other thirteen released scripts remain byte-identical.
+    // drawing-hint-topic, ramzi-drawing-intent-source and
+    // ramzi-analyzer-source-binding exercise those policies without live AI.
+    // Keep the entire script fence, including the migrated behavior, protected.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), '40c5babbcc812094a5b512697fa9724c9adc32009aa146a54c4f96e3fd712e34');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {

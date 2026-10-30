@@ -3,11 +3,12 @@
  * against production/live user storage.
  */
 import assert from 'node:assert/strict';
-import { readFileSync, existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { readFileSync, mkdirSync, writeFileSync } from 'node:fs';
 import { describe, it } from 'node:test';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import puppeteer from 'puppeteer-core';
+import { chromiumExecutable } from './helpers/chromium.ts';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const fixtureDir = join(root, 'tests/fixtures/nd-gate');
@@ -31,35 +32,34 @@ describe('M35 ndGate fixture-only', () => {
 <style>${readFileSync(join(root, 'src/styles/catalog.css'), 'utf8').match(/#ndGateOverlay[\s\S]*?\.nd-gate-foot[\s\S]*?}/)?.[0] || ''}</style>
 </head><body><main>fixture</main><script>${gateJs}</script></body></html>`
     );
-    const chrome = [process.env.CHROME_PATH, '/usr/bin/google-chrome-stable', '/usr/bin/google-chrome'].find(
-      (path): path is string => !!path && existsSync(path)
-    );
-    assert.ok(chrome, 'no Chrome/Chromium found: set CHROME_PATH');
     const browser = await puppeteer.launch({
-      executablePath: chrome,
+      executablePath: chromiumExecutable(),
       headless: true,
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
-    const ctx = await browser.createBrowserContext();
-    const page = await ctx.newPage();
-    await page.goto('file://' + fixtureHtml, { waitUntil: 'domcontentloaded' });
-    await new Promise((r) => setTimeout(r, 300));
-    const before = await page.evaluate(() => ({
-      gate: !!document.getElementById('ndGateOverlay'),
-      ls: localStorage.getItem('nd_gate_accepted_v1'),
-    }));
-    assert.equal(before.gate, true);
-    assert.equal(before.ls, null);
-    await page.click('#ndGateCheck');
-    await page.click('#ndGateBtn');
-    await new Promise((r) => setTimeout(r, 400));
-    const after = await page.evaluate(() => ({
-      gate: !!document.getElementById('ndGateOverlay'),
-      ls: !!localStorage.getItem('nd_gate_accepted_v1'),
-    }));
-    assert.equal(after.gate, false);
-    assert.equal(after.ls, true);
-    await ctx.close();
-    await browser.close();
+    try {
+      const ctx = await browser.createBrowserContext();
+      const page = await ctx.newPage();
+      await page.goto('file://' + fixtureHtml, { waitUntil: 'domcontentloaded' });
+      await page.waitForSelector('#ndGateOverlay');
+      const before = await page.evaluate(() => ({
+        gate: !!document.getElementById('ndGateOverlay'),
+        ls: localStorage.getItem('nd_gate_accepted_v1'),
+      }));
+      assert.equal(before.gate, true);
+      assert.equal(before.ls, null);
+      await page.click('#ndGateCheck');
+      await page.click('#ndGateBtn');
+      await page.waitForFunction(() => !document.getElementById('ndGateOverlay') && !!localStorage.getItem('nd_gate_accepted_v1'));
+      const after = await page.evaluate(() => ({
+        gate: !!document.getElementById('ndGateOverlay'),
+        ls: !!localStorage.getItem('nd_gate_accepted_v1'),
+      }));
+      assert.equal(after.gate, false);
+      assert.equal(after.ls, true);
+      await ctx.close();
+    } finally {
+      await browser.close();
+    }
   });
 });

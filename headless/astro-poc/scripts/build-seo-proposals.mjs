@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /**
- * Hebrew title/description proposals for review.
+ * Regenerate the historical PR 46 / PR 52 Hebrew SEO proposal review batch.
+ * Input identities and provenance: scripts/lib/seo-review-scope.json.
  * approved is always false. Nothing here is applied until a person sets approved: true.
  * Rules: scripts/lib/seo-copy.mjs. Reviewed point fixes: scripts/lib/seo-overrides.mjs.
  * Fails (exit 1) instead of clipping when a title or description cannot be built cleanly.
@@ -43,6 +44,7 @@ writeFileSync(join(root, 'seo-review.csv'), `${csv}\n`);
 const posts = proposals.filter((row) => row.kind === 'blog-post');
 const topics = proposals.filter((row) => row.kind !== 'blog-post');
 console.log({
+  scope: 'PR 46 / PR 52 historical review batch',
   topics: topics.length,
   posts: posts.length,
   pages: topics.filter((r) => r.kind === 'topic-page').length,

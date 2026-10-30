@@ -1,7 +1,10 @@
 /**
  * Shared live-SSR blog archive card index (source of truth for M26 gates).
- * Pro-gallery virtualization undercounts in Puppeteer; parse every post-list-item from SSR HTML.
+ * Parse the deployed Astro cards and the legacy Wix post-list-item markup.
+ * Read server HTML so browser gallery virtualization cannot hide source cards.
  */
+import { parseHTML } from 'linkedom';
+
 export const PROD = 'https://www.noamdoronmath.co.il';
 
 export const ARCHIVE_PATHS = [
@@ -63,8 +66,40 @@ export function pathnameOf(href) {
   }
 }
 
-/** Parse every SSR post-list-item in document order. */
+function parseAstroSsrCards(html) {
+  const { document } = parseHTML(html);
+  return [...document.querySelectorAll('[data-blog-archive-list] [data-blog-archive-card]')].flatMap((card) => {
+    const link = card.querySelector('[data-blog-archive-card-link]');
+    const title = clean(link?.textContent);
+    let href;
+    try {
+      const url = new URL(link?.getAttribute('href') || '', PROD);
+      if (url.origin !== PROD || !url.pathname.startsWith('/post/')) return [];
+      href = normHref(url.href);
+    } catch {
+      return [];
+    }
+    if (title.length < 3) return [];
+    const text = (selector) => clean(card.querySelector(selector)?.textContent);
+    const avatar = card.querySelector('.blog-archive__card-avatar');
+    const categories = [...card.querySelectorAll('.blog-archive__card-cats a[href]')].map((item) => ({
+      text: clean(item.textContent), href: normHref(item.getAttribute('href')),
+    }));
+    return [{
+      title, href, excerpt: text('[data-blog-archive-card-excerpt]'),
+      authorAvatar: avatar?.getAttribute('src') ? { src: avatar.getAttribute('src'), alt: avatar.getAttribute('alt') || '' } : undefined,
+      author: text('[data-blog-archive-card-author]') || undefined,
+      date: text('[data-blog-archive-card-date]') || undefined,
+      categories: categories.length ? categories : undefined,
+    }];
+  });
+}
+
+/** Parse every SSR archive card in document order, without rendering JavaScript. */
 export function parseSsrCards(html) {
+  // The custom Astro archive replaced Wix's gallery when the site went live.
+  // Keep its semantic hooks distinct from unrelated article/recent-post links.
+  if (/data-blog-archive-list\b/i.test(html)) return parseAstroSsrCards(html);
   const cards = [];
   const parts = html.split(/data-hook="post-list-item"/i);
   for (let i = 1; i < parts.length; i++) {
@@ -199,65 +234,86 @@ export function parseArchiveMeta(html) {
   };
 }
 
-/** Live SSR ordered title+href index for source-to-served gates. */
-export async function fetchLiveArchiveCardIndex(path, opts = {}) {
-  const attempts = Math.max(1, opts.attempts || 3);
-  const ua = opts.userAgent || 'Mozilla/5.0 (compatible; m26-ssr-gate)';
-  let lastErr;
-  for (let i = 0; i < attempts; i++) {
-    try {
-      const res = await fetch(PROD + path, {
-        headers: { 'user-agent': ua, accept: 'text/html' },
-        redirect: 'follow',
-      });
-      const finalUrl = res.url || PROD + path;
-      const contentType = res.headers.get('content-type') || '';
-      const status = res.status;
-      if (!res.ok) {
-        throw new Error(
-          `HTTP ${status} for ${path} final=${finalUrl} ctype=${contentType}`
-        );
-      }
-      if (!/text\/html/i.test(contentType) && contentType) {
-        throw new Error(
-          `Unexpected content-type ${contentType} for ${path} final=${finalUrl} status=${status}`
-        );
-      }
-      const html = await res.text();
-      const cards = parseSsrCards(html);
-      if (cards.length === 0) {
-        const diag = {
-          status,
-          finalUrl,
-          contentType,
-          bytes: html.length,
-          hasDoctype: /<!doctype html/i.test(html.slice(0, 200)),
-          postListItem: (html.match(/data-hook="post-list-item"/gi) || []).length,
-          title: (html.match(/<title[^>]*>([\s\S]*?)<\/title>/i) || [])[1]?.slice(0, 80),
-        };
-        throw new Error(
-          `Parsed 0 SSR cards for ${path}. diag=${JSON.stringify(diag)}`
-        );
-      }
-      return {
-        path,
-        cards: cards.map((c) => ({ title: c.title, href: c.href, pathname: pathnameOf(c.href) })),
-        titles: cards.map((c) => c.title),
-        hrefs: cards.map((c) => c.href),
-        pathnames: cards.map((c) => pathnameOf(c.href)),
-        count: cards.length,
-        loadMore: /טען עוד|הצג עוד|Load more|עוד פוסטים/i.test(html),
-        pagination: /data-hook="[^"]*pagination/i.test(html),
-        http: { status, finalUrl, contentType, bytes: html.length, attempt: i + 1 },
-      };
-    } catch (e) {
-      lastErr = e;
-      if (i < attempts - 1) {
-        await new Promise((r) => setTimeout(r, 400 * (i + 1)));
-      }
-    }
+/** Retry-After is delay-seconds or an HTTP date (RFC 9110 section 10.2.3). */
+function retryAfterDelay(value, now) {
+  if (!value) return null;
+  const text = value.trim();
+  if (/^\d+$/.test(text)) {
+    const delay = Number(text) * 1000;
+    return Number.isSafeInteger(delay) ? delay : null;
   }
-  throw lastErr;
+  // Do not let Date.parse reinterpret malformed numeric delays as calendar dates.
+  if (!/^(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun), /i.test(text)) return null;
+  const date = Date.parse(text);
+  return Number.isFinite(date) ? Math.max(0, date - now) : null;
+}
+
+/** Live SSR ordered title+href index; at most one server-directed, bounded retry. */
+export async function fetchLiveArchiveCardIndex(path, opts = {}) {
+  const attempts = Math.min(2, Math.max(1, Number(opts.attempts) || 2));
+  const fetchImpl = opts.fetchImpl || fetch;
+  const sleep = opts.sleep || ((ms) => new Promise((resolve) => setTimeout(resolve, ms)));
+  const now = opts.now || Date.now;
+  const ua = opts.userAgent || 'Mozilla/5.0 (compatible; m26-ssr-gate)';
+  for (let i = 0; i < attempts; i++) {
+    const res = await fetchImpl(PROD + path, {
+      headers: { 'user-agent': ua, accept: 'text/html' },
+      redirect: 'follow',
+      signal: AbortSignal.timeout(30000),
+    });
+    const finalUrl = res.url || PROD + path;
+    const contentType = res.headers.get('content-type') || '';
+    const status = res.status;
+    if (!res.ok) {
+      const retryAfter = res.headers.get('retry-after');
+      const delay = retryAfterDelay(retryAfter, now());
+      // Record normalized delay/status only, never arbitrary header or error-page text.
+      const retryMeta = { status, retryAfterMs: delay, retryAfterPresent: retryAfter !== null, attempt: i + 1 };
+      await res.body?.cancel();
+      if (status === 429 && delay !== null && delay > 0 && delay <= 30000 && i + 1 < attempts) {
+        await sleep(delay);
+        continue;
+      }
+      const error = new Error(`HTTP ${status} for ${path}; no further retry; metadata=${JSON.stringify(retryMeta)}`);
+      error.http = retryMeta;
+      throw error;
+    }
+    if (!/text\/html/i.test(contentType)) {
+      await res.body?.cancel();
+      throw new Error(`Unexpected or missing HTML content-type for ${path}; status=${status}`);
+    }
+    const html = await res.text();
+    const cards = parseSsrCards(html);
+    if (cards.length === 0) {
+      const diag = {
+        status, bytes: html.length,
+        hasDoctype: /<!doctype html/i.test(html.slice(0, 200)),
+        postListItem: (html.match(/data-hook="post-list-item"/gi) || []).length,
+        astroCards: (html.match(/data-blog-archive-card(?:[\s=>])/gi) || []).length,
+      };
+      throw new Error(`Parsed 0 SSR cards for ${path}. diag=${JSON.stringify(diag)}`);
+    }
+    return {
+      path,
+      cards: cards.map((c) => ({ title: c.title, href: c.href, pathname: pathnameOf(c.href) })),
+      titles: cards.map((c) => c.title),
+      hrefs: cards.map((c) => c.href),
+      pathnames: cards.map((c) => pathnameOf(c.href)),
+      count: cards.length,
+      loadMore: /טען עוד|הצג עוד|Load more|עוד פוסטים/i.test(html),
+      pagination: /data-hook="[^"]*pagination/i.test(html),
+      http: { status, finalUrl, contentType, bytes: html.length, attempt: i + 1 },
+    };
+  }
+}
+
+/** One exact live snapshot per path and test run, including unavailable results. */
+export function createLiveArchiveSnapshotReader(opts = {}) {
+  const snapshots = new Map();
+  return (path) => {
+    if (!snapshots.has(path)) snapshots.set(path, fetchLiveArchiveCardIndex(path, opts));
+    return snapshots.get(path);
+  };
 }
 
 /**
