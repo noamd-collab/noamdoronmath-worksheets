@@ -5,21 +5,17 @@ name: sync-old-blog
 #
 # GitHub runs schedule and workflow_dispatch only when this file is on the
 # default branch (main). A copy that exists only on headless/astro-poc-baseline
-# never starts. The daily sync also does not release posts that are already
-# committed; set publish=true on a manual run to release the current branch.
+# never starts. New posts open a pull request into the live branch. Publishing
+# happens after that pull request merges, in publish-blog-sync.yml.
 
 on:
   schedule:
     - cron: '30 4 * * *'
   workflow_dispatch:
-    inputs:
-      publish:
-        description: Release the branch even when this run imports no new posts
-        type: boolean
-        default: false
 
 permissions:
   contents: write
+  pull-requests: write
 
 concurrency:
   group: sync-old-blog
@@ -50,33 +46,25 @@ jobs:
         working-directory: headless/astro-poc
         run: node scripts/sync-old-blog.mjs
 
-      - name: Commit new posts
-        id: commit
-        run: |
-          git config user.name "cursor-blog-sync"
-          git config user.email "cursor-blog-sync@users.noreply.github.com"
-          git add \
-            headless/astro-poc/src/data/blog-posts \
-            headless/astro-poc/src/data/blog-archives/blog-index.json \
-            headless/astro-poc/src/data/site-guide.v1.json \
-            headless/astro-poc/src/data/search-index.v1.json \
-            headless/astro-poc/src/lib/blogArchives.ts \
+      - name: Open a pull request with new posts
+        uses: peter-evans/create-pull-request@v7
+        with:
+          # A fine-grained PAT lets the required checks run on the bot PR.
+          # PRs opened with GITHUB_TOKEN do not trigger other workflows.
+          token: ${{ secrets.BLOG_SYNC_PAT || secrets.GITHUB_TOKEN }}
+          base: headless/astro-poc-baseline
+          branch: bot/sync-old-blog
+          delete-branch: true
+          committer: cursor-blog-sync <cursor-blog-sync@users.noreply.github.com>
+          author: cursor-blog-sync <cursor-blog-sync@users.noreply.github.com>
+          commit-message: Sync new posts from the old Wix blog
+          title: Sync new posts from the old Wix blog
+          body: Automated daily sync from the old Wix blog. Merging this PR publishes the posts.
+          labels: blog-sync
+          add-paths: |
+            headless/astro-poc/src/data/blog-posts
+            headless/astro-poc/src/data/blog-archives/blog-index.json
+            headless/astro-poc/src/data/site-guide.v1.json
+            headless/astro-poc/src/data/search-index.v1.json
+            headless/astro-poc/src/lib/blogArchives.ts
             headless/astro-poc/docs/search/index-build.json
-          if git diff --cached --quiet; then
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-          else
-            git commit -m "Sync new posts from the old Wix blog"
-            git push
-            echo "changed=true" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Publish
-        if: steps.commit.outputs.changed == 'true' || inputs.publish == true
-        env:
-          WIX_CLI_API_KEY: ${{ secrets.WIX_CLI_API_KEY }}
-        run: |
-          if [ -z "${WIX_CLI_API_KEY}" ]; then
-            echo "WIX_CLI_API_KEY is not set. Posts are on the branch and were not published."
-            exit 1
-          fi
-          bash tools/release/release.sh "$(git rev-parse HEAD)"
