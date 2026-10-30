@@ -14,20 +14,26 @@ Visitors cannot write to the table, and the public key reads only the exercise I
 
 Full solutions and final answers are **not** stored. The repository is public and the table is readable with the public key, so only hints go in.
 
-## Steps for Noam
+## Steps for Noam: the SQL run
 
-These run in the Supabase SQL editor of the project in `noam-learning-config.js`. An agent does not run them.
+Everything runs in the Supabase SQL editor of the project in `noam-learning-config.js` (`ouzquolkeuceektfihss`). An agent does not run them. Run each file whole, in this order:
 
-1. Run `learning/ramzi-hints-schema.sql` once.
-2. Run `learning/ramzi-hints-seed.sql`. It can be run again; it updates existing rows.
-3. Optional: run `learning/verify-ramzi-hints-rls.sql`. It prints `PASS` and rolls back its test rows.
-4. Merge the pull request and publish the website as usual.
+| # | File | What it does | Expected result |
+| --- | --- | --- | --- |
+| 1 | `learning/ramzi-hints-schema.sql` | Creates `public.noam_ramzi_hints`, with row-level security and read access for the publishable key to the ID and three hints only. Run it once. | "Success. No rows returned" |
+| 2 | `learning/ramzi-hints-seed.sql` | Inserts the 500 rows. It can be run again: it updates existing rows. | "Success. No rows returned" |
+| 3 | `learning/verify-ramzi-hints-rls.sql` | Optional. Checks access and rolls back its test rows. | One row starting with `PASS` |
+| 4 | Check | `select status, count(*) from public.noam_ramzi_hints group by 1;` | `verified 415`, `review 85` |
+
+Then merge the pull request and publish the website as usual. Until the site is published, the table is not read.
+
+The older exercise tables have their own script, `learning/exercises-tables-rls.sql`. Its steps are in `docs/exercises-tables-rls-20261030.md`: publish the one-line Wix backend change first, then run the script.
 
 To show a row that is still `review`, change its `status` to `verified` in the Table Editor after checking it.
 
 ## The October 2026 banks
 
-Two Zero-Spoiler v2.1 banks feed the table, 490 rows in all.
+Two Zero-Spoiler v2.1 banks feed the table, plus ten rows added afterwards: 500 rows in all.
 
 **The 421-part middle-school bank** (157 grade 7, 177 grade 8, 87 grade 9) was written against the printed parts in `noam-ai/native/`, mostly part א of question 1. The builder maps its IDs to live viewer IDs:
 
@@ -36,6 +42,8 @@ Two Zero-Spoiler v2.1 banks feed the table, 490 rows in all.
 - **`G9-T40` (`A`, `B`, `E`)** is left out (3 rows): in `catalog.v1.json` it points to the same three PDFs as `G9-T32`. The other **418** rows map one-to-one to live exercise IDs.
 
 **72 rows from the first 136-part bank** are kept. Their bank texts did not match the printed parts, so each hint set was matched to the part of the same topic it fits and checked by a student-lens and a teacher-lens reviewer. They sit on parts the new bank does not cover (for example `G7-T01-A-Q34א`). Their `review_note` names the bank ID they came from.
+
+**10 rows added on 30 October** cover worksheets whose question 1 the bank missed: `G8-T65-E`, `G9-T41-A`, `G9-T42-A`, `G9-T43-E`, `G9-T44-A/B/E` and `G9-T45-A/B/E`. Their hints were written from the original PDFs, because these worksheets have no package in `noam-ai/native/`. They were audited the same way against that transcription. `G9-T44-B-Q01א` gives the answer away and is hidden.
 
 Fractions in hints use a horizontal bar (Noam, 18.10.2026): the builder turns a numeric slash fraction such as 1/4 into `$\frac{1}{4}$`, which Ramzi renders with KaTeX.
 
@@ -51,7 +59,7 @@ The bank's own pattern checks (no `=`, no extra numbers, no final answer value) 
 | `review`: both | 5 |
 | **Total from the 421-part bank** | **418** (334 `verified`, 84 `review`) |
 
-By grade, `verified`: ז׳ 141 of 157, ח׳ 125 of 177, ט׳ 68 of 84. With the 72 kept rows the table has **406 `verified`** and **84 `review`** rows.
+By grade, `verified`: ז׳ 141 of 157, ח׳ 125 of 177, ט׳ 68 of 84. With the 72 kept rows and the 10 added rows, the table has **415 `verified`** and **85 `review`** rows.
 
 The typical spoiler is hint 2 or 3 reading the values off the graph or table for the student, or naming the theorem or rule the part asks for. Two rows have factual errors: `G8-T10-E-Q01א` (segment times differ from the graph) and `G8-T35-B-Q01א` (values of b and c are swapped).
 
@@ -71,4 +79,4 @@ The first form reads a new bank. `--keep` keeps published rows for parts the ban
 - `tests/ramzi-hints-build.test.cjs`: parsing, ID mapping, no solutions in the output, review moves, rebuilding from rows and keeping rows, native package aliases, bar fractions, public column grants, and seed/JSON consistency.
 - `headless/astro-poc/tests/ramzi-curated-hints.test.ts`: guide registration, hint order, הבנתי / לא הבנתי, the Supabase request, single-level worksheets, failure fallback and viewer wiring.
 - `headless/astro-poc/tests/ramzi-understanding.test.ts`: הבנתי answers locally and never opens a hint or calls the model; לא הבנתי keeps its steps.
-- The SQL files were run on a local PostgreSQL 16 with Supabase-style `anon` and `authenticated` roles. The seed ran twice without errors, the publishable-key role saw only the 406 `verified` rows and only their ID and hints, and the RLS check printed `PASS`.
+- The SQL files were run on a local PostgreSQL 16 with Supabase-style `anon` and `authenticated` roles. The seed ran twice without errors, the publishable-key role saw only the 415 `verified` rows and only their ID and hints, and the RLS check printed `PASS`.
