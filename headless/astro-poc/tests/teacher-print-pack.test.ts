@@ -22,7 +22,7 @@ function layoutApi(source) {
   const start = printer.indexOf('function boxEnd');
   const end = printer.indexOf('async function measureSlices');
   return new Function('SOURCE', `${printer.slice(start, end)}
-    return { shortSlices, packShort, orderPrintQuestions, batchesOf, levelPrintName, answerCropsFromLines, answerHeadingBox, textItemBox, contentHeight, fittedScale, fittedHeight, sheetContentLimit, worksheetTitle, SHEET_PAGE_H, SHEET_BASAD_H, SHEET_TITLE_H };
+    return { shortSlices, packShort, orderPrintQuestions, batchesOf, levelPrintName, answerCropsFromLines, answerHeadingBox, inkBandsFromPixels, textItemBox, contentHeight, fittedScale, fittedHeight, sheetContentLimit, worksheetTitle, SHEET_PAGE_H, SHEET_BASAD_H, SHEET_TITLE_H };
   `)(source);
 }
 
@@ -483,6 +483,61 @@ describe('teacher short worksheet pack', () => {
     assert.equal(parenCrops.length, 1);
     assert.equal(parenCrops[0].q, 1);
     assert.equal(parenCrops[0].pieces.length, 2);
+  });
+
+  it('keeps a stacked fraction answer line whole, on one row, between its neighbours', () => {
+    const api = layoutApi({});
+    const lines = [
+      { page: 8, y: 0.0511, y2: 0.069, x: 0.780, x2: 0.933, text: 'תשובות סופיות' },
+      { page: 8, y: 0.2980, y2: 0.3100, x: 0.907, x2: 0.929, text: '(18)' },
+      { page: 8, y: 0.2980, y2: 0.3100, x: 0.865, x2: 0.881, text: 'א.' },
+      { page: 8, y: 0.2980, y2: 0.3100, x: 0.840, x2: 0.856, text: '36' },
+      { page: 8, y: 0.3400, y2: 0.3500, x: 0.907, x2: 0.929, text: '(19)' },
+      { page: 8, y: 0.3400, y2: 0.3500, x: 0.865, x2: 0.881, text: 'א.' },
+      { page: 8, y: 0.3300, y2: 0.3370, x: 0.840, x2: 0.848, text: '1' },
+      { page: 8, y: 0.3500, y2: 0.3570, x: 0.832, x2: 0.856, text: '100' },
+      { page: 8, y: 0.3400, y2: 0.3500, x: 0.820, x2: 0.825, text: '·' },
+      { page: 8, y: 0.3400, y2: 0.3500, x: 0.800, x2: 0.815, text: 'ב.' },
+      { page: 8, y: 0.3300, y2: 0.3370, x: 0.775, x2: 0.783, text: '1' },
+      { page: 8, y: 0.3500, y2: 0.3570, x: 0.760, x2: 0.797, text: '10,000' },
+      { page: 8, y: 0.3800, y2: 0.3900, x: 0.907, x2: 0.929, text: '(20)' },
+      { page: 8, y: 0.3800, y2: 0.3900, x: 0.865, x2: 0.881, text: 'א.' },
+      { page: 8, y: 0.3800, y2: 0.3900, x: 0.840, x2: 0.856, text: '50' },
+    ];
+    // Ink rows of the rendered page: the fraction line reaches above and
+    // below the pdf.js text boxes of (19).
+    const bands = new Map([[8, [
+      { y: 0.0500, y2: 0.0700 },
+      { y: 0.2960, y2: 0.3120 },
+      { y: 0.3285, y2: 0.3585 },
+      { y: 0.3780, y2: 0.3920 },
+    ]]]);
+    const inside = (box: { y: number; h: number }) => {
+      assert.ok(box.y <= 0.3285, 'top cut ' + box.y);
+      assert.ok(box.y + box.h >= 0.3585, 'bottom cut ' + (box.y + box.h));
+      assert.ok(box.y > 0.3120, 'took (18) ' + box.y);
+      assert.ok(box.y + box.h < 0.3780, 'took (20) ' + (box.y + box.h));
+    };
+    const [parts] = api.answerCropsFromLines(lines, [{ q: 19, part: 'א' }, { q: 19, part: 'ב' }], bands);
+    assert.equal(parts.q, 19);
+    assert.equal(parts.pieces.length, 3, JSON.stringify(parts.pieces));
+    assert.equal(new Set(parts.pieces.map((piece) => piece.box.y)).size, 1, 'fraction split over rows');
+    parts.pieces.forEach((piece) => inside(piece.box));
+    inside(parts.box);
+    const [whole] = api.answerCropsFromLines(lines, [19], bands);
+    inside(whole.box);
+    const [first] = api.answerCropsFromLines(lines, [18], bands);
+    assert.ok(first.box.y <= 0.2960 && first.box.y > 0.0700, JSON.stringify(first.box));
+    assert.ok(first.box.y + first.box.h >= 0.3120 && first.box.y + first.box.h < 0.3285, JSON.stringify(first.box));
+
+    const width = 40;
+    const height = 200;
+    const pixels = new Uint8ClampedArray(width * height * 4).fill(255);
+    const paint = (x: number, y: number) => { pixels.fill(0, (y * width + x) * 4, (y * width + x) * 4 + 3); };
+    for (let y = 0; y < height; y += 1) paint(3, y);
+    for (let y = 20; y < 30; y += 1) paint(20, y);
+    for (let y = 60; y < 68; y += 1) paint(22, y);
+    assert.deepEqual(api.inkBandsFromPixels(pixels, width, height), [{ y: 0.1, y2: 0.15 }, { y: 0.3, y2: 0.34 }]);
   });
 
   it('prints only the picked part, keeps 19 with its drawing, and groups parts of one question', (t) => {
