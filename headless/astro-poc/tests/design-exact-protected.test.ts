@@ -263,7 +263,11 @@ describe('exact-design protected live-baseline boundaries', () => {
     // requests/cache callbacks and release retry controls. Dedicated operation-
     // deadline tests cover timeout, body aborts and generation races; the bot
     // client, security protocol, source assets and conversation storage stay fixed.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '8a2c0e72a9102c7dc1c2c81f0146a92aadb042d8b3f5fe5ffe74d38492ddfe81');
+    // Noam, 2026-10-30: source-verified first-hint probes skip OCR only for a
+    // server-authorized printed-text cue. SDK preparation overlaps source reads;
+    // warm worksheet cache is identity-bound and the whole-operation cap is25s.
+    // Fast-hint/deadline tests preserve token checks, source scope and late fences.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), 'cd3e55fd566524e70f2700d010d3eb3b8999cb6f8d7554421f694190e9964952');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {
