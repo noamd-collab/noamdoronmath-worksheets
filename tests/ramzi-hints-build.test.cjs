@@ -100,3 +100,12 @@ test("the committed seed matches the committed public rows and hides unreviewed 
   assert.equal(sql.match(/^\('G\d-T\d{2}-[ABE]-Q\d{2}/gm).length,rows.length);
   assert.doesNotMatch(sql,/פתרון מלא:|תשובה סופית:/);
 });
+
+test("the public key reads only the id and the three hints that Ramzi asks for",()=>{
+  const root=path.join(__dirname,"..");
+  const schema=fs.readFileSync(path.join(root,"learning/ramzi-hints-schema.sql"),"utf8");
+  const client=fs.readFileSync(path.join(root,"headless/astro-poc/public/noam-curated-hints.js"),"utf8");
+  const grants=schema.match(/^grant .*$/gm);
+  assert.deepEqual(grants,["grant select (exercise_id,hint_1,hint_2,hint_3) on public.noam_ramzi_hints to anon, authenticated;"]);
+  assert.match(client,/select=exercise_id,hint_1,hint_2,hint_3"/);
+});

@@ -1,6 +1,7 @@
 -- Additive, isolated curated hints for Ramzi. Existing exercise and learning tables are untouched.
 -- Run once in the Supabase SQL editor, then run learning/ramzi-hints-seed.sql.
--- Visitors read only rows marked 'verified', with the publishable key. Hints only:
+-- Visitors read only rows marked 'verified', with the publishable key, and only the
+-- exercise id and the three hints. Review notes stay with the dashboard. Hints only:
 -- full solutions and final answers never go in this table.
 create table public.noam_ramzi_hints (
  exercise_id text primary key check (exercise_id ~ '^G[1-9]-T[0-9]{2}-[ABE]-Q[0-9]{2}[א-ת]?$'),
@@ -16,7 +17,7 @@ create table public.noam_ramzi_hints (
 );
 alter table public.noam_ramzi_hints enable row level security;
 revoke all on public.noam_ramzi_hints from anon, authenticated;
-grant select on public.noam_ramzi_hints to anon, authenticated;
+grant select (exercise_id,hint_1,hint_2,hint_3) on public.noam_ramzi_hints to anon, authenticated;
 create policy ramzi_hints_verified_read on public.noam_ramzi_hints for select to anon, authenticated using (status='verified');
 create function public.noam_ramzi_hints_timestamp() returns trigger language plpgsql security invoker set search_path = '' as $$
 begin new.updated_at=now(); return new; end;
