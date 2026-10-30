@@ -2056,10 +2056,12 @@ function pageInkFromPixels(data, width, height) {
   }
   // A long dark run across a row is a filled band (a highlight or a tint
   // behind the answers) or a line. Inside a band, ink is what is much darker
-  // than the band. A line that reaches the number column is a rule: not
-  // answer ink, and its rows part two answers. A shorter one (a number line)
-  // stays ink.
+  // than the band; a shorter band counts only when it is a light fill (a
+  // highlighted part), not a solid shape. A line from the left of the page
+  // to the number column is a rule: not answer ink, and its rows part two
+  // answers. A shorter one (a number line, a wide fraction bar) stays ink.
   const wide = Math.max(40, Math.round(width * 0.3));
+  const narrow = Math.max(24, Math.round(width * 0.03));
   const runs = [];
   for (let r = 0; r < height; r += 1) {
     const row = [];
@@ -2067,7 +2069,7 @@ function pageInkFromPixels(data, width, height) {
       if (!dark[r * width + c]) { c += 1; continue; }
       let end = c;
       while (end < width && dark[r * width + end]) end += 1;
-      if (end - c >= wide) row.push([c, end]);
+      if (end - c >= narrow) row.push([c, end]);
       c = end;
     }
     runs.push(row);
@@ -2077,6 +2079,7 @@ function pageInkFromPixels(data, width, height) {
   const ruled = new Uint8Array(height);
   for (let r = 0; r < height; r += 1) {
     runs[r].forEach((run) => {
+      const long = run[1] - run[0] >= wide;
       let up = r;
       while (up > 0 && runs[up - 1].some((other) => same(other, run))) up -= 1;
       let down = r;
@@ -2085,17 +2088,19 @@ function pageInkFromPixels(data, width, height) {
         const tones = [];
         for (let c = run[0]; c < run[1]; c += 1) tones.push(shade[r * width + c]);
         tones.sort((a, b) => a - b);
-        const band = tones[Math.floor(tones.length / 2)];
+        const band = tones[Math.floor(tones.length * (long ? 0.5 : 0.75))];
+        if (!long && band < 110) return;
         for (let c = run[0]; c < run[1]; c += 1) dark[r * width + c] = shade[r * width + c] < band - 70 ? 1 : 0;
-      } else if (run[1] >= width * 0.85) {
+      } else if (long && run[1] >= width * 0.85 && run[0] <= width * 0.3) {
         for (let c = run[0]; c < run[1]; c += 1) rule[r * width + c] = 1;
         ruled[r] = 1;
       }
     });
   }
   // A dashed or dotted line across to the number column is a rule too: a
-  // row of nothing but short, similar strokes with blank rows right above
-  // and below them.
+  // row of nothing but short, similar, evenly spaced strokes with blank rows
+  // right above and below them. Bars over a row of repeating decimals are
+  // spaced by the answers under them.
   const blankAt = (r, c0, c1) => {
     if (r < 0 || r >= height) return true;
     for (let c = c0; c < c1; c += 1) if (dark[r * width + c]) return false;
@@ -2117,7 +2122,9 @@ function pageInkFromPixels(data, width, height) {
     const lengths = strokes.map(([c0, c1]) => c1 - c0);
     const first = strokes[0][0];
     const last = strokes[strokes.length - 1][1];
-    if (Math.max(...lengths) > 3 * Math.min(...lengths) || last - first < width * 0.3 || last < width * 0.85) continue;
+    const gaps = strokes.slice(1).map(([c0], k) => c0 - strokes[k][1]);
+    if (Math.max(...lengths) > 3 * Math.min(...lengths) || Math.max(...gaps) > 1.5 * Math.min(...gaps) + 2) continue;
+    if (first > width * 0.3 || last < width * 0.85) continue;
     strokes.forEach(([c0, c1, thick]) => {
       for (let k = 0; k < thick; k += 1) {
         for (let c = c0; c < c1; c += 1) rule[(r + k) * width + c] = 1;
@@ -2197,8 +2204,9 @@ function inkMiddle(item) {
 
 // A numerator printed on its own baseline: under its ink, within half an em,
 // a fraction bar spans all its columns, with a blank row right under the bar.
-// Returns the bar's row, or -1.
-function inkBarBelow(ink, item, em) {
+// For a whole text line (not one glyph of it) the bar is not much longer than
+// the line. Returns the bar's row, or -1.
+function inkBarBelow(ink, item, em, glyph) {
   const H = ink.height;
   const width = Math.floor(item.x2 * ink.width) - Math.ceil(item.x * ink.width);
   if (width < 2) return -1;
@@ -2211,19 +2219,29 @@ function inkBarBelow(ink, item, em) {
   const thick = Math.max(3, Math.round(em * H * 0.22));
   let bar = r;
   while (bar < H - 1 && bar - r < thick && count(bar) >= width * 0.95) bar += 1;
-  if (bar === r || count(bar) > 0 || !inkLoneBar(ink, r, bar - 1, item.x) || inkRootStroke(ink, bar - 1, item.x, em)) return -1;
+  if (bar === r || count(bar) > 0 || !inkLoneBar(ink, r, bar - 1, item.x, glyph ? 0 : em, width) || inkRootStroke(ink, bar - 1, item.x, em)) return -1;
   return r;
 }
 
-// A fraction bar stands alone: the rows right above and below it are nearly
-// blank along its whole length (a letter's top stroke has the letter under it).
-function inkLoneBar(ink, top, bottom, x) {
+// The dark run through column x of row r, as [first, last] columns.
+function inkRunAt(ink, r, x) {
   const W = ink.width;
   let a = Math.ceil(x * W);
   let b = a;
-  while (a > 0 && ink.dark[bottom * W + a - 1]) a -= 1;
-  while (b < W - 1 && ink.dark[bottom * W + b + 1]) b += 1;
+  while (a > 0 && ink.dark[r * W + a - 1]) a -= 1;
+  while (b < W - 1 && ink.dark[r * W + b + 1]) b += 1;
+  return [a, b];
+}
+
+// A fraction bar stands alone: the rows right above and below it are nearly
+// blank along its whole length (a letter's top stroke has the letter under
+// it). It is not much longer than the numerator over it: a line under a
+// whole answer is no fraction bar.
+function inkLoneBar(ink, top, bottom, x, em, width) {
+  const W = ink.width;
+  const [a, b] = inkRunAt(ink, bottom, x);
   if (top < 1 || bottom + 1 >= ink.height) return false;
+  if (em && width && b - a + 1 > Math.max(em * ink.height * 8, width * 3)) return false;
   const most = Math.max(1, Math.floor((b - a + 1) * 0.15));
   return inkInRow(ink, top - 1, a / W, (b + 1) / W) <= most && inkInRow(ink, bottom + 1, a / W, (b + 1) / W) <= most;
 }
@@ -2242,9 +2260,9 @@ function inkRootStroke(ink, r, x, em) {
 }
 
 // A denominator under a numerator that has no text (a drawn root): right
-// above its ink, within half an em, a fraction bar spans all its columns.
-// Returns the bar's lowest row, or -1.
-function inkBarAbove(ink, item, em) {
+// above its ink, within half an em, a fraction bar spans all its columns, as
+// for inkBarBelow. Returns the bar's lowest row, or -1.
+function inkBarAbove(ink, item, em, glyph) {
   const H = ink.height;
   const width = Math.floor(item.x2 * ink.width) - Math.ceil(item.x * ink.width);
   if (width < 2) return -1;
@@ -2257,7 +2275,7 @@ function inkBarAbove(ink, item, em) {
   const thick = Math.max(3, Math.round(em * H * 0.22));
   let bar = r;
   while (bar > 0 && r - bar < thick && count(bar) >= width * 0.95) bar -= 1;
-  if (bar === r || count(bar) > 0 || !inkLoneBar(ink, bar + 1, r, item.x) || inkRootStroke(ink, r, item.x, em)) return -1;
+  if (bar === r || count(bar) > 0 || !inkLoneBar(ink, bar + 1, r, item.x, glyph ? 0 : em, width) || inkRootStroke(ink, r, item.x, em)) return -1;
   return r;
 }
 
@@ -2385,11 +2403,15 @@ function answerInkStarts(ink, pageLines, marks) {
       }
       // A thin bar over the first line: a short blank run (under half an
       // em), then at most 3 rows of a straight bar with a blank row above.
+      // It sits nearer this line than the ink above it (a line drawn under
+      // the answer above is not this line's bar).
       let top = r;
       while (top - 1 > stop && r - top < most - 1 && blank(top - 1)) top -= 1;
       let bar = top - 1;
       while (bar > stop && top - 1 - bar < 3 && !blank(bar) && !ruled(bar)) bar -= 1;
-      if (bar > stop && bar < top - 1 && blank(bar) && inkThinBar(ink, bar + 1, top - 1, x0, x1)) {
+      let over = bar;
+      while (over - 1 > stop && blank(over - 1)) over -= 1;
+      if (bar > stop && bar < top - 1 && blank(bar) && bar - over >= r - top && inkThinBar(ink, bar + 1, top - 1, x0, x1)) {
         r = bar;
         moved = true;
       }
@@ -2511,11 +2533,11 @@ function answerInkClusters(region, clusters, number) {
     if (!over.length) {
       // Nothing printed over it (a drawn root): its bar runs through the upper line.
       const a = box(upper.glyphs);
-      const bar = inkBarAbove(ink, low, em);
+      const bar = inkBarAbove(ink, low, em, true);
       return bar >= 0 && bar >= row(a.y) && bar <= row(a.y2) + 1;
     }
     // The bar spans the whole lower glyph, right above it.
-    const bar = inkBarBelow(ink, { x: low.x, x2: low.x2, y2: Math.max(...over.map((glyph) => glyph.y2)) }, em);
+    const bar = inkBarBelow(ink, { x: low.x, x2: low.x2, y2: Math.max(...over.map((glyph) => glyph.y2)) }, em, true);
     return bar >= 0 && bar <= row(low.y) + 1 && row(low.y) - bar <= Math.round(em * H * 0.5);
   });
   // An exponent or an index printed a little off the line's baseline.
@@ -2561,11 +2583,15 @@ function answerInkClusters(region, clusters, number) {
   for (let k = 0; k < lines.length;) {
     const free = !labelled(lines[k]);
     const math = free && !lines[k].labelGlyphs.some((glyph) => /[֐-׿]/.test(glyph.c));
-    const up = free && k > 0 && (stacked(lines[k - 1], lines[k]) || (math && overlapping(lines[k - 1], lines[k])));
+    const hangs = free && k > 0 && stacked(lines[k - 1], lines[k]);
+    const holds = free && k + 1 < lines.length && stacked(lines[k], lines[k + 1]);
+    const up = hangs || (free && k > 0 && math && overlapping(lines[k - 1], lines[k]));
     // Math printed right on top of the first line (within a quarter em) is
-    // its numerators, even where no bar shows.
-    const onTop = k === 0 && math && k + 1 < lines.length && box(lines[k + 1].glyphs).y - box(lines[k].glyphs).y2 + 0.004 <= em * 0.25;
-    const down = free && k + 1 < lines.length && (stacked(lines[k], lines[k + 1]) || (math && overlapping(lines[k], lines[k + 1])) || onTop);
+    // its numerators, even where no bar shows. A note that holds a whole
+    // fraction of its own, or any Hebrew, is not.
+    const onTop = k === 0 && math && !lines[k].fraction && !lines[k].glyphs.some((glyph) => /[֐-׿]/.test(glyph.c))
+      && k + 1 < lines.length && box(lines[k + 1].glyphs).y - box(lines[k].glyphs).y2 + 0.004 <= em * 0.25;
+    const down = holds || (free && k + 1 < lines.length && math && overlapping(lines[k], lines[k + 1])) || onTop;
     if (!up && !down) {
       k += 1;
       continue;
@@ -2575,17 +2601,34 @@ function answerInkClusters(region, clusters, number) {
       const me = box(lines[k].glyphs);
       into = me.y - box(lines[k - 1].glyphs).y2 <= box(lines[k + 1].glyphs).y - me.y2 ? k - 1 : k + 1;
     }
+    if (lines[k].fraction || (into < k ? hangs : holds)) lines[into].fraction = true;
     lines[into].glyphs.push(...lines[k].glyphs);
     lines.splice(k, 1);
     k = Math.min(into, k);
   }
-  const boxes = lines.map((line) => box(line.glyphs));
+  // The text boxes alone part one line from the next; the number widens only
+  // the first line's own box.
+  const texts = lines.map((line) => box(line.glyphs));
+  const boxes = texts.map((b) => ({ ...b }));
   if (number && boxes.length) {
     boxes[0].y = Math.min(boxes[0].y, number.y - 0.002);
     boxes[0].y2 = Math.max(boxes[0].y2, number.y2 + 0.002);
     boxes[0].x = Math.min(boxes[0].x, number.x);
     boxes[0].x2 = Math.max(boxes[0].x2, number.x2);
   }
+  // A drawn root or bar after a line's last glyph has no text box: the line
+  // reaches it across gaps of up to an em, short of the number.
+  const W = ink.width;
+  const cap = Math.floor(Math.min(0.895, number ? number.x - 0.003 : 0.895) * W);
+  const ends = texts.map((t) => {
+    let end = Math.ceil(t.x2 * W);
+    for (let c = end, blank = 0; c < cap && blank <= em * H; c += 1) {
+      let used = false;
+      for (let r = row(t.y); r <= row(t.y2) && !used; r += 1) used = ink.dark[r * W + c] === 1;
+      if (used) { end = c + 1; blank = 0; } else blank += 1;
+    }
+    return Math.max(t.x2, end / W);
+  });
   const pad = Math.round(H * 0.002);
   const most = Math.max(3, Math.round(em * H * 0.4));
   const grown = boxes.map((b, k) => {
@@ -2596,10 +2639,11 @@ function answerInkClusters(region, clusters, number) {
     const ceiling = Math.max(region.y2, ...lines[k].glyphs.filter((glyph) => glyph.y2 > region.y2).map((glyph) => (
       outside(glyph, region.y2) ? glyph.y2 : glyph.y2 + 1.5 / H
     )));
-    const lo = Math.max(floor, k ? boxes[k - 1].y2 : floor);
-    const hi = Math.min(ceiling, k + 1 < boxes.length ? boxes[k + 1].y : region.y2);
+    const lo = Math.max(floor, k ? texts[k - 1].y2 : floor);
+    const hi = Math.min(ceiling, k + 1 < boxes.length ? texts[k + 1].y : region.y2);
     const x0 = Math.max(0.02, b.x - reach);
-    const used = (r) => r >= row(lo) && inkInRow(ink, r, x0, b.x2) > 0;
+    const x1 = Math.max(b.x2, ends[k]);
+    const used = (r) => r >= row(lo) && inkInRow(ink, r, x0, x1) > 0;
     const ruled = (r) => Boolean(ink.ruled && ink.ruled[r]);
     let top = row(b.y);
     while (used(top - 1)) top -= 1;
@@ -2609,10 +2653,10 @@ function answerInkClusters(region, clusters, number) {
     if (used(bar) && bar < top - 1) {
       let barTop = bar;
       while (bar - barTop < 2 && used(barTop - 1)) barTop -= 1;
-      if (barTop - 1 >= row(lo) && !used(barTop - 1) && inkThinBar(ink, barTop, bar, x0, b.x2)) top = barTop;
+      if (barTop - 1 >= row(lo) && !used(barTop - 1) && inkThinBar(ink, barTop, bar, x0, x1)) top = barTop;
     }
     let bottom = row(b.y2);
-    while (bottom + 1 < row(hi) && inkInRow(ink, bottom + 1, x0, b.x2)) bottom += 1;
+    while (bottom + 1 < row(hi) && inkInRow(ink, bottom + 1, x0, x1)) bottom += 1;
     let y2 = Math.max(b.y2, Math.min(hi, (bottom + 1 + pad) / H));
     if (!region.last) y2 = Math.min(ceiling, y2);
     let y = Math.max(floor, Math.min(b.y, Math.max(lo, (top - pad) / H)));
@@ -2623,21 +2667,41 @@ function answerInkClusters(region, clusters, number) {
   });
   for (let k = 0; k + 1 < grown.length; k += 1) {
     if (grown[k].y2 <= grown[k + 1].y) continue;
-    if (boxes[k].y2 < boxes[k + 1].y) {
-      const x0 = Math.min(boxes[k].x, boxes[k + 1].x);
-      const x1 = Math.max(boxes[k].x2, boxes[k + 1].x2);
-      const cut = Math.max(boxes[k].y2, thinnestRow(ink, row(boxes[k].y2), row(boxes[k + 1].y), x0, x1) / H);
+    const x0 = Math.min(texts[k].x, texts[k + 1].x);
+    const x1 = Math.max(ends[k], ends[k + 1]);
+    // Blank rows between the glyphs part the lines best: the middle of the
+    // first blank run under the upper line, so a bar or a root drawn over the
+    // lower line stays with it, but not above the foot of the number.
+    const a = texts[k].y2 - 0.002;
+    const b = texts[k + 1].y + 0.002;
+    let first = -1;
+    let clear = -1;
+    for (let r = row(a); r <= row(b); r += 1) {
+      if (inkInRow(ink, r, x0, x1)) {
+        if (clear >= 0) break;
+      } else {
+        if (first < 0) first = r;
+        clear = r;
+      }
+    }
+    if (clear >= 0) {
+      let foot = -1;
+      if (k === 0 && number) {
+        foot = row(number.y2);
+        while (foot + 1 <= clear && inkInRow(ink, foot + 1, number.x, number.x2)) foot += 1;
+      }
+      clear = Math.min(clear, Math.max(Math.round((first + clear) / 2), foot + 1));
+      grown[k].y2 = clear / H;
+      grown[k + 1].y = clear / H;
+    } else if (texts[k].y2 < texts[k + 1].y) {
+      const cut = Math.max(texts[k].y2, thinnestRow(ink, row(texts[k].y2), row(texts[k + 1].y), x0, x1) / H);
       grown[k].y2 = cut;
       grown[k + 1].y = cut;
     } else {
       // The padded text boxes meet: part between the glyphs themselves.
-      const a = boxes[k].y2 - 0.002;
-      const b = boxes[k + 1].y + 0.002;
-      const x0 = Math.min(boxes[k].x, boxes[k + 1].x);
-      const x1 = Math.max(boxes[k].x2, boxes[k + 1].x2);
       const cut = a < b ? thinnestRow(ink, row(a), row(b), x0, x1) / H : null;
-      grown[k].y2 = cut != null ? cut : boxes[k].y2;
-      grown[k + 1].y = cut != null ? cut : boxes[k + 1].y;
+      grown[k].y2 = cut != null ? cut : texts[k].y2;
+      grown[k + 1].y = cut != null ? cut : texts[k + 1].y;
     }
   }
   return lines.map((line, k) => ({ glyphs: line.glyphs, labels: line.labels, top: grown[k].y, bottom: grown[k].y2, row: k }));
@@ -2732,7 +2796,7 @@ function answerPieces(pageLines, mark, nextY, parts, region) {
         // above the first picked part. Below, it stops where the next picked
         // line starts.
         const own = answerInkRows(region.ink, number.y - 0.002, number.y2 + 0.002, number.x, number.x2, region.y, region.y2);
-        const rows = [Math.min(y, own[0]), lines.length > 1 ? y2 : Math.max(y2, own[1])];
+        const rows = [Math.min(y, own[0]), Math.max(y2, lines.length > 1 ? Math.min(own[1], lines[1].y) : own[1])];
         // A star printed between the number and the first label stays with it.
         const star = glyphs.filter((glyph) => '★☆'.includes(glyph.c) && glyph.x > rightmost && glyph.x < nx && glyph.y < rows[1] && glyph.y2 > rows[0]);
         const sx = Math.min(nx, ...star.map((glyph) => glyph.x - 0.0015));
@@ -2772,17 +2836,27 @@ function answerCropsFromLines(lines, wanted, inkPages) {
     const labelAbove = partsOf(pageLines.filter((line) => line.y > headY && line.y < firstNumber - 0.006)).length > 0;
     let ink = labelAbove ? null : inkPages && inkPages.get(page);
     // With the page's ink, the answers run down to the page footer line (when
-    // the page has one), and a number above it is cropped even past 0.9.
+    // the page has one), and a number above it is cropped even past 0.9 when
+    // it carries on from the last number (a page number is no answer).
     const footers = ink ? pageLines.filter((line) => line.y >= 0.95 && !answerNumberValue(line)).map((line) => line.y - 0.004) : [];
     const bottom = footers.length ? Math.min(0.97, ...footers) : FOOTER;
-    const numbered = (line) => isAnswerNumber(line) || Boolean(ink && answerInkNumber(line) && line.y < bottom - 0.005);
     const byNumber = new Map();
+    const markOf = (line) => ({ n: answerNumberValue(line), y: line.y, y2: line.y2, x: line.x || 0, x2: line.x2 || 0 });
     pageLines.forEach((line) => {
-      if (!numbered(line)) return;
+      if (!isAnswerNumber(line)) return;
       const n = answerNumberValue(line);
       const prev = byNumber.get(n);
-      if (!prev || (line.x || 0) > (prev.x || 0)) byNumber.set(n, { n, y: line.y, y2: line.y2, x: line.x || 0, x2: line.x2 || 0 });
+      if (!prev || (line.x || 0) > (prev.x || 0)) byNumber.set(n, markOf(line));
     });
+    if (ink) {
+      pageLines.filter((line) => !isAnswerNumber(line) && answerInkNumber(line) && line.y < bottom - 0.005)
+        .sort((a, b) => a.y - b.y)
+        .forEach((line) => {
+          const last = [...byNumber.values()].sort((a, b) => b.y - a.y)[0];
+          const n = answerNumberValue(line);
+          if (last && !byNumber.has(n) && Number(n) === Number(last.n) + 1 && line.y > last.y) byNumber.set(n, markOf(line));
+        });
+    }
     const marks = [...byNumber.values()].sort((a, b) => a.y - b.y);
     // The next answer's number can sit too low to be cropped; the answer
     // above it still ends where it starts.
@@ -2807,7 +2881,24 @@ function answerCropsFromLines(lines, wanted, inkPages) {
       if (!want.has(mark.n)) return;
       const next = marks[index + 1];
       const nextY = next ? next.y : FOOTER;
-      const end = starts && (bounds[index + 1] ? starts[index + 1] : bottom);
+      let end = starts && (bounds[index + 1] ? starts[index + 1] : bottom);
+      if (starts && !bounds[index + 1] && bottom > FOOTER) {
+        // Past where answers always ended, the last answer takes only the
+        // lines that carry on from it, within an em; a footnote or a footer
+        // further down stays out.
+        const em = (mark.y2 - mark.y) / 0.78;
+        let reach = mark.y2;
+        pageLines.filter((line) => owners.get(line) === index && line.y2 != null && line.y > mark.y && line.y < bottom)
+          .sort((a, b) => a.y - b.y)
+          .some((line) => {
+            if (line.y < FOOTER || line.y - reach <= em) {
+              reach = Math.max(reach, line.y2);
+              return false;
+            }
+            end = Math.max(starts[index], Math.min(end, line.y - em * 0.25));
+            return true;
+          });
+      }
       const lines = owners && new Set(pageLines.filter((line) => owners.get(line) === index));
       const region = starts && end > starts[index] ? { ink, y: starts[index], y2: end, last: !bounds[index + 1], em: (mark.y2 - mark.y) / 0.78, lines } : null;
       const laid = answerPieces(pageLines, mark, nextY, want.get(mark.n), region);
