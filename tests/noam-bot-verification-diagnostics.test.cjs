@@ -305,14 +305,14 @@ for (const file of ["noam-bot-client.js", "headless/astro-poc/public/noam-bot-cl
     assert.deepEqual(h.warnings, []);
   });
 
-  test(`${file}: a consecutive request after recaptcha.net success still proceeds on google.com ready`, async () => {
+  test(`${file}: a consecutive request reuses the working recaptcha.net SDK`, async () => {
     const h = harness(file, { failHostOnce: "google.com/recaptcha" });
     assert.equal((await h.client.postJson(`${api}/noamImageSolve`, { exerciseId: "synthetic-exercise" })).answer, "רמז");
     assert.equal(h.scripts.length, 2);
     assert.equal(h.scripts[1].src, "https://www.recaptcha.net/recaptcha/api.js?render=public-test-key");
     assert.equal((await h.client.postJson(`${api}/noamImageSolve`, { exerciseId: "synthetic-exercise" })).answer, "רמז");
-    assert.equal(h.scripts.length, 3);
-    assert.equal(h.scripts[2].src, "https://www.google.com/recaptcha/api.js?render=public-test-key");
+    assert.equal(h.scripts.length, 2);
+    assert.equal(h.scripts[1].src, "https://www.recaptcha.net/recaptcha/api.js?render=public-test-key");
     assert.equal(h.modelCalls().length, 2);
     assert.equal(JSON.parse(h.modelCalls()[1].request.body).botVerification.token, "test-verification-token");
     assert.deepEqual(h.warnings, []);
