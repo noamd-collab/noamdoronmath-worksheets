@@ -6106,7 +6106,7 @@ function noamLatestDrawingAnswer(thread){
   var messages=thread&&thread.messages||[];
   for(var i=messages.length-1;i>=0;i--){
     var message=messages[i];
-    if(!message||message.role!=="assistant"){continue;}
+    if(!message||message.role!=="assistant"||message.understood){continue;}
     if(message.answerError||!String(message.text||"").trim()){return null;}
     if(!message.diagramOptions&&!message.diagramError&&/failed\s+to\s+fetch|לא\s+זמין|לא\s+(?:ניתן|הצלחנו)\s+(?:להשלים|לקבל)|נסו\s+שוב\s+בעוד/i.test(message.text)){return null;}
     return message;
@@ -6320,7 +6320,7 @@ function noamParsedLocalVisual(exercise){
 function tryNoamLocalVisual(studentMessage){
   var local=window.NoamLocalVisual;
   var previousThread=selectedExercise&&exerciseThread(selectedExercise.id);
-  var previousAnswer=previousThread&&(previousThread.messages||[]).filter(function(item){return item.role==="assistant";}).slice(-1)[0];
+  var previousAnswer=previousThread&&(previousThread.messages||[]).filter(function(item){return item.role==="assistant"&&!item.understood;}).slice(-1)[0];
   var retryDrawing=!!(previousAnswer&&previousAnswer.diagramError&&/^(?:(?:בבקשה|אולי)\s+)?(?:נסה|נסי|נסו|תנסה|תנסי)\s+שוב[.!?\s]*$/.test(String(studentMessage||"").trim()));
   var sourceCropRequest=noamSourceCropRequested(selectedExercise,{studentMessage:studentMessage});
   if(!sourceCropRequest&&typeof noamPageAllowsDrawingHint==='function'&&!noamPageAllowsDrawingHint()){return false;}
@@ -6329,7 +6329,7 @@ function tryNoamLocalVisual(studentMessage){
   if (!selectedExercise||busy||(!visualRequest&&!retryDrawing)){return false;}
   if (typeof currentAttachments==="function"&&currentAttachments().length){return false;}
   var thread=exerciseThread(selectedExercise.id);
-  var lastAnswer=(thread.messages||[]).filter(function(item){return item.role==="assistant";}).slice(-1)[0];
+  var lastAnswer=(thread.messages||[]).filter(function(item){return item.role==="assistant"&&!item.understood;}).slice(-1)[0];
   var options=noamMessageVisualOptions(thread,lastAnswer);
   if (!retryDrawing){options.studentMessage=studentMessage;}
   options.helpKind="free_question";
@@ -9089,7 +9089,7 @@ function noamPageAllowsDrawingHint(){
 
 function noamCanOfferDrawing(exercise,thread,message){
   if(typeof noamPageAllowsDrawingHint==='function'&&!noamPageAllowsDrawingHint()){return false;}
-  if (!exercise||!thread||!message||message.answerError||message.role!=="assistant"||!String(message.text||"").trim()){
+  if (!exercise||!thread||!message||message.answerError||message.understood||message.role!=="assistant"||!String(message.text||"").trim()){
     return false;
   }
   if (message.visual&&message.visual.type==="source-crop"){return true;}
@@ -9760,13 +9760,13 @@ function noamVisualAnswer(studentMessage,answer,visual){
 
 // Noam, 2026-10-30: הבנתי is answered in the exercise thread itself. It opens no
 // hint, makes no model call, and leaves the student's draft and attachments alone.
+// The exchange is shown only: it stays out of the model history and is never the
+// answer a drawing illustrates.
 function noamAnswerUnderstood(reply){
   var text=String(reply||"").trim();
   if (!selectedExercise||busy||!text){return false;}
   var thread=exerciseThread(selectedExercise.id);
-  thread.messages.push({role:"user",text:"הבנתי",kind:""},{role:"assistant",text:text,kind:""});
-  thread.history.push({role:"user",content:"הבנתי"},{role:"assistant",content:text});
-  thread.history=thread.history.slice(-8);
+  thread.messages.push({role:"user",text:"הבנתי",kind:"",understood:true},{role:"assistant",text:text,kind:"",understood:true});
   thread.messages=thread.messages.slice(-60);
   saveNoamState();renderNoamChat();
   announceNoam(exerciseLabel(selectedExercise) + ". רמזי: " + text);

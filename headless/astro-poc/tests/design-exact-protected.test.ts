@@ -260,8 +260,9 @@ describe('exact-design protected live-baseline boundaries', () => {
     // asset is versioned 20261030-understood1; ramzi-understanding tests cover the flow.
     // noamAnswerUnderstood adds the הבנתי exchange to the exercise thread in order and
     // leaves the draft and attachments alone; no request is sent. The adapter reaches it
-    // through window.noamAnswerUnderstood, the main script's only new global.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), 'ba11e6f7f21fc61be57886aaa85e4653b397697a67f7df0ccb24abc1e20ec361');
+    // through window.noamAnswerUnderstood, the main script's only new global. The exchange
+    // is marked understood: it stays out of the model history and is never a drawing target.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), '82a539547b5a962fe9f4dd76826c8624c1710cf6c3c2f5aad3e2c23d9d46f78a');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {
