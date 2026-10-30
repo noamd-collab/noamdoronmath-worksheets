@@ -59,7 +59,7 @@ function wireHint(f:any,analysis:any=contradictory()){
   getExerciseAnalysis:async()=>{counter.analysis++;if(analysis instanceof Error)throw analysis;return analysis;},
   postJson:async(url:string,payload:any)=>{requests.push({url,payload});return {ok:true,answer:'בדקו את הנתונים המודפסים.'};},
   noamGuardGeometryResult:(r:any)=>r,noamGuardSignedAddResult:(r:any)=>r,noamClarifySignedAddLanguage:(s:string)=>s,noamResponseVisual:()=>null,
-  noamVisualAnswer:(_:string,s:string)=>s,noamAttachSourceHint(){},setTimeout:(cb:any,ms:number)=>{if(ms<55000)cb();return 0;}});
+  noamVisualAnswer:(_:string,s:string)=>s,noamAttachSourceHint(){},setTimeout:(cb:any,ms:number)=>{if(ms<25000)cb();return 0;}});
  return {requests,counter};
 }
 // Invoke the exact on-click instruction, not the shorter visible user bubble.
@@ -111,7 +111,7 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
    f.attachments.push(a);const r=wireSnapshotReader(f,v);let finishCrop:any;
    f.c.cropExerciseCanvas=()=>new Promise(resolve=>{finishCrop=resolve;});
    let sourceLoads=0;f.c.noamLoadSourceVisual=async()=>{sourceLoads++;throw Error('photo request must bypass canonical');};
-   f.c.askNoam('hint',actualHintInstruction(v));assert.equal(typeof finishCrop,'function');
+   f.c.askNoam('hint',actualHintInstruction(v));await Promise.resolve();assert.equal(typeof finishCrop,'function');
    if(change==='remove')f.attachments.splice(0);
    if(change==='replace')f.attachments.splice(0,1,b);
    if(change==='add')f.attachments.push(b);

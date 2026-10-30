@@ -174,7 +174,7 @@ it('actual askNoam hint-button prompt uses the displayed hint scope for automati
     postJson: async (_url: string, payload: any) => { solveAnalysis = payload.imageAnalysis; return { ok: true, answer: opts.answer }; },
     noamGuardGeometryResult: (r: any) => r, noamGuardSignedAddResult: (r: any) => r,
     noamClarifySignedAddLanguage: (text: string) => text, noamResponseVisual: () => null,
-    noamVisualAnswer: (_student: string, answer: string) => answer, setTimeout: (callback: any, ms: number) => { if (ms < 55000) callback(); return 0; }
+    noamVisualAnswer: (_student: string, answer: string) => answer, setTimeout: (callback: any, ms: number) => { if (ms < 25000) callback(); return 0; }
   });
   runInNewContext(fn('askNoam'), f.c);
   f.c.askNoam('hint', 'תן לי רמז אחד בלבד. אל תגלה את התשובה הסופית, ואל תבצע את הצעד במקומי.');
@@ -201,7 +201,7 @@ it('student attachment solve skips worksheet source enrichment and automatic sou
     postJson: async (_url: string, payload: any) => { solveAnalysis = payload.imageAnalysis; return { ok: true, answer: opts.answer }; },
     noamGuardGeometryResult: (r: any) => r, noamGuardSignedAddResult: (r: any) => r,
     noamClarifySignedAddLanguage: (text: string) => text, noamResponseVisual: () => null,
-    noamVisualAnswer: (_student: string, answer: string) => answer, setTimeout: (callback: any, ms: number) => { if (ms < 55000) callback(); return 0; }
+    noamVisualAnswer: (_student: string, answer: string) => answer, setTimeout: (callback: any, ms: number) => { if (ms < 25000) callback(); return 0; }
   });
   runInNewContext(fn('askNoam'), f.c);
   f.c.askNoam('hint', 'תן לי רמז אחד בלבד.');
