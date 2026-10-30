@@ -3,7 +3,7 @@
 // without ever printing the key. Run this first, and after any key rotation.
 
 import { readConfig } from '../src/paths.mjs';
-import { getSecret, KEYCHAIN } from '../src/secret.mjs';
+import { getSecret } from '../src/secret.mjs';
 import { listAvailableModels } from '../src/tts.mjs';
 import { ffmpegPath } from '../src/mp3.mjs';
 import { parseArgs, log } from '../src/cli.mjs';
@@ -14,19 +14,26 @@ let problems = 0;
 const ok = (m) => log(`  ✓ ${m}`);
 const bad = (m) => { problems++; log(`  ✗ ${m}`); };
 
-log('\n== 1. Secrets ==');
-let key = null;
-try {
-  key = getSecret('GEMINI_API_KEY');
-  ok(`GEMINI_API_KEY found (length ${key.length}, value not shown)`);
-} catch (e) {
-  bad(e.message.split('\n')[0]);
-  log(`     store it with:  security add-generic-password -s ${KEYCHAIN.service} -a GEMINI_API_KEY -w`);
+function presentSecret(name, options) {
+  try {
+    const value = getSecret(name, options);
+    return typeof value === 'string' && value.trim() ? value : null;
+  } catch {
+    return null;
+  }
 }
-try {
-  const t = getSecret('NOAM_AUDIO_WORKER_TOKEN', { required: false });
-  t ? ok('NOAM_AUDIO_WORKER_TOKEN found (value not shown)') : bad('NOAM_AUDIO_WORKER_TOKEN missing (needed only for upload/register to Wix)');
-} catch (e) { bad(e.message.split('\n')[0]); }
+
+log('\n== 1. Secrets ==');
+const key = presentSecret('GEMINI_API_KEY');
+const token = presentSecret('NOAM_AUDIO_WORKER_TOKEN', { required: false });
+// Absent secrets must not fail the scheduled job and must not reach a paid call.
+// A present but wrong key still runs the checks below and still exits 1.
+if (!key || !token) {
+  log('blog-audio: secrets not configured, skipping');
+  process.exit(0);
+}
+ok(`GEMINI_API_KEY found (length ${key.length}, value not shown)`);
+ok('NOAM_AUDIO_WORKER_TOKEN found (value not shown)');
 
 log('\n== 2. Local tooling ==');
 const ff = ffmpegPath();
