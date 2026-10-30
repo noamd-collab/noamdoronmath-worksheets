@@ -9,6 +9,8 @@ import { buildCatalogRecords } from "./retrieve.js";
 
 export const CLASSIFIER_MAX_TOKENS = 300;
 export const BATCH_CLASSIFIER_MAX_TOKENS = 600;
+export const TEACHER_PLANS_MAX_TOKENS = 1200;
+export const TEACHER_PLAN_COUNTS = [5, 10, 15];
 export const MAX_PICKED_EXERCISES = 6;
 export const MAX_BATCH_PICK_EXERCISES = 60;
 export const BATCH_PICK_COUNTS = [15, 30, 45];
@@ -26,6 +28,11 @@ export const CLASSIFIER_SYSTEM = [
   "אם צוינה כמות מבוקשת לבחירה, בחר בדיוק את הכמות המבוקשת מתוך רשימת השאלות הקיימות, בהתאם למטרת השיעור, לסגנון ההוראה ולהערת המורה. כל מזהה שניתן לך מייצג שאלה שלמה; אין לבחור מזהה שאינו ברשימה.",
   "כאשר הערת המורה מבקשת שאלות מסוימות שקיימות ברשימה, כבד את הבחירה המפורשת ולא רק את סדר השאלות או סגנון השיעור.",
   "wantsSheet הוא true כשהמורה ביקש דף, נושא או רמה בלי סעיף מסוים.",
+].join("\n");
+
+const TEACHER_PLANS_SYSTEM = [
+  'בבקשה זו החזר גם exerciseLabelsByCount: {"5":[],"10":[],"15":[]}, בנוסף ל-exerciseLabels של הבקשה הראשית.',
+  "בחר כל רשימה במפורש ובהתאם לכמות ולמאגר שנמסרו. כל רשימה מכילה שאלות שלמות שונות מתוך המזהים הקיימים בלבד; אין להחזיר כמה סעיפים של אותה שאלה כרשימה של שאלות שונות.",
 ].join("\n");
 
 const LABEL_RE = /(\d{1,2})\s*([\u05D0-\u05EA])(?![\u05D0-\u05EA])/g;
@@ -71,6 +78,9 @@ function teacherOf(input) {
     styleLabel: clip(teacher.styleLabel, 80),
     note: clip(teacher.note, 400),
     count,
+    planCounts: Array.isArray(teacher.planCounts) && teacher.planCounts.length === TEACHER_PLAN_COUNTS.length &&
+      TEACHER_PLAN_COUNTS.every((value, index) => teacher.planCounts[index] === value)
+      ? TEACHER_PLAN_COUNTS.slice() : [],
     candidates: sanitizeCandidates(teacher.candidates),
   };
 }
@@ -115,6 +125,21 @@ function normalizeScopedLabel(value) {
   return plain;
 }
 
+function parsePlanLabels(value) {
+  const plans = {};
+  if (!value || typeof value !== "object" || Array.isArray(value)) return plans;
+  for (const count of TEACHER_PLAN_COUNTS) {
+    const labels = value[String(count)];
+    if (!Array.isArray(labels) || !labels.length || labels.length > count) continue;
+    if (!labels.every((label) => typeof label === "string")) continue;
+    const normalized = labels.map(normalizeScopedLabel);
+    // Unlike a primary suggestion, a stored plan must not silently discard an
+    // invalid item or shorten an overlong list into a seemingly complete result.
+    if (normalized.every(Boolean)) plans[String(count)] = normalized;
+  }
+  return plans;
+}
+
 export function parseClassifier(content) {
   const raw = String(content || "").trim();
   const start = raw.indexOf("{");
@@ -126,6 +151,7 @@ export function parseClassifier(content) {
     const grade = Number(parsed.grade);
     const level = String(parsed.level || "").toLowerCase();
     const labels = Array.isArray(parsed.exerciseLabels) ? parsed.exerciseLabels : [];
+    const plans = parsePlanLabels(parsed.exerciseLabelsByCount);
     return {
       grade: grade >= 1 && grade <= 9 ? grade : null,
       topicQuery: clip(parsed.topicQuery, 80),
@@ -133,6 +159,7 @@ export function parseClassifier(content) {
       exerciseLabels: labels.map(normalizeLabel).filter(Boolean).slice(0, MAX_BATCH_PICK_EXERCISES),
       scopedExerciseLabels: labels.map(normalizeScopedLabel).filter(Boolean).slice(0, MAX_BATCH_PICK_EXERCISES),
       wantsSheet: parsed.wantsSheet === true,
+      ...(Object.keys(plans).length ? { scopedExerciseLabelsByCount: plans } : {}),
     };
   } catch (error) {
     return null;
@@ -143,6 +170,9 @@ export function classifierRequestBody(input, index) {
   const teacher = teacherOf(input);
   const count = requestedPickCount(input);
   const page = input && input.page && typeof input.page === "object" ? input.page : {};
+  const planCandidates = teacherPlanCandidates(index, teacher);
+  const planQuestionCount = new Set(planCandidates.map((item) => item.questionKey)).size;
+  const preparePlans = teacher.planCounts.length > 0 && planQuestionCount > 0;
   const lines = [
     "עמוד: " + clip(page.kind, 32) + " " + clip(page.path, 200),
     "בקשה: " + messageOf(input),
@@ -193,19 +223,76 @@ export function classifierRequestBody(input, index) {
       }
     }
   }
+  if (preparePlans) {
+    lines.push("לצד exerciseLabels של הבקשה הראשית, החזר גם exerciseLabelsByCount עם שלוש בחירות עצמאיות מתוך אותן שאלות ובהתאם לאותן הגדרות.");
+    for (const requested of TEACHER_PLAN_COUNTS) {
+      lines.push(`exerciseLabelsByCount["${requested}"]: בחר בדיוק ${Math.min(requested, planQuestionCount)} שאלות שלמות שונות. בלי כפילות בתוך הבחירה.`);
+    }
+    lines.push("החזר במפורש את שלוש הרשימות; אין להסיק רשימה אחת מקיצור רשימה אחרת. מותר לשאלה להופיע ביותר מרשימה אחת. שמור גם את exerciseLabels עבור הכמות המבוקשת הראשית.");
+  }
   return {
     model: QWEN_MODEL,
     stream: false,
     enable_thinking: false,
-    max_tokens: count > 6 ? BATCH_CLASSIFIER_MAX_TOKENS : CLASSIFIER_MAX_TOKENS,
+    max_tokens: preparePlans ? TEACHER_PLANS_MAX_TOKENS : count > 6 ? BATCH_CLASSIFIER_MAX_TOKENS : CLASSIFIER_MAX_TOKENS,
     messages: [
-      { role: "system", content: CLASSIFIER_SYSTEM },
+      { role: "system", content: preparePlans ? CLASSIFIER_SYSTEM + "\n" + TEACHER_PLANS_SYSTEM : CLASSIFIER_SYSTEM },
       {
         role: "user",
         content: lines.join("\n"),
       },
     ],
   };
+}
+
+function teacherPlanCandidates(index, teacher) {
+  if (!teacher.planCounts.length || !teacher.candidates.length || teacher.count < 1 || teacher.count > 15) return [];
+  const allowed = new Set(teacher.candidates.map((item) => item.id));
+  const seen = new Set();
+  const available = [];
+  for (const sheet of matchingTeacherSheets(index, teacher)) {
+    for (const rawLabel of sheet.questions || []) {
+      const label = normalizeLabel(rawLabel);
+      if (!label) continue;
+      const scoped = /^(?:[abc]|c2)$/.test(String(sheet.level)) ? sheet.level + ":" + label : label;
+      const key = "ex:" + sheet.pdfId + ":" + label;
+      if (seen.has(key) || (!allowed.has(scoped) && !allowed.has(label))) continue;
+      seen.add(key);
+      available.push({ key, label, scoped, questionKey: sheet.pdfId + ":" + parseInt(label, 10), orderIndex: available.length });
+    }
+  }
+  return available;
+}
+
+/** Only explicit, complete model results are reusable. No local completion. */
+export function selectTeacherPlans(index, input, classification, model) {
+  const available = teacherPlanCandidates(index, teacherOf(input));
+  const total = new Set(available.map((item) => item.questionKey)).size;
+  const declared = classification && classification.scopedExerciseLabelsByCount;
+  const plans = {};
+  if (!total || !declared || !model) return plans;
+  for (const count of TEACHER_PLAN_COUNTS) {
+    const labels = declared[String(count)];
+    const target = Math.min(count, total);
+    if (!Array.isArray(labels) || labels.length !== target) continue;
+    const chosen = [];
+    const questions = new Set();
+    for (const token of labels) {
+      if (typeof token !== "string") break;
+      const matches = available.filter((item) => token.includes(":") ? item.scoped === token : item.label === token);
+      if (matches.length !== 1 || questions.has(matches[0].questionKey)) break;
+      questions.add(matches[0].questionKey);
+      chosen.push(matches[0]);
+    }
+    if (chosen.length !== target) continue;
+    plans[String(count)] = {
+      source: "classifier",
+      model,
+      exerciseIds: chosen.slice().sort((a, b) => a.orderIndex - b.orderIndex).map((item) => item.key),
+      modelExerciseIds: chosen.map((item) => item.key),
+    };
+  }
+  return plans;
 }
 
 function matchingTeacherSheets(index, teacher) {

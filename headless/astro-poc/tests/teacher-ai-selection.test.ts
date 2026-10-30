@@ -19,8 +19,8 @@ function definition(name: string) {
   return end < 0 ? tail : tail.slice(0, end);
 }
 
-type Payload = { teacher: { count: number; candidates: { id: string; label: string }[] } };
-type State = { selected: string[]; blocks: { kind: string; title: string; keys: string[] }[]; sectionKind: string; pickMode: string; filter: string; lastAiPickCount: number; pickNote?: string };
+type Payload = { teacher: { count: number; planCounts: number[]; candidates: { id: string; label: string }[] } };
+type State = { grade: string; topic: string; level: string; scenario: string; style: string; selected: string[]; blocks: { kind: string; title: string; keys: string[] }[]; sectionKind: string; pickMode: string; filter: string; lastAiPickCount: number; pickNote?: string };
 const successfulReply = (payload: Payload) => ({
   source: 'classifier', model: 'qwen3.8-flash',
   exerciseIds: payload.teacher.candidates.slice(-payload.teacher.count).map((candidate) => `ex:${source.pdfId}:${candidate.label}`),
@@ -33,7 +33,7 @@ function harness(reply: (payload: Payload, state: State) => unknown = successful
       sectionKind: 'review', lastAiPickCount: 0, pickMode: 'manual', filter: 'selected', expanded: false,
       ...Object.fromEntries(['grade', 'scenario', 'style'].filter(key => options[key] != null).map(key => [key, options[key]])) };
     let history = [];
-    let aiPickPending = 0;
+    let aiPickPending = 0, teacherAiPlanCache = null;
     const status = { textContent: '' };
     const requests = [];
     const announcements = [];
@@ -64,14 +64,15 @@ function harness(reply: (payload: Payload, state: State) => unknown = successful
       requests.push({ path, payload });
       return await reply(payload, state);
     } });
-    ${['exKey', 'questionPreviewGroup', 'currentQuestions', 'keysOfQuestions', 'rolePlan', 'interleaveSheets', 'planOrder', 'smartQuestionPick', 'carriedKeys', 'selectionKey', 'snapshot', 'pickWithAi'].map(definition).join('\n')}
-    return { pick: pickWithAi, state, requests, status, attrs, announcements, renders: () => renderCount };
+    ${['exKey', 'questionPreviewGroup', 'currentQuestions', 'keysOfQuestions', 'rolePlan', 'interleaveSheets', 'planOrder', 'smartQuestionPick', 'carriedKeys', 'selectionKey', 'snapshot', 'teacherAiNote', 'teacherAiContext', 'verifiedTeacherPlan', 'rememberTeacherPlans', 'pickWithAi'].map(definition).join('\n')}
+    return { pick: pickWithAi, state, requests, status, attrs, controls, announcements, renders: () => renderCount };
   `)(options.pool || source.questions, groupWholeQuestions, options.savedKeys || groupKeys(groups[0]), reply, options) as {
     pick: (count: number) => Promise<string[]>;
     state: State;
     requests: { path: string; payload: Payload }[];
     status: { textContent: string };
     attrs: string[][];
+    controls: Record<string, { value: string }>;
     renders: () => number;
   };
 }
@@ -236,4 +237,177 @@ test('requesting 15 from a topic with eight questions sends eight and explicitly
   assert.match(app.status.textContent, /^נבחרו 8 שאלות/);
   assert.match(app.status.textContent, /התבקשו 15 שאלות, אך בנושא וברמה האלה זמינות רק 8; כולן נבחרו/);
   assert.equal(new Set(app.state.selected).size, 8);
+});
+
+function explicitPlan(ids: string[]) {
+  return { source: 'classifier', model: 'test-model', exerciseIds: ids.slice().reverse(), modelExerciseIds: ids.slice() };
+}
+
+function replyWithPlans(payload: Payload, pool: ReturnType<typeof numberedPool>) {
+  const candidateIds = new Set(payload.teacher.candidates.map((candidate) => candidate.id));
+  const available = pool.filter((part) => candidateIds.has(`${part.source.level}:${part.id}`));
+  const teacherPlans = Object.fromEntries([5, 10, 15].map((count) => [String(count), explicitPlan(
+    available.slice(-Math.min(count, available.length)).map((part) => `ex:${part.source.pdfId}:${part.id}`)
+  )]));
+  const primary = teacherPlans[String([5, 10, 15].find((count) => Math.min(count, available.length) === payload.teacher.count) || 5)];
+  return { ...primary, teacherPlans };
+}
+
+test('one guarded response supplies three distinct model plans without another POST or truncating a larger plan', async () => {
+  const pool = numberedPool(20);
+  const ids = (from: number, to: number) => pool.slice(from, to).map((part) => `ex:${part.source.pdfId}:${part.id}`);
+  const teacherPlans = { '5': explicitPlan(ids(15, 20)), '10': explicitPlan(ids(0, 10)), '15': explicitPlan(ids(2, 17)) };
+  const app = harness((payload) => {
+    assert.deepEqual(payload.teacher.planCounts, [5, 10, 15]);
+    return { ...teacherPlans['5'], teacherPlans };
+  }, { pool, savedKeys: [] });
+  assert.deepEqual(await app.pick(5), ids(15, 20));
+  assert.deepEqual(await app.pick(10), ids(0, 10));
+  assert.deepEqual(await app.pick(15), ids(2, 17));
+  assert.deepEqual(await app.pick(5), ids(15, 20));
+  assert.equal(app.requests.length, 1);
+  assert.match(app.status.textContent, /עם AI\./);
+  assert.match(app.status.textContent, /הוכנה בבקשת ה-AI הקודמת/);
+  assert.doesNotMatch(app.status.textContent, /מקומית/);
+  app.state.selected = ids(0, 1);
+  assert.deepEqual(await app.pick(10), ids(0, 10), 'An explicit AI click may replace a manual selection with its verified plan');
+  assert.equal(app.requests.length, 1);
+});
+
+test('plan reuse is invalidated by every model input, source hash, full question membership and saved section context', async () => {
+  const pool = numberedPool(20);
+  const app = harness((payload) => replyWithPlans(payload, pool), { pool, savedKeys: [] });
+  await app.pick(5);
+  assert.equal(app.requests.length, 1);
+  const changes = [
+    () => { app.state.grade = '8'; },
+    () => { app.state.topic = '46'; },
+    () => { app.state.level = 'all'; },
+    () => { app.state.scenario = 'exam'; },
+    () => { app.state.style = 'creative'; },
+    () => { app.controls['teacher-note'].value = 'בחר שאלות מסוף המאגר'; },
+    () => { Object.assign(pool[0].source, { sourceSha256: 'changed-source-sha256' }); },
+    () => { pool.push({ ...pool[0], id: '1ב' }); },
+    () => { pool.push({ ...pool[19], id: '21', q: 21 }); },
+    () => { app.state.blocks[0].title = 'שם חדש לאותו חלק'; },
+    () => { app.state.blocks[0].kind = 'review'; },
+    () => { app.state.blocks[0].keys.push('ex:elementary-source:2'); },
+  ];
+  for (const [index, change] of changes.entries()) {
+    change();
+    await app.pick(10);
+    assert.equal(app.requests.length, index + 2, `Context change ${index + 1} requires a fresh guarded request`);
+  }
+});
+
+test('the cache uses the exact trimmed 400-character note sent to the server', async () => {
+  const pool = numberedPool(20);
+  const app = harness((payload) => replyWithPlans(payload, pool), { pool, savedKeys: [] });
+  app.controls['teacher-note'].value = '  ' + 'א'.repeat(400) + 'first ignored suffix';
+  await app.pick(5);
+  app.controls['teacher-note'].value = 'א'.repeat(400) + 'other ignored suffix  ';
+  await app.pick(10);
+  assert.equal(app.requests.length, 1);
+  app.controls['teacher-note'].value = 'ב' + 'א'.repeat(399);
+  await app.pick(15);
+  assert.equal(app.requests.length, 2);
+});
+
+for (const mutation of ['goal', 'style', 'note', 'source hash', 'candidate subparts']) {
+  test(`a ${mutation} change during the request preserves the current selection and cannot populate reusable plans`, async () => {
+    const pool = numberedPool(20);
+    let change = true;
+    const app = harness((payload, state) => {
+      const result = replyWithPlans(payload, pool);
+      if (change) {
+        change = false;
+        if (mutation === 'goal') state.scenario = 'exam';
+        if (mutation === 'style') state.style = 'creative';
+        if (mutation === 'note') app.controls['teacher-note'].value = 'משימה חדשה';
+        if (mutation === 'source hash') Object.assign(pool[0].source, { sourceSha256: 'new-source' });
+        if (mutation === 'candidate subparts') pool.push({ ...pool[0], id: '1ב' });
+      }
+      return result;
+    }, { pool, savedKeys: [] });
+    assert.deepEqual(await app.pick(5), []);
+    assert.deepEqual(app.state.selected, []);
+    assert.match(app.status.textContent, /הבחירה שלכם נשמרה/);
+    await app.pick(10);
+    assert.equal(app.requests.length, 2);
+  });
+}
+
+for (const invalid of ['mixed', 'fallback', 'missing model', 'partial', 'extra', 'duplicate', 'unknown', 'different IDs', 'same whole question']) {
+  test(`an explicit ${invalid} plan is never reused as verified AI`, async () => {
+    const pool = numberedPool(20);
+    pool.push({ ...pool[0], id: '1ב' });
+    const valid = pool.slice(0, 10).map((part) => `ex:${part.source.pdfId}:${part.id}`);
+    const bad: Record<string, any> = explicitPlan(valid);
+    if (invalid === 'mixed' || invalid === 'fallback') bad.source = invalid;
+    if (invalid === 'missing model') bad.model = '';
+    if (invalid === 'partial') { bad.exerciseIds.pop(); bad.modelExerciseIds.pop(); }
+    if (invalid === 'extra') { bad.exerciseIds.push('ex:elementary-source:11'); bad.modelExerciseIds.push('ex:elementary-source:11'); }
+    if (invalid === 'duplicate') { bad.exerciseIds[0] = bad.exerciseIds[1]; bad.modelExerciseIds[0] = bad.modelExerciseIds[1]; }
+    if (invalid === 'unknown') { bad.exerciseIds[0] = 'ex:unknown:10'; bad.modelExerciseIds[9] = 'ex:unknown:10'; }
+    if (invalid === 'different IDs') bad.exerciseIds[0] = 'ex:elementary-source:11';
+    if (invalid === 'same whole question') { bad.exerciseIds[0] = 'ex:elementary-source:1ב'; bad.modelExerciseIds[9] = 'ex:elementary-source:1ב'; }
+    const app = harness((payload) => ({ ...replyWithPlans(payload, pool), teacherPlans: { '10': bad } }), { pool, savedKeys: [] });
+    await app.pick(5);
+    await app.pick(10);
+    assert.equal(app.requests.length, 2);
+    assert.doesNotMatch(app.status.textContent, /הוכנה בבקשת ה-AI הקודמת/);
+  });
+}
+
+for (const source of ['mixed', 'fallback']) {
+  test(`a ${source} response cannot populate the verified-plan cache`, async () => {
+    const pool = numberedPool(20);
+    const app = harness((payload) => ({ ...replyWithPlans(payload, pool), source }), { pool, savedKeys: [] });
+    await app.pick(5);
+    await app.pick(10);
+    assert.equal(app.requests.length, 2);
+  });
+}
+
+test('c2 model plans stay distinct from c when switching all three counts without another request', async () => {
+  const c = numberedPool(20, 'c-source'), c2 = numberedPool(20, 'c2-source');
+  c[0].source.level = 'c'; c2[0].source.level = 'c2';
+  const app = harness((payload) => replyWithPlans(payload, [...c, ...c2]), { pool: [...c, ...c2], grade: '8', savedKeys: [] });
+  for (const count of [5, 10, 15]) {
+    assert.deepEqual(await app.pick(count), c2.slice(-count).map((part) => `ex:${part.source.pdfId}:${part.id}`));
+  }
+  assert.equal(app.requests.length, 1);
+});
+
+test('shortage plans retain each requested count and honestly reuse the eight available questions', async () => {
+  const pool = numberedPool(8);
+  const app = harness((payload) => replyWithPlans(payload, pool), { pool, grade: '1', savedKeys: [] });
+  assert.equal((await app.pick(5)).length, 5);
+  assert.equal((await app.pick(10)).length, 8);
+  assert.match(app.status.textContent, /התבקשו 10 שאלות.*זמינות רק 8/);
+  assert.equal((await app.pick(15)).length, 8);
+  assert.match(app.status.textContent, /התבקשו 15 שאלות.*זמינות רק 8/);
+  assert.equal(app.state.lastAiPickCount, 15);
+  assert.equal(app.requests.length, 1);
+});
+
+test('teacher startup prepares the shared client once without posting and remains usable if preparation fails', async () => {
+  for (const failPrepare of [false, true]) {
+    const boot = new Function('failPrepare', `
+      const events = [];
+      const installSuggest = () => {}, indexCatalog = () => {}, bind = () => {};
+      const fillGrades = () => {}, fillTopics = () => {}, applyScenario = () => events.push('ready');
+      const wizardPrefillFromSearch = () => null, loadCurrentTopic = async () => {};
+      const state = { scenario: 'first' }, location = { search: '' }, CATALOG_URL = '/catalog';
+      let CATALOG;
+      const fetch = async () => ({ ok: true, json: async () => ({ grades: [] }) });
+      const ensureTeacherBotClient = async () => ({
+        prepare: async () => { events.push('prepare'); if (failPrepare) throw new Error('SDK unavailable'); },
+        postJson: async () => { events.push('POST'); throw new Error('Unexpected model request'); },
+      });
+      ${definition('start').split('\nstart().catch')[0]}
+      return start().then(() => Promise.resolve()).then(() => events);
+    `);
+    assert.deepEqual(await boot(failPrepare), ['prepare', 'ready']);
+  }
 });
