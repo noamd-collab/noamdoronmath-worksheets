@@ -488,13 +488,13 @@ describe('teacher short worksheet pack', () => {
   it('keeps a stacked fraction answer line whole, on one row, between its neighbours', () => {
     const api = layoutApi({});
     const H = 1000;
-    // Dark pixels per row of a rendered answer page, painted by hand.
-    const page = (...blocks: [number, number, number][]) => {
-      const rows = new Uint32Array(H);
-      blocks.forEach(([y0, y1, count]) => {
-        for (let r = Math.floor(y0 * H); r < Math.ceil(y1 * H); r += 1) rows[r] += count;
+    // A rendered answer page: dark rectangles [y0, y1, x0, x1], painted by hand.
+    const page = (...blocks: [number, number, number, number][]) => {
+      const dark = new Uint8Array(1000 * H);
+      blocks.forEach(([y0, y1, x0, x1]) => {
+        for (let r = Math.floor(y0 * H); r < Math.ceil(y1 * H); r += 1) dark.fill(1, r * 1000 + Math.floor(x0 * 1000), r * 1000 + Math.ceil(x1 * 1000));
       });
-      return { width: 1000, height: H, span: 960, rows };
+      return { width: 1000, height: H, dark };
     };
     const item = (y: number, y2: number, x: number, x2: number, text: string) => ({ page: 8, y, y2, x, x2, text });
     const head = item(0.0511, 0.069, 0.780, 0.933, 'תשובות סופיות');
@@ -516,16 +516,18 @@ describe('teacher short worksheet pack', () => {
       item(0.3800, 0.3900, 0.840, 0.856, '50'),
     ];
     // The fraction line's ink reaches above and below the text boxes of (19).
-    const blocks: [number, number, number][] = [[0.05, 0.07, 200], [0.296, 0.312, 100], [0.3285, 0.3585, 100], [0.378, 0.392, 100]];
+    const blocks: [number, number, number, number][] = [
+      [0.05, 0.07, 0.78, 0.93], [0.296, 0.312, 0.84, 0.93], [0.3285, 0.3585, 0.76, 0.93], [0.378, 0.392, 0.84, 0.93],
+    ];
     const inside = (box: { y: number; h: number }) => {
       assert.ok(box.y <= 0.3285, 'top cut ' + box.y);
       assert.ok(box.y + box.h >= 0.3585, 'bottom cut ' + (box.y + box.h));
       assert.ok(box.y > 0.312, 'took (18) ' + box.y);
       assert.ok(box.y + box.h < 0.378, 'took (20) ' + (box.y + box.h));
     };
-    // A frame down the page adds the same dark pixels to every row.
-    for (const frame of [0, 30]) {
-      const ink = new Map([[8, page(...blocks, [0, 1, frame])]]);
+    // A frame down the page, outside the answer text, changes nothing.
+    for (const frame of [[], [[0.02, 0.98, 0.03, 0.032], [0.02, 0.98, 0.968, 0.97]]] as [number, number, number, number][][]) {
+      const ink = new Map([[8, page(...blocks, ...frame)]]);
       const [parts] = api.answerCropsFromLines(lines, [{ q: 19, part: 'א' }, { q: 19, part: 'ב' }], ink);
       assert.equal(parts.q, 19);
       assert.equal(parts.pieces.length, 3, JSON.stringify(parts.pieces));
@@ -559,7 +561,7 @@ describe('teacher short worksheet pack', () => {
       item(0.183, 0.190, 0.840, 0.848, '1'),
       item(0.203, 0.210, 0.832, 0.856, '100'),
     ];
-    const wrappedInk = new Map([[8, page([0.05, 0.07, 200], [0.138, 0.152, 100], [0.160, 0.174, 100], [0.1785, 0.2115, 100])]]);
+    const wrappedInk = new Map([[8, page([0.05, 0.07, 0.78, 0.93], [0.138, 0.152, 0.78, 0.93], [0.160, 0.174, 0.76, 0.88], [0.1785, 0.2115, 0.83, 0.93])]]);
     const [three] = api.answerCropsFromLines(wrapped, [3], wrappedInk);
     assert.ok(three.box.y <= 0.138 && three.box.y + three.box.h >= 0.174, JSON.stringify(three.box));
     assert.ok(three.box.y + three.box.h <= 0.1785, JSON.stringify(three.box));
@@ -588,7 +590,7 @@ describe('teacher short worksheet pack', () => {
       item(0.258, 0.268, 0.800, 0.815, 'ד.'),
       item(0.258, 0.268, 0.780, 0.790, '8'),
     ];
-    const touchingInk = new Map([[8, page([0.05, 0.07, 200], [0.236, 0.253, 100], [0.253, 0.255, 5], [0.255, 0.272, 100])]]);
+    const touchingInk = new Map([[8, page([0.05, 0.07, 0.78, 0.93], [0.236, 0.253, 0.78, 0.93], [0.253, 0.255, 0.85, 0.86], [0.255, 0.272, 0.78, 0.88])]]);
     const [six] = api.answerCropsFromLines(touching, ['א', 'ב', 'ג', 'ד'].map((part) => ({ q: 6, part })), touchingInk);
     assert.equal(six.pieces.length, 5, JSON.stringify(six.pieces));
     const sixRows = [...new Set(six.pieces.map((piece) => piece.box.y))].sort();
@@ -602,7 +604,7 @@ describe('teacher short worksheet pack', () => {
       item(0.110, 0.120, 0.907, 0.929, '(1)'),
       item(0.110, 0.120, 0.840, 0.856, '5'),
     ];
-    const ruledInk = new Map([[8, page([0.05, 0.07, 200], [0.074, 0.087, 300], [0.100, 0.1015, 900], [0.107, 0.123, 100])]]);
+    const ruledInk = new Map([[8, page([0.05, 0.07, 0.78, 0.93], [0.074, 0.087, 0.70, 0.93], [0.100, 0.1015, 0.05, 0.95], [0.107, 0.123, 0.84, 0.93])]]);
     const [one] = api.answerCropsFromLines(ruled, [1], ruledInk);
     assert.ok(one.box.y > 0.1015 && one.box.y <= 0.107, JSON.stringify(one.box));
     assert.ok(one.box.y + one.box.h >= 0.123, JSON.stringify(one.box));
@@ -616,8 +618,10 @@ describe('teacher short worksheet pack', () => {
     [10, 11, 12].forEach((x) => dark(x, 2));
     dark(0, 5);
     dark(20, 5, 0);
+    pixels.set([255, 242, 204, 255], (7 * width + 30) * 4);
     const counted = api.pageInkFromPixels(pixels, width, 10);
-    assert.deepEqual(Array.from(counted.rows), [0, 0, 3, 0, 0, 0, 0, 0, 0, 0]);
+    const perRow = Array.from({ length: 10 }, (_, r) => counted.dark.slice(r * width, (r + 1) * width).reduce((sum, value) => sum + value, 0));
+    assert.deepEqual(perRow, [0, 0, 3, 0, 0, 1, 0, 0, 0, 0]);
   });
 
   it('prints only the picked part, keeps 19 with its drawing, and groups parts of one question', (t) => {
