@@ -63,12 +63,13 @@ test('manual selection of a repeated part retains both source regions in current
     const state = { grade: '1', selected: [], blocks: [], sectionKind: 'review', filter: 'all' };
     const currentExercises = () => source.questions;
     const sectionKind = kind => kind;
+    const gradeRecord = () => null;
     const $ = () => null;
     const render = () => {};
     const announce = () => {};
     const clearPreparedPrint = () => {};
     let history = [];
-    ${['exKey', 'selectionKey', 'snapshot', 'carriedKeys', 'toggleWholeQuestion', 'visibleSelectionKeys', 'questionsForKeys', 'resolveChosen', 'pageBlocks'].map(definition).join('\n')}
+    ${['exKey', 'selectionKey', 'snapshot', 'carriedKeys', 'toggleWholeQuestion', 'visibleSelectionKeys', 'sourceForContext', 'questionsForKeys', 'resolveChosen', 'pageBlocks'].map(definition).join('\n')}
     return { state, toggle: toggleWholeQuestion, chosen: resolveChosen, blocks: pageBlocks };
   `)(source, groupWholeQuestions);
   app.toggle('source:13', true);

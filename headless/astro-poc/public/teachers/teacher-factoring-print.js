@@ -485,7 +485,7 @@ function pageBlocks() {
   const blocks = state.blocks.map((block) => ({
     kind: sectionKind(block.kind),
     title: block.title,
-    questions: questionsForKeys(block.keys),
+    questions: questionsForKeys(block.keys, block),
   }));
   return blocks;
 }
@@ -2433,13 +2433,27 @@ async function updateShortPrint(plan, printArea, chosen, note, cfg, blocks) {
   await attachTeacherNote(printArea, note);
 }
 
-function questionsForKeys(keys) {
+function sourceForContext(source, context) {
+  const grade = context && gradeRecord(context.grade);
+  const topic = grade && grade.topics.find((item) => String(item.id) === String(context.topic));
+  const meta = topic && topic.sheets.find((item) => item.pdfId === source.pdfId);
+  if (!meta) return source;
+  // PDF geometry is shared, but a saved section retains the grade/topic in which
+  // its questions were chosen. Never rewrite the cached original for a new scope.
+  const scoped = { ...source, ...meta, grade: grade.grade, gradeLabel: grade.label,
+    topic: topic.title, title: meta.title || source.title };
+  scoped.questions = source.questions.map((question) => ({ ...question, source: scoped }));
+  return scoped;
+}
+
+function questionsForKeys(keys, context = state) {
   const wanted = new Set(keys || []);
   const pdfs = [...new Set([...wanted].map((key) => key.split(':')[1]))];
   // Repeated legacy part IDs can denote more than one source region. Keep all
   // source records for printing while the selected ID itself remains unique.
   return pdfs.flatMap((pdfId) => {
-    const source = sheets.get(pdfId);
+    const original = sheets.get(pdfId);
+    const source = original && sourceForContext(original, context);
     return source ? source.questions.filter((question) => wanted.has(exKey(pdfId, question.id))) : [];
   });
 }
@@ -2463,9 +2477,10 @@ async function updatePrint() {
     return;
   }
   const carried = pageBlocks();
-  const onPage = new Set(carried.flatMap((block) => block.questions));
-  const current = (await resolveChosen()).filter((question) => !onPage.has(question));
-  const chosen = [...onPage].concat(current);
+  const savedQuestions = carried.flatMap((block) => block.questions);
+  const onPage = new Set(savedQuestions.map((question) => exKey(question.source.pdfId, question.id)));
+  const current = (await resolveChosen()).filter((question) => !onPage.has(exKey(question.source.pdfId, question.id)));
+  const chosen = savedQuestions.concat(current);
   const blocks = carried.length || state.sectionKind === 'test'
     ? carried.concat(current.length ? [{ kind: sectionKind(state.sectionKind), title: currentTopic() ? currentTopic().title : '', questions: current }] : [])
     : null;

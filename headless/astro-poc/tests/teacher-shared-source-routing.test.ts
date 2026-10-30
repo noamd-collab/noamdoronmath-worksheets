@@ -8,6 +8,50 @@ import { wizardPrefillFromSearch } from '../public/teachers/wizard-prefill.js';
 const catalog = JSON.parse(readFileSync(new URL('../src/data/catalog.v1.json', import.meta.url), 'utf8'));
 const index = JSON.parse(readFileSync(new URL('../src/data/teacher-pick-index.json', import.meta.url), 'utf8'));
 const records = buildCatalogRecords(catalog);
+const printer = readFileSync(new URL('../public/teachers/teacher-factoring-print.js', import.meta.url), 'utf8');
+
+function definition(name: string) {
+  const start = printer.search(new RegExp(`(?:^|\\n)(?:async )?function ${name}\\(`));
+  assert.notEqual(start, -1, `Missing ${name}`);
+  const tail = printer.slice(start + (printer[start] === '\n' ? 1 : 0));
+  const end = tail.search(/\n(?:async )?function /);
+  return end < 0 ? tail : tail.slice(0, end);
+}
+
+test('saved grade 7 and current grade 9 sections keep independent context when they share a cached PDF', () => {
+  const teacherCatalog = JSON.parse(readFileSync(new URL('../public/teachers/teacher-catalog.json', import.meta.url), 'utf8'));
+  const ninth = index.find((sheet: any) => sheet.grade === 9 && sheet.topicId === '23' && sheet.level === 'a');
+  const seventh = index.find((sheet: any) => sheet.grade === 7 && sheet.pdfId === ninth.pdfId);
+  assert.ok(seventh);
+  const source = JSON.parse(readFileSync(new URL(`../public/teachers/sheets/${ninth.pdfId}.json`, import.meta.url), 'utf8'));
+  const before = JSON.stringify(source);
+  const first = `ex:${source.pdfId}:${source.questions[0].id}`;
+  const last = `ex:${source.pdfId}:${source.questions.at(-1).id}`;
+  const app = new Function('CATALOG', 'source', 'seventh', 'ninth', 'first', 'last', `
+    const state = { grade: '9', topic: ninth.topicId, scenario: 'other',
+      blocks: [{ grade: '7', topic: seventh.topicId, title: seventh.topic, kind: 'review', keys: [first] }] };
+    const sheets = new Map([[source.pdfId, source]]);
+    const sectionKind = value => value;
+    ${['gradeRecord', 'exKey', 'sourceForContext', 'questionsForKeys', 'pageBlocks', 'escapeHTML', 'levelPrintName', 'metaHTML'].map(definition).join('\n')}
+    return { saved: () => pageBlocks()[0].questions, current: () => questionsForKeys([last]),
+      meta: chosen => metaHTML(chosen, { label: 'תרגול' }), state };
+  `)(teacherCatalog, source, seventh, ninth, first, last);
+  const saved = app.saved();
+  const current = app.current();
+  assert.ok(saved.length && current.length);
+  assert.ok(saved.every((question: any) => question.source.grade === 7 && question.source.gradeLabel === 'כיתה ז׳' && question.source.topic === seventh.topic));
+  assert.ok(current.every((question: any) => question.source.grade === 9 && question.source.gradeLabel === 'כיתה ט׳' && question.source.topic === ninth.topic));
+  assert.notEqual(saved[0].source, current[0].source);
+  assert.equal(JSON.stringify(source), before, 'Geometry and metadata in the shared PDF cache remain unchanged');
+  const html = app.meta([...saved, ...current]);
+  assert.match(html, /כיתה ז׳/);
+  assert.match(html, /כיתה ט׳/);
+  app.state.grade = '7';
+  app.state.topic = seventh.topicId;
+  assert.equal(app.current()[0].source.gradeLabel, 'כיתה ז׳');
+  assert.equal(app.saved()[0].source.gradeLabel, 'כיתה ז׳');
+  assert.equal(current[0].source.gradeLabel, 'כיתה ט׳', 'A later scope change cannot alter a prepared grade 9 section');
+});
 
 test('all 31 reused sources keep their requested grade and topic in returned links', () => {
   const reused = index.filter((sheet: any) => records.some((record: any) => record.pdfId === sheet.pdfId && record.grade !== sheet.grade) && sheet.grade === 9);
