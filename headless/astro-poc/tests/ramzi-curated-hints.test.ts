@@ -65,6 +65,9 @@ describe('curated hint guides', () => {
     guides.register(id, { hints });
     guides.resetUnderstanding(id);
     guides.respond(id, { helpKind: 'hint', hintIndex: 0, progress: 0 });
+    const understood = guides.planUnderstanding(id, 'understood', { progress: 1 });
+    assert.equal(understood.action, 'local', 'הבנתי does not open the next curated hint');
+    assert.equal(understood.text, guides.understoodText);
     const plan = guides.planUnderstanding(id, 'not-understood', { progress: 1 });
     assert.equal(plan.action, 'hint');
     assert.equal(plan.display, 'לא הבנתי');
@@ -141,7 +144,7 @@ describe('curated hint loading', () => {
 describe('viewer wiring', () => {
   it('loads the module before the viewer script and prefetches after the manifest loads', () => {
     assert.match(viewer, /noam-glossary\.js\?v=20261029-context6"><\/script>\n<script src="noam-curated-hints\.js\?v=20261030-curated1"><\/script>\n<script>\n/);
-    assert.match(viewer, /noam-didactic-guides\.js\?v=20261030-curated1/);
+    assert.match(viewer, /noam-didactic-guides\.js\?v=20261030-understood1/);
     assert.match(
       viewer,
       /manifest = data;\n\s+manifestReady = true;[\s\S]{0,400}window\.NoamCuratedHints\.prefetch\(data\);/,

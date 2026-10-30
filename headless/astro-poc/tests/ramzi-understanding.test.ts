@@ -1,6 +1,7 @@
 /**
  * הבנתי / לא הבנתי stay available after every Ramzi reply.
  * לא הבנתי asks for a new simpler step. It never replays the same full text.
+ * הבנתי never opens the next hint or calls the AI: the student keeps working.
  */
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
@@ -18,6 +19,7 @@ const guides = (
       notUnderstoodLead: string;
       notUnderstoodLeads: string[];
       understoodLead: string;
+      understoodText: string;
       closingText: string;
       resetUnderstanding: (key: string) => void;
       noteCheck: (decision: string) => void;
@@ -144,24 +146,23 @@ describe('Ramzi understanding checks', () => {
     assert.doesNotMatch(openings[3], /שמח|בוא ננסה/);
   });
 
-  it('uses a neutral lead for הבנתי, and closes after the explanation instead of nextStep', () => {
+  it('answers הבנתי without opening a hint or calling the AI, and closes once every hint is open', () => {
     reset();
     hint(0);
-    guides.noteCheck('understood');
-    const next = guides.respond(proof, { helpKind: 'hint', hintIndex: 1, progress: 1 });
-    assert.match(next.text, /^יופי, מעולה שזה ברור/);
+    const plan = guides.planUnderstanding(proof, 'understood', { progress: 1 });
+    assert.equal(plan.action, 'local');
+    assert.equal(plan.display, 'הבנתי');
+    assert.equal(plan.text, guides.understoodText);
+    assert.equal(plan.prompt, undefined);
+    const said = guides.respond(proof, { helpKind: 'free_question', studentMessage: 'הבנתי', progress: 1 });
+    assert.equal(said.text, guides.understoodText);
+    assert.match(said.text, /«רמז»/);
+    assert.doesNotMatch(said.text, /∠EBD = ∠DBC/, 'the second hint stays closed');
+    const next = hint(1);
     assert.match(next.text, /∠EBD = ∠DBC/);
-    assert.doesNotMatch(next.text, /שמח/);
+    assert.equal(next.text.startsWith(guides.understoodLead), false, 'a requested hint carries no הבנתי lead');
 
     hint(2);
-    const step = guides.respond(proof, {
-      helpKind: 'free_question',
-      studentMessage: 'הבנתי',
-      progress: 3,
-    });
-    assert.match(step.text, /יופי, מעולה שזה ברור/);
-    assert.match(step.text, /נכון שצריך להגיע/);
-    guides.respond(proof, { helpKind: 'free_question', studentMessage: 'לא הבנתי', progress: 3 });
     const closing = guides.respond(proof, {
       helpKind: 'free_question',
       studentMessage: 'הבנתי',
@@ -169,18 +170,18 @@ describe('Ramzi understanding checks', () => {
     });
     assert.equal(closing.text, guides.closingText);
     assert.match(closing.text, /אפשר לעבור לסעיף הבא/);
-    assert.doesNotMatch(closing.text, /נכון שצריך|שמח/);
+    assert.doesNotMatch(closing.text, /נכון שצריך|שמח/, 'הבנתי does not reveal the guide next step');
+    const stay = guides.planUnderstanding(proof, 'understood', { progress: 3, hintsDone: true });
+    assert.equal(stay.action, 'local');
+    assert.equal(stay.text, guides.closingText);
     const again = guides.planUnderstanding(proof, 'not-understood', { progress: 3, hintsDone: true });
     assert.equal(again.action, 'ai');
     assert.equal(again.display, 'לא הבנתי');
     assert.match(again.prompt ?? '', /הצעד האחרון/);
     assert.match(again.prompt ?? '', /זווית אחרת/);
-    assert.match(again.prompt ?? '', /E נמצאת על AB|הקרן BE/);
     assert.equal((again.prompt ?? '').includes('תסבירו מחדש את הצעד האחרון'), true);
-    const stay = guides.planUnderstanding(proof, 'understood', { progress: 3, hintsDone: true });
-    assert.equal(stay.action, 'local');
-    assert.match(stay.text ?? '', /אפשר לעבור לסעיף הבא/);
     assert.equal(guides.needsCheck(guides.closingText, '', ''), true);
+    assert.equal(guides.needsCheck(guides.understoodText, '', ''), true);
   });
 
   it('does not steal a longer question that merely contains the words', () => {
@@ -211,11 +212,11 @@ describe('Ramzi understanding checks', () => {
     assert.match(missed.fallback ?? '', /רמז/);
     assert.doesNotMatch(missed.fallback ?? '', /קודם מסמנים|הצעד הבא/);
     const got = guides.planUnderstanding(plain, 'understood', {});
-    assert.equal(got.action, 'ai');
+    assert.equal(got.action, 'say');
     assert.equal(got.display, 'הבנתי');
-    assert.match(got.prompt ?? '', /תנו רק את הצעד הבא/);
-    assert.match(got.fallback ?? '', /הצעד הבא/);
-    assert.doesNotMatch(got.fallback ?? '', /שמח|בואו ננסה|הסבר חדש/);
+    assert.equal(got.text, guides.understoodText);
+    assert.equal(got.prompt, undefined, 'הבנתי makes no model call');
+    assert.equal(guides.planUnderstanding(plain, 'understood', { hintsDone: true }).text, guides.closingText);
     const offline = guides.offlineUnderstanding('not-understood');
     const understoodDown = guides.offlineUnderstanding('understood');
     assert.match(offline, /רמז/);
@@ -254,6 +255,8 @@ describe('Ramzi understanding checks', () => {
     assert.match(adapter, /hintFloors/);
     assert.match(adapter, /Math\.max\(released,floor\)/);
     assert.match(adapter, /hintsDone:opened>=3/);
+    assert.match(adapter, /plan\.action==='say'/);
+    assert.doesNotMatch(adapter, /prompt:'הבנתי\. תנו רק את הצעד הבא/);
     assert.match(adapter, /createElement\('bdi'\)/);
     assert.match(adapter, /bdi\.dir='ltr'/);
     assert.match(adapter, /p\.dir='rtl'/);

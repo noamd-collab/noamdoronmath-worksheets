@@ -255,7 +255,10 @@ describe('exact-design protected live-baseline boundaries', () => {
     // read-only publishable key) register as text-only didactic guides. Requests,
     // auth, AI endpoints and storage are unchanged; ramzi-curated-hints tests cover it.
     // The didactic guides asset is versioned 20261030-curated1 for its register() API.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), 'fbdfbf4609eb47b91b7d771d14c330c97c25a8194c63d6928ef47d79bb2526cb');
+    // Noam, 2026-10-30: הבנתי answers locally and never opens the next hint or asks the
+    // model for the next step; לא הבנתי, «רמז», auth and storage are unchanged. The guides
+    // asset is versioned 20261030-understood1; ramzi-understanding tests cover the flow.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), '33cc9cb780408aa97130c9d5fdf5dcc7a27107cca34ec11940a007ccfb4c63fb');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {

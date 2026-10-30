@@ -3225,7 +3225,7 @@ html.noam-a11y-motion .exact-viewer .panel-head .exact-ramzi-avatar ramzi-avatar
   </div>
 </dialog>
 
-<script src="noam-didactic-guides.js?v=20261030-curated1"></script>
+<script src="noam-didactic-guides.js?v=20261030-understood1"></script>
 <script src="noam-geometry.js?v=20260921-aux1"></script>
 <script src="noam-geometry-guides.js?v=20260920-1"></script>
 <script src="noam-diagram-plan.js?v=20261021-plural-relations1"></script>
@@ -10567,7 +10567,7 @@ function esc(s){
     var plan=guides&&typeof guides.planUnderstanding==='function'
       ?guides.planUnderstanding(id,intent,{progress:opened,hintsDone:opened>=3})
       :(intent==='understood'
-        ?{action:'ai',prompt:'הבנתי. תנו רק את הצעד הבא, בלי לחזור על מה שכבר נאמר. סיימו בשאלה קצרה אחת.',display:'הבנתי',fallback:'אי אפשר להביא עכשיו את הצעד הבא. אפשר לעבור לסעיף הבא.'}
+        ?{action:'say',display:'הבנתי',text:opened>=3?'יופי, מעולה שזה ברור.\nאפשר לעבור לסעיף הבא.':'יופי, מעולה שזה ברור.\nעכשיו נסו להמשיך לבד. אם תיתקעו, אפשר ללחוץ על «רמז».'}
         :{action:'ai',prompt:'לא הבנתי. תסבירו מחדש, יותר בפשטות ובצעדים קטנים, בלי לחזור על אותן מילים. סיימו בשאלה קצרה אחת.',display:'לא הבנתי',fallback:'זה בסדר גמור, בואו ננסה אחרת.\nאי אפשר להביא עכשיו הסבר חדש. אפשר לקרוא שוב את הצעד לאט.'});
     var input=document.getElementById('noamQuestion');
     var send=document.getElementById('noamSend');
@@ -10583,6 +10583,13 @@ function esc(s){
       return;
     }
     if(plan.action==='hint'){plan={action:'local',phrase:phrase};}
+    if(plan.action==='say'){
+      // Noam, 2026-10-30: הבנתי keeps the student working. No hint opens and
+      // no model call is made; «רמז» still opens the next hint on request.
+      localChecks.push({id:id||'current',user:phrase,assistant:String(plan.text||'')});
+      schedule();
+      return;
+    }
     if(plan.action==='local'&&input&&send&&!send.disabled){
       input.value=plan.phrase||phrase;
       input.dispatchEvent(new Event('input',{bubbles:true}));

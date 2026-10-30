@@ -311,8 +311,10 @@
     "זה מובן, בואו נפרק את הצעד."
   ];
   var CLOSING_TEXT="יופי, מעולה שזה ברור.\nאפשר לעבור לסעיף הבא.";
+  // Noam, 2026-10-30: הבנתי never opens the next hint or asks the AI for the
+  // next step. The student keeps working; «רמז» opens the next hint on request.
+  var UNDERSTOOD_TEXT="יופי, מעולה שזה ברור.\nעכשיו נסו להמשיך לבד. אם תיתקעו, אפשר ללחוץ על «רמז».";
   var AI_SIMPLER="לא הבנתי. תסבירו מחדש, יותר בפשטות ובצעדים קטנים, בלי לחזור על אותן מילים. סיימו בשאלה קצרה אחת.";
-  var AI_NEXT="הבנתי. תנו רק את הצעד הבא, בלי לחזור על מה שכבר נאמר. סיימו בשאלה קצרה אחת.";
   var AI_ANGLE="לא הבנתי את הצעד גם אחרי הפירוק. תנו זווית אחרת, בפשטות ובצעדים קטנים, בלי לחזור על אותו ניסוח. סיימו בשאלה קצרה.";
   var AI_DOWN="אי אפשר להביא עכשיו הסבר חדש. אפשר ללחוץ על «רמז», או לקרוא שוב את הצעד לאט.";
   var AI_DOWN_NEXT="אי אפשר להביא עכשיו את הצעד הבא. אפשר ללחוץ על «רמז», או לעבור לסעיף הבא.";
@@ -456,23 +458,11 @@
   function applyReply(state,guide,intent){
     var hints=guide.hints||[];
     if(intent==="understood"){
-      if(state.closed||state.factsStarted||state.stepShown){
+      if(state.closed||state.factsStarted||state.stepShown||state.cursor>=hints.length-1){
         state.closed=true;
         return checkReply(CLOSING_TEXT,"");
       }
-      var next=state.cursor+1;
-      if(next>=0&&next<hints.length){
-        state.cursor=next;
-        rememberStep(state,hints[next]);
-        return checkReply(UNDERSTOOD_LEAD+"\n"+hints[next],hintKey(guide,next));
-      }
-      if(guide.nextStep){
-        state.stepShown=true;
-        rememberStep(state,guide.nextStep);
-        return checkReply(UNDERSTOOD_LEAD+"\n"+guide.nextStep,"");
-      }
-      state.closed=true;
-      return checkReply(CLOSING_TEXT,"");
+      return checkReply(UNDERSTOOD_TEXT,"");
     }
     if(state.closed){return null;}
     if(state.cursor<hints.length-1){
@@ -523,20 +513,24 @@
     var display=intent==="understood"?"הבנתי":"לא הבנתי";
     var guide=get(exerciseId);
     if(!guide){
+      // הבנתי is answered locally, without a model call or a new step.
       return intent==="understood"
-        ?{action:"ai",prompt:AI_NEXT,display:display,fallback:offlineUnderstanding(intent,settings)}
+        ?{action:"say",display:display,text:hintsDone(settings)?CLOSING_TEXT:UNDERSTOOD_TEXT}
         :{action:"ai",prompt:AI_SIMPLER,display:display,fallback:offlineUnderstanding(intent,settings)};
     }
     var sim=catchUpState(cloneState(understandingFor(exerciseId)),guide,settings);
+    if(intent==="understood"){
+      return {action:"local",phrase:display,display:display,text:applyReply(sim,guide,intent).text};
+    }
     var hints=guide.hints||[];
     if(!sim.closed&&!sim.factsStarted&&!sim.stepShown&&sim.cursor<hints.length-1){
-      return {action:"hint",hintsOpened:Math.min(3,sim.cursor+2),lead:intent==="understood",display:display};
+      return {action:"hint",hintsOpened:Math.min(3,sim.cursor+2),lead:false,display:display};
     }
     var reply=applyReply(sim,guide,intent);
     if(!reply){
       return {
         action:"ai",
-        prompt:intent==="understood"?AI_NEXT:(sim.closed?anglePrompt(sim.lastStep):AI_ANGLE),
+        prompt:sim.closed?anglePrompt(sim.lastStep):AI_ANGLE,
         display:display,
         fallback:offlineUnderstanding(intent,settings)
       };
@@ -610,6 +604,7 @@
     offlineUnderstanding:offlineUnderstanding,
     fallbackUnderstanding:fallbackUnderstanding,
     understoodLead:UNDERSTOOD_LEAD,
+    understoodText:UNDERSTOOD_TEXT,
     notUnderstoodLead:NOT_UNDERSTOOD_LEAD,
     notUnderstoodLeads:[NOT_UNDERSTOOD_LEAD].concat(NOT_UNDERSTOOD_LATER),
     openingFor:openingFor,
