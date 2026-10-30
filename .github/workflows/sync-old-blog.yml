@@ -44,6 +44,11 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ env.BASE_BRANCH }}
+          # A push or PR made with GITHUB_TOKEN does not start other workflows, so the
+          # required checks (seo, astro-poc-slash-fractions) would never run on the
+          # sync PR. BLOG_SYNC_PAT: fine-grained, this repository only,
+          # Contents + Pull requests read/write.
+          token: ${{ secrets.BLOG_SYNC_PAT || github.token }}
 
       - name: Set up Node
         uses: actions/setup-node@v4
@@ -60,11 +65,19 @@ jobs:
         working-directory: headless/astro-poc
         run: node scripts/sync-old-blog.mjs
 
+      - name: Warn when BLOG_SYNC_PAT is missing
+        env:
+          HAS_SYNC_PAT: ${{ secrets.BLOG_SYNC_PAT != '' }}
+        run: |
+          if [ "$HAS_SYNC_PAT" != "true" ]; then
+            echo "::warning::BLOG_SYNC_PAT is not set. The sync PR is pushed and opened with GITHUB_TOKEN, so the required checks will not run on it and it cannot be merged until someone updates the branch. Add BLOG_SYNC_PAT (fine-grained, this repository only, Contents + Pull requests read/write)."
+          fi
+
       # The branch is rebuilt from the base on every run, so a pull request that
       # was not merged yet picks up the newer posts too.
       - name: Open or update the pull request
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.BLOG_SYNC_PAT || github.token }}
         run: |
           git add \
             headless/astro-poc/src/data/blog-posts \
@@ -86,7 +99,7 @@ jobs:
 
           body="New posts copied from the old Wix blog by the sync-old-blog workflow (run ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}).
 
-          To put them on the live site: review, merge, then run \`npm run release\` in headless/astro-poc."
+          To put them on the live site: merging needs Noam's approval, and publishing needs a separate approval. After both, from the repository root run \`bash tools/release/release.sh <approved-commit-sha>\`. Do not run \`npm run release\` or \`wix release\` directly."
           existing=$(gh pr list --base "$BASE_BRANCH" --head "$SYNC_BRANCH" --state open --json number --jq '.[0].number // empty')
           if [ -n "$existing" ]; then
             echo "Updated pull request #${existing}."
