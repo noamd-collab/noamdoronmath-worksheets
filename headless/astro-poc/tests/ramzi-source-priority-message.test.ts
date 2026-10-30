@@ -17,7 +17,7 @@ function fixture(v:string,kind='dots'){
   fetch:async(url:string)=>{calls.push(url);const body=read(url.slice(1));return {ok:true,json:async()=>JSON.parse(body),text:async()=>body,arrayBuffer:async()=>new TextEncoder().encode(body).buffer};},TextDecoder};
  runInNewContext(read('noam-native-visual.js')+'\n'+read('noam-source-panels.js'),c);window.NoamNativeVisual=c.NoamNativeVisual;window.NoamSourcePanels=c.NoamSourcePanels;
  const helpers='var noamSourceVisualPackages='+v.split('var noamSourceVisualPackages=')[1].split('function noamNativeFigure(')[0];
- runInNewContext(v.slice(v.indexOf('var SOLVER_MESSAGE_MAX ='),v.indexOf('var GRADE_NAME ='))+'\n'+fn(v,'noamDiagramSourceIdentity')+'\n'+fn(v,'noamManifestOcrUnreliable')+'\n'+fn(v,'noamExerciseSectionLabel')+'\n'+helpers+'\n'+v.slice(v.indexOf('function noamGeometryContext(text){'),v.indexOf('function postJson(endpoint,payload){')),c);
+ runInNewContext(v.slice(v.indexOf('var SOLVER_MESSAGE_MAX ='),v.indexOf('var GRADE_NAME ='))+'\n'+fn(v,'noamDiagramSourceIdentity')+'\n'+fn(v,'noamManifestOcrUnreliable')+'\n'+fn(v,'noamExerciseSectionLabel')+'\n'+helpers+'\n'+v.slice(v.indexOf('function noamGeometryContext(text){'),v.indexOf('function postJson(')),c);
  return {c,exercise,manifest,calls,attachments,thread};
 }
 function contradictory(){return {readable:true,transcription:'OCR: n²',math_content:'n²',problem_statement:'OCR square pattern',diagram_description:'OCR:9,16,25',extracted_entities:{expressions:['n²'],numbers:[9,16,25]}};}
@@ -73,7 +73,7 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
    Object.assign(f.c,{busy:false,panelBody:f.c.document.body,noamDrafts:{},MIN_WAIT:0,API:'/model',g:7,lv:'a',LEVEL:{a:'רמה א׳'},ttl:'תבניות',
     setNoamBusy:(b:boolean)=>{f.c.busy=b;},restoreNoamChatFocus(){},exerciseLabel:()=> 'שאלה21ד',noamDidacticGuide:()=>null,noamDidacticPrompt:()=>'',noamDidacticResponse:()=>null,
     getExerciseAnalysis:async()=>{analysisCalls++;return ocr;},postJson:async(url:string,payload:any)=>{requests.push({url,payload});return {ok:true,answer:'בדקו את השורות והעמודות.'};},
-    noamGuardGeometryResult:(r:any)=>r,noamGuardSignedAddResult:(r:any)=>r,noamClarifySignedAddLanguage:(s:string)=>s,noamResponseVisual:()=>null,noamVisualAnswer:(_:string,s:string)=>s,noamAttachSourceHint(){},setTimeout:(cb:any)=>cb()});
+    noamGuardGeometryResult:(r:any)=>r,noamGuardSignedAddResult:(r:any)=>r,noamClarifySignedAddLanguage:(s:string)=>s,noamResponseVisual:()=>null,noamVisualAnswer:(_:string,s:string)=>s,noamAttachSourceHint(){},setTimeout:(cb:any,ms:number)=>{if(ms<55000)cb();return 0;}});
    f.c.askNoam('hint','תן לי רמז אחד בלבד.');await settled();assert.equal(requests.length,1);assert.equal(requests[0].url,'/model/noamImageSolve');assert.equal(requests[0].payload.exerciseId,f.exercise.id);
    const sent=requests[0].payload.imageAnalysis,text=JSON.stringify(sent);
    assert.equal(requests[0].payload.studentMessage.includes('ניתוח השאלה נבנה מהטקסט המודפס ומנתוני המקור המאומתים'),!attachment);
