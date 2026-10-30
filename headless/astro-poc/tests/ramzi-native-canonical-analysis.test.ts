@@ -99,6 +99,8 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
   f.c.askNoam('hint',actualHintInstruction(v));await settled(f.c);
   assert.equal(r.requests.length,1);assert.equal(r.requests[0].url,'/model/noamImageSolve');
   assert.equal(r.requests[0].payload.hasStudentAttachments,false);
+  assert.equal(r.requests[0].payload.selectedPart,f.exercise.part);
+  assert.deepEqual(clone(r.requests[0].payload.sourceIdentity),{nativeSha256:f.manifest.nativeExportSha256,questionId:f.exercise.nativeQuestionId,itemId:f.exercise.nativeItemId});
   assert.equal(r.requests[0].payload.imageAnalysis.content_type,'native_source_canonical');
   assert.ok(r.requests[0].payload.studentMessage.includes(actualHintInstruction(v)));
  });
@@ -118,6 +120,9 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
    const [analyze,solve]=r.requests;assert.equal(analyze.url,'/model/noamImageAnalyze');
    assert.deepEqual(JSON.parse(analyze.payload.imageDataUrl),['original-question','photo-A']);
    assert.equal(solve.payload.hasStudentAttachments,true);
+   assert.equal(analyze.payload.selectedPart,f.exercise.part);
+   assert.equal(solve.payload.selectedPart,f.exercise.part);
+   assert.deepEqual(clone(solve.payload.sourceIdentity),clone(analyze.payload.sourceIdentity));
    assert.match(solve.payload.imageAnalysis.transcription,/student photograph/);
    assert.equal(solve.payload.imageAnalysis.content_type,undefined);
    assert.deepEqual(clone(f.c.analysisCache),{},'never cache a photograph analysis');
@@ -132,6 +137,8 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
   f.c.askNoam('hint',actualHintInstruction(v));
   f.attachments.push({name:'later.png',canvas:{marker:'new-photo'}});resume();await settled(f.c);
   assert.equal(r.requests.length,1);assert.equal(r.requests[0].payload.hasStudentAttachments,false);
+  assert.equal(r.requests[0].payload.selectedPart,f.exercise.part);
+  assert.deepEqual(clone(r.requests[0].payload.sourceIdentity),{nativeSha256:f.manifest.nativeExportSha256,questionId:f.exercise.nativeQuestionId,itemId:f.exercise.nativeItemId});
   assert.equal(r.requests[0].payload.imageAnalysis.content_type,'native_source_canonical');
   assert.equal(f.c.currentAttachments()[0].name,'later.png');
  });
@@ -148,7 +155,7 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
 
  it(name+': legacy loader omission reads current photos while true and an empty array force original',async()=>{
   const f=fixture(v,'W11'),r=wireSnapshotReader(f,v);f.attachments.push({name:'a.png',canvas:{marker:'photo-A'}});
-  const original={readable:true,transcription:'cached original'};f.c.analysisCache[f.exercise.id]=original;
+  const original=await f.c.getExerciseAnalysis(f.exercise,true);
   assert.equal(await f.c.getExerciseAnalysis(f.exercise,true),original);
   assert.equal(await f.c.getExerciseAnalysis(f.exercise,[]),original);
   assert.equal(r.requests.length,0);

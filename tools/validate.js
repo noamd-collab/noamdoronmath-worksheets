@@ -8,7 +8,7 @@
  *   2. לכל topic יש links תואם, ולהפך — אין יתומים בשני הכיוונים
  *   3. topic.ic חייב להיות מפתח קיים ב-ICONS
  *   4. topic.g חייב להיות מפתח קיים ב-groups של אותה כיתה
- *   5. כל מזהה PDF (hex) תואם בדיוק /^[0-9a-f]{32}$/ ואין אף מזהה כפול בכל הקובץ
+ *   5. כל מזהה PDF (hex) תואם בדיוק /^[0-9a-f]{32}$/; שימוש חוזר מותר רק עם מקור מפורש ותואם
  *   6. אזהרה (לא שגיאה) על ערכים יתומים ב-SEARCH_TERMS שמצביעים על topic id שכבר לא קיים
  *
  * יציאה עם קוד 1 אם יש שגיאה אחת לפחות. קוד 0 אם הכל תקין (גם אם יש אזהרות).
@@ -62,17 +62,25 @@ var dataSlice =
   extractBlock(scriptBody, 'ICONS') + '\n' +
   extractBlock(scriptBody, 'SEARCH_TERMS') + '\n' +
   extractBlock(scriptBody, 'GRADE_EMOJI') + '\n' +
-  extractBlock(scriptBody, 'GRADE_NAME') + '\n';
+  extractBlock(scriptBody, 'GRADE_NAME') + '\n' +
+  extractBlock(scriptBody, 'NOAM_PREFIX_FALLBACK') + '\n';
 
 var sandbox = {};
 require('vm').createContext(sandbox);
 require('vm').runInContext(dataSlice, sandbox, { filename: 'data-slice.js' });
 var DATA = sandbox.DATA, ICONS = sandbox.ICONS, SEARCH_TERMS = sandbox.SEARCH_TERMS,
-    GRADE_EMOJI = sandbox.GRADE_EMOJI, GRADE_NAME = sandbox.GRADE_NAME;
+    GRADE_EMOJI = sandbox.GRADE_EMOJI, GRADE_NAME = sandbox.GRADE_NAME,
+    NOAM_PREFIX_FALLBACK = sandbox.NOAM_PREFIX_FALLBACK;
 
 var errors = [], warnings = [];
 var allHex = [];
 var summary = {};
+function topicPrefix(topic, grade){
+  return topic.x || (NOAM_PREFIX_FALLBACK[grade] || {})[topic.id] || null;
+}
+function rowLevels(row){
+  return ['a','b','c','c2','one'].filter(function(key){ return row[key] !== undefined; });
+}
 
 Object.keys(DATA).forEach(function(gk){
   var g = Number(gk);
@@ -89,18 +97,33 @@ Object.keys(DATA).forEach(function(gk){
 
     var L = gd.links ? gd.links[t.id] : undefined;
     if (!L){ errors.push('כיתה ' + g + ' נושא ' + t.id + ' ("' + t.t + '"): אין רשומת links תואמת (יתום)'); return; }
+    var reuseValid = false;
+    if (['sourceGrade','sourcePrefix','sourceTitle'].some(function(key){ return L[key] !== undefined; })){
+      var sourceData = DATA[L.sourceGrade];
+      var sourceTopic = sourceData && (sourceData.topics || []).find(function(item){ return topicPrefix(item, L.sourceGrade) === L.sourcePrefix; });
+      var sourceRow = sourceTopic && sourceData.links[sourceTopic.id];
+      var levels = rowLevels(L);
+      reuseValid = Number.isInteger(L.sourceGrade) && [7,8,9].includes(L.sourceGrade) &&
+        typeof L.sourceTitle === 'string' && !!L.sourceTitle.trim() && !!sourceRow && !sourceRow.sourceGrade &&
+        levels.join() === rowLevels(sourceRow).join() && levels.every(function(key){
+          return L[key] === sourceRow[key] && (L.viewerLevel || (key === 'one' ? 'b' : key)) ===
+            (sourceRow.viewerLevel || (key === 'one' ? 'b' : key));
+        });
+      if (!reuseValid) errors.push('כיתה ' + g + ' נושא ' + t.id + ': מקור שימוש חוזר לא תואם למזהי PDF ולרמות של דף המקור');
+    }
     if (L.one !== undefined){
       linkCount += 1;
-      allHex.push({ hex:L.one, where:'כיתה ' + g + ' נושא ' + t.id + '/one' });
+      allHex.push({ hex:L.one, where:'כיתה ' + g + ' נושא ' + t.id + '/one', grade:g, prefix:topicPrefix(t,g), level:'one', sourceGrade:L.sourceGrade, sourcePrefix:L.sourcePrefix, reuseValid:reuseValid });
     } else {
       var levelKeys = ['a','b','c'];
       if (t.parent !== undefined){
         var declaredChildLevels = levelKeys.filter(function(k){ return t[k + 'Label'] !== undefined; });
         if (declaredChildLevels.length) levelKeys = declaredChildLevels;
       }
+      if (L.c2 !== undefined) levelKeys.push('c2');
       levelKeys.forEach(function(k){
         if (L[k] === undefined) warnings.push('כיתה ' + g + ' נושא ' + t.id + ' ("' + t.t + '"): חסר קישור רמה "' + k + '"');
-        else { linkCount += 1; allHex.push({ hex:L[k], where:'כיתה ' + g + ' נושא ' + t.id + '/' + k }); }
+        else { linkCount += 1; allHex.push({ hex:L[k], where:'כיתה ' + g + ' נושא ' + t.id + '/' + k, grade:g, prefix:topicPrefix(t,g), level:k, sourceGrade:L.sourceGrade, sourcePrefix:L.sourcePrefix, reuseValid:reuseValid }); }
       });
     }
   });
@@ -116,8 +139,12 @@ var hexRe = /^[0-9a-f]{32}$/;
 var seen = {};
 allHex.forEach(function(e){
   if (!hexRe.test(e.hex)) errors.push(e.where + ': מזהה "' + e.hex + '" לא תואם תבנית hex32');
-  if (seen[e.hex]) errors.push('מזהה PDF כפול: ' + e.hex + '  (' + seen[e.hex] + '  <->  ' + e.where + ')');
-  else seen[e.hex] = e.where;
+  if (seen[e.hex]) {
+    var original = seen[e.hex];
+    if (!(e.reuseValid && e.sourceGrade === original.grade && e.sourcePrefix === original.prefix && e.level === original.level)) {
+      errors.push('מזהה PDF כפול: ' + e.hex + '  (' + original.where + '  <->  ' + e.where + ')');
+    }
+  } else seen[e.hex] = e;
 });
 
 Object.keys(SEARCH_TERMS || {}).forEach(function(gk){

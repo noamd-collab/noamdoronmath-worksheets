@@ -1,3 +1,7 @@
+import { FILM as distribFilm } from './topicFilms/distributive-area-model-grade-4';
+import { FILM as fracDivFilm } from './topicFilms/fraction-division-meaning-grade-6';
+import { FILM as grade4SummaryFilm } from './topicFilms/grade-4-summary';
+import { FILM as measureFilm } from './topicFilms/measurement-geometry-synthesis-grade-6';
 /**
  * KIMI-LOOPS-K3 — engine for the ConceptLoop film loops.
  *
@@ -2256,6 +2260,10 @@ const SPECS = {
     hold: KITE_AREA_END + KITE_HOLD,
     render: renderKiteShow,
   },
+  'distributive-area-model-grade-4': { duration: distribFilm.duration, hold: distribFilm.hold, render: (root: LoopRoot, t: number) => distribFilm.render(root, t) },
+  'fraction-division-meaning-grade-6': { duration: fracDivFilm.duration, hold: fracDivFilm.hold, render: (root: LoopRoot, t: number) => fracDivFilm.render(root, t) },
+  'grade-4-summary': { duration: grade4SummaryFilm.duration, hold: grade4SummaryFilm.hold, render: (root: LoopRoot, t: number) => grade4SummaryFilm.render(root, t) },
+  'measurement-geometry-synthesis-grade-6': { duration: measureFilm.duration, hold: measureFilm.hold, render: (root: LoopRoot, t: number) => measureFilm.render(root, t) },
 } as const;
 
 const MAX_LAPS = 4;

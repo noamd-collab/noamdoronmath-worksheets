@@ -24,7 +24,7 @@ const bubbleFns = slice('function setNoamDiagramButtonLabel(', 'function ensureN
 
 const catalogStart = indexHtml.indexOf('var DATA = {');
 const catalogEnd = indexHtml.indexOf('/* ===================== מכאן ומטה');
-const DATA = new Function(indexHtml.slice(catalogStart, catalogEnd) + '\nreturn DATA;')() as Record<string, { topics: Array<{ x?: string; g: string; t: string }> }>;
+const DATA = new Function(indexHtml.slice(catalogStart, catalogEnd) + '\nreturn DATA;')() as Record<string, { links: Record<number, { sourcePrefix?: string; sourceGrade?: number }>; topics: Array<{ id: number; x?: string; g: string; t: string }> }>;
 
 /** Spec: catalog group, not a geometry word inside the hint text. */
 const GRADE7_GEOMETRY = new Set([
@@ -70,8 +70,14 @@ test('catalog topics allow a drawing hint only for geometry and analytic geometr
   for (const grade of [7, 8, 9]) {
     for (const topic of DATA[grade].topics) {
       if (!topic.x) continue;
-      const expected = expectedKind(topic);
-      const actual = api.noamDrawingHintTopic(topic.x, topic.t);
+      // Declared reuse opens the original source worksheet and preserves its topic policy.
+      const row = DATA[grade].links[topic.id];
+      const sourcePrefix = row?.sourcePrefix || topic.x;
+      const sourceTopic = row?.sourceGrade
+        ? DATA[row.sourceGrade].topics.find((source) => source.x === sourcePrefix)
+        : undefined;
+      const expected = expectedKind(sourceTopic || topic);
+      const actual = api.noamDrawingHintTopic(sourcePrefix, topic.t);
       assert.equal(actual, expected, topic.x + ' ' + topic.t);
       if (expected) seen[expected as 'geometry' | 'analytic-geometry']++;
       else seen.denied++;

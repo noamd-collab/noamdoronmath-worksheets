@@ -5,6 +5,8 @@
  * Reduced motion, html.nd-motion-off, and html.noam-a11y-motion hold a
  * finished frame. A tiny observer pauses the loop while it is off-screen.
  */
+import LessonLoop from './LessonLoop.astro';
+import { isLessonLoop } from '../lib/lessonLoops';
 import LoopFormula from './LoopFormula.astro';
 import LoopSketch from './LoopSketch.astro';
 import {
@@ -17,18 +19,19 @@ interface Props {
   variant: CssLoopVariant;
 }
 const { variant } = Astro.props;
+const lesson = isLessonLoop(variant);
 const formula = (FORMULA_LOOP_VARIANTS as readonly string[]).includes(variant);
 ---
 
 <div
-  class:list={['ll', `ll--${variant}`]}
+  class:list={['ll', `ll--${variant}`, lesson && 'll--lesson']}
   dir="ltr"
   data-landing-loop={variant}
   data-css-loop
   data-loop-idea={CSS_LOOP_IDEAS[variant]}
-  aria-hidden="true"
+  aria-hidden={lesson ? undefined : "true"}
 >
-  {formula ? <LoopFormula variant={variant} /> : <LoopSketch variant={variant} />}
+  {lesson ? <LessonLoop variant={variant} /> : formula ? <LoopFormula variant={variant} /> : <LoopSketch variant={variant} />}
 </div>
 
 <script>
@@ -61,6 +64,8 @@ const formula = (FORMULA_LOOP_VARIANTS as readonly string[]).includes(variant);
     border-radius: 24px;
     overflow: hidden;
   }
+  .ll--lesson { aspect-ratio: auto; min-height: 420px; }
+  .ll--lesson :global(.lesson) { position: relative; }
   .ll :global(.ll-math) {
     unicode-bidi: isolate;
     direction: ltr;

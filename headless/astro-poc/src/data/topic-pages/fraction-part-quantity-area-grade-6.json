@@ -1,0 +1,265 @@
+{
+  "slug": "fraction-part-quantity-area-grade-6",
+  "path": "/fraction-part-quantity-area-grade-6",
+  "grade": 6,
+  "sourceUrl": "https://www.noamdoronmath.co.il/fraction-part-quantity-area-grade-6",
+  "fetchedAt": "2026-10-15T00:00:00.000Z",
+  "verifiedVia": "authored-elementary-g6-t2-grounded-pdf",
+  "title": "כפל כחלק מכמות ושטח לכיתה ו׳ | דפי עבודה במתמטיקה – נועם דורון",
+  "description": "כפל כחלק מכמות ושטח לכיתה ו׳: הכפל כחלק מכמות, ושטח מתוך שרטוט, ודפי עבודה ברמות א׳, ב׳ ומצוינות. חינם וללא הרשמה.",
+  "h1": "כפל כחלק מכמות ושטח לכיתה ו׳",
+  "intro": "הכפל כחלק מכמות וכשטח: קוראים את השרטוט וכותבים את התרגיל. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "הכפל של שברים הוא חלק של חלק: חצי של שליש זה שישית.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "בשטח קוראים את השטח הכולל מהשרטוט ואז את החלק.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "דוגמה: ⟨1¦2⟩ × ⟨1¦3⟩ = ⟨1¦6⟩ — החפיפה על הרשת.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "טעות נפוצה היא לכתוב את התרגיל בלי לקרוא את השרטוט. קודם קוראים מה השלם ומה החלק.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "בדקו את עצמכם: כמה זה חצי של שליש?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה היא ⟨1¦6⟩, כי ⟨1¦2⟩ × ⟨1¦3⟩ = ⟨1¦6⟩.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "הכפל כחלק מכמות וכשטח: קוראים את השרטוט וכותבים את התרגיל. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=6&topic=2",
+      "catalogTopicId": 2
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "הכפל של שברים הוא חלק של חלק: חצי של שליש זה שישית.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "בשטח קוראים את השטח הכולל מהשרטוט ואז את החלק.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "דוגמה: ⟨1¦2⟩ × ⟨1¦3⟩ = ⟨1¦6⟩ — החפיפה על הרשת.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "טעות נפוצה היא לכתוב את התרגיל בלי לקרוא את השרטוט. קודם קוראים מה השלם ומה החלק.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "בדקו את עצמכם: כמה זה חצי של שליש?",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "התשובה היא ⟨1¦6⟩, כי ⟨1¦2⟩ × ⟨1¦3⟩ = ⟨1¦6⟩.",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 15.10.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "האם דפי העבודה בנושא כפל כחלק מכמות ושטח מתאימים לכיתה ו׳?",
+      "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ו׳ ומסודר לפי רמות קושי."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ היא רמת התרגול הרגילה וברירת המחדל. רמה ב׳ קלה יותר ומתאימה לביסוס ולתרגול מודרך. מצוינות היא הרמה הקשה יותר, להעמקה ולאתגר."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "authored",
+      "items": [
+        {
+          "question": "האם דפי העבודה בנושא כפל כחלק מכמות ושטח מתאימים לכיתה ו׳?",
+          "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ו׳ ומסודר לפי רמות קושי."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ היא רמת התרגול הרגילה וברירת המחדל. רמה ב׳ קלה יותר ומתאימה לביסוס ולתרגול מודרך. מצוינות היא הרמה הקשה יותר, להעמקה ולאתגר."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/grade-6",
+      "label": "כל דפי כיתה ו׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-6"
+    },
+    {
+      "path": "/grade-7",
+      "label": "דפי עבודה לכיתה ז׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-7"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=6&topic=2",
+    "source": "catalog-g6-t2",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=6&topic=2",
+    "catalogTopicId": 2,
+    "catalogTopicTitle": "כפל כחלק מכמות ושטח"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=6&topic=2",
+      "source": "catalog-g6-t2",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=6&topic=2",
+      "catalogTopicId": 2,
+      "catalogTopicTitle": "כפל כחלק מכמות ושטח"
+    }
+  ],
+  "gradeHubHref": "/grade-6",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/fraction-part-quantity-area-grade-6#webpage",
+        "url": "https://www.noamdoronmath.co.il/fraction-part-quantity-area-grade-6",
+        "name": "כפל כחלק מכמות ושטח לכיתה ו׳ | דפי עבודה במתמטיקה – נועם דורון",
+        "description": "כפל כחלק מכמות ושטח לכיתה ו׳: הכפל כחלק מכמות, ושטח מתוך שרטוט, ודפי עבודה ברמות א׳, ב׳ ומצוינות. חינם וללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/fraction-part-quantity-area-grade-6#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/fraction-part-quantity-area-grade-6#learning-resource",
+        "name": "כפל כחלק מכמות ושטח לכיתה ו׳",
+        "url": "https://www.noamdoronmath.co.il/fraction-part-quantity-area-grade-6",
+        "description": "כפל כחלק מכמות ושטח לכיתה ו׳: הכפל כחלק מכמות, ושטח מתוך שרטוט, ודפי עבודה ברמות א׳, ב׳ ומצוינות. חינם וללא הרשמה.",
+        "educationalLevel": "כיתה ו׳",
+        "learningResourceType": "דפי עבודה",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/fraction-part-quantity-area-grade-6#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "האם דפי העבודה בנושא כפל כחלק מכמות ושטח מתאימים לכיתה ו׳?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ו׳ ומסודר לפי רמות קושי."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ היא רמת התרגול הרגילה וברירת המחדל. רמה ב׳ קלה יותר ומתאימה לביסוס ולתרגול מודרך. מצוינות היא הרמה הקשה יותר, להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

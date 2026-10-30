@@ -270,6 +270,12 @@ html.noam-a11y-motion .exact-home h1[data-lcp] {
   box-shadow: 2px 2px 0 #2a7c7a, 4px 4px 0 #e6a534;
 }
 @media (min-width: 981px) {
+  .exact-hero__panel {
+    --hero-panel-shift: clamp(0px, calc((100vw - 1264px) / 2), 180px);
+    align-self: start;
+    margin-inline-start: min(112px, var(--hero-panel-shift));
+    margin-inline-end: calc(-1 * var(--hero-panel-shift));
+  }
   .exact-hero-teachers {
     position: absolute;
     z-index: 3;

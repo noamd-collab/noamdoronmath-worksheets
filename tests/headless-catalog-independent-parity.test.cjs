@@ -132,13 +132,13 @@ test('independent: contract consumer href meaning matches production sheetHref f
       assert.equal(topic.routing.usesViewer, false);
     } else {
       assert.equal(meaning.path, catalog.config.viewer.path);
-      assert.equal(meaning.g, String(m.grade));
-      assert.equal(meaning.x, m.prefix);
+      assert.equal(meaning.g, String(m.viewerGrade));
+      assert.equal(meaning.x, m.viewerPrefix);
       assert.equal(meaning.pdf, m.pdfId);
-      assert.equal(meaning.t, m.title);
+      assert.equal(meaning.t, m.viewerTitle);
       assert.equal(meaning.lv, m.viewerLevelArg);
       if (m.levelKey === 'one') {
-        assert.equal(meaning.lv, 'b', 'one-level viewer lv must be b');
+        assert.equal(meaning.lv, level.viewerLevel || 'b', 'single-sheet viewer level matches its manifest');
         assert.equal(level.key, 'one', 'catalog key stays one');
         viewerOne++;
       } else {
@@ -157,7 +157,7 @@ test('independent: contract consumer href meaning matches production sheetHref f
   }
 
   assert.ok(viewerAbc > 0, 'expected some a/b/c viewer routes');
-  assert.ok(viewerOne > 0, 'expected some one→lv=b viewer routes');
+  assert.ok(viewerOne > 0, 'expected some single-sheet viewer routes');
   assert.ok(direct > 0, 'expected some direct PDF routes (elementary)');
   assert.ok(fallbackOnly > 0, 'expected some NOAM_PREFIX_FALLBACK-only routes');
   assert.ok(withSiblings > 0, 'expected some pa/pb/pc siblings');
@@ -239,7 +239,7 @@ test('independent: production levelLinksHTML rendered hrefs match contract consu
         );
         totalAnchors++;
         if (level.key === 'one' && hrefMeaning(rendered[i]).kind === 'viewer') {
-          assert.equal(hrefMeaning(rendered[i]).lv, 'b');
+          assert.equal(hrefMeaning(rendered[i]).lv, level.viewerLevel || 'b');
           assert.equal(level.key, 'one');
           oneViewerChecked++;
         }
@@ -249,10 +249,10 @@ test('independent: production levelLinksHTML rendered hrefs match contract consu
 
   assert.ok(totalAnchors > 0);
   assert.equal(totalAnchors, expected.mappings.length);
-  assert.ok(oneViewerChecked > 0, 'levelLinksHTML must render viewer-routed one with lv=b');
+  assert.ok(oneViewerChecked > 0, 'levelLinksHTML must render single-sheet viewer routes');
 });
 
-test('independent: one-level viewer-routed rows keep catalog key one and production lv=b', () => {
+test('independent: single-sheet rows keep catalog key one and their published manifest level', () => {
   const ones = expected.mappings.filter((m) => m.levelKey === 'one' && m.href.indexOf('?') !== -1);
   assert.ok(ones.length > 0, 'need at least one viewer-routed one-level mapping');
   for (const m of ones) {
@@ -262,7 +262,7 @@ test('independent: one-level viewer-routed rows keep catalog key one and product
     const href = contractHref(catalog, m.grade, topic, level);
     assertHrefMeaningEqual(href, m.href, 'one-level ' + m.grade + ':' + m.topicId);
     const { hrefMeaning } = require('./helpers/independent-catalog-parity.cjs');
-    assert.equal(hrefMeaning(href).lv, 'b');
+    assert.equal(hrefMeaning(href).lv, level.viewerLevel || 'b');
   }
 
   // Not every one-level is viewer-routed (document preservation of direct-PDF conditions).

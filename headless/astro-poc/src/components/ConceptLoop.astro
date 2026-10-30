@@ -1,4 +1,8 @@
 ---
+import { FILM as distribFilm } from '../lib/topicFilms/distributive-area-model-grade-4';
+import { FILM as fracDivFilm } from '../lib/topicFilms/fraction-division-meaning-grade-6';
+import { FILM as grade4SummaryFilm } from '../lib/topicFilms/grade-4-summary';
+import { FILM as measureFilm } from '../lib/topicFilms/measurement-geometry-synthesis-grade-6';
 import StackedFraction from './StackedFraction.astro';
 import KiteAreaFilm from './KiteAreaFilm.astro';
 /**
@@ -93,9 +97,20 @@ export interface Props {
     | 'mark-250'
     | 'quad-gate'
     | 'two-diag'
-    | 'kite-construct';
+    | 'kite-construct'
+    | 'distributive-area-model-grade-4'
+    | 'fraction-division-meaning-grade-6'
+    | 'grade-4-summary'
+    | 'measurement-geometry-synthesis-grade-6';
 }
 const { variant } = Astro.props;
+const authoredFilms = {
+  'distributive-area-model-grade-4': distribFilm,
+  'fraction-division-meaning-grade-6': fracDivFilm,
+  'grade-4-summary': grade4SummaryFilm,
+  'measurement-geometry-synthesis-grade-6': measureFilm,
+};
+const authoredFilm = authoredFilms[variant as keyof typeof authoredFilms];
 
 const ariaLabels: Record<string, string> = {
   triangle:
@@ -259,7 +274,7 @@ const topTexts: Record<string, { text: string; ltr?: boolean }> = {
   'two-diag': { text: 'כמה אלכסונים?' },
   'kite-construct': { text: 'למה מחלקים ב־2?' },
 };
-const top = topTexts[variant];
+const top = authoredFilm ? authoredFilm.top : topTexts[variant];
 
 /* ——— Pythagoras tile geometry (viewBox units). The engine reads the
    data-home-* / data-target-* attributes — single source of truth. ——— */
@@ -2246,6 +2261,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
         </svg>
       )
     }
+    {authoredFilm && <svg class="concept-loop__svg" viewBox={authoredFilm.viewBox} role="img" aria-label={authoredFilm.ariaLabel} set:html={authoredFilm.svgMarkup} />}
     {
       variant === 'kite-construct' && (
         <>
@@ -2986,6 +3002,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
         </p>
       )
     }
+    {authoredFilm && <Fragment set:html={authoredFilm.formulaHTML} />}
     {
       variant === 'kite-construct' && (
         <div data-el="kite-caption" style="display:none">
