@@ -167,6 +167,8 @@ describe('homepage Harmony parity (HEADLESS-MIGRATION-31)', () => {
     assert.doesNotMatch(index, /לחצו כאן/);
     assert.doesNotMatch(index, /exact-hero-teachers[\s\S]{0,800}\d+\/\d+/);
     assert.match(css, /exact-teachers-hello/);
+    assert.match(css, /\.exact-hero__panel\s*\{[^}]*align-self:\s*start/);
+    assert.match(css, /\.exact-hero__panel\s*\{[^}]*--hero-panel-shift:/);
     assert.match(css, /html\.nd-motion-off \.exact-hero-teachers/);
     assert.match(css, /html\.noam-a11y-motion \.exact-hero-teachers/);
     assert.match(css, /html\[data-nd-motion="off"\] \.exact-hero-teachers/);
