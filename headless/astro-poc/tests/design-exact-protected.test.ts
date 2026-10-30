@@ -251,7 +251,8 @@ describe('exact-design protected live-baseline boundaries', () => {
     // 2026-10-29: explicit printed last-part-only figure scope proves independent canonical text.
     // The whole reviewed framing must match; any extra scope qualification keeps the image reader.
     // The attachment-origin flag and reader use one request snapshot; cleanup retains newly added photos.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '4ba806e38320769fa2c2239379e3be12a0da2af1a51b462f9fcbd6b8fc7db7b7');
+    // Noam, 2026-10-30: after a manifest loads, verified curated hints (text-only) register as didactic guides.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), 'fbdfbf4609eb47b91b7d771d14c330c97c25a8194c63d6928ef47d79bb2526cb');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {
