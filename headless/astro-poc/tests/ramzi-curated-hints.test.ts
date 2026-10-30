@@ -110,6 +110,17 @@ describe('curated hint loading', () => {
     assert.equal(calls.length, 1, 'the worksheet is not fetched twice');
   });
 
+  it('follows the exercise level of a single-level worksheet, never another prefix', async () => {
+    const calls: { url: string; init: any }[] = [];
+    const rows = [{ exercise_id: 'G8-T56-A-Q01א', hint_1: 'ג1', hint_2: 'ג2', hint_3: 'ג3' }];
+    const single = manifest('G8-T56', 'B', ['G8-T56-A-Q01א']);
+    assert.equal(await curated.prefetch(single, { config, guides, fetch: fakeFetch(rows, calls) }), 1);
+    assert.equal(new URL(calls[0].url).searchParams.get('exercise_id'), 'like.G8-T56-A-Q*');
+    const foreign = manifest('G8-T57', 'B', ['G8-T58-A-Q01א']);
+    assert.equal(await curated.prefetch(foreign, { config, guides, fetch: fakeFetch(rows, calls) }), 0);
+    assert.equal(new URL(calls[1].url).searchParams.get('exercise_id'), 'like.G8-T57-B-Q*');
+  });
+
   it('leaves Ramzi unchanged when Supabase fails or the input is unsafe', async () => {
     const calls: { url: string; init: any }[] = [];
     const failing = fakeFetch([], calls, false);

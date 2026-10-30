@@ -82,6 +82,36 @@ test("only a verified review shows a hint, and a verified move claims its part f
   assert.equal(byId["G9-T01-A-Q01א"].status,"verified");
 });
 
+test("published rows rebuild without the bank, and kept rows only fill parts the input lacks",()=>{
+  const live=build.liveExercises(site);
+  const row=(id,extra)=>Object.assign({exercise_id:id,status:"verified",source:"s",source_id:id,topic:"t",source_exercise_text:"x",hints:["א","ב","ג"],review_note:"n"},extra);
+  const loaded=build.loadRows([
+    row("G7-T01-A-Q01א"),
+    row("G7-T01-C-Q01א"),
+    row("G7-T16-A-Q01א"),
+    row("G7-T01-A-Q01ב",{hints:["א","ב"]}),
+    row("G7-T01-B-Q01א",{status:"live"})
+  ],live);
+  assert.deepEqual(loaded.rows.map(item=>[item.exercise_id,item.status]),[["G7-T01-A-Q01א","verified"],["G7-T01-B-Q01א","review"]]);
+  assert.deepEqual(loaded.rejected.map(item=>item.exerciseId),["G7-T01-C-Q01א","G7-T16-A-Q01א","G7-T01-A-Q01ב"]);
+  const merged=build.mergeRows(loaded.rows,build.loadRows([row("G7-T01-A-Q01א",{hints:["x","y","z"]}),row("G7-T01-A-Q34א")],live).rows);
+  assert.equal(merged.kept,1);
+  assert.deepEqual(merged.rows.map(item=>item.exercise_id),["G7-T01-A-Q01א","G7-T01-A-Q34א","G7-T01-B-Q01א"]);
+  assert.equal(merged.rows[0].hints[0],"א","the input row wins over a kept row");
+});
+
+test("special worksheets read the same native package as the viewer",()=>{
+  const viewer=fs.readFileSync(path.join(__dirname,"..","headless/astro-poc/public/noam-native-visual.js"),"utf8");
+  const aliases=JSON.parse(viewer.match(/PACKAGE_ALIASES = (\{[^}]+\})/)[1]);
+  const prefixes=Object.values(aliases).filter(prefix=>prefix!=="G9-T32");
+  assert.ok(prefixes.length>=9);
+  for(const prefix of prefixes){
+    const exercise=build.nativeExercise(path.join(__dirname,".."),prefix+"-A-Q01א");
+    assert.ok(exercise&&exercise.parts.some(part=>part.selected),prefix+" resolves to its native package");
+  }
+  assert.match(build.nativeExercise(path.join(__dirname,".."),"G8-T64-A-Q01א").stem,/ABD/);
+});
+
 test("the committed seed matches the committed public rows and hides unreviewed hints",()=>{
   const root=path.join(__dirname,"..");
   const rows=JSON.parse(fs.readFileSync(path.join(root,"learning/ramzi-hints.json"),"utf8"));
