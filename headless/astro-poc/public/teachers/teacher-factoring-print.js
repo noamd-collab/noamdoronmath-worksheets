@@ -111,6 +111,7 @@ let loadToken = 0;
 let topicLoadPromise = null;
 let aiPickPending = 0;
 let teacherBotClientPromise = null;
+let teacherAiPlanCache = null;
 function exKey(pdfId, id) {
   return 'ex:' + pdfId + ':' + id;
 }
@@ -119,18 +120,18 @@ function ensureTeacherBotClient() {
   if (teacherBotClientPromise) return teacherBotClientPromise;
   teacherBotClientPromise = new Promise((resolve, reject) => {
     function finish(ok) {
-      if (ok && window.NoamBotClient && typeof window.NoamBotClient.create === 'function') {
+      if (ok && window.NoamBotClient && window.NoamBotClient.version === '20261030-shared-prepare' && typeof window.NoamBotClient.create === 'function') {
         resolve(window.NoamBotClient.create({ api: '/api', enabled: true, modelTimeoutMs: 25000 }));
         return;
       }
       reject(new Error('BOT_CLIENT_UNAVAILABLE'));
     }
-    if (window.NoamBotClient) {
+    if (window.NoamBotClient && window.NoamBotClient.version === '20261030-shared-prepare') {
       finish(true);
       return;
     }
     const loader = document.createElement('script');
-    loader.src = '/noam-bot-client.js?v=20261025-execute-ready-guard';
+    loader.src = '/noam-bot-client.js?v=20261030-shared-prepare';
     loader.async = true;
     loader.onload = () => finish(true);
     loader.onerror = () => finish(false);
@@ -234,6 +235,50 @@ function smartQuestionPick(groups, count, scenario, style, seedKeys) {
   return chosen.map((group) => group.key);
 }
 
+function teacherAiNote() {
+  return $('teacher-note') ? String($('teacher-note').value || '').trim().slice(0, 400) : '';
+}
+
+function teacherAiContext(groups, saved) {
+  return JSON.stringify({
+    grade: String(state.grade), topic: String(state.topic), level: String(state.level || 'all'),
+    goal: String(state.scenario), style: String(state.style), note: teacherAiNote(),
+    candidates: planOrder(groups, state.scenario, state.style).map((group) => ({
+      id: (/^(?:[abc]|c2)$/.test(String(group.source && group.source.level)) ? group.source.level + ':' : '') + group.parts[0].id,
+      key: group.key, keys: group.keys, role: group.role,
+      pdfId: group.pdfId, level: group.source && group.source.level,
+      sourceSha256: group.source && group.source.sourceSha256 || '',
+    })),
+    blocks: state.blocks, excluded: [...saved].sort(),
+  });
+}
+
+// A reusable plan must contain one explicit, valid model choice per whole
+// question. Never turn a larger plan, partial result or local fill into a plan.
+function verifiedTeacherPlan(plan, groups, count) {
+  const target = Math.min(count, groups.length);
+  if (!plan || plan.source !== 'classifier' || typeof plan.model !== 'string' || !plan.model.trim()) return null;
+  const ids = plan.exerciseIds, modelIds = plan.modelExerciseIds;
+  if (!Array.isArray(ids) || !Array.isArray(modelIds) || ids.length !== target || modelIds.length !== target || !target) return null;
+  if (ids.some((id) => typeof id !== 'string') || modelIds.some((id) => typeof id !== 'string')) return null;
+  const declared = new Set(ids);
+  if (declared.size !== target || new Set(modelIds).size !== target || modelIds.some((id) => !declared.has(id))) return null;
+  const owner = new Map();
+  groups.forEach((group) => group.keys.forEach((key) => owner.set(key, group.key)));
+  const questionKeys = modelIds.map((id) => owner.get(id));
+  if (questionKeys.some((key) => !key) || new Set(questionKeys).size !== target) return null;
+  return { source: 'classifier', model: plan.model, exerciseIds: ids.slice(), modelExerciseIds: modelIds.slice(), questionKeys };
+}
+
+function rememberTeacherPlans(result, context, groups) {
+  if (!result || result.source !== 'classifier' || !result.model || !result.teacherPlans || typeof result.teacherPlans !== 'object') return;
+  if (!teacherAiPlanCache || teacherAiPlanCache.context !== context) teacherAiPlanCache = { context, plans: {} };
+  AI_QUESTION_COUNTS.forEach((count) => {
+    const verified = verifiedTeacherPlan(result.teacherPlans[String(count)], groups, count);
+    if (verified) teacherAiPlanCache.plans[String(count)] = verified;
+  });
+}
+
 async function pickWithAi(rawCount) {
   const count = Number(rawCount);
   if (!AI_QUESTION_COUNTS.includes(count) || aiPickPending) return [];
@@ -241,13 +286,15 @@ async function pickWithAi(rawCount) {
   const groups = currentQuestions().filter((group) => !group.keys.some((key) => saved.has(key)));
   if (!groups.length) return [];
   const target = Math.min(count, groups.length);
-  const scope = [state.grade, state.topic, state.level].join('|');
+  const context = teacherAiContext(groups, saved);
+  if (teacherAiPlanCache && teacherAiPlanCache.context !== context) teacherAiPlanCache = null;
+  const preparedPlan = teacherAiPlanCache && verifiedTeacherPlan(teacherAiPlanCache.plans[String(count)], groups, count);
   const beforeRequest = selectionKey();
   const beforeBlocks = JSON.stringify(state.blocks);
   aiPickPending = count;
   paintAiPickButtons();
   const status = $('ai-suggest-status');
-  if (status) status.textContent = `נועם AI בוחר ${target} שאלות…`;
+  if (status) status.textContent = preparedPlan ? 'מיישמים את בחירת ה-AI שהוכנה…' : `נועם AI בוחר ${target} שאלות…`;
   const gradeEl = $('grade');
   const topicEl = $('topic');
   const payload = {
@@ -263,8 +310,9 @@ async function pickWithAi(rawCount) {
       goalLabel: (SCENARIOS[state.scenario] && SCENARIOS[state.scenario].label) || 'אחר',
       style: String(state.style),
       styleLabel: (STYLES[state.style] && STYLES[state.style].label) || '',
-      note: $('teacher-note') ? String($('teacher-note').value || '').trim().slice(0, 400) : '',
+      note: teacherAiNote(),
       count: target,
+      planCounts: AI_QUESTION_COUNTS.slice(),
       // Include every available question; ordering guides the lesson without excluding candidates.
       candidates: planOrder(groups, state.scenario, state.style).map((group) => ({
         id: (/^(?:[abc]|c2)$/.test(String(group.source && group.source.level)) ? group.source.level + ':' : '') + group.parts[0].id,
@@ -275,13 +323,16 @@ async function pickWithAi(rawCount) {
   };
   let seedKeys = [];
   let fromModel = false;
+  let result = preparedPlan;
   const startedAt = Date.now();
-  const timer = globalThis.setInterval(() => {
+  const timer = preparedPlan ? null : globalThis.setInterval(() => {
     if (status) status.textContent = `נועם AI בוחר ${target} שאלות… (${Math.floor((Date.now() - startedAt) / 1000)} שניות)`;
   }, 1000);
   try {
-    const client = await ensureTeacherBotClient();
-    const result = await client.postJson('/api/noamSiteCompanion', payload);
+    if (!preparedPlan) {
+      const client = await ensureTeacherBotClient();
+      result = await client.postJson('/api/noamSiteCompanion', payload);
+    }
     fromModel = Boolean(result && ['classifier', 'mixed'].includes(result.source) && result.model);
     const modelIds = result && (Array.isArray(result.modelExerciseIds) ? result.modelExerciseIds : result.source === 'classifier' ? result.exerciseIds : []);
     if (fromModel && Array.isArray(modelIds) && modelIds.length) {
@@ -294,13 +345,21 @@ async function pickWithAi(rawCount) {
   } catch (error) {
     seedKeys = [];
   } finally {
-    globalThis.clearInterval(timer);
+    if (timer !== null) globalThis.clearInterval(timer);
     aiPickPending = 0;
   }
-  if ([state.grade, state.topic, state.level].join('|') !== scope || selectionKey() !== beforeRequest || JSON.stringify(state.blocks) !== beforeBlocks) {
+  const nowSaved = carriedKeys();
+  const nowGroups = currentQuestions().filter((group) => !group.keys.some((key) => nowSaved.has(key)));
+  if (teacherAiContext(nowGroups, nowSaved) !== context || selectionKey() !== beforeRequest || JSON.stringify(state.blocks) !== beforeBlocks) {
     paintAiPickButtons();
     if (status) status.textContent = 'הנושא או הבחירה השתנו בזמן שה-AI עבד. הבחירה שלכם נשמרה; אפשר לבקש שוב.';
     return [];
+  }
+  if (!preparedPlan) rememberTeacherPlans(result, context, groups);
+  const exactPlan = teacherAiPlanCache && verifiedTeacherPlan(teacherAiPlanCache.plans[String(count)], groups, count);
+  if (exactPlan) {
+    seedKeys = exactPlan.questionKeys;
+    fromModel = true;
   }
   const pickedGroups = smartQuestionPick(groups, target, state.scenario, state.style, seedKeys);
   const finalPicked = keysOfQuestions(pickedGroups, groups);
@@ -323,7 +382,7 @@ async function pickWithAi(rawCount) {
     : modelCount > 0
       ? `נבחרו ${what}: ${modelCount} עם AI, והשאר הושלמו בבחירה מקומית.`
       : `נבחרו ${what} בבחירה אוטומטית מקומית. לא התקבלה בחירה מתאימה מה-AI.`;
-  const msg = outcome + (state.pickNote ? ' ' + state.pickNote : '');
+  const msg = outcome + (preparedPlan ? ' זו הבחירה שהוכנה בבקשת ה-AI הקודמת.' : '') + (state.pickNote ? ' ' + state.pickNote : '');
   if (status) status.textContent = msg;
   announce(msg);
   return finalPicked;
@@ -2919,6 +2978,9 @@ function applyWizardPrefill(prefill) {
 
 async function start() {
   installSuggest();
+  // Load configuration and the SDK early. prepare() never creates a token or
+  // submits a model request; postJson still performs fresh guarded verification.
+  void ensureTeacherBotClient().then((client) => typeof client.prepare === 'function' ? client.prepare() : null).catch(() => {});
   const response = await fetch(CATALOG_URL);
   if (!response.ok) throw new Error('CATALOG');
   CATALOG = await response.json();

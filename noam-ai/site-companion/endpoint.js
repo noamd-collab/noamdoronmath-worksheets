@@ -28,6 +28,7 @@ import {
   describePicks,
   hrefForSheet,
   selectTeacherPicks,
+  selectTeacherPlans,
 } from "./teacher-pick.js";
 
 export const QWEN_SECRET_NAME = "QWEN_API_KEY";
@@ -215,6 +216,11 @@ export async function runCompanionTurn(payload, deps) {
       body.answer = "המודל בחר חלק מהשאלות, והבחירה הושלמה מקומית: " + body.answer;
       body.text = body.answer;
       body.details = [body.answer, QUESTION_GAP, EXPORT_NOTE].filter(Boolean).join("\n");
+    }
+    if (classification) {
+      const model = resolveQwenTarget({ model: settings.qwenModel, baseUrl: settings.qwenBaseUrl }).model;
+      const plans = selectTeacherPlans(settings.teacherIndex, payload, classification, model);
+      if (Object.keys(plans).length) body.teacherPlans = plans;
     }
     return body;
   }

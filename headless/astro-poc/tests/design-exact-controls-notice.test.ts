@@ -165,6 +165,8 @@ describe('protected math sources stay pinned after the L01 removal', () => {
 
 describe('non-blocking site-development notice', () => {
   it('is an in-flow aside, not a dialog, overlay, consent form or focus trap', () => {
+    assert.match(notice, /PUBLIC_SHOW_DEV_NOTICE === 'true'/);
+    assert.match(notice, /showDevNotice && \(/);
     assert.match(notice, /<aside[^>]*data-development-notice/);
     assert.match(notice, /<button\s+type="button"\s+aria-label="(?:הבנתי – )?סגירת הודעת הפיתוח"/);
     assert.match(notice, /min-width:44px;min-height:44px/);
