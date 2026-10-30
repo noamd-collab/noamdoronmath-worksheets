@@ -2,11 +2,15 @@
 
 ## Teacher question picker — 2026-10-30
 
-Scope: all 959 current source PDFs across grades 1–9 and 329 topics, including the 507 elementary PDFs. The teacher picker uses original full-question crops, manual selection and AI selection of 5, 10 or 15 questions in every grade. Elementary geometry retains original cards, two-column questions, shared source context and the answer section. Numeric-only question identifiers are valid; all available questions reach the model; model choices and local fallback are reported separately. When fewer questions are available, the picker states the available count.
+Scope: all 933 unique source PDFs in the current live-branch catalog, represented by 964 grade/topic/level entries across grades 1–9 and 330 topics, including 507 elementary PDFs. The teacher picker exposes 18,794 original whole questions, manual selection and AI selection of 5, 10 or 15 questions in every grade. Elementary geometry retains original cards, two-column questions, shared source context and the answer section. Numeric-only and additional-excellence identifiers are valid; all available questions reach the model; model choices and local fallback are reported separately. When fewer questions are available, the picker states the available count.
 
-The kite excellence source `7adbcdb3bb5c49d1b9e3c38ea74a1285` has been remapped from physical labels: 20 questions and 71 unique subparts, including starred questions 14, 16 and 20. Original PDF content is unchanged. No new drawing hints are introduced.
+The archived kite excellence source `7adbcdb3bb5c49d1b9e3c38ea74a1285` retains its corrected physical labels: 20 questions and 71 unique subparts, including starred questions 14, 16 and 20. The newer active catalog and original PDFs are preserved. Shared source PDFs retain the requested grade/topic in links and saved print sections. No new drawing hints are introduced.
 
-Validation and publication status: integration in progress on `codex/teacher-all-grades-20261030`; publication has been authorized by Noam but is not yet confirmed. The checks and final PR/release evidence will be recorded after integration.
+Integration: the original `38eb5a39` feature was ported by `a4225f62` in PR 283; its behavior is retained alongside the newer teacher flow. Live baseline `5ad70953` was merged into this task branch without reverting its elementary routes, updated catalog or shared-source routing.
+
+Validation: 183 teacher tests passed, including 3,882 simulated model selections across 1,294 grade/topic/level scopes. Browser checks rendered all 348 questions in representative topics across all nine grades and verified manual selection, phone layout and shared-source print labels. The final elementary native-text audit covered 405 PDFs and 8,307 crops with no text clipping or missing content. Full suite: 1,416 passed, 11 failed, 1 skipped; all 11 failures match the previously checked baseline. The drawing-hint test ran separately with a 2 GiB heap limit and 3 GiB process-group watchdog and passed all five tests. Build and visible slash-fraction checks passed; the finalized build has 2,791 static files.
+
+Publication status: authorized by Noam on 2026-10-30; hosted upload and production verification are still pending. No live AI request was made during this integration; the authorized final production verification remains to be performed.
 
 One row per grade and topic in `headless/astro-poc/src/data/catalog.v1.json` on `headless/astro-poc-baseline` (`3911160f`). That file is generated from `index.html`. Level names are the catalog labels.
 
