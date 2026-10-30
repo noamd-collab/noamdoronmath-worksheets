@@ -290,6 +290,57 @@ test('a manifest made for another topic, and a missing manifest, are reported', 
   assert.ok(codes(r).includes('MANIFEST_COPY_DRIFT'));
 });
 
+test('native manifests with nullable numeric topic IDs still require the exact prefix', async () => {
+  const root = makeRepo();
+  editJson(root, `${P.manifests}/${PDFS.g7t1a}.json`, (m) => { m.topicId = null; });
+  assert.deepEqual(errors(await auditOf(root)), []);
+  editJson(root, `${P.manifests}/${PDFS.g7t1a}.json`, (m) => { m.prefix = 'G7-T99'; });
+  const r = await auditOf(root);
+  assert.ok(codes(r).includes('MANIFEST_MISMATCH'));
+});
+
+test('a declared single-sheet manifest level is checked instead of assuming level b', async () => {
+  const root = makeRepo((d) => { d.DATA[7].links[2].viewerLevel = 'one'; });
+  editJson(root, `${P.manifests}/${PDFS.g7t2one}.json`, (m) => { m.level = 'one'; });
+  assert.deepEqual(errors(await auditOf(root)), []);
+  editJson(root, `${P.manifests}/${PDFS.g7t2one}.json`, (m) => { m.level = 'b'; });
+  assert.ok(codes(await auditOf(root)).includes('MANIFEST_MISMATCH'));
+});
+
+function withSourceReuse(d) {
+  d.GRADE_EMOJI[9] = '9';
+  d.GRADE_NAME[9] = 'Grade 9';
+  d.MIDDLE.push(9);
+  d.DATA[9] = {
+    groups: [{ key: 'alg', name: 'Algebra' }],
+    topics: [{ id: 1, x: 'G9-T01', ic: 'plus', g: 'alg', t: 'Linear Equations Review' }],
+    links: { 1: { ...d.DATA[7].links[1], sourceGrade: 7, sourcePrefix: 'G7-T01', sourceTitle: 'Linear Equations' } },
+  };
+}
+
+test('declared source-grade reuse must match the complete source PDFs and viewer identity', async () => {
+  const root = makeRepo(withSourceReuse);
+  assert.deepEqual(errors(await auditOf(root)), []);
+  const raw = loadIndexCatalog(path.join(root, P.index));
+  raw.DATA[9].links[1].sourcePrefix = 'G7-T02';
+  write(root, P.index, indexHtml(raw));
+  regenerate(root);
+  const r = await auditOf(root);
+  assert.ok(codes(r).includes('DATA_SOURCE_REUSE'));
+  assert.ok(codes(r).includes('MANIFEST_MISMATCH'));
+});
+
+test('approved viewer routing cannot change while retaining the same PDF', async () => {
+  const root = makeRepo();
+  const raw = loadIndexCatalog(path.join(root, P.index));
+  raw.DATA[7].topics[0].x = 'G7-T99';
+  write(root, P.index, indexHtml(raw));
+  regenerate(root);
+  const r = await auditOf(root);
+  assert.ok(codes(r).includes('APPROVED_ROUTING_CHANGED'));
+  assert.ok(codes(r).includes('MANIFEST_MISMATCH'));
+});
+
 // ─── pages and links ───
 
 test('topic page CTA defects are reported', async () => {

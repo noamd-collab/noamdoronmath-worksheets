@@ -348,6 +348,7 @@ export function buildTeacherCatalog(catalog) {
         levelLabel: level.label,
         title: `${topic.title} · ${level.label}`,
         mode: elementary.has(grade.grade) ? 'sheet' : 'exercise',
+        ...(topic.routing?.sourceGrade ? { sourceGrade: topic.routing.sourceGrade, sourcePrefix: topic.routing.sourcePrefix, sourceTitle: topic.routing.sourceTitle } : {}),
       })),
     })),
   }));

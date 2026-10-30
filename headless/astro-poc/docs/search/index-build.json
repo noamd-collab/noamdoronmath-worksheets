@@ -873,6 +873,1358 @@
       "reason": "links to the topic, same grade, shared title word"
     },
     {
+      "key": "page:/counting-grade-1",
+      "title": "מונים בלי לפספס לכיתה א׳",
+      "linkedTopic": "topic:1:1",
+      "linkedTitle": "מונים בלי לפספס",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/numbers-to-100-grade-1",
+      "title": "קוראים כותבים ומייצגים עד ⁦100⁩ לכיתה א׳",
+      "linkedTopic": "topic:1:2",
+      "linkedTitle": "קוראים כותבים ומייצגים עד 100",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/number-neighbors-grade-1",
+      "title": "סדר שכנים והשוואה לכיתה א׳",
+      "linkedTopic": "topic:1:3",
+      "linkedTitle": "סדר שכנים והשוואה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/compose-decompose-10-grade-1",
+      "title": "מרכיבים ומפרקים עד ⁦10⁩ לכיתה א׳",
+      "linkedTopic": "topic:1:4",
+      "linkedTitle": "מרכיבים ומפרקים עד 10",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/addition-to-10-grade-1",
+      "title": "חיבור בתחום ⁦10⁩ לכיתה א׳",
+      "linkedTopic": "topic:1:5",
+      "linkedTitle": "חיבור בתחום 10",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/subtraction-to-10-grade-1",
+      "title": "חיסור בתחום ⁦10⁩ לכיתה א׳",
+      "linkedTopic": "topic:1:6",
+      "linkedTitle": "חיסור בתחום 10",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/making-20-via-10-grade-1",
+      "title": "בונים ⁦20⁩ דרך ⁦10⁩ לכיתה א׳",
+      "linkedTopic": "topic:1:7",
+      "linkedTitle": "בונים 20 דרך 10",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/addition-to-20-grade-1",
+      "title": "חיבור בתחום ⁦20⁩ לכיתה א׳",
+      "linkedTopic": "topic:1:8",
+      "linkedTitle": "חיבור בתחום 20",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/subtraction-to-20-grade-1",
+      "title": "חיסור בתחום ⁦20⁩ לכיתה א׳",
+      "linkedTopic": "topic:1:9",
+      "linkedTitle": "חיסור בתחום 20",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/equality-missing-number-grade-1",
+      "title": "שוויון נעלם והשוואת תרגילים לכיתה א׳",
+      "linkedTopic": "topic:1:10",
+      "linkedTitle": "שוויון נעלם והשוואת תרגילים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/patterns-sequences-grade-1",
+      "title": "דפוסים וסדרות לכיתה א׳",
+      "linkedTopic": "topic:1:11",
+      "linkedTitle": "דפוסים וסדרות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/hundred-chart-grade-1",
+      "title": "חוקרים את לוח המאה לכיתה א׳",
+      "linkedTopic": "topic:1:12",
+      "linkedTitle": "חוקרים את לוח המאה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/number-chains-pyramids-grade-1",
+      "title": "שרשראות ופירמידות מספרים לכיתה א׳",
+      "linkedTopic": "topic:1:13",
+      "linkedTitle": "שרשראות ופירמידות מספרים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/word-problems-picture-grade-1",
+      "title": "בעיות מילוליות בציור ובמספר לכיתה א׳",
+      "linkedTopic": "topic:1:14",
+      "linkedTitle": "בעיות מילוליות בציור ובמספר",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/measure-compare-length-grade-1",
+      "title": "מודדים ומשווים אורך לכיתה א׳",
+      "linkedTopic": "topic:1:15",
+      "linkedTitle": "מודדים ומשווים אורך",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/equal-groups-repeated-addition-grade-1",
+      "title": "קבוצות שוות וחיבור חוזר לכיתה א׳",
+      "linkedTopic": "topic:1:16",
+      "linkedTitle": "קבוצות שוות וחיבור חוזר",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/polygons-grade-1",
+      "title": "מצולעים לכיתה א׳",
+      "linkedTopic": "topic:1:17",
+      "linkedTitle": "מצולעים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/square-rectangle-grade-1",
+      "title": "ריבוע ומלבן לכיתה א׳",
+      "linkedTopic": "topic:1:18",
+      "linkedTitle": "ריבוע ומלבן",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/compose-decompose-grade-1",
+      "title": "מרכיבים ומפרקים לכיתה א׳",
+      "linkedTopic": "topic:1:19",
+      "linkedTitle": "מרכיבים ומפרקים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/reading-clock-grade-1",
+      "title": "שעה שלמה לכיתה א׳",
+      "linkedTopic": "topic:1:20",
+      "linkedTitle": "שעה שלמה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/data-grade-1",
+      "title": "נתונים לכיתה א׳",
+      "linkedTopic": "topic:1:21",
+      "linkedTitle": "נתונים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/word-problems-simple-grade-1",
+      "title": "בעיות מילוליות פשוטות לכיתה א׳",
+      "linkedTopic": "topic:1:22",
+      "linkedTitle": "בעיות מילוליות פשוטות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/shapes-compose-decompose-grade-1",
+      "title": "הרכבה ופירוק לכיתה א׳",
+      "linkedTopic": "topic:1:23",
+      "linkedTitle": "הרכבה ופירוק",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/number-bonds-10-20-grade-2",
+      "title": "חוזרים להרכבות ⁦10⁩ ו־⁦20⁩ לכיתה ב׳",
+      "linkedTopic": "topic:2:1",
+      "linkedTitle": "חוזרים להרכבות 10 ו־20",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/tens-and-ones-grade-2",
+      "title": "עשרות ויחידות בתחום ⁦100⁩ לכיתה ב׳",
+      "linkedTopic": "topic:2:2",
+      "linkedTitle": "עשרות ויחידות בתחום 100",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/order-compare-numberline-grade-2",
+      "title": "סדר השוואה וישר מספרים לכיתה ב׳",
+      "linkedTopic": "topic:2:3",
+      "linkedTitle": "סדר השוואה וישר מספרים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/adding-tens-decompose-grade-2",
+      "title": "מוסיפים עשרות ומפרקים מספרים לכיתה ב׳",
+      "linkedTopic": "topic:2:4",
+      "linkedTitle": "מוסיפים עשרות ומפרקים מספרים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/addition-two-digit-no-carry-grade-2",
+      "title": "חיבור דו־ספרתי ללא המרה לכיתה ב׳",
+      "linkedTopic": "topic:2:5",
+      "linkedTitle": "חיבור דו־ספרתי ללא המרה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/addition-two-digit-carrying-grade-2",
+      "title": "חיבור דו־ספרתי עם המרה לכיתה ב׳",
+      "linkedTopic": "topic:2:6",
+      "linkedTitle": "חיבור דו־ספרתי עם המרה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/subtraction-two-digit-no-borrow-grade-2",
+      "title": "חיסור דו־ספרתי ללא פריטה לכיתה ב׳",
+      "linkedTopic": "topic:2:7",
+      "linkedTitle": "חיסור דו־ספרתי ללא פריטה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/subtraction-two-digit-borrowing-grade-2",
+      "title": "חיסור דו־ספרתי עם פריטה לכיתה ב׳",
+      "linkedTopic": "topic:2:8",
+      "linkedTitle": "חיסור דו־ספרתי עם פריטה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/calculation-strategies-grade-2",
+      "title": "אסטרטגיות חישוב אומדן ופיצוי לכיתה ב׳",
+      "linkedTopic": "topic:2:9",
+      "linkedTitle": "אסטרטגיות חישוב אומדן ופיצוי",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/equality-missing-number-grade-2",
+      "title": "שוויון ומספר חסר לכיתה ב׳",
+      "linkedTopic": "topic:2:10",
+      "linkedTitle": "שוויון ומספר חסר",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/word-problems-money-grade-2",
+      "title": "בעיות מילוליות וכסף לכיתה ב׳",
+      "linkedTopic": "topic:2:11",
+      "linkedTitle": "בעיות מילוליות וכסף",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/tables-bar-charts-grade-2",
+      "title": "קוראים טבלה ודיאגרמת עמודות לכיתה ב׳",
+      "linkedTopic": "topic:2:12",
+      "linkedTitle": "קוראים טבלה ודיאגרמת עמודות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/hundreds-tens-ones-grade-2",
+      "title": "מאות עשרות ויחידות לכיתה ב׳",
+      "linkedTopic": "topic:2:13",
+      "linkedTitle": "מאות עשרות ויחידות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/compare-numbers-to-1000-grade-2",
+      "title": "ממיינים ומשווים מספרים עד ⁦1000⁩ לכיתה ב׳",
+      "linkedTopic": "topic:2:14",
+      "linkedTitle": "ממיינים ומשווים מספרים עד 1000",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/numbers-to-1000-grade-2",
+      "title": "מספרים עד ⁦1000⁩ לכיתה ב׳",
+      "linkedTopic": "topic:2:15",
+      "linkedTitle": "מספרים עד 1000",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/multiplication-equal-groups-grade-2",
+      "title": "כפל — קבוצות שוות ומערכים לכיתה ב׳",
+      "linkedTopic": "topic:2:16",
+      "linkedTitle": "כפל קבוצות שוות ומערכים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/division-measurement-grade-2",
+      "title": "חילוק להכלה לכיתה ב׳",
+      "linkedTopic": "topic:2:17",
+      "linkedTitle": "חילוק להכלה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/division-equal-shares-grade-2",
+      "title": "חילוק לחלקים שווים לכיתה ב׳",
+      "linkedTopic": "topic:2:18",
+      "linkedTitle": "חילוק לחלקים שווים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/multiplication-division-family-grade-2",
+      "title": "משפחת כפל וחילוק לכיתה ב׳",
+      "linkedTopic": "topic:2:19",
+      "linkedTitle": "משפחת כפל וחילוק",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/times-equal-groups-grade-2",
+      "title": "פי בקבוצות שוות לכיתה ב׳",
+      "linkedTopic": "topic:2:20",
+      "linkedTitle": "פי בקבוצות שוות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/even-odd-sequences-a-grade-2",
+      "title": "זוגי אי זוגי וסדרות א לכיתה ב׳",
+      "linkedTopic": "topic:2:21",
+      "linkedTitle": "זוגי אי־זוגי וסדרות א׳",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/even-odd-sequences-b-grade-2",
+      "title": "זוגי אי זוגי וסדרות ב לכיתה ב׳",
+      "linkedTopic": "topic:2:22",
+      "linkedTitle": "זוגי אי־זוגי וסדרות ב׳",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/word-problems-money-simple-grade-2",
+      "title": "בעיות מילוליות וכסף פשוט לכיתה ב׳",
+      "linkedTopic": "topic:2:24",
+      "linkedTitle": "בעיות מילוליות וכסף פשוט",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/measuring-length-grade-2",
+      "title": "מדידת אורך לכיתה ב׳",
+      "linkedTopic": "topic:2:23",
+      "linkedTitle": "מדידת אורך",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/clock-duration-grade-2",
+      "title": "שעון ומשך זמן לכיתה ב׳",
+      "linkedTopic": "topic:2:25",
+      "linkedTitle": "שעון ומשך זמן",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/half-and-quarter-grade-2",
+      "title": "חצי ורבע לכיתה ב׳",
+      "linkedTopic": "topic:2:26",
+      "linkedTitle": "חצי ורבע",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/shapes-vs-solids-grade-2",
+      "title": "צורות וגופים — לא אותו דבר לכיתה ב׳",
+      "linkedTopic": "topic:2:28",
+      "linkedTitle": "צורות וגופים לא אותו דבר",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/reflection-symmetry-grade-2",
+      "title": "סימטרייה שיקופית אינטואיטיבית לכיתה ב׳",
+      "linkedTopic": "topic:2:29",
+      "linkedTitle": "סימטרייה שיקופית אינטואיטיבית",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/numbers-operations-review-grade-2",
+      "title": "סיכום מספרים פעולות וייצוגים לכיתה ב׳",
+      "linkedTopic": "topic:2:30",
+      "linkedTitle": "סיכום מספרים פעולות וייצוגים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/place-value-grade-3",
+      "title": "ערך מקום לכיתה ג׳",
+      "linkedTopic": "topic:3:1",
+      "linkedTitle": "ערך מקום",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/neighbors-numberline-grade-3",
+      "title": "שכנים וישר מספרים לכיתה ג׳",
+      "linkedTopic": "topic:3:2",
+      "linkedTitle": "שכנים וישר מספרים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/sequences-find-mistake-grade-3",
+      "title": "סדרות ואיתור טעות לכיתה ג׳",
+      "linkedTopic": "topic:3:3",
+      "linkedTitle": "סדרות ואיתור טעות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/thousands-grade-3",
+      "title": "אל הרבבה לכיתה ג׳",
+      "linkedTopic": "topic:3:4",
+      "linkedTitle": "אל הרבבה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/estimation-close-numbers-grade-3",
+      "title": "אומדן באמצעות מספרים קרובים לכיתה ג׳",
+      "linkedTopic": "topic:3:5",
+      "linkedTitle": "אומדן באמצעות מספרים קרובים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/column-addition-carrying-grade-3",
+      "title": "חיבור בטור עם המרה לכיתה ג׳",
+      "linkedTopic": "topic:3:6",
+      "linkedTitle": "חיבור בטור עם המרה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/column-subtraction-borrowing-grade-3",
+      "title": "חיסור בטור עם פריטה לכיתה ג׳",
+      "linkedTopic": "topic:3:7",
+      "linkedTitle": "חיסור בטור עם פריטה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/multiplication-facts-arrays-grade-3",
+      "title": "כפל — עובדות ומבנים לכיתה ג׳",
+      "linkedTopic": "topic:3:9",
+      "linkedTitle": "כפל עובדות ומבנים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/division-inverse-multiplication-grade-3",
+      "title": "חילוק והקשר ההפוך לכפל לכיתה ג׳",
+      "linkedTopic": "topic:3:10",
+      "linkedTitle": "חילוק והקשר ההפוך לכפל",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/unit-fractions-part-of-whole-grade-3",
+      "title": "שברי יחידה וחלק משלם לכיתה ג׳",
+      "linkedTopic": "topic:3:11",
+      "linkedTitle": "שברי יחידה וחלק משלם",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/word-problems-grade-3",
+      "title": "בעיות מילוליות לכיתה ג׳",
+      "linkedTopic": "topic:3:8",
+      "linkedTitle": "בעיות מילוליות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/angles-types-grade-3",
+      "title": "זווית וסוגי זוויות לכיתה ג׳",
+      "linkedTopic": "topic:3:12",
+      "linkedTitle": "זווית וסוגי זוויות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/lines-angles-shapes-grade-3",
+      "title": "קווים וזוויות בצורות מוכרות לכיתה ג׳",
+      "linkedTopic": "topic:3:13",
+      "linkedTitle": "קווים וזוויות בצורות מוכרות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/polygons-sides-vertices-grade-3",
+      "title": "מצולעים — צלעות וקודקודים לכיתה ג׳",
+      "linkedTopic": "topic:3:14",
+      "linkedTitle": "מצולעים צלעות וקודקודים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/perimeter-polygons-grade-3",
+      "title": "היקף מצולעים לכיתה ג׳",
+      "linkedTopic": "topic:3:15",
+      "linkedTitle": "היקף מצולעים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/classify-triangles-grade-3",
+      "title": "מיון משולשים לכיתה ג׳",
+      "linkedTopic": "topic:3:16",
+      "linkedTitle": "מיון משולשים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/quadrilaterals-properties-grade-3",
+      "title": "מרובעים לפי תכונות לכיתה ג׳",
+      "linkedTopic": "topic:3:17",
+      "linkedTitle": "מרובעים לפי תכונות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/shapes-on-grid-grade-3",
+      "title": "צורות על רשת — בנייה ופירוק לכיתה ג׳",
+      "linkedTopic": "topic:3:18",
+      "linkedTitle": "צורות על רשת בנייה ופירוק",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/time-weight-measures-grade-3",
+      "title": "מדידות זמן ומשקל לכיתה ג׳",
+      "linkedTopic": "topic:3:19",
+      "linkedTitle": "מדידות זמן ומשקל",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/read-bar-diagram-grade-3",
+      "title": "קוראים דיאגרמה לכיתה ג׳",
+      "linkedTopic": "topic:3:20",
+      "linkedTitle": "קוראים דיאגרמה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/division-check-multiplication-grade-3",
+      "title": "חילוק ובדיקה בכפל לכיתה ג׳",
+      "linkedTopic": "topic:3:21",
+      "linkedTitle": "חילוק ובדיקה בכפל",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/measuring-length-cm-m-grade-3",
+      "title": "מדידות אורך — ס״מ ומטר לכיתה ג׳",
+      "linkedTopic": "topic:3:22",
+      "linkedTitle": "מדידות אורך ס״מ ומטר",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/build-decompose-shapes-grade-3",
+      "title": "בונים ומפרקים צורות לכיתה ג׳",
+      "linkedTopic": "topic:3:23",
+      "linkedTitle": "בונים ומפרקים צורות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/collecting-data-grade-3",
+      "title": "אוספים נתונים לכיתה ג׳",
+      "linkedTopic": "topic:3:24",
+      "linkedTitle": "אוספים נתונים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/money-grade-3",
+      "title": "כסף לכיתה ג׳",
+      "linkedTopic": "topic:3:25",
+      "linkedTitle": "כסף",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/numbers-to-million-grade-4",
+      "title": "מספרים עד מיליון — קריאה ופירוק לכיתה ד׳",
+      "linkedTopic": "topic:4:1",
+      "linkedTitle": "מספרים עד מיליון קריאה ופירוק",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/order-rounding-million-grade-4",
+      "title": "סדר שכנים ועיגול בתחום המיליון לכיתה ד׳",
+      "linkedTopic": "topic:4:2",
+      "linkedTitle": "סדר שכנים ועיגול בתחום המיליון",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/column-addition-grade-4",
+      "title": "חיבור רב־ספרתי בטור לכיתה ד׳",
+      "linkedTopic": "topic:4:3",
+      "linkedTitle": "חיבור רב־ספרתי בטור",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/multi-digit-subtraction-grade-4",
+      "title": "חיסור רב־ספרתי בטור לכיתה ד׳",
+      "linkedTopic": "topic:4:4",
+      "linkedTitle": "חיסור רב־ספרתי בטור",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/estimation-money-problems-grade-4",
+      "title": "אומדן ובעיות חיבור וחיסור כולל כסף לכיתה ד׳",
+      "linkedTopic": "topic:4:5",
+      "linkedTitle": "אומדן ובעיות חיבור וחיסור כולל כסף",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/operation-laws-tens-grade-4",
+      "title": "חוקי פעולות וכפל בעשרות שלמות לכיתה ד׳",
+      "linkedTopic": "topic:4:6",
+      "linkedTitle": "חוקי פעולות וכפל בעשרות שלמות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/order-of-operations-grade-4",
+      "title": "סדר פעולות חשבון לכיתה ד׳",
+      "linkedTopic": "topic:4:7",
+      "linkedTitle": "סדר פעולות חשבון",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/distributive-area-model-grade-4",
+      "title": "חוק הפילוג ומכפלות חלקיות לכיתה ד׳",
+      "linkedTopic": "topic:4:8",
+      "linkedTitle": "חוק הפילוג ומכפלות חלקיות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/multiplication-multi-digit-grade-4",
+      "title": "כפל רב־ספרתי לכיתה ד׳",
+      "linkedTopic": "topic:4:9",
+      "linkedTitle": "כפל רב־ספרתי",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/long-division-remainder-grade-4",
+      "title": "חילוק ארוך ושארית לכיתה ד׳",
+      "linkedTopic": "topic:4:10",
+      "linkedTitle": "חילוק ארוך ושארית",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/fraction-names-equivalent-grade-4",
+      "title": "שבר — ייצוגים ושמות שקולים לכיתה ד׳",
+      "linkedTopic": "topic:4:11",
+      "linkedTitle": "שבר ייצוגים ושמות שקולים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/fractions-numberline-compare-grade-4",
+      "title": "שברים על ישר והשוואה לכיתה ד׳",
+      "linkedTopic": "topic:4:12",
+      "linkedTitle": "שברים על ישר והשוואה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/equivalent-fractions-grade-4",
+      "title": "שברים שקולים — ייצוגים השוואה וישר מספרים לכיתה ד׳",
+      "linkedTopic": "topic:4:13",
+      "linkedTitle": "שברים שקולים ייצוגים השוואה וישר מספרים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/divisibility-factors-grade-4",
+      "title": "התחלקות וגורמים לכיתה ד׳",
+      "linkedTopic": "topic:4:14",
+      "linkedTitle": "התחלקות וגורמים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/prime-composite-grade-4",
+      "title": "מספרים ראשוניים ופריקים לכיתה ד׳",
+      "linkedTopic": "topic:4:15",
+      "linkedTitle": "מספרים ראשוניים ופריקים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/parallel-perpendicular-shapes-grade-4",
+      "title": "מקבילים ומאונכים בצורות לכיתה ד׳",
+      "linkedTopic": "topic:4:16",
+      "linkedTitle": "מקבילים ומאונכים בצורות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/polygons-diagonals-grade-4",
+      "title": "מצולעים ואלכסונים לכיתה ד׳",
+      "linkedTopic": "topic:4:17",
+      "linkedTitle": "מצולעים ואלכסונים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/rectangles-squares-grade-4",
+      "title": "מלבנים ריבועים ויחסי הכלה לכיתה ד׳",
+      "linkedTopic": "topic:4:18",
+      "linkedTitle": "מלבנים ריבועים ויחסי הכלה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/angle-types-grade-4",
+      "title": "סוגי זוויות לכיתה ד׳",
+      "linkedTopic": "topic:4:19",
+      "linkedTitle": "סוגי זוויות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/classify-triangles-grade-4",
+      "title": "מיון משולשים לכיתה ד׳",
+      "linkedTopic": "topic:4:20",
+      "linkedTitle": "מיון משולשים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/length-units-conversion-grade-4",
+      "title": "יחידות אורך והמרות לכיתה ד׳",
+      "linkedTopic": "topic:4:21",
+      "linkedTitle": "יחידות אורך והמרות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/area-perimeter-rectangle-grade-4",
+      "title": "שטח והיקף של מלבן וריבוע לכיתה ד׳",
+      "linkedTopic": "topic:4:22",
+      "linkedTitle": "שטח והיקף של מלבן וריבוע",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/area-perimeter-composite-grade-4",
+      "title": "שטח והיקף של צורות מורכבות לכיתה ד׳",
+      "linkedTopic": "topic:4:23",
+      "linkedTitle": "שטח והיקף של צורות מורכבות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/time-and-weight-grade-4",
+      "title": "זמן ומשקל — המרות ויישום לכיתה ד׳",
+      "linkedTopic": "topic:4:24",
+      "linkedTitle": "זמן ומשקל המרות ויישום",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/diagrams-conclusions-grade-4",
+      "title": "דיאגרמות ומסקנות לכיתה ד׳",
+      "linkedTopic": "topic:4:25",
+      "linkedTitle": "דיאגרמות ומסקנות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/symmetry-reflection-rotation-grade-4",
+      "title": "סימטריה שיקופית וסיבובית לכיתה ד׳",
+      "linkedTopic": "topic:4:26",
+      "linkedTitle": "סימטריה שיקופית וסיבובית",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/angles-lines-plane-grade-4",
+      "title": "זוויות וקווים במישור לכיתה ד׳",
+      "linkedTopic": "topic:4:27",
+      "linkedTitle": "זוויות וקווים במישור",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/triangles-classify-build-grade-4",
+      "title": "משולשים — מיון ובנייה לכיתה ד׳",
+      "linkedTopic": "topic:4:28",
+      "linkedTitle": "משולשים מיון ובנייה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/quadrilaterals-classify-grade-4",
+      "title": "מרובעים — תכונות מיון והכלה לכיתה ד׳",
+      "linkedTopic": "topic:4:29",
+      "linkedTitle": "מרובעים תכונות מיון והכלה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/grade-4-summary",
+      "title": "דף סיכום אינטגרטיבי לכיתה ד׳",
+      "linkedTopic": "topic:4:31",
+      "linkedTitle": "דף סיכום אינטגרטיבי לכיתה ד׳",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/big-numbers-rounding-grade-5",
+      "title": "מספרים גדולים — ערך מקום עיגול ואומדן לכיתה ה׳",
+      "linkedTopic": "topic:5:2",
+      "linkedTitle": "מספרים גדולים ערך מקום עיגול ואומדן",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/number-sense-tens-hundreds-grade-5",
+      "title": "תובנה מספרית — כפל וחילוק בעשרות ומאות לכיתה ה׳",
+      "linkedTopic": "topic:5:1",
+      "linkedTitle": "תובנה מספרית כפל וחילוק בעשרות ומאות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/multiplication-multi-digit-grade-5",
+      "title": "כפל רב־ספרתי ובדיקת סבירות לכיתה ה׳",
+      "linkedTopic": "topic:5:3",
+      "linkedTitle": "כפל רב־ספרתי ובדיקת סבירות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/long-division-grade-5",
+      "title": "חילוק מאונך ושארית לכיתה ה׳",
+      "linkedTopic": "topic:5:4",
+      "linkedTitle": "חילוק מאונך ושארית",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/prime-factors-grade-5",
+      "title": "גורמים ראשוניים ופריקים לכיתה ה׳",
+      "linkedTopic": "topic:5:5",
+      "linkedTitle": "גורמים ראשוניים ופריקים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/order-of-operations-grade-5",
+      "title": "סדר פעולות — תכנון ולא רק ביצוע לכיתה ה׳",
+      "linkedTopic": "topic:5:6",
+      "linkedTitle": "סדר פעולות תכנון ולא רק ביצוע",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/fraction-meaning-grade-5",
+      "title": "חזרה על משמעות השבר וייצוגיו לכיתה ה׳",
+      "linkedTopic": "topic:5:7",
+      "linkedTitle": "חזרה על משמעות השבר וייצוגיו",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/fractions-numberline-compare-grade-5",
+      "title": "שברים על ישר והשוואה לכיתה ה׳",
+      "linkedTopic": "topic:5:8",
+      "linkedTitle": "שברים על ישר והשוואה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/expand-reduce-fractions-grade-5",
+      "title": "הרחבה וצמצום — שברים שקולים לכיתה ה׳",
+      "linkedTopic": "topic:5:9",
+      "linkedTitle": "הרחבה וצמצום שברים שקולים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/common-denominator-grade-5",
+      "title": "מכנה משותף — בחירה יעילה לכיתה ה׳",
+      "linkedTopic": "topic:5:10",
+      "linkedTitle": "מכנה משותף בחירה יעילה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/add-subtract-fractions-grade-5",
+      "title": "חיבור וחיסור שברים במכנים שונים לכיתה ה׳",
+      "linkedTopic": "topic:5:11",
+      "linkedTitle": "חיבור וחיסור שברים במכנים שונים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/fraction-of-quantity-grade-5",
+      "title": "חלק מכמות לכיתה ה׳",
+      "linkedTopic": "topic:5:12",
+      "linkedTitle": "חלק מכמות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/fractions-mixed-numbers-grade-5",
+      "title": "שברים גדולים מ־⁦1⁩ ומספרים מעורבים לכיתה ה׳",
+      "linkedTopic": "topic:5:13",
+      "linkedTitle": "שברים גדולים מ־1 ומספרים מעורבים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/add-subtract-mixed-numbers-grade-5",
+      "title": "חיבור וחיסור מספרים מעורבים לכיתה ה׳",
+      "linkedTopic": "topic:5:14",
+      "linkedTitle": "חיבור וחיסור מספרים מעורבים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/completing-fractions-grade-5",
+      "title": "השלמת שברים ופעולות הפוכות לכיתה ה׳",
+      "linkedTopic": "topic:5:15",
+      "linkedTitle": "השלמת שברים ופעולות הפוכות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/read-tables-grade-5",
+      "title": "קריאת טבלאות וחישוב נתונים לכיתה ה׳",
+      "linkedTopic": "topic:5:16",
+      "linkedTitle": "קריאת טבלאות וחישוב נתונים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/read-graphs-grade-5",
+      "title": "קריאת גרפים והשוואת נתונים לכיתה ה׳",
+      "linkedTopic": "topic:5:17",
+      "linkedTitle": "קריאת גרפים והשוואת נתונים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/quadrilateral-family-grade-5",
+      "title": "משפחת המרובעים ויחסי הכלה לכיתה ה׳",
+      "linkedTopic": "topic:5:18",
+      "linkedTitle": "משפחת המרובעים ויחסי הכלה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/quadrilateral-diagonals-grade-5",
+      "title": "תכונות ואלכסונים במרובעים לכיתה ה׳",
+      "linkedTopic": "topic:5:19",
+      "linkedTitle": "תכונות ואלכסונים במרובעים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/build-classify-shapes-grade-5",
+      "title": "בניית צורות ומיון לפי תכונות לכיתה ה׳",
+      "linkedTopic": "topic:5:20",
+      "linkedTitle": "בניית צורות ומיון לפי תכונות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/unit-conversion-weight-grade-5",
+      "title": "המרות יחידות ומדידת משקל לכיתה ה׳",
+      "linkedTopic": "topic:5:21",
+      "linkedTitle": "המרות יחידות ומדידת משקל",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/perimeter-parallel-perpendicular-grade-5",
+      "title": "היקף יחידות וקווים מקבילים מאונכים לכיתה ה׳",
+      "linkedTopic": "topic:5:22",
+      "linkedTitle": "היקף יחידות וקווים מקבילים מאונכים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/triangle-height-acute-right-grade-5",
+      "title": "גובה במשולש חד־זווית וישר־זווית לכיתה ה׳",
+      "linkedTopic": "topic:5:23",
+      "linkedTitle": "גובה במשולש חד־זווית וישר־זווית",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/triangle-height-obtuse-parallelogram-grade-5",
+      "title": "גובה במשולש קהה ובמקבילית לכיתה ה׳",
+      "linkedTopic": "topic:5:24",
+      "linkedTitle": "גובה במשולש קהה ובמקבילית",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/area-perimeter-rectangles-grade-5",
+      "title": "שטח והיקף של מלבנים וריבועים לכיתה ה׳",
+      "linkedTopic": "topic:5:25",
+      "linkedTitle": "שטח והיקף של מלבנים וריבועים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/composite-area-grade-5",
+      "title": "שטח צורה מורכבת — פירוק והרכבה לכיתה ה׳",
+      "linkedTopic": "topic:5:26",
+      "linkedTitle": "שטח צורה מורכבת פירוק והרכבה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/parallelogram-area-grade-5",
+      "title": "שטח מקבילית והקשר למלבן לכיתה ה׳",
+      "linkedTopic": "topic:5:27",
+      "linkedTitle": "שטח מקבילית והקשר למלבן",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/triangle-area-grade-5",
+      "title": "שטח משולש — בסיס וגובה לכיתה ה׳",
+      "linkedTopic": "topic:5:31",
+      "linkedTitle": "שטח משולש בסיס וגובה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/decimal-place-value-grade-5",
+      "title": "מספרים עשרוניים — ערך מקום וייצוגים לכיתה ה׳",
+      "linkedTopic": "topic:5:28",
+      "linkedTitle": "מספרים עשרוניים ערך מקום וייצוגים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/compare-fractions-decimals-grade-5",
+      "title": "משווים שברים ומספרים עשרוניים לכיתה ה׳",
+      "linkedTopic": "topic:5:29",
+      "linkedTitle": "משווים שברים ומספרים עשרוניים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/add-subtract-decimals-grade-5",
+      "title": "חיבור וחיסור מספרים עשרוניים ואומדן לכיתה ה׳",
+      "linkedTopic": "topic:5:30",
+      "linkedTitle": "חיבור וחיסור מספרים עשרוניים ואומדן",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/missing-number-fractions-grade-5",
+      "title": "נעלמים ומשוואות בשברים לכיתה ה׳",
+      "linkedTopic": "topic:5:32",
+      "linkedTitle": "נעלמים ומשוואות בשברים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/mean-data-inquiry-grade-5",
+      "title": "ממוצע וחקר נתונים לכיתה ה׳",
+      "linkedTopic": "topic:5:33",
+      "linkedTitle": "ממוצע וחקר נתונים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/frequency-chance-grade-5",
+      "title": "שכיחות סיכוי וזמן מתוך נתונים לכיתה ה׳",
+      "linkedTopic": "topic:5:34",
+      "linkedTitle": "שכיחות סיכוי וזמן מתוך נתונים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/transformations-grade-5",
+      "title": "שיקוף סיבוב והזזה לכיתה ה׳",
+      "linkedTopic": "topic:5:35",
+      "linkedTitle": "שיקוף סיבוב והזזה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/fraction-times-whole-grade-6",
+      "title": "כפל שבר במספר שלם לכיתה ו׳",
+      "linkedTopic": "topic:6:1",
+      "linkedTitle": "כפל שבר במספר שלם",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/fraction-part-quantity-area-grade-6",
+      "title": "כפל כחלק מכמות ושטח לכיתה ו׳",
+      "linkedTopic": "topic:6:2",
+      "linkedTitle": "כפל כחלק מכמות ושטח",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/fraction-times-fraction-grade-6",
+      "title": "כפל שבר בשבר לכיתה ו׳",
+      "linkedTopic": "topic:6:3",
+      "linkedTitle": "כפל שבר בשבר",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/multiply-mixed-numbers-grade-6",
+      "title": "כפל מספרים מעורבים לכיתה ו׳",
+      "linkedTopic": "topic:6:4",
+      "linkedTitle": "כפל מספרים מעורבים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/fraction-multiplication-apply-grade-6",
+      "title": "כפל שברים — יישום ובקרה לכיתה ו׳",
+      "linkedTopic": "topic:6:5",
+      "linkedTitle": "כפל שברים יישום ובקרה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/fraction-division-meaning-grade-6",
+      "title": "משמעות חילוק שברים לכיתה ו׳",
+      "linkedTopic": "topic:6:6",
+      "linkedTitle": "משמעות חילוק שברים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/fraction-division-algorithm-grade-6",
+      "title": "אלגוריתם חילוק שברים וההופכי לכיתה ו׳",
+      "linkedTopic": "topic:6:7",
+      "linkedTitle": "אלגוריתם חילוק שברים והופכי",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/fraction-operations-choose-grade-6",
+      "title": "כפל וחילוק שברים — בחירת פעולה לכיתה ו׳",
+      "linkedTopic": "topic:6:8",
+      "linkedTitle": "כפל וחילוק שברים בחירת פעולה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/multiply-decimals-grade-6",
+      "title": "כפל מספרים עשרוניים לכיתה ו׳",
+      "linkedTopic": "topic:6:9",
+      "linkedTitle": "כפל מספרים עשרוניים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/divide-decimals-grade-6",
+      "title": "חילוק מספרים עשרוניים לכיתה ו׳",
+      "linkedTopic": "topic:6:10",
+      "linkedTitle": "חילוק מספרים עשרוניים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/solids-explore-grade-6",
+      "title": "חקר גופים ותכונותיהם לכיתה ו׳",
+      "linkedTopic": "topic:6:11",
+      "linkedTitle": "חקר גופים ותכונותיהם",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/boxes-nets-grade-6",
+      "title": "תיבות ופריסות — מעבר בין דו־ממד לתלת־ממד לכיתה ו׳",
+      "linkedTopic": "topic:6:12",
+      "linkedTitle": "תיבות ופריסות מעבר בין דו־ממד לתלת־ממד",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/box-surface-area-grade-6",
+      "title": "שטח פנים של תיבה לכיתה ו׳",
+      "linkedTopic": "topic:6:13",
+      "linkedTitle": "שטח פנים של תיבה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/box-volume-grade-6",
+      "title": "נפח תיבה ומבנים לכיתה ו׳",
+      "linkedTopic": "topic:6:14",
+      "linkedTitle": "נפח תיבה ומבנים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/capacity-ml-l-m3-grade-6",
+      "title": "קיבול — סמ״ק ליטר ומ״ק לכיתה ו׳",
+      "linkedTopic": "topic:6:15",
+      "linkedTitle": "קיבול סמ״ק ליטר ומ״ק",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/quadrilaterals-review-grade-6",
+      "title": "מרובעים ויחסי הכלה — חזרה מנומקת לכיתה ו׳",
+      "linkedTopic": "topic:6:16",
+      "linkedTitle": "מרובעים ויחסי הכלה חזרה מנומקת",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/measurement-geometry-synthesis-grade-6",
+      "title": "דף מסכם — מדידות גאומטריה ופתרון רב־שלבי לכיתה ו׳",
+      "linkedTopic": "topic:6:17",
+      "linkedTitle": "דף סיכום מדידות גאומטריה ופתרון רב־שלבי",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/fraction-decimal-percent-grade-6",
+      "title": "שבר עשרוני ואחוז — שלושה ייצוגים לאותו מספר לכיתה ו׳",
+      "linkedTopic": "topic:6:18",
+      "linkedTitle": "שבר עשרוני ואחוז שלושה ייצוגים לאותו מספר",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/percent-of-quantity-grade-6",
+      "title": "אחוז כחלק מכמות לכיתה ו׳",
+      "linkedTopic": "topic:6:19",
+      "linkedTitle": "אחוז כחלק מכמות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/find-the-whole-grade-6",
+      "title": "מציאת השלם ויישומי אחוזים לכיתה ו׳",
+      "linkedTopic": "topic:6:20",
+      "linkedTitle": "מציאת השלם ויישומי אחוזים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/ratio-grade-6",
+      "title": "יחס — משמעות ייצוג ויחסים שקולים לכיתה ו׳",
+      "linkedTopic": "topic:6:21",
+      "linkedTitle": "יחס משמעות ייצוג ויחסים שקולים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/scale-maps-grade-6",
+      "title": "קנה מידה במפות ובשרטוטים לכיתה ו׳",
+      "linkedTopic": "topic:6:22",
+      "linkedTitle": "קנה מידה במפות ובשרטוטים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/numbers-operations-review-grade-6",
+      "title": "מספרים ופעולות — סדר אומדן ובדיקת סבירות לכיתה ו׳",
+      "linkedTopic": "topic:6:23",
+      "linkedTitle": "מספרים ופעולות סדר אומדן ובדיקת סבירות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/collect-represent-data-grade-6",
+      "title": "אוספים ומייצגים נתונים לכיתה ו׳",
+      "linkedTopic": "topic:6:24",
+      "linkedTitle": "אוספים ומייצגים נתונים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/compare-groups-conclusions-grade-6",
+      "title": "משווים קבוצות ומנסחים מסקנות זהירות לכיתה ו׳",
+      "linkedTopic": "topic:6:25",
+      "linkedTitle": "משווים קבוצות ומנסחים מסקנות זהירות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/scaling-dimensions-grade-6",
+      "title": "שינוי ממדים — מה קורה להיקף לשטח ולנפח לכיתה ו׳",
+      "linkedTopic": "topic:6:26",
+      "linkedTitle": "שינוי ממדים מה קורה להיקף לשטח ולנפח",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/patterns-multistep-grade-6",
+      "title": "חוקיות ופתרון בעיות רב־שלביות לכיתה ו׳",
+      "linkedTopic": "topic:6:27",
+      "linkedTitle": "חוקיות ופתרון בעיות רב־שלביות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
       "key": "page:/games/eliyahu-pythagoras",
       "title": "משחק משפט פיתגורס עם אליהו",
       "linkedTopic": "topic:8:11",

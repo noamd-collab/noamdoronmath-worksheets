@@ -22,6 +22,7 @@ import {
   TOPIC_PAGE_KITE_SLUGS,
   TOPIC_PAGE_PILOT_SLUGS,
   TOPIC_PAGE_SLUGS,
+  TOPIC_PAGE_AUTHORED_SLUGS,
   extractJsonLdFaq,
   loadAllTopicPages,
   loadTopicPage,
@@ -72,7 +73,8 @@ describe('topic page routes (HEADLESS-MIGRATION-18/19/20)', () => {
         TOPIC_PAGE_M22_SLUGS.length +
         TOPIC_PAGE_M23_SLUGS.length +
         TOPIC_PAGE_M30_SLUGS.length +
-        TOPIC_PAGE_KITE_SLUGS.length
+        TOPIC_PAGE_KITE_SLUGS.length +
+        TOPIC_PAGE_AUTHORED_SLUGS.length
     );
     assert.equal(TOPIC_PAGE_M20_SLUGS.length, 11);
     assert.equal(TOPIC_PAGE_M21_SLUGS.length, 24);
@@ -135,7 +137,7 @@ describe('topic page routes (HEADLESS-MIGRATION-18/19/20)', () => {
       assert.ok(page.author.text.includes('נועם דורון'));
       assert.ok(page.author.links.some((l) => l.href.includes('aboutus')));
       assert.ok(page.jsonLd);
-      assert.ok(page.relatedTopics.length >= 2);
+      assert.ok(page.relatedTopics.length >= (page.grade <= 6 ? 1 : 2), page.slug);
       for (const rel of page.relatedTopics) {
         assert.equal(rel.productionHref, `${PROD}${rel.path}`);
       }

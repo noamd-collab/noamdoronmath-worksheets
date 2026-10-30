@@ -39,18 +39,22 @@ const protectedFiles: Record<string, string> = {
   // OTTERLY_API_KEY added to the env schema (optional secret, read from env only).
   // QWEN_BASE_URL and QWEN_MODEL are optional secrets for the Model Studio endpoint.
   'astro.config.mjs': 'c002156d52b10040396ba30e6fc01106bf866fb639a204eddc13c79fadcb2fab',
+  // Noam requested restoring main's reviewed native PDF catalog on baseline
+  // (30 October 2026), keeping the baseline Hebrew title corrections.
   // G9 PDF v2, G8 PDF v2 (two c2 levels), and G7 PDF v2.
   // Packages-120: replaced student PDF ids and added G9-T46 (דלתון) in the geometry group.
   // Visible topic labels: סינתזה גאומטרית → שילוב גאומטרי, and the grade-6 synthesis sheet → סיכום.
-  'src/data/catalog.v1.json': 'd4ff9c4b71fe22c3e66a390431ae7b65360a0d48b7a10275c8e472a75c4259eb',
+  'src/data/catalog.v1.json': 'c01d8b25c9fb339d51e1345ad35ccd412b5a7bb2c276f3d1617cfb3534305c4b',
   'src/lib/catalog/loadCatalog.ts': '1a5e54a4c19c016046202f3e0b9bb95203e58fe983dab5a27e6f261abfbc9d95',
   // Viewer links forward the c2 sibling as pc2.
-  'src/lib/worksheetLinks.ts': '6bfa7fe86ff7d02a87c2f7533c6eabae1c34a372c2c68b2a92519e8c4790f531',
+  'src/lib/worksheetLinks.ts': '06bfbaa4b9b778d171ca9d8802eed0ce3fb6c6f15d7d7bff3807dd1f80ce0770',
+  // Four additive elementary films restored from main (30 October 2026).
+  // Existing baseline films and kite rendering remain intact.
   // kite-construct film added for /kite-grade-9 (explicit content, not a design regen).
-  'src/lib/conceptLoops.ts': 'c0a46b28dd9610cd5b79b09f33a5ff60775bbb8e1859e07808e031e9bdc784f0',
+  'src/lib/conceptLoops.ts': '78636536a970ed54e07592c26450aa8f26540e780f9782c7b74482e07669d7e5',
   // Brave motion: site opt-in overrides prefers-reduced-motion inside the film.
   // Kite caption says חלקי 2 instead of a slash fraction.
-  'src/components/ConceptLoop.astro': '8fa8bd116ee7af1ea02bd7d580c140372f05a16772f4706876ced7ac9b3c66ef',
+  'src/components/ConceptLoop.astro': '24b3e9cddc65d2617755a02ebd8772aaa0a8d74477c913a86e15eff66d1c5131',
   // HeroLoop.astro is the homepage shell (which loops are emitted). The engine
   // above stays byte-identical; the home hero may lazy-load existing loops.
   // One readout line only: S = (a · h) : 2 school notation, PR #40 via PR #41.
@@ -62,7 +66,7 @@ const protectedFiles: Record<string, string> = {
   'public/noam-learning-config.js': '90228359e65a99300b7d5017ddc58edce650b0b1a403a13b40c22608330f4ca7',
   // Lazy Supabase: guest learning no longer downloads the SDK. Google sign-in
   // and an existing session still load it, then recreate the engine.
-  'public/noam-learning.js': '50866c6d2e8824b8dd89e5e8b00c2e55c0f1636d4a56dbed2e73928c7eef9a18',
+  'public/noam-learning.js': 'c6d55b6c39e0a5c5d99ae7b14d5a53fecaf92ad21e80e86ecd5d71013a39cdba',
   'public/noam-learning-boot.js': '8a4976b19a32a4e1820b4c8aa391004973988a3126337fe2b3355406220d8cd1',
   'public/noam-learning-auth-redirect.js': '8fcd0ee6ef88a5816bb220b5a23b63821b65d0b3574dbcbfdcda6fc73cc34147',
   'public/noam-learning-core.js': 'dcdf50b7448ca7e106ae6e433787018dab7ba9c55fe4d4118dfb71f85584f0b7',

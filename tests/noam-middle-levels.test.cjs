@@ -9,7 +9,7 @@ const vm = require("node:vm");
 const root = path.join(__dirname, "..");
 const source = fs.readFileSync(path.join(root, "index.html"), "utf8");
 const approved = require("./fixtures/middle-school-levels.json");
-const levels = ["a", "b", "c", "one"];
+const levels = ["a", "b", "c", "c2", "one"];
 
 // Run the production catalog and link renderer without loading a browser or network.
 function declaration(name, terminator) {
@@ -59,9 +59,8 @@ function renderedLinks(markup) {
 }
 
 test("approved middle-school level mappings cannot silently disappear or change PDF", () => {
-  // Grade 9 is 127: 66f916b removed topic 21 (127 -> 124), and 5c417899 (#104)
-  // added topic 46 דלתון (3 levels, 124 -> 127).
-  assert.deepEqual(approved.expectedLinkCounts, { 7: 148, 8: 177, 9: 127 });
+  // Includes restored G8-T66 and both existing c2 slots.
+  assert.deepEqual(approved.expectedLinkCounts, { 7: 148, 8: 182, 9: 127 });
   for (const [grade, topics] of Object.entries(approved.grades)) {
     const count = topics.reduce((total, topic) => total + Object.keys(topic.links).length, 0);
     assert.equal(count, approved.expectedLinkCounts[grade], `Incomplete approved grade ${grade} fixture`);
@@ -85,7 +84,7 @@ test("each protected level renders its own AI viewer link with correct sibling l
     const row = catalog.DATA[item.grade].links[item.id];
     const rendered = renderedLinks(catalog.levelLinksHTML(topic, item.grade));
     for (const [level, pdf] of Object.entries(item.links)) {
-      const viewerLevel = level === "one" ? "b" : level;
+      const viewerLevel = row.viewerLevel || (level === "one" ? "b" : level);
       // A PDF may legitimately be reused by another level or grade.
       const links = rendered.filter(link => {
         const params = new URL(link.href, "https://catalog.test/").searchParams;
@@ -96,11 +95,11 @@ test("each protected level renders its own AI viewer link with correct sibling l
       const destination = new URL(link.href, "https://catalog.test/");
       assert.equal(destination.origin, "https://catalog.test");
       assert.equal(destination.pathname, "/worksheet-viewer-noam.html");
-      assert.equal(destination.searchParams.get("g"), String(item.grade));
-      assert.equal(destination.searchParams.get("x"), item.prefix);
+      assert.equal(destination.searchParams.get("g"), String(row.sourceGrade || item.grade));
+      assert.equal(destination.searchParams.get("x"), row.sourcePrefix || item.prefix);
       assert.equal(destination.searchParams.get("lv"), viewerLevel);
-      assert.equal(destination.searchParams.get("t"), topic.t);
-      for (const sibling of ["a", "b", "c"]) {
+      assert.equal(destination.searchParams.get("t"), row.sourceTitle || topic.t);
+      for (const sibling of ["a", "b", "c", "c2"]) {
         assert.equal(destination.searchParams.get("p" + sibling), row[sibling] || null,
           `Wrong sibling ${sibling}: grade ${item.grade}, topic ${item.id}, level ${level}`);
       }

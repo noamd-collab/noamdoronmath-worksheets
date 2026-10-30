@@ -25,6 +25,7 @@ import {
   TOPIC_PAGE_M30_REDIRECTS,
   TOPIC_PAGE_M30_UNMIGRATED,
   TOPIC_PAGE_SLUGS,
+  TOPIC_PAGE_AUTHORED_SLUGS,
   loadTopicPage,
 } from '../src/lib/topicPages.ts';
 import {
@@ -40,6 +41,11 @@ import { applyContentCorrections, topicPageCorrections } from '../src/lib/parity
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const fixtureDir = join(root, 'tests', 'fixtures', 'topic-parity');
+
+// Authored elementary pages have no production capture. They still run the
+// route, structure and visible JSON-LD gates over TOPIC_PAGE_SLUGS.
+const authored = new Set<string>(TOPIC_PAGE_AUTHORED_SLUGS);
+const migratedSlugs = TOPIC_PAGE_SLUGS.filter((slug) => !authored.has(slug));
 
 function loadProductionFixture(slug: string): TopicParitySnapshot {
   const path = join(fixtureDir, `${slug}.production.json`);
@@ -86,18 +92,18 @@ function hasParagraphSelfCheck(source: TopicParitySnapshot | { sections: { parag
 
 describe('topic SOURCE→content parity gate (M19/M20)', () => {
   it('has production fixtures for every migrated topic slug', () => {
-    for (const slug of TOPIC_PAGE_SLUGS) {
+    for (const slug of migratedSlugs) {
       assert.ok(
         existsSync(join(fixtureDir, `${slug}.production.json`)),
         `missing fixture for ${slug}`
       );
     }
     const files = readdirSync(fixtureDir).filter((f) => f.endsWith('.production.json'));
-    assert.ok(files.length >= TOPIC_PAGE_SLUGS.length);
+    assert.ok(files.length >= migratedSlugs.length);
   });
 
   it('migrated content matches production fixtures (SEO, intro, sections, FAQ, CTAs, JSON-LD)', () => {
-    for (const slug of TOPIC_PAGE_SLUGS) {
+    for (const slug of migratedSlugs) {
       const source = loadProductionFixture(slug);
       const page = loadTopicPage(slug);
       const preview = contentToParitySnapshot(page, 'preview');
@@ -248,7 +254,7 @@ describe('topic SOURCE→content parity gate (M19/M20)', () => {
   });
 
   it('same-origin worksheet CTAs use production github topic ids (all CTAs, DOM order)', () => {
-    for (const slug of TOPIC_PAGE_SLUGS) {
+    for (const slug of migratedSlugs) {
       const source = loadProductionFixture(slug);
       const page = loadTopicPage(slug);
       const srcCtas =
@@ -268,7 +274,7 @@ describe('topic SOURCE→content parity gate (M19/M20)', () => {
   });
 
   it('FAQ parity is semantic Q&A (not markup-dependent on summary/details)', () => {
-    for (const slug of TOPIC_PAGE_SLUGS) {
+    for (const slug of migratedSlugs) {
       const source = loadProductionFixture(slug);
       const page = loadTopicPage(slug);
       const srcFaq = source.faqGroups.flatMap((g) => g.items);

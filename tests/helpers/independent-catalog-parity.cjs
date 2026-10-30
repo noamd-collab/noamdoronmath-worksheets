@@ -122,8 +122,8 @@ function walkExpectedFromProduction(prod) {
         const pdfId = row[key];
         pdfIds.push(pdfId);
         worksheetIds.push('g' + grade + '-t' + t.id + '-' + key);
-        // Production levelLinksHTML: one → sheetHref level arg "b"; else key.
-        const viewerLevelArg = key === 'one' ? 'b' : key;
+        // Production levelLinksHTML uses an explicit manifest level for promoted single sheets.
+        const viewerLevelArg = row.viewerLevel || (key === 'one' ? 'b' : key);
         const href = prod.sheetHref(t, grade, viewerLevelArg, pdfId, row);
         levels.push({ key, pdfId, viewerLevelArg, href });
         mappings.push({
@@ -140,6 +140,9 @@ function walkExpectedFromProduction(prod) {
           levelKey: key,
           pdfId,
           viewerLevelArg,
+          viewerGrade: row.sourceGrade || grade,
+          viewerPrefix: row.sourcePrefix || prefix,
+          viewerTitle: row.sourceTitle || t.t,
           href,
         });
       }
@@ -204,13 +207,13 @@ function contractHref(catalog, gradeNum, topic, level, options) {
   if (!viewerEnabled || !topic || !pdfId) return direct();
   if (!prefix || middle.indexOf(Number(gradeNum)) === -1) return direct();
 
-  const viewerLevel = level.key === 'one' ? 'b' : level.key;
+  const viewerLevel = level.viewerLevel || (level.key === 'one' ? 'b' : level.key);
   const params = new URLSearchParams();
-  params.set('g', String(gradeNum));
-  params.set('x', String(prefix));
+  params.set('g', String(topic.routing.sourceGrade || gradeNum));
+  params.set('x', String(topic.routing.sourcePrefix || prefix));
   params.set('lv', viewerLevel);
   params.set('pdf', pdfId);
-  params.set('t', topic.title);
+  params.set('t', topic.routing.sourceTitle || topic.title);
 
   const siblings = (topic.routing && topic.routing.siblingPdfQuery) || {};
   for (const k of ['pa', 'pb', 'pc', 'pc2']) {

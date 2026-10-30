@@ -1,6 +1,6 @@
 /**
  * Link-parity checks for the Astro POC buildWorksheetHref vs representative
- * catalog mappings (grade 7 viewer / one→lv=b, grade 9, direct PDF).
+ * catalog mappings (native single-level viewer, reused grade 7 sheets, direct PDF).
  * Expectations come from catalog.v1.json routing flags — not a copy of the app
  * algorithm beyond calling the shared builder.
  */
@@ -46,8 +46,8 @@ describe('astro-poc buildWorksheetHref parity (representative)', () => {
     assert.ok(!href.includes('127.0.0.1'));
   });
 
-  it('viewer-routed one-level uses lv=b while catalog key stays one', () => {
-    // G7-T16 is level a after the grade-7 PDF v2 swap. Other grades still have one-level sheets.
+  it('native single-sheet releases keep the explicit one viewer level', () => {
+    // Native releases declare viewerLevel=one to match their source manifests.
     const found = catalog.grades
       .map((grade) => ({
         grade: grade.grade,
@@ -61,7 +61,8 @@ describe('astro-poc buildWorksheetHref parity (representative)', () => {
     assert.equal(topic.levels[0].key, 'one');
     const href = buildWorksheetHref({ catalog, grade: found.grade, topic, levelKey: 'one' });
     const u = new URL(href, 'https://www.noamdoronmath.co.il');
-    assert.equal(u.searchParams.get('lv'), 'b');
+    assert.equal(topic.levels[0].viewerLevel, 'one');
+    assert.equal(u.searchParams.get('lv'), 'one');
     assert.equal(u.searchParams.get('pdf'), topic.levels[0].pdfId);
     assert.equal(
       u.searchParams.get('topic'),
@@ -95,8 +96,30 @@ describe('astro-poc buildWorksheetHref parity (representative)', () => {
     const u = new URL(href, 'https://www.noamdoronmath.co.il');
     assert.equal(u.searchParams.get('g'), '9');
     assert.equal(u.searchParams.get('x'), topic.routing.resolvedNoamPrefix);
-    if (level.key === 'one') assert.equal(u.searchParams.get('lv'), 'b');
-    else assert.equal(u.searchParams.get('lv'), level.key);
+    assert.equal(u.searchParams.get('lv'), level.viewerLevel || (level.key === 'one' ? 'b' : level.key));
+  });
+
+  it('declared grade-9 reuse opens the matching grade-7 source while returning to grade 9', () => {
+    const grade = catalog.grades.find((entry) => entry.grade === 9)!;
+    const reused = grade.topics.filter((topic) => topic.routing.sourceGrade !== undefined);
+    assert.equal(reused.length, 11);
+    for (const topic of reused) {
+      const source = catalog.grades.find((entry) => entry.grade === topic.routing.sourceGrade)!;
+      const sourceTopic = source.topics.find((entry) => entry.routing.resolvedNoamPrefix === topic.routing.sourcePrefix)!;
+      assert.ok(sourceTopic);
+      for (const level of topic.levels) {
+        const href = buildWorksheetHref({ catalog, grade: 9, topic, levelKey: level.key });
+        const url = new URL(href, 'https://www.noamdoronmath.co.il');
+        assert.equal(url.searchParams.get('g'), '7');
+        assert.equal(url.searchParams.get('x'), sourceTopic.routing.resolvedNoamPrefix);
+        assert.equal(url.searchParams.get('t'), topic.routing.sourceTitle);
+        assert.equal(url.searchParams.get('pdf'), level.pdfId);
+        assert.ok(sourceTopic.levels.some((sourceLevel) => sourceLevel.pdfId === level.pdfId));
+        assert.equal(url.searchParams.get('lv'), level.viewerLevel || level.key);
+        assert.equal(url.searchParams.get('back'), '/worksheets?grade=9');
+        assert.equal(url.searchParams.get('topic'), String(topic.parent ?? topic.id));
+      }
+    }
   });
 
   it('Headless viewer path defaults ON — GitHub Pages reserved for explicit rollback', () => {
