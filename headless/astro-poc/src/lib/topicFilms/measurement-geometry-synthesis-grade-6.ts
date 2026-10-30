@@ -78,12 +78,12 @@ export const FILM = {
 
     // ── Animate Unit Squares ──
     const cells = qa(root, '[data-cell]');
-    
+
     // Timing constants
     const step1Start = 1.5;
-    const step1End = 3.9; 
+    const step1End = 3.9;
     const step2Start = 5.0;
-    const step2End = 6.6; 
+    const step2End = 6.6;
     const step3Start = 9.5;
     const step3End = 10.2;
 
@@ -93,12 +93,12 @@ export const FILM = {
         const c = parseInt(coords[0]);
         const r = parseInt(coords[1]);
         const isCorner = (c >= 6 && r <= 2);
-        
+
         // --- Visibility Phase (Step 1) ---
         // Stagger by column index i = c*6 + r
         const i = c * 6 + r;
-        const cellStart = step1Start + (i / 60) * 2.4; 
-        
+        const cellStart = step1Start + (i / 60) * 2.4;
+
         // Calculate opacity unconditionally using master fade
         let cellOp = ph(t, cellStart, cellStart + 0.25) * fade;
         op(cell, cellOp);
@@ -106,7 +106,7 @@ export const FILM = {
         // Only calculate fill if visible enough to matter
         if (cellOp > 0.01) {
             // --- Coloring Logic ---
-            let fill = "none"; 
+            let fill = "none";
 
             // Step 2: Highlight Corner (Orange)
             let cornerIdx = -1;
@@ -126,7 +126,7 @@ export const FILM = {
             // Step 3: Remove Corner, Fill Rest Blue
             if (t > step3Start) {
                 const localP = ph(t, step3Start, step3End); // Fast transition
-                
+
                 if (isCorner) {
                     // Fade out orange
                     const opacity = 1 - localP;
@@ -149,7 +149,7 @@ export const FILM = {
     }
 
     // ── Update Chip Texts Dynamically ──
-    
+
     // Chip 1: Counts 0 -> 60 during Step 1 sweep
     const chip1El = q(root, 'chip1');
     if (chip1El) {
@@ -200,7 +200,7 @@ export const FILM = {
     ].forEach(function(id) { op(q(root, id), dimOp); });
 
     // ── Step badges & result chips visibility ──
-    
+
     // Row 1: Visible during Step 1 counting
     const r1 = Math.max(0, (ph(t, 1.5, 2.0) - ph(t, 7.5, 8.0)) * fade);
     op(q(root, 'row1'), r1);
