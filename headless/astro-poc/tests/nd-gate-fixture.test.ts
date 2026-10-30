@@ -3,11 +3,12 @@
  * against production/live user storage.
  */
 import assert from 'node:assert/strict';
-import { readFileSync, existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { readFileSync, mkdirSync, writeFileSync } from 'node:fs';
 import { describe, it } from 'node:test';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import puppeteer from 'puppeteer-core';
+import { resolveTestBrowser } from './helpers/chromium';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const fixtureDir = join(root, 'tests/fixtures/nd-gate');
@@ -31,10 +32,7 @@ describe('M35 ndGate fixture-only', () => {
 <style>${readFileSync(join(root, 'src/styles/catalog.css'), 'utf8').match(/#ndGateOverlay[\s\S]*?\.nd-gate-foot[\s\S]*?}/)?.[0] || ''}</style>
 </head><body><main>fixture</main><script>${gateJs}</script></body></html>`
     );
-    const chrome = [process.env.CHROME_PATH, '/usr/bin/google-chrome-stable', '/usr/bin/google-chrome'].find(
-      (path): path is string => !!path && existsSync(path)
-    );
-    assert.ok(chrome, 'no Chrome/Chromium found: set CHROME_PATH');
+    const chrome = resolveTestBrowser();
     const browser = await puppeteer.launch({
       executablePath: chrome,
       headless: true,

@@ -1,28 +1,15 @@
-/**
- * OPEN-07-FIX (live, network): every post in the live blog sitemap is served by the
- * POC. The 8 classic-gap posts may be ahead of the published sitemap until release.
- * Runs in the live-SSR suite only (`npm run test:live-ssr`).
- */
+/** Live parity of all served posts and archives against the owned sitemap route. */
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
-import { BLOG_POST_CLASSIC_GAP_PATHS, BLOG_POST_SERVED_PATHS, BLOG_POST_SYNC_PATHS } from '../src/lib/blogPosts';
+import { BLOG_SITEMAP_ORIGIN, BLOG_SITEMAP_PATH, listBlogSitemapEntries } from '../src/lib/blogSitemap';
+import { diffBlogSitemap, fetchBlogSitemap } from '../scripts/lib/blog-live-sitemap.mjs';
 
-const norm = (p: string) => decodeURIComponent(p.replace(/^https:\/\/www\.noamdoronmath\.co\.il/, '')).replace(/\/$/, '');
-
-describe('OPEN-07-FIX live blog sitemap parity', () => {
-  it('served posts cover blog-posts-sitemap.xml', async () => {
-    const res = await fetch('https://www.noamdoronmath.co.il/blog-posts-sitemap.xml', { headers: { accept: 'application/xml' } });
-    assert.equal(res.status, 200);
-    const live = [...(await res.text()).matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => norm(m[1]));
-    assert.ok(live.length >= 60, `live sitemap has ${live.length} posts`);
-    const served = new Set(BLOG_POST_SERVED_PATHS.map(norm));
-    // Classic-site posts this POC already serves, which are not in the published
-    // production blog-posts-sitemap.xml until the next release.
-    const allowedAhead = new Set([...BLOG_POST_CLASSIC_GAP_PATHS, ...BLOG_POST_SYNC_PATHS].map(norm));
-    const missing = live.filter((p) => !served.has(p));
-    const extra = [...served].filter((p) => !live.includes(p));
-    const unexpected = extra.filter((p) => !allowedAhead.has(p));
-    assert.deepEqual({ missing, unexpected }, { missing: [], unexpected: [] });
-    assert.equal(served.size, live.length + extra.length);
+describe('live blog sitemap parity', () => {
+  it('the current sitemap contains exactly the served posts and archive routes', async () => {
+    const expected = listBlogSitemapEntries();
+    assert.ok(expected.filter((entry) => new URL(entry.loc).pathname.startsWith('/post/')).length >= 60);
+    const live = await fetchBlogSitemap(BLOG_SITEMAP_ORIGIN + BLOG_SITEMAP_PATH);
+    assert.deepEqual(diffBlogSitemap(live, expected), []);
+    assert.equal(live.length, expected.length);
   });
 });

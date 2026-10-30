@@ -1,9 +1,10 @@
 import assert from 'node:assert/strict';
-import { existsSync, readFileSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import { createServer } from 'node:http';
 import { once } from 'node:events';
 import { it } from 'node:test';
 import puppeteer, { type Browser, type Page } from 'puppeteer-core';
+import { resolveTestBrowser } from './helpers/chromium';
 
 const read = (path: string) => readFileSync(new URL(path, import.meta.url), 'utf8');
 const pageSource = read('../src/pages/games/eliyahu-pythagoras/index.astro');
@@ -35,9 +36,7 @@ async function fits(page: Page, label: string) {
 }
 
 it('fits every game step on desktop and phone, including later content growth and shrinkage', { timeout: 90000 }, async () => {
-  const chrome = [process.env.CHROME_PATH, '/usr/bin/google-chrome-stable', '/usr/bin/google-chrome']
-    .find((path): path is string => !!path && existsSync(path));
-  assert.ok(chrome, 'Set CHROME_PATH to a Chromium browser');
+  const chrome = resolveTestBrowser();
   const server = createServer((req, res) => {
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     res.end(req.url === '/play' ? game : wrapper);

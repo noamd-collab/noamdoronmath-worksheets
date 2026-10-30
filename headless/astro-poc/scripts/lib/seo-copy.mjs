@@ -113,7 +113,7 @@ export function titleKey(value) {
     .trim();
 }
 
-function readJsonDir(dir) {
+export function readJsonDir(dir) {
   return readdirSync(dir)
     .filter((name) => name.endsWith('.json'))
     .sort()
@@ -131,8 +131,12 @@ function pick(path, field, ruleValue) {
 
 export function buildProposals(root) {
   const catalog = JSON.parse(readFileSync(join(root, 'src/data/catalog.v1.json'), 'utf8'));
+  // The frozen PR 46 / PR 52 batch reviewed elementary catalog rows and
+  // middle-school landing pages. Later authored elementary landing pages need
+  // their own proposal review; they must not replace reviewed catalog rows.
   const topicPages = readJsonDir(join(root, 'src/data/topic-pages')).filter(
-    (page) => !EXCLUDED_FROM_PROPOSAL_BATCH.has(decoded(page.path))
+    (page) => page.grade >= 7 && page.grade <= 9
+      && !EXCLUDED_FROM_PROPOSAL_BATCH.has(decoded(page.path))
   );
   const posts = readdirSync(join(root, 'src/data/blog-posts'))
     .filter((name) => name.endsWith('.json'))
@@ -195,6 +199,7 @@ export function buildProposals(root) {
           ]
         : grade.topics;
     for (const topic of orderedTopics) {
+      if (EXCLUDED_FROM_PROPOSAL_BATCH.has(`/worksheets?grade=${grade.grade}&topic=${topic.id}`)) continue;
       const page = pages.get(`${grade.grade}:${topic.id}`);
       const path = page?.path || `/worksheets?grade=${grade.grade}&topic=${topic.id}`;
       if (seenPaths.has(path)) continue;
