@@ -38,7 +38,10 @@ const protectedFiles: Record<string, string> = {
   // warning at build. Reviewed for the cut-over; ConceptLoop is untouched.
   // OTTERLY_API_KEY added to the env schema (optional secret, read from env only).
   // QWEN_BASE_URL and QWEN_MODEL are optional secrets for the Model Studio endpoint.
-  'astro.config.mjs': 'c002156d52b10040396ba30e6fc01106bf866fb639a204eddc13c79fadcb2fab',
+  // Noam, 2026-10-30: add only optional server-secret schemas for the v2
+  // human challenge. Removing those two lines exactly restores live 64933173.
+  // Existing reCAPTCHA v3 settings and every other config byte are unchanged.
+  'astro.config.mjs': '7db60ed41d0c192a6112254e1d1d4503a15e5b321acab9e45333a911a9b0d4f0',
   // Noam requested restoring main's reviewed native PDF catalog on baseline
   // (30 October 2026), keeping the baseline Hebrew title corrections.
   // G9 PDF v2, G8 PDF v2 (two c2 levels), and G7 PDF v2.

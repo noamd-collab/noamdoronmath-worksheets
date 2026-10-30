@@ -5,12 +5,14 @@
  * When either is missing the response is "not active" and Qwen is not called.
  */
 import type { APIRoute } from 'astro';
-import { NOAM_RECAPTCHA_SECRET_KEY, QWEN_API_KEY, QWEN_BASE_URL, QWEN_MODEL } from 'astro:env/server';
+import { NOAM_RECAPTCHA_SECRET_KEY, NOAM_RECAPTCHA_V2_SITE_KEY, NOAM_RECAPTCHA_V2_SECRET_KEY, QWEN_API_KEY, QWEN_BASE_URL, QWEN_MODEL } from 'astro:env/server';
 import catalog from '../../data/catalog.v1.json';
 import guide from '../../data/site-guide.v1.json';
 import teacherIndex from '../../data/teacher-pick-index.json';
 import {
   NOAM_RECAPTCHA_SECRET_NAME,
+  NOAM_RECAPTCHA_V2_SITE_KEY_NAME,
+  NOAM_RECAPTCHA_V2_SECRET_NAME,
   QWEN_BASE_URL_NAME,
   QWEN_MODEL_NAME,
   QWEN_SECRET_NAME,
@@ -21,10 +23,12 @@ import { publicRequestHost, recaptchaBypassFromEnv } from '../../../../../noam-a
 import { secretFromEnv } from '../../lib/noamSecrets';
 import { runtimeProcessEnv } from '../../lib/runtimeEnv';
 import { createWixRateBackend } from '../../lib/noamRateStore';
+import { createWixCaptchaUseStore } from '../../lib/noamCaptchaUses';
 
 export const prerender = false;
 
 const sharedRate = createWixRateBackend();
+const captchaUses = createWixCaptchaUseStore();
 
 function keys() {
   return {
@@ -32,6 +36,8 @@ function keys() {
     qwenBaseUrl: secretFromEnv(QWEN_BASE_URL_NAME, QWEN_BASE_URL),
     qwenModel: secretFromEnv(QWEN_MODEL_NAME, QWEN_MODEL),
     recaptchaSecret: secretFromEnv(NOAM_RECAPTCHA_SECRET_NAME, NOAM_RECAPTCHA_SECRET_KEY),
+    recaptchaV2SiteKey: secretFromEnv(NOAM_RECAPTCHA_V2_SITE_KEY_NAME, NOAM_RECAPTCHA_V2_SITE_KEY),
+    recaptchaV2Secret: secretFromEnv(NOAM_RECAPTCHA_V2_SECRET_NAME, NOAM_RECAPTCHA_V2_SECRET_KEY),
   };
 }
 
@@ -65,6 +71,7 @@ async function respond(context: Parameters<APIRoute>[0]): Promise<Response> {
     fetch: globalThis.fetch.bind(globalThis),
     recaptchaBypass: recaptchaBypassFromEnv(runtimeProcessEnv(), requestHost),
     rateBackend: sharedRate,
+    captchaUses,
   });
   return send(result);
 }
