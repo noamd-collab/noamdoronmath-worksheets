@@ -37,7 +37,7 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
    noamDidacticGuide:()=>null,noamDidacticPrompt:()=>'',noamDidacticResponse:()=>null,getExerciseAnalysis:async()=>cached,noamSolverMessage:(s:string)=>s,
    postJson:async(url:string,payload:any)=>{requests.push({url,payload});return {ok:true,answer:'בדקו את התווית על הצלע האנכית.'};},
    noamGuardGeometryResult:(r:any)=>r,noamGuardSignedAddResult:(r:any)=>r,noamClarifySignedAddLanguage:(s:string)=>s,noamResponseVisual:()=>null,
-   noamVisualAnswer:(_:string,s:string)=>s,noamAttachSourceHint(){},setTimeout:(cb:any,ms:number)=>{if(ms<55000)cb();return 0;}});
+   noamVisualAnswer:(_:string,s:string)=>s,noamAttachSourceHint(){},setTimeout:(cb:any,ms:number)=>{if(ms<25000)cb();return 0;}});
   runInNewContext(fn(v,'askNoam'),f.c);f.c.askNoam('hint','תן לי רמז אחד בלבד.');await settled();assert.equal(requests.length,1);
   assert.equal(requests[0].url,'/model/noamImageSolve');assert.equal(requests[0].payload.exerciseId,f.exercise.id);
   expectLabels(requests[0].payload.imageAnalysis.diagram_description.slice(0,800));assert.equal(cached.diagram_description,'old OCR');

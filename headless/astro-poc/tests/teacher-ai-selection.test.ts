@@ -62,13 +62,15 @@ function harness(reply: (payload: Payload, state: State, requestOptions: Challen
     const STYLES = { blended: { label: 'משולבת' } };
     const QUESTION_ROLES = { basis: 'ביסוס', review: 'חזרה', creative: 'יצירתית' };
     const AI_QUESTION_COUNTS = [5, 10, 15];
+    let dismissedPanels = 0;
+    const dismissTeacherHumanVerification = () => { dismissedPanels += 1; };
     const requestTeacherHumanVerification = options.humanVerification || (() => { throw new Error('Unexpected human verification'); });
     const ensureTeacherBotClient = async () => ({ postJson: async (path, payload, requestOptions) => {
       requests.push({ path, payload });
       return await reply(payload, state, requestOptions);
     } });
     ${['exKey', 'questionPreviewGroup', 'currentQuestions', 'keysOfQuestions', 'rolePlan', 'interleaveSheets', 'planOrder', 'smartQuestionPick', 'carriedKeys', 'selectionKey', 'snapshot', 'teacherAiNote', 'teacherAiContext', 'verifiedTeacherPlan', 'rememberTeacherPlans', 'pickWithAi'].map(definition).join('\n')}
-    return { pick: pickWithAi, state, requests, status, attrs, controls, announcements, renders: () => renderCount };
+    return { pick: pickWithAi, state, requests, status, attrs, controls, announcements, renders: () => renderCount, dismisses: () => dismissedPanels };
   `)(options.pool || source.questions, groupWholeQuestions, options.savedKeys || groupKeys(groups[0]), reply, options, options.clock || Date, options.timers || globalThis) as {
     pick: (count: number) => Promise<string[]>;
     state: State;
@@ -77,6 +79,7 @@ function harness(reply: (payload: Payload, state: State, requestOptions: Challen
     attrs: string[][];
     controls: Record<string, { value: string }>;
     renders: () => number;
+    dismisses: () => number;
   };
 }
 
@@ -292,6 +295,7 @@ test('a successful human step resumes one AI request and retains all three expli
   assert.match(app.status.textContent, /נדרש אימות אנושי.*הבחירה שלכם נשמרה/);
   assert.deepEqual(await app.pick(10), [], 'No duplicate AI request while human verification is pending');
   assert.equal(app.requests.length, 1);
+  assert.equal(app.dismisses(), 1, 'A duplicate click must not dismiss the active human task');
   human.onSubmitting(); finishHuman('synthetic-human-token');
   assert.equal((await pending).length, 5);
   assert.equal((await app.pick(10)).length, 10);
@@ -366,6 +370,10 @@ for (const code of ['BOT_CHALLENGE_CANCELLED', 'BOT_CHALLENGE_EXPIRED', 'BOT_CHA
     assert.equal(app.renders(), 0);
     assert.match(app.status.textContent, /הבחירה שלכם נשמרה/);
     assert.doesNotMatch(app.status.textContent, /נבחרו|מקומית/);
+    if (code === 'BOT_CHALLENGE_UNAVAILABLE') {
+      assert.match(app.status.textContent, /Google לא נטענה/);
+      assert.doesNotMatch(app.status.textContent, /לא אישרה/);
+    }
   });
 }
 

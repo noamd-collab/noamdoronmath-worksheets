@@ -73,7 +73,7 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
    Object.assign(f.c,{busy:false,panelBody:f.c.document.body,noamDrafts:{},MIN_WAIT:0,API:'/model',g:7,lv:'a',LEVEL:{a:'רמה א׳'},ttl:'תבניות',
     setNoamBusy:(b:boolean)=>{f.c.busy=b;},restoreNoamChatFocus(){},exerciseLabel:()=> 'שאלה21ד',noamDidacticGuide:()=>null,noamDidacticPrompt:()=>'',noamDidacticResponse:()=>null,
     getExerciseAnalysis:async()=>{analysisCalls++;return ocr;},postJson:async(url:string,payload:any)=>{requests.push({url,payload});return {ok:true,answer:'בדקו את השורות והעמודות.'};},
-    noamGuardGeometryResult:(r:any)=>r,noamGuardSignedAddResult:(r:any)=>r,noamClarifySignedAddLanguage:(s:string)=>s,noamResponseVisual:()=>null,noamVisualAnswer:(_:string,s:string)=>s,noamAttachSourceHint(){},setTimeout:(cb:any,ms:number)=>{if(ms<55000)cb();return 0;}});
+    noamGuardGeometryResult:(r:any)=>r,noamGuardSignedAddResult:(r:any)=>r,noamClarifySignedAddLanguage:(s:string)=>s,noamResponseVisual:()=>null,noamVisualAnswer:(_:string,s:string)=>s,noamAttachSourceHint(){},setTimeout:(cb:any,ms:number)=>{if(ms<25000)cb();return 0;}});
    f.c.askNoam('hint','תן לי רמז אחד בלבד.');await settled();assert.equal(requests.length,1);assert.equal(requests[0].url,'/model/noamImageSolve');assert.equal(requests[0].payload.exerciseId,f.exercise.id);
    const sent=requests[0].payload.imageAnalysis,text=JSON.stringify(sent);
    assert.equal(requests[0].payload.studentMessage.includes('ניתוח השאלה נבנה מהטקסט המודפס ומנתוני המקור המאומתים'),!attachment);

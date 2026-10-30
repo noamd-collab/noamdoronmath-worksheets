@@ -97,10 +97,11 @@ test('a late answer or failure does not announce the old part after the student 
       // this harness checks that askNoam retains the original section's identity.
       noamAttachSourceHint: (...args: any[]) => { sourceHints.push(args); return Promise.resolve(null); },
       ttl: '', g: 7, lv: 'a', LEVEL: { a: 'א׳' }, API: '/test', MIN_WAIT: 0,
-      setTimeout: (fn: () => void, ms: number) => { if (ms < 55000) fn(); return 0; },
+      setTimeout: (fn: () => void, ms: number) => { if (ms < 25000) fn(); return 0; },
     };
     runInNewContext(section('askNoam', 'noamRetryActionLabel') + '\naskNoam("hint", "");', context);
     context.selectedExercise = { id: 'q1b' };
+    await Promise.resolve(); // The source-only probe gate precedes the ordinary reader.
     finishAnalysis({ readable: true });
     await new Promise(resolve => setImmediate(resolve));
     assert.equal(thread.messages.length, 2, 'the old part still receives its own response');

@@ -1,4 +1,4 @@
-import { requestTeacherHumanVerification } from './teacher-human-verification.js';
+import { dismissTeacherHumanVerification, requestTeacherHumanVerification } from './teacher-human-verification.js?v=20261030-stepup-error-detail';
 import { wizardPrefillFromSearch } from './wizard-prefill.js';
 import { expandToWholeQuestionKeys, groupWholeQuestions, mulberry32, pickWholeQuestions, randomSeed } from './teacher-question-pick.js';
 import { PICK_HEADING, SECTION_KINDS, needsSectionHeadings, pointsLabel, scoreLabel, sectionKind, sectionTitle, shouldAskMoreTopic, testPoints, TEST_TOTAL_POINTS } from './teacher-page-sections.js';
@@ -121,18 +121,18 @@ function ensureTeacherBotClient() {
   if (teacherBotClientPromise) return teacherBotClientPromise;
   teacherBotClientPromise = new Promise((resolve, reject) => {
     function finish(ok) {
-      if (ok && window.NoamBotClient && window.NoamBotClient.version === '20261030-human-stepup' && typeof window.NoamBotClient.create === 'function') {
+      if (ok && window.NoamBotClient && window.NoamBotClient.version === '20261030-stepup-error-detail' && typeof window.NoamBotClient.create === 'function') {
         resolve(window.NoamBotClient.create({ api: '/api', enabled: true, modelTimeoutMs: 25000 }));
         return;
       }
       reject(new Error('BOT_CLIENT_UNAVAILABLE'));
     }
-    if (window.NoamBotClient && window.NoamBotClient.version === '20261030-human-stepup') {
+    if (window.NoamBotClient && window.NoamBotClient.version === '20261030-stepup-error-detail') {
       finish(true);
       return;
     }
     const loader = document.createElement('script');
-    loader.src = '/noam-bot-client.js?v=20261030-human-stepup';
+    loader.src = '/noam-bot-client.js?v=20261030-stepup-error-detail';
     loader.async = true;
     loader.onload = () => finish(true);
     loader.onerror = () => finish(false);
@@ -283,6 +283,7 @@ function rememberTeacherPlans(result, context, groups) {
 async function pickWithAi(rawCount) {
   const count = Number(rawCount);
   if (!AI_QUESTION_COUNTS.includes(count) || aiPickPending) return [];
+  dismissTeacherHumanVerification(document);
   const saved = carriedKeys();
   const groups = currentQuestions().filter((group) => !group.keys.some((key) => saved.has(key)));
   if (!groups.length) return [];
@@ -382,6 +383,8 @@ async function pickWithAi(rawCount) {
     const code = String(requestError.code || '');
     const message = code === 'BOT_STEP_UP_REQUIRED'
       ? 'נדרש אימות אנושי, אך הוא לא זמין כרגע. הבחירה שלכם נשמרה ואפשר להמשיך לבחור ידנית.'
+      : code === 'BOT_CHALLENGE_UNAVAILABLE'
+        ? 'בדיקת האבטחה של Google לא נטענה. הבחירה שלכם נשמרה; אפשר לעיין בפרטי התקלה בבדיקת האבטחה ולסגור אותה.'
       : code === 'BOT_CHALLENGE_CANCELLED' || code === 'BOT_CHALLENGE_EXPIRED' || code === 'BOT_CHALLENGE_CONTEXT_CHANGED'
         ? requestError.message
         : requestError.status === 429 || requestError.httpStatus === 429

@@ -265,6 +265,11 @@ describe('exact-design protected live-baseline boundaries', () => {
     // requests/cache callbacks and release retry controls. Dedicated operation-
     // deadline tests cover timeout, body aborts and generation races; the bot
     // client, security protocol, source assets and conversation storage stay fixed.
+    // Noam, 2026-10-30: source-verified first-hint probes skip OCR only for a
+    // server-authorized printed-text cue. SDK preparation overlaps source reads;
+    // only the source phase uses25s; normal requests keep55s from the click.
+    // Canonical source retains priority over image/manifest caches.
+    // Fast-hint/deadline tests preserve token checks, source scope and late fences.
     // Noam, 2026-10-30: after a manifest loads, its verified curated hints (Supabase,
     // read-only publishable key) register as text-only didactic guides. Requests,
     // auth, AI endpoints and storage are unchanged; ramzi-curated-hints tests cover it.
@@ -276,7 +281,7 @@ describe('exact-design protected live-baseline boundaries', () => {
     // leaves the draft and attachments alone; no request is sent. The adapter reaches it
     // through window.noamAnswerUnderstood, the main script's only new global. The exchange
     // is marked understood: it stays out of the model history and is never a drawing target.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), 'ef912c23a2104e1d58ac6d9f49b0c3bc6d0694691337dd48d8a4f35fafcc08c8');
+    assert.equal(sha256(JSON.stringify(releasedScripts)), 'bb255fde3bc7666c33cca5b08ac0682ccc353e74efc2c2ca1e97695b6f8662d7');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {

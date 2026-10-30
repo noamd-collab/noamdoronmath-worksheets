@@ -358,6 +358,12 @@
     }
 
     function getVerification(action, prepareOnly) {
+      // A new explicit protected action ends an older failed human task. A
+      // background prepare never removes the provider's visible error details.
+      var registry = win.__noamBotRecaptchaRuntime;
+      if (!prepareOnly && registry && typeof registry.failedChallenge === "function") {
+        registry.failedChallenge();
+      }
       var diagnosticState = null;
       return timed(function (requestState) {
         diagnosticState = requestState;
@@ -474,24 +480,46 @@
         return Promise.reject(makeError("אימות האבטחה פג. אפשר לבקש שוב.", "BOT_CHALLENGE_EXPIRED"));
       }
       var signal = challengeOptions && challengeOptions.signal;
-      var finished = false, widgetApi = null, widgetId = null, expiryTimer;
+      var previousRegistry = win.__noamBotRecaptchaRuntime;
+      if ((!signal || !signal.aborted) && previousRegistry && typeof previousRegistry.failedChallenge === "function") {
+        previousRegistry.failedChallenge();
+      }
+      var finished = false, disposed = false, retained = false, widgetApi = null, widgetId = null, expiryTimer, widgetRegistry = null;
       var resolveDone, rejectDone;
       var done = new Promise(function (resolve, reject) { resolveDone = resolve; rejectDone = reject; });
+      var releaseLease;
+      var lease = new Promise(function (resolve) { releaseLease = resolve; });
       function resetWidget() {
         if (widgetApi && widgetId !== null) {
           var id = widgetId; widgetId = null;
           try { widgetApi.reset(id); } catch (ignored) {}
         }
       }
-      function finish(error, token) {
+      function dispose() {
+        if (disposed) return;
+        disposed = true;
+        if (signal) signal.removeEventListener("abort", cancel);
+        resetWidget();
+        if (widgetRegistry && widgetRegistry.failedChallenge === dispose) delete widgetRegistry.failedChallenge;
+        releaseLease();
+        // UI cleanup is best effort and cannot retain the lease or reset twice.
+        if (retained && challengeOptions && typeof challengeOptions.onDispose === "function") {
+          try { challengeOptions.onDispose(); } catch (ignored) {}
+        }
+      }
+      function finish(error, token, keepWidget) {
         if (finished) return;
         finished = true;
         clearTimeout(expiryTimer);
-        if (signal) signal.removeEventListener("abort", cancel);
-        resetWidget();
+        retained = keepWidget === true;
+        if (retained && widgetRegistry) widgetRegistry.failedChallenge = dispose;
+        else dispose();
         if (error) rejectDone(error); else resolveDone(token);
       }
-      function cancel() { finish(makeError("האימות בוטל. הבחירה שלכם נשמרה.", "BOT_CHALLENGE_CANCELLED")); }
+      function cancel() {
+        if (finished) dispose();
+        else finish(makeError("האימות בוטל. הבחירה שלכם נשמרה.", "BOT_CHALLENGE_CANCELLED"));
+      }
       expiryTimer = setTimeout(function () {
         finish(makeError("אימות האבטחה פג. אפשר לבקש שוב.", "BOT_CHALLENGE_EXPIRED"));
       }, Math.max(1, proof.expiresAt - Date.now()));
@@ -502,6 +530,7 @@
       if (!finished) timed(getConfig, verificationTimeout, "BOT_VERIFICATION_TIMEOUT", VERIFY_MESSAGE).then(function (config) {
         if (finished) return;
         var runtime = sharedRuntime(win, config.siteKey);
+        widgetRegistry = runtime.registry;
         var queued = runtime.registry.queue.then(function () {
           if (finished) return;
           var ready = timed(function (state) {
@@ -529,10 +558,10 @@
                 } else finish(null, token);
               },
               "expired-callback": function () { finish(makeError("אימות האבטחה פג. אפשר לבקש שוב.", "BOT_CHALLENGE_EXPIRED")); },
-              "error-callback": function () { finish(makeError("אימות האבטחה לא נטען. אפשר לנסות שוב.", "BOT_CHALLENGE_UNAVAILABLE")); }
+              "error-callback": function () { finish(makeError("בדיקת האבטחה של Google לא נטענה. הבחירה שלכם נשמרה.", "BOT_CHALLENGE_UNAVAILABLE"), null, true); }
             });
-            if (finished) resetWidget();
-          }).catch(function (error) { finish(error); }).then(function () { return done; });
+            if (disposed) resetWidget();
+          }).catch(function (error) { finish(error); }).then(function () { return lease; });
         });
         runtime.registry.queue = queued.then(function () {}, function () {});
         return queued;
@@ -593,7 +622,7 @@
   }
 
   return {
-    version: "20261030-human-stepup",
+    version: "20261030-stepup-error-detail",
     create: create,
     isProtectionError: isProtectionError,
     isTransientNetworkError: isTransientNetworkError
