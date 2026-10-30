@@ -1,5 +1,13 @@
 # Worksheet tracker
 
+## Teacher Google verification error visibility — 2026-10-30
+
+Follow-up to published PR 303 (`6f7f39a6`). Noam added the separate v2 checkbox key pair, the environment was synchronized without exposing values, and the unchanged approved code was published again. Live configuration now advertises v2 while preserving v3 enforcement. One real teacher request reached the intended `BOT_STEP_UP_REQUIRED` response; the Google widget then failed before any human token or second protected request. Manual selection stayed intact. Its underlying Google configuration or loading error is not yet identified.
+
+A provider loading failure was incorrectly labeled as a security rejection, and cleanup immediately removed Google's own error surface. The follow-up keeps that failed widget visible with an accurate Hebrew message and an explicit close action. Its model promise is already rejected; later callbacks cannot submit a token. Closing it or starting another explicit protected action disposes only the owned failed widget and releases its SDK lease. Background preparation preserves the error, and no automatic retry is added. Backend checks, key/domain validation and rate limits are unchanged.
+
+Production data verification is complete: 933 of 933 unique sheet files match source, including all 736 resumed files at a minimum three-second start interval with no additional throttling. Offline contracts using archived live data pass all 3,843 count plans across 1,281 actual UI scopes and all 38,624 whole-question manual expansions. These are not real AI successes. The exhaustive browser audit continues separately; final tests, preview, PR, release and human-verification outcomes belong in the follow-up evidence report.
+
 ## Teacher human verification recovery — 2026-10-30
 
 Follow-up to published PR 297 on live baseline `64933173`: preserve the teacher’s manual selection when AI verification fails, and offer an explicit human reCAPTCHA v2 checkbox step only after an otherwise valid v3 assessment is rejected solely for its low score. The existing v3 threshold, action, hostname, origin and rate checks stay enabled. A fresh v2 success must match a short-lived, signed request ticket and consume an insert-only persistent nonce before any model call; a missing configuration, expired challenge, changed selection or failed verification stays closed.

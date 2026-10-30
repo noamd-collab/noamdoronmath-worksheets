@@ -128,7 +128,7 @@ for (const file of ["noam-bot-client.js", "headless/astro-poc/public/noam-bot-cl
     assert.equal(p.actions.length, 0); assert.equal(p.posts.length, 0);
   });
 
-  for (const failure of ["cancel", "expired-callback", "error-callback", "deadline"]) {
+  for (const failure of ["cancel", "expired-callback", "deadline"]) {
     test(`${file}: ${failure} resets its own widget and releases the SDK queue`, async () => {
       const p = page(file), first = p.client(), second = p.client();
       const controller = new AbortController();
@@ -153,6 +153,55 @@ for (const file of ["noam-bot-client.js", "headless/astro-poc/public/noam-bot-cl
     assert.equal(p.win.grecaptcha, p.google); assert.ok(p.scripts[0].parentNode); assert.equal(p.resets.length, 0);
     p.renders[0].options.callback("synthetic-human-token"); await waiting;
     await second.prepare(); assert.equal(p.scripts.length, 1); assert.equal(p.actions.length, 0);
+  });
+
+  test(`${file}: a provider error rejects immediately but stays visible until explicit close`, async () => {
+    const proof = challenge();
+    const p = page(file, () => response(403, { code: "BOT_STEP_UP_REQUIRED", challenge: proof }));
+    const client = p.client(), controller = new AbortController();
+    let disposed = 0;
+    const pending = client.postJson("/api/noamSiteCompanion", {}, { onChallenge: received =>
+      client.completeChallenge(received, {}, { signal: controller.signal, onDispose() { disposed += 1; } }) });
+    const rejected = assert.rejects(pending, { code: "BOT_CHALLENGE_UNAVAILABLE" });
+    while (!p.renders.length) await flush();
+    p.renders[0].options["error-callback"](); await rejected;
+    assert.equal(p.posts.length, 1); assert.equal(disposed, 0); assert.deepEqual(p.resets, []);
+    p.renders[0].options.callback("late-human-token"); await flush();
+    assert.equal(p.posts.length, 1, "A late success cannot redeem a failed challenge");
+    await assert.rejects(p.client({ verificationTimeoutMs: 20 }).prepare(), { code: "BOT_VERIFICATION_TIMEOUT" });
+    assert.equal(p.win.grecaptcha, p.google); assert.equal(p.resets.length, 0, "Background prepare preserves the owner error");
+    controller.abort(); controller.abort();
+    assert.equal(disposed, 1); assert.deepEqual(p.resets, [0]);
+    await client.prepare(); assert.equal(p.scripts.length, 1);
+  });
+
+  test(`${file}: another explicit protected action disposes only the failed widget before requesting a fresh token`, async () => {
+    const p = page(file), first = p.client(), second = p.client();
+    let disposed = 0;
+    const pending = first.completeChallenge(challenge(), {}, { onDispose() { disposed += 1; throw new Error("UI cleanup failed"); } });
+    const rejected = assert.rejects(pending, { code: "BOT_CHALLENGE_UNAVAILABLE" });
+    while (!p.renders.length) await flush();
+    p.renders[0].options["error-callback"](); await rejected;
+    await second.postJson("/api/noamImageSolve", { question: 1 });
+    assert.equal(disposed, 1); assert.deepEqual(p.resets, [0]);
+    assert.deepEqual(p.actions, ["noam_image_solve"]); assert.equal(p.posts.length, 1);
+    assert.equal(p.win.grecaptcha, p.google); assert.equal(p.scripts.length, 1);
+  });
+
+  test(`${file}: a synchronous render error is retained, and old cleanup cannot reset a new widget`, async () => {
+    const p = page(file), client = p.client(), oldController = new AbortController();
+    const realRender = p.google.render;
+    p.google.render = (container, options) => { const id = realRender(container, options); options["error-callback"](); return id; };
+    await assert.rejects(client.completeChallenge(challenge(), {}, { signal: oldController.signal }), { code: "BOT_CHALLENGE_UNAVAILABLE" });
+    assert.deepEqual(p.resets, []);
+    p.google.render = realRender;
+    const next = client.completeChallenge(challenge(), {});
+    while (p.renders.length < 2) await flush();
+    assert.deepEqual(p.resets, [0]);
+    oldController.abort(); p.renders[0].options.callback("stale-token"); p.renders[0].options["error-callback"]();
+    assert.deepEqual(p.resets, [0]);
+    p.renders[1].options.callback("new-human-token");
+    assert.equal(await next, "new-human-token"); assert.deepEqual(p.resets, [0, 1]);
   });
 
   test(`${file}: cancellation before ready cannot render a late widget`, async () => {

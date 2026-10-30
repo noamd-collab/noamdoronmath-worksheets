@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import { parseHTML } from 'linkedom';
-import { requestTeacherHumanVerification } from '../public/teachers/teacher-human-verification.js';
+import { dismissTeacherHumanVerification, requestTeacherHumanVerification } from '../public/teachers/teacher-human-verification.js';
 
 // Real UI module, simulated Google client: no live verification or AI requests.
 const flush = () => new Promise<void>((resolve) => setImmediate(resolve));
@@ -16,17 +16,25 @@ function page(expiresAt = Date.now() + 10000) {
   let complete: (token: string) => void = () => { throw new Error('Not opened'); };
   let reject: (error: Error) => void = () => { throw new Error('Not opened'); };
   let signal: AbortSignal | undefined;
-  const promise = requestTeacherHumanVerification({
+  let dispose: () => void = () => {};
+  const config = {
     challenge: { provider: 'recaptcha-v2', siteKey: 'synthetic-site-key', requestToken: 'synthetic-ticket', expiresAt },
     anchor: document.getElementById('status'), isCurrent: () => current,
     onSubmitting: () => { submits += 1; },
-    client: { completeChallenge(_challenge: unknown, container: HTMLElement, options: { signal: AbortSignal }) {
+    client: { completeChallenge(_challenge: unknown, container: HTMLElement, options: { signal: AbortSignal; onDispose: () => void }) {
       calls += 1; signal = options.signal;
+      dispose = options.onDispose;
       assert.equal(container.hidden, false);
+      const ownerDetails = document.createElement('p');
+      ownerDetails.className = 'synthetic-google-owner-details';
+      ownerDetails.textContent = 'Synthetic provider details, not a diagnosed cause';
+      container.append(ownerDetails);
       return new Promise<string>((resolve, fail) => { complete = resolve; reject = fail; });
     } },
-  });
+  };
+  const promise = requestTeacherHumanVerification(config);
   return { document, window, promise, calls: () => calls, submits: () => submits, signal: () => signal,
+    restart: () => requestTeacherHumanVerification(config), disposer: () => dispose,
     complete: (token: string) => complete(token), reject: (error: Error) => reject(error), changeContext: () => { current = false; },
     open: () => document.querySelector<HTMLButtonElement>('.teacher-human-verification-actions button')!.click(),
     cancel: () => document.querySelector<HTMLButtonElement>('.teacher-human-verification-actions button:last-child')!.click(),
@@ -102,13 +110,57 @@ test('a manual change just before the human callback cannot race the context tim
   await result; assert.equal(p.submits(), 0);
 });
 
-test('a widget error is returned visibly to the caller and cleans up all UI', async () => {
+test('a widget load error rejects the request but retains Google details until explicit close', async () => {
   const p = page();
   const result = assert.rejects(p.promise, { code: 'BOT_CHALLENGE_UNAVAILABLE' });
   p.open(); await flush();
+  const providerDetails = p.document.querySelector('.synthetic-google-owner-details');
   p.reject(Object.assign(new Error('The widget did not load'), { code: 'BOT_CHALLENGE_UNAVAILABLE' }));
   await result;
-  assert.equal(p.document.querySelector('.teacher-human-verification'), null); assert.equal(p.submits(), 0);
+  assert.equal(p.document.querySelector('.synthetic-google-owner-details'), providerDetails);
+  assert.match(p.document.querySelector('[role="alert"]')!.textContent!, /Google לא נטענה/);
+  assert.equal(p.signal()!.aborted, false); assert.equal(p.submits(), 0);
+  p.cancel();
+  assert.equal(p.document.querySelector('.teacher-human-verification'), null);
+  assert.equal(p.signal()!.aborted, true); assert.equal(p.submits(), 0);
+});
+
+test('a failed provider surface survives ticket expiry and context changes until the user closes it', async () => {
+  const p = page(Date.now() + 80);
+  const rejected = assert.rejects(p.promise, { code: 'BOT_CHALLENGE_UNAVAILABLE' });
+  p.open(); await flush();
+  p.reject(Object.assign(new Error('Load failed'), { code: 'BOT_CHALLENGE_UNAVAILABLE' })); await rejected;
+  p.changeContext();
+  await new Promise(resolve => setTimeout(resolve, 300));
+  assert.ok(p.document.querySelector('.synthetic-google-owner-details'));
+  assert.equal(p.signal()!.aborted, false); assert.equal(p.submits(), 0);
+  dismissTeacherHumanVerification(p.document);
+  assert.equal(p.signal()!.aborted, true); assert.equal(p.document.querySelector('.teacher-human-verification'), null);
+});
+
+test('a new attempt replaces one failed panel and an old disposer cannot remove the newer panel', async () => {
+  const p = page();
+  const rejected = assert.rejects(p.promise, { code: 'BOT_CHALLENGE_UNAVAILABLE' });
+  p.open(); await flush(); const oldDispose = p.disposer(), oldSignal = p.signal()!;
+  p.reject(Object.assign(new Error('Load failed'), { code: 'BOT_CHALLENGE_UNAVAILABLE' })); await rejected;
+  const next = p.restart();
+  const cancelled = assert.rejects(next, { code: 'BOT_CHALLENGE_CANCELLED' });
+  assert.equal(oldSignal.aborted, true);
+  assert.equal(p.document.querySelectorAll('.teacher-human-verification').length, 1);
+  oldDispose();
+  assert.equal(p.document.querySelectorAll('.teacher-human-verification').length, 1);
+  p.cancel(); await cancelled;
+  assert.equal(p.document.querySelector('.teacher-human-verification'), null);
+});
+
+test('an explicit action from another client removes only the matching retained error panel', async () => {
+  const p = page();
+  const rejected = assert.rejects(p.promise, { code: 'BOT_CHALLENGE_UNAVAILABLE' });
+  p.open(); await flush();
+  p.reject(Object.assign(new Error('Load failed'), { code: 'BOT_CHALLENGE_UNAVAILABLE' })); await rejected;
+  p.disposer()(); p.disposer()();
+  assert.equal(p.document.querySelector('.teacher-human-verification'), null);
+  assert.equal(p.signal()!.aborted, true); assert.equal(p.submits(), 0);
 });
 
 test('an expired challenge cannot create UI or execute Google', async () => {
