@@ -117,10 +117,12 @@ describe('exact-design protected live-baseline boundaries', () => {
       '<script src="noam-visual-plan.js?v=20261028-source3"></script>',
       '<script src="noam-source-data-visual.js?v=20261028-source-data3"></script>',
       '<script src="noam-source-scaffold.js?v=20261029-scaffold1"></script>',
+      // Noam, 2026-10-30: verified curated hints from Supabase join the didactic guides.
+      '<script src="noam-curated-hints.js?v=20261030-curated1"></script>',
     ];
     const allScripts = [...viewerWithNativeRelease.matchAll(/<script\b[^>]*>[\s\S]*?<\/script>/gi)].map(match => match[0]);
-    assert.equal(allScripts.length, 26, 'The release adds only its ten exact dependencies');
-    assert.deepEqual(allScripts.slice(7,15),nativeAdditions.slice(2),'Typed compilers follow their native source consumer in dependency order');
+    assert.equal(allScripts.length, 27, 'The release adds its ten exact dependencies and curated hints');
+    assert.deepEqual(allScripts.slice(7,15),nativeAdditions.slice(2,10),'Typed compilers follow their native source consumer in dependency order');
     assert.deepEqual(allScripts.slice(0, 2), nativeAdditions.slice(0, 2), 'Old URLs migrate before worksheet scripts run');
     assert.equal(allScripts[7], nativeAdditions[2], 'Native consumer follows the existing local visual engine');
     for (const addition of nativeAdditions) assert.equal(allScripts.filter(script => script === addition).length, 1);
@@ -249,7 +251,11 @@ describe('exact-design protected live-baseline boundaries', () => {
     // 2026-10-29: explicit printed last-part-only figure scope proves independent canonical text.
     // The whole reviewed framing must match; any extra scope qualification keeps the image reader.
     // The attachment-origin flag and reader use one request snapshot; cleanup retains newly added photos.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '4ba806e38320769fa2c2239379e3be12a0da2af1a51b462f9fcbd6b8fc7db7b7');
+    // Noam, 2026-10-30: after a manifest loads, its verified curated hints (Supabase,
+    // read-only publishable key) register as text-only didactic guides. Requests,
+    // auth, AI endpoints and storage are unchanged; ramzi-curated-hints tests cover it.
+    // The didactic guides asset is versioned 20261030-curated1 for its register() API.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), 'fbdfbf4609eb47b91b7d771d14c330c97c25a8194c63d6928ef47d79bb2526cb');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {
