@@ -26,8 +26,10 @@ const successfulReply = (payload: Payload) => ({
   exerciseIds: payload.teacher.candidates.slice(-payload.teacher.count).map((candidate) => `ex:${source.pdfId}:${candidate.label}`),
 });
 
-function harness(reply: (payload: Payload, state: State) => unknown = successfulReply, options: { pool?: unknown[]; grade?: string; scenario?: string; style?: string; savedKeys?: string[] } = {}) {
-  return new Function('pool', 'groupWholeQuestions', 'savedKeys', 'reply', 'options', `
+type ChallengeHandler = { onChallenge: (challenge: unknown) => Promise<string> };
+type HumanRequest = { isCurrent: () => boolean; onSubmitting: () => void; challenge: unknown; client: unknown; anchor: unknown };
+function harness(reply: (payload: Payload, state: State, requestOptions: ChallengeHandler) => unknown = successfulReply, options: { pool?: unknown[]; grade?: string; scenario?: string; style?: string; savedKeys?: string[]; humanVerification?: (request: HumanRequest) => Promise<string>; clock?: { now: () => number }; timers?: { setInterval: (fn: () => void) => number; clearInterval: () => void } } = {}) {
+  return new Function('pool', 'groupWholeQuestions', 'savedKeys', 'reply', 'options', 'Date', 'globalThis', `
     let state = { grade: '9', topic: '2', level: 'a', scenario: 'other', style: 'blended',
       selected: [], blocks: [{ kind: 'test', title: 'נושא קודם', keys: savedKeys }],
       sectionKind: 'review', lastAiPickCount: 0, pickMode: 'manual', filter: 'selected', expanded: false,
@@ -60,13 +62,14 @@ function harness(reply: (payload: Payload, state: State) => unknown = successful
     const STYLES = { blended: { label: 'משולבת' } };
     const QUESTION_ROLES = { basis: 'ביסוס', review: 'חזרה', creative: 'יצירתית' };
     const AI_QUESTION_COUNTS = [5, 10, 15];
-    const ensureTeacherBotClient = async () => ({ postJson: async (path, payload) => {
+    const requestTeacherHumanVerification = options.humanVerification || (() => { throw new Error('Unexpected human verification'); });
+    const ensureTeacherBotClient = async () => ({ postJson: async (path, payload, requestOptions) => {
       requests.push({ path, payload });
-      return await reply(payload, state);
+      return await reply(payload, state, requestOptions);
     } });
     ${['exKey', 'questionPreviewGroup', 'currentQuestions', 'keysOfQuestions', 'rolePlan', 'interleaveSheets', 'planOrder', 'smartQuestionPick', 'carriedKeys', 'selectionKey', 'snapshot', 'teacherAiNote', 'teacherAiContext', 'verifiedTeacherPlan', 'rememberTeacherPlans', 'pickWithAi'].map(definition).join('\n')}
     return { pick: pickWithAi, state, requests, status, attrs, controls, announcements, renders: () => renderCount };
-  `)(options.pool || source.questions, groupWholeQuestions, options.savedKeys || groupKeys(groups[0]), reply, options) as {
+  `)(options.pool || source.questions, groupWholeQuestions, options.savedKeys || groupKeys(groups[0]), reply, options, options.clock || Date, options.timers || globalThis) as {
     pick: (count: number) => Promise<string[]>;
     state: State;
     requests: { path: string; payload: Payload }[];
@@ -102,14 +105,27 @@ for (const count of [5, 10, 15]) {
   });
 }
 
-test('a model failure remains usable and clearly labels the automatic local fallback', async () => {
-  const app = harness(() => { throw new Error('model unavailable'); });
-  const result = await app.pick(10);
-  assert.equal(groups.filter((group) => groupKeys(group).some((key) => result.includes(key))).length, 10);
-  assert.match(app.status.textContent, /בחירה אוטומטית מקומית/);
-  assert.match(app.status.textContent, /לא התקבלה בחירה מתאימה מה-AI/);
-  assert.doesNotMatch(app.status.textContent, /עם AI\./);
-});
+for (const failure of [
+  new Error('model unavailable'),
+  Object.assign(new Error('denied'), { status: 403, code: 'BOT_VERIFICATION_FAILED' }),
+  Object.assign(new Error('limited'), { status: 429, code: 'RATE_LIMITED' }),
+  Object.assign(new Error('timeout'), { code: 'REQUEST_TIMEOUT' }),
+  Object.assign(new Error('unconfigured'), { status: 403, code: 'BOT_STEP_UP_REQUIRED' }),
+]) {
+  test(`an AI failure (${(failure as any).code || 'model'}) keeps manual choices and never substitutes local selection`, async () => {
+    const app = harness(() => { throw failure; });
+    const manual = groupKeys(groups[2]);
+    app.state.selected = manual.slice();
+    const before = JSON.stringify(app.state);
+    assert.deepEqual(await app.pick(10), []);
+    assert.equal(JSON.stringify(app.state), before);
+    assert.equal(app.renders(), 0);
+    assert.match(app.status.textContent, /הבחירה שלכם נשמרה/);
+    assert.doesNotMatch(app.status.textContent, /נבחרו|בחירה אוטומטית מקומית|עם AI\./);
+    if ((failure as any).status === 429) assert.match(app.status.textContent, /הגבלת בקשות/);
+    if ((failure as any).code === 'BOT_STEP_UP_REQUIRED') assert.match(app.status.textContent, /אימות אנושי.*לא זמין/);
+  });
+}
 
 test('manual changes made during an AI request are retained instead of overwritten', async () => {
   const manual = groupKeys(groups[2]);
@@ -217,12 +233,14 @@ test('mixed selections keep model choices and identify local completion without 
   assert.doesNotMatch(app.status.textContent, /סעיפים\) עם AI\./);
 });
 
-test('zero accepted model IDs are labelled local even when the response includes padded exercise IDs', async () => {
+test('zero accepted model IDs cannot replace a manual choice even when the response includes locally padded exercise IDs', async () => {
   const pool = numberedPool(20);
   const app = harness(() => ({ source: 'classifier', model: 'test-model', modelExerciseIds: [],
     exerciseIds: pool.slice(0, 5).map((question) => `ex:${question.source.pdfId}:${question.id}`) }), { pool, savedKeys: [] });
-  assert.equal((await app.pick(5)).length, 5);
-  assert.match(app.status.textContent, /בחירה אוטומטית מקומית/);
+  app.state.selected = ['ex:elementary-source:19'];
+  assert.deepEqual(await app.pick(5), []);
+  assert.deepEqual(app.state.selected, ['ex:elementary-source:19']);
+  assert.match(app.status.textContent, /לא התקבלה בחירת שאלות מה-AI.*הבחירה שלכם נשמרה/);
   assert.doesNotMatch(app.status.textContent, /עם AI\./);
 });
 
@@ -251,6 +269,104 @@ function replyWithPlans(payload: Payload, pool: ReturnType<typeof numberedPool>)
   )]));
   const primary = teacherPlans[String([5, 10, 15].find((count) => Math.min(count, available.length) === payload.teacher.count) || 5)];
   return { ...primary, teacherPlans };
+}
+
+test('a successful human step resumes one AI request and retains all three explicit model plans', async () => {
+  const pool = numberedPool(20);
+  let finishHuman: (token: string) => void = () => { throw new Error('Human step not shown'); };
+  let human: HumanRequest | undefined;
+  const proof = { provider: 'recaptcha-v2', siteKey: 'synthetic-site-key', requestToken: 'synthetic-ticket', expiresAt: Date.now() + 10000 };
+  const app = harness(async (payload, _state, options) => {
+    assert.equal(await options.onChallenge(proof), 'synthetic-human-token');
+    return replyWithPlans(payload, pool);
+  }, { pool, savedKeys: [], humanVerification: (request) => {
+    human = request;
+    return new Promise((resolve) => { finishHuman = resolve; });
+  } });
+  app.state.selected = ['ex:elementary-source:1'];
+  const pending = app.pick(5);
+  while (!human) await new Promise((resolve) => setImmediate(resolve));
+  assert.equal(human.challenge, proof);
+  assert.equal(human.isCurrent(), true);
+  assert.deepEqual(app.state.selected, ['ex:elementary-source:1']);
+  assert.match(app.status.textContent, /נדרש אימות אנושי.*הבחירה שלכם נשמרה/);
+  assert.deepEqual(await app.pick(10), [], 'No duplicate AI request while human verification is pending');
+  assert.equal(app.requests.length, 1);
+  human.onSubmitting(); finishHuman('synthetic-human-token');
+  assert.equal((await pending).length, 5);
+  assert.equal((await app.pick(10)).length, 10);
+  assert.equal((await app.pick(15)).length, 15);
+  assert.equal(app.requests.length, 1, 'Only model-returned plans are reused after human verification');
+  assert.match(app.status.textContent, /עם AI.*הוכנה בבקשת ה-AI הקודמת/);
+});
+
+test('the thinking timer excludes time spent completing the human challenge', async () => {
+  let now = 1000, tick = () => {}, cleared = 0;
+  const app = harness(async (payload, _state, options) => {
+    now = 2000;
+    await options.onChallenge({ expiresAt: 120000 });
+    tick();
+    assert.match(app.status.textContent, /\(1 שניות\)/, 'Sixty seconds of human time are excluded');
+    return successfulReply(payload);
+  }, {
+    clock: { now: () => now },
+    timers: { setInterval(fn) { tick = fn; return 1; }, clearInterval() { cleared += 1; } },
+    humanVerification: async (request) => {
+      now = 62000; tick();
+      assert.match(app.status.textContent, /נדרש אימות אנושי/, 'Waiting does not overwrite the human instruction');
+      request.onSubmitting();
+      return 'synthetic-human-token';
+    },
+  });
+  await app.pick(5);
+  assert.equal(cleared, 1);
+});
+
+test('manual edits during human verification invalidate its context and cannot cache late model plans', async () => {
+  const pool = numberedPool(20);
+  let finishHuman: (token: string) => void = () => { throw new Error('Human step not shown'); };
+  let human: HumanRequest | undefined;
+  let first = true;
+  const app = harness(async (payload, _state, options) => {
+    if (first) {
+      first = false;
+      await options.onChallenge({ expiresAt: Date.now() + 10000 });
+    }
+    return replyWithPlans(payload, pool);
+  }, { pool, savedKeys: [], humanVerification: (request) => {
+    human = request;
+    return new Promise((resolve) => { finishHuman = resolve; });
+  } });
+  const pending = app.pick(5);
+  while (!human) await new Promise((resolve) => setImmediate(resolve));
+  app.state.selected = ['ex:elementary-source:2'];
+  assert.equal(human.isCurrent(), false);
+  // Even a misbehaving/late widget callback cannot overwrite a newer manual choice.
+  finishHuman('late-synthetic-token');
+  assert.deepEqual(await pending, []);
+  assert.deepEqual(app.state.selected, ['ex:elementary-source:2']);
+  assert.equal(app.renders(), 0);
+  await app.pick(10);
+  assert.equal(app.requests.length, 2, 'The stale response must not populate the model-plan cache');
+});
+
+for (const code of ['BOT_CHALLENGE_CANCELLED', 'BOT_CHALLENGE_EXPIRED', 'BOT_CHALLENGE_UNAVAILABLE']) {
+  test(`${code} from human verification preserves manual choices without local completion`, async () => {
+    const pool = numberedPool(20);
+    const app = harness(async (payload, _state, options) => {
+      await options.onChallenge({ expiresAt: Date.now() + 10000 });
+      return replyWithPlans(payload, pool);
+    }, { pool, savedKeys: [], humanVerification: async () => {
+      throw Object.assign(new Error('האימות לא הושלם. הבחירה שלכם נשמרה.'), { code });
+    } });
+    app.state.selected = ['ex:elementary-source:3'];
+    const before = JSON.stringify(app.state);
+    assert.deepEqual(await app.pick(5), []);
+    assert.equal(JSON.stringify(app.state), before);
+    assert.equal(app.renders(), 0);
+    assert.match(app.status.textContent, /הבחירה שלכם נשמרה/);
+    assert.doesNotMatch(app.status.textContent, /נבחרו|מקומית/);
+  });
 }
 
 test('one guarded response supplies three distinct model plans without another POST or truncating a larger plan', async () => {
