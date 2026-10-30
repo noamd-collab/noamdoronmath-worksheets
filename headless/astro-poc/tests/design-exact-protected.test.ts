@@ -117,10 +117,12 @@ describe('exact-design protected live-baseline boundaries', () => {
       '<script src="noam-visual-plan.js?v=20261028-source3"></script>',
       '<script src="noam-source-data-visual.js?v=20261028-source-data3"></script>',
       '<script src="noam-source-scaffold.js?v=20261029-scaffold1"></script>',
+      // Noam, 2026-10-30: verified curated hints from Supabase join the didactic guides.
+      '<script src="noam-curated-hints.js?v=20261030-curated1"></script>',
     ];
     const allScripts = [...viewerWithNativeRelease.matchAll(/<script\b[^>]*>[\s\S]*?<\/script>/gi)].map(match => match[0]);
-    assert.equal(allScripts.length, 26, 'The release adds only its ten exact dependencies');
-    assert.deepEqual(allScripts.slice(7,15),nativeAdditions.slice(2),'Typed compilers follow their native source consumer in dependency order');
+    assert.equal(allScripts.length, 27, 'The release adds its ten exact dependencies and curated hints');
+    assert.deepEqual(allScripts.slice(7,15),nativeAdditions.slice(2,10),'Typed compilers follow their native source consumer in dependency order');
     assert.deepEqual(allScripts.slice(0, 2), nativeAdditions.slice(0, 2), 'Old URLs migrate before worksheet scripts run');
     assert.equal(allScripts[7], nativeAdditions[2], 'Native consumer follows the existing local visual engine');
     for (const addition of nativeAdditions) assert.equal(allScripts.filter(script => script === addition).length, 1);
