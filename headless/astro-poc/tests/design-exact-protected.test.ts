@@ -253,8 +253,9 @@ describe('exact-design protected live-baseline boundaries', () => {
     // 3474fd6b7 enforces Noam's geometry-only drawing policy, and PR285
     // (97fab9745) binds analysis/solve payloads and OCR caches to the selected
     // source revision. The viewer head and the other 13 released scripts are
-    // byte-identical. drawing-hint-topic, drawing-intent-source and
+    // byte-identical. drawing-hint-topic, ramzi-drawing-intent-source and
     // ramzi-analyzer-source-binding cover the policy and source/cache guards.
+    // Keep the entire script fence, including the migrated behavior, protected.
     assert.equal(sha256(JSON.stringify(releasedScripts)), '40c5babbcc812094a5b512697fa9724c9adc32009aa146a54c4f96e3fd712e34');
   });
 

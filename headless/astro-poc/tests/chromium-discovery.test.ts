@@ -24,3 +24,8 @@ test('Windows program paths and Linux Brave binaries can be resolved without she
   assert.equal(resolveTestBrowser({ platform: 'win32', env: { PROGRAMFILES: String.raw`C:\Program Files` }, canExecute: (path) => path === windowsBrowser }), windowsBrowser);
   assert.equal(resolveTestBrowser({ platform: 'linux', env: {}, canExecute: (path) => path === '/usr/bin/brave-browser' }), '/usr/bin/brave-browser');
 });
+
+test('a browser installed only in the macOS user Applications directory is supported', () => {
+  const installed = '/example/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
+  assert.equal(resolveTestBrowser({ platform: 'darwin', env: { HOME: '/example' }, canExecute: (path) => path === installed }), installed);
+});

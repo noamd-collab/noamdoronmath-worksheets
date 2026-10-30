@@ -1,56 +1,59 @@
-/** Live SSR parity uses the complete current archive, never a historical card cap. */
+/**
+ * Live SSR title+href order must match every card in the published archive.
+ */
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import {
   diffArchiveCardOrder,
-  fetchLiveArchiveCardIndex,
+  createLiveArchiveSnapshotReader,
   ARCHIVE_PATHS,
 } from '../scripts/lib/blog-archive-ssr.mjs';
 import { listBlogArchives } from '../src/lib/blogArchives';
 
-// One read per archive per run, paced to avoid repeated requests to /blog.
-// A failed read rejects later reads too: a server refusal must not trigger a burst.
-const reads = new Map<string, ReturnType<typeof fetchLiveArchiveCardIndex>>();
-let queue = Promise.resolve();
-let lastRequest = 0;
-function liveArchive(path: string) {
-  if (!reads.has(path)) {
-    const read = queue.then(async () => {
-      await new Promise((resolve) => setTimeout(resolve, Math.max(0, 5000 - (Date.now() - lastRequest))));
-      lastRequest = Date.now();
-      return fetchLiveArchiveCardIndex(path);
-    });
-    reads.set(path, read);
-    queue = read.then(() => undefined);
-    // Keep the queue rejected for subsequent reads without an unhandled rejection.
-    void queue.catch(() => {});
-  }
-  return reads.get(path)!;
-}
-
-describe('live SSR archive card index', () => {
-  it('returns every current /blog card with a title and canonical post link', async () => {
-    const fixture = listBlogArchives().find((a) => a.path === '/blog')!;
-    assert.ok(fixture.cards.length > 15, 'fixture must exercise truncation detection');
-    const live = await liveArchive('/blog');
-    assert.equal(live.count, fixture.cards.length, JSON.stringify(live.http));
-    assert.ok(live.cards.every((c) => c.title && /\/post\//.test(c.href)));
+describe('M26 live SSR archive card index', () => {
+  // Reuse one fetched response for all assertions; failures are also shared.
+  // Pace distinct archive requests and stop the queue on a refusal.
+  const liveSnapshot = createLiveArchiveSnapshotReader({ minIntervalMs: 5000 });
+  it('parseSsrCards returns every bundled post card from live /blog HTML', async () => {
+    const live = await liveSnapshot('/blog');
+    assert.equal(live.http.status, 200);
+    assert.match(live.http.contentType, /text\/html/i);
+    // Empty successful HTML must fail parity — do not treat 0 cards as pass.
+    const cards = live.cards;
+    const expected = listBlogArchives().find((archive) => archive.path === '/blog')!.cards.length;
+    assert.ok(expected >= 20, 'The published archive must retain at least the original 20 cards');
+    assert.equal(
+      cards.length,
+      expected,
+      `expected ${expected} SSR cards on /blog; got ${cards.length} bytes=${live.http.bytes}`
+    );
+    assert.ok(cards.every((c) => c.title && /\/post\//.test(c.href)));
   });
 
-  it('rejects serving only the first 15 live cards', async () => {
-    const live = await liveArchive('/blog');
-    assert.ok(live.count > 15);
-    const issues = diffArchiveCardOrder(live, live.cards.slice(0, 15), 'truncated');
-    assert.ok(issues.some((issue) => /card count|omitted live href|missing live SSR/.test(issue)), issues.join(' | '));
+  it('diffArchiveCardOrder fails when served only has the first 15 live cards', async () => {
+    const live = await liveSnapshot('/blog');
+    const expected = listBlogArchives().find((archive) => archive.path === '/blog')!.cards.length;
+    assert.equal(
+      live.count,
+      expected,
+      `live /blog count ${live.count}; http=${JSON.stringify(live.http)}`
+    );
+    const truncated = live.cards.slice(0, 15);
+    const issues = diffArchiveCardOrder(live, truncated, 'truncated');
+    assert.ok(issues.length >= 1, 'must detect omission');
+    assert.ok(
+      issues.some((i) => /card count 15 != live SSR|omitted live href|missing live SSR/.test(i)),
+      issues.join(' | ')
+    );
   });
 
-  it('fixtures match exact live title and href order for all four archives', async () => {
+  it('fixtures match live SSR title+href order for all 4 archives', async () => {
     for (const spec of ARCHIVE_PATHS) {
-      const live = await liveArchive(spec.path);
+      const live = await liveSnapshot(spec.path);
       const fixture = listBlogArchives().find((a) => a.path === spec.path);
       assert.ok(fixture, spec.path);
-      const issues = diffArchiveCardOrder(live, fixture.cards, 'fixture');
-      assert.deepEqual(issues, [], `${spec.path}: ${issues.join(' | ')}`);
+      const issues = diffArchiveCardOrder(live, fixture!.cards, 'fixture');
+      assert.equal(issues.length, 0, `${spec.path}: ${issues.join(' | ')}`);
     }
   });
 });

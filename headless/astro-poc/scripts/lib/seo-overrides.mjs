@@ -265,42 +265,11 @@ export const KEEP_CURRENT = [
 ];
 
 /**
- * Scope of the PR 46 / PR 52 SEO proposal review (390 rows: 328 catalog topics +
- * 2 shared-id topic pages + 60 blog posts). Pages/posts added to the baseline
- * after the cut-over review (including restored elementary pages and later
- * synced posts) keep their own page meta and are excluded until a separate
- * proposal batch is commissioned. Elementary pages remain catalog rows in this
- * frozen review; their later landing-page copies do not replace those rows.
+ * The complete PR 46 / PR 52 input scope is pinned in seo-review-scope.json.
+ * Restored elementary landing pages, G8-T66 and later synced posts retain their
+ * own page meta, as audited in PR 293; the manifest keeps them outside this batch.
+ * Keep new pages/posts in their own review batch; do not grow an exclusion list here.
  */
-export const EXCLUDED_FROM_PROPOSAL_BATCH = new Set([
-  // Restored by PR 291 after the frozen 390-row review batch.
-  '/worksheets?grade=8&topic=66',
-  '/kite-grade-9',
-  '/post/למידה-אדפטיבית-במתמטיקה-שמקדמת-כל-תלמיד',
-  '/post/תוצאות-מתרגול-עקבי-במתמטיקה-שמרגישים-בכיתה',
-  '/post/איך-מתרגלים-כפל-בעזרת-משחקים-בבית-ובכיתה',
-  '/post/איך-מסבירים-היקף-ושטח-בלי-לבלבל-בין-השניים',
-  '/post/פתרון-מפשטים-לכיתה-ז',
-  '/post/איך-משתמשים-בעוזר-מתמטי-חכם-בלי-לוותר-על-החשיבה',
-  '/post/איך-מלמדים-חילוק-ארוך-לילדים-בלי-לנחש-בדרך',
-  '/post/מהו-סדר-פעולות-ואיך-פותרים-תרגילים-בלי-להתבלבל',
-  // Later synced posts also await a separate SEO proposal review.
-  "/post/איך-מתכוננים-למבחן-אלגברה-בלי-ללמוד-בלחץ",
-  "/post/כלים-חינמיים-לחיזוק-חשבון-בבית-ובכיתה",
-  "/post/הוראה-מתקנת-במתמטיקה-לסגירת-פערים-נכונה",
-  "/post/מדריך-להמרת-יחידות-מידה-בלי-להתבלבל",
-  "/post/דפי-תרגול-מומלצים-לפני-מבחן-לפי-רמה-ונושא",
-  "/post/למה-תלמידים-חוששים-ממתמטיקה-ואיך-מסייעים",
-  "/post/מקרה-של-למידה-בקצב-אישי-במתמטיקה",
-  "/post/איך-מחזקים-ביטחון-מתמטי-בבית-בלי-להפוך-תרגיל-למאבק",
-  "/post/כלים-לזיהוי-קשיי-למידה-במתמטיקה-בכיתה-ובבית",
-  "/post/איך-להתכונן-למבחן-גאומטריה-בלי-ללמוד-בלחץ",
-  "/post/חומרי-הוראה-במתמטיקה-שבאמת-מקדמים-תרגול",
-  "/post/מספרים-שליליים-בחטיבה-להבין-ולתרגל-נכון",
-  "/post/סקירת-כלים-ללמידה-מה-באמת-עוזר-במתמטיקה",
-  "/post/מתמטיקה-בחינם-לתלמידים-שרוצים-להתקדם",
-  "/post/סקירת-עוזרי-מתמטיקה-שעוזרים-ללמוד-נכון",
-]);
 
 /**
  * Open questions for Noam. Copy stays as generated; approved stays false. Do not guess.

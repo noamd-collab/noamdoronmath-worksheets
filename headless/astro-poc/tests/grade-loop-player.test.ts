@@ -4,7 +4,8 @@
  * under node:test mock timers; the DOM adapter is checked as a source contract.
  */
 import assert from 'node:assert/strict';
-import { existsSync, readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { describe, it, mock } from 'node:test';
 import { fileURLToPath } from 'node:url';
@@ -98,7 +99,9 @@ function loopsMap(file: string): Map<string, Record<string, string>> {
   }));
 }
 
-const numbers = (text: string): string[] => text.match(/\d+/g) ?? [];
+// The source map uses plain digits; rendered copy also uses Unicode fractions
+// and superscripts. Compare their numeric content without requiring slash text.
+const numbers = (text: string): string[] => text.normalize('NFKC').match(/\d+/g) ?? [];
 
 function specsKeys(): Set<string> {
   const source = read('src/lib/conceptLoops.ts');
@@ -211,22 +214,60 @@ describe('grade loop pools (LOOPS_MAP_73_v2)', () => {
     assert.equal(l45.mathLine, 'אותו מקום על הישר: ½ = ²⁄₄ = ³⁄₆');
   });
 
-  const mapCsv = join(root, '..', '..', 'LOOPS_MAP_73_v2.csv');
-  it('copy follows the map: every loop is a map row, and an equation question keeps its numbers', {
-    skip: !existsSync(mapCsv) && 'LOOPS_MAP_73_v2.csv is not in this checkout',
-  }, () => {
+  const mapCsv = join(root, 'tests', 'fixtures', 'grade-loops', 'LOOPS_MAP_73_v2.csv');
+  const mapAmendments = JSON.parse(read('tests/fixtures/grade-loops/approved-amendments.json')) as {
+    sourceMap: string;
+    sourceMapSha256: string;
+    amendments: Record<string, {
+      source: string; originalQuestion: string; question: string; mathLine: string;
+      durationSeconds: number; holdSeconds: number; commit: string; pullRequest: string;
+    }>;
+  };
+
+  it('copy follows every original map row and its explicitly approved later amendment', () => {
+    assert.equal(createHash('sha256').update(readFileSync(mapCsv)).digest('hex'), mapAmendments.sourceMapSha256,
+      'the recovered source map must remain byte-identical');
     const map = loopsMap(mapCsv);
+    assert.equal(map.size, 73);
+    assert.deepEqual(Object.keys(mapAmendments.amendments), ['diff-sq'], 'only the independently reviewed L14 amendment is permitted');
+    let unamendedNumericRows = 0;
     for (const loop of gradeLoopMap()) {
       const row = map.get(loop.variant);
       assert.ok(row, `${loop.variant}: missing from LOOPS_MAP_73_v2.csv`);
       assert.equal(row['מספר'] === 'ישן' ? loop.variant : row['מספר'], loop.source, `${loop.variant}: map row id`);
       const question = row['שאלה/כותרת (מהקוד)'];
-      if (!/^[\d(−□].*(= \?|= \d+)$/.test(question)) continue;
+      const amendment = mapAmendments.amendments[loop.variant];
+      if (amendment) {
+        assert.equal(amendment.source, row['מספר']);
+        assert.equal(amendment.originalQuestion, question, `${loop.variant}: amendment must name the exact superseded question`);
+        assert.equal(GRADE_LOOP_COPY[loop.variant].mathLine, amendment.mathLine, `${loop.variant}: approved replacement formula`);
+      }
+      const numericQuestion = /^[\d(−□].*(= \?|= \d+)$/.test(question);
       const shown = numbers(GRADE_LOOP_COPY[loop.variant].mathLine);
-      for (const n of numbers(question)) {
-        assert.ok(shown.includes(n), `${loop.variant}: "${question}" but mathLine lacks ${n}`);
+      if (numericQuestion && !amendment) unamendedNumericRows++;
+      for (const n of amendment ? numbers(amendment.mathLine) : numericQuestion ? numbers(question) : []) {
+        assert.ok(shown.includes(n), `${loop.variant}: "${amendment?.mathLine ?? question}" but mathLine lacks ${n}`);
       }
     }
+    assert.equal(unamendedNumericRows, 20, 'all twenty unchanged numeric questions retain their original numbers');
+  });
+
+  it('L14 retains the independently approved letters-only identity in both copy and film', () => {
+    const amendment = mapAmendments.amendments['diff-sq'];
+    assert.equal(amendment.commit, 'de606a86f90f23f8fd90e936769bc082822a3208');
+    assert.equal(amendment.pullRequest, 'https://github.com/noamd-collab/noamdoronmath-worksheets/pull/97');
+    const component = read('src/components/ConceptLoop.astro');
+    const question = component.match(/'diff-sq':\s*\{ text: '([^']+)'/);
+    const formula = component.match(/variant === 'diff-sq' && \(\s*<p class="concept-loop__formula" dir="ltr">\s*<span data-fx="0">([^<]+)<\/span>/);
+    assert.ok(question && formula, 'the film must keep its explicit question and visible formula');
+    assert.equal(question[1], amendment.question);
+    assert.equal(formula[1], amendment.mathLine);
+    assert.doesNotMatch(formula[1], /\d/, 'L14 uses letters rather than a numeric substitution example');
+    const engine = read('src/lib/conceptLoops.ts');
+    const duration = engine.match(/'diff-sq':\s*\{ duration: ([\d.]+), hold: DIFF_SQ_HOLD, render: renderDiffSq \}/);
+    assert.ok(duration);
+    assert.equal(Number(duration[1]), amendment.durationSeconds);
+    assert.equal(engineHolds()['diff-sq'], amendment.holdSeconds);
   });
 
   it('math line splits into RTL prose and isolated LTR formula runs', () => {

@@ -23,3 +23,9 @@ A blocked request, HTTP error or malformed response fails this separate suite.
 The runner selects TAP explicitly so counts remain readable on supported Node
 versions; it never reports a successful suite without a test summary. Raw results
 and the separate suite summaries are saved under ignored `reports/test-suites/`.
+
+The full runner isolates `drawing-hint-topic.test.ts` in its own process. Every
+child has a 2 GiB Node heap cap, one test worker, and a 30-minute timeout. Incomplete
+TAP summaries, failed or cancelled tests, and missing required suites fail the run.
+The original loop map is committed under `tests/fixtures/grade-loops` with a checksum
+and the previously reviewed L14 amendment; the parity check no longer skips.

@@ -78,7 +78,7 @@ export function parseSsrCards(html) {
       const title = clean(link?.textContent);
       const href = normHref(link?.getAttribute('href') || '');
       const url = new URL(href, PROD);
-      if (!title || url.origin !== PROD || !/^\/post\/[^/]+\/?$/.test(url.pathname)) {
+      if (title.length < 3 || url.origin !== PROD || !/^\/post\/[^/]+\/?$/.test(url.pathname)) {
         throw new Error(`Invalid Astro SSR archive card[${index}]: missing title or canonical post link`);
       }
       const avatar = card.querySelector('.blog-archive__card-avatar');
@@ -234,68 +234,105 @@ export function parseArchiveMeta(html) {
   };
 }
 
-/** Live SSR ordered title+href index for source-to-served gates. */
-export async function fetchLiveArchiveCardIndex(path, opts = {}) {
-  const attempts = Math.max(1, opts.attempts || 1);
-  const fetchPage = opts.fetch || fetch;
-  let lastErr;
-  for (let i = 0; i < attempts; i++) {
-    try {
-      const res = await fetchPage(PROD + path, {
-        headers: { accept: 'text/html', ...(opts.userAgent ? { 'user-agent': opts.userAgent } : {}) },
-        redirect: 'follow',
-        signal: AbortSignal.timeout(30000),
-      });
-      const finalUrl = res.url || PROD + path;
-      const contentType = res.headers.get('content-type') || '';
-      const status = res.status;
-      if (status !== 200) {
-        const error = new Error(`HTTP ${status} for ${path} final=${finalUrl} ctype=${contentType} retry-after=${res.headers.get('retry-after') || 'none'}`);
-        error.status = status;
-        throw error;
-      }
-      if (!/text\/html/i.test(contentType)) {
-        throw new Error(
-          `Unexpected content-type ${contentType} for ${path} final=${finalUrl} status=${status}`
-        );
-      }
-      const html = await res.text();
-      const cards = parseSsrCards(html);
-      if (cards.length === 0) {
-        const diag = {
-          status,
-          finalUrl,
-          contentType,
-          bytes: html.length,
-          hasDoctype: /<!doctype html/i.test(html.slice(0, 200)),
-          postListItem: (html.match(/data-hook="post-list-item"/gi) || []).length,
-          astroCard: (html.match(/data-blog-archive-card(?:\s|>|=)/g) || []).length,
-          title: (html.match(/<title[^>]*>([\s\S]*?)<\/title>/i) || [])[1]?.slice(0, 80),
-        };
-        throw new Error(
-          `Parsed 0 SSR cards for ${path}. diag=${JSON.stringify(diag)}`
-        );
-      }
-      return {
-        path,
-        cards: cards.map((c) => ({ title: c.title, href: c.href, pathname: pathnameOf(c.href) })),
-        titles: cards.map((c) => c.title),
-        hrefs: cards.map((c) => c.href),
-        pathnames: cards.map((c) => pathnameOf(c.href)),
-        count: cards.length,
-        loadMore: /טען עוד|הצג עוד|Load more|עוד פוסטים/i.test(html),
-        pagination: /data-hook="[^"]*pagination/i.test(html),
-        http: { status, finalUrl, contentType, bytes: html.length, attempt: i + 1 },
-      };
-    } catch (e) {
-      lastErr = e;
-      if (e.status === 429) throw e;
-      if (i < attempts - 1) {
-        await new Promise((r) => setTimeout(r, 400 * (i + 1)));
-      }
-    }
+/** Retry-After is delay-seconds or an HTTP date (RFC 9110 section 10.2.3). */
+function retryAfterDelay(value, now) {
+  if (!value) return null;
+  const text = value.trim();
+  if (/^\d+$/.test(text)) {
+    const delay = Number(text) * 1000;
+    return Number.isSafeInteger(delay) ? delay : null;
   }
-  throw lastErr;
+  // Do not let Date.parse reinterpret malformed numeric delays as calendar dates.
+  if (!/^(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun), /i.test(text)) return null;
+  const date = Date.parse(text);
+  return Number.isFinite(date) ? Math.max(0, date - now) : null;
+}
+
+/** Live SSR ordered title+href index; at most one server-directed, bounded retry. */
+export async function fetchLiveArchiveCardIndex(path, opts = {}) {
+  const attempts = Math.min(2, Math.max(1, Number(opts.attempts) || 2));
+  const fetchImpl = opts.fetchImpl || opts.fetch || fetch;
+  const sleep = opts.sleep || ((ms) => new Promise((resolve) => setTimeout(resolve, ms)));
+  const now = opts.now || Date.now;
+  const ua = opts.userAgent || 'Mozilla/5.0 (compatible; m26-ssr-gate)';
+  for (let i = 0; i < attempts; i++) {
+    const res = await fetchImpl(PROD + path, {
+      headers: { 'user-agent': ua, accept: 'text/html' },
+      redirect: 'follow',
+      signal: AbortSignal.timeout(30000),
+    });
+    const finalUrl = res.url || PROD + path;
+    const contentType = res.headers.get('content-type') || '';
+    const status = res.status;
+    if (status !== 200) {
+      const retryAfter = res.headers.get('retry-after');
+      const delay = retryAfterDelay(retryAfter, now());
+      // Record normalized delay/status only, never arbitrary header or error-page text.
+      const retryMeta = { status, retryAfterMs: delay, retryAfterPresent: retryAfter !== null, attempt: i + 1 };
+      await res.body?.cancel();
+      if (status === 429 && delay !== null && delay > 0 && delay <= 30000 && i + 1 < attempts) {
+        await sleep(delay);
+        continue;
+      }
+      const error = new Error(`HTTP ${status} for ${path}; retry-after=${delay === null ? 'unavailable' : delay / 1000}; no further retry; metadata=${JSON.stringify(retryMeta)}`);
+      error.status = status;
+      error.http = retryMeta;
+      throw error;
+    }
+    if (!/text\/html/i.test(contentType)) {
+      await res.body?.cancel();
+      throw new Error(`Unexpected or missing HTML content-type for ${path}; status=${status}`);
+    }
+    const html = await res.text();
+    const cards = parseSsrCards(html);
+    if (cards.length === 0) {
+      const diag = {
+        status, bytes: html.length,
+        hasDoctype: /<!doctype html/i.test(html.slice(0, 200)),
+        postListItem: (html.match(/data-hook="post-list-item"/gi) || []).length,
+        astroCards: (html.match(/data-blog-archive-card(?:[\s=>])/gi) || []).length,
+      };
+      throw new Error(`Parsed 0 SSR cards for ${path}. diag=${JSON.stringify(diag)}`);
+    }
+    return {
+      path,
+      cards: cards.map((c) => ({ title: c.title, href: c.href, pathname: pathnameOf(c.href) })),
+      titles: cards.map((c) => c.title),
+      hrefs: cards.map((c) => c.href),
+      pathnames: cards.map((c) => pathnameOf(c.href)),
+      count: cards.length,
+      loadMore: /טען עוד|הצג עוד|Load more|עוד פוסטים/i.test(html),
+      pagination: /data-hook="[^"]*pagination/i.test(html),
+      http: { status, finalUrl, contentType, bytes: html.length, attempt: i + 1 },
+    };
+  }
+}
+
+/** One exact live snapshot per path and test run, including unavailable results. */
+export function createLiveArchiveSnapshotReader(opts = {}) {
+  const snapshots = new Map();
+  const minIntervalMs = Math.max(0, Number(opts.minIntervalMs) || 0);
+  const now = opts.now || Date.now;
+  const sleep = opts.sleep || ((ms) => new Promise((resolve) => setTimeout(resolve, ms)));
+  let lastRequest = -Infinity;
+  let queue = Promise.resolve();
+  return (path) => {
+    if (!snapshots.has(path)) {
+      const read = queue.then(async () => {
+        const delay = Math.max(0, minIntervalMs - (now() - lastRequest));
+        if (delay > 0) await sleep(delay);
+        lastRequest = now();
+        const snapshot = await fetchLiveArchiveCardIndex(path, opts);
+        lastRequest = now();
+        return snapshot;
+      });
+      snapshots.set(path, read);
+      queue = read.then(() => undefined);
+      // A refusal also blocks later paths in this run, without an unhandled rejection.
+      void queue.catch(() => {});
+    }
+    return snapshots.get(path);
+  };
 }
 
 /**

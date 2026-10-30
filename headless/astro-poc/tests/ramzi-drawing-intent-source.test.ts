@@ -60,7 +60,7 @@ for (const file of ['worksheet-viewer-noam.html', 'headless/astro-poc/public/wor
       noamDiagramError: () => 'unsupported', busy: false, drawingAnswer: message,
     };
     const sourceHelpers = html.slice(html.indexOf('var noamSourceVisualPackages='), html.indexOf('function noamNativeFigure('));
-    runInNewContext(nativeModule + '\n' + sourceHelpers + '\n' + pagePolicy + '\n' + ['noamMessageVisualOptions', 'noamNativeDiagramContext', 'noamTypedVisualContext', 'noamInspectVisualPlan', 'noamRenderVisualPlan', 'noamDiagramSourceInput', 'requestNoamDiagram'].map(fn).join('\n'), c);
+    runInNewContext(nativeModule + '\n' + sourceHelpers + '\n' + pagePolicy + '\n' + ['noamCanOfferDrawing', 'noamMessageVisualOptions', 'noamNativeDiagramContext', 'noamTypedVisualContext', 'noamInspectVisualPlan', 'noamRenderVisualPlan', 'noamDiagramSourceInput', 'requestNoamDiagram'].map(fn).join('\n'), c);
     window.NoamNativeVisual = c.NoamNativeVisual;
     window.NoamDiagramPlan = { inspect: () => ({ ok: false, reason: 'unsupported' }) };
     return { c, calls, data, exercise, manifest, message, thread, runtime };
@@ -71,6 +71,7 @@ for (const file of ['worksheet-viewer-noam.html', 'headless/astro-poc/public/wor
     f.c.requestNoamDiagram = (...args: any[]) => received.push(args);
     bindComposerDrawing(f);
     assert.equal(f.c.noamPageAllowsDrawingHint(), true);
+    assert.equal(f.c.drawingHintsAllowed, true);
     f.c.document.getElementById('noamDraw').click();
     assert.equal(received.length, 1);
     assert.equal(received[0][3].drawCurrentStep, true);
@@ -88,20 +89,28 @@ for (const file of ['worksheet-viewer-noam.html', 'headless/astro-poc/public/wor
 
   it(file + ': the actual composer and protected request reject non-geometry pages despite explicit drawing words', async () => {
     for (const [prefix, title] of [
+      ['G1-T01', 'מונים בלי לפספס'],
       ['G8-T02', 'משוואות ליניאריות'],
       ['G7-T02', 'חיבור וחיסור מספרים מכוונים'],
       ['G8-T15', 'פונקציה קווית'],
       ['G8-T99', 'נושא לא מוכר'],
+      ['G9-T999', 'נושא לא מוכר'],
+      ['', 'נושא לא מוכר'],
     ]) {
       const f = fixture(), received: any[] = [];
       f.manifest.prefix = prefix;
       f.manifest.topic = title;
+      f.c.ttl = title;
       const protectedRequest = f.c.requestNoamDiagram;
       f.c.requestNoamDiagram = (...args: any[]) => received.push(args);
       bindComposerDrawing(f);
-      assert.equal(f.c.noamPageAllowsDrawingHint(), false, prefix);
+      assert.equal(f.c.noamPageAllowsDrawingHint(), false, prefix || 'unknown');
+      assert.equal(f.c.drawingHintsAllowed, false, prefix || 'unknown');
       f.c.document.getElementById('noamDraw').click();
       assert.equal(received.length, 0, prefix + ' composer must retain its policy guard');
+      // A saved drawing failure must not make an answer retry bypass the topic.
+      f.message.diagramError = 'previous drawing failed';
+      assert.equal(f.c.noamCanOfferDrawing(f.exercise, f.thread, f.message), false, prefix || 'unknown');
       const result = await protectedRequest(f.exercise, f.thread, f.message, {
         studentMessage: 'שרטוט ריבוע בגיאומטריה אנליטית', answer: f.message.text,
         drawCurrentStep: true, nativeAttempted: true,
@@ -111,6 +120,20 @@ for (const file of ['worksheet-viewer-noam.html', 'headless/astro-poc/public/wor
       assert.equal(f.message.diagramOptions, undefined);
       assert.equal(f.message.visual, undefined);
     }
+  });
+
+  it(file + ': the actual composer policy still accepts analytic geometry', () => {
+    const f = fixture(), received: any[] = [];
+    f.manifest.prefix = 'G9-T08';
+    f.manifest.topic = 'גיאומטריה אנליטית';
+    f.c.ttl = f.manifest.topic;
+    f.c.requestNoamDiagram = (...args: any[]) => received.push(args);
+    bindComposerDrawing(f);
+    assert.equal(f.c.noamPageAllowsDrawingHint(), true);
+    assert.equal(f.c.drawingHintsAllowed, true);
+    f.c.document.getElementById('noamDraw').click();
+    assert.equal(received.length, 1);
+    assert.equal(received[0][3].drawCurrentStep, true);
   });
 
   it(file + ': native drawing payload keeps original image and only selected authored text and visible identities', async () => {

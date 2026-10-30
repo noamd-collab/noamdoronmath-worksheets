@@ -10,9 +10,11 @@ import { fileURLToPath } from 'node:url';
 import { describe, it } from 'node:test';
 import {
   buildProposals,
+  buildProposalsFromSources,
   readJsonDir,
   clipSentences,
   isValidLiveTitle,
+  loadProposalSources,
   normalizeHebrew,
   normalizePostCopy,
   titleKey,
@@ -53,6 +55,58 @@ describe('seo proposals – generator and coverage', () => {
     const { proposals, errors } = buildProposals(root);
     assert.deepEqual(errors, []);
     assert.deepEqual(proposals, committed);
+  });
+
+  it('the historical review scope has explicit provenance and unique input identities', () => {
+    const scope = JSON.parse(readFileSync(new URL('../scripts/lib/seo-review-scope.json', import.meta.url), 'utf8'));
+    assert.equal(scope.reviewedSource.commit, '39ce59e6');
+    assert.equal(scope.reviewedSource.path, 'headless/astro-poc/src/data/seo-proposals.json');
+    for (const [key, count] of [['catalogTopics', 328], ['topicPages', 95], ['blogPosts', 60]] as const) {
+      assert.equal(scope[key].length, count, key);
+      assert.equal(new Set(scope[key]).size, count, `${key} duplicates`);
+    }
+  });
+
+  it('new catalog topics, landing pages and posts do not silently enter the historical review batch', () => {
+    const sources = loadProposalSources(root);
+    const original = buildProposalsFromSources(sources);
+    const changed = structuredClone(sources);
+    changed.catalog.grades[0].topics.push({ id: 999, title: 'נושא בדיקה חדש', levels: [] });
+    changed.topicPages.push({
+      path: '/new-test-page', grade: 1, catalogCta: { catalogTopicId: 1 },
+      title: 'עמוד בדיקה לכיתה א׳', description: 'תיאור בדיקה בלבד.',
+    });
+    changed.posts.push({ path: '/post/new-test-post', title: 'פוסט בדיקה חדש', description: 'תיאור בדיקה בלבד.' });
+    assert.deepEqual(buildProposalsFromSources(changed), original);
+    assert.equal(changed.catalog.grades[0].topics.length, sources.catalog.grades[0].topics.length + 1);
+    assert.equal(changed.topicPages.length, sources.topicPages.length + 1);
+    assert.equal(changed.posts.length, sources.posts.length + 1);
+  });
+
+  it('reviewed copy still comes from independent current sources, never the generated proposal file', () => {
+    const sources = loadProposalSources(root);
+    const page = sources.topicPages.find((item) => item.path === '/triangle-area-grade-7')!;
+    page.description = 'תיאור בדיקה בלבד למקור המעודכן.';
+    const { proposals, errors } = buildProposalsFromSources(sources);
+    assert.deepEqual(errors, []);
+    const row = proposals.find((item) => item.path === page.path)!;
+    assert.equal(row.currentDescription, page.description);
+    assert.equal(row.description, page.description);
+    assert.equal(row.approved, false);
+  });
+
+  it('missing reviewed input records fail explicitly instead of shrinking the batch', () => {
+    const sources = loadProposalSources(root);
+    sources.catalog.grades[0].topics = sources.catalog.grades[0].topics.filter((topic: { id: number }) => topic.id !== 1);
+    sources.topicPages = sources.topicPages.filter((page) => page.path !== '/triangle-area-grade-7');
+    const post = sources.posts.find((item) => decodeURIComponent(item.path) === '/post/common-factor-and-minus-parentheses-grade-7')!;
+    sources.posts = sources.posts.filter((item) => item !== post);
+    const { errors } = buildProposalsFromSources(sources);
+    for (const error of [
+      '1:1: reviewed catalog topic source is missing',
+      '/triangle-area-grade-7: reviewed topic page source is missing',
+      `${post.path}: reviewed blog post source is missing`,
+    ]) assert.ok(errors.includes(error), error);
   });
 
   it('later elementary landing pages and G8-T66 do not rewrite the frozen review batch', () => {
@@ -168,10 +222,11 @@ describe('seo proposals – review criteria on all 390 rows', () => {
 
   it('no description is cut mid-word or mid-sentence', () => {
     const sources = new Map<string, string[]>();
-    for (const page of readJsonDir(join(root, 'src/data/topic-pages'))) {
+    const { topicPages, posts } = loadProposalSources(root);
+    for (const page of topicPages) {
       sources.set(page.path, [page.intro, page.description].filter(Boolean));
     }
-    for (const post of readJsonDir(join(root, 'src/data/blog-posts'))) {
+    for (const post of posts) {
       sources.set(post.path, [post.description].filter(Boolean));
     }
     for (const item of committed) {

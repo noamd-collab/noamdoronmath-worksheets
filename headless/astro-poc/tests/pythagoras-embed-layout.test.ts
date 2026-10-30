@@ -4,7 +4,7 @@ import { createServer } from 'node:http';
 import { once } from 'node:events';
 import { it } from 'node:test';
 import puppeteer, { type Browser, type Page } from 'puppeteer-core';
-import { resolveTestBrowser } from './helpers/chromium';
+import { resolveTestBrowser } from './helpers/chromium.ts';
 
 const read = (path: string) => readFileSync(new URL(path, import.meta.url), 'utf8');
 const pageSource = read('../src/pages/games/eliyahu-pythagoras/index.astro');
@@ -64,7 +64,13 @@ it('fits every game step on desktop and phone, including later content growth an
         if ([2, 3, 5].includes(step)) {
           assert.equal(await frame.$$eval('#opts button', buttons => buttons.length), 4);
           await frame.click('#opt0');
-          assert.equal(await frame.evaluate(() => (window as any).__lesson.state.done), true);
+          await frame.waitForFunction(() => (window as any).__lesson.state.done, { timeout: 3000 }).catch(async error => {
+            const state = await frame.evaluate(() => {
+              const { idx, done, wrong } = (window as any).__lesson.state;
+              return { idx, done, wrong, feedback: document.querySelector('#fb')?.textContent };
+            });
+            throw new Error(`${width}×${height}, step ${step + 1}: answer click did not complete: ${JSON.stringify(state)}`, { cause: error });
+          });
           await fits(page, `${width}×${height}, step ${step + 1} answered`);
         }
         if (step === 1) {
