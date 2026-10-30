@@ -143,9 +143,11 @@ describe('exact-design protected live-baseline boundaries', () => {
       '<script src="noam-source-data-visual.js?v=20261028-source-data3"></script>',
       '<script src="noam-source-scaffold.js?v=20261029-scaffold1"></script>',
       '<script src="noam-visual-policy.js?v=20261029-geometry-only-v1"></script>',
+      // Noam, 2026-10-30: verified curated hints from Supabase join the didactic guides.
+      '<script src="noam-curated-hints.js?v=20261030-curated1"></script>',
     ];
     const allScripts = [...viewerWithNativeRelease.matchAll(/<script\b[^>]*>[\s\S]*?<\/script>/gi)].map(match => match[0]);
-    assert.equal(allScripts.length, 27, 'The release adds its ten source dependencies and one geometry-only policy');
+    assert.equal(allScripts.length, 28, 'The release adds its ten source dependencies, one geometry-only policy and curated hints');
     assert.deepEqual(allScripts.slice(8,16),nativeAdditions.slice(2,10),'Typed compilers follow their native source consumer in dependency order');
     assert.deepEqual(allScripts.slice(0, 2), nativeAdditions.slice(0, 2), 'Old URLs migrate before worksheet scripts run');
     assert.equal(allScripts[8], nativeAdditions[2], 'Native consumer follows the existing local visual engine');
@@ -278,7 +280,11 @@ describe('exact-design protected live-baseline boundaries', () => {
     // Noam, 2026-10-29: Ramzi graphics are restricted by manifest/exercise identity
     // to geometry/analytic geometry. Text hints, canonical source reading and the
     // original PDF remain. Saved graphics are suppressed without deleting history.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '067b8deea648b254a80a2e945f98c407020e8c520e2291e514fd802c4631b2be');
+    // Noam, 2026-10-30: after a manifest loads, its verified curated hints (Supabase,
+    // read-only publishable key) register as text-only didactic guides. Requests,
+    // auth, AI endpoints and storage are unchanged; ramzi-curated-hints tests cover it.
+    // The didactic guides asset is versioned 20261030-curated1 for its register() API.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), '92a9c207e5bc8a93624b9882c31c3b0bafd838c4827193d62c9110749c148871');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {
