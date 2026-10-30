@@ -249,7 +249,18 @@ describe('exact-design protected live-baseline boundaries', () => {
     // 2026-10-29: explicit printed last-part-only figure scope proves independent canonical text.
     // The whole reviewed framing must match; any extra scope qualification keeps the image reader.
     // The attachment-origin flag and reader use one request snapshot; cleanup retains newly added photos.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '4ba806e38320769fa2c2239379e3be12a0da2af1a51b462f9fcbd6b8fc7db7b7');
+    // Reviewed from the prior 61152b5e1 fence through live baseline 5ad709533:
+    // 3474fd6b7 enforces Noam's geometry-only drawing policy, and PR285
+    // (97fab9745) binds analysis/solve payloads and OCR caches to the selected
+    // source revision. The viewer head and the other 13 released scripts are
+    // byte-identical. drawing-hint-topic, ramzi-drawing-intent-source and
+    // ramzi-analyzer-source-binding cover the policy and source/cache guards.
+    // Keep the entire script fence, including the migrated behavior, protected.
+    // Noam, 2026-10-30: cap the full hint operation at 55s, fence expired
+    // requests/cache callbacks and release retry controls. Dedicated operation-
+    // deadline tests cover timeout, body aborts and generation races; the bot
+    // client, security protocol, source assets and conversation storage stay fixed.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), '8a2c0e72a9102c7dc1c2c81f0146a92aadb042d8b3f5fe5ffe74d38492ddfe81');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {
