@@ -19,6 +19,8 @@ on:
         default: '3'
 
 permissions:
+  # github-pages storage commits new MP3s and deletes withdrawn ones on main.
+  # Do not lower this to read.
   contents: write
 
 # Never let two runs render the same post at once.
@@ -58,18 +60,27 @@ jobs:
           restore-keys: blog-audio-state-
 
       - name: Confirm access before spending anything
+        id: access
         working-directory: blog-audio-pipeline
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           NOAM_AUDIO_WORKER_TOKEN: ${{ secrets.NOAM_AUDIO_WORKER_TOKEN }}
-        run: node bin/verify-access.mjs
+        run: |
+          node bin/verify-access.mjs
+          if [ -z "${GEMINI_API_KEY}" ] || [ -z "${NOAM_AUDIO_WORKER_TOKEN}" ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Identify the committer
+        if: steps.access.outputs.skip != 'true'
         run: |
           git config user.name 'blog-audio bot'
           git config user.email 'noamd-collab@users.noreply.github.com'
 
       - name: Render whatever the site has queued
+        if: steps.access.outputs.skip != 'true'
         working-directory: blog-audio-pipeline
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
