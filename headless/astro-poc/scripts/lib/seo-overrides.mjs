@@ -265,22 +265,11 @@ export const KEEP_CURRENT = [
 ];
 
 /**
- * Scope of the PR 46 / PR 52 SEO proposal review (390 rows: 328 catalog topics +
- * 2 shared-id topic pages + 60 blog posts). Pages/posts added to the baseline
- * after the cut-over review (#90, #104, #105) have their own reviewed meta and
- * are excluded until a separate proposal batch is commissioned.
+ * The complete PR 46 / PR 52 input scope is pinned in seo-review-scope.json.
+ * Restored elementary landing pages, G8-T66 and later synced posts retain their
+ * own page meta, as audited in PR 293; the manifest keeps them outside this batch.
+ * Keep new pages/posts in their own review batch; do not grow an exclusion list here.
  */
-export const EXCLUDED_FROM_PROPOSAL_BATCH = new Set([
-  '/kite-grade-9',
-  '/post/למידה-אדפטיבית-במתמטיקה-שמקדמת-כל-תלמיד',
-  '/post/תוצאות-מתרגול-עקבי-במתמטיקה-שמרגישים-בכיתה',
-  '/post/איך-מתרגלים-כפל-בעזרת-משחקים-בבית-ובכיתה',
-  '/post/איך-מסבירים-היקף-ושטח-בלי-לבלבל-בין-השניים',
-  '/post/פתרון-מפשטים-לכיתה-ז',
-  '/post/איך-משתמשים-בעוזר-מתמטי-חכם-בלי-לוותר-על-החשיבה',
-  '/post/איך-מלמדים-חילוק-ארוך-לילדים-בלי-לנחש-בדרך',
-  '/post/מהו-סדר-פעולות-ואיך-פותרים-תרגילים-בלי-להתבלבל',
-]);
 
 /**
  * Open questions for Noam. Copy stays as generated; approved stays false. Do not guess.

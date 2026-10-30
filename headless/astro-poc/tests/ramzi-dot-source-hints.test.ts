@@ -59,7 +59,7 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
    noamDidacticGuide:()=>null,noamDidacticPrompt:()=>'',noamDidacticResponse:()=>null,getExerciseAnalysis:async()=>cached,
    noamSolverMessage:(s:string)=>s,postJson:async(url:string,payload:any)=>{requests.push({url,payload});return {ok:true,answer:'השוו את מספר הנקודות בשורות.'};},
    noamGuardGeometryResult:(r:any)=>r,noamGuardSignedAddResult:(r:any)=>r,noamClarifySignedAddLanguage:(s:string)=>s,
-   noamResponseVisual:()=>null,noamVisualAnswer:(_:string,s:string)=>s,setTimeout:(cb:any)=>cb()});
+   noamResponseVisual:()=>null,noamVisualAnswer:(_:string,s:string)=>s,setTimeout:(cb:any,ms:number)=>{if(ms<55000)cb();return 0;}});
   runInNewContext(fn(v,'askNoam'),f.c);f.c.askNoam('hint','תן לי רמז אחד בלבד.');await settled();
   assert.equal(requests.length,1);assert.equal(requests[0].url,'/model/noamImageSolve');assert.equal(requests[0].payload.exerciseId,f.exercise.id);
   const sent=requests[0].payload.imageAnalysis,description=sent.diagram_description.slice(0,800);

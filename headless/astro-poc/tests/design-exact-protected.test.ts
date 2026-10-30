@@ -251,6 +251,17 @@ describe('exact-design protected live-baseline boundaries', () => {
     // 2026-10-29: explicit printed last-part-only figure scope proves independent canonical text.
     // The whole reviewed framing must match; any extra scope qualification keeps the image reader.
     // The attachment-origin flag and reader use one request snapshot; cleanup retains newly added photos.
+    // Reviewed from the prior 61152b5e1 fence through live baseline 5ad709533:
+    // 3474fd6b7 enforces Noam's geometry-only drawing policy, and PR285
+    // (97fab9745) binds analysis/solve payloads and OCR caches to the selected
+    // source revision. The viewer head and the other 13 released scripts are
+    // byte-identical. drawing-hint-topic, ramzi-drawing-intent-source and
+    // ramzi-analyzer-source-binding cover the policy and source/cache guards.
+    // Keep the entire script fence, including the migrated behavior, protected.
+    // Noam, 2026-10-30: cap the full hint operation at 55s, fence expired
+    // requests/cache callbacks and release retry controls. Dedicated operation-
+    // deadline tests cover timeout, body aborts and generation races; the bot
+    // client, security protocol, source assets and conversation storage stay fixed.
     // Noam, 2026-10-30: after a manifest loads, its verified curated hints (Supabase,
     // read-only publishable key) register as text-only didactic guides. Requests,
     // auth, AI endpoints and storage are unchanged; ramzi-curated-hints tests cover it.
@@ -262,7 +273,7 @@ describe('exact-design protected live-baseline boundaries', () => {
     // leaves the draft and attachments alone; no request is sent. The adapter reaches it
     // through window.noamAnswerUnderstood, the main script's only new global. The exchange
     // is marked understood: it stays out of the model history and is never a drawing target.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '82a539547b5a962fe9f4dd76826c8624c1710cf6c3c2f5aad3e2c23d9d46f78a');
+    assert.equal(sha256(JSON.stringify(releasedScripts)), 'ef912c23a2104e1d58ac6d9f49b0c3bc6d0694691337dd48d8a4f35fafcc08c8');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {

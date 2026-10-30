@@ -1,5 +1,23 @@
 # Worksheet tracker
 
+## Baseline validation repairs — 2026-10-30
+
+Follow-up to published PR 295 (`90e5d372`), integrated with concurrent PR 293 on current live baseline `4e613d9a`: repair all eleven remaining test failures without changing production content, teacher selection, reCAPTCHA or the geometry-only drawing policy. The live blog checks now read the current Astro cards and canonical blog sitemap; the SEO review retains its original independently recorded 390-row scope; viewer harnesses load the actual drawing policy and retain a complete script fingerprint with reviewed commit provenance; browser fixtures find installed macOS Chrome and wait for actual UI completion.
+
+The original 73-row loop source map is restored as a hash-checked test fixture, with the single previously approved PR 97 symbolic L14 amendment recorded separately. Its parity test now runs without a skip. Blog assertions share one live snapshot per path, and a rate-limited response is retried at most once only after valid server-provided Retry-After guidance.
+
+Validation: full `npm test` passed 1,501 tests (1,492 unit, five isolated drawing-hint, four live SSR), with zero failures, cancellations or skips. Drawing tests use a separate process and 2 GiB heap cap; peak aggregate RSS was 655 MiB. Bot client and loader regression passed 70 tests. Build and slash-fraction guard passed. The production source and public assets are unchanged from PR 295. Noam explicitly authorized the fixes, full tests and publication in the active conversation; final preview, PR and release evidence are recorded in the release report.
+
+## Teacher AI verified plans — 2026-10-30
+
+Follow-up on current live baseline `b8f97327`: share and prepare the reCAPTCHA SDK once per page, without creating a token or making a model request during preparation. Each protected request still gets a fresh token; score threshold, action, hostname, origin and rate checks remain unchanged, and a rejected verification never reaches the model.
+
+One verified teacher request asks the model for explicit independent sets of five, ten and fifteen whole questions. Only exact, complete, unique model choices are kept in page memory. The next count button uses its corresponding prepared model set. Changing grade, topic, level, lesson goal, style, note, source, available question parts or saved sections requires a fresh verified request. Manual changes made while AI is running remain intact. Invalid or locally completed plans are never represented as model plans.
+
+Validation: the new model-plan contract covers 3,882 plans across all 1,294 actual grade/topic/level scopes, including elementary, numeric identifiers, c2 and short catalogs. Backend targeted tests: 66 passed. Frontend and print targeted tests: 101 passed. Full bounded suite: 1,452 passed, 11 failed, one skipped; the 11 failures match the prior baseline. Drawing-hint tests ran separately with a 2 GiB heap cap and passed all five. The final shared-client and cached-loader integration passed all 70 tests; teacher and companion checks passed all 242 tests. Hosted preview and real-model production verification are recorded in the release evidence. No Qwen or DeepSeek code review was run; no CAPTCHA guard was weakened.
+
+Publication: Noam explicitly approved this fix, additional tests and production publication in the active conversation. Preview and production checks are pending at this source revision; the final release report will state their actual results.
+
 ## Teacher question picker — 2026-10-30
 
 Scope: all 933 unique source PDFs in the current live-branch catalog, represented by 964 grade/topic/level entries across grades 1–9 and 330 topics, including 507 elementary PDFs. The teacher picker exposes 18,794 original whole questions, manual selection and AI selection of 5, 10 or 15 questions in every grade. Elementary geometry retains original cards, two-column questions, shared source context and the answer section. Numeric-only and additional-excellence identifiers are valid; all available questions reach the model; model choices and local fallback are reported separately. When fewer questions are available, the picker states the available count.
@@ -10,7 +28,7 @@ Integration: the original `38eb5a39` feature was ported by `a4225f62` in PR 283;
 
 Validation: 183 teacher tests passed, including 3,882 simulated model selections across 1,294 grade/topic/level scopes. Browser checks rendered all 348 questions in representative topics across all nine grades and verified manual selection, phone layout and shared-source print labels. The final elementary native-text audit covered 405 PDFs and 8,307 crops with no text clipping or missing content. Full suite: 1,416 passed, 11 failed, 1 skipped; all 11 failures match the previously checked baseline. The drawing-hint test ran separately with a 2 GiB heap limit and 3 GiB process-group watchdog and passed all five tests. Build and visible slash-fraction checks passed; the finalized build has 2,791 static files.
 
-Publication status: authorized by Noam on 2026-10-30; hosted upload and production verification are still pending. No live AI request was made during this integration; the authorized final production verification remains to be performed.
+Publication status: PR 292 merged as `ff46c2697c2b7eeecf89989d1a585532eb3e3461` and was published through the approved release script on 2026-10-30. Live checks confirmed the full-question display, manual selection and grade routing. The first model selection returned five real AI choices; subsequent requests for ten and fifteen were rejected by reCAPTCHA with score 0.3 and correctly labeled as local fallback. The follow-up below addresses repeated requests without weakening the guard.
 
 One row per grade and topic in `headless/astro-poc/src/data/catalog.v1.json` on `headless/astro-poc-baseline` (`3911160f`). That file is generated from `index.html`. Level names are the catalog labels.
 

@@ -3,19 +3,25 @@
  * Each block maps to a review finding or one of the seven review criteria.
  */
 import assert from 'node:assert/strict';
-import { readFileSync, readdirSync } from 'node:fs';
+import { readFileSync, mkdtempSync, writeFileSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { describe, it } from 'node:test';
 import {
   buildProposals,
+  buildProposalsFromSources,
+  readJsonDir,
   clipSentences,
   isValidLiveTitle,
+  loadProposalSources,
   normalizeHebrew,
   normalizePostCopy,
   titleKey,
   withBrand,
   withGrade,
 } from '../scripts/lib/seo-copy.mjs';
-import { KEEP_CURRENT, NEEDS_DECISION } from '../scripts/lib/seo-overrides.mjs';
+import { EXACT, KEEP_CURRENT, NEEDS_DECISION } from '../scripts/lib/seo-overrides.mjs';
 
 type Item = {
   path: string;
@@ -31,7 +37,7 @@ type Item = {
   needsDecision?: string;
 };
 
-const root = new URL('..', import.meta.url).pathname;
+const root = fileURLToPath(new URL('..', import.meta.url));
 const committed = JSON.parse(readFileSync(new URL('../src/data/seo-proposals.json', import.meta.url), 'utf8'))
   .items as Item[];
 const len = (s: string) => [...s].length;
@@ -49,6 +55,96 @@ describe('seo proposals – generator and coverage', () => {
     const { proposals, errors } = buildProposals(root);
     assert.deepEqual(errors, []);
     assert.deepEqual(proposals, committed);
+  });
+
+  it('the historical review scope has explicit provenance and unique input identities', () => {
+    const scope = JSON.parse(readFileSync(new URL('../scripts/lib/seo-review-scope.json', import.meta.url), 'utf8'));
+    assert.equal(scope.reviewedSource.commit, '39ce59e6');
+    assert.equal(scope.reviewedSource.path, 'headless/astro-poc/src/data/seo-proposals.json');
+    for (const [key, count] of [['catalogTopics', 328], ['topicPages', 95], ['blogPosts', 60]] as const) {
+      assert.equal(scope[key].length, count, key);
+      assert.equal(new Set(scope[key]).size, count, `${key} duplicates`);
+    }
+  });
+
+  it('new catalog topics, landing pages and posts do not silently enter the historical review batch', () => {
+    const sources = loadProposalSources(root);
+    const original = buildProposalsFromSources(sources);
+    const changed = structuredClone(sources);
+    changed.catalog.grades[0].topics.push({ id: 999, title: 'נושא בדיקה חדש', levels: [] });
+    changed.topicPages.push({
+      path: '/new-test-page', grade: 1, catalogCta: { catalogTopicId: 1 },
+      title: 'עמוד בדיקה לכיתה א׳', description: 'תיאור בדיקה בלבד.',
+    });
+    changed.posts.push({ path: '/post/new-test-post', title: 'פוסט בדיקה חדש', description: 'תיאור בדיקה בלבד.' });
+    assert.deepEqual(buildProposalsFromSources(changed), original);
+    assert.equal(changed.catalog.grades[0].topics.length, sources.catalog.grades[0].topics.length + 1);
+    assert.equal(changed.topicPages.length, sources.topicPages.length + 1);
+    assert.equal(changed.posts.length, sources.posts.length + 1);
+  });
+
+  it('reviewed copy still comes from independent current sources, never the generated proposal file', () => {
+    const sources = loadProposalSources(root);
+    const page = sources.topicPages.find((item) => item.path === '/triangle-area-grade-7')!;
+    page.description = 'תיאור בדיקה בלבד למקור המעודכן.';
+    const { proposals, errors } = buildProposalsFromSources(sources);
+    assert.deepEqual(errors, []);
+    const row = proposals.find((item) => item.path === page.path)!;
+    assert.equal(row.currentDescription, page.description);
+    assert.equal(row.description, page.description);
+    assert.equal(row.approved, false);
+  });
+
+  it('missing reviewed input records fail explicitly instead of shrinking the batch', () => {
+    const sources = loadProposalSources(root);
+    sources.catalog.grades[0].topics = sources.catalog.grades[0].topics.filter((topic: { id: number }) => topic.id !== 1);
+    sources.topicPages = sources.topicPages.filter((page) => page.path !== '/triangle-area-grade-7');
+    const post = sources.posts.find((item) => decodeURIComponent(item.path) === '/post/common-factor-and-minus-parentheses-grade-7')!;
+    sources.posts = sources.posts.filter((item) => item !== post);
+    const { errors } = buildProposalsFromSources(sources);
+    for (const error of [
+      '1:1: reviewed catalog topic source is missing',
+      '/triangle-area-grade-7: reviewed topic page source is missing',
+      `${post.path}: reviewed blog post source is missing`,
+    ]) assert.ok(errors.includes(error), error);
+  });
+
+  it('later elementary landing pages and G8-T66 do not rewrite the frozen review batch', () => {
+    const { proposals, errors } = buildProposals(root);
+    assert.deepEqual(errors, []);
+    const authored = readJsonDir(join(root, 'src/data/topic-pages')).filter((page) => page.grade <= 6);
+    assert.ok(authored.some((page) => page.path === '/addition-to-10-grade-1'));
+    for (const page of authored) {
+      assert.ok(!proposals.some((row) => row.path === page.path), page.path);
+      assert.ok(proposals.some((row) => row.path === `/worksheets?grade=${page.grade}&topic=${page.catalogCta.catalogTopicId}`), page.path);
+    }
+    assert.ok(!proposals.some((row) => row.path === '/worksheets?grade=8&topic=66'));
+  });
+
+  it('an unused review override still fails instead of silently dropping a decision', () => {
+    const path = '/not-in-the-reviewed-source-batch';
+    const overrides = EXACT as Record<string, { title?: string; description?: string }>;
+    assert.equal(overrides[path], undefined);
+    overrides[path] = { title: 'כותרת בדיקה' };
+    try {
+      const { errors } = buildProposals(root);
+      assert.ok(errors.includes(`${path}: override for a path that is not generated`));
+    } finally {
+      delete overrides[path];
+    }
+  });
+
+  it('JSON source loading ignores scripts but rejects malformed JSON content', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'noam-seo-json-sources-'));
+    try {
+      writeFileSync(join(dir, 'a.json'), JSON.stringify({ path: '/source-a', description: 'משפט שלם.' }));
+      writeFileSync(join(dir, 'synced-index.ts'), '/** Generated index. */\nthrow new Error("must not execute");');
+      assert.deepEqual(readJsonDir(dir), [{ path: '/source-a', description: 'משפט שלם.' }]);
+      writeFileSync(join(dir, 'broken.json'), '{ invalid');
+      assert.throws(() => readJsonDir(dir), SyntaxError);
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
   });
 
   it('all 390 rows exist once: 235 catalog topics, 95 topic pages, 60 posts; none approved', () => {
@@ -126,12 +222,11 @@ describe('seo proposals – review criteria on all 390 rows', () => {
 
   it('no description is cut mid-word or mid-sentence', () => {
     const sources = new Map<string, string[]>();
-    for (const name of readdirSync(new URL('../src/data/topic-pages', import.meta.url))) {
-      const page = JSON.parse(readFileSync(new URL(`../src/data/topic-pages/${name}`, import.meta.url), 'utf8'));
+    const { topicPages, posts } = loadProposalSources(root);
+    for (const page of topicPages) {
       sources.set(page.path, [page.intro, page.description].filter(Boolean));
     }
-    for (const name of readdirSync(new URL('../src/data/blog-posts', import.meta.url))) {
-      const post = JSON.parse(readFileSync(new URL(`../src/data/blog-posts/${name}`, import.meta.url), 'utf8'));
+    for (const post of posts) {
       sources.set(post.path, [post.description].filter(Boolean));
     }
     for (const item of committed) {
