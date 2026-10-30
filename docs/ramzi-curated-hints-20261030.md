@@ -10,7 +10,7 @@ Ramzi can show pre-written hints (three per worksheet part) from Supabase instea
 4. The hints join the existing didactic guides. **רמז** shows hint 1, 2, 3 in order. **הבנתי** and **לא הבנתי** keep working as before. Curated hints are text only: no drawing is added.
 5. Parts without a verified row, and any network failure, behave exactly as today (AI hints).
 
-Visitors cannot write to the table. Changes are made in the Supabase dashboard. A changed hint or status shows up the next time a worksheet is opened; no website deploy is needed.
+Visitors cannot write to the table, and the public key reads only the exercise ID and the three hints of a `verified` row: not its status, notes or bank text. Changes are made in the Supabase dashboard. A changed hint or status shows up the next time a worksheet is opened; no website deploy is needed.
 
 Full solutions and final answers are **not** stored. The repository is public and the table is readable with the public key, so only hints go in.
 
@@ -35,6 +35,30 @@ The bank had 136 parts for grades 7–9. The builder maps bank IDs to live viewe
 
 The bank's own exercise texts are not the printed exercises, so every hint set was checked against the real part. See the review results below.
 
+## Review results (30 October 2026)
+
+Each of the 135 hint sets went through three steps:
+
+1. A judge compared the hints with the printed part they were mapped to.
+2. If they did not fit, a second agent looked for a part in the same topic, at any level, that they do fit.
+3. Two reviewers, one reading as a student and one as a teacher, each tried to refute the fit. A row is `verified` only if neither refuted it: the hints must be correct, match what the part asks, mention nothing the part lacks, and not reveal the answer.
+
+| | Rows |
+| --- | --- |
+| `verified`, on the mapped part | 7 |
+| `verified`, moved to another part of the same topic | 72 (40 of them to another level) |
+| `review`, a move was proposed and refuted | 35 |
+| `review`, no fitting part found | 21 |
+| **Total** | **135** (79 `verified`, 56 `review`) |
+
+By grade: ז׳ 61 of 98, ח׳ 10 of 20, ט׳ 8 of 17 are `verified`. No two rows claimed the same part.
+
+Each row's `review_note` gives the outcome in one Hebrew sentence: fits, moved (and from which part), or why it is hidden. `source_id` keeps the bank ID. The reviewers' full reasoning is not stored, because it often states the part's answer.
+
+Extra checks on the 79 `verified` rows: no hint quotes a number (other than 0–3 and 10) that is missing from its part, and no hint contains the bank's final answer.
+
+The 56 `review` rows stay hidden from students. Noam can check one, fix its `exercise_id` or hints if needed, and set it to `verified`.
+
 ## Adding or updating hints
 
 ```bash
@@ -47,4 +71,5 @@ The script rewrites `learning/ramzi-hints.json` (the reviewable list) and `learn
 
 - `tests/ramzi-hints-build.test.cjs` — parsing, ID mapping, no solutions in the output, review moves, and seed/JSON consistency.
 - `headless/astro-poc/tests/ramzi-curated-hints.test.ts` — guide registration, hint order, הבנתי / לא הבנתי, the Supabase request, failure fallback and viewer wiring.
-- The SQL files were run on a local PostgreSQL 16 with Supabase-style `anon` and `authenticated` roles.
+- The SQL files were run on a local PostgreSQL 16 with Supabase-style `anon` and `authenticated` roles. The seed ran twice without errors, the publishable-key role saw the 79 `verified` rows only, and the RLS check printed `PASS`.
+- In the local viewer, on phone and desktop, a verified row (`G7-T01-A-Q34א`) showed hint 1, then hint 2 after **לא הבנתי**, with **הבנתי** and **לא הבנתי** on each, no drawing and no AI request.
