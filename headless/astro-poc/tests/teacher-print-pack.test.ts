@@ -648,6 +648,7 @@ describe('teacher short worksheet pack', () => {
     const headInk: [number, number, number, number] = [0.05, 0.07, 0.78, 0.93];
 
     // (2) A dot inside an answer is multiplication, not a part separator.
+    // Without the page's ink the text-only crop keeps its old reading.
     const dotted = [
       head,
       item(0.200, 0.210, 0.907, 0.929, '(2)'),
@@ -658,11 +659,11 @@ describe('teacher short worksheet pack', () => {
       item(0.200, 0.210, 0.740, 0.750, '7'),
     ];
     const dottedInk = new Map([[8, page(headInk, [0.198, 0.210, 0.740, 0.929])]]);
-    for (const ink of [undefined, dottedInk]) {
-      const [two] = api.answerCropsFromLines(dotted, [{ q: 2, part: 'א' }, { q: 2, part: 'ב' }], ink);
-      assert.equal(two.pieces.length, 3, JSON.stringify(two.pieces));
-      assert.ok(two.pieces[1].box.x <= 0.800, JSON.stringify(two.pieces[1].box));
-    }
+    const [two] = api.answerCropsFromLines(dotted, [{ q: 2, part: 'א' }, { q: 2, part: 'ב' }], dottedInk);
+    assert.equal(two.pieces.length, 3, JSON.stringify(two.pieces));
+    assert.ok(two.pieces[1].box.x <= 0.800, JSON.stringify(two.pieces[1].box));
+    const [twoText] = api.answerCropsFromLines(dotted, [{ q: 2, part: 'א' }, { q: 2, part: 'ב' }]);
+    assert.equal(twoText.pieces.length, 2, JSON.stringify(twoText.pieces));
 
     // (7) Parts of one row are top-aligned: ב holds a fraction and sits on a
     // lower baseline. Its numerator, bar and denominator stay in one row.
@@ -729,6 +730,35 @@ describe('teacher short worksheet pack', () => {
     assert.equal(nine.pieces.length, 2, JSON.stringify(nine.pieces));
     assert.ok(nine.pieces[0].box.x <= 0.888, JSON.stringify(nine.pieces[0].box));
     nine.pieces.forEach((piece) => assert.ok(piece.box.y + piece.box.h <= 0.905, JSON.stringify(piece.box)));
+  });
+
+  it('reads answer ink on highlights and tints, and tells rules from number lines', () => {
+    const api = layoutApi({});
+    const W = 200;
+    const H = 100;
+    const pixels = new Uint8ClampedArray(W * H * 4).fill(255);
+    const paint = (r0: number, r1: number, c0: number, c1: number, rgb: number[]) => {
+      for (let r = r0; r < r1; r += 1) for (let c = c0; c < c1; c += 1) pixels.set([...rgb, 255], (r * W + c) * 4);
+    };
+    paint(10, 20, 20, 190, [255, 255, 0]); // a yellow highlight
+    paint(13, 17, 40, 50, [0, 0, 0]); // text on it
+    paint(30, 40, 20, 190, [159, 197, 232]); // a light blue tint
+    paint(33, 37, 60, 70, [0, 0, 0]);
+    paint(50, 51, 10, 195, [0, 0, 0]); // a rule across to the number column
+    paint(60, 61, 40, 120, [0, 0, 0]); // a number line inside an answer
+    for (let c = 10; c < 195; c += 8) paint(80, 81, c, c + 4, [80, 80, 80]); // a dashed rule
+    const ink = api.pageInkFromPixels(pixels, W, H);
+    const count = (r: number) => ink.dark.slice(r * W, (r + 1) * W).reduce((sum: number, value: number) => sum + value, 0);
+    assert.equal(count(11), 0, 'highlight read as ink');
+    assert.equal(count(15), 10, 'text on the highlight lost');
+    assert.equal(count(31), 0, 'tint read as ink');
+    assert.equal(count(35), 10, 'text on the tint lost');
+    assert.equal(count(50), 0);
+    assert.equal(ink.ruled[50], 1);
+    assert.equal(count(60), 80, 'number line dropped');
+    assert.equal(ink.ruled[60], 0);
+    assert.equal(count(80), 0);
+    assert.equal(ink.ruled[80], 1);
   });
 
   it('prints only the picked part, keeps 19 with its drawing, and groups parts of one question', (t) => {
