@@ -259,7 +259,11 @@ describe('exact-design protected live-baseline boundaries', () => {
     // byte-identical. drawing-hint-topic, ramzi-drawing-intent-source and
     // ramzi-analyzer-source-binding cover the policy and source/cache guards.
     // Keep the entire script fence, including the migrated behavior, protected.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '40c5babbcc812094a5b512697fa9724c9adc32009aa146a54c4f96e3fd712e34');
+    // Noam, 2026-10-30: cap the full hint operation at 55s, fence expired
+    // requests/cache callbacks and release retry controls. Dedicated operation-
+    // deadline tests cover timeout, body aborts and generation races; the bot
+    // client, security protocol, source assets and conversation storage stay fixed.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), '8a2c0e72a9102c7dc1c2c81f0146a92aadb042d8b3f5fe5ffe74d38492ddfe81');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {

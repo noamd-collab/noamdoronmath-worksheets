@@ -78,7 +78,7 @@ test('the actual ask path binds scope to the requested part even if selection ch
   let finishAnalysis: (value: any) => void = () => {};
   let sent: any;
   Object.assign(ctx, {
-    selectedExercise: partC, busy: false,
+    selectedExercise: partC, busy: false, setTimeout: () => 0, clearTimeout() {},
     document: { activeElement: null }, panelBody: { contains: () => false },
     exerciseThread: () => ({ hintIndex: 0, messages: [], history: [] }),
     saveNoamState() {}, setNoamBusy() {}, renderNoamChat() {}, restoreNoamChatFocus() {}, announceNoam() {},
