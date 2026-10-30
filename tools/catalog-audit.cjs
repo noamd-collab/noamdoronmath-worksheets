@@ -24,7 +24,7 @@ const path = require('node:path');
 const zlib = require('node:zlib');
 const crypto = require('node:crypto');
 
-const { loadIndexCatalog, buildCatalog, validateCatalog, stableStringify } = require('../scripts/lib/headless-catalog.cjs');
+const { loadIndexCatalog, buildCatalog, validateCatalog, stableStringify, resolvedNoamPrefix } = require('../scripts/lib/headless-catalog.cjs');
 
 const SEVERITIES = ['error', 'warning', 'review', 'info'];
 const PDF_ID = /^[0-9a-f]{32}$/;
@@ -251,6 +251,19 @@ function checkIndexData(au, raw) {
       else if (!levels.includes('one') && levels.join() !== 'a,b,c' && levels.join() !== 'a,b,c,c2') {
         au.find('review', 'DATA_LEVELS_PARTIAL', { grade, topicId: t.id, subject: t.t, source: P.index, evidence: `levels ${levels.join(',')}${t.aLabel ? '; aLabel "' + t.aLabel + '"' : ''}${t.cLabel ? '; cLabel "' + t.cLabel + '"' : ''}` }, `only level(s) ${levels.join(', ')}${t.parent !== undefined ? ' (subtopic of ' + t.parent + ')' : ''}`);
       }
+      const declaredSource = ['sourceGrade', 'sourcePrefix', 'sourceTitle'].some((key) => row[key] !== undefined);
+      if (row.viewerLevel !== undefined && (!levels.includes('one') || !Object.hasOwn(LEVEL_ORDER, row.viewerLevel))) {
+        au.find('error', 'DATA_VIEWER_LEVEL', { grade, topicId: t.id, source: P.index, evidence: src(`.links[${t.id}].viewerLevel`) }, 'viewerLevel must name a supported manifest level on a single-sheet row');
+      }
+      if (declaredSource) {
+        const sourceTopic = (raw.DATA[row.sourceGrade]?.topics || []).find((item) => resolvedNoamPrefix(item, row.sourceGrade, raw.NOAM_PREFIX_FALLBACK) === row.sourcePrefix);
+        const sourceRow = sourceTopic && raw.DATA[row.sourceGrade]?.links?.[sourceTopic.id];
+        const valid = Number.isInteger(row.sourceGrade) && (raw.MIDDLE || []).includes(row.sourceGrade) &&
+          /^G[789]-T\d+$/.test(row.sourcePrefix || '') && typeof row.sourceTitle === 'string' && row.sourceTitle.trim() &&
+          sourceRow && !sourceRow.sourceGrade && levels.every((lv) => sourceRow[lv] === row[lv] &&
+            (sourceRow.viewerLevel || (lv === 'one' ? 'b' : lv)) === (row.viewerLevel || (lv === 'one' ? 'b' : lv)));
+        if (!valid) au.find('error', 'DATA_SOURCE_REUSE', { grade, topicId: t.id, source: P.index, evidence: src(`.links[${t.id}] sourceGrade/sourcePrefix/sourceTitle`) }, 'declared reuse must identify a complete existing source worksheet with the same PDFs and manifest levels');
+      }
       for (const lv of levels) {
         const id = row[lv];
         levelCount++;
@@ -420,6 +433,8 @@ function learningOutputs(raw) {
           l,
           label: l === 'one' ? row.oneLabel || 'כל הרמות' : t[l + 'Label'] || { a: 'רמה א׳', b: 'רמה ב׳', c: 'מצוינות', c2: 'מצוינות 2' }[l],
           pdf: row[l],
+          ...(row.viewerLevel ? { viewerLevel: row.viewerLevel } : {}),
+          ...(row.sourceGrade ? { sourceGrade: row.sourceGrade, sourcePrefix: row.sourcePrefix, sourceTitle: row.sourceTitle } : {}),
           x: t.x || (raw.NOAM_PREFIX_FALLBACK[g] || {})[t.id] || '',
         });
       }
@@ -454,6 +469,19 @@ function checkMiddleFixture(au, raw) {
   let n = 0;
   for (const [g, topics] of Object.entries(fx.grades || {})) {
     for (const t of topics) {
+      const currentTopic = raw.DATA[g]?.topics?.find((item) => item.id === t.id);
+      const row = raw.DATA[g]?.links?.[t.id] || {};
+      const prefix = currentTopic && resolvedNoamPrefix(currentTopic, Number(g), raw.NOAM_PREFIX_FALLBACK);
+      if (t.prefix && prefix !== t.prefix) au.find('error', 'APPROVED_ROUTING_CHANGED', { grade: g, topicId: t.id, subject: t.title, source: P.middleFixture, evidence: `catalog prefix now: ${prefix || '(none)'}` }, 'an approved catalog prefix changed');
+      if (t.routing) {
+        const routing = {
+          grade: row.sourceGrade || Number(g),
+          prefix: row.sourcePrefix || prefix,
+          title: row.sourceTitle || currentTopic?.t,
+          levels: Object.fromEntries(Object.keys(t.links || {}).map((lv) => [lv, row.viewerLevel || (lv === 'one' ? 'b' : lv)])),
+        };
+        if (JSON.stringify(routing) !== JSON.stringify(t.routing)) au.find('error', 'APPROVED_ROUTING_CHANGED', { grade: g, topicId: t.id, subject: t.title, source: P.middleFixture, evidence: `routing now: ${JSON.stringify(routing)}` }, 'an approved viewer grade, prefix, title or level changed');
+      }
       for (const [lv, id] of Object.entries(t.links || {})) {
         n++;
         const now = (raw.DATA[g]?.links?.[t.id] || {})[lv];
@@ -492,11 +520,22 @@ function checkManifests(au, raw, pdfOwners) {
         continue;
       }
       matched++;
+      const topic = raw.DATA[o.grade]?.topics?.find((item) => item.id === o.topicId);
+      const row = raw.DATA[o.grade]?.links?.[o.topicId] || {};
+      const sourceGrade = row.sourceGrade || o.grade;
+      const prefix = row.sourcePrefix || (topic && resolvedNoamPrefix(topic, o.grade, raw.NOAM_PREFIX_FALLBACK));
+      const sourceTopic = row.sourceGrade
+        ? (raw.DATA[sourceGrade]?.topics || []).find((item) => resolvedNoamPrefix(item, sourceGrade, raw.NOAM_PREFIX_FALLBACK) === prefix)
+        : topic;
+      const viewerLevel = row.viewerLevel || (o.level === 'one' ? 'b' : o.level);
       const diffs = [];
-      if (m.grade !== o.grade) diffs.push(`grade ${m.grade}`);
-      if (m.topicId !== o.topicId) diffs.push(`topicId ${m.topicId}`);
+      if (m.grade !== sourceGrade) diffs.push(`grade ${m.grade}; expected ${sourceGrade}`);
+      // New native manifests may omit the catalog's logical numeric ID. Their
+      // source prefix remains mandatory and exact; non-null IDs remain strict.
+      if (!prefix || m.prefix !== prefix) diffs.push(`prefix ${m.prefix}; expected ${prefix || '(none)'}`);
+      if (m.topicId != null && m.topicId !== sourceTopic?.id) diffs.push(`topicId ${m.topicId}; expected ${sourceTopic?.id}`);
       const ml = String(m.level || '').toLowerCase();
-      if (o.level !== 'one' && ml !== o.level) diffs.push(`level ${m.level}`);
+      if (ml !== viewerLevel) diffs.push(`level ${m.level}; expected ${viewerLevel}`);
       au.relate('pdf→manifest', { grade: m.grade, topicId: m.topicId, topicTitle: m.topic, level: ml, pdfId: id, target: `${m.prefix} pages ${m.pageCount}`, source: src, evidence: `pdfHash ${m.pdfHash}; sourceSha256 ${m.sourceSha256 || '(none)'}` });
       if (diffs.length) au.find('error', 'MANIFEST_MISMATCH', { grade: o.grade, topicId: o.topicId, level: o.level, pdfId: id, subject: o.title, source: src, evidence: `manifest: ${diffs.join(', ')} "${m.topic}"` }, 'the PDF\'s manifest was made for another grade/topic/level');
       else if (similarity(m.topic, o.title) < 0.5) au.find('review', 'MANIFEST_TITLE_DIFFERS', { grade: o.grade, topicId: o.topicId, level: o.level, pdfId: id, subject: o.title, source: src, evidence: `manifest topic "${m.topic}"` }, 'catalog title and the title the manifest was built with differ');

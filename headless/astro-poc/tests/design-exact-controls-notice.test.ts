@@ -140,6 +140,7 @@ describe('exact hero presentation adapter inventory', () => {
   });
 });
 
+// Four additive elementary films restored from main; existing films stay protected.
 describe('protected math sources stay pinned after the L01 removal', () => {
   // Hashes moved off live-base 8a098020 because L01 angle-sum was deleted
   // and replaced by the vertex-descent film. Not a silent design regen.
@@ -152,8 +153,8 @@ describe('protected math sources stay pinned after the L01 removal', () => {
   // Brave motion opt-in inside the film (sitePrefersReducedMotion). Not a design regen.
   // conceptLoops.ts parks on OS reduced motion unless the site opts in.
   const expected = {
-    'src/components/ConceptLoop.astro': '8fa8bd116ee7af1ea02bd7d580c140372f05a16772f4706876ced7ac9b3c66ef',
-    'src/lib/conceptLoops.ts': 'c0a46b28dd9610cd5b79b09f33a5ff60775bbb8e1859e07808e031e9bdc784f0',
+    'src/components/ConceptLoop.astro': '24b3e9cddc65d2617755a02ebd8772aaa0a8d74477c913a86e15eff66d1c5131',
+    'src/lib/conceptLoops.ts': '78636536a970ed54e07592c26450aa8f26540e780f9782c7b74482e07669d7e5',
   };
   for (const [file, digest] of Object.entries(expected)) {
     it(file, () => {

@@ -202,10 +202,23 @@ describe('teacher catalog picker', () => {
   it('reaches every catalog sheet for every grade in the picker', () => {
     const fromCatalog = catalogSheets();
     const fromPicker = indexSheets();
-    // teacher-catalog.json on this branch is not a mirror of the pinned catalog
-    // (hundreds of pdf ids differ). Do not regenerate that catalog here.
     assert.ok(fromCatalog.length > 0);
-    assert.ok(fromPicker.length > 0);
+    assert.deepEqual(
+      fromPicker.map(({ grade, topicId, pdfId, level }) => ({ grade, topicId, pdfId, level })),
+      fromCatalog,
+      'The teacher picker must use the same topics, PDF releases and levels as the worksheet catalog',
+    );
+    for (const grade of catalog.grades) {
+      const teacherGrade = index.grades.find((item) => item.grade === grade.grade);
+      for (const topic of grade.topics) {
+        const teacherTopic = teacherGrade.topics.find((item) => item.id === topic.id);
+        for (const sheet of teacherTopic.sheets) {
+          for (const key of ['sourceGrade', 'sourcePrefix', 'sourceTitle']) {
+            assert.equal(sheet[key], topic.routing[key], `${grade.grade}:${topic.id} ${key}`);
+          }
+        }
+      }
+    }
     assert.deepEqual(index.grades.map((grade) => grade.grade), [1, 2, 3, 4, 5, 6, 7, 8, 9]);
     for (const grade of [1, 2, 3, 4, 5, 6]) {
       assert.equal(index.grades.find((item) => item.grade === grade).band, 'elementary');

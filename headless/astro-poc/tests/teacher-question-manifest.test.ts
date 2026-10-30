@@ -12,8 +12,11 @@ const previews = JSON.parse(gunzipSync(Buffer.from(bundle.gzipBase64, 'base64'))
 const activeIds = [...new Set<string>(catalog.grades.flatMap((grade: any) => grade.topics.flatMap((topic: any) => topic.sheets.filter((sheet: any) => sheet.mode === 'exercise').map((sheet: any) => sheet.pdfId))))];
 const request = (query: string) => GET({ url: new URL('https://www.noamdoronmath.co.il/api/teacherQuestionManifest?' + query) } as Parameters<typeof GET>[0]);
 
-test('serves the live factoring sheet even though it has no public manifest file', async () => {
-  const response = await request('pdfId=6a37fe7160324a17ad107b3dbe43c1db');
+test('serves the current factoring release from compiled preview geometry', async () => {
+  const factoring = catalog.grades.find((grade: any) => grade.grade === 9).topics.find((topic: any) => topic.id === 2);
+  const sheet = factoring.sheets.find((sheet: any) => sheet.level === 'a');
+  assert.equal(sheet.pdfId, '40e46a64bcf0441bae36eba820884704');
+  const response = await request('pdfId=' + sheet.pdfId);
   assert.equal(response.status, 200);
   assert.match(response.headers.get('content-type') || '', /application\/json/);
   const body = await response.json();
@@ -22,7 +25,7 @@ test('serves the live factoring sheet even though it has no public manifest file
 });
 
 test('preview geometry includes every active exercise sheet and no other sheet', () => {
-  assert.equal(activeIds.length, 452);
+  assert.equal(activeIds.length, 426);
   assert.ok(bundle.gzipBase64.length < 1_000_000, 'geometry must fit in the Wix deployment request');
   assert.deepEqual(Object.keys(previews).sort(), [...activeIds].sort());
   for (const pdfId of activeIds) {
@@ -41,6 +44,7 @@ test('rejects malformed identifiers and never serves a nonactive worksheet', asy
     assert.equal((await request(query)).status, 400);
   }
   assert.equal((await request('pdfId=00000000000000000000000000000000')).status, 404);
+  assert.equal((await request('pdfId=6a37fe7160324a17ad107b3dbe43c1db')).status, 404, 'Archived factoring stays available as a sheet file but is not an active preview release');
 });
 
 test('committed geometry matches the current source manifests and teacher catalog', () => {
