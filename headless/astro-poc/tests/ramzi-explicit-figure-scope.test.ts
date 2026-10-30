@@ -79,7 +79,7 @@ for(const relative of ['worksheet-viewer-noam.html','../../../worksheet-viewer-n
   const source=viewer.slice(viewer.indexOf('var NOAM_NUMBER_SUMMARY_PDFS ='),viewer.indexOf('try{',viewer.indexOf('var NOAM_NUMBER_SUMMARY_PDFS =')));
   for(const pdf of [...specs.map(s=>s.pdf),'unrelated-pdf']){
    const c:any={pdf,HEADLESS_MANIFEST_BASE:'/noam-ai/manifests/'};runInNewContext(source,c);
-   assert.equal(c.ANALYSIS_STORAGE_KEY,'noam-static-analysis-v2-crop-geometry:'+pdf+(pdf==='unrelated-pdf'?'':':item-figure-scope-20261028'));
+   assert.equal(c.ANALYSIS_STORAGE_KEY,'noam-static-analysis-v3-source-bound-20261030:'+pdf+(pdf==='unrelated-pdf'?'':':item-figure-scope-20261028'));
    assert.equal(c.THREAD_STORAGE_KEY,'noam-static-threads-v1:'+pdf);assert.match(c.MANIFEST_PATH,/item-figure-scope/);
   }
  });

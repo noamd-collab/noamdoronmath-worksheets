@@ -51,7 +51,7 @@ it('corrected geometry refreshes cached manifests and OCR while retaining conver
   for (const url of [new URL('../public/worksheet-viewer-noam.html', import.meta.url), new URL('../../../worksheet-viewer-noam.html', import.meta.url)]) {
     const viewer = readFileSync(url, 'utf8');
     assert.match(viewer, /MANIFEST_PATH = [^\n]+\.json\?v=20261028-item-figure-scope/);
-    assert.match(viewer, /ANALYSIS_STORAGE_KEY = "noam-static-analysis-v2-crop-geometry:"/);
+    assert.match(viewer, /ANALYSIS_STORAGE_KEY = "noam-static-analysis-v3-source-bound-20261030:"/);
     assert.match(viewer, /THREAD_STORAGE_KEY = "noam-static-threads-v1:"/);
   }
 });

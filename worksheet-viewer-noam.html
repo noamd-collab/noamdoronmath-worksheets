@@ -4674,7 +4674,7 @@ var NOAM_NUMBER_SUMMARY_PDFS = [
 ];
 var MANIFEST_PATH = HEADLESS_MANIFEST_BASE + pdf + ".json?v=20261028-item-figure-scope-number-summary";
 var THREAD_STORAGE_KEY = "noam-static-threads-v1:" + pdf;
-var ANALYSIS_STORAGE_KEY = "noam-static-analysis-v2-crop-geometry:" + pdf +
+var ANALYSIS_STORAGE_KEY = "noam-static-analysis-v3-source-bound-20261030:" + pdf +
   (NOAM_NUMBER_SUMMARY_PDFS.indexOf(pdf)>=0?":number-summary-v1":"");
 // Only these four corrected source scopes invalidate OCR that included sibling givens.
 if (["e6bad05438cb48f4ab5f7d894727625f", "1447b1c93a0f481abbd1eccbef8a7551", "7b2d78cef1f44268ba9265392320ad26", "162e9a4cd15e41c5bb68cc6a1b600e81"].indexOf(pdf)>=0){ANALYSIS_STORAGE_KEY+=":item-figure-scope-20261028";}
@@ -7457,10 +7457,38 @@ function getExerciseAnalysis(exercise,attachmentSnapshot){
   // still forces the original worksheet for an explicit drawing request.
   var attachments=attachmentSnapshot===true?[]:Array.isArray(attachmentSnapshot)?attachmentSnapshot.slice():
     (typeof currentAttachments==="function"?currentAttachments().slice():[]);
+  // Capture selectors before cropping or reading the PDF. They identify the
+  // intended printed task; only the server can verify its published source.
+  var requestContext={exerciseId:String(exercise.id||""),selectedPart:String(exercise.part||""),hasStudentAttachments:attachments.length>0};
+  var sourceManifest=typeof manifest==="object"&&manifest?manifest:{};
+  var nativeSha=String(sourceManifest.nativeExportSha256||""),questionId=String(exercise.nativeQuestionId||""),itemId=String(exercise.nativeItemId||"");
+  if (/^[a-f0-9]{64}$/.test(nativeSha)&&/^q[1-9][0-9]*$/.test(questionId)&&
+      new RegExp("^"+questionId+"[a-z0-9]+$").test(itemId)){
+    requestContext.sourceIdentity={nativeSha256:nativeSha,questionId:questionId,itemId:itemId};
+  }
+  var exerciseId=requestContext.exerciseId;
+  var cacheIdentity=JSON.stringify([exerciseId,requestContext.selectedPart,nativeSha,questionId,itemId,
+    String(sourceManifest.sourceSha256||""),typeof pdf==="string"?pdf:"",exercise.crops||[exercise.crop]]);
+  var identityKey="identity:"+exerciseId;
+  function saveAnalysis(analysis){
+    analysisCache[exerciseId]=analysis;analysisCache[identityKey]=cacheIdentity;saveNoamState();return analysis;
+  }
+  function analyzeRequest(imageDataUrl,prefix){
+    return postJson(API+"/noamImageAnalyze",Object.assign({},requestContext,
+      {imageDataUrl:imageDataUrl,clientRequestId:prefix+Date.now().toString(36)}));
+  }
+  function verifiedPrintedAnalysis(analysis){
+    var proof=analysis&&analysis.source_context,expected=requestContext.sourceIdentity;
+    return !!(proof&&proof.serverVerified===true&&proof.status==="verified"&&proof.verificationScope==="printed_text"&&
+      requestContext.hasStudentAttachments===false&&proof.attachmentStatus==="none"&&
+      proof.exerciseId===exerciseId&&proof.selectedPart===requestContext.selectedPart&&
+      /^[a-f0-9]{64}$/.test(String(proof.sourceSha256||""))&&
+      (!expected||(proof.sourceSha256===expected.nativeSha256&&proof.questionId===expected.questionId&&proof.itemId===expected.itemId)));
+  }
   if (attachments.length){
     return exerciseImageWithAttachments(exercise,attachments)
       .then(function(imageDataUrl){
-        return postJson(API+"/noamImageAnalyze",{imageDataUrl:imageDataUrl,clientRequestId:"attach-"+Date.now().toString(36)});
+        return analyzeRequest(imageDataUrl,"attach-");
       })
       .then(function(result){
         if (!result||!result.ok||!result.analysis){ throw new Error("לא הצלחנו לקרוא את הקבצים שצורפו. נסו שוב."); }
@@ -7473,21 +7501,22 @@ function getExerciseAnalysis(exercise,attachmentSnapshot){
       });
   }
   var ocrUnreliable=noamManifestOcrUnreliable(exercise);
-  if (analysisCache[exercise.id]){
-    var cachedAnalysis=analysisCache[exercise.id];
+  if (analysisCache[exerciseId]&&analysisCache[identityKey]!==cacheIdentity){delete analysisCache[exerciseId];delete analysisCache[identityKey];}
+  if (analysisCache[exerciseId]){
+    var cachedAnalysis=analysisCache[exerciseId];
     // Drop stale synthetic / vision-without-expression caches for unreliable OCR.
     if (ocrUnreliable&&cachedAnalysis&&(
       cachedAnalysis.content_type==="static_manifest_exercise"||
       (cachedAnalysis.content_type==="vision_over_unreliable_ocr"&&!cachedAnalysis.selected_part_expression)
     )){
-      delete analysisCache[exercise.id];
+      delete analysisCache[exerciseId];
     }else{
       return Promise.resolve(cachedAnalysis);
     }
   }
   var fallback=syntheticAnalysis(exercise);
   var forceVision=noamExerciseNeedsLiveVision(exercise);
-  if (!forceVision){ analysisCache[exercise.id]=fallback;saveNoamState();return Promise.resolve(fallback); }
+  if (!forceVision){ return Promise.resolve(saveAnalysis(fallback)); }
 
   // Unreliable multi-part OCR: prefer PDF text-layer rebuild of the selected part
   // (reattach detached minus glyphs). Tall-crop vision has dropped the leading
@@ -7499,13 +7528,12 @@ function getExerciseAnalysis(exercise,attachmentSnapshot){
       .then(function(rebuild){
         if (!rebuild||!rebuild.expression){return null;}
         var analysis=noamAnalysisFromPartExpression(exercise,rebuild);
-        analysisCache[exercise.id]=analysis;saveNoamState();
-        return analysis;
+        return saveAnalysis(analysis);
       });
   }
 
-  // Cache key includes part so a shared-question crop cannot poison siblings.
-  var imageKey=forceVision?"image:"+String(exercise.part||"")+":"+JSON.stringify(exercise.crops||[exercise.crop]):null;
+  // A shared crop never authorizes a different task, part or source revision.
+  var imageKey=forceVision?"image:"+exerciseId+":"+cacheIdentity:null;
   var cachedImage=imageKey&&analysisCache[imageKey];
   function requestVisionAnalysis(allowCachedImage){
     return ensurePdfDocumentForCrop()
@@ -7520,9 +7548,9 @@ function getExerciseAnalysis(exercise,attachmentSnapshot){
             cropExercise=Object.assign({},exercise,{crop:rebuild.crop,crops:null});
           }
           return cropExerciseImage(cropExercise).then(function(imageDataUrl){
-            return postJson(API+"/noamImageAnalyze",{imageDataUrl:imageDataUrl,clientRequestId:"manifest-"+Date.now().toString(36)});
+            return analyzeRequest(imageDataUrl,"manifest-");
           }).then(function(result){
-            if (result&&result.analysis&&rebuild&&rebuild.expression){
+            if (result&&result.analysis&&!verifiedPrintedAnalysis(result.analysis)&&rebuild&&rebuild.expression){
               result.analysis.selected_part_expression=rebuild.expression;
               result.analysis.math_content=rebuild.expression;
               var pinned="ביטוי הסעיף הנבחר: "+rebuild.expression;
@@ -7559,17 +7587,17 @@ function getExerciseAnalysis(exercise,attachmentSnapshot){
         analysis=JSON.parse(JSON.stringify(analysis));
       }
       var semantic=noamScopedExerciseSemantic(exercise);
-      if (!analysis.selected_part_expression){
+      if (!verifiedPrintedAnalysis(analysis)&&!analysis.selected_part_expression){
         analysis.transcription=[semantic,analysis.transcription||""].filter(Boolean).join("\n");
         analysis.problem_statement=[semantic,analysis.problem_statement||""].filter(Boolean).join("\n");
       }
-      if (ocrUnreliable){
+      if (ocrUnreliable&&!verifiedPrintedAnalysis(analysis)){
         analysis.content_type=analysis.selected_part_expression
           ? "vision_with_pdf_part_expression"
           : "vision_over_unreliable_ocr";
         analysis.manifest_ocr_unreliable=true;
       }
-      analysisCache[exercise.id]=analysis;saveNoamState();return analysis;
+      return saveAnalysis(analysis);
     })
     .catch(function(error){
       // Security refusals must never trigger another paid request through the
@@ -7586,7 +7614,7 @@ function getExerciseAnalysis(exercise,attachmentSnapshot){
         throw visionError;
       }
       console.warn("NOAM VISION FALLBACK:",exercise.id,error);
-      analysisCache[exercise.id]=fallback;saveNoamState();return fallback;
+      return saveAnalysis(fallback);
     });
   });
 }
@@ -7594,10 +7622,9 @@ function getExerciseAnalysis(exercise,attachmentSnapshot){
 function clearExerciseVisionCache(exercise){
   if (!exercise){ return; }
   delete analysisCache[exercise.id];
-  var imageKey=noamExerciseNeedsLiveVision(exercise)
-    ?"image:"+String(exercise.part||"")+":"+JSON.stringify(exercise.crops||[exercise.crop])
-    :null;
-  if (imageKey){ delete analysisCache[imageKey]; }
+  delete analysisCache["identity:"+exercise.id];
+  var imagePrefix="image:"+exercise.id+":";
+  Object.keys(analysisCache).forEach(function(key){if(key.indexOf(imagePrefix)===0){delete analysisCache[key];}});
   delete exercisePreviewCache[exercise.id];
   pdfCropLoadPromise=null;
 }
@@ -8716,6 +8743,15 @@ function askNoam(helpKind,studentMessage){
   var requestFocusId = panelBody.contains(document.activeElement) ? document.activeElement.id : "";
   if (helpKind==="free_question"){delete noamDrafts[selectedExercise.id];}
   var exercise=selectedExercise;
+  // Keep the selected source revision through both HTTP steps. These are
+  // selectors only; the solver verifies the public bytes again on the server.
+  var requestSelectedPart=String(exercise.part||""),requestSourceIdentity=null;
+  var requestNativeSha=String(typeof manifest==="object"&&manifest&&manifest.nativeExportSha256||"");
+  var requestQuestionId=String(exercise.nativeQuestionId||""),requestItemId=String(exercise.nativeItemId||"");
+  if (/^[a-f0-9]{64}$/.test(requestNativeSha)&&/^q[1-9][0-9]*$/.test(requestQuestionId)&&
+      new RegExp("^"+requestQuestionId+"[a-z0-9]+$").test(requestItemId)){
+    requestSourceIdentity={nativeSha256:requestNativeSha,questionId:requestQuestionId,itemId:requestItemId};
+  }
   var thread=exerciseThread(exercise.id);
   var hintIndex=helpKind==="hint"?thread.hintIndex:0;
   var kindLabel=helpKind==="overview"?"הסבר כללי":helpKind==="hint"?("רמז "+(hintIndex+1)):helpKind==="common_mistake"?"טעות נפוצה":"";
@@ -8769,6 +8805,7 @@ function askNoam(helpKind,studentMessage){
       var solverMessage=noamSolverMessage(studentMessage,thread,ttl,guidePrompt,analysis,exercise);
       requestPayload={
         exerciseId:exercise.id,
+        selectedPart:requestSelectedPart,
         grade:g,
         level:LEVEL[lv],
         topic:ttl,
@@ -8779,6 +8816,7 @@ function askNoam(helpKind,studentMessage){
         imageAnalysis:analysis,
         hasStudentAttachments:attachments.length>0
       };
+      if(requestSourceIdentity){requestPayload.sourceIdentity=requestSourceIdentity;}
       return postJson(API+"/noamImageSolve",requestPayload);
     })
     .then(function(result){
