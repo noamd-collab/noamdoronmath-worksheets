@@ -48,6 +48,12 @@ function clean(text){
   return String(text||"").replace(/\r/g,"").replace(/[ \t]+/g," ").trim();
 }
 
+// Noam, 18.10.2026: every fraction uses a horizontal bar. Ramzi renders $…$
+// with KaTeX, so a numeric slash fraction such as 1/4 becomes $\frac{1}{4}$.
+function barFractions(text){
+  return clean(text).replace(/(?<![\d.$\\{])(\d+)\/(\d+)(?![\d}]|\.\d)/g,"$\\frac{$1}{$2}$");
+}
+
 function normalizeTitle(text){
   return clean(text)
     .replace(/[׳’'`]/g,"׳")
@@ -216,7 +222,8 @@ function normalize(site,parsed){
       rejected.push({sourceId:entry.sourceId,exerciseId,reason:"exercise is not in the live worksheet"});
       continue;
     }
-    const tooLong=entry.hints.find(hint=>hint.length>MAX_HINT);
+    const hints=entry.hints.map(barFractions);
+    const tooLong=hints.find(hint=>hint.length>MAX_HINT);
     if(tooLong){rejected.push({sourceId:entry.sourceId,exerciseId,reason:"hint longer than "+MAX_HINT});continue;}
     rows.push({
       exercise_id:exerciseId,
@@ -226,7 +233,7 @@ function normalize(site,parsed){
       level,
       topic:resolved.topic.title,
       source_exercise_text:entry.exerciseText,
-      hints:entry.hints.slice(),
+      hints,
       status:"review",
       review_note:"טרם נבדק מול התרגיל באתר."
     });
@@ -339,7 +346,7 @@ function loadRows(list,live){
   const rejected=[];
   (Array.isArray(list)?list:[]).forEach(item=>{
     const id=String(item&&item.exercise_id||"");
-    const hints=Array.isArray(item&&item.hints)?item.hints.map(clean):[];
+    const hints=Array.isArray(item&&item.hints)?item.hints.map(barFractions):[];
     if(!SITE_ID_RE.test(id)){rejected.push({exerciseId:id,reason:"bad exercise id"});return;}
     if(live&&!live.has(id)){rejected.push({exerciseId:id,reason:"exercise is not in the live worksheet"});return;}
     if(hints.length!==3||hints.some(hint=>!hint||hint.length>MAX_HINT)){rejected.push({exerciseId:id,reason:"needs three hints of 1-"+MAX_HINT+" characters"});return;}
@@ -415,4 +422,4 @@ function main(argv){
 
 if(require.main===module){main(process.argv);}
 
-module.exports={parseBank,normalizeTitle,loadSite,normalize,applyReviews,liveExercises,loadRows,mergeRows,toSql,nativeExercise,SITE_ID_RE,MAX_HINT};
+module.exports={parseBank,normalizeTitle,loadSite,normalize,applyReviews,liveExercises,loadRows,mergeRows,barFractions,toSql,nativeExercise,SITE_ID_RE,MAX_HINT};

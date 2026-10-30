@@ -65,6 +65,14 @@ test("no solution or final answer leaves the builder",()=>{
   assert.match(sql,/^on conflict \(exercise_id\) do update set/m);
 });
 
+test("numeric slash fractions become bar fractions that Ramzi renders with KaTeX",()=>{
+  assert.equal(build.barFractions("השבר 1/4."),"השבר $\\frac{1}{4}$.");
+  assert.equal(build.barFractions("(3/2 כפול ו־28/80;"),"($\\frac{3}{2}$ כפול ו־$\\frac{28}{80}$;");
+  ["2.5/3","1/2.5","km/h","$\\frac{1}{4}$"].forEach(text=>assert.equal(build.barFractions(text),text));
+  const rows=JSON.parse(fs.readFileSync(path.join(__dirname,"..","learning/ramzi-hints.json"),"utf8"));
+  rows.forEach(row=>row.hints.forEach(hint=>assert.doesNotMatch(hint,/\d\/\d/,row.exercise_id)));
+});
+
 test("only a verified review shows a hint, and a verified move claims its part first",()=>{
   const {rows}=build.normalize(site,build.parseBank(bank));
   const live=build.liveExercises(site);
