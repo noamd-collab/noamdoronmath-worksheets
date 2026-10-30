@@ -18,8 +18,11 @@ for (const grade of catalog.grades || []) {
     for (const sheet of topic.sheets || []) {
       const pdfId = String(sheet.pdfId || '');
       if (!/^[0-9a-f]{32}$/i.test(pdfId)) continue;
-      // Elementary sheets are catalog rows (topic / level / pdf). Only middle school
-      // has a per-exercise file, and only those ids may be picked.
+      // Every published grade uses the same mapped whole-question source.
+      // Missing sources must stop a build instead of silently disabling AI.
+      if (sheet.mode !== 'exercise' || !have.has(pdfId)) {
+        throw new Error('Missing teacher question source for ' + pdfId);
+      }
       let questions = [];
       if (sheet.mode === 'exercise' && have.has(pdfId)) {
         const source = JSON.parse(readFileSync(join(sheetDir, pdfId + '.json'), 'utf8'));
@@ -31,6 +34,7 @@ for (const grade of catalog.grades || []) {
           questions.push(id);
         }
       }
+      if (!questions.length) throw new Error('Empty teacher question source for ' + pdfId);
       sheets.push({
         pdfId,
         grade: Number(grade.grade),
@@ -50,6 +54,11 @@ for (const grade of catalog.grades || []) {
 }
 
 const out = join(root, 'src/data/teacher-pick-index.json');
-writeFileSync(out, JSON.stringify(sheets));
+const output = JSON.stringify(sheets);
+if (process.argv.includes('--check')) {
+  if (readFileSync(out, 'utf8') !== output) throw new Error('Teacher AI question index is stale');
+} else {
+  writeFileSync(out, output);
+}
 const bytes = Buffer.byteLength(JSON.stringify(sheets));
 console.log(`sheets=${sheets.length} bytes=${bytes}`);

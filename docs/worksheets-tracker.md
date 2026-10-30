@@ -1,5 +1,13 @@
 # Worksheet tracker
 
+## Teacher question picker — 2026-10-30
+
+Scope: all 959 current source PDFs across grades 1–9 and 329 topics, including the 507 elementary PDFs. The teacher picker uses original full-question crops, manual selection and AI selection of 5, 10 or 15 questions in every grade. Elementary geometry retains original cards, two-column questions, shared source context and the answer section. Numeric-only question identifiers are valid; all available questions reach the model; model choices and local fallback are reported separately. When fewer questions are available, the picker states the available count.
+
+The kite excellence source `7adbcdb3bb5c49d1b9e3c38ea74a1285` has been remapped from physical labels: 20 questions and 71 unique subparts, including starred questions 14, 16 and 20. Original PDF content is unchanged. No new drawing hints are introduced.
+
+Validation and publication status: integration in progress on `codex/teacher-all-grades-20261030`; publication has been authorized by Noam but is not yet confirmed. The checks and final PR/release evidence will be recorded after integration.
+
 One row per grade and topic in `headless/astro-poc/src/data/catalog.v1.json` on `headless/astro-poc-baseline` (`3911160f`). That file is generated from `index.html`. Level names are the catalog labels.
 
 Columns: grade, topic, levels present, author, reviewed, live, PR.

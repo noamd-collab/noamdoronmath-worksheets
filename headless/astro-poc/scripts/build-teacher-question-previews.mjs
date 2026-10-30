@@ -8,7 +8,8 @@ const previews = {};
 for (const grade of catalog.grades) {
   for (const topic of grade.topics) {
     for (const sheet of topic.sheets) {
-      if (sheet.mode !== 'exercise' || previews[sheet.pdfId]) continue;
+      if (sheet.mode !== 'exercise') throw new Error('Missing question-level data for ' + sheet.pdfId);
+      if (previews[sheet.pdfId]) continue;
       const manifest = JSON.parse(readFileSync(new URL('../../../noam-ai/manifests/' + sheet.pdfId + '.json', import.meta.url), 'utf8'));
       if (!Array.isArray(manifest.exercises) || !manifest.exercises.length) {
         throw new Error('Missing preview exercises for ' + sheet.pdfId);

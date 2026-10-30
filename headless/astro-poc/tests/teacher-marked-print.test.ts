@@ -213,10 +213,7 @@ describe('teacher catalog picker', () => {
     for (const grade of [7, 8, 9]) {
       assert.equal(index.grades.find((item) => item.grade === grade).band, 'middle');
     }
-    for (const sheet of fromPicker) {
-      if (sheet.grade <= 6) assert.equal(sheet.mode, 'sheet');
-      else assert.equal(sheet.mode, 'exercise');
-    }
+    for (const sheet of fromPicker) assert.equal(sheet.mode, 'exercise', `${sheet.grade}:${sheet.topicId}:${sheet.level}`);
     assert.match(page, /<option value="1">כיתה א׳<\/option>/);
     assert.match(page, /<option value="2">כיתה ב׳<\/option>/);
     assert.match(page, /<option value="8">כיתה ח׳<\/option>/);
@@ -231,15 +228,12 @@ describe('teacher catalog picker', () => {
     assert.equal(page.includes('teachers-demo-preview'), false);
   });
 
-  it('keeps middle-school exercise files inside the existing manifests', () => {
+  it('keeps every grade exercise file aligned with its source manifest', () => {
     const rich = JSON.parse(readFileSync(new URL('../public/teachers/factoring-grade-9-a-source.json', import.meta.url), 'utf8'));
     const copied = JSON.parse(readFileSync(new URL('../public/teachers/sheets/' + rich.pdfId + '.json', import.meta.url), 'utf8'));
     assert.deepEqual(copied, rich);
     for (const sheet of indexSheets()) {
-      if (sheet.mode !== 'exercise') {
-        assert.equal(existsSync(new URL('../public/teachers/sheets/' + sheet.pdfId + '.json', import.meta.url)), false);
-        continue;
-      }
+      assert.equal(sheet.mode, 'exercise');
       const manifest = JSON.parse(readFileSync(new URL('../../../noam-ai/manifests/' + sheet.pdfId + '.json', import.meta.url), 'utf8'));
       const source = JSON.parse(readFileSync(new URL('../public/teachers/sheets/' + sheet.pdfId + '.json', import.meta.url), 'utf8'));
       assert.equal(source.pdfId, sheet.pdfId);
@@ -349,8 +343,8 @@ describe('teacher catalog picker', () => {
     assert.match(levelHandler, /keepVisible\(state\.selected, visibleSelectionKeys\(\)\)/);
     const resolve = preview.slice(preview.indexOf('async function resolveChosen'), preview.indexOf('async function updatePrint'));
     assert.match(resolve, /if \(!allow\.has\(key\)\) continue/);
-    assert.match(preview, /box: null/);
-    assert.match(preview, /mode === 'short' && band\(\) === 'elementary'/);
+    assert.match(resolve, /return questionsForKeys\(keys\)/);
+    assert.doesNotMatch(preview, /mode === 'short' && band\(\) === 'elementary'/, 'Elementary questions use the same source-question print pipeline');
     assert.match(preview, /question\.rows && question\.rows\.length \? question\.rows : \[question\.row\]/);
     const html = readFileSync(new URL('../public/teachers/index.html', import.meta.url), 'utf8');
     assert.match(html, /\.skip\{display:none!important\}/);
