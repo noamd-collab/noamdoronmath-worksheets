@@ -143,9 +143,9 @@ test("the committed seed matches the committed public rows and hides unreviewed 
   const loaded=build.loadRows(rows,live);
   assert.deepEqual(loaded.rejected,[]);
   assert.deepEqual(build.publicRows(build.bindRows(site,loaded.rows).rows),rows);
-  assert.equal(rows.length,501);
-  assert.equal(rows.filter(row=>row.status==="verified").length,416);
-  assert.equal(rows.filter(row=>row.status==="review").length,85);
+  assert.equal(rows.length,543);
+  assert.equal(rows.filter(row=>row.status==="verified").length,543);
+  assert.equal(rows.filter(row=>row.status==="review").length,0);
 });
 
 test("the public key reads only verified hints and the two safe source bindings",()=>{

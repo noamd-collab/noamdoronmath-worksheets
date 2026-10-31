@@ -28,7 +28,7 @@ Future catalogue content updates require review against the exact source revisio
 
 ## The October 2026 banks
 
-The original PR302 bank contained 500 rows from two Zero-Spoiler v2.1 banks plus ten PDF additions. The 31 October target ladder makes the current total 501 rows (416 verified, 85 review). The historical audit counts below describe those original 500 rows.
+The original PR302 bank contained 500 rows from two Zero-Spoiler v2.1 banks plus ten PDF additions (415 verified, 85 review). PR309 added G9-T39-E-Q03ב making it 501 rows (416 verified, 85 review). On 31 October 2026, all 85 review rows were audited and rewritten according to Noam's Zero-Spoiler rules and promoted to verified, and all 42 remaining sub-questions of the Trapezoid Excellence worksheet (G9-T39-E) were added and verified. The catalog now holds 543 rows, all 543 verified (0 in review).
 
 **The 421-part middle-school bank** (157 grade 7, 177 grade 8, 87 grade 9) was written against the printed parts in `noam-ai/native/`, mostly part א of question 1. The builder maps its IDs to live viewer IDs:
 
