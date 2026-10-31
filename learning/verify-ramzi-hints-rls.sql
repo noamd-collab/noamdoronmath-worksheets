@@ -1,4 +1,25 @@
 begin;
+-- Check effective permissions, including PUBLIC and inherited-role grants.
+do $$ declare visitor text; c record; begin
+ if not (select relrowsecurity from pg_class where oid='public.noam_ramzi_hints'::regclass) then
+  raise exception 'RLS is disabled on noam_ramzi_hints';
+ end if;
+ foreach visitor in array array['anon','authenticated'] loop
+  if has_table_privilege(visitor,'public.noam_ramzi_hints','SELECT,INSERT,UPDATE,DELETE,TRUNCATE,REFERENCES,TRIGGER') then
+   raise exception 'Unexpected table privileges for % on noam_ramzi_hints',visitor;
+  end if;
+  for c in select attname from pg_attribute where attrelid='public.noam_ramzi_hints'::regclass and attnum>0 and not attisdropped loop
+   if has_column_privilege(visitor,'public.noam_ramzi_hints',c.attname,'SELECT')
+      <> (c.attname=any(array['exercise_id','hint_1','hint_2','hint_3','source_pdf_hash','source_native_sha256']))
+     or has_column_privilege(visitor,'public.noam_ramzi_hints',c.attname,'INSERT,UPDATE,REFERENCES') then
+    raise exception 'Unexpected column privileges for % on noam_ramzi_hints.%',visitor,c.attname;
+   end if;
+  end loop;
+  if has_function_privilege(visitor,'public.noam_ramzi_hints_timestamp()','EXECUTE') then
+   raise exception 'Visitor may call the maintenance trigger function';
+  end if;
+ end loop;
+end $$;
 insert into public.noam_ramzi_hints(exercise_id,hint_1,hint_2,hint_3,status,source,source_id,source_pdf_hash,source_native_sha256) values
  ('G9-T99-A-Q01א','רמז א','רמז ב','רמז ג','verified','rls-test','rls-1',repeat('a',32),repeat('b',64)),
  ('G9-T99-A-Q01ב','רמז א','רמז ב','רמז ג','review','rls-test','rls-2',repeat('a',32),null);
