@@ -206,8 +206,8 @@ test("the committed seed matches the committed public rows and hides unreviewed 
   const loaded=build.loadRows(rows,live);
   assert.deepEqual(loaded.rejected,[]);
   assert.deepEqual(build.publicRows(build.bindRows(site,loaded.rows).rows),rows);
-  assert.equal(rows.length,1760);
-  assert.equal(rows.filter(row=>row.status==="verified").length,1760);
+  assert.equal(rows.length,13058);
+  assert.equal(rows.filter(row=>row.status==="verified").length,13058);
   assert.equal(rows.filter(row=>row.status==="review").length,0);
   assert.deepEqual(build.firstPartCoverage(site,rows),{eligible:424,verified:424,missing:[]});
   rows.forEach(row=>{
@@ -411,12 +411,36 @@ test("all current Q01 parts have a source-bound ladder, including E2 and canonic
     assert.equal(build.hintIssue(row.hints),null,id);
   }
   const generated=rows.filter(row=>row.source==="ramzi-flash-authored-20261031");
-  assert.equal(generated.length,1217);
+  assert.equal(generated.length,12515);
   const ledger=JSON.parse(fs.readFileSync(path.join(root,"learning/ramzi-hints-review-20261031.json")));
+  const byLedgerId=new Map(ledger.rows.map(entry=>[entry.exercise_id,entry]));
   for(const row of generated){
-    const entry=ledger.rows.find(item=>item.exercise_id===row.exercise_id);
+    const entry=byLedgerId.get(row.exercise_id);assert.ok(entry,row.exercise_id);
     assert.equal(entry.authoring_model,"qwen3.8-flash");
     assert.equal(entry.review,"machine_generated_flash_automatic_checks_no_model_review");
+  }
+});
+
+test("every current grade 7 part has a ladder bound to its exact PDF, native revision and selected text",()=>{
+  const rows=JSON.parse(fs.readFileSync(path.join(__dirname,"..","learning/ramzi-hints.json")));
+  const byId=new Map(rows.map(row=>[row.exercise_id,row]));
+  const expected=new Map();
+  for(const topic of site.filter(topic=>topic.grade===7)){
+    for(const level of Object.values(topic.levels))for(const id of level.exercises){
+      assert.match(id,/^G7-/,"grade 7 catalog must not borrow another grade's task");
+      expected.set(level.source_pdf_hash+":"+id,{id,level});
+    }
+  }
+  assert.equal(expected.size,11942,"coverage includes every question and level, not only Q01");
+  assert.equal(new Set([...expected.values()].map(({id})=>id)).size,11942,"different source PDFs cannot share a covered exercise ID");
+  assert.equal(rows.filter(row=>row.exercise_id.startsWith("G7-")).length,11942);
+  for(const {id,level}of expected.values()){
+    const row=byId.get(id);assert.ok(row,id+" is missing");
+    assert.equal(row.status,"verified",id);
+    assert.equal(row.source_pdf_hash,level.source_pdf_hash,id+" PDF revision");
+    assert.equal(row.source_native_sha256,level.source_native_sha256,id+" native revision");
+    assert.equal(row.source_exercise_sha256,build.sourceTaskHash(level.exerciseTexts.get(id)),id+" selected task text");
+    assert.equal(build.hintIssue(row.hints),null,id);
   }
 });
 
