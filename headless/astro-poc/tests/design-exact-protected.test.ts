@@ -141,7 +141,8 @@ describe('exact-design protected live-baseline boundaries', () => {
     // and opt-in question zoom; manually checked at 390x844 and 1280x800.
     // Only presentation CSS changed in this head; metadata/SEO/fonts stay fixed.
     // 2026-10-23: pointer cursor on expandable local visuals. Metadata unchanged.
-    assert.equal(sha256(head), 'c10ecfc705406e89dc0a5b78f57c7d9bd8fa6cb970352c16a24c714d09590e27');
+    // 31 October: author CSS must not reveal the policy-hidden drawing control.
+    assert.equal(sha256(head), '54e2cebfd2250f27cf459dbb0702cf2b077c9e38dff36ea9777c4cf49749b6f0');
     const scripts = [...viewer.matchAll(/<script\b[^>]*>[\s\S]*?<\/script>/gi)].map((match) => match[0]);
     const adapters = scripts.filter((script) => /^<script id="exact-viewer-adapter">/.test(script));
     const companion = scripts.filter((script) => /noam-site-companion\.js/.test(script));
@@ -286,7 +287,9 @@ describe('exact-design protected live-baseline boundaries', () => {
     // catalog config+body share4s, confirmed misses focus the question composer,
     // and unbound historical guides cannot answer or steer additional questions.
     // DOM/catalog/deadline/freeform regressions cover the source and UI fences.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), 'b160e27d44da3527126c66a0cbb23595ec605c0f63cff1202ec667520f61ed7b');
+    // 31 October: busy-state resets retain the three-hint exhaustion guard.
+    // ramzi-hint-exhaustion tests exercise both released viewer copies.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), 'c5bfa66b39731814949064a8859f22ae50bc4e71a4a7e9302c9898611992a05b');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {

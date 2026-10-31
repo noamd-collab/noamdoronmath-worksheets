@@ -1,0 +1,42 @@
+name: Ramzi hints and private solutions
+
+on:
+  pull_request:
+    paths:
+      - 'learning/**'
+      - 'tools/ramzi-hints/**'
+      - 'tools/security/**'
+      - 'tests/ramzi-hints-build.test.cjs'
+      - 'tests/fixtures/ramzi-security-roles.sql'
+      - '.github/workflows/ramzi-hints-privacy.yml'
+  push:
+    branches: [headless/astro-poc-baseline]
+    paths:
+      - 'learning/**'
+      - 'tools/ramzi-hints/**'
+      - 'tools/security/**'
+      - 'tests/ramzi-hints-build.test.cjs'
+      - 'tests/fixtures/ramzi-security-roles.sql'
+      - '.github/workflows/ramzi-hints-privacy.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  hint-and-privacy-contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate hints, source bindings and seed
+        run: node --test tests/ramzi-hints-build.test.cjs
+      - name: Install isolated PostgreSQL test runtime
+        run: npm install --prefix "$RUNNER_TEMP/ramzi-rls" --no-save --ignore-scripts --no-audit --no-fund @electric-sql/pglite@0.5.14
+      - name: Verify permissions in a disposable PostgreSQL database
+        env:
+          NOAM_PGLITE_MODULE: ${{ runner.temp }}/ramzi-rls/node_modules/@electric-sql/pglite/dist/index.js
+        run: node tools/security/verify-rls-postgres.mjs
