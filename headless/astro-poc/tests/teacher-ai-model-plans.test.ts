@@ -218,11 +218,12 @@ test('all actual grade/topic/level scopes retain three independently supplied mo
       }).map((label: string) => ({ id: /^(?:[abc]|c2)$/.test(source.level) ? `${source.level}:${label}` : label,
         label, text: `שאלה ${parseInt(label, 10)}`, key: `ex:${source.pdfId}:${label}` }));
     });
-    const expected = {
-      '5': candidates.slice(-5),
-      '10': candidates.slice(0, 10),
-      '15': candidates.slice(-15).reverse(),
+    const representatives = level === 'all' ? ['a', 'b', 'c'].map(family => candidates.find((candidate: any) => candidate.id.split(':')[0].replace('c2', 'c') === family)).filter(Boolean) : [];
+    const choices = (count: number, reverse = false) => {
+      const ordered = reverse ? candidates.slice().reverse() : candidates;
+      return [...representatives, ...ordered.filter((candidate: any) => !representatives.includes(candidate))].slice(0, count);
     };
+    const expected = { '5': choices(5, true), '10': choices(10), '15': choices(15, true) };
     const input = payload(Math.min(5, candidates.length));
     Object.assign(input.teacher, { grade, topic, level, candidates });
     const parsed = parseClassifier(JSON.stringify({ exerciseLabelsByCount: Object.fromEntries(
