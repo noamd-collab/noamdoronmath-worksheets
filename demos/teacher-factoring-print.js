@@ -1,7 +1,7 @@
 import { dismissTeacherHumanVerification, requestTeacherHumanVerification } from './teacher-human-verification.js?v=20261030-stepup-error-detail';
-import { replaceWizardScopeUrl, wizardPrefillFromSearch } from './wizard-prefill.js?v=20261031-level-url';
+import { replaceWizardScopeUrl, wizardPrefillFromSearch } from './wizard-prefill.js?v=20261031-level-choice-help';
 import { expandToWholeQuestionKeys, groupWholeQuestions, mulberry32, pickWholeQuestions, randomSeed } from './teacher-question-pick.js';
-import { PICK_HEADING, SECTION_KINDS, needsSectionHeadings, pointsLabel, scoreLabel, sectionKind, sectionTitle, shouldAskMoreTopic, testPoints, TEST_TOTAL_POINTS } from './teacher-page-sections.js';
+import { PICK_HEADING, SECTION_KINDS, needsSectionHeadings, pointsLabel, scoreLabel, sectionKind, sectionTitle, shouldAskMoreTopic, testPoints, TEST_TOTAL_POINTS } from './teacher-page-sections.js?v=20261031-level-choice-help';
 
 /* Teacher picker for every catalog sheet, grades 1–9.
    Choose complete source questions across topic and level sheets.
@@ -94,7 +94,7 @@ let state = {
   expanded: false,
   grade: '9',
   topic: '2',
-  level: 'all',
+  level: 'a',
   wizard: 'grade',
   lastQuestionCount: 5,
   lastAiPickCount: 0,
@@ -256,6 +256,15 @@ function teacherAiContext(groups, saved) {
 
 // A reusable plan must contain one explicit, valid model choice per whole
 // question. Never turn a larger plan, partial result or local fill into a plan.
+function teacherLevelsCovered(groups, questionKeys, level = state.level) {
+  if (level !== 'all') return true;
+  const family = (group) => group.source && group.source.level === 'c2' ? 'c' : group.source && group.source.level;
+  const available = new Set(groups.map(family).filter((value) => ['a', 'b', 'c'].includes(value)));
+  const chosen = new Set(questionKeys);
+  const represented = new Set(groups.filter((group) => chosen.has(group.key)).map(family));
+  return available.size < 2 || [...available].every((value) => represented.has(value));
+}
+
 function verifiedTeacherPlan(plan, groups, count) {
   const target = Math.min(count, groups.length);
   if (!plan || plan.source !== 'classifier' || typeof plan.model !== 'string' || !plan.model.trim()) return null;
@@ -268,6 +277,7 @@ function verifiedTeacherPlan(plan, groups, count) {
   groups.forEach((group) => group.keys.forEach((key) => owner.set(key, group.key)));
   const questionKeys = modelIds.map((id) => owner.get(id));
   if (questionKeys.some((key) => !key) || new Set(questionKeys).size !== target) return null;
+  if (!teacherLevelsCovered(groups, questionKeys)) return null;
   return { source: 'classifier', model: plan.model, exerciseIds: ids.slice(), modelExerciseIds: modelIds.slice(), questionKeys };
 }
 
@@ -399,9 +409,13 @@ async function pickWithAi(rawCount) {
     announce(message);
     return [];
   }
-  if (!fromModel || !seedKeys.length) {
+  const mixedLevelsMissing = !teacherLevelsCovered(groups, seedKeys) || (!teacherLevelsCovered(groups, []) && seedKeys.length !== target);
+  if (!fromModel || !seedKeys.length || mixedLevelsMissing) {
     paintAiPickButtons();
-    const message = 'לא התקבלה בחירת שאלות מה-AI. הבחירה שלכם נשמרה ואפשר לבחור ידנית.';
+    const invalidMixedSelection = mixedLevelsMissing || ['MODEL_LEVEL_COVERAGE_MISSING', 'MODEL_SELECTION_INVALID'].includes(result && result.selectionError);
+    const message = invalidMixedSelection
+      ? 'לא התקבלה בחירת AI מלאה שמשלבת את כל הרמות. הבחירה שלכם נשמרה; אפשר לנסות שוב או לבחור שאלות ידנית.'
+      : 'לא התקבלה בחירת שאלות מה-AI. הבחירה שלכם נשמרה ואפשר לבחור ידנית.';
     if (status) status.textContent = message;
     announce(message);
     return [];
@@ -461,7 +475,7 @@ function paintAiPickButtons() {
     const baseLabel = count === AI_QUESTION_COUNTS[0] ? `בחר ${count} שאלות עם AI` : `בחר ${count}`;
     btn.textContent = busy ? `בוחר ${count}…` : baseLabel;
     btn.disabled = total === 0 || aiPickPending > 0;
-    btn.title = total > 0 && total < count ? `זמינות ${total} שאלות; כולן ייבחרו.` : `בחירת ${count} שאלות עם AI`;
+    btn.title = total > 0 && total < count ? `זמינות ${total} שאלות; כולן ייבחרו.` : `ה־AI יבחר ${count} שאלות שלמות מהרמות שבחרתם, לפי מטרת השיעור. אפשר לשנות את הבחירה ידנית.`;
     const active = total > 0 && state.lastAiPickCount === count && picked === Math.min(count, total);
     btn.setAttribute('aria-pressed', active ? 'true' : 'false');
     if (busy) btn.setAttribute('aria-busy', 'true');
@@ -535,7 +549,7 @@ function blockQuestionCount(keys) {
 
 function sectionToggleHTML(kind, attr) {
   return Object.entries(SECTION_KINDS).map(([value, info]) => (
-    `<button type="button" class="question-count-btn section-kind-btn" ${attr}="${value}" aria-pressed="${kind === value ? 'true' : 'false'}">${escapeHTML(info.label)}</button>`
+    `<button type="button" class="question-count-btn section-kind-btn" title="${escapeHTML(info.help)}" aria-describedby="help-${value}" ${attr}="${value}" aria-pressed="${kind === value ? 'true' : 'false'}">${escapeHTML(info.label)}</button>`
   )).join('');
 }
 
@@ -559,7 +573,7 @@ function paintPageBuilder() {
   if (!list) return;
   list.hidden = !state.blocks.length;
   list.innerHTML = state.blocks.map((block, index) => (
-    `<div class="page-block" data-page-block="${index}"><strong>${escapeHTML(block.title)} · ${questionCountText(blockQuestionCount(block.keys))}</strong>${sectionToggleHTML(block.kind, 'data-block-kind')}<button type="button" class="text-btn" data-block-remove aria-label="${escapeHTML('הסרת ' + block.title + ' מהדף')}">הסרה מהדף</button></div>`
+    `<div class="page-block" data-page-block="${index}"><strong>${escapeHTML(block.title)} · ${questionCountText(blockQuestionCount(block.keys))}</strong>${sectionToggleHTML(block.kind, 'data-block-kind')}<button type="button" class="text-btn" data-block-remove title="מסיר מהדף את הנושא ואת השאלות שנשמרו בו." aria-label="${escapeHTML('הסרת ' + block.title + ' מהדף')}">הסרה מהדף</button></div>`
   )).join('');
 }
 
@@ -668,28 +682,40 @@ function pilotOn() {
   return band() === 'middle' && String(state.grade) === '9' && String(state.topic) === '2' && (state.level === 'all' || state.level === 'a') && sheets.has(FACTORING_PDF);
 }
 
+function topicLevelChoices(topic = currentTopic()) {
+  const levels = new Set((topic && topic.sheets || []).map((sheet) => sheet.level === 'c2' ? 'c' : sheet.level));
+  return ['a', 'b', 'c'].filter((level) => levels.has(level));
+}
+
+function resolveTopicLevel(value, topic = currentTopic()) {
+  if (value === 'all') return 'all'; // Mixing is an explicit teacher choice or handoff.
+  const choices = topicLevelChoices(topic);
+  return choices.includes(value) ? value : choices[0] || 'all';
+}
+
 function topicSheets() {
   const topic = currentTopic();
   if (!topic) return [];
   if (state.level === 'all') return topic.sheets;
-  const matching = topic.sheets.filter((sheet) => sheet.level === state.level || (state.level === 'c' && sheet.level === 'c2'));
-  return matching.length ? matching : topic.sheets;
+  return topic.sheets.filter((sheet) => sheet.level === state.level || (state.level === 'c' && sheet.level === 'c2'));
 }
 
 function syncLevels() {
-  const topic = currentTopic();
-  const levels = new Set((topic ? topic.sheets : []).map((sheet) => sheet.level === 'c2' ? 'c' : sheet.level));
-  const hasSpecific = ['a', 'b', 'c'].some((lvl) => levels.has(lvl));
-  if (state.level !== 'all' && (!hasSpecific || !levels.has(state.level))) {
-    state.level = 'all';
-  }
+  const choices = topicLevelChoices();
+  state.level = resolveTopicLevel(state.level);
   document.querySelectorAll('[name=level]').forEach((el) => {
-    if (el.value === 'all') {
-      el.disabled = false;
-      return;
-    }
-    el.disabled = !hasSpecific || !levels.has(el.value);
+    el.disabled = el.value !== 'all' && !choices.includes(el.value);
+    const label = el.closest && el.closest('label');
+    if (label) label.title = el.disabled ? 'הרמה הזו אינה זמינה בנושא הנבחר.' : '';
   });
+  const allLabel = $('level-all-label');
+  if (allLabel) allLabel.textContent = choices.length ? 'כל הרמות יחד' : 'כל שאלות הנושא';
+  const help = $('level-help');
+  if (help) help.textContent = !choices.length
+    ? 'בנושא הזה אין חלוקה לרמות. כל שאלות הנושא זמינות לבחירה.'
+    : state.level === 'all' && choices.length > 1
+      ? 'בחרתם לשלב את כל הרמות: ה־AI ישלב שאלות מכל רמה זמינה, לפי מטרת השיעור. אפשר לבחור ולשנות גם ידנית.'
+      : 'מוצגות רק שאלות מהרמה שנבחרה. גם ה־AI יבחר מתוך הרמה הזו.';
 }
 
 function syncWizardUrl() {
@@ -834,7 +860,7 @@ function questionCard(group, picked) {
       previewHeight = slices.reduce((height, slice, index) => height + Math.round(1000 * Math.SQRT2 * slice.box.h / slice.box.w) + (index ? slice.gap : 0), 0) || previewHeight;
     } catch (error) { /* The preview supplies a retry and source link. */ }
   }
-  return `<article class="q-card q-card-whole q-card-pick q-group"><label class="q-select"><input type="checkbox" data-whole-question="${escapeHTML(group.key)}" ${picked ? 'checked' : ''} aria-label="בחירת שאלה ${escapeHTML(group.q)}${levelLabel ? ' ' + escapeHTML(levelLabel) : ''}"><span class="q-content"><span class="q-title-line"><span class="q-title">שאלה ${escapeHTML(group.q)}</span>${role ? `<span class="badge role-${group.role}">${role}</span>` : ''}</span><span class="q-page" style="display:block">${escapeHTML(meta)}</span></span></label><div class="q-preview" data-preview-key="${escapeHTML(group.key)}" aria-busy="true"><div class="q-preview-scroll q-preview-placeholder" style="aspect-ratio:1000/${previewHeight}"><p class="q-preview-loading">טוענים את השאלה המלאה מדף המקור…</p></div><button type="button" class="q-preview-zoom" disabled>הגדלת השאלה</button><a class="q-source-link" href="${escapeHTML(group.source.pdfUrl)}#page=${group.parts[0].page}" target="_blank" rel="noopener">פתיחת דף המקור</a></div></article>`;
+  return `<article class="q-card q-card-whole q-card-pick q-group"><label class="q-select"><input type="checkbox" data-whole-question="${escapeHTML(group.key)}" ${picked ? 'checked' : ''} aria-label="בחירת שאלה ${escapeHTML(group.q)}${levelLabel ? ' ' + escapeHTML(levelLabel) : ''}"><span class="q-content"><span class="q-title-line"><span class="q-title">שאלה ${escapeHTML(group.q)}</span>${role ? `<span class="badge role-${group.role}">${role}</span>` : ''}</span><span class="q-page" style="display:block">${escapeHTML(meta)}</span></span></label><div class="q-preview" data-preview-key="${escapeHTML(group.key)}" aria-busy="true"><div class="q-preview-scroll q-preview-placeholder" style="aspect-ratio:1000/${previewHeight}"><p class="q-preview-loading">טוענים את השאלה המלאה מדף המקור…</p></div><button type="button" class="q-preview-zoom" title="הגדלת התצוגה לעיון, בלי לשנות את הבחירה." aria-describedby="help-zoom" disabled>הגדלת השאלה</button><a class="q-source-link" href="${escapeHTML(group.source.pdfUrl)}#page=${group.parts[0].page}" target="_blank" rel="noopener">פתיחת דף המקור</a></div></article>`;
 }
 
 // The manifest's crops enclose the WHOLE question, including its instruction,
@@ -1048,6 +1074,7 @@ function wholeQuestionPickCards(pool) {
 }
 
 function render() {
+  syncLevels();
   const focusedQuestion = document.activeElement && document.activeElement.dataset.wholeQuestion;
   const ok = available();
   $('available-content').hidden = !ok;
@@ -1055,7 +1082,7 @@ function render() {
   const cfg = SCENARIOS[state.scenario] || SCENARIOS.first;
   $('result-title').textContent = ok ? (state.scenario === 'other' ? 'מרכיבים את הבחירה שלכם' : (pilotOn() ? cfg.title : cfg.label)) : 'בוחרים כיתה ונושא';
   $('result-summary').textContent = ok
-    ? 'רואים כל שאלה כפי שהיא בדף המקור ומסמנים את השאלות השלמות שמתאימות, בכל מספר. כל נושא בדף הוא קטע מבחן או בניית דף חזרה על חומר.'
+    ? 'רואים כל שאלה כפי שהיא בדף המקור ומסמנים את השאלות השלמות שמתאימות, בכל מספר. אפשר להכין קטע מבחן עם ניקוד או דף חזרה לתרגול.'
     : 'בוחרים כיתה ונושא מתוך הקטלוג.';
   $('rationale').textContent = ok ? 'בוחרים שאלה שלמה עם כל הסעיפים שלה, בכל הכיתות.' : '';
   $('pedagogy-details').textContent = ok ? (pilotOn() ? cfg.details : 'ההדפסה מסמנת על עמוד המקור, או חותכת ממנו דף מצומצם. לא מנוסח דף חדש.') : '';
@@ -1063,7 +1090,6 @@ function render() {
   $('other-banner').hidden = state.scenario !== 'other';
   $('grade').value = String(state.grade);
   if ($('topic').value !== String(state.topic) && state.topic) $('topic').value = String(state.topic);
-  syncLevels();
   syncWizardUrl();
   document.querySelectorAll('[name=scenario]').forEach((el) => { el.checked = el.value === state.scenario; });
   document.querySelectorAll('[name=style]').forEach((el) => { el.checked = el.value === state.style; });
@@ -1129,7 +1155,16 @@ function paintSourceLine() {
   const topic = currentTopic();
   const levels = [...new Set(chosen.map((meta) => levelPrintName(meta.level, meta.levelLabel)))].join(' · ');
   const title = `${topic ? topic.title : ''} · ${grade ? grade.label : ''} · ${levels}`;
-  const links = chosen.map((meta) => `<a href="${escapeHTML(meta.pdfUrl)}" target="_blank" rel="noopener noreferrer">${escapeHTML(chosen.length > 1 ? levelPrintName(meta.level, meta.levelLabel) : 'פתיחת דף המקור')} ↗</a>`).join('');
+  const levelTotals = new Map();
+  chosen.forEach((meta) => { const label = levelPrintName(meta.level, meta.levelLabel); levelTotals.set(label, (levelTotals.get(label) || 0) + 1); });
+  const levelPositions = new Map();
+  const links = chosen.map((meta) => {
+    const label = levelPrintName(meta.level, meta.levelLabel);
+    const position = (levelPositions.get(label) || 0) + 1;
+    levelPositions.set(label, position);
+    const text = chosen.length === 1 ? 'פתיחת דף המקור' : levelTotals.get(label) > 1 ? `${label} · דף ${position}` : label;
+    return `<a href="${escapeHTML(meta.pdfUrl)}" target="_blank" rel="noopener noreferrer">${escapeHTML(text)} ↗</a>`;
+  }).join('');
   line.innerHTML = `<span>${escapeHTML(title)}</span>${links}`;
 }
 
@@ -1241,8 +1276,7 @@ function levelAllows(source) {
   if (!source) return true;
   if (state.level === 'all') return true;
   if (!source.level || source.level === 'one' || source.level === state.level || (state.level === 'c' && source.level === 'c2')) return true;
-  const topic = currentTopic();
-  return !(topic && topic.sheets.some((sheet) => sheet.level === state.level));
+  return false;
 }
 
 function clearPreparedPrint() {
@@ -2754,6 +2788,12 @@ function applyWizard() {
   document.querySelectorAll('[data-wiz]').forEach((el) => {
     el.classList.toggle('wiz-off', el.dataset.wiz !== step);
   });
+  const levelChoice = $('teacher-level-choice');
+  const levelHome = $(step === 'pick' ? 'pick-level-home' : 'wizard-level-home');
+  if (levelChoice && levelHome) {
+    if (levelChoice.parentElement !== levelHome) levelHome.appendChild(levelChoice);
+    levelChoice.classList.toggle('wiz-off', step !== 'level' && step !== 'pick');
+  }
   const setup = $('setup-panel');
   if (setup) setup.classList.toggle('wiz-off', step === 'pick' || step === 'result');
   const labels = {
@@ -2859,7 +2899,7 @@ function bind() {
   }));
   $('grade').addEventListener('change', async () => {
     state.grade = $('grade').value;
-    state.level = 'all';
+    state.level = 'a';
     state.expanded = false;
     state.selected = [];
     state.moreDismissed = false;
@@ -2873,7 +2913,7 @@ function bind() {
   });
   $('topic').addEventListener('change', async () => {
     state.topic = $('topic').value;
-    state.level = 'all';
+    state.level = 'a';
     state.expanded = false;
     state.selected = [];
     state.moreDismissed = false;
@@ -2936,7 +2976,8 @@ function bind() {
     const previous = history.pop();
     if (!previous) return;
     const before = selectionKey();
-    state.selected = previous;
+    const saved = carriedKeys();
+    state.selected = expandToWholeQuestionKeys(currentExercises(), keepVisible(previous, visibleSelectionKeys())).filter((key) => !saved.has(key));
     state.pickNote = '';
     if (selectionKey() !== before) clearPreparedPrint();
     render();
@@ -2947,7 +2988,7 @@ function bind() {
   $('return-demo').addEventListener('click', async () => {
     state.grade = '9';
     state.topic = '2';
-    state.level = 'all';
+    state.level = 'a';
     fillGrades();
     fillTopics();
     syncWizardUrl();
@@ -3008,7 +3049,7 @@ function applyWizardPrefill(prefill) {
   if (!prefill || !prefill.grade || !prefill.topic) return;
   state.grade = String(prefill.grade);
   state.topic = String(prefill.topic);
-  state.level = prefill.level || 'all';
+  state.level = prefill.level || 'a';
   state.scenario = 'other';
   state.expanded = true;
   fillGrades();

@@ -81,6 +81,7 @@ function teacherOf(input) {
     planCounts: Array.isArray(teacher.planCounts) && teacher.planCounts.length === TEACHER_PLAN_COUNTS.length &&
       TEACHER_PLAN_COUNTS.every((value, index) => teacher.planCounts[index] === value)
       ? TEACHER_PLAN_COUNTS.slice() : [],
+    hasCandidates: Array.isArray(teacher.candidates),
     candidates: sanitizeCandidates(teacher.candidates),
   };
 }
@@ -173,6 +174,7 @@ export function classifierRequestBody(input, index) {
   const planCandidates = teacherPlanCandidates(index, teacher);
   const planQuestionCount = new Set(planCandidates.map((item) => item.questionKey)).size;
   const preparePlans = teacher.planCounts.length > 0 && planQuestionCount > 0;
+  const requiredFamilies = mixedLevelFamilies(eligibleTeacherQuestions(matchingTeacherSheets(index, teacher), teacher.candidates, teacher.hasCandidates), teacher.level);
   const lines = [
     "עמוד: " + clip(page.kind, 32) + " " + clip(page.path, 200),
     "בקשה: " + messageOf(input),
@@ -185,6 +187,10 @@ export function classifierRequestBody(input, index) {
   ];
   if (count > 0) {
     lines.push("כמות מבוקשת לבחירה: " + count);
+    if (requiredFamilies.length > 1) {
+      lines.push("המורה ביקש לשלב רמות. ב-exerciseLabels ובכל אחת מרשימות exerciseLabelsByCount חובה לבחור לפחות שאלה שלמה אחת מכל משפחת רמה זמינה: " + requiredFamilies.join(", ") + ".");
+      lines.push("c ו-c2 הן אותה משפחת מצוינות c; אין חובה לבחור משני המקורות. משפחה שלא נותרו בה שאלות ברשימת המועמדים אינה נדרשת. שאר הבחירה לפי מטרת השיעור והערת המורה; אין להחזיר בחירה מרמה אחת בלבד.");
+    }
     const matching = matchingTeacherSheets(index, teacher);
     const knownIds = new Set();
     for (const sheet of matching) {
@@ -205,7 +211,7 @@ export function classifierRequestBody(input, index) {
             .map((item) => (item.text ? `${item.id} (${item.text})` : item.id))
             .join(" | ")
       );
-    } else if (Array.isArray(index) && index.length) {
+    } else if (!teacher.hasCandidates && Array.isArray(index) && index.length) {
       const availableLabels = [];
       const seen = new Set();
       for (const sheet of matching) {
@@ -247,26 +253,55 @@ export function classifierRequestBody(input, index) {
 
 function teacherPlanCandidates(index, teacher) {
   if (!teacher.planCounts.length || !teacher.candidates.length || teacher.count < 1 || teacher.count > 15) return [];
-  const allowed = new Set(teacher.candidates.map((item) => item.id));
+  return eligibleTeacherQuestions(matchingTeacherSheets(index, teacher), teacher.candidates, teacher.hasCandidates);
+}
+
+function eligibleTeacherQuestions(pool, candidates, hasCandidates) {
+  const allowed = hasCandidates ? new Set(candidates.map((item) => item.id)) : null;
   const seen = new Set();
   const available = [];
-  for (const sheet of matchingTeacherSheets(index, teacher)) {
+  for (const sheet of pool) {
     for (const rawLabel of sheet.questions || []) {
       const label = normalizeLabel(rawLabel);
       if (!label) continue;
       const scoped = /^(?:[abc]|c2)$/.test(String(sheet.level)) ? sheet.level + ":" + label : label;
       const key = "ex:" + sheet.pdfId + ":" + label;
-      if (seen.has(key) || (!allowed.has(scoped) && !allowed.has(label))) continue;
+      if (seen.has(key) || (allowed && !allowed.has(scoped) && !allowed.has(label))) continue;
       seen.add(key);
-      available.push({ key, label, scoped, questionKey: sheet.pdfId + ":" + parseInt(label, 10), orderIndex: available.length });
+      available.push({ key, label, scoped, sheet, family: sheet.level === "c2" ? "c" : sheet.level,
+        questionKey: sheet.pdfId + ":" + parseInt(label, 10), orderIndex: available.length });
     }
   }
   return available;
 }
 
+function mixedLevelFamilies(available, level) {
+  if (String(level).toLowerCase() !== "all") return [];
+  return ["a", "b", "c"].filter((family) => available.some((item) => item.family === family));
+}
+
+function coversLevelFamilies(chosen, families) {
+  return families.length < 2 || families.every((family) => chosen.some((item) => item.family === family));
+}
+
+function explicitTeacherQuestions(available, labels, target) {
+  if (!Array.isArray(labels) || labels.length !== target) return null;
+  const chosen = [], questions = new Set();
+  for (const token of labels) {
+    if (typeof token !== "string") return null;
+    const matches = available.filter((item) => token.includes(":") ? item.scoped === token : item.label === token);
+    if (matches.length !== 1 || questions.has(matches[0].questionKey)) return null;
+    questions.add(matches[0].questionKey);
+    chosen.push(matches[0]);
+  }
+  return chosen;
+}
+
 /** Only explicit, complete model results are reusable. No local completion. */
 export function selectTeacherPlans(index, input, classification, model) {
-  const available = teacherPlanCandidates(index, teacherOf(input));
+  const teacher = teacherOf(input);
+  const available = teacherPlanCandidates(index, teacher);
+  const families = mixedLevelFamilies(available, teacher.level);
   const total = new Set(available.map((item) => item.questionKey)).size;
   const declared = classification && classification.scopedExerciseLabelsByCount;
   const plans = {};
@@ -274,17 +309,8 @@ export function selectTeacherPlans(index, input, classification, model) {
   for (const count of TEACHER_PLAN_COUNTS) {
     const labels = declared[String(count)];
     const target = Math.min(count, total);
-    if (!Array.isArray(labels) || labels.length !== target) continue;
-    const chosen = [];
-    const questions = new Set();
-    for (const token of labels) {
-      if (typeof token !== "string") break;
-      const matches = available.filter((item) => token.includes(":") ? item.scoped === token : item.label === token);
-      if (matches.length !== 1 || questions.has(matches[0].questionKey)) break;
-      questions.add(matches[0].questionKey);
-      chosen.push(matches[0]);
-    }
-    if (chosen.length !== target) continue;
+    const chosen = explicitTeacherQuestions(available, labels, target);
+    if (!chosen || !coversLevelFamilies(chosen, families)) continue;
     plans[String(count)] = {
       source: "classifier",
       model,
@@ -480,6 +506,23 @@ export function selectTeacherPicks(index, input, classification) {
     };
   }
   if (batchCount > 0) {
+    const available = eligibleTeacherQuestions(pool, teacher.candidates, teacher.hasCandidates);
+    const families = mixedLevelFamilies(available, teacher.level);
+    if (explicitAllLevels && teacher.hasCandidates && !available.length) {
+      return { band, exerciseIds: [], modelExerciseIds: [], sheetIds: [], sheets: [], selectionSource: "fallback", selectionError: "MODEL_SELECTION_INVALID" };
+    }
+    if (families.length > 1) {
+      const target = Math.min(batchCount, new Set(available.map((item) => item.questionKey)).size);
+      const labels = Array.isArray(classified.scopedExerciseLabels) ? classified.scopedExerciseLabels : classified.exerciseLabels;
+      const chosen = explicitTeacherQuestions(available, labels, target);
+      if (!chosen || !coversLevelFamilies(chosen, families)) {
+        return { band, exerciseIds: [], modelExerciseIds: [], sheetIds: [], sheets: [], selectionSource: "fallback",
+          selectionError: chosen ? "MODEL_LEVEL_COVERAGE_MISSING" : "MODEL_SELECTION_INVALID" };
+      }
+      const exerciseIds = chosen.slice().sort((a, b) => a.orderIndex - b.orderIndex).map((item) => item.key);
+      return { band, exerciseIds, modelExerciseIds: chosen.map((item) => item.key), sheetIds: [],
+        sheets: pool.filter((sheet) => chosen.some((item) => item.sheet === sheet)), selectionSource: "classifier" };
+    }
     const picked = selectBatchExercises(pool, batchCount, teacher.goal || "first", classified, teacher.candidates);
     return {
       band,

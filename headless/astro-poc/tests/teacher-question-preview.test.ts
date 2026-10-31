@@ -246,7 +246,13 @@ test('ticking a later question does not scroll the unchanged selection step back
     const controls = new Map();
     const $ = (id) => {
       if (!controls.has(id)) controls.set(id, {
-        hidden: false, textContent: '', classList: { toggle() {} },
+        id, hidden: false, textContent: '', parentElement: null, children: [], classList: { toggle() {} },
+        appendChild(child) {
+          if (child.parentElement) child.parentElement.children = child.parentElement.children.filter(item => item !== child);
+          child.parentElement = this;
+          this.children.push(child);
+          return child;
+        },
         scrollIntoView() { scrolled.push(id); },
       });
       return controls.get(id);
@@ -254,12 +260,16 @@ test('ticking a later question does not scroll the unchanged selection step back
     const document = { body: { dataset: { wizard: 'pick' } }, querySelectorAll: () => [] };
     const band = () => 'middle';
     ${definition('applyWizard')}
-    return { state, apply: applyWizard, scrolled };
+    return { state, apply: applyWizard, scrolled, controls };
   `)();
   app.apply();
   app.apply();
+  const levelChoice = app.controls.get('teacher-level-choice');
+  assert.equal(levelChoice.parentElement.id, 'pick-level-home');
+  assert.equal(app.controls.get('pick-level-home').children.length, 1, 'Rerendering does not duplicate the level control');
   assert.deepEqual(app.scrolled, [], 'Selection updates should preserve the teacher’s current scroll position');
   app.state.wizard = 'result';
   app.apply();
+  assert.equal(levelChoice.parentElement.id, 'wizard-level-home');
   assert.deepEqual(app.scrolled, ['wizard-result'], 'An actual wizard transition still brings its destination into view');
 });
