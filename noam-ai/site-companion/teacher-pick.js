@@ -33,7 +33,23 @@ export const CLASSIFIER_SYSTEM = [
 const TEACHER_PLANS_SYSTEM = [
   'בבקשה זו החזר גם exerciseLabelsByCount: {"5":[],"10":[],"15":[]}, בנוסף ל-exerciseLabels של הבקשה הראשית.',
   "בחר כל רשימה במפורש ובהתאם לכמות ולמאגר שנמסרו. כל רשימה מכילה שאלות שלמות שונות מתוך המזהים הקיימים בלבד; אין להחזיר כמה סעיפים של אותה שאלה כרשימה של שאלות שונות.",
+  "כשהכמות הראשית היא 5, 10 או 15, exerciseLabels חייב להכיל את אותה בחירה כמו הרשימה באותו מפתח של exerciseLabelsByCount.",
 ].join("\n");
+
+/** Server diagnostics contain only fixed enums and bounded counts, never model content. */
+export function logTeacherSelection(settings, entry) {
+  const codes = ["MODEL_RESPONSE_INVALID", "MODEL_RESPONSE_TRUNCATED", "MODEL_SELECTION_REJECTED", "MODEL_SELECTION_RECOVERED"];
+  const reasons = ["missing-content", "invalid-json", "length-limit", "primary-invalid", "level-coverage", "requested-plan"];
+  if (!entry || !codes.includes(entry.code) || !reasons.includes(entry.reason)) return;
+  const safe = { event: "noam-teacher-selection", code: entry.code, reason: entry.reason };
+  for (const [key, max] of [["requestedCount", 60], ["primaryCount", 60], ["planCount", 3], ["completionTokens", 100000]]) {
+    const value = entry[key];
+    if (Number.isInteger(value) && value >= 0) safe[key] = Math.min(value, max);
+  }
+  if (["stop", "length", "content_filter", "other", "missing"].includes(entry.finishReason)) safe.finishReason = entry.finishReason;
+  const logger = settings && typeof settings.log === "function" ? settings.log : console.error;
+  try { logger(safe); } catch (_) {}
+}
 
 const LABEL_RE = /(\d{1,2})\s*([\u05D0-\u05EA])(?![\u05D0-\u05EA])/g;
 const BATCH_COUNT_RE = /(?:בחר|בחרי|לבחור|תבחר)\s*(\d{1,2})(?![\s'׳]*[\u05D0-\u05EA](?![\u05D0-\u05EA]))/;
@@ -152,6 +168,8 @@ export function parseClassifier(content) {
     const grade = Number(parsed.grade);
     const level = String(parsed.level || "").toLowerCase();
     const labels = Array.isArray(parsed.exerciseLabels) ? parsed.exerciseLabels : [];
+    const primaryLabelsValid = Array.isArray(parsed.exerciseLabels) && labels.length <= MAX_BATCH_PICK_EXERCISES &&
+      labels.every((label) => typeof label === "string" && Boolean(normalizeScopedLabel(label)));
     const plans = parsePlanLabels(parsed.exerciseLabelsByCount);
     return {
       grade: grade >= 1 && grade <= 9 ? grade : null,
@@ -159,6 +177,7 @@ export function parseClassifier(content) {
       level: level === "a" || level === "b" || level === "c" || level === "c2" ? level : null,
       exerciseLabels: labels.map(normalizeLabel).filter(Boolean).slice(0, MAX_BATCH_PICK_EXERCISES),
       scopedExerciseLabels: labels.map(normalizeScopedLabel).filter(Boolean).slice(0, MAX_BATCH_PICK_EXERCISES),
+      primaryLabelsValid,
       wantsSheet: parsed.wantsSheet === true,
       ...(Object.keys(plans).length ? { scopedExerciseLabelsByCount: plans } : {}),
     };
@@ -319,6 +338,34 @@ export function selectTeacherPlans(index, input, classification, model) {
     };
   }
   return plans;
+}
+
+/** Recover only a complete model plan for this exact count, without a second model call. */
+export function recoverTeacherPickFromPlan(index, input, pick, plans) {
+  const count = requestedPickCount(input);
+  if (!TEACHER_PLAN_COUNTS.includes(count) || !pick ||
+      (!pick.selectionError && !["fallback", "mixed"].includes(pick.selectionSource))) return null;
+  const plan = plans && plans[String(count)];
+  if (!plan || plan.source !== "classifier" || !plan.model ||
+      !Array.isArray(plan.exerciseIds) || !Array.isArray(plan.modelExerciseIds)) return null;
+  const teacher = teacherOf(input);
+  const available = teacherPlanCandidates(index, teacher);
+  const target = Math.min(count, new Set(available.map((item) => item.questionKey)).size);
+  if (!target || plan.exerciseIds.length !== target || plan.modelExerciseIds.length !== target) return null;
+  const byKey = new Map(available.map((item) => [item.key, item]));
+  const chosen = plan.modelExerciseIds.map((key) => byKey.get(key));
+  if (chosen.some((item) => !item) || new Set(chosen.map((item) => item.questionKey)).size !== target ||
+      new Set(plan.exerciseIds).size !== target || !plan.exerciseIds.every((key) => plan.modelExerciseIds.includes(key)) ||
+      !coversLevelFamilies(chosen, mixedLevelFamilies(available, teacher.level))) return null;
+  const selectedSheets = new Set(chosen.map((item) => item.sheet));
+  return {
+    band: pick.band,
+    exerciseIds: chosen.slice().sort((a, b) => a.orderIndex - b.orderIndex).map((item) => item.key),
+    modelExerciseIds: chosen.map((item) => item.key),
+    sheetIds: [],
+    sheets: matchingTeacherSheets(index, teacher).filter((sheet) => selectedSheets.has(sheet)),
+    selectionSource: "classifier",
+  };
 }
 
 function matchingTeacherSheets(index, teacher) {
@@ -514,7 +561,7 @@ export function selectTeacherPicks(index, input, classification) {
     if (families.length > 1) {
       const target = Math.min(batchCount, new Set(available.map((item) => item.questionKey)).size);
       const labels = Array.isArray(classified.scopedExerciseLabels) ? classified.scopedExerciseLabels : classified.exerciseLabels;
-      const chosen = explicitTeacherQuestions(available, labels, target);
+      const chosen = classified.primaryLabelsValid === false ? null : explicitTeacherQuestions(available, labels, target);
       if (!chosen || !coversLevelFamilies(chosen, families)) {
         return { band, exerciseIds: [], modelExerciseIds: [], sheetIds: [], sheets: [], selectionSource: "fallback",
           selectionError: chosen ? "MODEL_LEVEL_COVERAGE_MISSING" : "MODEL_SELECTION_INVALID" };
@@ -597,7 +644,20 @@ export async function classifyTeacherRequest(input, options) {
   if (!settings.apiKey || typeof fetcher !== "function") return null;
   const called = await callQwen(settings, classifierRequestBody(input, settings.teacherIndex));
   const data = called.data;
-  const content =
-    data && data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
-  return parseClassifier(content);
+  const choice = data && data.choices && data.choices[0];
+  const content = choice && choice.message && choice.message.content;
+  const classification = parseClassifier(content);
+  const rawFinishReason = choice && choice.finish_reason;
+  const finishReason = ["stop", "length", "content_filter"].includes(rawFinishReason)
+    ? rawFinishReason : rawFinishReason ? "other" : "missing";
+  if (!classification || finishReason === "length") {
+    logTeacherSelection(settings, {
+      code: finishReason === "length" ? "MODEL_RESPONSE_TRUNCATED" : "MODEL_RESPONSE_INVALID",
+      reason: finishReason === "length" ? "length-limit" : typeof content !== "string" || !content.trim() ? "missing-content" : "invalid-json",
+      finishReason,
+      completionTokens: data && data.usage && data.usage.completion_tokens,
+      requestedCount: requestedPickCount(input),
+    });
+  }
+  return classification;
 }
