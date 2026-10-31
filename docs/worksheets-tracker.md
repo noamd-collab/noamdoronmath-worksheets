@@ -1,5 +1,13 @@
 # Worksheet tracker
 
+## Teacher wizard scope URL — 2026-10-31
+
+The exhaustive teacher-page audit found that changing the selected level left `level=all` in the address. The wizard now replaces its current grade, topic and normalized level in the existing history entry, preserving the path, hash, unrelated query parameters and `history.state`. Repeated rendering does not write history again. Level-only changes retain an existing handoff pick and lesson duration; moving to another grade or topic removes the old pick so a shared source PDF cannot restore a previous context's selection. Current selections and saved sections are not serialized into the URL.
+
+A valid scope-only link now reloads the selected grade, topic and level with an empty selection. Existing selected-question handoffs keep their identifier filtering and selection behavior. Single-source topics normalize to all, and additional excellence sources remain under public level c. URL updates run after normalization and read current state, including when older source loads finish later. An unavailable History API does not interrupt manual selection. Only the teacher module and wizard helper cache keys change; AI requests, bot SDK versions and reCAPTCHA protections remain unchanged.
+
+Validation: 182 targeted URL, teacher selection, preview, routing and print tests passed with zero failures or skips. Fifteen new regressions exercise actual startup, prefill, level and grade handlers, history preservation, manual reconciliation, scope-only reload and reversed asynchronous load completion. Six independent offline checks passed, covering all 1,281 catalog scopes, 31 cross-grade shared PDFs and all 11 single-source topics. These are offline tests, not new live AI requests. Full-suite, build, preview and release results are recorded separately after integration.
+
 ## Teacher Google verification error visibility — 2026-10-30
 
 Follow-up to published PR 303 (`6f7f39a6`). Noam added the separate v2 checkbox key pair, the environment was synchronized without exposing values, and the unchanged approved code was published again. Live configuration now advertises v2 while preserving v3 enforcement. One real teacher request reached the intended `BOT_STEP_UP_REQUIRED` response; the Google widget then failed before any human token or second protected request. Manual selection stayed intact. Its underlying Google configuration or loading error is not yet identified.
