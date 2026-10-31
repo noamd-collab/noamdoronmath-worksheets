@@ -40,6 +40,16 @@ The earlier integration was published separately. This follow-up is a reviewable
 
 Future catalogue content updates require review against the exact source revision. A `review` row remains hidden until the content and its source binding are reviewed. A running thread must not silently mix old and new ladders.
 
+## Trapezoid excellence rows (PR316 rebuilt after #319)
+
+The grade 9 trapezoid excellence worksheet (`G9-T39-E`, PDF `e020549ff713406fb0c0f07443b09b18`) has 44 parts. PR315 has ladders for 1א and 3ב. PR316 adds **39 verified rows** (`source` `ramzi-writer-pilot-20261031`), which brings the catalogue to 543 rows, all verified. First-part coverage stays at 419 of 419.
+
+- **How they were written.** The hints were written from the printed text in `noam-ai/native/G9-TRAP/c/noam-ai.json`, including the figure data and `curriculum.allowed_tools`, under the Zero-Spoiler v2.1 rules: direction, action, and the step before solving.
+- **Gates.** 34 of the first versions failed PR315's `hintIssue` gates, mostly because of a number word in hint 1 (four had `=` in a later hint). Those 34 were reworded to pass the gates, keeping the same guidance and grading.
+- **Audit.** Every reworded set was then audited again. A judge checked it against the printed part, and any problem went to a student-lens and a teacher-lens reviewer, with one rewrite allowed. All 34 passed on the first round. The other 5 rows passed the gates unchanged and keep their original audit.
+- **Ledger.** Each row is pinned in `learning/ramzi-hints-review-20261031.json` as `authored_against_native_source_agent_reviewed_pending_noam_approval`. Agent reviewers checked them, but no human has, so Noam approves them by merging.
+- **Relationship to #319.** `Q04ד`, `Q05ד` and `Q08ד` were already added and merged by PR319. This PR adds the other 39 parts without duplicating them. The first PR316 description wrongly named `Q07ג`, `Q14ד` and `Q14ה` as missing; those parts do not exist.
+
 ## The October 2026 banks
 
 The original PR302 bank contained 500 rows from two Zero-Spoiler v2.1 banks plus ten PDF additions. The 31 October target ladder makes the current total 501 rows (416 verified, 85 review). The historical audit counts below describe those original 500 rows.
