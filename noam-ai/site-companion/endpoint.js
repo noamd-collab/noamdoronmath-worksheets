@@ -199,6 +199,13 @@ export async function runCompanionTurn(payload, deps) {
       classificationFailure = ["MODEL_AUTH_FAILED", "MODEL_HTTP", "QWEN_CONFIG_REJECTED"].includes(error.code) ? error.code : "MODEL_RESPONSE_FAILED";
     }
     const pick = selectTeacherPicks(settings.teacherIndex, payload, classification);
+    if (pick.selectionError === "MODEL_LEVEL_COVERAGE_MISSING" || pick.selectionError === "MODEL_SELECTION_INVALID") {
+      const answer = "לא התקבלה בחירת שאלות תקינה שמשלבת את כל הרמות. אפשר לנסות שוב או לבחור שאלות ידנית.";
+      return Object.assign(teacherAnswer({ sheets: [], exerciseIds: [], modelExerciseIds: [], sheetIds: [] }, settings.catalog), {
+        source: "fallback", model: null, code: pick.selectionError, selectionError: pick.selectionError,
+        answer, text: answer, details: answer,
+      });
+    }
     if (!pick.sheets.length) {
       const missing = missingTeacher();
       return classification ? missing : Object.assign(missing, { source: "fallback", model: null, code: classificationFailure });

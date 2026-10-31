@@ -162,8 +162,10 @@ test('ambiguous or repeated unscoped model labels cannot choose a different leve
   const partial = selectTeacherPicks(rows, input, parseClassifier(JSON.stringify({
     exerciseLabels: ['b:20', '16', '16', '17', '18'],
   })));
-  assert.equal(partial.selectionSource, 'mixed');
-  assert.deepEqual(partial.modelExerciseIds, ids(['b:20']));
+  assert.equal(partial.selectionSource, 'fallback');
+  assert.equal(partial.selectionError, 'MODEL_SELECTION_INVALID');
+  assert.deepEqual(partial.modelExerciseIds, []);
+  assert.deepEqual(partial.exerciseIds, [], 'A partial all-level result must not be completed locally');
   const unique = selectTeacherPicks([sheet()], payload(sheet(), 5), parseClassifier(JSON.stringify({
     exerciseLabels: ['16', '17', '18', '19', '20'],
   })));
@@ -211,7 +213,8 @@ test('every actual grade/topic/level preserves model choices for 5, 10 and 15 wh
     });
     for (const requested of [5, 10, 15]) {
       const count = Math.min(requested, candidates.length);
-      const expected = candidates.slice(-count);
+      const representatives = level === 'all' ? ['a', 'b', 'c'].map(family => candidates.find((candidate: any) => candidate.id.split(':')[0].replace('c2', 'c') === family)).filter(Boolean) : [];
+      const expected = [...representatives, ...candidates.slice().reverse().filter((candidate: any) => !representatives.includes(candidate))].slice(0, count);
       const input = {
         message: `בחר ${requested} שאלות שלמות עם AI`, page: { kind: 'teachers' },
         teacher: { grade, topic, level, count, candidates, goal: 'first', style: 'scaffold' },

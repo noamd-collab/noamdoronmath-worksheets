@@ -36,9 +36,9 @@ describe('teacher page sections', () => {
 
   it('names the two section types as Noam asked and never as a test without points', () => {
     assert.equal(SECTION_KINDS.test.label, 'קטע מבחן');
-    assert.equal(SECTION_KINDS.review.label, 'בניית דף חזרה על חומר');
+    assert.equal(SECTION_KINDS.review.label, 'דף חזרה');
     assert.match(html, /id="section-kind-test"[^>]*data-section-kind="test"[^>]*>קטע מבחן<\/button>/);
-    assert.match(html, /id="section-kind-review"[^>]*data-section-kind="review"[^>]*>בניית דף חזרה על חומר<\/button>/);
+    assert.match(html, /id="section-kind-review"[^>]*data-section-kind="review"[^>]*>דף חזרה<\/button>/);
     for (const text of [html, printer, sections]) assert.equal(text.includes('מבחן בלי ניקוד'), false);
     assert.equal(sectionKind('test'), 'test');
     assert.equal(sectionKind('review'), 'review');
