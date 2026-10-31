@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "exerciseId": "G7-T15-A-Q04א",
+  "semantic_points": {
+    "A": { "role": "vertex_A" },
+    "B": { "role": "vertex_B" },
+    "C": { "role": "vertex_C" }
+  },
+  "expected": {
+    "segments": [["A", "B"], ["B", "C"], ["C", "A"]],
+    "dashed": [],
+    "right_angles": [],
+    "equal_sides": [],
+    "parallel": [],
+    "collinear": [],
+    "intersections": [],
+    "measures": [],
+    "labels_on_pdf": {
+      "A": true,
+      "B": true,
+      "C": true
+    },
+    "shape_hints": [
+      { "kind": "triangle", "points": ["A", "B", "C"] }
+    ]
+  },
+  "notes": "Control fixture: figure prints visible A/B/C glyphs. Binding should prefer glyph → package."
+}
