@@ -2685,7 +2685,7 @@ html.nd-motion-off .exact-viewer *,html.noam-a11y-motion .exact-viewer *{scroll-
 <script src="noam-source-scaffold.js?v=20261029-scaffold1"></script>
 <script src="noam-glossary-curriculum.js?v=20260927-concepts2"></script>
 <script src="noam-glossary.js?v=20261029-context6"></script>
-<script src="noam-curated-hints.js?v=20261031-source-bound2"></script>
+<script src="noam-curated-hints.js?v=20261031-source-bound3"></script>
 <script>
 (function(){
 
@@ -4853,7 +4853,14 @@ function loadStaticManifest(){
       fab.classList.remove("hidden");
       renderManifestPins();
       if (window.NoamCuratedHints&&typeof window.NoamCuratedHints.prefetch==="function"){
-        window.NoamCuratedHints.prefetch(data);
+        window.NoamCuratedHints.prefetch(data).then(function(){
+          if(manifest!==data||typeof noamReconcilePreparedHints!=="function"){return;}
+          var changed=false;
+          data.exercises.forEach(function(exercise){
+            if(threads[exercise.id]&&noamReconcilePreparedHints(data,exercise,threads[exercise.id])){changed=true;}
+          });
+          if(changed){saveNoamState();if(selectedExercise){renderNoamChat();}}
+        });
       }
       return data;
     })
@@ -5351,13 +5358,21 @@ function ensureNoamGlossaryPopover(){
 function positionNoamGlossaryPopover(trigger){
   if (!trigger||!noamGlossaryPopover||noamGlossaryPopover.hidden){return;}
   var rect=trigger.getBoundingClientRect();
-  var width=noamGlossaryPopover.offsetWidth;
-  var height=noamGlossaryPopover.offsetHeight;
   var viewportWidth=document.documentElement.clientWidth;
-  var viewportHeight=window.innerHeight;
+  var viewportHeight=window.innerHeight,bottom=viewportHeight-10;
+  // A term near the transcript footer must not cover the hint/composer controls.
+  var compose=typeof panelBody!=="undefined"&&panelBody.contains(trigger)&&panelBody.querySelector(".noam-compose");
+  var composeRect=compose&&compose.getBoundingClientRect();
+  if(composeRect&&composeRect.height>0&&composeRect.top>20){bottom=Math.min(bottom,composeRect.top-8);}
+  var maxHeight=Math.max(1,bottom-10);
+  noamGlossaryPopover.style.boxSizing="border-box";
+  noamGlossaryPopover.style.maxHeight=maxHeight+"px";
+  noamGlossaryPopover.style.overflowY="auto";
+  var width=noamGlossaryPopover.offsetWidth;
+  var height=Math.min(noamGlossaryPopover.offsetHeight,maxHeight);
   var left=Math.max(12,Math.min(viewportWidth-width-12,rect.left+(rect.width-width)/2));
   var below=rect.bottom+8;
-  var top=below+height<=viewportHeight-10?below:Math.max(10,rect.top-height-8);
+  var top=below+height<=bottom?below:Math.max(10,Math.min(bottom-height,rect.top-height-8));
   noamGlossaryPopover.style.left=Math.round(left)+"px";
   noamGlossaryPopover.style.top=Math.round(top)+"px";
 }
@@ -5557,6 +5572,7 @@ function renderNoamChat(){
   panelBody.classList.add("is-chat");
   panelBack.hidden = false;
   var thread = exerciseThread(selectedExercise.id);
+  if(typeof noamReconcilePreparedHints==="function"&&noamReconcilePreparedHints(manifest,selectedExercise,thread)){saveNoamState();}
   var drawingAnswer = noamLatestDrawingAnswer(thread);
   var drawingHintsAllowed=typeof noamPageAllowsDrawingHint!=='function'||noamPageAllowsDrawingHint();
   var drawingPending = !!(drawingAnswer&&drawingHintsAllowed&&noamDiagramRuntime().messages.has(drawingAnswer));
@@ -8820,6 +8836,51 @@ function noamVisualAnswer(studentMessage,answer,visual){
   return "הנה המחשה של השלב שעליו שאלת.";
 }
 
+function noamReconcilePreparedHints(source,exercise,thread){
+  if(!source||manifest!==source||!exercise||!thread||busy){return false;}
+  var bank=window.NoamCuratedHints;
+  if(!bank||typeof bank.get!=="function"||typeof bank.status!=="function"){return false;}
+  var saved=typeof thread.preparedHintRevision==="string"?thread.preparedHintRevision:"";
+  var messages=Array.isArray(thread.messages)?thread.messages:[];
+  if(!saved&&!messages.some(function(message){return message&&message.preparedHint===true;})){return false;}
+  var set=bank.get(source,exercise.id),status=bank.status(source,exercise.id);
+  if(status!=="available"&&status!=="missing"){return false;}
+  if(status==="available"&&(!set||!Array.isArray(set.hints)||set.hints.length!==3||!set.revision)){return false;}
+  if(set&&saved===set.revision){return false;}
+  // A fresh source-bound catalog is authoritative for standard hints. Remove
+  // only those turns; student questions, their replies, drafts and photos stay.
+  var oldAnswers=Object.create(null);
+  messages.forEach(function(message){if(message&&message.preparedHint===true&&message.role==="assistant"){oldAnswers[message.text]=true;}});
+  try{
+    var revision=JSON.parse(saved);
+    if(Array.isArray(revision)&&revision[1]===exercise.id&&Array.isArray(revision[2])){
+      revision[2].forEach(function(text){if(typeof text==="string"){oldAnswers[text]=true;}});
+    }
+  }catch(error){/* Older threads can recover from their marked hint messages. */}
+  var dropNext=false;
+  thread.messages=messages.filter(function(message){
+    if(!message){return true;}
+    var following=dropNext;dropNext=false;
+    if(message.role==="user"&&/^רמז [123]$/.test(message.kind||"")){dropNext=true;return false;}
+    if(message.preparedHint===true){return false;}
+    if(following&&message.role==="assistant"&&(message.answerError||oldAnswers[message.text])){return false;}
+    return true;
+  });
+  var history=Array.isArray(thread.history)?thread.history:[],dropHistory=Object.create(null);
+  history.forEach(function(message,index){
+    if(!message){return;}
+    if(message.preparedHint===true){dropHistory[index]=true;return;}
+    var next=history[index+1];
+    if(message.role==="user"&&/^רמז [123]$/.test(message.content||"")&&next&&next.role==="assistant"&&oldAnswers[next.content]){
+      dropHistory[index]=true;dropHistory[index+1]=true;
+    }else if(index===0&&message.role==="assistant"&&oldAnswers[message.content]){dropHistory[index]=true;}
+  });
+  thread.history=history.filter(function(_,index){return !dropHistory[index];});
+  thread.hintIndex=0;
+  delete thread.preparedHintRevision;
+  return true;
+}
+
 function noamPreparedHint(exercise,thread,hintIndex,operation){
   var source=typeof manifest==="object"&&manifest,bank=window.NoamCuratedHints;
   function unavailable(){var error=new Error("הרמז המוכן עדיין לא זמין לסעיף הזה. אפשר לנסות שוב.");error.code="PREPARED_HINT_UNAVAILABLE";return error;}
@@ -8944,7 +9005,7 @@ function askNoam(helpKind,studentMessage){
       if(!answer){throw new Error("הרמז המוכן לא זמין כרגע. אפשר לנסות שוב.");}
       thread.preparedHintRevision=prepared.revision;
       thread.messages.push({role:"assistant",text:answer,kind:"",preparedHint:true,preparedHintIndex:hintIndex});
-      thread.history.push({role:"user",content:historyQuestion},{role:"assistant",content:answer});
+      thread.history.push({role:"user",content:historyQuestion,preparedHint:true,preparedHintIndex:hintIndex},{role:"assistant",content:answer,preparedHint:true,preparedHintIndex:hintIndex});
       thread.history=thread.history.slice(-8);thread.messages=thread.messages.slice(-60);
       thread.hintIndex=hintIndex+1;
       saveNoamState();operation.complete();renderNoamChat();

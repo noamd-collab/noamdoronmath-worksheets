@@ -37,6 +37,67 @@ const bank=[
 
 const site=build.loadSite(path.join(__dirname,".."));
 
+test("E2 parts bind to their own PDF-only worksheets and never borrow native E data",()=>{
+  const expected={"G8-T45":"e4da722565a942e482c9e4dbf6ee41b5","G8-T51":"0b79f523d8ea4598a85d5320d6acd823"};
+  for(const [prefix,pdf] of Object.entries(expected)){
+    const topic=site.find(topic=>topic.prefix===prefix),id=prefix+"-E2-Q01א";
+    assert.equal(topic.levels.E2.source_pdf_hash,pdf);
+    assert.equal(topic.levels.E2.source_native_sha256,null);
+    assert.equal(topic.levels.E2.exercises.size,prefix==="G8-T45"?81:82);
+    const loaded=build.loadRows([{exercise_id:id,hints:["בדקו את הנתונים","חפשו קשר מתאים","נמקו את הצעד שבחרתם"]}],build.liveExercises(site));
+    assert.deepEqual(loaded.rejected,[]);
+    const bound=build.bindRows(site,loaded.rows).rows[0];
+    assert.equal(bound.source_pdf_hash,pdf);assert.equal(bound.source_native_sha256,null);
+    assert.match(build.toSql([bound]),new RegExp(prefix+"-E2-Q01א"));
+    assert.equal(build.nativeExercise(path.join(__dirname,".."),id),null);
+    assert.ok(build.nativeExercise(path.join(__dirname,".."),prefix+"-E-Q01א"));
+    assert.throws(()=>build.bindRows(site,[{...bound,exercise_id:prefix+"-E-Q01א"}]),/Stale or conflicting/);
+    const parsed=build.parseBank(block(id,"נושא "+Number(prefix.slice(-2))+": "+topic.title+", רמה E2","משימה לבדיקה"));
+    assert.equal(parsed.entries[0].bankLevel,"E2");
+    assert.equal(build.normalize(site,parsed).rows[0].exercise_id,id);
+  }
+  for(const level of ["E22","E3","C2","AE2","E20"]){assert.equal(build.SITE_ID_RE.test("G8-T45-"+level+"-Q01א"),false);}
+  const schema=fs.readFileSync(path.join(__dirname,"..","learning/ramzi-hints-schema.sql"),"utf8");
+  const idConstraint=new RegExp(schema.match(/exercise_id ~ '([^']+)'/)[1]);
+  assert.ok(idConstraint.test("G8-T45-E2-Q01א"));
+  assert.ok(!idConstraint.test("G8-T45-E22-Q01א"));
+});
+
+test("all T40 manifests match exact native selected tasks and have no T32 exercise IDs",()=>{
+  const root=path.join(__dirname,".."),pdfs={A:"043606cd6c8e4c199b148424caf7ef36",B:"9fdee3c1708d4726998df6526d437f4c",E:"8f86fe9850874c4f935f16ddddc51c83"};
+  let count=0;
+  for(const [level,pdf] of Object.entries(pdfs)){
+    const relative="noam-ai/manifests/"+pdf+".json",bytes=fs.readFileSync(path.join(root,relative)),manifest=JSON.parse(bytes);
+    assert.deepEqual(fs.readFileSync(path.join(root,"headless/astro-poc/public",relative)),bytes);
+    const nativeBytes=fs.readFileSync(path.join(root,manifest.nativeExportUrl)),native=JSON.parse(nativeBytes);
+    assert.equal(createHash("sha256").update(nativeBytes).digest("hex"),manifest.nativeExportSha256);
+    assert.equal(manifest.prefix,"G9-T40");assert.equal(native.package,"G9-T32","legacy package metadata stays unchanged");
+    for(const ex of manifest.exercises){
+      count++;assert.equal(ex.id,"G9-T40-"+level+"-Q"+String(ex.q).padStart(2,"0")+ex.part);
+      const question=native.questions.find(q=>q.id===ex.nativeQuestionId),part=question.items.find(p=>p.id===ex.nativeItemId);
+      assert.equal(question.id,"q"+ex.q);assert.equal(part.label,ex.part);assert.equal(part.text,ex.text);assert.equal(question.text,ex.context);
+      assert.equal(ex.nativeFigureId||null,part.figure_id||question.figure_id||null);
+      const bare={exercise_id:ex.id,topic:"דמיון משולשים"},bound=build.bindRows(site,[bare]).rows[0];
+      assert.equal(bound.source_pdf_hash,pdf);assert.equal(bound.source_native_sha256,manifest.nativeExportSha256);
+      assert.throws(()=>build.bindRows(site,[{...bound,exercise_id:ex.id.replace("G9-T40-","G9-T32-")}]),/Stale or conflicting|Unresolved/);
+    }
+  }
+  assert.equal(count,183);
+});
+
+test("a malformed catalog cannot treat E2 as a single-level alias of E",()=>{
+  const root=fs.mkdtempSync(path.join(os.tmpdir(),"ramzi-e2-")),pdf="a".repeat(32);
+  try{
+    fs.mkdirSync(path.join(root,"headless/catalog"),{recursive:true});
+    fs.mkdirSync(path.join(root,"noam-ai/manifests"),{recursive:true});
+    fs.writeFileSync(path.join(root,"headless/catalog/catalog.v1.json"),JSON.stringify({grades:[{grade:8,topics:[{noamTopicId:"G8-T45",title:"דמיון משולשים",levels:[{pdfId:pdf}]}]}]}));
+    for(const [levelCode,idLevel] of [["E2","E"],["E","E2"]]){
+      fs.writeFileSync(path.join(root,"noam-ai/manifests",pdf+".json"),JSON.stringify({prefix:"G8-T45",pdfHash:pdf,levelCode,exercises:[{id:"G8-T45-"+idLevel+"-Q01א",text:"משימה"}]}));
+      assert.throws(()=>build.loadSite(root),/E2 worksheet identity mismatch/);
+    }
+  }finally{fs.rmSync(root,{recursive:true,force:true});}
+});
+
 test("the parser keeps hints and exercise wording and drops a truncated or repeated block",()=>{
   const parsed=build.parseBank(bank);
   assert.equal(parsed.entries.length,5);
@@ -139,22 +200,43 @@ test("the committed seed matches the committed public rows and hides unreviewed 
     row.hints.forEach(hint=>assert.ok(hint.length>0&&hint.length<=build.MAX_HINT));
     assert.ok(sql.includes("('"+row.exercise_id+"',"),row.exercise_id+" is in the seed");
   }
-  assert.equal(sql.match(/^\('G\d-T\d{2}-[ABE]-Q\d{2}/gm).length,rows.length);
+  assert.equal(sql.match(/^\('G\d-T\d{2}-(?:[ABE]|E2)-Q\d{2}/gm).length,rows.length);
   assert.doesNotMatch(sql,/פתרון מלא:|תשובה סופית:/);
   assert.equal(sql,build.toSql(rows),"seed round-trips every hint and source binding exactly");
   const loaded=build.loadRows(rows,live);
   assert.deepEqual(loaded.rejected,[]);
   assert.deepEqual(build.publicRows(build.bindRows(site,loaded.rows).rows),rows);
-  assert.equal(rows.length,501);
-  assert.equal(rows.filter(row=>row.status==="verified").length,501);
+  assert.equal(rows.length,13058);
+  assert.equal(rows.filter(row=>row.status==="verified").length,13058);
   assert.equal(rows.filter(row=>row.status==="review").length,0);
-  assert.deepEqual(build.firstPartCoverage(site,rows),{eligible:419,verified:419,missing:[]});
+  assert.deepEqual(build.firstPartCoverage(site,rows),{eligible:424,verified:424,missing:[]});
   rows.forEach(row=>{
     assert.match(row.source_exercise_sha256,/^[a-f0-9]{64}$/);
     assert.ok(!Object.hasOwn(row,"source_exercise_text"),"answer-bearing bank context stays out of public JSON");
     assert.ok(!Object.hasOwn(row,"review_note"),"private review notes stay out of public JSON");
     assert.equal(build.hintIssue(row.hints),null,row.exercise_id);
   });
+});
+
+test("the trapezoid excellence rows from PR316 pass the gates and are pinned to the current revision",()=>{
+  const root=path.join(__dirname,"..");
+  const rows=JSON.parse(fs.readFileSync(path.join(root,"learning/ramzi-hints.json"),"utf8"));
+  const ledger=JSON.parse(fs.readFileSync(path.join(root,"learning/ramzi-hints-review-20261031.json"),"utf8"));
+  const review=new Map(ledger.rows.map(row=>[row.exercise_id,row.review]));
+  const pilot=rows.filter(row=>row.source==="ramzi-writer-pilot-20261031");
+  assert.equal(pilot.length,39);
+  pilot.forEach(row=>{
+    assert.match(row.exercise_id,/^G9-T39-E-Q\d{2}[א-ת]$/);
+    assert.equal(row.status,"verified");
+    assert.equal(row.source_pdf_hash,"e020549ff713406fb0c0f07443b09b18");
+    assert.equal(row.source_native_sha256,"0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201");
+    assert.equal(build.hintIssue(row.hints),null,row.exercise_id);
+    assert.equal(review.get(row.exercise_id),"authored_against_native_source_agent_reviewed_pending_noam_approval");
+  });
+  // Q04ד, Q05ד and Q08ד come from PR319; this PR does not add a second ladder for them.
+  for(const id of ["G9-T39-E-Q04ד","G9-T39-E-Q05ד","G9-T39-E-Q08ד"]){
+    assert.ok(!pilot.some(row=>row.exercise_id===id),id);
+  }
 });
 
 test("the public key reads only verified hints and the two safe source bindings",()=>{
@@ -172,7 +254,7 @@ test("the public key reads only verified hints and the two safe source bindings"
   assert.match(schema,/source_native_sha256 text check/);
 });
 
-test("current catalog bindings disambiguate reused T32 IDs by canonical prefix, topic and selected text",()=>{
+test("T32 rows retain their current bindings after T40 receives its own IDs; legacy ambiguous sources still fail closed",()=>{
   const rows=JSON.parse(fs.readFileSync(path.join(__dirname,"..","learning/ramzi-hints.json"),"utf8"));
   const expected={A:"1484d3da89c246e0bf6f7c6ccf7fd6f5",B:"6bfa684eb9b644f684bea0cde1c5c9a1",E:"9e98f366feb74e129b7c9d1f1d33285d"};
   const originals=rows.filter(row=>/^G9-T32-[ABE]-Q01א$/.test(row.exercise_id)).map(row=>{
@@ -181,9 +263,14 @@ test("current catalog bindings disambiguate reused T32 IDs by canonical prefix, 
   const bound=build.bindRows(site,originals);
   assert.equal(bound.rows.length,3);
   bound.rows.forEach(row=>assert.equal(row.source_pdf_hash,expected[row.exercise_id.split("-")[2]]));
-  assert.ok(bound.resolutions.every(row=>row.reason==="canonical_catalog_prefix_topic_and_selected_text"));
-  assert.throws(()=>build.bindRows(site,[{...originals[0],source_exercise_text:"משימה אחרת"}]),/Unresolved/);
-  assert.throws(()=>build.bindRows(site,[{...originals[0],topic:"נושא אחר"}]),/Unresolved/);
+  assert.ok(bound.resolutions.every(row=>row.reason==="unique_current_manifest"));
+  const originalTopic=site.find(topic=>topic.prefix==="G9-T32");
+  const imposter={...originalTopic,prefix:"G9-T40",levels:{A:{...originalTopic.levels.A,
+    pdfId:"f".repeat(32),source_pdf_hash:"f".repeat(32)}}};
+  const ambiguous=site.concat(imposter);
+  assert.equal(build.bindRows(ambiguous,[originals[0]]).resolutions[0].reason,"canonical_catalog_prefix_topic_and_selected_text");
+  assert.throws(()=>build.bindRows(ambiguous,[{...originals[0],source_exercise_text:"משימה אחרת"}]),/Unresolved/);
+  assert.throws(()=>build.bindRows(ambiguous,[{...originals[0],topic:"נושא אחר"}]),/Unresolved/);
 });
 
 test("source binding never silently refreshes a stale review or guesses an ambiguous revision",()=>{
@@ -287,7 +374,7 @@ test("a source-task fingerprint preserves mathematical signs",()=>{
   assert.throws(()=>build.sourceTaskHash(""),/Missing current source task/);
 });
 
-test("every published ladder and source binding matches its reviewed revision",()=>{
+test("every published ladder and source binding matches its recorded approval revision",()=>{
   const root=path.join(__dirname,"..");
   const rows=JSON.parse(fs.readFileSync(path.join(root,"learning/ramzi-hints.json")));
   const ledger=JSON.parse(fs.readFileSync(path.join(root,"learning/ramzi-hints-review-20261031.json")));
@@ -296,8 +383,65 @@ test("every published ladder and source binding matches its reviewed revision",(
   assert.equal(ledger.rows.length,rows.length);
   for(const row of rows){
     const review=approved.get(row.exercise_id);assert.ok(review,row.exercise_id);
-    assert.equal(review.hints_sha256,createHash('sha256').update(JSON.stringify(row.hints)).digest('hex'),row.exercise_id+' requires a new content review');
+    assert.equal(review.hints_sha256,createHash('sha256').update(JSON.stringify(row.hints)).digest('hex'),row.exercise_id+' differs from its recorded approval');
     for(const key of ['source_pdf_hash','source_native_sha256','source_exercise_sha256'])assert.equal(review[key],row[key],row.exercise_id+' source changed');
+  }
+});
+
+test("all current Q01 parts have a source-bound ladder, including E2 and canonical T40",()=>{
+  const root=path.join(__dirname,"..");
+  const rows=JSON.parse(fs.readFileSync(path.join(root,"learning/ramzi-hints.json")));
+  const byId=new Map(rows.map(row=>[row.exercise_id,row]));
+  const expected=new Map();
+  for(const topic of site){
+    if(![7,8,9].includes(topic.grade))continue;
+    for(const level of Object.values(topic.levels))for(const id of level.exercises){
+      if(!/-Q01[א-ת]?$/.test(id))continue;
+      const key=level.source_pdf_hash+":"+id;
+      expected.set(key,{id,level});
+    }
+  }
+  assert.equal(expected.size,1653);
+  for(const {id,level}of expected.values()){
+    const row=byId.get(id);assert.ok(row,id+" is missing");
+    assert.equal(row.status,"verified");
+    assert.equal(row.source_pdf_hash,level.source_pdf_hash,id);
+    assert.equal(row.source_native_sha256,level.source_native_sha256,id);
+    assert.equal(row.source_exercise_sha256,build.sourceTaskHash(level.exerciseTexts.get(id)),id);
+    assert.equal(build.hintIssue(row.hints),null,id);
+  }
+  const generated=rows.filter(row=>row.source==="ramzi-flash-authored-20261031");
+  assert.equal(generated.length,12515);
+  const ledger=JSON.parse(fs.readFileSync(path.join(root,"learning/ramzi-hints-review-20261031.json")));
+  const byLedgerId=new Map(ledger.rows.map(entry=>[entry.exercise_id,entry]));
+  for(const row of generated){
+    const entry=byLedgerId.get(row.exercise_id);assert.ok(entry,row.exercise_id);
+    assert.equal(entry.authoring_model,"qwen3.8-flash");
+    assert.equal(entry.review,"machine_generated_flash_automatic_checks_no_model_review");
+    assert.equal(new Set(row.hints.map(hint=>hint.normalize("NFC").trim().replace(/\s+/gu," "))).size,3,row.exercise_id+" must have three distinct hint texts");
+  }
+});
+
+test("every current grade 7 part has a ladder bound to its exact PDF, native revision and selected text",()=>{
+  const rows=JSON.parse(fs.readFileSync(path.join(__dirname,"..","learning/ramzi-hints.json")));
+  const byId=new Map(rows.map(row=>[row.exercise_id,row]));
+  const expected=new Map();
+  for(const topic of site.filter(topic=>topic.grade===7)){
+    for(const level of Object.values(topic.levels))for(const id of level.exercises){
+      assert.match(id,/^G7-/,"grade 7 catalog must not borrow another grade's task");
+      expected.set(level.source_pdf_hash+":"+id,{id,level});
+    }
+  }
+  assert.equal(expected.size,11942,"coverage includes every question and level, not only Q01");
+  assert.equal(new Set([...expected.values()].map(({id})=>id)).size,11942,"different source PDFs cannot share a covered exercise ID");
+  assert.equal(rows.filter(row=>row.exercise_id.startsWith("G7-")).length,11942);
+  for(const {id,level}of expected.values()){
+    const row=byId.get(id);assert.ok(row,id+" is missing");
+    assert.equal(row.status,"verified",id);
+    assert.equal(row.source_pdf_hash,level.source_pdf_hash,id+" PDF revision");
+    assert.equal(row.source_native_sha256,level.source_native_sha256,id+" native revision");
+    assert.equal(row.source_exercise_sha256,build.sourceTaskHash(level.exerciseTexts.get(id)),id+" selected task text");
+    assert.equal(build.hintIssue(row.hints),null,id);
   }
 });
 

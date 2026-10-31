@@ -38,6 +38,26 @@ it('single-level PDF aliases use only exact manifest exercise IDs and one worksh
  assert.equal(await bank.prefetch(sheet,{fetch:fetchRows([row({exercise_id:'G9-T39-A-Q03ב'})],calls)}),1);assert.equal(new URL(calls[0].url).searchParams.get('exercise_id'),'like.G9-T39-A-Q*');
  assert.equal(await bank.prefetch(manifest({exercises:[{id},{id:'G9-T39-A-Q03ב'}]}),{fetch:fetchRows([],calls)}),0);assert.equal(calls.length,1);
 });
+it('E2 PDF-only ladders load under E2 and never alias an E worksheet',async()=>{
+ const e2='G8-T45-E2-Q01א',e='G8-T45-E-Q01א',sheet=manifest({prefix:'G8-T45',levelCode:'E2',nativeExportSha256:null,exercises:[{id:e2}]}),calls:any[]=[],{bank}=setup();
+ assert.equal(await bank.prefetch(sheet,{fetch:fetchRows([row({exercise_id:e2,source_native_sha256:null}),row({exercise_id:e,source_native_sha256:null})],calls)}),1);
+ assert.equal(new URL(calls[0].url).searchParams.get('exercise_id'),'like.G8-T45-E2-Q*');
+ assert.deepEqual(Array.from(bank.get(sheet,e2).hints),hints);assert.equal(bank.get(sheet,e),null);
+ for(const changed of [{...sheet,levelCode:'E'},{...sheet,exercises:[{id:e}]},{...sheet,exercises:[{id:e2},{id:e}]},{...sheet,levelCode:'E22'}]){
+  assert.equal(await bank.prefetch(changed,{fetch:fetchRows([],calls)}),0);
+ }
+ assert.equal(calls.length,1);
+ const {bank:other}=setup();assert.equal(await other.prefetch(sheet,{fetch:fetchRows([row({exercise_id:e2,source_native_sha256:null,source_pdf_hash:'c'.repeat(32)})])}),0);
+});
+it('canonical T40 manifest IDs cannot load old T32 hints, including matching hashes',async()=>{
+ const sheet=JSON.parse(read('noam-ai/manifests/043606cd6c8e4c199b148424caf7ef36.json')),target=sheet.exercises[0].id,old=target.replace('G9-T40-','G9-T32-'),calls:any[]=[],{bank}=setup();
+ assert.equal(target,'G9-T40-A-Q01א');
+ const correct=row({exercise_id:target,source_pdf_hash:sheet.pdfHash,source_native_sha256:sheet.nativeExportSha256});
+ assert.equal(await bank.prefetch(sheet,{fetch:fetchRows([{...correct,exercise_id:old},correct],calls)}),1);
+ assert.equal(new URL(calls[0].url).searchParams.get('exercise_id'),'like.G9-T40-A-Q*');
+ assert.equal(bank.get(sheet,old),null);assert.deepEqual(Array.from(bank.get(sheet,target).hints),hints);
+ assert.equal(await bank.prefetch({...sheet,exercises:[{...sheet.exercises[0],id:old}]},{fetch:fetchRows([correct],calls)}),0);assert.equal(calls.length,1);
+});
 it('invalid manifest hashes, levels and configured hosts never send a request',async()=>{
  const calls:any[]=[];
  for(const extra of [{pdfHash:'x'},{nativeExportSha256:'x'},{levelCode:'AB'},{prefix:'G9-T39&x=1'},{exercises:[]}]){const {bank}=setup();assert.equal(await bank.prefetch(manifest(extra),{fetch:fetchRows([],calls)}),0);}
@@ -61,7 +81,7 @@ it('deferred public config is awaited and bounded without loading security or a 
 it('both viewer copies prefetch after manifest load and put prepared standard hints before any guide or AI action',()=>{
  for(const path of ['../public/worksheet-viewer-noam.html','../../../worksheet-viewer-noam.html']){
   const viewer=readFileSync(new URL(path,import.meta.url),'utf8'),ask=viewer.slice(viewer.indexOf('function askNoam('),viewer.indexOf('function noamRetryActionLabel('));
-  assert.match(viewer,/noam-curated-hints\.js\?v=20261031-source-bound2/);assert.match(viewer,/manifest = data;[\s\S]{0,600}NoamCuratedHints\.prefetch\(data\)/);assert.doesNotMatch(ask,/noamDidacticResponse\(|noamDidacticGuide\(|noamDidacticPrompt\(/);assert.ok(ask.indexOf('noamPreparedHint(')<ask.indexOf('noamPrepareOperationClient('));assert.doesNotMatch(viewer,/function noamFirstSourceHint\(/);
+  assert.match(viewer,/noam-curated-hints\.js\?v=20261031-source-bound3/);assert.match(viewer,/manifest = data;[\s\S]{0,600}NoamCuratedHints\.prefetch\(data\)/);assert.doesNotMatch(ask,/noamDidacticResponse\(|noamDidacticGuide\(|noamDidacticPrompt\(/);assert.ok(ask.indexOf('noamPreparedHint(')<ask.indexOf('noamPrepareOperationClient('));assert.doesNotMatch(viewer,/function noamFirstSourceHint\(/);
  }
  assert.equal(readFileSync(new URL('../../../noam-curated-hints.js',import.meta.url),'utf8'),code);
 });
