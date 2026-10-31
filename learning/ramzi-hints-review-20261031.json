@@ -1741,10 +1741,19 @@
       "source_pdf_hash": "8757ca57a057484cb22089ad0f251924",
       "source_native_sha256": "f44778a0fd2d10de83a8b0c68792b7daab4a54a69b09a2575931f2dccfc77fdf",
       "source_exercise_sha256": "69932b1c802c6b88bb7d379803c7b507c5a9a0e084227ea9c1c043e4ced97016",
-      "hints_sha256": "9db1cb9fcd7ce4ebfeeec595fc670ae3b4f861babf790f7b7d79931c521e447d",
+      "hints_sha256": "e934e1c948513d93dd834c89fa4529aa5d2f4f5fd19ce4fe0edb099331a1369c",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
+      "corrections": [
+        {
+          "kind": "opposite_number_terminology",
+          "authoring_model": "qwen3.8-flash",
+          "previous_hints_sha256": "9db1cb9fcd7ce4ebfeeec595fc670ae3b4f861babf790f7b7d79931c521e447d",
+          "validation": "source_bound_authoring_and_automatic_terminology_check",
+          "date": "2026-11-01"
+        }
+      ]
     },
     {
       "exercise_id": "G7-T01-B-Q20ג",
@@ -25531,50 +25540,100 @@
       "source_pdf_hash": "567e3ebc4a3c4c4ea64fd7aa67d58985",
       "source_native_sha256": "436b3b585a53d48d5f7f484ef7992d4e736f801f213f95798fc529656b28d3d4",
       "source_exercise_sha256": "09ef619ef5b83a4a89a42e4e2eb77249633901678b465b131944cc4af9e42a9f",
-      "hints_sha256": "8c14bcefcd84b0e4353fe70698d65b3b42c59c244fe488651f39de8e49a7c7fd",
+      "hints_sha256": "5b72be613694120e5edf1a82e8f2ae6b0434b0b52c85cf2fa6488faf2de7bb6e",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
+      "corrections": [
+        {
+          "kind": "distinct_hint_progression",
+          "authoring_model": "qwen3.8-flash",
+          "previous_hints_sha256": "8c14bcefcd84b0e4353fe70698d65b3b42c59c244fe488651f39de8e49a7c7fd",
+          "validation": "source_bound_authoring_and_automatic_distinct_hint_check",
+          "review": "machine_generated_flash_automatic_checks_no_model_review",
+          "date": "2026-11-01"
+        }
+      ]
     },
     {
       "exercise_id": "G7-T11-B-Q20ב",
       "source_pdf_hash": "567e3ebc4a3c4c4ea64fd7aa67d58985",
       "source_native_sha256": "436b3b585a53d48d5f7f484ef7992d4e736f801f213f95798fc529656b28d3d4",
       "source_exercise_sha256": "5427f9fa9ebb06309d5855294503b8b1ab4cdc17b72a2f2135e34ddf5232c885",
-      "hints_sha256": "888ddffaea7d4f30150156264f47785f7dcaa88111ff9b8ae0567812c837a9ab",
+      "hints_sha256": "ba73147c721308654196513853d56d2ee09f8664e9cd997c7be5ab141ca1c1ce",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
+      "corrections": [
+        {
+          "kind": "distinct_hint_progression",
+          "authoring_model": "qwen3.8-flash",
+          "previous_hints_sha256": "888ddffaea7d4f30150156264f47785f7dcaa88111ff9b8ae0567812c837a9ab",
+          "validation": "source_bound_authoring_and_automatic_distinct_hint_check",
+          "review": "machine_generated_flash_automatic_checks_no_model_review",
+          "date": "2026-11-01"
+        }
+      ]
     },
     {
       "exercise_id": "G7-T11-B-Q20ג",
       "source_pdf_hash": "567e3ebc4a3c4c4ea64fd7aa67d58985",
       "source_native_sha256": "436b3b585a53d48d5f7f484ef7992d4e736f801f213f95798fc529656b28d3d4",
       "source_exercise_sha256": "19d0e8890efe93b2378d4c874e157a60b2862f15bf4a1b06a630d762ae8af6c1",
-      "hints_sha256": "0af2de74d9a0a973e45a75ee8a0277f41b56946a5fb4c69c59da729c5efe8d8a",
+      "hints_sha256": "5e84fe22f599017ce5278ed178d6c88bd02851308ec99e770a87cfa8fbf3e507",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
+      "corrections": [
+        {
+          "kind": "distinct_hint_progression",
+          "authoring_model": "qwen3.8-flash",
+          "previous_hints_sha256": "0af2de74d9a0a973e45a75ee8a0277f41b56946a5fb4c69c59da729c5efe8d8a",
+          "validation": "source_bound_authoring_and_automatic_distinct_hint_check",
+          "review": "machine_generated_flash_automatic_checks_no_model_review",
+          "date": "2026-11-01"
+        }
+      ]
     },
     {
       "exercise_id": "G7-T11-B-Q20ד",
       "source_pdf_hash": "567e3ebc4a3c4c4ea64fd7aa67d58985",
       "source_native_sha256": "436b3b585a53d48d5f7f484ef7992d4e736f801f213f95798fc529656b28d3d4",
       "source_exercise_sha256": "120a60709ed472e2885c9027c705bfafe875a9ac65867bfdac672ff39b69583e",
-      "hints_sha256": "eb4826e8583046f832980e644f7e4e9f861743556f3d8f52a67effd0a756a99c",
+      "hints_sha256": "65c4697853024b1f2aa48b2c1d61bb81273fc26fb5c101de9eae11ff4920fb1c",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
+      "corrections": [
+        {
+          "kind": "distinct_hint_progression",
+          "authoring_model": "qwen3.8-flash",
+          "previous_hints_sha256": "eb4826e8583046f832980e644f7e4e9f861743556f3d8f52a67effd0a756a99c",
+          "validation": "source_bound_authoring_and_automatic_distinct_hint_check",
+          "review": "machine_generated_flash_automatic_checks_no_model_review",
+          "date": "2026-11-01"
+        }
+      ]
     },
     {
       "exercise_id": "G7-T11-B-Q20ה",
       "source_pdf_hash": "567e3ebc4a3c4c4ea64fd7aa67d58985",
       "source_native_sha256": "436b3b585a53d48d5f7f484ef7992d4e736f801f213f95798fc529656b28d3d4",
       "source_exercise_sha256": "db99c238d2f6855530743e5719b303c43b1c5b5bf77e38862c9111ff23eed0b8",
-      "hints_sha256": "da426bf372117c3e149e662e1818dbcff4389005797dc3a8e5aa75031d2e91bd",
+      "hints_sha256": "2528700606aabe02d6603ef70ef4adf3f250bab3b661d5eeb82961dcf7526d5e",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
+      "corrections": [
+        {
+          "kind": "distinct_hint_progression",
+          "authoring_model": "qwen3.8-flash",
+          "previous_hints_sha256": "da426bf372117c3e149e662e1818dbcff4389005797dc3a8e5aa75031d2e91bd",
+          "validation": "source_bound_authoring_and_automatic_distinct_hint_check",
+          "review": "machine_generated_flash_automatic_checks_no_model_review",
+          "date": "2026-11-01"
+        }
+      ]
     },
     {
       "exercise_id": "G7-T11-B-Q21א",
@@ -85353,10 +85412,20 @@
       "source_pdf_hash": "0560c5fa737544679a781625fd411cf5",
       "source_native_sha256": "aeed4d5dc08ecb50705a0d4c97d1186e244f010ec2c6957b2dc1f9bd7524ea3f",
       "source_exercise_sha256": "7d58f4ccd15b7ebe4d8aae0d4fe69699b47219f912ff486aa6a3713c727701e3",
-      "hints_sha256": "7e5a64f61df2984c269aaf4b0ac917063afb08cc12abbb13ddf60a3e7f89e95c",
+      "hints_sha256": "1f47ec71698a7430d02afa6aebcec35c753128731f434bda4579615705fb379d",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
+      "corrections": [
+        {
+          "kind": "distinct_hint_progression",
+          "authoring_model": "qwen3.8-flash",
+          "previous_hints_sha256": "7e5a64f61df2984c269aaf4b0ac917063afb08cc12abbb13ddf60a3e7f89e95c",
+          "validation": "source_bound_authoring_and_automatic_distinct_hint_check",
+          "review": "machine_generated_flash_automatic_checks_no_model_review",
+          "date": "2026-11-01"
+        }
+      ]
     },
     {
       "exercise_id": "G7-T36-B-Q05א",

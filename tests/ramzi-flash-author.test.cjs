@@ -11,6 +11,25 @@ function requested(init){return JSON.parse(JSON.parse(init.body).messages[1].con
 function read(out,name){return JSON.parse(fs.readFileSync(path.join(out,name),"utf8"));}
 function allText(out){return fs.readdirSync(out,{withFileTypes:true}).map(d=>d.isDirectory()?allText(path.join(out,d.name)):fs.readFileSync(path.join(out,d.name),"utf8")).join("\n");}
 
+test("opposite-number hints reject ambiguous inverse wording without blocking a correct reciprocal contrast",()=>{
+ const a=task('G7-T01-B-Q20ב');a.source.manifest_context='שני מספרים שונים בעלי אותו ערך מוחלט נמצאים משני צדי האפס.';
+ const bad=[HINTS[0],HINTS[1],'חשבו את המספר ההפוך לנתון.'];
+ const result=author.validateResponse(JSON.stringify({rows:[{exercise_id:a.exercise_id,hints:bad}]}),[a]);
+ assert.equal(result.invalid.get(a.exercise_id),'AMBIGUOUS_OPPOSITE_NUMBER_TERM');
+ assert.equal(author.terminologyIssue(a,[HINTS[0],HINTS[1],'חשבו את המספר הנגדי לנתון.']),null);
+ const b=task('G7-T02-A-Q14ג');b.source.manifest_context='כתבו את המספר הנגדי. הסבירו את הטעות של רון.';
+ assert.equal(author.terminologyIssue(b,['האם רון מצא את המספר הנגדי או את המספר ההופכי?',HINTS[1],HINTS[2]]),null);
+ const reciprocal=task('G7-T05-A-Q02א');reciprocal.source.manifest_context='מצאו את המספר ההופכי.';
+ assert.equal(author.terminologyIssue(reciprocal,[HINTS[0],HINTS[1],'חשבו את המספר ההופכי לנתון.']),null);
+});
+test("a ladder cannot repeat the same hint with whitespace-only changes",()=>{
+ const a=task(),hints=[HINTS[0],'בדקו את הפעולה.','  בדקו   את הפעולה.  '];
+ assert.equal(author.distinctHintIssue(hints),'DUPLICATE_HINT_TEXT');
+ const result=author.validateResponse(JSON.stringify({rows:[{exercise_id:a.exercise_id,hints}]}),[a]);
+ assert.equal(result.invalid.get(a.exercise_id),'DUPLICATE_HINT_TEXT');
+ assert.equal(author.distinctHintIssue(HINTS),null);
+});
+
 test("credentials parse without eval, invalid URLs fail closed, no model override exists",()=>{
  const cfg=author.envConfig('QWEN_API_KEY="'+SECRET+'"\nQWEN_BASE_URL=https://example.invalid/compatible-mode/v1\nQWEN_MODEL=forbidden-model\n');
  assert.equal(cfg.endpoint,"https://example.invalid/compatible-mode/v1/chat/completions");assert.equal(cfg.apiKey,SECRET);assert.equal(author.MODEL,"qwen3.8-flash");
