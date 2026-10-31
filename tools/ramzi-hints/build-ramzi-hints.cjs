@@ -263,6 +263,9 @@ function bindingText(value){
 function bindRows(site,rows){
   const resolutions=[];
   const bound=rows.map(row=>{
+    if(own(row,"source_pdf_hash")!==own(row,"source_native_sha256")){
+      throw new Error("Incomplete source binding for "+row.exercise_id);
+    }
     const candidates=new Map();
     for(const topic of site){
       for(const level of Object.values(topic.levels)){
@@ -400,9 +403,10 @@ function publicRows(rows){
 
 // Published rows (the shape of learning/ramzi-hints.json) back into builder rows.
 function loadRows(list,live){
+  if(!Array.isArray(list)){throw new Error("Published rows must be an array");}
   const rows=[];
   const rejected=[];
-  (Array.isArray(list)?list:[]).forEach(item=>{
+  list.forEach(item=>{
     const id=String(item&&item.exercise_id||"");
     const hints=Array.isArray(item&&item.hints)?item.hints.map(barFractions):[];
     if(!SITE_ID_RE.test(id)){rejected.push({exerciseId:id,reason:"bad exercise id"});return;}

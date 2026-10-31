@@ -188,8 +188,10 @@ test("source binding never silently refreshes a stale review or guesses an ambig
   assert.deepEqual(build.bindRows(catalog,[correct]).rows,[correct]);
   for(const change of [{source_pdf_hash:"c".repeat(32)},{source_pdf_hash:null},
     {source_native_sha256:"c".repeat(64)},{source_native_sha256:null},{source_native_sha256:"bad"}]){
-    assert.throws(()=>build.bindRows(catalog,[{...row,...change}]),/Stale or conflicting/);
+    assert.throws(()=>build.bindRows(catalog,[{...correct,...change}]),/Stale or conflicting/);
   }
+  assert.throws(()=>build.bindRows(catalog,[{...row,source_pdf_hash:pdf}]),/Incomplete source binding/);
+  assert.throws(()=>build.bindRows(catalog,[{...row,source_native_sha256:native}]),/Incomplete source binding/);
   assert.throws(()=>build.bindRows([],[row]),/Unresolved/);
   const duplicate={prefix:"G9-T39",title:"הטרפז",levels:{E:level()}};
   assert.equal(build.bindRows([...catalog,duplicate],[row]).rows[0].source_pdf_hash,pdf,"identical PDF/native pairs deduplicate");
@@ -198,6 +200,12 @@ test("source binding never silently refreshes a stale review or guesses an ambig
   assert.throws(()=>build.bindRows([{...catalog[0],levels:{E:level(pdf,"malformed")}}],[row]),/Invalid current/);
   assert.equal(build.bindRows([{...catalog[0],levels:{E:level(pdf,null)}}],[row]).rows[0].source_native_sha256,null);
   assert.throws(()=>build.toSql([row]),/requires validated source bindings/);
+});
+
+test("malformed published-row containers cannot silently rebuild an empty catalog",()=>{
+  for(const value of [null,{},"[]",{rows:[]},42]){
+    assert.throws(()=>build.loadRows(value,build.liveExercises(site)),/must be an array/);
+  }
 });
 
 test("the newly approved proof row contains only student-facing hints and a current revision binding",()=>{
