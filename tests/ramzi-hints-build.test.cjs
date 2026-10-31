@@ -206,8 +206,8 @@ test("the committed seed matches the committed public rows and hides unreviewed 
   const loaded=build.loadRows(rows,live);
   assert.deepEqual(loaded.rejected,[]);
   assert.deepEqual(build.publicRows(build.bindRows(site,loaded.rows).rows),rows);
-  assert.equal(rows.length,25997);
-  assert.equal(rows.filter(row=>row.status==="verified").length,25997);
+  assert.equal(rows.length,31670);
+  assert.equal(rows.filter(row=>row.status==="verified").length,31670);
   assert.equal(rows.filter(row=>row.status==="review").length,0);
   assert.deepEqual(build.firstPartCoverage(site,rows),{eligible:424,verified:424,missing:[]});
   rows.forEach(row=>{
@@ -411,7 +411,7 @@ test("all current Q01 parts have a source-bound ladder, including E2 and canonic
     assert.equal(build.hintIssue(row.hints),null,id);
   }
   const generated=rows.filter(row=>row.source==="ramzi-flash-authored-20261031");
-  assert.equal(generated.length,25454);
+  assert.equal(generated.length,31127);
   const ledger=JSON.parse(fs.readFileSync(path.join(root,"learning/ramzi-hints-review-20261031.json")));
   const byLedgerId=new Map(ledger.rows.map(entry=>[entry.exercise_id,entry]));
   for(const row of generated){
@@ -422,18 +422,28 @@ test("all current Q01 parts have a source-bound ladder, including E2 and canonic
   }
 });
 
-for(const [grade,coverage] of [[7,11942],[8,13673]])test("every current grade "+grade+" part has a ladder bound to its exact PDF, native revision and selected text",()=>{
+for(const [grade,coverage,sharedCoverage] of [[7,11942,0],[8,13673,0],[9,6055,2445]])test("every current grade "+grade+" part has a ladder bound to its exact PDF, native revision and selected text",()=>{
   const rows=JSON.parse(fs.readFileSync(path.join(__dirname,"..","learning/ramzi-hints.json")));
   const byId=new Map(rows.map(row=>[row.exercise_id,row]));
   const expected=new Map();
   for(const topic of site.filter(topic=>topic.grade===grade)){
     for(const level of Object.values(topic.levels))for(const id of level.exercises){
-      assert.match(id,new RegExp("^G"+grade+"-"),"grade "+grade+" catalog must not borrow another grade's task");
+      if(!id.startsWith("G"+grade+"-")){
+        // Some Grade9 topics explicitly reuse a Grade7 PDF. Require the same
+        // canonical task and complete source binding, never a guessed alias.
+        const prefix=id.match(/^G[7-9]-T\d{2}/)?.[0];
+        const owner=site.find(topic=>topic.prefix===prefix);
+        const original=owner&&Object.values(owner.levels).find(binding=>binding.exercises.has(id)&&binding.source_pdf_hash===level.source_pdf_hash);
+        assert.ok(original,id+" must exist in its canonical catalog topic");
+        assert.equal(original.source_native_sha256,level.source_native_sha256,id+" shared native revision");
+        assert.equal(original.exerciseTexts.get(id),level.exerciseTexts.get(id),id+" shared selected task text");
+      }
       expected.set(level.source_pdf_hash+":"+id,{id,level});
     }
   }
-  assert.equal(expected.size,coverage,"coverage includes every question and level, not only Q01");
-  assert.equal(new Set([...expected.values()].map(({id})=>id)).size,coverage,"different source PDFs cannot share a covered exercise ID");
+  assert.equal(expected.size,coverage+sharedCoverage,"coverage includes every question and level, including exact shared PDFs");
+  assert.equal([...expected.values()].filter(({id})=>id.startsWith("G"+grade+"-")).length,coverage,"own-grade IDs are counted once");
+  assert.equal(new Set([...expected.values()].map(({id})=>id)).size,coverage+sharedCoverage,"different source PDFs cannot share a covered exercise ID");
   assert.equal(rows.filter(row=>row.exercise_id.startsWith("G"+grade+"-")).length,coverage);
   for(const {id,level}of expected.values()){
     const row=byId.get(id);assert.ok(row,id+" is missing");
