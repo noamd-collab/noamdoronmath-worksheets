@@ -2,9 +2,21 @@
 
 Ramzi can show pre-written hints (three per worksheet part) from Supabase instead of generating them with AI. A hint reaches students only after it has been checked against the real printed part and marked `verified`.
 
-## Current runtime contract (31 October)
+## Follow-up PR — 31 October 2026, pending approval
 
-1. `public.noam_ramzi_hints` is the existing Claude PR302 catalogue, with one added reviewed row for `G9-T39-E-Q03ב`. There are now 501 rows: 416 verified, 85 review. This is coverage of selected worksheet parts, not a complete bank for every site question.
+The follow-up bank has **501 verified rows**, including the 85 formerly hidden rows. It has a verified, current-source-bound opening Q01 part for **419 of 419 canonical worksheet/level groups**. It does not cover every part of every question. The ten groups missing from the original PR287 bank were already present; this review restores the groups whose only opening ladder was hidden.
+
+A source-text review covered the catalogue, and **272 ladders were rewritten and peer-reviewed**. This includes first hints with numbers written as words, later hints that supplied the requested result, and previously hidden ladders. Native question text, given data and tables were used; PDF-only cases used the printed source or the recorded transcription. Not every figure was independently rendered. The review ledger pins the exact hint and source digests; a content or binding change requires a new review.
+
+Public JSON and SQL no longer export bank exercise wording or private review notes: graph transcriptions can themselves reveal requested answers. The public JSON keeps an operator-preserving source-task fingerprint for unambiguous, fail-closed rebuilding. SQL upserts leave existing private context and notes untouched. Complete solutions and final answers are never exported. Private review packets must be outside the public repository, including through symlinks.
+
+The builder rejects numbers in the first hint (digits and the supported Hebrew cardinal forms), comparison/equality signs, literal slash divisions, private-bank field labels, image syntax and malformed ladders before replacing the outputs. These mechanical gates supplement source review; they do not prove pedagogical correctness alone. `learning/ramzi-hints-review-20261031.json` records the reviewed catalogue revisions without raw questions or answers.
+
+No production DDL, seed write, merge or publication is authorized for this follow-up. Noam must approve the PR before deployment. The current production protection from PR309 was inspected read-only and is already active; rerunnable SQL is additionally hardened and tested against stale table, column, PUBLIC and inherited grants.
+
+## Runtime contract (31 October)
+
+1. The proposed catalogue contains 501 verified rows. The earlier PR309 release had 416 verified and 85 hidden review rows. Until the follow-up is approved and applied, production continues to use that earlier catalogue. This remains coverage of selected worksheet parts, not every site question.
 2. Every row is bound to its current manifest's immutable `source_pdf_hash`. Where the manifest pins native JSON, `source_native_sha256` must also match. The builder refuses unresolved or stale bindings. Reused T32/T40 IDs are resolved only to the exact canonical owner with matching topic and printed task; a T40 page cannot consume T32 hints.
 3. `noam-curated-hints.js` prefetches the public rows when the manifest is loaded. RLS exposes verified rows only; column grants expose only the exercise ID, three hint texts and the two source-binding fields. Status, review notes and bank context remain private to privileged maintainers. Visitors cannot write.
 4. All three standard hint buttons read only this bound catalogue. They never start image analysis, a model, the former source-probe shortcut, answer repair or an automatic drawing. The reply is shown immediately after the bounded catalogue read. A thread pins one complete ladder so revisions cannot mix.
@@ -16,11 +28,11 @@ No complete solutions or final answers are added. The new q3b row asks about the
 
 ## Database and release order
 
-The current Noam task authorizes completing and publishing this integration; the former manual-only run note is superseded by that instruction.
+The earlier integration was published separately. This follow-up is a reviewable PR only; obtain Noam’s explicit merge and publication approval before running these steps.
 
-1. Review and pin the exact schema/seed/UI commit, run focused and full checks, and obtain the required Opus5.5 medium review.
+1. Review and pin the exact schema/seed commit and run the hint, privacy, site and source-binding checks.
 2. Publish backend PR29's seven-column `getExercisesMiddle` projection before changing the older exercise-table grants. Its code is backward compatible with both permission states.
-3. Apply `learning/ramzi-hints-schema.sql` transactionally, then `learning/ramzi-hints-seed.sql`; verify 416 verified and 85 review rows, exact target ladder and public grants/hidden review rows. Record SQL file hashes and readback evidence.
+3. Apply `learning/ramzi-hints-schema.sql` transactionally, then `learning/ramzi-hints-seed.sql`; verify the approved catalogue counts (this proposal: 501 verified and zero review rows), exact target ladder and public grants/hidden review rows. Record SQL file hashes and readback evidence.
 4. Apply the reviewed `learning/exercises-tables-rls.sql` only after the backend publish succeeds. It enables RLS and removes public solution-column access while preserving the Home projection and service-role access. Verify the actual grants and approved reads/denied writes afterwards.
 5. Merge the website integration PR against baseline, publish via `tools/release/release.sh` using the existing workflow, verify live asset bytes, all three q3b hints and their timings, then an additional Flash question. Record public catalogue requests separately from provider requests.
 
@@ -58,7 +70,7 @@ By grade, `verified`: ז׳ 141 of 157, ח׳ 125 of 177, ט׳ 68 of 84. With the 
 
 The typical spoiler is hint 2 or 3 reading the values off the graph or table for the student, or naming the theorem or rule the part asks for. Two rows have factual errors: `G8-T10-E-Q01א` (segment times differ from the graph) and `G8-T35-B-Q01א` (values of b and c are swapped).
 
-The hidden rows are listed in `learning/ramzi-hints-audit.json`, each with a one-sentence reason that does not state the answer. To bring one back, rewrite its hints, remove its entry from that file, rebuild, and run the seed again.
+The hidden rows are listed in `learning/ramzi-hints-audit.json`, each with a one-sentence reason that does not state the answer. The follow-up rewrites those ladders and marks their audit entries verified with the reviewed hint digest. Any future correction needs a source and content review, an updated ledger, and an approved seed deployment.
 
 ## Adding or updating hints
 
@@ -67,7 +79,7 @@ node tools/ramzi-hints/build-ramzi-hints.cjs <bank.txt> --keep learning/ramzi-hi
 node tools/ramzi-hints/build-ramzi-hints.cjs --rows learning/ramzi-hints.json --reviews learning/ramzi-hints-audit.json
 ```
 
-The first form reads a new bank. `--keep` keeps published rows for parts the bank does not cover, so checked hints are not dropped. The second form rebuilds from the published rows when the bank file is not at hand. Both rewrite `learning/ramzi-hints.json` and `learning/ramzi-hints-seed.sql`, drop solutions and final answers, reject parts that are not in the live worksheet, and apply the audit file. A bank row is `review` unless a review marks it verified. Keep the bank file itself out of the repository, because it contains solutions.
+The first form reads a new bank. `--keep` keeps published rows for parts the bank does not cover, so checked hints are not dropped. The second form rebuilds from the published rows when the bank file is not at hand. Both rewrite `learning/ramzi-hints.json` and `learning/ramzi-hints-seed.sql`, omit solutions, final answers, raw bank context and private maintenance notes, reject unsafe hints and stale source bindings, and apply the audit file. A bank row is `review` unless a review marks it verified. Keep the bank file itself out of the repository, because it contains solutions.
 
 ## Tests
 
