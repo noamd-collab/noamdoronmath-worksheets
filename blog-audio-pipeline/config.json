@@ -1,8 +1,8 @@
 {
   "site": {
-    "baseUrl": "https://www.noamdoronmath.co.il",
-    "functionsBase": "https://www.noamdoronmath.co.il/_functions",
-    "functionsBaseDev": "https://www.noamdoronmath.co.il/_functions-dev"
+    "baseUrl": "https://amiramnoam.wixsite.com/my-site",
+    "functionsBase": "https://amiramnoam.wixsite.com/my-site/_functions",
+    "functionsBaseDev": "https://amiramnoam.wixsite.com/my-site/_functions-dev"
   },
   "tts": {
     "provider": "gemini-api",
