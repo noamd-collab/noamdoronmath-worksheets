@@ -34,11 +34,21 @@ The earlier integration was published separately. This follow-up is a reviewable
 
 1. Review and pin the exact schema/seed commit and run the hint, privacy, site and source-binding checks.
 2. Publish backend PR29's seven-column `getExercisesMiddle` projection before changing the older exercise-table grants. Its code is backward compatible with both permission states.
-3. Apply `learning/ramzi-hints-schema.sql` transactionally, then `learning/ramzi-hints-seed.sql`; verify the approved catalogue counts (this proposal: 501 verified and zero review rows), exact target ladder and public grants/hidden review rows. Record SQL file hashes and readback evidence.
+3. Apply `learning/ramzi-hints-schema.sql` transactionally, then `learning/ramzi-hints-seed.sql`; verify the approved catalogue counts (this proposal: 504 verified and zero review rows, after the stacked trapezoid PR), exact target ladder and public grants/hidden review rows. Record SQL file hashes and readback evidence.
 4. Apply the reviewed `learning/exercises-tables-rls.sql` only after the backend publish succeeds. It enables RLS and removes public solution-column access while preserving the Home projection and service-role access. Verify the actual grants and approved reads/denied writes afterwards.
 5. Merge the website integration PR against baseline, publish via `tools/release/release.sh` using the existing workflow, verify live asset bytes, all three q3b hints and their timings, then an additional Flash question. Record public catalogue requests separately from provider requests.
 
 Future catalogue content updates require review against the exact source revision. A `review` row remains hidden until the content and its source binding are reviewed. A running thread must not silently mix old and new ladders.
+
+## Trapezoid excellence rows (PR316 rebuilt after #319)
+
+The grade 9 trapezoid excellence worksheet (`G9-T39-E`, PDF `e020549ff713406fb0c0f07443b09b18`) has 44 parts. PR315 has ladders for 1א and 3ב. PR316 adds **39 verified rows** (`source` `ramzi-writer-pilot-20261031`), which brings the catalogue to 543 rows, all verified. First-part coverage stays at 419 of 419.
+
+- **How they were written.** The hints were written from the printed text in `noam-ai/native/G9-TRAP/c/noam-ai.json`, including the figure data and `curriculum.allowed_tools`, under the Zero-Spoiler v2.1 rules: direction, action, and the step before solving.
+- **Gates.** 34 of the first versions failed PR315's `hintIssue` gates, mostly because of a number word in hint 1 (four had `=` in a later hint). Those 34 were reworded to pass the gates, keeping the same guidance and grading.
+- **Audit.** Every reworded set was then audited again. A judge checked it against the printed part, and any problem went to a student-lens and a teacher-lens reviewer, with one rewrite allowed. All 34 passed on the first round. The other 5 rows passed the gates unchanged and keep their original audit.
+- **Ledger.** Each row is pinned in `learning/ramzi-hints-review-20261031.json` as `authored_against_native_source_agent_reviewed_pending_noam_approval`. Agent reviewers checked them, but no human has, so Noam approves them by merging.
+- **Relationship to #319.** `Q04ד`, `Q05ד` and `Q08ד` were already added and merged by PR319. This PR adds the other 39 parts without duplicating them. The first PR316 description wrongly named `Q07ג`, `Q14ד` and `Q14ה` as missing; those parts do not exist.
 
 ## The October 2026 banks
 
@@ -89,3 +99,12 @@ The first form reads a new bank. `--keep` keeps published rows for parts the ban
 - `headless/astro-poc/tests/ramzi-curated-hints.test.ts`: guide registration, hint order, הבנתי / לא הבנתי, the Supabase request, single-level worksheets, failure fallback and viewer wiring.
 - `headless/astro-poc/tests/ramzi-understanding.test.ts`: הבנתי answers locally and never opens a hint or calls the model; לא הבנתי keeps its steps.
 - The original PR302 SQL files were run on a local PostgreSQL 16 with Supabase-style `anon` and `authenticated` roles. The seed ran twice without errors, the publishable-key role saw only the 415 `verified` rows and only their ID and hints, and the RLS check printed `PASS`.
+
+## Trapezoid completion (stacked on PR315, 31 October)
+
+The trapezoid excellence worksheet (`G9-T39-E`, PDF `e020549ff713406fb0c0f07443b09b18`) has 44 parts. Its manifest and its native package list all of them, including `Q04ד`, `Q05ד` and `Q08ד`. PR316 omitted those three parts and listed non-existent ones (`Q07ג`, `Q14ד`, `Q14ה`) instead.
+
+This change adds ladders for those three parts only. They were written against the native question text, they pass `hintIssue`, and each one is pinned in the review ledger as `authored_against_native_source_pending_noam_approval`. No peer reviewer has checked them yet, so Noam approves them when he merges this PR. The catalogue now has 504 verified rows, and first-part coverage stays at 419 of 419.
+
+Most of PR316's other 39 trapezoid rows (34) fail this builder's gates. In most, the first hint has a cardinal word such as שני, שתי or אחד; several later hints contain an equation or equality, and some give the full equation with its numbers. Those rows need a content rewrite, not only a token substitution, before they can be imported.
+
