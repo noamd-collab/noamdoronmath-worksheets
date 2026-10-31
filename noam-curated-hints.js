@@ -15,19 +15,21 @@
       typeof cfg.key==="string"&&cfg.key?cfg:null;
   }
   function scope(manifest){
-    if(!manifest||!/^G[1-9]-T\d{2}$/.test(manifest.prefix)||!/^[ABE]$/.test(manifest.levelCode)||
+    if(!manifest||!/^G[1-9]-T\d{2}$/.test(manifest.prefix)||!/^(?:[ABE]|E2)$/.test(manifest.levelCode)||
         !/^[a-f0-9]{32}$/.test(manifest.pdfHash)||!Array.isArray(manifest.exercises)){return null;}
     var native=manifest.nativeExportSha256||"";
     if(native&&!/^[a-f0-9]{64}$/.test(native)){return null;}
     var worksheet=manifest.prefix+"-"+manifest.levelCode,known=Object.create(null);
     manifest.exercises.forEach(function(exercise){
       var id=exercise&&exercise.id;
-      if(typeof id==="string"&&new RegExp("^"+manifest.prefix+"-[ABE]-Q\\d{2}[\\u05d0-\\u05ea]?$").test(id)){known[id]=true;}
+      if(typeof id==="string"&&new RegExp("^"+manifest.prefix+"-(?:[ABE]|E2)-Q\\d{2}[\\u05d0-\\u05ea]?$").test(id)){known[id]=true;}
     });
     var ids=Object.keys(known),levels=ids.map(function(id){return id.split("-Q")[0];});
     // Some single-level PDFs retain A exercise IDs in a B/E viewer. They must
     // still have exactly one worksheet identity and the same source prefix.
     if(!ids.length||levels.some(function(value){return value!==levels[0];})){return null;}
+    // E2 is a separate worksheet, never an alias of the ordinary E level.
+    if((manifest.levelCode==="E2")!==(levels[0]===manifest.prefix+"-E2")){return null;}
     worksheet=levels[0];
     var binding=manifest.pdfHash+":"+native;
     return {worksheet:worksheet,known:known,pdf:manifest.pdfHash,native:native,binding:binding,

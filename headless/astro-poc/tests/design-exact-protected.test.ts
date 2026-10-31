@@ -121,7 +121,7 @@ describe('exact-design protected live-baseline boundaries', () => {
       '<script src="noam-source-data-visual.js?v=20261028-source-data3"></script>',
       '<script src="noam-source-scaffold.js?v=20261029-scaffold1"></script>',
       // Noam, 2026-10-31: source-bound public catalog supplies all three standard hints.
-      '<script src="noam-curated-hints.js?v=20261031-source-bound2"></script>',
+      '<script src="noam-curated-hints.js?v=20261031-source-bound3"></script>',
     ];
     const allScripts = [...viewerWithNativeRelease.matchAll(/<script\b[^>]*>[\s\S]*?<\/script>/gi)].map(match => match[0]);
     assert.equal(allScripts.length, 27, 'The release adds its ten exact dependencies and curated hints');

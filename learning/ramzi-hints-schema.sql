@@ -7,7 +7,7 @@
 -- full solutions and final answers never go in this table.
 begin;
 create table if not exists public.noam_ramzi_hints (
- exercise_id text primary key check (exercise_id ~ '^G[1-9]-T[0-9]{2}-[ABE]-Q[0-9]{2}[א-ת]?$'),
+ exercise_id text primary key check (exercise_id ~ '^G[1-9]-T[0-9]{2}-([ABE]|E2)-Q[0-9]{2}[א-ת]?$'),
  hint_1 text not null check (char_length(hint_1) between 1 and 600),
  hint_2 text not null check (char_length(hint_2) between 1 and 600),
  hint_3 text not null check (char_length(hint_3) between 1 and 600),

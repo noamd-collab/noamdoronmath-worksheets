@@ -27,8 +27,8 @@ const {createHash}=require("node:crypto");
 
 const REPO=path.resolve(__dirname,"..","..");
 const SOURCE="zero-spoiler-v2.1";
-const LEVELS={A:"A",B:"B",C:"E"};
-const LEVEL_CODES=new Set(["A","B","E"]);
+const LEVELS={A:"A",B:"B",C:"E",E2:"E2"};
+const LEVEL_CODES=new Set(["A","B","E","E2"]);
 // Same package names as PACKAGE_ALIASES in headless/astro-poc/public/noam-native-visual.js.
 const NATIVE_ALIAS={
   "G7-T50":"G7-ASSESS1",
@@ -41,8 +41,8 @@ const NATIVE_ALIAS={
   "G9-T39":"G9-TRAP",
   "G9-T46":"G9-KITE"
 };
-const ID_RE=/^G([1-9])-T(\d{2})-([ABC])-Q(\d{2})([א-ת]?)$/;
-const SITE_ID_RE=/^G[1-9]-T\d{2}-[ABE]-Q\d{2}[א-ת]?$/;
+const ID_RE=/^G([1-9])-T(\d{2})-([ABC]|E2)-Q(\d{2})([א-ת]?)$/;
+const SITE_ID_RE=/^G[1-9]-T\d{2}-(?:[ABE]|E2)-Q\d{2}[א-ת]?$/;
 const MAX_HINT=600;
 const PDF_HASH_RE=/^[a-f0-9]{32}$/;
 const NATIVE_HASH_RE=/^[a-f0-9]{64}$/;
@@ -147,12 +147,12 @@ function parseBank(text){
     const line=raw.trim();
     const header=line.match(/^נושא\s+(\d+)\s*:\s*(.+)$/);
     if(header){close();topic={number:Number(header[1]),title:clean(header[2])};continue;}
-    const start=line.match(/^סעיף\s+\S+\s+\((G\d-T\d+-[ABC]-Q\d+[א-ת]?)\)\s*\[(.*)\]\s*$/);
+    const start=line.match(/^סעיף\s+\S+\s+\((G\d-T\d+-(?:[ABC]|E2)-Q\d+[א-ת]?)\)\s*\[(.*)\]\s*$/);
     if(start){
       close();
       const meta=start[2];
-      const inline=meta.match(/נושא\s+(\d+)\s*:\s*(.+?)\s*,\s*רמה\s+([ABC])/);
-      const level=(meta.match(/רמה\s+([ABC])/)||[])[1]||"";
+      const inline=meta.match(/נושא\s+(\d+)\s*:\s*(.+?)\s*,\s*רמה\s+([ABC]|E2)\b/);
+      const level=(meta.match(/רמה\s+([ABC]|E2)\b/)||[])[1]||"";
       block={
         id:start[1],
         topicNumber:inline?Number(inline[1]):(topic&&topic.number),
@@ -211,13 +211,16 @@ function loadSite(repo){
         const code=manifest.levelCode;
         if(!LEVEL_CODES.has(code)){continue;}
         const exercises=new Set((manifest.exercises||[]).map(item=>item.id));
+        if([...exercises].some(id=>(/^G[1-9]-T\d{2}-E2-Q/.test(id))!==(code==="E2"))){
+          throw new Error("E2 worksheet identity mismatch in "+level.pdfId);
+        }
         const binding={pdfId:level.pdfId,exercises,source_pdf_hash:manifest.pdfHash,
           source_native_sha256:manifest.nativeExportSha256==null?null:manifest.nativeExportSha256,
           exerciseTexts:new Map((manifest.exercises||[]).map(item=>[item.id,item.text]))};
         levels[code]=binding;
         const firstEx=(manifest.exercises||[])[0]&&manifest.exercises[0].id||"";
-        const exLevel=(firstEx.match(/^G[1-9]-T\d{2}-([ABE])-Q/)||[])[1];
-        if(exLevel&&exLevel!==code&&!levels[exLevel]){
+        const exLevel=(firstEx.match(/^G[1-9]-T\d{2}-([ABE]|E2)-Q/)||[])[1];
+        if(exLevel&&exLevel!==code&&code!=="E2"&&exLevel!=="E2"&&!levels[exLevel]){
           levels[exLevel]=binding;
         }
       }
@@ -310,7 +313,7 @@ function firstPartCoverage(site,rows){
     if(![7,8,9].includes(topic.grade)){continue;}
     for(const level of Object.values(topic.levels)){
       for(const id of level.exercises){
-        if(!/^G[789]-T\d{2}-[ABE]-Q01[אב]$/.test(id)||!id.startsWith(topic.prefix+"-")){continue;}
+        if(!/^G[789]-T\d{2}-(?:[ABE]|E2)-Q01[אב]$/.test(id)||!id.startsWith(topic.prefix+"-")){continue;}
         const key=id.split("-").slice(0,3).join("-");
         const group=groups.get(key)||{worksheet:key,candidates:[]};
         group.candidates.push({id,pdf:level.source_pdf_hash,native:level.source_native_sha256});
@@ -418,8 +421,9 @@ function applyReviews(rows,reviews,live){
 }
 
 function nativeExercise(repo,exerciseId){
-  const match=exerciseId.match(/^(G\d-T\d{2})-([ABE])-Q(\d{2})([א-ת]?)$/);
-  if(!match){return null;}
+  const match=exerciseId.match(/^(G\d-T\d{2})-([ABE]|E2)-Q(\d{2})([א-ת]?)$/);
+  // E2 has its own PDF-only source, not the native c package of level E.
+  if(!match||match[2]==="E2"){return null;}
   const pkg=NATIVE_ALIAS[match[1]]||match[1];
   const level=match[2]==="A"?"a":match[2]==="B"?"b":"c";
   let file=path.join(repo,"noam-ai","native",pkg,level,"noam-ai.json");
