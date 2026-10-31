@@ -4,13 +4,10 @@ name: slash-fractions
 # Does not deploy and does not run model reviews.
 
 on:
+  # Run on every PR into the protected live branch: these are required checks,
+  # so a path filter would leave PRs that touch only learning/, docs/ or tests/
+  # waiting forever (issue #294). The push trigger keeps its path filter.
   pull_request:
-    paths:
-      - 'headless/astro-poc/**'
-      - '.github/scripts/check-slash-fractions.mjs'
-      - '.github/scripts/check-slash-fractions.test.mjs'
-      - '.github/slash-fraction-allowlist.json'
-      - '.github/workflows/slash-fractions.yml'
   push:
     branches:
       - headless/astro-poc-baseline
