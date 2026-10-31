@@ -78,7 +78,7 @@ for (const file of ["demos/teacher-practice-picker-site-style.html", "headless/a
   test(`${file}: teacher and companion scripts use their independently current cache versions`, () => {
     const html = read(file);
     for (const [asset, expectedVersion] of [
-      ["teacher-factoring-print.js", "20261031-level-choice-help"],
+      ["teacher-factoring-print.js", "20261031-plan-recovery"],
       ["noam-site-companion.js", version]
     ]) {
       const escaped = asset.replaceAll(".", "\\.");

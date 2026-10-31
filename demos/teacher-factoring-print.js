@@ -412,10 +412,13 @@ async function pickWithAi(rawCount) {
   const mixedLevelsMissing = !teacherLevelsCovered(groups, seedKeys) || (!teacherLevelsCovered(groups, []) && seedKeys.length !== target);
   if (!fromModel || !seedKeys.length || mixedLevelsMissing) {
     paintAiPickButtons();
-    const invalidMixedSelection = mixedLevelsMissing || ['MODEL_LEVEL_COVERAGE_MISSING', 'MODEL_SELECTION_INVALID'].includes(result && result.selectionError);
+    const invalidMixedSelection = (fromModel && mixedLevelsMissing) || ['MODEL_LEVEL_COVERAGE_MISSING', 'MODEL_SELECTION_INVALID'].includes(result && result.selectionError);
+    const modelUnavailable = ['MODEL_AUTH_FAILED', 'MODEL_HTTP', 'QWEN_CONFIG_REJECTED'].includes(result && result.code);
     const message = invalidMixedSelection
       ? 'לא התקבלה בחירת AI מלאה שמשלבת את כל הרמות. הבחירה שלכם נשמרה; אפשר לנסות שוב או לבחור שאלות ידנית.'
-      : 'לא התקבלה בחירת שאלות מה-AI. הבחירה שלכם נשמרה ואפשר לבחור ידנית.';
+      : modelUnavailable
+        ? 'החיבור ל־AI לא הצליח. הבחירה שלכם נשמרה; אפשר לנסות שוב או לבחור ידנית.'
+        : 'לא התקבלה בחירת שאלות מה-AI. הבחירה שלכם נשמרה ואפשר לבחור ידנית.';
     if (status) status.textContent = message;
     announce(message);
     return [];

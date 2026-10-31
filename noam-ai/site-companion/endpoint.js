@@ -28,6 +28,9 @@ import {
   classifyTeacherRequest,
   describePicks,
   hrefForSheet,
+  logTeacherSelection,
+  recoverTeacherPickFromPlan,
+  requestedPickCount,
   selectTeacherPicks,
   selectTeacherPlans,
 } from "./teacher-pick.js";
@@ -197,12 +200,30 @@ export async function runCompanionTurn(payload, deps) {
       if (isOutboundTimeout(error)) throw error;
       classification = null;
       classificationFailure = ["MODEL_AUTH_FAILED", "MODEL_HTTP", "QWEN_CONFIG_REJECTED"].includes(error.code) ? error.code : "MODEL_RESPONSE_FAILED";
+      if (error instanceof SyntaxError) logTeacherSelection(settings, { code: "MODEL_RESPONSE_INVALID", reason: "invalid-json",
+        requestedCount: requestedPickCount(payload) });
     }
-    const pick = selectTeacherPicks(settings.teacherIndex, payload, classification);
+    const model = classification ? resolveQwenTarget({ model: settings.qwenModel, baseUrl: settings.qwenBaseUrl }).model : null;
+    const plans = classification ? selectTeacherPlans(settings.teacherIndex, payload, classification, model) : {};
+    let pick = selectTeacherPicks(settings.teacherIndex, payload, classification);
+    const recovered = classification ? recoverTeacherPickFromPlan(settings.teacherIndex, payload, pick, plans) : null;
+    if (recovered) {
+      logTeacherSelection(settings, { code: "MODEL_SELECTION_RECOVERED", reason: "requested-plan",
+        requestedCount: requestedPickCount(payload), primaryCount: classification.scopedExerciseLabels.length,
+        planCount: Object.keys(plans).length });
+      pick = recovered;
+    }
     if (pick.selectionError === "MODEL_LEVEL_COVERAGE_MISSING" || pick.selectionError === "MODEL_SELECTION_INVALID") {
-      const answer = "לא התקבלה בחירת שאלות תקינה שמשלבת את כל הרמות. אפשר לנסות שוב או לבחור שאלות ידנית.";
+      const code = classification ? pick.selectionError : classificationFailure;
+      const answer = classification
+        ? "לא התקבלה בחירת שאלות תקינה שמשלבת את כל הרמות. אפשר לנסות שוב או לבחור שאלות ידנית."
+        : "לא התקבלה בחירת שאלות מה-AI. אפשר לנסות שוב או לבחור שאלות ידנית.";
+      if (classification) logTeacherSelection(settings, { code: "MODEL_SELECTION_REJECTED",
+        reason: pick.selectionError === "MODEL_LEVEL_COVERAGE_MISSING" ? "level-coverage" : "primary-invalid",
+        requestedCount: requestedPickCount(payload), primaryCount: classification.scopedExerciseLabels.length,
+        planCount: Object.keys(plans).length });
       return Object.assign(teacherAnswer({ sheets: [], exerciseIds: [], modelExerciseIds: [], sheetIds: [] }, settings.catalog), {
-        source: "fallback", model: null, code: pick.selectionError, selectionError: pick.selectionError,
+        source: "fallback", model: null, code, ...(classification ? { selectionError: code } : {}),
         answer, text: answer, details: answer,
       });
     }
@@ -211,7 +232,7 @@ export async function runCompanionTurn(payload, deps) {
       return classification ? missing : Object.assign(missing, { source: "fallback", model: null, code: classificationFailure });
     }
     const body = teacherAnswer(pick, settings.catalog);
-    if (classification) body.model = resolveQwenTarget({model: settings.qwenModel, baseUrl: settings.qwenBaseUrl}).model;
+    if (classification) body.model = model;
     if (classification && pick.selectionSource) body.source = pick.selectionSource;
     if (!classification || pick.selectionSource === "fallback") {
       body.model = null;
@@ -228,11 +249,7 @@ export async function runCompanionTurn(payload, deps) {
       body.text = body.answer;
       body.details = [body.answer, QUESTION_GAP, EXPORT_NOTE].filter(Boolean).join("\n");
     }
-    if (classification) {
-      const model = resolveQwenTarget({ model: settings.qwenModel, baseUrl: settings.qwenBaseUrl }).model;
-      const plans = selectTeacherPlans(settings.teacherIndex, payload, classification, model);
-      if (Object.keys(plans).length) body.teacherPlans = plans;
-    }
+    if (Object.keys(plans).length) body.teacherPlans = plans;
     return body;
   }
   const result = await handleCompanionTurn(payload, {
