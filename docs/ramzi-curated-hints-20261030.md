@@ -21,6 +21,8 @@ No production DDL, seed write, merge or publication is authorized for this follo
 3. `noam-curated-hints.js` prefetches the public rows when the manifest is loaded. RLS exposes verified rows only; column grants expose only the exercise ID, three hint texts and the two source-binding fields. Status, review notes and bank context remain private to privileged maintainers. Visitors cannot write.
 4. All three standard hint buttons read only this bound catalogue. They never start image analysis, a model, the former source-probe shortcut, answer repair or an automatic drawing. The reply is shown immediately after the bounded catalogue read. A thread pins one complete ladder so revisions cannot mix.
 5. A missing, review, stale, malformed or failed catalogue result gives an unavailable/retry state and keeps the exact hint number. It does **not** fall back to AI. Student attachments and drafts remain intact.
+The standard hint button remains disabled after the third hint, including after busy-state cleanup. A new thread resets that control; freeform questions retain their existing route. Both released viewer copies have the same guard and executable regression coverage. The policy-hidden drawing control also has explicit CSS suppression, so action-button styles cannot reveal it on non-geometry pages.
+
 6. Flash remains available for additional student questions through the existing protected request flow. reCAPTCHA is unchanged. No Max choice, route or fallback is introduced.
 7. **הבנתי** answers locally, does not increment the hint counter, and does not call AI. **לא הבנתי** may request the next prepared hint through the same catalogue-only flow.
 

@@ -1685,6 +1685,7 @@ textarea:focus{
   margin:0 0 2px;
 }
 .noam-input-spacer{flex:1 1 auto}
+#noamDraw[hidden]{display:none!important}
 .noam-input-actions .noam-action{
   min-height:28px;
   padding:3px 9px;
@@ -5856,6 +5857,8 @@ function setNoamBusy(value){
   if (!busy){ pendingExerciseId=null; }
   ["noamOverview","noamHint","noamMistake","noamDraw","noamSend","noamQuestion","noamNewThread","noamMathToggle"]
     .forEach(function(id){ var el=document.getElementById(id);if(el){el.disabled=busy;} });
+  var hintButton=document.getElementById("noamHint");
+  if(hintButton&&selectedExercise){hintButton.disabled=busy||exerciseThread(selectedExercise.id).hintIndex>=3;}
   panelBody.querySelectorAll("[data-math]").forEach(function(button){ button.disabled=busy; });
 }
 
