@@ -418,6 +418,7 @@ test("all current Q01 parts have a source-bound ladder, including E2 and canonic
     const entry=byLedgerId.get(row.exercise_id);assert.ok(entry,row.exercise_id);
     assert.equal(entry.authoring_model,"qwen3.8-flash");
     assert.equal(entry.review,"machine_generated_flash_automatic_checks_no_model_review");
+    assert.equal(new Set(row.hints.map(hint=>hint.normalize("NFC").trim().replace(/\s+/gu," "))).size,3,row.exercise_id+" must have three distinct hint texts");
   }
 });
 

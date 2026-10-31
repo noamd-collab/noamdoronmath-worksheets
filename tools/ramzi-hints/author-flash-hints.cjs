@@ -95,6 +95,20 @@ function candidateFeedback(row,issue){
   return {issue,previous_invalid_hints:hints,first_hint_offending_number_literals:firstNumberMatches(hints[0]),
     instruction:"כתבו מחדש את כל סולם הרמזים של הסעיף הזה בלבד. הרמז הפותח חייב להיות שאלה מכוונת שמסתיימת בסימן שאלה, ללא המילים המספריות שנמצאו או מספרים אחרים, ללא קביעה שמוסרת כלל או מסקנה הפותרים את הסעיף."};
 }
+function terminologyIssue(task,hints){
+  const source=task&&task.source||{};
+  const text=[source.stem,source.manifest_context,source.manifest_selected_text].filter(value=>typeof value==='string').join('\n');
+  // "הופכי" is a precise term and may correctly explain a student's mistake.
+  // Only reject the ambiguous "הפוך" in an explicitly opposite-number context.
+  if(/נגדי|אותו ערך מוחלט/u.test(text)&&Array.isArray(hints)&&hints.some(h=>typeof h==='string'&&/(?:המספר|מספר|הערך|ערך)\s+(?:ה)?הפוך(?![א-ת])/u.test(h))){
+    return 'AMBIGUOUS_OPPOSITE_NUMBER_TERM';
+  }
+  return null;
+}
+function distinctHintIssue(hints){
+  if(!Array.isArray(hints)||hints.length!==3||hints.some(h=>typeof h!=='string'))return null;
+  return new Set(hints.map(h=>h.normalize('NFC').trim().replace(/\s+/gu,' '))).size===3?null:'DUPLICATE_HINT_TEXT';
+}
 function validateResponse(content,tasks){
   const asked=new Map(tasks.map(t=>[t.exercise_id,t])),valid=[],invalid=new Map(),feedback=new Map();
   function envelopeFailure(issue){for(const task of tasks){invalid.set(task.exercise_id,issue);feedback.set(task.exercise_id,{issue});}return {valid,invalid,feedback};}
@@ -110,7 +124,7 @@ function validateResponse(content,tasks){
     const row=data.rows.find(r=>r.exercise_id===id);
     if(Object.keys(row).some(k=>!["exercise_id","hints","error"].includes(k))){fail(task,row,"UNEXPECTED_ROW_FIELD");continue;}
     if(own(row,"error")){fail(task,row,"SOURCE_AMBIGUOUS");continue;}
-    const issue=hintIssue(row.hints)||(!row.hints[0].trim().endsWith("?")?"first hint must end with a guiding question mark":null);
+    const issue=hintIssue(row.hints)||(!row.hints[0].trim().endsWith("?")?"first hint must end with a guiding question mark":null)||terminologyIssue(task,row.hints)||distinctHintIssue(row.hints);
     if(issue){fail(task,row,issue);continue;}
     valid.push({task,hints:row.hints.map(h=>h.trim())});
   }
@@ -133,7 +147,7 @@ function loadCheckpoint(out,task){
   if(!fs.existsSync(file))return null;
   let value;try{value=JSON.parse(fs.readFileSync(file,"utf8"));}catch(_){throw problem("CHECKPOINT_INVALID");}
   if(value.taskFingerprint!==key||value.model!==MODEL||value.provenance!==PROVENANCE||!value.row||
-      stable(preparedRow(task,value.row.hints))!==stable(value.row)||hintIssue(value.row.hints))throw problem("CHECKPOINT_INVALID");
+      stable(preparedRow(task,value.row.hints))!==stable(value.row)||hintIssue(value.row.hints)||terminologyIssue(task,value.row.hints)||distinctHintIssue(value.row.hints))throw problem("CHECKPOINT_INVALID");
   return value;
 }
 const FIRST_NUMBER_WORDS="אפס|אחד|אחת|שניים|שתיים|שני|שתי|שלוש|שלושה|שלושת|ארבע|ארבעה|ארבעת|חמש|חמישה|חמשת|שש|שישה|ששת|שבע|שבעה|שבעת|שמונה|שמונת|תשע|תשעה|תשעת|עשר|עשרה|עשרת|עשרים|שלושים|ארבעים|חמישים|שישים|שבעים|שמונים|תשעים|מאה|מאתיים|מאות|אלף|אלפיים|אלפים|חצי|מחצית|רבע";
@@ -144,6 +158,8 @@ const INSTRUCTIONS=[
   "הרמז הבא מציע דרך פעולה. הרמז האחרון מקדם עד לפני הפתרון, בלי התוצאה הסופית ובלי ביצוע החישוב המכריע.",
   "כל רמז עד שש מאות תווים. אין סימני שוויון או השוואה (= < > ≠ ≤ ≥), אין לוכסן / ואין קוד, תמונות, שרטוטים או קישורים בפלט.",
   "השתמשו רק בנתונים המודפסים בהקשר של אותו סעיף. אל תמציאו נתון או תוצאה. סעיפים קודמים הם הקשר אפשרי, לא פתרונות שכבר הוכחו.",
+  "הקפידו על המינוח: מספר נגדי ומספר הופכי הם מושגים שונים. השתמשו במונח המדויק שהמקור דורש, ואל תכתבו 'המספר ההפוך' כניסוח עמום. במציאת מספר אחר בעל אותו ערך מוחלט מדובר במספר הנגדי, ולא במספר ההופכי.",
+  "כל רמז חייב להיות שונה מקודמיו ולקדם צעד נוסף. אל תחזרו על אותו טקסט ברמזים שונים, גם אם הסעיף קצר; אפשר להתקדם מכיוון רעיוני לבחירת פעולה ואז לבדיקת הפעולה בלי למסור את התשובה.",
   "כאשר ההוראה מבקשת במפורש למצוא את כל האפשרויות, לדון במקרים או לבדוק אם יש די נתונים, אי־היחידות היא חלק מהתרגיל ולא עמימות במקור. גם סימן שאינו נתון במכוון אינו נתון חסר שיש להמציא: כוונו לבדיקת המקרים האפשריים ולנימוק לפי המקור. source_ambiguous מיועד למקור שאי אפשר לקרוא או להקשר הכרחי שאינו מסופק, ולא לשאלה פתוחה המודפסת בשלמותה.",
   "מטרת הוכחה או בנייה אינה נתון. מיקום בקובץ SVG וקואורדינטות ציור אינם מדידות מתמטיות. ציור אינו בקנה מידה, אלא אם יש צירים מסומנים או נתון מפורש.",
   "context_ref מפנה להקשר השאלה בcontexts; previous_part_refs מפנים לסעיפים קודמים בpriorParts. קראו רק את ההפניות של המשימה. כל משימה עצמאית. אין להעביר נתונים בין סעיפים. אם חסר נתון או שהמקור עמום, החזירו עבור הסעיף error במקום להמציא רמזים.",
@@ -366,4 +382,4 @@ async function main(argv){
   process.stdout.write(JSON.stringify(result)+"\n");if(result.failed)process.exitCode=1;
 }
 if(require.main===module)main(process.argv.slice(2)).catch(error=>{console.error(/^[A-Z][A-Z0-9_]{1,70}$/.test(error?.code||"")?error.code:"AUTHORING_FAILED");process.exitCode=1;});
-module.exports={MODEL,PROVENANCE,ROW_SOURCE,INSTRUCTIONS,USAGE,imageMime,compactCurriculum,contentFor,firstNumberMatches,candidateFeedback,envConfig,validateTask,readTasks,fingerprint,splitBatches,validateResponse,redact,preparedRow,loadCheckpoint,sharpRenderer,run,args};
+module.exports={MODEL,PROVENANCE,ROW_SOURCE,INSTRUCTIONS,USAGE,terminologyIssue,distinctHintIssue,imageMime,compactCurriculum,contentFor,firstNumberMatches,candidateFeedback,envConfig,validateTask,readTasks,fingerprint,splitBatches,validateResponse,redact,preparedRow,loadCheckpoint,sharpRenderer,run,args};

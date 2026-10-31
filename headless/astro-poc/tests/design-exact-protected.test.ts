@@ -289,7 +289,10 @@ describe('exact-design protected live-baseline boundaries', () => {
     // DOM/catalog/deadline/freeform regressions cover the source and UI fences.
     // 31 October: busy-state resets retain the three-hint exhaustion guard.
     // ramzi-hint-exhaustion tests exercise both released viewer copies.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), 'c5bfa66b39731814949064a8859f22ae50bc4e71a4a7e9302c9898611992a05b');
+    // 1 November: a fresh source-bound catalog revision clears only stale
+    // prepared hint turns; revision/DOM tests preserve additional conversation.
+    // The glossary also flips above the composer, keeping all hint controls reachable.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), 'b931c812d0ce08348f178b058d289c2b6cbe7355cfac9f5613bd8c4267f8e6a5');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {
