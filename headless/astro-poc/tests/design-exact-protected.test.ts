@@ -120,10 +120,12 @@ describe('exact-design protected live-baseline boundaries', () => {
       '<script src="noam-visual-plan.js?v=20261028-source3"></script>',
       '<script src="noam-source-data-visual.js?v=20261028-source-data3"></script>',
       '<script src="noam-source-scaffold.js?v=20261029-scaffold1"></script>',
+      // Noam, 2026-10-31: source-bound public catalog supplies all three standard hints.
+      '<script src="noam-curated-hints.js?v=20261031-source-bound2"></script>',
     ];
     const allScripts = [...viewerWithNativeRelease.matchAll(/<script\b[^>]*>[\s\S]*?<\/script>/gi)].map(match => match[0]);
-    assert.equal(allScripts.length, 26, 'The release adds only its ten exact dependencies');
-    assert.deepEqual(allScripts.slice(7,15),nativeAdditions.slice(2),'Typed compilers follow their native source consumer in dependency order');
+    assert.equal(allScripts.length, 27, 'The release adds its ten exact dependencies and curated hints');
+    assert.deepEqual(allScripts.slice(7,15),nativeAdditions.slice(2,10),'Typed compilers follow their native source consumer in dependency order');
     assert.deepEqual(allScripts.slice(0, 2), nativeAdditions.slice(0, 2), 'Old URLs migrate before worksheet scripts run');
     assert.equal(allScripts[7], nativeAdditions[2], 'Native consumer follows the existing local visual engine');
     for (const addition of nativeAdditions) assert.equal(allScripts.filter(script => script === addition).length, 1);
@@ -263,7 +265,28 @@ describe('exact-design protected live-baseline boundaries', () => {
     // requests/cache callbacks and release retry controls. Dedicated operation-
     // deadline tests cover timeout, body aborts and generation races; the bot
     // client, security protocol, source assets and conversation storage stay fixed.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '8a2c0e72a9102c7dc1c2c81f0146a92aadb042d8b3f5fe5ffe74d38492ddfe81');
+    // Noam, 2026-10-30: source-verified first-hint probes skip OCR only for a
+    // server-authorized printed-text cue. SDK preparation overlaps source reads;
+    // only the source phase uses25s; normal requests keep55s from the click.
+    // Canonical source retains priority over image/manifest caches.
+    // Fast-hint/deadline tests preserve token checks, source scope and late fences.
+    // Noam, 2026-10-31: all three standard hints come from the approved public
+    // Supabase catalog bound to exact exercise/PDF/native SHA. Missing rows fail
+    // closed without OCR/model fallback; retry keeps its exact index, attachments
+    // remain, and a thread cannot mix ladder revisions. Freeform keeps the protected
+    // client and55s deadline. Catalog/fast-hint/deadline tests exercise these rules.
+    // Noam, 2026-10-30: הבנתי answers locally and never opens the next hint or asks the
+    // model for the next step; לא הבנתי, «רמז», auth and storage are unchanged. The guides
+    // asset is versioned 20261030-understood1; ramzi-understanding tests cover the flow.
+    // noamAnswerUnderstood adds the הבנתי exchange to the exercise thread in order and
+    // leaves the draft and attachments alone; no request is sent. The adapter reaches it
+    // through window.noamAnswerUnderstood, the main script's only new global. The exchange
+    // is marked understood: it stays out of the model history and is never a drawing target.
+    // Noam, 2026-10-31 review: understood/closing replies have no check pair;
+    // catalog config+body share4s, confirmed misses focus the question composer,
+    // and unbound historical guides cannot answer or steer additional questions.
+    // DOM/catalog/deadline/freeform regressions cover the source and UI fences.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), 'b160e27d44da3527126c66a0cbb23595ec605c0f63cff1202ec667520f61ed7b');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {

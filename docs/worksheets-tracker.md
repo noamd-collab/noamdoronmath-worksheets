@@ -1,5 +1,29 @@
 # Worksheet tracker
 
+## Teacher Google browser verification recovery — 2026-10-31
+
+The authorized diagnostic returned HTTP 403 with `BOT_VERIFICATION_FAILED` and Google's sole `browser-error` code, without a score, hostname or action. That failed proof still cannot reach the model or open the human challenge. The client now obtains one fresh v3 token and submits it for complete server verification after this exact response. Browser-error recovery and the existing transport recovery share one automatic retry budget; a second failure is terminal. Other security responses, malformed assessments and v2 redemption never acquire this retry. Google documents browser errors as execute failures that may involve network problems; the specific cause of the observed failure remains unknown.
+
+Teacher requests supply a current-context guard before verification and again before submission, so a changed topic or manual selection cannot trigger a stale recovery request. An aborted request likewise cannot start another token or submit a pending fresh token. A repeated browser error explains the Google communication failure in Hebrew and preserves manual choices, with no local selection presented as AI. Backend thresholds, hostname and action checks, rate limits, challenge eligibility and nonce consumption are unchanged. The shared SDK and its strict consumers receive matching cache versions; worksheet data and the URL helper remain unchanged.
+
+Validation uses mocked network and model responses only: 139 SDK/client tests and 165 teacher, security, print and URL tests passed with zero skips. The 21 new SDK cases exercise both deployed variants and the real client/server guard path, including a denied first token, a fresh successful second token, two rate checks and one model call. Sixteen independent adversarial checks passed, covering exact eligibility, the shared two-attempt limit, stale/throwing/aborted contexts, unreadable responses, concurrent requests and terminal v2 failures. Three new teacher regressions cover the actual selection handler's context guard and unchanged manual state after a repeated error. Root SDK tests use an explicit `node --test tests/noam-bot-*.test.cjs` command alongside Astro's separate full suite. Full-suite, preview, release and any separately authorized live diagnostic results are recorded in the release evidence; this source change is not proof of a successful live recovery.
+
+## Teacher wizard scope URL — 2026-10-31
+
+The exhaustive teacher-page audit found that changing the selected level left `level=all` in the address. The wizard now replaces its current grade, topic and normalized level in the existing history entry, preserving the path, hash, unrelated query parameters and `history.state`. Repeated rendering does not write history again. Level-only changes retain an existing handoff pick and lesson duration; moving to another grade or topic removes the old pick so a shared source PDF cannot restore a previous context's selection. Current selections and saved sections are not serialized into the URL.
+
+A valid scope-only link now reloads the selected grade, topic and level with an empty selection. Existing selected-question handoffs keep their identifier filtering and selection behavior. Single-source topics normalize to all, and additional excellence sources remain under public level c. URL updates run after normalization and read current state, including when older source loads finish later. An unavailable History API does not interrupt manual selection. Only the teacher module and wizard helper cache keys change; AI requests, bot SDK versions and reCAPTCHA protections remain unchanged.
+
+Validation: 182 targeted URL, teacher selection, preview, routing and print tests passed with zero failures or skips. Fifteen new regressions exercise actual startup, prefill, level and grade handlers, history preservation, manual reconciliation, scope-only reload and reversed asynchronous load completion. Six independent offline checks passed, covering all 1,281 catalog scopes, 31 cross-grade shared PDFs and all 11 single-source topics. These are offline tests, not new live AI requests. Full-suite, build, preview and release results are recorded separately after integration.
+
+## Teacher Google verification error visibility — 2026-10-30
+
+Follow-up to published PR 303 (`6f7f39a6`). Noam added the separate v2 checkbox key pair, the environment was synchronized without exposing values, and the unchanged approved code was published again. Live configuration now advertises v2 while preserving v3 enforcement. One real teacher request reached the intended `BOT_STEP_UP_REQUIRED` response; the Google widget then failed before any human token or second protected request. Manual selection stayed intact. Its underlying Google configuration or loading error is not yet identified.
+
+A provider loading failure was incorrectly labeled as a security rejection, and cleanup immediately removed Google's own error surface. The follow-up keeps that failed widget visible with an accurate Hebrew message and an explicit close action. Its model promise is already rejected; later callbacks cannot submit a token. Closing it or starting another explicit protected action disposes only the owned failed widget and releases its SDK lease. Background preparation preserves the error, and no automatic retry is added. Backend checks, key/domain validation and rate limits are unchanged.
+
+Production data verification is complete: 933 of 933 unique sheet files match source, including all 736 resumed files at a minimum three-second start interval with no additional throttling. Offline contracts using archived live data pass all 3,843 count plans across 1,281 actual UI scopes and all 38,624 whole-question manual expansions. These are not real AI successes. The exhaustive browser audit continues separately; final tests, preview, PR, release and human-verification outcomes belong in the follow-up evidence report.
+
 ## Teacher human verification recovery — 2026-10-30
 
 Follow-up to published PR 297 on live baseline `64933173`: preserve the teacher’s manual selection when AI verification fails, and offer an explicit human reCAPTCHA v2 checkbox step only after an otherwise valid v3 assessment is rejected solely for its low score. The existing v3 threshold, action, hostname, origin and rate checks stay enabled. A fresh v2 success must match a short-lived, signed request ticket and consume an insert-only persistent nonce before any model call; a missing configuration, expired challenge, changed selection or failed verification stays closed.
@@ -382,3 +406,11 @@ Columns: grade, topic, levels present, author, reviewed, live, PR.
 | כיתה ט׳ | דו איבר בריבוע (G9-T44) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ט׳ | הפרש ריבועים (G9-T45) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ט׳ | דלתון (G9-T46) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104 |
+
+
+### 2026-10-31 — בחירת רמות מפורשת והסברים במרחב למורה
+
+- ברירת המחדל היא הרמה הזמינה הראשונה (א׳, ב׳, מצוינות), עם אפשרות מפורשת לשלב את כל הרמות. הבורר נגיש גם לצד השאלות; הכתובת מתעדכנת ונשמרת הבחירה הידנית הרלוונטית.
+- בשילוב רמות, הבחירה הראשית וכל תוכנית AI ל־5, 10 או 15 חייבות לייצג כל משפחת רמה שנותרו בה מועמדים. מקור מצוינות נוסף נחשב לאותה רמה. בחירה לא תקינה אינה מוצגת כבחירת AI מוצלחת.
+- נוסף מדריך פעולות קצר וסגור כברירת מחדל, תיאורים לכפתורים והסבר מדויק על ניקוד במבחן לעומת דף חזרה. רמות חסרות ונושאים ללא חלוקת רמות מוסברים במפורש.
+- שומר על שאלות המקור המלאות, דפי התשובות, ההגנה של reCAPTCHA וכללי השרטוטים. בדיקות קבלה מתועדות בחבילת הגרסה; אין בקשות AI חיות במסגרת התיקון הזה.

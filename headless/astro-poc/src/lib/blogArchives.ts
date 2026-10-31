@@ -59,7 +59,7 @@ export const BLOG_ARCHIVE_M26_PATHS = [
  * Archives have no dateModified; these are the dashboard dates, not capture time.
  */
 export const BLOG_ARCHIVE_SITEMAP_LASTMOD: Record<(typeof BLOG_ARCHIVE_M26_PATHS)[number], string> = {
-  '/blog': '2026-10-29',
+  '/blog': '2026-10-31',
   '/blog/categories/elementary-math': '2026-09-08',
   '/blog/categories/middle-school-math': '2026-09-19',
   '/blog/categories/teachers-and-parents': '2026-09-08',

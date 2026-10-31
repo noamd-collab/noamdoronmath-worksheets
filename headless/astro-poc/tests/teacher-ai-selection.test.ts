@@ -19,14 +19,14 @@ function definition(name: string) {
   return end < 0 ? tail : tail.slice(0, end);
 }
 
-type Payload = { teacher: { count: number; planCounts: number[]; candidates: { id: string; label: string }[] } };
+type Payload = { teacher: { level: string; count: number; planCounts: number[]; candidates: { id: string; label: string }[] } };
 type State = { grade: string; topic: string; level: string; scenario: string; style: string; selected: string[]; blocks: { kind: string; title: string; keys: string[] }[]; sectionKind: string; pickMode: string; filter: string; lastAiPickCount: number; pickNote?: string };
 const successfulReply = (payload: Payload) => ({
   source: 'classifier', model: 'qwen3.8-flash',
   exerciseIds: payload.teacher.candidates.slice(-payload.teacher.count).map((candidate) => `ex:${source.pdfId}:${candidate.label}`),
 });
 
-type ChallengeHandler = { onChallenge: (challenge: unknown) => Promise<string> };
+type ChallengeHandler = { isCurrent: () => boolean; onChallenge: (challenge: unknown) => Promise<string> };
 type HumanRequest = { isCurrent: () => boolean; onSubmitting: () => void; challenge: unknown; client: unknown; anchor: unknown };
 function harness(reply: (payload: Payload, state: State, requestOptions: ChallengeHandler) => unknown = successfulReply, options: { pool?: unknown[]; grade?: string; scenario?: string; style?: string; savedKeys?: string[]; humanVerification?: (request: HumanRequest) => Promise<string>; clock?: { now: () => number }; timers?: { setInterval: (fn: () => void) => number; clearInterval: () => void } } = {}) {
   return new Function('pool', 'groupWholeQuestions', 'savedKeys', 'reply', 'options', 'Date', 'globalThis', `
@@ -62,13 +62,15 @@ function harness(reply: (payload: Payload, state: State, requestOptions: Challen
     const STYLES = { blended: { label: 'משולבת' } };
     const QUESTION_ROLES = { basis: 'ביסוס', review: 'חזרה', creative: 'יצירתית' };
     const AI_QUESTION_COUNTS = [5, 10, 15];
+    let dismissedPanels = 0;
+    const dismissTeacherHumanVerification = () => { dismissedPanels += 1; };
     const requestTeacherHumanVerification = options.humanVerification || (() => { throw new Error('Unexpected human verification'); });
     const ensureTeacherBotClient = async () => ({ postJson: async (path, payload, requestOptions) => {
       requests.push({ path, payload });
       return await reply(payload, state, requestOptions);
     } });
-    ${['exKey', 'questionPreviewGroup', 'currentQuestions', 'keysOfQuestions', 'rolePlan', 'interleaveSheets', 'planOrder', 'smartQuestionPick', 'carriedKeys', 'selectionKey', 'snapshot', 'teacherAiNote', 'teacherAiContext', 'verifiedTeacherPlan', 'rememberTeacherPlans', 'pickWithAi'].map(definition).join('\n')}
-    return { pick: pickWithAi, state, requests, status, attrs, controls, announcements, renders: () => renderCount };
+    ${['exKey', 'questionPreviewGroup', 'currentQuestions', 'keysOfQuestions', 'rolePlan', 'interleaveSheets', 'planOrder', 'smartQuestionPick', 'carriedKeys', 'selectionKey', 'snapshot', 'teacherAiNote', 'teacherAiContext', 'teacherLevelsCovered', 'verifiedTeacherPlan', 'rememberTeacherPlans', 'pickWithAi'].map(definition).join('\n')}
+    return { pick: pickWithAi, state, requests, status, attrs, controls, announcements, renders: () => renderCount, dismisses: () => dismissedPanels };
   `)(options.pool || source.questions, groupWholeQuestions, options.savedKeys || groupKeys(groups[0]), reply, options, options.clock || Date, options.timers || globalThis) as {
     pick: (count: number) => Promise<string[]>;
     state: State;
@@ -77,6 +79,7 @@ function harness(reply: (payload: Payload, state: State, requestOptions: Challen
     attrs: string[][];
     controls: Record<string, { value: string }>;
     renders: () => number;
+    dismisses: () => number;
   };
 }
 
@@ -138,6 +141,50 @@ test('manual changes made during an AI request are retained instead of overwritt
   assert.equal(app.state.lastAiPickCount, 0);
   assert.equal(app.renders(), 0);
   assert.match(app.status.textContent, /הבחירה שלכם נשמרה/);
+});
+
+test('the client recovery guard detects a manual edit before another verification request', async () => {
+  const manual = groupKeys(groups[2]);
+  const app = harness((_payload, state, requestOptions) => {
+    assert.equal(requestOptions.isCurrent(), true);
+    state.selected = manual.slice();
+    assert.equal(requestOptions.isCurrent(), false);
+    throw Object.assign(new Error('הנושא או הבחירה השתנו. הבחירה שלכם נשמרה.'), { code: 'BOT_REQUEST_CONTEXT_CHANGED' });
+  });
+  assert.deepEqual(await app.pick(5), []);
+  assert.deepEqual(app.state.selected, manual);
+  assert.equal(app.requests.length, 1);
+  assert.equal(app.renders(), 0);
+  assert.equal(app.state.lastAiPickCount, 0);
+  assert.match(app.status.textContent, /הבחירה שלכם נשמרה/);
+});
+
+test('the client recovery guard detects a changed topic without changing the current manual choices', async () => {
+  const app = harness((_payload, state, requestOptions) => {
+    assert.equal(requestOptions.isCurrent(), true);
+    state.topic = '3';
+    assert.equal(requestOptions.isCurrent(), false);
+    throw Object.assign(new Error('הנושא או הבחירה השתנו. הבחירה שלכם נשמרה.'), { code: 'BOT_REQUEST_CONTEXT_CHANGED' });
+  });
+  const manual = groupKeys(groups[2]);
+  app.state.selected = manual.slice();
+  assert.deepEqual(await app.pick(10), []);
+  assert.equal(app.state.topic, '3');
+  assert.deepEqual(app.state.selected, manual);
+  assert.equal(app.renders(), 0);
+});
+
+test('repeated Google browser failure reports a communication error and preserves the complete manual state', async () => {
+  const app = harness(() => {
+    throw Object.assign(new Error('Google verification failed'), { status: 403, code: 'BOT_VERIFICATION_FAILED', recaptchaBrowserError: true });
+  });
+  app.state.selected = groupKeys(groups[2]).slice();
+  const before = JSON.stringify(app.state);
+  assert.deepEqual(await app.pick(15), []);
+  assert.equal(JSON.stringify(app.state), before);
+  assert.equal(app.renders(), 0);
+  assert.match(app.status.textContent, /Google.*תקלה בתקשורת.*הבחירה שלכם נשמרה/);
+  assert.doesNotMatch(app.status.textContent, /נבחרו|נחסמה מטעמי אבטחה|בחירה אוטומטית מקומית|עם AI\./);
 });
 
 test('changing a saved section while AI is running is not overwritten by the returned selection', async () => {
@@ -264,9 +311,11 @@ function explicitPlan(ids: string[]) {
 function replyWithPlans(payload: Payload, pool: ReturnType<typeof numberedPool>) {
   const candidateIds = new Set(payload.teacher.candidates.map((candidate) => candidate.id));
   const available = pool.filter((part) => candidateIds.has(`${part.source.level}:${part.id}`));
-  const teacherPlans = Object.fromEntries([5, 10, 15].map((count) => [String(count), explicitPlan(
-    available.slice(-Math.min(count, available.length)).map((part) => `ex:${part.source.pdfId}:${part.id}`)
-  )]));
+  const teacherPlans = Object.fromEntries([5, 10, 15].map((count) => {
+    const representatives = payload.teacher.level === 'all' ? ['a', 'b', 'c'].map(level => available.find(part => (part.source.level === 'c2' ? 'c' : part.source.level) === level)).filter(Boolean) : [];
+    const selected = representatives.length > 1 ? [...representatives, ...available.slice().reverse().filter(part => !representatives.includes(part))].slice(0, count) : available.slice(-count);
+    return [String(count), explicitPlan(available.filter(part => selected.includes(part)).map(part => `ex:${part.source.pdfId}:${part.id}`))];
+  }));
   const primary = teacherPlans[String([5, 10, 15].find((count) => Math.min(count, available.length) === payload.teacher.count) || 5)];
   return { ...primary, teacherPlans };
 }
@@ -292,6 +341,7 @@ test('a successful human step resumes one AI request and retains all three expli
   assert.match(app.status.textContent, /נדרש אימות אנושי.*הבחירה שלכם נשמרה/);
   assert.deepEqual(await app.pick(10), [], 'No duplicate AI request while human verification is pending');
   assert.equal(app.requests.length, 1);
+  assert.equal(app.dismisses(), 1, 'A duplicate click must not dismiss the active human task');
   human.onSubmitting(); finishHuman('synthetic-human-token');
   assert.equal((await pending).length, 5);
   assert.equal((await app.pick(10)).length, 10);
@@ -366,6 +416,10 @@ for (const code of ['BOT_CHALLENGE_CANCELLED', 'BOT_CHALLENGE_EXPIRED', 'BOT_CHA
     assert.equal(app.renders(), 0);
     assert.match(app.status.textContent, /הבחירה שלכם נשמרה/);
     assert.doesNotMatch(app.status.textContent, /נבחרו|מקומית/);
+    if (code === 'BOT_CHALLENGE_UNAVAILABLE') {
+      assert.match(app.status.textContent, /Google לא נטענה/);
+      assert.doesNotMatch(app.status.textContent, /לא אישרה/);
+    }
   });
 }
 
@@ -494,6 +548,83 @@ test('c2 model plans stay distinct from c when switching all three counts withou
   }
   assert.equal(app.requests.length, 1);
 });
+
+function mixedLevelPool() {
+  return ['a', 'b', 'c2'].flatMap(level => {
+    const pool = numberedPool(20, `${level}-mixed-source`);
+    pool[0].source.level = level;
+    return pool;
+  });
+}
+function assertMixedSelection(picked: string[], pool: ReturnType<typeof numberedPool>) {
+  const represented = new Set(pool.filter(part => picked.includes(`ex:${part.source.pdfId}:${part.id}`)).map(part => part.source.level === 'c2' ? 'c' : part.source.level));
+  assert.deepEqual([...represented].sort(), ['a', 'b', 'c']);
+}
+
+test('all-level 5/10/15 choices reuse only explicit plans covering a, b and c2 as excellence', async () => {
+  const pool = mixedLevelPool();
+  const app = harness(payload => replyWithPlans(payload, pool), { pool, savedKeys: [] });
+  app.state.level = 'all';
+  for (const count of [5, 10, 15]) {
+    const picked = await app.pick(count);
+    assert.equal(picked.length, count); assertMixedSelection(picked, pool);
+  }
+  assert.equal(app.requests.length, 1);
+  assert.match(app.status.textContent, /הוכנה בבקשת ה-AI הקודמת/);
+});
+
+for (const count of [5, 10, 15]) {
+  test(`a ${count}-question primary response missing a family preserves the entire manual state`, async () => {
+    const pool = mixedLevelPool();
+    const onlyA = pool.filter(part => part.source.level === 'a').slice(0, count).map(part => `ex:${part.source.pdfId}:${part.id}`);
+    const app = harness(() => ({ ...explicitPlan(onlyA), teacherPlans: { [String(count)]: explicitPlan(onlyA) } }), { pool, savedKeys: [] });
+    app.state.level = 'all'; app.state.selected = [`ex:${pool.at(-1)!.source.pdfId}:20`];
+    const before = JSON.stringify(app.state);
+    assert.deepEqual(await app.pick(count), []);
+    assert.equal(JSON.stringify(app.state), before); assert.equal(app.renders(), 0);
+    assert.match(app.status.textContent, /לא התקבלה בחירת AI מלאה שמשלבת את כל הרמות.*הבחירה שלכם נשמרה/);
+    assert.doesNotMatch(app.status.textContent, /נבחרו|הושלמו|הוכנה בבקשת/);
+  });
+}
+
+for (const invalid of ['partial', 'duplicate', 'unknown']) {
+  test(`a ${invalid} primary selection covering all families still cannot be filled locally`, async () => {
+    const pool = mixedLevelPool();
+    const ids = ['a', 'b', 'c2'].map(level => `ex:${level}-mixed-source:1`);
+    if (invalid === 'duplicate') ids.push('ex:a-mixed-source:2', 'ex:a-mixed-source:2');
+    if (invalid === 'unknown') ids.push('ex:a-mixed-source:2', 'ex:unknown-source:1');
+    const app = harness(() => explicitPlan(ids), { pool, savedKeys: [] });
+    app.state.level = 'all'; app.state.selected = ['ex:b-mixed-source:20'];
+    const before = JSON.stringify(app.state);
+    assert.deepEqual(await app.pick(5), []);
+    assert.equal(JSON.stringify(app.state), before); assert.equal(app.renders(), 0);
+    assert.match(app.status.textContent, /לא התקבלה בחירת AI מלאה שמשלבת את כל הרמות.*הבחירה שלכם נשמרה/);
+    assert.doesNotMatch(app.status.textContent, /נבחרו|הושלמו|הוכנה בבקשת/);
+  });
+}
+
+for (const invalid of ['missing family', 'duplicate', 'partial']) {
+  test(`a cached ${invalid} mixed-level plan cannot replace manual choices or avoid a fresh guarded request`, async () => {
+    const pool = mixedLevelPool(); let requests = 0;
+    const app = harness(payload => {
+      requests += 1;
+      if (requests > 1) return { source: 'fallback', model: null, exerciseIds: [], modelExerciseIds: [], selectionError: 'MODEL_LEVEL_COVERAGE_MISSING' };
+      const response = replyWithPlans(payload, pool);
+      const bad = response.teacherPlans['10'];
+      if (invalid === 'missing family') response.teacherPlans['10'] = explicitPlan(pool.filter(part => part.source.level === 'a').slice(0, 10).map(part => `ex:${part.source.pdfId}:${part.id}`));
+      if (invalid === 'duplicate') { bad.exerciseIds[0] = bad.exerciseIds[1]; bad.modelExerciseIds[0] = bad.modelExerciseIds[1]; }
+      if (invalid === 'partial') { bad.exerciseIds.pop(); bad.modelExerciseIds.pop(); }
+      return response;
+    }, { pool, savedKeys: [] });
+    app.state.level = 'all'; assertMixedSelection(await app.pick(5), pool);
+    app.state.selected = [`ex:${pool[0].source.pdfId}:1`];
+    const before = JSON.stringify(app.state);
+    assert.deepEqual(await app.pick(10), []);
+    assert.equal(JSON.stringify(app.state), before); assert.equal(requests, 2);
+    assert.match(app.status.textContent, /הבחירה שלכם נשמרה/);
+    assert.doesNotMatch(app.status.textContent, /הוכנה בבקשת/);
+  });
+}
 
 test('shortage plans retain each requested count and honestly reuse the eight available questions', async () => {
   const pool = numberedPool(8);

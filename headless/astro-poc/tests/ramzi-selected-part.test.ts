@@ -78,7 +78,7 @@ test('the actual ask path binds scope to the requested part even if selection ch
   let finishAnalysis: (value: any) => void = () => {};
   let sent: any;
   Object.assign(ctx, {
-    selectedExercise: partC, busy: false, setTimeout: () => 0, clearTimeout() {},
+    selectedExercise: partC, busy: false, noamDrafts: {}, setTimeout: () => 0, clearTimeout() {},
     document: { activeElement: null }, panelBody: { contains: () => false },
     exerciseThread: () => ({ hintIndex: 0, messages: [], history: [] }),
     saveNoamState() {}, setNoamBusy() {}, renderNoamChat() {}, restoreNoamChatFocus() {}, announceNoam() {},
@@ -93,8 +93,9 @@ test('the actual ask path binds scope to the requested part even if selection ch
     ttl: 'חפיפת משולשים', g: 8, lv: 'a', LEVEL: { a: 'רמה א׳' }, API: '/test',
   });
   vm.runInContext(html.slice(html.indexOf('function askNoam('), html.indexOf('function noamRetryActionLabel(')), ctx);
-  ctx.askNoam('hint', '');
+  ctx.askNoam('free_question', 'איך מתאימים את הנתונים לסעיף הזה?');
   ctx.selectedExercise = manifest.exercises[0];
+  await Promise.resolve(); // The additional-question reader starts on the next microtask.
   finishAnalysis(broadAnalysis);
   await new Promise(resolve => setImmediate(resolve));
   assert.equal(sent.exerciseId, partC.id);

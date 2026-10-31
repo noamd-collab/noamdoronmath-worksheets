@@ -30,15 +30,15 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
   assert.match(enriched.diagram_description,/גובהו לצלע הארוכה \$5\$/);assert.equal(JSON.stringify(original),before);
   assert.deepEqual(clone(f.c.noamSourceSegmentLabelFacts(f.source,f.exercise,f.model)),[{text:'13',direction:'אופקי'},{text:'2',direction:'אנכי'},{text:'13',direction:'אופקי'},{text:'24',direction:'אופקי'}]);
  });
- it(name+': actual hint enriches cached analysis in the single existing solve request',async()=>{
+ it(name+': additional question enriches cached analysis in the single existing solve request',async()=>{
   const f=fixture(v),cached={readable:true,diagram_description:'old OCR'},requests:any[]=[],thread:any={messages:[],history:[],hintIndex:0};
   Object.assign(f.c,{busy:false,panelBody:f.c.document.body,noamDrafts:{},MIN_WAIT:0,API:'/model',g:7,lv:'b',LEVEL:{b:'רמה ב׳'},ttl:'מנסרה',
    exerciseThread:()=>thread,setNoamBusy:(busy:boolean)=>{f.c.busy=busy;},restoreNoamChatFocus(){},exerciseLabel:()=> 'שאלה 7ב',saveNoamState(){},renderNoamChat(){},announceNoam(){},
    noamDidacticGuide:()=>null,noamDidacticPrompt:()=>'',noamDidacticResponse:()=>null,getExerciseAnalysis:async()=>cached,noamSolverMessage:(s:string)=>s,
    postJson:async(url:string,payload:any)=>{requests.push({url,payload});return {ok:true,answer:'בדקו את התווית על הצלע האנכית.'};},
    noamGuardGeometryResult:(r:any)=>r,noamGuardSignedAddResult:(r:any)=>r,noamClarifySignedAddLanguage:(s:string)=>s,noamResponseVisual:()=>null,
-   noamVisualAnswer:(_:string,s:string)=>s,noamAttachSourceHint(){},setTimeout:(cb:any,ms:number)=>{if(ms<55000)cb();return 0;}});
-  runInNewContext(fn(v,'askNoam'),f.c);f.c.askNoam('hint','תן לי רמז אחד בלבד.');await settled();assert.equal(requests.length,1);
+   noamVisualAnswer:(_:string,s:string)=>s,noamAttachSourceHint(){},setTimeout:(cb:any,ms:number)=>{if(ms<25000)cb();return 0;}});
+  runInNewContext(fn(v,'askNoam'),f.c);f.c.askNoam('free_question','אפשר להסביר איך משתמשים בנתונים המודפסים בסעיף הזה?');await settled();assert.equal(requests.length,1);
   assert.equal(requests[0].url,'/model/noamImageSolve');assert.equal(requests[0].payload.exerciseId,f.exercise.id);
   expectLabels(requests[0].payload.imageAnalysis.diagram_description.slice(0,800));assert.equal(cached.diagram_description,'old OCR');
  });

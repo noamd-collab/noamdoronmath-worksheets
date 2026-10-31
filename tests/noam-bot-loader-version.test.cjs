@@ -6,7 +6,7 @@ const path = require("node:path");
 const vm = require("node:vm");
 const sdk = require("../noam-bot-client.js");
 const read = file => fs.readFileSync(path.join(__dirname, "..", file), "utf8");
-const version = "20261030-human-stepup";
+const version = "20261031-browser-error";
 
 function loader(file, kind, initialSdk, keepOld = false) {
   const source = read(file), scripts = [];
@@ -75,11 +75,14 @@ for (const [file, kind] of [
 }
 
 for (const file of ["demos/teacher-practice-picker-site-style.html", "headless/astro-poc/public/teachers/index.html"]) {
-  test(`${file}: teacher and companion scripts bypass old browser cache together`, () => {
+  test(`${file}: teacher and companion scripts use their independently current cache versions`, () => {
     const html = read(file);
-    for (const asset of ["teacher-factoring-print.js", "noam-site-companion.js"]) {
+    for (const [asset, expectedVersion] of [
+      ["teacher-factoring-print.js", "20261031-level-choice-help"],
+      ["noam-site-companion.js", version]
+    ]) {
       const escaped = asset.replaceAll(".", "\\.");
-      assert.match(html, new RegExp('src="[^"]*' + escaped + '\\?v=' + version + '"'));
+      assert.match(html, new RegExp('src="[^"]*' + escaped + '\\?v=' + expectedVersion + '"'));
       assert.doesNotMatch(html, new RegExp('src="[^"]*' + escaped + '"'));
     }
   });
