@@ -1,0 +1,116 @@
+---
+import ConceptLoop from './ConceptLoop.astro';
+import { HERO_ROTATION } from '../lib/heroRotation';
+/* Keep in sync with SPECS in ../lib/conceptLoops.ts. Default stays triangle for no-JS/SEO.
+   The pool is the inventory the grade player still reconciles against.
+   The homepage renders only DEFAULT; the other hero loops are fetched on shuffle. */
+const HERO_POOL = [
+  'triangle', 'pythagoras', 'area-model', 'sticks', 'numberline', 'tenframes',
+  'balance', 'pattern', 'bars', 'ruler', 'array', 'polygon', 'data',
+  'baseten', 'cookies', 'fraction', 'transform',
+  'angle-sum', 'para-rect', 'angle-kinds', 'frac-product',
+  'slope', 'add-within', 'similar', 'order-ops',
+  'sup-angles', 'share-12', 'corr-angles', 'mean-cols',
+  'pct-25', 'diff-sq', 'clock-3', 'peri-rect',
+  'signed-jump', 'prime-rect', 'sas-snap', 'obtuse-ht',
+  'box-vol', 'trap-area', 'odd-pair', 'birds-sub',
+  'circ-unroll', 'rect-count', 'l-split', 'quad-tree',
+  'tri-sort', 'parab', 'ratio-beads', 'neighbors',
+  'signed-ops', 'clock-span', 'exterior', 'para-perp',
+  'quarter-12', 'two-coins', 'map-scale', 'unit-frac',
+  'coord-walk', 'coins-12', 'cyl-stack', 'tenth-cell',
+  'equiv-half', 'half-eq', 'sq-stretch', 'area-x4',
+  'cube-8', 'place-123', 'jumps-4', 'apples-5',
+  'topic-card', 'mark-250', 'quad-gate', 'two-diag',
+] as const;
+const DEFAULT = 'triangle';
+const known = new Set<string>(HERO_POOL);
+for (const item of HERO_ROTATION) {
+  if (!known.has(item.variant)) throw new Error(`Unknown hero loop: ${item.variant}`);
+}
+if (HERO_ROTATION[0]?.variant !== DEFAULT) throw new Error('Default hero loop must stay triangle');
+---
+<div class="hero-loop" data-hero-loop>
+  <div data-hero-loop-current>
+    <ConceptLoop variant={DEFAULT} />
+  </div>
+</div>
+<style>
+  .hero-loop .concept-loop__svg {
+    aspect-ratio: 560 / 340;
+  }
+</style>
+<script is:inline>
+  // Homepage hero (Noam, 31.10.2026): open on a random film and play the
+  // films in a random order. ExactHeroControls is unchanged: this shuffles the
+  // rotation JSON before it boots, then presses the shuffle button once, so the opening
+  // film is random too. The server-rendered triangle stays for no-JS and SEO;
+  // with JS it is hidden until the random film is in place (2.5 s safety net).
+  (function () {
+    var hero = document.querySelector('[data-hero-loop]');
+    var current = hero && hero.querySelector('[data-hero-loop-current]');
+    if (!hero || !current || hero.dataset.randomOpening) return;
+    hero.dataset.randomOpening = '1';
+    var shown = false;
+    function reveal() {
+      if (shown) return;
+      shown = true;
+      current.style.opacity = '';
+    }
+    current.style.transition = 'opacity .35s ease';
+    current.style.opacity = '0';
+    setTimeout(reveal, 2500);
+
+    function shuffleRotation() {
+      var node = document.querySelector('[data-hero-rotation]');
+      if (!node || node.dataset.shuffled) return;
+      try {
+        var list = JSON.parse(node.textContent || '[]');
+        for (var i = list.length - 1; i > 0; i--) {
+          var j = Math.floor(Math.random() * (i + 1));
+          var t = list[i]; list[i] = list[j]; list[j] = t;
+        }
+        node.textContent = JSON.stringify(list);
+        node.dataset.shuffled = '1';
+      } catch (e) { /* Keep the server order. */ }
+    }
+
+    function openRandom() {
+      var tries = 0;
+      (function wait() {
+        var button = document.querySelector('[data-exact-shuffle]');
+        if (!button || hero.dataset.exactControls !== 'ready') {
+          if (++tries < 60) { setTimeout(wait, 50); return; }
+          reveal();
+          return;
+        }
+        var count = 0;
+        try { count = JSON.parse(document.querySelector('[data-hero-rotation]').textContent || '[]').length; } catch (e) { /* none */ }
+        // The triangle is already on screen: keep it with the same chance as any other film.
+        if (count < 2 || Math.random() < 1 / count) { reveal(); return; }
+        button.click();
+        var checks = 0;
+        (function settle() {
+          var loop = current.querySelector('[data-loop]');
+          var swapped = loop && loop.getAttribute('data-loop') !== 'triangle';
+          if ((swapped && !button.hasAttribute('aria-busy')) || ++checks > 50) { reveal(); return; }
+          setTimeout(settle, 50);
+        })();
+      })();
+    }
+
+    // The controls are a deferred module: they read the rotation JSON right
+    // after parsing ends, so it is shuffled when readyState leaves "loading".
+    if (document.readyState === 'loading') {
+      document.addEventListener('readystatechange', function once() {
+        if (document.readyState === 'loading') return;
+        document.removeEventListener('readystatechange', once);
+        shuffleRotation();
+      });
+      document.addEventListener('DOMContentLoaded', openRandom, { once: true });
+    } else {
+      shuffleRotation();
+      setTimeout(openRandom, 0);
+    }
+  })();
+</script>
