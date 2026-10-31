@@ -3959,6 +3959,30 @@
    "review": "rewritten_and_peer_reviewed"
   },
   {
+   "exercise_id": "G9-T39-E-Q04ד",
+   "source_pdf_hash": "e020549ff713406fb0c0f07443b09b18",
+   "source_native_sha256": "0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201",
+   "source_exercise_sha256": "27bca4e5348a1153697883f030520e19a67fbe1f47e055f2f32902789fad7220",
+   "hints_sha256": "8d279755711b8d84da6ae4e8b2102cda1afac6dbd51fcfe5725af110582a546a",
+   "review": "authored_against_native_source_pending_noam_approval"
+  },
+  {
+   "exercise_id": "G9-T39-E-Q05ד",
+   "source_pdf_hash": "e020549ff713406fb0c0f07443b09b18",
+   "source_native_sha256": "0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201",
+   "source_exercise_sha256": "41eaf4ec5096785678a897efdabfd1f60025f21c389faa1db5a8f4e05718009b",
+   "hints_sha256": "3fd1609450c4638e81c778d7668e6c9dfb818e300e865a52c2ec6f5310b62090",
+   "review": "authored_against_native_source_pending_noam_approval"
+  },
+  {
+   "exercise_id": "G9-T39-E-Q08ד",
+   "source_pdf_hash": "e020549ff713406fb0c0f07443b09b18",
+   "source_native_sha256": "0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201",
+   "source_exercise_sha256": "6eeaf0f9cecd531ffe1fc44529017ae69a170919c2320bd3a2b944d626abd71f",
+   "hints_sha256": "93a40012085adec7b2e039b8bd6d7777e2c32643b9bdb8eff927e464e9b65949",
+   "review": "authored_against_native_source_pending_noam_approval"
+  },
+  {
    "exercise_id": "G9-T41-A-Q01א",
    "source_pdf_hash": "3f9546987fea4b9aa4294249ea017278",
    "source_native_sha256": null,
