@@ -63,6 +63,16 @@
     if (response.status === 403 && code === "BOT_STEP_UP_REQUIRED") {
       error.challenge = validatedChallenge(data && data.challenge);
     }
+    var assessment = data && data.siteverify;
+    if (response.status === 403 && code === "BOT_VERIFICATION_FAILED" && data.ok === false &&
+        assessment && Array.isArray(assessment.errorCodes) && assessment.errorCodes.length === 1 &&
+        assessment.errorCodes[0] === "browser-error" && assessment.score === null &&
+        assessment.hostname === "" && assessment.action === "") {
+      // Google could not complete the browser check. This is still a denial;
+      // recovery must obtain a new token and pass the full server guard.
+      error.recaptchaBrowserError = true;
+      error.message = "בדיקת האבטחה של Google נתקלה בתקלה בתקשורת. נסו שוב מאוחר יותר.";
+    }
     return error;
   }
 
@@ -128,6 +138,7 @@
     }
 
     function checkActive(state) {
+      if (typeof state.checkRequest === "function") { state.checkRequest(); }
       if (state.expired || (state.deadline && Date.now() >= state.deadline)) {
         state.expired = true;
         throw makeError(VERIFY_MESSAGE, "BOT_VERIFICATION_TIMEOUT");
@@ -189,7 +200,8 @@
       if (state && state.expired) { return false; }
       var code = error && error.code;
       return code !== "NOT_ACTIVE" && code !== "BOT_CONFIG_UNAVAILABLE" &&
-        code !== "BOT_VERIFICATION_TIMEOUT" && code !== "BOT_ROUTE_UNSUPPORTED";
+        code !== "BOT_VERIFICATION_TIMEOUT" && code !== "BOT_ROUTE_UNSUPPORTED" &&
+        code !== "BOT_REQUEST_CANCELLED" && code !== "BOT_REQUEST_CONTEXT_CHANGED";
     }
 
     function remainingMs(state) {
@@ -357,7 +369,7 @@
       });
     }
 
-    function getVerification(action, prepareOnly) {
+    function getVerification(action, prepareOnly, checkRequest) {
       // A new explicit protected action ends an older failed human task. A
       // background prepare never removes the provider's visible error details.
       var registry = win.__noamBotRecaptchaRuntime;
@@ -366,6 +378,7 @@
       }
       var diagnosticState = null;
       return timed(function (requestState) {
+        requestState.checkRequest = checkRequest;
         diagnosticState = requestState;
         requestState.stage = "config";
         return getConfig(requestState).then(function (config) {
@@ -578,16 +591,31 @@
       var onChallenge = requestOptions && requestOptions.onChallenge;
       // A later UI edit cannot change the server-ticket-bound request.
       var captured = typeof onChallenge === "function" ? JSON.parse(JSON.stringify(payload)) : payload;
+      function checkRequestCurrent() {
+        if (requestOptions && requestOptions.signal && requestOptions.signal.aborted) {
+          throw makeError("הבקשה בוטלה. הבחירה שלכם נשמרה.", "BOT_REQUEST_CANCELLED");
+        }
+        if (requestOptions && typeof requestOptions.isCurrent === "function") {
+          var current = false;
+          try { current = requestOptions.isCurrent() === true; } catch (ignored) {}
+          if (!current) throw makeError("הנושא או הבחירה השתנו. הבחירה שלכם נשמרה.", "BOT_REQUEST_CONTEXT_CHANGED");
+        }
+      }
       function attempt() {
-        if (!enabled) { return send(endpoint, captured); }
-        return getVerification(action).then(function (verification) {
-          var body = Object.assign({}, captured, { botVerification: verification });
+        return Promise.resolve().then(function () {
+          checkRequestCurrent();
+          return enabled ? getVerification(action, false, checkRequestCurrent) : null;
+        }).then(function (verification) {
+          checkRequestCurrent();
           // Every attempt receives a fresh single-use verification token.
-          return send(endpoint, body);
+          return send(endpoint, enabled ? Object.assign({}, captured, { botVerification: verification }) : captured);
         });
       }
       return attempt().catch(function (error) {
-        if (!isTransientNetworkError(error)) { throw error; }
+        checkRequestCurrent();
+        if (!isTransientNetworkError(error) && !(enabled && error && error.status === 403 && error.code === "BOT_VERIFICATION_FAILED" && error.recaptchaBrowserError === true)) { throw error; }
+        // One shared automatic retry budget, whether the first failure was a
+        // transport failure or Google's exact browser-error assessment.
         return new Promise(function (resolve) {
           setTimeout(resolve, networkRetryDelay);
         }).then(attempt).catch(function (retryError) {
@@ -599,7 +627,8 @@
         if (!enabled || !error || error.status !== 403 || error.code !== "BOT_STEP_UP_REQUIRED" ||
             typeof onChallenge !== "function" || !validatedChallenge(error.challenge)) throw error;
         var challenge = error.challenge;
-        return Promise.resolve().then(function () { return onChallenge(challenge); }).then(function (token) {
+        return Promise.resolve().then(function () { checkRequestCurrent(); return onChallenge(challenge); }).then(function (token) {
+          checkRequestCurrent();
           if (!validatedChallenge(challenge)) throw makeError("אימות האבטחה פג. אפשר לבקש שוב.", "BOT_CHALLENGE_EXPIRED");
           if (typeof token !== "string" || !token || token.length > 8192) throw makeError(VERIFY_MESSAGE, "BOT_VERIFICATION_FAILED");
           // One human response, one same-payload POST. This branch never retries
@@ -622,7 +651,7 @@
   }
 
   return {
-    version: "20261030-stepup-error-detail",
+    version: "20261031-browser-error",
     create: create,
     isProtectionError: isProtectionError,
     isTransientNetworkError: isTransientNetworkError

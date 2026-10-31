@@ -11413,11 +11413,55 @@ function esc(s){
     if(!el.classList.contains('noam-exercise-pin')&&!el.classList.contains('noam-report-pin')){return;}
     focusQuestionBand(el);
   },true);
+  /* Phone tap on הבנתי / לא הבנתי while the message field has focus: the
+     synthesized mousedown blurs the field, the released focusout handler drops
+     .is-typing (and the keyboard closes), the question card returns and the
+     buttons move before mouseup, so the click lands on the bubble. In that
+     case act on touchend, while the button is still under the finger, and
+     cancel the synthesized mouse events so one tap fires once and never lands
+     on the moved layout. Without a focused field the native click is kept. */
+  var checkTouch=null,touchedCheck=null,touchedAt=0;
+  function checkIntent(check){return check.getAttribute('data-ramzi-check')==='understood'?'understood':'not-understood';}
+  function touchById(list,id){
+    for(var i=0;list&&i<list.length;i++){if(list[i].identifier===id){return list[i];}}
+    return null;
+  }
+  function touchMoved(tap,touch){return Math.abs(touch.clientX-tap.x)+Math.abs(touch.clientY-tap.y)>10;}
+  function editingField(){
+    var el=document.activeElement;
+    return !!el&&(el.isContentEditable||el.tagName==='TEXTAREA'||
+      (el.tagName==='INPUT'&&!/^(button|submit|reset|checkbox|radio|file|image|range|color)$/i.test(el.type||'')));
+  }
+  panelBody.addEventListener('touchstart',function(event){
+    var check=event.touches.length===1&&event.target&&event.target.closest&&event.target.closest('[data-ramzi-check]');
+    var touch=event.changedTouches[0];
+    checkTouch=check&&touch&&!check.disabled?{check:check,id:touch.identifier,x:touch.clientX,y:touch.clientY}:null;
+  },{passive:true});
+  panelBody.addEventListener('touchmove',function(event){
+    var touch=checkTouch&&touchById(event.changedTouches,checkTouch.id);
+    if(touch&&touchMoved(checkTouch,touch)){checkTouch=null;}
+  },{passive:true});
+  panelBody.addEventListener('touchcancel',function(){checkTouch=null;});
+  panelBody.addEventListener('contextmenu',function(){checkTouch=null;});
+  panelBody.addEventListener('touchend',function(event){
+    var tap=checkTouch,touch=tap&&touchById(event.changedTouches,tap.id);
+    checkTouch=null;
+    // A scroll makes touchend uncancelable; a native tap would not click then either.
+    if(!touch||!event.cancelable||touchMoved(tap,touch)||!tap.check.isConnected||tap.check.disabled||!editingField()){return;}
+    event.preventDefault();
+    touchedCheck=tap.check;touchedAt=Date.now();
+    // Close the keyboard as the native tap would.
+    document.activeElement.blur();
+    submitUnderstanding(checkIntent(tap.check));
+  },{passive:false});
   panelBody.addEventListener('click',function(event){
     var check=event.target&&event.target.closest&&event.target.closest('[data-ramzi-check]');
     if(check&&panelBody.contains(check)){
       event.preventDefault();
-      submitUnderstanding(check.getAttribute('data-ramzi-check')==='understood'?'understood':'not-understood');
+      // Keyboard and programmatic clicks (detail 0) always count; a pointer
+      // click on the same button right after a handled touch is that tap.
+      if(event.detail>0&&check===touchedCheck&&Date.now()-touchedAt<800){return;}
+      submitUnderstanding(checkIntent(check));
       return;
     }
     if(event.target&&event.target.closest&&event.target.closest('#noamNewThread')){
