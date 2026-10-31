@@ -3,7 +3,7 @@ export function wizardPrefillFromSearch(search) {
   const params = new URLSearchParams(String(search || "").replace(/^\?/, ""));
   const grade = params.get("grade") || "";
   const topic = params.get("topic") || "";
-  const level = params.get("level") || "";
+  const level = params.has("level") ? params.get("level") : "a";
   const minutes = Number(params.get("minutes"));
   const exerciseIds = String(params.get("pick") || "")
     .split(",")
