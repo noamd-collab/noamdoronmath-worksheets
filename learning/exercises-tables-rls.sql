@@ -20,6 +20,7 @@ begin;
 do $$
 declare
   t text;
+  columns text;
 begin
   foreach t in array array['exercises_middle','exercises_elementary'] loop
     if to_regclass('public.'||t) is null then
@@ -27,7 +28,14 @@ begin
       continue;
     end if;
     execute format('alter table public.%I enable row level security', t);
-    execute format('revoke all on public.%I from anon, authenticated', t);
+    execute format('revoke all on public.%I from public, anon, authenticated', t);
+    -- Table-level REVOKE does not remove earlier column-level grants. Reset
+    -- those too, including PUBLIC grants inherited by every visitor role.
+    select string_agg(quote_ident(a.attname), ',' order by a.attnum)
+      into columns from pg_attribute a
+      where a.attrelid=to_regclass('public.'||t)
+        and a.attnum>0 and not a.attisdropped;
+    execute format('revoke all (%s) on public.%I from public, anon, authenticated', columns, t);
   end loop;
 end $$;
 
@@ -56,10 +64,14 @@ begin
   execute 'create policy exercises_middle_public_read on public.exercises_middle for select to anon, authenticated using (true)';
 end $$;
 
--- Refuse to finish if a guest or learner could still read a solution or answer.
+-- Refuse to finish if effective privileges differ from the public projection.
+-- This also catches grants inherited through another role, which cannot be
+-- repaired by revoking a direct grant from anon/authenticated alone.
 do $$
 declare
   leak text;
+  role_name text;
+  t text;
 begin
   select string_agg(table_name||'.'||column_name, ', ')
     into leak
@@ -70,6 +82,24 @@ begin
       and (has_column_privilege('anon', format('public.%I', table_name), column_name, 'SELECT')
         or has_column_privilege('authenticated', format('public.%I', table_name), column_name, 'SELECT'));
   if leak is not null then raise exception 'Still readable with the publishable key: %', leak; end if;
+  foreach role_name in array array['anon','authenticated'] loop
+    select string_agg(table_name||'.'||column_name, ', ')
+      into leak from information_schema.columns
+      where table_schema='public'
+        and table_name in ('exercises_middle','exercises_elementary')
+        and (
+          has_column_privilege(role_name, format('public.%I',table_name), column_name, 'SELECT')
+            <> (table_name='exercises_middle' and column_name=any(array['id','subject','topic','question_text','theory','trick_identification','hints_ladder']))
+          or has_column_privilege(role_name, format('public.%I',table_name), column_name, 'INSERT,UPDATE,REFERENCES')
+        );
+    if leak is not null then raise exception 'Unexpected column privileges for %: %', role_name, leak; end if;
+    foreach t in array array['exercises_middle','exercises_elementary'] loop
+      if to_regclass('public.'||t) is null then continue; end if;
+      if has_table_privilege(role_name, format('public.%I',t), 'SELECT,INSERT,UPDATE,DELETE,TRUNCATE,REFERENCES,TRIGGER') then
+        raise exception 'Unexpected table privileges for % on %', role_name, t;
+      end if;
+    end loop;
+  end loop;
 end $$;
 
 commit;
