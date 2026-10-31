@@ -4573,6 +4573,7 @@ var activeGlossaryEntryId = null;
 var noamGlossaryPopover = null;
 var noamGlossaryTrigger = null;
 var noamGlossaryCloseTimer = null;
+var noamGlossaryPositionFrame = null;
 
 // Announce new events without making rebuilt conversation history a live log.
 function announceNoam(text){
@@ -5352,6 +5353,13 @@ function ensureNoamGlossaryPopover(){
     }
   },0);});
   document.body.appendChild(noamGlossaryPopover);
+  // Focus/scroll can move the fixed hint controls after the initial measurement.
+  window.addEventListener("scroll",scheduleNoamGlossaryPosition,true);
+  window.addEventListener("resize",scheduleNoamGlossaryPosition);
+  if(window.visualViewport){
+    window.visualViewport.addEventListener("resize",scheduleNoamGlossaryPosition);
+    window.visualViewport.addEventListener("scroll",scheduleNoamGlossaryPosition);
+  }
   return noamGlossaryPopover;
 }
 
@@ -5360,10 +5368,13 @@ function positionNoamGlossaryPopover(trigger){
   var rect=trigger.getBoundingClientRect();
   var viewportWidth=document.documentElement.clientWidth;
   var viewportHeight=window.innerHeight,bottom=viewportHeight-10;
-  // A term near the transcript footer must not cover the hint/composer controls.
-  var compose=typeof panelBody!=="undefined"&&panelBody.contains(trigger)&&panelBody.querySelector(".noam-compose");
-  var composeRect=compose&&compose.getBoundingClientRect();
-  if(composeRect&&composeRect.height>0&&composeRect.top>20){bottom=Math.min(bottom,composeRect.top-8);}
+  // The hint row can sit above the composer; protect its real visible bounds too.
+  if(typeof panelBody!=="undefined"&&panelBody.contains(trigger)){
+    panelBody.querySelectorAll("#noamHint,.exact-hint-row,.noam-compose").forEach(function(control){
+      var boundary=control.getBoundingClientRect();
+      if(boundary.width>0&&boundary.height>0&&boundary.top>20){bottom=Math.min(bottom,boundary.top-8);}
+    });
+  }
   var maxHeight=Math.max(1,bottom-10);
   noamGlossaryPopover.style.boxSizing="border-box";
   noamGlossaryPopover.style.maxHeight=maxHeight+"px";
@@ -5377,8 +5388,17 @@ function positionNoamGlossaryPopover(trigger){
   noamGlossaryPopover.style.top=Math.round(top)+"px";
 }
 
+function scheduleNoamGlossaryPosition(){
+  if(!noamGlossaryTrigger||!noamGlossaryPopover||noamGlossaryPopover.hidden||noamGlossaryPositionFrame!==null){return;}
+  noamGlossaryPositionFrame=requestAnimationFrame(function(){
+    noamGlossaryPositionFrame=null;
+    if(noamGlossaryTrigger&&noamGlossaryTrigger.isConnected){positionNoamGlossaryPopover(noamGlossaryTrigger);}
+  });
+}
+
 function hideNoamGlossaryPopover(){
   clearTimeout(noamGlossaryCloseTimer);
+  if(noamGlossaryPositionFrame!==null){cancelAnimationFrame(noamGlossaryPositionFrame);noamGlossaryPositionFrame=null;}
   if (noamGlossaryTrigger){noamGlossaryTrigger.setAttribute("aria-expanded","false");}
   noamGlossaryTrigger=null;
   if (noamGlossaryPopover){noamGlossaryPopover.hidden=true;}
@@ -5410,6 +5430,7 @@ function showNoamGlossaryPopover(trigger,entry,keyboardOpen){
   popover.hidden=false;
   positionNoamGlossaryPopover(trigger);
   if (keyboardOpen){more.focus({preventScroll:true});}
+  scheduleNoamGlossaryPosition();
 }
 
 function noamStripMarkdownEmphasis(text){

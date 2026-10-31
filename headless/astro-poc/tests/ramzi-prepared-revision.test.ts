@@ -74,14 +74,40 @@ for(const [label,relative] of [['public','../public/worksheet-viewer-noam.html']
   assert.equal((document.getElementById('noamHint') as any).disabled,true);assert.equal(document.getElementById('noamDraw')!.hidden,true);assert.equal(document.querySelectorAll('.noam-draw-action').length,0);assert.equal(f.calls.length,2);
  });
  it(label+': glossary flips above the word before covering hint controls, retains its explanation action and scrolls within short viewports',()=>{
-  for(const [viewportWidth,viewportHeight,composeTop,wordTop,popoverHeight] of [[1280,800,412,340,166],[390,600,320,290,166],[390,330,180,140,240]]){
-   const {document}=parseHTML('<html><body><section><span id="term">אפס</span><div class="noam-compose"><button id="noamHint">רמז שלישי</button></div></section><div id="popover"><button id="more">להסבר המלא</button></div></body></html>');
-   const panelBody=document.querySelector('section')!,trigger=document.getElementById('term')!,popover=document.getElementById('popover')!,compose=document.querySelector('.noam-compose')!;
+  // The live overlap was y355..522 over a y471..515 hint button, while the
+  // composer began lower at y530. Do not equate the composer and hint boundaries.
+  for(const [viewportWidth,viewportHeight,composeTop,hintTop,wordTop,popoverHeight,rowVisible] of [[1280,800,530,471,331,167,1],[390,700,520,410,310,166,0],[1280,800,412,412,340,166,1],[390,600,320,280,250,166,1],[390,330,180,140,100,240,1]]){
+   const {document}=parseHTML('<html><body><section><span id="term">אפס</span><div class="exact-hint-row"><button id="noamHint">רמז שלישי</button></div><div class="noam-compose"></div></section><div id="popover"><button id="more">להסבר המלא</button></div></body></html>');
+   const panelBody=document.querySelector('section')!,trigger=document.getElementById('term')!,popover=document.getElementById('popover')!,compose=document.querySelector('.noam-compose')!,hint=document.getElementById('noamHint')!,hintRow=document.querySelector('.exact-hint-row')!;
    Object.defineProperty(document.documentElement,'clientWidth',{value:viewportWidth});Object.defineProperty(popover,'offsetWidth',{value:280});Object.defineProperty(popover,'offsetHeight',{value:popoverHeight});
-   trigger.getBoundingClientRect=()=>({top:wordTop,bottom:wordTop+16,left:200,width:30} as any);compose.getBoundingClientRect=()=>({top:composeTop,height:100} as any);popover.hidden=false;
+   trigger.getBoundingClientRect=()=>({top:wordTop,bottom:wordTop+16,left:200,width:30} as any);compose.getBoundingClientRect=()=>({top:composeTop,height:100,width:300} as any);hint.getBoundingClientRect=()=>({top:hintTop,height:44,width:123} as any);hintRow.getBoundingClientRect=()=>({top:hintTop-6,height:rowVisible?56:0,width:rowVisible?300:0} as any);popover.hidden=false;
    let clicked=0;document.getElementById('more')!.addEventListener('click',()=>clicked++);
    const c={document,panelBody,window:{innerHeight:viewportHeight},noamGlossaryPopover:popover};runInNewContext(fn(source,'positionNoamGlossaryPopover'),c);(c as any).positionNoamGlossaryPopover(trigger);
-   const top=parseFloat(popover.style.top),height=Math.min(popoverHeight,parseFloat(popover.style.maxHeight));assert.ok(top+height<=composeTop-8);assert.ok(top>=10);assert.equal(popover.style.overflowY,'auto');assert.notEqual(popover.style.pointerEvents,'none');document.getElementById('more')!.click();assert.equal(clicked,1);
+   const top=parseFloat(popover.style.top),height=Math.min(popoverHeight,parseFloat(popover.style.maxHeight));assert.ok(top+height<=Math.min(composeTop,hintTop,rowVisible?hintTop-6:hintTop)-8);assert.ok(top>=10);if(hintTop===471){assert.equal(top,156,'live geometry must flip above the word instead of staying at y355');}assert.equal(popover.style.overflowY,'auto');assert.notEqual(popover.style.pointerEvents,'none');document.getElementById('more')!.click();assert.equal(clicked,1);
   }
  });
+ it(label+': open, focus and captured scroll remeasure moving controls before the next frame without polling or blocking explanation',()=>{
+  for(const viewportWidth of [1280,390]){
+   const {document}=parseHTML('<html><body><section><span id="term">אפס</span><div class="exact-hint-row"><button id="noamHint">רמז שלישי</button></div><div class="noam-compose"></div></section></body></html>');
+   const panelBody=document.querySelector('section')!,trigger=document.getElementById('term')!,hint=document.getElementById('noamHint')!,row=document.querySelector('.exact-hint-row')!,compose=document.querySelector('.noam-compose')!;
+   let composeTop=645,hintTop=654,wordTop=331,frameId=0,detail='';const frames=new Map<number,()=>void>(),events=new Map<string,Function>(),viewportEvents=new Map<string,Function>();
+   Object.defineProperty(document.documentElement,'clientWidth',{value:viewportWidth});
+   trigger.getBoundingClientRect=()=>({top:wordTop,bottom:wordTop+16,left:200,width:30} as any);compose.getBoundingClientRect=()=>({top:composeTop,width:300,height:100} as any);hint.getBoundingClientRect=()=>({top:hintTop,width:123,height:44} as any);row.getBoundingClientRect=()=>({top:hintTop-6,width:300,height:56} as any);
+   const c:any={document,panelBody,noamGlossaryPopover:null,noamGlossaryTrigger:null,noamGlossaryCloseTimer:null,noamGlossaryPositionFrame:null,
+    window:{innerHeight:800,addEventListener:(name:string,callback:Function,capture?:boolean)=>{if(name==='scroll')assert.equal(capture,true,'nested transcript scrolling must be captured');events.set(name,callback);},visualViewport:{addEventListener:(name:string,callback:Function)=>viewportEvents.set(name,callback)}},
+    requestAnimationFrame:(callback:()=>void)=>{frames.set(++frameId,callback);return frameId;},cancelAnimationFrame:(id:number)=>frames.delete(id),clearTimeout(){},setTimeout(){},noamFractionHtml:(value:string)=>value,renderNoamFractionMarkers(){},renderNoamGlossaryDetail:(id:string)=>detail=id};
+   runInNewContext(['ensureNoamGlossaryPopover','positionNoamGlossaryPopover','scheduleNoamGlossaryPosition','hideNoamGlossaryPopover','scheduleNoamGlossaryClose','showNoamGlossaryPopover'].map(name=>fn(source,name)).join('\n'),c);
+   const popover=c.ensureNoamGlossaryPopover(),more=document.getElementById('noamGlossaryMore')!;Object.defineProperty(popover,'offsetWidth',{value:280});Object.defineProperty(popover,'offsetHeight',{value:167});
+   const flush=()=>{const queued=[...frames.values()];frames.clear();queued.forEach(callback=>callback());};
+   const clearOfControls=()=>assert.ok(parseFloat(popover.style.top)+Math.min(167,parseFloat(popover.style.maxHeight))<=Math.min(composeTop,hintTop-6)-8);
+   more.focus=()=>{composeTop=462.1875;hintTop=471.1875;wordTop=346.39;};
+   c.showNoamGlossaryPopover(trigger,{id:'zero',term:'אפס',short:'נקודת ייחוס'},true);
+   assert.equal(popover.style.top,'355px','initial layout reproduces the stale live placement');assert.equal(popover.style.maxHeight,'627px');assert.equal(frames.size,1);
+   flush();assert.equal(popover.style.top,'171px');clearOfControls();assert.equal(frames.size,0,'no animation-frame polling');
+   composeTop=400;hintTop=409;wordTop=280;events.get('scroll')!({target:panelBody});events.get('scroll')!({target:panelBody});assert.equal(frames.size,1,'scroll events coalesce');flush();clearOfControls();assert.equal(popover.style.top,'105px');
+   composeTop=240;hintTop=249;wordTop=190;viewportEvents.get('resize')!();flush();clearOfControls();assert.ok(parseFloat(popover.style.left)>=12);assert.ok(parseFloat(popover.style.left)+280<=viewportWidth-12);
+   events.get('scroll')!();assert.equal(frames.size,1);more.click();assert.equal(detail,'zero');assert.equal(popover.hidden,true);assert.equal(frames.size,0,'closing cancels pending reposition');assert.notEqual(popover.style.pointerEvents,'none');
+  }
+ });
+
 }
