@@ -163,7 +163,7 @@ it('source analysis fails safely when exact selected item or source identity no 
   assert.equal(await pending, cached);
 });
 
-it('actual askNoam hint-button prompt uses the displayed hint scope for automatic source focus', async () => {
+it('an additional question preserves source enrichment and an explicit drawing request focuses the original source', async () => {
   const f = fixture(); f.thread.messages.length = 0; f.thread.hintIndex = 0;
   const cached = { diagram_description: 'OCR original' }; let solveAnalysis: any;
   Object.assign(f.c, {
@@ -177,13 +177,20 @@ it('actual askNoam hint-button prompt uses the displayed hint scope for automati
     noamVisualAnswer: (_student: string, answer: string) => answer, setTimeout: (callback: any, ms: number) => { if (ms < 25000) callback(); return 0; }
   });
   runInNewContext(fn('askNoam'), f.c);
-  f.c.askNoam('hint', 'תן לי רמז אחד בלבד. אל תגלה את התשובה הסופית, ואל תבצע את הצעד במקומי.');
+  const question = 'איך יודעים איזו מהנקודות נמצאת על ציר y?';
+  f.c.askNoam('free_question', question);
   for (let i = 0; i < 60; i++) await Promise.resolve();
-  assert.equal(f.thread.messages[0].text, 'אפשר רמז 1?');
+  assert.equal(f.thread.messages[0].text, question);
   const delivered = f.thread.messages[1];
   assert.equal(delivered.text, opts.answer);
+  assert.equal(delivered.visual, null, 'an ordinary additional question does not automatically attach a drawing');
+  assert.equal(f.thread.hintIndex, 0, 'additional questions do not consume prepared hints');
+  await f.c.noamRequestSourceFirst(f.exercise, f.thread, delivered, {
+    answer: delivered.text, helpKind: 'free_question', studentMessage: 'סמן את הנקודה (0,-9) ואת ציר y'
+  });
   assert.equal(delivered.visual.presentation, 'source-focus');
-  assert.equal(delivered.visual.options.studentMessage, 'אפשר רמז 1?');
+  assert.equal(delivered.visual.options.studentMessage, 'סמן את הנקודה (0,-9) ואת ציר y');
+  assert.equal(f.fallback.length, 0, 'the explicit source drawing needs no protected generation');
   assert.match(solveAnalysis.diagram_description, /הקשר חזותי מאומת/);
   assert.equal(cached.diagram_description, 'OCR original');
 });
@@ -204,7 +211,7 @@ it('student attachment solve skips worksheet source enrichment and automatic sou
     noamVisualAnswer: (_student: string, answer: string) => answer, setTimeout: (callback: any, ms: number) => { if (ms < 25000) callback(); return 0; }
   });
   runInNewContext(fn('askNoam'), f.c);
-  f.c.askNoam('hint', 'תן לי רמז אחד בלבד.');
+  f.c.askNoam('free_question', 'אפשר לבדוק איך השתמשתי בנתונים שבתמונה שצירפתי?');
   for (let i = 0; i < 60; i++) await Promise.resolve();
   assert.equal(solveAnalysis, attached); assert.equal(f.calls.length, 0);
   assert.equal(f.thread.messages[1].text, opts.answer); assert.equal(f.thread.messages[1].visual, null);

@@ -178,7 +178,8 @@
   };
 
   function get(exerciseId){
-    return guides[String(exerciseId||"")]||null;
+    var id=String(exerciseId||"");
+    return Object.prototype.hasOwnProperty.call(guides,id)?guides[id]:null;
   }
 
   function asksWhichAngle(text){
@@ -280,8 +281,10 @@
     "זה מובן, בואו נפרק את הצעד."
   ];
   var CLOSING_TEXT="יופי, מעולה שזה ברור.\nאפשר לעבור לסעיף הבא.";
+  // Noam, 2026-10-30: הבנתי never opens the next hint or asks the AI for the
+  // next step. The student keeps working; «רמז» opens the next hint on request.
+  var UNDERSTOOD_TEXT="יופי, מעולה שזה ברור.\nעכשיו נסו להמשיך לבד. אם תיתקעו, אפשר ללחוץ על «רמז».";
   var AI_SIMPLER="לא הבנתי. תסבירו מחדש, יותר בפשטות ובצעדים קטנים, בלי לחזור על אותן מילים. סיימו בשאלה קצרה אחת.";
-  var AI_NEXT="הבנתי. תנו רק את הצעד הבא, בלי לחזור על מה שכבר נאמר. סיימו בשאלה קצרה אחת.";
   var AI_ANGLE="לא הבנתי את הצעד גם אחרי הפירוק. תנו זווית אחרת, בפשטות ובצעדים קטנים, בלי לחזור על אותו ניסוח. סיימו בשאלה קצרה.";
   var AI_DOWN="אי אפשר להביא עכשיו הסבר חדש. אפשר ללחוץ על «רמז», או לקרוא שוב את הצעד לאט.";
   var AI_DOWN_NEXT="אי אפשר להביא עכשיו את הצעד הבא. אפשר ללחוץ על «רמז», או לעבור לסעיף הבא.";
@@ -425,23 +428,9 @@
   function applyReply(state,guide,intent){
     var hints=guide.hints||[];
     if(intent==="understood"){
-      if(state.closed||state.factsStarted||state.stepShown){
-        state.closed=true;
-        return checkReply(CLOSING_TEXT,"");
-      }
-      var next=state.cursor+1;
-      if(next>=0&&next<hints.length){
-        state.cursor=next;
-        rememberStep(state,hints[next]);
-        return checkReply(UNDERSTOOD_LEAD+"\n"+hints[next],hintKey(guide,next));
-      }
-      if(guide.nextStep){
-        state.stepShown=true;
-        rememberStep(state,guide.nextStep);
-        return checkReply(UNDERSTOOD_LEAD+"\n"+guide.nextStep,"");
-      }
-      state.closed=true;
-      return checkReply(CLOSING_TEXT,"");
+      // No state change: a later לא הבנתי still walks the verified sub-steps.
+      var done=state.closed||state.factsStarted||state.stepShown||state.cursor>=hints.length-1;
+      return checkReply(done?CLOSING_TEXT:UNDERSTOOD_TEXT,"");
     }
     if(state.closed){return null;}
     if(state.cursor<hints.length-1){
@@ -491,21 +480,27 @@
   function planUnderstanding(exerciseId,intent,settings){
     var display=intent==="understood"?"הבנתי":"לא הבנתי";
     var guide=get(exerciseId);
+    if(intent==="understood"){
+      // הבנתי is answered in the thread itself: no hint, no model call, no composer.
+      pendingNote="";
+      var text=guide
+        ?applyReply(catchUpState(cloneState(understandingFor(exerciseId)),guide,settings),guide,intent).text
+        :(hintsDone(settings)?CLOSING_TEXT:UNDERSTOOD_TEXT);
+      return {action:"say",display:display,text:text};
+    }
     if(!guide){
-      return intent==="understood"
-        ?{action:"ai",prompt:AI_NEXT,display:display,fallback:offlineUnderstanding(intent,settings)}
-        :{action:"ai",prompt:AI_SIMPLER,display:display,fallback:offlineUnderstanding(intent,settings)};
+      return {action:"ai",prompt:AI_SIMPLER,display:display,fallback:offlineUnderstanding(intent,settings)};
     }
     var sim=catchUpState(cloneState(understandingFor(exerciseId)),guide,settings);
     var hints=guide.hints||[];
     if(!sim.closed&&!sim.factsStarted&&!sim.stepShown&&sim.cursor<hints.length-1){
-      return {action:"hint",hintsOpened:Math.min(3,sim.cursor+2),lead:intent==="understood",display:display};
+      return {action:"hint",hintsOpened:Math.min(3,sim.cursor+2),lead:false,display:display};
     }
     var reply=applyReply(sim,guide,intent);
     if(!reply){
       return {
         action:"ai",
-        prompt:intent==="understood"?AI_NEXT:(sim.closed?anglePrompt(sim.lastStep):AI_ANGLE),
+        prompt:sim.closed?anglePrompt(sim.lastStep):AI_ANGLE,
         display:display,
         fallback:offlineUnderstanding(intent,settings)
       };
@@ -521,7 +516,7 @@
     var message=String(settings.studentMessage||"");
     var visual=resolveVisual(exerciseId,settings);
     var intent=understandingIntent(message);
-    if(intent){return replyToUnderstanding(guide,exerciseId,intent,settings);}
+    if(intent){pendingNote="";return replyToUnderstanding(guide,exerciseId,intent,settings);}
     if(helpKind==="hint"){
       var hintIndex=Math.max(0,Math.min(2,Number(settings.hintIndex)||0));
       catchUp(exerciseId,guide,{helpKind:"hint",hintIndex:hintIndex,progress:hintIndex+1});
@@ -531,7 +526,7 @@
       rememberStep(understandingFor(exerciseId),body);
       if(note==="understood"){body=UNDERSTOOD_LEAD+"\n"+body;}
       if(note==="not-understood"){body=retryText(body,understandingFor(exerciseId));}
-      return {text:body,visual:"focus",focusKey:visual&&visual.key||"",source:"didactic-guide"};
+      return {text:body,visual:guide.visuals?"focus":null,focusKey:visual&&visual.key||"",source:"didactic-guide"};
     }
     pendingNote="";
     if(asksToEnlarge(message)){
@@ -576,6 +571,7 @@
     offlineUnderstanding:offlineUnderstanding,
     fallbackUnderstanding:fallbackUnderstanding,
     understoodLead:UNDERSTOOD_LEAD,
+    understoodText:UNDERSTOOD_TEXT,
     notUnderstoodLead:NOT_UNDERSTOOD_LEAD,
     notUnderstoodLeads:[NOT_UNDERSTOOD_LEAD].concat(NOT_UNDERSTOOD_LATER),
     openingFor:openingFor,

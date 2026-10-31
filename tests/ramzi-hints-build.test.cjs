@@ -1,0 +1,213 @@
+"use strict";
+const test=require("node:test");
+const assert=require("node:assert/strict");
+const fs=require("node:fs");
+const path=require("node:path");
+const build=require("../tools/ramzi-hints/build-ramzi-hints.cjs");
+
+const RULE="------------------------------------------------------------";
+function block(id,meta,exercise){
+  return [
+    "סעיף א ("+id+") ["+meta+"]",
+    "* נוסח התרגיל: "+exercise,
+    "* פתרון מלא: סוד הפתרון "+id,
+    "* תשובה סופית: סוד התשובה "+id,
+    "* רמז 1 (כיוון מחשבה): כיוון ל-"+id+" עם 'גרש'",
+    "* רמז 2 (ביצוע פעולות): פעולה ל-"+id,
+    "* רמז 3 (צעד לפני פתרון): צעד ל-"+id,
+    RULE
+  ].join("\n");
+}
+
+const bank=[
+  "################################################################################",
+  "נושא 1: מספרים מכוונים — ישר המספרים וערך מוחלט",
+  "################################################################################",
+  "",
+  block("G7-T01-A-Q01א","רמה A, שאלה 1","צוללן ירד לעומק"),
+  block("G7-T01-C-Q01א","רמה C, שאלה 1","מרחק 6 מאפס"),
+  block("G8-T04-A-Q01א","נושא 4: יחס ופרופורציה, רמה A","יחס בנים לבנות"),
+  block("G9-T16-A-Q01א","נושא 16: חוקי חזקות, רמה A","פשטו חזקות"),
+  block("G7-T16-A-Q01א","רמה A, שאלה 1","זוויות שווה-צלעות"),
+  block("G8-T04-A-Q01א","נושא 4: יחס ופרופורציה, רמה A","יחס בנים לבנות"),
+  "סעיף א (G8-T06-A-Q01א) [נושא 6: אחוזים — ייצוגים, רמה A]"
+].join("\n");
+
+const site=build.loadSite(path.join(__dirname,".."));
+
+test("the parser keeps hints and exercise wording and drops a truncated or repeated block",()=>{
+  const parsed=build.parseBank(bank);
+  assert.equal(parsed.entries.length,5);
+  assert.deepEqual(parsed.incomplete,["G8-T06-A-Q01א"]);
+  assert.deepEqual(parsed.conflicts,[]);
+  const first=parsed.entries[0];
+  assert.equal(first.topic,"מספרים מכוונים — ישר המספרים וערך מוחלט");
+  assert.equal(first.exerciseText,"צוללן ירד לעומק");
+  assert.deepEqual(first.hints,["כיוון ל-G7-T01-A-Q01א עם 'גרש'","פעולה ל-G7-T01-A-Q01א","צעד ל-G7-T01-A-Q01א"]);
+});
+
+test("bank IDs become live viewer IDs: C is מצוינות and grade 8/9 numbers are topic IDs",()=>{
+  const {rows,rejected}=build.normalize(site,build.parseBank(bank));
+  const ids=Object.fromEntries(rows.map(row=>[row.source_id,row.exercise_id]));
+  assert.equal(ids["G7-T01-A-Q01א"],"G7-T01-A-Q01א");
+  assert.equal(ids["G7-T01-C-Q01א"],"G7-T01-E-Q01א");
+  assert.equal(ids["G8-T04-A-Q01א"],"G8-T24-A-Q01א","יחס ופרופורציה is G8-T24 on the site, not אי־שוויון");
+  assert.equal(ids["G9-T16-A-Q01א"],"G9-T01-A-Q01א","חוקי חזקות is G9-T01 on the site");
+  assert.deepEqual(rejected.map(item=>item.sourceId),["G7-T16-A-Q01א"],"the single-level worksheet has no level A part");
+  assert.ok(rows.every(row=>row.status==="review"));
+});
+
+test("no solution or final answer leaves the builder",()=>{
+  const {rows}=build.normalize(site,build.parseBank(bank));
+  const sql=build.toSql(build.bindRows(site,rows).rows);
+  assert.doesNotMatch(sql,/סוד הפתרון|סוד התשובה/);
+  assert.match(sql,/עם ''גרש''/,"quotes are escaped");
+  assert.match(sql,/^on conflict \(exercise_id\) do update set/m);
+});
+
+test("numeric slash fractions become bar fractions that Ramzi renders with KaTeX",()=>{
+  assert.equal(build.barFractions("השבר 1/4."),"השבר $\\frac{1}{4}$.");
+  assert.equal(build.barFractions("(3/2 כפול ו־28/80;"),"($\\frac{3}{2}$ כפול ו־$\\frac{28}{80}$;");
+  ["2.5/3","1/2.5","km/h","$\\frac{1}{4}$"].forEach(text=>assert.equal(build.barFractions(text),text));
+  const rows=JSON.parse(fs.readFileSync(path.join(__dirname,"..","learning/ramzi-hints.json"),"utf8"));
+  rows.forEach(row=>row.hints.forEach(hint=>assert.doesNotMatch(hint,/\d\/\d/,row.exercise_id)));
+});
+
+test("only a verified review shows a hint, and a verified move claims its part first",()=>{
+  const {rows}=build.normalize(site,build.parseBank(bank));
+  const live=build.liveExercises(site);
+  const applied=build.applyReviews(rows,[
+    {exercise_id:"G7-T01-A-Q01א",verified:true,target_exercise_id:"G7-T01-E-Q01א",note:"מתאים לסעיף אחר"},
+    {exercise_id:"G7-T01-E-Q01א",verified:false,note:"לא מתאים"},
+    {exercise_id:"G8-T24-A-Q01א",verified:true,target_exercise_id:"G7-T02-A-Q01א",note:"דף אחר"},
+    {exercise_id:"G9-T01-A-Q01א",verified:true,note:"מתאים"}
+  ],live);
+  const byId=Object.fromEntries(applied.rows.map(row=>[row.exercise_id,row]));
+  assert.equal(byId["G7-T01-E-Q01א"].source_id,"G7-T01-A-Q01א");
+  assert.equal(byId["G7-T01-E-Q01א"].status,"verified");
+  assert.deepEqual(applied.displaced.map(item=>item.sourceId),["G7-T01-C-Q01א"]);
+  assert.equal(byId["G8-T24-A-Q01א"].status,"review","a move to another worksheet is refused");
+  assert.equal(byId["G9-T01-A-Q01א"].status,"verified");
+});
+
+test("published rows rebuild without the bank, and kept rows only fill parts the input lacks",()=>{
+  const live=build.liveExercises(site);
+  const row=(id,extra)=>Object.assign({exercise_id:id,status:"verified",source:"s",source_id:id,topic:"t",source_exercise_text:"x",hints:["א","ב","ג"],review_note:"n"},extra);
+  const loaded=build.loadRows([
+    row("G7-T01-A-Q01א"),
+    row("G7-T01-C-Q01א"),
+    row("G7-T16-A-Q01א"),
+    row("G7-T01-A-Q01ב",{hints:["א","ב"]}),
+    row("G7-T01-B-Q01א",{status:"live"})
+  ],live);
+  assert.deepEqual(loaded.rows.map(item=>[item.exercise_id,item.status]),[["G7-T01-A-Q01א","verified"],["G7-T01-B-Q01א","review"]]);
+  assert.deepEqual(loaded.rejected.map(item=>item.exerciseId),["G7-T01-C-Q01א","G7-T16-A-Q01א","G7-T01-A-Q01ב"]);
+  const merged=build.mergeRows(loaded.rows,build.loadRows([row("G7-T01-A-Q01א",{hints:["x","y","z"]}),row("G7-T01-A-Q34א")],live).rows);
+  assert.equal(merged.kept,1);
+  assert.deepEqual(merged.rows.map(item=>item.exercise_id),["G7-T01-A-Q01א","G7-T01-A-Q34א","G7-T01-B-Q01א"]);
+  assert.equal(merged.rows[0].hints[0],"א","the input row wins over a kept row");
+});
+
+test("special worksheets read the same native package as the viewer",()=>{
+  const viewer=fs.readFileSync(path.join(__dirname,"..","headless/astro-poc/public/noam-native-visual.js"),"utf8");
+  const aliases=JSON.parse(viewer.match(/PACKAGE_ALIASES = (\{[^}]+\})/)[1]);
+  const prefixes=Object.values(aliases).filter(prefix=>prefix!=="G9-T32");
+  assert.ok(prefixes.length>=9);
+  for(const prefix of prefixes){
+    const exercise=build.nativeExercise(path.join(__dirname,".."),prefix+"-A-Q01א");
+    assert.ok(exercise&&exercise.parts.some(part=>part.selected),prefix+" resolves to its native package");
+  }
+  assert.match(build.nativeExercise(path.join(__dirname,".."),"G8-T64-A-Q01א").stem,/ABD/);
+});
+
+test("the committed seed matches the committed public rows and hides unreviewed hints",()=>{
+  const root=path.join(__dirname,"..");
+  const rows=JSON.parse(fs.readFileSync(path.join(root,"learning/ramzi-hints.json"),"utf8"));
+  const sql=fs.readFileSync(path.join(root,"learning/ramzi-hints-seed.sql"),"utf8");
+  const live=build.liveExercises(site);
+  const seen=new Set();
+  for(const row of rows){
+    assert.match(row.exercise_id,build.SITE_ID_RE);
+    assert.ok(live.has(row.exercise_id),row.exercise_id+" is a live exercise");
+    assert.ok(!seen.has(row.exercise_id));seen.add(row.exercise_id);
+    assert.ok(["verified","review"].includes(row.status));
+    assert.match(row.source_pdf_hash,/^[a-f0-9]{32}$/);
+    assert.ok(row.source_native_sha256===null||/^[a-f0-9]{64}$/.test(row.source_native_sha256));
+    assert.equal(row.hints.length,3);
+    row.hints.forEach(hint=>assert.ok(hint.length>0&&hint.length<=build.MAX_HINT));
+    assert.ok(sql.includes("('"+row.exercise_id+"',"),row.exercise_id+" is in the seed");
+  }
+  assert.equal(sql.match(/^\('G\d-T\d{2}-[ABE]-Q\d{2}/gm).length,rows.length);
+  assert.doesNotMatch(sql,/פתרון מלא:|תשובה סופית:/);
+  assert.equal(sql,build.toSql(rows),"seed round-trips every hint and source binding exactly");
+  const loaded=build.loadRows(rows,live);
+  assert.deepEqual(loaded.rejected,[]);
+  assert.deepEqual(build.publicRows(build.bindRows(site,loaded.rows).rows),rows);
+  assert.equal(rows.length,501);
+  assert.equal(rows.filter(row=>row.status==="verified").length,416);
+  assert.equal(rows.filter(row=>row.status==="review").length,85);
+});
+
+test("the public key reads only verified hints and the two safe source bindings",()=>{
+  const root=path.join(__dirname,"..");
+  const schema=fs.readFileSync(path.join(root,"learning/ramzi-hints-schema.sql"),"utf8");
+  const client=fs.readFileSync(path.join(root,"headless/astro-poc/public/noam-curated-hints.js"),"utf8");
+  const grants=schema.match(/^grant .*$/gm);
+  assert.deepEqual(grants,["grant select (exercise_id,hint_1,hint_2,hint_3,source_pdf_hash,source_native_sha256) on public.noam_ramzi_hints to anon, authenticated;",
+    "grant select,insert,update,delete on public.noam_ramzi_hints to service_role;"]);
+  assert.match(client,/select=exercise_id,hint_1,hint_2,hint_3,source_pdf_hash,source_native_sha256"/);
+  assert.match(schema,/enable row level security/);
+  assert.match(schema,/revoke all on public\.noam_ramzi_hints from public, anon, authenticated/);
+  assert.match(schema,/for select to anon, authenticated using \(status='verified'\)/);
+  assert.match(schema,/source_pdf_hash text not null check/);
+  assert.match(schema,/source_native_sha256 text check/);
+});
+
+test("current catalog bindings disambiguate reused T32 IDs by canonical prefix, topic and selected text",()=>{
+  const rows=JSON.parse(fs.readFileSync(path.join(__dirname,"..","learning/ramzi-hints.json"),"utf8"));
+  const expected={A:"1484d3da89c246e0bf6f7c6ccf7fd6f5",B:"6bfa684eb9b644f684bea0cde1c5c9a1",E:"9e98f366feb74e129b7c9d1f1d33285d"};
+  const originals=rows.filter(row=>/^G9-T32-[ABE]-Q01א$/.test(row.exercise_id)).map(row=>{
+    const copy={...row};delete copy.source_pdf_hash;delete copy.source_native_sha256;return copy;
+  });
+  const bound=build.bindRows(site,originals);
+  assert.equal(bound.rows.length,3);
+  bound.rows.forEach(row=>assert.equal(row.source_pdf_hash,expected[row.exercise_id.split("-")[2]]));
+  assert.ok(bound.resolutions.every(row=>row.reason==="canonical_catalog_prefix_topic_and_selected_text"));
+  assert.throws(()=>build.bindRows(site,[{...originals[0],source_exercise_text:"משימה אחרת"}]),/Unresolved/);
+  assert.throws(()=>build.bindRows(site,[{...originals[0],topic:"נושא אחר"}]),/Unresolved/);
+});
+
+test("source binding never silently refreshes a stale review or guesses an ambiguous revision",()=>{
+  const id="G9-T39-E-Q03ב",pdf="a".repeat(32),native="b".repeat(64);
+  const row={exercise_id:id,topic:"הטרפז",source_exercise_text:"הוכיחו את הטענה.",hints:["א","ב","ג"]};
+  const level=(p=pdf,n=native)=>({pdfId:p,source_pdf_hash:p,source_native_sha256:n,
+    exercises:new Set([id]),exerciseTexts:new Map([[id,"הוכיחו את הטענה."]])});
+  const catalog=[{prefix:"G9-T39",title:"הטרפז",levels:{E:level()}}];
+  const correct=build.bindRows(catalog,[row]).rows[0];
+  assert.equal(correct.source_pdf_hash,pdf);assert.equal(correct.source_native_sha256,native);
+  assert.deepEqual(build.bindRows(catalog,[correct]).rows,[correct]);
+  for(const change of [{source_pdf_hash:"c".repeat(32)},{source_pdf_hash:null},
+    {source_native_sha256:"c".repeat(64)},{source_native_sha256:null},{source_native_sha256:"bad"}]){
+    assert.throws(()=>build.bindRows(catalog,[{...row,...change}]),/Stale or conflicting/);
+  }
+  assert.throws(()=>build.bindRows([],[row]),/Unresolved/);
+  const duplicate={prefix:"G9-T39",title:"הטרפז",levels:{E:level()}};
+  assert.equal(build.bindRows([...catalog,duplicate],[row]).rows[0].source_pdf_hash,pdf,"identical PDF/native pairs deduplicate");
+  assert.throws(()=>build.bindRows([...catalog,{...duplicate,levels:{E:level("c".repeat(32))}}],[row]),/Unresolved/);
+  assert.throws(()=>build.bindRows([{...catalog[0],levels:{E:{...level(),pdfId:"d".repeat(32)}}}],[row]),/Invalid current/);
+  assert.throws(()=>build.bindRows([{...catalog[0],levels:{E:level(pdf,"malformed")}}],[row]),/Invalid current/);
+  assert.equal(build.bindRows([{...catalog[0],levels:{E:level(pdf,null)}}],[row]).rows[0].source_native_sha256,null);
+  assert.throws(()=>build.toSql([row]),/requires validated source bindings/);
+});
+
+test("the newly approved proof row contains only student-facing hints and a current revision binding",()=>{
+  const rows=JSON.parse(fs.readFileSync(path.join(__dirname,"..","learning/ramzi-hints.json"),"utf8"));
+  const row=rows.find(row=>row.exercise_id==="G9-T39-E-Q03ב");
+  assert.equal(row.status,"verified");assert.equal(row.source,"ramzi-reviewed-20261031");
+  assert.equal(row.source_pdf_hash,"e020549ff713406fb0c0f07443b09b18");
+  assert.equal(row.source_native_sha256,"0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201");
+  assert.match(row.hints[1],/^אם הוכחתם/);
+  assert.match(row.hints[2],/אם נימקתם/);
+  assert.doesNotMatch(row.hints.join(" "),/SAS|צלע.זווית.צלע|expectedStudentStep|internalMathematicalOracle|AD=BC/);
+  assert.deepEqual(Object.keys(row).sort(),["exercise_id","hints","review_note","source","source_exercise_text","source_id","source_native_sha256","source_pdf_hash","status","topic"].sort());
+});

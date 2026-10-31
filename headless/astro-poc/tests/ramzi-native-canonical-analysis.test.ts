@@ -13,7 +13,7 @@ function fn(v:string,n:string){const s=v.slice(v.indexOf('function '+n+'('));ass
 async function settled(c:any){
  const deadline=Date.now()+5000;
  while(c.busy&&Date.now()<deadline)await new Promise(r=>setTimeout(r,5));
- assert.equal(c.busy,false,'the hint lifecycle must finish before checking its requests');
+ assert.equal(c.busy,false,'the additional-question lifecycle must finish before checking its requests');
 }
 const CASES:any={
  W15A:{pdf:'1447b1c93a0f481abbd1eccbef8a7551',item:'q20d'},
@@ -52,7 +52,7 @@ function fixture(v:string,key:string,edit?:(data:any,manifest:any,exercise:any)=
  runInNewContext(v.slice(v.indexOf('var SOLVER_MESSAGE_MAX ='),v.indexOf('var GRADE_NAME ='))+'\n'+fn(v,'noamDiagramSourceIdentity')+'\n'+fn(v,'noamManifestOcrUnreliable')+'\n'+fn(v,'noamExerciseSectionLabel')+'\n'+fn(v,'localVisualExerciseSource')+'\n'+helpers+'\n'+v.slice(v.indexOf('function noamGeometryContext(text){'),v.indexOf('function postJson(')),c);
  return {c,exercise,manifest,data,calls,attachments,thread};
 }
-function wireHint(f:any,analysis:any=contradictory()){
+function wireAdditionalQuestion(f:any,analysis:any=contradictory()){
  const requests:any[]=[],counter={analysis:0};
  Object.assign(f.c,{busy:false,panelBody:f.c.document.body,noamDrafts:{},MIN_WAIT:0,API:'/model',g:7,lv:'a',LEVEL:{a:'רמה א׳'},ttl:'נושא',
   setNoamBusy:(b:boolean)=>{f.c.busy=b;},restoreNoamChatFocus(){},exerciseLabel:()=> 'סעיף',noamDidacticGuide:()=>null,noamDidacticPrompt:()=>'',noamDidacticResponse:()=>null,
@@ -62,15 +62,13 @@ function wireHint(f:any,analysis:any=contradictory()){
   noamVisualAnswer:(_:string,s:string)=>s,noamAttachSourceHint(){},setTimeout:(cb:any,ms:number)=>{if(ms<25000)cb();return 0;}});
  return {requests,counter};
 }
-// Invoke the exact on-click instruction, not the shorter visible user bubble.
-function actualHintInstruction(v:string){
- const m=v.match(/hintButton\.addEventListener\("click",function\(\)\{ askNoam\("hint",("[^"\n]+")\);/);
- assert.ok(m,'actual hint button instruction');return JSON.parse(m[1]);
-}
+// The model path is for additional student questions; standard hint buttons
+// now use the approved Supabase catalog without OCR or generation.
+const additionalQuestion='אפשר להסביר איך משתמשים בנתונים המודפסים בסעיף הזה?';
 // Exercise the real request, canonical loader, original/photo reader, image
 // compositor and cleanup. Only canvas encoding and HTTP transport are stubbed.
 function wireSnapshotReader(f:any,v:string){
- const {requests}=wireHint(f);
+ const {requests}=wireAdditionalQuestion(f);
  Object.assign(f.c,{noamAttachments:{[f.exercise.id]:f.attachments},renderNoamAttachments(){},
   cropExerciseCanvas:async()=>({marker:'original-question'}),
   stackCanvases:(canvases:any[])=>({canvases}),encodeCropCanvas:(stack:any)=>JSON.stringify(stack.canvases.map((c:any)=>c.marker)),
@@ -94,15 +92,15 @@ function assertCanonicalShape(a:any,exercise:any){
 for(const relative of ['../public/worksheet-viewer-noam.html','../../../worksheet-viewer-noam.html']){
  const v=readFileSync(new URL(relative,import.meta.url),'utf8'),name=relative.includes('public')?'public':'root';
 
- it(name+': original hint sends false using the literal instruction from the real button',async()=>{
+ it(name+': additional question without a photo sends false and the student’s own message',async()=>{
   const f=fixture(v,'W11'),r=wireSnapshotReader(f,v);
-  f.c.askNoam('hint',actualHintInstruction(v));await settled(f.c);
+  f.c.askNoam('free_question',additionalQuestion);await settled(f.c);
   assert.equal(r.requests.length,1);assert.equal(r.requests[0].url,'/model/noamImageSolve');
   assert.equal(r.requests[0].payload.hasStudentAttachments,false);
   assert.equal(r.requests[0].payload.selectedPart,f.exercise.part);
   assert.deepEqual(clone(r.requests[0].payload.sourceIdentity),{nativeSha256:f.manifest.nativeExportSha256,questionId:f.exercise.nativeQuestionId,itemId:f.exercise.nativeItemId});
   assert.equal(r.requests[0].payload.imageAnalysis.content_type,'native_source_canonical');
-  assert.ok(r.requests[0].payload.studentMessage.includes(actualHintInstruction(v)));
+  assert.ok(r.requests[0].payload.studentMessage.includes(additionalQuestion));
  });
 
  it(name+': photos removed/replaced/added during crop cannot change the sent image or its flag',async()=>{
@@ -111,7 +109,7 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
    f.attachments.push(a);const r=wireSnapshotReader(f,v);let finishCrop:any;
    f.c.cropExerciseCanvas=()=>new Promise(resolve=>{finishCrop=resolve;});
    let sourceLoads=0;f.c.noamLoadSourceVisual=async()=>{sourceLoads++;throw Error('photo request must bypass canonical');};
-   f.c.askNoam('hint',actualHintInstruction(v));await Promise.resolve();assert.equal(typeof finishCrop,'function');
+   f.c.askNoam('free_question',additionalQuestion);await Promise.resolve();assert.equal(typeof finishCrop,'function');
    if(change==='remove')f.attachments.splice(0);
    if(change==='replace')f.attachments.splice(0,1,b);
    if(change==='add')f.attachments.push(b);
@@ -134,7 +132,7 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
   const f=fixture(v,'W11'),r=wireSnapshotReader(f,v),load=f.c.noamLoadSourceVisual;
   let resume:any;const gate=new Promise(resolve=>{resume=resolve;});
   f.c.noamLoadSourceVisual=async(e:any)=>{await gate;return load(e);};
-  f.c.askNoam('hint',actualHintInstruction(v));
+  f.c.askNoam('free_question',additionalQuestion);
   f.attachments.push({name:'later.png',canvas:{marker:'new-photo'}});resume();await settled(f.c);
   assert.equal(r.requests.length,1);assert.equal(r.requests[0].payload.hasStudentAttachments,false);
   assert.equal(r.requests[0].payload.selectedPart,f.exercise.part);
@@ -146,7 +144,7 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
  it(name+': original reader fallback uses the same empty snapshot after a photo is added',async()=>{
   const f=fixture(v,'W15construction'),r=wireSnapshotReader(f,v);
   let resume:any;const unavailable=new Promise(resolve=>{resume=()=>resolve(null);});f.c.noamLoadSourceVisual=()=>unavailable;
-  f.c.askNoam('hint',actualHintInstruction(v));
+  f.c.askNoam('free_question',additionalQuestion);
   f.attachments.push({name:'later.png',canvas:{marker:'new-photo'}});resume();await settled(f.c);
   assert.equal(r.requests.length,1);assert.equal(r.requests[0].payload.hasStudentAttachments,false);
   assert.equal(r.requests[0].payload.imageAnalysis.content_type,'snapshot-test-original');
@@ -169,7 +167,7 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
  it(name+': legacy askNoam without the canonical wrapper still passes its photo snapshot',async()=>{
   const f=fixture(v,'W11'),r=wireSnapshotReader(f,v);f.c.noamQuestionAnalysis=undefined;
   f.attachments.push({name:'a.png',canvas:{marker:'photo-A'}});
-  f.c.askNoam('hint',actualHintInstruction(v));f.attachments.splice(0);await settled(f.c);
+  f.c.askNoam('free_question',additionalQuestion);f.attachments.splice(0);await settled(f.c);
   assert.equal(r.requests.length,2);assert.equal(r.requests[1].payload.hasStudentAttachments,true);
   assert.deepEqual(JSON.parse(r.requests[0].payload.imageDataUrl),['original-question','photo-A']);
  });
@@ -187,15 +185,15 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
  it(name+': failed photo analysis preserves attachments and sends no solve request',async()=>{
   const f=fixture(v,'W11'),r=wireSnapshotReader(f,v);f.attachments.push({name:'a.png',canvas:{marker:'photo-A'}});
   const post=f.c.postJson;f.c.postJson=async(url:string,p:any)=>url.endsWith('/noamImageAnalyze')?{ok:true,analysis:{readable:false}}:post(url,p);
-  f.c.askNoam('hint',actualHintInstruction(v));await settled(f.c);
+  f.c.askNoam('free_question',additionalQuestion);await settled(f.c);
   assert.equal(r.requests.length,0);assert.equal(f.thread.messages[1].answerError,true);
   assert.equal(f.c.currentAttachments().length,1);assert.deepEqual(clone(f.c.analysisCache),{});
  });
 
  it(name+': W15 independent conceptual part uses its printed text and an explicit generic scaffold',async()=>{
-  const f=fixture(v,'W15'),{requests,counter}=wireHint(f,unreadable());
-  f.c.askNoam('hint','תן לי רמז אחד בלבד.');await settled(f.c);
-  assert.equal(counter.analysis,0);assert.equal(requests.length,1);assert.equal(f.thread.hintIndex,1);
+  const f=fixture(v,'W15'),{requests,counter}=wireAdditionalQuestion(f,unreadable());
+  f.c.askNoam('free_question','אפשר להסביר איך משתמשים בנתונים המודפסים בסעיף הזה?');await settled(f.c);
+  assert.equal(counter.analysis,0);assert.equal(requests.length,1);assert.equal(f.thread.hintIndex,0,'additional questions do not consume prepared hints');
   assert.equal(f.thread.messages[1].answerError,undefined);
   const a=requests[0].payload.imageAnalysis;assertCanonicalShape(a,f.exercise);
   assert.equal(a.transcription,['שאלה 20, סעיף ד.','בדקו את גבולות השימוש במשפטי הדמיון. האיור מתייחס רק לסעיף האחרון.','הסעיף הנבחר: מה יש לדרוש לפני שמחסרים שטח פנימי מן השלם?'].join('\n'));
@@ -269,7 +267,7 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
   ];
   for(const [label,change] of changes){
    const f=fixture(v,'W15',(d,m,e)=>{const q=d.questions.find((q:any)=>q.id==='q20');q.text=change(q.text);e.context=q.text;});
-   const {requests,counter}=wireHint(f);f.c.askNoam('hint','תן לי רמז אחד בלבד.');await settled(f.c);
+   const {requests,counter}=wireAdditionalQuestion(f);f.c.askNoam('free_question','אפשר להסביר איך משתמשים בנתונים המודפסים בסעיף הזה?');await settled(f.c);
    assert.equal(counter.analysis,1,label+' must retain the image reader');
    assert.equal(requests.length,1,label+' must preserve the solve request count');
    assert.equal(requests[0].payload.imageAnalysis.content_type,undefined,label);
@@ -278,14 +276,14 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
 
  it(name+': final figure part and student-designed proof keep the existing image route',async()=>{
   for(const key of ['W15final','W15construction']){
-   const f=fixture(v,key),{requests,counter}=wireHint(f);f.c.askNoam('hint','תן לי רמז אחד בלבד.');await settled(f.c);
+   const f=fixture(v,key),{requests,counter}=wireAdditionalQuestion(f);f.c.askNoam('free_question','אפשר להסביר איך משתמשים בנתונים המודפסים בסעיף הזה?');await settled(f.c);
    assert.equal(counter.analysis,1,key);assert.equal(requests.length,1,key);assert.equal(requests[0].payload.imageAnalysis.content_type,undefined,key);
   }
  });
 
  it(name+': W11 table question is answered from the printed source without reading the image',async()=>{
-  const f=fixture(v,'W11'),{requests,counter}=wireHint(f,unreadable());
-  f.c.askNoam('hint','תן לי רמז אחד בלבד.');await settled(f.c);
+  const f=fixture(v,'W11'),{requests,counter}=wireAdditionalQuestion(f,unreadable());
+  f.c.askNoam('free_question','אפשר להסביר איך משתמשים בנתונים המודפסים בסעיף הזה?');await settled(f.c);
   assert.equal(counter.analysis,0);assert.equal(requests.length,1);assert.equal(requests[0].url,'/model/noamImageSolve');
   assert.equal(f.thread.messages[1].answerError,undefined);assert.equal(f.thread.messages[1].text,'בדקו את הנתונים המודפסים.');
   const a=requests[0].payload.imageAnalysis;assertCanonicalShape(a,f.exercise);
@@ -297,8 +295,8 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
  });
 
  it(name+': W04 printed strip labels and the opening base altitude stay separate sources',async()=>{
-  const f=fixture(v,'W04'),{requests,counter}=wireHint(f);
-  f.c.askNoam('hint','תן לי רמז אחד בלבד.');await settled(f.c);
+  const f=fixture(v,'W04'),{requests,counter}=wireAdditionalQuestion(f);
+  f.c.askNoam('free_question','אפשר להסביר איך משתמשים בנתונים המודפסים בסעיף הזה?');await settled(f.c);
   assert.equal(counter.analysis,0);assert.equal(requests.length,1);const a=requests[0].payload.imageAnalysis;assertCanonicalShape(a,f.exercise);
   assert.match(a.transcription,/וגובהו לצלע הארוכה \$5\$ ס״מ/);assert.match(a.transcription,/הסעיף הנבחר: חשבו את סכום שטחי המלבנים\./);
   assert.match(a.diagram_description,/על קטע אנכי מודפס 2/);assert.equal((a.diagram_description.match(/על קטע אופקי מודפס 13/g)||[]).length,2);
@@ -307,8 +305,8 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
  });
 
  it(name+': MP02 uses verified printed captions bound to measured grids, never SVG order, and drops contradictory OCR',async()=>{
-  const f=fixture(v,'MP02'),{requests,counter}=wireHint(f);
-  f.c.askNoam('hint','תן לי רמז אחד בלבד.');await settled(f.c);
+  const f=fixture(v,'MP02'),{requests,counter}=wireAdditionalQuestion(f);
+  f.c.askNoam('free_question','אפשר להסביר איך משתמשים בנתונים המודפסים בסעיף הזה?');await settled(f.c);
   assert.equal(counter.analysis,0);const a=requests[0].payload.imageAnalysis;assertCanonicalShape(a,f.exercise);
   for(const [caption,columns] of [['שלב 1',3],['שלב 2',6],['שלב 3',9]])assert.ok(a.diagram_description.includes(`לוח עם הכיתוב "${caption}": 3 שורות, ${columns} נקודות בכל שורה.`));
   assert.doesNotMatch(JSON.stringify(a),/16|25|(?:9|18|27) נקודות(?! בכל שורה)|q21_head|9\s*n|ריבוע/);
@@ -349,9 +347,9 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
    ['W04','broken-label',(d)=>{const o=d.figures.find((f:any)=>f.id==='q7_head').visual_model.objects.find((o:any)=>o.type==='label');o.text='3';}],
    ['MP02','no-caption-ledger',(_d,m)=>{m.sourceSha256='f'.repeat(64);}]];
   for(const [key,mode,edit] of modes){
-   const f=fixture(v,key,edit),{requests,counter}=wireHint(f);
+   const f=fixture(v,key,edit),{requests,counter}=wireAdditionalQuestion(f);
    assert.equal(await f.c.noamCanonicalSourceAnalysis(f.exercise),null,mode);
-   f.c.askNoam('hint','רמז');await settled(f.c);assert.equal(counter.analysis,1,mode);assert.equal(requests[0].payload.imageAnalysis.content_type,undefined,mode);
+   f.c.askNoam('free_question','איך משתמשים בנתוני הסעיף הזה?');await settled(f.c);assert.equal(counter.analysis,1,mode);assert.equal(requests[0].payload.imageAnalysis.content_type,undefined,mode);
   }
   for(const mode of ['attachments','selection-change','identity-change','source-fails']){
    const f=fixture(v,'W11'),load=f.c.noamLoadSourceVisual;
@@ -384,9 +382,9 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
  it(name+': review (1) — fetched native bytes must hash to the manifest before they can become canonical data',async()=>{
   // Same edit with and without a matching hash: only the tampered bytes fall back.
   const edit=(d:any)=>{d.questions.find((q:any)=>q.id==='q16').table.rows[0][1]='999';};
-  const tampered=fixture(v,'W11',edit,true),{requests,counter}=wireHint(tampered);
+  const tampered=fixture(v,'W11',edit,true),{requests,counter}=wireAdditionalQuestion(tampered);
   assert.equal(await tampered.c.noamCanonicalSourceAnalysis(tampered.exercise),null);
-  tampered.c.askNoam('hint','רמז');await settled(tampered.c);assert.equal(counter.analysis,1);assert.doesNotMatch(JSON.stringify(requests[0].payload.imageAnalysis),/999/);
+  tampered.c.askNoam('free_question','איך משתמשים בנתוני הסעיף הזה?');await settled(tampered.c);assert.equal(counter.analysis,1);assert.doesNotMatch(JSON.stringify(requests[0].payload.imageAnalysis),/999/);
   const rehashed=fixture(v,'W11',edit);assert.match((await rehashed.c.noamCanonicalSourceAnalysis(rehashed.exercise)).diagram_description,/999/);
   // A poisoned shared package cache is not trusted: canonical data comes from the verified bytes.
   const poisoned=fixture(v,'W11'),load=poisoned.c.noamLoadSourceVisual;
