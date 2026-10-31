@@ -190,10 +190,10 @@ test('late completion of an earlier grade load cannot restore its old URL scope'
   assert.equal(app.calls.length,2,'late rendering reads current scope and makes no new history write');
 });
 
-test('the deployed teacher module and URL helper invalidate their own caches without changing the bot SDK version', () => {
+test('the deployed teacher module and URL helper invalidate their own caches while the URL helper retains its own version', () => {
   assert.equal(printer,readFileSync(new URL('../../../demos/teacher-factoring-print.js',import.meta.url),'utf8'));
   assert.equal(readFileSync(new URL('../public/teachers/wizard-prefill.js',import.meta.url),'utf8'),readFileSync(new URL('../../../demos/wizard-prefill.js',import.meta.url),'utf8'));
   assert.match(printer,/wizard-prefill\.js\?v=20261031-level-url/);
-  for(const file of ['../public/teachers/index.html','../../../demos/teacher-practice-picker-site-style.html']) assert.match(readFileSync(new URL(file,import.meta.url),'utf8'),/teacher-factoring-print\.js\?v=20261031-level-url/);
-  assert.match(printer,/NoamBotClient\.version === '20261030-stepup-error-detail'/);
+  for(const file of ['../public/teachers/index.html','../../../demos/teacher-practice-picker-site-style.html']) assert.match(readFileSync(new URL(file,import.meta.url),'utf8'),/teacher-factoring-print\.js\?v=20261031-browser-error/);
+  assert.match(printer,/NoamBotClient\.version === '20261031-browser-error'/);
 });
