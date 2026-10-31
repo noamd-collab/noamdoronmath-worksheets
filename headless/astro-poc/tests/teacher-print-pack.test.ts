@@ -22,7 +22,7 @@ function layoutApi(source) {
   const start = printer.indexOf('function boxEnd');
   const end = printer.indexOf('async function measureSlices');
   return new Function('SOURCE', `${printer.slice(start, end)}
-    return { shortSlices, packShort, orderPrintQuestions, batchesOf, levelPrintName, answerCropsFromLines, answerHeadingBox, textItemBox, contentHeight, fittedScale, fittedHeight, sheetContentLimit, worksheetTitle, SHEET_PAGE_H, SHEET_BASAD_H, SHEET_TITLE_H };
+    return { shortSlices, packShort, orderPrintQuestions, batchesOf, levelPrintName, answerCropsFromLines, answerHeadingBox, pageInkFromPixels, textItemBox, contentHeight, fittedScale, fittedHeight, sheetContentLimit, worksheetTitle, SHEET_PAGE_H, SHEET_BASAD_H, SHEET_TITLE_H };
   `)(source);
 }
 
@@ -483,6 +483,429 @@ describe('teacher short worksheet pack', () => {
     assert.equal(parenCrops.length, 1);
     assert.equal(parenCrops[0].q, 1);
     assert.equal(parenCrops[0].pieces.length, 2);
+  });
+
+  it('keeps a stacked fraction answer line whole, on one row, between its neighbours', () => {
+    const api = layoutApi({});
+    const H = 1000;
+    // A rendered answer page: dark rectangles [y0, y1, x0, x1], painted by hand.
+    const page = (...blocks: [number, number, number, number][]) => {
+      const pixels = new Uint8ClampedArray(1000 * H * 4).fill(255);
+      blocks.forEach(([y0, y1, x0, x1]) => {
+        for (let r = Math.floor(y0 * H); r < Math.ceil(y1 * H); r += 1) {
+          for (let c = Math.floor(x0 * 1000); c < Math.ceil(x1 * 1000); c += 1) pixels.set([0, 0, 0, 255], (r * 1000 + c) * 4);
+        }
+      });
+      return api.pageInkFromPixels(pixels, 1000, H);
+    };
+    const item = (y: number, y2: number, x: number, x2: number, text: string) => ({ page: 8, y, y2, x, x2, text });
+    const head = item(0.0511, 0.069, 0.780, 0.933, 'תשובות סופיות');
+    const lines = [
+      head,
+      item(0.2980, 0.3100, 0.907, 0.929, '(18)'),
+      item(0.2980, 0.3100, 0.865, 0.881, 'א.'),
+      item(0.2980, 0.3100, 0.840, 0.856, '36'),
+      item(0.3400, 0.3500, 0.907, 0.929, '(19)'),
+      item(0.3400, 0.3500, 0.865, 0.881, 'א.'),
+      item(0.3300, 0.3370, 0.840, 0.848, '1'),
+      item(0.3500, 0.3570, 0.832, 0.856, '100'),
+      item(0.3400, 0.3500, 0.820, 0.825, '·'),
+      item(0.3400, 0.3500, 0.800, 0.815, 'ב.'),
+      item(0.3300, 0.3370, 0.775, 0.783, '1'),
+      item(0.3500, 0.3570, 0.760, 0.797, '10,000'),
+      item(0.3800, 0.3900, 0.907, 0.929, '(20)'),
+      item(0.3800, 0.3900, 0.865, 0.881, 'א.'),
+      item(0.3800, 0.3900, 0.840, 0.856, '50'),
+    ];
+    // The fraction line's ink reaches above and below the text boxes of (19).
+    const blocks: [number, number, number, number][] = [
+      [0.05, 0.07, 0.78, 0.93], [0.296, 0.312, 0.84, 0.93], [0.3285, 0.3585, 0.76, 0.93], [0.378, 0.392, 0.84, 0.93],
+    ];
+    const inside = (box: { y: number; h: number }) => {
+      assert.ok(box.y <= 0.3285, 'top cut ' + box.y);
+      assert.ok(box.y + box.h >= 0.3585, 'bottom cut ' + (box.y + box.h));
+      assert.ok(box.y > 0.312, 'took (18) ' + box.y);
+      assert.ok(box.y + box.h < 0.378, 'took (20) ' + (box.y + box.h));
+    };
+    // A frame down the page, outside the answer text, changes nothing.
+    for (const frame of [[], [[0.02, 0.98, 0.03, 0.032], [0.02, 0.98, 0.968, 0.97]]] as [number, number, number, number][][]) {
+      const ink = new Map([[8, page(...blocks, ...frame)]]);
+      const [parts] = api.answerCropsFromLines(lines, [{ q: 19, part: 'א' }, { q: 19, part: 'ב' }], ink);
+      assert.equal(parts.q, 19);
+      assert.equal(parts.pieces.length, 3, JSON.stringify(parts.pieces));
+      assert.equal(new Set(parts.pieces.map((piece) => piece.box.y)).size, 1, 'fraction split over rows');
+      parts.pieces.forEach((piece) => inside(piece.box));
+      inside(parts.box);
+      const [whole] = api.answerCropsFromLines(lines, [19], ink);
+      inside(whole.box);
+      const [first] = api.answerCropsFromLines(lines, [18], ink);
+      assert.ok(first.box.y <= 0.296 && first.box.y > 0.07, JSON.stringify(first.box));
+      assert.ok(first.box.y + first.box.h >= 0.312 && first.box.y + first.box.h < 0.3285, JSON.stringify(first.box));
+    }
+
+    // (3) wraps onto a second line. (4) opens with a tall fraction whose
+    // numerator comes close to that line. The line stays with (3).
+    const wrapped = [
+      head,
+      item(0.140, 0.150, 0.907, 0.929, '(3)'),
+      item(0.140, 0.150, 0.865, 0.881, 'א.'),
+      item(0.140, 0.150, 0.840, 0.856, '12'),
+      item(0.140, 0.150, 0.820, 0.825, '·'),
+      item(0.140, 0.150, 0.800, 0.815, 'ב.'),
+      item(0.140, 0.150, 0.780, 0.790, '7'),
+      item(0.162, 0.172, 0.865, 0.881, 'ג.'),
+      item(0.162, 0.172, 0.820, 0.860, 'נכונה'),
+      item(0.162, 0.172, 0.800, 0.805, '·'),
+      item(0.162, 0.172, 0.780, 0.795, 'ד.'),
+      item(0.162, 0.172, 0.760, 0.775, '30'),
+      item(0.192, 0.202, 0.907, 0.929, '(4)'),
+      item(0.192, 0.202, 0.865, 0.881, 'א.'),
+      item(0.183, 0.190, 0.840, 0.848, '1'),
+      item(0.203, 0.210, 0.832, 0.856, '100'),
+    ];
+    const wrappedInk = new Map([[8, page(
+      [0.05, 0.07, 0.78, 0.93], [0.138, 0.152, 0.78, 0.93], [0.160, 0.174, 0.76, 0.88],
+      // (4): numerator, fraction bar, denominator, label and number.
+      [0.1785, 0.190, 0.840, 0.848], [0.1975, 0.199, 0.830, 0.858], [0.201, 0.2115, 0.832, 0.856],
+      [0.192, 0.202, 0.865, 0.881], [0.192, 0.202, 0.907, 0.929],
+    )]]);
+    const [three] = api.answerCropsFromLines(wrapped, [3], wrappedInk);
+    assert.ok(three.box.y <= 0.138 && three.box.y + three.box.h >= 0.174, JSON.stringify(three.box));
+    assert.ok(three.box.y + three.box.h <= 0.1785, JSON.stringify(three.box));
+    const [threeParts] = api.answerCropsFromLines(wrapped, ['א', 'ב', 'ג', 'ד'].map((part) => ({ q: 3, part })), wrappedInk);
+    assert.equal(threeParts.pieces.length, 5, JSON.stringify(threeParts.pieces));
+    assert.equal(new Set(threeParts.pieces.map((piece) => piece.box.y)).size, 2);
+    const [four] = api.answerCropsFromLines(wrapped, [{ q: 4, part: 'א' }], wrappedInk);
+    assert.equal(four.pieces.length, 2, JSON.stringify(four.pieces));
+    four.pieces.forEach((piece) => {
+      assert.ok(piece.box.y >= 0.174 && piece.box.y <= 0.1785, JSON.stringify(piece.box));
+      assert.ok(piece.box.y + piece.box.h >= 0.2115, JSON.stringify(piece.box));
+    });
+
+    // Two lines of one answer whose ink touches keep their own part labels.
+    const touching = [
+      head,
+      item(0.240, 0.250, 0.907, 0.929, '(6)'),
+      item(0.240, 0.250, 0.865, 0.881, 'א.'),
+      item(0.240, 0.250, 0.840, 0.850, '5'),
+      item(0.240, 0.250, 0.820, 0.825, '·'),
+      item(0.240, 0.250, 0.800, 0.815, 'ב.'),
+      item(0.240, 0.250, 0.780, 0.790, '6'),
+      item(0.258, 0.268, 0.865, 0.881, 'ג.'),
+      item(0.258, 0.268, 0.840, 0.850, '7'),
+      item(0.258, 0.268, 0.820, 0.825, '·'),
+      item(0.258, 0.268, 0.800, 0.815, 'ד.'),
+      item(0.258, 0.268, 0.780, 0.790, '8'),
+    ];
+    const touchingInk = new Map([[8, page([0.05, 0.07, 0.78, 0.93], [0.236, 0.253, 0.78, 0.93], [0.253, 0.255, 0.85, 0.86], [0.255, 0.272, 0.78, 0.88])]]);
+    const [six] = api.answerCropsFromLines(touching, ['א', 'ב', 'ג', 'ד'].map((part) => ({ q: 6, part })), touchingInk);
+    assert.equal(six.pieces.length, 5, JSON.stringify(six.pieces));
+    const sixRows = [...new Set(six.pieces.map((piece) => piece.box.y))].sort();
+    assert.equal(sixRows.length, 2);
+    assert.ok(sixRows[0] <= 0.236 && sixRows[1] >= 0.252 && sixRows[1] <= 0.256, sixRows.join(','));
+
+    // A rule under the note stays out of answer (1).
+    const ruled = [
+      head,
+      item(0.075, 0.085, 0.700, 0.930, 'התשובות הסופיות בלבד.'),
+      item(0.110, 0.120, 0.907, 0.929, '(1)'),
+      item(0.110, 0.120, 0.840, 0.856, '5'),
+    ];
+    const ruledInk = new Map([[8, page([0.05, 0.07, 0.78, 0.93], [0.074, 0.087, 0.70, 0.93], [0.100, 0.1015, 0.05, 0.95], [0.107, 0.123, 0.84, 0.93])]]);
+    const [one] = api.answerCropsFromLines(ruled, [1], ruledInk);
+    assert.ok(one.box.y > 0.1015 && one.box.y <= 0.107, JSON.stringify(one.box));
+    assert.ok(one.box.y + one.box.h >= 0.123, JSON.stringify(one.box));
+
+    const width = 50;
+    const pixels = new Uint8ClampedArray(width * 10 * 4).fill(255);
+    const dark = (x: number, y: number, alpha = 255) => {
+      const at = (y * width + x) * 4;
+      pixels.set([0, 0, 0, alpha], at);
+    };
+    [10, 11, 12].forEach((x) => dark(x, 2));
+    dark(0, 5);
+    dark(20, 5, 0);
+    pixels.set([255, 242, 204, 255], (7 * width + 30) * 4);
+    const counted = api.pageInkFromPixels(pixels, width, 10);
+    const perRow = Array.from({ length: 10 }, (_, r) => counted.dark.slice(r * width, (r + 1) * width).reduce((sum, value) => sum + value, 0));
+    assert.deepEqual(perRow, [0, 0, 3, 0, 0, 1, 0, 0, 0, 0]);
+  });
+
+  it('keeps house answer rows whole: lower baselines, a multiplication dot, a nested numerator, a star', () => {
+    const api = layoutApi({});
+    const H = 1000;
+    const page = (...blocks: [number, number, number, number][]) => {
+      const pixels = new Uint8ClampedArray(1000 * H * 4).fill(255);
+      blocks.forEach(([y0, y1, x0, x1]) => {
+        for (let r = Math.floor(y0 * H); r < Math.ceil(y1 * H); r += 1) {
+          for (let c = Math.floor(x0 * 1000); c < Math.ceil(x1 * 1000); c += 1) pixels.set([0, 0, 0, 255], (r * 1000 + c) * 4);
+        }
+      });
+      return api.pageInkFromPixels(pixels, 1000, H);
+    };
+    const item = (y: number, y2: number, x: number, x2: number, text: string) => ({ page: 8, y, y2, x, x2, text });
+    const head = item(0.0511, 0.069, 0.780, 0.933, 'תשובות סופיות');
+    const headInk: [number, number, number, number] = [0.05, 0.07, 0.78, 0.93];
+
+    // (2) A dot inside an answer is multiplication, not a part separator.
+    // Without the page's ink the text-only crop keeps its old reading.
+    const dotted = [
+      head,
+      item(0.200, 0.210, 0.907, 0.929, '(2)'),
+      item(0.200, 0.210, 0.865, 0.881, 'א.'),
+      item(0.200, 0.210, 0.800, 0.855, '5 · 10'),
+      item(0.198, 0.204, 0.795, 0.800, '6'),
+      item(0.200, 0.210, 0.760, 0.775, 'ב.'),
+      item(0.200, 0.210, 0.740, 0.750, '7'),
+    ];
+    const dottedInk = new Map([[8, page(headInk, [0.198, 0.210, 0.740, 0.929])]]);
+    const [two] = api.answerCropsFromLines(dotted, [{ q: 2, part: 'א' }, { q: 2, part: 'ב' }], dottedInk);
+    assert.equal(two.pieces.length, 3, JSON.stringify(two.pieces));
+    assert.ok(two.pieces[1].box.x <= 0.800, JSON.stringify(two.pieces[1].box));
+    const [twoText] = api.answerCropsFromLines(dotted, [{ q: 2, part: 'א' }, { q: 2, part: 'ב' }]);
+    assert.equal(twoText.pieces.length, 2, JSON.stringify(twoText.pieces));
+
+    // (7) Parts of one row are top-aligned: ב holds a fraction and sits on a
+    // lower baseline. Its numerator, bar and denominator stay in one row.
+    const row = [
+      head,
+      item(0.300, 0.310, 0.907, 0.929, '(7)'),
+      item(0.300, 0.310, 0.865, 0.881, 'א.'),
+      item(0.300, 0.310, 0.840, 0.856, '12'),
+      item(0.3115, 0.3215, 0.800, 0.815, 'ב.'),
+      item(0.300, 0.307, 0.775, 0.783, '1'),
+      item(0.316, 0.323, 0.775, 0.783, '4'),
+      item(0.360, 0.370, 0.907, 0.929, '(8)'),
+      item(0.360, 0.370, 0.865, 0.881, 'א.'),
+      item(0.360, 0.370, 0.840, 0.856, '30'),
+    ];
+    const rowInk = new Map([[8, page(
+      headInk, [0.301, 0.310, 0.907, 0.929], [0.301, 0.310, 0.840, 0.881], [0.312, 0.3215, 0.800, 0.815],
+      [0.3005, 0.307, 0.775, 0.783], [0.310, 0.3115, 0.770, 0.788], [0.3145, 0.323, 0.775, 0.783],
+      [0.361, 0.370, 0.840, 0.929],
+    )]]);
+    const [seven] = api.answerCropsFromLines(row, [{ q: 7, part: 'א' }, { q: 7, part: 'ב' }], rowInk);
+    assert.equal(seven.pieces.length, 3, JSON.stringify(seven.pieces));
+    assert.equal(new Set(seven.pieces.map((piece) => piece.box.y)).size, 1, 'row split');
+    seven.pieces.forEach((piece) => assert.ok(piece.box.y <= 0.3005 && piece.box.y + piece.box.h >= 0.323, JSON.stringify(piece.box)));
+    assert.ok(seven.pieces[2].box.x <= 0.770 && seven.pieces[2].box.x + seven.pieces[2].box.w >= 0.815, JSON.stringify(seven.pieces[2].box));
+    assert.ok(seven.pieces[1].box.x > 0.788, 'part ב in part א ' + JSON.stringify(seven.pieces[1].box));
+
+    // (5) A fraction inside a numerator: 1 over 2, all over 3. Its top stays in.
+    const nested = [
+      head,
+      item(0.440, 0.450, 0.907, 0.929, '(4)'),
+      item(0.440, 0.450, 0.865, 0.881, 'א.'),
+      item(0.440, 0.450, 0.840, 0.856, '9'),
+      item(0.500, 0.510, 0.907, 0.929, '(5)'),
+      item(0.500, 0.510, 0.865, 0.881, 'א.'),
+      item(0.480, 0.487, 0.840, 0.848, '1'),
+      item(0.493, 0.500, 0.840, 0.848, '2'),
+      item(0.512, 0.519, 0.840, 0.848, '3'),
+    ];
+    const nestedInk = new Map([[8, page(
+      headInk, [0.441, 0.450, 0.840, 0.929],
+      [0.4805, 0.487, 0.840, 0.848], [0.4895, 0.4905, 0.838, 0.850], [0.4925, 0.500, 0.840, 0.848],
+      [0.5035, 0.505, 0.835, 0.853], [0.5075, 0.519, 0.840, 0.848], [0.501, 0.510, 0.865, 0.881], [0.501, 0.510, 0.907, 0.929],
+    )]]);
+    const [five] = api.answerCropsFromLines(nested, [5], nestedInk);
+    assert.ok(five.box.y <= 0.4805 && five.box.y > 0.450, JSON.stringify(five.box));
+    const [four] = api.answerCropsFromLines(nested, [4], nestedInk);
+    assert.ok(four.box.y + four.box.h <= 0.4805, JSON.stringify(four.box));
+
+    // (9) A star between the number and the first label stays with the number.
+    // (10) sits past 0.9, too low to crop, but (9) still ends where it starts.
+    const starred = [
+      head,
+      item(0.880, 0.890, 0.907, 0.929, '(9)'),
+      item(0.881, 0.889, 0.888, 0.900, '★'),
+      item(0.880, 0.890, 0.865, 0.881, 'א.'),
+      item(0.880, 0.890, 0.845, 0.855, '5'),
+      item(0.905, 0.915, 0.907, 0.932, '(10)'),
+      item(0.905, 0.915, 0.865, 0.881, 'א.'),
+      item(0.905, 0.915, 0.845, 0.855, '7'),
+    ];
+    const starredInk = new Map([[8, page(headInk, [0.881, 0.890, 0.845, 0.929], [0.906, 0.915, 0.845, 0.932])]]);
+    const [nine] = api.answerCropsFromLines(starred, [{ q: 9, part: 'א' }], starredInk);
+    assert.equal(nine.pieces.length, 2, JSON.stringify(nine.pieces));
+    assert.ok(nine.pieces[0].box.x <= 0.888, JSON.stringify(nine.pieces[0].box));
+    nine.pieces.forEach((piece) => assert.ok(piece.box.y + piece.box.h <= 0.905, JSON.stringify(piece.box)));
+  });
+
+  it('keeps a note, a root and a line under an answer in place, and ends the last answer before a footnote', () => {
+    const api = layoutApi({});
+    const H = 1000;
+    const page = (...blocks: [number, number, number, number][]) => {
+      const pixels = new Uint8ClampedArray(1000 * H * 4).fill(255);
+      blocks.forEach(([y0, y1, x0, x1]) => {
+        for (let r = Math.floor(y0 * H); r < Math.ceil(y1 * H); r += 1) {
+          for (let c = Math.floor(x0 * 1000); c < Math.ceil(x1 * 1000); c += 1) pixels.set([0, 0, 0, 255], (r * 1000 + c) * 4);
+        }
+      });
+      return api.pageInkFromPixels(pixels, 1000, H);
+    };
+    const item = (y: number, y2: number, x: number, x2: number, text: string) => ({ page: 8, y, y2, x, x2, text });
+    const head = item(0.0511, 0.069, 0.780, 0.933, 'תשובות סופיות');
+    const headInk: [number, number, number, number] = [0.05, 0.07, 0.78, 0.93];
+
+    // (11) A note with a fraction of its own sits right over the parts. A
+    // picked part shows its own line, not a slice of the note.
+    const noted = [
+      head,
+      item(0.600, 0.610, 0.907, 0.935, '(11)'),
+      item(0.590, 0.597, 0.835, 0.843, '3'),
+      item(0.600, 0.610, 0.855, 0.885, 'בדיקה:'),
+      item(0.600, 0.610, 0.810, 0.828, '= 1'),
+      item(0.6075, 0.6145, 0.835, 0.843, '4'),
+      item(0.6165, 0.6265, 0.865, 0.881, 'א.'),
+      item(0.6165, 0.6265, 0.840, 0.856, '81'),
+      item(0.6165, 0.6265, 0.800, 0.815, 'ב.'),
+      item(0.6165, 0.6265, 0.775, 0.795, '80'),
+    ];
+    const notedInk = new Map([[8, page(
+      headInk, [0.601, 0.610, 0.907, 0.935], [0.5905, 0.597, 0.835, 0.843], [0.6045, 0.6055, 0.832, 0.846], [0.6085, 0.6145, 0.835, 0.843],
+      [0.601, 0.610, 0.855, 0.885], [0.601, 0.610, 0.810, 0.828], [0.6175, 0.6265, 0.775, 0.881],
+    )]]);
+    const [eleven] = api.answerCropsFromLines(noted, [{ q: 11, part: 'א' }], notedInk);
+    assert.equal(eleven.pieces.length, 2, JSON.stringify(eleven.pieces));
+    assert.ok(eleven.pieces[1].box.y >= 0.6145 && eleven.pieces[1].box.y + eleven.pieces[1].box.h >= 0.6265, 'note in part א ' + JSON.stringify(eleven.pieces[1].box));
+
+    // (12) A root drawn on the note line under the parts: its bar sits above
+    // the note's text, beside the number. The bar stays with the note.
+    const rooted = [
+      head,
+      item(0.700, 0.7155, 0.907, 0.935, '(12)'),
+      item(0.700, 0.710, 0.865, 0.881, 'א.'),
+      item(0.700, 0.710, 0.840, 0.856, '5'),
+      item(0.722, 0.732, 0.800, 0.830, '≈ 7'),
+    ];
+    const rootedInk = new Map([[8, page(
+      headInk, [0.7005, 0.714, 0.907, 0.935], [0.7005, 0.710, 0.840, 0.881],
+      [0.722, 0.732, 0.800, 0.830], [0.7165, 0.732, 0.833, 0.835], [0.7155, 0.7165, 0.833, 0.860], [0.721, 0.732, 0.838, 0.858],
+    )]]);
+    const [twelve] = api.answerCropsFromLines(rooted, [{ q: 12, part: 'א' }], rootedInk);
+    assert.equal(twelve.pieces.length, 3, JSON.stringify(twelve.pieces));
+    assert.ok(twelve.pieces[1].box.y + twelve.pieces[1].box.h <= 0.7155, 'bar in part א ' + JSON.stringify(twelve.pieces[1].box));
+    assert.ok(twelve.pieces[2].box.y <= 0.7155 && twelve.pieces[2].box.x + twelve.pieces[2].box.w >= 0.860, 'root cut ' + JSON.stringify(twelve.pieces[2].box));
+    assert.ok(twelve.pieces[0].box.y <= 0.7005 && twelve.pieces[0].box.y + twelve.pieces[0].box.h >= 0.714, 'number cut ' + JSON.stringify(twelve.pieces[0].box));
+    // The number's foot runs down beside the bar: both stay whole, and the
+    // note starts left of the number.
+    const footInk = new Map([[8, page(
+      headInk, [0.7005, 0.7165, 0.907, 0.935], [0.7005, 0.710, 0.840, 0.881],
+      [0.722, 0.732, 0.800, 0.830], [0.7165, 0.732, 0.833, 0.835], [0.7155, 0.7165, 0.833, 0.860], [0.721, 0.732, 0.838, 0.858],
+    )]]);
+    const [foot] = api.answerCropsFromLines(rooted, [{ q: 12, part: 'א' }], footInk);
+    assert.equal(foot.pieces.length, 3, JSON.stringify(foot.pieces));
+    assert.ok(foot.pieces[0].box.y + foot.pieces[0].box.h >= 0.7165, 'number foot cut ' + JSON.stringify(foot.pieces[0].box));
+    assert.ok(foot.pieces[2].box.y <= 0.7155, 'root cut ' + JSON.stringify(foot.pieces[2].box));
+    assert.ok(foot.pieces[2].at + foot.pieces[2].box.w <= foot.pieces[0].at, 'note drawn over the number ' + JSON.stringify(foot.pieces));
+
+    // (13) A line drawn under the answer, short of the number column, is no
+    // fraction bar: (14) does not take (13)'s denominator.
+    const lined = [
+      head,
+      item(0.780, 0.790, 0.907, 0.935, '(13)'),
+      item(0.780, 0.790, 0.865, 0.881, 'א.'),
+      item(0.772, 0.779, 0.840, 0.848, '7'),
+      item(0.789, 0.796, 0.838, 0.852, '12'),
+      item(0.804, 0.814, 0.907, 0.935, '(14)'),
+      item(0.804, 0.814, 0.865, 0.881, 'א.'),
+      item(0.804, 0.814, 0.840, 0.856, '5'),
+    ];
+    const linedInk = new Map([[8, page(
+      headInk, [0.781, 0.790, 0.865, 0.935], [0.7725, 0.779, 0.840, 0.848], [0.7815, 0.7825, 0.836, 0.852], [0.789, 0.796, 0.838, 0.852],
+      [0.798, 0.799, 0.05, 0.84], [0.804, 0.814, 0.840, 0.935],
+    )]]);
+    const [thirteen] = api.answerCropsFromLines(lined, [13], linedInk);
+    assert.ok(thirteen.box.y <= 0.7725 && thirteen.box.y + thirteen.box.h >= 0.796, JSON.stringify(thirteen.box));
+    const [fourteen] = api.answerCropsFromLines(lined, [14], linedInk);
+    assert.ok(fourteen.box.y >= 0.796 && fourteen.box.y <= 0.804, 'took (13) ' + JSON.stringify(fourteen.box));
+
+    // (15) is the last answer. A footnote further down, and the page number
+    // (2) in the number column, stay out of it; the real (2) keeps its crop.
+    const footed = [
+      head,
+      item(0.300, 0.310, 0.907, 0.929, '(2)'),
+      item(0.300, 0.310, 0.865, 0.881, 'א.'),
+      item(0.300, 0.310, 0.840, 0.856, '4'),
+      item(0.880, 0.890, 0.907, 0.935, '(15)'),
+      item(0.880, 0.890, 0.865, 0.881, 'א.'),
+      item(0.880, 0.890, 0.840, 0.856, '6'),
+      item(0.935, 0.945, 0.600, 0.880, '* הערה: כל תשובה שקולה'),
+      item(0.937, 0.947, 0.907, 0.929, '(2)'),
+      item(0.972, 0.982, 0.400, 0.600, 'עמוד 2'),
+    ];
+    const footedInk = new Map([[8, page(
+      headInk, [0.301, 0.310, 0.840, 0.929], [0.881, 0.890, 0.840, 0.935], [0.936, 0.945, 0.600, 0.880], [0.938, 0.947, 0.907, 0.929], [0.973, 0.982, 0.400, 0.600],
+    )]]);
+    const [fifteen] = api.answerCropsFromLines(footed, [15], footedInk);
+    assert.ok(fifteen.box.y + fifteen.box.h >= 0.890 && fifteen.box.y + fifteen.box.h <= 0.935, 'footnote in (15) ' + JSON.stringify(fifteen.box));
+    const [fifteenParts] = api.answerCropsFromLines(footed, [{ q: 15, part: 'א' }], footedInk);
+    assert.equal(fifteenParts.pieces.length, 2, JSON.stringify(fifteenParts.pieces));
+    const [second] = api.answerCropsFromLines(footed, [2], footedInk);
+    assert.ok(second.box.y < 0.301 && second.box.y + second.box.h < 0.88, 'page number read as (2) ' + JSON.stringify(second.box));
+
+    // (16) א is 0.3 with a bar; its "0." sits in the number column, beside
+    // (16) and a hair higher. It is no answer number.
+    const decimal = [
+      head,
+      item(0.350, 0.360, 0.907, 0.935, '(15)'),
+      item(0.350, 0.360, 0.865, 0.881, 'א.'),
+      item(0.350, 0.360, 0.840, 0.856, '5'),
+      item(0.3995, 0.4095, 0.852, 0.865, '0.'),
+      item(0.3995, 0.4095, 0.845, 0.852, '3'),
+      item(0.400, 0.410, 0.898, 0.929, '(16)'),
+      item(0.400, 0.410, 0.868, 0.882, 'א.'),
+      item(0.450, 0.460, 0.898, 0.929, '(17)'),
+      item(0.450, 0.460, 0.865, 0.881, 'א.'),
+      item(0.450, 0.460, 0.840, 0.856, '7'),
+    ];
+    const decimalInk = new Map([[8, page(
+      headInk, [0.351, 0.360, 0.840, 0.935], [0.3965, 0.3975, 0.845, 0.852], [0.401, 0.410, 0.845, 0.929], [0.451, 0.460, 0.840, 0.929],
+    )]]);
+    const [sixteen] = api.answerCropsFromLines(decimal, [16], decimalInk);
+    assert.ok(sixteen.box.y <= 0.3965 && sixteen.box.y + sixteen.box.h >= 0.410, '(16) cut ' + JSON.stringify(sixteen.box));
+  });
+
+  it('reads answer ink on highlights and tints, and tells rules from number lines', () => {
+    const api = layoutApi({});
+    const W = 200;
+    const H = 100;
+    const pixels = new Uint8ClampedArray(W * H * 4).fill(255);
+    const paint = (r0: number, r1: number, c0: number, c1: number, rgb: number[]) => {
+      for (let r = r0; r < r1; r += 1) for (let c = c0; c < c1; c += 1) pixels.set([...rgb, 255], (r * W + c) * 4);
+    };
+    paint(10, 20, 20, 190, [255, 255, 0]); // a yellow highlight
+    paint(13, 17, 40, 50, [0, 0, 0]); // text on it
+    paint(30, 40, 20, 190, [159, 197, 232]); // a light blue tint
+    paint(33, 37, 60, 70, [0, 0, 0]);
+    paint(50, 51, 10, 195, [0, 0, 0]); // a rule across to the number column
+    paint(60, 61, 40, 120, [0, 0, 0]); // a number line inside an answer
+    for (let c = 10; c < 195; c += 8) paint(80, 81, c, c + 4, [80, 80, 80]); // a dashed rule
+    paint(22, 28, 100, 140, [0, 255, 255]); // a highlighted part, just darker than the ink limit
+    paint(24, 26, 110, 115, [0, 0, 0]);
+    paint(42, 47, 150, 180, [0, 0, 0]); // a solid shape
+    paint(65, 66, 100, 190, [0, 0, 0]); // a wide fraction bar out to the number column
+    [[20, 26], [40, 46], [70, 76], [85, 91], [120, 126], [175, 181]].forEach(([c0, c1]) => paint(90, 91, c0, c1, [0, 0, 0])); // bars over repeating decimals
+    const ink = api.pageInkFromPixels(pixels, W, H);
+    const count = (r: number) => ink.dark.slice(r * W, (r + 1) * W).reduce((sum: number, value: number) => sum + value, 0);
+    assert.equal(count(11), 0, 'highlight read as ink');
+    assert.equal(count(15), 10, 'text on the highlight lost');
+    assert.equal(count(31), 0, 'tint read as ink');
+    assert.equal(count(35), 10, 'text on the tint lost');
+    assert.equal(count(50), 0);
+    assert.equal(ink.ruled[50], 1);
+    assert.equal(count(60), 80, 'number line dropped');
+    assert.equal(ink.ruled[60], 0);
+    assert.equal(count(80), 0);
+    assert.equal(ink.ruled[80], 1);
+    assert.equal(count(23), 0, 'highlighted part read as ink');
+    assert.equal(count(25), 5, 'text on the highlighted part lost');
+    assert.equal(count(44), 30, 'solid shape dropped');
+    assert.equal(count(65), 90, 'wide fraction bar dropped');
+    assert.equal(ink.ruled[65], 0);
+    assert.equal(count(90), 36, 'repeating-decimal bars dropped');
+    assert.equal(ink.ruled[90], 0);
   });
 
   it('prints only the picked part, keeps 19 with its drawing, and groups parts of one question', (t) => {
