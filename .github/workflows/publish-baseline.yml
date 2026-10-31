@@ -5,9 +5,9 @@ name: publish-baseline
 # A push of this file to main also releases once, because the token that
 # merges pull requests cannot call the dispatch API (Actions: write).
 # Release script on baseline installs @wix/cli before login (see #275).
-# Noam approved publishing PR #326 on 2026-10-31. All Q01 parts in grades 7–9
-# are covered by 1,760 prepared Supabase ladders. New rows were authored once
-# with Flash and passed automatic checks; runtime Flash is for additional questions only.
+# Noam-authorized Ramzi completion: PRs #328 and #329. All grade 7 parts
+# are in Supabase (13,058 total ladders). Publish saved-hint revision and
+# glossary-control fixes; Flash remains for additional questions, without Max.
 
 on:
   workflow_dispatch:
@@ -52,4 +52,4 @@ jobs:
             exit 1
           fi
           git fetch origin headless/astro-poc-baseline
-          bash tools/release/release.sh "3934cfcfaadf35c5df47a8c2ad2e595e82ececac"
+          bash tools/release/release.sh "d0ca699fa5145ca1876d0d857371ea41878ebf52"
