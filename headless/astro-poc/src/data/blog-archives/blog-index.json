@@ -32,6 +32,19 @@
   ],
   "cards": [
     {
+      "title": "משחקי חשבון מומלצים לילדי יסודי שבאמת מקדמים",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%9E%D7%A9%D7%97%D7%A7%D7%99-%D7%97%D7%A9%D7%91%D7%95%D7%9F-%D7%9E%D7%95%D7%9E%D7%9C%D7%A6%D7%99%D7%9D-%D7%9C%D7%99%D7%9C%D7%93%D7%99-%D7%99%D7%A1%D7%95%D7%93%D7%99-%D7%A9%D7%91%D7%90%D7%9E%D7%AA-%D7%9E%D7%A7%D7%93%D7%9E%D7%99%D7%9D",
+      "excerpt": "משחקי חשבון מומלצים לילדי יסודי הופכים תרגול לזמן של חשיבה, שיחה והצלחה. כך בוחרים משחק לפי כיתה, מיומנות ורמת קושי, ומחברים אותו לתרגול קצר, מדויק ונעים.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "31 באוק׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_f1792ae4c020441a9ca7bbb21093e860~mv2.webp/v1/fill/w_305,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_f1792ae4c020441a9ca7bbb21093e860~mv2.webp",
+      "imageAlt": "משחקי חשבון מומלצים לילדי יסודי שבאמת מקדמים"
+    },
+    {
       "title": "איך מחזקים חישוב מנטלי בלי לחץ ובלי ניחושים",
       "href": "https://www.noamdoronmath.co.il/post/%D7%90%D7%99%D7%9A-%D7%9E%D7%97%D7%96%D7%A7%D7%99%D7%9D-%D7%97%D7%99%D7%A9%D7%95%D7%91-%D7%9E%D7%A0%D7%98%D7%9C%D7%99-%D7%91%D7%9C%D7%99-%D7%9C%D7%97%D7%A5-%D7%95%D7%91%D7%9C%D7%99-%D7%A0%D7%99%D7%97%D7%95%D7%A9%D7%99%D7%9D",
       "excerpt": "איך מחזקים חישוב מנטלי אצל ילדים? שיטות קצרות לתרגול יומי, בניית ביטחון ובחירת משימות לפי רמה - בבית, בכיתה ולפני מבחן, בלי לחץ ובלי ניחושים מיותרים.",
@@ -1068,8 +1081,8 @@
   "loadMore": null,
   "source": {
     "liveUrl": "https://amiramnoam.wixsite.com/my-site/blog",
-    "capturedAt": "2026-10-30T10:57:22.526Z",
-    "cardCount": 84,
+    "capturedAt": "2026-10-31T10:29:28.182Z",
+    "cardCount": 85,
     "captureMethod": "old-site-sync"
   }
 }

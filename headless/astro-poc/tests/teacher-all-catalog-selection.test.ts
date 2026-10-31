@@ -14,7 +14,13 @@ function definition(name: string) {
   return end < 0 ? tail : tail.slice(0, end);
 }
 
-const appFor = new Function('pool', 'scope', 'groupWholeQuestions', `
+function modelChoice(groups: any[], count: number, level: string) {
+  const representatives = level === 'all' ? ['a', 'b', 'c'].map(family => groups.find(group => (group.source.level === 'c2' ? 'c' : group.source.level) === family)).filter(Boolean) : [];
+  const chosen = representatives.length > 1 ? [...representatives, ...groups.slice().reverse().filter(group => !representatives.includes(group))].slice(0, count) : groups.slice(-count);
+  return groups.filter(group => chosen.includes(group));
+}
+
+const appFor = new Function('pool', 'scope', 'groupWholeQuestions', 'modelChoice', `
   let state = { ...scope, selected: [], blocks: [], scenario: 'first', style: 'scaffold', filter: 'all', pickMode: 'manual' };
   let history = [], aiPickPending = 0, teacherAiPlanCache = null;
   const currentExercises = () => pool;
@@ -28,10 +34,10 @@ const appFor = new Function('pool', 'scope', 'groupWholeQuestions', `
   const dismissTeacherHumanVerification = () => {};
   const ensureTeacherBotClient = async () => ({ postJson: async (path, payload) => {
     requests.push(payload);
-    const chosen = currentQuestions().slice(-payload.teacher.count).map(group => group.keys[0]);
+    const chosen = modelChoice(currentQuestions(), payload.teacher.count, state.level).map(group => group.keys[0]);
     return { source: 'classifier', model: 'test-model', exerciseIds: chosen, modelExerciseIds: chosen };
   } });
-  ${['exKey', 'questionPreviewGroup', 'currentQuestions', 'keysOfQuestions', 'rolePlan', 'interleaveSheets', 'planOrder', 'smartQuestionPick', 'carriedKeys', 'selectionKey', 'snapshot', 'escapeHTML', 'questionCard', 'wholeQuestionPickCards', 'teacherAiNote', 'teacherAiContext', 'verifiedTeacherPlan', 'rememberTeacherPlans', 'pickWithAi'].map(definition).join('\n')}
+  ${['exKey', 'questionPreviewGroup', 'currentQuestions', 'keysOfQuestions', 'rolePlan', 'interleaveSheets', 'planOrder', 'smartQuestionPick', 'carriedKeys', 'selectionKey', 'snapshot', 'escapeHTML', 'questionCard', 'wholeQuestionPickCards', 'teacherAiNote', 'teacherAiContext', 'teacherLevelsCovered', 'verifiedTeacherPlan', 'rememberTeacherPlans', 'pickWithAi'].map(definition).join('\n')}
   return { groups: currentQuestions(), requests, status, state, pick: pickWithAi, cards: () => wholeQuestionPickCards(currentQuestions()) };
 `);
 
@@ -49,11 +55,11 @@ test('every catalog grade/topic/level exposes all source questions and supports 
         sheetsChecked += 1;
         return source;
       });
-      const levels = ['all', ...new Set(sources.map((source: { level: string }) => source.level))];
+      const levels = ['all', ...new Set(sources.map((source: { level: string }) => source.level === 'c2' ? 'c' : source.level).filter((level: string) => ['a', 'b', 'c'].includes(level)))];
       for (const level of levels) {
-        const pool = sources.filter((source: { level: string }) => level === 'all' || source.level === level).flatMap((source: { questions: unknown[] }) => source.questions);
+        const pool = sources.filter((source: { level: string }) => level === 'all' || source.level === level || (level === 'c' && source.level === 'c2')).flatMap((source: { questions: unknown[] }) => source.questions);
         const label = `${grade.grade}:${topic.id}:${level}`;
-        const app = appFor(pool, { grade: String(grade.grade), topic: String(topic.id), level }, groupWholeQuestions);
+        const app = appFor(pool, { grade: String(grade.grade), topic: String(topic.id), level }, groupWholeQuestions, modelChoice);
         const html = app.cards();
         assert.equal((html.match(/data-whole-question=/g) || []).length, app.groups.length, label);
         assert.equal((html.match(/data-preview-key=/g) || []).length, app.groups.length, label);
@@ -66,7 +72,12 @@ test('every catalog grade/topic/level exposes all source questions and supports 
           assert.equal(local.questionCount, target, label);
           assert.equal(new Set(local.keys).size, local.keys.length, label);
           const picked = await app.pick(count);
-          assert.deepEqual(picked, app.groups.slice(-target).flatMap((group: { keys: string[] }) => group.keys), `AI whole questions ${label}, count ${count}`);
+          assert.deepEqual(picked, modelChoice(app.groups, target, level).flatMap((group: { keys: string[] }) => group.keys), `AI whole questions ${label}, count ${count}`);
+          if (level === 'all') {
+            const required = new Set(sources.map((source: { level: string }) => source.level === 'c2' ? 'c' : source.level).filter((value: string) => ['a', 'b', 'c'].includes(value)));
+            const actual = new Set(app.groups.filter((group: any) => group.keys.every((key: string) => picked.includes(key))).map((group: any) => group.source.level === 'c2' ? 'c' : group.source.level));
+            for (const family of required) assert.ok(actual.has(family), `${label}:${count} omits ${family}`);
+          }
           assert.equal(new Set(picked).size, picked.length, label);
           const request = app.requests.at(-1);
           assert.equal(request.teacher.candidates.length, app.groups.length, label);
@@ -80,5 +91,6 @@ test('every catalog grade/topic/level exposes all source questions and supports 
     }
   }
   assert.deepEqual(catalog.grades.map((grade: { grade: number }) => grade.grade), [1, 2, 3, 4, 5, 6, 7, 8, 9]);
+  assert.equal(scopesChecked, 1281, 'Every actual UI scope: c2 belongs to c and one exposes only all');
   t.diagnostic(`Checked ${sheetsChecked} source sheets, ${scopesChecked} grade/topic/level scopes and ${questionsChecked} whole-question appearances.`);
 });

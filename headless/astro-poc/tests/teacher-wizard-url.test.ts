@@ -68,8 +68,14 @@ test('invalid scopes and unavailable history cannot break manual selection', () 
 });
 
 test('scope-only parsing keeps existing invalid-handoff and ID-filtering rules', () => {
-  for (const search of ['?grade=10&topic=1&level=a', '?grade=8&topic=1&level=c2', '?grade=8&topic=1&level=a&pick=', '?grade=8&topic=1&level=a&pick=invalid']) assert.equal(wizardPrefillFromSearch(search), null);
+  for (const search of ['?grade=10&topic=1&level=a', '?grade=8&topic=1&level=c2', '?grade=8&topic=1&level=', '?grade=8&topic=1&level=invalid', '?grade=8&topic=1&level=a&pick=', '?grade=8&topic=1&level=a&pick=invalid']) assert.equal(wizardPrefillFromSearch(search), null);
   assert.deepEqual(wizardPrefillFromSearch(`?grade=8&topic=1&level=a&pick=invalid,${pick}`).exerciseIds, [pick]);
+});
+
+test('a scope-only URL without a level retains grade and topic with a single-level default', () => {
+  assert.deepEqual(wizardPrefillFromSearch('?grade=9&topic=43&minutes=45'), {
+    grade:'9',topic:'43',level:'a',minutes:45,exerciseIds:[],
+  });
 });
 
 function definition(name: string) {
@@ -104,7 +110,7 @@ function wizard(options: { href?: string; load?: () => Promise<void>; historyFai
     const currentExercises=()=>[],expandToWholeQuestionKeys=(_pool,ids)=>ids,selectionKey=()=>state.selected.join('\\n');
     const assignWholeQuestions=()=>{throw new Error('manual selection must not be assigned');},carriedKeys=()=>new Set();
     const announce=message=>events.push(message),loadCurrentTopic=()=>load(),applyScenario=()=>render();
-    ${['gradeRecord','currentTopic','syncLevels','syncWizardUrl','keepVisible','fillGrades','fillTopics','render','bind','applyWizardPrefill','start'].map(definition).join('\n')}
+    ${['gradeRecord','currentTopic','topicLevelChoices','resolveTopicLevel','syncLevels','syncWizardUrl','keepVisible','fillGrades','fillTopics','render','bind','applyWizardPrefill','start'].map(definition).join('\n')}
     bind();
     return {state,events,levels,elements,calls,window,render,applyWizardPrefill,start,
       async changeLevel(value){for(const el of levels)el.checked=el.value===value;await levels.find(el=>el.value===value).handlers.change();},
@@ -141,14 +147,14 @@ test('grade, topic and demo changes sync their final valid scope before pending 
   const app = wizard({ load: () => pending });
   const gradeChange = app.changeGrade('9');
   let url = new URL(app.window.location.href);
-  assert.equal(url.searchParams.get('grade'), '9'); assert.equal(url.searchParams.get('topic'), '2'); assert.equal(url.searchParams.get('level'), 'all');
+  assert.equal(url.searchParams.get('grade'), '9'); assert.equal(url.searchParams.get('topic'), '2'); assert.equal(url.searchParams.get('level'), 'a');
   assert.equal(url.searchParams.has('pick'), false); assert.deepEqual(app.state.selected, []);
   const topicChange = app.changeTopic('2');
   release(); await Promise.all([gradeChange, topicChange]);
   assert.equal(new URL(app.window.location.href).searchParams.get('topic'), '2');
   app.state.grade='8'; app.state.topic='56'; app.state.level='all'; app.render();
   await app.returnDemo(); url=new URL(app.window.location.href);
-  assert.deepEqual(['grade','topic','level'].map(k=>url.searchParams.get(k)), ['9','2','all']);
+  assert.deepEqual(['grade','topic','level'].map(k=>url.searchParams.get(k)), ['9','2','a']);
 });
 
 test('startup reads a scope-only deep link before any URL write and reloads it with no invented selection', async () => {
@@ -162,6 +168,17 @@ test('startup reads a scope-only deep link before any URL write and reloads it w
   assert.equal(app.state.wizard,'pick'); assert.equal(app.calls.length,0);
   assert.equal(app.events.includes('הבחירה מנועם AI נטענה לאשף.'),false);
   assert.ok(app.events.includes('הכיתה, הנושא והרמה נטענו לאשף.'));
+});
+
+test('startup without a level preserves the linked scope and chooses one level instead of mixing', async () => {
+  const href='https://www.noamdoronmath.co.il/teachers?grade=8&topic=43&minutes=30&tag=guide#pick';
+  const app=wizard({href}); await app.start();
+  assert.equal(app.state.grade,'8'); assert.equal(app.state.topic,'43'); assert.equal(app.state.level,'a');
+  assert.deepEqual(app.state.selected,[]);
+  const url=new URL(app.window.location.href);
+  assert.equal(url.searchParams.get('level'),'a'); assert.equal(url.searchParams.get('minutes'),'30');
+  assert.equal(url.searchParams.get('tag'),'guide'); assert.equal(url.hash,'#pick');
+  assert.equal(app.events.includes('הבחירה מנועם AI נטענה לאשף.'),false);
 });
 
 test('existing selected-question deep links survive startup before and after source loading', async () => {
@@ -193,7 +210,7 @@ test('late completion of an earlier grade load cannot restore its old URL scope'
 test('the deployed teacher module and URL helper invalidate their own caches while the URL helper retains its own version', () => {
   assert.equal(printer,readFileSync(new URL('../../../demos/teacher-factoring-print.js',import.meta.url),'utf8'));
   assert.equal(readFileSync(new URL('../public/teachers/wizard-prefill.js',import.meta.url),'utf8'),readFileSync(new URL('../../../demos/wizard-prefill.js',import.meta.url),'utf8'));
-  assert.match(printer,/wizard-prefill\.js\?v=20261031-level-url/);
-  for(const file of ['../public/teachers/index.html','../../../demos/teacher-practice-picker-site-style.html']) assert.match(readFileSync(new URL(file,import.meta.url),'utf8'),/teacher-factoring-print\.js\?v=20261031-browser-error/);
+  assert.match(printer,/wizard-prefill\.js\?v=20261031-level-choice-help/);
+  for(const file of ['../public/teachers/index.html','../../../demos/teacher-practice-picker-site-style.html']) assert.match(readFileSync(new URL(file,import.meta.url),'utf8'),/teacher-factoring-print\.js\?v=20261031-live-validation/);
   assert.match(printer,/NoamBotClient\.version === '20261031-browser-error'/);
 });

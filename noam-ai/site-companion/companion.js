@@ -3,7 +3,7 @@
  * Retrieval is limited to the verified catalog. The model may only rank and explain those records.
  * qwen3.8-flash is called server-side. This module never reads a key from the browser.
  */
-import { fetchWithTimeout, isOutboundTimeout } from "./bot-guard.js";
+import { fetchWithTimeout, isOutboundTimeout, OutboundTimeoutError } from "./bot-guard.js";
 import { buildCatalogRecords, gradeMentioned, retrieveGuide, retrieveRecords } from "./retrieve.js";
 import { isRoleQuestion, SOLVE_REQUEST_SOURCE } from "./role.js";
 export { isRoleQuestion, SOLVE_REQUEST_SOURCE } from "./role.js";
@@ -119,10 +119,31 @@ export async function callQwen(settings, body) {
     error.code = "QWEN_CONFIG_REJECTED";
     throw error;
   }
+  const now = typeof settings.now === "function" ? settings.now : Date.now;
+  const budget = typeof settings.timeoutMs === "number" ? settings.timeoutMs : QWEN_TIMEOUT_MS;
+  const deadline = Number.isFinite(settings.deadlineMs) ? settings.deadlineMs : now() + budget;
+  const remaining = Math.min(budget, deadline - now());
+  if (remaining <= 0) throw new OutboundTimeoutError();
   let response;
   try {
-    response = await fetchWithTimeout(
-      settings.fetch,
+    return await fetchWithTimeout(
+      async (url, init) => {
+        response = await settings.fetch(url, init);
+        if (!response || !response.ok) {
+          const status = Number(response && response.status) || 0;
+          const failure = httpFailure(status, await providerCodeOf(response));
+          if (now() >= deadline) throw new OutboundTimeoutError();
+          logModel(settings, Object.assign({ model: target.model }, failure));
+          const wrapped = new Error(failure.code);
+          wrapped.code = failure.code;
+          wrapped.status = failure.status;
+          throw wrapped;
+        }
+        // The same abortable budget covers the response body, not only headers.
+        const data = await response.json();
+        if (now() >= deadline) throw new OutboundTimeoutError();
+        return { data, model: target.model };
+      },
       target.chatUrl,
       {
         method: "POST",
@@ -132,10 +153,13 @@ export async function callQwen(settings, body) {
         },
         body: JSON.stringify(Object.assign({}, body, { model: target.model })),
       },
-      typeof settings.timeoutMs === "number" ? settings.timeoutMs : QWEN_TIMEOUT_MS
+      remaining
     );
   } catch (error) {
     if (isOutboundTimeout(error)) throw error;
+    if (["MODEL_AUTH_FAILED", "MODEL_HTTP"].includes(error && error.code)) throw error;
+    // Keep malformed successful response bodies distinguishable from transport failures.
+    if (response && response.ok) throw error;
     logModel(settings, {
       code: "MODEL_HTTP",
       status: 0,
@@ -147,16 +171,6 @@ export async function callQwen(settings, body) {
     wrapped.code = "MODEL_HTTP";
     throw wrapped;
   }
-  if (!response || !response.ok) {
-    const status = Number(response && response.status) || 0;
-    const failure = httpFailure(status, await providerCodeOf(response));
-    logModel(settings, Object.assign({ model: target.model }, failure));
-    const wrapped = new Error(failure.code);
-    wrapped.code = failure.code;
-    wrapped.status = failure.status;
-    throw wrapped;
-  }
-  return { data: await response.json(), model: target.model };
 }
 
 export const FALLBACK_TEXT =
