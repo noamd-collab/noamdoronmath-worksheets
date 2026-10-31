@@ -39,6 +39,13 @@ describe('public lesson menu page', () => {
     assert.equal(html.includes('noindex'), false);
   });
 
+  it('ships a non-empty h1 in the server HTML (SEO audit ב-11)', () => {
+    assert.ok(lesson.includes('<h1 id="title"></h1>'), 'shared lesson markup keeps its empty script-filled h1');
+    const html = renderPublicLesson(lesson, 'www.noamdoronmath.co.il');
+    assert.ok(html.includes('<h1 id="title">למה (a + b)² ≠ a² + b²?</h1>'));
+    assert.equal((html.match(/<h1\b/g) || []).length, 1);
+  });
+
   it('stays noindex on a preview host, like the other public pages', () => {
     const html = renderPublicLesson(lesson, '127.0.0.1');
     assert.match(html, /content="noindex,nofollow"/);

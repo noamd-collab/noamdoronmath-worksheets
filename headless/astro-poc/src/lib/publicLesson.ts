@@ -39,6 +39,8 @@ export function renderPublicLesson(lessonHtml: string, hostname: string): string
       `<title>${PUBLIC_LESSON_TITLE}</title>\n<meta name="description" content="${PUBLIC_LESSON_DESCRIPTION}">\n<link rel="canonical" href="${canonical}">`
     )
     .replace(`property="og:title" content="${LESSON_TITLE}"`, `property="og:title" content="${PUBLIC_LESSON_TITLE}"`)
+    // Server HTML gets the first step's heading; the lesson script rewrites it per step.
+    .replace('<h1 id="title"></h1>', `<h1 id="title">${LESSON_TITLE}</h1>`)
     .replaceAll('__OG_URL__', canonical)
     .replaceAll('__OG_IMAGE__', image);
 }

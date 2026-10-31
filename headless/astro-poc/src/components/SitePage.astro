@@ -4,12 +4,21 @@ import LineArtDoodles from './LineArtDoodles.astro';
 import LandingLoop from './LandingLoop.astro';
 import { marketingLandingLoop } from '../lib/landingLoops';
 import { loadSitePage, localizeSiteHref, type SitePageBlock } from '../lib/sitePages';
+import { isPreviewHost } from '../lib/siteSeo';
 
 interface Props {
   slug: string;
 }
 const { slug } = Astro.props;
 const page = loadSitePage(slug);
+
+// The contact form does not deliver messages yet (dry-run / mock). Real
+// visitors get the e-mail link only; preview and local hosts keep the form for
+// tests. Copy that points at the form switches with the same condition.
+const contactBlock = page.blocks.find((b) => b.type === 'contact');
+const contactMode = (contactBlock?.type === 'contact' && contactBlock.wixForm?.submitMode) || 'dry-run';
+const contactFormInactive = contactMode === 'dry-run' || contactMode === 'mock';
+const contactFormHidden = !!contactBlock && contactFormInactive && !isPreviewHost(Astro.url.hostname);
 
 const footerLinks = [
   { href: '/conditionforfreeworksheets', label: 'תקנון שימוש בדפי עבודה חינמיים' },
@@ -167,12 +176,14 @@ const marketingLoop = marketingLandingLoop(page.slug);
                 </p>
               );
             }
+            const text =
+              contactFormHidden && block.textWhenContactFormHidden ? block.textWhenContactFormHidden : block.text;
             return block.dir === 'ltr' ? (
               <p>
-                <span dir="ltr">{block.text}</span>
+                <span dir="ltr">{text}</span>
               </p>
             ) : (
-              <p>{block.text}</p>
+              <p>{text}</p>
             );
           }
           if (block.type === 'ul' || block.type === 'ol') {
@@ -226,6 +237,21 @@ const marketingLoop = marketingLandingLoop(page.slug);
           if (block.type === 'contact') {
             const wf = block.wixForm;
             const mode = wf?.submitMode || 'dry-run';
+            const formInactive = mode === 'dry-run' || mode === 'mock';
+            if (contactFormHidden) {
+              return (
+                <div
+                  class="site-page__contact"
+                  data-contact-unavailable
+                  data-note={block.note}
+                  data-submit-mode={mode}
+                >
+                  <p>
+                    <a href={block.mailto}>{block.mailtoLabel}</a>
+                  </p>
+                </div>
+              );
+            }
             return (
               <div
                 class="site-page__contact"
@@ -260,9 +286,11 @@ const marketingLoop = marketingLandingLoop(page.slug);
                   <button type="submit">שליחה</button>
                 </form>
                 <p class="site-page__contact-status" data-contact-status role="status" aria-live="polite" />
-                <p class="site-page__contact-note">
-                  בתצוגה זו הטופס במצב בדיקה בלבד וההודעה אינה נמסרת לבעל האתר. אפשר גם לפנות ישירות:
-                </p>
+                {formInactive && (
+                  <p class="site-page__contact-note">
+                    בתצוגה זו הטופס במצב בדיקה בלבד וההודעה אינה נמסרת לבעל האתר. אפשר גם לפנות ישירות:
+                  </p>
+                )}
                 <p>
                   <a href={block.mailto}>{block.mailtoLabel}</a>
                 </p>
