@@ -145,8 +145,8 @@ test("the committed seed matches the committed public rows and hides unreviewed 
   const loaded=build.loadRows(rows,live);
   assert.deepEqual(loaded.rejected,[]);
   assert.deepEqual(build.publicRows(build.bindRows(site,loaded.rows).rows),rows);
-  assert.equal(rows.length,501);
-  assert.equal(rows.filter(row=>row.status==="verified").length,501);
+  assert.equal(rows.length,540);
+  assert.equal(rows.filter(row=>row.status==="verified").length,540);
   assert.equal(rows.filter(row=>row.status==="review").length,0);
   assert.deepEqual(build.firstPartCoverage(site,rows),{eligible:419,verified:419,missing:[]});
   rows.forEach(row=>{
@@ -155,6 +155,27 @@ test("the committed seed matches the committed public rows and hides unreviewed 
     assert.ok(!Object.hasOwn(row,"review_note"),"private review notes stay out of public JSON");
     assert.equal(build.hintIssue(row.hints),null,row.exercise_id);
   });
+});
+
+test("the trapezoid excellence rows from PR316 pass the gates and are pinned to the current revision",()=>{
+  const root=path.join(__dirname,"..");
+  const rows=JSON.parse(fs.readFileSync(path.join(root,"learning/ramzi-hints.json"),"utf8"));
+  const ledger=JSON.parse(fs.readFileSync(path.join(root,"learning/ramzi-hints-review-20261031.json"),"utf8"));
+  const review=new Map(ledger.rows.map(row=>[row.exercise_id,row.review]));
+  const pilot=rows.filter(row=>row.source==="ramzi-writer-pilot-20261031");
+  assert.equal(pilot.length,39);
+  pilot.forEach(row=>{
+    assert.match(row.exercise_id,/^G9-T39-E-Q\d{2}[א-ת]$/);
+    assert.equal(row.status,"verified");
+    assert.equal(row.source_pdf_hash,"e020549ff713406fb0c0f07443b09b18");
+    assert.equal(row.source_native_sha256,"0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201");
+    assert.equal(build.hintIssue(row.hints),null,row.exercise_id);
+    assert.equal(review.get(row.exercise_id),"authored_against_native_source_agent_reviewed_pending_noam_approval");
+  });
+  // Q04ד, Q05ד and Q08ד come from PR319; this PR does not add a second ladder for them.
+  for(const id of ["G9-T39-E-Q04ד","G9-T39-E-Q05ד","G9-T39-E-Q08ד"]){
+    assert.ok(!pilot.some(row=>row.exercise_id===id),id);
+  }
 });
 
 test("the public key reads only verified hints and the two safe source bindings",()=>{

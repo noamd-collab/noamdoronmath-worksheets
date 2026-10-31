@@ -3951,12 +3951,324 @@
    "review": "rewritten_and_peer_reviewed"
   },
   {
+   "exercise_id": "G9-T39-E-Q01ב",
+   "source_pdf_hash": "e020549ff713406fb0c0f07443b09b18",
+   "source_native_sha256": "0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201",
+   "source_exercise_sha256": "831c91cc6d1e02c1b69799bd9b9b3c6f0337e942f66c5a0e3f5ec57b2ad61b45",
+   "hints_sha256": "55e4de0fde6d40eebd727f965dddfe739162ac21285e5f5e8249092ea4d01f6a",
+   "review": "authored_against_native_source_agent_reviewed_pending_noam_approval"
+  },
+  {
+   "exercise_id": "G9-T39-E-Q01ג",
+   "source_pdf_hash": "e020549ff713406fb0c0f07443b09b18",
+   "source_native_sha256": "0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201",
+   "source_exercise_sha256": "45a5319b3b81c8fe60198860ef2a861e9fb0bc62cfbe0a2518b1f614fae30a2a",
+   "hints_sha256": "220ad71db5bf578f76bcc35fcb0746919e96309d9a3c58b822adf89920fb4669",
+   "review": "authored_against_native_source_agent_reviewed_pending_noam_approval"
+  },
+  {
+   "exercise_id": "G9-T39-E-Q02א",
+   "source_pdf_hash": "e020549ff713406fb0c0f07443b09b18",
+   "source_native_sha256": "0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201",
+   "source_exercise_sha256": "aff5c9105f0888b97b4956cfe88edc359984f98abe61b807b8d2923f779c3611",
+   "hints_sha256": "08d58d3fec4b0d3f6e2b41dd085f7c01d16bac482ec4d563ea2a7963b2f9923f",
+   "review": "authored_against_native_source_agent_reviewed_pending_noam_approval"
+  },
+  {
+   "exercise_id": "G9-T39-E-Q02ב",
+   "source_pdf_hash": "e020549ff713406fb0c0f07443b09b18",
+   "source_native_sha256": "0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201",
+   "source_exercise_sha256": "783dc84ec4e3a082ca9a64465c78dc2336bbfb98945d55eaee3188d8d8fb6759",
+   "hints_sha256": "dd097bc06ddbfdcebb02b0c1db748783823380ec1f5c515791caa0c73e63ab38",
+   "review": "authored_against_native_source_agent_reviewed_pending_noam_approval"
+  },
+  {
+   "exercise_id": "G9-T39-E-Q02ג",
+   "source_pdf_hash": "e020549ff713406fb0c0f07443b09b18",
+   "source_native_sha256": "0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201",
+   "source_exercise_sha256": "11a33d759ff01bc5c9804a6f2ad10f463aade5895d79819a63c0ef5fb25fb3e6",
+   "hints_sha256": "f4c17612b8408ead8c6f4c932a7a930bc0eb5b2820fc3221985621571d146dcf",
+   "review": "authored_against_native_source_agent_reviewed_pending_noam_approval"
+  },
+  {
+   "exercise_id": "G9-T39-E-Q03א",
+   "source_pdf_hash": "e020549ff713406fb0c0f07443b09b18",
+   "source_native_sha256": "0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201",
+   "source_exercise_sha256": "16d223d21b64ee375fe80b451309f93ac403236ea8aaa97ae23f049152aa88bb",
+   "hints_sha256": "d9337ccd3761a9dbafd6050cefd18e4597fa2a63a8264a7f5e82b5775f63a787",
+   "review": "authored_against_native_source_agent_reviewed_pending_noam_approval"
+  },
+  {
    "exercise_id": "G9-T39-E-Q03ב",
    "source_pdf_hash": "e020549ff713406fb0c0f07443b09b18",
    "source_native_sha256": "0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201",
    "source_exercise_sha256": "bd8c5f387d8dc57e9c6620919e2a2a33260acf34470276ac4af371f16a0c68d2",
    "hints_sha256": "3df0bca2413e60f5989538b0f293ea75e942a268f678d0d307a15999182a9ca2",
    "review": "rewritten_and_peer_reviewed"
+  },
+  {
+   "exercise_id": "G9-T39-E-Q03ג",
+   "source_pdf_hash": "e020549ff713406fb0c0f07443b09b18",
+   "source_native_sha256": "0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201",
+   "source_exercise_sha256": "7e1bb8baaec13cdc9bd28c4b03c79fa02131d5f44ebf3ce206b34cdeff63d0ad",
+   "hints_sha256": "f4235c5117695498e8fe46f49f19a2ccd9176016a116b2f83a5527db7e6df392",
+   "review": "authored_against_native_source_agent_reviewed_pending_noam_approval"
+  },
+  {
+   "exercise_id": "G9-T39-E-Q04א",
+   "source_pdf_hash": "e020549ff713406fb0c0f07443b09b18",
+   "source_native_sha256": "0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201",
+   "source_exercise_sha256": "38ac0eb1b3d459539927755c8e58d81f04f771496715a5f2e9c73a3056f91e2b",
+   "hints_sha256": "cecc9b314f74d59a6bbec4884d00880499ca0eacf1dcbc3221c28415cd94bcf0",
+   "review": "authored_against_native_source_agent_reviewed_pending_noam_approval"
+  },
+  {
+   "exercise_id": "G9-T39-E-Q04ב",
+   "source_pdf_hash": "e020549ff713406fb0c0f07443b09b18",
+   "source_native_sha256": "0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201",
+   "source_exercise_sha256": "5c829ce1cb26f476cae46c3b25629b3be92c955cea26543eba223fc7b0d8e902",
+   "hints_sha256": "3a757b9e9ed549f7e2e518d53c7afc87e1229f09d0ae9cc023c76442d1a31e67",
+   "review": "authored_against_native_source_agent_reviewed_pending_noam_approval"
+  },
+  {
+   "exercise_id": "G9-T39-E-Q04ג",
+   "source_pdf_hash": "e020549ff713406fb0c0f07443b09b18",
+   "source_native_sha256": "0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201",
+   "source_exercise_sha256": "82d8ff40b1ffcc35bfdb9ab49469385602339711f6c0c996df396c6b4815b92c",
+   "hints_sha256": "cbc4f99fe8301baf0286334d90da05f7dc890df00272d4c606880b9428ef7208",
+   "review": "authored_against_native_source_agent_reviewed_pending_noam_approval"
+  },
+  {
+   "exercise_id": "G9-T39-E-Q05א",
+   "source_pdf_hash": "e020549ff713406fb0c0f07443b09b18",
+   "source_native_sha256": "0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201",
+   "source_exercise_sha256": "1514a4d48b5443cff978a64880244a5f6b83f1462b2a44b429d254b2b6d34f4e",
+   "hints_sha256": "c0b62fdd564f9cd37f69e463dc5c42f83a78d4791f7fd9da94ae7e427a6655b1",
+   "review": "authored_against_native_source_agent_reviewed_pending_noam_approval"
+  },
+  {
+   "exercise_id": "G9-T39-E-Q05ב",
+   "source_pdf_hash": "e020549ff713406fb0c0f07443b09b18",
+   "source_native_sha256": "0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201",
+   "source_exercise_sha256": "5c52f2a0c81f4ccdbe5126bc1f66652e25bee312e7091a79190dbc0c880d0afb",
+   "hints_sha256": "f4a58488d705cbb7da7181213ee0dc02a5f09d8964b0c0fe43bdfc5a442df207",
+   "review": "authored_against_native_source_agent_reviewed_pending_noam_approval"
+  },
+  {
+   "exercise_id": "G9-T39-E-Q05ג",
+   "source_pdf_hash": "e020549ff713406fb0c0f07443b09b18",
+   "source_native_sha256": "0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201",
+   "source_exercise_sha256": "5a7ab3f38dbcdc52926e87e8bbe1b52243d5ac86c162cd1397f977d9f11a229a",
+   "hints_sha256": "7fe0c385d7a4a4d2c320ecb737de8cf09fc88987bbbc8a932934d4dbeea54c36",
+   "review": "authored_against_native_source_agent_reviewed_pending_noam_approval"
+  },
+  {
+   "exercise_id": "G9-T39-E-Q06א",
+   "source_pdf_hash": "e020549ff713406fb0c0f07443b09b18",
+   "source_native_sha256": "0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201",
+   "source_exercise_sha256": "d9fcf953fc9b42d299cc8695f1b278be4fb429ca09e0667da40eec54d3011e6c",
+   "hints_sha256": "5405ba4aa9e7bd2888d3119b70c8dc03b8229d4aa37594d7906c6267b4551a0c",
+   "review": "authored_against_native_source_agent_reviewed_pending_noam_approval"
+  },
+  {
+   "exercise_id": "G9-T39-E-Q06ב",
+   "source_pdf_hash": "e020549ff713406fb0c0f07443b09b18",
+   "source_native_sha256": "0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201",
+   "source_exercise_sha256": "1d356623d9aad8fcc3ade85b341a3c60168f4f61b8106ffd011e7c5a1ee42d86",
+   "hints_sha256": "dbe17cdddf49979086a19813159f13123bbe42f5bea60dcbf68ebf93442605d0",
+   "review": "authored_against_native_source_agent_reviewed_pending_noam_approval"
+  },
+  {
+   "exercise_id": "G9-T39-E-Q06ג",
+   "source_pdf_hash": "e020549ff713406fb0c0f07443b09b18",
+   "source_native_sha256": "0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201",
+   "source_exercise_sha256": "b526565b48da9bcc371778fd681098c016bc70c53572a93643f96f46ac93a27a",
+   "hints_sha256": "6490969e3c9b3d8f4c550e85701f1bcd3b29edf9f67d4ddc4c5ec8960bdacd16",
+   "review": "authored_against_native_source_agent_reviewed_pending_noam_approval"
+  },
+  {
+   "exercise_id": "G9-T39-E-Q07א",
+   "source_pdf_hash": "e020549ff713406fb0c0f07443b09b18",
+   "source_native_sha256": "0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201",
+   "source_exercise_sha256": "06d7d0b58184da26705a2c6af60ba601a6bb9bcde757b278340132a207c60f09",
+   "hints_sha256": "09f3291fb8859cfd8da846690a1f0f5c022fc7fa787c71c9ae27749fda80fa95",
+   "review": "authored_against_native_source_agent_reviewed_pending_noam_approval"
+  },
+  {
+   "exercise_id": "G9-T39-E-Q07ב",
+   "source_pdf_hash": "e020549ff713406fb0c0f07443b09b18",
+   "source_native_sha256": "0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201",
+   "source_exercise_sha256": "3f43f0b486b6dc931b067163d30b028883685d864e09e4a84a13e8da43d10bfa",
+   "hints_sha256": "1b4d908074ff2cba5501a0733540495a6ea4d9156c7f61738d1b06d15efb58e7",
+   "review": "authored_against_native_source_agent_reviewed_pending_noam_approval"
+  },
+  {
+   "exercise_id": "G9-T39-E-Q08א",
+   "source_pdf_hash": "e020549ff713406fb0c0f07443b09b18",
+   "source_native_sha256": "0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201",
+   "source_exercise_sha256": "9444b9e71888d4d39480b1710b4928fb641ba84c9bec89b58b63279164741b86",
+   "hints_sha256": "5562855d332a701bd420e9138b6b04701ed00b7db93e7acbb81da419e713d96e",
+   "review": "authored_against_native_source_agent_reviewed_pending_noam_approval"
+  },
+  {
+   "exercise_id": "G9-T39-E-Q08ב",
+   "source_pdf_hash": "e020549ff713406fb0c0f07443b09b18",
+   "source_native_sha256": "0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201",
+   "source_exercise_sha256": "b4b078f24e7e95bb18a758bc8910dd0f4d940ddc8f2da7716f241ef294092d0c",
+   "hints_sha256": "7fb1f10a6e328ee6a169bd87778174d7fe93c6016a846f874e1dc538902520ca",
+   "review": "authored_against_native_source_agent_reviewed_pending_noam_approval"
+  },
+  {
+   "exercise_id": "G9-T39-E-Q08ג",
+   "source_pdf_hash": "e020549ff713406fb0c0f07443b09b18",
+   "source_native_sha256": "0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201",
+   "source_exercise_sha256": "cdc93ea67247be3e99dde68911d2752e07b8e751bb04f620c02ec81a40bfa8ee",
+   "hints_sha256": "d66186e47b6e1cd070a66601231862521e796a135ba51f9f72e524d5e65ae182",
+   "review": "authored_against_native_source_agent_reviewed_pending_noam_approval"
+  },
+  {
+   "exercise_id": "G9-T39-E-Q09א",
+   "source_pdf_hash": "e020549ff713406fb0c0f07443b09b18",
+   "source_native_sha256": "0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201",
+   "source_exercise_sha256": "621bb32e26388a55709bcc8a4f19651315638181ae293967ba98e122193a7d8c",
+   "hints_sha256": "4eecabfb336dcccdc4ee88fe6b995fb03757691191f07c00e92727834121f5f2",
+   "review": "authored_against_native_source_agent_reviewed_pending_noam_approval"
+  },
+  {
+   "exercise_id": "G9-T39-E-Q09ב",
+   "source_pdf_hash": "e020549ff713406fb0c0f07443b09b18",
+   "source_native_sha256": "0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201",
+   "source_exercise_sha256": "97fd026a5390f78df048fa22ec16f2834cb0d1aa7c3620ba7d27ac33e1f6c725",
+   "hints_sha256": "02ec38d5020e8ee178d7b9996011a217d2367e0d68bf3b53d24e3a07b57b2a30",
+   "review": "authored_against_native_source_agent_reviewed_pending_noam_approval"
+  },
+  {
+   "exercise_id": "G9-T39-E-Q09ג",
+   "source_pdf_hash": "e020549ff713406fb0c0f07443b09b18",
+   "source_native_sha256": "0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201",
+   "source_exercise_sha256": "9a22a4edc4a5a68e540040092dc0563e9e91a83731a309537606b9b0f90bb7f8",
+   "hints_sha256": "823ff4096cf25b13c86f4f265832b79686a417e1805c3562aff1b5c4a3a3e127",
+   "review": "authored_against_native_source_agent_reviewed_pending_noam_approval"
+  },
+  {
+   "exercise_id": "G9-T39-E-Q10א",
+   "source_pdf_hash": "e020549ff713406fb0c0f07443b09b18",
+   "source_native_sha256": "0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201",
+   "source_exercise_sha256": "cdeab561c7f9e0157d89eed70686b210616bcc42a24b305e7b75c04994654794",
+   "hints_sha256": "0815f315b42906201eb18741e831c9bb874ddf260076907af86fd2bcd549255b",
+   "review": "authored_against_native_source_agent_reviewed_pending_noam_approval"
+  },
+  {
+   "exercise_id": "G9-T39-E-Q10ב",
+   "source_pdf_hash": "e020549ff713406fb0c0f07443b09b18",
+   "source_native_sha256": "0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201",
+   "source_exercise_sha256": "ddc0423029b6896bde4f961405227800a9d14a73fbe024083399aa01d06c2868",
+   "hints_sha256": "705cf9daf85055e8cfdde0d9bccb0b7e75c7cb9016abb66c97febcdbe5168e18",
+   "review": "authored_against_native_source_agent_reviewed_pending_noam_approval"
+  },
+  {
+   "exercise_id": "G9-T39-E-Q10ג",
+   "source_pdf_hash": "e020549ff713406fb0c0f07443b09b18",
+   "source_native_sha256": "0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201",
+   "source_exercise_sha256": "a572276e64cb4e439140b7c7028dedac84619c9c2f9533a8030326abf1f8b4e6",
+   "hints_sha256": "f261adb0fa6c175398a8e53fff2496bf048f6216171320235d2a3cd0966e2a7e",
+   "review": "authored_against_native_source_agent_reviewed_pending_noam_approval"
+  },
+  {
+   "exercise_id": "G9-T39-E-Q11א",
+   "source_pdf_hash": "e020549ff713406fb0c0f07443b09b18",
+   "source_native_sha256": "0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201",
+   "source_exercise_sha256": "5a676eee25a74313cca682054a5b76034a24fefb544cec35cba3764d6d539cbf",
+   "hints_sha256": "881c87aaabcc87354bdcf3f090164196085fbf8baeb514fda7e5407195522190",
+   "review": "authored_against_native_source_agent_reviewed_pending_noam_approval"
+  },
+  {
+   "exercise_id": "G9-T39-E-Q11ב",
+   "source_pdf_hash": "e020549ff713406fb0c0f07443b09b18",
+   "source_native_sha256": "0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201",
+   "source_exercise_sha256": "94ad5d654b5c7fb88411af1aa9359db6160b7f0e9281e7bc79193e1e4febb584",
+   "hints_sha256": "3e3d7983b4bbd3dfebaeaad65f1f7f1118b7d76cae9fa58405a29064b25d5c26",
+   "review": "authored_against_native_source_agent_reviewed_pending_noam_approval"
+  },
+  {
+   "exercise_id": "G9-T39-E-Q11ג",
+   "source_pdf_hash": "e020549ff713406fb0c0f07443b09b18",
+   "source_native_sha256": "0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201",
+   "source_exercise_sha256": "53d8da392e2b73bdb80b708a5f3a0f72dac41b2a6116f0deffe2ae2fc237ff37",
+   "hints_sha256": "8acdedb45157012f8e27d48f57902495c23dbeb1d92eea10c321e778d6a5ce5b",
+   "review": "authored_against_native_source_agent_reviewed_pending_noam_approval"
+  },
+  {
+   "exercise_id": "G9-T39-E-Q12א",
+   "source_pdf_hash": "e020549ff713406fb0c0f07443b09b18",
+   "source_native_sha256": "0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201",
+   "source_exercise_sha256": "38cc688b37957e716b7f100a717b1369d5cacef84f9dc64e86b4aca2ef753a4f",
+   "hints_sha256": "cddadcf66d8009bdcf0d3523419fda1e3add495311adad6ee7ef177c6009e4ae",
+   "review": "authored_against_native_source_agent_reviewed_pending_noam_approval"
+  },
+  {
+   "exercise_id": "G9-T39-E-Q12ב",
+   "source_pdf_hash": "e020549ff713406fb0c0f07443b09b18",
+   "source_native_sha256": "0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201",
+   "source_exercise_sha256": "ee902477c9cd7fa3350a8b8a6affa5ca18c1be1ac97b340ea121e4dfdd36ac6b",
+   "hints_sha256": "106973843710b2153b2e077e43689012d311696e2099cdd846815ce6040a6f02",
+   "review": "authored_against_native_source_agent_reviewed_pending_noam_approval"
+  },
+  {
+   "exercise_id": "G9-T39-E-Q12ג",
+   "source_pdf_hash": "e020549ff713406fb0c0f07443b09b18",
+   "source_native_sha256": "0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201",
+   "source_exercise_sha256": "5e5bce2a33e163b44cb9bf8bc99bd5853955fa29f5e9da8704e57d68d36611a9",
+   "hints_sha256": "81973adf1210d64bf0d49d3c1fa2cf667c537b5a95fe1e5e37583a907f5a61d8",
+   "review": "authored_against_native_source_agent_reviewed_pending_noam_approval"
+  },
+  {
+   "exercise_id": "G9-T39-E-Q13א",
+   "source_pdf_hash": "e020549ff713406fb0c0f07443b09b18",
+   "source_native_sha256": "0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201",
+   "source_exercise_sha256": "781872c65b4afd3208e33fa0cc27267a0f4f08acdc4a6c34e820cd03de975c12",
+   "hints_sha256": "97586a889f2e4d97ea2ea8e20970623fd9affd0c6481cdde18131c9fe1898374",
+   "review": "authored_against_native_source_agent_reviewed_pending_noam_approval"
+  },
+  {
+   "exercise_id": "G9-T39-E-Q13ב",
+   "source_pdf_hash": "e020549ff713406fb0c0f07443b09b18",
+   "source_native_sha256": "0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201",
+   "source_exercise_sha256": "3e2a1a2c0db25f916fb31d295ee54c426597c0aae5c0890995986519a1dad206",
+   "hints_sha256": "4209c8b3a6648d97fd037bddebcb89b8fadea8e97916719583361800bd2353c3",
+   "review": "authored_against_native_source_agent_reviewed_pending_noam_approval"
+  },
+  {
+   "exercise_id": "G9-T39-E-Q13ג",
+   "source_pdf_hash": "e020549ff713406fb0c0f07443b09b18",
+   "source_native_sha256": "0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201",
+   "source_exercise_sha256": "bb0c51b3d77f89908131da77bcac36342fd09239b04c2ca9cd869b1dc55682ab",
+   "hints_sha256": "1b08f319c7fe95fb928c75d43dbcb28dd42af283988c4ac52956460eb5829bd1",
+   "review": "authored_against_native_source_agent_reviewed_pending_noam_approval"
+  },
+  {
+   "exercise_id": "G9-T39-E-Q14א",
+   "source_pdf_hash": "e020549ff713406fb0c0f07443b09b18",
+   "source_native_sha256": "0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201",
+   "source_exercise_sha256": "b99e1f74333acde5384f563f514c0419bd80528fb4438d1c6a396bcc9f04d81a",
+   "hints_sha256": "78cec8daf44da0e2a16efb0b4f288173d2c1bd1beeeb3304bc9d2021cdfdce11",
+   "review": "authored_against_native_source_agent_reviewed_pending_noam_approval"
+  },
+  {
+   "exercise_id": "G9-T39-E-Q14ב",
+   "source_pdf_hash": "e020549ff713406fb0c0f07443b09b18",
+   "source_native_sha256": "0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201",
+   "source_exercise_sha256": "0cffa1d2a71d37762362a37c54dcebb524d079fbec1decefe10739721a5b31d4",
+   "hints_sha256": "a21370b7805e7577a84e4f2e48c242a53cfc9dab91bbd616600c17a14b1f4b45",
+   "review": "authored_against_native_source_agent_reviewed_pending_noam_approval"
+  },
+  {
+   "exercise_id": "G9-T39-E-Q14ג",
+   "source_pdf_hash": "e020549ff713406fb0c0f07443b09b18",
+   "source_native_sha256": "0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201",
+   "source_exercise_sha256": "4f4b87772b95bfabd0836ed2014c475a1059b15213e14da415b456fc41e5e7d4",
+   "hints_sha256": "929b282144b0027c97cb7dcad465860bab7f1495a817c372e2bd9039696e7f4d",
+   "review": "authored_against_native_source_agent_reviewed_pending_noam_approval"
   },
   {
    "exercise_id": "G9-T41-A-Q01א",
