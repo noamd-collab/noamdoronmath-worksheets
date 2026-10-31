@@ -34,7 +34,7 @@ for(const path of ['../public/worksheet-viewer-noam.html','../../../worksheet-vi
   for(const id of ['noamHint','noamSend','noamNewThread'])assert.equal(h.c.document.getElementById(id).disabled,false);
  });
  it(label+': synchronous preflight exception cannot strand busy state',async()=>{
-  const h=setup(source);h.c.noamDidacticGuide=()=>{throw new Error('preflight failed');};assert.doesNotThrow(()=>h.c.askNoam('free_question','רמז'));assert.equal(h.c.busy,false);assert.equal(h.thread().messages.at(-1).text,'preflight failed');assert.equal(h.timers.size,0);
+  const h=setup(source);h.c.currentAttachments=()=>{throw new Error('preflight failed');};assert.doesNotThrow(()=>h.c.askNoam('free_question','רמז'));assert.equal(h.c.busy,false);assert.equal(h.thread().messages.at(-1).text,'preflight failed');assert.equal(h.timers.size,0);
  });
  it(label+': expired same-exercise generation cannot post, append, unlock or clear newer photos',async()=>{
   const h=setup(source),old=deferred(),next=deferred();h.c.noamQuestionAnalysis=()=>old.promise;h.c.askNoam('free_question','old');await h.advance(55000);

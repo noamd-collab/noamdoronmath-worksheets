@@ -61,7 +61,26 @@ it('deferred public config is awaited and bounded without loading security or a 
 it('both viewer copies prefetch after manifest load and put prepared standard hints before any guide or AI action',()=>{
  for(const path of ['../public/worksheet-viewer-noam.html','../../../worksheet-viewer-noam.html']){
   const viewer=readFileSync(new URL(path,import.meta.url),'utf8'),ask=viewer.slice(viewer.indexOf('function askNoam('),viewer.indexOf('function noamRetryActionLabel('));
-  assert.match(viewer,/noam-curated-hints\.js\?v=20261031-source-bound1/);assert.match(viewer,/manifest = data;[\s\S]{0,600}NoamCuratedHints\.prefetch\(data\)/);assert.ok(ask.indexOf('noamPreparedHint(')<ask.indexOf('noamDidacticResponse('));assert.ok(ask.indexOf('noamPreparedHint(')<ask.indexOf('noamPrepareOperationClient('));assert.doesNotMatch(viewer,/function noamFirstSourceHint\(/);
+  assert.match(viewer,/noam-curated-hints\.js\?v=20261031-source-bound2/);assert.match(viewer,/manifest = data;[\s\S]{0,600}NoamCuratedHints\.prefetch\(data\)/);assert.doesNotMatch(ask,/noamDidacticResponse\(|noamDidacticGuide\(|noamDidacticPrompt\(/);assert.ok(ask.indexOf('noamPreparedHint(')<ask.indexOf('noamPrepareOperationClient('));assert.doesNotMatch(viewer,/function noamFirstSourceHint\(/);
  }
  assert.equal(readFileSync(new URL('../../../noam-curated-hints.js',import.meta.url),'utf8'),code);
+});
+
+it('config waiting and response body share one absolute4s budget; expiry never grants a fresh request budget',async()=>{
+ for(const configAt of [2500,4000]){
+  let now=0,next=0;const timers=new Map<number,{at:number,fn:()=>void}>(),listeners:any={},calls:any[]=[],body=deferred();
+  const {bank,c}=setup({Date:class extends Date{static now(){return now;}},NOAM_LEARNING_CONFIG:null,
+   setTimeout:(fn:any,ms:number)=>{timers.set(++next,{at:now+ms,fn});return next;},clearTimeout:(n:number)=>timers.delete(n),
+   document:{readyState:'interactive',addEventListener:(n:string,f:any)=>listeners[n]=f,removeEventListener(){}}});
+  const pending=bank.prefetch(manifest(),{fetch:async(url:any,init:any)=>{calls.push({url,init});return {ok:true,json:()=>body.promise};}});
+  now=configAt;c.NOAM_LEARNING_CONFIG=config;listeners.DOMContentLoaded();await drain();
+  if(configAt===2500){assert.equal(calls.length,1);assert.deepEqual([...timers.values()].map(x=>x.at),[4000]);now=4000;[...timers.values()][0].fn();}
+  assert.equal(await pending,0);assert.equal(bank.status(manifest(),id),'unavailable');assert.equal(calls.length,configAt===2500?1:0);
+  body.resolve([row()]);await drain();assert.equal(bank.get(manifest(),id),null);
+ }
+});
+it('successful approved-catalog misses are distinct from transient network/body failures',async()=>{
+ const {bank}=setup(),sheet=manifest();assert.equal(await bank.prefetch(sheet,{fetch:fetchRows([])}),0);assert.equal(bank.status(sheet,id),'missing');
+ bank.invalidate(sheet);assert.equal(await bank.prefetch(sheet,{fetch:async()=>{throw new Error('offline');}}),0);assert.equal(bank.status(sheet,id),'unavailable');
+ assert.equal(await bank.prefetch(sheet,{fetch:fetchRows([row()])}),1);assert.equal(bank.status(sheet,id),'available');
 });

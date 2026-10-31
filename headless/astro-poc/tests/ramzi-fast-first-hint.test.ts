@@ -74,6 +74,26 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
   const f=setup(source);f.c.window.NoamCuratedHints={prefetch:()=>{throw new Error('freeform never requests a standard hint');}};f.photos.push({name:'work.png'});
   f.c.askNoam('free_question','האם הצעד שלי נכון?');await finish(f.c);assert.equal(f.counts.analysis,1);assert.equal(f.calls.length,1);assert.equal(f.calls[0].payload.helpKind,'free_question');assert.equal(f.calls[0].payload.hasStudentAttachments,true);assert.equal(f.calls[0].payload.sourceHintOnly,undefined);assert.equal(f.photos.length,0);assert.equal(f.thread.hintIndex,0);
  });
+ it(label+': a successful catalog miss offers an additional question without retrying or sending any request',async()=>{
+  const f=setup(source);let invalidated=0,focused=0;
+  f.c.window.NoamCuratedHints={prefetch:async()=>0,get:()=>null,status:()=> 'missing',invalidate:()=>invalidated++};
+  f.c.askNoam('hint',standard);await drain();const error=f.thread.messages.at(-1);assert.equal(error.answerErrorCode,'PREPARED_HINT_MISSING');assert.match(error.text,/שאלה נוספת/);assert.doesNotMatch(error.text,/לנסות שוב/);
+  const input=f.c.document.createElement('textarea');input.id='noamQuestion';input.focus=()=>focused++;f.c.document.body.appendChild(input);
+  f.c.noamStripMarkdownEmphasis=(x:string)=>x;f.c.noamCanOfferDrawing=()=>false;f.load('addTranscriptBubble','noamRetryActionLabel');
+  const row=f.c.addTranscriptBubble(f.c.document.body,'assistant',error.text,'',null,error,f.thread),button=row.querySelector('button');assert.equal(button.textContent,'כתבו שאלה נוספת');button.click();
+  assert.equal(focused,1);assert.equal(invalidated,0);assert.equal(f.calls.length,0);assert.equal(f.counts.analysis,0);assert.equal(f.thread.hintIndex,0);
+ });
+ it(label+': extra questions never use unbound authored-guide answers, goals or repair prompts',async()=>{
+  for(const id of ['G9-T39-E-Q03ב','G9-T20-E-Q06א','G9-T15-E-Q04א','G9-T15-E-Q04ב']){
+   const f=setup(source);f.exercise.id=id;let oldGuideReads=0;
+   const stale={goal:'MN parallel AC',nextStep:'old false goal',modelPrompt:'old false source'};
+   f.c.noamDidacticGuide=()=>{oldGuideReads++;return stale;};f.c.noamDidacticPrompt=()=>{oldGuideReads++;return stale.modelPrompt;};f.c.noamDidacticResponse=()=>{oldGuideReads++;return {text:stale.nextStep};};
+   f.c.noamSolverMessage=(message:string,_thread:any,_topic:any,prompt:string)=>{assert.equal(prompt,'');return message;};
+   f.c.noamGuardGeometryResult=(result:any,_payload:any,_analysis:any,_message:any,guide:any,prompt:string)=>{assert.equal(guide,null);assert.equal(prompt,'');return result;};
+   f.c.askNoam('free_question','לא הבנתי את הנתון שבסעיף הנוכחי');await finish(f.c);
+   assert.equal(oldGuideReads,0,id);assert.equal(f.counts.analysis,1,id);assert.equal(f.calls.length,1,id);assert.equal(f.calls[0].payload.helpKind,'free_question');assert.equal(f.thread.messages.at(-1).text,'רמז רגיל');assert.doesNotMatch(JSON.stringify(f.calls),/old false|MN parallel/);
+  }
+ });
  it(label+': a warm image or manifest cache cannot replace canonical source priority',async()=>{
   const f=setup(source);f.load('noamQuestionAnalysis');let sourceReads=0,imageReads=0;
   const cached={readable:true,transcription:'conflicting old OCR'},canonical={readable:true,transcription:'verified printed source'};

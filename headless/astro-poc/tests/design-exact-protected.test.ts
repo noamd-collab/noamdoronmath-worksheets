@@ -121,7 +121,7 @@ describe('exact-design protected live-baseline boundaries', () => {
       '<script src="noam-source-data-visual.js?v=20261028-source-data3"></script>',
       '<script src="noam-source-scaffold.js?v=20261029-scaffold1"></script>',
       // Noam, 2026-10-31: source-bound public catalog supplies all three standard hints.
-      '<script src="noam-curated-hints.js?v=20261031-source-bound1"></script>',
+      '<script src="noam-curated-hints.js?v=20261031-source-bound2"></script>',
     ];
     const allScripts = [...viewerWithNativeRelease.matchAll(/<script\b[^>]*>[\s\S]*?<\/script>/gi)].map(match => match[0]);
     assert.equal(allScripts.length, 27, 'The release adds its ten exact dependencies and curated hints');
@@ -282,7 +282,11 @@ describe('exact-design protected live-baseline boundaries', () => {
     // leaves the draft and attachments alone; no request is sent. The adapter reaches it
     // through window.noamAnswerUnderstood, the main script's only new global. The exchange
     // is marked understood: it stays out of the model history and is never a drawing target.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '486bca4285c2b2e5297950eb111bf876c92a2face17f9d454608db2765942ed6');
+    // Noam, 2026-10-31 review: understood/closing replies have no check pair;
+    // catalog config+body share4s, confirmed misses focus the question composer,
+    // and unbound historical guides cannot answer or steer additional questions.
+    // DOM/catalog/deadline/freeform regressions cover the source and UI fences.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), 'b160e27d44da3527126c66a0cbb23595ec605c0f63cff1202ec667520f61ed7b');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {

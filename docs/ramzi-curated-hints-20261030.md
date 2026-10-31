@@ -28,7 +28,7 @@ Future catalogue content updates require review against the exact source revisio
 
 ## The October 2026 banks
 
-Two Zero-Spoiler v2.1 banks feed the table, plus ten rows added afterwards: 500 rows in all.
+The original PR302 bank contained 500 rows from two Zero-Spoiler v2.1 banks plus ten PDF additions. The 31 October target ladder makes the current total 501 rows (416 verified, 85 review). The historical audit counts below describe those original 500 rows.
 
 **The 421-part middle-school bank** (157 grade 7, 177 grade 8, 87 grade 9) was written against the printed parts in `noam-ai/native/`, mostly part א of question 1. The builder maps its IDs to live viewer IDs:
 
@@ -54,7 +54,7 @@ The bank's own pattern checks (no `=`, no extra numbers, no final answer value) 
 | `review`: both | 5 |
 | **Total from the 421-part bank** | **418** (334 `verified`, 84 `review`) |
 
-By grade, `verified`: ז׳ 141 of 157, ח׳ 125 of 177, ט׳ 68 of 84. With the 72 kept rows and the 10 added rows, the table has **415 `verified`** and **85 `review`** rows.
+By grade, `verified`: ז׳ 141 of 157, ח׳ 125 of 177, ט׳ 68 of 84. With the 72 kept rows and the 10 PDF rows, the original bank had **415 `verified`** and **85 `review`** rows. The added q3b ladder brings the current bank to **416 `verified`**, with **85 `review`** unchanged.
 
 The typical spoiler is hint 2 or 3 reading the values off the graph or table for the student, or naming the theorem or rule the part asks for. Two rows have factual errors: `G8-T10-E-Q01א` (segment times differ from the graph) and `G8-T35-B-Q01א` (values of b and c are swapped).
 

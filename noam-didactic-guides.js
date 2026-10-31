@@ -455,7 +455,7 @@
 
   function needsCheck(text){
     var value=String(text||"").replace(/\s+/g," ").trim();
-    if(!value){return false;}
+    if(!value||value===CLOSING_TEXT.replace(/\s+/g," ").trim()||value===UNDERSTOOD_TEXT.replace(/\s+/g," ").trim()){return false;}
     if(/חושב…|עדיין חושב/.test(value)){return false;}
     return true;
   }

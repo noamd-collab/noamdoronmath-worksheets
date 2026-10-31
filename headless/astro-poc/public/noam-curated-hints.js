@@ -33,7 +33,7 @@
     return {worksheet:worksheet,known:known,pdf:manifest.pdfHash,native:native,binding:binding,
       key:worksheet+":"+binding+":"+ids.sort().join(",")};
   }
-  function waitForConfig(){
+  function waitForConfig(deadline){
     var cfg=config(),doc=root&&root.document;
     if(cfg||!doc||doc.readyState==="complete"){return Promise.resolve(cfg);}
     return new Promise(function(resolve){
@@ -46,32 +46,37 @@
       }
       doc.addEventListener("DOMContentLoaded",finish,{once:true});
       if(root&&typeof root.addEventListener==="function"){root.addEventListener("load",finish,{once:true});}
-      timer=setTimeout(finish,TIMEOUT_MS);
+      timer=setTimeout(finish,Math.max(0,deadline-Date.now()));
     });
   }
-  function request(cfg,source,fetchImpl){
+  function request(cfg,source,fetchImpl,deadline){
+    var remaining=deadline-Date.now();
+    if(remaining<=0){return Promise.reject(new Error("CURATED_HINTS_TIMEOUT"));}
     var url=cfg.url+"/rest/v1/"+TABLE+"?select=exercise_id,hint_1,hint_2,hint_3,source_pdf_hash,source_native_sha256"+
       "&exercise_id=like."+encodeURIComponent(source.worksheet+"-Q*");
     var controller=typeof AbortController==="function"?new AbortController():null,timer;
     var timeout=new Promise(function(_,reject){timer=setTimeout(function(){
       if(controller){controller.abort();}reject(new Error("CURATED_HINTS_TIMEOUT"));
-    },TIMEOUT_MS);});
-    var work=Promise.resolve().then(function(){return fetchImpl(url,{method:"GET",
+    },remaining);});
+    var work=Promise.resolve().then(function(){
+      if(Date.now()>=deadline){throw new Error("CURATED_HINTS_TIMEOUT");}
+      return fetchImpl(url,{method:"GET",
       headers:{apikey:cfg.key,Accept:"application/json"},cache:"no-store",credentials:"omit",
       signal:controller?controller.signal:undefined});}).then(function(response){
       if(!response||!response.ok){throw new Error("CURATED_HINTS_HTTP");}
       return response.json();
     });
-    return Promise.race([work,timeout]).then(function(rows){clearTimeout(timer);return rows;},function(error){clearTimeout(timer);throw error;});
+    return Promise.race([work,timeout]).then(function(rows){clearTimeout(timer);if(Date.now()>=deadline){throw new Error("CURATED_HINTS_TIMEOUT");}return rows;},function(error){clearTimeout(timer);throw error;});
   }
   function prefetch(manifest,options){
     var source=scope(manifest),opts=options||{};
     var fetchImpl=opts.fetch||(root&&typeof root.fetch==="function"?root.fetch.bind(root):null);
     if(!source||!fetchImpl){return Promise.resolve(0);}
     if(loaded[source.key]){return loaded[source.key].promise;}
-    var entry={sets:Object.create(null),promise:null};loaded[source.key]=entry;
-    entry.promise=(opts.config?Promise.resolve(config(opts.config)):waitForConfig()).then(function(cfg){
-      if(!cfg){throw new Error("CURATED_HINTS_CONFIG");}return request(cfg,source,fetchImpl);
+    var deadline=Date.now()+TIMEOUT_MS;
+    var entry={sets:Object.create(null),promise:null,ready:false};loaded[source.key]=entry;
+    entry.promise=(opts.config?Promise.resolve(config(opts.config)):waitForConfig(deadline)).then(function(cfg){
+      if(!cfg){throw new Error("CURATED_HINTS_CONFIG");}return request(cfg,source,fetchImpl,deadline);
     }).then(function(rows){
       if(!Array.isArray(rows)||rows.length>1000){throw new Error("CURATED_HINTS_ROWS");}
       var seen=Object.create(null);
@@ -84,6 +89,7 @@
         if(!hints.every(function(item){return item&&item.length<=MAX_HINT;})){return;}
         entry.sets[id]={hints:hints,binding:source.binding,revision:JSON.stringify([source.binding,id,hints])};
       });
+      entry.ready=true;
       return Object.keys(entry.sets).length;
     }).catch(function(){if(loaded[source.key]===entry){delete loaded[source.key];}return 0;});
     return entry.promise;
@@ -92,6 +98,10 @@
     var source=scope(manifest),entry=source&&loaded[source.key],set=entry&&entry.sets[exerciseId];
     return set?{hints:set.hints.slice(),binding:set.binding,revision:set.revision}:null;
   }
+  function status(manifest,exerciseId){
+    var source=scope(manifest),entry=source&&loaded[source.key];
+    return entry&&entry.ready?(entry.sets[exerciseId]?"available":"missing"):"unavailable";
+  }
   function invalidate(manifest){var source=scope(manifest);if(source){delete loaded[source.key];}}
-  return {prefetch:prefetch,get:get,invalidate:invalidate,table:TABLE};
+  return {prefetch:prefetch,get:get,status:status,invalidate:invalidate,table:TABLE};
 });

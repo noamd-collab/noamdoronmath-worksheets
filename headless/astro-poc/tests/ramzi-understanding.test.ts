@@ -10,6 +10,7 @@ import { dirname, join } from 'node:path';
 import { describe, it } from 'node:test';
 import { fileURLToPath } from 'node:url';
 import { runInNewContext } from 'node:vm';
+import { parseHTML } from 'linkedom';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const require = createRequire(import.meta.url);
@@ -180,8 +181,8 @@ describe('Ramzi understanding checks', () => {
     const step = guides.respond(proof, { helpKind: 'free_question', studentMessage: 'לא הבנתי', progress: 3 });
     assert.match(step.text, /^זה בסדר גמור, בואו ננסה אחרת\.\n/);
     assert.match(step.text, /E נמצאת על AB/);
-    assert.equal(guides.needsCheck(guides.closingText, '', ''), true);
-    assert.equal(guides.needsCheck(guides.understoodText, '', ''), true);
+    assert.equal(guides.needsCheck(guides.closingText, '', ''), false);
+    assert.equal(guides.needsCheck(guides.understoodText, '', ''), false);
   });
 
   it('keeps the הבנתי exchange in the thread, in order, without touching the draft', () => {
@@ -271,7 +272,7 @@ describe('Ramzi understanding checks', () => {
     assert.doesNotMatch(fourth, /רמז|שמח|בוא ננסה/);
     assert.equal(guides.needsCheck('הסבר בלי שאלה.', '', 'השאלה שלך: הסבר כללי'), true);
     assert.equal(guides.needsCheck('רמזי חושב…', '', ''), false);
-    assert.equal(guides.needsCheck(guides.closingText, '', ''), true);
+    assert.equal(guides.needsCheck(guides.closingText, '', ''), false);
     assert.equal(guides.needsCheck('מה אפשר לומר על המשולש?', '', ''), true);
   });
 
@@ -314,4 +315,30 @@ describe('Ramzi understanding checks', () => {
     assert.match(style, /white-space:pre-wrap/);
     assert.doesNotMatch(adapter, /ramzi-check-no[\s\S]{0,80}disabled\s*=/);
   });
+});
+
+function namedFunction(source:string,name:string){
+ const start=source.indexOf('function '+name+'(');assert.ok(start>=0,name);
+ const end=source.indexOf('\nfunction ',start+1),indented=source.indexOf('\n  function ',start+1);
+ return source.slice(start,Math.min(...[end,indented].filter(n=>n>=0)));
+}
+it('the local understood exchange and closing message have no understanding pair in the actual transcript DOM',()=>{
+ const {document,window}=parseHTML('<html><body><div id="noamTranscript"></div></body></html>');
+ const transcript=document.getElementById('noamTranscript')!,thread:any={hintIndex:1,history:[],messages:[{role:'assistant',text:'איזו צלע משותפת?'}]};
+ (window as any).NoamDidacticGuides=guides;
+ const c:any={document,window,selectedExercise:{id:'ex'},busy:false,pendingCheckFocus:false,noamStripMarkdownEmphasis:(s:string)=>s,noamCanOfferDrawing:()=>false,
+  exerciseThread:()=>thread,saveNoamState(){},announceNoam(){},exerciseLabel:()=> 'סעיף א'};
+ runInNewContext(['addTranscriptBubble','rowText','rowQualifies','makeCheckGroup','placeUnderstandingChecks','noamAnswerUnderstood'].map(n=>namedFunction(viewer,n)).join('\n'),c);
+ c.renderNoamChat=()=>{transcript.replaceChildren();thread.messages.forEach((m:any)=>c.addTranscriptBubble(transcript,m.role,m.text,'',null,m,thread));c.placeUnderstandingChecks(transcript);};
+ c.renderNoamChat();assert.equal(transcript.querySelectorAll('.ramzi-check').length,1);
+ assert.equal(c.noamAnswerUnderstood(guides.understoodText),true);assert.equal(transcript.querySelectorAll('.ramzi-check').length,0);assert.equal(transcript.querySelectorAll('[data-ramzi-understood="1"]').length,2);
+ thread.messages.push({role:'assistant',text:guides.closingText});c.renderNoamChat();assert.equal(transcript.querySelectorAll('.ramzi-check').length,0,'unmarked legacy closing text also closes');
+ thread.messages.push({role:'assistant',text:'איזו זווית מתאימה?'});c.renderNoamChat();assert.equal(transcript.querySelectorAll('.ramzi-check').length,1,'a later real answer gets exactly one pair');assert.equal(transcript.querySelector('.noam-row.assistant:last-child')!.querySelectorAll('.ramzi-check').length,1);
+});
+it('לא הבנתי cannot open a standard hint or invoke an unbound historical guide',()=>{
+ const {document,window}=parseHTML('<html><body><div id="panel"><div class="noam-row assistant"><div class="noam-bubble">רמז</div></div></div><input id="noamQuestion"><button id="noamSend"></button><button id="noamHint"></button></body></html>');
+ let sent=0,hints=0,planned=0;(window as any).NoamDidacticGuides={planUnderstanding(){planned++;throw new Error('unbound guide');}};
+ document.getElementById('noamSend')!.addEventListener('click',()=>sent++);document.getElementById('noamHint')!.addEventListener('click',()=>hints++);
+ const c:any={document,window,Event:window.Event,panelBody:document.getElementById('panel'),currentExerciseId:()=>proof,openedHintCount:()=>1,pendingCheckFocus:false};
+ runInNewContext(namedFunction(viewer,'submitUnderstanding'),c);c.submitUnderstanding('not-understood');assert.equal(planned,0);assert.equal(hints,0);assert.equal(sent,1);
 });
