@@ -38,11 +38,12 @@ const TEACHER_PLANS_SYSTEM = [
 
 /** Server diagnostics contain only fixed enums and bounded counts, never model content. */
 export function logTeacherSelection(settings, entry) {
-  const codes = ["MODEL_RESPONSE_INVALID", "MODEL_RESPONSE_TRUNCATED", "MODEL_SELECTION_REJECTED", "MODEL_SELECTION_RECOVERED"];
-  const reasons = ["missing-content", "invalid-json", "length-limit", "primary-invalid", "level-coverage", "requested-plan"];
+  const codes = ["MODEL_RESPONSE_INVALID", "MODEL_RESPONSE_TRUNCATED", "MODEL_SELECTION_REJECTED", "MODEL_SELECTION_RECOVERED",
+    "MODEL_CORRECTION_ATTEMPTED", "MODEL_CORRECTION_SUCCEEDED", "MODEL_CORRECTION_REJECTED"];
+  const reasons = ["missing-content", "invalid-json", "length-limit", "primary-invalid", "level-coverage", "requested-plan", "exact-primary", "provider-failure", "deadline"];
   if (!entry || !codes.includes(entry.code) || !reasons.includes(entry.reason)) return;
   const safe = { event: "noam-teacher-selection", code: entry.code, reason: entry.reason };
-  for (const [key, max] of [["requestedCount", 60], ["primaryCount", 60], ["planCount", 3], ["completionTokens", 100000]]) {
+  for (const [key, max] of [["requestedCount", 60], ["primaryCount", 60], ["planCount", 3], ["completionTokens", 100000], ["remainingMs", 18000]]) {
     const value = entry[key];
     if (Number.isInteger(value) && value >= 0) safe[key] = Math.min(value, max);
   }
@@ -207,7 +208,8 @@ export function classifierRequestBody(input, index) {
   if (count > 0) {
     lines.push("כמות מבוקשת לבחירה: " + count);
     if (requiredFamilies.length > 1) {
-      lines.push("המורה ביקש לשלב רמות. ב-exerciseLabels ובכל אחת מרשימות exerciseLabelsByCount חובה לבחור לפחות שאלה שלמה אחת מכל משפחת רמה זמינה: " + requiredFamilies.join(", ") + ".");
+      const selectionLists = preparePlans ? "ב-exerciseLabels ובכל אחת מרשימות exerciseLabelsByCount" : "ב-exerciseLabels";
+      lines.push("המורה ביקש לשלב רמות. " + selectionLists + " חובה לבחור לפחות שאלה שלמה אחת מכל משפחת רמה זמינה: " + requiredFamilies.join(", ") + ".");
       lines.push("c ו-c2 הן אותה משפחת מצוינות c; אין חובה לבחור משני המקורות. משפחה שלא נותרו בה שאלות ברשימת המועמדים אינה נדרשת. שאר הבחירה לפי מטרת השיעור והערת המורה; אין להחזיר בחירה מרמה אחת בלבד.");
     }
     const matching = matchingTeacherSheets(index, teacher);
@@ -366,6 +368,45 @@ export function recoverTeacherPickFromPlan(index, input, pick, plans) {
     sheets: matchingTeacherSheets(index, teacher).filter((sheet) => selectedSheets.has(sheet)),
     selectionSource: "classifier",
   };
+}
+
+export function teacherCorrectionEligible(index, input, classification, pick, plans) {
+  const teacher = teacherOf(input);
+  return input?.page?.kind === "teachers" && Boolean(classification) && TEACHER_PLAN_COUNTS.includes(teacher.count) &&
+    teacher.planCounts.length === TEACHER_PLAN_COUNTS.length && teacherPlanCandidates(index, teacher).length > 0 &&
+    Boolean(pick && (pick.selectionError || ["fallback", "mixed"].includes(pick.selectionSource))) &&
+    !plans[String(teacher.count)];
+}
+
+/** A correction is accepted only as an exact, complete model selection. */
+export function validateExactTeacherPrimary(index, input, classification) {
+  const invalid = { pick: null, selectionError: "MODEL_SELECTION_INVALID" };
+  if (!classification || classification.primaryLabelsValid === false) return invalid;
+  const teacher = teacherOf(input);
+  const available = teacherPlanCandidates(index, teacher);
+  const count = teacher.count;
+  if (!TEACHER_PLAN_COUNTS.includes(count) || !available.length) return invalid;
+  const target = Math.min(count, new Set(available.map((item) => item.questionKey)).size);
+  const labels = classification.scopedExerciseLabels || classification.exerciseLabels;
+  const chosen = explicitTeacherQuestions(available, labels, target);
+  if (!chosen) return invalid;
+  if (!coversLevelFamilies(chosen, mixedLevelFamilies(available, teacher.level))) return { pick: null, selectionError: "MODEL_LEVEL_COVERAGE_MISSING" };
+  const selectedSheets = new Set(chosen.map((item) => item.sheet));
+  return { selectionError: null, pick: { band: Number(teacher.grade) <= 6 ? "elementary" : "middle",
+    exerciseIds: chosen.slice().sort((a, b) => a.orderIndex - b.orderIndex).map((item) => item.key),
+    modelExerciseIds: chosen.map((item) => item.key), sheetIds: [],
+    sheets: matchingTeacherSheets(index, teacher).filter((sheet) => selectedSheets.has(sheet)), selectionSource: "classifier" } };
+}
+
+export function teacherCorrectionRequestBody(input, index, reason) {
+  const focused = { ...input, teacher: { ...input.teacher, planCounts: [] } };
+  const body = classifierRequestBody(focused, index);
+  const feedback = reason === "level-coverage"
+    ? "הבחירה הקודמת לא ייצגה את כל משפחות הרמה הזמינות."
+    : "הבחירה הקודמת לא עברה בדיקה של המזהים, הכמות המדויקת או ייחודיות השאלות השלמות.";
+  body.messages[0].content += "\nזהו תיקון יחיד לבחירה. החזר רק JSON עם exerciseLabels עבור הכמות הראשית; אין להחזיר exerciseLabelsByCount או בחירות לכמויות אחרות.";
+  body.messages[1].content += "\n" + feedback + " בחר מחדש את כל הבחירה מתוך אותם מזהים מותרים, בדיוק בכמות המבוקשת ועם כל משפחת רמה נדרשת. אל תשלים בחירה חלקית ואל תמציא מזהים.";
+  return body;
 }
 
 function matchingTeacherSheets(index, teacher) {
@@ -642,7 +683,10 @@ export async function classifyTeacherRequest(input, options) {
   const settings = options || {};
   const fetcher = settings.fetch;
   if (!settings.apiKey || typeof fetcher !== "function") return null;
-  const called = await callQwen(settings, classifierRequestBody(input, settings.teacherIndex));
+  const body = settings.correctionReason
+    ? teacherCorrectionRequestBody(input, settings.teacherIndex, settings.correctionReason)
+    : classifierRequestBody(input, settings.teacherIndex);
+  const called = await callQwen(settings, body);
   const data = called.data;
   const choice = data && data.choices && data.choices[0];
   const content = choice && choice.message && choice.message.content;

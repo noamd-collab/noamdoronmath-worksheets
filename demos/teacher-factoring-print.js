@@ -394,6 +394,8 @@ async function pickWithAi(rawCount) {
     const code = String(requestError.code || '');
     const message = requestError.recaptchaBrowserError === true
       ? 'בדיקת האבטחה של Google נתקלה בתקלה בתקשורת. הבחירה שלכם נשמרה; אפשר לנסות שוב מאוחר יותר או לבחור ידנית.'
+      : code === 'BOT_VERIFICATION_TIMEOUT'
+        ? 'בדיקת האבטחה של Google לא הסתיימה בזמן. הבחירה שלכם נשמרה; אפשר לרענן את הדף ולנסות שוב, או לבחור ידנית.'
       : code === 'BOT_STEP_UP_REQUIRED'
       ? 'נדרש אימות אנושי, אך הוא לא זמין כרגע. הבחירה שלכם נשמרה ואפשר להמשיך לבחור ידנית.'
       : code === 'BOT_CHALLENGE_UNAVAILABLE'

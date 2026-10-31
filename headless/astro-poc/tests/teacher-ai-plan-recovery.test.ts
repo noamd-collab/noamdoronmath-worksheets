@@ -89,8 +89,10 @@ function assertExactModelChoice(body: any, labels: string[], candidates: Candida
   assert.equal(body.selectionError,undefined);
   assert.doesNotMatch(body.answer||'',/הושלמה מקומית|הנה בחירה בסיסית|לא התקבלה/);
 }
-function assertRejected(run: Awaited<ReturnType<typeof request>>) {
-  assert.equal(run.result.status,200);assertSingleCall(run);
+function assertRejected(run: Awaited<ReturnType<typeof request>>, modelCalls = 1) {
+  assert.equal(run.result.status,200);
+  assert.deepEqual(run.calls,['rate','verify',...Array(modelCalls).fill('model')]);
+  assert.equal(run.modelRequests.length,modelCalls);
   assert.equal(run.body.source,'fallback');assert.equal(run.body.model,null);
   assert.deepEqual(run.body.exerciseIds,[]);assert.deepEqual(run.body.modelExerciseIds,[]);
   assert.equal(run.body.teacherPlans,undefined);
@@ -141,7 +143,7 @@ test('another valid count never rescues a missing requested plan by slicing or p
     const rows=catalogIndex.filter((row: any)=>row.grade===1&&row.topicId==='21');
     const input=inputFor(rows,count),model: any=validModel(input.teacher.candidates,count);
     delete model.exerciseLabels;delete model.exerciseLabelsByCount[String(count)];
-    const run=await request({rows,input,model});assertRejected(run);
+    const run=await request({rows,input,model});assertRejected(run,2);
     assert.equal(run.body.selectionError,'MODEL_SELECTION_INVALID');
   }
 });
@@ -197,14 +199,14 @@ test('failure and recovery diagnostics contain only fixed categories and bounded
   const rejected=await request({rows,input,model:{exerciseLabels:[],exerciseLabelsByCount:{}}});
   const malformed=await request({raw:'PRIVATE_MODEL_RAW_SENTINEL',finishReason:'PRIVATE_PROVIDER_FINISH_SENTINEL',completionTokens:1e9});
   assert.ok(recovered.logs.some(entry=>entry.code==='MODEL_SELECTION_RECOVERED'));
-  assert.ok(rejected.logs.some(entry=>entry.code==='MODEL_SELECTION_REJECTED'));
+  assert.ok(rejected.logs.some(entry=>entry.code==='MODEL_CORRECTION_REJECTED'));
   const events=[...recovered.logs,...rejected.logs,...malformed.logs].filter(entry=>entry.event==='noam-teacher-selection');
-  const allowed=new Set(['event','code','reason','requestedCount','primaryCount','planCount','completionTokens','finishReason']);
+  const allowed=new Set(['event','code','reason','requestedCount','primaryCount','planCount','completionTokens','finishReason','remainingMs']);
   for(const entry of events) {
     assert.ok(Object.keys(entry).every(key=>allowed.has(key)));
-    assert.ok(['MODEL_RESPONSE_INVALID','MODEL_RESPONSE_TRUNCATED','MODEL_SELECTION_REJECTED','MODEL_SELECTION_RECOVERED'].includes(entry.code));
-    assert.ok(['missing-content','invalid-json','length-limit','primary-invalid','level-coverage','requested-plan'].includes(entry.reason));
-    for(const [key,max] of [['requestedCount',60],['primaryCount',60],['planCount',3],['completionTokens',100000]] as const) {
+    assert.ok(['MODEL_RESPONSE_INVALID','MODEL_RESPONSE_TRUNCATED','MODEL_SELECTION_REJECTED','MODEL_SELECTION_RECOVERED','MODEL_CORRECTION_ATTEMPTED','MODEL_CORRECTION_SUCCEEDED','MODEL_CORRECTION_REJECTED'].includes(entry.code));
+    assert.ok(['missing-content','invalid-json','length-limit','primary-invalid','level-coverage','requested-plan','exact-primary'].includes(entry.reason));
+    for(const [key,max] of [['requestedCount',60],['primaryCount',60],['planCount',3],['completionTokens',100000],['remainingMs',18000]] as const) {
       if(key in entry)assert.ok(Number.isInteger(entry[key])&&entry[key]>=0&&entry[key]<=max);
     }
     if('finishReason' in entry)assert.ok(['stop','length','content_filter','other','missing'].includes(entry.finishReason));
@@ -228,7 +230,7 @@ for(const invalid of ['missing family','partial','extra','duplicate','unknown','
     if(invalid==='duplicate')bad[4]=bad[3];
     if(invalid==='unknown')bad[4]='c:999';
     if(invalid==='nonstring')bad[4]=[bad[4]];
-    const run=await request({rows,input,model});assertRejected(run);
+    const run=await request({rows,input,model});assertRejected(run,2);
     assert.equal(run.body.selectionError,'MODEL_SELECTION_INVALID');
   });
 }
@@ -238,7 +240,7 @@ test('two parts of one source question cannot stand for two whole questions in a
   const input=inputFor(rows),extra={...input.teacher.candidates[0],id:'a:1ב',label:'1ב',key:`ex:${rows[0].pdfId}:1ב`};
   input.teacher.candidates.push(extra);
   const model={exerciseLabelsByCount:{'5':['a:1א','b:1א','c:1א','a:1ב','a:2א']}};
-  assertRejected(await request({rows,input,model}));
+  assertRejected(await request({rows,input,model}),2);
 });
 
 test('excluded candidates stay excluded and exhausted families are not reintroduced during recovery',async()=>{
@@ -249,7 +251,7 @@ test('excluded candidates stay excluded and exhausted families are not reintrodu
   assertExactModelChoice(run.body,model.exerciseLabelsByCount['5'],candidates);
   assert.ok(run.body.exerciseIds.every((id: string)=>candidates.some(item=>item.key===id)));
   model.exerciseLabelsByCount['5'][4]=original.find(item=>item.family==='c')!.id;
-  assertRejected(await request({rows,input,model}));
+  assertRejected(await request({rows,input,model}),2);
 });
 
 for(const count of [8,12]) {

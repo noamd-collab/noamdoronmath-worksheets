@@ -68,7 +68,7 @@ test('all-level prompts require each eligible family in primary and cached plans
   assert.doesNotMatch(filtered, /משפחת רמה זמינה: a, b, c/);
 });
 
-test('missing-family primary and same-count plan fail honestly after one verified model call with no local fill', async () => {
+test('missing-family primary and same-count plan fail honestly after one guarded correction with no local fill', async () => {
   const rows = index.filter((row: any) => row.grade === 1 && row.topicId === '1');
   const input = inputFor(rows), aOnly = input.teacher.candidates.filter(candidate => candidate.family === 'a').slice(0, 5).map(candidate => candidate.id);
   const calls: string[] = [];
@@ -84,7 +84,7 @@ test('missing-family primary and same-count plan fail honestly after one verifie
     },
   });
   const body = result.body as any;
-  assert.equal(result.status, 200); assert.deepEqual(calls, ['rate', 'verify', 'model']);
+  assert.equal(result.status, 200); assert.deepEqual(calls, ['rate', 'verify', 'model', 'model']);
   assert.equal(body.source, 'fallback'); assert.equal(body.model, null);
   assert.equal(body.selectionError, 'MODEL_LEVEL_COVERAGE_MISSING'); assert.equal(body.code, body.selectionError);
   assert.deepEqual(body.exerciseIds, []); assert.deepEqual(body.modelExerciseIds, []); assert.deepEqual(body.sheetIds, []);

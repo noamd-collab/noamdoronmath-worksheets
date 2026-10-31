@@ -114,6 +114,7 @@ for (const failure of [
   Object.assign(new Error('denied'), { status: 403, code: 'BOT_VERIFICATION_FAILED' }),
   Object.assign(new Error('limited'), { status: 429, code: 'RATE_LIMITED' }),
   Object.assign(new Error('timeout'), { code: 'REQUEST_TIMEOUT' }),
+  Object.assign(new Error('verification timed out'), { code: 'BOT_VERIFICATION_TIMEOUT' }),
   Object.assign(new Error('unconfigured'), { status: 403, code: 'BOT_STEP_UP_REQUIRED' }),
 ]) {
   test(`an AI failure (${(failure as any).code || 'model'}) keeps manual choices and never substitutes local selection`, async () => {
@@ -128,6 +129,10 @@ for (const failure of [
     assert.doesNotMatch(app.status.textContent, /נבחרו|בחירה אוטומטית מקומית|עם AI\./);
     if ((failure as any).status === 429) assert.match(app.status.textContent, /הגבלת בקשות/);
     if ((failure as any).code === 'BOT_STEP_UP_REQUIRED') assert.match(app.status.textContent, /אימות אנושי.*לא זמין/);
+    if ((failure as any).code === 'BOT_VERIFICATION_TIMEOUT') {
+      assert.match(app.status.textContent, /Google לא הסתיימה בזמן/);
+      assert.doesNotMatch(app.status.textContent, /לא אישרה|נדרש אימות אנושי/);
+    }
   });
 }
 
@@ -621,6 +626,50 @@ for (const count of [5, 10, 15]) {
     assert.deepEqual(endpoint.calls, ['rate', 'verify', 'model']);
   });
 }
+
+for (const count of [5, 10, 15]) {
+  test(`the guarded endpoint corrects one invalid model reply and the actual UI selects exactly ${count} model-chosen questions`, async () => {
+    const pool = mixedLevelPool();
+    let replies = 0;
+    let correctedLabels: string[] = [];
+    const endpoint = guardedModelReply(pool, payload => {
+      if (++replies === 1) return { exerciseLabels: [] };
+      correctedLabels = rawRecoveryPlans(payload).exerciseLabelsByCount[String(count)];
+      return { exerciseLabels: correctedLabels };
+    });
+    const app = harness(endpoint.reply, { pool, grade: '8', savedKeys: [] });
+    app.state.level = 'all'; app.state.topic = '43';
+    app.state.selected = ['ex:b-mixed-source:20'];
+    const picked = await app.pick(count);
+    assert.equal(picked.length, count);
+    assertMixedSelection(picked, pool);
+    const expected = correctedLabels.map(label => {
+      const [level, id] = label.split(':');
+      return `ex:${level}-mixed-source:${id}`;
+    });
+    assert.deepEqual(new Set(picked), new Set(expected));
+    assert.deepEqual(new Set(endpoint.bodies[0].modelExerciseIds), new Set(expected));
+    assert.equal(endpoint.bodies[0].source, 'classifier');
+    assert.match(app.status.textContent, new RegExp(`^נבחרו ${count} שאלות.*עם AI`));
+    assert.equal(app.requests.length, 1);
+    assert.deepEqual(endpoint.calls, ['rate', 'verify', 'model', 'model']);
+  });
+}
+
+test('two rejected model replies leave the entire manual selection unchanged in the actual UI', async () => {
+  const pool = mixedLevelPool();
+  const endpoint = guardedModelReply(pool, () => ({ exerciseLabels: [] }));
+  const app = harness(endpoint.reply, { pool, grade: '8', savedKeys: [] });
+  app.state.level = 'all'; app.state.topic = '43';
+  app.state.selected = ['ex:b-mixed-source:20'];
+  const before = JSON.stringify(app.state);
+  assert.deepEqual(await app.pick(5), []);
+  assert.equal(JSON.stringify(app.state), before);
+  assert.equal(app.renders(), 0);
+  assert.match(app.status.textContent, /לא התקבלה.*הבחירה שלכם נשמרה/);
+  assert.doesNotMatch(app.status.textContent, /נבחרו 5/);
+  assert.deepEqual(endpoint.calls, ['rate', 'verify', 'model', 'model']);
+});
 
 for (const failure of [
   { name: 'provider auth', status: 401, code: 'MODEL_AUTH_FAILED' },
