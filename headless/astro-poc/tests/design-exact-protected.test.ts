@@ -291,8 +291,10 @@ describe('exact-design protected live-baseline boundaries', () => {
     // ramzi-hint-exhaustion tests exercise both released viewer copies.
     // 1 November: a fresh source-bound catalog revision clears only stale
     // prepared hint turns; revision/DOM tests preserve additional conversation.
-    // The glossary also flips above the composer, keeping all hint controls reachable.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), 'b931c812d0ce08348f178b058d289c2b6cbe7355cfac9f5613bd8c4267f8e6a5');
+    // The glossary also protects the actual hint row/button above the composer;
+    // separate live hint/composer bounds and post-focus/scroll remeasurement
+    // are pinned by the positioning fixture.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), '9266607c351513311692f09b06c790f7b310fb176945debf7e21ca8531f716c0');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {
