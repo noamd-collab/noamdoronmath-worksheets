@@ -142,7 +142,7 @@ describe('exact-design protected live-baseline boundaries', () => {
     // Only presentation CSS changed in this head; metadata/SEO/fonts stay fixed.
     // 2026-10-23: pointer cursor on expandable local visuals. Metadata unchanged.
     // 31 October: author CSS must not reveal the policy-hidden drawing control.
-    assert.equal(sha256(head), '75a2758fd9250df0d6053504fb9a69d26f0c079e3dcc4b59e6f3af1e6c3c64e8');
+    assert.equal(sha256(head), '54e2cebfd2250f27cf459dbb0702cf2b077c9e38dff36ea9777c4cf49749b6f0');
     const scripts = [...viewer.matchAll(/<script\b[^>]*>[\s\S]*?<\/script>/gi)].map((match) => match[0]);
     const adapters = scripts.filter((script) => /^<script id="exact-viewer-adapter">/.test(script));
     const companion = scripts.filter((script) => /noam-site-companion\.js/.test(script));
