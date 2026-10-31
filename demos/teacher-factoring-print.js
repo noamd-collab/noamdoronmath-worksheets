@@ -121,18 +121,18 @@ function ensureTeacherBotClient() {
   if (teacherBotClientPromise) return teacherBotClientPromise;
   teacherBotClientPromise = new Promise((resolve, reject) => {
     function finish(ok) {
-      if (ok && window.NoamBotClient && window.NoamBotClient.version === '20261030-stepup-error-detail' && typeof window.NoamBotClient.create === 'function') {
+      if (ok && window.NoamBotClient && window.NoamBotClient.version === '20261031-browser-error' && typeof window.NoamBotClient.create === 'function') {
         resolve(window.NoamBotClient.create({ api: '/api', enabled: true, modelTimeoutMs: 25000 }));
         return;
       }
       reject(new Error('BOT_CLIENT_UNAVAILABLE'));
     }
-    if (window.NoamBotClient && window.NoamBotClient.version === '20261030-stepup-error-detail') {
+    if (window.NoamBotClient && window.NoamBotClient.version === '20261031-browser-error') {
       finish(true);
       return;
     }
     const loader = document.createElement('script');
-    loader.src = '/noam-bot-client.js?v=20261030-stepup-error-detail';
+    loader.src = '/noam-bot-client.js?v=20261031-browser-error';
     loader.async = true;
     loader.onload = () => finish(true);
     loader.onerror = () => finish(false);
@@ -340,6 +340,7 @@ async function pickWithAi(rawCount) {
     if (!preparedPlan) {
       const client = await ensureTeacherBotClient();
       result = await client.postJson('/api/noamSiteCompanion', payload, {
+        isCurrent: requestStillCurrent,
         onChallenge: (challenge) => {
           awaitingHuman = true;
           humanWaitStartedAt = Date.now();
@@ -381,11 +382,13 @@ async function pickWithAi(rawCount) {
   if (requestError) {
     paintAiPickButtons();
     const code = String(requestError.code || '');
-    const message = code === 'BOT_STEP_UP_REQUIRED'
+    const message = requestError.recaptchaBrowserError === true
+      ? 'בדיקת האבטחה של Google נתקלה בתקלה בתקשורת. הבחירה שלכם נשמרה; אפשר לנסות שוב מאוחר יותר או לבחור ידנית.'
+      : code === 'BOT_STEP_UP_REQUIRED'
       ? 'נדרש אימות אנושי, אך הוא לא זמין כרגע. הבחירה שלכם נשמרה ואפשר להמשיך לבחור ידנית.'
       : code === 'BOT_CHALLENGE_UNAVAILABLE'
         ? 'בדיקת האבטחה של Google לא נטענה. הבחירה שלכם נשמרה; אפשר לעיין בפרטי התקלה בבדיקת האבטחה ולסגור אותה.'
-      : code === 'BOT_CHALLENGE_CANCELLED' || code === 'BOT_CHALLENGE_EXPIRED' || code === 'BOT_CHALLENGE_CONTEXT_CHANGED'
+      : code === 'BOT_CHALLENGE_CANCELLED' || code === 'BOT_CHALLENGE_EXPIRED' || code === 'BOT_CHALLENGE_CONTEXT_CHANGED' || code === 'BOT_REQUEST_CANCELLED' || code === 'BOT_REQUEST_CONTEXT_CHANGED'
         ? requestError.message
         : requestError.status === 429 || requestError.httpStatus === 429
           ? 'יש כרגע הגבלת בקשות. הבחירה שלכם נשמרה; נסו שוב מאוחר יותר.'

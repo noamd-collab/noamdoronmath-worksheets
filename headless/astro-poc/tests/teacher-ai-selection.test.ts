@@ -26,7 +26,7 @@ const successfulReply = (payload: Payload) => ({
   exerciseIds: payload.teacher.candidates.slice(-payload.teacher.count).map((candidate) => `ex:${source.pdfId}:${candidate.label}`),
 });
 
-type ChallengeHandler = { onChallenge: (challenge: unknown) => Promise<string> };
+type ChallengeHandler = { isCurrent: () => boolean; onChallenge: (challenge: unknown) => Promise<string> };
 type HumanRequest = { isCurrent: () => boolean; onSubmitting: () => void; challenge: unknown; client: unknown; anchor: unknown };
 function harness(reply: (payload: Payload, state: State, requestOptions: ChallengeHandler) => unknown = successfulReply, options: { pool?: unknown[]; grade?: string; scenario?: string; style?: string; savedKeys?: string[]; humanVerification?: (request: HumanRequest) => Promise<string>; clock?: { now: () => number }; timers?: { setInterval: (fn: () => void) => number; clearInterval: () => void } } = {}) {
   return new Function('pool', 'groupWholeQuestions', 'savedKeys', 'reply', 'options', 'Date', 'globalThis', `
@@ -141,6 +141,50 @@ test('manual changes made during an AI request are retained instead of overwritt
   assert.equal(app.state.lastAiPickCount, 0);
   assert.equal(app.renders(), 0);
   assert.match(app.status.textContent, /הבחירה שלכם נשמרה/);
+});
+
+test('the client recovery guard detects a manual edit before another verification request', async () => {
+  const manual = groupKeys(groups[2]);
+  const app = harness((_payload, state, requestOptions) => {
+    assert.equal(requestOptions.isCurrent(), true);
+    state.selected = manual.slice();
+    assert.equal(requestOptions.isCurrent(), false);
+    throw Object.assign(new Error('הנושא או הבחירה השתנו. הבחירה שלכם נשמרה.'), { code: 'BOT_REQUEST_CONTEXT_CHANGED' });
+  });
+  assert.deepEqual(await app.pick(5), []);
+  assert.deepEqual(app.state.selected, manual);
+  assert.equal(app.requests.length, 1);
+  assert.equal(app.renders(), 0);
+  assert.equal(app.state.lastAiPickCount, 0);
+  assert.match(app.status.textContent, /הבחירה שלכם נשמרה/);
+});
+
+test('the client recovery guard detects a changed topic without changing the current manual choices', async () => {
+  const app = harness((_payload, state, requestOptions) => {
+    assert.equal(requestOptions.isCurrent(), true);
+    state.topic = '3';
+    assert.equal(requestOptions.isCurrent(), false);
+    throw Object.assign(new Error('הנושא או הבחירה השתנו. הבחירה שלכם נשמרה.'), { code: 'BOT_REQUEST_CONTEXT_CHANGED' });
+  });
+  const manual = groupKeys(groups[2]);
+  app.state.selected = manual.slice();
+  assert.deepEqual(await app.pick(10), []);
+  assert.equal(app.state.topic, '3');
+  assert.deepEqual(app.state.selected, manual);
+  assert.equal(app.renders(), 0);
+});
+
+test('repeated Google browser failure reports a communication error and preserves the complete manual state', async () => {
+  const app = harness(() => {
+    throw Object.assign(new Error('Google verification failed'), { status: 403, code: 'BOT_VERIFICATION_FAILED', recaptchaBrowserError: true });
+  });
+  app.state.selected = groupKeys(groups[2]).slice();
+  const before = JSON.stringify(app.state);
+  assert.deepEqual(await app.pick(15), []);
+  assert.equal(JSON.stringify(app.state), before);
+  assert.equal(app.renders(), 0);
+  assert.match(app.status.textContent, /Google.*תקלה בתקשורת.*הבחירה שלכם נשמרה/);
+  assert.doesNotMatch(app.status.textContent, /נבחרו|נחסמה מטעמי אבטחה|בחירה אוטומטית מקומית|עם AI\./);
 });
 
 test('changing a saved section while AI is running is not overwritten by the returned selection', async () => {
