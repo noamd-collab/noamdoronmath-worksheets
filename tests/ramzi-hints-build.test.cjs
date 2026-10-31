@@ -143,9 +143,15 @@ test("the committed seed matches the committed public rows and hides unreviewed 
   const loaded=build.loadRows(rows,live);
   assert.deepEqual(loaded.rejected,[]);
   assert.deepEqual(build.publicRows(build.bindRows(site,loaded.rows).rows),rows);
-  assert.equal(rows.length,501);
-  assert.equal(rows.filter(row=>row.status==="verified").length,416);
+  assert.equal(rows.length,540);
+  assert.equal(rows.filter(row=>row.status==="verified").length,455);
   assert.equal(rows.filter(row=>row.status==="review").length,85);
+  // Trapezoid מצוינות pilot, 31.10.2026: hints written from the printed native parts.
+  const pilot=rows.filter(row=>row.source==="ramzi-writer-pilot-20261031");
+  assert.equal(pilot.length,39);
+  assert.ok(pilot.every(row=>row.exercise_id.startsWith("G9-T39-E-")&&row.status==="verified"));
+  ["G9-T39-E-Q07ג","G9-T39-E-Q14ד","G9-T39-E-Q14ה"].forEach(id=>
+    assert.ok(!rows.some(row=>row.exercise_id===id),id+" is in the manifest but not in the native package"));
 });
 
 test("the public key reads only verified hints and the two safe source bindings",()=>{

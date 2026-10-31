@@ -4,7 +4,7 @@ Ramzi can show pre-written hints (three per worksheet part) from Supabase instea
 
 ## Current runtime contract (31 October)
 
-1. `public.noam_ramzi_hints` is the existing Claude PR302 catalogue, with one added reviewed row for `G9-T39-E-Q03ב`. There are now 501 rows: 416 verified, 85 review. This is coverage of selected worksheet parts, not a complete bank for every site question.
+1. `public.noam_ramzi_hints` is the existing Claude PR302 catalogue, with one added reviewed row for `G9-T39-E-Q03ב`. With the trapezoid excellence pilot (below) there are now 540 rows: 455 verified, 85 review. This is coverage of selected worksheet parts, not a complete bank for every site question.
 2. Every row is bound to its current manifest's immutable `source_pdf_hash`. Where the manifest pins native JSON, `source_native_sha256` must also match. The builder refuses unresolved or stale bindings. Reused T32/T40 IDs are resolved only to the exact canonical owner with matching topic and printed task; a T40 page cannot consume T32 hints.
 3. `noam-curated-hints.js` prefetches the public rows when the manifest is loaded. RLS exposes verified rows only; column grants expose only the exercise ID, three hint texts and the two source-binding fields. Status, review notes and bank context remain private to privileged maintainers. Visitors cannot write.
 4. All three standard hint buttons read only this bound catalogue. They never start image analysis, a model, the former source-probe shortcut, answer repair or an automatic drawing. The reply is shown immediately after the bounded catalogue read. A thread pins one complete ladder so revisions cannot mix.
@@ -20,11 +20,20 @@ The current Noam task authorizes completing and publishing this integration; the
 
 1. Review and pin the exact schema/seed/UI commit, run focused and full checks, and obtain the required Opus5.5 medium review.
 2. Publish backend PR29's seven-column `getExercisesMiddle` projection before changing the older exercise-table grants. Its code is backward compatible with both permission states.
-3. Apply `learning/ramzi-hints-schema.sql` transactionally, then `learning/ramzi-hints-seed.sql`; verify 416 verified and 85 review rows, exact target ladder and public grants/hidden review rows. Record SQL file hashes and readback evidence.
+3. Apply `learning/ramzi-hints-schema.sql` transactionally, then `learning/ramzi-hints-seed.sql`; verify 455 verified and 85 review rows, exact target ladder and public grants/hidden review rows. Record SQL file hashes and readback evidence.
 4. Apply the reviewed `learning/exercises-tables-rls.sql` only after the backend publish succeeds. It enables RLS and removes public solution-column access while preserving the Home projection and service-role access. Verify the actual grants and approved reads/denied writes afterwards.
 5. Merge the website integration PR against baseline, publish via `tools/release/release.sh` using the existing workflow, verify live asset bytes, all three q3b hints and their timings, then an additional Flash question. Record public catalogue requests separately from provider requests.
 
 Future catalogue content updates require review against the exact source revision. A `review` row remains hidden until the content and its source binding are reviewed. A running thread must not silently mix old and new ladders.
+
+## Trapezoid excellence pilot (31 October 2026)
+
+The grade 9 trapezoid excellence worksheet (`G9-T39-E`) had prepared hints for two parts only (1א׳ and 3ב׳). Its other parts were written from the printed text in `noam-ai/native/G9-TRAP/c/noam-ai.json`, including the figure data and the allowed tools:
+
+- One agent wrote three graded hints per part under the Zero-Spoiler v2.1 rules: direction, action, and the step before solving. Fractions use `$\frac{a}{b}$`, and the hints are text only.
+- A judge checked each set against the printed part. If the judge found a problem, a student-lens and a teacher-lens reviewer tried to refute it. A confirmed problem meant one rewrite, followed by a second audit.
+- All 39 printed parts passed: 39 rows, `source` `ramzi-writer-pilot-20261031`, all `verified`.
+- `Q07ג`, `Q14ד` and `Q14ה` are in the page map (manifest) but not in the native package, which has only `q7a–b` and `q14a–c`. They get no row until the mapping is checked against the PDF.
 
 ## The October 2026 banks
 
