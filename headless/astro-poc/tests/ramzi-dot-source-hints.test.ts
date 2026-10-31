@@ -52,7 +52,7 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
   await f.c.getExerciseAnalysis(f.exercise);
   assert.equal(captured.length,1);assert.equal(captured[0].crop.page,12);assert.deepEqual(captured[0].crops.map((c:any)=>c.page),[11,12]);
  });
- it(prefix+': the actual hint action sends the canonical dot arrays with verified printed captions in its single existing solve request',async()=>{
+ it(prefix+': an additional question sends the canonical dot arrays with verified printed captions in its single existing solve request',async()=>{
   const f=fixture(v),cached={diagram_description:'original OCR'},requests:any[]=[];
   Object.assign(f.c,{busy:false,panelBody:f.c.document.body,noamDrafts:{},MIN_WAIT:0,API:'/model',g:7,lv:'a',LEVEL:{a:'רמה א׳'},ttl:'תבניות',
    setNoamBusy:(busy:boolean)=>{f.c.busy=busy;},restoreNoamChatFocus(){},exerciseLabel:()=> 'שאלה 21ד',
@@ -60,7 +60,7 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
    noamSolverMessage:(s:string)=>s,postJson:async(url:string,payload:any)=>{requests.push({url,payload});return {ok:true,answer:'השוו את מספר הנקודות בשורות.'};},
    noamGuardGeometryResult:(r:any)=>r,noamGuardSignedAddResult:(r:any)=>r,noamClarifySignedAddLanguage:(s:string)=>s,
    noamResponseVisual:()=>null,noamVisualAnswer:(_:string,s:string)=>s,setTimeout:(cb:any,ms:number)=>{if(ms<25000)cb();return 0;}});
-  runInNewContext(fn(v,'askNoam'),f.c);f.c.askNoam('hint','תן לי רמז אחד בלבד.');await settled();
+  runInNewContext(fn(v,'askNoam'),f.c);f.c.askNoam('free_question','אפשר להסביר איך משתמשים בנתונים המודפסים בסעיף הזה?');await settled();
   assert.equal(requests.length,1);assert.equal(requests[0].url,'/model/noamImageSolve');assert.equal(requests[0].payload.exerciseId,f.exercise.id);
   const sent=requests[0].payload.imageAnalysis,description=sent.diagram_description.slice(0,800);
   assert.equal(sent.content_type,'native_source_canonical');assert.doesNotMatch(JSON.stringify(sent),/original OCR/);

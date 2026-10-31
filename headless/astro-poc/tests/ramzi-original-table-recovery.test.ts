@@ -89,13 +89,13 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
   const cold=fixture(v);cold.c.selectedExercise=cold.manifest.exercises.find((e:any)=>e.id!==cold.exercise.id);
   assert.equal(cold.c.noamRenderOriginalTable(saved),null);await settled();assert.equal(cold.fetches.length,0);
  });
- it(name+': actual failed hint records recovery authorization only for worksheet read errors without attachments (canonical source unavailable)',async()=>{
+ it(name+': actual failed additional question records recovery authorization only for worksheet read errors without attachments (canonical source unavailable)',async()=>{
   for(const [code,attachments] of [['QUESTION_IMAGE_UNREADABLE',false],['QUESTION_IMAGE_UNREADABLE',true],['BOT_RISK_REJECTED',false],['UNKNOWN',false]] as const){
    const f=fixture(v);f.thread.messages=[];const error=Object.assign(new Error('read failed'),{code});f.c.currentAttachments=()=>attachments?[{}]:[];
    Object.assign(f.c,{setTimeout:()=>0,clearTimeout(){},busy:false,panelBody:f.c.document.body,noamDrafts:{},MIN_WAIT:0,API:'/model',g:7,lv:'a',LEVEL:{a:'רמה א׳'},ttl:'חוקיות',setNoamBusy:(b:boolean)=>{f.c.busy=b;},restoreNoamChatFocus(){},exerciseLabel:()=> '16ב',
     noamDidacticGuide:()=>null,noamDidacticPrompt:()=>'',noamDidacticResponse:()=>null,getExerciseAnalysis:()=>Promise.reject(error),
     noamCanonicalSourceAnalysis:()=>Promise.resolve(null)});
-   runInNewContext(fn(v,'askNoam'),f.c);f.c.askNoam('hint','רמז');await settled();assert.equal(f.thread.messages.length,2);
+   runInNewContext(fn(v,'askNoam'),f.c);f.c.askNoam('free_question','איך משתמשים בנתוני הסעיף הזה?');await settled();assert.equal(f.thread.messages.length,2);
    assert.equal(f.thread.messages[1].sourceRecoveryAllowed,code==='QUESTION_IMAGE_UNREADABLE'&&!attachments);assert.equal(f.thread.messages[1].sourceRecoveryExerciseId,f.exercise.id);assert.equal(f.thread.hintIndex,0);
   }
  });

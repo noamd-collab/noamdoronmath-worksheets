@@ -79,38 +79,43 @@ test('a late answer or failure does not announce the old part after the student 
   for (const fail of [false, true]) {
     const announcements: string[] = [];
     const sourceHints: any[] = [];
+    const requestedParts: string[] = [];
     let finishAnalysis: (value: object) => void = () => {};
     const thread = { hintIndex: 0, messages: [] as any[], history: [] as any[] };
     const context: any = {
       document: { activeElement: null }, panelBody: { contains: () => false },
-      selectedExercise: { id: 'q1a' }, busy: false, exerciseThread: () => thread,
+      selectedExercise: { id: 'q1a' }, busy: false, noamDrafts: {}, exerciseThread: () => thread,
       saveNoamState() {}, setNoamBusy() {}, renderNoamChat() {}, restoreNoamChatFocus() {},
       announceNoam: (text: string) => announcements.push(text), exerciseLabel: (e: any) => e.id,
       noamDidacticGuide: () => null, noamDidacticPrompt: () => '', noamDidacticResponse: () => null,
       getExerciseAnalysis: () => new Promise(resolve => { finishAnalysis = resolve; }),
       noamEnrichSourceAnalysis: async (_exercise: any, analysis: any) => analysis,
-      noamSolverMessage: () => '', postJson: () => fail ? Promise.reject(new Error('security failure')) : Promise.resolve({ ok: true, answer: 'a hint for q1a' }),
+      noamSolverMessage: () => '', postJson: (_url: string, payload: any) => {
+        requestedParts.push(payload.exerciseId);
+        return fail ? Promise.reject(new Error('security failure')) : Promise.resolve({ ok: true, answer: 'an additional explanation for q1a' });
+      },
       noamGuardGeometryResult: (result: any) => result, noamGuardSignedAddResult: (result: any) => result,
       noamClarifySignedAddLanguage: (answer: string) => answer, noamResponseVisual: () => null,
       noamVisualAnswer: (_message: string, answer: string) => answer,
-      // Source attachment is separately covered by the native integration suite;
-      // this harness checks that askNoam retains the original section's identity.
+      // Additional questions keep their requested section's identity; source
+      // drawings require a separate explicit action covered by the native suite.
       noamAttachSourceHint: (...args: any[]) => { sourceHints.push(args); return Promise.resolve(null); },
       ttl: '', g: 7, lv: 'a', LEVEL: { a: 'א׳' }, API: '/test', MIN_WAIT: 0,
       setTimeout: (fn: () => void, ms: number) => { if (ms < 25000) fn(); return 0; },
     };
-    runInNewContext(section('askNoam', 'noamRetryActionLabel') + '\naskNoam("hint", "");', context);
+    runInNewContext(section('askNoam', 'noamRetryActionLabel') + '\naskNoam("free_question", "אפשר להסביר את הנתונים בסעיף הזה?");', context);
     context.selectedExercise = { id: 'q1b' };
-    await Promise.resolve(); // The source-only probe gate precedes the ordinary reader.
+    await Promise.resolve(); // The additional-question reader starts on the next microtask.
     finishAnalysis({ readable: true });
     await new Promise(resolve => setImmediate(resolve));
     assert.equal(thread.messages.length, 2, 'the old part still receives its own response');
     assert.equal(Boolean(thread.messages[1].answerError), fail);
-    assert.equal(sourceHints.length, fail ? 0 : 1);
+    assert.deepEqual(requestedParts, ['q1a'], 'the solve remains bound to the originally requested part');
+    assert.equal(sourceHints.length, 0, 'additional questions do not automatically attach a source drawing');
     if (!fail) {
-      assert.equal(sourceHints[0][0].id, 'q1a');
-      assert.equal(sourceHints[0][2], thread.messages[1]);
+      assert.equal(thread.messages[1].text, 'an additional explanation for q1a');
     }
+    assert.equal(thread.hintIndex, 0, 'late additional replies do not consume a prepared hint');
     assert.equal(announcements.length, 1, 'only the initial request was announced before switching');
   }
 });

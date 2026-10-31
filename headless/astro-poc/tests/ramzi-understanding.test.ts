@@ -1,6 +1,7 @@
 /**
  * הבנתי / לא הבנתי stay available after every Ramzi reply.
  * לא הבנתי asks for a new simpler step. It never replays the same full text.
+ * הבנתי never opens the next hint or calls the AI: the student keeps working.
  */
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
@@ -8,6 +9,8 @@ import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { describe, it } from 'node:test';
 import { fileURLToPath } from 'node:url';
+import { runInNewContext } from 'node:vm';
+import { parseHTML } from 'linkedom';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const require = createRequire(import.meta.url);
@@ -18,6 +21,7 @@ const guides = (
       notUnderstoodLead: string;
       notUnderstoodLeads: string[];
       understoodLead: string;
+      understoodText: string;
       closingText: string;
       resetUnderstanding: (key: string) => void;
       noteCheck: (decision: string) => void;
@@ -144,24 +148,23 @@ describe('Ramzi understanding checks', () => {
     assert.doesNotMatch(openings[3], /שמח|בוא ננסה/);
   });
 
-  it('uses a neutral lead for הבנתי, and closes after the explanation instead of nextStep', () => {
+  it('answers הבנתי without opening a hint or calling the AI, and closes once every hint is open', () => {
     reset();
     hint(0);
-    guides.noteCheck('understood');
-    const next = guides.respond(proof, { helpKind: 'hint', hintIndex: 1, progress: 1 });
-    assert.match(next.text, /^יופי, מעולה שזה ברור/);
+    const plan = guides.planUnderstanding(proof, 'understood', { progress: 1 });
+    assert.equal(plan.action, 'say');
+    assert.equal(plan.display, 'הבנתי');
+    assert.equal(plan.text, guides.understoodText);
+    assert.equal(plan.prompt, undefined);
+    const said = guides.respond(proof, { helpKind: 'free_question', studentMessage: 'הבנתי', progress: 1 });
+    assert.equal(said.text, guides.understoodText);
+    assert.match(said.text, /«רמז»/);
+    assert.doesNotMatch(said.text, /∠EBD = ∠DBC/, 'the second hint stays closed');
+    const next = hint(1);
     assert.match(next.text, /∠EBD = ∠DBC/);
-    assert.doesNotMatch(next.text, /שמח/);
+    assert.equal(next.text.startsWith(guides.understoodLead), false, 'a requested hint carries no הבנתי lead');
 
     hint(2);
-    const step = guides.respond(proof, {
-      helpKind: 'free_question',
-      studentMessage: 'הבנתי',
-      progress: 3,
-    });
-    assert.match(step.text, /יופי, מעולה שזה ברור/);
-    assert.match(step.text, /נכון שצריך להגיע/);
-    guides.respond(proof, { helpKind: 'free_question', studentMessage: 'לא הבנתי', progress: 3 });
     const closing = guides.respond(proof, {
       helpKind: 'free_question',
       studentMessage: 'הבנתי',
@@ -169,18 +172,50 @@ describe('Ramzi understanding checks', () => {
     });
     assert.equal(closing.text, guides.closingText);
     assert.match(closing.text, /אפשר לעבור לסעיף הבא/);
-    assert.doesNotMatch(closing.text, /נכון שצריך|שמח/);
-    const again = guides.planUnderstanding(proof, 'not-understood', { progress: 3, hintsDone: true });
-    assert.equal(again.action, 'ai');
-    assert.equal(again.display, 'לא הבנתי');
-    assert.match(again.prompt ?? '', /הצעד האחרון/);
-    assert.match(again.prompt ?? '', /זווית אחרת/);
-    assert.match(again.prompt ?? '', /E נמצאת על AB|הקרן BE/);
-    assert.equal((again.prompt ?? '').includes('תסבירו מחדש את הצעד האחרון'), true);
+    assert.doesNotMatch(closing.text, /נכון שצריך|שמח/, 'הבנתי does not reveal the guide next step');
     const stay = guides.planUnderstanding(proof, 'understood', { progress: 3, hintsDone: true });
-    assert.equal(stay.action, 'local');
-    assert.match(stay.text ?? '', /אפשר לעבור לסעיף הבא/);
-    assert.equal(guides.needsCheck(guides.closingText, '', ''), true);
+    assert.equal(stay.action, 'say');
+    assert.equal(stay.text, guides.closingText);
+    const again = guides.planUnderstanding(proof, 'not-understood', { progress: 3, hintsDone: true });
+    assert.equal(again.action, 'local', 'הבנתי does not close the verified sub-steps');
+    const step = guides.respond(proof, { helpKind: 'free_question', studentMessage: 'לא הבנתי', progress: 3 });
+    assert.match(step.text, /^זה בסדר גמור, בואו ננסה אחרת\.\n/);
+    assert.match(step.text, /E נמצאת על AB/);
+    assert.equal(guides.needsCheck(guides.closingText, '', ''), false);
+    assert.equal(guides.needsCheck(guides.understoodText, '', ''), false);
+  });
+
+  it('keeps the הבנתי exchange in the thread, in order, without touching the draft', () => {
+    const helper = viewer.slice(viewer.indexOf('function noamAnswerUnderstood('), viewer.indexOf('function askNoam('));
+    const thread = { hintIndex: 1, history: [] as unknown[], messages: [{ role: 'assistant', text: 'רמז 1' }] as any[] };
+    const drafts: Record<string, string> = { ex: 'טיוטה' };
+    let renders = 0;
+    const ctx = {
+      window: {} as Record<string, unknown>,
+      selectedExercise: { id: 'ex', q: 1, part: 'א' }, busy: false, noamDrafts: drafts,
+      exerciseThread: () => thread, saveNoamState() {}, renderNoamChat() { renders++; },
+      announceNoam() {}, exerciseLabel: () => 'שאלה 1 · סעיף א',
+    };
+    const api = runInNewContext(helper + '\n({noamAnswerUnderstood})', ctx);
+    assert.equal(ctx.window.noamAnswerUnderstood, api.noamAnswerUnderstood, 'the adapter reaches it through window');
+    assert.equal(api.noamAnswerUnderstood(guides.understoodText), true);
+    assert.deepEqual(thread.messages.slice(-2).map((m) => [m.role, m.text, m.understood]), [['user', 'הבנתי', true], ['assistant', guides.understoodText, true]]);
+    assert.equal(thread.history.length, 0, 'the model history keeps the real hints');
+    assert.equal(thread.hintIndex, 1, 'no hint is opened');
+    assert.equal(drafts.ex, 'טיוטה');
+    assert.equal(renders, 1);
+    ctx.busy = true;
+    assert.equal(api.noamAnswerUnderstood(guides.understoodText), false);
+    const drawing = viewer.slice(viewer.indexOf('function noamLatestDrawingAnswer('), viewer.indexOf('function renderNoamChat('));
+    const pick = runInNewContext(drawing + '\n({noamLatestDrawingAnswer})', {});
+    const hintMessage = { role: 'assistant', text: 'רמז 1' };
+    assert.equal(pick.noamLatestDrawingAnswer({ messages: [hintMessage, ...thread.messages.slice(-2)] }), hintMessage, 'a drawing still illustrates the hint');
+    assert.match(viewer, /message\.answerError\|\|message\.understood\|\|message\.role!=="assistant"/);
+    assert.equal((viewer.match(/item\.role==="assistant"&&!item\.understood/g) || []).length, 2);
+    const adapter = viewer.match(/<script id="exact-viewer-adapter">([\s\S]*?)<\/script>/)?.[1] || '';
+    const say = adapter.slice(adapter.indexOf("if(plan.action==='say')"), adapter.indexOf("if(plan.action==='local'"));
+    assert.match(say, /noamAnswerUnderstood\(plan\.text\)/);
+    assert.doesNotMatch(say, /localChecks|send\.click|input\.value/);
   });
 
   it('does not steal a longer question that merely contains the words', () => {
@@ -211,11 +246,11 @@ describe('Ramzi understanding checks', () => {
     assert.match(missed.fallback ?? '', /רמז/);
     assert.doesNotMatch(missed.fallback ?? '', /קודם מסמנים|הצעד הבא/);
     const got = guides.planUnderstanding(plain, 'understood', {});
-    assert.equal(got.action, 'ai');
+    assert.equal(got.action, 'say');
     assert.equal(got.display, 'הבנתי');
-    assert.match(got.prompt ?? '', /תנו רק את הצעד הבא/);
-    assert.match(got.fallback ?? '', /הצעד הבא/);
-    assert.doesNotMatch(got.fallback ?? '', /שמח|בואו ננסה|הסבר חדש/);
+    assert.equal(got.text, guides.understoodText);
+    assert.equal(got.prompt, undefined, 'הבנתי makes no model call');
+    assert.equal(guides.planUnderstanding(plain, 'understood', { hintsDone: true }).text, guides.closingText);
     const offline = guides.offlineUnderstanding('not-understood');
     const understoodDown = guides.offlineUnderstanding('understood');
     assert.match(offline, /רמז/);
@@ -237,7 +272,7 @@ describe('Ramzi understanding checks', () => {
     assert.doesNotMatch(fourth, /רמז|שמח|בוא ננסה/);
     assert.equal(guides.needsCheck('הסבר בלי שאלה.', '', 'השאלה שלך: הסבר כללי'), true);
     assert.equal(guides.needsCheck('רמזי חושב…', '', ''), false);
-    assert.equal(guides.needsCheck(guides.closingText, '', ''), true);
+    assert.equal(guides.needsCheck(guides.closingText, '', ''), false);
     assert.equal(guides.needsCheck('מה אפשר לומר על המשולש?', '', ''), true);
   });
 
@@ -254,6 +289,8 @@ describe('Ramzi understanding checks', () => {
     assert.match(adapter, /hintFloors/);
     assert.match(adapter, /Math\.max\(released,floor\)/);
     assert.match(adapter, /hintsDone:opened>=3/);
+    assert.match(adapter, /plan\.action==='say'/);
+    assert.doesNotMatch(adapter, /prompt:'הבנתי\. תנו רק את הצעד הבא/);
     assert.match(adapter, /createElement\('bdi'\)/);
     assert.match(adapter, /bdi\.dir='ltr'/);
     assert.match(adapter, /p\.dir='rtl'/);
@@ -278,4 +315,30 @@ describe('Ramzi understanding checks', () => {
     assert.match(style, /white-space:pre-wrap/);
     assert.doesNotMatch(adapter, /ramzi-check-no[\s\S]{0,80}disabled\s*=/);
   });
+});
+
+function namedFunction(source:string,name:string){
+ const start=source.indexOf('function '+name+'(');assert.ok(start>=0,name);
+ const end=source.indexOf('\nfunction ',start+1),indented=source.indexOf('\n  function ',start+1);
+ return source.slice(start,Math.min(...[end,indented].filter(n=>n>=0)));
+}
+it('the local understood exchange and closing message have no understanding pair in the actual transcript DOM',()=>{
+ const {document,window}=parseHTML('<html><body><div id="noamTranscript"></div></body></html>');
+ const transcript=document.getElementById('noamTranscript')!,thread:any={hintIndex:1,history:[],messages:[{role:'assistant',text:'איזו צלע משותפת?'}]};
+ (window as any).NoamDidacticGuides=guides;
+ const c:any={document,window,selectedExercise:{id:'ex'},busy:false,pendingCheckFocus:false,noamStripMarkdownEmphasis:(s:string)=>s,noamCanOfferDrawing:()=>false,
+  exerciseThread:()=>thread,saveNoamState(){},announceNoam(){},exerciseLabel:()=> 'סעיף א'};
+ runInNewContext(['addTranscriptBubble','rowText','rowQualifies','makeCheckGroup','placeUnderstandingChecks','noamAnswerUnderstood'].map(n=>namedFunction(viewer,n)).join('\n'),c);
+ c.renderNoamChat=()=>{transcript.replaceChildren();thread.messages.forEach((m:any)=>c.addTranscriptBubble(transcript,m.role,m.text,'',null,m,thread));c.placeUnderstandingChecks(transcript);};
+ c.renderNoamChat();assert.equal(transcript.querySelectorAll('.ramzi-check').length,1);
+ assert.equal(c.noamAnswerUnderstood(guides.understoodText),true);assert.equal(transcript.querySelectorAll('.ramzi-check').length,0);assert.equal(transcript.querySelectorAll('[data-ramzi-understood="1"]').length,2);
+ thread.messages.push({role:'assistant',text:guides.closingText});c.renderNoamChat();assert.equal(transcript.querySelectorAll('.ramzi-check').length,0,'unmarked legacy closing text also closes');
+ thread.messages.push({role:'assistant',text:'איזו זווית מתאימה?'});c.renderNoamChat();assert.equal(transcript.querySelectorAll('.ramzi-check').length,1,'a later real answer gets exactly one pair');assert.equal(transcript.querySelector('.noam-row.assistant:last-child')!.querySelectorAll('.ramzi-check').length,1);
+});
+it('לא הבנתי cannot open a standard hint or invoke an unbound historical guide',()=>{
+ const {document,window}=parseHTML('<html><body><div id="panel"><div class="noam-row assistant"><div class="noam-bubble">רמז</div></div></div><input id="noamQuestion"><button id="noamSend"></button><button id="noamHint"></button></body></html>');
+ let sent=0,hints=0,planned=0;(window as any).NoamDidacticGuides={planUnderstanding(){planned++;throw new Error('unbound guide');}};
+ document.getElementById('noamSend')!.addEventListener('click',()=>sent++);document.getElementById('noamHint')!.addEventListener('click',()=>hints++);
+ const c:any={document,window,Event:window.Event,panelBody:document.getElementById('panel'),currentExerciseId:()=>proof,openedHintCount:()=>1,pendingCheckFocus:false};
+ runInNewContext(namedFunction(viewer,'submitUnderstanding'),c);c.submitUnderstanding('not-understood');assert.equal(planned,0);assert.equal(hints,0);assert.equal(sent,1);
 });

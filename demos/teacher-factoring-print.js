@@ -1,5 +1,5 @@
 import { dismissTeacherHumanVerification, requestTeacherHumanVerification } from './teacher-human-verification.js?v=20261030-stepup-error-detail';
-import { wizardPrefillFromSearch } from './wizard-prefill.js';
+import { replaceWizardScopeUrl, wizardPrefillFromSearch } from './wizard-prefill.js?v=20261031-level-url';
 import { expandToWholeQuestionKeys, groupWholeQuestions, mulberry32, pickWholeQuestions, randomSeed } from './teacher-question-pick.js';
 import { PICK_HEADING, SECTION_KINDS, needsSectionHeadings, pointsLabel, scoreLabel, sectionKind, sectionTitle, shouldAskMoreTopic, testPoints, TEST_TOTAL_POINTS } from './teacher-page-sections.js';
 
@@ -689,6 +689,10 @@ function syncLevels() {
   });
 }
 
+function syncWizardUrl() {
+  if (currentTopic()) replaceWizardScopeUrl(window, state);
+}
+
 function visibleSelectionKeys() {
   return [...new Set(currentExercises().map((question) => exKey(question.source.pdfId, question.id)))];
 }
@@ -1057,6 +1061,7 @@ function render() {
   $('grade').value = String(state.grade);
   if ($('topic').value !== String(state.topic) && state.topic) $('topic').value = String(state.topic);
   syncLevels();
+  syncWizardUrl();
   document.querySelectorAll('[name=scenario]').forEach((el) => { el.checked = el.value === state.scenario; });
   document.querySelectorAll('[name=style]').forEach((el) => { el.checked = el.value === state.style; });
   document.querySelectorAll('[name=level]').forEach((el) => { el.checked = el.value === state.level; });
@@ -2859,6 +2864,7 @@ function bind() {
     history = [];
     clearPreparedPrint();
     fillTopics();
+    syncWizardUrl();
     await loadCurrentTopic();
     applyScenario(state.scenario === 'other' ? 'first' : state.scenario);
   });
@@ -2871,6 +2877,7 @@ function bind() {
     history = [];
     clearPreparedPrint();
     syncLevels();
+    syncWizardUrl();
     await loadCurrentTopic();
     if (state.scenario === 'other') render();
     else applyScenario(state.scenario, { quiet: true });
@@ -2940,6 +2947,7 @@ function bind() {
     state.level = 'all';
     fillGrades();
     fillTopics();
+    syncWizardUrl();
     await loadCurrentTopic();
     applyScenario('first');
   });
@@ -3015,7 +3023,7 @@ function applyWizardPrefill(prefill) {
     render();
     state.wizard = 'pick';
     applyWizard();
-    announce('הבחירה מנועם AI נטענה לאשף.');
+    announce(prefill.exerciseIds && prefill.exerciseIds.length ? 'הבחירה מנועם AI נטענה לאשף.' : 'הכיתה, הנושא והרמה נטענו לאשף.');
     const picked = document.querySelector('#questions input:checked');
     const card = picked && picked.closest('.q-card');
     if (card && typeof card.scrollIntoView === 'function') {
