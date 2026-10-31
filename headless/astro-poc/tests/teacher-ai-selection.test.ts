@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import { groupWholeQuestions } from '../public/teachers/teacher-question-pick.js';
+import { handleNoamSiteCompanion } from '../../../noam-ai/site-companion/endpoint.js';
 
 const printer = readFileSync(new URL('../public/teachers/teacher-factoring-print.js', import.meta.url), 'utf8');
 const source = JSON.parse(readFileSync(new URL('../public/teachers/factoring-grade-9-a-source.json', import.meta.url), 'utf8'));
@@ -113,6 +114,7 @@ for (const failure of [
   Object.assign(new Error('denied'), { status: 403, code: 'BOT_VERIFICATION_FAILED' }),
   Object.assign(new Error('limited'), { status: 429, code: 'RATE_LIMITED' }),
   Object.assign(new Error('timeout'), { code: 'REQUEST_TIMEOUT' }),
+  Object.assign(new Error('verification timed out'), { code: 'BOT_VERIFICATION_TIMEOUT' }),
   Object.assign(new Error('unconfigured'), { status: 403, code: 'BOT_STEP_UP_REQUIRED' }),
 ]) {
   test(`an AI failure (${(failure as any).code || 'model'}) keeps manual choices and never substitutes local selection`, async () => {
@@ -127,6 +129,10 @@ for (const failure of [
     assert.doesNotMatch(app.status.textContent, /נבחרו|בחירה אוטומטית מקומית|עם AI\./);
     if ((failure as any).status === 429) assert.match(app.status.textContent, /הגבלת בקשות/);
     if ((failure as any).code === 'BOT_STEP_UP_REQUIRED') assert.match(app.status.textContent, /אימות אנושי.*לא זמין/);
+    if ((failure as any).code === 'BOT_VERIFICATION_TIMEOUT') {
+      assert.match(app.status.textContent, /Google לא הסתיימה בזמן/);
+      assert.doesNotMatch(app.status.textContent, /לא אישרה|נדרש אימות אנושי/);
+    }
   });
 }
 
@@ -554,6 +560,161 @@ function mixedLevelPool() {
     const pool = numberedPool(20, `${level}-mixed-source`);
     pool[0].source.level = level;
     return pool;
+  });
+}
+
+// Exercise the actual parser, guarded endpoint and UI together. Only the
+// external verification/model services are replaced; no server reply is fabricated.
+function guardedModelReply(pool: ReturnType<typeof numberedPool>, modelResult: (payload: Payload) => unknown,
+  options: { status?: number; raw?: string } = {}) {
+  const calls: string[] = [], bodies: any[] = [];
+  return { calls, bodies, reply: async (payload: Payload) => {
+    const teacher = payload.teacher as any;
+    const rows = [...new Map(pool.map(part => [part.source.pdfId, part.source])).values()].map(sheet => ({
+      ...sheet, grade: Number(teacher.grade), gradeLabel: 'כיתה לבדיקה', topicId: teacher.topic, topic: 'נושא לבדיקה',
+      band: Number(teacher.grade) < 7 ? 'elementary' : 'middle', pdfUrl: `https://example.test/${sheet.pdfId}.pdf`,
+      questions: pool.filter(part => part.source === sheet).map(part => part.id),
+    }));
+    const response = await handleNoamSiteCompanion({ method: 'POST', url: 'https://www.noamdoronmath.co.il/api/noamSiteCompanion' }, {
+      payload: { ...payload, botVerification: { provider: 'recaptcha-v3', token: 'synthetic-ui-integration-token' } },
+      origin: 'https://www.noamdoronmath.co.il', clientIp: '203.0.113.90', store: new Map(), now: 5000,
+      teacherIndex: rows, catalog: { grades: [] }, qwenKey: 'synthetic-model-key', recaptchaSecret: 'synthetic-recaptcha-secret',
+      qwenModel: 'offline-test-model', log: () => {},
+      rateBackend: { async take() { calls.push('rate'); return true; } },
+      fetch: async (url: string) => {
+        if (url === 'https://www.google.com/recaptcha/api/siteverify') {
+          calls.push('verify');
+          return { ok: true, json: async () => ({ success: true, score: 0.9, hostname: 'www.noamdoronmath.co.il', action: 'noam_site_companion' }) };
+        }
+        calls.push('model');
+        const status = options.status || 200;
+        return { ok: status === 200, status, json: async () => status === 200
+          ? { choices: [{ message: { content: options.raw ?? JSON.stringify(modelResult(payload)) } }] }
+          : { error: { code: 'SyntheticProviderError' } } };
+      },
+    });
+    assert.equal(response.status, 200);
+    bodies.push(response.body);
+    return response.body;
+  } };
+}
+
+function rawRecoveryPlans(payload: Payload) {
+  const candidates = payload.teacher.candidates;
+  const representatives = ['a:', 'b:', 'c2:'].map(prefix => candidates.find(item => item.id.startsWith(prefix))!);
+  const ordered = [...representatives, ...candidates.slice().reverse().filter(item => !representatives.includes(item))];
+  return { exerciseLabels: [], exerciseLabelsByCount: Object.fromEntries([5, 10, 15].map(n => [String(n), ordered.slice(0, n).map(item => item.id)])) };
+}
+
+for (const count of [5, 10, 15]) {
+  test(`the guarded endpoint recovers an explicit ${count}-question model plan and the actual UI reuses only its independent plans`, async () => {
+    const pool = mixedLevelPool();
+    const endpoint = guardedModelReply(pool, rawRecoveryPlans);
+    const app = harness(endpoint.reply, { pool, grade: '8', savedKeys: [] });
+    app.state.level = 'all'; app.state.topic = '43';
+    app.state.selected = ['ex:b-mixed-source:20'];
+    for (const requested of [count, ...[5, 10, 15].filter(n => n !== count)]) {
+      const picked = await app.pick(requested);
+      const plan = endpoint.bodies[0].teacherPlans[String(requested)];
+      assert.equal(picked.length, requested);
+      assert.deepEqual(new Set(picked), new Set(plan.modelExerciseIds));
+      assertMixedSelection(picked, pool);
+      assert.match(app.status.textContent, /עם AI\./);
+      assert.doesNotMatch(app.status.textContent, /הושלמו|מקומית|לא התקבלה/);
+    }
+    assert.equal(app.requests.length, 1);
+    assert.deepEqual(endpoint.calls, ['rate', 'verify', 'model']);
+  });
+}
+
+for (const count of [5, 10, 15]) {
+  test(`the guarded endpoint corrects one invalid model reply and the actual UI selects exactly ${count} model-chosen questions`, async () => {
+    const pool = mixedLevelPool();
+    let replies = 0;
+    let correctedLabels: string[] = [];
+    const endpoint = guardedModelReply(pool, payload => {
+      if (++replies === 1) return { exerciseLabels: [] };
+      correctedLabels = rawRecoveryPlans(payload).exerciseLabelsByCount[String(count)];
+      return { exerciseLabels: correctedLabels };
+    });
+    const app = harness(endpoint.reply, { pool, grade: '8', savedKeys: [] });
+    app.state.level = 'all'; app.state.topic = '43';
+    app.state.selected = ['ex:b-mixed-source:20'];
+    const picked = await app.pick(count);
+    assert.equal(picked.length, count);
+    assertMixedSelection(picked, pool);
+    const expected = correctedLabels.map(label => {
+      const [level, id] = label.split(':');
+      return `ex:${level}-mixed-source:${id}`;
+    });
+    assert.deepEqual(new Set(picked), new Set(expected));
+    assert.deepEqual(new Set(endpoint.bodies[0].modelExerciseIds), new Set(expected));
+    assert.equal(endpoint.bodies[0].source, 'classifier');
+    assert.match(app.status.textContent, new RegExp(`^נבחרו ${count} שאלות.*עם AI`));
+    assert.equal(app.requests.length, 1);
+    assert.deepEqual(endpoint.calls, ['rate', 'verify', 'model', 'model']);
+  });
+}
+
+test('two rejected model replies leave the entire manual selection unchanged in the actual UI', async () => {
+  const pool = mixedLevelPool();
+  const endpoint = guardedModelReply(pool, () => ({ exerciseLabels: [] }));
+  const app = harness(endpoint.reply, { pool, grade: '8', savedKeys: [] });
+  app.state.level = 'all'; app.state.topic = '43';
+  app.state.selected = ['ex:b-mixed-source:20'];
+  const before = JSON.stringify(app.state);
+  assert.deepEqual(await app.pick(5), []);
+  assert.equal(JSON.stringify(app.state), before);
+  assert.equal(app.renders(), 0);
+  assert.match(app.status.textContent, /לא התקבלה.*הבחירה שלכם נשמרה/);
+  assert.doesNotMatch(app.status.textContent, /נבחרו 5/);
+  assert.deepEqual(endpoint.calls, ['rate', 'verify', 'model', 'model']);
+});
+
+for (const failure of [
+  { name: 'provider auth', status: 401, code: 'MODEL_AUTH_FAILED' },
+  { name: 'provider unavailable', status: 500, code: 'MODEL_HTTP' },
+  { name: 'malformed model JSON', raw: '{"exerciseLabels": [', code: 'MODEL_RESPONSE_FAILED' },
+]) {
+  test(`the actual endpoint and UI keep ${failure.name} distinct from missing mixed levels`, async () => {
+    const pool = mixedLevelPool(), endpoint = guardedModelReply(pool, rawRecoveryPlans, failure);
+    const app = harness(endpoint.reply, { pool, grade: '8', savedKeys: [] });
+    app.state.level = 'all'; app.state.topic = '43'; app.state.selected = ['ex:b-mixed-source:20'];
+    const before = JSON.stringify(app.state);
+    assert.deepEqual(await app.pick(5), []);
+    assert.equal(JSON.stringify(app.state), before);
+    assert.equal(endpoint.bodies[0].code, failure.code);
+    assert.equal(endpoint.bodies[0].selectionError, undefined);
+    assert.deepEqual(endpoint.calls, ['rate', 'verify', 'model']);
+    assert.match(app.status.textContent, /הבחירה שלכם נשמרה/);
+    assert.doesNotMatch(app.status.textContent, /משלבת את כל הרמות|נבחרו|הושלמו|מקומית/);
+    if (failure.status) assert.match(app.status.textContent, /החיבור ל־AI לא הצליח/);
+  });
+}
+
+for (const mutation of ['level', 'note', 'manual']) {
+  test(`a real recovered plan arriving after a ${mutation} edit cannot apply or populate the UI cache`, async () => {
+    const pool = mixedLevelPool(), endpoint = guardedModelReply(pool, rawRecoveryPlans);
+    let edit = true;
+    const app = harness(async (payload, state) => {
+      const result = await endpoint.reply(payload);
+      if (edit) {
+        edit = false;
+        if (mutation === 'level') state.level = 'a';
+        if (mutation === 'note') app.controls['teacher-note'].value = 'הערה חדשה';
+        if (mutation === 'manual') state.selected = ['ex:b-mixed-source:19'];
+      }
+      return result;
+    }, { pool, grade: '8', savedKeys: [] });
+    app.state.level = 'all'; app.state.topic = '43';
+    assert.deepEqual(await app.pick(5), []);
+    assert.equal(app.renders(), 0);
+    assert.match(app.status.textContent, /הנושא או הבחירה השתנו/);
+    if (mutation === 'manual') assert.deepEqual(app.state.selected, ['ex:b-mixed-source:19']);
+    app.state.level = 'all';
+    assert.equal((await app.pick(10)).length, 10);
+    assert.equal(app.requests.length, 2, 'A stale result must not populate the plan cache');
+    assert.deepEqual(endpoint.calls, ['rate', 'verify', 'model', 'rate', 'verify', 'model']);
   });
 }
 function assertMixedSelection(picked: string[], pool: ReturnType<typeof numberedPool>) {

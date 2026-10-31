@@ -9,6 +9,7 @@ import {
   MISSING_TEXT,
   QUESTION_GAP,
   QWEN_MODEL,
+  QWEN_TIMEOUT_MS,
   resolveQwenTarget,
   RAMZI_TEXT,
   handleCompanionTurn,
@@ -22,14 +23,20 @@ import {
   isAllowedOrigin,
   isHeadlessPreviewHost,
   isOutboundTimeout,
+  OutboundTimeoutError,
   takeCompanionRate,
 } from "./bot-guard.js";
 import {
   classifyTeacherRequest,
   describePicks,
   hrefForSheet,
+  logTeacherSelection,
+  recoverTeacherPickFromPlan,
+  requestedPickCount,
+  validateExactTeacherPrimary,
   selectTeacherPicks,
   selectTeacherPlans,
+  teacherCorrectionEligible,
 } from "./teacher-pick.js";
 
 export const QWEN_SECRET_NAME = "QWEN_API_KEY";
@@ -153,6 +160,15 @@ function missingTeacher() {
   );
 }
 
+function failedTeacherSelection(catalog, code, selectionError) {
+  const answer = selectionError
+    ? "לא התקבלה בחירת שאלות תקינה שמשלבת את כל הרמות. אפשר לנסות שוב או לבחור שאלות ידנית."
+    : "לא התקבלה בחירת שאלות מה-AI. אפשר לנסות שוב או לבחור שאלות ידנית.";
+  return Object.assign(teacherAnswer({ sheets: [], exerciseIds: [], modelExerciseIds: [], sheetIds: [] }, catalog), {
+    source: "fallback", model: null, code, ...(selectionError ? { selectionError } : {}), answer, text: answer, details: answer,
+  });
+}
+
 export async function runCompanionTurn(payload, deps) {
   const settings = deps || {};
   const guided = resolveDeterministicTurn(payload, settings);
@@ -183,35 +199,78 @@ export async function runCompanionTurn(payload, deps) {
   if (page.kind === "teachers") {
     let classification = null;
     let classificationFailure = "MODEL_RESPONSE_FAILED";
+    const modelNow = typeof settings.modelNow === "function" ? settings.modelNow : Date.now;
+    const budget = Number.isFinite(settings.qwenTimeoutMs) ? Math.max(0, Math.min(QWEN_TIMEOUT_MS, settings.qwenTimeoutMs)) : QWEN_TIMEOUT_MS;
+    const modelSettings = {
+      apiKey: settings.qwenKey, baseUrl: settings.qwenBaseUrl, model: settings.qwenModel,
+      fetch: settings.fetch, timeoutMs: budget, deadlineMs: modelNow() + budget, now: modelNow,
+      log: settings.log, teacherIndex: settings.teacherIndex,
+    };
+    const remainingMs = () => Math.max(0, Math.floor(modelSettings.deadlineMs - modelNow()));
     try {
-      classification = await classifyTeacherRequest(payload, {
-        apiKey: settings.qwenKey,
-        baseUrl: settings.qwenBaseUrl,
-        model: settings.qwenModel,
-        fetch: settings.fetch,
-        timeoutMs: settings.qwenTimeoutMs,
-        log: settings.log,
-        teacherIndex: settings.teacherIndex,
-      });
+      classification = await classifyTeacherRequest(payload, modelSettings);
     } catch (error) {
       if (isOutboundTimeout(error)) throw error;
       classification = null;
       classificationFailure = ["MODEL_AUTH_FAILED", "MODEL_HTTP", "QWEN_CONFIG_REJECTED"].includes(error.code) ? error.code : "MODEL_RESPONSE_FAILED";
+      if (error instanceof SyntaxError) logTeacherSelection(settings, { code: "MODEL_RESPONSE_INVALID", reason: "invalid-json",
+        requestedCount: requestedPickCount(payload) });
     }
-    const pick = selectTeacherPicks(settings.teacherIndex, payload, classification);
+    const model = classification ? resolveQwenTarget({ model: settings.qwenModel, baseUrl: settings.qwenBaseUrl }).model : null;
+    const plans = classification ? selectTeacherPlans(settings.teacherIndex, payload, classification, model) : {};
+    let pick = selectTeacherPicks(settings.teacherIndex, payload, classification);
+    const recovered = classification ? recoverTeacherPickFromPlan(settings.teacherIndex, payload, pick, plans) : null;
+    if (recovered) {
+      logTeacherSelection(settings, { code: "MODEL_SELECTION_RECOVERED", reason: "requested-plan",
+        requestedCount: requestedPickCount(payload), primaryCount: classification.scopedExerciseLabels.length,
+        planCount: Object.keys(plans).length });
+      pick = recovered;
+    }
+    if (teacherCorrectionEligible(settings.teacherIndex, payload, classification, pick, plans)) {
+      const reason = pick.selectionError === "MODEL_LEVEL_COVERAGE_MISSING" ? "level-coverage" : "primary-invalid";
+      const diagnostic = () => ({ requestedCount: requestedPickCount(payload), remainingMs: remainingMs(), planCount: Object.keys(plans).length });
+      if (!remainingMs()) {
+        logTeacherSelection(settings, { ...diagnostic(), code: "MODEL_CORRECTION_REJECTED", reason: "deadline" });
+        throw new OutboundTimeoutError();
+      }
+      logTeacherSelection(settings, { ...diagnostic(), code: "MODEL_CORRECTION_ATTEMPTED", reason });
+      let corrected;
+      try {
+        corrected = await classifyTeacherRequest(payload, { ...modelSettings, correctionReason: reason });
+      } catch (error) {
+        logTeacherSelection(settings, { ...diagnostic(), code: "MODEL_CORRECTION_REJECTED", reason: isOutboundTimeout(error) ? "deadline" : "provider-failure" });
+        if (isOutboundTimeout(error)) throw error;
+        const code = ["MODEL_AUTH_FAILED", "MODEL_HTTP", "QWEN_CONFIG_REJECTED"].includes(error && error.code) ? error.code : "MODEL_RESPONSE_FAILED";
+        return failedTeacherSelection(settings.catalog, code);
+      }
+      const validation = validateExactTeacherPrimary(settings.teacherIndex, payload, corrected);
+      const exact = validation.pick;
+      if (!exact) {
+        const reason = !corrected ? "invalid-json" : validation.selectionError === "MODEL_LEVEL_COVERAGE_MISSING" ? "level-coverage" : "primary-invalid";
+        logTeacherSelection(settings, { ...diagnostic(), code: "MODEL_CORRECTION_REJECTED", reason });
+        const code = corrected ? validation.selectionError : "MODEL_RESPONSE_FAILED";
+        return failedTeacherSelection(settings.catalog, code, corrected && pick.selectionError ? code : undefined);
+      }
+      // Retain only already-validated original plans. The correction supplies a
+      // new primary choice, never a locally derived plan for a different count.
+      pick = exact;
+      classification = corrected;
+      logTeacherSelection(settings, { ...diagnostic(), code: "MODEL_CORRECTION_SUCCEEDED", reason: "exact-primary", primaryCount: exact.modelExerciseIds.length });
+    }
     if (pick.selectionError === "MODEL_LEVEL_COVERAGE_MISSING" || pick.selectionError === "MODEL_SELECTION_INVALID") {
-      const answer = "לא התקבלה בחירת שאלות תקינה שמשלבת את כל הרמות. אפשר לנסות שוב או לבחור שאלות ידנית.";
-      return Object.assign(teacherAnswer({ sheets: [], exerciseIds: [], modelExerciseIds: [], sheetIds: [] }, settings.catalog), {
-        source: "fallback", model: null, code: pick.selectionError, selectionError: pick.selectionError,
-        answer, text: answer, details: answer,
-      });
+      const code = classification ? pick.selectionError : classificationFailure;
+      if (classification) logTeacherSelection(settings, { code: "MODEL_SELECTION_REJECTED",
+        reason: pick.selectionError === "MODEL_LEVEL_COVERAGE_MISSING" ? "level-coverage" : "primary-invalid",
+        requestedCount: requestedPickCount(payload), primaryCount: classification.scopedExerciseLabels.length,
+        planCount: Object.keys(plans).length });
+      return failedTeacherSelection(settings.catalog, code, classification ? code : undefined);
     }
     if (!pick.sheets.length) {
       const missing = missingTeacher();
       return classification ? missing : Object.assign(missing, { source: "fallback", model: null, code: classificationFailure });
     }
     const body = teacherAnswer(pick, settings.catalog);
-    if (classification) body.model = resolveQwenTarget({model: settings.qwenModel, baseUrl: settings.qwenBaseUrl}).model;
+    if (classification) body.model = model;
     if (classification && pick.selectionSource) body.source = pick.selectionSource;
     if (!classification || pick.selectionSource === "fallback") {
       body.model = null;
@@ -228,11 +287,7 @@ export async function runCompanionTurn(payload, deps) {
       body.text = body.answer;
       body.details = [body.answer, QUESTION_GAP, EXPORT_NOTE].filter(Boolean).join("\n");
     }
-    if (classification) {
-      const model = resolveQwenTarget({ model: settings.qwenModel, baseUrl: settings.qwenBaseUrl }).model;
-      const plans = selectTeacherPlans(settings.teacherIndex, payload, classification, model);
-      if (Object.keys(plans).length) body.teacherPlans = plans;
-    }
+    if (Object.keys(plans).length) body.teacherPlans = plans;
     return body;
   }
   const result = await handleCompanionTurn(payload, {

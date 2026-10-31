@@ -4,7 +4,7 @@
  * Turns a "Zero-Spoiler" hint bank (plain text, three graded hints per part)
  * into rows for public.noam_ramzi_hints.
  *
- * Only the three hints and the bank's own exercise wording leave this script.
+ * Only the three hints and non-answer metadata leave this script.
  * Full solutions and final answers are dropped: the repository is public and
  * the hints table is readable with the publishable key.
  *
@@ -23,6 +23,7 @@
  */
 const fs=require("fs");
 const path=require("path");
+const {createHash}=require("node:crypto");
 
 const REPO=path.resolve(__dirname,"..","..");
 const SOURCE="zero-spoiler-v2.1";
@@ -46,6 +47,8 @@ const MAX_HINT=600;
 const PDF_HASH_RE=/^[a-f0-9]{32}$/;
 const NATIVE_HASH_RE=/^[a-f0-9]{64}$/;
 const own=(value,key)=>Object.prototype.hasOwnProperty.call(value,key);
+const FIRST_NUMBER_WORDS="אפס|אחד|אחת|שניים|שתיים|שני|שתי|שלוש|שלושה|שלושת|ארבע|ארבעה|ארבעת|חמש|חמישה|חמשת|שש|שישה|ששת|שבע|שבעה|שבעת|שמונה|שמונת|תשע|תשעה|תשעת|עשר|עשרה|עשרת|עשרים|שלושים|ארבעים|חמישים|שישים|שבעים|שמונים|תשעים|מאה|מאתיים|מאות|אלף|אלפיים|אלפים|חצי|מחצית|רבע";
+const FIRST_NUMBER_RE=new RegExp("(?<![\\p{L}])[ובכלמשה]{0,3}(?:"+FIRST_NUMBER_WORDS+")(?![\\p{L}])","u");
 
 function clean(text){
   return String(text||"").replace(/\r/g,"").replace(/[ \t]+/g," ").trim();
@@ -55,6 +58,50 @@ function clean(text){
 // with KaTeX, so a numeric slash fraction such as 1/4 becomes $\frac{1}{4}$.
 function barFractions(text){
   return clean(text).replace(/(?<![\d.$\\{])(\d+)\/(\d+)(?![\d}]|\.\d)/g,"$\\frac{$1}{$2}$");
+}
+
+// Syntax checks cannot establish pedagogical correctness. They prevent known
+// unsafe imports from replacing an independently reviewed catalogue.
+function hintIssue(hints){
+  if(!Array.isArray(hints)||hints.length!==3||hints.some(h=>typeof h!=="string"||!h.trim()||h.length>MAX_HINT)){
+    return "needs three plain-text hints of 1-"+MAX_HINT+" characters";
+  }
+  const first=hints[0].normalize("NFD").replace(/\p{M}/gu,"");
+  if(/\p{N}/u.test(first)||FIRST_NUMBER_RE.test(first)){return "first hint contains a number";}
+  for(const hint of hints){
+    if(/[=<>≠≤≥]/u.test(hint)||/&(?:lt|gt|equals|#(?:0*6[012]|x0*3[cde]));/i.test(hint)){
+      return "hint contains a comparison or equality";
+    }
+    if(hint.includes("/")){return "hint contains a slash; use text or a horizontal-bar fraction";}
+    if(/פתרון\s+מלא\s*:|תשובה\s+סופית\s*:|data:image|!\[[^\]]*\]\s*\(|```/i.test(hint)){
+      return "hint contains private-bank fields or non-text content";
+    }
+  }
+  return null;
+}
+
+function assertSafeHints(rows){
+  for(const row of rows){
+    const issue=hintIssue(row.hints);
+    if(issue){throw new Error("Unsafe hints for "+row.exercise_id+": "+issue);}
+  }
+}
+
+function privatePacketDirectory(repo,directory){
+  let ancestor=path.resolve(directory);
+  const suffix=[];
+  while(!fs.existsSync(ancestor)){
+    suffix.unshift(path.basename(ancestor));
+    const parent=path.dirname(ancestor);
+    if(parent===ancestor){throw new Error("Cannot resolve review packet directory");}
+    ancestor=parent;
+  }
+  const physical=path.resolve(fs.realpathSync(ancestor),...suffix);
+  const relative=path.relative(fs.realpathSync(repo),physical);
+  if(relative===""||(!relative.startsWith(".."+path.sep)&&relative!==".."&&!path.isAbsolute(relative))){
+    throw new Error("Review packets contain private context; choose a directory outside the public repository");
+  }
+  return physical;
 }
 
 function normalizeTitle(text){
@@ -254,8 +301,40 @@ function liveExercises(site){
   return ids;
 }
 
+// Q01 coverage is per canonical worksheet/level, not per stored row. A hidden
+// or stale row cannot make a worksheet appear covered, and reused T40/T32 IDs
+// never substitute for a different canonical PDF.
+function firstPartCoverage(site,rows){
+  const groups=new Map();
+  for(const topic of site){
+    if(![7,8,9].includes(topic.grade)){continue;}
+    for(const level of Object.values(topic.levels)){
+      for(const id of level.exercises){
+        if(!/^G[789]-T\d{2}-[ABE]-Q01[אב]$/.test(id)||!id.startsWith(topic.prefix+"-")){continue;}
+        const key=id.split("-").slice(0,3).join("-");
+        const group=groups.get(key)||{worksheet:key,candidates:[]};
+        group.candidates.push({id,pdf:level.source_pdf_hash,native:level.source_native_sha256});
+        groups.set(key,group);
+      }
+    }
+  }
+  const verified=new Map(rows.filter(r=>r.status==="verified").map(r=>[r.exercise_id,r]));
+  const missing=[...groups.values()].filter(group=>!group.candidates.some(candidate=>{
+    const row=verified.get(candidate.id);
+    return row&&row.source_pdf_hash===candidate.pdf&&row.source_native_sha256===candidate.native;
+  })).map(group=>group.worksheet).sort();
+  return {eligible:groups.size,verified:groups.size-missing.length,missing};
+}
+
 function bindingText(value){
   return clean(value).replace(/\$|\\[()]/g,"").replace(/[־‐-―\-]/g," ").replace(/\s+/g," ").trim();
+}
+function sourceTaskHash(value){
+  // A revision fingerprint must preserve arithmetic signs. The permissive
+  // bank-wording matcher above is deliberately not suitable for this hash.
+  const text=clean(value).normalize("NFC");
+  if(!text){throw new Error("Missing current source task text");}
+  return createHash("sha256").update(text).digest("hex");
 }
 
 // Bind to the CURRENT catalog, never whichever historical manifest happens to
@@ -283,21 +362,28 @@ function bindRows(site,rows){
     let reason="unique_current_manifest";
     if(choices.length>1){
       const prefix=(row.exercise_id.match(/^(G[1-9]-T\d{2})-/)||[])[1];
-      choices=choices.filter(candidate=>candidate.owners.some(topic=>topic.prefix===prefix&&
-        normalizeTitle(topic.title)===normalizeTitle(row.topic))&&
-        bindingText(candidate.level.exerciseTexts.get(row.exercise_id))&&
-        bindingText(row.source_exercise_text).includes(bindingText(candidate.level.exerciseTexts.get(row.exercise_id))));
+      choices=choices.filter(candidate=>{
+        const task=candidate.level.exerciseTexts.get(row.exercise_id);
+        const raw=typeof row.source_exercise_text==="string"&&row.source_exercise_text.trim();
+        return candidate.owners.some(topic=>topic.prefix===prefix&&normalizeTitle(topic.title)===normalizeTitle(row.topic))&&
+          bindingText(task)&&(raw?bindingText(raw).includes(bindingText(task)):row.source_exercise_sha256===sourceTaskHash(task));
+      });
       reason="canonical_catalog_prefix_topic_and_selected_text";
     }
     if(choices.length!==1){throw new Error("Unresolved current source binding for "+row.exercise_id+" ("+choices.length+" candidates)");}
     const selected=choices[0].level;
+    const taskHash=sourceTaskHash(selected.exerciseTexts.get(row.exercise_id));
     if((own(row,"source_pdf_hash")&&row.source_pdf_hash!==selected.source_pdf_hash)||
         (own(row,"source_native_sha256")&&row.source_native_sha256!==selected.source_native_sha256)){
       throw new Error("Stale or conflicting source binding for "+row.exercise_id);
     }
+    if(own(row,"source_exercise_sha256")&&row.source_exercise_sha256!==taskHash){
+      throw new Error("Stale or conflicting source task fingerprint for "+row.exercise_id);
+    }
     resolutions.push({exercise_id:row.exercise_id,reason,source_pdf_hash:selected.source_pdf_hash,
       source_native_sha256:selected.source_native_sha256});
-    return Object.assign({},row,{source_pdf_hash:selected.source_pdf_hash,source_native_sha256:selected.source_native_sha256});
+    return Object.assign({},row,{source_pdf_hash:selected.source_pdf_hash,source_native_sha256:selected.source_native_sha256,
+      source_exercise_sha256:taskHash});
   });
   return {rows:bound,resolutions};
 }
@@ -366,6 +452,7 @@ function sqlText(value){
 }
 
 function toSql(rows){
+  assertSafeHints(rows);
   if(rows.some(row=>!PDF_HASH_RE.test(row.source_pdf_hash||"")||
       (row.source_native_sha256!==null&&!NATIVE_HASH_RE.test(row.source_native_sha256||"")))){
     throw new Error("SQL seed requires validated source bindings");
@@ -373,20 +460,20 @@ function toSql(rows){
   const header=[
     "-- Generated by tools/ramzi-hints/build-ramzi-hints.cjs. Do not edit by hand.",
     "-- Hints only: no solutions or final answers. Rows marked 'review' stay hidden from Ramzi.",
-    "insert into public.noam_ramzi_hints (exercise_id,hint_1,hint_2,hint_3,source_pdf_hash,source_native_sha256,status,source,source_id,source_exercise_text,review_note) values"
+    "insert into public.noam_ramzi_hints (exercise_id,hint_1,hint_2,hint_3,source_pdf_hash,source_native_sha256,status,source,source_id) values"
   ];
   const values=rows.map(row=>"("+[
     row.exercise_id,row.hints[0],row.hints[1],row.hints[2],row.source_pdf_hash,row.source_native_sha256,row.status,
-    row.source,row.source_id,row.source_exercise_text,row.review_note
+    row.source,row.source_id
   ].map(sqlText).join(",")+")");
   return header.join("\n")+"\n"+values.join(",\n")+"\n"+
     "on conflict (exercise_id) do update set hint_1=excluded.hint_1,hint_2=excluded.hint_2,hint_3=excluded.hint_3,"+
     "source_pdf_hash=excluded.source_pdf_hash,source_native_sha256=excluded.source_native_sha256,"+
-    "status=excluded.status,source=excluded.source,source_id=excluded.source_id,"+
-    "source_exercise_text=excluded.source_exercise_text,review_note=excluded.review_note;\n";
+    "status=excluded.status,source=excluded.source,source_id=excluded.source_id;\n";
 }
 
 function publicRows(rows){
+  assertSafeHints(rows);
   return rows.map(row=>({
     exercise_id:row.exercise_id,
     source_pdf_hash:row.source_pdf_hash,
@@ -395,9 +482,8 @@ function publicRows(rows){
     source:row.source,
     source_id:row.source_id,
     topic:row.topic,
-    source_exercise_text:row.source_exercise_text,
-    hints:row.hints,
-    review_note:row.review_note
+    source_exercise_sha256:row.source_exercise_sha256,
+    hints:row.hints
   }));
 }
 
@@ -408,14 +494,17 @@ function loadRows(list,live){
   const rejected=[];
   list.forEach(item=>{
     const id=String(item&&item.exercise_id||"");
-    const hints=Array.isArray(item&&item.hints)?item.hints.map(barFractions):[];
+    const rawHints=item&&item.hints;
+    const hints=Array.isArray(rawHints)&&rawHints.every(h=>typeof h==="string")?rawHints.map(barFractions):[];
     if(!SITE_ID_RE.test(id)){rejected.push({exerciseId:id,reason:"bad exercise id"});return;}
     if(live&&!live.has(id)){rejected.push({exerciseId:id,reason:"exercise is not in the live worksheet"});return;}
-    if(hints.length!==3||hints.some(hint=>!hint||hint.length>MAX_HINT)){rejected.push({exerciseId:id,reason:"needs three hints of 1-"+MAX_HINT+" characters"});return;}
+    const issue=hintIssue(hints);
+    if(issue){rejected.push({exerciseId:id,reason:issue});return;}
     rows.push({
       exercise_id:id,
       ...(own(item,"source_pdf_hash")?{source_pdf_hash:item.source_pdf_hash}:{}),
       ...(own(item,"source_native_sha256")?{source_native_sha256:item.source_native_sha256}:{}),
+      ...(own(item,"source_exercise_sha256")?{source_exercise_sha256:item.source_exercise_sha256}:{}),
       source:clean(item.source)||SOURCE,
       source_id:clean(item.source_id)||id,
       topic:clean(item.topic),
@@ -448,6 +537,7 @@ function main(argv){
   const site=loadSite(REPO);
   const live=liveExercises(site);
   const parsed=bankFile?parseBank(fs.readFileSync(bankFile,"utf8")):{entries:[],incomplete:[],conflicts:[]};
+  if(parsed.incomplete.length||parsed.conflicts.length){throw new Error("Incomplete or conflicting bank blocks; refusing to overwrite output");}
   const normalized=bankFile?normalize(site,parsed):loadRows(readJson(rowsFile),live);
   const keepFile=option("--keep");
   const keep=keepFile?loadRows(readJson(keepFile),live):{rows:[],rejected:[]};
@@ -461,19 +551,23 @@ function main(argv){
     :{rows:merged.rows,displaced:[]};
   const binding=bindRows(site,applied.rows);
   const rows=binding.rows;
+  assertSafeHints(rows);
+  const published=JSON.stringify(publicRows(rows),null,1)+"\n";
+  const seed=toSql(rows);
   const packets=option("--packets");
   if(packets){
-    fs.mkdirSync(packets,{recursive:true});
+    const privatePackets=privatePacketDirectory(REPO,packets);
+    fs.mkdirSync(privatePackets,{recursive:true});
     rows.forEach(row=>{
-      fs.writeFileSync(path.join(packets,row.exercise_id+".json"),JSON.stringify({
+      fs.writeFileSync(path.join(privatePackets,row.exercise_id+".json"),JSON.stringify({
         exercise_id:row.exercise_id,
         bank:{source_id:row.source_id,topic:row.topic,exercise_text:row.source_exercise_text,hints:row.hints},
         site:nativeExercise(REPO,row.exercise_id)
       },null,1));
     });
   }
-  fs.writeFileSync(path.join(REPO,"learning","ramzi-hints.json"),JSON.stringify(publicRows(rows),null,1)+"\n");
-  fs.writeFileSync(path.join(REPO,"learning","ramzi-hints-seed.sql"),toSql(rows));
+  fs.writeFileSync(path.join(REPO,"learning","ramzi-hints.json"),published);
+  fs.writeFileSync(path.join(REPO,"learning","ramzi-hints-seed.sql"),seed);
   const verified=rows.filter(row=>row.status==="verified").length;
   console.log(JSON.stringify({
     parsed:parsed.entries.length,
@@ -483,6 +577,7 @@ function main(argv){
     rows:rows.length,
     verified,
     review:rows.length-verified,
+    firstPartCoverage:firstPartCoverage(site,rows),
     bindingResolutions:binding.resolutions.filter(item=>item.reason!=="unique_current_manifest"),
     rejected:normalized.rejected.concat(keep.rejected),
     displaced:applied.displaced
@@ -491,4 +586,4 @@ function main(argv){
 
 if(require.main===module){main(process.argv);}
 
-module.exports={parseBank,normalizeTitle,loadSite,normalize,applyReviews,liveExercises,loadRows,mergeRows,bindRows,publicRows,barFractions,toSql,nativeExercise,SITE_ID_RE,MAX_HINT};
+module.exports={parseBank,normalizeTitle,loadSite,normalize,applyReviews,liveExercises,firstPartCoverage,loadRows,mergeRows,bindRows,sourceTaskHash,publicRows,barFractions,hintIssue,assertSafeHints,privatePacketDirectory,toSql,nativeExercise,SITE_ID_RE,MAX_HINT};
