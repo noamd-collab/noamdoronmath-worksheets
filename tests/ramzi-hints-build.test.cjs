@@ -145,8 +145,8 @@ test("the committed seed matches the committed public rows and hides unreviewed 
   const loaded=build.loadRows(rows,live);
   assert.deepEqual(loaded.rejected,[]);
   assert.deepEqual(build.publicRows(build.bindRows(site,loaded.rows).rows),rows);
-  assert.equal(rows.length,501);
-  assert.equal(rows.filter(row=>row.status==="verified").length,501);
+  assert.equal(rows.length,504);
+  assert.equal(rows.filter(row=>row.status==="verified").length,504);
   assert.equal(rows.filter(row=>row.status==="review").length,0);
   assert.deepEqual(build.firstPartCoverage(site,rows),{eligible:419,verified:419,missing:[]});
   rows.forEach(row=>{
