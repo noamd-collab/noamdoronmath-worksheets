@@ -32,6 +32,19 @@
   ],
   "cards": [
     {
+      "title": "מדריך לבניית ביטויים אלגבריים ממילים לתרגיל",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%9E%D7%93%D7%A8%D7%99%D7%9A-%D7%9C%D7%91%D7%A0%D7%99%D7%99%D7%AA-%D7%91%D7%99%D7%98%D7%95%D7%99%D7%99%D7%9D-%D7%90%D7%9C%D7%92%D7%91%D7%A8%D7%99%D7%99%D7%9D-%D7%9E%D7%9E%D7%99%D7%9C%D7%99%D7%9D-%D7%9C%D7%AA%D7%A8%D7%92%D7%99%D7%9C",
+      "excerpt": "מדריך לבניית ביטויים אלגבריים לתלמידי חטיבת הביניים: מזהים את הכמות המשתנה, מתרגמים מילים לסימנים, בודקים סדר פעולות ומתרגלים נכון בבית ובכיתה בביטחון.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "1 בנוב׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_6d269e609c374da8806d45a348e88389~mv2.webp/v1/fill/w_305,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_6d269e609c374da8806d45a348e88389~mv2.webp",
+      "imageAlt": "מדריך לבניית ביטויים אלגבריים ממילים לתרגיל"
+    },
+    {
       "title": "משחקי חשבון מומלצים לילדי יסודי שבאמת מקדמים",
       "href": "https://www.noamdoronmath.co.il/post/%D7%9E%D7%A9%D7%97%D7%A7%D7%99-%D7%97%D7%A9%D7%91%D7%95%D7%9F-%D7%9E%D7%95%D7%9E%D7%9C%D7%A6%D7%99%D7%9D-%D7%9C%D7%99%D7%9C%D7%93%D7%99-%D7%99%D7%A1%D7%95%D7%93%D7%99-%D7%A9%D7%91%D7%90%D7%9E%D7%AA-%D7%9E%D7%A7%D7%93%D7%9E%D7%99%D7%9D",
       "excerpt": "משחקי חשבון מומלצים לילדי יסודי הופכים תרגול לזמן של חשיבה, שיחה והצלחה. כך בוחרים משחק לפי כיתה, מיומנות ורמת קושי, ומחברים אותו לתרגול קצר, מדויק ונעים.",
@@ -1081,8 +1094,8 @@
   "loadMore": null,
   "source": {
     "liveUrl": "https://amiramnoam.wixsite.com/my-site/blog",
-    "capturedAt": "2026-10-31T10:29:28.182Z",
-    "cardCount": 85,
+    "capturedAt": "2026-11-01T11:24:12.654Z",
+    "cardCount": 86,
     "captureMethod": "old-site-sync"
   }
 }
