@@ -3529,4 +3529,59 @@ print(json.dumps({'scanned': scanned, 'cases': cases}))
     assert.match(page, /השיחה עם נועם AI היא בפאנל/);
     assert.equal(printer.includes('worksheet-viewer-noam'), false);
   });
+
+  it('prints side-by-side drawings as one row and guided boxes whole', () => {
+    const preview = readFileSync(new URL('../public/teachers/teacher-factoring-print.js', import.meta.url), 'utf8');
+    type Bitmap = { width: number; height: number; getContext: () => { getImageData: (x: number, y: number, w: number, h: number) => { data: Uint8ClampedArray } } };
+    const source = (from: string, to: string, name: string) => new Function(`${preview.slice(preview.indexOf(from), preview.indexOf(to))} return ${name};`)();
+    type Figure = { x0: number; x1: number; y0: number; y1: number };
+    const leftFigureBoxes = source('function leftFigureBoxes', 'async function measureWorksheet', 'leftFigureBoxes') as (bitmap: Bitmap, y0: number, y1: number) => Figure[];
+    const joinFigureRow = source('function leftFigureBoxes', 'async function measureWorksheet', 'joinFigureRow') as (figures: Figure[]) => Figure[];
+    const widenGuidedBox = source('function leftFigureBoxes', 'async function measureWorksheet', 'widenGuidedBox') as (bitmap: Bitmap, box: object) => { x: number; w: number };
+    const eraseWritingDashes = source('function eraseWritingDashes', 'function bakeMeasuredClips', 'eraseWritingDashes') as (data: Uint8ClampedArray, w: number, h: number, rows: number[], srcY: number) => void;
+    const W = 1000;
+    const H = 1400;
+    const data = new Uint8ClampedArray(W * H * 4).fill(255);
+    const paint = (x: number, y: number, v: number) => {
+      const i = (y * W + x) * 4;
+      data[i] = data[i + 1] = data[i + 2] = v;
+    };
+    const bitmapOf = (pixels: Uint8ClampedArray, width: number, height: number): Bitmap => ({
+      width,
+      height,
+      getContext: () => ({
+        getImageData: (x, y, w, h) => {
+          const out = new Uint8ClampedArray(w * h * 4);
+          for (let r = 0; r < h; r += 1) out.set(pixels.subarray(((y + r) * width + x) * 4, ((y + r) * width + x + w) * 4), r * w * 4);
+          return { data: out };
+        },
+      }),
+    });
+    // Four cube nets: squares filled at 250, the near-white fill of the source.
+    [[250, 320], [350, 450], [476, 574], [600, 674]].forEach(([x0, x1]) => {
+      for (let y = 700; y <= 770; y += 1) {
+        for (let x = x0; x <= x1; x += 1) {
+          const edge = y === 700 || y === 770 || y === 735 || x === x0 || x === x1 || (x - x0) % 35 === 0;
+          paint(x, y, edge ? 20 : 250);
+        }
+      }
+    });
+    const nets = joinFigureRow(leftFigureBoxes(bitmapOf(data, W, H), 0.45, 0.6));
+    assert.equal(nets.length, 1, `nets print as ${nets.length} pieces`);
+    assert.ok(nets[0].x0 < 0.26 && nets[0].x1 > 0.66, 'the row keeps all four nets');
+    // A guided box: grey fill from 0.37, text only from 0.55.
+    const box = new Uint8ClampedArray(W * H * 4).fill(255);
+    for (let y = 900; y < 1000; y += 1) {
+      for (let x = 370; x < 855; x += 1) {
+        const i = (y * W + x) * 4;
+        box[i] = box[i + 1] = box[i + 2] = 246;
+      }
+    }
+    const widened = widenGuidedBox(bitmapOf(box, W, H), { x: 0.542, y: 900 / H, w: 0.4, h: 100 / H, segment: 'figure', guided: true });
+    assert.ok(widened.x < 0.372 && widened.x > 0.36, `guided box starts at ${widened.x}`);
+    // A writing-dash row through the box fill must not leave a white seam.
+    const crop = new Uint8ClampedArray(20 * 10 * 4).fill(246);
+    eraseWritingDashes(crop, 20, 10, [5], 0);
+    assert.equal(crop[(5 * 20 + 10) * 4], 246, 'box fill under a dash row stays grey');
+  });
 });
