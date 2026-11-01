@@ -25,6 +25,17 @@ it('requires exact PDF and native SHA when present; a missing native binding is 
  }
  const {bank}=setup(),legacy=manifest({nativeExportSha256:undefined});assert.equal(await bank.prefetch(legacy,{fetch:fetchRows([row({source_native_sha256:null})])}),1);
 });
+it('a sheet republished with final answers keeps hints bound to the PDF whose question pages it repeats',async()=>{
+ const withAnswers='e'.repeat(32),sheet=manifest({pdfHash:withAnswers,questionPagesIdenticalTo:[pdf]});
+ const {bank}=setup();assert.equal(await bank.prefetch(sheet,{fetch:fetchRows([row()])}),1);assert.deepEqual(Array.from(bank.get(sheet,id).hints),hints);
+ const {bank:rebound}=setup();assert.equal(await rebound.prefetch(sheet,{fetch:fetchRows([row({source_pdf_hash:withAnswers})])}),1);
+ // Only the named earlier PDF counts: generic aliases, other hashes and malformed entries do not.
+ for(const other of [manifest({pdfHash:withAnswers,aliases:[pdf]}),manifest({pdfHash:withAnswers,questionPagesIdenticalTo:['c'.repeat(32)]}),
+   manifest({pdfHash:withAnswers,questionPagesIdenticalTo:[pdf.toUpperCase(),'__proto__',null]}),manifest({pdfHash:withAnswers,questionPagesIdenticalTo:pdf})]){
+  const {bank:b}=setup();assert.equal(await b.prefetch(other,{fetch:fetchRows([row()])}),0);
+ }
+ const {bank:native}=setup();assert.equal(await native.prefetch(sheet,{fetch:fetchRows([row({source_native_sha256:'d'.repeat(64)})])}),0);
+});
 it('rejects duplicate, incomplete, oversized and foreign exercise rows without reusing a matching-looking part',async()=>{
  for(const rows of [[row(),row()],[row({hint_2:''})],[row({hint_1:'x'.repeat(601)})],[row({exercise_id:'G9-T39-A-Q03ב'})],[row({exercise_id:'__proto__'})],{}]){
   const {bank}=setup(),sheet=manifest();assert.equal(await bank.prefetch(sheet,{fetch:fetchRows(rows)}),0);assert.equal(bank.get(sheet,id),null);
