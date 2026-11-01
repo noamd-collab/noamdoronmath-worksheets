@@ -183,19 +183,19 @@ for (const file of ["noam-bot-client.js", "headless/astro-poc/public/noam-bot-cl
     } });
     await assert.rejects(h.client.postJson(`${api}/noamImageSolve`, { question: privateText }));
     assertDiagnostic(h, "execute", "BOT_VERIFICATION_FAILED");
-    assert.equal(h.scripts.length, 2);
+    assert.equal(h.scripts.length, 1);
     assert.equal(JSON.stringify(h.warnings).includes(privateText), false);
     assert.equal(JSON.stringify(h.warnings).includes(config.siteKey), false);
   });
 
-  test(`${file}: execute failure on google.com falls back to recaptcha.net without skipping the token`, async () => {
+  test(`${file}: execute failure keeps the installed SDK and cannot switch hosts`, async () => {
     const h = harness(file, { executeFailHost: "google.com/recaptcha" });
-    assert.equal((await h.client.postJson(`${api}/noamImageSolve`, { exerciseId: "synthetic-exercise" })).answer, "רמז");
-    assert.equal(h.scripts.length, 2);
-    assert.equal(h.scripts[0].src, "https://www.google.com/recaptcha/api.js?render=public-test-key");
-    assert.equal(h.scripts[1].src, "https://www.recaptcha.net/recaptcha/api.js?render=public-test-key");
-    assert.equal(JSON.parse(h.modelCalls()[0].request.body).botVerification.token, "test-verification-token");
-    assert.deepEqual(h.warnings, []);
+    await assert.rejects(h.client.postJson(`${api}/noamImageSolve`, { exerciseId: "synthetic-exercise" }),
+      { code: "BOT_VERIFICATION_FAILED" });
+    assert.equal(h.scripts.length, 1);
+    assert.ok(h.win.grecaptcha);
+    assert.ok(h.scripts[0].parentNode);
+    assertDiagnostic(h, "execute", "BOT_VERIFICATION_FAILED");
   });
 
   test(`${file}: a late first-host script must not drop recaptcha.net or send a stale token`, async () => {
@@ -226,37 +226,23 @@ for (const file of ["noam-bot-client.js", "headless/astro-poc/public/noam-bot-cl
     assert.equal(JSON.parse(h.modelCalls()[0].request.body).botVerification.token, "test-verification-token");
   });
 
-  test(`${file}: a late first-host ready callback must not execute after recaptcha.net`, async () => {
-    let host1Ready;
-    const h = harness(file, {
-      timeout: 150,
-      recaptcha: {
-        ready(callback) {
-          const last = h.scripts[h.scripts.length - 1];
-          if (last && String(last.src || "").includes("google.com/recaptcha")) {
-            host1Ready = callback;
-            return;
-          }
-          callback();
-        },
-        async execute(_key, details) {
-          h.actions.push(details.action);
-          const last = h.scripts[h.scripts.length - 1];
-          if (last && String(last.src || "").includes("google.com/recaptcha")) {
-            return "stale-host1-token";
-          }
-          return "test-verification-token";
-        }
-      }
-    });
-    assert.equal((await h.client.postJson(`${api}/noamImageSolve`, { exerciseId: "synthetic-exercise" })).answer, "רמז");
+  test(`${file}: a late ready callback leaves the SDK intact but cannot revive an expired request`, async () => {
+    let host1Ready, isReady = false;
+    const h = harness(file, { timeout: 40, recaptcha: {
+      ready(callback) { if (isReady) callback(); else host1Ready = callback; },
+      async execute(_key, details) { h.actions.push(details.action); return "fresh-token"; }
+    } });
+    await assert.rejects(h.client.postJson(`${api}/noamImageSolve`, {}), { code: "BOT_VERIFICATION_TIMEOUT" });
+    const installed = h.win.grecaptcha;
+    assert.equal(h.scripts.length, 1);
     assert.equal(typeof host1Ready, "function");
-    assert.equal(h.actions.length, 1);
-    host1Ready();
-    await flush();
-    assert.equal(h.actions.length, 1);
+    isReady = true; host1Ready(); await flush();
+    assert.equal(h.actions.length, 0);
+    assert.equal(h.modelCalls().length, 0);
+    assert.equal((await h.client.postJson(`${api}/noamImageSolve`, {})).answer, "רמז");
+    assert.equal(h.win.grecaptcha, installed);
+    assert.equal(h.scripts.length, 1);
     assert.equal(h.modelCalls().length, 1);
-    assert.equal(JSON.parse(h.modelCalls()[0].request.body).botVerification.token, "test-verification-token");
   });
 
   test(`${file}: a hanging google.com execute uses the remaining overall budget instead of a second widget`, async () => {
@@ -280,29 +266,16 @@ for (const file of ["noam-bot-client.js", "headless/astro-poc/public/noam-bot-cl
     assert.deepEqual(h.warnings, []);
   });
 
-  test(`${file}: a stalled google.com ready falls back to recaptcha.net without skipping the token`, async () => {
-    const h = harness(file, {
-      timeout: 150,
-      recaptcha: {
-        ready(callback) {
-          const last = h.scripts[h.scripts.length - 1];
-          if (last && String(last.src || "").includes("google.com/recaptcha")) {
-            return;
-          }
-          callback();
-        },
-        async execute(_key, details) {
-          h.actions.push(details.action);
-          return "test-verification-token";
-        }
-      }
-    });
-    assert.equal((await h.client.postJson(`${api}/noamImageSolve`, { exerciseId: "synthetic-exercise" })).answer, "רמז");
-    assert.equal(h.scripts.length, 2);
-    assert.equal(h.scripts[1].src, "https://www.recaptcha.net/recaptcha/api.js?render=public-test-key");
-    assert.equal(JSON.parse(h.modelCalls()[0].request.body).botVerification.token, "test-verification-token");
-    assert.equal(h.modelCalls().length, 1);
-    assert.deepEqual(h.warnings, []);
+  test(`${file}: a stalled ready is bounded without reinjecting the installed SDK`, async () => {
+    const h = harness(file, { timeout: 40, recaptcha: {
+      ready() {},
+      async execute() { throw new Error("Must not execute before ready"); }
+    } });
+    await assert.rejects(h.client.postJson(`${api}/noamImageSolve`, {}), { code: "BOT_VERIFICATION_TIMEOUT" });
+    assert.equal(h.scripts.length, 1);
+    assert.ok(h.win.grecaptcha);
+    assert.ok(h.scripts[0].parentNode);
+    assertDiagnostic(h, "ready", "BOT_VERIFICATION_TIMEOUT");
   });
 
   test(`${file}: a consecutive request reuses the working recaptcha.net SDK`, async () => {
@@ -318,21 +291,23 @@ for (const file of ["noam-bot-client.js", "headless/astro-poc/public/noam-bot-cl
     assert.deepEqual(h.warnings, []);
   });
 
-  test(`${file}: a later request reloads after execute failed on both hosts`, async () => {
+  test(`${file}: a later explicit request retries execution on the same SDK after rejection`, async () => {
     let pass = 0;
     const h = harness(file, { recaptcha: {
       ready(callback) { callback(); },
       async execute() {
         pass += 1;
-        if (pass <= 2) { throw new Error("first pass blocked"); }
+        if (pass === 1) throw new Error("first pass blocked");
         return "retry-token";
       }
     } });
     await assert.rejects(h.client.postJson(`${api}/noamImageSolve`, {}), { code: "BOT_VERIFICATION_FAILED" });
+    const installed = h.win.grecaptcha;
     assert.equal(h.modelCalls().length, 0);
     assert.equal((await h.client.postJson(`${api}/noamImageSolve`, { exerciseId: "synthetic-exercise" })).answer, "רמז");
-    assert.equal(h.scripts.length, 3);
-    assert.equal(h.scripts[2].src, "https://www.google.com/recaptcha/api.js?render=public-test-key");
+    assert.equal(h.win.grecaptcha, installed);
+    assert.equal(h.scripts.length, 1);
+    assert.equal(pass, 2);
     assert.equal(JSON.parse(h.modelCalls()[0].request.body).botVerification.token, "retry-token");
   });
 
@@ -343,7 +318,7 @@ for (const file of ["noam-bot-client.js", "headless/astro-poc/public/noam-bot-cl
     } });
     await assert.rejects(h.client.postJson(`${api}/noamImageSolve`, {}), { code: "BOT_VERIFICATION_FAILED" });
     assertDiagnostic(h, "token", "BOT_VERIFICATION_FAILED");
-    assert.equal(h.scripts.length, 2);
+    assert.equal(h.scripts.length, 1);
   });
 
   test(`${file}: server denial is still enforced once after successful Google verification`, async () => {

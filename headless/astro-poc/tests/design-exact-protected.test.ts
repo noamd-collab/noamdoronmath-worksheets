@@ -294,7 +294,16 @@ describe('exact-design protected live-baseline boundaries', () => {
     // The glossary also protects the actual hint row/button above the composer;
     // separate live hint/composer bounds and post-focus/scroll remeasurement
     // are pinned by the positioning fixture.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '9266607c351513311692f09b06c790f7b310fb176945debf7e21ca8531f716c0');
+    // 1 November: only the shared bot-client cache query is refreshed for the
+    // approved SDK lifecycle fix. Reversing that query restores the exact
+    // 41ad576e released scripts; the separate companion URL is also cache-busted.
+    // PR333 hints, content and presentation stay intact.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), 'c21a58e5170c4eab936a62587c71dac4d346c7699306efd9fc24667e83489217');
+    const priorSdkScripts = releasedScripts.map(script => script.replace(
+      './noam-bot-client.js?v=20261101-sdk-lifecycle',
+      './noam-bot-client.js?v=20261025-execute-ready-guard',
+    ));
+    assert.equal(sha256(JSON.stringify(priorSdkScripts)), '9266607c351513311692f09b06c790f7b310fb176945debf7e21ca8531f716c0');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {

@@ -1,5 +1,11 @@
 # Worksheet tracker
 
+## Shared Google SDK lifecycle — 2026-11-01
+
+The authorized teacher verification investigation found that client cleanup could delete Google's page-global API and client registry after an installed SDK's ready or execute failure. Cleanup now retains that SDK for a later fresh verification or explicit human widget. Host fallback remains available only for a script failure before SDK installation. Ready, execute and queue waits remain bounded; expired callbacks cannot submit tokens. Verification thresholds, action/hostname checks, model selection and challenge nonce rules are unchanged.
+
+Both SDK copies and their teacher, companion and viewer loaders use matching cache versions. Each viewer differs from baseline 41ad576e by exactly two cache query strings (SDK and companion); its content, prepared hints and visual behavior remain intact. Offline actual-loader regressions cover timeout followed by human verification, late callbacks, repeated readiness timeouts and legitimate script-load fallback. The earlier live Google exception and duplicate secondary scripts make SDK replacement a plausible contributor to the blank challenge, but do not establish its cause. This fix still needs release validation and a separately authorized human check; it does not claim a solved live CAPTCHA or new AI success.
+
 ## Teacher Google browser verification recovery — 2026-10-31
 
 The authorized diagnostic returned HTTP 403 with `BOT_VERIFICATION_FAILED` and Google's sole `browser-error` code, without a score, hostname or action. That failed proof still cannot reach the model or open the human challenge. The client now obtains one fresh v3 token and submits it for complete server verification after this exact response. Browser-error recovery and the existing transport recovery share one automatic retry budget; a second failure is terminal. Other security responses, malformed assessments and v2 redemption never acquire this retry. Google documents browser errors as execute failures that may involve network problems; the specific cause of the observed failure remains unknown.

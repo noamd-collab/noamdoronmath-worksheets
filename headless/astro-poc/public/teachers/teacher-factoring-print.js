@@ -121,18 +121,18 @@ function ensureTeacherBotClient() {
   if (teacherBotClientPromise) return teacherBotClientPromise;
   teacherBotClientPromise = new Promise((resolve, reject) => {
     function finish(ok) {
-      if (ok && window.NoamBotClient && window.NoamBotClient.version === '20261031-browser-error' && typeof window.NoamBotClient.create === 'function') {
+      if (ok && window.NoamBotClient && window.NoamBotClient.version === '20261101-sdk-lifecycle' && typeof window.NoamBotClient.create === 'function') {
         resolve(window.NoamBotClient.create({ api: '/api', enabled: true, modelTimeoutMs: 25000 }));
         return;
       }
       reject(new Error('BOT_CLIENT_UNAVAILABLE'));
     }
-    if (window.NoamBotClient && window.NoamBotClient.version === '20261031-browser-error') {
+    if (window.NoamBotClient && window.NoamBotClient.version === '20261101-sdk-lifecycle') {
       finish(true);
       return;
     }
     const loader = document.createElement('script');
-    loader.src = '/noam-bot-client.js?v=20261031-browser-error';
+    loader.src = '/noam-bot-client.js?v=20261101-sdk-lifecycle';
     loader.async = true;
     loader.onload = () => finish(true);
     loader.onerror = () => finish(false);

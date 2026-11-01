@@ -88,7 +88,7 @@
     if (!registry.bySiteKey[siteKey]) {
       registry.bySiteKey[siteKey] = {
         registry: registry, scriptPromise: null, loadedHost: "", currentScript: null,
-        recaptchaAttempt: 0, discardedRecaptcha: null, loadedApi: null
+        recaptchaAttempt: 0, loadedApi: null
       };
     }
     return registry.bySiteKey[siteKey];
@@ -175,6 +175,9 @@
     }
 
     function clearLoadedRecaptcha(runtime) {
+      // Google owns page-global clients, secondary scripts and iframe callbacks.
+      // Once its API exists, a request timeout must not erase or reload that SDK.
+      if (runtime.loadedApi) { return; }
       runtime.recaptchaAttempt += 1;
       runtime.scriptPromise = null;
       runtime.loadedHost = "";
@@ -185,22 +188,12 @@
         script.onerror = null;
         if (script.parentNode) { script.parentNode.removeChild(script); }
       }
-      var ownedApi = runtime.loadedApi;
-      runtime.discardedRecaptcha = ownedApi;
-      runtime.loadedApi = null;
-      // Never erase a page-global SDK that this loader did not create/use.
-      if (ownedApi && win.grecaptcha === ownedApi) {
-        try { win.grecaptcha = undefined; } catch (error) {}
-        try { delete win.grecaptcha; } catch (error) {
-          try { win.grecaptcha = undefined; } catch (ignored) {}
-        }
-        try { win.___grecaptcha_cfg = undefined; } catch (error) {}
-        try { delete win.___grecaptcha_cfg; } catch (error) {}
-      }
     }
 
-    function canFallbackHost(error, state) {
-      if (state && state.expired) { return false; }
+    function canFallbackHost(error, state, runtime) {
+      // Only an API script that failed before installing the SDK may change host.
+      // A ready/execute/token failure keeps the same SDK for the next human action.
+      if (!state || state.expired || state.stage !== "script" || runtime.loadedApi) { return false; }
       var code = error && error.code;
       return code !== "NOT_ACTIVE" && code !== "BOT_CONFIG_UNAVAILABLE" &&
         code !== "BOT_VERIFICATION_TIMEOUT" && code !== "BOT_ROUTE_UNSUPPORTED" &&
@@ -253,6 +246,7 @@
 
     function loadRecaptcha(siteKey, hostPrefix, state, isLastHost, runtime) {
       if (options.loadRecaptcha) { return options.loadRecaptcha(siteKey); }
+      if (runtime.loadedApi) { return Promise.resolve(runtime.loadedApi); }
       hostPrefix = hostPrefix || RECAPTCHA_HOSTS[0];
       if (runtime.scriptPromise && runtime.loadedHost === hostPrefix) { return runtime.scriptPromise; }
       if (runtime.scriptPromise && runtime.loadedHost !== hostPrefix) { clearLoadedRecaptcha(runtime); }
@@ -285,7 +279,7 @@
           }
           // api.js can finish before Google's secondary bundle adds execute.
           var api = win.grecaptcha;
-          if (ok && api && api !== runtime.discardedRecaptcha && typeof api.ready === "function") {
+          if (ok && api && typeof api.ready === "function") {
             runtime.loadedApi = api;
             resolve(api);
             return;
@@ -338,26 +332,26 @@
 
     function tokenFromHost(siteKey, action, hostPrefix, state, isLastHost, prepareOnly, runtime) {
       state.stage = "script";
-      // Bound script+ready per host. Do not switch hosts after execute starts.
+      // The host cap ends when api.js installs its API. Google's secondary ready
+      // work and execute share the remaining overall verification deadline.
       return withHostDeadline(
-        loadRecaptcha(siteKey, hostPrefix, state, isLastHost, runtime).then(function (recaptcha) {
-          checkActive(state);
-          state.stage = "ready";
-          // loadRecaptcha may increment runtime.recaptchaAttempt synchronously on host switch.
-          var attempt = runtime.recaptchaAttempt;
-          return new Promise(function (resolve) {
-            recaptcha.ready(function () {
-              if (attempt !== runtime.recaptchaAttempt || (state && state.expired)) {
-                return;
-              }
-              resolve(recaptcha);
-            });
-          });
-        }),
+        loadRecaptcha(siteKey, hostPrefix, state, isLastHost, runtime),
         state,
         isLastHost,
         runtime
       ).then(function (recaptcha) {
+        checkActive(state);
+        state.stage = "ready";
+        var attempt = runtime.recaptchaAttempt;
+        return new Promise(function (resolve) {
+          recaptcha.ready(function () {
+            if (attempt !== runtime.recaptchaAttempt || (state && state.expired)) {
+              return;
+            }
+            resolve(recaptcha);
+          });
+        });
+      }).then(function (recaptcha) {
         checkActive(state);
         if (prepareOnly) { return true; }
         return executeRecaptcha(recaptcha, siteKey, action, state, runtime.recaptchaAttempt, runtime);
@@ -407,7 +401,7 @@
                 return tokenFromHost(
                   config.siteKey, action, hosts[hostIndex], state, isLastHost, prepareOnly, runtime
                 ).catch(function (error) {
-                  if (!canFallbackHost(error, state) || isLastHost) { throw error; }
+                  if (!canFallbackHost(error, state, runtime) || isLastHost) { throw error; }
                   hostIndex += 1;
                   clearLoadedRecaptcha(runtime);
                   return attemptHost();
@@ -419,8 +413,8 @@
             }, remainingMs(requestState), "BOT_VERIFICATION_TIMEOUT", VERIFY_MESSAGE).catch(function (error) {
               // This operation still owns the shared SDK queue. A config/queue
               // timeout in a different client never runs this cleanup.
-              // A rejected execute can be an untyped Google error. Do not
-              // retain that failed SDK as the preferred host for the next action.
+              // Release only an unfinished script load. An installed Google SDK
+              // stays intact for fresh verification and a possible human widget.
               clearLoadedRecaptcha(runtime);
               throw error;
             });
@@ -654,7 +648,7 @@
   }
 
   return {
-    version: "20261031-browser-error",
+    version: "20261101-sdk-lifecycle",
     create: create,
     isProtectionError: isProtectionError,
     isTransientNetworkError: isTransientNetworkError

@@ -9190,7 +9190,7 @@ function ensureNoamBotClient(){
     }
     if (window.NoamBotClient){finish(true);return;}
     script=document.createElement("script");
-    script.src="./noam-bot-client.js?v=20261025-execute-ready-guard";
+    script.src="./noam-bot-client.js?v=20261101-sdk-lifecycle";
     script.async=true;
     script.onload=function(){finish(true);};
     script.onerror=function(){finish(false);};
@@ -9859,6 +9859,6 @@ function esc(s){
 
 })();
 </script>
-<script src="noam-site-companion.js" defer></script>
+<script src="noam-site-companion.js?v=20261101-sdk-lifecycle" defer></script>
 </body>
 </html>
