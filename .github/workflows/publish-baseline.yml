@@ -5,8 +5,8 @@ name: publish-baseline
 # A push of this file to main also releases once, because the token that
 # merges pull requests cannot call the dispatch API (Actions: write).
 # Release script on baseline installs @wix/cli before login (see #275).
-# Noam-authorized full Ramzi bank: PR #333. All current grade 7–9 parts
-# are prepared in Supabase: 31,670 canonical parts and 95,010 hints.
+# Noam-authorized Ramzi corrections: PR #336 fixes grade 9 math typesetting
+# and grade 8 triangle guidance in Supabase; all 31,670 ladders remain covered.
 # Standard hints use the bank; Flash is for additional questions, without Max.
 
 on:
@@ -52,4 +52,4 @@ jobs:
             exit 1
           fi
           git fetch origin headless/astro-poc-baseline
-          bash tools/release/release.sh "41ad576e7d5ff16f4f892f5718b33acd7976ce7b"
+          bash tools/release/release.sh "0fbf88199fd853e510187bfc271941d4c805c78e"
