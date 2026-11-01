@@ -5995,6 +5995,22 @@ function layoutQuestionCrops(model) {
     segments.splice(after, 0, moved);
     i -= 1;
   }
+  // A stem sentence that wraps beside the drawing ("…בנוי" / "ריבוע.") stays one sentence.
+  for (let i = 1; i < segments.length; i += 1) {
+    const fig = segments[i].box;
+    if (!sideFigure(fig)) continue;
+    const prev = segments[i - 1].box;
+    if (prev.segment !== 'stem' || prev.y + prev.h <= fig.y) continue;
+    let after = -1;
+    for (let k = i + 1; k < segments.length; k += 1) {
+      const other = segments[k].box;
+      if (other.segment !== 'stem' || other.y >= fig.y + fig.h) break;
+      after = k;
+    }
+    if (after < 0) continue;
+    const [moved] = segments.splice(i, 1);
+    segments.splice(after, 0, moved);
+  }
   return segments;
 }
 
