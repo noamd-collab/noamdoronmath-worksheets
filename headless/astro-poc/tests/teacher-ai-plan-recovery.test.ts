@@ -201,12 +201,12 @@ test('failure and recovery diagnostics contain only fixed categories and bounded
   assert.ok(recovered.logs.some(entry=>entry.code==='MODEL_SELECTION_RECOVERED'));
   assert.ok(rejected.logs.some(entry=>entry.code==='MODEL_CORRECTION_REJECTED'));
   const events=[...recovered.logs,...rejected.logs,...malformed.logs].filter(entry=>entry.event==='noam-teacher-selection');
-  const allowed=new Set(['event','code','reason','requestedCount','primaryCount','planCount','completionTokens','finishReason','remainingMs']);
+  const allowed=new Set(['event','code','reason','requestedCount','primaryCount','expectedCount','candidateCount','invalidCount','planCount','completionTokens','finishReason','remainingMs']);
   for(const entry of events) {
     assert.ok(Object.keys(entry).every(key=>allowed.has(key)));
     assert.ok(['MODEL_RESPONSE_INVALID','MODEL_RESPONSE_TRUNCATED','MODEL_SELECTION_REJECTED','MODEL_SELECTION_RECOVERED','MODEL_CORRECTION_ATTEMPTED','MODEL_CORRECTION_SUCCEEDED','MODEL_CORRECTION_REJECTED'].includes(entry.code));
-    assert.ok(['missing-content','invalid-json','length-limit','primary-invalid','level-coverage','requested-plan','exact-primary'].includes(entry.reason));
-    for(const [key,max] of [['requestedCount',60],['primaryCount',60],['planCount',3],['completionTokens',100000],['remainingMs',18000]] as const) {
+    assert.ok(['missing-content','invalid-json','length-limit','primary-invalid','level-coverage','requested-plan','exact-primary','malformed-labels','wrong-count','unknown-id','ambiguous-id','duplicate-question'].includes(entry.reason));
+    for(const [key,max] of [['requestedCount',60],['primaryCount',60],['expectedCount',60],['candidateCount',10000],['invalidCount',60],['planCount',3],['completionTokens',100000],['remainingMs',18000]] as const) {
       if(key in entry)assert.ok(Number.isInteger(entry[key])&&entry[key]>=0&&entry[key]<=max);
     }
     if('finishReason' in entry)assert.ok(['stop','length','content_filter','other','missing'].includes(entry.finishReason));

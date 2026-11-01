@@ -303,13 +303,13 @@ test('correction diagnostics expose bounded categories and counts, never teacher
   for (const code of ['MODEL_CORRECTION_ATTEMPTED', 'MODEL_CORRECTION_SUCCEEDED', 'MODEL_CORRECTION_REJECTED']) {
     assert.ok(entries.some(entry => entry.code === code), code);
   }
-  const allowed = new Set(['event', 'code', 'reason', 'requestedCount', 'primaryCount', 'planCount', 'completionTokens', 'finishReason', 'remainingMs']);
+  const allowed = new Set(['event', 'code', 'reason', 'requestedCount', 'primaryCount', 'expectedCount', 'candidateCount', 'invalidCount', 'planCount', 'completionTokens', 'finishReason', 'remainingMs']);
   for (const entry of entries) {
     assert.ok(Object.keys(entry).every(key => allowed.has(key)));
     assert.ok(['MODEL_RESPONSE_INVALID', 'MODEL_RESPONSE_TRUNCATED', 'MODEL_SELECTION_REJECTED', 'MODEL_SELECTION_RECOVERED',
       'MODEL_CORRECTION_ATTEMPTED', 'MODEL_CORRECTION_SUCCEEDED', 'MODEL_CORRECTION_REJECTED'].includes(entry.code));
     assert.ok(['missing-content', 'invalid-json', 'length-limit', 'primary-invalid', 'level-coverage', 'requested-plan',
-      'exact-primary', 'provider-failure', 'deadline'].includes(entry.reason));
+      'exact-primary', 'provider-failure', 'deadline', 'malformed-labels', 'wrong-count', 'unknown-id', 'ambiguous-id', 'duplicate-question'].includes(entry.reason));
     if ('remainingMs' in entry) assert.ok(Number.isInteger(entry.remainingMs) && entry.remainingMs >= 0 && entry.remainingMs <= 18000);
   }
   assert.doesNotMatch(JSON.stringify(entries), /PRIVATE_|exerciseLabels|exerciseIds|Bearer|apiKey|botVerification/);

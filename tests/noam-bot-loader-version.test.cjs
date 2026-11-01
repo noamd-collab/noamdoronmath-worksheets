@@ -6,7 +6,7 @@ const path = require("node:path");
 const vm = require("node:vm");
 const sdk = require("../noam-bot-client.js");
 const read = file => fs.readFileSync(path.join(__dirname, "..", file), "utf8");
-const version = "20261031-browser-error";
+const version = "20261101-sdk-lifecycle";
 
 function loader(file, kind, initialSdk, keepOld = false) {
   const source = read(file), scripts = [];
@@ -78,7 +78,7 @@ for (const file of ["demos/teacher-practice-picker-site-style.html", "headless/a
   test(`${file}: teacher and companion scripts use their independently current cache versions`, () => {
     const html = read(file);
     for (const [asset, expectedVersion] of [
-      ["teacher-factoring-print.js", "20261031-live-validation"],
+      ["teacher-factoring-print.js", "20261101-sdk-lifecycle"],
       ["noam-site-companion.js", version]
     ]) {
       const escaped = asset.replaceAll(".", "\\.");
@@ -87,3 +87,23 @@ for (const file of ["demos/teacher-practice-picker-site-style.html", "headless/a
     }
   });
 }
+
+for (const file of ["worksheet-viewer-noam.html", "headless/astro-poc/public/worksheet-viewer-noam.html"]) {
+  test(`${file}: the protected freeform loader requests the current shared SDK`, () => {
+    const source = read(file);
+    const urls = [...source.matchAll(/script\.src="(\.\/noam-bot-client\.js\?v=[^"]+)"/g)];
+    assert.equal(urls.length, 1);
+    assert.equal(urls[0][1], "./noam-bot-client.js?v=" + version);
+    const companionUrls = [...source.matchAll(/<script src="(noam-site-companion\.js[^\"]*)" defer><\/script>/g)];
+    assert.equal(companionUrls.length, 1);
+    assert.equal(companionUrls[0][1], "noam-site-companion.js?v=" + version,
+      "a stale companion must not inject an older SDK before the viewer loader");
+  });
+}
+
+test("the shared site layout invalidates cached companion loaders", () => {
+  const source = read("headless/astro-poc/src/layouts/BaseLayout.astro");
+  const urls = [...source.matchAll(/<script src="(\/noam-site-companion\.js[^\"]*)" defer><\/script>/g)];
+  assert.equal(urls.length, 1);
+  assert.equal(urls[0][1], "/noam-site-companion.js?v=" + version);
+});

@@ -40,10 +40,12 @@ const TEACHER_PLANS_SYSTEM = [
 export function logTeacherSelection(settings, entry) {
   const codes = ["MODEL_RESPONSE_INVALID", "MODEL_RESPONSE_TRUNCATED", "MODEL_SELECTION_REJECTED", "MODEL_SELECTION_RECOVERED",
     "MODEL_CORRECTION_ATTEMPTED", "MODEL_CORRECTION_SUCCEEDED", "MODEL_CORRECTION_REJECTED"];
-  const reasons = ["missing-content", "invalid-json", "length-limit", "primary-invalid", "level-coverage", "requested-plan", "exact-primary", "provider-failure", "deadline"];
+  const reasons = ["missing-content", "invalid-json", "length-limit", "primary-invalid", "level-coverage", "requested-plan", "exact-primary", "provider-failure", "deadline",
+    "malformed-labels", "wrong-count", "unknown-id", "ambiguous-id", "duplicate-question"];
   if (!entry || !codes.includes(entry.code) || !reasons.includes(entry.reason)) return;
   const safe = { event: "noam-teacher-selection", code: entry.code, reason: entry.reason };
-  for (const [key, max] of [["requestedCount", 60], ["primaryCount", 60], ["planCount", 3], ["completionTokens", 100000], ["remainingMs", 18000]]) {
+  for (const [key, max] of [["requestedCount", 60], ["primaryCount", 60], ["planCount", 3], ["completionTokens", 100000], ["remainingMs", 18000],
+    ["expectedCount", 60], ["candidateCount", 10000], ["invalidCount", 60]]) {
     const value = entry[key];
     if (Number.isInteger(value) && value >= 0) safe[key] = Math.min(value, max);
   }
@@ -169,6 +171,8 @@ export function parseClassifier(content) {
     const grade = Number(parsed.grade);
     const level = String(parsed.level || "").toLowerCase();
     const labels = Array.isArray(parsed.exerciseLabels) ? parsed.exerciseLabels : [];
+    const malformedLabelCount = Array.isArray(parsed.exerciseLabels)
+      ? labels.filter((label) => typeof label !== "string" || !normalizeScopedLabel(label)).length : 1;
     const primaryLabelsValid = Array.isArray(parsed.exerciseLabels) && labels.length <= MAX_BATCH_PICK_EXERCISES &&
       labels.every((label) => typeof label === "string" && Boolean(normalizeScopedLabel(label)));
     const plans = parsePlanLabels(parsed.exerciseLabelsByCount);
@@ -179,6 +183,9 @@ export function parseClassifier(content) {
       exerciseLabels: labels.map(normalizeLabel).filter(Boolean).slice(0, MAX_BATCH_PICK_EXERCISES),
       scopedExerciseLabels: labels.map(normalizeScopedLabel).filter(Boolean).slice(0, MAX_BATCH_PICK_EXERCISES),
       primaryLabelsValid,
+      // Retain only counts before normalization, never the raw malformed values.
+      primaryLabelCount: labels.length,
+      malformedLabelCount,
       wantsSheet: parsed.wantsSheet === true,
       ...(Object.keys(plans).length ? { scopedExerciseLabelsByCount: plans } : {}),
     };
@@ -380,19 +387,45 @@ export function teacherCorrectionEligible(index, input, classification, pick, pl
 
 /** A correction is accepted only as an exact, complete model selection. */
 export function validateExactTeacherPrimary(index, input, classification) {
-  const invalid = { pick: null, selectionError: "MODEL_SELECTION_INVALID" };
-  if (!classification || classification.primaryLabelsValid === false) return invalid;
   const teacher = teacherOf(input);
   const available = teacherPlanCandidates(index, teacher);
   const count = teacher.count;
-  if (!TEACHER_PLAN_COUNTS.includes(count) || !available.length) return invalid;
-  const target = Math.min(count, new Set(available.map((item) => item.questionKey)).size);
-  const labels = classification.scopedExerciseLabels || classification.exerciseLabels;
-  const chosen = explicitTeacherQuestions(available, labels, target);
-  if (!chosen) return invalid;
-  if (!coversLevelFamilies(chosen, mixedLevelFamilies(available, teacher.level))) return { pick: null, selectionError: "MODEL_LEVEL_COVERAGE_MISSING" };
+  const candidateCount = new Set(available.map((item) => item.questionKey)).size;
+  const target = Math.min(count, candidateCount);
+  const labels = classification && (classification.scopedExerciseLabels || classification.exerciseLabels);
+  const primaryCount = Number.isInteger(classification?.primaryLabelCount)
+    ? classification.primaryLabelCount : Array.isArray(labels) ? labels.length : 0;
+  const diagnostic = (reason, invalidCount = 0) => ({ reason, primaryCount, expectedCount: target, candidateCount, invalidCount });
+  const reject = (reason, invalidCount = 1) => ({ pick: null,
+    selectionError: reason === "level-coverage" ? "MODEL_LEVEL_COVERAGE_MISSING" : "MODEL_SELECTION_INVALID",
+    diagnostic: diagnostic(reason, invalidCount) });
+  if (!TEACHER_PLAN_COUNTS.includes(count) || !available.length) return reject("primary-invalid");
+  const retainedMalformedCount = Number.isInteger(classification?.malformedLabelCount) ? classification.malformedLabelCount
+    : !Array.isArray(labels) || classification?.primaryLabelsValid === false ? 1
+      : 0;
+  const malformedCount = Math.max(retainedMalformedCount, Array.isArray(labels)
+    ? labels.filter((label) => typeof label !== "string" || !normalizeScopedLabel(label)).length : 1);
+  if (malformedCount || !Array.isArray(labels)) return reject("malformed-labels", malformedCount || 1);
+  if (primaryCount !== target || labels.length !== target) return reject("wrong-count", Math.abs(primaryCount - target));
+  if (classification.primaryLabelsValid === false) return reject("malformed-labels");
+  const chosen = [], questions = new Set();
+  let unknown = 0, ambiguous = 0, duplicates = 0;
+  for (const token of labels) {
+    const matches = available.filter((item) => token.includes(":") ? item.scoped === token : item.label === token);
+    if (!matches.length) { unknown += 1; continue; }
+    if (matches.length !== 1) { ambiguous += 1; continue; }
+    if (questions.has(matches[0].questionKey)) { duplicates += 1; continue; }
+    questions.add(matches[0].questionKey);
+    chosen.push(matches[0]);
+  }
+  if (unknown) return reject("unknown-id", unknown);
+  if (ambiguous) return reject("ambiguous-id", ambiguous);
+  if (duplicates) return reject("duplicate-question", duplicates);
+  const families = mixedLevelFamilies(available, teacher.level);
+  const missingFamilies = families.length > 1 ? families.filter((family) => !chosen.some((item) => item.family === family)) : [];
+  if (missingFamilies.length) return reject("level-coverage", missingFamilies.length);
   const selectedSheets = new Set(chosen.map((item) => item.sheet));
-  return { selectionError: null, pick: { band: Number(teacher.grade) <= 6 ? "elementary" : "middle",
+  return { selectionError: null, diagnostic: diagnostic("exact-primary"), pick: { band: Number(teacher.grade) <= 6 ? "elementary" : "middle",
     exerciseIds: chosen.slice().sort((a, b) => a.orderIndex - b.orderIndex).map((item) => item.key),
     modelExerciseIds: chosen.map((item) => item.key), sheetIds: [],
     sheets: matchingTeacherSheets(index, teacher).filter((sheet) => selectedSheets.has(sheet)), selectionSource: "classifier" } };
@@ -401,11 +434,23 @@ export function validateExactTeacherPrimary(index, input, classification) {
 export function teacherCorrectionRequestBody(input, index, reason) {
   const focused = { ...input, teacher: { ...input.teacher, planCounts: [] } };
   const body = classifierRequestBody(focused, index);
-  const feedback = reason === "level-coverage"
-    ? "הבחירה הקודמת לא ייצגה את כל משפחות הרמה הזמינות."
-    : "הבחירה הקודמת לא עברה בדיקה של המזהים, הכמות המדויקת או ייחודיות השאלות השלמות.";
+  const feedback = {
+    "malformed-labels": "exerciseLabels חייב להיות מערך של מחרוזות מזהה בלבד, בלי אובייקטים או מערכים פנימיים. העתק כל מזהה כפי שהוא ברשימה.",
+    "wrong-count": "מספר המזהים בבחירה הקודמת לא התאים לכמות המבוקשת. החזר בדיוק את מספר השאלות המבוקש.",
+    "unknown-id": "בבחירה הקודמת היה מזהה שאינו ברשימת המועמדים המותרת. בחר רק מהמזהים המפורטים למטה, בלי לשנות או להמציא מזהה.",
+    "ambiguous-id": "בבחירה הקודמת היה מזהה שמתאים ליותר ממקור אחד. העתק את המזהה המלא עם קידומת המקור, למשל a: או b: או c: או c2: כאשר היא מופיעה ברשימה.",
+    "duplicate-question": "הבחירה הקודמת כללה אותה שאלה שלמה יותר מפעם אחת. בחר כל שאלה שלמה רק פעם אחת, גם אם יש לה כמה סעיפים.",
+    "level-coverage": "הבחירה הקודמת לא ייצגה את כל משפחות הרמה הזמינות.",
+  }[reason] || "הבחירה הקודמת לא עברה בדיקה של המזהים, הכמות המדויקת או ייחודיות השאלות השלמות.";
+  const grouped = {};
+  for (const item of teacherPlanCandidates(index, teacherOf(input))) {
+    const level = item.sheet.level || "one";
+    if (!grouped[level]) grouped[level] = [];
+    grouped[level].push(item.scoped);
+  }
   body.messages[0].content += "\nזהו תיקון יחיד לבחירה. החזר רק JSON עם exerciseLabels עבור הכמות הראשית; אין להחזיר exerciseLabelsByCount או בחירות לכמויות אחרות.";
-  body.messages[1].content += "\n" + feedback + " בחר מחדש את כל הבחירה מתוך אותם מזהים מותרים, בדיוק בכמות המבוקשת ועם כל משפחת רמה נדרשת. אל תשלים בחירה חלקית ואל תמציא מזהים.";
+  body.messages[1].content += "\n" + feedback + " בחר מחדש את כל הבחירה מתוך אותם מזהים מותרים, בדיוק בכמות המבוקשת ועם כל משפחת רמה נדרשת. אל תשלים בחירה חלקית ואל תמציא מזהים." +
+    "\nמזהי שאלות מותרים לפי מקור: " + JSON.stringify(grouped);
   return body;
 }
 
