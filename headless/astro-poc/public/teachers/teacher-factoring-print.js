@@ -4807,6 +4807,50 @@ function clipEmptyFigureTail(bitmap, box) {
 }
 
 /**
+ * A guided box is cropped from its text, which can end well inside the grey fill.
+ * Follow the fill out to the box's left edge so the box prints whole.
+ */
+function widenGuidedBox(bitmap, box) {
+  if (!bitmap || !box || !box.guided || typeof bitmap.getContext !== 'function') return box;
+  const width = bitmap.width;
+  const height = bitmap.height;
+  const x0 = Math.floor((box.x || 0) * width);
+  const y0 = Math.floor((box.y || 0) * height);
+  const y1 = Math.ceil(((box.y || 0) + (box.h || 0)) * height);
+  if (x0 < 4 || y1 - y0 < 8) return box;
+  let data;
+  try {
+    data = bitmap.getContext('2d').getImageData(0, y0, x0 + 4, y1 - y0).data;
+  } catch (error) {
+    return box;
+  }
+  const rw = x0 + 4;
+  const fill = (x, y) => {
+    const i = (y * rw + x) * 4;
+    const r = data[i];
+    const g = data[i + 1];
+    const b = data[i + 2];
+    const mx = r > g ? (r > b ? r : b) : (g > b ? g : b);
+    const mn = r < g ? (r < b ? r : b) : (g < b ? g : b);
+    return mx - mn < 18 && mx >= 225 && mx <= 250;
+  };
+  const edges = [];
+  [0.3, 0.5, 0.7].forEach((at) => {
+    const y = Math.floor((y1 - y0) * at);
+    if (!fill(x0 + 2, y)) return;
+    let x = x0 + 2;
+    while (x > 0 && fill(x - 1, y)) x -= 1;
+    edges.push(x);
+  });
+  if (edges.length < 2) return box;
+  edges.sort((a, b) => a - b);
+  const left = edges[edges.length - 1];
+  if (x0 - left < 4) return box;
+  const nx = Math.max(0, (left - 2) / width);
+  return { ...box, x: nx, w: box.w + (box.x - nx) };
+}
+
+/**
  * A drawing under a section bar can start on the bar's bottom border.
  * That rule runs on across the page past the drawing; a table's own border stops with the crop.
  */
@@ -5882,9 +5926,12 @@ function layoutQuestionCrops(model) {
     });
     if (y1 - y0 < 0.02 || x1 - x0 < 0.08) return;
     pushBox('figure', x0, y0, x1 - x0, y1 - y0);
-    if (inquiry && segments.length) {
+    if (segments.length) {
       const added = segments[segments.length - 1];
-      if (added && added.box && added.box.segment === 'figure') added.box.inquiry = true;
+      if (added && added.box && added.box.segment === 'figure') {
+        if (inquiry) added.box.inquiry = true;
+        else added.box.guided = true;
+      }
     }
   });
   segments.sort((a, b) => a.box.y - b.box.y || b.box.x - a.box.x);
@@ -6129,7 +6176,7 @@ function rebuildQuestionGroup(group, texts) {
     if (!entry.box || entry.box.segment !== 'figure' || entry.box.inquiry) continue;
     const clipped = clipEmptyFigureTail(sample.bitmap, clipFigureHeadRule(sample.bitmap, entry.box));
     if (!clipped) boxes.splice(i, 1);
-    else entry.box = clipped;
+    else entry.box = widenGuidedBox(sample.bitmap, clipped);
   }
   if (!boxes.length) return null;
   boxes.forEach((entry) => {
@@ -6572,8 +6619,11 @@ function eraseWritingDashes(data, width, height, rows, srcY) {
     const y = absY - srcY;
     if (y < 0 || y >= height) return;
     for (let x = 0; x < width; x += 1) {
-      if (lumAt(x, y) >= 253) continue;
+      const lum = lumAt(x, y);
+      if (lum >= 253) continue;
       if (keepStroke(x, y)) continue;
+      // A guided box's grey fill keeps one tone above and below. Whitening it leaves a seam.
+      if (lum >= 225 && Math.abs(lumAt(x, y - 2) - lum) <= 4 && Math.abs(lumAt(x, y + 2) - lum) <= 4) continue;
       const i = (y * width + x) * 4;
       data[i] = data[i + 1] = data[i + 2] = 255;
     }
