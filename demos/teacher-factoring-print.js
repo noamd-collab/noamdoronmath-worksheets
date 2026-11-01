@@ -4702,7 +4702,8 @@ function leftFigureBoxes(bitmap, y0, y1) {
           const b = data[i + 2];
           const mx = r > g ? (r > b ? r : b) : (g > b ? g : b);
           const mn = r < g ? (r < b ? r : b) : (g < b ? g : b);
-          if (mx - mn < 22 && mx > 170 && mx < 252) paleN += 1;
+          // Writing boxes are filled at 246 or darker. A cube net's squares are 250, nearly white.
+          if (mx - mn < 22 && mx > 170 && mx < 248) paleN += 1;
         }
       }
       if (seen && paleN / seen > 0.22) return;
@@ -4740,6 +4741,44 @@ function leftFigureBoxes(bitmap, y0, y1) {
     });
     if (!overlap) boxes.push(box);
   });
+  return boxes;
+}
+
+/**
+ * Drawings side by side in one band (four cube nets) are one row in the source.
+ * Printed apart, each would take its own band.
+ */
+function joinFigureRow(figures) {
+  const boxes = figures.slice();
+  const besideMate = (a, b) => {
+    // A drawing that runs on into the text column is a centered graph, kept as the catalog crop.
+    if (a.runsOn || b.runsOn) return false;
+    const shorter = Math.min(a.y1 - a.y0, b.y1 - b.y0);
+    if (shorter < 0.04) return false;
+    const shared = Math.min(a.y1, b.y1) - Math.max(a.y0, b.y0);
+    const gapX = Math.max(a.x0, b.x0) - Math.min(a.x1, b.x1);
+    return shared >= shorter * 0.6 && gapX < 0.04;
+  };
+  for (let merged = true; merged;) {
+    merged = false;
+    for (let i = 0; i < boxes.length && !merged; i += 1) {
+      for (let j = i + 1; j < boxes.length; j += 1) {
+        const a = boxes[i];
+        const b = boxes[j];
+        if (!besideMate(a, b)) continue;
+        boxes[i] = {
+          ...a,
+          x0: Math.min(a.x0, b.x0),
+          x1: Math.max(a.x1, b.x1),
+          y0: Math.min(a.y0, b.y0),
+          y1: Math.max(a.y1, b.y1),
+        };
+        boxes.splice(j, 1);
+        merged = true;
+        break;
+      }
+    }
+  }
   return boxes;
 }
 
@@ -6096,7 +6135,7 @@ function rebuildQuestionGroup(group, texts) {
   const headerBottom = header && Number(header.page) === Number(page) ? (header.y || 0) + (header.h || 0) : 0;
   const footerTop = sourceFooterTop(slice.source, pageItems);
   if (searchBot > footerTop) searchBot = footerTop;
-  const figures = leftFigureBoxes(sample.bitmap, Math.max(0, searchTop - 0.008), Math.min(figureScanBot, footerTop))
+  let figures = leftFigureBoxes(sample.bitmap, Math.max(0, searchTop - 0.008), Math.min(figureScanBot, footerTop))
     .filter((figure) => !figureIsSentence(figure, rows))
     .filter((figure) => {
       if (earlierEnd > 0.02 && figure.y1 <= earlierEnd + 0.008) return false;
@@ -6119,6 +6158,7 @@ function rebuildQuestionGroup(group, texts) {
       return tail || yCap - figure.y0 < 0.02 ? null : { ...figure, y0: figure.y0, y1: yCap };
     })
     .filter((figure) => figure && figure.y1 - figure.y0 >= 0.02);
+  figures = joinFigureRow(figures);
   // A graph in the middle of the page is not a left-column drawing. Slicing it as
   // one would print its grid as stem lines, so the catalog crop stays whole.
   const centered = figures.some((figure) => figure.runsOn && !rows.some((row) => {
