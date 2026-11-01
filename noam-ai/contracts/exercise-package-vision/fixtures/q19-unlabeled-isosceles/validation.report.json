@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "exerciseId": "G7-T43-A-Q19א",
+  "ok": true,
+  "overall_confidence": 0.82,
+  "layers": {
+    "text_numeric": {
+      "status": "match",
+      "confidence": 0.9,
+      "notes": ["Numbers 25 and 14 observed; isosceles wording present."]
+    },
+    "vertex_labels": {
+      "status": "match",
+      "confidence": 0.95,
+      "notes": [
+        "visible_labels empty with emptiness_is_confident=true matches package labels_on_pdf all false — not an OCR failure."
+      ]
+    },
+    "structural": {
+      "status": "match",
+      "confidence": 0.8,
+      "notes": [
+        "Anonymous triangle + dashed altitude + right-angle + equal-leg ticks + base collinear order."
+      ]
+    }
+  },
+  "bindings": [
+    {
+      "package": "A",
+      "observation": "n0",
+      "visible_glyph": null,
+      "basis": "structure_and_role",
+      "confidence": 0.78
+    },
+    {
+      "package": "B",
+      "observation": "n1",
+      "visible_glyph": null,
+      "basis": "structure_and_measure",
+      "confidence": 0.76
+    },
+    {
+      "package": "C",
+      "observation": "n2",
+      "visible_glyph": null,
+      "basis": "structure_and_measure",
+      "confidence": 0.76
+    },
+    {
+      "package": "H",
+      "observation": "n3",
+      "visible_glyph": null,
+      "basis": "structure_and_role",
+      "confidence": 0.8
+    }
+  ],
+  "mismatches": [],
+  "drawing_policy": {
+    "may_use_package_names": true,
+    "require_visible_labels": false,
+    "reason": "structure_matched_unlabeled_figure",
+    "min_binding_confidence": 0.7
+  },
+  "notes": "Bindings are validator-only. Vision did not invent A/B/C/H."
+}
