@@ -2,7 +2,7 @@
   "version": 1,
   "date": "2026-10-31",
   "scope": "Prepared hints for current canonical worksheet parts. Exact coverage is recorded separately; first-part coverage does not mean every part is covered.",
-  "limitations": "Previously reviewed rows retain their original provenance. Rows labelled machine_generated_flash_automatic_checks_no_model_review were authored with qwen3.8-flash and passed source-binding and automatic builder checks under Noam's explicit instruction. They did not receive an independent model or human content review.",
+  "limitations": "Previously reviewed rows retain their original provenance. Rows labelled machine_generated_flash_automatic_checks_no_model_review were authored with qwen3.8-flash and passed source-binding and automatic builder checks under Noam's explicit instruction. They did not receive an independent model or human content review. The two rows with editorial_revisions dated 2026-11-01 received owner-authorized notation or source-specific wording corrections by Codex after original Flash generation, with zero new model calls and no independent model review. Their historical authoring provenance is retained; the revision records describe the changes.",
   "proposalInputs": [
     {
       "file": "ramzi-hints-grade79-updates.json",
@@ -217804,10 +217804,23 @@
       "source_pdf_hash": "e4da722565a942e482c9e4dbf6ee41b5",
       "source_native_sha256": null,
       "source_exercise_sha256": "9114c5a1d61cb6663dbc6c15ebc0129e12d436a155db86b609face528c828031",
-      "hints_sha256": "40aa6f95adb101a28156210d3d162f60828ab87886c5e84ea5bdbc68576639fa",
+      "hints_sha256": "8b76eed19d1e918e4d8cd954aac2b03d45db9e94297f2bc1fe658cea2b71e59f",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
+      "editorial_revisions": [
+        {
+          "date": "2026-11-01",
+          "editor": "Codex",
+          "owner_authorized": true,
+          "kind": "source_specific_guidance_wording",
+          "hint": 1,
+          "previous_hints_sha256": "40aa6f95adb101a28156210d3d162f60828ab87886c5e84ea5bdbc68576639fa",
+          "hints_sha256": "8b76eed19d1e918e4d8cd954aac2b03d45db9e94297f2bc1fe658cea2b71e59f",
+          "model_calls": 0,
+          "independent_model_review": false
+        }
+      ]
     },
     {
       "exercise_id": "G8-T45-E2-Q02ב",
@@ -262908,10 +262921,23 @@
       "source_pdf_hash": "3422bed5e0164d6688e894e0382a8d06",
       "source_native_sha256": "a7564b9dd2ca6da9eabb972fde86955c8eaefc6e84a5a5d9c63cf55f5be359d8",
       "source_exercise_sha256": "38ba13963165f68a8c1d50105b641b39f19ff550a217138293103f869aed4149",
-      "hints_sha256": "e94d51777787da094ffa2d049640b5e637ca2019e00ec38cbd256c873dd4c98d",
+      "hints_sha256": "58324c1b1b6c1828321cc6d470b6566f646115bc28508d4733c82b27868b90e8",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
+      "editorial_revisions": [
+        {
+          "date": "2026-11-01",
+          "editor": "Codex",
+          "owner_authorized": true,
+          "kind": "math_notation_only",
+          "hint": 2,
+          "previous_hints_sha256": "e94d51777787da094ffa2d049640b5e637ca2019e00ec38cbd256c873dd4c98d",
+          "hints_sha256": "58324c1b1b6c1828321cc6d470b6566f646115bc28508d4733c82b27868b90e8",
+          "model_calls": 0,
+          "independent_model_review": false
+        }
+      ]
     },
     {
       "exercise_id": "G9-T04-A-Q02ב",
