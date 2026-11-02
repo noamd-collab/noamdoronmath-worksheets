@@ -36,7 +36,7 @@ export const TOPIC_PARITY_EXTRACTOR = `() => {
       label: clean(a.textContent),
     }));
     const catalogCtas = [...document.querySelectorAll('a.topic-page__cta')].map((a) => ({
-      href: a.href,
+      href: a.getAttribute('data-catalog-href') || a.href,
       label: clean(a.textContent),
     }));
     const catalogCta = catalogCtas[0] || null;
@@ -87,7 +87,7 @@ export const TOPIC_PARITY_EXTRACTOR = `() => {
           bodyFlow.push({
             type: 'cta',
             label: clean(a.textContent),
-            href: a.getAttribute('href') || a.href,
+            href: a.getAttribute('data-catalog-href') || a.getAttribute('href') || a.href,
             catalogTopicId: a.getAttribute('data-catalog-topic')
               ? Number(a.getAttribute('data-catalog-topic'))
               : null,

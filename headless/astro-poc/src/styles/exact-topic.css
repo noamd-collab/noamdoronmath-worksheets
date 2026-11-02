@@ -109,18 +109,24 @@
 .exact-topic .topic-page__cta:active { transform: none; }
 .exact-topic .exact-topic-levels {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   flex-wrap: wrap;
   margin-top: 18px;
+  scroll-margin-top: 120px;
+}
+.exact-topic .exact-topic-levels.is-highlighted .exact-topic-level {
+  box-shadow: 0 0 0 3px #e6a534, 4px 4px 0 #22305a;
 }
 .exact-topic .exact-topic-level {
-  padding: 8px 14px;
+  padding: 10px 16px;
   border: 2px solid #22305a;
-  border-radius: 10px;
+  border-radius: 12px;
+  background: #fff;
   color: #22305a;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 700;
   text-decoration: none;
+  box-shadow: 3px 3px 0 #e6a534;
 }
 .exact-topic .exact-topic-level:hover { background: #eaf4f3; color: #22305a; }
 .exact-topic .exact-topic-level--b:hover { background: #fdf1d8; }

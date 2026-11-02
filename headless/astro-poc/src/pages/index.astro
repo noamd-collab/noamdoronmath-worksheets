@@ -70,7 +70,7 @@ const midGrades = home.grades.slice(6).map((grade,i)=>({...grade,l:letters[i+6],
       <GamePromoCard />
 
       <!-- GRADES -->
-      <section data-home-grades style="position:relative;max-width:1200px;margin:0 auto;padding:56px 24px 72px;">
+      <section id="choose-grade" data-home-grades style="position:relative;max-width:1200px;margin:0 auto;padding:56px 24px 72px;scroll-margin-top:96px;">
         <div data-doodle="cat" style="position:absolute;top:-20px;left:36%;width:120px;height:90px;"><button type="button" class="exact-doodle-btn exact-doodle-btn--fill" aria-label="הנפשת השרבוט"><img src="/design-exact/assets/doodles/sleeping-cat.svg" alt="" width="140" height="92" loading="lazy" decoding="async" style="position:absolute;left:0;bottom:0;width:120px;height:auto;display:block;cursor:pointer;"></button><span data-zzz="0" style="position:absolute;left:86px;top:6px;font:700 18px 'Amatic SC','Amatic SC Fallback',cursive;color:#2a7c7a;opacity:0;pointer-events:none;">Z</span><span data-zzz="1" style="position:absolute;left:98px;top:-10px;font:700 24px 'Amatic SC','Amatic SC Fallback',cursive;color:#2a7c7a;opacity:0;pointer-events:none;">Z</span><span data-zzz="2" style="position:absolute;left:112px;top:-30px;font:700 30px 'Amatic SC','Amatic SC Fallback',cursive;color:#2a7c7a;opacity:0;pointer-events:none;">Z</span></div>
         <div style="margin-bottom:28px;">
           <h2 data-pop="0" style="font-family:'Secular One','Secular One Fallback',sans-serif;font-weight:400;font-size:clamp(30px,3.6vw,44px);margin:0 0 6px;display:flex;flex-wrap:wrap;align-items:baseline;gap:0 .28em;"><span style="display:inline-block;transform:rotate(-3deg) translateY(2px);">בחרו</span><span style="display:inline-block;transform:rotate(2deg) translateY(-3px);color:#2a7c7a;">כיתה</span><span style="display:inline-block;transform:rotate(-1.5deg);">והתחילו</span><span style="position:relative;display:inline-block;transform:rotate(3deg) translateY(-2px);color:#e5735c;">לתרגל<svg viewBox="0 0 120 16" preserveAspectRatio="none" aria-hidden="true" style="position:absolute;right:-4%;bottom:-8px;width:108%;height:12px;overflow:visible;"><path data-draw="500" data-dur="700" pathLength="1" d="M3 9 Q 18 2, 33 9 T 63 9 T 93 9 T 117 7" fill="none" stroke="#e6a534" stroke-width="4" stroke-linecap="round" stroke-dasharray="1"></path></svg></span><span style="display:inline-block;transform:rotate(-8deg) translateY(-6px);color:#e6a534;font-size:.8em;">!</span></h2>
@@ -206,6 +206,27 @@ const midGrades = home.grades.slice(6).map((grade,i)=>({...grade,l:letters[i+6],
         inset-block-end: auto !important; /* inline style: bottom:-6px */
       }
     }
+    [data-home-grades][data-grade-prompt-active='1'] a[data-tl] {
+      box-shadow: 0 0 0 3px #e6a534, 4px 4px 0 #22305a;
+    }
   </style>
+  <script is:inline>
+    (function () {
+      var cta = document.querySelector('[data-home-search-cta]');
+      var grades = document.getElementById('choose-grade') || document.querySelector('[data-home-grades]');
+      if (!cta || !grades) return;
+      cta.addEventListener('click', function (e) {
+        if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        e.preventDefault();
+        grades.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        grades.setAttribute('data-grade-prompt-active', '1');
+        var firstGrade = grades.querySelector('a[href^="/grade-"]');
+        if (firstGrade) firstGrade.focus({ preventScroll: true });
+        setTimeout(function () {
+          grades.removeAttribute('data-grade-prompt-active');
+        }, 2600);
+      });
+    })();
+  </script>
   <ExactHeroControls />
 </BaseLayout>

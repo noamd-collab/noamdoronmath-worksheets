@@ -38,6 +38,8 @@ export interface WorksheetsClientProps {
   initialUrlState?: Partial<Omit<WorksheetsUrlState, 'grade'>>;
   /** grade:topicId → topic page, when exactly one page exists. */
   topicPageHrefs?: Record<string, string>;
+  /** True when /worksheets was opened without a grade/level parameter. */
+  initialNeedsGradeChoice?: boolean;
 }
 
 function levelClass(key: string): string {
@@ -59,8 +61,16 @@ function readBrowserState(grade: GradeNum): WorksheetsUrlState {
 }
 
 export function WorksheetsClient(props: WorksheetsClientProps) {
-  const { catalog, grade, gradeEntry, familyGrades, highlightTopicId = null, initialUrlState, topicPageHrefs = {} } =
-    props;
+  const {
+    catalog,
+    grade,
+    gradeEntry,
+    familyGrades,
+    highlightTopicId = null,
+    initialUrlState,
+    topicPageHrefs = {},
+    initialNeedsGradeChoice = false,
+  } = props;
 
   const boot = {
     q: initialUrlState?.q ?? '',
@@ -73,6 +83,7 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
   const [group, setGroup] = useState(boot.group);
   const [track, setTrack] = useState<TrackMode>(boot.track);
   const [cross, setCross] = useState(boot.cross);
+  const [needsGradeChoice, setNeedsGradeChoice] = useState(initialNeedsGradeChoice);
   // Client-owned topic pin so "נקה" / URL edits can drop landing ?topic= without reload.
   const [topicPin, setTopicPin] = useState<number | null>(highlightTopicId);
   const pinnedCard = useMemo(() => pinnedCardTopicId(topicPin, gradeEntry), [topicPin, gradeEntry]);
@@ -121,9 +132,12 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
     [q, cross, track, showTrack]
   );
 
+  const showGradePrompt = needsGradeChoice && !q.trim() && topicPin == null;
+
   // Sync React filter state → URL (replaceState so grade-tab history keeps prior q).
   useEffect(() => {
     if (typeof window === 'undefined') return;
+    if (showGradePrompt) return;
     if (skipUrlWrite.current) {
       skipUrlWrite.current = false;
       return;
@@ -132,7 +146,7 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
     const cur = `${window.location.pathname}${window.location.search}`;
     if (cur === next) return;
     window.history.replaceState(window.history.state, '', next);
-  }, [catalogState]);
+  }, [catalogState, showGradePrompt]);
 
   // Browser Back/Forward within same document (rare) or bfcache restore.
   useEffect(() => {
@@ -434,9 +448,11 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
             <img src="/design-exact/assets/doodles/geometry-fish.webp" alt="" />
           </button>
         </div>
-        <h1 data-pop="0">דפי עבודה ל{gradeLabel}</h1>
+        <h1 data-pop="0">{showGradePrompt ? 'דפי עבודה במתמטיקה — בחרו כיתה' : `דפי עבודה ל${gradeLabel}`}</h1>
         <p data-pop="100">
-          {topLevelCount} נושאים לפי תכנית הלימודים. בחרו דף והוא ייפתח בלשונית חדשה.
+          {showGradePrompt
+            ? 'בחרו כיתה מתוך יסודי (א׳–ו׳) או חטיבת ביניים (ז׳–ט׳) כדי לראות את נושאי הלימוד ודפי העבודה.'
+            : `${topLevelCount} נושאים לפי תכנית הלימודים. בחרו דף והוא ייפתח בלשונית חדשה.`}
         </p>
         <p className="proto-note" data-pop="160">
           {family === 'elementary'
@@ -444,6 +460,90 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
             : 'חטיבה — דפי עבודה וצופה (כולל רמזי AI) במראה רגוע וברור.'}
         </p>
       </header>
+
+      {showGradePrompt ? (
+        <section
+          className="exact-grade-picker"
+          data-grade-picker
+          aria-label="בחירת כיתה למציאת משימת תרגול"
+          style={{
+            margin: '0 0 28px',
+            padding: '24px',
+            background: '#fff',
+            border: '2px solid #22305a',
+            borderRadius: '18px 6px 20px 8px / 8px 20px 6px 18px',
+            boxShadow: '4px 4px 0 #e6a534',
+          }}
+        >
+          <h2 style={{ margin: '0 0 14px', fontFamily: "'Secular One', sans-serif", fontWeight: 400, fontSize: '26px', color: '#22305a' }}>
+            באיזו כיתה תרצו לתרגל?
+          </h2>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div>
+              <strong style={{ display: 'block', marginBottom: '8px', color: '#2a7c7a', fontSize: '16px' }}>יסודי (כיתות א׳–ו׳)</strong>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+                {([1, 2, 3, 4, 5, 6] as GradeNum[]).map((g) => (
+                  <a
+                    key={g}
+                    href={gradeHref(g)}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      minHeight: '44px',
+                      padding: '10px 18px',
+                      background: '#fbfaf5',
+                      color: '#22305a',
+                      border: '2px solid #22305a',
+                      borderRadius: '12px',
+                      fontWeight: 700,
+                      fontSize: '16px',
+                      textDecoration: 'none',
+                    }}
+                  >
+                    {gradeNames[String(g)] || `כיתה ${g}`}
+                  </a>
+                ))}
+              </div>
+            </div>
+            <div>
+              <strong style={{ display: 'block', marginBottom: '8px', color: '#22305a', fontSize: '16px' }}>חטיבת ביניים (כיתות ז׳–ט׳)</strong>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+                {([7, 8, 9] as GradeNum[]).map((g) => (
+                  <a
+                    key={g}
+                    href={gradeHref(g)}
+                    onClick={
+                      g === grade
+                        ? (e) => {
+                            e.preventDefault();
+                            setNeedsGradeChoice(false);
+                          }
+                        : undefined
+                    }
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      minHeight: '44px',
+                      padding: '10px 18px',
+                      background: '#22305a',
+                      color: '#fbfaf5',
+                      border: '2px solid #22305a',
+                      borderRadius: '12px',
+                      fontWeight: 700,
+                      fontSize: '16px',
+                      textDecoration: 'none',
+                    }}
+                  >
+                    {gradeNames[String(g)] || `כיתה ${g}`}
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       <div className="toolbar">
         <div className="search">

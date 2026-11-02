@@ -181,6 +181,26 @@ function levelsForTopicId(catTopicId: number | null | undefined, backHref?: stri
 
 const topicLevels = levelsForTopicId(topicId, page.catalogCta?.href);
 
+function ctaTargetHref(cta: { label: string; href: string; catalogTopicId?: number | null }, targetId: string) {
+  const levels = levelsForTopicId(cta.catalogTopicId ?? topicId, cta.href);
+  if (cta.label.includes('רמה ב')) {
+    return levels.find((l) => l.key === 'b')?.href || `#${targetId}`;
+  }
+  if (cta.label.includes('מצוינות')) {
+    return levels.find((l) => l.key === 'c' || l.key === 'c2')?.href || `#${targetId}`;
+  }
+  if (levels.length === 1) {
+    return levels[0].href;
+  }
+  return `#${targetId}`;
+}
+
+function ctaDisplayLabel(label: string): string {
+  if (label === 'רמה ב׳') return 'רמה ב׳ · מחזקת';
+  if (label === 'רמת מצוינות') return 'רמת מצוינות · אתגר';
+  return label;
+}
+
 function faqHeadingId(groupIndex: number) {
   return groupIndex === 0 ? 'topic-faq-heading' : `topic-faq-heading-${groupIndex}`;
 }
@@ -219,19 +239,34 @@ function faqHeadingId(groupIndex: number) {
     </div>
 
     {
-      (page.preH1Ctas || []).map((cta) => (
-        <p class="topic-page__cta-row topic-page__cta-row--pre-h1" data-flow="cta" data-pre-h1-cta data-catalog-ctas>
-          <a
-            class="cta cta--mid topic-page__cta"
-            href={resolveSiteHrefString(cta.href)}
-            data-catalog-topic={
-              cta.catalogTopicId != null ? String(cta.catalogTopicId) : undefined
-            }
-          >
-            {cta.label}
-          </a>
-        </p>
-      ))
+      (page.preH1Ctas || []).map((cta, idx) => {
+        const preLevels = levelsForTopicId(cta.catalogTopicId ?? topicId, cta.href);
+        const targetId = idx === 0 && !hasDemo ? 'topic-levels' : `topic-levels-pre-${idx}`;
+        const directHref = ctaTargetHref(cta, targetId);
+        return (
+          <div class="topic-page__cta-group">
+            <p class="topic-page__cta-row topic-page__cta-row--pre-h1" data-flow="cta" data-pre-h1-cta data-catalog-ctas>
+              <a
+                class="cta cta--mid topic-page__cta"
+                href={directHref}
+                data-catalog-href={resolveSiteHrefString(cta.href)}
+                data-catalog-topic={
+                  cta.catalogTopicId != null ? String(cta.catalogTopicId) : undefined
+                }
+              >
+                {ctaDisplayLabel(cta.label)}
+              </a>
+            </p>
+            {preLevels.length > 0 && directHref.startsWith('#') && (
+              <div class="exact-topic-levels" id={targetId} data-topic-levels>
+                {preLevels.map((level) => (
+                  <a class={`exact-topic-level exact-topic-level--${level.key}`} href={level.href} target="_blank" rel="noopener noreferrer" data-level-key={level.key} data-level-tag={level.difficultyTag}>{level.displayLabel}</a>
+                ))}
+              </div>
+            )}
+          </div>
+        );
+      })
     }
 
     <header class="topic-page__header">
@@ -265,15 +300,21 @@ function faqHeadingId(groupIndex: number) {
               if (unit.kind === 'intro') return (
                 <p class="topic-page__intro" data-flow="paragraph" data-role="intro"><TopicInline text={unit.text} /></p>
               );
-              if (unit.kind === 'cta') return (
-                <p class="topic-page__cta-row" data-flow="cta" data-catalog-ctas>
-                  <a
-                    class="cta cta--mid topic-page__cta"
-                    href={resolveSiteHrefString(unit.item.href)}
-                    data-catalog-topic={unit.item.catalogTopicId != null ? String(unit.item.catalogTopicId) : undefined}
-                  >{unit.item.label}</a>
-                </p>
-              );
+              if (unit.kind === 'cta') {
+                const directHref = ctaTargetHref(unit.item, 'topic-levels');
+                return (
+                  <p class="topic-page__cta-row" data-flow="cta" data-catalog-ctas>
+                    <a
+                      class="cta cta--mid topic-page__cta"
+                      href={directHref}
+                      data-catalog-href={resolveSiteHrefString(unit.item.href)}
+                      data-catalog-topic={unit.item.catalogTopicId != null ? String(unit.item.catalogTopicId) : undefined}
+                      target={directHref.startsWith('#') ? undefined : '_blank'}
+                      rel={directHref.startsWith('#') ? undefined : 'noopener noreferrer'}
+                    >{ctaDisplayLabel(unit.item.label)}</a>
+                  </p>
+                );
+              }
               return null;
             })}
             {topicLevels.length > 0 && (
@@ -300,18 +341,35 @@ function faqHeadingId(groupIndex: number) {
           }
           if (unit.kind === 'cta') {
             const block = unit.item;
+            const flowLevels = levelsForTopicId(block.catalogTopicId ?? topicId, block.href);
+            const targetId = !hasDemo && topicLevels.length > 0 && block.catalogTopicId === topicId
+              ? 'topic-levels'
+              : `topic-levels-${block.catalogTopicId ?? 'main'}`;
+            const directHref = ctaTargetHref(block, targetId);
             return (
-              <p class="topic-page__cta-row" data-flow="cta" data-catalog-ctas>
-                <a
-                  class="cta cta--mid topic-page__cta"
-                  href={resolveSiteHrefString(block.href)}
-                  data-catalog-topic={
-                    block.catalogTopicId != null ? String(block.catalogTopicId) : undefined
-                  }
-                >
-                  {block.label}
-                </a>
-              </p>
+              <div class="topic-page__cta-group" data-flow="cta" data-catalog-ctas>
+                <p class="topic-page__cta-row">
+                  <a
+                    class="cta cta--mid topic-page__cta"
+                    href={directHref}
+                    data-catalog-href={resolveSiteHrefString(block.href)}
+                    data-catalog-topic={
+                      block.catalogTopicId != null ? String(block.catalogTopicId) : undefined
+                    }
+                    target={directHref.startsWith('#') ? undefined : '_blank'}
+                    rel={directHref.startsWith('#') ? undefined : 'noopener noreferrer'}
+                  >
+                    {ctaDisplayLabel(block.label)}
+                  </a>
+                </p>
+                {flowLevels.length > 0 && directHref.startsWith('#') && (
+                  <div class="exact-topic-levels" id={targetId} data-topic-levels>
+                    {flowLevels.map((level) => (
+                      <a class={`exact-topic-level exact-topic-level--${level.key}`} href={level.href} target="_blank" rel="noopener noreferrer" data-level-key={level.key} data-level-tag={level.difficultyTag}>{level.displayLabel}</a>
+                    ))}
+                  </div>
+                )}
+              </div>
             );
           }
           if (unit.kind === 'section') {
@@ -507,4 +565,23 @@ function faqHeadingId(groupIndex: number) {
       </a>
     </p>
   </main>
+  <script is:inline>
+    (function () {
+      document.addEventListener('click', function (e) {
+        var link = e.target && e.target.closest ? e.target.closest('a.topic-page__cta[href^="#topic-levels"]') : null;
+        if (!link) return;
+        var hash = link.getAttribute('href') || '';
+        var target = hash ? document.getElementById(hash.slice(1)) : null;
+        if (!target) return;
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        target.classList.add('is-highlighted');
+        var first = target.querySelector('a.exact-topic-level');
+        if (first) first.focus({ preventScroll: true });
+        setTimeout(function () {
+          target.classList.remove('is-highlighted');
+        }, 2200);
+      });
+    })();
+  </script>
 </BaseLayout>

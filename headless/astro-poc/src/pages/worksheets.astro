@@ -29,6 +29,11 @@ const familyGrades =
       })
     : [];
 const topicPageHrefs = topicPageHrefByCatalogTopic();
+const hasExplicitGradeChoice =
+  Astro.url.searchParams.has('grade') ||
+  Astro.url.searchParams.has('level') ||
+  Astro.url.searchParams.has('topic') ||
+  Astro.url.searchParams.has('q');
 const urlState = parseWorksheetsUrlState(Astro.url.searchParams, grade || 7);
 const highlightTopicId = urlState.topic;
 const initialUrlState = {
@@ -112,6 +117,7 @@ const initialUrlState = {
           highlightTopicId={highlightTopicId}
           initialUrlState={initialUrlState}
           topicPageHrefs={topicPageHrefs}
+          initialNeedsGradeChoice={!hasExplicitGradeChoice}
         />
       </main>
     </BaseLayout>
