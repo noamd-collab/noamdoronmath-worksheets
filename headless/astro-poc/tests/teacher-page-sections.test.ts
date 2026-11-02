@@ -1,8 +1,9 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { parseHTML } from 'linkedom';
+import { groupWholeQuestions } from '../public/teachers/teacher-question-pick.js';
 import {
-  MORE_TOPIC_QUESTION,
   SECTION_KINDS,
   TEST_TOTAL_POINTS,
   needsSectionHeadings,
@@ -10,7 +11,6 @@ import {
   scoreLabel,
   sectionKind,
   sectionTitle,
-  shouldAskMoreTopic,
   testPoints,
 } from '../public/teachers/teacher-page-sections.js';
 
@@ -22,16 +22,81 @@ const sections = read('../public/teachers/teacher-page-sections.js');
 const q = (n: number) => n;
 const sum = (list: number[]) => list.reduce((a, b) => a + b, 0);
 
+function definition(name: string) {
+  const start = printer.search(new RegExp(`(?:^|\\n)(?:async )?function ${name}\\(`));
+  assert.notEqual(start, -1, `Missing shipped function ${name}`);
+  const tail = printer.slice(start + (printer[start] === '\n' ? 1 : 0));
+  const end = tail.search(/\n(?:async )?function /);
+  return end < 0 ? tail : tail.slice(0, end);
+}
+
+function pageBuilder(searchEnabled: boolean) {
+  const { document } = parseHTML(html);
+  const order = printer.match(/const WIZARD_ORDER = (\[[^;]+\]);/);
+  assert.ok(order);
+  const calls = { invalidations: 0, focus: [] as string[], announcements: [] as string[] };
+  for (const id of ['teacher-workspace', 'wizard-bar']) document.getElementById(id)!.hidden = false;
+  for (const id of ['wizard-label', 'topic']) document.getElementById(id)!.focus = () => { calls.focus.push(id); };
+  return new Function('document', 'calls', 'searchEnabled', 'SECTION_KINDS', 'sectionKind', 'groupWholeQuestions', `
+    const $ = id => document.getElementById(id);
+    const state = { grade: '9', topic: '2', wizard: 'pick', sectionKind: 'review', selected: [], blocks: [], pickNote: '' };
+    let history = [];
+    const WIZARD_ORDER = ${order[1]};
+    const topicSearch = searchEnabled ? { close() {}, focus() { calls.focus.push('topic-search'); } } : null;
+    const currentTopic = () => ({ title: 'פירוק לגורמים' });
+    const source = { pdfId: 'source' };
+    const library = new Map([
+      ['ex:source:1', { id: '1', q: 1, source }],
+      ['ex:source:2א', { id: '2א', q: 2, part: 'א', source }],
+      ['ex:source:2ב', { id: '2ב', q: 2, part: 'ב', source }],
+    ]);
+    const clearPreparedPrint = () => { calls.invalidations += 1; };
+    const announce = message => calls.announcements.push(message);
+    const render = () => { paintPageBuilder(); applyWizard(); };
+    ${['escapeHTML', 'blockQuestionCount', 'sectionToggleHTML', 'questionCountText', 'carriedKeys',
+      'paintPageBuilder', 'addAnotherTopic', 'applyWizard', 'bind'].map(definition).join('\n')}
+    bind();
+    render();
+    return { document, state, calls, render };
+  `)(document, calls, searchEnabled, SECTION_KINDS, sectionKind, groupWholeQuestions);
+}
+
 describe('teacher page sections', () => {
-  it('asks exactly the follow-up question after the teacher ticks a question', () => {
-    assert.equal(MORE_TOPIC_QUESTION, 'האם תרצה לבחור עוד נושא לדף שלך?');
-    assert.match(html, /<p id="more-topic-q">האם תרצה לבחור עוד נושא לדף שלך\?<\/p>/);
-    assert.match(html, /id="more-topic-yes"[^>]*>כן, בוחרים נושא נוסף<\/button>/);
-    assert.match(html, /id="more-topic-no"[^>]*>לא, ממשיכים<\/button>/);
-    assert.equal(shouldAskMoreTopic(0, false), false);
-    assert.equal(shouldAskMoreTopic(1, false), true);
-    assert.equal(shouldAskMoreTopic(17, false), true);
-    assert.equal(shouldAskMoreTopic(3, true), false);
+  it('keeps the add-topic action visible and saves fresh questions only after an explicit click', () => {
+    for (const searchEnabled of [true, false]) {
+      const app = pageBuilder(searchEnabled);
+      const { document } = app;
+      const button = document.getElementById('add-topic');
+      assert.ok(button);
+      assert.equal(button.textContent, '+ הוספת נושא לדף');
+      assert.equal(button.closest('.wiz-off, [hidden]'), null, 'The action stays visible in step 3 even before selection');
+      assert.equal(button.disabled, true);
+      assert.equal(button.getAttribute('aria-describedby'), 'add-topic-help');
+      assert.equal(document.getElementById('add-topic-help').textContent,
+        'השאלות שכבר בחרתם יישמרו בדף. אפשר להוסיף נושא נוסף באותה כיתה.');
+      assert.equal(document.querySelector('#more-topic, #more-topic-yes, #more-topic-no'), null);
+      const saved = { grade: '9', topic: '1', title: 'נושא קודם', kind: 'test', keys: ['ex:source:1'] };
+      app.state.blocks = [structuredClone(saved)];
+      app.state.selected = ['ex:source:1'];
+      app.render();
+      assert.equal(button.disabled, true, 'Previously saved questions cannot create a duplicate section');
+      assert.equal(button.closest('.wiz-off, [hidden]'), null);
+      app.state.selected = ['ex:source:1', 'ex:source:2א', 'ex:source:2ב'];
+      app.render();
+      assert.equal(button.disabled, false);
+      assert.equal(app.state.wizard, 'pick', 'Selection alone does not move to another step');
+      assert.deepEqual(app.state.blocks, [saved], 'Selection alone does not save a section');
+      button.dispatchEvent(new document.defaultView.Event('click', { bubbles: true }));
+      assert.deepEqual(app.state.blocks, [saved, { grade: '9', topic: '2', title: 'פירוק לגורמים',
+        kind: 'review', keys: ['ex:source:2א', 'ex:source:2ב'] }]);
+      assert.deepEqual(app.state.selected, []);
+      assert.equal(app.state.grade, '9');
+      assert.equal(app.state.wizard, 'setup');
+      assert.equal(button.disabled, true, 'Saving consumes the fresh selection');
+      assert.equal(app.calls.invalidations, 1);
+      assert.equal(app.calls.focus.at(-1), searchEnabled ? 'topic-search' : 'topic');
+      assert.match(app.calls.announcements.at(-1), /השאלות נשמרו בדף/);
+    }
   });
 
   it('names the two section types as Noam asked and never as a test without points', () => {
@@ -99,7 +164,7 @@ describe('teacher page sections', () => {
 
   it('keeps the new page-builder styles out of <head>', () => {
     const [head, body] = html.split('</head>');
-    for (const rule of ['.section-kind-group{', '.more-topic{', '.page-block{', '.q-preview{']) {
+    for (const rule of ['.section-kind-group{', '.add-topic-action{', '.page-block{', '.q-preview{']) {
       assert.equal(head.includes(rule), false, rule);
       assert.ok(body.includes(rule), rule);
     }

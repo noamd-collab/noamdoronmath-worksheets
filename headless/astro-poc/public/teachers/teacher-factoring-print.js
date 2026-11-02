@@ -1,7 +1,8 @@
 import { dismissTeacherHumanVerification, requestTeacherHumanVerification } from './teacher-human-verification.js?v=20261030-stepup-error-detail';
 import { replaceWizardScopeUrl, wizardPrefillFromSearch } from './wizard-prefill.js?v=20261031-level-choice-help';
 import { expandToWholeQuestionKeys, groupWholeQuestions, mulberry32, pickWholeQuestions, randomSeed } from './teacher-question-pick.js';
-import { PICK_HEADING, SECTION_KINDS, needsSectionHeadings, pointsLabel, scoreLabel, sectionKind, sectionTitle, shouldAskMoreTopic, testPoints, TEST_TOTAL_POINTS } from './teacher-page-sections.js?v=20261102-test-section-wording';
+import { PICK_HEADING, SECTION_KINDS, needsSectionHeadings, pointsLabel, scoreLabel, sectionKind, sectionTitle, testPoints, TEST_TOTAL_POINTS } from './teacher-page-sections.js?v=20261103-add-topic-button';
+import { buildTeacherReview, renderTeacherReview } from './teacher-review-summary.js?v=20261103-note-separation';
 
 /* Teacher picker for every catalog sheet, grades 1–9.
    Choose complete source questions across topic and level sheets.
@@ -102,7 +103,6 @@ let state = {
   pickNote: '',
   blocks: [],
   sectionKind: 'review',
-  moreDismissed: false,
 };
 let history = [];
 let rendering = false;
@@ -189,7 +189,6 @@ async function changeTeacherScope(grade, topic) {
   state.expanded = false;
   state.selected = [];
   if (gradeChanged) state.blocks = [];
-  state.moreDismissed = false;
   state.pickNote = '';
   state.lastAiPickCount = 0;
   history = [];
@@ -324,7 +323,8 @@ function smartQuestionPick(groups, count, scenario, style, seedKeys) {
 }
 
 function teacherAiNote() {
-  return $('teacher-note') ? String($('teacher-note').value || '').trim().slice(0, 400) : '';
+  // Printed instructions remain in teacher-note and never enter AI context.
+  return $('teacher-ai-note') ? String($('teacher-ai-note').value || '').trim().slice(0, 400) : '';
 }
 
 function teacherAiContext(groups, saved) {
@@ -657,8 +657,11 @@ function paintPageBuilder() {
     const help = $('section-kind-help');
     if (help) help.textContent = SECTION_KINDS[sectionKind(state.sectionKind)].help;
   }
-  const prompt = $('more-topic');
-  if (prompt) prompt.hidden = !shouldAskMoreTopic(blockQuestionCount(state.selected), state.moreDismissed);
+  const addTopic = $('add-topic');
+  if (addTopic) {
+    const saved = carriedKeys();
+    addTopic.disabled = !state.selected.some((key) => !saved.has(key));
+  }
   const list = $('page-blocks');
   if (!list) return;
   list.hidden = !state.blocks.length;
@@ -680,7 +683,6 @@ function addAnotherTopic() {
     keys: state.selected.slice(),
   });
   state.selected = [];
-  state.moreDismissed = false;
   state.pickNote = '';
   history = [];
   clearPreparedPrint();
@@ -1387,8 +1389,10 @@ function levelAllows(source) {
 
 let printGeneration = 0;
 
-function clearPreparedPrint() {
+function clearPreparedPrint(keepReview = false) {
   printGeneration += 1;
+  const review = $('wizard-review');
+  if (review && !keepReview) review.hidden = true;
   const area = $('print-area');
   if (!area || area.querySelector('.print-unprepared')) return;
   area.innerHTML = PRINT_UNPREPARED;
@@ -1433,7 +1437,7 @@ async function loadPdf(source) {
 function teacherNoteHTML(note) {
   const text = String(note || '').trim();
   if (!text) return '';
-  return `<aside class="teacher-print-note" dir="rtl"><strong>הערת המורה</strong><p>${escapeHTML(text)}</p></aside>`;
+  return `<aside class="teacher-print-note" dir="rtl"><strong>הוראות לתלמיד</strong><p>${escapeHTML(text)}</p></aside>`;
 }
 
 async function noteBandMm(note) {
@@ -1447,7 +1451,7 @@ async function noteBandMm(note) {
   }
   const probe = document.createElement('div');
   probe.style.cssText = 'position:fixed;inset-inline-start:0;top:0;visibility:hidden;box-sizing:border-box;width:180mm;font:11px/1.35 Heebo,Arial,sans-serif;white-space:pre-wrap;overflow-wrap:anywhere;direction:rtl';
-  probe.innerHTML = `<strong style="display:block;font-size:12px;margin:0 0 1mm">הערת המורה</strong><p style="margin:0">${escapeHTML(text)}</p>`;
+  probe.innerHTML = `<strong style="display:block;font-size:12px;margin:0 0 1mm">הוראות לתלמיד</strong><p style="margin:0">${escapeHTML(text)}</p>`;
   document.body.appendChild(probe);
   const mm = probe.getBoundingClientRect().height * 25.4 / 96;
   probe.remove();
@@ -2730,7 +2734,7 @@ function metaHTML(chosen, cfg) {
 
 async function updateShortPrint(plan, printArea, chosen, note, cfg, blocks) {
   const head = `<p class="plan-notice">דף מצומצם. כל קטע נחתך מדף המקור, עם ההוראה, הנוסח והתרשים המקוריים.</p>${metaHTML(chosen, cfg)}`;
-  const foot = `<p class="print-source">מקור: ${escapeHTML(chosen.map((question) => question.source && question.source.title).filter((title, index, all) => title && all.indexOf(title) === index).join(' · '))}</p><p class="plan-notes">${escapeHTML(STYLES[state.style].plan)}</p>${note ? `<div class="plan-notes"><strong>הערת המורה</strong><br>${escapeHTML(note)}</div>` : ''}`;
+  const foot = `<p class="print-source">מקור: ${escapeHTML(chosen.map((question) => question.source && question.source.title).filter((title, index, all) => title && all.indexOf(title) === index).join(' · '))}</p><p class="plan-notes">${escapeHTML(STYLES[state.style].plan)}</p>${note ? `<div class="plan-notes"><strong>הוראות לתלמיד</strong><br>${escapeHTML(note)}</div>` : ''}`;
   plan.innerHTML = head + '<div class="crop-preview"></div>' + foot;
   printArea.innerHTML = '';
   await paintAllShort(plan.querySelector('.crop-preview'), chosen, blocks);
@@ -2773,9 +2777,30 @@ async function resolveChosen() {
   return questionsForKeys(keys);
 }
 
+function paintTeacherReview(chosen, blocks, note, scenario, style) {
+  const panel = $('wizard-review');
+  const content = $('wizard-review-content');
+  if (!panel || !content) return;
+  // Use the exact scoped questions gathered for printing, including saved sections.
+  const sections = (blocks || [{ kind: 'review', title: '', questions: chosen }]).map((block) => ({
+    title: block.title,
+    kindLabel: SECTION_KINDS[sectionKind(block.kind)].label,
+    questions: orderPrintQuestions(block.questions.filter((question) => question && question.source)),
+  }));
+  const review = buildTeacherReview({ sections, scenario, style, note }, (source) => ({
+    grade: source.gradeLabel || (gradeRecord(source.grade) || {}).label || '',
+    topic: source.topic || source.title || '',
+    level: levelPrintName(source.level, source.levelLabel),
+  }));
+  renderTeacherReview(content, review);
+  panel.hidden = false;
+}
+
 async function updatePrint() {
   const generation = ++printGeneration;
   const mode = printMode;
+  const review = $('wizard-review');
+  if (review) review.hidden = true;
   // Render off-screen and publish both surfaces only after every exercise and
   // answer has finished. Selection edits invalidate the generation meanwhile.
   const plan = document.createElement('div');
@@ -2808,6 +2833,7 @@ async function updatePrint() {
     const savedQuestions = carried.flatMap((block) => block.questions);
     const onPage = new Set(savedQuestions.map((question) => exKey(question.source.pdfId, question.id)));
     const current = (await resolveChosen()).filter((question) => !onPage.has(exKey(question.source.pdfId, question.id)));
+    if (generation !== printGeneration) return false;
     const chosen = savedQuestions.concat(current);
     const blocks = carried.length || state.sectionKind === 'test'
       ? carried.concat(current.length ? [{ kind: sectionKind(state.sectionKind), title: currentTopic() ? currentTopic().title : '', questions: current }] : [])
@@ -2820,6 +2846,9 @@ async function updatePrint() {
     }
     const note = $('teacher-note').value.trim();
     const cfg = SCENARIOS[state.scenario] || SCENARIOS.first;
+    if (state.wizard === 'result') {
+      paintTeacherReview(chosen, blocks, note, state.scenario === 'other' ? 'אחר' : cfg.label, STYLES[state.style].label);
+    }
     if (mode === 'short') {
       await updateShortPrint(plan, printArea, chosen, note, cfg, blocks);
       return commit();
@@ -2828,7 +2857,7 @@ async function updatePrint() {
     const head = `<p class="plan-notice">דף המקור המלא. מה שנבחר מסומן על העמוד, והתשובות הסופיות מצורפות בסוף.</p>${metaHTML(chosen, cfg)}`;
     const sheetsHtml = markedHTML(chosen);
     const titles = chosen.map((question) => question.source && question.source.pdfUrl).filter((url, index, all) => url && all.indexOf(url) === index);
-    const foot = `<p class="print-source">מקור: ${escapeHTML(titles.join(' · '))}</p><p class="plan-notes">${escapeHTML(STYLES[state.style].plan)}</p>${note ? `<div class="plan-notes"><strong>הערת המורה</strong><br>${escapeHTML(note)}</div>` : ''}`;
+    const foot = `<p class="print-source">מקור: ${escapeHTML(titles.join(' · '))}</p><p class="plan-notes">${escapeHTML(STYLES[state.style].plan)}</p>${note ? `<div class="plan-notes"><strong>הוראות לתלמיד</strong><br>${escapeHTML(note)}</div>` : ''}`;
     const answerRoot = '<div class="marked-answers"></div>';
     plan.innerHTML = head + sheetsHtml + answerRoot + foot;
     printArea.innerHTML = sheetsHtml + answerRoot;
@@ -2904,6 +2933,7 @@ async function prepare(mode) {
 function applyScenario(value, options) {
   const quiet = options && options.quiet;
   const before = selectionKey();
+  const scenarioChanged = state.scenario !== value;
   if (!quiet) snapshot();
   state.scenario = value;
   state.expanded = false;
@@ -2914,9 +2944,9 @@ function applyScenario(value, options) {
   } else {
     state.pickNote = '';
   }
-  if (selectionKey() !== before) clearPreparedPrint();
+  if (scenarioChanged || selectionKey() !== before) clearPreparedPrint();
   render();
-  if (!quiet) announce(value === 'other' ? 'אפשר להוסיף הערה ולבחור מהקטלוג.' : 'הוצגו פריטים שכבר קיימים בקטלוג.');
+  if (!quiet) announce(value === 'other' ? 'אפשר להוסיף הנחיות ולבחור מהקטלוג.' : 'הוצגו פריטים שכבר קיימים בקטלוג.');
   if (!quiet && value === 'other') $('teacher-note').focus();
 }
 
@@ -2989,7 +3019,10 @@ function applyWizard() {
   if (!$('wizard-bar')) return;
   const step = WIZARD_ORDER.includes(state.wizard) ? state.wizard : 'setup';
   const stepChanged = document.body.dataset.wizard !== step;
-  if (stepChanged) topicSearch?.close();
+  if (stepChanged) {
+    topicSearch?.close();
+    if (document.body.dataset.wizard === 'result') clearPreparedPrint();
+  }
   state.wizard = step;
   document.body.dataset.wizard = step;
   document.querySelectorAll('[data-wiz]').forEach((el) => {
@@ -3158,11 +3191,7 @@ function bind() {
     clearPreparedPrint();
     render();
   });
-  if ($('more-topic-yes')) $('more-topic-yes').addEventListener('click', () => addAnotherTopic());
-  if ($('more-topic-no')) $('more-topic-no').addEventListener('click', () => {
-    state.moreDismissed = true;
-    render();
-  });
+  if ($('add-topic')) $('add-topic').addEventListener('click', () => addAnotherTopic());
   document.querySelectorAll('[data-question-count]').forEach((btn) => {
     btn.addEventListener('click', () => {
       state.pickMode = 'ai';
@@ -3189,6 +3218,12 @@ function bind() {
   $('teacher-note').addEventListener('input', () => clearPreparedPrint());
   $('prepare').addEventListener('click', () => prepare('marked'));
   $('prepare-short').addEventListener('click', () => prepare('short'));
+  document.querySelectorAll('[data-review-edit]').forEach((button) => button.addEventListener('click', () => {
+    const step = button.dataset.reviewEdit;
+    if (!['setup', 'purpose', 'pick'].includes(step)) return;
+    state.wizard = step;
+    applyWizard();
+  }));
   if ($('wizard-next')) $('wizard-next').addEventListener('click', async () => {
     const index = WIZARD_ORDER.indexOf(state.wizard || 'setup');
     state.wizard = WIZARD_ORDER[Math.min(WIZARD_ORDER.length - 1, index + 1)];
@@ -3210,7 +3245,7 @@ function bind() {
   });
   if ($('wizard-print')) $('wizard-print').addEventListener('click', async () => {
     try { if (!(await updatePrint())) return; } catch (error) {
-      clearPreparedPrint();
+      clearPreparedPrint(true);
       reportPrintError(error.code === 'MISSING_ANSWERS' ? error.message : 'דף המקור לא נטען. אפשר לנסות שוב.');
       return;
     }
@@ -3282,8 +3317,8 @@ function applyWizardPrefill(prefill) {
     const saved = carriedKeys();
     state.selected = expandToWholeQuestionKeys(currentExercises(), ids.filter((id) => allow.has(id))).filter((key) => !saved.has(key));
     state.pickNote = '';
-    const note = $('teacher-note');
-    if (note && prefill.minutes && !note.value) note.value = 'אורך שיעור: ' + prefill.minutes + ' דקות';
+    const aiNote = $('teacher-ai-note');
+    if (aiNote && prefill.minutes && !aiNote.value) aiNote.value = 'אורך שיעור: ' + prefill.minutes + ' דקות';
     render();
     state.wizard = 'pick';
     applyWizard();

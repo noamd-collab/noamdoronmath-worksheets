@@ -242,6 +242,7 @@ test('manual selection keeps every part and preserves earlier test/review sectio
 test('ticking a later question does not scroll the unchanged selection step back to the top', () => {
   const app = new Function(`
     const state = { wizard: 'pick' };
+    const clearPreparedPrint = () => {};
     const WIZARD_ORDER = ['setup', 'purpose', 'pick', 'result'];
     const scrolled = [], focused = [];
     const controls = new Map();

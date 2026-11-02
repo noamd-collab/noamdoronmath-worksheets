@@ -1,5 +1,20 @@
 # Worksheet tracker
 
+## Separate AI guidance from printed instructions — 2026-11-03
+
+- Added two optional fields in the existing purpose step: AI guidance (400 characters, not printed) and student instructions (600 characters, printed in full). The existing `teacher-note` value retains its printed role; it is never copied into the new AI field.
+- AI selection, its cache and pending-request validation use only the AI guidance. Student instructions feed the review, preview and both printed formats. Editing printed instructions invalidates the prepared output; editing AI guidance preserves the existing manually selected worksheet.
+- Ordinary companion requests also send only the AI guidance, in both served and legacy clients, with no fallback to printed instructions.
+- Planning minutes received from the companion prefill the AI guidance only, without overwriting existing guidance or printed instructions. Both fields persist across wizard navigation.
+- The shared worksheet retains final answers; no new step, storage or server contract was introduced.
+
+## Teacher review summary before printing — 2026-11-02
+
+- Added Noam's approved textual summary inside the existing fourth step, above the worksheet preview: actual source grade/topic/levels, complete-question and explicit-subpart counts, section kinds, goal/style and the full note that will print.
+- The summary consumes the same resolved, context-scoped saved/current questions as printing, preserving section order and excluding current questions already saved. Standalone questions count as whole questions without invented subparts; repeated source regions do not inflate subpart counts.
+- Three shortcuts return to settings, purpose/note or question selection without resetting work. Leaving the result invalidates its rendering; returning rebuilds the summary. A companion goal change also invalidates the summary even when manual selections stay the same. Missing answers keep the selection summary available for editing while printing remains blocked.
+- The summary is excluded from the worksheet itself. No new wizard step, note fields, source content, AI-selection rules or output copies were added; the shared worksheet retains final answers.
+
 ## Teacher topic search — 2026-11-02
 
 - Added Noam's approved topic-name search inside the existing setup step. Typing filters the current grade's topics; the full-list button and native-list fallback remain available.
@@ -517,3 +532,9 @@ Columns: grade, topic, levels present, author, reviewed, live, PR.
 - Answer pages without a repeated heading are included after the final-answer section begins.
 - Regression case: grade 7, topic 8, excellence, questions 5, 13, 14 and 15.
 - Validation: 1,842 tests passed (1,833 unit, 5 isolated drawing, 4 live SSR), production build and slash-fraction check passed. Brave desktop/mobile and four-page print PDF inspected: all four answers readable, with no overlap. Wix preview URL is recorded in the PR.
+
+### 2026-11-03 — פעולה יזומה להוספת נושא באזור המורים
+
+- לפי אישור נועם להצעת Manus CL4, שאלת ״האם תרצה לבחור עוד נושא״ וכפתורי כן/לא הוחלפו בכפתור קבוע ״+ הוספת נושא לדף״ בשלב 3, באתר ובדמו. הוא פעיל כשנבחרו שאלות חדשות.
+- הלחיצה משתמשת בפעולה הקיימת: שומרת את הבחירה כמקטע, משאירה מקטעים קודמים וחוזרת לבחירת נושא באותה כיתה עם מיקוד בשדה החיפוש. אפשר להמשיך לתצוגה ולהדפסה בלי להוסיף נושא.
+- השמירה בזיכרון הדף הקיים; אין התחברות, מסד נתונים או שינוי במנגנון ההדפסה ובתשובות הסופיות. תוצאות האימות ותצוגה מקדימה יירשמו ב־PR. מיזוג ופרסום טעונים אישור נפרד.

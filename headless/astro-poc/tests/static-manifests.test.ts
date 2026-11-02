@@ -30,7 +30,7 @@ describe('same-origin static manifests (HEADLESS-MIGRATION-13)', () => {
     // Representative active native releases for the same G7/G8/G9 identities.
     for (const id of [
       'b6b9bf5985484191b71c0c864fd04c31', // G7-T08 a
-      'd5efea6959f4415a913565dec0994063', // G8-T02 a
+      '4d77b8a6dc9a471594f248c95a7575c0', // G8-T02 a
       'fa1bf558e210495e98750875aa9b2d8a', // G9-T02 a
     ]) {
       assert.ok(provenance.files[id], 'missing provenance entry ' + id);

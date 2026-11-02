@@ -71,7 +71,7 @@
       goalLabel: goals[goal] || "",
       style: style,
       styleLabel: styles[style] || "",
-      note: value("teacher-note"),
+      note: value("teacher-ai-note").slice(0, 400),
     };
   }
 
