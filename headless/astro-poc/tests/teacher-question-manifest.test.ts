@@ -15,7 +15,7 @@ const request = (query: string) => GET({ url: new URL('https://www.noamdoronmath
 test('serves the current factoring release from compiled preview geometry', async () => {
   const factoring = catalog.grades.find((grade: any) => grade.grade === 9).topics.find((topic: any) => topic.id === 2);
   const sheet = factoring.sheets.find((sheet: any) => sheet.level === 'a');
-  assert.equal(sheet.pdfId, '40e46a64bcf0441bae36eba820884704');
+  assert.equal(sheet.pdfId, '7ca43412ff97480b9f38b1d6957c1bc5');
   const response = await request('pdfId=' + sheet.pdfId);
   assert.equal(response.status, 200);
   assert.match(response.headers.get('content-type') || '', /application\/json/);

@@ -88,7 +88,7 @@ for(const path of ['../public/worksheet-viewer-noam.html','../../../worksheet-vi
 it('corpus impact is exactly the seven selected parts supported by the two complete source stems',()=>{
  const impacted:string[]=[];
  for(const file of readdirSync(new URL('noam-ai/manifests/',pub))){
-  const m=JSON.parse(readFileSync(new URL('noam-ai/manifests/'+file,pub),'utf8'));if(!m.nativeExportUrl)continue;
+  const m=JSON.parse(readFileSync(new URL('noam-ai/manifests/'+file,pub),'utf8'));if(!m.nativeExportUrl||m.questionPagesIdenticalTo)continue;
   const d=JSON.parse(readFileSync(new URL(m.nativeExportUrl.slice(1),pub),'utf8'));
   for(const e of m.exercises){if(e.nativeFigureId)continue;const ctx=c.NoamNativeVisual.authoredContext(d,e,'');if(!ctx)continue;
    const scene=c.NoamAuthoredGeometry.resolve(ctx,draw);if(scene?.kind==='authored-square-construction')impacted.push(e.id);
