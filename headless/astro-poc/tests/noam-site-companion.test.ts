@@ -30,11 +30,9 @@ import {
 } from '../../../noam-ai/site-companion/bot-guard.js';
 import { starterLinksFor } from '../../../noam-ai/site-companion/starters.js';
 import { runCompanionTurn } from '../../../noam-ai/site-companion/endpoint.js';
-import { buildMathExerciseHint } from '../../../noam-ai/site-companion/math-hints.js';
 import { didacticSequence } from '../../../noam-ai/site-companion/topic-order.js';
 import type { CatalogV1 } from '../src/lib/catalog/types.ts';
 import { loadGradeHub } from '../src/lib/gradeHubs.ts';
-import { loadTopicPage } from '../src/lib/topicPages.ts';
 import { bareTopicTitle, catalogQuadrilateralTitles } from '../src/lib/gradeHubQuadrilaterals.ts';
 
 type GuideRecord = {
@@ -313,92 +311,6 @@ describe('Noam AI model role', () => {
     assert.equal(result.links.length, 0);
     assert.equal(isWorksheetSolveRequest('worksheet', 'יש דף פתרונות לכיתה ה?'), false);
     assert.equal(isWorksheetSolveRequest('worksheet', 'איך פותרים את שאלה 3?'), true);
-  });
-
-  it('gives a real step-by-step hint for (-12)÷3 without the final answer and strips leaked internal English', async () => {
-    let called = 0;
-    const hint = await handleCompanionTurn(
-      { message: '(-12)÷3', page: { kind: 'topic', path: '/dividing-signed-numbers-grade-7', title: 'חילוק מספרים מכוונים' } },
-      { catalog, guide, apiKey: 'server-side', fetch: async () => { called += 1; throw new Error('should not call'); } }
-    );
-    assert.equal(called, 0);
-    assert.equal(hint.ok, true);
-    assert.equal(hint.source, 'math-hint');
-    assert.match(hint.answer, /1\.\s*קביעת הסימן/);
-    assert.match(hint.answer, /2\.\s*חישוב הערך המוחלט/);
-    assert.match(hint.answer, /12 ÷ 3/);
-    assert.doesNotMatch(hint.answer, /=\s*[−-]?\s*4|\b[−-]4\b/);
-    assert.ok(hint.primary && hint.primary.href === '/dividing-signed-numbers-grade-7');
-
-    const grounded = groundModelPayload(
-      {
-        answer: 'העמוד הנוכחי הוא topic (הסבר) בחילוק מספרים מכוונים.',
-        details: 'אפשר לפתוח worksheet מתוך catalog.',
-      },
-      [],
-      { page: { kind: 'topic', path: '/dividing-signed-numbers-grade-7', title: 'חילוק' } }
-    );
-    assert.doesNotMatch(grounded.answer, /\btopic\b/i);
-    assert.doesNotMatch(grounded.details, /\b(?:worksheet|catalog)\b/i);
-  });
-
-  it('does not treat navigation/ranges/times/fractions as exercises, handles x^2-49 and (-3)^2, keeps Ramzi priority on worksheets, refuses non-worksheet solve requests, and matches equation topic IDs', async () => {
-    for (const nonExercise of [
-      'דפים לכיתה 7-8',
-      'שאלות 1-10',
-      'רמה 2-3',
-      'דף עבודה 3-4',
-      'השעה 2:30',
-      '3/4 של 20',
-      'שבר 3/5',
-    ]) {
-      assert.equal(buildMathExerciseHint(nonExercise, { kind: 'home' }), null, `must not treat '${nonExercise}' as exercise`);
-    }
-
-    const diffSq = buildMathExerciseHint('x^2-49', { kind: 'topic' });
-    assert.ok(diffSq);
-    assert.equal(diffSq.primary?.href, '/difference-of-squares-grade-9');
-    assert.equal(diffSq.chips[0]?.href, '/worksheets?grade=9&topic=45');
-    assert.doesNotMatch(diffSq.answer, /2\s*−\s*49/);
-
-    const power = buildMathExerciseHint('(-3)^2', { kind: 'topic' });
-    assert.ok(power);
-    assert.equal(power.primary?.href, '/powers-grade-7');
-    assert.equal(power.chips[0]?.href, '/worksheets?grade=7&topic=6');
-    assert.doesNotMatch(power.answer, /\(a ± b\)²/);
-
-    const eq = buildMathExerciseHint('2x+5=11', { kind: 'topic' });
-    assert.ok(eq && eq.primary);
-    const eqPage = loadTopicPage(eq.primary.href.slice(1));
-    assert.equal(eq.chips[0]?.href, eqPage.catalogCta.href);
-
-    // Ramzi priority on worksheet pages
-    assert.equal(buildMathExerciseHint('(-12)÷3', { kind: 'worksheet' }), null);
-    let wsCalls = 0;
-    const wsTurn = await runCompanionTurn(
-      { message: 'רמז ל-(-12)÷3', page: { kind: 'worksheet', path: '/worksheet-viewer-noam.html', title: 'דף' } },
-      { catalog, guide, qwenKey: 'server-side', fetch: async () => { wsCalls += 1; throw new Error('should not call'); } }
-    );
-    assert.equal(wsCalls, 0);
-    assert.equal(wsTurn.source, 'ramzi-redirect');
-
-    // Solve requests outside worksheets are refused without model calls
-    let homeCalls = 0;
-    const refused = await runCompanionTurn(
-      { message: 'איך פותרים את שאלה 4?', page: { kind: 'home', path: '/', title: 'בית' } },
-      { catalog, guide, qwenKey: 'server-side', fetch: async () => { homeCalls += 1; throw new Error('should not call'); } }
-    );
-    assert.equal(homeCalls, 0);
-    assert.equal(refused.source, 'no-solution');
-
-    // Ensure browser client and math-hints.js share identical buildMathExerciseHint source
-    const mathHintsSrc = readFileSync(new URL('../../../noam-ai/site-companion/math-hints.js', import.meta.url), 'utf8');
-    const clientSrc = readFileSync(new URL('../public/noam-site-companion.js', import.meta.url), 'utf8');
-    const fnBody = mathHintsSrc
-      .slice(mathHintsSrc.indexOf('function buildMathExerciseHint'))
-      .trim()
-      .replace(/\s+/g, ' ');
-    assert.ok(clientSrc.replace(/\s+/g, ' ').includes(fnBody), 'client buildMathExerciseHint must stay synced with math-hints.js');
   });
 
   it('answers what Noam AI does without calling the model', async () => {
