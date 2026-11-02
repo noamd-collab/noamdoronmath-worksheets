@@ -109,7 +109,7 @@ for (const textFails of [false, true]) {
       const sheetTextLines = async () => { if (textFails) throw new Error('text unavailable'); return []; };
       const answerCropsFromLines = () => [];
       const measureSlices = async slices => slices;
-      ${['levelPrintName', 'answerFallbackSlices', 'answerMeasured'].map(definition).join('\n')}
+      ${['levelPrintName', 'answerSpecsForGroup', 'answerFallbackSlices', 'answerMeasured'].map(definition).join('\n')}
       return answerMeasured;
     `)(textFails);
     const slices = await measured([{ source: { pdfId: 'elementary', level: 'b', answerStartPage: 4, pageCount: 5 }, questions: [{ q: 2 }] }]);
@@ -127,7 +127,7 @@ test('outlined answer pages never use plausible text-overlay coordinates', async
     const sheetTextLines = async () => { throw new Error('Unreliable outlined-text coordinates must not be read'); };
     const answerCropsFromLines = () => { throw new Error('Do not derive answer crops from an outlined-text overlay'); };
     const measureSlices = async slices => slices;
-    ${['levelPrintName', 'answerFallbackSlices', 'answerMeasured'].map(definition).join('\n')}
+    ${['levelPrintName', 'answerSpecsForGroup', 'answerFallbackSlices', 'answerMeasured'].map(definition).join('\n')}
     return answerMeasured;
   `)();
   const slices = await measured([{ source: { pdfId: 'outlined-source', answerGeometry: 'full-pages', level: 'a', answerStartPage: 8, pageCount: 9 }, questions: [{ q: 5 }] }]);

@@ -1963,6 +1963,26 @@ function wantedAnswerSpecs(wanted) {
   return byQ;
 }
 
+function answerSpecsForGroup(group) {
+  const selected = new Map();
+  group.questions.forEach((question) => {
+    const q = String(question.q);
+    if (!selected.has(q)) selected.set(q, []);
+    selected.get(q).push(question);
+  });
+  return [...selected].flatMap(([q, questions]) => {
+    const sourceParts = (group.source.questions || []).filter((question) => String(question.q) === q);
+    const ids = new Set(questions.map((question) => String(question.id)));
+    // Whole-question selection expands to its legacy part records. Keep the
+    // answer as one source crop: splitting it into text rows can separate a
+    // fraction's numerator and denominator and move them over other answers.
+    if (sourceParts.length && sourceParts.every((question) => ids.has(String(question.id)))) {
+      return [{ q, part: '' }];
+    }
+    return [...new Set(questions.map((question) => question.part || ''))].map((part) => ({ q, part }));
+  });
+}
+
 function charWeight(ch) {
   if (/[\u0590-\u05FF]/.test(ch)) return 1;
   if (/[0-9]/.test(ch)) return 0.55;
@@ -2144,10 +2164,14 @@ function answerCropsFromLines(lines, wanted) {
   });
   const crops = [];
   const FOOTER = 0.93;
-  pages.forEach((pageLines, page) => {
+  let inAnswers = false;
+  [...pages].sort(([a], [b]) => a - b).forEach(([page, pageLines]) => {
     // The answer page opens with the heading "תשובות סופיות". A question that
     // merely mentions התשובות is not that page.
-    if (!pageLines.some(isAnswerHeading)) return;
+    // Later answer pages can continue with numbered answers and no repeated
+    // heading. Start only at the real heading, then retain those continuations.
+    if (pageLines.some(isAnswerHeading)) inAnswers = true;
+    if (!inAnswers) return;
     const byNumber = new Map();
     pageLines.forEach((line) => {
       if (!isAnswerNumber(line)) return;
@@ -2432,7 +2456,7 @@ async function answerMeasured(groups) {
       // Some source PDFs have an outline but no extractable answer text.
       // Their checked answer-page metadata preserves the original answers.
     }
-    const wanted = group.questions.map((question) => ({ q: question.q, part: question.part || '' }));
+    const wanted = answerSpecsForGroup(group);
     const crops = answerCropsFromLines(lines, wanted);
     if (!crops.length) {
       slices.push(...answerFallbackSlices(group.source));
