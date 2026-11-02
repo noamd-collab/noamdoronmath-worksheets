@@ -480,3 +480,10 @@ Columns: grade, topic, levels present, author, reviewed, live, PR.
 - ב־`G8-T45-E2-Q02א`, רמז 1, השאלה הכללית על צורת המשולשים הוחלפה בהכוונה להתאמת הצלעות לפי סדר אורכיהן, תוך שימוש בנתון שהצלע החסרה מתאימה לצלע הארוכה במשולש האחר. רמזים 2 ו־3 נשמרו.
 - המאגר נשאר עם 31,670 שלישיות. רק שני טקסטים בשתי רשומות השתנו; 31,668 הרשומות האחרות וכל חתימות המקור נשמרו. היסטוריית עריכות מפורשת נוספה לרישום המקור, עם אפס קריאות מודל ואפס ביקורות מודלים חדשות. עדכון Supabase מוגן בחתימות לפני ואחרי ובבדיקת מספר הרשומות.
 - הרמזים הרגילים ממשיכים להישלף מ־Supabase. רענון הגרסה הקיים מחליף את הרמזים הישנים בשיחות שנשמרו. Flash נשאר לשאלות נוספות בלבד, ללא Max. תוצאות הפרסום והבדיקה החיה מתועדות בדוח המסירה.
+
+## 2026-11-02 — Teacher answer print preservation
+
+- Whole-question selections retain each complete answer crop from the source PDF, preserving fraction layout instead of repacking individual text rows.
+- Answer pages without a repeated heading are included after the final-answer section begins.
+- Regression case: grade 7, topic 8, excellence, questions 5, 13, 14 and 15.
+- Validation: 1,842 tests passed (1,833 unit, 5 isolated drawing, 4 live SSR), production build and slash-fraction check passed. Brave desktop/mobile and four-page print PDF inspected: all four answers readable, with no overlap. Wix preview URL is recorded in the PR.
