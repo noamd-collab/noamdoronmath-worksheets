@@ -66,6 +66,8 @@ function scan(repo, write = false) {
     const sourcePath = path.join(directory, name), bytes = fs.readFileSync(sourcePath);
     const manifest = JSON.parse(bytes);
     if (!manifest.nativeExportUrl) continue;
+    // A sheet republished with its final answers repeats its original manifest; scan the original once.
+    if (manifest.questionPagesIdenticalTo) continue;
     if (!/^\/noam-ai\/native\/G[789]-[A-Z0-9]+\/[abc]\/noam-ai\.json$/.test(manifest.nativeExportUrl)) throw Error('Invalid native path: ' + name);
     const nativePath = path.join(repo, manifest.nativeExportUrl), nativeBytes = fs.readFileSync(nativePath);
     if (sha(nativeBytes) !== manifest.nativeExportSha256) throw Error('Native SHA mismatch: ' + name);
