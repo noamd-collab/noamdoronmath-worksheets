@@ -180,13 +180,13 @@ test('the same accessible level radio group moves between setup and question pic
   assert.deepEqual(inputs.map(input=>input.getAttribute('value')), ['a','b','c']);
   const selected = inputs.find(input=>input.getAttribute('value')==='b') as any;
   selected.checked = true;
-  const state = {wizard:'level'};
+  const state = {wizard:'setup'};
   const apply = new Function('document','state',`
-    const $=id=>document.getElementById(id),WIZARD_ORDER=['grade','topic','level','scenario','style','pick','result'];
+    const $=id=>document.getElementById(id),WIZARD_ORDER=['setup','purpose','pick','result'];
     ${definition('applyWizard')}
     return applyWizard;
   `)(document,state);
-  for (const step of ['level','pick','scenario','pick','result','level']) {
+  for (const step of ['setup','pick','purpose','pick','result','setup']) {
     state.wizard = step; apply();
     assert.equal(field.parentElement?.id, step==='pick'?'pick-level-home':'wizard-level-home');
     assert.equal(document.querySelectorAll('#teacher-level-choice').length, 1);

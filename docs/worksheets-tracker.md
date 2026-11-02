@@ -1,5 +1,12 @@
 # Worksheet tracker
 
+## Four-step teacher wizard — 2026-11-02
+
+- Implemented Noam's approved grouping: setup (grade/topic/level), purpose (scenario/style/note), question selection/page building, and preview/print. Each screen shows its name and `שלב N מתוך 4`.
+- Keyboard focus moves to the current heading, associated with the step counter. Same-step rendering keeps focus in place. The header adapts to narrow screens, and asynchronous print preparation no longer scrolls the step counter out of view.
+- Back/Next preserves existing selections, saved sections, level, scenario, style and note. The same level control moves between setup and picking. Add-topic returns to setup and focuses the topic selector; existing deep links still open selection at step 3.
+- This groups existing controls only. AI selection, source PDFs and print generation remain unchanged; the shared worksheet still includes final answers. Other Manus proposals remain separate decisions.
+
 ## Remove the combined-level button — 2026-11-02
 
 - At Noam's request, removed `כל הרמות יחד` from the site and demo level selector; a, b and excellence remain. Topics without graded choices show their explanatory text without a disabled radio group.

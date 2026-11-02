@@ -95,7 +95,8 @@ nav[data-nav-panel] a:hover{background:rgba(42,124,122,.1)}
 .setup{padding:22px}
 .step-title{display:flex;align-items:center;gap:10px;margin-bottom:14px;font-family:'Secular One',Heebo,sans-serif;font-weight:400;font-size:26px;line-height:1.2}
 .step-num{font-family:Heebo,sans-serif;font-weight:700;font-size:14px;width:28px;height:28px;display:grid;place-items:center;background:var(--ink);color:#fbfaf5;border-radius:9px 3px 10px 4px;flex:none}
-.setup-fields{display:grid;grid-template-columns:1fr;gap:12px}
+.setup-fields{display:grid;grid-template-columns:minmax(140px,.35fr) minmax(0,1fr);gap:16px}
+.setup-fields>.field{min-width:0}
 .field label,.style-label,.other-field label{display:block;font-size:14px;font-weight:700;margin-bottom:6px;color:var(--ink)}
 .field select,.other-field textarea{
   width:100%;background:#fff;color:var(--ink);border:2px solid var(--ink);
@@ -301,8 +302,12 @@ dialog::backdrop{background:rgba(34,48,90,.46)}
 .print-area{display:none}
 .wiz-off{display:none!important}
 body[data-wizard] .wiz-extra{display:none!important}
-.wizard-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 16px}
-.wizard-label{margin:0;font-family:'Secular One',Heebo,sans-serif;font-size:28px}
+.wizard-bar{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:12px;margin:0 0 16px}
+.wizard-heading{grid-column:2;grid-row:1;min-width:0;text-align:center}
+.wizard-progress{margin:0 0 4px;font-size:14px;font-weight:700;color:var(--teal-dark)}
+#wizard-back{grid-column:1;grid-row:1}
+#wizard-next{grid-column:3;grid-row:1}
+.wizard-label{line-height:1.3;margin:0;font-family:'Secular One',Heebo,sans-serif;font-size:28px}
 .wizard-bar,.wizard-result,.setup{scroll-margin-top:96px}
 .wizard-result{grid-column:1 / -1;margin-top:16px;min-width:0;padding:22px 24px}
 .wizard-result canvas{display:block;width:100%;height:auto;background:#fff}
@@ -314,6 +319,14 @@ body[data-wizard] .intro{order:3}
 body[data-wizard] .foot{order:4}
 body[data-wizard] .setup,body[data-wizard] .results{grid-column:1 / -1}
 body[data-wizard="result"] .wizard-result{scroll-margin-top:164px}
+@media(max-width:600px){
+  .setup-fields{grid-template-columns:1fr}
+  .wizard-bar{grid-template-columns:1fr 1fr;gap:10px}
+  .wizard-heading{grid-column:1 / -1;grid-row:1;text-align:start}
+  .wizard-label{font-size:26px}
+  #wizard-back{grid-column:1;grid-row:2;justify-self:start}
+  #wizard-next{grid-column:2;grid-row:2;justify-self:end}
+}
 @media(min-width:900px){
   .topbar{height:90px;box-sizing:border-box}
   .topline{flex-wrap:nowrap;gap:8px;height:100%;box-sizing:border-box;padding:0 12px}
@@ -488,7 +501,7 @@ body[data-wizard="result"] .wizard-result{scroll-margin-top:164px}
 @media(max-width:600px){#pick-level-home .level-field{padding:14px}.action-help dl{grid-template-columns:1fr;gap:2px}.action-help dd{margin-bottom:10px}.source-line{gap:10px}}
 </style>
 </head>
-<body data-noam-companion="teacher" data-noam-teacher-suggest="off" data-wizard="grade">
+<body data-noam-companion="teacher" data-noam-teacher-suggest="off" data-wizard="setup">
 
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true"><symbol id="i-book" viewBox="0 0 24 24"><path d="M12 6c-3-2-6-2-9-1v15c3-1 6-1 9 1 3-2 6-2 9-1V5c-3-1-6-1-9 1Z"/><path d="M12 6v15M6 9h3m6 0h3M6 12h3m6 0h3"/></symbol><symbol id="i-print" viewBox="0 0 24 24"><path d="M6 9V3h12v6M6 17H3V9h18v8h-3M6 14h12v7H6z"/><path d="M17 11h1"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol><symbol id="i-undo" viewBox="0 0 24 24"><path d="M9 4 4 9l5 5M4 9h9a7 7 0 0 1 0 14" transform="translate(0 -2)"/></symbol><symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5m0-9h.01"/></symbol><symbol id="i-bulb" viewBox="0 0 24 24"><path d="M9 18h6m-6 3h6M8 14a7 7 0 1 1 8 0c-1 1-1 2-1 3H9c0-1 0-2-1-3Z"/></symbol><symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol><symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h12M8 12h12M8 18h12M3 6h.01M3 12h.01M3 18h.01"/></symbol></svg>
 <a href="#selection" class="skip">דלגו לבחירת השאלות</a>
@@ -514,24 +527,24 @@ body[data-wizard="result"] .wizard-result{scroll-margin-top:164px}
 </header>
 <main class="wrap">
 <section class="panel teacher-load-state" id="teacher-load-state" aria-label="טעינת דפי העבודה"><p id="teacher-loading" role="status">טוענים את דפי העבודה…</p><p id="teacher-load-error" role="alert" hidden></p><button type="button" class="primary" id="teacher-load-retry" hidden>ניסיון נוסף</button></section>
-<div class="wizard-bar" id="wizard-bar" hidden inert><button type="button" class="text-btn" id="wizard-back" hidden>חזרה</button><p class="wizard-label" id="wizard-label" tabindex="-1">כיתה</p><button type="button" class="primary" id="wizard-next">המשך</button></div>
+<div class="wizard-bar" id="wizard-bar" hidden inert><button type="button" class="text-btn" id="wizard-back" hidden>חזרה</button><div class="wizard-heading" aria-current="step"><p class="wizard-progress" id="wizard-progress">שלב 1 מתוך 4</p><h2 class="wizard-label" id="wizard-label" tabindex="-1" aria-describedby="wizard-progress">הגדרות התרגול</h2></div><button type="button" class="primary" id="wizard-next">המשך</button></div>
 <div class="intro"><div><p class="eyebrow">מתכננים את התרגול</p><h1>בוחרים מה לתרגל.</h1><p class="subtitle">כיתה, נושא ומטרת השיעור. מכאן מסמנים שאלות שלמות, ומדפיסים את דף המקור עם סימון.</p><p class="head-meta"><span>מהדפים הקיימים, לשיעור שלכם</span><span class="demo-tag">כיתות א׳–ט׳</span><span class="brand-kicker">מתמטיקה • מרחב למורה</span></p></div><p class="intro-note">בכל הכיתות א׳–ט׳: רואים כל שאלה כפי שהיא בדף המקור ומסמנים את השאלות השלמות שמתאימות, בכל מספר. בלי סעיף חתוך.<br>אפשר לבחור ידנית או לתת ל־AI לבחור 5, 10 או 15 שאלות. ההדפסה מסמנת על דף המקור המלא, או חותכת דף מצומצם מאותו מקור.</p></div>
 <div class="workspace" id="teacher-workspace" hidden inert aria-busy="true">
 <aside class="panel setup" id="setup-panel" aria-label="הגדרות השיעור">
 <h2 class="step-title wiz-extra"><span class="step-num">1</span> מתחילים מהכיתה</h2>
-<div class="setup-fields"><div class="field" data-wiz="grade"><label for="grade">כיתה</label><select id="grade"><option value="1">כיתה א׳</option><option value="2">כיתה ב׳</option><option value="3">כיתה ג׳</option><option value="4">כיתה ד׳</option><option value="5">כיתה ה׳</option><option value="6">כיתה ו׳</option><option value="7">כיתה ז׳</option><option value="8">כיתה ח׳</option><option value="9" selected>כיתה ט׳</option></select></div><div class="field wiz-off" data-wiz="topic"><label for="topic">נושא</label><select id="topic"><option value="2">פירוק לגורמים</option></select></div></div>
-<div id="wizard-level-home"><div class="level-field wiz-off" id="teacher-level-choice" data-wiz="level"><span class="style-label" id="level-label">מאילו רמות לבחור שאלות?</span><div class="segmented" id="level-filter" role="radiogroup" aria-labelledby="level-label" aria-describedby="level-help"><label><input type="radio" name="level" value="a" checked>רמה א׳</label><label><input type="radio" name="level" value="b">רמה ב׳</label><label><input type="radio" name="level" value="c">מצוינות</label></div><p class="level-help" id="level-help" aria-live="polite">מוצגות רק שאלות מהרמה שנבחרה. גם ה־AI יבחר מתוך הרמה הזו.</p></div></div>
+<div class="setup-fields"><div class="field" data-wiz="setup"><label for="grade">כיתה</label><select id="grade"><option value="1">כיתה א׳</option><option value="2">כיתה ב׳</option><option value="3">כיתה ג׳</option><option value="4">כיתה ד׳</option><option value="5">כיתה ה׳</option><option value="6">כיתה ו׳</option><option value="7">כיתה ז׳</option><option value="8">כיתה ח׳</option><option value="9" selected>כיתה ט׳</option></select></div><div class="field" data-wiz="setup"><label for="topic">נושא</label><select id="topic"><option value="2">פירוק לגורמים</option></select></div></div>
+<div id="wizard-level-home"><div class="level-field" id="teacher-level-choice" data-wiz="setup"><span class="style-label" id="level-label">מאילו רמות לבחור שאלות?</span><div class="segmented" id="level-filter" role="radiogroup" aria-labelledby="level-label" aria-describedby="level-help"><label><input type="radio" name="level" value="a" checked>רמה א׳</label><label><input type="radio" name="level" value="b">רמה ב׳</label><label><input type="radio" name="level" value="c">מצוינות</label></div><p class="level-help" id="level-help" aria-live="polite">מוצגות רק שאלות מהרמה שנבחרה. גם ה־AI יבחר מתוך הרמה הזו.</p></div></div>
 <p class="source-mini wiz-extra" id="scope-hint">הבחירה נטענת מקטלוג הדפים של האתר.</p>
 <div class="divider wiz-extra"></div>
-<fieldset class="wiz-off" data-wiz="scenario" style="border:0;padding:0;margin:0"><legend class="step-title wiz-extra"><span class="step-num">2</span> מה קורה בשיעור?</legend><div class="scenario-list">
+<fieldset class="wiz-off" data-wiz="purpose" style="border:0;padding:0;margin:0"><legend class="style-label">מה קורה בשיעור?</legend><div class="scenario-list">
 <label class="scenario"><input type="radio" name="scenario" value="first" checked><span><span class="scenario-title">מפגש ראשון</span><span class="scenario-desc">בונים את הרעיון, שלב־שלב</span></span></label>
 <label class="scenario"><input type="radio" name="scenario" value="spiral"><span><span class="scenario-title">חזרה ספירלית</span><span class="scenario-desc">נזכרים ומחברים לידע קודם</span></span></label>
 <label class="scenario"><input type="radio" name="scenario" value="practice"><span><span class="scenario-title">תרגול וביסוס</span><span class="scenario-desc">מחזקים דיוק ועצמאות</span></span></label>
 </div><details class="more-scenarios"><summary>עוד מצבים לשיעור</summary><label class="scenario"><input type="radio" name="scenario" value="exam"><span><span class="scenario-title">לקראת מבחן</span><span class="scenario-desc">בוחרים דרך פתרון בין כמה סוגים</span></span></label><label class="scenario"><input type="radio" name="scenario" value="other"><span><span class="scenario-title">אחר</span><span class="scenario-desc">מוסיפים צורך או רעיון משלכם</span></span></label></details></fieldset>
-<div class="other-field wiz-off" id="other-field" data-wiz="scenario"><label for="teacher-note">הערת המורה</label><textarea id="teacher-note" maxlength="600" placeholder="למשל: קבוצה שצריכה עוד חיזוק בסימנים"></textarea><small>ההערה מודפסת על הדף. כשתבקשו בחירת AI, היא תישלח אליו כדי להתאים את הבחירה לצורך שלכם.</small></div>
+<div class="other-field wiz-off" id="other-field" data-wiz="purpose"><label for="teacher-note">הערת המורה</label><textarea id="teacher-note" maxlength="600" placeholder="למשל: קבוצה שצריכה עוד חיזוק בסימנים"></textarea><small>ההערה מודפסת על הדף. כשתבקשו בחירת AI, היא תישלח אליו כדי להתאים את הבחירה לצורך שלכם.</small></div>
 <div class="divider wiz-extra"></div>
-<fieldset class="wiz-off" data-wiz="style" style="border:0;padding:0;margin:0"><legend class="style-label">איך ניגשים לתרגול?</legend><div class="segmented"><label><input type="radio" name="style" value="scaffold" checked>מדורגת</label><label><input type="radio" name="style" value="creative">יצירתית</label><label><input type="radio" name="style" value="blended">משולבת</label></div></fieldset>
-<p class="style-help wiz-off" id="style-help" data-wiz="style">מתחילים יחד, ואז עוברים בהדרגה לעבודה עצמאית.</p>
+<fieldset class="wiz-off" data-wiz="purpose" style="border:0;padding:0;margin:24px 0 0"><legend class="style-label">איך ניגשים לתרגול?</legend><div class="segmented"><label><input type="radio" name="style" value="scaffold" checked>מדורגת</label><label><input type="radio" name="style" value="creative">יצירתית</label><label><input type="radio" name="style" value="blended">משולבת</label></div></fieldset>
+<p class="style-help wiz-off" id="style-help" data-wiz="purpose">מתחילים יחד, ואז עוברים בהדרגה לעבודה עצמאית.</p>
 <div class="setup-bottom wiz-extra"><svg aria-hidden="true"><use href="#i-info"/></svg><span>כל הצעה היא נקודת פתיחה.<br>הבחירה הסופית תמיד שלכם.</span></div>
 </aside>
 <section class="panel results wiz-off" id="selection" data-wiz="pick" aria-labelledby="result-title" tabindex="-1">
@@ -601,7 +614,7 @@ body[data-wizard="result"] .wizard-result{scroll-margin-top:164px}
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js" integrity="sha384-/1qUCSGwTur9vjf/z9lmu/eCUYbpOTgSjmpbMQZ1/CtX2v/WcAIKqRv+U1DUCG6e" crossorigin="anonymous"></script>
-<script type="module" src="/teachers/teacher-factoring-print.js?v=20261102-level-buttons"></script>
+<script type="module" src="/teachers/teacher-factoring-print.js?v=20261102-four-step-wizard"></script>
 
 <script src="/noam-accessibility.js" defer></script>
 <script src="/noam-site-companion.js?v=20261101-sdk-lifecycle" defer data-avatar="/design-exact/assets/avatar/ramzi-A-idle.svg"></script>
