@@ -23,8 +23,8 @@ A final script rebuilt all 45 topic keys once more and checked: all gates pass, 
 - Tests that pinned old ids follow the republished ids (`g7-pdf-v2`, `noam-site-companion`, `static-manifests`, `teacher-question-manifest`), and `final-answers-republish.test.ts` expects 375 republished manifests.
 - `check:static`, `check:catalog`, `check:site-guide` and `check:search-index` pass; the unit suite and the root tests fail only what also fails on the baseline (`noam-captcha-uses`).
 
-## Still without final answers (29 sheets)
+## Still without final answers (29 sheets when this batch was published; 26 after G8-T65)
 
-- 24 sheets (G7-T03 a; G7-T39 a, b; G8-T15, T22 c, T23, T24 a, b, T30; G9-T06, T09, T31): source folders exist, but every one rebuilds a different version of the sheet (different wording on most pages), so using it would change the live questions.
+- 22 sheets (G7-T03 a; G8-T15 a, b, c; G8-T22 c; G8-T23 a, b, c; G8-T24 a, b; G8-T30 a, b, c; G9-T06 a, b, c; G9-T09 a, b, c; G9-T31 a, b, c): source folders exist, but every one rebuilds a different version of the sheet (different wording on most pages), so using it would change the live questions.
 - G8-T45 and G8-T51 level c2, G8-T56 and G8-T57: no source found.
-- G8-T65 (three levels): withdrawn earlier and not yet redone.
+- G8-T65 (three levels): withdrawn earlier; republished in `docs/final-answers-g8t65-20261103.md`.
