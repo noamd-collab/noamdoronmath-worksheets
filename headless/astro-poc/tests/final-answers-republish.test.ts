@@ -1,9 +1,10 @@
 /**
  * Noam, 2026-11-02: grade 7-9 sheets that had no final-answers page were
  * republished as new Wix PDFs that repeat the same question pages and add the
- * final answers. Each new manifest is the original manifest with only the PDF
- * id, the page count and questionPagesIdenticalTo changed, the catalog points
- * at the new PDF, and the original id redirects to it.
+ * final answers (401 from their verified keys, then the 3 G8-T65 levels).
+ * Each new manifest is the original manifest with only the PDF id, the page
+ * count and questionPagesIdenticalTo changed, the catalog points at the new
+ * PDF, and the original id redirects to it.
  */
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
@@ -20,7 +21,7 @@ const republished = readdirSync(new URL('noam-ai/manifests/', pub))
 
 describe('sheets republished with final answers', () => {
   it('each new manifest repeats its original except id, page count and the question-page link', () => {
-    assert.equal(republished.length, 401);
+    assert.equal(republished.length, 404);
     for (const m of republished) {
       assert.equal(m.questionPagesIdenticalTo.length, 1, m.pdfHash);
       const [old] = m.questionPagesIdenticalTo;
