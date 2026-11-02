@@ -582,6 +582,98 @@ function faqHeadingId(groupIndex: number) {
           target.classList.remove('is-highlighted');
         }, 2200);
       });
+
+      function setupSelfCheckReveal() {
+        var sections = document.querySelectorAll('.topic-page__section');
+        sections.forEach(function (sec) {
+          var h2 = sec.querySelector('h2');
+          var heading = h2 ? (h2.textContent || '').trim() : '';
+          var isCheckSection =
+            heading.indexOf('בדקו') !== -1 ||
+            heading.indexOf('בדיקה') !== -1 ||
+            /\?$/.test(heading) ||
+            /^(חשבו|פתרו|מהו|באיזה|מצאו)/.test(heading);
+          var paras = sec.querySelectorAll(':scope > p');
+          paras.forEach(function (p, idx) {
+            if (p.dataset.selfCheckReady === '1') return;
+            var raw = (p.textContent || '')
+              .replace(/[\u200b\u200e\u200f\ufeff\u2066\u2067\u2068\u2069]/g, '')
+              .trim();
+            // Case 1: single paragraph containing both question and "תשובה:"
+            if (raw.indexOf('בדקו את עצמכם') !== -1 && /תשובה\s*:/.test(raw)) {
+              p.dataset.selfCheckReady = '1';
+              var walker = document.createTreeWalker(p, NodeFilter.SHOW_TEXT, null);
+              var targetNode = null;
+              var matchIdx = -1;
+              while (walker.nextNode()) {
+                var val = walker.currentNode.nodeValue || '';
+                var m = val.match(/תשובה\s*:/);
+                if (m && m.index !== undefined) {
+                  targetNode = walker.currentNode;
+                  matchIdx = m.index;
+                  break;
+                }
+              }
+              if (targetNode && matchIdx >= 0) {
+                var answerTextNode = targetNode.splitText(matchIdx);
+                var span = document.createElement('span');
+                span.className = 'topic-page__answer-reveal';
+                span.hidden = true;
+                var nodesToMove = [];
+                var cur = answerTextNode;
+                while (cur) {
+                  nodesToMove.push(cur);
+                  cur = cur.nextSibling;
+                }
+                nodesToMove.forEach(function (n) { span.appendChild(n); });
+                p.appendChild(span);
+                var btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'topic-page__reveal-btn';
+                btn.setAttribute('aria-expanded', 'false');
+                btn.textContent = 'הצג תשובה';
+                btn.addEventListener('click', function () {
+                  var open = span.hidden;
+                  span.hidden = !open;
+                  btn.setAttribute('aria-expanded', String(open));
+                  btn.textContent = open ? 'הסתר תשובה' : 'הצג תשובה';
+                });
+                p.insertAdjacentElement('afterend', btn);
+              }
+              return;
+            }
+            // Case 2: answer paragraph inside a self-check section
+            if (!isCheckSection) return;
+            var isMeta =
+              /^(?:בדף העבודה|לפני:|תחילת הפרק:|קישורים קשורים|אחרי:)/.test(raw);
+            if (isMeta) return;
+            var isAnswerPara =
+              /^(?:ה?תשובה(?:\s+היא)?[\s:—–-]|אם\s+ספרתם\b)/.test(raw) ||
+              (idx === 1 && paras.length >= 2 && !/bad/.test(raw));
+            if (isAnswerPara && idx >= 1) {
+              p.dataset.selfCheckReady = '1';
+              p.classList.add('topic-page__answer-hidden');
+              var btn2 = document.createElement('button');
+              btn2.type = 'button';
+              btn2.className = 'topic-page__reveal-btn';
+              btn2.setAttribute('aria-expanded', 'false');
+              btn2.textContent = 'הצג תשובה';
+              btn2.addEventListener('click', function () {
+                var hiddenNow = p.classList.toggle('topic-page__answer-hidden');
+                var expanded = !hiddenNow;
+                btn2.setAttribute('aria-expanded', String(expanded));
+                btn2.textContent = expanded ? 'הסתר תשובה' : 'הצג תשובה';
+              });
+              p.insertAdjacentElement('beforebegin', btn2);
+            }
+          });
+        });
+      }
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', setupSelfCheckReveal, { once: true });
+      } else {
+        setupSelfCheckReveal();
+      }
     })();
   </script>
 </BaseLayout>
