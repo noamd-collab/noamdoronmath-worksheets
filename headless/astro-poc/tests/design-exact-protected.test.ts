@@ -49,7 +49,8 @@ const protectedFiles: Record<string, string> = {
   // Visible topic labels: סינתזה גאומטרית → שילוב גאומטרי, and the grade-6 synthesis sheet → סיכום.
   // Noam, 2026-11-02: G9-T07 republished with its final-answers pages (new PDF ids only).
   // Noam, 2026-11-02: batch 2 (G9-T04, G9-T05, G9-T10, G9-T11) republished with final answers.
-  'src/data/catalog.v1.json': 'b2f22a029a96598bcd976a821825d5017c6359ed3b0489fec521f54bf1f00650',
+  // Batch 3 (2026-11-02): G9-T17, G9-T18, G9-T19 and G9-T20 republished with final answers; the catalog points at their new PDFs.
+  'src/data/catalog.v1.json': 'd7c69a5f29af7d6c9c8f74254304f36a0f2d9ba18cd72c32b1c06f40e08f0927',
   'src/lib/catalog/loadCatalog.ts': '1a5e54a4c19c016046202f3e0b9bb95203e58fe983dab5a27e6f261abfbc9d95',
   // Viewer links forward the c2 sibling as pc2.
   'src/lib/worksheetLinks.ts': '06bfbaa4b9b778d171ca9d8802eed0ce3fb6c6f15d7d7bff3807dd1f80ce0770',
