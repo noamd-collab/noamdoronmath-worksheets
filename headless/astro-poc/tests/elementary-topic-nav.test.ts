@@ -87,4 +87,14 @@ describe('elementary topic pages are linked from their grade hub', () => {
     assert.match(client, /<a href=\{pageHref\}>\{topic\.title\}<\/a>/);
     assert.equal(topicPageHrefByCatalogTopic()['9:46'], '/kite-grade-9');
   });
+
+  it('a redirected old topic URL does not hide the canonical page link', () => {
+    const hrefs = topicPageHrefByCatalogTopic();
+    // /angles-grade-7 301s to /adjacent-vertical-angles-grade-7 (redirects.json).
+    assert.equal(hrefs['7:12'], '/adjacent-vertical-angles-grade-7');
+    for (const href of Object.values(hrefs)) assert.notEqual(href, '/angles-grade-7');
+    // Two live, indexable pages share topic 7:9, so the card stays unlinked
+    // until Noam picks one of them.
+    assert.equal(hrefs['7:9'], undefined);
+  });
 });

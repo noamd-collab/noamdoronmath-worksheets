@@ -2,7 +2,7 @@
  * Regression tests for the cut-over readiness review of SEO stages 1–7.
  */
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { describe, it } from 'node:test';
 import { canonicalUrl, readSiteIndexEnv, robotsContent } from '../src/lib/siteSeo';
 
@@ -44,7 +44,16 @@ describe('redirect map reflects what production serves', () => {
   it('/dev-loops is dev-only, so the map says 404 and it stays out of robots allow', () => {
     const row = read('redirects-map.csv').split('\n').find((line) => line.startsWith('https://www.noamdoronmath.co.il/dev-loops,'));
     assert.equal(row, 'https://www.noamdoronmath.co.il/dev-loops,,404-מכוון,גבוה');
-    assert.match(read('src/pages/dev-loops.astro'), /import\.meta\.env\.DEV/);
+    assert.match(read('src/dev-pages/dev-loops.astro'), /import\.meta\.env\.DEV/);
+  });
+
+  it('/dev-loops is not a Wix page, so Wix cannot list it in /pages-sitemap.xml', () => {
+    // @wix/astro-pages lists every src/pages/**/*.astro file in /_wix/pages.json.
+    assert.equal(existsSync(new URL('../src/pages/dev-loops.astro', import.meta.url)), false);
+    assert.doesNotMatch(read('astro.config.mjs'), /dev-loops/);
+    const preview = read('astro.config.preview.mjs');
+    assert.match(preview, /pattern: '\/dev-loops'/);
+    assert.match(preview, /\.\/src\/dev-pages\/dev-loops\.astro/);
   });
 });
 
