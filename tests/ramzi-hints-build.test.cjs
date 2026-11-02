@@ -38,7 +38,7 @@ const bank=[
 const site=build.loadSite(path.join(__dirname,".."));
 
 test("E2 parts bind to their own PDF-only worksheets and never borrow native E data",()=>{
-  const expected={"G8-T45":"e4da722565a942e482c9e4dbf6ee41b5","G8-T51":"0b79f523d8ea4598a85d5320d6acd823"};
+  const expected={"G8-T45":"3ae242baf1944414864cd19ee6c1dae0","G8-T51":"7abc4c52de0545b39dfd75ac01b748e9"};
   for(const [prefix,pdf] of Object.entries(expected)){
     const topic=site.find(topic=>topic.prefix===prefix),id=prefix+"-E2-Q01א";
     assert.equal(topic.levels.E2.source_pdf_hash,pdf);
@@ -64,7 +64,7 @@ test("E2 parts bind to their own PDF-only worksheets and never borrow native E d
 });
 
 test("all T40 manifests match exact native selected tasks and have no T32 exercise IDs",()=>{
-  const root=path.join(__dirname,".."),pdfs={A:"043606cd6c8e4c199b148424caf7ef36",B:"9fdee3c1708d4726998df6526d437f4c",E:"8f86fe9850874c4f935f16ddddc51c83"};
+  const root=path.join(__dirname,".."),pdfs={A:"6c9067eacb3449938916dbe0573993b5",B:"3974b70de6ef4d4fbd4757f0b3568c05",E:"06d24b6595e04f92b06b4200cedf86f5"};
   let count=0;
   for(const [level,pdf] of Object.entries(pdfs)){
     const relative="noam-ai/manifests/"+pdf+".json",bytes=fs.readFileSync(path.join(root,relative)),manifest=JSON.parse(bytes);
@@ -228,7 +228,7 @@ test("the trapezoid excellence rows from PR316 pass the gates and are pinned to 
   pilot.forEach(row=>{
     assert.match(row.exercise_id,/^G9-T39-E-Q\d{2}[א-ת]$/);
     assert.equal(row.status,"verified");
-    assert.equal(row.source_pdf_hash,"e020549ff713406fb0c0f07443b09b18");
+    assert.equal(row.source_pdf_hash,"a463a44f4c584dd1af17726dedac59e8");
     assert.equal(row.source_native_sha256,"0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201");
     assert.equal(build.hintIssue(row.hints),null,row.exercise_id);
     assert.equal(review.get(row.exercise_id),"authored_against_native_source_agent_reviewed_pending_noam_approval");
@@ -256,7 +256,7 @@ test("the public key reads only verified hints and the two safe source bindings"
 
 test("T32 rows retain their current bindings after T40 receives its own IDs; legacy ambiguous sources still fail closed",()=>{
   const rows=JSON.parse(fs.readFileSync(path.join(__dirname,"..","learning/ramzi-hints.json"),"utf8"));
-  const expected={A:"1484d3da89c246e0bf6f7c6ccf7fd6f5",B:"6bfa684eb9b644f684bea0cde1c5c9a1",E:"9e98f366feb74e129b7c9d1f1d33285d"};
+  const expected={A:"5bfde0f3ebd14a3499e954d8a84e0bb9",B:"a6788f6ba9c34a36b156434e93fd4e75",E:"fd592a72a4714fbeb32b05b751bcff01"};
   const originals=rows.filter(row=>/^G9-T32-[ABE]-Q01א$/.test(row.exercise_id)).map(row=>{
     const copy={...row};delete copy.source_pdf_hash;delete copy.source_native_sha256;return copy;
   });
@@ -459,7 +459,7 @@ test("the newly approved proof row contains only student-facing hints and a curr
   const rows=JSON.parse(fs.readFileSync(path.join(__dirname,"..","learning/ramzi-hints.json"),"utf8"));
   const row=rows.find(row=>row.exercise_id==="G9-T39-E-Q03ב");
   assert.equal(row.status,"verified");assert.equal(row.source,"ramzi-reviewed-20261031");
-  assert.equal(row.source_pdf_hash,"e020549ff713406fb0c0f07443b09b18");
+  assert.equal(row.source_pdf_hash,"a463a44f4c584dd1af17726dedac59e8");
   assert.equal(row.source_native_sha256,"0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201");
   assert.match(row.hints[1],/^אם הוכחתם/);
   assert.match(row.hints[2],/אם נימקתם/);

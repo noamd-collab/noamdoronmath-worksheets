@@ -92,7 +92,7 @@ it('deferred public config is awaited and bounded without loading security or a 
 it('both viewer copies prefetch after manifest load and put prepared standard hints before any guide or AI action',()=>{
  for(const path of ['../public/worksheet-viewer-noam.html','../../../worksheet-viewer-noam.html']){
   const viewer=readFileSync(new URL(path,import.meta.url),'utf8'),ask=viewer.slice(viewer.indexOf('function askNoam('),viewer.indexOf('function noamRetryActionLabel('));
-  assert.match(viewer,/noam-curated-hints\.js\?v=20261031-source-bound3/);assert.match(viewer,/manifest = data;[\s\S]{0,600}NoamCuratedHints\.prefetch\(data\)/);assert.doesNotMatch(ask,/noamDidacticResponse\(|noamDidacticGuide\(|noamDidacticPrompt\(/);assert.ok(ask.indexOf('noamPreparedHint(')<ask.indexOf('noamPrepareOperationClient('));assert.doesNotMatch(viewer,/function noamFirstSourceHint\(/);
+  assert.match(viewer,/noam-curated-hints\.js\?v=20261102-answers1/);assert.match(viewer,/manifest = data;[\s\S]{0,600}NoamCuratedHints\.prefetch\(data\)/);assert.doesNotMatch(ask,/noamDidacticResponse\(|noamDidacticGuide\(|noamDidacticPrompt\(/);assert.ok(ask.indexOf('noamPreparedHint(')<ask.indexOf('noamPrepareOperationClient('));assert.doesNotMatch(viewer,/function noamFirstSourceHint\(/);
  }
  assert.equal(readFileSync(new URL('../../../noam-curated-hints.js',import.meta.url),'utf8'),code);
 });
