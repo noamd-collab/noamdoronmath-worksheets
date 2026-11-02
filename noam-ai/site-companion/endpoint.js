@@ -508,7 +508,8 @@ export async function handleNoamSiteCompanion(request, deps) {
     return jsonResponse(200, unavailableBody(), origin);
   }
   if (!guard.ok) {
-    if (guard.stepUpEligible === true && guard.siteverify?.hostname === requestHost) {
+    if (!isStepUp && guard.stepUpEligible === true &&
+        (guard.stepUpReason === "browser-error" || guard.siteverify?.hostname === requestHost)) {
       const stepUp = createTeacherStepUpChallenge(payload, stepUpSettings);
       if (stepUp) {
         const result = denied({ ...guard, code: "BOT_STEP_UP_REQUIRED" }, origin);
