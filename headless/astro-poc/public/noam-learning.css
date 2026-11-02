@@ -53,3 +53,325 @@
   .nl-card>a{width:100%;}
   .nl-privacy>summary{min-height:44px;padding-block:10px;}
 }
+
+/* Site-consistent shell, header, menu, cards, and footer for body.nl-page */
+body.nl-page{
+  margin:0;
+  color:#22305a;
+  font-family:'Heebo',Arial,'Noto Sans Hebrew',sans-serif;
+  background-color:#fbfaf5;
+  background-image:linear-gradient(rgba(34,48,90,.065) 1px,transparent 1px),linear-gradient(90deg,rgba(34,48,90,.065) 1px,transparent 1px);
+  background-size:28px 28px;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+body.nl-page .nl-shell{
+  flex:1;
+  width:100%;
+  max-width:1160px;
+  margin:0 auto;
+  padding:28px 72px 88px;
+}
+body.nl-page .nl-header.exact-header{
+  position:sticky;
+  top:0;
+  z-index:20;
+  background:rgba(251,250,245,.94);
+  backdrop-filter:blur(6px);
+  border-bottom:2px solid #22305a;
+  padding:28px 0 0;
+}
+body.nl-page .nl-header__row{
+  max-width:1200px;
+  margin:0 auto;
+  padding:10px 24px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  flex-wrap:wrap;
+}
+body.nl-page .nl-brand__logo{
+  height:62px;
+  width:auto;
+}
+body.nl-page .nl-primary-nav{
+  display:flex;
+  align-items:center;
+  gap:4px;
+  flex-wrap:wrap;
+  flex:1;
+  font-weight:500;
+  font-size:15px;
+}
+body.nl-page .nl-primary-nav>a,
+body.nl-page .exact-nav-tools__btn{
+  padding:8px 10px;
+  border-radius:999px;
+  color:#22305a;
+  text-decoration:none;
+  border:0;
+  background:transparent;
+  font:inherit;
+  font-weight:500;
+  cursor:pointer;
+  white-space:nowrap;
+}
+body.nl-page .nl-primary-nav>a:hover,
+body.nl-page .exact-nav-tools__btn:hover{
+  background:rgba(42,124,122,.12);
+}
+body.nl-page .exact-nav-tools{
+  position:relative;
+  display:flex;
+  align-items:center;
+}
+body.nl-page .exact-nav-drop{
+  position:absolute;
+  z-index:40;
+  top:100%;
+  inset-inline-start:0;
+  min-width:max-content;
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+  padding:8px;
+  background:#fbfaf5;
+  border:2px solid #22305a;
+  border-radius:14px 6px 16px 8px / 8px 16px 6px 14px;
+  box-shadow:4px 4px 0 rgba(34,48,90,.12);
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+}
+body.nl-page .exact-nav-drop a{
+  padding:8px 12px;
+  border-radius:10px;
+  color:#22305a;
+  font-size:15px;
+  font-weight:500;
+  text-decoration:none;
+  white-space:nowrap;
+}
+body.nl-page .exact-nav-drop a:hover{
+  background:rgba(42,124,122,.12);
+}
+@media(hover:hover){
+  body.nl-page .exact-nav-tools:hover .exact-nav-drop{opacity:1;visibility:visible;pointer-events:auto;}
+}
+body.nl-page .exact-nav-tools:focus-within .exact-nav-drop,
+body.nl-page .exact-nav-tools[data-open] .exact-nav-drop{opacity:1;visibility:visible;pointer-events:auto;}
+body.nl-page .exact-nav-teachers{display:inline-flex;align-items:center;}
+body.nl-page .exact-nav-new{
+  display:inline-block;
+  margin-inline-start:6px;
+  padding:0 6px;
+  border-radius:999px;
+  background:#e8f4f3;
+  color:#1f6462;
+  border:1px solid #8fbfbd;
+  font-size:11px;
+  font-weight:700;
+  line-height:1.65;
+}
+body.nl-page .exact-header__learn{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 16px;
+  background:#2a7c7a;
+  border:2px solid #22305a;
+  border-radius:18px 6px 20px 8px / 8px 20px 6px 18px;
+  box-shadow:3px 3px 0 #22305a;
+  color:#fff;
+  font-weight:700;
+  font-size:15px;
+  text-decoration:none;
+  white-space:nowrap;
+}
+body.nl-page .nl-all-worksheets{
+  display:inline-flex;
+  align-items:center;
+  padding:8px 14px;
+  background:#fff;
+  border:2px solid #22305a;
+  border-radius:18px 6px 20px 8px / 8px 20px 6px 18px;
+  box-shadow:2px 2px 0 #e6a534;
+  color:#22305a;
+  font-weight:700;
+  font-size:14px;
+  text-decoration:none;
+  white-space:nowrap;
+}
+body.nl-page .exact-nav-toggle,
+body.nl-page .exact-nav-learn-mobile,
+body.nl-page .exact-nav-search-mobile{display:none!important;}
+@media(max-width:899.98px){
+  body.nl-page .nl-shell{padding:20px 18px 88px;}
+  body.nl-page .exact-header__learn{display:none!important;}
+  body.nl-page .exact-nav-toggle{
+    display:inline-flex!important;
+    align-items:center;
+    gap:8px;
+    margin-inline-start:auto;
+    min-height:44px;
+    padding:8px 14px;
+    background:#fff;
+    border:2px solid #22305a;
+    border-radius:18px 6px 20px 8px / 8px 20px 6px 18px;
+    box-shadow:3px 3px 0 #22305a;
+    color:#22305a;
+    font:700 15px Heebo,sans-serif;
+    cursor:pointer;
+  }
+  body.nl-page .exact-nav-toggle__bars,
+  body.nl-page .exact-nav-toggle__bars::before,
+  body.nl-page .exact-nav-toggle__bars::after{
+    display:block;
+    width:18px;
+    height:2px;
+    background:#22305a;
+    border-radius:2px;
+  }
+  body.nl-page .exact-nav-toggle__bars{position:relative;}
+  body.nl-page .exact-nav-toggle__bars::before,
+  body.nl-page .exact-nav-toggle__bars::after{content:'';position:absolute;inset-inline-start:0;}
+  body.nl-page .exact-nav-toggle__bars::before{top:-6px;}
+  body.nl-page .exact-nav-toggle__bars::after{top:6px;}
+  body.nl-page .nl-primary-nav{
+    display:none;
+    position:absolute;
+    top:calc(100% + 6px);
+    inset-inline:14px;
+    flex-direction:column;
+    align-items:stretch;
+    padding:10px;
+    background:#fbfaf5;
+    border:2px solid #22305a;
+    border-radius:16px 6px 18px 8px / 8px 18px 6px 16px;
+    box-shadow:5px 6px 0 rgba(34,48,90,.14);
+  }
+  body.nl-page .nl-primary-nav[data-open]{display:flex;}
+  body.nl-page .nl-primary-nav a{min-height:44px;padding:10px 12px;border-radius:10px;text-align:start;}
+  body.nl-page .exact-nav-learn-mobile,
+  body.nl-page .exact-nav-search-mobile{display:block!important;}
+  body.nl-page .exact-nav-tools__btn{display:none!important;}
+  body.nl-page .exact-nav-drop{position:static;opacity:1;visibility:visible;pointer-events:auto;border:0;box-shadow:none;padding:0;background:transparent;}
+}
+body.nl-page .nl-kicker{
+  display:inline-block;
+  background:#e8f4f3;
+  color:#1e605e;
+  border:1.5px solid #22305a;
+  border-radius:999px;
+  padding:4px 12px;
+  font-size:14px;
+  font-weight:700;
+}
+body.nl-page .nl-intro h1{
+  font-family:'Secular One',sans-serif;
+  font-weight:400;
+  color:#22305a;
+}
+body.nl-page .nl-intro p{color:#3d4870;}
+body.nl-page .nl-account{
+  background:#eaf4f3;
+  border:2px solid #22305a;
+  border-radius:18px 6px 20px 8px / 8px 20px 6px 18px;
+  box-shadow:4px 4px 0 #e6a534;
+  color:#22305a;
+}
+body.nl-page .nl-card{
+  background:#fff;
+  border:2px solid #22305a;
+  border-radius:18px 6px 20px 8px / 8px 20px 6px 18px;
+  box-shadow:4px 4px 0 rgba(34,48,90,.1);
+  color:#22305a;
+}
+body.nl-page .nl-card h2{
+  font-family:'Secular One',sans-serif;
+  font-weight:400;
+  color:#22305a;
+}
+body.nl-page .nl-filters select,
+body.nl-page .nl-filters input{
+  border:2px solid #22305a;
+  border-radius:12px;
+  color:#22305a;
+}
+body.nl-page .exact-footer{
+  background:#22305a;
+  color:#e8ebf3;
+  margin-top:40px;
+}
+body.nl-page .nl-footer__grid{
+  max-width:1200px;
+  margin:0 auto;
+  padding:48px 24px 28px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:32px;
+}
+body.nl-page .nl-footer__brand{
+  font-family:'Secular One',sans-serif;
+  font-weight:400;
+  font-size:22px;
+  color:#fff;
+}
+body.nl-page .nl-footer__blurb{
+  margin:10px 0 0;
+  line-height:1.6;
+  font-size:16px;
+  color:#c3c9dc;
+}
+body.nl-page .exact-footer h3{
+  margin:0 0 10px;
+  font-size:16px;
+  font-weight:700;
+  color:#fff;
+}
+body.nl-page .nl-footer__mail{
+  color:#f2c46b;
+  font-size:16px;
+  text-decoration:none;
+}
+body.nl-page .nl-footer__social{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:16px;
+  list-style:none;
+  padding:0;
+}
+body.nl-page .nl-footer__social .exact-social{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:44px;
+  height:44px;
+  border-radius:12px;
+  border:1.5px solid rgba(255,255,255,.3);
+  color:#fff;
+}
+body.nl-page .nl-footer__links{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  font-size:16px;
+}
+body.nl-page .nl-footer__links a{
+  color:#c3c9dc;
+  text-decoration:none;
+  min-height:36px;
+  display:inline-flex;
+  align-items:center;
+}
+body.nl-page .nl-footer__links a:hover{color:#fff;}
+body.nl-page .nl-footer__copy{
+  max-width:1200px;
+  margin:0 auto;
+  padding:18px 24px 28px;
+  border-top:1px solid rgba(255,255,255,.15);
+  font-size:13px;
+  color:#a9b0c8;
+}

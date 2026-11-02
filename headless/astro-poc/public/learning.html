@@ -1,14 +1,113 @@
 <!doctype html>
 <html lang="he" dir="rtl">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,follow"><meta name="referrer" content="strict-origin-when-cross-origin"><title>הלמידה שלי — נועם דורון מתמטיקה</title><link rel="stylesheet" href="noam-learning.css?v=20260910-mobile-1"><style id="nl-basad-headless">/* M37 Headless-only בס״ד — physical top-right; do not redesign learning layout */.nl-basad{position:absolute;top:8px;right:12px;left:auto;z-index:40;font-size:13px;font-weight:600;color:#1a2b4a;line-height:1;pointer-events:none}body.nl-page{position:relative}.nl-header .nl-brand{display:inline-flex;align-items:center;line-height:0;text-decoration:none;color:inherit}.nl-brand__logo{display:block;width:min(168px,42vw);height:auto;border-radius:0;background:transparent;box-shadow:none}.nl-header{padding-top:14px}@media(max-width:650px){.nl-basad{top:6px;right:10px;font-size:12px}.nl-brand__logo{width:min(148px,46vw)}.nl-header{padding-top:16px}}</style><link rel="icon" href="/favicon.ico" sizes="48x48">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,follow"><meta name="referrer" content="strict-origin-when-cross-origin"><title>הלמידה שלי — נועם דורון מתמטיקה</title><link rel="stylesheet" href="/fonts/site-fonts.css"><link rel="stylesheet" href="noam-learning.css?v=20260910-mobile-1"><style id="nl-basad-headless">/* M37 Headless-only בס״ד — physical top-right; do not redesign learning layout */.nl-basad{position:absolute;top:8px;right:12px;left:auto;z-index:40;font-size:13px;font-weight:600;color:#1a2b4a;line-height:1;pointer-events:none}body.nl-page{position:relative}.nl-header .nl-brand{display:inline-flex;align-items:center;line-height:0;text-decoration:none;color:inherit}.nl-brand__logo{display:block;width:min(168px,42vw);height:auto;border-radius:0;background:transparent;box-shadow:none}.nl-header{padding-top:14px}@media(max-width:650px){.nl-basad{top:6px;right:10px;font-size:12px}.nl-brand__logo{width:min(148px,46vw)}.nl-header{padding-top:16px}}</style><link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#fbfaf5">
 </head>
-<body class="nl-page"><div class="nl-basad" lang="he" data-basad>בס״ד</div><div class="nl-shell"><header class="nl-header"><a class="nl-brand" href="/"><img class="nl-brand__logo" src="/brand/noam-doron-math-logo-cropped.png" alt="נועם דורון מתמטיקה" width="573" height="243"></a><a href="/worksheets">לכל דפי העבודה — ללא כניסה</a></header>
-<main><section class="nl-intro"><div class="nl-kicker">כל דפי העבודה פתוחים · בחינם</div><h1>הלמידה שלי</h1><p>מה כבר תרגלתי, על מה כדאי לחזור, ואיפה ממשיכים?</p><p>מסמנים מצב עבודה לכל דף ורמה. הסימונים הם הדיווח שלכם — פתיחת דף אינה מסמנת שסיימתם אותו.</p></section><div id="learning-app"></div>
+<body class="nl-page exact-site"><div class="nl-basad" lang="he" data-basad>בס״ד</div>
+<header class="nl-header exact-header">
+  <div class="nl-header__row exact-header__row">
+    <a class="nl-brand" href="/"><img class="nl-brand__logo" src="/brand/noam-doron-math-logo-cropped.png" alt="נועם דורון מתמטיקה" width="573" height="243"></a>
+    <button class="exact-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" data-nav-toggle>
+      <span class="exact-nav-toggle__bars" aria-hidden="true"></span>
+      <span>תפריט</span>
+    </button>
+    <nav id="primary-nav" aria-label="ניווט ראשי" data-nav-panel class="nl-primary-nav">
+      <a href="/">בית</a>
+      <a href="/aboutus">אודותינו</a>
+      <a href="/worksheets?level=ysodi">דפי עבודה ליסודי</a>
+      <a href="/worksheets?level=hatzava">דפי עבודה לחטיבת הביניים</a>
+      <a href="/blog">בלוג</a>
+      <div class="exact-nav-tools">
+        <button type="button" class="exact-nav-tools__btn" data-tools-toggle aria-expanded="false" aria-controls="extras-menu" aria-haspopup="true">משחקים</button>
+        <div id="extras-menu" class="exact-nav-drop">
+          <a href="/math-tools">משחקים וכלים</a>
+          <a class="exact-nav-game" href="/games/kefel-mekutsar-2">משחק כפל מקוצר שנייה&nbsp;(beta)</a>
+          <a class="exact-nav-game" href="/games/eliyahu-pythagoras">משחק משפט פיתגורס</a>
+        </div>
+      </div>
+      <a href="/high-school-math">מתמטיקה לתיכון ↗</a>
+      <a class="exact-nav-teachers" aria-label="למורים, חדש" href="/teachers">למורים<span class="exact-nav-new" aria-hidden="true">חדש</span></a>
+      <a class="exact-nav-search-mobile" href="/search">חיפוש באתר</a>
+      <a class="exact-nav-learn-mobile" aria-current="page" href="/learning.html">הלמידה שלי</a>
+    </nav>
+    <a class="exact-header__learn" aria-current="page" href="/learning.html">הלמידה שלי</a>
+    <a class="nl-all-worksheets" href="/worksheets">לכל דפי העבודה — ללא כניסה</a>
+  </div>
+</header>
+<div class="nl-shell">
+<main id="learning-main"><section class="nl-intro"><div class="nl-kicker">כל דפי העבודה פתוחים · בחינם</div><h1>הלמידה שלי</h1><p>מה כבר תרגלתי, על מה כדאי לחזור, ואיפה ממשיכים?</p><p>מסמנים מצב עבודה לכל דף ורמה. הסימונים הם הדיווח שלכם — פתיחת דף אינה מסמנת שסיימתם אותו.</p></section><div id="learning-app"></div>
 <details class="nl-privacy"><summary>איך נשמר המידע שלי?</summary><p>ללא כניסה: נשמרים במכשיר הזה רק מזהה דף, מצב עבודה ומועד העדכון. מחיקת נתוני הדפדפן מסירה את הסימונים המקומיים.</p><p>עם כניסה באמצעות Google: נוצר חשבון למידה באמצעות שם, כתובת דוא״ל ומזהה חשבון. סימוני העבודה נשמרים בחשבון לצורך המשך ממכשירים אחרים. אין צורך בגישה לתיבת הדואר, לקבצי Drive או לתשובות בכתב יד. הסימונים אינם ציונים ואינם משותפים אוטומטית עם מורים או הורים.</p><p>אפשר לייצא ולמחוק את סימוני ההתקדמות באמצעות הכפתורים בעמוד. לבקשת מחיקת חשבון למידה: <a href="mailto:noamd@noamdoronmath.co.il">noamd@noamdoronmath.co.il</a>. <a href="/accessibilityadaptation">מדיניות האתר</a>.</p></details>
 <noscript><p>המעקב דורש JavaScript. <a href="/worksheets">כל דפי העבודה ממשיכים להיות זמינים במאגר.</a></p></noscript></main></div>
-<script src="noam-learning-catalog.js?v=20260910-four-pdf-fixes" defer></script><script src="noam-learning-config.js?v=20260924-m35-1" defer></script><script src="noam-learning-core.js?v=20260908-1" defer></script><script src="noam-learning-boot.js?v=20260924-m35-1" defer></script><script src="noam-site-companion.js" defer></script>
+<footer class="exact-footer" data-home-footer>
+  <div class="nl-footer__grid">
+    <div>
+      <strong class="nl-footer__brand">נועם דורון - מתמטיקה</strong>
+      <p class="nl-footer__blurb">דפי עבודה במתמטיקה להורדה בחינם לכיתות א׳–ט׳. תשתית למידה איכותית לכל תלמיד ותלמידה.</p>
+    </div>
+    <div>
+      <h3>צור קשר</h3>
+      <p class="nl-footer__blurb">מורים, מורות והורים, נשמח לעזור בכל שאלה.</p>
+      <a class="nl-footer__mail" href="mailto:noamd@noamdoronmath.co.il">noamd@noamdoronmath.co.il</a>
+      <ul class="nl-footer__social" aria-label="רשתות חברתיות">
+        <li><a class="exact-social" href="https://www.instagram.com/noamdoronmath/" target="_blank" rel="noopener" aria-label="אינסטגרם של נועם דורון מתמטיקה"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><rect x="4" y="4" width="16" height="16" rx="4" fill="none" stroke="currentColor" stroke-width="2"></rect><circle cx="12" cy="12" r="3.5" fill="none" stroke="currentColor" stroke-width="2"></circle><circle cx="17" cy="7" r="1" fill="currentColor"></circle></svg></a></li>
+        <li><a class="exact-social" href="https://www.facebook.com/profile.php?id=61593749281930" target="_blank" rel="noopener" aria-label="פייסבוק של נועם דורון מתמטיקה"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path fill="currentColor" d="M14.2 20v-6.2h2.1l.3-2.4h-2.4V9.9c0-.7.2-1.2 1.2-1.2h1.3V6.6c-.2 0-1-.1-1.9-.1-1.9 0-3.2 1.2-3.2 3.3v1.6H9.4v2.4h2.2V20h2.6Z"></path></svg></a></li>
+        <li><a class="exact-social" href="https://chat.whatsapp.com/DOepmlK5bKxCBbbGMusLdF?mode=gi_t" target="_blank" rel="noopener" aria-label="הצטרפות לקבוצת הוואטסאפ של נועם דורון מתמטיקה"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 3.1A8.4 8.4 0 0 0 4.7 15.4L3.5 20.3l5-1.3A8.4 8.4 0 1 0 12 3.1Zm0 1.7a6.7 6.7 0 0 1 5.7 10.1 6.7 6.7 0 0 1-9.4 2l-.4-.2-2.6.7.7-2.5-.2-.4A6.7 6.7 0 0 1 12 4.8Zm3.7 9.6c-.2.5-1 .9-1.4 1-.4.1-.8.2-2.6-.5-2.2-.9-3.6-3.1-3.7-3.3-.1-.2-.9-1.2-.9-2.2s.6-1.6.8-1.8c.2-.2.4-.3.6-.3h.4c.1 0 .3 0 .4.3.2.4.6 1.4.6 1.5.1.1.1.3 0 .4l-.3.5c-.1.1-.2.3-.1.5.1.2.5.8 1.1 1.3.8.7 1.4.9 1.6 1 .2.1.3.1.5-.1l.6-.7c.1-.2.3-.2.5-.1.2.1 1.3.6 1.5.7.2.1.4.2.4.3 0 .1 0 .6-.2 1.1Z"></path></svg></a></li>
+      </ul>
+    </div>
+    <nav aria-label="ניווט מהיר">
+      <h3>ניווט מהיר</h3>
+      <div class="nl-footer__links">
+        <a href="/">בית</a>
+        <a href="/worksheets">דפי עבודה</a>
+        <a href="/aboutus">אודותינו</a>
+        <a href="/blog">בלוג</a>
+        <a href="/search">חיפוש באתר</a>
+      </div>
+    </nav>
+    <nav aria-label="מידע נוסף">
+      <h3>מידע נוסף</h3>
+      <div class="nl-footer__links">
+        <a href="/conditionforfreeworksheets">תקנון שימוש בדפי עבודה חינמיים</a>
+        <a href="/terms">תנאי השימוש</a>
+        <a href="/accessibilityadaptation">הצהרת נגישות</a>
+        <a href="/accessibilityadaptation#privacy-policy">מדיניות פרטיות</a>
+      </div>
+    </nav>
+  </div>
+  <div class="nl-footer__copy">© 2026 נועם דורון מתמטיקה. כל הזכויות שמורות.</div>
+</footer>
+<script>
+(function(){
+  var toggle=document.querySelector('[data-nav-toggle]');
+  var panel=document.getElementById('primary-nav');
+  if(toggle&&panel){
+    var setOpen=function(open){
+      toggle.setAttribute('aria-expanded',String(open));
+      if(open)panel.setAttribute('data-open','');
+      else panel.removeAttribute('data-open');
+    };
+    toggle.addEventListener('click',function(e){e.stopPropagation();setOpen(!panel.hasAttribute('data-open'));});
+    document.addEventListener('keydown',function(e){if(e.key==='Escape'&&panel.hasAttribute('data-open'))setOpen(false);});
+    document.addEventListener('click',function(e){if(panel.hasAttribute('data-open')&&!e.target.closest('.exact-header'))setOpen(false);});
+  }
+  var tools=document.querySelector('.exact-nav-tools');
+  var toolsBtn=tools&&tools.querySelector('[data-tools-toggle]');
+  if(tools&&toolsBtn){
+    toolsBtn.addEventListener('click',function(e){
+      e.stopPropagation();
+      var open=tools.hasAttribute('data-open');
+      if(open)tools.removeAttribute('data-open');
+      else tools.setAttribute('data-open','');
+      toolsBtn.setAttribute('aria-expanded',String(!open));
+    });
+    document.addEventListener('click',function(e){
+      if(!tools.contains(e.target)){tools.removeAttribute('data-open');toolsBtn.setAttribute('aria-expanded','false');}
+    });
+  }
+})();
+</script>
+<script src="noam-learning-catalog.js?v=20260910-four-pdf-fixes" defer></script><script src="noam-learning-config.js?v=20260924-m35-1" defer></script><script src="noam-learning-core.js?v=20260908-1" defer></script><script src="noam-learning-boot.js?v=20260924-m35-1" defer></script><script src="/noam-accessibility.js" defer></script><script src="noam-site-companion.js" defer></script>
 </body></html>
