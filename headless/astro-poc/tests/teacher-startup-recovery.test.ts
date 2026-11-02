@@ -93,6 +93,7 @@ function harness(options: Options = {}) {
     let appState = 'loading', appBound = false, startupComplete = false, retryTeacherLoad = null, appLoadId = 0;
     let loadToken = 0, topicLoadPromise = null;
     const byPdf = new Map(), sheets = new Map(), library = new Map();
+    const topicSearch = null;
     const $ = id => document.getElementById(id), CATALOG_URL = 'fixture:catalog', FACTORING_PDF = 'unused';
     const location = { get search(){ return new URL(window.location.href).search; } };
     const SCENARIOS = {}, escapeHTML = value => String(value);

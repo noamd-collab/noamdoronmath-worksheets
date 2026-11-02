@@ -1,5 +1,12 @@
 # Worksheet tracker
 
+## Teacher topic search — 2026-11-02
+
+- Added Noam's approved topic-name search inside the existing setup step. Typing filters the current grade's topics; the full-list button and native-list fallback remain available.
+- The existing topic select stays authoritative. Typing, keyboard exploration and leaving the field do not change the topic, URL, selected questions or prepared worksheet. Only an explicit result choice invokes the existing scope-change confirmation.
+- Search resets to the committed topic after cancellation, follows grade/prefill updates and closes when leaving setup. Keyboard navigation keeps focus on the named combobox, with result count and no-match feedback.
+- The enhancement loads independently; if it cannot load, the native topic selector remains usable. AI selection, source PDFs, final answers and print generation are unchanged.
+
 ## Four-step teacher wizard — 2026-11-02
 
 - Implemented Noam's approved grouping: setup (grade/topic/level), purpose (scenario/style/note), question selection/page building, and preview/print. Each screen shows its name and `שלב N מתוך 4`.

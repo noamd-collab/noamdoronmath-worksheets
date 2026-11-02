@@ -35,6 +35,7 @@ function navigation() {
   const app = new Function('document', `
     let state = ${initial[1]};
     const WIZARD_ORDER = ${order[1]};
+    const topicSearch = null;
     const $ = id => document.getElementById(id);
     const topicLoadPromise = null;
     let resultPreparations = 0;

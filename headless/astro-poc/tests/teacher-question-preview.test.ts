@@ -206,6 +206,7 @@ test('manual selection keeps every part and preserves earlier test/review sectio
     const clearPreparedPrint = () => {};
     const render = () => {};
     const announce = (message) => announcements.push(message);
+    const topicSearch = null;
     const $ = () => null;
     ${definition('exKey')}
     ${definition('selectionKey')}
@@ -244,6 +245,7 @@ test('ticking a later question does not scroll the unchanged selection step back
     const WIZARD_ORDER = ['setup', 'purpose', 'pick', 'result'];
     const scrolled = [], focused = [];
     const controls = new Map();
+    const topicSearch = null;
     const $ = (id) => {
       if (!controls.has(id)) controls.set(id, {
         id, hidden: false, textContent: '', parentElement: null, children: [], classList: { toggle() {} },

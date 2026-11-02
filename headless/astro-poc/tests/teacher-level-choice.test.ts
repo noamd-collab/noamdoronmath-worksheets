@@ -42,6 +42,7 @@ function picker(href = 'https://www.noamdoronmath.co.il/teachers?tag=keep#questi
     let appState = 'ready', appBound = false, startupComplete = false, retryTeacherLoad = null, appLoadId = 0;
     let state = ${initial[1]}, history = [], CATALOG = catalog, topicLoadPromise = null;
     const elements = new Map(), levels = ['all','a','b','c'].map(value => ({value,checked:false,disabled:false,handlers:{},addEventListener(type,fn){this.handlers[type]=fn;}}));
+    const topicSearch = null;
     const $ = id => {if(!elements.has(id))elements.set(id,{value:'',dataset:{},handlers:{},setAttribute(){},removeAttribute(){},focus(){},addEventListener(type,fn){this.handlers[type]=fn;},classList:{toggle(){}}});return elements.get(id);};
     const document = {activeElement:null,body:{dataset:{}},querySelectorAll(selector){return selector==='[name=level]'?levels:[];},querySelector(){return null;},addEventListener(){}};
     const SCENARIOS={first:{label:'ראשון'},other:{label:'אחר'}}, STYLES={scaffold:{help:''},blended:{help:''}};
@@ -182,6 +183,7 @@ test('the same accessible level radio group moves between setup and question pic
   selected.checked = true;
   const state = {wizard:'setup'};
   const apply = new Function('document','state',`
+    const topicSearch = null;
     const $=id=>document.getElementById(id),WIZARD_ORDER=['setup','purpose','pick','result'];
     ${definition('applyWizard')}
     return applyWizard;
