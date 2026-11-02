@@ -206,8 +206,31 @@ body.nl-page .nl-all-worksheets{
 body.nl-page .exact-nav-toggle,
 body.nl-page .exact-nav-learn-mobile,
 body.nl-page .exact-nav-search-mobile{display:none!important;}
+@media (min-width: 900px) {
+  body.nl-page .nl-header.exact-header {height:90px;box-sizing:border-box;}
+  body.nl-page .nl-header__row {flex-wrap:nowrap!important;gap:8px!important;height:100%;box-sizing:border-box;padding-top:0!important;padding-bottom:0!important;padding-inline:12px!important;}
+  body.nl-page .nl-primary-nav {flex-wrap:nowrap!important;gap:0!important;min-width:0;font-size:14px;}
+  body.nl-page .nl-primary-nav > a,
+  body.nl-page .exact-nav-tools__btn {padding:6px 7px!important;white-space:nowrap;}
+  body.nl-page .exact-header__learn {padding:8px 12px!important;font-size:14px!important;white-space:nowrap;}
+}
+@media (min-width: 900px) and (max-width: 1279px) {
+  body.nl-page .nl-header__row {gap:6px!important;padding-inline:8px!important;}
+  body.nl-page .nl-primary-nav {font-size:13px!important;}
+  body.nl-page .nl-primary-nav > a,
+  body.nl-page .exact-nav-tools__btn {padding:6px 3px!important;}
+  body.nl-page .exact-header__learn {padding:8px 8px!important;font-size:13px!important;}
+  body.nl-page .exact-nav-new {margin-inline-start:4px;padding:0 4px;}
+}
+@media (min-width: 900px) and (max-width: 1023.98px) {
+  body.nl-page .nl-header__row {gap:6px!important;padding-inline:6px!important;}
+  body.nl-page .nl-primary-nav {font-size:12px!important;}
+  body.nl-page .nl-primary-nav > a,
+  body.nl-page .exact-nav-tools__btn {padding:6px 5px!important;}
+  body.nl-page .exact-header__learn {padding:8px 8px!important;font-size:12px!important;}
+}
 @media(max-width:899.98px){
-  body.nl-page .nl-shell{padding:20px 18px 88px;}
+  body.nl-page .nl-shell{padding:20px 60px 88px;}
   body.nl-page .exact-header__learn{display:none!important;}
   body.nl-page .exact-nav-toggle{
     display:inline-flex!important;

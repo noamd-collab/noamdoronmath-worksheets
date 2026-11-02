@@ -430,7 +430,7 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
       data-catalog-group={group}
     >
       <GradeNav
-        activeGrade={grade}
+        activeGrade={showGradePrompt ? null : grade}
         gradeNames={gradeNames}
         gradeEmojis={gradeEmojis}
         listId={listId}
@@ -450,11 +450,13 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
             ? 'בחרו כיתה מתוך יסודי (א׳–ו׳) או חטיבת ביניים (ז׳–ט׳) כדי לראות את נושאי הלימוד ודפי העבודה.'
             : `${topLevelCount} נושאים לפי תכנית הלימודים. בחרו דף והוא ייפתח בלשונית חדשה.`}
         </p>
-        <p className="proto-note" data-pop="160">
-          {family === 'elementary'
-            ? 'יסודי — דפי עבודה, תרגול והסברים בדרך מהנה וברורה.'
-            : 'חטיבה — דפי עבודה וצופה (כולל רמזי AI) במראה רגוע וברור.'}
-        </p>
+        {!showGradePrompt ? (
+          <p className="proto-note" data-pop="160">
+            {family === 'elementary'
+              ? 'יסודי — דפי עבודה, תרגול והסברים בדרך מהנה וברורה.'
+              : 'חטיבה — דפי עבודה וצופה (כולל רמזי AI) במראה רגוע וברור.'}
+          </p>
+        ) : null}
       </header>
 
       {showGradePrompt ? (
@@ -539,8 +541,8 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
             </div>
           </div>
         </section>
-      ) : null}
-
+      ) : (
+      <>
       <div className="toolbar">
         <div className="search">
           <span className="exact-search-icon" aria-hidden="true">⌕</span>
@@ -688,6 +690,8 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
           ))}
         </div>
       </div>
+      </>
+      )}
     </div>
   );
 }

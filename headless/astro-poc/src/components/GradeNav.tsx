@@ -9,7 +9,7 @@ import {
 } from '../lib/grades';
 
 export interface GradeNavProps {
-  activeGrade: GradeNum;
+  activeGrade: GradeNum | null;
   gradeNames: Record<string, string>;
   gradeEmojis: Record<string, string>;
   listId: string;
@@ -22,7 +22,7 @@ function TabRow(props: {
   label: string;
   emoji: string;
   grades: readonly GradeNum[];
-  activeGrade: GradeNum;
+  activeGrade: GradeNum | null;
   gradeNames: Record<string, string>;
   gradeEmojis: Record<string, string>;
   listId: string;
@@ -50,7 +50,8 @@ function TabRow(props: {
       </span>
       <div className="tabrow-btns" role="presentation">
         {grades.map((g) => {
-          const selected = g === activeGrade;
+          const selected = activeGrade !== null && g === activeGrade;
+          const focusable = activeGrade === null ? g === 1 : selected;
           return (
             <a
               key={g}
@@ -61,7 +62,7 @@ function TabRow(props: {
               aria-selected={selected}
               aria-controls={listId}
               aria-label={gradeNames[String(g)] || `כיתה ${g}`}
-              tabIndex={selected ? 0 : -1}
+              tabIndex={focusable ? 0 : -1}
               data-grade={g}
               onKeyDown={(e) => onKeyNav(g, e)}
             >

@@ -150,7 +150,7 @@ const flowUnits = hasDemo ? bodyUnits.slice(heroEnd) : bodyUnits;
 const catalog = loadCatalog();
 const topicId = page.catalogCta?.catalogTopicId ?? null;
 function levelDifficultyTag(key: string): string {
-  if (key === 'b') return 'מחזקת';
+  if (key === 'b') return 'ביסוס';
   if (key === 'c' || key === 'c2') return 'אתגר';
   return 'רגילה';
 }
@@ -196,7 +196,7 @@ function ctaTargetHref(cta: { label: string; href: string; catalogTopicId?: numb
 }
 
 function ctaDisplayLabel(label: string): string {
-  if (label === 'רמה ב׳') return 'רמה ב׳ · מחזקת';
+  if (label === 'רמה ב׳') return 'רמה ב׳ · ביסוס';
   if (label === 'רמת מצוינות') return 'רמת מצוינות · אתגר';
   return label;
 }

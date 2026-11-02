@@ -373,6 +373,18 @@ html.nd-motion-off .exact-frame *,html.noam-a11y-motion .exact-frame * {scroll-b
 }
 @media (max-width: 767px) {
   .exact-frame {
-    padding-bottom: 76px;
+    padding-bottom: 84px;
+  }
+  .exact-home > section,
+  .exact-home > [data-home-values] > div,
+  .exact-game-promo,
+  .exact-topic.topic-page,
+  .grade-hub.exact-grade,
+  .site-page.wrap,
+  .blog-archive.wrap,
+  .blog-post.wrap,
+  .exact-catalog {
+    padding-inline: 60px !important;
+    box-sizing: border-box;
   }
 }

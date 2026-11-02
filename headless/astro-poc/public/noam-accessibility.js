@@ -200,10 +200,10 @@
 
     function obstacleRects() {
       var rects = [];
-      var nodes = document.querySelectorAll('a,button,input,select,textarea,summary,[role="button"],p,h1,h2,h3,h4');
-      for (var i = 0; i < nodes.length; i++) {
-        var el = nodes[i];
-        if (el.closest('#noam-accessibility,#ndGateOverlay,.site-doodles')) continue;
+      var interactive = document.querySelectorAll('a,button,input,select,textarea,summary,[role="button"],.exact-topic-demo,.concept-loop__card,.ka-film,.grade-loop');
+      for (var i = 0; i < interactive.length; i++) {
+        var el = interactive[i];
+        if (el.closest('#noam-accessibility,#noam-site-companion,#ndGateOverlay,.site-doodles,[data-doodle]')) continue;
         var st = getComputedStyle(el);
         if (st.display === 'none' || st.visibility === 'hidden' || Number(st.opacity) === 0) continue;
         var r = el.getBoundingClientRect();
@@ -211,12 +211,31 @@
         if (r.bottom <= 0 || r.top >= window.innerHeight || r.right <= 0 || r.left >= window.innerWidth) continue;
         rects.push(r);
       }
-      var cards = document.querySelectorAll('.exact-topic-demo,.concept-loop__card,.ka-film,.grade-loop');
-      for (var c = 0; c < cards.length; c++) {
-        var card = cards[c].getBoundingClientRect();
-        if (card.width < 2 || card.height < 2) continue;
-        if (card.bottom <= 0 || card.top >= window.innerHeight || card.right <= 0 || card.left >= window.innerWidth) continue;
-        rects.push(card);
+      var textEls = document.querySelectorAll('p,h1,h2,h3,h4,h5,h6,span,strong,b,em,small,label,li,dt,dd,th,td,figcaption');
+      var range = typeof document.createRange === 'function' ? document.createRange() : null;
+      for (var t = 0; t < textEls.length; t++) {
+        var tel = textEls[t];
+        if (tel.closest('#noam-accessibility,#noam-site-companion,#ndGateOverlay,.site-doodles,[data-doodle]')) continue;
+        var tst = getComputedStyle(tel);
+        if (tst.display === 'none' || tst.visibility === 'hidden' || Number(tst.opacity) === 0) continue;
+        var trBox = tel.getBoundingClientRect();
+        if (trBox.width < 2 || trBox.height < 2) continue;
+        if (trBox.bottom <= 0 || trBox.top >= window.innerHeight || trBox.right <= 0 || trBox.left >= window.innerWidth) continue;
+        if (range) {
+          for (var c = 0; c < tel.childNodes.length; c++) {
+            var child = tel.childNodes[c];
+            if (child.nodeType === 3 && child.nodeValue && child.nodeValue.trim()) {
+              range.selectNodeContents(child);
+              var crects = range.getClientRects();
+              for (var k = 0; k < crects.length; k++) {
+                var cr = crects[k];
+                if (cr.width > 1 && cr.height > 1) rects.push(cr);
+              }
+            }
+          }
+        } else {
+          rects.push(trBox);
+        }
       }
       var fixedNodes = document.body.querySelectorAll('*');
       for (var j = 0; j < fixedNodes.length; j++) {
@@ -237,8 +256,8 @@
       if (box.width < 2 || box.bottom < 0 || box.top > window.innerHeight) return true;
       for (var i = 0; i < rects.length; i++) {
         var r = rects[i];
-        var ix = Math.min(box.right, r.right + 6) - Math.max(box.left, r.left - 6);
-        var iy = Math.min(box.bottom, r.bottom + 6) - Math.max(box.top, r.top - 6);
+        var ix = Math.min(box.right, r.right + 4) - Math.max(box.left, r.left - 4);
+        var iy = Math.min(box.bottom, r.bottom + 4) - Math.max(box.top, r.top - 4);
         if (ix > 0.5 && iy > 0.5) return true;
       }
       return false;
@@ -246,21 +265,20 @@
     function settleLauncher() {
       if (!astroShell || !host.isConnected || dialog.open) return;
       var metrics = launcherMetrics();
-      /* Stay consistently in the bottom-left corner across all pages, opposite
-         the Noam AI launcher on the right, and never climb onto the top menu. */
-      if (docked() || document.documentElement.classList.contains('noam-ai-engaged')) {
+      if (document.documentElement.classList.contains('noam-ai-engaged')) {
         applyHostBox('left', metrics.edge, 8, metrics.size);
         return;
       }
+      var hdr = document.querySelector('.exact-header,.nl-header,.topbar');
+      var hdrBot = hdr ? Math.max(0, hdr.getBoundingClientRect().bottom) : 88;
+      var maxBottom = Math.max(metrics.edge, Math.floor(window.innerHeight - hdrBot - metrics.size - 8));
       var rects = obstacleRects();
-      var maxBottom = Math.max(8, Math.min(96, Math.round(window.innerHeight * 0.2)));
-      var bottoms = [14, 8, 22, 30, 38, 46, 54, 62, 70, 78, 86, maxBottom];
-      for (var i = 0; i < bottoms.length; i++) {
-        applyHostBox('left', metrics.edge, bottoms[i], metrics.size);
+      for (var bottom = metrics.edge; bottom <= maxBottom; bottom += 4) {
+        applyHostBox('left', metrics.edge, bottom, metrics.size);
         if (!boxHits(host.getBoundingClientRect(), rects)) return;
       }
       if (parkOffLessonCard(metrics)) return;
-      applyHostBox('left', metrics.edge, 14, metrics.size);
+      applyHostBox('left', metrics.edge, metrics.edge, metrics.size);
     }
     function parkOffLessonCard(metrics) {
       var cardEl = document.querySelector('.exact-topic-demo,.concept-loop__card,.ka-film');
