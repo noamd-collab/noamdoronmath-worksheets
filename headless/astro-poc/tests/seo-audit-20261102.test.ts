@@ -3,6 +3,7 @@
  * visible update line, and the quadratic-equations page teaches the formula.
  */
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import { describe, it } from 'node:test';
 import { TOPIC_PAGE_SLUGS, loadTopicPage, updatedLineIsoDate } from '../src/lib/topicPages.ts';
 import { learningResourceJsonLd } from '../src/lib/structuredData.ts';
@@ -132,5 +133,38 @@ describe('topic-page fractions render whole and in reading order', () => {
       }
     }
     assert.ok(markers > 100, `markers checked: ${markers}`);
+  });
+});
+
+describe('about page and curriculum claims match what Noam approved (2.11.2026)', () => {
+  const read = (file: string) => JSON.parse(readFileSync(new URL(`../src/data/${file}`, import.meta.url), 'utf8'));
+  const NOT_APPROVED = 'לא קיבלו אישור רשמי של משרד החינוך';
+
+  it('every claim in the about-page description is also visible on the page', () => {
+    const about = read('site-pages/aboutus.json');
+    const visible = about.blocks.map((b: { text?: string }) => b.text || '').join('\n');
+    for (const claim of ['מורה למתמטיקה עם תעודת הוראה', 'תוכנית הלימודים', 'שלוש רמות', 'א׳–ט׳']) {
+      assert.ok(about.description.includes(claim), `description lost "${claim}"`);
+      assert.ok(visible.includes(claim), `visible text is missing "${claim}"`);
+    }
+    assert.ok(visible.includes(NOT_APPROVED), 'about page says the pages are not Ministry-approved');
+  });
+
+  it('no site-page image uses a file name as its alt text', () => {
+    for (const slug of ['aboutus', 'accessibilityadaptation', 'conditionforfreeworksheets', 'high-school-math', 'math-tools', 'terms']) {
+      for (const block of read(`site-pages/${slug}.json`).blocks as { type: string; alt?: string }[]) {
+        if (block.type !== 'img') continue;
+        assert.doesNotMatch(block.alt || '', /\.(jpe?g|png|webp|gif|avif|svg)$|^Gemini_Generated/i, `${slug}: ${block.alt}`);
+      }
+    }
+  });
+
+  it('grade-hub FAQ answers that name the Ministry also say it did not approve the pages', () => {
+    for (let grade = 1; grade <= 9; grade++) {
+      for (const item of read(`grade-hubs/${grade}.json`).faq as { answer: string }[]) {
+        if (!item.answer.includes('משרד החינוך')) continue;
+        assert.ok(item.answer.includes(NOT_APPROVED), `grade ${grade}: ${item.answer}`);
+      }
+    }
   });
 });
