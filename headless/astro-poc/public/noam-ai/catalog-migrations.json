@@ -6201,16 +6201,16 @@
         "grade": 9,
         "level": "a"
       },
-      "pdfId": "3b303728ec1b41ea81250f79f6965a21",
+      "pdfId": "b4335c05f6294bac8dd16b8273c8945b",
       "prefix": "G9-T07",
       "grade": 9,
       "level": "a",
       "topicId": 8,
       "title": "אי־שוויונות ריבועיים ומערכות משוואות",
       "siblings": {
-        "pa": "3b303728ec1b41ea81250f79f6965a21",
-        "pb": "210b0e60d11e42a78fed7e3cf1721f9f",
-        "pc": "18f55c2c93784e8bbea6786376e8608f"
+        "pa": "b4335c05f6294bac8dd16b8273c8945b",
+        "pb": "7625185b14014f308b6befd0d27d65d8",
+        "pc": "be641e8b5d7146c58c35d430f979352b"
       }
     },
     "591f709299794c1cb0fa2984a6cf6c2f": {
@@ -6219,16 +6219,16 @@
         "grade": 9,
         "level": "b"
       },
-      "pdfId": "210b0e60d11e42a78fed7e3cf1721f9f",
+      "pdfId": "7625185b14014f308b6befd0d27d65d8",
       "prefix": "G9-T07",
       "grade": 9,
       "level": "b",
       "topicId": 8,
       "title": "אי־שוויונות ריבועיים ומערכות משוואות",
       "siblings": {
-        "pa": "3b303728ec1b41ea81250f79f6965a21",
-        "pb": "210b0e60d11e42a78fed7e3cf1721f9f",
-        "pc": "18f55c2c93784e8bbea6786376e8608f"
+        "pa": "b4335c05f6294bac8dd16b8273c8945b",
+        "pb": "7625185b14014f308b6befd0d27d65d8",
+        "pc": "be641e8b5d7146c58c35d430f979352b"
       }
     },
     "587931ff06bc45788468c17ffa9c6397": {
@@ -6237,16 +6237,16 @@
         "grade": 9,
         "level": "c"
       },
-      "pdfId": "18f55c2c93784e8bbea6786376e8608f",
+      "pdfId": "be641e8b5d7146c58c35d430f979352b",
       "prefix": "G9-T07",
       "grade": 9,
       "level": "c",
       "topicId": 8,
       "title": "אי־שוויונות ריבועיים ומערכות משוואות",
       "siblings": {
-        "pa": "3b303728ec1b41ea81250f79f6965a21",
-        "pb": "210b0e60d11e42a78fed7e3cf1721f9f",
-        "pc": "18f55c2c93784e8bbea6786376e8608f"
+        "pa": "b4335c05f6294bac8dd16b8273c8945b",
+        "pb": "7625185b14014f308b6befd0d27d65d8",
+        "pc": "be641e8b5d7146c58c35d430f979352b"
       }
     },
     "f155a1aadd5a40fc9057f969f4f20c7f": {
@@ -7881,6 +7881,60 @@
         "pa": "42d14e3577194ad883c2f2bcdffb141e",
         "pb": "bc0639f3f80341fe96a9fa8c339efe7e",
         "pc": "ba7bca690c5d48c0a4ca00eb38ef711a"
+      }
+    },
+    "3b303728ec1b41ea81250f79f6965a21": {
+      "original": {
+        "prefix": "G9-T07",
+        "grade": 9,
+        "level": "a"
+      },
+      "pdfId": "b4335c05f6294bac8dd16b8273c8945b",
+      "prefix": "G9-T07",
+      "grade": 9,
+      "level": "a",
+      "topicId": 8,
+      "title": "אי־שוויונות ריבועיים ומערכות משוואות",
+      "siblings": {
+        "pa": "b4335c05f6294bac8dd16b8273c8945b",
+        "pb": "7625185b14014f308b6befd0d27d65d8",
+        "pc": "be641e8b5d7146c58c35d430f979352b"
+      }
+    },
+    "210b0e60d11e42a78fed7e3cf1721f9f": {
+      "original": {
+        "prefix": "G9-T07",
+        "grade": 9,
+        "level": "b"
+      },
+      "pdfId": "7625185b14014f308b6befd0d27d65d8",
+      "prefix": "G9-T07",
+      "grade": 9,
+      "level": "b",
+      "topicId": 8,
+      "title": "אי־שוויונות ריבועיים ומערכות משוואות",
+      "siblings": {
+        "pa": "b4335c05f6294bac8dd16b8273c8945b",
+        "pb": "7625185b14014f308b6befd0d27d65d8",
+        "pc": "be641e8b5d7146c58c35d430f979352b"
+      }
+    },
+    "18f55c2c93784e8bbea6786376e8608f": {
+      "original": {
+        "prefix": "G9-T07",
+        "grade": 9,
+        "level": "c"
+      },
+      "pdfId": "be641e8b5d7146c58c35d430f979352b",
+      "prefix": "G9-T07",
+      "grade": 9,
+      "level": "c",
+      "topicId": 8,
+      "title": "אי־שוויונות ריבועיים ומערכות משוואות",
+      "siblings": {
+        "pa": "b4335c05f6294bac8dd16b8273c8945b",
+        "pb": "7625185b14014f308b6befd0d27d65d8",
+        "pc": "be641e8b5d7146c58c35d430f979352b"
       }
     }
   }

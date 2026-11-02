@@ -405,7 +405,7 @@ test("all current Q01 parts have a source-bound ladder, including E2 and canonic
   for(const {id,level}of expected.values()){
     const row=byId.get(id);assert.ok(row,id+" is missing");
     assert.equal(row.status,"verified");
-    assert.equal(row.source_pdf_hash,level.source_pdf_hash,id);
+    assert.ok(row.source_pdf_hash===level.source_pdf_hash||level.pdfAliases.includes(row.source_pdf_hash),id);
     assert.equal(row.source_native_sha256,level.source_native_sha256,id);
     assert.equal(row.source_exercise_sha256,build.sourceTaskHash(level.exerciseTexts.get(id)),id);
     assert.equal(build.hintIssue(row.hints),null,id);
@@ -448,7 +448,8 @@ for(const [grade,coverage,sharedCoverage] of [[7,11942,0],[8,13673,0],[9,6055,24
   for(const {id,level}of expected.values()){
     const row=byId.get(id);assert.ok(row,id+" is missing");
     assert.equal(row.status,"verified",id);
-    assert.equal(row.source_pdf_hash,level.source_pdf_hash,id+" PDF revision");
+    // A republished sheet keeps the hints of the PDF whose question pages it repeats.
+    assert.ok(row.source_pdf_hash===level.source_pdf_hash||level.pdfAliases.includes(row.source_pdf_hash),id+" PDF revision");
     assert.equal(row.source_native_sha256,level.source_native_sha256,id+" native revision");
     assert.equal(row.source_exercise_sha256,build.sourceTaskHash(level.exerciseTexts.get(id)),id+" selected task text");
     assert.equal(build.hintIssue(row.hints),null,id);
