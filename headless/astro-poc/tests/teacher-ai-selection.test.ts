@@ -20,7 +20,7 @@ function definition(name: string) {
   return end < 0 ? tail : tail.slice(0, end);
 }
 
-type Payload = { teacher: { level: string; count: number; planCounts: number[]; candidates: { id: string; label: string }[] } };
+type Payload = { teacher: { level: string; count: number; note: string; planCounts: number[]; candidates: { id: string; label: string }[] } };
 type State = { grade: string; topic: string; level: string; scenario: string; style: string; selected: string[]; blocks: { kind: string; title: string; keys: string[] }[]; sectionKind: string; pickMode: string; filter: string; lastAiPickCount: number; pickNote?: string };
 const successfulReply = (payload: Payload) => ({
   source: 'classifier', model: 'qwen3.8-flash',
@@ -48,7 +48,8 @@ function harness(reply: (payload: Payload, state: State, requestOptions: Challen
       'ai-suggest-status': status,
       grade: { selectedOptions: [{ textContent: 'כיתה ט׳' }] },
       topic: { selectedOptions: [{ textContent: 'פירוק לגורמים' }] },
-      'teacher-note': { value: 'לתרגול בכיתה' },
+      'teacher-ai-note': { value: 'לתרגול בכיתה' },
+      'teacher-note': { value: 'הוראות לתלמיד שאינן מיועדות ל־AI' },
       'filter-all': { setAttribute: (...args) => attrs.push(['all', ...args]) },
       'filter-selected': { setAttribute: (...args) => attrs.push(['selected', ...args]) },
     };
@@ -212,6 +213,21 @@ test('unsupported counts never send a model request', async () => {
   const app = harness();
   for (const count of [0, -1, 6, 20, NaN]) assert.deepEqual(await app.pick(count), []);
   assert.deepEqual(app.requests, []);
+});
+
+test('AI requests send only trimmed AI guidance, never the separate student instructions', async () => {
+  for (const guidance of ['', '  ' + 'AI_ONLY_GUIDANCE_'.repeat(30) + '  ']) {
+    const app = harness();
+    const studentInstructions = 'STUDENT_ONLY_INSTRUCTIONS_DO_NOT_SEND';
+    app.controls['teacher-ai-note'].value = guidance;
+    app.controls['teacher-note'].value = studentInstructions;
+    assert.ok((await app.pick(5)).length > 0);
+    assert.equal(app.requests.length, 1);
+    assert.equal(app.requests[0].payload.teacher.note, guidance.trim().slice(0, 400));
+    assert.equal(JSON.stringify(app.requests).includes(studentInstructions), false);
+    assert.equal(app.controls['teacher-ai-note'].value, guidance, 'Sending does not overwrite the editable guidance');
+    assert.equal(app.controls['teacher-note'].value, studentInstructions);
+  }
 });
 
 function numberedPool(count: number, pdfId = 'elementary-source') {
@@ -465,7 +481,7 @@ test('plan reuse is invalidated by every model input, source hash, full question
     () => { app.state.level = 'all'; },
     () => { app.state.scenario = 'exam'; },
     () => { app.state.style = 'creative'; },
-    () => { app.controls['teacher-note'].value = 'בחר שאלות מסוף המאגר'; },
+    () => { app.controls['teacher-ai-note'].value = 'בחר שאלות מסוף המאגר'; },
     () => { Object.assign(pool[0].source, { sourceSha256: 'changed-source-sha256' }); },
     () => { pool.push({ ...pool[0], id: '1ב' }); },
     () => { pool.push({ ...pool[19], id: '21', q: 21 }); },
@@ -480,32 +496,63 @@ test('plan reuse is invalidated by every model input, source hash, full question
   }
 });
 
-test('the cache uses the exact trimmed 400-character note sent to the server', async () => {
+test('the cache uses the exact trimmed 400-character AI guidance sent to the server', async () => {
   const pool = numberedPool(20);
   const app = harness((payload) => replyWithPlans(payload, pool), { pool, savedKeys: [] });
-  app.controls['teacher-note'].value = '  ' + 'א'.repeat(400) + 'first ignored suffix';
+  app.controls['teacher-ai-note'].value = '  ' + 'א'.repeat(400) + 'first ignored suffix';
   await app.pick(5);
-  app.controls['teacher-note'].value = 'א'.repeat(400) + 'other ignored suffix  ';
+  app.controls['teacher-ai-note'].value = 'א'.repeat(400) + 'other ignored suffix  ';
   await app.pick(10);
   assert.equal(app.requests.length, 1);
-  app.controls['teacher-note'].value = 'ב' + 'א'.repeat(399);
+  app.controls['teacher-ai-note'].value = 'ב' + 'א'.repeat(399);
   await app.pick(15);
   assert.equal(app.requests.length, 2);
 });
 
-for (const mutation of ['goal', 'style', 'note', 'source hash', 'candidate subparts']) {
+test('student instruction edits preserve cached AI plans without sharing the new text', async () => {
+  const pool = numberedPool(20);
+  const app = harness(payload => replyWithPlans(payload, pool), { pool, savedKeys: [] });
+  const guidance = 'AI_GUIDANCE_FOR_THE_SAME_SELECTION';
+  app.controls['teacher-ai-note'].value = guidance;
+  assert.equal((await app.pick(5)).length, 5);
+  app.controls['teacher-note'].value = 'STUDENT_ONLY_REVISED_INSTRUCTIONS';
+  assert.equal((await app.pick(10)).length, 10);
+  assert.equal(app.requests.length, 1, 'Editing printed instructions does not require another AI request');
+  assert.match(app.status.textContent, /הוכנה בבקשת ה-AI הקודמת/);
+  assert.equal(app.requests[0].payload.teacher.note, guidance);
+  assert.equal(JSON.stringify(app.requests).includes('STUDENT_ONLY'), false);
+});
+
+test('student instruction edits during an AI request keep its guard valid and its returned plans reusable', async () => {
+  const pool = numberedPool(20);
+  const app = harness((payload, _state, requestOptions) => {
+    assert.equal(requestOptions.isCurrent(), true);
+    app.controls['teacher-note'].value = 'STUDENT_ONLY_EDIT_WHILE_AI_IS_PENDING';
+    assert.equal(requestOptions.isCurrent(), true, 'Student text is outside the model request context');
+    return replyWithPlans(payload, pool);
+  }, { pool, savedKeys: [] });
+  assert.equal((await app.pick(5)).length, 5);
+  assert.equal(app.renders(), 1);
+  assert.equal((await app.pick(15)).length, 15);
+  assert.equal(app.requests.length, 1, 'The accepted response still supplies its other verified plans');
+  assert.equal(app.controls['teacher-note'].value, 'STUDENT_ONLY_EDIT_WHILE_AI_IS_PENDING');
+  assert.equal(JSON.stringify(app.requests).includes('STUDENT_ONLY'), false);
+});
+
+for (const mutation of ['goal', 'style', 'AI guidance', 'source hash', 'candidate subparts']) {
   test(`a ${mutation} change during the request preserves the current selection and cannot populate reusable plans`, async () => {
     const pool = numberedPool(20);
     let change = true;
-    const app = harness((payload, state) => {
+    const app = harness((payload, state, requestOptions) => {
       const result = replyWithPlans(payload, pool);
       if (change) {
         change = false;
         if (mutation === 'goal') state.scenario = 'exam';
         if (mutation === 'style') state.style = 'creative';
-        if (mutation === 'note') app.controls['teacher-note'].value = 'משימה חדשה';
+        if (mutation === 'AI guidance') app.controls['teacher-ai-note'].value = 'משימה חדשה';
         if (mutation === 'source hash') Object.assign(pool[0].source, { sourceSha256: 'new-source' });
         if (mutation === 'candidate subparts') pool.push({ ...pool[0], id: '1ב' });
+        assert.equal(requestOptions.isCurrent(), false, 'Changed model inputs also invalidate challenge/retry recovery');
       }
       return result;
     }, { pool, savedKeys: [] });
@@ -696,7 +743,7 @@ for (const failure of [
   });
 }
 
-for (const mutation of ['level', 'note', 'manual']) {
+for (const mutation of ['level', 'AI guidance', 'manual']) {
   test(`a real recovered plan arriving after a ${mutation} edit cannot apply or populate the UI cache`, async () => {
     const pool = mixedLevelPool(), endpoint = guardedModelReply(pool, rawRecoveryPlans);
     let edit = true;
@@ -705,7 +752,7 @@ for (const mutation of ['level', 'note', 'manual']) {
       if (edit) {
         edit = false;
         if (mutation === 'level') state.level = 'a';
-        if (mutation === 'note') app.controls['teacher-note'].value = 'הערה חדשה';
+        if (mutation === 'AI guidance') app.controls['teacher-ai-note'].value = 'הערה חדשה';
         if (mutation === 'manual') state.selected = ['ex:b-mixed-source:19'];
       }
       return result;

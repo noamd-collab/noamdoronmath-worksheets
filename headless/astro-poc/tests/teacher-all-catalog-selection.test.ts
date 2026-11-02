@@ -27,7 +27,8 @@ const appFor = new Function('pool', 'scope', 'groupWholeQuestions', 'modelChoice
   const currentExercises = () => pool;
   const previewManifests = new Map();
   const status = { textContent: '' }, requests = [];
-  const $ = id => id === 'ai-suggest-status' ? status : id === 'teacher-note' ? { value: 'בחר שאלות מסוף המאגר' } : { setAttribute() {}, selectedOptions: [] };
+  const $ = id => id === 'ai-suggest-status' ? status : id === 'teacher-ai-note' ? { value: 'בחר שאלות מסוף המאגר' }
+    : id === 'teacher-note' ? { value: 'STUDENT_ONLY_INSTRUCTIONS' } : { setAttribute() {}, selectedOptions: [] };
   const document = { title: 'Teacher picker' }, location = { pathname: '/teachers', search: '' };
   const render = () => {}, announce = () => {}, clearPreparedPrint = () => {}, paintAiPickButtons = () => {};
   const SCENARIOS = { first: { label: 'היכרות' } }, STYLES = { scaffold: { label: 'מדורגת' } };
@@ -83,6 +84,8 @@ test('every catalog grade/topic/level exposes all source questions and supports 
           const request = app.requests.at(-1);
           assert.equal(request.teacher.candidates.length, app.groups.length, label);
           assert.equal(request.teacher.count, target, label);
+          assert.equal(request.teacher.note, 'בחר שאלות מסוף המאגר', label);
+          assert.equal(JSON.stringify(request).includes('STUDENT_ONLY_INSTRUCTIONS'), false, label);
           assert.match(app.status.textContent, /עם AI\./, label);
           if (target < count) assert.match(app.status.textContent, new RegExp(`התבקשו ${count} שאלות.*זמינות רק ${target}`), label);
         }

@@ -116,10 +116,10 @@ export function renderTeacherReview(container, review) {
   const note = document.createElement('section');
   note.className = 'teacher-review-note-block';
   const noteHeading = document.createElement('h4');
-  noteHeading.textContent = 'ההערה שתודפס';
+  noteHeading.textContent = 'ההוראות שיודפסו';
   const noteText = document.createElement('p');
   noteText.className = 'teacher-review-note';
-  noteText.textContent = review.note || 'לא נוספה הערה';
+  noteText.textContent = review.note || 'לא נוספו הוראות לתלמיד';
   note.append(noteHeading, noteText);
   fragment.append(facts, sections, note);
   container.replaceChildren(fragment);

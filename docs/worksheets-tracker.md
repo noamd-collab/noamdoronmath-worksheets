@@ -1,5 +1,13 @@
 # Worksheet tracker
 
+## Separate AI guidance from printed instructions — 2026-11-03
+
+- Added two optional fields in the existing purpose step: AI guidance (400 characters, not printed) and student instructions (600 characters, printed in full). The existing `teacher-note` value retains its printed role; it is never copied into the new AI field.
+- AI selection, its cache and pending-request validation use only the AI guidance. Student instructions feed the review, preview and both printed formats. Editing printed instructions invalidates the prepared output; editing AI guidance preserves the existing manually selected worksheet.
+- Ordinary companion requests also send only the AI guidance, in both served and legacy clients, with no fallback to printed instructions.
+- Planning minutes received from the companion prefill the AI guidance only, without overwriting existing guidance or printed instructions. Both fields persist across wizard navigation.
+- The shared worksheet retains final answers; no new step, storage or server contract was introduced.
+
 ## Teacher review summary before printing — 2026-11-02
 
 - Added Noam's approved textual summary inside the existing fourth step, above the worksheet preview: actual source grade/topic/levels, complete-question and explicit-subpart counts, section kinds, goal/style and the full note that will print.

@@ -74,6 +74,7 @@ test('four grouped steps navigate forward and back without losing questions, sec
   const levelB = levelInputs.find(input => input.getAttribute('value') === 'b')! as HTMLInputElement;
   levelB.checked = true;
   (byId('teacher-note') as HTMLTextAreaElement).value = 'הוראות קיימות שנשמרות';
+  (byId('teacher-ai-note') as HTMLTextAreaElement).value = 'הנחיה פרטית קיימת ל־AI';
 
   const visible = (selector: string) => {
     const node = document.querySelector(selector);
@@ -91,7 +92,7 @@ test('four grouped steps navigate forward and back without losing questions, sec
     assert.equal(byId('wizard-back').hidden, index === 1);
     assert.equal(byId('wizard-next').hidden, index === 4);
     for (const selector of ['#grade', '#topic']) assert.equal(visible(selector), step === 'setup', selector);
-    for (const selector of ['[name=scenario]', '[name=style]', '#teacher-note']) assert.equal(visible(selector), step === 'purpose', selector);
+    for (const selector of ['[name=scenario]', '[name=style]', '#teacher-ai-note', '#teacher-note']) assert.equal(visible(selector), step === 'purpose', selector);
     assert.equal(visible('#questions'), step === 'pick');
     assert.equal(visible('#wizard-result'), step === 'result');
     assert.equal(visible('#teacher-level-choice'), step === 'setup' || step === 'pick');
@@ -99,6 +100,7 @@ test('four grouped steps navigate forward and back without losing questions, sec
     assert.equal(byId('teacher-level-choice'), levelControl);
     assert.equal(levelB.checked, true);
     assert.equal((byId('teacher-note') as HTMLTextAreaElement).value, 'הוראות קיימות שנשמרות');
+    assert.equal((byId('teacher-ai-note') as HTMLTextAreaElement).value, 'הנחיה פרטית קיימת ל־AI');
     assert.equal(app.state.scenario, 'practice');
     assert.equal(app.state.style, 'blended');
     assert.equal(JSON.stringify({ selected: app.state.selected, blocks: app.state.blocks }), selection);
@@ -135,7 +137,9 @@ test('review shortcuts return to each existing step without resetting saved sect
   app.state.scenario = 'practice';
   app.state.style = 'blended';
   const note = app.document.getElementById('teacher-note') as HTMLTextAreaElement;
+  const aiNote = app.document.getElementById('teacher-ai-note') as HTMLTextAreaElement;
   note.value = 'הערה שנשארת בדף';
+  aiNote.value = 'הנחיה שנשארת ל־AI בלבד';
   const before = JSON.stringify({ ...app.state, wizard: undefined });
   for (const [index, step] of ['setup', 'purpose', 'pick'].entries()) {
     app.state.wizard = 'result';
@@ -146,6 +150,34 @@ test('review shortcuts return to each existing step without resetting saved sect
     assert.equal(app.invalidations(), index + 1, 'Leaving result invalidates only the old rendering');
     assert.equal(JSON.stringify({ ...app.state, wizard: undefined }), before);
     assert.equal(note.value, 'הערה שנשארת בדף');
+    assert.equal(aiNote.value, 'הנחיה שנשארת ל־AI בלבד');
     assert.equal(app.focused.at(-1), 'wizard-label');
   }
+});
+
+test('the separate labeled fields explain their destinations and only student edits invalidate prepared printing', () => {
+  const app = navigation();
+  const { document } = app;
+  const aiNote = document.getElementById('teacher-ai-note') as HTMLTextAreaElement;
+  const studentNote = document.getElementById('teacher-note') as HTMLTextAreaElement;
+  assert.equal(document.querySelectorAll('#teacher-ai-note').length, 1);
+  assert.equal(document.querySelectorAll('#teacher-note').length, 1);
+  assert.equal(aiNote.getAttribute('maxlength'), '400');
+  assert.equal(studentNote.getAttribute('maxlength'), '600');
+  assert.match(document.querySelector('label[for="teacher-ai-note"]')!.textContent!, /לא מודפסת/);
+  assert.match(document.querySelector('label[for="teacher-note"]')!.textContent!, /מודפסות/);
+  assert.match(document.getElementById(aiNote.getAttribute('aria-describedby')!)!.textContent!, /נשלחת/);
+  assert.match(document.getElementById(studentNote.getAttribute('aria-describedby')!)!.textContent!, /אינן נשלחות ל־AI/);
+  app.state.selected = ['ex:current:2א', 'ex:current:2ב'];
+  app.state.blocks = [{ grade: '9', topic: '2', kind: 'test', keys: ['ex:saved:1'] }];
+  const before = JSON.stringify(app.state);
+  aiNote.value = 'AI_ONLY_GUIDANCE_EDIT';
+  aiNote.dispatchEvent(new document.defaultView!.Event('input', { bubbles: true }));
+  assert.equal(app.invalidations(), 0, 'AI-only edits do not invalidate a worksheet that has already been prepared');
+  studentNote.value = 'STUDENT_ONLY_INSTRUCTIONS_EDIT';
+  studentNote.dispatchEvent(new document.defaultView!.Event('input', { bubbles: true }));
+  assert.equal(app.invalidations(), 1, 'The actual student-input handler clears the now-stale printable output');
+  assert.equal(JSON.stringify(app.state), before, 'Typing in either field preserves questions, sections and wizard scope');
+  assert.equal(aiNote.value, 'AI_ONLY_GUIDANCE_EDIT');
+  assert.equal(studentNote.value, 'STUDENT_ONLY_INSTRUCTIONS_EDIT');
 });

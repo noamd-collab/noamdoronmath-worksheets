@@ -154,7 +154,7 @@ describe('grade 9 factoring marked source', () => {
     assert.match(printer, /class="teacher-print-note" dir="rtl"/);
     assert.equal(printer.split('attachTeacherNote(printArea, note)').length - 1, 2);
     assert.match(page, /\.print-area \.teacher-print-note\{[^}]*direction:rtl[^}]*break-inside:avoid;page-break-inside:avoid/);
-    assert.match(page, /ההערה מודפסת על הדף/);
+    assert.match(page, /הוראות לתלמיד — מודפסות/);
     assert.match(printer, /fonts\.load\('11px Heebo'\)/);
     assert.match(page, /\.plan-notes\{display:none!important\}/);
     assert.match(page, /\.print-area \.crop-sheet\.has-teacher-note\{[^}]*height:281mm[^}]*overflow:hidden/);
@@ -163,7 +163,7 @@ describe('grade 9 factoring marked source', () => {
     assert.match(page, /\.print-area \.source-sheet\{[^}]*height:281mm/);
     const served = readFileSync(new URL('../public/teachers/index.html', import.meta.url), 'utf8');
     assert.match(served, /\.print-area \.teacher-print-note\{[^}]*direction:rtl[^}]*break-inside:avoid;page-break-inside:avoid/);
-    assert.match(served, /ההערה מודפסת על הדף/);
+    assert.match(served, /הוראות לתלמיד — מודפסות/);
     assert.match(served, /\.print-area \.crop-sheet\.has-teacher-note canvas\{width:auto;height:auto;max-width:180mm/);
     assert.match(served, /\.print-area \.crop-sheet\.has-teacher-note\{[^}]*height:281mm[^}]*overflow:hidden/);
   });

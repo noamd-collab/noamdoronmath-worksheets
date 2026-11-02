@@ -128,12 +128,12 @@ test('semantic rendering escapes titles and notes, preserves their newlines, and
   assert.equal(container.querySelectorAll('dl dd').length, 5);
   assert.equal(container.querySelectorAll('ol > li').length, 1);
   assert.match(container.textContent!, /ללא סעיפים נפרדים/);
-  assert.match(container.textContent!, /ההערה שתודפס/);
+  assert.match(container.textContent!, /ההוראות שיודפסו/);
   assert.equal(container.querySelector('button, input, select, textarea, a'), null, 'The renderer does not add navigation or editable controls');
   renderTeacherReview(container, { ...review, note: '' });
   assert.equal(container.querySelectorAll('.teacher-review-facts').length, 1);
   assert.equal(container.querySelectorAll('.teacher-review-note').length, 1);
-  assert.equal(container.querySelector('.teacher-review-note')?.textContent, 'לא נוספה הערה');
+  assert.equal(container.querySelector('.teacher-review-note')?.textContent, 'לא נוספו הוראות לתלמיד');
 });
 
 test('the public review module is identical to its demo copy', () => {

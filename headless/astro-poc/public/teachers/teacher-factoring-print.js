@@ -2,7 +2,7 @@ import { dismissTeacherHumanVerification, requestTeacherHumanVerification } from
 import { replaceWizardScopeUrl, wizardPrefillFromSearch } from './wizard-prefill.js?v=20261031-level-choice-help';
 import { expandToWholeQuestionKeys, groupWholeQuestions, mulberry32, pickWholeQuestions, randomSeed } from './teacher-question-pick.js';
 import { PICK_HEADING, SECTION_KINDS, needsSectionHeadings, pointsLabel, scoreLabel, sectionKind, sectionTitle, shouldAskMoreTopic, testPoints, TEST_TOTAL_POINTS } from './teacher-page-sections.js?v=20261102-test-section-wording';
-import { buildTeacherReview, renderTeacherReview } from './teacher-review-summary.js?v=20261102-review-summary';
+import { buildTeacherReview, renderTeacherReview } from './teacher-review-summary.js?v=20261103-note-separation';
 
 /* Teacher picker for every catalog sheet, grades 1–9.
    Choose complete source questions across topic and level sheets.
@@ -325,7 +325,8 @@ function smartQuestionPick(groups, count, scenario, style, seedKeys) {
 }
 
 function teacherAiNote() {
-  return $('teacher-note') ? String($('teacher-note').value || '').trim().slice(0, 400) : '';
+  // Printed instructions remain in teacher-note and never enter AI context.
+  return $('teacher-ai-note') ? String($('teacher-ai-note').value || '').trim().slice(0, 400) : '';
 }
 
 function teacherAiContext(groups, saved) {
@@ -1436,7 +1437,7 @@ async function loadPdf(source) {
 function teacherNoteHTML(note) {
   const text = String(note || '').trim();
   if (!text) return '';
-  return `<aside class="teacher-print-note" dir="rtl"><strong>הערת המורה</strong><p>${escapeHTML(text)}</p></aside>`;
+  return `<aside class="teacher-print-note" dir="rtl"><strong>הוראות לתלמיד</strong><p>${escapeHTML(text)}</p></aside>`;
 }
 
 async function noteBandMm(note) {
@@ -1450,7 +1451,7 @@ async function noteBandMm(note) {
   }
   const probe = document.createElement('div');
   probe.style.cssText = 'position:fixed;inset-inline-start:0;top:0;visibility:hidden;box-sizing:border-box;width:180mm;font:11px/1.35 Heebo,Arial,sans-serif;white-space:pre-wrap;overflow-wrap:anywhere;direction:rtl';
-  probe.innerHTML = `<strong style="display:block;font-size:12px;margin:0 0 1mm">הערת המורה</strong><p style="margin:0">${escapeHTML(text)}</p>`;
+  probe.innerHTML = `<strong style="display:block;font-size:12px;margin:0 0 1mm">הוראות לתלמיד</strong><p style="margin:0">${escapeHTML(text)}</p>`;
   document.body.appendChild(probe);
   const mm = probe.getBoundingClientRect().height * 25.4 / 96;
   probe.remove();
@@ -2733,7 +2734,7 @@ function metaHTML(chosen, cfg) {
 
 async function updateShortPrint(plan, printArea, chosen, note, cfg, blocks) {
   const head = `<p class="plan-notice">דף מצומצם. כל קטע נחתך מדף המקור, עם ההוראה, הנוסח והתרשים המקוריים.</p>${metaHTML(chosen, cfg)}`;
-  const foot = `<p class="print-source">מקור: ${escapeHTML(chosen.map((question) => question.source && question.source.title).filter((title, index, all) => title && all.indexOf(title) === index).join(' · '))}</p><p class="plan-notes">${escapeHTML(STYLES[state.style].plan)}</p>${note ? `<div class="plan-notes"><strong>הערת המורה</strong><br>${escapeHTML(note)}</div>` : ''}`;
+  const foot = `<p class="print-source">מקור: ${escapeHTML(chosen.map((question) => question.source && question.source.title).filter((title, index, all) => title && all.indexOf(title) === index).join(' · '))}</p><p class="plan-notes">${escapeHTML(STYLES[state.style].plan)}</p>${note ? `<div class="plan-notes"><strong>הוראות לתלמיד</strong><br>${escapeHTML(note)}</div>` : ''}`;
   plan.innerHTML = head + '<div class="crop-preview"></div>' + foot;
   printArea.innerHTML = '';
   await paintAllShort(plan.querySelector('.crop-preview'), chosen, blocks);
@@ -2856,7 +2857,7 @@ async function updatePrint() {
     const head = `<p class="plan-notice">דף המקור המלא. מה שנבחר מסומן על העמוד, והתשובות הסופיות מצורפות בסוף.</p>${metaHTML(chosen, cfg)}`;
     const sheetsHtml = markedHTML(chosen);
     const titles = chosen.map((question) => question.source && question.source.pdfUrl).filter((url, index, all) => url && all.indexOf(url) === index);
-    const foot = `<p class="print-source">מקור: ${escapeHTML(titles.join(' · '))}</p><p class="plan-notes">${escapeHTML(STYLES[state.style].plan)}</p>${note ? `<div class="plan-notes"><strong>הערת המורה</strong><br>${escapeHTML(note)}</div>` : ''}`;
+    const foot = `<p class="print-source">מקור: ${escapeHTML(titles.join(' · '))}</p><p class="plan-notes">${escapeHTML(STYLES[state.style].plan)}</p>${note ? `<div class="plan-notes"><strong>הוראות לתלמיד</strong><br>${escapeHTML(note)}</div>` : ''}`;
     const answerRoot = '<div class="marked-answers"></div>';
     plan.innerHTML = head + sheetsHtml + answerRoot + foot;
     printArea.innerHTML = sheetsHtml + answerRoot;
@@ -2945,7 +2946,7 @@ function applyScenario(value, options) {
   }
   if (scenarioChanged || selectionKey() !== before) clearPreparedPrint();
   render();
-  if (!quiet) announce(value === 'other' ? 'אפשר להוסיף הערה ולבחור מהקטלוג.' : 'הוצגו פריטים שכבר קיימים בקטלוג.');
+  if (!quiet) announce(value === 'other' ? 'אפשר להוסיף הנחיות ולבחור מהקטלוג.' : 'הוצגו פריטים שכבר קיימים בקטלוג.');
   if (!quiet && value === 'other') $('teacher-note').focus();
 }
 
@@ -3320,8 +3321,8 @@ function applyWizardPrefill(prefill) {
     const saved = carriedKeys();
     state.selected = expandToWholeQuestionKeys(currentExercises(), ids.filter((id) => allow.has(id))).filter((key) => !saved.has(key));
     state.pickNote = '';
-    const note = $('teacher-note');
-    if (note && prefill.minutes && !note.value) note.value = 'אורך שיעור: ' + prefill.minutes + ' דקות';
+    const aiNote = $('teacher-ai-note');
+    if (aiNote && prefill.minutes && !aiNote.value) aiNote.value = 'אורך שיעור: ' + prefill.minutes + ' דקות';
     render();
     state.wizard = 'pick';
     applyWizard();

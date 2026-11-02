@@ -106,7 +106,7 @@ function harness(options: Options = {}) {
     const applyScenario = () => render(), applyWizard = () => {};
     const announce = message => calls.announcements.push(message);
     ${functions.map(definition).join('\n')}
-    return { state, start, reloadTeacherTopic, changeTeacherScope, confirmTeacherReplacement, setTeacherAppState,
+    return { state, start, reloadTeacherTopic, changeTeacherScope, confirmTeacherReplacement, setTeacherAppState, applyWizardPrefill,
       status: () => appState, started: () => startupComplete };
   `)(document, browser, fetchLocal, moduleUrl.href, calls,
     expandToWholeQuestionKeys, replaceWizardScopeUrl, wizardPrefillFromSearch);
@@ -157,9 +157,26 @@ test('a URL handoff survives failed catalog startup and restores the complete se
   assert.equal(app.state.level, 'all');
   assert.equal(app.state.wizard, 'pick');
   assert.deepEqual(app.state.selected, [key(pdfs.otherGrade, '1א'), key(pdfs.otherGrade, '1ב')]);
-  assert.equal(app.element('teacher-note').value, 'אורך שיעור: 15 דקות');
+  assert.equal(app.element('teacher-ai-note').value, 'אורך שיעור: 15 דקות');
+  assert.equal(app.element('teacher-note').value, '', 'A lesson-length handoff must not become printed student instructions');
   assert.equal(app.browser.location.href, url.href);
   assert.equal(app.calls.bind, 1);
+});
+
+test('lesson-length handoffs fill only empty AI guidance and preserve existing instructions in both fields', async () => {
+  for (const existingGuidance of ['', 'AI_ONLY_EXISTING_GUIDANCE']) {
+    const app = harness();
+    await app.start();
+    const instructions = 'STUDENT_ONLY_EXISTING_INSTRUCTIONS';
+    app.element('teacher-ai-note').value = existingGuidance;
+    app.element('teacher-note').value = instructions;
+    await app.applyWizardPrefill({ grade: '8', topic: '43', level: 'a', minutes: 20, exerciseIds: [] });
+    assert.equal(app.element('teacher-ai-note').value, existingGuidance || 'אורך שיעור: 20 דקות');
+    assert.equal(app.element('teacher-note').value, instructions);
+    await app.applyWizardPrefill({ grade: '9', topic: '2', level: 'a', minutes: 45, exerciseIds: [] });
+    assert.equal(app.element('teacher-ai-note').value, existingGuidance || 'אורך שיעור: 20 דקות', 'A later handoff does not overwrite an existing guidance value');
+    assert.equal(app.element('teacher-note').value, instructions);
+  }
 });
 
 test('failed topic-sheet load retries only that topic and retains the confirmed scope and saved sections', async () => {

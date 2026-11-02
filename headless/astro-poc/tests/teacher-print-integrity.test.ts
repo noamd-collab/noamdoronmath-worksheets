@@ -64,7 +64,7 @@ type PrintOptions = {
 function printApp(options: PrintOptions = {}) {
   const { document } = parseHTML(`<html><body>
     <div id="dialog-plan"></div><div id="print-area"><canvas data-old="1"></canvas></div>
-    <textarea id="teacher-note"></textarea><button id="prepare"></button><button id="prepare-short"></button>
+    <textarea id="teacher-ai-note"></textarea><textarea id="teacher-note"></textarea><button id="prepare"></button><button id="prepare-short"></button>
     <p id="prepare-hint"></p><div id="wizard-preview"></div><h2 id="print-title"></h2><p id="print-lead"></p><button id="print">הדפסה</button><dialog id="print-dialog"></dialog>
     ${options.review ? '<section id="wizard-review" hidden><div id="wizard-review-content"></div></section>' : ''}
   </body></html>`);
@@ -87,7 +87,7 @@ function printApp(options: PrintOptions = {}) {
     const worksheetTitle = () => 'דף';
     const markedHTML = () => '<figure class="source-sheet"><div class="source-stage"><canvas></canvas></div></figure>';
     const paintSheets = async () => {};
-    const attachTeacherNote = async () => {};
+    const noteBandMm = async () => 12;
     const awaitPrintResources = async () => {
       if (options.wait) await options.wait;
       if (options.failure) throw Object.assign(new Error('חסרות תשובות סופיות'), { code: 'MISSING_ANSWERS' });
@@ -107,11 +107,10 @@ function printApp(options: PrintOptions = {}) {
     const canvasPrototype = Object.getPrototypeOf(document.querySelector('canvas'));
     canvasPrototype.getContext = () => ({ fillRect() {}, drawImage() {} });
     const printInputs = [];
-    const updateShortPrint = async (plan, area, chosen, note, cfg, blocks) => {
-      printInputs.push({ chosen, note, cfg, blocks });
+    const paintAllShort = async (root, chosen, blocks) => {
+      printInputs.push({ chosen, blocks, planText: root.parentElement?.textContent || '' });
       await awaitPrintResources();
-      plan.innerHTML = '<figure class="crop-sheet"><canvas></canvas></figure>';
-      area.innerHTML = plan.innerHTML;
+      root.innerHTML = '<figure class="crop-sheet"><canvas></canvas></figure><figure class="crop-sheet" data-answers="1"><canvas></canvas></figure>';
     };
     const notices = [];
     const announce = message => notices.push(message);
@@ -120,7 +119,8 @@ function printApp(options: PrintOptions = {}) {
     $('print-dialog').showModal = () => { opened += 1; };
     ${['exKey', 'gradeRecord', 'currentTopic', 'topicSheets', 'currentExercises', 'visibleSelectionKeys', 'available',
       'sourceForContext', 'questionsForKeys', 'pageBlocks', 'resolveChosen', 'partRank', 'levelPrintName', 'orderPrintQuestions',
-      'escapeHTML', 'groupsOf', 'paintPacked', 'clearPreparedPrint', 'copyCanvases', 'paintTeacherReview', 'updatePrint', 'reportPrintError', 'prepare',
+      'escapeHTML', 'groupsOf', 'paintPacked', 'teacherNoteHTML', 'attachTeacherNote', 'updateShortPrint',
+      'clearPreparedPrint', 'copyCanvases', 'paintTeacherReview', 'updatePrint', 'reportPrintError', 'prepare',
       'selectionKey', 'snapshot', 'applyScenario'].map(definition).join('\n')}
     return { document, state, notices, update: updatePrint, prepare, report: reportPrintError, invalidate: clearPreparedPrint, applyScenario,
       opener: () => printOpener, opened: () => opened, groups: () => assertGroups, printInputs,
@@ -140,6 +140,39 @@ test("prepare('marked') appends selected final answers after the source pages in
     assert.equal(figures[1].dataset.answers, '1');
   }
 });
+
+for (const mode of ['marked', 'short']) {
+  test(`${mode} printing and the review show only complete student instructions, never private AI guidance`, async () => {
+    const app = printApp({ review: true });
+    app.state.wizard = 'result';
+    app.mode(mode);
+    const privateGuidance = 'AI_ONLY_PRIVATE_GUIDANCE_DO_NOT_PRINT';
+    const studentInstructions = 'STUDENT_ONLY_' + 'א'.repeat(450) + '\n  <b>הסבירו את הדרך</b>';
+    app.document.getElementById('teacher-ai-note').value = privateGuidance;
+    app.document.getElementById('teacher-note').value = `  ${studentInstructions}\n`;
+    assert.equal(await app.update(), true);
+    const printArea = app.document.getElementById('print-area');
+    const review = app.document.getElementById('wizard-review');
+    assert.equal(review.hidden, false);
+    assert.equal(review.querySelector('.teacher-review-note').textContent, studentInstructions);
+    assert.equal(printArea.querySelector('.teacher-print-note p').textContent, studentInstructions);
+    assert.ok(printArea.querySelector('[data-answers="1"]'), 'Instructions stay in the one worksheet with final answers');
+    for (const id of ['dialog-plan', 'print-area', 'wizard-review']) {
+      const surface = app.document.getElementById(id);
+      assert.ok(surface.textContent.includes(studentInstructions), `${id}: keep the full printed text`);
+      assert.equal(surface.textContent.includes(privateGuidance), false, `${id}: AI guidance is not student-facing`);
+      assert.equal(surface.querySelector('b'), null, `${id}: instructions remain escaped text`);
+    }
+
+    app.document.getElementById('teacher-note').value = '';
+    assert.equal(await app.update(), true);
+    assert.equal(printArea.querySelector('.teacher-print-note'), null, 'Empty student instructions never fall back to AI guidance');
+    assert.equal(review.querySelector('.teacher-review-note').textContent, 'לא נוספו הוראות לתלמיד');
+    for (const id of ['dialog-plan', 'print-area', 'wizard-review']) {
+      assert.equal(app.document.getElementById(id).textContent.includes(privateGuidance), false);
+    }
+  });
+}
 
 test('failed answer preparation clears stale printable canvases and reports the missing key', async () => {
   const app = printApp({ failure: true });
@@ -278,8 +311,8 @@ test('review and printing consume the same scoped saved/current selection and fu
   assert.match(sections[0].textContent, /קטע ממבחן · כיתה ז׳ · מצוינות · שאלה אחת · 2 סעיפים/);
   assert.match(sections[1].textContent, /דף חזרה · כיתה ט׳ · רמה א׳ · 2 שאלות · 2 סעיפים/);
   assert.doesNotMatch(content.textContent, /כיתה ד׳|הקשר מהמטמון|רמה ב׳/);
-  assert.equal(input.note, note);
-  assert.equal(content.querySelector('.teacher-review-note').textContent, input.note);
+  assert.ok(input.planText.includes(note), 'The detached print preview already uses the same full student instructions');
+  assert.equal(content.querySelector('.teacher-review-note').textContent, note);
   assert.equal(content.querySelector('b'), null, 'The printed note is represented as text, not markup');
   finish();
   assert.equal(await pending, true);
