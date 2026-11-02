@@ -51,7 +51,8 @@ const protectedFiles: Record<string, string> = {
   // Noam, 2026-11-02: batch 2 (G9-T04, G9-T05, G9-T10, G9-T11) republished with final answers.
   // Batch 3 (2026-11-02): G9-T17, G9-T18, G9-T19 and G9-T20 republished with final answers; the catalog points at their new PDFs.
   // Batch 4 (2026-11-02): 92 grade 7-9 topics, 276 sheets, republished with final answers; the catalog points at their new PDFs.
-  'src/data/catalog.v1.json': 'f7c88ad2d9c4eced6e8b532d7b076334c877a4304b71bfe0504d216e42b96312',
+  // Batch 5 (2026-11-03): 72 more grade 7-9 sheets republished with final answers; the catalog points at their new PDFs.
+  'src/data/catalog.v1.json': '090dca898e19ef7be8465f19a152be11c51b90158c800a0700cb6c08955b88ec',
   'src/lib/catalog/loadCatalog.ts': '1a5e54a4c19c016046202f3e0b9bb95203e58fe983dab5a27e6f261abfbc9d95',
   // Viewer links forward the c2 sibling as pc2.
   'src/lib/worksheetLinks.ts': '06bfbaa4b9b778d171ca9d8802eed0ce3fb6c6f15d7d7bff3807dd1f80ce0770',
