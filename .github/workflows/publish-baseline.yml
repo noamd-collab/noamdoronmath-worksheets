@@ -8,6 +8,7 @@ name: publish-baseline
 # Noam-authorized final answers: PR #341 (401 grade 7–9 sheets) and PR #344
 # (G8-T65, newly written key); Ramzi hints follow them through the old PDF ids.
 # Standard hints use the bank; Flash is for additional questions, without Max.
+# Noam-authorized SEO audit fixes: PR #342 (merge 50d54a4), approved 2.11.2026.
 
 on:
   workflow_dispatch:
@@ -52,4 +53,4 @@ jobs:
             exit 1
           fi
           git fetch origin headless/astro-poc-baseline
-          bash tools/release/release.sh "29bb7fc9ea907a6e1efce1092285a15d638241e1"
+          bash tools/release/release.sh "50d54a4e737b4d77430f45b5c58592bce96fd6e8"
