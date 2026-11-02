@@ -20,7 +20,7 @@ const republished = readdirSync(new URL('noam-ai/manifests/', pub))
 
 describe('sheets republished with final answers', () => {
   it('each new manifest repeats its original except id, page count and the question-page link', () => {
-    assert.equal(republished.length, 3);
+    assert.equal(republished.length, 15);
     for (const m of republished) {
       assert.equal(m.questionPagesIdenticalTo.length, 1, m.pdfHash);
       const [old] = m.questionPagesIdenticalTo;
