@@ -32,7 +32,14 @@
     if((manifest.levelCode==="E2")!==(levels[0]===manifest.prefix+"-E2")){return null;}
     worksheet=levels[0];
     var binding=manifest.pdfHash+":"+native;
-    return {worksheet:worksheet,known:known,pdf:manifest.pdfHash,native:native,binding:binding,
+    // questionPagesIdenticalTo names earlier PDFs of this sheet whose question
+    // pages were verified identical; the new PDF only appends the final-answers
+    // pages. Hints bound to such a PDF stay valid until the bank is rebound.
+    var pdfs=Object.create(null);pdfs[manifest.pdfHash]=true;
+    (Array.isArray(manifest.questionPagesIdenticalTo)?manifest.questionPagesIdenticalTo:[]).forEach(function(alias){
+      if(typeof alias==="string"&&/^[a-f0-9]{32}$/.test(alias)){pdfs[alias]=true;}
+    });
+    return {worksheet:worksheet,known:known,pdf:manifest.pdfHash,pdfs:pdfs,native:native,binding:binding,
       key:worksheet+":"+binding+":"+ids.sort().join(",")};
   }
   function waitForConfig(deadline){
@@ -85,7 +92,7 @@
       rows.forEach(function(row){var id=row&&row.exercise_id;if(typeof id==="string"){seen[id]=(seen[id]||0)+1;}});
       rows.forEach(function(row){
         var id=row&&row.exercise_id;
-        if(!source.known[id]||seen[id]!==1||row.source_pdf_hash!==source.pdf||
+        if(!source.known[id]||seen[id]!==1||typeof row.source_pdf_hash!=="string"||source.pdfs[row.source_pdf_hash]!==true||
             (source.native&&row.source_native_sha256!==source.native)){return;}
         var hints=[row.hint_1,row.hint_2,row.hint_3].map(function(item){return typeof item==="string"?item.trim():"";});
         if(!hints.every(function(item){return item&&item.length<=MAX_HINT;})){return;}

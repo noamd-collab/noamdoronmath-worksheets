@@ -215,6 +215,9 @@ function loadSite(repo){
           throw new Error("E2 worksheet identity mismatch in "+level.pdfId);
         }
         const binding={pdfId:level.pdfId,exercises,source_pdf_hash:manifest.pdfHash,
+          // A sheet republished with answer pages lists the PDF whose question pages it repeats;
+          // hints bound to that PDF stay valid, as the site client accepts them too.
+          pdfAliases:(Array.isArray(manifest.questionPagesIdenticalTo)?manifest.questionPagesIdenticalTo:[]).filter(id=>PDF_HASH_RE.test(id)),
           source_native_sha256:manifest.nativeExportSha256==null?null:manifest.nativeExportSha256,
           exerciseTexts:new Map((manifest.exercises||[]).map(item=>[item.id,item.text]))};
         levels[code]=binding;
@@ -316,7 +319,7 @@ function firstPartCoverage(site,rows){
         if(!/^G[789]-T\d{2}-(?:[ABE]|E2)-Q01[אב]$/.test(id)||!id.startsWith(topic.prefix+"-")){continue;}
         const key=id.split("-").slice(0,3).join("-");
         const group=groups.get(key)||{worksheet:key,candidates:[]};
-        group.candidates.push({id,pdf:level.source_pdf_hash,native:level.source_native_sha256});
+        group.candidates.push({id,pdf:level.source_pdf_hash,aliases:level.pdfAliases||[],native:level.source_native_sha256});
         groups.set(key,group);
       }
     }
@@ -324,7 +327,7 @@ function firstPartCoverage(site,rows){
   const verified=new Map(rows.filter(r=>r.status==="verified").map(r=>[r.exercise_id,r]));
   const missing=[...groups.values()].filter(group=>!group.candidates.some(candidate=>{
     const row=verified.get(candidate.id);
-    return row&&row.source_pdf_hash===candidate.pdf&&row.source_native_sha256===candidate.native;
+    return row&&(row.source_pdf_hash===candidate.pdf||candidate.aliases.includes(row.source_pdf_hash))&&row.source_native_sha256===candidate.native;
   })).map(group=>group.worksheet).sort();
   return {eligible:groups.size,verified:groups.size-missing.length,missing};
 }
@@ -376,16 +379,18 @@ function bindRows(site,rows){
     if(choices.length!==1){throw new Error("Unresolved current source binding for "+row.exercise_id+" ("+choices.length+" candidates)");}
     const selected=choices[0].level;
     const taskHash=sourceTaskHash(selected.exerciseTexts.get(row.exercise_id));
-    if((own(row,"source_pdf_hash")&&row.source_pdf_hash!==selected.source_pdf_hash)||
+    const aliasBound=own(row,"source_pdf_hash")&&(selected.pdfAliases||[]).includes(row.source_pdf_hash);
+    if((own(row,"source_pdf_hash")&&row.source_pdf_hash!==selected.source_pdf_hash&&!aliasBound)||
         (own(row,"source_native_sha256")&&row.source_native_sha256!==selected.source_native_sha256)){
       throw new Error("Stale or conflicting source binding for "+row.exercise_id);
     }
     if(own(row,"source_exercise_sha256")&&row.source_exercise_sha256!==taskHash){
       throw new Error("Stale or conflicting source task fingerprint for "+row.exercise_id);
     }
-    resolutions.push({exercise_id:row.exercise_id,reason,source_pdf_hash:selected.source_pdf_hash,
+    const pdf=aliasBound?row.source_pdf_hash:selected.source_pdf_hash;
+    resolutions.push({exercise_id:row.exercise_id,reason,source_pdf_hash:pdf,
       source_native_sha256:selected.source_native_sha256});
-    return Object.assign({},row,{source_pdf_hash:selected.source_pdf_hash,source_native_sha256:selected.source_native_sha256,
+    return Object.assign({},row,{source_pdf_hash:pdf,source_native_sha256:selected.source_native_sha256,
       source_exercise_sha256:taskHash});
   });
   return {rows:bound,resolutions};
