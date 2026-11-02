@@ -134,7 +134,7 @@ describe('homepage Harmony parity (HEADLESS-MIGRATION-31)', () => {
       'href="/math-tools"',
       'href="/high-school-math"',
       'href="/learning.html"',
-      'תוספים',
+      'משחקים',
       'מתמטיקה לתיכון',
       'href="/teachers"',
       'למורים',

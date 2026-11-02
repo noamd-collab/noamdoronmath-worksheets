@@ -131,7 +131,7 @@ export const PK: Record<string, PeekEntry> = {
     ],
   },
   tools: {
-    title: 'תוספים',
+    title: 'משחקים',
     tag: 'כלים',
     desc: 'מחשבון מדעי וכלים שעוזרים בבגרות במחשבון.',
     blocks: [

@@ -33,9 +33,9 @@ const worksheetsBand: WorksheetsNavBand | null =
         <a aria-current={worksheetsBand === 'hatzava' ? 'page' : undefined} data-peek="ws-hatzava" href="/worksheets?level=hatzava" style="padding:8px 12px;border-radius:999px;color:#22305a;" data-exact-hover="exact-hover-15">דפי עבודה לחטיבת הביניים</a>
         <a aria-current={active === 'blog' ? 'page' : undefined} data-peek="blog" href="/blog" style="padding:8px 12px;border-radius:999px;color:#22305a;" data-exact-hover="exact-hover-16">בלוג</a>
         <div class="exact-nav-tools">
-          <button type="button" class="exact-nav-tools__btn" data-tools-toggle data-exact-hover="exact-hover-17" aria-expanded="false" aria-controls="extras-menu" aria-haspopup="true" aria-current={active === 'tools' ? 'page' : undefined}>תוספים</button>
+          <button type="button" class="exact-nav-tools__btn" data-tools-toggle data-exact-hover="exact-hover-17" aria-expanded="false" aria-controls="extras-menu" aria-haspopup="true" aria-current={active === 'tools' ? 'page' : undefined}>משחקים</button>
           <div id="extras-menu" class="exact-nav-drop">
-            <a aria-current={active === 'tools' ? 'page' : undefined} href="/math-tools">תוספים</a>
+            <a aria-current={active === 'tools' ? 'page' : undefined} href="/math-tools">משחקים וכלים</a>
             <a class="exact-nav-game" aria-current={onGame ? 'page' : undefined} href={PUBLIC_LESSON_PATH}>משחק כפל מקוצר שנייה&nbsp;(beta)</a>
             <a class="exact-nav-game" aria-current={onPythagorasGame ? 'page' : undefined} href={PYTHAGORAS_GAME_PATH}>משחק משפט פיתגורס</a>
           </div>
