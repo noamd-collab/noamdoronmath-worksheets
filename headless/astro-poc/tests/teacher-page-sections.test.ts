@@ -87,7 +87,7 @@ describe('teacher page sections', () => {
   it('keeps earlier topics on the same page and lets each one be a test or review section', () => {
     assert.match(printer, /function addAnotherTopic\(\)/);
     assert.match(printer, /state\.blocks\.push\(/);
-    assert.match(printer, /state\.wizard = 'topic'/);
+    assert.match(printer, /state\.wizard = 'setup'/);
     assert.match(printer, /data-block-kind/);
     assert.match(html, /id="page-blocks"/);
     assert.match(printer, /data-block-remove/);

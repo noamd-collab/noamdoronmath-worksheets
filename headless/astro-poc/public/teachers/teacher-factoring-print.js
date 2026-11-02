@@ -95,7 +95,7 @@ let state = {
   grade: '9',
   topic: '2',
   level: 'a',
-  wizard: 'grade',
+  wizard: 'setup',
   lastQuestionCount: 5,
   lastAiPickCount: 0,
   pickMode: 'manual',
@@ -682,7 +682,7 @@ function addAnotherTopic() {
   state.pickNote = '';
   history = [];
   clearPreparedPrint();
-  state.wizard = 'topic';
+  state.wizard = 'setup';
   render();
   announce('השאלות נשמרו בדף. בוחרים נושא נוסף.');
   const select = $('topic');
@@ -2976,11 +2976,11 @@ async function loadCurrentTopic() {
   await run;
 }
 
-const WIZARD_ORDER = ['grade', 'topic', 'level', 'scenario', 'style', 'pick', 'result'];
+const WIZARD_ORDER = ['setup', 'purpose', 'pick', 'result'];
 
 function applyWizard() {
   if (!$('wizard-bar')) return;
-  const step = WIZARD_ORDER.includes(state.wizard) ? state.wizard : 'grade';
+  const step = WIZARD_ORDER.includes(state.wizard) ? state.wizard : 'setup';
   const stepChanged = document.body.dataset.wizard !== step;
   state.wizard = step;
   document.body.dataset.wizard = step;
@@ -2991,24 +2991,23 @@ function applyWizard() {
   const levelHome = $(step === 'pick' ? 'pick-level-home' : 'wizard-level-home');
   if (levelChoice && levelHome) {
     if (levelChoice.parentElement !== levelHome) levelHome.appendChild(levelChoice);
-    levelChoice.classList.toggle('wiz-off', step !== 'level' && step !== 'pick');
+    levelChoice.classList.toggle('wiz-off', step !== 'setup' && step !== 'pick');
   }
   const setup = $('setup-panel');
   if (setup) setup.classList.toggle('wiz-off', step === 'pick' || step === 'result');
   const labels = {
-    grade: 'כיתה',
-    topic: 'נושא',
-    level: 'רמה',
-    scenario: 'מה קורה בשיעור?',
-    style: 'איך ניגשים לתרגול?',
-    pick: 'בוחרים שאלות',
-    result: 'הדף להדפסה',
+    setup: 'הגדרות התרגול',
+    purpose: 'מטרת התרגול',
+    pick: 'בחירת שאלות',
+    result: 'תצוגה והדפסה',
   };
   $('wizard-label').textContent = labels[step];
+  const progress = $('wizard-progress');
+  if (progress) progress.textContent = `שלב ${WIZARD_ORDER.indexOf(step) + 1} מתוך ${WIZARD_ORDER.length}`;
   $('wizard-back').hidden = WIZARD_ORDER.indexOf(step) <= 0;
   $('wizard-next').hidden = step === 'result';
   $('wizard-next').textContent = step === 'pick' ? 'אל הדף' : 'המשך';
-  const anchor = step === 'result' ? $('wizard-result') : $('wizard-bar');
+  const anchor = $('wizard-bar');
   if (stepChanged && anchor && anchor.scrollIntoView) anchor.scrollIntoView({ block: 'start', inline: 'nearest' });
   if (stepChanged) {
     const label = $('wizard-label');
@@ -3045,8 +3044,7 @@ async function showWizardResult() {
   try {
     if (!(await updatePrint())) return;
     copyCanvases($('print-area'), preview);
-    const anchor = $('wizard-result');
-    if (anchor && anchor.scrollIntoView) anchor.scrollIntoView({ block: 'start', inline: 'nearest' });
+    // Keep the current step heading in view; rendering must not move the reader.
   } catch (error) {
     preview.textContent = error && error.code === 'MISSING_ANSWERS'
       ? error.message
@@ -3184,7 +3182,7 @@ function bind() {
   $('prepare').addEventListener('click', () => prepare('marked'));
   $('prepare-short').addEventListener('click', () => prepare('short'));
   if ($('wizard-next')) $('wizard-next').addEventListener('click', async () => {
-    const index = WIZARD_ORDER.indexOf(state.wizard || 'grade');
+    const index = WIZARD_ORDER.indexOf(state.wizard || 'setup');
     state.wizard = WIZARD_ORDER[Math.min(WIZARD_ORDER.length - 1, index + 1)];
     if (state.wizard === 'pick') {
       if (topicLoadPromise) await topicLoadPromise;
@@ -3198,7 +3196,7 @@ function bind() {
     if (state.wizard === 'result') await showWizardResult();
   });
   if ($('wizard-back')) $('wizard-back').addEventListener('click', () => {
-    const index = WIZARD_ORDER.indexOf(state.wizard || 'grade');
+    const index = WIZARD_ORDER.indexOf(state.wizard || 'setup');
     state.wizard = WIZARD_ORDER[Math.max(0, index - 1)];
     applyWizard();
   });
