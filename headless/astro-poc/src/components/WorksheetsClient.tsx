@@ -343,10 +343,7 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
   function renderTopicCard(topic: CatalogTopic, gEntry: CatalogGrade) {
     const childrenMap = childrenByParentByGrade.get(gEntry.grade) || new Map<number, CatalogTopic[]>();
     const children: CatalogTopic[] = childrenMap.get(topic.id) || [];
-    // Display the existing catalog identifier, not the prototype's sample data.
-    const topicCode = topic.noamTopicId?.match(/T\d+$/)?.[0];
     const pageHref = topicPageHrefs[`${gEntry.grade}:${topic.id}`];
-    const badgeColor = ({ m09: '#2a7c7a', m10: '#e5735c', m11: '#c98a1a' } as Record<string, string>)[topic.group] || '#22305a';
     return (
       <article
         key={`${gEntry.grade}-${topic.id}`}
@@ -358,7 +355,6 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
           <h3>
             {pageHref ? <a href={pageHref}>{topic.title}</a> : topic.title}
           </h3>
-          {topicCode ? <span className="exact-topic-code" style={{ background: badgeColor }}>{topicCode}</span> : null}
         </div>
         {topic.description ? <p className="exact-card-description">{topic.description}</p> : null}
         {topic.note ? <p className="note">{topic.note}</p> : null}
