@@ -2,7 +2,7 @@
   "version": 1,
   "date": "2026-10-31",
   "scope": "Prepared hints for current canonical worksheet parts. Exact coverage is recorded separately; first-part coverage does not mean every part is covered.",
-  "limitations": "Previously reviewed rows retain their original provenance. Rows labelled machine_generated_flash_automatic_checks_no_model_review were authored with qwen3.8-flash and passed source-binding and automatic builder checks under Noam's explicit instruction. They did not receive an independent model or human content review. The two rows with editorial_revisions dated 2026-11-01 received owner-authorized notation or source-specific wording corrections by Codex after original Flash generation, with zero new model calls and no independent model review. Their historical authoring provenance is retained; the revision records describe the changes. On 2026-11-02, by Noam's instruction, 401 grade 7-9 worksheet PDFs were republished with their final-answers pages appended; each new PDF repeats the old PDF's question pages exactly (text, digits and drawings compared page by page). The 30229 rows bound to those PDFs carry a source_rebindings record and the new source_pdf_hash; their hints, native bindings and source task fingerprints are unchanged, with zero model calls. The same day, by the same instruction, the three G8-T65 PDFs were republished with newly written final-answers pages; their question pages are unchanged except the page-count footer, and their 123 rows were rebound the same way.",
+  "limitations": "Previously reviewed rows retain their original provenance. Rows labelled machine_generated_flash_automatic_checks_no_model_review were authored with qwen3.8-flash and passed source-binding and automatic builder checks under Noam's explicit instruction. They did not receive an independent model or human content review. The two rows with editorial_revisions dated 2026-11-01 received owner-authorized notation or source-specific wording corrections by Codex after original Flash generation, with zero new model calls and no independent model review. Their historical authoring provenance is retained; the revision records describe the changes. On 2026-11-02, by Noam's instruction, 401 grade 7-9 worksheet PDFs were republished with their final-answers pages appended; each new PDF repeats the old PDF's question pages exactly (text, digits and drawings compared page by page). The 30229 rows bound to those PDFs carry a source_rebindings record and the new source_pdf_hash; their hints, native bindings and source task fingerprints are unchanged, with zero model calls.",
   "proposalInputs": [
     {
       "file": "ramzi-hints-grade79-updates.json",
@@ -572894,2830 +572894,1231 @@
     },
     {
       "exercise_id": "G8-T65-A-Q01",
-      "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
+      "source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
       "source_native_sha256": null,
       "source_exercise_sha256": "5e41467f1b0952ad1f967217da79d88a2df20ac36f52463fccaf3eb11374803b",
       "hints_sha256": "c6665dd96511d8ee81e7ac41081c6250777f8deb98f9ef65720de21074685436",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
-          "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-A-Q02א",
-      "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
+      "source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
       "source_native_sha256": null,
       "source_exercise_sha256": "9114c5a1d61cb6663dbc6c15ebc0129e12d436a155db86b609face528c828031",
       "hints_sha256": "40132d0ee75d769b314d6c25dd66c27af1f472b591592e1b14b3c20b65ff8ced",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
-          "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-A-Q02ב",
-      "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
+      "source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
       "source_native_sha256": null,
       "source_exercise_sha256": "ef4cfbed2c579c3ea917a71d00a327ff260c0a785bcd7f550c6a06f9d4b006c4",
       "hints_sha256": "5aaa290ac9400acd4608b2c86673c51550f3b22d9f984034a72ecefe59ca374b",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
-          "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-A-Q02ג",
-      "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
+      "source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
       "source_native_sha256": null,
       "source_exercise_sha256": "05ba5f6e6a1696f0caf1da9bbbd36d4bf4d81ee52fc88160823429d171906086",
       "hints_sha256": "7397aca6256a85198c3bae7f502b8de7528cf35cd5c253ac1db5909ac3dd1d55",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
-          "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-A-Q03א",
-      "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
+      "source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
       "source_native_sha256": null,
       "source_exercise_sha256": "2c6a773ff1ac2d6317a1ad54312d98d962dfe7da95ede0a35e86486ce9538756",
       "hints_sha256": "d648088f93cf48667623e4cf640ef14592dd938f5f8ae4abb1b117fa17050855",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
-          "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-A-Q03ב",
-      "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
+      "source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
       "source_native_sha256": null,
       "source_exercise_sha256": "92e0e1fbfdfbba71923a4fbe00f956bf512b4544a41a5b770788315d2f28bd5b",
       "hints_sha256": "9ad93aa70aaaf67328df1845439a6df2524b14f52ad8618c22fd874fd471c526",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
-          "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-A-Q03ג",
-      "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
+      "source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
       "source_native_sha256": null,
       "source_exercise_sha256": "c118da0bec5a2473dbc6f59cf8520284e6fab24aabac16a894f9a7bf83f10227",
       "hints_sha256": "ee3c8c9e42c57c263278bf225f9821ba3c9a01fd2d26a361f94ed1deba3c3ce7",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
-          "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-A-Q03ד",
-      "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
+      "source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
       "source_native_sha256": null,
       "source_exercise_sha256": "233c19b968e28e26a2b1683743289b7061d9f69a25d520c9611ab52704138853",
       "hints_sha256": "74f41a7eee113d0e5d3f07d4a2c347832ed7f2c5fedab12dab4285692ca7a79f",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
-          "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-A-Q04א",
-      "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
+      "source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
       "source_native_sha256": null,
       "source_exercise_sha256": "06cd8854819c90ea04f377f9f97fa9673de5f0f67cf8101f591fcff54c017a21",
       "hints_sha256": "d79ebd0ea914018c64787e66cafc8cbe0ed5e5d919f6bec10e0cc9bad7e80d4a",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
-          "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-A-Q04ב",
-      "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
+      "source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
       "source_native_sha256": null,
       "source_exercise_sha256": "218a3a4ffde529aa388f65709c51cda99f15cec5e6fcef9b4bb9f2e282835044",
       "hints_sha256": "e392477f2324aaafa8066cade30571f7a2e06a87033c87fa93d05e291aabb526",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
-          "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-A-Q04ג",
-      "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
+      "source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
       "source_native_sha256": null,
       "source_exercise_sha256": "ddf469bc4dafdbbe88924ec8cb7401ce2db377368fb4ae54d3c3d71023a18ecc",
       "hints_sha256": "ed96d6ff248cd5bfebccb9b358d29339d91b56e4119cd2c36cafd925a3c0ff58",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
-          "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-A-Q05א",
-      "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
+      "source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
       "source_native_sha256": null,
       "source_exercise_sha256": "1547ce3e77f26914dc86b0f0e664be85fab48d11b061fb75c5e1473659d9f3de",
       "hints_sha256": "b856c3da85de5db8b993b01066f8f90457f780f5991f7110e5e443bda6d2ed3b",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
-          "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-A-Q05ב",
-      "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
+      "source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
       "source_native_sha256": null,
       "source_exercise_sha256": "5aa87cbd77b9565f26458e5491c552cbe2324506288d3889096094f4807f2e2d",
       "hints_sha256": "020dbef374daf8958f06d287c0c8551b70902429cbe644961638dfe7ae8f809e",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
-          "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-A-Q05ג",
-      "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
+      "source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
       "source_native_sha256": null,
       "source_exercise_sha256": "696a2077885bedf03109f78e7b24f859130a3cbbe226c017eafd261a69bf7b9e",
       "hints_sha256": "f7e6dc5b28b86544ee22e12acfb6fd83ce83542321f244c854022dde49a1e272",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
-          "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-A-Q06א",
-      "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
+      "source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
       "source_native_sha256": null,
       "source_exercise_sha256": "5e3ffc3f6d6e4b739932b3513ffc99fbdaa37b7161fbb63959f57788b6a3cca2",
       "hints_sha256": "cc296525292b1112ac2141c0389b1ed5d75da465ae7b6a808be5bd17ba0d00ca",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
-          "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-A-Q06ב",
-      "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
+      "source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
       "source_native_sha256": null,
       "source_exercise_sha256": "2b67d6ff3b1c72e5d3e77ca10a67cd7cf53f38d2e0d92151db5e0aac62aabf0e",
       "hints_sha256": "9322ad4dc1757bd22dca8dd969ae11adbe51f681e9f9d44feeffaf1486c2550f",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
-          "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-A-Q06ג",
-      "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
+      "source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
       "source_native_sha256": null,
       "source_exercise_sha256": "8765435688e0e6879facb8443f558c284b89ee861a4258b4eb8bf3f24e4c543f",
       "hints_sha256": "e0e1450abd263c45a00b2c9d631d9f016a572f358fd6b4097c4227dc9a53422e",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
-          "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-A-Q07א",
-      "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
+      "source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
       "source_native_sha256": null,
       "source_exercise_sha256": "9d249aeab765cf5c2b4aecc785ec83a2dd1dfba1b4525ae4a4531b34a7e5b6d3",
       "hints_sha256": "f7a629b9495126d635b131aa743899ac8c717d770b9bf8a845e7e3de9e987edd",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
-          "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-A-Q07ב",
-      "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
+      "source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
       "source_native_sha256": null,
       "source_exercise_sha256": "f3d3315fef4f9ef673e59ede5c706f36747ba21b7502d76ba46575447b4d001a",
       "hints_sha256": "38cfe8bfb20f4d8f5f39bccf1223ff0fc2241352156ce8b66506974a79ebc7b2",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
-          "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-A-Q07ג",
-      "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
+      "source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
       "source_native_sha256": null,
       "source_exercise_sha256": "31c5278c719d1a9d8c0eb5fab30ea97a4eb6a544dc1972db6ab1b9cd125ba362",
       "hints_sha256": "fb0632c56074af6797fe922c6c0b4421a919bb1c2386b075f25cd0099ed5639d",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
-          "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-A-Q08א",
-      "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
+      "source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
       "source_native_sha256": null,
       "source_exercise_sha256": "90f05aa8b919d3d97141c42ef8c043ffc42a496cf04a7797a506bf3dd6f8d9bd",
       "hints_sha256": "1de72d7dedaf829d075d833556f530115550c1f65bb998a2089b1b2360e511ac",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
-          "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-A-Q08ב",
-      "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
+      "source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
       "source_native_sha256": null,
       "source_exercise_sha256": "c2c8c9190c7328529a671059e9914ae1c6e6102f7d9b4b4ff340c378cc360fe3",
       "hints_sha256": "38cfe8bfb20f4d8f5f39bccf1223ff0fc2241352156ce8b66506974a79ebc7b2",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
-          "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-A-Q08ג",
-      "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
+      "source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
       "source_native_sha256": null,
       "source_exercise_sha256": "dde6b74e5c95bd226ef1842bfefc62b3a6bbaef69eeb05a75d4bf9858db23e0f",
       "hints_sha256": "004609fa71529d2bf390a39e40c2deb390324bc656fb01552bdc7ad156745c16",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
-          "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-A-Q09א",
-      "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
+      "source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
       "source_native_sha256": null,
       "source_exercise_sha256": "5e8e08a5a614abad34d422cff8a887da6c3aba7b1e6430d65296b7b977df928e",
       "hints_sha256": "1dcfad37a4414c69a2aa6521765e63c7ea0dc3dc3cb6bcd9027aeb8d65f2607a",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
-          "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-A-Q09ב",
-      "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
+      "source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
       "source_native_sha256": null,
       "source_exercise_sha256": "98975eabbc16e80790074954943ad1dde1b935fcf2e7e718c5fafddcc4b2a81c",
       "hints_sha256": "c37d0a2211e2cce271762ad3a4b31ba8cafd7e4af29d1db9dbf382bf75ec11e8",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
-          "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-A-Q09ג",
-      "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
+      "source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
       "source_native_sha256": null,
       "source_exercise_sha256": "242bd155efe8db089f26ca6f4e3b0f4a4de0a124cf363ba13ced6314f1269d58",
       "hints_sha256": "6ade609fcd4c58df655e00abd3d1f17b5a4d3cff2f2ed75787acaefaffbeaced",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
-          "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-A-Q10א",
-      "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
+      "source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
       "source_native_sha256": null,
       "source_exercise_sha256": "dc8e139841b09b2266b31100626dafce20afb353be780c34919e18601d62c9c0",
       "hints_sha256": "3925bbc36b6b41ee4ae17a7fd0b9cbc2be7873a5bd39adf93f230fc0f258888b",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
-          "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-A-Q10ב",
-      "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
+      "source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
       "source_native_sha256": null,
       "source_exercise_sha256": "6bc801f18a7859839e5bfe460df91b9fd65443aaad5c1bfb3ec0b7c8848cc53c",
       "hints_sha256": "c3b122de3b3ca0a1e862eff91a7673759383fb9d17440340b3671e7ae546fb8c",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
-          "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-A-Q10ג",
-      "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
+      "source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
       "source_native_sha256": null,
       "source_exercise_sha256": "4e0cdab5888c7dfe7b71ee021c37513c2119ec963a946400907584ca81ab125b",
       "hints_sha256": "d6f4d2511ce32bfc99ae6d119d1d5cb985dc5e52d05d01f07a65e1ddba4b1ed8",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
-          "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-A-Q11א",
-      "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
+      "source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
       "source_native_sha256": null,
       "source_exercise_sha256": "1fd04386146bdfa28c2d33ec29ea1ebd769c064f082171897a20c63529bdbe87",
       "hints_sha256": "1374acad9dfbf83b9aa31048505b76b3c804e9999b956073540fe7487880ad5a",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
-          "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-A-Q11ב",
-      "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
+      "source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
       "source_native_sha256": null,
       "source_exercise_sha256": "a29c536d13577b3580bb274828acfd09849dc1cd5179d227c8e25599d59d51fe",
       "hints_sha256": "1d01c90b3f059d6167c51a348c7677982519730bda63d907b78d81ee61c2fc41",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
-          "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-A-Q11ג",
-      "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
+      "source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
       "source_native_sha256": null,
       "source_exercise_sha256": "3f4dfb9d0c1144e2221836c9dbd6efd1c3fe5c1fc33ffc5db76d9e763b846990",
       "hints_sha256": "2c0d16f939aeb737aafdcce156ed3749fac4abb4d37a402be907b4c75475f41e",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
-          "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-A-Q12א",
-      "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
+      "source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
       "source_native_sha256": null,
       "source_exercise_sha256": "f8c7f2b1289a1b34b86f813e178821908ec93f91b398bca1e34b0fa8f588ee55",
       "hints_sha256": "a74eaecc1e754c56b3bd9d09fb2e29ae809df17a0bdcf18186f567309f599131",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
-          "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-A-Q12ב",
-      "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
+      "source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
       "source_native_sha256": null,
       "source_exercise_sha256": "65078dab2ac871a450530e9d535a7ace12b5bd87ab0bff71a860a878ed8d088c",
       "hints_sha256": "6fd56ec4e3ee62513d39717e9c15c8dedb97b61f616d5dc97b4735653c77edee",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
-          "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-A-Q12ג",
-      "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
+      "source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
       "source_native_sha256": null,
       "source_exercise_sha256": "306a7cab7eaef1a1f95b18c48444aa0deae7d64da1aca92f5fcaa71a1d07b7a0",
       "hints_sha256": "4fd7bfddffdfb1910a087f99a100e30f4b41036b6449308527cc6759a706ee2f",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
-          "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-A-Q13א",
-      "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
+      "source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
       "source_native_sha256": null,
       "source_exercise_sha256": "aaaaf53c423fe1113e0c6a06bf91a8df5ac9fe8a8a43eebfe9ea8ce63985b611",
       "hints_sha256": "1ec1899a6f18f1a85257444c869b1bdafaf7cd93cb2f383b65c03772947422ac",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
-          "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-A-Q13ב",
-      "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
+      "source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
       "source_native_sha256": null,
       "source_exercise_sha256": "23888310502ee55ff95dde3e81a28bb797b4d9edf560ae1a7cb0d6165091cf62",
       "hints_sha256": "4aa86d08c5a80b66d862d94aea330dfd15fbfe1c916fe672b9eb425c339c2cb6",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
-          "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-A-Q13ג",
-      "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
+      "source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
       "source_native_sha256": null,
       "source_exercise_sha256": "fb7f86626e80444083fa649da6ba3fb6956340cc69ad6802363f4f75b9d85beb",
       "hints_sha256": "a1c61ff8a2755b85860ce7f3b2f8f79f8c7b74dc893b7253a9bad9e36dc290cd",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
-          "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-A-Q14א",
-      "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
+      "source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
       "source_native_sha256": null,
       "source_exercise_sha256": "0381decaa4c2cdb85dc5ddc9ded5c98b2f71223d1e255c7b9d410b5561f55508",
       "hints_sha256": "06b616e4a967ab6b517dc4822e6e01fc779c83206b3ceec5fd55673b5513ee46",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
-          "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-A-Q14ב",
-      "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
+      "source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
       "source_native_sha256": null,
       "source_exercise_sha256": "c0ec7e47e34d54d4ea75ff631ef67c3cebb6cd5fc30e2b677bae12ead65006e9",
       "hints_sha256": "23954c435ca092bfccae32d176c72a9786a84ea2eddc077032f52af5214f69fe",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
-          "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-A-Q14ג",
-      "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
+      "source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
       "source_native_sha256": null,
       "source_exercise_sha256": "5315ad4d0288c485a67ca093c0d9d2f2908f79397f37640e61a58d0050c1a69d",
       "hints_sha256": "07224f2a4d99715e2fd6aca0beb502a80d6d1dff83bba014b0892f05a2c6b19e",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "fc62c3516b5c4f4c8e3f433792c84c40",
-          "source_pdf_hash": "6d6a93579d99417fb11f1763de507490",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-B-Q01",
-      "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
+      "source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
       "source_native_sha256": null,
       "source_exercise_sha256": "5e41467f1b0952ad1f967217da79d88a2df20ac36f52463fccaf3eb11374803b",
       "hints_sha256": "ada42d79c81589d29cb63b0899add842941badf1bfc571165510ae6d22dbd4d7",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
-          "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-B-Q02",
-      "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
+      "source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
       "source_native_sha256": null,
       "source_exercise_sha256": "e5cbb6d8b853f6e35d5ef03cadfaf9c83466a8c13a22a9974471d67d72c7a5b0",
       "hints_sha256": "e25546faa49e7eaaa873f9f677e41a9a5a3b8900d651494b6b96c10a885148d9",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
-          "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-B-Q03א",
-      "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
+      "source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
       "source_native_sha256": null,
       "source_exercise_sha256": "2c6a773ff1ac2d6317a1ad54312d98d962dfe7da95ede0a35e86486ce9538756",
       "hints_sha256": "d40cd4cd1def54a2caec0c5b4622ee9fac54ae7e549fc791963dc6ac01aede70",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
-          "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-B-Q03ב",
-      "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
+      "source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
       "source_native_sha256": null,
       "source_exercise_sha256": "92e0e1fbfdfbba71923a4fbe00f956bf512b4544a41a5b770788315d2f28bd5b",
       "hints_sha256": "fb5f73587293942db0e036ceb770b0eeaee69221e09107ca9b45a66d60d88d20",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
-          "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-B-Q03ג",
-      "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
+      "source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
       "source_native_sha256": null,
       "source_exercise_sha256": "c118da0bec5a2473dbc6f59cf8520284e6fab24aabac16a894f9a7bf83f10227",
       "hints_sha256": "911765e89657fae394684496ffeda4d6e7d8a7b767d2ff984da7a05e0df8227e",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
-          "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-B-Q04א",
-      "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
+      "source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
       "source_native_sha256": null,
       "source_exercise_sha256": "06cd8854819c90ea04f377f9f97fa9673de5f0f67cf8101f591fcff54c017a21",
       "hints_sha256": "f89b551f6c3bb0786dece072e9fdb1fde381dc773c8d0b44d8000c3660fa3482",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
-          "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-B-Q04ב",
-      "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
+      "source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
       "source_native_sha256": null,
       "source_exercise_sha256": "218a3a4ffde529aa388f65709c51cda99f15cec5e6fcef9b4bb9f2e282835044",
       "hints_sha256": "7afcf4af2688c445bed97a283436bd48c8d7ebd6aa138f65acb61ab77e8ef8d5",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
-          "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-B-Q04ג",
-      "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
+      "source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
       "source_native_sha256": null,
       "source_exercise_sha256": "ddf469bc4dafdbbe88924ec8cb7401ce2db377368fb4ae54d3c3d71023a18ecc",
       "hints_sha256": "eda64d2e6e7f91ca6792584ea17f7aa2c3f63949f1cd0f015a27a8f4b9bcb1a4",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
-          "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-B-Q05א",
-      "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
+      "source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
       "source_native_sha256": null,
       "source_exercise_sha256": "1547ce3e77f26914dc86b0f0e664be85fab48d11b061fb75c5e1473659d9f3de",
       "hints_sha256": "4a63298f74ac79e13a833d40879306f52aaa290b9fa09178e43c97614346e184",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
-          "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-B-Q05ב",
-      "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
+      "source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
       "source_native_sha256": null,
       "source_exercise_sha256": "5aa87cbd77b9565f26458e5491c552cbe2324506288d3889096094f4807f2e2d",
       "hints_sha256": "b85239bb830730b6e8babbc93a5c5021758a6eb7333c5199e9c036ba1e400863",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
-          "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-B-Q05ג",
-      "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
+      "source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
       "source_native_sha256": null,
       "source_exercise_sha256": "696a2077885bedf03109f78e7b24f859130a3cbbe226c017eafd261a69bf7b9e",
       "hints_sha256": "1f703010fddebd5e5097f3b0378c6e21e01413b7b69318425906f68188aa16f2",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
-          "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-B-Q06א",
-      "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
+      "source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
       "source_native_sha256": null,
       "source_exercise_sha256": "5e3ffc3f6d6e4b739932b3513ffc99fbdaa37b7161fbb63959f57788b6a3cca2",
       "hints_sha256": "defb23ef5ec183ad31c0cfc666929be12a92ee91467e280d1b426030e7f57ca2",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
-          "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-B-Q06ב",
-      "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
+      "source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
       "source_native_sha256": null,
       "source_exercise_sha256": "2b67d6ff3b1c72e5d3e77ca10a67cd7cf53f38d2e0d92151db5e0aac62aabf0e",
       "hints_sha256": "8618fae7770b5bcf9351af88772ad81cb68a76ef6fce7f61c8aa7860187aabbd",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
-          "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-B-Q06ג",
-      "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
+      "source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
       "source_native_sha256": null,
       "source_exercise_sha256": "8765435688e0e6879facb8443f558c284b89ee861a4258b4eb8bf3f24e4c543f",
       "hints_sha256": "8f85ade2532ee045a05644f67a7808ff5e6a0c7300663fcae58d038d6f39281b",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
-          "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-B-Q07א",
-      "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
+      "source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
       "source_native_sha256": null,
       "source_exercise_sha256": "9d249aeab765cf5c2b4aecc785ec83a2dd1dfba1b4525ae4a4531b34a7e5b6d3",
       "hints_sha256": "7e20ea3cc99b09ae335182da6410d8f799f8d14d1c237ca5303f5996a571125e",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
-          "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-B-Q07ב",
-      "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
+      "source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
       "source_native_sha256": null,
       "source_exercise_sha256": "f3d3315fef4f9ef673e59ede5c706f36747ba21b7502d76ba46575447b4d001a",
       "hints_sha256": "b3318589ff1eb2dfa06b76e17340cb071c944cbe3e3e0891cde33ef48de5411d",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
-          "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-B-Q07ג",
-      "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
+      "source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
       "source_native_sha256": null,
       "source_exercise_sha256": "31c5278c719d1a9d8c0eb5fab30ea97a4eb6a544dc1972db6ab1b9cd125ba362",
       "hints_sha256": "e317f893cb78546f190f147029a598912bd44ade9a9298093be8b49f070bdb5b",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
-          "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-B-Q08א",
-      "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
+      "source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
       "source_native_sha256": null,
       "source_exercise_sha256": "90f05aa8b919d3d97141c42ef8c043ffc42a496cf04a7797a506bf3dd6f8d9bd",
       "hints_sha256": "aadd3f7301fca16d3d7073e38bec152d5e1f4c37f6119359fc5743c5a4c49e7d",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
-          "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-B-Q08ב",
-      "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
+      "source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
       "source_native_sha256": null,
       "source_exercise_sha256": "c2c8c9190c7328529a671059e9914ae1c6e6102f7d9b4b4ff340c378cc360fe3",
       "hints_sha256": "e88cd2238b709697459c65356c55937ce3f03155f4761cd4f51784a2ad03eb88",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
-          "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-B-Q08ג",
-      "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
+      "source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
       "source_native_sha256": null,
       "source_exercise_sha256": "dde6b74e5c95bd226ef1842bfefc62b3a6bbaef69eeb05a75d4bf9858db23e0f",
       "hints_sha256": "c82d7853e4dd0d67c1bc2af97e7ee4ee0b20f4a426303c640ba259a4864ede88",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
-          "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-B-Q09א",
-      "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
+      "source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
       "source_native_sha256": null,
       "source_exercise_sha256": "5e8e08a5a614abad34d422cff8a887da6c3aba7b1e6430d65296b7b977df928e",
       "hints_sha256": "d5cbb42b0c5ce3a8c18aa11664dd932c6975c0e704758f68fabc7e51ec44e2a5",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
-          "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-B-Q09ב",
-      "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
+      "source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
       "source_native_sha256": null,
       "source_exercise_sha256": "98975eabbc16e80790074954943ad1dde1b935fcf2e7e718c5fafddcc4b2a81c",
       "hints_sha256": "a773b03d2bcd89283adbbf61a6709a9b2da5522a8b095ee6cb66b22ea8b5cd89",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
-          "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-B-Q09ג",
-      "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
+      "source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
       "source_native_sha256": null,
       "source_exercise_sha256": "242bd155efe8db089f26ca6f4e3b0f4a4de0a124cf363ba13ced6314f1269d58",
       "hints_sha256": "36dacb3e599834259fa1b937c91522e65f7d31f5c3beb54396da6b2e8d38f953",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
-          "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-B-Q10א",
-      "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
+      "source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
       "source_native_sha256": null,
       "source_exercise_sha256": "dc8e139841b09b2266b31100626dafce20afb353be780c34919e18601d62c9c0",
       "hints_sha256": "57677c5f0cd3402471d079fc35b15a1326eeb05489087569e7976866d1dd2d29",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
-          "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-B-Q10ב",
-      "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
+      "source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
       "source_native_sha256": null,
       "source_exercise_sha256": "6bc801f18a7859839e5bfe460df91b9fd65443aaad5c1bfb3ec0b7c8848cc53c",
       "hints_sha256": "9200e447c92d0f479d0cce6d613de31786a7920fff30dd858ad8a285fc9a5bc4",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
-          "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-B-Q10ג",
-      "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
+      "source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
       "source_native_sha256": null,
       "source_exercise_sha256": "4e0cdab5888c7dfe7b71ee021c37513c2119ec963a946400907584ca81ab125b",
       "hints_sha256": "9a8829e761d6702f1a549c879ee4e924698ef2ba330a1783bf2aaba22041313b",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
-          "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-B-Q11א",
-      "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
+      "source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
       "source_native_sha256": null,
       "source_exercise_sha256": "1fd04386146bdfa28c2d33ec29ea1ebd769c064f082171897a20c63529bdbe87",
       "hints_sha256": "57692226caa13042520c7340e6ce042d8356ffb1fb8930fccee01177bd0cdd72",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
-          "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-B-Q11ב",
-      "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
+      "source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
       "source_native_sha256": null,
       "source_exercise_sha256": "a29c536d13577b3580bb274828acfd09849dc1cd5179d227c8e25599d59d51fe",
       "hints_sha256": "37dd402e7b1492a4573a0f1842e2549c685a693189b528e97914b0beeefa7c23",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
-          "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-B-Q11ג",
-      "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
+      "source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
       "source_native_sha256": null,
       "source_exercise_sha256": "3f4dfb9d0c1144e2221836c9dbd6efd1c3fe5c1fc33ffc5db76d9e763b846990",
       "hints_sha256": "a5541543553fc2f2c3169fa98ecaf819dcbd1c36377c8c878244eacbcd9e2fb8",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
-          "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-B-Q12א",
-      "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
+      "source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
       "source_native_sha256": null,
       "source_exercise_sha256": "f8c7f2b1289a1b34b86f813e178821908ec93f91b398bca1e34b0fa8f588ee55",
       "hints_sha256": "93ae7078ad281cdda829652660b044374f1c491d5b9dddc82f3dc8b74c26345c",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
-          "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-B-Q12ב",
-      "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
+      "source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
       "source_native_sha256": null,
       "source_exercise_sha256": "65078dab2ac871a450530e9d535a7ace12b5bd87ab0bff71a860a878ed8d088c",
       "hints_sha256": "37dd402e7b1492a4573a0f1842e2549c685a693189b528e97914b0beeefa7c23",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
-          "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-B-Q12ג",
-      "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
+      "source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
       "source_native_sha256": null,
       "source_exercise_sha256": "306a7cab7eaef1a1f95b18c48444aa0deae7d64da1aca92f5fcaa71a1d07b7a0",
       "hints_sha256": "e1aed9742ac5fdbf456f5112fc46dddfeb8f3716d14593066e78a61de7d7b9c7",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
-          "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-B-Q13א",
-      "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
+      "source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
       "source_native_sha256": null,
       "source_exercise_sha256": "aaaaf53c423fe1113e0c6a06bf91a8df5ac9fe8a8a43eebfe9ea8ce63985b611",
       "hints_sha256": "8ef55852e96c73bc55db6ea460ea0dbfd6ed448fcfac0d5d755bdd326b11d459",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
-          "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-B-Q13ב",
-      "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
+      "source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
       "source_native_sha256": null,
       "source_exercise_sha256": "23888310502ee55ff95dde3e81a28bb797b4d9edf560ae1a7cb0d6165091cf62",
       "hints_sha256": "6392ed7be498ebcb1e1b195a00dca9810aecc845233a330f80626c4ee0081790",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
-          "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-B-Q13ג",
-      "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
+      "source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
       "source_native_sha256": null,
       "source_exercise_sha256": "fb7f86626e80444083fa649da6ba3fb6956340cc69ad6802363f4f75b9d85beb",
       "hints_sha256": "48a42f4abdff95ec76f6d49a27746711767c210054e4bf669b3999c927afca94",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
-          "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-B-Q14א",
-      "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
+      "source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
       "source_native_sha256": null,
       "source_exercise_sha256": "0381decaa4c2cdb85dc5ddc9ded5c98b2f71223d1e255c7b9d410b5561f55508",
       "hints_sha256": "8d75d26a965e8abecb534befc1c045bb2c9add28471490613eb89d710b21a5bd",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
-          "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-B-Q14ב",
-      "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
+      "source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
       "source_native_sha256": null,
       "source_exercise_sha256": "c0ec7e47e34d54d4ea75ff631ef67c3cebb6cd5fc30e2b677bae12ead65006e9",
       "hints_sha256": "fdd8a132e50bdc47b6e0d8717afaadd18deef9ea080f7bc94feea5cf19149166",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
-          "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-B-Q14ג",
-      "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
+      "source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
       "source_native_sha256": null,
       "source_exercise_sha256": "5315ad4d0288c485a67ca093c0d9d2f2908f79397f37640e61a58d0050c1a69d",
       "hints_sha256": "c337642d6122c32d6a725951b27862709fda75185f235ebdc5bbd971eb522828",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "993467c2757a4950abd2a0237f18a48c",
-          "source_pdf_hash": "03715f890d4c4ff096384c2f00ccccf0",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-E-Q01א",
-      "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
+      "source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
       "source_native_sha256": null,
       "source_exercise_sha256": "7df4ba0df0cc36cb13ea44b561ee2a216537c783738bd72a40b0aaaf2d0c1edf",
       "hints_sha256": "9ea31b7cc0121fca302f7685f278d355e3bf5dc3bf87408c0a4bb3297c2378d3",
-      "review": "rewritten_and_peer_reviewed",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
-          "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "review": "rewritten_and_peer_reviewed"
     },
     {
       "exercise_id": "G8-T65-E-Q01ב",
-      "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
+      "source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
       "source_native_sha256": null,
       "source_exercise_sha256": "87c89fc84857b44388644465623ef71d321c0ec6b9032eee441ec87622215f10",
       "hints_sha256": "ede6d6a75dd71cd901fb6a0ec2ff228f6974d94e0de5930f9daa9add3814cc22",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
-          "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-E-Q01ג",
-      "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
+      "source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
       "source_native_sha256": null,
       "source_exercise_sha256": "3c81648f9d635e5085fd043a4e72c246e33671135f569112ff914b16ce0247b9",
       "hints_sha256": "c101fb2895b9b0e9ba076abc0ef701940bcc1e7339b6e0e8dacdad939ed4a05c",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
-          "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-E-Q02א",
-      "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
+      "source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
       "source_native_sha256": null,
       "source_exercise_sha256": "9114c5a1d61cb6663dbc6c15ebc0129e12d436a155db86b609face528c828031",
       "hints_sha256": "ce4c9030b545be387178d1d0792701033596eec839a9c953153785df5dd8edc6",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
-          "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-E-Q02ב",
-      "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
+      "source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
       "source_native_sha256": null,
       "source_exercise_sha256": "ef4cfbed2c579c3ea917a71d00a327ff260c0a785bcd7f550c6a06f9d4b006c4",
       "hints_sha256": "65be4b9d0984f94476a36d38dfef7a63d5dcd64684c1c2bd6b46748be7a8daa7",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
-          "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-E-Q02ג",
-      "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
+      "source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
       "source_native_sha256": null,
       "source_exercise_sha256": "05ba5f6e6a1696f0caf1da9bbbd36d4bf4d81ee52fc88160823429d171906086",
       "hints_sha256": "3ef3b512b8088aa93cdd59d4d518ec93015d150987f7c739a9af532a1d4897f2",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
-          "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-E-Q03א",
-      "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
+      "source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
       "source_native_sha256": null,
       "source_exercise_sha256": "2c6a773ff1ac2d6317a1ad54312d98d962dfe7da95ede0a35e86486ce9538756",
       "hints_sha256": "f4573b518edd238d2d7e6fd77f2331964d3335cde105968ce16352702d56e70f",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
-          "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-E-Q03ב",
-      "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
+      "source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
       "source_native_sha256": null,
       "source_exercise_sha256": "92e0e1fbfdfbba71923a4fbe00f956bf512b4544a41a5b770788315d2f28bd5b",
       "hints_sha256": "9db1ecca1915a2bc1d17c0bbb37c0b3cf6b8dde1c2a8ac9a29debccd267aee45",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
-          "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-E-Q03ג",
-      "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
+      "source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
       "source_native_sha256": null,
       "source_exercise_sha256": "c118da0bec5a2473dbc6f59cf8520284e6fab24aabac16a894f9a7bf83f10227",
       "hints_sha256": "874a189a34512596713465ea8736433c2dd2cfbb9e1abe06f1d53da203f90e7c",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
-          "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-E-Q03ד",
-      "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
+      "source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
       "source_native_sha256": null,
       "source_exercise_sha256": "233c19b968e28e26a2b1683743289b7061d9f69a25d520c9611ab52704138853",
       "hints_sha256": "23ef1f8fe5b366c249a47e2be076132a4d7c18ca008412e0a854d73019864f14",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
-          "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-E-Q04א",
-      "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
+      "source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
       "source_native_sha256": null,
       "source_exercise_sha256": "06cd8854819c90ea04f377f9f97fa9673de5f0f67cf8101f591fcff54c017a21",
       "hints_sha256": "a1a4de225ba8ddf777dd06ccb08555eed19c372d1a16437ece9770fd25c0d37b",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
-          "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-E-Q04ב",
-      "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
+      "source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
       "source_native_sha256": null,
       "source_exercise_sha256": "218a3a4ffde529aa388f65709c51cda99f15cec5e6fcef9b4bb9f2e282835044",
       "hints_sha256": "8234530b99f6cccbe2eca0150a8ad66313a56b4bd71f9fc40d7b9442f0d6cd0d",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
-          "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-E-Q04ג",
-      "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
+      "source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
       "source_native_sha256": null,
       "source_exercise_sha256": "ddf469bc4dafdbbe88924ec8cb7401ce2db377368fb4ae54d3c3d71023a18ecc",
       "hints_sha256": "666bad3c14dee17b7a6f35b37c5707b7793b96b4f3230c18a580932a3e1232e2",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
-          "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-E-Q05א",
-      "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
+      "source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
       "source_native_sha256": null,
       "source_exercise_sha256": "1547ce3e77f26914dc86b0f0e664be85fab48d11b061fb75c5e1473659d9f3de",
       "hints_sha256": "fdf2ae5218ce8814d59755936706d2231ceb6f974dd6751dd6e2b530d8ec532c",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
-          "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-E-Q05ב",
-      "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
+      "source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
       "source_native_sha256": null,
       "source_exercise_sha256": "5aa87cbd77b9565f26458e5491c552cbe2324506288d3889096094f4807f2e2d",
       "hints_sha256": "b7eac2eea6a8a0abc14ca15171f245b121774ae1b323fd63522121d51940e4f6",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
-          "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-E-Q05ג",
-      "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
+      "source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
       "source_native_sha256": null,
       "source_exercise_sha256": "696a2077885bedf03109f78e7b24f859130a3cbbe226c017eafd261a69bf7b9e",
       "hints_sha256": "3c253cc7907742b04d5ff9ecee43fdb6e6686466207ca83f4ad369d68159cc04",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
-          "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-E-Q06א",
-      "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
+      "source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
       "source_native_sha256": null,
       "source_exercise_sha256": "5e3ffc3f6d6e4b739932b3513ffc99fbdaa37b7161fbb63959f57788b6a3cca2",
       "hints_sha256": "d8e07d66065ba1d9c6a8d7e69019095ab733de11125790534769c3ce6fd0a8db",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
-          "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-E-Q06ב",
-      "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
+      "source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
       "source_native_sha256": null,
       "source_exercise_sha256": "2b67d6ff3b1c72e5d3e77ca10a67cd7cf53f38d2e0d92151db5e0aac62aabf0e",
       "hints_sha256": "b135ee0c576f4e228f224229d686d696ca244855cc74028e60b424be9de7abbe",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
-          "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-E-Q06ג",
-      "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
+      "source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
       "source_native_sha256": null,
       "source_exercise_sha256": "8765435688e0e6879facb8443f558c284b89ee861a4258b4eb8bf3f24e4c543f",
       "hints_sha256": "48b0bb41acc5649b97789620aa88c16c08420189d80b1ccae7e3a2bf13d7e38c",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
-          "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-E-Q07א",
-      "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
+      "source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
       "source_native_sha256": null,
       "source_exercise_sha256": "9d249aeab765cf5c2b4aecc785ec83a2dd1dfba1b4525ae4a4531b34a7e5b6d3",
       "hints_sha256": "538c8b418cf120ddb15aee7590913b3ccd366ea7ab9b37c71223c5956b1f6ad7",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
-          "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-E-Q07ב",
-      "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
+      "source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
       "source_native_sha256": null,
       "source_exercise_sha256": "f3d3315fef4f9ef673e59ede5c706f36747ba21b7502d76ba46575447b4d001a",
       "hints_sha256": "c540279341c0949deaffa9fdecff38aab50b6ad6312279d183ac19869040b3ec",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
-          "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-E-Q07ג",
-      "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
+      "source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
       "source_native_sha256": null,
       "source_exercise_sha256": "31c5278c719d1a9d8c0eb5fab30ea97a4eb6a544dc1972db6ab1b9cd125ba362",
       "hints_sha256": "1f433b1e6769ba652c1d22ff13955d5e553e14328e2cb1860bc5265d7961bb96",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
-          "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-E-Q08א",
-      "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
+      "source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
       "source_native_sha256": null,
       "source_exercise_sha256": "90f05aa8b919d3d97141c42ef8c043ffc42a496cf04a7797a506bf3dd6f8d9bd",
       "hints_sha256": "cf48b7c5667dfdd2219f266e9be1cf06ef9bd68a112e1c857edd53077fb41503",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
-          "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-E-Q08ב",
-      "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
+      "source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
       "source_native_sha256": null,
       "source_exercise_sha256": "c2c8c9190c7328529a671059e9914ae1c6e6102f7d9b4b4ff340c378cc360fe3",
       "hints_sha256": "7092c317f90a5abb8082291edf9a9a4c362abae24839aa809b93195cdea5249c",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
-          "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-E-Q08ג",
-      "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
+      "source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
       "source_native_sha256": null,
       "source_exercise_sha256": "dde6b74e5c95bd226ef1842bfefc62b3a6bbaef69eeb05a75d4bf9858db23e0f",
       "hints_sha256": "0d9151f6e65a97916fda2d79d9c8a9edd7fea8d3526bf133185ecdc18f78ace1",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
-          "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-E-Q09א",
-      "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
+      "source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
       "source_native_sha256": null,
       "source_exercise_sha256": "5e8e08a5a614abad34d422cff8a887da6c3aba7b1e6430d65296b7b977df928e",
       "hints_sha256": "41f94b0009cc4f69ce0e73fdcb2b8cb22dd325090578263f7d894bec80a2d5f0",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
-          "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-E-Q09ב",
-      "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
+      "source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
       "source_native_sha256": null,
       "source_exercise_sha256": "98975eabbc16e80790074954943ad1dde1b935fcf2e7e718c5fafddcc4b2a81c",
       "hints_sha256": "9ae1a64444a4c687e4c62b8ffc9b18fa169156f20021f0bfe2d9dfb4ed990f54",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
-          "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-E-Q09ג",
-      "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
+      "source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
       "source_native_sha256": null,
       "source_exercise_sha256": "242bd155efe8db089f26ca6f4e3b0f4a4de0a124cf363ba13ced6314f1269d58",
       "hints_sha256": "d6239ed6eac70911b2835964f75f6a029e065d1f393a55b6c7b31e7e216c7792",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
-          "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-E-Q09ד",
-      "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
+      "source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
       "source_native_sha256": null,
       "source_exercise_sha256": "b68327dea2c337a826276a1ddcdf5adb997e17fcc73ee6b8add614c5df22f63b",
       "hints_sha256": "ddcf2cd4603f783621f83e12bde5b13295278cf5e247fa0e9ce54933a8e6032b",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
-          "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-E-Q10א",
-      "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
+      "source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
       "source_native_sha256": null,
       "source_exercise_sha256": "dc8e139841b09b2266b31100626dafce20afb353be780c34919e18601d62c9c0",
       "hints_sha256": "1b4a99355177fab2a0c46dd0b3473ab5deabe88791355bbd8215a4775cde7222",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
-          "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-E-Q10ב",
-      "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
+      "source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
       "source_native_sha256": null,
       "source_exercise_sha256": "6bc801f18a7859839e5bfe460df91b9fd65443aaad5c1bfb3ec0b7c8848cc53c",
       "hints_sha256": "15ff82c419c19694c646e367c5436c8a951c802760c0fed2b8cac07ba2c03566",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
-          "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-E-Q10ג",
-      "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
+      "source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
       "source_native_sha256": null,
       "source_exercise_sha256": "4e0cdab5888c7dfe7b71ee021c37513c2119ec963a946400907584ca81ab125b",
       "hints_sha256": "e07ef3ff8b0a0d93f2029cec1fd39a44c07fc6758d79380aeecb45daa2f4ff59",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
-          "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-E-Q11א",
-      "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
+      "source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
       "source_native_sha256": null,
       "source_exercise_sha256": "1fd04386146bdfa28c2d33ec29ea1ebd769c064f082171897a20c63529bdbe87",
       "hints_sha256": "08785597790131588574ca70b473b039c1e39133458314d10aeb374fbcca4c42",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
-          "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-E-Q11ב",
-      "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
+      "source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
       "source_native_sha256": null,
       "source_exercise_sha256": "a29c536d13577b3580bb274828acfd09849dc1cd5179d227c8e25599d59d51fe",
       "hints_sha256": "66703c7556825a9ada65ed72dfd264f9f8b840ed67d2eeaa28995fe41cbf0990",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
-          "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-E-Q11ג",
-      "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
+      "source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
       "source_native_sha256": null,
       "source_exercise_sha256": "3f4dfb9d0c1144e2221836c9dbd6efd1c3fe5c1fc33ffc5db76d9e763b846990",
       "hints_sha256": "644ce2f0e44e05fa5b0f3c8a2f1f2f63299a8086da462c164febebc2d085745e",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
-          "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-E-Q12א",
-      "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
+      "source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
       "source_native_sha256": null,
       "source_exercise_sha256": "f8c7f2b1289a1b34b86f813e178821908ec93f91b398bca1e34b0fa8f588ee55",
       "hints_sha256": "1f0ee1432921c9e5dbd40222744f66968b53b1f2ff09e5d45caad9598e3bc50c",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
-          "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-E-Q12ב",
-      "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
+      "source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
       "source_native_sha256": null,
       "source_exercise_sha256": "65078dab2ac871a450530e9d535a7ace12b5bd87ab0bff71a860a878ed8d088c",
       "hints_sha256": "2f16c1c94c6948633729c3349ec3e0997d14e09fb95cf2d0405261d7c723dcb3",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
-          "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-E-Q12ג",
-      "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
+      "source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
       "source_native_sha256": null,
       "source_exercise_sha256": "306a7cab7eaef1a1f95b18c48444aa0deae7d64da1aca92f5fcaa71a1d07b7a0",
       "hints_sha256": "7b7aa57d7ebb5c662d51234afad0bed66ad757e02f39e6f340a9e8079dddb9b8",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
-          "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-E-Q13א",
-      "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
+      "source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
       "source_native_sha256": null,
       "source_exercise_sha256": "aaaaf53c423fe1113e0c6a06bf91a8df5ac9fe8a8a43eebfe9ea8ce63985b611",
       "hints_sha256": "f73bd1997e8c71cebe8a9ca88951a5bc196526070dc8ba50d72a46cb39ff5463",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
-          "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-E-Q13ב",
-      "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
+      "source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
       "source_native_sha256": null,
       "source_exercise_sha256": "23888310502ee55ff95dde3e81a28bb797b4d9edf560ae1a7cb0d6165091cf62",
       "hints_sha256": "b1940e540283bc035fc4dd2f7377f0a9259a7a6f631da198c78f325263a8fa72",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
-          "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-E-Q13ג",
-      "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
+      "source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
       "source_native_sha256": null,
       "source_exercise_sha256": "fb7f86626e80444083fa649da6ba3fb6956340cc69ad6802363f4f75b9d85beb",
       "hints_sha256": "f489e52462c98fc2bc689cb27acac46fee177bd286767c169e765a767401d36b",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
-          "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-E-Q14א",
-      "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
+      "source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
       "source_native_sha256": null,
       "source_exercise_sha256": "0381decaa4c2cdb85dc5ddc9ded5c98b2f71223d1e255c7b9d410b5561f55508",
       "hints_sha256": "94aaee7aa8a1d6c1df0ec7efab7cda46650a80783eee1cf8af16ceb079be7e46",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
-          "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-E-Q14ב",
-      "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
+      "source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
       "source_native_sha256": null,
       "source_exercise_sha256": "c0ec7e47e34d54d4ea75ff631ef67c3cebb6cd5fc30e2b677bae12ead65006e9",
       "hints_sha256": "4f4b6c8ccd00c1069994b9606f4d4996d9eefecfe2238cebd47559a3c7d2ccbc",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
-          "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T65-E-Q14ג",
-      "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
+      "source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
       "source_native_sha256": null,
       "source_exercise_sha256": "5315ad4d0288c485a67ca093c0d9d2f2908f79397f37640e61a58d0050c1a69d",
       "hints_sha256": "eabb99a4ed250b976915529be017515ca574b5e6bd27c56cebd117bf40654d26",
       "review": "machine_generated_flash_automatic_checks_no_model_review",
       "authoring_model": "qwen3.8-flash",
-      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review",
-      "source_rebindings": [
-        {
-          "date": "2026-11-02",
-          "editor": "Claude",
-          "owner_authorized": true,
-          "kind": "pdf_republished_with_final_answers",
-          "previous_source_pdf_hash": "1626318ee2c94f6a9b53ffcaf289ec83",
-          "source_pdf_hash": "1ccae5fe64b54f459395ee3c454f30bb",
-          "question_pages_identical": true,
-          "hints_changed": false,
-          "model_calls": 0
-        }
-      ]
+      "approval": "noam_20261031_flash_authoring_and_builder_checks_without_model_review"
     },
     {
       "exercise_id": "G8-T66-A-Q01א",
