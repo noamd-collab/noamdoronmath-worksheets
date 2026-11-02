@@ -429,14 +429,16 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
       data-catalog-cross={cross ? '1' : '0'}
       data-catalog-group={group}
     >
-      <GradeNav
-        activeGrade={showGradePrompt ? null : grade}
-        gradeNames={gradeNames}
-        gradeEmojis={gradeEmojis}
-        listId={listId}
-        showEmojis={false}
-        hrefForGrade={gradeHref}
-      />
+      {!showGradePrompt ? (
+        <GradeNav
+          activeGrade={grade}
+          gradeNames={gradeNames}
+          gradeEmojis={gradeEmojis}
+          listId={listId}
+          showEmojis={false}
+          hrefForGrade={gradeHref}
+        />
+      ) : null}
 
       <header className="exact-catalog-heading">
         <div data-doodle="fish" className="exact-catalog-fish">

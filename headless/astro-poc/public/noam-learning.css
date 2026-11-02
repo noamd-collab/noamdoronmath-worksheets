@@ -77,23 +77,28 @@ body.nl-page .nl-header.exact-header{
   position:sticky;
   top:0;
   z-index:20;
-  background:rgba(251,250,245,.94);
+  display:block!important;
+  width:100%;
+  background:rgba(251,250,245,.92);
   backdrop-filter:blur(6px);
   border-bottom:2px solid #22305a;
-  padding:28px 0 0;
+  padding:28px 0 0!important;
 }
 body.nl-page .nl-header__row{
+  width:100%;
   max-width:1200px;
   margin:0 auto;
   padding:10px 24px;
   display:flex;
   align-items:center;
-  gap:14px;
+  gap:24px;
   flex-wrap:wrap;
+  box-sizing:border-box;
 }
-body.nl-page .nl-brand__logo{
-  height:62px;
-  width:auto;
+body.nl-page .nl-header .nl-brand__logo{
+  height:68px!important;
+  width:auto!important;
+  display:block;
 }
 body.nl-page .nl-primary-nav{
   display:flex;
@@ -175,15 +180,15 @@ body.nl-page .exact-nav-new{
   line-height:1.65;
 }
 body.nl-page .exact-header__learn{
-  display:inline-flex;
+  display:flex;
   align-items:center;
   gap:8px;
-  padding:8px 16px;
-  background:#2a7c7a;
+  padding:9px 18px;
+  background:#fff;
   border:2px solid #22305a;
   border-radius:18px 6px 20px 8px / 8px 20px 6px 18px;
   box-shadow:3px 3px 0 #22305a;
-  color:#fff;
+  color:#22305a;
   font-weight:700;
   font-size:15px;
   text-decoration:none;
@@ -231,6 +236,8 @@ body.nl-page .exact-nav-search-mobile{display:none!important;}
 }
 @media(max-width:899.98px){
   body.nl-page .nl-shell{padding:20px 60px 88px;}
+  body.nl-page .nl-header__row{flex-wrap:nowrap!important;gap:10px!important;padding:8px 14px!important;position:relative;}
+  body.nl-page .nl-header .nl-brand__logo{height:52px!important;width:auto!important;}
   body.nl-page .exact-header__learn{display:none!important;}
   body.nl-page .exact-nav-toggle{
     display:inline-flex!important;
@@ -397,4 +404,24 @@ body.nl-page .nl-footer__copy{
   border-top:1px solid rgba(255,255,255,.15);
   font-size:13px;
   color:#a9b0c8;
+}
+@media (min-width: 768px) and (max-width: 1360px) {
+  body.nl-page .nl-footer__grid,
+  body.nl-page .nl-footer__copy {
+    padding-inline: 72px !important;
+    box-sizing: border-box;
+  }
+  body.nl-page .exact-footer {
+    padding-bottom: 64px !important;
+  }
+}
+@media (max-width: 767px) {
+  body.nl-page .nl-footer__grid,
+  body.nl-page .nl-footer__copy {
+    padding-inline: 60px !important;
+    box-sizing: border-box;
+  }
+  body.nl-page .exact-footer {
+    padding-bottom: 72px !important;
+  }
 }
