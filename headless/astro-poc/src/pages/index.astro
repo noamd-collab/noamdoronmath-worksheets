@@ -77,7 +77,7 @@ const midGrades = home.grades.slice(6).map((grade,i)=>({...grade,l:letters[i+6],
           <p data-pop="100" style="margin:0;font-size:18px;color:#4a5478;">דפי עבודה בחינם לכיתות א׳–ט׳</p>
         </div>
         <div style="font-family:'Amatic SC','Amatic SC Fallback',cursive;font-size:26px;color:#2a7c7a;margin-bottom:8px;">יסודי</div>
-        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(max(190px,calc((100% - 28px) / 3)),1fr));gap:14px;margin-bottom:28px;">
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(max(190px,calc((100% - 28px) * 0.333)),1fr));gap:14px;margin-bottom:28px;">
           {elemGrades.map(g => (
             <a href={g.href} data-peek="elem" data-tl={g.l}  data-pop={g.delay} style="position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:18px 18px 16px;background:#fff;border:2px solid #22305a;border-radius:16px 6px 18px 8px / 8px 18px 6px 16px;color:#22305a;min-height:140px;transition:transform .2s,box-shadow .2s;" data-exact-hover="exact-hover-5">
               <span style="font-size:14px;color:#5a6588;">כיתה</span>
