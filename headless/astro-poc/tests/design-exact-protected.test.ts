@@ -47,9 +47,7 @@ const protectedFiles: Record<string, string> = {
   // G9 PDF v2, G8 PDF v2 (two c2 levels), and G7 PDF v2.
   // Packages-120: replaced student PDF ids and added G9-T46 (דלתון) in the geometry group.
   // Visible topic labels: סינתזה גאומטרית → שילוב גאומטרי, and the grade-6 synthesis sheet → סיכום.
-  // Noam, 2026-11-02: grade 7-9 sheets republished with their final-answers pages (new PDF ids only),
-  // then the three G8-T65 sheets once their key was written.
-  'src/data/catalog.v1.json': 'bd1d6e0420dece9b57c330130064acfe32aec5085504a6e154df7f6b37adbb11',
+  'src/data/catalog.v1.json': 'c01d8b25c9fb339d51e1345ad35ccd412b5a7bb2c276f3d1617cfb3534305c4b',
   'src/lib/catalog/loadCatalog.ts': '1a5e54a4c19c016046202f3e0b9bb95203e58fe983dab5a27e6f261abfbc9d95',
   // Viewer links forward the c2 sibling as pc2.
   'src/lib/worksheetLinks.ts': '06bfbaa4b9b778d171ca9d8802eed0ce3fb6c6f15d7d7bff3807dd1f80ce0770',
@@ -115,7 +113,7 @@ describe('exact-design protected live-baseline boundaries', () => {
       '<script src="/noam-ai/catalog-migrations.js?v=20261027-native1"></script>',
       '<script src="/noam-catalog-migration.js?v=20261027-native1"></script>',
       '<script src="noam-native-visual.js?v=20261029-angles1"></script>',
-      '<script src="noam-source-panels.js?v=20261102-answers1"></script>',
+      '<script src="noam-source-panels.js?v=20261028-panels1"></script>',
       '<script src="noam-authored-geometry.js?v=20261028-square1"></script>',
       '<script src="noam-authored-visual.js?v=20261028-source5"></script>',
       '<script src="noam-visual-data.js?v=20261028-source3"></script>',
@@ -123,7 +121,7 @@ describe('exact-design protected live-baseline boundaries', () => {
       '<script src="noam-source-data-visual.js?v=20261028-source-data3"></script>',
       '<script src="noam-source-scaffold.js?v=20261029-scaffold1"></script>',
       // Noam, 2026-10-31: source-bound public catalog supplies all three standard hints.
-      '<script src="noam-curated-hints.js?v=20261102-answers1"></script>',
+      '<script src="noam-curated-hints.js?v=20261031-source-bound3"></script>',
     ];
     const allScripts = [...viewerWithNativeRelease.matchAll(/<script\b[^>]*>[\s\S]*?<\/script>/gi)].map(match => match[0]);
     assert.equal(allScripts.length, 27, 'The release adds its ten exact dependencies and curated hints');

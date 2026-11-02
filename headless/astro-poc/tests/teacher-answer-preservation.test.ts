@@ -3,7 +3,9 @@ import { readFileSync } from 'node:fs';
 import { describe, it } from 'node:test';
 
 const printer = readFileSync(new URL('../public/teachers/teacher-factoring-print.js', import.meta.url), 'utf8');
-const source = JSON.parse(readFileSync(new URL('../public/teachers/sheets/4ea57bfe05164789a2bc235e8c9cf10e.json', import.meta.url), 'utf8'));
+// The republished G7-T08 c sheet (4ea57bfe…) was withdrawn on 2026-11-02; its teacher
+// record equals the original sheet's apart from the PDF id.
+const source = JSON.parse(readFileSync(new URL('../public/teachers/sheets/0da72e0cca4e454da620640f85476a94.json', import.meta.url), 'utf8'));
 
 function answerApi() {
   const start = printer.indexOf('function isAnswerHeading');

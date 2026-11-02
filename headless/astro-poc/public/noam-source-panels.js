@@ -136,14 +136,9 @@
   function isReviewed(exercise) { return !!route(exercise); }
   function approvedCrop(manifest, exercise) {
     var r = route(exercise), approval = r && APPROVED_CROPS[r.key];
-    // A sheet republished with its final answers appended keeps the approved
-    // PDF's question pages (questionPagesIdenticalTo); only pages are added.
-    var republished = !!approval && !!manifest && manifest.pdfHash !== approval.pdf &&
-      Array.isArray(manifest.questionPagesIdenticalTo) && manifest.questionPagesIdenticalTo.indexOf(approval.pdf) !== -1;
-    if (!approval || !manifest || (manifest.pdfHash !== approval.pdf && !republished) || manifest.sourceSha256 !== approval.source ||
+    if (!approval || !manifest || manifest.pdfHash !== approval.pdf || manifest.sourceSha256 !== approval.source ||
         manifest.nativeExportSha256 !== approval.native || manifest.nativeExportUrl !== r.prefix + "noam-ai.json" ||
-        (republished ? !(manifest.pageCount > approval.pages) : manifest.pageCount !== approval.pages) ||
-        !Array.isArray(manifest.exercises)) return null;
+        manifest.pageCount !== approval.pages || !Array.isArray(manifest.exercises)) return null;
     var current = manifest.exercises.filter(function(e){return e && e.id === exercise.id;});
     if (current.length !== 1 || ["q","part","nativeQuestionId","nativeItemId","nativeFigureId","nativeFigureUrl"].some(function(k){return current[0][k] !== exercise[k];})) return null;
     function cropValues(crops) {

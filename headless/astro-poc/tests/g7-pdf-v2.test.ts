@@ -57,7 +57,7 @@ describe('grade 7 PDF v2 replacements', () => {
     assert.equal(topic.levels[0].key, 'one');
     assert.equal(topic.levels[0].viewerLevel, 'one');
     assert.equal(topic.levels[0].label, 'העמקה ורשות');
-    assert.equal(topic.levels[0].pdfId, migrations['204e16c7ea444016ae8725f38a9b1f37']?.pdfId ?? '204e16c7ea444016ae8725f38a9b1f37');
+    assert.equal(topic.levels[0].pdfId, '204e16c7ea444016ae8725f38a9b1f37');
     assert.equal(topic.routing.aiHintShown, true);
   });
 
