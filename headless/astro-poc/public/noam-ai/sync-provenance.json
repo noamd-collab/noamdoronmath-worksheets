@@ -11,23 +11,13 @@
     "catalogPath": "src/data/catalog.v1.json",
     "count": 426
   },
-  "generatedAt": "2026-11-02T18:32:25.618Z",
-  "aggregateSha256": "e32417241d16f7a754b0ab2a17b923ccda305f2fc5ff85423d130aaf587617c8",
+  "generatedAt": "2026-11-02T22:09:03.028Z",
+  "aggregateSha256": "99d8ea1fd9814dd324a59ffff524d082058cc94e5281b42b932f2e41c80efd9e",
   "files": {
     "00469caa9cc343ab945e5a4a826b6a88": {
       "source": "noam-ai/manifests/00469caa9cc343ab945e5a4a826b6a88.json",
       "sha256": "1b2205a65198afa1a4a7ae307e7582ef898fd0d17d61bdac6beaad533b98f455",
       "bytes": 117647
-    },
-    "00eaed3ffa30496ab6f4217f4364f10c": {
-      "source": "noam-ai/manifests/00eaed3ffa30496ab6f4217f4364f10c.json",
-      "sha256": "1d07e14dc5b4f28cd523c33a9b62723f2d1a5f32f14b24eda799fd881a19f15a",
-      "bytes": 144388
-    },
-    "012617fda30a4a55a2c24e3bbef479c7": {
-      "source": "noam-ai/manifests/012617fda30a4a55a2c24e3bbef479c7.json",
-      "sha256": "14ca2173be4a8198784063575c6bc067fccf7ee966c5521f707d78679c03ced2",
-      "bytes": 142657
     },
     "019633ff4d054eb6aa84a5c32039f501": {
       "source": "noam-ai/manifests/019633ff4d054eb6aa84a5c32039f501.json",
@@ -54,11 +44,6 @@
       "sha256": "c587607e4085c10e305f76a2d99c37cb2286878eab3f18f72664ebfd3934df90",
       "bytes": 135992
     },
-    "025d5bf773214ac187d51f2734d2975f": {
-      "source": "noam-ai/manifests/025d5bf773214ac187d51f2734d2975f.json",
-      "sha256": "d510cf6de18f476ec5391bfb92b67b45ac74af2f1a393a9b9e1babb428478a4a",
-      "bytes": 159284
-    },
     "0374254c346d4fb5b1d38227cc5c0c0b": {
       "source": "noam-ai/manifests/0374254c346d4fb5b1d38227cc5c0c0b.json",
       "sha256": "03b5e72a13fb50a36b5084e775d522cfcfe68471ad3975101b1652ed4781394c",
@@ -74,15 +59,15 @@
       "sha256": "6e42c2604c6910df373c9a45464d26a84da8ff509dc3e5cf46e7e2c51d15584b",
       "bytes": 87313
     },
-    "0560c5fa737544679a781625fd411cf5": {
-      "source": "noam-ai/manifests/0560c5fa737544679a781625fd411cf5.json",
-      "sha256": "9f49c3bd2412bb1ac813ac22d2ac86f293aa247fe18e25abf9198e3d1649b6d7",
-      "bytes": 109695
+    "0647e59a9dca4cb4ac22f791a98dea9f": {
+      "source": "noam-ai/manifests/0647e59a9dca4cb4ac22f791a98dea9f.json",
+      "sha256": "324ff651f31f63a8b7c3b9d46f0223fa1b30951ee1a9639bca6be30897066115",
+      "bytes": 106850
     },
-    "06bedbe78b3b4730b5d41c52a2a95741": {
-      "source": "noam-ai/manifests/06bedbe78b3b4730b5d41c52a2a95741.json",
-      "sha256": "b6eeea50206b2f26a3b8fe4377f7d99fea277c9c9b095a6afe446f5676d76003",
-      "bytes": 117048
+    "06c31cd5853a466eb664fdf8b9174c12": {
+      "source": "noam-ai/manifests/06c31cd5853a466eb664fdf8b9174c12.json",
+      "sha256": "151d644af27298285c44a654b062c3ae7e602245bd67d21dab5b70f1afcb3e76",
+      "bytes": 96564
     },
     "07706ef6012b4f3487fc78a202683446": {
       "source": "noam-ai/manifests/07706ef6012b4f3487fc78a202683446.json",
@@ -104,20 +89,10 @@
       "sha256": "37b198d57e7233bbadb268b53556f17c1ff6eb9292af971502d4d512c1872f26",
       "bytes": 131986
     },
-    "084c58836048405aa2a2f97ba4396553": {
-      "source": "noam-ai/manifests/084c58836048405aa2a2f97ba4396553.json",
-      "sha256": "a7803426a8b6a1b7dceed7c0917d2d3c8c6259f5d61d760c30045e68c2e77eb5",
-      "bytes": 136273
-    },
     "0975cb34d4884dc384df400dd804b846": {
       "source": "noam-ai/manifests/0975cb34d4884dc384df400dd804b846.json",
       "sha256": "9e4bbd70e3a9616e9cf2ba0cc5af1fa17a3531d283b3e273c67342fe663223f7",
       "bytes": 190825
-    },
-    "098594ea15754fcea4654320ddf80b0f": {
-      "source": "noam-ai/manifests/098594ea15754fcea4654320ddf80b0f.json",
-      "sha256": "a7407914e621338c885b3489e1ace49fa0550b6d24297d0fe24ec0c6385f48e6",
-      "bytes": 121009
     },
     "0acb5790d6d3433280de4e783969c488": {
       "source": "noam-ai/manifests/0acb5790d6d3433280de4e783969c488.json",
@@ -128,11 +103,6 @@
       "source": "noam-ai/manifests/0ad55184eb594aaf83d4306744c83891.json",
       "sha256": "c267ca2ac00778779ea2f536ffdcb3b5ac8865060e0819a7570617e3d4bd7252",
       "bytes": 121959
-    },
-    "0b35039ff7184b488eb37f1c0e37b493": {
-      "source": "noam-ai/manifests/0b35039ff7184b488eb37f1c0e37b493.json",
-      "sha256": "89e089005f80a9643fc2324cd987e75dd2c00602522dc7ddba1a60218982bb98",
-      "bytes": 258892
     },
     "0b63e6ceeed343dcbd3ac394d92c58cf": {
       "source": "noam-ai/manifests/0b63e6ceeed343dcbd3ac394d92c58cf.json",
@@ -153,6 +123,11 @@
       "source": "noam-ai/manifests/0ce1399d83c84ac482e04d50a2f042a9.json",
       "sha256": "147d3bbfc7f7482a0431b33caa4ad16644a0c74d13b00188bed1756d49a89c7c",
       "bytes": 93970
+    },
+    "0d7ce70392bb4fdcbafdea71295c6b87": {
+      "source": "noam-ai/manifests/0d7ce70392bb4fdcbafdea71295c6b87.json",
+      "sha256": "26f73f5e5a0c826b6ca5e68c48c7cb43afd35b9a6840085b158f2cd3699a97de",
+      "bytes": 83242
     },
     "0d88c0d15f97493c8d2c1eac5dac8fbf": {
       "source": "noam-ai/manifests/0d88c0d15f97493c8d2c1eac5dac8fbf.json",
@@ -239,15 +214,20 @@
       "sha256": "ee5f065acc40f299fb3a74d77decb7c0f3d4072064aec8a3d088b437fe4234ee",
       "bytes": 88776
     },
+    "14dfa34d5eae41cbb4858ba36e9d492f": {
+      "source": "noam-ai/manifests/14dfa34d5eae41cbb4858ba36e9d492f.json",
+      "sha256": "a735da4977a95d485341f588e61677dd3db448dbb0659629421793c945ba4bfb",
+      "bytes": 144464
+    },
     "153a2258b3d944f8ba5e4826bc4f1a36": {
       "source": "noam-ai/manifests/153a2258b3d944f8ba5e4826bc4f1a36.json",
       "sha256": "cd8e7b40735dbb1a868339c173fe7067b839c48d3bf06855f3b790c90293f2d7",
       "bytes": 127066
     },
-    "1623ec564ee040efa9ae74d734014c69": {
-      "source": "noam-ai/manifests/1623ec564ee040efa9ae74d734014c69.json",
-      "sha256": "d3b3968719386ccf9ad036df9bd722d274b1bf04822533e7990499a29781f3b4",
-      "bytes": 138413
+    "1593f8a8b8dc427eb7eb2f721ac35dfb": {
+      "source": "noam-ai/manifests/1593f8a8b8dc427eb7eb2f721ac35dfb.json",
+      "sha256": "03fa6a78d4dac6d0268ace412f209e3a6ce08fe12f3b974b3fda19fb896984d0",
+      "bytes": 108987
     },
     "1626318ee2c94f6a9b53ffcaf289ec83": {
       "source": "noam-ai/manifests/1626318ee2c94f6a9b53ffcaf289ec83.json",
@@ -268,6 +248,11 @@
       "source": "noam-ai/manifests/182025dea59f4baf8f1bc79c641c17dd.json",
       "sha256": "cc51fa2f0d297c747e6c952765a0815e0cae8e6449c0b88724713b1d4d59f98d",
       "bytes": 95889
+    },
+    "1890a0b2a77a48188a9a006af51d4ea6": {
+      "source": "noam-ai/manifests/1890a0b2a77a48188a9a006af51d4ea6.json",
+      "sha256": "f9e4ebb3aa4f70500dc4be0205cfcda892fb2f5cea678d09f3fed99998b8136b",
+      "bytes": 121138
     },
     "18b45f3978cd46c1ae7016c4b0027efc": {
       "source": "noam-ai/manifests/18b45f3978cd46c1ae7016c4b0027efc.json",
@@ -299,10 +284,20 @@
       "sha256": "6dd3ae0f4b934a718885736dae76169394660c5708bb1127ed57878501969f50",
       "bytes": 91081
     },
+    "1c0d862537914450946324c8a145af04": {
+      "source": "noam-ai/manifests/1c0d862537914450946324c8a145af04.json",
+      "sha256": "baed32f434a55be1bcc49e47fd5cf3ef0678aace503ebc945253cc2a864a3ba3",
+      "bytes": 120414
+    },
     "1c2ce5c6f73e411196155b4df5d58c8d": {
       "source": "noam-ai/manifests/1c2ce5c6f73e411196155b4df5d58c8d.json",
       "sha256": "71379dbfebe4637cca656953f6a5cb25fb919607c21493fbb1c479e82f3b0ca7",
       "bytes": 155334
+    },
+    "1c552950aa7043ff8c3f108798173c46": {
+      "source": "noam-ai/manifests/1c552950aa7043ff8c3f108798173c46.json",
+      "sha256": "c052266fb66ef027e71626a8c568abb76bb0ed94daf6a208c83b12af658aeb8c",
+      "bytes": 148633
     },
     "1c676026e49d4adeae45864911235727": {
       "source": "noam-ai/manifests/1c676026e49d4adeae45864911235727.json",
@@ -324,15 +319,15 @@
       "sha256": "5f63c19afa6724273c7de02413186ced94a812e847ae8030fa2f3a6e529c8f4e",
       "bytes": 159260
     },
+    "1ef724d40dbc4df9a54379c375a552d0": {
+      "source": "noam-ai/manifests/1ef724d40dbc4df9a54379c375a552d0.json",
+      "sha256": "fa7682f30a74813d51f6916753c36c4fb03c7e9673144c98697b87061b8d6bbf",
+      "bytes": 130741
+    },
     "2020207d65844bf0937db0f2c1f2fac2": {
       "source": "noam-ai/manifests/2020207d65844bf0937db0f2c1f2fac2.json",
       "sha256": "fe8d7fb6c07e87bb1886c563d250dc09ddc304d8f9935cca42950df6fbf6ecfb",
       "bytes": 90398
-    },
-    "204e16c7ea444016ae8725f38a9b1f37": {
-      "source": "noam-ai/manifests/204e16c7ea444016ae8725f38a9b1f37.json",
-      "sha256": "0518b97898f786059c9928a641879312f231c1189b3be2e02d2fb6e0f22444c2",
-      "bytes": 119494
     },
     "20c94d7c0cc848cfb6419dc33c28ef16": {
       "source": "noam-ai/manifests/20c94d7c0cc848cfb6419dc33c28ef16.json",
@@ -343,11 +338,6 @@
       "source": "noam-ai/manifests/23c37b41a1184705974a4e6e276cf979.json",
       "sha256": "793db43f73d9e0a06a6b115a7af3d1a8912693b7ed47444ab6cc30ecb42515fe",
       "bytes": 131869
-    },
-    "23cfc95975824ad58475cb12f5ac23b8": {
-      "source": "noam-ai/manifests/23cfc95975824ad58475cb12f5ac23b8.json",
-      "sha256": "d7ee586bdf961896e7f0d746df2af56641e47cee4845faf3f8148c1c4cfba75f",
-      "bytes": 83165
     },
     "240e343ffc734a7b9ee5125fa0f9253e": {
       "source": "noam-ai/manifests/240e343ffc734a7b9ee5125fa0f9253e.json",
@@ -374,10 +364,10 @@
       "sha256": "3b4c610528aae84049bae39e9be7921b5596fc698f2c868f797935ae782f6aaf",
       "bytes": 115061
     },
-    "2662239f4d044fae91a5392184264c3a": {
-      "source": "noam-ai/manifests/2662239f4d044fae91a5392184264c3a.json",
-      "sha256": "e899f60c52e59d827e70de3a92d03b7123da2ee9ec4bb1b408015b2cdc0d9fb7",
-      "bytes": 160004
+    "26b22710e551486d9e8b37a165d1590a": {
+      "source": "noam-ai/manifests/26b22710e551486d9e8b37a165d1590a.json",
+      "sha256": "d0b008af356186ea79458b84ba8e3f900faa955fd0f1efcb4818a2407332edbc",
+      "bytes": 112409
     },
     "2704db9ce5e44645830bb3ea18fb9541": {
       "source": "noam-ai/manifests/2704db9ce5e44645830bb3ea18fb9541.json",
@@ -393,11 +383,6 @@
       "source": "noam-ai/manifests/27cce5e7983c457abda6e670a9408901.json",
       "sha256": "598c2ccf083810b90acad801ca82be46b75e75461a5ff2882d564a8d703acfff",
       "bytes": 112685
-    },
-    "2998e1b949014a2fbbbe837cbcaa6d6d": {
-      "source": "noam-ai/manifests/2998e1b949014a2fbbbe837cbcaa6d6d.json",
-      "sha256": "1c3c6d17dfccf66a41e2913a2a8239b4ccc71c49371e73248dbff47583b41558",
-      "bytes": 111257
     },
     "29a9576b0bae44c3b6e15958af20220f": {
       "source": "noam-ai/manifests/29a9576b0bae44c3b6e15958af20220f.json",
@@ -419,15 +404,20 @@
       "sha256": "f1b408b144692c3349fe2ef43fe6f24cd2ee50d20c11c97721744e5e0c21404c",
       "bytes": 157769
     },
+    "2a6385d4e649433e89a2636d05be7e99": {
+      "source": "noam-ai/manifests/2a6385d4e649433e89a2636d05be7e99.json",
+      "sha256": "fc523735972a62e0140fab73931faee6f4b320f3f57b38129e874d9d96ebfa54",
+      "bytes": 136614
+    },
+    "2a6f2841ad1d479ca7d010dd042f680d": {
+      "source": "noam-ai/manifests/2a6f2841ad1d479ca7d010dd042f680d.json",
+      "sha256": "82b486e24154dbda131ddb837a6bfe6f445000b2a9cd093588bd276c285efc4d",
+      "bytes": 122525
+    },
     "2b1d3056caa1496b863765c957d2f942": {
       "source": "noam-ai/manifests/2b1d3056caa1496b863765c957d2f942.json",
       "sha256": "6f6f7f0d5c71cc26573fbd0bec466035ac04a19756e2a545b03e204d0b60a38a",
       "bytes": 138758
-    },
-    "2bcb2d70bbf74221b17ca1c21b54aaa8": {
-      "source": "noam-ai/manifests/2bcb2d70bbf74221b17ca1c21b54aaa8.json",
-      "sha256": "2ffa7d3d6d2797ce9176724e56a325abd7585987777dd29d8c70438a5eeae9d0",
-      "bytes": 120338
     },
     "2c1a359db25f4dafa192a64440248088": {
       "source": "noam-ai/manifests/2c1a359db25f4dafa192a64440248088.json",
@@ -444,15 +434,20 @@
       "sha256": "423594c17360e2d5eaafc7e32136924c961b7665172e2506890fff2fa97ac223",
       "bytes": 172794
     },
+    "2cf9913986224e839512320e23c74c82": {
+      "source": "noam-ai/manifests/2cf9913986224e839512320e23c74c82.json",
+      "sha256": "3ae2c5289eacc0627167e73bceadc263e80fe35ebb586afc5ac8420428f75267",
+      "bytes": 258968
+    },
     "2e259f5011354d84840e15086c2672d3": {
       "source": "noam-ai/manifests/2e259f5011354d84840e15086c2672d3.json",
       "sha256": "e9ab8b6a46435ed0060fe67b78c98367b965f2b132a85f2da962b533ff8812a8",
       "bytes": 79808
     },
-    "2ed892ea7085498bb4fad96a10ebf69f": {
-      "source": "noam-ai/manifests/2ed892ea7085498bb4fad96a10ebf69f.json",
-      "sha256": "a376474fb179d9a99a423f5be14e75309c177338e5bcc08f2842ee2d2983b9a9",
-      "bytes": 130110
+    "2f7398bfabb04f7c92be573f222561f6": {
+      "source": "noam-ai/manifests/2f7398bfabb04f7c92be573f222561f6.json",
+      "sha256": "675ddeaa2a7bbe93672517e7430bebc56314a0155fed9f41a6def3614dc390cc",
+      "bytes": 129346
     },
     "307e4f57d1bf443d9d3e5d82b8c5b031": {
       "source": "noam-ai/manifests/307e4f57d1bf443d9d3e5d82b8c5b031.json",
@@ -469,11 +464,6 @@
       "sha256": "aaf21d66d7aaea1134876050aa560a104403323719792df707ee638dac31e60e",
       "bytes": 146239
     },
-    "323e3cb6bafb42be8037df0b8f4a2b8b": {
-      "source": "noam-ai/manifests/323e3cb6bafb42be8037df0b8f4a2b8b.json",
-      "sha256": "098349fe16b7e674407000da6ac4a62697b0ae71a178a625f20bbd43780b7d43",
-      "bytes": 117740
-    },
     "3329215ba8e24999b3522228011baae2": {
       "source": "noam-ai/manifests/3329215ba8e24999b3522228011baae2.json",
       "sha256": "710a691418042a1d39a3f473d78491953c180f2574e7bf514e2c27b724332f20",
@@ -483,11 +473,6 @@
       "source": "noam-ai/manifests/33bb88e3144345578e4748286dabed97.json",
       "sha256": "381f106008137469351170d03d36de768973ff1de9e9c77f383bb9460cac46db",
       "bytes": 142911
-    },
-    "34f8cf3e66654c26a75f6fb78e94d802": {
-      "source": "noam-ai/manifests/34f8cf3e66654c26a75f6fb78e94d802.json",
-      "sha256": "5be8007b1fbc7e1741c9dd95bfbbf89acb46ed4488c9bcdc251f88ed8513f600",
-      "bytes": 148557
     },
     "34fc04b2cbaa43d1ab142bf0a7f3eb3b": {
       "source": "noam-ai/manifests/34fc04b2cbaa43d1ab142bf0a7f3eb3b.json",
@@ -503,6 +488,11 @@
       "source": "noam-ai/manifests/35202a955b8c422c84c87c99ae12f2d9.json",
       "sha256": "a890d67583827794fca1b87d1d07db1c7b72eaf748aafbd95e4ae17c4ffb6422",
       "bytes": 185406
+    },
+    "354004be379d4d8bbf19f62fbd24a58d": {
+      "source": "noam-ai/manifests/354004be379d4d8bbf19f62fbd24a58d.json",
+      "sha256": "2db41fca4bc36299f5fa6e88b34f804eb238616a52559f644310181407ff3a7f",
+      "bytes": 114459
     },
     "35a2c13891bd428dbbff0882b89957e2": {
       "source": "noam-ai/manifests/35a2c13891bd428dbbff0882b89957e2.json",
@@ -534,11 +524,6 @@
       "sha256": "62cd251ec6ff6a7f77f4d81dba4ce00737a6403c442bfab17e4f4570e92151e6",
       "bytes": 191661
     },
-    "3be66c151b6a4402bc1e0b67d4b94924": {
-      "source": "noam-ai/manifests/3be66c151b6a4402bc1e0b67d4b94924.json",
-      "sha256": "e009f609c2ecebc2a5053bf09e64ade2347ed2d7e9e8bf25cce3a477796e375c",
-      "bytes": 122449
-    },
     "3c1e37115eca4b69bb8daf90565a7c1d": {
       "source": "noam-ai/manifests/3c1e37115eca4b69bb8daf90565a7c1d.json",
       "sha256": "0634f6f22c0c9f596b16fed6b34456beba248adf0cba18d1d3488113992fcfdb",
@@ -549,10 +534,10 @@
       "sha256": "7567777660a386cd525cacae82997a5a48ac12ca02e139d95a7d4822118a4b43",
       "bytes": 152598
     },
-    "3ca14fc381824c368bd898dc9fd41bed": {
-      "source": "noam-ai/manifests/3ca14fc381824c368bd898dc9fd41bed.json",
-      "sha256": "d0e5d611ea77761f23c2d610dad59d2dda7384f892ae8ea8dc47d1829f89ec18",
-      "bytes": 120430
+    "3cdf0cf512904354ba68a36728f246b7": {
+      "source": "noam-ai/manifests/3cdf0cf512904354ba68a36728f246b7.json",
+      "sha256": "c4c20cc5de3e1536c3fc1146b08bf299504f9817d3aa47b239343cda8c9940bd",
+      "bytes": 135072
     },
     "3d8a3b472b8d407dbf62a3a6353429b3": {
       "source": "noam-ai/manifests/3d8a3b472b8d407dbf62a3a6353429b3.json",
@@ -564,15 +549,10 @@
       "sha256": "68abdace7cd304b700bd6866fedefca9e4646d5f12f92e0d549cc7375f9bb989",
       "bytes": 169544
     },
-    "3e0c7fda5830446782e25f7d479842d6": {
-      "source": "noam-ai/manifests/3e0c7fda5830446782e25f7d479842d6.json",
-      "sha256": "a8ae92aea31abcb6f1f4ef140141fa9d6a0b4c1dd6ada04f7d5a9d0a2396e573",
-      "bytes": 130664
-    },
-    "3e6c195769744197b61e0d32e164f609": {
-      "source": "noam-ai/manifests/3e6c195769744197b61e0d32e164f609.json",
-      "sha256": "867658c86b0aaae2384f461189bd6c36eff50952ebf16654a3f0f47cdf767948",
-      "bytes": 118334
+    "3eea0f90115e4a3f968a2148bffca11d": {
+      "source": "noam-ai/manifests/3eea0f90115e4a3f968a2148bffca11d.json",
+      "sha256": "f7851f8d00c55a5d5ca556303659c54affa88ba7bc03d66bf91d62efab990821",
+      "bytes": 136349
     },
     "3f9546987fea4b9aa4294249ea017278": {
       "source": "noam-ai/manifests/3f9546987fea4b9aa4294249ea017278.json",
@@ -584,10 +564,10 @@
       "sha256": "bc23bd2b4177abd6ead527fdbcd9d3a065226acfbfdb890ba4ad40781ef2e0da",
       "bytes": 157694
     },
-    "40e46a64bcf0441bae36eba820884704": {
-      "source": "noam-ai/manifests/40e46a64bcf0441bae36eba820884704.json",
-      "sha256": "c75c6d66e7bfb709e085284b67ec8c107b92656e512a411ae59e39d1fdf165fe",
-      "bytes": 136538
+    "402c1f3155ec4cbaac4add4ff11a4887": {
+      "source": "noam-ai/manifests/402c1f3155ec4cbaac4add4ff11a4887.json",
+      "sha256": "81e9b7888f9974eef5a6a783a3b88780c82aabf2e0ac43267e59f2a9d4f09646",
+      "bytes": 117701
     },
     "41840861c0a4494f94f3a54fbd4d9943": {
       "source": "noam-ai/manifests/41840861c0a4494f94f3a54fbd4d9943.json",
@@ -614,11 +594,6 @@
       "sha256": "d01d26db8a8f5b08eea848e0499b2288088b130fc4d3e917e37bea1638aac6f8",
       "bytes": 22371
     },
-    "42ad6117dbe347b18cd46e39fa90b0a9": {
-      "source": "noam-ai/manifests/42ad6117dbe347b18cd46e39fa90b0a9.json",
-      "sha256": "9ce77875ebd0d63502f02d42e5c3cab993e680710122bdc524c2f9a6a3c689c3",
-      "bytes": 114383
-    },
     "42d14e3577194ad883c2f2bcdffb141e": {
       "source": "noam-ai/manifests/42d14e3577194ad883c2f2bcdffb141e.json",
       "sha256": "6b47e4063e979dba96ffbea568b0629462b932ce22a411ed90a707194049662b",
@@ -629,6 +604,11 @@
       "sha256": "b2793653d81548704a14d239eafe89bc07440e114820e3e52ef8590bc06bfce3",
       "bytes": 156200
     },
+    "438d52243e2c4d05818bae586f6a5f53": {
+      "source": "noam-ai/manifests/438d52243e2c4d05818bae586f6a5f53.json",
+      "sha256": "7aaa22f16a1b9c97026a21ea37c71b64d050de41d799d77ec3ea82f5cda36ccf",
+      "bytes": 118410
+    },
     "43da6c9c22de432881f2e830bbcdcb0f": {
       "source": "noam-ai/manifests/43da6c9c22de432881f2e830bbcdcb0f.json",
       "sha256": "7c6aa89d628ec8726ce85e815dc125bf81805e7777b03c77b9efdc2e7afd63fe",
@@ -638,6 +618,11 @@
       "source": "noam-ai/manifests/4409b9a48eea47d48956ae7fd65cd27a.json",
       "sha256": "4759ea0d39aa766dd6c828fe135c1531643c13927ded60750ff3ade83fe68956",
       "bytes": 207500
+    },
+    "444185957347402095a9166d7822f136": {
+      "source": "noam-ai/manifests/444185957347402095a9166d7822f136.json",
+      "sha256": "4080d4897d01d37d4590c00df6e63cf430eb04a3e0ffbcc6980a95eb8efc4c09",
+      "bytes": 142231
     },
     "4457125905df478dbe3708b198d3f9ba": {
       "source": "noam-ai/manifests/4457125905df478dbe3708b198d3f9ba.json",
@@ -664,11 +649,6 @@
       "sha256": "c33d04e7c1a62de050fce0480f231ac9b9b656aab05214523a1bc6b11aed157f",
       "bytes": 198805
     },
-    "45ab1aedeacb4ed5b8b40b4fec71af5b": {
-      "source": "noam-ai/manifests/45ab1aedeacb4ed5b8b40b4fec71af5b.json",
-      "sha256": "6070af2b8e91fd710f5e1d064391601eb6742fffd703b7ebf3668d79486fdade",
-      "bytes": 155730
-    },
     "45e83202136044d3871b45eefca0a8fb": {
       "source": "noam-ai/manifests/45e83202136044d3871b45eefca0a8fb.json",
       "sha256": "fac60b511760b56903fff119c3a8bc55b006ab9b5712f77fd205606c97de0ff0",
@@ -679,15 +659,20 @@
       "sha256": "e25aa28a7fcbe7b66b8efbf5eb0664ed621cc3a6b285f384799715cb231b8ab1",
       "bytes": 133373
     },
-    "46af5a6c97a74dbd82f191d33b5dd0ad": {
-      "source": "noam-ai/manifests/46af5a6c97a74dbd82f191d33b5dd0ad.json",
-      "sha256": "4cf908588f8b0eb18b9aaa887807f0c1c301321371984457cfa227b9209585a3",
-      "bytes": 124778
+    "4658c078b87740e7a5d0a8abf3e88717": {
+      "source": "noam-ai/manifests/4658c078b87740e7a5d0a8abf3e88717.json",
+      "sha256": "cee46f5f726e1b98ce19ef9e974ebbedeb6c497fd35048d627895c62360b488d",
+      "bytes": 124854
     },
     "4714a6557ba249eb94bf23658ff2a239": {
       "source": "noam-ai/manifests/4714a6557ba249eb94bf23658ff2a239.json",
       "sha256": "bd9233b10ff8441a8411caa3884d4a27c85730c055271bf8bae4fc17b4dd734e",
       "bytes": 74677
+    },
+    "4732bc82d5cb4976b0413b8ac1524595": {
+      "source": "noam-ai/manifests/4732bc82d5cb4976b0413b8ac1524595.json",
+      "sha256": "82630845387a35b7993689c31ea5d598d85edd5368d9a704da98756937483d44",
+      "bytes": 125943
     },
     "4776eb8d58fd4a75b66820018b897e17": {
       "source": "noam-ai/manifests/4776eb8d58fd4a75b66820018b897e17.json",
@@ -699,35 +684,30 @@
       "sha256": "bb388e0cf1d0413f82d609e5a34719f2594244cfa80c53d8c24765815b741e67",
       "bytes": 108323
     },
-    "47f40f2db72940b99ccbb1889acc634a": {
-      "source": "noam-ai/manifests/47f40f2db72940b99ccbb1889acc634a.json",
-      "sha256": "202d6fee4341a935d1c1d7238d448bd84a5423da09ddea86e06ffc4c59c358e5",
-      "bytes": 82558
-    },
     "48164ad3e5db498cae7ac08b3848816e": {
       "source": "noam-ai/manifests/48164ad3e5db498cae7ac08b3848816e.json",
       "sha256": "6cf80286dabd6f9543d64949e50413b59f6f936046f6162f5ed7cca3a2f4d634",
       "bytes": 98106
-    },
-    "496d0753176643c0adc6be3523cedf99": {
-      "source": "noam-ai/manifests/496d0753176643c0adc6be3523cedf99.json",
-      "sha256": "0f8093c6e146071a078b76bd9ecaab446954b15f3228fd6d629d9003a4542ae4",
-      "bytes": 164563
     },
     "497fa6cea0d54988a9357357ef0b90ab": {
       "source": "noam-ai/manifests/497fa6cea0d54988a9357357ef0b90ab.json",
       "sha256": "c879c271e116d379285b1fe947e9429a20afe4a4af8f4478b839ae994975cf66",
       "bytes": 92334
     },
+    "4a4af26aaede4dc3846c78f1bd7dba31": {
+      "source": "noam-ai/manifests/4a4af26aaede4dc3846c78f1bd7dba31.json",
+      "sha256": "586621fcd2bf17d0e93f2451ccbd40766dab1497340f1c52c274359e379cbf4d",
+      "bytes": 119570
+    },
+    "4d77b8a6dc9a471594f248c95a7575c0": {
+      "source": "noam-ai/manifests/4d77b8a6dc9a471594f248c95a7575c0.json",
+      "sha256": "a8cf5a890dfd61864c226d37268a74fe77bbf2d3a9ab035ee9536238f18ebd66",
+      "bytes": 148249
+    },
     "4f20a4286850488cb34785e4e04fc2dc": {
       "source": "noam-ai/manifests/4f20a4286850488cb34785e4e04fc2dc.json",
       "sha256": "35f6f376f4cfb35baec6f9e1dafd606f09a7f7d4888942a83eea3ce7633281c1",
       "bytes": 182957
-    },
-    "4f580164ecf2473eba160963e34cc701": {
-      "source": "noam-ai/manifests/4f580164ecf2473eba160963e34cc701.json",
-      "sha256": "2ecd8f302a0e3c2c967cb473c149a1da8b95929c7f74dab19c8222feb6f8ff13",
-      "bytes": 122809
     },
     "50a26e70686441ddb056a5a3a17d99ce": {
       "source": "noam-ai/manifests/50a26e70686441ddb056a5a3a17d99ce.json",
@@ -738,11 +718,6 @@
       "source": "noam-ai/manifests/51fa9bbf02904cdab1e016161aeeb7cb.json",
       "sha256": "94888270ca0a90b45ada4d475b63193026f1643cff0a69b734a4fded2bf0a7c3",
       "bytes": 152547
-    },
-    "522ffec2cd564632a811cd4afc55596c": {
-      "source": "noam-ai/manifests/522ffec2cd564632a811cd4afc55596c.json",
-      "sha256": "600cc51cd5b98184b91ae92ecf02fb6537adfee07441c3b44463fb062d456157",
-      "bytes": 125867
     },
     "5277db462624487ab9b1392973cfcdfe": {
       "source": "noam-ai/manifests/5277db462624487ab9b1392973cfcdfe.json",
@@ -759,6 +734,11 @@
       "sha256": "2d6164cd007645a28d8fefe13f618cc916a515ab226ebbe3b0d24046d87cb665",
       "bytes": 90817
     },
+    "548d397fab67450a8b66e950ecb5dd0e": {
+      "source": "noam-ai/manifests/548d397fab67450a8b66e950ecb5dd0e.json",
+      "sha256": "c05ec88da243e06dbdb12ed66e874bd3a6471601a4fd8c2904715253d617667f",
+      "bytes": 115551
+    },
     "54deb34c469f4ece9a2fa5093a877c5e": {
       "source": "noam-ai/manifests/54deb34c469f4ece9a2fa5093a877c5e.json",
       "sha256": "9567838443d73b0f49f05dc58687f29d0f86bd7462fd4d304a216447f5ebda0b",
@@ -768,6 +748,11 @@
       "source": "noam-ai/manifests/551f5fac11ba48eb9380625da3114218.json",
       "sha256": "47e3b7391b227b4e91ef2446d08b6f1acfea6f150f635561c5dd20a9ae13ca1e",
       "bytes": 79379
+    },
+    "556fbc4ef1c6405ab8b7b77486048434": {
+      "source": "noam-ai/manifests/556fbc4ef1c6405ab8b7b77486048434.json",
+      "sha256": "539f133280543d0919192e481e54bca3ee996118fda3af7322954b58fdd11ee3",
+      "bytes": 162303
     },
     "55d4e3af5dc9475280503de2dcbf4902": {
       "source": "noam-ai/manifests/55d4e3af5dc9475280503de2dcbf4902.json",
@@ -789,11 +774,6 @@
       "sha256": "1c0afdfed55743514e827f85f6462d35ed28ed9c8c7e6a1dca2da20a6fe00f99",
       "bytes": 191412
     },
-    "58eac99145554f0fac7a1814e40d4eb8": {
-      "source": "noam-ai/manifests/58eac99145554f0fac7a1814e40d4eb8.json",
-      "sha256": "1e3f86b309b63e8795782899075dfbd89d1b805525b5d4a68cea8783b47c470f",
-      "bytes": 129270
-    },
     "59358f19a4b7485db687e4e35400df86": {
       "source": "noam-ai/manifests/59358f19a4b7485db687e4e35400df86.json",
       "sha256": "5eb86b4212bbbefffa8b5149c14167deec8bfbd85230880c6cdf98ef9dcece16",
@@ -803,11 +783,6 @@
       "source": "noam-ai/manifests/594e3b89f7194ad49c73b740f40dd37f.json",
       "sha256": "160372bf251cac4925b91b24c8484396a9b2033bf49997c83a1b35e0f28a7287",
       "bytes": 104898
-    },
-    "596c40e9ffb049e8b4e53a7960a9fef1": {
-      "source": "noam-ai/manifests/596c40e9ffb049e8b4e53a7960a9fef1.json",
-      "sha256": "f323535b7e50f249795a4b6aa3cc2706210d50d4f30c3e32633c979f55763fb0",
-      "bytes": 122306
     },
     "5ad5c2be58ea41cc9fbb9ab10787f9d8": {
       "source": "noam-ai/manifests/5ad5c2be58ea41cc9fbb9ab10787f9d8.json",
@@ -844,11 +819,6 @@
       "sha256": "ab9d64c371e1b5586aafb93ca783e5930bbc0194e6f057ae34135ef3fbbdcc92",
       "bytes": 22479
     },
-    "5de437cdcb37465bac3fe9ab206a4c2e": {
-      "source": "noam-ai/manifests/5de437cdcb37465bac3fe9ab206a4c2e.json",
-      "sha256": "564676bd03f733aeaf89211ed97ac5924b70dffb2479440303b3bd28286bfea8",
-      "bytes": 153432
-    },
     "5e2500ea4a014e849977fc098ea9a835": {
       "source": "noam-ai/manifests/5e2500ea4a014e849977fc098ea9a835.json",
       "sha256": "44a7596b27a38355568f9cf6b6e501d4eba71037489e2a1ac4e9a59ac75e0586",
@@ -874,10 +844,10 @@
       "sha256": "a48620cba003c79cc95d76de07875f788dff07ad7c8162f33670bf571bc1c551",
       "bytes": 136481
     },
-    "600c0a265850496c976874c087428c15": {
-      "source": "noam-ai/manifests/600c0a265850496c976874c087428c15.json",
-      "sha256": "1ac08f231f1542a1ddac9d99daa7e8f2b857ab59426f67b393de81645d3633f2",
-      "bytes": 122382
+    "5ff9bbaff1b9498b98aa660692de2635": {
+      "source": "noam-ai/manifests/5ff9bbaff1b9498b98aa660692de2635.json",
+      "sha256": "a432d0554a377a78592456e6e39777251be796b3a98b6b5c4dd35906aa5a98f3",
+      "bytes": 231461
     },
     "603ae3022235401285aef9c415ec56b3": {
       "source": "noam-ai/manifests/603ae3022235401285aef9c415ec56b3.json",
@@ -888,11 +858,6 @@
       "source": "noam-ai/manifests/60707df0a053404fba27bc66cc87432c.json",
       "sha256": "04b044f6a09396ef6c7c8cee9ed2cfe470426e812fe595f027fd0dd0cec66ce7",
       "bytes": 146879
-    },
-    "60be549db8904f43a920ae87b8290686": {
-      "source": "noam-ai/manifests/60be549db8904f43a920ae87b8290686.json",
-      "sha256": "392a7184d1dbc9d8260ec7cf4d55705e5b70e536d257dd79cd7eef1544cd3f64",
-      "bytes": 115474
     },
     "60c1d220383c413aaae3b2c75fcec769": {
       "source": "noam-ai/manifests/60c1d220383c413aaae3b2c75fcec769.json",
@@ -909,11 +874,6 @@
       "sha256": "8ef41dcd7c926eb627627fd828491295b488aa13a7720befee86c0302423b07b",
       "bytes": 107156
     },
-    "64a247f2ee684709aaba264440fc71e0": {
-      "source": "noam-ai/manifests/64a247f2ee684709aaba264440fc71e0.json",
-      "sha256": "8f5667e0eae54ced9e8321fc4698815b2eda3f8591ebc0460b69a50adf4a5c4a",
-      "bytes": 231385
-    },
     "650ad39b6ea141b4b5c19e377c6e8544": {
       "source": "noam-ai/manifests/650ad39b6ea141b4b5c19e377c6e8544.json",
       "sha256": "10212f2826f1f1243427c4ec3486744e22d8b5996d3e94f28e1d50c15a52a459",
@@ -924,15 +884,20 @@
       "sha256": "87b7652d3ad2d3a07480209356c13dd70326fb95e76453e085060b5ede1d0a23",
       "bytes": 83353
     },
+    "65bc6fe3c0564a31a48c1ba0583f4345": {
+      "source": "noam-ai/manifests/65bc6fe3c0564a31a48c1ba0583f4345.json",
+      "sha256": "f4bac0e9962b0d5a82a681f2a16e3692514c97815b14f61ffcd0d8a0c6afb4fb",
+      "bytes": 118290
+    },
     "662bd4d64bbf461ea044fa2e125fec26": {
       "source": "noam-ai/manifests/662bd4d64bbf461ea044fa2e125fec26.json",
       "sha256": "26bd589535b83c1d4b0fc7762082fc22418a939da7c6c7e60f22f0f50c088a8d",
       "bytes": 191554
     },
-    "666a9275737f42a28b18fb383654fc31": {
-      "source": "noam-ai/manifests/666a9275737f42a28b18fb383654fc31.json",
-      "sha256": "f5a8a662fb55d315748bc00cbf2255ba0c1dca27edcc96dcb7ee57c28c7b6492",
-      "bytes": 118213
+    "66460dc78c48472fb6dd74e287414400": {
+      "source": "noam-ai/manifests/66460dc78c48472fb6dd74e287414400.json",
+      "sha256": "5a6f8e11461d69c871b45e41f6736c669a850a142fa8b63dcd105524260f3131",
+      "bytes": 111727
     },
     "67788949e19a4d49a98411b95f81a39d": {
       "source": "noam-ai/manifests/67788949e19a4d49a98411b95f81a39d.json",
@@ -943,6 +908,11 @@
       "source": "noam-ai/manifests/67caa6e8341841f7acaaf83107e85f75.json",
       "sha256": "3651606695970a946af53414539b2f8ff8e273f85cceab7241e879e00fd8cc6b",
       "bytes": 137565
+    },
+    "684eedcc41e54a71823852d043a297f6": {
+      "source": "noam-ai/manifests/684eedcc41e54a71823852d043a297f6.json",
+      "sha256": "ab7709935736f88071ba366ac36bd096ef3a815a9452963178f98c91758b0a96",
+      "bytes": 142734
     },
     "68e8bd8d0df0479cb4f8d2f5adc21020": {
       "source": "noam-ai/manifests/68e8bd8d0df0479cb4f8d2f5adc21020.json",
@@ -989,6 +959,11 @@
       "sha256": "8725b0c55f741f8326b048851bbcf58f6fdd95f6c0c88da01eeca35940465a98",
       "bytes": 137266
     },
+    "6ed4ad1901ed4c89a2b7bb40247300ce": {
+      "source": "noam-ai/manifests/6ed4ad1901ed4c89a2b7bb40247300ce.json",
+      "sha256": "5bfca85fc098ec01fa345a1fc371ca7da1dc14269332c5903aac31d57bd3ceb0",
+      "bytes": 88932
+    },
     "6f0f427e9c5646bba9ae56a0d00aa3d2": {
       "source": "noam-ai/manifests/6f0f427e9c5646bba9ae56a0d00aa3d2.json",
       "sha256": "02f689b24e1d62e8eae6cb1b682b12775d3ccc3cc294dfd1ff39f44dcc9c04a8",
@@ -1004,10 +979,15 @@
       "sha256": "ecf109f9197c33a5cc9f84206a882e2985544354b1bcfd3b3dee8776212c96c0",
       "bytes": 190326
     },
-    "7182303b63f54d28908ba246552f5f6f": {
-      "source": "noam-ai/manifests/7182303b63f54d28908ba246552f5f6f.json",
-      "sha256": "1e829eb77f89ae26722f0368476f84439a91230e5915275e38d97b29516993a7",
-      "bytes": 97332
+    "707f56abd61f4003a7503d533968569d": {
+      "source": "noam-ai/manifests/707f56abd61f4003a7503d533968569d.json",
+      "sha256": "de9ff824d540b96d334bbd93f006fd5b60b01f3830b1beeb84a98acdfd0cd303",
+      "bytes": 120764
+    },
+    "70d353417c37451f8742b12fa3502850": {
+      "source": "noam-ai/manifests/70d353417c37451f8742b12fa3502850.json",
+      "sha256": "109507c554b53e6a2c4769ea616ae153ca0d9eed4d1bc5f765baf4865b761188",
+      "bytes": 160080
     },
     "71af6f83a413405f8be85802a15b10a8": {
       "source": "noam-ai/manifests/71af6f83a413405f8be85802a15b10a8.json",
@@ -1023,11 +1003,6 @@
       "source": "noam-ai/manifests/729eda27840f40c6b44ddca8917a727b.json",
       "sha256": "79e540e6a9cc38e66cb62427497fb2b817a73d7ac7af4ab6cffb2d738d555815",
       "bytes": 175447
-    },
-    "72d2c8e02cbd4f20aecd7674f131bab2": {
-      "source": "noam-ai/manifests/72d2c8e02cbd4f20aecd7674f131bab2.json",
-      "sha256": "759c0b5d6e5ceccf076cbd999633f6dc0edbc3fd2c790450a8ebae0e24c2a8cb",
-      "bytes": 106774
     },
     "72d87d8b638f4a98b5bd6a379030919f": {
       "source": "noam-ai/manifests/72d87d8b638f4a98b5bd6a379030919f.json",
@@ -1054,15 +1029,15 @@
       "sha256": "43b2662135d76c91b3f990083214008e99b6507f0639d85b222b053584b0967b",
       "bytes": 107173
     },
-    "74ab03626ac843c0bb8e98e194379fba": {
-      "source": "noam-ai/manifests/74ab03626ac843c0bb8e98e194379fba.json",
-      "sha256": "1b22a4fc355b50021903c17f319b046d7ce0210023c1d34fd91c205b8a73af55",
-      "bytes": 142155
-    },
     "7500a1a23e3840af8d8effd2675eb571": {
       "source": "noam-ai/manifests/7500a1a23e3840af8d8effd2675eb571.json",
       "sha256": "ce63aa7fb1ead097bc8d1c73c7a378537578202fadf0f1e86728ce9fee1fa7c5",
       "bytes": 94745
+    },
+    "75190762fa9f4ea68781ee676892b877": {
+      "source": "noam-ai/manifests/75190762fa9f4ea68781ee676892b877.json",
+      "sha256": "9c3bfcc8f71d252218d4e2449d22d8f9a53bb9a0db3da6ff48d4681e84a4c8eb",
+      "bytes": 120145
     },
     "753b902248c04c0588aa93c3ed2d2961": {
       "source": "noam-ai/manifests/753b902248c04c0588aa93c3ed2d2961.json",
@@ -1078,11 +1053,6 @@
       "source": "noam-ai/manifests/7625185b14014f308b6befd0d27d65d8.json",
       "sha256": "5080f2c1e3ed34485a5caaf733355bde40112825636bf9d3ad10c1f96d049afc",
       "bytes": 81272
-    },
-    "76a598431ca24b388eeba9ba08c39838": {
-      "source": "noam-ai/manifests/76a598431ca24b388eeba9ba08c39838.json",
-      "sha256": "e251cac24d47b6c0c159904ff449d30dc9066de16c89a8629fe87fe3780e393b",
-      "bytes": 100177
     },
     "774110467ff449c7bd6b725471b735e7": {
       "source": "noam-ai/manifests/774110467ff449c7bd6b725471b735e7.json",
@@ -1103,6 +1073,16 @@
       "source": "noam-ai/manifests/790ee5d372854ef3b666bcc8b1fadf80.json",
       "sha256": "83fccc1eff33c5c991ea84bfab896269fc4384cf342aaf061900546708246ebe",
       "bytes": 91531
+    },
+    "79243d687e8c42a28d156ef6ecedfea8": {
+      "source": "noam-ai/manifests/79243d687e8c42a28d156ef6ecedfea8.json",
+      "sha256": "6ece1d6953d179521253552d258a164582937da3ba4754043ef5d86a9a74d513",
+      "bytes": 153509
+    },
+    "7a2e133c4b484319bbf74f918538cdf5": {
+      "source": "noam-ai/manifests/7a2e133c4b484319bbf74f918538cdf5.json",
+      "sha256": "a9399edef6c7a45e054f71170e85a8e3fc7ee46175e523b9f73ec133bbcf1bc1",
+      "bytes": 122885
     },
     "7a74d131052449089d3ef56a9f9b9ec8": {
       "source": "noam-ai/manifests/7a74d131052449089d3ef56a9f9b9ec8.json",
@@ -1134,6 +1114,11 @@
       "sha256": "e7fc7ae4295d5fc49a20a616facdfe95dbb654b58d0aac0d4a890dec299ff6e3",
       "bytes": 27869
     },
+    "7d1d4f0a117d4b1ca979c62df6b50b96": {
+      "source": "noam-ai/manifests/7d1d4f0a117d4b1ca979c62df6b50b96.json",
+      "sha256": "e4a7aeb79f2fbb7b1a89f2c9e5c0029a300f5b8ad472777deba336074db79870",
+      "bytes": 97409
+    },
     "7eb2f143944b4a3aa8620fb81f73a8e9": {
       "source": "noam-ai/manifests/7eb2f143944b4a3aa8620fb81f73a8e9.json",
       "sha256": "c4f38926f5a09c6d0a241076a4ee0b36ae2dbda8edf36c011e04d62527c8b5ee",
@@ -1144,10 +1129,10 @@
       "sha256": "a7c5c0cef26f76258fa6089eff16706d440341abf0614c8374ad9dd7546c1406",
       "bytes": 119758
     },
-    "7f6dffec6ea549bbbf3eba78a22a15a4": {
-      "source": "noam-ai/manifests/7f6dffec6ea549bbbf3eba78a22a15a4.json",
-      "sha256": "8c5d716892362465efde107bb74c6a6b5b796a3eceffb8e8a17e3061b7386bcf",
-      "bytes": 111650
+    "813697a12f5f4f25861be4b4ecd7df76": {
+      "source": "noam-ai/manifests/813697a12f5f4f25861be4b4ecd7df76.json",
+      "sha256": "d4e0f23ad8e92c7246d5c57a726690bef3ffd30d11099069acdff0c5a9b6fb3f",
+      "bytes": 93373
     },
     "82bdf30b0a4d4e2f9fb57b80ed22f26f": {
       "source": "noam-ai/manifests/82bdf30b0a4d4e2f9fb57b80ed22f26f.json",
@@ -1169,30 +1154,20 @@
       "sha256": "811037434fbd687e7eac270068503773295a98566e8700ca0c18b25c6954ea78",
       "bytes": 185037
     },
-    "834ce057e06543e698b9946abb71cacf": {
-      "source": "noam-ai/manifests/834ce057e06543e698b9946abb71cacf.json",
-      "sha256": "be4a4ce9114f1e4b57aac27e17f352c8097e8e3f8c06a0cc61bbc7a137c6a0f6",
-      "bytes": 119654
-    },
     "83a3b06973694b15802f1043da7ddabf": {
       "source": "noam-ai/manifests/83a3b06973694b15802f1043da7ddabf.json",
       "sha256": "58ef09133fad3b3af367e88d9b311f4042c50aae579ce143c6de233a1a2787e6",
       "bytes": 96522
-    },
-    "8401eb43f92143a7bf232d1d725fc4fa": {
-      "source": "noam-ai/manifests/8401eb43f92143a7bf232d1d725fc4fa.json",
-      "sha256": "e6954ef6e24e496655b23fe6d62f89a189e25422e275617109ff2cb8f22c0daf",
-      "bytes": 128138
     },
     "84038e7df38c4f8c870680046366059e": {
       "source": "noam-ai/manifests/84038e7df38c4f8c870680046366059e.json",
       "sha256": "69cf0fe81809a10d296a205813a944a9ea99fcfe9105257e43c68d0ebed91b47",
       "bytes": 158166
     },
-    "85a816e73705483ba910b25c49b178ca": {
-      "source": "noam-ai/manifests/85a816e73705483ba910b25c49b178ca.json",
-      "sha256": "f77ada9de4307814ace1190bb8cfa7c6294b20beb834af7e1600d4873a4c8578",
-      "bytes": 107583
+    "863ebe2f492444358f2c9de7562084b2": {
+      "source": "noam-ai/manifests/863ebe2f492444358f2c9de7562084b2.json",
+      "sha256": "c975bb6134eb053d5efdc8d0960d9d419f2d954dc5d9ef564ecfc4bd57e2c127",
+      "bytes": 165192
     },
     "86643d62d70443f6bef326fcbb673ab0": {
       "source": "noam-ai/manifests/86643d62d70443f6bef326fcbb673ab0.json",
@@ -1209,20 +1184,10 @@
       "sha256": "f4f5b5ba9cf26e2da0e57c293f77db8e9141ded64e5160e26b1cb589727cf0aa",
       "bytes": 110881
     },
-    "8adcec2943024c2ab1c55a9153263c63": {
-      "source": "noam-ai/manifests/8adcec2943024c2ab1c55a9153263c63.json",
-      "sha256": "f449e94ba58dde6908eb0155efd9ebf3fc0be9507826f8cfb9c6653acbaa8d80",
-      "bytes": 122774
-    },
-    "8ae1af12f69f4d4db7def05d45160c2b": {
-      "source": "noam-ai/manifests/8ae1af12f69f4d4db7def05d45160c2b.json",
-      "sha256": "54ae59e0b909f6b4156f92257e9d333d5c4c635fe7b9209eea55fbf4a884f019",
-      "bytes": 136512
-    },
-    "8b9e807d61574516a74ddbc78b182275": {
-      "source": "noam-ai/manifests/8b9e807d61574516a74ddbc78b182275.json",
-      "sha256": "62a7053b8e7bfb94ba9bcd3b16d41d8fc4dbe2d129d594b245c6e1020a15e7ee",
-      "bytes": 114646
+    "8a9212498afb4ba78038cbf40b70052e": {
+      "source": "noam-ai/manifests/8a9212498afb4ba78038cbf40b70052e.json",
+      "sha256": "90f16a0a5db53a98e3f9e158fef8b5c599bfb39ae9c7ac5047f29b36958d0832",
+      "bytes": 128215
     },
     "8bd2c48fff214a359af747207d791100": {
       "source": "noam-ai/manifests/8bd2c48fff214a359af747207d791100.json",
@@ -1309,11 +1274,6 @@
       "sha256": "f69ef315773b64ed18341fea3373920996f3f95bc83caf95a0201d9438c15ba8",
       "bytes": 148784
     },
-    "971fe14dc7eb43c0b5566b95a0e09fa9": {
-      "source": "noam-ai/manifests/971fe14dc7eb43c0b5566b95a0e09fa9.json",
-      "sha256": "40698f473810988afdca48f400a8cfc8755f78dfe22036c3b7ac695b5fefe227",
-      "bytes": 197613
-    },
     "9764420460f84628acbffb2ea2ee53a5": {
       "source": "noam-ai/manifests/9764420460f84628acbffb2ea2ee53a5.json",
       "sha256": "3d02a86bcf702ebd477d9db9b2dc4a06e2ac595e694f47d275d851ca32e57557",
@@ -1334,10 +1294,20 @@
       "sha256": "bfd5ce579d9af09977186588c8b002c4522d808fa806da829ce27e2e36425fa1",
       "bytes": 138983
     },
+    "996d8f603bbe492b9c08841b46f1bd3e": {
+      "source": "noam-ai/manifests/996d8f603bbe492b9c08841b46f1bd3e.json",
+      "sha256": "6fa4705df8054bacd681277f2c1b2810ea2f12d4664c9a6c8b65ed445b95f60b",
+      "bytes": 128681
+    },
     "9a1159da9cfa425795c48947f91d805a": {
       "source": "noam-ai/manifests/9a1159da9cfa425795c48947f91d805a.json",
       "sha256": "14782e24ddf250f128596900c0e8c7eef4e973b12493874a8686679de74459b3",
       "bytes": 168015
+    },
+    "9ad5ade1577544418d1fa8d69ff527a4": {
+      "source": "noam-ai/manifests/9ad5ade1577544418d1fa8d69ff527a4.json",
+      "sha256": "dab8d9cd63bfb353f100ae70a1357dcbebe6ad6f105cb7bc1c0c2d8a45f83087",
+      "bytes": 114722
     },
     "9b10c4ae6e564d4692c958b7664e6d60": {
       "source": "noam-ai/manifests/9b10c4ae6e564d4692c958b7664e6d60.json",
@@ -1374,11 +1344,6 @@
       "sha256": "37e38a90442b03612c16f83518d77a10731e6ec48ecc17b587d6882eaf673aed",
       "bytes": 142966
     },
-    "9c121029a5d843ceb0b2aee110cf2c46": {
-      "source": "noam-ai/manifests/9c121029a5d843ceb0b2aee110cf2c46.json",
-      "sha256": "4fabbf6faf4e40aa84a53790f5ff2991de9338de3cdeda5210dd76b0c440a68d",
-      "bytes": 120068
-    },
     "9d035a0049c2446c8767d88891e03948": {
       "source": "noam-ai/manifests/9d035a0049c2446c8767d88891e03948.json",
       "sha256": "e481746422870d19840b3b51a385811fc065c6861323c38e9aeea289eb169c23",
@@ -1394,10 +1359,20 @@
       "sha256": "d9ce1d0062df197e3ebaee2e90ab6182232eede003c197b762434e07cfb6c65f",
       "bytes": 106983
     },
+    "a08987eaf00849788ca1bdf0ff31692e": {
+      "source": "noam-ai/manifests/a08987eaf00849788ca1bdf0ff31692e.json",
+      "sha256": "769158019b213d432b6ee27d1457e29fa0f4198ce6173843f074a8d1f1aa5f45",
+      "bytes": 119731
+    },
     "a12b638b79a04d9785c8c5994760c960": {
       "source": "noam-ai/manifests/a12b638b79a04d9785c8c5994760c960.json",
       "sha256": "fcf32e0eef0483d08478afc028fea7f37da85433b8d0911d5abf5f1db466983e",
       "bytes": 160502
+    },
+    "a17452e723ae450db74a1f9bf479af96": {
+      "source": "noam-ai/manifests/a17452e723ae450db74a1f9bf479af96.json",
+      "sha256": "9299fe407c50f1b74ac8820b9a3c2a9bcafdffe3db00b257e08b115f59e5bc11",
+      "bytes": 107659
     },
     "a1d2b5ea613744d09602119effdcb48e": {
       "source": "noam-ai/manifests/a1d2b5ea613744d09602119effdcb48e.json",
@@ -1409,11 +1384,6 @@
       "sha256": "1270f67bba49f51b1138dace240496be6248d0b2781a7248a821fd90175deb6b",
       "bytes": 184813
     },
-    "a35d706421f44c1799318ed685ad90b8": {
-      "source": "noam-ai/manifests/a35d706421f44c1799318ed685ad90b8.json",
-      "sha256": "ea61bb7f25e0a931bfcea9737322b2cadefee4c2053acc9b33f8c23ea4d136e5",
-      "bytes": 145223
-    },
     "a3d4cf8e50ee4b2ebe84504f5bf41adb": {
       "source": "noam-ai/manifests/a3d4cf8e50ee4b2ebe84504f5bf41adb.json",
       "sha256": "d648cb8f74fa968312cbcd0ec8b88077ae04a526c053d3567136fe505f56a915",
@@ -1424,15 +1394,20 @@
       "sha256": "70212fc828cb1d4a678906fd6df5a4a271c0dd0906fb028e449128b27137da00",
       "bytes": 155165
     },
-    "a5ec88ec61be48afa8e56e3e24ad96ac": {
-      "source": "noam-ai/manifests/a5ec88ec61be48afa8e56e3e24ad96ac.json",
-      "sha256": "0ac4a26eb2365b1e3cc2ba5e65ff5f79f145a5064cc13b0452d4e8509d370a6a",
-      "bytes": 125897
+    "a55ad4b479834389b93955264330c498": {
+      "source": "noam-ai/manifests/a55ad4b479834389b93955264330c498.json",
+      "sha256": "f608dd059c07271a76080c9d38ff825e3f95f8a80a94192dc6d2eb357f3fcd95",
+      "bytes": 117125
     },
     "a606d9fa15bd4a94a5793fbfb6cd710d": {
       "source": "noam-ai/manifests/a606d9fa15bd4a94a5793fbfb6cd710d.json",
       "sha256": "74d77474efef77b8144e88bd1a52d7f3d960cf57349874779945e9fc9d1c102e",
       "bytes": 94752
+    },
+    "a78226524cf449ca955a36fc8a79ad24": {
+      "source": "noam-ai/manifests/a78226524cf449ca955a36fc8a79ad24.json",
+      "sha256": "60559525c2404fe4a4245ecc6f9c806089cc0afb10c05946c73125d4425a5a3e",
+      "bytes": 131041
     },
     "a7c9ee501e8e4b9fb90efd59db5bac3c": {
       "source": "noam-ai/manifests/a7c9ee501e8e4b9fb90efd59db5bac3c.json",
@@ -1444,20 +1419,25 @@
       "sha256": "328bd5252fe54b6d58e2b2921ed881a12eeea5d7fb9bdae9d61253d05f288128",
       "bytes": 88480
     },
+    "a96a0a1a7e254c8480111c057b804f70": {
+      "source": "noam-ai/manifests/a96a0a1a7e254c8480111c057b804f70.json",
+      "sha256": "7ed21e53a72da2b655828af827c7ca431ec5cdf426169e5e9e9034128f2841d5",
+      "bytes": 197689
+    },
     "aafb63c1073e4cdb892782e919d65719": {
       "source": "noam-ai/manifests/aafb63c1073e4cdb892782e919d65719.json",
       "sha256": "bf635dd2f5d543723921d167bac545cfe7fdc14701dd2c5e8c87c8ae3e213c8b",
       "bytes": 48129
     },
+    "ab9f9a9beeae48a080936b7a305c2928": {
+      "source": "noam-ai/manifests/ab9f9a9beeae48a080936b7a305c2928.json",
+      "sha256": "6457f0b58c51107020eaa9af5cca1ed37fecd97dfacaed6667280d4fcdb63530",
+      "bytes": 158227
+    },
     "abd0a1873cdf4a03b9864fa5e6a74b3c": {
       "source": "noam-ai/manifests/abd0a1873cdf4a03b9864fa5e6a74b3c.json",
       "sha256": "73082578f47ef73ca31b46980efe709e1657ecd38467d0a7f2901810059dab40",
       "bytes": 84186
-    },
-    "abeb9b55a19846d98a209f8158ee6f41": {
-      "source": "noam-ai/manifests/abeb9b55a19846d98a209f8158ee6f41.json",
-      "sha256": "16a41e08a6323ad0a2c2ac2574d0c888491adfe94835cdaafbdc3f72f02ec82e",
-      "bytes": 108910
     },
     "acca66d18cdd4a66b48272218673c7b9": {
       "source": "noam-ai/manifests/acca66d18cdd4a66b48272218673c7b9.json",
@@ -1474,6 +1454,11 @@
       "sha256": "522ba3b51f6be4577e9c8a7ce04bf8f510bfbe4e03d0d9cdcb68dab5779b23d4",
       "bytes": 153686
     },
+    "af4c2da1ae18423087edf01b8e1f36d6": {
+      "source": "noam-ai/manifests/af4c2da1ae18423087edf01b8e1f36d6.json",
+      "sha256": "efd2835de921f0f4f65a930788f79c9ff7c869d1eb1af25d18a3561e39d26ca0",
+      "bytes": 145299
+    },
     "af83bcf8e5dd4f349651356079af0a62": {
       "source": "noam-ai/manifests/af83bcf8e5dd4f349651356079af0a62.json",
       "sha256": "75d5a1fc29bf6c02e35c92f8584a88f65c1f1065b26f6d6f490d0267b1605378",
@@ -1489,10 +1474,10 @@
       "sha256": "df42c95178a872dd970d2b927e93942e31d519a8c8f0cd1428d4b3ec842cb22b",
       "bytes": 121340
     },
-    "b16fc22c674b432586ea628ff4429e51": {
-      "source": "noam-ai/manifests/b16fc22c674b432586ea628ff4429e51.json",
-      "sha256": "e09cb97f02e765a476b93aca49b0a883e272c5fa1b07c049ce42e91ac0ba3cb8",
-      "bytes": 96487
+    "b189a37abff04785af77f9aec17c0b8b": {
+      "source": "noam-ai/manifests/b189a37abff04785af77f9aec17c0b8b.json",
+      "sha256": "b320ff395c38fe62127b6359e55c47869a5bc837a6c09f20700a23788fcc98f9",
+      "bytes": 103260
     },
     "b26d49817e034ce0a07a79c2e28bbdd5": {
       "source": "noam-ai/manifests/b26d49817e034ce0a07a79c2e28bbdd5.json",
@@ -1518,11 +1503,6 @@
       "source": "noam-ai/manifests/b57712d1f0cc47d1ad85c57d2ecdb384.json",
       "sha256": "2806fd00fe89963b904a0a221258668271d47e24066ff33988b0f068426a588c",
       "bytes": 201038
-    },
-    "b5a000c7294949679ad0de9c07f6ea66": {
-      "source": "noam-ai/manifests/b5a000c7294949679ad0de9c07f6ea66.json",
-      "sha256": "243f31d317e0668da484160464b188f697f119fc258d37a625554d128ce3f320",
-      "bytes": 121519
     },
     "b646f348c297460ca440f4f84c880aa8": {
       "source": "noam-ai/manifests/b646f348c297460ca440f4f84c880aa8.json",
@@ -1554,11 +1534,6 @@
       "sha256": "9093b9e1b856742d65f50be3d44ee6276435ce7b28cb396a44b9c917879628d5",
       "bytes": 99472
     },
-    "b7244cbaf9d04ba88740070ecb06e0eb": {
-      "source": "noam-ai/manifests/b7244cbaf9d04ba88740070ecb06e0eb.json",
-      "sha256": "bca232fa4045fbbfea0e8b73b89d18a1510de6baaeeb406fe7f87abe60a6dfcd",
-      "bytes": 165116
-    },
     "b740b58f64cd4f42bfb326121421d4bf": {
       "source": "noam-ai/manifests/b740b58f64cd4f42bfb326121421d4bf.json",
       "sha256": "e0500174da64e87c8d41780bacdc9cc2b03e2f6ce46f5066661e0ac550bfe34a",
@@ -1584,6 +1559,11 @@
       "sha256": "785d0d2baba7f0db415c95c705945f8783ddb2df2927e780e81dd66dc129396d",
       "bytes": 184600
     },
+    "ba1dcfbc19a24ae19c1260227725dc42": {
+      "source": "noam-ai/manifests/ba1dcfbc19a24ae19c1260227725dc42.json",
+      "sha256": "ed11c55d4192d8ee1639c66f17c1f14c24d68c870958eddb9c8d34b9a9877cac",
+      "bytes": 122382
+    },
     "ba7bca690c5d48c0a4ca00eb38ef711a": {
       "source": "noam-ai/manifests/ba7bca690c5d48c0a4ca00eb38ef711a.json",
       "sha256": "b9561583fbe9832214511cea19fc8286a78f0c176fec75719c90a8f88537b58c",
@@ -1598,11 +1578,6 @@
       "source": "noam-ai/manifests/bb0cc3bff3c6448b85bb56169ba5d1ef.json",
       "sha256": "f56a173e38b515edb71b2467def9676301404ad70b15beddd9952078daeaf666",
       "bytes": 130954
-    },
-    "bb59bd8257a54ddfa93694efccd3e936": {
-      "source": "noam-ai/manifests/bb59bd8257a54ddfa93694efccd3e936.json",
-      "sha256": "460d9b5ebb4e2be5f2ebdc15662edc7da01b587cbe443a7abedae727abafa2de",
-      "bytes": 130965
     },
     "bbd39bae542e4398bf25a1ed1349dbaa": {
       "source": "noam-ai/manifests/bbd39bae542e4398bf25a1ed1349dbaa.json",
@@ -1638,6 +1613,11 @@
       "source": "noam-ai/manifests/bed47a7056dc440eae02dd5d5d34673f.json",
       "sha256": "d3a5928f2cd4e223f58168de923b1a6f5931ec0a4cb7ea4c2ed4fff9d244233f",
       "bytes": 117539
+    },
+    "befa0c8563234c71a2b22206a64ec8fd": {
+      "source": "noam-ai/manifests/befa0c8563234c71a2b22206a64ec8fd.json",
+      "sha256": "de9ec120db7bbc4dbd09d2a47318eae5ef4d72612de3b3dc5df35c94cd001329",
+      "bytes": 100253
     },
     "bf0b89ae4eb8453e9291d2834ab3c3f3": {
       "source": "noam-ai/manifests/bf0b89ae4eb8453e9291d2834ab3c3f3.json",
@@ -1679,6 +1659,11 @@
       "sha256": "7c92f94f2c5b2d801504ea55b898f9cca2073abab900e6db001e0a1c0039fd78",
       "bytes": 151547
     },
+    "c1a708894e8148d88391ac250443ee25": {
+      "source": "noam-ai/manifests/c1a708894e8148d88391ac250443ee25.json",
+      "sha256": "110243258665dc22ac474f2f733eba1643ac3af673eb160a43a5ff18c1d39252",
+      "bytes": 155839
+    },
     "c246ee5ec30f40489e3c1b6ac437c49e": {
       "source": "noam-ai/manifests/c246ee5ec30f40489e3c1b6ac437c49e.json",
       "sha256": "b4f3bfe2130cf74c32cac67cbae2a6c91aa589efbf0c95d481e6d88522c42347",
@@ -1709,45 +1694,40 @@
       "sha256": "34cb8cfdc662ed5e1edd4c66be4798c21c31a8bb489ee5879be5fa2e5a241b86",
       "bytes": 218937
     },
-    "c630a882f117481d8d158a8248671b91": {
-      "source": "noam-ai/manifests/c630a882f117481d8d158a8248671b91.json",
-      "sha256": "1e17e733a2179e03ed55374963115c80684617bc4c93f103102415bbda58b6ee",
-      "bytes": 93297
-    },
     "c6b776aa000041d9955788bac628e765": {
       "source": "noam-ai/manifests/c6b776aa000041d9955788bac628e765.json",
       "sha256": "6f71bd816c864a3512e35c1b4dd1d49405460ac5b21dcc3f30bc723c271ee655",
       "bytes": 240086
+    },
+    "c71d485429794a3babd539808721d40f": {
+      "source": "noam-ai/manifests/c71d485429794a3babd539808721d40f.json",
+      "sha256": "663cc2fd1d9d4de03a284b58f07a69bc72fd44e53a9fab9cc74b8147e54e201b",
+      "bytes": 121085
     },
     "c86ee284bbf848bc8b742c656cd058dd": {
       "source": "noam-ai/manifests/c86ee284bbf848bc8b742c656cd058dd.json",
       "sha256": "2bebde2d7de4c60d4f07bc936b4db23b2b52ff711b08eef50ed612eb161c5074",
       "bytes": 181057
     },
-    "c9acfbe1c4c14f318cdf9f977e088df0": {
-      "source": "noam-ai/manifests/c9acfbe1c4c14f318cdf9f977e088df0.json",
-      "sha256": "6c9fd92c897685711b718c524271fc1485a653f9c3ac998bb2a8e29267b5f2c2",
-      "bytes": 103183
-    },
-    "ca311271e1de4f4e850bbafe637b2303": {
-      "source": "noam-ai/manifests/ca311271e1de4f4e850bbafe637b2303.json",
-      "sha256": "fddb9742e1fb57646587e36f4e332fdb6962e42e049f8d6558f75d0317f07ec8",
-      "bytes": 120688
+    "c8c7308d6b5a46d18032ecacfab4fe5b": {
+      "source": "noam-ai/manifests/c8c7308d6b5a46d18032ecacfab4fe5b.json",
+      "sha256": "057b09e8a290f168b1d056eaa29a3a013757069342bcfd40e6d57a3fbd1a0b76",
+      "bytes": 125974
     },
     "cabe0ab7dd684950b6001ae73c70b70b": {
       "source": "noam-ai/manifests/cabe0ab7dd684950b6001ae73c70b70b.json",
       "sha256": "037d04fd7b42779e8d6993bc68e1c770be3b4ebd4293ecad58ab071c14f96108",
       "bytes": 129399
     },
-    "cb58f1eed5014be086fd0ce42935ebf5": {
-      "source": "noam-ai/manifests/cb58f1eed5014be086fd0ce42935ebf5.json",
-      "sha256": "e2a1d4cd65cd51f1ac0a0215b7302d0bb378e9b9fb3727b845263dc31f2247ed",
-      "bytes": 121061
-    },
     "cbd2cc183746417d85eb5e67e0af41a9": {
       "source": "noam-ai/manifests/cbd2cc183746417d85eb5e67e0af41a9.json",
       "sha256": "a2c6446f53be0815c28aa209e844808b2b5635999f59b0522fef1e8b2360533c",
       "bytes": 166793
+    },
+    "ccf868d3e4a14c67940d8a0391c56979": {
+      "source": "noam-ai/manifests/ccf868d3e4a14c67940d8a0391c56979.json",
+      "sha256": "2e1e9efd956caf9826cc374e27e2dfe911ea1e55e18a1e6f886bfc35d395f02e",
+      "bytes": 138490
     },
     "cd3cfcc70f6c44eca4079c8d2bb6656a": {
       "source": "noam-ai/manifests/cd3cfcc70f6c44eca4079c8d2bb6656a.json",
@@ -1774,6 +1754,11 @@
       "sha256": "c054fb93dd3a706c309c14515119e2517226ff4c3b73bab3661eb88e9f19fd52",
       "bytes": 177330
     },
+    "cf6e578aab7c43fa951044966badb121": {
+      "source": "noam-ai/manifests/cf6e578aab7c43fa951044966badb121.json",
+      "sha256": "d089159910003511db7fc93aa5ceeb835cd16728774bcc3268879e4bd2e298d4",
+      "bytes": 143820
+    },
     "cff4758892e44743bbff84e4a9920a86": {
       "source": "noam-ai/manifests/cff4758892e44743bbff84e4a9920a86.json",
       "sha256": "9c2771980f61989d0ff66b7d265d43941f005eba60fcf4acda4a5c962787d613",
@@ -1794,10 +1779,10 @@
       "sha256": "f91abdbcf61fe667554e0faf80bb3d8b3dbd0b947e11b22733dcc1b29859c53f",
       "bytes": 169204
     },
-    "d56013e8610549919ca16e845624dc51": {
-      "source": "noam-ai/manifests/d56013e8610549919ca16e845624dc51.json",
-      "sha256": "68a87bb293e243134a5198fe98eeaf55f91316a996ade53faede856699a9124c",
-      "bytes": 115271
+    "d30723feb0db4613bd2be70218a022fd": {
+      "source": "noam-ai/manifests/d30723feb0db4613bd2be70218a022fd.json",
+      "sha256": "585b44cfc81e1d071f78692dbe69da54e5053811826f687403ee19f8d660a250",
+      "bytes": 122459
     },
     "d58c0aeb2208488594ec4c671d8ca7bb": {
       "source": "noam-ai/manifests/d58c0aeb2208488594ec4c671d8ca7bb.json",
@@ -1809,10 +1794,10 @@
       "sha256": "d99603c6e345205b91899a1b4a1132535fc11c8afe815d3e43d8dcfb1a33844d",
       "bytes": 139784
     },
-    "d5efea6959f4415a913565dec0994063": {
-      "source": "noam-ai/manifests/d5efea6959f4415a913565dec0994063.json",
-      "sha256": "4b882de24257ae1207d8d985ce14c699869e30be470c37b9ad72ed76f0ce2dba",
-      "bytes": 148173
+    "d657709fb27e4bc891e17d2d510c3d7f": {
+      "source": "noam-ai/manifests/d657709fb27e4bc891e17d2d510c3d7f.json",
+      "sha256": "dd3ab1edf9d669899a4d5be18fb1e7999fb3d95986aa5efeb1e106398452abc9",
+      "bytes": 164639
     },
     "d6ad7e5a5f6b4eb0b6e10d318243d5df": {
       "source": "noam-ai/manifests/d6ad7e5a5f6b4eb0b6e10d318243d5df.json",
@@ -1823,6 +1808,16 @@
       "source": "noam-ai/manifests/d7421f7457b54d19981e88558c6e1d8f.json",
       "sha256": "97c30793dd947545566494e5238f4eb5741b3a612be80204a16bd1c09d588bad",
       "bytes": 165023
+    },
+    "d74d1a63fd7a4bd59e7da3bf0fbf46aa": {
+      "source": "noam-ai/manifests/d74d1a63fd7a4bd59e7da3bf0fbf46aa.json",
+      "sha256": "23f97d79c26ddabcbc218cbada530ee17c8d63f67803437802524cabbcf27de5",
+      "bytes": 120506
+    },
+    "d77bea9c04b64d7a8e5f24776145ca0f": {
+      "source": "noam-ai/manifests/d77bea9c04b64d7a8e5f24776145ca0f.json",
+      "sha256": "327fbb1e0df3b02063733382a6ef641895d83ed891e6f3a07f09371ed1962593",
+      "bytes": 158650
     },
     "d7871990b85b4f24b3d033d19f4de35d": {
       "source": "noam-ai/manifests/d7871990b85b4f24b3d033d19f4de35d.json",
@@ -1859,6 +1854,16 @@
       "sha256": "14b069083004adbb6c77b8579171a428e627f121d3233513ee9db8dc98e3d299",
       "bytes": 79996
     },
+    "d94c909460964143b2127be632ddf167": {
+      "source": "noam-ai/manifests/d94c909460964143b2127be632ddf167.json",
+      "sha256": "bf8f3aeb53d2a70dc7db605548148ef57db942e841b82d7d0923b5f247ce6492",
+      "bytes": 121595
+    },
+    "d96091082589468b9d9d73a1367a3d7a": {
+      "source": "noam-ai/manifests/d96091082589468b9d9d73a1367a3d7a.json",
+      "sha256": "389178262e3eba5965fe84d55c2c88c2ce866b54387152df5a4ed7484a0b7fc5",
+      "bytes": 111333
+    },
     "da384a477a124b1fbfe2ec2a1c7d6971": {
       "source": "noam-ai/manifests/da384a477a124b1fbfe2ec2a1c7d6971.json",
       "sha256": "2638eaad6b3726c46380c21c54c555fc7719ca0a448a05aec325fdf58b56e06b",
@@ -1874,15 +1879,10 @@
       "sha256": "895f81bbad798a2bdb658ae2a5317e9e57737af749c4d4bee686b87397379016",
       "bytes": 473389
     },
-    "daad47e855154e258dc94c4906d11fac": {
-      "source": "noam-ai/manifests/daad47e855154e258dc94c4906d11fac.json",
-      "sha256": "3057565b7dd0e8a9ec3e6ffdf7960e29f37286e1bf8577ddc432f5d68aa2b490",
-      "bytes": 128604
-    },
-    "db50dbf33fd44a8eb185851fc39e1c4d": {
-      "source": "noam-ai/manifests/db50dbf33fd44a8eb185851fc39e1c4d.json",
-      "sha256": "fa0e4e4badef573492a7c1f4e4c14f85812b783c824a6fa73127d6632ae38c57",
-      "bytes": 155763
+    "dab269f8452c4252b7eeabe920217f9e": {
+      "source": "noam-ai/manifests/dab269f8452c4252b7eeabe920217f9e.json",
+      "sha256": "5ce248071bfe001a48e734516bf7dd2807f212654559a64a6798f5a1591ffdd1",
+      "bytes": 120271
     },
     "dba77d79bf104a539ed417ccfd472a35": {
       "source": "noam-ai/manifests/dba77d79bf104a539ed417ccfd472a35.json",
@@ -1904,10 +1904,10 @@
       "sha256": "07ce44165552d838c1b83e8841169ddfff46d1f7c026d1464ff344abd85c0380",
       "bytes": 103003
     },
-    "de181fdb99b547c887627213597b7a84": {
-      "source": "noam-ai/manifests/de181fdb99b547c887627213597b7a84.json",
-      "sha256": "5cba60fcff248a16966708c0c2dd4bb98e9e85fa4f43da15491c03e40be8009c",
-      "bytes": 158151
+    "de46359e8a624fdfadaef12b31fd7198": {
+      "source": "noam-ai/manifests/de46359e8a624fdfadaef12b31fd7198.json",
+      "sha256": "f30ade54c2bc0b458a5847b1f86c86d83783ee150551a8c49e75007193b05511",
+      "bytes": 115347
     },
     "df3fc7664cf64f4590cf5c5aa5482290": {
       "source": "noam-ai/manifests/df3fc7664cf64f4590cf5c5aa5482290.json",
@@ -1924,11 +1924,6 @@
       "sha256": "b8b92517e9ac95ac4942fe22b44e03b84fa4cf30e640cc0af9139aaa6b8f9d10",
       "bytes": 134259
     },
-    "e0812364636641e2bc649589dbbcb6fc": {
-      "source": "noam-ai/manifests/e0812364636641e2bc649589dbbcb6fc.json",
-      "sha256": "76dfb3587b166cf9bbcabc56c2111e642f9eaa02fafd75a0baa3d0966d8d6791",
-      "bytes": 120195
-    },
     "e1b7865746774b6a9a8293985626c15d": {
       "source": "noam-ai/manifests/e1b7865746774b6a9a8293985626c15d.json",
       "sha256": "6247623d1af789a5566d3ed780c37524f1979e4a7bdc29cc6e977a8060692759",
@@ -1938,6 +1933,11 @@
       "source": "noam-ai/manifests/e1cb29afc9744721ad729d6d3ba956be.json",
       "sha256": "36dd9cbf974e472026baaf9cec0f45faebaa9052ba766f3e4b21ea8f2d0fb55d",
       "bytes": 390283
+    },
+    "e1e7cbc0db784a6bace0b86b742659a7": {
+      "source": "noam-ai/manifests/e1e7cbc0db784a6bace0b86b742659a7.json",
+      "sha256": "1fd18d80c91c708dd0acde8d7936e27ac83060f92b7cd466df0202d630d7b534",
+      "bytes": 117817
     },
     "e2e76a38716a443a82f0bd64d0e30556": {
       "source": "noam-ai/manifests/e2e76a38716a443a82f0bd64d0e30556.json",
@@ -1974,6 +1974,11 @@
       "sha256": "af0b5b70db573dbf9b76c5d9e2ffc8230d46d50335b39b01c16cf114eedddbbd",
       "bytes": 69691
     },
+    "e5bdc917e16441df9503097d9be73742": {
+      "source": "noam-ai/manifests/e5bdc917e16441df9503097d9be73742.json",
+      "sha256": "8cbe01e5d45e0ef4f4f0b02515ff377e91c0b1afe6dd5488247be75bf941f50e",
+      "bytes": 136588
+    },
     "e5e7f80a61704a47812ad8746c596b99": {
       "source": "noam-ai/manifests/e5e7f80a61704a47812ad8746c596b99.json",
       "sha256": "c5fb569b3d2413f08773f5e9d5edb1754ac84b5cdcfbf98f09d8fceae4812fd5",
@@ -1989,25 +1994,15 @@
       "sha256": "bc74e0182b46cebb631c1195ea6b5b4c9042cb911e49e9dacf018a0407fbc4ad",
       "bytes": 107107
     },
-    "e87fb723f6144a43816b9fdb5362b5c5": {
-      "source": "noam-ai/manifests/e87fb723f6144a43816b9fdb5362b5c5.json",
-      "sha256": "bcac96d16fea6cf0714550608db08b15ddfde40ebc7528a18590a060596ef076",
-      "bytes": 117625
+    "e7b11e96954b4935951214f8a9035814": {
+      "source": "noam-ai/manifests/e7b11e96954b4935951214f8a9035814.json",
+      "sha256": "bfe29343a079c8716027f6e8b392081eacc38b39dcfe23be76ad8a502d70e89d",
+      "bytes": 159361
     },
-    "e8c9bb0c4bc44293865461a01cc464c3": {
-      "source": "noam-ai/manifests/e8c9bb0c4bc44293865461a01cc464c3.json",
-      "sha256": "7042da35c958ec15b250f8090ea5834bf607e434c8a041053d6eb3ad5cba270d",
-      "bytes": 158574
-    },
-    "ea00b6c8f3e94de99470d736307d0aef": {
-      "source": "noam-ai/manifests/ea00b6c8f3e94de99470d736307d0aef.json",
-      "sha256": "b88b53f84d15e0fce977b0870f718b348aa6a84d2bae6dc6c8aadd99cded6f9f",
-      "bytes": 162227
-    },
-    "ea229f9253c34ce1a0cb841e83e27a55": {
-      "source": "noam-ai/manifests/ea229f9253c34ce1a0cb841e83e27a55.json",
-      "sha256": "76052a840f14680e9552f9fe6fd95351b7cda0b2df47a9af422e8f2f2d14556d",
-      "bytes": 143744
+    "eb78ab16801b4be1a9eb12a94bc118b9": {
+      "source": "noam-ai/manifests/eb78ab16801b4be1a9eb12a94bc118b9.json",
+      "sha256": "41af14ffa213b7149914c566724bdd7a2d79b952085d2169bbeefe1c056a13a4",
+      "bytes": 109771
     },
     "ec2be9496a7d44c98e9ad618639b38d6": {
       "source": "noam-ai/manifests/ec2be9496a7d44c98e9ad618639b38d6.json",
@@ -2018,6 +2013,11 @@
       "source": "noam-ai/manifests/ecf0ddf558114847a7515eb75432f2c8.json",
       "sha256": "eb55a54657f98fe6e665de597336ad898fb4ab7210692b124af8d36a583d99cd",
       "bytes": 99680
+    },
+    "ee29bd2442634da0961245f24b7c0f9b": {
+      "source": "noam-ai/manifests/ee29bd2442634da0961245f24b7c0f9b.json",
+      "sha256": "f60ea12158600bb39eb4a6107d4e5a779c05d19e0101e21240d86183c1ac529c",
+      "bytes": 155806
     },
     "eeb2abc7a2074cd1901c2c800cd305bb": {
       "source": "noam-ai/manifests/eeb2abc7a2074cd1901c2c800cd305bb.json",
@@ -2079,6 +2079,11 @@
       "sha256": "66f8b209ef12ce4989384b0931cdaccf572808128f71e557ddfbe9f05aaf9429",
       "bytes": 147058
     },
+    "f5e5da68fc91439485d53e5f68b74f0b": {
+      "source": "noam-ai/manifests/f5e5da68fc91439485d53e5f68b74f0b.json",
+      "sha256": "134523ff443af5f8bcfface0005aedc6928ca59c95e8b0e8a042602037270dde",
+      "bytes": 122850
+    },
     "f60779646afc4c938aa62b0a6a445859": {
       "source": "noam-ai/manifests/f60779646afc4c938aa62b0a6a445859.json",
       "sha256": "1af252bf27fbcae18ec57051095820cc48a9dffd56e63ba6c3594f7739642f26",
@@ -2099,15 +2104,15 @@
       "sha256": "64794d8ad171404cb0d2f538acd485557933ccfcbfbe2a243f0cb19ef9e4b33e",
       "bytes": 236068
     },
-    "f7f25d7fe22a461694ad73cce2c0ceab": {
-      "source": "noam-ai/manifests/f7f25d7fe22a461694ad73cce2c0ceab.json",
-      "sha256": "310ce5db9bfe5dbd5a30f791d8b13c015874b29b4ff8924c776c5d99c32874bc",
-      "bytes": 134996
-    },
     "f82fb387aa674d29b416d8cdeb8384ff": {
       "source": "noam-ai/manifests/f82fb387aa674d29b416d8cdeb8384ff.json",
       "sha256": "53d4704c12b18008125967cf1dcab1c9115eb95fe60b87f954381d6feafc9158",
       "bytes": 72635
+    },
+    "f8f637f884da4d118af1dcf13b3d688b": {
+      "source": "noam-ai/manifests/f8f637f884da4d118af1dcf13b3d688b.json",
+      "sha256": "a46612efd844f20644cf67e44f0b5539abfed8818008026410a91983956f5036",
+      "bytes": 130186
     },
     "fa1bf558e210495e98750875aa9b2d8a": {
       "source": "noam-ai/manifests/fa1bf558e210495e98750875aa9b2d8a.json",
@@ -2138,17 +2143,12 @@
       "source": "noam-ai/manifests/fe16c964d2a64956817e3193791a757d.json",
       "sha256": "04b7f091e679f62eead18309624895fc46838822c34f6165560be0b50dc72671",
       "bytes": 184063
-    },
-    "fe9a1e56bd6d4833afea8c7a4ed4f715": {
-      "source": "noam-ai/manifests/fe9a1e56bd6d4833afea8c7a4ed4f715.json",
-      "sha256": "918ec5351f99bfda71c086efddf3d7fef1a5a410034dbd938e25d5961ee06d35",
-      "bytes": 112333
     }
   },
   "legacyIndex": {
     "path": "public/legacy-github/index.html",
     "source": "index.html",
-    "sha256": "e0f3e05e8769170352cc497732c9a9bdcd2140408fdb78ad3d6149fe8b3d093d",
+    "sha256": "6999fbbbd519261331698fb9aae86645399bf4e625e8e68adf5958f3776cae71",
     "bytes": 186589,
     "note": "Sibling-level discovery fallback when pa/pb/pc are incomplete; not the Astro home route."
   }
