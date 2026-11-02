@@ -47,8 +47,9 @@ const protectedFiles: Record<string, string> = {
   // G9 PDF v2, G8 PDF v2 (two c2 levels), and G7 PDF v2.
   // Packages-120: replaced student PDF ids and added G9-T46 (דלתון) in the geometry group.
   // Visible topic labels: סינתזה גאומטרית → שילוב גאומטרי, and the grade-6 synthesis sheet → סיכום.
-  // Noam, 2026-11-02: grade 7-9 sheets republished with their final-answers pages (new PDF ids only).
-  'src/data/catalog.v1.json': 'ee1b7b3f0edaffcf4c92052d259ccd038b973c7f5e71f1154e7615ce1f22f4ff',
+  // Noam, 2026-11-02: grade 7-9 sheets republished with their final-answers pages (new PDF ids only),
+  // then the three G8-T65 sheets once their key was written.
+  'src/data/catalog.v1.json': 'bd1d6e0420dece9b57c330130064acfe32aec5085504a6e154df7f6b37adbb11',
   'src/lib/catalog/loadCatalog.ts': '1a5e54a4c19c016046202f3e0b9bb95203e58fe983dab5a27e6f261abfbc9d95',
   // Viewer links forward the c2 sibling as pc2.
   'src/lib/worksheetLinks.ts': '06bfbaa4b9b778d171ca9d8802eed0ce3fb6c6f15d7d7bff3807dd1f80ce0770',
