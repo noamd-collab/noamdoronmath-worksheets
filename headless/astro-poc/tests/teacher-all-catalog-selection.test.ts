@@ -21,6 +21,7 @@ function modelChoice(groups: any[], count: number, level: string) {
 }
 
 const appFor = new Function('pool', 'scope', 'groupWholeQuestions', 'modelChoice', `
+  const window = { confirm: () => true };
   let state = { ...scope, selected: [], blocks: [], scenario: 'first', style: 'scaffold', filter: 'all', pickMode: 'manual' };
   let history = [], aiPickPending = 0, teacherAiPlanCache = null;
   const currentExercises = () => pool;
@@ -37,7 +38,7 @@ const appFor = new Function('pool', 'scope', 'groupWholeQuestions', 'modelChoice
     const chosen = modelChoice(currentQuestions(), payload.teacher.count, state.level).map(group => group.keys[0]);
     return { source: 'classifier', model: 'test-model', exerciseIds: chosen, modelExerciseIds: chosen };
   } });
-  ${['exKey', 'questionPreviewGroup', 'currentQuestions', 'keysOfQuestions', 'rolePlan', 'interleaveSheets', 'planOrder', 'smartQuestionPick', 'carriedKeys', 'selectionKey', 'snapshot', 'escapeHTML', 'questionCard', 'wholeQuestionPickCards', 'teacherAiNote', 'teacherAiContext', 'teacherLevelsCovered', 'verifiedTeacherPlan', 'rememberTeacherPlans', 'pickWithAi'].map(definition).join('\n')}
+  ${['exKey', 'questionPreviewGroup', 'currentQuestions', 'keysOfQuestions', 'rolePlan', 'interleaveSheets', 'planOrder', 'smartQuestionPick', 'carriedKeys', 'selectionKey', 'snapshot', 'escapeHTML', 'questionCard', 'wholeQuestionPickCards', 'teacherAiNote', 'teacherAiContext', 'teacherLevelsCovered', 'verifiedTeacherPlan', 'rememberTeacherPlans', 'confirmTeacherReplacement', 'pickWithAi'].map(definition).join('\n')}
   return { groups: currentQuestions(), requests, status, state, pick: pickWithAi, cards: () => wholeQuestionPickCards(currentQuestions()) };
 `);
 

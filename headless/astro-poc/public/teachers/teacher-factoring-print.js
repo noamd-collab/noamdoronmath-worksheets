@@ -113,6 +113,91 @@ let topicLoadPromise = null;
 let aiPickPending = 0;
 let teacherBotClientPromise = null;
 let teacherAiPlanCache = null;
+let appState = 'loading';
+let appBound = false;
+let startupComplete = false;
+let retryTeacherLoad = null;
+let appLoadId = 0;
+
+function setTeacherAppState(next, message = '') {
+  appState = next;
+  for (const workspace of [$('teacher-workspace'), $('wizard-bar')]) {
+    if (!workspace) continue;
+    workspace.inert = next !== 'ready';
+    workspace.hidden = !startupComplete && next !== 'ready';
+    workspace.setAttribute('aria-busy', next === 'loading' ? 'true' : 'false');
+  }
+  const panel = $('teacher-load-state');
+  if (panel) panel.hidden = next === 'ready';
+  const loading = $('teacher-loading');
+  if (loading) {
+    loading.hidden = next !== 'loading';
+    loading.textContent = next === 'loading' ? (message || 'טוענים את דפי העבודה…') : '';
+  }
+  const error = $('teacher-load-error');
+  if (error) {
+    error.hidden = next !== 'error';
+    error.textContent = next === 'error' ? message : '';
+  }
+  const retry = $('teacher-load-retry');
+  if (retry) {
+    retry.hidden = next !== 'error';
+    retry.disabled = next !== 'error';
+    if (next === 'error') retry.focus();
+  }
+}
+
+async function reloadTeacherTopic() {
+  const request = ++appLoadId;
+  const focused = document.activeElement;
+  retryTeacherLoad = reloadTeacherTopic;
+  setTeacherAppState('loading', 'טוענים את שאלות הנושא…');
+  try {
+    await loadCurrentTopic();
+    if (request !== appLoadId) return false;
+    render();
+    setTeacherAppState('ready');
+    if (focused && focused.isConnected && !focused.closest('.wiz-off') && typeof focused.focus === 'function') focused.focus({ preventScroll: true });
+    return true;
+  } catch (error) {
+    if (request !== appLoadId) return false;
+    setTeacherAppState('error', 'שאלות הנושא לא נטענו. ההגדרות והמקטעים שנשמרו נשארו בדף. לחצו על ניסיון נוסף.');
+    return false;
+  }
+}
+
+function confirmTeacherReplacement(message, includeBlocks = false) {
+  return (!state.selected.length && (!includeBlocks || !state.blocks.length)) || window.confirm(message);
+}
+
+async function changeTeacherScope(grade, topic) {
+  const gradeChanged = String(grade) !== String(state.grade);
+  if (!gradeChanged && String(topic) === String(state.topic)) return;
+  const accepted = confirmTeacherReplacement(gradeChanged
+    ? 'שינוי הכיתה יאפס את כל השאלות והמקטעים בדף. להמשיך ולאפס?'
+    : 'שינוי הנושא יאפס את הבחירה בנושא הנוכחי. המקטעים שכבר נשמרו יישארו. אפשר לבטל ולשמור את הבחירה באמצעות הוספת נושא. להמשיך ולאפס?', gradeChanged);
+  if (!accepted) {
+    $('grade').value = String(state.grade);
+    $('topic').value = String(state.topic);
+    return;
+  }
+  state.grade = String(grade);
+  state.topic = String(topic || '');
+  state.level = 'a';
+  state.expanded = false;
+  state.selected = [];
+  if (gradeChanged) state.blocks = [];
+  state.moreDismissed = false;
+  state.pickNote = '';
+  state.lastAiPickCount = 0;
+  history = [];
+  clearPreparedPrint();
+  fillGrades();
+  fillTopics();
+  syncWizardUrl();
+  await reloadTeacherTopic();
+}
+
 function exKey(pdfId, id) {
   return 'ex:' + pdfId + ':' + id;
 }
@@ -293,6 +378,7 @@ function rememberTeacherPlans(result, context, groups) {
 async function pickWithAi(rawCount) {
   const count = Number(rawCount);
   if (!AI_QUESTION_COUNTS.includes(count) || aiPickPending) return [];
+  if (!confirmTeacherReplacement('הצעת ה־AI תחליף את השאלות שסימנתם בנושא הנוכחי. המקטעים השמורים יישארו. להמשיך?')) return [];
   dismissTeacherHumanVerification(document);
   const saved = carriedKeys();
   const groups = currentQuestions().filter((group) => !group.keys.some((key) => saved.has(key)));
@@ -408,7 +494,6 @@ async function pickWithAi(rawCount) {
             ? 'בדיקת האבטחה לא אישרה את בקשת ה-AI. הבחירה שלכם נשמרה ואפשר להמשיך לבחור ידנית.'
             : 'לא התקבלה בחירת AI. הבחירה שלכם נשמרה; אפשר לנסות שוב או לבחור ידנית.';
     if (status) status.textContent = message;
-    announce(message);
     return [];
   }
   const mixedLevelsMissing = !teacherLevelsCovered(groups, seedKeys) || (!teacherLevelsCovered(groups, []) && seedKeys.length !== target);
@@ -422,7 +507,6 @@ async function pickWithAi(rawCount) {
         ? 'החיבור ל־AI לא הצליח. הבחירה שלכם נשמרה; אפשר לנסות שוב או לבחור ידנית.'
         : 'לא התקבלה בחירת שאלות מה-AI. הבחירה שלכם נשמרה ואפשר לבחור ידנית.';
     if (status) status.textContent = message;
-    announce(message);
     return [];
   }
   if (!preparedPlan) rememberTeacherPlans(result, context, groups);
@@ -454,7 +538,6 @@ async function pickWithAi(rawCount) {
       : `נבחרו ${what} בבחירה אוטומטית מקומית. לא התקבלה בחירה מתאימה מה-AI.`;
   const msg = outcome + (preparedPlan ? ' זו הבחירה שהוכנה בבקשת ה-AI הקודמת.' : '') + (state.pickNote ? ' ' + state.pickNote : '');
   if (status) status.textContent = msg;
-  announce(msg);
   return finalPicked;
 }
 
@@ -1081,6 +1164,9 @@ function wholeQuestionPickCards(pool) {
 function render() {
   syncLevels();
   const focusedQuestion = document.activeElement && document.activeElement.dataset.wholeQuestion;
+  const active = document.activeElement;
+  const focusedBlock = active && active.closest && active.closest('[data-page-block]');
+  const blockFocus = focusedBlock ? { index: focusedBlock.dataset.pageBlock, kind: active.dataset.blockKind, remove: active.hasAttribute('data-block-remove') } : null;
   const ok = available();
   $('available-content').hidden = !ok;
   $('unavailable').hidden = ok;
@@ -1107,7 +1193,10 @@ function render() {
   const shortBtn = $('prepare-short');
   if (shortBtn) shortBtn.hidden = false;
   const prepareHint = $('prepare-hint');
-  if (prepareHint) prepareHint.textContent = 'דף מלא עם סימון, או דף מצומצם שנחתך מהמקור';
+  if (prepareHint) {
+    prepareHint.removeAttribute('role');
+    prepareHint.textContent = 'דף מלא עם סימון, או דף מצומצם שנחתך מהמקור';
+  }
   if (!ok) {
     paintSourceLine();
     applyWizard();
@@ -1135,6 +1224,11 @@ function render() {
   if (focusedQuestion) {
     const checkbox = Array.from($('questions').querySelectorAll('[data-whole-question]')).find((input) => input.dataset.wholeQuestion === focusedQuestion);
     if (checkbox) checkbox.focus({ preventScroll: true });
+  }
+  if (blockFocus) {
+    const row = document.querySelector('[data-page-block="' + blockFocus.index + '"]');
+    const control = row && row.querySelector(blockFocus.remove ? '[data-block-remove]' : '[data-block-kind="' + blockFocus.kind + '"]');
+    if (control) control.focus({ preventScroll: true });
   }
 }
 
@@ -1284,7 +1378,10 @@ function levelAllows(source) {
   return false;
 }
 
+let printGeneration = 0;
+
 function clearPreparedPrint() {
+  printGeneration += 1;
   const area = $('print-area');
   if (!area || area.querySelector('.print-unprepared')) return;
   area.innerHTML = PRINT_UNPREPARED;
@@ -2356,7 +2453,7 @@ function paintMeasuredPage(ctx, items, top, scale) {
 
 async function paintPacked(root, exerciseMeasured, answerMeasured, title) {
   const OUT_W = 1000;
-  const exercisePages = packShort(exerciseMeasured);
+  const exercisePages = exerciseMeasured.length ? packShort(exerciseMeasured) : [];
   const answerPages = answerMeasured.length ? packShort(answerMeasured, { answers: true }) : [];
   const packs = exercisePages.concat(answerPages);
   const answerStart = exercisePages.length;
@@ -2443,10 +2540,22 @@ function answerFallbackSlices(source) {
 async function answerMeasured(groups) {
   const slices = [];
   for (const group of groups) {
+    const wanted = answerSpecsForGroup(group);
+    const missingAnswers = (numbers) => {
+      const label = group.source.title || group.source.topic || levelPrintName(group.source.level, group.source.levelLabel);
+      const error = new Error(`לא נמצאו תשובות סופיות מאומתות לשאלות ${numbers.join(', ')}${label ? ' — ' + label : ''}. הדף לא הוכן להדפסה. אפשר לנסות שוב או לשנות את הבחירה.`);
+      error.code = 'MISSING_ANSWERS';
+      return error;
+    };
+    const appendFallback = (numbers) => {
+      const fallback = answerFallbackSlices(group.source);
+      if (!fallback.length) throw missingAnswers(numbers);
+      slices.push(...fallback);
+    };
     if (group.source.answerGeometry === 'full-pages') {
       // Outlined PDFs can contain a searchable overlay at unrelated positions.
       // Use the verified source answer pages instead of those text coordinates.
-      slices.push(...answerFallbackSlices(group.source));
+      appendFallback([...new Set(wanted.map((spec) => spec.q))]);
       continue;
     }
     let lines = [];
@@ -2456,10 +2565,13 @@ async function answerMeasured(groups) {
       // Some source PDFs have an outline but no extractable answer text.
       // Their checked answer-page metadata preserves the original answers.
     }
-    const wanted = answerSpecsForGroup(group);
     const crops = answerCropsFromLines(lines, wanted);
-    if (!crops.length) {
-      slices.push(...answerFallbackSlices(group.source));
+    const found = new Set(crops.map((crop) => String(crop.q)));
+    const missing = [...new Set(wanted.map((spec) => spec.q))].filter((q) => !found.has(q));
+    if (missing.length) {
+      // A nonempty extraction can still omit selected answers. Preserve all
+      // verified source answer pages, or fail instead of printing a partial key.
+      appendFallback(missing);
       continue;
     }
     const head = lines.find((line) => {
@@ -2580,6 +2692,14 @@ function markedHTML(chosen) {
     group.questions.forEach((question) => {
       if (!byPage.has(question.page)) byPage.set(question.page, []);
       byPage.get(question.page).push(question);
+      // A whole question can require a continuation or shared context on a
+      // different source page. Include those pages, without moving the primary
+      // question's check mark onto unrelated coordinates on the extra page.
+      const rows = question.rows && question.rows.length ? question.rows : [question.row];
+      for (const box of rows.concat(question.stem ? [question.stem] : [])) {
+        const page = box && (box.page || question.page);
+        if (Number.isInteger(page) && page > 0 && !byPage.has(page)) byPage.set(page, []);
+      }
     });
     return [...byPage.keys()].sort((a, b) => a - b).map((page) => sheetHTML(page, byPage.get(page))).join('');
   }).join('');
@@ -2647,45 +2767,91 @@ async function resolveChosen() {
 }
 
 async function updatePrint() {
-  const plan = $('dialog-plan');
-  const printArea = $('print-area');
-  if (!available()) {
-    plan.innerHTML = '<p>אין דף מקור להדפסה. בוחרים כיתה ונושא מהקטלוג.</p>';
-    printArea.innerHTML = PRINT_UNPREPARED;
-    return;
+  const generation = ++printGeneration;
+  const mode = printMode;
+  // Render off-screen and publish both surfaces only after every exercise and
+  // answer has finished. Selection edits invalidate the generation meanwhile.
+  const plan = document.createElement('div');
+  const printArea = document.createElement('div');
+  $('print-area').innerHTML = PRINT_UNPREPARED;
+  const commit = (ready = true) => {
+    if (generation !== printGeneration) return false;
+    $('dialog-plan').replaceChildren(...plan.childNodes);
+    $('print-area').replaceChildren(...printArea.childNodes);
+    if (ready) {
+      for (const id of ['prepare-hint', 'dialog-plan', 'wizard-preview']) {
+        const target = $(id);
+        if (!target || target.getAttribute('role') !== 'alert') continue;
+        target.removeAttribute('role');
+        target.removeAttribute('tabindex');
+        if (id === 'prepare-hint') target.textContent = 'דף מלא עם סימון, או דף מצומצם שנחתך מהמקור';
+        else if (id === 'wizard-preview') copyCanvases($('print-area'), target);
+      }
+    }
+    return true;
+  };
+  try {
+    if (!available()) {
+      plan.innerHTML = '<p>אין דף מקור להדפסה. בוחרים כיתה ונושא מהקטלוג.</p>';
+      printArea.innerHTML = PRINT_UNPREPARED;
+      commit(false);
+      return false;
+    }
+    const carried = pageBlocks();
+    const savedQuestions = carried.flatMap((block) => block.questions);
+    const onPage = new Set(savedQuestions.map((question) => exKey(question.source.pdfId, question.id)));
+    const current = (await resolveChosen()).filter((question) => !onPage.has(exKey(question.source.pdfId, question.id)));
+    const chosen = savedQuestions.concat(current);
+    const blocks = carried.length || state.sectionKind === 'test'
+      ? carried.concat(current.length ? [{ kind: sectionKind(state.sectionKind), title: currentTopic() ? currentTopic().title : '', questions: current }] : [])
+      : null;
+    if (!chosen.length) {
+      plan.innerHTML = '<p>עדיין לא נבחרו שאלות מתוך הקטלוג.</p>';
+      printArea.innerHTML = PRINT_UNPREPARED;
+      commit(false);
+      return false;
+    }
+    const note = $('teacher-note').value.trim();
+    const cfg = SCENARIOS[state.scenario] || SCENARIOS.first;
+    if (mode === 'short') {
+      await updateShortPrint(plan, printArea, chosen, note, cfg, blocks);
+      return commit();
+    }
+    const answers = await answerMeasured(groupsOf(chosen));
+    const head = `<p class="plan-notice">דף המקור המלא. מה שנבחר מסומן על העמוד, והתשובות הסופיות מצורפות בסוף.</p>${metaHTML(chosen, cfg)}`;
+    const sheetsHtml = markedHTML(chosen);
+    const titles = chosen.map((question) => question.source && question.source.pdfUrl).filter((url, index, all) => url && all.indexOf(url) === index);
+    const foot = `<p class="print-source">מקור: ${escapeHTML(titles.join(' · '))}</p><p class="plan-notes">${escapeHTML(STYLES[state.style].plan)}</p>${note ? `<div class="plan-notes"><strong>הערת המורה</strong><br>${escapeHTML(note)}</div>` : ''}`;
+    const answerRoot = '<div class="marked-answers"></div>';
+    plan.innerHTML = head + sheetsHtml + answerRoot + foot;
+    printArea.innerHTML = sheetsHtml + answerRoot;
+    await paintSheets(plan, false);
+    await paintSheets(printArea, true);
+    await paintPacked(plan.querySelector('.marked-answers'), [], answers, worksheetTitle(chosen));
+    await paintPacked(printArea.querySelector('.marked-answers'), [], answers, worksheetTitle(chosen));
+    await attachTeacherNote(printArea, note);
+    return commit();
+  } catch (error) {
+    if (generation !== printGeneration) return false;
+    $('print-area').innerHTML = PRINT_UNPREPARED;
+    throw error;
   }
-  const carried = pageBlocks();
-  const savedQuestions = carried.flatMap((block) => block.questions);
-  const onPage = new Set(savedQuestions.map((question) => exKey(question.source.pdfId, question.id)));
-  const current = (await resolveChosen()).filter((question) => !onPage.has(exKey(question.source.pdfId, question.id)));
-  const chosen = savedQuestions.concat(current);
-  const blocks = carried.length || state.sectionKind === 'test'
-    ? carried.concat(current.length ? [{ kind: sectionKind(state.sectionKind), title: currentTopic() ? currentTopic().title : '', questions: current }] : [])
-    : null;
-  if (!chosen.length) {
-    plan.innerHTML = '<p>עדיין לא נבחרו שאלות מתוך הקטלוג.</p>';
-    printArea.innerHTML = PRINT_UNPREPARED;
-    return;
-  }
-  const note = $('teacher-note').value.trim();
-  const cfg = SCENARIOS[state.scenario] || SCENARIOS.first;
-  if (printMode === 'short') {
-    await updateShortPrint(plan, printArea, chosen, note, cfg, blocks);
-    return;
-  }
-  const head = `<p class="plan-notice">דף המקור המלא. מה שנבחר מסומן על העמוד.</p>${metaHTML(chosen, cfg)}`;
-  const sheetsHtml = markedHTML(chosen);
-  const titles = chosen.map((question) => question.source && question.source.pdfUrl).filter((url, index, all) => url && all.indexOf(url) === index);
-  const foot = `<p class="print-source">מקור: ${escapeHTML(titles.join(' · '))}</p><p class="plan-notes">${escapeHTML(STYLES[state.style].plan)}</p>${note ? `<div class="plan-notes"><strong>הערת המורה</strong><br>${escapeHTML(note)}</div>` : ''}`;
-  plan.innerHTML = head + sheetsHtml + foot;
-  printArea.innerHTML = sheetsHtml;
-  await paintSheets(plan, false);
-  await paintSheets(printArea, true);
-  await attachTeacherNote(printArea, note);
+}
+
+function reportPrintError(message) {
+  const dialog = $('print-dialog');
+  const target = dialog && dialog.open ? $('dialog-plan')
+    : state.wizard === 'result' ? $('wizard-preview') : $('prepare-hint');
+  if (!target) { announce(message); return; }
+  target.setAttribute('role', 'alert');
+  target.setAttribute('tabindex', '-1');
+  target.textContent = message;
+  target.focus();
 }
 
 async function prepare(mode) {
   if (rendering) return;
+  const opener = mode === 'short' ? $('prepare-short') : $('prepare');
   if (!state.selected.length && !state.blocks.length) {
     announce('עדיין לא נבחרו שאלות.');
     return;
@@ -2699,7 +2865,7 @@ async function prepare(mode) {
   $('prepare').disabled = true;
   if ($('prepare-short')) $('prepare-short').disabled = true;
   try {
-    await updatePrint();
+    if (!(await updatePrint())) return;
     const ready = mode === 'short'
       ? $('dialog-plan').querySelector('.crop-sheet canvas')
       : $('dialog-plan').querySelector('.source-stage canvas');
@@ -2709,14 +2875,18 @@ async function prepare(mode) {
     }
     $('print-title').textContent = mode === 'short' ? 'דף מצומצם מהמקור' : 'דף המקור עם סימון';
     $('print-lead').textContent = mode === 'short'
-      ? 'קטעים שנחתכו מדף המקור, עם ההוראה והנוסח המקוריים.'
-      : 'העמוד המלא, ומה שנבחר מסומן עליו.';
+      ? 'קטעים שנחתכו מדף המקור, עם ההוראה והנוסח המקוריים. התשובות הסופיות בסוף הדף.'
+      : 'העמוד המלא, ומה שנבחר מסומן עליו. התשובות הסופיות מצורפות בסוף.';
     $('print').lastChild.textContent = mode === 'short' ? 'הדפסת הדף המצומצם' : 'הדפסת הדף המסומן';
-    printOpener = mode === 'short' ? $('prepare-short') : $('prepare');
+    printOpener = opener;
     $('print-dialog').showModal();
   } catch (error) {
-    $('dialog-plan').innerHTML = '<p>דף המקור לא נטען, ולכן אין הדפסה. לא הוצג דף חלופי.</p>';
-    announce('דף המקור לא נטען.');
+    const message = error && error.code === 'MISSING_ANSWERS'
+      ? error.message
+      : 'דף המקור לא נטען, ולכן אין הדפסה. אפשר לנסות שוב.';
+    $('dialog-plan').innerHTML = `<p role="alert">${escapeHTML(message)}</p>`;
+    $('print-area').innerHTML = PRINT_UNPREPARED;
+    reportPrintError(message);
   } finally {
     rendering = false;
     $('prepare').disabled = false;
@@ -2840,6 +3010,11 @@ function applyWizard() {
   $('wizard-next').textContent = step === 'pick' ? 'אל הדף' : 'המשך';
   const anchor = step === 'result' ? $('wizard-result') : $('wizard-bar');
   if (stepChanged && anchor && anchor.scrollIntoView) anchor.scrollIntoView({ block: 'start', inline: 'nearest' });
+  if (stepChanged) {
+    const label = $('wizard-label');
+    label.setAttribute('tabindex', '-1');
+    label.focus({ preventScroll: true });
+  }
 }
 
 function copyCanvases(from, to) {
@@ -2868,12 +3043,14 @@ async function showWizardResult() {
   preview.textContent = 'מכינים את הדף…';
   printMode = 'short';
   try {
-    await updatePrint();
+    if (!(await updatePrint())) return;
     copyCanvases($('print-area'), preview);
     const anchor = $('wizard-result');
     if (anchor && anchor.scrollIntoView) anchor.scrollIntoView({ block: 'start', inline: 'nearest' });
   } catch (error) {
-    preview.textContent = 'דף המקור לא נטען, ולכן אין הדפסה.';
+    preview.textContent = error && error.code === 'MISSING_ANSWERS'
+      ? error.message
+      : 'דף המקור לא נטען, ולכן אין הדפסה. אפשר לנסות שוב.';
   }
 }
 
@@ -2911,9 +3088,15 @@ function bind() {
   }));
   document.querySelectorAll('[name=level]').forEach((el) => el.addEventListener('change', () => {
     if (!el.checked) return;
+    const previousLevel = state.level;
     state.level = el.value;
     state.expanded = false;
     let next = keepVisible(state.selected, visibleSelectionKeys());
+    if (next.length < state.selected.length && !confirmTeacherReplacement('שינוי הרמה יסיר מהבחירה שאלות שאינן ברמה החדשה. להמשיך?')) {
+      state.level = previousLevel;
+      document.querySelectorAll('[name=level]').forEach((input) => { input.checked = input.value === previousLevel; });
+      return;
+    }
     if (!next.length && state.scenario !== 'other') {
       if (state.pickMode !== 'manual') next = assignWholeQuestions(state.lastQuestionCount || 5);
     } else {
@@ -2927,32 +3110,10 @@ function bind() {
     render();
   }));
   $('grade').addEventListener('change', async () => {
-    state.grade = $('grade').value;
-    state.level = 'a';
-    state.expanded = false;
-    state.selected = [];
-    state.moreDismissed = false;
-    state.topic = '';
-    history = [];
-    clearPreparedPrint();
-    fillTopics();
-    syncWizardUrl();
-    await loadCurrentTopic();
-    applyScenario(state.scenario === 'other' ? 'first' : state.scenario);
+    await changeTeacherScope($('grade').value, '');
   });
   $('topic').addEventListener('change', async () => {
-    state.topic = $('topic').value;
-    state.level = 'a';
-    state.expanded = false;
-    state.selected = [];
-    state.moreDismissed = false;
-    history = [];
-    clearPreparedPrint();
-    syncLevels();
-    syncWizardUrl();
-    await loadCurrentTopic();
-    if (state.scenario === 'other') render();
-    else applyScenario(state.scenario, { quiet: true });
+    await changeTeacherScope(state.grade, $('topic').value);
   });
   $('filter-all').addEventListener('click', () => { state.filter = 'all'; $('filter-all').setAttribute('aria-pressed', 'true'); $('filter-selected').setAttribute('aria-pressed', 'false'); render(); });
   $('filter-selected').addEventListener('click', () => { state.filter = 'selected'; $('filter-selected').setAttribute('aria-pressed', 'true'); $('filter-all').setAttribute('aria-pressed', 'false'); render(); });
@@ -2982,6 +3143,8 @@ function bind() {
       state.blocks.splice(index, 1);
       clearPreparedPrint();
       render();
+      const next = $('page-blocks').querySelector('[data-page-block="' + Math.min(index, state.blocks.length - 1) + '"] [data-block-remove]') || $('section-kind-review');
+      if (next) next.focus({ preventScroll: true });
       announce('הנושא הוסר מהדף.');
       return;
     }
@@ -3015,14 +3178,7 @@ function bind() {
     announce('בוחרים שאלה שלמה, לא סעיף בודד.');
   });
   $('return-demo').addEventListener('click', async () => {
-    state.grade = '9';
-    state.topic = '2';
-    state.level = 'a';
-    fillGrades();
-    fillTopics();
-    syncWizardUrl();
-    await loadCurrentTopic();
-    applyScenario('first');
+    await changeTeacherScope('9', '2');
   });
   $('teacher-note').addEventListener('input', () => clearPreparedPrint());
   $('prepare').addEventListener('click', () => prepare('marked'));
@@ -3047,7 +3203,11 @@ function bind() {
     applyWizard();
   });
   if ($('wizard-print')) $('wizard-print').addEventListener('click', async () => {
-    try { await updatePrint(); } catch (error) { announce('דף המקור לא נטען.'); return; }
+    try { if (!(await updatePrint())) return; } catch (error) {
+      clearPreparedPrint();
+      reportPrintError(error.code === 'MISSING_ANSWERS' ? error.message : 'דף המקור לא נטען. אפשר לנסות שוב.');
+      return;
+    }
     window.print();
   });
   $('print-dialog').addEventListener('close', () => {
@@ -3057,7 +3217,11 @@ function bind() {
   });
   ['close-dialog', 'back-edit'].forEach((id) => $(id).addEventListener('click', () => $('print-dialog').close()));
   $('print').addEventListener('click', async () => {
-    try { await updatePrint(); } catch (error) { announce('דף המקור לא נטען.'); return; }
+    try { if (!(await updatePrint())) return; } catch (error) {
+      clearPreparedPrint();
+      reportPrintError(error.code === 'MISSING_ANSWERS' ? error.message : 'דף המקור לא נטען. אפשר לנסות שוב.');
+      return;
+    }
     window.print();
   });
   document.addEventListener('noam-teacher-option', (event) => {
@@ -3068,9 +3232,30 @@ function bind() {
     applyScenario(goal);
   });
   document.addEventListener('noam-teacher-prefill', (event) => {
+    if (appState !== 'ready') return;
     const detail = event.detail || {};
     const prefill = detail.exerciseIds ? detail : wizardPrefillFromSearch(detail.href || '');
-    applyWizardPrefill(prefill);
+    const grade = prefill && gradeRecord(prefill.grade);
+    if (!grade || !grade.topics.some((topic) => String(topic.id) === String(prefill.topic))
+      || (prefill.exerciseIds && (!Array.isArray(prefill.exerciseIds) || prefill.exerciseIds.some((id) => typeof id !== 'string')))) return;
+    if (!confirmTeacherReplacement('הבחירה שהתקבלה תחליף את השאלות והמקטעים בדף. להמשיך?', true)) return;
+    const apply = async () => {
+      setTeacherAppState('loading');
+      try {
+        await applyWizardPrefill(prefill);
+        setTeacherAppState('ready');
+        const label = $('wizard-label');
+        if (label) label.focus({ preventScroll: true });
+      } catch (error) {
+        retryTeacherLoad = apply;
+        setTeacherAppState('error', 'הבחירה לא נטענה. לחצו על ניסיון נוסף.');
+      }
+    };
+    state.blocks = [];
+    state.selected = [];
+    history = [];
+    clearPreparedPrint();
+    void apply();
   });
 }
 
@@ -3106,26 +3291,46 @@ function applyWizardPrefill(prefill) {
 }
 
 async function start() {
-  installSuggest();
+  retryTeacherLoad = start;
+  setTeacherAppState('loading');
+  if (!appBound) {
+    installSuggest();
+    bind();
+    const retry = $('teacher-load-retry');
+    if (retry) retry.addEventListener('click', async () => {
+      if (!retryTeacherLoad || appState === 'loading') return;
+      await retryTeacherLoad();
+      if (appState === 'ready') {
+        const label = $('wizard-label');
+        if (label) { label.setAttribute('tabindex', '-1'); label.focus(); }
+      }
+    });
+    appBound = true;
+  }
   // Load configuration and the SDK early. prepare() never creates a token or
   // submits a model request; postJson still performs fresh guarded verification.
   void ensureTeacherBotClient().then((client) => typeof client.prepare === 'function' ? client.prepare() : null).catch(() => {});
-  const response = await fetch(CATALOG_URL);
-  if (!response.ok) throw new Error('CATALOG');
-  CATALOG = await response.json();
-  indexCatalog();
-  bind();
-  const prefill = wizardPrefillFromSearch(location.search);
-  if (prefill) {
-    await applyWizardPrefill(prefill);
-    return;
+  try {
+    const response = await fetch(CATALOG_URL);
+    if (!response.ok) throw new Error('CATALOG');
+    CATALOG = await response.json();
+    indexCatalog();
+    const prefill = wizardPrefillFromSearch(location.search);
+    if (prefill) {
+      await applyWizardPrefill(prefill);
+    } else {
+      fillGrades();
+      fillTopics();
+      await loadCurrentTopic();
+      applyScenario(state.scenario, { quiet: true });
+    }
+    startupComplete = true;
+    setTeacherAppState('ready');
+  } catch (error) {
+    setTeacherAppState('error', 'רשימת דפי העבודה לא נטענה. לחצו על ניסיון נוסף; אין צורך לרענן את הדף.');
   }
-  fillGrades();
-  fillTopics();
-  await loadCurrentTopic();
-  applyScenario(state.scenario, { quiet: true });
 }
 
 start().catch(() => {
-  $('result-summary').textContent = 'רשימת דפי הקטלוג לא נטענה.';
+  setTeacherAppState('error', 'רשימת דפי העבודה לא נטענה. לחצו על ניסיון נוסף.');
 });

@@ -437,6 +437,10 @@ body[data-wizard="result"] .wizard-result{scroll-margin-top:164px}
 .source-mark svg{display:block;width:100%;height:100%;overflow:hidden}
 .source-mark path{fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
 .print-unprepared{margin:0;font:16px/1.4 Heebo,Arial,sans-serif}
+.teacher-load-state{margin:18px 0;padding:20px;line-height:1.6}
+.teacher-load-state[hidden]{display:none}
+#teacher-workspace[hidden],#wizard-bar[hidden]{display:none!important}
+.teacher-load-state p{margin:0 0 12px}
 .source-sheet figcaption,.crop-sheet figcaption{direction:rtl;font-size:13px;margin-top:6px;color:#3d4870}
 .crop-sheet{margin:0 0 18px}
 .crop-sheet canvas{display:block;width:100%;height:auto;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
@@ -508,9 +512,10 @@ body[data-wizard="result"] .wizard-result{scroll-margin-top:164px}
 </div>
 </header>
 <main class="wrap">
-<div class="wizard-bar" id="wizard-bar"><button type="button" class="text-btn" id="wizard-back" hidden>חזרה</button><p class="wizard-label" id="wizard-label">כיתה</p><button type="button" class="primary" id="wizard-next">המשך</button></div>
+<section class="panel teacher-load-state" id="teacher-load-state" aria-label="טעינת דפי העבודה"><p id="teacher-loading" role="status">טוענים את דפי העבודה…</p><p id="teacher-load-error" role="alert" hidden></p><button type="button" class="primary" id="teacher-load-retry" hidden>ניסיון נוסף</button></section>
+<div class="wizard-bar" id="wizard-bar" hidden inert><button type="button" class="text-btn" id="wizard-back" hidden>חזרה</button><p class="wizard-label" id="wizard-label" tabindex="-1">כיתה</p><button type="button" class="primary" id="wizard-next">המשך</button></div>
 <div class="intro"><div><p class="eyebrow">מתכננים את התרגול</p><h1>בוחרים מה לתרגל.</h1><p class="subtitle">כיתה, נושא ומטרת השיעור. מכאן מסמנים שאלות שלמות, ומדפיסים את דף המקור עם סימון.</p><p class="head-meta"><span>מהדפים הקיימים, לשיעור שלכם</span><span class="demo-tag">כיתות א׳–ט׳</span><span class="brand-kicker">מתמטיקה • מרחב למורה</span></p></div><p class="intro-note">בכל הכיתות א׳–ט׳: רואים כל שאלה כפי שהיא בדף המקור ומסמנים את השאלות השלמות שמתאימות, בכל מספר. בלי סעיף חתוך.<br>אפשר לבחור ידנית או לתת ל־AI לבחור 5, 10 או 15 שאלות. ההדפסה מסמנת על דף המקור המלא, או חותכת דף מצומצם מאותו מקור.</p></div>
-<div class="workspace">
+<div class="workspace" id="teacher-workspace" hidden inert aria-busy="true">
 <aside class="panel setup" id="setup-panel" aria-label="הגדרות השיעור">
 <h2 class="step-title wiz-extra"><span class="step-num">1</span> מתחילים מהכיתה</h2>
 <div class="setup-fields"><div class="field" data-wiz="grade"><label for="grade">כיתה</label><select id="grade"><option value="1">כיתה א׳</option><option value="2">כיתה ב׳</option><option value="3">כיתה ג׳</option><option value="4">כיתה ד׳</option><option value="5">כיתה ה׳</option><option value="6">כיתה ו׳</option><option value="7">כיתה ז׳</option><option value="8">כיתה ח׳</option><option value="9" selected>כיתה ט׳</option></select></div><div class="field wiz-off" data-wiz="topic"><label for="topic">נושא</label><select id="topic"><option value="2">פירוק לגורמים</option></select></div></div>
@@ -595,7 +600,7 @@ body[data-wizard="result"] .wizard-result{scroll-margin-top:164px}
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js" integrity="sha384-/1qUCSGwTur9vjf/z9lmu/eCUYbpOTgSjmpbMQZ1/CtX2v/WcAIKqRv+U1DUCG6e" crossorigin="anonymous"></script>
-<script type="module" src="/teachers/teacher-factoring-print.js?v=20261102-answer-source-crops"></script>
+<script type="module" src="/teachers/teacher-factoring-print.js?v=20261102-teacher-integrity"></script>
 
 <script src="/noam-accessibility.js" defer></script>
 <script src="/noam-site-companion.js?v=20261101-sdk-lifecycle" defer data-avatar="/design-exact/assets/avatar/ramzi-A-idle.svg"></script>

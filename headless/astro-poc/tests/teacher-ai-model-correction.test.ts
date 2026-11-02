@@ -234,7 +234,8 @@ for (const kind of ['teacher chat', 'absent candidates', 'empty candidates', 'wr
     if (kind === 'wrong plan opt-in') input.teacher.planCounts = [5, 15, 10];
     if (kind.startsWith('shortage')) input.teacher.count = Number(kind.split(' ')[1]);
     const result = await run({ rows, input, responses: [{ model: { exerciseLabels: [], exerciseLabelsByCount: {} } }] });
-    assertCalls(result, 1); assertNoSelection(result.body);
+    assertCalls(result, kind === 'empty candidates' ? 0 : 1); assertNoSelection(result.body);
+    if (kind === 'empty candidates') assert.equal(result.body.code, 'TEACHER_CANDIDATES_INVALID');
   });
 }
 

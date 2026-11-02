@@ -32,15 +32,17 @@ function picker(href = 'https://www.noamdoronmath.co.il/teachers?tag=keep#questi
   const historyState = { route: 'retained' };
   const writes: string[] = [];
   const window = {
+    confirm: () => true,
     location: { href },
     history: { state: historyState, replaceState(value: unknown, _title: string, next: string) {
       assert.equal(value, historyState); writes.push(next); window.location.href = next;
     } },
   };
   return new Function('window', 'catalog', 'sheets', 'expandToWholeQuestionKeys', 'groupWholeQuestions', 'replaceWizardScopeUrl', 'wizardPrefillFromSearch', 'writes', `
+    let appState = 'ready', appBound = false, startupComplete = false, retryTeacherLoad = null, appLoadId = 0;
     let state = ${initial[1]}, history = [], CATALOG = catalog, topicLoadPromise = null;
     const elements = new Map(), levels = ['all','a','b','c'].map(value => ({value,checked:false,disabled:false,handlers:{},addEventListener(type,fn){this.handlers[type]=fn;}}));
-    const $ = id => {if(!elements.has(id))elements.set(id,{value:'',dataset:{},handlers:{},setAttribute(){},addEventListener(type,fn){this.handlers[type]=fn;},classList:{toggle(){}}});return elements.get(id);};
+    const $ = id => {if(!elements.has(id))elements.set(id,{value:'',dataset:{},handlers:{},setAttribute(){},removeAttribute(){},focus(){},addEventListener(type,fn){this.handlers[type]=fn;},classList:{toggle(){}}});return elements.get(id);};
     const document = {activeElement:null,body:{dataset:{}},querySelectorAll(selector){return selector==='[name=level]'?levels:[];},querySelector(){return null;},addEventListener(){}};
     const SCENARIOS={first:{label:'ראשון'},other:{label:'אחר'}}, STYLES={scaffold:{help:''},blended:{help:''}};
     const available=()=>false,paintSourceLine=()=>{},applyWizard=()=>{},clearPreparedPrint=()=>{},announce=()=>{},escapeHTML=value=>String(value);
@@ -49,7 +51,7 @@ function picker(href = 'https://www.noamdoronmath.co.il/teachers?tag=keep#questi
     const CATALOG_URL='/local-test-catalog',location={get search(){return new URL(window.location.href).search;}};
     const fetch=async url=>{if(url!==CATALOG_URL)throw new Error('Unexpected network');return {ok:true,json:async()=>catalog};};
     const installSuggest=()=>{},indexCatalog=()=>{},ensureTeacherBotClient=async()=>({prepare:async()=>{},postJson:()=>{throw new Error('Unexpected AI');}});
-    ${['gradeRecord','currentTopic','topicLevelChoices','resolveTopicLevel','syncLevels','syncWizardUrl','topicSheets','currentExercises','exKey','visibleSelectionKeys','keepVisible','selectionKey','snapshot','carriedKeys','toggleWholeQuestion','fillGrades','fillTopics','render','bind','applyWizardPrefill','start','levelAllows'].map(definition).join('\n')}
+    ${['setTeacherAppState','reloadTeacherTopic','confirmTeacherReplacement','changeTeacherScope','gradeRecord','currentTopic','topicLevelChoices','resolveTopicLevel','syncLevels','syncWizardUrl','topicSheets','currentExercises','exKey','visibleSelectionKeys','keepVisible','selectionKey','snapshot','carriedKeys','toggleWholeQuestion','fillGrades','fillTopics','render','bind','applyWizardPrefill','start','levelAllows'].map(definition).join('\n')}
     bind();
     return {state,levels,loads,writes,window,render,start,applyWizardPrefill,topicSheets,currentExercises,levelAllows,resolveTopicLevel,topicLevelChoices,toggleWholeQuestion,
       undo(){return $('undo').handlers.click();},
@@ -76,13 +78,18 @@ test('fresh startup and all real grade/topic handlers choose one available level
     app.state.level = 'all';
     await app.changeGrade(grade.grade);
     assert.equal(app.state.level, expectedLevel(grade.topics[0]), `grade ${grade.grade}`);
+    assert.deepEqual(app.state.blocks, [], 'Accepted grade changes reset the complete page');
+    const sameGradeSaved = [{ ...saved[0], grade: String(grade.grade) }];
+    app.state.blocks = structuredClone(sameGradeSaved);
     for (const topic of grade.topics) {
-      app.state.level = 'all'; app.state.selected = ['stale-selection'];
-      await app.changeTopic(topic.id);
+      if (String(app.state.topic) !== String(topic.id)) {
+        app.state.level = 'all'; app.state.selected = ['stale-selection'];
+        await app.changeTopic(topic.id);
+      }
       const level = expectedLevel(topic), label = `${grade.grade}:${topic.id}`;
       assert.equal(app.state.level, level, label);
       assert.deepEqual(app.state.selected, [], label);
-      assert.deepEqual(app.state.blocks, saved, 'Changing scope retains previously saved sections');
+      assert.deepEqual(app.state.blocks, sameGradeSaved, 'Changing topic retains saved sections in the same grade');
       const selected = topic.sheets.filter((sheet: any) => level === 'all' || sheet.level === level || (level === 'c' && sheet.level === 'c2'));
       assert.deepEqual(app.topicSheets().map((sheet: any) => sheet.pdfId), selected.map((sheet: any) => sheet.pdfId), label);
       const url = new URL(app.window.location.href);

@@ -30,6 +30,7 @@ import {
   classifyTeacherRequest,
   describePicks,
   hrefForSheet,
+  hasInvalidTeacherCandidates,
   logTeacherSelection,
   recoverTeacherPickFromPlan,
   requestedPickCount,
@@ -197,6 +198,12 @@ export async function runCompanionTurn(payload, deps) {
     );
   }
   if (page.kind === "teachers") {
+    if (hasInvalidTeacherCandidates(settings.teacherIndex, payload)) {
+      const answer = "רשימת השאלות לבחירה אינה תקינה או אינה עדכנית. אפשר לטעון מחדש את הנושא או לבחור שאלות ידנית.";
+      return Object.assign(failedTeacherSelection(settings.catalog, "TEACHER_CANDIDATES_INVALID"), {
+        answer, text: answer, details: answer,
+      });
+    }
     let classification = null;
     let classificationFailure = "MODEL_RESPONSE_FAILED";
     const modelNow = typeof settings.modelNow === "function" ? settings.modelNow : Date.now;

@@ -242,7 +242,7 @@ test('ticking a later question does not scroll the unchanged selection step back
   const app = new Function(`
     const state = { wizard: 'pick' };
     const WIZARD_ORDER = ['grade', 'topic', 'level', 'scenario', 'style', 'pick', 'result'];
-    const scrolled = [];
+    const scrolled = [], focused = [];
     const controls = new Map();
     const $ = (id) => {
       if (!controls.has(id)) controls.set(id, {
@@ -253,6 +253,8 @@ test('ticking a later question does not scroll the unchanged selection step back
           this.children.push(child);
           return child;
         },
+        setAttribute() {},
+        focus() { focused.push(id); },
         scrollIntoView() { scrolled.push(id); },
       });
       return controls.get(id);
@@ -260,7 +262,7 @@ test('ticking a later question does not scroll the unchanged selection step back
     const document = { body: { dataset: { wizard: 'pick' } }, querySelectorAll: () => [] };
     const band = () => 'middle';
     ${definition('applyWizard')}
-    return { state, apply: applyWizard, scrolled, controls };
+    return { state, apply: applyWizard, scrolled, focused, controls };
   `)();
   app.apply();
   app.apply();
@@ -268,8 +270,10 @@ test('ticking a later question does not scroll the unchanged selection step back
   assert.equal(levelChoice.parentElement.id, 'pick-level-home');
   assert.equal(app.controls.get('pick-level-home').children.length, 1, 'Rerendering does not duplicate the level control');
   assert.deepEqual(app.scrolled, [], 'Selection updates should preserve the teacher’s current scroll position');
+  assert.deepEqual(app.focused, [], 'Question selection must not move keyboard focus');
   app.state.wizard = 'result';
   app.apply();
   assert.equal(levelChoice.parentElement.id, 'wizard-level-home');
   assert.deepEqual(app.scrolled, ['wizard-result'], 'An actual wizard transition still brings its destination into view');
+  assert.deepEqual(app.focused, ['wizard-label'], 'Only a step transition moves focus to its heading');
 });

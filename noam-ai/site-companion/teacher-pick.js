@@ -63,28 +63,28 @@ function clip(value, max) {
 }
 
 function sanitizeCandidates(raw) {
-  if (!Array.isArray(raw)) return [];
+  if (!Array.isArray(raw)) return { valid: false, items: [] };
   const out = [];
   const seen = new Set();
   for (const item of raw) {
-    if (!item || typeof item !== "object") continue;
-    const id = normalizeScopedLabel(item.id || item.label);
+    if (!item || typeof item !== "object" || Array.isArray(item)) return { valid: false, items: [] };
+    const token = item.id === undefined ? item.label : item.id;
+    if (typeof token !== "string") return { valid: false, items: [] };
+    const id = normalizeScopedLabel(token);
     const label = normalizeLabel(id);
-    if (!id || !label || seen.has(id)) continue;
+    if (!id || !label || seen.has(id)) return { valid: false, items: [] };
     seen.add(id);
-    out.push({
-      id,
-      label,
-      text: clip(item.text, 80),
-    });
+    // Labels and descriptions supplied by the browser are not source metadata.
+    out.push({ id, label });
   }
-  return out;
+  return { valid: true, items: out };
 }
 
 function teacherOf(input) {
   const teacher = input && input.teacher && typeof input.teacher === "object" ? input.teacher : {};
   const rawCount = Number(teacher.count);
   const count = Number.isInteger(rawCount) && rawCount > 0 ? Math.min(rawCount, MAX_BATCH_PICK_EXERCISES) : 0;
+  const candidates = sanitizeCandidates(teacher.candidates);
   return {
     grade: clip(teacher.grade, 8),
     gradeLabel: clip(teacher.gradeLabel, 80),
@@ -100,9 +100,46 @@ function teacherOf(input) {
     planCounts: Array.isArray(teacher.planCounts) && teacher.planCounts.length === TEACHER_PLAN_COUNTS.length &&
       TEACHER_PLAN_COUNTS.every((value, index) => teacher.planCounts[index] === value)
       ? TEACHER_PLAN_COUNTS.slice() : [],
-    hasCandidates: Array.isArray(teacher.candidates),
-    candidates: sanitizeCandidates(teacher.candidates),
+    hasCandidates: teacher.candidates !== undefined,
+    candidatesValid: candidates.valid,
+    candidates: candidates.items,
   };
+}
+
+/** Resolve browser selection constraints against authoritative source questions. */
+function canonicalTeacher(index, input) {
+  const teacher = teacherOf(input);
+  if (!teacher.hasCandidates) return teacher;
+  const reject = () => ({ ...teacher, candidates: [], candidateError: true });
+  if (!teacher.candidatesValid || !teacher.candidates.length) return reject();
+  if (!Number.isInteger(Number(teacher.grade)) || !/^(?:a|b|c|c2|all|one)$/.test(teacher.level)) return reject();
+  const pool = matchingTeacherSheets(index, teacher);
+  const available = eligibleTeacherQuestions(pool, [], false);
+  const byQuestion = new Map();
+  for (const item of available) {
+    if (!byQuestion.has(item.questionKey)) byQuestion.set(item.questionKey, []);
+    byQuestion.get(item.questionKey).push(item);
+  }
+  const seen = new Set();
+  const candidates = [];
+  for (const candidate of teacher.candidates) {
+    const matches = available.filter((item) => candidate.id.includes(":")
+      ? item.scoped === candidate.id : item.label === candidate.id);
+    if (matches.length !== 1) return reject();
+    const item = matches[0];
+    const parts = byQuestion.get(item.questionKey);
+    // The first source part represents the whole question, as in the browser
+    // picker. A second part cannot add another question or replace its anchor.
+    if (parts[0] !== item || seen.has(item.questionKey)) return reject();
+    seen.add(item.questionKey);
+    candidates.push({ id: item.scoped, label: item.label,
+      text: [item.sheet.levelLabel, "שאלה " + parseInt(item.label, 10), parts.length === 1 ? "סעיף אחד" : parts.length + " סעיפים"].filter(Boolean).join(" · ") });
+  }
+  return { ...teacher, candidates };
+}
+
+export function hasInvalidTeacherCandidates(index, input) {
+  return requestedPickCount(input) > 0 && canonicalTeacher(index, input).candidateError === true;
 }
 
 function messageOf(input) {
@@ -195,8 +232,11 @@ export function parseClassifier(content) {
 }
 
 export function classifierRequestBody(input, index) {
-  const teacher = teacherOf(input);
+  const teacher = canonicalTeacher(index, input);
   const count = requestedPickCount(input);
+  if (count > 0 && teacher.candidateError) {
+    throw Object.assign(new Error("Teacher candidate list is invalid"), { code: "TEACHER_CANDIDATES_INVALID" });
+  }
   const page = input && input.page && typeof input.page === "object" ? input.page : {};
   const planCandidates = teacherPlanCandidates(index, teacher);
   const planQuestionCount = new Set(planCandidates.map((item) => item.questionKey)).size;
@@ -220,18 +260,7 @@ export function classifierRequestBody(input, index) {
       lines.push("c ו-c2 הן אותה משפחת מצוינות c; אין חובה לבחור משני המקורות. משפחה שלא נותרו בה שאלות ברשימת המועמדים אינה נדרשת. שאר הבחירה לפי מטרת השיעור והערת המורה; אין להחזיר בחירה מרמה אחת בלבד.");
     }
     const matching = matchingTeacherSheets(index, teacher);
-    const knownIds = new Set();
-    for (const sheet of matching) {
-      for (const rawLabel of sheet.questions || []) {
-        const label = normalizeLabel(rawLabel);
-        if (!label) continue;
-        knownIds.add(label);
-        if (/^(?:[abc]|c2)$/.test(sheet.level)) knownIds.add(sheet.level + ":" + label);
-      }
-    }
-    const candidates = Array.isArray(index)
-      ? teacher.candidates.filter((candidate) => knownIds.has(candidate.id))
-      : teacher.candidates;
+    const candidates = teacher.candidates;
     if (candidates.length) {
       lines.push(
         "שאלות קיימות בדף לבחירה: " +
@@ -280,7 +309,7 @@ export function classifierRequestBody(input, index) {
 }
 
 function teacherPlanCandidates(index, teacher) {
-  if (!teacher.planCounts.length || !teacher.candidates.length || teacher.count < 1 || teacher.count > 15) return [];
+  if (teacher.candidateError || !teacher.planCounts.length || !teacher.candidates.length || teacher.count < 1 || teacher.count > 15) return [];
   return eligibleTeacherQuestions(matchingTeacherSheets(index, teacher), teacher.candidates, teacher.hasCandidates);
 }
 
@@ -327,7 +356,7 @@ function explicitTeacherQuestions(available, labels, target) {
 
 /** Only explicit, complete model results are reusable. No local completion. */
 export function selectTeacherPlans(index, input, classification, model) {
-  const teacher = teacherOf(input);
+  const teacher = canonicalTeacher(index, input);
   const available = teacherPlanCandidates(index, teacher);
   const families = mixedLevelFamilies(available, teacher.level);
   const total = new Set(available.map((item) => item.questionKey)).size;
@@ -357,7 +386,7 @@ export function recoverTeacherPickFromPlan(index, input, pick, plans) {
   const plan = plans && plans[String(count)];
   if (!plan || plan.source !== "classifier" || !plan.model ||
       !Array.isArray(plan.exerciseIds) || !Array.isArray(plan.modelExerciseIds)) return null;
-  const teacher = teacherOf(input);
+  const teacher = canonicalTeacher(index, input);
   const available = teacherPlanCandidates(index, teacher);
   const target = Math.min(count, new Set(available.map((item) => item.questionKey)).size);
   if (!target || plan.exerciseIds.length !== target || plan.modelExerciseIds.length !== target) return null;
@@ -378,7 +407,7 @@ export function recoverTeacherPickFromPlan(index, input, pick, plans) {
 }
 
 export function teacherCorrectionEligible(index, input, classification, pick, plans) {
-  const teacher = teacherOf(input);
+  const teacher = canonicalTeacher(index, input);
   return input?.page?.kind === "teachers" && Boolean(classification) && TEACHER_PLAN_COUNTS.includes(teacher.count) &&
     teacher.planCounts.length === TEACHER_PLAN_COUNTS.length && teacherPlanCandidates(index, teacher).length > 0 &&
     Boolean(pick && (pick.selectionError || ["fallback", "mixed"].includes(pick.selectionSource))) &&
@@ -387,7 +416,7 @@ export function teacherCorrectionEligible(index, input, classification, pick, pl
 
 /** A correction is accepted only as an exact, complete model selection. */
 export function validateExactTeacherPrimary(index, input, classification) {
-  const teacher = teacherOf(input);
+  const teacher = canonicalTeacher(index, input);
   const available = teacherPlanCandidates(index, teacher);
   const count = teacher.count;
   const candidateCount = new Set(available.map((item) => item.questionKey)).size;
@@ -443,7 +472,7 @@ export function teacherCorrectionRequestBody(input, index, reason) {
     "level-coverage": "הבחירה הקודמת לא ייצגה את כל משפחות הרמה הזמינות.",
   }[reason] || "הבחירה הקודמת לא עברה בדיקה של המזהים, הכמות המדויקת או ייחודיות השאלות השלמות.";
   const grouped = {};
-  for (const item of teacherPlanCandidates(index, teacherOf(input))) {
+  for (const item of teacherPlanCandidates(index, canonicalTeacher(index, input))) {
     const level = item.sheet.level || "one";
     if (!grouped[level]) grouped[level] = [];
     grouped[level].push(item.scoped);
@@ -483,7 +512,7 @@ function numberOrNull(value) {
 
 function levelOrEmpty(value) {
   const level = String(value || "").toLowerCase();
-  return level === "a" || level === "b" || level === "c" || level === "c2" ? level : "";
+  return level === "a" || level === "b" || level === "c" || level === "c2" || level === "one" ? level : "";
 }
 
 function matchesTeacherLevel(sheet, level) {
@@ -599,12 +628,16 @@ export function selectBatchExercises(pool, count, goal, classified, candidates) 
 
 export function selectTeacherPicks(index, input, classification) {
   const rows = Array.isArray(index) ? index : [];
-  const teacher = teacherOf(input);
+  const teacher = canonicalTeacher(index, input);
   const classified = classification || {};
   const local = resolveNavigationIntent(input);
   const grade = numberOrNull(teacher.grade) || numberOrNull(classified.grade) || local.grade;
   const topicId = /^\d{1,6}$/.test(teacher.topic) ? String(teacher.topic) : "";
   const batchCount = requestedPickCount(input);
+  if (batchCount > 0 && teacher.candidateError) {
+    return { band: grade && grade <= 6 ? "elementary" : "middle", exerciseIds: [], modelExerciseIds: [],
+      sheetIds: [], sheets: [], selectionSource: "fallback", selectionError: "MODEL_SELECTION_INVALID" };
+  }
   const explicitAllLevels = batchCount > 0 && String(teacher.level || "").toLowerCase() === "all";
   const level = explicitAllLevels
     ? ""
