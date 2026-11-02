@@ -4,18 +4,31 @@ import { PYTHAGORAS_GAME_PATH } from '../lib/pythagorasGame';
 ---
 <section class="exact-game-promo">
   <a class="exact-game-promo__card" href={PUBLIC_LESSON_PATH} data-home-game-promo>
-    <span class="exact-game-promo__shot">
+    <span class="exact-game-promo__shot exact-game-promo__shot--kefel">
       <img
         src="/games/kefel-mekutsar-card.webp"
         width="960"
         height="508"
-        alt="ריבוע (a+b) מהמשחק, מחולק ל־a² בירוק, b² באדום ושני מלבני ab צהובים"
+        alt="ריבוע (a−b)² מהמשחק, מחולק ל־(a−b)² ולמלבני החיסור"
+        hidden
       />
+      <svg class="exact-game-promo__mark exact-formula-new__svg" viewBox="0 0 402 320" aria-hidden="true" focusable="false">
+        <rect x="88" y="42" width="240" height="240" rx="11" fill="#fff" stroke="#17233f" stroke-width="2.5"></rect>
+        <rect x="93.5" y="47.5" width="144" height="144" rx="6" fill="#1a8a80"></rect>
+        <text class="exact-tile-label" x="165" y="120" fill="#fff">(a−b)²</text>
+        <rect x="240.5" y="47.5" width="82" height="144" rx="6" fill="#f0b429"></rect>
+        <text class="exact-tile-label exact-tile-label--mid" x="281" y="120" fill="#222e44">b(a−b)</text>
+        <rect x="93.5" y="194.5" width="144" height="82" rx="6" fill="#f0b429"></rect>
+        <text class="exact-tile-label exact-tile-label--mid" x="165" y="236" fill="#222e44">b(a−b)</text>
+        <rect x="240.5" y="194.5" width="82" height="82" rx="6" fill="#e8684a"></rect>
+        <text class="exact-tile-label" x="281" y="236" fill="#17233f">b²</text>
+        <text x="208" y="22" fill="#22305a" style="font-size:18px;font-weight:700">(a−b)² = a² − 2ab + b²</text>
+      </svg>
     </span>
     <span class="exact-game-promo__copy">
       <span class="exact-game-promo__badge">חדש!</span>
       <h2 class="exact-game-promo__title">נסו את המשחק החדש!</h2>
-      <p class="exact-game-promo__text">נוסחת הכפל המקוצר השנייה, עם אליהו. אהבתם?</p>
+      <p class="exact-game-promo__text">נוסחת הכפל המקוצר השנייה <bdi dir="ltr">(a−b)²</bdi>, עם אליהו. אהבתם?</p>
       <span class="exact-game-promo__go">למשחק</span>
     </span>
   </a>
@@ -154,9 +167,9 @@ import { PYTHAGORAS_GAME_PATH } from '../lib/pythagorasGame';
           </svg>
         </span>
         <span class="exact-formula-new__copy">
-          <span class="exact-formula-new__formula" dir="ltr">(a+b)²</span>
+          <span class="exact-formula-new__formula" dir="ltr">(a−b)² · (a+b)²</span>
           <span class="exact-formula-new__name">דו־איבר בריבוע</span>
-          <span class="exact-formula-new__hint">ריבוע הסכום וההפרש</span>
+          <span class="exact-formula-new__hint">ריבוע ההפרש והסכום</span>
         </span>
       </a>
       <a class="exact-formula-new__link" href="/difference-of-squares-grade-9">
@@ -234,9 +247,11 @@ import { PYTHAGORAS_GAME_PATH } from '../lib/pythagorasGame';
   .exact-game-promo__card:hover{transform:translateY(-3px);box-shadow:6px 6px 0 #e5735c;}
   .exact-game-promo__card:focus-visible{outline:3px solid #2a7c7a;outline-offset:3px;}
   .exact-game-promo__shot{
-    flex:1 1 46%;min-width:0;display:flex;align-items:center;background:#f7f6f2;
+    flex:1 1 46%;min-width:0;display:flex;align-items:center;justify-content:center;background:#f7f6f2;
     border-inline-end:2px solid #22305a;
   }
+  .exact-game-promo__shot--kefel{padding:14px 12px;}
+  .exact-game-promo__shot img[hidden]{display:none!important;}
   .exact-game-promo__shot img{display:block;width:100%;height:auto;}
   .exact-game-promo__copy{
     flex:1 1 54%;min-width:0;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;
