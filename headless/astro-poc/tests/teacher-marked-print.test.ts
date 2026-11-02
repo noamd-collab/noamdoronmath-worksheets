@@ -575,7 +575,7 @@ describe('teacher catalog picker', () => {
       assert.equal(html.includes('אפשר להוסיף סעיף'), false);
       assert.match(html, /id="ai-suggest-status"[^>]*role="status"/);
       assert.match(html, /id="section-kind-test"/);
-      assert.match(html, /id="more-topic-yes"/);
+      assert.match(html, /id="add-topic"/);
     }
     assert.match(printer, /data-whole-question/);
     assert.match(printer, /pickMode: 'manual'/);
