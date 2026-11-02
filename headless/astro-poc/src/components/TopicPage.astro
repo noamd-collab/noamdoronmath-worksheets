@@ -149,19 +149,37 @@ const heroUnits = hasDemo ? bodyUnits.slice(0, heroEnd) : [];
 const flowUnits = hasDemo ? bodyUnits.slice(heroEnd) : bodyUnits;
 const catalog = loadCatalog();
 const topicId = page.catalogCta?.catalogTopicId ?? null;
-const catalogTopic = catalog.grades.find((entry) => entry.grade === page.grade)
-  ?.topics.find((topic) => topic.id === topicId);
-const topicLevels = catalogTopic?.levels.map((level) => ({
-  key: level.key,
-  label: level.label,
-  href: buildWorksheetHref({
-    catalog,
-    grade: page.grade,
-    topic: catalogTopic,
-    levelKey: level.key,
-    backPath: resolveSiteHrefString(page.catalogCta.href),
-  }),
-})) || [];
+function levelDifficultyTag(key: string): string {
+  if (key === 'b') return 'מחזקת';
+  if (key === 'c' || key === 'c2') return 'אתגר';
+  return 'רגילה';
+}
+
+function levelsForTopicId(catTopicId: number | null | undefined, backHref?: string) {
+  if (catTopicId == null) return [];
+  const found = catalog.grades
+    .find((entry) => entry.grade === page.grade)
+    ?.topics.find((topic) => topic.id === catTopicId);
+  if (!found) return [];
+  return found.levels.map((level) => {
+    const difficultyTag = levelDifficultyTag(level.key);
+    return {
+      key: level.key,
+      label: level.label,
+      difficultyTag,
+      displayLabel: `${level.label} · ${difficultyTag}`,
+      href: buildWorksheetHref({
+        catalog,
+        grade: page.grade,
+        topic: found,
+        levelKey: level.key,
+        backPath: resolveSiteHrefString(backHref || page.catalogCta.href),
+      }),
+    };
+  });
+}
+
+const topicLevels = levelsForTopicId(topicId, page.catalogCta?.href);
 
 function faqHeadingId(groupIndex: number) {
   return groupIndex === 0 ? 'topic-faq-heading' : `topic-faq-heading-${groupIndex}`;
@@ -259,9 +277,9 @@ function faqHeadingId(groupIndex: number) {
               return null;
             })}
             {topicLevels.length > 0 && (
-              <div class="exact-topic-levels">
+              <div class="exact-topic-levels" id="topic-levels" data-topic-levels>
                 {topicLevels.map((level) => (
-                  <a class={`exact-topic-level exact-topic-level--${level.key}`} href={level.href} target="_blank" rel="noopener noreferrer">{level.label}</a>
+                  <a class={`exact-topic-level exact-topic-level--${level.key}`} href={level.href} target="_blank" rel="noopener noreferrer" data-level-key={level.key} data-level-tag={level.difficultyTag}>{level.displayLabel}</a>
                 ))}
               </div>
             )}
