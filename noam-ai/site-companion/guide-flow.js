@@ -62,10 +62,6 @@ export function resolveDeterministicTurn(payload, deps) {
   if (isRoleQuestion(message)) {
     return Object.assign({ active: true, exerciseIds: [], sheetIds: [], intake: null, wizard: null }, roleAnswer(payload));
   }
-  const mathHint = buildMathExerciseHint(message, page);
-  if (mathHint) {
-    return mathHint;
-  }
   if (isWorksheetSolveRequest(page.kind, message)) {
     return {
       ok: true,
@@ -85,6 +81,10 @@ export function resolveDeterministicTurn(payload, deps) {
       intake: null,
       wizard: null,
     };
+  }
+  const mathHint = buildMathExerciseHint(message, page);
+  if (mathHint) {
+    return mathHint;
   }
   if (continuesIntake(message, payload && payload.intake)) {
     return advanceExerciseIntake(message, payload && payload.intake, settings.teacherIndex, page);

@@ -519,12 +519,12 @@ export async function handleCompanionTurn(input, options) {
   const safe = boundCompanionInput(input);
   const pageKind = safe.page && safe.page.kind;
   const message = String((input && input.message) || "");
-  if (isRoleQuestion(message)) return roleAnswer(safe);
-  const mathHint = buildMathExerciseHint(message, safe.page);
-  if (mathHint) return mathHint;
   if (isWorksheetSolveRequest(pageKind, message)) {
     return emptyResult("ramzi-redirect", RAMZI_TEXT, safe);
   }
+  if (isRoleQuestion(message)) return roleAnswer(safe);
+  const mathHint = buildMathExerciseHint(message, safe.page);
+  if (mathHint) return mathHint;
   const suggested = safe.history.length ? null : suggestTopicGroup(safe, settings.catalog, settings.guide);
   if (suggested) return suggested;
   const query = teacherQuery(safe) || (safe.page && safe.page.title) || "";
