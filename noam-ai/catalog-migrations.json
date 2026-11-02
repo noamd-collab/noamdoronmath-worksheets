@@ -6147,16 +6147,16 @@
         "grade": 9,
         "level": "a"
       },
-      "pdfId": "a86b0e802b7747c2ab2b496856474b96",
+      "pdfId": "963480052e8346d6a6a893b9586192f9",
       "prefix": "G9-T17",
       "grade": 9,
       "level": "a",
       "topicId": 7,
       "title": "המקבילית",
       "siblings": {
-        "pa": "a86b0e802b7747c2ab2b496856474b96",
-        "pb": "e1fbaa2e0e7b499995b2cec1e0d1f95e",
-        "pc": "c7fc81f5c13b433eb66230d5358224de"
+        "pa": "963480052e8346d6a6a893b9586192f9",
+        "pb": "a606d9fa15bd4a94a5793fbfb6cd710d",
+        "pc": "2704db9ce5e44645830bb3ea18fb9541"
       }
     },
     "f41dd83e9f8b4200b7bfced99715646f": {
@@ -6165,16 +6165,16 @@
         "grade": 9,
         "level": "b"
       },
-      "pdfId": "e1fbaa2e0e7b499995b2cec1e0d1f95e",
+      "pdfId": "a606d9fa15bd4a94a5793fbfb6cd710d",
       "prefix": "G9-T17",
       "grade": 9,
       "level": "b",
       "topicId": 7,
       "title": "המקבילית",
       "siblings": {
-        "pa": "a86b0e802b7747c2ab2b496856474b96",
-        "pb": "e1fbaa2e0e7b499995b2cec1e0d1f95e",
-        "pc": "c7fc81f5c13b433eb66230d5358224de"
+        "pa": "963480052e8346d6a6a893b9586192f9",
+        "pb": "a606d9fa15bd4a94a5793fbfb6cd710d",
+        "pc": "2704db9ce5e44645830bb3ea18fb9541"
       }
     },
     "f068defc5cfc4d399f757acd636dde49": {
@@ -6183,16 +6183,16 @@
         "grade": 9,
         "level": "c"
       },
-      "pdfId": "c7fc81f5c13b433eb66230d5358224de",
+      "pdfId": "2704db9ce5e44645830bb3ea18fb9541",
       "prefix": "G9-T17",
       "grade": 9,
       "level": "c",
       "topicId": 7,
       "title": "המקבילית",
       "siblings": {
-        "pa": "a86b0e802b7747c2ab2b496856474b96",
-        "pb": "e1fbaa2e0e7b499995b2cec1e0d1f95e",
-        "pc": "c7fc81f5c13b433eb66230d5358224de"
+        "pa": "963480052e8346d6a6a893b9586192f9",
+        "pb": "a606d9fa15bd4a94a5793fbfb6cd710d",
+        "pc": "2704db9ce5e44645830bb3ea18fb9541"
       }
     },
     "86a5365243ab4d668af204921c33df91": {
@@ -6363,16 +6363,16 @@
         "grade": 9,
         "level": "a"
       },
-      "pdfId": "a023ea9a363a4b0f9c7954ace1553f5e",
+      "pdfId": "8be86fcf1a7e48ad98b2c2adc12724ab",
       "prefix": "G9-T18",
       "grade": 9,
       "level": "a",
       "topicId": 11,
       "title": "המלבן",
       "siblings": {
-        "pa": "a023ea9a363a4b0f9c7954ace1553f5e",
-        "pb": "9522ad34d5334d59815bda38d0f5609f",
-        "pc": "a41a75e4778041168fe26b19439eb72d"
+        "pa": "8be86fcf1a7e48ad98b2c2adc12724ab",
+        "pb": "543140ba72214305b7f76c4318d6c941",
+        "pc": "594e3b89f7194ad49c73b740f40dd37f"
       }
     },
     "013ccbb6896d486090482c2b548fef6c": {
@@ -6381,16 +6381,16 @@
         "grade": 9,
         "level": "b"
       },
-      "pdfId": "9522ad34d5334d59815bda38d0f5609f",
+      "pdfId": "543140ba72214305b7f76c4318d6c941",
       "prefix": "G9-T18",
       "grade": 9,
       "level": "b",
       "topicId": 11,
       "title": "המלבן",
       "siblings": {
-        "pa": "a023ea9a363a4b0f9c7954ace1553f5e",
-        "pb": "9522ad34d5334d59815bda38d0f5609f",
-        "pc": "a41a75e4778041168fe26b19439eb72d"
+        "pa": "8be86fcf1a7e48ad98b2c2adc12724ab",
+        "pb": "543140ba72214305b7f76c4318d6c941",
+        "pc": "594e3b89f7194ad49c73b740f40dd37f"
       }
     },
     "f561a64ccb054d2daeb6931c72cd3361": {
@@ -6399,16 +6399,16 @@
         "grade": 9,
         "level": "c"
       },
-      "pdfId": "a41a75e4778041168fe26b19439eb72d",
+      "pdfId": "594e3b89f7194ad49c73b740f40dd37f",
       "prefix": "G9-T18",
       "grade": 9,
       "level": "c",
       "topicId": 11,
       "title": "המלבן",
       "siblings": {
-        "pa": "a023ea9a363a4b0f9c7954ace1553f5e",
-        "pb": "9522ad34d5334d59815bda38d0f5609f",
-        "pc": "a41a75e4778041168fe26b19439eb72d"
+        "pa": "8be86fcf1a7e48ad98b2c2adc12724ab",
+        "pb": "543140ba72214305b7f76c4318d6c941",
+        "pc": "594e3b89f7194ad49c73b740f40dd37f"
       }
     },
     "f262d5fe385546a19a74dae866684939": {
@@ -6471,16 +6471,16 @@
         "grade": 9,
         "level": "a"
       },
-      "pdfId": "d2c3c7ce359e494da2e6f1141e3fe215",
+      "pdfId": "182025dea59f4baf8f1bc79c641c17dd",
       "prefix": "G9-T19",
       "grade": 9,
       "level": "a",
       "topicId": 13,
       "title": "המעוין",
       "siblings": {
-        "pa": "d2c3c7ce359e494da2e6f1141e3fe215",
-        "pb": "3151dae0d8864f9fb3271e1a3fb3b87b",
-        "pc": "8d0c14af0f6e4a3286c2ecc1183ba3a8"
+        "pa": "182025dea59f4baf8f1bc79c641c17dd",
+        "pb": "41d31b1a4eea4ed998ed62e362bf258c",
+        "pc": "8db365cde371430c9104a8b0254058fc"
       }
     },
     "e091562d859a4059abca94dfddc17bfa": {
@@ -6489,16 +6489,16 @@
         "grade": 9,
         "level": "b"
       },
-      "pdfId": "3151dae0d8864f9fb3271e1a3fb3b87b",
+      "pdfId": "41d31b1a4eea4ed998ed62e362bf258c",
       "prefix": "G9-T19",
       "grade": 9,
       "level": "b",
       "topicId": 13,
       "title": "המעוין",
       "siblings": {
-        "pa": "d2c3c7ce359e494da2e6f1141e3fe215",
-        "pb": "3151dae0d8864f9fb3271e1a3fb3b87b",
-        "pc": "8d0c14af0f6e4a3286c2ecc1183ba3a8"
+        "pa": "182025dea59f4baf8f1bc79c641c17dd",
+        "pb": "41d31b1a4eea4ed998ed62e362bf258c",
+        "pc": "8db365cde371430c9104a8b0254058fc"
       }
     },
     "a188baefebd84cbdbb11df34ecad5985": {
@@ -6507,16 +6507,16 @@
         "grade": 9,
         "level": "c"
       },
-      "pdfId": "8d0c14af0f6e4a3286c2ecc1183ba3a8",
+      "pdfId": "8db365cde371430c9104a8b0254058fc",
       "prefix": "G9-T19",
       "grade": 9,
       "level": "c",
       "topicId": 13,
       "title": "המעוין",
       "siblings": {
-        "pa": "d2c3c7ce359e494da2e6f1141e3fe215",
-        "pb": "3151dae0d8864f9fb3271e1a3fb3b87b",
-        "pc": "8d0c14af0f6e4a3286c2ecc1183ba3a8"
+        "pa": "182025dea59f4baf8f1bc79c641c17dd",
+        "pb": "41d31b1a4eea4ed998ed62e362bf258c",
+        "pc": "8db365cde371430c9104a8b0254058fc"
       }
     },
     "526a6c54461442f8bbdf9de7dbc7d962": {
@@ -6525,16 +6525,16 @@
         "grade": 9,
         "level": "a"
       },
-      "pdfId": "9f018ad3bdda495ea5cf7198a29c923d",
+      "pdfId": "128c0bb142ae4f08a58ef4a4bdd041d4",
       "prefix": "G9-T20",
       "grade": 9,
       "level": "a",
       "topicId": 14,
       "title": "הריבוע",
       "siblings": {
-        "pa": "9f018ad3bdda495ea5cf7198a29c923d",
-        "pb": "9f4807731eac489881c7eefd54b52cab",
-        "pc": "b29f978c516747c1ab3516039f5863c6"
+        "pa": "128c0bb142ae4f08a58ef4a4bdd041d4",
+        "pb": "5ad5c2be58ea41cc9fbb9ab10787f9d8",
+        "pc": "0db5d6a3180c482e95e61dbed062fd1e"
       }
     },
     "bbe055af16ca45b1993c5e6c22330b3c": {
@@ -6543,16 +6543,16 @@
         "grade": 9,
         "level": "b"
       },
-      "pdfId": "9f4807731eac489881c7eefd54b52cab",
+      "pdfId": "5ad5c2be58ea41cc9fbb9ab10787f9d8",
       "prefix": "G9-T20",
       "grade": 9,
       "level": "b",
       "topicId": 14,
       "title": "הריבוע",
       "siblings": {
-        "pa": "9f018ad3bdda495ea5cf7198a29c923d",
-        "pb": "9f4807731eac489881c7eefd54b52cab",
-        "pc": "b29f978c516747c1ab3516039f5863c6"
+        "pa": "128c0bb142ae4f08a58ef4a4bdd041d4",
+        "pb": "5ad5c2be58ea41cc9fbb9ab10787f9d8",
+        "pc": "0db5d6a3180c482e95e61dbed062fd1e"
       }
     },
     "a35a7f529d004270bcf512f0145316f3": {
@@ -6561,16 +6561,16 @@
         "grade": 9,
         "level": "c"
       },
-      "pdfId": "b29f978c516747c1ab3516039f5863c6",
+      "pdfId": "0db5d6a3180c482e95e61dbed062fd1e",
       "prefix": "G9-T20",
       "grade": 9,
       "level": "c",
       "topicId": 14,
       "title": "הריבוע",
       "siblings": {
-        "pa": "9f018ad3bdda495ea5cf7198a29c923d",
-        "pb": "9f4807731eac489881c7eefd54b52cab",
-        "pc": "b29f978c516747c1ab3516039f5863c6"
+        "pa": "128c0bb142ae4f08a58ef4a4bdd041d4",
+        "pb": "5ad5c2be58ea41cc9fbb9ab10787f9d8",
+        "pc": "0db5d6a3180c482e95e61dbed062fd1e"
       }
     },
     "177f4a3afb2f42bfae772c13af5f0cd4": {
@@ -8151,6 +8151,222 @@
         "pa": "175b22c6530447edbc183ea8589671e3",
         "pb": "aafb63c1073e4cdb892782e919d65719",
         "pc": "5403246d19ed4a93a8b7004cc3103243"
+      }
+    },
+    "a86b0e802b7747c2ab2b496856474b96": {
+      "original": {
+        "prefix": "G9-T17",
+        "grade": 9,
+        "level": "a"
+      },
+      "pdfId": "963480052e8346d6a6a893b9586192f9",
+      "prefix": "G9-T17",
+      "grade": 9,
+      "level": "a",
+      "topicId": 7,
+      "title": "המקבילית",
+      "siblings": {
+        "pa": "963480052e8346d6a6a893b9586192f9",
+        "pb": "a606d9fa15bd4a94a5793fbfb6cd710d",
+        "pc": "2704db9ce5e44645830bb3ea18fb9541"
+      }
+    },
+    "e1fbaa2e0e7b499995b2cec1e0d1f95e": {
+      "original": {
+        "prefix": "G9-T17",
+        "grade": 9,
+        "level": "b"
+      },
+      "pdfId": "a606d9fa15bd4a94a5793fbfb6cd710d",
+      "prefix": "G9-T17",
+      "grade": 9,
+      "level": "b",
+      "topicId": 7,
+      "title": "המקבילית",
+      "siblings": {
+        "pa": "963480052e8346d6a6a893b9586192f9",
+        "pb": "a606d9fa15bd4a94a5793fbfb6cd710d",
+        "pc": "2704db9ce5e44645830bb3ea18fb9541"
+      }
+    },
+    "c7fc81f5c13b433eb66230d5358224de": {
+      "original": {
+        "prefix": "G9-T17",
+        "grade": 9,
+        "level": "c"
+      },
+      "pdfId": "2704db9ce5e44645830bb3ea18fb9541",
+      "prefix": "G9-T17",
+      "grade": 9,
+      "level": "c",
+      "topicId": 7,
+      "title": "המקבילית",
+      "siblings": {
+        "pa": "963480052e8346d6a6a893b9586192f9",
+        "pb": "a606d9fa15bd4a94a5793fbfb6cd710d",
+        "pc": "2704db9ce5e44645830bb3ea18fb9541"
+      }
+    },
+    "a023ea9a363a4b0f9c7954ace1553f5e": {
+      "original": {
+        "prefix": "G9-T18",
+        "grade": 9,
+        "level": "a"
+      },
+      "pdfId": "8be86fcf1a7e48ad98b2c2adc12724ab",
+      "prefix": "G9-T18",
+      "grade": 9,
+      "level": "a",
+      "topicId": 11,
+      "title": "המלבן",
+      "siblings": {
+        "pa": "8be86fcf1a7e48ad98b2c2adc12724ab",
+        "pb": "543140ba72214305b7f76c4318d6c941",
+        "pc": "594e3b89f7194ad49c73b740f40dd37f"
+      }
+    },
+    "9522ad34d5334d59815bda38d0f5609f": {
+      "original": {
+        "prefix": "G9-T18",
+        "grade": 9,
+        "level": "b"
+      },
+      "pdfId": "543140ba72214305b7f76c4318d6c941",
+      "prefix": "G9-T18",
+      "grade": 9,
+      "level": "b",
+      "topicId": 11,
+      "title": "המלבן",
+      "siblings": {
+        "pa": "8be86fcf1a7e48ad98b2c2adc12724ab",
+        "pb": "543140ba72214305b7f76c4318d6c941",
+        "pc": "594e3b89f7194ad49c73b740f40dd37f"
+      }
+    },
+    "a41a75e4778041168fe26b19439eb72d": {
+      "original": {
+        "prefix": "G9-T18",
+        "grade": 9,
+        "level": "c"
+      },
+      "pdfId": "594e3b89f7194ad49c73b740f40dd37f",
+      "prefix": "G9-T18",
+      "grade": 9,
+      "level": "c",
+      "topicId": 11,
+      "title": "המלבן",
+      "siblings": {
+        "pa": "8be86fcf1a7e48ad98b2c2adc12724ab",
+        "pb": "543140ba72214305b7f76c4318d6c941",
+        "pc": "594e3b89f7194ad49c73b740f40dd37f"
+      }
+    },
+    "d2c3c7ce359e494da2e6f1141e3fe215": {
+      "original": {
+        "prefix": "G9-T19",
+        "grade": 9,
+        "level": "a"
+      },
+      "pdfId": "182025dea59f4baf8f1bc79c641c17dd",
+      "prefix": "G9-T19",
+      "grade": 9,
+      "level": "a",
+      "topicId": 13,
+      "title": "המעוין",
+      "siblings": {
+        "pa": "182025dea59f4baf8f1bc79c641c17dd",
+        "pb": "41d31b1a4eea4ed998ed62e362bf258c",
+        "pc": "8db365cde371430c9104a8b0254058fc"
+      }
+    },
+    "3151dae0d8864f9fb3271e1a3fb3b87b": {
+      "original": {
+        "prefix": "G9-T19",
+        "grade": 9,
+        "level": "b"
+      },
+      "pdfId": "41d31b1a4eea4ed998ed62e362bf258c",
+      "prefix": "G9-T19",
+      "grade": 9,
+      "level": "b",
+      "topicId": 13,
+      "title": "המעוין",
+      "siblings": {
+        "pa": "182025dea59f4baf8f1bc79c641c17dd",
+        "pb": "41d31b1a4eea4ed998ed62e362bf258c",
+        "pc": "8db365cde371430c9104a8b0254058fc"
+      }
+    },
+    "8d0c14af0f6e4a3286c2ecc1183ba3a8": {
+      "original": {
+        "prefix": "G9-T19",
+        "grade": 9,
+        "level": "c"
+      },
+      "pdfId": "8db365cde371430c9104a8b0254058fc",
+      "prefix": "G9-T19",
+      "grade": 9,
+      "level": "c",
+      "topicId": 13,
+      "title": "המעוין",
+      "siblings": {
+        "pa": "182025dea59f4baf8f1bc79c641c17dd",
+        "pb": "41d31b1a4eea4ed998ed62e362bf258c",
+        "pc": "8db365cde371430c9104a8b0254058fc"
+      }
+    },
+    "9f018ad3bdda495ea5cf7198a29c923d": {
+      "original": {
+        "prefix": "G9-T20",
+        "grade": 9,
+        "level": "a"
+      },
+      "pdfId": "128c0bb142ae4f08a58ef4a4bdd041d4",
+      "prefix": "G9-T20",
+      "grade": 9,
+      "level": "a",
+      "topicId": 14,
+      "title": "הריבוע",
+      "siblings": {
+        "pa": "128c0bb142ae4f08a58ef4a4bdd041d4",
+        "pb": "5ad5c2be58ea41cc9fbb9ab10787f9d8",
+        "pc": "0db5d6a3180c482e95e61dbed062fd1e"
+      }
+    },
+    "9f4807731eac489881c7eefd54b52cab": {
+      "original": {
+        "prefix": "G9-T20",
+        "grade": 9,
+        "level": "b"
+      },
+      "pdfId": "5ad5c2be58ea41cc9fbb9ab10787f9d8",
+      "prefix": "G9-T20",
+      "grade": 9,
+      "level": "b",
+      "topicId": 14,
+      "title": "הריבוע",
+      "siblings": {
+        "pa": "128c0bb142ae4f08a58ef4a4bdd041d4",
+        "pb": "5ad5c2be58ea41cc9fbb9ab10787f9d8",
+        "pc": "0db5d6a3180c482e95e61dbed062fd1e"
+      }
+    },
+    "b29f978c516747c1ab3516039f5863c6": {
+      "original": {
+        "prefix": "G9-T20",
+        "grade": 9,
+        "level": "c"
+      },
+      "pdfId": "0db5d6a3180c482e95e61dbed062fd1e",
+      "prefix": "G9-T20",
+      "grade": 9,
+      "level": "c",
+      "topicId": 14,
+      "title": "הריבוע",
+      "siblings": {
+        "pa": "128c0bb142ae4f08a58ef4a4bdd041d4",
+        "pb": "5ad5c2be58ea41cc9fbb9ab10787f9d8",
+        "pc": "0db5d6a3180c482e95e61dbed062fd1e"
       }
     }
   }
