@@ -3507,6 +3507,12 @@ function trimPieceBox(slice, bitmap) {
     const winTop = ink.y0;
     const winBot = Math.min(pageH, ink.y0 + (ink.rh || 0));
     const mid = (winTop + winBot) / 2;
+    const winW = Math.ceil((clipped.x + clipped.w) * ink.width) - ink.x0;
+    // A fraction bar is thin, narrower than the window, and spans its numerator and denominator.
+    const bars = ink.bands.filter((band) => band.h <= 6 && band.maxX - band.minX >= band.h * 3 && (band.minX > 1 || band.maxX < winW - 2));
+    const onBar = (band) => bars.some((bar) => bar !== band
+      && band.minX >= bar.minX - 3 && band.maxX <= bar.maxX + 3
+      && (Math.abs(bar.y - (band.y + band.h)) <= 14 || Math.abs(band.y - (bar.y + bar.h)) <= 14));
     // A neighbour that leaked in touches an edge and does not cross this label's midline.
     const inner = ink.bands.filter((band) => {
       const topPx = ink.y0 + band.y;
@@ -3514,7 +3520,7 @@ function trimPieceBox(slice, bitmap) {
       const touches = topPx <= winTop + 1 || botPx >= winBot - 1;
       const ownsLine = topPx <= mid && botPx >= mid;
       // A wrapped answer puts its next line on the bottom edge on purpose.
-      if (touches && !ownsLine && !clipped.wrap) return false;
+      if (touches && !ownsLine && !clipped.wrap && !onBar(band)) return false;
       return true;
     });
     const bands = inner.length ? inner : ink.bands;
