@@ -138,7 +138,7 @@ describe('Noam AI site manual', () => {
     assert.equal(guide.counts.worksheet, catalogIds.length);
     for (const id of [
       '40e46a64bcf0441bae36eba820884704',
-      '8d23a741d56347aa9ff0747a47f0f92d',
+      'd7871990b85b4f24b3d033d19f4de35d',
       'd5efea6959f4415a913565dec0994063',
     ]) {
       assert.ok(guideIds.includes(id), id);
