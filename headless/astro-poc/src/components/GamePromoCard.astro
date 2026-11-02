@@ -22,30 +22,48 @@ import { PYTHAGORAS_GAME_PATH } from '../lib/pythagorasGame';
   <div class="exact-game-promo__slot" id="pythagoras-promo" data-pop="160">
     <a class="exact-game-promo__card exact-game-promo__card--beta" href={PYTHAGORAS_GAME_PATH} data-home-pythagoras-promo>
       <span class="exact-game-promo__shot" aria-hidden="true">
-        <svg class="exact-game-promo__mark exact-pyth" viewBox="78 -16 280 300" aria-hidden="true" focusable="false">
-          <g class="exact-live-pop exact-pyth-a">
-            <rect class="exact-pyth-glow" x="96" y="96" width="72" height="72" fill="none" stroke="#1a8a80" stroke-width="12"></rect>
-            <rect x="100" y="100" width="72" height="72" rx="4" fill="#17233f"></rect>
-            <rect x="96" y="96" width="72" height="72" rx="4" fill="#1a8a80" stroke="#17233f" stroke-width="2.5"></rect>
-            <text x="132" y="132" fill="#fff">a²</text>
+        <svg class="exact-game-promo__mark exact-pyth exact-live-pop" viewBox="48 -28 316 364" aria-hidden="true" focusable="false">
+          <g fill="none" stroke-linecap="round" stroke-width="1.6">
+            <path d="M80 96V168 M76 96H84 M76 168H84" stroke="#1a8a80"></path>
+            <path d="M168 282H264 M168 278V286 M264 278V286" stroke="#e8684a"></path>
+            <path d="M247.2 -9.6L343.2 62.4 M244.8 -6.4L249.6 -12.8 M340.8 65.6L345.6 59.2" stroke="#334155"></path>
           </g>
-          <g class="exact-live-pop exact-pyth-b">
-            <rect class="exact-pyth-glow" x="168" y="168" width="96" height="96" fill="none" stroke="#e8684a" stroke-width="12"></rect>
-            <rect x="172" y="172" width="96" height="96" rx="4" fill="#17233f"></rect>
-            <rect x="168" y="168" width="96" height="96" rx="4" fill="#e8684a" stroke="#17233f" stroke-width="2.5"></rect>
-            <text x="216" y="216" fill="#fff">b²</text>
+          <g class="exact-dim-pill" transform="rotate(-90 69 132)">
+            <rect x="48" y="123" width="42" height="18" rx="6"></rect>
+            <text class="exact-dim" x="69" y="132" fill="#1a8a80">a=3</text>
           </g>
-          <g class="exact-live-pop exact-pyth-c">
-            <polygon class="exact-pyth-glow" points="168,96 264,168 336,72 240,0" fill="none" stroke="#f0b429" stroke-width="14" stroke-linejoin="round"></polygon>
-            <polygon points="172,100 268,172 340,76 244,4" fill="#17233f" stroke-linejoin="round"></polygon>
-            <polygon points="168,96 264,168 336,72 240,0" fill="#f0b429" stroke="#17233f" stroke-width="2.5" stroke-linejoin="round"></polygon>
-            <text x="252" y="84" fill="#17233f">c²</text>
+          <g class="exact-dim-pill">
+            <rect x="195" y="273" width="42" height="18" rx="6"></rect>
+            <text class="exact-dim" x="216" y="282" fill="#a84434">b=4</text>
           </g>
-          <polygon points="168,168 168,96 264,168" fill="#fff8ea" stroke="#17233f" stroke-width="3.5" stroke-linejoin="round"></polygon>
-          <polyline points="168,156 180,156 180,168" fill="none" stroke="#17233f" stroke-width="2.5" stroke-linejoin="round"></polyline>
-          <text class="exact-pyth-side" x="184" y="124" fill="#0f5f58">a</text>
-          <text class="exact-pyth-side" x="216" y="150" fill="#a84434">b</text>
-          <text class="exact-pyth-side" x="204" y="148" fill="#8a5a00">c</text>
+          <g class="exact-dim-pill" transform="rotate(36.87 295.2 26.4)">
+            <rect x="274.2" y="17.4" width="42" height="18" rx="6"></rect>
+            <text class="exact-dim" x="295.2" y="26.4" fill="#334155">c=5</text>
+          </g>
+          <g class="exact-pyth-a">
+            <rect x="96" y="96" width="72" height="72" rx="5" fill="#fff" stroke="#17233f" stroke-width="1.6"></rect>
+            <rect x="98" y="98" width="68" height="68" rx="4" fill="#1a8a80"></rect>
+            <text x="132" y="132" fill="#fff">a² = 9</text>
+          </g>
+          <g class="exact-pyth-b">
+            <rect x="168" y="168" width="96" height="96" rx="5" fill="#fff" stroke="#17233f" stroke-width="1.6"></rect>
+            <rect x="170" y="170" width="92" height="92" rx="4" fill="#e8684a"></rect>
+            <text x="216" y="216" fill="#17233f">b² = 16</text>
+          </g>
+          <g class="exact-pyth-c">
+            <polygon points="168,96 264,168 336,72 240,0" fill="#fff" stroke="#17233f" stroke-width="1.6" stroke-linejoin="round"></polygon>
+            <rect x="2" y="-118" width="116" height="116" rx="4" fill="#f0b429" transform="translate(168 96) rotate(36.86989765)"></rect>
+            <text x="252" y="84" fill="#17233f">c² = 25</text>
+          </g>
+          <polygon points="168,168 168,96 264,168" fill="#fff" stroke="#334155" stroke-width="1.5" stroke-linejoin="round"></polygon>
+          <polyline points="168,148 188,148 188,168" fill="none" stroke="#334155" stroke-width="1.2" stroke-linejoin="round"></polyline>
+          <g class="exact-handle" transform="translate(168 168)">
+            <circle class="exact-ring" r="10" fill="none" stroke="#1a8a80" stroke-width="2"></circle>
+            <circle class="exact-ring exact-ring--b" r="10" fill="none" stroke="#1a8a80" stroke-width="1.4"></circle>
+            <circle r="10" fill="#fff" stroke="#17233f" stroke-width="3"></circle>
+            <circle r="3.4" fill="#1a8a80"></circle>
+          </g>
+          <text class="exact-pyth-summary" x="206" y="315" fill="#22305a">a² + b² = c²</text>
         </svg>
       </span>
       <span class="exact-game-promo__copy">
@@ -236,13 +254,11 @@ import { PYTHAGORAS_GAME_PATH } from '../lib/pythagorasGame';
     margin-top:6px;font-weight:700;font-size:16px;color:#1e605e;text-decoration:underline;text-underline-offset:4px;
   }
   .exact-game-promo__slot{margin-top:18px;}
+  .exact-game-promo__card--beta,
+  .exact-game-promo__card--beta:hover{box-shadow:none;}
   .exact-game-promo__card--beta .exact-game-promo__shot{
     flex:1 1 48%;min-width:0;justify-content:center;align-items:center;padding:14px 12px;
-    background:
-      radial-gradient(120px 90px at 18% 28%, rgba(21,117,111,.18), transparent 70%),
-      radial-gradient(140px 110px at 78% 76%, rgba(196,78,58,.14), transparent 72%),
-      radial-gradient(110px 80px at 62% 16%, rgba(240,180,41,.24), transparent 70%),
-      #fbfaf5;
+    background:#f4e7c3;
   }
   .exact-game-promo__mark{display:block;width:min(100%,420px);height:auto;max-width:100%;}
   .exact-pyth,.exact-formula-new__svg{direction:ltr;unicode-bidi:isolate;}
@@ -250,13 +266,10 @@ import { PYTHAGORAS_GAME_PATH } from '../lib/pythagorasGame';
     font-family:'Secular One',Heebo,sans-serif;font-weight:400;font-size:15px;
     text-anchor:middle;dominant-baseline:central;
   }
-  .exact-pyth-a text{font-size:22px;}
-  .exact-pyth-b text,.exact-pyth-c text{font-size:26px;}
-  .exact-pyth-side{font-size:16px;}
+  .exact-pyth-a text,.exact-pyth-b text,.exact-pyth-c text{font-size:16px;}
+  .exact-pyth .exact-dim{font-size:12px;}
+  .exact-pyth .exact-pyth-summary{font-size:18px;}
   .exact-live-pop{transform-box:fill-box;transform-origin:center;animation:exact-live-in .95s cubic-bezier(.22,.82,.2,1) both;}
-  .exact-pyth-a{transform-origin:100% 50%;animation-delay:.08s;}
-  .exact-pyth-b{transform-origin:50% 0%;animation-delay:.32s;}
-  .exact-pyth-c{transform-origin:28.6% 78.6%;animation-delay:.56s;}
   .exact-pyth-glow{opacity:.22;animation:exact-pyth-glow 2.8s ease-in-out infinite;}
   .exact-ring{
     transform-box:fill-box;transform-origin:center;
