@@ -14606,6 +14606,60 @@
       "topicId": 35,
       "title": "גישור ותיקון פערים",
       "siblings": {}
+    },
+    "fc62c3516b5c4f4c8e3f433792c84c40": {
+      "original": {
+        "prefix": "G8-T65",
+        "grade": 8,
+        "level": "a"
+      },
+      "pdfId": "4a982d78725944ffb0a96fb4a1a35e3e",
+      "prefix": "G8-T65",
+      "grade": 8,
+      "level": "a",
+      "topicId": 65,
+      "title": "הוכחות בחפיפת משולשים",
+      "siblings": {
+        "pa": "4a982d78725944ffb0a96fb4a1a35e3e",
+        "pb": "26a801705f18420b80e3c31d29f1a983",
+        "pc": "341c68b3cf2d42dabe9034e085a434d6"
+      }
+    },
+    "993467c2757a4950abd2a0237f18a48c": {
+      "original": {
+        "prefix": "G8-T65",
+        "grade": 8,
+        "level": "b"
+      },
+      "pdfId": "26a801705f18420b80e3c31d29f1a983",
+      "prefix": "G8-T65",
+      "grade": 8,
+      "level": "b",
+      "topicId": 65,
+      "title": "הוכחות בחפיפת משולשים",
+      "siblings": {
+        "pa": "4a982d78725944ffb0a96fb4a1a35e3e",
+        "pb": "26a801705f18420b80e3c31d29f1a983",
+        "pc": "341c68b3cf2d42dabe9034e085a434d6"
+      }
+    },
+    "1626318ee2c94f6a9b53ffcaf289ec83": {
+      "original": {
+        "prefix": "G8-T65",
+        "grade": 8,
+        "level": "c"
+      },
+      "pdfId": "341c68b3cf2d42dabe9034e085a434d6",
+      "prefix": "G8-T65",
+      "grade": 8,
+      "level": "c",
+      "topicId": 65,
+      "title": "הוכחות בחפיפת משולשים",
+      "siblings": {
+        "pa": "4a982d78725944ffb0a96fb4a1a35e3e",
+        "pb": "26a801705f18420b80e3c31d29f1a983",
+        "pc": "341c68b3cf2d42dabe9034e085a434d6"
+      }
     }
   }
 }
