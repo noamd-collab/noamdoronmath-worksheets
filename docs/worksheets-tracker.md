@@ -1,5 +1,10 @@
 # Worksheet tracker
 
+## Remove the combined-level button — 2026-11-02
+
+- At Noam's request, removed `כל הרמות יחד` from the site and demo level selector; a, b and excellence remain. Topics without graded choices show their explanatory text without a disabled radio group.
+- Existing explicit all-level links and ungraded source filtering remain compatible. No AI selection, source content or print behavior changes. The existing accessible-selector check now verifies the three actual controls.
+
 ## Teacher selection and print integrity — 2026-11-02
 
 - Noam approved PR #357 for merge/publication after correcting the UI wording to `קטע ממבחן`. The label, help text, messages and demo are synchronized, and the affected module cache versions are refreshed.
