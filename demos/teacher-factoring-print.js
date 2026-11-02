@@ -3251,7 +3251,7 @@ function answerDebris(bitmap, left, right, top, bot, tightTop, tightBottom) {
   };
 }
 
-function dropMaskedAnswerBand(piece) {
+function dropMaskedAnswerBand(piece, bitmap) {
   const box = piece && piece.box;
   const masks = box && box.masks;
   if (!box || !(box.h > 0) || !masks || !masks.length) return piece;
@@ -3264,7 +3264,13 @@ function dropMaskedAnswerBand(piece) {
   if (h < 0.008) return piece;
   // box.y is the top. Dropping the masked label line means moving the top down,
   // so the continuation sentence stays and the stranded כל does not.
-  return { ...piece, box: placedBox(box, box.y + box.h * cut, h) };
+  const nextBox = placedBox(box, box.y + box.h * cut, h);
+  delete nextBox.baseline;
+  delete nextBox.wrap;
+  delete nextBox.mask;
+  delete nextBox.masks;
+  const next = { ...piece, box: nextBox };
+  return bitmap && typeof trimPieceBox === 'function' ? trimPieceBox(next, bitmap) : next;
 }
 
 // Cut a glued mark at the blank gap nearest the estimate. A gap narrower than a
@@ -3667,16 +3673,26 @@ function trimPieceBox(slice, bitmap) {
   if (clipped.h < 0.12 && clipped.segment !== 'figure' && ink.bands.length >= 2) {
     const bands = ink.bands.slice();
     const gapBetween = (above, below) => below.y - (above.y + above.h);
+    let shiftedTop = false;
+    let poppedTail = null;
     // A cut row of the previous line is about 6px, with a full gap under it.
-    if (bands[0].h <= 10 && gapBetween(bands[0], bands[1]) >= 12) bands.shift();
+    if (bands[0].h <= 10 && gapBetween(bands[0], bands[1]) >= 12) {
+      bands.shift();
+      shiftedTop = true;
+    }
     if (bands.length >= 2) {
       const tail = bands[bands.length - 1];
       const prev = bands[bands.length - 2];
-      if (tail.h <= 10 && gapBetween(prev, tail) >= 12) bands.pop();
+      if (tail.h <= 10 && gapBetween(prev, tail) >= 12) {
+        bands.pop();
+        poppedTail = tail;
+      }
     }
     if (bands.length && bands.length < ink.bands.length) {
-      const top = Math.max(0, ink.y0 + bands[0].y - pad);
-      const bot = Math.min(pageH, ink.y0 + bands[bands.length - 1].y + bands[bands.length - 1].h + pad);
+      const top = shiftedTop ? Math.max(0, ink.y0 + bands[0].y - pad) : ink.y0;
+      const bot = poppedTail && !clipped.segment
+        ? Math.min(pageH, ink.y0 + poppedTail.y - pad)
+        : Math.min(pageH, ink.y0 + bands[bands.length - 1].y + bands[bands.length - 1].h + pad);
       if (bot - top > 8) {
         return { ...slice, box: placedBox(clipped, top / pageH, (bot - top) / pageH) };
       }
@@ -4523,6 +4539,28 @@ function leftFigureBoxes(bitmap, y0, y1) {
       } else if (++leftMiss > gapPx) break;
     }
     minX = first;
+    const leftSpanNeed = Math.max(8, Math.round(height * 0.012));
+    const leftRunNeed = Math.max(8, Math.round(width * 0.02));
+    let leftRun = 0;
+    let leftRunStart = minX;
+    let leftBest = minX;
+    for (let x = xStart; x < minX; x += 1) {
+      let sMin = high + 1;
+      let sMax = low - 1;
+      for (let y = low; y <= high; y += 1) {
+        if (barRow[y - top] || ruleAt(y) || thinRule[y] || !strokeAt(x, y)) continue;
+        if (y < sMin) sMin = y;
+        if (y > sMax) sMax = y;
+      }
+      if (sMax - sMin >= leftSpanNeed) {
+        if (!leftRun) leftRunStart = x;
+        leftRun += 1;
+        if (leftRun >= leftRunNeed && leftRunStart < leftBest) leftBest = leftRunStart;
+      } else {
+        leftRun = 0;
+      }
+    }
+    if (leftBest < minX) minX = leftBest;
     let seeds = [];
     for (let y = low; y <= high; y += 1) {
       if (barRow[y - top] || ruleAt(y) || thinRule[y]) continue;
@@ -4763,7 +4801,7 @@ function joinFigureRow(figures) {
     if (shorter < 0.04) return false;
     const shared = Math.min(a.y1, b.y1) - Math.max(a.y0, b.y0);
     const gapX = Math.max(a.x0, b.x0) - Math.min(a.x1, b.x1);
-    return shared >= shorter * 0.6 && gapX < 0.04;
+    return shared >= shorter * 0.6 && gapX < 0.065;
   };
   for (let merged = true; merged;) {
     merged = false;
@@ -5509,14 +5547,23 @@ function layoutQuestionCrops(model) {
     // a short piece of it sits inside the drawing's x range.
     const onSentence = rows.some((row) => {
       if (Math.abs(row.y - (item.y || 0)) > 0.008) return false;
-      if ((row.w || 0) < 0.18) return false;
+      if ((row.w || 0) < 0.18 || !/[א-ת]{2,}/.test(String(row.text || ''))) return false;
       if ((item.x || 0) + w < (row.x || 0) - 0.01 || (item.x || 0) > (row.x || 0) + (row.w || 0) + 0.01) return false;
       return (row.x || 0) + (row.w || 0) > figure.x1 + 0.02;
     });
     if (onSentence) return false;
     return cx >= figure.x0 - reach && cx <= figure.x1 + reach && cy >= figure.y0 - reach && cy <= figure.y1 + reach;
   };
-  const onFigure = (item) => figures.some((figure) => figureHit(item, figure));
+  const onFigure = (item) => {
+    if (figures.some((figure) => figureHit(item, figure))) return true;
+    if (item && item.text != null && !/[א-ת]{2,}/.test(String(item.text || '')) && items && items.length) {
+      const rowItems = items.filter((one) => Math.abs((one.y || 0) - (item.y || 0)) <= 0.008
+        && (one.x || 0) + (one.w || 0) >= (item.x || 0) - 0.004
+        && (one.x || 0) <= (item.x || 0) + (item.w || 0) + 0.004);
+      if (rowItems.length && rowItems.every((one) => figures.some((figure) => figureHit(one, figure)))) return true;
+    }
+    return false;
+  };
   const segments = [];
   const pushBox = (segment, x, y, w, h, figure) => {
     if (!(w > 0.012) || !(h > 0.008)) return;
@@ -6309,10 +6356,12 @@ function polishQuestionSlice(item, items) {
     }).filter(Boolean);
   };
   if (next && next.y > nextBox.y + 0.016 && next.y < nextBox.y + nextBox.h - 0.004) cutBox(next.y - 0.004);
+  const pMarks = partMarks(items);
+  const isPartRow = (row) => Boolean(rowPart(row.text) || pMarks.some((m) => Math.abs((m.y || 0) - (row.y || 0)) <= 0.008));
   // A stem that runs into the first part's writing line leaves a grey stub in the margin.
   if (slice.kind === 'stem' && mine) {
     const rows = textRows(items);
-    const partRow = rows.filter((row) => rowPart(row.text) && row.y > mine.y + 0.008).sort((a, b) => a.y - b.y)[0];
+    const partRow = rows.filter((row) => isPartRow(row) && row.y > mine.y + 0.008).sort((a, b) => a.y - b.y)[0];
     if (partRow && partRow.y < nextBox.y + nextBox.h + 0.002 && partRow.y > nextBox.y + nextBox.h - 0.02) {
       let textBottom = nextBox.y;
       rows.forEach((row) => {
@@ -6322,6 +6371,8 @@ function polishQuestionSlice(item, items) {
       // A drawing under the wording is taller than this. Only the grey stub above the first part goes.
       if (textBottom > nextBox.y + 0.008 && nextBox.y + nextBox.h - textBottom < 0.02) {
         cutBox(Math.min(partRow.y - 0.003, textBottom + 0.004));
+      } else if (partRow.y - 0.007 > nextBox.y + 0.02) {
+        cutBox(partRow.y - 0.007);
       }
     }
   }
@@ -6377,7 +6428,9 @@ function polishQuestionCrops(measured, texts) {
     const slice = item && item.slice;
     if (!slice || (slice.kind !== 'stem' && slice.kind !== 'row') || !slice.page) return item;
     const key = slicePdf(item) + ':' + slice.page;
-    return polishQuestionSlice(item, texts && texts.get(key));
+    const polished = polishQuestionSlice(item, texts && texts.get(key));
+    if (polished !== item) syncSliceMetrics(polished);
+    return polished;
   });
 }
 
@@ -6448,7 +6501,7 @@ async function measureWorksheet(slices) {
     } else if (slice.kind === 'answer' || slice.kind === 'row' || slice.kind === 'stem') {
       const bitmap = await pageBitmap(slice.page, slice.source, 'print');
       const trimmed = trimPieceBox(await clipClosingLine(slice), bitmap);
-      const piece = slice.kind === 'answer' ? dropMaskedAnswerBand(trimmed) : trimmed;
+      const piece = slice.kind === 'answer' ? dropMaskedAnswerBand(trimmed, bitmap) : trimmed;
       if (!piece.clip) piece.clip = sourceClip(piece.source || slice.source, piece.page, (piece.box && piece.box.segment) || piece.kind);
       const sw = piece.box.w * bitmap.width;
       const sh = piece.box.h * bitmap.height;
@@ -6517,16 +6570,26 @@ async function measureWorksheet(slices) {
     if (!ink || ink.bands.length < 2) return;
     const bands = ink.bands.slice();
     const gapBetween = (above, below) => below.y - (above.y + above.h);
-    if (bands[0].h <= 10 && gapBetween(bands[0], bands[1]) >= 12) bands.shift();
+    let shiftedTop = false;
+    let poppedTail = null;
+    if (bands[0].h <= 10 && gapBetween(bands[0], bands[1]) >= 12) {
+      bands.shift();
+      shiftedTop = true;
+    }
     if (bands.length >= 2) {
       const tail = bands[bands.length - 1];
       const prev = bands[bands.length - 2];
-      if (tail.h <= 10 && gapBetween(prev, tail) >= 12) bands.pop();
+      if (tail.h <= 10 && gapBetween(prev, tail) >= 12) {
+        bands.pop();
+        poppedTail = tail;
+      }
     }
     if (bands.length >= ink.bands.length || !bands.length) return;
     const pad = 2;
-    const top = Math.max(0, ink.y0 + bands[0].y - pad);
-    const bot = Math.min(ink.height, ink.y0 + bands[bands.length - 1].y + bands[bands.length - 1].h + pad);
+    const top = shiftedTop ? Math.max(0, ink.y0 + bands[0].y - pad) : ink.y0;
+    const bot = poppedTail && !box.segment
+      ? Math.min(ink.height, ink.y0 + poppedTail.y - pad)
+      : Math.min(ink.height, ink.y0 + bands[bands.length - 1].y + bands[bands.length - 1].h + pad);
     if (bot - top < 8) return;
     item.slice = { ...item.slice, box: placedBox(box, top / ink.height, (bot - top) / ink.height) };
     syncSliceMetrics(item);

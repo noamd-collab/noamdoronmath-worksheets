@@ -3583,5 +3583,36 @@ print(json.dumps({'scanned': scanned, 'cases': cases}))
     const crop = new Uint8ClampedArray(20 * 10 * 4).fill(246);
     eraseWritingDashes(crop, 20, 10, [5], 0);
     assert.equal(crop[(5 * 20 + 10) * 4], 246, 'box fill under a dash row stays grey');
+    // Paired triangles (gap 0.058) join into one row, and merged vertex/axis rows stay on the figure.
+    const pair = joinFigureRow([
+      { x0: 0.506, x1: 0.594, y0: 0.42, y1: 0.462 },
+      { x0: 0.652, x1: 0.739, y0: 0.42, y1: 0.462 },
+    ]);
+    assert.equal(pair.length, 1);
+    const layoutQuestionCrops = source('function leftFigureBoxes', 'async function measureWorksheet', 'layoutQuestionCrops') as (model: object) => { box: { x: number; y: number; w: number; h: number; segment: string } }[];
+    const axisItems = [
+      { str: 'א.', x: 0.84, y: 0.23, w: 0.015, h: 0.014 },
+      { str: 'רשמו את התנאי', x: 0.58, y: 0.23, w: 0.24, h: 0.014 },
+      { str: '-3', x: 0.08, y: 0.3, w: 0.02, h: 0.011 },
+      { str: '4', x: 0.2, y: 0.3, w: 0.02, h: 0.011 },
+    ];
+    const axisSlices = layoutQuestionCrops({
+      page: 2,
+      parts: [{ id: '3א', part: 'א', page: 2, row: { y: 0.22, h: 0.16, page: 2 }, labelLine: { y: 0.23, page: 2 } }],
+      picked: ['3א'],
+      labels: [{ part: 'א', y: 0.23 }],
+      figures: [{ x0: 0.07, x1: 0.25, y0: 0.18, y1: 0.36 }],
+      rows: [
+        { x: 0.58, y: 0.23, w: 0.275, h: 0.014, text: 'א. רשמו את התנאי' },
+        { x: 0.08, y: 0.3, w: 0.14, h: 0.011, text: '-3 -2 -1 1 2 3 4' },
+      ],
+      items: axisItems,
+      questionTop: 0.17,
+      questionBot: 0.38,
+      earlierEnd: 0,
+      headerBottom: 0,
+      footerTop: 0.94,
+    });
+    assert.equal(axisSlices.filter((s) => s.box.segment === 'part').length, 1, 'axis ticks do not print a second time as a part row');
   });
 });
