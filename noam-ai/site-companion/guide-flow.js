@@ -5,6 +5,7 @@
  */
 import { isRoleQuestion, isWorksheetSolveRequest, RAMZI_TEXT, roleAnswer } from "./companion.js";
 import { advanceExerciseIntake, continuesIntake } from "./exercise-intake.js";
+import { buildMathExerciseHint } from "./math-hints.js";
 import { suggestTopicGroup } from "./topic-order.js";
 
 export const VAGUE_TEXT =
@@ -60,6 +61,10 @@ export function resolveDeterministicTurn(payload, deps) {
   }
   if (isRoleQuestion(message)) {
     return Object.assign({ active: true, exerciseIds: [], sheetIds: [], intake: null, wizard: null }, roleAnswer(payload));
+  }
+  const mathHint = buildMathExerciseHint(message, page);
+  if (mathHint) {
+    return mathHint;
   }
   if (isWorksheetSolveRequest(page.kind, message)) {
     return {

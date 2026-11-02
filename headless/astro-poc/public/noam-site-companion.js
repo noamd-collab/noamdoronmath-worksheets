@@ -19,6 +19,96 @@
   var mode = "closed";
   var streaming = false;
   var hasAnswer = false;
+  var chatHistory = [];
+  var lastUserQuestion = "";
+
+  function stripInternalEnglish(text) {
+    return String(text || "")
+      .replace(/העמוד הנוכחי הוא\s+topic\s*(?:\(\s*הסבר\s*\))?/gi, "העמוד הנוכחי הוא דף הסבר לנושא")
+      .replace(/\btopic\s*\(\s*הסבר\s*\)/gi, "דף הסבר לנושא")
+      .replace(/\bworksheet\s*\(\s*דף עבודה\s*\)/gi, "דף עבודה")
+      .replace(/\bcatalog\s*\(\s*מאגר\s*\)/gi, "מאגר דפי עבודה")
+      .replace(/(?<=[\u0590-\u05FF\s—–(])\btopic\b(?=[\u0590-\u05FF\s.,!?:;—–)]|$)/gi, "דף הנושא")
+      .replace(/(?<=[\u0590-\u05FF\s—–(])\bworksheet\b(?=[\u0590-\u05FF\s.,!?:;—–)]|$)/gi, "דף העבודה")
+      .replace(/(?<=[\u0590-\u05FF\s—–(])\bcatalog\b(?=[\u0590-\u05FF\s.,!?:;—–)]|$)/gi, "מאגר דפי העבודה")
+      .replace(/(?<=[\u0590-\u05FF\s—–(])\bhub\b(?=[\u0590-\u05FF\s.,!?:;—–)]|$)/gi, "עמוד הכיתה");
+  }
+
+  function localMathHint(rawMessage) {
+    var clean = String(rawMessage || "")
+      .replace(/[\u200e\u200f\u202a-\u202e\u2066-\u2069]/g, "")
+      .replace(/[−–—]/g, "-")
+      .replace(/\s+/g, " ")
+      .trim();
+    if (!clean || /30\s*-\s*60\s*-\s*90/.test(clean)) return null;
+    if (/^(?:כיתה|דף|דפים|דפי עבודה|שאלה|סעיף)\s*\d+$/i.test(clean)) return null;
+    if (/\d+\s*(?:דקות|תרגילים|שאלות|סעיפים|פריטים)/.test(clean)) return null;
+    function iso(s) { return "\u2066" + s + "\u2069"; }
+    function fmt(n) { return n < 0 ? "(−" + Math.abs(n) + ")" : String(n); }
+    var m = clean.match(
+      /(?:^|[^\dA-Za-z])\(\s*(-?\d+(?:\.\d+)?)\s*\)\s*([÷:×·*/])\s*\(\s*(-?\d+(?:\.\d+)?)\s*\)(?=$|[^\dA-Za-z])|(?:^|[^\dA-Za-z])\(\s*(-?\d+(?:\.\d+)?)\s*\)\s*([÷:×·*/])\s*(-?\d+(?:\.\d+)?)(?=$|[^\dA-Za-z])|(?:^|[^\dA-Za-z])(-?\d+(?:\.\d+)?)\s*([÷:×·*/])\s*\(\s*(-?\d+(?:\.\d+)?)\s*\)(?=$|[^\dA-Za-z])|(?:^|[^\dA-Za-z])(-?\d+(?:\.\d+)?)\s*([÷:×·*/])\s*(-?\d+(?:\.\d+)?)(?=$|[^\dA-Za-z])/
+    );
+    if (m) {
+      var a = Number(m[1] ?? m[4] ?? m[7] ?? m[10]);
+      var op = m[2] ?? m[5] ?? m[8] ?? m[11];
+      var b = Number(m[3] ?? m[6] ?? m[9] ?? m[12]);
+      if (Number.isFinite(a) && Number.isFinite(b)) {
+        var isDiv = op === "÷" || op === ":" || op === "/";
+        var absA = Math.abs(a), absB = Math.abs(b);
+        var dispOp = isDiv ? "÷" : "×";
+        var expr = iso(fmt(a) + " " + dispOp + " " + fmt(b));
+        var absExpr = iso(absA + " " + dispOp + " " + absB);
+        if (isDiv && b === 0) {
+          var zeroText = "שימו לב: בתרגיל " + expr + " המחלק הוא 0, ובמתמטיקה חילוק ב־0 אינו מוגדר.";
+          return { answer: zeroText, details: zeroText, primary: { label: "כיתה ז׳ · חילוק מספרים מכוונים", href: siteHref("/dividing-signed-numbers-grade-7") }, chips: [{ label: "דפי עבודה בחילוק מספרים מכוונים", href: siteHref("/worksheets?grade=7&topic=4") }] };
+        }
+        if (a < 0 || b < 0) {
+          var same = (a < 0 && b < 0) || (a > 0 && b > 0);
+          var act = isDiv ? "חילוק" : "כפל";
+          var verb = isDiv ? "חלקו" : "כפלו";
+          var text = [
+            "כדי לפתור את התרגיל " + expr + " צעד אחר צעד (בלי לגלות את התשובה הסופית):",
+            "1. קביעת הסימן: " + (same ? "שני המספרים בעלי אותו סימן, ולכן ב" + act + " סימן התוצאה הוא חיובי (+)." : "אחד המספרים שלילי והשני חיובי (סימנים מנוגדים), ולכן ב" + act + " סימן התוצאה הוא שלילי (−)."),
+            "2. חישוב הערך המוחלט: " + verb + " את הערכים המוחלטים ללא הסימנים — כמה הם " + absExpr + "?",
+            "3. חיבור השלבים: צרפו את הסימן שמצאתם בשלב 1 לתוצאה מחישוב שלב 2."
+          ].join("\n");
+          return {
+            answer: text,
+            details: text,
+            primary: isDiv ? { label: "כיתה ז׳ · חילוק מספרים מכוונים", href: siteHref("/dividing-signed-numbers-grade-7") } : { label: "כיתה ז׳ · כפל מספרים מכוונים", href: siteHref("/multiplying-signed-numbers-grade-7") },
+            chips: isDiv ? [{ label: "דפי עבודה בחילוק מספרים מכוונים", href: siteHref("/worksheets?grade=7&topic=4") }] : [{ label: "דפי עבודה בכפל מספרים מכוונים", href: siteHref("/worksheets?grade=7&topic=3") }]
+          };
+        }
+      }
+    }
+    var asMatch = clean.match(/(?:^|[^\dA-Za-z])(?:\(\s*(-?\d+(?:\.\d+)?)\s*\)|(-?\d+(?:\.\d+)?))\s*([+-])\s*(?:\(\s*(-?\d+(?:\.\d+)?)\s*\)|(-?\d+(?:\.\d+)?))(?=$|[^\dA-Za-z])/);
+    if (asMatch) {
+      var a2 = Number(asMatch[1] ?? asMatch[2]);
+      var op2 = asMatch[3];
+      var b2 = Number(asMatch[4] ?? asMatch[5]);
+      if (Number.isFinite(a2) && Number.isFinite(b2) && (a2 < 0 || b2 < 0 || (op2 === "-" && a2 < b2))) {
+        var effB = op2 === "-" ? -b2 : b2;
+        var absA2 = Math.abs(a2), absB2 = Math.abs(effB);
+        var same2 = (a2 < 0 && effB < 0) || (a2 > 0 && effB > 0);
+        var expr2 = iso(fmt(a2) + " " + (op2 === "-" ? "−" : "+") + " " + fmt(b2));
+        var text2 = [
+          "כדי לפתור את התרגיל " + expr2 + " צעד אחר צעד (בלי לגלות את התשובה הסופית):",
+          "1. כיוון וסימנים: " + (op2 === "-" && b2 < 0 ? "חיסור מספר שלילי שווה לחיבור המספר הנגדי החיובי (" + iso(fmt(a2) + " + " + absB2) + ")." : "בדקו את הסימנים של שני המספרים על ישר המספרים."),
+          same2
+            ? "2. חישוב הגודל: הסימנים באותו כיוון — חברו את הערכים המוחלטים (" + iso(absA2 + " + " + absB2) + ") והשאירו את הסימן המשותף."
+            : "2. השוואת ערכים מוחלטים: סימן התוצאה נקבע לפי המספר בעל הערך המוחלט הגדול יותר, והגודל הוא ההפרש (" + iso(Math.max(absA2, absB2) + " − " + Math.min(absA2, absB2)) + ").",
+          "3. בדיקה: בדקו על ישר המספרים אם התוצאה בצד החיובי או השלילי."
+        ].join("\n");
+        return {
+          answer: text2,
+          details: text2,
+          primary: { label: "כיתה ז׳ · חיבור וחיסור מספרים מכוונים", href: siteHref("/signed-numbers-grade-7") },
+          chips: [{ label: "דפי עבודה במספרים מכוונים", href: siteHref("/worksheets?grade=7&topic=2") }]
+        };
+      }
+    }
+    return null;
+  }
 
   function panelSize(vw, vh) {
     vw = Math.max(1, Math.floor(vw || 1));
@@ -197,6 +287,12 @@
     "html.noam-ai-engaged{display:grid;direction:rtl;grid-template-columns:360px minmax(0,1fr);grid-template-rows:minmax(0,100dvh);height:100dvh;overflow:hidden}",
     "html.noam-ai-engaged body{direction:rtl;grid-column:2;grid-row:1;min-width:0;min-height:0;height:auto!important;max-height:100%!important;overflow:auto!important}",
     "html.noam-ai-engaged #noam-site-companion-panel{direction:rtl;grid-column:1;grid-row:1;position:relative;right:auto;bottom:auto;width:auto;height:auto;max-height:100dvh;border-radius:0;box-shadow:none}",
+    "html.noam-ai-engaged #noam-site-companion-answer{display:block;-webkit-line-clamp:unset;overflow:visible;white-space:pre-line;background:#fff;border:2px solid #22305a;border-radius:14px 14px 14px 4px;padding:8px 10px}",
+    "#noam-site-companion-history{display:flex;flex-direction:column;gap:6px;max-height:180px;overflow:auto}",
+    "#noam-site-companion-history[hidden],#noam-site-companion-question[hidden]{display:none!important}",
+    "#noam-site-companion-question,.noam-chat-turn{margin:0;flex:none;font-size:16px;line-height:1.35;padding:6px 10px;border:2px solid #22305a;border-radius:14px 14px 4px 14px;background:#e6f2f1;color:#22305a;word-break:break-word}",
+    ".noam-chat-turn--assistant{background:#fff;border-radius:14px 14px 14px 4px;white-space:pre-line}",
+    "#noam-site-companion-panel.is-compact #noam-site-companion-history{display:none!important}",
     "html.noam-ai-engaged #noam-site-companion-details{flex:1;min-height:0}",
     "@media (max-width:767px){",
     "html.noam-ai-engaged{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) minmax(168px,42dvh)}",
@@ -208,7 +304,7 @@
     "html.noam-ai-engaged .fab{inset-block-end:calc(42dvh + 8px)!important}",
     "}",
     "@media (min-width:768px){",
-    "html.noam-ai-engaged #noam-accessibility{left:8px!important;right:auto!important}",
+    "html.noam-ai-engaged #noam-accessibility{left:8px!important;right:auto!important;top:auto!important;bottom:8px!important}",
     "}",
     "@keyframes noam-think-dot{0%,80%,100%{opacity:.25}40%{opacity:1}}",
     "#noam-site-companion-panel.is-thinking #noam-site-companion-answer{display:block;-webkit-line-clamp:unset;overflow:visible}",
@@ -240,23 +336,27 @@
   panel.setAttribute("role", "region");
   panel.setAttribute("aria-labelledby", "noam-site-companion-title");
   panel.innerHTML =
-    '<header><img alt="" width="24" height="24"><h2 id="noam-site-companion-title">נועם AI</h2>' +
+    '<header><img alt="" width="24" height="24"><h2 id="noam-site-companion-title">נועם AI — עוזר למידה</h2>' +
     '<button type="button" id="noam-ai-expand" aria-expanded="false" aria-label="הרחבה">הרחבה</button>' +
     '<button type="button" id="noam-ai-collapse" hidden>צמצום</button>' +
     '<button type="button" id="noam-site-companion-close" aria-label="סגירת נועם AI">×</button></header>' +
+    '<div id="noam-site-companion-history" role="log" aria-label="היסטוריית שיחה" hidden></div>' +
+    '<p id="noam-site-companion-question" hidden></p>' +
     '<p id="noam-site-companion-answer" aria-live="polite"></p>' +
     '<a id="noam-site-companion-primary" hidden></a>' +
     '<button type="button" id="noam-site-companion-ramzi" hidden>עזרה מרמזי</button>' +
     '<div id="noam-site-companion-chips" role="group" aria-label="הצעות"></div>' +
     '<button type="button" id="noam-site-companion-more" aria-expanded="false" aria-controls="noam-site-companion-details">עוד פרטים</button>' +
     '<p id="noam-site-companion-details" hidden tabindex="0"></p>' +
-    '<form id="noam-site-companion-form"><label for="noam-site-companion-input" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">מה אתם מחפשים?</label>' +
-    '<input id="noam-site-companion-input" type="text" maxlength="700" autocomplete="off" aria-label="מה אתם מחפשים?">' +
+    '<form id="noam-site-companion-form"><label for="noam-site-companion-input" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">שאלה או תרגיל לנועם AI</label>' +
+    '<input id="noam-site-companion-input" type="text" maxlength="700" autocomplete="off" placeholder="כתבו תרגיל לקבלת רמז או נושא לחיפוש…" aria-label="כתבו תרגיל לקבלת רמז או נושא לחיפוש…">' +
     '<button type="submit" aria-label="שליחה">שליחה</button></form>';
   root.appendChild(panel);
   panel.querySelector("header img").src = avatarSrc;
   forceSiteFont(root);
 
+  var historyEl = document.getElementById("noam-site-companion-history");
+  var questionEl = document.getElementById("noam-site-companion-question");
   var answerEl = document.getElementById("noam-site-companion-answer");
   var primaryEl = document.getElementById("noam-site-companion-primary");
   var ramziEl = document.getElementById("noam-site-companion-ramzi");
@@ -309,11 +409,51 @@
       chipsEl.appendChild(button);
       return;
     }
+    if (item.send) {
+      var sendBtn = document.createElement("button");
+      sendBtn.type = "button";
+      sendBtn.textContent = item.label;
+      sendBtn.addEventListener("click", function () {
+        input.value = item.send;
+        form.dispatchEvent(new Event("submit", { cancelable: true }));
+      });
+      chipsEl.appendChild(sendBtn);
+      return;
+    }
     if (!item.href) return;
     var link = document.createElement("a");
     link.href = item.href;
     link.textContent = item.label;
     chipsEl.appendChild(link);
+  }
+
+  function renderChatState() {
+    if (questionEl) {
+      if (lastUserQuestion) {
+        questionEl.textContent = "השאלה שלך: " + lastUserQuestion;
+        questionEl.hidden = false;
+      } else {
+        questionEl.textContent = "";
+        questionEl.hidden = true;
+      }
+    }
+    if (historyEl) {
+      historyEl.textContent = "";
+      var priorCount = chatHistory.length >= 2 ? chatHistory.length - 2 : 0;
+      if (priorCount > 0) {
+        for (var i = Math.max(0, priorCount - 6); i < priorCount; i++) {
+          var turn = chatHistory[i];
+          var bubble = document.createElement("p");
+          bubble.className = "noam-chat-turn" + (turn.role === "assistant" ? " noam-chat-turn--assistant" : "");
+          bubble.textContent = (turn.role === "user" ? "השאלה שלך: " : "נועם AI: ") + turn.content;
+          historyEl.appendChild(bubble);
+        }
+        historyEl.hidden = false;
+        historyEl.scrollTop = historyEl.scrollHeight;
+      } else {
+        historyEl.hidden = true;
+      }
+    }
   }
 
   function setChips(items) {
@@ -341,10 +481,12 @@
 
   function showIdle() {
     hasAnswer = false;
+    lastUserQuestion = "";
+    renderChatState();
     var links = starterLinks();
     answerEl.textContent = pageKind() === "teachers"
       ? "אפשר להתחיל ממפגש ראשון בפירוק לגורמים לכיתה ט׳, לבחור שאלות קיימות, ולסמן אותן על דף המקור."
-      : "מה לחפש באתר?";
+      : "איך אפשר לעזור היום? שאלו על תרגיל או נושא";
     if (pageKind() === "worksheet") {
       primaryEl.hidden = true;
       ramziEl.hidden = false;
@@ -358,7 +500,7 @@
       }
       setChips(links.slice(1, 3));
     }
-    var details = "נועם AI מכוון לדפים קיימים. עזרה בפתרון שאלה נמצאת אצל רמזי.";
+    var details = "נועם AI נותן רמזים והכוונה צעד אחר צעד לתרגילים (בלי לגלות את התשובה הסופית), ומכוון לדפי הנושא ולדפי העבודה באתר.";
     if (pageKind() === "teachers") details += "\n" + EXPORT_NOTE;
     detailsEl.textContent = details;
     moreEl.hidden = false;
@@ -403,7 +545,15 @@
   function showResult(result) {
     stopThinking();
     hasAnswer = true;
-    answerEl.textContent = (result && (result.answer || result.text)) || FALLBACK;
+    var rawAnswer = (result && (result.answer || result.text)) || FALLBACK;
+    var cleanAnswer = stripInternalEnglish(rawAnswer);
+    answerEl.textContent = cleanAnswer;
+    if (lastUserQuestion) {
+      chatHistory.push({ role: "user", content: lastUserQuestion });
+      chatHistory.push({ role: "assistant", content: cleanAnswer });
+      if (chatHistory.length > 12) chatHistory = chatHistory.slice(-12);
+    }
+    renderChatState();
     var primary = result && result.primary;
     if (primary && primary.action === "ramzi") {
       primaryEl.hidden = true;
@@ -418,7 +568,7 @@
       ramziEl.hidden = true;
     }
     setChips((result && result.chips) || []);
-    detailsEl.textContent = (result && result.details) || answerEl.textContent;
+    detailsEl.textContent = stripInternalEnglish((result && result.details) || answerEl.textContent);
     moreEl.hidden = !detailsEl.textContent;
     if (mode === "compact") fitCompact();
   }
@@ -455,6 +605,7 @@
     undrop(moreEl);
     undrop(primaryEl);
     undrop(ramziEl);
+    undrop(questionEl);
     undrop(answerEl);
     var links = chipsEl.querySelectorAll("a, button");
     for (var i = 0; i < links.length; i++) undrop(links[i]);
@@ -476,10 +627,10 @@
     if (visibleChips === 0 || (!wide && !teacher)) drop(chipsEl);
     if (tight && !hasAnswer && !panel.classList.contains("is-thinking")) drop(answerEl);
     var order = teacher
-      ? [primaryEl, ramziEl, moreEl, answerEl]
+      ? [questionEl, primaryEl, ramziEl, moreEl, answerEl]
       : tight && hasAnswer
-        ? [primaryEl, ramziEl, moreEl, chipsEl]
-        : [moreEl, chipsEl, primaryEl, ramziEl];
+        ? [questionEl, primaryEl, ramziEl, moreEl, chipsEl]
+        : [moreEl, chipsEl, primaryEl, ramziEl, questionEl];
     for (var n = 0; n < order.length; n++) {
       if (panel.scrollHeight <= panel.clientHeight + 1) return;
       drop(order[n]);
@@ -490,19 +641,46 @@
     return a.width > 0 && b.width > 0 && a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
   }
 
+  function launcherHitsText(box) {
+    if (!box || box.width <= 0 || box.height <= 0) return false;
+    var nodes = document.querySelectorAll("main p, main span, main strong, main a, main h1, main h2, main h3, main h4, main li");
+    for (var i = 0; i < nodes.length; i++) {
+      var el = nodes[i];
+      if (el.closest("#noam-site-companion,#noam-accessibility,.site-doodles,[data-doodle]")) continue;
+      var st = getComputedStyle(el);
+      if (st.display === "none" || st.visibility === "hidden" || Number(st.opacity) === 0) continue;
+      var r = el.getBoundingClientRect();
+      if (r.width < 2 || r.height < 2) continue;
+      if (box.left < r.right + 4 && box.right > r.left - 4 && box.top < r.bottom + 4 && box.bottom > r.top - 4) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   function placeLauncher() {
     root.style.right = "8px";
     root.style.left = "auto";
     root.style.bottom = "8px";
     var a11y = document.getElementById("noam-accessibility");
-    if (!a11y) return;
-    var box = a11y.getBoundingClientRect();
+    var box = a11y ? a11y.getBoundingClientRect() : null;
     var mine = root.getBoundingClientRect();
-    if (!rectsOverlap(mine, box)) return;
-    root.style.bottom = Math.round(window.innerHeight - box.top + 8) + "px";
-    mine = root.getBoundingClientRect();
-    if (!rectsOverlap(mine, box)) return;
-    root.style.right = Math.round(window.innerWidth - box.left + 8) + "px";
+    if (box && rectsOverlap(mine, box)) {
+      root.style.bottom = Math.round(window.innerHeight - box.top + 8) + "px";
+      mine = root.getBoundingClientRect();
+      if (rectsOverlap(mine, box)) {
+        root.style.right = Math.round(window.innerWidth - box.left + 8) + "px";
+        mine = root.getBoundingClientRect();
+      }
+    }
+    if (!launcherHitsText(mine)) return;
+    var maxLift = Math.min(220, Math.max(64, Math.floor(window.innerHeight * 0.35)));
+    for (var b = 16; b <= maxLift; b += 12) {
+      root.style.bottom = b + "px";
+      mine = root.getBoundingClientRect();
+      if ((!box || !rectsOverlap(mine, box)) && !launcherHitsText(mine)) return;
+    }
+    root.style.bottom = "8px";
   }
 
   function layoutCompact(force) {
@@ -708,6 +886,14 @@
     if (!message || streaming) return;
     input.value = "";
     input.focus();
+    lastUserQuestion = message;
+    renderChatState();
+    engage("submit");
+    var mathHint = localMathHint(message);
+    if (mathHint) {
+      showResult(mathHint);
+      return;
+    }
     if (isLocalSolve(message)) {
       showResult({ answer: RAMZI_TEXT, details: RAMZI_TEXT, primary: { action: "ramzi", label: "עזרה מרמזי" }, chips: [] });
       return;
@@ -717,6 +903,7 @@
     ensureBotClient().then(function (client) {
       return client.postJson(API, {
         message: message.slice(0, 700),
+        history: chatHistory.slice(-8),
         page: { kind: pageKind(), path: location.pathname + location.search, title: document.title },
         teacher: teacherContext(),
       });
@@ -747,6 +934,9 @@
     if (mode === "compact") layoutCompact(false);
     if (mode === "closed") placeLauncher();
   });
+  window.addEventListener("scroll", function () {
+    if (mode === "closed") placeLauncher();
+  }, { passive: true });
   window.setInterval(function () { paintChrome(false); }, 1000);
   showIdle();
   placeLauncher();

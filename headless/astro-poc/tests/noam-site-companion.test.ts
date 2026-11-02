@@ -313,6 +313,33 @@ describe('Noam AI model role', () => {
     assert.equal(isWorksheetSolveRequest('worksheet', 'איך פותרים את שאלה 3?'), true);
   });
 
+  it('gives a real step-by-step hint for (-12)÷3 without the final answer and strips leaked internal English', async () => {
+    let called = 0;
+    const hint = await handleCompanionTurn(
+      { message: '(-12)÷3', page: { kind: 'topic', path: '/dividing-signed-numbers-grade-7', title: 'חילוק מספרים מכוונים' } },
+      { catalog, guide, apiKey: 'server-side', fetch: async () => { called += 1; throw new Error('should not call'); } }
+    );
+    assert.equal(called, 0);
+    assert.equal(hint.ok, true);
+    assert.equal(hint.source, 'math-hint');
+    assert.match(hint.answer, /1\.\s*קביעת הסימן/);
+    assert.match(hint.answer, /2\.\s*חישוב הערך המוחלט/);
+    assert.match(hint.answer, /12 ÷ 3/);
+    assert.doesNotMatch(hint.answer, /=\s*[−-]?\s*4|\b[−-]4\b/);
+    assert.ok(hint.primary && hint.primary.href === '/dividing-signed-numbers-grade-7');
+
+    const grounded = groundModelPayload(
+      {
+        answer: 'העמוד הנוכחי הוא topic (הסבר) בחילוק מספרים מכוונים.',
+        details: 'אפשר לפתוח worksheet מתוך catalog.',
+      },
+      [],
+      { page: { kind: 'topic', path: '/dividing-signed-numbers-grade-7', title: 'חילוק' } }
+    );
+    assert.doesNotMatch(grounded.answer, /\btopic\b/i);
+    assert.doesNotMatch(grounded.details, /\b(?:worksheet|catalog)\b/i);
+  });
+
   it('answers what Noam AI does without calling the model', async () => {
     assert.equal(isRoleQuestion('במה אתה עוזר לי באתר?'), true);
     assert.equal(isRoleQuestion('הי במה אתה יכול לעזור לי?'), true);

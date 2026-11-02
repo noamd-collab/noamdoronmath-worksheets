@@ -306,7 +306,7 @@
     var links = starterLinks();
     answerEl.textContent = pageKind() === "teachers"
       ? "אפשר להתחיל ממפגש ראשון בפירוק לגורמים לכיתה ט׳, לבחור שאלות קיימות, ולסמן אותן על דף המקור."
-      : "מה לחפש באתר?";
+      : "איך אפשר לעזור היום? שאלו על תרגיל או נושא";
     if (pageKind() === "worksheet") {
       primaryEl.hidden = true;
       ramziEl.hidden = false;

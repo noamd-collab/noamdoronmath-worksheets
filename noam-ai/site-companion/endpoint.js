@@ -176,7 +176,7 @@ export async function runCompanionTurn(payload, deps) {
   if (guided) return guided;
   const page = payload && payload.page && typeof payload.page === "object" ? payload.page : {};
   const message = String((payload && payload.message) || "");
-  if (isWorksheetSolveRequest("worksheet", message)) {
+  if (isWorksheetSolveRequest(page.kind, message)) {
     const text = page.kind === "worksheet" ? RAMZI_TEXT : "נועם AI לא פותר שאלה ולא ממציא תרגיל. הבחירה היא רק מתוך מה שכבר קיים באתר.";
     return withIds(
       {
