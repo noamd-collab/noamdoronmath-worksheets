@@ -52,5 +52,7 @@ jobs:
             echo "WIX_CLI_API_KEY is not set. The baseline was not published."
             exit 1
           fi
-          git fetch origin headless/astro-poc-baseline
+          # Checkout is depth 1. Deepen so the pinned SHA below exists even when
+          # newer commits were merged after it (release.sh checks it out detached).
+          git fetch --deepen=200 origin headless/astro-poc-baseline
           bash tools/release/release.sh "50d54a4e737b4d77430f45b5c58592bce96fd6e8"
