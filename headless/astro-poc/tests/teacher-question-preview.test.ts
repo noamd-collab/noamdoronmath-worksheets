@@ -206,6 +206,7 @@ test('manual selection keeps every part and preserves earlier test/review sectio
     const clearPreparedPrint = () => {};
     const render = () => {};
     const announce = (message) => announcements.push(message);
+    const topicSearch = null;
     const $ = () => null;
     ${definition('exKey')}
     ${definition('selectionKey')}
@@ -235,15 +236,16 @@ test('manual selection keeps every part and preserves earlier test/review sectio
   assert.deepEqual(harness.state.blocks[0].keys, keys(saved));
   assert.deepEqual(harness.state.blocks[1].keys, keys(chosen));
   assert.deepEqual(harness.state.selected, []);
-  assert.equal(harness.state.wizard, 'topic');
+  assert.equal(harness.state.wizard, 'setup');
 });
 
 test('ticking a later question does not scroll the unchanged selection step back to the top', () => {
   const app = new Function(`
     const state = { wizard: 'pick' };
-    const WIZARD_ORDER = ['grade', 'topic', 'level', 'scenario', 'style', 'pick', 'result'];
+    const WIZARD_ORDER = ['setup', 'purpose', 'pick', 'result'];
     const scrolled = [], focused = [];
     const controls = new Map();
+    const topicSearch = null;
     const $ = (id) => {
       if (!controls.has(id)) controls.set(id, {
         id, hidden: false, textContent: '', parentElement: null, children: [], classList: { toggle() {} },
@@ -274,6 +276,6 @@ test('ticking a later question does not scroll the unchanged selection step back
   app.state.wizard = 'result';
   app.apply();
   assert.equal(levelChoice.parentElement.id, 'wizard-level-home');
-  assert.deepEqual(app.scrolled, ['wizard-result'], 'An actual wizard transition still brings its destination into view');
+  assert.deepEqual(app.scrolled, ['wizard-bar'], 'A wizard transition keeps the current step heading and progress in view');
   assert.deepEqual(app.focused, ['wizard-label'], 'Only a step transition moves focus to its heading');
 });

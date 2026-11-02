@@ -95,7 +95,7 @@ let state = {
   grade: '9',
   topic: '2',
   level: 'a',
-  wizard: 'grade',
+  wizard: 'setup',
   lastQuestionCount: 5,
   lastAiPickCount: 0,
   pickMode: 'manual',
@@ -118,6 +118,7 @@ let appBound = false;
 let startupComplete = false;
 let retryTeacherLoad = null;
 let appLoadId = 0;
+let topicSearch = null;
 
 function setTeacherAppState(next, message = '') {
   appState = next;
@@ -179,6 +180,7 @@ async function changeTeacherScope(grade, topic) {
   if (!accepted) {
     $('grade').value = String(state.grade);
     $('topic').value = String(state.topic);
+    topicSearch?.sync();
     return;
   }
   state.grade = String(grade);
@@ -682,11 +684,14 @@ function addAnotherTopic() {
   state.pickNote = '';
   history = [];
   clearPreparedPrint();
-  state.wizard = 'topic';
+  state.wizard = 'setup';
   render();
   announce('השאלות נשמרו בדף. בוחרים נושא נוסף.');
-  const select = $('topic');
-  if (select && select.focus) select.focus();
+  if (topicSearch) topicSearch.focus();
+  else {
+    const select = $('topic');
+    if (select && select.focus) select.focus();
+  }
 }
 
 function pageNeedsSections() {
@@ -901,6 +906,7 @@ function fillTopics() {
   }
   $('topic').innerHTML = topics.map((topic) => `<option value="${topic.id}">${escapeHTML(topic.title)}</option>`).join('');
   if (state.topic) $('topic').value = String(state.topic);
+  topicSearch?.sync();
   syncLevels();
 }
 
@@ -1181,6 +1187,7 @@ function render() {
   $('other-banner').hidden = state.scenario !== 'other';
   $('grade').value = String(state.grade);
   if ($('topic').value !== String(state.topic) && state.topic) $('topic').value = String(state.topic);
+  topicSearch?.sync();
   syncWizardUrl();
   document.querySelectorAll('[name=scenario]').forEach((el) => { el.checked = el.value === state.scenario; });
   document.querySelectorAll('[name=style]').forEach((el) => { el.checked = el.value === state.style; });
@@ -2976,12 +2983,13 @@ async function loadCurrentTopic() {
   await run;
 }
 
-const WIZARD_ORDER = ['grade', 'topic', 'level', 'scenario', 'style', 'pick', 'result'];
+const WIZARD_ORDER = ['setup', 'purpose', 'pick', 'result'];
 
 function applyWizard() {
   if (!$('wizard-bar')) return;
-  const step = WIZARD_ORDER.includes(state.wizard) ? state.wizard : 'grade';
+  const step = WIZARD_ORDER.includes(state.wizard) ? state.wizard : 'setup';
   const stepChanged = document.body.dataset.wizard !== step;
+  if (stepChanged) topicSearch?.close();
   state.wizard = step;
   document.body.dataset.wizard = step;
   document.querySelectorAll('[data-wiz]').forEach((el) => {
@@ -2991,24 +2999,23 @@ function applyWizard() {
   const levelHome = $(step === 'pick' ? 'pick-level-home' : 'wizard-level-home');
   if (levelChoice && levelHome) {
     if (levelChoice.parentElement !== levelHome) levelHome.appendChild(levelChoice);
-    levelChoice.classList.toggle('wiz-off', step !== 'level' && step !== 'pick');
+    levelChoice.classList.toggle('wiz-off', step !== 'setup' && step !== 'pick');
   }
   const setup = $('setup-panel');
   if (setup) setup.classList.toggle('wiz-off', step === 'pick' || step === 'result');
   const labels = {
-    grade: 'כיתה',
-    topic: 'נושא',
-    level: 'רמה',
-    scenario: 'מה קורה בשיעור?',
-    style: 'איך ניגשים לתרגול?',
-    pick: 'בוחרים שאלות',
-    result: 'הדף להדפסה',
+    setup: 'הגדרות התרגול',
+    purpose: 'מטרת התרגול',
+    pick: 'בחירת שאלות',
+    result: 'תצוגה והדפסה',
   };
   $('wizard-label').textContent = labels[step];
+  const progress = $('wizard-progress');
+  if (progress) progress.textContent = `שלב ${WIZARD_ORDER.indexOf(step) + 1} מתוך ${WIZARD_ORDER.length}`;
   $('wizard-back').hidden = WIZARD_ORDER.indexOf(step) <= 0;
   $('wizard-next').hidden = step === 'result';
   $('wizard-next').textContent = step === 'pick' ? 'אל הדף' : 'המשך';
-  const anchor = step === 'result' ? $('wizard-result') : $('wizard-bar');
+  const anchor = $('wizard-bar');
   if (stepChanged && anchor && anchor.scrollIntoView) anchor.scrollIntoView({ block: 'start', inline: 'nearest' });
   if (stepChanged) {
     const label = $('wizard-label');
@@ -3045,8 +3052,7 @@ async function showWizardResult() {
   try {
     if (!(await updatePrint())) return;
     copyCanvases($('print-area'), preview);
-    const anchor = $('wizard-result');
-    if (anchor && anchor.scrollIntoView) anchor.scrollIntoView({ block: 'start', inline: 'nearest' });
+    // Keep the current step heading in view; rendering must not move the reader.
   } catch (error) {
     preview.textContent = error && error.code === 'MISSING_ANSWERS'
       ? error.message
@@ -3184,7 +3190,7 @@ function bind() {
   $('prepare').addEventListener('click', () => prepare('marked'));
   $('prepare-short').addEventListener('click', () => prepare('short'));
   if ($('wizard-next')) $('wizard-next').addEventListener('click', async () => {
-    const index = WIZARD_ORDER.indexOf(state.wizard || 'grade');
+    const index = WIZARD_ORDER.indexOf(state.wizard || 'setup');
     state.wizard = WIZARD_ORDER[Math.min(WIZARD_ORDER.length - 1, index + 1)];
     if (state.wizard === 'pick') {
       if (topicLoadPromise) await topicLoadPromise;
@@ -3198,7 +3204,7 @@ function bind() {
     if (state.wizard === 'result') await showWizardResult();
   });
   if ($('wizard-back')) $('wizard-back').addEventListener('click', () => {
-    const index = WIZARD_ORDER.indexOf(state.wizard || 'grade');
+    const index = WIZARD_ORDER.indexOf(state.wizard || 'setup');
     state.wizard = WIZARD_ORDER[Math.max(0, index - 1)];
     applyWizard();
   });
@@ -3334,3 +3340,10 @@ async function start() {
 start().catch(() => {
   setTeacherAppState('error', 'רשימת דפי העבודה לא נטענה. לחצו על ניסיון נוסף.');
 });
+
+// Optional enhancement: a failed search download leaves the native topic list usable.
+void import('./teacher-topic-search.js?v=20261102-topic-search').then(({ enhanceTopicSelect }) => {
+  topicSearch = enhanceTopicSelect($('topic'), {
+    onChoose: (topic) => changeTeacherScope(state.grade, topic),
+  });
+}).catch(() => {});

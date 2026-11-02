@@ -96,16 +96,16 @@ describe('teacher short worksheet pack', () => {
     assert.equal(split[1].some((item) => item.slice.kind === 'footer'), false);
   });
 
-  it('shows one wizard choice at a time, with back, and the sheet at the end', () => {
-    assert.match(pageHtml, /<body[^>]*data-wizard="grade"/);
+  it('groups the wizard into four decisions, with back, and the sheet at the end', () => {
+    assert.match(pageHtml, /<body[^>]*data-wizard="setup"/);
     assert.match(pageHtml, /id="wizard-back"[^>]*hidden/);
     assert.match(pageHtml, /id="wizard-next"/);
     assert.match(pageHtml, /id="wizard-result"/);
     assert.match(pageHtml, /id="wizard-print"/);
-    for (const step of ['topic', 'level', 'scenario', 'style', 'pick', 'result']) {
+    for (const step of ['purpose', 'pick', 'result']) {
       assert.match(pageHtml, new RegExp(`wiz-off[^>]*data-wiz="${step}"|data-wiz="${step}"[^>]*wiz-off`));
     }
-    assert.match(printer, /WIZARD_ORDER = \['grade', 'topic', 'level', 'scenario', 'style', 'pick', 'result'\]/);
+    assert.match(printer, /WIZARD_ORDER = \['setup', 'purpose', 'pick', 'result'\]/);
     assert.match(printer, /levelPrintName/);
     assert.equal(layoutApi({}).levelPrintName('c', 'רמת מצוינות'), 'מצוינות');
     assert.equal(layoutApi({}).levelPrintName('a', 'רמה א׳'), 'רמה א׳');
@@ -393,7 +393,7 @@ describe('teacher short worksheet pack', () => {
     assert.match(pageHtml, /scroll-margin-top:96px/);
     assert.match(pageHtml, /@media\(min-width:900px\)\{\s*\.wizard-bar,\.wizard-result\{scroll-margin-top:110px\}/);
     assert.match(pageHtml, /@media\(max-width:767\.98px\)\{[\s\S]*?\.workspace\{order:2\}[\s\S]*?\.intro\{order:3\}/);
-    assert.match(printer, /step === 'result' \? \$\('wizard-result'\) : \$\('wizard-bar'\)/);
+    assert.match(printer, /const anchor = \$\('wizard-bar'\)/);
     assert.match(printer, /scrollIntoView\(\{ block: 'start'/);
   });
 

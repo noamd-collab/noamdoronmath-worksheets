@@ -42,6 +42,7 @@ function picker(href = 'https://www.noamdoronmath.co.il/teachers?tag=keep#questi
     let appState = 'ready', appBound = false, startupComplete = false, retryTeacherLoad = null, appLoadId = 0;
     let state = ${initial[1]}, history = [], CATALOG = catalog, topicLoadPromise = null;
     const elements = new Map(), levels = ['all','a','b','c'].map(value => ({value,checked:false,disabled:false,handlers:{},addEventListener(type,fn){this.handlers[type]=fn;}}));
+    const topicSearch = null;
     const $ = id => {if(!elements.has(id))elements.set(id,{value:'',dataset:{},handlers:{},setAttribute(){},removeAttribute(){},focus(){},addEventListener(type,fn){this.handlers[type]=fn;},classList:{toggle(){}}});return elements.get(id);};
     const document = {activeElement:null,body:{dataset:{}},querySelectorAll(selector){return selector==='[name=level]'?levels:[];},querySelector(){return null;},addEventListener(){}};
     const SCENARIOS={first:{label:'ראשון'},other:{label:'אחר'}}, STYLES={scaffold:{help:''},blended:{help:''}};
@@ -180,13 +181,14 @@ test('the same accessible level radio group moves between setup and question pic
   assert.deepEqual(inputs.map(input=>input.getAttribute('value')), ['a','b','c']);
   const selected = inputs.find(input=>input.getAttribute('value')==='b') as any;
   selected.checked = true;
-  const state = {wizard:'level'};
+  const state = {wizard:'setup'};
   const apply = new Function('document','state',`
-    const $=id=>document.getElementById(id),WIZARD_ORDER=['grade','topic','level','scenario','style','pick','result'];
+    const topicSearch = null;
+    const $=id=>document.getElementById(id),WIZARD_ORDER=['setup','purpose','pick','result'];
     ${definition('applyWizard')}
     return applyWizard;
   `)(document,state);
-  for (const step of ['level','pick','scenario','pick','result','level']) {
+  for (const step of ['setup','pick','purpose','pick','result','setup']) {
     state.wizard = step; apply();
     assert.equal(field.parentElement?.id, step==='pick'?'pick-level-home':'wizard-level-home');
     assert.equal(document.querySelectorAll('#teacher-level-choice').length, 1);
