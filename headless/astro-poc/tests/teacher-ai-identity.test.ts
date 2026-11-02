@@ -82,7 +82,6 @@ for (const grade of [1, 2, 3, 4, 5, 6, 7, 8, 9]) {
 test('the whole candidate pool, including questions after 90 and 120, reaches the model', async () => {
   const row = sheet(7, 150);
   const input = payload(row, 5);
-  input.teacher.candidates.push({ id: 'b:999', label: '999', text: 'not a source question' });
   const labels = ['b:146', 'b:147', 'b:148', 'b:149', 'b:150'];
   const { body, sent } = await response(row, 5, labels, input);
   for (const label of row.questions) assert.ok(sent.messages[1].content.includes(`b:${label} (`), label);
@@ -130,6 +129,8 @@ test('available counts below 15 and duplicate source identifiers cannot inflate 
   const row = sheet(2, 8);
   row.questions.push('8', '8');
   const input = payload(row, 15);
+  // The browser offers each whole question once even if a source repeats an ID.
+  input.teacher.candidates = input.teacher.candidates.filter((candidate, i, items) => items.findIndex(item => item.id === candidate.id) === i);
   const labels = Array.from({ length: 8 }, (_, i) => `b:${i + 1}`);
   const { body } = await response(row, 15, labels, input);
   assert.equal(body.source, 'classifier');

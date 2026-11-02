@@ -124,17 +124,19 @@ test('partial, duplicate, ambiguous and duplicate-whole-question primary choices
   }
 });
 
-test('excluded or exhausted families are not required and invented candidates cannot create them', () => {
+test('excluded or exhausted families are not required; invented candidates reject the request', () => {
   const rows = index.filter((row: any) => row.grade === 1 && row.topicId === '1');
   for (const families of [['a', 'b'], ['a']]) {
     const candidates = anchors(rows).filter(candidate => families.includes(candidate.family));
     const input = inputFor(rows, 5, candidates), model = modelFor(candidates);
-    input.teacher.candidates.push({ id: 'c:999', label: '999', family: 'c', key: 'invented', text: 'not available' });
     const classified = parseClassifier(JSON.stringify(model));
     const primary = selectTeacherPicks(index, input, classified);
     assert.equal(primary.selectionSource, 'classifier'); assertCoverage(primary.modelExerciseIds, candidates);
     const plans = selectTeacherPlans(index, input, classified, 'offline-model');
     for (const count of [5, 10, 15]) assertCoverage(plans[count].modelExerciseIds, candidates);
+    input.teacher.candidates.push({ id: 'c:999', label: '999', family: 'c', key: 'invented', text: 'not available' });
+    assert.deepEqual(selectTeacherPicks(index, input, classified).exerciseIds, []);
+    assert.deepEqual(selectTeacherPlans(index, input, classified, 'offline-model'), {});
   }
 });
 
@@ -147,7 +149,7 @@ test('an explicit empty or invalid candidate list cannot reopen excluded catalog
     const picked = selectTeacherPicks(index, input, model);
     assert.equal(picked.selectionError, 'MODEL_SELECTION_INVALID'); assert.deepEqual(picked.exerciseIds, []);
     assert.deepEqual(selectTeacherPlans(index, input, model, 'offline-model'), {});
-    assert.doesNotMatch(classifierRequestBody(input, index).messages[1].content, /סעיפים קיימים בדף לבחירה/);
+    assert.throws(() => classifierRequestBody(input, index), { code: 'TEACHER_CANDIDATES_INVALID' });
   }
 });
 

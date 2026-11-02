@@ -350,8 +350,10 @@ describe('teacher catalog picker', () => {
     assert.deepEqual(keepVisible(['ex:a:1ב', 'ex:b:3ב', 'sheet:c'], ['ex:b:3ב']), ['ex:b:3ב']);
     const topicStart = preview.indexOf("$('topic').addEventListener");
     const topicHandler = preview.slice(topicStart, preview.indexOf("$('filter-all')", topicStart));
-    assert.match(topicHandler, /state\.selected = \[\]/);
-    assert.match(topicHandler, /applyScenario/);
+    assert.match(topicHandler, /changeTeacherScope\(state\.grade, \$\('topic'\)\.value\)/);
+    const scopeChange = preview.slice(preview.indexOf('async function changeTeacherScope'), preview.indexOf('function exKey'));
+    assert.match(scopeChange, /confirmTeacherReplacement/);
+    assert.match(scopeChange, /state\.selected = \[\]/);
     const levelHandler = preview.slice(preview.indexOf("document.querySelectorAll('[name=level]')"), preview.indexOf("$('grade').addEventListener"));
     assert.match(levelHandler, /keepVisible\(state\.selected, visibleSelectionKeys\(\)\)/);
     const resolve = preview.slice(preview.indexOf('async function resolveChosen'), preview.indexOf('async function updatePrint'));

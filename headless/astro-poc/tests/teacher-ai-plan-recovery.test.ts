@@ -240,7 +240,9 @@ test('two parts of one source question cannot stand for two whole questions in a
   const input=inputFor(rows),extra={...input.teacher.candidates[0],id:'a:1ב',label:'1ב',key:`ex:${rows[0].pdfId}:1ב`};
   input.teacher.candidates.push(extra);
   const model={exerciseLabelsByCount:{'5':['a:1א','b:1א','c:1א','a:1ב','a:2א']}};
-  assertRejected(await request({rows,input,model}),2);
+  const run=await request({rows,input,model});
+  assertRejected(run,0);
+  assert.equal(run.body.code,'TEACHER_CANDIDATES_INVALID');
 });
 
 test('excluded candidates stay excluded and exhausted families are not reintroduced during recovery',async()=>{

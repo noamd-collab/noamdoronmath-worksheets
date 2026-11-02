@@ -57,14 +57,14 @@ test('overlong primary arrays retain their real count before parser truncation',
   assert.equal(validation.diagnostic.primaryCount, 61); assert.equal(validation.diagnostic.invalidCount, 56);
 });
 
-test('two different parts of one G8 source question are a duplicate whole question', () => {
+test('two different parts of one G8 source question invalidate the candidate pool before correction', () => {
   const f = fixture(8, '43');
   f.input.teacher.candidates.push({ ...f.candidates[0], id: 'a:1ב', label: '1ב', key: f.candidates[0].key.replace(/1א$/, '1ב') });
   const validation = validateExactTeacherPrimary(index, f.input, parseClassifier(JSON.stringify({
     exerciseLabels: [f.labels[0], f.labels[1], f.labels[2], 'a:1ב', f.labels[4]],
   })));
-  assert.equal(validation.pick, null); assert.equal(validation.diagnostic.reason, 'duplicate-question');
-  assert.equal(validation.diagnostic.invalidCount, 1); assert.equal(validation.diagnostic.candidateCount, 80);
+  assert.equal(validation.pick, null); assert.equal(validation.diagnostic.reason, 'primary-invalid');
+  assert.equal(validation.diagnostic.invalidCount, 1); assert.equal(validation.diagnostic.candidateCount, 0);
 });
 
 test('precise reasons preserve missing-family rejection and valid c2 family representation', () => {
@@ -160,13 +160,14 @@ test('a repeated invalid result remains rejected after exactly one correction an
 test('grouped corrective labels contain only server-validated candidates and preserve c2 exactly', () => {
   const f = fixture(8, '43'), excluded = f.candidates[0].id;
   f.input.teacher.candidates = f.input.teacher.candidates.slice(1);
-  f.input.teacher.candidates.push({ id: 'a:999', label: '999', family: 'a', key: 'PRIVATE_INVENTED_KEY' });
   const body = teacherCorrectionRequestBody(f.input, index, 'unknown-id');
   const grouped = JSON.parse(body.messages[1].content.split('\nמזהי שאלות מותרים לפי מקור: ')[1]);
   const labels = Object.values(grouped).flat();
   assert.ok(!labels.includes(excluded)); assert.ok(!labels.includes('a:999'));
   assert.equal(labels.length, 79); assert.ok(Array.isArray(grouped.c2));
   assert.ok(grouped.c2.every((id: string) => id.startsWith('c2:')));
+  f.input.teacher.candidates.push({ id: 'a:999', label: '999', family: 'a', key: 'PRIVATE_INVENTED_KEY' });
+  assert.throws(() => teacherCorrectionRequestBody(f.input, index, 'unknown-id'), { code: 'TEACHER_CANDIDATES_INVALID' });
 });
 
 test('diagnostic sanitizer bounds new counts and drops private or invalid fields and reasons', () => {

@@ -29,7 +29,7 @@ const successfulReply = (payload: Payload) => ({
 
 type ChallengeHandler = { isCurrent: () => boolean; onChallenge: (challenge: unknown) => Promise<string> };
 type HumanRequest = { isCurrent: () => boolean; onSubmitting: () => void; challenge: unknown; client: unknown; anchor: unknown };
-function harness(reply: (payload: Payload, state: State, requestOptions: ChallengeHandler) => unknown = successfulReply, options: { pool?: unknown[]; grade?: string; scenario?: string; style?: string; savedKeys?: string[]; humanVerification?: (request: HumanRequest) => Promise<string>; clock?: { now: () => number }; timers?: { setInterval: (fn: () => void) => number; clearInterval: () => void } } = {}) {
+function harness(reply: (payload: Payload, state: State, requestOptions: ChallengeHandler) => unknown = successfulReply, options: { confirmReplacement?: boolean; pool?: unknown[]; grade?: string; scenario?: string; style?: string; savedKeys?: string[]; humanVerification?: (request: HumanRequest) => Promise<string>; clock?: { now: () => number }; timers?: { setInterval: (fn: () => void) => number; clearInterval: () => void } } = {}) {
   return new Function('pool', 'groupWholeQuestions', 'savedKeys', 'reply', 'options', 'Date', 'globalThis', `
     let state = { grade: '9', topic: '2', level: 'a', scenario: 'other', style: 'blended',
       selected: [], blocks: [{ kind: 'test', title: 'נושא קודם', keys: savedKeys }],
@@ -38,6 +38,8 @@ function harness(reply: (payload: Payload, state: State, requestOptions: Challen
     let history = [];
     let aiPickPending = 0, teacherAiPlanCache = null;
     const status = { textContent: '' };
+    const confirmations = [];
+    const window = { confirm: message => { confirmations.push(message); return options.confirmReplacement !== false; } };
     const requests = [];
     const announcements = [];
     const attrs = [];
@@ -70,14 +72,16 @@ function harness(reply: (payload: Payload, state: State, requestOptions: Challen
       requests.push({ path, payload });
       return await reply(payload, state, requestOptions);
     } });
-    ${['exKey', 'questionPreviewGroup', 'currentQuestions', 'keysOfQuestions', 'rolePlan', 'interleaveSheets', 'planOrder', 'smartQuestionPick', 'carriedKeys', 'selectionKey', 'snapshot', 'teacherAiNote', 'teacherAiContext', 'teacherLevelsCovered', 'verifiedTeacherPlan', 'rememberTeacherPlans', 'pickWithAi'].map(definition).join('\n')}
-    return { pick: pickWithAi, state, requests, status, attrs, controls, announcements, renders: () => renderCount, dismisses: () => dismissedPanels };
+    ${['exKey', 'questionPreviewGroup', 'currentQuestions', 'keysOfQuestions', 'rolePlan', 'interleaveSheets', 'planOrder', 'smartQuestionPick', 'carriedKeys', 'selectionKey', 'snapshot', 'teacherAiNote', 'teacherAiContext', 'teacherLevelsCovered', 'verifiedTeacherPlan', 'rememberTeacherPlans', 'confirmTeacherReplacement', 'pickWithAi'].map(definition).join('\n')}
+    return { pick: pickWithAi, state, requests, status, attrs, controls, announcements, confirmations, renders: () => renderCount, dismisses: () => dismissedPanels };
   `)(options.pool || source.questions, groupWholeQuestions, options.savedKeys || groupKeys(groups[0]), reply, options, options.clock || Date, options.timers || globalThis) as {
     pick: (count: number) => Promise<string[]>;
     state: State;
     requests: { path: string; payload: Payload }[];
     status: { textContent: string };
     attrs: string[][];
+    confirmations: string[];
+    announcements: string[];
     controls: Record<string, { value: string }>;
     renders: () => number;
     dismisses: () => number;
@@ -807,7 +811,8 @@ test('teacher startup prepares the shared client once without posting and remain
       const fillGrades = () => {}, fillTopics = () => {}, applyScenario = () => events.push('ready');
       const wizardPrefillFromSearch = () => null, loadCurrentTopic = async () => {};
       const state = { scenario: 'first' }, location = { search: '' }, CATALOG_URL = '/catalog';
-      let CATALOG;
+      let CATALOG, retryTeacherLoad, appBound = false, startupComplete = false;
+      const setTeacherAppState = () => {}, $ = () => null;
       const fetch = async () => ({ ok: true, json: async () => ({ grades: [] }) });
       const ensureTeacherBotClient = async () => ({
         prepare: async () => { events.push('prepare'); if (failPrepare) throw new Error('SDK unavailable'); },
@@ -817,5 +822,25 @@ test('teacher startup prepares the shared client once without posting and remain
       return start().then(() => Promise.resolve()).then(() => events);
     `);
     assert.deepEqual(await boot(failPrepare), ['prepare', 'ready']);
+  }
+});
+
+
+test('cancelling AI replacement preserves the selection without a model request', async () => {
+  const app = harness(successfulReply, { confirmReplacement: false });
+  app.state.selected = groupKeys(groups[2]);
+  const before = JSON.stringify(app.state);
+  assert.deepEqual(await app.pick(5), []);
+  assert.equal(JSON.stringify(app.state), before);
+  assert.equal(app.requests.length, 0);
+  assert.equal(app.confirmations.length, 1);
+});
+
+test('AI status is announced once, without repeating the same outcome in the toast', async () => {
+  for (const reply of [successfulReply, () => { throw new Error('unavailable'); }]) {
+    const app = harness(reply);
+    await app.pick(5);
+    assert.ok(app.status.textContent.length);
+    assert.deepEqual(app.announcements, []);
   }
 });

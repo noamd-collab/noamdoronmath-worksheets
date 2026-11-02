@@ -118,7 +118,7 @@ for (const textFails of [false, true]) {
       { page: 4, box: { x: 0, y: 0, w: 1, h: 1 } },
       { page: 5, box: { x: 0, y: 0, w: 1, h: 1 } },
     ]);
-    assert.deepEqual(await measured([{ source: { pdfId: 'no-answers', answerStartPage: null, pageCount: 3 }, questions: [{ q: 2 }] }]), []);
+    await assert.rejects(measured([{ source: { pdfId: 'no-answers', answerStartPage: null, pageCount: 3 }, questions: [{ q: 2 }] }]), { code: 'MISSING_ANSWERS' });
   });
 }
 
