@@ -3689,9 +3689,9 @@ function trimPieceBox(slice, bitmap) {
       }
     }
     if (bands.length && bands.length < ink.bands.length) {
-      const top = shiftedTop ? Math.max(0, ink.y0 + bands[0].y - pad) : ink.y0;
-      const bot = poppedTail && !clipped.segment
-        ? Math.min(pageH, ink.y0 + poppedTail.y - pad)
+      const top = (!clipped.segment && !shiftedTop) ? ink.y0 : Math.max(0, ink.y0 + bands[0].y - pad);
+      const bot = !clipped.segment
+        ? (poppedTail ? Math.min(pageH, ink.y0 + poppedTail.y - pad) : Math.min(pageH, ink.y0 + (ink.rh || 0)))
         : Math.min(pageH, ink.y0 + bands[bands.length - 1].y + bands[bands.length - 1].h + pad);
       if (bot - top > 8) {
         return { ...slice, box: placedBox(clipped, top / pageH, (bot - top) / pageH) };
@@ -6586,9 +6586,9 @@ async function measureWorksheet(slices) {
     }
     if (bands.length >= ink.bands.length || !bands.length) return;
     const pad = 2;
-    const top = shiftedTop ? Math.max(0, ink.y0 + bands[0].y - pad) : ink.y0;
-    const bot = poppedTail && !box.segment
-      ? Math.min(ink.height, ink.y0 + poppedTail.y - pad)
+    const top = (!box.segment && !shiftedTop) ? ink.y0 : Math.max(0, ink.y0 + bands[0].y - pad);
+    const bot = !box.segment
+      ? (poppedTail ? Math.min(ink.height, ink.y0 + poppedTail.y - pad) : Math.min(ink.height, ink.y0 + (ink.rh || 0)))
       : Math.min(ink.height, ink.y0 + bands[bands.length - 1].y + bands[bands.length - 1].h + pad);
     if (bot - top < 8) return;
     item.slice = { ...item.slice, box: placedBox(box, top / ink.height, (bot - top) / ink.height) };
