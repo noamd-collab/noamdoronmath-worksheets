@@ -5,8 +5,8 @@ name: publish-baseline
 # A push of this file to main also releases once, because the token that
 # merges pull requests cannot call the dispatch API (Actions: write).
 # Release script on baseline installs @wix/cli before login (see #275).
-# Noam-authorized final answers: PR #341 (401 grade 7–9 sheets) and PR #344
-# (G8-T65, newly written key); Ramzi hints follow them through the old PDF ids.
+# Noam: withdraw the final-answers republish (#349); the earlier sheets return
+# until the answers are rebuilt as the skill's final-answers-only page.
 # Standard hints use the bank; Flash is for additional questions, without Max.
 
 on:
@@ -52,4 +52,4 @@ jobs:
             exit 1
           fi
           git fetch origin headless/astro-poc-baseline
-          bash tools/release/release.sh "29bb7fc9ea907a6e1efce1092285a15d638241e1"
+          bash tools/release/release.sh "be1f3e706fd410c42bb43a55255ef108db917f48"
