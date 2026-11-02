@@ -27,6 +27,11 @@ function navigation() {
       events.set(id, handler);
     }) as typeof element.addEventListener;
   }
+  for (const button of document.querySelectorAll<HTMLButtonElement>('[data-review-edit]')) {
+    button.addEventListener = ((_event: string, handler: () => Promise<void>) => {
+      events.set('edit-' + button.dataset.reviewEdit, handler);
+    }) as typeof button.addEventListener;
+  }
   const focused: string[] = [];
   document.getElementById('wizard-label')!.focus = () => { focused.push('wizard-label'); };
   // Startup/loading is covered separately. Exercise the actual HTML and
@@ -38,17 +43,19 @@ function navigation() {
     const topicSearch = null;
     const $ = id => document.getElementById(id);
     const topicLoadPromise = null;
-    let resultPreparations = 0;
+    let resultPreparations = 0, invalidations = 0;
+    const clearPreparedPrint = () => { invalidations += 1; };
     const showWizardResult = async () => { resultPreparations += 1; };
     const render = () => applyWizard();
     const applyScenario = () => render();
     ${definition('applyWizard')}
     ${definition('bind')}
     bind();
-    return { state, apply: applyWizard, order: WIZARD_ORDER, resultPreparations: () => resultPreparations };
+    return { state, apply: applyWizard, order: WIZARD_ORDER, resultPreparations: () => resultPreparations, invalidations: () => invalidations };
   `)(document);
   return { ...app, document, focused, async next() { await events.get('wizard-next')!(); },
-    async back() { await events.get('wizard-back')!(); } };
+    async back() { await events.get('wizard-back')!(); },
+    async edit(step: string) { await events.get('edit-' + step)!(); } };
 }
 
 test('four grouped steps navigate forward and back without losing questions, sections or field values', async () => {
@@ -118,4 +125,27 @@ test('four grouped steps navigate forward and back without losing questions, sec
   verify('setup', 1, 'הגדרות התרגול');
   assert.equal(levelControl.parentElement?.id, 'wizard-level-home');
   assert.equal(app.focused.length, 6, 'Each of the six actual transitions announces its destination through heading focus');
+});
+
+
+test('review shortcuts return to each existing step without resetting saved sections, questions or settings', async () => {
+  const app = navigation();
+  app.state.selected = ['ex:current:2א', 'ex:current:2ב'];
+  app.state.blocks = [{ grade: '9', topic: '2', kind: 'test', keys: ['ex:saved:1'] }];
+  app.state.scenario = 'practice';
+  app.state.style = 'blended';
+  const note = app.document.getElementById('teacher-note') as HTMLTextAreaElement;
+  note.value = 'הערה שנשארת בדף';
+  const before = JSON.stringify({ ...app.state, wizard: undefined });
+  for (const [index, step] of ['setup', 'purpose', 'pick'].entries()) {
+    app.state.wizard = 'result';
+    app.apply();
+    await app.edit(step);
+    assert.equal(app.state.wizard, step);
+    assert.equal(app.document.body.dataset.wizard, step);
+    assert.equal(app.invalidations(), index + 1, 'Leaving result invalidates only the old rendering');
+    assert.equal(JSON.stringify({ ...app.state, wizard: undefined }), before);
+    assert.equal(note.value, 'הערה שנשארת בדף');
+    assert.equal(app.focused.at(-1), 'wizard-label');
+  }
 });

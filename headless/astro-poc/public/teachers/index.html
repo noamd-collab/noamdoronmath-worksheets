@@ -123,6 +123,20 @@ nav[data-nav-panel] a:hover{background:rgba(42,124,122,.1)}
 .topic-search-empty{margin:0;padding:12px;font-size:14px;line-height:1.5}
 .topic-search-fallback{display:block;min-height:44px;margin:0;padding:6px 0;border:0;background:transparent;color:var(--teal-dark);font-size:14px;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 @media (forced-colors:active){.topic-search-list [role=option][aria-selected=true]{border-color:Highlight}.topic-search-toggle{color:ButtonText}}
+.teacher-review{margin:20px 0 24px;padding:18px;border:2px solid var(--ink);border-radius:var(--r-alt);background:#fff}
+.teacher-review[hidden]{display:none}
+.teacher-review>h3{margin:0 0 14px;font-family:'Secular One',Heebo,sans-serif;font-size:22px;font-weight:400}
+.teacher-review-facts{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:6px 18px;margin:0 0 14px;font-size:15px;line-height:1.6}
+.teacher-review-facts dt{font-weight:700}.teacher-review-facts dd{margin:0;overflow-wrap:anywhere}
+.teacher-review-sections{margin:0;padding-inline-start:24px;display:grid;gap:10px}
+.teacher-review-section{padding:8px 10px;border-inline-start:3px solid var(--teal);background:var(--mint);border-radius:6px;overflow-wrap:anywhere}
+.teacher-review-section-title{margin:0;font-size:16px;line-height:1.5}.teacher-review-section-meta{margin:4px 0 0;font-size:14px;line-height:1.6}
+.teacher-review-note-block{margin-top:14px}.teacher-review-note-block h4{margin:0;font-size:15px}
+.teacher-review-note{margin:6px 0 0;white-space:pre-wrap;overflow-wrap:anywhere;font-size:15px;line-height:1.6}
+.teacher-review-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;padding-top:12px;border-top:1px dashed var(--ink)}
+.teacher-review-actions button{min-height:44px;padding:8px 14px}
+@media(max-width:600px){.teacher-review{padding:14px}.teacher-review-facts{gap:4px 10px}.teacher-review-actions button{flex:1 1 0;min-width:0;padding:8px 6px;font-size:14px;justify-content:center}}
+@media print{.teacher-review{display:none!important}}
 .source-mini{font-size:14px;color:var(--quiet);margin-top:10px;line-height:1.5}
 .level-field{margin-top:12px}
 .level-field .style-label{display:block;margin-bottom:8px}
@@ -602,7 +616,7 @@ body[data-wizard="result"] .wizard-result{scroll-margin-top:164px}
 <div class="prepare-bar"><div class="selection-total" aria-live="polite" aria-atomic="true"><strong id="selection-count">0 נבחרו</strong><span id="selection-composition"></span></div><button type="button" class="primary" id="prepare" title="מציג את עמודי המקור המלאים עם סימון הבחירה. כשיש קטע ממבחן או כמה נושאים, נבנה דף מצומצם." aria-describedby="help-marked"><svg aria-hidden="true"><use href="#i-print"/></svg>הצגת הדף המסומן</button><button type="button" class="text-btn" id="prepare-short" title="מרכיב דף מהשאלות שנבחרו, כפי שהן במקור, ומצרף את התשובות בסוף." aria-describedby="help-short"><svg aria-hidden="true"><use href="#i-print"/></svg>הצגת הדף המצומצם</button></div><p class="prepare-hint" id="prepare-hint">דף מלא עם סימון, או דף מצומצם שנחתך מהמקור</p></div>
 <div id="unavailable" class="empty" hidden><h3>אין דפים להצגה בכיתה הזו</h3><p style="margin-top:8px">אפשר לחזור לפירוק לגורמים לכיתה ט׳.</p><button type="button" class="text-btn" id="return-demo">חזרה לפירוק לגורמים</button></div>
 </section>
-<section class="panel wizard-result wiz-off" id="wizard-result" data-wiz="result" aria-label="הדף להדפסה"><h2>הדף להדפסה</h2><p>דף אחד: כותרת ושדה שם פעם אחת, בס״ד בכל עמוד, והתשובות שנבחרו בסוף. כל סעיף נחתך מדף המקור.</p><div id="wizard-preview"></div><button type="button" class="primary" id="wizard-print">הדפסה</button></section>
+<section class="panel wizard-result wiz-off" id="wizard-result" data-wiz="result" aria-label="הדף להדפסה"><h2>הדף להדפסה</h2><p>דף אחד: כותרת ושדה שם פעם אחת, בס״ד בכל עמוד, והתשובות שנבחרו בסוף. כל סעיף נחתך מדף המקור.</p><section class="teacher-review" id="wizard-review" aria-labelledby="wizard-review-title" hidden><h3 id="wizard-review-title">סיכום הבחירות</h3><div id="wizard-review-content"></div><div class="teacher-review-actions" role="group" aria-label="חזרה לעריכת הבחירות"><button type="button" class="text-btn" data-review-edit="setup">עריכת ההגדרות</button><button type="button" class="text-btn" data-review-edit="purpose">עריכת המטרה וההערה</button><button type="button" class="text-btn" data-review-edit="pick">עריכת בחירת השאלות</button></div></section><div id="wizard-preview"></div><button type="button" class="primary" id="wizard-print">הדפסה</button></section>
 </div>
 <footer class="foot"><div class="foot-grid"><div><strong class="foot-brand">נועם דורון - מתמטיקה</strong><p>דפי עבודה במתמטיקה להורדה בחינם לכיתות א׳–ט׳. תשתית למידה איכותית לכל תלמיד.</p></div><div><h3>צור קשר</h3><p>מורים והורים, נשמח לעזור בכל שאלה.</p><a class="foot-mail" href="mailto:noamd@noamdoronmath.co.il">noamd@noamdoronmath.co.il</a></div><nav aria-label="ניווט מהיר"><h3>ניווט מהיר</h3><a href="https://www.noamdoronmath.co.il/">בית</a><a href="https://www.noamdoronmath.co.il/worksheets">דפי עבודה</a><a href="https://www.noamdoronmath.co.il/aboutus">אודותינו</a><a href="https://www.noamdoronmath.co.il/blog">בלוג</a></nav></div><div class="foot-bottom"><span>בוחרים מתוך דפי האתר בכל הכיתות: ידנית או בעזרת AI. כל שאלה נבחרת עם כל הסעיפים שלה. הערת המורה נכנסת להדפסה.</span><span class="footer-source">מקור: דפי העבודה של האתר · כיתות א׳–ט׳</span><span>© 2026 נועם דורון מתמטיקה. כל הזכויות שמורות.</span></div></footer>
 </main></div>
@@ -629,7 +643,7 @@ body[data-wizard="result"] .wizard-result{scroll-margin-top:164px}
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js" integrity="sha384-/1qUCSGwTur9vjf/z9lmu/eCUYbpOTgSjmpbMQZ1/CtX2v/WcAIKqRv+U1DUCG6e" crossorigin="anonymous"></script>
-<script type="module" src="/teachers/teacher-factoring-print.js?v=20261102-topic-search"></script>
+<script type="module" src="/teachers/teacher-factoring-print.js?v=20261102-review-summary"></script>
 
 <script src="/noam-accessibility.js" defer></script>
 <script src="/noam-site-companion.js?v=20261101-sdk-lifecycle" defer data-avatar="/design-exact/assets/avatar/ramzi-A-idle.svg"></script>

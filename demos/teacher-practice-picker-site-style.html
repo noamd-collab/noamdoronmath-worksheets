@@ -122,6 +122,20 @@ nav[data-nav-panel] a:hover{background:rgba(42,124,122,.1)}
 .topic-search-empty{margin:0;padding:12px;font-size:14px;line-height:1.5}
 .topic-search-fallback{display:block;min-height:44px;margin:0;padding:6px 0;border:0;background:transparent;color:var(--teal-dark);font-size:14px;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 @media (forced-colors:active){.topic-search-list [role=option][aria-selected=true]{border-color:Highlight}.topic-search-toggle{color:ButtonText}}
+.teacher-review{margin:20px 0 24px;padding:18px;border:2px solid var(--ink);border-radius:var(--r-alt);background:#fff}
+.teacher-review[hidden]{display:none}
+.teacher-review>h3{margin:0 0 14px;font-family:'Secular One',Heebo,sans-serif;font-size:22px;font-weight:400}
+.teacher-review-facts{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:6px 18px;margin:0 0 14px;font-size:15px;line-height:1.6}
+.teacher-review-facts dt{font-weight:700}.teacher-review-facts dd{margin:0;overflow-wrap:anywhere}
+.teacher-review-sections{margin:0;padding-inline-start:24px;display:grid;gap:10px}
+.teacher-review-section{padding:8px 10px;border-inline-start:3px solid var(--teal);background:var(--mint);border-radius:6px;overflow-wrap:anywhere}
+.teacher-review-section-title{margin:0;font-size:16px;line-height:1.5}.teacher-review-section-meta{margin:4px 0 0;font-size:14px;line-height:1.6}
+.teacher-review-note-block{margin-top:14px}.teacher-review-note-block h4{margin:0;font-size:15px}
+.teacher-review-note{margin:6px 0 0;white-space:pre-wrap;overflow-wrap:anywhere;font-size:15px;line-height:1.6}
+.teacher-review-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;padding-top:12px;border-top:1px dashed var(--ink)}
+.teacher-review-actions button{min-height:44px;padding:8px 14px}
+@media(max-width:600px){.teacher-review{padding:14px}.teacher-review-facts{gap:4px 10px}.teacher-review-actions button{flex:1 1 0;min-width:0;padding:8px 6px;font-size:14px;justify-content:center}}
+@media print{.teacher-review{display:none!important}}
 .source-mini{font-size:14px;color:var(--quiet);margin-top:10px;line-height:1.5}
 .level-field{margin-top:12px}
 .level-field .style-label{display:block;margin-bottom:8px}
@@ -558,7 +572,7 @@ dialog::backdrop{background:rgba(34,48,90,.46)}
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js" integrity="sha384-/1qUCSGwTur9vjf/z9lmu/eCUYbpOTgSjmpbMQZ1/CtX2v/WcAIKqRv+U1DUCG6e" crossorigin="anonymous"></script>
-<script type="module" src="./teacher-factoring-print.js?v=20261102-topic-search"></script>
+<script type="module" src="./teacher-factoring-print.js?v=20261102-review-summary"></script>
 
 <script src="../headless/astro-poc/public/noam-site-companion.js?v=20261101-sdk-lifecycle" defer data-avatar="../headless/astro-poc/public/design-exact/assets/avatar/ramzi-A-idle.svg"></script>
 </body>

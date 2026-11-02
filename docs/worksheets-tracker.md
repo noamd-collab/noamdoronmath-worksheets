@@ -1,5 +1,12 @@
 # Worksheet tracker
 
+## Teacher review summary before printing — 2026-11-02
+
+- Added Noam's approved textual summary inside the existing fourth step, above the worksheet preview: actual source grade/topic/levels, complete-question and explicit-subpart counts, section kinds, goal/style and the full note that will print.
+- The summary consumes the same resolved, context-scoped saved/current questions as printing, preserving section order and excluding current questions already saved. Standalone questions count as whole questions without invented subparts; repeated source regions do not inflate subpart counts.
+- Three shortcuts return to settings, purpose/note or question selection without resetting work. Leaving the result invalidates its rendering; returning rebuilds the summary. A companion goal change also invalidates the summary even when manual selections stay the same. Missing answers keep the selection summary available for editing while printing remains blocked.
+- The summary is excluded from the worksheet itself. No new wizard step, note fields, source content, AI-selection rules or output copies were added; the shared worksheet retains final answers.
+
 ## Teacher topic search — 2026-11-02
 
 - Added Noam's approved topic-name search inside the existing setup step. Typing filters the current grade's topics; the full-list button and native-list fallback remain available.

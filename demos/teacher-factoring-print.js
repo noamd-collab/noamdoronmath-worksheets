@@ -2,6 +2,7 @@ import { dismissTeacherHumanVerification, requestTeacherHumanVerification } from
 import { replaceWizardScopeUrl, wizardPrefillFromSearch } from './wizard-prefill.js?v=20261031-level-choice-help';
 import { expandToWholeQuestionKeys, groupWholeQuestions, mulberry32, pickWholeQuestions, randomSeed } from './teacher-question-pick.js';
 import { PICK_HEADING, SECTION_KINDS, needsSectionHeadings, pointsLabel, scoreLabel, sectionKind, sectionTitle, shouldAskMoreTopic, testPoints, TEST_TOTAL_POINTS } from './teacher-page-sections.js?v=20261102-test-section-wording';
+import { buildTeacherReview, renderTeacherReview } from './teacher-review-summary.js?v=20261102-review-summary';
 
 /* Teacher picker for every catalog sheet, grades 1–9.
    Choose complete source questions across topic and level sheets.
@@ -1387,8 +1388,10 @@ function levelAllows(source) {
 
 let printGeneration = 0;
 
-function clearPreparedPrint() {
+function clearPreparedPrint(keepReview = false) {
   printGeneration += 1;
+  const review = $('wizard-review');
+  if (review && !keepReview) review.hidden = true;
   const area = $('print-area');
   if (!area || area.querySelector('.print-unprepared')) return;
   area.innerHTML = PRINT_UNPREPARED;
@@ -2773,9 +2776,30 @@ async function resolveChosen() {
   return questionsForKeys(keys);
 }
 
+function paintTeacherReview(chosen, blocks, note, scenario, style) {
+  const panel = $('wizard-review');
+  const content = $('wizard-review-content');
+  if (!panel || !content) return;
+  // Use the exact scoped questions gathered for printing, including saved sections.
+  const sections = (blocks || [{ kind: 'review', title: '', questions: chosen }]).map((block) => ({
+    title: block.title,
+    kindLabel: SECTION_KINDS[sectionKind(block.kind)].label,
+    questions: orderPrintQuestions(block.questions.filter((question) => question && question.source)),
+  }));
+  const review = buildTeacherReview({ sections, scenario, style, note }, (source) => ({
+    grade: source.gradeLabel || (gradeRecord(source.grade) || {}).label || '',
+    topic: source.topic || source.title || '',
+    level: levelPrintName(source.level, source.levelLabel),
+  }));
+  renderTeacherReview(content, review);
+  panel.hidden = false;
+}
+
 async function updatePrint() {
   const generation = ++printGeneration;
   const mode = printMode;
+  const review = $('wizard-review');
+  if (review) review.hidden = true;
   // Render off-screen and publish both surfaces only after every exercise and
   // answer has finished. Selection edits invalidate the generation meanwhile.
   const plan = document.createElement('div');
@@ -2808,6 +2832,7 @@ async function updatePrint() {
     const savedQuestions = carried.flatMap((block) => block.questions);
     const onPage = new Set(savedQuestions.map((question) => exKey(question.source.pdfId, question.id)));
     const current = (await resolveChosen()).filter((question) => !onPage.has(exKey(question.source.pdfId, question.id)));
+    if (generation !== printGeneration) return false;
     const chosen = savedQuestions.concat(current);
     const blocks = carried.length || state.sectionKind === 'test'
       ? carried.concat(current.length ? [{ kind: sectionKind(state.sectionKind), title: currentTopic() ? currentTopic().title : '', questions: current }] : [])
@@ -2820,6 +2845,9 @@ async function updatePrint() {
     }
     const note = $('teacher-note').value.trim();
     const cfg = SCENARIOS[state.scenario] || SCENARIOS.first;
+    if (state.wizard === 'result') {
+      paintTeacherReview(chosen, blocks, note, state.scenario === 'other' ? 'אחר' : cfg.label, STYLES[state.style].label);
+    }
     if (mode === 'short') {
       await updateShortPrint(plan, printArea, chosen, note, cfg, blocks);
       return commit();
@@ -2904,6 +2932,7 @@ async function prepare(mode) {
 function applyScenario(value, options) {
   const quiet = options && options.quiet;
   const before = selectionKey();
+  const scenarioChanged = state.scenario !== value;
   if (!quiet) snapshot();
   state.scenario = value;
   state.expanded = false;
@@ -2914,7 +2943,7 @@ function applyScenario(value, options) {
   } else {
     state.pickNote = '';
   }
-  if (selectionKey() !== before) clearPreparedPrint();
+  if (scenarioChanged || selectionKey() !== before) clearPreparedPrint();
   render();
   if (!quiet) announce(value === 'other' ? 'אפשר להוסיף הערה ולבחור מהקטלוג.' : 'הוצגו פריטים שכבר קיימים בקטלוג.');
   if (!quiet && value === 'other') $('teacher-note').focus();
@@ -2989,7 +3018,10 @@ function applyWizard() {
   if (!$('wizard-bar')) return;
   const step = WIZARD_ORDER.includes(state.wizard) ? state.wizard : 'setup';
   const stepChanged = document.body.dataset.wizard !== step;
-  if (stepChanged) topicSearch?.close();
+  if (stepChanged) {
+    topicSearch?.close();
+    if (document.body.dataset.wizard === 'result') clearPreparedPrint();
+  }
   state.wizard = step;
   document.body.dataset.wizard = step;
   document.querySelectorAll('[data-wiz]').forEach((el) => {
@@ -3189,6 +3221,12 @@ function bind() {
   $('teacher-note').addEventListener('input', () => clearPreparedPrint());
   $('prepare').addEventListener('click', () => prepare('marked'));
   $('prepare-short').addEventListener('click', () => prepare('short'));
+  document.querySelectorAll('[data-review-edit]').forEach((button) => button.addEventListener('click', () => {
+    const step = button.dataset.reviewEdit;
+    if (!['setup', 'purpose', 'pick'].includes(step)) return;
+    state.wizard = step;
+    applyWizard();
+  }));
   if ($('wizard-next')) $('wizard-next').addEventListener('click', async () => {
     const index = WIZARD_ORDER.indexOf(state.wizard || 'setup');
     state.wizard = WIZARD_ORDER[Math.min(WIZARD_ORDER.length - 1, index + 1)];
@@ -3210,7 +3248,7 @@ function bind() {
   });
   if ($('wizard-print')) $('wizard-print').addEventListener('click', async () => {
     try { if (!(await updatePrint())) return; } catch (error) {
-      clearPreparedPrint();
+      clearPreparedPrint(true);
       reportPrintError(error.code === 'MISSING_ANSWERS' ? error.message : 'דף המקור לא נטען. אפשר לנסות שוב.');
       return;
     }
