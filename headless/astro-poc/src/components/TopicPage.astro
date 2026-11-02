@@ -14,10 +14,12 @@ import { topicLandingLoop } from '../lib/landingLoops';
 import {
   loadTopicPage,
   synthesizeBodyFlow,
+  updatedLineIsoDate,
   type TopicBodyFlowItem,
   type TopicPageFaqGroup,
 } from '../lib/topicPages';
 import { localizeSiteHref } from '../lib/sitePages';
+import { topicTextParts } from '../lib/topicTextParts';
 import { gradeHubLabel, isGradeHubGrade } from '../lib/gradeHubs';
 import { resolveSiteHrefString } from '../lib/resolveSiteHref';
 import TopicInline from './TopicInline.astro';
@@ -44,24 +46,14 @@ const beforeUpdateCount =
 const faqBeforeUpdate = page.faqGroups.slice(0, beforeUpdateCount);
 const faqAfterUpdate = page.faqGroups.slice(beforeUpdateCount);
 const bodyFlow: TopicBodyFlowItem[] = synthesizeBodyFlow(page);
-
-const LRI = '\u2066';
-const PDI = '\u2069';
 const NOWRAP_MATH = new Set(['S = (d1 · d2) : 2', '(6 · 8) : 2 = 24', '(10 · 6) : 2 = 30']);
 
-/** Keep a whole formula on one line. The isolate stays inside the span. */
+/**
+ * Keep a whole formula on one line (the isolate stays inside the span), and
+ * keep each ⟨n¦d⟩ fraction marker in one part so TopicInline can stack it.
+ */
 function textParts(text: string): { text: string; nowrap: boolean }[] {
-  const parts: { text: string; nowrap: boolean }[] = [];
-  const re = new RegExp(`${LRI}([^${PDI}]*)${PDI}`, 'g');
-  let last = 0;
-  for (const match of text.matchAll(re)) {
-    const index = match.index ?? 0;
-    if (index > last) parts.push({ text: text.slice(last, index), nowrap: false });
-    parts.push({ text: match[0], nowrap: NOWRAP_MATH.has(match[1] ?? '') });
-    last = index + match[0].length;
-  }
-  if (last < text.length || parts.length === 0) parts.push({ text: text.slice(last), nowrap: false });
-  return parts;
+  return topicTextParts(text, NOWRAP_MATH);
 }
 
 /** Group flow so H2 sections nest following paragraphs/lists; CTAs stay ordered siblings. */
@@ -130,6 +122,7 @@ const topicJsonLdExtras = jsonLdTypes(page.jsonLd).includes('LearningResource')
         path: page.path,
         description: page.description,
         educationalLevel: educationalLevelForGrade(page.grade),
+        dateModified: updatedLineIsoDate(page.updatedLine),
       }),
     ];
 

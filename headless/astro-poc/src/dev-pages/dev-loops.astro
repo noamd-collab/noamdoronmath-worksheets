@@ -7,6 +7,12 @@
  *
  * Gated with `import.meta.env.DEV`: available under `astro dev` (local QA);
  * any production / preview *build* returns 404 (does not ship as a public page).
+ *
+ * Lives outside src/pages on purpose. @wix/astro-pages lists every .astro file
+ * under src/pages in /_wix/pages.json, and Wix then put /dev-loops into its
+ * own /pages-sitemap.xml (seen live 2.11.2026) although the route answers 404.
+ * Only astro.config.preview.mjs (local loopback QA) injects this route; the
+ * Wix build never sees it.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ConceptLoop from '../components/ConceptLoop.astro';
