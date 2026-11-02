@@ -6,7 +6,7 @@ import {parseHTML} from 'linkedom';
 const root=new URL('../public/',import.meta.url),context:any={};
 for(const file of ['noam-native-visual.js','noam-source-panels.js'])runInNewContext(readFileSync(new URL(file,root),'utf8'),context);
 const api=context.NoamSourcePanels,json=(path:string)=>JSON.parse(readFileSync(new URL(path,root),'utf8')),clone=(v:any)=>JSON.parse(JSON.stringify(v));
-const manifests=readdirSync(new URL('noam-ai/manifests/',root)).filter(f=>f.endsWith('.json')).map(f=>json('noam-ai/manifests/'+f)).filter((m:any)=>!m.questionPagesIdenticalTo);
+const manifests=readdirSync(new URL('noam-ai/manifests/',root)).filter(f=>f.endsWith('.json')).map(f=>json('noam-ai/manifests/'+f));
 function fixture(pkg='G7-T22',level='a',q='q21',part='א'){
  const path=`noam-ai/native/${pkg}/${level}/noam-ai.json`,data=json(path),manifest=manifests.find(m=>m.nativeExportUrl==='/'+path);
  const exercise=manifest.exercises.find((e:any)=>e.nativeQuestionId===q&&e.part===part),primary=readFileSync(new URL(exercise.nativeFigureUrl.slice(1),root),'utf8');

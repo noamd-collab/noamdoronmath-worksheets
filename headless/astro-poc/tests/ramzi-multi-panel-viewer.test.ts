@@ -5,7 +5,7 @@ import { it } from 'node:test';
 import { parseHTML } from 'linkedom';
 const root=new URL('../public/',import.meta.url);
 const native=readFileSync(new URL('noam-native-visual.js',root),'utf8'),panels=readFileSync(new URL('noam-source-panels.js',root),'utf8');
-const manifests=readdirSync(new URL('noam-ai/manifests/',root)).map(f=>JSON.parse(readFileSync(new URL('noam-ai/manifests/'+f,root),'utf8'))).filter(m=>m.nativeExportUrl&&!m.questionPagesIdenticalTo);
+const manifests=readdirSync(new URL('noam-ai/manifests/',root)).map(f=>JSON.parse(readFileSync(new URL('noam-ai/manifests/'+f,root),'utf8'))).filter(m=>m.nativeExportUrl);
 const clone=(v:any)=>JSON.parse(JSON.stringify(v)),opts={answer:'בדקו את הנקודה A בשרטוטים.',studentMessage:'אפשר רמז 1?',helpKind:'hint',hintIndex:0};
 function fn(v:string,n:string){const s=v.slice(v.indexOf('function '+n+'('));return s.slice(0,s.indexOf('\nfunction ',1));}
 function fixture(v:string,path='G8-TWOSRC/a',qid='q3',part='ג',hooks:any={}){

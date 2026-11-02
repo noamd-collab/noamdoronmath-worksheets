@@ -56,7 +56,7 @@ describe('grade 8 PDF v2 replacements', () => {
     ] as const) {
       const sheetTopic = grade.topics.find((entry) => entry.noamTopicId === prefix)!;
       assert.ok(sheetTopic, prefix);
-      assert.equal(sheetTopic.levels.find((level) => level.key === 'c2')?.pdfId, migrations[pdfId]?.pdfId ?? pdfId);
+      assert.equal(sheetTopic.levels.find((level) => level.key === 'c2')?.pdfId, pdfId);
     }
     for (const prefix of ['G8-T56', 'G8-T57', 'G8-T58', 'G8-T59', 'G8-T60']) {
       const singleTopic = grade.topics.find((entry) => entry.noamTopicId === prefix)!;

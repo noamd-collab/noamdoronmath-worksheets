@@ -6,7 +6,7 @@ import { parseHTML } from 'linkedom';
 
 const root=new URL('../public/',import.meta.url);
 const native=readFileSync(new URL('noam-native-visual.js',root),'utf8'),panels=readFileSync(new URL('noam-source-panels.js',root),'utf8');
-const manifests=readdirSync(new URL('noam-ai/manifests/',root)).map(f=>JSON.parse(readFileSync(new URL('noam-ai/manifests/'+f,root),'utf8'))).filter(m=>m.nativeExportUrl&&!m.questionPagesIdenticalTo);
+const manifests=readdirSync(new URL('noam-ai/manifests/',root)).map(f=>JSON.parse(readFileSync(new URL('noam-ai/manifests/'+f,root),'utf8'))).filter(m=>m.nativeExportUrl);
 const clone=(v:any)=>JSON.parse(JSON.stringify(v));
 function fn(v:string,n:string){const s=v.slice(v.indexOf('function '+n+'('));assert.ok(s.startsWith('function '+n+'('));return s.slice(0,s.indexOf('\nfunction ',1));}
 function fixture(v:string,path='G7-T22/a',qid='q21',part='ד',mutate?:(url:string,body:string)=>string|null){
