@@ -101,6 +101,7 @@ function wizard(options: { confirmReplacement?: boolean; href?: string; load?: (
       {grade:9,label:'כיתה ט׳',topics:[{id:2,title:'פירוק',sheets:[{level:'a'},{level:'b'},{level:'c'}]}]}
     ] };
     const elements = new Map(), levels=['all','a','b','c'].map(value=>({value,checked:value==='all',disabled:false,handlers:{},addEventListener(type,fn){this.handlers[type]=fn;}}));
+    const topicSearch = null;
     function $(id){if(!elements.has(id))elements.set(id,{value:'',dataset:{},handlers:{},setAttribute(){},removeAttribute(){},focus(){},addEventListener(type,fn){this.handlers[type]=fn;},classList:{toggle(){}}});return elements.get(id);}
     const listeners = {};
     const document={activeElement:null,body:{dataset:{}},querySelectorAll(selector){return selector==='[name=level]'?levels:[];},querySelector(){return null;},addEventListener(type,fn){listeners[type]=fn;}};
@@ -216,7 +217,7 @@ test('the deployed teacher module and URL helper invalidate their own caches whi
   assert.equal(printer,readFileSync(new URL('../../../demos/teacher-factoring-print.js',import.meta.url),'utf8'));
   assert.equal(readFileSync(new URL('../public/teachers/wizard-prefill.js',import.meta.url),'utf8'),readFileSync(new URL('../../../demos/wizard-prefill.js',import.meta.url),'utf8'));
   assert.match(printer,/wizard-prefill\.js\?v=20261031-level-choice-help/);
-  for(const file of ['../public/teachers/index.html','../../../demos/teacher-practice-picker-site-style.html']) assert.match(readFileSync(new URL(file,import.meta.url),'utf8'),/teacher-factoring-print\.js\?v=20261102-four-step-wizard/);
+  for(const file of ['../public/teachers/index.html','../../../demos/teacher-practice-picker-site-style.html']) assert.match(readFileSync(new URL(file,import.meta.url),'utf8'),/teacher-factoring-print\.js\?v=20261102-topic-search/);
   assert.match(printer,/NoamBotClient\.version === '20261101-sdk-lifecycle'/);
 });
 

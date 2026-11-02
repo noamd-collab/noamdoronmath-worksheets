@@ -107,6 +107,21 @@ nav[data-nav-panel] a:hover{background:rgba(42,124,122,.1)}
   background-position:left 10px center,left 16px center;background-size:6px 6px,6px 6px;background-repeat:no-repeat;
   padding-left:28px;
 }
+.topic-search{position:relative;min-width:0}
+.topic-search input{width:100%;min-height:48px;padding:10px 14px;padding-inline-end:52px;border:2px solid var(--ink);border-radius:14px 6px 16px 8px / 8px 16px 6px 14px;background:#fff;color:var(--ink);font-size:16px}
+.topic-search-toggle{position:absolute;top:2px;inset-inline-end:2px;display:grid;place-items:center;width:44px;min-height:44px;border:0;border-radius:8px;background:transparent;color:var(--ink);cursor:pointer}
+.topic-search-toggle:hover{background:var(--mint)}
+.topic-search-popup{position:absolute;top:52px;inset-inline:0;z-index:40;border:2px solid var(--ink);border-radius:12px;background:#fff;box-shadow:3px 4px 0 rgba(34,48,90,.16);overflow:hidden}
+.topic-search-popup[hidden]{display:none}
+.topic-search-list{list-style:none;padding:4px;margin:0;max-height:min(280px,45vh);overflow-y:auto;overscroll-behavior:contain}
+.topic-search-list [role=option]{min-height:44px;display:flex;align-items:center;padding:10px 12px;border:2px solid transparent;border-radius:8px;line-height:1.5;overflow-wrap:anywhere;cursor:pointer}
+.topic-search-list [role=option]:hover{background:var(--mint)}
+.topic-search-list [role=option][aria-selected=true]{border-color:var(--ink);background:var(--mint);font-weight:700}
+.topic-search-help,.topic-search-status{margin:6px 0 0;font-size:14px;line-height:1.5;color:var(--quiet)}
+.topic-search-status{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.topic-search-empty{margin:0;padding:12px;font-size:14px;line-height:1.5}
+.topic-search-fallback{display:block;min-height:44px;margin:0;padding:6px 0;border:0;background:transparent;color:var(--teal-dark);font-size:14px;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+@media (forced-colors:active){.topic-search-list [role=option][aria-selected=true]{border-color:Highlight}.topic-search-toggle{color:ButtonText}}
 .source-mini{font-size:14px;color:var(--quiet);margin-top:10px;line-height:1.5}
 .level-field{margin-top:12px}
 .level-field .style-label{display:block;margin-bottom:8px}
@@ -543,7 +558,7 @@ dialog::backdrop{background:rgba(34,48,90,.46)}
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js" integrity="sha384-/1qUCSGwTur9vjf/z9lmu/eCUYbpOTgSjmpbMQZ1/CtX2v/WcAIKqRv+U1DUCG6e" crossorigin="anonymous"></script>
-<script type="module" src="./teacher-factoring-print.js?v=20261102-four-step-wizard"></script>
+<script type="module" src="./teacher-factoring-print.js?v=20261102-topic-search"></script>
 
 <script src="../headless/astro-poc/public/noam-site-companion.js?v=20261101-sdk-lifecycle" defer data-avatar="../headless/astro-poc/public/design-exact/assets/avatar/ramzi-A-idle.svg"></script>
 </body>

@@ -118,6 +118,7 @@ let appBound = false;
 let startupComplete = false;
 let retryTeacherLoad = null;
 let appLoadId = 0;
+let topicSearch = null;
 
 function setTeacherAppState(next, message = '') {
   appState = next;
@@ -179,6 +180,7 @@ async function changeTeacherScope(grade, topic) {
   if (!accepted) {
     $('grade').value = String(state.grade);
     $('topic').value = String(state.topic);
+    topicSearch?.sync();
     return;
   }
   state.grade = String(grade);
@@ -685,8 +687,11 @@ function addAnotherTopic() {
   state.wizard = 'setup';
   render();
   announce('השאלות נשמרו בדף. בוחרים נושא נוסף.');
-  const select = $('topic');
-  if (select && select.focus) select.focus();
+  if (topicSearch) topicSearch.focus();
+  else {
+    const select = $('topic');
+    if (select && select.focus) select.focus();
+  }
 }
 
 function pageNeedsSections() {
@@ -901,6 +906,7 @@ function fillTopics() {
   }
   $('topic').innerHTML = topics.map((topic) => `<option value="${topic.id}">${escapeHTML(topic.title)}</option>`).join('');
   if (state.topic) $('topic').value = String(state.topic);
+  topicSearch?.sync();
   syncLevels();
 }
 
@@ -1181,6 +1187,7 @@ function render() {
   $('other-banner').hidden = state.scenario !== 'other';
   $('grade').value = String(state.grade);
   if ($('topic').value !== String(state.topic) && state.topic) $('topic').value = String(state.topic);
+  topicSearch?.sync();
   syncWizardUrl();
   document.querySelectorAll('[name=scenario]').forEach((el) => { el.checked = el.value === state.scenario; });
   document.querySelectorAll('[name=style]').forEach((el) => { el.checked = el.value === state.style; });
@@ -2982,6 +2989,7 @@ function applyWizard() {
   if (!$('wizard-bar')) return;
   const step = WIZARD_ORDER.includes(state.wizard) ? state.wizard : 'setup';
   const stepChanged = document.body.dataset.wizard !== step;
+  if (stepChanged) topicSearch?.close();
   state.wizard = step;
   document.body.dataset.wizard = step;
   document.querySelectorAll('[data-wiz]').forEach((el) => {
@@ -3332,3 +3340,10 @@ async function start() {
 start().catch(() => {
   setTeacherAppState('error', 'רשימת דפי העבודה לא נטענה. לחצו על ניסיון נוסף.');
 });
+
+// Optional enhancement: a failed search download leaves the native topic list usable.
+void import('./teacher-topic-search.js?v=20261102-topic-search').then(({ enhanceTopicSelect }) => {
+  topicSearch = enhanceTopicSelect($('topic'), {
+    onChoose: (topic) => changeTeacherScope(state.grade, topic),
+  });
+}).catch(() => {});
