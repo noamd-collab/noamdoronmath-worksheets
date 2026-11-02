@@ -177,7 +177,7 @@ test('the same accessible level radio group moves between setup and question pic
   const field = document.getElementById('teacher-level-choice'); assert.ok(field);
   const group = document.getElementById('level-filter'); assert.ok(group);
   const inputs = [...group.querySelectorAll('input[name=level]')];
-  assert.equal(inputs.length, 4);
+  assert.deepEqual(inputs.map(input=>input.getAttribute('value')), ['a','b','c']);
   const selected = inputs.find(input=>input.getAttribute('value')==='b') as any;
   selected.checked = true;
   const state = {wizard:'level'};
@@ -190,7 +190,7 @@ test('the same accessible level radio group moves between setup and question pic
     state.wizard = step; apply();
     assert.equal(field.parentElement?.id, step==='pick'?'pick-level-home':'wizard-level-home');
     assert.equal(document.querySelectorAll('#teacher-level-choice').length, 1);
-    assert.equal(document.querySelectorAll('input[name=level]').length, 4);
+    assert.equal(document.querySelectorAll('input[name=level]').length, 3);
     assert.equal(document.getElementById('level-filter'), group);
     assert.equal(selected.checked, true, 'Moving the controls must not recreate their inputs');
     if(step==='pick') assert.equal(field.closest('.wiz-off'), null, 'Level choice remains visible beside the questions');

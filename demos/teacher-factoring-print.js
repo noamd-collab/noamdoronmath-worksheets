@@ -796,8 +796,8 @@ function syncLevels() {
     const label = el.closest && el.closest('label');
     if (label) label.title = el.disabled ? 'הרמה הזו אינה זמינה בנושא הנבחר.' : '';
   });
-  const allLabel = $('level-all-label');
-  if (allLabel) allLabel.textContent = choices.length ? 'כל הרמות יחד' : 'כל שאלות הנושא';
+  const filter = $('level-filter');
+  if (filter) filter.hidden = choices.length === 0;
   const help = $('level-help');
   if (help) help.textContent = !choices.length
     ? 'בנושא הזה אין חלוקה לרמות. כל שאלות הנושא זמינות לבחירה.'
