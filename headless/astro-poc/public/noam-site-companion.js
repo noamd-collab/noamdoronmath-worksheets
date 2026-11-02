@@ -643,15 +643,34 @@
 
   function launcherHitsText(box) {
     if (!box || box.width <= 0 || box.height <= 0) return false;
-    var nodes = document.querySelectorAll("main p, main span, main strong, main a, main h1, main h2, main h3, main h4, main li");
+    var nodes = document.querySelectorAll("main p, main span, main strong, main a, main button, main h1, main h2, main h3, main h4, main li");
+    var range = typeof document.createRange === "function" ? document.createRange() : null;
     for (var i = 0; i < nodes.length; i++) {
       var el = nodes[i];
       if (el.closest("#noam-site-companion,#noam-accessibility,.site-doodles,[data-doodle]")) continue;
       var st = getComputedStyle(el);
       if (st.display === "none" || st.visibility === "hidden" || Number(st.opacity) === 0) continue;
-      var r = el.getBoundingClientRect();
-      if (r.width < 2 || r.height < 2) continue;
-      if (box.left < r.right + 4 && box.right > r.left - 4 && box.top < r.bottom + 4 && box.bottom > r.top - 4) {
+      var elRect = el.getBoundingClientRect();
+      if (elRect.width < 2 || elRect.height < 2) continue;
+      if (elRect.bottom < box.top - 6 || elRect.top > box.bottom + 6 || elRect.right < box.left - 6 || elRect.left > box.right + 6) continue;
+      if (el.tagName === "A" || el.tagName === "BUTTON") {
+        return true;
+      }
+      if (range) {
+        for (var c = 0; c < el.childNodes.length; c++) {
+          var child = el.childNodes[c];
+          if (child.nodeType === 3 && child.nodeValue && child.nodeValue.trim()) {
+            range.selectNodeContents(child);
+            var clientRects = range.getClientRects();
+            for (var rIdx = 0; rIdx < clientRects.length; rIdx++) {
+              var tr = clientRects[rIdx];
+              if (tr.width > 1 && tr.height > 1 && box.left < tr.right + 6 && box.right > tr.left - 6 && box.top < tr.bottom + 6 && box.bottom > tr.top - 6) {
+                return true;
+              }
+            }
+          }
+        }
+      } else {
         return true;
       }
     }

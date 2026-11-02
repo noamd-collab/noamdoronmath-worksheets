@@ -246,25 +246,21 @@
     function settleLauncher() {
       if (!astroShell || !host.isConnected || dialog.open) return;
       var metrics = launcherMetrics();
-      /* Phone: stay in the bottom dock, opposite the chat launcher.
-         Climbing the screen parks the button on the headline or בס״ד. */
-      if (docked()) {
+      /* Stay consistently in the bottom-left corner across all pages, opposite
+         the Noam AI launcher on the right, and never climb onto the top menu. */
+      if (docked() || document.documentElement.classList.contains('noam-ai-engaged')) {
         applyHostBox('left', metrics.edge, 8, metrics.size);
         return;
       }
       var rects = obstacleRects();
-      var maxBottom = Math.max(8, Math.round(window.innerHeight * 0.75));
-      var bottoms = [8, 0];
-      for (var bottom = 16; bottom <= maxBottom; bottom += 8) bottoms.push(bottom);
-      var sides = ['right', 'left'];
+      var maxBottom = Math.max(8, Math.min(96, Math.round(window.innerHeight * 0.2)));
+      var bottoms = [14, 8, 22, 30, 38, 46, 54, 62, 70, 78, 86, maxBottom];
       for (var i = 0; i < bottoms.length; i++) {
-        for (var s = 0; s < sides.length; s++) {
-          applyHostBox(sides[s], metrics.edge, bottoms[i], metrics.size);
-          if (!boxHits(host.getBoundingClientRect(), rects)) return;
-        }
+        applyHostBox('left', metrics.edge, bottoms[i], metrics.size);
+        if (!boxHits(host.getBoundingClientRect(), rects)) return;
       }
       if (parkOffLessonCard(metrics)) return;
-      applyHostBox('left', metrics.edge, 8, metrics.size);
+      applyHostBox('left', metrics.edge, 14, metrics.size);
     }
     function parkOffLessonCard(metrics) {
       var cardEl = document.querySelector('.exact-topic-demo,.concept-loop__card,.ka-film');
@@ -272,20 +268,21 @@
       var card = cardEl.getBoundingClientRect();
       if (card.width < 2 || card.height < 2) return false;
       var rects = obstacleRects();
-      var topGap = Math.max(8, Math.round(window.innerHeight - metrics.size - 8));
-      var aboveCard = Math.round(window.innerHeight - card.top + 8);
-      var spots = [];
-      if (card.top > metrics.size + 16) {
-        spots.push(['left', aboveCard], ['right', aboveCard]);
-      }
-      spots.push(['left', topGap], ['right', topGap]);
+      var safeCap = Math.max(14, Math.min(110, Math.round(window.innerHeight - 140)));
+      var belowCard = Math.max(8, Math.min(safeCap, Math.round(window.innerHeight - card.bottom - metrics.size - 8)));
+      var spots = [
+        ['left', 14],
+        ['left', 8],
+        ['left', belowCard],
+        ['left', safeCap],
+      ];
       for (var i = 0; i < spots.length; i++) {
         applyHostBox(spots[i][0], metrics.edge, spots[i][1], metrics.size);
         var box = host.getBoundingClientRect();
         var onCard = box.left < card.right && box.right > card.left && box.top < card.bottom && box.bottom > card.top;
         if (!onCard && !boxHits(box, rects)) return true;
       }
-      applyHostBox('left', metrics.edge, topGap, metrics.size);
+      applyHostBox('left', metrics.edge, 14, metrics.size);
       return true;
     }
     function placeDialogNearLauncher() {

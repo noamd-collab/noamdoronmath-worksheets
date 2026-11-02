@@ -1,5 +1,5 @@
 ---
-const showDevNotice = import.meta.env.PUBLIC_SHOW_DEV_NOTICE === 'true';
+const showDevNotice = false && import.meta.env.PUBLIC_SHOW_DEV_NOTICE === 'true';
 ---
 {showDevNotice && (
 <aside class="exact-development-notice" aria-label="הודעת פיתוח" data-development-notice>
