@@ -184,6 +184,7 @@ test('the same accessible level radio group moves between setup and question pic
   const state = {wizard:'setup'};
   const apply = new Function('document','state',`
     const topicSearch = null;
+    const clearPreparedPrint=()=>{};
     const $=id=>document.getElementById(id),WIZARD_ORDER=['setup','purpose','pick','result'];
     ${definition('applyWizard')}
     return applyWizard;
