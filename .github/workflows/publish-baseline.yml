@@ -5,7 +5,7 @@ name: publish-baseline
 # A push of this file to main also releases once, because the token that
 # merges pull requests cannot call the dispatch API (Actions: write).
 # Release script on baseline installs @wix/cli before login (see #275).
-# Noam-approved batch 3: PR #355 republishes G9-T17, G9-T18, G9-T19 and G9-T20
+# Noam-approved batch 4: PR #360 republishes the remaining 92 grade 7-9 topics (276 sheets)
 # with their final answers; Ramzi hints follow through the original PDF ids.
 # Standard hints use the bank; Flash is for additional questions, without Max.
 
@@ -52,4 +52,4 @@ jobs:
             exit 1
           fi
           git fetch origin headless/astro-poc-baseline
-          bash tools/release/release.sh "663e99d510cb20f3c8a366f204ee76f5a33570d1"
+          bash tools/release/release.sh "1eec5b74b5f37cdcebdbec70280b9519716e62b9"
