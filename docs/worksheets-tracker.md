@@ -532,3 +532,9 @@ Columns: grade, topic, levels present, author, reviewed, live, PR.
 - Answer pages without a repeated heading are included after the final-answer section begins.
 - Regression case: grade 7, topic 8, excellence, questions 5, 13, 14 and 15.
 - Validation: 1,842 tests passed (1,833 unit, 5 isolated drawing, 4 live SSR), production build and slash-fraction check passed. Brave desktop/mobile and four-page print PDF inspected: all four answers readable, with no overlap. Wix preview URL is recorded in the PR.
+
+### 2026-11-03 — פעולה יזומה להוספת נושא באזור המורים
+
+- לפי אישור נועם להצעת Manus CL4, שאלת ״האם תרצה לבחור עוד נושא״ וכפתורי כן/לא הוחלפו בכפתור קבוע ״+ הוספת נושא לדף״ בשלב 3, באתר ובדמו. הוא פעיל כשנבחרו שאלות חדשות.
+- הלחיצה משתמשת בפעולה הקיימת: שומרת את הבחירה כמקטע, משאירה מקטעים קודמים וחוזרת לבחירת נושא באותה כיתה עם מיקוד בשדה החיפוש. אפשר להמשיך לתצוגה ולהדפסה בלי להוסיף נושא.
+- השמירה בזיכרון הדף הקיים; אין התחברות, מסד נתונים או שינוי במנגנון ההדפסה ובתשובות הסופיות. תוצאות האימות ותצוגה מקדימה יירשמו ב־PR. מיזוג ופרסום טעונים אישור נפרד.

@@ -1,7 +1,7 @@
 import { dismissTeacherHumanVerification, requestTeacherHumanVerification } from './teacher-human-verification.js?v=20261030-stepup-error-detail';
 import { replaceWizardScopeUrl, wizardPrefillFromSearch } from './wizard-prefill.js?v=20261031-level-choice-help';
 import { expandToWholeQuestionKeys, groupWholeQuestions, mulberry32, pickWholeQuestions, randomSeed } from './teacher-question-pick.js';
-import { PICK_HEADING, SECTION_KINDS, needsSectionHeadings, pointsLabel, scoreLabel, sectionKind, sectionTitle, shouldAskMoreTopic, testPoints, TEST_TOTAL_POINTS } from './teacher-page-sections.js?v=20261102-test-section-wording';
+import { PICK_HEADING, SECTION_KINDS, needsSectionHeadings, pointsLabel, scoreLabel, sectionKind, sectionTitle, testPoints, TEST_TOTAL_POINTS } from './teacher-page-sections.js?v=20261103-add-topic-button';
 import { buildTeacherReview, renderTeacherReview } from './teacher-review-summary.js?v=20261103-note-separation';
 
 /* Teacher picker for every catalog sheet, grades 1–9.
@@ -103,7 +103,6 @@ let state = {
   pickNote: '',
   blocks: [],
   sectionKind: 'review',
-  moreDismissed: false,
 };
 let history = [];
 let rendering = false;
@@ -190,7 +189,6 @@ async function changeTeacherScope(grade, topic) {
   state.expanded = false;
   state.selected = [];
   if (gradeChanged) state.blocks = [];
-  state.moreDismissed = false;
   state.pickNote = '';
   state.lastAiPickCount = 0;
   history = [];
@@ -659,8 +657,11 @@ function paintPageBuilder() {
     const help = $('section-kind-help');
     if (help) help.textContent = SECTION_KINDS[sectionKind(state.sectionKind)].help;
   }
-  const prompt = $('more-topic');
-  if (prompt) prompt.hidden = !shouldAskMoreTopic(blockQuestionCount(state.selected), state.moreDismissed);
+  const addTopic = $('add-topic');
+  if (addTopic) {
+    const saved = carriedKeys();
+    addTopic.disabled = !state.selected.some((key) => !saved.has(key));
+  }
   const list = $('page-blocks');
   if (!list) return;
   list.hidden = !state.blocks.length;
@@ -682,7 +683,6 @@ function addAnotherTopic() {
     keys: state.selected.slice(),
   });
   state.selected = [];
-  state.moreDismissed = false;
   state.pickNote = '';
   history = [];
   clearPreparedPrint();
@@ -3191,11 +3191,7 @@ function bind() {
     clearPreparedPrint();
     render();
   });
-  if ($('more-topic-yes')) $('more-topic-yes').addEventListener('click', () => addAnotherTopic());
-  if ($('more-topic-no')) $('more-topic-no').addEventListener('click', () => {
-    state.moreDismissed = true;
-    render();
-  });
+  if ($('add-topic')) $('add-topic').addEventListener('click', () => addAnotherTopic());
   document.querySelectorAll('[data-question-count]').forEach((btn) => {
     btn.addEventListener('click', () => {
       state.pickMode = 'ai';
