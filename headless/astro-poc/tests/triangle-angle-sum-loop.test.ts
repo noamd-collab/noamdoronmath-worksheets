@@ -117,7 +117,7 @@ describe('triangle angle-sum vertex descent film', () => {
     assert.equal(shell.includes('reel.mp4'), false);
     const hero = read('src/pages/hero-loops/[variant].astro');
     const grade = read('src/components/GradeLoopPlayer.astro');
-    const dev = read('src/pages/dev-loops.astro');
+    const dev = read('src/dev-pages/dev-loops.astro');
     assert.match(hero, /TriangleAngleSumLoop/);
     assert.match(hero, /\/loops\/triangle-angle-sum-vertex-descent\.html/);
     assert.doesNotMatch(hero, /reel\.mp4/);

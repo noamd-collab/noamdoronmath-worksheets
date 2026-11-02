@@ -21,16 +21,21 @@ function isCore(ch: string): boolean {
   return '−+×÷=≠<>≤≥±√∞%*'.includes(ch);
 }
 
-/** Symbols that may sit inside a math run (parentheses, degree, dashes, …). */
+/**
+ * Symbols that may sit inside a math run (parentheses, degree, dashes, …).
+ * ⟨ ¦ ⟩ are the stored fraction marker ⟨numerator¦denominator⟩. Without them
+ * “x=⟨−3+5¦4⟩=⟨1¦2⟩” broke into five separate isolates, and the RTL paragraph
+ * laid those out right to left, so the formula read mirrored.
+ */
 function isMathSymbol(ch: string): boolean {
   if (isCore(ch)) return true;
-  return '()[]{}|∥⊥∠^/~·∙′″°⁄–—:+'.includes(ch) || ch === '-';
+  return '()[]{}|∥⊥∠^/~·∙′″°⁄–—:+⟨¦⟩'.includes(ch) || ch === '-';
 }
 
 /** Symbols that may open a run (a run never starts with ":" or a dash used as punctuation). */
-const OPENERS = new Set(['(', '[', '{', '|', '∠', '√', '−', '-', '+', '±', '~']);
+const OPENERS = new Set(['(', '[', '{', '|', '∠', '√', '−', '-', '+', '±', '~', '⟨']);
 /** Symbols that may close a run (a run never ends with ":" or a dash). */
-const CLOSERS = new Set([')', ']', '}', '|', '°', '′', '″', '%', '!']);
+const CLOSERS = new Set([')', ']', '}', '|', '°', '′', '″', '%', '!', '⟩']);
 
 function isHebrewLetter(ch: string | undefined): boolean {
   return !!ch && ch >= '\u05D0' && ch <= '\u05EA';
