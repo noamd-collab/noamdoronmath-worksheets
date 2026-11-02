@@ -61,4 +61,4 @@ G9/T7 source `963480052e8346d6a6a893b9586192f9` has verified full-page answers o
 
 ## Review delivery
 
-The [hosted Wix preview](https://6klaty-noam-math-astro-poc-amiramnoam-130a.wix-site-host.com/teachers?grade=9&topic=7&level=a) contains the reviewed implementation. Its JavaScript is checked byte-for-byte against the source, and the served HTML is checked for the new load panel and cache version. The PR identifies the reviewed commit. No merge or production release is included.
+The PR links to the current hosted Wix preview and identifies the reviewed commit. Preview JavaScript is checked byte-for-byte against the source, and the served HTML is checked for the load panel and current cache versions. Noam subsequently approved merge and publication after the final wording correction to `קטע ממבחן`; the label, help, messages and demo all use that wording.

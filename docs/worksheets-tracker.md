@@ -2,6 +2,8 @@
 
 ## Teacher selection and print integrity — 2026-11-02
 
+- Noam approved PR #357 for merge/publication after correcting the UI wording to `קטע ממבחן`. The label, help text, messages and demo are synchronized, and the affected module cache versions are refreshed.
+
 - Catalog and topic loading now expose loading/error/retry states, preserve valid scope and saved sections, and bind controls only once across retries. Class/topic/level changes and AI replacements request confirmation before discarding selected work; invalid external handoffs leave the page intact.
 - The student and teacher use the same worksheet with final answers at the end. Marked source output now appends answers and includes the source pages required by continuation rows/stems. Marks retain their original page coordinates. Missing answer coverage without verified full-page metadata blocks printing with a persistent visible message; it never fabricates an answer key.
 - Print preparation renders off-screen and commits complete exercise/answer canvases together. Selection changes invalidate pending renders, and failures cannot leave a partial or stale worksheet printable. Existing full-page answer geometry, whole-question crops and question/diagram grouping remain intact.

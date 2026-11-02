@@ -1,7 +1,7 @@
 import { dismissTeacherHumanVerification, requestTeacherHumanVerification } from './teacher-human-verification.js?v=20261030-stepup-error-detail';
 import { replaceWizardScopeUrl, wizardPrefillFromSearch } from './wizard-prefill.js?v=20261031-level-choice-help';
 import { expandToWholeQuestionKeys, groupWholeQuestions, mulberry32, pickWholeQuestions, randomSeed } from './teacher-question-pick.js';
-import { PICK_HEADING, SECTION_KINDS, needsSectionHeadings, pointsLabel, scoreLabel, sectionKind, sectionTitle, shouldAskMoreTopic, testPoints, TEST_TOTAL_POINTS } from './teacher-page-sections.js?v=20261031-level-choice-help';
+import { PICK_HEADING, SECTION_KINDS, needsSectionHeadings, pointsLabel, scoreLabel, sectionKind, sectionTitle, shouldAskMoreTopic, testPoints, TEST_TOTAL_POINTS } from './teacher-page-sections.js?v=20261102-test-section-wording';
 
 /* Teacher picker for every catalog sheet, grades 1–9.
    Choose complete source questions across topic and level sheets.
@@ -1173,7 +1173,7 @@ function render() {
   const cfg = SCENARIOS[state.scenario] || SCENARIOS.first;
   $('result-title').textContent = ok ? (state.scenario === 'other' ? 'מרכיבים את הבחירה שלכם' : (pilotOn() ? cfg.title : cfg.label)) : 'בוחרים כיתה ונושא';
   $('result-summary').textContent = ok
-    ? 'רואים כל שאלה כפי שהיא בדף המקור ומסמנים את השאלות השלמות שמתאימות, בכל מספר. אפשר להכין קטע מבחן עם ניקוד או דף חזרה לתרגול.'
+    ? 'רואים כל שאלה כפי שהיא בדף המקור ומסמנים את השאלות השלמות שמתאימות, בכל מספר. אפשר להכין קטע ממבחן עם ניקוד או דף חזרה לתרגול.'
     : 'בוחרים כיתה ונושא מתוך הקטלוג.';
   $('rationale').textContent = ok ? 'בוחרים שאלה שלמה עם כל הסעיפים שלה, בכל הכיתות.' : '';
   $('pedagogy-details').textContent = ok ? (pilotOn() ? cfg.details : 'ההדפסה מסמנת על עמוד המקור, או חותכת ממנו דף מצומצם. לא מנוסח דף חדש.') : '';
@@ -2858,7 +2858,7 @@ async function prepare(mode) {
   }
   if (mode === 'marked' && pageNeedsSections()) {
     mode = 'short';
-    announce('דף עם קטע מבחן או עם כמה נושאים נבנה כדף מצומצם מהמקור.');
+    announce('דף עם קטע ממבחן או עם כמה נושאים נבנה כדף מצומצם מהמקור.');
   }
   printMode = mode;
   rendering = true;

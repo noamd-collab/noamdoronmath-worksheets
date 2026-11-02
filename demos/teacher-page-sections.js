@@ -4,7 +4,7 @@ export const MORE_TOPIC_QUESTION = 'האם תרצה לבחור עוד נושא �
 
 export const SECTION_KINDS = {
   test: {
-    label: 'קטע מבחן',
+    label: 'קטע ממבחן',
     help: 'ניקוד לכל שאלה ושדה לציון בדף המודפס. הציון ממולא ידנית.',
     heading: 'מבחן',
   },
