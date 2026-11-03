@@ -15,13 +15,14 @@ function fixture(v:string,path='G8-TWOSRC/a',qid='q3',part='ג',hooks:any={}){
  document.createElement=((tag:string)=>{const e:any=create(tag);if(tag==='dialog'){e.showModal=()=>e.open=true;e.close=()=>e.dispatchEvent(new window.Event('close'));}return e;}) as any;
  const calls:string[]=[],crops:any[]=[],fallback:any[]=[],runtime={messages:new Map()},message:any={role:'assistant',text:opts.answer},thread:any={messages:[message],history:[]};
  const c:any={document,window,manifest,selectedExercise:exercise,pdf:manifest.pdfHash,Map,WeakSet,Promise,
- noamNativeFocusUrl:()=>manifest.nativeExportUrl,noamDiagramRuntime:()=>runtime,noamMessageVisualOptions:()=>opts,exerciseThread:()=>thread,
+ // This suite exercises source galleries independently of the catalog drawing-policy gate.
+ noamPageAllowsDrawingHint:()=>true,noamNativeFocusUrl:()=>manifest.nativeExportUrl,noamDiagramRuntime:()=>runtime,noamMessageVisualOptions:()=>opts,exerciseThread:()=>thread,
  renderCount:0,savedCount:0,renderNoamChat(){c.renderCount++;},saveNoamState(){c.savedCount++;},announceNoam(){},
  cropExerciseCanvas:async(e:any,o:any)=>{crops.push({exercise:clone(e),options:clone(o)});return {width:640,height:1200,toDataURL:()=> 'data:image/png;base64,QUJD'};},
  fetch:async(url:string)=>{calls.push(url);if(hooks.wait)await hooks.wait;if(hooks.fail===url)return {ok:false};const body=readFileSync(new URL(url.slice(1),root),'utf8');return {ok:true,json:async()=>JSON.parse(body),text:async()=>hooks.svg?hooks.svg(url,body):body};},
  requestNoamDiagram:async(...args:any[])=>{fallback.push(args);return 'protected-fallback';}};
  const helper='var noamSourceVisualPackages='+v.split('var noamSourceVisualPackages=')[1].split('function noamNativeFigure(')[0];
- runInNewContext(native+'\n'+panels+'\n'+fn(v,'noamDiagramSourceIdentity')+'\n'+helper+'\n'+['noamDiagramCurrent','noamDiagramRefresh','noamTypedVisualContext','noamAddDiagramExpansion','noamRenderAiDiagram'].map(n=>fn(v,n)).join('\n'),c);
+ runInNewContext(native+'\n'+panels+'\n'+fn(v,'noamDiagramSourceIdentity')+'\n'+helper+'\n'+['noamDiagramCurrent','noamDiagramRefresh','noamTypedVisualContext','noamAddDiagramExpansion','noamRenderAiDiagram','noamRenderDrawingVisual','noamQuestionDrawing','noamReuseQuestionDrawing','noamTrimQuestionMessages','noamPendingQuestionDrawing','noamQuestionDrawingBlocked'].map(n=>fn(v,n)).join('\n'),c);
  window.NoamNativeVisual=c.NoamNativeVisual;window.NoamSourcePanels=c.NoamSourcePanels;
  return {c,manifest,exercise,message,thread,calls,crops,fallback,runtime,document,window};
 }

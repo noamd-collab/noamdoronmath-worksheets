@@ -23,7 +23,8 @@ function fixture(file=viewers[1],legacy=false) {
   const calls:any[]=[],fetches:string[]=[],renders:string[]=[],notices:string[]=[];
   const manifest:any={sourceSha256:'same-pdf',exercises:[exercise],...(legacy?{}:{nativeExportUrl:'/noam-ai/native/G8-T03/a/noam-ai.json',nativeExportSha256:sourceHash})};
   const c:any={document,manifest,pdf:'fixture-pdf',selectedExercise:exercise,threads:{[exercise.id]:thread},API:'https://api.test/_functions',g:8,lv:'a',LEVEL:{a:'רמה א׳'},ttl:'ביטויים',ownerKey:'unchanged-owner',Map,WeakSet,Promise,console:{warn(){}},
-    noamNativeFocusUrl:()=>null,noamSourceCropRequested:()=>false,noamConstructedVisual:()=>null,noamParsedLocalVisual:()=>null,
+    // Typed-renderer coverage is independent of the catalog drawing-policy gate.
+    noamPageAllowsDrawingHint:()=>true,noamNativeFocusUrl:()=>null,noamSourceCropRequested:()=>false,noamConstructedVisual:()=>null,noamParsedLocalVisual:()=>null,
     exerciseThread:(id:string)=>c.threads[id],saveNoamState(){},renderNoamChat(){renders.push(c.selectedExercise.id);},announceNoam:(s:string)=>notices.push(s),
     noamDiagramRefresh:(e:any,t:any)=>{if(c.selectedExercise.id===e.id&&c.threads[e.id]===t)renders.push(e.id);},
     getExerciseAnalysis:async()=>({readable:true,transcription:legacy?exercise.text:question.text,diagram_description:''}),
@@ -35,7 +36,7 @@ function fixture(file=viewers[1],legacy=false) {
   c.pollNoamDiagramJob=async()=>clone({ok:true,plan:legacy?legacyPlan:typedPlan,sourceSha256:sourceHash,validationQuestionText:legacy?exercise.text:'model text is not authoritative for typed plans'});
   for(const name of modules)runInNewContext(readFileSync(new URL(name,pub),'utf8'),c,{filename:name});
   const sourceHelpers='var noamSourceVisualPackages='+html.split('var noamSourceVisualPackages=')[1].split('function noamNativeFigure(')[0];
-  const names=['noamDiagramRuntime','noamDiagramSourceIdentity','noamDiagramAnalysis','noamDiagramQuestionText','noamTypedVisualContext','noamInspectVisualPlan','noamRenderVisualPlan','noamRenderAiDiagram','noamDiagramError','noamNativeDiagramContext','noamDiagramSourceInput','requestNoamDiagram'];
+  const names=['noamDiagramRuntime','noamDiagramSourceIdentity','noamDiagramAnalysis','noamDiagramQuestionText','noamTypedVisualContext','noamInspectVisualPlan','noamRenderVisualPlan','noamRenderAiDiagram','noamDiagramError','noamNativeDiagramContext','noamDiagramSourceInput','requestNoamDiagram','noamRenderDrawingVisual','noamQuestionDrawing','noamReuseQuestionDrawing','noamTrimQuestionMessages','noamPendingQuestionDrawing','noamQuestionDrawingBlocked'];
   // The released viewer retains earlier native-focus and printed-mark guards.
   // Include their real functions: these no-figure fixtures must pass through
   // them naturally, rather than mocking those production branches away.

@@ -13,6 +13,8 @@ function fn(name: string) {
   return text.slice(0, text.indexOf('\nfunction ', 1));
 }
 const refresh = fn('noamDiagramCurrent') + '\n' + fn('noamDiagramRefresh');
+const drawingState = ['noamRenderDrawingVisual', 'noamQuestionDrawing', 'noamReuseQuestionDrawing',
+  'noamTrimQuestionMessages', 'noamPendingQuestionDrawing', 'noamQuestionDrawingBlocked'].map(fn).join('\n');
 const data = JSON.parse(readFileSync(new URL('../public/noam-ai/native/G8-T15/a/noam-ai.json', import.meta.url), 'utf8'));
 const svg = readFileSync(new URL('../public/noam-ai/native/G8-T15/a/figures/q2a.svg', import.meta.url), 'utf8');
 const opts = { answer: 'שים לב לנקודה (0,-9) ולציר y.', studentMessage: 'אפשר רמז 1?', helpKind: 'hint' };
@@ -26,12 +28,14 @@ function fixture(fetcher?: (url: string, fallback: () => any) => any) {
   const c: any = { document, window, manifest, selectedExercise: exercise, Map, WeakSet, Promise,
     noamNativeFocusUrl: () => manifest.nativeExportUrl,
     noamDiagramSourceIdentity: (e: any) => e.id + ':pdf-v1', noamDiagramRuntime: () => runtime,
+    // These are source-renderer tests; the catalog suite independently exercises the topic gate.
+    noamPageAllowsDrawingHint: () => true,
     noamMessageVisualOptions: () => opts, exerciseThread: () => thread,
     renderCount: 0, savedCount: 0, renderNoamChat: () => { c.renderCount++; }, saveNoamState: () => { c.savedCount++; }, announceNoam() {},
     fetch: async (url: string) => { calls.push(url); const result = () => ({ ok: true, json: async () => data, text: async () => svg }); return fetcher ? fetcher(url, result) : result(); },
     requestNoamDiagram: async (...args: any[]) => { fallback.push(args); return 'protected-fallback'; }
   };
-  runInNewContext(sourceModule + '\n' + helper + '\n' + refresh, c);
+  runInNewContext(sourceModule + '\n' + helper + '\n' + drawingState + '\n' + refresh, c);
   window.NoamNativeVisual = c.NoamNativeVisual;
   return { c, calls, fallback, exercise, message, thread, runtime };
 }

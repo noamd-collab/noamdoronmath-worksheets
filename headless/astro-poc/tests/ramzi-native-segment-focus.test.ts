@@ -12,7 +12,8 @@ const request='function requestNoamDiagram'+source.split('function requestNoamDi
 // Cache keys now bind the canonical native version as well as the PDF. Keep
 // the real identity functions in this legacy-focus harness too.
 const sourcePanels=readFileSync(new URL('../public/noam-source-panels.js',import.meta.url),'utf8');
-const sourceIdentity=['noamNativeDataUrl','noamSourceVisualIdentity','noamSourcePanelReviewed'].map(name=>{
+const sourceIdentity=['noamNativeDataUrl','noamSourceVisualIdentity','noamSourcePanelReviewed',
+ 'noamRenderDrawingVisual','noamQuestionDrawing','noamReuseQuestionDrawing','noamPendingQuestionDrawing','noamQuestionDrawingBlocked'].map(name=>{
  const text=source.slice(source.indexOf('function '+name+'('));return text.slice(0,text.indexOf('\nfunction ',1));
 }).join('\n');
 const data=JSON.parse(readFileSync(new URL('../public/noam-ai/native/G8-T39/a/noam-ai.json',import.meta.url),'utf8'));
@@ -26,6 +27,7 @@ function fixture(payload:any=data,ex:any=exercise){
   noamDiagramSourceIdentity:(e:any)=>e.id+':'+(e.version||''),renderNoamChat:()=>{},
   fetch:async(url:string)=>{calls.push(url);return{ok:true,json:async()=>payload};},
   noamDiagramRuntime:()=>runtime,noamConstructedVisual:()=>null,saveNoamState:()=>{},noamDiagramRefresh:()=>{},
+  noamPageAllowsDrawingHint:()=>true,
   noamDiagramError:(e:any)=>e.message,Map,WeakSet,Promise};
  runInNewContext(sourcePanels+'\n'+sourceCrop+'\n'+sourceIdentity+'\n'+helper+'\n'+request,context);
  window.NoamSourcePanels=context.NoamSourcePanels;

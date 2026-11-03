@@ -97,13 +97,14 @@ test('a late answer or failure does not announce the old part after the student 
       noamGuardGeometryResult: (result: any) => result, noamGuardSignedAddResult: (result: any) => result,
       noamClarifySignedAddLanguage: (answer: string) => answer, noamResponseVisual: () => null,
       noamVisualAnswer: (_message: string, answer: string) => answer,
+      noamDiagramRuntime: () => ({ messages: new Map() }),
       // Additional questions keep their requested section's identity; source
       // drawings require a separate explicit action covered by the native suite.
       noamAttachSourceHint: (...args: any[]) => { sourceHints.push(args); return Promise.resolve(null); },
       ttl: '', g: 7, lv: 'a', LEVEL: { a: 'א׳' }, API: '/test', MIN_WAIT: 0,
       setTimeout: (fn: () => void, ms: number) => { if (ms < 25000) fn(); return 0; },
     };
-    runInNewContext(section('askNoam', 'noamRetryActionLabel') + '\naskNoam("free_question", "אפשר להסביר את הנתונים בסעיף הזה?");', context);
+    runInNewContext(section('noamRenderDrawingVisual', 'noamCanOfferDrawing') + '\n' + section('askNoam', 'noamRetryActionLabel') + '\naskNoam("free_question", "אפשר להסביר את הנתונים בסעיף הזה?");', context);
     context.selectedExercise = { id: 'q1b' };
     await Promise.resolve(); // The additional-question reader starts on the next microtask.
     finishAnalysis({ readable: true });

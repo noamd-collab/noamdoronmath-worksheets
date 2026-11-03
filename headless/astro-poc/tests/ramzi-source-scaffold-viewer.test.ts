@@ -55,6 +55,8 @@ function harness(viewer: string, f = fixture()) {
     noamDiagramRefresh: () => calls.refresh++,
     renderNoamChat: () => calls.repaint++,
     requestNoamDiagram: () => { calls.fallback++; return null; },
+    // Exercise source scaffolds independently of the catalog topic gate.
+    noamPageAllowsDrawingHint: () => true,
   };
   s.window = s;
   for (const name of ['noam-native-visual', 'noam-source-panels', 'noam-authored-geometry', 'noam-authored-visual', 'noam-visual-data', 'noam-visual-plan', 'noam-source-data-visual', 'noam-source-scaffold']) {
@@ -68,6 +70,8 @@ function harness(viewer: string, f = fixture()) {
     'noamSourcePanelBlocksFallback', 'noamLoadSourceVisual', 'noamCachedSourceVisual',
     'noamSourcePresentation', 'noamPrepareSourceVisual', 'noamRenderSourceVisual',
     'noamDiagramRuntime', 'noamRequestSourceFirst', 'noamAttachSourceHint',
+    'noamRenderDrawingVisual', 'noamQuestionDrawing', 'noamReuseQuestionDrawing',
+    'noamPendingQuestionDrawing', 'noamQuestionDrawingBlocked',
   ].map(fn).join('\n'), s);
   return { s, f, calls, html };
 }

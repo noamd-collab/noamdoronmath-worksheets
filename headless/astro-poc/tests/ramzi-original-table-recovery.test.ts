@@ -13,14 +13,14 @@ function fixture(v:string){
  const message:any={role:'assistant',text:'לא הצלחנו לקרוא את תמונת השאלה.',answerError:true,answerErrorCode:'QUESTION_IMAGE_UNREADABLE',sourceRecoveryAllowed:true,sourceRecoveryExerciseId:exercise.id};
  const thread:any={messages:[{role:'user',text:'אפשר רמז 1?',kind:'רמז 1'},message],hintIndex:0,history:[]},fetches:string[]=[],announcements:string[]=[];
  const c:any={document,window,manifest,selectedExercise:exercise,pdf:manifest.pdfHash,Map,WeakSet,Promise,
-  noamNativeFocusUrl:()=>manifest.nativeExportUrl,exerciseThread:()=>thread,currentAttachments:()=>[],
+  noamPageAllowsDrawingHint:()=>false,noamNativeFocusUrl:()=>manifest.nativeExportUrl,exerciseThread:()=>thread,currentAttachments:()=>[],
   noamStripMarkdownEmphasis:(s:string)=>s,
   noamCanOfferDrawing:()=>false,retryLastNoamHelp(){},saveNoamState(){},renderNoamChat(){},announceNoam:(s:string)=>announcements.push(s),
   noamAddDiagramExpansion:(container:any)=>{const b=document.createElement('button');b.textContent='הגדלת הטבלה';container.append(b);},
   postJson:()=>{throw Error('protected request forbidden');},requestNoamDiagram:()=>{throw Error('diagram request forbidden');},
   fetch:async(url:string)=>{assert.equal(url,manifest.nativeExportUrl);fetches.push(url);const body=readFileSync(new URL(url.slice(1),pub),'utf8');return {ok:true,json:async()=>JSON.parse(body)};}};
  const helpers='var noamSourceVisualPackages='+v.split('var noamSourceVisualPackages=')[1].split('function noamNativeFigure(')[0];
- runInNewContext(modules+'\n'+readFileSync(new URL('noam-bot-client.js',pub),'utf8')+'\n'+fn(v,'isBotProtectionError')+'\n'+fn(v,'noamDiagramSourceIdentity')+'\n'+helpers+'\n'+['noamVisualCanExpand','noamRetryActionLabel','addTranscriptBubble'].map(n=>fn(v,n)).join('\n'),c);
+ runInNewContext(modules+'\n'+readFileSync(new URL('noam-bot-client.js',pub),'utf8')+'\n'+fn(v,'isBotProtectionError')+'\n'+fn(v,'noamDiagramSourceIdentity')+'\n'+helpers+'\n'+['noamVisualCanExpand','noamRetryActionLabel','addTranscriptBubble','noamDiagramRuntime','noamRenderDrawingVisual','noamQuestionDrawing','noamTrimQuestionMessages','noamPendingQuestionDrawing'].map(n=>fn(v,n)).join('\n'),c);
  for(const k of Object.keys(c))if(k.startsWith('Noam'))window[k]=c[k];
  function bubble(){return c.addTranscriptBubble(document.querySelector('main'),'assistant',message.text,'',message.visual||null,message,thread);}
  return {c,manifest,exercise,message,thread,fetches,announcements,bubble};

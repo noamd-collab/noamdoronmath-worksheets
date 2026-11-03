@@ -5,7 +5,7 @@ const fs=require("node:fs");
 const vm=require("node:vm");
 const path=require("node:path");
 const html=fs.readFileSync(path.join(__dirname,"../worksheet-viewer-noam.html"),"utf8");
-const helpers=html.slice(html.indexOf("function noamGeometryContext(text){"),html.indexOf("function postJson(endpoint,payload){"));
+const helpers=html.slice(html.indexOf("function noamGeometryContext(text){"),html.indexOf("function postJson("));
 const local=html.slice(html.indexOf("function noamParsedLocalVisual(exercise){"),html.indexOf("function insertNoamMath(kind){"));
 const drawing=html.slice(html.indexOf("function setNoamDiagramButtonLabel("),html.indexOf("function ensureNoamGlossaryPopover("));
 // 8a09802 (restore PR26 AI fix) made addTranscriptBubble, inside the drawing

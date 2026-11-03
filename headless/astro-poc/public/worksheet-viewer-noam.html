@@ -7322,7 +7322,7 @@ function noamAppendSourceCropHelp(container,exercise,message,thread){
   if(!message||message.role!=='assistant'||message.answerError||message.diagramErrorCode!=='DIAGRAM_UNSUPPORTED'||
       (message.visual&&message.visual.type==='source-crop')||!noamSourceCropExercise(exercise)){return;}
   var identity=noamSourceCropIdentity(exercise);
-  function current(){return container.isConnected&&noamDiagramCurrent(exercise,thread)&&identity===noamSourceCropIdentity(selectedExercise)&&message.diagramErrorCode==='DIAGRAM_UNSUPPORTED'&&!noamQuestionDrawingBlocked(exercise,thread);}
+  function current(){return container.isConnected&&noamDiagramCurrent(exercise,thread)&&(thread.messages||[]).indexOf(message)>=0&&identity===noamSourceCropIdentity(selectedExercise)&&message.diagramErrorCode==='DIAGRAM_UNSUPPORTED'&&!noamQuestionDrawingBlocked(exercise,thread);}
   noamLoadSourceCrop(exercise).then(function(loaded){
     if(!loaded||!current()){return;}
     var visual={type:'source-crop',exerciseId:exercise.id,sourceIdentity:identity};
@@ -9955,7 +9955,7 @@ function noamAnswerUnderstood(reply){
   if (!selectedExercise||busy||!text){return false;}
   var thread=exerciseThread(selectedExercise.id);
   thread.messages.push({role:"user",text:"הבנתי",kind:"",understood:true},{role:"assistant",text:text,kind:"",understood:true});
-  thread.messages=thread.messages.slice(-60);
+  noamTrimQuestionMessages(selectedExercise,thread);
   saveNoamState();renderNoamChat();
   announceNoam(exerciseLabel(selectedExercise) + ". רמזי: " + text);
   return true;
@@ -10133,7 +10133,7 @@ function askNoam(helpKind,studentMessage){
       thread.preparedHintRevision=prepared.revision;
       thread.messages.push({role:"assistant",text:answer,kind:"",preparedHint:true,preparedHintIndex:hintIndex});
       thread.history.push({role:"user",content:historyQuestion,preparedHint:true,preparedHintIndex:hintIndex},{role:"assistant",content:answer,preparedHint:true,preparedHintIndex:hintIndex});
-      thread.history=thread.history.slice(-8);thread.messages=thread.messages.slice(-60);
+      thread.history=thread.history.slice(-8);noamTrimQuestionMessages(exercise,thread);
       thread.hintIndex=hintIndex+1;
       saveNoamState();operation.complete();renderNoamChat();
       if(selectedExercise&&selectedExercise.id===exercise.id){announceNoam(exerciseLabel(exercise)+". רמזי: "+answer);}

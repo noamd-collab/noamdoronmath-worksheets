@@ -65,13 +65,14 @@ for(const [label,relative] of [['public','../public/worksheet-viewer-noam.html']
    currentAttachments:()=>f.c.photos,MIN_WAIT:0,g:7,lv:'b',LEVEL:{b:'רמה ב'},ttl:'מספרים מכוונים',
    noamQuestionAnalysis:()=>{throw Error('No provider/OCR for prepared hints');},noamStripMarkdownEmphasis:(value:string)=>value,
    isBotProtectionError:()=>false,noamDiagramRuntime:()=>({messages:new Map()})});
-  runInNewContext(['noamCanOfferDrawing','noamLatestDrawingAnswer','addTranscriptBubble','noamKeepComposerFocusForSend','renderNoamChat','askNoam'].map(name=>fn(source,name)).join('\n'),f.c);
+  runInNewContext(['noamCanOfferDrawing','noamLatestDrawingAnswer','addTranscriptBubble','noamKeepComposerFocusForSend','renderNoamChat','askNoam',
+   'noamRenderDrawingVisual','noamQuestionDrawing','noamPendingQuestionDrawing','noamQuestionDrawingBlocked','noamTrimQuestionMessages'].map(name=>fn(source,name)).join('\n'),f.c);
   await f.c.loadStaticManifest();await drain();f.c.renderNoamChat();
   for(let index=0;index<3;index++){
    const button=document.getElementById('noamHint') as any;assert.equal(button.disabled,false);button.click();await drain();assert.equal(f.c.busy,false);assert.equal(f.thread.hintIndex,index+1);assert.equal(f.thread.messages.at(-1).preparedHintIndex,index);
   }
   assert.match(document.getElementById('noamTranscript')!.textContent!,/המספר האחר נמצא באותו מרחק מהאפס אך בצד השני/);
-  assert.equal((document.getElementById('noamHint') as any).disabled,true);assert.equal(document.getElementById('noamDraw')!.hidden,true);assert.equal(document.querySelectorAll('.noam-draw-action').length,0);assert.equal(f.calls.length,2);
+  assert.equal((document.getElementById('noamHint') as any).disabled,true);assert.equal(document.getElementById('noamDraw'),null);assert.equal(document.querySelectorAll('.noam-draw-action').length,0);assert.equal(f.calls.length,2);
  });
  it(label+': glossary flips above the word before covering hint controls, retains its explanation action and scrolls within short viewports',()=>{
   // The live overlap was y355..522 over a y471..515 hint button, while the

@@ -19,9 +19,9 @@ function setup(source:string){
   noamQuestionAnalysis:async()=>({readable:true,transcription:'original'}),noamEnrichSourceAnalysis:(_:any,a:any)=>a,noamSolverMessage:(s:string)=>s,
   noamGuardGeometryResult:(r:any)=>r,noamGuardSignedAddResult:(r:any)=>r,noamClarifySignedAddLanguage:(s:string)=>s,noamResponseVisual:()=>null,noamVisualAnswer:(_:any,s:string)=>s,noamAttachSourceHint(){},
   isBotProtectionError:(e:any)=>/^BOT_/.test(e?.code||''),postJson:async(url:string,payload:any)=>{requests.push({url,payload});return {ok:true,answer:'בדקו את הזוויות.'};},
-  analysisCache:{},exercisePreviewCache:{},console:{warn(){}}};
+  analysisCache:{},exercisePreviewCache:{},console:{warn(){}},noamDiagramRuntime:()=>({messages:new Map()})};
  function load(...names:string[]){runInNewContext(names.map(n=>fn(source,n)).join('\n'),c);}
- load('setNoamBusy','askNoam');
+ load('setNoamBusy','askNoam','noamRenderDrawingVisual','noamQuestionDrawing','noamPendingQuestionDrawing','noamTrimQuestionMessages');
  async function advance(ms:number){now+=ms;for(let rounds=0;rounds<8;rounds++){for(const [id,t] of timers)if(t.at<=now){timers.delete(id);t.fn();}await drain();}}
  function thread(){return c.exerciseThread(c.selectedExercise.id);}
  return {c,load,advance,timers,requests,photos,thread,threads};

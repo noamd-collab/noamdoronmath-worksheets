@@ -45,6 +45,15 @@ function expectedKind(topic: { x?: string; g: string; t: string }) {
   return '';
 }
 
+function catalogSource(grade: number, topic: { id: number; x?: string; g: string; t: string }) {
+  const row = DATA[grade].links[topic.id];
+  const prefix = row?.sourcePrefix || topic.x!;
+  const sourceTopic = row?.sourceGrade
+    ? DATA[row.sourceGrade].topics.find((source) => source.x === prefix)
+    : undefined;
+  return { prefix, topic: sourceTopic || topic };
+}
+
 function pageApi(prefix: string, title: string) {
   return runInNewContext(topicFns + offerFns + needFn + '\n({noamDrawingHintTopic,noamPageAllowsDrawingHint,noamCanOfferDrawing,noamVisualNeed})', {
     manifest: { prefix, topic: title },
@@ -74,13 +83,9 @@ test('catalog topics allow a drawing hint only for geometry and analytic geometr
     for (const topic of DATA[grade].topics) {
       if (!topic.x) continue;
       // Declared reuse opens the original source worksheet and preserves its topic policy.
-      const row = DATA[grade].links[topic.id];
-      const sourcePrefix = row?.sourcePrefix || topic.x;
-      const sourceTopic = row?.sourceGrade
-        ? DATA[row.sourceGrade].topics.find((source) => source.x === sourcePrefix)
-        : undefined;
-      const expected = expectedKind(sourceTopic || topic);
-      const actual = api.noamDrawingHintTopic(sourcePrefix, topic.t);
+      const source = catalogSource(grade, topic);
+      const expected = expectedKind(source.topic);
+      const actual = api.noamDrawingHintTopic(source.prefix, topic.t);
       assert.equal(actual, expected, topic.x + ' ' + topic.t);
       if (expected) seen[expected as 'geometry' | 'analytic-geometry']++;
       else seen.denied++;
@@ -163,6 +168,7 @@ function chatFixture(prefix: string, title: string) {
     noamStripMarkdownEmphasis: (value: string) => value, esc: (value: string) => value,
     exerciseLabel: () => 'שאלה 1 · סעיף א', noamAddDiagramExpansion() {}, noamAppendSourceCropHelp() {}, noamAppendSourceDiagramHelp() {},
     hideNoamGlossaryPopover() {}, renderNoamAttachments() {}, locateSelectedExercise() {},
+    noamKeepComposerFocusForSend() {},
     setNoamBusy() {}, renderNoamFractionMarkers() {}, renderPanelMath() {}, enhanceNoamGlossary() {},
     restoreNoamChatFocus() {}, renderExercisePreview() {}, saveNoamState() {},
   };
@@ -196,10 +202,11 @@ test('every catalog page renders the drawing control only on geometry, then remo
   const checked = { allowed: 0, blocked: 0 };
   for (const grade of [7, 8, 9]) for (const topic of DATA[grade].topics) {
     if (!topic.x) continue;
-    const f = chatFixture(topic.x, topic.t);
+    const source = catalogSource(grade, topic);
+    const f = chatFixture(source.prefix, topic.t);
     f.render();
     const button = f.document.getElementById('noamDraw');
-    if (!expectedKind(topic)) {
+    if (!expectedKind(source.topic)) {
       checked.blocked++;
       assertNoDrawingActions(f.document, topic.x);
       for (const visual of drawingTypes) {
@@ -236,9 +243,11 @@ test('every catalog page renders the drawing control only on geometry, then remo
 
 test('every permitted topic hides both drawing controls for every supported saved drawing type', () => {
   for (const grade of [7, 8, 9]) for (const topic of DATA[grade].topics) {
-    if (!topic.x || !expectedKind(topic)) continue;
+    if (!topic.x) continue;
+    const source = catalogSource(grade, topic);
+    if (!expectedKind(source.topic)) continue;
     for (const visual of drawingTypes) {
-      const f = chatFixture(topic.x, topic.t);
+      const f = chatFixture(source.prefix, topic.t);
       f.message.visual = { ...visual, exerciseId: f.exercise.id };
       f.thread.messages.push({ role: 'assistant', text: 'המשיכו להתבונן באותו שרטוט.' });
       f.render();
