@@ -12,10 +12,10 @@ test('a failed chat keeps the original question and source figure accessible, wi
   const panelBody = document.querySelector('#panel')!;
   const selectedExercise = { id: 'g7-t19-a-q1b', q: 1, part: 'ב', text: 'העבירו גובה במשולש', crop: {} };
   const thread = { messages: [{ role: 'assistant', text: 'בדיקת האבטחה נכשלה', answerError: true }], history: [], hintIndex: 0 };
-  const api = runInNewContext(section('showExercisePreview', 'renderExercisePreview') + section('renderNoamChat', 'localVisualExerciseSource') + `
+  const api = runInNewContext(section('showExercisePreview', 'renderExercisePreview') + section('noamKeepComposerFocusForSend', 'setNoamBusy') + section('renderNoamChat', 'localVisualExerciseSource') + `
     function renderExercisePreview(exercise){showExercisePreview(exercise,'data:image/png;base64,original-question');}
     ({renderNoamChat})`, {
-    document, window, panelBody, selectedExercise, panelBack: document.querySelector('#back'),
+    document, window, panelBody, selectedExercise, panelBack: document.querySelector('#back'), mobileLayout: { matches: false },
     activeGlossaryEntryId: null, mathKeyboardOpen: false, noamDrafts: {}, busy: false,
     hideNoamGlossaryPopover() {}, exerciseThread: () => thread, noamLatestDrawingAnswer: () => null,
     exerciseLabel: () => 'שאלה 1 · סעיף ב', esc: (text: string) => text,
