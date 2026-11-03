@@ -102,7 +102,7 @@ describe('teacher answer preservation', () => {
 
   it('uses complete-answer specifications in the actual print pipeline', async () => {
     const pure = printer.slice(printer.indexOf('function isAnswerHeading'), printer.indexOf('function worksheetTitle'));
-    const measured = printer.slice(printer.indexOf('async function answerMeasured'), printer.indexOf('async function paintAllShort'));
+    const measured = printer.slice(printer.indexOf('function selectedAnswerCrops'), printer.indexOf('async function paintAllShort'));
     const run = new Function('lines', `${pure}
       const sheetTextLines = async () => lines;
       const answerFallbackSlices = () => { throw new Error('Unexpected fallback for readable answer text'); };
@@ -111,8 +111,16 @@ describe('teacher answer preservation', () => {
       ${measured}
       return answerMeasured;
     `)(answerLines);
-    const slices = await run([{ source, questions: chosen([5, 13, 14, 15]) }]);
-    const answers = slices.filter((slice: { block: string }) => slice.block.startsWith('answer:'));
+    const picked = [5, 13, 14, 15];
+    const crops = answerApi().answerCropsFromLines(answerLines, picked);
+    const mapped = { ...source, pageCount: 16, answerSourceSha256: 'a'.repeat(64), answerMap: {
+      version: 1, sourceSha256: 'a'.repeat(64), questions: picked.map(q => ({ q,
+        parts: source.questions.filter((item: any) => item.q === q).map((item: any) => item.part || ''),
+        crops: crops.filter((crop: any) => crop.q === q).map((crop: any) => ({ page: crop.page, ...crop.box })),
+      })),
+    } };
+    const slices = await run([{ source: mapped, questions: chosen(picked) }]);
+    const answers = slices.filter((slice: { kind: string }) => slice.kind === 'answer');
     assert.equal(answers.length, 4);
     assert.ok(answers.every((slice: { pieces?: unknown }) => slice.pieces === undefined));
     assert.deepEqual(answers.map((slice: { page: number }) => slice.page), [15, 16, 16, 16]);

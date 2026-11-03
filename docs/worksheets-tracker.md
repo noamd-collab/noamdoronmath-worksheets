@@ -1,5 +1,12 @@
 # Worksheet tracker
 
+## Selected final answers in teacher printing — 2026-11-03
+
+- Print verified whole-answer rectangles only for selected questions, retaining all printed subparts and source formulas. Do not append complete answer sections or use unreliable text overlays.
+- Keep source/topic/level headings with their first answer, preserve font scale for narrow columns, and split long answers only at verified source boundaries.
+- Missing original answers are explicitly identified and block incomplete output; they are not silently replaced with unrelated answers. Original worksheet PDFs and question content remain unchanged.
+- Validation and content-gap limits: [teacher-selected-answers-20261103.md](teacher-selected-answers-20261103.md).
+
 ## Separate AI guidance from printed instructions — 2026-11-03
 
 - Added two optional fields in the existing purpose step: AI guidance (400 characters, not printed) and student instructions (600 characters, printed in full). The existing `teacher-note` value retains its printed role; it is never copied into the new AI field.

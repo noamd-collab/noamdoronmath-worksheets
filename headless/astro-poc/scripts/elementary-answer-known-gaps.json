@@ -1,0 +1,126 @@
+{
+  "version": 1,
+  "verification": "Original source PDFs visually inspected; missing rows contain only their blue question number. Placeholder rows were compared with actual question requests: G5 fa859 q15b and q16–20c require checks, G4 c165 q20 requires a general reason, G5 279ea q20 requires an explanation. No answers are fabricated.",
+  "sources": {
+    "24aebdcd8b344b14bd27b9c4cb441325": {
+      "sourceSha256": "142f934de0bf733bfa9309e8ae6d3d2dcb5d752b9352ac7866acd2dec2dc6758",
+      "questions": [
+        {
+          "q": 1,
+          "unavailableReason": "missing-answer-body"
+        }
+      ]
+    },
+    "c74090e51f8747bdb43cba6c9690ce73": {
+      "sourceSha256": "bc034a5ebe7a736fcbbeff73d70c528005aac4877af064967e87162198606466",
+      "questions": [
+        {
+          "q": 1,
+          "unavailableReason": "missing-answer-body"
+        }
+      ]
+    },
+    "f7215421b05142288d9480138282d7e1": {
+      "sourceSha256": "6e12578cb1e3fb4658f3895a596d2d3df948176a83a8748b9ebd059f2a21bada",
+      "questions": [
+        {
+          "q": 1,
+          "unavailableReason": "missing-answer-body"
+        },
+        {
+          "q": 2,
+          "unavailableReason": "missing-answer-body"
+        },
+        {
+          "q": 3,
+          "unavailableReason": "missing-answer-body"
+        },
+        {
+          "q": 4,
+          "unavailableReason": "missing-answer-body"
+        },
+        {
+          "q": 5,
+          "unavailableReason": "missing-answer-body"
+        },
+        {
+          "q": 6,
+          "unavailableReason": "missing-answer-body"
+        },
+        {
+          "q": 7,
+          "unavailableReason": "missing-answer-body"
+        },
+        {
+          "q": 8,
+          "unavailableReason": "missing-answer-body"
+        }
+      ]
+    },
+    "0069f3da129040e9a2b13485e509a63f": {
+      "sourceSha256": "7c572de1b96da091e4f0b0fd4783c7fbeb61a11daa767eb644682c6968e6bab0",
+      "questions": [
+        {
+          "q": 1,
+          "unavailableReason": "missing-answer-body"
+        }
+      ]
+    },
+    "ce932ef443044f35a4c07f938bf954f0": {
+      "sourceSha256": "5777a39e20412220b238b9678d2b6ad5ed29eef557ae6ef3fe012cba7b6cb820",
+      "questions": [
+        {
+          "q": 11,
+          "unavailableReason": "missing-answer-body"
+        }
+      ]
+    },
+    "fa8592180c5a42f9bf77b69bf9e4993d": {
+      "sourceSha256": "819ed9a7ce22fc9c713da0d73ab8c702f07d89d232c4066e893904168aede7b7",
+      "questions": [
+        {
+          "q": 15,
+          "unavailableReason": "incomplete-answer-placeholder"
+        },
+        {
+          "q": 16,
+          "unavailableReason": "incomplete-answer-placeholder"
+        },
+        {
+          "q": 17,
+          "unavailableReason": "incomplete-answer-placeholder"
+        },
+        {
+          "q": 18,
+          "unavailableReason": "incomplete-answer-placeholder"
+        },
+        {
+          "q": 19,
+          "unavailableReason": "incomplete-answer-placeholder"
+        },
+        {
+          "q": 20,
+          "unavailableReason": "incomplete-answer-placeholder"
+        }
+      ]
+    },
+    "c16511e176924a3abe9e7a78d84282b6": {
+      "sourceSha256": "011a71517ef70dd960ad9f5fee82cd835d3da7644a164ed96d6d2e5bba4e9216",
+      "questions": [
+        {
+          "q": 20,
+          "unavailableReason": "incomplete-answer-placeholder"
+        }
+      ]
+    },
+    "279ea200737b44ea9acf275831d7d19c": {
+      "sourceSha256": "33eb5fe67e15b76257453d934b179461b35f4e220b04fb32b30030cd6c9082ff",
+      "questions": [
+        {
+          "q": 20,
+          "unavailableReason": "incomplete-answer-placeholder"
+        }
+      ]
+    }
+  }
+}

@@ -103,36 +103,32 @@ test('short topics explain availability visibly before clicking AI, with an acce
   assert.match(html, /id="ai-pick-group"[^>]*aria-describedby="ai-available-note"/);
 });
 
-for (const textFails of [false, true]) {
-  test(`original elementary answer pages are appended when text extraction ${textFails ? 'fails' : 'has no usable question labels'}`, async () => {
-    const measured = new Function('textFails', `
-      const sheetTextLines = async () => { if (textFails) throw new Error('text unavailable'); return []; };
-      const answerCropsFromLines = () => [];
-      const measureSlices = async slices => slices;
-      ${['levelPrintName', 'answerSpecsForGroup', 'answerFallbackSlices', 'answerMeasured'].map(definition).join('\n')}
-      return answerMeasured;
-    `)(textFails);
-    const slices = await measured([{ source: { pdfId: 'elementary', level: 'b', answerStartPage: 4, pageCount: 5 }, questions: [{ q: 2 }] }]);
-    assert.match(slices[0].label, /רמה ב׳ · תשובות מדף המקור המלא/);
-    assert.deepEqual(slices.filter((slice: { kind: string }) => slice.kind === 'answer').map((slice: { page: number; box: unknown }) => ({ page: slice.page, box: slice.box })), [
-      { page: 4, box: { x: 0, y: 0, w: 1, h: 1 } },
-      { page: 5, box: { x: 0, y: 0, w: 1, h: 1 } },
-    ]);
-    await assert.rejects(measured([{ source: { pdfId: 'no-answers', answerStartPage: null, pageCount: 3 }, questions: [{ q: 2 }] }]), { code: 'MISSING_ANSWERS' });
-  });
-}
-
-test('outlined answer pages never use plausible text-overlay coordinates', async () => {
+test('unverified elementary answer pages block printing instead of exposing other answers', async () => {
   const measured = new Function(`
-    const sheetTextLines = async () => { throw new Error('Unreliable outlined-text coordinates must not be read'); };
-    const answerCropsFromLines = () => { throw new Error('Do not derive answer crops from an outlined-text overlay'); };
     const measureSlices = async slices => slices;
-    ${['levelPrintName', 'answerSpecsForGroup', 'answerFallbackSlices', 'answerMeasured'].map(definition).join('\n')}
+    ${['levelPrintName', 'selectedAnswerCrops', 'answerMeasured'].map(definition).join('\n')}
     return answerMeasured;
   `)();
-  const slices = await measured([{ source: { pdfId: 'outlined-source', answerGeometry: 'full-pages', level: 'a', answerStartPage: 8, pageCount: 9 }, questions: [{ q: 5 }] }]);
-  assert.deepEqual(slices.filter((slice: { kind: string }) => slice.kind === 'answer').map((slice: { page: number }) => slice.page), [8, 9]);
-  assert.ok(slices.filter((slice: { kind: string }) => slice.kind === 'answer').every((slice: { box: { x: number; y: number; w: number; h: number } }) => slice.box.x === 0 && slice.box.y === 0 && slice.box.w === 1 && slice.box.h === 1));
+  await assert.rejects(measured([{ source: { pdfId: 'elementary', level: 'b', answerStartPage: 4, pageCount: 5 }, questions: [{ q: 2 }] }]), { code: 'MISSING_ANSWERS' });
+});
+
+test('outlined answers use only verified question rectangles, never text-overlay coordinates', async () => {
+  const measured = new Function(`
+    const sheetTextLines = async () => { throw new Error('Unreliable outlined-text coordinates must not be read'); };
+    const measureSlices = async slices => slices;
+    ${['levelPrintName', 'selectedAnswerCrops', 'answerMeasured'].map(definition).join('\n')}
+    return answerMeasured;
+  `)();
+  const source = { pdfId: 'outlined-source', answerGeometry: 'full-pages', level: 'a', answerStartPage: 8, pageCount: 9,
+    answerMap: { version: 1, sourceSha256: 'a'.repeat(64), questions: [
+      { q: 5, parts: [], crops: [{ page: 8, x: 0.05, y: 0.2, w: 0.9, h: 0.1 }] },
+      { q: 6, parts: [], crops: [{ page: 8, x: 0.05, y: 0.4, w: 0.9, h: 0.1 }] },
+    ] } };
+  const slices = await measured([{ source, questions: [{ q: 5 }] }]);
+  const answers = slices.filter((slice: { kind: string }) => slice.kind === 'answer');
+  assert.equal(answers.length, 1);
+  assert.equal(answers[0].answerKey, 'outlined-source:5');
+  assert.deepEqual(answers[0].box, { x: 0.05, y: 0.2, w: 0.9, h: 0.1 });
 });
 
 test('a narrow original column fills the question preview without changing its source crop or extracting PDF text', async () => {
