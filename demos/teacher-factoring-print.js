@@ -2,7 +2,7 @@ import { dismissTeacherHumanVerification, requestTeacherHumanVerification } from
 import { replaceWizardScopeUrl, wizardPrefillFromSearch } from './wizard-prefill.js?v=20261031-level-choice-help';
 import { expandToWholeQuestionKeys, groupWholeQuestions, mulberry32, pickWholeQuestions, randomSeed } from './teacher-question-pick.js';
 import { PICK_HEADING, SECTION_KINDS, needsSectionHeadings, pointsLabel, scoreLabel, sectionKind, sectionTitle, testPoints, TEST_TOTAL_POINTS } from './teacher-page-sections.js?v=20261103-add-topic-button';
-import { buildTeacherReview, renderTeacherReview } from './teacher-review-summary.js?v=20261103-note-separation';
+import { buildTeacherReview, renderTeacherReview, renderTeacherPageCount } from './teacher-review-summary.js?v=20261103-page-count';
 
 /* Teacher picker for every catalog sheet, grades 1–9.
    Choose complete source questions across topic and level sheets.
@@ -1391,6 +1391,7 @@ let printGeneration = 0;
 
 function clearPreparedPrint(keepReview = false) {
   printGeneration += 1;
+  renderTeacherPageCount($('wizard-page-count'));
   const review = $('wizard-review');
   if (review && !keepReview) review.hidden = true;
   const area = $('print-area');
@@ -2798,6 +2799,7 @@ function paintTeacherReview(chosen, blocks, note, scenario, style) {
 
 async function updatePrint() {
   const generation = ++printGeneration;
+  renderTeacherPageCount($('wizard-page-count'));
   const mode = printMode;
   const review = $('wizard-review');
   if (review) review.hidden = true;
@@ -2811,6 +2813,7 @@ async function updatePrint() {
     $('dialog-plan').replaceChildren(...plan.childNodes);
     $('print-area').replaceChildren(...printArea.childNodes);
     if (ready) {
+      renderTeacherPageCount($('wizard-page-count'), $('print-area'));
       for (const id of ['prepare-hint', 'dialog-plan', 'wizard-preview']) {
         const target = $(id);
         if (!target || target.getAttribute('role') !== 'alert') continue;
@@ -2875,6 +2878,7 @@ async function updatePrint() {
 }
 
 function reportPrintError(message) {
+  renderTeacherPageCount($('wizard-page-count'));
   const dialog = $('print-dialog');
   const target = dialog && dialog.open ? $('dialog-plan')
     : state.wizard === 'result' ? $('wizard-preview') : $('prepare-hint');

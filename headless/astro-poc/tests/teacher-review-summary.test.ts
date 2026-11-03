@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import { parseHTML } from 'linkedom';
-import { buildTeacherReview, renderTeacherReview } from '../public/teachers/teacher-review-summary.js';
+import { buildTeacherReview, renderTeacherPageCount, renderTeacherReview } from '../public/teachers/teacher-review-summary.js';
 
 type Source = { pdfId: string; gradeLabel: string; topic: string; levelLabel: string };
 const source = (pdfId: string, gradeLabel = 'כיתה ט׳', levelLabel = 'רמה א׳', topic = 'אי־שוויונות') => ({ pdfId, gradeLabel, levelLabel, topic });
@@ -134,6 +134,58 @@ test('semantic rendering escapes titles and notes, preserves their newlines, and
   assert.equal(container.querySelectorAll('.teacher-review-facts').length, 1);
   assert.equal(container.querySelectorAll('.teacher-review-note').length, 1);
   assert.equal(container.querySelector('.teacher-review-note')?.textContent, 'לא נוספו הוראות לתלמיד');
+});
+
+test('the page count describes prepared question and answer pages without counting preview copies or notes twice', () => {
+  const { document } = parseHTML(`<html><body><p id="count" hidden></p>
+    <div id="preview"><figure class="crop-sheet" data-answers="0"><canvas></canvas></figure></div>
+    <div id="print-area"><div class="section">
+      <figure class="crop-sheet" data-sheet-page="1" data-answers="0"><canvas></canvas></figure>
+      <figure class="crop-sheet" data-sheet-page="2" data-answers="0"><canvas></canvas></figure>
+    </div><figure class="crop-sheet has-teacher-note" data-sheet-page="3" data-answers="1">
+      <canvas></canvas><aside class="teacher-print-note">הוראות לתלמיד</aside>
+    </figure></div></body></html>`);
+  const count = document.getElementById('count')!, area = document.getElementById('print-area')!;
+  const prepared = area.innerHTML;
+  renderTeacherPageCount(count, area);
+  assert.equal(count.hidden, false);
+  assert.equal(count.textContent, '2 עמודי שאלות + עמוד תשובות אחד — 3 עמודים בסך הכול');
+  assert.equal(area.innerHTML, prepared, 'Counting does not rewrite the prepared worksheet');
+});
+
+test('marked source pages and nested answer pages retain separate actual counts', () => {
+  const { document } = parseHTML(`<html><body><p id="count"></p><div id="print-area">
+    <figure class="source-sheet"><div data-page="4"><canvas></canvas></div><figcaption>עמוד 4 מתוך 27</figcaption></figure>
+    <figure class="source-sheet"><div data-page="9"><canvas></canvas></div></figure>
+    <div class="marked-answers"><figure class="crop-sheet" data-answers="1"><canvas></canvas></figure>
+      <figure class="crop-sheet" data-answers="1"><canvas></canvas></figure></div>
+    </div></body></html>`);
+  const count = document.getElementById('count')!, area = document.getElementById('print-area')!;
+  renderTeacherPageCount(count, area);
+  assert.equal(count.textContent, '2 עמודי מקור + 2 עמודי תשובות — 4 עמודים בסך הכול');
+});
+
+test('single-page labels are singular and unprepared or invalidated output clears the previous count', () => {
+  const { document } = parseHTML('<html><body><p id="count"></p><div id="print-area"></div></body></html>');
+  const count = document.getElementById('count')!, area = document.getElementById('print-area')!;
+  for (const [page, expected] of [
+    ['<figure class="source-sheet"><canvas></canvas></figure>', 'עמוד מקור אחד'],
+    ['<figure class="crop-sheet" data-answers="0"><canvas></canvas></figure>', 'עמוד שאלות אחד'],
+    ['<figure class="crop-sheet" data-answers="1"><canvas></canvas></figure>', 'עמוד תשובות אחד'],
+  ]) {
+    area.innerHTML = page;
+    renderTeacherPageCount(count, area);
+    assert.equal(count.hidden, false);
+    assert.equal(count.textContent, `${expected} — עמוד אחד בסך הכול`);
+  }
+  renderTeacherPageCount(count);
+  assert.equal(count.hidden, true);
+  assert.equal(count.textContent, '');
+  renderTeacherPageCount(count, area);
+  area.innerHTML = '<p class="print-unprepared">יש להכין את הדף</p><canvas></canvas>';
+  renderTeacherPageCount(count, area);
+  assert.equal(count.hidden, true, 'An error message or unrelated canvas is not a prepared page');
+  assert.equal(count.textContent, '');
 });
 
 test('the public review module is identical to its demo copy', () => {

@@ -124,3 +124,26 @@ export function renderTeacherReview(container, review) {
   fragment.append(facts, sections, note);
   container.replaceChildren(fragment);
 }
+
+/**
+ * Count only pages prepared for printing, after all questions, answers and notes
+ * have rendered. Omitting printArea clears a previous result during edits/load.
+ * @param {HTMLElement | null} container
+ * @param {ParentNode} [printArea]
+ */
+export function renderTeacherPageCount(container, printArea) {
+  if (!container) return;
+  container.hidden = true;
+  container.textContent = '';
+  if (!printArea) return;
+  const categories = [
+    { count: printArea.querySelectorAll('.crop-sheet[data-answers="0"]').length, one: 'עמוד שאלות אחד', many: 'עמודי שאלות' },
+    { count: printArea.querySelectorAll('.source-sheet').length, one: 'עמוד מקור אחד', many: 'עמודי מקור' },
+    { count: printArea.querySelectorAll('.crop-sheet[data-answers="1"]').length, one: 'עמוד תשובות אחד', many: 'עמודי תשובות' },
+  ];
+  const total = categories.reduce((sum, item) => sum + item.count, 0);
+  if (!total) return;
+  const parts = categories.filter(item => item.count > 0).map(item => item.count === 1 ? item.one : `${item.count} ${item.many}`);
+  container.textContent = `${parts.join(' + ')} — ${total === 1 ? 'עמוד אחד' : `${total} עמודים`} בסך הכול`;
+  container.hidden = false;
+}
