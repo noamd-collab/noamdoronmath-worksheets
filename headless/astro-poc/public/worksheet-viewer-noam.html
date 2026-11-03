@@ -6318,7 +6318,9 @@ function renderNoamChat(){
       window.open(aiFeedbackUrl(selectedExercise),"_blank","noopener,noreferrer");
     });
   }
-  document.getElementById("noamSend").addEventListener("click",function(){
+  var noamSendButton=document.getElementById("noamSend");
+  noamSendButton.addEventListener("pointerdown",noamKeepComposerFocusForSend);
+  noamSendButton.addEventListener("click",function(){
     var input=document.getElementById("noamQuestion");
     var message=String(input.value||"").trim().slice(0,700);
     if (!message){ input.focus(); return; }
@@ -6474,6 +6476,16 @@ function locateSelectedExercise(){
     (pin||page).scrollIntoView({behavior:"smooth",block:"center",inline:"nearest"});
     (pin||pdfScroll).focus({preventScroll:true});
   }
+}
+
+function noamKeepComposerFocusForSend(event){
+  // On phones a blur reveals the question card and moves the send button
+  // between pointerdown and pointerup. Keep the field focused until the native
+  // click submits; never submit on pointerdown or synthesize a second click.
+  var input=document.getElementById("noamQuestion");
+  if(!mobileLayout.matches||!input||document.activeElement!==input||
+      event.button!==0||event.isPrimary===false||event.currentTarget.disabled){return;}
+  event.preventDefault();
 }
 
 function setNoamBusy(value){
