@@ -51,8 +51,8 @@ describe('grade 8 PDF v2 replacements', () => {
     const grade = catalog.grades.find((entry) => entry.grade === 8)!;
     assert.ok(grade);
     for (const [prefix, pdfId] of [
-      ['G8-T45', 'e4da722565a942e482c9e4dbf6ee41b5'],
-      ['G8-T51', '0b79f523d8ea4598a85d5320d6acd823'],
+      ['G8-T45', '37e09211e4dd425cbcbf5fe78eb68080'],
+      ['G8-T51', '404058e8bee94abb9a2c7afc8035f316'],
     ] as const) {
       const sheetTopic = grade.topics.find((entry) => entry.noamTopicId === prefix)!;
       assert.ok(sheetTopic, prefix);
