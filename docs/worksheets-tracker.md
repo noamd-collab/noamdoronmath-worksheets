@@ -1,5 +1,12 @@
 # Worksheet tracker
 
+## Ramzi additional-question latency — 2026-11-03
+
+- Additional student questions now use one protected solver request with the selected original crop when image reading is needed. The submitted attachment snapshot stays bound to that turn; changing the source or expiring the operation prevents a late request. No separate image-analysis request precedes the answer.
+- The existing verified native-source route also recognizes a narrowly defined, self-contained substitution exercise whose expression and variable value are printed in the selected part. Source identity, native SHA and selected-part checks remain mandatory; other text tasks do not gain a blanket exemption from image reading.
+- The companion backend change accepts a validated image only for additional questions and uses Flash for its answer. Origin checks, reCAPTCHA, source validation, spending controls and geometry-only drawing rules remain required.
+- The three prepared hints continue to load from Supabase. Hint content, catalog/source mappings, final answers and PDF files are unchanged. Validation and live timings are recorded with the release artifacts; no paid model review is part of this change.
+
 ## Separate AI guidance from printed instructions — 2026-11-03
 
 - Added two optional fields in the existing purpose step: AI guidance (400 characters, not printed) and student instructions (600 characters, printed in full). The existing `teacher-note` value retains its printed role; it is never copied into the new AI field.
