@@ -50,4 +50,9 @@ jobs:
           fi
           git fetch origin headless/astro-poc-baseline
           SHA="${TARGET_SHA:-$(git rev-parse origin/headless/astro-poc-baseline)}"
+          if [[ ! "$SHA" =~ ^[0-9a-f]{40}$ ]] || ! git cat-file -e "${SHA}^{commit}" 2>/dev/null; then
+            echo "Invalid commit SHA: $SHA"
+            exit 1
+          fi
+          echo "Releasing $SHA"
           bash tools/release/release.sh "$SHA"

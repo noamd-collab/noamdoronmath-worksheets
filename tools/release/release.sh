@@ -15,12 +15,9 @@ W="env -u CURSOR_AGENT -u CURSOR_TRACE_ID -u AI_AGENT"
 # The wix executable comes from @wix/cli. Install before login, or npx exits
 # with "could not determine executable to run" (release.sh exit 5).
 $W npm ci --no-audit --no-fund || exit 6
-# wix login --api-key works without a TTY only when ~/.wix/auth has no existing
-# session; otherwise LoginCommand renders ConfirmInput ("Do you want to log in
-# to a different account?") and Ink throws "Raw mode is not supported".
-# wix release also requires a TTY: with no TTY, Ink throws NonInteractiveTerminal
-# before it uploads anything. A PTY lets a logged-in headless release finish.
-# Headless release publishes as soon as the preview exists.
+# wix login --api-key works without a TTY. wix release does not: with no TTY, Ink
+# throws NonInteractiveTerminal before it uploads anything. A PTY lets a logged-in
+# headless release finish. Headless release publishes as soon as the preview exists.
 run_release() {
   if [ -t 0 ]; then
     CI=1 $W npx wix release
@@ -29,7 +26,6 @@ run_release() {
   fi
 }
 if [ -n "${WIX_CLI_API_KEY:-}" ]; then
-  rm -rf "${HOME}/.wix/auth" "${HOME}/.wix/auth.json"
   $W npx wix login --api-key "$WIX_CLI_API_KEY" </dev/null || exit 5
 fi
 # @wix/astro reads WIX_CLIENT_ID from .env.local. Login does not write that file.
