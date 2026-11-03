@@ -5,7 +5,7 @@ name: publish-baseline
 # A push of this file to main also releases once, because the token that
 # merges pull requests cannot call the dispatch API (Actions: write).
 # Release script on baseline installs @wix/cli before login (see #275).
-# Ramzi additional-question latency repair requested by Noam: integration PR #377.
+# Ramzi phone first-Send-tap repair found during the authorized live tests: PR #379.
 # The companion backend PR #31 is already published: one bounded Flash image answer.
 # Prepared hints stay in Supabase; reCAPTCHA and the current worksheet catalog stay intact.
 
@@ -52,4 +52,4 @@ jobs:
             exit 1
           fi
           git fetch origin headless/astro-poc-baseline
-          bash tools/release/release.sh "c356ab7b2bbf621209cbe074f1b41d604789a453"
+          bash tools/release/release.sh "1ff8d3572910831cac8eeff9f2fd40c5c730889f"
