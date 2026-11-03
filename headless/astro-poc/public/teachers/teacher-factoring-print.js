@@ -947,6 +947,8 @@ function questionCard(group, picked) {
   const contextLabel = contextQuestions.length ? 'כולל נתונים משאלה ' + contextQuestions.join(', ') : '';
   const meta = [levelLabel, partsText, pageText, contextLabel].filter(Boolean).join(' · ');
   const role = QUESTION_ROLES[group.role] || '';
+  const answer = group.source.answerMap?.questions?.find((item) => Number(item.q) === Number(group.q));
+  const answerNotice = answer?.unavailableReason ? '<span class="q-page" style="display:block">בדף המקור חסרה תשובה מלאה לשאלה זו.</span>' : '';
   // Reserve the full A4 crop height before its bitmap loads, so scrolling to a
   // checkbox does not move it when earlier questions finish rendering.
   let previewHeight = 140;
@@ -956,7 +958,7 @@ function questionCard(group, picked) {
       previewHeight = slices.reduce((height, slice, index) => height + Math.round(1000 * Math.SQRT2 * slice.box.h / slice.box.w) + (index ? slice.gap : 0), 0) || previewHeight;
     } catch (error) { /* The preview supplies a retry and source link. */ }
   }
-  return `<article class="q-card q-card-whole q-card-pick q-group"><label class="q-select"><input type="checkbox" data-whole-question="${escapeHTML(group.key)}" ${picked ? 'checked' : ''} aria-label="בחירת שאלה ${escapeHTML(group.q)}${levelLabel ? ' ' + escapeHTML(levelLabel) : ''}"><span class="q-content"><span class="q-title-line"><span class="q-title">שאלה ${escapeHTML(group.q)}</span>${role ? `<span class="badge role-${group.role}">${role}</span>` : ''}</span><span class="q-page" style="display:block">${escapeHTML(meta)}</span></span></label><div class="q-preview" data-preview-key="${escapeHTML(group.key)}" aria-busy="true"><div class="q-preview-scroll q-preview-placeholder" style="aspect-ratio:1000/${previewHeight}"><p class="q-preview-loading">טוענים את השאלה המלאה מדף המקור…</p></div><button type="button" class="q-preview-zoom" title="הגדלת התצוגה לעיון, בלי לשנות את הבחירה." aria-describedby="help-zoom" disabled>הגדלת השאלה</button><a class="q-source-link" href="${escapeHTML(group.source.pdfUrl)}#page=${group.parts[0].page}" target="_blank" rel="noopener">פתיחת דף המקור</a></div></article>`;
+  return `<article class="q-card q-card-whole q-card-pick q-group"><label class="q-select"><input type="checkbox" data-whole-question="${escapeHTML(group.key)}" ${picked ? 'checked' : ''} aria-label="בחירת שאלה ${escapeHTML(group.q)}${levelLabel ? ' ' + escapeHTML(levelLabel) : ''}"><span class="q-content"><span class="q-title-line"><span class="q-title">שאלה ${escapeHTML(group.q)}</span>${role ? `<span class="badge role-${group.role}">${role}</span>` : ''}</span><span class="q-page" style="display:block">${escapeHTML(meta)}</span>${answerNotice}</span></label><div class="q-preview" data-preview-key="${escapeHTML(group.key)}" aria-busy="true"><div class="q-preview-scroll q-preview-placeholder" style="aspect-ratio:1000/${previewHeight}"><p class="q-preview-loading">טוענים את השאלה המלאה מדף המקור…</p></div><button type="button" class="q-preview-zoom" title="הגדלת התצוגה לעיון, בלי לשנות את הבחירה." aria-describedby="help-zoom" disabled>הגדלת השאלה</button><a class="q-source-link" href="${escapeHTML(group.source.pdfUrl)}#page=${group.parts[0].page}" target="_blank" rel="noopener">פתיחת דף המקור</a></div></article>`;
 }
 
 // The manifest's crops enclose the WHOLE question, including its instruction,
@@ -1391,6 +1393,7 @@ let printGeneration = 0;
 
 function clearPreparedPrint(keepReview = false) {
   printGeneration += 1;
+  if ($('wizard-print')) $('wizard-print').disabled = true;
   renderTeacherPageCount($('wizard-page-count'));
   const review = $('wizard-review');
   if (review && !keepReview) review.hidden = true;
@@ -2003,9 +2006,30 @@ function packShort(measured, options) {
     if (last && last.id === item.slice.block) last.items.push(item);
     else blocks.push({ id: item.slice.block, items: [item] });
   });
+  const packedBlocks = [];
+  for (const block of blocks) {
+    const limit = sheetContentLimit(1, false);
+    if (!(options && options.answers) || contentHeight(block.items) <= limit / 0.85) {
+      packedBlocks.push(block);
+      continue;
+    }
+    // A long answer can continue on another source page. Break only between
+    // its verified rectangles; never split a formula or shrink several pages
+    // into one. The heading stays attached to the first answer rectangle.
+    let chunk = [];
+    for (const item of block.items) {
+      const hasAnswer = chunk.some((entry) => entry.slice.kind === 'answer');
+      if (hasAnswer && contentHeight(chunk.concat(item)) > limit / 0.85) {
+        packedBlocks.push({ id: block.id, items: chunk });
+        chunk = [];
+      }
+      chunk.push(item);
+    }
+    if (chunk.length) packedBlocks.push({ id: block.id, items: chunk });
+  }
   const pages = [];
   let page = [];
-  blocks.forEach((block) => {
+  packedBlocks.forEach((block) => {
     const items = block.items;
     const limitHere = sheetContentLimit(pages.length, reserveTitle);
     const joined = page.concat(items);
@@ -2321,15 +2345,15 @@ async function measureSlices(slices, options) {
   const fullWidth = Boolean(options && options.fullWidth);
   const measured = [];
   for (const slice of slices) {
-    if (slice.kind === 'level' || slice.kind === 'section' || slice.kind === 'points') {
-      const dh = slice.kind === 'section' ? (slice.test ? SECTION_TEST_H : SECTION_REVIEW_H) : (slice.kind === 'points' ? 30 : 36);
+    if (slice.kind === 'level' || slice.kind === 'section' || slice.kind === 'points' || slice.kind === 'answer-heading') {
+      const dh = slice.kind === 'answer-heading' ? 66 : slice.kind === 'section' ? (slice.test ? SECTION_TEST_H : SECTION_REVIEW_H) : (slice.kind === 'points' ? 30 : 36);
       measured.push({ slice, bitmap: null, sw: OUT_W, sh: dh, dh });
       continue;
     }
     const bitmap = await pageBitmap(slice.page, sheets.get(slice.pdfId) || SOURCE);
     const sw = Math.max(1, slice.box.w * bitmap.width);
     const sh = Math.max(1, slice.box.h * bitmap.height);
-    const dw = !fullWidth && slice.box.w < 0.5 ? slice.box.w * OUT_W : OUT_W;
+    const dw = slice.kind === 'answer' || (!fullWidth && slice.box.w < 0.5) ? slice.box.w * OUT_W : OUT_W;
     measured.push({ slice, bitmap, sw, sh, dh: Math.max(1, Math.round(dw * sh / sw)), fullWidth });
   }
   return measured;
@@ -2409,6 +2433,20 @@ function paintMeasuredPage(ctx, items, top, scale) {
   items.forEach((item, itemIndex) => {
     if (itemIndex) y += gapSize(item.slice.gap, fit);
     const dh = Math.max(1, Math.round(item.dh * fit));
+    if (item.slice.kind === 'answer-heading') {
+      ctx.save();
+      ctx.direction = 'rtl';
+      ctx.textAlign = 'right';
+      ctx.fillStyle = '#22305a';
+      const right = x0 + drawW - 28;
+      ctx.font = 'bold ' + Math.max(12, Math.round(23 * fit)) + 'px Heebo, Arial, sans-serif';
+      ctx.fillText(item.slice.label, right, y + Math.round(26 * fit), drawW - 56);
+      ctx.font = Math.max(12, Math.round(19 * fit)) + 'px Heebo, Arial, sans-serif';
+      ctx.fillText(item.slice.note || '', right, y + Math.round(55 * fit), drawW - 56);
+      ctx.restore();
+      y += dh;
+      return;
+    }
     if (item.slice.kind === 'section') {
       paintSectionHeading(ctx, item.slice, x0, drawW, y, fit);
       y += dh;
@@ -2449,8 +2487,8 @@ function paintMeasuredPage(ctx, items, top, scale) {
     } else {
       const sx = item.slice.box.x * item.bitmap.width;
       const sy = item.slice.box.y * item.bitmap.height;
-      const narrow = !item.fullWidth && item.slice.box.w < 0.5;
-      const dx = x0 + (narrow ? item.slice.box.x * drawW : 0);
+      const narrow = item.slice.kind === 'answer' || (!item.fullWidth && item.slice.box.w < 0.5);
+      const dx = x0 + (narrow ? (item.slice.kind === 'answer' ? (1 - item.slice.box.w) * drawW : item.slice.box.x * drawW) : 0);
       const dw = narrow ? item.slice.box.w * drawW : drawW;
       ctx.drawImage(item.bitmap, sx, sy, item.sw, item.sh, dx, y, dw, dh);
       const masks = item.slice.box.masks && item.slice.box.masks.length ? item.slice.box.masks : (item.slice.box.mask ? [item.slice.box.mask] : []);
@@ -2469,8 +2507,8 @@ async function paintPacked(root, exerciseMeasured, answerMeasured, title) {
   const answerPages = answerMeasured.length ? packShort(answerMeasured, { answers: true }) : [];
   const packs = exercisePages.concat(answerPages);
   const answerStart = exercisePages.length;
-  root.innerHTML = packs.map((_, index) => (
-    `<figure class="crop-sheet" data-sheet-page="${index + 1}" data-answers="${index >= answerStart ? '1' : '0'}"><canvas></canvas><figcaption>${index >= answerStart ? 'תשובות' : 'דף תרגול'} ${index + 1} מתוך ${packs.length}</figcaption></figure>`
+  root.innerHTML = packs.map((items, index) => (
+    `<figure class="crop-sheet" data-sheet-page="${index + 1}" data-answers="${index >= answerStart ? '1' : '0'}" data-answer-questions="${escapeHTML(JSON.stringify([...new Set(items.map((item) => item.slice.answerKey).filter(Boolean))]))}"><canvas></canvas><figcaption>${index >= answerStart ? 'תשובות' : 'דף תרגול'} ${index + 1} מתוך ${packs.length}</figcaption></figure>`
   )).join('');
   const canvases = root.querySelectorAll('canvas');
   if (document.fonts && document.fonts.load) {
@@ -2533,92 +2571,87 @@ async function sheetTextLines(source) {
   return lines;
 }
 
-function answerFallbackSlices(source) {
-  const start = Number(source.answerStartPage);
-  const end = Number(source.pageCount);
-  if (!Number.isInteger(start) || start < 1 || !Number.isInteger(end) || start > end) return [];
-  const slices = [{
-    page: start, pdfId: source.pdfId, gap: 8, kind: 'level',
-    block: 'answers-head:' + source.pdfId,
-    label: [levelPrintName(source.level, source.levelLabel), 'תשובות מדף המקור המלא'].filter(Boolean).join(' · '),
-  }];
-  for (let page = start; page <= end; page += 1) {
-    slices.push({ page, pdfId: source.pdfId, box: { x: 0, y: 0, w: 1, h: 1 },
-      gap: 6, block: 'answers-page:' + source.pdfId + ':' + page, kind: 'answer' });
+function selectedAnswerCrops(group) {
+  const source = group.source;
+  const wanted = [...new Set(group.questions.map((question) => Number(question.q)))];
+  const missing = (numbers) => {
+    const label = source.title || source.topic || levelPrintName(source.level, source.levelLabel);
+    const error = new Error(`לא נמצאו תשובות סופיות מאומתות לשאלות ${numbers.join(', ')}${label ? ' — ' + label : ''}. הדף לא הוכן להדפסה. אפשר לנסות שוב או לשנות את הבחירה.`);
+    error.code = 'MISSING_ANSWERS';
+    return error;
+  };
+  const map = source.answerMap;
+  if (!map || map.version !== 1 || !/^[a-f0-9]{64}$/.test(map.sourceSha256 || '')
+    || (source.answerSourceSha256 && source.answerSourceSha256 !== map.sourceSha256)
+    || !Array.isArray(map.questions)) throw missing(wanted);
+  const byNumber = new Map();
+  for (const entry of map.questions) {
+    const q = Number(entry.q);
+    if (!Number.isInteger(q) || q < 1 || byNumber.has(q)) throw missing(wanted);
+    byNumber.set(q, entry);
   }
-  return slices;
+  return wanted.flatMap((q) => {
+    const entry = byNumber.get(q);
+    if (entry && entry.unavailableReason) {
+      const error = new Error(`בדף המקור חסרה תשובה מלאה לשאלה ${q}. לא ניתן להכין דף עם כל התשובות לבחירה זו. אפשר לבחור שאלה אחרת.`);
+      error.code = 'MISSING_ANSWERS';
+      throw error;
+    }
+    const expectedParts = (source.questions || []).filter((item) => Number(item.q) === q)
+      .map((item) => item.part || '').filter(Boolean);
+    if (!entry || !Array.isArray(entry.parts) || expectedParts.some((part) => !entry.parts.includes(part))
+      || !Array.isArray(entry.crops) || !entry.crops.length) throw missing([q]);
+    return entry.crops.map((crop) => {
+      const { page, x, y, w, h } = crop;
+      if (!Number.isInteger(page) || page < 1 || page > source.pageCount
+        || (source.answerStartPage && page < source.answerStartPage)
+        || ![x, y, w, h].every(Number.isFinite) || x < 0 || y < 0 || w <= 0 || h <= 0
+        || x + w > 1.000001 || y + h > 1.000001) throw missing([q]);
+      // A selected rectangle must not overlap a different answer, including a
+      // second column on the same page. Never fall back to a complete page.
+      for (const other of map.questions) {
+        if (Number(other.q) === q) continue;
+        for (const neighbor of other.crops || []) {
+          if (neighbor.page === page && Math.min(x + w, neighbor.x + neighbor.w) - Math.max(x, neighbor.x) > 0.00001
+            && Math.min(y + h, neighbor.y + neighbor.h) - Math.max(y, neighbor.y) > 0.00001) throw missing([q]);
+        }
+      }
+      return { q, page, box: { x, y, w, h }, ...(entry.labelMissing ? { labelMissing: true } : {}) };
+    });
+  });
 }
 
 async function answerMeasured(groups) {
-  const slices = [];
+  // Saved sections can refer to the same source more than once. Each chosen
+  // whole question has one answer, but equal question numbers in other levels
+  // remain separate. Even a legacy part selection retains every answer part.
+  const sources = new Map();
   for (const group of groups) {
-    const wanted = answerSpecsForGroup(group);
-    const missingAnswers = (numbers) => {
-      const label = group.source.title || group.source.topic || levelPrintName(group.source.level, group.source.levelLabel);
-      const error = new Error(`לא נמצאו תשובות סופיות מאומתות לשאלות ${numbers.join(', ')}${label ? ' — ' + label : ''}. הדף לא הוכן להדפסה. אפשר לנסות שוב או לשנות את הבחירה.`);
-      error.code = 'MISSING_ANSWERS';
-      return error;
-    };
-    const appendFallback = (numbers) => {
-      const fallback = answerFallbackSlices(group.source);
-      if (!fallback.length) throw missingAnswers(numbers);
-      slices.push(...fallback);
-    };
-    if (group.source.answerGeometry === 'full-pages') {
-      // Outlined PDFs can contain a searchable overlay at unrelated positions.
-      // Use the verified source answer pages instead of those text coordinates.
-      appendFallback([...new Set(wanted.map((spec) => spec.q))]);
-      continue;
-    }
-    let lines = [];
-    try {
-      lines = await sheetTextLines(group.source);
-    } catch (error) {
-      // Some source PDFs have an outline but no extractable answer text.
-      // Their checked answer-page metadata preserves the original answers.
-    }
-    const crops = answerCropsFromLines(lines, wanted);
-    const found = new Set(crops.map((crop) => String(crop.q)));
-    const missing = [...new Set(wanted.map((spec) => spec.q))].filter((q) => !found.has(q));
-    if (missing.length) {
-      // A nonempty extraction can still omit selected answers. Preserve all
-      // verified source answer pages, or fail instead of printing a partial key.
-      appendFallback(missing);
-      continue;
-    }
-    const head = lines.find((line) => {
-      const text = String(line.text).replace(/\s/g, '');
-      return text.startsWith('תשובות') && text.length < 24;
+    const existing = sources.get(group.source.pdfId);
+    if (existing) existing.questions.push(...group.questions);
+    else sources.set(group.source.pdfId, { source: group.source, questions: group.questions.slice() });
+  }
+  const slices = [];
+  for (const group of sources.values()) {
+    const crops = selectedAnswerCrops(group);
+    if (!crops.length) continue;
+    const firstKey = group.source.pdfId + ':' + crops[0].q;
+    slices.push({
+      page: crops[0].page, pdfId: group.source.pdfId, gap: 12,
+      kind: 'answer-heading', block: 'answer:' + firstKey,
+      label: 'תשובות לשאלות שנבחרו',
+      note: [group.source.topic || group.source.title, levelPrintName(group.source.level, group.source.levelLabel)].filter(Boolean).join(' · '),
     });
-    if (head) {
-      slices.push({
-        page: head.page,
-        pdfId: group.source.pdfId,
-        box: { x: 0, y: 0, w: 1, h: 0.02 },
-        gap: 8,
-        block: 'answers-head:' + group.source.pdfId,
-        kind: 'level',
-        label: levelPrintName(group.source.level, group.source.levelLabel),
-      });
-      slices.push({
-        page: head.page,
-        pdfId: group.source.pdfId,
-        box: answerHeadingBox(head),
-        gap: 6,
-        block: 'answers-head:' + group.source.pdfId,
-        kind: 'answer',
-      });
-    }
+    const labeled = new Set();
     crops.forEach((crop) => {
-      slices.push({
-        page: crop.page,
-        pdfId: group.source.pdfId,
-        box: crop.box,
-        pieces: crop.pieces,
-        gap: 6,
-        block: 'answer:' + group.source.pdfId + ':' + crop.q,
-        kind: 'answer',
-      });
+      const answerKey = group.source.pdfId + ':' + crop.q;
+      if (crop.labelMissing && !labeled.has(crop.q)) {
+        slices.push({ page: crop.page, pdfId: group.source.pdfId, gap: 8,
+          block: 'answer:' + answerKey, kind: 'points', label: 'שאלה ' + crop.q });
+        labeled.add(crop.q);
+      }
+      slices.push({ page: crop.page, pdfId: group.source.pdfId, box: crop.box,
+        gap: 8, block: 'answer:' + answerKey, answerKey, kind: 'answer' });
     });
   }
   return measureSlices(slices);
@@ -2799,6 +2832,7 @@ function paintTeacherReview(chosen, blocks, note, scenario, style) {
 
 async function updatePrint() {
   const generation = ++printGeneration;
+  if ($('wizard-print')) $('wizard-print').disabled = true;
   renderTeacherPageCount($('wizard-page-count'));
   const mode = printMode;
   const review = $('wizard-review');
@@ -2813,6 +2847,7 @@ async function updatePrint() {
     $('dialog-plan').replaceChildren(...plan.childNodes);
     $('print-area').replaceChildren(...printArea.childNodes);
     if (ready) {
+      if ($('wizard-print')) $('wizard-print').disabled = false;
       renderTeacherPageCount($('wizard-page-count'), $('print-area'));
       for (const id of ['prepare-hint', 'dialog-plan', 'wizard-preview']) {
         const target = $(id);
@@ -2878,6 +2913,7 @@ async function updatePrint() {
 }
 
 function reportPrintError(message) {
+  if ($('wizard-print')) $('wizard-print').disabled = true;
   renderTeacherPageCount($('wizard-page-count'));
   const dialog = $('print-dialog');
   const target = dialog && dialog.open ? $('dialog-plan')
@@ -2956,7 +2992,9 @@ function applyScenario(value, options) {
 
 async function loadExerciseSheet(pdfId) {
   if (sheets.has(pdfId)) return sheets.get(pdfId);
-  const response = await fetch(new URL('./sheets/' + pdfId + '.json', import.meta.url));
+  const sheetUrl = new URL('./sheets/' + pdfId + '.json', import.meta.url);
+  sheetUrl.searchParams.set('v', '20261103-selected-answers');
+  const response = await fetch(sheetUrl);
   if (!response.ok) throw new Error('SHEET_' + pdfId);
   const source = await response.json();
   source.mode = source.mode || 'exercise';

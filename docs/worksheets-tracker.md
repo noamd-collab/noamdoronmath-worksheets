@@ -6,6 +6,13 @@
 
 # Worksheet tracker
 
+## Selected final answers in teacher printing — 2026-11-03
+
+- Print verified whole-answer rectangles only for selected questions, retaining all printed subparts and source formulas. Do not append complete answer sections or use unreliable text overlays.
+- Keep source/topic/level headings with their first answer, preserve font scale for narrow columns, and split long answers only at verified source boundaries.
+- Missing original answers are explicitly identified and block incomplete output; they are not silently replaced with unrelated answers. Original worksheet PDFs and question content remain unchanged.
+- Validation and content-gap limits: [teacher-selected-answers-20261103.md](teacher-selected-answers-20261103.md).
+
 ## Ramzi additional-question latency — 2026-11-03
 
 - Additional student questions now use one protected solver request with the selected original crop when image reading is needed. The submitted attachment snapshot stays bound to that turn; changing the source or expiring the operation prevents a late request. No separate image-analysis request precedes the answer.

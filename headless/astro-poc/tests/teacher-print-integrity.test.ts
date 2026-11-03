@@ -19,7 +19,7 @@ function answerPipeline(crops: { q: number; page: number; box: object }[] = [], 
     const sheetTextLines = async () => { if (textFails) throw new Error('text unavailable'); return []; };
     const answerCropsFromLines = () => crops;
     const measureSlices = async slices => slices;
-    ${['levelPrintName', 'answerSpecsForGroup', 'answerFallbackSlices', 'answerMeasured'].map(definition).join('\n')}
+    ${['levelPrintName', 'selectedAnswerCrops', 'answerMeasured'].map(definition).join('\n')}
     return answerMeasured;
   `)(crops, textFails);
 }
@@ -30,17 +30,14 @@ const group = (extra = {}) => ({
 });
 const crop = { q: 2, page: 8, box: { x: 0.02, y: 0.2, w: 0.96, h: 0.1 } };
 
-test('partly extracted answer keys use verified complete source pages instead of dropping selected answers', async () => {
-  const slices = await answerPipeline([crop])([group({ answerStartPage: 8, pageCount: 9 })]);
-  assert.deepEqual(slices.filter((slice: { kind: string }) => slice.kind === 'answer').map((slice: { page: number }) => slice.page), [8, 9]);
-  assert.ok(slices.filter((slice: { kind: string }) => slice.kind === 'answer').every((slice: { box: { h: number } }) => slice.box.h === 1));
-  assert.equal(slices.some((slice: { block: string }) => slice.block === 'answer:source:2'), false);
+test('partly extracted answer keys cannot print unselected answers through a full-page fallback', async () => {
+  await assert.rejects(answerPipeline([crop])([group({ answerStartPage: 8, pageCount: 9 })]), { code: 'MISSING_ANSWERS' });
 });
 
 test('a missing selected answer blocks printing explicitly when no verified answer pages exist', async () => {
   await assert.rejects(answerPipeline([crop])([group()]), (error: Error & { code?: string }) => {
     assert.equal(error.code, 'MISSING_ANSWERS');
-    assert.match(error.message, /לשאלות 5 — דף תרגול/);
+    assert.match(error.message, /לשאלות 2, 5 — דף תרגול/);
     assert.match(error.message, /לא הוכן להדפסה/);
     return true;
   });
@@ -65,7 +62,7 @@ function printApp(options: PrintOptions = {}) {
   const { document } = parseHTML(`<html><body>
     <div id="dialog-plan"></div><div id="print-area"><canvas data-old="1"></canvas></div>
     <textarea id="teacher-ai-note"></textarea><textarea id="teacher-note"></textarea><button id="prepare"></button><button id="prepare-short"></button>
-    <p id="prepare-hint"></p><div id="wizard-preview"></div><h2 id="print-title"></h2><p id="print-lead"></p><button id="print">הדפסה</button><dialog id="print-dialog"></dialog>
+    <button id="wizard-print">הדפסה</button><p id="prepare-hint"></p><div id="wizard-preview"></div><h2 id="print-title"></h2><p id="print-lead"></p><button id="print">הדפסה</button><dialog id="print-dialog"></dialog>
     ${options.review ? '<section id="wizard-review" hidden><div id="wizard-review-content"></div><p id="wizard-page-count" hidden></p></section>' : '<p id="wizard-page-count" hidden></p>'}
   </body></html>`);
   return new Function('document', 'options', 'buildTeacherReview', 'renderTeacherReview', 'renderTeacherPageCount', 'SECTION_KINDS', 'sectionKind', `
@@ -186,6 +183,7 @@ test('failed answer preparation clears stale printable canvases and reports the 
   assert.equal(app.opened(), 0);
   assert.equal(app.document.getElementById('print-area').querySelector('canvas'), null);
   assert.ok(app.document.getElementById('print-area').querySelector('.print-unprepared'));
+  assert.equal(app.document.getElementById('wizard-print').disabled, true);
   const feedback = app.document.getElementById('prepare-hint');
   assert.equal(feedback.getAttribute('role'), 'alert');
   assert.match(feedback.textContent, /חסרות תשובות סופיות/);
@@ -202,6 +200,7 @@ test('successful retry clears the persistent print error without requiring a sel
   assert.equal(feedback.getAttribute('role'), 'alert');
   options.failure = false;
   await app.prepare('marked');
+  assert.equal(app.document.getElementById('wizard-print').disabled, false);
   assert.equal(app.opened(), 1);
   assert.equal(feedback.getAttribute('role'), null);
   assert.equal(feedback.getAttribute('tabindex'), null);

@@ -51,7 +51,8 @@ describe('sheets republished with final answers', () => {
       // The teacher page prints the new answer pages for these sheets.
       const sheet = json('teachers/sheets/' + m.pdfHash + '.json');
       assert.equal(sheet.pageCount, m.pageCount, m.pdfHash);
-      assert.equal(sheet.answerGeometry, 'full-pages', m.pdfHash);
+      assert.equal(sheet.answerGeometry, 'question-crops', m.pdfHash);
+      assert.equal(sheet.answerMap?.version, 1, m.pdfHash);
       assert.equal(sheet.answerStartPage, sheet.exercisePageCount + 1, m.pdfHash);
       assert.ok(sheet.answerStartPage <= sheet.pageCount, m.pdfHash);
     }

@@ -6,6 +6,7 @@
  * as-is so the pilot boxes stay the ones already checked.
  */
 import { spawnSync } from 'node:child_process';
+import { applyTeacherAnswerMaps } from './apply-teacher-answer-maps.mjs';
 import { existsSync, mkdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
@@ -558,6 +559,7 @@ async function writeOutputs({ elementaryOnly = false } = {}) {
     questions += source.questions.length;
     writeFileSync(join(sheetDir, job.id + '.json'), JSON.stringify(source));
   }
+  applyTeacherAnswerMaps();
   return { sheets: catalogSheets(index).length, exerciseSheets, questions, measuredTops, fallbacks };
 }
 
