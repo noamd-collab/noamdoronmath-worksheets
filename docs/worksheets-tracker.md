@@ -550,3 +550,11 @@ Columns: grade, topic, levels present, author, reviewed, live, PR.
 - לפי אישור נועם להצעת Manus CL5, נוסף בשלב 4 סיכום של עמודי השאלות, עמודי התשובות וסך העמודים במסמך שהוכן. הספירה מבוססת על העמודים שנוצרו בפועל ומוצגת רק לאחר סיום הכנה מוצלחת. במקור מסומן נשמר המונח ״עמודי מקור״.
 - הספירה מתנקה עם עריכה, הכנה חוזרת או שגיאה; הכנה ישנה שהושלמה באיחור אינה מפרסמת ספירה. ההוראות לתלמיד מצורפות לפני הספירה, באותו מסמך עם התשובות הסופיות.
 - אין שינוי בחלוקת העמודים, בתוכן, בשמירה או בהתחברות. הסיכום מופיע במסך בלבד. בדיקות ותצוגה מקדימה יירשמו ב־PR; מיזוג ופרסום טעונים אישור נפרד.
+
+
+## Completion of the final-answer recovery — 2026-11-03
+
+- Added final answers to the remaining 22 worksheets (1,735 subparts / 45 answer pages), bringing this 404-sheet republishing project to completion. The wider catalog has 426 PDFs and is not claimed fully re-audited.
+- Rebuilt editable sources with skill 7.0.3-noam / engine 6.18; 292 question pages preserve their content and layout. Noam approved verified AA-only raster differences; exact rendering state and positions were independently checked.
+- All final-answer pages visually checked; all selected questions retain every subpart answer through full answer-section printing. Answers to unselected questions remain in that full section.
+- Uploaded directly to Wix and verified all 22 downloads byte-for-byte. Old files retained; no SQL execution, secret extraction or temporary release. Details, checks and direct routes: `docs/final-answers-remaining22-20261103.md`.

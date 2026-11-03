@@ -439,14 +439,14 @@
         "grade": 7,
         "level": "a"
       },
-      "pdfId": "622c7814c15b4647b47339d5989d4430",
+      "pdfId": "6f6823dd9d2040cfabc418f0443458f4",
       "prefix": "G7-T03",
       "grade": 7,
       "level": "a",
       "topicId": 3,
       "title": "כפל מספרים מכוונים",
       "siblings": {
-        "pa": "622c7814c15b4647b47339d5989d4430",
+        "pa": "6f6823dd9d2040cfabc418f0443458f4",
         "pb": "b189a37abff04785af77f9aec17c0b8b",
         "pc": "06c31cd5853a466eb664fdf8b9174c12"
       }
@@ -464,7 +464,7 @@
       "topicId": 3,
       "title": "כפל מספרים מכוונים",
       "siblings": {
-        "pa": "622c7814c15b4647b47339d5989d4430",
+        "pa": "6f6823dd9d2040cfabc418f0443458f4",
         "pb": "b189a37abff04785af77f9aec17c0b8b",
         "pc": "06c31cd5853a466eb664fdf8b9174c12"
       }
@@ -482,7 +482,7 @@
       "topicId": 3,
       "title": "כפל מספרים מכוונים",
       "siblings": {
-        "pa": "622c7814c15b4647b47339d5989d4430",
+        "pa": "6f6823dd9d2040cfabc418f0443458f4",
         "pb": "b189a37abff04785af77f9aec17c0b8b",
         "pc": "06c31cd5853a466eb664fdf8b9174c12"
       }
@@ -2789,15 +2789,15 @@
         "grade": 8,
         "level": "a"
       },
-      "pdfId": "1cd0d5ee61c44100925f8b809d6a672b",
+      "pdfId": "6e8c36b1189342be8f3cea76af330590",
       "prefix": "G8-T24",
       "grade": 8,
       "level": "a",
       "topicId": 4,
       "title": "יחס ופרופורציה",
       "siblings": {
-        "pa": "1cd0d5ee61c44100925f8b809d6a672b",
-        "pb": "0e7c2da24a9943da879d191f2fff1a11",
+        "pa": "6e8c36b1189342be8f3cea76af330590",
+        "pb": "cc51695c3a1241dfb660bded52e24574",
         "pc": "8a9212498afb4ba78038cbf40b70052e"
       }
     },
@@ -2807,15 +2807,15 @@
         "grade": 8,
         "level": "b"
       },
-      "pdfId": "0e7c2da24a9943da879d191f2fff1a11",
+      "pdfId": "cc51695c3a1241dfb660bded52e24574",
       "prefix": "G8-T24",
       "grade": 8,
       "level": "b",
       "topicId": 4,
       "title": "יחס ופרופורציה",
       "siblings": {
-        "pa": "1cd0d5ee61c44100925f8b809d6a672b",
-        "pb": "0e7c2da24a9943da879d191f2fff1a11",
+        "pa": "6e8c36b1189342be8f3cea76af330590",
+        "pb": "cc51695c3a1241dfb660bded52e24574",
         "pc": "8a9212498afb4ba78038cbf40b70052e"
       }
     },
@@ -2832,8 +2832,8 @@
       "topicId": 4,
       "title": "יחס ופרופורציה",
       "siblings": {
-        "pa": "1cd0d5ee61c44100925f8b809d6a672b",
-        "pb": "0e7c2da24a9943da879d191f2fff1a11",
+        "pa": "6e8c36b1189342be8f3cea76af330590",
+        "pb": "cc51695c3a1241dfb660bded52e24574",
         "pc": "8a9212498afb4ba78038cbf40b70052e"
       }
     },
@@ -3014,7 +3014,7 @@
       "siblings": {
         "pa": "438d52243e2c4d05818bae586f6a5f53",
         "pb": "e5bdc917e16441df9503097d9be73742",
-        "pc": "3fc18fcf47e444f29e23d5833ebd11cf"
+        "pc": "ccbe1eb738b14d3b93a272282090a21e"
       }
     },
     "f98e804af31044708ca2dc3f0d97f270": {
@@ -3032,7 +3032,7 @@
       "siblings": {
         "pa": "438d52243e2c4d05818bae586f6a5f53",
         "pb": "e5bdc917e16441df9503097d9be73742",
-        "pc": "3fc18fcf47e444f29e23d5833ebd11cf"
+        "pc": "ccbe1eb738b14d3b93a272282090a21e"
       }
     },
     "60994088b46e43b78f3345fe5d3e5153": {
@@ -3041,7 +3041,7 @@
         "grade": 8,
         "level": "c"
       },
-      "pdfId": "3fc18fcf47e444f29e23d5833ebd11cf",
+      "pdfId": "ccbe1eb738b14d3b93a272282090a21e",
       "prefix": "G8-T22",
       "grade": 8,
       "level": "c",
@@ -3050,7 +3050,7 @@
       "siblings": {
         "pa": "438d52243e2c4d05818bae586f6a5f53",
         "pb": "e5bdc917e16441df9503097d9be73742",
-        "pc": "3fc18fcf47e444f29e23d5833ebd11cf"
+        "pc": "ccbe1eb738b14d3b93a272282090a21e"
       }
     },
     "5e5c345c418747bea1e83bbe770c9106": {
@@ -3059,16 +3059,16 @@
         "grade": 8,
         "level": "a"
       },
-      "pdfId": "729eda27840f40c6b44ddca8917a727b",
+      "pdfId": "ca05ca2f9ffd4b2f970d6dd968ffa0aa",
       "prefix": "G8-T23",
       "grade": 8,
       "level": "a",
       "topicId": 9,
       "title": "שינויים עוקבים",
       "siblings": {
-        "pa": "729eda27840f40c6b44ddca8917a727b",
-        "pb": "7abf038ad2fb4c9189a02367f2a2f5ff",
-        "pc": "8cb4b14d7f3c42c5855b8d64cb1b7284"
+        "pa": "ca05ca2f9ffd4b2f970d6dd968ffa0aa",
+        "pb": "09a92f73a25a4602b2d8d77a2cae6f13",
+        "pc": "4087b7a14e684835973ca6de0c0d0e31"
       }
     },
     "8b2108fe4dd0452a9807759142938ecb": {
@@ -3077,16 +3077,16 @@
         "grade": 8,
         "level": "b"
       },
-      "pdfId": "7abf038ad2fb4c9189a02367f2a2f5ff",
+      "pdfId": "09a92f73a25a4602b2d8d77a2cae6f13",
       "prefix": "G8-T23",
       "grade": 8,
       "level": "b",
       "topicId": 9,
       "title": "שינויים עוקבים",
       "siblings": {
-        "pa": "729eda27840f40c6b44ddca8917a727b",
-        "pb": "7abf038ad2fb4c9189a02367f2a2f5ff",
-        "pc": "8cb4b14d7f3c42c5855b8d64cb1b7284"
+        "pa": "ca05ca2f9ffd4b2f970d6dd968ffa0aa",
+        "pb": "09a92f73a25a4602b2d8d77a2cae6f13",
+        "pc": "4087b7a14e684835973ca6de0c0d0e31"
       }
     },
     "d3086bad05cc436d8e989cabc21b9772": {
@@ -3095,16 +3095,16 @@
         "grade": 8,
         "level": "c"
       },
-      "pdfId": "8cb4b14d7f3c42c5855b8d64cb1b7284",
+      "pdfId": "4087b7a14e684835973ca6de0c0d0e31",
       "prefix": "G8-T23",
       "grade": 8,
       "level": "c",
       "topicId": 9,
       "title": "שינויים עוקבים",
       "siblings": {
-        "pa": "729eda27840f40c6b44ddca8917a727b",
-        "pb": "7abf038ad2fb4c9189a02367f2a2f5ff",
-        "pc": "8cb4b14d7f3c42c5855b8d64cb1b7284"
+        "pa": "ca05ca2f9ffd4b2f970d6dd968ffa0aa",
+        "pb": "09a92f73a25a4602b2d8d77a2cae6f13",
+        "pc": "4087b7a14e684835973ca6de0c0d0e31"
       }
     },
     "a150cbf555ca430885a78a78b458af12": {
@@ -3545,16 +3545,16 @@
         "grade": 8,
         "level": "a"
       },
-      "pdfId": "72edbfe254b74cbcbd08856b3ebaf804",
+      "pdfId": "c38e3843942346748ff8e25116b7bd6d",
       "prefix": "G8-T30",
       "grade": 8,
       "level": "a",
       "topicId": 18,
       "title": "דיאגרמת עוגה",
       "siblings": {
-        "pa": "72edbfe254b74cbcbd08856b3ebaf804",
-        "pb": "51fa9bbf02904cdab1e016161aeeb7cb",
-        "pc": "92cfe6cb439a4c03a30aa700c73dad68"
+        "pa": "c38e3843942346748ff8e25116b7bd6d",
+        "pb": "5da9f0651be9493dbba0016fcc9f231c",
+        "pc": "b52c1674413140dd8cc91f3a3920db34"
       }
     },
     "cb7c93d69d644075953ed8a3b2b1b51b": {
@@ -3563,16 +3563,16 @@
         "grade": 8,
         "level": "b"
       },
-      "pdfId": "51fa9bbf02904cdab1e016161aeeb7cb",
+      "pdfId": "5da9f0651be9493dbba0016fcc9f231c",
       "prefix": "G8-T30",
       "grade": 8,
       "level": "b",
       "topicId": 18,
       "title": "דיאגרמת עוגה",
       "siblings": {
-        "pa": "72edbfe254b74cbcbd08856b3ebaf804",
-        "pb": "51fa9bbf02904cdab1e016161aeeb7cb",
-        "pc": "92cfe6cb439a4c03a30aa700c73dad68"
+        "pa": "c38e3843942346748ff8e25116b7bd6d",
+        "pb": "5da9f0651be9493dbba0016fcc9f231c",
+        "pc": "b52c1674413140dd8cc91f3a3920db34"
       }
     },
     "f631693edb1643648591b614ab4103d0": {
@@ -3581,16 +3581,16 @@
         "grade": 8,
         "level": "c"
       },
-      "pdfId": "92cfe6cb439a4c03a30aa700c73dad68",
+      "pdfId": "b52c1674413140dd8cc91f3a3920db34",
       "prefix": "G8-T30",
       "grade": 8,
       "level": "c",
       "topicId": 18,
       "title": "דיאגרמת עוגה",
       "siblings": {
-        "pa": "72edbfe254b74cbcbd08856b3ebaf804",
-        "pb": "51fa9bbf02904cdab1e016161aeeb7cb",
-        "pc": "92cfe6cb439a4c03a30aa700c73dad68"
+        "pa": "c38e3843942346748ff8e25116b7bd6d",
+        "pb": "5da9f0651be9493dbba0016fcc9f231c",
+        "pc": "b52c1674413140dd8cc91f3a3920db34"
       }
     },
     "1dafe53ed9834db5b6790a6ccc82a35a": {
@@ -4099,16 +4099,16 @@
         "grade": 8,
         "level": "a"
       },
-      "pdfId": "f693012a04194166b37dd6127b4f345c",
+      "pdfId": "f9d6d1792f96415f935554ec4c5d843c",
       "prefix": "G8-T15",
       "grade": 8,
       "level": "a",
       "topicId": 29,
       "title": "פונקציה קווית",
       "siblings": {
-        "pa": "f693012a04194166b37dd6127b4f345c",
-        "pb": "fbdd83babe6843ec8ac6103564c8e81b",
-        "pc": "b53f2b1d1ee94a46ac8d3c175aca36c6"
+        "pa": "f9d6d1792f96415f935554ec4c5d843c",
+        "pb": "8c196cba304b43d3ac4a6eaa6ce56308",
+        "pc": "f5b6274c0c504f12b211282c4b712c4a"
       }
     },
     "18dd79c7e8324bd599e2e7539e9c5baf": {
@@ -4117,16 +4117,16 @@
         "grade": 8,
         "level": "b"
       },
-      "pdfId": "fbdd83babe6843ec8ac6103564c8e81b",
+      "pdfId": "8c196cba304b43d3ac4a6eaa6ce56308",
       "prefix": "G8-T15",
       "grade": 8,
       "level": "b",
       "topicId": 29,
       "title": "פונקציה קווית",
       "siblings": {
-        "pa": "f693012a04194166b37dd6127b4f345c",
-        "pb": "fbdd83babe6843ec8ac6103564c8e81b",
-        "pc": "b53f2b1d1ee94a46ac8d3c175aca36c6"
+        "pa": "f9d6d1792f96415f935554ec4c5d843c",
+        "pb": "8c196cba304b43d3ac4a6eaa6ce56308",
+        "pc": "f5b6274c0c504f12b211282c4b712c4a"
       }
     },
     "db92841f98b94328a68f9658575a8111": {
@@ -4135,16 +4135,16 @@
         "grade": 8,
         "level": "c"
       },
-      "pdfId": "b53f2b1d1ee94a46ac8d3c175aca36c6",
+      "pdfId": "f5b6274c0c504f12b211282c4b712c4a",
       "prefix": "G8-T15",
       "grade": 8,
       "level": "c",
       "topicId": 29,
       "title": "פונקציה קווית",
       "siblings": {
-        "pa": "f693012a04194166b37dd6127b4f345c",
-        "pb": "fbdd83babe6843ec8ac6103564c8e81b",
-        "pc": "b53f2b1d1ee94a46ac8d3c175aca36c6"
+        "pa": "f9d6d1792f96415f935554ec4c5d843c",
+        "pb": "8c196cba304b43d3ac4a6eaa6ce56308",
+        "pc": "f5b6274c0c504f12b211282c4b712c4a"
       }
     },
     "1f1b89f1c4cd4de58a3c6eeb1bb5e218": {
@@ -5985,16 +5985,16 @@
         "grade": 9,
         "level": "a"
       },
-      "pdfId": "3c1e37115eca4b69bb8daf90565a7c1d",
+      "pdfId": "8f7c5c26b5f54cd88d361e85a1aa857a",
       "prefix": "G9-T06",
       "grade": 9,
       "level": "a",
       "topicId": 5,
       "title": "הפונקציה הריבועית",
       "siblings": {
-        "pa": "3c1e37115eca4b69bb8daf90565a7c1d",
-        "pb": "c514c4cd526e4ac68a61d0521e7ee022",
-        "pc": "cff4758892e44743bbff84e4a9920a86"
+        "pa": "8f7c5c26b5f54cd88d361e85a1aa857a",
+        "pb": "cbe4f5fa3c484b9e8f031697bf2580bc",
+        "pc": "68aa9ec0763c439f9dc7355620de15f9"
       }
     },
     "c51fadd25caf43deb049902fcccae7e8": {
@@ -6003,16 +6003,16 @@
         "grade": 9,
         "level": "b"
       },
-      "pdfId": "c514c4cd526e4ac68a61d0521e7ee022",
+      "pdfId": "cbe4f5fa3c484b9e8f031697bf2580bc",
       "prefix": "G9-T06",
       "grade": 9,
       "level": "b",
       "topicId": 5,
       "title": "הפונקציה הריבועית",
       "siblings": {
-        "pa": "3c1e37115eca4b69bb8daf90565a7c1d",
-        "pb": "c514c4cd526e4ac68a61d0521e7ee022",
-        "pc": "cff4758892e44743bbff84e4a9920a86"
+        "pa": "8f7c5c26b5f54cd88d361e85a1aa857a",
+        "pb": "cbe4f5fa3c484b9e8f031697bf2580bc",
+        "pc": "68aa9ec0763c439f9dc7355620de15f9"
       }
     },
     "deb1a34c46d649939c3f2cdcb5be8f27": {
@@ -6021,16 +6021,16 @@
         "grade": 9,
         "level": "c"
       },
-      "pdfId": "cff4758892e44743bbff84e4a9920a86",
+      "pdfId": "68aa9ec0763c439f9dc7355620de15f9",
       "prefix": "G9-T06",
       "grade": 9,
       "level": "c",
       "topicId": 5,
       "title": "הפונקציה הריבועית",
       "siblings": {
-        "pa": "3c1e37115eca4b69bb8daf90565a7c1d",
-        "pb": "c514c4cd526e4ac68a61d0521e7ee022",
-        "pc": "cff4758892e44743bbff84e4a9920a86"
+        "pa": "8f7c5c26b5f54cd88d361e85a1aa857a",
+        "pb": "cbe4f5fa3c484b9e8f031697bf2580bc",
+        "pc": "68aa9ec0763c439f9dc7355620de15f9"
       }
     },
     "7f0e97c6b2d545b3857a1acf2ca670c6": {
@@ -6039,16 +6039,16 @@
         "grade": 9,
         "level": "a"
       },
-      "pdfId": "3ae0575b833f45a59616944111af5324",
+      "pdfId": "15cdc869e656479e96162699e3571d49",
       "prefix": "G9-T31",
       "grade": 9,
       "level": "a",
       "topicId": 6,
       "title": "משוואות ריבועיות ונוסחת השורשים",
       "siblings": {
-        "pa": "3ae0575b833f45a59616944111af5324",
-        "pb": "5b9c4787bb8d4114b21abf4a6e569210",
-        "pc": "0d88c0d15f97493c8d2c1eac5dac8fbf"
+        "pa": "15cdc869e656479e96162699e3571d49",
+        "pb": "633bb6f33db64de2ad892ef5fd645407",
+        "pc": "93dabb7c536e4aff911389c28531c691"
       }
     },
     "14cd0252316f484ca852ff37f8a77f15": {
@@ -6057,16 +6057,16 @@
         "grade": 9,
         "level": "b"
       },
-      "pdfId": "5b9c4787bb8d4114b21abf4a6e569210",
+      "pdfId": "633bb6f33db64de2ad892ef5fd645407",
       "prefix": "G9-T31",
       "grade": 9,
       "level": "b",
       "topicId": 6,
       "title": "משוואות ריבועיות ונוסחת השורשים",
       "siblings": {
-        "pa": "3ae0575b833f45a59616944111af5324",
-        "pb": "5b9c4787bb8d4114b21abf4a6e569210",
-        "pc": "0d88c0d15f97493c8d2c1eac5dac8fbf"
+        "pa": "15cdc869e656479e96162699e3571d49",
+        "pb": "633bb6f33db64de2ad892ef5fd645407",
+        "pc": "93dabb7c536e4aff911389c28531c691"
       }
     },
     "4f3683439d0d460a9b7e29ac97fa3793": {
@@ -6075,16 +6075,16 @@
         "grade": 9,
         "level": "c"
       },
-      "pdfId": "0d88c0d15f97493c8d2c1eac5dac8fbf",
+      "pdfId": "93dabb7c536e4aff911389c28531c691",
       "prefix": "G9-T31",
       "grade": 9,
       "level": "c",
       "topicId": 6,
       "title": "משוואות ריבועיות ונוסחת השורשים",
       "siblings": {
-        "pa": "3ae0575b833f45a59616944111af5324",
-        "pb": "5b9c4787bb8d4114b21abf4a6e569210",
-        "pc": "0d88c0d15f97493c8d2c1eac5dac8fbf"
+        "pa": "15cdc869e656479e96162699e3571d49",
+        "pb": "633bb6f33db64de2ad892ef5fd645407",
+        "pc": "93dabb7c536e4aff911389c28531c691"
       }
     },
     "d01e019b553b44d2957c555d5227bec7": {
@@ -6795,16 +6795,16 @@
         "grade": 9,
         "level": "a"
       },
-      "pdfId": "17798a629ec042b78d1dbabce87001b6",
+      "pdfId": "9c474c90282c4982858f84f9fedda98c",
       "prefix": "G9-T09",
       "grade": 9,
       "level": "a",
       "topicId": 18,
       "title": "בעיות מילוליות",
       "siblings": {
-        "pa": "17798a629ec042b78d1dbabce87001b6",
-        "pb": "0ce1399d83c84ac482e04d50a2f042a9",
-        "pc": "e77d5e23afb24ad6813bd63dfb6cf9f3"
+        "pa": "9c474c90282c4982858f84f9fedda98c",
+        "pb": "db4bd441df5a47f8bfedf6457bc0e072",
+        "pc": "254212e2c7c4488898d78a0f1a21e6cc"
       }
     },
     "35e10629bca54583bad6a7d4e6ef31ab": {
@@ -6813,16 +6813,16 @@
         "grade": 9,
         "level": "b"
       },
-      "pdfId": "0ce1399d83c84ac482e04d50a2f042a9",
+      "pdfId": "db4bd441df5a47f8bfedf6457bc0e072",
       "prefix": "G9-T09",
       "grade": 9,
       "level": "b",
       "topicId": 18,
       "title": "בעיות מילוליות",
       "siblings": {
-        "pa": "17798a629ec042b78d1dbabce87001b6",
-        "pb": "0ce1399d83c84ac482e04d50a2f042a9",
-        "pc": "e77d5e23afb24ad6813bd63dfb6cf9f3"
+        "pa": "9c474c90282c4982858f84f9fedda98c",
+        "pb": "db4bd441df5a47f8bfedf6457bc0e072",
+        "pc": "254212e2c7c4488898d78a0f1a21e6cc"
       }
     },
     "7977bf5f1e524924baf3d83d1cf7bb47": {
@@ -6831,16 +6831,16 @@
         "grade": 9,
         "level": "c"
       },
-      "pdfId": "e77d5e23afb24ad6813bd63dfb6cf9f3",
+      "pdfId": "254212e2c7c4488898d78a0f1a21e6cc",
       "prefix": "G9-T09",
       "grade": 9,
       "level": "c",
       "topicId": 18,
       "title": "בעיות מילוליות",
       "siblings": {
-        "pa": "17798a629ec042b78d1dbabce87001b6",
-        "pb": "0ce1399d83c84ac482e04d50a2f042a9",
-        "pc": "e77d5e23afb24ad6813bd63dfb6cf9f3"
+        "pa": "9c474c90282c4982858f84f9fedda98c",
+        "pb": "db4bd441df5a47f8bfedf6457bc0e072",
+        "pc": "254212e2c7c4488898d78a0f1a21e6cc"
       }
     },
     "cbc951ad64d347099b1eaf5b10b34e7f": {
@@ -13356,7 +13356,7 @@
       "topicId": 3,
       "title": "כפל מספרים מכוונים",
       "siblings": {
-        "pa": "622c7814c15b4647b47339d5989d4430",
+        "pa": "6f6823dd9d2040cfabc418f0443458f4",
         "pb": "b189a37abff04785af77f9aec17c0b8b",
         "pc": "06c31cd5853a466eb664fdf8b9174c12"
       }
@@ -13374,7 +13374,7 @@
       "topicId": 3,
       "title": "כפל מספרים מכוונים",
       "siblings": {
-        "pa": "622c7814c15b4647b47339d5989d4430",
+        "pa": "6f6823dd9d2040cfabc418f0443458f4",
         "pb": "b189a37abff04785af77f9aec17c0b8b",
         "pc": "06c31cd5853a466eb664fdf8b9174c12"
       }
@@ -13628,7 +13628,7 @@
       "siblings": {
         "pa": "438d52243e2c4d05818bae586f6a5f53",
         "pb": "e5bdc917e16441df9503097d9be73742",
-        "pc": "3fc18fcf47e444f29e23d5833ebd11cf"
+        "pc": "ccbe1eb738b14d3b93a272282090a21e"
       }
     },
     "323e3cb6bafb42be8037df0b8f4a2b8b": {
@@ -14404,7 +14404,7 @@
       "siblings": {
         "pa": "438d52243e2c4d05818bae586f6a5f53",
         "pb": "e5bdc917e16441df9503097d9be73742",
-        "pc": "3fc18fcf47e444f29e23d5833ebd11cf"
+        "pc": "ccbe1eb738b14d3b93a272282090a21e"
       }
     },
     "8401eb43f92143a7bf232d1d725fc4fa": {
@@ -14420,8 +14420,8 @@
       "topicId": 4,
       "title": "יחס ופרופורציה",
       "siblings": {
-        "pa": "1cd0d5ee61c44100925f8b809d6a672b",
-        "pb": "0e7c2da24a9943da879d191f2fff1a11",
+        "pa": "6e8c36b1189342be8f3cea76af330590",
+        "pb": "cc51695c3a1241dfb660bded52e24574",
         "pc": "8a9212498afb4ba78038cbf40b70052e"
       }
     },
@@ -14726,6 +14726,402 @@
       "topicId": 57,
       "title": "העמקה — חקר והכללה",
       "siblings": {}
+    },
+    "622c7814c15b4647b47339d5989d4430": {
+      "original": {
+        "prefix": "G7-T03",
+        "grade": 7,
+        "level": "a"
+      },
+      "pdfId": "6f6823dd9d2040cfabc418f0443458f4",
+      "prefix": "G7-T03",
+      "grade": 7,
+      "level": "a",
+      "topicId": 3,
+      "title": "כפל מספרים מכוונים",
+      "siblings": {
+        "pa": "6f6823dd9d2040cfabc418f0443458f4",
+        "pb": "b189a37abff04785af77f9aec17c0b8b",
+        "pc": "06c31cd5853a466eb664fdf8b9174c12"
+      }
+    },
+    "f693012a04194166b37dd6127b4f345c": {
+      "original": {
+        "prefix": "G8-T15",
+        "grade": 8,
+        "level": "a"
+      },
+      "pdfId": "f9d6d1792f96415f935554ec4c5d843c",
+      "prefix": "G8-T15",
+      "grade": 8,
+      "level": "a",
+      "topicId": 29,
+      "title": "פונקציה קווית",
+      "siblings": {
+        "pa": "f9d6d1792f96415f935554ec4c5d843c",
+        "pb": "8c196cba304b43d3ac4a6eaa6ce56308",
+        "pc": "f5b6274c0c504f12b211282c4b712c4a"
+      }
+    },
+    "fbdd83babe6843ec8ac6103564c8e81b": {
+      "original": {
+        "prefix": "G8-T15",
+        "grade": 8,
+        "level": "b"
+      },
+      "pdfId": "8c196cba304b43d3ac4a6eaa6ce56308",
+      "prefix": "G8-T15",
+      "grade": 8,
+      "level": "b",
+      "topicId": 29,
+      "title": "פונקציה קווית",
+      "siblings": {
+        "pa": "f9d6d1792f96415f935554ec4c5d843c",
+        "pb": "8c196cba304b43d3ac4a6eaa6ce56308",
+        "pc": "f5b6274c0c504f12b211282c4b712c4a"
+      }
+    },
+    "b53f2b1d1ee94a46ac8d3c175aca36c6": {
+      "original": {
+        "prefix": "G8-T15",
+        "grade": 8,
+        "level": "c"
+      },
+      "pdfId": "f5b6274c0c504f12b211282c4b712c4a",
+      "prefix": "G8-T15",
+      "grade": 8,
+      "level": "c",
+      "topicId": 29,
+      "title": "פונקציה קווית",
+      "siblings": {
+        "pa": "f9d6d1792f96415f935554ec4c5d843c",
+        "pb": "8c196cba304b43d3ac4a6eaa6ce56308",
+        "pc": "f5b6274c0c504f12b211282c4b712c4a"
+      }
+    },
+    "3fc18fcf47e444f29e23d5833ebd11cf": {
+      "original": {
+        "prefix": "G8-T22",
+        "grade": 8,
+        "level": "c"
+      },
+      "pdfId": "ccbe1eb738b14d3b93a272282090a21e",
+      "prefix": "G8-T22",
+      "grade": 8,
+      "level": "c",
+      "topicId": 8,
+      "title": "שינוי באחוזים",
+      "siblings": {
+        "pa": "438d52243e2c4d05818bae586f6a5f53",
+        "pb": "e5bdc917e16441df9503097d9be73742",
+        "pc": "ccbe1eb738b14d3b93a272282090a21e"
+      }
+    },
+    "729eda27840f40c6b44ddca8917a727b": {
+      "original": {
+        "prefix": "G8-T23",
+        "grade": 8,
+        "level": "a"
+      },
+      "pdfId": "ca05ca2f9ffd4b2f970d6dd968ffa0aa",
+      "prefix": "G8-T23",
+      "grade": 8,
+      "level": "a",
+      "topicId": 9,
+      "title": "שינויים עוקבים",
+      "siblings": {
+        "pa": "ca05ca2f9ffd4b2f970d6dd968ffa0aa",
+        "pb": "09a92f73a25a4602b2d8d77a2cae6f13",
+        "pc": "4087b7a14e684835973ca6de0c0d0e31"
+      }
+    },
+    "7abf038ad2fb4c9189a02367f2a2f5ff": {
+      "original": {
+        "prefix": "G8-T23",
+        "grade": 8,
+        "level": "b"
+      },
+      "pdfId": "09a92f73a25a4602b2d8d77a2cae6f13",
+      "prefix": "G8-T23",
+      "grade": 8,
+      "level": "b",
+      "topicId": 9,
+      "title": "שינויים עוקבים",
+      "siblings": {
+        "pa": "ca05ca2f9ffd4b2f970d6dd968ffa0aa",
+        "pb": "09a92f73a25a4602b2d8d77a2cae6f13",
+        "pc": "4087b7a14e684835973ca6de0c0d0e31"
+      }
+    },
+    "8cb4b14d7f3c42c5855b8d64cb1b7284": {
+      "original": {
+        "prefix": "G8-T23",
+        "grade": 8,
+        "level": "c"
+      },
+      "pdfId": "4087b7a14e684835973ca6de0c0d0e31",
+      "prefix": "G8-T23",
+      "grade": 8,
+      "level": "c",
+      "topicId": 9,
+      "title": "שינויים עוקבים",
+      "siblings": {
+        "pa": "ca05ca2f9ffd4b2f970d6dd968ffa0aa",
+        "pb": "09a92f73a25a4602b2d8d77a2cae6f13",
+        "pc": "4087b7a14e684835973ca6de0c0d0e31"
+      }
+    },
+    "1cd0d5ee61c44100925f8b809d6a672b": {
+      "original": {
+        "prefix": "G8-T24",
+        "grade": 8,
+        "level": "a"
+      },
+      "pdfId": "6e8c36b1189342be8f3cea76af330590",
+      "prefix": "G8-T24",
+      "grade": 8,
+      "level": "a",
+      "topicId": 4,
+      "title": "יחס ופרופורציה",
+      "siblings": {
+        "pa": "6e8c36b1189342be8f3cea76af330590",
+        "pb": "cc51695c3a1241dfb660bded52e24574",
+        "pc": "8a9212498afb4ba78038cbf40b70052e"
+      }
+    },
+    "0e7c2da24a9943da879d191f2fff1a11": {
+      "original": {
+        "prefix": "G8-T24",
+        "grade": 8,
+        "level": "b"
+      },
+      "pdfId": "cc51695c3a1241dfb660bded52e24574",
+      "prefix": "G8-T24",
+      "grade": 8,
+      "level": "b",
+      "topicId": 4,
+      "title": "יחס ופרופורציה",
+      "siblings": {
+        "pa": "6e8c36b1189342be8f3cea76af330590",
+        "pb": "cc51695c3a1241dfb660bded52e24574",
+        "pc": "8a9212498afb4ba78038cbf40b70052e"
+      }
+    },
+    "72edbfe254b74cbcbd08856b3ebaf804": {
+      "original": {
+        "prefix": "G8-T30",
+        "grade": 8,
+        "level": "a"
+      },
+      "pdfId": "c38e3843942346748ff8e25116b7bd6d",
+      "prefix": "G8-T30",
+      "grade": 8,
+      "level": "a",
+      "topicId": 18,
+      "title": "דיאגרמת עוגה",
+      "siblings": {
+        "pa": "c38e3843942346748ff8e25116b7bd6d",
+        "pb": "5da9f0651be9493dbba0016fcc9f231c",
+        "pc": "b52c1674413140dd8cc91f3a3920db34"
+      }
+    },
+    "51fa9bbf02904cdab1e016161aeeb7cb": {
+      "original": {
+        "prefix": "G8-T30",
+        "grade": 8,
+        "level": "b"
+      },
+      "pdfId": "5da9f0651be9493dbba0016fcc9f231c",
+      "prefix": "G8-T30",
+      "grade": 8,
+      "level": "b",
+      "topicId": 18,
+      "title": "דיאגרמת עוגה",
+      "siblings": {
+        "pa": "c38e3843942346748ff8e25116b7bd6d",
+        "pb": "5da9f0651be9493dbba0016fcc9f231c",
+        "pc": "b52c1674413140dd8cc91f3a3920db34"
+      }
+    },
+    "92cfe6cb439a4c03a30aa700c73dad68": {
+      "original": {
+        "prefix": "G8-T30",
+        "grade": 8,
+        "level": "c"
+      },
+      "pdfId": "b52c1674413140dd8cc91f3a3920db34",
+      "prefix": "G8-T30",
+      "grade": 8,
+      "level": "c",
+      "topicId": 18,
+      "title": "דיאגרמת עוגה",
+      "siblings": {
+        "pa": "c38e3843942346748ff8e25116b7bd6d",
+        "pb": "5da9f0651be9493dbba0016fcc9f231c",
+        "pc": "b52c1674413140dd8cc91f3a3920db34"
+      }
+    },
+    "3c1e37115eca4b69bb8daf90565a7c1d": {
+      "original": {
+        "prefix": "G9-T06",
+        "grade": 9,
+        "level": "a"
+      },
+      "pdfId": "8f7c5c26b5f54cd88d361e85a1aa857a",
+      "prefix": "G9-T06",
+      "grade": 9,
+      "level": "a",
+      "topicId": 5,
+      "title": "הפונקציה הריבועית",
+      "siblings": {
+        "pa": "8f7c5c26b5f54cd88d361e85a1aa857a",
+        "pb": "cbe4f5fa3c484b9e8f031697bf2580bc",
+        "pc": "68aa9ec0763c439f9dc7355620de15f9"
+      }
+    },
+    "c514c4cd526e4ac68a61d0521e7ee022": {
+      "original": {
+        "prefix": "G9-T06",
+        "grade": 9,
+        "level": "b"
+      },
+      "pdfId": "cbe4f5fa3c484b9e8f031697bf2580bc",
+      "prefix": "G9-T06",
+      "grade": 9,
+      "level": "b",
+      "topicId": 5,
+      "title": "הפונקציה הריבועית",
+      "siblings": {
+        "pa": "8f7c5c26b5f54cd88d361e85a1aa857a",
+        "pb": "cbe4f5fa3c484b9e8f031697bf2580bc",
+        "pc": "68aa9ec0763c439f9dc7355620de15f9"
+      }
+    },
+    "cff4758892e44743bbff84e4a9920a86": {
+      "original": {
+        "prefix": "G9-T06",
+        "grade": 9,
+        "level": "c"
+      },
+      "pdfId": "68aa9ec0763c439f9dc7355620de15f9",
+      "prefix": "G9-T06",
+      "grade": 9,
+      "level": "c",
+      "topicId": 5,
+      "title": "הפונקציה הריבועית",
+      "siblings": {
+        "pa": "8f7c5c26b5f54cd88d361e85a1aa857a",
+        "pb": "cbe4f5fa3c484b9e8f031697bf2580bc",
+        "pc": "68aa9ec0763c439f9dc7355620de15f9"
+      }
+    },
+    "17798a629ec042b78d1dbabce87001b6": {
+      "original": {
+        "prefix": "G9-T09",
+        "grade": 9,
+        "level": "a"
+      },
+      "pdfId": "9c474c90282c4982858f84f9fedda98c",
+      "prefix": "G9-T09",
+      "grade": 9,
+      "level": "a",
+      "topicId": 18,
+      "title": "בעיות מילוליות",
+      "siblings": {
+        "pa": "9c474c90282c4982858f84f9fedda98c",
+        "pb": "db4bd441df5a47f8bfedf6457bc0e072",
+        "pc": "254212e2c7c4488898d78a0f1a21e6cc"
+      }
+    },
+    "0ce1399d83c84ac482e04d50a2f042a9": {
+      "original": {
+        "prefix": "G9-T09",
+        "grade": 9,
+        "level": "b"
+      },
+      "pdfId": "db4bd441df5a47f8bfedf6457bc0e072",
+      "prefix": "G9-T09",
+      "grade": 9,
+      "level": "b",
+      "topicId": 18,
+      "title": "בעיות מילוליות",
+      "siblings": {
+        "pa": "9c474c90282c4982858f84f9fedda98c",
+        "pb": "db4bd441df5a47f8bfedf6457bc0e072",
+        "pc": "254212e2c7c4488898d78a0f1a21e6cc"
+      }
+    },
+    "e77d5e23afb24ad6813bd63dfb6cf9f3": {
+      "original": {
+        "prefix": "G9-T09",
+        "grade": 9,
+        "level": "c"
+      },
+      "pdfId": "254212e2c7c4488898d78a0f1a21e6cc",
+      "prefix": "G9-T09",
+      "grade": 9,
+      "level": "c",
+      "topicId": 18,
+      "title": "בעיות מילוליות",
+      "siblings": {
+        "pa": "9c474c90282c4982858f84f9fedda98c",
+        "pb": "db4bd441df5a47f8bfedf6457bc0e072",
+        "pc": "254212e2c7c4488898d78a0f1a21e6cc"
+      }
+    },
+    "3ae0575b833f45a59616944111af5324": {
+      "original": {
+        "prefix": "G9-T31",
+        "grade": 9,
+        "level": "a"
+      },
+      "pdfId": "15cdc869e656479e96162699e3571d49",
+      "prefix": "G9-T31",
+      "grade": 9,
+      "level": "a",
+      "topicId": 6,
+      "title": "משוואות ריבועיות ונוסחת השורשים",
+      "siblings": {
+        "pa": "15cdc869e656479e96162699e3571d49",
+        "pb": "633bb6f33db64de2ad892ef5fd645407",
+        "pc": "93dabb7c536e4aff911389c28531c691"
+      }
+    },
+    "5b9c4787bb8d4114b21abf4a6e569210": {
+      "original": {
+        "prefix": "G9-T31",
+        "grade": 9,
+        "level": "b"
+      },
+      "pdfId": "633bb6f33db64de2ad892ef5fd645407",
+      "prefix": "G9-T31",
+      "grade": 9,
+      "level": "b",
+      "topicId": 6,
+      "title": "משוואות ריבועיות ונוסחת השורשים",
+      "siblings": {
+        "pa": "15cdc869e656479e96162699e3571d49",
+        "pb": "633bb6f33db64de2ad892ef5fd645407",
+        "pc": "93dabb7c536e4aff911389c28531c691"
+      }
+    },
+    "0d88c0d15f97493c8d2c1eac5dac8fbf": {
+      "original": {
+        "prefix": "G9-T31",
+        "grade": 9,
+        "level": "c"
+      },
+      "pdfId": "93dabb7c536e4aff911389c28531c691",
+      "prefix": "G9-T31",
+      "grade": 9,
+      "level": "c",
+      "topicId": 6,
+      "title": "משוואות ריבועיות ונוסחת השורשים",
+      "siblings": {
+        "pa": "15cdc869e656479e96162699e3571d49",
+        "pb": "633bb6f33db64de2ad892ef5fd645407",
+        "pc": "93dabb7c536e4aff911389c28531c691"
+      }
     }
   }
 }

@@ -39,3 +39,8 @@ The old PDFs and manifests remain available. Catalog migrations route all four o
 - Integration and publication: pending required GitHub checks; the user-provided completion workflow authorizes squash integration and the publication trigger. Temporary GitHub Release approval was not needed because upload was direct to Wix.
 
 This batch advances the candidate from 378 to 382 of 404 sheets. The other 22 are excluded: their reconstructed question text matches, but raster differences exceed the user-authorized 30-pixel limit. No acceptance threshold was relaxed.
+
+
+## Subsequent confirmed release
+
+PR #372 merged as 95994999bd3915355b01385bcc5f3c230dfb2bd2; publish PR #373 merged as 2e45be269f23d2c51ee45dad941fe85b6f116841. Run 41621680608 completed with RELEASE_EXIT=0. All four new PDF IDs were verified in the live teacher page: manual Q1/Q11/Q20 selection, all 11 answer pages, desktop/phone and zero AI calls. The earlier pending status above is retained as the pre-merge record. Noam subsequently approved AA-only differences for the other 22; see final-answers-remaining22-20261103.md.
