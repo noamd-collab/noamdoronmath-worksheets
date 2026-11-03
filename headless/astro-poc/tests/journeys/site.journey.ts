@@ -267,8 +267,8 @@ async function openWorksheet(tab: Tab, link: ViewerLink, label: string) {
  * otherwise its catalog call-to-action (/worksheets?grade=…&topic=…) and the card there.
  */
 async function worksheetFromTopicPage(tab: Tab, page: TopicPage, label: string) {
-  const own = await viewerLinks(tab, 'main');
   const cta = page.catalogCta?.catalogTopicId;
+  const own = await viewerLinks(tab, 'main', cta != null ? { grade: page.grade, topic: cta } : undefined);
   if (own.length > 0) {
     if (cta != null) assert.ok(own.some((l) => l.topic === cta), `${label}: no level link for catalog topic ${cta}`);
     await openWorksheet(tab, own[0], label);
@@ -312,8 +312,8 @@ describe('journey: home → grade → topic → worksheet', () => {
             await assertHebrewRtl(tab, `${label} topic page`);
             const page = topicPages.find((p) => p.path === target);
             assert.ok(page);
-            const h1 = await tab.page.$eval('h1', (el) => el.textContent?.trim() || '');
-            assert.equal(h1, page.h1, `${label}: topic page h1`);
+            const h1 = (await tab.page.$eval('h1', (el) => el.textContent?.trim() || '')).replace(/[\u2066-\u2069]/g, '');
+            assert.equal(h1, page.h1.replace(/[\u2066-\u2069]/g, ''), `${label}: topic page h1`);
             await worksheetFromTopicPage(tab, page, `${label} ${target}`);
           } else {
             // Elementary: hub → catalog grade → topic card → level link.

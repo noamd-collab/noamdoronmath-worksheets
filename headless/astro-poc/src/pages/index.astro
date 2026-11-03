@@ -70,14 +70,14 @@ const midGrades = home.grades.slice(6).map((grade,i)=>({...grade,l:letters[i+6],
       <GamePromoCard />
 
       <!-- GRADES -->
-      <section data-home-grades style="position:relative;max-width:1200px;margin:0 auto;padding:56px 24px 72px;">
+      <section id="choose-grade" data-home-grades style="position:relative;max-width:1200px;margin:0 auto;padding:56px 24px 72px;scroll-margin-top:96px;">
         <div data-doodle="cat" style="position:absolute;top:-20px;left:36%;width:120px;height:90px;"><button type="button" class="exact-doodle-btn exact-doodle-btn--fill" aria-label="הנפשת השרבוט"><img src="/design-exact/assets/doodles/sleeping-cat.svg" alt="" width="140" height="92" loading="lazy" decoding="async" style="position:absolute;left:0;bottom:0;width:120px;height:auto;display:block;cursor:pointer;"></button><span data-zzz="0" style="position:absolute;left:86px;top:6px;font:700 18px 'Amatic SC','Amatic SC Fallback',cursive;color:#2a7c7a;opacity:0;pointer-events:none;">Z</span><span data-zzz="1" style="position:absolute;left:98px;top:-10px;font:700 24px 'Amatic SC','Amatic SC Fallback',cursive;color:#2a7c7a;opacity:0;pointer-events:none;">Z</span><span data-zzz="2" style="position:absolute;left:112px;top:-30px;font:700 30px 'Amatic SC','Amatic SC Fallback',cursive;color:#2a7c7a;opacity:0;pointer-events:none;">Z</span></div>
         <div style="margin-bottom:28px;">
           <h2 data-pop="0" style="font-family:'Secular One','Secular One Fallback',sans-serif;font-weight:400;font-size:clamp(30px,3.6vw,44px);margin:0 0 6px;display:flex;flex-wrap:wrap;align-items:baseline;gap:0 .28em;"><span style="display:inline-block;transform:rotate(-3deg) translateY(2px);">בחרו</span><span style="display:inline-block;transform:rotate(2deg) translateY(-3px);color:#2a7c7a;">כיתה</span><span style="display:inline-block;transform:rotate(-1.5deg);">והתחילו</span><span style="position:relative;display:inline-block;transform:rotate(3deg) translateY(-2px);color:#e5735c;">לתרגל<svg viewBox="0 0 120 16" preserveAspectRatio="none" aria-hidden="true" style="position:absolute;right:-4%;bottom:-8px;width:108%;height:12px;overflow:visible;"><path data-draw="500" data-dur="700" pathLength="1" d="M3 9 Q 18 2, 33 9 T 63 9 T 93 9 T 117 7" fill="none" stroke="#e6a534" stroke-width="4" stroke-linecap="round" stroke-dasharray="1"></path></svg></span><span style="display:inline-block;transform:rotate(-8deg) translateY(-6px);color:#e6a534;font-size:.8em;">!</span></h2>
           <p data-pop="100" style="margin:0;font-size:18px;color:#4a5478;">דפי עבודה בחינם לכיתות א׳–ט׳</p>
         </div>
         <div style="font-family:'Amatic SC','Amatic SC Fallback',cursive;font-size:26px;color:#2a7c7a;margin-bottom:8px;">יסודי</div>
-        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(max(190px,calc((100% - 28px) / 3)),1fr));gap:14px;margin-bottom:28px;">
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(max(190px,calc((100% - 28px) * 0.333)),1fr));gap:14px;margin-bottom:28px;">
           {elemGrades.map(g => (
             <a href={g.href} data-peek="elem" data-tl={g.l}  data-pop={g.delay} style="position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:18px 18px 16px;background:#fff;border:2px solid #22305a;border-radius:16px 6px 18px 8px / 8px 18px 6px 16px;color:#22305a;min-height:140px;transition:transform .2s,box-shadow .2s;" data-exact-hover="exact-hover-5">
               <span style="font-size:14px;color:#5a6588;">כיתה</span>
@@ -169,12 +169,12 @@ const midGrades = home.grades.slice(6).map((grade,i)=>({...grade,l:letters[i+6],
       <!-- LEARNING + WHATSAPP -->
       <section style="max-width:1200px;margin:0 auto;padding:72px 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:28px;">
         <div style="position:relative;background:#fff;border:2px solid #22305a;border-radius:22px 8px 26px 10px / 10px 26px 8px 22px;padding:32px;overflow:hidden;">
-          <div data-doodle="robot" dir="ltr" style="position:absolute;left:8px;bottom:-6px;width:150px;"><div style="position:relative;overflow:hidden;aspect-ratio:.75;"><button type="button" class="exact-doodle-btn" aria-label="הנפשת השרבוט"><img src="/design-exact/assets/doodles/notebook-doodles-v1.webp" alt="" width="600" height="400" loading="lazy" decoding="async" style="width:200%;height:auto;max-width:none;display:block;margin-left:-100%;cursor:pointer;"></button><span aria-hidden="true" style="position:absolute;left:96px;top:20px;width:54px;height:44px;background:#fff;"></span></div><span data-plane="1" aria-hidden="true" style="position:absolute;left:95px;top:25px;width:49px;height:33px;overflow:hidden;pointer-events:none;"><img src="/design-exact/assets/doodles/notebook-doodles-v1.webp" alt="" width="600" height="400" loading="lazy" decoding="async" style="position:absolute;left:-245.1px;top:-25.4px;width:300px;height:200px;max-width:none;"></span></div>
-          <h2 data-home-learning style="font-family:'Secular One','Secular One Fallback',sans-serif;font-weight:400;font-size:34px;margin:0 0 18px;">הלמידה שלי</h2>
-          <div style="display:flex;flex-direction:column;gap:12px;align-items:flex-start;position:relative;z-index:1;">
+          <div data-doodle="robot" dir="ltr" style="position:absolute;left:8px;bottom:-6px;width:150px;z-index:0;pointer-events:none;"><div style="position:relative;overflow:hidden;aspect-ratio:.75;pointer-events:auto;"><button type="button" class="exact-doodle-btn" aria-label="הנפשת השרבוט"><img src="/design-exact/assets/doodles/notebook-doodles-v1.webp" alt="" width="600" height="400" loading="lazy" decoding="async" style="width:200%;height:auto;max-width:none;display:block;margin-left:-100%;cursor:pointer;"></button><span aria-hidden="true" style="position:absolute;left:96px;top:20px;width:54px;height:44px;background:#fff;"></span></div><span data-plane="1" aria-hidden="true" style="position:absolute;left:95px;top:25px;width:49px;height:33px;overflow:hidden;pointer-events:none;"><img src="/design-exact/assets/doodles/notebook-doodles-v1.webp" alt="" width="600" height="400" loading="lazy" decoding="async" style="position:absolute;left:-245.1px;top:-25.4px;width:300px;height:200px;max-width:none;"></span></div>
+          <h2 data-home-learning style="position:relative;z-index:2;font-family:'Secular One','Secular One Fallback',sans-serif;font-weight:400;font-size:34px;margin:0 0 18px;">הלמידה שלי</h2>
+          <div class="exact-home-learning-copy" style="display:flex;flex-direction:column;gap:12px;align-items:flex-start;position:relative;z-index:2;">
             <a data-peek="google" href={home.learning.googleHref} style="display:flex;align-items:center;gap:10px;padding:12px 20px;background:#fff;border:2px solid #22305a;border-radius:999px;color:#22305a;font-weight:700;" data-exact-hover="exact-hover-10"><span style="width:22px;height:22px;border-radius:50%;background:conic-gradient(#e5735c 0 25%,#e6a534 0 50%,#2a7c7a 0 75%,#22305a 0);display:inline-block;"></span>התחברות עם Google</a>
             <a data-peek="learn" href={home.learning.learningHref} style="font-weight:700;color:#2a7c7a;text-decoration:underline;text-underline-offset:4px;" data-exact-hover="exact-hover-11">הלמידה שלי — מעקב עבודה אישי</a>
-            <p style="margin:6px 0 0;color:#4a5478;font-size:16px;line-height:1.6;max-width:30ch;">אפשר לסמן התקדמות גם בלי להתחבר<br>עם Google אפשר להמשיך גם ממכשיר אחר.</p>
+            <p style="margin:6px 0 0;color:#4a5478;font-size:16px;line-height:1.6;max-width:30ch;">אפשר לסמן התקדמות גם בלי להתחבר.<br>עם Google אפשר להמשיך גם ממכשיר אחר.</p>
           </div>
         </div>
         <div style="position:relative;background:#eaf4f3;border:2px solid #22305a;border-radius:8px 22px 10px 26px / 26px 10px 22px 8px;padding:32px;display:grid;grid-template-columns:1fr auto;gap:20px;align-items:start;overflow:hidden;">
@@ -198,6 +198,11 @@ const midGrades = home.grades.slice(6).map((grade,i)=>({...grade,l:letters[i+6],
      * zoom shrinks the fixed-px sprite/mask/plane together (a transform
      * would fight the idle WAAPI rotation); park it beside the title.
      */
+    @media (min-width: 561px) {
+      .exact-home-learning-copy {
+        padding-inline-end: 152px;
+      }
+    }
     @media (max-width: 560px) {
       [data-doodle='robot'] {
         zoom: 0.45;
@@ -206,6 +211,27 @@ const midGrades = home.grades.slice(6).map((grade,i)=>({...grade,l:letters[i+6],
         inset-block-end: auto !important; /* inline style: bottom:-6px */
       }
     }
+    [data-home-grades][data-grade-prompt-active='1'] a[data-tl] {
+      box-shadow: 0 0 0 3px #e6a534, 4px 4px 0 #22305a;
+    }
   </style>
+  <script is:inline>
+    (function () {
+      var cta = document.querySelector('[data-home-search-cta]');
+      var grades = document.getElementById('choose-grade') || document.querySelector('[data-home-grades]');
+      if (!cta || !grades) return;
+      cta.addEventListener('click', function (e) {
+        if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        e.preventDefault();
+        grades.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        grades.setAttribute('data-grade-prompt-active', '1');
+        var firstGrade = grades.querySelector('a[href^="/grade-"]');
+        if (firstGrade) firstGrade.focus({ preventScroll: true });
+        setTimeout(function () {
+          grades.removeAttribute('data-grade-prompt-active');
+        }, 2600);
+      });
+    })();
+  </script>
   <ExactHeroControls />
 </BaseLayout>

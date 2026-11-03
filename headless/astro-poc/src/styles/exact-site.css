@@ -356,3 +356,40 @@ html[data-nd-motion="off"] .exact-hero-teachers:active {
 /* Off uses the existing accessibility contract, not another animation engine. */
 html.nd-motion-off .exact-frame *,html.noam-a11y-motion .exact-frame * {scroll-behavior:auto!important;}
 @media(prefers-reduced-motion:reduce){.exact-frame *{scroll-behavior:auto!important;}}
+/* Safe horizontal gutter on desktop/laptop so bottom-right/left floating buttons never cover text */
+@media (min-width: 768px) and (max-width: 1360px) {
+  .exact-home > section,
+  .exact-home > [data-home-values] > div,
+  .exact-game-promo,
+  .exact-topic.topic-page,
+  .grade-hub.exact-grade,
+  .site-page.wrap,
+  .blog-archive.wrap,
+  .blog-post.wrap,
+  .exact-catalog,
+  .exact-footer > div {
+    padding-inline: 72px !important;
+    box-sizing: border-box;
+  }
+  .exact-footer {
+    padding-bottom: 64px !important;
+  }
+}
+@media (max-width: 767px) {
+  .exact-home > section,
+  .exact-home > [data-home-values] > div,
+  .exact-game-promo,
+  .exact-topic.topic-page,
+  .grade-hub.exact-grade,
+  .site-page.wrap,
+  .blog-archive.wrap,
+  .blog-post.wrap,
+  .exact-catalog,
+  .exact-footer > div {
+    padding-inline: 60px !important;
+    box-sizing: border-box;
+  }
+  .exact-footer {
+    padding-bottom: 72px !important;
+  }
+}

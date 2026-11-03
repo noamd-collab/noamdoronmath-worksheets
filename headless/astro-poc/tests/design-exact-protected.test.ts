@@ -71,7 +71,8 @@ const protectedFiles: Record<string, string> = {
   'src/lib/homePage.ts': '26a884245860716a5b6dd3aa6189c9d07fcd99e21dc50fca8cf70116a3ba67fb',
   'src/data/home-page.json': 'af14191d863d623cfb95e65f28ca258663d4b8be01a1ef07d520c8b1e47ff73b',
   // Head favicon/manifest/theme-color tags (b7eab08, PR #34) + noam-site-companion.js (20d0ad0f, PR #82).
-  'public/learning.html': 'e0ba9a8743a1422e5d3bfeafdee4a4a01e1736422a4cb3777e962078f1c61ffb',
+  // Noam, 2026-11-02: add site header/nav, footer, fonts and /noam-accessibility.js on learning.html.
+  'public/learning.html': 'd77630abdb1558576e2339d663a9143f7f022112fbe750d6aa73925b2581b50e',
   'public/noam-learning-config.js': '90228359e65a99300b7d5017ddc58edce650b0b1a403a13b40c22608330f4ca7',
   // Lazy Supabase: guest learning no longer downloads the SDK. Google sign-in
   // and an existing session still load it, then recreate the engine.
