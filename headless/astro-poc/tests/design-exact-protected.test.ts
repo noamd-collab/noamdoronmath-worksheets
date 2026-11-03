@@ -53,7 +53,8 @@ const protectedFiles: Record<string, string> = {
   // Batch 4 (2026-11-02): 92 grade 7-9 topics, 276 sheets, republished with final answers; the catalog points at their new PDFs.
   // Batch 5 (2026-11-03): 72 more grade 7-9 sheets republished with final answers; the catalog points at their new PDFs.
   // Batch 6 (2026-11-03): G8-T65 (3 sheets) republished with final answers; the catalog points at its new PDFs.
-  'src/data/catalog.v1.json': '963618b3a103c353f8ec35ab1b1a5741b08229f1dc1935ade8f94814b4a73ec9',
+  // 2026-11-03: four source-recovered grade 8 worksheets; question pages pixel-identical; final answers appended.
+  'src/data/catalog.v1.json': '7cd7ca8ecd1dadc8b1c98bada6214af7fb6ba24c6e111b36d2877caa878da1c2',
   'src/lib/catalog/loadCatalog.ts': '1a5e54a4c19c016046202f3e0b9bb95203e58fe983dab5a27e6f261abfbc9d95',
   // Viewer links forward the c2 sibling as pc2.
   'src/lib/worksheetLinks.ts': '06bfbaa4b9b778d171ca9d8802eed0ce3fb6c6f15d7d7bff3807dd1f80ce0770',

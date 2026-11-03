@@ -38,7 +38,7 @@ const bank=[
 const site=build.loadSite(path.join(__dirname,".."));
 
 test("E2 parts bind to their own PDF-only worksheets and never borrow native E data",()=>{
-  const expected={"G8-T45":"e4da722565a942e482c9e4dbf6ee41b5","G8-T51":"0b79f523d8ea4598a85d5320d6acd823"};
+  const expected={"G8-T45":"37e09211e4dd425cbcbf5fe78eb68080","G8-T51":"404058e8bee94abb9a2c7afc8035f316"};
   for(const [prefix,pdf] of Object.entries(expected)){
     const topic=site.find(topic=>topic.prefix===prefix),id=prefix+"-E2-Q01א";
     assert.equal(topic.levels.E2.source_pdf_hash,pdf);
