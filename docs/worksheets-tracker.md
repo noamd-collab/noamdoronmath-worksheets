@@ -1,3 +1,9 @@
+## 2026-11-03 — Ramzi phone send focus
+
+- A first tap on Send could blur the focused message field, move the phone composer and lose the click. The primary pointer-down now keeps textarea focus until the ordinary click; it does not submit or synthesize a click.
+- Desktop pointer behavior, keyboard/Enter activation and disabled controls retain their existing behavior. Prepared Supabase hints, Flash routing and reCAPTCHA are unchanged.
+- Regression tests cover a moving button after blur, one submission per click, pointer cancellation, non-primary/disabled/desktop behavior, keyboard composition and empty messages.
+
 # Worksheet tracker
 
 ## Selected final answers in teacher printing — 2026-11-03

@@ -312,12 +312,16 @@ describe('exact-design protected live-baseline boundaries', () => {
     // and no artificial answer delay. The head and other13 scripts are identical
     // to240f2363; canonical/image/attachment/deadline tests cover the new contract.
     // Prepared Supabase hints and the current bot SDK remain unchanged.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), 'e23849bd68271cdcd20085808b4781f29a68b3168ca5030ecda165b675b733f6');
+    // 3 November, phone verification: keep a focused composer from blurring on
+    // primary Send pointerdown so its layout cannot move before native click.
+    // Only main script 7 changes from c356ab7b; no submit on down or cancelled
+    // gestures. ramzi-send-focus covers both viewers and keyboard/desktop paths.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), '6489924e2cd03a6ff8eeb950ac6d920107441ca0cba6cf427108447ab480179d');
     const priorSdkScripts = releasedScripts.map(script => script.replace(
       './noam-bot-client.js?v=20261101-sdk-lifecycle',
       './noam-bot-client.js?v=20261025-execute-ready-guard',
     ));
-    assert.equal(sha256(JSON.stringify(priorSdkScripts)), '24af42d7318794cea9e76322e415f9789b0e35fcfe259ecf07d626e22498e29c');
+    assert.equal(sha256(JSON.stringify(priorSdkScripts)), '19820de4d7182081a007abe19da9d2e6c24c3827fba9de4042740653f491d89e');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {
