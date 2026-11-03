@@ -6,7 +6,7 @@ const vm=require("node:vm");
 const path=require("node:path");
 const html=fs.readFileSync(path.join(__dirname,"../worksheet-viewer-noam.html"),"utf8");
 const helpers=html.slice(html.indexOf("function noamGeometryContext(text){"),html.indexOf("function postJson(endpoint,payload){"));
-const local=html.slice(html.indexOf("function tryNoamLocalVisual(studentMessage){"),html.indexOf("function insertNoamMath(kind){"));
+const local=html.slice(html.indexOf("function noamParsedLocalVisual(exercise){"),html.indexOf("function insertNoamMath(kind){"));
 const drawing=html.slice(html.indexOf("function setNoamDiagramButtonLabel("),html.indexOf("function ensureNoamGlossaryPopover("));
 // 8a09802 (restore PR26 AI fix) made addTranscriptBubble, inside the drawing
 // slice above, render assistant text through noamStripMarkdownEmphasis, which is
@@ -16,19 +16,24 @@ const markdown=html.slice(html.indexOf("function noamStripMarkdownEmphasis(text)
 const plan={version:1,status:"ok",points:{A:[0,0],B:[4,0],C:[1,3]},
   segments:[["A","B"],["B","C"],["C","A"]],highlights:[{from:"A",to:"B",color:"blue",label:"AB"}],
   angles:[],equalGroups:[],rightAngles:[],evidence:[]};
-function el(name){return {name,children:[],attributes:{},textContent:"",handlers:{},
+function el(name){const node={name,children:[],attributes:{},textContent:"",handlers:{},dataset:{},style:{},
   appendChild(n){this.children.push(n);},setAttribute(k,v){this.attributes[k]=String(v);},
-  addEventListener(k,fn){this.handlers[k]=fn;}};}
+  addEventListener(k,fn){this.handlers[k]=fn;}};
+  node.classList={contains:token=>(node.className||"").split(" ").includes(token),add:token=>{node.className=((node.className||"")+" "+token).trim();}};
+  return node;}
 function deferred(){let resolve,reject;const promise=new Promise((a,b)=>{resolve=a;reject=b;});return {promise,resolve,reject};}
 function fixture(){
-  const exercise={id:"G8-T09-A-Q02א",text:"נתון משולש ABC."};
+  const exercise={id:"G8-T38-A-Q02א",text:"נתון משולש ABC."};
   const message={role:"assistant",text:"סמנו את הקטע AB."};
   const thread={hintIndex:2,history:[],messages:[{role:"user",text:"אפשר רמז 2?",kind:"רמז 2"},message]};
   const calls=[],statusCalls=[],notices=[],renders=[];
-  const context={manifest:{sourceSha256:"source-v1",exercises:[exercise]},pdf:"public-pdf-id",
+  const context={manifest:{prefix:"G8-T38",sourceSha256:"source-v1",exercises:[exercise]},pdf:"public-pdf-id",
     selectedExercise:exercise,threads:{[exercise.id]:thread},busy:false,noamDrafts:{},
     API:"https://api.test/_functions",g:8,lv:"a",LEVEL:{a:"A"},ttl:"משולשים",
     ownerKey:"owner-key-1234567890",STATUS_POLL_MS:0,ASYNC_JOB_MAX_WAIT:1000,
+    noamSourceCropRequested:()=>false,noamNativeDataUrl:()=>"",
+    noamSourceVisualIdentity:e=>e.id+":"+context.manifest.sourceSha256,
+    noamAppendSourceCropHelp(){},
     currentAttachments:()=>[],exerciseThread(id){return context.threads[id];},
     saveNoamState(){},renderNoamChat(){renders.push(context.selectedExercise.id);},announceNoam(s){notices.push(s);},
     exerciseLabel:()=>"שאלה 2",localVisualExerciseSource:e=>e.text,
@@ -110,7 +115,7 @@ test("a valid plan that cannot render never claims a drawing or enters the succe
 test("switching section while waiting cannot redraw or populate the new conversation",async()=>{
   const f=fixture(),gate=deferred();f.ctx.postJson=()=>gate.promise;
   const pending=f.ctx.requestNoamDiagram(f.exercise,f.thread,f.message);
-  const other={id:"G8-T09-A-Q03א",text:"שאלה אחרת"};
+  const other={id:"G8-T38-A-Q03א",text:"שאלה אחרת"};
   f.ctx.selectedExercise=other;f.ctx.threads[other.id]={messages:[],history:[]};
   const renders=f.renders.length,notices=f.notices.length;
   gate.resolve({ok:true,accepted:true,jobId:"job-1",status:"pending"});await pending;
@@ -134,8 +139,9 @@ function scrollFixture(figureHeight=180){
     querySelector:selector=>selector===".noam-geometry-svg"?svg:null,
     scrollIntoView:options=>scrolled.push({target:"figure",options})};
   const retry={scrollIntoView:options=>scrolled.push({target:"retry",options})};
+  const expansion={scrollIntoView:options=>scrolled.push({target:"expansion",options})};
   const row={isConnected:true,
-    querySelector:selector=>selector===".noam-geometry"?figure:retry,
+    querySelector:selector=>selector===".noam-geometry"?figure:selector===".noam-diagram-expand"?expansion:retry,
     scrollIntoView:options=>scrolled.push({target:"row",options})};
   const transcript={clientHeight:260,children:[{},row]};
   f.ctx.document.getElementById=id=>id==="noamTranscript"?transcript:null;
@@ -154,11 +160,11 @@ test("a completed diagram reveals its figure after layout instead of the long an
   ],"target the diagram and cancel the transcript's competing smooth scroll");
 });
 
-test("a figure taller than the visible transcript reveals the SVG, while a failure reveals retry",()=>{
+test("a figure taller than the visible transcript reveals expansion, while a failure reveals retry",()=>{
   const f=scrollFixture(500);
   f.ctx.noamDiagramRefresh(f.exercise,f.thread,f.message,true);
   f.frames.shift()();
-  assert.equal(f.scrolled[0].target,"svg");
+  assert.equal(f.scrolled[0].target,"expansion");
   f.message.diagramError="לא הצלחתי להכין את השרטוט כרגע.";
   f.ctx.noamDiagramRefresh(f.exercise,f.thread,f.message,true);
   f.frames.shift()();
@@ -313,4 +319,153 @@ test("typed retry after a failed drawing preserves the current hint and requests
 test("typed retry without a failed drawing remains a normal tutor question",()=>{
  const f=fixture();f.ctx.NoamLocalVisual.wantsDrawing=()=>false;f.ctx.NoamLocalVisual.wantsVisualSupport=()=>false;
  assert.equal(f.ctx.tryNoamLocalVisual("נסה שוב"),false);assert.equal(f.calls.length,0);
+});
+
+test("different hint messages for one question share the first pending drawing without copying its result",async()=>{
+  const f=fixture(),gate=deferred();let calls=0;
+  f.ctx.postJson=()=>{calls++;return gate.promise;};
+  const later={role:"assistant",text:"כעת התבוננו בזווית ABC."};
+  f.thread.messages.push({role:"user",text:"אפשר עוד רמז?"},later);
+  const first=f.ctx.requestNoamDiagram(f.exercise,f.thread,f.message);
+  const second=f.ctx.requestNoamDiagram(f.exercise,f.thread,later,{answer:later.text,studentMessage:"שרטוט אחר",drawCurrentStep:true});
+  assert.equal(second,first,"the question, not the hint text, owns the pending request");
+  await new Promise(resolve=>setImmediate(resolve));
+  assert.equal(calls,1);
+  gate.resolve({ok:true,accepted:true,jobId:"job-1",status:"pending"});
+  const visual=await first;
+  assert.equal(f.message.visual,visual);
+  assert.equal(later.visual,undefined,"sharing a promise must not append another drawing");
+  assert.equal(await f.ctx.requestNoamDiagram(f.exercise,f.thread,later),visual);
+  assert.equal(later.visual,undefined);
+  assert.equal(f.ctx.noamCanOfferDrawing(f.exercise,f.thread,later),false);
+  assert.equal(calls,1);
+});
+
+for(const type of ["source-crop","native-source-visual","geometry-guide","ai-diagram","labeled-triangle"]){
+  test(`a saved ${type} removes drawing actions for every answer and is reused without generation`,async()=>{
+    const f=fixture();
+    const visual={type,exerciseId:f.exercise.id};
+    f.message.visual=visual;
+    const rendered=()=>Object.assign(el("figure"),{className:"noam-geometry"});
+    f.ctx.noamRenderSourceCrop=rendered;
+    f.ctx.noamRenderSourceVisual=rendered;
+    f.ctx.noamRenderGeometryGuide=rendered;
+    f.ctx.noamRenderAiDiagram=rendered;
+    f.ctx.NoamLocalVisual.render=rendered;
+    const later={role:"assistant",text:"רמז נוסף על אותה שאלה."};
+    f.thread.messages.push(later);
+    for(const message of [f.message,later]){
+      assert.equal(f.ctx.noamCanOfferDrawing(f.exercise,f.thread,message),false);
+      const host=el("main");
+      f.ctx.addTranscriptBubble(host,"assistant",message.text,"",message.visual,message,f.thread);
+      const bubble=host.children[0].children[0];
+      assert.equal(bubble.children.some(node=>node.className==="noam-draw-action"),false);
+    }
+    assert.equal(await f.ctx.requestNoamDiagram(f.exercise,f.thread,later),visual);
+    assert.equal(later.visual,undefined);
+    assert.equal(f.calls.length,0);
+  });
+}
+
+test("saved duplicate drawings render only the first valid figure without hiding either answer",()=>{
+  const f=fixture();
+  f.ctx.noamRenderAiDiagram=()=>Object.assign(el("figure"),{className:"noam-geometry"});
+  f.message.visual={type:"ai-diagram",exerciseId:f.exercise.id};
+  const later={role:"assistant",text:"זהו הרמז הבא.",visual:{type:"ai-diagram",exerciseId:f.exercise.id}};
+  f.thread.messages.push(later);
+  const host=el("main");
+  for(const message of [f.message,later]){
+    f.ctx.addTranscriptBubble(host,"assistant",message.text,"",message.visual,message,f.thread);
+  }
+  const nodes=[];function visit(node){nodes.push(node);node.children.forEach(visit);}visit(host);
+  assert.equal(nodes.filter(node=>node.name==="figure").length,1);
+  assert.ok(nodes.some(node=>node.textContent===f.message.text));
+  assert.ok(nodes.some(node=>node.textContent===later.text));
+  assert.equal(nodes.filter(node=>node.className==="noam-draw-action").length,0);
+});
+
+test("typing another drawing request after success reveals the existing drawing without adding messages",async()=>{
+  const f=fixture();
+  await f.ctx.requestNoamDiagram(f.exercise,f.thread,f.message);
+  const messages=f.thread.messages.slice(),history=f.thread.history.slice();
+  assert.equal(f.ctx.tryNoamLocalVisual("צייר שוב את המשולש"),true);
+  await new Promise(resolve=>setImmediate(resolve));
+  assert.deepEqual(f.thread.messages,messages);
+  assert.deepEqual(f.thread.history,history);
+  assert.equal(f.calls.length,1);
+});
+
+for(const route of ["planner","native-source","source-crop"]){
+  test(`a saved drawing that rehydrates during ${route} completion keeps the only drawing slot`,async()=>{
+    const f=fixture(),gate=deferred();let restored=false;
+    const saved={type:"native-source-visual",exerciseId:f.exercise.id};
+    f.message.visual=saved;
+    f.ctx.noamRenderSourceVisual=()=>restored?Object.assign(el("figure"),{className:"noam-geometry"}):null;
+    const later={role:"assistant",text:"מכין המחשה לשלב שעליו שאלת.",diagramTyped:true};
+    f.thread.messages.push(later);
+    if(route==="planner"){
+      f.ctx.pollNoamDiagramJob=()=>gate.promise;
+    }else{
+      f.ctx.noamSourceVisualOptions=options=>({...options});
+      const from=route==="native-source"?"function noamRequestSourceFirst(":"function noamRequestSourceCrop(";
+      const to=route==="native-source"?"function noamAttachSourceHint(":"function noamAppendSourceCropHelp(";
+      vm.runInContext(html.slice(html.indexOf(from),html.indexOf(to)),f.ctx);
+      if(route==="native-source"){
+        f.ctx.NoamNativeVisual={};
+        f.ctx.noamNativeDataUrl=()=>"/noam-ai/native/G8-T38/a/noam-ai.json";
+        f.ctx.noamPrepareSourceVisual=()=>gate.promise;
+      }else{
+        f.ctx.noamSourceCropRequested=()=>true;
+        f.ctx.noamSourceCropIdentity=()=>"source-crop-current";
+        f.ctx.noamSourceCropExercise=exercise=>exercise;
+        f.ctx.noamLoadSourceCrop=()=>gate.promise;
+      }
+    }
+    const pending=f.ctx.requestNoamDiagram(f.exercise,f.thread,later,{answer:f.message.text,studentMessage:"אפשר רמז 2?"});
+    await new Promise(resolve=>setImmediate(resolve));
+    restored=true;
+    gate.resolve(route==="planner"?{ok:true,plan}:route==="native-source"?{type:"native-source-visual",exerciseId:f.exercise.id}:{dataUrl:"data:image/png;base64,c291cmNl"});
+    assert.equal(await pending,saved,"reuse the rehydrated original, not the superseded result");
+    assert.equal(f.thread.messages.filter(message=>message.visual).length,1);
+    assert.equal(later.visual,undefined);
+    assert.equal(later.diagramTyped,undefined);
+    assert.match(later.text,/כבר מוצג/);
+    assert.equal(f.ctx.noamDiagramRuntime().messages.size,0);
+    assert.equal(f.ctx.noamCanOfferDrawing(f.exercise,f.thread,later),false);
+  });
+}
+
+test("long conversations retain their first drawing within the message limit, including after reload",async()=>{
+  const f=fixture();
+  await f.ctx.requestNoamDiagram(f.exercise,f.thread,f.message);
+  for(let index=0;index<66;index++)f.thread.messages.push({role:index%2?"assistant":"user",text:`המשך השיחה ${index}`});
+  const latest=f.thread.messages.at(-1);
+  f.ctx.noamTrimQuestionMessages(f.exercise,f.thread);
+  assert.equal(f.thread.messages.length,60);
+  assert.equal(f.thread.messages[0],f.message,"trimming text must not restore permission to draw again");
+  assert.equal(f.thread.messages.at(-1),latest);
+  assert.equal(f.ctx.noamCanOfferDrawing(f.exercise,f.thread,latest),false);
+  f.thread.messages=JSON.parse(JSON.stringify(f.thread.messages));
+  f.ctx.noamDiagramRuntime.state=null;
+  assert.equal(f.ctx.noamCanOfferDrawing(f.exercise,f.thread,f.thread.messages.at(-1)),false);
+  await f.ctx.requestNoamDiagram(f.exercise,f.thread,f.thread.messages.at(-1));
+  assert.equal(f.calls.length,1,"reload after trimming still cannot request regeneration");
+  assert.equal(f.thread.messages.filter(message=>message.visual).length,1);
+});
+
+test("trimming a long conversation preserves the pending drawing owner until completion",async()=>{
+  const f=fixture(),gate=deferred();
+  f.ctx.pollNoamDiagramJob=()=>gate.promise;
+  const pending=f.ctx.requestNoamDiagram(f.exercise,f.thread,f.message);
+  await new Promise(resolve=>setImmediate(resolve));
+  for(let index=0;index<66;index++)f.thread.messages.push({role:"assistant",text:`רמז ${index}`});
+  f.ctx.noamTrimQuestionMessages(f.exercise,f.thread);
+  assert.equal(f.thread.messages.length,60);
+  assert.equal(f.thread.messages[0],f.message);
+  assert.equal(f.ctx.requestNoamDiagram(f.exercise,f.thread,f.thread.messages.at(-1)),pending);
+  gate.resolve({ok:true,plan});
+  await pending;
+  assert.equal(f.thread.messages.filter(message=>message.visual).length,1);
+  assert.equal(f.calls.length,1);
+  assert.equal(f.ctx.noamCanOfferDrawing(f.exercise,f.thread,f.thread.messages.at(-1)),false);
 });

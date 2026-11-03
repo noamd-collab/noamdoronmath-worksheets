@@ -146,6 +146,12 @@ Columns: grade, topic, levels present, author, reviewed, live, PR.
 - `noamd-collab/noam-agent-hub` was not readable (repository not found with this token). Nothing from that repo is in this table.
 - Topics named in the staging stub as pending (G7-T28, G7-T47, G7-T48, G8-T11, G8-T26, G8-T29, G8-T37, G8-T49, G8-T35, G9-T17, G9-T32) are filled only from the catalog and the PRs above. The stub's author and pending status were not copied.
 
+## Viewer drawing controls — 2026-11-03
+
+Branch `fix/single-question-drawing`: one validated drawing per question in the root and hosted viewers. Drawing controls disappear after a new or restored drawing, including source aids; repeated clicks and later hints reuse the existing drawing. Long conversations retain it. No regeneration control. Geometry and analytic geometry remain the only eligible topics.
+
+Validation: 54 focused regression tests passed, including all 155 prefixed middle-school catalog topics (61 allowed, 94 blocked), eight saved drawing representations, concurrent requests, source rehydration and transcript trimming. Browser/build/preview verification is recorded in the pull request. Worksheet PDFs, answers and source data are unchanged. Merge and publication await Noam's approval.
+
 | Grade | Topic | Levels | Author | Reviewed | Live | PR |
 |---|---|---|---|---|---|---|
 | כיתה א׳ | מונים בלי לפספס (id 1) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
