@@ -164,6 +164,8 @@ describe('homepage Harmony parity (HEADLESS-MIGRATION-31)', () => {
     for (const role of ['מורה?', 'מורה פרטי?', 'הורה?']) {
       assert.ok(index.includes(`exact-hero-teachers__role">${role}<`), `card names ${role}`);
     }
+    assert.ok(index.indexOf('exact-hero-teachers__who') < index.indexOf('exact-hero-teachers__note">במיוחד בשבילך!'),
+      'roles come first, then the handwritten note');
     assert.match(index, /בונים דף עבודה משלכם/);
     assert.match(index, /מדפיסים עם תשובות/);
     assert.match(index, /לבניית הדף שלי/);
@@ -175,7 +177,7 @@ describe('homepage Harmony parity (HEADLESS-MIGRATION-31)', () => {
     assert.match(css, /html\.nd-motion-off \.exact-hero-teachers/);
     assert.match(css, /html\.noam-a11y-motion \.exact-hero-teachers/);
     assert.match(css, /html\[data-nd-motion="off"\] \.exact-hero-teachers/);
-    assert.match(css, /html\.nd-motion-off \.exact-hero-teachers__ribbon/);
+    assert.match(css, /html\.nd-motion-off \.exact-hero-teachers__note/);
     assert.match(css, /prefers-reduced-motion: reduce/);
     assert.match(css, /html:not\(\.nd-motion-enabled\)/);
     assert.match(css, /@media \(max-width: 980px\)/);
