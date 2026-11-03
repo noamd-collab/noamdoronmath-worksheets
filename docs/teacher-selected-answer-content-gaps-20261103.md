@@ -26,6 +26,8 @@ These gaps predate the selected-answer print change. The printer shows a source-
 | 9 | [משולש שווה־שוקיים · b](https://www.noamdoronmath.co.il/teachers?grade=9&topic=4&level=b) | 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22 | missing-answer-section | `d11f2f0d17b3432a92571f3b2bb805d4` |
 | 9 | [משולש שווה־שוקיים · c](https://www.noamdoronmath.co.il/teachers?grade=9&topic=4&level=c) | 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25 | missing-answer-section | `ddfdb423c2dc4e9d925ee5be56971195` |
 
-Counts: 290 questions across 21 source PDFs: 270 in 13 PDFs with no answer section, 12 empty answer bodies in 5 elementary PDFs, and 8 verified placeholders in 3 other elementary PDFs.
+| 2 | [חוזרים להרכבות 10 ו־20 · a](https://www.noamdoronmath.co.il/teachers?grade=2&topic=1&level=a) | 1, 11 | incomplete-answer-placeholder | `93ebe0eb0303457bb305b41577498037` |
 
-A separate keyword scan left 371 unreviewed candidates in 99 elementary PDFs. They have not been classified as errors or blocked automatically. Completing this source-content review and authoring missing answers are separate from preserving the existing final answers during selected-question printing.
+Counts: 292 questions across 22 source PDFs: 270 in 13 PDFs with no answer section, 12 empty answer bodies in 5 elementary PDFs, and 10 verified placeholders in 4 other elementary PDFs.
+
+A separate keyword scan initially left 371 candidates in 99 elementary PDFs; two more were subsequently confirmed and are included above. They have not been classified as errors or blocked automatically. Completing this source-content review and authoring missing answers are separate from preserving the existing final answers during selected-question printing.

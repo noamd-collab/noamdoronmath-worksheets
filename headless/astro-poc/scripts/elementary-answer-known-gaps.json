@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "verification": "Original source PDFs visually inspected; missing rows contain only their blue question number. Placeholder rows were compared with actual question requests: G5 fa859 q15b and q16–20c require checks, G4 c165 q20 requires a general reason, G5 279ea q20 requires an explanation. No answers are fabricated.",
+  "verification": "Original source PDFs visually inspected; missing rows contain only their blue question number. Placeholder rows were compared with actual question requests: G5 fa859 q15b and q16–20c require checks, G4 c165 q20 requires a general reason, G5 279ea q20 requires an explanation. No answers are fabricated. Grade 2 93ebe q1 and q11 explicitly request a written check, but source answers contain only the numeric result followed by the word בדיקה.",
   "sources": {
     "24aebdcd8b344b14bd27b9c4cb441325": {
       "sourceSha256": "142f934de0bf733bfa9309e8ae6d3d2dcb5d752b9352ac7866acd2dec2dc6758",
@@ -118,6 +118,19 @@
       "questions": [
         {
           "q": 20,
+          "unavailableReason": "incomplete-answer-placeholder"
+        }
+      ]
+    },
+    "93ebe0eb0303457bb305b41577498037": {
+      "sourceSha256": "0ed8531874afa91fbe33517be63d84167b7537744d4d89750dce0d063caa96f4",
+      "questions": [
+        {
+          "q": 1,
+          "unavailableReason": "incomplete-answer-placeholder"
+        },
+        {
+          "q": 11,
           "unavailableReason": "incomplete-answer-placeholder"
         }
       ]
