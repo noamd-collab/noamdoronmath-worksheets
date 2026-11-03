@@ -163,15 +163,19 @@ it('source analysis fails safely when exact selected item or source identity no 
   assert.equal(await pending, cached);
 });
 
-it('an additional question preserves source enrichment and an explicit drawing request focuses the original source', async () => {
+it('an additional question sends the original image once without false enrichment and an explicit drawing request still focuses the source', async () => {
   const f = fixture(); f.thread.messages.length = 0; f.thread.hintIndex = 0;
-  const cached = { diagram_description: 'OCR original' }; let solveAnalysis: any;
+  const cached = { diagram_description: 'OCR original' }, requests: any[] = [];
+  const worksheetImage = 'data:image/png;base64,d29ya3NoZWV0';
   Object.assign(f.c, {
     busy: false, panelBody: f.c.document.body, noamDrafts: {}, MIN_WAIT: 0, API: '/model', g: 8, lv: 'a', LEVEL: { a: 'רמה א׳' }, ttl: 'פונקציה קווית',
     setNoamBusy: (busy: boolean) => { f.c.busy = busy; }, restoreNoamChatFocus() {}, exerciseLabel: () => 'שאלה 2א',
     noamDidacticGuide: () => null, noamDidacticPrompt: () => '', noamDidacticResponse: () => null,
-    getExerciseAnalysis: async () => cached, noamSolverMessage: (s: string) => s,
-    postJson: async (_url: string, payload: any) => { solveAnalysis = payload.imageAnalysis; return { ok: true, answer: opts.answer }; },
+    getExerciseAnalysis: async () => { throw Error('direct questions must not call the analyzer'); },
+    cropExerciseImage: async (exercise: any) => { assert.equal(exercise, f.exercise); return worksheetImage; },
+    noamEnrichSourceAnalysis: () => { throw Error('the image has not been analyzed and cannot gain source provenance'); },
+    noamSolverMessage: (s: string) => s,
+    postJson: async (url: string, payload: any) => { requests.push({url, payload}); return { ok: true, answer: opts.answer }; },
     noamGuardGeometryResult: (r: any) => r, noamGuardSignedAddResult: (r: any) => r,
     noamClarifySignedAddLanguage: (text: string) => text, noamResponseVisual: () => null,
     noamVisualAnswer: (_student: string, answer: string) => answer, setTimeout: (callback: any, ms: number) => { if (ms < 25000) callback(); return 0; }
@@ -191,21 +195,30 @@ it('an additional question preserves source enrichment and an explicit drawing r
   assert.equal(delivered.visual.presentation, 'source-focus');
   assert.equal(delivered.visual.options.studentMessage, 'סמן את הנקודה (0,-9) ואת ציר y');
   assert.equal(f.fallback.length, 0, 'the explicit source drawing needs no protected generation');
-  assert.match(solveAnalysis.diagram_description, /הקשר חזותי מאומת/);
+  assert.equal(requests.length, 1); assert.equal(requests[0].url, '/model/noamImageSolve');
+  assert.equal(requests[0].payload.imageDataUrl, worksheetImage);
+  assert.equal(requests[0].payload.hasStudentAttachments, false);
+  assert.equal(requests[0].payload.selectedPart, f.exercise.part);
+  assert.deepEqual(JSON.parse(JSON.stringify(requests[0].payload.imageAnalysis)), {});
   assert.equal(cached.diagram_description, 'OCR original');
 });
 
 it('student attachment solve skips worksheet source enrichment and automatic source illustration', async () => {
   const f = fixture(); f.thread.messages.length = 0; f.thread.hintIndex = 0;
-  const attached = { diagram_description: 'student attachment' }; let solveAnalysis: any;
+  const attached = { diagram_description: 'student attachment' }, requests: any[] = [];
+  const photo = { name: 'student-photo' }, composite = 'data:image/png;base64,Y29tcG9zaXRl';
+  let compositeCalls = 0;
   Object.assign(f.c, {
     busy: false, panelBody: f.c.document.body, noamDrafts: {}, MIN_WAIT: 0, API: '/model', g: 8, lv: 'a', LEVEL: { a: 'רמה א׳' }, ttl: 'פונקציה קווית',
     setNoamBusy: (busy: boolean) => { f.c.busy = busy; }, restoreNoamChatFocus() {}, exerciseLabel: () => 'שאלה 2א',
-    currentAttachments: () => [{ name: 'student-photo' }],
+    currentAttachments: () => [photo],
+    exerciseImageWithAttachments: async (exercise: any, snapshot: any[]) => {
+      compositeCalls++; assert.equal(exercise, f.exercise); assert.equal(snapshot.length, 1); assert.equal(snapshot[0], photo); return composite;
+    },
     noamEnrichSourceAnalysis: () => { throw Error('must not enrich student attachments'); },
     noamDidacticGuide: () => null, noamDidacticPrompt: () => '', noamDidacticResponse: () => null,
-    getExerciseAnalysis: async () => attached, noamSolverMessage: (s: string) => s,
-    postJson: async (_url: string, payload: any) => { solveAnalysis = payload.imageAnalysis; return { ok: true, answer: opts.answer }; },
+    getExerciseAnalysis: async () => { throw Error('student photos must not enter the old analyzer'); }, noamSolverMessage: (s: string) => s,
+    postJson: async (url: string, payload: any) => { requests.push({url, payload}); return { ok: true, answer: opts.answer }; },
     noamGuardGeometryResult: (r: any) => r, noamGuardSignedAddResult: (r: any) => r,
     noamClarifySignedAddLanguage: (text: string) => text, noamResponseVisual: () => null,
     noamVisualAnswer: (_student: string, answer: string) => answer, setTimeout: (callback: any, ms: number) => { if (ms < 25000) callback(); return 0; }
@@ -213,7 +226,10 @@ it('student attachment solve skips worksheet source enrichment and automatic sou
   runInNewContext(fn('askNoam'), f.c);
   f.c.askNoam('free_question', 'אפשר לבדוק איך השתמשתי בנתונים שבתמונה שצירפתי?');
   for (let i = 0; i < 60; i++) await Promise.resolve();
-  assert.equal(solveAnalysis, attached); assert.equal(f.calls.length, 0);
+  assert.equal(requests.length, 1); assert.equal(requests[0].url, '/model/noamImageSolve');
+  assert.equal(requests[0].payload.imageDataUrl, composite); assert.equal(requests[0].payload.hasStudentAttachments, true);
+  assert.deepEqual(JSON.parse(JSON.stringify(requests[0].payload.imageAnalysis)), {});
+  assert.equal(compositeCalls, 1); assert.equal(f.calls.length, 0); assert.equal(attached.diagram_description, 'student attachment');
   assert.equal(f.thread.messages[1].text, opts.answer); assert.equal(f.thread.messages[1].visual, null);
 });
 
