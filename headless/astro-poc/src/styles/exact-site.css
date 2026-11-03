@@ -236,23 +236,53 @@ html.noam-a11y-motion .exact-home h1[data-lcp] {
   transform-origin: center;
 }
 .exact-hero-teachers__star { display: block; flex: none; width: 18px; height: 18px; }
-.exact-hero-teachers__mark { display: block; width: 46px; height: 46px; }
-.exact-hero-teachers__kicker {
-  font: 700 14px/1.35 Heebo, 'Heebo Fallback', sans-serif;
-  color: #1f6462;
-}
-.exact-hero-teachers__lead {
+/* Each visitor finds their own role in big type first. */
+.exact-hero-teachers__who {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 8px;
   font-family: 'Secular One', 'Secular One Fallback', sans-serif;
   font-weight: 400;
-  font-size: 26px;
-  line-height: 1.15;
+  font-size: 25px;
+  line-height: 1.12;
   color: #22305a;
-  text-wrap: balance;
+}
+.exact-hero-teachers__role { white-space: nowrap; }
+.exact-hero-teachers__role:nth-child(2) { color: #1f6462; }
+.exact-hero-teachers__role:nth-child(3) { color: #b8432f; }
+.exact-hero-teachers__lead {
+  font: 800 17px/1.3 Heebo, 'Heebo Fallback', sans-serif;
+  color: #22305a;
+  box-shadow: inset 0 -7px 0 #fdf1d8;
+}
+.exact-hero-teachers__perks {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-block-start: -2px;
+}
+.exact-hero-teachers__perk {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font: 600 14px/1.35 Heebo, 'Heebo Fallback', sans-serif;
+  color: #3d4870;
+}
+.exact-hero-teachers__perk::before {
+  content: '';
+  flex: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #22305a;
+  border-radius: 4px 3px 5px 3px;
+  background: #e6a534 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.4 6.6 11.3 12.6 4.6' fill='none' stroke='%2322305a' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 14px no-repeat;
+  box-sizing: border-box;
 }
 .exact-hero-teachers__cta {
   display: inline-flex;
   align-items: center;
-  margin-block-start: 2px;
+  gap: 8px;
+  margin-block-start: 4px;
   padding: 8px 16px;
   background: #22305a;
   color: #fbfaf5;
