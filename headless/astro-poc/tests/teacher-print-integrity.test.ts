@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import { parseHTML } from 'linkedom';
-import { buildTeacherReview, renderTeacherReview } from '../public/teachers/teacher-review-summary.js';
+import { buildTeacherReview, renderTeacherPageCount, renderTeacherReview } from '../public/teachers/teacher-review-summary.js';
 import { SECTION_KINDS, sectionKind } from '../public/teachers/teacher-page-sections.js';
 
 const printer = readFileSync(new URL('../public/teachers/teacher-factoring-print.js', import.meta.url), 'utf8');
@@ -66,9 +66,9 @@ function printApp(options: PrintOptions = {}) {
     <div id="dialog-plan"></div><div id="print-area"><canvas data-old="1"></canvas></div>
     <textarea id="teacher-ai-note"></textarea><textarea id="teacher-note"></textarea><button id="prepare"></button><button id="prepare-short"></button>
     <p id="prepare-hint"></p><div id="wizard-preview"></div><h2 id="print-title"></h2><p id="print-lead"></p><button id="print">הדפסה</button><dialog id="print-dialog"></dialog>
-    ${options.review ? '<section id="wizard-review" hidden><div id="wizard-review-content"></div></section>' : ''}
+    ${options.review ? '<section id="wizard-review" hidden><div id="wizard-review-content"></div><p id="wizard-page-count" hidden></p></section>' : '<p id="wizard-page-count" hidden></p>'}
   </body></html>`);
-  return new Function('document', 'options', 'buildTeacherReview', 'renderTeacherReview', 'SECTION_KINDS', 'sectionKind', `
+  return new Function('document', 'options', 'buildTeacherReview', 'renderTeacherReview', 'renderTeacherPageCount', 'SECTION_KINDS', 'sectionKind', `
     const $ = id => document.getElementById(id);
     const state = { grade: '9', topic: '2', level: 'a', selected: ['ex:source:2'], blocks: [],
       sectionKind: 'review', scenario: 'first', style: 'first', pickMode: 'manual', ...options.selection?.state };
@@ -110,7 +110,7 @@ function printApp(options: PrintOptions = {}) {
     const paintAllShort = async (root, chosen, blocks) => {
       printInputs.push({ chosen, blocks, planText: root.parentElement?.textContent || '' });
       await awaitPrintResources();
-      root.innerHTML = '<figure class="crop-sheet"><canvas></canvas></figure><figure class="crop-sheet" data-answers="1"><canvas></canvas></figure>';
+      root.innerHTML = '<figure class="crop-sheet" data-answers="0"><canvas></canvas></figure><figure class="crop-sheet" data-answers="1"><canvas></canvas></figure>';
     };
     const notices = [];
     const announce = message => notices.push(message);
@@ -125,7 +125,7 @@ function printApp(options: PrintOptions = {}) {
     return { document, state, notices, update: updatePrint, prepare, report: reportPrintError, invalidate: clearPreparedPrint, applyScenario,
       opener: () => printOpener, opened: () => opened, groups: () => assertGroups, printInputs,
       mode: value => { printMode = value; } };
-  `)(document, options, buildTeacherReview, renderTeacherReview, SECTION_KINDS, sectionKind);
+  `)(document, options, buildTeacherReview, renderTeacherReview, renderTeacherPageCount, SECTION_KINDS, sectionKind);
 }
 
 test("prepare('marked') appends selected final answers after the source pages in the shared worksheet", async () => {
@@ -157,6 +157,11 @@ for (const mode of ['marked', 'short']) {
     assert.equal(review.querySelector('.teacher-review-note').textContent, studentInstructions);
     assert.equal(printArea.querySelector('.teacher-print-note p').textContent, studentInstructions);
     assert.ok(printArea.querySelector('[data-answers="1"]'), 'Instructions stay in the one worksheet with final answers');
+    const pageCount = app.document.getElementById('wizard-page-count');
+    const expectedCount = `${mode === 'marked' ? 'עמוד מקור אחד' : 'עמוד שאלות אחד'} + עמוד תשובות אחד — 2 עמודים בסך הכול`;
+    assert.equal(pageCount.hidden, false);
+    assert.equal(pageCount.textContent, expectedCount, 'The attached instructions occupy the existing last page');
+    assert.equal(printArea.querySelector('#wizard-page-count'), null, 'The interface page count is not copied into the worksheet');
     for (const id of ['dialog-plan', 'print-area', 'wizard-review']) {
       const surface = app.document.getElementById(id);
       assert.ok(surface.textContent.includes(studentInstructions), `${id}: keep the full printed text`);
@@ -167,6 +172,7 @@ for (const mode of ['marked', 'short']) {
     app.document.getElementById('teacher-note').value = '';
     assert.equal(await app.update(), true);
     assert.equal(printArea.querySelector('.teacher-print-note'), null, 'Empty student instructions never fall back to AI guidance');
+    assert.equal(pageCount.textContent, expectedCount, 'Removing the attached instructions does not remove or add a page');
     assert.equal(review.querySelector('.teacher-review-note').textContent, 'לא נוספו הוראות לתלמיד');
     for (const id of ['dialog-plan', 'print-area', 'wizard-review']) {
       assert.equal(app.document.getElementById(id).textContent.includes(privateGuidance), false);
@@ -184,6 +190,8 @@ test('failed answer preparation clears stale printable canvases and reports the 
   assert.equal(feedback.getAttribute('role'), 'alert');
   assert.match(feedback.textContent, /חסרות תשובות סופיות/);
   assert.deepEqual(app.notices, [], 'Persistent error must not be repeated in the transient toast');
+  assert.equal(app.document.getElementById('wizard-page-count').hidden, true);
+  assert.equal(app.document.getElementById('wizard-page-count').textContent, '');
 });
 
 test('successful retry clears the persistent print error without requiring a selection edit', async () => {
@@ -208,8 +216,13 @@ for (const errorTarget of ['dialog-plan', 'wizard-preview']) {
   test(`successful retry restores ${errorTarget} without erasing the committed worksheet`, async () => {
     const app = printApp();
     app.state.wizard = 'result';
+    assert.equal(await app.update(), true);
+    const pageCount = app.document.getElementById('wizard-page-count');
+    assert.equal(pageCount.hidden, false);
     app.document.getElementById('print-dialog').open = errorTarget === 'dialog-plan';
     app.report('ההדפסה נכשלה');
+    assert.equal(pageCount.hidden, true, 'A reported print error clears the prior successful count');
+    assert.equal(pageCount.textContent, '');
     const feedback = app.document.getElementById(errorTarget);
     assert.equal(feedback.getAttribute('role'), 'alert');
     assert.equal(await app.update(), true);
@@ -219,8 +232,36 @@ for (const errorTarget of ['dialog-plan', 'wizard-preview']) {
     assert.equal(feedback.querySelectorAll('canvas').length, 2);
     assert.equal(app.document.getElementById('print-area').querySelectorAll('canvas').length, 2);
     assert.ok(app.document.getElementById('print-area').querySelector('[data-answers="1"]'));
+    assert.equal(pageCount.hidden, false);
+    assert.equal(pageCount.textContent, 'עמוד מקור אחד + עמוד תשובות אחד — 2 עמודים בסך הכול');
   });
 }
+
+test('reloading a prepared worksheet removes the old page count before resource work and keeps it cleared on failure', async () => {
+  const options: PrintOptions = { review: true };
+  const app = printApp(options);
+  app.state.wizard = 'result';
+  app.mode('short');
+  assert.equal(await app.update(), true);
+  const count = app.document.getElementById('wizard-page-count');
+  assert.equal(count.hidden, false);
+  let finish!: () => void;
+  options.wait = new Promise<void>(resolve => { finish = resolve; });
+  options.failure = true;
+  const pending = app.update();
+  assert.equal(count.hidden, true, 'An earlier count must disappear synchronously when preparation starts');
+  assert.equal(count.textContent, '');
+  await Promise.resolve();
+  assert.equal(app.document.getElementById('wizard-review').hidden, false, 'Choice details may be shown before PDF readiness');
+  finish();
+  await assert.rejects(pending, { code: 'MISSING_ANSWERS' });
+  assert.equal(count.hidden, true);
+  assert.equal(count.textContent, '');
+  options.wait = undefined;
+  options.failure = false;
+  assert.equal(await app.update(), true);
+  assert.equal(count.textContent, 'עמוד שאלות אחד + עמוד תשובות אחד — 2 עמודים בסך הכול');
+});
 
 test('changing selection while rendering prevents stale canvases from becoming printable', async () => {
   let finish!: () => void;
@@ -232,6 +273,8 @@ test('changing selection while rendering prevents stale canvases from becoming p
   finish();
   assert.equal(await pending, false);
   assert.equal(app.document.getElementById('print-area').querySelector('canvas'), null);
+  assert.equal(app.document.getElementById('wizard-page-count').hidden, true);
+  assert.equal(app.document.getElementById('wizard-page-count').textContent, '');
 });
 
 test('an obsolete render failure cannot clear a newer completed worksheet', async () => {
@@ -244,11 +287,16 @@ test('an obsolete render failure cannot clear a newer completed worksheet', asyn
   await Promise.resolve();
   options.wait = undefined;
   assert.equal(await app.update(), true);
+  const count = app.document.getElementById('wizard-page-count');
+  const currentCount = count.textContent;
+  assert.equal(count.hidden, false);
   options.failure = true;
   finish();
   assert.equal(await old, false);
   assert.equal(app.document.getElementById('print-area').querySelectorAll('canvas').length, 2);
   assert.ok(app.document.getElementById('print-area').querySelector('[data-answers="1"]'));
+  assert.equal(count.hidden, false, 'An obsolete failure must not clear a newer successful count');
+  assert.equal(count.textContent, currentCount);
 });
 
 test('marked requests converted to compact output retain the actual opening button for focus return', async () => {
@@ -256,6 +304,8 @@ test('marked requests converted to compact output retain the actual opening butt
   await app.prepare('marked');
   assert.equal(app.opened(), 1);
   assert.equal(app.opener(), app.document.getElementById('prepare'));
+  assert.equal(app.document.getElementById('wizard-page-count').textContent,
+    'עמוד שאלות אחד + עמוד תשובות אחד — 2 עמודים בסך הכול', 'The count follows the prepared compact output, not the requested marked mode');
 });
 
 function reviewSelection() {
@@ -298,6 +348,8 @@ test('review and printing consume the same scoped saved/current selection and fu
   const panel = app.document.getElementById('wizard-review');
   const content = app.document.getElementById('wizard-review-content');
   assert.equal(panel.hidden, false, 'The choice summary is available while PDFs are still loading');
+  const pageCount = app.document.getElementById('wizard-page-count');
+  assert.equal(pageCount.hidden, true, 'Saved/current question counts do not predict page counts before packing completes');
   assert.equal(app.document.getElementById('print-area').querySelector('canvas'), null);
   const input = app.printInputs[0];
   assert.deepEqual(input.chosen.map((question: any) => `${question.source.pdfId}:${question.id}`),
@@ -317,7 +369,24 @@ test('review and printing consume the same scoped saved/current selection and fu
   finish();
   assert.equal(await pending, true);
   assert.equal(panel.hidden, false);
+  assert.equal(pageCount.textContent, 'עמוד שאלות אחד + עמוד תשובות אחד — 2 עמודים בסך הכול');
   assert.equal(app.document.getElementById('print-area').querySelector('.teacher-review-facts'), null);
+});
+
+test('invalidating a prepared document can retain its choice review while clearing the successful page count', async () => {
+  const app = printApp({ review: true });
+  app.state.wizard = 'result';
+  app.mode('short');
+  assert.equal(await app.update(), true);
+  const panel = app.document.getElementById('wizard-review');
+  const count = app.document.getElementById('wizard-page-count');
+  assert.equal(panel.hidden, false);
+  assert.equal(count.hidden, false);
+  app.invalidate(true);
+  assert.equal(panel.hidden, false);
+  assert.equal(count.hidden, true);
+  assert.equal(count.textContent, '');
+  assert.equal(app.document.getElementById('print-area').querySelector('canvas'), null);
 });
 
 test('missing answers retain the resolved review while preventing worksheet output', async () => {
@@ -387,11 +456,15 @@ test('empty or unavailable selections hide an earlier review instead of presenti
     app.mode('short');
     assert.equal(await app.update(), true);
     const panel = app.document.getElementById('wizard-review');
+    const count = app.document.getElementById('wizard-page-count');
     assert.equal(panel.hidden, false);
+    assert.equal(count.hidden, false);
     if (unavailable) app.state.topic = 'missing';
     else app.state.selected = [];
     assert.equal(await app.update(), false);
     assert.equal(panel.hidden, true);
+    assert.equal(count.hidden, true);
+    assert.equal(count.textContent, '');
     assert.equal(app.document.getElementById('print-area').querySelector('canvas'), null);
   }
 });
