@@ -69,16 +69,20 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
  });
  it(name+': additional question sends the canonical source analysis in one existing solve request and skips it for student attachments',async()=>{
   for(const attachment of [false,true]){
-   const f=fixture(v),ocr=contradictory(),requests:any[]=[];let analysisCalls=0;if(attachment)f.attachments.push({name:'student.png'});
+   const f=fixture(v),ocr=contradictory(),requests:any[]=[];let analysisCalls=0,compositeCalls=0;const photo={name:'student.png'};if(attachment)f.attachments.push(photo);
    Object.assign(f.c,{busy:false,panelBody:f.c.document.body,noamDrafts:{},MIN_WAIT:0,API:'/model',g:7,lv:'a',LEVEL:{a:'רמה א׳'},ttl:'תבניות',
     setNoamBusy:(b:boolean)=>{f.c.busy=b;},restoreNoamChatFocus(){},exerciseLabel:()=> 'שאלה21ד',noamDidacticGuide:()=>null,noamDidacticPrompt:()=>'',noamDidacticResponse:()=>null,
+    exerciseImageWithAttachments:async(ex:any,snapshot:any[])=>{compositeCalls++;assert.equal(ex,f.exercise);assert.equal(snapshot.length,1);assert.equal(snapshot[0],photo);return 'data:image/png;base64,QUJD';},
     getExerciseAnalysis:async()=>{analysisCalls++;return ocr;},postJson:async(url:string,payload:any)=>{requests.push({url,payload});return {ok:true,answer:'בדקו את השורות והעמודות.'};},
     noamGuardGeometryResult:(r:any)=>r,noamGuardSignedAddResult:(r:any)=>r,noamClarifySignedAddLanguage:(s:string)=>s,noamResponseVisual:()=>null,noamVisualAnswer:(_:string,s:string)=>s,noamAttachSourceHint(){},setTimeout:(cb:any,ms:number)=>{if(ms<25000)cb();return 0;}});
    f.c.askNoam('free_question','אפשר להסביר איך משתמשים בנתונים המודפסים בסעיף הזה?');await settled();assert.equal(requests.length,1);assert.equal(requests[0].url,'/model/noamImageSolve');assert.equal(requests[0].payload.exerciseId,f.exercise.id);
    const sent=requests[0].payload.imageAnalysis,text=JSON.stringify(sent);
    assert.equal(requests[0].payload.studentMessage.includes('ניתוח השאלה נבנה מהטקסט המודפס ומנתוני המקור המאומתים'),!attachment);
    assert.equal(requests[0].payload.studentMessage.includes('העדף את נתוני המקור המאומתים'),false);
-   assert.equal(sent.content_type==='native_source_canonical',!attachment);assert.equal(analysisCalls,attachment?1:0);
+   assert.equal(sent.content_type==='native_source_canonical',!attachment);assert.equal(analysisCalls,0);assert.equal(compositeCalls,attachment?1:0);
+   assert.equal(requests[0].payload.hasStudentAttachments,attachment);
+   assert.equal(requests[0].payload.imageDataUrl,attachment?'data:image/png;base64,QUJD':undefined);
+   if(attachment){assert.deepEqual(clone(sent),{});assert.equal(f.c.noamSourcePriorityInstruction(sent,f.exercise),'');}
    if(!attachment){assert.doesNotMatch(text,/OCR|16|25|n²/);assert.match(sent.diagram_description,/לוח עם הכיתוב "שלב 2": 3 שורות, 6 נקודות בכל שורה/);}
    assert.equal(f.calls.length>0,!attachment);assert.equal(ocr.diagram_description,'OCR:9,16,25');
   }
