@@ -74,6 +74,13 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
   const f=setup(source);f.c.window.NoamCuratedHints={prefetch:()=>{throw new Error('freeform never requests a standard hint');}};f.photos.push({name:'work.png'});
   f.c.askNoam('free_question','האם הצעד שלי נכון?');await finish(f.c);assert.equal(f.counts.analysis,1);assert.equal(f.calls.length,1);assert.equal(f.calls[0].payload.helpKind,'free_question');assert.equal(f.calls[0].payload.hasStudentAttachments,true);assert.equal(f.calls[0].payload.sourceHintOnly,undefined);assert.equal(f.photos.length,0);assert.equal(f.thread.hintIndex,0);
  });
+ it(label+': a completed additional answer is displayed without an artificial minimum wait',async()=>{
+  const f=setup(source),waits:number[]=[];let timers=0;f.c.MIN_WAIT=999999;
+  f.c.setTimeout=(callback:any,ms:number)=>{if(timers++===0)return 0;waits.push(ms);callback();return 0;};
+  f.c.askNoam('free_question','האם הצעד שלי נכון?');await drain();
+  assert.equal(f.c.busy,false);assert.equal(f.thread.messages.at(-1).text,'רמז רגיל');
+  assert.deepEqual(waits,[0]);assert.equal(f.calls.length,1);
+ });
  it(label+': a successful catalog miss offers an additional question without retrying or sending any request',async()=>{
   const f=setup(source);let invalidated=0,focused=0;
   f.c.window.NoamCuratedHints={prefetch:async()=>0,get:()=>null,status:()=> 'missing',invalidate:()=>invalidated++};

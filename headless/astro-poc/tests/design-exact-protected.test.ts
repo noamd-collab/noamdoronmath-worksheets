@@ -307,12 +307,17 @@ describe('exact-design protected live-baseline boundaries', () => {
     // approved SDK lifecycle fix. Reversing that query restores the exact
     // 41ad576e released scripts; the separate companion URL is also cache-busted.
     // PR333 hints, content and presentation stay intact.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), 'c21a58e5170c4eab936a62587c71dac4d346c7699306efd9fc24667e83489217');
+    // 3 November, Noam-authorized additional-question latency repair: the main
+    // script uses one protected image solve, narrowly verified substitution text,
+    // and no artificial answer delay. The head and other13 scripts are identical
+    // to240f2363; canonical/image/attachment/deadline tests cover the new contract.
+    // Prepared Supabase hints and the current bot SDK remain unchanged.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), 'e23849bd68271cdcd20085808b4781f29a68b3168ca5030ecda165b675b733f6');
     const priorSdkScripts = releasedScripts.map(script => script.replace(
       './noam-bot-client.js?v=20261101-sdk-lifecycle',
       './noam-bot-client.js?v=20261025-execute-ready-guard',
     ));
-    assert.equal(sha256(JSON.stringify(priorSdkScripts)), '9266607c351513311692f09b06c790f7b310fb176945debf7e21ca8531f716c0');
+    assert.equal(sha256(JSON.stringify(priorSdkScripts)), '24af42d7318794cea9e76322e415f9789b0e35fcfe259ecf07d626e22498e29c');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {
