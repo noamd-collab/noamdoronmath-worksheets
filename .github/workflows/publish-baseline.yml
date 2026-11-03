@@ -5,9 +5,9 @@ name: publish-baseline
 # A push of this file to main also releases once, because the token that
 # merges pull requests cannot call the dispatch API (Actions: write).
 # Release script on baseline installs @wix/cli before login (see #275).
-# Noam-approved batch 6: PR #369 republishes G8-T65 (3 sheets)
-# with their final answers; Ramzi hints follow through the original PDF ids.
-# Standard hints use the bank; Flash is for additional questions, without Max.
+# Final-answer completion workflow requested by Noam: integration PR #372.
+# Four recovered grade 8 sources: 56 unchanged question pages and 325 final answers.
+# Direct Wix PDF uploads verified byte-identical. Publish the reviewed baseline SHA.
 
 on:
   workflow_dispatch:
@@ -52,4 +52,4 @@ jobs:
             exit 1
           fi
           git fetch origin headless/astro-poc-baseline
-          bash tools/release/release.sh "a7fcc18cce9823022595ca4a8f9da6cf915110eb"
+          bash tools/release/release.sh "95994999bd3915355b01385bcc5f3c230dfb2bd2"
