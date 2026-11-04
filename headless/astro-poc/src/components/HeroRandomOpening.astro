@@ -1,14 +1,18 @@
 ---
-/* Homepage hero (Noam to Copilot, 4.11.2026): the hero must not always open on
-   the triangle. ExactHeroControls.astro and heroRotation.ts stay unchanged:
+/* Homepage hero (Noam to Copilot, 4.11.2026): open on a random animation from
+   the WHOLE site, not only the nine HERO_ROTATION films, and keep playing them
+   in a random order. ExactHeroControls.astro and heroRotation.ts stay unchanged:
    1. Before the controls boot, the rotation JSON ([data-hero-rotation]) is
-      shuffled, so the films after the first play in a random order each visit.
+      replaced by a shuffled copy of HERO_SITE_POOL (every grade-hub loop plus
+      the hero films), so the clock and the shuffle button use the whole site.
    2. Once the controls are ready, the existing shuffle button is pressed once,
-      so the opening film is random. The triangle keeps the same 1/n chance as
-      any other film.
+      so the opening animation is random. The triangle has the same 1/n chance
+      as any other loop.
    The server-rendered triangle stays for no-JS and SEO. With JS it is hidden
-   until the random film is mounted; a 2.5 s safety net always reveals it. */
+   until the random loop is mounted; a 2.5 s safety net always reveals it. */
+import { HERO_SITE_POOL } from '../lib/heroSitePool';
 ---
+<script type="application/json" data-hero-site-pool set:html={JSON.stringify(HERO_SITE_POOL)} />
 <script is:inline>
   (function () {
     var hero = document.querySelector('[data-hero-loop]');
@@ -30,18 +34,27 @@
       return document.querySelector('[data-hero-rotation]');
     }
 
+    function readList(node) {
+      try {
+        var list = JSON.parse((node && node.textContent) || '[]');
+        return Array.isArray(list) ? list : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
     function shuffleRotation() {
       var node = rotationNode();
       if (!node || node.dataset.shuffled) return;
-      try {
-        var list = JSON.parse(node.textContent || '[]');
-        for (var i = list.length - 1; i > 0; i--) {
-          var j = Math.floor(Math.random() * (i + 1));
-          var t = list[i]; list[i] = list[j]; list[j] = t;
-        }
-        node.textContent = JSON.stringify(list);
-        node.dataset.shuffled = '1';
-      } catch (e) { /* Keep the server order. */ }
+      var list = readList(document.querySelector('[data-hero-site-pool]'));
+      if (list.length < 2) list = readList(node);
+      if (!list.length) return;
+      for (var i = list.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var t = list[i]; list[i] = list[j]; list[j] = t;
+      }
+      node.textContent = JSON.stringify(list);
+      node.dataset.shuffled = '1';
     }
 
     function openRandom() {
@@ -53,8 +66,7 @@
           reveal();
           return;
         }
-        var count = 0;
-        try { count = JSON.parse((rotationNode() || {}).textContent || '[]').length; } catch (e) { /* none */ }
+        var count = readList(rotationNode()).length;
         if (count < 2 || Math.random() < 1 / count) { reveal(); return; }
         button.click();
         var checks = 0;
