@@ -5,12 +5,11 @@ name: publish-baseline
 # A push of this file to main also releases once, because the token that
 # merges pull requests cannot call the dispatch API (Actions: write).
 # Release script on baseline installs @wix/cli before login (see #275).
-# Noam, 5.11.2026: put the homepage teachers card back (#385 + #387), SHA 0e192d1
-# = live 45f9038 + the three teachers-card files. The card was live on 4.11 (published
-# directly with wix release, not through this file), and the #388 and #393 releases,
-# built from older SHAs, removed it.
-# LIVE NOW: 0e192d1 on release/hero-random-opening. Build the next release on this SHA,
-# or the teachers card is lost again. #380 + #389 are still not live.
+# Noam approved teacher answer completion and editable RTL Word publication.
+# 16a15cb8 includes live 0e192d1: whole-site hero and restored teachers card.
+# It adds #380 + #389 + #394; its tree matches reviewed baseline d40b9ceb.
+# #394 fixes the production Node/zlib validation failure; content bytes stay pinned.
+# Build future releases on this SHA so previously published changes are retained.
 
 on:
   workflow_dispatch:
@@ -37,7 +36,7 @@ jobs:
       - name: Check out the live branch
         uses: actions/checkout@v4
         with:
-          ref: release/hero-random-opening
+          ref: release/teacher-word-selected-answers-20261104
           fetch-depth: 0
 
       - name: Set up Node
@@ -50,11 +49,11 @@ jobs:
       - name: Publish baseline
         env:
           WIX_CLI_API_KEY: ${{ secrets.WIX_CLI_API_KEY }}
-          RELEASE_BRANCH: release/hero-random-opening
+          RELEASE_BRANCH: release/teacher-word-selected-answers-20261104
         run: |
           if [ -z "${WIX_CLI_API_KEY}" ]; then
             echo "WIX_CLI_API_KEY is not set. The baseline was not published."
             exit 1
           fi
-          git fetch origin release/hero-random-opening
-          bash tools/release/release.sh "0e192d172cd021b319729484c838fd5cf8e9dba9"
+          git fetch origin release/teacher-word-selected-answers-20261104
+          bash tools/release/release.sh "16a15cb8ffb83c496ea639910688b5dfc0c79be8"
