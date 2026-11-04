@@ -38,7 +38,7 @@
     "env": "wix env",
     "skills": "wix skills",
     "postbuild": "node scripts/bundle-native-svg.mjs finalize",
-    "predev": "node scripts/bundle-native-svg.mjs generate",
+    "predev": "node scripts/build-teacher-word-bank.mjs --check && node scripts/bundle-native-svg.mjs generate",
     "check:answer-maps": "node scripts/apply-teacher-answer-maps.mjs --check"
   },
   "dependencies": {
