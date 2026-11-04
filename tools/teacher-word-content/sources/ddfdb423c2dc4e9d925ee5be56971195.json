@@ -1,0 +1,858 @@
+{
+  "sourceSha256": "8c4f431942116ef89b673bedf26047d797359fbbdc628bd0eeaadf2f8f0edd0d",
+  "answerSourceSha256": "a1427ac26bd8116c92464ceb900ea109751f4e98a76931cb28afc6838b60b8e6",
+  "nativeSha256": "60bcfb485ddc8f5cdf45a9657114de4a0220d371c5b6f173e7ba4cb4e622fcbf",
+  "questions": {
+    "1": {
+      "id": "ddfdb423c2dc4e9d925ee5be56971195:1",
+      "q": 1,
+      "grade": 9,
+      "topic": "משולש שווה־שוקיים",
+      "levelLabel": "רמת מצוינות",
+      "text": "$AB ∥ CD$, והקטע $GH$ עובר דרך $E$ שעל $AB$ ודרך $F$ שעל $CD$. ידוע ש־$\\angle{GEB} = (3x + 7)°$ ו־$\\angle{EFD} = (x + 39)°$.",
+      "example": {
+        "title": "דוגמה מודרכת",
+        "lines": [
+          "כשישר חותך שני ישרים מקבילים: זוויות מתאימות שוות, זוויות מתחלפות שוות, וזוויות חד־צדדיות משלימות ל־$180°$.",
+          "כדי לבחור את הקשר, שואלים שתי שאלות: האם שתי הזוויות באותו צד של החותך? והאם שתיהן בין המקבילים, או רק אחת מהן?"
+        ]
+      },
+      "figure": {
+        "url": "/noam-ai/native/G9-T15/c/figures/q1_head.svg",
+        "sha256": "b9e0f10a3abcbf003c100e0195207dd9de4add76c2a36e7d1b4a9b50697c4623"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "רשמו מה סוג הזוג, כתבו משוואה ומצאו את $x$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q1_head.svg",
+            "sha256": "b9e0f10a3abcbf003c100e0195207dd9de4add76c2a36e7d1b4a9b50697c4623"
+          },
+          "answer": "זוויות מתאימות; $3x+7=x+39$, ולכן $x=16$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את ארבע הזוויות שהקטע $GH$ יוצר עם $CD$ בנקודה $F$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q1_head.svg",
+            "sha256": "b9e0f10a3abcbf003c100e0195207dd9de4add76c2a36e7d1b4a9b50697c4623"
+          },
+          "answer": "$\\angle{EFD}=\\angle{CFH}=55°$; $\\angle{EFC}=\\angle{DFH}=125°$."
+        }
+      ]
+    },
+    "2": {
+      "id": "ddfdb423c2dc4e9d925ee5be56971195:2",
+      "q": 2,
+      "grade": 9,
+      "topic": "משולש שווה־שוקיים",
+      "levelLabel": "רמת מצוינות",
+      "text": "ב־$\\tri PQR$ השוקיים $PQ$ ו־$PR$ שוות. מאריכים את הבסיס $QR$ מעבר ל־$R$ עד לנקודה $S$. זווית הראש היא $\\angle{QPR} = (2x + 4)°$, והזווית החיצונית ליד $R$ היא $\\angle{PRS} = (3x + 40)°$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T15/c/figures/q2_head.svg",
+        "sha256": "d99661f7910f52bc5cb550d894e7f8b09190c654e904e8469774292766a84e84"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "כתבו משוואה ומצאו את $x$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q2_head.svg",
+            "sha256": "d99661f7910f52bc5cb550d894e7f8b09190c654e904e8469774292766a84e84"
+          },
+          "answer": "$(2x+4)+2(180−3x−40)=180$; $x=26$."
+        },
+        {
+          "label": "ב",
+          "text": "מצאו את הזוויות של $\\tri PQR$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q2_head.svg",
+            "sha256": "d99661f7910f52bc5cb550d894e7f8b09190c654e904e8469774292766a84e84"
+          },
+          "answer": "$\\angle{QPR}=56°$, $\\angle{PQR}=\\angle{PRQ}=62°$."
+        }
+      ]
+    },
+    "3": {
+      "id": "ddfdb423c2dc4e9d925ee5be56971195:3",
+      "q": 3,
+      "grade": 9,
+      "topic": "משולש שווה־שוקיים",
+      "levelLabel": "רמת מצוינות",
+      "text": "הישרים $KA$ ו־$BN$ מקבילים, והנקודה $P$ נמצאת ביניהם. נתון $\\angle{NBP} = 33°$, ונסמן $\\angle{KAP} = x°$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T15/c/figures/q3_head.svg",
+        "sha256": "f9c2c1de297ec5507e8807a21b28b80330500193b142316e207a0bc82f079706"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הוכיחו: $\\angle{APB} = (213 − x)°$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q3_head.svg",
+            "sha256": "f9c2c1de297ec5507e8807a21b28b80330500193b142316e207a0bc82f079706"
+          },
+          "answer": "ישר עזר דרך $P$ המקביל לישרים הנתונים מחלק את הזווית לשני חלקים: $(180−x)°$ ו־$33°$, לפי זוויות בין מקבילים. סכומם הוא $\\angle{APB}=(213−x)°$."
+        },
+        {
+          "label": "ב",
+          "text": "נתון $\\angle{APB} = 76°$. מצאו את $x$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q3_head.svg",
+            "sha256": "f9c2c1de297ec5507e8807a21b28b80330500193b142316e207a0bc82f079706"
+          },
+          "answer": "$x=137$."
+        }
+      ]
+    },
+    "4": {
+      "id": "ddfdb423c2dc4e9d925ee5be56971195:4",
+      "q": 4,
+      "grade": 9,
+      "topic": "משולש שווה־שוקיים",
+      "levelLabel": "רמת מצוינות",
+      "text": "ב־$\\tri ABC$ חוצה הזווית $BD$ יורד מ־$B$ אל הצלע $AC$. מ־$D$ יוצא קטע $DE$, מקביל ל־$AB$, ש־$E$ על $BC$. ידוע ש־$\\angle{ABC} = (4x + 24)°$ ו־$\\angle{BDE} = (x + 26)°$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T15/c/figures/q4_head.svg",
+        "sha256": "b4d7298de88d1516e8b3f380fd4ce7f55e98563db41da0a55c60149da01f095f"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הוכיחו: $EB = ED$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q4_head.svg",
+            "sha256": "b4d7298de88d1516e8b3f380fd4ce7f55e98563db41da0a55c60149da01f095f"
+          },
+          "answer": "$\\angle{BDE}=\\angle{ABD}$ מתחלפות, ו־$\\angle{ABD}=\\angle{DBE}$ מחוצה הזווית. לכן במשולש $\\tri BDE$ זוויות הבסיס שוות, ו־$EB=ED$."
+        },
+        {
+          "label": "ב",
+          "text": "כתבו משוואה ומצאו את $x$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q4_head.svg",
+            "sha256": "b4d7298de88d1516e8b3f380fd4ce7f55e98563db41da0a55c60149da01f095f"
+          },
+          "answer": "$4x+24=2(x+26)$; $x=14$."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את $\\angle{DEC}$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q4_head.svg",
+            "sha256": "b4d7298de88d1516e8b3f380fd4ce7f55e98563db41da0a55c60149da01f095f"
+          },
+          "answer": "$\\angle{DEC}=80°$."
+        }
+      ]
+    },
+    "5": {
+      "id": "ddfdb423c2dc4e9d925ee5be56971195:5",
+      "q": 5,
+      "grade": 9,
+      "topic": "משולש שווה־שוקיים",
+      "levelLabel": "רמת מצוינות",
+      "text": "ב־$\\tri ABC$ השוקיים $AB$ ו־$AC$ שוות. על כל שוק מסמנים נקודה במרחק שווה מ־$A$: $D$ על $AB$ ו־$E$ על $AC$, ו־$AD = AE$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T15/c/figures/q5_head.svg",
+        "sha256": "42dcf03a86a438869af72b1d950acf11f093c264bf4322c5178c7627adb7ac1c"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הוכיחו: $DE ∥ BC$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q5_head.svg",
+            "sha256": "42dcf03a86a438869af72b1d950acf11f093c264bf4322c5178c7627adb7ac1c"
+          },
+          "answer": "למשולשים שווי־השוקיים $\\tri ADE$ ו־$\\tri ABC$ אותה זווית ראש. לכן זוויות הבסיס שלהם שוות בהתאמה; בפרט $\\angle{ADE}=\\angle{ABC}$ מתאימות, ומכאן $DE\\para BC$."
+        },
+        {
+          "label": "ב",
+          "text": "אם $\\angle{BAC} = 38°$, מה גודל $\\angle{BDE}$?",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q5_head.svg",
+            "sha256": "42dcf03a86a438869af72b1d950acf11f093c264bf4322c5178c7627adb7ac1c"
+          },
+          "answer": "$\\angle{BDE}=109°$."
+        }
+      ]
+    },
+    "6": {
+      "id": "ddfdb423c2dc4e9d925ee5be56971195:6",
+      "q": 6,
+      "grade": 9,
+      "topic": "משולש שווה־שוקיים",
+      "levelLabel": "רמת מצוינות",
+      "text": "ב־$\\tri KLM$ השוקיים $KL$ ו־$KM$ שוות. מאריכים את $LK$ מעבר לקודקוד $K$ עד לנקודה $N$, והקרן $KP$ היא חוצת הזווית $\\angle{NKM}$. ידוע ש־$\\angle{LKM} = (2x + 10)°$ ו־$\\angle{PKM} = (x + 31)°$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T15/c/figures/q6_head.svg",
+        "sha256": "a67c3ad5ef257e0b11534875abf20db2df52bad64e93b3d0d9ac91feb29c7ca4"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "כתבו משוואה ומצאו את $x$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q6_head.svg",
+            "sha256": "a67c3ad5ef257e0b11534875abf20db2df52bad64e93b3d0d9ac91feb29c7ca4"
+          },
+          "answer": "$(2x+10)+2(x+31)=180$; $x=27$."
+        },
+        {
+          "label": "ב",
+          "text": "הוכיחו: $KP ∥ LM$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q6_head.svg",
+            "sha256": "a67c3ad5ef257e0b11534875abf20db2df52bad64e93b3d0d9ac91feb29c7ca4"
+          },
+          "answer": "$\\angle{PKM}=\\angle{KML}=58°$. אלה זוויות מתחלפות שוות, ולכן $KP\\para LM$."
+        }
+      ]
+    },
+    "7": {
+      "id": "ddfdb423c2dc4e9d925ee5be56971195:7",
+      "q": 7,
+      "grade": 9,
+      "topic": "משולש שווה־שוקיים",
+      "levelLabel": "רמת מצוינות",
+      "text": "$\\tri ABC$ הוא משולש ישר־זווית שבו $\\angle{ABC} = 90°$. על היתר $AC$ בוחרים נקודה $D$, כך ש־$DA = DB$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T15/c/figures/q7_head.svg",
+        "sha256": "27a9f6886bb4903810070a8fbcf7615cf375202c4b429827e46b2ef2b5513d34"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הוכיחו: $\\angle{DBC} = \\angle{DCB}$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q7_head.svg",
+            "sha256": "27a9f6886bb4903810070a8fbcf7615cf375202c4b429827e46b2ef2b5513d34"
+          },
+          "answer": "$DA=DB$, ולכן $\\angle{DBA}=\\angle{BAC}$. מכאן $\\angle{DBC}=90°−\\angle{BAC}=\\angle{DCB}$."
+        },
+        {
+          "label": "ב",
+          "text": "הוכיחו כי $D$ היא אמצע היתר $AC$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q7_head.svg",
+            "sha256": "27a9f6886bb4903810070a8fbcf7615cf375202c4b429827e46b2ef2b5513d34"
+          },
+          "answer": "מסעיף א׳ $DB=DC$; יחד עם $DA=DB$ מתקבל $DA=DC$, ולכן $D$ אמצע $AC$."
+        },
+        {
+          "label": "ג",
+          "text": "אם $\\angle{BAC} = 26°$, מה גודל $\\angle{BDC}$?",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q7_head.svg",
+            "sha256": "27a9f6886bb4903810070a8fbcf7615cf375202c4b429827e46b2ef2b5513d34"
+          },
+          "answer": "$\\angle{BDC}=52°$."
+        }
+      ]
+    },
+    "8": {
+      "id": "ddfdb423c2dc4e9d925ee5be56971195:8",
+      "q": 8,
+      "grade": 9,
+      "topic": "משולש שווה־שוקיים",
+      "levelLabel": "רמת מצוינות",
+      "text": "ב־$\\tri ABC$ השוקיים $AB$ ו־$AC$ שוות, וזווית הבסיס $\\angle{ABC} = 34°$. $D$ היא נקודה על הבסיס שמרחקה מ־$A$ שווה למרחקה מ־$B$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T15/c/figures/q8_head.svg",
+        "sha256": "033ec31aeb2b07d81fd27cae0a84ee1138c9cee2ef20fdf5e45f929593f45b31"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את $\\angle{ADC}$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q8_head.svg",
+            "sha256": "033ec31aeb2b07d81fd27cae0a84ee1138c9cee2ef20fdf5e45f929593f45b31"
+          },
+          "answer": "$\\angle{ADC}=68°$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את $\\angle{DAC}$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q8_head.svg",
+            "sha256": "033ec31aeb2b07d81fd27cae0a84ee1138c9cee2ef20fdf5e45f929593f45b31"
+          },
+          "answer": "$\\angle{DAC}=78°$."
+        },
+        {
+          "label": "ג",
+          "text": "תלמיד טוען שהקטע $AD$ חוצה את $\\angle{BAC}$. האם הוא צודק? נמקו בחישוב.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q8_head.svg",
+            "sha256": "033ec31aeb2b07d81fd27cae0a84ee1138c9cee2ef20fdf5e45f929593f45b31"
+          },
+          "answer": "לא: $\\angle{BAD}=34°$, ואילו $\\angle{DAC}=78°$; החלקים אינם שווים."
+        }
+      ]
+    },
+    "9": {
+      "id": "ddfdb423c2dc4e9d925ee5be56971195:9",
+      "q": 9,
+      "grade": 9,
+      "topic": "משולש שווה־שוקיים",
+      "levelLabel": "רמת מצוינות",
+      "text": "הישרים $AK$ ו־$BM$ מקבילים, והקטע $AB$ מחבר ביניהם; $K$ ו־$M$ באותו צד של $AB$. חוצה הזווית $\\angle{KAB}$ וחוצה הזווית $\\angle{ABM}$ נפגשים בנקודה $P$. ההמשך של $AP$ פוגש את $BM$ בנקודה $Q$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T15/c/figures/q9_head.svg",
+        "sha256": "10d24892dd229baf1d3fa8f32878cfd96c8657fc3a7f0b329b9777553cd2f7b0"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הוכיחו: $\\angle{APB} = 90°$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q9_head.svg",
+            "sha256": "10d24892dd229baf1d3fa8f32878cfd96c8657fc3a7f0b329b9777553cd2f7b0"
+          },
+          "answer": "הזוויות $\\angle{KAB}$ ו־$\\angle{ABM}$ חד־צדדיות וסכומן $180°$. סכום חצאיהן $90°$, ולכן $\\angle{APB}=90°$."
+        },
+        {
+          "label": "ב",
+          "text": "הוכיחו: $BA = BQ$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q9_head.svg",
+            "sha256": "10d24892dd229baf1d3fa8f32878cfd96c8657fc3a7f0b329b9777553cd2f7b0"
+          },
+          "answer": "$\\angle{BAQ}=\\angle{KAQ}$ מחוצה הזווית, ו־$\\angle{KAQ}=\\angle{AQB}$ מתחלפות. לכן $BA=BQ$."
+        },
+        {
+          "label": "ג",
+          "text": "נתון $AQ = 18$ ס״מ. חשבו את אורך הקטע $AP$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q9_head.svg",
+            "sha256": "10d24892dd229baf1d3fa8f32878cfd96c8657fc3a7f0b329b9777553cd2f7b0"
+          },
+          "answer": "$AP=9$ ס״מ: במשולש שווה־השוקיים $\\tri ABQ$, הגובה $BP$ הוא גם תיכון לבסיס $AQ$."
+        }
+      ]
+    },
+    "10": {
+      "id": "ddfdb423c2dc4e9d925ee5be56971195:10",
+      "q": 10,
+      "grade": 9,
+      "topic": "משולש שווה־שוקיים",
+      "levelLabel": "רמת מצוינות",
+      "text": "ב־$\\tri PQR$ השוקיים $PQ$ ו־$PR$ שוות. הקטע $KL$ מקביל לבסיס $QR$; $K$ על $PQ$ ו־$L$ על $PR$. זווית הראש היא $\\angle{QPR} = (2x + 8)°$, ו־$\\angle{QKL} = (3x + 46)°$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T15/c/figures/q10_head.svg",
+        "sha256": "3984573877d8afaf8200acdf157c5e1174d0bf544506a95f9b7e06a81605ac7f"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "כתבו משוואה ומצאו את $x$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q10_head.svg",
+            "sha256": "3984573877d8afaf8200acdf157c5e1174d0bf544506a95f9b7e06a81605ac7f"
+          },
+          "answer": "$(2x+8)+2(180−3x−46)=180$; $x=24$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את $\\angle{PLK}$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q10_head.svg",
+            "sha256": "3984573877d8afaf8200acdf157c5e1174d0bf544506a95f9b7e06a81605ac7f"
+          },
+          "answer": "$\\angle{PLK}=62°$."
+        }
+      ]
+    },
+    "11": {
+      "id": "ddfdb423c2dc4e9d925ee5be56971195:11",
+      "q": 11,
+      "grade": 9,
+      "topic": "משולש שווה־שוקיים",
+      "levelLabel": "רמת מצוינות",
+      "text": "ב־$\\tri ABC$ השוקיים $AB$ ו־$AC$ שוות. חוצי זוויות הבסיס, $BD$ ו־$CE$ ($D$ על $AC$, $E$ על $AB$), נפגשים ב־$P$. דרך $P$ משורטט הקטע $FG$, מקביל לבסיס, וקצותיו $F$ על $AB$ ו־$G$ על $AC$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T15/c/figures/q11_head.svg",
+        "sha256": "911027351370a730019f1ec324a61293612f3dfb5d40679fc04f24bf1a150040"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הוכיחו: $PB = PC$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q11_head.svg",
+            "sha256": "911027351370a730019f1ec324a61293612f3dfb5d40679fc04f24bf1a150040"
+          },
+          "answer": "חצאי זוויות הבסיס שווים: $\\angle{PBC}=\\angle{PCB}$; לכן $PB=PC$."
+        },
+        {
+          "label": "ב",
+          "text": "הוכיחו: $FB = FP$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q11_head.svg",
+            "sha256": "911027351370a730019f1ec324a61293612f3dfb5d40679fc04f24bf1a150040"
+          },
+          "answer": "$\\angle{FBP}=\\angle{PBC}$ מחוצה הזווית, ו־$\\angle{PBC}=\\angle{BPF}$ מתחלפות. לכן $FB=FP$."
+        },
+        {
+          "label": "ג",
+          "text": "אם $BF = 6$ ס״מ, מה אורך $FG$?",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q11_head.svg",
+            "sha256": "911027351370a730019f1ec324a61293612f3dfb5d40679fc04f24bf1a150040"
+          },
+          "answer": "$FG=12$ ס״מ. גם $CG=GP$, ו־$FB=CG$ כי $AB=AC$ ו־$AF=AG$; לכן כל חצי של $FG$ הוא $6$ ס״מ."
+        },
+        {
+          "label": "ד",
+          "text": "אם $\\angle{BAC} = 46°$, מה גודל $\\angle{BPC}$?",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q11_head.svg",
+            "sha256": "911027351370a730019f1ec324a61293612f3dfb5d40679fc04f24bf1a150040"
+          },
+          "answer": "$\\angle{BPC}=113°$."
+        }
+      ]
+    },
+    "12": {
+      "id": "ddfdb423c2dc4e9d925ee5be56971195:12",
+      "q": 12,
+      "grade": 9,
+      "topic": "משולש שווה־שוקיים",
+      "levelLabel": "רמת מצוינות",
+      "text": "$O$ היא נקודת החיתוך של הקטעים $AC$ ו־$BD$. ידוע ש־$AB ∥ CD$ וש־$OA = OB$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T15/c/figures/q12_head.svg",
+        "sha256": "18f20a7ebfcdcbcd77b8da8eb845315fd21c7c5d849ce22f1f922ff4342d4583"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הוכיחו: $OC = OD$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q12_head.svg",
+            "sha256": "18f20a7ebfcdcbcd77b8da8eb845315fd21c7c5d849ce22f1f922ff4342d4583"
+          },
+          "answer": "$\\angle{OAB}=\\angle{OBA}$ כי $OA=OB$. מהמקבילות מתקבל $\\angle{OCD}=\\angle{OAB}$ ו־$\\angle{ODC}=\\angle{OBA}$; לכן $OC=OD$."
+        },
+        {
+          "label": "ב",
+          "text": "אם $\\angle{AOB} = 74°$, מהן הזוויות של $\\tri OCD$?",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q12_head.svg",
+            "sha256": "18f20a7ebfcdcbcd77b8da8eb845315fd21c7c5d849ce22f1f922ff4342d4583"
+          },
+          "answer": "$\\angle{COD}=74°$, $\\angle{OCD}=\\angle{ODC}=53°$."
+        }
+      ]
+    },
+    "13": {
+      "id": "ddfdb423c2dc4e9d925ee5be56971195:13",
+      "q": 13,
+      "grade": 9,
+      "topic": "משולש שווה־שוקיים",
+      "levelLabel": "רמת מצוינות",
+      "text": "ב־$\\tri ABC$ חוצה הזווית $CD$ יורד מ־$C$ אל הצלע $AB$. דרך $B$ משורטט ישר מקביל ל־$CD$, ונקודת המפגש שלו עם הישר $AC$ היא $E$, כך ש־$C$ בין $A$ ל־$E$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T15/c/figures/q13_head.svg",
+        "sha256": "12c14a5a784602638e1b3446a879930a02f6b090c8a8f3b688c5179eaefc6511"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הוכיחו: $CB = CE$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q13_head.svg",
+            "sha256": "12c14a5a784602638e1b3446a879930a02f6b090c8a8f3b688c5179eaefc6511"
+          },
+          "answer": "$\\angle{CBE}=\\angle{BCD}$ מתחלפות, ו־$\\angle{CEB}=\\angle{ACD}$ מתאימות. חוצה הזווית נותן $\\angle{BCD}=\\angle{ACD}$, ולכן $CB=CE$."
+        },
+        {
+          "label": "ב",
+          "text": "אם $\\angle{ACB} = 82°$, מה גודל $\\angle{CEB}$ ומה גודל $\\angle{BCE}$?",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q13_head.svg",
+            "sha256": "12c14a5a784602638e1b3446a879930a02f6b090c8a8f3b688c5179eaefc6511"
+          },
+          "answer": "$\\angle{CEB}=41°$, $\\angle{BCE}=98°$."
+        }
+      ]
+    },
+    "14": {
+      "id": "ddfdb423c2dc4e9d925ee5be56971195:14",
+      "q": 14,
+      "grade": 9,
+      "topic": "משולש שווה־שוקיים",
+      "levelLabel": "רמת מצוינות",
+      "text": "$O$ היא נקודה בתוך $\\tri KLM$, ו־$LO$, $MO$ הם חוצי הזוויות $\\angle{KLM}$ ו־$\\angle{KML}$. נסמן $\\angle{LKM} = x°$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T15/c/figures/q14_head.svg",
+        "sha256": "ebe6632b0efe59330afefa11ed12a2db0f59916f7a28f9b7db6ff8da70c8aacc"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הוכיחו: $\\angle{LOM} = (90 + \\f{x}{2})°$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q14_head.svg",
+            "sha256": "ebe6632b0efe59330afefa11ed12a2db0f59916f7a28f9b7db6ff8da70c8aacc"
+          },
+          "answer": "סכום זוויות הבסיס במשולש $\\tri LOM$ הוא $\\f{180°−x°}{2}$. לכן $\\angle{LOM}=180°−\\f{180°−x°}{2}=(90+\\f{x}{2})°$."
+        },
+        {
+          "label": "ב",
+          "text": "נתון $\\angle{LOM} = 127°$. מצאו את $x$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q14_head.svg",
+            "sha256": "ebe6632b0efe59330afefa11ed12a2db0f59916f7a28f9b7db6ff8da70c8aacc"
+          },
+          "answer": "$x=74$."
+        }
+      ]
+    },
+    "15": {
+      "id": "ddfdb423c2dc4e9d925ee5be56971195:15",
+      "q": 15,
+      "grade": 9,
+      "topic": "משולש שווה־שוקיים",
+      "levelLabel": "רמת מצוינות",
+      "text": "הישרים $AK$ ו־$BP$ מקבילים, והנקודות $K$ ו־$P$ באותו צד של הישר $AB$. נתון $BA = BP$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T15/c/figures/q15_head.svg",
+        "sha256": "d41e6f37611be1614b8cbfa5ee71951bafa6cb97e5ec40389c6b9e5baa251091"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הוכיחו כי $AP$ חוצה את $\\angle{KAB}$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q15_head.svg",
+            "sha256": "d41e6f37611be1614b8cbfa5ee71951bafa6cb97e5ec40389c6b9e5baa251091"
+          },
+          "answer": "$BA=BP$ נותן $\\angle{BAP}=\\angle{APB}$. מהמקבילות $\\angle{APB}=\\angle{KAP}$; לכן $AP$ חוצה את $\\angle{KAB}$."
+        },
+        {
+          "label": "ב",
+          "text": "נתון $\\angle{ABP} = 128°$. חשבו את $\\angle{KAP}$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q15_head.svg",
+            "sha256": "d41e6f37611be1614b8cbfa5ee71951bafa6cb97e5ec40389c6b9e5baa251091"
+          },
+          "answer": "$\\angle{KAP}=26°$."
+        }
+      ]
+    },
+    "16": {
+      "id": "ddfdb423c2dc4e9d925ee5be56971195:16",
+      "q": 16,
+      "grade": 9,
+      "topic": "משולש שווה־שוקיים",
+      "levelLabel": "רמת מצוינות",
+      "text": "הישרים $AK$ ו־$MB$ מקבילים, והנקודות $P$ ו־$Q$ נמצאות ביניהם. דרך $P$ ודרך $Q$ עוברים הישרים $PW$ ו־$QZ$, המקבילים ל־$AK$. נתון $\\angle{KAP} = 27°$ ו־$\\angle{APQ} = 129°$, ונסמן $\\angle{PQB} = x°$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T15/c/figures/q16_head.svg",
+        "sha256": "121ea8a1b8998f824f84480709f8ef8a720586d694b08e09452ddf4ea0adeaef"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הוכיחו: $\\angle{QBM} = (156 − x)°$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q16_head.svg",
+            "sha256": "121ea8a1b8998f824f84480709f8ef8a720586d694b08e09452ddf4ea0adeaef"
+          },
+          "answer": "$\\angle{APW}=153°$, ולכן $\\angle{QPW}=24°$. מהמקבילות $\\angle{PQZ}=24°$, ומכאן $\\angle{BQZ}=(x+24)°$. לכן $\\angle{QBM}=180°−(x+24)°=(156−x)°$."
+        },
+        {
+          "label": "ב",
+          "text": "נתון $\\angle{QBM} = 58°$. מצאו את $x$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q16_head.svg",
+            "sha256": "121ea8a1b8998f824f84480709f8ef8a720586d694b08e09452ddf4ea0adeaef"
+          },
+          "answer": "$x=98$."
+        }
+      ]
+    },
+    "17": {
+      "id": "ddfdb423c2dc4e9d925ee5be56971195:17",
+      "q": 17,
+      "grade": 9,
+      "topic": "משולש שווה־שוקיים",
+      "levelLabel": "רמת מצוינות",
+      "text": "הנקודות $A$ ו־$C$ על קרן אחת שיוצאת מ־$O$, והנקודות $B$ ו־$D$ על קרן שנייה שיוצאת מ־$O$; $A$ בין $O$ ל־$C$, ו־$B$ בין $O$ ל־$D$. נתון $OA = AB = BC = CD$ ו־$\\angle{AOB} = 16°$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T15/c/figures/q17_head.svg",
+        "sha256": "337b694ed56b86f13de1ccc3dd6cc4343df74091da4325c33e57b335efb4036c"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את $\\angle{ACB}$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q17_head.svg",
+            "sha256": "337b694ed56b86f13de1ccc3dd6cc4343df74091da4325c33e57b335efb4036c"
+          },
+          "answer": "$\\angle{ACB}=32°$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את $\\angle{BDC}$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q17_head.svg",
+            "sha256": "337b694ed56b86f13de1ccc3dd6cc4343df74091da4325c33e57b335efb4036c"
+          },
+          "answer": "$\\angle{BDC}=48°$."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את $\\angle{BCD}$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q17_head.svg",
+            "sha256": "337b694ed56b86f13de1ccc3dd6cc4343df74091da4325c33e57b335efb4036c"
+          },
+          "answer": "$\\angle{BCD}=84°$."
+        }
+      ]
+    },
+    "18": {
+      "id": "ddfdb423c2dc4e9d925ee5be56971195:18",
+      "q": 18,
+      "grade": 9,
+      "topic": "משולש שווה־שוקיים",
+      "levelLabel": "רמת מצוינות",
+      "text": "ב־$\\tri ABC$ השוקיים $AB$ ו־$AC$ שוות. מאריכים את $CB$ מעבר ל־$B$ באורך של שוק, עד לנקודה $D$ ($BD = BA$). נסמן $\\angle{ADB} = x°$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T15/c/figures/q18_head.svg",
+        "sha256": "0b1f10312612df5aa991c9ae8a9cd813bbd1e348f2984751307461ba7c0efda7"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הוכיחו: $\\angle{DAC} = (180 − 3x)°$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q18_head.svg",
+            "sha256": "0b1f10312612df5aa991c9ae8a9cd813bbd1e348f2984751307461ba7c0efda7"
+          },
+          "answer": "$BD=BA$ נותן $\\angle{DAB}=x°$, ולכן $\\angle{ABC}=2x°$. גם $\\angle{ACB}=2x°$, ומכאן $\\angle{BAC}=(180−4x)°$. לכן $\\angle{DAC}=x°+(180−4x)°=(180−3x)°$."
+        },
+        {
+          "label": "ב",
+          "text": "נתון $\\angle{DAC} = 111°$. מצאו את $x$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q18_head.svg",
+            "sha256": "0b1f10312612df5aa991c9ae8a9cd813bbd1e348f2984751307461ba7c0efda7"
+          },
+          "answer": "$x=23$."
+        },
+        {
+          "label": "ג",
+          "text": "גם כאן $\\angle{DAC} = 111°$. מה גודל $\\angle{BAC}$?",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q18_head.svg",
+            "sha256": "0b1f10312612df5aa991c9ae8a9cd813bbd1e348f2984751307461ba7c0efda7"
+          },
+          "answer": "$\\angle{BAC}=88°$."
+        }
+      ]
+    },
+    "19": {
+      "id": "ddfdb423c2dc4e9d925ee5be56971195:19",
+      "q": 19,
+      "grade": 9,
+      "topic": "משולש שווה־שוקיים",
+      "levelLabel": "רמת מצוינות",
+      "text": "רון טוען: „שני משולשים שווי־שוקיים שזוויות הראש שלהם שוות – חופפים.“",
+      "items": [
+        {
+          "label": "א",
+          "text": "האם רון צודק? אם לא – סרטטו דוגמה נגדית.",
+          "answer": "לא. דוגמה: שני משולשים שווי־צלעות, אחד שצלעו $3$ ס״מ ואחד שצלעו $5$ ס״מ. זוויות הראש שוות והאורכים שונים. יש דוגמאות נוספות עם זווית ראש שווה ושוקיים באורכים שונים."
+        },
+        {
+          "label": "ב",
+          "text": "איזה נתון אחד על השוקיים, אם נוסיף אותו, יבטיח חפיפה? לפי איזה משפט חפיפה?",
+          "answer": "די בשוויון של שוק במשולש אחד לשוק במשולש השני. גם השוק האחרת שווה, וזוויות הראש שוות; החפיפה היא לפי צלע־זווית־צלע."
+        }
+      ]
+    },
+    "20": {
+      "id": "ddfdb423c2dc4e9d925ee5be56971195:20",
+      "q": 20,
+      "grade": 9,
+      "topic": "משולש שווה־שוקיים",
+      "levelLabel": "רמת מצוינות",
+      "text": "אורכי הצלעות של משולש הם $9$ ס״מ, $12$ ס״מ ו־$16$ ס״מ.",
+      "items": [
+        {
+          "label": "א",
+          "text": "האם המשולש ישר־זווית? בדקו בעזרת המשפט ההפוך למשפט פיתגורס.",
+          "answer": "לא: $9 ^2+12 ^2=225$, ואילו $16 ^2=256$."
+        },
+        {
+          "label": "ב",
+          "text": "משנים רק את אורך הצלע הארוכה, כך שהמשולש יהיה ישר־זווית. מה צריך להיות אורכה?",
+          "answer": "$15$ ס״מ, אם הצלע ששונתה נשארת היתר. אם מותר לה להפוך לניצב, יש גם אפשרות $\\sqrt{63}=3\\sqrt{7}$ ס״מ, ואז היתר הוא $12$ ס״מ."
+        },
+        {
+          "label": "ג",
+          "text": "סרטטו סקיצה של המשולש החדש, וחשבו את שטחו.",
+          "answer": "באפשרות הראשונה: סקיצה עם ניצבים $9$ ו־$12$ ס״מ ויתר $15$ ס״מ; השטח $54$ סמ״ר. באפשרות השנייה: ניצבים $9$ ו־$3\\sqrt{7}$ ס״מ ויתר $12$ ס״מ; השטח $\\f{27\\sqrt{7}}{2}$ סמ״ר."
+        }
+      ]
+    },
+    "21": {
+      "id": "ddfdb423c2dc4e9d925ee5be56971195:21",
+      "q": 21,
+      "grade": 9,
+      "topic": "משולש שווה־שוקיים",
+      "levelLabel": "רמת מצוינות",
+      "text": "ב־$\\tri ABC$ השוקיים $AB$ ו־$AC$ שוות, $AB = 41$ ס״מ ו־$BC = 18$ ס״מ. $AD$ הוא הגובה לבסיס ($AD ⊥ BC$).",
+      "figure": {
+        "url": "/noam-ai/native/G9-T15/c/figures/q21_head.svg",
+        "sha256": "99c6590aeeac1e19588c12eaf54b115bc6e252b67b7a233714564ddd8c144b68"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מה אורך הגובה $AD$? פרטו את כל שלבי החישוב.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q21_head.svg",
+            "sha256": "99c6590aeeac1e19588c12eaf54b115bc6e252b67b7a233714564ddd8c144b68"
+          },
+          "answer": "$AD=40$ ס״מ. הגובה חוצה את הבסיס לשני קטעים של $9$ ס״מ, ולכן $AD=\\sqrt{41 ^2−9 ^2}=40$."
+        },
+        {
+          "label": "ב",
+          "text": "מהו שטח $\\tri ABC$?",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q21_head.svg",
+            "sha256": "99c6590aeeac1e19588c12eaf54b115bc6e252b67b7a233714564ddd8c144b68"
+          },
+          "answer": "$360$ סמ״ר."
+        }
+      ]
+    },
+    "22": {
+      "id": "ddfdb423c2dc4e9d925ee5be56971195:22",
+      "q": 22,
+      "grade": 9,
+      "topic": "משולש שווה־שוקיים",
+      "levelLabel": "רמת מצוינות",
+      "text": "ב־$\\tri ABC$ מאריכים את $BC$ מעבר ל־$C$ עד לנקודה $E$. $P$ היא נקודת המפגש של חוצה הזווית הפנימית $\\angle{ABC}$ עם חוצה הזווית החיצונית $\\angle{ACE}$. נסמן $\\angle{BAC} = x°$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T15/c/figures/q22_head.svg",
+        "sha256": "ac69c3112e85d343c672b2381d448ec7b975bb53d1681a5db98944b56f6bc162"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הוכיחו: $\\angle{BPC} = \\f{x}{2}°$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q22_head.svg",
+            "sha256": "ac69c3112e85d343c672b2381d448ec7b975bb53d1681a5db98944b56f6bc162"
+          },
+          "answer": "נסמן את זוויות $B,C$ במעלות ב־$b,c$. במשולש $\\tri BPC$ הזוויות לידן הן $\\f{b}{2}°$ ו־$(90+\\f{c}{2})°$. לכן $\\angle{BPC}=(90−\\f{b+c}{2})°=\\f{x}{2}°$, כי $b+c=180−x$."
+        },
+        {
+          "label": "ב",
+          "text": "נתון $\\angle{BPC} = 31°$. מצאו את $x$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q22_head.svg",
+            "sha256": "ac69c3112e85d343c672b2381d448ec7b975bb53d1681a5db98944b56f6bc162"
+          },
+          "answer": "$x=62$."
+        }
+      ]
+    },
+    "23": {
+      "id": "ddfdb423c2dc4e9d925ee5be56971195:23",
+      "q": 23,
+      "grade": 9,
+      "topic": "משולש שווה־שוקיים",
+      "levelLabel": "רמת מצוינות",
+      "text": "ב־$\\tri ABC$ השוקיים $AB$ ו־$AC$ שוות, ונסמן $\\angle{BAC} = x°$. על השוק $AC$ יש נקודה $D$ שמרחקה מ־$B$ שווה לאורך הבסיס: $BD = BC$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T15/c/figures/q23_head.svg",
+        "sha256": "63846e756b14cd4896c2d615f3cbc27ac8e58f9b76ecfc3efb25e347806e5e02"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הוכיחו: $\\angle{DBC} = x°$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q23_head.svg",
+            "sha256": "63846e756b14cd4896c2d615f3cbc27ac8e58f9b76ecfc3efb25e347806e5e02"
+          },
+          "answer": "כל זווית בסיס של $\\tri ABC$ היא $\\f{180−x}{2}°$. גם $\\angle{BDC}=\\angle{BCD}=\\f{180−x}{2}°$, כי $BD=BC$; לכן $\\angle{DBC}=x°$."
+        },
+        {
+          "label": "ב",
+          "text": "נתון גם ש־$BD$ חוצה את $\\angle{ABC}$. מצאו את $x$, והוכיחו כי $AD = BD$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q23_head.svg",
+            "sha256": "63846e756b14cd4896c2d615f3cbc27ac8e58f9b76ecfc3efb25e347806e5e02"
+          },
+          "answer": "$x=36$. מחוצה הזווית מתקבל $\\angle{ABC}=2x°$, ולכן $5x=180$. במשולש $\\tri ABD$ הזוויות $\\angle{BAD}=\\angle{ABD}=36°$; לכן $AD=BD$."
+        }
+      ]
+    },
+    "24": {
+      "id": "ddfdb423c2dc4e9d925ee5be56971195:24",
+      "q": 24,
+      "grade": 9,
+      "topic": "משולש שווה־שוקיים",
+      "levelLabel": "רמת מצוינות",
+      "text": "ב־$\\tri ABC$ מאריכים את $BA$ מעבר ל־$A$ עד לנקודה $E$. הקרן $AD$ היא חוצת הזווית החיצונית $\\angle{EAC}$, ו־$AD ∥ BC$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T15/c/figures/q24_head.svg",
+        "sha256": "38277374e63dd4a45a602ed2c612ded1588e327d91c3d8d6ade305b483cf9ed8"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הוכיחו: $AB = AC$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q24_head.svg",
+            "sha256": "38277374e63dd4a45a602ed2c612ded1588e327d91c3d8d6ade305b483cf9ed8"
+          },
+          "answer": "$\\angle{EAD}=\\angle{ABC}$ מתאימות, ו־$\\angle{DAC}=\\angle{ACB}$ מתחלפות. חוצה הזווית משווה ביניהן, ולכן זוויות הבסיס שוות ו־$AB=AC$."
+        },
+        {
+          "label": "ב",
+          "text": "אם $\\angle{EAC} = 128°$, מהן הזוויות של $\\tri ABC$?",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q24_head.svg",
+            "sha256": "38277374e63dd4a45a602ed2c612ded1588e327d91c3d8d6ade305b483cf9ed8"
+          },
+          "answer": "$\\angle{BAC}=52°$, $\\angle{ABC}=\\angle{ACB}=64°$."
+        }
+      ]
+    },
+    "25": {
+      "id": "ddfdb423c2dc4e9d925ee5be56971195:25",
+      "q": 25,
+      "grade": 9,
+      "topic": "משולש שווה־שוקיים",
+      "levelLabel": "רמת מצוינות",
+      "text": "ב־$\\tri WXY$ נתון $WX = WY$. מן הקדקוד $X$ יוצא הקטע $XZ$ אל $WY$: הוא חוצה את $\\angle{WXY}$ וגם מאונך ל־$WY$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T15/c/figures/q25_head.svg",
+        "sha256": "a19d0773cce5767cc4d0079ed494450734af5626c5943abfcd58d7af2447a7bb"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "בלי למדוד בשרטוט, הראו ששני התפקידים של $XZ$ מחייבים את כל צלעות המשולש להיות שוות, וחשבו את זוויותיו. התחילו מביטוי לזוויות של $\\tri XYZ$ באמצעות זווית הבסיס של $\\tri WXY$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/c/figures/q25_head.svg",
+            "sha256": "a19d0773cce5767cc4d0079ed494450734af5626c5943abfcd58d7af2447a7bb"
+          },
+          "answer": "נסמן את זווית הבסיס ב־$t$. במשולש $\\tri XYZ$: $t+\\f{t}{2}+90°=180°$, ולכן $t=60°$. כל זוויות $\\tri WXY$ הן $60°$; מול זוויות שוות נמצאות צלעות שוות, ולכן $WX=WY=XY$."
+        }
+      ]
+    }
+  }
+}

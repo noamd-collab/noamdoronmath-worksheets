@@ -34,7 +34,7 @@ function readManifest(pdfId: string): Manifest {
   return JSON.parse(readFileSync(new URL(`../../../noam-ai/manifests/${pdfId}.json`, import.meta.url), 'utf8'));
 }
 
-const previewHelpers = () => ['exKey', 'questionPreviewGroup', 'questionPreviewSlices'].map(definition).join('\n');
+const previewHelpers = () => ['exKey', 'questionPreviewGroup', 'originalQuestionPreviewSlices', 'questionDataSlices', 'answerDocumentSource', 'questionPreviewSlices'].map(definition).join('\n');
 const preview = new Function(`${previewHelpers()} return questionPreviewSlices;`)() as (group: Group, manifest: Manifest) => Slice[];
 
 const covers = (slices: Slice[], page: number, y: number) => slices.some((slice) => (

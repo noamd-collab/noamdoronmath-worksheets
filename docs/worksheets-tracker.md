@@ -578,3 +578,11 @@ Columns: grade, topic, levels present, author, reviewed, live, PR.
 - Rebuilt editable sources with skill 7.0.3-noam / engine 6.18; 292 question pages preserve their content and layout. Noam approved verified AA-only raster differences; exact rendering state and positions were independently checked.
 - All final-answer pages visually checked; all selected questions retain every subpart answer through full answer-section printing. Answers to unselected questions remain in that full section.
 - Uploaded directly to Wix and verified all 22 downloads byte-for-byte. Old files retained; no SQL execution, secret extraction or temporary release. Details, checks and direct routes: `docs/final-answers-remaining22-20261103.md`.
+
+## 2026-11-04 — Selected answers and editable Word export
+
+Completed 612 previously missing/incomplete whole-question answers: 270 across 13 middle-school PDFs, 332 elementary repairs and ten explicitly approved grade-six data additions with matching answers. Question source PDFs remain unchanged; approved data appears alongside its question in the teacher preview and compact print. The generated answer maps cover all 18,794 questions across 933 sources with no recorded missing-answer entries. Coverage validation does not replace an independent mathematical review of the entire older answer bank.
+
+Word export uses editable RTL text, native Office Math, selected questions only, and all their subpart answers at the end. Initial source-backed coverage is 8,026 questions (404 complete middle-school PDFs plus the ten approved elementary repairs). Remaining sources fail with a visible message instead of producing a partial or image-only Word document. Original diagrams remain images. Source provenance and reproducible build: `tools/teacher-word-content/README.md`.
+
+Checks and publication evidence: `docs/teacher-answer-word-20261104.md`.

@@ -106,7 +106,7 @@ test('short topics explain availability visibly before clicking AI, with an acce
 test('unverified elementary answer pages block printing instead of exposing other answers', async () => {
   const measured = new Function(`
     const measureSlices = async slices => slices;
-    ${['levelPrintName', 'selectedAnswerCrops', 'answerMeasured'].map(definition).join('\n')}
+    ${['levelPrintName', 'answerDocumentSource', 'selectedAnswerCrops', 'answerMeasured'].map(definition).join('\n')}
     return answerMeasured;
   `)();
   await assert.rejects(measured([{ source: { pdfId: 'elementary', level: 'b', answerStartPage: 4, pageCount: 5 }, questions: [{ q: 2 }] }]), { code: 'MISSING_ANSWERS' });
@@ -116,7 +116,7 @@ test('outlined answers use only verified question rectangles, never text-overlay
   const measured = new Function(`
     const sheetTextLines = async () => { throw new Error('Unreliable outlined-text coordinates must not be read'); };
     const measureSlices = async slices => slices;
-    ${['levelPrintName', 'selectedAnswerCrops', 'answerMeasured'].map(definition).join('\n')}
+    ${['levelPrintName', 'answerDocumentSource', 'selectedAnswerCrops', 'answerMeasured'].map(definition).join('\n')}
     return answerMeasured;
   `)();
   const source = { pdfId: 'outlined-source', answerGeometry: 'full-pages', level: 'a', answerStartPage: 8, pageCount: 9,
@@ -146,7 +146,7 @@ test('a narrow original column fills the question preview without changing its s
     const sheetTextLines = () => { throw new Error('Preview must not require extractable PDF text'); };
     const loadQuestionPreviewManifest = async () => manifest;
     const pageBitmap = async (page, source) => { pages.push([page, source.pdfId]); return { width: 1100, height: 1555 }; };
-    ${['exKey', 'questionPreviewGroup', 'questionPreviewSlices', 'gapSize', 'fittedHeight', 'measureSlices', 'paintMeasuredPage', 'questionPreviewCanvas'].map(definition).join('\n')}
+    ${['exKey', 'questionPreviewGroup', 'originalQuestionPreviewSlices', 'questionDataSlices', 'answerDocumentSource', 'questionPreviewSlices', 'gapSize', 'fittedHeight', 'measureSlices', 'paintMeasuredPage', 'questionPreviewCanvas'].map(definition).join('\n')}
     return { render: questionPreviewCanvas, draws, pages };
   `)(group, manifest);
   const canvas = await app.render(group);
@@ -170,7 +170,7 @@ test('whole-question print geometry retains original context, columns and conten
     { page: 2, x: 0.53, y: 0.93, w: 0.42, h: 0.04 },
   ];
   const question = { id: '1', q: 1, page: 2, source, row: rows[0], rows, inkTop: 0.93 };
-  const slices = new Function('SOURCE', `${definition('wholeQuestionSlices')}\n${definition('shortSlices')} return shortSlices;`)(source)([question]);
+  const slices = new Function('SOURCE', `${['wholeQuestionSlices', 'originalShortSlices', 'questionDataSlices', 'answerDocumentSource', 'shortSlices'].map(definition).join('\n')} return shortSlices;`)(source)([question]);
   assert.deepEqual(slices.map((slice: { page: number; box: unknown }) => ({ page: slice.page, box: slice.box })), rows.map(box => ({ page: box.page, box })));
   assert.ok(slices.every((slice: { pdfId: string; block: string }) => slice.pdfId === source.pdfId && slice.block === 'elementary-source:q1'));
   assert.ok(Math.abs(slices[1].box.y + slices[1].box.h - 0.97) < 0.000001);
@@ -185,7 +185,7 @@ test('shared same-page context remains separate from the question instead of exp
     { page: 2, x: 0.05, y: 0.73, w: 0.9, h: 0.16 },
   ];
   const manifest = { exercises: [{ q: 4, pin: { page: 2, x: 0.9, y: 0.76 }, crops: [...crops, crops[2]] }] };
-  const preview = new Function(`${['exKey', 'questionPreviewGroup', 'questionPreviewSlices'].map(definition).join('\n')} return questionPreviewSlices;`)();
+  const preview = new Function(`${['exKey', 'questionPreviewGroup', 'originalQuestionPreviewSlices', 'questionDataSlices', 'answerDocumentSource', 'questionPreviewSlices'].map(definition).join('\n')} return questionPreviewSlices;`)();
   const slices = preview(group, manifest);
   assert.deepEqual(slices.map((slice: { page: number; box: unknown }) => ({ page: slice.page, ...slice.box as object })), crops);
   assert.equal(slices.length, 3, 'Repeated copies of an exact crop are rendered once');

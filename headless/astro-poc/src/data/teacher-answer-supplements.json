@@ -1,0 +1,3889 @@
+{
+  "schemaVersion": 1,
+  "answers": [
+    {
+      "pdfId": "0069f3da129040e9a2b13485e509a63f",
+      "sourceSha256": "7c572de1b96da091e4f0b0fd4783c7fbeb61a11daa767eb644682c6968e6bab0",
+      "q": 1,
+      "parts": [
+        {
+          "label": "",
+          "html": "התוצאה: 4,834. אומדן למאות: <span class=\"ltr\">2,600 + 2,200 = 4,800</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "008d194c4d044e529b83263797f12111",
+      "sourceSha256": "a691c7d31837d725fc36914674f55789ae03780ab116add49f03958db30be567",
+      "q": 18,
+      "parts": [
+        {
+          "label": "",
+          "html": "כן. אם המנה בחילוק המספר ב־6 היא מספר שלם, אז בחילוקו ב־3 המנה גדולה פי 2 ועדיין שלמה."
+        }
+      ]
+    },
+    {
+      "pdfId": "01acfa2796fb419e98f1c557afcf5ad6",
+      "sourceSha256": "7d236722c749beaf34dce01a8bf2aef3e928351fa86035e8df6a2c610954dc7e",
+      "q": 1,
+      "parts": [
+        {
+          "label": "",
+          "html": "5; בְּדִיקָה: <span class=\"ltr\">5 + 33 = 38</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "01acfa2796fb419e98f1c557afcf5ad6",
+      "sourceSha256": "7d236722c749beaf34dce01a8bf2aef3e928351fa86035e8df6a2c610954dc7e",
+      "q": 2,
+      "parts": [
+        {
+          "label": "",
+          "html": "36; בְּדִיקָה: <span class=\"ltr\">36 + 32 = 68</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "01acfa2796fb419e98f1c557afcf5ad6",
+      "sourceSha256": "7d236722c749beaf34dce01a8bf2aef3e928351fa86035e8df6a2c610954dc7e",
+      "q": 3,
+      "parts": [
+        {
+          "label": "",
+          "html": "1; בְּדִיקָה: <span class=\"ltr\">1 + 36 = 37</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "01acfa2796fb419e98f1c557afcf5ad6",
+      "sourceSha256": "7d236722c749beaf34dce01a8bf2aef3e928351fa86035e8df6a2c610954dc7e",
+      "q": 4,
+      "parts": [
+        {
+          "label": "",
+          "html": "11; בְּדִיקָה: <span class=\"ltr\">11 + 21 = 32</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "01acfa2796fb419e98f1c557afcf5ad6",
+      "sourceSha256": "7d236722c749beaf34dce01a8bf2aef3e928351fa86035e8df6a2c610954dc7e",
+      "q": 5,
+      "parts": [
+        {
+          "label": "",
+          "html": "33; בְּדִיקָה: <span class=\"ltr\">33 + 56 = 89</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "01acfa2796fb419e98f1c557afcf5ad6",
+      "sourceSha256": "7d236722c749beaf34dce01a8bf2aef3e928351fa86035e8df6a2c610954dc7e",
+      "q": 6,
+      "parts": [
+        {
+          "label": "",
+          "html": "14; בְּדִיקָה: <span class=\"ltr\">14 + 20 = 34</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "01acfa2796fb419e98f1c557afcf5ad6",
+      "sourceSha256": "7d236722c749beaf34dce01a8bf2aef3e928351fa86035e8df6a2c610954dc7e",
+      "q": 7,
+      "parts": [
+        {
+          "label": "",
+          "html": "41; בְּדִיקָה: <span class=\"ltr\">41 + 23 = 64</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "01acfa2796fb419e98f1c557afcf5ad6",
+      "sourceSha256": "7d236722c749beaf34dce01a8bf2aef3e928351fa86035e8df6a2c610954dc7e",
+      "q": 8,
+      "parts": [
+        {
+          "label": "",
+          "html": "61; בְּדִיקָה: <span class=\"ltr\">61 + 23 = 84</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "01acfa2796fb419e98f1c557afcf5ad6",
+      "sourceSha256": "7d236722c749beaf34dce01a8bf2aef3e928351fa86035e8df6a2c610954dc7e",
+      "q": 9,
+      "parts": [
+        {
+          "label": "",
+          "html": "33; בְּדִיקָה: <span class=\"ltr\">33 + 20 = 53</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "01acfa2796fb419e98f1c557afcf5ad6",
+      "sourceSha256": "7d236722c749beaf34dce01a8bf2aef3e928351fa86035e8df6a2c610954dc7e",
+      "q": 10,
+      "parts": [
+        {
+          "label": "",
+          "html": "14; בְּדִיקָה: <span class=\"ltr\">14 + 35 = 49</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "01acfa2796fb419e98f1c557afcf5ad6",
+      "sourceSha256": "7d236722c749beaf34dce01a8bf2aef3e928351fa86035e8df6a2c610954dc7e",
+      "q": 11,
+      "parts": [
+        {
+          "label": "",
+          "html": "16; בְּדִיקָה: <span class=\"ltr\">16 + 50 = 66</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "01acfa2796fb419e98f1c557afcf5ad6",
+      "sourceSha256": "7d236722c749beaf34dce01a8bf2aef3e928351fa86035e8df6a2c610954dc7e",
+      "q": 12,
+      "parts": [
+        {
+          "label": "",
+          "html": "53; בְּדִיקָה: <span class=\"ltr\">53 + 42 = 95</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "01acfa2796fb419e98f1c557afcf5ad6",
+      "sourceSha256": "7d236722c749beaf34dce01a8bf2aef3e928351fa86035e8df6a2c610954dc7e",
+      "q": 13,
+      "parts": [
+        {
+          "label": "",
+          "html": "36; בְּדִיקָה: <span class=\"ltr\">36 + 32 = 68</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "01acfa2796fb419e98f1c557afcf5ad6",
+      "sourceSha256": "7d236722c749beaf34dce01a8bf2aef3e928351fa86035e8df6a2c610954dc7e",
+      "q": 14,
+      "parts": [
+        {
+          "label": "",
+          "html": "11; בְּדִיקָה: <span class=\"ltr\">11 + 34 = 45</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "01acfa2796fb419e98f1c557afcf5ad6",
+      "sourceSha256": "7d236722c749beaf34dce01a8bf2aef3e928351fa86035e8df6a2c610954dc7e",
+      "q": 15,
+      "parts": [
+        {
+          "label": "",
+          "html": "15; בְּדִיקָה: <span class=\"ltr\">15 + 63 = 78</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "01acfa2796fb419e98f1c557afcf5ad6",
+      "sourceSha256": "7d236722c749beaf34dce01a8bf2aef3e928351fa86035e8df6a2c610954dc7e",
+      "q": 16,
+      "parts": [
+        {
+          "label": "",
+          "html": "30; בְּדִיקָה: <span class=\"ltr\">30 + 67 = 97</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "01acfa2796fb419e98f1c557afcf5ad6",
+      "sourceSha256": "7d236722c749beaf34dce01a8bf2aef3e928351fa86035e8df6a2c610954dc7e",
+      "q": 17,
+      "parts": [
+        {
+          "label": "",
+          "html": "64; בְּדִיקָה: <span class=\"ltr\">64 + 21 = 85</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "01acfa2796fb419e98f1c557afcf5ad6",
+      "sourceSha256": "7d236722c749beaf34dce01a8bf2aef3e928351fa86035e8df6a2c610954dc7e",
+      "q": 18,
+      "parts": [
+        {
+          "label": "",
+          "html": "16; בְּדִיקָה: <span class=\"ltr\">16 + 52 = 68</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "01acfa2796fb419e98f1c557afcf5ad6",
+      "sourceSha256": "7d236722c749beaf34dce01a8bf2aef3e928351fa86035e8df6a2c610954dc7e",
+      "q": 19,
+      "parts": [
+        {
+          "label": "",
+          "html": "4; בְּדִיקָה: <span class=\"ltr\">4 + 65 = 69</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "044d3f37c6bd4fada6aa6192ba3d0fe3",
+      "sourceSha256": "2af5fcd9f721f5152b45cfcf7b472192d3162fcff4ef802bbb529694e8db3587",
+      "q": 19,
+      "parts": [
+        {
+          "label": "",
+          "html": "נכון אם „מפורטת יותר” פירושו קנה מידה גדול יותר. אותו מרחק אמיתי מחולק במספר קטן יותר ולכן אורכו במפה גדל; למשל 1 ק״מ תופס 10 ס״מ בקנה מידה <span class=\"ltr\">1 : 10,000</span> ורק 2 ס״מ בקנה מידה <span class=\"ltr\">1 : 50,000</span>. פירוט גרפי לבדו, בלי שינוי קנה מידה, אינו מחייב אורך גדול יותר."
+        }
+      ]
+    },
+    {
+      "pdfId": "07de1dbfc6f644d7a25ca965d0e19cb2",
+      "sourceSha256": "940ad8622c38a501fbf400a99d6115dd3b55db01e93c187be097bbb6c2b4fef1",
+      "q": 20,
+      "parts": [
+        {
+          "label": "",
+          "html": "לא. המקבילית שבציור היא דוגמה נגדית: הצלעות הנגדיות שוות, אך הזוויות אינן ישרות. גם מקבילית אחרת שאינה מלבן מתאימה."
+        }
+      ]
+    },
+    {
+      "pdfId": "1c5c6d9ccd0d434699e29fc589e19d56",
+      "sourceSha256": "10c8aaedeb811ce3ccdfc111ecf105f814500136f5f9a892c462c60a611ebb0a",
+      "q": 1,
+      "parts": [
+        {
+          "label": "",
+          "html": "88; בְּדִיקָה: <span class=\"ltr\">88 − 20 = 68</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "1c5c6d9ccd0d434699e29fc589e19d56",
+      "sourceSha256": "10c8aaedeb811ce3ccdfc111ecf105f814500136f5f9a892c462c60a611ebb0a",
+      "q": 2,
+      "parts": [
+        {
+          "label": "",
+          "html": "76; בְּדִיקָה: <span class=\"ltr\">76 − 14 = 62</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "1c5c6d9ccd0d434699e29fc589e19d56",
+      "sourceSha256": "10c8aaedeb811ce3ccdfc111ecf105f814500136f5f9a892c462c60a611ebb0a",
+      "q": 3,
+      "parts": [
+        {
+          "label": "",
+          "html": "59; בְּדִיקָה: <span class=\"ltr\">59 − 16 = 43</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "1c5c6d9ccd0d434699e29fc589e19d56",
+      "sourceSha256": "10c8aaedeb811ce3ccdfc111ecf105f814500136f5f9a892c462c60a611ebb0a",
+      "q": 4,
+      "parts": [
+        {
+          "label": "",
+          "html": "82; בְּדִיקָה: <span class=\"ltr\">82 − 20 = 62</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "1c5c6d9ccd0d434699e29fc589e19d56",
+      "sourceSha256": "10c8aaedeb811ce3ccdfc111ecf105f814500136f5f9a892c462c60a611ebb0a",
+      "q": 5,
+      "parts": [
+        {
+          "label": "",
+          "html": "64; בְּדִיקָה: <span class=\"ltr\">64 − 24 = 40</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "1c5c6d9ccd0d434699e29fc589e19d56",
+      "sourceSha256": "10c8aaedeb811ce3ccdfc111ecf105f814500136f5f9a892c462c60a611ebb0a",
+      "q": 6,
+      "parts": [
+        {
+          "label": "",
+          "html": "69; בְּדִיקָה: <span class=\"ltr\">69 − 22 = 47</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "1c5c6d9ccd0d434699e29fc589e19d56",
+      "sourceSha256": "10c8aaedeb811ce3ccdfc111ecf105f814500136f5f9a892c462c60a611ebb0a",
+      "q": 7,
+      "parts": [
+        {
+          "label": "",
+          "html": "49; בְּדִיקָה: <span class=\"ltr\">49 − 22 = 27</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "1c5c6d9ccd0d434699e29fc589e19d56",
+      "sourceSha256": "10c8aaedeb811ce3ccdfc111ecf105f814500136f5f9a892c462c60a611ebb0a",
+      "q": 8,
+      "parts": [
+        {
+          "label": "",
+          "html": "68; בְּדִיקָה: <span class=\"ltr\">68 − 26 = 42</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "1c5c6d9ccd0d434699e29fc589e19d56",
+      "sourceSha256": "10c8aaedeb811ce3ccdfc111ecf105f814500136f5f9a892c462c60a611ebb0a",
+      "q": 9,
+      "parts": [
+        {
+          "label": "",
+          "html": "35; בְּדִיקָה: <span class=\"ltr\">35 − 12 = 23</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "1c5c6d9ccd0d434699e29fc589e19d56",
+      "sourceSha256": "10c8aaedeb811ce3ccdfc111ecf105f814500136f5f9a892c462c60a611ebb0a",
+      "q": 10,
+      "parts": [
+        {
+          "label": "",
+          "html": "89; בְּדִיקָה: <span class=\"ltr\">89 − 29 = 60</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "1c5c6d9ccd0d434699e29fc589e19d56",
+      "sourceSha256": "10c8aaedeb811ce3ccdfc111ecf105f814500136f5f9a892c462c60a611ebb0a",
+      "q": 11,
+      "parts": [
+        {
+          "label": "",
+          "html": "76; בְּדִיקָה: <span class=\"ltr\">76 − 22 = 54</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "1c5c6d9ccd0d434699e29fc589e19d56",
+      "sourceSha256": "10c8aaedeb811ce3ccdfc111ecf105f814500136f5f9a892c462c60a611ebb0a",
+      "q": 12,
+      "parts": [
+        {
+          "label": "",
+          "html": "43; בְּדִיקָה: <span class=\"ltr\">43 − 21 = 22</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "1c5c6d9ccd0d434699e29fc589e19d56",
+      "sourceSha256": "10c8aaedeb811ce3ccdfc111ecf105f814500136f5f9a892c462c60a611ebb0a",
+      "q": 13,
+      "parts": [
+        {
+          "label": "",
+          "html": "42; בְּדִיקָה: <span class=\"ltr\">42 − 12 = 30</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "1c5c6d9ccd0d434699e29fc589e19d56",
+      "sourceSha256": "10c8aaedeb811ce3ccdfc111ecf105f814500136f5f9a892c462c60a611ebb0a",
+      "q": 14,
+      "parts": [
+        {
+          "label": "",
+          "html": "84; בְּדִיקָה: <span class=\"ltr\">84 − 21 = 63</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "1c5c6d9ccd0d434699e29fc589e19d56",
+      "sourceSha256": "10c8aaedeb811ce3ccdfc111ecf105f814500136f5f9a892c462c60a611ebb0a",
+      "q": 15,
+      "parts": [
+        {
+          "label": "",
+          "html": "68; בְּדִיקָה: <span class=\"ltr\">68 − 28 = 40</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "1c5c6d9ccd0d434699e29fc589e19d56",
+      "sourceSha256": "10c8aaedeb811ce3ccdfc111ecf105f814500136f5f9a892c462c60a611ebb0a",
+      "q": 16,
+      "parts": [
+        {
+          "label": "",
+          "html": "43; בְּדִיקָה: <span class=\"ltr\">43 − 22 = 21</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "1c5c6d9ccd0d434699e29fc589e19d56",
+      "sourceSha256": "10c8aaedeb811ce3ccdfc111ecf105f814500136f5f9a892c462c60a611ebb0a",
+      "q": 17,
+      "parts": [
+        {
+          "label": "",
+          "html": "49; בְּדִיקָה: <span class=\"ltr\">49 − 26 = 23</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "1c5c6d9ccd0d434699e29fc589e19d56",
+      "sourceSha256": "10c8aaedeb811ce3ccdfc111ecf105f814500136f5f9a892c462c60a611ebb0a",
+      "q": 18,
+      "parts": [
+        {
+          "label": "",
+          "html": "86; בְּדִיקָה: <span class=\"ltr\">86 − 23 = 63</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "1c5c6d9ccd0d434699e29fc589e19d56",
+      "sourceSha256": "10c8aaedeb811ce3ccdfc111ecf105f814500136f5f9a892c462c60a611ebb0a",
+      "q": 19,
+      "parts": [
+        {
+          "label": "",
+          "html": "48; בְּדִיקָה: <span class=\"ltr\">48 − 24 = 24</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "1f47546e37aa40cf8814c485ee6a3e30",
+      "sourceSha256": "f0c7141877cee64218e38dd1e5e9176bdff0e34e35a8b31a3c782104cd15f717",
+      "q": 19,
+      "parts": [
+        {
+          "label": "",
+          "html": "נכון עבור שלם חיובי. כאשר <span class=\"ltr\">p > 100</span>, הגורם <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">p</span><span class=\"fden\">100</span></span></span> גדול מ־1; כפל השלם בגורם זה נותן כמות גדולה מן השלם. אם השלם הוא 0, שני הגדלים שווים, ולכן הנחת חיוביות נחוצה."
+        }
+      ]
+    },
+    {
+      "pdfId": "1f47546e37aa40cf8814c485ee6a3e30",
+      "sourceSha256": "f0c7141877cee64218e38dd1e5e9176bdff0e34e35a8b31a3c782104cd15f717",
+      "q": 20,
+      "parts": [
+        {
+          "label": "",
+          "html": "דוגמה: 30 ספרים הם 15% מספריית הכיתה. כמה ספרים בספרייה, וכמה הם 35% ממנה? תשובה: בספרייה 200 ספרים, ו־35% הם 70 ספרים. בדיקות: <span class=\"ltr\">200 x 0.15 = 30</span>; <span class=\"ltr\">200 x 0.35 = 70</span>. ייתכנו תשובות נוספות; מתקבלת כל תשובה שבה הבעיה מחייבת מציאת שלם ואחר כך אחוז אחר ממנו, וכל הכמויות והתוצאות שלמות."
+        }
+      ]
+    },
+    {
+      "pdfId": "207e690c250944928d94ddb2384ec7d8",
+      "sourceSha256": "fe4fb87ea097ac5921afe977d640fa100365367e41334c6b7aa7a61d83ea27eb",
+      "q": 16,
+      "parts": [
+        {
+          "label": "א",
+          "html": "<span class=\"ltr\">32</span>"
+        },
+        {
+          "label": "ב",
+          "html": "<span class=\"ltr\">11</span>"
+        },
+        {
+          "label": "ג",
+          "html": "<span class=\"ltr\">(6 + 8 + 7 + 11) : 4 = 8</span>"
+        }
+      ]
+    },
+    {
+      "pdfId": "207e690c250944928d94ddb2384ec7d8",
+      "sourceSha256": "fe4fb87ea097ac5921afe977d640fa100365367e41334c6b7aa7a61d83ea27eb",
+      "q": 20,
+      "parts": [
+        {
+          "label": "א",
+          "html": "<span class=\"ltr\">50</span>"
+        },
+        {
+          "label": "ב",
+          "html": "<span class=\"ltr\">12</span>"
+        },
+        {
+          "label": "ג",
+          "html": "<span class=\"ltr\">(8 + 9 + 10 + 11 + 12) : 5 = 10</span>"
+        }
+      ]
+    },
+    {
+      "pdfId": "21d2e85e62174c03aaa3dde332f01552",
+      "sourceSha256": "7322e3d023660d3acef04ce0a8afadc1c15cd84d99364be6994c671efeddc6ae",
+      "q": 19,
+      "parts": [
+        {
+          "label": "",
+          "html": "נכון. כפל שני איברי יחס באותו מספר חיובי אינו משנה אותו: <span class=\"ltr\">(3a) : (3b) = a : b = 4 : 7</span>. הגורם המשותף 3 מצטמצם."
+        }
+      ]
+    },
+    {
+      "pdfId": "24aebdcd8b344b14bd27b9c4cb441325",
+      "sourceSha256": "142f934de0bf733bfa9309e8ae6d3d2dcb5d752b9352ac7866acd2dec2dc6758",
+      "q": 1,
+      "parts": [
+        {
+          "label": "",
+          "html": "גודל הקפיצה: 20; המספר החסר: 1,640."
+        }
+      ]
+    },
+    {
+      "pdfId": "25a35bec1b9b4104892ce769859a6512",
+      "sourceSha256": "19325c9d1a73a05eef4c9ead4fe94744f5b031df6d11daca7a7ddca70d492822",
+      "q": 16,
+      "parts": [
+        {
+          "label": "א",
+          "html": "<span class=\"ltr\">80</span>"
+        },
+        {
+          "label": "ב",
+          "html": "<span class=\"ltr\">24</span>"
+        },
+        {
+          "label": "ג",
+          "html": "<span class=\"ltr\">(12 + 15 + 18 + 11 + 24) : 5 = 16</span>"
+        }
+      ]
+    },
+    {
+      "pdfId": "25a35bec1b9b4104892ce769859a6512",
+      "sourceSha256": "19325c9d1a73a05eef4c9ead4fe94744f5b031df6d11daca7a7ddca70d492822",
+      "q": 20,
+      "parts": [
+        {
+          "label": "א",
+          "html": "<span class=\"ltr\">108</span>"
+        },
+        {
+          "label": "ב",
+          "html": "<span class=\"ltr\">18</span>"
+        },
+        {
+          "label": "ג",
+          "html": "<span class=\"ltr\">(16 + 17 + 18 + 19 + 20 + 18) : 6 = 18</span>"
+        }
+      ]
+    },
+    {
+      "pdfId": "279ea200737b44ea9acf275831d7d19c",
+      "sourceSha256": "33eb5fe67e15b76257453d934b179461b35f4e220b04fb32b30030cd6c9082ff",
+      "q": 20,
+      "parts": [
+        {
+          "label": "",
+          "html": "כפל ב־100 וחילוק ב־100 הן פעולות הפוכות: לכל מספר שלם <span class=\"ltr\">n</span>, <span class=\"ltr\">(n x 100) : 100 = n</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "2a659fe72592474693a00b469687867b",
+      "sourceSha256": "e59fe5e06ec4cf966ca6187332244ca0713fe86d05cccce18ef8cd2b2b7241fe",
+      "q": 1,
+      "parts": [
+        {
+          "label": "",
+          "html": "שתי הפריסות תקינות. בפריסה A נסמן את ארבע הפאות בשורה משמאל לימין 1–4: הפאות 1 ו־3 נגדיות, 2 ו־4 נגדיות, והפאה העליונה והתחתונה נגדיות. בפריסה B נסמן את ארבע הפאות בעמוד המרכזי מלמעלה למטה 1–4: 1 ו־3 נגדיות, 2 ו־4 נגדיות, ושתי פאות הזרועות העליונות נגדיות. בקיפול מתקבלות שש פאות שונות, ללא חפיפה."
+        }
+      ]
+    },
+    {
+      "pdfId": "2a659fe72592474693a00b469687867b",
+      "sourceSha256": "e59fe5e06ec4cf966ca6187332244ca0713fe86d05cccce18ef8cd2b2b7241fe",
+      "q": 3,
+      "parts": [
+        {
+          "label": "",
+          "html": "לא. צלע משותפת בפריסה נשארת מקצוע משותף בקיפול, ולכן הפאות צמודות; לפאות נגדיות אין מקצוע משותף."
+        }
+      ]
+    },
+    {
+      "pdfId": "2a659fe72592474693a00b469687867b",
+      "sourceSha256": "e59fe5e06ec4cf966ca6187332244ca0713fe86d05cccce18ef8cd2b2b7241fe",
+      "q": 12,
+      "parts": [
+        {
+          "label": "",
+          "html": "לדוגמה, בפריסה A שבשאלה 1: הפאה העליונה, הפאה התחתונה והפאה השמאלית בשורה. העליונה והתחתונה נגדיות, ולכן שלוש הפאות אינן נפגשות בקודקוד אחד. ייתכנו תשובות נוספות; מתקבלת כל תשובה שבה נבחרות שלוש פאות ובהן זוג פאות נגדיות."
+        }
+      ]
+    },
+    {
+      "pdfId": "2a659fe72592474693a00b469687867b",
+      "sourceSha256": "e59fe5e06ec4cf966ca6187332244ca0713fe86d05cccce18ef8cd2b2b7241fe",
+      "q": 14,
+      "parts": [
+        {
+          "label": "",
+          "html": "לדוגמה: פריסה אחת היא שורה של ארבעה ריבועים, עם ריבוע מעל הריבוע השני וריבוע מתחתיו; פריסה שנייה היא עמודה של ארבעה ריבועים, עם ריבוע מכל צד של הריבוע העליון. שתיהן מתקפלות לקובייה. בראשונה יש ריבוע שנוגע בארבעה ריבועים אחרים, ובשנייה לכל היותר שלושה; סיבוב אינו משנה מספר שכנים ולכן הפריסות אינן מתקבלות זו מזו בסיבוב. ייתכנו תשובות נוספות; מתקבלת כל תשובה שבה שתי הפריסות תקינות ואינן חופפות לאחר סיבוב במישור."
+        }
+      ]
+    },
+    {
+      "pdfId": "2a659fe72592474693a00b469687867b",
+      "sourceSha256": "e59fe5e06ec4cf966ca6187332244ca0713fe86d05cccce18ef8cd2b2b7241fe",
+      "q": 17,
+      "parts": [
+        {
+          "label": "",
+          "html": "נשמרים: אורכי הצלעות והשטח הכולל של הפאות. משתנים: הזוויות בין פאות סמוכות ומיקומי הפאות במרחב; בפריסה כולן במישור ובקובייה הן סוגרות גוף תלת־ממדי. ייתכנו תשובות נוספות; מתקבלת כל תשובה שבה שני הגדלים אכן נשמרים ושתי התכונות אכן משתנות בקיפול."
+        }
+      ]
+    },
+    {
+      "pdfId": "2dd7240572dc41e3a320d6ab258c53aa",
+      "sourceSha256": "955b60fec4ec202bb87785a4294ddbc96901bee3b8625e4133424a44f8f745a4",
+      "q": 20,
+      "parts": [
+        {
+          "label": "",
+          "html": "כן, אם אלה שני ישרים שונים באותו מישור. שניהם מאונכים לאותו ישר, ולכן כיוונם זהה והם אינם נפגשים."
+        }
+      ]
+    },
+    {
+      "pdfId": "2feaa550e5624413850647e884ea7076",
+      "sourceSha256": "e613559a481ef9e807af693e745ae7278f531c64ded486044126f0448784fc27",
+      "q": 7,
+      "parts": [
+        {
+          "label": "",
+          "html": "הנקודה <span class=\"ltr\">6.48</span> נמצאת בין <span class=\"ltr\">6.4</span> ל־<span class=\"ltr\">6.5</span>, מעט משמאל ל־<span class=\"ltr\">6.5</span>. היא גדולה מ־6 ב־<span class=\"ltr\">0.48</span> וקטנה מ־7 ב־<span class=\"ltr\">0.52</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "325dbe7b49a341aebe80b552c9cd80ec",
+      "sourceSha256": "e41a374ce846471e8c0e83768a6200230528d617a6c40785847befae04d2e0fd",
+      "q": 14,
+      "parts": [
+        {
+          "label": "",
+          "html": "לדוגמה, מתחילים ב־1 ומבצעים שש פעולות מעבר. סדרה א׳: <span class=\"ltr\">1, 2, 3, 4, 5, 6, 7</span> — מוסיפים 1 בכל מעבר. סדרה ב׳: <span class=\"ltr\">1, 1, 3, 3, 5, 5, 7</span> — מוסיפים לסירוגין 0 ואז 2. בשתיהן מתחילים ב־1 ומסיימים ב־7 אחרי שישה מעברים, אך האיברים הפנימיים והחוקים שונים. ייתכנו תשובות נוספות; מתקבלת כל תשובה שבה מספר המעברים מוגדר, שני ערכי הקצה זהים, ושני החוקים והסדרות שונים."
+        }
+      ]
+    },
+    {
+      "pdfId": "325dbe7b49a341aebe80b552c9cd80ec",
+      "sourceSha256": "e41a374ce846471e8c0e83768a6200230528d617a6c40785847befae04d2e0fd",
+      "q": 19,
+      "parts": [
+        {
+          "label": "",
+          "html": "נכון אם אין הגבלה מראש על סוג החוק. לכל רשימה סופית אפשר לקבוע כלל שמחזיר את האיברים הנתונים במקומותיהם ואחר כך ממשיך תמיד ב־0, וכלל אחר שמחזיר אותם איברים ואחר כך ממשיך תמיד ב־1. שני החוקים מתאימים לכל הנתונים אך נותנים המשכים שונים; זו בנייה שמתאימה לכל רשימה סופית."
+        }
+      ]
+    },
+    {
+      "pdfId": "325dbe7b49a341aebe80b552c9cd80ec",
+      "sourceSha256": "e41a374ce846471e8c0e83768a6200230528d617a6c40785847befae04d2e0fd",
+      "q": 20,
+      "parts": [
+        {
+          "label": "",
+          "html": "דוגמה א׳: ההכללה „סדרה שהתחילה בעלייה ממשיכה תמיד לעלות” מופרכת בידי <span class=\"ltr\">1, 2, 1, 2, 1, 2</span>, לפי חוק מחזורי 1 ואז 2; האיבר השלישי קטן מהשני. דוגמה ב׳: ההכללה „אם שני האיברים הראשונים זוגיים, כל האיברים זוגיים” מופרכת בידי <span class=\"ltr\">2, 4, 5, 7, 8, 10</span>, בהוספה לסירוגין של 2 ואז 1; האיבר השלישי 5 אי־זוגי. ייתכנו תשובות נוספות; מתקבלת כל תשובה שבה מוצגות שתי טענות כלליות שגויות ולכל אחת סדרה בעלת חוק ברור שמקיימת את התנאי ומפרה את המסקנה."
+        }
+      ]
+    },
+    {
+      "pdfId": "36a5228a38944129bdce2e255d85173f",
+      "sourceSha256": "48f5b52b269e01c7dadb73bfdc8cdec1c793f862ac2c371f8a8d549557c0b381",
+      "q": 20,
+      "parts": [
+        {
+          "label": "",
+          "html": "כן. מספר שמתחלק ב־10 הוא עשר פעמים מספר שלם; הוא גם פעמיים מספר שלם וגם חמש פעמים מספר שלם, ולכן מתחלק ב־2 וב־5."
+        }
+      ]
+    },
+    {
+      "pdfId": "38e317b81414403db63211a098802715",
+      "sourceSha256": "421aef7605f6d1747d3587b0cb87f5d318cb119b54f4c2f4f48c1b0907a34b04",
+      "q": 15,
+      "parts": [
+        {
+          "label": "",
+          "html": "הטענה נכונה. כל גורם חיובי, וכפל שלו במספר גדול מ־1 מגדיל אותו; לכן המכפלה גדולה מכל אחד משני הגורמים."
+        }
+      ]
+    },
+    {
+      "pdfId": "3b791261d41b449ba45a234b5294483d",
+      "sourceSha256": "56d8d77da5cd91fd5e5abb6e4b3301ddbdca9deb7f91d3e9d384609c311a4e90",
+      "q": 20,
+      "parts": [
+        {
+          "label": "",
+          "html": "כן. אפשר להרחיב את השבר שוב ושוב: כופלים את המונה ואת המכנה באותו מספר טבעי שאינו 0, והערך נשאר קבוע. יש אינסוף מספרים כאלה."
+        }
+      ]
+    },
+    {
+      "pdfId": "3d56bca1424241c29d27bdf2fda0daef",
+      "sourceSha256": "2a187edaba7b1cd143df99419b13925b00f3df913cc706629f3fcfbbe6da3b85",
+      "q": 1,
+      "parts": [
+        {
+          "label": "א",
+          "html": "4 ו־10."
+        },
+        {
+          "label": "ב",
+          "html": "כמספרים, דנה צודקת: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">3</span></span> > <span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">4</span></span></span>. כשמשווים חלקים מכמויות צריך לציין שהשלם זהה. יובל משווה חלקים משני שלמים שונים, ולכן הדוגמה שלו אינה מפריכה את ההשוואה בין השברים."
+        }
+      ]
+    },
+    {
+      "pdfId": "3d56bca1424241c29d27bdf2fda0daef",
+      "sourceSha256": "2a187edaba7b1cd143df99419b13925b00f3df913cc706629f3fcfbbe6da3b85",
+      "q": 2,
+      "parts": [
+        {
+          "label": "א",
+          "html": "לא."
+        },
+        {
+          "label": "ב",
+          "html": "<span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">4</span></span>"
+        },
+        {
+          "label": "ג",
+          "html": "אי אפשר להסיק רבע רק ממספר החלקים. בהשוואת שטח החלק לשטח השלם, החלק הצבוע כאן הוא <span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">6</span></span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "3d56bca1424241c29d27bdf2fda0daef",
+      "sourceSha256": "2a187edaba7b1cd143df99419b13925b00f3df913cc706629f3fcfbbe6da3b85",
+      "q": 6,
+      "parts": [
+        {
+          "label": "א",
+          "html": "35"
+        },
+        {
+          "label": "ב",
+          "html": "5"
+        },
+        {
+          "label": "ג",
+          "html": "השלם מורכב מחמישה חלקים שווים, שבכל אחד 7: <span class=\"ltr\">5 x 7 = 35</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "3d56bca1424241c29d27bdf2fda0daef",
+      "sourceSha256": "2a187edaba7b1cd143df99419b13925b00f3df913cc706629f3fcfbbe6da3b85",
+      "q": 9,
+      "parts": [
+        {
+          "label": "",
+          "html": "מכיתה א׳ נסעו 4 תלמידים; מכיתה ב׳ נסעו 5 תלמידים; יחד נסעו 9 תלמידים. התוצאות שונות כי מספר התלמידים בכיתות שונה."
+        }
+      ]
+    },
+    {
+      "pdfId": "3d56bca1424241c29d27bdf2fda0daef",
+      "sourceSha256": "2a187edaba7b1cd143df99419b13925b00f3df913cc706629f3fcfbbe6da3b85",
+      "q": 14,
+      "parts": [
+        {
+          "label": "א",
+          "html": "<span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">4</span></span> מ־40; באותו שלם, רבע גדול מחמישית."
+        },
+        {
+          "label": "ב",
+          "html": "<span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">4</span></span> מ־60; כשנוטלים אותו שבר, השלם הגדול יותר נותן חלק גדול יותר."
+        }
+      ]
+    },
+    {
+      "pdfId": "3d56bca1424241c29d27bdf2fda0daef",
+      "sourceSha256": "2a187edaba7b1cd143df99419b13925b00f3df913cc706629f3fcfbbe6da3b85",
+      "q": 16,
+      "parts": [
+        {
+          "label": "",
+          "html": "<span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">6</span></span> גדול יותר; כשמחלקים אותו שלם לפחות חלקים שווים, כל חלק גדול יותר."
+        }
+      ]
+    },
+    {
+      "pdfId": "3fddf5c02e2745eca67a93ac3e063172",
+      "sourceSha256": "d7f07778a8fdfc3b79299b1151f790286b10dcd426afb2484515ac216e32a92a",
+      "q": 20,
+      "parts": [
+        {
+          "label": "",
+          "html": "לא. לדוגמה, 12 ו־21 שונים, אך סכום הספרות של שניהם הוא 3. גם זוג אחר של מספרים שונים בעלי אותו סכום ספרות מתאים."
+        }
+      ]
+    },
+    {
+      "pdfId": "435846964cae4c21bf8fa6685bc9f89a",
+      "sourceSha256": "6836623aa6edcd3356c1640e2e365e2dd35332f270f3fd8075a0431af7edc692",
+      "q": 15,
+      "parts": [
+        {
+          "label": "א",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">9</span></span></span>"
+        },
+        {
+          "label": "ב",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">18</span></span> + <span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">9</span></span> = <span class=\"frac\"><span class=\"fnum\">17</span><span class=\"fden\">18</span></span></span>"
+        },
+        {
+          "label": "ג",
+          "html": "כן; <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">9</span></span> < <span class=\"frac\"><span class=\"fnum\">17</span><span class=\"fden\">18</span></span></span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "435846964cae4c21bf8fa6685bc9f89a",
+      "sourceSha256": "6836623aa6edcd3356c1640e2e365e2dd35332f270f3fd8075a0431af7edc692",
+      "q": 16,
+      "parts": [
+        {
+          "label": "א",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">11</span><span class=\"fden\">8</span></span></span>"
+        },
+        {
+          "label": "ב",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">13</span><span class=\"fden\">24</span></span></span>"
+        },
+        {
+          "label": "ג",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">11</span><span class=\"fden\">8</span></span> − <span class=\"frac\"><span class=\"fnum\">23</span><span class=\"fden\">24</span></span> = <span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">12</span></span></span>; <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">13</span><span class=\"fden\">24</span></span> + <span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">12</span></span> = <span class=\"frac\"><span class=\"fnum\">23</span><span class=\"fden\">24</span></span></span>. המשוואות המודפסות בסעיפים א׳ וב׳ שונות ולכן פתרונותיהן שונים."
+        }
+      ]
+    },
+    {
+      "pdfId": "435846964cae4c21bf8fa6685bc9f89a",
+      "sourceSha256": "6836623aa6edcd3356c1640e2e365e2dd35332f270f3fd8075a0431af7edc692",
+      "q": 17,
+      "parts": [
+        {
+          "label": "א",
+          "html": "<span class=\"ltr\">42</span>"
+        },
+        {
+          "label": "ב",
+          "html": "<span class=\"ltr\">6</span>"
+        },
+        {
+          "label": "ג",
+          "html": "<span class=\"ltr\">6 x 7 = 42</span>"
+        }
+      ]
+    },
+    {
+      "pdfId": "435846964cae4c21bf8fa6685bc9f89a",
+      "sourceSha256": "6836623aa6edcd3356c1640e2e365e2dd35332f270f3fd8075a0431af7edc692",
+      "q": 18,
+      "parts": [
+        {
+          "label": "א",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">2</span></span></span>"
+        },
+        {
+          "label": "ב",
+          "html": "<span class=\"ltr\">30</span>"
+        },
+        {
+          "label": "ג",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">2</span></span> + <span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">30</span></span> = <span class=\"frac\"><span class=\"fnum\">11</span><span class=\"fden\">15</span></span></span>"
+        }
+      ]
+    },
+    {
+      "pdfId": "435846964cae4c21bf8fa6685bc9f89a",
+      "sourceSha256": "6836623aa6edcd3356c1640e2e365e2dd35332f270f3fd8075a0431af7edc692",
+      "q": 19,
+      "parts": [
+        {
+          "label": "א",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">5</span></span></span> מנפח המכל."
+        },
+        {
+          "label": "ב",
+          "html": "<span class=\"ltr\">x + <span class=\"frac\"><span class=\"fnum\">11</span><span class=\"fden\">30</span></span> = <span class=\"frac\"><span class=\"fnum\">29</span><span class=\"fden\">30</span></span>; x = <span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">5</span></span></span>"
+        },
+        {
+          "label": "ג",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">5</span></span> + <span class=\"frac\"><span class=\"fnum\">11</span><span class=\"fden\">30</span></span> = <span class=\"frac\"><span class=\"fnum\">29</span><span class=\"fden\">30</span></span></span>"
+        }
+      ]
+    },
+    {
+      "pdfId": "435846964cae4c21bf8fa6685bc9f89a",
+      "sourceSha256": "6836623aa6edcd3356c1640e2e365e2dd35332f270f3fd8075a0431af7edc692",
+      "q": 20,
+      "parts": [
+        {
+          "label": "א",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">17</span><span class=\"fden\">36</span></span></span>"
+        },
+        {
+          "label": "ב",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">17</span><span class=\"fden\">36</span></span></span> ו־<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">17</span><span class=\"fden\">36</span></span></span>"
+        },
+        {
+          "label": "ג",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">17</span><span class=\"fden\">36</span></span> + <span class=\"frac\"><span class=\"fnum\">17</span><span class=\"fden\">36</span></span> = <span class=\"frac\"><span class=\"fnum\">17</span><span class=\"fden\">18</span></span></span>"
+        }
+      ]
+    },
+    {
+      "pdfId": "43c898389ca74873a6972e49f6ae024e",
+      "sourceSha256": "313b1be4c05437af1f86613e545cde9ae568ec545d849657383972e1d64cf134",
+      "q": 1,
+      "parts": [
+        {
+          "label": "",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">13</span><span class=\"fden\">15</span></span> : <span class=\"frac\"><span class=\"fnum\">26</span><span class=\"fden\">45</span></span> = <span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">2</span></span></span>. דרך א׳: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">39</span><span class=\"fden\">45</span></span> : <span class=\"frac\"><span class=\"fnum\">26</span><span class=\"fden\">45</span></span> = 39 : 26 = <span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">2</span></span></span>. דרך ב׳: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">13</span><span class=\"fden\">15</span></span> x <span class=\"frac\"><span class=\"fnum\">45</span><span class=\"fden\">26</span></span> = <span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">2</span></span></span>. שתיהן מודדות אותה כמות ביחידות של המחלק; הישר המודפס מחולק לשמיניות ואינו מסמן את המרחקים האלה במדויק."
+        }
+      ]
+    },
+    {
+      "pdfId": "43c898389ca74873a6972e49f6ae024e",
+      "sourceSha256": "313b1be4c05437af1f86613e545cde9ae568ec545d849657383972e1d64cf134",
+      "q": 2,
+      "parts": [
+        {
+          "label": "",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">13</span><span class=\"fden\">15</span></span> : <span class=\"frac\"><span class=\"fnum\">26</span><span class=\"fden\">45</span></span> = <span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">2</span></span></span>. ההופכי הוא <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">45</span><span class=\"fden\">26</span></span></span>. בדיקה: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">2</span></span> x <span class=\"frac\"><span class=\"fnum\">26</span><span class=\"fden\">45</span></span> = <span class=\"frac\"><span class=\"fnum\">13</span><span class=\"fden\">15</span></span></span>. כלל: חילוק בשבר חיובי שקול לכפל בהופכי שלו."
+        }
+      ]
+    },
+    {
+      "pdfId": "43c898389ca74873a6972e49f6ae024e",
+      "sourceSha256": "313b1be4c05437af1f86613e545cde9ae568ec545d849657383972e1d64cf134",
+      "q": 3,
+      "parts": [
+        {
+          "label": "",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">17</span><span class=\"fden\">18</span></span> : <span class=\"frac\"><span class=\"fnum\">34</span><span class=\"fden\">63</span></span> = <span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">4</span></span></span>. ההופכי הוא <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">63</span><span class=\"fden\">34</span></span></span>. צמצום לפני הכפל יעיל כי 17 מחלק את 34 ו־9 מחלק את 18 ואת 63. התוצאה סבירה: המחולק גדול ממחלק אחד וקטן משני מחלקים, ולכן המנה בין 1 ל־2."
+        }
+      ]
+    },
+    {
+      "pdfId": "43c898389ca74873a6972e49f6ae024e",
+      "sourceSha256": "313b1be4c05437af1f86613e545cde9ae568ec545d849657383972e1d64cf134",
+      "q": 4,
+      "parts": [
+        {
+          "label": "",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">19</span><span class=\"fden\">24</span></span> : <span class=\"frac\"><span class=\"fnum\">57</span><span class=\"fden\">80</span></span> = <span class=\"frac\"><span class=\"fnum\">10</span><span class=\"fden\">9</span></span></span>. דרך א׳: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">190</span><span class=\"fden\">240</span></span> : <span class=\"frac\"><span class=\"fnum\">171</span><span class=\"fden\">240</span></span> = 190 : 171 = <span class=\"frac\"><span class=\"fnum\">10</span><span class=\"fden\">9</span></span></span>. דרך ב׳: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">19</span><span class=\"fden\">24</span></span> x <span class=\"frac\"><span class=\"fnum\">80</span><span class=\"fden\">57</span></span> = <span class=\"frac\"><span class=\"fnum\">10</span><span class=\"fden\">9</span></span></span>. ההופכי הוא <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">80</span><span class=\"fden\">57</span></span></span>; שתי הדרכים נותנות אותה מנה, ובכפל בהופכי אפשר לצמצם מוקדם."
+        }
+      ]
+    },
+    {
+      "pdfId": "43c898389ca74873a6972e49f6ae024e",
+      "sourceSha256": "313b1be4c05437af1f86613e545cde9ae568ec545d849657383972e1d64cf134",
+      "q": 7,
+      "parts": [
+        {
+          "label": "",
+          "html": "3 רבעים. דרך א׳: מונים 3 קטעים של רבע על הישר. דרך ב׳: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">4</span></span> x 4 = 3</span>. שתי הדרכים מבטאות חילוק של שלושה רבעים ברבע."
+        }
+      ]
+    },
+    {
+      "pdfId": "43c898389ca74873a6972e49f6ae024e",
+      "sourceSha256": "313b1be4c05437af1f86613e545cde9ae568ec545d849657383972e1d64cf134",
+      "q": 8,
+      "parts": [
+        {
+          "label": "",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">2</span></span></span> מנות, כלומר 2 מנות מלאות ועוד חצי מנה. בדיקה: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">2</span></span> x <span class=\"frac\"><span class=\"fnum\">26</span><span class=\"fden\">75</span></span> = <span class=\"frac\"><span class=\"fnum\">13</span><span class=\"fden\">15</span></span></span>. כלל: מספר המנות הוא הכמות הכוללת חלקי גודל המנה; בספירת מנות מלאות בלבד לוקחים את החלק השלם."
+        }
+      ]
+    },
+    {
+      "pdfId": "43c898389ca74873a6972e49f6ae024e",
+      "sourceSha256": "313b1be4c05437af1f86613e545cde9ae568ec545d849657383972e1d64cf134",
+      "q": 9,
+      "parts": [
+        {
+          "label": "",
+          "html": "לפי הביטוי המודפס: החסר הוא <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">44</span></span></span> והבדיקה <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">12</span></span> : <span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">44</span></span> = <span class=\"frac\"><span class=\"fnum\">11</span><span class=\"fden\">3</span></span></span>. לפי ההוראה „השלימו את המחולק”: החסר הוא <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">77</span><span class=\"fden\">36</span></span></span> והבדיקה <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">77</span><span class=\"fden\">36</span></span> : <span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">12</span></span> = <span class=\"frac\"><span class=\"fnum\">11</span><span class=\"fden\">3</span></span></span>. כפל המחלק במנה יעיל למציאת מחולק; במחולק המבוקש מתקבל מספר בין 2 ל־3, כפי שמתאים לכ־4 קבוצות שגודל כל אחת מעט יותר מחצי."
+        }
+      ]
+    },
+    {
+      "pdfId": "43c898389ca74873a6972e49f6ae024e",
+      "sourceSha256": "313b1be4c05437af1f86613e545cde9ae568ec545d849657383972e1d64cf134",
+      "q": 10,
+      "parts": [
+        {
+          "label": "",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">9</span></span> : <span class=\"frac\"><span class=\"fnum\">14</span><span class=\"fden\">27</span></span> = <span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">2</span></span></span>. לפני הכפל: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">9</span></span> x <span class=\"frac\"><span class=\"fnum\">27</span><span class=\"fden\">14</span></span> = <span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">1</span></span> x <span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">2</span></span> = <span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">2</span></span></span>. אחרי הכפל: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">189</span><span class=\"fden\">126</span></span> = <span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">2</span></span></span>. הצמצום מחלק מונה ומכנה באותו גורם ולכן הערך נשמר."
+        }
+      ]
+    },
+    {
+      "pdfId": "43c898389ca74873a6972e49f6ae024e",
+      "sourceSha256": "313b1be4c05437af1f86613e545cde9ae568ec545d849657383972e1d64cf134",
+      "q": 11,
+      "parts": [
+        {
+          "label": "",
+          "html": "6 מנות: כמה קבוצות של <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">2</span><span class=\"fden\">15</span></span></span> יש בתוך <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">4</span><span class=\"fden\">5</span></span></span>. הפעולה היא חילוק, וההופכי של המחלק הוא <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">15</span><span class=\"fden\">2</span></span></span>. בדיקה: <span class=\"ltr\">6 x <span class=\"frac\"><span class=\"fnum\">2</span><span class=\"fden\">15</span></span> = <span class=\"frac\"><span class=\"fnum\">4</span><span class=\"fden\">5</span></span></span>. כלל: כמות חלקי גודל מנה נותנת את מספר המנות; כפל במספר המנות מחזיר את הכמות."
+        }
+      ]
+    },
+    {
+      "pdfId": "43c898389ca74873a6972e49f6ae024e",
+      "sourceSha256": "313b1be4c05437af1f86613e545cde9ae568ec545d849657383972e1d64cf134",
+      "q": 12,
+      "parts": [
+        {
+          "label": "",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">8</span><span class=\"fden\">15</span></span> : <span class=\"frac\"><span class=\"fnum\">12</span><span class=\"fden\">25</span></span> = <span class=\"frac\"><span class=\"fnum\">10</span><span class=\"fden\">9</span></span></span>. בדיקה: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">10</span><span class=\"fden\">9</span></span> x <span class=\"frac\"><span class=\"fnum\">12</span><span class=\"fden\">25</span></span> = <span class=\"frac\"><span class=\"fnum\">8</span><span class=\"fden\">15</span></span></span>. צמצום לפני הכפל יעיל כי 8 ו־12 מתחלקים ב־4 ו־25 ו־15 מתחלקים ב־5. המנה מעט גדולה מ־1, כי המחולק מעט גדול מהמחלק."
+        }
+      ]
+    },
+    {
+      "pdfId": "43c898389ca74873a6972e49f6ae024e",
+      "sourceSha256": "313b1be4c05437af1f86613e545cde9ae568ec545d849657383972e1d64cf134",
+      "q": 13,
+      "parts": [
+        {
+          "label": "",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">14</span><span class=\"fden\">3</span></span></span> קבוצות, כלומר 4 שלמות ועוד <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">2</span><span class=\"fden\">3</span></span></span> קבוצה. דרך א׳: 14 שש־עשריות מחולקות לקבוצות של 3. דרך ב׳: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">8</span></span> x <span class=\"frac\"><span class=\"fnum\">16</span><span class=\"fden\">3</span></span> = <span class=\"frac\"><span class=\"fnum\">14</span><span class=\"fden\">3</span></span></span>. ספירת החלקים והכפל בהופכי מבטאים אותו חילוק."
+        }
+      ]
+    },
+    {
+      "pdfId": "43c898389ca74873a6972e49f6ae024e",
+      "sourceSha256": "313b1be4c05437af1f86613e545cde9ae568ec545d849657383972e1d64cf134",
+      "q": 14,
+      "parts": [
+        {
+          "label": "",
+          "html": "לדוגמה, השבר הראשון <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">9</span></span></span> והשני <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">3</span></span></span>. המנה <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">3</span></span></span>. בדיקה: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">3</span></span> x <span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">3</span></span> = <span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">9</span></span></span>. כלל: בוחרים שבר שני חיובי, ואת הראשון קובעים כ־<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">3</span></span></span> פעמים השני. ייתכנו תשובות נוספות; מתקבלת כל תשובה שבה שני השברים חיוביים והראשון שווה ל־<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">3</span></span></span> כפול השני."
+        }
+      ]
+    },
+    {
+      "pdfId": "43c898389ca74873a6972e49f6ae024e",
+      "sourceSha256": "313b1be4c05437af1f86613e545cde9ae568ec545d849657383972e1d64cf134",
+      "q": 16,
+      "parts": [
+        {
+          "label": "",
+          "html": "11 מנות מלאות לשימוש ועוד <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">4</span></span></span> מנה, כלומר <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">47</span><span class=\"fden\">4</span></span></span> מנות במונחי כמות; השארית היא <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">21</span><span class=\"fden\">100</span></span></span> ליטר. דרך א׳: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">77</span><span class=\"fden\">20</span></span> : <span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">25</span></span> − 2 = <span class=\"frac\"><span class=\"fnum\">47</span><span class=\"fden\">4</span></span></span>. דרך ב׳: <span class=\"ltr\">(<span class=\"frac\"><span class=\"fnum\">77</span><span class=\"fden\">20</span></span> − 2 x <span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">25</span></span>) : <span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">25</span></span> = <span class=\"frac\"><span class=\"fnum\">47</span><span class=\"fden\">4</span></span></span>. הסרת שתי מנות לפני החילוק או אחרי ספירת המנות נותנת אותה כמות."
+        }
+      ]
+    },
+    {
+      "pdfId": "43c898389ca74873a6972e49f6ae024e",
+      "sourceSha256": "313b1be4c05437af1f86613e545cde9ae568ec545d849657383972e1d64cf134",
+      "q": 17,
+      "parts": [
+        {
+          "label": "",
+          "html": "המנות שוות ל־6. בדיקות: <span class=\"ltr\">6 x <span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">8</span></span> = <span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">4</span></span></span>; <span class=\"ltr\">6 x <span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">36</span></span> = <span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">6</span></span></span>. כלל: כשמחולק שווה ל־6 פעמים המחלק, המנה היא 6; אין צורך שהמחולקים עצמם יהיו שווים."
+        }
+      ]
+    },
+    {
+      "pdfId": "43c898389ca74873a6972e49f6ae024e",
+      "sourceSha256": "313b1be4c05437af1f86613e545cde9ae568ec545d849657383972e1d64cf134",
+      "q": 18,
+      "parts": [
+        {
+          "label": "",
+          "html": "4. הדרך היעילה היא לספור שש־עשריות: <span class=\"ltr\">12 : 3 = 4</span>. זה סביר כי <span class=\"ltr\">4 x <span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">16</span></span> = <span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">4</span></span></span>. במעבר לשש־עשריות שני הגדלים נמדדים באותה יחידה."
+        }
+      ]
+    },
+    {
+      "pdfId": "43c898389ca74873a6972e49f6ae024e",
+      "sourceSha256": "313b1be4c05437af1f86613e545cde9ae568ec545d849657383972e1d64cf134",
+      "q": 19,
+      "parts": [
+        {
+          "label": "",
+          "html": "המנה <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">11</span><span class=\"fden\">5</span></span></span> קרובה יותר ל־2; מרחקה מ־2 הוא <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">5</span></span></span> ומ־3 הוא <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">4</span><span class=\"fden\">5</span></span></span>. דרך א׳: <span class=\"ltr\">11 : 5 = <span class=\"frac\"><span class=\"fnum\">11</span><span class=\"fden\">5</span></span></span>. דרך ב׳: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">11</span><span class=\"fden\">12</span></span> x <span class=\"frac\"><span class=\"fnum\">12</span><span class=\"fden\">5</span></span> = <span class=\"frac\"><span class=\"fnum\">11</span><span class=\"fden\">5</span></span></span>. מכנים שווים מאפשרים למדוד בשנים־עשריות; הכפל בהופכי נותן אותה תוצאה."
+        }
+      ]
+    },
+    {
+      "pdfId": "43c898389ca74873a6972e49f6ae024e",
+      "sourceSha256": "313b1be4c05437af1f86613e545cde9ae568ec545d849657383972e1d64cf134",
+      "q": 20,
+      "parts": [
+        {
+          "label": "",
+          "html": "12 מנות מלאות ועוד רבע מנה, כלומר <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">49</span><span class=\"fden\">4</span></span></span> מנות במונחי כמות; השארית היא <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">100</span></span></span> יחידה. בדיקה: <span class=\"ltr\">(<span class=\"frac\"><span class=\"fnum\">49</span><span class=\"fden\">4</span></span> + 4) x <span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">25</span></span> = <span class=\"frac\"><span class=\"fnum\">91</span><span class=\"fden\">20</span></span></span>. כלל: מספר המנות שנותרות שווה לכמות הכוללת חלקי גודל מנה, פחות מספר המנות שהוסרו; במנות מלאות סופרים רק את החלק השלם."
+        }
+      ]
+    },
+    {
+      "pdfId": "46df9eaca3ff48b581474f29bab19c80",
+      "sourceSha256": "91dc87fda5ae2b372fe17d7a8e8789fe8a4c96538b0716ea12b152f905ba40f8",
+      "q": 1,
+      "parts": [
+        {
+          "label": "",
+          "html": "6 מנות. דרך א׳: בשלושה רבעים יש 6 שמיניות. דרך ב׳: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">4</span></span> x 8 = 6</span>. בשתיהן מחלקים את הכמות בגודל מנה."
+        }
+      ]
+    },
+    {
+      "pdfId": "46df9eaca3ff48b581474f29bab19c80",
+      "sourceSha256": "91dc87fda5ae2b372fe17d7a8e8789fe8a4c96538b0716ea12b152f905ba40f8",
+      "q": 2,
+      "parts": [
+        {
+          "label": "",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">13</span><span class=\"fden\">15</span></span> : <span class=\"frac\"><span class=\"fnum\">26</span><span class=\"fden\">45</span></span> = <span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">2</span></span></span>. ההופכי הוא <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">45</span><span class=\"fden\">26</span></span></span>. בדיקה: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">2</span></span> x <span class=\"frac\"><span class=\"fnum\">26</span><span class=\"fden\">45</span></span> = <span class=\"frac\"><span class=\"fnum\">13</span><span class=\"fden\">15</span></span></span>. כלל: חילוק בשבר חיובי שקול לכפל בהופכי שלו."
+        }
+      ]
+    },
+    {
+      "pdfId": "46df9eaca3ff48b581474f29bab19c80",
+      "sourceSha256": "91dc87fda5ae2b372fe17d7a8e8789fe8a4c96538b0716ea12b152f905ba40f8",
+      "q": 3,
+      "parts": [
+        {
+          "label": "",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">17</span><span class=\"fden\">18</span></span> : <span class=\"frac\"><span class=\"fnum\">34</span><span class=\"fden\">63</span></span> = <span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">4</span></span></span>. ההופכי הוא <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">63</span><span class=\"fden\">34</span></span></span>. צמצום לפני הכפל יעיל כי 17 מחלק את 34 ו־9 מחלק את 18 ואת 63. התוצאה סבירה: המחולק גדול ממחלק אחד וקטן משני מחלקים, ולכן המנה בין 1 ל־2."
+        }
+      ]
+    },
+    {
+      "pdfId": "46df9eaca3ff48b581474f29bab19c80",
+      "sourceSha256": "91dc87fda5ae2b372fe17d7a8e8789fe8a4c96538b0716ea12b152f905ba40f8",
+      "q": 4,
+      "parts": [
+        {
+          "label": "",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">19</span><span class=\"fden\">24</span></span> : <span class=\"frac\"><span class=\"fnum\">57</span><span class=\"fden\">80</span></span> = <span class=\"frac\"><span class=\"fnum\">10</span><span class=\"fden\">9</span></span></span>. דרך א׳: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">190</span><span class=\"fden\">240</span></span> : <span class=\"frac\"><span class=\"fnum\">171</span><span class=\"fden\">240</span></span> = 190 : 171 = <span class=\"frac\"><span class=\"fnum\">10</span><span class=\"fden\">9</span></span></span>. דרך ב׳: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">19</span><span class=\"fden\">24</span></span> x <span class=\"frac\"><span class=\"fnum\">80</span><span class=\"fden\">57</span></span> = <span class=\"frac\"><span class=\"fnum\">10</span><span class=\"fden\">9</span></span></span>. ההופכי הוא <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">80</span><span class=\"fden\">57</span></span></span>; שתי הדרכים נותנות אותה מנה, ובכפל בהופכי אפשר לצמצם מוקדם."
+        }
+      ]
+    },
+    {
+      "pdfId": "46df9eaca3ff48b581474f29bab19c80",
+      "sourceSha256": "91dc87fda5ae2b372fe17d7a8e8789fe8a4c96538b0716ea12b152f905ba40f8",
+      "q": 6,
+      "parts": [
+        {
+          "label": "",
+          "html": "רות בחרה נכון: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">6</span></span> : <span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">3</span></span> = <span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">2</span></span></span>. נוח לספור שישיות: 5 שישיות מכילות <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">2</span></span></span> קבוצות של שתי שישיות. המנה סבירה כי הכמות בין שני שלישים לשלושה שלישים."
+        }
+      ]
+    },
+    {
+      "pdfId": "46df9eaca3ff48b581474f29bab19c80",
+      "sourceSha256": "91dc87fda5ae2b372fe17d7a8e8789fe8a4c96538b0716ea12b152f905ba40f8",
+      "q": 7,
+      "parts": [
+        {
+          "label": "",
+          "html": "3 רבעים. דרך א׳: מונים 3 קטעים של רבע על הישר. דרך ב׳: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">4</span></span> x 4 = 3</span>. שתי הדרכים מבטאות חילוק של שלושה רבעים ברבע."
+        }
+      ]
+    },
+    {
+      "pdfId": "46df9eaca3ff48b581474f29bab19c80",
+      "sourceSha256": "91dc87fda5ae2b372fe17d7a8e8789fe8a4c96538b0716ea12b152f905ba40f8",
+      "q": 8,
+      "parts": [
+        {
+          "label": "",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">2</span></span></span> מנות, כלומר 2 מנות מלאות ועוד חצי מנה. בדיקה: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">2</span></span> x <span class=\"frac\"><span class=\"fnum\">26</span><span class=\"fden\">75</span></span> = <span class=\"frac\"><span class=\"fnum\">13</span><span class=\"fden\">15</span></span></span>. כלל: מספר המנות הוא הכמות הכוללת חלקי גודל המנה; בספירת מנות מלאות בלבד לוקחים את החלק השלם."
+        }
+      ]
+    },
+    {
+      "pdfId": "46df9eaca3ff48b581474f29bab19c80",
+      "sourceSha256": "91dc87fda5ae2b372fe17d7a8e8789fe8a4c96538b0716ea12b152f905ba40f8",
+      "q": 9,
+      "parts": [
+        {
+          "label": "",
+          "html": "לפי הביטוי המודפס: החסר הוא <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">44</span></span></span> והבדיקה <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">12</span></span> : <span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">44</span></span> = <span class=\"frac\"><span class=\"fnum\">11</span><span class=\"fden\">3</span></span></span>. לפי ההוראה „השלימו את המחולק”: החסר הוא <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">77</span><span class=\"fden\">36</span></span></span> והבדיקה <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">77</span><span class=\"fden\">36</span></span> : <span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">12</span></span> = <span class=\"frac\"><span class=\"fnum\">11</span><span class=\"fden\">3</span></span></span>. כפל המחלק במנה יעיל למציאת מחולק; במחולק המבוקש מתקבל מספר בין 2 ל־3, כפי שמתאים לכ־4 קבוצות שגודל כל אחת מעט יותר מחצי."
+        }
+      ]
+    },
+    {
+      "pdfId": "46df9eaca3ff48b581474f29bab19c80",
+      "sourceSha256": "91dc87fda5ae2b372fe17d7a8e8789fe8a4c96538b0716ea12b152f905ba40f8",
+      "q": 10,
+      "parts": [
+        {
+          "label": "",
+          "html": "סיפור לדוגמה: יש <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">9</span></span></span> ליטר מיץ; גודל מנה הוא <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">14</span><span class=\"fden\">27</span></span></span> ליטר. לכמה מנות מספיקה הכמות? <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">9</span></span> : <span class=\"frac\"><span class=\"fnum\">14</span><span class=\"fden\">27</span></span> = <span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">2</span></span></span>. דרך א׳: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">21</span><span class=\"fden\">27</span></span> : <span class=\"frac\"><span class=\"fnum\">14</span><span class=\"fden\">27</span></span> = 21 : 14 = <span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">2</span></span></span>. דרך ב׳: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">9</span></span> x <span class=\"frac\"><span class=\"fnum\">27</span><span class=\"fden\">14</span></span> = <span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">2</span></span></span>. בשתיהן מחפשים כמה קבוצות בגודל המחלק נכנסות במחולק. ייתכנו תשובות נוספות; מתקבלת כל תשובה שבה הסיפור מתאר חלוקת <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">9</span></span></span> למנות בגודל <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">14</span><span class=\"fden\">27</span></span></span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "46df9eaca3ff48b581474f29bab19c80",
+      "sourceSha256": "91dc87fda5ae2b372fe17d7a8e8789fe8a4c96538b0716ea12b152f905ba40f8",
+      "q": 11,
+      "parts": [
+        {
+          "label": "",
+          "html": "6 מנות: כמה קבוצות של <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">2</span><span class=\"fden\">15</span></span></span> יש בתוך <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">4</span><span class=\"fden\">5</span></span></span>. הפעולה היא חילוק, וההופכי של המחלק הוא <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">15</span><span class=\"fden\">2</span></span></span>. בדיקה: <span class=\"ltr\">6 x <span class=\"frac\"><span class=\"fnum\">2</span><span class=\"fden\">15</span></span> = <span class=\"frac\"><span class=\"fnum\">4</span><span class=\"fden\">5</span></span></span>. כלל: כמות חלקי גודל מנה נותנת את מספר המנות; כפל במספר המנות מחזיר את הכמות."
+        }
+      ]
+    },
+    {
+      "pdfId": "46df9eaca3ff48b581474f29bab19c80",
+      "sourceSha256": "91dc87fda5ae2b372fe17d7a8e8789fe8a4c96538b0716ea12b152f905ba40f8",
+      "q": 12,
+      "parts": [
+        {
+          "label": "",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">8</span><span class=\"fden\">15</span></span> : <span class=\"frac\"><span class=\"fnum\">12</span><span class=\"fden\">25</span></span> = <span class=\"frac\"><span class=\"fnum\">10</span><span class=\"fden\">9</span></span></span>. בדיקה: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">10</span><span class=\"fden\">9</span></span> x <span class=\"frac\"><span class=\"fnum\">12</span><span class=\"fden\">25</span></span> = <span class=\"frac\"><span class=\"fnum\">8</span><span class=\"fden\">15</span></span></span>. צמצום לפני הכפל יעיל כי 8 ו־12 מתחלקים ב־4 ו־25 ו־15 מתחלקים ב־5. המנה מעט גדולה מ־1, כי המחולק מעט גדול מהמחלק."
+        }
+      ]
+    },
+    {
+      "pdfId": "46df9eaca3ff48b581474f29bab19c80",
+      "sourceSha256": "91dc87fda5ae2b372fe17d7a8e8789fe8a4c96538b0716ea12b152f905ba40f8",
+      "q": 13,
+      "parts": [
+        {
+          "label": "",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">14</span><span class=\"fden\">3</span></span></span> קבוצות, כלומר 4 שלמות ועוד <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">2</span><span class=\"fden\">3</span></span></span> קבוצה. דרך א׳: 14 שש־עשריות מחולקות לקבוצות של 3. דרך ב׳: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">8</span></span> x <span class=\"frac\"><span class=\"fnum\">16</span><span class=\"fden\">3</span></span> = <span class=\"frac\"><span class=\"fnum\">14</span><span class=\"fden\">3</span></span></span>. ספירת החלקים והכפל בהופכי מבטאים אותו חילוק."
+        }
+      ]
+    },
+    {
+      "pdfId": "46df9eaca3ff48b581474f29bab19c80",
+      "sourceSha256": "91dc87fda5ae2b372fe17d7a8e8789fe8a4c96538b0716ea12b152f905ba40f8",
+      "q": 14,
+      "parts": [
+        {
+          "label": "",
+          "html": "לדוגמה, השבר הראשון <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">9</span></span></span> והשני <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">3</span></span></span>. המנה <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">3</span></span></span>. בדיקה: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">3</span></span> x <span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">3</span></span> = <span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">9</span></span></span>. כלל: בוחרים שבר שני חיובי, ואת הראשון קובעים כ־<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">3</span></span></span> פעמים השני. ייתכנו תשובות נוספות; מתקבלת כל תשובה שבה שני השברים חיוביים והראשון שווה ל־<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">3</span></span></span> כפול השני."
+        }
+      ]
+    },
+    {
+      "pdfId": "46df9eaca3ff48b581474f29bab19c80",
+      "sourceSha256": "91dc87fda5ae2b372fe17d7a8e8789fe8a4c96538b0716ea12b152f905ba40f8",
+      "q": 16,
+      "parts": [
+        {
+          "label": "",
+          "html": "11 מנות מלאות לשימוש ועוד <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">4</span></span></span> מנה, כלומר <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">47</span><span class=\"fden\">4</span></span></span> מנות במונחי כמות; השארית היא <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">21</span><span class=\"fden\">100</span></span></span> ליטר. דרך א׳: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">77</span><span class=\"fden\">20</span></span> : <span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">25</span></span> − 2 = <span class=\"frac\"><span class=\"fnum\">47</span><span class=\"fden\">4</span></span></span>. דרך ב׳: <span class=\"ltr\">(<span class=\"frac\"><span class=\"fnum\">77</span><span class=\"fden\">20</span></span> − 2 x <span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">25</span></span>) : <span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">25</span></span> = <span class=\"frac\"><span class=\"fnum\">47</span><span class=\"fden\">4</span></span></span>. הסרת שתי מנות לפני החילוק או אחרי ספירת המנות נותנת אותה כמות."
+        }
+      ]
+    },
+    {
+      "pdfId": "46df9eaca3ff48b581474f29bab19c80",
+      "sourceSha256": "91dc87fda5ae2b372fe17d7a8e8789fe8a4c96538b0716ea12b152f905ba40f8",
+      "q": 17,
+      "parts": [
+        {
+          "label": "",
+          "html": "המנות שוות ל־6. בדיקות: <span class=\"ltr\">6 x <span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">8</span></span> = <span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">4</span></span></span>; <span class=\"ltr\">6 x <span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">36</span></span> = <span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">6</span></span></span>. כלל: כשמחולק שווה ל־6 פעמים המחלק, המנה היא 6; אין צורך שהמחולקים עצמם יהיו שווים."
+        }
+      ]
+    },
+    {
+      "pdfId": "46df9eaca3ff48b581474f29bab19c80",
+      "sourceSha256": "91dc87fda5ae2b372fe17d7a8e8789fe8a4c96538b0716ea12b152f905ba40f8",
+      "q": 18,
+      "parts": [
+        {
+          "label": "",
+          "html": "4. הדרך היעילה היא לספור שש־עשריות: <span class=\"ltr\">12 : 3 = 4</span>. זה סביר כי <span class=\"ltr\">4 x <span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">16</span></span> = <span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">4</span></span></span>. במעבר לשש־עשריות שני הגדלים נמדדים באותה יחידה."
+        }
+      ]
+    },
+    {
+      "pdfId": "46df9eaca3ff48b581474f29bab19c80",
+      "sourceSha256": "91dc87fda5ae2b372fe17d7a8e8789fe8a4c96538b0716ea12b152f905ba40f8",
+      "q": 19,
+      "parts": [
+        {
+          "label": "",
+          "html": "המנה <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">11</span><span class=\"fden\">5</span></span></span> קרובה יותר ל־2; מרחקה מ־2 הוא <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">5</span></span></span> ומ־3 הוא <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">4</span><span class=\"fden\">5</span></span></span>. דרך א׳: <span class=\"ltr\">11 : 5 = <span class=\"frac\"><span class=\"fnum\">11</span><span class=\"fden\">5</span></span></span>. דרך ב׳: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">11</span><span class=\"fden\">12</span></span> x <span class=\"frac\"><span class=\"fnum\">12</span><span class=\"fden\">5</span></span> = <span class=\"frac\"><span class=\"fnum\">11</span><span class=\"fden\">5</span></span></span>. מכנים שווים מאפשרים למדוד בשנים־עשריות; הכפל בהופכי נותן אותה תוצאה."
+        }
+      ]
+    },
+    {
+      "pdfId": "46df9eaca3ff48b581474f29bab19c80",
+      "sourceSha256": "91dc87fda5ae2b372fe17d7a8e8789fe8a4c96538b0716ea12b152f905ba40f8",
+      "q": 20,
+      "parts": [
+        {
+          "label": "",
+          "html": "12 מנות מלאות ועוד רבע מנה, כלומר <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">49</span><span class=\"fden\">4</span></span></span> מנות במונחי כמות; השארית היא <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">100</span></span></span> יחידה. בדיקה: <span class=\"ltr\">(<span class=\"frac\"><span class=\"fnum\">49</span><span class=\"fden\">4</span></span> + 4) x <span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">25</span></span> = <span class=\"frac\"><span class=\"fnum\">91</span><span class=\"fden\">20</span></span></span>. כלל: מספר המנות שנותרות שווה לכמות הכוללת חלקי גודל מנה, פחות מספר המנות שהוסרו; במנות מלאות סופרים רק את החלק השלם."
+        }
+      ]
+    },
+    {
+      "pdfId": "4a466ab88c3944018b9320d87f205120",
+      "sourceSha256": "ad4d6859e7b14eba6a9eb1e5b57879f9d41c005a6e27f2ca9cd367aa3927dc6f",
+      "q": 5,
+      "parts": [
+        {
+          "label": "",
+          "html": "לא. <span class=\"ltr\">105 − 40 = 65</span>; לאחר החלפת הסדר מחסרים 105 מ־40, ולכן לא מתקבלת אותה תוצאה."
+        }
+      ]
+    },
+    {
+      "pdfId": "4a466ab88c3944018b9320d87f205120",
+      "sourceSha256": "ad4d6859e7b14eba6a9eb1e5b57879f9d41c005a6e27f2ca9cd367aa3927dc6f",
+      "q": 6,
+      "parts": [
+        {
+          "label": "",
+          "html": "לא. <span class=\"ltr\">100 : 7</span> גדול מ־1, ואילו <span class=\"ltr\">7 : 100</span> קטן מ־1; לכן החלפת הסדר משנה את המנה."
+        }
+      ]
+    },
+    {
+      "pdfId": "4bf8a12b04f54b3495a28c4eb7c59aa1",
+      "sourceSha256": "6eb955853c1649cdd7e212ee6ccd06c1df4f4d08fc0ddfe98026941f1ce25794",
+      "q": 17,
+      "parts": [
+        {
+          "label": "",
+          "html": "שני זוגות של צלעות מקבילות: <span class=\"ltr\">AB ∥ DC</span> ו־<span class=\"ltr\">AD ∥ BC</span>. הזוג הראשון אופקי והזוג השני אנכי; צלעות כל זוג אינן נפגשות גם בהמשך שלהן."
+        }
+      ]
+    },
+    {
+      "pdfId": "4d27373122ac435c86b829cce5b42eb5",
+      "sourceSha256": "f4e7309158cc807c3774fdf7c9f4196ffcae3c9c8412cac468d8d88c3a449f21",
+      "q": 6,
+      "parts": [
+        {
+          "label": "",
+          "html": "2,400; האומדן גדול מ־2,347, ולכן לא יחסר."
+        }
+      ]
+    },
+    {
+      "pdfId": "4d27373122ac435c86b829cce5b42eb5",
+      "sourceSha256": "f4e7309158cc807c3774fdf7c9f4196ffcae3c9c8412cac468d8d88c3a449f21",
+      "q": 7,
+      "parts": [
+        {
+          "label": "",
+          "html": "1,800; האומדן גדול מ־1,782, ולכן לא יחסר."
+        }
+      ]
+    },
+    {
+      "pdfId": "4d27373122ac435c86b829cce5b42eb5",
+      "sourceSha256": "f4e7309158cc807c3774fdf7c9f4196ffcae3c9c8412cac468d8d88c3a449f21",
+      "q": 8,
+      "parts": [
+        {
+          "label": "",
+          "html": "3,100; האומדן קטן מ־3,126, ולכן אינו עובר את הכמות."
+        }
+      ]
+    },
+    {
+      "pdfId": "4d27373122ac435c86b829cce5b42eb5",
+      "sourceSha256": "f4e7309158cc807c3774fdf7c9f4196ffcae3c9c8412cac468d8d88c3a449f21",
+      "q": 9,
+      "parts": [
+        {
+          "label": "",
+          "html": "4,500; האומדן גדול מ־4,491, ולכן לא יחסר."
+        }
+      ]
+    },
+    {
+      "pdfId": "4d27373122ac435c86b829cce5b42eb5",
+      "sourceSha256": "f4e7309158cc807c3774fdf7c9f4196ffcae3c9c8412cac468d8d88c3a449f21",
+      "q": 10,
+      "parts": [
+        {
+          "label": "",
+          "html": "900; האומדן קטן מ־967, ולכן אינו עובר את הכמות."
+        }
+      ]
+    },
+    {
+      "pdfId": "4d27373122ac435c86b829cce5b42eb5",
+      "sourceSha256": "f4e7309158cc807c3774fdf7c9f4196ffcae3c9c8412cac468d8d88c3a449f21",
+      "q": 13,
+      "parts": [
+        {
+          "label": "",
+          "html": "<span class=\"ltr\">3,000 − 2,000 = 1,000</span>; זה האומדן הקרוב יותר, כי 3,012 קרוב ל־3,000 ו־1,988 קרוב ל־2,000."
+        }
+      ]
+    },
+    {
+      "pdfId": "4fb55b64601c4b39a715cd10d9d8fd19",
+      "sourceSha256": "5c3cee14850c087d236009d1a81c9ec84fb5e7ae93c7353238bdab796fde4c00",
+      "q": 20,
+      "parts": [
+        {
+          "label": "",
+          "html": "כן. הכפלת גורם פי 2 יוצרת שתי פעמים את המכפלה המקורית, לפי חוק הקיבוץ בכפל."
+        }
+      ]
+    },
+    {
+      "pdfId": "52fb4917a43c475abb8a2155fbec6ed5",
+      "sourceSha256": "1806f36eda676336f4fe06ec5891da96cee45f64ffd2bea37ca243f68e08b463",
+      "q": 16,
+      "parts": [
+        {
+          "label": "",
+          "html": "הטענה שגויה. לדוגמה, 123 מתעגל לעשרות ל־120, ולכן העיגול מקטין אותו. מתאימה גם דוגמה אחרת שבה העיגול אינו מגדיל את המספר."
+        }
+      ]
+    },
+    {
+      "pdfId": "52fb4917a43c475abb8a2155fbec6ed5",
+      "sourceSha256": "1806f36eda676336f4fe06ec5891da96cee45f64ffd2bea37ca243f68e08b463",
+      "q": 20,
+      "parts": [
+        {
+          "label": "",
+          "html": "לא. לדוגמה, 149 מתעגל לעשרות ל־150, ומשם למאות ל־200; בעיגול ישיר למאות מתקבל 100. מתאימה גם דוגמה אחרת שבה שני מסלולי העיגול נותנים תוצאות שונות."
+        }
+      ]
+    },
+    {
+      "pdfId": "56dd1fc5347943b48fea991334b4d940",
+      "sourceSha256": "5c1af02aa293033fcfa52569cdd981075d3c6e08b3c57a06652db791cfeff59a",
+      "q": 1,
+      "parts": [
+        {
+          "label": "",
+          "html": "4; בְּדִיקָה: <span class=\"ltr\">2 + 4 + 4 = 10</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "56dd1fc5347943b48fea991334b4d940",
+      "sourceSha256": "5c1af02aa293033fcfa52569cdd981075d3c6e08b3c57a06652db791cfeff59a",
+      "q": 2,
+      "parts": [
+        {
+          "label": "",
+          "html": "2; בְּדִיקָה: <span class=\"ltr\">4 + 14 + 2 = 20</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "56dd1fc5347943b48fea991334b4d940",
+      "sourceSha256": "5c1af02aa293033fcfa52569cdd981075d3c6e08b3c57a06652db791cfeff59a",
+      "q": 3,
+      "parts": [
+        {
+          "label": "",
+          "html": "4; בְּדִיקָה: <span class=\"ltr\">4 + 2 + 4 = 10</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "56dd1fc5347943b48fea991334b4d940",
+      "sourceSha256": "5c1af02aa293033fcfa52569cdd981075d3c6e08b3c57a06652db791cfeff59a",
+      "q": 4,
+      "parts": [
+        {
+          "label": "",
+          "html": "7; בְּדִיקָה: <span class=\"ltr\">8 + 5 + 7 = 20</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "56dd1fc5347943b48fea991334b4d940",
+      "sourceSha256": "5c1af02aa293033fcfa52569cdd981075d3c6e08b3c57a06652db791cfeff59a",
+      "q": 5,
+      "parts": [
+        {
+          "label": "",
+          "html": "4; בְּדִיקָה: <span class=\"ltr\">5 + 1 + 4 = 10</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "56dd1fc5347943b48fea991334b4d940",
+      "sourceSha256": "5c1af02aa293033fcfa52569cdd981075d3c6e08b3c57a06652db791cfeff59a",
+      "q": 6,
+      "parts": [
+        {
+          "label": "",
+          "html": "7; בְּדִיקָה: <span class=\"ltr\">1 + 12 + 7 = 20</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "56dd1fc5347943b48fea991334b4d940",
+      "sourceSha256": "5c1af02aa293033fcfa52569cdd981075d3c6e08b3c57a06652db791cfeff59a",
+      "q": 7,
+      "parts": [
+        {
+          "label": "",
+          "html": "5; בְּדִיקָה: <span class=\"ltr\">4 + 1 + 5 = 10</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "56dd1fc5347943b48fea991334b4d940",
+      "sourceSha256": "5c1af02aa293033fcfa52569cdd981075d3c6e08b3c57a06652db791cfeff59a",
+      "q": 8,
+      "parts": [
+        {
+          "label": "",
+          "html": "1; בְּדִיקָה: <span class=\"ltr\">8 + 11 + 1 = 20</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "56dd1fc5347943b48fea991334b4d940",
+      "sourceSha256": "5c1af02aa293033fcfa52569cdd981075d3c6e08b3c57a06652db791cfeff59a",
+      "q": 9,
+      "parts": [
+        {
+          "label": "",
+          "html": "3; בְּדִיקָה: <span class=\"ltr\">2 + 5 + 3 = 10</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "56dd1fc5347943b48fea991334b4d940",
+      "sourceSha256": "5c1af02aa293033fcfa52569cdd981075d3c6e08b3c57a06652db791cfeff59a",
+      "q": 10,
+      "parts": [
+        {
+          "label": "",
+          "html": "14; בְּדִיקָה: <span class=\"ltr\">4 + 2 + 14 = 20</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "56dd1fc5347943b48fea991334b4d940",
+      "sourceSha256": "5c1af02aa293033fcfa52569cdd981075d3c6e08b3c57a06652db791cfeff59a",
+      "q": 11,
+      "parts": [
+        {
+          "label": "",
+          "html": "3; בְּדִיקָה: <span class=\"ltr\">5 + 2 + 3 = 10</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "56dd1fc5347943b48fea991334b4d940",
+      "sourceSha256": "5c1af02aa293033fcfa52569cdd981075d3c6e08b3c57a06652db791cfeff59a",
+      "q": 12,
+      "parts": [
+        {
+          "label": "",
+          "html": "10; בְּדִיקָה: <span class=\"ltr\">4 + 6 + 10 = 20</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "56dd1fc5347943b48fea991334b4d940",
+      "sourceSha256": "5c1af02aa293033fcfa52569cdd981075d3c6e08b3c57a06652db791cfeff59a",
+      "q": 13,
+      "parts": [
+        {
+          "label": "",
+          "html": "2; בְּדִיקָה: <span class=\"ltr\">2 + 6 + 2 = 10</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "56dd1fc5347943b48fea991334b4d940",
+      "sourceSha256": "5c1af02aa293033fcfa52569cdd981075d3c6e08b3c57a06652db791cfeff59a",
+      "q": 14,
+      "parts": [
+        {
+          "label": "",
+          "html": "7; בְּדִיקָה: <span class=\"ltr\">5 + 8 + 7 = 20</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "56dd1fc5347943b48fea991334b4d940",
+      "sourceSha256": "5c1af02aa293033fcfa52569cdd981075d3c6e08b3c57a06652db791cfeff59a",
+      "q": 15,
+      "parts": [
+        {
+          "label": "",
+          "html": "5; בְּדִיקָה: <span class=\"ltr\">3 + 2 + 5 = 10</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "56dd1fc5347943b48fea991334b4d940",
+      "sourceSha256": "5c1af02aa293033fcfa52569cdd981075d3c6e08b3c57a06652db791cfeff59a",
+      "q": 16,
+      "parts": [
+        {
+          "label": "",
+          "html": "12; בְּדִיקָה: <span class=\"ltr\">5 + 3 + 12 = 20</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "56dd1fc5347943b48fea991334b4d940",
+      "sourceSha256": "5c1af02aa293033fcfa52569cdd981075d3c6e08b3c57a06652db791cfeff59a",
+      "q": 17,
+      "parts": [
+        {
+          "label": "",
+          "html": "7; בְּדִיקָה: <span class=\"ltr\">2 + 1 + 7 = 10</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "56dd1fc5347943b48fea991334b4d940",
+      "sourceSha256": "5c1af02aa293033fcfa52569cdd981075d3c6e08b3c57a06652db791cfeff59a",
+      "q": 18,
+      "parts": [
+        {
+          "label": "",
+          "html": "13; בְּדִיקָה: <span class=\"ltr\">6 + 1 + 13 = 20</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "5887c0d0837b464a9fa34a05ddea50d0",
+      "sourceSha256": "73ff06148a4c38bb0a482e732a5d252bc394e861198caf3d49c210128442cab7",
+      "q": 15,
+      "parts": [
+        {
+          "label": "",
+          "html": "נכון, כאשר „מתוך” משמש כפל באותה יחידת כמות. חצי כפול הכמות שווה לכמות כפול חצי לפי חוק החילוף בכפל."
+        }
+      ]
+    },
+    {
+      "pdfId": "5c38d44d6eed4484bcb4dc43ea80f14d",
+      "sourceSha256": "b5e5c0244ed587d29d1f4c43b91e00850c803941ebd1240cdf63399ac9c30598",
+      "q": 20,
+      "parts": [
+        {
+          "label": "",
+          "html": "לדוגמה: <span class=\"ltr\">4, 5, 6</span> ו־<span class=\"ltr\">1, 5, 9</span>. ממוצע כל קבוצה 5, אך הטווחים 2 ו־8 בהתאמה. ממוצע קובע מרכז ואינו קובע את הפיזור. ייתכנו תשובות נוספות; מתקבלת כל תשובה שבה שתי הקבוצות בעלות ממוצע שווה וטווחים שונים."
+        }
+      ]
+    },
+    {
+      "pdfId": "62c5fcb4518e4b16bb70194bb635a320",
+      "sourceSha256": "6795cd794a9caf33b05c748a4da19de26ff05d1a2da3bfb23eaf3caa7b378833",
+      "q": 15,
+      "parts": [
+        {
+          "label": "א",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">2</span></span></span>"
+        },
+        {
+          "label": "ב",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">4</span></span> + <span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">2</span></span> = <span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">4</span></span></span>"
+        },
+        {
+          "label": "ג",
+          "html": "כן; <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">2</span></span> < <span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">4</span></span></span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "62c5fcb4518e4b16bb70194bb635a320",
+      "sourceSha256": "6795cd794a9caf33b05c748a4da19de26ff05d1a2da3bfb23eaf3caa7b378833",
+      "q": 16,
+      "parts": [
+        {
+          "label": "א",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">6</span></span></span>"
+        },
+        {
+          "label": "ב",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">2</span></span></span>"
+        },
+        {
+          "label": "ג",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">6</span></span> − <span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">6</span></span> = <span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">3</span></span></span>; <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">2</span></span> + <span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">3</span></span> = <span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">6</span></span></span>. המשוואות המודפסות בסעיפים א׳ וב׳ שונות ולכן פתרונותיהן שונים."
+        }
+      ]
+    },
+    {
+      "pdfId": "62c5fcb4518e4b16bb70194bb635a320",
+      "sourceSha256": "6795cd794a9caf33b05c748a4da19de26ff05d1a2da3bfb23eaf3caa7b378833",
+      "q": 17,
+      "parts": [
+        {
+          "label": "א",
+          "html": "<span class=\"ltr\">15</span>"
+        },
+        {
+          "label": "ב",
+          "html": "<span class=\"ltr\">5</span>"
+        },
+        {
+          "label": "ג",
+          "html": "<span class=\"ltr\">5 x 3 = 15</span>"
+        }
+      ]
+    },
+    {
+      "pdfId": "62c5fcb4518e4b16bb70194bb635a320",
+      "sourceSha256": "6795cd794a9caf33b05c748a4da19de26ff05d1a2da3bfb23eaf3caa7b378833",
+      "q": 18,
+      "parts": [
+        {
+          "label": "א",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">2</span></span></span>"
+        },
+        {
+          "label": "ב",
+          "html": "<span class=\"ltr\">6</span>"
+        },
+        {
+          "label": "ג",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">2</span></span> + <span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">6</span></span> = <span class=\"frac\"><span class=\"fnum\">2</span><span class=\"fden\">3</span></span></span>"
+        }
+      ]
+    },
+    {
+      "pdfId": "62c5fcb4518e4b16bb70194bb635a320",
+      "sourceSha256": "6795cd794a9caf33b05c748a4da19de26ff05d1a2da3bfb23eaf3caa7b378833",
+      "q": 19,
+      "parts": [
+        {
+          "label": "א",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">2</span><span class=\"fden\">5</span></span></span> מנפח המכל."
+        },
+        {
+          "label": "ב",
+          "html": "<span class=\"ltr\">x + <span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">10</span></span> = <span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">10</span></span>; x = <span class=\"frac\"><span class=\"fnum\">2</span><span class=\"fden\">5</span></span></span>"
+        },
+        {
+          "label": "ג",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">2</span><span class=\"fden\">5</span></span> + <span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">10</span></span> = <span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">10</span></span></span>"
+        }
+      ]
+    },
+    {
+      "pdfId": "62c5fcb4518e4b16bb70194bb635a320",
+      "sourceSha256": "6795cd794a9caf33b05c748a4da19de26ff05d1a2da3bfb23eaf3caa7b378833",
+      "q": 20,
+      "parts": [
+        {
+          "label": "א",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">12</span></span></span>"
+        },
+        {
+          "label": "ב",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">12</span></span></span> ו־<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">12</span></span></span>"
+        },
+        {
+          "label": "ג",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">12</span></span> + <span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">12</span></span> = <span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">6</span></span></span>"
+        }
+      ]
+    },
+    {
+      "pdfId": "63cd209d97604f10941ce63115d8d0e5",
+      "sourceSha256": "35319c6070276e26b7cdaf1d8d30e7d5874a36964c9599df0f58ff28cdb2c269",
+      "q": 15,
+      "parts": [
+        {
+          "label": "",
+          "html": "1,000; בעיגול למאות מתקבל <span class=\"ltr\">700 + 300 = 1,000</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "69f8cea0ad6a40d993ce9a57021065a8",
+      "sourceSha256": "447afa3e00173af391065a81d2df27d32ead8a231de33ca598641ae7abb700ce",
+      "q": 20,
+      "parts": [
+        {
+          "label": "",
+          "html": "לא. בעיגול לעשרות הסטייה של כל מחובר היא לכל היותר 5 ש״ח, ולכן הסטייה בסכום שני המחוברים היא לכל היותר 10 ש״ח."
+        }
+      ]
+    },
+    {
+      "pdfId": "6c79037d21dd4fe99490ff36f872648a",
+      "sourceSha256": "12a0032bf49ebfcebde970b8f81919697d222d5fd8e488d619f67a3dcfa8767f",
+      "q": 5,
+      "parts": [
+        {
+          "label": "",
+          "html": "לא. <span class=\"ltr\">95 − 35 = 60</span>; לאחר החלפת הסדר מחסרים 95 מ־35, ולכן לא מתקבלת אותה תוצאה."
+        }
+      ]
+    },
+    {
+      "pdfId": "6c79037d21dd4fe99490ff36f872648a",
+      "sourceSha256": "12a0032bf49ebfcebde970b8f81919697d222d5fd8e488d619f67a3dcfa8767f",
+      "q": 6,
+      "parts": [
+        {
+          "label": "",
+          "html": "לא. <span class=\"ltr\">80 : 6</span> גדול מ־1, ואילו <span class=\"ltr\">6 : 80</span> קטן מ־1; לכן החלפת הסדר משנה את המנה."
+        }
+      ]
+    },
+    {
+      "pdfId": "6f03feb428164154b271cd13b1ca2513",
+      "sourceSha256": "e04c43bc142548f832e1165c27c92ff2766ec167fce0f91b07a6bc66f12be12c",
+      "q": 19,
+      "parts": [
+        {
+          "label": "",
+          "html": "הטענה שגויה: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">3</span></span> ≠ <span class=\"frac\"><span class=\"fnum\">2</span><span class=\"fden\">4</span></span></span>; <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">2</span><span class=\"fden\">4</span></span> = <span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">2</span></span></span>. הוספת אותו מספר למונה ולמכנה אינה הרחבה; בהרחבה כופלים את שניהם באותו גורם."
+        }
+      ]
+    },
+    {
+      "pdfId": "723cb10975aa4de58d642aa1f33b0a1c",
+      "sourceSha256": "0fedbb842fe83f4a6fe858fcc3059bc64da475a4cd6e296769a21360a4e6aa40",
+      "q": 17,
+      "parts": [
+        {
+          "label": "",
+          "html": "בציור יש ארבע זוויות ישרות: בקודקודים A, B, C ו־D. בכל קודקוד נפגשות צלע אופקית וצלע אנכית, ולכן הן מאונכות."
+        }
+      ]
+    },
+    {
+      "pdfId": "7293e2a2261f426fbdda52a3fee8f0da",
+      "sourceSha256": "c120dda2ffb3913de8cb86c62b76e21248ba4bd9246b03c14b61ec0ac3b44576",
+      "q": 1,
+      "parts": [
+        {
+          "label": "",
+          "html": "השברים הם <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">11</span><span class=\"fden\">14</span></span></span> ו־<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">9</span></span></span>; החפיפה היא <span class=\"ltr\">77</span> מתוך <span class=\"ltr\">126</span> תאים, כלומר <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">11</span><span class=\"fden\">18</span></span></span>. סדר הכפל אינו משנה את מכפלת המונים או המכנים, ולכן גם השבר המצומצם אינו משתנה."
+        }
+      ]
+    },
+    {
+      "pdfId": "7293e2a2261f426fbdda52a3fee8f0da",
+      "sourceSha256": "c120dda2ffb3913de8cb86c62b76e21248ba4bd9246b03c14b61ec0ac3b44576",
+      "q": 7,
+      "parts": [
+        {
+          "label": "",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">11</span></span></span>. הגורם 8 מופיע במונה ובמכנה, ולכן חלוקת שניהם ב־8 משאירה אותו ערך."
+        }
+      ]
+    },
+    {
+      "pdfId": "7293e2a2261f426fbdda52a3fee8f0da",
+      "sourceSha256": "c120dda2ffb3913de8cb86c62b76e21248ba4bd9246b03c14b61ec0ac3b44576",
+      "q": 18,
+      "parts": [
+        {
+          "label": "",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">8</span></span></span> מן השלם המקורי. היחס בין החלק שנבחר ליתרת הכמות הוא <span class=\"ltr\">5 : 7</span>, כי נבחרו 5 מתוך 12 חלקים ונשארו 7; החלק שנבחר הוא <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">12</span></span></span> מן הכמות <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">9</span><span class=\"fden\">10</span></span></span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "73a2e04f778643e2ade45ba38ffb242b",
+      "sourceSha256": "c59233b396dfefd4b64fa07cf300398f7922a2e75c0dd0e05b85b7ddc1651e5d",
+      "q": 6,
+      "parts": [
+        {
+          "label": "",
+          "html": "עידו טועה. הוספת אפסים בסוף החלק העשרוני אינה משנה את הערך, מפני שמוסיפים אפס מאיות או אלפיות. לדוגמה, <span class=\"ltr\">1.5 = 1.50 = 1.500</span> ליטר; בכולם אותה כמות של ליטר וחצי."
+        }
+      ]
+    },
+    {
+      "pdfId": "73a2e04f778643e2ade45ba38ffb242b",
+      "sourceSha256": "c59233b396dfefd4b64fa07cf300398f7922a2e75c0dd0e05b85b7ddc1651e5d",
+      "q": 20,
+      "parts": [
+        {
+          "label": "",
+          "html": "לדוגמה, מכלים סגורים שמידותיהם הפנימיות <span class=\"ltr\">20 x 20 x 30</span> ס״מ ו־<span class=\"ltr\">10 x 20 x 60</span> ס״מ. נפח כל אחד 12,000 סמ״ק, כלומר 12 ליטר. שטחי הפנים: 3,200 סמ״ר ו־4,000 סמ״ר; לשני שטח פנים גדול ב־800 סמ״ר. אם מתכוונים למכלים פתוחים, בלי הפאה העליונה: 2,800 סמ״ר ו־3,800 סמ״ר בהתאמה. ייתכנו תשובות נוספות; מתקבלת כל תשובה שבה שתי שלשות המידות שונות, המכפלה בכל אחת היא 12,000 סמ״ק, ושטחי הפנים מחושבים לפי אותה הנחה על מכסה."
+        }
+      ]
+    },
+    {
+      "pdfId": "7411d987d16044fd865e7a4388042850",
+      "sourceSha256": "8188779cd354a3bc8669f0723f16a9c9e8a994d84f430de5df63cd95b02e5aee",
+      "q": 4,
+      "parts": [
+        {
+          "label": "",
+          "html": "תרשים קו מתאים יותר להצגת שינוי לאורך שבוע, כי הימים מסודרים בזמן וחיבור הערכים מבליט עליות, ירידות ומגמה. תרשים עמודות אפשרי להשוואת הערך בכל יום, אך פחות מבליט רצף."
+        }
+      ]
+    },
+    {
+      "pdfId": "77aadbfee73a4d2fa104c5f2bd2b637b",
+      "sourceSha256": "96f22825c9d76bde580f19b91ee6c639068a1c2a7ff213090304724fe2920ed8",
+      "q": 12,
+      "parts": [
+        {
+          "label": "",
+          "html": "לדוגמה: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">13</span><span class=\"fden\">20</span></span> = 0.65 = 65%</span>. שלושתם מציינים 65 מאיות, בין 60% ל־70%. ייתכנו תשובות נוספות; מתקבלת כל תשובה שבה שלושת הייצוגים הם שבר, מספר עשרוני ואחוז שווי ערך, והערך גדול מ־60% וקטן מ־70%."
+        }
+      ]
+    },
+    {
+      "pdfId": "77aadbfee73a4d2fa104c5f2bd2b637b",
+      "sourceSha256": "96f22825c9d76bde580f19b91ee6c639068a1c2a7ff213090304724fe2920ed8",
+      "q": 20,
+      "parts": [
+        {
+          "label": "",
+          "html": "לדוגמה: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">10</span></span> = 0.3 = 30%</span>; <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">10</span></span> = 0.7 = 70%</span>. הערכים משלימים לשלם: <span class=\"ltr\">0.3 + 0.7 = 1</span> וגם <span class=\"ltr\">30% + 70% = 100%</span>. ייתכנו תשובות נוספות; מתקבלת כל תשובה שבה כל שלישייה שקולה, ערכי שתי השלישיות שונים וסכומם 1."
+        }
+      ]
+    },
+    {
+      "pdfId": "79cc6db7432d4fd6a683ef45980d4299",
+      "sourceSha256": "84829ac923de4bea8adc756a7e112ba534407a1c17f7587b65cafac47d4afff1",
+      "q": 19,
+      "parts": [
+        {
+          "label": "",
+          "html": "נכון. למשל, שתי סדרות מתחילות 1, 2: בסדרה אחת מוסיפים 1 ומקבלים 1, 2, 3, 4; בשנייה מכפילים ב־2 ומקבלים 1, 2, 4, 8. שני האיברים הראשונים זהים אך הכללים וההמשך שונים."
+        }
+      ]
+    },
+    {
+      "pdfId": "83109f8e238549a3bdc19f79108144cb",
+      "sourceSha256": "4691495b4e1121d5c66be1572521c6a25a0a492cdc5e102ecf48450e1f054d07",
+      "q": 9,
+      "parts": [
+        {
+          "label": "",
+          "html": "<span class=\"ltr\">8 x <span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">6</span></span> = <span class=\"frac\"><span class=\"fnum\">20</span><span class=\"fden\">3</span></span> < 7</span>. המרחק של המכפלה מ־8 הוא <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">4</span><span class=\"fden\">3</span></span></span>, ואילו המרחק של 7 מ־8 הוא 1; לכן המכפלה קטנה מ־7."
+        }
+      ]
+    },
+    {
+      "pdfId": "84592328cbd3460f9fa860ec5aa536f3",
+      "sourceSha256": "5ee3a95d0db61be7a122122c8c9df1bbbde500db6fa3d03c903cdde98a2ba43b",
+      "q": 20,
+      "parts": [
+        {
+          "label": "",
+          "html": "לדוגמה, הביטוי <span class=\"ltr\">6 x 23</span>: דרך א׳ <span class=\"ltr\">6 x (20 + 3) = 120 + 18 = 138</span>; דרך ב׳ <span class=\"ltr\">(3 x 23) x 2 = 69 x 2 = 138</span>. הדרך הראשונה נשענת על חוק הפילוג והשנייה על חוק הקיבוץ בכפל, ולכן שתיהן שומרות את ערך הביטוי. ייתכנו תשובות נוספות; מתקבלת כל תשובה שבה מוצגות שתי דרכי חישוב שונות לאותו ביטוי, תוצאה זהה והסבר לחוק המצדיק כל דרך."
+        }
+      ]
+    },
+    {
+      "pdfId": "858f257962a94f04adf6327e7093592f",
+      "sourceSha256": "49ef8daf4f305e1445d2b65ddbb178a9421dd783a19d7b34bc6816e3f43b523f",
+      "q": 8,
+      "parts": [
+        {
+          "label": "",
+          "html": "כן. ריבוע הוא מרובע שכל ארבע הזוויות שלו ישרות, ולכן הוא מקיים את הגדרת המלבן; השוויון בין כל הצלעות אינו מבטל זאת."
+        }
+      ]
+    },
+    {
+      "pdfId": "858f257962a94f04adf6327e7093592f",
+      "sourceSha256": "49ef8daf4f305e1445d2b65ddbb178a9421dd783a19d7b34bc6816e3f43b523f",
+      "q": 20,
+      "parts": [
+        {
+          "label": "",
+          "html": "לא. לדוגמה, 12 ו־21 שונים, אך סכום הספרות של שניהם הוא 3. גם זוג אחר של מספרים שונים בעלי אותו סכום ספרות מתאים."
+        }
+      ]
+    },
+    {
+      "pdfId": "85be0c2282a34d91b2fbdf474237077d",
+      "sourceSha256": "9a34e090bcde7282f0efeba263c56cacb642e0d9781208920920c18d46722a23",
+      "q": 7,
+      "parts": [
+        {
+          "label": "",
+          "html": "לדוגמה: מלבנים שמידותיהם 7 ו־6 יחידות אורך, ו־9 ו־4 יחידות אורך. היקף כל אחד 26 יחידות אורך, כמו היקף המלבן 8 על 5. ייתכנו תשובות נוספות; מתקבלת כל תשובה שבה מידות כל מלבן חיוביות, סכומן 13, והמלבנים שונים זה מזה ומהנתון."
+        }
+      ]
+    },
+    {
+      "pdfId": "85be0c2282a34d91b2fbdf474237077d",
+      "sourceSha256": "9a34e090bcde7282f0efeba263c56cacb642e0d9781208920920c18d46722a23",
+      "q": 19,
+      "parts": [
+        {
+          "label": "",
+          "html": "לדוגמה: אורך 8 ס״מ, שטח 8 סמ״ר ונפח 8 סמ״ק. המספר זהה, אך ס״מ מודד אורך, סמ״ר שטח וסמ״ק נפח, ולכן אלה גדלים מסוגים שונים. ייתכנו תשובות נוספות; מתקבלת כל תשובה שבה אותו מספר חיובי מוצמד ליחידות אורך, שטח ונפח מתאימות."
+        }
+      ]
+    },
+    {
+      "pdfId": "87c7df37ef5d4319badccbc7fb49ba35",
+      "sourceSha256": "929c5eefb1a16da3777c04a70fd26cc8ad8ffd3e796ceffd339a5350afa6bb98",
+      "q": 16,
+      "parts": [
+        {
+          "label": "",
+          "html": "לדוגמה: לבחור באקראי תלמידים מכל כיתה בשתי השכבות, כך שחלקה של כל כיתה במדגם יהיה יחסי לגודלה; להשתמש באותו שאלון ובאותו שבוע, ולהגדיר קריאה בדקות ליום. כך אין העדפה לכיתה מסוימת, וחוק המדידה זהה בשתי הקבוצות. ייתכנו תשובות נוספות; מתקבלת כל תשובה שבה הדגימה אקראית ומייצגת את שתי השכבות, וההגדרה, התקופה ושיטת המדידה זהות."
+        }
+      ]
+    },
+    {
+      "pdfId": "87c7df37ef5d4319badccbc7fb49ba35",
+      "sourceSha256": "929c5eefb1a16da3777c04a70fd26cc8ad8ffd3e796ceffd339a5350afa6bb98",
+      "q": 20,
+      "parts": [
+        {
+          "label": "",
+          "html": "דוגמה למחקר: „כמה דקות ביום קוראים תלמידי כיתה ו׳ להנאתם?” מדגם: 30 תלמידים שייבחרו באקראי מכל כיתות השכבה, לפי גודל הכיתות, כדי לצמצם הטיית בחירה. רישום במשך שבוע רגיל מפחית תלות ביום יחיד. ייצוג: תרשים עמודות של מספר התלמידים בכל קבוצת זמני קריאה, כדי לראות את התפלגות הנתונים. מדדים: ממוצע לתיאור זמן הקריאה הכללי וטווח לתיאור הפיזור. ייתכנו תשובות נוספות; מתקבלת כל תשובה שבה יש שאלה מדידה, מדגם הוגן, ייצוג מתאים ושני מדדים מוסברים."
+        }
+      ]
+    },
+    {
+      "pdfId": "88fd2c8e7b7344108109d63c556ca435",
+      "sourceSha256": "47d0b5af79c862bfd0886db23e6ea16ccc32bea4ddd0fc4fbab55dadfad24c5d",
+      "q": 1,
+      "parts": [
+        {
+          "label": "",
+          "html": "10 קבוצות. דרך א׳: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">10</span><span class=\"fden\">12</span></span> : <span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">12</span></span> = 10</span>. דרך ב׳: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">6</span></span> x 12 = 10</span>. שתי הדרכים סופרות אותן עשר קבוצות של אחד חלקי שנים־עשר; הראשונה מונה חלקים שווים והשנייה כופלת בהופכי."
+        }
+      ]
+    },
+    {
+      "pdfId": "88fd2c8e7b7344108109d63c556ca435",
+      "sourceSha256": "47d0b5af79c862bfd0886db23e6ea16ccc32bea4ddd0fc4fbab55dadfad24c5d",
+      "q": 2,
+      "parts": [
+        {
+          "label": "",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">13</span><span class=\"fden\">15</span></span> : <span class=\"frac\"><span class=\"fnum\">26</span><span class=\"fden\">45</span></span> = <span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">2</span></span></span>. ההופכי הוא <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">45</span><span class=\"fden\">26</span></span></span>. בדיקה: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">2</span></span> x <span class=\"frac\"><span class=\"fnum\">26</span><span class=\"fden\">45</span></span> = <span class=\"frac\"><span class=\"fnum\">13</span><span class=\"fden\">15</span></span></span>. כלל: חילוק בשבר חיובי שקול לכפל בהופכי שלו."
+        }
+      ]
+    },
+    {
+      "pdfId": "88fd2c8e7b7344108109d63c556ca435",
+      "sourceSha256": "47d0b5af79c862bfd0886db23e6ea16ccc32bea4ddd0fc4fbab55dadfad24c5d",
+      "q": 3,
+      "parts": [
+        {
+          "label": "",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">17</span><span class=\"fden\">18</span></span> : <span class=\"frac\"><span class=\"fnum\">34</span><span class=\"fden\">63</span></span> = <span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">4</span></span></span>. ההופכי הוא <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">63</span><span class=\"fden\">34</span></span></span>. צמצום לפני הכפל יעיל כי 17 מחלק את 34 ו־9 מחלק את 18 ואת 63. התוצאה סבירה: המחולק גדול ממחלק אחד וקטן משני מחלקים, ולכן המנה בין 1 ל־2."
+        }
+      ]
+    },
+    {
+      "pdfId": "88fd2c8e7b7344108109d63c556ca435",
+      "sourceSha256": "47d0b5af79c862bfd0886db23e6ea16ccc32bea4ddd0fc4fbab55dadfad24c5d",
+      "q": 4,
+      "parts": [
+        {
+          "label": "",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">19</span><span class=\"fden\">24</span></span> : <span class=\"frac\"><span class=\"fnum\">57</span><span class=\"fden\">80</span></span> = <span class=\"frac\"><span class=\"fnum\">10</span><span class=\"fden\">9</span></span></span>. דרך א׳: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">190</span><span class=\"fden\">240</span></span> : <span class=\"frac\"><span class=\"fnum\">171</span><span class=\"fden\">240</span></span> = 190 : 171 = <span class=\"frac\"><span class=\"fnum\">10</span><span class=\"fden\">9</span></span></span>. דרך ב׳: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">19</span><span class=\"fden\">24</span></span> x <span class=\"frac\"><span class=\"fnum\">80</span><span class=\"fden\">57</span></span> = <span class=\"frac\"><span class=\"fnum\">10</span><span class=\"fden\">9</span></span></span>. ההופכי הוא <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">80</span><span class=\"fden\">57</span></span></span>; שתי הדרכים נותנות אותה מנה, ובכפל בהופכי אפשר לצמצם מוקדם."
+        }
+      ]
+    },
+    {
+      "pdfId": "88fd2c8e7b7344108109d63c556ca435",
+      "sourceSha256": "47d0b5af79c862bfd0886db23e6ea16ccc32bea4ddd0fc4fbab55dadfad24c5d",
+      "q": 7,
+      "parts": [
+        {
+          "label": "",
+          "html": "3 רבעים. דרך א׳: מונים 3 קטעים של רבע על הישר. דרך ב׳: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">4</span></span> x 4 = 3</span>. שתי הדרכים מבטאות חילוק של שלושה רבעים ברבע."
+        }
+      ]
+    },
+    {
+      "pdfId": "88fd2c8e7b7344108109d63c556ca435",
+      "sourceSha256": "47d0b5af79c862bfd0886db23e6ea16ccc32bea4ddd0fc4fbab55dadfad24c5d",
+      "q": 8,
+      "parts": [
+        {
+          "label": "",
+          "html": "2 כוסות מלאות ושארית של <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">13</span><span class=\"fden\">75</span></span></span> ליטר; הכמות הכוללת שווה ל־<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">2</span></span></span> כוסות. בדיקה: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">2</span></span> x <span class=\"frac\"><span class=\"fnum\">26</span><span class=\"fden\">75</span></span> = <span class=\"frac\"><span class=\"fnum\">13</span><span class=\"fden\">15</span></span></span>. כלל: מספר המנות הוא הכמות הכוללת חלקי גודל המנה; בספירת מנות מלאות בלבד לוקחים את החלק השלם."
+        }
+      ]
+    },
+    {
+      "pdfId": "88fd2c8e7b7344108109d63c556ca435",
+      "sourceSha256": "47d0b5af79c862bfd0886db23e6ea16ccc32bea4ddd0fc4fbab55dadfad24c5d",
+      "q": 9,
+      "parts": [
+        {
+          "label": "",
+          "html": "לפי הביטוי המודפס: החסר הוא <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">44</span></span></span> והבדיקה <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">12</span></span> : <span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">44</span></span> = <span class=\"frac\"><span class=\"fnum\">11</span><span class=\"fden\">3</span></span></span>. לפי ההוראה „השלימו את המחולק”: החסר הוא <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">77</span><span class=\"fden\">36</span></span></span> והבדיקה <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">77</span><span class=\"fden\">36</span></span> : <span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">12</span></span> = <span class=\"frac\"><span class=\"fnum\">11</span><span class=\"fden\">3</span></span></span>. כפל המחלק במנה יעיל למציאת מחולק; במחולק המבוקש מתקבל מספר בין 2 ל־3, כפי שמתאים לכ־4 קבוצות שגודל כל אחת מעט יותר מחצי."
+        }
+      ]
+    },
+    {
+      "pdfId": "88fd2c8e7b7344108109d63c556ca435",
+      "sourceSha256": "47d0b5af79c862bfd0886db23e6ea16ccc32bea4ddd0fc4fbab55dadfad24c5d",
+      "q": 10,
+      "parts": [
+        {
+          "label": "",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">9</span></span> : <span class=\"frac\"><span class=\"fnum\">14</span><span class=\"fden\">27</span></span> = <span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">2</span></span></span>. דרך א׳: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">21</span><span class=\"fden\">27</span></span> : <span class=\"frac\"><span class=\"fnum\">14</span><span class=\"fden\">27</span></span> = 21 : 14 = <span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">2</span></span></span>. דרך ב׳: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">9</span></span> x <span class=\"frac\"><span class=\"fnum\">27</span><span class=\"fden\">14</span></span> = <span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">2</span></span></span>. בשתיהן מחפשים כמה קבוצות בגודל המחלק נכנסות במחולק."
+        }
+      ]
+    },
+    {
+      "pdfId": "88fd2c8e7b7344108109d63c556ca435",
+      "sourceSha256": "47d0b5af79c862bfd0886db23e6ea16ccc32bea4ddd0fc4fbab55dadfad24c5d",
+      "q": 11,
+      "parts": [
+        {
+          "label": "",
+          "html": "6 מנות: כמה קבוצות של <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">2</span><span class=\"fden\">15</span></span></span> יש בתוך <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">4</span><span class=\"fden\">5</span></span></span>. הפעולה היא חילוק, וההופכי של המחלק הוא <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">15</span><span class=\"fden\">2</span></span></span>. בדיקה: <span class=\"ltr\">6 x <span class=\"frac\"><span class=\"fnum\">2</span><span class=\"fden\">15</span></span> = <span class=\"frac\"><span class=\"fnum\">4</span><span class=\"fden\">5</span></span></span>. כלל: כמות חלקי גודל מנה נותנת את מספר המנות; כפל במספר המנות מחזיר את הכמות."
+        }
+      ]
+    },
+    {
+      "pdfId": "88fd2c8e7b7344108109d63c556ca435",
+      "sourceSha256": "47d0b5af79c862bfd0886db23e6ea16ccc32bea4ddd0fc4fbab55dadfad24c5d",
+      "q": 12,
+      "parts": [
+        {
+          "label": "",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">8</span><span class=\"fden\">15</span></span> : <span class=\"frac\"><span class=\"fnum\">12</span><span class=\"fden\">25</span></span> = <span class=\"frac\"><span class=\"fnum\">10</span><span class=\"fden\">9</span></span></span>. בדיקה: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">10</span><span class=\"fden\">9</span></span> x <span class=\"frac\"><span class=\"fnum\">12</span><span class=\"fden\">25</span></span> = <span class=\"frac\"><span class=\"fnum\">8</span><span class=\"fden\">15</span></span></span>. צמצום לפני הכפל יעיל כי 8 ו־12 מתחלקים ב־4 ו־25 ו־15 מתחלקים ב־5. המנה מעט גדולה מ־1, כי המחולק מעט גדול מהמחלק."
+        }
+      ]
+    },
+    {
+      "pdfId": "88fd2c8e7b7344108109d63c556ca435",
+      "sourceSha256": "47d0b5af79c862bfd0886db23e6ea16ccc32bea4ddd0fc4fbab55dadfad24c5d",
+      "q": 13,
+      "parts": [
+        {
+          "label": "",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">14</span><span class=\"fden\">3</span></span></span> קבוצות, כלומר 4 שלמות ועוד <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">2</span><span class=\"fden\">3</span></span></span> קבוצה. דרך א׳: 14 שש־עשריות מחולקות לקבוצות של 3. דרך ב׳: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">8</span></span> x <span class=\"frac\"><span class=\"fnum\">16</span><span class=\"fden\">3</span></span> = <span class=\"frac\"><span class=\"fnum\">14</span><span class=\"fden\">3</span></span></span>. ספירת החלקים והכפל בהופכי מבטאים אותו חילוק."
+        }
+      ]
+    },
+    {
+      "pdfId": "88fd2c8e7b7344108109d63c556ca435",
+      "sourceSha256": "47d0b5af79c862bfd0886db23e6ea16ccc32bea4ddd0fc4fbab55dadfad24c5d",
+      "q": 14,
+      "parts": [
+        {
+          "label": "",
+          "html": "לדוגמה, השבר הראשון <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">9</span></span></span> והשני <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">3</span></span></span>. המנה <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">3</span></span></span>. בדיקה: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">3</span></span> x <span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">3</span></span> = <span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">9</span></span></span>. כלל: בוחרים שבר שני חיובי, ואת הראשון קובעים כ־<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">3</span></span></span> פעמים השני. ייתכנו תשובות נוספות; מתקבלת כל תשובה שבה שני השברים חיוביים והראשון שווה ל־<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">3</span></span></span> כפול השני."
+        }
+      ]
+    },
+    {
+      "pdfId": "88fd2c8e7b7344108109d63c556ca435",
+      "sourceSha256": "47d0b5af79c862bfd0886db23e6ea16ccc32bea4ddd0fc4fbab55dadfad24c5d",
+      "q": 16,
+      "parts": [
+        {
+          "label": "",
+          "html": "11 מנות מלאות לשימוש ועוד <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">4</span></span></span> מנה, כלומר <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">47</span><span class=\"fden\">4</span></span></span> מנות במונחי כמות; השארית היא <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">21</span><span class=\"fden\">100</span></span></span> ליטר. דרך א׳: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">77</span><span class=\"fden\">20</span></span> : <span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">25</span></span> − 2 = <span class=\"frac\"><span class=\"fnum\">47</span><span class=\"fden\">4</span></span></span>. דרך ב׳: <span class=\"ltr\">(<span class=\"frac\"><span class=\"fnum\">77</span><span class=\"fden\">20</span></span> − 2 x <span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">25</span></span>) : <span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">25</span></span> = <span class=\"frac\"><span class=\"fnum\">47</span><span class=\"fden\">4</span></span></span>. הסרת שתי מנות לפני החילוק או אחרי ספירת המנות נותנת אותה כמות."
+        }
+      ]
+    },
+    {
+      "pdfId": "88fd2c8e7b7344108109d63c556ca435",
+      "sourceSha256": "47d0b5af79c862bfd0886db23e6ea16ccc32bea4ddd0fc4fbab55dadfad24c5d",
+      "q": 17,
+      "parts": [
+        {
+          "label": "",
+          "html": "המנות שוות ל־6. בדיקות: <span class=\"ltr\">6 x <span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">8</span></span> = <span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">4</span></span></span>; <span class=\"ltr\">6 x <span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">36</span></span> = <span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">6</span></span></span>. כלל: כשמחולק שווה ל־6 פעמים המחלק, המנה היא 6; אין צורך שהמחולקים עצמם יהיו שווים."
+        }
+      ]
+    },
+    {
+      "pdfId": "88fd2c8e7b7344108109d63c556ca435",
+      "sourceSha256": "47d0b5af79c862bfd0886db23e6ea16ccc32bea4ddd0fc4fbab55dadfad24c5d",
+      "q": 18,
+      "parts": [
+        {
+          "label": "",
+          "html": "4. הדרך היעילה היא לספור שש־עשריות: <span class=\"ltr\">12 : 3 = 4</span>. זה סביר כי <span class=\"ltr\">4 x <span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">16</span></span> = <span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">4</span></span></span>. במעבר לשש־עשריות שני הגדלים נמדדים באותה יחידה."
+        }
+      ]
+    },
+    {
+      "pdfId": "88fd2c8e7b7344108109d63c556ca435",
+      "sourceSha256": "47d0b5af79c862bfd0886db23e6ea16ccc32bea4ddd0fc4fbab55dadfad24c5d",
+      "q": 19,
+      "parts": [
+        {
+          "label": "",
+          "html": "המנה <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">11</span><span class=\"fden\">5</span></span></span> קרובה יותר ל־2; מרחקה מ־2 הוא <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">5</span></span></span> ומ־3 הוא <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">4</span><span class=\"fden\">5</span></span></span>. דרך א׳: <span class=\"ltr\">11 : 5 = <span class=\"frac\"><span class=\"fnum\">11</span><span class=\"fden\">5</span></span></span>. דרך ב׳: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">11</span><span class=\"fden\">12</span></span> x <span class=\"frac\"><span class=\"fnum\">12</span><span class=\"fden\">5</span></span> = <span class=\"frac\"><span class=\"fnum\">11</span><span class=\"fden\">5</span></span></span>. מכנים שווים מאפשרים למדוד בשנים־עשריות; הכפל בהופכי נותן אותה תוצאה."
+        }
+      ]
+    },
+    {
+      "pdfId": "88fd2c8e7b7344108109d63c556ca435",
+      "sourceSha256": "47d0b5af79c862bfd0886db23e6ea16ccc32bea4ddd0fc4fbab55dadfad24c5d",
+      "q": 20,
+      "parts": [
+        {
+          "label": "",
+          "html": "12 מנות מלאות ועוד רבע מנה, כלומר <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">49</span><span class=\"fden\">4</span></span></span> מנות במונחי כמות; השארית היא <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">100</span></span></span> יחידה. בדיקה: <span class=\"ltr\">(<span class=\"frac\"><span class=\"fnum\">49</span><span class=\"fden\">4</span></span> + 4) x <span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">25</span></span> = <span class=\"frac\"><span class=\"fnum\">91</span><span class=\"fden\">20</span></span></span>. כלל: מספר המנות שנותרות שווה לכמות הכוללת חלקי גודל מנה, פחות מספר המנות שהוסרו; במנות מלאות סופרים רק את החלק השלם."
+        }
+      ]
+    },
+    {
+      "pdfId": "88fdc091ceb04702a8c386094cb97627",
+      "sourceSha256": "ccb82bf1d26df93f8cc4184e0532fa2c9c6bc859fb0dd0493065e1fec4808b40",
+      "q": 7,
+      "parts": [
+        {
+          "label": "",
+          "html": "<span class=\"ltr\">2.5 x 1,000 = 2,500</span>; ליטר אחד הוא 1,000 מ״ל, ולכן 2 ליטרים וחצי הם 2,500 מ״ל. במדיד זה גובה שבאמצע בין 2 ל־3 ליטרים."
+        }
+      ]
+    },
+    {
+      "pdfId": "88fdc091ceb04702a8c386094cb97627",
+      "sourceSha256": "ccb82bf1d26df93f8cc4184e0532fa2c9c6bc859fb0dd0493065e1fec4808b40",
+      "q": 18,
+      "parts": [
+        {
+          "label": "",
+          "html": "750 מ״ל הם <span class=\"ltr\">0.75</span> ליטר. במדיד בעל חתך אחיד מוזגים עד אמצע המרחק בין הסימונים <span class=\"ltr\">0.5</span> ו־1 ליטר; זה מוסיף 250 מ״ל ל־500 מ״ל."
+        }
+      ]
+    },
+    {
+      "pdfId": "88fdc091ceb04702a8c386094cb97627",
+      "sourceSha256": "ccb82bf1d26df93f8cc4184e0532fa2c9c6bc859fb0dd0493065e1fec4808b40",
+      "q": 19,
+      "parts": [
+        {
+          "label": "",
+          "html": "נכון. מטר אחד הוא 10 דצימטרים, ולכן מ״ק אחד מכיל <span class=\"ltr\">10 x 10 x 10 = 1,000</span> דצימטרים מעוקבים; כל דצימטר מעוקב הוא ליטר אחד."
+        }
+      ]
+    },
+    {
+      "pdfId": "89d6ffb21a134d319ead83904817acb5",
+      "sourceSha256": "4827aedc05778844c55382f6d743976d22004c261d0afe4a5445dbeedb71424c",
+      "q": 1,
+      "parts": [
+        {
+          "label": "",
+          "html": "91; בְּדִיקָה: <span class=\"ltr\">91 − 34 = 57</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "89d6ffb21a134d319ead83904817acb5",
+      "sourceSha256": "4827aedc05778844c55382f6d743976d22004c261d0afe4a5445dbeedb71424c",
+      "q": 2,
+      "parts": [
+        {
+          "label": "",
+          "html": "93; בְּדִיקָה: <span class=\"ltr\">93 − 36 = 57</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "89d6ffb21a134d319ead83904817acb5",
+      "sourceSha256": "4827aedc05778844c55382f6d743976d22004c261d0afe4a5445dbeedb71424c",
+      "q": 3,
+      "parts": [
+        {
+          "label": "",
+          "html": "71; בְּדִיקָה: <span class=\"ltr\">71 − 36 = 35</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "89d6ffb21a134d319ead83904817acb5",
+      "sourceSha256": "4827aedc05778844c55382f6d743976d22004c261d0afe4a5445dbeedb71424c",
+      "q": 4,
+      "parts": [
+        {
+          "label": "",
+          "html": "54; בְּדִיקָה: <span class=\"ltr\">54 − 27 = 27</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "89d6ffb21a134d319ead83904817acb5",
+      "sourceSha256": "4827aedc05778844c55382f6d743976d22004c261d0afe4a5445dbeedb71424c",
+      "q": 5,
+      "parts": [
+        {
+          "label": "",
+          "html": "60; בְּדִיקָה: <span class=\"ltr\">60 − 36 = 24</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "89d6ffb21a134d319ead83904817acb5",
+      "sourceSha256": "4827aedc05778844c55382f6d743976d22004c261d0afe4a5445dbeedb71424c",
+      "q": 6,
+      "parts": [
+        {
+          "label": "",
+          "html": "73; בְּדִיקָה: <span class=\"ltr\">73 − 39 = 34</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "89d6ffb21a134d319ead83904817acb5",
+      "sourceSha256": "4827aedc05778844c55382f6d743976d22004c261d0afe4a5445dbeedb71424c",
+      "q": 7,
+      "parts": [
+        {
+          "label": "",
+          "html": "82; בְּדִיקָה: <span class=\"ltr\">82 − 39 = 43</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "89d6ffb21a134d319ead83904817acb5",
+      "sourceSha256": "4827aedc05778844c55382f6d743976d22004c261d0afe4a5445dbeedb71424c",
+      "q": 8,
+      "parts": [
+        {
+          "label": "",
+          "html": "61; בְּדִיקָה: <span class=\"ltr\">61 − 36 = 25</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "89d6ffb21a134d319ead83904817acb5",
+      "sourceSha256": "4827aedc05778844c55382f6d743976d22004c261d0afe4a5445dbeedb71424c",
+      "q": 9,
+      "parts": [
+        {
+          "label": "",
+          "html": "92; בְּדִיקָה: <span class=\"ltr\">92 − 25 = 67</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "89d6ffb21a134d319ead83904817acb5",
+      "sourceSha256": "4827aedc05778844c55382f6d743976d22004c261d0afe4a5445dbeedb71424c",
+      "q": 10,
+      "parts": [
+        {
+          "label": "",
+          "html": "85; בְּדִיקָה: <span class=\"ltr\">85 − 26 = 59</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "89d6ffb21a134d319ead83904817acb5",
+      "sourceSha256": "4827aedc05778844c55382f6d743976d22004c261d0afe4a5445dbeedb71424c",
+      "q": 11,
+      "parts": [
+        {
+          "label": "",
+          "html": "91; בְּדִיקָה: <span class=\"ltr\">91 − 38 = 53</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "89d6ffb21a134d319ead83904817acb5",
+      "sourceSha256": "4827aedc05778844c55382f6d743976d22004c261d0afe4a5445dbeedb71424c",
+      "q": 12,
+      "parts": [
+        {
+          "label": "",
+          "html": "83; בְּדִיקָה: <span class=\"ltr\">83 − 29 = 54</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "89d6ffb21a134d319ead83904817acb5",
+      "sourceSha256": "4827aedc05778844c55382f6d743976d22004c261d0afe4a5445dbeedb71424c",
+      "q": 13,
+      "parts": [
+        {
+          "label": "",
+          "html": "85; בְּדִיקָה: <span class=\"ltr\">85 − 27 = 58</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "89d6ffb21a134d319ead83904817acb5",
+      "sourceSha256": "4827aedc05778844c55382f6d743976d22004c261d0afe4a5445dbeedb71424c",
+      "q": 14,
+      "parts": [
+        {
+          "label": "",
+          "html": "82; בְּדִיקָה: <span class=\"ltr\">82 − 35 = 47</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "89d6ffb21a134d319ead83904817acb5",
+      "sourceSha256": "4827aedc05778844c55382f6d743976d22004c261d0afe4a5445dbeedb71424c",
+      "q": 15,
+      "parts": [
+        {
+          "label": "",
+          "html": "73; בְּדִיקָה: <span class=\"ltr\">73 − 39 = 34</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "89d6ffb21a134d319ead83904817acb5",
+      "sourceSha256": "4827aedc05778844c55382f6d743976d22004c261d0afe4a5445dbeedb71424c",
+      "q": 16,
+      "parts": [
+        {
+          "label": "",
+          "html": "84; בְּדִיקָה: <span class=\"ltr\">84 − 18 = 66</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "89d6ffb21a134d319ead83904817acb5",
+      "sourceSha256": "4827aedc05778844c55382f6d743976d22004c261d0afe4a5445dbeedb71424c",
+      "q": 17,
+      "parts": [
+        {
+          "label": "",
+          "html": "70; בְּדִיקָה: <span class=\"ltr\">70 − 32 = 38</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "89d6ffb21a134d319ead83904817acb5",
+      "sourceSha256": "4827aedc05778844c55382f6d743976d22004c261d0afe4a5445dbeedb71424c",
+      "q": 18,
+      "parts": [
+        {
+          "label": "",
+          "html": "91; בְּדִיקָה: <span class=\"ltr\">91 − 28 = 63</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "89d6ffb21a134d319ead83904817acb5",
+      "sourceSha256": "4827aedc05778844c55382f6d743976d22004c261d0afe4a5445dbeedb71424c",
+      "q": 19,
+      "parts": [
+        {
+          "label": "",
+          "html": "56; בְּדִיקָה: <span class=\"ltr\">56 − 29 = 27</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "92f2188824954405a7eb673878682c77",
+      "sourceSha256": "28d884b89af1b94aec74ae2efa3e4f7572c140859eaaccafcede373159e1a641",
+      "q": 8,
+      "parts": [
+        {
+          "label": "",
+          "html": "כן. ריבוע הוא מרובע שכל ארבע הזוויות שלו ישרות, ולכן הוא מקיים את הגדרת המלבן; השוויון בין כל הצלעות אינו מבטל זאת."
+        }
+      ]
+    },
+    {
+      "pdfId": "933a9edea1c14d7995f78b7c6bc07ad6",
+      "sourceSha256": "2fa32d7f999fe61d378f0186594f4c5ea54b1c729a57d6e764c298ffba4a7b47",
+      "q": 16,
+      "parts": [
+        {
+          "label": "",
+          "html": "6 צלעות ו־6 קודקודים. בכל קודקוד נפגשות שתי צלעות עוקבות, ולכן במצולע מספר הקודקודים שווה למספר הצלעות."
+        }
+      ]
+    },
+    {
+      "pdfId": "93ebe0eb0303457bb305b41577498037",
+      "sourceSha256": "0ed8531874afa91fbe33517be63d84167b7537744d4d89750dce0d063caa96f4",
+      "q": 1,
+      "parts": [
+        {
+          "label": "",
+          "html": "4; בְּדִיקָה: <span class=\"ltr\">2 + 4 + 4 = 10</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "93ebe0eb0303457bb305b41577498037",
+      "sourceSha256": "0ed8531874afa91fbe33517be63d84167b7537744d4d89750dce0d063caa96f4",
+      "q": 2,
+      "parts": [
+        {
+          "label": "",
+          "html": "13; בְּדִיקָה: <span class=\"ltr\">1 + 6 + 13 = 20</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "93ebe0eb0303457bb305b41577498037",
+      "sourceSha256": "0ed8531874afa91fbe33517be63d84167b7537744d4d89750dce0d063caa96f4",
+      "q": 3,
+      "parts": [
+        {
+          "label": "",
+          "html": "2; בְּדִיקָה: <span class=\"ltr\">1 + 7 + 2 = 10</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "93ebe0eb0303457bb305b41577498037",
+      "sourceSha256": "0ed8531874afa91fbe33517be63d84167b7537744d4d89750dce0d063caa96f4",
+      "q": 4,
+      "parts": [
+        {
+          "label": "",
+          "html": "8; בְּדִיקָה: <span class=\"ltr\">1 + 11 + 8 = 20</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "93ebe0eb0303457bb305b41577498037",
+      "sourceSha256": "0ed8531874afa91fbe33517be63d84167b7537744d4d89750dce0d063caa96f4",
+      "q": 5,
+      "parts": [
+        {
+          "label": "",
+          "html": "6; בְּדִיקָה: <span class=\"ltr\">3 + 1 + 6 = 10</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "93ebe0eb0303457bb305b41577498037",
+      "sourceSha256": "0ed8531874afa91fbe33517be63d84167b7537744d4d89750dce0d063caa96f4",
+      "q": 6,
+      "parts": [
+        {
+          "label": "",
+          "html": "8; בְּדִיקָה: <span class=\"ltr\">10 + 2 + 8 = 20</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "93ebe0eb0303457bb305b41577498037",
+      "sourceSha256": "0ed8531874afa91fbe33517be63d84167b7537744d4d89750dce0d063caa96f4",
+      "q": 7,
+      "parts": [
+        {
+          "label": "",
+          "html": "4; בְּדִיקָה: <span class=\"ltr\">2 + 4 + 4 = 10</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "93ebe0eb0303457bb305b41577498037",
+      "sourceSha256": "0ed8531874afa91fbe33517be63d84167b7537744d4d89750dce0d063caa96f4",
+      "q": 8,
+      "parts": [
+        {
+          "label": "",
+          "html": "8; בְּדִיקָה: <span class=\"ltr\">7 + 5 + 8 = 20</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "93ebe0eb0303457bb305b41577498037",
+      "sourceSha256": "0ed8531874afa91fbe33517be63d84167b7537744d4d89750dce0d063caa96f4",
+      "q": 9,
+      "parts": [
+        {
+          "label": "",
+          "html": "2; בְּדִיקָה: <span class=\"ltr\">4 + 4 + 2 = 10</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "93ebe0eb0303457bb305b41577498037",
+      "sourceSha256": "0ed8531874afa91fbe33517be63d84167b7537744d4d89750dce0d063caa96f4",
+      "q": 10,
+      "parts": [
+        {
+          "label": "",
+          "html": "14; בְּדִיקָה: <span class=\"ltr\">2 + 4 + 14 = 20</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "93ebe0eb0303457bb305b41577498037",
+      "sourceSha256": "0ed8531874afa91fbe33517be63d84167b7537744d4d89750dce0d063caa96f4",
+      "q": 11,
+      "parts": [
+        {
+          "label": "",
+          "html": "1; בְּדִיקָה: <span class=\"ltr\">5 + 4 + 1 = 10</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "93ebe0eb0303457bb305b41577498037",
+      "sourceSha256": "0ed8531874afa91fbe33517be63d84167b7537744d4d89750dce0d063caa96f4",
+      "q": 12,
+      "parts": [
+        {
+          "label": "",
+          "html": "8; בְּדִיקָה: <span class=\"ltr\">8 + 4 + 8 = 20</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "93ebe0eb0303457bb305b41577498037",
+      "sourceSha256": "0ed8531874afa91fbe33517be63d84167b7537744d4d89750dce0d063caa96f4",
+      "q": 13,
+      "parts": [
+        {
+          "label": "",
+          "html": "4; בְּדִיקָה: <span class=\"ltr\">4 + 2 + 4 = 10</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "93ebe0eb0303457bb305b41577498037",
+      "sourceSha256": "0ed8531874afa91fbe33517be63d84167b7537744d4d89750dce0d063caa96f4",
+      "q": 14,
+      "parts": [
+        {
+          "label": "",
+          "html": "12; בְּדִיקָה: <span class=\"ltr\">3 + 5 + 12 = 20</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "93ebe0eb0303457bb305b41577498037",
+      "sourceSha256": "0ed8531874afa91fbe33517be63d84167b7537744d4d89750dce0d063caa96f4",
+      "q": 15,
+      "parts": [
+        {
+          "label": "",
+          "html": "5; בְּדִיקָה: <span class=\"ltr\">2 + 3 + 5 = 10</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "93ebe0eb0303457bb305b41577498037",
+      "sourceSha256": "0ed8531874afa91fbe33517be63d84167b7537744d4d89750dce0d063caa96f4",
+      "q": 16,
+      "parts": [
+        {
+          "label": "",
+          "html": "5; בְּדִיקָה: <span class=\"ltr\">7 + 8 + 5 = 20</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "93ebe0eb0303457bb305b41577498037",
+      "sourceSha256": "0ed8531874afa91fbe33517be63d84167b7537744d4d89750dce0d063caa96f4",
+      "q": 17,
+      "parts": [
+        {
+          "label": "",
+          "html": "2; בְּדִיקָה: <span class=\"ltr\">2 + 6 + 2 = 10</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "93ebe0eb0303457bb305b41577498037",
+      "sourceSha256": "0ed8531874afa91fbe33517be63d84167b7537744d4d89750dce0d063caa96f4",
+      "q": 18,
+      "parts": [
+        {
+          "label": "",
+          "html": "14; בְּדִיקָה: <span class=\"ltr\">4 + 2 + 14 = 20</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "93ebe0eb0303457bb305b41577498037",
+      "sourceSha256": "0ed8531874afa91fbe33517be63d84167b7537744d4d89750dce0d063caa96f4",
+      "q": 19,
+      "parts": [
+        {
+          "label": "",
+          "html": "1; בְּדִיקָה: <span class=\"ltr\">2 + 7 + 1 = 10</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "9db72eb2e73843ad883097dfe7052e88",
+      "sourceSha256": "188a8d55a4c62835a965dc7d65941e83f32462bd5e74a83c0501e9ca40aeb88f",
+      "q": 20,
+      "parts": [
+        {
+          "label": "",
+          "html": "לא. מחסרים מהמחוסר מספר שאינו שלילי, ולכן התוצאה אינה יכולה לגדול ממנו; בחיסור 0 התוצאה שווה למחוסר."
+        }
+      ]
+    },
+    {
+      "pdfId": "a06f892b214b4bbd9f2670e17390ac43",
+      "sourceSha256": "f9ded412dc9dbd86139148356cb0d11fb32a53edd71623e0d1eb9ef5623bcfae",
+      "q": 20,
+      "parts": [
+        {
+          "label": "",
+          "html": "לא. במלבנים שבציור, <span class=\"ltr\">6 x 4</span> ו־<span class=\"ltr\">8 x 3</span> יחידות נותנות אותו שטח: 24 יחידות ריבועיות. ההיקפים הם 20 ו־22 יחידות אורך, בהתאמה."
+        }
+      ]
+    },
+    {
+      "pdfId": "a0977442f65941728bdbb3e5f0a2ce83",
+      "sourceSha256": "61aa53fc6779ca7ad83464db55e41dc852dc6df91fb83dddf880c3c6e4068be5",
+      "q": 1,
+      "parts": [
+        {
+          "label": "א",
+          "html": "בצורה א׳."
+        },
+        {
+          "label": "ב",
+          "html": "בצורה ב׳ החלק הצבוע הוא <span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">6</span></span> מהשלם, ולא רבע; ספירת ארבעה חלקים שאינם שווים אינה מספיקה."
+        }
+      ]
+    },
+    {
+      "pdfId": "a0977442f65941728bdbb3e5f0a2ce83",
+      "sourceSha256": "61aa53fc6779ca7ad83464db55e41dc852dc6df91fb83dddf880c3c6e4068be5",
+      "q": 12,
+      "parts": [
+        {
+          "label": "",
+          "html": "לא. שני החלקים האחרים גדולים מהצבוע, ולכן השלם גדול מפי 3 מהחלק הצבוע; מכאן שהחלק הצבוע קטן משליש."
+        }
+      ]
+    },
+    {
+      "pdfId": "a0977442f65941728bdbb3e5f0a2ce83",
+      "sourceSha256": "61aa53fc6779ca7ad83464db55e41dc852dc6df91fb83dddf880c3c6e4068be5",
+      "q": 17,
+      "parts": [
+        {
+          "label": "",
+          "html": "<span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">3</span></span> גדול יותר; כשמחלקים אותו שלם לפחות חלקים שווים, כל חלק גדול יותר."
+        }
+      ]
+    },
+    {
+      "pdfId": "a373338a56b04c8a8252aaf5cb15e36a",
+      "sourceSha256": "70b8ac88775541ea8659f728cffd1e86d87b6d83df7aa16168c81e6e3eab257f",
+      "q": 5,
+      "parts": [
+        {
+          "label": "",
+          "html": "נכון. לקובייה שש פאות ריבועיות, וכל ריבוע הוא מלבן, ולכן היא תיבה. תיבה שמידותיה <span class=\"ltr\">2 x 3 x 4</span> ס״מ אינה קובייה כי לא כל מקצועותיה שווים."
+        }
+      ]
+    },
+    {
+      "pdfId": "a373338a56b04c8a8252aaf5cb15e36a",
+      "sourceSha256": "70b8ac88775541ea8659f728cffd1e86d87b6d83df7aa16168c81e6e3eab257f",
+      "q": 11,
+      "parts": [
+        {
+          "label": "",
+          "html": "5 פאות, 8 מקצועות ו־5 קודקודים: בסיס מרובע ועוד 4 פאות משולשות; 4 מקצועות בבסיס ועוד 4 לקודקוד העליון; 4 קודקודי בסיס ועוד קודקוד עליון."
+        }
+      ]
+    },
+    {
+      "pdfId": "a373338a56b04c8a8252aaf5cb15e36a",
+      "sourceSha256": "70b8ac88775541ea8659f728cffd1e86d87b6d83df7aa16168c81e6e3eab257f",
+      "q": 20,
+      "parts": [
+        {
+          "label": "",
+          "html": "תיבה: 6 פאות, 12 מקצועות, 8 קודקודים. פירמידה מרובעת: 5 פאות, 8 מקצועות, 5 קודקודים."
+        }
+      ]
+    },
+    {
+      "pdfId": "a4100c050b4f46e5bf3983256762dccf",
+      "sourceSha256": "231100e40678eb866785c23ff66e9b8184207feb8cb4e7bc437763f62c01fd1b",
+      "q": 20,
+      "parts": [
+        {
+          "label": "",
+          "html": "לדוגמה, מתחילים מקובייה שצלעה 1 ס״מ. שינוי ראשון בגורמים <span class=\"ltr\">4, 1, 1</span> יוצר תיבה <span class=\"ltr\">4 x 1 x 1</span>; שינוי שני בגורמים <span class=\"ltr\">2, 2, 1</span> יוצר תיבה <span class=\"ltr\">2 x 2 x 1</span>. בשתיהן מכפלת גורמי השינוי 4 ונפח 4 סמ״ק. שטח הפנים משתנה מ־6 סמ״ר ל־18 סמ״ר בראשונה ול־16 סמ״ר בשנייה. ייתכנו תשובות נוספות; מתקבלת כל תשובה שבה יש בסיס השוואה מוגדר, מכפלות גורמי השינוי שוות ושטחי הפנים משתנים בשיעורים שונים."
+        }
+      ]
+    },
+    {
+      "pdfId": "a9e9bcfb23534a17aee0c47ff808a22d",
+      "sourceSha256": "cc08896ce6c879f240531322c208e6269a97e519af14edf03931d753144932bb",
+      "q": 10,
+      "parts": [
+        {
+          "label": "",
+          "html": "<table><tr><th>גוף</th><th>פאות</th><th>מקצועות</th><th>קודקודים</th></tr><tr><td>קובייה</td><td>6</td><td>12</td><td>8</td></tr><tr><td>תיבה</td><td>6</td><td>12</td><td>8</td></tr><tr><td>מנסרה משולשת</td><td>5</td><td>9</td><td>6</td></tr><tr><td>פירמידה מרובעת</td><td>5</td><td>8</td><td>5</td></tr><tr><td>פירמידה מחומשת</td><td>6</td><td>10</td><td>6</td></tr></table> ייתכנו תשובות נוספות; מתקבלת כל תשובה שבה הטבלה כוללת גופים שנלמדו ומנייה נכונה של שלוש התכונות."
+        }
+      ]
+    },
+    {
+      "pdfId": "af8f6ce5baa34773873d858dfd9fe5ab",
+      "sourceSha256": "e382ebebc877feae978beabfaaa00b0d17b3aba2dabb4c61e8adf4123f43aa7c",
+      "q": 16,
+      "parts": [
+        {
+          "label": "",
+          "html": "הטענה שגויה. אם שני ישרים שונים במישור מאונכים לישר השלישי, הם מקבילים זה לזה, ולכן אינם מאונכים זה לזה."
+        }
+      ]
+    },
+    {
+      "pdfId": "b43f610e710e4cc8961cec0a70295b09",
+      "sourceSha256": "cf056aaa5d8abb3dae9c9a4687ac9ea7780091f51459a606c166088140c23a30",
+      "q": 16,
+      "parts": [
+        {
+          "label": "",
+          "html": "הזוויות A ו־B חדות. סוג הזווית נקבע לפי המפתח בין הקרניים, ולא לפי אורכי הקטעים המצוירים שלהן."
+        }
+      ]
+    },
+    {
+      "pdfId": "b504d2a6490f4973b1608844220cb792",
+      "sourceSha256": "7b80f903da8881837b6b3d3a3e4830360fadb4e6c46f75bc1b15ab56d9d4bb8a",
+      "q": 19,
+      "parts": [
+        {
+          "label": "",
+          "html": "נכון; במלבן שמידותיו חיוביות ההיקף אף קטן מפי 2 מן ההיקף המקורי. אם מכפילים רק את האורך, תרומת האורך מוכפלת ותרומת הרוחב נשארת כשהייתה; בהכפלת ההיקף כולו גם תרומת הרוחב הייתה צריכה להכפיל את עצמה. לדוגמה, מלבן 3 על 4: היקף 14; מלבן 6 על 4: היקף 20, ולא 28."
+        }
+      ]
+    },
+    {
+      "pdfId": "b504d2a6490f4973b1608844220cb792",
+      "sourceSha256": "7b80f903da8881837b6b3d3a3e4830360fadb4e6c46f75bc1b15ab56d9d4bb8a",
+      "q": 20,
+      "parts": [
+        {
+          "label": "",
+          "html": "לדוגמה: לשנות מלבן <span class=\"ltr\">3 x 8</span> ס״מ למלבן <span class=\"ltr\">4 x 6</span> ס״מ. השטח נשאר 24 סמ״ר, וההיקף משתנה מ־22 ס״מ ל־20 ס״מ. ייתכנו תשובות נוספות; מתקבלת כל תשובה שבה מכפלות המידות שוות, אך סכומי האורך והרוחב שונים."
+        }
+      ]
+    },
+    {
+      "pdfId": "bbf3d375a36f4fd1a609bb875822f059",
+      "sourceSha256": "a279fb606981594d89b9d5f7111793f0c526f9c752a9d63779ab9690d1a049c3",
+      "q": 1,
+      "parts": [
+        {
+          "label": "",
+          "html": "לפי הצורות המוצגות: A — ריבוע, מלבן, מעוין, מקבילית ומרובע; B — מלבן, מקבילית ומרובע; D — טרפז ומרובע. C הוא משולש ואינו מרובע. בהגדרת טרפז כמרובע בעל לפחות זוג אחד של צלעות מקבילות, גם A ו־B הם טרפזים. הסיווג מתאר את השרטוט; בלי סימוני שוויון, זוויות או נתונים אין להוכיח את התכונות ממראה בלבד."
+        }
+      ]
+    },
+    {
+      "pdfId": "bbf3d375a36f4fd1a609bb875822f059",
+      "sourceSha256": "a279fb606981594d89b9d5f7111793f0c526f9c752a9d63779ab9690d1a049c3",
+      "q": 12,
+      "parts": [
+        {
+          "label": "",
+          "html": "נכון. למשל, מעוין שכל צלעותיו 3 ס״מ וזוויותיו <span class=\"ltr\">60°, 120°, 60°, 120°</span> אינו ריבוע, מפני שאין לו זוויות ישרות."
+        }
+      ]
+    },
+    {
+      "pdfId": "bbf3d375a36f4fd1a609bb875822f059",
+      "sourceSha256": "a279fb606981594d89b9d5f7111793f0c526f9c752a9d63779ab9690d1a049c3",
+      "q": 18,
+      "parts": [
+        {
+          "label": "",
+          "html": "לפי הצורות המוצגות: A — ריבוע, מלבן, מעוין, מקבילית ומרובע; B — מלבן, מקבילית ומרובע; D — טרפז ומרובע. C הוא משולש ואינו מרובע. בהגדרת טרפז כמרובע בעל לפחות זוג אחד של צלעות מקבילות, גם A ו־B הם טרפזים. הסיווג מתאר את השרטוט; בלי סימוני שוויון, זוויות או נתונים אין להוכיח את התכונות ממראה בלבד."
+        }
+      ]
+    },
+    {
+      "pdfId": "c01401da7a404a8eba3bb017352f9940",
+      "sourceSha256": "58d8fff478d1836324f7aa7ed3a920b3ae9fd24b09785492e5e9deae8fd5ab8a",
+      "q": 1,
+      "parts": [
+        {
+          "label": "",
+          "html": "9; בְּדִיקָה: <span class=\"ltr\">9 + 25 = 34</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "c01401da7a404a8eba3bb017352f9940",
+      "sourceSha256": "58d8fff478d1836324f7aa7ed3a920b3ae9fd24b09785492e5e9deae8fd5ab8a",
+      "q": 2,
+      "parts": [
+        {
+          "label": "",
+          "html": "6; בְּדִיקָה: <span class=\"ltr\">6 + 68 = 74</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "c01401da7a404a8eba3bb017352f9940",
+      "sourceSha256": "58d8fff478d1836324f7aa7ed3a920b3ae9fd24b09785492e5e9deae8fd5ab8a",
+      "q": 3,
+      "parts": [
+        {
+          "label": "",
+          "html": "7; בְּדִיקָה: <span class=\"ltr\">7 + 37 = 44</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "c01401da7a404a8eba3bb017352f9940",
+      "sourceSha256": "58d8fff478d1836324f7aa7ed3a920b3ae9fd24b09785492e5e9deae8fd5ab8a",
+      "q": 4,
+      "parts": [
+        {
+          "label": "",
+          "html": "49; בְּדִיקָה: <span class=\"ltr\">49 + 19 = 68</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "c01401da7a404a8eba3bb017352f9940",
+      "sourceSha256": "58d8fff478d1836324f7aa7ed3a920b3ae9fd24b09785492e5e9deae8fd5ab8a",
+      "q": 5,
+      "parts": [
+        {
+          "label": "",
+          "html": "25; בְּדִיקָה: <span class=\"ltr\">25 + 48 = 73</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "c01401da7a404a8eba3bb017352f9940",
+      "sourceSha256": "58d8fff478d1836324f7aa7ed3a920b3ae9fd24b09785492e5e9deae8fd5ab8a",
+      "q": 6,
+      "parts": [
+        {
+          "label": "",
+          "html": "38; בְּדִיקָה: <span class=\"ltr\">38 + 59 = 97</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "c01401da7a404a8eba3bb017352f9940",
+      "sourceSha256": "58d8fff478d1836324f7aa7ed3a920b3ae9fd24b09785492e5e9deae8fd5ab8a",
+      "q": 7,
+      "parts": [
+        {
+          "label": "",
+          "html": "18; בְּדִיקָה: <span class=\"ltr\">18 + 39 = 57</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "c01401da7a404a8eba3bb017352f9940",
+      "sourceSha256": "58d8fff478d1836324f7aa7ed3a920b3ae9fd24b09785492e5e9deae8fd5ab8a",
+      "q": 8,
+      "parts": [
+        {
+          "label": "",
+          "html": "5; בְּדִיקָה: <span class=\"ltr\">5 + 38 = 43</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "c01401da7a404a8eba3bb017352f9940",
+      "sourceSha256": "58d8fff478d1836324f7aa7ed3a920b3ae9fd24b09785492e5e9deae8fd5ab8a",
+      "q": 9,
+      "parts": [
+        {
+          "label": "",
+          "html": "38; בְּדִיקָה: <span class=\"ltr\">38 + 27 = 65</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "c01401da7a404a8eba3bb017352f9940",
+      "sourceSha256": "58d8fff478d1836324f7aa7ed3a920b3ae9fd24b09785492e5e9deae8fd5ab8a",
+      "q": 10,
+      "parts": [
+        {
+          "label": "",
+          "html": "18; בְּדִיקָה: <span class=\"ltr\">18 + 25 = 43</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "c01401da7a404a8eba3bb017352f9940",
+      "sourceSha256": "58d8fff478d1836324f7aa7ed3a920b3ae9fd24b09785492e5e9deae8fd5ab8a",
+      "q": 11,
+      "parts": [
+        {
+          "label": "",
+          "html": "8; בְּדִיקָה: <span class=\"ltr\">8 + 34 = 42</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "c01401da7a404a8eba3bb017352f9940",
+      "sourceSha256": "58d8fff478d1836324f7aa7ed3a920b3ae9fd24b09785492e5e9deae8fd5ab8a",
+      "q": 12,
+      "parts": [
+        {
+          "label": "",
+          "html": "67; בְּדִיקָה: <span class=\"ltr\">67 + 26 = 93</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "c01401da7a404a8eba3bb017352f9940",
+      "sourceSha256": "58d8fff478d1836324f7aa7ed3a920b3ae9fd24b09785492e5e9deae8fd5ab8a",
+      "q": 13,
+      "parts": [
+        {
+          "label": "",
+          "html": "8; בְּדִיקָה: <span class=\"ltr\">8 + 87 = 95</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "c01401da7a404a8eba3bb017352f9940",
+      "sourceSha256": "58d8fff478d1836324f7aa7ed3a920b3ae9fd24b09785492e5e9deae8fd5ab8a",
+      "q": 14,
+      "parts": [
+        {
+          "label": "",
+          "html": "16; בְּדִיקָה: <span class=\"ltr\">16 + 47 = 63</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "c01401da7a404a8eba3bb017352f9940",
+      "sourceSha256": "58d8fff478d1836324f7aa7ed3a920b3ae9fd24b09785492e5e9deae8fd5ab8a",
+      "q": 15,
+      "parts": [
+        {
+          "label": "",
+          "html": "22; בְּדִיקָה: <span class=\"ltr\">22 + 28 = 50</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "c01401da7a404a8eba3bb017352f9940",
+      "sourceSha256": "58d8fff478d1836324f7aa7ed3a920b3ae9fd24b09785492e5e9deae8fd5ab8a",
+      "q": 16,
+      "parts": [
+        {
+          "label": "",
+          "html": "15; בְּדִיקָה: <span class=\"ltr\">15 + 69 = 84</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "c01401da7a404a8eba3bb017352f9940",
+      "sourceSha256": "58d8fff478d1836324f7aa7ed3a920b3ae9fd24b09785492e5e9deae8fd5ab8a",
+      "q": 17,
+      "parts": [
+        {
+          "label": "",
+          "html": "38; בְּדִיקָה: <span class=\"ltr\">38 + 16 = 54</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "c01401da7a404a8eba3bb017352f9940",
+      "sourceSha256": "58d8fff478d1836324f7aa7ed3a920b3ae9fd24b09785492e5e9deae8fd5ab8a",
+      "q": 18,
+      "parts": [
+        {
+          "label": "",
+          "html": "7; בְּדִיקָה: <span class=\"ltr\">7 + 68 = 75</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "c01401da7a404a8eba3bb017352f9940",
+      "sourceSha256": "58d8fff478d1836324f7aa7ed3a920b3ae9fd24b09785492e5e9deae8fd5ab8a",
+      "q": 19,
+      "parts": [
+        {
+          "label": "",
+          "html": "27; בְּדִיקָה: <span class=\"ltr\">27 + 45 = 72</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "c1285207887d425581319a8eaafcfbc5",
+      "sourceSha256": "283f31d1d2d8045950291dacd0695c361c536e4ac196cacaf1257a2b4934b156",
+      "q": 17,
+      "parts": [
+        {
+          "label": "",
+          "html": "4 ריבועי יחידה; היקף של 10 יחידות אורך. מספר הריבועים מודד את השטח שבתוך הצורה, וההיקף מודד את אורך הגבול שלה."
+        }
+      ]
+    },
+    {
+      "pdfId": "c16511e176924a3abe9e7a78d84282b6",
+      "sourceSha256": "011a71517ef70dd960ad9f5fee82cd835d3da7644a164ed96d6d2e5bba4e9216",
+      "q": 20,
+      "parts": [
+        {
+          "label": "",
+          "html": "כן, בתחום המספרים השלמים: כל ספרה עוברת למקום שערכו גדול פי 10, והאפס ממלא את מקום היחידות."
+        }
+      ]
+    },
+    {
+      "pdfId": "c22a0ce64c4e49e7b3750e7646e34b07",
+      "sourceSha256": "ce4f463d4259d6b2ce2771c3a0248f2e59e1666a01f7f694f3134b6d8f1974ba",
+      "q": 5,
+      "parts": [
+        {
+          "label": "",
+          "html": "לא. <span class=\"ltr\">85 − 30 = 55</span>; לאחר החלפת הסדר מחסרים 85 מ־30, ולכן לא מתקבלת אותה תוצאה."
+        }
+      ]
+    },
+    {
+      "pdfId": "c22a0ce64c4e49e7b3750e7646e34b07",
+      "sourceSha256": "ce4f463d4259d6b2ce2771c3a0248f2e59e1666a01f7f694f3134b6d8f1974ba",
+      "q": 6,
+      "parts": [
+        {
+          "label": "",
+          "html": "לא. <span class=\"ltr\">60 : 5</span> גדול מ־1, ואילו <span class=\"ltr\">5 : 60</span> קטן מ־1; לכן החלפת הסדר משנה את המנה."
+        }
+      ]
+    },
+    {
+      "pdfId": "c4ade11dcb7e42d6987b3eabd71308ad",
+      "sourceSha256": "5aecf1053ecd07ac89d67328e322ba442df8299e495175a15c7fe6fdbc8759f3",
+      "q": 16,
+      "parts": [
+        {
+          "label": "",
+          "html": "התלמיד טעה: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">2</span><span class=\"fden\">3</span></span> = <span class=\"frac\"><span class=\"fnum\">10</span><span class=\"fden\">15</span></span> > <span class=\"frac\"><span class=\"fnum\">9</span><span class=\"fden\">15</span></span> = <span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">5</span></span></span>. כשיש מכנים שונים, אי אפשר להכריע לפי המונים בלבד."
+        }
+      ]
+    },
+    {
+      "pdfId": "c4ade11dcb7e42d6987b3eabd71308ad",
+      "sourceSha256": "5aecf1053ecd07ac89d67328e322ba442df8299e495175a15c7fe6fdbc8759f3",
+      "q": 20,
+      "parts": [
+        {
+          "label": "",
+          "html": "כן, בכתיבה שונה אך באותו ערך: למשל <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">2</span></span> = <span class=\"frac\"><span class=\"fnum\">2</span><span class=\"fden\">4</span></span></span>. כל זוג שברים שקולים מתאים; שברים שערכיהם שונים אינם באותה נקודה."
+        }
+      ]
+    },
+    {
+      "pdfId": "c57518a2c69e482685be059fec68470a",
+      "sourceSha256": "c7dbb3fdcee892f2316e10462f5fd08e140794c087ea930b06f07cae96fa39d3",
+      "q": 3,
+      "parts": [
+        {
+          "label": "",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">11</span><span class=\"fden\">12</span></span> : <span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">18</span></span> = <span class=\"frac\"><span class=\"fnum\">33</span><span class=\"fden\">10</span></span></span>. בחרתי חילוק כי מחפשים כמה קבוצות בגודל נתון נכנסות בכמות. הכפל בהופכי <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">18</span><span class=\"fden\">5</span></span></span> נותן אותה מנה."
+        }
+      ]
+    },
+    {
+      "pdfId": "c57518a2c69e482685be059fec68470a",
+      "sourceSha256": "c7dbb3fdcee892f2316e10462f5fd08e140794c087ea930b06f07cae96fa39d3",
+      "q": 9,
+      "parts": [
+        {
+          "label": "",
+          "html": "לפי הביטוי המודפס, החסר הוא <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">20</span></span></span>: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">8</span></span> : <span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">20</span></span> = <span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">2</span></span></span>. לפי ההוראה „השלימו את המחולק”, החסר הוא <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">15</span><span class=\"fden\">16</span></span></span>: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">15</span><span class=\"fden\">16</span></span> : <span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">8</span></span> = <span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">2</span></span></span>. כדי למצוא מחולק מכפילים מחלק במנה."
+        }
+      ]
+    },
+    {
+      "pdfId": "c57518a2c69e482685be059fec68470a",
+      "sourceSha256": "c7dbb3fdcee892f2316e10462f5fd08e140794c087ea930b06f07cae96fa39d3",
+      "q": 12,
+      "parts": [
+        {
+          "label": "",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">12</span></span> : <span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">18</span></span> = <span class=\"frac\"><span class=\"fnum\">21</span><span class=\"fden\">10</span></span></span>. בדיקה: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">21</span><span class=\"fden\">10</span></span> x <span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">18</span></span> = <span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">12</span></span></span>. חילוק מתאים למציאת מספר הקבוצות בגודל הנתון."
+        }
+      ]
+    },
+    {
+      "pdfId": "c57518a2c69e482685be059fec68470a",
+      "sourceSha256": "c7dbb3fdcee892f2316e10462f5fd08e140794c087ea930b06f07cae96fa39d3",
+      "q": 18,
+      "parts": [
+        {
+          "label": "",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">4</span></span> : <span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">16</span></span> = 4</span>. בחרתי חילוק כי בשלושה רבעים יש 12 שש־עשריות, המתחלקות לארבע קבוצות של 3."
+        }
+      ]
+    },
+    {
+      "pdfId": "c73305ad3c064839bf4375ee1cb23f29",
+      "sourceSha256": "b1318a2d578c0be8bf58aa2e782ce65c02805a83b5efe139cde7adb41ea35f01",
+      "q": 3,
+      "parts": [
+        {
+          "label": "",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">11</span><span class=\"fden\">12</span></span> : <span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">18</span></span> = <span class=\"frac\"><span class=\"fnum\">33</span><span class=\"fden\">10</span></span></span>. בחרתי חילוק כי מחפשים כמה קבוצות בגודל נתון נכנסות בכמות. הכפל בהופכי <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">18</span><span class=\"fden\">5</span></span></span> נותן אותה מנה."
+        }
+      ]
+    },
+    {
+      "pdfId": "c73305ad3c064839bf4375ee1cb23f29",
+      "sourceSha256": "b1318a2d578c0be8bf58aa2e782ce65c02805a83b5efe139cde7adb41ea35f01",
+      "q": 9,
+      "parts": [
+        {
+          "label": "",
+          "html": "לפי הביטוי המודפס, החסר הוא <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">20</span></span></span>: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">8</span></span> : <span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">20</span></span> = <span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">2</span></span></span>. לפי ההוראה „השלימו את המחולק”, החסר הוא <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">15</span><span class=\"fden\">16</span></span></span>: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">15</span><span class=\"fden\">16</span></span> : <span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">8</span></span> = <span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">2</span></span></span>. כדי למצוא מחולק מכפילים מחלק במנה."
+        }
+      ]
+    },
+    {
+      "pdfId": "c73305ad3c064839bf4375ee1cb23f29",
+      "sourceSha256": "b1318a2d578c0be8bf58aa2e782ce65c02805a83b5efe139cde7adb41ea35f01",
+      "q": 12,
+      "parts": [
+        {
+          "label": "",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">12</span></span> : <span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">18</span></span> = <span class=\"frac\"><span class=\"fnum\">21</span><span class=\"fden\">10</span></span></span>. בדיקה: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">21</span><span class=\"fden\">10</span></span> x <span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">18</span></span> = <span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">12</span></span></span>. חילוק מתאים למציאת מספר הקבוצות בגודל הנתון."
+        }
+      ]
+    },
+    {
+      "pdfId": "c73305ad3c064839bf4375ee1cb23f29",
+      "sourceSha256": "b1318a2d578c0be8bf58aa2e782ce65c02805a83b5efe139cde7adb41ea35f01",
+      "q": 18,
+      "parts": [
+        {
+          "label": "",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">4</span></span> : <span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">16</span></span> = 4</span>. בחרתי חילוק כי בשלושה רבעים יש 12 שש־עשריות, המתחלקות לארבע קבוצות של 3."
+        }
+      ]
+    },
+    {
+      "pdfId": "c74090e51f8747bdb43cba6c9690ce73",
+      "sourceSha256": "bc034a5ebe7a736fcbbeff73d70c528005aac4877af064967e87162198606466",
+      "q": 1,
+      "parts": [
+        {
+          "label": "",
+          "html": "גודל הקפיצה: 10; המספר החסר: 3,330."
+        }
+      ]
+    },
+    {
+      "pdfId": "c902d595f9ce4449bdf568984b0c0484",
+      "sourceSha256": "afdfcf08bfe7f1dff674bc63862b07c2da45fa6702db487e26c9c57bdead706e",
+      "q": 20,
+      "parts": [
+        {
+          "label": "",
+          "html": "לא. במלבנים שבציור: <span class=\"ltr\">6 x 4</span> יחידות נותנות שטח של 24 יחידות ריבועיות, ואילו <span class=\"ltr\">8 x 2</span> נותנות שטח של 16 יחידות ריבועיות; לשניהם היקף של 20 יחידות אורך."
+        }
+      ]
+    },
+    {
+      "pdfId": "c9ba5991de514567a44f08062a908023",
+      "sourceSha256": "dd81d4de0c548fa054e36254828c8a6412b1d2728bc3b286db619684df48ea3e",
+      "q": 20,
+      "parts": [
+        {
+          "label": "",
+          "html": "לא. סיבוב שומר על אורכי הצלעות ועל הזוויות; ארבע הזוויות נשארות ישרות, ולכן הצורה נשארת מלבן."
+        }
+      ]
+    },
+    {
+      "pdfId": "cbb330d419134c1992b8e796aa47d836",
+      "sourceSha256": "9129b4d8f5cd65c6a2a475ac63fdcf11ddba63a832b31dddd1c7191cc231db12",
+      "q": 20,
+      "parts": [
+        {
+          "label": "",
+          "html": "דוגמה לתכנון דוח על זמן קריאה בשתי שכבות: מדגם אקראי של 30 תלמידים מכל שכבה, בחלוקה יחסית בין הכיתות ובאותו שבוע. ייצוג: תרשימי עמודות באותם תחומי זמן ובאותו קנה מידה. שלושה מדדים: ממוצע, חציון וטווח. מסקנה זהירה תתייחס למדגם בלבד, למשל „במדגם, זמן הקריאה הטיפוסי בשכבה א׳ גבוה יותר” רק אם הנתונים יתמכו בכך. מגבלה: דיווח עצמי ושבוע אחד עלולים שלא לייצג הרגלים לאורך זמן. ייתכנו תשובות נוספות; מתקבלת כל תשובה שבה מצוינים מדגם, ייצוג מתאים, שלושה מדדים, מסקנה שאינה חורגת מהנתונים ומגבלה רלוונטית."
+        }
+      ]
+    },
+    {
+      "pdfId": "cc48ddaf044840aaa1e5416ad61b87da",
+      "sourceSha256": "64921201f39fa82043656fa6db133955c6d53ed54478cebae6703b5fcfb41c46",
+      "q": 20,
+      "parts": [
+        {
+          "label": "",
+          "html": "ההפרש אינו משתנה: התוספת למחוסר והתוספת למחסר מבטלות זו את זו."
+        }
+      ]
+    },
+    {
+      "pdfId": "cde64aee2b8a41b09c97a2e926ed3c6f",
+      "sourceSha256": "941a4321184bc8bb9ffc3a022a08e12332b25ee350803c2cbb5a5ddde38a2772",
+      "q": 20,
+      "parts": [
+        {
+          "label": "",
+          "html": "לא. לפי חוק החילוף בחיבור, סדר המחוברים אינו משנה את מספר הפריטים הכולל, ולכן הסכום נשמר."
+        }
+      ]
+    },
+    {
+      "pdfId": "ce932ef443044f35a4c07f938bf954f0",
+      "sourceSha256": "5777a39e20412220b238b9678d2b6ad5ed29eef557ae6ef3fe012cba7b6cb820",
+      "q": 2,
+      "parts": [
+        {
+          "label": "א",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">2</span></span> = <span class=\"frac\"><span class=\"fnum\">2</span><span class=\"fden\">4</span></span></span>"
+        },
+        {
+          "label": "ב",
+          "html": "שני רבעים הם חצי מהשלם, ולכן שני השברים מציינים את אותה נקודה באמצע הישר."
+        }
+      ]
+    },
+    {
+      "pdfId": "ce932ef443044f35a4c07f938bf954f0",
+      "sourceSha256": "5777a39e20412220b238b9678d2b6ad5ed29eef557ae6ef3fe012cba7b6cb820",
+      "q": 4,
+      "parts": [
+        {
+          "label": "א",
+          "html": "2"
+        },
+        {
+          "label": "ב",
+          "html": "5"
+        },
+        {
+          "label": "ג",
+          "html": "השלמים שונים: רבע מ־8 ורבע מ־20 הם רבעים של כמויות שונות."
+        }
+      ]
+    },
+    {
+      "pdfId": "ce932ef443044f35a4c07f938bf954f0",
+      "sourceSha256": "5777a39e20412220b238b9678d2b6ad5ed29eef557ae6ef3fe012cba7b6cb820",
+      "q": 8,
+      "parts": [
+        {
+          "label": "",
+          "html": "לא. החלקים אינם שווים בשטחם; החלק הצבוע הוא <span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">2</span></span> מהשלם."
+        }
+      ]
+    },
+    {
+      "pdfId": "ce932ef443044f35a4c07f938bf954f0",
+      "sourceSha256": "5777a39e20412220b238b9678d2b6ad5ed29eef557ae6ef3fe012cba7b6cb820",
+      "q": 11,
+      "parts": [
+        {
+          "label": "",
+          "html": "המחברת עלתה 6 ש״ח; העיפרון עלה 3 ש״ח; נשארו 9 ש״ח."
+        }
+      ]
+    },
+    {
+      "pdfId": "ce932ef443044f35a4c07f938bf954f0",
+      "sourceSha256": "5777a39e20412220b238b9678d2b6ad5ed29eef557ae6ef3fe012cba7b6cb820",
+      "q": 15,
+      "parts": [
+        {
+          "label": "",
+          "html": "<span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">4</span></span> גדול יותר; כשמחלקים אותו שלם לפחות חלקים שווים, כל חלק גדול יותר."
+        }
+      ]
+    },
+    {
+      "pdfId": "d00ead119d7a4edf975eee7b7698bb1a",
+      "sourceSha256": "ca1075aa9eda92ca1650673a6cd997a53e3c03a8f541806cdd4bb3bbffc4e987",
+      "q": 3,
+      "parts": [
+        {
+          "label": "",
+          "html": "דוגמה נגדית: מקבילית שצלעותיה הסמוכות 3 ס״מ ו־5 ס״מ וזוויותיה <span class=\"ltr\">60°, 120°, 60°, 120°</span>. שני זוגות הצלעות הנגדיות מקבילים, אך אין זוויות ישרות, ולכן היא אינה מלבן. ייתכנו תשובות נוספות; מתקבלת כל תשובה שבה למרובע שני זוגות צלעות נגדיות מקבילות ולפחות זווית אחת שאינה ישרה."
+        }
+      ]
+    },
+    {
+      "pdfId": "d00ead119d7a4edf975eee7b7698bb1a",
+      "sourceSha256": "ca1075aa9eda92ca1650673a6cd997a53e3c03a8f541806cdd4bb3bbffc4e987",
+      "q": 13,
+      "parts": [
+        {
+          "label": "",
+          "html": "לפי מראה השרטוט, A — הריבוע: ארבע צלעות שוות, ארבע זוויות ישרות ושני זוגות צלעות מקבילות; הוא גם מלבן, מעוין ומקבילית. הזיהוי מותנה בכך ש־A אכן נתון כריבוע, כי אין בשרטוט סימונים שמוכיחים זאת."
+        }
+      ]
+    },
+    {
+      "pdfId": "d00ead119d7a4edf975eee7b7698bb1a",
+      "sourceSha256": "ca1075aa9eda92ca1650673a6cd997a53e3c03a8f541806cdd4bb3bbffc4e987",
+      "q": 16,
+      "parts": [
+        {
+          "label": "",
+          "html": "מלבן: מרובע בעל ארבע זוויות ישרות. מעוין: מרובע בעל ארבע צלעות שוות. ריבוע: מרובע בעל ארבע צלעות שוות וארבע זוויות ישרות; הוא שייך גם לשתי הקבוצות האחרות. מלבן שאינו ריבוע בעל צלעות סמוכות שאינן שוות, ומעוין שאינו ריבוע בעל זווית שאינה ישרה."
+        }
+      ]
+    },
+    {
+      "pdfId": "d00ead119d7a4edf975eee7b7698bb1a",
+      "sourceSha256": "ca1075aa9eda92ca1650673a6cd997a53e3c03a8f541806cdd4bb3bbffc4e987",
+      "q": 17,
+      "parts": [
+        {
+          "label": "",
+          "html": "דוגמאות לטענות נכונות: כל ריבוע הוא מלבן; כל מעוין הוא מקבילית. דוגמאות לטענות שגויות: „כל מלבן הוא ריבוע” — מלבן שמידותיו 2 ו־3 ס״מ מפריך זאת; „כל מקבילית היא מלבן” — מקבילית שזוויותיה 60° ו־120° מפריכה זאת. בכל דוגמה נגדית תנאי הפתיחה מתקיים והמסקנה אינה מתקיימת. ייתכנו תשובות נוספות; מתקבלת כל תשובה שבה יש שתי טענות הכלה נכונות ושתי טענות שגויות, ולכל שגויה דוגמה נגדית תקפה."
+        }
+      ]
+    },
+    {
+      "pdfId": "d00ead119d7a4edf975eee7b7698bb1a",
+      "sourceSha256": "ca1075aa9eda92ca1650673a6cd997a53e3c03a8f541806cdd4bb3bbffc4e987",
+      "q": 20,
+      "parts": [
+        {
+          "label": "",
+          "html": "לפי הגדרת „לפחות זוג אחד מקביל” שבדף: ריבועים כלולים במלבנים ובמעוינים; מלבנים ומעוינים כלולים במקביליות; מקביליות כלולות בטרפזים; טרפזים כלולים במרובעים. ריבוע הוא בדיוק מרובע שהוא גם מלבן וגם מעוין. ההכלות ההפוכות אינן נכונות: מלבן 2 על 3 אינו ריבוע; מעוין בזוויות 60° ו־120° אינו ריבוע; מקבילית בעלת צלעות 2 ו־3 וזוויות 60° ו־120° אינה מלבן או מעוין; טרפז בעל זוג מקביל יחיד אינו מקבילית; מרובע ללא צלעות מקבילות אינו טרפז. אותן דוגמאות מפריכות גם את ההכלות ההפוכות הרחוקות יותר במפה."
+        }
+      ]
+    },
+    {
+      "pdfId": "d8fe9431a9a4441cbff7804ca36bb39a",
+      "sourceSha256": "a30b1e0984feade59aa2eb759cc35c4796261d23560a20725cdfd0bf30088c02",
+      "q": 19,
+      "parts": [
+        {
+          "label": "",
+          "html": "מילימטרים, כי עובי מטבע הוא אורך קטן, והמילימטר הוא יחידה קטנה המתאימה למדידה זו."
+        }
+      ]
+    },
+    {
+      "pdfId": "d8fe9431a9a4441cbff7804ca36bb39a",
+      "sourceSha256": "a30b1e0984feade59aa2eb759cc35c4796261d23560a20725cdfd0bf30088c02",
+      "q": 20,
+      "parts": [
+        {
+          "label": "",
+          "html": "במילימטרים: מטר אחד שווה 1,000 מ״מ, ולכן אותו אורך חיובי מקבל במ״מ מספר גדול פי 1,000."
+        }
+      ]
+    },
+    {
+      "pdfId": "de12590ded914d43befe73a56d895911",
+      "sourceSha256": "678798a9cce1147e95e60c9905b8c8086e2f4ac2e88394b94774df38d2f726f5",
+      "q": 20,
+      "parts": [
+        {
+          "label": "",
+          "html": "לא. בצמצום מחלקים את המונה ואת המכנה באותו גורם משותף שאינו 0, ולכן ערך השבר ומיקומו על הישר אינם משתנים."
+        }
+      ]
+    },
+    {
+      "pdfId": "e0e9707b398b44e2bc899bf2b408d49e",
+      "sourceSha256": "740ac69214b266bae63ff1fe49c408b74592806f444962923d3c93c38b41d565",
+      "q": 20,
+      "parts": [
+        {
+          "label": "",
+          "html": "לא. בקבלת עודף דרוש סכום מדויק, כדי לא לתת יותר או פחות מהמגיע. אומדן יכול לבדוק שהתוצאה סבירה, אך אינו מבטיח עודף נכון."
+        }
+      ]
+    },
+    {
+      "pdfId": "e6085f0b07e9474a84bf173f1b6a2a79",
+      "sourceSha256": "2c8b23ed2138953a5861f3d6aaf600d199c37dc2925340eaac461d3ec0b5e080",
+      "q": 18,
+      "parts": [
+        {
+          "label": "",
+          "html": "ברשת יש 100 תאים שווים, ו־75 צבועים. חלוקה לארבע קבוצות שוות של 25 תאים נותנת שלוש קבוצות צבועות מתוך ארבע; לכן <span class=\"ltr\">75% = <span class=\"frac\"><span class=\"fnum\">75</span><span class=\"fden\">100</span></span> = <span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">4</span></span></span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "e76fe2ed7c15497da019eb0989b0a0b1",
+      "sourceSha256": "f83885b620d42efddcc5e54167765ebabcaf605da007f5d4acf8250b002cce3f",
+      "q": 20,
+      "parts": [
+        {
+          "label": "",
+          "html": "דוגמה: בקופסה 30 כדורים אדומים וכחולים ביחס <span class=\"ltr\">2 : 3</span>. מוסיפים 6 אדומים. מה מספר הכדורים מכל צבע ומה היחס החדש? תשובה: בתחילה 12 אדומים ו־18 כחולים; לאחר ההוספה 18 מכל צבע, בסך הכול 36, והיחס <span class=\"ltr\">1 : 1</span>. ייתכנו תשובות נוספות; מתקבלת כל תשובה שבה הנתונים מספיקים למציאת הכמויות, רק חלק אחד משתנה, והיחס החדש מחושב נכון."
+        }
+      ]
+    },
+    {
+      "pdfId": "e85bc87a7bdb49d780d445b6d4a0eca3",
+      "sourceSha256": "eb28d35648419006c14e9cc0e9c4dc3bc3d369b972f3f80fd888d5eff48de936",
+      "q": 19,
+      "parts": [
+        {
+          "label": "",
+          "html": "נכון: אחוז פירושו מאית, ולכן <span class=\"ltr\">8% = <span class=\"frac\"><span class=\"fnum\">8</span><span class=\"fden\">100</span></span> = 0.08</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "ef716fba16f84b7f9d31bd4a14f2eff5",
+      "sourceSha256": "d0ba59e555f4a853103024ee56b4c86c22f9938dbd206c106e94508126d324bc",
+      "q": 8,
+      "parts": [
+        {
+          "label": "",
+          "html": "כן. ריבוע הוא מרובע שכל ארבע הזוויות שלו ישרות, ולכן הוא מקיים את הגדרת המלבן; השוויון בין כל הצלעות אינו מבטל זאת."
+        }
+      ]
+    },
+    {
+      "pdfId": "ef716fba16f84b7f9d31bd4a14f2eff5",
+      "sourceSha256": "d0ba59e555f4a853103024ee56b4c86c22f9938dbd206c106e94508126d324bc",
+      "q": 20,
+      "parts": [
+        {
+          "label": "",
+          "html": "לא. לדוגמה, מלבנים שמידותיהם <span class=\"ltr\">6 x 4</span> ו־<span class=\"ltr\">8 x 2</span> יחידות: לשניהם היקף 20 יחידות אורך, אך שטחיהם 24 ו־16 יחידות ריבועיות. כל זוג מלבנים בעלי אותו היקף ושטחים שונים מתאים."
+        }
+      ]
+    },
+    {
+      "pdfId": "f163f83d87f849f4b981db6ee2722269",
+      "sourceSha256": "3b3278984ff484d79979804c4d34bff82540ccdb121356eddfcf68f559633675",
+      "q": 3,
+      "parts": [
+        {
+          "label": "",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">11</span><span class=\"fden\">12</span></span> : <span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">18</span></span> = <span class=\"frac\"><span class=\"fnum\">33</span><span class=\"fden\">10</span></span></span>. בחרתי חילוק כי מחפשים כמה קבוצות בגודל נתון נכנסות בכמות. הכפל בהופכי <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">18</span><span class=\"fden\">5</span></span></span> נותן אותה מנה."
+        }
+      ]
+    },
+    {
+      "pdfId": "f163f83d87f849f4b981db6ee2722269",
+      "sourceSha256": "3b3278984ff484d79979804c4d34bff82540ccdb121356eddfcf68f559633675",
+      "q": 6,
+      "parts": [
+        {
+          "label": "",
+          "html": "רות בחרה נכון: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">6</span></span> : <span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">3</span></span> = <span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">2</span></span></span>. חילוק מוצא כמה קבוצות בגודל שליש יש בכמות."
+        }
+      ]
+    },
+    {
+      "pdfId": "f163f83d87f849f4b981db6ee2722269",
+      "sourceSha256": "3b3278984ff484d79979804c4d34bff82540ccdb121356eddfcf68f559633675",
+      "q": 9,
+      "parts": [
+        {
+          "label": "",
+          "html": "לפי הביטוי המודפס, החסר הוא <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">20</span></span></span>: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">8</span></span> : <span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">20</span></span> = <span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">2</span></span></span>. לפי ההוראה „השלימו את המחולק”, החסר הוא <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">15</span><span class=\"fden\">16</span></span></span>: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">15</span><span class=\"fden\">16</span></span> : <span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">8</span></span> = <span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">2</span></span></span>. כדי למצוא מחולק מכפילים מחלק במנה."
+        }
+      ]
+    },
+    {
+      "pdfId": "f163f83d87f849f4b981db6ee2722269",
+      "sourceSha256": "3b3278984ff484d79979804c4d34bff82540ccdb121356eddfcf68f559633675",
+      "q": 12,
+      "parts": [
+        {
+          "label": "",
+          "html": "רות בחרה נכון; <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">12</span></span> : <span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">18</span></span> = <span class=\"frac\"><span class=\"fnum\">21</span><span class=\"fden\">10</span></span></span>. בדיקה: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">21</span><span class=\"fden\">10</span></span> x <span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">18</span></span> = <span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">12</span></span></span>. חילוק מתאים למציאת מספר הקבוצות בגודל הנתון."
+        }
+      ]
+    },
+    {
+      "pdfId": "f163f83d87f849f4b981db6ee2722269",
+      "sourceSha256": "3b3278984ff484d79979804c4d34bff82540ccdb121356eddfcf68f559633675",
+      "q": 18,
+      "parts": [
+        {
+          "label": "",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">4</span></span> : <span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">16</span></span> = 4</span>. בחרתי חילוק כי בשלושה רבעים יש 12 שש־עשריות, המתחלקות לארבע קבוצות של 3."
+        }
+      ]
+    },
+    {
+      "pdfId": "f7215421b05142288d9480138282d7e1",
+      "sourceSha256": "6e12578cb1e3fb4658f3895a596d2d3df948176a83a8748b9ebd059f2a21bada",
+      "q": 1,
+      "parts": [
+        {
+          "label": "",
+          "html": "גודל הקפיצה: 25; המספר החסר: 3,270. האיבר השביעי: 3,345."
+        }
+      ]
+    },
+    {
+      "pdfId": "f7215421b05142288d9480138282d7e1",
+      "sourceSha256": "6e12578cb1e3fb4658f3895a596d2d3df948176a83a8748b9ebd059f2a21bada",
+      "q": 2,
+      "parts": [
+        {
+          "label": "",
+          "html": "גודל הקפיצה: 40; המספר החסר: 5,460. האיבר השביעי: 5,580."
+        }
+      ]
+    },
+    {
+      "pdfId": "f7215421b05142288d9480138282d7e1",
+      "sourceSha256": "6e12578cb1e3fb4658f3895a596d2d3df948176a83a8748b9ebd059f2a21bada",
+      "q": 3,
+      "parts": [
+        {
+          "label": "",
+          "html": "גודל הקפיצה: 75; המספר החסר: 5,270. האיבר השביעי: 5,495."
+        }
+      ]
+    },
+    {
+      "pdfId": "f7215421b05142288d9480138282d7e1",
+      "sourceSha256": "6e12578cb1e3fb4658f3895a596d2d3df948176a83a8748b9ebd059f2a21bada",
+      "q": 4,
+      "parts": [
+        {
+          "label": "",
+          "html": "גודל הקפיצה: 125; המספר החסר: 6,395. האיבר השביעי: 6,770."
+        }
+      ]
+    },
+    {
+      "pdfId": "f7215421b05142288d9480138282d7e1",
+      "sourceSha256": "6e12578cb1e3fb4658f3895a596d2d3df948176a83a8748b9ebd059f2a21bada",
+      "q": 5,
+      "parts": [
+        {
+          "label": "",
+          "html": "גודל הקפיצה: 25; המספר החסר: 5,445. האיבר השביעי: 5,520."
+        }
+      ]
+    },
+    {
+      "pdfId": "f7215421b05142288d9480138282d7e1",
+      "sourceSha256": "6e12578cb1e3fb4658f3895a596d2d3df948176a83a8748b9ebd059f2a21bada",
+      "q": 6,
+      "parts": [
+        {
+          "label": "",
+          "html": "גודל הקפיצה: 40; המספר החסר: 6,180. האיבר השביעי: 6,300."
+        }
+      ]
+    },
+    {
+      "pdfId": "f7215421b05142288d9480138282d7e1",
+      "sourceSha256": "6e12578cb1e3fb4658f3895a596d2d3df948176a83a8748b9ebd059f2a21bada",
+      "q": 7,
+      "parts": [
+        {
+          "label": "",
+          "html": "גודל הקפיצה: 75; המספר החסר: 3,995. האיבר השביעי: 4,220."
+        }
+      ]
+    },
+    {
+      "pdfId": "f7215421b05142288d9480138282d7e1",
+      "sourceSha256": "6e12578cb1e3fb4658f3895a596d2d3df948176a83a8748b9ebd059f2a21bada",
+      "q": 8,
+      "parts": [
+        {
+          "label": "",
+          "html": "גודל הקפיצה: 125; המספר החסר: 1,770. האיבר השביעי: 2,145."
+        }
+      ]
+    },
+    {
+      "pdfId": "f9601108b5c041018a64abfcfadd3c70",
+      "sourceSha256": "b3f7c2179ad4e86ad1aa30a8c67c7dc0345b6e550cdef7a6869b9c5343a8f808",
+      "q": 15,
+      "parts": [
+        {
+          "label": "",
+          "html": "הטענה נכונה. בכפל מספר חיובי בשבר שבין 0 ל־1 מתקבל חלק ממש של אותו מספר; לכן המכפלה קטנה מן הגורם הראשון וגם מן השני."
+        }
+      ]
+    },
+    {
+      "pdfId": "fa8592180c5a42f9bf77b69bf9e4993d",
+      "sourceSha256": "819ed9a7ce22fc9c713da0d73ab8c702f07d89d232c4066e893904168aede7b7",
+      "q": 15,
+      "parts": [
+        {
+          "label": "א",
+          "html": "<span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">2</span></span>"
+        },
+        {
+          "label": "ב",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">12</span></span> + <span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">2</span></span> = <span class=\"frac\"><span class=\"fnum\">11</span><span class=\"fden\">12</span></span></span>"
+        },
+        {
+          "label": "ג",
+          "html": "כן: <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">2</span></span> < <span class=\"frac\"><span class=\"fnum\">11</span><span class=\"fden\">12</span></span></span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "fa8592180c5a42f9bf77b69bf9e4993d",
+      "sourceSha256": "819ed9a7ce22fc9c713da0d73ab8c702f07d89d232c4066e893904168aede7b7",
+      "q": 16,
+      "parts": [
+        {
+          "label": "א",
+          "html": "<span class=\"frac\"><span class=\"fnum\">9</span><span class=\"fden\">8</span></span>"
+        },
+        {
+          "label": "ב",
+          "html": "<span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">8</span></span>"
+        },
+        {
+          "label": "ג",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">9</span><span class=\"fden\">8</span></span> − <span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">8</span></span> = <span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">4</span></span></span>; <span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">8</span></span> + <span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">4</span></span> = <span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">8</span></span></span>. המשוואות המודפסות שונות, ולכן גם ערכי הנעלמים שונים."
+        }
+      ]
+    },
+    {
+      "pdfId": "fa8592180c5a42f9bf77b69bf9e4993d",
+      "sourceSha256": "819ed9a7ce22fc9c713da0d73ab8c702f07d89d232c4066e893904168aede7b7",
+      "q": 17,
+      "parts": [
+        {
+          "label": "א",
+          "html": "25"
+        },
+        {
+          "label": "ב",
+          "html": "5"
+        },
+        {
+          "label": "ג",
+          "html": "<span class=\"ltr\">5 x 5 = 25</span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "fa8592180c5a42f9bf77b69bf9e4993d",
+      "sourceSha256": "819ed9a7ce22fc9c713da0d73ab8c702f07d89d232c4066e893904168aede7b7",
+      "q": 18,
+      "parts": [
+        {
+          "label": "א",
+          "html": "<span class=\"frac\"><span class=\"fnum\">11</span><span class=\"fden\">20</span></span>"
+        },
+        {
+          "label": "ב",
+          "html": "20"
+        },
+        {
+          "label": "ג",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">11</span><span class=\"fden\">20</span></span> + <span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">20</span></span> = <span class=\"frac\"><span class=\"fnum\">14</span><span class=\"fden\">20</span></span> = <span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">10</span></span></span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "fa8592180c5a42f9bf77b69bf9e4993d",
+      "sourceSha256": "819ed9a7ce22fc9c713da0d73ab8c702f07d89d232c4066e893904168aede7b7",
+      "q": 19,
+      "parts": [
+        {
+          "label": "א",
+          "html": "<span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">5</span></span>"
+        },
+        {
+          "label": "ב",
+          "html": "נסמן את החלק שנשאר ב־<span class=\"ltr\">x</span>: <span class=\"ltr\">x + <span class=\"frac\"><span class=\"fnum\">4</span><span class=\"fden\">15</span></span> = <span class=\"frac\"><span class=\"fnum\">13</span><span class=\"fden\">15</span></span></span>."
+        },
+        {
+          "label": "ג",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">3</span><span class=\"fden\">5</span></span> + <span class=\"frac\"><span class=\"fnum\">4</span><span class=\"fden\">15</span></span> = <span class=\"frac\"><span class=\"fnum\">13</span><span class=\"fden\">15</span></span></span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "fa8592180c5a42f9bf77b69bf9e4993d",
+      "sourceSha256": "819ed9a7ce22fc9c713da0d73ab8c702f07d89d232c4066e893904168aede7b7",
+      "q": 20,
+      "parts": [
+        {
+          "label": "א",
+          "html": "<span class=\"frac\"><span class=\"fnum\">11</span><span class=\"fden\">24</span></span>"
+        },
+        {
+          "label": "ב",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">11</span><span class=\"fden\">24</span></span> , <span class=\"frac\"><span class=\"fnum\">11</span><span class=\"fden\">24</span></span></span>"
+        },
+        {
+          "label": "ג",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">11</span><span class=\"fden\">24</span></span> + <span class=\"frac\"><span class=\"fnum\">11</span><span class=\"fden\">24</span></span> = <span class=\"frac\"><span class=\"fnum\">11</span><span class=\"fden\">12</span></span></span>."
+        }
+      ]
+    },
+    {
+      "pdfId": "fc9ac60445034ae3b14df378e6f88c31",
+      "sourceSha256": "075c163da4cbb0907833857bb52ccf63caf0dca2214174d0476fcdca783fd992",
+      "q": 19,
+      "parts": [
+        {
+          "label": "",
+          "html": "כן. לפי הגדרת ריבוע, כל ארבע הזוויות שלו ישרות."
+        }
+      ]
+    },
+    {
+      "pdfId": "fe8c1a1691db42189124f2752c9f3f3b",
+      "sourceSha256": "b58e27be82de354e93330e341b704a047f60ab4ab849ddc8052544deeb0961d0",
+      "q": 20,
+      "parts": [
+        {
+          "label": "",
+          "html": "כן. כל גורם ראשוני גדול מ־1, והמכפלה מתחלקת בכל אחד משני הגורמים. לכן יש לה מחלק שאינו 1 ואינו היא עצמה, והיא פריקה."
+        }
+      ]
+    },
+    {
+      "pdfId": "ff4c197865614c76b543d1546f4b4c7a",
+      "sourceSha256": "b5bf0e7c8355f0301a3d035d4876b890cf59986154cd89fa352a45e3319a7fdd",
+      "q": 16,
+      "parts": [
+        {
+          "label": "א",
+          "html": "<span class=\"ltr\">210</span>"
+        },
+        {
+          "label": "ב",
+          "html": "<span class=\"ltr\">60</span>"
+        },
+        {
+          "label": "ג",
+          "html": "<span class=\"ltr\">(24 + 31 + 27 + 38 + 30 + 60) : 6 = 35</span>"
+        }
+      ]
+    },
+    {
+      "pdfId": "ff4c197865614c76b543d1546f4b4c7a",
+      "sourceSha256": "b5bf0e7c8355f0301a3d035d4876b890cf59986154cd89fa352a45e3319a7fdd",
+      "q": 20,
+      "parts": [
+        {
+          "label": "א",
+          "html": "<span class=\"ltr\">259</span>"
+        },
+        {
+          "label": "ב",
+          "html": "<span class=\"ltr\">35</span>"
+        },
+        {
+          "label": "ג",
+          "html": "<span class=\"ltr\">(35 + 36 + 37 + 38 + 39 + 39 + 35) : 7 = 37</span>"
+        }
+      ]
+    }
+  ]
+}

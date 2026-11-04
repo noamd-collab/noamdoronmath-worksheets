@@ -1,0 +1,1082 @@
+{
+  "sourceSha256": "cd68a8fbc3982cac3088787abf917dede9f2a88287b5c16574b7a8cdb79e384c",
+  "answerSourceSha256": "8d3b7031e046aef27ba7d0e06cd562d1e4c385e5a7b49f17b0c183acc611d4a4",
+  "nativeSha256": "f0a69a363f040182fad1b926aa6aa5a8db09ddecaa2f2ffec89ce25ac13c6e9a",
+  "questions": {
+    "1": {
+      "id": "753b902248c04c0588aa93c3ed2d2961:1",
+      "q": 1,
+      "grade": 8,
+      "topic": "הוכחה גאומטרית",
+      "levelLabel": "רמה ב׳",
+      "text": "בכל זוג צלעות שוות מופיע אותו מספר סימונים. הכיוון של המשולש על הדף אינו נתון.",
+      "example": {
+        "title": "דוגמה פתורה",
+        "lines": [
+          "בקודקוד A נפגשות הצלעות עם סימון אחד ועם שלושה סימונים. גם ב־D נפגשים אותם סימונים, ולכן A מתאים ל־D."
+        ]
+      },
+      "figure": {
+        "url": "/noam-ai/native/G8-T40/b/figures/q1_head.svg",
+        "sha256": "94cb1df7fd43bcb3dce0eaed8ffab4eab6ddd2ad96d84c721d812bd4798c0525"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מצאו את הקודקודים המתאימים ל־B ול־C לפי מפגש הסימונים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q1_head.svg",
+            "sha256": "94cb1df7fd43bcb3dce0eaed8ffab4eab6ddd2ad96d84c721d812bd4798c0525"
+          },
+          "answer": "$B$ מתאים ל־$E$ ו־$C$ ל־$F$."
+        },
+        {
+          "label": "ב",
+          "text": "רשמו את שלושת זוגות הצלעות השוות ואת מקור השוויון.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q1_head.svg",
+            "sha256": "94cb1df7fd43bcb3dce0eaed8ffab4eab6ddd2ad96d84c721d812bd4798c0525"
+          },
+          "answer": "$AB = DE$, $BC = EF$, $AC = DF$; כל זוג מסומן כנתון."
+        },
+        {
+          "label": "ג",
+          "text": "הוכיחו את חפיפת שני המשולשים, וכתבו התאמה ומשפט.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q1_head.svg",
+            "sha256": "94cb1df7fd43bcb3dce0eaed8ffab4eab6ddd2ad96d84c721d812bd4798c0525"
+          },
+          "answer": "$△ABC$ חופף ל־$△DEF$ לפי צ.צ.צ."
+        },
+        {
+          "label": "ד",
+          "text": "הוכיחו כי $∠BCA$ שווה ל־$∠EFD$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q1_head.svg",
+            "sha256": "94cb1df7fd43bcb3dce0eaed8ffab4eab6ddd2ad96d84c721d812bd4798c0525"
+          },
+          "answer": "זוויות מתאימות במשולשים החופפים."
+        }
+      ]
+    },
+    "2": {
+      "id": "753b902248c04c0588aa93c3ed2d2961:2",
+      "q": 2,
+      "grade": 8,
+      "topic": "הוכחה גאומטרית",
+      "levelLabel": "רמה ב׳",
+      "text": "הקטע AC משותף לשני המשולשים שבמרובע. סימוני הצלעות הם הנתונים.",
+      "table": {
+        "head": [
+          "טענה",
+          "נימוק"
+        ],
+        "rows": [
+          [
+            "________________",
+            "________________"
+          ],
+          [
+            "________________",
+            "________________"
+          ],
+          [
+            "________________",
+            "________________"
+          ],
+          [
+            "________________",
+            "________________"
+          ]
+        ]
+      },
+      "figure": {
+        "url": "/noam-ai/native/G8-T40/b/figures/q2_head.svg",
+        "sha256": "5a793bdc943d61ca2bbc794908abca7c327e798d0eb69a73f1128adb5cf8c263"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "רשמו שני זוגות צלעות שהשוויון ביניהן נתון בסימונים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q2_head.svg",
+            "sha256": "5a793bdc943d61ca2bbc794908abca7c327e798d0eb69a73f1128adb5cf8c263"
+          },
+          "answer": "$AB = AD$ וכן $BC = DC$."
+        },
+        {
+          "label": "ב",
+          "text": "איזה זוג צלעות שלישי משלים את הנתונים לצ.צ.צ? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q2_head.svg",
+            "sha256": "5a793bdc943d61ca2bbc794908abca7c327e798d0eb69a73f1128adb5cf8c263"
+          },
+          "answer": "$AC = AC$, משום שזו אותה צלע בשני המשולשים."
+        },
+        {
+          "label": "ג",
+          "text": "השלימו את טבלת הטענה־נימוק והוכיחו את חפיפת המשולשים משני צדי AC.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q2_head.svg",
+            "sha256": "5a793bdc943d61ca2bbc794908abca7c327e798d0eb69a73f1128adb5cf8c263"
+          },
+          "answer": "$AB = AD$ ו־$BC = DC$ נתונים; $AC = AC$ משותפת; $△ABC$ חופף ל־$△ADC$ לפי צ.צ.צ."
+        },
+        {
+          "label": "ד",
+          "text": "הוכיחו כי $∠BAC$ שווה ל־$∠DAC$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q2_head.svg",
+            "sha256": "5a793bdc943d61ca2bbc794908abca7c327e798d0eb69a73f1128adb5cf8c263"
+          },
+          "answer": "זוויות מתאימות בחפיפה שהוכחה."
+        }
+      ]
+    },
+    "3": {
+      "id": "753b902248c04c0588aa93c3ed2d2961:3",
+      "q": 3,
+      "grade": 8,
+      "topic": "הוכחה גאומטרית",
+      "levelLabel": "רמה ב׳",
+      "text": "O אמצע AB וגם אמצע CD. הקטעים נפגשים ב־O.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T40/b/figures/q3_head.svg",
+        "sha256": "d1a54ad7911e3490131f9f62989d8449503d861162abbf6dee0cf7ddb1895f28"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מה נובע מכל אחד משני נתוני האמצע?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q3_head.svg",
+            "sha256": "d1a54ad7911e3490131f9f62989d8449503d861162abbf6dee0cf7ddb1895f28"
+          },
+          "answer": "$AO = BO$ וכן $CO = DO$, לפי הגדרת אמצע."
+        },
+        {
+          "label": "ב",
+          "text": "הוכיחו כי $∠AOC$ שווה ל־$∠BOD$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q3_head.svg",
+            "sha256": "d1a54ad7911e3490131f9f62989d8449503d861162abbf6dee0cf7ddb1895f28"
+          },
+          "answer": "זוויות קודקודיות בין אותם שני ישרים."
+        },
+        {
+          "label": "ג",
+          "text": "הוכיחו כי $△AOC$ ו־$△BOD$ חופפים. ציינו היכן הזווית ביחס לצלעות.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q3_head.svg",
+            "sha256": "d1a54ad7911e3490131f9f62989d8449503d861162abbf6dee0cf7ddb1895f28"
+          },
+          "answer": "$AO = BO$ ו־$CO = DO$ מהגדרת האמצע, ו־$∠AOC = ∠BOD$; בכל משולש הזווית כלואה בין שתי הצלעות ($AO$ ו־$CO$ בראשון, $BO$ ו־$DO$ בשני). לכן $△AOC \\cong △BOD$ לפי צ.ז.צ."
+        },
+        {
+          "label": "ד",
+          "text": "הוכיחו כי AC שווה ל־BD, והסבירו למה לא הנחתם זאת בתחילת הפתרון.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q3_head.svg",
+            "sha256": "d1a54ad7911e3490131f9f62989d8449503d861162abbf6dee0cf7ddb1895f28"
+          },
+          "answer": "צלעות מתאימות בחפיפה; השוויון לא היה נתון אלא מסקנה."
+        }
+      ]
+    },
+    "4": {
+      "id": "753b902248c04c0588aa93c3ed2d2961:4",
+      "q": 4,
+      "grade": 8,
+      "topic": "הוכחה גאומטרית",
+      "levelLabel": "רמה ב׳",
+      "text": "נתון כי $△RST$ חופף ל־$△UVW$ לפי הסדר הכתוב. אין איור נתון.",
+      "items": [
+        {
+          "label": "א",
+          "text": "רשמו את שלושת זוגות הקודקודים המתאימים.",
+          "answer": "$R$ מול $U$, $S$ מול $V$, $T$ מול $W$."
+        },
+        {
+          "label": "ב",
+          "text": "מהי הצלע המתאימה ל־RT ומהי הזווית המתאימה ל־$∠RST$?",
+          "answer": "$RT$ מתאימה ל־$UW$, ו־$∠RST$ מתאימה ל־$∠UVW$."
+        },
+        {
+          "label": "ג",
+          "text": "האם $△TRS$ חופף ל־$△WUV$ מתאר אותה התאמה? נמקו.",
+          "answer": "כן. בכל זוג נשמר אותו קודקוד מתאים, אף שסדר ההתחלה השתנה."
+        },
+        {
+          "label": "ד",
+          "text": "שרטטו שני משולשים חופפים בכיוונים שונים. כתבו את שמותיהם לפי הנתון וסמנו את זוג הצלעות מסעיף ב.",
+          "answer": "סקיצה תקפה עם ההתאמה $R$ מול $U$, $S$ מול $V$, $T$ מול $W$; סימון $RT$ ו־$UW$."
+        }
+      ]
+    },
+    "5": {
+      "id": "753b902248c04c0588aa93c3ed2d2961:5",
+      "q": 5,
+      "grade": 8,
+      "topic": "הוכחה גאומטרית",
+      "levelLabel": "רמה ב׳",
+      "text": "נתון AB מקביל ל־DC ו־AD מקביל ל־BC. AC הוא אלכסון.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T40/b/figures/q5_head.svg",
+        "sha256": "59bcacd49bc306f35d596b6104af61a41d83fe8e93ab411b668a830eb067609e"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הוכיחו כי $∠BAC$ שווה ל־$∠DCA$ בעזרת אחד מנתוני המקבילות.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q5_head.svg",
+            "sha256": "59bcacd49bc306f35d596b6104af61a41d83fe8e93ab411b668a830eb067609e"
+          },
+          "answer": "זוויות מתחלפות בין $AB$ ו־$DC$ עם החותך $AC$."
+        },
+        {
+          "label": "ב",
+          "text": "הוכיחו כי $∠BCA$ שווה ל־$∠DAC$ בעזרת הנתון השני.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q5_head.svg",
+            "sha256": "59bcacd49bc306f35d596b6104af61a41d83fe8e93ab411b668a830eb067609e"
+          },
+          "answer": "זוויות מתחלפות בין $BC$ ו־$AD$ עם החותך $AC$."
+        },
+        {
+          "label": "ג",
+          "text": "זהו את הצלע הכלואה והוכיחו את חפיפת $△BAC$ ו־$△DCA$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q5_head.svg",
+            "sha256": "59bcacd49bc306f35d596b6104af61a41d83fe8e93ab411b668a830eb067609e"
+          },
+          "answer": "$AC = CA$ צלע משותפת בין הזוויות; חפיפה לפי ז.צ.ז."
+        },
+        {
+          "label": "ד",
+          "text": "הוכיחו כי AB שווה ל־DC.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q5_head.svg",
+            "sha256": "59bcacd49bc306f35d596b6104af61a41d83fe8e93ab411b668a830eb067609e"
+          },
+          "answer": "צלעות מתאימות בחפיפה."
+        }
+      ]
+    },
+    "6": {
+      "id": "753b902248c04c0588aa93c3ed2d2961:6",
+      "q": 6,
+      "grade": 8,
+      "topic": "הוכחה גאומטרית",
+      "levelLabel": "רמה ב׳",
+      "text": "A,B,C בסדר זה על קרן אחת; A,E,D בסדר זה על קרן שנייה. נתון AB שווה ל־AE, ו־AC שווה ל־AD.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T40/b/figures/q6_head.svg",
+        "sha256": "ffc087e241ec8c5c8f77640b6062428d4fb351a2db94abdd5524ded953197578"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הוכיחו כי $∠BAD$ שווה ל־$∠EAC$ לפי סדר הנקודות.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q6_head.svg",
+            "sha256": "ffc087e241ec8c5c8f77640b6062428d4fb351a2db94abdd5524ded953197578"
+          },
+          "answer": "הקרניים $AB$ ו־$AC$ הן אותה קרן, וכך $AD$ ו־$AE$; אלו אותן שתי קרניים."
+        },
+        {
+          "label": "ב",
+          "text": "בחרו שני משולשים המתאימים להוכחת שוויון הצלעות שבסעיף ד.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q6_head.svg",
+            "sha256": "ffc087e241ec8c5c8f77640b6062428d4fb351a2db94abdd5524ded953197578"
+          },
+          "answer": "$△BAD$ ו־$△EAC$ מכילים את הצלעות המבוקשות ושני זוגות הצלעות הנתונים."
+        },
+        {
+          "label": "ג",
+          "text": "כתבו הוכחת חפיפה לשני המשולשים שבחרתם.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q6_head.svg",
+            "sha256": "ffc087e241ec8c5c8f77640b6062428d4fb351a2db94abdd5524ded953197578"
+          },
+          "answer": "$AB = AE$, $AD = AC$ והזוויות הכלואות שוות, לכן $△BAD$ חופף ל־$△EAC$ לפי צ.ז.צ."
+        },
+        {
+          "label": "ד",
+          "text": "הוכיחו כי BD שווה ל־EC.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q6_head.svg",
+            "sha256": "ffc087e241ec8c5c8f77640b6062428d4fb351a2db94abdd5524ded953197578"
+          },
+          "answer": "צלעות מתאימות בחפיפה."
+        }
+      ]
+    },
+    "7": {
+      "id": "753b902248c04c0588aa93c3ed2d2961:7",
+      "q": 7,
+      "grade": 8,
+      "topic": "הוכחה גאומטרית",
+      "levelLabel": "רמה ב׳",
+      "text": "ב־$△ABC$ נתון AB שווה ל־AC ו־M הוא אמצע BC. הקטע AM מצויר.",
+      "table": {
+        "head": [
+          "טענה",
+          "נימוק"
+        ],
+        "rows": [
+          [
+            "AB שווה ל־AC",
+            "____"
+          ],
+          [
+            "BM שווה ל־CM",
+            "____"
+          ],
+          [
+            "AM שווה לעצמו",
+            "____"
+          ]
+        ]
+      },
+      "figure": {
+        "url": "/noam-ai/native/G8-T40/b/figures/q7_head.svg",
+        "sha256": "4dfb10c0349df48f74d2d882e6266a6b733fe59232d40a633171398f31f78ee0"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "השלימו את הטבלה: ציינו את מקור השוויון בכל שורה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q7_head.svg",
+            "sha256": "4dfb10c0349df48f74d2d882e6266a6b733fe59232d40a633171398f31f78ee0"
+          },
+          "answer": "$AB = AC$ נתון; $BM = CM$ מהגדרת אמצע; $AM = AM$ צלע משותפת."
+        },
+        {
+          "label": "ב",
+          "text": "הוכיחו כי $△ABM$ ו־$△ACM$ חופפים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q7_head.svg",
+            "sha256": "4dfb10c0349df48f74d2d882e6266a6b733fe59232d40a633171398f31f78ee0"
+          },
+          "answer": "לפי שלושת זוגות הצלעות שבטבלה, צ.צ.צ."
+        },
+        {
+          "label": "ג",
+          "text": "הוכיחו כי $∠BAM$ שווה ל־$∠CAM$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q7_head.svg",
+            "sha256": "4dfb10c0349df48f74d2d882e6266a6b733fe59232d40a633171398f31f78ee0"
+          },
+          "answer": "זוויות מתאימות במשולשים חופפים."
+        },
+        {
+          "label": "ד",
+          "text": "הסבירו מדוע סימון זווית ישרה ליד M אינו דרוש להוכחה זו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q7_head.svg",
+            "sha256": "4dfb10c0349df48f74d2d882e6266a6b733fe59232d40a633171398f31f78ee0"
+          },
+          "answer": "אין צורך בסימון זווית ישרה ליד $M$ (ובציור אין סימון כזה): ההוכחה משתמשת בצ.צ.צ בלבד, ושלושת זוגות הצלעות מוצדקים בלעדיו. הניצבות אינה נתונה אלא מסקנה מן החפיפה."
+        }
+      ]
+    },
+    "8": {
+      "id": "753b902248c04c0588aa93c3ed2d2961:8",
+      "q": 8,
+      "grade": 8,
+      "topic": "הוכחה גאומטרית",
+      "levelLabel": "רמה ב׳",
+      "text": "שני זוגות הצלעות וזוג הזוויות המסומנים הם הנתונים.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T40/b/figures/q8_head.svg",
+        "sha256": "e5e66b9094a12adfcca12835fba113f2f60ee3ae531ba0166d5a14f829b3e780"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "כתבו את שמות הזוויות המסומנות בשלוש אותיות.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q8_head.svg",
+            "sha256": "e5e66b9094a12adfcca12835fba113f2f60ee3ae531ba0166d5a14f829b3e780"
+          },
+          "answer": "$∠BAC$ ו־$∠EDF$."
+        },
+        {
+          "label": "ב",
+          "text": "אילו צלעות נפגשות בכל אחת מן הזוויות האלה?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q8_head.svg",
+            "sha256": "e5e66b9094a12adfcca12835fba113f2f60ee3ae531ba0166d5a14f829b3e780"
+          },
+          "answer": "$AB$ ו־$AC$; בהתאמה $DE$ ו־$DF$."
+        },
+        {
+          "label": "ג",
+          "text": "הוכיחו חפיפה לפי הסימונים וכתבו התאמה מלאה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q8_head.svg",
+            "sha256": "e5e66b9094a12adfcca12835fba113f2f60ee3ae531ba0166d5a14f829b3e780"
+          },
+          "answer": "$AB = DE$, $∠BAC = ∠EDF$ ו־$AC = DF$ (הזווית כלואה בין שתי הצלעות השוות), לכן $△ABC \\cong △DEF$ לפי צ.ז.צ, בהתאמה $A$ מתאים ל־$D$, $B$ ל־$E$, $C$ ל־$F$."
+        },
+        {
+          "label": "ד",
+          "text": "הוכיחו כי BC שווה ל־EF.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q8_head.svg",
+            "sha256": "e5e66b9094a12adfcca12835fba113f2f60ee3ae531ba0166d5a14f829b3e780"
+          },
+          "answer": "צלעות מתאימות בחפיפה."
+        }
+      ]
+    },
+    "9": {
+      "id": "753b902248c04c0588aa93c3ed2d2961:9",
+      "q": 9,
+      "grade": 8,
+      "topic": "הוכחה גאומטרית",
+      "levelLabel": "רמה ב׳",
+      "text": "נתון PQ שווה ל־KL, QR שווה ל־LM ו־PR שווה ל־KM. פתרו מן הנתונים לפני שתשרטטו.",
+      "items": [
+        {
+          "label": "א",
+          "text": "מצאו את ההתאמה בין קודקודי $△PQR$ וקודקודי $△KLM$.",
+          "answer": "$P$ מול $K$, $Q$ מול $L$, $R$ מול $M$; לפי מפגשי הצלעות המתאימות."
+        },
+        {
+          "label": "ב",
+          "text": "הוכיחו את חפיפת המשולשים ורשמו משפט מתאים.",
+          "answer": "$△PQR$ חופף ל־$△KLM$ לפי צ.צ.צ."
+        },
+        {
+          "label": "ג",
+          "text": "רשמו את הזווית המתאימה ל־$∠QRP$ ונמקו.",
+          "answer": "$∠LMK$, משום ש־$R$ מתאים ל־$M$ וקרניה מחברות את הקודקודים המתאימים."
+        },
+        {
+          "label": "ד",
+          "text": "שרטטו סקיצה של שני המשולשים. סמנו את הנתונים בשלושה סוגי סימוני צלעות.",
+          "answer": "סקיצה של זוג משולשים חופפים בהתאמה שנמצאה, עם שלושה זוגות צלעות מסומנים."
+        }
+      ]
+    },
+    "10": {
+      "id": "753b902248c04c0588aa93c3ed2d2961:10",
+      "q": 10,
+      "grade": 8,
+      "topic": "הוכחה גאומטרית",
+      "levelLabel": "רמה ב׳",
+      "text": "נתוני הצלעות מסומנים. תלמיד כתב בטבלה הוכחה בסדר שאינו תקף.",
+      "table": {
+        "head": [
+          "טענה",
+          "נימוק"
+        ],
+        "rows": [
+          [
+            "$∠ABC$ שווה ל־$∠ADC$",
+            "____"
+          ],
+          [
+            "$△ABC$ חופף ל־$△ADC$",
+            "____"
+          ],
+          [
+            "AB שווה ל־AD",
+            "____"
+          ],
+          [
+            "BC שווה ל־DC",
+            "____"
+          ],
+          [
+            "AC שווה לעצמו",
+            "____"
+          ]
+        ]
+      },
+      "figure": {
+        "url": "/noam-ai/native/G8-T40/b/figures/q10_head.svg",
+        "sha256": "2f15861d6d9ade167d05a82ca62831e7225c4f0e489c6948d4d770fd1e0e9a4c"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "איזו שורה בטבלה היא המסקנה האחרונה שצריך להגיע אליה?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q10_head.svg",
+            "sha256": "2f15861d6d9ade167d05a82ca62831e7225c4f0e489c6948d4d770fd1e0e9a4c"
+          },
+          "answer": "שוויון הזוויות $∠ABC$ ו־$∠ADC$."
+        },
+        {
+          "label": "ב",
+          "text": "איזו טענה צריכה לבוא מיד לפני המסקנה כדי להצדיק אותה?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q10_head.svg",
+            "sha256": "2f15861d6d9ade167d05a82ca62831e7225c4f0e489c6948d4d770fd1e0e9a4c"
+          },
+          "answer": "חפיפת $△ABC$ ו־$△ADC$."
+        },
+        {
+          "label": "ג",
+          "text": "סדרו את כל השורות והוסיפו נימוק לכל שורה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q10_head.svg",
+            "sha256": "2f15861d6d9ade167d05a82ca62831e7225c4f0e489c6948d4d770fd1e0e9a4c"
+          },
+          "answer": "שני שוויונות נתונים ושוויון $AC$ לעצמו תחילה; אחריהם חפיפה בצ.צ.צ ולבסוף זוויות מתאימות."
+        },
+        {
+          "label": "ד",
+          "text": "מדוע אסור להצדיק את החפיפה בעזרת המסקנה שבשורה הראשונה?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q10_head.svg",
+            "sha256": "2f15861d6d9ade167d05a82ca62831e7225c4f0e489c6948d4d770fd1e0e9a4c"
+          },
+          "answer": "שוויון הזוויות לא ניתן; הוא נשען על החפיפה עצמה. שימוש בו להוכחתה ייצור מעגל."
+        },
+        {
+          "label": "ה",
+          "text": "תלמיד הוסיף בתחילת ההוכחה את שוויון הזוויות המבוקש וכתב נכון. מדוע זה אינו נימוק? תארו מקורות לגיטימיים לטענה כזו בהוכחה, והסבירו מה חסר כאן.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q10_head.svg",
+            "sha256": "2f15861d6d9ade167d05a82ca62831e7225c4f0e489c6948d4d770fd1e0e9a4c"
+          },
+          "answer": "טענה יכולה להתקבל כנתון מפורש, מהגדרה, ממשפט שתנאיו הוכחו או ממסקנה קודמת. כאן אין מקור עצמאי לשוויון הזוויות לפני החפיפה; אמת הטענה כשלעצמה אינה מספקת את הנימוק ואינה מתירה מעגל."
+        }
+      ]
+    },
+    "11": {
+      "id": "753b902248c04c0588aa93c3ed2d2961:11",
+      "q": 11,
+      "grade": 8,
+      "topic": "הוכחה גאומטרית",
+      "levelLabel": "רמה ב׳",
+      "text": "O אמצע AB וגם אמצע CD. אורך AC הוא $13$ ס״מ.",
+      "example": {
+        "title": "דוגמה פתורה",
+        "lines": [
+          "לאחר שהוכחה חפיפה, אם צלע נתונה באורך $6$ ס״מ, גם הצלע המתאימה לה באורך $6$ ס״מ. ההעברה מותרת רק אחרי זיהוי ההתאמה והצדקת החפיפה."
+        ]
+      },
+      "figure": {
+        "url": "/noam-ai/native/G8-T40/b/figures/q11_head.svg",
+        "sha256": "45ea5ee65d21979a70327785eba6b431ffb8c6264909b35433df070c1cf53d17"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "רשמו שני שוויונות צלעות הנובעים מנתוני האמצע.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q11_head.svg",
+            "sha256": "45ea5ee65d21979a70327785eba6b431ffb8c6264909b35433df070c1cf53d17"
+          },
+          "answer": "$AO = BO$ וכן $CO = DO$."
+        },
+        {
+          "label": "ב",
+          "text": "הוכיחו את חפיפת $△AOC$ ו־$△BOD$ באמצעות הזוויות הקודקודיות.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q11_head.svg",
+            "sha256": "45ea5ee65d21979a70327785eba6b431ffb8c6264909b35433df070c1cf53d17"
+          },
+          "answer": "$AO = BO$ ו־$CO = DO$; $∠AOC = ∠BOD$ כזוויות קודקודיות (בין אותם שני ישרים), והן כלואות בין שני זוגות הצלעות. לכן $△AOC \\cong △BOD$ לפי צ.ז.צ."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את אורך BD וכתבו יחידה ונימוק.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q11_head.svg",
+            "sha256": "45ea5ee65d21979a70327785eba6b431ffb8c6264909b35433df070c1cf53d17"
+          },
+          "answer": "$BD = 13$ ס״מ, כי $BD$ מתאימה ל־$AC$ בחפיפה $△AOC \\cong △BOD$."
+        },
+        {
+          "label": "ד",
+          "text": "האם אפשר לקבוע גם את אורך AO מן האורך היחיד שנמסר? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q11_head.svg",
+            "sha256": "45ea5ee65d21979a70327785eba6b431ffb8c6264909b35433df070c1cf53d17"
+          },
+          "answer": "לא. שוויון $AO$ ו־$BO$ אינו קובע את ערכם המספרי; לא נמסרו אורכי חצאי הקטעים."
+        }
+      ]
+    },
+    "12": {
+      "id": "753b902248c04c0588aa93c3ed2d2961:12",
+      "q": 12,
+      "grade": 8,
+      "topic": "הוכחה גאומטרית",
+      "levelLabel": "רמה ב׳",
+      "text": "נתון AB מקביל ל־DC ו־AD מקביל ל־BC, ומצויר AC. השלימו את ההוכחה המדורגת.",
+      "table": {
+        "head": [
+          "טענה",
+          "נימוק"
+        ],
+        "rows": [
+          [
+            "____",
+            "מתחלפות בין AB ו־DC"
+          ],
+          [
+            "____",
+            "מתחלפות בין BC ו־AD"
+          ],
+          [
+            "AC שווה ל־CA",
+            "____"
+          ],
+          [
+            "____",
+            "____"
+          ]
+        ]
+      },
+      "figure": {
+        "url": "/noam-ai/native/G8-T40/b/figures/q12_head.svg",
+        "sha256": "7124c2be1d53b8a23d2bf759aead1f2916ebfc995934a04046fe9a3c94828b82"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "השלימו את זוג הזוויות הראשון בטבלה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q12_head.svg",
+            "sha256": "7124c2be1d53b8a23d2bf759aead1f2916ebfc995934a04046fe9a3c94828b82"
+          },
+          "answer": "$∠BAC = ∠DCA$, זוויות מתחלפות."
+        },
+        {
+          "label": "ב",
+          "text": "השלימו את זוג הזוויות השני ואת נימוק הצלע הכלואה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q12_head.svg",
+            "sha256": "7124c2be1d53b8a23d2bf759aead1f2916ebfc995934a04046fe9a3c94828b82"
+          },
+          "answer": "$∠BCA = ∠DAC$ כמתחלפות; $AC = CA$ כצלע משותפת."
+        },
+        {
+          "label": "ג",
+          "text": "השלימו את טענת החפיפה ואת שם המשפט.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q12_head.svg",
+            "sha256": "7124c2be1d53b8a23d2bf759aead1f2916ebfc995934a04046fe9a3c94828b82"
+          },
+          "answer": "$△BAC$ חופף ל־$△DCA$ לפי ז.צ.ז."
+        },
+        {
+          "label": "ד",
+          "text": "הוכיחו כי BC שווה ל־DA.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q12_head.svg",
+            "sha256": "7124c2be1d53b8a23d2bf759aead1f2916ebfc995934a04046fe9a3c94828b82"
+          },
+          "answer": "צלעות מתאימות בחפיפה שהוכחה."
+        }
+      ]
+    },
+    "13": {
+      "id": "753b902248c04c0588aa93c3ed2d2961:13",
+      "q": 13,
+      "grade": 8,
+      "topic": "הוכחה גאומטרית",
+      "levelLabel": "רמה ב׳",
+      "text": "A,B,C על קרן אחת בסדר זה; A,E,D על קרן שנייה בסדר זה. נתון AB שווה ל־AE ו־AC שווה ל־AD.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T40/b/figures/q13_head.svg",
+        "sha256": "d41ec721b45b1163124043b932befb8001ffbdaa48df5c34bda50b5e49b82862"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "בחרו זוג משולשים לקראת הוכחת שוויון הזוויות בסעיף ג.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q13_head.svg",
+            "sha256": "d41ec721b45b1163124043b932befb8001ffbdaa48df5c34bda50b5e49b82862"
+          },
+          "answer": "$△ABD$ ו־$△AEC$, בהתאמה $A$ מול $A$, $B$ מול $E$, $D$ מול $C$."
+        },
+        {
+          "label": "ב",
+          "text": "הוכיחו את חפיפת המשולשים שבחרתם.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q13_head.svg",
+            "sha256": "d41ec721b45b1163124043b932befb8001ffbdaa48df5c34bda50b5e49b82862"
+          },
+          "answer": "שני זוגות צלעות נתונים, והזוויות הכלואות בקודקוד $A$ הן אותה זווית; צ.ז.צ."
+        },
+        {
+          "label": "ג",
+          "text": "הוכיחו כי $∠ABD$ שווה ל־$∠AEC$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q13_head.svg",
+            "sha256": "d41ec721b45b1163124043b932befb8001ffbdaa48df5c34bda50b5e49b82862"
+          },
+          "answer": "זוויות מתאימות בחפיפה."
+        },
+        {
+          "label": "ד",
+          "text": "הסבירו מדוע AB ו־AC אינן צלע משותפת שלמה לשני המשולשים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q13_head.svg",
+            "sha256": "d41ec721b45b1163124043b932befb8001ffbdaa48df5c34bda50b5e49b82862"
+          },
+          "answer": "$AB$ הוא רק חלק מ־$AC$; קטעים השוכנים על אותה קרן אינם בהכרח אותו קטע."
+        }
+      ]
+    },
+    "14": {
+      "id": "753b902248c04c0588aa93c3ed2d2961:14",
+      "q": 14,
+      "grade": 8,
+      "topic": "הוכחה גאומטרית",
+      "levelLabel": "רמה ב׳",
+      "text": "נתון כי $△KLM$ חופף ל־$△PQR$ לפי הסדר. אורך KM הוא $17$ יחידות אורך וגודל $∠KLM$ הוא $58°$.",
+      "items": [
+        {
+          "label": "א",
+          "text": "רשמו את הצלע המתאימה ל־KM ואת הזווית המתאימה ל־$∠KLM$.",
+          "answer": "$KM$ מתאימה ל־$PR$, ו־$∠KLM$ מתאימה ל־$∠PQR$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את אורך PR ונמקו.",
+          "answer": "$PR = 17$ יחידות אורך, כי $PR$ ו־$KM$ צלעות מתאימות."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את גודל $∠PQR$ ונמקו.",
+          "answer": "$∠PQR = 58°$, כי $∠PQR$ ו־$∠KLM$ זוויות מתאימות."
+        },
+        {
+          "label": "ד",
+          "text": "שרטטו זוג משולשים המתאים לנתונים. סמנו את המידות הנתונות בלבד ואת ההתאמה, בלי להוסיף את התוצאות שחישבתם.",
+          "answer": "סקיצה בהתאמה $K$ מול $P$, $L$ מול $Q$, $M$ מול $R$, עם סימון המידות רק על $KM$ ועל $∠KLM$."
+        },
+        {
+          "label": "ה",
+          "text": "תלמיד העביר את אורך KM לצלע PQ, בטענה ששתיהן מופיעות בתחילת השם. דחו את ההתאמה המסוימת, וכתבו לאיזו צלע יש להעביר את האורך.",
+          "answer": "$KM$ מחברת את המקומות הראשון והשלישי, ולכן מתאימה ל־$PR$. $PQ$ מתאימה ל־$KL$, ולא ניתן לה אורכו של $KM$."
+        }
+      ]
+    },
+    "15": {
+      "id": "753b902248c04c0588aa93c3ed2d2961:15",
+      "q": 15,
+      "grade": 8,
+      "topic": "הוכחה גאומטרית",
+      "levelLabel": "רמה ב׳",
+      "text": "נתון AB שווה ל־AC, ו־M אמצע BC. יש להוכיח ניצבות בסעיף ג בלי להניח אותה מראש.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T40/b/figures/q15_head.svg",
+        "sha256": "633cc3de98f71d3829fe57784d886ae7d46b992a0aada73c512a792cceea2377"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הוכיחו כי $△ABM$ ו־$△ACM$ חופפים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q15_head.svg",
+            "sha256": "633cc3de98f71d3829fe57784d886ae7d46b992a0aada73c512a792cceea2377"
+          },
+          "answer": "$AB = AC$ נתון, $BM = CM$ מהגדרת האמצע, $AM$ משותפת; צ.צ.צ."
+        },
+        {
+          "label": "ב",
+          "text": "הוכיחו כי $∠BMA$ שווה ל־$∠CMA$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q15_head.svg",
+            "sha256": "633cc3de98f71d3829fe57784d886ae7d46b992a0aada73c512a792cceea2377"
+          },
+          "answer": "זוויות מתאימות בחפיפה."
+        },
+        {
+          "label": "ג",
+          "text": "הוכיחו כי AM מאונך ל־BC: השתמשו גם בסכום זוויות צמודות.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q15_head.svg",
+            "sha256": "633cc3de98f71d3829fe57784d886ae7d46b992a0aada73c512a792cceea2377"
+          },
+          "answer": "$∠BMA = ∠CMA$ (סעיף ב) והן זוויות צמודות על הישר $BC$, סכומן $180°$, לכן כל אחת $90°$ ו־$AM$ מאונך ל־$BC$."
+        },
+        {
+          "label": "ד",
+          "text": "תלמידה סימנה ליד M ריבוע של זווית ישרה לפני הפתרון. מדוע אין להשתמש בסימון זה כנתון?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q15_head.svg",
+            "sha256": "633cc3de98f71d3829fe57784d886ae7d46b992a0aada73c512a792cceea2377"
+          },
+          "answer": "הניצבות היא המסקנה המבוקשת ואינה נתונה. הוספת סימון אינה מוכיחה אותה."
+        }
+      ]
+    },
+    "16": {
+      "id": "753b902248c04c0588aa93c3ed2d2961:16",
+      "q": 16,
+      "grade": 8,
+      "topic": "הוכחה גאומטרית",
+      "levelLabel": "רמה ב׳",
+      "text": "שני זוגות הזוויות וזוג הצלעות המסומנים הם הנתונים.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T40/b/figures/q16_head.svg",
+        "sha256": "9a6df3a4eac8125a1c5e58a1533bea4f7e1c5f72a35482da87dd52b1c9f831c2"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "ציינו את הזוויות ואת הצלע שביניהן בכל משולש.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q16_head.svg",
+            "sha256": "9a6df3a4eac8125a1c5e58a1533bea4f7e1c5f72a35482da87dd52b1c9f831c2"
+          },
+          "answer": "$∠BAC$ ו־$∠ABC$ עם $AB$; $∠EDF$ ו־$∠DEF$ עם $DE$."
+        },
+        {
+          "label": "ב",
+          "text": "הוכיחו את חפיפת שני המשולשים וכתבו את התאמתם.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q16_head.svg",
+            "sha256": "9a6df3a4eac8125a1c5e58a1533bea4f7e1c5f72a35482da87dd52b1c9f831c2"
+          },
+          "answer": "$△ABC$ חופף ל־$△DEF$ לפי ז.צ.ז."
+        },
+        {
+          "label": "ג",
+          "text": "הוכיחו כי AC שווה ל־DF.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q16_head.svg",
+            "sha256": "9a6df3a4eac8125a1c5e58a1533bea4f7e1c5f72a35482da87dd52b1c9f831c2"
+          },
+          "answer": "צלעות מתאימות בחפיפה."
+        },
+        {
+          "label": "ד",
+          "text": "האם שני זוגות זוויות ללא צלע מספיקים לחפיפה? הסבירו מה קורה בהגדלת כל אורכי המשולש באותו גורם.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q16_head.svg",
+            "sha256": "9a6df3a4eac8125a1c5e58a1533bea4f7e1c5f72a35482da87dd52b1c9f831c2"
+          },
+          "answer": "לא. ההגדלה משמרת זוויות אך משנה אורכים, ולכן אינה משמרת חפיפה."
+        }
+      ]
+    },
+    "17": {
+      "id": "753b902248c04c0588aa93c3ed2d2961:17",
+      "q": 17,
+      "grade": 8,
+      "topic": "הוכחה גאומטרית",
+      "levelLabel": "רמה ב׳",
+      "text": "באיור מצוירים המרובע ABCD והאלכסון AC, ללא סימוני שוויון.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T40/b/figures/q17_head.svg",
+        "sha256": "75ff7af354deaf7455b616e9d4e52c3cb79623ed20f42dbf13944ce240777892"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "האם עצם הדמיון במראה מוכיח חפיפה בין $△ABC$ ו־$△ADC$? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q17_head.svg",
+            "sha256": "75ff7af354deaf7455b616e9d4e52c3cb79623ed20f42dbf13944ce240777892"
+          },
+          "answer": "לא. מראה האיור אינו נתון על אורכים או זוויות."
+        },
+        {
+          "label": "ב",
+          "text": "רשמו שוויון צלעות אחד הנכון מעצם המבנה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q17_head.svg",
+            "sha256": "75ff7af354deaf7455b616e9d4e52c3cb79623ed20f42dbf13944ce240777892"
+          },
+          "answer": "$AC = AC$, אותה צלע בשני המשולשים."
+        },
+        {
+          "label": "ג",
+          "text": "הוסיפו שני נתוני צלעות שיספיקו להוכחת חפיפה יחד עם השוויון שמצאתם.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q17_head.svg",
+            "sha256": "75ff7af354deaf7455b616e9d4e52c3cb79623ed20f42dbf13944ce240777892"
+          },
+          "answer": "$AB = AD$ וכן $BC = DC$; אז אפשר להשתמש בצ.צ.צ."
+        },
+        {
+          "label": "ד",
+          "text": "אם נוסף רק אחד משני הנתונים שלכם, האם צ.צ.צ הושלם? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q17_head.svg",
+            "sha256": "75ff7af354deaf7455b616e9d4e52c3cb79623ed20f42dbf13944ce240777892"
+          },
+          "answer": "לא. עדיין חסר זוג הצלעות השלישי."
+        }
+      ]
+    },
+    "18": {
+      "id": "753b902248c04c0588aa93c3ed2d2961:18",
+      "q": 18,
+      "grade": 8,
+      "topic": "הוכחה גאומטרית",
+      "levelLabel": "רמה ב׳",
+      "text": "O אמצע AB ואמצע CD. בסעיף ג הוכיחו כי AC שווה ל־BD. תלמיד מציע להניח את המסקנה כדי להוכיח אותה בחפיפה.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T40/b/figures/q18_head.svg",
+        "sha256": "4187c136cb31625913ea612c7feadb7ce140e36e5fbdb881529ea0bdd7f6d742"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "איזה חלק בניסיון הוא המסקנה שהוכנסה בטעות לנתונים?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q18_head.svg",
+            "sha256": "4187c136cb31625913ea612c7feadb7ce140e36e5fbdb881529ea0bdd7f6d742"
+          },
+          "answer": "השוויון $AC = BD$ הוא המסקנה המבוקשת, ולא נתון."
+        },
+        {
+          "label": "ב",
+          "text": "איזה זוג זוויות אפשר להצדיק בלי להניח את המסקנה?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q18_head.svg",
+            "sha256": "4187c136cb31625913ea612c7feadb7ce140e36e5fbdb881529ea0bdd7f6d742"
+          },
+          "answer": "$∠AOC$ ו־$∠BOD$ שוות כזוויות קודקודיות."
+        },
+        {
+          "label": "ג",
+          "text": "הוכיחו כי AC שווה ל־BD בהוכחה תקפה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q18_head.svg",
+            "sha256": "4187c136cb31625913ea612c7feadb7ce140e36e5fbdb881529ea0bdd7f6d742"
+          },
+          "answer": "$AO = BO$, $CO = DO$, והזוויות הכלואות קודקודיות; $△AOC$ חופף ל־$△BOD$ בצ.ז.צ, ומכאן $AC = BD$."
+        },
+        {
+          "label": "ד",
+          "text": "מדוע שינוי סדר המשפטים בניסיון המקורי אינו מתקן את הכשל?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q18_head.svg",
+            "sha256": "4187c136cb31625913ea612c7feadb7ce140e36e5fbdb881529ea0bdd7f6d742"
+          },
+          "answer": "ההנחה הלא מוצדקת נשארת גם בסדר אחר. צריך להצדיק חפיפה מנתונים עצמאיים."
+        }
+      ]
+    },
+    "19": {
+      "id": "753b902248c04c0588aa93c3ed2d2961:19",
+      "q": 19,
+      "grade": 8,
+      "topic": "הוכחה גאומטרית",
+      "levelLabel": "רמה ב׳",
+      "text": "נתון XY שווה ל־MN, XZ שווה ל־MP, ו־$∠YXZ$ שווה ל־$∠NMP$. אין איור נתון.",
+      "items": [
+        {
+          "label": "א",
+          "text": "אילו שתי צלעות נפגשות בזווית הנתונה בכל משולש?",
+          "answer": "$XY$ ו־$XZ$; $MN$ ו־$MP$."
+        },
+        {
+          "label": "ב",
+          "text": "הוכיחו את חפיפת $△XYZ$ ו־$△MNP$ לפי סדר מתאים.",
+          "answer": "שני זוגות צלעות והזווית הכלואה שווים, לכן $△XYZ$ חופף ל־$△MNP$ לפי צ.ז.צ."
+        },
+        {
+          "label": "ג",
+          "text": "איזו צלע מתאימה ל־YZ, ואיזה שוויון נובע מן החפיפה?",
+          "answer": "$NP$ מתאימה ל־$YZ$, ולכן $YZ = NP$."
+        },
+        {
+          "label": "ד",
+          "text": "שרטטו סקיצה המתאימה לנתונים. סמנו שני זוגות צלעות ואת הזוויות הנתונות בלבד.",
+          "answer": "סקיצה בהתאמה $X$ מול $M$, $Y$ מול $N$, $Z$ מול $P$; סימונים רק לנתוני צ.ז.צ, ללא סימון המסקנה."
+        }
+      ]
+    },
+    "20": {
+      "id": "753b902248c04c0588aa93c3ed2d2961:20",
+      "q": 20,
+      "grade": 8,
+      "topic": "הוכחה גאומטרית",
+      "levelLabel": "רמה ב׳",
+      "text": "AB מקביל ל־DC ו־AD מקביל ל־BC. טבלת ההוכחה מתייחסת לאלכסון AC.",
+      "table": {
+        "head": [
+          "טענה",
+          "נימוק"
+        ],
+        "rows": [
+          [
+            "____",
+            "מתחלפות"
+          ],
+          [
+            "____",
+            "מתחלפות"
+          ],
+          [
+            "AC שווה ל־CA",
+            "צלע משותפת"
+          ],
+          [
+            "____",
+            "____"
+          ]
+        ]
+      },
+      "figure": {
+        "url": "/noam-ai/native/G8-T40/b/figures/q20_head.svg",
+        "sha256": "d50edfabc0bacec42690881be44304fb75908ec14dac424a6c7fb4aaa57263b5"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "השלימו את שני זוגות הזוויות החסרים בטבלה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q20_head.svg",
+            "sha256": "d50edfabc0bacec42690881be44304fb75908ec14dac424a6c7fb4aaa57263b5"
+          },
+          "answer": "$∠BAC = ∠DCA$ וכן $∠BCA = ∠DAC$, כזוויות מתחלפות."
+        },
+        {
+          "label": "ב",
+          "text": "השלימו את שורת החפיפה ואת נימוקה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q20_head.svg",
+            "sha256": "d50edfabc0bacec42690881be44304fb75908ec14dac424a6c7fb4aaa57263b5"
+          },
+          "answer": "$△BAC$ חופף ל־$△DCA$ לפי ז.צ.ז, עם $AC$ כצלע המשותפת."
+        },
+        {
+          "label": "ג",
+          "text": "הוכיחו כי $∠ABC$ שווה ל־$∠CDA$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q20_head.svg",
+            "sha256": "d50edfabc0bacec42690881be44304fb75908ec14dac424a6c7fb4aaa57263b5"
+          },
+          "answer": "זוויות מתאימות בחפיפה."
+        },
+        {
+          "label": "ד",
+          "text": "לנימוק המסקנה נכתב בטעות נתון. כתבו נימוק נכון והסבירו את ההבדל.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q20_head.svg",
+            "sha256": "d50edfabc0bacec42690881be44304fb75908ec14dac424a6c7fb4aaa57263b5"
+          },
+          "answer": "הנימוק הוא זוויות מתאימות במשולשים חופפים. המקבילות נתונות; שוויון הזוויות שבסעיף ג הוא מסקנה."
+        },
+        {
+          "label": "ה",
+          "text": "לפני השלמת טבלה חדשה באותם נתונים, השוו תכנון בצ.צ.צ לתכנון בז.צ.ז. איזה מידע זמין כעת לכל מסלול, ובאיזה מהם אפשר להתחיל בלי להניח תכונה שטרם הוכחה?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T40/b/figures/q20_head.svg",
+            "sha256": "d50edfabc0bacec42690881be44304fb75908ec14dac424a6c7fb4aaa57263b5"
+          },
+          "answer": "ז.צ.ז: שני זוגות זוויות מתחלפות מנתוני המקבילות, עם $AC$ משותפת. צ.צ.צ דורש גם $AB = CD$ ו־$BC = AD$, שלא נמסרו כנתונים. לכן מתחילים בז.צ.ז; שוויונות הצלעות יבואו כמסקנות."
+        }
+      ]
+    }
+  }
+}

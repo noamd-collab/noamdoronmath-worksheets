@@ -1,0 +1,758 @@
+{
+  "sourceSha256": "7d4b938d91b38c3d9a89724a12908cfb1886829d485399dab2905a50673338a2",
+  "answerSourceSha256": "969c2b8940c118b8ea2e2fdcfa7028a9915f7a0f67ed0c500635930858469489",
+  "nativeSha256": "c3afafd99c67f962152e20f3aa0c1d65c17e4f0eafe2118378f92c82449d4e68",
+  "questions": {
+    "1": {
+      "id": "65970eb92a8d4ee28b441416fa12e1ab:1",
+      "q": 1,
+      "grade": 8,
+      "topic": "חפיפת משולשים",
+      "levelLabel": "רמת מצוינות",
+      "text": "נתון $△ABC≅△DEF$. תלמיד החליף בכל צד שתי אותיות, אך בחר זוג שונה בכל צד.",
+      "items": [
+        {
+          "label": "א",
+          "text": "תנו דוגמה להחלפה כזו שאינה מתארת את ההתאמה הנתונה.",
+          "answer": "למשל $△BAC\\cong △DFE$ משנה את בני הזוג ($B↔D$, $A↔F$, $C↔E$ במקום $A↔D$, $B↔E$, $C↔F$). כל החלפה של שתי אותיות בצד אחד ושל זוג אחר בצד השני מתאימה."
+        },
+        {
+          "label": "ב",
+          "text": "איך מתקנים רק את הצד הימני בדוגמה שלכם?",
+          "answer": "בדוגמה: $△BAC\\cong △EDF$. הצד הימני חייב לעבור אותה תמורה כמו השמאלי."
+        },
+        {
+          "label": "ג",
+          "text": "כמה כתיבות אפשר ליצור להתאמה הנתונה כשהמשולש הראשון משמאל? הוכיחו שהספירה שלמה.",
+          "answer": "בצד שמאל כל סידור של $A,B,C$ מתאים: $3·2·1=6$. הצד הימני נקבע בכל סידור לפי בני הזוג, ולכן כל כתיבה נקבעת לפי הצד השמאלי ואין כתיבות נוספות: בדיוק 6 כתיבות."
+        },
+        {
+          "label": "ד",
+          "text": "האם החלפת הצדדים בכל הכתיבות יוצרת התאמות גאומטריות חדשות? נמקו.",
+          "answer": "לא. היא מתארת את אותה התאמה בכיוון ההפוך."
+        },
+        {
+          "label": "ה",
+          "text": "שרטטו זוג משולשים שוני צלעות התואם לנתון, וסמנו צלעות מתאימות. הסבירו גם מדוע הדוגמה השגויה מסעיף א משנה את בני הזוג.",
+          "answer": "פתוח: כל זוג חופף שונה צלעות שבו $AB=DE$, $BC=EF$, $AC=DF$ מתאים. בדוגמה $△BAC\\cong △DFE$ מוצמדות $AB$ ל־$DF$ ו־$BC$ ל־$DE$, צלעות שאורכיהן שונים בזוג שונה צלעות, ולכן בני הזוג השתנו."
+        }
+      ]
+    },
+    "2": {
+      "id": "65970eb92a8d4ee28b441416fa12e1ab:2",
+      "q": 2,
+      "grade": 8,
+      "topic": "חפיפת משולשים",
+      "levelLabel": "רמת מצוינות",
+      "text": "במרובע החיצוני מועבר האלכסון $AB$. נתון $AC=BD$ ו־$BC=AD$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T38/c/figures/q2_head.svg",
+        "sha256": "7589b70a8354311a676b816d95773761b7fc1ecc672df522e656caf1b87f3429"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הוכיחו חפיפה באמצעות נתוני הצלעות והאלכסון.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q2_head.svg",
+            "sha256": "7589b70a8354311a676b816d95773761b7fc1ecc672df522e656caf1b87f3429"
+          },
+          "answer": "$AC=BD$ ו־$BC=AD$ (נתון) ו־$AB=BA$ (משותפת), ולכן $△ABC\\cong △BAD$ לפי צ.צ.צ."
+        },
+        {
+          "label": "ב",
+          "text": "האם $A$ מתאים לעצמו בחפיפה שהוכחתם? הסבירו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q2_head.svg",
+            "sha256": "7589b70a8354311a676b816d95773761b7fc1ecc672df522e656caf1b87f3429"
+          },
+          "answer": "לא. $A$ מתאים ל־$B$: מ־$AC=BD$ ו־$BC=AD$ נובע $A↔B$, $B↔A$, $C↔D$."
+        },
+        {
+          "label": "ג",
+          "text": "נתון $AB=12$ ס״מ והיקף כל משולש31 ס״מ. מצאו את היקף המרובע החיצוני.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q2_head.svg",
+            "sha256": "7589b70a8354311a676b816d95773761b7fc1ecc672df522e656caf1b87f3429"
+          },
+          "answer": "$62−24=38$ ס״מ; האלכסון נספר פעמיים ואינו חלק מההיקף החיצוני."
+        },
+        {
+          "label": "ד",
+          "text": "כתבו שוויון זוויות הנוגע לקודקוד $D$, והסבירו מדוע אינו נתון נוסף.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q2_head.svg",
+            "sha256": "7589b70a8354311a676b816d95773761b7fc1ecc672df522e656caf1b87f3429"
+          },
+          "answer": "$∠BDA=∠ACB$ הוא מסקנה מן החפיפה."
+        }
+      ]
+    },
+    "3": {
+      "id": "65970eb92a8d4ee28b441416fa12e1ab:3",
+      "q": 3,
+      "grade": 8,
+      "topic": "חפיפת משולשים",
+      "levelLabel": "רמת מצוינות",
+      "text": "נתון $△OAB≅△CDO$. שני המשולשים נוגעים בנקודה $O$ בלבד.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T38/c/figures/q3_head.svg",
+        "sha256": "0fd3f4221b0b3c6d33b48bdd9fe19bde612a17f7890019a607b478ff6546bee3"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "תלמיד מתעקש ש־$O$ חייב להתאים לעצמו. הפריכו מתוך הנתון.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q3_head.svg",
+            "sha256": "0fd3f4221b0b3c6d33b48bdd9fe19bde612a17f7890019a607b478ff6546bee3"
+          },
+          "answer": "בחפיפה $O↔C$, ואילו $B↔O$. נקודה משותפת אינה חייבת להתאים לעצמה."
+        },
+        {
+          "label": "ב",
+          "text": "כתבו את הצלע שמתאימה ל־$OB$ ואת הזווית שמתאימה ל־$∠AOB$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q3_head.svg",
+            "sha256": "0fd3f4221b0b3c6d33b48bdd9fe19bde612a17f7890019a607b478ff6546bee3"
+          },
+          "answer": "$CO$ ו־$∠DCO$."
+        },
+        {
+          "label": "ג",
+          "text": "כתבו את אותה חפיפה כשהמשולש השני מופיע ראשון ומתחיל ב־$O$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q3_head.svg",
+            "sha256": "0fd3f4221b0b3c6d33b48bdd9fe19bde612a17f7890019a607b478ff6546bee3"
+          },
+          "answer": "$△OCD\\cong △BOA$. גם $△ODC\\cong △BAO$ מתאים."
+        },
+        {
+          "label": "ד",
+          "text": "האם עצם המגע בקודקוד היה מספיק כדי להסיק חפיפה אילו לא ניתנה? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q3_head.svg",
+            "sha256": "0fd3f4221b0b3c6d33b48bdd9fe19bde612a17f7890019a607b478ff6546bee3"
+          },
+          "answer": "לא. משולשים בגדלים ובצורות שונים יכולים להיפגש בקודקוד בלבד."
+        }
+      ]
+    },
+    "4": {
+      "id": "65970eb92a8d4ee28b441416fa12e1ab:4",
+      "q": 4,
+      "grade": 8,
+      "topic": "חפיפת משולשים",
+      "levelLabel": "רמת מצוינות",
+      "text": "לפניכם שלושה סוגי משולשים. לכל אחד מכינים עותק חופף. שונה הצלעות הוא $△ABC$, שווה השוקיים שאינו שווה צלעות הוא $△DEF$, ושווה הצלעות הוא $△KLM$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T38/c/figures/q4_head.svg",
+        "sha256": "e424d8a6cfc2df2bf5ed961b51fee5b68985dbb76f33f38951223e1dcd1c4f56"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "באיזה סוג יש הכי מעט התאמות לעותק? כמה, ומדוע?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q4_head.svg",
+            "sha256": "e424d8a6cfc2df2bf5ed961b51fee5b68985dbb76f33f38951223e1dcd1c4f56"
+          },
+          "answer": "בשונה הצלעות יש התאמה אחת: אורכי הצלעות השונים מזהים את הקודקודים."
+        },
+        {
+          "label": "ב",
+          "text": "כמה התאמות יש במקרה שווה השוקיים? הסבירו מה אפשר להחליף.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q4_head.svg",
+            "sha256": "e424d8a6cfc2df2bf5ed961b51fee5b68985dbb76f33f38951223e1dcd1c4f56"
+          },
+          "answer": "שתיים: הראש מזוהה, ואפשר להחליף בין שני קודקודי הבסיס."
+        },
+        {
+          "label": "ג",
+          "text": "כמה התאמות יש במקרה שווה הצלעות? נמקו ספירה מלאה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q4_head.svg",
+            "sha256": "e424d8a6cfc2df2bf5ed961b51fee5b68985dbb76f33f38951223e1dcd1c4f56"
+          },
+          "answer": "כל התאמה של קודקודים היא חפיפה, כי כל הצלעות שוות וכל הזוויות שוות. מספר ההתאמות: $3·2·1=6$ (שלוש בחירות לבן זוג של הראשון, שתיים לשני, אחת לשלישי)."
+        },
+        {
+          "label": "ד",
+          "text": "הסבירו מדוע המספרים שמצאתם אינם ספירת הכתיבות של התאמה קבועה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q4_head.svg",
+            "sha256": "e424d8a6cfc2df2bf5ed961b51fee5b68985dbb76f33f38951223e1dcd1c4f56"
+          },
+          "answer": "כאן משנים את בני הזוג עצמם, תוך שמירת מידות. כתיבות שקולות משאירות את בני הזוג קבועים."
+        }
+      ]
+    },
+    "5": {
+      "id": "65970eb92a8d4ee28b441416fa12e1ab:5",
+      "q": 5,
+      "grade": 8,
+      "topic": "חפיפת משולשים",
+      "levelLabel": "רמת מצוינות",
+      "text": "שני המשולשים חופפים ושווי שוקיים שאינם שווי צלעות. השוקיים מסומנות.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T38/c/figures/q5_head.svg",
+        "sha256": "b83b0c24061f4d0853e70bdca652fbdc25f3a91b90254f704c4b32e7125c1cac"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "כתבו שתי התאמות שונות בין המשולשים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q5_head.svg",
+            "sha256": "b83b0c24061f4d0853e70bdca652fbdc25f3a91b90254f704c4b32e7125c1cac"
+          },
+          "answer": "$△ABC\\cong △DEF$ וגם $△ABC\\cong △EDF$; קודקודי הבסיס יכולים להתחלף."
+        },
+        {
+          "label": "ב",
+          "text": "באילו מההתאמות $C$ מתאים ל־$F$? הסבירו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q5_head.svg",
+            "sha256": "b83b0c24061f4d0853e70bdca652fbdc25f3a91b90254f704c4b32e7125c1cac"
+          },
+          "answer": "בשתי ההתאמות: הראש הוא מפגש השוקיים ולכן מזוהה יחיד."
+        },
+        {
+          "label": "ג",
+          "text": "נתון $AC=10$ ס״מ ו־$AB=12$ ס״מ. מצאו את ההיקף של כל אחד.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q5_head.svg",
+            "sha256": "b83b0c24061f4d0853e70bdca652fbdc25f3a91b90254f704c4b32e7125c1cac"
+          },
+          "answer": "$AC=BC=10$ ס״מ (שוקיים) ו־$AB=12$ ס״מ (בסיס), ולכן ההיקף $10+10+12=32$ ס״מ בכל אחד מהמשולשים."
+        },
+        {
+          "label": "ד",
+          "text": "מדוע החלפת הראש בקודקוד בסיס אינה התאמה שלישית?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q5_head.svg",
+            "sha256": "b83b0c24061f4d0853e70bdca652fbdc25f3a91b90254f704c4b32e7125c1cac"
+          },
+          "answer": "היא מצמידה בסיס לשוק; במשולש הנתון אורכיהם שונים."
+        }
+      ]
+    },
+    "6": {
+      "id": "65970eb92a8d4ee28b441416fa12e1ab:6",
+      "q": 6,
+      "grade": 8,
+      "topic": "חפיפת משולשים",
+      "levelLabel": "רמת מצוינות",
+      "text": "נתון $△ABC≅△ABD$, וכן $∠BAC=39°$ ו־$∠ABC=74°$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T38/c/figures/q6_head.svg",
+        "sha256": "63803ccb32d7d8e7428b925a5b8daa0f2d4c7063d28724633b71aa6c7ca947ee"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מצאו $∠ADB$ בעזרת שני כללים שונים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q6_head.svg",
+            "sha256": "63803ccb32d7d8e7428b925a5b8daa0f2d4c7063d28724633b71aa6c7ca947ee"
+          },
+          "answer": "סכום זוויות נותן $∠ACB=180−39−74=67°$. בחפיפה מתקבל $∠ADB=67°$."
+        },
+        {
+          "label": "ב",
+          "text": "כתבו את טענת החפיפה כאשר $D$ מופיע ראשון בצד שמאל.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q6_head.svg",
+            "sha256": "63803ccb32d7d8e7428b925a5b8daa0f2d4c7063d28724633b71aa6c7ca947ee"
+          },
+          "answer": "$△DAB\\cong △CAB$. גם $△DBA\\cong △CBA$ מתאים."
+        },
+        {
+          "label": "ג",
+          "text": "האם שוויון הזוויות שחישבתם לבדו היה מספיק לחפיפה?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q6_head.svg",
+            "sha256": "63803ccb32d7d8e7428b925a5b8daa0f2d4c7063d28724633b71aa6c7ca947ee"
+          },
+          "answer": "לא. שוויון של זווית אחת אינו קובע את מידות המשולשים."
+        },
+        {
+          "label": "ד",
+          "text": "תלמיד רוצה להעביר אורך מנתון זווית בלבד. הסבירו מה חסר גם כאשר החפיפה ידועה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q6_head.svg",
+            "sha256": "63803ccb32d7d8e7428b925a5b8daa0f2d4c7063d28724633b71aa6c7ca947ee"
+          },
+          "answer": "צריך נתון אורך של צלע מתאימה; זוויות וחפיפה אינן קובעות את קנה המידה בלי אורך."
+        }
+      ]
+    },
+    "7": {
+      "id": "65970eb92a8d4ee28b441416fa12e1ab:7",
+      "q": 7,
+      "grade": 8,
+      "topic": "חפיפת משולשים",
+      "levelLabel": "רמת מצוינות",
+      "text": "נתון $△OAB≅△OCD$. הקווים $AC$ ו־$BD$ עוברים דרך $O$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T38/c/figures/q7_head.svg",
+        "sha256": "bea99c30013cadcec19aa8fa617aa35dc130f5618e7dd7d1cc935246cfdab5be"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "איזו צלע מתאימה ל־$AB$? אל תסתמכו על כיוון הכתיבה בדף.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q7_head.svg",
+            "sha256": "bea99c30013cadcec19aa8fa617aa35dc130f5618e7dd7d1cc935246cfdab5be"
+          },
+          "answer": "$CD$ לפי התאמת הקודקודים."
+        },
+        {
+          "label": "ב",
+          "text": "כתבו שתי דרכים מנומקות לדעת שהזוויות $∠AOB$ ו־$∠COD$ שוות.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q7_head.svg",
+            "sha256": "bea99c30013cadcec19aa8fa617aa35dc130f5618e7dd7d1cc935246cfdab5be"
+          },
+          "answer": "הן זוויות מתאימות במשולשים חופפים; וגם זוויות קודקודיות בין ישרים נחתכים."
+        },
+        {
+          "label": "ג",
+          "text": "מדוע הנימוק השני אינו מוכיח לבדו חפיפה של המשולשים?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q7_head.svg",
+            "sha256": "bea99c30013cadcec19aa8fa617aa35dc130f5618e7dd7d1cc935246cfdab5be"
+          },
+          "answer": "זוויות קודקודיות שוות גם כאשר האורכים על קרני הישרים שונים."
+        },
+        {
+          "label": "ד",
+          "text": "כתבו את כל זוגות הצלעות וכל זוגות הזוויות לפי החפיפה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q7_head.svg",
+            "sha256": "bea99c30013cadcec19aa8fa617aa35dc130f5618e7dd7d1cc935246cfdab5be"
+          },
+          "answer": "צלעות: $OA=OC$, $OB=OD$, $AB=CD$. זוויות: $∠AOB=∠COD$, $∠OAB=∠OCD$, $∠ABO=∠CDO$."
+        }
+      ]
+    },
+    "8": {
+      "id": "65970eb92a8d4ee28b441416fa12e1ab:8",
+      "q": 8,
+      "grade": 8,
+      "topic": "חפיפת משולשים",
+      "levelLabel": "רמת מצוינות",
+      "text": "נתון $△DEF≅△ABC$ וכן $△MLK≅△EFD$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T38/c/figures/q8_head.svg",
+        "sha256": "20be933935839d4f883f89feecd26035bc5dc9ccd92af8309286a2498fcbdebe"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "כתבו טענה ישירה בין $△ABC$ למשולש האחרון.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q8_head.svg",
+            "sha256": "20be933935839d4f883f89feecd26035bc5dc9ccd92af8309286a2498fcbdebe"
+          },
+          "answer": "$△ABC\\cong △KML$."
+        },
+        {
+          "label": "ב",
+          "text": "נתון היקף $△ABC$ הוא 31 ס״מ, $AB=9$ ס״מ ו־$AC=10$ ס״מ. איזו צלע אחרונה ניתן למצוא מהצלע החסרה, ומה אורכה?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q8_head.svg",
+            "sha256": "20be933935839d4f883f89feecd26035bc5dc9ccd92af8309286a2498fcbdebe"
+          },
+          "answer": "$BC=31−9−10=12$ ס״מ; היא מתאימה ל־$ML$, לכן $ML=12$ ס״מ."
+        },
+        {
+          "label": "ג",
+          "text": "הפכו את סדר הצדדים בשתי החוליות. האם התוצאה בסעיף ב משתנה? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q8_head.svg",
+            "sha256": "20be933935839d4f883f89feecd26035bc5dc9ccd92af8309286a2498fcbdebe"
+          },
+          "answer": "לא. המיפויים נשארים אותם מיפויים בכיוון הפוך."
+        },
+        {
+          "label": "ד",
+          "text": "בחרו זווית במשולש הראשון וכתבו את המסלול עד לזווית במשולש האחרון.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q8_head.svg",
+            "sha256": "20be933935839d4f883f89feecd26035bc5dc9ccd92af8309286a2498fcbdebe"
+          },
+          "answer": "למשל $∠BAC↔∠EDF↔∠MKL$. כל זווית אחרת במשולש הראשון מתאימה באותו אופן, למשל $∠ABC↔∠DEF↔∠KML$."
+        }
+      ]
+    },
+    "9": {
+      "id": "65970eb92a8d4ee28b441416fa12e1ab:9",
+      "q": 9,
+      "grade": 8,
+      "topic": "חפיפת משולשים",
+      "levelLabel": "רמת מצוינות",
+      "text": "לשני המשולשים אותן זוויות, אך השני מתקבל מהראשון בהגדלה.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T38/c/figures/q9_head.svg",
+        "sha256": "20ae10ccd3fac916447232a214c066dc029e9d2a9f276bf59345ee3f7d34c8c7"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "האם אפשר להסיק חפיפה מן הקשתות בלבד? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q9_head.svg",
+            "sha256": "20ae10ccd3fac916447232a214c066dc029e9d2a9f276bf59345ee3f7d34c8c7"
+          },
+          "answer": "לא. שוויון זוויות אינו קובע אורכי צלעות, והגדלה שאינה שומרת אורכים אינה תנועה קשיחה."
+        },
+        {
+          "label": "ב",
+          "text": "נתון $AB=4$ ס״מ ו־$DE=8$ ס״מ. האם אפשר להעביר את הראשון לשני רק בסיבוב ושיקוף?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q9_head.svg",
+            "sha256": "20ae10ccd3fac916447232a214c066dc029e9d2a9f276bf59345ee3f7d34c8c7"
+          },
+          "answer": "לא. שתי הפעולות שומרות אורכים והצלעות המתאימות שונות."
+        },
+        {
+          "label": "ג",
+          "text": "הבחינו בין טעות בסוג הגדלים לבין מחסור בנתון להוכחת חפיפה במקרה זה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q9_head.svg",
+            "sha256": "20ae10ccd3fac916447232a214c066dc029e9d2a9f276bf59345ee3f7d34c8c7"
+          },
+          "answer": "הקשתות משוות זוויות לזוויות, ולכן אין טעות סוג. הכשל הוא ששוויון זוויות אינו מספיק לחפיפה."
+        }
+      ]
+    },
+    "10": {
+      "id": "65970eb92a8d4ee28b441416fa12e1ab:10",
+      "q": 10,
+      "grade": 8,
+      "topic": "חפיפת משולשים",
+      "levelLabel": "רמת מצוינות",
+      "text": "נתון $△ABC≅△BAD$. רוצים לזהות שיקוף או סיבוב המתאים למבנה.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T38/c/figures/q10_head.svg",
+        "sha256": "c436ddb0a488524e1aef930a32c0d02e1aeacc9b0bb3104eb3e132809ade58cf"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מדוע שיקוף סביב $AB$ אינו מממש את ההתאמה הנתונה באופן כללי?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q10_head.svg",
+            "sha256": "c436ddb0a488524e1aef930a32c0d02e1aeacc9b0bb3104eb3e132809ade58cf"
+          },
+          "answer": "שיקוף כזה משאיר את $A,B$ במקומם, אך ההתאמה הנתונה מחליפה ביניהם."
+        },
+        {
+          "label": "ב",
+          "text": "איזו תנועה קשיחה כן מתאימה לאיור, ומה קורה לקצות $AB$?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q10_head.svg",
+            "sha256": "c436ddb0a488524e1aef930a32c0d02e1aeacc9b0bb3104eb3e132809ade58cf"
+          },
+          "answer": "חצי סיבוב סביב אמצע $AB$ מחליף את $A,B$ ומעביר את $C$ ל־$D$."
+        },
+        {
+          "label": "ג",
+          "text": "האם הוספת אותה כמות לכל אורכי הצלעות היא תמיד תנועה קשיחה? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q10_head.svg",
+            "sha256": "c436ddb0a488524e1aef930a32c0d02e1aeacc9b0bb3104eb3e132809ade58cf"
+          },
+          "answer": "לא. תנועה קשיחה שומרת כל אורך; תוספת חיובית משנה אותו."
+        }
+      ]
+    },
+    "11": {
+      "id": "65970eb92a8d4ee28b441416fa12e1ab:11",
+      "q": 11,
+      "grade": 8,
+      "topic": "חפיפת משולשים",
+      "levelLabel": "רמת מצוינות",
+      "text": "נתון רק $OA=OC$ וגם $∠OAB=∠OCD$. אין הודעת חפיפה.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T38/c/figures/q11_head.svg",
+        "sha256": "9a2b29fb6d9233cb86cab22833b95802f0327e6ff66989d3bebefb4466f570aa"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "האם $O↔O$, $A↔C$, $B↔D$ היא התאמה עקבית עם הנתונים?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q11_head.svg",
+            "sha256": "9a2b29fb6d9233cb86cab22833b95802f0327e6ff66989d3bebefb4466f570aa"
+          },
+          "answer": "כן, שתי התאמות החלקים מתאימות לרישום."
+        },
+        {
+          "label": "ב",
+          "text": "מדוע התאמה עקבית אינה בהכרח חפיפה? תארו איזה מידע חסר.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q11_head.svg",
+            "sha256": "9a2b29fb6d9233cb86cab22833b95802f0327e6ff66989d3bebefb4466f570aa"
+          },
+          "answer": "עקבית פירושו שאין סתירה, לא הוכחה. נתונות רק צלע אחת וזווית אחת; חסר שוויון שלישי, למשל $AB=CD$ (צ.ז.צ) או $∠AOB=∠COD$ (ז.צ.ז)."
+        },
+        {
+          "label": "ג",
+          "text": "הציעו שני שוויוני צלעות נוספים שיספיקו ללא שימוש במראה האיור.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q11_head.svg",
+            "sha256": "9a2b29fb6d9233cb86cab22833b95802f0327e6ff66989d3bebefb4466f570aa"
+          },
+          "answer": "$OB=OD$ וגם $AB=CD$; יחד עם הנתון מתקבל צ.צ.צ."
+        }
+      ]
+    },
+    "12": {
+      "id": "65970eb92a8d4ee28b441416fa12e1ab:12",
+      "q": 12,
+      "grade": 8,
+      "topic": "חפיפת משולשים",
+      "levelLabel": "רמת מצוינות",
+      "text": "נתון $△ABC≅△DEF$ ו־$△KLM≅△FDE$. נבדקת טענה נוספת: $△ABC≅△KLM$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T38/c/figures/q12_head.svg",
+        "sha256": "85f8423647e952e30a2be83eeefcda52bb792d2e099a08f357f012823948b8ab"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "האם הטענה הנוספת מתארת בהכרח את ההתאמה שבשרשרת? תקנו אם צריך.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q12_head.svg",
+            "sha256": "85f8423647e952e30a2be83eeefcda52bb792d2e099a08f357f012823948b8ab"
+          },
+          "answer": "לא. ההתאמה המורכבת היא $△ABC\\cong △LMK$."
+        },
+        {
+          "label": "ב",
+          "text": "אם כל המשולשים שווי צלעות, האם הטענה הנוספת יכולה בכל זאת להיות נכונה? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q12_head.svg",
+            "sha256": "85f8423647e952e30a2be83eeefcda52bb792d2e099a08f357f012823948b8ab"
+          },
+          "answer": "כן. בסימטריה של שווה צלעות גם התאמות אחרות שומרות על כל המידות."
+        },
+        {
+          "label": "ג",
+          "text": "מה מראה המקרה המיוחד על ההבדל בין אינה נובעת מההתאמה הנתונה לבין בלתי אפשרית?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q12_head.svg",
+            "sha256": "85f8423647e952e30a2be83eeefcda52bb792d2e099a08f357f012823948b8ab"
+          },
+          "answer": "טענה שאינה נובעת ממיפוי מסוים עשויה להיות נכונה כשנתון נוסף יוצר סימטריה."
+        }
+      ]
+    },
+    "13": {
+      "id": "65970eb92a8d4ee28b441416fa12e1ab:13",
+      "q": 13,
+      "grade": 8,
+      "topic": "חפיפת משולשים",
+      "levelLabel": "רמת מצוינות",
+      "text": "נתון $△ABC≅△DEF$. המשולש הראשון ישר זווית ב־$A$, $AB=8$ ס״מ ו־$AC=15$ ס״מ.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T38/c/figures/q13_head.svg",
+        "sha256": "6bd8c6868cf065d3295026e9d3d860ca877427b0b3eaefe00c3dcc3f2de0b5f8"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מצאו את שטח $△DEF$ ונמקו את ההעברה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q13_head.svg",
+            "sha256": "6bd8c6868cf065d3295026e9d3d860ca877427b0b3eaefe00c3dcc3f2de0b5f8"
+          },
+          "answer": "ב־$△DEF$ הזווית $∠EDF$ ישרה, $DE=AB=8$ ס״מ ו־$DF=AC=15$ ס״מ (חפיפה, $D↔A$). השטח $\\f{8·15}{2}=60$ סמ״ר. חפיפה שומרת על השטח."
+        },
+        {
+          "label": "ב",
+          "text": "איזה זוג צלעות במשולש השני יכול לשמש בסיס וגובה לחישוב ישיר?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q13_head.svg",
+            "sha256": "6bd8c6868cf065d3295026e9d3d860ca877427b0b3eaefe00c3dcc3f2de0b5f8"
+          },
+          "answer": "$DE,DF$ הן הצלעות המתאימות לניצבים ולכן מאונכות."
+        },
+        {
+          "label": "ג",
+          "text": "תלמיד כותב שהשטח הוא סכום אורכי הניצבים. הסבירו את טעותו גם לפי היחידות.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q13_head.svg",
+            "sha256": "6bd8c6868cf065d3295026e9d3d860ca877427b0b3eaefe00c3dcc3f2de0b5f8"
+          },
+          "answer": "סכום אורכים נמדד בס״מ, ואילו שטח בסמ״ר. דרוש מכפלת בסיס בגובה וחלוקה בשתיים."
+        }
+      ]
+    },
+    "14": {
+      "id": "65970eb92a8d4ee28b441416fa12e1ab:14",
+      "q": 14,
+      "grade": 8,
+      "topic": "חפיפת משולשים",
+      "levelLabel": "רמת מצוינות",
+      "text": "הצלע $AB$ משותפת. מסומנים שני זוגות של צלעות שוות, אך אין מידות מספריות.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T38/c/figures/q14_head.svg",
+        "sha256": "c3220290ddd41e1ccbc08101593f474ab01b49108b9dd4fffb6cf6b1d53336df"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הוכיחו חפיפה וכתבו את המשפט.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q14_head.svg",
+            "sha256": "c3220290ddd41e1ccbc08101593f474ab01b49108b9dd4fffb6cf6b1d53336df"
+          },
+          "answer": "$AC=AD$, $BC=BD$ ו־$AB=AB$, ולכן $△ABC\\cong △ABD$ לפי צ.צ.צ."
+        },
+        {
+          "label": "ב",
+          "text": "האם אפשר לקבוע מספרית את $AC$? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q14_head.svg",
+            "sha256": "c3220290ddd41e1ccbc08101593f474ab01b49108b9dd4fffb6cf6b1d53336df"
+          },
+          "answer": "לא. החפיפה ושוויונות הצלעות אינם נותנים אורך מספרי."
+        },
+        {
+          "label": "ג",
+          "text": "כמה שוויונות זוויות מתקבלים מן החפיפה? כתבו את כולם.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q14_head.svg",
+            "sha256": "c3220290ddd41e1ccbc08101593f474ab01b49108b9dd4fffb6cf6b1d53336df"
+          },
+          "answer": "שלושה: $∠BAC=∠BAD$, $∠ABC=∠ABD$, $∠ACB=∠ADB$."
+        },
+        {
+          "label": "ד",
+          "text": "איזה שיקוף מעביר את $△ABC$ אל $△ABD$? תארו מה קורה לכל קודקוד והסבירו מדוע השיקוף מצדיק חפיפה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q14_head.svg",
+            "sha256": "c3220290ddd41e1ccbc08101593f474ab01b49108b9dd4fffb6cf6b1d53336df"
+          },
+          "answer": "שיקוף ביחס לישר $AB$ משאיר את $A,B$ במקומם ומעביר את $C$ אל $D$. שיקוף שומר על אורכים ועל זוויות, ולכן מתקבלת חפיפה."
+        }
+      ]
+    },
+    "15": {
+      "id": "65970eb92a8d4ee28b441416fa12e1ab:15",
+      "q": 15,
+      "grade": 8,
+      "topic": "חפיפת משולשים",
+      "levelLabel": "רמת מצוינות",
+      "text": "נתון $△OAB≅△OCD$, $∠AOB=58°$ ו־$∠OAB=81°$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T38/c/figures/q15_head.svg",
+        "sha256": "b55c5d58ba2514e65487db1d088ace4e770b94a4004c2e1662b74af651238a5c"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מצאו $∠CDO$ והבחינו בין שלב החישוב לשלב ההתאמה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q15_head.svg",
+            "sha256": "b55c5d58ba2514e65487db1d088ace4e770b94a4004c2e1662b74af651238a5c"
+          },
+          "answer": "$∠ABO=180−58−81=41°$ מסכום הזוויות, ואחר כך $∠CDO=41°$ מהחפיפה."
+        },
+        {
+          "label": "ב",
+          "text": "טענה חלופית מצמידה את $O$ ל־$D$. האם היא אפשרית במקרה זה? השתמשו בחישוב.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q15_head.svg",
+            "sha256": "b55c5d58ba2514e65487db1d088ace4e770b94a4004c2e1662b74af651238a5c"
+          },
+          "answer": "לא. $∠AOB=58°$ אמורה להתאים ל־$∠CDO$, אבל $∠CDO=41°$, והזוויות שונות. לכן $O$ אינו מתאים ל־$D$."
+        },
+        {
+          "label": "ג",
+          "text": "האם העובדה שהמשולשים נוגעים בקודקוד היא הנימוק לשלילה? הסבירו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q15_head.svg",
+            "sha256": "b55c5d58ba2514e65487db1d088ace4e770b94a4004c2e1662b74af651238a5c"
+          },
+          "answer": "לא. השלילה נובעת ממידות זווית שונות בחלקים המוצעים כמתאימים."
+        }
+      ]
+    },
+    "16": {
+      "id": "65970eb92a8d4ee28b441416fa12e1ab:16",
+      "q": 16,
+      "grade": 8,
+      "topic": "חפיפת משולשים",
+      "levelLabel": "רמת מצוינות",
+      "text": "נתון $△DEF≅△ABC$ ו־$△MLK≅△DFE$.",
+      "table": {
+        "head": [
+          "קודקוד",
+          "בן זוג לפי הסימונים"
+        ],
+        "rows": [
+          [
+            "A",
+            "____"
+          ],
+          [
+            "B",
+            "____"
+          ],
+          [
+            "C",
+            "____"
+          ]
+        ]
+      },
+      "figure": {
+        "url": "/noam-ai/native/G8-T38/c/figures/q16_head.svg",
+        "sha256": "4405f9d5a740e3aaf4ce0d1bb57871636f91a3cd7579a14f239288efab66ca9e"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "כתבו חפיפה ישירה בין $△CBA$ למשולש האחרון.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q16_head.svg",
+            "sha256": "4405f9d5a740e3aaf4ce0d1bb57871636f91a3cd7579a14f239288efab66ca9e"
+          },
+          "answer": "$△CBA\\cong △LKM$."
+        },
+        {
+          "label": "ב",
+          "text": "כתבו שוויון אחד של צלעות ושוויון אחד של זוויות בין קצות השרשרת.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q16_head.svg",
+            "sha256": "4405f9d5a740e3aaf4ce0d1bb57871636f91a3cd7579a14f239288efab66ca9e"
+          },
+          "answer": "למשל $AB=MK$ וגם $∠BAC=∠KML$. גם $BC=KL$, $AC=ML$ ו־$∠ABC=∠MKL$, $∠ACB=∠MLK$ מתאימים."
+        },
+        {
+          "label": "ג",
+          "text": "תלמיד מציע לבדוק את השרשרת באמצעות מדידה בסרגל. מדוע הנתונים עדיפים?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q16_head.svg",
+            "sha256": "4405f9d5a740e3aaf4ce0d1bb57871636f91a3cd7579a14f239288efab66ca9e"
+          },
+          "answer": "מדידה באיור תלויה בקנה המידה ובדיוק ההדפסה; החפיפות נותנות מסקנה מדויקת מן הנתונים."
+        },
+        {
+          "label": "ד",
+          "text": "השלימו את טבלת הקודקודים של שני המשולשים הראשונים באמצעות שילוב הקשת וקו השוויון. הסבירו כיצד הם מבחינים בין קצות הצלע.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T38/c/figures/q16_head.svg",
+            "sha256": "4405f9d5a740e3aaf4ce0d1bb57871636f91a3cd7579a14f239288efab66ca9e"
+          },
+          "answer": "הקשת מזהה $A↔D$; הצלע המסומנת מזהה את הקצה השני $B↔E$; לכן הקודקודים הנותרים $C↔F$."
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,967 @@
+{
+  "sourceSha256": "c6f7aeaa173741c9ad46c8ad47db8f2e754185b5d1d0af896c1419ee9516f3ba",
+  "answerSourceSha256": "345991f44cca1b1598cfd3f33eb55d3c9d1fe3b38ab31359b9c71791cf76bfdd",
+  "nativeSha256": "ad2608e221828285d5ca9ae86a9bec5ebf4c0d683cf41c06ebe1570c7d60351e",
+  "questions": {
+    "1": {
+      "id": "d282cb88e31345d5aa45093ce91a28e2:1",
+      "q": 1,
+      "grade": 8,
+      "topic": "פיתגורס במרחב",
+      "levelLabel": "רמה ב׳",
+      "text": "בחתך של תיבה מסומנים אלכסון הבסיס $AC=10$ והגובה $CG=24$. הזווית $∠ACG$ ישרה.",
+      "example": {
+        "title": "דוגמה קצרה",
+        "lines": [
+          "אם ניצבי משולש הם שלוש וארבע, סכום ריבועיהם הוא עשרים וחמש; לכן היתר הוא חמש."
+        ]
+      },
+      "figure": {
+        "url": "/noam-ai/native/G8-T51/b/figures/q1_head.svg",
+        "sha256": "1143f0d859aaa675d7856079f8eb6de4b1d7993f5e9103e64a9b007b35ece459"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "זהו את היתר במשולש ואת שני הניצבים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q1_head.svg",
+            "sha256": "1143f0d859aaa675d7856079f8eb6de4b1d7993f5e9103e64a9b007b35ece459"
+          },
+          "answer": "היתר $AG$, והניצבים $AC,CG$."
+        },
+        {
+          "label": "ב",
+          "text": "השלימו את סכום הריבועים הדרוש.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q1_head.svg",
+            "sha256": "1143f0d859aaa675d7856079f8eb6de4b1d7993f5e9103e64a9b007b35ece459"
+          },
+          "answer": "מתקיים $AG^2=100+576=676$."
+        },
+        {
+          "label": "ג",
+          "text": "מצאו את אלכסון הגוף.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q1_head.svg",
+            "sha256": "1143f0d859aaa675d7856079f8eb6de4b1d7993f5e9103e64a9b007b35ece459"
+          },
+          "answer": "האורך $26$."
+        },
+        {
+          "label": "ד",
+          "text": "בדקו מדוע חיבור עשר ועשרים וארבע אינו החישוב המתאים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q1_head.svg",
+            "sha256": "1143f0d859aaa675d7856079f8eb6de4b1d7993f5e9103e64a9b007b35ece459"
+          },
+          "answer": "הסכום $34$ הוא מסלול בשני ניצבים, ולא היתר; צריך לחבר ריבועים."
+        }
+      ]
+    },
+    "2": {
+      "id": "d282cb88e31345d5aa45093ce91a28e2:2",
+      "q": 2,
+      "grade": 8,
+      "topic": "פיתגורס במרחב",
+      "levelLabel": "רמה ב׳",
+      "text": "בתיבה המידות $AB=2$, $BC=4$, $AE=5$. האיור מציג את מקצועות התיבה.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T51/b/figures/q2_head.svg",
+        "sha256": "6023d1b9e03f42e0e293aba22a08208680859a34e0532648f68b9c5396e818fb"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "ציינו אלכסון פאה ואלכסון גוף היוצאים מן הנקודה $A$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q2_head.svg",
+            "sha256": "6023d1b9e03f42e0e293aba22a08208680859a34e0532648f68b9c5396e818fb"
+          },
+          "answer": "למשל אלכסון פאה $AC$ ואלכסון גוף $AG$; אלכסון הגוף היוצא מ־$A$ הוא $AG$ בלבד, ואלכסון פאה מ־$A$ יכול להיות גם $AF$ או $AH$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את ריבוע אלכסון הבסיס.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q2_head.svg",
+            "sha256": "6023d1b9e03f42e0e293aba22a08208680859a34e0532648f68b9c5396e818fb"
+          },
+          "answer": "מתקבל $4+16=20$."
+        },
+        {
+          "label": "ג",
+          "text": "הוסיפו את ריבוע הגובה וכתבו את אלכסון הגוף.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q2_head.svg",
+            "sha256": "6023d1b9e03f42e0e293aba22a08208680859a34e0532648f68b9c5396e818fb"
+          },
+          "answer": "סכום הריבועים $45$, ולכן האורך $\\sqrt{45}$."
+        },
+        {
+          "label": "ד",
+          "text": "בדקו בין אילו שלמים עוקבים נמצא השורש.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q2_head.svg",
+            "sha256": "6023d1b9e03f42e0e293aba22a08208680859a34e0532648f68b9c5396e818fb"
+          },
+          "answer": "בין שש לשבע, כי $36<45<49$."
+        }
+      ]
+    },
+    "3": {
+      "id": "d282cb88e31345d5aa45093ce91a28e2:3",
+      "q": 3,
+      "grade": 8,
+      "topic": "פיתגורס במרחב",
+      "levelLabel": "רמה ב׳",
+      "text": "בקובייה אורך מקצוע $3$. מסומנים אלכסון פאה ואלכסון גוף. הקטעים $AC,AD,AG,CD,DH$ מסומנים בקווים מקווקווים.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T51/b/figures/q3_head.svg",
+        "sha256": "daa4e7204352b7bb19090867fa3d99f15b1e75aa770b69b29b13040469542005"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "כמה מקצועות שווים משתתפים בחישוב ריבוע אלכסון הפאה? חשבו אותו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q3_head.svg",
+            "sha256": "daa4e7204352b7bb19090867fa3d99f15b1e75aa770b69b29b13040469542005"
+          },
+          "answer": "שניים; הריבוע $18$."
+        },
+        {
+          "label": "ב",
+          "text": "הוסיפו את ריבוע המקצוע השלישי ומצאו את אלכסון הגוף.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q3_head.svg",
+            "sha256": "daa4e7204352b7bb19090867fa3d99f15b1e75aa770b69b29b13040469542005"
+          },
+          "answer": "הריבוע $27$, ולכן האורך $\\sqrt{27}$."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את היחס בין ריבוע אלכסון הפאה לריבוע אלכסון הגוף.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q3_head.svg",
+            "sha256": "daa4e7204352b7bb19090867fa3d99f15b1e75aa770b69b29b13040469542005"
+          },
+          "answer": "היחס $\\f{18}{27}=\\f{2}{3}$."
+        },
+        {
+          "label": "ד",
+          "text": "מדוע אלכסון פאה אחרת בקובייה יהיה שווה לראשון?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q3_head.svg",
+            "sha256": "daa4e7204352b7bb19090867fa3d99f15b1e75aa770b69b29b13040469542005"
+          },
+          "answer": "כל הפאות ריבועים חופפים עם אותו מקצוע."
+        }
+      ]
+    },
+    "4": {
+      "id": "d282cb88e31345d5aa45093ce91a28e2:4",
+      "q": 4,
+      "grade": 8,
+      "topic": "פיתגורס במרחב",
+      "levelLabel": "רמה ב׳",
+      "text": "הפאה המלבנית $ABCD$ מוצגת לבדה. $AB=5$, $BC=12$. גובה התיבה שאליה היא שייכת הוא $4$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T51/b/figures/q4_head.svg",
+        "sha256": "54211c00378c23dde231a93d8d9dd8fc666830f7debf6fc2ad3759e120b5c66b"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מצאו את ריבוע אלכסון הפאה ואת אורכו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q4_head.svg",
+            "sha256": "54211c00378c23dde231a93d8d9dd8fc666830f7debf6fc2ad3759e120b5c66b"
+          },
+          "answer": "הריבוע $169$, והאורך $13$."
+        },
+        {
+          "label": "ב",
+          "text": "הסבירו מדוע המידה ארבע אינה משתתפת בחישוב הראשון. תלמיד צירף גם את ריבועה וקרא לתוצאה אלכסון הפאה; איזה אלכסון חישב למעשה?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q4_head.svg",
+            "sha256": "54211c00378c23dde231a93d8d9dd8fc666830f7debf6fc2ad3759e120b5c66b"
+          },
+          "answer": "היא מאונכת לפאה ואינה צלע שלה. הכללת שלוש המידות מחשבת את אלכסון הגוף במקום את אלכסון הפאה."
+        },
+        {
+          "label": "ג",
+          "text": "צרפו את המידה השלישית ומצאו את אלכסון הגוף בדיוק.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q4_head.svg",
+            "sha256": "54211c00378c23dde231a93d8d9dd8fc666830f7debf6fc2ad3759e120b5c66b"
+          },
+          "answer": "האורך $\\sqrt{185}$."
+        },
+        {
+          "label": "ד",
+          "text": "האם הוא גדול מאלכסון הפאה? הסבירו בלי קירוב.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q4_head.svg",
+            "sha256": "54211c00378c23dde231a93d8d9dd8fc666830f7debf6fc2ad3759e120b5c66b"
+          },
+          "answer": "כן; לריבוע אלכסון הפאה נוספה כמות חיובית."
+        }
+      ]
+    },
+    "5": {
+      "id": "d282cb88e31345d5aa45093ce91a28e2:5",
+      "q": 5,
+      "grade": 8,
+      "topic": "פיתגורס במרחב",
+      "levelLabel": "רמה ב׳",
+      "text": "בתיבה $AB=4$, $BC=8$, $AE=8$. אפשר להתחיל מן הבסיס או מן הפאה הקדמית. הקטעים $AC,AD,AG,CD,DH$ מסומנים בקווים מקווקווים.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T51/b/figures/q5_head.svg",
+        "sha256": "c1961e1cd41fc600d45233593dad52b88f21bca33ce98ac1f6185d8b388c557a"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "רשמו את ריבוע אלכסון הבסיס.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q5_head.svg",
+            "sha256": "c1961e1cd41fc600d45233593dad52b88f21bca33ce98ac1f6185d8b388c557a"
+          },
+          "answer": "הריבוע $80$."
+        },
+        {
+          "label": "ב",
+          "text": "רשמו את ריבוע אלכסון הפאה הקדמית $AF$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q5_head.svg",
+            "sha256": "c1961e1cd41fc600d45233593dad52b88f21bca33ce98ac1f6185d8b388c557a"
+          },
+          "answer": "גם כאן הריבוע $80$."
+        },
+        {
+          "label": "ג",
+          "text": "השלימו כל אחד מן המסלולים למציאת אלכסון הגוף.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q5_head.svg",
+            "sha256": "c1961e1cd41fc600d45233593dad52b88f21bca33ce98ac1f6185d8b388c557a"
+          },
+          "answer": "בכל מסלול $80+64=144$, ולכן $AG=12$."
+        },
+        {
+          "label": "ד",
+          "text": "חשבו גם את אלכסון הפאה השלישית. כמה אורכי אלכסוני פאות שונים יש כאן, ומדוע הטענה שתמיד יש שלושה אורכים שונים שגויה?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q5_head.svg",
+            "sha256": "c1961e1cd41fc600d45233593dad52b88f21bca33ce98ac1f6185d8b388c557a"
+          },
+          "answer": "אלכסוני שתי הפאות הראשונות הם $\\sqrt{80}$; השלישית $\\sqrt{128}$. יש שני אורכים שונים כי שתי מידות הגוף שוות, וזוהי דוגמה נגדית לטענה."
+        }
+      ]
+    },
+    "6": {
+      "id": "d282cb88e31345d5aa45093ce91a28e2:6",
+      "q": 6,
+      "grade": 8,
+      "topic": "פיתגורס במרחב",
+      "levelLabel": "רמה ב׳",
+      "text": "שרטטו תיבה שמידותיה חמש, חמש ושתיים.",
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את ריבוע אלכסון הפאה ששתי צלעותיה שוות.",
+          "answer": "הריבוע $50$."
+        },
+        {
+          "label": "ב",
+          "text": "מצאו את אלכסון הגוף במדויק.",
+          "answer": "האורך $\\sqrt{54}$."
+        },
+        {
+          "label": "ג",
+          "text": "כלאו את האלכסון בין שני שלמים עוקבים.",
+          "answer": "בין שבע לשמונה."
+        },
+        {
+          "label": "ד",
+          "text": "שרטטו אלכסון פאה ומשולש עזר, והבדילו בין קווים גלויים לנסתרים. בחרו מבט שבו אלכסון הפאה ואלכסון הגוף נבדלים בבירור, והסבירו את הבחירה.",
+          "answer": "למשל: בסיס ריבועי שצלעו $5$ עם אלכסון $AC$, והמשולש $△ACG$ ישר־זווית ב־$C$ עם ניצבים $AC$ ו־$CG=2$; בהיטל הרגיל הקווים הנסתרים הם $DA,DC,DH$. במבט אלכסוני שבו רואים את הגובה, אלכסון הגוף $AG$ עולה מן הבסיס ואינו מתלכד עם אלכסון הפאה $AC$. כל שרטוט ברור המבדיל ביניהם מתאים."
+        }
+      ]
+    },
+    "7": {
+      "id": "d282cb88e31345d5aa45093ce91a28e2:7",
+      "q": 7,
+      "grade": 8,
+      "topic": "פיתגורס במרחב",
+      "levelLabel": "רמה ב׳",
+      "text": "בתיבה $AB=0.06$ מטר, $BC=8$ ס״מ, $AE=0.24$ מטר. החתך המוצג מכיל את אלכסון הגוף. הקטעים $AD,AG,CD,DH$ מסומנים בקווים מקווקווים.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T51/b/figures/q7_head.svg",
+        "sha256": "fac8096088fd85af91c0977144c7872c802bfcb83712bd8feac479d207c9a513"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "המירו את שלוש המידות לס״מ.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q7_head.svg",
+            "sha256": "fac8096088fd85af91c0977144c7872c802bfcb83712bd8feac479d207c9a513"
+          },
+          "answer": "שש, שמונה ועשרים וארבע ס״מ."
+        },
+        {
+          "label": "ב",
+          "text": "מצאו את אלכסון הבסיס בס״מ.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q7_head.svg",
+            "sha256": "fac8096088fd85af91c0977144c7872c802bfcb83712bd8feac479d207c9a513"
+          },
+          "answer": "האורך עשר ס״מ."
+        },
+        {
+          "label": "ג",
+          "text": "מצאו את אלכסון הגוף בס״מ ולאחר מכן במטר.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q7_head.svg",
+            "sha256": "fac8096088fd85af91c0977144c7872c802bfcb83712bd8feac479d207c9a513"
+          },
+          "answer": "עשרים ושש ס״מ, שהם $0.26$ מטר."
+        },
+        {
+          "label": "ד",
+          "text": "האם אפשר לחבר את ריבועי המספרים כפי שנכתבו בתחילת השאלה בלי להמיר? הסבירו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q7_head.svg",
+            "sha256": "fac8096088fd85af91c0977144c7872c802bfcb83712bd8feac479d207c9a513"
+          },
+          "answer": "לא; המספרים מייצגים יחידות שונות, ולכן צריך תחילה לאחד יחידות."
+        }
+      ]
+    },
+    "8": {
+      "id": "d282cb88e31345d5aa45093ce91a28e2:8",
+      "q": 8,
+      "grade": 8,
+      "topic": "פיתגורס במרחב",
+      "levelLabel": "רמה ב׳",
+      "text": "בתיבה $AB=3$, $BC=6$, $AE=2$. אין אלכסונים מסומנים מראש.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T51/b/figures/q8_head.svg",
+        "sha256": "951764ad3106fd08617b7cfd38523d16c2cc9e4bec5277f80d0c30a8851cc73f"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את סכום ריבועי שלוש המידות.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q8_head.svg",
+            "sha256": "951764ad3106fd08617b7cfd38523d16c2cc9e4bec5277f80d0c30a8851cc73f"
+          },
+          "answer": "הסכום $49$."
+        },
+        {
+          "label": "ב",
+          "text": "מצאו את אלכסון הגוף.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q8_head.svg",
+            "sha256": "951764ad3106fd08617b7cfd38523d16c2cc9e4bec5277f80d0c30a8851cc73f"
+          },
+          "answer": "האורך שבע."
+        },
+        {
+          "label": "ג",
+          "text": "רשמו חסם תחתון מן המקצוע הארוך וחסם עליון מסכום המקצועות.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q8_head.svg",
+            "sha256": "951764ad3106fd08617b7cfd38523d16c2cc9e4bec5277f80d0c30a8851cc73f"
+          },
+          "answer": "מתקיים $6<AG<11$."
+        },
+        {
+          "label": "ד",
+          "text": "הצעה של שמונה עומדת בשני החסמים. מדוע אין בכך הוכחה שהיא נכונה?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q8_head.svg",
+            "sha256": "951764ad3106fd08617b7cfd38523d16c2cc9e4bec5277f80d0c30a8851cc73f"
+          },
+          "answer": "החסמים הם תנאי הכרחי בלבד: $8$ נמצא בין $6$ ל־$11$, אך ריבועו $64$ שונה מ־$49$, ולכן הוא שגוי."
+        }
+      ]
+    },
+    "9": {
+      "id": "d282cb88e31345d5aa45093ce91a28e2:9",
+      "q": 9,
+      "grade": 8,
+      "topic": "פיתגורס במרחב",
+      "levelLabel": "רמה ב׳",
+      "text": "בקובייה אורך המקצוע $13$. נתבונן באלכסונים גם דרך ריבועי אורכיהם. הקטעים $AC,AD,AG,CD,DH$ מסומנים בקווים מקווקווים.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T51/b/figures/q9_head.svg",
+        "sha256": "bf24cda14b6c03627d21ee51e66091d23344c804cab54340ce070145aa3a5cbc"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את ריבוע אלכסון הפאה ואת ריבוע אלכסון הגוף.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q9_head.svg",
+            "sha256": "bf24cda14b6c03627d21ee51e66091d23344c804cab54340ce070145aa3a5cbc"
+          },
+          "answer": "הריבועים $338$ ו־$507$."
+        },
+        {
+          "label": "ב",
+          "text": "כתבו את שני האורכים המדויקים בלי לפשט שורשים, וכלאו כל אחד בין שלמים עוקבים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q9_head.svg",
+            "sha256": "bf24cda14b6c03627d21ee51e66091d23344c804cab54340ce070145aa3a5cbc"
+          },
+          "answer": "$AC=\\sqrt{338}$ בין שמונה עשרה לתשע עשרה, ו־$AG=\\sqrt{507}$ בין עשרים ושתיים לעשרים ושלוש."
+        },
+        {
+          "label": "ג",
+          "text": "האם ריבוע אורך שהוא מספר שלם מבטיח שאורכו שלם? הסבירו בעזרת דוגמה זו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q9_head.svg",
+            "sha256": "bf24cda14b6c03627d21ee51e66091d23344c804cab54340ce070145aa3a5cbc"
+          },
+          "answer": "לא; שלוש מאות שלושים ושמונה אינו ריבוע שלם, ולכן שורשו אינו שלם."
+        },
+        {
+          "label": "ד",
+          "text": "הסבירו מדוע גם בקובייה בעלת מקצוע שלם אחר האלכסונים לא יהיו שלמים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q9_head.svg",
+            "sha256": "bf24cda14b6c03627d21ee51e66091d23344c804cab54340ce070145aa3a5cbc"
+          },
+          "answer": "יחס האלכסון למקצוע הוא השורש של שתיים או שלוש, ושורשים אלה אינם רציונליים."
+        }
+      ]
+    },
+    "10": {
+      "id": "d282cb88e31345d5aa45093ce91a28e2:10",
+      "q": 10,
+      "grade": 8,
+      "topic": "פיתגורס במרחב",
+      "levelLabel": "רמה ב׳",
+      "text": "בתיבה $AB=6$, $BC=8$, $AE=3$ מסומנים שני מסלולי פאות. הקטעים $AC,AD,AG,CD,DH$ מסומנים בקווים מקווקווים.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T51/b/figures/q10_head.svg",
+        "sha256": "9516f6c88f05d1d69c3e256c44860e114d4273f0cebc0e0ec71de7a548de93f5"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "השלימו את המסלול דרך הבסיס: ריבוע אלכסון הפאה ואז ריבוע אלכסון הגוף.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q10_head.svg",
+            "sha256": "9516f6c88f05d1d69c3e256c44860e114d4273f0cebc0e0ec71de7a548de93f5"
+          },
+          "answer": "הראשון $100$, והשני $109$."
+        },
+        {
+          "label": "ב",
+          "text": "התחילו דרך הפאה הקדמית וחשבו שוב את ריבוע אלכסון הגוף.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q10_head.svg",
+            "sha256": "9516f6c88f05d1d69c3e256c44860e114d4273f0cebc0e0ec71de7a548de93f5"
+          },
+          "answer": "ריבוע $AF$ הוא $45$, ולאחר הוספת $64$ מתקבל $109$."
+        },
+        {
+          "label": "ג",
+          "text": "כתבו את אלכסון הגוף במדויק.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q10_head.svg",
+            "sha256": "9516f6c88f05d1d69c3e256c44860e114d4273f0cebc0e0ec71de7a548de93f5"
+          },
+          "answer": "האורך $\\sqrt{109}$."
+        },
+        {
+          "label": "ד",
+          "text": "נמקו מדוע אין צורך לקרב את השורש של ארבעים וחמש באמצע החישוב.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q10_head.svg",
+            "sha256": "9516f6c88f05d1d69c3e256c44860e114d4273f0cebc0e0ec71de7a548de93f5"
+          },
+          "answer": "השלב השני משתמש בריבוע אלכסון הפאה, שכבר ידוע בדיוק."
+        },
+        {
+          "label": "ה",
+          "text": "באיזה מסלול קל יותר לזהות גם אלכסון פאה שלם?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q10_head.svg",
+            "sha256": "9516f6c88f05d1d69c3e256c44860e114d4273f0cebc0e0ec71de7a548de93f5"
+          },
+          "answer": "במסלול הבסיס, שבו האלכסון עשר."
+        }
+      ]
+    },
+    "11": {
+      "id": "d282cb88e31345d5aa45093ce91a28e2:11",
+      "q": 11,
+      "grade": 8,
+      "topic": "פיתגורס במרחב",
+      "levelLabel": "רמה ב׳",
+      "text": "מוצג חתך אלכסוני של תיבה. שני הניצבים במשולש $ACG$ הם $AC=8$ ו־$CG=15$. הזווית $∠ACG$ ישרה.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T51/b/figures/q11_head.svg",
+        "sha256": "a148d57707078aabedc8e25d0b00c8a520c1dde9853f4e7a92dbeb309a055604"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "כתבו את הקשר בין ריבוע היתר לריבועי הניצבים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q11_head.svg",
+            "sha256": "a148d57707078aabedc8e25d0b00c8a520c1dde9853f4e7a92dbeb309a055604"
+          },
+          "answer": "$AG^2=AC^2+CG^2$, כלומר $AG^2=64+225=289$."
+        },
+        {
+          "label": "ב",
+          "text": "מצאו את אורך $AG$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q11_head.svg",
+            "sha256": "a148d57707078aabedc8e25d0b00c8a520c1dde9853f4e7a92dbeb309a055604"
+          },
+          "answer": "האורך $17$."
+        },
+        {
+          "label": "ג",
+          "text": "תלמיד חיבר את שני הניצבים וקיבל עשרים ושלוש. איזו פעולה חסרה במודל שלו?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q11_head.svg",
+            "sha256": "a148d57707078aabedc8e25d0b00c8a520c1dde9853f4e7a92dbeb309a055604"
+          },
+          "answer": "יש לרבע את הניצבים, לחבר את הריבועים ואז להוציא שורש."
+        },
+        {
+          "label": "ד",
+          "text": "הסבירו מדוע $CG$ מאונך לאלכסון הבסיס אף שההיטל של גוף עשוי להיראות אלכסוני.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q11_head.svg",
+            "sha256": "a148d57707078aabedc8e25d0b00c8a520c1dde9853f4e7a92dbeb309a055604"
+          },
+          "answer": "$CG$ הוא מקצוע המאונך למישור הבסיס, ולכן הוא מאונך לכל ישר בבסיס העובר דרך $C$, ובכללו $AC$; המראה האלכסוני נובע מההיטל בלבד."
+        }
+      ]
+    },
+    "12": {
+      "id": "d282cb88e31345d5aa45093ce91a28e2:12",
+      "q": 12,
+      "grade": 8,
+      "topic": "פיתגורס במרחב",
+      "levelLabel": "רמה ב׳",
+      "text": "בתיבה שטוחה $AB=8$, $BC=15$, $AE=1$. הקטעים $AD,AG,CD,DH$ מסומנים בקווים מקווקווים.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T51/b/figures/q12_head.svg",
+        "sha256": "bda542d71eb12e206ec746a9dc474fc46b875fb6ea183263d235c23dc69f5b7a"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מצאו את אלכסון הבסיס.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q12_head.svg",
+            "sha256": "bda542d71eb12e206ec746a9dc474fc46b875fb6ea183263d235c23dc69f5b7a"
+          },
+          "answer": "האורך $17$."
+        },
+        {
+          "label": "ב",
+          "text": "מצאו את אלכסון הגוף המדויק.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q12_head.svg",
+            "sha256": "bda542d71eb12e206ec746a9dc474fc46b875fb6ea183263d235c23dc69f5b7a"
+          },
+          "answer": "האורך $\\sqrt{290}$."
+        },
+        {
+          "label": "ג",
+          "text": "רשמו את ההפרש המדויק בין אלכסון הגוף למקצוע הארוך ביותר.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q12_head.svg",
+            "sha256": "bda542d71eb12e206ec746a9dc474fc46b875fb6ea183263d235c23dc69f5b7a"
+          },
+          "answer": "ההפרש $\\sqrt{290}−15$."
+        },
+        {
+          "label": "ד",
+          "text": "מה אומר ההפרש שחישבתם מן המקצוע הארוך, ומדוע אסור להשמיט את המידה אחת מן החישוב?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q12_head.svg",
+            "sha256": "bda542d71eb12e206ec746a9dc474fc46b875fb6ea183263d235c23dc69f5b7a"
+          },
+          "answer": "ההפרש מודד בכמה האלכסון ארוך מן המקצוע חמש עשרה; גם המידה שמונה וגם העובי תורמים. העובי מוסיף אחד לסכום הריבועים ולכן אסור להשמיטו."
+        }
+      ]
+    },
+    "13": {
+      "id": "d282cb88e31345d5aa45093ce91a28e2:13",
+      "q": 13,
+      "grade": 8,
+      "topic": "פיתגורס במרחב",
+      "levelLabel": "רמה ב׳",
+      "text": "הכינו שרטוט לתיבה שמידותיה שתיים, שלוש וארבע.",
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את ריבוע אלכסון הגוף ואת אורכו.",
+          "answer": "הריבוע $29$ והאורך $\\sqrt{29}$."
+        },
+        {
+          "label": "ב",
+          "text": "רשמו שני שלמים עוקבים שביניהם נמצא האלכסון.",
+          "answer": "בין חמש לשש."
+        },
+        {
+          "label": "ג",
+          "text": "בחרו פאה, וכתבו חישוב בשני שלבים המוביל לאותה תוצאה.",
+          "answer": "למשל פאה שמידותיה $2,3$: $4+9=13$, ואז $13+16=29$, ולכן $AG=\\sqrt{29}$. כל פאה אחרת מתאימה, למשל $3,4$: $9+16=25$, ואז $25+4=29$."
+        },
+        {
+          "label": "ד",
+          "text": "שרטטו את הגוף, סמנו את הפאה שבחרתם ואת היתר בכל אחד ממשולשי העזר.",
+          "answer": "בפאה שבחרתם ($2,3$) היתר הוא אלכסון הפאה $\\sqrt{13}$, ובמשולש העזר השני היתר הוא אלכסון הגוף $\\sqrt{29}$; כל סימון עקבי נכון מתאים."
+        }
+      ]
+    },
+    "14": {
+      "id": "d282cb88e31345d5aa45093ce91a28e2:14",
+      "q": 14,
+      "grade": 8,
+      "topic": "פיתגורס במרחב",
+      "levelLabel": "רמה ב׳",
+      "text": "פאת בסיס של תיבה היא מלבן עם $AB=7$, $BC=24$. גובה התיבה $10$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T51/b/figures/q14_head.svg",
+        "sha256": "35702c9a61bd5c21d039869ce1fd6d0418d876359342eb705ec5acecf9a500aa"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את אלכסון הבסיס.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q14_head.svg",
+            "sha256": "35702c9a61bd5c21d039869ce1fd6d0418d876359342eb705ec5acecf9a500aa"
+          },
+          "answer": "האורך $25$."
+        },
+        {
+          "label": "ב",
+          "text": "מישהו השתמש בשבע ובעשר כדי לחשב את אלכסון הבסיס. מדוע נבחר זוג מידות לא מתאים?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q14_head.svg",
+            "sha256": "35702c9a61bd5c21d039869ce1fd6d0418d876359342eb705ec5acecf9a500aa"
+          },
+          "answer": "עשר הוא גובה שאינו צלע פאת הבסיס; הוא שייך לפאה אחרת."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את ריבוע אלכסון הגוף ואת אורכו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q14_head.svg",
+            "sha256": "35702c9a61bd5c21d039869ce1fd6d0418d876359342eb705ec5acecf9a500aa"
+          },
+          "answer": "הריבוע $725$, והאורך $\\sqrt{725}$."
+        },
+        {
+          "label": "ד",
+          "text": "כלאו את התוצאה בין שלמים עוקבים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q14_head.svg",
+            "sha256": "35702c9a61bd5c21d039869ce1fd6d0418d876359342eb705ec5acecf9a500aa"
+          },
+          "answer": "בין עשרים ושש לעשרים ושבע, כי $676<725<729$."
+        }
+      ]
+    },
+    "15": {
+      "id": "d282cb88e31345d5aa45093ce91a28e2:15",
+      "q": 15,
+      "grade": 8,
+      "topic": "פיתגורס במרחב",
+      "levelLabel": "רמה ב׳",
+      "text": "בתיבה $AB=1$, $BC=2$, $AE=2$. מסומנים $AC$ ו־$AG$. הקטעים $AC,AD,AG,CD,DH$ מסומנים בקווים מקווקווים.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T51/b/figures/q15_head.svg",
+        "sha256": "223881d61f6d04cec5c38008bfba41d5c4c8cbd94b2cacbb1adbf300e1b0555b"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את אלכסון הבסיס במדויק.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q15_head.svg",
+            "sha256": "223881d61f6d04cec5c38008bfba41d5c4c8cbd94b2cacbb1adbf300e1b0555b"
+          },
+          "answer": "האורך $\\sqrt{5}$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את אלכסון הגוף, בלי לקרב את תוצאת הסעיף הראשון.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q15_head.svg",
+            "sha256": "223881d61f6d04cec5c38008bfba41d5c4c8cbd94b2cacbb1adbf300e1b0555b"
+          },
+          "answer": "ריבועו $5+4=9$, ולכן אורכו שלוש."
+        },
+        {
+          "label": "ג",
+          "text": "בדקו: האם אלכסון פאה לא שלם מחייב אלכסון גוף לא שלם?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q15_head.svg",
+            "sha256": "223881d61f6d04cec5c38008bfba41d5c4c8cbd94b2cacbb1adbf300e1b0555b"
+          },
+          "answer": "לא; כאן הראשון אינו שלם והשני שלם."
+        },
+        {
+          "label": "ד",
+          "text": "איזה משולש מראה שהמידה השלישית נחוצה למרות שכבר חושב אלכסון?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q15_head.svg",
+            "sha256": "223881d61f6d04cec5c38008bfba41d5c4c8cbd94b2cacbb1adbf300e1b0555b"
+          },
+          "answer": "משולש החתך $△ACG$, שבו אלכסון הבסיס הוא רק ניצב."
+        }
+      ]
+    },
+    "16": {
+      "id": "d282cb88e31345d5aa45093ce91a28e2:16",
+      "q": 16,
+      "grade": 8,
+      "topic": "פיתגורס במרחב",
+      "levelLabel": "רמה ב׳",
+      "text": "בתיבה $AB=4$, $BC=5$, $AE=7$ מסומנים כל המקצועות.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T51/b/figures/q16_head.svg",
+        "sha256": "e3445a39997bf720f27ab9d24b841d96c70808ef363d0b3fc73a98fb379130c9"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מהו ריבוע אלכסון הפאה הארוך ביותר? בחרו את שתי המידות המתאימות.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q16_head.svg",
+            "sha256": "e3445a39997bf720f27ab9d24b841d96c70808ef363d0b3fc73a98fb379130c9"
+          },
+          "answer": "המידות חמש ושבע; הריבוע $74$."
+        },
+        {
+          "label": "ב",
+          "text": "מהו ריבוע אלכסון הגוף?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q16_head.svg",
+            "sha256": "e3445a39997bf720f27ab9d24b841d96c70808ef363d0b3fc73a98fb379130c9"
+          },
+          "answer": "הריבוע $90$."
+        },
+        {
+          "label": "ג",
+          "text": "רשמו חסם תחתון מאלכסון הפאה הארוך וחסם עליון מסכום המקצועות.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q16_head.svg",
+            "sha256": "e3445a39997bf720f27ab9d24b841d96c70808ef363d0b3fc73a98fb379130c9"
+          },
+          "answer": "מתקיים $\\sqrt{74}<AG<16$."
+        },
+        {
+          "label": "ד",
+          "text": "האם תשובה שמונה אפשרית? הסבירו בעזרת ריבועים בלבד.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q16_head.svg",
+            "sha256": "e3445a39997bf720f27ab9d24b841d96c70808ef363d0b3fc73a98fb379130c9"
+          },
+          "answer": "לא; ריבועה $64$ קטן אפילו מריבוע אלכסון הפאה הארוך."
+        }
+      ]
+    },
+    "17": {
+      "id": "d282cb88e31345d5aa45093ce91a28e2:17",
+      "q": 17,
+      "grade": 8,
+      "topic": "פיתגורס במרחב",
+      "levelLabel": "רמה ב׳",
+      "text": "נסמן מקצוע כללי של קובייה באות $e$, כאשר $e>0$. הקטעים $AB,AC,AD,AE,AG$ מסומנים בקווים מקווקווים.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T51/b/figures/q17_head.svg",
+        "sha256": "edbd0e1548c66749a34a8a58bf6441f0f43ed586be4021c5d00d138777470190"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "כתבו ביטוי לריבוע אלכסון הפאה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q17_head.svg",
+            "sha256": "edbd0e1548c66749a34a8a58bf6441f0f43ed586be4021c5d00d138777470190"
+          },
+          "answer": "הביטוי $2e^2$."
+        },
+        {
+          "label": "ב",
+          "text": "כתבו ביטוי לריבוע אלכסון הגוף.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q17_head.svg",
+            "sha256": "edbd0e1548c66749a34a8a58bf6441f0f43ed586be4021c5d00d138777470190"
+          },
+          "answer": "הביטוי $3e^2$."
+        },
+        {
+          "label": "ג",
+          "text": "כתבו את אורכי שני האלכסונים באמצעות שורש.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q17_head.svg",
+            "sha256": "edbd0e1548c66749a34a8a58bf6441f0f43ed586be4021c5d00d138777470190"
+          },
+          "answer": "אלכסון הפאה $\\sqrt{2e^2}$ ואלכסון הגוף $\\sqrt{3e^2}$."
+        },
+        {
+          "label": "ד",
+          "text": "הסבירו מדוע יחס הריבועים קבוע כשמשנים את המקצוע.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q17_head.svg",
+            "sha256": "edbd0e1548c66749a34a8a58bf6441f0f43ed586be4021c5d00d138777470190"
+          },
+          "answer": "ריבוע המקצוע הוא גורם משותף המצטמצם; היחס תמיד $\\f{2}{3}$."
+        }
+      ]
+    },
+    "18": {
+      "id": "d282cb88e31345d5aa45093ce91a28e2:18",
+      "q": 18,
+      "grade": 8,
+      "topic": "פיתגורס במרחב",
+      "levelLabel": "רמה ב׳",
+      "text": "בתיבה $AB=6$, $BC=10$, $AE=12$ נבדקים שני רישומים של ריבוע אלכסון הגוף: $280$ ו־$196$. הקטעים $AC,AD,AG,CD,DH$ מסומנים בקווים מקווקווים.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T51/b/figures/q18_head.svg",
+        "sha256": "34343488f603dde7fd0d396d3a176863f0fcb947d783d3995d1faa6bba3f3fa1"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "בחרו מסלול דרך הבסיס וקבעו איזה רישום מתאים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q18_head.svg",
+            "sha256": "34343488f603dde7fd0d396d3a176863f0fcb947d783d3995d1faa6bba3f3fa1"
+          },
+          "answer": "ריבוע אלכסון הבסיס $136$; הוספת $144$ נותנת $280$, ולכן הרישום $280$ מתאים ולא $196$."
+        },
+        {
+          "label": "ב",
+          "text": "בדקו את ההכרעה במסלול דרך הפאה הקדמית.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q18_head.svg",
+            "sha256": "34343488f603dde7fd0d396d3a176863f0fcb947d783d3995d1faa6bba3f3fa1"
+          },
+          "answer": "ריבוע אלכסון הפאה $180$; הוספת $100$ מחזירה $280$."
+        },
+        {
+          "label": "ג",
+          "text": "כתבו את אורך אלכסון הגוף בדיוק.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q18_head.svg",
+            "sha256": "34343488f603dde7fd0d396d3a176863f0fcb947d783d3995d1faa6bba3f3fa1"
+          },
+          "answer": "האורך $\\sqrt{280}$."
+        },
+        {
+          "label": "ד",
+          "text": "מישהו הציע להסתפק ברישום סכום של שלושה ריבועים. איזו הצדקה גאומטרית יש לצרף אליו?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q18_head.svg",
+            "sha256": "34343488f603dde7fd0d396d3a176863f0fcb947d783d3995d1faa6bba3f3fa1"
+          },
+          "answer": "שתי הפעלות פיתגורס: תחילה בפאה, ואחר כך בחתך עם המידה המאונכת לפאה."
+        }
+      ]
+    },
+    "19": {
+      "id": "d282cb88e31345d5aa45093ce91a28e2:19",
+      "q": 19,
+      "grade": 8,
+      "topic": "פיתגורס במרחב",
+      "levelLabel": "רמה ב׳",
+      "text": "בתיבה מסומנים $AB=20$, $BC=21$, $AE=12$. יש לבצע את פיתגורס בשני שלבים. הקטעים $AC,AD,AG,CD,DH$ מסומנים בקווים מקווקווים.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T51/b/figures/q19_head.svg",
+        "sha256": "921b01054634a224a3694e933be48edbad2ec7430e2484b6c473de9a17c613b5"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את אלכסון הבסיס.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q19_head.svg",
+            "sha256": "921b01054634a224a3694e933be48edbad2ec7430e2484b6c473de9a17c613b5"
+          },
+          "answer": "האורך $29$."
+        },
+        {
+          "label": "ב",
+          "text": "השלימו את החישוב לאלכסון הגוף.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q19_head.svg",
+            "sha256": "921b01054634a224a3694e933be48edbad2ec7430e2484b6c473de9a17c613b5"
+          },
+          "answer": "ריבועו $841+144=985$, ולכן אורכו $\\sqrt{985}$."
+        },
+        {
+          "label": "ג",
+          "text": "בדיקה חלופית דרך פאה אחרת צריכה לתת איזה ריבוע סופי?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q19_head.svg",
+            "sha256": "921b01054634a224a3694e933be48edbad2ec7430e2484b6c473de9a17c613b5"
+          },
+          "answer": "אותו ריבוע $985$, ללא תלות במסלול."
+        },
+        {
+          "label": "ד",
+          "text": "נרשם פתרון שבו מחברים את אלכסון הבסיס שחושב לגובה התיבה. היכן הכשל?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T51/b/figures/q19_head.svg",
+            "sha256": "921b01054634a224a3694e933be48edbad2ec7430e2484b6c473de9a17c613b5"
+          },
+          "answer": "במעבר לחיבור אורכים בשלב השני; צריך לחבר את ריבוע עשרים ותשע לריבוע שתים עשרה, ואחר כך להוציא שורש."
+        }
+      ]
+    },
+    "20": {
+      "id": "d282cb88e31345d5aa45093ce91a28e2:20",
+      "q": 20,
+      "grade": 8,
+      "topic": "פיתגורס במרחב",
+      "levelLabel": "רמה ב׳",
+      "text": "שרטטו תיבה שמידותיה ארבע, שלוש ושתים עשרה, ובחרו סימון עקבי לקודקודיה.",
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את אלכסון הפאה שמידותיה שלוש וארבע.",
+          "answer": "האורך חמש."
+        },
+        {
+          "label": "ב",
+          "text": "השתמשו בו לחישוב אלכסון הגוף.",
+          "answer": "האורך שלוש עשרה."
+        },
+        {
+          "label": "ג",
+          "text": "מצאו חסם תחתון וחסם עליון בעזרת המקצועות.",
+          "answer": "מתקיים $12<AG<19$."
+        },
+        {
+          "label": "ד",
+          "text": "הסבירו מדוע אלכסון הגוף קטן ממש מסכום המידות.",
+          "answer": "מסלול לאורך המקצועות ארוך מן הקטע הישר המחבר את אותם קצוות, וכל המידות חיוביות."
+        },
+        {
+          "label": "ה",
+          "text": "שרטטו את משולשי העזר עם הזוויות הישרות, והבחינו בין אלכסון פאה לאלכסון גוף.",
+          "answer": "$△ABC$ ישר־זווית ב־$B$ והיתר $AC=5$ הוא אלכסון פאה; $△ACG$ ישר־זווית ב־$C$ והיתר $AG=13$ הוא אלכסון גוף; כל שרטוט עקבי מתאים."
+        }
+      ]
+    }
+  }
+}

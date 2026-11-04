@@ -1,0 +1,774 @@
+{
+  "sourceSha256": "3dbe3e80eb3faa2191d77ebf85e9f64ee690731292d3104534f10af9db986539",
+  "answerSourceSha256": "4d2c3c4a86e908ac1cc0ea1d1491fc08cf6cba11c0ecba93cd42199073a8a040",
+  "nativeSha256": "42d2278b73abecbb9a617011deb3cad6801ddf369c2bf73ca2506c425b2d1244",
+  "questions": {
+    "1": {
+      "id": "5694f57628744ebeaa37f5eca2c92b2a:1",
+      "q": 1,
+      "grade": 9,
+      "topic": "דלתון",
+      "levelLabel": "רמה א׳",
+      "text": "במרובע $PQRS$ סומנו בשנתות זוגות של צלעות שוות. אין במרובע נתונים נוספים.",
+      "figure": {
+        "url": "/noam-ai/native/G9-KITE/a/figures/q1_head.svg",
+        "sha256": "b05c5667a94b75cb5997b81c821ff829d3f30dc278c2a493221840dc8e9ae8d7"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הסבירו לפי ההגדרה מדוע $PQRS$ הוא דלתון.",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q1_head.svg",
+            "sha256": "b05c5667a94b75cb5997b81c821ff829d3f30dc278c2a493221840dc8e9ae8d7"
+          },
+          "answer": "נתון $PQ=PS$ ו־$RQ=RS$. אלה שני זוגות נפרדים של צלעות סמוכות: הזוג הראשון נפגש בקודקוד $P$ והשני בקודקוד $R$. לכן לפי ההגדרה $PQRS$ דלתון."
+        },
+        {
+          "label": "ב",
+          "text": "מהם קודקודי הראש ומהם קודקודי הצד? איזה אלכסון הוא האלכסון הראשי ואיזה הוא המשני?",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q1_head.svg",
+            "sha256": "b05c5667a94b75cb5997b81c821ff829d3f30dc278c2a493221840dc8e9ae8d7"
+          },
+          "answer": "קודקודי הראש: $P$ ו־$R$, שבהם נפגשות צלעות שוות. קודקודי הצד: $Q$ ו־$S$. האלכסון הראשי $PR$, האלכסון המשני $QS$."
+        },
+        {
+          "label": "ג",
+          "text": "נועה טוענת שהצלעות $PQ$ ו־$QR$ שוות זו לזו, כי כך הן נראות. האם אפשר להסיק זאת מן הנתונים? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q1_head.svg",
+            "sha256": "b05c5667a94b75cb5997b81c821ff829d3f30dc278c2a493221840dc8e9ae8d7"
+          },
+          "answer": "לא. השנתות מסמנות רק $PQ=PS$ ו־$RQ=RS$, ואין נתון שמשווה צלע מהזוג הראשון לצלע מהזוג השני. מראה השרטוט אינו נתון."
+        }
+      ]
+    },
+    "2": {
+      "id": "5694f57628744ebeaa37f5eca2c92b2a:2",
+      "q": 2,
+      "grade": 9,
+      "topic": "דלתון",
+      "levelLabel": "רמה א׳",
+      "text": "בשרטוט שני מרובעים. שנתות במספר זהה מסמנות צלעות שוות, ואין נתונים נוספים.",
+      "figure": {
+        "url": "/noam-ai/native/G9-KITE/a/figures/q2_head.svg",
+        "sha256": "8ec222b83d2752667476b5cc7d09b5e2224d21d267d7b5871bbca74844b42fe2"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "האם לפי הנתונים $ABCD$ הוא דלתון? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q2_head.svg",
+            "sha256": "8ec222b83d2752667476b5cc7d09b5e2224d21d267d7b5871bbca74844b42fe2"
+          },
+          "answer": "לא נובע מהנתונים. הנתונים הם $AB=CD$ ו־$BC=DA$: בכל זוג הצלעות נגדיות ואינן סמוכות. ההגדרה דורשת שני זוגות של צלעות סמוכות שוות."
+        },
+        {
+          "label": "ב",
+          "text": "האם לפי הנתונים $PQRS$ הוא דלתון? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q2_head.svg",
+            "sha256": "8ec222b83d2752667476b5cc7d09b5e2224d21d267d7b5871bbca74844b42fe2"
+          },
+          "answer": "לא נובע מהנתונים. יש זוג אחד בלבד של צלעות סמוכות שוות, $PQ=PS$, וההגדרה דורשת שני זוגות נפרדים."
+        },
+        {
+          "label": "ג",
+          "text": "כתבו נתון נוסף אחד על צלעות $PQRS$ שיבטיח שהמרובע דלתון. מה יהיו אז קודקודי הראש שלו?",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q2_head.svg",
+            "sha256": "8ec222b83d2752667476b5cc7d09b5e2224d21d267d7b5871bbca74844b42fe2"
+          },
+          "answer": "למשל $RQ=RS$. אז יש שני זוגות נפרדים של צלעות סמוכות שוות, $PQ=PS$ ו־$RQ=RS$, וקודקודי הראש הם $P$ ו־$R$. כל נתון שמבטיח $RQ=RS$ מתאים, למשל ששתיהן $7$ ס״מ; שוויון אחר בין צלעות, כמו $PQ=QR$, אינו מספיק."
+        }
+      ]
+    },
+    "3": {
+      "id": "5694f57628744ebeaa37f5eca2c92b2a:3",
+      "q": 3,
+      "grade": 9,
+      "topic": "דלתון",
+      "levelLabel": "רמה א׳",
+      "text": "$ABCD$ דלתון שבו $AB=AD$ ו־$CB=CD$. האלכסון הראשי $AC$ מצויר.",
+      "figure": {
+        "url": "/noam-ai/native/G9-KITE/a/figures/q3_head.svg",
+        "sha256": "2f5d5b852aca45e3076ece80ad741441a9c75633059a13948dcefcc570528517"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הוכיחו כי $△ABC≅△ADC$. כתבו אילו נתונים שימשו אתכם ולפי איזה משפט חפיפה.",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q3_head.svg",
+            "sha256": "2f5d5b852aca45e3076ece80ad741441a9c75633059a13948dcefcc570528517"
+          },
+          "answer": "$AB=AD$ ו־$CB=CD$ נתונים, ו־$AC$ צלע משותפת. לכן $△ABC\\cong △ADC$ לפי משפט החפיפה צלע, צלע, צלע."
+        },
+        {
+          "label": "ב",
+          "text": "הסיקו כי $∠ABC=∠ADC$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q3_head.svg",
+            "sha256": "2f5d5b852aca45e3076ece80ad741441a9c75633059a13948dcefcc570528517"
+          },
+          "answer": "הזוויות מול הצלע המשותפת $AC$ מתאימות במשולשים החופפים, ולכן $∠ABC=∠ADC$: זוויות הצד שוות."
+        },
+        {
+          "label": "ג",
+          "text": "הסבירו מדוע האלכסון $AC$ חוצה את $∠BAD$ ואת $∠BCD$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q3_head.svg",
+            "sha256": "2f5d5b852aca45e3076ece80ad741441a9c75633059a13948dcefcc570528517"
+          },
+          "answer": "מהחפיפה: $∠BAC=∠DAC$ ו־$∠BCA=∠DCA$ כזוויות מתאימות. לכן $AC$ חוצה את שתי זוויות הראש."
+        }
+      ]
+    },
+    "4": {
+      "id": "5694f57628744ebeaa37f5eca2c92b2a:4",
+      "q": 4,
+      "grade": 9,
+      "topic": "דלתון",
+      "levelLabel": "רמה א׳",
+      "text": "בדלתון $ABCD$ מתקיים $AB=AD$ ו־$CB=CD$, והאלכסון המשני $BD$ מצויר. נתון $∠BAD=70°$ ו־$∠BCD=50°$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-KITE/a/figures/q4_head.svg",
+        "sha256": "f91934678296a4ae55f2d1a2cc297d1f79e283d14011275ad8f70bc1a231af96"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את $∠ABC$. נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q4_head.svg",
+            "sha256": "f91934678296a4ae55f2d1a2cc297d1f79e283d14011275ad8f70bc1a231af96"
+          },
+          "answer": "זוויות הצד שוות: $∠ABC=∠ADC$. סכום הזוויות במרובע $360°$, לכן כל זווית צד היא מחצית $360°−70°−50°$, כלומר $∠ABC=120°$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את $∠ABD$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q4_head.svg",
+            "sha256": "f91934678296a4ae55f2d1a2cc297d1f79e283d14011275ad8f70bc1a231af96"
+          },
+          "answer": "$AB=AD$, ולכן $△ABD$ שווה שוקיים וזוויות הבסיס שלו שוות: $∠ABD$ היא מחצית $180°−70°$, כלומר $55°$."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את $∠DBC$ בשתי דרכים: פעם מתוך התוצאות של סעיפים א ו־ב, ופעם מתוך $△BCD$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q4_head.svg",
+            "sha256": "f91934678296a4ae55f2d1a2cc297d1f79e283d14011275ad8f70bc1a231af96"
+          },
+          "answer": "דרך ראשונה: $∠DBC$ הוא ההפרש $120°−55°$, כלומר $65°$. דרך שנייה: $CB=CD$, ולכן ב־$△BCD$ השווה שוקיים $∠DBC$ היא מחצית $180°−50°$, כלומר $65°$. שתי הדרכים מתאימות."
+        }
+      ]
+    },
+    "5": {
+      "id": "5694f57628744ebeaa37f5eca2c92b2a:5",
+      "q": 5,
+      "grade": 9,
+      "topic": "דלתון",
+      "levelLabel": "רמה א׳",
+      "text": "$KLMN$ דלתון שבו $KL=KN=35$ ס״מ ו־$ML=MN=53$ ס״מ. האלכסון $LN=56$ ס״מ מצויר, והנקודה $O$ היא אמצע $LN$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-KITE/a/figures/q5_head.svg",
+        "sha256": "8ba9ded1dc14d9df20f45c5979212dc43bd64c3304766b7548b1c7633146254e"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "נמקו מדוע האלכסון $KM$ מאונך ל־$LN$ ועובר דרך $O$, וחשבו את $KO$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q5_head.svg",
+            "sha256": "8ba9ded1dc14d9df20f45c5979212dc43bd64c3304766b7548b1c7633146254e"
+          },
+          "answer": "$KL=KN$ ו־$ML=MN$, ולכן $K$ ו־$M$ שתיהן על האנך האמצעי של $LN$: הישר $KM$ מאונך ל־$LN$ ועובר דרך אמצעו $O$. $LO=28$ ס״מ, כי $O$ אמצע $LN$, ובמשולש הישר־זווית $△KOL$: $KO^{2}=1225−784=441$, ולכן $KO=21$ ס״מ."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את $MO$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q5_head.svg",
+            "sha256": "8ba9ded1dc14d9df20f45c5979212dc43bd64c3304766b7548b1c7633146254e"
+          },
+          "answer": "ב־$△MOL$ ישר הזווית: $MO^{2}=2809−784=2025$, ולכן $MO=45$ ס״מ."
+        },
+        {
+          "label": "ג",
+          "text": "נועה חישבה את אורך האלכסון $KM$ כהפרש בין $MO$ לבין $KO$. איזו הנחה על מיקום $K$ ו־$M$ ביחס ל־$LN$ עומדת מאחורי החישוב שלה? נמקו מה נכון בדלתון, וחשבו את $KM$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q5_head.svg",
+            "sha256": "8ba9ded1dc14d9df20f45c5979212dc43bd64c3304766b7548b1c7633146254e"
+          },
+          "answer": "נועה הניחה ש־$K$ ו־$M$ באותו צד של $LN$, כך ש־$O$ אינה בין $K$ ל־$M$. בדלתון קמור האלכסונים נחתכים, ולכן $O$ בין $K$ ל־$M$ ו־$KM$ הוא סכום $KO$ ו־$OM$: $KM=66$ ס״מ."
+        }
+      ]
+    },
+    "6": {
+      "id": "5694f57628744ebeaa37f5eca2c92b2a:6",
+      "q": 6,
+      "grade": 9,
+      "topic": "דלתון",
+      "levelLabel": "רמה א׳",
+      "text": "בדלתון $ABCD$ מתקיים $AB=AD$ ו־$CB=CD$, והאלכסונים $AC$ ו־$BD$ נפגשים בנקודה $O$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-KITE/a/figures/q6_head.svg",
+        "sha256": "d2ba5168416d6570b56f3998bedb3f5055f19b0824a26c4cb2280d2f0c8c6a6d"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הסבירו מדוע $BO$ הוא הגובה של $△ABC$ לצלע $AC$, ומדוע $DO$ הוא הגובה של $△ADC$ לאותה צלע.",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q6_head.svg",
+            "sha256": "d2ba5168416d6570b56f3998bedb3f5055f19b0824a26c4cb2280d2f0c8c6a6d"
+          },
+          "answer": "בדלתון האלכסון הראשי $AC$ מאונך לאלכסון המשני $BD$. לכן $BO⊥AC$ ו־$DO⊥AC$, כלומר אלה הגבהים לצלע $AC$."
+        },
+        {
+          "label": "ב",
+          "text": "הראו ששטח הדלתון שווה למחצית המכפלה של אורכי שני האלכסונים.",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q6_head.svg",
+            "sha256": "d2ba5168416d6570b56f3998bedb3f5055f19b0824a26c4cb2280d2f0c8c6a6d"
+          },
+          "answer": "שטח הדלתון הוא סכום שטחי $△ABC$ ו־$△ADC$, כלומר מחצית $AC·BO$ ועוד מחצית $AC·DO$, שזו מחצית $AC·BD$ כי $BO+DO=BD$."
+        },
+        {
+          "label": "ג",
+          "text": "נתון $AC=17$ ס״מ ו־$BD=8$ ס״מ. חשבו את שטח הדלתון.",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q6_head.svg",
+            "sha256": "d2ba5168416d6570b56f3998bedb3f5055f19b0824a26c4cb2280d2f0c8c6a6d"
+          },
+          "answer": "לפי סעיף ב: מחצית $17·8$, כלומר השטח $68$ סמ״ר."
+        }
+      ]
+    },
+    "7": {
+      "id": "5694f57628744ebeaa37f5eca2c92b2a:7",
+      "q": 7,
+      "grade": 9,
+      "topic": "דלתון",
+      "levelLabel": "רמה א׳",
+      "text": "בדלתון $ABCD$ קודקודי הראש הם $A$ ו־$C$. אורכי הצלעות בס״מ: $AB=x+4$, $AD=2x−1$, $CB=2x−3$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-KITE/a/figures/q7_head.svg",
+        "sha256": "997106f302b4e5003ae740ffca9f720c802f894a1595edc806fb592ccc3077dc"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מצאו את $x$ ואת אורכי כל הצלעות.",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q7_head.svg",
+            "sha256": "997106f302b4e5003ae740ffca9f720c802f894a1595edc806fb592ccc3077dc"
+          },
+          "answer": "$A$ קודקוד ראש, ולכן $AB=AD$: $x+4=2x−1$, ומכאן $x=5$. $AB=AD=9$ ס״מ ו־$CB=CD=7$ ס״מ, כולם חיוביים."
+        },
+        {
+          "label": "ב",
+          "text": "נועה הציעה לתאר את $CB$ בביטוי $x−8$ במקום $2x−3$ שבנתונים. הסבירו מדוע עם ביטוי זה אין דלתון כזה.",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q7_head.svg",
+            "sha256": "997106f302b4e5003ae740ffca9f720c802f894a1595edc806fb592ccc3077dc"
+          },
+          "answer": "$x$ נקבע מן השוויון $AB=AD$ בלבד, ולכן $x=5$ גם בהצעה של נועה. אז אורך $CB$ היה $5−8$, מספר שלילי, ואורך צלע חייב להיות חיובי."
+        },
+        {
+          "label": "ג",
+          "text": "האם ייתכן שבדלתון של סעיף א אורך האלכסון $BD$ יהיה $20$ ס״מ? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q7_head.svg",
+            "sha256": "997106f302b4e5003ae740ffca9f720c802f894a1595edc806fb592ccc3077dc"
+          },
+          "answer": "לא. ב־$△ABD$ סכום שתי הצלעות $AB+AD=18$ ס״מ, ולפי אי־שוויון המשולש $BD$ קטן מ־$18$ ס״מ."
+        }
+      ]
+    },
+    "8": {
+      "id": "5694f57628744ebeaa37f5eca2c92b2a:8",
+      "q": 8,
+      "grade": 9,
+      "topic": "דלתון",
+      "levelLabel": "רמה א׳",
+      "text": "במרובע $EFGH$ האלכסונים $EG$ ו־$FH$ נפגשים בנקודה $M$. נתון $EG⊥FH$ ו־$FM=MH$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-KITE/a/figures/q8_head.svg",
+        "sha256": "14132bd9ce9aa45aac33451bae03c54abfcd1f1e0e5c789c51b969fd50c1b42d"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הוכיחו כי $EF=EH$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q8_head.svg",
+            "sha256": "14132bd9ce9aa45aac33451bae03c54abfcd1f1e0e5c789c51b969fd50c1b42d"
+          },
+          "answer": "ב־$△EMF$ וב־$△EMH$: $FM=MH$ נתון, $∠EMF=∠EMH=90°$ כי $EG⊥FH$, ו־$EM$ צלע משותפת. לכן המשולשים חופפים לפי צלע, זווית, צלע, ו־$EF=EH$."
+        },
+        {
+          "label": "ב",
+          "text": "הוכיחו כי $GF=GH$, והסבירו מדוע $EFGH$ הוא דלתון. איזה מאלכסוניו הוא האלכסון הראשי?",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q8_head.svg",
+            "sha256": "14132bd9ce9aa45aac33451bae03c54abfcd1f1e0e5c789c51b969fd50c1b42d"
+          },
+          "answer": "באותה דרך $△GMF\\cong △GMH$, ולכן $GF=GH$. יש שני זוגות נפרדים של צלעות סמוכות שוות, ולכן $EFGH$ דלתון. קודקודי הראש $E$ ו־$G$, והאלכסון הראשי $EG$."
+        },
+        {
+          "label": "ג",
+          "text": "נניח שבמרובע אחר ידוע רק שאלכסון אחד חוצה את האחר, ואין נתון על מאונכות. איזה שלב בהוכחה של סעיף א אינו מתקיים עוד? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q8_head.svg",
+            "sha256": "14132bd9ce9aa45aac33451bae03c54abfcd1f1e0e5c789c51b969fd50c1b42d"
+          },
+          "answer": "שוויון הזוויות שליד $M$. בלי מאונכות הזוויות $∠EMF$ ו־$∠EMH$ צמודות אך אינן בהכרח שוות, ולכן אין צלע, זווית, צלע ואין מסקנה $EF=EH$. חציה לבדה אינה מספיקה."
+        }
+      ]
+    },
+    "9": {
+      "id": "5694f57628744ebeaa37f5eca2c92b2a:9",
+      "q": 9,
+      "grade": 9,
+      "topic": "דלתון",
+      "levelLabel": "רמה א׳",
+      "text": "$ABCD$ דלתון שבו $AB=AD=5$ ס״מ ו־$CB=CD=8$ ס״מ. האלכסון הראשי $AC$ מצויר. הנקודה $P$ על הצלע $AB$, ו־$AP=1$ ס״מ.",
+      "figure": {
+        "url": "/noam-ai/native/G9-KITE/a/figures/q9_head.svg",
+        "sha256": "14364c1ebb79f10887b514073583e1ce7569da31f420edafa2798f2d13c77e73"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הסבירו מדוע שיקוף בישר $AC$ מעביר את הקרן $AB$ אל הקרן $AD$, ואת הנקודה $B$ אל הנקודה $D$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q9_head.svg",
+            "sha256": "14364c1ebb79f10887b514073583e1ce7569da31f420edafa2798f2d13c77e73"
+          },
+          "answer": "האלכסון הראשי חוצה את $∠BAD$, לכן הקרניים $AB$ ו־$AD$ יוצרות זוויות שוות עם הציר, והשיקוף מחליף ביניהן. השיקוף שומר על אורכים, ולכן $B$ עוברת לנקודה על הקרן $AD$ במרחק $5$ ס״מ מ־$A$, וזו $D$."
+        },
+        {
+          "label": "ב",
+          "text": "השתמשו בשיקוף והסבירו מדוע $∠ABC=∠ADC$ ומדוע $BD⊥AC$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q9_head.svg",
+            "sha256": "14364c1ebb79f10887b514073583e1ce7569da31f420edafa2798f2d13c77e73"
+          },
+          "answer": "השיקוף מעביר את $A$ ואת $C$ לעצמן ואת $B$ אל $D$, ולכן הוא מעביר את $∠ABC$ אל $∠ADC$ ושומר על גודלה. קטע המחבר נקודה ותמונתה מאונך לציר השיקוף, ולכן $BD⊥AC$."
+        },
+        {
+          "label": "ג",
+          "text": "סמנו ב־$Q$ את תמונת הנקודה $P$ בשיקוף בישר $AC$. על איזו צלע נמצאת $Q$, ומהו אורך $AQ$? נמקו מדוע הקטעים $CP$ ו־$CQ$ שווים באורכם.",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q9_head.svg",
+            "sha256": "14364c1ebb79f10887b514073583e1ce7569da31f420edafa2798f2d13c77e73"
+          },
+          "answer": "לפי סעיף א השיקוף מעביר את הקרן $AB$ אל הקרן $AD$ ושומר על אורכים, ולכן $Q$ על הצלע $AD$ ו־$AQ=1$ ס״מ. $C$ על ציר השיקוף ונשארת במקומה, ולכן הקטע $CP$ עובר אל $CQ$ ואורכם שווה."
+        }
+      ]
+    },
+    "10": {
+      "id": "5694f57628744ebeaa37f5eca2c92b2a:10",
+      "q": 10,
+      "grade": 9,
+      "topic": "דלתון",
+      "levelLabel": "רמה א׳",
+      "text": "בנו בסרגל ובמחוגה דלתון $ABCD$ שבו $AB=AD=4$ ס״מ, $CB=CD=7$ ס״מ והאלכסון המשני $BD=6$ ס״מ.",
+      "items": [
+        {
+          "label": "א",
+          "text": "תארו בשלבים את סדר הבנייה, החל מהקטע $BD$.",
+          "answer": "מעבירים קטע $BD$ באורך $6$ ס״מ. מ־$B$ ומ־$D$ משרטטים קשתות ברדיוס $4$ ס״מ; החיתוך הוא $A$. מצדו השני של $BD$ משרטטים קשתות ברדיוס $7$ ס״מ; החיתוך הוא $C$. מחברים את הקודקודים."
+        },
+        {
+          "label": "ב",
+          "text": "מדוע יש לבחור את $A$ ואת $C$ משני צדי הישר $BD$?",
+          "answer": "אם $A$ ו־$C$ באותו צד של $BD$, המרובע שמתקבל אינו קמור. בצדדים שונים האלכסונים נחתכים והמרובע קמור."
+        },
+        {
+          "label": "ג",
+          "text": "בצעו את הבנייה במקום הריק. סמנו בשנתות את הצלעות השוות הנתונות, העבירו את האלכסון הראשי, וכתבו ליד הבנייה איזו תכונה של האלכסונים נובעת מתכונות הדלתון ואינה נתונה.",
+          "answer": "בנייה לפי סעיף א. שנתות על $AB$, $AD$ ועל $CB$, $CD$. $AC$ מאונך ל־$BD$ וחוצה אותו: זו מסקנה ולא נתון."
+        }
+      ]
+    },
+    "11": {
+      "id": "5694f57628744ebeaa37f5eca2c92b2a:11",
+      "q": 11,
+      "grade": 9,
+      "topic": "דלתון",
+      "levelLabel": "רמה א׳",
+      "text": "בדלתון $ABCD$ מתקיים $AB=AD$ ו־$CB=CD$, והאלכסונים $AC$ ו־$BD$ נפגשים בנקודה $O$. נתון $AB=65$ ס״מ, $BD=120$ ס״מ ו־$AC=105$ ס״מ. דנה כתבה שכל אחד מאלכסוני הדלתון חוצה את האחר, ולכן $AO$ הוא מחצית $AC$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-KITE/a/figures/q11_head.svg",
+        "sha256": "a45c522e6253754a14bf4824f23e61511d06fe20f15c629c159195d5bca25454"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מצאו את הטעות של דנה ונמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q11_head.svg",
+            "sha256": "a45c522e6253754a14bf4824f23e61511d06fe20f15c629c159195d5bca25454"
+          },
+          "answer": "בדלתון רק האלכסון הראשי $AC$ חוצה את המשני $BD$. אין סיבה ש־$BD$ יחצה את $AC$. ב־$△AOB$ ישר הזווית $AO^{2}=4225−3600=625$, כלומר $AO=25$ ולא $52.5$, ולכן $O$ אינה אמצע $AC$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את $AO$ ואת $CB$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q11_head.svg",
+            "sha256": "a45c522e6253754a14bf4824f23e61511d06fe20f15c629c159195d5bca25454"
+          },
+          "answer": "$BO=60$ ס״מ, כי $AC$ חוצה את $BD$. ב־$△AOB$ ישר הזווית: $AO^{2}=4225−3600=625$, $AO=25$ ס״מ. לכן $OC=80$ ס״מ, וב־$△COB$: $CB^{2}=6400+3600=10000$, $CB=100$ ס״מ."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את היקף הדלתון.",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q11_head.svg",
+            "sha256": "a45c522e6253754a14bf4824f23e61511d06fe20f15c629c159195d5bca25454"
+          },
+          "answer": "$AD=AB=65$ ס״מ ו־$CD=CB=100$ ס״מ, ולכן ההיקף $65+65+100+100$, כלומר $330$ ס״מ."
+        }
+      ]
+    },
+    "12": {
+      "id": "5694f57628744ebeaa37f5eca2c92b2a:12",
+      "q": 12,
+      "grade": 9,
+      "topic": "דלתון",
+      "levelLabel": "רמה א׳",
+      "text": "ערוגה בצורת דלתון $PQRS$, שבו $PQ=PS=25$ מ׳ ו־$RQ=RS$. לאורך האלכסון $PR$ עובר שביל ישר באורך $39$ מ׳. המרחק של $Q$ מן השביל הוא $QO=24$ מ׳, כאשר $QO⊥PR$ ו־$O$ על $PR$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-KITE/a/figures/q12_head.svg",
+        "sha256": "235914babc59a190cdc8ca9a3899c9149dce884a59d74561dfc3c921e6b1cb4c"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את שטח הערוגה. נמקו כל שלב.",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q12_head.svg",
+            "sha256": "235914babc59a190cdc8ca9a3899c9149dce884a59d74561dfc3c921e6b1cb4c"
+          },
+          "answer": "$PR$ הוא האלכסון הראשי, ולכן הוא מאונך ל־$QS$ וחוצה אותו. האנך מ־$Q$ ל־$PR$ יחיד, ולכן $O$ היא נקודת המפגש של האלכסונים ו־$OS=24$ מ׳. $QS=48$ מ׳, והשטח מחצית $39·48$, כלומר $936$ מ״ר."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את $PO$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q12_head.svg",
+            "sha256": "235914babc59a190cdc8ca9a3899c9149dce884a59d74561dfc3c921e6b1cb4c"
+          },
+          "answer": "ב־$△POQ$ ישר הזווית: $PO^{2}=625−576=49$, ולכן $PO=7$ מ׳."
+        },
+        {
+          "label": "ג",
+          "text": "סביב הערוגה מתקינים גדר. חשבו את היקף הערוגה.",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q12_head.svg",
+            "sha256": "235914babc59a190cdc8ca9a3899c9149dce884a59d74561dfc3c921e6b1cb4c"
+          },
+          "answer": "$OR=39−7=32$ מ׳. ב־$△ROQ$: $RQ^{2}=1024+576=1600$, ולכן $RQ=40$ מ׳. ההיקף $25+25+40+40$, כלומר $130$ מ׳."
+        }
+      ]
+    },
+    "13": {
+      "id": "5694f57628744ebeaa37f5eca2c92b2a:13",
+      "q": 13,
+      "grade": 9,
+      "topic": "דלתון",
+      "levelLabel": "רמה א׳",
+      "text": "בדלתון $ABCD$ מתקיים $AB=AD$ ו־$CB=CD$, והאלכסון הראשי $AC$ מצויר. נתון $∠ABC=115°$. גודלי זוויות הראש במעלות: $∠BAD=3x−10$ ו־$∠BCD=2x$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-KITE/a/figures/q13_head.svg",
+        "sha256": "fe67dbba8a71b8584b07fb48780d69c447c9c0ed13fb767038471f0f204f6bfb"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מצאו את $x$. נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q13_head.svg",
+            "sha256": "fe67dbba8a71b8584b07fb48780d69c447c9c0ed13fb767038471f0f204f6bfb"
+          },
+          "answer": "זוויות הצד שוות: $∠ADC=∠ABC=115°$. סכום הזוויות במרובע $360°$: $3x−10+2x+230=360$, ולכן $x=28$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את $∠BAD$ ואת $∠BCD$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q13_head.svg",
+            "sha256": "fe67dbba8a71b8584b07fb48780d69c447c9c0ed13fb767038471f0f204f6bfb"
+          },
+          "answer": "$∠BAD=3·28−10=74°$ ו־$∠BCD=2·28=56°$."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את $∠BAC$ ואת $∠ACB$, ובדקו את סכום הזוויות ב־$△ABC$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q13_head.svg",
+            "sha256": "fe67dbba8a71b8584b07fb48780d69c447c9c0ed13fb767038471f0f204f6bfb"
+          },
+          "answer": "האלכסון הראשי חוצה את זוויות הראש: $∠BAC=37°$ ו־$∠ACB=28°$. עם $∠ABC=115°$ הסכום $180°$, כנדרש."
+        }
+      ]
+    },
+    "14": {
+      "id": "5694f57628744ebeaa37f5eca2c92b2a:14",
+      "q": 14,
+      "grade": 9,
+      "topic": "דלתון",
+      "levelLabel": "רמה א׳",
+      "text": "במרובע $KLMN$ כל ארבע הצלעות שוות זו לזו. האלכסונים $KM$ ו־$LN$ נפגשים בנקודה $O$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-KITE/a/figures/q14_head.svg",
+        "sha256": "98941adad8cd17198a6bc569fee24b0d14c7757257d2a271865f4f0e822a8dba"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הסבירו לפי ההגדרה מדוע $KLMN$ הוא דלתון, בשתי דרכים: פעם כשקודקודי הראש הם $K$ ו־$M$, ופעם כשהם $L$ ו־$N$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q14_head.svg",
+            "sha256": "98941adad8cd17198a6bc569fee24b0d14c7757257d2a271865f4f0e822a8dba"
+          },
+          "answer": "$KL=KN$ ו־$ML=MN$: שני זוגות סמוכים, ראשים $K$ ו־$M$. גם $LK=LM$ ו־$NK=NM$: שני זוגות סמוכים, ראשים $L$ ו־$N$. מעוין הוא דלתון לפי ההגדרה הכוללת."
+        },
+        {
+          "label": "ב",
+          "text": "השתמשו בתכונת האלכסון הראשי של דלתון בכל אחת משתי הדרכים, והסיקו שכל אחד מהאלכסונים חוצה את שתי הזוויות שבקצותיו.",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q14_head.svg",
+            "sha256": "98941adad8cd17198a6bc569fee24b0d14c7757257d2a271865f4f0e822a8dba"
+          },
+          "answer": "בדרך הראשונה $KM$ ראשי ולכן חוצה את $∠LKN$ ואת $∠LMN$. בדרך השנייה $LN$ ראשי ולכן חוצה את $∠KLM$ ואת $∠KNM$."
+        },
+        {
+          "label": "ג",
+          "text": "נתון $∠LKN=76°$. היעזרו בסעיף ב וחשבו את $∠OKL$ ואת $∠OLK$, והסיקו מהי $∠KOL$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q14_head.svg",
+            "sha256": "98941adad8cd17198a6bc569fee24b0d14c7757257d2a271865f4f0e822a8dba"
+          },
+          "answer": "$KM$ חוצה את $∠LKN$: $∠OKL=38°$. כש־$L$ ו־$N$ הם הראשים, $K$ ו־$M$ קודקודי צד, ולכן $∠LMN=∠LKN=76°$. מסכום הזוויות $360°$ ומ־$∠KLM=∠KNM$ מקבלים $∠KLM=104°$, ו־$LN$ חוצה אותה: $∠OLK=52°$. ב־$△KOL$: $∠KOL=180°−38°−52°=90°$, כלומר האלכסונים מאונכים."
+        }
+      ]
+    },
+    "15": {
+      "id": "5694f57628744ebeaa37f5eca2c92b2a:15",
+      "q": 15,
+      "grade": 9,
+      "topic": "דלתון",
+      "levelLabel": "רמה א׳",
+      "text": "בדלתון $ABCD$ מתקיים $AB=AD$ ו־$CB=CD$, והאלכסון $BD$ מצויר. נתון $∠BAD=36°$ ו־$∠ABC=132°$. יואב כתב: האלכסון $BD$ חוצה את $∠ABC$, ולכן $∠ABD$ הוא מחצית $∠ABC$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-KITE/a/figures/q15_head.svg",
+        "sha256": "7631487c770c31cad81be25a5e5eadadc7272a30783ff9c6b260be7701802c30"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הסבירו מדוע הנימוק של יואב שגוי.",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q15_head.svg",
+            "sha256": "7631487c770c31cad81be25a5e5eadadc7272a30783ff9c6b260be7701802c30"
+          },
+          "answer": "$BD$ הוא האלכסון המשני. בדלתון האלכסון הראשי חוצה את זוויות הראש, ואין משפט שהמשני חוצה את זוויות הצד."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את $∠ABD$ ואת $∠DBC$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q15_head.svg",
+            "sha256": "7631487c770c31cad81be25a5e5eadadc7272a30783ff9c6b260be7701802c30"
+          },
+          "answer": "$△ABD$ שווה שוקיים: $∠ABD$ מחצית $180°−36°$, כלומר $72°$. לכן $∠DBC=132°−72°=60°$, ולא $66°$."
+        },
+        {
+          "label": "ג",
+          "text": "הוכיחו כי $△BCD$ שווה צלעות.",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q15_head.svg",
+            "sha256": "7631487c770c31cad81be25a5e5eadadc7272a30783ff9c6b260be7701802c30"
+          },
+          "answer": "$∠ADC=∠ABC=132°$, ולכן $∠BCD=360°−36°−264°=60°$. ב־$△BCD$ השווה שוקיים זוויות הבסיס שוות ל־$∠DBC=60°$, כלומר כל הזוויות $60°$ והמשולש שווה צלעות. בפרט $BD=CB=CD$."
+        }
+      ]
+    },
+    "16": {
+      "id": "5694f57628744ebeaa37f5eca2c92b2a:16",
+      "q": 16,
+      "grade": 9,
+      "topic": "דלתון",
+      "levelLabel": "רמה א׳",
+      "text": "במרובע $RSTU$ האלכסון $RT$ מצויר. נתון $RS=RU$ ו־$∠SRT=∠URT$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-KITE/a/figures/q16_head.svg",
+        "sha256": "88d6211d54cc7a7add7def906aa1cf3fe7d8d036aeb08ba2bdf195c32d1fc137"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הוכיחו כי $△RST≅△RUT$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q16_head.svg",
+            "sha256": "88d6211d54cc7a7add7def906aa1cf3fe7d8d036aeb08ba2bdf195c32d1fc137"
+          },
+          "answer": "$RS=RU$ ו־$∠SRT=∠URT$ נתונים, ו־$RT$ צלע משותפת. לכן המשולשים חופפים לפי צלע, זווית, צלע."
+        },
+        {
+          "label": "ב",
+          "text": "הסיקו כי $TS=TU$, והסבירו מדוע $RSTU$ דלתון.",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q16_head.svg",
+            "sha256": "88d6211d54cc7a7add7def906aa1cf3fe7d8d036aeb08ba2bdf195c32d1fc137"
+          },
+          "answer": "$TS=TU$ כצלעות מתאימות. יחד עם $RS=RU$ יש שני זוגות נפרדים של צלעות סמוכות שוות, ולכן $RSTU$ דלתון."
+        },
+        {
+          "label": "ג",
+          "text": "הוכיחו כי $RT⊥SU$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q16_head.svg",
+            "sha256": "88d6211d54cc7a7add7def906aa1cf3fe7d8d036aeb08ba2bdf195c32d1fc137"
+          },
+          "answer": "$△RSU$ שווה שוקיים, ו־$RT$ חוצה את זווית הראש שלו. במשולש שווה שוקיים חוצה זווית הראש הוא גם הגובה לבסיס, ולכן $RT⊥SU$."
+        }
+      ]
+    },
+    "17": {
+      "id": "5694f57628744ebeaa37f5eca2c92b2a:17",
+      "q": 17,
+      "grade": 9,
+      "topic": "דלתון",
+      "levelLabel": "רמה א׳",
+      "text": "עדי טוענת: כל מרובע קמור שאלכסוניו מאונכים זה לזה הוא דלתון.",
+      "items": [
+        {
+          "label": "א",
+          "text": "אם מרובע הוא דלתון, מה ידוע על נקודת המפגש של אלכסוניו ביחס לאחד האלכסונים? נמקו.",
+          "answer": "האלכסון הראשי חוצה את המשני, ולכן נקודת המפגש היא אמצע האלכסון המשני."
+        },
+        {
+          "label": "ב",
+          "text": "בנו מרובע $EFGH$ שאלכסוניו $EG$ ו־$FH$ מאונכים ונפגשים בנקודה $M$, כך ש־$EM=2$ ס״מ, $MG=5$ ס״מ, $FM=3$ ס״מ ו־$MH=6$ ס״מ. הסבירו בעזרת סעיף א מדוע המרובע שבניתם אינו דלתון, ומה זה אומר על הטענה של עדי.",
+          "answer": "$M$ אינה אמצע $EG$ ואינה אמצע $FH$, אבל לפי סעיף א בדלתון היא אמצע של אחד האלכסונים. לכן $EFGH$ אינו דלתון, אף שאלכסוניו מאונכים: הטענה של עדי שגויה."
+        }
+      ]
+    },
+    "18": {
+      "id": "5694f57628744ebeaa37f5eca2c92b2a:18",
+      "q": 18,
+      "grade": 9,
+      "topic": "דלתון",
+      "levelLabel": "רמה א׳",
+      "text": "בדלתון $ABCD$ מתקיים $AB=AD$ ו־$CB=CD$, והאלכסונים $AC$ ו־$BD$ נפגשים בנקודה $O$. נתון $AB=20$ ס״מ, $BD=32$ ס״מ, והיקף הדלתון $170$ ס״מ.",
+      "figure": {
+        "url": "/noam-ai/native/G9-KITE/a/figures/q18_head.svg",
+        "sha256": "e2a74aa4fa05a5717884f505a7ea1bf6745f0a769dad00585aee25a6b71c04c4"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את $AO$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q18_head.svg",
+            "sha256": "e2a74aa4fa05a5717884f505a7ea1bf6745f0a769dad00585aee25a6b71c04c4"
+          },
+          "answer": "$AC$ חוצה את $BD$ ומאונך לו, ולכן $BO=16$ ס״מ. ב־$△AOB$: $AO^{2}=400−256=144$, ולכן $AO=12$ ס״מ."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את $CB$ ואת $OC$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q18_head.svg",
+            "sha256": "e2a74aa4fa05a5717884f505a7ea1bf6745f0a769dad00585aee25a6b71c04c4"
+          },
+          "answer": "$AB+AD=40$ ס״מ, ולכן $CB+CD=130$ ס״מ ו־$CB=65$ ס״מ. ב־$△COB$: $OC^{2}=4225−256=3969$, ולכן $OC=63$ ס״מ."
+        },
+        {
+          "label": "ג",
+          "text": "גיל רוצה לבנות דלתון אחר, עם אותם אורכים של $AB$ ושל $BD$, אבל שהיקפו $44$ ס״מ. הסבירו מדוע אין דלתון כזה.",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q18_head.svg",
+            "sha256": "e2a74aa4fa05a5717884f505a7ea1bf6745f0a769dad00585aee25a6b71c04c4"
+          },
+          "answer": "אז $CB$ היה $2$ ס״מ. אבל $CB$ הוא יתר ב־$△COB$ ישר הזווית, ולכן $CB$ גדול מהניצב $BO=16$ ס״מ. לכן ההיקף חייב להיות גדול מ־$72$ ס״מ."
+        }
+      ]
+    },
+    "19": {
+      "id": "5694f57628744ebeaa37f5eca2c92b2a:19",
+      "q": 19,
+      "grade": 9,
+      "topic": "דלתון",
+      "levelLabel": "רמה א׳",
+      "text": "דלתון $ABCD$ שאינו מעוין מקיים $AB=AD=3$ ס״מ, $CB=CD=4$ ס״מ, ו־$∠ABC=∠ADC=90°$.",
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את אורך האלכסון $AC$.",
+          "answer": "ב־$△ABC$ הזווית ב־$B$ ישרה, ולכן $AC^{2}=9+16=25$ ו־$AC=5$ ס״מ."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את שטח הדלתון, ובעזרתו את אורך האלכסון $BD$.",
+          "answer": "השטח הוא פעמיים שטח $△ABC$: $2·\\f{3·4}{2}$, כלומר $12$ סמ״ר. השטח שווה גם למחצית $AC·BD$, ולכן $BD=\\f{24}{5}$, כלומר $4.8$ ס״מ."
+        },
+        {
+          "label": "ג",
+          "text": "בנו את הדלתון במקום הריק, החל מהאלכסון $AC$. הסבירו כיצד מוצאים את $B$ ואת $D$, ובדקו במדידה את אורך $BD$ שחישבתם.",
+          "answer": "משרטטים $AC$ באורך $5$ ס״מ. קשת ברדיוס $3$ ס״מ סביב $A$ וקשת ברדיוס $4$ ס״מ סביב $C$ נחתכות ב־$B$ ובצד השני ב־$D$. המדידה נותנת $BD$ של כ־$4.8$ ס״מ."
+        }
+      ]
+    },
+    "20": {
+      "id": "5694f57628744ebeaa37f5eca2c92b2a:20",
+      "q": 20,
+      "grade": 9,
+      "topic": "דלתון",
+      "levelLabel": "רמה א׳",
+      "text": "בדלתון $ABCD$ מתקיים $AB=AD$ ו־$CB=CD$, והאלכסונים $AC$ ו־$BD$ נפגשים בנקודה $O$. הנקודה $E$ על הקטע $OC$, והיא מחוברת בקטעים לקודקודים $B$ ו־$D$. נתון $AC=20$ ס״מ, $BD=10$ ס״מ ו־$AE=15$ ס״מ.",
+      "figure": {
+        "url": "/noam-ai/native/G9-KITE/a/figures/q20_head.svg",
+        "sha256": "a18061094aa544a9e588f643f026cc22ad4833784daf10106def2566d062deb3"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הוכיחו כי $EB=ED$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q20_head.svg",
+            "sha256": "a18061094aa544a9e588f643f026cc22ad4833784daf10106def2566d062deb3"
+          },
+          "answer": "$AC$ מאונך ל־$BD$ וחוצה אותו: $BO=OD$ ו־$∠EOB=∠EOD=90°$. $EO$ משותפת, ולכן $△EOB\\cong △EOD$ לפי צלע, זווית, צלע, ו־$EB=ED$."
+        },
+        {
+          "label": "ב",
+          "text": "נמקו מדוע $AE⊥BD$ ו־$O$ אמצע $BD$, והביעו את שטח $ABED$ בעזרת $AE$ ו־$BD$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q20_head.svg",
+            "sha256": "a18061094aa544a9e588f643f026cc22ad4833784daf10106def2566d062deb3"
+          },
+          "answer": "$AE$ מוכל באלכסון הראשי $AC$, המאונך ל־$BD$ וחוצה אותו. לכן $AE⊥BD$ ו־$BO=OD$. $ABED$ מתחלק ל־$△ABE$ ול־$△ADE$ שגובהיהם לבסיס $AE$ הם $BO$ ו־$DO$, ולכן שטחו מחצית $AE·BO$ ועוד מחצית $AE·DO$, כלומר מחצית $AE·BD$."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את שטח $ABED$, ואת השטח של החלק של $ABCD$ שנמצא מחוץ ל־$ABED$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-KITE/a/figures/q20_head.svg",
+            "sha256": "a18061094aa544a9e588f643f026cc22ad4833784daf10106def2566d062deb3"
+          },
+          "answer": "שטח $ABED$: מחצית $15·10$, כלומר $75$ סמ״ר. שטח $ABCD$: מחצית $20·10$, כלומר $100$ סמ״ר. מחוץ ל־$ABED$: $25$ סמ״ר."
+        }
+      ]
+    }
+  }
+}

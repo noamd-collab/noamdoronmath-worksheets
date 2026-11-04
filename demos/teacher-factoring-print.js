@@ -965,6 +965,11 @@ function questionCard(group, picked) {
 // drawing and every continuation. Per-part print rows can end inside a final
 // wrapped sentence, so they must never be used for the selection preview.
 function questionPreviewSlices(group, manifest) {
+  const original = originalQuestionPreviewSlices(group, manifest);
+  return original.concat(questionDataSlices(group.source, group.q, group.key));
+}
+
+function originalQuestionPreviewSlices(group, manifest) {
   group = questionPreviewGroup(group);
   const pages = new Map();
   const exactWhole = Boolean(manifest.wholeQuestionGeometry || group.source.wholeQuestionGeometry);
@@ -1422,18 +1427,40 @@ function selectKey(key, on) {
   render();
 }
 
+function pdfCacheKey(source) {
+  return [source.pdfId, source.pdfUrl, source.expectedSha256 || source.answerSourceSha256 || '',
+    source.expectedSha256 ? source.pageCount : ''].join('|');
+}
+
 async function loadPdf(source) {
   const active = source || SOURCE;
   if (!active || !active.pdfUrl) throw new Error('PDF_LIB');
-  if (pdfDocs.has(active.pdfId)) return pdfDocs.get(active.pdfId);
+  const key = pdfCacheKey(active);
+  if (pdfDocs.has(key)) return pdfDocs.get(key);
   if (!window.pdfjsLib || typeof window.pdfjsLib.getDocument !== 'function') throw new Error('PDF_LIB');
   window.pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_WORKER;
-  const loading = window.pdfjsLib.getDocument({ url: active.pdfUrl, withCredentials: false, isEvalSupported: false }).promise;
-  pdfDocs.set(active.pdfId, loading);
+  const loading = (async () => {
+    let verifiedBytes = null;
+    if (active.expectedSha256) {
+      const response = await fetch(active.pdfUrl, { credentials: 'omit' });
+      if (!response.ok) throw new Error('ANSWER_DOCUMENT_UNAVAILABLE');
+      const data = await response.arrayBuffer();
+      const digest = Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', data)))
+        .map((value) => value.toString(16).padStart(2, '0')).join('');
+      if (digest !== active.expectedSha256) throw new Error('ANSWER_DOCUMENT_DIGEST');
+      verifiedBytes = new Uint8Array(data);
+    }
+    const pdf = await (verifiedBytes
+      ? window.pdfjsLib.getDocument({ data: verifiedBytes, withCredentials: false, isEvalSupported: false }).promise
+      : window.pdfjsLib.getDocument({ url: active.pdfUrl, withCredentials: false, isEvalSupported: false }).promise);
+    if (active.expectedSha256 && pdf.numPages !== active.pageCount) throw new Error('ANSWER_DOCUMENT_PAGES');
+    return pdf;
+  })();
+  pdfDocs.set(key, loading);
   try {
     return await loading;
   } catch (error) {
-    pdfDocs.delete(active.pdfId);
+    pdfDocs.delete(key);
     throw error;
   }
 }
@@ -1547,7 +1574,7 @@ async function paintSheets(root, bake) {
 
 async function pageBitmap(pageNumber, source) {
   const active = source || SOURCE;
-  const key = active.pdfId + ':' + pageNumber;
+  const key = pdfCacheKey(active) + ':' + pageNumber;
   if (pageBitmaps.has(key)) {
     const cached = pageBitmaps.get(key);
     pageBitmaps.delete(key);
@@ -1833,7 +1860,32 @@ function wholeQuestionSlices(chosen) {
   return slices;
 }
 
+function questionDataSlices(source, q, block) {
+  const supplement = source.questionSupplements;
+  if (!supplement) return [];
+  if (supplement.sourceSha256 !== source.sourceSha256 || !Array.isArray(supplement.questions)) throw new Error('QUESTION_DATA_SOURCE');
+  const entry = supplement.questions.find(item => Number(item.q) === Number(q));
+  if (!entry) return [];
+  const documentSource = entry.answerDocument && answerDocumentSource(entry, source);
+  if (!documentSource || !Array.isArray(entry.crops) || !entry.crops.length) throw new Error('QUESTION_DATA_DOCUMENT');
+  return entry.crops.map(crop => {
+    const { page, x, y, w, h } = crop;
+    if (!Number.isInteger(page) || page < 1 || page > documentSource.pageCount
+      || ![x,y,w,h].every(Number.isFinite) || x < 0 || y < 0 || w <= 0 || h <= 0 || x+w > 1.000001 || y+h > 1.000001) throw new Error('QUESTION_DATA_BOUNDS');
+    return { page, box: { x,y,w,h }, block, kind: 'row', gap: 10, pdfId: source.pdfId, source: documentSource };
+  });
+}
+
 function shortSlices(chosen) {
+  const original = originalShortSlices(chosen);
+  return original.flatMap((slice, index) => {
+    if (original[index + 1]?.block === slice.block) return [slice];
+    const question = chosen.find(item => slice.block === (item.source?.pdfId || SOURCE.pdfId) + ':q' + item.q || slice.block === 'q' + item.q);
+    return question ? [slice, ...questionDataSlices(question.source || SOURCE, question.q, slice.block)] : [slice];
+  });
+}
+
+function originalShortSlices(chosen) {
   // These rows already enclose a complete original question and its context.
   // Legacy per-part footer, ink and shared-drawing adjustments would clip them.
   if (SOURCE && SOURCE.wholeQuestionGeometry) return wholeQuestionSlices(chosen);
@@ -2350,7 +2402,7 @@ async function measureSlices(slices, options) {
       measured.push({ slice, bitmap: null, sw: OUT_W, sh: dh, dh });
       continue;
     }
-    const bitmap = await pageBitmap(slice.page, sheets.get(slice.pdfId) || SOURCE);
+    const bitmap = await pageBitmap(slice.page, slice.source || sheets.get(slice.pdfId) || SOURCE);
     const sw = Math.max(1, slice.box.w * bitmap.width);
     const sh = Math.max(1, slice.box.h * bitmap.height);
     const dw = slice.kind === 'answer' || (!fullWidth && slice.box.w < 0.5) ? slice.box.w * OUT_W : OUT_W;
@@ -2571,6 +2623,18 @@ async function sheetTextLines(source) {
   return lines;
 }
 
+function answerDocumentSource(entry, source) {
+  if (entry.answerDocument === undefined) return source;
+  const doc = entry.answerDocument;
+  if (!doc || typeof doc !== 'object') return null;
+  const match = /^\/teachers\/answers\/([a-f0-9]{64})\.pdf$/.exec(doc.url || '');
+  if (!match || doc.sha256 !== match[1]
+    || !Number.isSafeInteger(doc.pageCount) || doc.pageCount < 1
+    || !Number.isSafeInteger(doc.answerStartPage) || doc.answerStartPage < 1 || doc.answerStartPage > doc.pageCount) return null;
+  return { pdfId: 'answer:' + doc.sha256, pdfUrl: doc.url,
+    expectedSha256: doc.sha256, pageCount: doc.pageCount, answerStartPage: doc.answerStartPage };
+}
+
 function selectedAnswerCrops(group) {
   const source = group.source;
   const wanted = [...new Set(group.questions.map((question) => Number(question.q)))];
@@ -2601,22 +2665,28 @@ function selectedAnswerCrops(group) {
       .map((item) => item.part || '').filter(Boolean);
     if (!entry || !Array.isArray(entry.parts) || expectedParts.some((part) => !entry.parts.includes(part))
       || !Array.isArray(entry.crops) || !entry.crops.length) throw missing([q]);
+    const documentSource = answerDocumentSource(entry, source);
+    if (!documentSource) throw missing([q]);
     return entry.crops.map((crop) => {
       const { page, x, y, w, h } = crop;
-      if (!Number.isInteger(page) || page < 1 || page > source.pageCount
-        || (source.answerStartPage && page < source.answerStartPage)
+      if (!Number.isInteger(page) || page < 1 || page > documentSource.pageCount
+        || (documentSource.answerStartPage && page < documentSource.answerStartPage)
         || ![x, y, w, h].every(Number.isFinite) || x < 0 || y < 0 || w <= 0 || h <= 0
         || x + w > 1.000001 || y + h > 1.000001) throw missing([q]);
       // A selected rectangle must not overlap a different answer, including a
       // second column on the same page. Never fall back to a complete page.
       for (const other of map.questions) {
         if (Number(other.q) === q) continue;
+        const otherSource = answerDocumentSource(other, source);
+        if (!otherSource) throw missing([q]);
+        if (otherSource.pdfId !== documentSource.pdfId) continue;
         for (const neighbor of other.crops || []) {
           if (neighbor.page === page && Math.min(x + w, neighbor.x + neighbor.w) - Math.max(x, neighbor.x) > 0.00001
             && Math.min(y + h, neighbor.y + neighbor.h) - Math.max(y, neighbor.y) > 0.00001) throw missing([q]);
         }
       }
-      return { q, page, box: { x, y, w, h }, ...(entry.labelMissing ? { labelMissing: true } : {}) };
+      return { q, page, box: { x, y, w, h }, ...(entry.answerDocument ? { source: documentSource } : {}),
+        ...(entry.labelMissing ? { labelMissing: true } : {}) };
     });
   });
 }
@@ -2651,6 +2721,7 @@ async function answerMeasured(groups) {
         labeled.add(crop.q);
       }
       slices.push({ page: crop.page, pdfId: group.source.pdfId, box: crop.box,
+        ...(crop.source ? { source: crop.source } : {}),
         gap: 8, block: 'answer:' + answerKey, answerKey, kind: 'answer' });
     });
   }
@@ -2811,6 +2882,59 @@ async function resolveChosen() {
   return questionsForKeys(keys);
 }
 
+let wordPending = false;
+async function downloadTeacherWord() {
+  if (wordPending) return;
+  wordPending = true;
+  const buttons = [...document.querySelectorAll('[data-word-download]')];
+  const messages = [...document.querySelectorAll('[data-word-status]')];
+  const message = (text, error = false) => messages.forEach((el) => {
+    el.textContent = text; el.hidden = !text; el.setAttribute('role', error ? 'alert' : 'status');
+  });
+  buttons.forEach((b) => { b.disabled = true; b.setAttribute('aria-busy', 'true'); });
+  message('מכינים קובץ Word עם השאלות שנבחרו והתשובות לכל הסעיפים…');
+  const generation = printGeneration;
+  try {
+    const carried = pageBlocks().flatMap((block) => orderPrintQuestions(block.questions));
+    const all = carried.concat(orderPrintQuestions(await resolveChosen()));
+    const seen = new Set();
+    const selection = all.flatMap((question) => {
+      const source = question.source, key = source.pdfId + ':' + question.q;
+      if (seen.has(key)) return [];
+      seen.add(key);
+      return [{ pdfId: source.pdfId, q: question.q, sourceSha256: source.sourceSha256 }];
+    });
+    if (!selection.length) { message('בחרו לפחות שאלה אחת להורדה ל־Word.', true); return; }
+    if (selection.length > 100) { message('אפשר להוריד עד 100 שאלות בקובץ Word אחד.', true); return; }
+    const response = await fetch('/api/teacherWordQuestions', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ selection }), signal: AbortSignal.timeout(45000),
+    });
+    const result = await response.json();
+    if (!response.ok) {
+      if (result.error === 'WORD_CONTEXT_REQUIRED') {
+        message('חלק מהשאלות מפנות לשאלות נוספות. כדי שהדף יהיה שלם, הוסיפו לבחירה: ' + result.required.map(q => `שאלה ${q.q} — ${q.topic}, ${q.levelLabel}`).join('; ') + '.', true); return;
+      }
+      if (result.error === 'WORD_CONTENT_UNAVAILABLE') {
+        message('חלק מהשאלות שבחרתם עדיין אינן זמינות לעריכה ב־Word. אפשר להדפיס את הבחירה; קובץ חלקי לא נוצר.', true); return;
+      }
+      throw new Error('WORD_REQUEST');
+    }
+    const { createTeacherDocx, loadWordFigure } = await import('./teacher-word-export.js?v=20261104-rtl');
+    const bytes = await createTeacherDocx({ questions: result.questions, title: worksheetTitle(all), note: $('teacher-note').value.trim() }, loadWordFigure);
+    if (generation !== printGeneration) { message('הבחירה השתנתה בזמן ההכנה. לחצו שוב כדי להוריד את הבחירה המעודכנת.', true); return; }
+    const url = URL.createObjectURL(new Blob([bytes], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' }));
+    const link = document.createElement('a'); link.href = url; link.download = 'דף-עבודה-נועם-דורון.docx'; document.body.appendChild(link); link.click(); link.remove();
+    window.setTimeout(() => URL.revokeObjectURL(url), 60000);
+    message('קובץ Word מוכן. הטקסט והנוסחאות ניתנים לעריכה; התשובות נמצאות בסוף. שינוי שאלה בקובץ אינו מעדכן אוטומטית את התשובה.');
+  } catch {
+    message('לא הצלחנו להכין את קובץ Word. הבחירה נשמרה. נסו שוב בעוד רגע.', true);
+  } finally {
+    wordPending = false;
+    buttons.forEach((b) => { b.disabled = false; b.removeAttribute('aria-busy'); });
+  }
+}
+
 function paintTeacherReview(chosen, blocks, note, scenario, style) {
   const panel = $('wizard-review');
   const content = $('wizard-review-content');
@@ -2834,7 +2958,7 @@ async function updatePrint() {
   const generation = ++printGeneration;
   if ($('wizard-print')) $('wizard-print').disabled = true;
   renderTeacherPageCount($('wizard-page-count'));
-  const mode = printMode;
+  let mode = printMode;
   const review = $('wizard-review');
   if (review) review.hidden = true;
   // Render off-screen and publish both surfaces only after every exercise and
@@ -2873,6 +2997,10 @@ async function updatePrint() {
     const current = (await resolveChosen()).filter((question) => !onPage.has(exKey(question.source.pdfId, question.id)));
     if (generation !== printGeneration) return false;
     const chosen = savedQuestions.concat(current);
+    if (mode !== 'short' && chosen.some(q => q.source?.questionSupplements?.questions.some(item => Number(item.q) === Number(q.q)))) {
+      mode = printMode = 'short';
+      announce('הנתונים הנוספים מצורפים לשאלה בדף המצומצם.');
+    }
     const blocks = carried.length || state.sectionKind === 'test'
       ? carried.concat(current.length ? [{ kind: sectionKind(state.sectionKind), title: currentTopic() ? currentTopic().title : '', questions: current }] : [])
       : null;
@@ -2942,6 +3070,7 @@ async function prepare(mode) {
   if ($('prepare-short')) $('prepare-short').disabled = true;
   try {
     if (!(await updatePrint())) return;
+    mode = printMode;
     const ready = mode === 'short'
       ? $('dialog-plan').querySelector('.crop-sheet canvas')
       : $('dialog-plan').querySelector('.source-stage canvas');
@@ -2993,7 +3122,7 @@ function applyScenario(value, options) {
 async function loadExerciseSheet(pdfId) {
   if (sheets.has(pdfId)) return sheets.get(pdfId);
   const sheetUrl = new URL('./sheets/' + pdfId + '.json', import.meta.url);
-  sheetUrl.searchParams.set('v', '20261103-selected-answers');
+  sheetUrl.searchParams.set('v', '20261104-word-export');
   const response = await fetch(sheetUrl);
   if (!response.ok) throw new Error('SHEET_' + pdfId);
   const source = await response.json();
@@ -3260,6 +3389,7 @@ function bind() {
   $('teacher-note').addEventListener('input', () => clearPreparedPrint());
   $('prepare').addEventListener('click', () => prepare('marked'));
   $('prepare-short').addEventListener('click', () => prepare('short'));
+  document.querySelectorAll('[data-word-download]').forEach((button) => button.addEventListener('click', () => { void downloadTeacherWord(); }));
   document.querySelectorAll('[data-review-edit]').forEach((button) => button.addEventListener('click', () => {
     const step = button.dataset.reviewEdit;
     if (!['setup', 'purpose', 'pick'].includes(step)) return;
