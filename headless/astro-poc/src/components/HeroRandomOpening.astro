@@ -1,0 +1,84 @@
+---
+/* Homepage hero (Noam to Copilot, 4.11.2026): the hero must not always open on
+   the triangle. ExactHeroControls.astro and heroRotation.ts stay unchanged:
+   1. Before the controls boot, the rotation JSON ([data-hero-rotation]) is
+      shuffled, so the films after the first play in a random order each visit.
+   2. Once the controls are ready, the existing shuffle button is pressed once,
+      so the opening film is random. The triangle keeps the same 1/n chance as
+      any other film.
+   The server-rendered triangle stays for no-JS and SEO. With JS it is hidden
+   until the random film is mounted; a 2.5 s safety net always reveals it. */
+---
+<script is:inline>
+  (function () {
+    var hero = document.querySelector('[data-hero-loop]');
+    var host = hero && hero.querySelector('[data-hero-loop-current]');
+    if (!hero || !host || hero.dataset.randomOpening) return;
+    hero.dataset.randomOpening = '1';
+
+    var shown = false;
+    function reveal() {
+      if (shown) return;
+      shown = true;
+      host.style.opacity = '';
+    }
+    host.style.transition = 'opacity .35s ease';
+    host.style.opacity = '0';
+    setTimeout(reveal, 2500);
+
+    function rotationNode() {
+      return document.querySelector('[data-hero-rotation]');
+    }
+
+    function shuffleRotation() {
+      var node = rotationNode();
+      if (!node || node.dataset.shuffled) return;
+      try {
+        var list = JSON.parse(node.textContent || '[]');
+        for (var i = list.length - 1; i > 0; i--) {
+          var j = Math.floor(Math.random() * (i + 1));
+          var t = list[i]; list[i] = list[j]; list[j] = t;
+        }
+        node.textContent = JSON.stringify(list);
+        node.dataset.shuffled = '1';
+      } catch (e) { /* Keep the server order. */ }
+    }
+
+    function openRandom() {
+      var tries = 0;
+      (function wait() {
+        var button = document.querySelector('[data-exact-shuffle]');
+        if (!button || hero.dataset.exactControls !== 'ready') {
+          if (++tries < 60) { setTimeout(wait, 50); return; }
+          reveal();
+          return;
+        }
+        var count = 0;
+        try { count = JSON.parse((rotationNode() || {}).textContent || '[]').length; } catch (e) { /* none */ }
+        if (count < 2 || Math.random() < 1 / count) { reveal(); return; }
+        button.click();
+        var checks = 0;
+        (function settle() {
+          var loop = host.querySelector('[data-loop]');
+          var moved = loop && loop.getAttribute('data-loop') !== 'triangle';
+          if ((moved && !button.hasAttribute('aria-busy')) || ++checks > 50) { reveal(); return; }
+          setTimeout(settle, 50);
+        })();
+      })();
+    }
+
+    // The controls are a deferred module and read the rotation JSON when they
+    // boot, right after parsing ends. Shuffle as readyState leaves "loading".
+    if (document.readyState === 'loading') {
+      document.addEventListener('readystatechange', function once() {
+        if (document.readyState === 'loading') return;
+        document.removeEventListener('readystatechange', once);
+        shuffleRotation();
+      });
+      document.addEventListener('DOMContentLoaded', openRandom, { once: true });
+    } else {
+      shuffleRotation();
+      setTimeout(openRandom, 0);
+    }
+  })();
+</script>
