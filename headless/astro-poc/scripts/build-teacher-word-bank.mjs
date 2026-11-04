@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
 import { gzipSync } from 'node:zlib';
 import { richXml } from '../../../demos/teacher-word-export.js';
+import { verifyWordBankArtifact } from './lib/word-bank-artifact.mjs';
 const app = join(dirname(fileURLToPath(import.meta.url)), '..');
 const root = join(app, '../..'), sourceDir = join(root, 'tools/teacher-word-content/sources');
 const parse = p => JSON.parse(readFileSync(p, 'utf8'));
@@ -55,13 +56,14 @@ for (const [pdfId, sheet] of Object.entries(sheets)) {
 const bank = { version: 1, sheets };
 const bundle = { version: 1, sheets: Object.keys(sheets).length, questions: count, gzipBase64: gzipSync(JSON.stringify(bank), { level: 9 }).toString('base64') };
 const output = join(app, 'src/data/teacher-word-content.json');
-const content = JSON.stringify(bundle) + '\n';
+const checking = process.argv.includes('--check');
+const content = checking ? readFileSync(output, 'utf8') : JSON.stringify(bundle) + '\n';
+verifyWordBankArtifact(content, bank);
 const bundleSha256 = createHash('sha256').update(content).digest('hex');
 const descriptor = { bundlePath: `/teachers/word-content.${bundleSha256}.json`, bundleSha256, bundleBytes: Buffer.byteLength(content), sheets: bundle.sheets, questions: count };
 const descriptorFile = join(app, 'src/data/teacher-word-descriptor.json');
 const descriptorContent = JSON.stringify(descriptor) + '\n';
-if (process.argv.includes('--check')) assert.equal(readFileSync(output, 'utf8'), content, 'Word bank is stale');
-else writeFileSync(output, content);
+if (!checking) writeFileSync(output, content);
 if (process.argv.includes('--check')) assert.equal(readFileSync(descriptorFile, 'utf8'), descriptorContent, 'Word descriptor is stale');
 else writeFileSync(descriptorFile, descriptorContent);
 // This immutable public data is served as one static asset, outside the worker

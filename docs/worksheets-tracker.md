@@ -586,3 +586,5 @@ Completed 612 previously missing/incomplete whole-question answers: 270 across 1
 Word export uses editable RTL text, native Office Math, selected questions only, and all their subpart answers at the end. Initial source-backed coverage is 8,026 questions (404 complete middle-school PDFs plus the ten approved elementary repairs). Remaining sources fail with a visible message instead of producing a partial or image-only Word document. Original diagrams remain images. Source provenance and reproducible build: `tools/teacher-word-content/README.md`.
 
 Checks and publication evidence: `docs/teacher-answer-word-20261104.md`.
+
+- 2026-11-05: Word-bank build portability repair validates complete decoded source content while preserving the reviewed compressed artifact; regression coverage rejects stale answers and questions. No worksheet content changed. Elementary replacement planning follows Noam’s updated instruction.

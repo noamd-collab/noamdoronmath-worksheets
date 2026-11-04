@@ -25,3 +25,9 @@ Noam approved implementation, tests and live publication. On 4 November he also 
 ## Remaining release work
 
 Final refinement checks, protected PR checks, Wix build/preview, baseline merge, release through `tools/release/release.sh`, and live verification. Supabase hint authoring/integration and the remaining editable elementary source conversion are separate unfinished work; neither is claimed complete here.
+
+## 5 November production-build repair
+
+PR #390's release stopped before publication: Node 22/Linux recompressed the reviewed bank to different gzip bytes than Node 26/macOS, triggering a false stale-bank error. `--check` now compares the complete decompressed bank and counts with the freshly source-validated content, then preserves and hashes the exact reviewed compressed artifact. Changed questions, answers, counts, broken compression or a changed descriptor still fail. A Linux Node 22 CI job now checks the whole bank before release. No question, answer, figure or compressed content artifact changed.
+
+Noam plans to replace all elementary worksheets. Further conversion of the old elementary set is deferred; the elementary skill/source contract is being updated for the replacement worksheets.
