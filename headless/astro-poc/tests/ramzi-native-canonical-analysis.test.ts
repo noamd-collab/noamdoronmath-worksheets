@@ -16,6 +16,8 @@ async function settled(c:any){
  assert.equal(c.busy,false,'the additional-question lifecycle must finish before checking its requests');
 }
 const CASES:any={
+ SUBSTITUTION:{pdf:'f8f637f884da4d118af1dcf13b3d688b',item:'q1c'},
+ PDF_SIMILARITY:{pdf:'37e09211e4dd425cbcbf5fe78eb68080',exerciseId:'G8-T45-E2-Q02א'},
  W15A:{pdf:'1447b1c93a0f481abbd1eccbef8a7551',item:'q20d'},
  W15B:{pdf:'7b2d78cef1f44268ba9265392320ad26',item:'q20d'},
  W15:{pdf:'162e9a4cd15e41c5bb68cc6a1b600e81',item:'q20d'},
@@ -36,11 +38,11 @@ const CASES:any={
 };
 function contradictory(){return {readable:true,transcription:'OCR transcription',math_content:'OCR: 3×3, 4×4, 5×5',problem_statement:'OCR square pattern',diagram_description:'OCR:9,16,25',extracted_entities:{numbers:[9,16,25]}};}
 function fixture(v:string,key:string,edit?:(data:any,manifest:any,exercise:any)=>void,keepHash=false){
- const {pdf,item}=CASES[key],manifest=JSON.parse(read('noam-ai/manifests/'+pdf+'.json'));
- const exercise=manifest.exercises.find((e:any)=>e.nativeItemId===item),data=JSON.parse(read(manifest.nativeExportUrl.slice(1)));
+ const {pdf,item,exerciseId}=CASES[key],manifest=JSON.parse(read('noam-ai/manifests/'+pdf+'.json'));
+ const exercise=manifest.exercises.find((e:any)=>exerciseId?e.id===exerciseId:e.nativeItemId===item),data=manifest.nativeExportUrl?JSON.parse(read(manifest.nativeExportUrl.slice(1))):{};
  // The original bytes are served unchanged; an edited package gets its own hash
  // unless the test is about tampered bytes behind the original manifest hash.
- let nativeBody=read(manifest.nativeExportUrl.slice(1));
+ let nativeBody=manifest.nativeExportUrl?read(manifest.nativeExportUrl.slice(1)):'';
  if(edit){edit(data,manifest,exercise);nativeBody=JSON.stringify(data);if(!keepHash)manifest.nativeExportSha256=createHash('sha256').update(nativeBody).digest('hex');}
  const {document,window}=parseHTML('<html><body></body></html>'),calls:string[]=[],attachments:any[]=[],thread:any={messages:[],history:[],hintIndex:0};
  const c:any={document,window,manifest,selectedExercise:exercise,pdf,Promise,Map,WeakMap,WeakSet,Set,currentAttachments:()=>attachments,
@@ -53,10 +55,12 @@ function fixture(v:string,key:string,edit?:(data:any,manifest:any,exercise:any)=
  return {c,exercise,manifest,data,calls,attachments,thread};
 }
 function wireAdditionalQuestion(f:any,analysis:any=contradictory()){
- const requests:any[]=[],counter={analysis:0};
+ const requests:any[]=[],counter={analysis:0,image:0};
  Object.assign(f.c,{busy:false,panelBody:f.c.document.body,noamDrafts:{},MIN_WAIT:0,API:'/model',g:7,lv:'a',LEVEL:{a:'רמה א׳'},ttl:'נושא',
   setNoamBusy:(b:boolean)=>{f.c.busy=b;},restoreNoamChatFocus(){},exerciseLabel:()=> 'סעיף',noamDidacticGuide:()=>null,noamDidacticPrompt:()=>'',noamDidacticResponse:()=>null,
   getExerciseAnalysis:async()=>{counter.analysis++;if(analysis instanceof Error)throw analysis;return analysis;},
+  cropExerciseImage:async()=>{counter.image++;return 'data:image/png;base64,QUJD';},
+  exerciseImageWithAttachments:async()=>{counter.image++;return 'data:image/png;base64,QUJD';},
   postJson:async(url:string,payload:any)=>{requests.push({url,payload});return {ok:true,answer:'בדקו את הנתונים המודפסים.'};},
   noamGuardGeometryResult:(r:any)=>r,noamGuardSignedAddResult:(r:any)=>r,noamClarifySignedAddLanguage:(s:string)=>s,noamResponseVisual:()=>null,
   noamVisualAnswer:(_:string,s:string)=>s,noamAttachSourceHint(){},setTimeout:(cb:any,ms:number)=>{if(ms<25000)cb();return 0;}});
@@ -71,6 +75,7 @@ function wireSnapshotReader(f:any,v:string){
  const {requests}=wireAdditionalQuestion(f);
  Object.assign(f.c,{noamAttachments:{[f.exercise.id]:f.attachments},renderNoamAttachments(){},
   cropExerciseCanvas:async()=>({marker:'original-question'}),
+  cropExerciseImage:async()=>JSON.stringify(['original-question']),
   stackCanvases:(canvases:any[])=>({canvases}),encodeCropCanvas:(stack:any)=>JSON.stringify(stack.canvases.map((c:any)=>c.marker)),
   noamExerciseNeedsLiveVision:()=>false,syntheticAnalysis:()=>({readable:true,content_type:'snapshot-test-original',transcription:'original worksheet'}),
   noamScopedExerciseSemantic:()=>f.exercise.prompt,
@@ -92,6 +97,64 @@ function assertCanonicalShape(a:any,exercise:any){
 for(const relative of ['../public/worksheet-viewer-noam.html','../../../worksheet-viewer-noam.html']){
  const v=readFileSync(new URL(relative,import.meta.url),'utf8'),name=relative.includes('public')?'public':'root';
 
+
+ it(name+': the republished substitution source skips OCR and sends the exact negative value in one protected solve',async()=>{
+  const f=fixture(v,'SUBSTITUTION'),{requests,counter}=wireAdditionalQuestion(f,unreadable());
+  f.c.analysisCache[f.exercise.id]={readable:true,transcription:'stale 7 + 2n'};
+  f.c.askNoam('free_question','הצבתי n=-4.5 בביטוי 7−2n וקיבלתי 16. האם נכון?');await settled(f.c);
+  assert.equal(counter.analysis,0);assert.equal(counter.image,0);assert.equal(requests.length,1);
+  const sent=requests[0];assert.equal(sent.url,'/model/noamImageSolve');assert.equal(sent.payload.imageDataUrl,undefined);
+  assert.equal(sent.payload.hasStudentAttachments,false);assert.equal(sent.payload.selectedPart,'ג');
+  assert.equal(sent.payload.sourceIdentity.nativeSha256,f.manifest.nativeExportSha256);
+  assertCanonicalShape(sent.payload.imageAnalysis,f.exercise);
+  assert.match(sent.payload.imageAnalysis.transcription,/\$7 − 2n\$/);
+  assert.match(sent.payload.imageAnalysis.transcription,/\$n = −4\.5\$/);
+  assert.doesNotMatch(sent.payload.imageAnalysis.transcription,/stale|5\(n|0\.6|סעיף א/);
+  assert.equal(f.thread.hintIndex,0);
+ });
+
+ it(name+': text-only shortcuts reject unbound bytes, missing values, other variables and implicit sibling tasks',async()=>{
+  const changes:[string,(d:any,m:any,e:any)=>void,boolean?][]=[
+   ['tampered-bytes',(d)=>{d.questions[0].items[2].text='מצאו את ערכו של $7 + 2n$ כאשר $n = −4.5$.';},true],
+   ['implicit-sibling',(d,_m,e)=>{d.questions[0].items[2].text='ומהו ערכו של אותו ביטוי כאשר $n = −4.5$?';e.text=d.questions[0].items[2].text;}],
+   ['missing-value',(d,_m,e)=>{d.questions[0].items[2].text='מצאו את ערכו של $7 − 2n$ כאשר $n$ נתון.';e.text=d.questions[0].items[2].text;}],
+   ['second-variable',(d,_m,e)=>{d.questions[0].items[2].text='מצאו את ערכו של $7m − 2n$ כאשר $n = −4.5$.';e.text=d.questions[0].items[2].text;}],
+   ['unbalanced-expression',(d,_m,e)=>{d.questions[0].items[2].text='מצאו את ערכו של $(7 − 2n$ כאשר $n = −4.5$.';e.text=d.questions[0].items[2].text;}],
+   ['printed-aid',(d,_m,e)=>{d.questions[0].text+=' הנתונים בשרטוט.';e.context=d.questions[0].text;}],
+   ['native-givens',(d)=>{d.questions[0].items[2].given=[{text:'נתון נוסף'}];}]
+  ];
+  for(const [label,change,keepHash] of changes){
+   const f=fixture(v,'SUBSTITUTION',change,keepHash),{requests,counter}=wireAdditionalQuestion(f);
+   assert.equal(await f.c.noamCanonicalSourceAnalysis(f.exercise),null,label);
+   f.c.askNoam('free_question','האם ההצבה שלי נכונה?');await settled(f.c);
+   assert.equal(counter.analysis,0,label);assert.equal(counter.image,1,label);assert.equal(requests.length,1,label);
+   assert.deepEqual(clone(requests[0].payload.imageAnalysis),{},label);
+   assert.equal(requests[0].payload.imageDataUrl,'data:image/png;base64,QUJD',label);
+  }
+ });
+
+ it(name+': a PDF-only additional question sends its actual image directly once and ignores old analysis caches',async()=>{
+  const f=fixture(v,'PDF_SIMILARITY'),{requests,counter}=wireAdditionalQuestion(f,unreadable());
+  f.c.analysisCache[f.exercise.id]=contradictory();
+  f.c.askNoam('free_question','האם היחס בין 12 ל־8 שווה ליחס בין 16.5 ל־11?');await settled(f.c);
+  assert.equal(counter.analysis,0);assert.equal(counter.image,1);assert.equal(requests.length,1);
+  assert.equal(requests[0].url,'/model/noamImageSolve');assert.equal(requests[0].payload.sourceIdentity,undefined);
+  assert.equal(requests[0].payload.exerciseId,'G8-T45-E2-Q02א');assert.equal(requests[0].payload.selectedPart,'א');
+  assert.equal(requests[0].payload.imageDataUrl,'data:image/png;base64,QUJD');
+  assert.deepEqual(clone(requests[0].payload.imageAnalysis),{});assert.equal(f.thread.hintIndex,0);
+ });
+
+ it(name+': a direct-image source change or protected refusal cannot fall back to the analyzer',async()=>{
+  for(const mode of ['source-change','BOT_VERIFICATION_FAILED','QUESTION_DEADLINE_EXCEEDED']){
+   const f=fixture(v,'PDF_SIMILARITY'),{requests,counter}=wireAdditionalQuestion(f);
+   if(mode==='source-change')f.c.cropExerciseImage=async()=>{f.c.manifest.sourceSha256='0'.repeat(64);return 'data:image/png;base64,QUJD';};
+   else f.c.postJson=async(url:string,payload:any)=>{requests.push({url,payload});throw Object.assign(new Error(mode),{code:mode});};
+   f.c.askNoam('free_question','שאלה נוספת');await settled(f.c);
+   assert.equal(counter.analysis,0,mode);assert.equal(requests.length,mode==='source-change'?0:1,mode);
+   assert.equal(f.thread.messages.at(-1).answerErrorCode,mode==='source-change'?'QUESTION_SOURCE_CHANGED':mode);
+   assert.equal(f.thread.hintIndex,0,mode);
+  }
+ });
  it(name+': additional question without a photo sends false and the student’s own message',async()=>{
   const f=fixture(v,'W11'),r=wireSnapshotReader(f,v);
   f.c.askNoam('free_question',additionalQuestion);await settled(f.c);
@@ -106,23 +169,22 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
  it(name+': photos removed/replaced/added during crop cannot change the sent image or its flag',async()=>{
   for(const change of ['remove','replace','add']){
    const f=fixture(v,'W11'),a={name:'a.png',canvas:{marker:'photo-A'}},b={name:'b.png',canvas:{marker:'photo-B'}};
-   f.attachments.push(a);const r=wireSnapshotReader(f,v);let finishCrop:any;
-   f.c.cropExerciseCanvas=()=>new Promise(resolve=>{finishCrop=resolve;});
+   f.attachments.push(a);const r=wireSnapshotReader(f,v);let finishCrop:any,startCrop:any;
+   const cropStarted=new Promise(resolve=>{startCrop=resolve;});
+   f.c.cropExerciseCanvas=()=>new Promise(resolve=>{finishCrop=resolve;startCrop();});
    let sourceLoads=0;f.c.noamLoadSourceVisual=async()=>{sourceLoads++;throw Error('photo request must bypass canonical');};
-   f.c.askNoam('free_question',additionalQuestion);await Promise.resolve();assert.equal(typeof finishCrop,'function');
+   f.c.askNoam('free_question',additionalQuestion);await cropStarted;assert.equal(typeof finishCrop,'function');
    if(change==='remove')f.attachments.splice(0);
    if(change==='replace')f.attachments.splice(0,1,b);
    if(change==='add')f.attachments.push(b);
    finishCrop({marker:'original-question'});await settled(f.c);
-   assert.equal(sourceLoads,0);assert.equal(r.requests.length,2);
-   const [analyze,solve]=r.requests;assert.equal(analyze.url,'/model/noamImageAnalyze');
-   assert.deepEqual(JSON.parse(analyze.payload.imageDataUrl),['original-question','photo-A']);
+   assert.equal(sourceLoads,0);assert.equal(r.requests.length,1);
+   const [solve]=r.requests;assert.equal(solve.url,'/model/noamImageSolve');
+   assert.deepEqual(JSON.parse(solve.payload.imageDataUrl),['original-question','photo-A']);
    assert.equal(solve.payload.hasStudentAttachments,true);
-   assert.equal(analyze.payload.selectedPart,f.exercise.part);
    assert.equal(solve.payload.selectedPart,f.exercise.part);
-   assert.deepEqual(clone(solve.payload.sourceIdentity),clone(analyze.payload.sourceIdentity));
-   assert.match(solve.payload.imageAnalysis.transcription,/student photograph/);
-   assert.equal(solve.payload.imageAnalysis.content_type,undefined);
+   assert.deepEqual(clone(solve.payload.sourceIdentity),{nativeSha256:f.manifest.nativeExportSha256,questionId:f.exercise.nativeQuestionId,itemId:f.exercise.nativeItemId});
+   assert.deepEqual(clone(solve.payload.imageAnalysis),{});
    assert.deepEqual(clone(f.c.analysisCache),{},'never cache a photograph analysis');
    assert.deepEqual(clone(f.c.currentAttachments()).map((x:any)=>x.name),change==='remove'?[]:['b.png']);
   }
@@ -147,7 +209,8 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
   f.c.askNoam('free_question',additionalQuestion);
   f.attachments.push({name:'later.png',canvas:{marker:'new-photo'}});resume();await settled(f.c);
   assert.equal(r.requests.length,1);assert.equal(r.requests[0].payload.hasStudentAttachments,false);
-  assert.equal(r.requests[0].payload.imageAnalysis.content_type,'snapshot-test-original');
+  assert.deepEqual(JSON.parse(r.requests[0].payload.imageDataUrl),['original-question']);
+  assert.deepEqual(clone(r.requests[0].payload.imageAnalysis),{});
   assert.equal(f.c.currentAttachments()[0].name,'later.png');
  });
 
@@ -165,7 +228,7 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
  });
 
  it(name+': legacy askNoam without the canonical wrapper still passes its photo snapshot',async()=>{
-  const f=fixture(v,'W11'),r=wireSnapshotReader(f,v);f.c.noamQuestionAnalysis=undefined;
+  const f=fixture(v,'W11'),r=wireSnapshotReader(f,v);f.c.noamQuestionAnalysis=undefined;f.c.noamAdditionalQuestionInput=undefined;
   f.attachments.push({name:'a.png',canvas:{marker:'photo-A'}});
   f.c.askNoam('free_question',additionalQuestion);f.attachments.splice(0);await settled(f.c);
   assert.equal(r.requests.length,2);assert.equal(r.requests[1].payload.hasStudentAttachments,true);
@@ -182,11 +245,12 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
   f.c.clearNoamAttachments(f.exercise.id);assert.equal(f.c.currentAttachments().length,0);
  });
 
- it(name+': failed photo analysis preserves attachments and sends no solve request',async()=>{
+ it(name+': a rejected direct photo solve preserves attachments and never calls the analyzer',async()=>{
   const f=fixture(v,'W11'),r=wireSnapshotReader(f,v);f.attachments.push({name:'a.png',canvas:{marker:'photo-A'}});
-  const post=f.c.postJson;f.c.postJson=async(url:string,p:any)=>url.endsWith('/noamImageAnalyze')?{ok:true,analysis:{readable:false}}:post(url,p);
+  f.c.postJson=async(url:string,p:any)=>{r.requests.push({url,payload:p});throw unreadable();};
   f.c.askNoam('free_question',additionalQuestion);await settled(f.c);
-  assert.equal(r.requests.length,0);assert.equal(f.thread.messages[1].answerError,true);
+  assert.equal(r.requests.length,1);assert.equal(r.requests[0].url,'/model/noamImageSolve');assert.equal(f.thread.messages[1].answerError,true);
+  assert.equal(f.thread.messages[1].answerErrorCode,'QUESTION_IMAGE_UNREADABLE');
   assert.equal(f.c.currentAttachments().length,1);assert.deepEqual(clone(f.c.analysisCache),{});
  });
 
@@ -268,7 +332,7 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
   for(const [label,change] of changes){
    const f=fixture(v,'W15',(d,m,e)=>{const q=d.questions.find((q:any)=>q.id==='q20');q.text=change(q.text);e.context=q.text;});
    const {requests,counter}=wireAdditionalQuestion(f);f.c.askNoam('free_question','אפשר להסביר איך משתמשים בנתונים המודפסים בסעיף הזה?');await settled(f.c);
-   assert.equal(counter.analysis,1,label+' must retain the image reader');
+   assert.equal(counter.analysis,0,label+' must skip the analyzer');assert.equal(counter.image,1,label+' must retain the source image');
    assert.equal(requests.length,1,label+' must preserve the solve request count');
    assert.equal(requests[0].payload.imageAnalysis.content_type,undefined,label);
   }
@@ -277,7 +341,7 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
  it(name+': final figure part and student-designed proof keep the existing image route',async()=>{
   for(const key of ['W15final','W15construction']){
    const f=fixture(v,key),{requests,counter}=wireAdditionalQuestion(f);f.c.askNoam('free_question','אפשר להסביר איך משתמשים בנתונים המודפסים בסעיף הזה?');await settled(f.c);
-   assert.equal(counter.analysis,1,key);assert.equal(requests.length,1,key);assert.equal(requests[0].payload.imageAnalysis.content_type,undefined,key);
+   assert.equal(counter.analysis,0,key);assert.equal(counter.image,1,key);assert.equal(requests.length,1,key);assert.equal(requests[0].payload.imageAnalysis.content_type,undefined,key);
   }
  });
 
@@ -349,7 +413,7 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
   for(const [key,mode,edit] of modes){
    const f=fixture(v,key,edit),{requests,counter}=wireAdditionalQuestion(f);
    assert.equal(await f.c.noamCanonicalSourceAnalysis(f.exercise),null,mode);
-   f.c.askNoam('free_question','איך משתמשים בנתוני הסעיף הזה?');await settled(f.c);assert.equal(counter.analysis,1,mode);assert.equal(requests[0].payload.imageAnalysis.content_type,undefined,mode);
+   f.c.askNoam('free_question','איך משתמשים בנתוני הסעיף הזה?');await settled(f.c);assert.equal(counter.analysis,0,mode);assert.equal(counter.image,1,mode);assert.equal(requests[0].payload.imageAnalysis.content_type,undefined,mode);assert.equal(requests[0].payload.imageDataUrl,'data:image/png;base64,QUJD',mode);
   }
   for(const mode of ['attachments','selection-change','identity-change','source-fails']){
    const f=fixture(v,'W11'),load=f.c.noamLoadSourceVisual;
@@ -384,7 +448,7 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
   const edit=(d:any)=>{d.questions.find((q:any)=>q.id==='q16').table.rows[0][1]='999';};
   const tampered=fixture(v,'W11',edit,true),{requests,counter}=wireAdditionalQuestion(tampered);
   assert.equal(await tampered.c.noamCanonicalSourceAnalysis(tampered.exercise),null);
-  tampered.c.askNoam('free_question','איך משתמשים בנתוני הסעיף הזה?');await settled(tampered.c);assert.equal(counter.analysis,1);assert.doesNotMatch(JSON.stringify(requests[0].payload.imageAnalysis),/999/);
+  tampered.c.askNoam('free_question','איך משתמשים בנתוני הסעיף הזה?');await settled(tampered.c);assert.equal(counter.analysis,0);assert.equal(counter.image,1);assert.doesNotMatch(JSON.stringify(requests[0].payload.imageAnalysis),/999/);
   const rehashed=fixture(v,'W11',edit);assert.match((await rehashed.c.noamCanonicalSourceAnalysis(rehashed.exercise)).diagram_description,/999/);
   // A poisoned shared package cache is not trusted: canonical data comes from the verified bytes.
   const poisoned=fixture(v,'W11'),load=poisoned.c.noamLoadSourceVisual;

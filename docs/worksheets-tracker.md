@@ -1,4 +1,75 @@
+## 2026-11-03 — Ramzi phone send focus
+
+- A first tap on Send could blur the focused message field, move the phone composer and lose the click. The primary pointer-down now keeps textarea focus until the ordinary click; it does not submit or synthesize a click.
+- Desktop pointer behavior, keyboard/Enter activation and disabled controls retain their existing behavior. Prepared Supabase hints, Flash routing and reCAPTCHA are unchanged.
+- Regression tests cover a moving button after blur, one submission per click, pointer cancellation, non-primary/disabled/desktop behavior, keyboard composition and empty messages.
+
 # Worksheet tracker
+
+## Selected final answers in teacher printing — 2026-11-03
+
+- Print verified whole-answer rectangles only for selected questions, retaining all printed subparts and source formulas. Do not append complete answer sections or use unreliable text overlays.
+- Keep source/topic/level headings with their first answer, preserve font scale for narrow columns, and split long answers only at verified source boundaries.
+- Missing original answers are explicitly identified and block incomplete output; they are not silently replaced with unrelated answers. Original worksheet PDFs and question content remain unchanged.
+- Validation and content-gap limits: [teacher-selected-answers-20261103.md](teacher-selected-answers-20261103.md).
+
+## Ramzi additional-question latency — 2026-11-03
+
+- Additional student questions now use one protected solver request with the selected original crop when image reading is needed. The submitted attachment snapshot stays bound to that turn; changing the source or expiring the operation prevents a late request. No separate image-analysis request precedes the answer.
+- The existing verified native-source route also recognizes a narrowly defined, self-contained substitution exercise whose expression and variable value are printed in the selected part. Source identity, native SHA and selected-part checks remain mandatory; other text tasks do not gain a blanket exemption from image reading.
+- The companion backend change accepts a validated image only for additional questions and uses Flash for its answer. Origin checks, reCAPTCHA, source validation, spending controls and geometry-only drawing rules remain required.
+- The three prepared hints continue to load from Supabase. Hint content, catalog/source mappings, final answers and PDF files are unchanged. Validation and live timings are recorded with the release artifacts; no paid model review is part of this change.
+
+## Separate AI guidance from printed instructions — 2026-11-03
+
+- Added two optional fields in the existing purpose step: AI guidance (400 characters, not printed) and student instructions (600 characters, printed in full). The existing `teacher-note` value retains its printed role; it is never copied into the new AI field.
+- AI selection, its cache and pending-request validation use only the AI guidance. Student instructions feed the review, preview and both printed formats. Editing printed instructions invalidates the prepared output; editing AI guidance preserves the existing manually selected worksheet.
+- Ordinary companion requests also send only the AI guidance, in both served and legacy clients, with no fallback to printed instructions.
+- Planning minutes received from the companion prefill the AI guidance only, without overwriting existing guidance or printed instructions. Both fields persist across wizard navigation.
+- The shared worksheet retains final answers; no new step, storage or server contract was introduced.
+
+## Teacher review summary before printing — 2026-11-02
+
+- Added Noam's approved textual summary inside the existing fourth step, above the worksheet preview: actual source grade/topic/levels, complete-question and explicit-subpart counts, section kinds, goal/style and the full note that will print.
+- The summary consumes the same resolved, context-scoped saved/current questions as printing, preserving section order and excluding current questions already saved. Standalone questions count as whole questions without invented subparts; repeated source regions do not inflate subpart counts.
+- Three shortcuts return to settings, purpose/note or question selection without resetting work. Leaving the result invalidates its rendering; returning rebuilds the summary. A companion goal change also invalidates the summary even when manual selections stay the same. Missing answers keep the selection summary available for editing while printing remains blocked.
+- The summary is excluded from the worksheet itself. No new wizard step, note fields, source content, AI-selection rules or output copies were added; the shared worksheet retains final answers.
+
+## Teacher topic search — 2026-11-02
+
+- Added Noam's approved topic-name search inside the existing setup step. Typing filters the current grade's topics; the full-list button and native-list fallback remain available.
+- The existing topic select stays authoritative. Typing, keyboard exploration and leaving the field do not change the topic, URL, selected questions or prepared worksheet. Only an explicit result choice invokes the existing scope-change confirmation.
+- Search resets to the committed topic after cancellation, follows grade/prefill updates and closes when leaving setup. Keyboard navigation keeps focus on the named combobox, with result count and no-match feedback.
+- The enhancement loads independently; if it cannot load, the native topic selector remains usable. AI selection, source PDFs, final answers and print generation are unchanged.
+
+## Four-step teacher wizard — 2026-11-02
+
+- Implemented Noam's approved grouping: setup (grade/topic/level), purpose (scenario/style/note), question selection/page building, and preview/print. Each screen shows its name and `שלב N מתוך 4`.
+- Keyboard focus moves to the current heading, associated with the step counter. Same-step rendering keeps focus in place. The header adapts to narrow screens, and asynchronous print preparation no longer scrolls the step counter out of view.
+- Back/Next preserves existing selections, saved sections, level, scenario, style and note. The same level control moves between setup and picking. Add-topic returns to setup and focuses the topic selector; existing deep links still open selection at step 3.
+- This groups existing controls only. AI selection, source PDFs and print generation remain unchanged; the shared worksheet still includes final answers. Other Manus proposals remain separate decisions.
+
+## Remove the combined-level button — 2026-11-02
+
+- At Noam's request, removed `כל הרמות יחד` from the site and demo level selector; a, b and excellence remain. Topics without graded choices show their explanatory text without a disabled radio group.
+- Existing explicit all-level links and ungraded source filtering remain compatible. No AI selection, source content or print behavior changes. The existing accessible-selector check now verifies the three actual controls.
+
+## Teacher selection and print integrity — 2026-11-02
+
+- Noam approved PR #357 for merge/publication after correcting the UI wording to `קטע ממבחן`. The label, help text, messages and demo are synchronized, and the affected module cache versions are refreshed.
+
+- Catalog and topic loading now expose loading/error/retry states, preserve valid scope and saved sections, and bind controls only once across retries. Class/topic/level changes and AI replacements request confirmation before discarding selected work; invalid external handoffs leave the page intact.
+- The student and teacher use the same worksheet with final answers at the end. Marked source output now appends answers and includes the source pages required by continuation rows/stems. Marks retain their original page coordinates. Missing answer coverage without verified full-page metadata blocks printing with a persistent visible message; it never fabricates an answer key.
+- Print preparation renders off-screen and commits complete exercise/answer canvases together. Selection changes invalidate pending renders, and failures cannot leave a partial or stale worksheet printable. Existing full-page answer geometry, whole-question crops and question/diagram grouping remain intact.
+- Server candidate descriptions come from the authoritative question index. Foreign, ambiguous, duplicate, non-anchor, malformed or empty explicit candidate lists fail before model invocation. Explicit `one` scope remains exact. Existing counts, level coverage, correction/recovery limits, CAPTCHA and telemetry privacy are preserved.
+- Wizard transitions and modal closure restore keyboard focus; identical AI outcome messages no longer announce twice. Source/demo JavaScript stays synchronized. No four-stage redesign, topic search, new review screen, split note fields, spiral feature, evaluation product or drafts are included.
+- Validation evidence and remaining baseline type-check failures are recorded in `docs/teacher-integrity-validation-2026-11-02.md`. No live model call, merge or production publication is part of this change.
+
+## Shared Google SDK lifecycle — 2026-11-01
+
+The authorized teacher verification investigation found that client cleanup could delete Google's page-global API and client registry after an installed SDK's ready or execute failure. Cleanup now retains that SDK for a later fresh verification or explicit human widget. Host fallback remains available only for a script failure before SDK installation. Ready, execute and queue waits remain bounded; expired callbacks cannot submit tokens. Verification thresholds, action/hostname checks, model selection and challenge nonce rules are unchanged.
+
+Both SDK copies and their teacher, companion and viewer loaders use matching cache versions. Each viewer differs from baseline 41ad576e by exactly two cache query strings (SDK and companion); its content, prepared hints and visual behavior remain intact. Offline actual-loader regressions cover timeout followed by human verification, late callbacks, repeated readiness timeouts and legitimate script-load fallback. The earlier live Google exception and duplicate secondary scripts make SDK replacement a plausible contributor to the blank challenge, but do not establish its cause. This fix still needs release validation and a separately authorized human check; it does not claim a solved live CAPTCHA or new AI success.
 
 ## Teacher Google browser verification recovery — 2026-10-31
 
@@ -453,3 +524,65 @@ Columns: grade, topic, levels present, author, reviewed, live, PR.
 - ב־`G7-T01-B-Q20ב` הוחלף הניסוח העמום על מספר הפוך בהפקת Flash ממוקדת למושג מספר נגדי. ההשוואה המפורשת למספר הופכי ב־`G7-T02-A-Q14ג` נשמרה ללא שינוי.
 - שש שלישיות שבהן טקסט רמז חזר על עצמו הופקו מחדש עם `qwen3.8-flash` בלבד: `G7-T11-B-Q20א`–`G7-T11-B-Q20ה` ו־`G7-T36-B-Q04ד`. חתימות המקור נשמרו, ו־13,052 הרשומות האחרות, כולל 543 המקוריות ותיקון Q20ב, לא השתנו. לכל 12,515 השלישיות האוטומטיות יש כעת שלושה טקסטים שונים לאחר נרמול רווחים.
 - התיקונים מתועדים כהפקת Flash עם בדיקות קוד אוטומטיות וללא ביקורת תוכן נוספת של מודל. בדיקות מבנה ושונות טקסט אינן טענה לאימות נכונות או התקדמות דידקטית; אין קריאות מודל מצד כלי ההחלה ואין מעבר ל־Max.
+
+### 2026-11-01 — רמזים מוכנים: השלמת כיתה ח׳
+
+- יובאו למאגר הקוד המועמד 12,939 שלישיות נוספות לכיתה ח׳. המאגר כולל כעת 25,997 רשומות, ובתוכן כל 13,673 סעיפי כיתה ח׳ וכל 11,942 סעיפי כיתה ז׳ בקטלוג הנוכחי, בכל השאלות והרמות. נשמר גם הכיסוי של כל 1,653 סעיפי Q01 בכיתות ז׳–ט׳.
+- כל 13,058 הרשומות הקודמות נשמרו ללא שינוי, כולל תיקון המונח בסעיף Q20ב, שש השלישיות שתוקנו ו־543 הרשומות המקוריות. כל 25,454 השלישיות האוטומטיות נשארות מזוהות כהפקת `qwen3.8-flash` ללא ביקורת תוכן נוספת של מודל, עם שלושה טקסטים שונים וחתימות מקור מדויקות.
+- הפקת 5,673 השלישיות החסרות בכיתה ט׳ התחילה; אין עדיין טענה להשלמת כיתה ט׳. העלאת תוספת כיתה ח׳ ל־Supabase, פרסום ובדיקה חיה מתועדים בנפרד מהשלמת המאגר בקוד.
+- אין שינוי בממשק, בהגנות או בכלל השרטוטים במסגרת ההרחבה הזאת. שלושת הרמזים הסטנדרטיים מגיעים מהמאגר המוכן; Flash בזמן שימוש נשאר לשאלות נוספות בלבד, ללא Max.
+
+### 2026-11-01 — רמזים מוכנים: השלמת כל סעיפי כיתות ז׳–ט׳
+
+- יובאו למאגר הקוד המועמד 5,673 שלישיות נוספות לכיתה ט׳. המאגר כולל כעת 31,670 רשומות ייחודיות, המכסות את כל סעיפי הקטלוג הנוכחי בכל השאלות והרמות בכיתות ז׳–ט׳: 11,942 במזהי כיתה ז׳, 13,673 במזהי כיתה ח׳ ו־6,055 במזהי כיתה ט׳. בתצוגת כיתה ט׳ מופיעים גם 2,445 סעיפים מדפי כיתה ז׳ משותפים, המכוסים באותם מזהים וחתימות מקור; הם אינם נספרים שוב במאגר. נשמר גם הכיסוי של כל 1,653 סעיפי Q01.
+- כל 25,997 הרשומות הקודמות ורישומי המקור שלהן נשמרו ללא שינוי, כולל שבעת התיקונים בכיתה ז׳ ו־543 הרשומות המקוריות. כל 31,127 השלישיות האוטומטיות מזוהות כהפקת `qwen3.8-flash` עם `machine_generated_flash_automatic_checks_no_model_review`, ושלושת הרמזים בכל שלישייה שונים לאחר נרמול רווחים.
+- הבדיקות האוטומטיות מאמתות מבנה, מזהה סעיף, חתימת PDF, גרסת native כשקיימת וחתימת נוסח הסעיף. לא נערכה ביקורת תוכן עצמאית נוספת, ואין בבדיקות האלה טענה לאימות נכונות מתמטית.
+- תוספת כיתה ט׳ ל־Supabase ממתינה להחלה המוגנת; פרסום ובדיקה חיה יתועדו בנפרד. שלושת הרמזים הסטנדרטיים מגיעים מהמאגר המוכן; Flash בזמן שימוש נשאר לשאלות נוספות בלבד. אין שינוי בקוד האתר, בהגנות, בכלל השרטוטים או מעבר ל־Max או למודל חלופי.
+
+### 2026-11-01 — תיקון נוסחה ורמז דמיון לאחר מדגם חי
+
+- ב־`G9-T04-A-Q02א`, רמז 2, הביטויים של המונה והמכנה נעטפו בתחומי נוסחה כדי שהחזקות וסימני החיסור יוצגו מתמטית ובכיוון הקריאה הנכון בתוך עברית.
+- ב־`G8-T45-E2-Q02א`, רמז 1, השאלה הכללית על צורת המשולשים הוחלפה בהכוונה להתאמת הצלעות לפי סדר אורכיהן, תוך שימוש בנתון שהצלע החסרה מתאימה לצלע הארוכה במשולש האחר. רמזים 2 ו־3 נשמרו.
+- המאגר נשאר עם 31,670 שלישיות. רק שני טקסטים בשתי רשומות השתנו; 31,668 הרשומות האחרות וכל חתימות המקור נשמרו. היסטוריית עריכות מפורשת נוספה לרישום המקור, עם אפס קריאות מודל ואפס ביקורות מודלים חדשות. עדכון Supabase מוגן בחתימות לפני ואחרי ובבדיקת מספר הרשומות.
+- הרמזים הרגילים ממשיכים להישלף מ־Supabase. רענון הגרסה הקיים מחליף את הרמזים הישנים בשיחות שנשמרו. Flash נשאר לשאלות נוספות בלבד, ללא Max. תוצאות הפרסום והבדיקה החיה מתועדות בדוח המסירה.
+
+## 2026-11-02 — Teacher answer print preservation
+
+- Whole-question selections retain each complete answer crop from the source PDF, preserving fraction layout instead of repacking individual text rows.
+- Answer pages without a repeated heading are included after the final-answer section begins.
+- Regression case: grade 7, topic 8, excellence, questions 5, 13, 14 and 15.
+- Validation: 1,842 tests passed (1,833 unit, 5 isolated drawing, 4 live SSR), production build and slash-fraction check passed. Brave desktop/mobile and four-page print PDF inspected: all four answers readable, with no overlap. Wix preview URL is recorded in the PR.
+
+### 2026-11-03 — פעולה יזומה להוספת נושא באזור המורים
+
+- לפי אישור נועם להצעת Manus CL4, שאלת ״האם תרצה לבחור עוד נושא״ וכפתורי כן/לא הוחלפו בכפתור קבוע ״+ הוספת נושא לדף״ בשלב 3, באתר ובדמו. הוא פעיל כשנבחרו שאלות חדשות.
+- הלחיצה משתמשת בפעולה הקיימת: שומרת את הבחירה כמקטע, משאירה מקטעים קודמים וחוזרת לבחירת נושא באותה כיתה עם מיקוד בשדה החיפוש. אפשר להמשיך לתצוגה ולהדפסה בלי להוסיף נושא.
+- השמירה בזיכרון הדף הקיים; אין התחברות, מסד נתונים או שינוי במנגנון ההדפסה ובתשובות הסופיות. תוצאות האימות ותצוגה מקדימה יירשמו ב־PR. מיזוג ופרסום טעונים אישור נפרד.
+
+### 2026-11-03 — תשובות סופיות לארבעה דפים שמקורם שוחזר
+
+- G8-T45 ו־G8-T51 במצוינות נוספת, G8-T56 ו־G8-T57 בדף ההעמקה: 325 סעיפים נבדקו ונוספו להם תשובות סופיות. 56 עמודי השאלות זהים בפיקסלים; נוסף פרק תשובות בן 11 עמודים בסך הכול.
+- בקטלוג המועמד 382 מתוך 404 דפים עם תשובות. הקישורים הישנים נשמרים ומועברים לחדשים, כולל רמת c2. הדפסת מורה כוללת את פרק התשובות המלא של כל מקור נבחר.
+- הקבצים הועלו ישירות ל־Wix והורדה חוזרת זהה בייט־לבייט. שילוב ופרסום טרם בוצעו; ראיות ומגבלות ב־`docs/final-answers-recovered4-20261103.md`.
+
+### 2026-11-03 — מניין עמודים לפני ההדפסה באזור המורים
+
+- לפי אישור נועם להצעת Manus CL5, נוסף בשלב 4 סיכום של עמודי השאלות, עמודי התשובות וסך העמודים במסמך שהוכן. הספירה מבוססת על העמודים שנוצרו בפועל ומוצגת רק לאחר סיום הכנה מוצלחת. במקור מסומן נשמר המונח ״עמודי מקור״.
+- הספירה מתנקה עם עריכה, הכנה חוזרת או שגיאה; הכנה ישנה שהושלמה באיחור אינה מפרסמת ספירה. ההוראות לתלמיד מצורפות לפני הספירה, באותו מסמך עם התשובות הסופיות.
+- אין שינוי בחלוקת העמודים, בתוכן, בשמירה או בהתחברות. הסיכום מופיע במסך בלבד. בדיקות ותצוגה מקדימה יירשמו ב־PR; מיזוג ופרסום טעונים אישור נפרד.
+
+
+## Completion of the final-answer recovery — 2026-11-03
+
+- Added final answers to the remaining 22 worksheets (1,735 subparts / 45 answer pages), bringing this 404-sheet republishing project to completion. The wider catalog has 426 PDFs and is not claimed fully re-audited.
+- Rebuilt editable sources with skill 7.0.3-noam / engine 6.18; 292 question pages preserve their content and layout. Noam approved verified AA-only raster differences; exact rendering state and positions were independently checked.
+- All final-answer pages visually checked; all selected questions retain every subpart answer through full answer-section printing. Answers to unselected questions remain in that full section.
+- Uploaded directly to Wix and verified all 22 downloads byte-for-byte. Old files retained; no SQL execution, secret extraction or temporary release. Details, checks and direct routes: `docs/final-answers-remaining22-20261103.md`.
+
+## 2026-11-04 — Selected answers and editable Word export
+
+Completed 612 previously missing/incomplete whole-question answers: 270 across 13 middle-school PDFs, 332 elementary repairs and ten explicitly approved grade-six data additions with matching answers. Question source PDFs remain unchanged; approved data appears alongside its question in the teacher preview and compact print. The generated answer maps cover all 18,794 questions across 933 sources with no recorded missing-answer entries. Coverage validation does not replace an independent mathematical review of the entire older answer bank.
+
+Word export uses editable RTL text, native Office Math, selected questions only, and all their subpart answers at the end. Initial source-backed coverage is 8,026 questions (404 complete middle-school PDFs plus the ten approved elementary repairs). Remaining sources fail with a visible message instead of producing a partial or image-only Word document. Original diagrams remain images. Source provenance and reproducible build: `tools/teacher-word-content/README.md`.
+
+Checks and publication evidence: `docs/teacher-answer-word-20261104.md`.

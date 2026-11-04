@@ -38,7 +38,7 @@ const bank=[
 const site=build.loadSite(path.join(__dirname,".."));
 
 test("E2 parts bind to their own PDF-only worksheets and never borrow native E data",()=>{
-  const expected={"G8-T45":"e4da722565a942e482c9e4dbf6ee41b5","G8-T51":"0b79f523d8ea4598a85d5320d6acd823"};
+  const expected={"G8-T45":"37e09211e4dd425cbcbf5fe78eb68080","G8-T51":"404058e8bee94abb9a2c7afc8035f316"};
   for(const [prefix,pdf] of Object.entries(expected)){
     const topic=site.find(topic=>topic.prefix===prefix),id=prefix+"-E2-Q01א";
     assert.equal(topic.levels.E2.source_pdf_hash,pdf);
@@ -64,7 +64,7 @@ test("E2 parts bind to their own PDF-only worksheets and never borrow native E d
 });
 
 test("all T40 manifests match exact native selected tasks and have no T32 exercise IDs",()=>{
-  const root=path.join(__dirname,".."),pdfs={A:"043606cd6c8e4c199b148424caf7ef36",B:"9fdee3c1708d4726998df6526d437f4c",E:"8f86fe9850874c4f935f16ddddc51c83"};
+  const root=path.join(__dirname,".."),pdfs={A:"07a64e423dc04a5e8c1afca0e5fd2378",B:"60c1d220383c413aaae3b2c75fcec769",E:"72d87d8b638f4a98b5bd6a379030919f"};
   let count=0;
   for(const [level,pdf] of Object.entries(pdfs)){
     const relative="noam-ai/manifests/"+pdf+".json",bytes=fs.readFileSync(path.join(root,relative)),manifest=JSON.parse(bytes);
@@ -206,8 +206,8 @@ test("the committed seed matches the committed public rows and hides unreviewed 
   const loaded=build.loadRows(rows,live);
   assert.deepEqual(loaded.rejected,[]);
   assert.deepEqual(build.publicRows(build.bindRows(site,loaded.rows).rows),rows);
-  assert.equal(rows.length,13058);
-  assert.equal(rows.filter(row=>row.status==="verified").length,13058);
+  assert.equal(rows.length,31670);
+  assert.equal(rows.filter(row=>row.status==="verified").length,31670);
   assert.equal(rows.filter(row=>row.status==="review").length,0);
   assert.deepEqual(build.firstPartCoverage(site,rows),{eligible:424,verified:424,missing:[]});
   rows.forEach(row=>{
@@ -228,7 +228,7 @@ test("the trapezoid excellence rows from PR316 pass the gates and are pinned to 
   pilot.forEach(row=>{
     assert.match(row.exercise_id,/^G9-T39-E-Q\d{2}[א-ת]$/);
     assert.equal(row.status,"verified");
-    assert.equal(row.source_pdf_hash,"e020549ff713406fb0c0f07443b09b18");
+    assert.equal(row.source_pdf_hash,"1c676026e49d4adeae45864911235727");
     assert.equal(row.source_native_sha256,"0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201");
     assert.equal(build.hintIssue(row.hints),null,row.exercise_id);
     assert.equal(review.get(row.exercise_id),"authored_against_native_source_agent_reviewed_pending_noam_approval");
@@ -256,7 +256,7 @@ test("the public key reads only verified hints and the two safe source bindings"
 
 test("T32 rows retain their current bindings after T40 receives its own IDs; legacy ambiguous sources still fail closed",()=>{
   const rows=JSON.parse(fs.readFileSync(path.join(__dirname,"..","learning/ramzi-hints.json"),"utf8"));
-  const expected={A:"1484d3da89c246e0bf6f7c6ccf7fd6f5",B:"6bfa684eb9b644f684bea0cde1c5c9a1",E:"9e98f366feb74e129b7c9d1f1d33285d"};
+  const expected={A:"9bb06971abc942498819b1640477546d",B:"2c6b61aee35a48aa8d4a0560a3612eae",E:"41d812848a9b439c8c4c330a838e6616"};
   const originals=rows.filter(row=>/^G9-T32-[ABE]-Q01א$/.test(row.exercise_id)).map(row=>{
     const copy={...row};delete copy.source_pdf_hash;delete copy.source_native_sha256;return copy;
   });
@@ -405,13 +405,13 @@ test("all current Q01 parts have a source-bound ladder, including E2 and canonic
   for(const {id,level}of expected.values()){
     const row=byId.get(id);assert.ok(row,id+" is missing");
     assert.equal(row.status,"verified");
-    assert.equal(row.source_pdf_hash,level.source_pdf_hash,id);
+    assert.ok(row.source_pdf_hash===level.source_pdf_hash||level.pdfAliases.includes(row.source_pdf_hash),id);
     assert.equal(row.source_native_sha256,level.source_native_sha256,id);
     assert.equal(row.source_exercise_sha256,build.sourceTaskHash(level.exerciseTexts.get(id)),id);
     assert.equal(build.hintIssue(row.hints),null,id);
   }
   const generated=rows.filter(row=>row.source==="ramzi-flash-authored-20261031");
-  assert.equal(generated.length,12515);
+  assert.equal(generated.length,31127);
   const ledger=JSON.parse(fs.readFileSync(path.join(root,"learning/ramzi-hints-review-20261031.json")));
   const byLedgerId=new Map(ledger.rows.map(entry=>[entry.exercise_id,entry]));
   for(const row of generated){
@@ -422,23 +422,34 @@ test("all current Q01 parts have a source-bound ladder, including E2 and canonic
   }
 });
 
-test("every current grade 7 part has a ladder bound to its exact PDF, native revision and selected text",()=>{
+for(const [grade,coverage,sharedCoverage] of [[7,11942,0],[8,13673,0],[9,6055,2445]])test("every current grade "+grade+" part has a ladder bound to its exact PDF, native revision and selected text",()=>{
   const rows=JSON.parse(fs.readFileSync(path.join(__dirname,"..","learning/ramzi-hints.json")));
   const byId=new Map(rows.map(row=>[row.exercise_id,row]));
   const expected=new Map();
-  for(const topic of site.filter(topic=>topic.grade===7)){
+  for(const topic of site.filter(topic=>topic.grade===grade)){
     for(const level of Object.values(topic.levels))for(const id of level.exercises){
-      assert.match(id,/^G7-/,"grade 7 catalog must not borrow another grade's task");
+      if(!id.startsWith("G"+grade+"-")){
+        // Some Grade9 topics explicitly reuse a Grade7 PDF. Require the same
+        // canonical task and complete source binding, never a guessed alias.
+        const prefix=id.match(/^G[7-9]-T\d{2}/)?.[0];
+        const owner=site.find(topic=>topic.prefix===prefix);
+        const original=owner&&Object.values(owner.levels).find(binding=>binding.exercises.has(id)&&binding.source_pdf_hash===level.source_pdf_hash);
+        assert.ok(original,id+" must exist in its canonical catalog topic");
+        assert.equal(original.source_native_sha256,level.source_native_sha256,id+" shared native revision");
+        assert.equal(original.exerciseTexts.get(id),level.exerciseTexts.get(id),id+" shared selected task text");
+      }
       expected.set(level.source_pdf_hash+":"+id,{id,level});
     }
   }
-  assert.equal(expected.size,11942,"coverage includes every question and level, not only Q01");
-  assert.equal(new Set([...expected.values()].map(({id})=>id)).size,11942,"different source PDFs cannot share a covered exercise ID");
-  assert.equal(rows.filter(row=>row.exercise_id.startsWith("G7-")).length,11942);
+  assert.equal(expected.size,coverage+sharedCoverage,"coverage includes every question and level, including exact shared PDFs");
+  assert.equal([...expected.values()].filter(({id})=>id.startsWith("G"+grade+"-")).length,coverage,"own-grade IDs are counted once");
+  assert.equal(new Set([...expected.values()].map(({id})=>id)).size,coverage+sharedCoverage,"different source PDFs cannot share a covered exercise ID");
+  assert.equal(rows.filter(row=>row.exercise_id.startsWith("G"+grade+"-")).length,coverage);
   for(const {id,level}of expected.values()){
     const row=byId.get(id);assert.ok(row,id+" is missing");
     assert.equal(row.status,"verified",id);
-    assert.equal(row.source_pdf_hash,level.source_pdf_hash,id+" PDF revision");
+    // A republished sheet keeps the hints of the PDF whose question pages it repeats.
+    assert.ok(row.source_pdf_hash===level.source_pdf_hash||level.pdfAliases.includes(row.source_pdf_hash),id+" PDF revision");
     assert.equal(row.source_native_sha256,level.source_native_sha256,id+" native revision");
     assert.equal(row.source_exercise_sha256,build.sourceTaskHash(level.exerciseTexts.get(id)),id+" selected task text");
     assert.equal(build.hintIssue(row.hints),null,id);
@@ -449,7 +460,7 @@ test("the newly approved proof row contains only student-facing hints and a curr
   const rows=JSON.parse(fs.readFileSync(path.join(__dirname,"..","learning/ramzi-hints.json"),"utf8"));
   const row=rows.find(row=>row.exercise_id==="G9-T39-E-Q03ב");
   assert.equal(row.status,"verified");assert.equal(row.source,"ramzi-reviewed-20261031");
-  assert.equal(row.source_pdf_hash,"e020549ff713406fb0c0f07443b09b18");
+  assert.equal(row.source_pdf_hash,"1c676026e49d4adeae45864911235727");
   assert.equal(row.source_native_sha256,"0d13e656ba7f89ca2cd9fc5b394ba95ede2e274a45cdd83ff88b2c1c528f6201");
   assert.match(row.hints[1],/^אם הוכחתם/);
   assert.match(row.hints[2],/אם נימקתם/);

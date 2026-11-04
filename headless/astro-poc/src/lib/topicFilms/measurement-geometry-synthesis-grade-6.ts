@@ -67,7 +67,7 @@ export const FILM = {
       <text data-el="chip3" class="cl-t cl-num cl-rtl" x="159" y="422" text-anchor="middle" style="font-size:32px">48 סמ״ר</text>
     </g>
   `,
-  formulaHTML: `<p class="concept-loop__formula cl-num" dir="ltr"><span data-fx="0" style="display:block">10 × 6 = 60 סמ״ר</span><span data-fx="1" style="display:block">4 × 3 = 12 סמ״ר</span><span data-fx="2" style="display:block">60 − 12 = 48 סמ״ר</span><span data-fx="3" class="cl-check" aria-hidden="true">✓</span></p>`,
+  formulaHTML: `<p class="concept-loop__formula cl-num" dir="rtl" style="direction:rtl;unicode-bidi:isolate"><span data-fx="0" dir="rtl" style="display:block;direction:rtl;unicode-bidi:isolate"><bdi dir="ltr" style="direction:ltr;unicode-bidi:bidi-override">10 × 6 = 60</bdi> <span dir="rtl">סמ״ר</span></span><span data-fx="1" dir="rtl" style="display:block;direction:rtl;unicode-bidi:isolate"><bdi dir="ltr" style="direction:ltr;unicode-bidi:bidi-override">4 × 3 = 12</bdi> <span dir="rtl">סמ״ר</span></span><span data-fx="2" dir="rtl" style="display:block;direction:rtl;unicode-bidi:isolate"><bdi dir="ltr" style="direction:ltr;unicode-bidi:bidi-override">60 − 12 = 48</bdi> <span dir="rtl">סמ״ר</span></span><span data-fx="3" class="cl-check" aria-hidden="true">✓</span></p>`,
 
   render(root, t) {
     const { ph, op, q, qa } = LoopHelpers;

@@ -1,0 +1,994 @@
+{
+  "sourceSha256": "34e8fe6a03971436a0d77fc6ee34ca9c86d06719504576d310d96a3203401c5e",
+  "answerSourceSha256": "3363e409bba2bba70fd8fa3331a6c32c872abecf525bd3bafe0ee6473d88d0ca",
+  "nativeSha256": "39b96d6669fae3da38695fe8a153a9c24be62707a51d3ff9f6426820310f559e",
+  "questions": {
+    "1": {
+      "id": "35a2c13891bd428dbbff0882b89957e2:1",
+      "q": 1,
+      "grade": 8,
+      "topic": "פיתגורס מורכב",
+      "levelLabel": "רמה ב׳",
+      "text": "הצורה מורכבת ממלבן $ABCD$ וממשולש ישר זווית $BCE$ הצמוד אליו. נתון $AB=8$, $BC=3$, $BE=4$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T50/b/figures/q1_head.svg",
+        "sha256": "9b1f6925cdba29b0d6ade4106978c7825986e2185c7da19381642d319c9b96f3"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "אילו קטעים שייכים לגבול החיצוני, ואיזה קטע משותף אינו חלק ממנו?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q1_head.svg",
+            "sha256": "9b1f6925cdba29b0d6ade4106978c7825986e2185c7da19381642d319c9b96f3"
+          },
+          "answer": "הגבול הוא $AE,EC,CD,DA$. הקטע $BC$ פנימי."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו גם את $CE$ וגם את אלכסון המלבן $AC$. הסבירו מדוע לכל חישוב משולש עזר אחר.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q1_head.svg",
+            "sha256": "9b1f6925cdba29b0d6ade4106978c7825986e2185c7da19381642d319c9b96f3"
+          },
+          "answer": "$CE=5$ מן הניצבים $3,4$; $AC=\\sqrt{73}$ מן הניצבים $8,3$."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו בנפרד את שטח המלבן ואת שטח המשולש, ואחר כך את שטח הצורה כולה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q1_head.svg",
+            "sha256": "9b1f6925cdba29b0d6ade4106978c7825986e2185c7da19381642d319c9b96f3"
+          },
+          "answer": "שטח המלבן $24$, שטח המשולש $6$, ובסך הכול $30$."
+        },
+        {
+          "label": "ד",
+          "text": "איזה חלק משטח הצורה הוא המשולש? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q1_head.svg",
+            "sha256": "9b1f6925cdba29b0d6ade4106978c7825986e2185c7da19381642d319c9b96f3"
+          },
+          "answer": "$\\f{1}{5}$, כי שטח כל הצורה $30$."
+        },
+        {
+          "label": "ה",
+          "text": "חשבו את היקף הצורה כולה, בלי לספור את הצלע המשותפת.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q1_head.svg",
+            "sha256": "9b1f6925cdba29b0d6ade4106978c7825986e2185c7da19381642d319c9b96f3"
+          },
+          "answer": "$28$ מחיבור צלעות הגבול."
+        }
+      ]
+    },
+    "2": {
+      "id": "35a2c13891bd428dbbff0882b89957e2:2",
+      "q": 2,
+      "grade": 8,
+      "topic": "פיתגורס מורכב",
+      "levelLabel": "רמה ב׳",
+      "text": "נתונות $A(2,2)$ ו־$B(5,6)$.",
+      "example": {
+        "title": "דוגמה נפרדת — זיהוי היתר",
+        "lines": [
+          "במשולש ישר זווית שניצביו $5$ ו־$12$, היתר הוא הצלע שמול הזווית הישרה.",
+          "$c ^2=5 ^2+12 ^2=169$ ולכן $c=13$."
+        ]
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מהם אורכי התנועה האופקית והאנכית בין הנקודות?",
+          "answer": "$3$ ו־$4$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את $AB$ באמצעות משולש עזר, ולא בחיבור שני האורכים.",
+          "answer": "$AB=5$."
+        },
+        {
+          "label": "ג",
+          "text": "תלמיד כתב שאורך קטע יכול להיות שלילי כי חיסר בסדר הפוך. הסבירו כיצד מתקנים.",
+          "answer": "משתמשים באורכי הפרשים חיוביים; שינוי כיוון התנועה אינו משנה את המרחק."
+        },
+        {
+          "label": "ד",
+          "text": "שרטטו משולש עזר והשוו בין אורך המסלול האופקי ואחריו האנכי לבין הקטע הישר.",
+          "answer": "המסלול השבור $7$, ארוך מן הקטע הישר ב־$2$."
+        }
+      ]
+    },
+    "3": {
+      "id": "35a2c13891bd428dbbff0882b89957e2:3",
+      "q": 3,
+      "grade": 8,
+      "topic": "פיתגורס מורכב",
+      "levelLabel": "רמה ב׳",
+      "text": "$ABCD$ הוא ריבוע שצלעו $3$. האלכסון $AC$ מסומן.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T50/b/figures/q3_head.svg",
+        "sha256": "176851e272b90068dca286af245d8469f8aba67961067d9840fe405676feb037"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מהו ריבוע אורך האלכסון?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q3_head.svg",
+            "sha256": "176851e272b90068dca286af245d8469f8aba67961067d9840fe405676feb037"
+          },
+          "answer": "$AC^2=18$."
+        },
+        {
+          "label": "ב",
+          "text": "כתבו אורך מדויק ומצאו בין אילו שלמים הוא נמצא.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q3_head.svg",
+            "sha256": "176851e272b90068dca286af245d8469f8aba67961067d9840fe405676feb037"
+          },
+          "answer": "$\\sqrt{18}$, בין $4$ ל־$5$."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את שטח $△ABC$ בלי להשתמש בתוצאת השורש.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q3_head.svg",
+            "sha256": "176851e272b90068dca286af245d8469f8aba67961067d9840fe405676feb037"
+          },
+          "answer": "$\\f{9}{2}$, מחצית משטח הריבוע."
+        },
+        {
+          "label": "ד",
+          "text": "הסבירו מדוע מספר שאינו שלם הוא עדיין תשובה מדויקת כאשר הוא כתוב כשורש.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q3_head.svg",
+            "sha256": "176851e272b90068dca286af245d8469f8aba67961067d9840fe405676feb037"
+          },
+          "answer": "סימן השורש מגדיר את האורך החיובי שריבועו ידוע; אין צורך להחליפו בקירוב."
+        }
+      ]
+    },
+    "4": {
+      "id": "35a2c13891bd428dbbff0882b89957e2:4",
+      "q": 4,
+      "grade": 8,
+      "topic": "פיתגורס מורכב",
+      "levelLabel": "רמה ב׳",
+      "text": "במלבן $ABCD$ נתונים $BC=6$, $AC=10$.",
+      "example": {
+        "title": "דוגמה נפרדת — מציאת ניצב",
+        "lines": [
+          "אם היתר $25$ וניצב אחד $7$, מסמנים את האחר ב־$x$.",
+          "$x ^2+7 ^2=25 ^2$, ולכן $x ^2=576$ ו־$x=24$."
+        ]
+      },
+      "figure": {
+        "url": "/noam-ai/native/G8-T50/b/figures/q4_head.svg",
+        "sha256": "938c7dccdad09a37d3bf40a946aba513848dc1868c2c412f0bdd7dafe2b7f05d"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "לפני חישוב: האם $AB$ יכול להיות ארוך מן האלכסון? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q4_head.svg",
+            "sha256": "938c7dccdad09a37d3bf40a946aba513848dc1868c2c412f0bdd7dafe2b7f05d"
+          },
+          "answer": "לא. האלכסון הוא יתר במשולש ישר זווית ולכן ארוך מכל ניצב."
+        },
+        {
+          "label": "ב",
+          "text": "כתבו משוואה לריבוע $AB$ ופתרו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q4_head.svg",
+            "sha256": "938c7dccdad09a37d3bf40a946aba513848dc1868c2c412f0bdd7dafe2b7f05d"
+          },
+          "answer": "$AB^2+6 ^2=10 ^2$, ולכן $AB^2=64$ ו־$AB=8$; הפתרון $−8$ נפסל, כי אורך חיובי."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את שטח המלבן ואת היקפו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q4_head.svg",
+            "sha256": "938c7dccdad09a37d3bf40a946aba513848dc1868c2c412f0bdd7dafe2b7f05d"
+          },
+          "answer": "השטח $48$ וההיקף $28$."
+        },
+        {
+          "label": "ד",
+          "text": "השלימו בדיקה של התשובה באמצעות חיבור ריבועי הצלעות.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q4_head.svg",
+            "sha256": "938c7dccdad09a37d3bf40a946aba513848dc1868c2c412f0bdd7dafe2b7f05d"
+          },
+          "answer": "$8 ^2+6 ^2=10 ^2$, ולכן התשובה מתאימה לנתונים."
+        }
+      ]
+    },
+    "5": {
+      "id": "35a2c13891bd428dbbff0882b89957e2:5",
+      "q": 5,
+      "grade": 8,
+      "topic": "פיתגורס מורכב",
+      "levelLabel": "רמה ב׳",
+      "text": "נסמן ב־$P$ את הנקודה המבוקשת ברביע הראשון. מרחקה מראשית הצירים $O$ הוא $17$, ושיעור האיקס שלה $8$. באיור מסומן $H(8,0)$ בלבד. הוצעו שיעורי וואי $9$ או $15$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T50/b/figures/q5_head.svg",
+        "sha256": "827c99910a5eb52c931c5f8383e05873d059424deefbbeba07ae2b8762621a85"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "כתבו את שיעורי $O$ ובחרו איזו הצעה עבור $P$ מתאימה לנתון המרחק. בדקו בריבועים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q5_head.svg",
+            "sha256": "827c99910a5eb52c931c5f8383e05873d059424deefbbeba07ae2b8762621a85"
+          },
+          "answer": "$O(0,0)$; $8 ^2+15 ^2=17 ^2$ ואילו $8 ^2+9 ^2=145$, ולכן ההצעה המתאימה היא $15$."
+        },
+        {
+          "label": "ב",
+          "text": "סמנו את $P$ ואת המשולש $△OHP$. מהו היתר ומדוע זיהויו קודם לחשבון?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q5_head.svg",
+            "sha256": "827c99910a5eb52c931c5f8383e05873d059424deefbbeba07ae2b8762621a85"
+          },
+          "answer": "$∠OHP=90°$ ב־$H(8,0)$, ולכן $OP=17$ הוא היתר ו־$P(8,15)$. מזהים את היתר לפני החישוב כדי לדעת שריבועו שווה לסכום ריבועי הניצבים: $8 ^2+HP^2=17 ^2$."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את שטח $△OHP$ ואת היקפו, ובדקו שהניצבים אינם המרחק הישר מן הראשית.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q5_head.svg",
+            "sha256": "827c99910a5eb52c931c5f8383e05873d059424deefbbeba07ae2b8762621a85"
+          },
+          "answer": "השטח $60$ וההיקף $40$; הניצבים $8,15$ והיתר $17$."
+        },
+        {
+          "label": "ד",
+          "text": "כתבו את ההיטל של $P$ על ציר הוואי וקבעו לאיזה ציר היא קרובה יותר. הסבירו מדוע אין די בשיעור יחיד כדי לחשב מרחק מן הראשית.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q5_head.svg",
+            "sha256": "827c99910a5eb52c931c5f8383e05873d059424deefbbeba07ae2b8762621a85"
+          },
+          "answer": "ההיטל $K(0,15)$; קרובה יותר לציר הוואי במרחק $8$, לעומת $15$ מציר האיקס. למרחק מן הראשית נחוצים שני ההפרשים."
+        }
+      ]
+    },
+    "6": {
+      "id": "35a2c13891bd428dbbff0882b89957e2:6",
+      "q": 6,
+      "grade": 8,
+      "topic": "פיתגורס מורכב",
+      "levelLabel": "רמה ב׳",
+      "text": "הנקודות $A(1,1)$, $B(9,7)$ ו־$C(1,7)$ מסומנות.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T50/b/figures/q6_head.svg",
+        "sha256": "48d01ddeabbf855de40970184129964771c38db17ee087a14470c7b765d5b9cc"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הסבירו מדוע $∠ACB$ ישרה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q6_head.svg",
+            "sha256": "48d01ddeabbf855de40970184129964771c38db17ee087a14470c7b765d5b9cc"
+          },
+          "answer": "הקטע $AC$ אנכי והקטע $CB$ אופקי."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את אורך הקטע הישר $AB$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q6_head.svg",
+            "sha256": "48d01ddeabbf855de40970184129964771c38db17ee087a14470c7b765d5b9cc"
+          },
+          "answer": "$10$."
+        },
+        {
+          "label": "ג",
+          "text": "מה ארוך יותר: המסלול דרך $C$ או הקטע הישר? בכמה?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q6_head.svg",
+            "sha256": "48d01ddeabbf855de40970184129964771c38db17ee087a14470c7b765d5b9cc"
+          },
+          "answer": "המסלול דרך $C$ ארוך ב־$4$."
+        },
+        {
+          "label": "ד",
+          "text": "האם חישוב $AB$ נחוץ למציאת שטח המשולש? נמקו וחשבו את השטח.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q6_head.svg",
+            "sha256": "48d01ddeabbf855de40970184129964771c38db17ee087a14470c7b765d5b9cc"
+          },
+          "answer": "לא; שני הניצבים מספיקים והשטח $24$."
+        }
+      ]
+    },
+    "7": {
+      "id": "35a2c13891bd428dbbff0882b89957e2:7",
+      "q": 7,
+      "grade": 8,
+      "topic": "פיתגורס מורכב",
+      "levelLabel": "רמה ב׳",
+      "text": "ב־$△ABC$ נתון במילים ש־$AB$ מאונך ל־$BC$. נתונים $AB=8$, $AC=17$. באיור אין סימון קטן של זווית ישרה.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T50/b/figures/q7_head.svg",
+        "sha256": "6323ab0a759ccf4a51addc72781d2849dfab313ce39afa89fa24e3ba058c420c"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "איזה נתון מצדיק את השימוש בפיתגורס ואיזו צלע היא היתר?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q7_head.svg",
+            "sha256": "6323ab0a759ccf4a51addc72781d2849dfab313ce39afa89fa24e3ba058c420c"
+          },
+          "answer": "המאונכות נתונה במילים; היתר הוא $AC$."
+        },
+        {
+          "label": "ב",
+          "text": "מצאו את $BC$ ובדקו בחיבור ריבועים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q7_head.svg",
+            "sha256": "6323ab0a759ccf4a51addc72781d2849dfab313ce39afa89fa24e3ba058c420c"
+          },
+          "answer": "$BC=15$; $64+225=289$."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את שטח המשולש, וציינו את הבסיס והגובה שבחרתם.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q7_head.svg",
+            "sha256": "6323ab0a759ccf4a51addc72781d2849dfab313ce39afa89fa24e3ba058c420c"
+          },
+          "answer": "$\\f{8·15}{2}=60$: הבסיס $AB=8$ והגובה אליו $BC=15$ (אפשר גם להפך, כי הניצבים מאונכים)."
+        },
+        {
+          "label": "ד",
+          "text": "חשבו את היקף המשולש.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q7_head.svg",
+            "sha256": "6323ab0a759ccf4a51addc72781d2849dfab313ce39afa89fa24e3ba058c420c"
+          },
+          "answer": "$40$."
+        }
+      ]
+    },
+    "8": {
+      "id": "35a2c13891bd428dbbff0882b89957e2:8",
+      "q": 8,
+      "grade": 8,
+      "topic": "פיתגורס מורכב",
+      "levelLabel": "רמה ב׳",
+      "text": "במלבן $ABCD$ נתונים $AB=4$, $BC=7$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T50/b/figures/q8_head.svg",
+        "sha256": "7ee561eab4c811b9531c8bb21f829f1f44d9ae3653531bb60250df939cda9333"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "תלמיד קבע שהאלכסון שלם כי שתי הצלעות שלמות. חשבו את ריבוע האלכסון כדי לבדוק את טענתו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q8_head.svg",
+            "sha256": "7ee561eab4c811b9531c8bb21f829f1f44d9ae3653531bb60250df939cda9333"
+          },
+          "answer": "$AC^2=65$, שאינו ריבוע של מספר שלם."
+        },
+        {
+          "label": "ב",
+          "text": "כתבו את האלכסון בדיוק וכלואו אותו בין שלמים עוקבים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q8_head.svg",
+            "sha256": "7ee561eab4c811b9531c8bb21f829f1f44d9ae3653531bb60250df939cda9333"
+          },
+          "answer": "$\\sqrt{65}$, בין $8$ ל־$9$."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את שטח המשולש שנוצר מן האלכסון.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q8_head.svg",
+            "sha256": "7ee561eab4c811b9531c8bb21f829f1f44d9ae3653531bb60250df939cda9333"
+          },
+          "answer": "$14$."
+        },
+        {
+          "label": "ד",
+          "text": "השוו בין ההיקף ובין פעמיים האלכסון בעזרת הגבולות שמצאתם.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q8_head.svg",
+            "sha256": "7ee561eab4c811b9531c8bb21f829f1f44d9ae3653531bb60250df939cda9333"
+          },
+          "answer": "ההיקף $22$ גדול מפעמיים האלכסון, שכן פעמיים האלכסון קטן מ־$18$."
+        }
+      ]
+    },
+    "9": {
+      "id": "35a2c13891bd428dbbff0882b89957e2:9",
+      "q": 9,
+      "grade": 8,
+      "topic": "פיתגורס מורכב",
+      "levelLabel": "רמה ב׳",
+      "text": "המלבן $ABCD$ בעל $AB=5$, $BC=4$. אליו צמוד $△DCE$, כאשר $CE=12$ מאונך ל־$DC$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T50/b/figures/q9_head.svg",
+        "sha256": "00e29e290553719037adce8d0ca2fbed08ac713b355226ea69ce57fbc20394e2"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "בכמה גדול שטח המשולש משטח המלבן?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q9_head.svg",
+            "sha256": "00e29e290553719037adce8d0ca2fbed08ac713b355226ea69ce57fbc20394e2"
+          },
+          "answer": "שטח המשולש $30$ ושטח המלבן $20$; ההפרש $10$."
+        },
+        {
+          "label": "ב",
+          "text": "מצאו את הצלע הנטויה $DE$ באמצעות פיתגורס.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q9_head.svg",
+            "sha256": "00e29e290553719037adce8d0ca2fbed08ac713b355226ea69ce57fbc20394e2"
+          },
+          "answer": "$DE=13$."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את שטח הצורה המאוחדת.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q9_head.svg",
+            "sha256": "00e29e290553719037adce8d0ca2fbed08ac713b355226ea69ce57fbc20394e2"
+          },
+          "answer": "$50$."
+        },
+        {
+          "label": "ד",
+          "text": "חשבו את היקף הצורה והסבירו מדוע $DC$ אינו נוסף אליו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q9_head.svg",
+            "sha256": "00e29e290553719037adce8d0ca2fbed08ac713b355226ea69ce57fbc20394e2"
+          },
+          "answer": "$38$; $DC$ הוא חיבור פנימי בין שני החלקים."
+        }
+      ]
+    },
+    "10": {
+      "id": "35a2c13891bd428dbbff0882b89957e2:10",
+      "q": 10,
+      "grade": 8,
+      "topic": "פיתגורס מורכב",
+      "levelLabel": "רמה ב׳",
+      "text": "נקודות הבסיס הן $A(−1,−2)$ ו־$B(11,−2)$. שני קודקודים מוצעים הם $C(11,7)$ ו־$D(11,14)$. בדוח נכתב ששטח המשולש שנבחר הוא $96$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T50/b/figures/q10_head.svg",
+        "sha256": "967e72e87c57bf5dd335cac4a8264c824d455017b0083ce77fc040adfeb0ae84"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "איזה מן המשולשים $△ABC$ או $△ABD$ מתאים לדוח? חשבו את הגבהים כהפרשי שיעורים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q10_head.svg",
+            "sha256": "967e72e87c57bf5dd335cac4a8264c824d455017b0083ce77fc040adfeb0ae84"
+          },
+          "answer": "הגבהים $9$ ו־$16$, והשטחים $54$ ו־$96$; לכן $△ABD$ מתאים."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את שטח המלבן החוסם כל אחת מהאפשרויות, שצלעותיו מקבילות לצירים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q10_head.svg",
+            "sha256": "967e72e87c57bf5dd335cac4a8264c824d455017b0083ce77fc040adfeb0ae84"
+          },
+          "answer": "שטחי המלבנים $108$ ו־$192$, בהתאמה."
+        },
+        {
+          "label": "ג",
+          "text": "הסבירו את יחס שטח כל משולש למלבן שלו, ובדקו שסכום שני חלקי כל מלבן שווה לשלם.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q10_head.svg",
+            "sha256": "967e72e87c57bf5dd335cac4a8264c824d455017b0083ce77fc040adfeb0ae84"
+          },
+          "answer": "היחס חצי; $54+54=108$ ו־$96+96=192$. האלכסון יוצר שני משולשים שווי שטח."
+        },
+        {
+          "label": "ד",
+          "text": "חשבו את שני ההיקפים. האם המשולש המתאים לדוח הוא גם בעל ההיקף הגדול יותר?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q10_head.svg",
+            "sha256": "967e72e87c57bf5dd335cac4a8264c824d455017b0083ce77fc040adfeb0ae84"
+          },
+          "answer": "היתרים $15$ ו־$20$, וההיקפים $36$ ו־$48$; כאן כן."
+        }
+      ]
+    },
+    "11": {
+      "id": "35a2c13891bd428dbbff0882b89957e2:11",
+      "q": 11,
+      "grade": 8,
+      "topic": "פיתגורס מורכב",
+      "levelLabel": "רמה ב׳",
+      "text": "במלבן $ABCD$ נתונים $AB=6$, $BC=5$. בטבלת העבודה חסרות התוצאות.",
+      "table": {
+        "head": [
+          "גודל",
+          "פעולה",
+          "תוצאה"
+        ],
+        "rows": [
+          [
+            "שטח",
+            "$6·5$",
+            ""
+          ],
+          [
+            "היקף",
+            "$2·6+2·5$",
+            ""
+          ],
+          [
+            "ריבוע אלכסון",
+            "$6 ^2+5 ^2$",
+            ""
+          ]
+        ]
+      },
+      "figure": {
+        "url": "/noam-ai/native/G8-T50/b/figures/q11_head.svg",
+        "sha256": "2aff103e7083f330ece96f366973ea713c62c7bde01f56a5089a9e84451c832f"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "השלימו את שורת השטח והסבירו מדוע אינה דורשת פיתגורס.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q11_head.svg",
+            "sha256": "2aff103e7083f330ece96f366973ea713c62c7bde01f56a5089a9e84451c832f"
+          },
+          "answer": "$30$, כי הבסיס והגובה הם צלעות המלבן."
+        },
+        {
+          "label": "ב",
+          "text": "השלימו את שורת ההיקף.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q11_head.svg",
+            "sha256": "2aff103e7083f330ece96f366973ea713c62c7bde01f56a5089a9e84451c832f"
+          },
+          "answer": "$22$."
+        },
+        {
+          "label": "ג",
+          "text": "השלימו את שורת ריבוע האלכסון ואת אורך האלכסון המדויק.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q11_head.svg",
+            "sha256": "2aff103e7083f330ece96f366973ea713c62c7bde01f56a5089a9e84451c832f"
+          },
+          "answer": "$61$ ו־$\\sqrt{61}$."
+        },
+        {
+          "label": "ד",
+          "text": "איזו טעות תתגלה אם מישהו ישים בשורת האלכסון את התוצאה של ריבועו?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q11_head.svg",
+            "sha256": "2aff103e7083f330ece96f366973ea713c62c7bde01f56a5089a9e84451c832f"
+          },
+          "answer": "הוא יבלבל בין אורך האלכסון לבין ריבועו: $61$ הוא ריבוע האלכסון, והאלכסון הוא $\\sqrt{61}$. האורך $61$ אינו אפשרי, כי האלכסון קטן מסכום שתי הצלעות $11$."
+        }
+      ]
+    },
+    "12": {
+      "id": "35a2c13891bd428dbbff0882b89957e2:12",
+      "q": 12,
+      "grade": 8,
+      "topic": "פיתגורס מורכב",
+      "levelLabel": "רמה ב׳",
+      "text": "נתונות $P(0,−6)$, $Q(8,0)$ וראשית הצירים $O$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T50/b/figures/q12_head.svg",
+        "sha256": "929022123078bee33b3ea53b862ff25e54d826279f15eb9bcc87aa9294490aa4"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מהם אורכי $OP$ ו־$OQ$? מדוע אף אחד מהם אינו שלילי?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q12_head.svg",
+            "sha256": "929022123078bee33b3ea53b862ff25e54d826279f15eb9bcc87aa9294490aa4"
+          },
+          "answer": "$6$ ו־$8$; אורך הוא חיובי אף ששיעור הוואי שלילי."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את $PQ$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q12_head.svg",
+            "sha256": "929022123078bee33b3ea53b862ff25e54d826279f15eb9bcc87aa9294490aa4"
+          },
+          "answer": "$10$."
+        },
+        {
+          "label": "ג",
+          "text": "מי מבין $P$ ו־$Q$ נמצאת במרחק אפס מציר הוואי? הסבירו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q12_head.svg",
+            "sha256": "929022123078bee33b3ea53b862ff25e54d826279f15eb9bcc87aa9294490aa4"
+          },
+          "answer": "$P$, כי שיעור האיקס שלה אפס."
+        },
+        {
+          "label": "ד",
+          "text": "חשבו את שטח $△POQ$ והסבירו את בחירת הניצבים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q12_head.svg",
+            "sha256": "929022123078bee33b3ea53b862ff25e54d826279f15eb9bcc87aa9294490aa4"
+          },
+          "answer": "$24$; הקטעים שעל הצירים מאונכים."
+        }
+      ]
+    },
+    "13": {
+      "id": "35a2c13891bd428dbbff0882b89957e2:13",
+      "q": 13,
+      "grade": 8,
+      "topic": "פיתגורס מורכב",
+      "levelLabel": "רמה ב׳",
+      "text": "נתון ריבוע $ABCD$ שצלעו $5$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T50/b/figures/q13_head.svg",
+        "sha256": "21a884107ded605df6d4cdaa9beac9a8f7e929fd590e2bc87f7cd3b93cb2d8a8"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את ריבוע האלכסון.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q13_head.svg",
+            "sha256": "21a884107ded605df6d4cdaa9beac9a8f7e929fd590e2bc87f7cd3b93cb2d8a8"
+          },
+          "answer": "$50$."
+        },
+        {
+          "label": "ב",
+          "text": "האם האלכסון ארוך מ־$7$ וקצר מ־$8$? נמקו בעזרת ריבועים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q13_head.svg",
+            "sha256": "21a884107ded605df6d4cdaa9beac9a8f7e929fd590e2bc87f7cd3b93cb2d8a8"
+          },
+          "answer": "כן, כי $49<50<64$."
+        },
+        {
+          "label": "ג",
+          "text": "מה גדול יותר: האלכסון או מחצית ההיקף? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q13_head.svg",
+            "sha256": "21a884107ded605df6d4cdaa9beac9a8f7e929fd590e2bc87f7cd3b93cb2d8a8"
+          },
+          "answer": "מחצית ההיקף $10$ גדולה יותר מן האלכסון, כי ריבועה $100$ גדול מ־$AC^2=50$."
+        },
+        {
+          "label": "ד",
+          "text": "כתבו ערך מדויק לאלכסון. הבחינו בין הטענה על ריבוע שצלעו שלמה חיובית לבין טענה על כל מלבן בעל צלעות שלמות; תנו דוגמה נגדית לטענה השנייה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q13_head.svg",
+            "sha256": "21a884107ded605df6d4cdaa9beac9a8f7e929fd590e2bc87f7cd3b93cb2d8a8"
+          },
+          "answer": "$\\sqrt{50}$. בריבוע שצלעו שלמה חיובית $s$ מתקבל $d^2=2s^2$, כלומר $\\sqrt{2}=\\f{d}{s}$; אילו $d$ היה שלם, $\\sqrt{2}$ היה רציונלי, וזה אינו נכון. לכן האלכסון אינו שלם. הדבר אינו נכון לכל מלבן: צלעות $3,4$ נותנות אלכסון $5$; דוגמה אחת, וכל שלשה פיתגורית מתאימה, למשל $5,12$ עם אלכסון $13$."
+        }
+      ]
+    },
+    "14": {
+      "id": "35a2c13891bd428dbbff0882b89957e2:14",
+      "q": 14,
+      "grade": 8,
+      "topic": "פיתגורס מורכב",
+      "levelLabel": "רמה ב׳",
+      "text": "הנקודות הן $A(1,1)$, $B(7,1)$, $C(4,5)$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T50/b/figures/q14_head.svg",
+        "sha256": "0d8d51a220b03944e3599285f175db3a09cb117646bf9995773f0de0d8887d16"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את אורך $AB$ מתוך שיעורי הנקודות.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q14_head.svg",
+            "sha256": "0d8d51a220b03944e3599285f175db3a09cb117646bf9995773f0de0d8887d16"
+          },
+          "answer": "$6$."
+        },
+        {
+          "label": "ב",
+          "text": "מצאו את $AC$ ואת $BC$ בעזרת משולשי עזר.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q14_head.svg",
+            "sha256": "0d8d51a220b03944e3599285f175db3a09cb117646bf9995773f0de0d8887d16"
+          },
+          "answer": "שניהם באורך $5$."
+        },
+        {
+          "label": "ג",
+          "text": "מה ארוך יותר: מעבר מ־$A$ אל $B$ דרך $C$, או הקטע $AB$? בכמה?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q14_head.svg",
+            "sha256": "0d8d51a220b03944e3599285f175db3a09cb117646bf9995773f0de0d8887d16"
+          },
+          "answer": "המעבר דרך $C$ ארוך ב־$4$."
+        },
+        {
+          "label": "ד",
+          "text": "חשבו את שטח המשולש. הסבירו מדוע הצלעות הנטויות אינן הגובה לבסיס האופקי.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q14_head.svg",
+            "sha256": "0d8d51a220b03944e3599285f175db3a09cb117646bf9995773f0de0d8887d16"
+          },
+          "answer": "$12$; הגובה הוא ההפרש האנכי $4$, ולא אחת הצלעות הנטויות."
+        }
+      ]
+    },
+    "15": {
+      "id": "35a2c13891bd428dbbff0882b89957e2:15",
+      "q": 15,
+      "grade": 8,
+      "topic": "פיתגורס מורכב",
+      "levelLabel": "רמה ב׳",
+      "text": "למלבן $ABCD$ בעל $AB=9$, $BC=4$ צורף משולש ישר זווית $BCE$. שטח הצורה כולה $42$. הנקודות $A,B,E$ על ישר אחד.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T50/b/figures/q15_head.svg",
+        "sha256": "686fe39cc152e69de62cd797d9f1f8d07285c4db51f78dbeffb5e765ba3bf29c"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "שחזרו את שטח המשולש מתוך השטח הכולל.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q15_head.svg",
+            "sha256": "686fe39cc152e69de62cd797d9f1f8d07285c4db51f78dbeffb5e765ba3bf29c"
+          },
+          "answer": "$6$."
+        },
+        {
+          "label": "ב",
+          "text": "מצאו את אורך התוספת $BE$ מתוך שטח המשולש.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q15_head.svg",
+            "sha256": "686fe39cc152e69de62cd797d9f1f8d07285c4db51f78dbeffb5e765ba3bf29c"
+          },
+          "answer": "$BE=3$."
+        },
+        {
+          "label": "ג",
+          "text": "האם נדרש אלכסון המלבן כדי למצוא את $CE$? נמקו וחשבו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q15_head.svg",
+            "sha256": "686fe39cc152e69de62cd797d9f1f8d07285c4db51f78dbeffb5e765ba3bf29c"
+          },
+          "answer": "לא. משתמשים בניצבי המשולש הצמוד, ומקבלים $CE=5$."
+        },
+        {
+          "label": "ד",
+          "text": "מצאו את היקף הצורה המאוחדת.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q15_head.svg",
+            "sha256": "686fe39cc152e69de62cd797d9f1f8d07285c4db51f78dbeffb5e765ba3bf29c"
+          },
+          "answer": "$30$."
+        }
+      ]
+    },
+    "16": {
+      "id": "35a2c13891bd428dbbff0882b89957e2:16",
+      "q": 16,
+      "grade": 8,
+      "topic": "פיתגורס מורכב",
+      "levelLabel": "רמה ב׳",
+      "text": "נתונות $A(2,1)$ ו־$B(8,9)$. רוצים להשלים משולש שיתרו $AB$ וניצביו מקבילים לצירים.",
+      "items": [
+        {
+          "label": "א",
+          "text": "כתבו את שיעורי שני הקודקודים האפשריים של הזווית הישרה.",
+          "answer": "$C(2,9)$ או $C(8,1)$."
+        },
+        {
+          "label": "ב",
+          "text": "הסבירו מדוע נקודה על הישר $x=8$ שאינה בגובה של $A$ לא תיתן את ההשלמה הנדרשת.",
+          "answer": "בנקודה על $x=8$ שאינה בגובה של $A$ הקטע אל $B$ אנכי, אך הקטע אל $A$ נטוי ואינו אופקי; לכן אין שני ניצבים מקבילים לצירים."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את שטח כל אפשרות והסבירו מדוע השטחים שווים.",
+          "answer": "בכל אפשרות הניצבים באורכים $6$ ו־$8$, ולכן השטח $24$."
+        },
+        {
+          "label": "ד",
+          "text": "שרטטו את שתי האפשרויות, סמנו את הזווית הישרה וחשבו את היתר.",
+          "answer": "בשני המקרים היתר $10$."
+        }
+      ]
+    },
+    "17": {
+      "id": "35a2c13891bd428dbbff0882b89957e2:17",
+      "q": 17,
+      "grade": 8,
+      "topic": "פיתגורס מורכב",
+      "levelLabel": "רמה ב׳",
+      "text": "באיור שני מלבנים: מידות הראשון $2$ ו־$3$, ומידות השני $1$ ו־$4$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T50/b/figures/q17_head.svg",
+        "sha256": "9fbd9b1b0452cc88713b28b604e5162c93c5d69e126ee14c0a4ea3d6c84b9dbb"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את שני ההיקפים. האם הם שווים?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q17_head.svg",
+            "sha256": "9fbd9b1b0452cc88713b28b604e5162c93c5d69e126ee14c0a4ea3d6c84b9dbb"
+          },
+          "answer": "שני ההיקפים שווים ל־$10$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את שני השטחים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q17_head.svg",
+            "sha256": "9fbd9b1b0452cc88713b28b604e5162c93c5d69e126ee14c0a4ea3d6c84b9dbb"
+          },
+          "answer": "השטחים הם $6$ ו־$4$."
+        },
+        {
+          "label": "ג",
+          "text": "מצאו בדיוק את שני האלכסונים וקבעו איזה ארוך יותר.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q17_head.svg",
+            "sha256": "9fbd9b1b0452cc88713b28b604e5162c93c5d69e126ee14c0a4ea3d6c84b9dbb"
+          },
+          "answer": "$\\sqrt{13}$ ו־$\\sqrt{17}$; האלכסון של המלבן השני ארוך יותר."
+        },
+        {
+          "label": "ד",
+          "text": "איזו טענה מופרכת בעזרת שני המלבנים: היקפים שווים מחייבים אלכסונים שווים, או כל מלבן בעל אלכסון? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q17_head.svg",
+            "sha256": "9fbd9b1b0452cc88713b28b604e5162c93c5d69e126ee14c0a4ea3d6c84b9dbb"
+          },
+          "answer": "הטענה הראשונה מופרכת: ההיקפים שווים והאלכסונים שונים."
+        }
+      ]
+    },
+    "18": {
+      "id": "35a2c13891bd428dbbff0882b89957e2:18",
+      "q": 18,
+      "grade": 8,
+      "topic": "פיתגורס מורכב",
+      "levelLabel": "רמה ב׳",
+      "text": "$P(−4,3)$ ו־$Q(4,3)$ מסומנות יחד עם ראשית הצירים $O$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T50/b/figures/q18_head.svg",
+        "sha256": "340a38706ef858288020bd9a2e6b218e7d9fbf90a2888dc144034063a0f47da2"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הסבירו מדוע מרחקי שתי הנקודות מציר האיקס שווים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q18_head.svg",
+            "sha256": "340a38706ef858288020bd9a2e6b218e7d9fbf90a2888dc144034063a0f47da2"
+          },
+          "answer": "לשתיהן אותו שיעור וואי, ולכן המרחק הוא $3$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את מרחק כל נקודה מן הראשית.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q18_head.svg",
+            "sha256": "340a38706ef858288020bd9a2e6b218e7d9fbf90a2888dc144034063a0f47da2"
+          },
+          "answer": "שני המרחקים הם $5$."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את $PQ$, והסבירו מדוע אינו סכום המרחקים מהראשית.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q18_head.svg",
+            "sha256": "340a38706ef858288020bd9a2e6b218e7d9fbf90a2888dc144034063a0f47da2"
+          },
+          "answer": "$PQ=8$; סכום המרחקים מודד מסלול העובר דרך $O$."
+        },
+        {
+          "label": "ד",
+          "text": "חשבו את שטח $△POQ$ לפי בסיס אופקי וגובה מתאים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q18_head.svg",
+            "sha256": "340a38706ef858288020bd9a2e6b218e7d9fbf90a2888dc144034063a0f47da2"
+          },
+          "answer": "$12$."
+        }
+      ]
+    },
+    "19": {
+      "id": "35a2c13891bd428dbbff0882b89957e2:19",
+      "q": 19,
+      "grade": 8,
+      "topic": "פיתגורס מורכב",
+      "levelLabel": "רמה ב׳",
+      "text": "מסלול שבור עובר דרך $A(0,0)$, $B(5,0)$, $C(5,6)$, $D(8,6)$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T50/b/figures/q19_head.svg",
+        "sha256": "f6454a1d790f76f4339bf6bdf3e5fe0b72f8c9860abf4364376bd086c1e29fa1"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את אורך המסלול השבור.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q19_head.svg",
+            "sha256": "f6454a1d790f76f4339bf6bdf3e5fe0b72f8c9860abf4364376bd086c1e29fa1"
+          },
+          "answer": "$14$."
+        },
+        {
+          "label": "ב",
+          "text": "מהם סך ההתקדמות האופקית וההפרש האנכי בין קצות המסלול?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q19_head.svg",
+            "sha256": "f6454a1d790f76f4339bf6bdf3e5fe0b72f8c9860abf4364376bd086c1e29fa1"
+          },
+          "answer": "$8$ ו־$6$."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את המרחק הישר $AD$ והסבירו מדוע אין להשתמש רק ב־$CD$ כניצב אופקי.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q19_head.svg",
+            "sha256": "f6454a1d790f76f4339bf6bdf3e5fe0b72f8c9860abf4364376bd086c1e29fa1"
+          },
+          "answer": "$AD=10$; צריך את כל ההפרש האופקי בין הקצוות."
+        },
+        {
+          "label": "ד",
+          "text": "כמה נחסך במעבר לאורך הקטע הישר? בדקו את ההפרש.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T50/b/figures/q19_head.svg",
+            "sha256": "f6454a1d790f76f4339bf6bdf3e5fe0b72f8c9860abf4364376bd086c1e29fa1"
+          },
+          "answer": "$4$."
+        }
+      ]
+    },
+    "20": {
+      "id": "35a2c13891bd428dbbff0882b89957e2:20",
+      "q": 20,
+      "grade": 8,
+      "topic": "פיתגורס מורכב",
+      "levelLabel": "רמה ב׳",
+      "text": "מתכננים משולש ישר זווית ששטחו $10$ ואחד מניצביו באורך $4$.",
+      "items": [
+        {
+          "label": "א",
+          "text": "מצאו את הניצב האחר באמצעות נוסחת שטח.",
+          "answer": "$5$."
+        },
+        {
+          "label": "ב",
+          "text": "מצאו את היתר בדיוק וכלואו אותו בין שני שלמים עוקבים.",
+          "answer": "$\\sqrt{41}$, בין $6$ ל־$7$."
+        },
+        {
+          "label": "ג",
+          "text": "כתבו את ההיקף המדויק, בלי לעגל את היתר.",
+          "answer": "$9+\\sqrt{41}$."
+        },
+        {
+          "label": "ד",
+          "text": "שרטטו דוגמה מתאימה ובדקו גם שטח וגם קשר בין הריבועים.",
+          "answer": "ניצבים $4,5$ ויתר $\\sqrt{41}$; השטח $10$ וסכום ריבועי הניצבים $41$."
+        }
+      ]
+    }
+  }
+}

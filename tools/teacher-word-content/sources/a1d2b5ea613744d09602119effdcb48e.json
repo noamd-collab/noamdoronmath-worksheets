@@ -1,0 +1,868 @@
+{
+  "sourceSha256": "7c7b09d044898cc2a81892b722ddcc899ed0517d234c3b4f186c75e808f382a9",
+  "answerSourceSha256": "03ff1294605289f5d077a18db46895e908660fdc97effe20e42280a0e5ff5a2e",
+  "nativeSha256": "afdd917294d42b34737e0ba3523d874b62cc8dafb3b0054a2b1229bd7e04224e",
+  "questions": {
+    "1": {
+      "id": "a1d2b5ea613744d09602119effdcb48e:1",
+      "q": 1,
+      "grade": 7,
+      "topic": "סכום הזוויות במשולש ובמרובע",
+      "levelLabel": "רמת מצוינות",
+      "text": "בתרשים מאריכים את $BC$ עד $D$, את $CA$ דרך $A$ עד $E$, ואת $AB$ דרך $B$ עד $F$. נמדדו הזוויות החיצוניות $\\angle{BAE}=137°$ ו־$\\angle{CBF}=116°$ של $\\tri ABC$.",
+      "figure": {
+        "url": "/noam-ai/native/G7-T14/c/figures/q1_head.svg",
+        "sha256": "da1235b7a75003152702916a2bf8c6a4815a2bbd30ace409229f8d30685c522b"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "שחזרו את הזוויות הפנימיות, ובהן $\\angle{ACB}$, וקבעו את סוג $\\tri ABC$ לפי זוויותיו.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q1_head.svg",
+            "sha256": "da1235b7a75003152702916a2bf8c6a4815a2bbd30ace409229f8d30685c522b"
+          },
+          "answer": "$\\angle{BAC}=43°$, $\\angle{ABC}=64°$, $\\angle{ACB}=73°$; המשולש חד־זוויות."
+        },
+        {
+          "label": "ב",
+          "text": "סדרו את $AB$, $AC$, $BC$ מן הקצרה לארוכה והצדיקו בעזרת הזוויות שמולן.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q1_head.svg",
+            "sha256": "da1235b7a75003152702916a2bf8c6a4815a2bbd30ace409229f8d30685c522b"
+          },
+          "answer": "$BC<AC<AB$, כי מולן נמצאות הזוויות $43°<64°<73°$, בהתאמה."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את הזווית החיצונית שנותרה, $\\angle{ACD}$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q1_head.svg",
+            "sha256": "da1235b7a75003152702916a2bf8c6a4815a2bbd30ace409229f8d30685c522b"
+          },
+          "answer": "$\\angle{ACD}=107°$."
+        },
+        {
+          "label": "ד",
+          "text": "חברו את שלוש הזוויות החיצוניות. מהו הסכום שהתקבל? תארו אותו באמצעות סיבוב שלם.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q1_head.svg",
+            "sha256": "da1235b7a75003152702916a2bf8c6a4815a2bbd30ace409229f8d30685c522b"
+          },
+          "answer": "$360°$ — סיבוב שלם."
+        }
+      ]
+    },
+    "2": {
+      "id": "a1d2b5ea613744d09602119effdcb48e:2",
+      "q": 2,
+      "grade": 7,
+      "topic": "סכום הזוויות במשולש ובמרובע",
+      "levelLabel": "רמת מצוינות",
+      "text": "בשרטוט שני משולשים. ב־$\\tri ABC$ שלוש הצלעות שוות: $AB = BC = CA$. ב־$\\tri DEF$ נתון: $\\angle{EDF} = 60°$, $\\angle{DEF} = 60°$.",
+      "figure": {
+        "url": "/noam-ai/native/G7-T14/c/figures/q2_head.svg",
+        "sha256": "bba34c23e57982f3ab20b01415c441daec335f8b8d16ac6daedbd7f8a4b5fd76"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הוכיחו כי $\\angle{BAC} = 60°$, $\\angle{ABC} = 60°$ ו־$\\angle{BCA} = 60°$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q2_head.svg",
+            "sha256": "bba34c23e57982f3ab20b01415c441daec335f8b8d16ac6daedbd7f8a4b5fd76"
+          },
+          "answer": "מול שלוש הצלעות השוות נמצאות שלוש זוויות שוות שסכומן $180°$. לכן $\\angle{BAC}=\\angle{ABC}=\\angle{BCA}=60°$."
+        },
+        {
+          "label": "ב",
+          "text": "הוכיחו כי $\\tri DEF$ הוא משולש שווה־צלעות. במה ההוכחה הזאת שונה מההוכחה של סעיף א?",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q2_head.svg",
+            "sha256": "bba34c23e57982f3ab20b01415c441daec335f8b8d16ac6daedbd7f8a4b5fd76"
+          },
+          "answer": "גם הזווית השלישית היא $60°$, ולכן שלוש הצלעות שמול הזוויות השוות שוות. כאן עוברים משוויון זוויות לשוויון צלעות; בסעיף א הכיוון הפוך."
+        }
+      ]
+    },
+    "3": {
+      "id": "a1d2b5ea613744d09602119effdcb48e:3",
+      "q": 3,
+      "grade": 7,
+      "topic": "סכום הזוויות במשולש ובמרובע",
+      "levelLabel": "רמת מצוינות",
+      "text": "ב־$\\tri ABC$ נתון $\\angle{ACB} = 90°$, והזווית $\\angle{BAC}$ עולה ב־$24°$ על הזווית $\\angle{ABC}$. הקטע $CD$ הוא הגובה ליתר: $D$ על $AB$ ו־$CD ⊥ AB$.",
+      "figure": {
+        "url": "/noam-ai/native/G7-T14/c/figures/q3_head.svg",
+        "sha256": "f5776760697e4c094575ed62748ecb0fae3e315ce01a8f77cd380676dfd7743a"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את $\\angle{ABC}$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q3_head.svg",
+            "sha256": "f5776760697e4c094575ed62748ecb0fae3e315ce01a8f77cd380676dfd7743a"
+          },
+          "answer": "$\\angle{ABC}=33°$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את $\\angle{BCD}$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q3_head.svg",
+            "sha256": "f5776760697e4c094575ed62748ecb0fae3e315ce01a8f77cd380676dfd7743a"
+          },
+          "answer": "$\\angle{BCD}=57°$."
+        },
+        {
+          "label": "ג",
+          "text": "הוכיחו כי $\\angle{ACD} = \\angle{ABC}$. האם ההוכחה תלויה במספרים של השאלה?",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q3_head.svg",
+            "sha256": "f5776760697e4c094575ed62748ecb0fae3e315ce01a8f77cd380676dfd7743a"
+          },
+          "answer": "$\\angle{ACD}=\\angle{ABC}$, כי שתיהן משלימות את $\\angle{BAC}$ ל־$90°$. הנימוק תקף לכל משולש ישר־זווית עם הגובה הנתון, ואינו תלוי במספרים."
+        }
+      ]
+    },
+    "4": {
+      "id": "a1d2b5ea613744d09602119effdcb48e:4",
+      "q": 4,
+      "grade": 7,
+      "topic": "סכום הזוויות במשולש ובמרובע",
+      "levelLabel": "רמת מצוינות",
+      "text": "הנקודות $D$ ו־$E$ נמצאות על הצלע $BC$ של $\\tri ABC$, בסדר $B$, $D$, $E$, $C$. נתון: $\\angle{ABC} = 34°$, $\\angle{ACB} = 34°$, $\\angle{BAD} = 56°$, והקטע $AE$ חוצה את $\\angle{DAC}$ ($\\angle{DAE} = \\angle{EAC}$).",
+      "figure": {
+        "url": "/noam-ai/native/G7-T14/c/figures/q4_head.svg",
+        "sha256": "c1b55834760500911da19c9e83afbd06229ae3e12b4e701f3bbb6ceab9de9b59"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את $\\angle{ADB}$, וקבעו את סוג $\\tri ABD$ לפי זוויותיו.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q4_head.svg",
+            "sha256": "c1b55834760500911da19c9e83afbd06229ae3e12b4e701f3bbb6ceab9de9b59"
+          },
+          "answer": "$\\angle{ADB}=90°$; המשולש $\\tri ABD$ ישר־זווית."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את $\\angle{DAE}$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q4_head.svg",
+            "sha256": "c1b55834760500911da19c9e83afbd06229ae3e12b4e701f3bbb6ceab9de9b59"
+          },
+          "answer": "$\\angle{DAE}=28°$."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את $\\angle{AEC}$, וקבעו את סוג $\\tri AEC$ לפי זוויותיו.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q4_head.svg",
+            "sha256": "c1b55834760500911da19c9e83afbd06229ae3e12b4e701f3bbb6ceab9de9b59"
+          },
+          "answer": "$\\angle{AEC}=118°$; המשולש $\\tri AEC$ קהה־זוויות."
+        },
+        {
+          "label": "ד",
+          "text": "לאיזה סוג שייך $\\tri ABE$ לפי זוויותיו? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q4_head.svg",
+            "sha256": "c1b55834760500911da19c9e83afbd06229ae3e12b4e701f3bbb6ceab9de9b59"
+          },
+          "answer": "משולש חד־זוויות: זוויותיו $84°,34°,62°$, וכולן קטנות מ־$90°$."
+        }
+      ]
+    },
+    "5": {
+      "id": "a1d2b5ea613744d09602119effdcb48e:5",
+      "q": 5,
+      "grade": 7,
+      "topic": "סכום הזוויות במשולש ובמרובע",
+      "levelLabel": "רמת מצוינות",
+      "text": "ב־$\\tri ABC$ נתון $AB = AC$. ממשיכים את השוק $AB$ מעבר ל־$B$ עד הנקודה $D$, ואת השוק $AC$ מעבר ל־$C$ עד הנקודה $E$.",
+      "figure": {
+        "url": "/noam-ai/native/G7-T14/c/figures/q5_head.svg",
+        "sha256": "7909a3ad743cfd11276d1063a81e2eaa2ea622dc4ee5045ad6bef3dc9cc8a811"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הוכיחו כי $\\angle{DBC} = \\angle{ECB}$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q5_head.svg",
+            "sha256": "7909a3ad743cfd11276d1063a81e2eaa2ea622dc4ee5045ad6bef3dc9cc8a811"
+          },
+          "answer": "מ־$AB=AC$ נובע $\\angle{ABC}=\\angle{ACB}$. הזוויות $\\angle{DBC}$ ו־$\\angle{ECB}$ משלימות זוויות שוות ל־$180°$, ולכן הן שוות."
+        },
+        {
+          "label": "ב",
+          "text": "כעת נמדד $\\angle{DBC}=116°$. חשבו את זווית הראש $\\angle{BAC}$, והשתמשו בסעיף א לבקרת שתי הזוויות החיצוניות.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q5_head.svg",
+            "sha256": "7909a3ad743cfd11276d1063a81e2eaa2ea622dc4ee5045ad6bef3dc9cc8a811"
+          },
+          "answer": "$\\angle{BAC}=52°$; בבקרה מתקבל $\\angle{DBC}=\\angle{ECB}=116°$."
+        },
+        {
+          "label": "ג",
+          "text": "בדגם נוסף מסוג זה ההפרש בין $\\angle{ECB}$ ל־$\\angle{ACB}$ הוא $84°$. מצאו את $\\angle{ACB}$ ואת זווית הראש. אין להשתמש במידה מסעיף ב.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q5_head.svg",
+            "sha256": "7909a3ad743cfd11276d1063a81e2eaa2ea622dc4ee5045ad6bef3dc9cc8a811"
+          },
+          "answer": "$\\angle{ACB}=48°$, $\\angle{BAC}=84°$."
+        }
+      ]
+    },
+    "6": {
+      "id": "a1d2b5ea613744d09602119effdcb48e:6",
+      "q": 6,
+      "grade": 7,
+      "topic": "סכום הזוויות במשולש ובמרובע",
+      "levelLabel": "רמת מצוינות",
+      "text": "במרובע $ABCD$ ההפרשים העוקבים בין הזוויות אינם אחידים: $\\angle{ABC}$ גדולה מ־$\\angle{DAB}$ ב־$22°$, $\\angle{BCD}$ גדולה מ־$\\angle{ABC}$ ב־$9°$, ו־$\\angle{CDA}$ גדולה מ־$\\angle{BCD}$ ב־$24°$. נתון גם $\\angle{BAC}=41°$.",
+      "figure": {
+        "url": "/noam-ai/native/G7-T14/c/figures/q6_head.svg",
+        "sha256": "f62ca4a5c396fbae8b94fa4af42f7da362ed3a48a02e8c9a02251e546bbb9bf3"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "כתבו משוואה וחשבו את $\\angle{DAB}$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q6_head.svg",
+            "sha256": "f62ca4a5c396fbae8b94fa4af42f7da362ed3a48a02e8c9a02251e546bbb9bf3"
+          },
+          "answer": "נסמן $x=\\angle{DAB}$ במעלות. המשוואה: $x+(x+22)+(x+31)+(x+55)=360$; מתקבל $\\angle{DAB}=63°$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את $\\angle{CDA}$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q6_head.svg",
+            "sha256": "f62ca4a5c396fbae8b94fa4af42f7da362ed3a48a02e8c9a02251e546bbb9bf3"
+          },
+          "answer": "$\\angle{CDA}=118°$."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את $\\angle{CAD}$, וקבעו את סוג $\\tri ACD$ לפי זוויותיו.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q6_head.svg",
+            "sha256": "f62ca4a5c396fbae8b94fa4af42f7da362ed3a48a02e8c9a02251e546bbb9bf3"
+          },
+          "answer": "$\\angle{CAD}=22°$; המשולש $\\tri ACD$ קהה־זוויות."
+        },
+        {
+          "label": "ד",
+          "text": "בדקו מודל אחר: ארבע זוויות המרובע גדלות בהפרש קבוע $d$, והקטנה היא $x$. כתבו את ארבע הזוויות באמצעות $x$ ו־$d$ ובנו משוואה. כיצד נראית המשוואה כשההפרש הוא מעלה אחת?",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q6_head.svg",
+            "sha256": "f62ca4a5c396fbae8b94fa4af42f7da362ed3a48a02e8c9a02251e546bbb9bf3"
+          },
+          "answer": "הזוויות במעלות: $x$, $x+d$, $x+2d$, $x+3d$; המשוואה: $4x+6d=360$. כאשר $d=1$: $4x+6=360$."
+        }
+      ]
+    },
+    "7": {
+      "id": "a1d2b5ea613744d09602119effdcb48e:7",
+      "q": 7,
+      "grade": 7,
+      "topic": "סכום הזוויות במשולש ובמרובע",
+      "levelLabel": "רמת מצוינות",
+      "text": "במרובע $ABCD$ משורטט האלכסון $AC$. נתון: $\\angle{DAB} = 118°$, $\\angle{ABC} = 61°$, $\\angle{BCD} = 107°$, $\\angle{CAD} = 51°$.",
+      "figure": {
+        "url": "/noam-ai/native/G7-T14/c/figures/q7_head.svg",
+        "sha256": "768bbefa14cde6f37dc8acb7ac03301920ad1a3f7d2b74998f2a164c1537331a"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הוכיחו בעזרת האלכסון $AC$ כי $\\angle{DAB} + \\angle{ABC} + \\angle{BCD} + \\angle{CDA} = 360°$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q7_head.svg",
+            "sha256": "768bbefa14cde6f37dc8acb7ac03301920ad1a3f7d2b74998f2a164c1537331a"
+          },
+          "answer": "האלכסון מחלק את המרובע לשני משולשים, וזוויותיהם מרכיבות בדיוק את ארבע זוויות המרובע. לכן סכום זוויות המרובע הוא $180°+180°=360°$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את $\\angle{CDA}$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q7_head.svg",
+            "sha256": "768bbefa14cde6f37dc8acb7ac03301920ad1a3f7d2b74998f2a164c1537331a"
+          },
+          "answer": "$\\angle{CDA}=74°$."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את $\\angle{ACD}$, וקבעו את סוג $\\tri ACD$ לפי זוויותיו.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q7_head.svg",
+            "sha256": "768bbefa14cde6f37dc8acb7ac03301920ad1a3f7d2b74998f2a164c1537331a"
+          },
+          "answer": "$\\angle{ACD}=55°$; המשולש $\\tri ACD$ חד־זוויות."
+        }
+      ]
+    },
+    "8": {
+      "id": "a1d2b5ea613744d09602119effdcb48e:8",
+      "q": 8,
+      "grade": 7,
+      "topic": "סכום הזוויות במשולש ובמרובע",
+      "levelLabel": "רמת מצוינות",
+      "text": "$\\tri ABC$ הוא משולש כלשהו. כל צלע שלו הוארכה: $BC$ מעבר ל־$C$ עד $D$, $CA$ מעבר ל־$A$ עד $E$, ו־$AB$ מעבר ל־$B$ עד $F$.",
+      "figure": {
+        "url": "/noam-ai/native/G7-T14/c/figures/q8_head.svg",
+        "sha256": "4fe00056163dd735b13db132b9f004664bbf8c8cf20a80eef3cde5841911e379"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הוכיחו כי $\\angle{ACD} = \\angle{BAC} + \\angle{ABC}$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q8_head.svg",
+            "sha256": "4fe00056163dd735b13db132b9f004664bbf8c8cf20a80eef3cde5841911e379"
+          },
+          "answer": "$\\angle{ACD}=180°-\\angle{ACB}=\\angle{BAC}+\\angle{ABC}$: הזוויות הצמודות משלימות ל־$180°$, וכך גם שלוש זוויות המשולש."
+        },
+        {
+          "label": "ב",
+          "text": "הוכיחו כי $\\angle{ACD} + \\angle{BAE} + \\angle{CBF} = 360°$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q8_head.svg",
+            "sha256": "4fe00056163dd735b13db132b9f004664bbf8c8cf20a80eef3cde5841911e379"
+          },
+          "answer": "כל זווית חיצונית משלימה את הפנימית הסמוכה ל־$180°$. סכום שלוש הפנימיות הוא $180°$, ולכן סכום החיצוניות הוא $3\\cdot180°-180°=360°$."
+        },
+        {
+          "label": "ג",
+          "text": "במקרה מסוים נתון $\\angle{ACD}=124°$ ו־$\\angle{BAC}=47°$. שחזרו את שתי הזוויות $\\angle{ACB}$ ו־$\\angle{ABC}$, ואמתו את סכום הזוויות במשולש.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q8_head.svg",
+            "sha256": "4fe00056163dd735b13db132b9f004664bbf8c8cf20a80eef3cde5841911e379"
+          },
+          "answer": "$\\angle{ACB}=56°$, $\\angle{ABC}=77°$; בבקרה מתקבל $47°+77°+56°=180°$."
+        }
+      ]
+    },
+    "9": {
+      "id": "a1d2b5ea613744d09602119effdcb48e:9",
+      "q": 9,
+      "grade": 7,
+      "topic": "סכום הזוויות במשולש ובמרובע",
+      "levelLabel": "רמת מצוינות",
+      "text": "ב־$\\tri ABC$ נתון $AB = AC$, וזווית הראש $\\angle{BAC}$ גדולה ב־$12°$ מפי $2$ מזווית הבסיס $\\angle{ABC}$.",
+      "figure": {
+        "url": "/noam-ai/native/G7-T14/c/figures/q9_head.svg",
+        "sha256": "378c011fb39384855f58d0ccbe67715fff2606b3c6f6b2ed0df5800bd91c5af7"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "כתבו משוואה וחשבו את $\\angle{ABC}$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q9_head.svg",
+            "sha256": "378c011fb39384855f58d0ccbe67715fff2606b3c6f6b2ed0df5800bd91c5af7"
+          },
+          "answer": "נסמן $x=\\angle{ABC}$ במעלות. המשוואה: $x+x+(2x+12)=180$; מתקבל $\\angle{ABC}=42°$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את $\\angle{BAC}$. האם זווית הראש גדולה מסכום שתי זוויות הבסיס?",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q9_head.svg",
+            "sha256": "378c011fb39384855f58d0ccbe67715fff2606b3c6f6b2ed0df5800bd91c5af7"
+          },
+          "answer": "$\\angle{BAC}=96°$; כן, $96°>84°$, סכום שתי זוויות הבסיס."
+        },
+        {
+          "label": "ג",
+          "text": "לאיזה סוג שייך $\\tri ABC$ לפי זוויותיו? הסבירו מדוע זווית ראש הגדולה מסכום זוויות הבסיס נותנת תמיד את הסוג הזה.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q9_head.svg",
+            "sha256": "378c011fb39384855f58d0ccbe67715fff2606b3c6f6b2ed0df5800bd91c5af7"
+          },
+          "answer": "משולש קהה־זוויות. תמיד, כאשר זווית הראש גדולה מסכום שתי האחרות, היא גדולה ממחצית הסכום הכולל $180°$, ולכן גדולה מ־$90°$."
+        }
+      ]
+    },
+    "10": {
+      "id": "a1d2b5ea613744d09602119effdcb48e:10",
+      "q": 10,
+      "grade": 7,
+      "topic": "סכום הזוויות במשולש ובמרובע",
+      "levelLabel": "רמת מצוינות",
+      "text": "במרובע $ABCD$ שלוש זוויות קהות: $\\angle{DAB} = 98°$, $\\angle{ABC} = 103°$, $\\angle{BCD} = 112°$. משורטט האלכסון $AC$, ו־$\\angle{BAC} = 35°$.",
+      "figure": {
+        "url": "/noam-ai/native/G7-T14/c/figures/q10_head.svg",
+        "sha256": "4a9cce7acd4249964af5d7ceca530d9ab83285e3f605221ef5c50277467855a6"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את $\\angle{CDA}$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q10_head.svg",
+            "sha256": "4a9cce7acd4249964af5d7ceca530d9ab83285e3f605221ef5c50277467855a6"
+          },
+          "answer": "$\\angle{CDA}=47°$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את $\\angle{BCA}$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q10_head.svg",
+            "sha256": "4a9cce7acd4249964af5d7ceca530d9ab83285e3f605221ef5c50277467855a6"
+          },
+          "answer": "$\\angle{BCA}=42°$."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את $\\angle{CAD}$, וקבעו את סוג $\\tri ACD$ לפי זוויותיו.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q10_head.svg",
+            "sha256": "4a9cce7acd4249964af5d7ceca530d9ab83285e3f605221ef5c50277467855a6"
+          },
+          "answer": "$\\angle{CAD}=63°$; המשולש $\\tri ACD$ חד־זוויות."
+        }
+      ]
+    },
+    "11": {
+      "id": "a1d2b5ea613744d09602119effdcb48e:11",
+      "q": 11,
+      "grade": 7,
+      "topic": "סכום הזוויות במשולש ובמרובע",
+      "levelLabel": "רמת מצוינות",
+      "text": "ארכיון שומר למשולש שווה־שוקיים רק מידה אחת. שני שחזורים נחשבים שונים אם רשימות הזוויות שלהם שונות, בלי חשיבות לסדר.",
+      "items": [
+        {
+          "label": "א",
+          "text": "לרשומה $68°$ הכינו את כל השחזורים. האם אפשר לדעת מראש כמה תוויות צריך להדפיס?",
+          "answer": "שני שחזורים: $68°,56°,56°$ ו־$68°,68°,44°$; דרושות שתי תוויות."
+        },
+        {
+          "label": "ב",
+          "text": "בחנו גם את הרשומה $132°$ והשוו למספר התוויות בסעיף א.",
+          "answer": "שחזור יחיד: $132°,24°,24°$, לעומת שניים בסעיף א. שתי זוויות של $132°$ אינן אפשריות."
+        },
+        {
+          "label": "ג",
+          "text": "תיקיית $74°$ מכילה רק תווית אחת: $74°,53°,53°$. בדקו את שלמות התיקייה ותקנו אותה במקרה הצורך.",
+          "answer": "התיקייה אינה שלמה; יש להוסיף $74°,74°,32°$."
+        },
+        {
+          "label": "ד",
+          "text": "מיינו את כל המידות האפשריות לשלוש קבוצות: אין שחזור; שחזור יחיד; שני שחזורים. ציינו במיוחד מתי שני חישובים שונים מתארים אותו משולש.",
+          "answer": "ל־$x\\leq0°$ או $x\\geq180°$ אין שחזור. ל־$x=60°$ או $90°\\leq x<180°$ יש שחזור יחיד. ל־$0°<x<90°$, פרט ל־$60°$, יש שניים. ב־$60°$ שני החישובים נותנים אותו משולש שווה־צלעות."
+        },
+        {
+          "label": "ה",
+          "text": "שרטטו שתי סקיצות מן התיקייה המתוקנת בסעיף ג והסבירו איך אפשר לזהות שהן שונות גם בלי מדידה.",
+          "answer": "הסקיצות מתאימות ל־$74°,53°,53°$ ול־$74°,74°,32°$. בראשון הזווית היחידה גדולה מכל אחת מהשוות; בשני היא קטנה מהן. אפשר לצייר בכל גודל השומר על הזוויות; רשימות הזוויות שונות."
+        }
+      ]
+    },
+    "12": {
+      "id": "a1d2b5ea613744d09602119effdcb48e:12",
+      "q": 12,
+      "grade": 7,
+      "topic": "סכום הזוויות במשולש ובמרובע",
+      "levelLabel": "רמת מצוינות",
+      "text": "לפניכם משימות לבדיקת תקפות של נימוקים. בכל משימה יש לקבוע אילו נתונים מספיקים ואילו אפשרויות נפסלות.",
+      "items": [
+        {
+          "label": "א",
+          "text": "מתכנן רוצה משולש ובו זווית ישרה וגם זווית קהה. מצאו את הסתירה, והסיקו כמה זוויות חדות חייבות להישאר בכל משולש תקין.",
+          "answer": "זווית ישרה וזווית קהה מסתכמות ביותר מ־$180°$, ולכן אין משולש כזה. בכל משולש תקין לפחות שתי זוויות חדות."
+        },
+        {
+          "label": "ב",
+          "text": "ברשומה של מרובע שלוש זוויות מסומנות ישרות. הסיקו את הרביעית. כעת החליפו בין ההנחה למסקנה: אם הרביעית ישרה, האם גם שלוש האחרות חייבות להיות ישרות? הוכיחו או הביאו דוגמה נגדית.",
+          "answer": "הרביעית היא $90°$. הכיוון ההפוך אינו נכון: דוגמה נגדית היא $70°,80°,120°,90°$. יש דוגמאות נוספות שסכומן $360°$, ובהן הרביעית ישרה ולא כל האחרות ישרות."
+        },
+        {
+          "label": "ג",
+          "text": "במשולש, זווית חיצונית היא $143°$ ואחת הפנימיות הרחוקות ממנה היא $58°$. השלימו את המשולש ובדקו אם הפנימית האחרת יכולה להיות גדולה מהחיצונית.",
+          "answer": "הפנימית הרחוקה האחרת היא $85°$, והסמוכה היא $37°$. האחרת אינה יכולה להיות גדולה מהחיצונית, שהיא סכום שתי הפנימיות הרחוקות החיוביות."
+        },
+        {
+          "label": "ד",
+          "text": "שלוש פינות של מרובע הן $94°$, $111°$, $119°$. מצאו את הרביעית. השתמשו באותו שיקול כדי להכריע אם אפשר לבנות מרובע עם ארבע פינות קהות או עם ארבע פינות חדות.",
+          "answer": "הזווית הרביעית היא $36°$. ארבע קהות היו מסתכמות ביותר מ־$360°$, וארבע חדות בפחות מ־$360°$; שני המצבים אינם אפשריים."
+        },
+        {
+          "label": "ה",
+          "text": "תכננו משולש עם זוויות שלמות כך שהזווית החיצונית תהיה גדולה ב־$46°$ מאחת הפנימיות הרחוקות ממנה. תנו שתי דוגמאות שונות. לאחר מכן תכננו מרובע עם בדיוק שתי פינות ישרות.",
+          "answer": "דוגמאות: משולש $30°,46°,104°$, שבו חיצונית של $76°$ גדולה מ־$30°$ ב־$46°$; ומשולש $50°,46°,84°$, שבו חיצונית של $96°$ גדולה מ־$50°$ ב־$46°$. מרובע לדוגמה: $90°,90°,70°,110°$. יש תשובות נוספות עם זוויות שלמות, פנימית רחוקה של $46°$ במשולש, ובמרובע בדיוק שתי ישרות וסכום של $360°$."
+        },
+        {
+          "label": "ו",
+          "text": "תכננו זוג משולשים שונים שלשניהם זווית של $60°$. בכל אחד שלוש המידות שונות וכולן כפולות של $20°$. מצאו את שני המשולשים והסבירו מדוע אין אפשרות נוספת תחת התנאים האלה. סרטטו גם את המרובע שתכננתם בסעיף ה.",
+          "answer": "שני המשולשים: $20°,60°,100°$ ו־$40°,60°,80°$. הזוויות האחרות מסתכמות ב־$120°$; מבין זוגות הכפולות החיוביות של $20°$, הזוג $60°,60°$ נפסל כי המידות צריכות להיות שונות. למרובע אפשר לצייר טרפז ישר־זווית שזוויותיו $90°,90°,70°,110°$; יש דוגמאות נוספות השומרות על תנאי סעיף ה."
+        }
+      ]
+    },
+    "13": {
+      "id": "a1d2b5ea613744d09602119effdcb48e:13",
+      "q": 13,
+      "grade": 7,
+      "topic": "סכום הזוויות במשולש ובמרובע",
+      "levelLabel": "רמת מצוינות",
+      "text": "במשולש $\\tri ABC$ נתון $AB=AC$ והקשר $\\angle{BAC}=4\\angle{ABC}+12°$. במרובע $DEFG$ הזוויות $\\angle{GDE}$, $\\angle{DEF}$, $\\angle{EFG}$, $\\angle{FGD}$ מתייחסות זו לזו כמו המספרים $4$, $7$, $8$, $11$.",
+      "figure": {
+        "url": "/noam-ai/native/G7-T14/c/figures/q13_head.svg",
+        "sha256": "05e534d8f8cb4e6cc529e6642ae6d61e001c729ea49c1fd28248e8562a046ccf"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את $\\angle{ABC}$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q13_head.svg",
+            "sha256": "05e534d8f8cb4e6cc529e6642ae6d61e001c729ea49c1fd28248e8562a046ccf"
+          },
+          "answer": "$\\angle{ABC}=28°$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את $\\angle{BAC}$, וקבעו את סוג $\\tri ABC$ לפי זוויותיו.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q13_head.svg",
+            "sha256": "05e534d8f8cb4e6cc529e6642ae6d61e001c729ea49c1fd28248e8562a046ccf"
+          },
+          "answer": "$\\angle{BAC}=124°$; המשולש קהה־זוויות."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את ארבע הזוויות של המרובע $DEFG$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q13_head.svg",
+            "sha256": "05e534d8f8cb4e6cc529e6642ae6d61e001c729ea49c1fd28248e8562a046ccf"
+          },
+          "answer": "$\\angle{GDE}=48°$, $\\angle{DEF}=84°$, $\\angle{EFG}=96°$, $\\angle{FGD}=132°$."
+        },
+        {
+          "label": "ד",
+          "text": "בדגם נוסף של משולש מידות הזוויות מתקבלות מהכפלת מידה משותפת ב־$3$, ב־$5$ וב־$10$. מצאו את שלוש הזוויות וקבעו איזו מהן גדולה פי $2$ מאחרת.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q13_head.svg",
+            "sha256": "05e534d8f8cb4e6cc529e6642ae6d61e001c729ea49c1fd28248e8562a046ccf"
+          },
+          "answer": "$30°,50°,100°$; הזווית של $100°$ גדולה פי $2$ מזו של $50°$."
+        }
+      ]
+    },
+    "14": {
+      "id": "a1d2b5ea613744d09602119effdcb48e:14",
+      "q": 14,
+      "grade": 7,
+      "topic": "סכום הזוויות במשולש ובמרובע",
+      "levelLabel": "רמת מצוינות",
+      "text": "בתהליך בדיקה של מרובע $ABCD$ נרשמו $\\angle{DAB}=87°$, $\\angle{ABC}=109°$, $\\angle{BCD}=72°$, $\\angle{ADB}=41°$. בודקים אם הזווית הרביעית ניתנת לחישוב גם בלי להשתמש בכלל סכום הזוויות במרובע.",
+      "figure": {
+        "url": "/noam-ai/native/G7-T14/c/figures/q14_head.svg",
+        "sha256": "c3af8aea020c9118558f797a2187dc40c04724568281a8d77f2d09a417f14309"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את $\\angle{CDA}$ כסכום זוויות של מרובע.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q14_head.svg",
+            "sha256": "c3af8aea020c9118558f797a2187dc40c04724568281a8d77f2d09a417f14309"
+          },
+          "answer": "$\\angle{CDA}=92°$."
+        },
+        {
+          "label": "ב",
+          "text": "פתחו מסלול חישוב חלופי דרך האלכסון $BD$: חשבו את $\\angle{ABD}$ ואת $\\angle{DBC}$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q14_head.svg",
+            "sha256": "c3af8aea020c9118558f797a2187dc40c04724568281a8d77f2d09a417f14309"
+          },
+          "answer": "$\\angle{ABD}=52°$, $\\angle{DBC}=57°$."
+        },
+        {
+          "label": "ג",
+          "text": "סיימו את המסלול דרך $\\tri BCD$: חשבו את $\\angle{BDC}$ ואת $\\angle{CDA}$. הסבירו כיצד החיבור של שני המשולשים מבטיח התאמה לתוצאה הראשונה.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q14_head.svg",
+            "sha256": "c3af8aea020c9118558f797a2187dc40c04724568281a8d77f2d09a417f14309"
+          },
+          "answer": "$\\angle{BDC}=51°$, $\\angle{CDA}=92°$. שני המשולשים מרכיבים בדיוק את זוויות המרובע, ולכן שני המסלולים נותנים אותו סכום."
+        }
+      ]
+    },
+    "15": {
+      "id": "a1d2b5ea613744d09602119effdcb48e:15",
+      "q": 15,
+      "grade": 7,
+      "topic": "סכום הזוויות במשולש ובמרובע",
+      "levelLabel": "רמת מצוינות",
+      "text": "לוח שקוף $KLMN$ נחתך לאורך $KM$. נתון $\\angle{LKN}=79°$, $\\angle{KLM}=124°$, $\\angle{LMN}=58°$, $\\angle{LKM}=31°$. בודקים את זוויות שני החלקים כדי לתאר אותם לפני החיתוך.",
+      "figure": {
+        "url": "/noam-ai/native/G7-T14/c/figures/q15_head.svg",
+        "sha256": "1e0a6a0f252e72b77144cb50c998a732d808b1621ac62ceda6f6624c0564f008"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מה גודל הזווית בפינה $N$, $\\angle{MNK}$?",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q15_head.svg",
+            "sha256": "1e0a6a0f252e72b77144cb50c998a732d808b1621ac62ceda6f6624c0564f008"
+          },
+          "answer": "$\\angle{MNK}=99°$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את $\\angle{KML}$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q15_head.svg",
+            "sha256": "1e0a6a0f252e72b77144cb50c998a732d808b1621ac62ceda6f6624c0564f008"
+          },
+          "answer": "$\\angle{KML}=25°$."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את $\\angle{MKN}$, וקבעו את סוג $\\tri KMN$ לפי זוויותיו.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q15_head.svg",
+            "sha256": "1e0a6a0f252e72b77144cb50c998a732d808b1621ac62ceda6f6624c0564f008"
+          },
+          "answer": "$\\angle{MKN}=48°$; המשולש $\\tri KMN$ קהה־זוויות."
+        }
+      ]
+    },
+    "16": {
+      "id": "a1d2b5ea613744d09602119effdcb48e:16",
+      "q": 16,
+      "grade": 7,
+      "topic": "סכום הזוויות במשולש ובמרובע",
+      "levelLabel": "רמת מצוינות",
+      "text": "הנקודה $D$ נמצאת על הצלע $BC$ של $\\tri ABC$. נתון: $\\angle{ABC} = 60°$, $\\angle{ADB} = 60°$, $\\angle{DAC} = 33°$.",
+      "figure": {
+        "url": "/noam-ai/native/G7-T14/c/figures/q16_head.svg",
+        "sha256": "32ebb07dbf948872f11d952fa2e85121db80dbb6a581c38dbb585b3ea54b5c18"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את $\\angle{BAD}$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q16_head.svg",
+            "sha256": "32ebb07dbf948872f11d952fa2e85121db80dbb6a581c38dbb585b3ea54b5c18"
+          },
+          "answer": "$\\angle{BAD}=60°$."
+        },
+        {
+          "label": "ב",
+          "text": "הוכיחו כי $\\tri ABD$ הוא משולש שווה־צלעות.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q16_head.svg",
+            "sha256": "32ebb07dbf948872f11d952fa2e85121db80dbb6a581c38dbb585b3ea54b5c18"
+          },
+          "answer": "כל שלוש זוויות המשולש $\\tri ABD$ הן $60°$; מול זוויות שוות נמצאות צלעות שוות, ולכן הוא שווה־צלעות."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את $\\angle{ACB}$, וקבעו את סוג $\\tri ADC$ לפי זוויותיו.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q16_head.svg",
+            "sha256": "32ebb07dbf948872f11d952fa2e85121db80dbb6a581c38dbb585b3ea54b5c18"
+          },
+          "answer": "$\\angle{ACB}=27°$; המשולש $\\tri ADC$ קהה־זוויות."
+        },
+        {
+          "label": "ד",
+          "text": "האם יש בשרטוט עוד משולש שווה־צלעות, מלבד $\\tri ABD$? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q16_head.svg",
+            "sha256": "32ebb07dbf948872f11d952fa2e85121db80dbb6a581c38dbb585b3ea54b5c18"
+          },
+          "answer": "לא: במשולש $\\tri ADC$ יש זווית של $120°$, ובמשולש $\\tri ABC$ יש זווית של $27°$; לכן אין בהם שלוש זוויות של $60°$."
+        },
+        {
+          "label": "ה",
+          "text": "מיינו את הרשומות הבאות לנתון, מסקנה או מידע שלא ניתן לקבוע: $D$ על $BC$; $\\tri ABD$ שווה־צלעות; אורך $AD$ גדול מסנטימטר. הסבירו מדוע הזוויות אינן קובעות את הגודל בסנטימטרים.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q16_head.svg",
+            "sha256": "32ebb07dbf948872f11d952fa2e85121db80dbb6a581c38dbb585b3ea54b5c18"
+          },
+          "answer": "$D$ על $BC$ — נתון; המשולש $\\tri ABD$ שווה־צלעות — מסקנה; אורך $AD$ גדול מסנטימטר — לא ניתן לקבוע. הגדלה או הקטנה שומרת על הזוויות ומשנה את האורך בסנטימטרים."
+        }
+      ]
+    },
+    "17": {
+      "id": "a1d2b5ea613744d09602119effdcb48e:17",
+      "q": 17,
+      "grade": 7,
+      "topic": "סכום הזוויות במשולש ובמרובע",
+      "levelLabel": "רמת מצוינות",
+      "text": "בתרשים $A,C,E$ על ישר אחד ו־$AB=BC=CD=DE$, עם $\\angle{ABC}=52°$, $\\angle{CDE}=52°$. בוחנים אם שינוי משותף בזוויות הראש יכול להעלים את הזווית שבין $CB$ ל־$CD$ בלי למוטט אף משולש.",
+      "figure": {
+        "url": "/noam-ai/native/G7-T14/c/figures/q17_head.svg",
+        "sha256": "cafe5a1a81612b3e1cdbc0f909343c2fc912336c839a5ead6290d4a6558a984c"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את $\\angle{BAC}$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q17_head.svg",
+            "sha256": "cafe5a1a81612b3e1cdbc0f909343c2fc912336c839a5ead6290d4a6558a984c"
+          },
+          "answer": "$\\angle{BAC}=64°$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את הזווית $\\angle{BCD}$ שבין שני המשולשים.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q17_head.svg",
+            "sha256": "cafe5a1a81612b3e1cdbc0f909343c2fc912336c839a5ead6290d4a6558a984c"
+          },
+          "answer": "$\\angle{BCD}=52°$."
+        },
+        {
+          "label": "ג",
+          "text": "הוכיחו כי $\\angle{BCD}=\\angle{ABC}$ לכל זווית ראש תקינה. האם $\\angle{BCD}$ יכולה להיות אפס? איזו זווית ראש הייתה נדרשת ומה פירוש הדבר למשולשים?",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q17_head.svg",
+            "sha256": "cafe5a1a81612b3e1cdbc0f909343c2fc912336c839a5ead6290d4a6558a984c"
+          },
+          "answer": "אם זווית הראש היא $x$, כל אחת משתי הזוויות הסמוכות היא $\\f{180°-x}{2}$; לכן $\\angle{BCD}=180°-2\\cdot\\f{180°-x}{2}=x=\\angle{ABC}$. אפס היה מחייב זווית ראש של $0°$, ואז אין משולשים תקינים."
+        }
+      ]
+    },
+    "18": {
+      "id": "a1d2b5ea613744d09602119effdcb48e:18",
+      "q": 18,
+      "grade": 7,
+      "topic": "סכום הזוויות במשולש ובמרובע",
+      "levelLabel": "רמת מצוינות",
+      "text": "הנקודה $C$ נמצאת על הקטע $BE$, והנקודה $D$ נמצאת על הקטע $CA$. לשני המשולשים $\\tri ABC$ ו־$\\tri DBC$ יש אותה זווית חיצונית בקודקוד $C$: $\\angle{ACE} = 128°$. נתון גם: $\\angle{ABD} = 32°$, $\\angle{DBC} = 39°$.",
+      "figure": {
+        "url": "/noam-ai/native/G7-T14/c/figures/q18_head.svg",
+        "sha256": "f9ef2414940532230ec7ff4b4f765940a0db5b3679e57404efb20ef5081f74ee"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את $\\angle{BDC}$ בלי לחשב קודם את $\\angle{ACB}$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q18_head.svg",
+            "sha256": "f9ef2414940532230ec7ff4b4f765940a0db5b3679e57404efb20ef5081f74ee"
+          },
+          "answer": "$\\angle{BDC}=89°$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את $\\angle{BAC}$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q18_head.svg",
+            "sha256": "f9ef2414940532230ec7ff4b4f765940a0db5b3679e57404efb20ef5081f74ee"
+          },
+          "answer": "$\\angle{BAC}=57°$."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את $\\angle{ADB}$, וקבעו את סוג $\\tri ABD$ לפי זוויותיו.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q18_head.svg",
+            "sha256": "f9ef2414940532230ec7ff4b4f765940a0db5b3679e57404efb20ef5081f74ee"
+          },
+          "answer": "$\\angle{ADB}=91°$; המשולש $\\tri ABD$ קהה־זוויות."
+        }
+      ]
+    },
+    "19": {
+      "id": "a1d2b5ea613744d09602119effdcb48e:19",
+      "q": 19,
+      "grade": 7,
+      "topic": "סכום הזוויות במשולש ובמרובע",
+      "levelLabel": "רמת מצוינות",
+      "text": "בבדיקת תוכנת שרטוט נרשם מספר המשולשים בחלוקה היוצאת מקודקוד אחד. חוקרים גם מצולעים משוכללים, שבהם כל הצלעות וכל הזוויות שוות.",
+      "items": [
+        {
+          "label": "א",
+          "text": "בקובץ אחד נספרו $8$ משולשים ובשני $12$. שחזרו את מספר הצלעות של כל מצולע ואת סכום זוויותיו. הצדיקו בסקיצה את הקשר בין שני המספרים.",
+          "answer": "בקובץ הראשון $10$ צלעות וסכום של $1440°$; בשני $14$ צלעות וסכום של $2160°$. בחלוקה מקודקוד אחד מספר המשולשים קטן ממספר הצלעות ב־$2$. דוגמאות לסקיצות: מצולעים משוכללים בני $10$ ו־$14$ צלעות; גם מצולעים קמורים אחרים באותם מספרי צלעות מתאימים."
+        },
+        {
+          "label": "ב",
+          "text": "כתבו ביטוי לסכום הזוויות כאשר מספר המשולשים הוא $k$, ואז ביטוי כאשר מספר הצלעות הוא $n$. הראו בסקיצה מדוע אין לספור משולש נוסף ליד שתי הצלעות הסמוכות לקודקוד.",
+          "answer": "הסכום הוא $180°k=180°(n-2)$. בחלוקה יש $n-3$ אלכסונים ו־$n-2$ משולשים; שתי הצלעות הסמוכות לקודקוד הן גבולות קיימים ואינן יוצרות משולש נוסף."
+        },
+        {
+          "label": "ג",
+          "text": "לאחר הוספת $3$ צלעות התקבל מצולע שסכום זוויותיו $2520°$. כמה צלעות היו לפני ההוספה? בדקו את שינוי הסכום.",
+          "answer": "לפני ההוספה היו $13$ צלעות, ואחריה $16$. הסכום גדל ב־$540°$, מ־$1980°$ ל־$2520°$."
+        },
+        {
+          "label": "ד",
+          "text": "מסנן נוסף שומר רק מצולעים משוכללים שהזווית הפנימית שלהם מספר שלם בין $150°$ ל־$165°$, כולל הקצוות. מצאו את כל מספרי הצלעות המתאימים בלי לבדוק כל מצולע בנפרד.",
+          "answer": "מספרי הצלעות הם $12,15,18,20,24$. המידה $\\f{360°}{n}$ צריכה להיות מספר שלם בין $15°$ ל־$30°$; המחלקים המתאימים של $360$ הם $15,18,20,24,30$."
+        },
+        {
+          "label": "ה",
+          "text": "תוכנה אחת מעגלת זווית של מצולע משוכלל ל־$180°$ ומכריזה שהתקבל ישר. הסבירו מדוע עיגול אינו שוויון, ולאיזה ערך מתקרבות הזוויות עם הוספת צלעות. הוסיפו סקיצה.",
+          "answer": "לכל מספר צלעות סופי הזווית היא $180°-\\f{360°}{n}<180°$; היא מתקרבת ל־$180°$ אך אינה שווה לו. עיגול אינו שוויון מדויק. דוגמה לסקיצות: מצולעים משוכללים בני $12$ ו־$24$ צלעות; אפשר לבחור זוגות נוספים עם מספר צלעות גדל."
+        }
+      ]
+    },
+    "20": {
+      "id": "a1d2b5ea613744d09602119effdcb48e:20",
+      "q": 20,
+      "grade": 7,
+      "topic": "סכום הזוויות במשולש ובמרובע",
+      "levelLabel": "רמת מצוינות",
+      "text": "$ABCDEF$ הוא משושה משוכלל: $AB = BC = CD = DE = EF = FA$, ו־$\\angle{FAB} = \\angle{ABC} = \\angle{BCD} = \\angle{CDE} = \\angle{DEF} = \\angle{EFA}$. משורטטים האלכסונים $AC$ ו־$AD$.",
+      "figure": {
+        "url": "/noam-ai/native/G7-T14/c/figures/q20_head.svg",
+        "sha256": "c2dfe7eea5a31d3292867c00ab9de26b08f64330096274ef9326a2494d19e6df"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את $\\angle{ABC}$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q20_head.svg",
+            "sha256": "c2dfe7eea5a31d3292867c00ab9de26b08f64330096274ef9326a2494d19e6df"
+          },
+          "answer": "$\\angle{ABC}=120°$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את $\\angle{BAC}$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q20_head.svg",
+            "sha256": "c2dfe7eea5a31d3292867c00ab9de26b08f64330096274ef9326a2494d19e6df"
+          },
+          "answer": "$\\angle{BAC}=30°$."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את $\\angle{ACD}$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q20_head.svg",
+            "sha256": "c2dfe7eea5a31d3292867c00ab9de26b08f64330096274ef9326a2494d19e6df"
+          },
+          "answer": "$\\angle{ACD}=90°$."
+        },
+        {
+          "label": "ד",
+          "text": "לאיזה סוג שייך $\\tri ACD$ לפי זוויותיו? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T14/c/figures/q20_head.svg",
+            "sha256": "c2dfe7eea5a31d3292867c00ab9de26b08f64330096274ef9326a2494d19e6df"
+          },
+          "answer": "משולש ישר־זווית, כי $\\angle{ACD}=90°$."
+        }
+      ]
+    }
+  }
+}

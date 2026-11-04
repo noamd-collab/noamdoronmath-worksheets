@@ -1,0 +1,961 @@
+{
+  "sourceSha256": "6ff7defac204e60231729052935672fbc45165109c0d8e3a918441eff7f599b2",
+  "answerSourceSha256": "c999b94f50029b31bac3b20d6301a7339de9b1d9917f2dfbaf9c6b8c8ced0ab0",
+  "nativeSha256": "7d47fc4f5f6d7ab2e1f05c4af1ab56b7fe5f32a2ff33c1af4f7652ccedf8eb4f",
+  "questions": {
+    "1": {
+      "id": "9be17796d94c40b5bbb987c4b7ef0882:1",
+      "q": 1,
+      "grade": 8,
+      "topic": "מערכות — חיתוך גרפי",
+      "levelLabel": "רמה ב׳",
+      "text": "מוצגים $f(x)=x+1$ ו־$g(x)=−x+5$.",
+      "example": {
+        "title": "דוגמה מודרכת",
+        "lines": [
+          "לבדיקת הזוג $(1,4)$ במערכת $y=2x+2$, $y=−x+5$, מציבים $x=1$ בשתי המשוואות. בשתיהן מתקבל $y=4$, ולכן הזוג משותף."
+        ]
+      },
+      "figure": {
+        "url": "/noam-ai/native/G8-T06/b/figures/q1_head.svg",
+        "sha256": "ab3b28688f7148c0a836ebfc298a28d1bec14069f9fc61e934fc34d9c4ea994e"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "קראו את שיעור $x$ של המפגש, ואז את שיעור $y$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q1_head.svg",
+            "sha256": "ab3b28688f7148c0a836ebfc298a28d1bec14069f9fc61e934fc34d9c4ea994e"
+          },
+          "answer": "$(2,3)$."
+        },
+        {
+          "label": "ב",
+          "text": "הציבו את שיעור $x$ שקראתם בכל נוסחה והשוו את התוצאות.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q1_head.svg",
+            "sha256": "ab3b28688f7148c0a836ebfc298a28d1bec14069f9fc61e934fc34d9c4ea994e"
+          },
+          "answer": "$2+1=3$ וגם $−2+5=3$."
+        },
+        {
+          "label": "ג",
+          "text": "בדקו אם הזוג $(0,1)$ הוא פתרון המערכת.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q1_head.svg",
+            "sha256": "ab3b28688f7148c0a836ebfc298a28d1bec14069f9fc61e934fc34d9c4ea994e"
+          },
+          "answer": "לא; הוא על $f$ בלבד, כי $g(0)=5$."
+        },
+        {
+          "label": "ד",
+          "text": "כתבו מה פירוש המילה ״משותף״ במקרה הזה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q1_head.svg",
+            "sha256": "ab3b28688f7148c0a836ebfc298a28d1bec14069f9fc61e934fc34d9c4ea994e"
+          },
+          "answer": "אותו זוג סדור נמצא על שני הישרים ומקיים את שתי המשוואות."
+        }
+      ]
+    },
+    "2": {
+      "id": "9be17796d94c40b5bbb987c4b7ef0882:2",
+      "q": 2,
+      "grade": 8,
+      "topic": "מערכות — חיתוך גרפי",
+      "levelLabel": "רמה ב׳",
+      "text": "בגרף $f(x)=2x+1$ ו־$g(x)=2x−4$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T06/b/figures/q2_head.svg",
+        "sha256": "2adbc44b111754e3146b8f1c3ea282289b29ee65a6b3a7696e13bb44c5261045"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מצאו בכל נוסחה את השיפוע.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q2_head.svg",
+            "sha256": "2adbc44b111754e3146b8f1c3ea282289b29ee65a6b3a7696e13bb44c5261045"
+          },
+          "answer": "בשני הישרים השיפוע $2$."
+        },
+        {
+          "label": "ב",
+          "text": "קראו מן הגרף את חיתוך כל ישר עם ציר $y$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q2_head.svg",
+            "sha256": "2adbc44b111754e3146b8f1c3ea282289b29ee65a6b3a7696e13bb44c5261045"
+          },
+          "answer": "$f$: $(0,1)$; $g$: $(0,−4)$."
+        },
+        {
+          "label": "ג",
+          "text": "בחרו: מפגש אחד, אין מפגש, או חפיפה. הסבירו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q2_head.svg",
+            "sha256": "2adbc44b111754e3146b8f1c3ea282289b29ee65a6b3a7696e13bb44c5261045"
+          },
+          "answer": "אין מפגש; השיפועים שווים וחיתוכי הציר שונים."
+        },
+        {
+          "label": "ד",
+          "text": "האם די בידיעת השיפועים בלבד כדי להבחין בין מקבילות לחפיפה?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q2_head.svg",
+            "sha256": "2adbc44b111754e3146b8f1c3ea282289b29ee65a6b3a7696e13bb44c5261045"
+          },
+          "answer": "לא; צריך להשוות גם את האיברים החופשיים."
+        }
+      ]
+    },
+    "3": {
+      "id": "9be17796d94c40b5bbb987c4b7ef0882:3",
+      "q": 3,
+      "grade": 8,
+      "topic": "מערכות — חיתוך גרפי",
+      "levelLabel": "רמה ב׳",
+      "text": "נבדוק את המערכת $y=x−2$, $y=−2x+7$ בעזרת טבלת מועמדים.",
+      "table": {
+        "head": [
+          "שורה",
+          "זוג"
+        ],
+        "rows": [
+          [
+            "א",
+            "$(0,−2)$"
+          ],
+          [
+            "ב",
+            "$(1,5)$"
+          ],
+          [
+            "ג",
+            "$(3,1)$"
+          ]
+        ]
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "בדקו את הזוג בשורה א בשתי המשוואות.",
+          "answer": "$(0,−2)$ מקיים רק את הראשונה; בשנייה מתקבל $7$."
+        },
+        {
+          "label": "ב",
+          "text": "בדקו את הזוג בשורה ב בשתי המשוואות.",
+          "answer": "$(1,5)$ מקיים רק את השנייה; בראשונה מתקבל $−1$."
+        },
+        {
+          "label": "ג",
+          "text": "בדקו את הזוג בשורה ג וקבעו מי המועמד המשותף.",
+          "answer": "$(3,1)$ מקיים את שתיהן, כי $3−2=1$ וגם $−6+7=1$."
+        },
+        {
+          "label": "ד",
+          "text": "חבר טען שמספיק לסמן ״כן״ באחת המשוואות. השתמשו בטבלה כדי לתקן אותו.",
+          "answer": "שורות א וב מראות שבדיקה אחת עלולה לקבל זוג שגוי; נדרשות שתיהן."
+        }
+      ]
+    },
+    "4": {
+      "id": "9be17796d94c40b5bbb987c4b7ef0882:4",
+      "q": 4,
+      "grade": 8,
+      "topic": "מערכות — חיתוך גרפי",
+      "levelLabel": "רמה ב׳",
+      "text": "הישרים הם $f(x)=3x−1$ ו־$g(x)=−x+7$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T06/b/figures/q4_head.svg",
+        "sha256": "08082cb4a49416a71af5114b212bbdc3c22c1e00d7c8c9899ebd27ae4f8b2c94"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "קראו את המפגש מהשרטוט וכתבו זוג סדור.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q4_head.svg",
+            "sha256": "08082cb4a49416a71af5114b212bbdc3c22c1e00d7c8c9899ebd27ae4f8b2c94"
+          },
+          "answer": "$(2,5)$."
+        },
+        {
+          "label": "ב",
+          "text": "מלאו בחישוב: מה מתקבל בהצבת שיעור $x$ במשוואת $f$?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q4_head.svg",
+            "sha256": "08082cb4a49416a71af5114b212bbdc3c22c1e00d7c8c9899ebd27ae4f8b2c94"
+          },
+          "answer": "$3\\cdot2−1=5$."
+        },
+        {
+          "label": "ג",
+          "text": "מלאו בחישוב: מה מתקבל בהצבה במשוואת $g$?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q4_head.svg",
+            "sha256": "08082cb4a49416a71af5114b212bbdc3c22c1e00d7c8c9899ebd27ae4f8b2c94"
+          },
+          "answer": "$−2+7=5$."
+        },
+        {
+          "label": "ד",
+          "text": "האם הזוג שמתקבל מהחלפת השיעורים פותר את המערכת? בדקו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q4_head.svg",
+            "sha256": "08082cb4a49416a71af5114b212bbdc3c22c1e00d7c8c9899ebd27ae4f8b2c94"
+          },
+          "answer": "$(5,2)$ אינו פתרון; $f(5)=14$ ואילו $g(5)=2$."
+        },
+        {
+          "label": "ה",
+          "text": "נסחו כלל שימנע החלפת שיעורים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q4_head.svg",
+            "sha256": "08082cb4a49416a71af5114b212bbdc3c22c1e00d7c8c9899ebd27ae4f8b2c94"
+          },
+          "answer": "בזוג סדור נכתב תחילה השיעור האופקי $x$ ואחריו השיעור האנכי $y$."
+        }
+      ]
+    },
+    "5": {
+      "id": "9be17796d94c40b5bbb987c4b7ef0882:5",
+      "q": 5,
+      "grade": 8,
+      "topic": "מערכות — חיתוך גרפי",
+      "levelLabel": "רמה ב׳",
+      "text": "לכל אחת משתי הפונקציות ניתנה אותה נוסחה: $f(x)=−x+2$, $g(x)=−x+2$. בשרטוט הן חופפות.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T06/b/figures/q5_head.svg",
+        "sha256": "0074fecd65fec2d9cd3e8c537fd4c878346f838eac9035e926a2fc6a851b54ba"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את ערכי שתי הפונקציות ב־$x=0$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q5_head.svg",
+            "sha256": "0074fecd65fec2d9cd3e8c537fd4c878346f838eac9035e926a2fc6a851b54ba"
+          },
+          "answer": "בשתי הפונקציות הערך $2$."
+        },
+        {
+          "label": "ב",
+          "text": "בחרו $x$ אחר ומצאו זוג משותף נוסף.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q5_head.svg",
+            "sha256": "0074fecd65fec2d9cd3e8c537fd4c878346f838eac9035e926a2fc6a851b54ba"
+          },
+          "answer": "למשל $x=1$ נותן $(1,1)$. דוגמה אחת; כל $x$ נותן זוג משותף $(x,−x+2)$."
+        },
+        {
+          "label": "ג",
+          "text": "הסבירו מדוע אין צורך לבדוק כל מספר בנפרד כדי לדעת שיש אינסוף פתרונות.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q5_head.svg",
+            "sha256": "0074fecd65fec2d9cd3e8c537fd4c878346f838eac9035e926a2fc6a851b54ba"
+          },
+          "answer": "הנוסחאות זהות ולכן כל $x$ נותן אותו ערך בשתיהן."
+        },
+        {
+          "label": "ד",
+          "text": "האם כל זוג, למשל $(0,0)$, פותר את המערכת? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q5_head.svg",
+            "sha256": "0074fecd65fec2d9cd3e8c537fd4c878346f838eac9035e926a2fc6a851b54ba"
+          },
+          "answer": "לא; הפתרונות נמצאים על הישר המשותף בלבד, והזוג הנתון אינו עליו."
+        }
+      ]
+    },
+    "6": {
+      "id": "9be17796d94c40b5bbb987c4b7ef0882:6",
+      "q": 6,
+      "grade": 8,
+      "topic": "מערכות — חיתוך גרפי",
+      "levelLabel": "רמה ב׳",
+      "text": "לפניכם המשוואות $y=x+3$ ו־$y=−x−1$.",
+      "example": {
+        "title": "דוגמה מודרכת",
+        "lines": [
+          "אם מתקבלת משוואת השוואה $2x+1=x+4$, מחסרים $x$ ומחסרים $1$, ומקבלים $x=3$. את שיעור $y$ מוצאים באחת המשוואות ואז מאמתים בשנייה."
+        ]
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מצאו שתי נקודות נוחות לכל ישר.",
+          "answer": "למשל לישר $y=x+3$ הנקודות $(0,3),(−3,0)$, ולישר $y=−x−1$ הנקודות $(0,−1),(−1,0)$. דוגמה אחת; כל נקודות המקיימות את משוואת הישר מתאימות."
+        },
+        {
+          "label": "ב",
+          "text": "השוו את אגפי ימין ופתרו את $x$.",
+          "answer": "$x+3=−x−1$, ולכן $x=−2$."
+        },
+        {
+          "label": "ג",
+          "text": "מצאו את $y$ ובדקו בשתי המשוואות.",
+          "answer": "$y=1$, והפתרון $(−2,1)$ מקיים את שתיהן."
+        },
+        {
+          "label": "ד",
+          "text": "שרטטו את שני הישרים בעזרת הנקודות וסמנו את המפגש.",
+          "answer": "שני ישרים דרך הנקודות שנבחרו, עם מפגש ב־$(−2,1)$ וסקלה ברורה."
+        }
+      ]
+    },
+    "7": {
+      "id": "9be17796d94c40b5bbb987c4b7ef0882:7",
+      "q": 7,
+      "grade": 8,
+      "topic": "מערכות — חיתוך גרפי",
+      "levelLabel": "רמה ב׳",
+      "text": "בגרף $f(x)=x+2$, $g(x)=−x+3$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T06/b/figures/q7_head.svg",
+        "sha256": "4fb2f79aa4d27b0cd0b2119a1195c4f49dfb8bec5d0b165452084c52cc594a3f"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "האם המפגש נמצא על קו רשת של $x$ שלם? הסבירו לפי הציור.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q7_head.svg",
+            "sha256": "4fb2f79aa4d27b0cd0b2119a1195c4f49dfb8bec5d0b165452084c52cc594a3f"
+          },
+          "answer": "לא; שיעור $x$ של המפגש הוא $\\f{1}{2}$, בין $0$ ל־$1$, ולכן המפגש אינו על קו רשת של $x$ שלם."
+        },
+        {
+          "label": "ב",
+          "text": "פתרו $x+2=−x+3$ כדי למצוא את השיעור המדויק.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q7_head.svg",
+            "sha256": "4fb2f79aa4d27b0cd0b2119a1195c4f49dfb8bec5d0b165452084c52cc594a3f"
+          },
+          "answer": "$x=\\f{1}{2}$."
+        },
+        {
+          "label": "ג",
+          "text": "השלימו את הזוג ובדקו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q7_head.svg",
+            "sha256": "4fb2f79aa4d27b0cd0b2119a1195c4f49dfb8bec5d0b165452084c52cc594a3f"
+          },
+          "answer": "$(\\f{1}{2},\\f{5}{2})$; שתי הנוסחאות נותנות $\\f{5}{2}$."
+        },
+        {
+          "label": "ד",
+          "text": "תקנו את הטענה: ״אין מפגש בנקודת רשת, לכן אין פתרון״. מתי רשת מסומנת מאפשרת קריאה מדויקת, ומתי נדרש חישוב לאימות?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q7_head.svg",
+            "sha256": "4fb2f79aa4d27b0cd0b2119a1195c4f49dfb8bec5d0b165452084c52cc594a3f"
+          },
+          "answer": "גם שיעורים שבריים מותרים. אם המפגש נופל על שנתות שסקלתן ידועה אפשר לקרוא בדיוק, גם ברשת שברית; אחרת הקריאה היא אומדן ונדרש חישוב ואימות בשתי המשוואות."
+        }
+      ]
+    },
+    "8": {
+      "id": "9be17796d94c40b5bbb987c4b7ef0882:8",
+      "q": 8,
+      "grade": 8,
+      "topic": "מערכות — חיתוך גרפי",
+      "levelLabel": "רמה ב׳",
+      "text": "מוצגים $f(x)=−2x+6$ ו־$g(x)=x$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T06/b/figures/q8_head.svg",
+        "sha256": "6ca9a6d2e8207ff27ba9f1f0b4a3c5950fe5db4b51bd898bc3a30aa6ea8ed39e"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "קראו את נקודת החיתוך.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q8_head.svg",
+            "sha256": "6ca9a6d2e8207ff27ba9f1f0b4a3c5950fe5db4b51bd898bc3a30aa6ea8ed39e"
+          },
+          "answer": "$(2,2)$."
+        },
+        {
+          "label": "ב",
+          "text": "אמתו את הקריאה באמצעות שתי הצבות.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q8_head.svg",
+            "sha256": "6ca9a6d2e8207ff27ba9f1f0b4a3c5950fe5db4b51bd898bc3a30aa6ea8ed39e"
+          },
+          "answer": "$−2\\cdot2+6=2$, ו־$g(2)=2$."
+        },
+        {
+          "label": "ג",
+          "text": "בחרו נקודה על $g$ שאינה על $f$ והראו זאת.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q8_head.svg",
+            "sha256": "6ca9a6d2e8207ff27ba9f1f0b4a3c5950fe5db4b51bd898bc3a30aa6ea8ed39e"
+          },
+          "answer": "למשל $(0,0)$ על $g$: $f(0)=6\\neq 0$. דוגמה אחת; כל נקודה על $g$ פרט ל־$(2,2)$ מתאימה."
+        },
+        {
+          "label": "ד",
+          "text": "במפגש הזה החלפת סדר השיעורים לא שינתה את הזוג. האם מותר מכאן תמיד להחליף?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q8_head.svg",
+            "sha256": "6ca9a6d2e8207ff27ba9f1f0b4a3c5950fe5db4b51bd898bc3a30aa6ea8ed39e"
+          },
+          "answer": "לא; השיעורים כאן שווים במקרה, ובזוגות אחרים הסדר חשוב."
+        }
+      ]
+    },
+    "9": {
+      "id": "9be17796d94c40b5bbb987c4b7ef0882:9",
+      "q": 9,
+      "grade": 8,
+      "topic": "מערכות — חיתוך גרפי",
+      "levelLabel": "רמה ב׳",
+      "text": "סווגו את המערכות בטבלה בעזרת השיפועים והקבועים.",
+      "table": {
+        "head": [
+          "שורה",
+          "משוואה א",
+          "משוואה ב"
+        ],
+        "rows": [
+          [
+            "א",
+            "$y=−3x+7$",
+            "$y=−3x−5$"
+          ],
+          [
+            "ב",
+            "$y=2x−2$",
+            "$y=−x+4$"
+          ],
+          [
+            "ג",
+            "$y=3x+1$",
+            "$y=3x+1$"
+          ]
+        ]
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "באיזו שורה יש ישרים מקבילים נפרדים? פרטו את שני הסימנים לכך.",
+          "answer": "א: אותו שיפוע $−3$, קבועים $7$ ו־$−5$ שונים."
+        },
+        {
+          "label": "ב",
+          "text": "באיזו שורה יש חפיפה? פרטו מה שווה.",
+          "answer": "ג: השיפוע והקבוע זהים בשתי המשוואות."
+        },
+        {
+          "label": "ג",
+          "text": "באיזו שורה יש פתרון יחיד, עוד לפני חישובו?",
+          "answer": "ב: השיפועים $2$ ו־$−1$ שונים."
+        },
+        {
+          "label": "ד",
+          "text": "מה יקרה לשורה א אם מחליפים את הקבוע במשוואה השנייה בקבוע של הראשונה?",
+          "answer": "תהיה חפיפה ואינסוף פתרונות."
+        }
+      ]
+    },
+    "10": {
+      "id": "9be17796d94c40b5bbb987c4b7ef0882:10",
+      "q": 10,
+      "grade": 8,
+      "topic": "מערכות — חיתוך גרפי",
+      "levelLabel": "רמה ב׳",
+      "text": "הגרף מציג $f(x)=x−1$ ו־$g(x)=x+4$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T06/b/figures/q10_head.svg",
+        "sha256": "d1b3e3269c4d2de0c2380b649855bb040f8ee98ed77f61f08bae0b13a53554a8"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "קראו את ערכי שתי הפונקציות כאשר $x=0$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q10_head.svg",
+            "sha256": "d1b3e3269c4d2de0c2380b649855bb040f8ee98ed77f61f08bae0b13a53554a8"
+          },
+          "answer": "$f(0)=−1$ ו־$g(0)=4$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את ערכיהן כאשר $x=2$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q10_head.svg",
+            "sha256": "d1b3e3269c4d2de0c2380b649855bb040f8ee98ed77f61f08bae0b13a53554a8"
+          },
+          "answer": "$f(2)=1$ ו־$g(2)=6$."
+        },
+        {
+          "label": "ג",
+          "text": "האם ההפרש השתנה בין שתי הבדיקות?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q10_head.svg",
+            "sha256": "d1b3e3269c4d2de0c2380b649855bb040f8ee98ed77f61f08bae0b13a53554a8"
+          },
+          "answer": "לא; בשתיהן ההפרש $5$."
+        },
+        {
+          "label": "ד",
+          "text": "הראו בעזרת $g(x)−f(x)$ שההפרש קבוע לכל $x$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q10_head.svg",
+            "sha256": "d1b3e3269c4d2de0c2380b649855bb040f8ee98ed77f61f08bae0b13a53554a8"
+          },
+          "answer": "$x+4−(x−1)=5$."
+        },
+        {
+          "label": "ה",
+          "text": "קשרו את ההפרש למספר פתרונות המערכת.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q10_head.svg",
+            "sha256": "d1b3e3269c4d2de0c2380b649855bb040f8ee98ed77f61f08bae0b13a53554a8"
+          },
+          "answer": "ההפרש לעולם אינו אפס, לכן אין פתרון."
+        }
+      ]
+    },
+    "11": {
+      "id": "9be17796d94c40b5bbb987c4b7ef0882:11",
+      "q": 11,
+      "grade": 8,
+      "topic": "מערכות — חיתוך גרפי",
+      "levelLabel": "רמה ב׳",
+      "text": "שני ישרים עולים מוצגים בשרטוט: $f(x)=2x−2$, $g(x)=x+1$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T06/b/figures/q11_head.svg",
+        "sha256": "b365f4eb0d6eaf870991553b70a5370e320d06f1dfb9d07bf0edbfdd65c3c0bd"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "האם העובדה ששניהם עולים מוכיחה שהם מקבילים? הסבירו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q11_head.svg",
+            "sha256": "b365f4eb0d6eaf870991553b70a5370e320d06f1dfb9d07bf0edbfdd65c3c0bd"
+          },
+          "answer": "לא; השיפועים החיוביים $2$ ו־$1$ שונים."
+        },
+        {
+          "label": "ב",
+          "text": "קראו את נקודת המפגש.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q11_head.svg",
+            "sha256": "b365f4eb0d6eaf870991553b70a5370e320d06f1dfb9d07bf0edbfdd65c3c0bd"
+          },
+          "answer": "$(3,4)$."
+        },
+        {
+          "label": "ג",
+          "text": "אמתו את הקריאה בשתי הנוסחאות.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q11_head.svg",
+            "sha256": "b365f4eb0d6eaf870991553b70a5370e320d06f1dfb9d07bf0edbfdd65c3c0bd"
+          },
+          "answer": "$2\\cdot3−2=4$ וגם $3+1=4$."
+        },
+        {
+          "label": "ד",
+          "text": "איזה פרט בנוסחאות קובע כאן שיש רק מפגש אחד?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q11_head.svg",
+            "sha256": "b365f4eb0d6eaf870991553b70a5370e320d06f1dfb9d07bf0edbfdd65c3c0bd"
+          },
+          "answer": "שיפועים שונים של שני ישרים."
+        }
+      ]
+    },
+    "12": {
+      "id": "9be17796d94c40b5bbb987c4b7ef0882:12",
+      "q": 12,
+      "grade": 8,
+      "topic": "מערכות — חיתוך גרפי",
+      "levelLabel": "רמה ב׳",
+      "text": "נתונות המשוואות $y=−x+4$ ו־$y=x−4$.",
+      "items": [
+        {
+          "label": "א",
+          "text": "בדקו את הזוג $(0,4)$ בשתיהן.",
+          "answer": "על הראשונה בלבד; בשנייה מתקבל $−4$."
+        },
+        {
+          "label": "ב",
+          "text": "בדקו את הזוג $(4,0)$ בשתיהן.",
+          "answer": "מקיים את שתיהן."
+        },
+        {
+          "label": "ג",
+          "text": "הסבירו מה מייצג פתרון של מערכת בגישה הגרפית.",
+          "answer": "נקודת מפגש משותפת של שני הישרים, ולא רק נקודה על אחד."
+        },
+        {
+          "label": "ד",
+          "text": "שרטטו את המערכת וסמנו את המועמד המשותף.",
+          "answer": "שני ישרים דרך חיתוכי הצירים המתאימים; מפגש $(4,0)$."
+        }
+      ]
+    },
+    "13": {
+      "id": "9be17796d94c40b5bbb987c4b7ef0882:13",
+      "q": 13,
+      "grade": 8,
+      "topic": "מערכות — חיתוך גרפי",
+      "levelLabel": "רמה ב׳",
+      "text": "בשרטוט $f(x)=\\f{x}{2}+2$ ו־$g(x)=−\\f{x}{2}+6$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T06/b/figures/q13_head.svg",
+        "sha256": "1201e6a1b9bf6c6360d4c7ad72065a067f9b07c6b7c294194e084574b9c405de"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "קראו את נקודת המפגש.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q13_head.svg",
+            "sha256": "1201e6a1b9bf6c6360d4c7ad72065a067f9b07c6b7c294194e084574b9c405de"
+          },
+          "answer": "$(4,4)$."
+        },
+        {
+          "label": "ב",
+          "text": "בדקו את הזוג בנוסחה הראשונה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q13_head.svg",
+            "sha256": "1201e6a1b9bf6c6360d4c7ad72065a067f9b07c6b7c294194e084574b9c405de"
+          },
+          "answer": "$\\f{4}{2}+2=4$."
+        },
+        {
+          "label": "ג",
+          "text": "בדקו בנוסחה השנייה והסבירו מדוע הבדיקה הראשונה לא הספיקה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q13_head.svg",
+            "sha256": "1201e6a1b9bf6c6360d4c7ad72065a067f9b07c6b7c294194e084574b9c405de"
+          },
+          "answer": "$−\\f{4}{2}+6=4$; שתי משוואות צריכות להתקיים יחד."
+        },
+        {
+          "label": "ד",
+          "text": "האם שיפוע שברי מחייב נקודת חיתוך עם שיעורים לא שלמים? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q13_head.svg",
+            "sha256": "1201e6a1b9bf6c6360d4c7ad72065a067f9b07c6b7c294194e084574b9c405de"
+          },
+          "answer": "לא; כאן שני השיפועים שבריים אך נקודת המפגש שלמה."
+        }
+      ]
+    },
+    "14": {
+      "id": "9be17796d94c40b5bbb987c4b7ef0882:14",
+      "q": 14,
+      "grade": 8,
+      "topic": "מערכות — חיתוך גרפי",
+      "levelLabel": "רמה ב׳",
+      "text": "מוצגים $f(x)=x$ ו־$g(x)=1.05x+0.1$. המספרים בנוסחאות נתונים בדיוק.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T06/b/figures/q14_head.svg",
+        "sha256": "f811b768a7206efc3971d541d5d69e0bf09252ae37da4a404dd34a6964a7c290"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "האם הישרים חופפים לפי הנוסחאות? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q14_head.svg",
+            "sha256": "f811b768a7206efc3971d541d5d69e0bf09252ae37da4a404dd34a6964a7c290"
+          },
+          "answer": "לא; גם השיפועים וגם הקבועים שונים."
+        },
+        {
+          "label": "ב",
+          "text": "התמונה קטנה והקווים נראים קרובים. האם מותר להכריז שאין הבדל?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q14_head.svg",
+            "sha256": "f811b768a7206efc3971d541d5d69e0bf09252ae37da4a404dd34a6964a7c290"
+          },
+          "answer": "לא; עובי קו וקנה מידה עלולים לטשטש פער."
+        },
+        {
+          "label": "ג",
+          "text": "בדקו אם הזוג $(0,0)$ נמצא על שני הישרים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q14_head.svg",
+            "sha256": "f811b768a7206efc3971d541d5d69e0bf09252ae37da4a404dd34a6964a7c290"
+          },
+          "answer": "על $f$ בלבד; $g(0)=0.1$."
+        },
+        {
+          "label": "ד",
+          "text": "הסבירו מדוע עשרוני סופי אינו בהכרח תוצאת אומדן.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q14_head.svg",
+            "sha256": "f811b768a7206efc3971d541d5d69e0bf09252ae37da4a404dd34a6964a7c290"
+          },
+          "answer": "המספר יכול להיות נתון מדויק; כאן הדבר נאמר במפורש."
+        }
+      ]
+    },
+    "15": {
+      "id": "9be17796d94c40b5bbb987c4b7ef0882:15",
+      "q": 15,
+      "grade": 8,
+      "topic": "מערכות — חיתוך גרפי",
+      "levelLabel": "רמה ב׳",
+      "text": "נתון $f(x)=−x+3$. משווים אליו פעם את $g(x)=−x−2$ ופעם את $h(x)=2x−3$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T06/b/figures/q15_head.svg",
+        "sha256": "451223b2de82b90d1525dbbb5f4483ab4614e7747c8e8942bf65e53b3947f753"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "זהו את זוג הישרים המקביל וקבעו את מספר הפתרונות שלו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q15_head.svg",
+            "sha256": "451223b2de82b90d1525dbbb5f4483ab4614e7747c8e8942bf65e53b3947f753"
+          },
+          "answer": "$f,g$ מקבילים נפרדים; אין פתרון."
+        },
+        {
+          "label": "ב",
+          "text": "קראו את המפגש של הזוג שאינו מקביל.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q15_head.svg",
+            "sha256": "451223b2de82b90d1525dbbb5f4483ab4614e7747c8e8942bf65e53b3947f753"
+          },
+          "answer": "$f,h$ נחתכים ב־$(2,1)$."
+        },
+        {
+          "label": "ג",
+          "text": "אמתו את המפגש בשתי הנוסחאות המתאימות.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q15_head.svg",
+            "sha256": "451223b2de82b90d1525dbbb5f4483ab4614e7747c8e8942bf65e53b3947f753"
+          },
+          "answer": "$f(2)=1$ ו־$h(2)=1$."
+        },
+        {
+          "label": "ד",
+          "text": "האם נקודת המפגש שמצאתם נמצאת גם על הישר השלישי? בדקו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q15_head.svg",
+            "sha256": "451223b2de82b90d1525dbbb5f4483ab4614e7747c8e8942bf65e53b3947f753"
+          },
+          "answer": "לא; $g(2)=−4$."
+        }
+      ]
+    },
+    "16": {
+      "id": "9be17796d94c40b5bbb987c4b7ef0882:16",
+      "q": 16,
+      "grade": 8,
+      "topic": "מערכות — חיתוך גרפי",
+      "levelLabel": "רמה ב׳",
+      "text": "המערכת היא $y=2x+2$, $y=2x+2$.",
+      "items": [
+        {
+          "label": "א",
+          "text": "כתבו זוג פותר שבו $x=0$.",
+          "answer": "$(0,2)$."
+        },
+        {
+          "label": "ב",
+          "text": "כתבו זוג פותר שבו $x=−1$.",
+          "answer": "$(−1,0)$."
+        },
+        {
+          "label": "ג",
+          "text": "כתבו פתרון שלישי שונה משני הקודמים, והסבירו איך לייצר עוד פתרונות בלי לשנות את המערכת.",
+          "answer": "למשל $(2,6)$ הוא פתרון שלישי; בוחרים כל $x$ ומחשבים $y=2x+2$, ושתי המשוואות זהות."
+        },
+        {
+          "label": "ד",
+          "text": "שרטטו וכתבו מדוע קו אחד מספיק לייצוג שתי המשוואות.",
+          "answer": "הישרים חופפים בדיוק; כל נקודה על הקו משותפת לשניהם."
+        }
+      ]
+    },
+    "17": {
+      "id": "9be17796d94c40b5bbb987c4b7ef0882:17",
+      "q": 17,
+      "grade": 8,
+      "topic": "מערכות — חיתוך גרפי",
+      "levelLabel": "רמה ב׳",
+      "text": "בגרף $f(x)=3x+2$ ו־$g(x)=−x−2$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T06/b/figures/q17_head.svg",
+        "sha256": "5aa1acf09edda5880d0e049a05bbe64fee1195a19e3bb8d770ef888e8c1c6c2b"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "קראו את נקודת החיתוך, כולל הסימנים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q17_head.svg",
+            "sha256": "5aa1acf09edda5880d0e049a05bbe64fee1195a19e3bb8d770ef888e8c1c6c2b"
+          },
+          "answer": "$(−1,−1)$."
+        },
+        {
+          "label": "ב",
+          "text": "בדקו את הזוג בשתי המשוואות.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q17_head.svg",
+            "sha256": "5aa1acf09edda5880d0e049a05bbe64fee1195a19e3bb8d770ef888e8c1c6c2b"
+          },
+          "answer": "$3\\cdot(−1)+2=−1$ וגם $−(−1)−2=−1$."
+        },
+        {
+          "label": "ג",
+          "text": "תלמיד מחק את סימני המינוס. בדקו את הזוג שקיבל.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q17_head.svg",
+            "sha256": "5aa1acf09edda5880d0e049a05bbe64fee1195a19e3bb8d770ef888e8c1c6c2b"
+          },
+          "answer": "$(1,1)$ אינו מקיים אף משוואה: מתקבלים $5$ ו־$−3$."
+        },
+        {
+          "label": "ד",
+          "text": "ציינו איזה מידע חייב להיקרא מכל ציר.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q17_head.svg",
+            "sha256": "5aa1acf09edda5880d0e049a05bbe64fee1195a19e3bb8d770ef888e8c1c6c2b"
+          },
+          "answer": "גודל השיעור וסימנו, לפי הסקלה והמיקום יחסית לראשית."
+        }
+      ]
+    },
+    "18": {
+      "id": "9be17796d94c40b5bbb987c4b7ef0882:18",
+      "q": 18,
+      "grade": 8,
+      "topic": "מערכות — חיתוך גרפי",
+      "levelLabel": "רמה ב׳",
+      "text": "הנקודות הבאות נבדקות מול $y=x+4$ ו־$y=−x+2$: $(0,4)$, $(0,2)$, $(−1,3)$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T06/b/figures/q18_head.svg",
+        "sha256": "199fe2011752159652d26980186269760881fa947b6e6eb365018b8393f175cc"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "איזו נקודה מקיימת רק את המשוואה הראשונה?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q18_head.svg",
+            "sha256": "199fe2011752159652d26980186269760881fa947b6e6eb365018b8393f175cc"
+          },
+          "answer": "$(0,4)$."
+        },
+        {
+          "label": "ב",
+          "text": "איזו נקודה מקיימת רק את השנייה?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q18_head.svg",
+            "sha256": "199fe2011752159652d26980186269760881fa947b6e6eb365018b8393f175cc"
+          },
+          "answer": "$(0,2)$."
+        },
+        {
+          "label": "ג",
+          "text": "איזו מקיימת את שתיהן? הראו את שתי ההצבות.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q18_head.svg",
+            "sha256": "199fe2011752159652d26980186269760881fa947b6e6eb365018b8393f175cc"
+          },
+          "answer": "$(−1,3)$; $−1+4=3$ וגם $−(−1)+2=3$."
+        },
+        {
+          "label": "ד",
+          "text": "האם שלוש הנקודות הן שלושה פתרונות למערכת? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q18_head.svg",
+            "sha256": "199fe2011752159652d26980186269760881fa947b6e6eb365018b8393f175cc"
+          },
+          "answer": "לא; רק הזוג שמקיים את שתי המשוואות הוא פתרון."
+        }
+      ]
+    },
+    "19": {
+      "id": "9be17796d94c40b5bbb987c4b7ef0882:19",
+      "q": 19,
+      "grade": 8,
+      "topic": "מערכות — חיתוך גרפי",
+      "levelLabel": "רמה ב׳",
+      "text": "השרטוט מציג $f(x)=2x$ ו־$g(x)=−x+3$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T06/b/figures/q19_head.svg",
+        "sha256": "1021b893a85206593a7b902f5f05672673e752eb49dcdd7c2b9b564201b7a2cc"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "קראו את נקודת החיתוך.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q19_head.svg",
+            "sha256": "1021b893a85206593a7b902f5f05672673e752eb49dcdd7c2b9b564201b7a2cc"
+          },
+          "answer": "$(1,2)$."
+        },
+        {
+          "label": "ב",
+          "text": "שנו רק את הקבוע של $g$ כך שהישר החדש יעבור בראשית, בלי לשנות את שיפועו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q19_head.svg",
+            "sha256": "1021b893a85206593a7b902f5f05672673e752eb49dcdd7c2b9b564201b7a2cc"
+          },
+          "answer": "$y=−x$."
+        },
+        {
+          "label": "ג",
+          "text": "כמה פתרונות יהיו למערכת החדשה, ומדוע?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q19_head.svg",
+            "sha256": "1021b893a85206593a7b902f5f05672673e752eb49dcdd7c2b9b564201b7a2cc"
+          },
+          "answer": "פתרון יחיד, כי השיפועים שונים; הוא $(0,0)$."
+        },
+        {
+          "label": "ד",
+          "text": "הסבירו מדוע שינוי קבוע אינו תמיד שומר על נקודת הפתרון.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T06/b/figures/q19_head.svg",
+            "sha256": "1021b893a85206593a7b902f5f05672673e752eb49dcdd7c2b9b564201b7a2cc"
+          },
+          "answer": "שינוי הקבוע של $g$ מזיז את הישר אנכית, ולכן $(1,2)$ כבר אינה עליו (בדוגמה $g(1)=−1\\neq 2$) והמפגש עובר למקום אחר (כאן $(0,0)$)."
+        }
+      ]
+    },
+    "20": {
+      "id": "9be17796d94c40b5bbb987c4b7ef0882:20",
+      "q": 20,
+      "grade": 8,
+      "topic": "מערכות — חיתוך גרפי",
+      "levelLabel": "רמה ב׳",
+      "text": "שתי טענות: ״שתי משוואות שונות תמיד נותנות פתרון אחד״; ״זוג שעובר בדיקה אחת חייב לעבור גם את השנייה״.",
+      "items": [
+        {
+          "label": "א",
+          "text": "הפריכו את הטענה הראשונה בעזרת שתי משוואות פשוטות.",
+          "answer": "למשל $y=x$ ו־$y=x+1$: מקבילים, אין פתרון. דוגמה אחת; כל שני ישרים מקבילים נפרדים מתאימים."
+        },
+        {
+          "label": "ב",
+          "text": "הפריכו את השנייה באמצעות זוג ומשוואות.",
+          "answer": "למשל $(0,0)$ מקיים $y=x$ אך אינו מקיים $y=x+1$. דוגמה אחת; כל זוג שעל ישר אחד בלבד מתאים."
+        },
+        {
+          "label": "ג",
+          "text": "כתבו תנאי נכון לפתרון יחיד בשתי פונקציות קוויות.",
+          "answer": "שיפועי הישרים שונים."
+        },
+        {
+          "label": "ד",
+          "text": "שרטטו את הדוגמה שבחרתם והסבירו כיצד רואים בה את שתי ההפרכות.",
+          "answer": "בדוגמה שני ישרים מקבילים נפרדים; הזוג על הראשון בלבד."
+        }
+      ]
+    }
+  }
+}

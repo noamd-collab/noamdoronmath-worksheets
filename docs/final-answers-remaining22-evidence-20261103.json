@@ -1,0 +1,410 @@
+{
+  "date": "2026-11-03",
+  "skill": "7.0.3-noam",
+  "engine": "6.18",
+  "scope": "22 remaining worksheets, completing the named 404-sheet republishing project; not a claim about every PDF in the wider catalog.",
+  "approval": "לאשר הבדלי החלקת אותיות בלבד, לאחר אימות",
+  "verifierSha256": "200f95210a0e50dfd0c27f2735e32fba5acfd3c8fc9d019939bf8d6fd2cc5fa2",
+  "aaRegressionCases": 14,
+  "questionPages": 292,
+  "answerPages": 45,
+  "answerItems": 1735,
+  "rows": [
+    {
+      "topic": "G7-T03",
+      "level": "a",
+      "oldPdfId": "622c7814c15b4647b47339d5989d4430",
+      "newPdfId": "6f6823dd9d2040cfabc418f0443458f4",
+      "sha256": "4ffd0f455bb2bb583e300394f5fe351572d3e9d7d0a3db4d56e88816b85a0e8a",
+      "questionPages": 9,
+      "answerPages": 2,
+      "answerItems": 79,
+      "didactic": [
+        99,
+        0,
+        0
+      ],
+      "maxGrayDelta": 2,
+      "questionIdentity": "PASS — authorized AA-only difference; exact content/rendering state and geometry within PDF float precision",
+      "teacherUrl": "https://www.noamdoronmath.co.il/teachers?grade=7&topic=3&level=a"
+    },
+    {
+      "topic": "G8-T15",
+      "level": "a",
+      "oldPdfId": "f693012a04194166b37dd6127b4f345c",
+      "newPdfId": "f9d6d1792f96415f935554ec4c5d843c",
+      "sha256": "cb7dbb2a1d5dbaf25d12ee1b3558443755128910cfd12e6bd1fad63cec0ec951",
+      "questionPages": 15,
+      "answerPages": 2,
+      "answerItems": 73,
+      "didactic": [
+        64,
+        0,
+        29
+      ],
+      "maxGrayDelta": 2,
+      "questionIdentity": "PASS — authorized AA-only difference; exact content/rendering state and geometry within PDF float precision",
+      "teacherUrl": "https://www.noamdoronmath.co.il/teachers?grade=8&topic=29&level=a"
+    },
+    {
+      "topic": "G8-T15",
+      "level": "b",
+      "oldPdfId": "fbdd83babe6843ec8ac6103564c8e81b",
+      "newPdfId": "8c196cba304b43d3ac4a6eaa6ce56308",
+      "sha256": "57086ac99a1a70e77544811f04ac36c6fe1380d433169a000dd400f68a4b929c",
+      "questionPages": 16,
+      "answerPages": 1,
+      "answerItems": 69,
+      "didactic": [
+        64,
+        0,
+        25
+      ],
+      "maxGrayDelta": 2,
+      "questionIdentity": "PASS — authorized AA-only difference; exact content/rendering state and geometry within PDF float precision",
+      "teacherUrl": "https://www.noamdoronmath.co.il/teachers?grade=8&topic=29&level=b"
+    },
+    {
+      "topic": "G8-T15",
+      "level": "c",
+      "oldPdfId": "b53f2b1d1ee94a46ac8d3c175aca36c6",
+      "newPdfId": "f5b6274c0c504f12b211282c4b712c4a",
+      "sha256": "ac4b4057e2e59dc63d2b894602262029be22497a32adf4298bdbd4ce1e4f5c66",
+      "questionPages": 17,
+      "answerPages": 2,
+      "answerItems": 76,
+      "didactic": [
+        40,
+        0,
+        56
+      ],
+      "maxGrayDelta": 2,
+      "questionIdentity": "PASS — authorized AA-only difference; exact content/rendering state and geometry within PDF float precision",
+      "teacherUrl": "https://www.noamdoronmath.co.il/teachers?grade=8&topic=29&level=c"
+    },
+    {
+      "topic": "G8-T22",
+      "level": "c",
+      "oldPdfId": "3fc18fcf47e444f29e23d5833ebd11cf",
+      "newPdfId": "ccbe1eb738b14d3b93a272282090a21e",
+      "sha256": "13b0f7eead154ad986756ca7e1e2628e8ed900d70287c6d915ada685e29fe1ae",
+      "questionPages": 11,
+      "answerPages": 3,
+      "answerItems": 81,
+      "didactic": [
+        101,
+        0,
+        0
+      ],
+      "maxGrayDelta": 55,
+      "questionIdentity": "PASS — authorized AA-only difference; exact content/rendering state and geometry within PDF float precision",
+      "teacherUrl": "https://www.noamdoronmath.co.il/teachers?grade=8&topic=8&level=c"
+    },
+    {
+      "topic": "G8-T23",
+      "level": "a",
+      "oldPdfId": "729eda27840f40c6b44ddca8917a727b",
+      "newPdfId": "ca05ca2f9ffd4b2f970d6dd968ffa0aa",
+      "sha256": "3bb499f4512afa82a370a124cf661fdda43f3e4d47382936ca35537eedd0366f",
+      "questionPages": 10,
+      "answerPages": 2,
+      "answerItems": 80,
+      "didactic": [
+        100,
+        0,
+        0
+      ],
+      "maxGrayDelta": 2,
+      "questionIdentity": "PASS — authorized AA-only difference; exact content/rendering state and geometry within PDF float precision",
+      "teacherUrl": "https://www.noamdoronmath.co.il/teachers?grade=8&topic=9&level=a"
+    },
+    {
+      "topic": "G8-T23",
+      "level": "b",
+      "oldPdfId": "7abf038ad2fb4c9189a02367f2a2f5ff",
+      "newPdfId": "09a92f73a25a4602b2d8d77a2cae6f13",
+      "sha256": "ecacc96026a01d0db8649a59f4dd2e0d83b34afc6fafe7aba5361b16a8a20bb1",
+      "questionPages": 11,
+      "answerPages": 2,
+      "answerItems": 81,
+      "didactic": [
+        101,
+        0,
+        0
+      ],
+      "maxGrayDelta": 3,
+      "questionIdentity": "PASS — authorized AA-only difference; exact content/rendering state and geometry within PDF float precision",
+      "teacherUrl": "https://www.noamdoronmath.co.il/teachers?grade=8&topic=9&level=b"
+    },
+    {
+      "topic": "G8-T23",
+      "level": "c",
+      "oldPdfId": "8cb4b14d7f3c42c5855b8d64cb1b7284",
+      "newPdfId": "4087b7a14e684835973ca6de0c0d0e31",
+      "sha256": "daf00c7b8d77f4ae34cfd4e7bdf2efdefb669ea8c2437315ff64cf7340684813",
+      "questionPages": 10,
+      "answerPages": 2,
+      "answerItems": 80,
+      "didactic": [
+        100,
+        0,
+        0
+      ],
+      "maxGrayDelta": 4,
+      "questionIdentity": "PASS — authorized AA-only difference; exact content/rendering state and geometry within PDF float precision",
+      "teacherUrl": "https://www.noamdoronmath.co.il/teachers?grade=8&topic=9&level=c"
+    },
+    {
+      "topic": "G8-T24",
+      "level": "a",
+      "oldPdfId": "1cd0d5ee61c44100925f8b809d6a672b",
+      "newPdfId": "6e8c36b1189342be8f3cea76af330590",
+      "sha256": "91e7358d5f54ed5a9f6f525c65cd04388dda1265d3e6f381c0ad4620c9a0f770",
+      "questionPages": 9,
+      "answerPages": 2,
+      "answerItems": 76,
+      "didactic": [
+        96,
+        0,
+        0
+      ],
+      "maxGrayDelta": 3,
+      "questionIdentity": "PASS — authorized AA-only difference; exact content/rendering state and geometry within PDF float precision",
+      "teacherUrl": "https://www.noamdoronmath.co.il/teachers?grade=8&topic=4&level=a"
+    },
+    {
+      "topic": "G8-T24",
+      "level": "b",
+      "oldPdfId": "0e7c2da24a9943da879d191f2fff1a11",
+      "newPdfId": "cc51695c3a1241dfb660bded52e24574",
+      "sha256": "65a55b0be81e0a1042524ef578b602f79c977610d9f36a394f3b0b22eacc0272",
+      "questionPages": 9,
+      "answerPages": 2,
+      "answerItems": 70,
+      "didactic": [
+        90,
+        0,
+        0
+      ],
+      "maxGrayDelta": 3,
+      "questionIdentity": "PASS — authorized AA-only difference; exact content/rendering state and geometry within PDF float precision",
+      "teacherUrl": "https://www.noamdoronmath.co.il/teachers?grade=8&topic=4&level=b"
+    },
+    {
+      "topic": "G8-T30",
+      "level": "a",
+      "oldPdfId": "72edbfe254b74cbcbd08856b3ebaf804",
+      "newPdfId": "c38e3843942346748ff8e25116b7bd6d",
+      "sha256": "a02c2257ca643a7df0c71f877a6e9d3677eab914b9d47aa9754542f2727f2357",
+      "questionPages": 14,
+      "answerPages": 2,
+      "answerItems": 79,
+      "didactic": [
+        36,
+        0,
+        63
+      ],
+      "maxGrayDelta": 3,
+      "questionIdentity": "PASS — authorized AA-only difference; exact content/rendering state and geometry within PDF float precision",
+      "teacherUrl": "https://www.noamdoronmath.co.il/teachers?grade=8&topic=18&level=a"
+    },
+    {
+      "topic": "G8-T30",
+      "level": "b",
+      "oldPdfId": "51fa9bbf02904cdab1e016161aeeb7cb",
+      "newPdfId": "5da9f0651be9493dbba0016fcc9f231c",
+      "sha256": "08749287eaf9c81a991622b6353116961051d675b4b610d99a9ea3a7197e0ae0",
+      "questionPages": 15,
+      "answerPages": 2,
+      "answerItems": 81,
+      "didactic": [
+        42,
+        0,
+        59
+      ],
+      "maxGrayDelta": 2,
+      "questionIdentity": "PASS — authorized AA-only difference; exact content/rendering state and geometry within PDF float precision",
+      "teacherUrl": "https://www.noamdoronmath.co.il/teachers?grade=8&topic=18&level=b"
+    },
+    {
+      "topic": "G8-T30",
+      "level": "c",
+      "oldPdfId": "92cfe6cb439a4c03a30aa700c73dad68",
+      "newPdfId": "b52c1674413140dd8cc91f3a3920db34",
+      "sha256": "f7b3fdec5ebb55b172937d9bc9b19294627831c4bea6b25afda50bda47831d5c",
+      "questionPages": 16,
+      "answerPages": 2,
+      "answerItems": 82,
+      "didactic": [
+        35,
+        0,
+        67
+      ],
+      "maxGrayDelta": 2,
+      "questionIdentity": "PASS — authorized AA-only difference; exact content/rendering state and geometry within PDF float precision",
+      "teacherUrl": "https://www.noamdoronmath.co.il/teachers?grade=8&topic=18&level=c"
+    },
+    {
+      "topic": "G9-T06",
+      "level": "a",
+      "oldPdfId": "3c1e37115eca4b69bb8daf90565a7c1d",
+      "newPdfId": "8f7c5c26b5f54cd88d361e85a1aa857a",
+      "sha256": "bc05c8b9d6035d3468ace0a8a15c10961aebc53169e7195f1487f24f5b620324",
+      "questionPages": 22,
+      "answerPages": 3,
+      "answerItems": 99,
+      "didactic": [
+        59,
+        0,
+        64
+      ],
+      "maxGrayDelta": 2,
+      "questionIdentity": "PASS — authorized AA-only difference; exact content/rendering state and geometry within PDF float precision",
+      "teacherUrl": "https://www.noamdoronmath.co.il/teachers?grade=9&topic=5&level=a"
+    },
+    {
+      "topic": "G9-T06",
+      "level": "b",
+      "oldPdfId": "c514c4cd526e4ac68a61d0521e7ee022",
+      "newPdfId": "cbe4f5fa3c484b9e8f031697bf2580bc",
+      "sha256": "d68c62de72e2a2adb0fd42f3d3cc57b5f56744421503466f4c3073ccc17e6501",
+      "questionPages": 21,
+      "answerPages": 2,
+      "answerItems": 97,
+      "didactic": [
+        58,
+        0,
+        63
+      ],
+      "maxGrayDelta": 2,
+      "questionIdentity": "PASS — authorized AA-only difference; exact content/rendering state and geometry within PDF float precision",
+      "teacherUrl": "https://www.noamdoronmath.co.il/teachers?grade=9&topic=5&level=b"
+    },
+    {
+      "topic": "G9-T06",
+      "level": "c",
+      "oldPdfId": "cff4758892e44743bbff84e4a9920a86",
+      "newPdfId": "68aa9ec0763c439f9dc7355620de15f9",
+      "sha256": "6872e8ff9fc1f1f1f9be06e82be6cc861e96e4625ea04523954604a0a1c69759",
+      "questionPages": 23,
+      "answerPages": 3,
+      "answerItems": 99,
+      "didactic": [
+        22,
+        0,
+        101
+      ],
+      "maxGrayDelta": 2,
+      "questionIdentity": "PASS — authorized AA-only difference; exact content/rendering state and geometry within PDF float precision",
+      "teacherUrl": "https://www.noamdoronmath.co.il/teachers?grade=9&topic=5&level=c"
+    },
+    {
+      "topic": "G9-T09",
+      "level": "a",
+      "oldPdfId": "17798a629ec042b78d1dbabce87001b6",
+      "newPdfId": "9c474c90282c4982858f84f9fedda98c",
+      "sha256": "2a0032f5363f5cee17ae1e0cc0c320755369cf36e269bfcd80105538e5a00a71",
+      "questionPages": 8,
+      "answerPages": 1,
+      "answerItems": 57,
+      "didactic": [
+        77,
+        0,
+        0
+      ],
+      "maxGrayDelta": 2,
+      "questionIdentity": "PASS — authorized AA-only difference; exact content/rendering state and geometry within PDF float precision",
+      "teacherUrl": "https://www.noamdoronmath.co.il/teachers?grade=9&topic=18&level=a"
+    },
+    {
+      "topic": "G9-T09",
+      "level": "b",
+      "oldPdfId": "0ce1399d83c84ac482e04d50a2f042a9",
+      "newPdfId": "db4bd441df5a47f8bfedf6457bc0e072",
+      "sha256": "679bf5d4f9fb0fc8587c77d90720f507dfff61bdaf59f39166fa92b873c121bf",
+      "questionPages": 7,
+      "answerPages": 1,
+      "answerItems": 54,
+      "didactic": [
+        74,
+        0,
+        0
+      ],
+      "maxGrayDelta": 2,
+      "questionIdentity": "PASS — authorized AA-only difference; exact content/rendering state and geometry within PDF float precision",
+      "teacherUrl": "https://www.noamdoronmath.co.il/teachers?grade=9&topic=18&level=b"
+    },
+    {
+      "topic": "G9-T09",
+      "level": "c",
+      "oldPdfId": "e77d5e23afb24ad6813bd63dfb6cf9f3",
+      "newPdfId": "254212e2c7c4488898d78a0f1a21e6cc",
+      "sha256": "250719e9de6936965917b47305a8257057c277c63f180cc89ae72b42009ef16a",
+      "questionPages": 8,
+      "answerPages": 2,
+      "answerItems": 55,
+      "didactic": [
+        75,
+        0,
+        0
+      ],
+      "maxGrayDelta": 2,
+      "questionIdentity": "PASS — authorized AA-only difference; exact content/rendering state and geometry within PDF float precision",
+      "teacherUrl": "https://www.noamdoronmath.co.il/teachers?grade=9&topic=18&level=c"
+    },
+    {
+      "topic": "G9-T31",
+      "level": "a",
+      "oldPdfId": "3ae0575b833f45a59616944111af5324",
+      "newPdfId": "15cdc869e656479e96162699e3571d49",
+      "sha256": "ae5d93ce6b349f8f7c10d56b5ab0f53cfd40e15b5eb25390f6eac623a6b1aba2",
+      "questionPages": 14,
+      "answerPages": 2,
+      "answerItems": 88,
+      "didactic": [
+        110,
+        0,
+        0
+      ],
+      "maxGrayDelta": 2,
+      "questionIdentity": "PASS — authorized AA-only difference; exact content/rendering state and geometry within PDF float precision",
+      "teacherUrl": "https://www.noamdoronmath.co.il/teachers?grade=9&topic=6&level=a"
+    },
+    {
+      "topic": "G9-T31",
+      "level": "b",
+      "oldPdfId": "5b9c4787bb8d4114b21abf4a6e569210",
+      "newPdfId": "633bb6f33db64de2ad892ef5fd645407",
+      "sha256": "d43672f6ac107228323446f4764c93bbf56619fdf2002ce5006aa74d383f611a",
+      "questionPages": 12,
+      "answerPages": 2,
+      "answerItems": 90,
+      "didactic": [
+        112,
+        0,
+        0
+      ],
+      "maxGrayDelta": 59,
+      "questionIdentity": "PASS — authorized AA-only difference; exact content/rendering state and geometry within PDF float precision",
+      "teacherUrl": "https://www.noamdoronmath.co.il/teachers?grade=9&topic=6&level=b"
+    },
+    {
+      "topic": "G9-T31",
+      "level": "c",
+      "oldPdfId": "0d88c0d15f97493c8d2c1eac5dac8fbf",
+      "newPdfId": "93dabb7c536e4aff911389c28531c691",
+      "sha256": "c4bfd9a8289573f94633ed8fef51e82b36a49136ad4fc65c95c1bc606306ce58",
+      "questionPages": 15,
+      "answerPages": 3,
+      "answerItems": 89,
+      "didactic": [
+        104,
+        0,
+        7
+      ],
+      "maxGrayDelta": 2,
+      "questionIdentity": "PASS — authorized AA-only difference; exact content/rendering state and geometry within PDF float precision",
+      "teacherUrl": "https://www.noamdoronmath.co.il/teachers?grade=9&topic=6&level=c"
+    }
+  ]
+}

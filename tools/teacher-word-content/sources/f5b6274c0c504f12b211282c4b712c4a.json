@@ -1,0 +1,951 @@
+{
+  "sourceSha256": "f6929fead0381b92a4c7c08a0913421461f6a49fcfcb055689a9e25fe78d2418",
+  "answerSourceSha256": "ac4b4057e2e59dc63d2b894602262029be22497a32adf4298bdbd4ce1e4f5c66",
+  "nativeSha256": "bd64cfbdfa105c746142ff15a5d1fbd13b6cc93fcf7e23046ae6f750085ab8f5",
+  "questions": {
+    "1": {
+      "id": "f5b6274c0c504f12b211282c4b712c4a:1",
+      "q": 1,
+      "grade": 8,
+      "topic": "פונקציה קווית",
+      "levelLabel": "רמת מצוינות",
+      "text": "השיפוע של ישר הוא $4$, והנקודות $(1,−2)$ ו־$(3,a)$ נמצאות עליו.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T15/c/figures/q1_head.svg",
+        "sha256": "6b1eac23fbfd3f3b423c65a0ff42d26f49f0b7c33b0c67f98306d0d98b14b1ae"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מצאו את $a$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q1_head.svg",
+            "sha256": "6b1eac23fbfd3f3b423c65a0ff42d26f49f0b7c33b0c67f98306d0d98b14b1ae"
+          },
+          "answer": "$a = 6$"
+        },
+        {
+          "label": "ב",
+          "text": "מהי משוואת הישר?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q1_head.svg",
+            "sha256": "6b1eac23fbfd3f3b423c65a0ff42d26f49f0b7c33b0c67f98306d0d98b14b1ae"
+          },
+          "answer": "$y = 4x − 6$"
+        },
+        {
+          "label": "ג",
+          "text": "האם $(−1,−10)$ היא נקודה של הישר?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q1_head.svg",
+            "sha256": "6b1eac23fbfd3f3b423c65a0ff42d26f49f0b7c33b0c67f98306d0d98b14b1ae"
+          },
+          "answer": "כן"
+        },
+        {
+          "label": "ד",
+          "text": "עבור אילו ערכי $x$ ערכי $y$ של הישר חיוביים?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q1_head.svg",
+            "sha256": "6b1eac23fbfd3f3b423c65a0ff42d26f49f0b7c33b0c67f98306d0d98b14b1ae"
+          },
+          "answer": "$x > 1.5$"
+        }
+      ]
+    },
+    "2": {
+      "id": "f5b6274c0c504f12b211282c4b712c4a:2",
+      "q": 2,
+      "grade": 8,
+      "topic": "פונקציה קווית",
+      "levelLabel": "רמת מצוינות",
+      "text": "הנקודות $(−2,3.5)$ ו־$(2,1.5)$ נמצאות על ישר.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T15/c/figures/q2_head.svg",
+        "sha256": "cb7f75e46c1252955b40f2288eda0a025c538a7c265fa6ba6296c31442771eae"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את שיפוע הישר.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q2_head.svg",
+            "sha256": "cb7f75e46c1252955b40f2288eda0a025c538a7c265fa6ba6296c31442771eae"
+          },
+          "answer": "$−0.5$"
+        },
+        {
+          "label": "ב",
+          "text": "מצאו את משוואתו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q2_head.svg",
+            "sha256": "cb7f75e46c1252955b40f2288eda0a025c538a7c265fa6ba6296c31442771eae"
+          },
+          "answer": "$y = −0.5x + 2.5$"
+        },
+        {
+          "label": "ג",
+          "text": "באיזו נקודה הישר חותך את הציר האופקי?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q2_head.svg",
+            "sha256": "cb7f75e46c1252955b40f2288eda0a025c538a7c265fa6ba6296c31442771eae"
+          },
+          "answer": "$(5,0)$"
+        }
+      ]
+    },
+    "3": {
+      "id": "f5b6274c0c504f12b211282c4b712c4a:3",
+      "q": 3,
+      "grade": 8,
+      "topic": "פונקציה קווית",
+      "levelLabel": "רמת מצוינות",
+      "text": "שני ישרים: $y = (2k + 1)x − 4$ ו־$y = 7x + 5$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T15/c/figures/q3_head.svg",
+        "sha256": "0319493e2a51b99d1370eda8ad1c6a4439342a1303de28a14756698ee21ca815"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "החליטו כיצד לכוון את $k$ כדי שהקווים לא ייפגשו. הראו את תנאי הכיוון שלכם.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q3_head.svg",
+            "sha256": "0319493e2a51b99d1370eda8ad1c6a4439342a1303de28a14756698ee21ca815"
+          },
+          "answer": "$k = 3$: נדרש $2k + 1 = 7$ (שיפועים שווים), והחיתוכים עם הציר האנכי $−4$ ו־$5$ שונים"
+        },
+        {
+          "label": "ב",
+          "text": "כתבו את הנוסחה שתתקבל לאחר כיוון הפרמטר מסעיף א.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q3_head.svg",
+            "sha256": "0319493e2a51b99d1370eda8ad1c6a4439342a1303de28a14756698ee21ca815"
+          },
+          "answer": "$y = 7x − 4$"
+        },
+        {
+          "label": "ג",
+          "text": "בודק מציע למצוא כיוון אחר של הפרמטר שיגרום לשני הקווים לחפוף. האם אפשר למלא את בקשתו?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q3_head.svg",
+            "sha256": "0319493e2a51b99d1370eda8ad1c6a4439342a1303de28a14756698ee21ca815"
+          },
+          "answer": "לא: החיתוכים עם הציר האנכי שונים ($−4$ ו־$5$)"
+        },
+        {
+          "label": "ד",
+          "text": "כעת דרוש פלט קבוע לכל קלט. איך צריך לשנות את כיוון הפרמטר?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q3_head.svg",
+            "sha256": "0319493e2a51b99d1370eda8ad1c6a4439342a1303de28a14756698ee21ca815"
+          },
+          "answer": "$k = −0.5$"
+        }
+      ]
+    },
+    "4": {
+      "id": "f5b6274c0c504f12b211282c4b712c4a:4",
+      "q": 4,
+      "grade": 8,
+      "topic": "פונקציה קווית",
+      "levelLabel": "רמת מצוינות",
+      "text": "לכל מספר $m$ מתאים הישר $y = m\\text{}x + 5$. כל הישרים האלה יחד הם משפחה של ישרים.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T15/c/figures/q4_head.svg",
+        "sha256": "2171f7012ddd539ccf6d14a97201b42d53e8b32504b8dbff7170b43fad80c3a6"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "באיזו נקודה עוברים כל ישרי המשפחה? הסבירו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q4_head.svg",
+            "sha256": "2171f7012ddd539ccf6d14a97201b42d53e8b32504b8dbff7170b43fad80c3a6"
+          },
+          "answer": "$(0,5)$: ב־$x = 0$ מתקבל $y = 5$ לכל $m$"
+        },
+        {
+          "label": "ב",
+          "text": "איזה ישר מהמשפחה עובר דרך $(2,−3)$? כתבו את משוואתו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q4_head.svg",
+            "sha256": "2171f7012ddd539ccf6d14a97201b42d53e8b32504b8dbff7170b43fad80c3a6"
+          },
+          "answer": "$y = −4x + 5$"
+        },
+        {
+          "label": "ג",
+          "text": "האם יש במשפחה ישר שעובר דרך $(0,−1)$? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q4_head.svg",
+            "sha256": "2171f7012ddd539ccf6d14a97201b42d53e8b32504b8dbff7170b43fad80c3a6"
+          },
+          "answer": "לא: כל ישרי המשפחה עוברים ב־$(0,5)$"
+        }
+      ]
+    },
+    "5": {
+      "id": "f5b6274c0c504f12b211282c4b712c4a:5",
+      "q": 5,
+      "grade": 8,
+      "topic": "פונקציה קווית",
+      "levelLabel": "רמת מצוינות",
+      "text": "גיל טוען שהישרים $y = −4x + 9$ ו־$y = 7 − 4x$ נפגשים בנקודה אחת.",
+      "items": [
+        {
+          "label": "א",
+          "text": "השוו בין שני הביטויים ופתרו את המשוואה. מה מתקבל?",
+          "answer": "אין פתרון: מתקבל $9 = 7$"
+        },
+        {
+          "label": "ב",
+          "text": "מה התוצאה אומרת על המיקום של שני הישרים זה ביחס לזה? הסבירו.",
+          "answer": "מקבילים (שיפוע $−4$ לשניהם)"
+        },
+        {
+          "label": "ג",
+          "text": "שנו מספר אחד במשוואה השנייה כך ששני הישרים יתלכדו.",
+          "answer": "$y = 9 − 4x$"
+        },
+        {
+          "label": "ד",
+          "text": "במקום זאת משנים את המקדם של $x$ במשוואה השנייה ל־$−3$ (ומשאירים את $7$). באיזו נקודה נחתכים עכשיו הישרים? סרטטו סקיצה שלהם.",
+          "answer": "$(2,1)$; הישרים הם $y=−4x+9$ ו־$y=−3x+7$."
+        }
+      ]
+    },
+    "6": {
+      "id": "f5b6274c0c504f12b211282c4b712c4a:6",
+      "q": 6,
+      "grade": 8,
+      "topic": "פונקציה קווית",
+      "levelLabel": "רמת מצוינות",
+      "text": "בשרטוט הישר $y = 3x − 6$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T15/c/figures/q6_head.svg",
+        "sha256": "ff451bdff1b1751a65a8c5fdd322810faebc3c8af7ba656bfa999d1821cdc41b"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הכינו כרטיס זיהוי לגרף ובו שני מפגשיו עם צירי המערכת.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q6_head.svg",
+            "sha256": "ff451bdff1b1751a65a8c5fdd322810faebc3c8af7ba656bfa999d1821cdc41b"
+          },
+          "answer": "$(0,−6)$ ו־$(2,0)$"
+        },
+        {
+          "label": "ב",
+          "text": "בעריכה הראשונה משנים רק את ערך ההתחלה לשלוש פעמים ערכו הנוכחי. רשמו את הנוסחה המעודכנת.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q6_head.svg",
+            "sha256": "ff451bdff1b1751a65a8c5fdd322810faebc3c8af7ba656bfa999d1821cdc41b"
+          },
+          "answer": "$y = 3x − 18$"
+        },
+        {
+          "label": "ג",
+          "text": "בעריכה שנייה של המקור מאטים את קצב השינוי למחצית, בלי לשנות את ערך ההתחלה. רשמו גם נוסחה זו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q6_head.svg",
+            "sha256": "ff451bdff1b1751a65a8c5fdd322810faebc3c8af7ba656bfa999d1821cdc41b"
+          },
+          "answer": "$y = 1.5x − 6$"
+        },
+        {
+          "label": "ד",
+          "text": "סכמו את שתי העריכות בכרטיס בקרה: איזו שמרה על כיוון הקו, ואיזו שמרה על נקודת ההתחלה שלו? הסבירו כיצד רואים זאת בנוסחאות ובגרפים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q6_head.svg",
+            "sha256": "ff451bdff1b1751a65a8c5fdd322810faebc3c8af7ba656bfa999d1821cdc41b"
+          },
+          "answer": "העריכה הראשונה שומרת על השיפוע 3, ולכן על מקבילות למקור; השנייה שומרת על $(0,−6)$ אך משנה את השיפוע ל־1.5. שני הקווים עדיין עולים, אך רק הראשון שומר על אותו כיוון בדיוק."
+        }
+      ]
+    },
+    "7": {
+      "id": "f5b6274c0c504f12b211282c4b712c4a:7",
+      "q": 7,
+      "grade": 8,
+      "topic": "פונקציה קווית",
+      "levelLabel": "רמת מצוינות",
+      "text": "נתון הישר $y = 1.5x + 6$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T15/c/figures/q7_head.svg",
+        "sha256": "0f2773795e8682c454f7782c0942d20e5ae4cc19b10dab2cf77c7c7a9203b11d"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מכשיר מחליף בכל נקודה את סימן הקואורדינטה האופקית בלבד. תארו בנוסחה את אוסף הנקודות החדש.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q7_head.svg",
+            "sha256": "0f2773795e8682c454f7782c0942d20e5ae4cc19b10dab2cf77c7c7a9203b11d"
+          },
+          "answer": "$y = −1.5x + 6$"
+        },
+        {
+          "label": "ב",
+          "text": "בפעולה נפרדת על המקור, המכשיר מחליף רק את סימן הקואורדינטה האנכית. איזה חוק יתקבל?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q7_head.svg",
+            "sha256": "0f2773795e8682c454f7782c0942d20e5ae4cc19b10dab2cf77c7c7a9203b11d"
+          },
+          "answer": "$y = −1.5x − 6$"
+        },
+        {
+          "label": "ג",
+          "text": "חפשו נקודה משותפת למקור ולתוצאה מסעיף א. הסבירו גאומטרית מדוע היא לא זזה בפעולה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q7_head.svg",
+            "sha256": "0f2773795e8682c454f7782c0942d20e5ae4cc19b10dab2cf77c7c7a9203b11d"
+          },
+          "answer": "$(0,6)$; נקודה על ציר $y$ אינה זזה בהחלפת סימן הקואורדינטה האופקית. הפעולה היא שיקוף בציר $y$, לא הזזה, כי הצדדים מתהפכים והשיפוע משתנה."
+        },
+        {
+          "label": "ד",
+          "text": "בצעו בדיקת נקודה משותפת גם לפעולה מסעיף ב.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q7_head.svg",
+            "sha256": "0f2773795e8682c454f7782c0942d20e5ae4cc19b10dab2cf77c7c7a9203b11d"
+          },
+          "answer": "$(−4,0)$"
+        }
+      ]
+    },
+    "8": {
+      "id": "f5b6274c0c504f12b211282c4b712c4a:8",
+      "q": 8,
+      "grade": 8,
+      "topic": "פונקציה קווית",
+      "levelLabel": "רמת מצוינות",
+      "text": "בשרטוט הישר $f$ שמשוואתו $y = 3x + 9$ והישר $g$ שמשוואתו $y = −3x + 9$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T15/c/figures/q8_head.svg",
+        "sha256": "5eed310ab9ab2752f50dac72e08dbbd2a55c0fb9fc143230bb017c1cac5e4a77"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "סמנו את ראש האוהל: הנקודה המשותפת ל־$f$ ול־$g$. מצאו את שיעוריה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q8_head.svg",
+            "sha256": "5eed310ab9ab2752f50dac72e08dbbd2a55c0fb9fc143230bb017c1cac5e4a77"
+          },
+          "answer": "$(0,9)$"
+        },
+        {
+          "label": "ב",
+          "text": "רגלי האוהל מונחות על הציר האופקי. שחזרו את מיקומי הרגליים מתוך חוקי $f$ ו־$g$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q8_head.svg",
+            "sha256": "5eed310ab9ab2752f50dac72e08dbbd2a55c0fb9fc143230bb017c1cac5e4a77"
+          },
+          "answer": "$(−3,0)$ ו־$(3,0)$"
+        },
+        {
+          "label": "ג",
+          "text": "האם שני המוטות המחברים את הראש לרגליים יכולים להיות בעלי אותו אורך? הוכיחו באמצעות שיעורי הקדקודים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q8_head.svg",
+            "sha256": "5eed310ab9ab2752f50dac72e08dbbd2a55c0fb9fc143230bb017c1cac5e4a77"
+          },
+          "answer": "הקדקודים $(−3,0)$ ו־$(3,0)$ סימטריים ביחס לציר האנכי, ולכן השוקיים שוות"
+        },
+        {
+          "label": "ד",
+          "text": "חשבו את שטח חתך האוהל, שהוא המשולש שהתקבל.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q8_head.svg",
+            "sha256": "5eed310ab9ab2752f50dac72e08dbbd2a55c0fb9fc143230bb017c1cac5e4a77"
+          },
+          "answer": "$27$ יחידות שטח"
+        },
+        {
+          "label": "ה",
+          "text": "היצרן דורש מוטות מאונכים. בדקו בפיתגורס אם חתך זה עומד בדרישה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q8_head.svg",
+            "sha256": "5eed310ab9ab2752f50dac72e08dbbd2a55c0fb9fc143230bb017c1cac5e4a77"
+          },
+          "answer": "לא: $90 + 90 = 180$ ולא $36$"
+        }
+      ]
+    },
+    "9": {
+      "id": "f5b6274c0c504f12b211282c4b712c4a:9",
+      "q": 9,
+      "grade": 8,
+      "topic": "פונקציה קווית",
+      "levelLabel": "רמת מצוינות",
+      "text": "במפה מסומנות תחנות $A(−4,7)$ ו־$B(2,−5)$. מתכננים ביניהן שביל ישר ומקום מנוחה בחצי הדרך.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T15/c/figures/q9_head.svg",
+        "sha256": "64f22795f7bc611c97764d5115827f0b0d1d8887164d81534c660cfb0e5d6b9b"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "איזו נוסחה תאפשר לבדוק אם סימון במפה נמצא על קו השביל $AB$?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q9_head.svg",
+            "sha256": "64f22795f7bc611c97764d5115827f0b0d1d8887164d81534c660cfb0e5d6b9b"
+          },
+          "answer": "$y = −2x − 1$"
+        },
+        {
+          "label": "ב",
+          "text": "תכננו את מיקום המנוחה על $AB$ באמצעות שני שיעורי התחנות.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q9_head.svg",
+            "sha256": "64f22795f7bc611c97764d5115827f0b0d1d8887164d81534c660cfb0e5d6b9b"
+          },
+          "answer": "$(−1,1)$"
+        },
+        {
+          "label": "ג",
+          "text": "בצעו בקרת תכנון: האם נקודת המנוחה עומדת בחוק השביל שחישבתם? הציגו בדיקה אלגברית.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q9_head.svg",
+            "sha256": "64f22795f7bc611c97764d5115827f0b0d1d8887164d81534c660cfb0e5d6b9b"
+          },
+          "answer": "הצבה: עבור $x = −1$ הישר נותן $y = 1$"
+        }
+      ]
+    },
+    "10": {
+      "id": "f5b6274c0c504f12b211282c4b712c4a:10",
+      "q": 10,
+      "grade": 8,
+      "topic": "פונקציה קווית",
+      "levelLabel": "רמת מצוינות",
+      "text": "על שולחן הטכנאי שני מדי מסה. $A$ כולל את משקל האריזה, ואילו $B$ מציג רק את משקל החומר. בכל מכשיר כל המנות שוות זו לזו, אך מנה במכשיר $A$ שונה ממנה במכשיר $B$.\nהקווים מתארים את קריאת המאזניים בגרמים בהתאם למספר המנות.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T15/c/figures/q10_head.svg",
+        "sha256": "565bf7f33bbe8178b8b9a7ca3f1d3eb10ef5c1ccba5249295cfcd19b1897dcd1"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "שחזרו נוסחה לקריאת כל מכשיר לאחר הכנסת $x$ מנות.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q10_head.svg",
+            "sha256": "565bf7f33bbe8178b8b9a7ca3f1d3eb10ef5c1ccba5249295cfcd19b1897dcd1"
+          },
+          "answer": "$A$: $2x + 15$ גרם, $B$: $5x$ גרם"
+        },
+        {
+          "label": "ב",
+          "text": "שני המכשירים מכילים $3$ מנות. מהי הקריאה בכל אחד?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q10_head.svg",
+            "sha256": "565bf7f33bbe8178b8b9a7ca3f1d3eb10ef5c1ccba5249295cfcd19b1897dcd1"
+          },
+          "answer": "$A$: $21$ גרם, $B$: $15$ גרם"
+        },
+        {
+          "label": "ג",
+          "text": "באילו כמויות מנות המכשיר $A$ יציג מסה קטנה יותר?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q10_head.svg",
+            "sha256": "565bf7f33bbe8178b8b9a7ca3f1d3eb10ef5c1ccba5249295cfcd19b1897dcd1"
+          },
+          "answer": "כאשר מספר המנות גדול מ־$5$"
+        },
+        {
+          "label": "ד",
+          "text": "הגרף נגמר לפני המדידה הבאה. חשבו מה יהיה הפרש הקריאות כשמכניסים $12$ מנות לכל מכשיר, וזהו את הקריאה הקטנה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q10_head.svg",
+            "sha256": "565bf7f33bbe8178b8b9a7ca3f1d3eb10ef5c1ccba5249295cfcd19b1897dcd1"
+          },
+          "answer": "$A$, ב־$21$ גרם ($39$ מול $60$)"
+        }
+      ]
+    },
+    "11": {
+      "id": "f5b6274c0c504f12b211282c4b712c4a:11",
+      "q": 11,
+      "grade": 8,
+      "topic": "פונקציה קווית",
+      "levelLabel": "רמת מצוינות",
+      "text": "בשרטוט שלושה ישרים: $p$, $q$, $r$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T15/c/figures/q11_head.svg",
+        "sha256": "14f52d56b3ae859caac30df7018bc69f587987ca7c235d3b27181add284dece2"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "בדקו איזו רשומת קלט–פלט מתאימה יחד לכל שלושת הקווים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q11_head.svg",
+            "sha256": "14f52d56b3ae859caac30df7018bc69f587987ca7c235d3b27181add284dece2"
+          },
+          "answer": "$(0,−6)$"
+        },
+        {
+          "label": "ב",
+          "text": "הכינו נוסחה לכל קו, וציינו מה בה משותף לשלוש הנוסחאות ומה שונה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q11_head.svg",
+            "sha256": "14f52d56b3ae859caac30df7018bc69f587987ca7c235d3b27181add284dece2"
+          },
+          "answer": "$p: y=6x−6$; $q: y=−3x−6$; $r: y=−0.5x−6$. בכולם החיתוך האנכי $−6$, והשיפועים שונים."
+        },
+        {
+          "label": "ג",
+          "text": "הסבירו מדוע קו נוסף מן הצורה $y = m\\text{}x − 6$, לכל ערך של $m$, יעבור גם הוא דרך הרשומה שמצאתם.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q11_head.svg",
+            "sha256": "14f52d56b3ae859caac30df7018bc69f587987ca7c235d3b27181add284dece2"
+          },
+          "answer": "ב־$x = 0$ מתקבל $y = −6$ לכל $m$"
+        }
+      ]
+    },
+    "12": {
+      "id": "f5b6274c0c504f12b211282c4b712c4a:12",
+      "q": 12,
+      "grade": 8,
+      "topic": "פונקציה קווית",
+      "levelLabel": "רמת מצוינות",
+      "text": "האורך של קפיץ תלוי במשקל שתולים עליו, לפי הנוסחה $y = 0.2w + 15$.\n$w$ הוא המשקל בגרם, ו־$y$ הוא אורך הקפיץ בס״מ.",
+      "items": [
+        {
+          "label": "א",
+          "text": "מה אורך הקפיץ כשתולים עליו $40$ גרם?",
+          "answer": "$23$ ס״מ"
+        },
+        {
+          "label": "ב",
+          "text": "מה אורך הקפיץ כשלא תולים עליו דבר?",
+          "answer": "$15$ ס״מ"
+        },
+        {
+          "label": "ג",
+          "text": "איזה משקל צריך לתלות כדי שאורך הקפיץ יהיה $20$ ס״מ?",
+          "answer": "$25$ גרם"
+        },
+        {
+          "label": "ד",
+          "text": "צרפו לנוסחה הוראות שימוש: הסבירו כיצד תשתנה קריאת האורך בעקבות תוספת גרם אחד. ציירו סקיצה עם יחידות בשני הצירים.",
+          "answer": "כל גרם נוסף מאריך את הקפיץ ב־0.2 ס״מ. הגרף הוא הקרן $y=0.2w+15$ עבור $w\\geq0$, למשל דרך $(0,15)$ ו־$(25,20)$; הציר האופקי בגרמים והאנכי בס״מ."
+        }
+      ]
+    },
+    "13": {
+      "id": "f5b6274c0c504f12b211282c4b712c4a:13",
+      "q": 13,
+      "grade": 8,
+      "topic": "פונקציה קווית",
+      "levelLabel": "רמת מצוינות",
+      "text": "קובץ מדידות מתהליך שקצבו קבוע נפגם. העמודות שנותרו תקינות צריכות להספיק לשחזור הקובץ.",
+      "table": {
+        "head": [
+          "$x$",
+          "$−3$",
+          "$−1$",
+          "$1$",
+          "$3$",
+          "$5$"
+        ],
+        "rows": [
+          [
+            "$y$",
+            "",
+            "",
+            "$7$",
+            "",
+            "$−9$"
+          ]
+        ]
+      },
+      "figure": {
+        "url": "/noam-ai/native/G8-T15/c/figures/q13_head.svg",
+        "sha256": "2a65e482fab25ecbd208033353265f2d70d1e054d2097d77a09b1738fca64f28"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "זהו מן העמודות השלמות את קצב התהליך.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q13_head.svg",
+            "sha256": "2a65e482fab25ecbd208033353265f2d70d1e054d2097d77a09b1738fca64f28"
+          },
+          "answer": "$−4$"
+        },
+        {
+          "label": "ב",
+          "text": "שחזרו את שלוש המדידות שנמחקו, לפי הקצב שזיהיתם.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q13_head.svg",
+            "sha256": "2a65e482fab25ecbd208033353265f2d70d1e054d2097d77a09b1738fca64f28"
+          },
+          "answer": "$23$, $15$, $−1$ (לפי הסדר בטבלה)"
+        },
+        {
+          "label": "ג",
+          "text": "מהי משוואת הישר?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q13_head.svg",
+            "sha256": "2a65e482fab25ecbd208033353265f2d70d1e054d2097d77a09b1738fca64f28"
+          },
+          "answer": "$y = −4x + 11$"
+        },
+        {
+          "label": "ד",
+          "text": "עבור איזה $x$ מתקבל $y = 39$?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q13_head.svg",
+            "sha256": "2a65e482fab25ecbd208033353265f2d70d1e054d2097d77a09b1738fca64f28"
+          },
+          "answer": "$x = −7$"
+        }
+      ]
+    },
+    "14": {
+      "id": "f5b6274c0c504f12b211282c4b712c4a:14",
+      "q": 14,
+      "grade": 8,
+      "topic": "פונקציה קווית",
+      "levelLabel": "רמת מצוינות",
+      "text": "את הישר $y = −5x + 8$ מזיזים $3$ יחידות כלפי מטה.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T15/c/figures/q14_head.svg",
+        "sha256": "0a2d4e1bb414c5c803563935422288eb5fdccccd8a8faa78f0c38d97c94513b7"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מהי המשוואה אחרי ההזזה?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q14_head.svg",
+            "sha256": "0a2d4e1bb414c5c803563935422288eb5fdccccd8a8faa78f0c38d97c94513b7"
+          },
+          "answer": "$y = −5x + 5$"
+        },
+        {
+          "label": "ב",
+          "text": "הסבירו איזו תכונה מאפשרת לזהות שההעתק נוצר בהזזה אנכית בלבד.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q14_head.svg",
+            "sha256": "0a2d4e1bb414c5c803563935422288eb5fdccccd8a8faa78f0c38d97c94513b7"
+          },
+          "answer": "השיפוע נשאר $−5$, והפלט קטן ב־3 לכל קלט; לכן זו הזזה אנכית כלפי מטה ב־3 יחידות."
+        },
+        {
+          "label": "ג",
+          "text": "סמנו על הציר האופקי את מיקומי האפס של המקור ושל ההעתק, וחשבו אותם.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q14_head.svg",
+            "sha256": "0a2d4e1bb414c5c803563935422288eb5fdccccd8a8faa78f0c38d97c94513b7"
+          },
+          "answer": "הנתון: $(1.6,0)$, החדש: $(1,0)$"
+        },
+        {
+          "label": "ד",
+          "text": "השוו את המרחק בין סימוני האפס למרחק ההזזה האנכית, שהוא $3$. הסבירו את הקשר באמצעות השיפוע.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q14_head.svg",
+            "sha256": "0a2d4e1bb414c5c803563935422288eb5fdccccd8a8faa78f0c38d97c94513b7"
+          },
+          "answer": "$0.6$: הזזה אנכית של $3$ בשיפוע שגודלו $5$ משנה את מקום האפס ב־$0.6$ יחידה אופקית"
+        }
+      ]
+    },
+    "15": {
+      "id": "f5b6274c0c504f12b211282c4b712c4a:15",
+      "q": 15,
+      "grade": 8,
+      "topic": "פונקציה קווית",
+      "levelLabel": "רמת מצוינות",
+      "text": "שתי משוואות יוצרות מערכת: $y = −3x + 4$ ו־$y = k\\text{}x − 4$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T15/c/figures/q15_head.svg",
+        "sha256": "8b485fe5f4bf88be06c155cbc0644edec899e69bce3c10fac76ed792688dface"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "עבור איזה ערך של $k$ אין למערכת פתרון? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q15_head.svg",
+            "sha256": "8b485fe5f4bf88be06c155cbc0644edec899e69bce3c10fac76ed792688dface"
+          },
+          "answer": "$k=−3$; השיפועים שווים והחיתוכים האנכיים 4 ו־$−4$ שונים, ולכן אין חיתוך."
+        },
+        {
+          "label": "ב",
+          "text": "פתרו את המערכת כאשר $k = 1$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q15_head.svg",
+            "sha256": "8b485fe5f4bf88be06c155cbc0644edec899e69bce3c10fac76ed792688dface"
+          },
+          "answer": "$(2,−2)$"
+        },
+        {
+          "label": "ג",
+          "text": "יכול להיות שלמערכת יהיו אינסוף פתרונות, בשביל $k$ כלשהו? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q15_head.svg",
+            "sha256": "8b485fe5f4bf88be06c155cbc0644edec899e69bce3c10fac76ed792688dface"
+          },
+          "answer": "לא: החיתוכים עם הציר האנכי שונים"
+        },
+        {
+          "label": "ד",
+          "text": "עבור איזה ערך של $k$ הפתרון של המערכת הוא נקודה שבה $x = 4$?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q15_head.svg",
+            "sha256": "8b485fe5f4bf88be06c155cbc0644edec899e69bce3c10fac76ed792688dface"
+          },
+          "answer": "$k = −1$: על הישר $y = −3x + 4$ כש־$x = 4$ מתקבל $y = −8$, ולכן $4k − 4 = −8$"
+        }
+      ]
+    },
+    "16": {
+      "id": "f5b6274c0c504f12b211282c4b712c4a:16",
+      "q": 16,
+      "grade": 8,
+      "topic": "פונקציה קווית",
+      "levelLabel": "רמת מצוינות",
+      "text": "נתון ישר שמשוואתו $y = m\\text{}x + b$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T15/c/figures/q16_head.svg",
+        "sha256": "89588b0fdea5893f7a04622f046f94b67ba765fedc541d1d0ff938523437bbbb"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "כש־$m$ ו־$b$ שליליים שניהם, דרך אילו רביעים הישר עובר?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q16_head.svg",
+            "sha256": "89588b0fdea5893f7a04622f046f94b67ba765fedc541d1d0ff938523437bbbb"
+          },
+          "answer": "שני, שלישי ורביעי"
+        },
+        {
+          "label": "ב",
+          "text": "כש־$m$ חיובי ו־$b$ שלילי, דרך אילו רביעים הישר עובר?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q16_head.svg",
+            "sha256": "89588b0fdea5893f7a04622f046f94b67ba765fedc541d1d0ff938523437bbbb"
+          },
+          "answer": "ראשון, שלישי ורביעי"
+        },
+        {
+          "label": "ג",
+          "text": "תנו דוגמה למשוואת ישר שעובר ברביעים הראשון והשני בלבד.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q16_head.svg",
+            "sha256": "89588b0fdea5893f7a04622f046f94b67ba765fedc541d1d0ff938523437bbbb"
+          },
+          "answer": "למשל $y=5$. כל ישר אופקי $y=b$ עם $b>0$ מתאים."
+        },
+        {
+          "label": "ד",
+          "text": "הסבירו מדוע אף ישר אינו עובר בכל ארבעת הרביעים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q16_head.svg",
+            "sha256": "89588b0fdea5893f7a04622f046f94b67ba765fedc541d1d0ff938523437bbbb"
+          },
+          "answer": "אם הישר מתלכד עם ציר, הוא אינו עובר בשום רביע. אחרת הוא חוצה כל ציר לכל היותר פעם אחת: שני החיתוכים מחלקים אותו לכל היותר לשלושה חלקים, ולכן אינו מגיע לארבעה רביעים"
+        }
+      ]
+    },
+    "17": {
+      "id": "f5b6274c0c504f12b211282c4b712c4a:17",
+      "q": 17,
+      "grade": 8,
+      "topic": "פונקציה קווית",
+      "levelLabel": "רמת מצוינות",
+      "text": "כל הישרים בשאלה זו עוברים דרך הנקודה $(−1,5)$, והמשוואה של כל אחד מהם היא $y = m\\text{}x + b$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T15/c/figures/q17_head.svg",
+        "sha256": "ad2ef4e5b472e7ce3741d386897f2e12c8aa4d31bad461686ebc90b320f15814"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הביעו את $b$ באמצעות $m$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q17_head.svg",
+            "sha256": "ad2ef4e5b472e7ce3741d386897f2e12c8aa4d31bad461686ebc90b320f15814"
+          },
+          "answer": "$b = 5 + m$"
+        },
+        {
+          "label": "ב",
+          "text": "תנו שתי דוגמאות שונות לישרים כאלה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q17_head.svg",
+            "sha256": "ad2ef4e5b472e7ce3741d386897f2e12c8aa4d31bad461686ebc90b320f15814"
+          },
+          "answer": "למשל $y=x+6$ ו־$y=2x+7$. כל שני ערכי $m$ שונים, עם $b=m+5$, נותנים שתי דוגמאות מתאימות."
+        },
+        {
+          "label": "ג",
+          "text": "עבור איזה $m$ הישר עובר גם דרך ראשית הצירים?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q17_head.svg",
+            "sha256": "ad2ef4e5b472e7ce3741d386897f2e12c8aa4d31bad461686ebc90b320f15814"
+          },
+          "answer": "$m = −5$"
+        },
+        {
+          "label": "ד",
+          "text": "עבור איזה $m$ הישר חותך את הציר האופקי בנקודה $(9,0)$?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q17_head.svg",
+            "sha256": "ad2ef4e5b472e7ce3741d386897f2e12c8aa4d31bad461686ebc90b320f15814"
+          },
+          "answer": "$m = −0.5$"
+        }
+      ]
+    },
+    "18": {
+      "id": "f5b6274c0c504f12b211282c4b712c4a:18",
+      "q": 18,
+      "grade": 8,
+      "topic": "פונקציה קווית",
+      "levelLabel": "רמת מצוינות",
+      "text": "תוכנת שרטוטים מוחקת קווים שנחשבים לכפולים. המתכנת הציע לזהות כפילות לפי המקום שבו כל קו פוגש את הציר האנכי: אם המקומות זהים, התוכנה תשמור קו אחד בלבד.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T15/c/figures/q18_head.svg",
+        "sha256": "1e297828bda9f00bc800dc118633659d72d7555753afaada63bd23d08f0cd92a"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "העריכו אם המחיקה תשמור תמיד על השרטוט המקורי. כתבו את התחזית לפני הניסוי.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q18_head.svg",
+            "sha256": "1e297828bda9f00bc800dc118633659d72d7555753afaada63bd23d08f0cd92a"
+          },
+          "answer": "לא; חיתוך אנכי משותף אינו מחייב שיפועים שווים."
+        },
+        {
+          "label": "ב",
+          "text": "בנו קובץ ניסוי ובו שתי נוסחאות. הפעילו עליהן את הצעת המתכנת ובדקו אם מידע אבד. צרפו סקיצה והכריעו בעזרת הקובץ.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q18_head.svg",
+            "sha256": "1e297828bda9f00bc800dc118633659d72d7555753afaada63bd23d08f0cd92a"
+          },
+          "answer": "למשל $y=x+1$ ו־$y=−x+1$: שניהם עוברים דרך $(0,1)$ אך שונים, למשל בפלט עבור $x=1$. מחיקת אחד מאבדת קו. כל שני שיפועים שונים עם אותו חיתוך אנכי הם דוגמה נגדית מתאימה."
+        },
+        {
+          "label": "ג",
+          "text": "כתבו למתכנת תנאי מדויק למחיקת עותק מיותר. הסבירו מדוע התנאי שלכם מספיק וגם נחוץ.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q18_head.svg",
+            "sha256": "1e297828bda9f00bc800dc118633659d72d7555753afaada63bd23d08f0cd92a"
+          },
+          "answer": "מותר למחוק רק כאשר גם השיפועים וגם ערכי החיתוך האנכי שווים: אז שתי הנוסחאות נותנות אותו פלט לכל קלט. אם הקווים זהים, ערכם בקלט אפס וקצב השינוי שלהם מוכרחים להיות שווים"
+        }
+      ]
+    },
+    "19": {
+      "id": "f5b6274c0c504f12b211282c4b712c4a:19",
+      "q": 19,
+      "grade": 8,
+      "topic": "פונקציה קווית",
+      "levelLabel": "רמת מצוינות",
+      "text": "שירות שיחות מחו״ל מציע שתי תוכניות חודשיות. תוכנית א: $0.6$ שקלים לכל דקה. תוכנית ב: $36$ שקלים לחודש, ועוד $0.15$ שקלים לכל דקה.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T15/c/figures/q19_head.svg",
+        "sha256": "b70fef5808c8578a16df215ef4f26d14167a950db0334d820077b4bf267780b4"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הכינו נוסחאות לשני גיליונות חיוב. כל גיליון יקבל את מספר דקות השיחה $x$ ויחזיר את הסכום בשקלים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q19_head.svg",
+            "sha256": "b70fef5808c8578a16df215ef4f26d14167a950db0334d820077b4bf267780b4"
+          },
+          "answer": "תוכנית א: $0.6x$ שקלים, תוכנית ב: $0.15x + 36$ שקלים"
+        },
+        {
+          "label": "ב",
+          "text": "יועץ רוצה להמליץ על ב רק ללקוחות שישלמו בה פחות. רשמו את קבוצת כמויות השימוש שההמלצה מתאימה לה, ואת הגבול שבו לא תחסוך דבר.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q19_head.svg",
+            "sha256": "b70fef5808c8578a16df215ef4f26d14167a950db0334d820077b4bf267780b4"
+          },
+          "answer": "מעל $80$ דקות; ב־$80$ דקות שתי החשבוניות הן $48$ שקלים"
+        },
+        {
+          "label": "ג",
+          "text": "בתיק הלקוחה רשומות $150$ דקות בחודש הקודם. בדוח הנוכחי מצוין גידול של $60$ אחוזים. הכינו לה השוואת חשבוניות לחודש הנוכחי: כמה תחויב בכל גיליון, ומה ההפרש?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q19_head.svg",
+            "sha256": "b70fef5808c8578a16df215ef4f26d14167a950db0334d820077b4bf267780b4"
+          },
+          "answer": "240 דקות; תוכנית א: 144 ש״ח; תוכנית ב: 72 ש״ח. ההפרש 72 ש״ח."
+        },
+        {
+          "label": "ד",
+          "text": "הלקוחה מבקשת תחזית בלי להכין שוב שתי חשבוניות: מה תעשה דקת שיחה נוספת להפרש ביניהן? נמקו באמצעות התעריפים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q19_head.svg",
+            "sha256": "b70fef5808c8578a16df215ef4f26d14167a950db0334d820077b4bf267780b4"
+          },
+          "answer": "כל דקה מוסיפה $0.6$ שקל בא ו־$0.15$ שקל בב; לכן ההפרש (א פחות ב) גדל ב־$0.45$ שקל לכל דקה"
+        }
+      ]
+    },
+    "20": {
+      "id": "f5b6274c0c504f12b211282c4b712c4a:20",
+      "q": 20,
+      "grade": 8,
+      "topic": "פונקציה קווית",
+      "levelLabel": "רמת מצוינות",
+      "text": "המשוואות של ארבעת הישרים שבשרטוט הן $y = x + 5$, $y = x − 5$, $y = −x + 7$, $y = −x − 7$.\nארבעת הקווים הם גבולות של חלקה סגורה במפה.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T15/c/figures/q20_head.svg",
+        "sha256": "5ac7218a5e92db1d64ed6bc9f4c53ba99cd8d54d6a4c9e2eeb1247ec8fe98e5c"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הכינו רשימת קואורדינטות עבור פינות החלקה, מתוך מפגשי הגבולות.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q20_head.svg",
+            "sha256": "5ac7218a5e92db1d64ed6bc9f4c53ba99cd8d54d6a4c9e2eeb1247ec8fe98e5c"
+          },
+          "answer": "$(1,6)$, $(−6,−1)$, $(−1,−6)$, $(6,1)$"
+        },
+        {
+          "label": "ב",
+          "text": "מודֵד טוען שאפשר לתאר את החלקה בשם מיוחד של מרובע. תנו שם מדויק והצדיקו אותו בעזרת כיווני הגבולות.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q20_head.svg",
+            "sha256": "5ac7218a5e92db1d64ed6bc9f4c53ba99cd8d54d6a4c9e2eeb1247ec8fe98e5c"
+          },
+          "answer": "מלבן: צלעות נגדיות מקבילות, וסמוכות מאונכות (כל ישר יוצר $45$ מעלות עם הציר)"
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את שטח החלקה ביחידות הרשת.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q20_head.svg",
+            "sha256": "5ac7218a5e92db1d64ed6bc9f4c53ba99cd8d54d6a4c9e2eeb1247ec8fe98e5c"
+          },
+          "answer": "$70$ יחידות שטח"
+        },
+        {
+          "label": "ד",
+          "text": "מתכננים שני שבילים בין פינות נגדיות. בדקו שתי טענות: השבילים שווים באורכם; הם מאונכים זה לזה. הכריעו בכל טענה בעזרת חישוב.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/c/figures/q20_head.svg",
+            "sha256": "5ac7218a5e92db1d64ed6bc9f4c53ba99cd8d54d6a4c9e2eeb1247ec8fe98e5c"
+          },
+          "answer": "האורכים שווים: $\\sqrt{148}$ לכל שביל. הם אינם מאונכים. אמצע שניהם הוא $(0,0)$; ריבוע המרחק ממנו לכל אחת מהפינות $(1,6)$ ו־$(−6,−1)$ הוא $37$, ואילו ריבוע המרחק בין הפינות הוא $98$. מאחר ש־$37 + 37$ אינו $98$, הזווית ביניהם אינה ישרה"
+        }
+      ]
+    }
+  }
+}

@@ -47,7 +47,15 @@ const protectedFiles: Record<string, string> = {
   // G9 PDF v2, G8 PDF v2 (two c2 levels), and G7 PDF v2.
   // Packages-120: replaced student PDF ids and added G9-T46 (דלתון) in the geometry group.
   // Visible topic labels: סינתזה גאומטרית → שילוב גאומטרי, and the grade-6 synthesis sheet → סיכום.
-  'src/data/catalog.v1.json': 'c01d8b25c9fb339d51e1345ad35ccd412b5a7bb2c276f3d1617cfb3534305c4b',
+  // Noam, 2026-11-02: G9-T07 republished with its final-answers pages (new PDF ids only).
+  // Noam, 2026-11-02: batch 2 (G9-T04, G9-T05, G9-T10, G9-T11) republished with final answers.
+  // Batch 3 (2026-11-02): G9-T17, G9-T18, G9-T19 and G9-T20 republished with final answers; the catalog points at their new PDFs.
+  // Batch 4 (2026-11-02): 92 grade 7-9 topics, 276 sheets, republished with final answers; the catalog points at their new PDFs.
+  // Batch 5 (2026-11-03): 72 more grade 7-9 sheets republished with final answers; the catalog points at their new PDFs.
+  // Batch 6 (2026-11-03): G8-T65 (3 sheets) republished with final answers; the catalog points at its new PDFs.
+  // 2026-11-03: four source-recovered grade 8 worksheets; question pages pixel-identical; final answers appended.
+  // Final answers completed for remaining22 sheets; verified source identity with authorized AA-only differences, 2026-11-03.
+  'src/data/catalog.v1.json': '4b92aed69a9485557cd83c1e2b0813ee9358a77698f61b96a5204842bb3f9ad3',
   'src/lib/catalog/loadCatalog.ts': '1a5e54a4c19c016046202f3e0b9bb95203e58fe983dab5a27e6f261abfbc9d95',
   // Viewer links forward the c2 sibling as pc2.
   'src/lib/worksheetLinks.ts': '06bfbaa4b9b778d171ca9d8802eed0ce3fb6c6f15d7d7bff3807dd1f80ce0770',
@@ -65,7 +73,8 @@ const protectedFiles: Record<string, string> = {
   'src/lib/homePage.ts': '26a884245860716a5b6dd3aa6189c9d07fcd99e21dc50fca8cf70116a3ba67fb',
   'src/data/home-page.json': 'af14191d863d623cfb95e65f28ca258663d4b8be01a1ef07d520c8b1e47ff73b',
   // Head favicon/manifest/theme-color tags (b7eab08, PR #34) + noam-site-companion.js (20d0ad0f, PR #82).
-  'public/learning.html': 'e0ba9a8743a1422e5d3bfeafdee4a4a01e1736422a4cb3777e962078f1c61ffb',
+  // Noam, 2026-11-02: add site header/nav, footer, fonts and /noam-accessibility.js on learning.html.
+  'public/learning.html': 'd77630abdb1558576e2339d663a9143f7f022112fbe750d6aa73925b2581b50e',
   'public/noam-learning-config.js': '90228359e65a99300b7d5017ddc58edce650b0b1a403a13b40c22608330f4ca7',
   // Lazy Supabase: guest learning no longer downloads the SDK. Google sign-in
   // and an existing session still load it, then recreate the engine.
@@ -113,7 +122,7 @@ describe('exact-design protected live-baseline boundaries', () => {
       '<script src="/noam-ai/catalog-migrations.js?v=20261027-native1"></script>',
       '<script src="/noam-catalog-migration.js?v=20261027-native1"></script>',
       '<script src="noam-native-visual.js?v=20261029-angles1"></script>',
-      '<script src="noam-source-panels.js?v=20261028-panels1"></script>',
+      '<script src="noam-source-panels.js?v=20261102-answers1"></script>',
       '<script src="noam-authored-geometry.js?v=20261028-square1"></script>',
       '<script src="noam-authored-visual.js?v=20261028-source5"></script>',
       '<script src="noam-visual-data.js?v=20261028-source3"></script>',
@@ -121,7 +130,7 @@ describe('exact-design protected live-baseline boundaries', () => {
       '<script src="noam-source-data-visual.js?v=20261028-source-data3"></script>',
       '<script src="noam-source-scaffold.js?v=20261029-scaffold1"></script>',
       // Noam, 2026-10-31: source-bound public catalog supplies all three standard hints.
-      '<script src="noam-curated-hints.js?v=20261031-source-bound3"></script>',
+      '<script src="noam-curated-hints.js?v=20261102-answers1"></script>',
     ];
     const allScripts = [...viewerWithNativeRelease.matchAll(/<script\b[^>]*>[\s\S]*?<\/script>/gi)].map(match => match[0]);
     assert.equal(allScripts.length, 27, 'The release adds its ten exact dependencies and curated hints');
@@ -291,8 +300,28 @@ describe('exact-design protected live-baseline boundaries', () => {
     // ramzi-hint-exhaustion tests exercise both released viewer copies.
     // 1 November: a fresh source-bound catalog revision clears only stale
     // prepared hint turns; revision/DOM tests preserve additional conversation.
-    // The glossary also flips above the composer, keeping all hint controls reachable.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), 'b931c812d0ce08348f178b058d289c2b6cbe7355cfac9f5613bd8c4267f8e6a5');
+    // The glossary also protects the actual hint row/button above the composer;
+    // separate live hint/composer bounds and post-focus/scroll remeasurement
+    // are pinned by the positioning fixture.
+    // 1 November: only the shared bot-client cache query is refreshed for the
+    // approved SDK lifecycle fix. Reversing that query restores the exact
+    // 41ad576e released scripts; the separate companion URL is also cache-busted.
+    // PR333 hints, content and presentation stay intact.
+    // 3 November, Noam-authorized additional-question latency repair: the main
+    // script uses one protected image solve, narrowly verified substitution text,
+    // and no artificial answer delay. The head and other13 scripts are identical
+    // to240f2363; canonical/image/attachment/deadline tests cover the new contract.
+    // Prepared Supabase hints and the current bot SDK remain unchanged.
+    // 3 November, phone verification: keep a focused composer from blurring on
+    // primary Send pointerdown so its layout cannot move before native click.
+    // Only main script 7 changes from c356ab7b; no submit on down or cancelled
+    // gestures. ramzi-send-focus covers both viewers and keyboard/desktop paths.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), '6489924e2cd03a6ff8eeb950ac6d920107441ca0cba6cf427108447ab480179d');
+    const priorSdkScripts = releasedScripts.map(script => script.replace(
+      './noam-bot-client.js?v=20261101-sdk-lifecycle',
+      './noam-bot-client.js?v=20261025-execute-ready-guard',
+    ));
+    assert.equal(sha256(JSON.stringify(priorSdkScripts)), '19820de4d7182081a007abe19da9d2e6c24c3827fba9de4042740653f491d89e');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {

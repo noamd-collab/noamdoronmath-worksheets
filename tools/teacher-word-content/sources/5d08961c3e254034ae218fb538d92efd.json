@@ -1,0 +1,961 @@
+{
+  "sourceSha256": "e1cf1ef0b72ef2537c6a4a2f0f78d3b7bb9e32d925d2587ac3b52c3a87401dd3",
+  "answerSourceSha256": "cec98decf5d70bf2af2f03102b17f7913b97f3b9e8493a01bf890c1115afed74",
+  "nativeSha256": "e713c54e2ba288d2f61e9b98562b76a7bf2265c85f42b30485fe35bee407fc5e",
+  "questions": {
+    "1": {
+      "id": "5d08961c3e254034ae218fb538d92efd:1",
+      "q": 1,
+      "grade": 7,
+      "topic": "משולשים מיוחדים",
+      "levelLabel": "רמה ב׳",
+      "text": "במשולש $△ABC$ זוג צלעות נושא סימוני שוויון זהים. קראו את הסימונים שבאיור.",
+      "example": {
+        "title": "דוגמה נפרדת",
+        "lines": [
+          "משולש בצלעות $4,4,6$ הוא שווה שוקיים, והיקפו $4+4+6=14$ יחידות אורך. שווה שוקיים דורש לפחות זוג צלעות שוות."
+        ]
+      },
+      "figure": {
+        "url": "/noam-ai/native/G7-T15/b/figures/q1_head.svg",
+        "sha256": "64e06a8d73933fbeceae155c550bcf5ba94fdd0e65307813661a35b41732ca69"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "כתבו את שמות שתי הצלעות שסומנו כשוות.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q1_head.svg",
+            "sha256": "64e06a8d73933fbeceae155c550bcf5ba94fdd0e65307813661a35b41732ca69"
+          },
+          "answer": "$AB=AC$"
+        },
+        {
+          "label": "ב",
+          "text": "איזה קודקוד הוא הראש ואיזו צלע הבסיס?",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q1_head.svg",
+            "sha256": "64e06a8d73933fbeceae155c550bcf5ba94fdd0e65307813661a35b41732ca69"
+          },
+          "answer": "הראש $A$, והבסיס $BC$."
+        },
+        {
+          "label": "ג",
+          "text": "איזה זוג זוויות שוות בעקבות הסימון?",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q1_head.svg",
+            "sha256": "64e06a8d73933fbeceae155c550bcf5ba94fdd0e65307813661a35b41732ca69"
+          },
+          "answer": "$∠ABC=∠ACB$"
+        },
+        {
+          "label": "ד",
+          "text": "האם היעדר סימון על הבסיס מוכיח שהוא שונה מן השוקיים? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q1_head.svg",
+            "sha256": "64e06a8d73933fbeceae155c550bcf5ba94fdd0e65307813661a35b41732ca69"
+          },
+          "answer": "לא. היעדר סימון אינו נתון של אי־שוויון; רק הזוג המסומן ידוע כשווה."
+        }
+      ]
+    },
+    "2": {
+      "id": "5d08961c3e254034ae218fb538d92efd:2",
+      "q": 2,
+      "grade": 7,
+      "topic": "משולשים מיוחדים",
+      "levelLabel": "רמה ב׳",
+      "text": "המשולש $△ABC$ שווה צלעות. אורכה של כל צלע $5$ מ׳.",
+      "figure": {
+        "url": "/noam-ai/native/G7-T15/b/figures/q2_head.svg",
+        "sha256": "148ab8eef40ab32e48db3449f6350e0e46346bc61a86f7341a323588c7cc6410"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את היקפו.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q2_head.svg",
+            "sha256": "148ab8eef40ab32e48db3449f6350e0e46346bc61a86f7341a323588c7cc6410"
+          },
+          "answer": "$15$ מ׳"
+        },
+        {
+          "label": "ב",
+          "text": "האם גם השם שווה שוקיים מתאים? הסבירו.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q2_head.svg",
+            "sha256": "148ab8eef40ab32e48db3449f6350e0e46346bc61a86f7341a323588c7cc6410"
+          },
+          "answer": "כן; יש בו לפחות זוג צלעות שוות."
+        },
+        {
+          "label": "ג",
+          "text": "כמה זוגות שונים של צלעות שוות אפשר לבחור?",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q2_head.svg",
+            "sha256": "148ab8eef40ab32e48db3449f6350e0e46346bc61a86f7341a323588c7cc6410"
+          },
+          "answer": "$3$ זוגות."
+        },
+        {
+          "label": "ד",
+          "text": "האם אפשר שיהיה בו גם סימן של זווית ישרה? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q2_head.svg",
+            "sha256": "148ab8eef40ab32e48db3449f6350e0e46346bc61a86f7341a323588c7cc6410"
+          },
+          "answer": "לא; במשולש שווה צלעות כל הזוויות שוות וחדות."
+        }
+      ]
+    },
+    "3": {
+      "id": "5d08961c3e254034ae218fb538d92efd:3",
+      "q": 3,
+      "grade": 7,
+      "topic": "משולשים מיוחדים",
+      "levelLabel": "רמה ב׳",
+      "text": "בטבלה רשומות הצעות לשלוש צלעות ביחידות אורך.",
+      "table": {
+        "head": [
+          "שורה",
+          "צלע א",
+          "צלע ב",
+          "צלע ג"
+        ],
+        "rows": [
+          [
+            "א",
+            "5",
+            "5",
+            "8"
+          ],
+          [
+            "ב",
+            "6",
+            "6",
+            "6"
+          ],
+          [
+            "ג",
+            "3",
+            "4",
+            "7"
+          ]
+        ]
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "בחרו שורה המתארת משולש שווה שוקיים שאינו שווה צלעות.",
+          "answer": "שורה א: $5,5,8$."
+        },
+        {
+          "label": "ב",
+          "text": "איזו הצעה נפסלת בגלל תנאי המשולש? הסבירו.",
+          "answer": "שורה ג נפסלת: $3+4=7$ אינו גדול מ־$7$, ולכן אין משולש."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את ההיקף בכל שורה המתארת משולש אפשרי. קבעו לאיזו הצעה ההיקף הגדול ביותר או אם יש שוויון.",
+          "answer": "בשורה א: $5+5+8=18$ יחידות. בשורה ב: $6+6+6=18$ יחידות. יש שוויון בהיקפים. שורה ג אינה מתארת משולש."
+        },
+        {
+          "label": "ד",
+          "text": "סווגו: ״שלוש הצלעות בשורה ב שוות״ — עובדה בטבלה או השערה? ומה לגבי ״כל הדגמים בעתיד יהיו כאלה״?",
+          "answer": "הראשונה עובדה; השנייה השערה שאין לה ראיה בטבלה."
+        }
+      ]
+    },
+    "4": {
+      "id": "5d08961c3e254034ae218fb538d92efd:4",
+      "q": 4,
+      "grade": 7,
+      "topic": "משולשים מיוחדים",
+      "levelLabel": "רמה ב׳",
+      "text": "במשולש $△ABC$ לא נרשמו אורכי צלעות או מידות זווית. מדדו על הדף בסרגל ובמד זווית.",
+      "figure": {
+        "url": "/noam-ai/native/G7-T15/b/figures/q4_head.svg",
+        "sha256": "b56eead0d484c8f8f8b07c259aa78685f403cfd5f7374b0274afcbadd0936198"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מדדו את שלוש הצלעות בס״מ לעשירית.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q4_head.svg",
+            "sha256": "b56eead0d484c8f8f8b07c259aa78685f403cfd5f7374b0274afcbadd0936198"
+          },
+          "answer": "$AB≈4.8$ ס״מ, $BC≈3.8$ ס״מ, $CA≈3.8$ ס״מ."
+        },
+        {
+          "label": "ב",
+          "text": "איזה סוג משולש מסתמן מן האורכים?",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q4_head.svg",
+            "sha256": "b56eead0d484c8f8f8b07c259aa78685f403cfd5f7374b0274afcbadd0936198"
+          },
+          "answer": "שווה שוקיים."
+        },
+        {
+          "label": "ג",
+          "text": "מדדו את $∠ACB$ למעלה הקרובה וקבעו אם היא חדה. מדדו גם את $∠BAC$ ואת $∠ABC$ והשוו ביניהן.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q4_head.svg",
+            "sha256": "b56eead0d484c8f8f8b07c259aa78685f403cfd5f7374b0274afcbadd0936198"
+          },
+          "answer": "כ־$77°$; חדה. שתי זוויות הבסיס כ־$51°$ כל אחת, שוות עד כדי שגיאת מדידה."
+        },
+        {
+          "label": "ד",
+          "text": "מדוע ייתכן ששתי צלעות שוות יימדדו במספרים מעט שונים?",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q4_head.svg",
+            "sha256": "b56eead0d484c8f8f8b07c259aa78685f403cfd5f7374b0274afcbadd0936198"
+          },
+          "answer": "עובי הקו, הצבת הסרגל ודיוק הקריאה יוצרים שגיאת מדידה קטנה."
+        }
+      ]
+    },
+    "5": {
+      "id": "5d08961c3e254034ae218fb538d92efd:5",
+      "q": 5,
+      "grade": 7,
+      "topic": "משולשים מיוחדים",
+      "levelLabel": "רמה ב׳",
+      "text": "במשולש $△ABC$ מסומנת זווית ישרה. נתון $AB=3$ ס״מ, $BC=4$ ס״מ, $CA=5$ ס״מ.",
+      "figure": {
+        "url": "/noam-ai/native/G7-T15/b/figures/q5_head.svg",
+        "sha256": "30cd54ce7fbd439899ed29c23e76a2a106191ae0eb8f971dc3356a76605ac038"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "קראו מן האיור את שם הזווית הישרה.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q5_head.svg",
+            "sha256": "30cd54ce7fbd439899ed29c23e76a2a106191ae0eb8f971dc3356a76605ac038"
+          },
+          "answer": "$∠ABC$"
+        },
+        {
+          "label": "ב",
+          "text": "מהו היתר? ומהם שני הניצבים?",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q5_head.svg",
+            "sha256": "30cd54ce7fbd439899ed29c23e76a2a106191ae0eb8f971dc3356a76605ac038"
+          },
+          "answer": "היתר $AC$ והניצבים $AB,BC$."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את היקף המשולש.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q5_head.svg",
+            "sha256": "30cd54ce7fbd439899ed29c23e76a2a106191ae0eb8f971dc3356a76605ac038"
+          },
+          "answer": "$12$ ס״מ"
+        },
+        {
+          "label": "ד",
+          "text": "אילו מסובבים את הדף, האם צלע אחרת נעשית היתר? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q5_head.svg",
+            "sha256": "30cd54ce7fbd439899ed29c23e76a2a106191ae0eb8f971dc3356a76605ac038"
+          },
+          "answer": "לא; היתר נשאר מול הזווית הישרה."
+        }
+      ]
+    },
+    "6": {
+      "id": "5d08961c3e254034ae218fb538d92efd:6",
+      "q": 6,
+      "grade": 7,
+      "topic": "משולשים מיוחדים",
+      "levelLabel": "רמה ב׳",
+      "text": "בנו משולש שווה צלעות בהיקף $21$ ס״מ.",
+      "items": [
+        {
+          "label": "א",
+          "text": "מה אורך כל צלע?",
+          "answer": "$7$ ס״מ"
+        },
+        {
+          "label": "ב",
+          "text": "תלמיד כתב $21−3$. איזו פעולה מתאימה ומדוע?",
+          "answer": "מחלקים את ההיקף לשלושה חלקים שווים, ולא מפחיתים את מספר הצלעות."
+        },
+        {
+          "label": "ג",
+          "text": "שרטטו סקיצה וסמנו את המידות ואת שלוש הצלעות השוות.",
+          "answer": "משולש שווה צלעות שעל כל אחת משלוש צלעותיו כתוב $7$ ס״מ, עם סימוני שוויון זהים על שלושתן."
+        },
+        {
+          "label": "ד",
+          "text": "אם ידוע רק ההיקף הזה, האם מוכרחים לקבל שווה צלעות? תנו דוגמה אחרת.",
+          "answer": "לא. דוגמה אחת: $6,7,8$ בהיקף $21$ ואינה שווה צלעות; כל שלשה בסכום $21$ שמקיימת את תנאי המשולש ואינה $7,7,7$ מתאימה (למשל $5,8,8$)."
+        }
+      ]
+    },
+    "7": {
+      "id": "5d08961c3e254034ae218fb538d92efd:7",
+      "q": 7,
+      "grade": 7,
+      "topic": "משולשים מיוחדים",
+      "levelLabel": "רמה ב׳",
+      "text": "במשולש $△ABC$ נתון $AB=6$ מ׳, $BC=7$ מ׳, $CA=8$ מ׳.",
+      "figure": {
+        "url": "/noam-ai/native/G7-T15/b/figures/q7_head.svg",
+        "sha256": "26d4f76282b178cdf81454ecdb28aba8bdc05a31c5d458d8fdf4755b7bdc1b23"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "רשמו את הצלע שמול $∠ABC$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q7_head.svg",
+            "sha256": "26d4f76282b178cdf81454ecdb28aba8bdc05a31c5d458d8fdf4755b7bdc1b23"
+          },
+          "answer": "$AC$"
+        },
+        {
+          "label": "ב",
+          "text": "איזו זווית היא הקטנה ביותר? הסבירו.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q7_head.svg",
+            "sha256": "26d4f76282b178cdf81454ecdb28aba8bdc05a31c5d458d8fdf4755b7bdc1b23"
+          },
+          "answer": "$∠ACB$, מול הצלע הקצרה $AB$."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את היקפו.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q7_head.svg",
+            "sha256": "26d4f76282b178cdf81454ecdb28aba8bdc05a31c5d458d8fdf4755b7bdc1b23"
+          },
+          "answer": "$21$ מ׳"
+        },
+        {
+          "label": "ד",
+          "text": "איזה שם מתאים לפי הצלעות?",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q7_head.svg",
+            "sha256": "26d4f76282b178cdf81454ecdb28aba8bdc05a31c5d458d8fdf4755b7bdc1b23"
+          },
+          "answer": "שונה צלעות."
+        }
+      ]
+    },
+    "8": {
+      "id": "5d08961c3e254034ae218fb538d92efd:8",
+      "q": 8,
+      "grade": 7,
+      "topic": "משולשים מיוחדים",
+      "levelLabel": "רמה ב׳",
+      "text": "במשולש $△ABC$ נתון $AB=AC=6$ יחידות ו־$BC=9$ יחידות.",
+      "figure": {
+        "url": "/noam-ai/native/G7-T15/b/figures/q8_head.svg",
+        "sha256": "b8d7cdcb8cd33859ab453eb7a3520110d7fca4368728b74ffc154026176d2f3e"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מהו הבסיס ומה אורך כל שוק?",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q8_head.svg",
+            "sha256": "b8d7cdcb8cd33859ab453eb7a3520110d7fca4368728b74ffc154026176d2f3e"
+          },
+          "answer": "הבסיס $BC$; כל שוק באורך $6$ יחידות."
+        },
+        {
+          "label": "ב",
+          "text": "בחרו דרך לחישוב ההיקף והסבירו אותה.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q8_head.svg",
+            "sha256": "b8d7cdcb8cd33859ab453eb7a3520110d7fca4368728b74ffc154026176d2f3e"
+          },
+          "answer": "$2·6+9=21$ יחידות; שתי שוקיים ובסיס."
+        },
+        {
+          "label": "ג",
+          "text": "בדקו תנאי משולש באמצעות הצלע הארוכה.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q8_head.svg",
+            "sha256": "b8d7cdcb8cd33859ab453eb7a3520110d7fca4368728b74ffc154026176d2f3e"
+          },
+          "answer": "$6+6>9$, ולכן ניתן לבנות."
+        },
+        {
+          "label": "ד",
+          "text": "האם אפשר להחליף רק את הבסיס בצלע של $12$ יחידות? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q8_head.svg",
+            "sha256": "b8d7cdcb8cd33859ab453eb7a3520110d7fca4368728b74ffc154026176d2f3e"
+          },
+          "answer": "לא; סכום השוקיים יהיה שווה לבסיס ונקבל מצב מנוון."
+        }
+      ]
+    },
+    "9": {
+      "id": "5d08961c3e254034ae218fb538d92efd:9",
+      "q": 9,
+      "grade": 7,
+      "topic": "משולשים מיוחדים",
+      "levelLabel": "רמה ב׳",
+      "text": "במשולש $△ABC$ נתון $∠BAC=100°$, $∠ABC=40°$, $∠ACB=40°$.",
+      "figure": {
+        "url": "/noam-ai/native/G7-T15/b/figures/q9_head.svg",
+        "sha256": "a5bfff21abe695552e28dc3078c7d973827e3d3be463deefaf380e6655384eb9"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "סווגו לפי הזוויות.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q9_head.svg",
+            "sha256": "a5bfff21abe695552e28dc3078c7d973827e3d3be463deefaf380e6655384eb9"
+          },
+          "answer": "קהה־זוויות."
+        },
+        {
+          "label": "ב",
+          "text": "איזה זוג צלעות שוות?",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q9_head.svg",
+            "sha256": "a5bfff21abe695552e28dc3078c7d973827e3d3be463deefaf380e6655384eb9"
+          },
+          "answer": "$AB=AC$"
+        },
+        {
+          "label": "ג",
+          "text": "האם אפשר לתת לו גם שם לפי הצלעות?",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q9_head.svg",
+            "sha256": "a5bfff21abe695552e28dc3078c7d973827e3d3be463deefaf380e6655384eb9"
+          },
+          "answer": "כן, שווה שוקיים."
+        },
+        {
+          "label": "ד",
+          "text": "הסבירו מדוע אין סתירה בין שני השמות שמצאתם.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q9_head.svg",
+            "sha256": "a5bfff21abe695552e28dc3078c7d973827e3d3be463deefaf380e6655384eb9"
+          },
+          "answer": "שם אחד מתאר את הזוויות, והאחר את הצלעות."
+        }
+      ]
+    },
+    "10": {
+      "id": "5d08961c3e254034ae218fb538d92efd:10",
+      "q": 10,
+      "grade": 7,
+      "topic": "משולשים מיוחדים",
+      "levelLabel": "רמה ב׳",
+      "text": "שני משולשים $△ABC$ ו־$△ABD$ חולקים בסיס $AB=4$ ס״מ. ארבע הצלעות האחרות הן $AC=BC=AD=BD=3$ ס״מ.",
+      "figure": {
+        "url": "/noam-ai/native/G7-T15/b/figures/q10_head.svg",
+        "sha256": "e7ad7fc1fcc60076cb1fa200e2bd274fce7fca252d040719ac8ff750188a0ad7"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את היקף כל משולש בנפרד.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q10_head.svg",
+            "sha256": "e7ad7fc1fcc60076cb1fa200e2bd274fce7fca252d040719ac8ff750188a0ad7"
+          },
+          "answer": "$10$ ס״מ לכל משולש."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את אורך המסגרת החיצונית.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q10_head.svg",
+            "sha256": "e7ad7fc1fcc60076cb1fa200e2bd274fce7fca252d040719ac8ff750188a0ad7"
+          },
+          "answer": "$12$ ס״מ."
+        },
+        {
+          "label": "ג",
+          "text": "אם מוסיפים גם מוט לאורך $AB$, כמה ס״מ מוטות נדרשים? מחיר סנטימטר מוט הוא $5$ שקלים. חשבו גם את המחיר הכולל.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q10_head.svg",
+            "sha256": "e7ad7fc1fcc60076cb1fa200e2bd274fce7fca252d040719ac8ff750188a0ad7"
+          },
+          "answer": "$16$ ס״מ; המחיר $16·5=80$ שקלים."
+        },
+        {
+          "label": "ד",
+          "text": "תלמיד חיבר את שני ההיקפים וקיבל אורך מוטות גדול מדי. איזו צלע נספרה יותר מפעם אחת?",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q10_head.svg",
+            "sha256": "e7ad7fc1fcc60076cb1fa200e2bd274fce7fca252d040719ac8ff750188a0ad7"
+          },
+          "answer": "$AB$, הצלע המשותפת."
+        }
+      ]
+    },
+    "11": {
+      "id": "5d08961c3e254034ae218fb538d92efd:11",
+      "q": 11,
+      "grade": 7,
+      "topic": "משולשים מיוחדים",
+      "levelLabel": "רמה ב׳",
+      "text": "משולש $△ABC$ שווה שוקיים והיקפו $28$ מ׳. הבסיס $BC=8$ מ׳.",
+      "figure": {
+        "url": "/noam-ai/native/G7-T15/b/figures/q11_head.svg",
+        "sha256": "76c3fb17c1beb1300ba572c274e57bd664d7dfbfd883d5ff8e0035a1cbda830c"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "כמה מטרים יחד יש בשתי השוקיים?",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q11_head.svg",
+            "sha256": "76c3fb17c1beb1300ba572c274e57bd664d7dfbfd883d5ff8e0035a1cbda830c"
+          },
+          "answer": "$20$ מ׳."
+        },
+        {
+          "label": "ב",
+          "text": "מה אורך כל שוק?",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q11_head.svg",
+            "sha256": "76c3fb17c1beb1300ba572c274e57bd664d7dfbfd883d5ff8e0035a1cbda830c"
+          },
+          "answer": "$10$ מ׳."
+        },
+        {
+          "label": "ג",
+          "text": "בדקו שהאורכים אכן מאפשרים משולש.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q11_head.svg",
+            "sha256": "76c3fb17c1beb1300ba572c274e57bd664d7dfbfd883d5ff8e0035a1cbda830c"
+          },
+          "answer": "$10+10>8$ וכל יתר הבדיקות מתקיימות."
+        },
+        {
+          "label": "ד",
+          "text": "האם הבסיס מוכרח להיות הצלע הארוכה ביותר בכל משולש שווה שוקיים? הסבירו בעזרת הנתונים.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q11_head.svg",
+            "sha256": "76c3fb17c1beb1300ba572c274e57bd664d7dfbfd883d5ff8e0035a1cbda830c"
+          },
+          "answer": "לא; כאן הבסיס קצר מן השוקיים."
+        }
+      ]
+    },
+    "12": {
+      "id": "5d08961c3e254034ae218fb538d92efd:12",
+      "q": 12,
+      "grade": 7,
+      "topic": "משולשים מיוחדים",
+      "levelLabel": "רמה ב׳",
+      "text": "באיור $△ABC$ שווה צלעות. גוזרים שלושה מקלות שווים מתוך פס שאורכו $39$ ס״מ, ללא שארית.",
+      "figure": {
+        "url": "/noam-ai/native/G7-T15/b/figures/q12_head.svg",
+        "sha256": "df4d314c431877e96d5c0565d8cf3683bb74429ec3b73020859994d7acb6face"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מה אורך כל מקל?",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q12_head.svg",
+            "sha256": "df4d314c431877e96d5c0565d8cf3683bb74429ec3b73020859994d7acb6face"
+          },
+          "answer": "$13$ ס״מ"
+        },
+        {
+          "label": "ב",
+          "text": "כמה ס״מ יידרשו לשתי מסגרות נפרדות כאלה?",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q12_head.svg",
+            "sha256": "df4d314c431877e96d5c0565d8cf3683bb74429ec3b73020859994d7acb6face"
+          },
+          "answer": "$78$ ס״מ."
+        },
+        {
+          "label": "ג",
+          "text": "למה אין צורך להפחית צלע מן הכמות בסעיף ב?",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q12_head.svg",
+            "sha256": "df4d314c431877e96d5c0565d8cf3683bb74429ec3b73020859994d7acb6face"
+          },
+          "answer": "המסגרות נפרדות, ולכן שום צלע אינה משותפת."
+        },
+        {
+          "label": "ד",
+          "text": "האם כל משולש בעל שלוש זוויות שוות מתאים לשם שווה שוקיים? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q12_head.svg",
+            "sha256": "df4d314c431877e96d5c0565d8cf3683bb74429ec3b73020859994d7acb6face"
+          },
+          "answer": "כן; הוא שווה צלעות, ולכן גם שווה שוקיים לפי הגדרת לפחות זוג שווה."
+        }
+      ]
+    },
+    "13": {
+      "id": "5d08961c3e254034ae218fb538d92efd:13",
+      "q": 13,
+      "grade": 7,
+      "topic": "משולשים מיוחדים",
+      "levelLabel": "רמה ב׳",
+      "text": "מצאו את כל המשולשים באורכי צלעות שלמים ובהיקף $9$ יחידות. אין להחשיב החלפת סדר כאפשרות חדשה.",
+      "items": [
+        {
+          "label": "א",
+          "text": "האם צלע באורך $5$ אפשרית? נמקו.",
+          "answer": "לא; שתי האחרות מסתכמות ב־$4$, פחות ממנה."
+        },
+        {
+          "label": "ב",
+          "text": "רשמו את כל שלשות האורכים האפשריות בסדר עולה.",
+          "answer": "$1,4,4$; $2,3,4$; $3,3,3$."
+        },
+        {
+          "label": "ג",
+          "text": "אילו משלשותיכם מתארות שווה שוקיים?",
+          "answer": "הראשונה והשלישית; שווה צלעות נחשב גם שווה שוקיים."
+        },
+        {
+          "label": "ד",
+          "text": "שרטטו סקיצה של האפשרות שונת הצלעות. הסבירו כיצד מנעתם ספירה כפולה.",
+          "answer": "השלשה $2,3,4$; כתיבת שלשות בסדר עולה מונעת החלפות סדר חוזרות."
+        }
+      ]
+    },
+    "14": {
+      "id": "5d08961c3e254034ae218fb538d92efd:14",
+      "q": 14,
+      "grade": 7,
+      "topic": "משולשים מיוחדים",
+      "levelLabel": "רמה ב׳",
+      "text": "במשולש $△ABC$ נתון $∠BAC=50°$, $∠ABC=60°$, $∠ACB=70°$.",
+      "figure": {
+        "url": "/noam-ai/native/G7-T15/b/figures/q14_head.svg",
+        "sha256": "07bbadcb7dbd5a574af59bc9b88b12d3884298c5602337029ec0f564dda89376"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "בדקו את סכום הזוויות.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q14_head.svg",
+            "sha256": "07bbadcb7dbd5a574af59bc9b88b12d3884298c5602337029ec0f564dda89376"
+          },
+          "answer": "$180°$"
+        },
+        {
+          "label": "ב",
+          "text": "האם המשולש חד־זוויות? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q14_head.svg",
+            "sha256": "07bbadcb7dbd5a574af59bc9b88b12d3884298c5602337029ec0f564dda89376"
+          },
+          "answer": "כן, כל הזוויות קטנות מזווית ישרה."
+        },
+        {
+          "label": "ג",
+          "text": "האם הוא שווה צלעות? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q14_head.svg",
+            "sha256": "07bbadcb7dbd5a574af59bc9b88b12d3884298c5602337029ec0f564dda89376"
+          },
+          "answer": "לא; הזוויות שונות, ולכן גם הצלעות שונות."
+        },
+        {
+          "label": "ד",
+          "text": "איזו טענה מפריך האיור: ״כל שווה צלעות חד־זוויות״ או ״כל חד־זוויות שווה צלעות״?",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q14_head.svg",
+            "sha256": "07bbadcb7dbd5a574af59bc9b88b12d3884298c5602337029ec0f564dda89376"
+          },
+          "answer": "הטענה השנייה; האיור חד־זוויות אך אינו שווה צלעות."
+        }
+      ]
+    },
+    "15": {
+      "id": "5d08961c3e254034ae218fb538d92efd:15",
+      "q": 15,
+      "grade": 7,
+      "topic": "משולשים מיוחדים",
+      "levelLabel": "רמה ב׳",
+      "text": "אורכי צלעות $△ABC$ הם $AB=x$, $BC=x+1$, $CA=x+2$ ביחידות אורך. היקפו $18$ יחידות.",
+      "figure": {
+        "url": "/noam-ai/native/G7-T15/b/figures/q15_head.svg",
+        "sha256": "bec981a8bce72dc3ba28a2e1c8a76c7df6db05e745ff2888fc3fcc341b05a29e"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "כתבו משוואה מן ההיקף.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q15_head.svg",
+            "sha256": "bec981a8bce72dc3ba28a2e1c8a76c7df6db05e745ff2888fc3fcc341b05a29e"
+          },
+          "answer": "$x+(x+1)+(x+2)=18$"
+        },
+        {
+          "label": "ב",
+          "text": "מצאו את $x$ ואת שלושת האורכים.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q15_head.svg",
+            "sha256": "bec981a8bce72dc3ba28a2e1c8a76c7df6db05e745ff2888fc3fcc341b05a29e"
+          },
+          "answer": "$x=5$; האורכים $5,6,7$."
+        },
+        {
+          "label": "ג",
+          "text": "בדקו את סכום האורכים ואת תנאי המשולש.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q15_head.svg",
+            "sha256": "bec981a8bce72dc3ba28a2e1c8a76c7df6db05e745ff2888fc3fcc341b05a29e"
+          },
+          "answer": "$5+6+7=18$ וגם $5+6>7$."
+        },
+        {
+          "label": "ד",
+          "text": "לאיזו זווית נמצאת הצלע הארוכה ביותר ממול?",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q15_head.svg",
+            "sha256": "bec981a8bce72dc3ba28a2e1c8a76c7df6db05e745ff2888fc3fcc341b05a29e"
+          },
+          "answer": "$∠ABC$"
+        }
+      ]
+    },
+    "16": {
+      "id": "5d08961c3e254034ae218fb538d92efd:16",
+      "q": 16,
+      "grade": 7,
+      "topic": "משולשים מיוחדים",
+      "levelLabel": "רמה ב׳",
+      "text": "במשולש $△ABC$ נתון $AB=BC=8$ ס״מ, $CA=6$ ס״מ.",
+      "figure": {
+        "url": "/noam-ai/native/G7-T15/b/figures/q16_head.svg",
+        "sha256": "fe4680390b536e8926d4a3dbfabef9933ea94fc35b25966c5db9b4058d5fed1b"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "סמנו במילים את הראש ואת הבסיס.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q16_head.svg",
+            "sha256": "fe4680390b536e8926d4a3dbfabef9933ea94fc35b25966c5db9b4058d5fed1b"
+          },
+          "answer": "הראש $B$, הבסיס $AC$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את ההיקף.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q16_head.svg",
+            "sha256": "fe4680390b536e8926d4a3dbfabef9933ea94fc35b25966c5db9b4058d5fed1b"
+          },
+          "answer": "$22$ ס״מ."
+        },
+        {
+          "label": "ג",
+          "text": "האם מדידת $AB$ ו־$AC$ בלבד ושלילת שוויונן שוללת שווה שוקיים? הסבירו.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q16_head.svg",
+            "sha256": "fe4680390b536e8926d4a3dbfabef9933ea94fc35b25966c5db9b4058d5fed1b"
+          },
+          "answer": "לא; הצלע השלישית שווה ל־$AB$."
+        },
+        {
+          "label": "ד",
+          "text": "איזו מדידה נוספת תשלים את בדיקת זוג השוקיים?",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q16_head.svg",
+            "sha256": "fe4680390b536e8926d4a3dbfabef9933ea94fc35b25966c5db9b4058d5fed1b"
+          },
+          "answer": "מדידת $BC$ והשוואתה ל־$AB$."
+        }
+      ]
+    },
+    "17": {
+      "id": "5d08961c3e254034ae218fb538d92efd:17",
+      "q": 17,
+      "grade": 7,
+      "topic": "משולשים מיוחדים",
+      "levelLabel": "רמה ב׳",
+      "text": "הזווית $∠ABC$ במשולש $△ABC$ ישרה, כלומר $AB⊥BC$. שתי הזוויות האחרות שוות.",
+      "figure": {
+        "url": "/noam-ai/native/G7-T15/b/figures/q17_head.svg",
+        "sha256": "b76ce0f12d448488d239667d146d859beaed35608cc8d7e3a4b2be792544cc70"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מצאו את שתי הזוויות האחרות.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q17_head.svg",
+            "sha256": "b76ce0f12d448488d239667d146d859beaed35608cc8d7e3a4b2be792544cc70"
+          },
+          "answer": "$45°$ כל אחת."
+        },
+        {
+          "label": "ב",
+          "text": "איזה זוג צלעות שוות?",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q17_head.svg",
+            "sha256": "b76ce0f12d448488d239667d146d859beaed35608cc8d7e3a4b2be792544cc70"
+          },
+          "answer": "$AB=BC$"
+        },
+        {
+          "label": "ג",
+          "text": "האם היתר נכלל בזוג השווה? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q17_head.svg",
+            "sha256": "b76ce0f12d448488d239667d146d859beaed35608cc8d7e3a4b2be792544cc70"
+          },
+          "answer": "לא; הוא מול הזווית הגדולה ביותר ולכן ארוך משני הניצבים."
+        },
+        {
+          "label": "ד",
+          "text": "תנו שני שמות מתאימים למשולש.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q17_head.svg",
+            "sha256": "b76ce0f12d448488d239667d146d859beaed35608cc8d7e3a4b2be792544cc70"
+          },
+          "answer": "ישר־זווית ושווה שוקיים."
+        }
+      ]
+    },
+    "18": {
+      "id": "5d08961c3e254034ae218fb538d92efd:18",
+      "q": 18,
+      "grade": 7,
+      "topic": "משולשים מיוחדים",
+      "levelLabel": "רמה ב׳",
+      "text": "במשולש $△ABC$ נתון $AB=4$ יחידות, $BC=7$ יחידות, $CA=9$ יחידות.",
+      "figure": {
+        "url": "/noam-ai/native/G7-T15/b/figures/q18_head.svg",
+        "sha256": "9a537fdbc5984687919c43d4cf30c443c57f757fcb86bf56798acb0970e3cf06"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "בדקו שהצלעות מאפשרות משולש.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q18_head.svg",
+            "sha256": "9a537fdbc5984687919c43d4cf30c443c57f757fcb86bf56798acb0970e3cf06"
+          },
+          "answer": "$4+7>9$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את היקפו.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q18_head.svg",
+            "sha256": "9a537fdbc5984687919c43d4cf30c443c57f757fcb86bf56798acb0970e3cf06"
+          },
+          "answer": "$20$ יחידות."
+        },
+        {
+          "label": "ג",
+          "text": "איזו זווית הגדולה ביותר?",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q18_head.svg",
+            "sha256": "9a537fdbc5984687919c43d4cf30c443c57f757fcb86bf56798acb0970e3cf06"
+          },
+          "answer": "$∠ABC$"
+        },
+        {
+          "label": "ד",
+          "text": "האם די בסדר הצלעות כדי לדעת בכמה מעלות הזווית הגדולה גדולה מהקטנה? הסבירו.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q18_head.svg",
+            "sha256": "9a537fdbc5984687919c43d4cf30c443c57f757fcb86bf56798acb0970e3cf06"
+          },
+          "answer": "לא. מן הסדר בלבד יודעים רק איזו גדולה יותר."
+        }
+      ]
+    },
+    "19": {
+      "id": "5d08961c3e254034ae218fb538d92efd:19",
+      "q": 19,
+      "grade": 7,
+      "topic": "משולשים מיוחדים",
+      "levelLabel": "רמה ב׳",
+      "text": "בחרו אורכי צלעות שלמים למשולש שווה שוקיים שאינו שווה צלעות, בהיקף $16$ יחידות.",
+      "items": [
+        {
+          "label": "א",
+          "text": "הציעו שלשה אחת ובדקו את התנאים.",
+          "answer": "למשל $5,5,6$; ההיקף מתאים ואי־שוויון המשולש מתקיים."
+        },
+        {
+          "label": "ב",
+          "text": "האם $4,4,8$ היא אפשרות נוספת? הסבירו.",
+          "answer": "לא; סכום שתי הקצרות שווה לארוכה."
+        },
+        {
+          "label": "ג",
+          "text": "מצאו אפשרות תקפה אחרת.",
+          "answer": "למשל $7,7,2$; מקבלים גם $6,6,4$."
+        },
+        {
+          "label": "ד",
+          "text": "שרטטו אחת מהאפשרויות וסמנו את הבסיס ואת השוקיים.",
+          "answer": "למשל משולש $5,5,6$: השוקיים $5$ ו־$5$, הבסיס $6$. דוגמה אחת; כל שלשה מהאפשרויות ($5,5,6$; $6,6,4$; $7,7,2$) מתאימה."
+        }
+      ]
+    },
+    "20": {
+      "id": "5d08961c3e254034ae218fb538d92efd:20",
+      "q": 20,
+      "grade": 7,
+      "topic": "משולשים מיוחדים",
+      "levelLabel": "רמה ב׳",
+      "text": "במשולש $△ABC$ נתון $AB=AC$ וזווית הראש $∠BAC=80°$.",
+      "figure": {
+        "url": "/noam-ai/native/G7-T15/b/figures/q20_head.svg",
+        "sha256": "6a3e8b8f47256a8b4646447a6c645ba95435d05287684d3c8b2befa06fab6ffb"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מהו סכום זוויות הבסיס?",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q20_head.svg",
+            "sha256": "6a3e8b8f47256a8b4646447a6c645ba95435d05287684d3c8b2befa06fab6ffb"
+          },
+          "answer": "$100°$"
+        },
+        {
+          "label": "ב",
+          "text": "מצאו כל זווית בסיס.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q20_head.svg",
+            "sha256": "6a3e8b8f47256a8b4646447a6c645ba95435d05287684d3c8b2befa06fab6ffb"
+          },
+          "answer": "$50°$"
+        },
+        {
+          "label": "ג",
+          "text": "האם אפשר להסיק שהבסיס ארוך מכל שוק? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q20_head.svg",
+            "sha256": "6a3e8b8f47256a8b4646447a6c645ba95435d05287684d3c8b2befa06fab6ffb"
+          },
+          "answer": "כן; זווית הראש גדולה מזוויות הבסיס, ולכן הצלע שמולה ארוכה יותר."
+        },
+        {
+          "label": "ד",
+          "text": "האם האיור מוכיח שכך קורה בכל משולש שווה שוקיים? הסבירו.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T15/b/figures/q20_head.svg",
+            "sha256": "6a3e8b8f47256a8b4646447a6c645ba95435d05287684d3c8b2befa06fab6ffb"
+          },
+          "answer": "לא; זווית הראש יכולה להיות קטנה מזוויות הבסיס במשולש אחר."
+        }
+      ]
+    }
+  }
+}

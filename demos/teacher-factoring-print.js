@@ -1,7 +1,8 @@
 import { dismissTeacherHumanVerification, requestTeacherHumanVerification } from './teacher-human-verification.js?v=20261030-stepup-error-detail';
 import { replaceWizardScopeUrl, wizardPrefillFromSearch } from './wizard-prefill.js?v=20261031-level-choice-help';
 import { expandToWholeQuestionKeys, groupWholeQuestions, mulberry32, pickWholeQuestions, randomSeed } from './teacher-question-pick.js';
-import { PICK_HEADING, SECTION_KINDS, needsSectionHeadings, pointsLabel, scoreLabel, sectionKind, sectionTitle, shouldAskMoreTopic, testPoints, TEST_TOTAL_POINTS } from './teacher-page-sections.js?v=20261031-level-choice-help';
+import { PICK_HEADING, SECTION_KINDS, needsSectionHeadings, pointsLabel, scoreLabel, sectionKind, sectionTitle, testPoints, TEST_TOTAL_POINTS } from './teacher-page-sections.js?v=20261103-add-topic-button';
+import { buildTeacherReview, renderTeacherReview, renderTeacherPageCount } from './teacher-review-summary.js?v=20261103-page-count';
 
 /* Teacher picker for every catalog sheet, grades 1–9.
    Choose complete source questions across topic and level sheets.
@@ -95,14 +96,13 @@ let state = {
   grade: '9',
   topic: '2',
   level: 'a',
-  wizard: 'grade',
+  wizard: 'setup',
   lastQuestionCount: 5,
   lastAiPickCount: 0,
   pickMode: 'manual',
   pickNote: '',
   blocks: [],
   sectionKind: 'review',
-  moreDismissed: false,
 };
 let history = [];
 let rendering = false;
@@ -113,6 +113,92 @@ let topicLoadPromise = null;
 let aiPickPending = 0;
 let teacherBotClientPromise = null;
 let teacherAiPlanCache = null;
+let appState = 'loading';
+let appBound = false;
+let startupComplete = false;
+let retryTeacherLoad = null;
+let appLoadId = 0;
+let topicSearch = null;
+
+function setTeacherAppState(next, message = '') {
+  appState = next;
+  for (const workspace of [$('teacher-workspace'), $('wizard-bar')]) {
+    if (!workspace) continue;
+    workspace.inert = next !== 'ready';
+    workspace.hidden = !startupComplete && next !== 'ready';
+    workspace.setAttribute('aria-busy', next === 'loading' ? 'true' : 'false');
+  }
+  const panel = $('teacher-load-state');
+  if (panel) panel.hidden = next === 'ready';
+  const loading = $('teacher-loading');
+  if (loading) {
+    loading.hidden = next !== 'loading';
+    loading.textContent = next === 'loading' ? (message || 'טוענים את דפי העבודה…') : '';
+  }
+  const error = $('teacher-load-error');
+  if (error) {
+    error.hidden = next !== 'error';
+    error.textContent = next === 'error' ? message : '';
+  }
+  const retry = $('teacher-load-retry');
+  if (retry) {
+    retry.hidden = next !== 'error';
+    retry.disabled = next !== 'error';
+    if (next === 'error') retry.focus();
+  }
+}
+
+async function reloadTeacherTopic() {
+  const request = ++appLoadId;
+  const focused = document.activeElement;
+  retryTeacherLoad = reloadTeacherTopic;
+  setTeacherAppState('loading', 'טוענים את שאלות הנושא…');
+  try {
+    await loadCurrentTopic();
+    if (request !== appLoadId) return false;
+    render();
+    setTeacherAppState('ready');
+    if (focused && focused.isConnected && !focused.closest('.wiz-off') && typeof focused.focus === 'function') focused.focus({ preventScroll: true });
+    return true;
+  } catch (error) {
+    if (request !== appLoadId) return false;
+    setTeacherAppState('error', 'שאלות הנושא לא נטענו. ההגדרות והמקטעים שנשמרו נשארו בדף. לחצו על ניסיון נוסף.');
+    return false;
+  }
+}
+
+function confirmTeacherReplacement(message, includeBlocks = false) {
+  return (!state.selected.length && (!includeBlocks || !state.blocks.length)) || window.confirm(message);
+}
+
+async function changeTeacherScope(grade, topic) {
+  const gradeChanged = String(grade) !== String(state.grade);
+  if (!gradeChanged && String(topic) === String(state.topic)) return;
+  const accepted = confirmTeacherReplacement(gradeChanged
+    ? 'שינוי הכיתה יאפס את כל השאלות והמקטעים בדף. להמשיך ולאפס?'
+    : 'שינוי הנושא יאפס את הבחירה בנושא הנוכחי. המקטעים שכבר נשמרו יישארו. אפשר לבטל ולשמור את הבחירה באמצעות הוספת נושא. להמשיך ולאפס?', gradeChanged);
+  if (!accepted) {
+    $('grade').value = String(state.grade);
+    $('topic').value = String(state.topic);
+    topicSearch?.sync();
+    return;
+  }
+  state.grade = String(grade);
+  state.topic = String(topic || '');
+  state.level = 'a';
+  state.expanded = false;
+  state.selected = [];
+  if (gradeChanged) state.blocks = [];
+  state.pickNote = '';
+  state.lastAiPickCount = 0;
+  history = [];
+  clearPreparedPrint();
+  fillGrades();
+  fillTopics();
+  syncWizardUrl();
+  await reloadTeacherTopic();
+}
+
 function exKey(pdfId, id) {
   return 'ex:' + pdfId + ':' + id;
 }
@@ -121,18 +207,18 @@ function ensureTeacherBotClient() {
   if (teacherBotClientPromise) return teacherBotClientPromise;
   teacherBotClientPromise = new Promise((resolve, reject) => {
     function finish(ok) {
-      if (ok && window.NoamBotClient && window.NoamBotClient.version === '20261031-browser-error' && typeof window.NoamBotClient.create === 'function') {
+      if (ok && window.NoamBotClient && window.NoamBotClient.version === '20261101-sdk-lifecycle' && typeof window.NoamBotClient.create === 'function') {
         resolve(window.NoamBotClient.create({ api: '/api', enabled: true, modelTimeoutMs: 25000 }));
         return;
       }
       reject(new Error('BOT_CLIENT_UNAVAILABLE'));
     }
-    if (window.NoamBotClient && window.NoamBotClient.version === '20261031-browser-error') {
+    if (window.NoamBotClient && window.NoamBotClient.version === '20261101-sdk-lifecycle') {
       finish(true);
       return;
     }
     const loader = document.createElement('script');
-    loader.src = '/noam-bot-client.js?v=20261031-browser-error';
+    loader.src = '/noam-bot-client.js?v=20261101-sdk-lifecycle';
     loader.async = true;
     loader.onload = () => finish(true);
     loader.onerror = () => finish(false);
@@ -237,7 +323,8 @@ function smartQuestionPick(groups, count, scenario, style, seedKeys) {
 }
 
 function teacherAiNote() {
-  return $('teacher-note') ? String($('teacher-note').value || '').trim().slice(0, 400) : '';
+  // Printed instructions remain in teacher-note and never enter AI context.
+  return $('teacher-ai-note') ? String($('teacher-ai-note').value || '').trim().slice(0, 400) : '';
 }
 
 function teacherAiContext(groups, saved) {
@@ -293,6 +380,7 @@ function rememberTeacherPlans(result, context, groups) {
 async function pickWithAi(rawCount) {
   const count = Number(rawCount);
   if (!AI_QUESTION_COUNTS.includes(count) || aiPickPending) return [];
+  if (!confirmTeacherReplacement('הצעת ה־AI תחליף את השאלות שסימנתם בנושא הנוכחי. המקטעים השמורים יישארו. להמשיך?')) return [];
   dismissTeacherHumanVerification(document);
   const saved = carriedKeys();
   const groups = currentQuestions().filter((group) => !group.keys.some((key) => saved.has(key)));
@@ -408,7 +496,6 @@ async function pickWithAi(rawCount) {
             ? 'בדיקת האבטחה לא אישרה את בקשת ה-AI. הבחירה שלכם נשמרה ואפשר להמשיך לבחור ידנית.'
             : 'לא התקבלה בחירת AI. הבחירה שלכם נשמרה; אפשר לנסות שוב או לבחור ידנית.';
     if (status) status.textContent = message;
-    announce(message);
     return [];
   }
   const mixedLevelsMissing = !teacherLevelsCovered(groups, seedKeys) || (!teacherLevelsCovered(groups, []) && seedKeys.length !== target);
@@ -422,7 +509,6 @@ async function pickWithAi(rawCount) {
         ? 'החיבור ל־AI לא הצליח. הבחירה שלכם נשמרה; אפשר לנסות שוב או לבחור ידנית.'
         : 'לא התקבלה בחירת שאלות מה-AI. הבחירה שלכם נשמרה ואפשר לבחור ידנית.';
     if (status) status.textContent = message;
-    announce(message);
     return [];
   }
   if (!preparedPlan) rememberTeacherPlans(result, context, groups);
@@ -454,7 +540,6 @@ async function pickWithAi(rawCount) {
       : `נבחרו ${what} בבחירה אוטומטית מקומית. לא התקבלה בחירה מתאימה מה-AI.`;
   const msg = outcome + (preparedPlan ? ' זו הבחירה שהוכנה בבקשת ה-AI הקודמת.' : '') + (state.pickNote ? ' ' + state.pickNote : '');
   if (status) status.textContent = msg;
-  announce(msg);
   return finalPicked;
 }
 
@@ -572,8 +657,11 @@ function paintPageBuilder() {
     const help = $('section-kind-help');
     if (help) help.textContent = SECTION_KINDS[sectionKind(state.sectionKind)].help;
   }
-  const prompt = $('more-topic');
-  if (prompt) prompt.hidden = !shouldAskMoreTopic(blockQuestionCount(state.selected), state.moreDismissed);
+  const addTopic = $('add-topic');
+  if (addTopic) {
+    const saved = carriedKeys();
+    addTopic.disabled = !state.selected.some((key) => !saved.has(key));
+  }
   const list = $('page-blocks');
   if (!list) return;
   list.hidden = !state.blocks.length;
@@ -595,15 +683,17 @@ function addAnotherTopic() {
     keys: state.selected.slice(),
   });
   state.selected = [];
-  state.moreDismissed = false;
   state.pickNote = '';
   history = [];
   clearPreparedPrint();
-  state.wizard = 'topic';
+  state.wizard = 'setup';
   render();
   announce('השאלות נשמרו בדף. בוחרים נושא נוסף.');
-  const select = $('topic');
-  if (select && select.focus) select.focus();
+  if (topicSearch) topicSearch.focus();
+  else {
+    const select = $('topic');
+    if (select && select.focus) select.focus();
+  }
 }
 
 function pageNeedsSections() {
@@ -713,8 +803,8 @@ function syncLevels() {
     const label = el.closest && el.closest('label');
     if (label) label.title = el.disabled ? 'הרמה הזו אינה זמינה בנושא הנבחר.' : '';
   });
-  const allLabel = $('level-all-label');
-  if (allLabel) allLabel.textContent = choices.length ? 'כל הרמות יחד' : 'כל שאלות הנושא';
+  const filter = $('level-filter');
+  if (filter) filter.hidden = choices.length === 0;
   const help = $('level-help');
   if (help) help.textContent = !choices.length
     ? 'בנושא הזה אין חלוקה לרמות. כל שאלות הנושא זמינות לבחירה.'
@@ -818,6 +908,7 @@ function fillTopics() {
   }
   $('topic').innerHTML = topics.map((topic) => `<option value="${topic.id}">${escapeHTML(topic.title)}</option>`).join('');
   if (state.topic) $('topic').value = String(state.topic);
+  topicSearch?.sync();
   syncLevels();
 }
 
@@ -856,6 +947,8 @@ function questionCard(group, picked) {
   const contextLabel = contextQuestions.length ? 'כולל נתונים משאלה ' + contextQuestions.join(', ') : '';
   const meta = [levelLabel, partsText, pageText, contextLabel].filter(Boolean).join(' · ');
   const role = QUESTION_ROLES[group.role] || '';
+  const answer = group.source.answerMap?.questions?.find((item) => Number(item.q) === Number(group.q));
+  const answerNotice = answer?.unavailableReason ? '<span class="q-page" style="display:block">בדף המקור חסרה תשובה מלאה לשאלה זו.</span>' : '';
   // Reserve the full A4 crop height before its bitmap loads, so scrolling to a
   // checkbox does not move it when earlier questions finish rendering.
   let previewHeight = 140;
@@ -865,13 +958,18 @@ function questionCard(group, picked) {
       previewHeight = slices.reduce((height, slice, index) => height + Math.round(1000 * Math.SQRT2 * slice.box.h / slice.box.w) + (index ? slice.gap : 0), 0) || previewHeight;
     } catch (error) { /* The preview supplies a retry and source link. */ }
   }
-  return `<article class="q-card q-card-whole q-card-pick q-group"><label class="q-select"><input type="checkbox" data-whole-question="${escapeHTML(group.key)}" ${picked ? 'checked' : ''} aria-label="בחירת שאלה ${escapeHTML(group.q)}${levelLabel ? ' ' + escapeHTML(levelLabel) : ''}"><span class="q-content"><span class="q-title-line"><span class="q-title">שאלה ${escapeHTML(group.q)}</span>${role ? `<span class="badge role-${group.role}">${role}</span>` : ''}</span><span class="q-page" style="display:block">${escapeHTML(meta)}</span></span></label><div class="q-preview" data-preview-key="${escapeHTML(group.key)}" aria-busy="true"><div class="q-preview-scroll q-preview-placeholder" style="aspect-ratio:1000/${previewHeight}"><p class="q-preview-loading">טוענים את השאלה המלאה מדף המקור…</p></div><button type="button" class="q-preview-zoom" title="הגדלת התצוגה לעיון, בלי לשנות את הבחירה." aria-describedby="help-zoom" disabled>הגדלת השאלה</button><a class="q-source-link" href="${escapeHTML(group.source.pdfUrl)}#page=${group.parts[0].page}" target="_blank" rel="noopener">פתיחת דף המקור</a></div></article>`;
+  return `<article class="q-card q-card-whole q-card-pick q-group"><label class="q-select"><input type="checkbox" data-whole-question="${escapeHTML(group.key)}" ${picked ? 'checked' : ''} aria-label="בחירת שאלה ${escapeHTML(group.q)}${levelLabel ? ' ' + escapeHTML(levelLabel) : ''}"><span class="q-content"><span class="q-title-line"><span class="q-title">שאלה ${escapeHTML(group.q)}</span>${role ? `<span class="badge role-${group.role}">${role}</span>` : ''}</span><span class="q-page" style="display:block">${escapeHTML(meta)}</span>${answerNotice}</span></label><div class="q-preview" data-preview-key="${escapeHTML(group.key)}" aria-busy="true"><div class="q-preview-scroll q-preview-placeholder" style="aspect-ratio:1000/${previewHeight}"><p class="q-preview-loading">טוענים את השאלה המלאה מדף המקור…</p></div><button type="button" class="q-preview-zoom" title="הגדלת התצוגה לעיון, בלי לשנות את הבחירה." aria-describedby="help-zoom" disabled>הגדלת השאלה</button><a class="q-source-link" href="${escapeHTML(group.source.pdfUrl)}#page=${group.parts[0].page}" target="_blank" rel="noopener">פתיחת דף המקור</a></div></article>`;
 }
 
 // The manifest's crops enclose the WHOLE question, including its instruction,
 // drawing and every continuation. Per-part print rows can end inside a final
 // wrapped sentence, so they must never be used for the selection preview.
 function questionPreviewSlices(group, manifest) {
+  const original = originalQuestionPreviewSlices(group, manifest);
+  return original.concat(questionDataSlices(group.source, group.q, group.key));
+}
+
+function originalQuestionPreviewSlices(group, manifest) {
   group = questionPreviewGroup(group);
   const pages = new Map();
   const exactWhole = Boolean(manifest.wholeQuestionGeometry || group.source.wholeQuestionGeometry);
@@ -1081,13 +1179,16 @@ function wholeQuestionPickCards(pool) {
 function render() {
   syncLevels();
   const focusedQuestion = document.activeElement && document.activeElement.dataset.wholeQuestion;
+  const active = document.activeElement;
+  const focusedBlock = active && active.closest && active.closest('[data-page-block]');
+  const blockFocus = focusedBlock ? { index: focusedBlock.dataset.pageBlock, kind: active.dataset.blockKind, remove: active.hasAttribute('data-block-remove') } : null;
   const ok = available();
   $('available-content').hidden = !ok;
   $('unavailable').hidden = ok;
   const cfg = SCENARIOS[state.scenario] || SCENARIOS.first;
   $('result-title').textContent = ok ? (state.scenario === 'other' ? 'מרכיבים את הבחירה שלכם' : (pilotOn() ? cfg.title : cfg.label)) : 'בוחרים כיתה ונושא';
   $('result-summary').textContent = ok
-    ? 'רואים כל שאלה כפי שהיא בדף המקור ומסמנים את השאלות השלמות שמתאימות, בכל מספר. אפשר להכין קטע מבחן עם ניקוד או דף חזרה לתרגול.'
+    ? 'רואים כל שאלה כפי שהיא בדף המקור ומסמנים את השאלות השלמות שמתאימות, בכל מספר. אפשר להכין קטע ממבחן עם ניקוד או דף חזרה לתרגול.'
     : 'בוחרים כיתה ונושא מתוך הקטלוג.';
   $('rationale').textContent = ok ? 'בוחרים שאלה שלמה עם כל הסעיפים שלה, בכל הכיתות.' : '';
   $('pedagogy-details').textContent = ok ? (pilotOn() ? cfg.details : 'ההדפסה מסמנת על עמוד המקור, או חותכת ממנו דף מצומצם. לא מנוסח דף חדש.') : '';
@@ -1095,6 +1196,7 @@ function render() {
   $('other-banner').hidden = state.scenario !== 'other';
   $('grade').value = String(state.grade);
   if ($('topic').value !== String(state.topic) && state.topic) $('topic').value = String(state.topic);
+  topicSearch?.sync();
   syncWizardUrl();
   document.querySelectorAll('[name=scenario]').forEach((el) => { el.checked = el.value === state.scenario; });
   document.querySelectorAll('[name=style]').forEach((el) => { el.checked = el.value === state.style; });
@@ -1107,7 +1209,10 @@ function render() {
   const shortBtn = $('prepare-short');
   if (shortBtn) shortBtn.hidden = false;
   const prepareHint = $('prepare-hint');
-  if (prepareHint) prepareHint.textContent = 'דף מלא עם סימון, או דף מצומצם שנחתך מהמקור';
+  if (prepareHint) {
+    prepareHint.removeAttribute('role');
+    prepareHint.textContent = 'דף מלא עם סימון, או דף מצומצם שנחתך מהמקור';
+  }
   if (!ok) {
     paintSourceLine();
     applyWizard();
@@ -1135,6 +1240,11 @@ function render() {
   if (focusedQuestion) {
     const checkbox = Array.from($('questions').querySelectorAll('[data-whole-question]')).find((input) => input.dataset.wholeQuestion === focusedQuestion);
     if (checkbox) checkbox.focus({ preventScroll: true });
+  }
+  if (blockFocus) {
+    const row = document.querySelector('[data-page-block="' + blockFocus.index + '"]');
+    const control = row && row.querySelector(blockFocus.remove ? '[data-block-remove]' : '[data-block-kind="' + blockFocus.kind + '"]');
+    if (control) control.focus({ preventScroll: true });
   }
 }
 
@@ -1284,7 +1394,14 @@ function levelAllows(source) {
   return false;
 }
 
-function clearPreparedPrint() {
+let printGeneration = 0;
+
+function clearPreparedPrint(keepReview = false) {
+  printGeneration += 1;
+  if ($('wizard-print')) $('wizard-print').disabled = true;
+  renderTeacherPageCount($('wizard-page-count'));
+  const review = $('wizard-review');
+  if (review && !keepReview) review.hidden = true;
   const area = $('print-area');
   if (!area || area.querySelector('.print-unprepared')) return;
   area.innerHTML = PRINT_UNPREPARED;
@@ -1310,18 +1427,40 @@ function selectKey(key, on) {
   render();
 }
 
+function pdfCacheKey(source) {
+  return [source.pdfId, source.pdfUrl, source.expectedSha256 || source.answerSourceSha256 || '',
+    source.expectedSha256 ? source.pageCount : ''].join('|');
+}
+
 async function loadPdf(source) {
   const active = source || SOURCE;
   if (!active || !active.pdfUrl) throw new Error('PDF_LIB');
-  if (pdfDocs.has(active.pdfId)) return pdfDocs.get(active.pdfId);
+  const key = pdfCacheKey(active);
+  if (pdfDocs.has(key)) return pdfDocs.get(key);
   if (!window.pdfjsLib || typeof window.pdfjsLib.getDocument !== 'function') throw new Error('PDF_LIB');
   window.pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_WORKER;
-  const loading = window.pdfjsLib.getDocument({ url: active.pdfUrl, withCredentials: false, isEvalSupported: false }).promise;
-  pdfDocs.set(active.pdfId, loading);
+  const loading = (async () => {
+    let verifiedBytes = null;
+    if (active.expectedSha256) {
+      const response = await fetch(active.pdfUrl, { credentials: 'omit' });
+      if (!response.ok) throw new Error('ANSWER_DOCUMENT_UNAVAILABLE');
+      const data = await response.arrayBuffer();
+      const digest = Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', data)))
+        .map((value) => value.toString(16).padStart(2, '0')).join('');
+      if (digest !== active.expectedSha256) throw new Error('ANSWER_DOCUMENT_DIGEST');
+      verifiedBytes = new Uint8Array(data);
+    }
+    const pdf = await (verifiedBytes
+      ? window.pdfjsLib.getDocument({ data: verifiedBytes, withCredentials: false, isEvalSupported: false }).promise
+      : window.pdfjsLib.getDocument({ url: active.pdfUrl, withCredentials: false, isEvalSupported: false }).promise);
+    if (active.expectedSha256 && pdf.numPages !== active.pageCount) throw new Error('ANSWER_DOCUMENT_PAGES');
+    return pdf;
+  })();
+  pdfDocs.set(key, loading);
   try {
     return await loading;
   } catch (error) {
-    pdfDocs.delete(active.pdfId);
+    pdfDocs.delete(key);
     throw error;
   }
 }
@@ -1329,7 +1468,7 @@ async function loadPdf(source) {
 function teacherNoteHTML(note) {
   const text = String(note || '').trim();
   if (!text) return '';
-  return `<aside class="teacher-print-note" dir="rtl"><strong>הערת המורה</strong><p>${escapeHTML(text)}</p></aside>`;
+  return `<aside class="teacher-print-note" dir="rtl"><strong>הוראות לתלמיד</strong><p>${escapeHTML(text)}</p></aside>`;
 }
 
 async function noteBandMm(note) {
@@ -1343,7 +1482,7 @@ async function noteBandMm(note) {
   }
   const probe = document.createElement('div');
   probe.style.cssText = 'position:fixed;inset-inline-start:0;top:0;visibility:hidden;box-sizing:border-box;width:180mm;font:11px/1.35 Heebo,Arial,sans-serif;white-space:pre-wrap;overflow-wrap:anywhere;direction:rtl';
-  probe.innerHTML = `<strong style="display:block;font-size:12px;margin:0 0 1mm">הערת המורה</strong><p style="margin:0">${escapeHTML(text)}</p>`;
+  probe.innerHTML = `<strong style="display:block;font-size:12px;margin:0 0 1mm">הוראות לתלמיד</strong><p style="margin:0">${escapeHTML(text)}</p>`;
   document.body.appendChild(probe);
   const mm = probe.getBoundingClientRect().height * 25.4 / 96;
   probe.remove();
@@ -1435,7 +1574,7 @@ async function paintSheets(root, bake) {
 
 async function pageBitmap(pageNumber, source) {
   const active = source || SOURCE;
-  const key = active.pdfId + ':' + pageNumber;
+  const key = pdfCacheKey(active) + ':' + pageNumber;
   if (pageBitmaps.has(key)) {
     const cached = pageBitmaps.get(key);
     pageBitmaps.delete(key);
@@ -1721,7 +1860,32 @@ function wholeQuestionSlices(chosen) {
   return slices;
 }
 
+function questionDataSlices(source, q, block) {
+  const supplement = source.questionSupplements;
+  if (!supplement) return [];
+  if (supplement.sourceSha256 !== source.sourceSha256 || !Array.isArray(supplement.questions)) throw new Error('QUESTION_DATA_SOURCE');
+  const entry = supplement.questions.find(item => Number(item.q) === Number(q));
+  if (!entry) return [];
+  const documentSource = entry.answerDocument && answerDocumentSource(entry, source);
+  if (!documentSource || !Array.isArray(entry.crops) || !entry.crops.length) throw new Error('QUESTION_DATA_DOCUMENT');
+  return entry.crops.map(crop => {
+    const { page, x, y, w, h } = crop;
+    if (!Number.isInteger(page) || page < 1 || page > documentSource.pageCount
+      || ![x,y,w,h].every(Number.isFinite) || x < 0 || y < 0 || w <= 0 || h <= 0 || x+w > 1.000001 || y+h > 1.000001) throw new Error('QUESTION_DATA_BOUNDS');
+    return { page, box: { x,y,w,h }, block, kind: 'row', gap: 10, pdfId: source.pdfId, source: documentSource };
+  });
+}
+
 function shortSlices(chosen) {
+  const original = originalShortSlices(chosen);
+  return original.flatMap((slice, index) => {
+    if (original[index + 1]?.block === slice.block) return [slice];
+    const question = chosen.find(item => slice.block === (item.source?.pdfId || SOURCE.pdfId) + ':q' + item.q || slice.block === 'q' + item.q);
+    return question ? [slice, ...questionDataSlices(question.source || SOURCE, question.q, slice.block)] : [slice];
+  });
+}
+
+function originalShortSlices(chosen) {
   // These rows already enclose a complete original question and its context.
   // Legacy per-part footer, ink and shared-drawing adjustments would clip them.
   if (SOURCE && SOURCE.wholeQuestionGeometry) return wholeQuestionSlices(chosen);
@@ -1894,9 +2058,30 @@ function packShort(measured, options) {
     if (last && last.id === item.slice.block) last.items.push(item);
     else blocks.push({ id: item.slice.block, items: [item] });
   });
+  const packedBlocks = [];
+  for (const block of blocks) {
+    const limit = sheetContentLimit(1, false);
+    if (!(options && options.answers) || contentHeight(block.items) <= limit / 0.85) {
+      packedBlocks.push(block);
+      continue;
+    }
+    // A long answer can continue on another source page. Break only between
+    // its verified rectangles; never split a formula or shrink several pages
+    // into one. The heading stays attached to the first answer rectangle.
+    let chunk = [];
+    for (const item of block.items) {
+      const hasAnswer = chunk.some((entry) => entry.slice.kind === 'answer');
+      if (hasAnswer && contentHeight(chunk.concat(item)) > limit / 0.85) {
+        packedBlocks.push({ id: block.id, items: chunk });
+        chunk = [];
+      }
+      chunk.push(item);
+    }
+    if (chunk.length) packedBlocks.push({ id: block.id, items: chunk });
+  }
   const pages = [];
   let page = [];
-  blocks.forEach((block) => {
+  packedBlocks.forEach((block) => {
     const items = block.items;
     const limitHere = sheetContentLimit(pages.length, reserveTitle);
     const joined = page.concat(items);
@@ -1937,11 +2122,6 @@ function answerNumberValue(line) {
   return match ? (match[1] || match[2]) : null;
 }
 
-// A question number in the number column, at any height on the page.
-function answerInkNumber(line) {
-  return Boolean(answerNumberValue(line)) && line.x != null && line.x >= 0.85;
-}
-
 function isAnswerNumber(line) {
   if (!answerNumberValue(line)) return false;
   if (line.y > 0.9) return false;
@@ -1966,6 +2146,26 @@ function wantedAnswerSpecs(wanted) {
     byQ.get(spec.q).add(spec.part);
   });
   return byQ;
+}
+
+function answerSpecsForGroup(group) {
+  const selected = new Map();
+  group.questions.forEach((question) => {
+    const q = String(question.q);
+    if (!selected.has(q)) selected.set(q, []);
+    selected.get(q).push(question);
+  });
+  return [...selected].flatMap(([q, questions]) => {
+    const sourceParts = (group.source.questions || []).filter((question) => String(question.q) === q);
+    const ids = new Set(questions.map((question) => String(question.id)));
+    // Whole-question selection expands to its legacy part records. Keep the
+    // answer as one source crop: splitting it into text rows can separate a
+    // fraction's numerator and denominator and move them over other answers.
+    if (sourceParts.length && sourceParts.every((question) => ids.has(String(question.id)))) {
+      return [{ q, part: '' }];
+    }
+    return [...new Set(questions.map((question) => question.part || ''))].map((part) => ({ q, part }));
+  });
 }
 
 function charWeight(ch) {
@@ -2011,32 +2211,9 @@ function answerGlyphs(item) {
   });
 }
 
-// A dot between parts is followed by the next part's label; a dot inside
-// an answer (5 · 10⁶) is multiplication. Without the page's ink every dot
-// is a separator, as the text-only crop always read it.
-function answerSeparators(glyphs, anyDot) {
-  if (anyDot) return new Set(glyphs.filter((glyph) => '·∙•'.includes(glyph.c)));
+function answerLabels(glyphs) {
   const ordered = glyphs.slice().sort((a, b) => b.x2 - a.x2 || b.x - a.x);
-  const after = (index) => {
-    let at = index + 1;
-    while (at < ordered.length && !String(ordered[at].c).trim()) at += 1;
-    return at;
-  };
-  const seps = new Set();
-  ordered.forEach((glyph, index) => {
-    if (!'·∙•'.includes(glyph.c)) return;
-    const letter = after(index);
-    if (letter >= ordered.length || !ANSWER_PARTS.includes(ordered[letter].c)) return;
-    const dot = after(letter);
-    if (dot < ordered.length && ordered[dot].c === '.') seps.add(glyph);
-  });
-  return seps;
-}
-
-function answerLabels(glyphs, textOnly) {
-  const ordered = glyphs.slice().sort((a, b) => b.x2 - a.x2 || b.x - a.x);
-  const seps = answerSeparators(glyphs, textOnly);
-  const hasSeparators = seps.size > 0;
+  const hasSeparators = ordered.some((glyph) => '·∙•'.includes(glyph.c));
   const found = [];
   ordered.forEach((glyph, index) => {
     if (!ANSWER_PARTS.includes(glyph.c)) return;
@@ -2044,10 +2221,9 @@ function answerLabels(glyphs, textOnly) {
     while (dot < ordered.length && !String(ordered[dot].c).trim()) dot += 1;
     if (dot >= ordered.length || ordered[dot].c !== '.') return;
     let prev = index - 1;
-    // A star marking the question is not text before the label.
-    while (prev >= 0 && (!String(ordered[prev].c).trim() || (!textOnly && '★☆'.includes(ordered[prev].c)))) prev -= 1;
+    while (prev >= 0 && !String(ordered[prev].c).trim()) prev -= 1;
     if (hasSeparators) {
-      if (prev >= 0 && !seps.has(ordered[prev])) return;
+      if (prev >= 0 && !'·∙•'.includes(ordered[prev].c)) return;
     } else if (prev >= 0 && ordered[prev].x - glyph.x2 < 0.01) {
       return;
     }
@@ -2067,9 +2243,8 @@ function answerClusters(glyphs) {
   return clusters;
 }
 
-function answerPartBox(glyphs, left, right, y, y2, textOnly) {
-  const seps = answerSeparators(glyphs, textOnly);
-  const owned = glyphs.filter((glyph) => glyph.x2 > left + 0.001 && glyph.x < right - 0.001 && !seps.has(glyph));
+function answerPartBox(glyphs, left, right, y, y2) {
+  const owned = glyphs.filter((glyph) => glyph.x2 > left + 0.001 && glyph.x < right - 0.001 && !'·∙•'.includes(glyph.c));
   if (!owned.length) return null;
   let x = Math.min(...owned.map((glyph) => glyph.x)) - 0.0015;
   let x2 = Math.min(right, Math.max(...owned.map((glyph) => glyph.x2)) + 0.002);
@@ -2077,7 +2252,7 @@ function answerPartBox(glyphs, left, right, y, y2, textOnly) {
   // an individually cropped answer does not keep the dot.
   const midBox = (x + x2) / 2;
   glyphs.forEach((glyph) => {
-    if (!seps.has(glyph) || glyph.x >= x2 || glyph.x2 <= x) return;
+    if (!'·∙•'.includes(glyph.c) || glyph.x >= x2 || glyph.x2 <= x) return;
     const mid = (glyph.x + glyph.x2) / 2;
     if (mid >= midBox) x2 = Math.min(x2, glyph.x - 0.001);
     else x = Math.max(x, glyph.x2 + 0.001);
@@ -2086,736 +2261,47 @@ function answerPartBox(glyphs, left, right, y, y2, textOnly) {
   return { x: Math.max(0.02, x), y, w: x2 - Math.max(0.02, x), h: Math.max(0.012, y2 - y) };
 }
 
-// Dark pixels of a rendered answer page. pdf.js gives text boxes only; a
-// fraction's numerator and denominator, an exponent or a descender reach past
-// them. A light tint or the grey rule under an answer row is not ink.
-function answerPageInk(bitmap) {
-  if (!bitmap || !bitmap.width || !bitmap.height || typeof bitmap.getContext !== 'function') return null;
-  const data = bitmap.getContext('2d').getImageData(0, 0, bitmap.width, bitmap.height).data;
-  return pageInkFromPixels(data, bitmap.width, bitmap.height);
-}
-
-function pageInkFromPixels(data, width, height) {
-  const size = width * height;
-  const shade = new Uint8Array(size);
-  const dark = new Uint8Array(size);
-  for (let at = 0; at < size; at += 1) {
-    const p = at * 4;
-    shade[at] = data[p + 3] > 40 ? Math.round((data[p] * 299 + data[p + 1] * 587 + data[p + 2] * 114) / 1000) : 255;
-    if (shade[at] < 180) dark[at] = 1;
-  }
-  // A long dark run across a row is a filled band (a highlight or a tint
-  // behind the answers) or a line. Inside a band, ink is what is much darker
-  // than the band; a shorter band counts only when it is a light fill (a
-  // highlighted part), not a solid shape. A line from the left of the page
-  // to the number column is a rule: not answer ink, and its rows part two
-  // answers. A shorter one (a number line, a wide fraction bar) stays ink.
-  const wide = Math.max(40, Math.round(width * 0.3));
-  const narrow = Math.max(24, Math.round(width * 0.03));
-  const runs = [];
-  for (let r = 0; r < height; r += 1) {
-    const row = [];
-    for (let c = 0; c < width;) {
-      if (!dark[r * width + c]) { c += 1; continue; }
-      let end = c;
-      while (end < width && dark[r * width + end]) end += 1;
-      if (end - c >= narrow) row.push([c, end]);
-      c = end;
-    }
-    runs.push(row);
-  }
-  const same = (a, b) => Math.min(a[1], b[1]) - Math.max(a[0], b[0]) >= 0.8 * Math.min(a[1] - a[0], b[1] - b[0]);
-  const rule = new Uint8Array(size);
-  const ruled = new Uint8Array(height);
-  for (let r = 0; r < height; r += 1) {
-    runs[r].forEach((run) => {
-      const long = run[1] - run[0] >= wide;
-      let up = r;
-      while (up > 0 && runs[up - 1].some((other) => same(other, run))) up -= 1;
-      let down = r;
-      while (down < height - 1 && runs[down + 1].some((other) => same(other, run))) down += 1;
-      if (down - up >= 3) {
-        const tones = [];
-        for (let c = run[0]; c < run[1]; c += 1) tones.push(shade[r * width + c]);
-        tones.sort((a, b) => a - b);
-        const band = tones[Math.floor(tones.length * (long ? 0.5 : 0.75))];
-        if (!long && band < 110) return;
-        for (let c = run[0]; c < run[1]; c += 1) dark[r * width + c] = shade[r * width + c] < band - 70 ? 1 : 0;
-      } else if (long && run[1] >= width * 0.85 && run[0] <= width * 0.3) {
-        for (let c = run[0]; c < run[1]; c += 1) rule[r * width + c] = 1;
-        ruled[r] = 1;
-      }
-    });
-  }
-  // A dashed or dotted line across to the number column is a rule too: a
-  // row of nothing but short, similar, evenly spaced strokes with blank rows
-  // right above and below them. Bars over a row of repeating decimals are
-  // spaced by the answers under them.
-  const blankAt = (r, c0, c1) => {
-    if (r < 0 || r >= height) return true;
-    for (let c = c0; c < c1; c += 1) if (dark[r * width + c]) return false;
-    return true;
-  };
-  for (let r = 1; r < height - 2; r += 1) {
-    const strokes = [];
-    let other = 0;
-    for (let c = 0; c < width;) {
-      if (!dark[r * width + c]) { c += 1; continue; }
-      let end = c;
-      while (end < width && dark[r * width + end]) end += 1;
-      const thick = blankAt(r + 1, c, end) ? 1 : (blankAt(r + 2, c, end) ? 2 : 0);
-      if (thick && blankAt(r - 1, c, end) && end - c <= width * 0.05) strokes.push([c, end, thick]);
-      else other += end - c;
-      c = end;
-    }
-    if (strokes.length < 6 || other > 0) continue;
-    const lengths = strokes.map(([c0, c1]) => c1 - c0);
-    const first = strokes[0][0];
-    const last = strokes[strokes.length - 1][1];
-    const gaps = strokes.slice(1).map(([c0], k) => c0 - strokes[k][1]);
-    if (Math.max(...lengths) > 3 * Math.min(...lengths) || Math.max(...gaps) > 1.5 * Math.min(...gaps) + 2) continue;
-    if (first > width * 0.3 || last < width * 0.85) continue;
-    strokes.forEach(([c0, c1, thick]) => {
-      for (let k = 0; k < thick; k += 1) {
-        for (let c = c0; c < c1; c += 1) rule[(r + k) * width + c] = 1;
-        ruled[r + k] = 1;
-      }
-    });
-  }
-  // A frame side or a table rule is not answer ink either: no glyph runs
-  // that far down.
-  const tall = Math.max(24, Math.round(height * 0.05));
-  for (let c = 0; c < width; c += 1) {
-    for (let r = 0; r < height;) {
-      if (!dark[r * width + c] || rule[r * width + c]) { r += 1; continue; }
-      let end = r;
-      while (end < height && dark[end * width + c] && !rule[end * width + c]) end += 1;
-      if (end - r >= tall) for (let k = r; k < end; k += 1) rule[k * width + c] = 1;
-      r = end;
-    }
-  }
-  for (let at = 0; at < size; at += 1) if (rule[at]) dark[at] = 0;
-  // Ruled across much of the page: the ink cannot be read reliably.
-  if (ruled.reduce((sum, value) => sum + value, 0) > height * 0.15) return null;
-  return { width, height, dark, ruled };
-}
-
-// Dark pixels in one row, inside the columns of [x0, x1].
-function inkInRow(ink, r, x0, x1) {
-  const c0 = Math.max(0, Math.floor(x0 * ink.width));
-  const c1 = Math.min(ink.width, Math.ceil(x1 * ink.width));
-  let count = 0;
-  for (let c = c0; c < c1; c += 1) count += ink.dark[r * ink.width + c];
-  return count;
-}
-
-// Rows [top, bottom] (at most 3) hold a straight bar: a run at least twice
-// as long as the rows are high, with blank rows right above and below it
-// along its length. The curved tip of a tall bracket is no bar.
-function inkThinBar(ink, top, bottom, x0, x1) {
-  const W = ink.width;
-  if (top < 1 || bottom + 1 >= ink.height) return false;
-  const c0 = Math.max(0, Math.floor(x0 * W));
-  const c1 = Math.min(W, Math.ceil(x1 * W));
-  let best = null;
-  for (let r = top; r <= bottom; r += 1) {
-    for (let c = c0; c < c1;) {
-      if (!ink.dark[r * W + c]) { c += 1; continue; }
-      let end = c;
-      while (end < c1 && ink.dark[r * W + end]) end += 1;
-      if (!best || end - c > best[1] - best[0]) best = [c, end];
-      c = end;
-    }
-  }
-  if (!best || best[1] - best[0] < Math.max(3, 2 * (bottom - top + 1))) return false;
-  const a = Math.max(0, best[0] - 2) / W;
-  const b = Math.min(W, best[1] + 2) / W;
-  return inkInRow(ink, top - 1, a, b) === 0 && inkInRow(ink, bottom + 1, a, b) === 0;
-}
-
-// The row with the least ink in [r0, r1], nearest the middle on ties.
-function thinnestRow(ink, r0, r1, x0, x1) {
-  const centre = (r0 + r1) / 2;
-  let best = r0;
-  let least = Infinity;
-  for (let r = r0; r <= r1; r += 1) {
-    const count = inkInRow(ink, r, x0, x1);
-    if (count < least || (count === least && Math.abs(r - centre) < Math.abs(best - centre))) {
-      best = r;
-      least = count;
-    }
-  }
-  return best;
-}
-
-function inkMiddle(item) {
-  return (item.y + (item.y2 != null ? item.y2 : item.y)) / 2;
-}
-
-// A numerator printed on its own baseline: under its ink, within half an em,
-// a fraction bar spans all its columns, with a blank row right under the bar.
-// For a whole text line (not one glyph of it) the bar is not much longer than
-// the line. Returns the bar's row, or -1.
-function inkBarBelow(ink, item, em, glyph) {
-  const H = ink.height;
-  const width = Math.floor(item.x2 * ink.width) - Math.ceil(item.x * ink.width);
-  if (width < 2) return -1;
-  const count = (r) => inkInRow(ink, r, item.x, item.x2);
-  const end = Math.min(H - 2, Math.ceil((item.y2 + em * 0.5) * H));
-  let r = Math.floor(item.y2 * H);
-  while (r <= end && count(r) > 0) r += 1;
-  while (r <= end && count(r) === 0) r += 1;
-  if (r > end) return -1;
-  const thick = Math.max(3, Math.round(em * H * 0.22));
-  let bar = r;
-  while (bar < H - 1 && bar - r < thick && count(bar) >= width * 0.95) bar += 1;
-  if (bar === r || count(bar) > 0 || !inkLoneBar(ink, r, bar - 1, item.x, glyph ? 0 : em, width) || inkRootStroke(ink, bar - 1, item.x, em)) return -1;
-  return r;
-}
-
-// The dark run through column x of row r, as [first, last] columns.
-function inkRunAt(ink, r, x) {
-  const W = ink.width;
-  let a = Math.ceil(x * W);
-  let b = a;
-  while (a > 0 && ink.dark[r * W + a - 1]) a -= 1;
-  while (b < W - 1 && ink.dark[r * W + b + 1]) b += 1;
-  return [a, b];
-}
-
-// A fraction bar stands alone: the rows right above and below it are nearly
-// blank along its whole length (a letter's top stroke has the letter under
-// it). It is not much longer than the numerator over it: a line under a
-// whole answer is no fraction bar.
-function inkLoneBar(ink, top, bottom, x, em, width) {
-  const W = ink.width;
-  const [a, b] = inkRunAt(ink, bottom, x);
-  if (top < 1 || bottom + 1 >= ink.height) return false;
-  if (em && width && b - a + 1 > Math.max(em * ink.height * 8, width * 3)) return false;
-  const most = Math.max(1, Math.floor((b - a + 1) * 0.15));
-  return inkInRow(ink, top - 1, a / W, (b + 1) / W) <= most && inkInRow(ink, bottom + 1, a / W, (b + 1) / W) <= most;
-}
-
-// A root's bar is not a fraction bar: an unbroken stroke runs down and to
-// the left from its left end.
-function inkRootStroke(ink, r, x, em) {
-  const W = ink.width;
-  let left = Math.ceil(x * W);
-  while (left > 0 && ink.dark[r * W + left - 1]) left -= 1;
-  const span = Math.max(3, Math.round(em * ink.height * 0.4));
-  for (let k = 1; k <= span; k += 1) {
-    if (r + k >= ink.height || !inkInRow(ink, r + k, (left - k - 1) / W, (left + 2) / W)) return false;
-  }
-  return true;
-}
-
-// A denominator under a numerator that has no text (a drawn root): right
-// above its ink, within half an em, a fraction bar spans all its columns, as
-// for inkBarBelow. Returns the bar's lowest row, or -1.
-function inkBarAbove(ink, item, em, glyph) {
-  const H = ink.height;
-  const width = Math.floor(item.x2 * ink.width) - Math.ceil(item.x * ink.width);
-  if (width < 2) return -1;
-  const count = (r) => inkInRow(ink, r, item.x, item.x2);
-  const end = Math.max(1, Math.floor((item.y - em * 0.5) * H));
-  let r = Math.floor(((item.y + item.y2) / 2) * H);
-  while (r >= end && count(r) > 0) r -= 1;
-  while (r >= end && count(r) === 0) r -= 1;
-  if (r < end) return -1;
-  const thick = Math.max(3, Math.round(em * H * 0.22));
-  let bar = r;
-  while (bar > 0 && r - bar < thick && count(bar) >= width * 0.95) bar -= 1;
-  if (bar === r || count(bar) > 0 || !inkLoneBar(ink, bar + 1, r, item.x, glyph ? 0 : em, width) || inkRootStroke(ink, r, item.x, em)) return -1;
-  return r;
-}
-
-// Where to part two answers whose ink touches, within rows [low, high]: ink
-// joined to the line above (it crosses row top) stays above, ink joined to
-// the first line below (it crosses row bottom) stays below; among equal
-// cuts, the thinnest row nearest the middle.
-function answerInkCut(ink, top, bottom, low, high, x0, x1) {
-  const W = ink.width;
-  const c0 = Math.max(0, Math.floor(x0 * W));
-  const c1 = Math.min(W, Math.ceil(x1 * W));
-  const w = c1 - c0;
-  const h = bottom - top + 1;
-  if (w <= 0 || h <= 0) return low;
-  const joined = new Uint8Array(w * h);
-  const flood = (seed, bit) => {
-    const stack = [];
-    for (let c = c0; c < c1; c += 1) {
-      const at = (seed - top) * w + c - c0;
-      if (ink.dark[seed * W + c]) { joined[at] |= bit; stack.push(at); }
-    }
-    while (stack.length) {
-      const at = stack.pop();
-      const r = Math.floor(at / w);
-      const c = at % w;
-      for (let dr = -1; dr <= 1; dr += 1) {
-        for (let dc = -1; dc <= 1; dc += 1) {
-          const nr = r + dr;
-          const nc = c + dc;
-          if (nr < 0 || nr >= h || nc < 0 || nc >= w) continue;
-          const next = nr * w + nc;
-          if (joined[next] & bit || !ink.dark[(nr + top) * W + nc + c0]) continue;
-          joined[next] |= bit;
-          stack.push(next);
-        }
-      }
-    }
-  };
-  flood(top, 1);
-  flood(bottom, 2);
-  const upper = new Array(h).fill(0);
-  const lower = new Array(h).fill(0);
-  joined.forEach((bits, at) => {
-    if (bits === 1) upper[Math.floor(at / w)] += 1;
-    else if (bits === 2) lower[Math.floor(at / w)] += 1;
-  });
-  const centre = (low + high) / 2;
-  let best = low;
-  let bestCost = Infinity;
-  let bestInk = Infinity;
-  for (let r = low; r <= high; r += 1) {
-    let cost = 0;
-    for (let k = Math.max(0, r - top); k < h; k += 1) cost += upper[k];
-    for (let k = 0; k < Math.min(h, r - top); k += 1) cost += lower[k];
-    const count = inkInRow(ink, r, x0, x1);
-    if (cost < bestCost || (cost === bestCost && (count < bestInk || (count === bestInk && Math.abs(r - centre) < Math.abs(best - centre))))) {
-      best = r;
-      bestCost = cost;
-      bestInk = count;
-    }
-  }
-  return best;
-}
-
-// Where each answer starts on the page. From the middle of its number, go up
-// through the ink of its first line (a numerator above it included) to the
-// first blank row, but never past the baseline of the text line above or a
-// ruled line; if that line's ink touches, part at the thinnest row. A thin
-// bar drawn just over the first line (a repeating decimal, a root) and a
-// fraction inside a numerator stay with it. The scan reaches an em left of
-// the text, where a drawn root or a fraction bar ends.
-function answerInkStarts(ink, pageLines, marks) {
-  const H = ink.height;
-  const row = (y) => Math.max(0, Math.min(H - 1, Math.floor(y * H)));
-  const hebrew = (line) => /[֐-׿]/.test(String(line.text || ''));
-  return marks.map((mark, index) => {
-    const em = (mark.y2 - mark.y) / 0.78;
-    const floor = index ? marks[index - 1].y2 : 0.02;
-    let limit = floor;
-    pageLines.forEach((line) => {
-      const mid = inkMiddle(line);
-      if (line.y2 != null && hebrew(line) && mid > floor && mid < mark.y - em * 0.45) limit = Math.max(limit, line.y2);
-    });
-    const near = pageLines.filter((line) => line.y2 != null && line.x != null && inkMiddle(line) > limit && line.y < mark.y2 + em);
-    // The first line's ink can reach further left than its text (a drawn
-    // root or ≈ before the leftmost glyph): follow it across gaps of an em.
-    const W = ink.width;
-    let left = Math.max(Math.ceil(0.02 * W), Math.floor((Math.min(mark.x, ...near.map((line) => line.x)) - em * H / W) * W));
-    for (let c = left - 1, blank = 0; c >= Math.ceil(0.02 * W) && blank <= em * H; c -= 1) {
-      let used = false;
-      for (let r = row(mark.y); r <= row(mark.y2) && !used; r += 1) used = ink.dark[r * W + c] === 1;
-      if (used) { left = c; blank = 0; } else blank += 1;
-    }
-    const x0 = left / W;
-    const x1 = Math.min(0.98, Math.max(mark.x2, ...near.map((line) => line.x2)));
-    const stop = row(limit);
-    const from = row(inkMiddle(mark));
-    const ruled = (r) => Boolean(ink.ruled && ink.ruled[r]);
-    const blank = (r) => !ruled(r) && inkInRow(ink, r, x0, x1) === 0;
-    const climb = (at) => {
-      let k = at;
-      while (k > stop && !blank(k) && !ruled(k)) k -= 1;
-      return k;
-    };
-    const numerators = near.filter((line) => !hebrew(line) && !answerInkNumber(line));
-    // With no blank row at all, part above the first line's own numerators:
-    // those whose fraction bar runs through the first line.
-    let reach = from;
-    numerators.forEach((line) => {
-      const bar = row(line.y2) < from ? inkBarBelow(ink, line, em) : -1;
-      if (bar >= row(mark.y) && bar <= row(mark.y2) + Math.round(em * H * 0.3)) reach = Math.max(stop, Math.min(reach, row(line.y) + 2));
-    });
-    const most = Math.max(3, Math.round(em * H * 0.4));
-    let r = climb(from);
-    for (let moved = true; moved && r > stop && !ruled(r);) {
-      moved = false;
-      // A numerator of the first line can sit above a blank row of its own
-      // fraction (a fraction inside a numerator).
-      const up = numerators.find((line) => row(line.y2) <= r + 1 && row(inkMiddle(line)) > stop && row(inkMiddle(line)) < r && inkBarBelow(ink, line, em) > r);
-      if (up) {
-        reach = Math.max(stop, Math.min(reach, row(up.y)));
-        r = climb(row(inkMiddle(up)));
-        moved = true;
-        continue;
-      }
-      // A thin bar over the first line: a short blank run (under half an
-      // em), then at most 3 rows of a straight bar with a blank row above.
-      // It sits nearer this line than the ink above it (a line drawn under
-      // the answer above is not this line's bar).
-      let top = r;
-      while (top - 1 > stop && r - top < most - 1 && blank(top - 1)) top -= 1;
-      let bar = top - 1;
-      while (bar > stop && top - 1 - bar < 3 && !blank(bar) && !ruled(bar)) bar -= 1;
-      let over = bar;
-      while (over - 1 > stop && blank(over - 1)) over -= 1;
-      if (bar > stop && bar < top - 1 && blank(bar) && bar - over >= r - top && inkThinBar(ink, bar + 1, top - 1, x0, x1)) {
-        r = bar;
-        moved = true;
-      }
-    }
-    if (r > stop && ruled(r)) return Math.max(limit, (r + 1) / H);
-    if (r <= stop) {
-      // ... and below the denominators of the answer above (their bar is
-      // above its baseline).
-      let low = stop;
-      pageLines.forEach((line) => {
-        if (line.x == null || line.y2 == null || hebrew(line) || answerInkNumber(line)) return;
-        const mid = row(inkMiddle(line));
-        if (mid <= stop || mid >= reach) return;
-        const bar = inkBarAbove(ink, line, em);
-        if (bar >= 0 && bar <= stop) low = Math.max(low, Math.min(reach, row(line.y2) + 1));
-      });
-      return Math.max(limit, answerInkCut(ink, stop, from, low, reach, x0, x1) / H);
-    }
-    let gap = r;
-    while (gap - 1 > stop && blank(gap - 1)) gap -= 1;
-    // The margin taken from the blank rows above stays clear of ink across
-    // the whole row (the line above can reach out of these columns).
-    let start = r + 1 - Math.min(Math.round(H * 0.004), Math.floor((r - gap + 1) / 2));
-    for (let k = r; k >= start; k -= 1) {
-      if (inkInRow(ink, k, 0.02, 0.98)) { start = k + 1; break; }
-    }
-    return Math.max(limit, start / H);
-  });
-}
-
-// Which answer each text line belongs to: the one whose rows hold its
-// middle. Where two answers' fractions interleave, a numerator or a
-// denominator goes with the answer that holds its fraction bar.
-function answerInkOwners(ink, pageLines, starts, em) {
-  const index = (y) => {
-    let k = -1;
-    starts.forEach((start, at) => { if (y >= start) k = at; });
-    return k;
-  };
-  const owners = new Map();
-  pageLines.forEach((line) => {
-    if (line.y2 == null) return;
-    let k = index(inkMiddle(line));
-    if (line.x != null && line.x2 != null && !/[֐-׿]/.test(String(line.text || '')) && !answerInkNumber(line)) {
-      let bar = inkBarBelow(ink, line, em);
-      if (bar < 0) bar = inkBarAbove(ink, line, em);
-      if (bar >= 0 && index(bar / ink.height) >= 0) k = index(bar / ink.height);
-    }
-    owners.set(line, k);
-  });
-  return owners;
-}
-
-// The rows of [y, y2], grown through the ink of columns [x0, x1] while it
-// lasts, inside [lo, hi].
-function answerInkRows(ink, y, y2, x0, x1, lo, hi) {
-  const H = ink.height;
-  let top = Math.max(0, Math.floor(y * H));
-  while (top - 1 >= Math.ceil(lo * H) && inkInRow(ink, top - 1, x0, x1)) top -= 1;
-  let end = Math.min(H - 1, Math.ceil(y2 * H) - 1);
-  while (end + 1 < Math.floor(hi * H) && inkInRow(ink, end + 1, x0, x1)) end += 1;
-  const pad = Math.round(H * 0.002);
-  return [Math.max(lo, (top - pad) / H), Math.min(hi, (end + 1 + pad) / H)];
-}
-
-// A drawn fraction bar or root has no text box, and a glyph's place in a
-// text box is only estimated. A part's crop reaches out to the ink beside it
-// in its rows, across gaps of up to about a word space, inside the part's
-// own columns.
-function answerInkPartBox(ink, box, left, right, em) {
-  if (!box) return box;
-  const W = ink.width;
-  const r0 = Math.max(0, Math.floor(box.y * ink.height));
-  const r1 = Math.min(ink.height, Math.ceil((box.y + box.h) * ink.height));
-  const used = (c) => {
-    for (let r = r0; r < r1; r += 1) if (ink.dark[r * W + c]) return true;
-    return false;
-  };
-  const gap = Math.max(Math.round(W * 0.01), Math.round((em || 0) * ink.height * 0.8));
-  const c0 = Math.max(0, Math.ceil(Math.max(0.02, left) * W));
-  const c1 = Math.min(W - 1, Math.floor(right * W) - 1);
-  let x = Math.floor(box.x * W);
-  for (let c = x - 1, blank = 0; c >= c0 && blank <= gap; c -= 1) {
-    if (used(c)) { x = c; blank = 0; } else blank += 1;
-  }
-  let x2 = Math.ceil((box.x + box.w) * W);
-  for (let c = x2, blank = 0; c <= c1 && blank <= gap; c += 1) {
-    if (used(c)) { x2 = c + 1; blank = 0; } else blank += 1;
-  }
-  const nx = Math.min(box.x, Math.max(c0 / W, x / W - 0.0015));
-  const nx2 = Math.max(box.x + box.w, Math.min((c1 + 1) / W, x2 / W + 0.002));
-  return { ...box, x: nx, w: nx2 - nx };
-}
-
-// The text lines of one answer, as rows to crop. Parts of one row printed on
-// different baselines join that row; a numerator or a denominator printed on
-// its own baseline joins the line its fraction bar belongs to; an exponent
-// joins the line it overlaps. Labels are read from each line's own text. Each line then grows
-// into the blank rows around it until its ink ends, never into the next
-// line's text and never out of the answer. Inside the answer, a line never
-// shrinks below its text boxes.
-function answerInkClusters(region, clusters, number) {
-  const { ink } = region;
-  const H = ink.height;
-  const em = region.em || 0.012;
-  const row = (y) => Math.max(0, Math.min(H - 1, Math.floor(y * H)));
-  const reach = em * H / ink.width;
-  const box = (glyphs) => ({
-    y: Math.min(...glyphs.map((glyph) => glyph.y)) - 0.002,
-    y2: Math.max(...glyphs.map((glyph) => glyph.y2)) + 0.002,
-    x: Math.min(...glyphs.map((glyph) => glyph.x)),
-    x2: Math.max(...glyphs.map((glyph) => glyph.x2)),
-  });
-  // The lower line hangs under a fraction bar that runs under the upper one:
-  // some glyph of it has a bar right above it, under the glyphs over it.
-  const stacked = (upper, lower) => lower.glyphs.some((low) => {
-    if (!String(low.c).trim()) return false;
-    const over = upper.glyphs.filter((glyph) => Math.min(glyph.x2, low.x2) - Math.max(glyph.x, low.x) > 0.5 * Math.min(glyph.x2 - glyph.x, low.x2 - low.x));
-    if (!over.length) {
-      // Nothing printed over it (a drawn root): its bar runs through the upper line.
-      const a = box(upper.glyphs);
-      const bar = inkBarAbove(ink, low, em, true);
-      return bar >= 0 && bar >= row(a.y) && bar <= row(a.y2) + 1;
-    }
-    // The bar spans the whole lower glyph, right above it.
-    const bar = inkBarBelow(ink, { x: low.x, x2: low.x2, y2: Math.max(...over.map((glyph) => glyph.y2)) }, em, true);
-    return bar >= 0 && bar <= row(low.y) + 1 && row(low.y) - bar <= Math.round(em * H * 0.5);
-  });
-  // An exponent or an index printed a little off the line's baseline.
-  const overlapping = (upper, lower) => {
-    const a = box(upper.glyphs);
-    const b = box(lower.glyphs);
-    const overlap = Math.min(a.y2, b.y2) - Math.max(a.y, b.y);
-    return overlap > 0.4 * Math.min(a.y2 - a.y, b.y2 - b.y);
-  };
-  const lines = clusters.map((cluster) => ({ glyphs: cluster.glyphs.slice(), labelGlyphs: cluster.glyphs.slice(), labels: answerLabels(cluster.glyphs) }));
-  const labelled = (line) => line.labels.length > 0;
-  // Parts in one row are aligned at their tops, so a part holding a tall
-  // fraction sits on a lower baseline than its neighbours. Every row starts
-  // with a labelled line at the right edge; a labelled line further left
-  // belongs to the last row that starts with an earlier part, when its
-  // labels fit between that row's labels.
-  const baseline = (line) => Math.max(...line.labelGlyphs.map((glyph) => glyph.y2));
-  const topOf = (line) => Math.min(...line.glyphs.map((glyph) => glyph.y));
-  const labelledLines = lines.filter(labelled);
-  if (labelledLines.length > 1) {
-    const right = (line) => Math.max(...line.labels.map((label) => label.x2));
-    const edge = Math.max(...labelledLines.map(right));
-    const starts = labelledLines.filter((line) => right(line) >= edge - 0.01);
-    const rank = (line) => ANSWER_PARTS.indexOf(line.labels[0].part);
-    labelledLines.forEach((line) => {
-      if (starts.includes(line)) return;
-      let best = null;
-      starts.forEach((start) => {
-        const gap = Math.abs(baseline(start) - baseline(line));
-        const clash = line.labels.some((label) => start.labels.some((other) => label.x < other.x2 + 0.004 && other.x < label.x2 + 0.004));
-        if (gap >= em * 3.5 || clash || rank(start) >= rank(line)) return;
-        if (!best || rank(start) > rank(best)) best = start;
-      });
-      if (!best) return;
-      best.glyphs.push(...line.glyphs);
-      best.labelGlyphs.push(...line.labelGlyphs);
-      best.labels = best.labels.concat(line.labels).sort((a, b) => b.x2 - a.x2);
-      line.merged = true;
-    });
-    for (let k = lines.length - 1; k >= 0; k -= 1) if (lines[k].merged) lines.splice(k, 1);
-    lines.sort((a, b) => topOf(a) - topOf(b));
-  }
-  for (let k = 0; k < lines.length;) {
-    const free = !labelled(lines[k]);
-    const math = free && !lines[k].labelGlyphs.some((glyph) => /[֐-׿]/.test(glyph.c));
-    const hangs = free && k > 0 && stacked(lines[k - 1], lines[k]);
-    const holds = free && k + 1 < lines.length && stacked(lines[k], lines[k + 1]);
-    const up = hangs || (free && k > 0 && math && overlapping(lines[k - 1], lines[k]));
-    // Math printed right on top of the first line (within a quarter em) is
-    // its numerators, even where no bar shows. A note that holds a whole
-    // fraction of its own, or any Hebrew, is not.
-    const onTop = k === 0 && math && !lines[k].fraction && !lines[k].glyphs.some((glyph) => /[֐-׿]/.test(glyph.c))
-      && k + 1 < lines.length && box(lines[k + 1].glyphs).y - box(lines[k].glyphs).y2 + 0.004 <= em * 0.25;
-    const down = holds || (free && k + 1 < lines.length && math && overlapping(lines[k], lines[k + 1])) || onTop;
-    if (!up && !down) {
-      k += 1;
-      continue;
-    }
-    let into = up ? k - 1 : k + 1;
-    if (up && down) {
-      const me = box(lines[k].glyphs);
-      into = me.y - box(lines[k - 1].glyphs).y2 <= box(lines[k + 1].glyphs).y - me.y2 ? k - 1 : k + 1;
-    }
-    if (lines[k].fraction || (into < k ? hangs : holds)) lines[into].fraction = true;
-    lines[into].glyphs.push(...lines[k].glyphs);
-    lines.splice(k, 1);
-    k = Math.min(into, k);
-  }
-  // The text boxes alone part one line from the next; the number widens only
-  // the first line's own box.
-  const texts = lines.map((line) => box(line.glyphs));
-  const boxes = texts.map((b) => ({ ...b }));
-  if (number && boxes.length) {
-    boxes[0].y = Math.min(boxes[0].y, number.y - 0.002);
-    boxes[0].y2 = Math.max(boxes[0].y2, number.y2 + 0.002);
-    boxes[0].x = Math.min(boxes[0].x, number.x);
-    boxes[0].x2 = Math.max(boxes[0].x2, number.x2);
-  }
-  // A drawn root or bar after a line's last glyph has no text box: the line
-  // reaches it across gaps of up to an em, short of the number.
-  const W = ink.width;
-  const cap = Math.floor(Math.min(0.895, number ? number.x - 0.003 : 0.895) * W);
-  const ends = texts.map((t) => {
-    let end = Math.ceil(t.x2 * W);
-    for (let c = end, blank = 0; c < cap && blank <= em * H; c += 1) {
-      let used = false;
-      for (let r = row(t.y); r <= row(t.y2) && !used; r += 1) used = ink.dark[r * W + c] === 1;
-      if (used) { end = c + 1; blank = 0; } else blank += 1;
-    }
-    return Math.max(t.x2, end / W);
-  });
-  const pad = Math.round(H * 0.002);
-  const most = Math.max(3, Math.round(em * H * 0.4));
-  const grown = boxes.map((b, k) => {
-    // A numerator or a denominator printed past the answer's rows, but
-    // given to it by its fraction bar, keeps its text box.
-    const outside = (glyph, y) => (glyph.y + glyph.y2) / 2 < y;
-    const floor = Math.min(region.y, ...lines[k].glyphs.filter((glyph) => outside(glyph, region.y)).map((glyph) => glyph.y));
-    const ceiling = Math.max(region.y2, ...lines[k].glyphs.filter((glyph) => glyph.y2 > region.y2).map((glyph) => (
-      outside(glyph, region.y2) ? glyph.y2 : glyph.y2 + 1.5 / H
-    )));
-    const lo = Math.max(floor, k ? texts[k - 1].y2 : floor);
-    const hi = Math.min(ceiling, k + 1 < boxes.length ? texts[k + 1].y : region.y2);
-    const x0 = Math.max(0.02, b.x - reach);
-    const x1 = Math.max(b.x2, ends[k]);
-    const used = (r) => r >= row(lo) && inkInRow(ink, r, x0, x1) > 0;
-    const ruled = (r) => Boolean(ink.ruled && ink.ruled[r]);
-    let top = row(b.y);
-    while (used(top - 1)) top -= 1;
-    // A thin bar just over the line (a drawn root's bar) belongs to it.
-    let bar = top - 1;
-    while (bar >= row(lo) && top - bar <= most && !used(bar) && !ruled(bar)) bar -= 1;
-    if (used(bar) && bar < top - 1) {
-      let barTop = bar;
-      while (bar - barTop < 2 && used(barTop - 1)) barTop -= 1;
-      if (barTop - 1 >= row(lo) && !used(barTop - 1) && inkThinBar(ink, barTop, bar, x0, x1)) top = barTop;
-    }
-    let bottom = row(b.y2);
-    while (bottom + 1 < row(hi) && inkInRow(ink, bottom + 1, x0, x1)) bottom += 1;
-    let y2 = Math.max(b.y2, Math.min(hi, (bottom + 1 + pad) / H));
-    if (!region.last) y2 = Math.min(ceiling, y2);
-    let y = Math.max(floor, Math.min(b.y, Math.max(lo, (top - pad) / H)));
-    // The padding never takes in a ruled line beside the text.
-    for (let r = row(b.y + 0.002) - 1; r >= row(y); r -= 1) if (ruled(r)) { y = (r + 1) / H; break; }
-    for (let r = row(b.y2 - 0.002) + 1; r < Math.ceil(y2 * H); r += 1) if (ruled(r)) { y2 = r / H; break; }
-    return { y, y2 };
-  });
-  for (let k = 0; k + 1 < grown.length; k += 1) {
-    if (grown[k].y2 <= grown[k + 1].y) continue;
-    const x0 = Math.min(texts[k].x, texts[k + 1].x);
-    const x1 = Math.max(ends[k], ends[k + 1]);
-    // Blank rows between the glyphs part the lines best: the middle of the
-    // first blank run under the upper line, so a bar or a root drawn over the
-    // lower line stays with it, but not above the foot of the number.
-    const a = texts[k].y2 - 0.002;
-    const b = texts[k + 1].y + 0.002;
-    let first = -1;
-    let clear = -1;
-    for (let r = row(a); r <= row(b); r += 1) {
-      if (inkInRow(ink, r, x0, x1)) {
-        if (clear >= 0) break;
-      } else {
-        if (first < 0) first = r;
-        clear = r;
-      }
-    }
-    if (clear >= 0) {
-      let foot = -1;
-      if (k === 0 && number) {
-        foot = row(number.y2);
-        while (foot + 1 <= clear && inkInRow(ink, foot + 1, number.x, number.x2)) foot += 1;
-      }
-      clear = Math.min(clear, Math.max(Math.round((first + clear) / 2), foot + 1));
-      grown[k].y2 = clear / H;
-      grown[k + 1].y = clear / H;
-    } else if (texts[k].y2 < texts[k + 1].y) {
-      const cut = Math.max(texts[k].y2, thinnestRow(ink, row(texts[k].y2), row(texts[k + 1].y), x0, x1) / H);
-      grown[k].y2 = cut;
-      grown[k + 1].y = cut;
-    } else {
-      // The padded text boxes meet: part between the glyphs themselves.
-      const cut = a < b ? thinnestRow(ink, row(a), row(b), x0, x1) / H : null;
-      grown[k].y2 = cut != null ? cut : texts[k].y2;
-      grown[k + 1].y = cut != null ? cut : texts[k + 1].y;
-    }
-  }
-  return lines.map((line, k) => ({ glyphs: line.glyphs, labels: line.labels, top: grown[k].y, bottom: grown[k].y2, row: k }));
-}
-
-function clusterSpan(cluster) {
-  if (cluster.top != null) return { y: cluster.top, y2: cluster.bottom };
-  return {
-    y: Math.min(...cluster.glyphs.map((glyph) => glyph.y)) - 0.002,
-    y2: Math.max(...cluster.glyphs.map((glyph) => glyph.y2)) + 0.002,
-  };
-}
-
 // Each picked part is its own crop, placed just to the left of the question
 // number. The full answer line is not masked.
-function answerPieces(pageLines, mark, nextY, parts, region) {
+function answerPieces(pageLines, mark, nextY, parts) {
   if (!parts || parts.has('')) return null;
-  const band = pageLines.filter((line) => {
-    if (line.x != null && line.x >= 0.85 && (region ? answerInkNumber(line) : isAnswerNumber(line))) return false;
-    if (!region) return line.y >= mark.y - 0.008 && line.y < nextY - 0.004;
-    if (region.lines) return region.lines.has(line) && (!region.last || line.y < region.y2 - 0.004);
-    return inkMiddle(line) >= region.y && (region.last ? line.y < region.y2 - 0.004 : inkMiddle(line) < region.y2);
-  });
+  const band = pageLines.filter((line) => (
+    line.y >= mark.y - 0.008
+    && line.y < nextY - 0.004
+    && !(line.x != null && line.x >= 0.85 && isAnswerNumber(line))
+  ));
   const glyphs = band.flatMap(answerGlyphs).filter((glyph) => glyph.x < 0.90);
-  const number = pageLines.find((line) => (region ? answerInkNumber(line) : isAnswerNumber(line)) && Math.abs(line.y - mark.y) < 0.008 && answerNumberValue(line) === mark.n);
-  let clusters = answerClusters(glyphs);
-  if (region && clusters.length) clusters = answerInkClusters(region, clusters, number);
+  const clusters = answerClusters(glyphs);
   if (!clusters.length) return null;
   const exact = glyphs.some((glyph) => glyph.exact);
   const pad = exact ? 0.003 : 0.008;
   const owned = [];
   let carry = null;
-  let rightmost = 0;
-  // With the page's ink, a line's rows are already whole: a short line is
-  // not stretched over the next one.
-  const partBox = (own, left, right, y, y2) => {
-    if (!region) return answerPartBox(own, left, right, y, y2, true);
-    const box = answerInkPartBox(region.ink, answerPartBox(own, left, right, y, y2), left, right, region.em);
-    return box && { ...box, h: Math.max(0.004, y2 - y) };
-  };
   clusters.forEach((cluster) => {
-    const labels = cluster.labels || answerLabels(cluster.glyphs, !region);
-    const { y, y2 } = clusterSpan(cluster);
+    const labels = answerLabels(cluster.glyphs);
     if (!labels.length) {
       if (!carry || !parts.has(carry.part)) return;
-      const box = partBox(cluster.glyphs, 0.02, 0.90, y, y2);
-      if (box) owned.push({ part: carry.part, box, row: cluster.row });
+      const y = Math.min(...cluster.glyphs.map((glyph) => glyph.y)) - 0.002;
+      const y2 = Math.max(...cluster.glyphs.map((glyph) => glyph.y2)) + 0.002;
+      const box = answerPartBox(cluster.glyphs, 0.02, 0.90, y, y2);
+      if (box) owned.push({ part: carry.part, box });
       return;
     }
-    const dots = answerSeparators(cluster.glyphs, !region);
     labels.forEach((label, index) => {
       const next = labels[index + 1];
       const seps = cluster.glyphs.filter((glyph) => (
-        dots.has(glyph) && glyph.x2 < label.x + 0.002 && (!next || glyph.x > next.x - 0.004)
+        '·∙•'.includes(glyph.c) && glyph.x2 < label.x + 0.002 && (!next || glyph.x > next.x - 0.004)
       ));
       const sep = seps.sort((a, b) => b.x2 - a.x2)[0];
       const left = sep ? sep.x2 + pad : (next ? next.x2 + pad + 0.006 : 0.02);
+      const y = Math.min(...cluster.glyphs.map((glyph) => glyph.y)) - 0.002;
+      const y2 = Math.max(...cluster.glyphs.map((glyph) => glyph.y2)) + 0.002;
       if (parts.has(label.part)) {
-        const box = partBox(cluster.glyphs, left, Math.min(0.90, label.x2 + 0.004), y, y2);
-        if (box) owned.push({ part: label.part, box, row: cluster.row });
+        const box = answerPartBox(cluster.glyphs, left, Math.min(0.90, label.x2 + 0.004), y, y2);
+        if (box) owned.push({ part: label.part, box });
       }
     });
     carry = labels[labels.length - 1];
-    rightmost = Math.max(rightmost, ...labels.map((label) => label.x2));
   });
   if (!owned.length) return null;
   const rank = {};
@@ -2824,44 +2310,26 @@ function answerPieces(pageLines, mark, nextY, parts, region) {
   const lines = [];
   owned.forEach((item) => {
     const last = lines[lines.length - 1];
-    if (!last || (item.row != null ? item.row !== last.row : item.box.y - last.y > 0.01)) lines.push({ y: item.box.y, row: item.row, items: [item] });
+    if (!last || item.box.y - last.y > 0.01) lines.push({ y: item.box.y, items: [item] });
     else last.items.push(item);
   });
+  const number = pageLines.find((line) => isAnswerNumber(line) && Math.abs(line.y - mark.y) < 0.008 && answerNumberValue(line) === mark.n);
   const pieces = [];
-  // The number's foot can reach down beside the next line (a root drawn over
-  // that line takes the rows in between); that line then starts left of it.
-  let beside = null;
   lines.forEach((line, lineIndex) => {
     const y = Math.min(...line.items.map((item) => item.box.y));
     const y2 = Math.max(...line.items.map((item) => item.box.y + item.box.h));
-    let cursor = beside && beside.y2 > y ? beside.at - ANSWER_GAP : ANSWER_RIGHT;
-    const place = (box, rows) => {
+    let cursor = ANSWER_RIGHT;
+    const place = (box) => {
       const width = Math.min(box.w, Math.max(0.012, cursor - 0.02));
       cursor -= width;
       const at = Math.max(0.02, cursor);
       cursor -= ANSWER_GAP;
-      const [top, end] = rows || [y, y2];
-      const least = region && lines[lineIndex + 1] ? Math.min(0.012, lines[lineIndex + 1].y - top) : 0.012;
-      pieces.push({ box: { ...box, y: top, w: width, h: Math.max(least, end - top) }, at });
+      pieces.push({ box: { ...box, y, w: width, h: Math.max(0.012, y2 - y) }, at });
     };
     if (lineIndex === 0 && number) {
       const nx = Math.max(0.88, (number.x || mark.x) - 0.002);
       const nx2 = Math.min(0.98, (number.x2 || nx + 0.02) + 0.003);
-      if (!region) {
-        place({ x: nx, y, w: Math.max(0.012, nx2 - nx), h: y2 - y });
-      } else {
-        // The number keeps its own ink rows too: it can sit on a note line
-        // above the first picked part. Below, it stops where the next picked
-        // line starts, unless its own ink runs on.
-        const own = answerInkRows(region.ink, number.y - 0.002, number.y2 + 0.002, number.x, number.x2, region.y, region.y2);
-        const low = lines.length > 1 && own[1] - Math.round(region.ink.height * 0.002) / region.ink.height > lines[1].y;
-        const rows = [Math.min(y, own[0]), Math.max(y2, lines.length > 1 && !low ? Math.min(own[1], lines[1].y) : own[1])];
-        // A star printed between the number and the first label stays with it.
-        const star = glyphs.filter((glyph) => '★☆'.includes(glyph.c) && glyph.x > rightmost && glyph.x < nx && glyph.y < rows[1] && glyph.y2 > rows[0]);
-        const sx = Math.min(nx, ...star.map((glyph) => glyph.x - 0.0015));
-        place({ x: sx, y: rows[0], w: Math.max(0.012, nx2 - sx), h: rows[1] - rows[0] }, rows);
-        if (low) beside = { at: pieces[pieces.length - 1].at, y2: rows[1] };
-      }
+      place({ x: nx, y, w: Math.max(0.012, nx2 - nx), h: y2 - y });
     }
     line.items.forEach((item) => place(item.box));
   });
@@ -2872,7 +2340,7 @@ function answerPieces(pageLines, mark, nextY, parts, region) {
   return { box: { x: 0, y: rowY, w: 1, h: rowH }, pieces };
 }
 
-function answerCropsFromLines(lines, wanted, inkPages) {
+function answerCropsFromLines(lines, wanted) {
   const want = wantedAnswerSpecs(wanted);
   const pages = new Map();
   (lines || []).forEach((line) => {
@@ -2881,105 +2349,29 @@ function answerCropsFromLines(lines, wanted, inkPages) {
   });
   const crops = [];
   const FOOTER = 0.93;
-  pages.forEach((pageLines, page) => {
+  let inAnswers = false;
+  [...pages].sort(([a], [b]) => a - b).forEach(([page, pageLines]) => {
     // The answer page opens with the heading "תשובות סופיות". A question that
     // merely mentions התשובות is not that page.
-    if (!pageLines.some(isAnswerHeading)) return;
-    // The ink rules below expect each number at the top of its answer, as
-    // Noam's answer pages print it. A part label printed above the first
-    // number (a number centred or at the foot of its answer) keeps the
-    // text-only crop.
-    const partsOf = (lines) => answerClusters(lines.flatMap(answerGlyphs).filter((glyph) => glyph.x < 0.90))
-      .flatMap((cluster) => answerLabels(cluster.glyphs).map((label) => label.part));
-    const firstNumber = Math.min(...pageLines.filter(isAnswerNumber).map((line) => line.y));
-    const headY = Math.max(...pageLines.filter(isAnswerHeading).map((line) => line.y2 != null ? line.y2 : line.y));
-    const labelAbove = partsOf(pageLines.filter((line) => line.y > headY && line.y < firstNumber - 0.006)).length > 0;
-    let ink = labelAbove ? null : inkPages && inkPages.get(page);
-    // With the page's ink, the answers run down to the page footer line (when
-    // the page has one), and a number above it is cropped even past 0.9 when
-    // it carries on from the last number (a page number is no answer).
-    const footers = ink ? pageLines.filter((line) => line.y >= 0.95 && !answerNumberValue(line)).map((line) => line.y - 0.004) : [];
-    const bottom = footers.length ? Math.min(0.97, ...footers) : FOOTER;
+    // Later answer pages can continue with numbered answers and no repeated
+    // heading. Start only at the real heading, then retain those continuations.
+    if (pageLines.some(isAnswerHeading)) inAnswers = true;
+    if (!inAnswers) return;
     const byNumber = new Map();
-    const markOf = (line) => ({ n: answerNumberValue(line), y: line.y, y2: line.y2, x: line.x || 0, x2: line.x2 || 0 });
     pageLines.forEach((line) => {
       if (!isAnswerNumber(line)) return;
       const n = answerNumberValue(line);
       const prev = byNumber.get(n);
-      if (!prev || (line.x || 0) > (prev.x || 0)) byNumber.set(n, markOf(line));
+      if (!prev || (line.x || 0) > (prev.x || 0)) byNumber.set(n, { n, y: line.y, y2: line.y2, x: line.x || 0, x2: line.x2 || 0 });
     });
-    if (ink) {
-      pageLines.filter((line) => !isAnswerNumber(line) && answerInkNumber(line) && line.y < bottom - 0.005)
-        .sort((a, b) => a.y - b.y)
-        .forEach((line) => {
-          const last = [...byNumber.values()].sort((a, b) => b.y - a.y)[0];
-          const n = answerNumberValue(line);
-          if (last && !byNumber.has(n) && Number(n) === Number(last.n) + 1 && line.y > last.y) byNumber.set(n, markOf(line));
-        });
-    }
-    // An answer that reads like a number ("0." of 0.3 with a bar) beside the
-    // real number in its row is no number.
-    const found = [...byNumber.values()].sort((a, b) => a.y - b.y);
-    const marks = ink ? found.filter((mark) => !found.some((other) => Math.abs(other.y - mark.y) < 0.006 && other.x > mark.x + 0.01)) : found;
-    // The next answer's number can sit too low to be cropped; the answer
-    // above it still ends where it starts.
-    const tail = marks.length && pageLines.find((line) => (
-      line.x != null && line.x >= 0.85 && line.y > marks[marks.length - 1].y && line.y < bottom
-      && answerNumberValue(line) === String(Number(marks[marks.length - 1].n) + 1)
-    ));
-    const bounds = tail ? marks.concat([{ n: answerNumberValue(tail), y: tail.y, y2: tail.y2, x: tail.x || 0, x2: tail.x2 || 0 }]) : marks;
-    let starts = ink && marks.length ? answerInkStarts(ink, pageLines, bounds) : null;
-    let owners = starts ? answerInkOwners(ink, pageLines, starts, (marks[0].y2 - marks[0].y) / 0.78) : null;
-    // ... and so does a page where one answer would get the same part label
-    // twice: its numbers do not head their answers.
-    if (owners && marks.some((mark, index) => {
-      const seen = partsOf(pageLines.filter((line) => owners.get(line) === index && !answerInkNumber(line)));
-      return new Set(seen).size < seen.length;
-    })) {
-      ink = null;
-      starts = null;
-      owners = null;
-    }
+    const marks = [...byNumber.values()].sort((a, b) => a.y - b.y);
     marks.forEach((mark, index) => {
       if (!want.has(mark.n)) return;
       const next = marks[index + 1];
       const nextY = next ? next.y : FOOTER;
-      let end = starts && (bounds[index + 1] ? starts[index + 1] : bottom);
-      if (starts && !bounds[index + 1] && bottom > FOOTER) {
-        // Past where answers always ended, the last answer takes only the
-        // lines that carry on from it, within an em; a footnote or a footer
-        // further down stays out.
-        const em = (mark.y2 - mark.y) / 0.78;
-        let reach = mark.y2;
-        pageLines.filter((line) => owners.get(line) === index && line.y2 != null && line.y > mark.y && line.y < bottom)
-          .sort((a, b) => a.y - b.y)
-          .some((line) => {
-            if (line.y < FOOTER || line.y - reach <= em) {
-              reach = Math.max(reach, line.y2);
-              return false;
-            }
-            end = Math.max(starts[index], Math.min(end, line.y - em * 0.25));
-            return true;
-          });
-      }
-      const lines = owners && new Set(pageLines.filter((line) => owners.get(line) === index));
-      const region = starts && end > starts[index] ? { ink, y: starts[index], y2: end, last: !bounds[index + 1], em: (mark.y2 - mark.y) / 0.78, lines } : null;
-      const laid = answerPieces(pageLines, mark, nextY, want.get(mark.n), region);
+      const laid = answerPieces(pageLines, mark, nextY, want.get(mark.n));
       if (laid) {
         crops.push({ page, q: Number(mark.n), box: laid.box, pieces: laid.pieces });
-        return;
-      }
-      if (region) {
-        // A ruled line under the answer stays out of its crop. The last
-        // answer ends with its ink, but not above where it always ended.
-        let y2 = region.y2;
-        if (region.last) {
-          let r = Math.floor(y2 * ink.height) - 1;
-          while (r > Math.floor(region.y * ink.height) && !inkInRow(ink, r, 0.02, 0.98)) r -= 1;
-          y2 = Math.min(region.y2, Math.max(Math.min(FOOTER, region.y2), (r + 1) / ink.height + 0.002));
-        }
-        while (y2 - 1 / ink.height > region.y && ink.ruled && ink.ruled[Math.floor(y2 * ink.height) - 1]) y2 -= 1 / ink.height;
-        crops.push({ page, q: Number(mark.n), box: { x: 0.02, y: region.y, w: 0.96, h: y2 - region.y } });
         return;
       }
       const y = Math.max(0.04, mark.y - 0.004);
@@ -3005,15 +2397,15 @@ async function measureSlices(slices, options) {
   const fullWidth = Boolean(options && options.fullWidth);
   const measured = [];
   for (const slice of slices) {
-    if (slice.kind === 'level' || slice.kind === 'section' || slice.kind === 'points') {
-      const dh = slice.kind === 'section' ? (slice.test ? SECTION_TEST_H : SECTION_REVIEW_H) : (slice.kind === 'points' ? 30 : 36);
+    if (slice.kind === 'level' || slice.kind === 'section' || slice.kind === 'points' || slice.kind === 'answer-heading') {
+      const dh = slice.kind === 'answer-heading' ? 66 : slice.kind === 'section' ? (slice.test ? SECTION_TEST_H : SECTION_REVIEW_H) : (slice.kind === 'points' ? 30 : 36);
       measured.push({ slice, bitmap: null, sw: OUT_W, sh: dh, dh });
       continue;
     }
-    const bitmap = await pageBitmap(slice.page, sheets.get(slice.pdfId) || SOURCE);
+    const bitmap = await pageBitmap(slice.page, slice.source || sheets.get(slice.pdfId) || SOURCE);
     const sw = Math.max(1, slice.box.w * bitmap.width);
     const sh = Math.max(1, slice.box.h * bitmap.height);
-    const dw = !fullWidth && slice.box.w < 0.5 ? slice.box.w * OUT_W : OUT_W;
+    const dw = slice.kind === 'answer' || (!fullWidth && slice.box.w < 0.5) ? slice.box.w * OUT_W : OUT_W;
     measured.push({ slice, bitmap, sw, sh, dh: Math.max(1, Math.round(dw * sh / sw)), fullWidth });
   }
   return measured;
@@ -3093,6 +2485,20 @@ function paintMeasuredPage(ctx, items, top, scale) {
   items.forEach((item, itemIndex) => {
     if (itemIndex) y += gapSize(item.slice.gap, fit);
     const dh = Math.max(1, Math.round(item.dh * fit));
+    if (item.slice.kind === 'answer-heading') {
+      ctx.save();
+      ctx.direction = 'rtl';
+      ctx.textAlign = 'right';
+      ctx.fillStyle = '#22305a';
+      const right = x0 + drawW - 28;
+      ctx.font = 'bold ' + Math.max(12, Math.round(23 * fit)) + 'px Heebo, Arial, sans-serif';
+      ctx.fillText(item.slice.label, right, y + Math.round(26 * fit), drawW - 56);
+      ctx.font = Math.max(12, Math.round(19 * fit)) + 'px Heebo, Arial, sans-serif';
+      ctx.fillText(item.slice.note || '', right, y + Math.round(55 * fit), drawW - 56);
+      ctx.restore();
+      y += dh;
+      return;
+    }
     if (item.slice.kind === 'section') {
       paintSectionHeading(ctx, item.slice, x0, drawW, y, fit);
       y += dh;
@@ -3133,8 +2539,8 @@ function paintMeasuredPage(ctx, items, top, scale) {
     } else {
       const sx = item.slice.box.x * item.bitmap.width;
       const sy = item.slice.box.y * item.bitmap.height;
-      const narrow = !item.fullWidth && item.slice.box.w < 0.5;
-      const dx = x0 + (narrow ? item.slice.box.x * drawW : 0);
+      const narrow = item.slice.kind === 'answer' || (!item.fullWidth && item.slice.box.w < 0.5);
+      const dx = x0 + (narrow ? (item.slice.kind === 'answer' ? (1 - item.slice.box.w) * drawW : item.slice.box.x * drawW) : 0);
       const dw = narrow ? item.slice.box.w * drawW : drawW;
       ctx.drawImage(item.bitmap, sx, sy, item.sw, item.sh, dx, y, dw, dh);
       const masks = item.slice.box.masks && item.slice.box.masks.length ? item.slice.box.masks : (item.slice.box.mask ? [item.slice.box.mask] : []);
@@ -3149,12 +2555,12 @@ function paintMeasuredPage(ctx, items, top, scale) {
 
 async function paintPacked(root, exerciseMeasured, answerMeasured, title) {
   const OUT_W = 1000;
-  const exercisePages = packShort(exerciseMeasured);
+  const exercisePages = exerciseMeasured.length ? packShort(exerciseMeasured) : [];
   const answerPages = answerMeasured.length ? packShort(answerMeasured, { answers: true }) : [];
   const packs = exercisePages.concat(answerPages);
   const answerStart = exercisePages.length;
-  root.innerHTML = packs.map((_, index) => (
-    `<figure class="crop-sheet" data-sheet-page="${index + 1}" data-answers="${index >= answerStart ? '1' : '0'}"><canvas></canvas><figcaption>${index >= answerStart ? 'תשובות' : 'דף תרגול'} ${index + 1} מתוך ${packs.length}</figcaption></figure>`
+  root.innerHTML = packs.map((items, index) => (
+    `<figure class="crop-sheet" data-sheet-page="${index + 1}" data-answers="${index >= answerStart ? '1' : '0'}" data-answer-questions="${escapeHTML(JSON.stringify([...new Set(items.map((item) => item.slice.answerKey).filter(Boolean))]))}"><canvas></canvas><figcaption>${index >= answerStart ? 'תשובות' : 'דף תרגול'} ${index + 1} מתוך ${packs.length}</figcaption></figure>`
   )).join('');
   const canvases = root.querySelectorAll('canvas');
   if (document.fonts && document.fonts.load) {
@@ -3217,97 +2623,106 @@ async function sheetTextLines(source) {
   return lines;
 }
 
-function answerFallbackSlices(source) {
-  const start = Number(source.answerStartPage);
-  const end = Number(source.pageCount);
-  if (!Number.isInteger(start) || start < 1 || !Number.isInteger(end) || start > end) return [];
-  const slices = [{
-    page: start, pdfId: source.pdfId, gap: 8, kind: 'level',
-    block: 'answers-head:' + source.pdfId,
-    label: [levelPrintName(source.level, source.levelLabel), 'תשובות מדף המקור המלא'].filter(Boolean).join(' · '),
-  }];
-  for (let page = start; page <= end; page += 1) {
-    slices.push({ page, pdfId: source.pdfId, box: { x: 0, y: 0, w: 1, h: 1 },
-      gap: 6, block: 'answers-page:' + source.pdfId + ':' + page, kind: 'answer' });
-  }
-  return slices;
+function answerDocumentSource(entry, source) {
+  if (entry.answerDocument === undefined) return source;
+  const doc = entry.answerDocument;
+  if (!doc || typeof doc !== 'object') return null;
+  const match = /^\/teachers\/answers\/([a-f0-9]{64})\.pdf$/.exec(doc.url || '');
+  if (!match || doc.sha256 !== match[1]
+    || !Number.isSafeInteger(doc.pageCount) || doc.pageCount < 1
+    || !Number.isSafeInteger(doc.answerStartPage) || doc.answerStartPage < 1 || doc.answerStartPage > doc.pageCount) return null;
+  return { pdfId: 'answer:' + doc.sha256, pdfUrl: doc.url,
+    expectedSha256: doc.sha256, pageCount: doc.pageCount, answerStartPage: doc.answerStartPage };
 }
 
-// The rendered answer pages, read for their ink.
-async function answerInkPages(lines, source) {
-  const inkPages = new Map();
-  for (const page of new Set(lines.filter(isAnswerHeading).map((line) => line.page))) {
-    try {
-      inkPages.set(page, answerPageInk(await pageBitmap(page, source)));
-    } catch (error) {
-      // Without the page's ink, the text boxes alone still give the crop.
-    }
+function selectedAnswerCrops(group) {
+  const source = group.source;
+  const wanted = [...new Set(group.questions.map((question) => Number(question.q)))];
+  const missing = (numbers) => {
+    const label = source.title || source.topic || levelPrintName(source.level, source.levelLabel);
+    const error = new Error(`לא נמצאו תשובות סופיות מאומתות לשאלות ${numbers.join(', ')}${label ? ' — ' + label : ''}. הדף לא הוכן להדפסה. אפשר לנסות שוב או לשנות את הבחירה.`);
+    error.code = 'MISSING_ANSWERS';
+    return error;
+  };
+  const map = source.answerMap;
+  if (!map || map.version !== 1 || !/^[a-f0-9]{64}$/.test(map.sourceSha256 || '')
+    || (source.answerSourceSha256 && source.answerSourceSha256 !== map.sourceSha256)
+    || !Array.isArray(map.questions)) throw missing(wanted);
+  const byNumber = new Map();
+  for (const entry of map.questions) {
+    const q = Number(entry.q);
+    if (!Number.isInteger(q) || q < 1 || byNumber.has(q)) throw missing(wanted);
+    byNumber.set(q, entry);
   }
-  return inkPages;
+  return wanted.flatMap((q) => {
+    const entry = byNumber.get(q);
+    if (entry && entry.unavailableReason) {
+      const error = new Error(`בדף המקור חסרה תשובה מלאה לשאלה ${q}. לא ניתן להכין דף עם כל התשובות לבחירה זו. אפשר לבחור שאלה אחרת.`);
+      error.code = 'MISSING_ANSWERS';
+      throw error;
+    }
+    const expectedParts = (source.questions || []).filter((item) => Number(item.q) === q)
+      .map((item) => item.part || '').filter(Boolean);
+    if (!entry || !Array.isArray(entry.parts) || expectedParts.some((part) => !entry.parts.includes(part))
+      || !Array.isArray(entry.crops) || !entry.crops.length) throw missing([q]);
+    const documentSource = answerDocumentSource(entry, source);
+    if (!documentSource) throw missing([q]);
+    return entry.crops.map((crop) => {
+      const { page, x, y, w, h } = crop;
+      if (!Number.isInteger(page) || page < 1 || page > documentSource.pageCount
+        || (documentSource.answerStartPage && page < documentSource.answerStartPage)
+        || ![x, y, w, h].every(Number.isFinite) || x < 0 || y < 0 || w <= 0 || h <= 0
+        || x + w > 1.000001 || y + h > 1.000001) throw missing([q]);
+      // A selected rectangle must not overlap a different answer, including a
+      // second column on the same page. Never fall back to a complete page.
+      for (const other of map.questions) {
+        if (Number(other.q) === q) continue;
+        const otherSource = answerDocumentSource(other, source);
+        if (!otherSource) throw missing([q]);
+        if (otherSource.pdfId !== documentSource.pdfId) continue;
+        for (const neighbor of other.crops || []) {
+          if (neighbor.page === page && Math.min(x + w, neighbor.x + neighbor.w) - Math.max(x, neighbor.x) > 0.00001
+            && Math.min(y + h, neighbor.y + neighbor.h) - Math.max(y, neighbor.y) > 0.00001) throw missing([q]);
+        }
+      }
+      return { q, page, box: { x, y, w, h }, ...(entry.answerDocument ? { source: documentSource } : {}),
+        ...(entry.labelMissing ? { labelMissing: true } : {}) };
+    });
+  });
 }
 
 async function answerMeasured(groups) {
-  const slices = [];
+  // Saved sections can refer to the same source more than once. Each chosen
+  // whole question has one answer, but equal question numbers in other levels
+  // remain separate. Even a legacy part selection retains every answer part.
+  const sources = new Map();
   for (const group of groups) {
-    if (group.source.answerGeometry === 'full-pages') {
-      // Outlined PDFs can contain a searchable overlay at unrelated positions.
-      // Use the verified source answer pages instead of those text coordinates.
-      slices.push(...answerFallbackSlices(group.source));
-      continue;
-    }
-    let lines = [];
-    try {
-      lines = await sheetTextLines(group.source);
-    } catch (error) {
-      // Some source PDFs have an outline but no extractable answer text.
-      // Their checked answer-page metadata preserves the original answers.
-    }
-    const wanted = group.questions.map((question) => ({ q: question.q, part: question.part || '' }));
-    const inkPages = lines.length ? await answerInkPages(lines, group.source) : new Map();
-    let crops;
-    try {
-      crops = answerCropsFromLines(lines, wanted, inkPages);
-    } catch (error) {
-      // A page whose ink cannot be read still gets the text-only crops.
-      crops = answerCropsFromLines(lines, wanted);
-    }
-    if (!crops.length) {
-      slices.push(...answerFallbackSlices(group.source));
-      continue;
-    }
-    const head = lines.find((line) => {
-      const text = String(line.text).replace(/\s/g, '');
-      return text.startsWith('תשובות') && text.length < 24;
+    const existing = sources.get(group.source.pdfId);
+    if (existing) existing.questions.push(...group.questions);
+    else sources.set(group.source.pdfId, { source: group.source, questions: group.questions.slice() });
+  }
+  const slices = [];
+  for (const group of sources.values()) {
+    const crops = selectedAnswerCrops(group);
+    if (!crops.length) continue;
+    const firstKey = group.source.pdfId + ':' + crops[0].q;
+    slices.push({
+      page: crops[0].page, pdfId: group.source.pdfId, gap: 12,
+      kind: 'answer-heading', block: 'answer:' + firstKey,
+      label: 'תשובות לשאלות שנבחרו',
+      note: [group.source.topic || group.source.title, levelPrintName(group.source.level, group.source.levelLabel)].filter(Boolean).join(' · '),
     });
-    if (head) {
-      slices.push({
-        page: head.page,
-        pdfId: group.source.pdfId,
-        box: { x: 0, y: 0, w: 1, h: 0.02 },
-        gap: 8,
-        block: 'answers-head:' + group.source.pdfId,
-        kind: 'level',
-        label: levelPrintName(group.source.level, group.source.levelLabel),
-      });
-      slices.push({
-        page: head.page,
-        pdfId: group.source.pdfId,
-        box: answerHeadingBox(head),
-        gap: 6,
-        block: 'answers-head:' + group.source.pdfId,
-        kind: 'answer',
-      });
-    }
+    const labeled = new Set();
     crops.forEach((crop) => {
-      slices.push({
-        page: crop.page,
-        pdfId: group.source.pdfId,
-        box: crop.box,
-        pieces: crop.pieces,
-        gap: 6,
-        block: 'answer:' + group.source.pdfId + ':' + crop.q,
-        kind: 'answer',
-      });
+      const answerKey = group.source.pdfId + ':' + crop.q;
+      if (crop.labelMissing && !labeled.has(crop.q)) {
+        slices.push({ page: crop.page, pdfId: group.source.pdfId, gap: 8,
+          block: 'answer:' + answerKey, kind: 'points', label: 'שאלה ' + crop.q });
+        labeled.add(crop.q);
+      }
+      slices.push({ page: crop.page, pdfId: group.source.pdfId, box: crop.box,
+        ...(crop.source ? { source: crop.source } : {}),
+        gap: 8, block: 'answer:' + answerKey, answerKey, kind: 'answer' });
     });
   }
   return measureSlices(slices);
@@ -3393,6 +2808,14 @@ function markedHTML(chosen) {
     group.questions.forEach((question) => {
       if (!byPage.has(question.page)) byPage.set(question.page, []);
       byPage.get(question.page).push(question);
+      // A whole question can require a continuation or shared context on a
+      // different source page. Include those pages, without moving the primary
+      // question's check mark onto unrelated coordinates on the extra page.
+      const rows = question.rows && question.rows.length ? question.rows : [question.row];
+      for (const box of rows.concat(question.stem ? [question.stem] : [])) {
+        const page = box && (box.page || question.page);
+        if (Number.isInteger(page) && page > 0 && !byPage.has(page)) byPage.set(page, []);
+      }
     });
     return [...byPage.keys()].sort((a, b) => a - b).map((page) => sheetHTML(page, byPage.get(page))).join('');
   }).join('');
@@ -3416,7 +2839,7 @@ function metaHTML(chosen, cfg) {
 
 async function updateShortPrint(plan, printArea, chosen, note, cfg, blocks) {
   const head = `<p class="plan-notice">דף מצומצם. כל קטע נחתך מדף המקור, עם ההוראה, הנוסח והתרשים המקוריים.</p>${metaHTML(chosen, cfg)}`;
-  const foot = `<p class="print-source">מקור: ${escapeHTML(chosen.map((question) => question.source && question.source.title).filter((title, index, all) => title && all.indexOf(title) === index).join(' · '))}</p><p class="plan-notes">${escapeHTML(STYLES[state.style].plan)}</p>${note ? `<div class="plan-notes"><strong>הערת המורה</strong><br>${escapeHTML(note)}</div>` : ''}`;
+  const foot = `<p class="print-source">מקור: ${escapeHTML(chosen.map((question) => question.source && question.source.title).filter((title, index, all) => title && all.indexOf(title) === index).join(' · '))}</p><p class="plan-notes">${escapeHTML(STYLES[state.style].plan)}</p>${note ? `<div class="plan-notes"><strong>הוראות לתלמיד</strong><br>${escapeHTML(note)}</div>` : ''}`;
   plan.innerHTML = head + '<div class="crop-preview"></div>' + foot;
   printArea.innerHTML = '';
   await paintAllShort(plan.querySelector('.crop-preview'), chosen, blocks);
@@ -3459,60 +2882,195 @@ async function resolveChosen() {
   return questionsForKeys(keys);
 }
 
+let wordPending = false;
+async function downloadTeacherWord() {
+  if (wordPending) return;
+  wordPending = true;
+  const buttons = [...document.querySelectorAll('[data-word-download]')];
+  const messages = [...document.querySelectorAll('[data-word-status]')];
+  const message = (text, error = false) => messages.forEach((el) => {
+    el.textContent = text; el.hidden = !text; el.setAttribute('role', error ? 'alert' : 'status');
+  });
+  buttons.forEach((b) => { b.disabled = true; b.setAttribute('aria-busy', 'true'); });
+  message('מכינים קובץ Word עם השאלות שנבחרו והתשובות לכל הסעיפים…');
+  const generation = printGeneration;
+  try {
+    const carried = pageBlocks().flatMap((block) => orderPrintQuestions(block.questions));
+    const all = carried.concat(orderPrintQuestions(await resolveChosen()));
+    const seen = new Set();
+    const selection = all.flatMap((question) => {
+      const source = question.source, key = source.pdfId + ':' + question.q;
+      if (seen.has(key)) return [];
+      seen.add(key);
+      return [{ pdfId: source.pdfId, q: question.q, sourceSha256: source.sourceSha256 }];
+    });
+    if (!selection.length) { message('בחרו לפחות שאלה אחת להורדה ל־Word.', true); return; }
+    if (selection.length > 100) { message('אפשר להוריד עד 100 שאלות בקובץ Word אחד.', true); return; }
+    const response = await fetch('/api/teacherWordQuestions', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ selection }), signal: AbortSignal.timeout(45000),
+    });
+    const result = await response.json();
+    if (!response.ok) {
+      if (result.error === 'WORD_CONTEXT_REQUIRED') {
+        message('חלק מהשאלות מפנות לשאלות נוספות. כדי שהדף יהיה שלם, הוסיפו לבחירה: ' + result.required.map(q => `שאלה ${q.q} — ${q.topic}, ${q.levelLabel}`).join('; ') + '.', true); return;
+      }
+      if (result.error === 'WORD_CONTENT_UNAVAILABLE') {
+        message('חלק מהשאלות שבחרתם עדיין אינן זמינות לעריכה ב־Word. אפשר להדפיס את הבחירה; קובץ חלקי לא נוצר.', true); return;
+      }
+      throw new Error('WORD_REQUEST');
+    }
+    const { createTeacherDocx, loadWordFigure } = await import('./teacher-word-export.js?v=20261104-rtl');
+    const bytes = await createTeacherDocx({ questions: result.questions, title: worksheetTitle(all), note: $('teacher-note').value.trim() }, loadWordFigure);
+    if (generation !== printGeneration) { message('הבחירה השתנתה בזמן ההכנה. לחצו שוב כדי להוריד את הבחירה המעודכנת.', true); return; }
+    const url = URL.createObjectURL(new Blob([bytes], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' }));
+    const link = document.createElement('a'); link.href = url; link.download = 'דף-עבודה-נועם-דורון.docx'; document.body.appendChild(link); link.click(); link.remove();
+    window.setTimeout(() => URL.revokeObjectURL(url), 60000);
+    message('קובץ Word מוכן. הטקסט והנוסחאות ניתנים לעריכה; התשובות נמצאות בסוף. שינוי שאלה בקובץ אינו מעדכן אוטומטית את התשובה.');
+  } catch {
+    message('לא הצלחנו להכין את קובץ Word. הבחירה נשמרה. נסו שוב בעוד רגע.', true);
+  } finally {
+    wordPending = false;
+    buttons.forEach((b) => { b.disabled = false; b.removeAttribute('aria-busy'); });
+  }
+}
+
+function paintTeacherReview(chosen, blocks, note, scenario, style) {
+  const panel = $('wizard-review');
+  const content = $('wizard-review-content');
+  if (!panel || !content) return;
+  // Use the exact scoped questions gathered for printing, including saved sections.
+  const sections = (blocks || [{ kind: 'review', title: '', questions: chosen }]).map((block) => ({
+    title: block.title,
+    kindLabel: SECTION_KINDS[sectionKind(block.kind)].label,
+    questions: orderPrintQuestions(block.questions.filter((question) => question && question.source)),
+  }));
+  const review = buildTeacherReview({ sections, scenario, style, note }, (source) => ({
+    grade: source.gradeLabel || (gradeRecord(source.grade) || {}).label || '',
+    topic: source.topic || source.title || '',
+    level: levelPrintName(source.level, source.levelLabel),
+  }));
+  renderTeacherReview(content, review);
+  panel.hidden = false;
+}
+
 async function updatePrint() {
-  const plan = $('dialog-plan');
-  const printArea = $('print-area');
-  if (!available()) {
-    plan.innerHTML = '<p>אין דף מקור להדפסה. בוחרים כיתה ונושא מהקטלוג.</p>';
-    printArea.innerHTML = PRINT_UNPREPARED;
-    return;
+  const generation = ++printGeneration;
+  if ($('wizard-print')) $('wizard-print').disabled = true;
+  renderTeacherPageCount($('wizard-page-count'));
+  let mode = printMode;
+  const review = $('wizard-review');
+  if (review) review.hidden = true;
+  // Render off-screen and publish both surfaces only after every exercise and
+  // answer has finished. Selection edits invalidate the generation meanwhile.
+  const plan = document.createElement('div');
+  const printArea = document.createElement('div');
+  $('print-area').innerHTML = PRINT_UNPREPARED;
+  const commit = (ready = true) => {
+    if (generation !== printGeneration) return false;
+    $('dialog-plan').replaceChildren(...plan.childNodes);
+    $('print-area').replaceChildren(...printArea.childNodes);
+    if (ready) {
+      if ($('wizard-print')) $('wizard-print').disabled = false;
+      renderTeacherPageCount($('wizard-page-count'), $('print-area'));
+      for (const id of ['prepare-hint', 'dialog-plan', 'wizard-preview']) {
+        const target = $(id);
+        if (!target || target.getAttribute('role') !== 'alert') continue;
+        target.removeAttribute('role');
+        target.removeAttribute('tabindex');
+        if (id === 'prepare-hint') target.textContent = 'דף מלא עם סימון, או דף מצומצם שנחתך מהמקור';
+        else if (id === 'wizard-preview') copyCanvases($('print-area'), target);
+      }
+    }
+    return true;
+  };
+  try {
+    if (!available()) {
+      plan.innerHTML = '<p>אין דף מקור להדפסה. בוחרים כיתה ונושא מהקטלוג.</p>';
+      printArea.innerHTML = PRINT_UNPREPARED;
+      commit(false);
+      return false;
+    }
+    const carried = pageBlocks();
+    const savedQuestions = carried.flatMap((block) => block.questions);
+    const onPage = new Set(savedQuestions.map((question) => exKey(question.source.pdfId, question.id)));
+    const current = (await resolveChosen()).filter((question) => !onPage.has(exKey(question.source.pdfId, question.id)));
+    if (generation !== printGeneration) return false;
+    const chosen = savedQuestions.concat(current);
+    if (mode !== 'short' && chosen.some(q => q.source?.questionSupplements?.questions.some(item => Number(item.q) === Number(q.q)))) {
+      mode = printMode = 'short';
+      announce('הנתונים הנוספים מצורפים לשאלה בדף המצומצם.');
+    }
+    const blocks = carried.length || state.sectionKind === 'test'
+      ? carried.concat(current.length ? [{ kind: sectionKind(state.sectionKind), title: currentTopic() ? currentTopic().title : '', questions: current }] : [])
+      : null;
+    if (!chosen.length) {
+      plan.innerHTML = '<p>עדיין לא נבחרו שאלות מתוך הקטלוג.</p>';
+      printArea.innerHTML = PRINT_UNPREPARED;
+      commit(false);
+      return false;
+    }
+    const note = $('teacher-note').value.trim();
+    const cfg = SCENARIOS[state.scenario] || SCENARIOS.first;
+    if (state.wizard === 'result') {
+      paintTeacherReview(chosen, blocks, note, state.scenario === 'other' ? 'אחר' : cfg.label, STYLES[state.style].label);
+    }
+    if (mode === 'short') {
+      await updateShortPrint(plan, printArea, chosen, note, cfg, blocks);
+      return commit();
+    }
+    const answers = await answerMeasured(groupsOf(chosen));
+    const head = `<p class="plan-notice">דף המקור המלא. מה שנבחר מסומן על העמוד, והתשובות הסופיות מצורפות בסוף.</p>${metaHTML(chosen, cfg)}`;
+    const sheetsHtml = markedHTML(chosen);
+    const titles = chosen.map((question) => question.source && question.source.pdfUrl).filter((url, index, all) => url && all.indexOf(url) === index);
+    const foot = `<p class="print-source">מקור: ${escapeHTML(titles.join(' · '))}</p><p class="plan-notes">${escapeHTML(STYLES[state.style].plan)}</p>${note ? `<div class="plan-notes"><strong>הוראות לתלמיד</strong><br>${escapeHTML(note)}</div>` : ''}`;
+    const answerRoot = '<div class="marked-answers"></div>';
+    plan.innerHTML = head + sheetsHtml + answerRoot + foot;
+    printArea.innerHTML = sheetsHtml + answerRoot;
+    await paintSheets(plan, false);
+    await paintSheets(printArea, true);
+    await paintPacked(plan.querySelector('.marked-answers'), [], answers, worksheetTitle(chosen));
+    await paintPacked(printArea.querySelector('.marked-answers'), [], answers, worksheetTitle(chosen));
+    await attachTeacherNote(printArea, note);
+    return commit();
+  } catch (error) {
+    if (generation !== printGeneration) return false;
+    $('print-area').innerHTML = PRINT_UNPREPARED;
+    throw error;
   }
-  const carried = pageBlocks();
-  const savedQuestions = carried.flatMap((block) => block.questions);
-  const onPage = new Set(savedQuestions.map((question) => exKey(question.source.pdfId, question.id)));
-  const current = (await resolveChosen()).filter((question) => !onPage.has(exKey(question.source.pdfId, question.id)));
-  const chosen = savedQuestions.concat(current);
-  const blocks = carried.length || state.sectionKind === 'test'
-    ? carried.concat(current.length ? [{ kind: sectionKind(state.sectionKind), title: currentTopic() ? currentTopic().title : '', questions: current }] : [])
-    : null;
-  if (!chosen.length) {
-    plan.innerHTML = '<p>עדיין לא נבחרו שאלות מתוך הקטלוג.</p>';
-    printArea.innerHTML = PRINT_UNPREPARED;
-    return;
-  }
-  const note = $('teacher-note').value.trim();
-  const cfg = SCENARIOS[state.scenario] || SCENARIOS.first;
-  if (printMode === 'short') {
-    await updateShortPrint(plan, printArea, chosen, note, cfg, blocks);
-    return;
-  }
-  const head = `<p class="plan-notice">דף המקור המלא. מה שנבחר מסומן על העמוד.</p>${metaHTML(chosen, cfg)}`;
-  const sheetsHtml = markedHTML(chosen);
-  const titles = chosen.map((question) => question.source && question.source.pdfUrl).filter((url, index, all) => url && all.indexOf(url) === index);
-  const foot = `<p class="print-source">מקור: ${escapeHTML(titles.join(' · '))}</p><p class="plan-notes">${escapeHTML(STYLES[state.style].plan)}</p>${note ? `<div class="plan-notes"><strong>הערת המורה</strong><br>${escapeHTML(note)}</div>` : ''}`;
-  plan.innerHTML = head + sheetsHtml + foot;
-  printArea.innerHTML = sheetsHtml;
-  await paintSheets(plan, false);
-  await paintSheets(printArea, true);
-  await attachTeacherNote(printArea, note);
+}
+
+function reportPrintError(message) {
+  if ($('wizard-print')) $('wizard-print').disabled = true;
+  renderTeacherPageCount($('wizard-page-count'));
+  const dialog = $('print-dialog');
+  const target = dialog && dialog.open ? $('dialog-plan')
+    : state.wizard === 'result' ? $('wizard-preview') : $('prepare-hint');
+  if (!target) { announce(message); return; }
+  target.setAttribute('role', 'alert');
+  target.setAttribute('tabindex', '-1');
+  target.textContent = message;
+  target.focus();
 }
 
 async function prepare(mode) {
   if (rendering) return;
+  const opener = mode === 'short' ? $('prepare-short') : $('prepare');
   if (!state.selected.length && !state.blocks.length) {
     announce('עדיין לא נבחרו שאלות.');
     return;
   }
   if (mode === 'marked' && pageNeedsSections()) {
     mode = 'short';
-    announce('דף עם קטע מבחן או עם כמה נושאים נבנה כדף מצומצם מהמקור.');
+    announce('דף עם קטע ממבחן או עם כמה נושאים נבנה כדף מצומצם מהמקור.');
   }
   printMode = mode;
   rendering = true;
   $('prepare').disabled = true;
   if ($('prepare-short')) $('prepare-short').disabled = true;
   try {
-    await updatePrint();
+    if (!(await updatePrint())) return;
+    mode = printMode;
     const ready = mode === 'short'
       ? $('dialog-plan').querySelector('.crop-sheet canvas')
       : $('dialog-plan').querySelector('.source-stage canvas');
@@ -3522,14 +3080,18 @@ async function prepare(mode) {
     }
     $('print-title').textContent = mode === 'short' ? 'דף מצומצם מהמקור' : 'דף המקור עם סימון';
     $('print-lead').textContent = mode === 'short'
-      ? 'קטעים שנחתכו מדף המקור, עם ההוראה והנוסח המקוריים.'
-      : 'העמוד המלא, ומה שנבחר מסומן עליו.';
+      ? 'קטעים שנחתכו מדף המקור, עם ההוראה והנוסח המקוריים. התשובות הסופיות בסוף הדף.'
+      : 'העמוד המלא, ומה שנבחר מסומן עליו. התשובות הסופיות מצורפות בסוף.';
     $('print').lastChild.textContent = mode === 'short' ? 'הדפסת הדף המצומצם' : 'הדפסת הדף המסומן';
-    printOpener = mode === 'short' ? $('prepare-short') : $('prepare');
+    printOpener = opener;
     $('print-dialog').showModal();
   } catch (error) {
-    $('dialog-plan').innerHTML = '<p>דף המקור לא נטען, ולכן אין הדפסה. לא הוצג דף חלופי.</p>';
-    announce('דף המקור לא נטען.');
+    const message = error && error.code === 'MISSING_ANSWERS'
+      ? error.message
+      : 'דף המקור לא נטען, ולכן אין הדפסה. אפשר לנסות שוב.';
+    $('dialog-plan').innerHTML = `<p role="alert">${escapeHTML(message)}</p>`;
+    $('print-area').innerHTML = PRINT_UNPREPARED;
+    reportPrintError(message);
   } finally {
     rendering = false;
     $('prepare').disabled = false;
@@ -3540,6 +3102,7 @@ async function prepare(mode) {
 function applyScenario(value, options) {
   const quiet = options && options.quiet;
   const before = selectionKey();
+  const scenarioChanged = state.scenario !== value;
   if (!quiet) snapshot();
   state.scenario = value;
   state.expanded = false;
@@ -3550,15 +3113,17 @@ function applyScenario(value, options) {
   } else {
     state.pickNote = '';
   }
-  if (selectionKey() !== before) clearPreparedPrint();
+  if (scenarioChanged || selectionKey() !== before) clearPreparedPrint();
   render();
-  if (!quiet) announce(value === 'other' ? 'אפשר להוסיף הערה ולבחור מהקטלוג.' : 'הוצגו פריטים שכבר קיימים בקטלוג.');
+  if (!quiet) announce(value === 'other' ? 'אפשר להוסיף הנחיות ולבחור מהקטלוג.' : 'הוצגו פריטים שכבר קיימים בקטלוג.');
   if (!quiet && value === 'other') $('teacher-note').focus();
 }
 
 async function loadExerciseSheet(pdfId) {
   if (sheets.has(pdfId)) return sheets.get(pdfId);
-  const response = await fetch(new URL('./sheets/' + pdfId + '.json', import.meta.url));
+  const sheetUrl = new URL('./sheets/' + pdfId + '.json', import.meta.url);
+  sheetUrl.searchParams.set('v', '20261104-word-export');
+  const response = await fetch(sheetUrl);
   if (!response.ok) throw new Error('SHEET_' + pdfId);
   const source = await response.json();
   source.mode = source.mode || 'exercise';
@@ -3619,12 +3184,16 @@ async function loadCurrentTopic() {
   await run;
 }
 
-const WIZARD_ORDER = ['grade', 'topic', 'level', 'scenario', 'style', 'pick', 'result'];
+const WIZARD_ORDER = ['setup', 'purpose', 'pick', 'result'];
 
 function applyWizard() {
   if (!$('wizard-bar')) return;
-  const step = WIZARD_ORDER.includes(state.wizard) ? state.wizard : 'grade';
+  const step = WIZARD_ORDER.includes(state.wizard) ? state.wizard : 'setup';
   const stepChanged = document.body.dataset.wizard !== step;
+  if (stepChanged) {
+    topicSearch?.close();
+    if (document.body.dataset.wizard === 'result') clearPreparedPrint();
+  }
   state.wizard = step;
   document.body.dataset.wizard = step;
   document.querySelectorAll('[data-wiz]').forEach((el) => {
@@ -3634,25 +3203,29 @@ function applyWizard() {
   const levelHome = $(step === 'pick' ? 'pick-level-home' : 'wizard-level-home');
   if (levelChoice && levelHome) {
     if (levelChoice.parentElement !== levelHome) levelHome.appendChild(levelChoice);
-    levelChoice.classList.toggle('wiz-off', step !== 'level' && step !== 'pick');
+    levelChoice.classList.toggle('wiz-off', step !== 'setup' && step !== 'pick');
   }
   const setup = $('setup-panel');
   if (setup) setup.classList.toggle('wiz-off', step === 'pick' || step === 'result');
   const labels = {
-    grade: 'כיתה',
-    topic: 'נושא',
-    level: 'רמה',
-    scenario: 'מה קורה בשיעור?',
-    style: 'איך ניגשים לתרגול?',
-    pick: 'בוחרים שאלות',
-    result: 'הדף להדפסה',
+    setup: 'הגדרות התרגול',
+    purpose: 'מטרת התרגול',
+    pick: 'בחירת שאלות',
+    result: 'תצוגה והדפסה',
   };
   $('wizard-label').textContent = labels[step];
+  const progress = $('wizard-progress');
+  if (progress) progress.textContent = `שלב ${WIZARD_ORDER.indexOf(step) + 1} מתוך ${WIZARD_ORDER.length}`;
   $('wizard-back').hidden = WIZARD_ORDER.indexOf(step) <= 0;
   $('wizard-next').hidden = step === 'result';
   $('wizard-next').textContent = step === 'pick' ? 'אל הדף' : 'המשך';
-  const anchor = step === 'result' ? $('wizard-result') : $('wizard-bar');
+  const anchor = $('wizard-bar');
   if (stepChanged && anchor && anchor.scrollIntoView) anchor.scrollIntoView({ block: 'start', inline: 'nearest' });
+  if (stepChanged) {
+    const label = $('wizard-label');
+    label.setAttribute('tabindex', '-1');
+    label.focus({ preventScroll: true });
+  }
 }
 
 function copyCanvases(from, to) {
@@ -3681,12 +3254,13 @@ async function showWizardResult() {
   preview.textContent = 'מכינים את הדף…';
   printMode = 'short';
   try {
-    await updatePrint();
+    if (!(await updatePrint())) return;
     copyCanvases($('print-area'), preview);
-    const anchor = $('wizard-result');
-    if (anchor && anchor.scrollIntoView) anchor.scrollIntoView({ block: 'start', inline: 'nearest' });
+    // Keep the current step heading in view; rendering must not move the reader.
   } catch (error) {
-    preview.textContent = 'דף המקור לא נטען, ולכן אין הדפסה.';
+    preview.textContent = error && error.code === 'MISSING_ANSWERS'
+      ? error.message
+      : 'דף המקור לא נטען, ולכן אין הדפסה. אפשר לנסות שוב.';
   }
 }
 
@@ -3724,9 +3298,15 @@ function bind() {
   }));
   document.querySelectorAll('[name=level]').forEach((el) => el.addEventListener('change', () => {
     if (!el.checked) return;
+    const previousLevel = state.level;
     state.level = el.value;
     state.expanded = false;
     let next = keepVisible(state.selected, visibleSelectionKeys());
+    if (next.length < state.selected.length && !confirmTeacherReplacement('שינוי הרמה יסיר מהבחירה שאלות שאינן ברמה החדשה. להמשיך?')) {
+      state.level = previousLevel;
+      document.querySelectorAll('[name=level]').forEach((input) => { input.checked = input.value === previousLevel; });
+      return;
+    }
     if (!next.length && state.scenario !== 'other') {
       if (state.pickMode !== 'manual') next = assignWholeQuestions(state.lastQuestionCount || 5);
     } else {
@@ -3740,32 +3320,10 @@ function bind() {
     render();
   }));
   $('grade').addEventListener('change', async () => {
-    state.grade = $('grade').value;
-    state.level = 'a';
-    state.expanded = false;
-    state.selected = [];
-    state.moreDismissed = false;
-    state.topic = '';
-    history = [];
-    clearPreparedPrint();
-    fillTopics();
-    syncWizardUrl();
-    await loadCurrentTopic();
-    applyScenario(state.scenario === 'other' ? 'first' : state.scenario);
+    await changeTeacherScope($('grade').value, '');
   });
   $('topic').addEventListener('change', async () => {
-    state.topic = $('topic').value;
-    state.level = 'a';
-    state.expanded = false;
-    state.selected = [];
-    state.moreDismissed = false;
-    history = [];
-    clearPreparedPrint();
-    syncLevels();
-    syncWizardUrl();
-    await loadCurrentTopic();
-    if (state.scenario === 'other') render();
-    else applyScenario(state.scenario, { quiet: true });
+    await changeTeacherScope(state.grade, $('topic').value);
   });
   $('filter-all').addEventListener('click', () => { state.filter = 'all'; $('filter-all').setAttribute('aria-pressed', 'true'); $('filter-selected').setAttribute('aria-pressed', 'false'); render(); });
   $('filter-selected').addEventListener('click', () => { state.filter = 'selected'; $('filter-selected').setAttribute('aria-pressed', 'true'); $('filter-all').setAttribute('aria-pressed', 'false'); render(); });
@@ -3795,6 +3353,8 @@ function bind() {
       state.blocks.splice(index, 1);
       clearPreparedPrint();
       render();
+      const next = $('page-blocks').querySelector('[data-page-block="' + Math.min(index, state.blocks.length - 1) + '"] [data-block-remove]') || $('section-kind-review');
+      if (next) next.focus({ preventScroll: true });
       announce('הנושא הוסר מהדף.');
       return;
     }
@@ -3802,11 +3362,7 @@ function bind() {
     clearPreparedPrint();
     render();
   });
-  if ($('more-topic-yes')) $('more-topic-yes').addEventListener('click', () => addAnotherTopic());
-  if ($('more-topic-no')) $('more-topic-no').addEventListener('click', () => {
-    state.moreDismissed = true;
-    render();
-  });
+  if ($('add-topic')) $('add-topic').addEventListener('click', () => addAnotherTopic());
   document.querySelectorAll('[data-question-count]').forEach((btn) => {
     btn.addEventListener('click', () => {
       state.pickMode = 'ai';
@@ -3828,20 +3384,20 @@ function bind() {
     announce('בוחרים שאלה שלמה, לא סעיף בודד.');
   });
   $('return-demo').addEventListener('click', async () => {
-    state.grade = '9';
-    state.topic = '2';
-    state.level = 'a';
-    fillGrades();
-    fillTopics();
-    syncWizardUrl();
-    await loadCurrentTopic();
-    applyScenario('first');
+    await changeTeacherScope('9', '2');
   });
   $('teacher-note').addEventListener('input', () => clearPreparedPrint());
   $('prepare').addEventListener('click', () => prepare('marked'));
   $('prepare-short').addEventListener('click', () => prepare('short'));
+  document.querySelectorAll('[data-word-download]').forEach((button) => button.addEventListener('click', () => { void downloadTeacherWord(); }));
+  document.querySelectorAll('[data-review-edit]').forEach((button) => button.addEventListener('click', () => {
+    const step = button.dataset.reviewEdit;
+    if (!['setup', 'purpose', 'pick'].includes(step)) return;
+    state.wizard = step;
+    applyWizard();
+  }));
   if ($('wizard-next')) $('wizard-next').addEventListener('click', async () => {
-    const index = WIZARD_ORDER.indexOf(state.wizard || 'grade');
+    const index = WIZARD_ORDER.indexOf(state.wizard || 'setup');
     state.wizard = WIZARD_ORDER[Math.min(WIZARD_ORDER.length - 1, index + 1)];
     if (state.wizard === 'pick') {
       if (topicLoadPromise) await topicLoadPromise;
@@ -3855,12 +3411,16 @@ function bind() {
     if (state.wizard === 'result') await showWizardResult();
   });
   if ($('wizard-back')) $('wizard-back').addEventListener('click', () => {
-    const index = WIZARD_ORDER.indexOf(state.wizard || 'grade');
+    const index = WIZARD_ORDER.indexOf(state.wizard || 'setup');
     state.wizard = WIZARD_ORDER[Math.max(0, index - 1)];
     applyWizard();
   });
   if ($('wizard-print')) $('wizard-print').addEventListener('click', async () => {
-    try { await updatePrint(); } catch (error) { announce('דף המקור לא נטען.'); return; }
+    try { if (!(await updatePrint())) return; } catch (error) {
+      clearPreparedPrint(true);
+      reportPrintError(error.code === 'MISSING_ANSWERS' ? error.message : 'דף המקור לא נטען. אפשר לנסות שוב.');
+      return;
+    }
     window.print();
   });
   $('print-dialog').addEventListener('close', () => {
@@ -3870,7 +3430,11 @@ function bind() {
   });
   ['close-dialog', 'back-edit'].forEach((id) => $(id).addEventListener('click', () => $('print-dialog').close()));
   $('print').addEventListener('click', async () => {
-    try { await updatePrint(); } catch (error) { announce('דף המקור לא נטען.'); return; }
+    try { if (!(await updatePrint())) return; } catch (error) {
+      clearPreparedPrint();
+      reportPrintError(error.code === 'MISSING_ANSWERS' ? error.message : 'דף המקור לא נטען. אפשר לנסות שוב.');
+      return;
+    }
     window.print();
   });
   document.addEventListener('noam-teacher-option', (event) => {
@@ -3881,9 +3445,30 @@ function bind() {
     applyScenario(goal);
   });
   document.addEventListener('noam-teacher-prefill', (event) => {
+    if (appState !== 'ready') return;
     const detail = event.detail || {};
     const prefill = detail.exerciseIds ? detail : wizardPrefillFromSearch(detail.href || '');
-    applyWizardPrefill(prefill);
+    const grade = prefill && gradeRecord(prefill.grade);
+    if (!grade || !grade.topics.some((topic) => String(topic.id) === String(prefill.topic))
+      || (prefill.exerciseIds && (!Array.isArray(prefill.exerciseIds) || prefill.exerciseIds.some((id) => typeof id !== 'string')))) return;
+    if (!confirmTeacherReplacement('הבחירה שהתקבלה תחליף את השאלות והמקטעים בדף. להמשיך?', true)) return;
+    const apply = async () => {
+      setTeacherAppState('loading');
+      try {
+        await applyWizardPrefill(prefill);
+        setTeacherAppState('ready');
+        const label = $('wizard-label');
+        if (label) label.focus({ preventScroll: true });
+      } catch (error) {
+        retryTeacherLoad = apply;
+        setTeacherAppState('error', 'הבחירה לא נטענה. לחצו על ניסיון נוסף.');
+      }
+    };
+    state.blocks = [];
+    state.selected = [];
+    history = [];
+    clearPreparedPrint();
+    void apply();
   });
 }
 
@@ -3904,8 +3489,8 @@ function applyWizardPrefill(prefill) {
     const saved = carriedKeys();
     state.selected = expandToWholeQuestionKeys(currentExercises(), ids.filter((id) => allow.has(id))).filter((key) => !saved.has(key));
     state.pickNote = '';
-    const note = $('teacher-note');
-    if (note && prefill.minutes && !note.value) note.value = 'אורך שיעור: ' + prefill.minutes + ' דקות';
+    const aiNote = $('teacher-ai-note');
+    if (aiNote && prefill.minutes && !aiNote.value) aiNote.value = 'אורך שיעור: ' + prefill.minutes + ' דקות';
     render();
     state.wizard = 'pick';
     applyWizard();
@@ -3919,26 +3504,53 @@ function applyWizardPrefill(prefill) {
 }
 
 async function start() {
-  installSuggest();
+  retryTeacherLoad = start;
+  setTeacherAppState('loading');
+  if (!appBound) {
+    installSuggest();
+    bind();
+    const retry = $('teacher-load-retry');
+    if (retry) retry.addEventListener('click', async () => {
+      if (!retryTeacherLoad || appState === 'loading') return;
+      await retryTeacherLoad();
+      if (appState === 'ready') {
+        const label = $('wizard-label');
+        if (label) { label.setAttribute('tabindex', '-1'); label.focus(); }
+      }
+    });
+    appBound = true;
+  }
   // Load configuration and the SDK early. prepare() never creates a token or
   // submits a model request; postJson still performs fresh guarded verification.
   void ensureTeacherBotClient().then((client) => typeof client.prepare === 'function' ? client.prepare() : null).catch(() => {});
-  const response = await fetch(CATALOG_URL);
-  if (!response.ok) throw new Error('CATALOG');
-  CATALOG = await response.json();
-  indexCatalog();
-  bind();
-  const prefill = wizardPrefillFromSearch(location.search);
-  if (prefill) {
-    await applyWizardPrefill(prefill);
-    return;
+  try {
+    const response = await fetch(CATALOG_URL);
+    if (!response.ok) throw new Error('CATALOG');
+    CATALOG = await response.json();
+    indexCatalog();
+    const prefill = wizardPrefillFromSearch(location.search);
+    if (prefill) {
+      await applyWizardPrefill(prefill);
+    } else {
+      fillGrades();
+      fillTopics();
+      await loadCurrentTopic();
+      applyScenario(state.scenario, { quiet: true });
+    }
+    startupComplete = true;
+    setTeacherAppState('ready');
+  } catch (error) {
+    setTeacherAppState('error', 'רשימת דפי העבודה לא נטענה. לחצו על ניסיון נוסף; אין צורך לרענן את הדף.');
   }
-  fillGrades();
-  fillTopics();
-  await loadCurrentTopic();
-  applyScenario(state.scenario, { quiet: true });
 }
 
 start().catch(() => {
-  $('result-summary').textContent = 'רשימת דפי הקטלוג לא נטענה.';
+  setTeacherAppState('error', 'רשימת דפי העבודה לא נטענה. לחצו על ניסיון נוסף.');
 });
+
+// Optional enhancement: a failed search download leaves the native topic list usable.
+void import('./teacher-topic-search.js?v=20261102-topic-search').then(({ enhanceTopicSelect }) => {
+  topicSearch = enhanceTopicSelect($('topic'), {
+    onChoose: (topic) => changeTeacherScope(state.grade, topic),
+  });
+}).catch(() => {});

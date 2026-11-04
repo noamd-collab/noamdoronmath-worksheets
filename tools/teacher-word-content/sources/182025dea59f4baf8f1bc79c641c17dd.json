@@ -1,0 +1,687 @@
+{
+  "sourceSha256": "91c2ffdc7b2072089b7f65a53a960cbc06a3a820a41233baf433109dcc3a568b",
+  "answerSourceSha256": "3394c1f5487c6b9ecaa99a03a01c37642d1df6c84e598d53996f9146d9fa3418",
+  "nativeSha256": "cfc215d32d1c1260ee1584889753e70adf850aca46498f932617e20a7fcc532f",
+  "questions": {
+    "1": {
+      "id": "182025dea59f4baf8f1bc79c641c17dd:1",
+      "q": 1,
+      "grade": 9,
+      "topic": "המעוין",
+      "levelLabel": "רמה א׳",
+      "text": "המעוין $ABCD$ נתון עם שני אלכסוניו. כל המידות בס״מ. $CH$ גובה לצלע $AB$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T19/a/figures/q1_head.svg",
+        "sha256": "2859b43ac9aa0ceeaceedae26a99899e0c94d91e2fe616f6cf821a29b0b979b4"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את היקף המעוין.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T19/a/figures/q1_head.svg",
+            "sha256": "2859b43ac9aa0ceeaceedae26a99899e0c94d91e2fe616f6cf821a29b0b979b4"
+          },
+          "answer": "חצאי האלכסונים הם 5 ו־12. פיתגורס נותן צלע 13, לכן ההיקף 52 ס״מ."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את גובה המעוין לצלע $AB$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T19/a/figures/q1_head.svg",
+            "sha256": "2859b43ac9aa0ceeaceedae26a99899e0c94d91e2fe616f6cf821a29b0b979b4"
+          },
+          "answer": "שטח המעוין 120 סמ״ר, ולכן הגובה לצלע $AB$ הוא $CH=\\f{120}{13}$ ס״מ."
+        },
+        {
+          "label": "ג",
+          "text": "נרשמה הטענה: אם נשאיר את אורכי האלכסונים קבועים, אפשר לשנות את אורך הצלע. הכריעו ונמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T19/a/figures/q1_head.svg",
+            "sha256": "2859b43ac9aa0ceeaceedae26a99899e0c94d91e2fe616f6cf821a29b0b979b4"
+          },
+          "answer": "הטענה שגויה: חצאי האלכסונים הם ניצבים קבועים, ולכן פיתגורס קובע את הצלע."
+        }
+      ]
+    },
+    "2": {
+      "id": "182025dea59f4baf8f1bc79c641c17dd:2",
+      "q": 2,
+      "grade": 9,
+      "topic": "המעוין",
+      "levelLabel": "רמה א׳",
+      "text": "במעוין $ABCD$ נתון $∠BAC=2x+9$ ו־$∠CAD=5x−18$. הזוויות במעלות.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T19/a/figures/q2_head.svg",
+        "sha256": "d897cdc6f2e6c0aa4f9aa9d566d60308aca13d0e2a39079223f0da105eecf082"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מצאו את $x$ ובדקו שהזוויות חיוביות.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T19/a/figures/q2_head.svg",
+            "sha256": "d897cdc6f2e6c0aa4f9aa9d566d60308aca13d0e2a39079223f0da105eecf082"
+          },
+          "answer": "$2x+9=5x−18$ ולכן $x=9$; שתי הזוויות 27 מעלות, חיוביות."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את $∠ABC$ והסבירו.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T19/a/figures/q2_head.svg",
+            "sha256": "d897cdc6f2e6c0aa4f9aa9d566d60308aca13d0e2a39079223f0da105eecf082"
+          },
+          "answer": "$AC$ חוצה את $∠DAB$, לכן $∠DAB=54$ מעלות; זוויות סמוכות במעוין משלימות ל־180 מעלות, ולכן $∠ABC=126$ מעלות."
+        },
+        {
+          "label": "ג",
+          "text": "מצאו את כל שלוש הזוויות במשולש $AOB$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T19/a/figures/q2_head.svg",
+            "sha256": "d897cdc6f2e6c0aa4f9aa9d566d60308aca13d0e2a39079223f0da105eecf082"
+          },
+          "answer": "האלכסון $BD$ חוצה את $∠ABC$, לכן $∠ABO=63$ מעלות; $∠BAO=27$ מעלות; $∠AOB=90$ מעלות כי אלכסוני המעוין מאונכים."
+        }
+      ]
+    },
+    "3": {
+      "id": "182025dea59f4baf8f1bc79c641c17dd:3",
+      "q": 3,
+      "grade": 9,
+      "topic": "המעוין",
+      "levelLabel": "רמה א׳",
+      "text": "במעוין $ABCD$ הנקודה $E$ בתוך $AO$ מקיימת $AE=2EO$. רוצים לבחור נקודה $F$ בתוך $OC$ כך שהמרובע הפנימי יהיה מעוין. באיור מוצגת בחירה אפשרית שיש לבדוק.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T19/a/figures/q3_head.svg",
+        "sha256": "bef1c9dc52c941dfa3da92aa5f198c053623dded896733e6414696bd27ea6bae"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מצאו תנאי הכרחי על מיקום $F$ למימוש מטרת הבנייה, והסבירו מדוע יש לכל היותר בחירה אחת.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T19/a/figures/q3_head.svg",
+            "sha256": "bef1c9dc52c941dfa3da92aa5f198c053623dded896733e6414696bd27ea6bae"
+          },
+          "answer": "אם $BEDF$ מעוין, אלכסוניו $EF,BD$ חוצים זה את זה. $BD$ נחצה ב־$O$ ולכן בהכרח $OF=OE$. על הקטע $OC$ יש לכל היותר נקודה אחת במרחק הנתון מ־$O$."
+        },
+        {
+          "label": "ב",
+          "text": "הוכיחו שהבחירה קיימת בתוך הקטע, והוכיחו כי $BEDF$ מעוין בבחירה זו. מהו הקשר בין $CF$ לבין $AE$?",
+          "figure": {
+            "url": "/noam-ai/native/G9-T19/a/figures/q3_head.svg",
+            "sha256": "bef1c9dc52c941dfa3da92aa5f198c053623dded896733e6414696bd27ea6bae"
+          },
+          "answer": "$E$ פנימית ל־$AO$ ולכן $OE$ חיובי וקטן מ־$AO=OC$. קיימת נקודה יחידה $F$ בתוך $OC$ עם $OF=OE$. אז האלכסונים $EF,BD$ חוצים ומאונכים, ולכן $BEDF$ מעוין. מחיסור $OE=OF$ מן $AO=OC$ מתקבל $AE=CF$."
+        },
+        {
+          "label": "ג",
+          "text": "איזה חלק משטח המעוין המקורי תופס המרובע שנבנה?",
+          "figure": {
+            "url": "/noam-ai/native/G9-T19/a/figures/q3_head.svg",
+            "sha256": "bef1c9dc52c941dfa3da92aa5f198c053623dded896733e6414696bd27ea6bae"
+          },
+          "answer": "$AO=AE+EO=3EO$. לכן $EF$ שליש $AC$, ואילו האלכסון $BD$ משותף; יחס השטחים שליש."
+        }
+      ]
+    },
+    "4": {
+      "id": "182025dea59f4baf8f1bc79c641c17dd:4",
+      "q": 4,
+      "grade": 9,
+      "topic": "המעוין",
+      "levelLabel": "רמה א׳",
+      "text": "בנו מרובע קמור משלכם שאלכסוניו מאונכים, אך רק אחד מהם חוצה את האחר.",
+      "items": [
+        {
+          "label": "א",
+          "text": "שרטטו דוגמה וסמנו את אורכי חלקי האלכסונים כך שתקיים את הדרישה.",
+          "answer": "למשל אלכסונים מאונכים: האחד מחולק בנקודת המפגש ל־3 ו־3 ס״מ, והאחר ל־2 ו־5 ס״מ; מחברים את הקצוות לפי הסדר. הראשון נחצה והשני אינו נחצה. יש דוגמאות נוספות."
+        },
+        {
+          "label": "ב",
+          "text": "הסבירו מדוע הדוגמה מפריכה את הטענה שכל מרובע בעל אלכסונים מאונכים הוא מעוין.",
+          "answer": "במעוין שני האלכסונים חוצים זה את זה. בדוגמה רק אחד נחצה, ולכן אינה מעוין אף שהאלכסונים מאונכים."
+        }
+      ]
+    },
+    "5": {
+      "id": "182025dea59f4baf8f1bc79c641c17dd:5",
+      "q": 5,
+      "grade": 9,
+      "topic": "המעוין",
+      "levelLabel": "רמה א׳",
+      "text": "הנקודות $E,F,G,H$ הן אמצעי צלעות המעוין $ABCD$, לפי הסדר. הקטעים המחברים אותן מצוירים. $T$ על המשך $EF$ מעבר ל־$F$, כך ש־$EF=FT$; גם $CT$ מצויר.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T19/a/figures/q5_head.svg",
+        "sha256": "49be6d717e5766acae7169abb1e13f6a589f049b17399b991bf0e85eda12bc0c"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "ב־$△ABC$ השתמשו בנקודה $T$ הנתונה והוכיחו כי $AE=CT$ וגם $AE∥CT$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T19/a/figures/q5_head.svg",
+            "sha256": "49be6d717e5766acae7169abb1e13f6a589f049b17399b991bf0e85eda12bc0c"
+          },
+          "answer": "$△BEF\\cong △CTF$ (צלע־זווית־צלע: $BF=FC$, $EF=FT$, הזוויות שב־$F$ קודקודיות). לכן $CT=BE=AE$, ו־$∠EBF=∠TCF$ הן זוויות מתחלפות שוות, ולכן $CT$ מקביל $AB$, כלומר $AE∥CT$."
+        },
+        {
+          "label": "ב",
+          "text": "הסיקו שהמרובע $AETC$ הוא מקבילית, ולכן $EF∥AC$ ו־$EF$ מחצית $AC$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T19/a/figures/q5_head.svg",
+            "sha256": "49be6d717e5766acae7169abb1e13f6a589f049b17399b991bf0e85eda12bc0c"
+          },
+          "answer": "$AE,CT$ שוות ומקבילות, לכן $AETC$ מקבילית, ומכאן $ET∥AC$ ו־$ET=AC$. $F$ אמצע $ET$, ולכן $EF∥AC$ ו־$EF=\\f{AC}{2}$."
+        },
+        {
+          "label": "ג",
+          "text": "הפעילו את אותה דרך על שאר הצלעות והוכיחו ש־$EFGH$ מלבן.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T19/a/figures/q5_head.svg",
+            "sha256": "49be6d717e5766acae7169abb1e13f6a589f049b17399b991bf0e85eda12bc0c"
+          },
+          "answer": "הצלעות הנגדיות מקבילות בהתאמה לאותו אלכסון. צלעות סמוכות מקבילות לאלכסוני המעוין המאונכים; לכן זו מקבילית עם זווית ישרה, כלומר מלבן."
+        },
+        {
+          "label": "ד",
+          "text": "האם המלבן הפנימי חייב להיות ריבוע? נמקו תנאי מדויק.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T19/a/figures/q5_head.svg",
+            "sha256": "49be6d717e5766acae7169abb1e13f6a589f049b17399b991bf0e85eda12bc0c"
+          },
+          "answer": "לא. צלעותיו מחציות האלכסונים; הוא ריבוע אם ורק אם אלכסוני המעוין שווים, כלומר אם המעוין ריבוע."
+        }
+      ]
+    },
+    "6": {
+      "id": "182025dea59f4baf8f1bc79c641c17dd:6",
+      "q": 6,
+      "grade": 9,
+      "topic": "המעוין",
+      "levelLabel": "רמה א׳",
+      "text": "במעוין $ABCD$ הורדו האנכים $AH$ לצלע $BC$ ו־$AK$ לצלע $CD$. גודל הזווית שבין הגבהים $∠HAK$ הוא $62°$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T19/a/figures/q6_head.svg",
+        "sha256": "7b64d0ef2c48f960b7dbd3c28853a644e28a55e40ab0612a12ef6743d837db70"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "תלמיד קבע ש־$∠DAB=62°$. בדקו את טענתו, שחזרו את ארבע זוויות המעוין והסבירו כיצד מיקום העקבים משפיע על המסקנה.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T19/a/figures/q6_head.svg",
+            "sha256": "7b64d0ef2c48f960b7dbd3c28853a644e28a55e40ab0612a12ef6743d837db70"
+          },
+          "answer": "הטענה שגויה. העקבים על הצלעות $BC,CD$, ולכן במרובע $AHCK$ הזווית שב־$C$ היא $∠BCD$; שתי זוויותיו ב־$H,K$ ישרות, לכן $∠BCD=180−62=118$ מעלות. מכאן $∠DAB=∠BCD=118$ מעלות ו־$∠ABC=∠CDA=62$ מעלות: 62 היא הזווית החדה, לא $∠DAB$."
+        },
+        {
+          "label": "ב",
+          "text": "הוכיחו כי $AH=AK$ באמצעות שטח המעוין. האם שוויון הגבהים לבדו היה קובע את הזוויות?",
+          "figure": {
+            "url": "/noam-ai/native/G9-T19/a/figures/q6_head.svg",
+            "sha256": "7b64d0ef2c48f960b7dbd3c28853a644e28a55e40ab0612a12ef6743d837db70"
+          },
+          "answer": "אותו שטח שווה $BC$ כפול $AH$ וגם $CD$ כפול $AK$. במעוין $BC=CD$ ואורכן חיובי, ולכן הגבהים שווים. קשר זה מתקיים במעוינים בעלי זוויות שונות; לבדו אינו קובע את הזוויות."
+        }
+      ]
+    },
+    "7": {
+      "id": "182025dea59f4baf8f1bc79c641c17dd:7",
+      "q": 7,
+      "grade": 9,
+      "topic": "המעוין",
+      "levelLabel": "רמה א׳",
+      "text": "במעוין $ABCD$ נקודות $E,F$ על הצלעות $AB,AD$ בהתאמה. נתון $AE=AF$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T19/a/figures/q7_head.svg",
+        "sha256": "bf4b71a3deb9beb24be32fbd31bb0efb91761b7f059ccfda3fc2d1ac0fa90852"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "נתון $∠DAB=84°$ ו־$∠AEC=114°$. מצאו את $∠ECF$ ובססו כל חציית זווית שנחוצה לחישוב.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T19/a/figures/q7_head.svg",
+            "sha256": "bf4b71a3deb9beb24be32fbd31bb0efb91761b7f059ccfda3fc2d1ac0fa90852"
+          },
+          "answer": "$AC$ חוצה את $∠DAB$ (אלכסון מעוין), לכן $∠EAC=42$ מעלות, ובמשולש $△AEC$ מתקבל $∠ECA=24$ מעלות. $△AEC\\cong △AFC$ (צלע־זווית־צלע: $AE=AF$, $∠EAC=∠FAC$, $AC$ משותפת), לכן $∠ACF=∠ECA$ ו־$AC$ חוצה את $∠ECF$; לכן $∠ECF=48$ מעלות."
+        },
+        {
+          "label": "ב",
+          "text": "הוכיחו כי $CE=CF$ וציינו זוג משולשים חופפים.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T19/a/figures/q7_head.svg",
+            "sha256": "bf4b71a3deb9beb24be32fbd31bb0efb91761b7f059ccfda3fc2d1ac0fa90852"
+          },
+          "answer": "$AC$ משותפת, $AE=AF$, ואלכסון המעוין חוצה את זווית $∠DAB$. לכן $△AEC\\cong △AFC$ לפי צלע־זווית־צלע ומתקבל $CE=CF$."
+        },
+        {
+          "label": "ג",
+          "text": "הוכיחו שהאלכסון $AC$ חוצה את $∠ECF$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T19/a/figures/q7_head.svg",
+            "sha256": "bf4b71a3deb9beb24be32fbd31bb0efb91761b7f059ccfda3fc2d1ac0fa90852"
+          },
+          "answer": "הזוויות $ECA$ ו־$ACF$ שוות כחלקים מתאימים במשולשים החופפים."
+        },
+        {
+          "label": "ד",
+          "text": "הסבירו מדוע $EF∥BD$, בלי להשתמש בדמיון משולשים.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T19/a/figures/q7_head.svg",
+            "sha256": "bf4b71a3deb9beb24be32fbd31bb0efb91761b7f059ccfda3fc2d1ac0fa90852"
+          },
+          "answer": "המשולש $△AEF$ שווה שוקיים; חוצה זווית הראש $AC$ הוא גם גובה לבסיס $EF$, כפי שנובע מחפיפת חצאיו. גם $BD$ מאונך $AC$, ולכן $EF$ מקביל $BD$."
+        }
+      ]
+    },
+    "8": {
+      "id": "182025dea59f4baf8f1bc79c641c17dd:8",
+      "q": 8,
+      "grade": 9,
+      "topic": "המעוין",
+      "levelLabel": "רמה א׳",
+      "text": "במעוין $ABCD$ הנקודה $M$ אמצע $BC$. הישר $AM$ פוגש את המשך $DC$ מעבר ל־$C$ בנקודה $E$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T19/a/figures/q8_head.svg",
+        "sha256": "8b307c6b7823a96ff0b29570da0e13226ded53dd2c39b1e3206e7ca94ad978df"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הוכיחו שהמרובע $ABEC$ מקבילית.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T19/a/figures/q8_head.svg",
+            "sha256": "8b307c6b7823a96ff0b29570da0e13226ded53dd2c39b1e3206e7ca94ad978df"
+          },
+          "answer": "ב־$△ABM$ וב־$△ECM$: $BM=CM$, הזוויות $∠BMA,∠CME$ קודקודיות והזוויות $∠ABM,∠ECM$ מתחלפות כי $AB$ מקביל $CE$. חפיפה זווית־צלע־זווית נותנת $AB=CE$; הן גם מקבילות, ולכן $ABEC$ מקבילית."
+        },
+        {
+          "label": "ב",
+          "text": "הוכיחו כי $BE⊥BD$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T19/a/figures/q8_head.svg",
+            "sha256": "8b307c6b7823a96ff0b29570da0e13226ded53dd2c39b1e3206e7ca94ad978df"
+          },
+          "answer": "במקבילית החדשה $BE$ מקביל $AC$, ובמעוין $AC$ מאונך $BD$, ולכן $BE$ מאונך $BD$."
+        },
+        {
+          "label": "ג",
+          "text": "איזה חלק משטח המעוין הוא שטח $△ACE$? נמקו בעזרת בסיס וגובה.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T19/a/figures/q8_head.svg",
+            "sha256": "8b307c6b7823a96ff0b29570da0e13226ded53dd2c39b1e3206e7ca94ad978df"
+          },
+          "answer": "$CE=AB=DC$, והגובה מ־$A$ לישר $DCE$ הוא גובה המעוין. לכן המשולש בעל מחצית שטח המעוין."
+        },
+        {
+          "label": "ד",
+          "text": "הוכיחו כי המשולש $△BDE$ ישר זווית, ומצאו את יחס שטחו לשטח המעוין.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T19/a/figures/q8_head.svg",
+            "sha256": "8b307c6b7823a96ff0b29570da0e13226ded53dd2c39b1e3206e7ca94ad978df"
+          },
+          "answer": "$BE$ מקביל $AC$ ושווה לו כי $ABEC$ מקבילית, ו־$AC$ מאונך $BD$; לכן $△BDE$ ישר זווית ב־$B$. שטחו $\\f{BE·BD}{2}=\\f{AC·BD}{2}$, כלומר שווה לשטח המעוין, ויחס השטחים הוא 1."
+        }
+      ]
+    },
+    "9": {
+      "id": "182025dea59f4baf8f1bc79c641c17dd:9",
+      "q": 9,
+      "grade": 9,
+      "topic": "המעוין",
+      "levelLabel": "רמה א׳",
+      "text": "ב־$△ABC$ הקטע $AD$ חוצה את $∠BAC$. דרך $D$ הועברו $DE∥AC$ ו־$DF∥AB$, כאשר $E$ על $AB$ ו־$F$ על $AC$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T19/a/figures/q9_head.svg",
+        "sha256": "d4c1380c35a93c89a09627126312a1a8c2618db238164c7bf3b5d7a43b0576e1"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הסבירו מדוע $AEDF$ מקבילית.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T19/a/figures/q9_head.svg",
+            "sha256": "d4c1380c35a93c89a09627126312a1a8c2618db238164c7bf3b5d7a43b0576e1"
+          },
+          "answer": "$AE$ על $AB$ ולכן $AE$ מקביל $DF$; $AF$ על $AC$ ולכן $AF$ מקביל $DE$. שני זוגות צלעות נגדיות מקבילים."
+        },
+        {
+          "label": "ב",
+          "text": "הוכיחו כי $AE=ED$ באמצעות זוויות ב־$△AED$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T19/a/figures/q9_head.svg",
+            "sha256": "d4c1380c35a93c89a09627126312a1a8c2618db238164c7bf3b5d7a43b0576e1"
+          },
+          "answer": "$EAD$ שווה $DAF$ מחציית הזווית, ו־$DAF$ שווה $ADE$ כי $DE$ מקביל $AF$. לכן במשולש $△AED$ זוויות הבסיס שוות, והצלעות $AE,ED$ שוות."
+        },
+        {
+          "label": "ג",
+          "text": "הסיקו את סוג המרובע, ובארו למה המקבילים לבדם לא היו מספיקים.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T19/a/figures/q9_head.svg",
+            "sha256": "d4c1380c35a93c89a09627126312a1a8c2618db238164c7bf3b5d7a43b0576e1"
+          },
+          "answer": "זו מקבילית עם צלעות סמוכות שוות, לכן מעוין. מקבילים לבדם מוכיחים רק מקבילית; שוויון הצלעות נובע מחוצה הזווית."
+        }
+      ]
+    },
+    "10": {
+      "id": "182025dea59f4baf8f1bc79c641c17dd:10",
+      "q": 10,
+      "grade": 9,
+      "topic": "המעוין",
+      "levelLabel": "רמה א׳",
+      "text": "שרטטו מעוין $KLMN$ שצלעו $7$ ס״מ וזווית $∠NKL=60°$. הוסיפו את אלכסוניו.",
+      "items": [
+        {
+          "label": "א",
+          "text": "איזה אלכסון שווה לצלע? הוכיחו באמצעות משולש שווה צלעות.",
+          "answer": "$KL=KN$ ו־$LKN$ זווית 60 מעלות; שאר זוויות המשולש $△KLN$ הן 60 מעלות ולכן $LN=7$ ס״מ."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את האלכסון האחר בצורת שורש מפושט.",
+          "answer": "חצי $LN$ הוא $\\f{7}{2}$. בפיתגורס חצי $KM$ הוא $\\f{7\\sqrt{3}}{2}$, ולכן $KM$ הוא $7\\sqrt{3}$ ס״מ."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את שטח המעוין.",
+          "answer": "מחצית מכפלת האלכסונים היא $\\f{49\\sqrt{3}}{2}$ סמ״ר."
+        }
+      ]
+    },
+    "11": {
+      "id": "182025dea59f4baf8f1bc79c641c17dd:11",
+      "q": 11,
+      "grade": 9,
+      "topic": "המעוין",
+      "levelLabel": "רמה א׳",
+      "text": "במעוין $ABCD$, דרך $A,C$ הועברו ישרים מקבילים ל־$BD$, ודרך $B,D$ ישרים מקבילים ל־$AC$. חיתוכיהם יוצרים את המרובע $EFGH$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T19/a/figures/q11_head.svg",
+        "sha256": "f691d02bc9207f89df794b0c6f0df815eee498a64288450fad8ea5c8bb19f9d7"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הוכיחו שהמרובע החיצוני מלבן.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T19/a/figures/q11_head.svg",
+            "sha256": "f691d02bc9207f89df794b0c6f0df815eee498a64288450fad8ea5c8bb19f9d7"
+          },
+          "answer": "צלעותיו הנגדיות מקבילות לאותו אלכסון ולכן מקבילות זו לזו. צלעות סמוכות מקבילות לאלכסונים המאונכים, ולכן כל זווית ישרה."
+        },
+        {
+          "label": "ב",
+          "text": "נתון $AC=14$ ס״מ ו־$BD=20$ ס״מ. חשבו את שטח המלבן.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T19/a/figures/q11_head.svg",
+            "sha256": "f691d02bc9207f89df794b0c6f0df815eee498a64288450fad8ea5c8bb19f9d7"
+          },
+          "answer": "צלעות המלבן שוות לאלכסוני המעוין, ולכן שטחו $14·20=280$ סמ״ר."
+        },
+        {
+          "label": "ג",
+          "text": "מה יחס שטח המלבן לשטח המעוין? הוכיחו גם בלי להציב מספרים.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T19/a/figures/q11_head.svg",
+            "sha256": "f691d02bc9207f89df794b0c6f0df815eee498a64288450fad8ea5c8bb19f9d7"
+          },
+          "answer": "שטח המלבן הוא מכפלת האלכסונים ושטח המעוין מחציתה, ולכן היחס הוא 2."
+        },
+        {
+          "label": "ד",
+          "text": "סמנו ב־$O$ את מפגש האלכסונים. הוכיחו כי $OAEB$ מלבן, קראו את אורכי צלעותיו והשוו את שטחו לשטח המעוין.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T19/a/figures/q11_head.svg",
+            "sha256": "f691d02bc9207f89df794b0c6f0df815eee498a64288450fad8ea5c8bb19f9d7"
+          },
+          "answer": "$AE$ מקביל $OB$, $BE$ מקביל $OA$ והזווית $AOB$ ישרה, לכן $OAEB$ מלבן. צלעותיו $OA=7$ ס״מ ו־$OB=10$ ס״מ (חצאי האלכסונים); שטחו 70 סמ״ר, מחצית שטח המעוין (140 סמ״ר)."
+        }
+      ]
+    },
+    "12": {
+      "id": "182025dea59f4baf8f1bc79c641c17dd:12",
+      "q": 12,
+      "grade": 9,
+      "topic": "המעוין",
+      "levelLabel": "רמה א׳",
+      "text": "במעוין $ABCD$ הנקודה $O$ מפגש האלכסונים ו־$M$ אמצע $AB$. הנקודה $E$ על המשך $OM$ מעבר ל־$M$, ו־$OM=ME$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T19/a/figures/q12_head.svg",
+        "sha256": "02b0fadf120a2260ce192a75e694c95edec81cd629ee0de47d35fa5404747426"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "השתמשו בנקודה $E$ הנתונה והוכיחו שהמרובע $AOBE$ מלבן.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T19/a/figures/q12_head.svg",
+            "sha256": "02b0fadf120a2260ce192a75e694c95edec81cd629ee0de47d35fa5404747426"
+          },
+          "answer": "במרובע $AOBE$ האלכסונים $AB,OE$ חוצים זה את זה ב־$M$, לכן מקבילית. הזווית $AOB$ ישרה מהמעוין; מקבילית עם זווית ישרה היא מלבן."
+        },
+        {
+          "label": "ב",
+          "text": "הסיקו $AB=2OM$ מתוך תכונות המלבן בלבד.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T19/a/figures/q12_head.svg",
+            "sha256": "02b0fadf120a2260ce192a75e694c95edec81cd629ee0de47d35fa5404747426"
+          },
+          "answer": "אלכסוני המלבן שווים, ולכן $AB=OE$. הנקודה $M$ אמצע $OE$, לכן $OE=2OM$."
+        },
+        {
+          "label": "ג",
+          "text": "אם $OM=18.5$ ס״מ, תלמיד הציע היקף $144$ ס״מ. בדקו ותקנו לפי הצורך.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T19/a/figures/q12_head.svg",
+            "sha256": "02b0fadf120a2260ce192a75e694c95edec81cd629ee0de47d35fa5404747426"
+          },
+          "answer": "$AB=2OM=37$ ס״מ, ולכן ההיקף 148 ס״מ; ההצעה 144 שגויה."
+        },
+        {
+          "label": "ד",
+          "text": "נתון גם $AC=24$ ס״מ. תלמיד נוסף הציע $BD=68$ ס״מ. בדקו באמצעות הצלע שמצאתם, תקנו וחשבו את השטח.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T19/a/figures/q12_head.svg",
+            "sha256": "02b0fadf120a2260ce192a75e694c95edec81cd629ee0de47d35fa5404747426"
+          },
+          "answer": "הצלע 37 ס״מ וחצי $AC$ הוא 12 ס״מ, לכן $BO=\\sqrt{(37)^2-(12)^2}=35$ ס״מ; $BD=70$ ס״מ ולא 68, והשטח 840 סמ״ר."
+        }
+      ]
+    },
+    "13": {
+      "id": "182025dea59f4baf8f1bc79c641c17dd:13",
+      "q": 13,
+      "grade": 9,
+      "topic": "המעוין",
+      "levelLabel": "רמה א׳",
+      "text": "שתי צלעות סמוכות במעוין $ABCD$ מתוארות בביטויים $AB=4x−5$ ו־$BC=2x+9$, בס״מ.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T19/a/figures/q13_head.svg",
+        "sha256": "8381699028ea18185e857a6687bedfc0cf71ceb0e9aea9a72df7775c987d949d"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מצאו את הפרמטר ובדקו שהאורכים מתאימים לצלעות.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T19/a/figures/q13_head.svg",
+            "sha256": "8381699028ea18185e857a6687bedfc0cf71ceb0e9aea9a72df7775c987d949d"
+          },
+          "answer": "$4x−5=2x+9$, לכן $x=7$ ושתי הצלעות 23 ס״מ, חיוביות."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את ההיקף.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T19/a/figures/q13_head.svg",
+            "sha256": "8381699028ea18185e857a6687bedfc0cf71ceb0e9aea9a72df7775c987d949d"
+          },
+          "answer": "$4·23=92$ ס״מ."
+        },
+        {
+          "label": "ג",
+          "text": "האם הנתונים קובעים גם את השטח? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T19/a/figures/q13_head.svg",
+            "sha256": "8381699028ea18185e857a6687bedfc0cf71ceb0e9aea9a72df7775c987d949d"
+          },
+          "answer": "לא. אורך הצלע נקבע, אך זווית המעוין או גובהו לא נקבעו. מעוינים בעלי אותה צלע ופתיחות שונות בעלי שטחים שונים."
+        }
+      ]
+    },
+    "14": {
+      "id": "182025dea59f4baf8f1bc79c641c17dd:14",
+      "q": 14,
+      "grade": 9,
+      "topic": "המעוין",
+      "levelLabel": "רמה א׳",
+      "text": "במעוין $ABCD$ נתון $∠BAC=∠ABC$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T19/a/figures/q14_head.svg",
+        "sha256": "e2a896a687fb3c8cc20e84dd879ceff3369c7e48ccc603a1154c9a3ac04f0724"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את זוויות המעוין.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T19/a/figures/q14_head.svg",
+            "sha256": "e2a896a687fb3c8cc20e84dd879ceff3369c7e48ccc603a1154c9a3ac04f0724"
+          },
+          "answer": "נסמן את זווית $∠DAB$ ב־$t$. אז $BAC$ שווה למחצית $t$ ו־$ABC=180−t$, ולכן $t=120$. הזוויות $∠DAB,∠BCD$ הן 120 מעלות והזוויות $∠ABC,∠CDA$ הן 60 מעלות."
+        },
+        {
+          "label": "ב",
+          "text": "תלמיד הסיק מהשוויון שהמעוין ריבוע. הפריכו בעזרת הזוויות שמצאתם.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T19/a/figures/q14_head.svg",
+            "sha256": "e2a896a687fb3c8cc20e84dd879ceff3369c7e48ccc603a1154c9a3ac04f0724"
+          },
+          "answer": "הזוויות אינן ישרות, ולכן אינו ריבוע. שוויון בין חצי זווית לזווית סמוכה אינו שוויון בין הזוויות השלמות."
+        }
+      ]
+    },
+    "15": {
+      "id": "182025dea59f4baf8f1bc79c641c17dd:15",
+      "q": 15,
+      "grade": 9,
+      "topic": "המעוין",
+      "levelLabel": "רמה א׳",
+      "text": "שטח המעוין $ABCD$ הוא $240$ סמ״ר ונתון $AC=16$ ס״מ. $CH$ הוא גובה לצלע $AB$. הוצע שאורכו $15$ ס״מ.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T19/a/figures/q15_head.svg",
+        "sha256": "b18aa5e15b1cdff3f51d474463e3766c79126e821d22139b8a68a89e1b6109cc"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "שחזרו את האלכסון $BD$ ואת אורך הצלע.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T19/a/figures/q15_head.svg",
+            "sha256": "b18aa5e15b1cdff3f51d474463e3766c79126e821d22139b8a68a89e1b6109cc"
+          },
+          "answer": "240 הוא מחצית 16 כפול $BD$, לכן $BD=30$ ס״מ. חצאי האלכסונים 8,15 ולכן הצלע 17 ס״מ."
+        },
+        {
+          "label": "ב",
+          "text": "בדקו את ההצעה ותנו את הגובה הנכון.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T19/a/figures/q15_head.svg",
+            "sha256": "b18aa5e15b1cdff3f51d474463e3766c79126e821d22139b8a68a89e1b6109cc"
+          },
+          "answer": "הגובה הוא שטח חלקי צלע: $\\f{240}{17}$ ס״מ. לכן ההצעה 15 ס״מ אינה נכונה."
+        }
+      ]
+    },
+    "16": {
+      "id": "182025dea59f4baf8f1bc79c641c17dd:16",
+      "q": 16,
+      "grade": 9,
+      "topic": "המעוין",
+      "levelLabel": "רמה א׳",
+      "text": "שרטטו מרובע קמור $PQRS$ שבו האלכסונים $PR,QS$ חוצים זה את זה בנקודה $T$ ומאונכים זה לזה. בחרו אלכסונים באורכים שונים.",
+      "items": [
+        {
+          "label": "א",
+          "text": "הוכיחו מן הנתונים שהמרובע מעוין.",
+          "answer": "החצייה ההדדית מוכיחה מקבילית. המשולשים הישרים שסביב $T$ חופפים לפי ניצבים, ולכן צלעות סמוכות שוות; זו מקבילית שהיא מעוין."
+        },
+        {
+          "label": "ב",
+          "text": "הסבירו מדוע התנאי שבחרתם על אורכי האלכסונים מונע ריבוע.",
+          "answer": "בריבוע האלכסונים שווים. בדוגמה נבחרו שונים, ולכן המעוין אינו ריבוע."
+        }
+      ]
+    },
+    "17": {
+      "id": "182025dea59f4baf8f1bc79c641c17dd:17",
+      "q": 17,
+      "grade": 9,
+      "topic": "המעוין",
+      "levelLabel": "רמה א׳",
+      "text": "במעוין $ABCD$ נתון $AB=8$ ס״מ ו־$∠DAB=120°$. האנך מ־$D$ לישר $AB$ פוגש אותו ב־$H$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T19/a/figures/q17_head.svg",
+        "sha256": "20139cea11a28b3c15e188010b0c21b3209d6c8dfb5c2c2ec5de35794f291fec"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הסבירו מדוע $H$ על המשך $BA$, וחשבו את הגובה $DH$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T19/a/figures/q17_head.svg",
+            "sha256": "20139cea11a28b3c15e188010b0c21b3209d6c8dfb5c2c2ec5de35794f291fec"
+          },
+          "answer": "$∠DAB$ קהה, לכן העקב $H$ על המשך $BA$ מעבר ל־$A$: על הקרן $AB$ היו במשולש $DAH$ זווית קהה וגם זווית ישרה. $∠DAH=60$ מעלות; שיקוף $A$ ביחס ל־$H$ יוצר משולש שווה צלעות שצלעו 8, לכן $AH=4$ ס״מ ו־$DH=4\\sqrt{3}$ ס״מ."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את שטח המעוין ובדקו שאינו שטח ריבוע בעל אותה צלע.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T19/a/figures/q17_head.svg",
+            "sha256": "20139cea11a28b3c15e188010b0c21b3209d6c8dfb5c2c2ec5de35794f291fec"
+          },
+          "answer": "השטח $8·4\\sqrt{3}=32\\sqrt{3}$ סמ״ר. הוא קטן מ־64 סמ״ר כי $\\sqrt{3}<2$, ולכן קטן משטח הריבוע."
+        }
+      ]
+    },
+    "18": {
+      "id": "182025dea59f4baf8f1bc79c641c17dd:18",
+      "q": 18,
+      "grade": 9,
+      "topic": "המעוין",
+      "levelLabel": "רמה א׳",
+      "text": "במעוין $ABCD$ נתון $AC=14$ ס״מ ו־$BD=48$ ס״מ. המרובע $EFGH$ מחבר את אמצעי הצלעות. מותר להשתמש בקשרים שהוכחתם בשאלה 5.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T19/a/figures/q18_head.svg",
+        "sha256": "c425d69d6fcda96a9d09ecbb04260f98d30f9fbb138e07e0e97d94b538e3facc"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את היקף המרובע הפנימי ואת שטחו.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T19/a/figures/q18_head.svg",
+            "sha256": "c425d69d6fcda96a9d09ecbb04260f98d30f9fbb138e07e0e97d94b538e3facc"
+          },
+          "answer": "צלעות המלבן הן 7 ו־24 ס״מ. היקפו 62 ס״מ ושטחו 168 סמ״ר."
+        },
+        {
+          "label": "ב",
+          "text": "איזה חלק משטח המעוין נמצא מחוץ למרובע הפנימי? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T19/a/figures/q18_head.svg",
+            "sha256": "c425d69d6fcda96a9d09ecbb04260f98d30f9fbb138e07e0e97d94b538e3facc"
+          },
+          "answer": "שטח המעוין 336 סמ״ר, לכן מחוץ למלבן 168 סמ״ר, מחצית מהשטח."
+        }
+      ]
+    }
+  }
+}

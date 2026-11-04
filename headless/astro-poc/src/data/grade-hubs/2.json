@@ -33,14 +33,14 @@
   "footerLinks": [
     {
       "label": "אודותינו",
-      "href": "https://www.noamdoronmath.co.il/aboutus#Who%20is%20Noam%20Doron"
+      "href": "https://www.noamdoronmath.co.il/aboutus"
     },
     {
       "label": "בלוג",
       "href": "https://www.noamdoronmath.co.il/blog"
     },
     {
-      "label": "תוספים",
+      "label": "משחקים",
       "href": "https://www.noamdoronmath.co.il/math-tools"
     },
     {

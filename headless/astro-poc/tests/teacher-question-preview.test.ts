@@ -34,7 +34,7 @@ function readManifest(pdfId: string): Manifest {
   return JSON.parse(readFileSync(new URL(`../../../noam-ai/manifests/${pdfId}.json`, import.meta.url), 'utf8'));
 }
 
-const previewHelpers = () => ['exKey', 'questionPreviewGroup', 'questionPreviewSlices'].map(definition).join('\n');
+const previewHelpers = () => ['exKey', 'questionPreviewGroup', 'originalQuestionPreviewSlices', 'questionDataSlices', 'answerDocumentSource', 'questionPreviewSlices'].map(definition).join('\n');
 const preview = new Function(`${previewHelpers()} return questionPreviewSlices;`)() as (group: Group, manifest: Manifest) => Slice[];
 
 const covers = (slices: Slice[], page: number, y: number) => slices.some((slice) => (
@@ -206,6 +206,7 @@ test('manual selection keeps every part and preserves earlier test/review sectio
     const clearPreparedPrint = () => {};
     const render = () => {};
     const announce = (message) => announcements.push(message);
+    const topicSearch = null;
     const $ = () => null;
     ${definition('exKey')}
     ${definition('selectionKey')}
@@ -235,15 +236,17 @@ test('manual selection keeps every part and preserves earlier test/review sectio
   assert.deepEqual(harness.state.blocks[0].keys, keys(saved));
   assert.deepEqual(harness.state.blocks[1].keys, keys(chosen));
   assert.deepEqual(harness.state.selected, []);
-  assert.equal(harness.state.wizard, 'topic');
+  assert.equal(harness.state.wizard, 'setup');
 });
 
 test('ticking a later question does not scroll the unchanged selection step back to the top', () => {
   const app = new Function(`
     const state = { wizard: 'pick' };
-    const WIZARD_ORDER = ['grade', 'topic', 'level', 'scenario', 'style', 'pick', 'result'];
-    const scrolled = [];
+    const clearPreparedPrint = () => {};
+    const WIZARD_ORDER = ['setup', 'purpose', 'pick', 'result'];
+    const scrolled = [], focused = [];
     const controls = new Map();
+    const topicSearch = null;
     const $ = (id) => {
       if (!controls.has(id)) controls.set(id, {
         id, hidden: false, textContent: '', parentElement: null, children: [], classList: { toggle() {} },
@@ -253,6 +256,8 @@ test('ticking a later question does not scroll the unchanged selection step back
           this.children.push(child);
           return child;
         },
+        setAttribute() {},
+        focus() { focused.push(id); },
         scrollIntoView() { scrolled.push(id); },
       });
       return controls.get(id);
@@ -260,7 +265,7 @@ test('ticking a later question does not scroll the unchanged selection step back
     const document = { body: { dataset: { wizard: 'pick' } }, querySelectorAll: () => [] };
     const band = () => 'middle';
     ${definition('applyWizard')}
-    return { state, apply: applyWizard, scrolled, controls };
+    return { state, apply: applyWizard, scrolled, focused, controls };
   `)();
   app.apply();
   app.apply();
@@ -268,8 +273,10 @@ test('ticking a later question does not scroll the unchanged selection step back
   assert.equal(levelChoice.parentElement.id, 'pick-level-home');
   assert.equal(app.controls.get('pick-level-home').children.length, 1, 'Rerendering does not duplicate the level control');
   assert.deepEqual(app.scrolled, [], 'Selection updates should preserve the teacher’s current scroll position');
+  assert.deepEqual(app.focused, [], 'Question selection must not move keyboard focus');
   app.state.wizard = 'result';
   app.apply();
   assert.equal(levelChoice.parentElement.id, 'wizard-level-home');
-  assert.deepEqual(app.scrolled, ['wizard-result'], 'An actual wizard transition still brings its destination into view');
+  assert.deepEqual(app.scrolled, ['wizard-bar'], 'A wizard transition keeps the current step heading and progress in view');
+  assert.deepEqual(app.focused, ['wizard-label'], 'Only a step transition moves focus to its heading');
 });

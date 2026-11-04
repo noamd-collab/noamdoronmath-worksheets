@@ -154,7 +154,7 @@ describe('grade 9 factoring marked source', () => {
     assert.match(printer, /class="teacher-print-note" dir="rtl"/);
     assert.equal(printer.split('attachTeacherNote(printArea, note)').length - 1, 2);
     assert.match(page, /\.print-area \.teacher-print-note\{[^}]*direction:rtl[^}]*break-inside:avoid;page-break-inside:avoid/);
-    assert.match(page, /ההערה מודפסת על הדף/);
+    assert.match(page, /הוראות לתלמיד — מודפסות/);
     assert.match(printer, /fonts\.load\('11px Heebo'\)/);
     assert.match(page, /\.plan-notes\{display:none!important\}/);
     assert.match(page, /\.print-area \.crop-sheet\.has-teacher-note\{[^}]*height:281mm[^}]*overflow:hidden/);
@@ -163,7 +163,7 @@ describe('grade 9 factoring marked source', () => {
     assert.match(page, /\.print-area \.source-sheet\{[^}]*height:281mm/);
     const served = readFileSync(new URL('../public/teachers/index.html', import.meta.url), 'utf8');
     assert.match(served, /\.print-area \.teacher-print-note\{[^}]*direction:rtl[^}]*break-inside:avoid;page-break-inside:avoid/);
-    assert.match(served, /ההערה מודפסת על הדף/);
+    assert.match(served, /הוראות לתלמיד — מודפסות/);
     assert.match(served, /\.print-area \.crop-sheet\.has-teacher-note canvas\{width:auto;height:auto;max-width:180mm/);
     assert.match(served, /\.print-area \.crop-sheet\.has-teacher-note\{[^}]*height:281mm[^}]*overflow:hidden/);
   });
@@ -350,8 +350,10 @@ describe('teacher catalog picker', () => {
     assert.deepEqual(keepVisible(['ex:a:1ב', 'ex:b:3ב', 'sheet:c'], ['ex:b:3ב']), ['ex:b:3ב']);
     const topicStart = preview.indexOf("$('topic').addEventListener");
     const topicHandler = preview.slice(topicStart, preview.indexOf("$('filter-all')", topicStart));
-    assert.match(topicHandler, /state\.selected = \[\]/);
-    assert.match(topicHandler, /applyScenario/);
+    assert.match(topicHandler, /changeTeacherScope\(state\.grade, \$\('topic'\)\.value\)/);
+    const scopeChange = preview.slice(preview.indexOf('async function changeTeacherScope'), preview.indexOf('function exKey'));
+    assert.match(scopeChange, /confirmTeacherReplacement/);
+    assert.match(scopeChange, /state\.selected = \[\]/);
     const levelHandler = preview.slice(preview.indexOf("document.querySelectorAll('[name=level]')"), preview.indexOf("$('grade').addEventListener"));
     assert.match(levelHandler, /keepVisible\(state\.selected, visibleSelectionKeys\(\)\)/);
     const resolve = preview.slice(preview.indexOf('async function resolveChosen'), preview.indexOf('async function updatePrint'));
@@ -573,7 +575,7 @@ describe('teacher catalog picker', () => {
       assert.equal(html.includes('אפשר להוסיף סעיף'), false);
       assert.match(html, /id="ai-suggest-status"[^>]*role="status"/);
       assert.match(html, /id="section-kind-test"/);
-      assert.match(html, /id="more-topic-yes"/);
+      assert.match(html, /id="add-topic"/);
     }
     assert.match(printer, /data-whole-question/);
     assert.match(printer, /pickMode: 'manual'/);

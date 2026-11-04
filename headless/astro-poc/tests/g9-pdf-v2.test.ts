@@ -60,7 +60,7 @@ describe('grade 9 PDF v2 replacements', () => {
     assert.ok(rhombus);
     assert.equal(
       rhombus.levels.find((level) => level.key === 'b')?.pdfId,
-      '3151dae0d8864f9fb3271e1a3fb3b87b'
+      '41d31b1a4eea4ed998ed62e362bf258c'
     );
   });
 

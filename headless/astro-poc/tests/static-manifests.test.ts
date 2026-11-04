@@ -29,9 +29,9 @@ describe('same-origin static manifests (HEADLESS-MIGRATION-13)', () => {
     assert.ok(provenance.sourceOfTruth.path.includes('noam-ai/manifests'));
     // Representative active native releases for the same G7/G8/G9 identities.
     for (const id of [
-      'ad9fd13d91a14886b0e03a0c15e14d82', // G7-T08 a
-      'd5efea6959f4415a913565dec0994063', // G8-T02 a
-      'deffb55c56a64578b7554ecd921d17ac', // G9-T02 a
+      'b6b9bf5985484191b71c0c864fd04c31', // G7-T08 a
+      '4d77b8a6dc9a471594f248c95a7575c0', // G8-T02 a
+      'fa1bf558e210495e98750875aa9b2d8a', // G9-T02 a
     ]) {
       assert.ok(provenance.files[id], 'missing provenance entry ' + id);
       assert.equal(existsSync(join(pub, 'noam-ai', 'manifests', id + '.json')), true);

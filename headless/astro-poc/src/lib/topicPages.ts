@@ -1094,6 +1094,37 @@ function isolateJsonLdFaq(jsonLd: Record<string, unknown>): Record<string, unkno
 }
 
 /**
+ * ISO date (YYYY-MM-DD) from the visible “… · עודכן D.M.YYYY” line, or null.
+ * This is the only date source for topic-page dateModified: never the build,
+ * deploy, or capture time, so the structured data says what the page says.
+ */
+export function updatedLineIsoDate(updatedLine: string | null | undefined): string | null {
+  const m = /עודכן\s+(\d{1,2})\.(\d{1,2})\.(\d{4})/.exec(updatedLine || '');
+  if (!m) return null;
+  const [day, month, year] = [Number(m[1]), Number(m[2]), Number(m[3])];
+  const date = new Date(Date.UTC(year, month - 1, day));
+  if (date.getUTCFullYear() !== year || date.getUTCMonth() !== month - 1 || date.getUTCDate() !== day) {
+    return null;
+  }
+  return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+}
+
+/** WebPage and LearningResource nodes get the visible update date, if any. */
+function withJsonLdDateModified(
+  jsonLd: Record<string, unknown>,
+  updatedLine: string | null | undefined
+): Record<string, unknown> {
+  const iso = updatedLineIsoDate(updatedLine);
+  if (!iso) return jsonLd;
+  const graph = (jsonLd['@graph'] as Record<string, unknown>[] | undefined) || [];
+  for (const node of graph) {
+    if (node['@type'] !== 'WebPage' && node['@type'] !== 'LearningResource') continue;
+    if (node.dateModified == null) node.dateModified = iso;
+  }
+  return jsonLd;
+}
+
+/**
  * Visible strings TopicPage renders outside bodyFlow (h1, FAQ, related labels).
  * Sections, intro, and stored bodyFlow stay as captured; synthesizeBodyFlow
  * isolates those when the page is rendered.
@@ -1121,7 +1152,7 @@ function withVisibleMathIsolates(data: TopicPageContent): TopicPageContent {
       label: isolateMathRuns(rel.label),
     })),
     relatedTopics: presentRelatedTopics(data),
-    jsonLd: isolateJsonLdFaq(data.jsonLd),
+    jsonLd: withJsonLdDateModified(isolateJsonLdFaq(data.jsonLd), data.updatedLine),
   };
 }
 

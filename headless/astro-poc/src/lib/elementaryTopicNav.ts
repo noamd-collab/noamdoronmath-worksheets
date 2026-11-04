@@ -3,6 +3,7 @@
  * Labels and group headings come from topic-page and catalog data. No invented copy.
  */
 import { loadCatalog } from './catalog/loadCatalog';
+import { REDIRECT_RULES } from './redirects';
 import {
   TOPIC_PAGE_AUTHORED_SLUGS,
   loadAllTopicPages,
@@ -82,12 +83,18 @@ export function elementaryTopicSections(grade: number): ElementaryTopicSection[]
 /**
  * Unique catalog topic → topic page. A grade+topic with two pages is omitted
  * so a worksheet card title is not pointed at an arbitrary page.
+ * A page whose path is a redirect source (an old URL that 301s to another
+ * topic page) is not a second page: only the redirect target counts. Without
+ * this, /angles-grade-7 → /adjacent-vertical-angles-grade-7 left catalog topic
+ * 7:12 with no title link.
  */
 export function topicPageHrefByCatalogTopic(): Record<string, string> {
+  const redirectSources = new Set(REDIRECT_RULES.map((rule) => rule.from));
   const groups = new Map<string, string[]>();
   for (const page of loadAllTopicPages()) {
     const id = page.catalogCta?.catalogTopicId;
     if (id == null || !page.path.startsWith('/')) continue;
+    if (redirectSources.has(page.path)) continue;
     const key = `${page.grade}:${id}`;
     const list = groups.get(key) ?? [];
     list.push(page.path);

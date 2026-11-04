@@ -9,8 +9,27 @@ import { defineConfig, envField } from 'astro/config';
 import react from '@astrojs/react';
 import node from '@astrojs/node';
 
+/**
+ * DEV/QA-only routes. They live outside src/pages so @wix/astro-pages never
+ * lists them in /_wix/pages.json, and Wix never adds them to its sitemap.
+ * scripts/check-loops-k3.mjs still opens /dev-loops on this loopback server.
+ */
+const devOnlyRoutes = {
+  name: 'noam-dev-only-routes',
+  hooks: {
+    /** @param {{ injectRoute: (route: { pattern: string; entrypoint: string | URL; prerender?: boolean }) => void }} options */
+    'astro:config:setup': ({ injectRoute }) => {
+      injectRoute({
+        pattern: '/dev-loops',
+        entrypoint: new URL('./src/dev-pages/dev-loops.astro', import.meta.url),
+        prerender: false,
+      });
+    },
+  },
+};
+
 export default defineConfig({
-  integrations: [react()],
+  integrations: [react(), devOnlyRoutes],
   output: 'server',
   adapter: node({ mode: 'standalone' }),
   server: { host: '127.0.0.1', port: 4337 },

@@ -2676,7 +2676,7 @@ html.nd-motion-off .exact-viewer *,html.noam-a11y-motion .exact-viewer *{scroll-
 <script src="noam-diagram-plan.js?v=20261021-plural-relations1"></script>
 <script src="noam-local-visual.js?v=20261027-native1"></script>
 <script src="noam-native-visual.js?v=20261029-angles1"></script>
-<script src="noam-source-panels.js?v=20261028-panels1"></script>
+<script src="noam-source-panels.js?v=20261102-answers1"></script>
 <script src="noam-authored-geometry.js?v=20261028-square1"></script>
 <script src="noam-authored-visual.js?v=20261028-source5"></script>
 <script src="noam-visual-data.js?v=20261028-source3"></script>
@@ -2685,7 +2685,7 @@ html.nd-motion-off .exact-viewer *,html.noam-a11y-motion .exact-viewer *{scroll-
 <script src="noam-source-scaffold.js?v=20261029-scaffold1"></script>
 <script src="noam-glossary-curriculum.js?v=20260927-concepts2"></script>
 <script src="noam-glossary.js?v=20261029-context6"></script>
-<script src="noam-curated-hints.js?v=20261031-source-bound3"></script>
+<script src="noam-curated-hints.js?v=20261102-answers1"></script>
 <script>
 (function(){
 
@@ -4573,6 +4573,7 @@ var activeGlossaryEntryId = null;
 var noamGlossaryPopover = null;
 var noamGlossaryTrigger = null;
 var noamGlossaryCloseTimer = null;
+var noamGlossaryPositionFrame = null;
 
 // Announce new events without making rebuilt conversation history a live log.
 function announceNoam(text){
@@ -5352,6 +5353,13 @@ function ensureNoamGlossaryPopover(){
     }
   },0);});
   document.body.appendChild(noamGlossaryPopover);
+  // Focus/scroll can move the fixed hint controls after the initial measurement.
+  window.addEventListener("scroll",scheduleNoamGlossaryPosition,true);
+  window.addEventListener("resize",scheduleNoamGlossaryPosition);
+  if(window.visualViewport){
+    window.visualViewport.addEventListener("resize",scheduleNoamGlossaryPosition);
+    window.visualViewport.addEventListener("scroll",scheduleNoamGlossaryPosition);
+  }
   return noamGlossaryPopover;
 }
 
@@ -5360,10 +5368,13 @@ function positionNoamGlossaryPopover(trigger){
   var rect=trigger.getBoundingClientRect();
   var viewportWidth=document.documentElement.clientWidth;
   var viewportHeight=window.innerHeight,bottom=viewportHeight-10;
-  // A term near the transcript footer must not cover the hint/composer controls.
-  var compose=typeof panelBody!=="undefined"&&panelBody.contains(trigger)&&panelBody.querySelector(".noam-compose");
-  var composeRect=compose&&compose.getBoundingClientRect();
-  if(composeRect&&composeRect.height>0&&composeRect.top>20){bottom=Math.min(bottom,composeRect.top-8);}
+  // The hint row can sit above the composer; protect its real visible bounds too.
+  if(typeof panelBody!=="undefined"&&panelBody.contains(trigger)){
+    panelBody.querySelectorAll("#noamHint,.exact-hint-row,.noam-compose").forEach(function(control){
+      var boundary=control.getBoundingClientRect();
+      if(boundary.width>0&&boundary.height>0&&boundary.top>20){bottom=Math.min(bottom,boundary.top-8);}
+    });
+  }
   var maxHeight=Math.max(1,bottom-10);
   noamGlossaryPopover.style.boxSizing="border-box";
   noamGlossaryPopover.style.maxHeight=maxHeight+"px";
@@ -5377,8 +5388,17 @@ function positionNoamGlossaryPopover(trigger){
   noamGlossaryPopover.style.top=Math.round(top)+"px";
 }
 
+function scheduleNoamGlossaryPosition(){
+  if(!noamGlossaryTrigger||!noamGlossaryPopover||noamGlossaryPopover.hidden||noamGlossaryPositionFrame!==null){return;}
+  noamGlossaryPositionFrame=requestAnimationFrame(function(){
+    noamGlossaryPositionFrame=null;
+    if(noamGlossaryTrigger&&noamGlossaryTrigger.isConnected){positionNoamGlossaryPopover(noamGlossaryTrigger);}
+  });
+}
+
 function hideNoamGlossaryPopover(){
   clearTimeout(noamGlossaryCloseTimer);
+  if(noamGlossaryPositionFrame!==null){cancelAnimationFrame(noamGlossaryPositionFrame);noamGlossaryPositionFrame=null;}
   if (noamGlossaryTrigger){noamGlossaryTrigger.setAttribute("aria-expanded","false");}
   noamGlossaryTrigger=null;
   if (noamGlossaryPopover){noamGlossaryPopover.hidden=true;}
@@ -5410,6 +5430,7 @@ function showNoamGlossaryPopover(trigger,entry,keyboardOpen){
   popover.hidden=false;
   positionNoamGlossaryPopover(trigger);
   if (keyboardOpen){more.focus({preventScroll:true});}
+  scheduleNoamGlossaryPosition();
 }
 
 function noamStripMarkdownEmphasis(text){
@@ -5709,7 +5730,9 @@ function renderNoamChat(){
       window.open(aiFeedbackUrl(selectedExercise),"_blank","noopener,noreferrer");
     });
   }
-  document.getElementById("noamSend").addEventListener("click",function(){
+  var noamSendButton=document.getElementById("noamSend");
+  noamSendButton.addEventListener("pointerdown",noamKeepComposerFocusForSend);
+  noamSendButton.addEventListener("click",function(){
     var input=document.getElementById("noamQuestion");
     var message=String(input.value||"").trim().slice(0,700);
     if (!message){ input.focus(); return; }
@@ -5866,6 +5889,16 @@ function locateSelectedExercise(){
     (pin||page).scrollIntoView({behavior:"smooth",block:"center",inline:"nearest"});
     (pin||pdfScroll).focus({preventScroll:true});
   }
+}
+
+function noamKeepComposerFocusForSend(event){
+  // On phones a blur reveals the question card and moves the send button
+  // between pointerdown and pointerup. Keep the field focused until the native
+  // click submits; never submit on pointerdown or synthesize a second click.
+  var input=document.getElementById("noamQuestion");
+  if(!mobileLayout.matches||!input||document.activeElement!==input||
+      event.button!==0||event.isPrimary===false||event.currentTarget.disabled){return;}
+  event.preventDefault();
 }
 
 function setNoamBusy(value){
@@ -7244,6 +7277,25 @@ function noamCanonicalOtherPartFigure(question,item,exercise,data,earlier){
       data.figures.filter(function(f){return f&&f.id===figure;}).length!==1){return null;}
   return {clause:matches[0][1],label:last.label};
 }
+function noamCanonicalSelfContainedSubstitution(question,item,exercise,data){
+  // A narrow printed grammar proves that this task contains both the whole
+  // expression and its only variable's value. Merely lacking an exported
+  // drawing is not enough to skip image reading for an arbitrary text task.
+  if(!question||!item||question.figure_id!==null||item.figure_id!==null||
+      exercise.nativeFigureId||exercise.nativeFigureUrl||question.table||item.table||
+      !Array.isArray(question.given)||question.given.length||
+      !Array.isArray(item.given)||item.given.length||
+      !Array.isArray(question.to_construct)||question.to_construct.length||
+      !Array.isArray(item.to_construct)||item.to_construct.length||
+      data.figures.some(function(f){return f&&f.question===question.id;})||
+      (data.visuals||[]).some(function(v){return v&&v.question===question.id;})){return false;}
+  var text=noamSourceText(noamPrintedText(item.text));
+  var match=/^(?:מצאו את ערכו של|מהו ערכו של) \$([^$]+)\$ כאשר \$([A-Za-z])\s*=\s*[-−]?\d+(?:\.\d+)?\$[?.]$/.exec(text);
+  if(!match||match[1].indexOf(match[2])<0||!new RegExp('^[0-9'+match[2]+'\\s.+−\\-*·×()^]+$').test(match[1])){return false;}
+  var depth=0;
+  for(var character of match[1]){if(character==='('){depth++;}if(character===')'&&--depth<0){return false;}}
+  return depth===0;
+}
 function noamCanonicalAnalysisFromSource(exercise,source){
   var data=source&&source.data,native=window.NoamNativeVisual;
   // Only image-read exercises change route; text-only rows keep their manifest analysis.
@@ -7306,12 +7358,16 @@ function noamCanonicalAnalysisFromSource(exercise,source){
   if(/גרף|גרפים|צירים|ציר ה|ישר המספרים/.test(requiredAids)||
       (/טבל/.test(requiredAids)&&!haveTable)||
       (/שרטוט|סרטוט|איור|ציור|תרשים|מצויר|מסומנ|מוצג|בתמונה|ברשת|לוח/.test(requiredAids)&&!haveFigure)){return null;}
-  // No exported aid does not prove the printed page has none.
+  var selfContainedSubstitution=!facts.length&&!earlier.length&&
+    noamCanonicalSelfContainedSubstitution(question,item,exercise,data);
+  if(selfContainedSubstitution){facts.push('הביטוי וערך המשתנה מופיעים במלואם בסעיף הנבחר.');}
+  // Other text tasks still need a fully verified aid; a missing export alone
+  // cannot establish that the printed task is self-contained.
   if(!facts.length){return null;}
   // An unnamed earlier part that introduces a number may carry a given the
   // selected part relies on ("קופסה רביעית ובה 4"): fall back rather than omit it.
   var known=(printed+'\n'+facts.join('\n')).match(/\d+(?:\.\d+)?/g)||[];
-  if((question.items||[]).slice(0,(question.items||[]).indexOf(item)).some(function(part){
+  if(!selfContainedSubstitution&&(question.items||[]).slice(0,(question.items||[]).indexOf(item)).some(function(part){
     return earlier.indexOf(part)<0&&(String(noamPrintedText(part.text)||'').match(/\d+(?:\.\d+)?/g)||[]).some(function(n){return known.indexOf(n)<0;});
   })){return null;}
   var header='שאלה '+String(exercise.q)+', סעיף '+String(exercise.part)+'.';
@@ -7357,6 +7413,35 @@ function noamQuestionAnalysis(exercise,attachmentSnapshot,operation){
     (typeof currentAttachments==='function'?currentAttachments().slice():[]);
   if(attachments.length){return getExerciseAnalysis(exercise,attachments,operation);}
   return noamCanonicalSourceAnalysis(exercise,attachments,operation).then(function(canonical){if(operation){operation.check();}return canonical||getExerciseAnalysis(exercise,attachments,operation);});
+}
+
+function noamAdditionalQuestionInput(exercise,attachmentSnapshot,operation){
+  if(operation){operation.check();}
+  // Membership belongs to the submitted turn. Later uploads/removals cannot
+  // change either the image or hasStudentAttachments on its protected request.
+  var attachments=Array.isArray(attachmentSnapshot)?attachmentSnapshot.slice():
+    (typeof currentAttachments==='function'?currentAttachments().slice():[]);
+  var identity=noamSourceVisualIdentity(exercise);
+  function checkSource(){
+    if(operation){operation.check();}
+    if(identity!==noamSourceVisualIdentity(exercise)){
+      var error=new Error('מקור השאלה השתנה. פתחו שוב את הסעיף ונסו מחדש.');
+      error.code='QUESTION_SOURCE_CHANGED';throw error;
+    }
+  }
+  var canonical=attachments.length?Promise.resolve(null):noamCanonicalSourceAnalysis(exercise,attachments,operation);
+  return canonical.then(function(analysis){
+    checkSource();
+    if(analysis){return {analysis:analysis};}
+    // Send the actual selected crop to Flash once. The solver verifies the
+    // source itself; neither an OCR preflight nor cached student photos are used.
+    var image=attachments.length?exerciseImageWithAttachments(exercise,attachments,operation):cropExerciseImage(exercise,operation);
+    return image.then(function(imageDataUrl){
+      checkSource();
+      if(typeof imageDataUrl!=='string'||!imageDataUrl){throw new Error('לא הצלחנו להכין את תמונת השאלה. נסו שוב.');}
+      return {analysis:{},imageDataUrl:imageDataUrl};
+    });
+  });
 }
 
 function noamSourcePresentation(source,exercise,options){
@@ -9026,10 +9111,17 @@ function askNoam(helpKind,studentMessage){
   }
   Promise.resolve().then(function(){
     operation.check();
-    return (typeof noamQuestionAnalysis==='function'?noamQuestionAnalysis:getExerciseAnalysis)(exercise,attachments,operation)
-    .then(function(analysis){operation.check();return attachments.length?analysis:noamEnrichSourceAnalysis(exercise,analysis,operation);})
-    .then(function(analysis){
+    var input=helpKind==='free_question'&&typeof noamAdditionalQuestionInput==='function'
+      ? noamAdditionalQuestionInput(exercise,attachments,operation)
+      : (typeof noamQuestionAnalysis==='function'?noamQuestionAnalysis:getExerciseAnalysis)(exercise,attachments,operation)
+        .then(function(analysis){return {analysis:analysis};});
+    return input.then(function(prepared){
       operation.check();
+      if(prepared.imageDataUrl||attachments.length){return prepared;}
+      return Promise.resolve(noamEnrichSourceAnalysis(exercise,prepared.analysis,operation)).then(function(analysis){return {analysis:analysis};});
+    }).then(function(prepared){
+      operation.check();
+      var analysis=prepared.analysis;
       requestAnalysis=analysis;
       var solverMessage=noamSolverMessage(studentMessage,thread,ttl,guidePrompt,analysis,exercise);
       requestPayload={
@@ -9045,6 +9137,7 @@ function askNoam(helpKind,studentMessage){
         imageAnalysis:analysis,
         hasStudentAttachments:attachments.length>0
       };
+      if(prepared.imageDataUrl){requestPayload.imageDataUrl=prepared.imageDataUrl;}
       if(requestSourceIdentity){requestPayload.sourceIdentity=requestSourceIdentity;}
       return postJson(API+"/noamImageSolve",requestPayload,operation);
     });
@@ -9067,7 +9160,7 @@ function askNoam(helpKind,studentMessage){
         }
       }
       var elapsed=Date.now()-started;
-      return new Promise(function(resolve){setTimeout(function(){resolve(result);},Math.max(0,MIN_WAIT-elapsed));});
+      return new Promise(function(resolve){setTimeout(function(){resolve(result);},Math.max(0,(helpKind==='free_question'?0:MIN_WAIT)-elapsed));});
     })
     .then(function(result){
       operation.check();
@@ -9169,7 +9262,7 @@ function ensureNoamBotClient(){
     }
     if (window.NoamBotClient){finish(true);return;}
     script=document.createElement("script");
-    script.src="./noam-bot-client.js?v=20261025-execute-ready-guard";
+    script.src="./noam-bot-client.js?v=20261101-sdk-lifecycle";
     script.async=true;
     script.onload=function(){finish(true);};
     script.onerror=function(){finish(false);};
@@ -9838,6 +9931,6 @@ function esc(s){
 
 })();
 </script>
-<script src="noam-site-companion.js" defer></script>
+<script src="noam-site-companion.js?v=20261101-sdk-lifecycle" defer></script>
 </body>
 </html>

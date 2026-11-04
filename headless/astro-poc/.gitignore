@@ -42,3 +42,6 @@ design_handoff_noam_site/
 # Generated native SVG deployment bundle
 src/generated/native-svg-bundle.json
 public/noam-ai/native-svg-bundle.*.json
+
+# Reproducible public Word bank (never embedded in the server worker)
+public/teachers/word-content.*.json

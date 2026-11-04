@@ -1,0 +1,345 @@
+{
+  "version": 1,
+  "questions": [
+    {
+      "pdfId": "7293e2a2261f426fbdda52a3fee8f0da",
+      "sourceSha256": "c120dda2ffb3913de8cb86c62b76e21248ba4bd9246b03c14b61ec0ac3b44576",
+      "question": {
+        "id": "7293e2a2261f426fbdda52a3fee8f0da:12",
+        "q": 12,
+        "grade": 6,
+        "topic": "כפל שבר בשבר",
+        "levelLabel": "רמת מצוינות",
+        "text": "מצאו את הצמצום המרבי לפני הכפל והסבירו מדוע אין צמצום נוסף בתוצאה.\n$\\f{14}{25} \\times \\f{15}{28}$",
+        "items": [
+          {
+            "label": "",
+            "text": "",
+            "answer": "$\\f{3}{10}$. מצמצמים 14 עם 28 ו־15 עם 25 לפני הכפל; מתקבלים המונים 1 ו־3 והמכנים 5 ו־2. אין צמצום נוסף כי 3 ו־10 זרים."
+          }
+        ]
+      },
+      "provenance": {
+        "sourcePDFSHA256": "c120dda2ffb3913de8cb86c62b76e21248ba4bd9246b03c14b61ec0ac3b44576",
+        "questionCrop": [
+          {
+            "page": 3,
+            "x": 0.0641,
+            "y": 0.4035,
+            "w": 0.8717,
+            "h": 0.1579
+          }
+        ],
+        "approval": "Noam 2026-11-04 missing-data proposal",
+        "review": "All ten question crops visually transcribed; answer arithmetic verified exactly"
+      }
+    },
+    {
+      "pdfId": "7293e2a2261f426fbdda52a3fee8f0da",
+      "sourceSha256": "c120dda2ffb3913de8cb86c62b76e21248ba4bd9246b03c14b61ec0ac3b44576",
+      "question": {
+        "id": "7293e2a2261f426fbdda52a3fee8f0da:19",
+        "q": 19,
+        "grade": 6,
+        "topic": "כפל שבר בשבר",
+        "levelLabel": "רמת מצוינות",
+        "text": "מצאו אומדן חסר ואומדן יתר למכפלה, ואז חשבו במדויק.\n$\\f{11}{14} \\times \\f{7}{9}$",
+        "items": [
+          {
+            "label": "",
+            "text": "",
+            "answer": "אומדן חסר: $\\f{3}{5}$; אומדן יתר: $\\f{2}{3}$; תוצאה מדויקת: $\\f{11}{18}$. אכן $\\f{3}{5} < \\f{11}{18} < \\f{2}{3}$."
+          }
+        ]
+      },
+      "provenance": {
+        "sourcePDFSHA256": "c120dda2ffb3913de8cb86c62b76e21248ba4bd9246b03c14b61ec0ac3b44576",
+        "questionCrop": [
+          {
+            "page": 4,
+            "x": 0.0641,
+            "y": 0.6191,
+            "w": 0.8717,
+            "h": 0.1309
+          }
+        ],
+        "approval": "Noam 2026-11-04 missing-data proposal",
+        "review": "All ten question crops visually transcribed; answer arithmetic verified exactly"
+      }
+    },
+    {
+      "pdfId": "e38b2869141b41fb9f000c5cd3dcad50",
+      "sourceSha256": "4bef19dca2ff0ec82ce5865fb03b6f7c624ad42f4f95a0d0894db326962d1775",
+      "question": {
+        "id": "e38b2869141b41fb9f000c5cd3dcad50:19",
+        "q": 19,
+        "grade": 6,
+        "topic": "כפל מספרים מעורבים",
+        "levelLabel": "רמה א׳",
+        "text": "אמדו, חשבו, וכתבו את שגיאת האומדן לשלם הקרוב.\n$2 \\f{1}{4} \\times 3 \\f{1}{5}$",
+        "items": [
+          {
+            "label": "",
+            "text": "",
+            "answer": "התוצאה $7 \\f{1}{5}$; האומדן לשלם הקרוב הוא 7, ושגיאתו $\\f{1}{5}$. אם האומדן הראשוני נעשה בעיגול כל גורם לשלם הקרוב, מתקבל $2 \\times 3 = 6$ ושגיאתו $1 \\f{1}{5}$."
+          }
+        ]
+      },
+      "provenance": {
+        "sourcePDFSHA256": "4bef19dca2ff0ec82ce5865fb03b6f7c624ad42f4f95a0d0894db326962d1775",
+        "questionCrop": [
+          {
+            "page": 4,
+            "x": 0.0641,
+            "y": 0.6191,
+            "w": 0.8717,
+            "h": 0.1309
+          }
+        ],
+        "approval": "Noam 2026-11-04 missing-data proposal",
+        "review": "All ten question crops visually transcribed; answer arithmetic verified exactly"
+      }
+    },
+    {
+      "pdfId": "5e27f374f1174eb5bb599e0f376b44d7",
+      "sourceSha256": "ea32b43c419d65288f824299408e2bd2b729e04df655b9a92116ee85c4f63fdd",
+      "question": {
+        "id": "5e27f374f1174eb5bb599e0f376b44d7:13",
+        "q": 13,
+        "grade": 6,
+        "topic": "כפל מספרים מעורבים",
+        "levelLabel": "רמת מצוינות",
+        "text": "התרשים מציע חלוקה לתשיעיות. השתמשו בו כדי להסביר צמצום במכפלה.\n$1 \\f{5}{9} \\times 2 \\f{4}{7}$",
+        "items": [
+          {
+            "label": "",
+            "text": "",
+            "answer": "המכפלה היא 4. $1 \\f{5}{9} = \\f{14}{9}$ מתאים לשלם ולחמש תשיעיות; במכפלה $\\f{14}{9} \\times \\f{18}{7}$ מצמצמים 14 עם 7 ו־18 עם 9 ומקבלים $2 \\times 2 = 4$."
+          }
+        ],
+        "figure": {
+          "url": "/teachers/word-figures/c8b9e428e3c3455995ec7b7863446aae184beabd6760687517e4500f0de89fc1.png",
+          "sha256": "c8b9e428e3c3455995ec7b7863446aae184beabd6760687517e4500f0de89fc1",
+          "displayWidthPx": 180
+        }
+      },
+      "provenance": {
+        "sourcePDFSHA256": "ea32b43c419d65288f824299408e2bd2b729e04df655b9a92116ee85c4f63fdd",
+        "questionCrop": [
+          {
+            "page": 3,
+            "x": 0.0641,
+            "y": 0.5652,
+            "w": 0.8717,
+            "h": 0.1579
+          }
+        ],
+        "approval": "Noam 2026-11-04 missing-data proposal",
+        "review": "All ten question crops visually transcribed; answer arithmetic verified exactly"
+      }
+    },
+    {
+      "pdfId": "8ef7dfbb350a4928a398258415f2f192",
+      "sourceSha256": "3280d1dd2ae90c3982e590ce18486781f0a48b0c5419cb1e589cd54e3d6e1587",
+      "question": {
+        "id": "8ef7dfbb350a4928a398258415f2f192:9",
+        "q": 9,
+        "grade": 6,
+        "topic": "כפל שברים יישום ובקרה",
+        "levelLabel": "רמת מצוינות",
+        "text": "מצאו גורם חסר מצומצם והוכיחו שהוא יחיד.\n$\\f{7}{12} \\times ___ = \\f{21}{40}$",
+        "items": [
+          {
+            "label": "",
+            "text": "",
+            "answer": "הגורם החסר הוא $\\f{9}{10}$. בדיקה: $\\f{7}{12} \\times \\f{9}{10} = \\f{21}{40}$. הוא יחיד כי כפל במספר חיובי שאינו אפס הוא הפיך; חלוקת שני האגפים ב־$\\f{7}{12}$ קובעת ערך יחיד."
+          }
+        ]
+      },
+      "provenance": {
+        "sourcePDFSHA256": "3280d1dd2ae90c3982e590ce18486781f0a48b0c5419cb1e589cd54e3d6e1587",
+        "questionCrop": [
+          {
+            "page": 2,
+            "x": 0.0641,
+            "y": 0.727,
+            "w": 0.8717,
+            "h": 0.1579
+          }
+        ],
+        "approval": "Noam 2026-11-04 missing-data proposal",
+        "review": "All ten question crops visually transcribed; answer arithmetic verified exactly"
+      }
+    },
+    {
+      "pdfId": "1ea1f15a94f34e66b8c2be73548ffc5a",
+      "sourceSha256": "8332a1df789d2716c440e953f50410f55406db1bfb8b55233190e51c28c589e3",
+      "question": {
+        "id": "1ea1f15a94f34e66b8c2be73548ffc5a:5",
+        "q": 5,
+        "grade": 6,
+        "topic": "כפל מספרים עשרוניים",
+        "levelLabel": "רמה א׳",
+        "text": "בנו אומדן לשלמים סמוכים, חשבו וקבעו את שגיאת האומדן.\n$2.7 \\times 3.6$",
+        "items": [
+          {
+            "label": "",
+            "text": "",
+            "answer": "אומדנים באמצעות שלמים סמוכים: $2 \\times 3 = 6$ ו־$3 \\times 4 = 12$. התוצאה $9.72$ נמצאת ביניהם. שגיאת אומדן החסר 6 היא $3.72$; שגיאת אומדן היתר 12 היא $2.28$."
+          }
+        ]
+      },
+      "provenance": {
+        "sourcePDFSHA256": "8332a1df789d2716c440e953f50410f55406db1bfb8b55233190e51c28c589e3",
+        "questionCrop": [
+          {
+            "page": 2,
+            "x": 0.0641,
+            "y": 0.08,
+            "w": 0.8717,
+            "h": 0.1579
+          }
+        ],
+        "approval": "Noam 2026-11-04 missing-data proposal",
+        "review": "All ten question crops visually transcribed; answer arithmetic verified exactly"
+      }
+    },
+    {
+      "pdfId": "2feaa550e5624413850647e884ea7076",
+      "sourceSha256": "e613559a481ef9e807af693e745ae7278f531c64ded486044126f0448784fc27",
+      "question": {
+        "id": "2feaa550e5624413850647e884ea7076:5",
+        "q": 5,
+        "grade": 6,
+        "topic": "כפל מספרים עשרוניים",
+        "levelLabel": "רמת מצוינות",
+        "text": "תנו אומדן יתר ואומדן חסר, חשבו, ומקמו את התוצאה ביניהם.\n$2.45 \\times 3.18$",
+        "items": [
+          {
+            "label": "",
+            "text": "",
+            "answer": "אומדן חסר: $2.4 \\times 3.1 = 7.44$; אומדן יתר: $2.5 \\times 3.2 = 8$. התוצאה $7.791$, ואכן $7.44 < 7.791 < 8$."
+          }
+        ]
+      },
+      "provenance": {
+        "sourcePDFSHA256": "e613559a481ef9e807af693e745ae7278f531c64ded486044126f0448784fc27",
+        "questionCrop": [
+          {
+            "page": 2,
+            "x": 0.0641,
+            "y": 0.08,
+            "w": 0.8717,
+            "h": 0.1579
+          }
+        ],
+        "approval": "Noam 2026-11-04 missing-data proposal",
+        "review": "All ten question crops visually transcribed; answer arithmetic verified exactly"
+      }
+    },
+    {
+      "pdfId": "7ad8b30e2e8f4e64b089a3233e7e6beb",
+      "sourceSha256": "c2a6aecaa4e40e55dec59b84ff539bd02d64dd6c6e57af44fa005389010bc0a2",
+      "question": {
+        "id": "7ad8b30e2e8f4e64b089a3233e7e6beb:5",
+        "q": 5,
+        "grade": 6,
+        "topic": "חילוק מספרים עשרוניים",
+        "levelLabel": "רמת מצוינות",
+        "text": "בנו אומדן יתר וחסר סביב $5$, ואז חשבו.\n$28.35 : 5.4$",
+        "items": [
+          {
+            "label": "",
+            "text": "",
+            "answer": "אומדן חסר 5 ואומדן יתר $5.5$; המנה המדויקת $5.25$. הבדיקה $5 \\times 5.4 = 27 < 28.35 < 29.7 = 5.5 \\times 5.4$ ממקמת את המנה בין האומדנים."
+          }
+        ]
+      },
+      "provenance": {
+        "sourcePDFSHA256": "c2a6aecaa4e40e55dec59b84ff539bd02d64dd6c6e57af44fa005389010bc0a2",
+        "questionCrop": [
+          {
+            "page": 2,
+            "x": 0.0641,
+            "y": 0.08,
+            "w": 0.8717,
+            "h": 0.1579
+          }
+        ],
+        "approval": "Noam 2026-11-04 missing-data proposal",
+        "review": "All ten question crops visually transcribed; answer arithmetic verified exactly"
+      }
+    },
+    {
+      "pdfId": "7ad8b30e2e8f4e64b089a3233e7e6beb",
+      "sourceSha256": "c2a6aecaa4e40e55dec59b84ff539bd02d64dd6c6e57af44fa005389010bc0a2",
+      "question": {
+        "id": "7ad8b30e2e8f4e64b089a3233e7e6beb:12",
+        "q": 12,
+        "grade": 6,
+        "topic": "חילוק מספרים עשרוניים",
+        "levelLabel": "רמת מצוינות",
+        "text": "בדקו את המנה בכפל ובחיסור חוזר מקוצר.\n$14.3 : 2.6$",
+        "items": [
+          {
+            "label": "",
+            "text": "",
+            "answer": "המנה $5.5$. בדיקת כפל: $5.5 \\times 2.6 = 14.3$. חיסור חוזר מקוצר: $14.3 − 5 \\times 2.6 = 1.3$, ו־$1.3$ הוא חצי מ־$2.6$; לכן יש 5 קבוצות ועוד חצי."
+          }
+        ]
+      },
+      "provenance": {
+        "sourcePDFSHA256": "c2a6aecaa4e40e55dec59b84ff539bd02d64dd6c6e57af44fa005389010bc0a2",
+        "questionCrop": [
+          {
+            "page": 3,
+            "x": 0.0641,
+            "y": 0.4035,
+            "w": 0.8717,
+            "h": 0.1579
+          }
+        ],
+        "approval": "Noam 2026-11-04 missing-data proposal",
+        "review": "All ten question crops visually transcribed; answer arithmetic verified exactly"
+      }
+    },
+    {
+      "pdfId": "7ad8b30e2e8f4e64b089a3233e7e6beb",
+      "sourceSha256": "c2a6aecaa4e40e55dec59b84ff539bd02d64dd6c6e57af44fa005389010bc0a2",
+      "question": {
+        "id": "7ad8b30e2e8f4e64b089a3233e7e6beb:18",
+        "q": 18,
+        "grade": 6,
+        "topic": "חילוק מספרים עשרוניים",
+        "levelLabel": "רמת מצוינות",
+        "text": "הישר תומך בטענה שהמנה באמצע בין $5$ ל־$6$. אמתו.\n$15.4 : 2.8$",
+        "items": [
+          {
+            "label": "",
+            "text": "",
+            "answer": "המנה $5.5$ כי $5.5 \\times 2.8 = 15.4$. היא באמצע בין 5 ל־6: $5.5 − 5 = 6 − 5.5 = 0.5$."
+          }
+        ],
+        "figure": {
+          "url": "/teachers/word-figures/9c018f6d03609ba17a1245242150bfe8170d2eb60b6059ad2578275ae0f0efcd.png",
+          "sha256": "9c018f6d03609ba17a1245242150bfe8170d2eb60b6059ad2578275ae0f0efcd",
+          "displayWidthPx": 180
+        }
+      },
+      "provenance": {
+        "sourcePDFSHA256": "c2a6aecaa4e40e55dec59b84ff539bd02d64dd6c6e57af44fa005389010bc0a2",
+        "questionCrop": [
+          {
+            "page": 4,
+            "x": 0.0641,
+            "y": 0.4843,
+            "w": 0.8717,
+            "h": 0.1309
+          }
+        ],
+        "approval": "Noam 2026-11-04 missing-data proposal",
+        "review": "All ten question crops visually transcribed; answer arithmetic verified exactly"
+      }
+    }
+  ]
+}

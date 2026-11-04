@@ -90,12 +90,20 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
   assert.equal(cold.c.noamRenderOriginalTable(saved),null);await settled();assert.equal(cold.fetches.length,0);
  });
  it(name+': actual failed additional question records recovery authorization only for worksheet read errors without attachments (canonical source unavailable)',async()=>{
-  for(const [code,attachments] of [['QUESTION_IMAGE_UNREADABLE',false],['QUESTION_IMAGE_UNREADABLE',true],['BOT_RISK_REJECTED',false],['UNKNOWN',false]] as const){
-   const f=fixture(v);f.thread.messages=[];const error=Object.assign(new Error('read failed'),{code});f.c.currentAttachments=()=>attachments?[{}]:[];
+  for(const [code,attachments] of [['QUESTION_IMAGE_UNREADABLE',false],['QUESTION_IMAGE_UNREADABLE',true],['BOT_RISK_REJECTED',false],['QUESTION_DEADLINE_EXCEEDED',false],['NETWORK_UNAVAILABLE',false],['UNKNOWN',false]] as const){
+   const f=fixture(v),requests:any[]=[];f.thread.messages=[];const error=Object.assign(new Error('read failed'),{code});f.c.currentAttachments=()=>attachments?[{}]:[];
    Object.assign(f.c,{setTimeout:()=>0,clearTimeout(){},busy:false,panelBody:f.c.document.body,noamDrafts:{},MIN_WAIT:0,API:'/model',g:7,lv:'a',LEVEL:{a:'רמה א׳'},ttl:'חוקיות',setNoamBusy:(b:boolean)=>{f.c.busy=b;},restoreNoamChatFocus(){},exerciseLabel:()=> '16ב',
-    noamDidacticGuide:()=>null,noamDidacticPrompt:()=>'',noamDidacticResponse:()=>null,getExerciseAnalysis:()=>Promise.reject(error),
+    noamDidacticGuide:()=>null,noamDidacticPrompt:()=>'',noamDidacticResponse:()=>null,
+    getExerciseAnalysis:()=>{throw Error('additional questions cannot start the old analyzer');},
+    cropExerciseImage:async()=> 'data:image/png;base64,QUJD',exerciseImageWithAttachments:async()=> 'data:image/png;base64,QUJD',
+    noamEnrichSourceAnalysis:()=>{throw Error('direct image must not get unverified source enrichment');},noamSolverMessage:(s:string)=>s,
+    postJson:async(url:string,payload:any)=>{requests.push({url,payload});throw error;},
     noamCanonicalSourceAnalysis:()=>Promise.resolve(null)});
    runInNewContext(fn(v,'askNoam'),f.c);f.c.askNoam('free_question','איך משתמשים בנתוני הסעיף הזה?');await settled();assert.equal(f.thread.messages.length,2);
+   assert.equal(requests.length,1);assert.equal(requests[0].url,'/model/noamImageSolve');
+   assert.equal(requests[0].payload.imageDataUrl,'data:image/png;base64,QUJD');assert.equal(requests[0].payload.hasStudentAttachments,attachments);
+   assert.deepEqual(clone(requests[0].payload.imageAnalysis),{});assert.equal(f.thread.messages[1].answerErrorCode,code);
+   assert.equal(f.c.noamTableRecoveryAllowed(f.exercise,f.thread,f.thread.messages[1]),code==='QUESTION_IMAGE_UNREADABLE'&&!attachments);
    assert.equal(f.thread.messages[1].sourceRecoveryAllowed,code==='QUESTION_IMAGE_UNREADABLE'&&!attachments);assert.equal(f.thread.messages[1].sourceRecoveryExerciseId,f.exercise.id);assert.equal(f.thread.hintIndex,0);
   }
  });

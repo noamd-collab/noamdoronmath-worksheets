@@ -134,7 +134,7 @@ describe('homepage Harmony parity (HEADLESS-MIGRATION-31)', () => {
       'href="/math-tools"',
       'href="/high-school-math"',
       'href="/learning.html"',
-      'תוספים',
+      'משחקים',
       'מתמטיקה לתיכון',
       'href="/teachers"',
       'למורים',
@@ -160,10 +160,20 @@ describe('homepage Harmony parity (HEADLESS-MIGRATION-31)', () => {
     assert.equal((index.match(/<h1\b/g) || []).length, 1);
     assert.match(index, /class="exact-hero-teachers"[^>]*href="\/teachers"/);
     assert.match(index, /id="for-teachers"/);
-    assert.match(index, /במיוחד בשבילכם/);
-    assert.match(index, /למורים ולמורים פרטיים/);
-    assert.match(index, /דפי עבודה מוכנים להדפסה/);
-    assert.match(index, /לאזור המורים/);
+    assert.match(index, /במיוחד בשבילך!/);
+    for (const role of ['מורה', 'מורה פרטי', 'הורה']) {
+      assert.ok(index.includes(`exact-hero-teachers__role">${role}<span class="exact-hero-teachers__q">?</span></span>`), `card names ${role}?`);
+    }
+    // Roll call: one role per line, each marked by a highlighter stroke that
+    // stays put when motion is off.
+    assert.match(css, /\.exact-hero-teachers__who\s*\{[^}]*flex-direction:\s*column/);
+    assert.match(css, /exact-teachers-mark/);
+    assert.match(css, /html\[data-nd-motion="off"\] \.exact-hero-teachers__role/);
+    assert.ok(index.indexOf('exact-hero-teachers__who') < index.indexOf('exact-hero-teachers__note">במיוחד בשבילך!'),
+      'roles come first, then the handwritten note');
+    assert.match(index, /בונים דף עבודה משלכם/);
+    assert.match(index, /מדפיסים עם תשובות/);
+    assert.match(index, /לבניית הדף שלי/);
     assert.doesNotMatch(index, /לחצו כאן/);
     assert.doesNotMatch(index, /exact-hero-teachers[\s\S]{0,800}\d+\/\d+/);
     assert.match(css, /exact-teachers-hello/);
@@ -172,7 +182,7 @@ describe('homepage Harmony parity (HEADLESS-MIGRATION-31)', () => {
     assert.match(css, /html\.nd-motion-off \.exact-hero-teachers/);
     assert.match(css, /html\.noam-a11y-motion \.exact-hero-teachers/);
     assert.match(css, /html\[data-nd-motion="off"\] \.exact-hero-teachers/);
-    assert.match(css, /html\.nd-motion-off \.exact-hero-teachers__ribbon/);
+    assert.match(css, /html\.nd-motion-off \.exact-hero-teachers__note/);
     assert.match(css, /prefers-reduced-motion: reduce/);
     assert.match(css, /html:not\(\.nd-motion-enabled\)/);
     assert.match(css, /@media \(max-width: 980px\)/);

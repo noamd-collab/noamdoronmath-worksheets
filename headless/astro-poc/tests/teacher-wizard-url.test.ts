@@ -10,6 +10,7 @@ function browserAt(href = base) {
   const state = { router: { index: 7 }, retained: ['value'] };
   const calls: { state: unknown; url: string }[] = [];
   const browser = {
+    confirm: () => true,
     location: { href, assign() { assert.fail('URL sync must not navigate'); }, reload() { assert.fail('URL sync must not reload'); } },
     history: { state, pushState() { assert.fail('URL sync must not add history entries'); }, replaceState(saved: unknown, _title: string, url: string) {
       assert.equal(saved, state, 'preserve the actual existing history.state');
@@ -88,18 +89,22 @@ function definition(name: string) {
 
 // Execute the actual event handlers, normalization, render scope updates and
 // startup/prefill functions. Only source loading and unrelated print UI are stubbed.
-function wizard(options: { href?: string; load?: () => Promise<void>; historyFails?: boolean; prefillKeys?: string[] } = {}) {
+function wizard(options: { confirmReplacement?: boolean; href?: string; load?: () => Promise<void>; historyFails?: boolean; prefillKeys?: string[] } = {}) {
   const app = browserAt(options.href || base);
+  app.browser.confirm = () => options.confirmReplacement !== false;
   if (options.historyFails) app.browser.history.replaceState = () => { throw new Error('blocked'); };
   return new Function('window', 'replaceWizardScopeUrl', 'wizardPrefillFromSearch', 'load', 'calls', 'prefillKeys', `
     let state = { grade:'8', topic:'43', level:'all', scenario:'other', style:'blended', selected:['a:first','b:last'], blocks:[], pickMode:'manual', wizard:'pick' };
+    let appState = 'ready', appBound = false, startupComplete = false, retryTeacherLoad = null, appLoadId = 0;
     let history = [], CATALOG = { grades:[
       {grade:8,label:'כיתה ח׳',topics:[{id:43,title:'ראשון',sheets:[{level:'a'},{level:'b'},{level:'c2'}]},{id:56,title:'דף יחיד',sheets:[{level:'one'}]}]},
       {grade:9,label:'כיתה ט׳',topics:[{id:2,title:'פירוק',sheets:[{level:'a'},{level:'b'},{level:'c'}]}]}
     ] };
     const elements = new Map(), levels=['all','a','b','c'].map(value=>({value,checked:value==='all',disabled:false,handlers:{},addEventListener(type,fn){this.handlers[type]=fn;}}));
-    function $(id){if(!elements.has(id))elements.set(id,{value:'',dataset:{},handlers:{},addEventListener(type,fn){this.handlers[type]=fn;},classList:{toggle(){}}});return elements.get(id);}
-    const document={activeElement:null,body:{dataset:{}},querySelectorAll(selector){return selector==='[name=level]'?levels:[];},querySelector(){return null;},addEventListener(){}};
+    const topicSearch = null;
+    function $(id){if(!elements.has(id))elements.set(id,{value:'',dataset:{},handlers:{},setAttribute(){},removeAttribute(){},focus(){},addEventListener(type,fn){this.handlers[type]=fn;},classList:{toggle(){}}});return elements.get(id);}
+    const listeners = {};
+    const document={activeElement:null,body:{dataset:{}},querySelectorAll(selector){return selector==='[name=level]'?levels:[];},querySelector(){return null;},addEventListener(type,fn){listeners[type]=fn;}};
     const SCENARIOS={other:{label:'אחר',title:'אחר'},first:{label:'ראשון'}},STYLES={blended:{help:''}};
     const escapeHTML=value=>String(value),available=()=>false,paintSourceLine=()=>{},applyWizard=()=>{};
     const events=[], CATALOG_URL='/catalog',location={get search(){return new URL(window.location.href).search;}};
@@ -110,9 +115,10 @@ function wizard(options: { href?: string; load?: () => Promise<void>; historyFai
     const currentExercises=()=>[],expandToWholeQuestionKeys=(_pool,ids)=>ids,selectionKey=()=>state.selected.join('\\n');
     const assignWholeQuestions=()=>{throw new Error('manual selection must not be assigned');},carriedKeys=()=>new Set();
     const announce=message=>events.push(message),loadCurrentTopic=()=>load(),applyScenario=()=>render();
-    ${['gradeRecord','currentTopic','topicLevelChoices','resolveTopicLevel','syncLevels','syncWizardUrl','keepVisible','fillGrades','fillTopics','render','bind','applyWizardPrefill','start'].map(definition).join('\n')}
+    ${['setTeacherAppState','reloadTeacherTopic','confirmTeacherReplacement','changeTeacherScope','gradeRecord','currentTopic','topicLevelChoices','resolveTopicLevel','syncLevels','syncWizardUrl','keepVisible','fillGrades','fillTopics','render','bind','applyWizardPrefill','start'].map(definition).join('\n')}
     bind();
     return {state,events,levels,elements,calls,window,render,applyWizardPrefill,start,
+      prefill(detail){listeners['noam-teacher-prefill']({detail});},
       async changeLevel(value){for(const el of levels)el.checked=el.value===value;await levels.find(el=>el.value===value).handlers.change();},
       async changeGrade(value){$('grade').value=value;return $('grade').handlers.change();},
       async changeTopic(value){$('topic').value=value;return $('topic').handlers.change();},
@@ -211,6 +217,29 @@ test('the deployed teacher module and URL helper invalidate their own caches whi
   assert.equal(printer,readFileSync(new URL('../../../demos/teacher-factoring-print.js',import.meta.url),'utf8'));
   assert.equal(readFileSync(new URL('../public/teachers/wizard-prefill.js',import.meta.url),'utf8'),readFileSync(new URL('../../../demos/wizard-prefill.js',import.meta.url),'utf8'));
   assert.match(printer,/wizard-prefill\.js\?v=20261031-level-choice-help/);
-  for(const file of ['../public/teachers/index.html','../../../demos/teacher-practice-picker-site-style.html']) assert.match(readFileSync(new URL(file,import.meta.url),'utf8'),/teacher-factoring-print\.js\?v=20261031-live-validation/);
-  assert.match(printer,/NoamBotClient\.version === '20261031-browser-error'/);
+  for(const file of ['../public/teachers/index.html','../../../demos/teacher-practice-picker-site-style.html']) assert.match(readFileSync(new URL(file,import.meta.url),'utf8'),/teacher-factoring-print\.js\?v=20261104-word-export/);
+  assert.match(printer,/NoamBotClient\.version === '20261101-sdk-lifecycle'/);
+});
+
+
+test('malformed external handoffs cannot erase selected questions or saved blocks', () => {
+  for (const detail of [{ exerciseIds: ['ex:x:1'] }, { grade: 9, topic: 'missing', exerciseIds: [] }, { grade: 9, topic: 2, exerciseIds: [{}] }]) {
+    const app = wizard();
+    app.state.blocks.push({ grade:'8', topic:'43', keys:['saved'] });
+    const before = JSON.stringify(app.state), href = app.window.location.href;
+    app.prefill(detail);
+    assert.equal(JSON.stringify(app.state), before);
+    assert.equal(app.window.location.href, href);
+    assert.equal(app.events.length, 0);
+  }
+});
+
+test('cancelling a narrower level preserves the selected questions and checked level', async () => {
+  const app = wizard({ confirmReplacement: false });
+  const before = JSON.stringify(app.state), href = app.window.location.href;
+  await app.changeLevel('b');
+  assert.deepEqual(app.state.selected, JSON.parse(before).selected);
+  assert.equal(app.state.level, 'all');
+  assert.equal(app.levels.find((x: any) => x.value === 'all').checked, true);
+  assert.equal(app.window.location.href, href);
 });

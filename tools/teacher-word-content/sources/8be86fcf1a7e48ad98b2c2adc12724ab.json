@@ -1,0 +1,695 @@
+{
+  "sourceSha256": "733fe37e0c4f84d3503a85ed0e56108fc8093257877e29c8ea192759786ce435",
+  "answerSourceSha256": "a31054c31aafaab5956e3a9f9d834fe8ac6f7e1a644a4cff96c6b679f54710b5",
+  "nativeSha256": "7c31300753f452b7551b023cd56f679e18ea25c667192c9b4cfc144de4214ea8",
+  "questions": {
+    "1": {
+      "id": "8be86fcf1a7e48ad98b2c2adc12724ab:1",
+      "q": 1,
+      "grade": 9,
+      "topic": "המלבן",
+      "levelLabel": "רמה א׳",
+      "text": "במלבן $ABCD$ האלכסונים $AC$ ו־$BD$ נחתכים בנקודה $O$. נתון כי אורך $AB$ הוא $28$ ס״מ ואורך $AD$ הוא $45$ ס״מ.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T18/a/figures/q1_head.svg",
+        "sha256": "99834dca5cb44888e6bca089db176268b8fc845c70a85fbf4a4f8902622a8b89"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את אורך $AO$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T18/a/figures/q1_head.svg",
+            "sha256": "99834dca5cb44888e6bca089db176268b8fc845c70a85fbf4a4f8902622a8b89"
+          },
+          "answer": "$AO=26.5$ ס״מ, כי $AC=\\sqrt{(28)^2+(45)^2}=53$ והאלכסונים חוצים זה את זה."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את היקף $△AOB$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T18/a/figures/q1_head.svg",
+            "sha256": "99834dca5cb44888e6bca089db176268b8fc845c70a85fbf4a4f8902622a8b89"
+          },
+          "answer": "$81$ ס״מ: $AO=BO$ ולכן $28+53=81$."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את שטח $△AOB$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T18/a/figures/q1_head.svg",
+            "sha256": "99834dca5cb44888e6bca089db176268b8fc845c70a85fbf4a4f8902622a8b89"
+          },
+          "answer": "$315$ סמ״ר: הגובה לצלע $AB$ הוא מחצית $AD$."
+        },
+        {
+          "label": "ד",
+          "text": "הוכיחו כי שטחי $△AOB$ ו־$△BOC$ שווים, וכי כל אחד מהם רבע משטח המלבן.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T18/a/figures/q1_head.svg",
+            "sha256": "99834dca5cb44888e6bca089db176268b8fc845c70a85fbf4a4f8902622a8b89"
+          },
+          "answer": "האלכסונים חוצים זה את זה. לשני המשולשים בסיסים שווים $AO=OC$ על אותו ישר וגובה משותף מן הנקודה $B$, ולכן שטחיהם שווים. איחודם הוא $△ABC$, שמחצית שטחו של המלבן; כל אחד רבע ממנו."
+        }
+      ]
+    },
+    "2": {
+      "id": "8be86fcf1a7e48ad98b2c2adc12724ab:2",
+      "q": 2,
+      "grade": 9,
+      "topic": "המלבן",
+      "levelLabel": "רמה א׳",
+      "text": "הנקודה $P$ בתוך המלבן $ABCD$. הקטעים $BP$ ו־$CP$ מסורטטים. נתון כי גודל $∡ABP$ הוא $32°$ וגודל $∡PCD$ הוא $46°$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T18/a/figures/q2_head.svg",
+        "sha256": "88e1755fdb3b89220f36ca4aa366f6831b6d089447e8a9567355c732702e7c96"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את $∡BPC$ ונמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T18/a/figures/q2_head.svg",
+            "sha256": "88e1755fdb3b89220f36ca4aa366f6831b6d089447e8a9567355c732702e7c96"
+          },
+          "answer": "$78°$: נעביר דרך $P$ ישר המקביל ל־$AB$ ול־$DC$. לפי זוויות מתחלפות בין מקבילים הוא מחלק את $∡BPC$ לזוויות של $32°$ ו־$46°$, ולכן $∡BPC=32°+46°=78°$."
+        },
+        {
+          "label": "ב",
+          "text": "סרטטו דרך $P$ ישר המקביל ל־$AB$. סמנו עליו נקודה $K$ מימין ל־$P$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T18/a/figures/q2_head.svg",
+            "sha256": "88e1755fdb3b89220f36ca4aa366f6831b6d089447e8a9567355c732702e7c96"
+          },
+          "answer": "יש לסרטט ישר דרך $P$ המקביל ל־$AB$, ולסמן $K$ מימין ל־$P$."
+        },
+        {
+          "label": "ג",
+          "text": "הוכיחו כי בכל מיקום כזה מתקיים $∡BPC=∡ABP+∡PCD$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T18/a/figures/q2c.svg",
+            "sha256": "0e6232c306ff7299290ff1905d268f5066b4b79c4feab2365cc894c832a067e9"
+          },
+          "answer": "זוויות מתחלפות נותנות $∡BPK=∡ABP$ ו־$∡KPC=∡PCD$. הקרן $PK$ פנימית לזווית $BPC$, לכן מחברים."
+        },
+        {
+          "label": "ד",
+          "text": "האם ייתכן שאחת הזוויות $ABP,PCD$ גדלה והזווית $BPC$ אינה משתנה? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T18/a/figures/q2_head.svg",
+            "sha256": "88e1755fdb3b89220f36ca4aa366f6831b6d089447e8a9567355c732702e7c96"
+          },
+          "answer": "כן. האחרת יכולה לקטון בדיוק באותה מידה, כך שסכומן נשמר."
+        }
+      ]
+    },
+    "3": {
+      "id": "8be86fcf1a7e48ad98b2c2adc12724ab:3",
+      "q": 3,
+      "grade": 9,
+      "topic": "המלבן",
+      "levelLabel": "רמה א׳",
+      "text": "במלבן $ABCD$ הנקודה $M$ אמצע $AB$. נתון כי אורך $MD$ הוא $25$ ס״מ ואורך $AD$ הוא $7$ ס״מ. הקטעים $MC,MD$ מסורטטים.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T18/a/figures/q3_head.svg",
+        "sha256": "215544c8ebb8d1482cd7f6e63464864b3b7d3a6d1460c1f9a843da996f5fe527"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מצאו את אורך $AB$ ונמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T18/a/figures/q3_head.svg",
+            "sha256": "215544c8ebb8d1482cd7f6e63464864b3b7d3a6d1460c1f9a843da996f5fe527"
+          },
+          "answer": "$48$ ס״מ: במשולש הישר $△AMD$ מתקבל $AM^2=(25)^2−(7)^2=576$, ולכן $AM=24$ והצלע כולה כפולה."
+        },
+        {
+          "label": "ב",
+          "text": "הוכיחו כי $MC=MD$ בעזרת חפיפה.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T18/a/figures/q3_head.svg",
+            "sha256": "215544c8ebb8d1482cd7f6e63464864b3b7d3a6d1460c1f9a843da996f5fe527"
+          },
+          "answer": "$△AMD$ ו־$△BMC$ חופפים לפי צלע–זווית–צלע: $AM=MB$, זוויות ישרות ו־$AD=BC$. לכן $MD=MC$."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את שטח $△MCD$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T18/a/figures/q3_head.svg",
+            "sha256": "215544c8ebb8d1482cd7f6e63464864b3b7d3a6d1460c1f9a843da996f5fe527"
+          },
+          "answer": "$168$ סמ״ר, מחצית מכפלת $CD=48$ בגובה $AD=7$."
+        },
+        {
+          "label": "ד",
+          "text": "חשבו את היקף $△MCD$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T18/a/figures/q3_head.svg",
+            "sha256": "215544c8ebb8d1482cd7f6e63464864b3b7d3a6d1460c1f9a843da996f5fe527"
+          },
+          "answer": "$98$ ס״מ: $48+25+25$."
+        }
+      ]
+    },
+    "4": {
+      "id": "8be86fcf1a7e48ad98b2c2adc12724ab:4",
+      "q": 4,
+      "grade": 9,
+      "topic": "המלבן",
+      "levelLabel": "רמה א׳",
+      "text": "במלבן $ABCD$ נתון כי אורך $AB$ הוא $23$ ס״מ ואורך $AD$ הוא $8$ ס״מ. הקטע $AE$ חוצה את $∡DAB$ ופוגש את הצלע $DC$ בנקודה $E$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T18/a/figures/q4_head.svg",
+        "sha256": "45f4c3e3b9d7566fc08e450fe9de41ed88df41eb0f2ec53fa32634b994201ac6"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את $EC$ ונמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T18/a/figures/q4_head.svg",
+            "sha256": "45f4c3e3b9d7566fc08e450fe9de41ed88df41eb0f2ec53fa32634b994201ac6"
+          },
+          "answer": "$15$ ס״מ: $∡DAE=∡AED=45°$, ולכן $DE=AD=8$ ומחסרים מן $DC=23$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את אורך $AE$ בדיוק.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T18/a/figures/q4_head.svg",
+            "sha256": "45f4c3e3b9d7566fc08e450fe9de41ed88df41eb0f2ec53fa32634b994201ac6"
+          },
+          "answer": "$8\\sqrt{2}$ ס״מ לפי פיתגורס במשולש ישר־זווית ושווה־שוקיים."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את שטח המרובע $ABCE$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T18/a/figures/q4_head.svg",
+            "sha256": "45f4c3e3b9d7566fc08e450fe9de41ed88df41eb0f2ec53fa32634b994201ac6"
+          },
+          "answer": "$152$ סמ״ר: שטח המלבן $184$ פחות שטח $△ADE$ שהוא $32$."
+        },
+        {
+          "label": "ד",
+          "text": "חשבו את היקף המרובע $ABCE$ בדיוק.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T18/a/figures/q4_head.svg",
+            "sha256": "45f4c3e3b9d7566fc08e450fe9de41ed88df41eb0f2ec53fa32634b994201ac6"
+          },
+          "answer": "$46+8\\sqrt{2}$ ס״מ: $AB+BC+CE+EA$."
+        }
+      ]
+    },
+    "5": {
+      "id": "8be86fcf1a7e48ad98b2c2adc12724ab:5",
+      "q": 5,
+      "grade": 9,
+      "topic": "המלבן",
+      "levelLabel": "רמה א׳",
+      "text": "סרטטו מקבילית $KLMN$ שאלכסוניה $KM,LN$ נחתכים ב־$P$, ומתקיים $PK=PN$. נתון כי אורך $PK$ הוא $17$ ס״מ ואורך $KL$ הוא $30$ ס״מ.",
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את אורכי $KM,LN$ ונמקו.",
+          "answer": "כל אחד $34$ ס״מ. אלכסוני מקבילית חוצים זה את זה: $KM=2PK$, $LN=2PN$, והנתון משווה את החצאים."
+        },
+        {
+          "label": "ב",
+          "text": "הוכיחו כי המרובע $KLMN$ הוא מלבן.",
+          "answer": "לפי סעיף א $KM=LN=34$ ס״מ. מקבילית שאלכסוניה שווים היא מלבן, ולכן $KLMN$ מלבן."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את $KN$. הוסיפו סרטוט המסומן בנתונים בלבד.",
+          "answer": "$16$ ס״מ: האלכסון $34$, ולכן $KN^2=(34)^2−(30)^2=256$."
+        },
+        {
+          "label": "ד",
+          "text": "סרטטו מקבילית נוספת $EFGH$ שאלכסוניה $EG,FH$ נחתכים ב־$Q$. אורכי חצאי האלכסונים בס״מ נתונים בביטויים $EQ=2x+5$ ו־$FQ=3x−4$. מצאו את $x$ שיבטיח שהמקבילית מלבן, חשבו את אורכי האלכסונים ונמקו.",
+          "answer": "$x=9$: מקבילית שאלכסוניה שווים היא מלבן, ומכיוון שהאלכסונים חוצים זה את זה די ש־$EQ=FQ$: $2x+5=3x−4$. אז $EQ=FQ=23$ ס״מ, ולכן $EG=FH=46$ ס״מ."
+        }
+      ]
+    },
+    "6": {
+      "id": "8be86fcf1a7e48ad98b2c2adc12724ab:6",
+      "q": 6,
+      "grade": 9,
+      "topic": "המלבן",
+      "levelLabel": "רמה א׳",
+      "text": "במלבן $ABCD$ האלכסונים נפגשים ב־$O$. נתון כי גודל $∡BAC$ הוא $34°$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T18/a/figures/q6_head.svg",
+        "sha256": "71d7dfb48e14bfd054d937ad9cdc5bb2d962c9a92fd2f001cc123ac51093b17b"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את $∡BOC$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T18/a/figures/q6_head.svg",
+            "sha256": "71d7dfb48e14bfd054d937ad9cdc5bb2d962c9a92fd2f001cc123ac51093b17b"
+          },
+          "answer": "$68°$: $△AOB$ שווה־שוקיים, זוויות הבסיס $34°$, ולכן $∡AOB=112°$ והזווית הצמודה $68°$."
+        },
+        {
+          "label": "ב",
+          "text": "הוכיחו כי $∡AOD=∡BOC$ בדרך שאינה משתמשת בחישוב הזווית.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T18/a/figures/q6_head.svg",
+            "sha256": "71d7dfb48e14bfd054d937ad9cdc5bb2d962c9a92fd2f001cc123ac51093b17b"
+          },
+          "answer": "אלו זוויות קודקודיות הנוצרות מחיתוך האלכסונים."
+        },
+        {
+          "label": "ג",
+          "text": "תלמיד אמר שכל מקבילית בעלת אלכסונים חוצים היא מלבן. הסבירו מה חסר בטענתו.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T18/a/figures/q6_head.svg",
+            "sha256": "71d7dfb48e14bfd054d937ad9cdc5bb2d962c9a92fd2f001cc123ac51093b17b"
+          },
+          "answer": "כל מקבילית מקיימת חציית אלכסונים. נדרש תנאי נוסף, למשל שוויון האלכסונים או זווית ישרה."
+        }
+      ]
+    },
+    "7": {
+      "id": "8be86fcf1a7e48ad98b2c2adc12724ab:7",
+      "q": 7,
+      "grade": 9,
+      "topic": "המלבן",
+      "levelLabel": "רמה א׳",
+      "text": "במשולש $△ABC$ הזווית $BAC$ ישרה. $AM$ תיכון ליתר $BC$, ו־$AH$ גובה ליתר. נתון כי גודל $∡ABC$ הוא $29°$ ואורך $BC$ הוא $30$ ס״מ. קשרי הניצבות הנתונים: $AB⊥AC$, $AH⊥BC$, $AH⊥BH$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T18/a/figures/q7_head.svg",
+        "sha256": "14e7190d8fc21c373b7de4e43232c252ef62145ca0f694cc243fec90026b0c4e"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את $∡HAM$ ונמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T18/a/figures/q7_head.svg",
+            "sha256": "14e7190d8fc21c373b7de4e43232c252ef62145ca0f694cc243fec90026b0c4e"
+          },
+          "answer": "$32°$: $∡BAH=61°$, ואילו $AM=BM$ נותן $∡BAM=29°$; ההפרש הוא $32°$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את אורך $AM$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T18/a/figures/q7_head.svg",
+            "sha256": "14e7190d8fc21c373b7de4e43232c252ef62145ca0f694cc243fec90026b0c4e"
+          },
+          "answer": "$15$ ס״מ, התיכון ליתר שווה למחצית היתר."
+        },
+        {
+          "label": "ג",
+          "text": "איזה קטע ארוך יותר, $AM$ או $AH$? נמקו בלי לחשב את הגובה.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T18/a/figures/q7_head.svg",
+            "sha256": "14e7190d8fc21c373b7de4e43232c252ef62145ca0f694cc243fec90026b0c4e"
+          },
+          "answer": "$AM>AH$: $△AHM$ ישר־זווית ב־$H$, ולכן היתר $AM$ ארוך מן הניצב $AH$."
+        }
+      ]
+    },
+    "8": {
+      "id": "8be86fcf1a7e48ad98b2c2adc12724ab:8",
+      "q": 8,
+      "grade": 9,
+      "topic": "המלבן",
+      "levelLabel": "רמה א׳",
+      "text": "במשולש $△ABC$ הנקודות $M,N$ הן אמצעי $AB,AC$ בהתאמה. נתון כי אורך $BC$ הוא $18$ ס״מ. נוכיח קשר בין אמצעי צלעות באמצעות חפיפה ומקבילית.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T18/a/figures/q8_head.svg",
+        "sha256": "bdc853892a6f7320ff0dbfed8b65de8e7b3b4031c21f7270ef8b95051c876227"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חברו את $M$ ל־$N$. האריכו את $MN$ מעבר ל־$N$ לנקודה $E$ כך ש־$NE=MN$. חברו את $E$ גם אל $B,C$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T18/a/figures/q8_head.svg",
+            "sha256": "bdc853892a6f7320ff0dbfed8b65de8e7b3b4031c21f7270ef8b95051c876227"
+          },
+          "answer": "בנייה: ממשיכים את $MN$ מעבר ל־$N$ עד $E$ כך ש־$NE=MN$, ומחברים את $E$ ל־$B$ ול־$C$."
+        },
+        {
+          "label": "ב",
+          "text": "הוכיחו כי $△AMN$ ו־$△CEN$ חופפים, והסיקו $CE=AM$ ו־$CE∥AB$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T18/a/figures/q8b.svg",
+            "sha256": "15580ede491b85f0e257e37e35c0e053e7c18de7aeffdf9045453dc2d01534a3"
+          },
+          "answer": "$△AMN\\cong △CEN$ לפי צלע–זווית–צלע: $AN=NC$, $MN=NE$, $∡ANM=∡CNE$ (קודקודיות). לכן $CE=AM$ וגם $∡MAN=∡ECN$; אלו זוויות מתחלפות, ולכן $CE∥AB$."
+        },
+        {
+          "label": "ג",
+          "text": "הוכיחו כי $B,C,E,M$ הם קודקודי מקבילית, והסיקו $MN∥BC$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T18/a/figures/q8c.svg",
+            "sha256": "15580ede491b85f0e257e37e35c0e053e7c18de7aeffdf9045453dc2d01534a3"
+          },
+          "answer": "מן האמצע $BM=AM=CE$ וגם $BM∥CE$. במרובע $BCEM$ זוג צלעות נגדיות שווה ומקביל, ולכן הוא מקבילית. מכאן $ME∥BC$, וגם $MN∥BC$."
+        },
+        {
+          "label": "ד",
+          "text": "חשבו את $MN$ מתוך המקבילית שהוכחתם.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T18/a/figures/q8d.svg",
+            "sha256": "15580ede491b85f0e257e37e35c0e053e7c18de7aeffdf9045453dc2d01534a3"
+          },
+          "answer": "$9$ ס״מ: $ME=BC=18$, ו־$MN=NE$, לכן $MN$ מחצית $ME$."
+        }
+      ]
+    },
+    "9": {
+      "id": "8be86fcf1a7e48ad98b2c2adc12724ab:9",
+      "q": 9,
+      "grade": 9,
+      "topic": "המלבן",
+      "levelLabel": "רמה א׳",
+      "text": "במשולש החד־זוויות $△ABC$ הגובה $AH$ פוגש את $BC$. הנקודה $M$ אמצע $AB$, והקטע $MH$ מסורטט. נתון כי גודל $∡ABC$ הוא $41°$ ואורך $AB$ הוא $18$ ס״מ. קשרי הניצבות הנתונים: $AH⊥BC$, $AH⊥BH$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T18/a/figures/q9_head.svg",
+        "sha256": "e70cc89ed1612cb44a7933193be3dd1103d735fab023450e1f32de337e7074f5"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הוכיחו כי $MA=MH$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T18/a/figures/q9_head.svg",
+            "sha256": "e70cc89ed1612cb44a7933193be3dd1103d735fab023450e1f32de337e7074f5"
+          },
+          "answer": "$△AHB$ ישר־זווית ב־$H$, ו־$HM$ תיכון ליתר $AB$. לכן $HM=AM=BM$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את $∡AMH$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T18/a/figures/q9_head.svg",
+            "sha256": "e70cc89ed1612cb44a7933193be3dd1103d735fab023450e1f32de337e7074f5"
+          },
+          "answer": "$82°$: $∡MAH=49°$, וגם $∡AHM=49°$ משוויון השוקיים; מחסרים את שתי הזוויות מסכום זוויות משולש."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את אורך $MH$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T18/a/figures/q9_head.svg",
+            "sha256": "e70cc89ed1612cb44a7933193be3dd1103d735fab023450e1f32de337e7074f5"
+          },
+          "answer": "$9$ ס״מ, מחצית $AB$."
+        }
+      ]
+    },
+    "10": {
+      "id": "8be86fcf1a7e48ad98b2c2adc12724ab:10",
+      "q": 10,
+      "grade": 9,
+      "topic": "המלבן",
+      "levelLabel": "רמה א׳",
+      "text": "במלבן $ABCD$ נתון כי אורך $AB$ הוא $18$ ס״מ ואורך $AD$ הוא $24$ ס״מ. האלכסון $AC$ מסורטט, ו־$DE$ אנך ל־$AC$, כאשר $E$ על האלכסון. קשרי הניצבות הנתונים: $DE⊥AC$, $DE⊥AE$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T18/a/figures/q10_head.svg",
+        "sha256": "ce368b3f906770869e7a8facd07b467f0f61844d5867c1697148c327f38c363e"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את אורך $AC$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T18/a/figures/q10_head.svg",
+            "sha256": "ce368b3f906770869e7a8facd07b467f0f61844d5867c1697148c327f38c363e"
+          },
+          "answer": "$30$ ס״מ לפי פיתגורס."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את שטח $△ADC$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T18/a/figures/q10_head.svg",
+            "sha256": "ce368b3f906770869e7a8facd07b467f0f61844d5867c1697148c327f38c363e"
+          },
+          "answer": "$216$ סמ״ר, מחצית שטח המלבן."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את $DE$ באמצעות השטח שמצאתם.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T18/a/figures/q10_head.svg",
+            "sha256": "ce368b3f906770869e7a8facd07b467f0f61844d5867c1697148c327f38c363e"
+          },
+          "answer": "$14.4$ ס״מ: $30·DE=432$."
+        },
+        {
+          "label": "ד",
+          "text": "הוכיחו כי $∡EDC=∡CAD$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T18/a/figures/q10_head.svg",
+            "sha256": "ce368b3f906770869e7a8facd07b467f0f61844d5867c1697148c327f38c363e"
+          },
+          "answer": "$∡EDC$ משלימה את $∡ACD$ לזווית ישרה. במלבן $∡CAD$ משלימה אותה זווית לזווית ישרה, לכן הן שוות."
+        }
+      ]
+    },
+    "11": {
+      "id": "8be86fcf1a7e48ad98b2c2adc12724ab:11",
+      "q": 11,
+      "grade": 9,
+      "topic": "המלבן",
+      "levelLabel": "רמה א׳",
+      "text": "במלבן $ABCD$ האלכסונים נחתכים ב־$O$. נתון כי גודל $∡AOB$ הוא $60°$ ואורך $AB$ הוא $7$ ס״מ.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T18/a/figures/q11_head.svg",
+        "sha256": "bd5e3705b39eef492e3a305b1e8be49113a0decf1f36f7e6f9f0a66bba7197ce"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הוכיחו כי $△AOB$ שווה־צלעות.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T18/a/figures/q11_head.svg",
+            "sha256": "bd5e3705b39eef492e3a305b1e8be49113a0decf1f36f7e6f9f0a66bba7197ce"
+          },
+          "answer": "חצאי אלכסוני מלבן שווים, לכן $AO=BO$. מזווית הראש $60°$ מתקבלות שתי זוויות בסיס $60°$, ולכן כל הצלעות שוות."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את אורך $AC$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T18/a/figures/q11_head.svg",
+            "sha256": "bd5e3705b39eef492e3a305b1e8be49113a0decf1f36f7e6f9f0a66bba7197ce"
+          },
+          "answer": "$14$ ס״מ: $AO=AB=7$ ו־$AC=2AO$."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את שטח המלבן בדיוק.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T18/a/figures/q11_head.svg",
+            "sha256": "bd5e3705b39eef492e3a305b1e8be49113a0decf1f36f7e6f9f0a66bba7197ce"
+          },
+          "answer": "$49\\sqrt{3}$ סמ״ר: $AD^2=(14)^2−(7)^2=147$, ולכן $AD=7\\sqrt{3}$."
+        },
+        {
+          "label": "ד",
+          "text": "חשבו את היקף המלבן בדיוק.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T18/a/figures/q11_head.svg",
+            "sha256": "bd5e3705b39eef492e3a305b1e8be49113a0decf1f36f7e6f9f0a66bba7197ce"
+          },
+          "answer": "$14+14\\sqrt{3}$ ס״מ."
+        }
+      ]
+    },
+    "12": {
+      "id": "8be86fcf1a7e48ad98b2c2adc12724ab:12",
+      "q": 12,
+      "grade": 9,
+      "topic": "המלבן",
+      "levelLabel": "רמה א׳",
+      "text": "במלבן $ABCD$ הנקודות $E,F$ על הצלעות $AD,BC$ בהתאמה. נתון כי אורך $AE$ הוא $3$ ס״מ ואורך $CF$ הוא $3$ ס״מ, אורך $AB$ הוא $11$ ס״מ ואורך $AD$ הוא $9$ ס״מ. הקטעים $BE,DF$ מסורטטים.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T18/a/figures/q12_head.svg",
+        "sha256": "a1651a9a1f8cc5e82191f13828232d85cc93610e3034879cad570147b3ae5c24"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הוכיחו כי $△ABE$ ו־$△CDF$ חופפים.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T18/a/figures/q12_head.svg",
+            "sha256": "a1651a9a1f8cc5e82191f13828232d85cc93610e3034879cad570147b3ae5c24"
+          },
+          "answer": "$AB=CD$, $AE=CF$ ושתי הזוויות הכלואות ישרות, לכן החפיפה לפי צלע–זווית–צלע, בהתאמה $A↔C,B↔D,E↔F$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את אורך $BE$ בדיוק.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T18/a/figures/q12_head.svg",
+            "sha256": "a1651a9a1f8cc5e82191f13828232d85cc93610e3034879cad570147b3ae5c24"
+          },
+          "answer": "$\\sqrt{130}$ ס״מ לפי $(11)^2+(3)^2=130$."
+        },
+        {
+          "label": "ג",
+          "text": "הוכיחו כי $BEDF$ מקבילית.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T18/a/figures/q12_head.svg",
+            "sha256": "a1651a9a1f8cc5e82191f13828232d85cc93610e3034879cad570147b3ae5c24"
+          },
+          "answer": "$ED=BF=6$, וכן $ED∥BF$ משום שהם על צלעות נגדיות במלבן. זוג נגדיות שווה ומקביל מספיק."
+        },
+        {
+          "label": "ד",
+          "text": "חשבו את שטח $BEDF$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T18/a/figures/q12_head.svg",
+            "sha256": "a1651a9a1f8cc5e82191f13828232d85cc93610e3034879cad570147b3ae5c24"
+          },
+          "answer": "$66$ סמ״ר: בסיס $ED=6$ והגובה אליו $AB=11$."
+        }
+      ]
+    },
+    "13": {
+      "id": "8be86fcf1a7e48ad98b2c2adc12724ab:13",
+      "q": 13,
+      "grade": 9,
+      "topic": "המלבן",
+      "levelLabel": "רמה א׳",
+      "text": "במשולש $△ABC$ הנקודה $M$ אמצע $BC$, ונתון $MA=MB$. כמו כן אורך $AB$ הוא $16$ ס״מ ואורך $BC$ הוא $34$ ס״מ.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T18/a/figures/q13_head.svg",
+        "sha256": "b7bee1b2f5b14626523cb206064b9b4112c49cfc2bc61bf523b0f5ce6228803e"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הוכיחו כי $∡BAC$ ישרה.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T18/a/figures/q13_head.svg",
+            "sha256": "b7bee1b2f5b14626523cb206064b9b4112c49cfc2bc61bf523b0f5ce6228803e"
+          },
+          "answer": "$MA=MB=MC$, ולכן התיכון $AM$ שווה למחצית $BC$. לפי המשפט ההפוך לתיכון ליתר, המשולש ישר־זווית ב־$A$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את אורך $AC$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T18/a/figures/q13_head.svg",
+            "sha256": "b7bee1b2f5b14626523cb206064b9b4112c49cfc2bc61bf523b0f5ce6228803e"
+          },
+          "answer": "$30$ ס״מ: $AC^2=(34)^2−(16)^2=900$."
+        },
+        {
+          "label": "ג",
+          "text": "הסבירו מדוע אי אפשר לקבוע שהזווית הישרה היא דווקא $ABC$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T18/a/figures/q13_head.svg",
+            "sha256": "b7bee1b2f5b14626523cb206064b9b4112c49cfc2bc61bf523b0f5ce6228803e"
+          },
+          "answer": "הצלע $BC$ היא היתר, משום שהתיכון היוצא מ־$A$ שווה למחציתה. הזווית הישרה מול היתר, בקודקוד $A$."
+        }
+      ]
+    },
+    "14": {
+      "id": "8be86fcf1a7e48ad98b2c2adc12724ab:14",
+      "q": 14,
+      "grade": 9,
+      "topic": "המלבן",
+      "levelLabel": "רמה א׳",
+      "text": "סרטטו מלבן. במלבן $KLMN$ הנקודה $P$ יכולה לנוע על הצלע $MN$. נתון כי אורך $KL$ הוא $14$ ס״מ, ושטח $△KLP$ הוא $84$ סמ״ר.",
+      "items": [
+        {
+          "label": "א",
+          "text": "הסבירו מדוע הזזת $P$ לאורך הצלע אינה משנה את שטח המשולש.",
+          "answer": "הבסיס $KL$ קבוע והגובה מכל נקודה על $MN$ הוא המרחק בין הישרים המקבילים $KL,MN$, שגם הוא קבוע."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את אורך $KN$.",
+          "answer": "$12$ ס״מ: מכפלת $14$ בגובה שווה לפעמיים השטח."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את שטח המלבן.",
+          "answer": "$168$ סמ״ר, פי שניים משטח המשולש."
+        },
+        {
+          "label": "ד",
+          "text": "חשבו את אורך האלכסון $KM$ בדיוק. הוסיפו סרטוט המסומן בנתונים בלבד.",
+          "answer": "$2\\sqrt{85}$ ס״מ: $(14)^2+(12)^2=340$."
+        }
+      ]
+    },
+    "15": {
+      "id": "8be86fcf1a7e48ad98b2c2adc12724ab:15",
+      "q": 15,
+      "grade": 9,
+      "topic": "המלבן",
+      "levelLabel": "רמה א׳",
+      "text": "במשולש החד־זוויות $△ABC$ נתון כי אורך $AB$ הוא $14$ ס״מ, אורך $AC$ הוא $22$ ס״מ ואורך $BC$ הוא $24$ ס״מ. $AH$ גובה, $M$ אמצע $AB$ ו־$N$ אמצע $AC$. הקטעים $MH,NH,MN$ מסורטטים. קשרי הניצבות הנתונים: $AH⊥BC$, $AH⊥BH$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T18/a/figures/q15_head.svg",
+        "sha256": "81d77da81b50c0e6ae199ce99ca1bbd68ca5d85a24534c4c35a9329909653acd"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את $MH$ ואת $NH$, ונמקו איזה משולש ישר־זווית משמש בכל חישוב.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T18/a/figures/q15_head.svg",
+            "sha256": "81d77da81b50c0e6ae199ce99ca1bbd68ca5d85a24534c4c35a9329909653acd"
+          },
+          "answer": "$MH=7$ ס״מ כתיכון ליתר $△AHB$; $NH=11$ ס״מ כתיכון ליתר $△AHC$."
+        },
+        {
+          "label": "ב",
+          "text": "היעזרו בקשר שהוכחתם בשאלה 8 וחשבו את $MN$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T18/a/figures/q15_head.svg",
+            "sha256": "81d77da81b50c0e6ae199ce99ca1bbd68ca5d85a24534c4c35a9329909653acd"
+          },
+          "answer": "$12$ ס״מ, מחצית $BC$. ההוכחה בשאלה 8 חלה על כל משולש."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את היקף $△MHN$ וקבעו אם הוא שווה־שוקיים.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T18/a/figures/q15_head.svg",
+            "sha256": "81d77da81b50c0e6ae199ce99ca1bbd68ca5d85a24534c4c35a9329909653acd"
+          },
+          "answer": "$30$ ס״מ. הצלעות $7,11,12$ שונות זו מזו, ולכן אינו שווה־שוקיים."
+        }
+      ]
+    },
+    "16": {
+      "id": "8be86fcf1a7e48ad98b2c2adc12724ab:16",
+      "q": 16,
+      "grade": 9,
+      "topic": "המלבן",
+      "levelLabel": "רמה א׳",
+      "text": "במשולש $△DEF$ מתקיים $DE⊥EF$ וגודל $∡EDF$ הוא $37°$. $P$ אמצע $DE$, ו־$Q$ אמצע $DF$. שני הקטעים הפנימיים מסורטטים באיור. קשרי הניצבות הנתונים: $DE⊥EF$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T18/a/figures/q16_head.svg",
+        "sha256": "eafd83db88f93b3f6e02fe1a6d21caacb230dbcd202c5e282cc0d3911afcb438"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "השתמשו בקשר שהוכחתם בשאלה 8: הוכיחו כי $PQ⊥DE$ וגם כי $DQ=EQ$, וחשבו את $∡DQE$ ואת $∡QEF$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T18/a/figures/q16_head.svg",
+            "sha256": "eafd83db88f93b3f6e02fe1a6d21caacb230dbcd202c5e282cc0d3911afcb438"
+          },
+          "answer": "מהקשר שהוכח $PQ∥EF$, ולכן $PQ⊥DE$. במשולש הישר $△DEF$, התיכון $EQ$ ליתר $DF$ שווה למחצית היתר, כמו $DQ$. לכן ב־$△DQE$ זוויות הבסיס $37°$, ומתקבל $∡DQE=106°$. הזווית הישרה ב־$E$ נותנת $∡QEF=53°$."
+        }
+      ]
+    }
+  }
+}

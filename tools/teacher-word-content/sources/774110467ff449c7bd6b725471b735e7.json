@@ -1,0 +1,866 @@
+{
+  "sourceSha256": "c9e19b111da4d48cbaab57cc9319ec90d929368b366e4db69923cd73de2fedca",
+  "answerSourceSha256": "b9e9d021a704226baaa33e697872398f532cb650b48c2539d79d62a9931979cb",
+  "nativeSha256": "ed6311f013f3b50752c4164fb12f4261970aeacefa76076272a9f0b586940707",
+  "questions": {
+    "1": {
+      "id": "774110467ff449c7bd6b725471b735e7:1",
+      "q": 1,
+      "grade": 7,
+      "topic": "שטח משולש — העמקה",
+      "levelLabel": "רמה א׳",
+      "text": "בשרטוט $\\tri ABC$. הקטע $CD$ הוא הגובה לצלע $AB$, והקטע $AE$ הוא הגובה לצלע $BC$. נתון: $AB = 28$ ס״מ, $CD = 15$ ס״מ.",
+      "figure": {
+        "url": "/noam-ai/native/G7-T19/a/figures/q1_head.svg",
+        "sha256": "c3271496c8bc8acce2ad2511521362336090aad2acc1c4ed0c5888bb60c47211"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את שטח $\\tri ABC$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q1_head.svg",
+            "sha256": "c3271496c8bc8acce2ad2511521362336090aad2acc1c4ed0c5888bb60c47211"
+          },
+          "answer": "שטח $\\tri ABC$ הוא $210$ סמ״ר."
+        },
+        {
+          "label": "ב",
+          "text": "נתון: $BC = 25$ ס״מ. חשבו את אורך הגובה $AE$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q1_head.svg",
+            "sha256": "c3271496c8bc8acce2ad2511521362336090aad2acc1c4ed0c5888bb60c47211"
+          },
+          "answer": "$AE=16.8$ ס״מ."
+        },
+        {
+          "label": "ג",
+          "text": "נתון: $AD = 8$ ס״מ. חשבו את שטח $\\tri ADC$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q1_head.svg",
+            "sha256": "c3271496c8bc8acce2ad2511521362336090aad2acc1c4ed0c5888bb60c47211"
+          },
+          "answer": "שטח $\\tri ADC$ הוא $60$ סמ״ר."
+        }
+      ]
+    },
+    "2": {
+      "id": "774110467ff449c7bd6b725471b735e7:2",
+      "q": 2,
+      "grade": 7,
+      "topic": "שטח משולש — העמקה",
+      "levelLabel": "רמה א׳",
+      "text": "הכינו כרטיסי בנייה. בכל כרטיס ציינו בסיס וגובה מתאימים; כשהבנייה אינה יחידה, די בדוגמה מוצדקת.",
+      "items": [
+        {
+          "label": "א",
+          "text": "בנו זוג משולשים ששטח כל אחד מהם $18$ סמ״ר, ובסיסיהם שונים. רשמו את המידות והראו שהן מתאימות.",
+          "answer": "למשל, בסיס $6$ וגובה $6$, ובסיס $9$ וגובה $4$ ס״מ: $\\f{6·6}{2}=\\f{9·4}{2}=18$ סמ״ר. יש זוגות נוספים: בסיסים שונים ומכפלת בסיס בגובה $36$."
+        },
+        {
+          "label": "ב",
+          "text": "לכרטיס נוסף נמסר אותו שטח ובסיס של $9$ ס״מ. האם אפשר לבחור לו יותר מגובה אחד? הסבירו באמצעות הנוסחה.",
+          "answer": "לא; הגובה נקבע יחיד: $h=\\f{2·18}{9}=4$ ס״מ."
+        },
+        {
+          "label": "ג",
+          "text": "ציירו משולש עם זווית קהה. מכל קודקוד הורידו אנך לישר המכיל את הצלע שמולו. סמנו אילו רגליים על הצלע ואילו על המשכה.",
+          "answer": "דוגמה: משולש שבו $\\angle{BAC}=120°$ ושתי הזוויות האחרות $30°$. רגל הגובה מ־$A$ על $BC$; הרגליים מ־$B$ ומ־$C$ על המשכי הצלעות, מעבר ל־$A$. יש דוגמאות נוספות לכל משולש קהה־זווית."
+        },
+        {
+          "label": "ד",
+          "text": "שנו את הסקיצה ששרטטתם למשולש חד־זוויות, ואחר כך לישר־זווית. תארו מה משתנה במיקום הגבהים. הוסיפו סקיצה מתאימה.",
+          "answer": "בדוגמה חדה־זוויות, כגון שלוש זוויות של $60°$, כל הרגליים בפנים הצלעות. בדוגמה ישרת־זווית ב־$A$, שני גבהים מתלכדים עם $AB,AC$, ורגליהם ב־$A$; השלישי יורד לפנים $BC$. יש דוגמאות נוספות מאותם סוגים."
+        }
+      ]
+    },
+    "3": {
+      "id": "774110467ff449c7bd6b725471b735e7:3",
+      "q": 3,
+      "grade": 7,
+      "topic": "שטח משולש — העמקה",
+      "levelLabel": "רמה א׳",
+      "text": "דוגמה מודרכת: שטח של משולש הוא $21$ סמ״ר והבסיס שלו $7$ ס״מ. מכפלת הבסיס בגובה היא פי $2$ מן השטח: $21 \\cdot 2 = 42$. לכן הגובה הוא $\\f{42}{7} = 6$ ס״מ.\nשטח $\\tri ABC$ שבשרטוט הוא $98$ סמ״ר. הקטעים $CD$ ו־$BF$ הם גבהים במשולש.",
+      "figure": {
+        "url": "/noam-ai/native/G7-T19/a/figures/q3_head.svg",
+        "sha256": "6d154aee28da0ff3fb7be7b4fa48773f86f8f67b01d6531a6bb7cbc8deba2f92"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "נתון: $CD = 11.2$ ס״מ. חשבו את אורך הצלע $AB$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q3_head.svg",
+            "sha256": "6d154aee28da0ff3fb7be7b4fa48773f86f8f67b01d6531a6bb7cbc8deba2f92"
+          },
+          "answer": "$AB=17.5$ ס״מ."
+        },
+        {
+          "label": "ב",
+          "text": "נתון: הגובה $BF$ שווה באורכו לצלע $AC$. חשבו את אורך הצלע $AC$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q3_head.svg",
+            "sha256": "6d154aee28da0ff3fb7be7b4fa48773f86f8f67b01d6531a6bb7cbc8deba2f92"
+          },
+          "answer": "$AC=14$ ס״מ."
+        }
+      ]
+    },
+    "4": {
+      "id": "774110467ff449c7bd6b725471b735e7:4",
+      "q": 4,
+      "grade": 7,
+      "topic": "שטח משולש — העמקה",
+      "levelLabel": "רמה א׳",
+      "text": "ב־$\\tri ABC$ נתון: $\\angle{ACB} = 90°$, $AC = 30$ ס״מ, $BC = 40$ ס״מ. הקטע $CD$ הוא הגובה לצלע $AB$.",
+      "figure": {
+        "url": "/noam-ai/native/G7-T19/a/figures/q4_head.svg",
+        "sha256": "3c07367435b69042d42c5a61db778ab301928ae9138d1f7fd6189fe5b1545a62"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את שטח $\\tri ABC$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q4_head.svg",
+            "sha256": "3c07367435b69042d42c5a61db778ab301928ae9138d1f7fd6189fe5b1545a62"
+          },
+          "answer": "שטח $\\tri ABC$ הוא $600$ סמ״ר."
+        },
+        {
+          "label": "ב",
+          "text": "נתון: $AB = 50$ ס״מ. חשבו את אורך הגובה $CD$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q4_head.svg",
+            "sha256": "3c07367435b69042d42c5a61db778ab301928ae9138d1f7fd6189fe5b1545a62"
+          },
+          "answer": "$CD=24$ ס״מ."
+        },
+        {
+          "label": "ג",
+          "text": "נתון: $AD = 18$ ס״מ. חשבו את שטח $\\tri ACD$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q4_head.svg",
+            "sha256": "3c07367435b69042d42c5a61db778ab301928ae9138d1f7fd6189fe5b1545a62"
+          },
+          "answer": "שטח $\\tri ACD$ הוא $216$ סמ״ר."
+        },
+        {
+          "label": "ד",
+          "text": "חשבו את שטח $\\tri BCD$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q4_head.svg",
+            "sha256": "3c07367435b69042d42c5a61db778ab301928ae9138d1f7fd6189fe5b1545a62"
+          },
+          "answer": "שטח $\\tri BCD$ הוא $384$ סמ״ר."
+        }
+      ]
+    },
+    "5": {
+      "id": "774110467ff449c7bd6b725471b735e7:5",
+      "q": 5,
+      "grade": 7,
+      "topic": "שטח משולש — העמקה",
+      "levelLabel": "רמה א׳",
+      "text": "$ABCD$ הוא מלבן. הנקודות $E$ ו־$F$ נמצאות על הצלע $DC$. נתון: $AB = 16$ ס״מ, $BC = 7$ ס״מ.",
+      "figure": {
+        "url": "/noam-ai/native/G7-T19/a/figures/q5_head.svg",
+        "sha256": "b5618a36d74419c7b7ae386358ab8dabce4881832ab033674ecf5e4312775541"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את שטח המלבן $ABCD$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q5_head.svg",
+            "sha256": "b5618a36d74419c7b7ae386358ab8dabce4881832ab033674ecf5e4312775541"
+          },
+          "answer": "שטח $ABCD$ הוא $112$ סמ״ר."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את שטח $\\tri ABE$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q5_head.svg",
+            "sha256": "b5618a36d74419c7b7ae386358ab8dabce4881832ab033674ecf5e4312775541"
+          },
+          "answer": "שטח $\\tri ABE$ הוא $56$ סמ״ר."
+        },
+        {
+          "label": "ג",
+          "text": "מצאו את שטח $\\tri ABF$ והכריעו אם הזזת $F$ לאורך $DC$ משנה אותו. כתבו מה נשאר קבוע במהלך ההזזה.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q5_head.svg",
+            "sha256": "b5618a36d74419c7b7ae386358ab8dabce4881832ab033674ecf5e4312775541"
+          },
+          "answer": "שטח $\\tri ABF$ הוא $56$ סמ״ר ואינו משתנה: הבסיס $AB=16$ ס״מ והגובה אליו $7$ ס״מ נשארים קבועים."
+        },
+        {
+          "label": "ד",
+          "text": "נתון: $DE = 6$ ס״מ. חשבו את שטח $\\tri BCE$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q5_head.svg",
+            "sha256": "b5618a36d74419c7b7ae386358ab8dabce4881832ab033674ecf5e4312775541"
+          },
+          "answer": "שטח $\\tri BCE$ הוא $35$ סמ״ר."
+        }
+      ]
+    },
+    "6": {
+      "id": "774110467ff449c7bd6b725471b735e7:6",
+      "q": 6,
+      "grade": 7,
+      "topic": "שטח משולש — העמקה",
+      "levelLabel": "רמה א׳",
+      "text": "בשרטוט שלושה משולשים שהצלע $AB$ משותפת להם: $\\tri ABC$, $\\tri ABD$ ו־$\\tri ABF$. הקטעים $CK$, $DL$ ו־$FM$ הם הגבהים שלהם לצלע $AB$. נתון: $AB = 16$ ס״מ, $CK = 1.5$ ס״מ, $DL = 4.5$ ס״מ.",
+      "figure": {
+        "url": "/noam-ai/native/G7-T19/a/figures/q6_head.svg",
+        "sha256": "fac0e520449e2aef0da50db5c5d3ef3519160632fea9f3ab43b20e6c18af3c4c"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את שטח $\\tri ABC$ ואת שטח $\\tri ABD$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q6_head.svg",
+            "sha256": "fac0e520449e2aef0da50db5c5d3ef3519160632fea9f3ab43b20e6c18af3c4c"
+          },
+          "answer": "שטח $\\tri ABC$ הוא $12$ סמ״ר; שטח $\\tri ABD$ הוא $36$ סמ״ר."
+        },
+        {
+          "label": "ב",
+          "text": "שטח $\\tri ABF$ גדול פי $5$ משטח $\\tri ABC$. חשבו את הגובה $FM$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q6_head.svg",
+            "sha256": "fac0e520449e2aef0da50db5c5d3ef3519160632fea9f3ab43b20e6c18af3c4c"
+          },
+          "answer": "$FM=7.5$ ס״מ."
+        },
+        {
+          "label": "ג",
+          "text": "במשולשים בעלי בסיס משותף, איזה קשר גיליתם בין יחס השטחים ליחס הגבהים? נמקו בכלל בעזרת הנוסחה.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q6_head.svg",
+            "sha256": "fac0e520449e2aef0da50db5c5d3ef3519160632fea9f3ab43b20e6c18af3c4c"
+          },
+          "answer": "יחס השטחים שווה ליחס הגבהים: לבסיס משותף $b$ מתקיים $\\f{S_1}{S_2}=\\f{bh_1}{bh_2}=\\f{h_1}{h_2}$."
+        }
+      ]
+    },
+    "7": {
+      "id": "774110467ff449c7bd6b725471b735e7:7",
+      "q": 7,
+      "grade": 7,
+      "topic": "שטח משולש — העמקה",
+      "levelLabel": "רמה א׳",
+      "text": "בשרטוט $\\tri ABC$ קהה־זווית. רגל הגובה מן הקודקוד $C$ אל הבסיס $AB$ נמצאת מחוץ למשולש, על המשך הבסיס, המסומן בקו מקווקו. האורכים בשרטוט הם בס״מ.",
+      "figure": {
+        "url": "/noam-ai/native/G7-T19/a/figures/q7_head.svg",
+        "sha256": "cb3c40188fd286cc7e7cf8477033d72d9a91887fa1ff92fe24ed86e33d8193e3"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "ערכו רשימת עבודה לחישוב: איזה קטע מסומן הוא צלע הבסיס, ואיזה מספר מציין את המרחק המאונך אליו? ציינו בנפרד את אורך הבסיס ואת אורך הגובה בס״מ.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q7_head.svg",
+            "sha256": "cb3c40188fd286cc7e7cf8477033d72d9a91887fa1ff92fe24ed86e33d8193e3"
+          },
+          "answer": "הבסיס הוא $AB=13$ ס״מ; הגובה אליו $4$ ס״מ."
+        },
+        {
+          "label": "ב",
+          "text": "הרכיבו מן הרשימה מכפלה מתאימה, והשלימו את חישוב שטח $\\tri ABC$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q7_head.svg",
+            "sha256": "cb3c40188fd286cc7e7cf8477033d72d9a91887fa1ff92fe24ed86e33d8193e3"
+          },
+          "answer": "שטח $\\tri ABC$: $\\f{13·4}{2}=26$ סמ״ר."
+        },
+        {
+          "label": "ג",
+          "text": "דמיינו שמאריכים עוד את הקו המקווקו, בלי להזיז אף קודקוד. האם מותר להשתמש באורך הקו החדש במקום בבסיס? תארו איזו טעות בשטח תתקבל ולמה.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q7_head.svg",
+            "sha256": "cb3c40188fd286cc7e7cf8477033d72d9a91887fa1ff92fe24ed86e33d8193e3"
+          },
+          "answer": "לא: בסיס המשולש הוא $AB$ ואינו משתנה. הכללת ההמשך תגדיל את השטח המחושב בלי לשנות את המשולש."
+        },
+        {
+          "label": "ד",
+          "text": "ציירו במחברת גרסה חדה־זוויות וגרסה ישרת־זווית של משולש, וסמנו גובה בכל אחת. הסבירו מה קובע אם הנוסחה משתנה כאשר רגל הגובה יוצאת החוצה.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q7_head.svg",
+            "sha256": "cb3c40188fd286cc7e7cf8477033d72d9a91887fa1ff92fe24ed86e33d8193e3"
+          },
+          "answer": "למשל, משולש שווה־צלעות וגובהו אל אמצע בסיסו; ומשולש ישר־זווית שבו אחת משתי הצלעות המאונכות היא בסיס והאחרת גובה. יש דוגמאות נוספות. תמיד $S=\\f{bh}{2}$, בתנאי שהגובה הוא המרחק המאונך לישר הבסיס, גם אם רגלו על ההמשך."
+        }
+      ]
+    },
+    "8": {
+      "id": "774110467ff449c7bd6b725471b735e7:8",
+      "q": 8,
+      "grade": 7,
+      "topic": "שטח משולש — העמקה",
+      "levelLabel": "רמה א׳",
+      "text": "בשרטוט $\\tri ABC$ ושלושת הגבהים שלו: $AD$, $BE$ ו־$CF$. נתון: $AB = 30$ ס״מ, $CF = 20$ ס״מ.",
+      "figure": {
+        "url": "/noam-ai/native/G7-T19/a/figures/q8_head.svg",
+        "sha256": "e23438ee905f66309c97079c785beb423e9a902b1f47039d07af56556c8cf2e5"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את שטח $\\tri ABC$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q8_head.svg",
+            "sha256": "e23438ee905f66309c97079c785beb423e9a902b1f47039d07af56556c8cf2e5"
+          },
+          "answer": "שטח $\\tri ABC$ הוא $300$ סמ״ר."
+        },
+        {
+          "label": "ב",
+          "text": "נתון: $BC = 25$ ס״מ. איזה מן הגבהים יורד אל הצלע $BC$? חשבו את אורכו.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q8_head.svg",
+            "sha256": "e23438ee905f66309c97079c785beb423e9a902b1f47039d07af56556c8cf2e5"
+          },
+          "answer": "הגובה הוא $AD=24$ ס״מ."
+        },
+        {
+          "label": "ג",
+          "text": "נתון: $AC = 25$ ס״מ. חשבו את אורך הגובה לצלע $AC$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q8_head.svg",
+            "sha256": "e23438ee905f66309c97079c785beb423e9a902b1f47039d07af56556c8cf2e5"
+          },
+          "answer": "$BE=24$ ס״מ."
+        },
+        {
+          "label": "ד",
+          "text": "סדרו את שלושת הבסיסים ואת הגבהים המתאימים להם מן הקטן לגדול. הסבירו את כיוון הקשר עבור אותו משולש.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q8_head.svg",
+            "sha256": "e23438ee905f66309c97079c785beb423e9a902b1f47039d07af56556c8cf2e5"
+          },
+          "answer": "בסיסים: $BC=AC=25<AB=30$ ס״מ. גבהים: $CF=20<AD=BE=24$ ס״מ. באותו משולש מכפלת כל בסיס בגובהו קבועה, ולכן לבסיס גדול יותר מתאים גובה קטן יותר."
+        }
+      ]
+    },
+    "9": {
+      "id": "774110467ff449c7bd6b725471b735e7:9",
+      "q": 9,
+      "grade": 7,
+      "topic": "שטח משולש — העמקה",
+      "levelLabel": "רמה א׳",
+      "text": "ב־$\\tri ABC$ נתון: $\\angle{ACB} = 90°$, $AC = 8$ ס״מ, $CB = 15$ ס״מ. הנקודות $D$ ו־$E$ נמצאות על הצלע $CB$.",
+      "figure": {
+        "url": "/noam-ai/native/G7-T19/a/figures/q9_head.svg",
+        "sha256": "d8e8ce06d80cdee5d1b3b6f4fdd7511e15a9e25fbf3a2caa0f6f2554cb9cf39b"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את שטח $\\tri ABC$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q9_head.svg",
+            "sha256": "d8e8ce06d80cdee5d1b3b6f4fdd7511e15a9e25fbf3a2caa0f6f2554cb9cf39b"
+          },
+          "answer": "שטח $\\tri ABC$ הוא $60$ סמ״ר."
+        },
+        {
+          "label": "ב",
+          "text": "נתון: $CD = 5$ ס״מ. חשבו את שטח $\\tri ACD$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q9_head.svg",
+            "sha256": "d8e8ce06d80cdee5d1b3b6f4fdd7511e15a9e25fbf3a2caa0f6f2554cb9cf39b"
+          },
+          "answer": "שטח $\\tri ACD$ הוא $20$ סמ״ר."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את שטח $\\tri ADB$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q9_head.svg",
+            "sha256": "d8e8ce06d80cdee5d1b3b6f4fdd7511e15a9e25fbf3a2caa0f6f2554cb9cf39b"
+          },
+          "answer": "שטח $\\tri ADB$ הוא $40$ סמ״ר."
+        },
+        {
+          "label": "ד",
+          "text": "נתון: שטח $\\tri ACE$ הוא $40$ סמ״ר. חשבו את אורך הקטע $CE$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q9_head.svg",
+            "sha256": "d8e8ce06d80cdee5d1b3b6f4fdd7511e15a9e25fbf3a2caa0f6f2554cb9cf39b"
+          },
+          "answer": "$CE=10$ ס״מ."
+        }
+      ]
+    },
+    "10": {
+      "id": "774110467ff449c7bd6b725471b735e7:10",
+      "q": 10,
+      "grade": 7,
+      "topic": "שטח משולש — העמקה",
+      "levelLabel": "רמה א׳",
+      "text": "מחברים יריעה מלבנית $ABCD$ ליריעה משולשת $△DCE$ לאורך $DC$. שטח הצורה המחוברת $ABCED$ הוא $60$ מ״ר. נתון: $AB=8$ מ׳, $BC=6$ מ׳, ו־$EF$ הוא הגובה אל $DC$.",
+      "figure": {
+        "url": "/noam-ai/native/G7-T19/a/figures/q10_head.svg",
+        "sha256": "2a7ae66310ba252323eb88ea6d418161bcd730299ce6e86276010ef6808d7215"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את שטח החלק המלבני.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q10_head.svg",
+            "sha256": "2a7ae66310ba252323eb88ea6d418161bcd730299ce6e86276010ef6808d7215"
+          },
+          "answer": "שטח המלבן $48$ מ״ר."
+        },
+        {
+          "label": "ב",
+          "text": "השתמשו בשטח הכולל כדי לשחזר את שטח החלק המשולש.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q10_head.svg",
+            "sha256": "2a7ae66310ba252323eb88ea6d418161bcd730299ce6e86276010ef6808d7215"
+          },
+          "answer": "שטח $\\tri DCE$ הוא $12$ מ״ר."
+        },
+        {
+          "label": "ג",
+          "text": "מצאו את $EF$; מדוע הצלע $DC$ יכולה לשמש בסיס לחישוב?",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q10_head.svg",
+            "sha256": "2a7ae66310ba252323eb88ea6d418161bcd730299ce6e86276010ef6808d7215"
+          },
+          "answer": "$EF=3$ מ׳. $DC$ היא צלע במשולש ו־$EF$ מאונך לה, ולכן הם בסיס וגובה מתאימים."
+        },
+        {
+          "label": "ד",
+          "text": "מחברים את $E$ ל־$A$ ול־$B$. חשבו את שטח $\\tri ABE$ ואת השטח שנשאר מן היריעה מחוצה לו.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q10_head.svg",
+            "sha256": "2a7ae66310ba252323eb88ea6d418161bcd730299ce6e86276010ef6808d7215"
+          },
+          "answer": "שטח $\\tri ABE$ הוא $36$ מ״ר; השטח שמחוצה לו $24$ מ״ר."
+        }
+      ]
+    },
+    "11": {
+      "id": "774110467ff449c7bd6b725471b735e7:11",
+      "q": 11,
+      "grade": 7,
+      "topic": "שטח משולש — העמקה",
+      "levelLabel": "רמה א׳",
+      "text": "למשולש $△ABC$ נמסרו $AB=13$ ס״מ, $BC=21$ ס״מ, $AC=20$ ס״מ. $AD$ ו־$BE$ הם הגבהים אל $BC$ ואל $AC$. יש לבחור זוג מתאים לכל חישוב, ולא להסתפק בשתי מידות מוכרות.",
+      "figure": {
+        "url": "/noam-ai/native/G7-T19/a/figures/q11_head.svg",
+        "sha256": "7b5ab5f35a7c873369bd5f32adc99bb06a7b2bb4c4791afab11e62206c1c81a2"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "בחרו מתוך הביטויים $\\f{AB·BC}{2}$, $\\f{BC·AD}{2}$, $\\f{AC·BE}{2}$, $\\f{AB·BE}{2}$ את אלה שמייצגים בהכרח את השטח. נמקו באמצעות המאונכות המסומנת.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q11_head.svg",
+            "sha256": "7b5ab5f35a7c873369bd5f32adc99bb06a7b2bb4c4791afab11e62206c1c81a2"
+          },
+          "answer": "הביטויים $\\f{BC·AD}{2}$ ו־$\\f{AC·BE}{2}$: בכל אחד מהם הגובה מאונך לבסיס שנבחר."
+        },
+        {
+          "label": "ב",
+          "text": "נתון: $AD = 12$ ס״מ. חשבו את השטח הנכון של $\\tri ABC$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q11_head.svg",
+            "sha256": "7b5ab5f35a7c873369bd5f32adc99bb06a7b2bb4c4791afab11e62206c1c81a2"
+          },
+          "answer": "שטח $\\tri ABC$ הוא $126$ סמ״ר."
+        },
+        {
+          "label": "ג",
+          "text": "מצאו את $BE$. אחר כך הסבירו איזו החלפה שגויה של גובה בצלע עלולה להפיק שטח $136.5$ סמ״ר מן הנתונים.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q11_head.svg",
+            "sha256": "7b5ab5f35a7c873369bd5f32adc99bb06a7b2bb4c4791afab11e62206c1c81a2"
+          },
+          "answer": "$BE=12.6$ ס״מ. התוצאה השגויה $136.5$ מתקבלת מ־$\\f{AB·BC}{2}$, כאשר מציבים את הצלע $AB=13$ במקום הגובה $AD=12$."
+        }
+      ]
+    },
+    "12": {
+      "id": "774110467ff449c7bd6b725471b735e7:12",
+      "q": 12,
+      "grade": 7,
+      "topic": "שטח משולש — העמקה",
+      "levelLabel": "רמה א׳",
+      "text": "בודקים אילו נתונים שולטים בשטח. את המסקנות הסיקו מתוך בנייה או חישוב, בלי למדוד בסקיצה.",
+      "items": [
+        {
+          "label": "א",
+          "text": "משולש מתחיל בבסיס $3$ ס״מ ובגובה $4$ ס״מ. שרטוט מוגדל פי $3$ בכל אורך. חשבו את השטח לפני ואחרי והסיקו את גורם השינוי.",
+          "answer": "לפני ההגדלה $6$ סמ״ר; אחריה $54$ סמ״ר; השטח גדל פי $9$."
+        },
+        {
+          "label": "ב",
+          "text": "במשולש אחר מחליפים בסיס באורך רבע מן הבסיס הקודם. מה צריך לקרות לגובה כדי לשמור על השטח? הוכיחו בעזרת מכפלה.",
+          "answer": "הגובה צריך לגדול פי $4$, כי $\\f{b}{4}·4h=bh$."
+        },
+        {
+          "label": "ג",
+          "text": "תכננו משולש שבו הגובה לבסיס ארוך מן הבסיס. רשמו מידות, ציירו וסמנו זווית ישרה ברגל הגובה.",
+          "answer": "למשל, משולש ישר־זווית עם בסיס $3$ ס״מ וגובה $5$ ס״מ, המתלכד עם הצלע המאונכת לבסיס. יש דוגמאות נוספות שבהן הגובה המאונך ארוך מהבסיס."
+        },
+        {
+          "label": "ד",
+          "text": "שתי זרועות באורכים קבועים מחוברות בציר. האם אורכי הזרועות לבדם קובעים את שטח המשולש הנוצר עם הקטע שבין הקצוות? תארו שני מצבים שמכריעים. הוסיפו סקיצה מתאימה.",
+          "answer": "לא. למשל, שתי זרועות באורך $5$ ס״מ יוצרות בזווית ישרה שטח $12.5$ סמ״ר; כשהמרחק בין קצותיהן $6$ ס״מ והגובה לבסיס זה $4$ ס״מ, השטח $12$ סמ״ר. יש דוגמאות נוספות: אותם שני אורכים וזווית ביניהם המביאה לשטח אחר."
+        }
+      ]
+    },
+    "13": {
+      "id": "774110467ff449c7bd6b725471b735e7:13",
+      "q": 13,
+      "grade": 7,
+      "topic": "שטח משולש — העמקה",
+      "levelLabel": "רמה א׳",
+      "text": "שטח $\\tri ABC$ הוא $44$ סמ״ר. הקטע $CD$ הוא הגובה לצלע $AB$, והצלע $AB$ ארוכה ב־$3$ ס״מ מן הגובה $CD$.",
+      "figure": {
+        "url": "/noam-ai/native/G7-T19/a/figures/q13_head.svg",
+        "sha256": "69678b6748f001aead328af47f9ba5c761fe440c2bffe8e09070266097f3e933"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מצאו את $AB$ ואת $CD$ (אפשר בניחוש ובדיקה).",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q13_head.svg",
+            "sha256": "69678b6748f001aead328af47f9ba5c761fe440c2bffe8e09070266097f3e933"
+          },
+          "answer": "$AB=11$ ס״מ, $CD=8$ ס״מ."
+        },
+        {
+          "label": "ב",
+          "text": "נתון: שטח $\\tri ADC$ הוא $12$ סמ״ר. חשבו את $AD$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q13_head.svg",
+            "sha256": "69678b6748f001aead328af47f9ba5c761fe440c2bffe8e09070266097f3e933"
+          },
+          "answer": "$AD=3$ ס״מ."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את שטח $\\tri DBC$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q13_head.svg",
+            "sha256": "69678b6748f001aead328af47f9ba5c761fe440c2bffe8e09070266097f3e933"
+          },
+          "answer": "שטח $\\tri DBC$ הוא $32$ סמ״ר."
+        }
+      ]
+    },
+    "14": {
+      "id": "774110467ff449c7bd6b725471b735e7:14",
+      "q": 14,
+      "grade": 7,
+      "topic": "שטח משולש — העמקה",
+      "levelLabel": "רמה א׳",
+      "text": "מן המלבן $ABCD$ חותכים שתי פינות ומשאירים את המחומש $ABFGE$. $E$ על $AD$, $F$ על $BC$, ו־$G$ אמצע $DC$. נתון $AB=12$ ס״מ, $AD=9$ ס״מ, $AE=5$ ס״מ, $BF=5$ ס״מ.",
+      "figure": {
+        "url": "/noam-ai/native/G7-T19/a/figures/q14_head.svg",
+        "sha256": "0dfbd02a4630ea86d6afee0cd9f9e2f230ebafc38a5df9c1b9aa4d5b4edfd81f"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את שטח המלבן $ABCD$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q14_head.svg",
+            "sha256": "0dfbd02a4630ea86d6afee0cd9f9e2f230ebafc38a5df9c1b9aa4d5b4edfd81f"
+          },
+          "answer": "שטח $ABCD$ הוא $108$ סמ״ר."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את שטח $\\tri EDG$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q14_head.svg",
+            "sha256": "0dfbd02a4630ea86d6afee0cd9f9e2f230ebafc38a5df9c1b9aa4d5b4edfd81f"
+          },
+          "answer": "שטח $\\tri EDG$ הוא $12$ סמ״ר."
+        },
+        {
+          "label": "ג",
+          "text": "מה שטח המחומש שנשאר לאחר החיתוך? ציינו אילו שטחים הוסרו.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q14_head.svg",
+            "sha256": "0dfbd02a4630ea86d6afee0cd9f9e2f230ebafc38a5df9c1b9aa4d5b4edfd81f"
+          },
+          "answer": "שטח המחומש $84$ סמ״ר; הוסרו $\\tri EDG$ ו־$\\tri FCG$, כל אחד בשטח $12$ סמ״ר."
+        },
+        {
+          "label": "ד",
+          "text": "בדקו את התשובה לסעיף ג׳ בדרך אחרת: חשבו את שטח $\\tri EFG$, ואז חברו אותו לשטח המלבן $ABFE$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q14_head.svg",
+            "sha256": "0dfbd02a4630ea86d6afee0cd9f9e2f230ebafc38a5df9c1b9aa4d5b4edfd81f"
+          },
+          "answer": "שטח $\\tri EFG$ הוא $24$ סמ״ר; שטח $ABFE$ הוא $60$ סמ״ר; יחד $24+60=84$ סמ״ר."
+        }
+      ]
+    },
+    "15": {
+      "id": "774110467ff449c7bd6b725471b735e7:15",
+      "q": 15,
+      "grade": 7,
+      "topic": "שטח משולש — העמקה",
+      "levelLabel": "רמה א׳",
+      "text": "שתי תבניות חיתוך $△ABC$ ו־$△ABE$ נשענות על הצלע $AB$. הקטעים $CD,EF$ הם הגבהים אליה. נתון $AB=8$ מ׳ ו־$CD=3.5$ מ׳.",
+      "figure": {
+        "url": "/noam-ai/native/G7-T19/a/figures/q15_head.svg",
+        "sha256": "a7a071e261e331c7d5921635e37f71858b64bab46ddb66329aacd862349220f4"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את שטח התבנית $\\tri ABC$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q15_head.svg",
+            "sha256": "a7a071e261e331c7d5921635e37f71858b64bab46ddb66329aacd862349220f4"
+          },
+          "answer": "שטח $\\tri ABC$ הוא $14$ מ״ר."
+        },
+        {
+          "label": "ב",
+          "text": "התבנית $△ABE$ דורשת עוד $7$ מ״ר חומר מעבר לתבנית הראשונה. שחזרו את גובהה $EF$ והסיקו את היחס בין הגבהים.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q15_head.svg",
+            "sha256": "a7a071e261e331c7d5921635e37f71858b64bab46ddb66329aacd862349220f4"
+          },
+          "answer": "$EF=5.25$ מ׳; היחס של $EF$ ל־$CD$ הוא $\\f{3}{2}$."
+        }
+      ]
+    },
+    "16": {
+      "id": "774110467ff449c7bd6b725471b735e7:16",
+      "q": 16,
+      "grade": 7,
+      "topic": "שטח משולש — העמקה",
+      "levelLabel": "רמה א׳",
+      "text": "בשרטוט שלושה משולשים, ובכל אחד מהם הגובה לצלע התחתונה: $CD$ ב־$\\tri ABC$, $GH$ ב־$\\tri EFG$, ו־$MN$ ב־$\\tri KLM$ (הנקודה $N$ נמצאת על המשך הצלע $KL$, והקטע $LN$ מקווקו). נתון: $AB = 12$ ס״מ, $CD = 3$ ס״מ, $EF = 4$ ס״מ, $GH = 9$ ס״מ, $KL = 5$ ס״מ, $MN = 8$ ס״מ.",
+      "figure": {
+        "url": "/noam-ai/native/G7-T19/a/figures/q16_head.svg",
+        "sha256": "68d680701bd804cd1a86b8020f72494803df9b12b472ab8f35ffb1fbde6af4d4"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את שטח $\\tri ABC$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q16_head.svg",
+            "sha256": "68d680701bd804cd1a86b8020f72494803df9b12b472ab8f35ffb1fbde6af4d4"
+          },
+          "answer": "שטח $\\tri ABC$ הוא $18$ סמ״ר."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את שטח $\\tri EFG$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q16_head.svg",
+            "sha256": "68d680701bd804cd1a86b8020f72494803df9b12b472ab8f35ffb1fbde6af4d4"
+          },
+          "answer": "שטח $\\tri EFG$ הוא $18$ סמ״ר."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את שטח $\\tri KLM$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q16_head.svg",
+            "sha256": "68d680701bd804cd1a86b8020f72494803df9b12b472ab8f35ffb1fbde6af4d4"
+          },
+          "answer": "שטח $\\tri KLM$ הוא $20$ סמ״ר."
+        }
+      ]
+    },
+    "17": {
+      "id": "774110467ff449c7bd6b725471b735e7:17",
+      "q": 17,
+      "grade": 7,
+      "topic": "שטח משולש — העמקה",
+      "levelLabel": "רמה א׳",
+      "text": "משטח ניסוי משולש $△ABC$ תופס $0.9$ דונם; דונם הוא $1000$ מ״ר. נתון $AB=60$ מ׳ ו־$CD$ הוא הגובה אל $AB$. נדרש לצפות רק חמישית מן המשטח בחומר שמחירו $120$ ₪ למ״ר.",
+      "figure": {
+        "url": "/noam-ai/native/G7-T19/a/figures/q17_head.svg",
+        "sha256": "2e88a2a79abd61fd353267c5319382dcf9256dbfa0ca0902abfe10d42c1dce4f"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "המירו את השטח למ״ר.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q17_head.svg",
+            "sha256": "2e88a2a79abd61fd353267c5319382dcf9256dbfa0ca0902abfe10d42c1dce4f"
+          },
+          "answer": "$900$ מ״ר."
+        },
+        {
+          "label": "ב",
+          "text": "שחזרו את הגובה $CD$ מן השטח.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q17_head.svg",
+            "sha256": "2e88a2a79abd61fd353267c5319382dcf9256dbfa0ca0902abfe10d42c1dce4f"
+          },
+          "answer": "$CD=30$ מ׳."
+        },
+        {
+          "label": "ג",
+          "text": "כמה מ״ר יצופו, ומה עלות החומר הדרוש לחלק הזה?",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q17_head.svg",
+            "sha256": "2e88a2a79abd61fd353267c5319382dcf9256dbfa0ca0902abfe10d42c1dce4f"
+          },
+          "answer": "יצופו $180$ מ״ר; העלות $21,600$ ש״ח."
+        },
+        {
+          "label": "ד",
+          "text": "איזה חלק יישאר ללא ציפוי, ומה שטחו? בדקו ששני החלקים מצטרפים לשלם.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q17_head.svg",
+            "sha256": "2e88a2a79abd61fd353267c5319382dcf9256dbfa0ca0902abfe10d42c1dce4f"
+          },
+          "answer": "יישארו $\\f{4}{5}$ מהשטח, שהם $720$ מ״ר. הבדיקה: $180+720=900$ מ״ר."
+        },
+        {
+          "label": "ה",
+          "text": "כתבו עובדה ישירה מן הנתונים, מסקנה מספרית מהחישוב, והשערה על התנהגות החומר שאי אפשר להכריע מן הנתונים.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q17_head.svg",
+            "sha256": "2e88a2a79abd61fd353267c5319382dcf9256dbfa0ca0902abfe10d42c1dce4f"
+          },
+          "answer": "למשל: נתון — $AB=60$ מ׳; מסקנה — הגובה $30$ מ׳; השערה — החומר לא ידהה בשמש. יש תשובות נוספות: נתון מפורש, תוצאה הנובעת מחישוב, וטענה על החומר שאינה נקבעת מהנתונים."
+        }
+      ]
+    },
+    "18": {
+      "id": "774110467ff449c7bd6b725471b735e7:18",
+      "q": 18,
+      "grade": 7,
+      "topic": "שטח משולש — העמקה",
+      "levelLabel": "רמה א׳",
+      "text": "בשרטוט $\\tri ABC$ ו־$\\tri ABD$, והקטע $CD$ מקביל לצלע $AB$. הקטעים $CK$ ו־$DL$ מאונכים ל־$AB$. נתון: $AB = 9$ ס״מ, $CK = 8$ ס״מ.",
+      "figure": {
+        "url": "/noam-ai/native/G7-T19/a/figures/q18_head.svg",
+        "sha256": "460ea6e7efe3c4d7a589d2167c6124281f9b8837dcb7e4df628bd872e6e149a1"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את שטח $\\tri ABC$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q18_head.svg",
+            "sha256": "460ea6e7efe3c4d7a589d2167c6124281f9b8837dcb7e4df628bd872e6e149a1"
+          },
+          "answer": "שטח $\\tri ABC$ הוא $36$ סמ״ר."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את שטח $\\tri ABD$. נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q18_head.svg",
+            "sha256": "460ea6e7efe3c4d7a589d2167c6124281f9b8837dcb7e4df628bd872e6e149a1"
+          },
+          "answer": "שטח $\\tri ABD$ הוא $36$ סמ״ר: הבסיס משותף, והגבהים שווים למרחק בין הישרים המקבילים $AB$ ו־$CD$."
+        },
+        {
+          "label": "ג",
+          "text": "נתון: $CD = 6$ ס״מ. חשבו את שטח $\\tri ACD$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q18_head.svg",
+            "sha256": "460ea6e7efe3c4d7a589d2167c6124281f9b8837dcb7e4df628bd872e6e149a1"
+          },
+          "answer": "שטח $\\tri ACD$ הוא $24$ סמ״ר."
+        }
+      ]
+    },
+    "19": {
+      "id": "774110467ff449c7bd6b725471b735e7:19",
+      "q": 19,
+      "grade": 7,
+      "topic": "שטח משולש — העמקה",
+      "levelLabel": "רמה א׳",
+      "text": "בשרטוט שלושה משולשים, ובכל אחד מהם הגובה לצלע התחתונה. השטחים של $\\tri EFG$ ושל $\\tri KLM$ שווים לשטח של $\\tri ABC$. נתון: $AB = 11$ ס״מ, $CD = 12$ ס״מ, $EF = 12$ ס״מ, $KL = 22$ ס״מ.",
+      "figure": {
+        "url": "/noam-ai/native/G7-T19/a/figures/q19_head.svg",
+        "sha256": "9232042a19ac24ae11610009093fe2c154523388396c42dfdb9374d2351e0c4b"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את שטח $\\tri ABC$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q19_head.svg",
+            "sha256": "9232042a19ac24ae11610009093fe2c154523388396c42dfdb9374d2351e0c4b"
+          },
+          "answer": "שטח $\\tri ABC$ הוא $66$ סמ״ר."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את הגובה $GH$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q19_head.svg",
+            "sha256": "9232042a19ac24ae11610009093fe2c154523388396c42dfdb9374d2351e0c4b"
+          },
+          "answer": "$GH=11$ ס״מ."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את הגובה $MN$.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q19_head.svg",
+            "sha256": "9232042a19ac24ae11610009093fe2c154523388396c42dfdb9374d2351e0c4b"
+          },
+          "answer": "$MN=6$ ס״מ."
+        },
+        {
+          "label": "ד",
+          "text": "השוו את גורמי השינוי בבסיס ובגובה בשני המעברים. נסחו כלל למשולשים בעלי שטח קבוע.",
+          "figure": {
+            "url": "/noam-ai/native/G7-T19/a/figures/q19_head.svg",
+            "sha256": "9232042a19ac24ae11610009093fe2c154523388396c42dfdb9374d2351e0c4b"
+          },
+          "answer": "ל־$\\tri EFG$: הבסיס מוכפל ב־$\\f{12}{11}$ והגובה ב־$\\f{11}{12}$. ל־$\\tri KLM$: הבסיס פי $2$ והגובה פי $\\f{1}{2}$. בשטח קבוע, גורמי השינוי בבסיס ובגובה הופכיים."
+        }
+      ]
+    },
+    "20": {
+      "id": "774110467ff449c7bd6b725471b735e7:20",
+      "q": 20,
+      "grade": 7,
+      "topic": "שטח משולש — העמקה",
+      "levelLabel": "רמה א׳",
+      "text": "קטלוג משולשים ששטחם $27$ סמ״ר מכיל רק את זוגות המידות $(3,18)$, $(6,9)$, $(9,6)$. בכל זוג המספר הראשון הוא בסיס והשני גובה, בס״מ. כל המידות שלמות וחיוביות.",
+      "items": [
+        {
+          "label": "א",
+          "text": "בדקו שהרשומות מתאימות, והשלימו את הקטלוג בכל הזוגות החסרים. נמקו שאין עוד אפשרויות.",
+          "answer": "כל הרשומות מתאימות, כי מכפלת הבסיס בגובה $54$. החסרות: $(1,54)$, $(2,27)$, $(18,3)$, $(27,2)$, $(54,1)$. אלה וכל הנתונות ממצות את כל זוגות המחלקים החיוביים של $54$."
+        },
+        {
+          "label": "ב",
+          "text": "מסננים את הקטלוג לבסיס שאורכו לפחות $3$ ולכל היותר $12$. אילו רשומות שורדות?",
+          "answer": "$(3,18)$, $(6,9)$, $(9,6)$."
+        },
+        {
+          "label": "ג",
+          "text": "באיזו רשומה מלאה הבסיס והגובה הקרובים ביותר? האם ניתן לקבל אותם שווים?",
+          "answer": "$(6,9)$ ו־$(9,6)$ הן הקרובות ביותר. שוויון שלם אינו אפשרי, כי $54$ אינו ריבוע של מספר שלם."
+        },
+        {
+          "label": "ד",
+          "text": "בתכנון חדש מותר לבחור שטח $18$, $24.5$ או $27$ סמ״ר. לאילו מן השטחים יש בסיס וגובה שווים ושלמים? בחרו מקרה אפשרי ושרטטו.",
+          "answer": "אפשר בשטח $18$ עם בסיס וגובה $6$ ס״מ, ובשטח $24.5$ עם בסיס וגובה $7$ ס״מ; בשטח $27$ אי אפשר. דוגמה למקרה הראשון: משולש ישר־זווית עם שתי צלעות מאונכות באורך $6$ ס״מ; יש דוגמאות נוספות בעלות אותו בסיס וגובה."
+        }
+      ]
+    }
+  }
+}

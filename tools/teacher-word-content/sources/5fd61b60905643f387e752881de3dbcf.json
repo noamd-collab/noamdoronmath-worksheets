@@ -1,0 +1,823 @@
+{
+  "sourceSha256": "b10518226859efd2de5bdb81c854b183d5bfe03b37c160a7b9b22d721cd3c5b4",
+  "answerSourceSha256": "610a78979965d40b8a71ff6cd1cb33b89c4d5f35a4a99d7e32ae279852e6c13f",
+  "nativeSha256": "2d6d6ae9a1725212170619d90ef545745c262ac23421b858a9d2af97e4037980",
+  "questions": {
+    "1": {
+      "id": "5fd61b60905643f387e752881de3dbcf:1",
+      "q": 1,
+      "grade": 9,
+      "topic": "משולש שווה־שוקיים",
+      "levelLabel": "רמה א׳",
+      "text": "הישרים $EG$ ו־$FH$ מקבילים, והנקודה $T$ נמצאת ביניהם. דרך $T$ עובר הישר $TR$, המקביל ל־$EG$. נתון $\\angle{GET} = 34°$ ו־$\\angle{HFT} = 47°$.",
+      "example": {
+        "title": "דוגמה מודרכת",
+        "lines": [
+          "כשנקודה נמצאת בין שני ישרים מקבילים, מעבירים דרכה ישר עזר שמקביל לשניהם.",
+          "ישר העזר מחלק את הזווית שבנקודה לשני חלקים. כל חלק הוא זווית מתחלפת לזווית שנמצאת ליד אחד הישרים, ולכן שווה לה.",
+          "מכאן: הזווית שבנקודה שווה לסכום שתי הזוויות שליד הישרים."
+        ]
+      },
+      "figure": {
+        "url": "/noam-ai/native/G9-T15/a/figures/q1_head.svg",
+        "sha256": "c772780362cbe721ff833b3e2a1089dfdaf40537d06ff3560c4e6131dcf94b82"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את $\\angle{ETR}$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q1_head.svg",
+            "sha256": "c772780362cbe721ff833b3e2a1089dfdaf40537d06ff3560c4e6131dcf94b82"
+          },
+          "answer": "$\\angle{ETR}=34°$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את $\\angle{FTR}$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q1_head.svg",
+            "sha256": "c772780362cbe721ff833b3e2a1089dfdaf40537d06ff3560c4e6131dcf94b82"
+          },
+          "answer": "$\\angle{FTR}=47°$."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את $\\angle{ETF}$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q1_head.svg",
+            "sha256": "c772780362cbe721ff833b3e2a1089dfdaf40537d06ff3560c4e6131dcf94b82"
+          },
+          "answer": "$\\angle{ETF}=81°$."
+        }
+      ]
+    },
+    "2": {
+      "id": "5fd61b60905643f387e752881de3dbcf:2",
+      "q": 2,
+      "grade": 9,
+      "topic": "משולש שווה־שוקיים",
+      "levelLabel": "רמה א׳",
+      "text": "הקטעים $AB$ ו־$CD$ מקבילים. הקטע $EF$ חותך את $AB$ בנקודה $G$ ואת $CD$ בנקודה $H$. נתון $\\angle{BGH} = (4x + 15)°$ ו־$\\angle{GHD} = (2x + 3)°$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T15/a/figures/q2_head.svg",
+        "sha256": "366c1bcef6531ee212897f27c3320db6ad9a9919af71bf9276f181d751fe47b5"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "כתבו משוואה ומצאו את $x$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q2_head.svg",
+            "sha256": "366c1bcef6531ee212897f27c3320db6ad9a9919af71bf9276f181d751fe47b5"
+          },
+          "answer": "$(4x+15)+(2x+3)=180$; $x=27$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את $\\angle{BGH}$ ואת $\\angle{GHD}$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q2_head.svg",
+            "sha256": "366c1bcef6531ee212897f27c3320db6ad9a9919af71bf9276f181d751fe47b5"
+          },
+          "answer": "$\\angle{BGH}=123°$, $\\angle{GHD}=57°$."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את $\\angle{EGB}$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q2_head.svg",
+            "sha256": "366c1bcef6531ee212897f27c3320db6ad9a9919af71bf9276f181d751fe47b5"
+          },
+          "answer": "$\\angle{EGB}=57°$."
+        }
+      ]
+    },
+    "3": {
+      "id": "5fd61b60905643f387e752881de3dbcf:3",
+      "q": 3,
+      "grade": 9,
+      "topic": "משולש שווה־שוקיים",
+      "levelLabel": "רמה א׳",
+      "text": "ב־$\\tri KLM$ השוקיים הן $KL = KM$. זווית הראש היא $\\angle{LKM} = (2x + 14)°$, וזווית הבסיס $\\angle{KLM} = (x + 23)°$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T15/a/figures/q3_head.svg",
+        "sha256": "b434c1cdc733ee5cc5f75c4b248714cda53513acdcc68bdb53a140602c9619b3"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "כתבו משוואה ומצאו את $x$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q3_head.svg",
+            "sha256": "b434c1cdc733ee5cc5f75c4b248714cda53513acdcc68bdb53a140602c9619b3"
+          },
+          "answer": "$(2x+14)+2(x+23)=180$; $x=30$."
+        },
+        {
+          "label": "ב",
+          "text": "מצאו את הזוויות של $\\tri KLM$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q3_head.svg",
+            "sha256": "b434c1cdc733ee5cc5f75c4b248714cda53513acdcc68bdb53a140602c9619b3"
+          },
+          "answer": "$\\angle{LKM}=74°$, $\\angle{KLM}=\\angle{KML}=53°$."
+        },
+        {
+          "label": "ג",
+          "text": "איזה משולש הוא $\\tri KLM$ לפי זוויותיו?",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q3_head.svg",
+            "sha256": "b434c1cdc733ee5cc5f75c4b248714cda53513acdcc68bdb53a140602c9619b3"
+          },
+          "answer": "משולש חד־זוויות."
+        }
+      ]
+    },
+    "4": {
+      "id": "5fd61b60905643f387e752881de3dbcf:4",
+      "q": 4,
+      "grade": 9,
+      "topic": "משולש שווה־שוקיים",
+      "levelLabel": "רמה א׳",
+      "text": "ב־$\\tri PQR$ מעבירים מן הקודקוד $P$ את חוצה הזווית $PS$ אל הצלע $QR$. מ־$S$ יוצא קטע $ST$, מקביל ל־$PQ$, שקצהו $T$ על הצלע $PR$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T15/a/figures/q4_head.svg",
+        "sha256": "066a6fd34a028024ee307a46394000cc7eed41296bb184e979ca9ddc6b50337c"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הוכיחו: $TP = TS$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q4_head.svg",
+            "sha256": "066a6fd34a028024ee307a46394000cc7eed41296bb184e979ca9ddc6b50337c"
+          },
+          "answer": "$\\angle{TPS}=\\angle{SPQ}$ מחוצה הזווית, ו־$\\angle{SPQ}=\\angle{PST}$ מתחלפות. מול הזוויות השוות במשולש $\\tri PTS$ נמצאות צלעות שוות: $TP=TS$."
+        },
+        {
+          "label": "ב",
+          "text": "עתה ידוע ש־$\\angle{QPR} = 78°$. מה גודל $\\angle{TSP}$, ומה גודל $\\angle{PTS}$?",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q4_head.svg",
+            "sha256": "066a6fd34a028024ee307a46394000cc7eed41296bb184e979ca9ddc6b50337c"
+          },
+          "answer": "$\\angle{TSP}=39°$, $\\angle{PTS}=102°$."
+        }
+      ]
+    },
+    "5": {
+      "id": "5fd61b60905643f387e752881de3dbcf:5",
+      "q": 5,
+      "grade": 9,
+      "topic": "משולש שווה־שוקיים",
+      "levelLabel": "רמה א׳",
+      "text": "ב־$\\tri KLM$ השוקיים שוות: $KL = KM$. מאריכים את שתי השוקיים אל מעבר לבסיס $LM$, עד לנקודות $P$ (בהמשך של $KL$) ו־$R$ (בהמשך של $KM$), כך שהקטע $PR$ מקביל לבסיס.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T15/a/figures/q5_head.svg",
+        "sha256": "4eafc2298ca8d7c0e063efda565cc5afc2e8b7496ec4c39174b4978a9044f783"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הוכיחו: $KP = KR$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q5_head.svg",
+            "sha256": "4eafc2298ca8d7c0e063efda565cc5afc2e8b7496ec4c39174b4978a9044f783"
+          },
+          "answer": "מהמקבילות מתקבל $\\angle{KPR}=\\angle{KLM}$ וגם $\\angle{KRP}=\\angle{KML}$. זוויות הבסיס המקוריות שוות, ולכן גם החדשות שוות ו־$KP=KR$."
+        },
+        {
+          "label": "ב",
+          "text": "אם $\\angle{LKM} = 46°$, מה גודל $\\angle{KPR}$?",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q5_head.svg",
+            "sha256": "4eafc2298ca8d7c0e063efda565cc5afc2e8b7496ec4c39174b4978a9044f783"
+          },
+          "answer": "$\\angle{KPR}=67°$."
+        },
+        {
+          "label": "ג",
+          "text": "הוכיחו: $LP = MR$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q5_head.svg",
+            "sha256": "4eafc2298ca8d7c0e063efda565cc5afc2e8b7496ec4c39174b4978a9044f783"
+          },
+          "answer": "$LP=KP−KL=KR−KM=MR$: מחסרים אורכים שווים מאורכים שווים."
+        }
+      ]
+    },
+    "6": {
+      "id": "5fd61b60905643f387e752881de3dbcf:6",
+      "q": 6,
+      "grade": 9,
+      "topic": "משולש שווה־שוקיים",
+      "levelLabel": "רמה א׳",
+      "text": "ב־$\\tri RST$ השוקיים $RS$ ו־$RT$ שוות, ו־$\\angle{RST} = 63°$. מאריכים את $TR$ מעבר לקודקוד $R$ עד לנקודה $U$. הקרן $RZ$ היא חוצת הזווית $\\angle{URS}$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T15/a/figures/q6_head.svg",
+        "sha256": "0e9d92c1ebf07779b20ba5e1e9a5a42440d2f3c0b4721e38b9c028ff76a17925"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את $\\angle{URS}$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q6_head.svg",
+            "sha256": "0e9d92c1ebf07779b20ba5e1e9a5a42440d2f3c0b4721e38b9c028ff76a17925"
+          },
+          "answer": "$\\angle{URS}=126°$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את $\\angle{ZRS}$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q6_head.svg",
+            "sha256": "0e9d92c1ebf07779b20ba5e1e9a5a42440d2f3c0b4721e38b9c028ff76a17925"
+          },
+          "answer": "$\\angle{ZRS}=63°$."
+        },
+        {
+          "label": "ג",
+          "text": "הוכיחו: $RZ ∥ ST$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q6_head.svg",
+            "sha256": "0e9d92c1ebf07779b20ba5e1e9a5a42440d2f3c0b4721e38b9c028ff76a17925"
+          },
+          "answer": "$\\angle{ZRS}=\\angle{RST}=63°$. אלה זוויות מתחלפות שוות, ולכן $RZ\\para ST$."
+        }
+      ]
+    },
+    "7": {
+      "id": "5fd61b60905643f387e752881de3dbcf:7",
+      "q": 7,
+      "grade": 9,
+      "topic": "משולש שווה־שוקיים",
+      "levelLabel": "רמה א׳",
+      "text": "$M$ היא אמצע הקטע $PR$, ו־$Q$ היא נקודה שמרחקה מ־$M$ שווה למרחק של $P$ מ־$M$: $MQ = MP$. הקטעים $QP$, $QM$ ו־$QR$ משורטטים.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T15/a/figures/q7_head.svg",
+        "sha256": "e48ce0e6331b29eccd8e5c4e76d29b6b0c91962926fefad0883de5f8c50f59a1"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הוכיחו כי $\\angle{PQR} = 90°$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q7_head.svg",
+            "sha256": "e48ce0e6331b29eccd8e5c4e76d29b6b0c91962926fefad0883de5f8c50f59a1"
+          },
+          "answer": "נסמן $a=\\angle{MPQ}$ ו־$b=\\angle{MRQ}$. מאחר ש־$MP=MQ=MR$, גם $\\angle{PQM}=a$ ו־$\\angle{MQR}=b$. סכום זוויות המשולש נותן $2a+2b=180°$, ולכן $\\angle{PQR}=a+b=90°$."
+        },
+        {
+          "label": "ב",
+          "text": "נניח ש־$\\angle{MPQ} = 31°$. מה גודל $\\angle{PRQ}$, ומה גודל $\\angle{QMR}$?",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q7_head.svg",
+            "sha256": "e48ce0e6331b29eccd8e5c4e76d29b6b0c91962926fefad0883de5f8c50f59a1"
+          },
+          "answer": "$\\angle{PRQ}=59°$, $\\angle{QMR}=62°$."
+        }
+      ]
+    },
+    "8": {
+      "id": "5fd61b60905643f387e752881de3dbcf:8",
+      "q": 8,
+      "grade": 9,
+      "topic": "משולש שווה־שוקיים",
+      "levelLabel": "רמה א׳",
+      "text": "ב־$\\tri KLM$ השוקיים $KL$ ו־$KM$ שוות, וזווית הראש $\\angle{LKM} = 120°$. על הבסיס $LM$ בוחרים נקודה $N$ שמרחקה מ־$K$ שווה למרחקה מ־$L$: $NK = NL$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T15/a/figures/q8_head.svg",
+        "sha256": "89c64c6eb304b3aad7f7b8bc86b7b5956ae31fb56cfe5acd062c633062b59541"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את $\\angle{KNM}$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q8_head.svg",
+            "sha256": "89c64c6eb304b3aad7f7b8bc86b7b5956ae31fb56cfe5acd062c633062b59541"
+          },
+          "answer": "$\\angle{KNM}=60°$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את $\\angle{NKM}$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q8_head.svg",
+            "sha256": "89c64c6eb304b3aad7f7b8bc86b7b5956ae31fb56cfe5acd062c633062b59541"
+          },
+          "answer": "$\\angle{NKM}=90°$."
+        },
+        {
+          "label": "ג",
+          "text": "איזה משולש הוא $\\tri KNM$ לפי זוויותיו?",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q8_head.svg",
+            "sha256": "89c64c6eb304b3aad7f7b8bc86b7b5956ae31fb56cfe5acd062c633062b59541"
+          },
+          "answer": "משולש ישר־זווית."
+        }
+      ]
+    },
+    "9": {
+      "id": "5fd61b60905643f387e752881de3dbcf:9",
+      "q": 9,
+      "grade": 9,
+      "topic": "משולש שווה־שוקיים",
+      "levelLabel": "רמה א׳",
+      "text": "הישרים $EG$ ו־$FH$ מקבילים, והנקודות $G$ ו־$H$ באותו צד של הישר $EF$. חוצה הזווית $\\angle{GEF}$ וחוצה הזווית $\\angle{EFH}$ נפגשים בנקודה $T$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T15/a/figures/q9_head.svg",
+        "sha256": "1f4b17abd5ccf206289eca2957d4163d61d65c4728e07ba41fae63260d94c89e"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הוכיחו כי $\\angle{ETF} = 90°$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q9_head.svg",
+            "sha256": "1f4b17abd5ccf206289eca2957d4163d61d65c4728e07ba41fae63260d94c89e"
+          },
+          "answer": "$\\angle{GEF}+\\angle{EFH}=180°$ כי הן חד־צדדיות. חצאיהן מסתכמים ב־$90°$, ולכן הזווית השלישית במשולש היא $\\angle{ETF}=90°$."
+        },
+        {
+          "label": "ב",
+          "text": "נתון $\\angle{GEF} = 128°$. חשבו את $\\angle{TEF}$ ואת $\\angle{EFT}$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q9_head.svg",
+            "sha256": "1f4b17abd5ccf206289eca2957d4163d61d65c4728e07ba41fae63260d94c89e"
+          },
+          "answer": "$\\angle{TEF}=64°$, $\\angle{EFT}=26°$."
+        }
+      ]
+    },
+    "10": {
+      "id": "5fd61b60905643f387e752881de3dbcf:10",
+      "q": 10,
+      "grade": 9,
+      "topic": "משולש שווה־שוקיים",
+      "levelLabel": "רמה א׳",
+      "text": "ב־$\\tri FGH$ השוקיים $FG$ ו־$FH$ שוות. הקטע $KL$ מקביל לבסיס $GH$; קצהו $K$ על השוק $FG$ וקצהו $L$ על השוק $FH$. ידוע ש־$\\angle{FGH} = (4x + 6)°$ ו־$\\angle{FLK} = (x + 42)°$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T15/a/figures/q10_head.svg",
+        "sha256": "c4690c3d8aef24ba36f2a5a3bd6ad1d25f6d11c03c268744e32a5be610486ef6"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "כתבו משוואה ומצאו את $x$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q10_head.svg",
+            "sha256": "c4690c3d8aef24ba36f2a5a3bd6ad1d25f6d11c03c268744e32a5be610486ef6"
+          },
+          "answer": "$4x+6=x+42$; $x=12$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את $\\angle{GFH}$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q10_head.svg",
+            "sha256": "c4690c3d8aef24ba36f2a5a3bd6ad1d25f6d11c03c268744e32a5be610486ef6"
+          },
+          "answer": "$\\angle{GFH}=72°$."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את $\\angle{GKL}$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q10_head.svg",
+            "sha256": "c4690c3d8aef24ba36f2a5a3bd6ad1d25f6d11c03c268744e32a5be610486ef6"
+          },
+          "answer": "$\\angle{GKL}=126°$."
+        }
+      ]
+    },
+    "11": {
+      "id": "5fd61b60905643f387e752881de3dbcf:11",
+      "q": 11,
+      "grade": 9,
+      "topic": "משולש שווה־שוקיים",
+      "levelLabel": "רמה א׳",
+      "text": "ב־$\\tri KLM$ השוקיים $KL$ ו־$KM$ שוות. חוצי זוויות הבסיס הם הקטעים $LS$ ו־$MT$ (הנקודה $S$ על $KM$, הנקודה $T$ על $KL$), ונקודת החיתוך שלהם היא $O$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T15/a/figures/q11_head.svg",
+        "sha256": "0a6cbc038edcd9bf49383bffdcb880e7d800df2ce8f77cb4686e2d5d3eed69d5"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הוכיחו: $OL = OM$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q11_head.svg",
+            "sha256": "0a6cbc038edcd9bf49383bffdcb880e7d800df2ce8f77cb4686e2d5d3eed69d5"
+          },
+          "answer": "זוויות הבסיס שוות, ולכן גם חצאיהן $\\angle{OLM}=\\angle{OML}$. מולן נמצאות הצלעות השוות $OL=OM$."
+        },
+        {
+          "label": "ב",
+          "text": "אם $\\angle{KLM} = 74°$, מה גודל $\\angle{LOM}$?",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q11_head.svg",
+            "sha256": "0a6cbc038edcd9bf49383bffdcb880e7d800df2ce8f77cb4686e2d5d3eed69d5"
+          },
+          "answer": "$\\angle{LOM}=106°$."
+        }
+      ]
+    },
+    "12": {
+      "id": "5fd61b60905643f387e752881de3dbcf:12",
+      "q": 12,
+      "grade": 9,
+      "topic": "משולש שווה־שוקיים",
+      "levelLabel": "רמה א׳",
+      "text": "בכיסא מתקפל הרגליים הן הקטעים $AC$ ו־$BD$, והן נחתכות בנקודה $O$. המושב הוא הקטע $AB$, והקטע $CD$ מונח על הרצפה. נתון $OA = OB$ ו־$OC = OD$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T15/a/figures/q12_head.svg",
+        "sha256": "174274f0a4e387788dba5b0cf1e770d2c708257ce8e59c517f369eae4d89492b"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "בפתיחה מסוימת $\\angle{AOB} = 54°$. מה גודל $\\angle{OAB}$, ומה גודל $\\angle{OCD}$?",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q12_head.svg",
+            "sha256": "174274f0a4e387788dba5b0cf1e770d2c708257ce8e59c517f369eae4d89492b"
+          },
+          "answer": "$\\angle{OAB}=\\angle{OCD}=63°$."
+        },
+        {
+          "label": "ב",
+          "text": "הוכיחו כי המושב מקביל לרצפה, כלומר $AB ∥ CD$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q12_head.svg",
+            "sha256": "174274f0a4e387788dba5b0cf1e770d2c708257ce8e59c517f369eae4d89492b"
+          },
+          "answer": "הזוויות $\\angle{AOB}$ ו־$\\angle{COD}$ קודקודיות ושוות. בשני המשולשים שווי־השוקיים גם זוויות הבסיס שוות בהתאמה; לכן $\\angle{OAB}=\\angle{OCD}$ מתחלפות, ו־$AB\\para CD$."
+        }
+      ]
+    },
+    "13": {
+      "id": "5fd61b60905643f387e752881de3dbcf:13",
+      "q": 13,
+      "grade": 9,
+      "topic": "משולש שווה־שוקיים",
+      "levelLabel": "רמה א׳",
+      "text": "ב־$\\tri RST$ מאריכים את $ST$ מעבר ל־$T$ עד לנקודה $U$. הקרן $TZ$, שמקבילה ל־$SR$, היא חוצת הזווית החיצונית $\\angle{RTU}$. ידוע ש־$\\angle{RTU} = (6x + 4)°$ ו־$\\angle{RST} = (2x + 22)°$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T15/a/figures/q13_head.svg",
+        "sha256": "0cdd983afa8c52a1143af90a22802362ea2728e73bd746698ed28c1481d49c63"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "כתבו משוואה ומצאו את $x$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q13_head.svg",
+            "sha256": "0cdd983afa8c52a1143af90a22802362ea2728e73bd746698ed28c1481d49c63"
+          },
+          "answer": "$6x+4=2(2x+22)$; $x=20$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את $\\angle{SRT}$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q13_head.svg",
+            "sha256": "0cdd983afa8c52a1143af90a22802362ea2728e73bd746698ed28c1481d49c63"
+          },
+          "answer": "$\\angle{SRT}=62°$."
+        },
+        {
+          "label": "ג",
+          "text": "הוכיחו: $TR = TS$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q13_head.svg",
+            "sha256": "0cdd983afa8c52a1143af90a22802362ea2728e73bd746698ed28c1481d49c63"
+          },
+          "answer": "$\\angle{RST}=\\angle{SRT}=62°$; מול זוויות שוות נמצאות צלעות שוות, ולכן $TR=TS$."
+        }
+      ]
+    },
+    "14": {
+      "id": "5fd61b60905643f387e752881de3dbcf:14",
+      "q": 14,
+      "grade": 9,
+      "topic": "משולש שווה־שוקיים",
+      "levelLabel": "רמה א׳",
+      "text": "$M$ היא נקודה בתוך $\\tri DEF$, והקטעים $EM$ ו־$FM$ הם חוצי הזוויות $\\angle{DEF}$ ו־$\\angle{DFE}$. הזווית שביניהם היא $\\angle{EMF} = 124°$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T15/a/figures/q14_head.svg",
+        "sha256": "599e2ada54b50539d0997862950dbb026ab01514682e417fe5419457849a3c49"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את $\\angle{EDF}$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q14_head.svg",
+            "sha256": "599e2ada54b50539d0997862950dbb026ab01514682e417fe5419457849a3c49"
+          },
+          "answer": "$\\angle{EDF}=68°$."
+        },
+        {
+          "label": "ב",
+          "text": "ידוע גם ש־$\\angle{DEF} = 76°$. מה גודל $\\angle{MFE}$?",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q14_head.svg",
+            "sha256": "599e2ada54b50539d0997862950dbb026ab01514682e417fe5419457849a3c49"
+          },
+          "answer": "$\\angle{MFE}=18°$."
+        }
+      ]
+    },
+    "15": {
+      "id": "5fd61b60905643f387e752881de3dbcf:15",
+      "q": 15,
+      "grade": 9,
+      "topic": "משולש שווה־שוקיים",
+      "levelLabel": "רמה א׳",
+      "text": "$PK ∥ QR$, והקטע $PQ$ מחבר בין שני הישרים. $S$ היא נקודה על $PK$, בין $P$ ל־$K$, כך ש־$QS$ חוצה את $\\angle{PQR}$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T15/a/figures/q15_head.svg",
+        "sha256": "3294ae6cc004606ad5f45ccc784ec25572453e0713a84f68d34933738119455c"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "ידוע ש־$\\angle{PQR} = 82°$. מצאו את הזוויות של $\\tri PQS$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q15_head.svg",
+            "sha256": "3294ae6cc004606ad5f45ccc784ec25572453e0713a84f68d34933738119455c"
+          },
+          "answer": "$\\angle{PQS}=\\angle{PSQ}=41°$, $\\angle{QPS}=98°$."
+        },
+        {
+          "label": "ב",
+          "text": "הוכיחו: $PQ = PS$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q15_head.svg",
+            "sha256": "3294ae6cc004606ad5f45ccc784ec25572453e0713a84f68d34933738119455c"
+          },
+          "answer": "$\\angle{PQS}=\\angle{SQR}$ מחוצה הזווית, ו־$\\angle{SQR}=\\angle{PSQ}$ מתחלפות. לכן $PQ=PS$."
+        }
+      ]
+    },
+    "16": {
+      "id": "5fd61b60905643f387e752881de3dbcf:16",
+      "q": 16,
+      "grade": 9,
+      "topic": "משולש שווה־שוקיים",
+      "levelLabel": "רמה א׳",
+      "text": "הישרים $AK$ ו־$MB$ מקבילים, והנקודות $P$ ו־$Q$ נמצאות ביניהם. דרך $P$ ודרך $Q$ עוברים הישרים $PW$ ו־$QZ$, המקבילים ל־$AK$. נתון $\\angle{KAP} = 31°$, $\\angle{APQ} = 124°$ ו־$\\angle{PQB} = 85°$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T15/a/figures/q16_head.svg",
+        "sha256": "bffd492023b47dec23f7e7428167e1f7813c024d65d6822a0e87664959b2bacf"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את $\\angle{QPW}$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q16_head.svg",
+            "sha256": "bffd492023b47dec23f7e7428167e1f7813c024d65d6822a0e87664959b2bacf"
+          },
+          "answer": "$\\angle{QPW}=25°$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את $\\angle{BQZ}$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q16_head.svg",
+            "sha256": "bffd492023b47dec23f7e7428167e1f7813c024d65d6822a0e87664959b2bacf"
+          },
+          "answer": "$\\angle{BQZ}=110°$."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את $\\angle{QBM}$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q16_head.svg",
+            "sha256": "bffd492023b47dec23f7e7428167e1f7813c024d65d6822a0e87664959b2bacf"
+          },
+          "answer": "$\\angle{QBM}=70°$."
+        }
+      ]
+    },
+    "17": {
+      "id": "5fd61b60905643f387e752881de3dbcf:17",
+      "q": 17,
+      "grade": 9,
+      "topic": "משולש שווה־שוקיים",
+      "levelLabel": "רמה א׳",
+      "text": "מן הנקודה $O$ יוצאות הקרניים $OB$ ו־$OC$, ו־$\\angle{AOB} = 22°$. הנקודה $A$ על הקרן $OC$, בין $O$ ל־$C$. שלושת הקטעים $OA$, $AB$ ו־$BC$ שווים זה לזה.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T15/a/figures/q17_head.svg",
+        "sha256": "85e9a1320027b2533a8c5742a1f2be1433757705cd83408dc5367e3fc2f7b403"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מה גודל $\\angle{BAC}$? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q17_head.svg",
+            "sha256": "85e9a1320027b2533a8c5742a1f2be1433757705cd83408dc5367e3fc2f7b403"
+          },
+          "answer": "$\\angle{BAC}=44°$: במשולש $\\tri OAB$ זוויות הבסיס הן $22°$ כל אחת, והזווית החיצונית $\\angle{BAC}$ שווה לסכומן."
+        },
+        {
+          "label": "ב",
+          "text": "מה גודל $\\angle{ABC}$?",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q17_head.svg",
+            "sha256": "85e9a1320027b2533a8c5742a1f2be1433757705cd83408dc5367e3fc2f7b403"
+          },
+          "answer": "$\\angle{ABC}=92°$."
+        },
+        {
+          "label": "ג",
+          "text": "מה גודל $\\angle{OBC}$?",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q17_head.svg",
+            "sha256": "85e9a1320027b2533a8c5742a1f2be1433757705cd83408dc5367e3fc2f7b403"
+          },
+          "answer": "$\\angle{OBC}=114°$."
+        }
+      ]
+    },
+    "18": {
+      "id": "5fd61b60905643f387e752881de3dbcf:18",
+      "q": 18,
+      "grade": 9,
+      "topic": "משולש שווה־שוקיים",
+      "levelLabel": "רמה א׳",
+      "text": "ב־$\\tri ABC$ השוקיים $AB$ ו־$AC$ שוות, ו־$\\angle{ABC} = 57°$. מאריכים את $CA$ מעבר לקודקוד $A$ באורך של שוק, עד לנקודה $E$ ($AE = AB$), ומשרטטים את $EB$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T15/a/figures/q18_head.svg",
+        "sha256": "40e4877328df66cc63149dc6644a3f6eccbf645a1aed4abaeab233b7f092a14b"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מה גודל $\\angle{AEB}$?",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q18_head.svg",
+            "sha256": "40e4877328df66cc63149dc6644a3f6eccbf645a1aed4abaeab233b7f092a14b"
+          },
+          "answer": "$\\angle{AEB}=33°$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את $\\angle{EBC}$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q18_head.svg",
+            "sha256": "40e4877328df66cc63149dc6644a3f6eccbf645a1aed4abaeab233b7f092a14b"
+          },
+          "answer": "$\\angle{EBC}=90°$."
+        },
+        {
+          "label": "ג",
+          "text": "הוכיחו כי $\\angle{BAC} = 2\\angle{AEB}$ (בלי הנתון של זווית הבסיס).",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q18_head.svg",
+            "sha256": "40e4877328df66cc63149dc6644a3f6eccbf645a1aed4abaeab233b7f092a14b"
+          },
+          "answer": "$AE=AB$, ולכן $\\angle{AEB}=\\angle{ABE}$. הזווית $\\angle{BAC}$ חיצונית למשולש $\\tri ABE$, ולכן היא סכומן: $\\angle{BAC}=2\\angle{AEB}$."
+        }
+      ]
+    },
+    "19": {
+      "id": "5fd61b60905643f387e752881de3dbcf:19",
+      "q": 19,
+      "grade": 9,
+      "topic": "משולש שווה־שוקיים",
+      "levelLabel": "רמה א׳",
+      "text": "דנה טוענת: „אם לשני משולשים יש בסיס שווה, והגובה לבסיס שווה גם הוא, אז המשולשים חופפים.“",
+      "items": [
+        {
+          "label": "א",
+          "text": "האם דנה צודקת? אם לא – סרטטו שני משולשים שהבסיס של כל אחד מהם $6$ ס״מ והגובה לבסיס $4$ ס״מ, ושאינם חופפים.",
+          "answer": "לא. דוגמה: משולש ישר־זווית שניצביו $6$ ו־$4$ ס״מ, ומשולש שווה־שוקיים שבסיסו $6$ וגובהו $4$ ס״מ. השוקיים בשני הן $5$ ס״מ, ולכן המשולשים אינם חופפים. יש דוגמאות נוספות עם בסיס $6$, גובה $4$ ואורכי צלעות שאינם תואמים."
+        },
+        {
+          "label": "ב",
+          "text": "מה בכל זאת שווה בשני המשולשים שסרטטתם? מה גודלו?",
+          "answer": "השטחים שווים: $12$ סמ״ר לכל משולש."
+        }
+      ]
+    },
+    "20": {
+      "id": "5fd61b60905643f387e752881de3dbcf:20",
+      "q": 20,
+      "grade": 9,
+      "topic": "משולש שווה־שוקיים",
+      "levelLabel": "רמה א׳",
+      "text": "דגם של רמפה בנוי כמשולש ישר־זווית. הצלע המשופעת של הרמפה (היתר) ארוכה $29$ ס״מ, והצלע האנכית (ניצב) ארוכה $20$ ס״מ.",
+      "items": [
+        {
+          "label": "א",
+          "text": "סרטטו סקיצה של המשולש וסמנו עליה את הנתונים. מה אורכה של הצלע שעל הרצפה?",
+          "answer": "$21$ ס״מ. בסקיצה: ניצבים $20$ ו־$21$ ס״מ, זווית ישרה ביניהם ויתר $29$ ס״מ."
+        },
+        {
+          "label": "ב",
+          "text": "מהו שטח המשולש?",
+          "answer": "$210$ סמ״ר."
+        }
+      ]
+    },
+    "21": {
+      "id": "5fd61b60905643f387e752881de3dbcf:21",
+      "q": 21,
+      "grade": 9,
+      "topic": "משולש שווה־שוקיים",
+      "levelLabel": "רמה א׳",
+      "text": "ב־$\\tri ABC$ נתון $AB = AC$ ו־$AB = 37$ ס״מ. הקטע $AD$ הוא הגובה לצלע $BC$ ($AD ⊥ BC$), ו־$AD = 35$ ס״מ.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T15/a/figures/q21_head.svg",
+        "sha256": "9afde38d6c51fe159a1a0ea2eb5e375ef40b5edd237b218d292d5260b459ef9c"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מה אורך הבסיס $BC$? פרטו את כל שלבי החישוב.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q21_head.svg",
+            "sha256": "9afde38d6c51fe159a1a0ea2eb5e375ef40b5edd237b218d292d5260b459ef9c"
+          },
+          "answer": "$BC=24$ ס״מ. הגובה במשולש שווה־שוקיים חוצה את הבסיס; מחצית הבסיס היא $\\sqrt{37 ^2−35 ^2}=12$ ס״מ."
+        },
+        {
+          "label": "ב",
+          "text": "מהו היקף $\\tri ABC$?",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q21_head.svg",
+            "sha256": "9afde38d6c51fe159a1a0ea2eb5e375ef40b5edd237b218d292d5260b459ef9c"
+          },
+          "answer": "$98$ ס״מ."
+        },
+        {
+          "label": "ג",
+          "text": "מהו שטח $\\tri ABC$?",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q21_head.svg",
+            "sha256": "9afde38d6c51fe159a1a0ea2eb5e375ef40b5edd237b218d292d5260b459ef9c"
+          },
+          "answer": "$420$ סמ״ר."
+        }
+      ]
+    },
+    "22": {
+      "id": "5fd61b60905643f387e752881de3dbcf:22",
+      "q": 22,
+      "grade": 9,
+      "topic": "משולש שווה־שוקיים",
+      "levelLabel": "רמה א׳",
+      "text": "הישרים $AK$ ו־$BN$ מקבילים, והנקודה $P$ נמצאת ביניהם. נתון $\\angle{KAP} = (x + 16)°$, $\\angle{NBP} = (2x + 7)°$ ו־$\\angle{APB} = (5x + 1)°$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T15/a/figures/q22_head.svg",
+        "sha256": "9fc18c914c9d10b77d4a988f038015e520231d84d04d2f385f674887d268ffee"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "היעזרו בכלל שבדוגמה המודרכת של שאלה 1, כתבו משוואה ומצאו את $x$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q22_head.svg",
+            "sha256": "9fc18c914c9d10b77d4a988f038015e520231d84d04d2f385f674887d268ffee"
+          },
+          "answer": "$5x+1=(x+16)+(2x+7)$; $x=11$."
+        },
+        {
+          "label": "ב",
+          "text": "מצאו את גודלי הזוויות, וּודאו שהכלל מתקיים.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T15/a/figures/q22_head.svg",
+            "sha256": "9fc18c914c9d10b77d4a988f038015e520231d84d04d2f385f674887d268ffee"
+          },
+          "answer": "$\\angle{KAP}=27°$, $\\angle{NBP}=29°$, $\\angle{APB}=56°$. בדיקה: $27°+29°=56°$."
+        }
+      ]
+    },
+    "23": {
+      "id": "5fd61b60905643f387e752881de3dbcf:23",
+      "q": 23,
+      "grade": 9,
+      "topic": "משולש שווה־שוקיים",
+      "levelLabel": "רמה א׳",
+      "text": "במשולש שווה־שוקיים זווית הראש גדולה פי $4$ מזווית בסיס.",
+      "items": [
+        {
+          "label": "א",
+          "text": "מצאו את גודלי הזוויות, וסרטטו סקיצה של המשולש שעליה רשומות הזוויות.",
+          "answer": "זווית הראש $120°$ וזוויות הבסיס $30°$ כל אחת. הסקיצה יכולה להיות בכל גודל ששומר על הזוויות האלה."
+        },
+        {
+          "label": "ב",
+          "text": "בשאלה 8 יש משולש שזוויותיו שוות לזוויות המשולש הזה. איזה משולש הוא?",
+          "answer": "המשולש $\\tri KLM$; גם $\\tri KLN$ מתאים: בשניהם הזוויות הן $120°,30°,30°$."
+        }
+      ]
+    }
+  }
+}

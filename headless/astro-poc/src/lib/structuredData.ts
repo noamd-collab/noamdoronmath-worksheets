@@ -37,6 +37,8 @@ export function learningResourceJsonLd(input: {
   description: string;
   educationalLevel: string;
   learningResourceType?: string;
+  /** ISO date that matches the page's visible update line. Omitted when unknown. */
+  dateModified?: string | null;
 }): Record<string, unknown> {
   return {
     '@context': 'https://schema.org',
@@ -48,6 +50,7 @@ export function learningResourceJsonLd(input: {
     learningResourceType: input.learningResourceType || 'דפי עבודה',
     inLanguage: 'he',
     isAccessibleForFree: true,
+    ...(input.dateModified ? { dateModified: input.dateModified } : {}),
   };
 }
 

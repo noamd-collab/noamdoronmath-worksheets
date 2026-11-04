@@ -103,36 +103,32 @@ test('short topics explain availability visibly before clicking AI, with an acce
   assert.match(html, /id="ai-pick-group"[^>]*aria-describedby="ai-available-note"/);
 });
 
-for (const textFails of [false, true]) {
-  test(`original elementary answer pages are appended when text extraction ${textFails ? 'fails' : 'has no usable question labels'}`, async () => {
-    const measured = new Function('textFails', `
-      const sheetTextLines = async () => { if (textFails) throw new Error('text unavailable'); return []; };
-      const answerCropsFromLines = () => [];
-      const measureSlices = async slices => slices;
-      ${['levelPrintName', 'answerFallbackSlices', 'answerMeasured'].map(definition).join('\n')}
-      return answerMeasured;
-    `)(textFails);
-    const slices = await measured([{ source: { pdfId: 'elementary', level: 'b', answerStartPage: 4, pageCount: 5 }, questions: [{ q: 2 }] }]);
-    assert.match(slices[0].label, /רמה ב׳ · תשובות מדף המקור המלא/);
-    assert.deepEqual(slices.filter((slice: { kind: string }) => slice.kind === 'answer').map((slice: { page: number; box: unknown }) => ({ page: slice.page, box: slice.box })), [
-      { page: 4, box: { x: 0, y: 0, w: 1, h: 1 } },
-      { page: 5, box: { x: 0, y: 0, w: 1, h: 1 } },
-    ]);
-    assert.deepEqual(await measured([{ source: { pdfId: 'no-answers', answerStartPage: null, pageCount: 3 }, questions: [{ q: 2 }] }]), []);
-  });
-}
-
-test('outlined answer pages never use plausible text-overlay coordinates', async () => {
+test('unverified elementary answer pages block printing instead of exposing other answers', async () => {
   const measured = new Function(`
-    const sheetTextLines = async () => { throw new Error('Unreliable outlined-text coordinates must not be read'); };
-    const answerCropsFromLines = () => { throw new Error('Do not derive answer crops from an outlined-text overlay'); };
     const measureSlices = async slices => slices;
-    ${['levelPrintName', 'answerFallbackSlices', 'answerMeasured'].map(definition).join('\n')}
+    ${['levelPrintName', 'answerDocumentSource', 'selectedAnswerCrops', 'answerMeasured'].map(definition).join('\n')}
     return answerMeasured;
   `)();
-  const slices = await measured([{ source: { pdfId: 'outlined-source', answerGeometry: 'full-pages', level: 'a', answerStartPage: 8, pageCount: 9 }, questions: [{ q: 5 }] }]);
-  assert.deepEqual(slices.filter((slice: { kind: string }) => slice.kind === 'answer').map((slice: { page: number }) => slice.page), [8, 9]);
-  assert.ok(slices.filter((slice: { kind: string }) => slice.kind === 'answer').every((slice: { box: { x: number; y: number; w: number; h: number } }) => slice.box.x === 0 && slice.box.y === 0 && slice.box.w === 1 && slice.box.h === 1));
+  await assert.rejects(measured([{ source: { pdfId: 'elementary', level: 'b', answerStartPage: 4, pageCount: 5 }, questions: [{ q: 2 }] }]), { code: 'MISSING_ANSWERS' });
+});
+
+test('outlined answers use only verified question rectangles, never text-overlay coordinates', async () => {
+  const measured = new Function(`
+    const sheetTextLines = async () => { throw new Error('Unreliable outlined-text coordinates must not be read'); };
+    const measureSlices = async slices => slices;
+    ${['levelPrintName', 'answerDocumentSource', 'selectedAnswerCrops', 'answerMeasured'].map(definition).join('\n')}
+    return answerMeasured;
+  `)();
+  const source = { pdfId: 'outlined-source', answerGeometry: 'full-pages', level: 'a', answerStartPage: 8, pageCount: 9,
+    answerMap: { version: 1, sourceSha256: 'a'.repeat(64), questions: [
+      { q: 5, parts: [], crops: [{ page: 8, x: 0.05, y: 0.2, w: 0.9, h: 0.1 }] },
+      { q: 6, parts: [], crops: [{ page: 8, x: 0.05, y: 0.4, w: 0.9, h: 0.1 }] },
+    ] } };
+  const slices = await measured([{ source, questions: [{ q: 5 }] }]);
+  const answers = slices.filter((slice: { kind: string }) => slice.kind === 'answer');
+  assert.equal(answers.length, 1);
+  assert.equal(answers[0].answerKey, 'outlined-source:5');
+  assert.deepEqual(answers[0].box, { x: 0.05, y: 0.2, w: 0.9, h: 0.1 });
 });
 
 test('a narrow original column fills the question preview without changing its source crop or extracting PDF text', async () => {
@@ -150,7 +146,7 @@ test('a narrow original column fills the question preview without changing its s
     const sheetTextLines = () => { throw new Error('Preview must not require extractable PDF text'); };
     const loadQuestionPreviewManifest = async () => manifest;
     const pageBitmap = async (page, source) => { pages.push([page, source.pdfId]); return { width: 1100, height: 1555 }; };
-    ${['exKey', 'questionPreviewGroup', 'questionPreviewSlices', 'gapSize', 'fittedHeight', 'measureSlices', 'paintMeasuredPage', 'questionPreviewCanvas'].map(definition).join('\n')}
+    ${['exKey', 'questionPreviewGroup', 'originalQuestionPreviewSlices', 'questionDataSlices', 'answerDocumentSource', 'questionPreviewSlices', 'gapSize', 'fittedHeight', 'measureSlices', 'paintMeasuredPage', 'questionPreviewCanvas'].map(definition).join('\n')}
     return { render: questionPreviewCanvas, draws, pages };
   `)(group, manifest);
   const canvas = await app.render(group);
@@ -174,7 +170,7 @@ test('whole-question print geometry retains original context, columns and conten
     { page: 2, x: 0.53, y: 0.93, w: 0.42, h: 0.04 },
   ];
   const question = { id: '1', q: 1, page: 2, source, row: rows[0], rows, inkTop: 0.93 };
-  const slices = new Function('SOURCE', `${definition('wholeQuestionSlices')}\n${definition('shortSlices')} return shortSlices;`)(source)([question]);
+  const slices = new Function('SOURCE', `${['wholeQuestionSlices', 'originalShortSlices', 'questionDataSlices', 'answerDocumentSource', 'shortSlices'].map(definition).join('\n')} return shortSlices;`)(source)([question]);
   assert.deepEqual(slices.map((slice: { page: number; box: unknown }) => ({ page: slice.page, box: slice.box })), rows.map(box => ({ page: box.page, box })));
   assert.ok(slices.every((slice: { pdfId: string; block: string }) => slice.pdfId === source.pdfId && slice.block === 'elementary-source:q1'));
   assert.ok(Math.abs(slices[1].box.y + slices[1].box.h - 0.97) < 0.000001);
@@ -189,7 +185,7 @@ test('shared same-page context remains separate from the question instead of exp
     { page: 2, x: 0.05, y: 0.73, w: 0.9, h: 0.16 },
   ];
   const manifest = { exercises: [{ q: 4, pin: { page: 2, x: 0.9, y: 0.76 }, crops: [...crops, crops[2]] }] };
-  const preview = new Function(`${['exKey', 'questionPreviewGroup', 'questionPreviewSlices'].map(definition).join('\n')} return questionPreviewSlices;`)();
+  const preview = new Function(`${['exKey', 'questionPreviewGroup', 'originalQuestionPreviewSlices', 'questionDataSlices', 'answerDocumentSource', 'questionPreviewSlices'].map(definition).join('\n')} return questionPreviewSlices;`)();
   const slices = preview(group, manifest);
   assert.deepEqual(slices.map((slice: { page: number; box: unknown }) => ({ page: slice.page, ...slice.box as object })), crops);
   assert.equal(slices.length, 3, 'Repeated copies of an exact crop are rendered once');

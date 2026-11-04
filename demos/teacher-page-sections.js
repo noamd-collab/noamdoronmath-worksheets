@@ -1,10 +1,8 @@
 /* Sections of a teacher page: test sections are scored, review sections are not. */
 
-export const MORE_TOPIC_QUESTION = 'האם תרצה לבחור עוד נושא לדף שלך?';
-
 export const SECTION_KINDS = {
   test: {
-    label: 'קטע מבחן',
+    label: 'קטע ממבחן',
     help: 'ניקוד לכל שאלה ושדה לציון בדף המודפס. הציון ממולא ידנית.',
     heading: 'מבחן',
   },
@@ -22,11 +20,6 @@ export function sectionKind(value) {
 }
 
 export const PICK_HEADING = 'מסמנים את השאלות השלמות שמתאימות, כפי שהן בדף המקור';
-
-/** Ask once the teacher has picked at least one whole question, until they answer no for this topic. */
-export function shouldAskMoreTopic(selectedQuestions, dismissed) {
-  return Number(selectedQuestions) > 0 && !dismissed;
-}
 
 /**
  * Split the test points over every test question on the page.

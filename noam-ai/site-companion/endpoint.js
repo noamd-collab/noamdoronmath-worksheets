@@ -30,6 +30,7 @@ import {
   classifyTeacherRequest,
   describePicks,
   hrefForSheet,
+  hasInvalidTeacherCandidates,
   logTeacherSelection,
   recoverTeacherPickFromPlan,
   requestedPickCount,
@@ -197,6 +198,12 @@ export async function runCompanionTurn(payload, deps) {
     );
   }
   if (page.kind === "teachers") {
+    if (hasInvalidTeacherCandidates(settings.teacherIndex, payload)) {
+      const answer = "רשימת השאלות לבחירה אינה תקינה או אינה עדכנית. אפשר לטעון מחדש את הנושא או לבחור שאלות ידנית.";
+      return Object.assign(failedTeacherSelection(settings.catalog, "TEACHER_CANDIDATES_INVALID"), {
+        answer, text: answer, details: answer,
+      });
+    }
     let classification = null;
     let classificationFailure = "MODEL_RESPONSE_FAILED";
     const modelNow = typeof settings.modelNow === "function" ? settings.modelNow : Date.now;
@@ -227,8 +234,10 @@ export async function runCompanionTurn(payload, deps) {
       pick = recovered;
     }
     if (teacherCorrectionEligible(settings.teacherIndex, payload, classification, pick, plans)) {
-      const reason = pick.selectionError === "MODEL_LEVEL_COVERAGE_MISSING" ? "level-coverage" : "primary-invalid";
-      const diagnostic = () => ({ requestedCount: requestedPickCount(payload), remainingMs: remainingMs(), planCount: Object.keys(plans).length });
+      const primaryValidation = validateExactTeacherPrimary(settings.teacherIndex, payload, classification);
+      const reason = primaryValidation.diagnostic.reason;
+      const diagnostic = (validation = primaryValidation) => ({ ...validation.diagnostic,
+        requestedCount: requestedPickCount(payload), remainingMs: remainingMs(), planCount: Object.keys(plans).length });
       if (!remainingMs()) {
         logTeacherSelection(settings, { ...diagnostic(), code: "MODEL_CORRECTION_REJECTED", reason: "deadline" });
         throw new OutboundTimeoutError();
@@ -246,8 +255,8 @@ export async function runCompanionTurn(payload, deps) {
       const validation = validateExactTeacherPrimary(settings.teacherIndex, payload, corrected);
       const exact = validation.pick;
       if (!exact) {
-        const reason = !corrected ? "invalid-json" : validation.selectionError === "MODEL_LEVEL_COVERAGE_MISSING" ? "level-coverage" : "primary-invalid";
-        logTeacherSelection(settings, { ...diagnostic(), code: "MODEL_CORRECTION_REJECTED", reason });
+        const reason = !corrected ? "invalid-json" : validation.diagnostic.reason;
+        logTeacherSelection(settings, { ...diagnostic(validation), code: "MODEL_CORRECTION_REJECTED", reason });
         const code = corrected ? validation.selectionError : "MODEL_RESPONSE_FAILED";
         return failedTeacherSelection(settings.catalog, code, corrected && pick.selectionError ? code : undefined);
       }
@@ -255,7 +264,7 @@ export async function runCompanionTurn(payload, deps) {
       // new primary choice, never a locally derived plan for a different count.
       pick = exact;
       classification = corrected;
-      logTeacherSelection(settings, { ...diagnostic(), code: "MODEL_CORRECTION_SUCCEEDED", reason: "exact-primary", primaryCount: exact.modelExerciseIds.length });
+      logTeacherSelection(settings, { ...diagnostic(validation), code: "MODEL_CORRECTION_SUCCEEDED", reason: "exact-primary", primaryCount: exact.modelExerciseIds.length });
     }
     if (pick.selectionError === "MODEL_LEVEL_COVERAGE_MISSING" || pick.selectionError === "MODEL_SELECTION_INVALID") {
       const code = classification ? pick.selectionError : classificationFailure;

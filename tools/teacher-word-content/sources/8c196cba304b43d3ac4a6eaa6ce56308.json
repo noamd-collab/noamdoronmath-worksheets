@@ -1,0 +1,863 @@
+{
+  "sourceSha256": "f2a3df69b9e6f268608965302a05ce33961d3b6966bc5930f8f1ab27e075a26c",
+  "answerSourceSha256": "57086ac99a1a70e77544811f04ac36c6fe1380d433169a000dd400f68a4b929c",
+  "nativeSha256": "1f4a449f212e0e8fab8670da4e5def98fd75ad228396fc6f072b372d42c69244",
+  "questions": {
+    "1": {
+      "id": "8c196cba304b43d3ac4a6eaa6ce56308:1",
+      "q": 1,
+      "grade": 8,
+      "topic": "פונקציה קווית",
+      "levelLabel": "רמה ב׳",
+      "text": "מכשיר מציג על מסך את הקשר $f$ בין הקלט האופקי לפלט האנכי. שחזרו מן המסך את שלוש הרשומות המבוקשות.",
+      "example": {
+        "title": "דוגמה מודרכת",
+        "lines": [
+          "אפשר להצמיד לגרף מלבן עזר: צלע אחת מגיעה מציר הקלט אל הקו, וצלע שנייה מן הקו אל ציר הפלט. למשל, בנקודה $(−1,18)$ שתי הצלעות מצביעות על קלט מינוס אחת ועל פלט שמונה־עשרה. בדקו על המסך."
+        ]
+      },
+      "figure": {
+        "url": "/noam-ai/native/G8-T15/b/figures/q1_head.svg",
+        "sha256": "bad0b0515b443f1ae8058167f65d6d4a955895d72859d250e5cf2293c75a1bbf"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "המכשיר קיבל $x = 3$. איזה פלט יופיע?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q1_head.svg",
+            "sha256": "bad0b0515b443f1ae8058167f65d6d4a955895d72859d250e5cf2293c75a1bbf"
+          },
+          "answer": "$y = 6$"
+        },
+        {
+          "label": "ב",
+          "text": "קראו את נקודת המפגש עם הציר האנכי ורשמו את ערך הפלט שלה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q1_head.svg",
+            "sha256": "bad0b0515b443f1ae8058167f65d6d4a955895d72859d250e5cf2293c75a1bbf"
+          },
+          "answer": "נקודת החיתוך $(0,15)$; ערך הפלט 15."
+        },
+        {
+          "label": "ג",
+          "text": "הפלט $y = 21$ נשמר, אך הקלט נמחק. שחזרו אותו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q1_head.svg",
+            "sha256": "bad0b0515b443f1ae8058167f65d6d4a955895d72859d250e5cf2293c75a1bbf"
+          },
+          "answer": "$x = −2$"
+        }
+      ]
+    },
+    "2": {
+      "id": "8c196cba304b43d3ac4a6eaa6ce56308:2",
+      "q": 2,
+      "grade": 8,
+      "topic": "פונקציה קווית",
+      "levelLabel": "רמה ב׳",
+      "text": "גם בשאלה זו קוראים מהגרף של $f$ מהשאלה הקודמת. הוא מסורטט כאן שוב.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T15/b/figures/q2_head.svg",
+        "sha256": "bad0b0515b443f1ae8058167f65d6d4a955895d72859d250e5cf2293c75a1bbf"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מהו $y$ כאשר $x = 1$?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q2_head.svg",
+            "sha256": "bad0b0515b443f1ae8058167f65d6d4a955895d72859d250e5cf2293c75a1bbf"
+          },
+          "answer": "$y = 12$"
+        },
+        {
+          "label": "ב",
+          "text": "באיזו נקודה הגרף חותך את הציר האופקי?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q2_head.svg",
+            "sha256": "bad0b0515b443f1ae8058167f65d6d4a955895d72859d250e5cf2293c75a1bbf"
+          },
+          "answer": "$(5,0)$"
+        },
+        {
+          "label": "ג",
+          "text": "מהו $y$ כאשר $x = 6$?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q2_head.svg",
+            "sha256": "bad0b0515b443f1ae8058167f65d6d4a955895d72859d250e5cf2293c75a1bbf"
+          },
+          "answer": "$y = −3$"
+        }
+      ]
+    },
+    "3": {
+      "id": "8c196cba304b43d3ac4a6eaa6ce56308:3",
+      "q": 3,
+      "grade": 8,
+      "topic": "פונקציה קווית",
+      "levelLabel": "רמה ב׳",
+      "text": "בסדנת יצירה שוקלים חומר במכל. השקילה כוללת את המכל הריק ואת החומר שבו. הגרף מתאר את המסה בגרמים בהתאם למספר המנות שהוכנסו.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T15/b/figures/q3_head.svg",
+        "sha256": "3b47cfeab77ea72840446891eb87a77e882b09b53ae03793921db096f3540711"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "איזו מסה צריך להפחית מכל שקילה כדי לקבל רק את מסת החומר?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q3_head.svg",
+            "sha256": "3b47cfeab77ea72840446891eb87a77e882b09b53ae03793921db096f3540711"
+          },
+          "answer": "$10$ גרם"
+        },
+        {
+          "label": "ב",
+          "text": "על המאזניים מכל ובו $6$ מנות. מה יציגו המאזניים?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q3_head.svg",
+            "sha256": "3b47cfeab77ea72840446891eb87a77e882b09b53ae03793921db096f3540711"
+          },
+          "answer": "$40$ גרם"
+        },
+        {
+          "label": "ג",
+          "text": "בודקים אם כל מנה שוקלת אותו דבר. לפי שתי הקריאות שלכם, מהי מסת מנה אחת? ציינו את היחידה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q3_head.svg",
+            "sha256": "3b47cfeab77ea72840446891eb87a77e882b09b53ae03793921db096f3540711"
+          },
+          "answer": "$5$ גרם למנה"
+        }
+      ]
+    },
+    "4": {
+      "id": "8c196cba304b43d3ac4a6eaa6ce56308:4",
+      "q": 4,
+      "grade": 8,
+      "topic": "פונקציה קווית",
+      "levelLabel": "רמה ב׳",
+      "text": "לכל קו נשמרו שני שדות בכרטיס: קצב השינוי וגובה ההתחלה. הפכו כל כרטיס גם לנוסחה וגם לשרטוט על הרשת.\nהכינו קודם שתי רשומות קלט–פלט שמתאימות לכרטיס. מקמו אותן ברשת, ורק אז השלימו את הקו.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T15/b/figures/q4_head.svg",
+        "sha256": "1f2b9b6610b5b4f12faa5bd0d7b526d3f1667ec3b20fe1aa2c24a5a144e83565"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "שיפוע $5$, והישר חותך את הציר האנכי ב־$−4$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q4_head.svg",
+            "sha256": "1f2b9b6610b5b4f12faa5bd0d7b526d3f1667ec3b20fe1aa2c24a5a144e83565"
+          },
+          "answer": "$y=5x−4$; למשל $(0,−4)$ ו־$(1,1)$. כל שתי נקודות שונות המקיימות את המשוואה מתאימות לשרטוט אותו ישר."
+        },
+        {
+          "label": "ב",
+          "text": "שיפוע $−5$, והישר חותך את הציר האנכי ב־$4$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q4_head.svg",
+            "sha256": "1f2b9b6610b5b4f12faa5bd0d7b526d3f1667ec3b20fe1aa2c24a5a144e83565"
+          },
+          "answer": "$y=−5x+4$; למשל $(0,4)$ ו־$(1,−1)$. כל שתי נקודות שונות המקיימות את המשוואה מתאימות."
+        },
+        {
+          "label": "ג",
+          "text": "שיפוע $−1.5$, והישר חותך את הציר האנכי ב־$−1$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q4_head.svg",
+            "sha256": "1f2b9b6610b5b4f12faa5bd0d7b526d3f1667ec3b20fe1aa2c24a5a144e83565"
+          },
+          "answer": "$y=−1.5x−1$; למשל $(0,−1)$ ו־$(2,−4)$. כל שתי נקודות שונות המקיימות את המשוואה מתאימות."
+        }
+      ]
+    },
+    "5": {
+      "id": "8c196cba304b43d3ac4a6eaa6ce56308:5",
+      "q": 5,
+      "grade": 8,
+      "topic": "פונקציה קווית",
+      "levelLabel": "רמה ב׳",
+      "text": "בשרטוט: הישר $h$.",
+      "example": {
+        "title": "דוגמה מודרכת",
+        "lines": [
+          "כדי לשחזר חוק מן הרשת, בנו לו כרטיס זיהוי:",
+          "בשדה ההתחלה רושמים את הפלט המתאים לקלט אפס; זהו $b$.",
+          "בשדה הקצב רושמים את ההפרש בין שני פלטים שהקלטים שלהם עוקבים. ההפרש החתום הזה הוא $m$."
+        ]
+      },
+      "figure": {
+        "url": "/noam-ai/native/G8-T15/b/figures/q5_head.svg",
+        "sha256": "6e1c39fe33ed8be81749e08e29be3de3e945555f9b4ddbb5e8ad93cea4dcd6d0"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מלאו את שדה ההתחלה בכרטיס של $h$: מהו $b$?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q5_head.svg",
+            "sha256": "6e1c39fe33ed8be81749e08e29be3de3e945555f9b4ddbb5e8ad93cea4dcd6d0"
+          },
+          "answer": "$b = 5$"
+        },
+        {
+          "label": "ב",
+          "text": "בחרו שני קלטים עוקבים ברשת. חשבו את הפרש הפלטים, ורשמו אותו בשדה $m$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q5_head.svg",
+            "sha256": "6e1c39fe33ed8be81749e08e29be3de3e945555f9b4ddbb5e8ad93cea4dcd6d0"
+          },
+          "answer": "למשל הקלטים 0 ו־1 נותנים פלטים 5 ו־2, ולכן $m=2−5=−3$. כל זוג קלטים בהפרש 1 נותן אותו שינוי."
+        },
+        {
+          "label": "ג",
+          "text": "כתבו את משוואת הישר $h$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q5_head.svg",
+            "sha256": "6e1c39fe33ed8be81749e08e29be3de3e945555f9b4ddbb5e8ad93cea4dcd6d0"
+          },
+          "answer": "$y = −3x + 5$"
+        }
+      ]
+    },
+    "6": {
+      "id": "8c196cba304b43d3ac4a6eaa6ce56308:6",
+      "q": 6,
+      "grade": 8,
+      "topic": "פונקציה קווית",
+      "levelLabel": "רמה ב׳",
+      "text": "הנקודות שבטבלה נמצאות על ישר.",
+      "table": {
+        "head": [
+          "$x$",
+          "$0$",
+          "$1$",
+          "$2$",
+          "$3$"
+        ],
+        "rows": [
+          [
+            "$y$",
+            "$9$",
+            "$6$",
+            "$3$",
+            "$0$"
+          ]
+        ]
+      },
+      "figure": {
+        "url": "/noam-ai/native/G8-T15/b/figures/q6_head.svg",
+        "sha256": "39218f4d557b572080acedd229237fdad9efddd2f92dba6edc86f0f72749df55"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מצאו את $b$ של הישר. באיזו עמודה בטבלה הוא נמצא?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q6_head.svg",
+            "sha256": "39218f4d557b572080acedd229237fdad9efddd2f92dba6edc86f0f72749df55"
+          },
+          "answer": "$b = 9$ (בעמודה שבה $x = 0$)"
+        },
+        {
+          "label": "ב",
+          "text": "בכמה משתנה $y$ כש־$x$ גדל ב־$1$? מהו $m$?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q6_head.svg",
+            "sha256": "39218f4d557b572080acedd229237fdad9efddd2f92dba6edc86f0f72749df55"
+          },
+          "answer": "$m = −3$"
+        },
+        {
+          "label": "ג",
+          "text": "מהי משוואת הישר?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q6_head.svg",
+            "sha256": "39218f4d557b572080acedd229237fdad9efddd2f92dba6edc86f0f72749df55"
+          },
+          "answer": "$y = −3x + 9$"
+        }
+      ]
+    },
+    "7": {
+      "id": "8c196cba304b43d3ac4a6eaa6ce56308:7",
+      "q": 7,
+      "grade": 8,
+      "topic": "פונקציה קווית",
+      "levelLabel": "רמה ב׳",
+      "text": "תעדו לכל זוג נקודות נסיעה אופקית ושינוי גובה. חלקו את שינוי הגובה בשינוי האופקי החתום; כיוון המעבר חייב להיות זהה בשני ההפרשים.\nעל הכרטיסים רשומות נקודות. צרפו לכל כרטיס את קצב השינוי שלו.",
+      "items": [
+        {
+          "label": "א",
+          "text": "$(1,−2)$ ו־$(3,8)$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q7a.svg",
+            "sha256": "9e06a2fbe2a0ae6d181eb1651e95c15499c29be5d28664e801834d3833bd568c"
+          },
+          "answer": "משמאל לימין: השינוי האופקי 2, השינוי האנכי $10$; $m=5$."
+        },
+        {
+          "label": "ב",
+          "text": "$(−1,7)$ ו־$(3,−9)$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q7b.svg",
+            "sha256": "dd19a374d194dc82dabf7a618d186189d275eccff32b00e744e7f1fe0749a479"
+          },
+          "answer": "משמאל לימין: השינוי האופקי 4, השינוי האנכי $-16$; $m=-4$."
+        },
+        {
+          "label": "ג",
+          "text": "$(−2,−3)$ ו־$(4,−3)$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q7c.svg",
+            "sha256": "5f8b42ad80132bdfb9d08c4f5779129d810454e05841d7c5a0974c4d9909eacb"
+          },
+          "answer": "משמאל לימין: השינוי האופקי 6, השינוי האנכי $0$; $m=0$."
+        },
+        {
+          "label": "ד",
+          "text": "$(1,−6)$ ו־$(3,2)$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q7d.svg",
+            "sha256": "8e0f90562e6d73b4290040417cf2e6f6cdecd7119ca315b70654309bed059bc4"
+          },
+          "answer": "משמאל לימין: השינוי האופקי 2, השינוי האנכי $8$; $m=4$."
+        }
+      ]
+    },
+    "8": {
+      "id": "8c196cba304b43d3ac4a6eaa6ce56308:8",
+      "q": 8,
+      "grade": 8,
+      "topic": "פונקציה קווית",
+      "levelLabel": "רמה ב׳",
+      "text": "שני סימוני מדידה על $g$ הם $(−3,4)$ ו־$(1,−4)$. מתעדים תנועה מן הסימון השמאלי אל הימני.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T15/b/figures/q8_head.svg",
+        "sha256": "5a67752d15a7ad67860c14a81f0c9fcd75a17f457f01a8f137eda7b2ca7a7056"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "רשמו את שינוי הגובה, עם סימן המעיד על כיוונו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q8_head.svg",
+            "sha256": "5a67752d15a7ad67860c14a81f0c9fcd75a17f457f01a8f137eda7b2ca7a7056"
+          },
+          "answer": "$−8$"
+        },
+        {
+          "label": "ב",
+          "text": "מהו אורך התנועה האופקית החתומה באותו תיעוד?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q8_head.svg",
+            "sha256": "5a67752d15a7ad67860c14a81f0c9fcd75a17f457f01a8f137eda7b2ca7a7056"
+          },
+          "answer": "$4$"
+        },
+        {
+          "label": "ג",
+          "text": "המירו את התיעוד לקצב שינוי לכל יחידת קלט של $g$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q8_head.svg",
+            "sha256": "5a67752d15a7ad67860c14a81f0c9fcd75a17f457f01a8f137eda7b2ca7a7056"
+          },
+          "answer": "השיפוע $−2$"
+        }
+      ]
+    },
+    "9": {
+      "id": "8c196cba304b43d3ac4a6eaa6ce56308:9",
+      "q": 9,
+      "grade": 8,
+      "topic": "פונקציה קווית",
+      "levelLabel": "רמה ב׳",
+      "text": "מיינו את הכרטיסים לשלוש מגירות: פלט שגדל כשהקלט גדל, פלט שקטן, ופלט שאינו משתנה. היעזרו בנתון שבכרטיס.",
+      "items": [
+        {
+          "label": "א",
+          "text": "השיפוע של הישר הוא $−0.5$.",
+          "answer": "יורד"
+        },
+        {
+          "label": "ב",
+          "text": "השיפוע של הישר הוא $7$.",
+          "answer": "עולה"
+        },
+        {
+          "label": "ג",
+          "text": "השיפוע של הישר הוא $0$.",
+          "answer": "אופקי (קבוע)"
+        },
+        {
+          "label": "ד",
+          "text": "משוואת הישר היא $y = 9 − 2x$. סרטטו סקיצה של הישר.",
+          "answer": "פלט קטן; הישר $y=9−2x$ עובר דרך $(0,9)$ ו־$(4.5,0)$."
+        }
+      ]
+    },
+    "10": {
+      "id": "8c196cba304b43d3ac4a6eaa6ce56308:10",
+      "q": 10,
+      "grade": 8,
+      "topic": "פונקציה קווית",
+      "levelLabel": "רמה ב׳",
+      "text": "קובץ של תוכנת גרפים כולל הוראה לרדת $3$ יחידות בכל צעד ימינה, ואת נקודת ההתחלה $(0,4)$. בעת הייצוא התקבל הקוד $y = 4x − 3$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T15/b/figures/q10_head.svg",
+        "sha256": "aaf9b446ff647c8698f27dbd53293ac62567fe623819218ca79fd7563cd93320"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "האם הקוד ייצור את הגרף שתואר בקובץ?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q10_head.svg",
+            "sha256": "aaf9b446ff647c8698f27dbd53293ac62567fe623819218ca79fd7563cd93320"
+          },
+          "answer": "לא"
+        },
+        {
+          "label": "ב",
+          "text": "אתרו את סיבת ההתאמה או אי־ההתאמה באמצעות שני הנתונים שבקובץ.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q10_head.svg",
+            "sha256": "aaf9b446ff647c8698f27dbd53293ac62567fe623819218ca79fd7563cd93320"
+          },
+          "answer": "הוא החליף בין $m$ ל־$b$: כתב את מספר נקודת החיתוך במקום השיפוע, ואת השיפוע במקום המספר שמתווסף"
+        },
+        {
+          "label": "ג",
+          "text": "תקנו את שורת הקוד כך שתעמוד בשתי הדרישות.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q10_head.svg",
+            "sha256": "aaf9b446ff647c8698f27dbd53293ac62567fe623819218ca79fd7563cd93320"
+          },
+          "answer": "$y = −3x + 4$"
+        }
+      ]
+    },
+    "11": {
+      "id": "8c196cba304b43d3ac4a6eaa6ce56308:11",
+      "q": 11,
+      "grade": 8,
+      "topic": "פונקציה קווית",
+      "levelLabel": "רמה ב׳",
+      "text": "מעבירים נוסחאות לכרטיסי זיהוי. בשתי המשבצות של כל כרטיס דרושים קצב השינוי וערך ההתחלה.",
+      "example": {
+        "title": "דוגמה מודרכת",
+        "lines": [
+          "בדיקת אפס חושפת את ערך ההתחלה. כדי למצוא את הקצב משווים את הפלטים של אפס ושל אחת. כך אפשר לפענח גם נוסחה שבה האיברים מסודרים אחרת.",
+          "השיפוע של הישר $y = −4x + 8$ שבשרטוט הוא $−4$ (הישר יורד), והוא חותך את הציר האנכי ב־$8$."
+        ]
+      },
+      "figure": {
+        "url": "/noam-ai/native/G8-T15/b/figures/q11_head.svg",
+        "sha256": "4cbf1a5f4f4619f63245fc5c455f670b57507e3c4496242a86618885f71931d5"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "כרטיס ראשון: $y = 5x − 8$. בדקו בכמה ישתנה הפלט כשהקלט יגדל ביחידה, ומלאו לפי זה את שדה הקצב $m$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q11a.svg",
+            "sha256": "cccfdb4ac7fc3c90570bc3d3fdb95eb7410331b13a588e4fe87e25a013b78e15"
+          },
+          "answer": "$m = 5$"
+        },
+        {
+          "label": "ב",
+          "text": "בצעו בכרטיס בדיקת קלט אפס. איזו תוצאה תיכנס לשדה ערך ההתחלה $b$?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q11_head.svg",
+            "sha256": "4cbf1a5f4f4619f63245fc5c455f670b57507e3c4496242a86618885f71931d5"
+          },
+          "answer": "$b = −8$"
+        },
+        {
+          "label": "ג",
+          "text": "כרטיס שני: $y = −x − 6$. תלמיד השאיר את שדה הקצב ריק, כי לא ראה מספר לפני $x$. השלימו אותו והסבירו מה מסמן האיבר $−x$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q11c.svg",
+            "sha256": "55a6449f399e5803784439468179ad3cbde4dcf027ca804d9914e376bb70d792"
+          },
+          "answer": "$m = −1$: האיבר $−x$ פירושו כפל ב־$−1$"
+        },
+        {
+          "label": "ד",
+          "text": "אם נשרטט את הכרטיס השני כגרף, באיזה גובה הוא יחתוך את הציר האנכי? איזה ערך יש לרשום בשדה $b$?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q11_head.svg",
+            "sha256": "4cbf1a5f4f4619f63245fc5c455f670b57507e3c4496242a86618885f71931d5"
+          },
+          "answer": "$b = −6$"
+        }
+      ]
+    },
+    "12": {
+      "id": "8c196cba304b43d3ac4a6eaa6ce56308:12",
+      "q": 12,
+      "grade": 8,
+      "topic": "פונקציה קווית",
+      "levelLabel": "רמה ב׳",
+      "text": "לכל משוואה: מהו השיפוע $m$, ומהו $b$?",
+      "items": [
+        {
+          "label": "א",
+          "text": "$y = 3x − 7$",
+          "answer": "$m = 3$, $b = −7$"
+        },
+        {
+          "label": "ב",
+          "text": "$y = −x + 8$",
+          "answer": "$m = −1$, $b = 8$"
+        },
+        {
+          "label": "ג",
+          "text": "$y = 2.5x$",
+          "answer": "$m = 2.5$, $b = 0$"
+        },
+        {
+          "label": "ד",
+          "text": "$y = 10 − 6x$. סרטטו גם סקיצה של הישר הזה.",
+          "answer": "$m=−6$, $b=10$; הישר עובר דרך $(0,10)$ ו־$(1,4)$."
+        }
+      ]
+    },
+    "13": {
+      "id": "8c196cba304b43d3ac4a6eaa6ce56308:13",
+      "q": 13,
+      "grade": 8,
+      "topic": "פונקציה קווית",
+      "levelLabel": "רמה ב׳",
+      "text": "נתון הישר $y = −3x + 10$.\nבקרת קואורדינטות: חשבו מן הנוסחה פלט עבור כל קלט רשום. התאמה בין הפלט המחושב לגובה הרשום מאשרת את הרשומה.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T15/b/figures/q13_head.svg",
+        "sha256": "adcd21aac9cad9f34d2ef279a75bef78901b08975288b98f9fc12956875e8075"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הרשומה $(3,1)$ נשלחה לבדיקה. אשרו או דחו אותה, בעזרת חישוב.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q13_head.svg",
+            "sha256": "adcd21aac9cad9f34d2ef279a75bef78901b08975288b98f9fc12956875e8075"
+          },
+          "answer": "מתאימה: $−3·3+10=1$."
+        },
+        {
+          "label": "ב",
+          "text": "בדקו באותה דרך את הרשומה $(−1,6)$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q13_head.svg",
+            "sha256": "adcd21aac9cad9f34d2ef279a75bef78901b08975288b98f9fc12956875e8075"
+          },
+          "answer": "לא: עבור $x = −1$ מתקבל $y = 13$"
+        },
+        {
+          "label": "ג",
+          "text": "על הישר יש נקודה שבה $x = −3$. מהו שיעור ה־$y$ שלה?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q13_head.svg",
+            "sha256": "adcd21aac9cad9f34d2ef279a75bef78901b08975288b98f9fc12956875e8075"
+          },
+          "answer": "$y = 19$"
+        }
+      ]
+    },
+    "14": {
+      "id": "8c196cba304b43d3ac4a6eaa6ce56308:14",
+      "q": 14,
+      "grade": 8,
+      "topic": "פונקציה קווית",
+      "levelLabel": "רמה ב׳",
+      "text": "נתון הישר $y = 5x − 10$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T15/b/figures/q14_head.svg",
+        "sha256": "88311806a1f7613b825e489edb8e57b4ed22e2a1208ebac4a994cad71b12b68c"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "רשמו את הפלט שהחוק מחזיר עבור הקלט $x = 0$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q14_head.svg",
+            "sha256": "88311806a1f7613b825e489edb8e57b4ed22e2a1208ebac4a994cad71b12b68c"
+          },
+          "answer": "$y = −10$"
+        },
+        {
+          "label": "ב",
+          "text": "חפשו קלט שהפלט שלו הוא $y = 0$. הציגו משוואה מתאימה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q14_head.svg",
+            "sha256": "88311806a1f7613b825e489edb8e57b4ed22e2a1208ebac4a994cad71b12b68c"
+          },
+          "answer": "$5x−10=0$; $x=2$."
+        },
+        {
+          "label": "ג",
+          "text": "כתבו את שיעורי נקודות המפגש עם הצירים מתוך שתי התוצאות.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q14_head.svg",
+            "sha256": "88311806a1f7613b825e489edb8e57b4ed22e2a1208ebac4a994cad71b12b68c"
+          },
+          "answer": "$(0,−10)$ ו־$(2,0)$"
+        },
+        {
+          "label": "ד",
+          "text": "שירה אמרה שהישר $y = 3x − 12$ חותך את הציר האופקי בנקודה $(−12,0)$. האם היא צודקת? הסבירו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q14d.svg",
+            "sha256": "bf2b01bf2c623ff0da0fae8211ab4813094d07f6ec26a63972c8b2457afaf608"
+          },
+          "answer": "לא: $−12$ הוא שיעור ה־$y$ של החיתוך עם הציר האנכי; הישר חותך את הציר האופקי ב־$(4,0)$"
+        }
+      ]
+    },
+    "15": {
+      "id": "8c196cba304b43d3ac4a6eaa6ce56308:15",
+      "q": 15,
+      "grade": 8,
+      "topic": "פונקציה קווית",
+      "levelLabel": "רמה ב׳",
+      "text": "בשרטוט שלושה ישרים: $f$, $g$, $h$.\nהמשוואות שלהם, לא לפי הסדר: $y = −5$, $y = 4x + 2$, $y = 0.5x − 2$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T15/b/figures/q15_head.svg",
+        "sha256": "8a780c62dfbcb2e11473638f16c491b49ababc453df5edef20d559d3a418b8c3"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מהי המשוואה של $f$?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q15_head.svg",
+            "sha256": "8a780c62dfbcb2e11473638f16c491b49ababc453df5edef20d559d3a418b8c3"
+          },
+          "answer": "$y = 4x + 2$"
+        },
+        {
+          "label": "ב",
+          "text": "מהי המשוואה של $g$?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q15_head.svg",
+            "sha256": "8a780c62dfbcb2e11473638f16c491b49ababc453df5edef20d559d3a418b8c3"
+          },
+          "answer": "$y = 0.5x − 2$"
+        },
+        {
+          "label": "ג",
+          "text": "מהי המשוואה של $h$?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q15_head.svg",
+            "sha256": "8a780c62dfbcb2e11473638f16c491b49ababc453df5edef20d559d3a418b8c3"
+          },
+          "answer": "$y = −5$"
+        }
+      ]
+    },
+    "16": {
+      "id": "8c196cba304b43d3ac4a6eaa6ce56308:16",
+      "q": 16,
+      "grade": 8,
+      "topic": "פונקציה קווית",
+      "levelLabel": "רמה ב׳",
+      "text": "נתון הישר $y = 6x − 5$.",
+      "items": [
+        {
+          "label": "א",
+          "text": "באיזו נקודה הוא חותך את הציר האנכי?",
+          "answer": "$(0,−5)$"
+        },
+        {
+          "label": "ב",
+          "text": "מפעילים על כל פלט הפחתה של $5$, ללא שינוי הקלט. שחזרו את נוסחת המכונה לאחר העדכון.",
+          "answer": "$y = 6x − 10$"
+        },
+        {
+          "label": "ג",
+          "text": "הסבירו מה קרה לכיוון הקו בעקבות העדכון ומה אפשר להסיק על שני הקווים.",
+          "answer": "הכיוון לא השתנה: השיפוע נשאר 6, ולכן הישרים מקבילים. הקו החדש נמוך ב־5 יחידות."
+        },
+        {
+          "label": "ד",
+          "text": "חשבו את $y$ בשני הישרים כאשר $x = 4$, ואת ההפרש ביניהם. האם יתקבל אותו הפרש גם כאשר $x = −2$? סרטטו סקיצה של שני הישרים.",
+          "answer": "ב־$x=4$: הערכים 19 ו־14; ב־$x=−2$: $−17$ ו־$−22$. ההפרש 5 בשני המקרים. לשרטוט: שני ישרים בעלי שיפוע 6 וחיתוכים אנכיים $−5$ ו־$−10$."
+        }
+      ]
+    },
+    "17": {
+      "id": "8c196cba304b43d3ac4a6eaa6ce56308:17",
+      "q": 17,
+      "grade": 8,
+      "topic": "פונקציה קווית",
+      "levelLabel": "רמה ב׳",
+      "text": "נתון הישר $y = −5x + 2$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T15/b/figures/q17_head.svg",
+        "sha256": "1535283232ec35e13f49aa096bf9a3a6199f9c80b4ed76cf19e74dba8d41c75c"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מתכננים קו נוסף שיישאר באותו כיוון בכל מקום. איזה קצב שינוי צריך להזין עבורו?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q17_head.svg",
+            "sha256": "1535283232ec35e13f49aa096bf9a3a6199f9c80b4ed76cf19e74dba8d41c75c"
+          },
+          "answer": "$−5$"
+        },
+        {
+          "label": "ב",
+          "text": "לקו שתכננתם נקבעה נקודת ההתחלה $(0,−3)$. חברו את שני הנתונים לנוסחה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q17_head.svg",
+            "sha256": "1535283232ec35e13f49aa096bf9a3a6199f9c80b4ed76cf19e74dba8d41c75c"
+          },
+          "answer": "$y = −5x − 3$"
+        },
+        {
+          "label": "ג",
+          "text": "האם $y = 7 − 5x$ והישר הנתון מקבילים? הסבירו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q17c.svg",
+            "sha256": "6e86efe996163e67ec7ad819f1b87402e887840285af24ce949962418f9e32ef"
+          },
+          "answer": "כן: גם בו המקדם של $x$ הוא $−5$"
+        }
+      ]
+    },
+    "18": {
+      "id": "8c196cba304b43d3ac4a6eaa6ce56308:18",
+      "q": 18,
+      "grade": 8,
+      "topic": "פונקציה קווית",
+      "levelLabel": "רמה ב׳",
+      "text": "מזכירת חוג הציור השמיטה את טבלת התעריפים. נשאר הגרף: $A$ כולל דמי רישום, ואילו $B$ מחויב לפי השתתפות בלבד.\nהגרף מראה את התשלום הכולל בשקלים לפי מספר השיעורים.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T15/b/figures/q18_head.svg",
+        "sha256": "f8a0277780d5df7a8d6a32433a0c73fdacdacd1b60ac41b37166bc75ce39cb63"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "שחזרו מהגרף את דמי הרישום החסרים של $A$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q18_head.svg",
+            "sha256": "f8a0277780d5df7a8d6a32433a0c73fdacdacd1b60ac41b37166bc75ce39cb63"
+          },
+          "answer": "$60$ שקלים"
+        },
+        {
+          "label": "ב",
+          "text": "בדקו את החיוב של $B$ בחודש ללא שיעורים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q18_head.svg",
+            "sha256": "f8a0277780d5df7a8d6a32433a0c73fdacdacd1b60ac41b37166bc75ce39cb63"
+          },
+          "answer": "$0$ שקלים"
+        },
+        {
+          "label": "ג",
+          "text": "איזו כמות שיעורים תביא לשני חשבונות זהים?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q18_head.svg",
+            "sha256": "f8a0277780d5df7a8d6a32433a0c73fdacdacd1b60ac41b37166bc75ce39cb63"
+          },
+          "answer": "$6$ שיעורים"
+        },
+        {
+          "label": "ד",
+          "text": "שייכו את רונית, שתשתתף ב־$9$ שיעורים, למסלול המשתלם עבורה. ציינו ראיה מן הקווים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q18_head.svg",
+            "sha256": "f8a0277780d5df7a8d6a32433a0c73fdacdacd1b60ac41b37166bc75ce39cb63"
+          },
+          "answer": "מסלול $A$: אחרי $6$ שיעורים הקו שלו נמוך מהקו של $B$"
+        }
+      ]
+    },
+    "19": {
+      "id": "8c196cba304b43d3ac4a6eaa6ce56308:19",
+      "q": 19,
+      "grade": 8,
+      "topic": "פונקציה קווית",
+      "levelLabel": "רמה ב׳",
+      "text": "תוכנה לחיפוש אפסים מניחה שלכל פונקציה קווית יש בדיוק קלט אחד שהפלט שלו אפס. בוחנים אם מותר להסתמך על ההנחה הזאת.",
+      "items": [
+        {
+          "label": "א",
+          "text": "תעדו השערה לפני הבדיקה: האם ההנחה תמיד נכונה?",
+          "answer": "לא תמיד; פונקציה קבועה היא חריג אפשרי."
+        },
+        {
+          "label": "ב",
+          "text": "הריצו בדיקה על $y = −7$. כמה קלטים נותנים בה פלט אפס?",
+          "answer": "אין קלט כזה: הפלט תמיד $−7$"
+        },
+        {
+          "label": "ג",
+          "text": "בדקו גם את $y = 0$. מה ההבדל בין שני המקרים, ומה אפשר להסיק על התוכנה?",
+          "answer": "כל מספר הוא קלט אפס ב־$y = 0$; לכן יש אינסוף, והתוכנה אינה נכונה לכל פונקציה קווית"
+        },
+        {
+          "label": "ד",
+          "text": "נסחו תנאי מדויק לחוק $y = m\\text{}x + b$ שמבטיח אפס יחיד. ציירו סקיצות המציגות גם את שני החריגים שבדקתם.",
+          "answer": "אפס יחיד אם ורק אם $m\\neq0$, ואז $x=−\\f{b}{m}$. כאשר $m=0$: אם $b\\neq0$ אין אפס, ואם $b=0$ כל קלט הוא אפס. החריגים הם קווים אופקיים: $y=−7$ וציר $x$."
+        }
+      ]
+    },
+    "20": {
+      "id": "8c196cba304b43d3ac4a6eaa6ce56308:20",
+      "q": 20,
+      "grade": 8,
+      "topic": "פונקציה קווית",
+      "levelLabel": "רמה ב׳",
+      "text": "לאירוע מדפיסים חוברות. במדפסת הביתית משלמים $35$ שקלים להכנה ועוד $6$ שקלים לחוברת. בבית הדפוס משלמים $13$ שקלים לחוברת, ללא עלות הכנה.\nהכמות המתוכננת של החוברות תסומן $x$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T15/b/figures/q20_head.svg",
+        "sha256": "9fc8307007aad85824bd91a69169864304f45334de4e00b7a278865f086c8a04"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "כתבו את תקציב ההדפסה הביתית כפונקציה של הכמות.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q20_head.svg",
+            "sha256": "9fc8307007aad85824bd91a69169864304f45334de4e00b7a278865f086c8a04"
+          },
+          "answer": "$6x + 35$ שקלים"
+        },
+        {
+          "label": "ב",
+          "text": "בנו באותה דרך נוסחה להצעת בית הדפוס.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q20_head.svg",
+            "sha256": "9fc8307007aad85824bd91a69169864304f45334de4e00b7a278865f086c8a04"
+          },
+          "answer": "$13x$ שקלים"
+        },
+        {
+          "label": "ג",
+          "text": "בדקו שתי הצעות עבור הדפסה של $3$ חוברות.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q20_head.svg",
+            "sha256": "9fc8307007aad85824bd91a69169864304f45334de4e00b7a278865f086c8a04"
+          },
+          "answer": "הדפסה ביתית: $53$ שקלים; בית דפוס: $39$ שקלים"
+        },
+        {
+          "label": "ד",
+          "text": "מצאו את הכמות שעבורה אין הבדל בתקציב בין שתי האפשרויות.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T15/b/figures/q20_head.svg",
+            "sha256": "9fc8307007aad85824bd91a69169864304f45334de4e00b7a278865f086c8a04"
+          },
+          "answer": "$5$ חוברות"
+        }
+      ]
+    }
+  }
+}
