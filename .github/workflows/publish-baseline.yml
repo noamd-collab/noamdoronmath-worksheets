@@ -5,9 +5,12 @@ name: publish-baseline
 # A push of this file to main also releases once, because the token that
 # merges pull requests cannot call the dispatch API (Actions: write).
 # Release script on baseline installs @wix/cli before login (see #275).
-# Noam, 4.11.2026: publish the homepage hero random from the whole site (#391), SHA 45f9038
-# = live daf9708 + the three #391 files. a668e478 (#380 + #389) failed its build (exit 7)
-# and never went live; build that fix on 45f9038 so the hero change is kept.
+# Noam, 5.11.2026: put the homepage teachers card back (#385 + #387), SHA 0e192d1
+# = live 45f9038 + the three teachers-card files. The card was live on 4.11 (published
+# directly with wix release, not through this file), and the #388 and #393 releases,
+# built from older SHAs, removed it.
+# LIVE NOW: 0e192d1 on release/hero-random-opening. Build the next release on this SHA,
+# or the teachers card is lost again. #380 + #389 are still not live.
 
 on:
   workflow_dispatch:
@@ -54,4 +57,4 @@ jobs:
             exit 1
           fi
           git fetch origin release/hero-random-opening
-          bash tools/release/release.sh "45f90387de54aaf065fa5ef4ff69e6fda93a505c"
+          bash tools/release/release.sh "0e192d172cd021b319729484c838fd5cf8e9dba9"
