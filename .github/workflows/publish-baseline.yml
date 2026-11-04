@@ -5,9 +5,9 @@ name: publish-baseline
 # A push of this file to main also releases once, because the token that
 # merges pull requests cannot call the dispatch API (Actions: write).
 # Release script on baseline installs @wix/cli before login (see #275).
-# Noam, 4.11.2026: publish only the homepage hero random-opening change (#386) on top of the
-# live 1ff8d35. Teacher answer printing (#380) and the new teachers card stay off the live site.
-# Built from release/hero-random-opening = 1ff8d35 + the two hero files from #386.
+# Noam approved teacher answer completion, editable RTL Word download and publication.
+# Release a668e478 preserves the live hero opening and adds only #380 + #389.
+# The unrelated unpublished teachers homepage card is intentionally excluded.
 
 on:
   workflow_dispatch:
@@ -34,7 +34,7 @@ jobs:
       - name: Check out the live branch
         uses: actions/checkout@v4
         with:
-          ref: release/hero-random-opening
+          ref: release/teacher-word-selected-answers-20261104
           fetch-depth: 0
 
       - name: Set up Node
@@ -47,11 +47,11 @@ jobs:
       - name: Publish baseline
         env:
           WIX_CLI_API_KEY: ${{ secrets.WIX_CLI_API_KEY }}
-          RELEASE_BRANCH: release/hero-random-opening
+          RELEASE_BRANCH: release/teacher-word-selected-answers-20261104
         run: |
           if [ -z "${WIX_CLI_API_KEY}" ]; then
             echo "WIX_CLI_API_KEY is not set. The baseline was not published."
             exit 1
           fi
-          git fetch origin release/hero-random-opening
-          bash tools/release/release.sh "daf9708eeb78f162d816f38c54fdd6766a53305f"
+          git fetch origin release/teacher-word-selected-answers-20261104
+          bash tools/release/release.sh "a668e47831f9c2605c42d4508f974da23dfe61f2"
