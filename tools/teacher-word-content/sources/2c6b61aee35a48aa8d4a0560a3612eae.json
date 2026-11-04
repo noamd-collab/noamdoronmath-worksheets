@@ -1,0 +1,1257 @@
+{
+  "sourceSha256": "b82c0978740bebbb18241f3e56df02c410d7dbfe49c7255bb600c7f6dfe22707",
+  "answerSourceSha256": "0129145d72df4ae6a786e8b71255830cc54e105775852b1a1b1a5d3d44e89ffe",
+  "nativeSha256": "7b6c38803fc247c6da578fb90c2f4e4665b5d56a8440b716be665cf0fe0f9693",
+  "questions": {
+    "1": {
+      "id": "2c6b61aee35a48aa8d4a0560a3612eae:1",
+      "q": 1,
+      "grade": 9,
+      "topic": "דמיון משולשים",
+      "levelLabel": "רמה ב׳",
+      "text": "נתון $△ABC∼△FDE$. אורכי הצלעות הם $AB=5$, $AC=10$, $BC=8$, $FD=10$ ס״מ.",
+      "example": {
+        "title": "דוגמה מודרכת — קוראים התאמה",
+        "lines": [
+          "בדוגמה נפרדת נתון $△KLM∼△RST$. לכן $KL↔RS$ ו־$∠KML↔∠RTS$.",
+          "אם $KM=6$ ו־$RT=9$ ביחידות אורך, יחס הראשון לשני הוא $\\f{2}{3}$; בכיוון ההפוך $\\f{3}{2}$.",
+          "אם היקף הראשון $20$ יחידות אורך, היקף השני $30$ יחידות אורך: כל צלע מוכפלת פי $\\f{3}{2}$ וגם סכום הצלעות מוכפל באותו גורם."
+        ]
+      },
+      "figure": {
+        "url": "/noam-ai/native/G9-T32/b/figures/q1_head.svg",
+        "sha256": "5ef8d55d5e306141dbd70dfe05164bb6a342eedf067b5986c14d39425a9b2e89"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "כתבו את כל שלושת זוגות הזוויות השוות ואת הצלע המתאימה ל־$AC$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q1_head.svg",
+            "sha256": "5ef8d55d5e306141dbd70dfe05164bb6a342eedf067b5986c14d39425a9b2e89"
+          },
+          "answer": "$∠BAC=∠DFE$, $∠ABC=∠FDE$, $∠ACB=∠FED$; $AC↔FE$, לפי סדר האותיות."
+        },
+        {
+          "label": "ב",
+          "text": "מצאו את יחס הדמיון של $△ABC$ ל־$△FDE$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q1_head.svg",
+            "sha256": "5ef8d55d5e306141dbd70dfe05164bb6a342eedf067b5986c14d39425a9b2e89"
+          },
+          "answer": "$\\f{1}{2}$."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את $FE$ ואת $DE$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q1_head.svg",
+            "sha256": "5ef8d55d5e306141dbd70dfe05164bb6a342eedf067b5986c14d39425a9b2e89"
+          },
+          "answer": "$FE=20$ ס״מ, $DE=16$ ס״מ."
+        },
+        {
+          "label": "ד",
+          "text": "כתבו את יחס $△FDE$ ל־$△ABC$. האם $AC$ ו־$FD$ מתאימות כי שתיהן באורך $10$ ס״מ? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q1_head.svg",
+            "sha256": "5ef8d55d5e306141dbd70dfe05164bb6a342eedf067b5986c14d39425a9b2e89"
+          },
+          "answer": "$2$; לא. $AC↔FE$ ו־$FD↔AB$, לפי סדר האותיות. שוויון מספרים אינו קובע התאמה."
+        }
+      ]
+    },
+    "2": {
+      "id": "2c6b61aee35a48aa8d4a0560a3612eae:2",
+      "q": 2,
+      "grade": 9,
+      "topic": "דמיון משולשים",
+      "levelLabel": "רמה ב׳",
+      "text": "שני המשולשים מקיימים $△ABC∼△DEC$. היקף $△ABC$ הוא $60$ ס״מ והיקף $△DEC$ הוא $40$ ס״מ. נתון $AB=21$ ס״מ ו־$EC=10$ ס״מ.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T32/b/figures/q2_head.svg",
+        "sha256": "f27318968b4c3d54f30354b4f09c530355d7e84067fe1f0537f87501d916bd81"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הסבירו מדוע יחס ההיקפים שווה ליחס הצלעות ולא לריבועו.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q2_head.svg",
+            "sha256": "f27318968b4c3d54f30354b4f09c530355d7e84067fe1f0537f87501d916bd81"
+          },
+          "answer": "כל צלע מוכפלת באותו גורם; גם סכום שלוש הצלעות מוכפל בו."
+        },
+        {
+          "label": "ב",
+          "text": "מצאו את יחס הדמיון של $△ABC$ ל־$△DEC$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q2_head.svg",
+            "sha256": "f27318968b4c3d54f30354b4f09c530355d7e84067fe1f0537f87501d916bd81"
+          },
+          "answer": "$\\f{3}{2}$."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את $DE$ ואת $BC$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q2_head.svg",
+            "sha256": "f27318968b4c3d54f30354b4f09c530355d7e84067fe1f0537f87501d916bd81"
+          },
+          "answer": "$DE=14$ ס״מ, $BC=15$ ס״מ."
+        },
+        {
+          "label": "ד",
+          "text": "חשבו את שתי הצלעות שנותרו, ובדקו את סכום הצלעות בכל משולש.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q2_head.svg",
+            "sha256": "f27318968b4c3d54f30354b4f09c530355d7e84067fe1f0537f87501d916bd81"
+          },
+          "answer": "$AC=24$ ס״מ, $DC=16$ ס״מ. ההיקפים $60$ ו־$40$ ס״מ."
+        }
+      ]
+    },
+    "3": {
+      "id": "2c6b61aee35a48aa8d4a0560a3612eae:3",
+      "q": 3,
+      "grade": 9,
+      "topic": "דמיון משולשים",
+      "levelLabel": "רמה ב׳",
+      "text": "ב־$△ABC$ נתון $∠BAC=(α+15)°$, $∠ABC=(95−α)°$. ב־$△DEF$ נתון $∠EDF=70°$, $∠DFE=(α+15)°$; $0°<α<95°$. כל האורכים בשאלה בס״מ; נתון $AB=8$, $FE=12$.",
+      "example": {
+        "title": "דוגמה מודרכת — שני זוגות זוויות",
+        "lines": [
+          "בדוגמה נפרדת זוויות משולש הן $40°,75°$ והזווית השלישית $65°$.",
+          "במשולש אחר מופיעות הזוויות $65°,40°$. די בשני הזוגות השווים כדי להוכיח ז.ז; רק לאחר ההוכחה מותר להשתמש ביחסי הצלעות."
+        ]
+      },
+      "figure": {
+        "url": "/noam-ai/native/G9-T32/b/figures/q3_head.svg",
+        "sha256": "548445ce6eb056039ea8c485d299b6ff8cbfc64aea27edd557ac6a218dc53dd5"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את $∠ACB$ בלי למצוא את $α$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q3_head.svg",
+            "sha256": "548445ce6eb056039ea8c485d299b6ff8cbfc64aea27edd557ac6a218dc53dd5"
+          },
+          "answer": "$∠ACB=70°$; סכום שתי הזוויות הנתונות הוא $110°$ כי הפרמטר מצטמצם."
+        },
+        {
+          "label": "ב",
+          "text": "הוכיחו דמיון וכתבו אותו בסדר מתאים.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q3_head.svg",
+            "sha256": "548445ce6eb056039ea8c485d299b6ff8cbfc64aea27edd557ac6a218dc53dd5"
+          },
+          "answer": "$△ABC∼△FED$ לפי ז.ז: $A↔F$, $B↔E$, $C↔D$."
+        },
+        {
+          "label": "ג",
+          "text": "מצאו את יחס $△ABC$ ל־$△FED$. האם נדרשת בדיקה של זוג זוויות נוסף?",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q3_head.svg",
+            "sha256": "548445ce6eb056039ea8c485d299b6ff8cbfc64aea27edd557ac6a218dc53dd5"
+          },
+          "answer": "$\\f{2}{3}$. לא: שני זוגות מספיקים; הזוג השלישי נובע מסכום זוויות המשולש."
+        },
+        {
+          "label": "ד",
+          "text": "כתבו את יחס הצלע $ED$ לצלע $BC$, ונמקו את כיוון היחס.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q3_head.svg",
+            "sha256": "548445ce6eb056039ea8c485d299b6ff8cbfc64aea27edd557ac6a218dc53dd5"
+          },
+          "answer": "$\\f{ED}{BC}=\\f{3}{2}$: $ED$ מתאימה ל־$BC$ (שתיהן מול הזווית $α+15°$) ונמצאת במשולש הגדול $△FED$, לכן היחס גדול מ־$1$ ושווה ל־$\\f{FE}{AB}=\\f{12}{8}$."
+        }
+      ]
+    },
+    "4": {
+      "id": "2c6b61aee35a48aa8d4a0560a3612eae:4",
+      "q": 4,
+      "grade": 9,
+      "topic": "דמיון משולשים",
+      "levelLabel": "רמה ב׳",
+      "text": "ב־$△ABC$ הנקודות $D,E$ על $AB,AC$ בהתאמה ו־$DE∥BC$. נתון $AD=6$, $DB=3$, $AE=10$, $DE=8$ ס״מ.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T32/b/figures/q4_head.svg",
+        "sha256": "d66d7377418dfaac568794a36a9feaa972e03443a105dc7d74577e1511d33555"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "נמקו שני זוגות זוויות שוות והוכיחו דמיון.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q4_head.svg",
+            "sha256": "d66d7377418dfaac568794a36a9feaa972e03443a105dc7d74577e1511d33555"
+          },
+          "answer": "$∠DAE=∠BAC$ משותפת ו־$∠ADE=∠ABC$ מתאימות בין מקבילים; $△ADE∼△ABC$ לפי ז.ז."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את $AB$ וכתבו את יחס הפנימי לחיצוני.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q4_head.svg",
+            "sha256": "d66d7377418dfaac568794a36a9feaa972e03443a105dc7d74577e1511d33555"
+          },
+          "answer": "$AB=9$ ס״מ והיחס $\\f{2}{3}$."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את $AC$ ואת $EC$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q4_head.svg",
+            "sha256": "d66d7377418dfaac568794a36a9feaa972e03443a105dc7d74577e1511d33555"
+          },
+          "answer": "$AC=15$ ס״מ, $EC=5$ ס״מ."
+        },
+        {
+          "label": "ד",
+          "text": "חשבו את $BC$ ואת היקף $△ABC$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q4_head.svg",
+            "sha256": "d66d7377418dfaac568794a36a9feaa972e03443a105dc7d74577e1511d33555"
+          },
+          "answer": "$BC=12$ ס״מ, ההיקף $36$ ס״מ."
+        }
+      ]
+    },
+    "5": {
+      "id": "2c6b61aee35a48aa8d4a0560a3612eae:5",
+      "q": 5,
+      "grade": 9,
+      "topic": "דמיון משולשים",
+      "levelLabel": "רמה ב׳",
+      "text": "ב־$△ABC$: $AB=6$, $AC=8$ ס״מ ו־$∠BAC=90°$. ב־$△DEF$: $DE=9$, $DF=12$ ס״מ ו־$∠EDF=90°$.",
+      "example": {
+        "title": "דוגמה מודרכת — מזהים זווית כלואה",
+        "lines": [
+          "בדוגמה נפרדת נתונות צלעות $3,7$ וצלעות מתאימות $6,14$ ביחידות אורך, והזווית שביניהן שווה.",
+          "שני היחסים $\\f{1}{2}$ והזווית הכלואה שווה: צ.ז.צ. זווית שווה במקום אחר אינה מקיימת את המשפט."
+        ]
+      },
+      "figure": {
+        "url": "/noam-ai/native/G9-T32/b/figures/q5_head.svg",
+        "sha256": "392280b36d3436f062398f43e1fb84f11061d35c405b884964395ac54e7c2c7a"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "כתבו את שני יחסי הצלעות מן הראשון לשני.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q5_head.svg",
+            "sha256": "392280b36d3436f062398f43e1fb84f11061d35c405b884964395ac54e7c2c7a"
+          },
+          "answer": "$\\f{AB}{DE}=\\f{AC}{DF}=\\f{2}{3}$."
+        },
+        {
+          "label": "ב",
+          "text": "הוכיחו דמיון. ציינו בין אילו צלעות כלואה כל זווית שווה.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q5_head.svg",
+            "sha256": "392280b36d3436f062398f43e1fb84f11061d35c405b884964395ac54e7c2c7a"
+          },
+          "answer": "$△ABC∼△DEF$ לפי צ.ז.צ; $∠BAC$ בין $AB,AC$ ו־$∠EDF$ בין $DE,DF$."
+        },
+        {
+          "label": "ג",
+          "text": "הביעו את $EF$ באמצעות $BC$, בלי לחשב שורש.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q5_head.svg",
+            "sha256": "392280b36d3436f062398f43e1fb84f11061d35c405b884964395ac54e7c2c7a"
+          },
+          "answer": "$EF=\\f{3}{2}BC$."
+        },
+        {
+          "label": "ד",
+          "text": "נתון $BC=10$ ס״מ. חשבו את היקף כל משולש ואת הפרש ההיקפים.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q5_head.svg",
+            "sha256": "392280b36d3436f062398f43e1fb84f11061d35c405b884964395ac54e7c2c7a"
+          },
+          "answer": "$24$ ס״מ, $36$ ס״מ; ההפרש $12$ ס״מ."
+        }
+      ]
+    },
+    "6": {
+      "id": "2c6b61aee35a48aa8d4a0560a3612eae:6",
+      "q": 6,
+      "grade": 9,
+      "topic": "דמיון משולשים",
+      "levelLabel": "רמה ב׳",
+      "text": "שרטטו סקיצה לכל אחד משני משולשים: ב־$△ABC$, $AB=6$, $AC=4$ ס״מ ו־$∠ABC=30°$; ב־$△DEF$, $DE=12$, $DF=8$ ס״מ ו־$∠DEF=30°$.",
+      "items": [
+        {
+          "label": "א",
+          "text": "כתבו את שני יחסי האורכים הנתונים מן הראשון לשני.",
+          "answer": "$\\f{AB}{DE}=\\f{AC}{DF}=\\f{1}{2}$."
+        },
+        {
+          "label": "ב",
+          "text": "האם הזוויות השוות כלואות בין זוגות הצלעות שבדקתם? הסבירו.",
+          "answer": "לא. הצלעות הנתונות נפגשות ב־$A,D$, אך הזוויות הנתונות נמצאות ב־$B,E$."
+        },
+        {
+          "label": "ג",
+          "text": "קבעו אם הנתונים מכריחים דמיון, ונמקו.",
+          "answer": "לא ניתן להסיק. שתי צלעות ביחס שווה וזווית שאינה כלואה אינן משפט דמיון; ייתכנו צורות שונות."
+        },
+        {
+          "label": "ד",
+          "text": "איזה זוג זוויות שוות נוסף יספיק להוכיח דמיון לפי ז.ז? תנו אפשרות אחת.",
+          "answer": "דוגמה אחת: $∠BAC=∠EDF$ (יחד עם $∠ABC=∠DEF$ מתקבל ז.ז). כל זוג זוויות שוות נוסף מתאים, למשל גם $∠ACB=∠DFE$."
+        }
+      ]
+    },
+    "7": {
+      "id": "2c6b61aee35a48aa8d4a0560a3612eae:7",
+      "q": 7,
+      "grade": 9,
+      "topic": "דמיון משולשים",
+      "levelLabel": "רמה ב׳",
+      "text": "כל האורכים בשאלה בס״מ. ב־$△ABC$: $AB=6$, $AC=7$, $BC=8$. ב־$△DEF$: $DE=12$, $DF=14$, $EF=16$.",
+      "example": {
+        "title": "דוגמה מודרכת — בודקים את שלושת היחסים",
+        "lines": [
+          "בדוגמה נפרדת צלעות משולשים הן $5,6,9$ ו־$15,18,27$ ביחידות אורך.",
+          "מתקיים $\\f{5}{15}=\\f{6}{18}=\\f{9}{27}=\\f{1}{3}$, ולכן צ.צ.צ. אם היחס השלישי שונה, שני היחסים האחרים אינם מספיקים."
+        ]
+      },
+      "figure": {
+        "url": "/noam-ai/native/G9-T32/b/figures/q7_head.svg",
+        "sha256": "4542f56fac84659c020adf73dafc77ece8b3e70f770e7aa31fc552b88c5ad5b9"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את כל שלושת יחסי הצלעות המתאימות מן הראשון לשני.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q7_head.svg",
+            "sha256": "4542f56fac84659c020adf73dafc77ece8b3e70f770e7aa31fc552b88c5ad5b9"
+          },
+          "answer": "שלושתם $\\f{1}{2}$."
+        },
+        {
+          "label": "ב",
+          "text": "הוכיחו דמיון וציינו את המשפט ואת ההתאמה.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q7_head.svg",
+            "sha256": "4542f56fac84659c020adf73dafc77ece8b3e70f770e7aa31fc552b88c5ad5b9"
+          },
+          "answer": "$△ABC∼△DEF$ לפי צ.צ.צ."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את שני ההיקפים והשוו את יחסם ליחס הדמיון.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q7_head.svg",
+            "sha256": "4542f56fac84659c020adf73dafc77ece8b3e70f770e7aa31fc552b88c5ad5b9"
+          },
+          "answer": "היקף $△ABC$ הוא $21$ ס״מ והיקף $△DEF$ הוא $42$ ס״מ; יחס ההיקפים $\\f{1}{2}$ שווה ליחס הדמיון."
+        },
+        {
+          "label": "ד",
+          "text": "במשולש שלישי אורכי הצלעות הם $12,14,17$ ס״מ. האם הוא דומה ל־$△ABC$? נמקו בעזרת כל שלושת היחסים.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q7_head.svg",
+            "sha256": "4542f56fac84659c020adf73dafc77ece8b3e70f770e7aa31fc552b88c5ad5b9"
+          },
+          "answer": "לא: $\\f{6}{12}=\\f{7}{14}=\\f{1}{2}$, אבל $\\f{8}{17}\\neq \\f{1}{2}$."
+        }
+      ]
+    },
+    "8": {
+      "id": "2c6b61aee35a48aa8d4a0560a3612eae:8",
+      "q": 8,
+      "grade": 9,
+      "topic": "דמיון משולשים",
+      "levelLabel": "רמה ב׳",
+      "text": "ב־$△ABC$, $D$ על $AB$ ו־$E$ על $AC$. נתון $∠ADE=∠ACB$, והקטע $DE$ אינו מקביל ל־$BC$. נתון $AD=8$, $AC=12$, $AE=10$ ס״מ. היקף $△ABC$ גדול מהיקף $△ADE$ ב־$16$ ס״מ.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T32/b/figures/q8_head.svg",
+        "sha256": "7c714a70f7d05e8dcdcb0b639b1b33edc64c74aee8633fb24041cb08d80fe1f9"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הוכיחו דמיון בעזרת הזווית הנתונה והזווית המשותפת, וכתבו את סדר ההתאמה.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q8_head.svg",
+            "sha256": "7c714a70f7d05e8dcdcb0b639b1b33edc64c74aee8633fb24041cb08d80fe1f9"
+          },
+          "answer": "$∠DAE=∠CAB$ משותפות ו־$∠ADE=∠ACB$ נתונות; לכן $△ADE∼△ACB$ לפי ז.ז."
+        },
+        {
+          "label": "ב",
+          "text": "כתבו שרשרת של שלושה יחסי צלעות שווים. השתמשו בה כדי לחשב את $AB$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q8_head.svg",
+            "sha256": "7c714a70f7d05e8dcdcb0b639b1b33edc64c74aee8633fb24041cb08d80fe1f9"
+          },
+          "answer": "$\\f{AD}{AC}=\\f{AE}{AB}=\\f{DE}{CB}=\\f{2}{3}$; מכאן $AB=15$ ס״מ."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את היקף כל משולש בעזרת ההפרש הנתון.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q8_head.svg",
+            "sha256": "7c714a70f7d05e8dcdcb0b639b1b33edc64c74aee8633fb24041cb08d80fe1f9"
+          },
+          "answer": "יחס ההיקפים קטן לגדול $\\f{2}{3}$; ההפרש הוא $\\f{1}{3}$ מההיקף הגדול. לכן ההיקפים $48$ ס״מ ו־$32$ ס״מ."
+        },
+        {
+          "label": "ד",
+          "text": "חשבו את $BC$ ואת $DE$. מדוע משפט על קטע מקביל לבסיס אינו נימוק לדמיון כאן?",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q8_head.svg",
+            "sha256": "7c714a70f7d05e8dcdcb0b639b1b33edc64c74aee8633fb24041cb08d80fe1f9"
+          },
+          "answer": "$BC=48−15−12=21$ ס״מ; $DE=14$ ס״מ. נתון שהקטע אינו מקביל לבסיס; הדמיון הוכח באמצעות הזוויות, בסדר התאמה מוצלב."
+        }
+      ]
+    },
+    "9": {
+      "id": "2c6b61aee35a48aa8d4a0560a3612eae:9",
+      "q": 9,
+      "grade": 9,
+      "topic": "דמיון משולשים",
+      "levelLabel": "רמה ב׳",
+      "text": "ב־$△ABC$, $DE∥BC$, $D$ על $AB$ ו־$E$ על $AC$. נתון $AD=5$, $DB=10$, $EC=12$, $BC=24$ ס״מ.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T32/b/figures/q9_head.svg",
+        "sha256": "667cd58e325e251120ccb333657c5fd7535542c0c6403f17574fcfd408f96b4f"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "כתבו את יחס $AD$ ל־$DB$, ואז את יחס $AD$ ל־$AB$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q9_head.svg",
+            "sha256": "667cd58e325e251120ccb333657c5fd7535542c0c6403f17574fcfd408f96b4f"
+          },
+          "answer": "$\\f{1}{2}$ לעומת $\\f{1}{3}$; $AB=15$ ס״מ."
+        },
+        {
+          "label": "ב",
+          "text": "איזה מן היחסים מתאים לדמיון $△ADE∼△ABC$? נמקו תחילה את הדמיון.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q9_head.svg",
+            "sha256": "667cd58e325e251120ccb333657c5fd7535542c0c6403f17574fcfd408f96b4f"
+          },
+          "answer": "$\\f{1}{3}$; הזוויות $∠DAE=∠BAC$ משותפות, וזוויות מתאימות בין מקבילים שוות, ולכן ז.ז."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את $AE$ ואת $AC$ באמצעות היחס בין שני חלקי הצלע.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q9_head.svg",
+            "sha256": "667cd58e325e251120ccb333657c5fd7535542c0c6403f17574fcfd408f96b4f"
+          },
+          "answer": "$AE=6$ ס״מ, $AC=18$ ס״מ; $\\f{AE}{EC}=\\f{1}{2}$."
+        },
+        {
+          "label": "ד",
+          "text": "חשבו את $DE$ ואת היקף המרובע $DBCE$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q9_head.svg",
+            "sha256": "667cd58e325e251120ccb333657c5fd7535542c0c6403f17574fcfd408f96b4f"
+          },
+          "answer": "$DE=8$ ס״מ, ההיקף $54$ ס״מ."
+        }
+      ]
+    },
+    "10": {
+      "id": "2c6b61aee35a48aa8d4a0560a3612eae:10",
+      "q": 10,
+      "grade": 9,
+      "topic": "דמיון משולשים",
+      "levelLabel": "רמה ב׳",
+      "text": "ב־$△ABC$ הנקודה $D$ על $AB$ והקטע $CD$ נתון. מתקיים $∠ACD=∠ABC$. נתון $AB=16$, $AC=12$ ס״מ.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T32/b/figures/q10_head.svg",
+        "sha256": "7f837f5a415fa4f2df135b8707f4b96d4d2d20cefac6978a445aa59aa89f846a"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "רשמו בנפרד את קודקודי $△ACD$ ואת קודקודי $△ABC$, והוכיחו דמיון בסדר זה.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q10_head.svg",
+            "sha256": "7f837f5a415fa4f2df135b8707f4b96d4d2d20cefac6978a445aa59aa89f846a"
+          },
+          "answer": "בקטן $A,C,D$ ובגדול $A,B,C$. הזוויות $∠CAD=∠BAC$ משותפות והזוויות הנתונות שוות; ז.ז."
+        },
+        {
+          "label": "ב",
+          "text": "הצלע $AC$ משותפת. כתבו לאיזו צלע היא מתאימה כשהיא צלע במשולש הקטן, ולאיזו כשהיא צלע במשולש הגדול.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q10_head.svg",
+            "sha256": "7f837f5a415fa4f2df135b8707f4b96d4d2d20cefac6978a445aa59aa89f846a"
+          },
+          "answer": "בקטן $AC↔AB$; בגדול $AC↔AD$."
+        },
+        {
+          "label": "ג",
+          "text": "כתבו יחס מתאים וחשבו את $AD$ ואת $DB$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q10_head.svg",
+            "sha256": "7f837f5a415fa4f2df135b8707f4b96d4d2d20cefac6978a445aa59aa89f846a"
+          },
+          "answer": "$\\f{AC}{AB}=\\f{AD}{AC}=\\f{3}{4}$; $AD=9$ ס״מ, $DB=7$ ס״מ."
+        },
+        {
+          "label": "ד",
+          "text": "נתון גם $BC=14$ ס״מ. חשבו את $CD$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q10_head.svg",
+            "sha256": "7f837f5a415fa4f2df135b8707f4b96d4d2d20cefac6978a445aa59aa89f846a"
+          },
+          "answer": "$10.5$ ס״מ."
+        }
+      ]
+    },
+    "11": {
+      "id": "2c6b61aee35a48aa8d4a0560a3612eae:11",
+      "q": 11,
+      "grade": 9,
+      "topic": "דמיון משולשים",
+      "levelLabel": "רמה ב׳",
+      "text": "$△ABC$ ישר־זווית ב־$C$, ו־$CD$ הוא גובה ליתר $AB$. נתון $AC=30$, $BC=40$ ס״מ.",
+      "example": {
+        "title": "דוגמה מודרכת — מתאימים לפני שמציבים",
+        "lines": [
+          "בדוגמה נפרדת $△PQR$ ישר־זווית ב־$R$, ו־$RS$ גובה ליתר $PQ$. הזווית $∠RPS=∠QPR$ משותפת, והזוויות ב־$S,R$ ישרות; לכן $△PRS∼△PQR$ לפי ז.ז.",
+          "תחילה קוראים התאמה: $PR$ במשולש הקטן מתאים ל־$PQ$, ו־$PS$ מתאים ל־$PR$ במשולש הגדול. לכן $\\f{PR}{PQ}=\\f{PS}{PR}$.",
+          "כעת, אם $PQ=10$ יחידות אורך ו־$PR=2\\sqrt{15}$ יחידות אורך, נקבל $PS=\\f{(2\\sqrt{15})^2}{10}=6$ יחידות אורך."
+        ]
+      },
+      "figure": {
+        "url": "/noam-ai/native/G9-T32/b/figures/q11_head.svg",
+        "sha256": "560fe5ebfaeef1b3979a2bef3d06e0192336704c6cab20abe0ee6e21f37e2166"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו תחילה את היתר $AB$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q11_head.svg",
+            "sha256": "560fe5ebfaeef1b3979a2bef3d06e0192336704c6cab20abe0ee6e21f37e2166"
+          },
+          "answer": "$50$ ס״מ לפי פיתגורס."
+        },
+        {
+          "label": "ב",
+          "text": "כתבו שרשרת דמיון של שלושת המשולשים בסדר מתאים ונמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q11_head.svg",
+            "sha256": "560fe5ebfaeef1b3979a2bef3d06e0192336704c6cab20abe0ee6e21f37e2166"
+          },
+          "answer": "$△ABC∼△ACD∼△CBD$ לפי ז.ז: זוויות ישרות וזוג זוויות חדות מתאים."
+        },
+        {
+          "label": "ג",
+          "text": "בעזרת יחס בין $△ACD$ ל־$△ABC$ חשבו את $AD$ ואת $DB$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q11_head.svg",
+            "sha256": "560fe5ebfaeef1b3979a2bef3d06e0192336704c6cab20abe0ee6e21f37e2166"
+          },
+          "answer": "$AD=18$ ס״מ, $DB=32$ ס״מ; $\\f{AD}{AC}=\\f{AC}{AB}$."
+        },
+        {
+          "label": "ד",
+          "text": "חשבו את $CD$ בעזרת דמיון וציינו את זוג הצלעות המתאים.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q11_head.svg",
+            "sha256": "560fe5ebfaeef1b3979a2bef3d06e0192336704c6cab20abe0ee6e21f37e2166"
+          },
+          "answer": "$CD=24$ ס״מ; $\\f{CD}{BC}=\\f{AC}{AB}=\\f{3}{5}$."
+        }
+      ]
+    },
+    "12": {
+      "id": "2c6b61aee35a48aa8d4a0560a3612eae:12",
+      "q": 12,
+      "grade": 9,
+      "topic": "דמיון משולשים",
+      "levelLabel": "רמה ב׳",
+      "text": "בטרפז $ABCD$ הבסיסים $AB∥DC$, והאלכסונים נפגשים ב־$O$. נתון $AB=6$, $DC=12$, $AC=18$, $BD=15$ ס״מ.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T32/b/figures/q12_head.svg",
+        "sha256": "b26030bea7d07da098b686badac4f1d037d7dc6090ec952ffae1f1b92a4e7ed9"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "ציינו זוג זוויות שוות מן המקבילים וזוג מן החיתוך, והוכיחו דמיון.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q12_head.svg",
+            "sha256": "b26030bea7d07da098b686badac4f1d037d7dc6090ec952ffae1f1b92a4e7ed9"
+          },
+          "answer": "$∠ABO=∠CDO$ מתחלפות ו־$∠AOB=∠COD$ קודקודיות; $△AOB∼△COD$ לפי ז.ז."
+        },
+        {
+          "label": "ב",
+          "text": "מצאו את יחס הדמיון של $△AOB$ ל־$△COD$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q12_head.svg",
+            "sha256": "b26030bea7d07da098b686badac4f1d037d7dc6090ec952ffae1f1b92a4e7ed9"
+          },
+          "answer": "$\\f{1}{2}$."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את שני חלקי כל אלכסון.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q12_head.svg",
+            "sha256": "b26030bea7d07da098b686badac4f1d037d7dc6090ec952ffae1f1b92a4e7ed9"
+          },
+          "answer": "$AO=6$, $OC=12$, $BO=5$, $OD=10$ ס״מ."
+        },
+        {
+          "label": "ד",
+          "text": "בדקו את יחס ההיקפים באמצעות סכום הצלעות בכל משולש.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q12_head.svg",
+            "sha256": "b26030bea7d07da098b686badac4f1d037d7dc6090ec952ffae1f1b92a4e7ed9"
+          },
+          "answer": "$P_{AOB}=17$ ס״מ, $P_{COD}=34$ ס״מ; היחס $\\f{1}{2}$."
+        }
+      ]
+    },
+    "13": {
+      "id": "2c6b61aee35a48aa8d4a0560a3612eae:13",
+      "q": 13,
+      "grade": 9,
+      "topic": "דמיון משולשים",
+      "levelLabel": "רמה ב׳",
+      "text": "$ABCD$ מקבילית, ובה $AB∥DC$ ו־$AD∥BC$. $E$ על $DC$, והקטע $AE$ פוגש את האלכסון $BD$ ב־$F$. נתון $AB=12$, $DE=4$, $AF=10.5$ ס״מ.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T32/b/figures/q13_head.svg",
+        "sha256": "843a74597b666877ea49ffdfbf5d64296b6ee4a8599a485f6aec236821322311"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את $DC$ ואת $EC$. באיזו תכונה השתמשתם?",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q13_head.svg",
+            "sha256": "843a74597b666877ea49ffdfbf5d64296b6ee4a8599a485f6aec236821322311"
+          },
+          "answer": "$DC=12$ ס״מ, $EC=8$ ס״מ; צלעות נגדיות במקבילית שוות."
+        },
+        {
+          "label": "ב",
+          "text": "הוכיחו $△AFB∼△EFD$ וציינו את סדר ההתאמה.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q13_head.svg",
+            "sha256": "843a74597b666877ea49ffdfbf5d64296b6ee4a8599a485f6aec236821322311"
+          },
+          "answer": "זוויות קודקודיות ב־$F$ ($∠AFB=∠EFD$) וזוויות מתחלפות כי $AB∥DE$ ($∠FAB=∠FED$); ז.ז. סדר ההתאמה: $A↔E$, $F↔F$, $B↔D$."
+        },
+        {
+          "label": "ג",
+          "text": "מצאו את יחס $△AFB$ ל־$△EFD$ וחשבו את $EF$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q13_head.svg",
+            "sha256": "843a74597b666877ea49ffdfbf5d64296b6ee4a8599a485f6aec236821322311"
+          },
+          "answer": "היחס $3$; $EF=3.5$ ס״מ."
+        },
+        {
+          "label": "ד",
+          "text": "חשבו את $AE$. נתון גם $BF=15$ ס״מ; חשבו את האלכסון $BD$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q13_head.svg",
+            "sha256": "843a74597b666877ea49ffdfbf5d64296b6ee4a8599a485f6aec236821322311"
+          },
+          "answer": "$AE=14$ ס״מ; $FD=5$ ס״מ ולכן $BD=20$ ס״מ."
+        }
+      ]
+    },
+    "14": {
+      "id": "2c6b61aee35a48aa8d4a0560a3612eae:14",
+      "q": 14,
+      "grade": 9,
+      "topic": "דמיון משולשים",
+      "levelLabel": "רמה ב׳",
+      "text": "נתון $△ABC∼△DEF$, והגבהים המתאימים הם $AH,DK$, כך ש־$AH⊥BH$ ו־$DK⊥EK$. נתון $BC=8$, $EF=16$, $AH=3$ ס״מ.",
+      "example": {
+        "title": "דוגמה מודרכת — מדוע ריבוע היחס",
+        "lines": [
+          "בדוגמה נפרדת בסיס $6$ וגובה $4$ ביחידות אורך נותנים שטח $12$ יחידות שטח.",
+          "בהגדלה פי $3$ הבסיס $18$ והגובה $12$, ולכן השטח $108$ יחידות שטח — פי $9$. ההיקף גדל רק פי $3$.",
+          "אם נחתך משולש פנימי ביחס אורך $\\f{1}{2}$ ממשולש ששטחו $40$ יחידות שטח, שטחו $10$ והשטח הנותר $40−10=30$ יחידות שטח."
+        ]
+      },
+      "figure": {
+        "url": "/noam-ai/native/G9-T32/b/figures/q14_head.svg",
+        "sha256": "cf6d5d482ad0bef26feabfcfa7545c72e39bc9e1b2536667fc8fb1cc0b037944"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מצאו את יחס $△ABC$ ל־$△DEF$ וחשבו את $DK$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q14_head.svg",
+            "sha256": "cf6d5d482ad0bef26feabfcfa7545c72e39bc9e1b2536667fc8fb1cc0b037944"
+          },
+          "answer": "$\\f{1}{2}$; $DK=6$ ס״מ."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו ישירות לפי בסיס וגובה את שטח כל משולש.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q14_head.svg",
+            "sha256": "cf6d5d482ad0bef26feabfcfa7545c72e39bc9e1b2536667fc8fb1cc0b037944"
+          },
+          "answer": "$S_{ABC}=12$ סמ״ר, $S_{DEF}=48$ סמ״ר."
+        },
+        {
+          "label": "ג",
+          "text": "כתבו את יחס השטחים והסבירו מדוע יחס האורך מופיע במכפלה פעמיים.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q14_head.svg",
+            "sha256": "cf6d5d482ad0bef26feabfcfa7545c72e39bc9e1b2536667fc8fb1cc0b037944"
+          },
+          "answer": "$\\f{1}{4}$; גם הבסיס וגם הגובה קטנים פי $2$, ולכן מכפלתם קטנה פי $4$."
+        },
+        {
+          "label": "ד",
+          "text": "נתון גם $AB=AC=5$ ס״מ. חשבו את היקף כל משולש והסבירו מדוע יחס ההיקפים שונה מיחס השטחים.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q14_head.svg",
+            "sha256": "cf6d5d482ad0bef26feabfcfa7545c72e39bc9e1b2536667fc8fb1cc0b037944"
+          },
+          "answer": "$18$ ס״מ ו־$36$ ס״מ. יחס ההיקפים $\\f{1}{2}$ כי היקף הוא סכום אורכים; יחס השטחים $\\f{1}{4}$."
+        }
+      ]
+    },
+    "15": {
+      "id": "2c6b61aee35a48aa8d4a0560a3612eae:15",
+      "q": 15,
+      "grade": 9,
+      "topic": "דמיון משולשים",
+      "levelLabel": "רמה ב׳",
+      "text": "$△ABC∼△ADE$, כאשר $A,B,D$ על ישר אחד ו־$A,C,E$ על ישר אחד בסדר זה. שטחיהם $12$ סמ״ר ו־$27$ סמ״ר בהתאמה. נתון $AB=5$, $AE=7.5$ ס״מ.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T32/b/figures/q15_head.svg",
+        "sha256": "339cec254c200de293387998462af90677654a81f522e8d1b8fb4dcaf430847d"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "כתבו את יחס השטחים של $△ABC$ ל־$△ADE$ בצמצום.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q15_head.svg",
+            "sha256": "339cec254c200de293387998462af90677654a81f522e8d1b8fb4dcaf430847d"
+          },
+          "answer": "$\\f{4}{9}$."
+        },
+        {
+          "label": "ב",
+          "text": "מצאו את יחס הדמיון באותו סדר. נמקו מדוע הוא חיובי.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q15_head.svg",
+            "sha256": "339cec254c200de293387998462af90677654a81f522e8d1b8fb4dcaf430847d"
+          },
+          "answer": "$\\f{2}{3}$; זהו השורש החיובי של יחס השטחים, כי אורכים חיוביים."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את $AD$ ואת $AC$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q15_head.svg",
+            "sha256": "339cec254c200de293387998462af90677654a81f522e8d1b8fb4dcaf430847d"
+          },
+          "answer": "$AD=7.5$ ס״מ, $AC=5$ ס״מ."
+        },
+        {
+          "label": "ד",
+          "text": "נתון שהיקף $△ADE$ הוא $24$ ס״מ. חשבו את היקף $△ABC$ ואת $BC$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q15_head.svg",
+            "sha256": "339cec254c200de293387998462af90677654a81f522e8d1b8fb4dcaf430847d"
+          },
+          "answer": "$P_{ABC}=16$ ס״מ, $BC=6$ ס״מ."
+        }
+      ]
+    },
+    "16": {
+      "id": "2c6b61aee35a48aa8d4a0560a3612eae:16",
+      "q": 16,
+      "grade": 9,
+      "topic": "דמיון משולשים",
+      "levelLabel": "רמה ב׳",
+      "text": "ב־$△ABC$, $D$ על $AB$ ו־$E$ על $AC$. נתון $AB=18$, $AC=12$, $AD=6$, $AE=9$ ס״מ. הקטע $DE$ אינו מקביל ל־$BC$. שטח המרובע $DBCE$ הוא $45$ סמ״ר.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T32/b/figures/q16_head.svg",
+        "sha256": "c8f9905ff946354d4983d980ca6eee53df941be28a9802a6d82732e1b745afb3"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הוכיחו דמיון באמצעות שני יחסי צלעות והזווית הכלואה. כתבו התאמה ויחס מן המשולש הפנימי לחיצוני.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q16_head.svg",
+            "sha256": "c8f9905ff946354d4983d980ca6eee53df941be28a9802a6d82732e1b745afb3"
+          },
+          "answer": "$\\f{AD}{AC}=\\f{AE}{AB}=\\f{1}{2}$ והזווית $∠DAE=∠CAB$ משותפת; לכן $△ADE∼△ACB$ לפי צ.ז.צ."
+        },
+        {
+          "label": "ב",
+          "text": "איזה חלק משטח $△ABC$ הוא שטח $△ADE$, ואיזה חלק הוא שטח המרובע?",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q16_head.svg",
+            "sha256": "c8f9905ff946354d4983d980ca6eee53df941be28a9802a6d82732e1b745afb3"
+          },
+          "answer": "יחס השטחים קטן לגדול $\\f{1}{4}$. המרובע הוא השטח שנותר: $1−\\f{1}{4}=\\f{3}{4}$."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את שטח $△ABC$ ואת שטח $△ADE$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q16_head.svg",
+            "sha256": "c8f9905ff946354d4983d980ca6eee53df941be28a9802a6d82732e1b745afb3"
+          },
+          "answer": "השטח הגדול $45·\\f{4}{3}=60$ סמ״ר; מחסרים את המרובע ומקבלים $60−45=15$ סמ״ר למשולש הפנימי."
+        },
+        {
+          "label": "ד",
+          "text": "איתי טוען ששטח המרובע הוא מחצית שטח המשולש הגדול, מפני שיחס האורכים הוא חצי. הסבירו את הטעות.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q16_head.svg",
+            "sha256": "c8f9905ff946354d4983d980ca6eee53df941be28a9802a6d82732e1b745afb3"
+          },
+          "answer": "יחס האורכים $\\f{1}{2}$ אינו יחס השטחים: שטח המשולש הפנימי הוא ריבוע היחס, $\\f{1}{4}$ מן הגדול, ולכן המרובע הוא $\\f{3}{4}$ מן הגדול ולא $\\f{1}{2}$."
+        }
+      ]
+    },
+    "17": {
+      "id": "2c6b61aee35a48aa8d4a0560a3612eae:17",
+      "q": 17,
+      "grade": 9,
+      "topic": "דמיון משולשים",
+      "levelLabel": "רמה ב׳",
+      "text": "ממרפסת שגובהה $4$ מ׳ מעל קרקע אופקית צופים בראש מבנה. העינית $A$ בגובה המרפסת. במרחק אופקי $1$ מ׳ ממנה מציבים סרגל אנכי $ED$ שאורכו $0.5$ מ׳; $E$ באותו גובה כמו $A$, ו־$D$ מעליו. ראש המבנה $C$ נמצא על המשך קו הראייה $AD$. הנקודה $B$ על המבנה בגובה העינית, ו־$AB=12$ מ׳. שרטטו סקיצה; $A,E,B$ על ישר אופקי ו־$A,D,C$ על ישר.",
+      "items": [
+        {
+          "label": "א",
+          "text": "הוכיחו $△AED∼△ABC$ וכתבו אילו צלעות מייצגות מרחק אופקי.",
+          "answer": "הזווית ב־$A$ משותפת והזוויות ב־$E,B$ ישרות; ז.ז. המרחקים האופקיים הם $AE,AB$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את $BC$, גובה ראש המבנה מעל גובה העינית.",
+          "answer": "$6$ מ׳, כלומר $6.0$ מ׳ בקירוב לעשירית."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את גובה המבנה מן הקרקע.",
+          "answer": "$10$ מ׳, כלומר $10.0$ מ׳ בקירוב לעשירית; מוסיפים את גובה המרפסת."
+        },
+        {
+          "label": "ד",
+          "text": "במדידה נפרדת באותה מרפסת מכוונים את הסרגל באותו אופן לראש מבנה אחר, שמרחקו האופקי מהעינית $14$ מ׳. חשבו את גובה המבנה האחר מן הקרקע.",
+          "answer": "$11$ מ׳, כלומר $11.0$ מ׳ בקירוב לעשירית; העלייה מעל העינית $7$ מ׳."
+        }
+      ]
+    },
+    "18": {
+      "id": "2c6b61aee35a48aa8d4a0560a3612eae:18",
+      "q": 18,
+      "grade": 9,
+      "topic": "דמיון משולשים",
+      "levelLabel": "רמה ב׳",
+      "text": "ב־$△ABC$, $D$ על $AB$, $E$ על $AC$ ו־$DE∥BC$. נתון $AD=9$, $AB=15$, $DE=12$ ס״מ. $M$ היא אמצע $DE$. המשך הקטע $AM$ פוגש את $BC$ בנקודה $N$.",
+      "example": {
+        "title": "דוגמה מודרכת — מוכיחים יחס של תיכונים",
+        "lines": [
+          "בדוגמה נפרדת נתון $△KLM∼△XYZ$ ביחס $\\f{4}{7}$. $U,V$ אמצעי הצלעות $LM,YZ$, ולכן גם $\\f{LU}{YV}=\\f{4}{7}$.",
+          "מתקיים $\\f{KL}{XY}=\\f{LU}{YV}$, והזוויות הכלואות מתאימות; לכן $△KLU∼△XYV$ לפי צ.ז.צ, ומכאן $\\f{KU}{XV}=\\f{4}{7}$.",
+          "אם $KU=8$ יחידות אורך, אז $XV=14$ יחידות אורך. יחס האורכים נובע מהגדרת האמצע ומדמיון משולשי המשנה."
+        ]
+      },
+      "figure": {
+        "url": "/noam-ai/native/G9-T32/b/figures/q18_head.svg",
+        "sha256": "ec86b653acedc4464c7f5d2f23f7cb2a7a298b8aae270290967ecbf3ae7204cc"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הוכיחו $△ADE∼△ABC$ וחשבו את $BC$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q18_head.svg",
+            "sha256": "ec86b653acedc4464c7f5d2f23f7cb2a7a298b8aae270290967ecbf3ae7204cc"
+          },
+          "answer": "הזווית $∠DAE=∠BAC$ משותפת וזוויות מתאימות במקבילים שוות; ז.ז. היחס $\\f{3}{5}$ ולכן $BC=20$ ס״מ."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את $DM$ לפי הנתון על $M$, והוכיחו $△ADM∼△ABN$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q18_head.svg",
+            "sha256": "ec86b653acedc4464c7f5d2f23f7cb2a7a298b8aae270290967ecbf3ae7204cc"
+          },
+          "answer": "$DM=6$ ס״מ לפי הגדרת אמצע. הזווית $∠DAM=∠BAN$ משותפת ו־$∠ADM=∠ABN$ מתאימות כי $DM∥BN$; לכן ז.ז."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את $BN$ ואת $NC$. קבעו ונמקו אם $AN$ הוא תיכון ל־$BC$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q18_head.svg",
+            "sha256": "ec86b653acedc4464c7f5d2f23f7cb2a7a298b8aae270290967ecbf3ae7204cc"
+          },
+          "answer": "$BN=6·\\f{5}{3}=10$ ס״מ ו־$NC=20−10=10$ ס״מ. לכן $N$ אמצע $BC$, ומכאן $AN$ תיכון."
+        },
+        {
+          "label": "ד",
+          "text": "נתון גם $AM=9$ ס״מ. כתבו את יחס התיכונים $AM$ ל־$AN$, וחשבו את $AN$ ואת $MN$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q18_head.svg",
+            "sha256": "ec86b653acedc4464c7f5d2f23f7cb2a7a298b8aae270290967ecbf3ae7204cc"
+          },
+          "answer": "יחס התיכונים $\\f{3}{5}$, לפי דמיון משולשי המשנה. $AN=15$ ס״מ ו־$MN=15−9=6$ ס״מ."
+        },
+        {
+          "label": "ה",
+          "text": "נעמה טוענת שאחרי שהוכח כי $AN$ תיכון, מותר גם לסמן שהוא חוצה את זווית $∠BAC$. קבעו אם טענתה מוצדקת ונמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q18_head.svg",
+            "sha256": "ec86b653acedc4464c7f5d2f23f7cb2a7a298b8aae270290967ecbf3ae7204cc"
+          },
+          "answer": "הטענה אינה מוצדקת. תיכון מחייב חלוקה שווה של הצלע, ואינו מחייב חלוקה שווה של זווית הקודקוד; אין נתון נוסף המאפשר זאת."
+        }
+      ]
+    },
+    "19": {
+      "id": "2c6b61aee35a48aa8d4a0560a3612eae:19",
+      "q": 19,
+      "grade": 9,
+      "topic": "דמיון משולשים",
+      "levelLabel": "רמה ב׳",
+      "text": "נתון $△ABC∼△DEF$. הקטעים $AM,DN$ חוצים את הזוויות המתאימות ב־$A,D$ ופוגשים את $BC,EF$. נתון $AB=6$, $DE=12$ ס״מ ו־$∠BAC=∠EDF=80°$.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T32/b/figures/q19_head.svg",
+        "sha256": "38621b73ad5ffe1bfb2deb55995e2132c351dbe2e957855f449a02e8cfb1b5e2"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את $∠BAM$ ואת $∠EDN$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q19_head.svg",
+            "sha256": "38621b73ad5ffe1bfb2deb55995e2132c351dbe2e957855f449a02e8cfb1b5e2"
+          },
+          "answer": "$40°$ כל אחת, לפי הגדרת חוצה זווית."
+        },
+        {
+          "label": "ב",
+          "text": "הוכיחו $△ABM∼△DEN$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q19_head.svg",
+            "sha256": "38621b73ad5ffe1bfb2deb55995e2132c351dbe2e957855f449a02e8cfb1b5e2"
+          },
+          "answer": "חצאי הזוויות שווים והזוויות ב־$B,E$ מתאימות במשולשים הדומים הנתונים; ז.ז."
+        },
+        {
+          "label": "ג",
+          "text": "נתון $DN=10$ ס״מ. חשבו את $AM$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q19_head.svg",
+            "sha256": "38621b73ad5ffe1bfb2deb55995e2132c351dbe2e957855f449a02e8cfb1b5e2"
+          },
+          "answer": "$5$ ס״מ."
+        },
+        {
+          "label": "ד",
+          "text": "מהו יחס חוצי הזוויות בסדר $DN$ ל־$AM$? האם חוצה זווית מוכרח להיות גם תיכון? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q19_head.svg",
+            "sha256": "38621b73ad5ffe1bfb2deb55995e2132c351dbe2e957855f449a02e8cfb1b5e2"
+          },
+          "answer": "היחס $2$. לא: חוצה זווית הוא תיכון רק כאשר $AB=AC$ (משולש שווה־שוקיים), ואין נתון כזה; במשולש שונה־צלעות הוא מחלק את $BC$ לשני חלקים לא שווים."
+        }
+      ]
+    },
+    "20": {
+      "id": "2c6b61aee35a48aa8d4a0560a3612eae:20",
+      "q": 20,
+      "grade": 9,
+      "topic": "דמיון משולשים",
+      "levelLabel": "רמה ב׳",
+      "text": "בטרפז $ABCD$, $AB∥DC$, האלכסונים נפגשים ב־$O$. נתון ששטח $△ABC$ הוא $35$ סמ״ר ושטח $△AOB$ הוא $14$ סמ״ר. אין אורכים נתונים; יחידות השטח הן סמ״ר.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T32/b/figures/q20_head.svg",
+        "sha256": "2a7cd3294652c08687aac2bff66e705325768c655c8b2e48c524227b1825cdc5"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "נמקו מדוע שטחי $△ABC$ ו־$△ABD$ שווים, בלי להשתמש בדמיון.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q20_head.svg",
+            "sha256": "2a7cd3294652c08687aac2bff66e705325768c655c8b2e48c524227b1825cdc5"
+          },
+          "answer": "לשניהם בסיס משותף $AB$. הגבהים מ־$C,D$ שווים למרחק בין הישרים המקבילים $AB,DC$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את שטח $△BOC$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q20_head.svg",
+            "sha256": "2a7cd3294652c08687aac2bff66e705325768c655c8b2e48c524227b1825cdc5"
+          },
+          "answer": "$21$ סמ״ר; $35−14$."
+        },
+        {
+          "label": "ג",
+          "text": "הוכיחו ששטח $△AOD$ שווה לשטח $△BOC$ וחשבו אותו.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q20_head.svg",
+            "sha256": "2a7cd3294652c08687aac2bff66e705325768c655c8b2e48c524227b1825cdc5"
+          },
+          "answer": "מחסרים את $△AOB$ משני המשולשים שווי השטח מסעיף א; מתקבל $21$ סמ״ר גם ב־$△AOD$."
+        },
+        {
+          "label": "ד",
+          "text": "האם שוויון השטחים לבדו מוכיח ש־$△AOD∼△BOC$? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q20_head.svg",
+            "sha256": "2a7cd3294652c08687aac2bff66e705325768c655c8b2e48c524227b1825cdc5"
+          },
+          "answer": "לא ניתן להסיק: בסיסים וגבהים שונים יכולים לתת אותה מכפלה. כאן שוויון השטחים הוכח מחיסור, ולא ממשפט דמיון."
+        }
+      ]
+    },
+    "21": {
+      "id": "2c6b61aee35a48aa8d4a0560a3612eae:21",
+      "q": 21,
+      "grade": 9,
+      "topic": "דמיון משולשים",
+      "levelLabel": "רמה ב׳",
+      "text": "בכל שורה בטבלה נתונים חדשים עבור המשולשים $△ABC,△DEF$. קבעו אם ניתן להסיק $△ABC∼△DEF$, ציינו משפט ונמקו. בכל שורה שבה יש אורכים יחידת האורך היא ס״מ; אין קשר בין השורות.",
+      "table": {
+        "head": [
+          "שורה",
+          "נתוני הראשון",
+          "נתוני השני"
+        ],
+        "rows": [
+          [
+            "א",
+            "$∠BAC=45°,∠ABC=65°$",
+            "$∠EDF=45°,∠DEF=65°$"
+          ],
+          [
+            "ב",
+            "$AB=9,AC=12,BC=15$",
+            "$DE=12,DF=16,EF=20$"
+          ],
+          [
+            "ג",
+            "$AB=6,AC=9,∠BAC=50°$",
+            "$DE=9,DF=13.5,∠EDF=50°$"
+          ],
+          [
+            "ד",
+            "$AB=8,AC=6,∠ABC=30°$",
+            "$DE=16,DF=12,∠DEF=30°$"
+          ]
+        ]
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "דונו בשורה א.",
+          "answer": "כן, ז.ז: הזוויות השלישיות שוות ל־$70°$."
+        },
+        {
+          "label": "ב",
+          "text": "דונו בשורה ב.",
+          "answer": "כן, צ.צ.צ: כל שלושת היחסים $\\f{3}{4}$."
+        },
+        {
+          "label": "ג",
+          "text": "דונו בשורה ג.",
+          "answer": "כן, צ.ז.צ: שני היחסים $\\f{2}{3}$ והזווית הכלואה שווה."
+        },
+        {
+          "label": "ד",
+          "text": "דונו בשורה ד.",
+          "answer": "לא ניתן להסיק: הזווית ב־$B,E$ אינה כלואה בין הצלעות הנתונות, הנפגשות ב־$A,D$."
+        }
+      ]
+    },
+    "22": {
+      "id": "2c6b61aee35a48aa8d4a0560a3612eae:22",
+      "q": 22,
+      "grade": 9,
+      "topic": "דמיון משולשים",
+      "levelLabel": "רמה ב׳",
+      "text": "שרטטו $△ABC$ ישר־זווית ב־$C$, ואת הגובה $CD$ ליתר $AB$, כך ש־$D$ על $AB$. סמנו $AD=4$, $DB=9$ ס״מ.",
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את היתר המלא וכתבו שרשרת דמיון של שלושת המשולשים.",
+          "answer": "$AB=13$ ס״מ; $△ABC∼△ACD∼△CBD$ לפי ז.ז."
+        },
+        {
+          "label": "ב",
+          "text": "כתבו יחס שבו $AC$ מופיע בתפקידים שונים, וחשבו אותו.",
+          "answer": "$\\f{AC}{AB}=\\f{AD}{AC}$; $AC^2=4·13=52$, לכן $AC=2\\sqrt{13}$ ס״מ."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את $BC$ בעזרת דמיון או פיתגורס.",
+          "answer": "$3\\sqrt{13}$ ס״מ; למשל $BC^2=9·13=117$."
+        },
+        {
+          "label": "ד",
+          "text": "חשבו את $CD$ ואת שטח $△ABC$.",
+          "answer": "$CD=6$ ס״מ; השטח $39$ סמ״ר."
+        }
+      ]
+    },
+    "23": {
+      "id": "2c6b61aee35a48aa8d4a0560a3612eae:23",
+      "q": 23,
+      "grade": 9,
+      "topic": "דמיון משולשים",
+      "levelLabel": "רמה ב׳",
+      "text": "$ABCD$ מקבילית, ובה $AB∥DC$ ו־$AD∥BC$. $E$ על המשך $AB$ מעבר ל־$B$, והישר $EC$ פוגש את המשך $AD$ מעבר ל־$D$ ב־$F$. נתון $AB=8$, $BE=4$, $AD=5$, $EC=6$ ס״מ.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T32/b/figures/q23_head.svg",
+        "sha256": "09b9927d25bb4a6850c7ac68b6a680b333307a488a1cf196fe1f996850578f94"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הפיקו מן הנתונים את $AE$ ואת $BC$. נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q23_head.svg",
+            "sha256": "09b9927d25bb4a6850c7ac68b6a680b333307a488a1cf196fe1f996850578f94"
+          },
+          "answer": "$AE=12$ ס״מ מחיבור חלקים; $BC=5$ ס״מ כצלעות נגדיות במקבילית."
+        },
+        {
+          "label": "ב",
+          "text": "הוכיחו $△EBC∼△EAF$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q23_head.svg",
+            "sha256": "09b9927d25bb4a6850c7ac68b6a680b333307a488a1cf196fe1f996850578f94"
+          },
+          "answer": "הזווית ב־$E$ משותפת ו־$BC∥AF$; ז.ז."
+        },
+        {
+          "label": "ג",
+          "text": "הוכיחו $△FDC∼△FAE$ וחשבו את החלק החיצוני $DF$. לפני יצירת היחס כתבו את $AF$ כסכום של שני חלקיו.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q23_head.svg",
+            "sha256": "09b9927d25bb4a6850c7ac68b6a680b333307a488a1cf196fe1f996850578f94"
+          },
+          "answer": "זווית $∠DFC=∠AFE$ משותפת וזוויות מתאימות כי $DC∥AE$; ז.ז. נסמן $DF=t$, ואז $AF=t+5$ ומתקיים $\\f{t}{t+5}=\\f{8}{12}$. לכן $3t=2t+10$ ומתקבל $DF=10$ ס״מ."
+        },
+        {
+          "label": "ד",
+          "text": "היעזרו בסעיף ג כדי לחשב את $AF$ כולו כסכום חלק פנימי וחלק חיצוני. איזה נתון מספרי לא נדרש לחישוב?",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q23_head.svg",
+            "sha256": "09b9927d25bb4a6850c7ac68b6a680b333307a488a1cf196fe1f996850578f94"
+          },
+          "answer": "$AF=AD+DF=5+10=15$ ס״מ. $EC=6$ ס״מ לא נדרש."
+        },
+        {
+          "label": "ה",
+          "text": "חשבו את $EF$. התיכונים מ־$E$ לצלעות $BC,AF$ אינם מצוירים; כתבו את יחס אורכיהם, בסדר קטן לגדול.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q23_head.svg",
+            "sha256": "09b9927d25bb4a6850c7ac68b6a680b333307a488a1cf196fe1f996850578f94"
+          },
+          "answer": "$EF=18$ ס״מ. יחס התיכונים $\\f{1}{3}$, כיחס הצלעות המתאימות במשולשים הדומים."
+        }
+      ]
+    },
+    "24": {
+      "id": "2c6b61aee35a48aa8d4a0560a3612eae:24",
+      "q": 24,
+      "grade": 9,
+      "topic": "דמיון משולשים",
+      "levelLabel": "רמה ב׳",
+      "text": "במעבדת צילום משתמשים במצלמת נקב אידאלית: הנקב הוא נקודה $O$. חץ $AB$ מודפס על כרטיס שטוח, ודמותו ההפוכה $CD$ נוצרת על המסך. הכרטיס והמסך מאונכים לאותו ציר אופטי: $B,O,D$ על ישר בסדר זה, $AB⊥OB$ ו־$CD⊥OD$. קרן האור מקיימת $A,O,C$ על ישר בסדר זה. כל המרחקים מן הנקב לכרטיס ולמסך נמדדים לאורך הציר. נתון $OB=30$, $OD=10$, $CD=4$ ס״מ. מסת המצלמה $300$ גרם.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T32/b/figures/q24_head.svg",
+        "sha256": "80e9a083537236eaa0293c5d7bea0b59efcce07cf8de573333d30f5705bcdcbd"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הוכיחו $△OAB∼△OCD$. איזה נתון אינו דרוש להוכחה או לחישובי הדמיון?",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q24_head.svg",
+            "sha256": "80e9a083537236eaa0293c5d7bea0b59efcce07cf8de573333d30f5705bcdcbd"
+          },
+          "answer": "הזוויות ב־$B,D$ ישרות והזוויות $∠AOB=∠COD$ קודקודיות; לכן ז.ז. מסת המצלמה אינה נחוצה."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את אורך החץ המודפס $AB$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q24_head.svg",
+            "sha256": "80e9a083537236eaa0293c5d7bea0b59efcce07cf8de573333d30f5705bcdcbd"
+          },
+          "answer": "$AB=4·\\f{30}{10}=12$ ס״מ, כלומר $12.0$ ס״מ בקירוב לעשירית."
+        },
+        {
+          "label": "ג",
+          "text": "בצילום שני באותה מצלמה מצלמים כרטיס אחר. באיור של סעיף זה $AB$ מסמן את החץ החדש ו־$CD$ את דמותו. נתון $OB=40$, $OD=10$, $CD=5$ ס״מ; $AB⊥OB$, $CD⊥OD$, ו־$B,O,D$ וכן $A,O,C$ על ישרים בסדרים אלה. חשבו את אורך החץ החדש.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q24c.svg",
+            "sha256": "7751fac6ed65a4cdcec1a6abd18998920a07aa5ffe069929665473e00f02e543"
+          },
+          "answer": "$AB=5·\\f{40}{10}=20$ ס״מ, כלומר $20.0$ ס״מ בקירוב לעשירית, לפי ז.ז ואותה התאמה בין חץ לדמות."
+        },
+        {
+          "label": "ד",
+          "text": "תלמידה טוענת שיחס אורכי החצים המודפסים בצילום השני לראשון שווה ליחס אורכי הדמויות, $\\f{5}{4}$. בדקו את הטענה והסבירו את הגורם הפיזיקלי שיש להביא בחשבון.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T32/b/figures/q24_head.svg",
+            "sha256": "80e9a083537236eaa0293c5d7bea0b59efcce07cf8de573333d30f5705bcdcbd"
+          },
+          "answer": "הטענה שגויה: יחס אורכי החצים $\\f{20}{12}=\\f{5}{3}$. מרחק הכרטיס מהנקב השתנה, ולכן גורם ההעתקה שונה בשני הצילומים; יחס הדמויות לבדו אינו יחס החצים."
+        }
+      ]
+    },
+    "25": {
+      "id": "2c6b61aee35a48aa8d4a0560a3612eae:25",
+      "q": 25,
+      "grade": 9,
+      "topic": "דמיון משולשים",
+      "levelLabel": "רמה ב׳",
+      "text": "שרטטו משולש $△ABC$ כך ש־$AB=14$, $AC=10$, $BC=12$ ס״מ. סמנו את אמצע $AB$ בשם $D$, והעבירו דרך $D$ ישר מקביל ל־$BC$ הפוגש את $AC$ ב־$E$.",
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את $AD$ והוכיחו $△ADE∼△ABC$ לפי זוויות.",
+          "answer": "$AD=7$ ס״מ; הזוויות $∠DAE=∠BAC$ משותפות, וזוויות מתאימות במקבילים שוות, ולכן ז.ז."
+        },
+        {
+          "label": "ב",
+          "text": "השתמשו בדמיון כדי לחשב את $AE,EC,DE$.",
+          "answer": "$AE=5$, $EC=5$, $DE=6$ ס״מ."
+        },
+        {
+          "label": "ג",
+          "text": "נמקו מדוע $E$ היא אמצע $AC$, בעזרת הנתונים והחישוב בלבד.",
+          "answer": "$AE=EC=5$ ס״מ, ו־$E$ על הצלע; לכן זו נקודת האמצע לפי ההגדרה."
+        },
+        {
+          "label": "ד",
+          "text": "חשבו את יחס היקף המשולש הקטן להיקף הגדול ואת יחס שטחיהם.",
+          "answer": "יחס ההיקפים $\\f{1}{2}$, יחס השטחים $\\f{1}{4}$."
+        }
+      ]
+    }
+  }
+}

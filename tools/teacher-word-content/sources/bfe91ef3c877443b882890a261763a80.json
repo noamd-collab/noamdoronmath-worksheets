@@ -1,0 +1,1050 @@
+{
+  "sourceSha256": "1b1d21fb28303ab1b5355d2ef4a84fb4b482092eb0bbe459696869a93981f525",
+  "answerSourceSha256": "b6b7a57ea3f26f18665dd17ddb2939a130663985f5385557f61e02da3b301432",
+  "nativeSha256": "6a73a98339a471e605bb37d775712536abf25e97d47828c04a313bc34c95d47e",
+  "questions": {
+    "1": {
+      "id": "bfe91ef3c877443b882890a261763a80:1",
+      "q": 1,
+      "grade": 8,
+      "topic": "משפטי חפיפה",
+      "levelLabel": "רמה ב׳",
+      "text": "הטבלה מתארת התאמה מוצעת. באיור מסומן רק זוג אחד של צלעות.",
+      "table": {
+        "head": [
+          "צלע",
+          "בת זוג"
+        ],
+        "rows": [
+          [
+            "AB",
+            "DE"
+          ],
+          [
+            "AC",
+            "____"
+          ],
+          [
+            "BC",
+            "____"
+          ]
+        ]
+      },
+      "example": {
+        "title": "דוגמה פתורה",
+        "lines": [
+          "בסדר $A↔D$, $B↔E$, $C↔F$, הצלע המחברת את הקודקודים הראשונים והשניים מתאימה לצלע באותם מקומות."
+        ]
+      },
+      "figure": {
+        "url": "/noam-ai/native/G8-T39/b/figures/q1_head.svg",
+        "sha256": "83ed9676b7db0b6603137b513bcafb024e54d51d580cc57c1f04039f413ea3ac"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "השלימו בטבלה את שני שמות הצלעות החסרים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q1_head.svg",
+            "sha256": "83ed9676b7db0b6603137b513bcafb024e54d51d580cc57c1f04039f413ea3ac"
+          },
+          "answer": "$AC$ מתאימה ל־$DF$ ו־$BC$ מתאימה ל־$EF$, לפי מיקום הקודקודים."
+        },
+        {
+          "label": "ב",
+          "text": "איזה שני שוויונות יש להוסיף כדי להוכיח בצ.צ.צ?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q1_head.svg",
+            "sha256": "83ed9676b7db0b6603137b513bcafb024e54d51d580cc57c1f04039f413ea3ac"
+          },
+          "answer": "$AC=DF$ ו־$BC=EF$."
+        },
+        {
+          "label": "ג",
+          "text": "האם צריך להוסיף גם שוויון זוויות? הסבירו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q1_head.svg",
+            "sha256": "83ed9676b7db0b6603137b513bcafb024e54d51d580cc57c1f04039f413ea3ac"
+          },
+          "answer": "לא; שלושה זוגות הצלעות מספיקים לפי צ.צ.צ."
+        },
+        {
+          "label": "ד",
+          "text": "לאחר הוספת השוויונות, תקנו את הכתיבה $△ACB≅△DEF$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q1_head.svg",
+            "sha256": "83ed9676b7db0b6603137b513bcafb024e54d51d580cc57c1f04039f413ea3ac"
+          },
+          "answer": "$△ACB\\cong △DFE$ (משנים את הצד הימני), או $△ABC\\cong △DEF$ (משנים את הצד השמאלי); בשני המקרים $A↔D$, $B↔E$, $C↔F$."
+        }
+      ]
+    },
+    "2": {
+      "id": "bfe91ef3c877443b882890a261763a80:2",
+      "q": 2,
+      "grade": 8,
+      "topic": "משפטי חפיפה",
+      "levelLabel": "רמה ב׳",
+      "text": "נתון $AC=AD$. השוויון השני של הצלעות לא נמסר. מסומנות זוויות שוות בראש $A$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T39/b/figures/q2_head.svg",
+        "sha256": "6be154db2f6fcc43da5c8db6600c8cae4418a501a963b90db9da9a3fce67f4c7"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "כתבו את הצלע המשותפת ואת שוויונה לעצמה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q2_head.svg",
+            "sha256": "6be154db2f6fcc43da5c8db6600c8cae4418a501a963b90db9da9a3fce67f4c7"
+          },
+          "answer": "$AB=AB$."
+        },
+        {
+          "label": "ב",
+          "text": "השלימו: הזוויות המסומנות נמצאות בין ____ ובין ____.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q2_head.svg",
+            "sha256": "6be154db2f6fcc43da5c8db6600c8cae4418a501a963b90db9da9a3fce67f4c7"
+          },
+          "answer": "בין $AC$ ל־$AB$, ובין $AD$ ל־$AB$."
+        },
+        {
+          "label": "ג",
+          "text": "הוכיחו $BC=BD$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q2_head.svg",
+            "sha256": "6be154db2f6fcc43da5c8db6600c8cae4418a501a963b90db9da9a3fce67f4c7"
+          },
+          "answer": "$△CAB\\cong △DAB$ לפי צ.ז.צ, ולכן $BC=BD$."
+        },
+        {
+          "label": "ד",
+          "text": "מה ההבדל בין $AC=AD$ לבין השוויון שהוכחתם?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q2_head.svg",
+            "sha256": "6be154db2f6fcc43da5c8db6600c8cae4418a501a963b90db9da9a3fce67f4c7"
+          },
+          "answer": "$AC=AD$ נתון; $BC=BD$ מוכח כמסקנה מן החפיפה."
+        }
+      ]
+    },
+    "3": {
+      "id": "bfe91ef3c877443b882890a261763a80:3",
+      "q": 3,
+      "grade": 8,
+      "topic": "משפטי חפיפה",
+      "levelLabel": "רמה ב׳",
+      "text": "במשולשים הנוגעים ב־$O$ נתון $OA=OC$, $AB=CD$ וגם $∠OAB=∠OCD$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T39/b/figures/q3_head.svg",
+        "sha256": "90ef3740527cfbded01d78d725f1ca66b6d957fef5495b908cce03e7f2a0daea"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "זהו את הזווית הכלואה בכל זוג צלעות נתונות.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q3_head.svg",
+            "sha256": "90ef3740527cfbded01d78d725f1ca66b6d957fef5495b908cce03e7f2a0daea"
+          },
+          "answer": "$∠OAB$ כלואה בין $OA$ ל־$AB$, ו־$∠OCD$ כלואה בין $OC$ ל־$CD$."
+        },
+        {
+          "label": "ב",
+          "text": "האם מיקום המשולשים הנפרד מפריע למשפט? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q3_head.svg",
+            "sha256": "90ef3740527cfbded01d78d725f1ca66b6d957fef5495b908cce03e7f2a0daea"
+          },
+          "answer": "לא; צ.ז.צ מתבסס על אורכים וזווית כלואה, לא על מיקום בדף."
+        },
+        {
+          "label": "ג",
+          "text": "כתבו חפיפה ומסקנה על הצלעות שלא ניתנו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q3_head.svg",
+            "sha256": "90ef3740527cfbded01d78d725f1ca66b6d957fef5495b908cce03e7f2a0daea"
+          },
+          "answer": "$△OAB\\cong △OCD$, ומכאן $OB=OD$."
+        },
+        {
+          "label": "ד",
+          "text": "אילו החליפו את הזוויות הנתונות בזוויות שב־$O$ בלבד, האם זו עדיין אותה הוכחת צ.ז.צ?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q3_head.svg",
+            "sha256": "90ef3740527cfbded01d78d725f1ca66b6d957fef5495b908cce03e7f2a0daea"
+          },
+          "answer": "לא; $O$ אינו מפגש שתי הצלעות הנתונות: $OA$ ו־$AB$ נפגשות ב־$A$, ו־$OC$ ו־$CD$ ב־$C$; זה צ.צ.ז."
+        }
+      ]
+    },
+    "4": {
+      "id": "bfe91ef3c877443b882890a261763a80:4",
+      "q": 4,
+      "grade": 8,
+      "topic": "משפטי חפיפה",
+      "levelLabel": "רמה ב׳",
+      "text": "יש להפריך טענה שלפיה צלע משותפת מספיקה לחפיפה.",
+      "items": [
+        {
+          "label": "א",
+          "text": "תארו כיצד מתחילים את הדוגמה מצלע אחת.",
+          "answer": "מציירים קטע $AB$ ומשתמשים בו כצלע משותפת בשני משולשים."
+        },
+        {
+          "label": "ב",
+          "text": "בחרו שתי נקודות מחוץ לישר כך שלפחות זוג אורכים נוסף יהיה שונה.",
+          "answer": "דוגמה אחת: $AB=6$, ו־$C$ ו־$D$ משני עברי $AB$ עם $AC=BC=5$ ו־$AD=BD=8$; כל בחירה חוקית שבה לפחות זוג אורכים נוסף שונה מתאימה."
+        },
+        {
+          "label": "ג",
+          "text": "בדקו מדוע שני המשולשים חוקיים ומדוע אינם חופפים.",
+          "answer": "בכל זוג סכום השוקיים גדול מהבסיס; קבוצות האורכים שונות ולכן אין חפיפה."
+        },
+        {
+          "label": "ד",
+          "text": "שרטטו את הדוגמה שבניתם ורשמו את המידות.",
+          "answer": "$△ABC$ עם $AB=6$, $AC=BC=5$, ו־$△ABD$ עם $AB=6$, $AD=BD=8$; $AB=6$ משותפת, הצלעות האחרות שונות, ולכן אין חפיפה."
+        }
+      ]
+    },
+    "5": {
+      "id": "bfe91ef3c877443b882890a261763a80:5",
+      "q": 5,
+      "grade": 8,
+      "topic": "משפטי חפיפה",
+      "levelLabel": "רמה ב׳",
+      "text": "נתון $AB=AC$, והקטע $AM$ חוצה את זווית הראש. לא נתון ש־$M$ אמצע הבסיס.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T39/b/figures/q5_head.svg",
+        "sha256": "b199af836adcbacc998e7e4e557b0f8d01e905eb27c0a87a089930df5241a666"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "איזה שוויון זוויות פירושו של הנתון על החוצה?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q5_head.svg",
+            "sha256": "b199af836adcbacc998e7e4e557b0f8d01e905eb27c0a87a089930df5241a666"
+          },
+          "answer": "$∠BAM=∠MAC$."
+        },
+        {
+          "label": "ב",
+          "text": "השלימו שוויון עצמי הנחוץ להוכחה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q5_head.svg",
+            "sha256": "b199af836adcbacc998e7e4e557b0f8d01e905eb27c0a87a089930df5241a666"
+          },
+          "answer": "$AM=AM$."
+        },
+        {
+          "label": "ג",
+          "text": "הוכיחו ש־$M$ אמצע הבסיס.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q5_head.svg",
+            "sha256": "b199af836adcbacc998e7e4e557b0f8d01e905eb27c0a87a089930df5241a666"
+          },
+          "answer": "$△ABM\\cong △ACM$ לפי צ.ז.צ ($AB=AC$, $∠BAM=∠MAC$, $AM=AM$); לכן $BM=CM$, ו־$M$ על $BC$, כלומר $M$ אמצע הבסיס."
+        },
+        {
+          "label": "ד",
+          "text": "מדוע אסור להתחיל את ההוכחה בשוויון שביקשתם להוכיח בסעיף ג?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q5_head.svg",
+            "sha256": "b199af836adcbacc998e7e4e557b0f8d01e905eb27c0a87a089930df5241a666"
+          },
+          "answer": "זהו בדיוק מה שצריך להסיק, ולא נתון."
+        }
+      ]
+    },
+    "6": {
+      "id": "bfe91ef3c877443b882890a261763a80:6",
+      "q": 6,
+      "grade": 8,
+      "topic": "משפטי חפיפה",
+      "levelLabel": "רמה ב׳",
+      "text": "נתון $AC=BD$ וגם $BC=AD$. תלמיד כתב שהצלע המשותפת מתאימה לצלע חיצונית.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T39/b/figures/q6_head.svg",
+        "sha256": "ed871f902b4d807f89d37c098b82939eb522682ff20b1eaa30f4c72f160454d8"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "כתבו את שוויון הצלע המשותפת הנכון.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q6_head.svg",
+            "sha256": "ed871f902b4d807f89d37c098b82939eb522682ff20b1eaa30f4c72f160454d8"
+          },
+          "answer": "$AB=BA$; זו אותה צלע גם אם סדר האותיות מתהפך."
+        },
+        {
+          "label": "ב",
+          "text": "הוכיחו חפיפה בסדר שבו A בראש המשולש הראשון.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q6_head.svg",
+            "sha256": "ed871f902b4d807f89d37c098b82939eb522682ff20b1eaa30f4c72f160454d8"
+          },
+          "answer": "$△ABC\\cong △BAD$ לפי צ.צ.צ."
+        },
+        {
+          "label": "ג",
+          "text": "איזה קודקוד מתאים ל־$A$? האם הוא אותו מקום גאומטרי?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q6_head.svg",
+            "sha256": "ed871f902b4d807f89d37c098b82939eb522682ff20b1eaa30f4c72f160454d8"
+          },
+          "answer": "$B$ מתאים ל־$A$; הוא קודקוד אחר של הצלע המשותפת, לא אותה נקודה."
+        },
+        {
+          "label": "ד",
+          "text": "הסבירו למה שיתוף צלע אינו מחייב שכל קצה שלה יתאים לעצמו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q6_head.svg",
+            "sha256": "ed871f902b4d807f89d37c098b82939eb522682ff20b1eaa30f4c72f160454d8"
+          },
+          "answer": "הנתונים האחרים קובעים את המיפוי; כאן קצות הצלע מתחלפים."
+        }
+      ]
+    },
+    "7": {
+      "id": "bfe91ef3c877443b882890a261763a80:7",
+      "q": 7,
+      "grade": 8,
+      "topic": "משפטי חפיפה",
+      "levelLabel": "רמה ב׳",
+      "text": "הקשתות באיור מסמנות זוגות זוויות שוות. נתון גם $AB=DE$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T39/b/figures/q7_head.svg",
+        "sha256": "44ec79e7ad3b5481ba57f91dec67f1989ef1100acd5d2cc774903b06ca47e2e8"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "כתבו בשמות מלאים את שני שוויונות הזוויות.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q7_head.svg",
+            "sha256": "44ec79e7ad3b5481ba57f91dec67f1989ef1100acd5d2cc774903b06ca47e2e8"
+          },
+          "answer": "$∠BAC=∠EDF$ ו־$∠ABC=∠DEF$."
+        },
+        {
+          "label": "ב",
+          "text": "הסבירו מדוע הצלע הנתונה נמצאת בין הזוויות.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q7_head.svg",
+            "sha256": "44ec79e7ad3b5481ba57f91dec67f1989ef1100acd5d2cc774903b06ca47e2e8"
+          },
+          "answer": "קצות $AB$ הם $A,B$ וקצות $DE$ הם $D,E$, קודקודי הזוויות הנתונות; לכן $AB$ ו־$DE$ כלואות בין הזוויות."
+        },
+        {
+          "label": "ג",
+          "text": "הוכיחו חפיפה. הסיקו ממנה את שני שוויונות הצלעות שלא ניתנו ואת שוויון הזוויות הנותרות.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q7_head.svg",
+            "sha256": "44ec79e7ad3b5481ba57f91dec67f1989ef1100acd5d2cc774903b06ca47e2e8"
+          },
+          "answer": "$△ABC\\cong △DEF$ לפי ז.צ.ז; לכן $AC=DF$, $BC=EF$ וגם $∠ACB=∠DFE$."
+        },
+        {
+          "label": "ד",
+          "text": "האם שוויון הזוויות שנותרו ניתן להסיק גם בלי החפיפה?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q7_head.svg",
+            "sha256": "44ec79e7ad3b5481ba57f91dec67f1989ef1100acd5d2cc774903b06ca47e2e8"
+          },
+          "answer": "כן, מסכום הזוויות ושני השוויונות הנתונים."
+        }
+      ]
+    },
+    "8": {
+      "id": "bfe91ef3c877443b882890a261763a80:8",
+      "q": 8,
+      "grade": 8,
+      "topic": "משפטי חפיפה",
+      "levelLabel": "רמה ב׳",
+      "text": "לפניכם שלושה כרטיסי בנייה. הבדיקה המלאה בכל כרטיס כבר בוצעה, ותוצאותיה הן נתונים. האיור מציג את החלופות של כרטיס ג.",
+      "table": {
+        "head": [
+          "כרטיס",
+          "בדיקה מלאה"
+        ],
+        "rows": [
+          [
+            "א",
+            "אין ביצוע חוקי"
+          ],
+          [
+            "ב",
+            "ביצוע יחיד עד כדי חפיפה"
+          ],
+          [
+            "ג",
+            "שני ביצועים שאינם חופפים"
+          ]
+        ]
+      },
+      "figure": {
+        "url": "/noam-ai/native/G8-T39/b/figures/q8_head.svg",
+        "sha256": "3ae2f4cf61c9dc3c0a21694e55c8f4f039c0c1325308ec0cfbd20dacb8ceaf31"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "איזה כרטיס צריך לדחות כי תנאיו אינם מאפשרים משולש?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q8_head.svg",
+            "sha256": "3ae2f4cf61c9dc3c0a21694e55c8f4f039c0c1325308ec0cfbd20dacb8ceaf31"
+          },
+          "answer": "כרטיס א, לפי הבדיקה שנמסרה."
+        },
+        {
+          "label": "ב",
+          "text": "איזה כרטיס קובע משולש עד כדי חפיפה, ואיזה אינו קובע?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q8_head.svg",
+            "sha256": "3ae2f4cf61c9dc3c0a21694e55c8f4f039c0c1325308ec0cfbd20dacb8ceaf31"
+          },
+          "answer": "ב קובע; ג אינו קובע כי יש בו שתי צורות שונות."
+        },
+        {
+          "label": "ג",
+          "text": "בכרטיס ג שתי צלעות וזווית שאינה כלואה שוות בשני הביצועים. מדוע אין משפט חפיפה כללי?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q8_head.svg",
+            "sha256": "3ae2f4cf61c9dc3c0a21694e55c8f4f039c0c1325308ec0cfbd20dacb8ceaf31"
+          },
+          "answer": "הבדיקה מספקת שני משולשים חוקיים שאינם חופפים עם אותם נתונים."
+        },
+        {
+          "label": "ד",
+          "text": "תלמיד ראה רק את כרטיס ב והכריז על משפט חדש. מה עליו לבדוק לפני הכללה?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q8_head.svg",
+            "sha256": "3ae2f4cf61c9dc3c0a21694e55c8f4f039c0c1325308ec0cfbd20dacb8ceaf31"
+          },
+          "answer": "עליו להוכיח שכל קבוצת נתונים חוקית קובעת חפיפה; כרטיס ג כבר מפריך זאת."
+        }
+      ]
+    },
+    "9": {
+      "id": "bfe91ef3c877443b882890a261763a80:9",
+      "q": 9,
+      "grade": 8,
+      "topic": "משפטי חפיפה",
+      "levelLabel": "רמה ב׳",
+      "text": "נתון $AB=DE$, $AC=DF$, $BC=EF$; במשולשים המחוברים נתון $DE=DG$, $EF=GF$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T39/b/figures/q9_head.svg",
+        "sha256": "97072d1f5089191c53a48e71ee41a6f0b2cac5812c26f3152e9630664e0e9419"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "באילו שני זוגות משולשים אפשר להשתמש בצ.צ.צ?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q9_head.svg",
+            "sha256": "97072d1f5089191c53a48e71ee41a6f0b2cac5812c26f3152e9630664e0e9419"
+          },
+          "answer": "$△ABC$ עם $△DEF$; $△DEF$ עם $△DGF$, בעזרת $DF$ המשותפת."
+        },
+        {
+          "label": "ב",
+          "text": "השלימו את ההתאמה מ־$B$ דרך המשולש האמצעי לאחרון.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q9_head.svg",
+            "sha256": "97072d1f5089191c53a48e71ee41a6f0b2cac5812c26f3152e9630664e0e9419"
+          },
+          "answer": "$B↔E↔G$."
+        },
+        {
+          "label": "ג",
+          "text": "מה נובע לגבי $∠ABC$ ו־$∠DGF$?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q9_head.svg",
+            "sha256": "97072d1f5089191c53a48e71ee41a6f0b2cac5812c26f3152e9630664e0e9419"
+          },
+          "answer": "$∠ABC=∠DGF$: $∠ABC=∠DEF$ מחפיפת $△ABC$ ו־$△DEF$, ו־$∠DEF=∠DGF$ מחפיפת $△DEF$ ו־$△DGF$."
+        },
+        {
+          "label": "ד",
+          "text": "מדוע עצם השרשרת של ציורים אינה מספיקה בלי הנתונים?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q9_head.svg",
+            "sha256": "97072d1f5089191c53a48e71ee41a6f0b2cac5812c26f3152e9630664e0e9419"
+          },
+          "answer": "האיור אינו מוכיח שוויון צלעות; צריך נתונים או נימוקים תקפים לכל חוליה."
+        }
+      ]
+    },
+    "10": {
+      "id": "bfe91ef3c877443b882890a261763a80:10",
+      "q": 10,
+      "grade": 8,
+      "topic": "משפטי חפיפה",
+      "levelLabel": "רמה ב׳",
+      "text": "רוצים להראות ששתי צלעות בלי הזווית שביניהן אינן מבטיחות חפיפה.",
+      "items": [
+        {
+          "label": "א",
+          "text": "בחרו שני אורכים לשתי צלעות היוצאות מאותו קודקוד.",
+          "answer": "דוגמה אחת: $AB=5$ ו־$AC=7$ היוצאות מאותו קודקוד; כל שני אורכים חיוביים מתאימים."
+        },
+        {
+          "label": "ב",
+          "text": "תארו שני מצבים שבהם האורכים נשמרים אך הזווית שביניהם משתנה.",
+          "answer": "דוגמה אחת: זווית כלואה של 40° באחד המצבים ושל 100° באחר, באותם אורכים; כל שתי זוויות שונות בין 0° ל־180° מתאימות."
+        },
+        {
+          "label": "ג",
+          "text": "מדוע ההתאמה השומרת על שתי הצלעות אינה חפיפה?",
+          "answer": "הזווית הכלואה המתאימה שונה, וחפיפה שומרת על זוויות."
+        },
+        {
+          "label": "ד",
+          "text": "שרטטו את שני המצבים וסמנו בשניהם רק את הנתונים שבחרתם.",
+          "answer": "שתי צלעות באותם אורכים ושתי זוויות כלואות שונות; נוצר זוג חוקי שאינו חופף."
+        }
+      ]
+    },
+    "11": {
+      "id": "bfe91ef3c877443b882890a261763a80:11",
+      "q": 11,
+      "grade": 8,
+      "topic": "משפטי חפיפה",
+      "levelLabel": "רמה ב׳",
+      "text": "נתון $OA=OC$ ו־$OB=OD$. שני ישרים נחתכים ב־$O$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T39/b/figures/q11_head.svg",
+        "sha256": "d9e574199c3445a884fe589898f5a1c7699764968323e327eaf1460b208df396"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "כתבו שוויון זוויות הנובע מן הישרים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q11_head.svg",
+            "sha256": "d9e574199c3445a884fe589898f5a1c7699764968323e327eaf1460b208df396"
+          },
+          "answer": "$∠AOB=∠COD$ כזוויות קודקודיות."
+        },
+        {
+          "label": "ב",
+          "text": "הוכיחו חפיפה וציינו מדוע הזווית מתאימה למשפט.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q11_head.svg",
+            "sha256": "d9e574199c3445a884fe589898f5a1c7699764968323e327eaf1460b208df396"
+          },
+          "answer": "$△OAB\\cong △OCD$ לפי צ.ז.צ; הזווית היא בין שני הקטעים הנתונים."
+        },
+        {
+          "label": "ג",
+          "text": "נתון $AB=9$. מצאו $CD$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q11_head.svg",
+            "sha256": "d9e574199c3445a884fe589898f5a1c7699764968323e327eaf1460b208df396"
+          },
+          "answer": "$CD=9$ מצלעות מתאימות."
+        },
+        {
+          "label": "ד",
+          "text": "אם רק $OA=OC$ נשמר, האם הזוויות הקודקודיות יספיקו?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q11_head.svg",
+            "sha256": "d9e574199c3445a884fe589898f5a1c7699764968323e327eaf1460b208df396"
+          },
+          "answer": "לא; זוג צלעות וזוג זוויות בלבד אינם אחד מתנאי החפיפה."
+        }
+      ]
+    },
+    "12": {
+      "id": "bfe91ef3c877443b882890a261763a80:12",
+      "q": 12,
+      "grade": 8,
+      "topic": "משפטי חפיפה",
+      "levelLabel": "רמה ב׳",
+      "text": "נתון $AB=AC$ ו־$BM=CM$. בטיוטת הוכחה שלושה נימוקים הושמטו.",
+      "table": {
+        "head": [
+          "טענה",
+          "נימוק"
+        ],
+        "rows": [
+          [
+            "$AM=AM$",
+            "____"
+          ],
+          [
+            "$△ABM≅△ACM$",
+            "____"
+          ],
+          [
+            "$∠BAM=∠CAM$",
+            "____"
+          ]
+        ]
+      },
+      "figure": {
+        "url": "/noam-ai/native/G8-T39/b/figures/q12_head.svg",
+        "sha256": "18e52f65c5f530f045d3973bf4549cf28eece9c22b523e43fef6c24214f51ccd"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "השלימו את הנימוק לשוויון $AM=AM$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q12_head.svg",
+            "sha256": "18e52f65c5f530f045d3973bf4549cf28eece9c22b523e43fef6c24214f51ccd"
+          },
+          "answer": "צלע משותפת לעצמה."
+        },
+        {
+          "label": "ב",
+          "text": "השלימו את משפט החפיפה בטבלה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q12_head.svg",
+            "sha256": "18e52f65c5f530f045d3973bf4549cf28eece9c22b523e43fef6c24214f51ccd"
+          },
+          "answer": "צ.צ.צ, כי שני זוגות נתונים והשלישי משותף."
+        },
+        {
+          "label": "ג",
+          "text": "השלימו את הנימוק למסקנה $∠BAM=∠CAM$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q12_head.svg",
+            "sha256": "18e52f65c5f530f045d3973bf4549cf28eece9c22b523e43fef6c24214f51ccd"
+          },
+          "answer": "זוויות מתאימות במשולשים חופפים."
+        },
+        {
+          "label": "ד",
+          "text": "מדוע לא רושמים את מסקנת הזוויות בשורה הראשונה כנתון?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q12_head.svg",
+            "sha256": "18e52f65c5f530f045d3973bf4549cf28eece9c22b523e43fef6c24214f51ccd"
+          },
+          "answer": "היא לא נמסרה; זהו היעד שהחפיפה אמורה להצדיק."
+        }
+      ]
+    },
+    "13": {
+      "id": "bfe91ef3c877443b882890a261763a80:13",
+      "q": 13,
+      "grade": 8,
+      "topic": "משפטי חפיפה",
+      "levelLabel": "רמה ב׳",
+      "text": "תלמיד כתב: יש שתי צלעות וזווית, ולכן המשולשים חופפים. בפועל נתון $AC=BD$, $AB=BA$, $∠ACB=∠BDA$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T39/b/figures/q13_head.svg",
+        "sha256": "50d42944a5d6154d0c7d6329dfb720289e7f999aa324a0a49953e624a02d56cd"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "באיזה קודקוד נפגשות הצלעות הנתונות במשולש הראשון?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q13_head.svg",
+            "sha256": "50d42944a5d6154d0c7d6329dfb720289e7f999aa324a0a49953e624a02d56cd"
+          },
+          "answer": "בקודקוד $A$: $AB$ ו־$AC$ נפגשות ב־$A$."
+        },
+        {
+          "label": "ב",
+          "text": "האם הזווית הנתונה היא באותו קודקוד?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q13_head.svg",
+            "sha256": "50d42944a5d6154d0c7d6329dfb720289e7f999aa324a0a49953e624a02d56cd"
+          },
+          "answer": "לא; הזווית הנתונה $∠ACB$ היא ב־$C$, ולא בין $AB$ ל־$AC$ הנפגשות ב־$A$."
+        },
+        {
+          "label": "ג",
+          "text": "החליפו את נתון הזוויות כדי לתקן את ההוכחה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q13_head.svg",
+            "sha256": "50d42944a5d6154d0c7d6329dfb720289e7f999aa324a0a49953e624a02d56cd"
+          },
+          "answer": "$∠CAB=∠DBA$ הוא השוויון הכלוא הדרוש."
+        },
+        {
+          "label": "ד",
+          "text": "הציעו תיקון מסוג אחר בלי להשתמש בזווית.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q13_head.svg",
+            "sha256": "50d42944a5d6154d0c7d6329dfb720289e7f999aa324a0a49953e624a02d56cd"
+          },
+          "answer": "להוסיף $BC=AD$, ואז להשתמש בצ.צ.צ עם שני הזוגות הקיימים."
+        }
+      ]
+    },
+    "14": {
+      "id": "bfe91ef3c877443b882890a261763a80:14",
+      "q": 14,
+      "grade": 8,
+      "topic": "משפטי חפיפה",
+      "levelLabel": "רמה ב׳",
+      "text": "הקשתות הן הנתונים היחידים באיור. הצלעות לא מסומנות.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T39/b/figures/q14_head.svg",
+        "sha256": "9db3b282cacb19e89f5209c0a270436f1a5dde19a83b1246b557cbc54b9dcd7b"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "האם מותר להסיק חפיפה מן הדמיון של הציורים?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q14_head.svg",
+            "sha256": "9db3b282cacb19e89f5209c0a270436f1a5dde19a83b1246b557cbc54b9dcd7b"
+          },
+          "answer": "לא; האיור אינו נתון של שוויון אורכים."
+        },
+        {
+          "label": "ב",
+          "text": "איזה משפט נותן בכל זאת מסקנה על הצורה?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q14_head.svg",
+            "sha256": "9db3b282cacb19e89f5209c0a270436f1a5dde19a83b1246b557cbc54b9dcd7b"
+          },
+          "answer": "זווית־זווית נותן דמיון."
+        },
+        {
+          "label": "ג",
+          "text": "בחרו זוג צלעות מתאים ששוויונו יאפשר ז.צ.ז.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q14_head.svg",
+            "sha256": "9db3b282cacb19e89f5209c0a270436f1a5dde19a83b1246b557cbc54b9dcd7b"
+          },
+          "answer": "$AB=DE$ נמצא בין הזוויות המסומנות."
+        },
+        {
+          "label": "ד",
+          "text": "מדוע זווית נוספת לא תמלא את מקום הצלע?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q14_head.svg",
+            "sha256": "9db3b282cacb19e89f5209c0a270436f1a5dde19a83b1246b557cbc54b9dcd7b"
+          },
+          "answer": "היא תלויה בשתי הזוויות הקיימות ואינה מעגנת את גודל המשולש."
+        }
+      ]
+    },
+    "15": {
+      "id": "bfe91ef3c877443b882890a261763a80:15",
+      "q": 15,
+      "grade": 8,
+      "topic": "משפטי חפיפה",
+      "levelLabel": "רמה ב׳",
+      "text": "זוג תלמידים בודק נתוני צלעות: $AB=DE$, $AC=DF$, $BC=EF$. במשולשים המחוברים גם $DE=DG$, $EF=GF$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T39/b/figures/q15_head.svg",
+        "sha256": "4828be139910204c3e67abf29ef769643916dc31e0805f02641758023baf28fc"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הראשון מציע למדוד זווית לפני שמתחילים. האם צריך?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q15_head.svg",
+            "sha256": "4828be139910204c3e67abf29ef769643916dc31e0805f02641758023baf28fc"
+          },
+          "answer": "לא; שלושת זוגות הצלעות מספיקים לחפיפת $△ABC$ ו־$△DEF$."
+        },
+        {
+          "label": "ב",
+          "text": "השני מציע רק להסתמך על סימטריה שנראית באיור. תקנו את הנימוק.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q15_head.svg",
+            "sha256": "4828be139910204c3e67abf29ef769643916dc31e0805f02641758023baf28fc"
+          },
+          "answer": "מוכיחים $△DEF\\cong △DGF$ לפי צ.צ.צ עם $DF$ משותפת, ולא לפי מראה סימטרי."
+        },
+        {
+          "label": "ג",
+          "text": "כתבו איזו צלע במשולש האחרון מתאימה ל־$AC$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q15_head.svg",
+            "sha256": "4828be139910204c3e67abf29ef769643916dc31e0805f02641758023baf28fc"
+          },
+          "answer": "$DF$, כי $A↔D$ ו־$C↔F$ דרך שתי ההתאמות."
+        },
+        {
+          "label": "ד",
+          "text": "איזה מן השוויונות שנמסרו הוא נתון, ואיזה שוויון עצמי נדרש אך לא נמסר בנפרד?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q15_head.svg",
+            "sha256": "4828be139910204c3e67abf29ef769643916dc31e0805f02641758023baf28fc"
+          },
+          "answer": "למשל $DE=DG$ נתון; $DF=DF$ עצמי."
+        }
+      ]
+    },
+    "16": {
+      "id": "bfe91ef3c877443b882890a261763a80:16",
+      "q": 16,
+      "grade": 8,
+      "topic": "משפטי חפיפה",
+      "levelLabel": "רמה ב׳",
+      "text": "נתון $AC=AD$ ו־$BC=BD$. המטרה היא להוכיח ש־$AB$ חוצה את הזווית שב־$A$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T39/b/figures/q16_head.svg",
+        "sha256": "bc94003d7bef47b07c188bc1481dc56d5e3b308eddd8dbdd314d66223a59cce1"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "כתבו את שם הזווית המבוקשת בשלוש אותיות.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q16_head.svg",
+            "sha256": "bc94003d7bef47b07c188bc1481dc56d5e3b308eddd8dbdd314d66223a59cce1"
+          },
+          "answer": "$∠CAD$."
+        },
+        {
+          "label": "ב",
+          "text": "מצאו שוויון שלא מסומן אך תמיד מתקיים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q16_head.svg",
+            "sha256": "bc94003d7bef47b07c188bc1481dc56d5e3b308eddd8dbdd314d66223a59cce1"
+          },
+          "answer": "$AB=AB$."
+        },
+        {
+          "label": "ג",
+          "text": "סדרו הוכחה בת שני צעדים: משפט, ואז מסקנה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q16_head.svg",
+            "sha256": "bc94003d7bef47b07c188bc1481dc56d5e3b308eddd8dbdd314d66223a59cce1"
+          },
+          "answer": "$△CAB\\cong △DAB$ לפי צ.צ.צ ($AC=AD$, $BC=BD$, $AB=AB$); לכן $∠CAB=∠DAB$, ו־$AB$ חוצה את $∠CAD$."
+        },
+        {
+          "label": "ד",
+          "text": "איזו טעות תהיה בשימוש בחוצה כנתון לצ.ז.צ?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q16_head.svg",
+            "sha256": "bc94003d7bef47b07c188bc1481dc56d5e3b308eddd8dbdd314d66223a59cce1"
+          },
+          "answer": "זו הנחת המבוקש, כי חציית הזווית היא היעד."
+        }
+      ]
+    },
+    "17": {
+      "id": "bfe91ef3c877443b882890a261763a80:17",
+      "q": 17,
+      "grade": 8,
+      "topic": "משפטי חפיפה",
+      "levelLabel": "רמה ב׳",
+      "text": "שתי הצעות משנות את שלוש צלעותיו של משולש: הצעה א מכפילה כל אורך באותו גורם גדול מאחד; הצעה ב מוסיפה לכל אורך אותה תוספת חיובית. הטענה היא ששתיהן שומרות תמיד על שלוש הזוויות.",
+      "items": [
+        {
+          "label": "א",
+          "text": "איזו הצעה מבטיחה את הטענה לכל משולש? נמקו באמצעות היחס בין צלעות מתאימות, והסבירו מדוע אין חפיפה.",
+          "answer": "הצעה א היא הגדלה אחידה: כל היחסים בין הצלעות המתאימות שווים לגורם ההגדלה, והזוויות נשמרות. הגורם גדול מאחד ולכן אורכי הצלעות משתנים ואין חפיפה."
+        },
+        {
+          "label": "ב",
+          "text": "האם די בכך שההפרשים בין הצלעות נשמרים כדי להבטיח דמיון? הסבירו מה צריך לבדוק בהצעה ב.",
+          "answer": "לא. דמיון דורש יחסים שווים בין צלעות מתאימות, ולא הפרשים שווים. הוספת אותו מספר לצלעות שונות אינה מבטיחה יחסים שווים."
+        },
+        {
+          "label": "ג",
+          "text": "בחרו משולש חוקי שאינו שווה צלעות ותוספת חיובית. חשבו את שלוש הצלעות החדשות, בדקו שהן יוצרות משולש והפריכו את ההבטחה לשמירת הזוויות; תקנו את השינוי כך שיתקבל זוג דומה שאינו חופף.",
+          "answer": "למשל צלעות $4,6,9$ חוקיות כי $4+6>9$. הוספת $3$ נותנת $7,9,12$, חוקיות כי $7+9>12$. היחסים הם $\\f{7}{4}$, $\\f{3}{2}$ ו־$\\f{4}{3}$ ואינם שווים, לכן המשולשים אינם דומים ואין שוויון של כל הזוויות המתאימות. מתקנים לכפל אחיד פי שניים ומקבלים $8,12,18$, יחס קבוע ושינוי גודל. זו דוגמה אחת; כל משולש שאינו שווה צלעות וכל תוספת חיובית מפריכים את ההבטחה."
+        },
+        {
+          "label": "ד",
+          "text": "שרטטו את המשולש המקורי ואת המשולש המתוקן, סמנו התאמה והציגו את יחסי הצלעות.",
+          "answer": "בדוגמה, מציירים משולשים בעלי צלעות $4,6,9$ ו־$8,12,18$ ומסמנים צלעות מתאימות. כל יחס צלע חדשה לצלע מקורית שווה לשניים; מציינים דמיון ולא חפיפה."
+        }
+      ]
+    },
+    "18": {
+      "id": "bfe91ef3c877443b882890a261763a80:18",
+      "q": 18,
+      "grade": 8,
+      "topic": "משפטי חפיפה",
+      "levelLabel": "רמה ב׳",
+      "text": "המשולשים נוגעים ב־$O$. נתון $OA=OC$ ו־$∠OAB=∠OCD$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T39/b/figures/q18_head.svg",
+        "sha256": "0efd01440266698e7b2e1385499d0a6d236963ca4116c0c952e8ce1dcc31b015"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "איזו זווית נוספת תאפשר ז.צ.ז כאשר משתמשים בצלע הנתונה?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q18_head.svg",
+            "sha256": "0efd01440266698e7b2e1385499d0a6d236963ca4116c0c952e8ce1dcc31b015"
+          },
+          "answer": "$∠AOB=∠COD$: אז $OA=OC$ כלואה בין $∠OAB$ ל־$∠AOB$ ובין $∠OCD$ ל־$∠COD$."
+        },
+        {
+          "label": "ב",
+          "text": "האם עצם המגע בנקודה נותן את השוויון הזה?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q18_head.svg",
+            "sha256": "0efd01440266698e7b2e1385499d0a6d236963ca4116c0c952e8ce1dcc31b015"
+          },
+          "answer": "לא; לא נמסר שהקרניים יוצרות שני ישרים."
+        },
+        {
+          "label": "ג",
+          "text": "נניח שהשוויון הנוסף התקבל ממקור אמין. מה אפשר להסיק?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q18_head.svg",
+            "sha256": "0efd01440266698e7b2e1385499d0a6d236963ca4116c0c952e8ce1dcc31b015"
+          },
+          "answer": "$△OAB\\cong △OCD$ לפי ז.צ.ז, ולכן $OB=OD$, $AB=CD$ ו־$∠OBA=∠ODC$."
+        },
+        {
+          "label": "ד",
+          "text": "האם הוספת הזווית השלישית אחרי שני שוויונות הזוויות מוסיפה מידע עצמאי?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q18_head.svg",
+            "sha256": "0efd01440266698e7b2e1385499d0a6d236963ca4116c0c952e8ce1dcc31b015"
+          },
+          "answer": "לא; היא נקבעת מסכום זוויות המשולש."
+        }
+      ]
+    },
+    "19": {
+      "id": "bfe91ef3c877443b882890a261763a80:19",
+      "q": 19,
+      "grade": 8,
+      "topic": "משפטי חפיפה",
+      "levelLabel": "רמה ב׳",
+      "text": "נתון $AB=AC$. הנקודה $M$ על הבסיס, אבל לא נאמר שהיא אמצעו.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T39/b/figures/q19_head.svg",
+        "sha256": "6e02ab9118eee5b0a598c6f1038c4738fb0a4e43461a9f59a217cf37b2a2262d"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "הציעו נתון על קטעי הבסיס שיאפשר צ.צ.צ.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q19_head.svg",
+            "sha256": "6e02ab9118eee5b0a598c6f1038c4738fb0a4e43461a9f59a217cf37b2a2262d"
+          },
+          "answer": "$BM=CM$, יחד עם $AM$ המשותפת ו־$AB=AC$, נותן צ.צ.צ."
+        },
+        {
+          "label": "ב",
+          "text": "הציעו במקום זאת נתון על זוויות בראש שיאפשר צ.ז.צ.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q19_head.svg",
+            "sha256": "6e02ab9118eee5b0a598c6f1038c4738fb0a4e43461a9f59a217cf37b2a2262d"
+          },
+          "answer": "$∠BAM=∠MAC$, יחד עם $AB=AC$ ו־$AM$ המשותפת, נותן צ.ז.צ."
+        },
+        {
+          "label": "ג",
+          "text": "מדוע תוספת הנתון $∠ABC=∠ACB$ אינה מבטיחה את אותה חפיפה בין החלקים?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q19_head.svg",
+            "sha256": "6e02ab9118eee5b0a598c6f1038c4738fb0a4e43461a9f59a217cf37b2a2262d"
+          },
+          "answer": "השוויון נובע מ־$AB=AC$ בכל מקרה, ואינו קובע את מיקומה של $M$ על הבסיס; בנוסף הזווית ב־$B$ אינה כלואה בין $AB$ ל־$AM$."
+        },
+        {
+          "label": "ד",
+          "text": "הסבירו את ההבדל בין תוספת נתון ובין שרטוט הקטע במקום שנראה אמצעי.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q19_head.svg",
+            "sha256": "6e02ab9118eee5b0a598c6f1038c4738fb0a4e43461a9f59a217cf37b2a2262d"
+          },
+          "answer": "נתון מחייב שוויון; מיקום חזותי אינו הוכחה ואין למדוד ממנו."
+        }
+      ]
+    },
+    "20": {
+      "id": "bfe91ef3c877443b882890a261763a80:20",
+      "q": 20,
+      "grade": 8,
+      "topic": "משפטי חפיפה",
+      "levelLabel": "רמה ב׳",
+      "text": "בכל שורה מתוארים נתונים בין שני משולשים בהתאמה קבועה. בודקים הבטחת חפיפה כללית.",
+      "table": {
+        "head": [
+          "שורה",
+          "תנאים"
+        ],
+        "rows": [
+          [
+            "ר",
+            "שלושה זוגות צלעות שוות"
+          ],
+          [
+            "ש",
+            "שני זוגות צלעות והזווית שביניהן"
+          ],
+          [
+            "ת",
+            "שתי זוויות והצלע המחברת ביניהן"
+          ],
+          [
+            "א",
+            "שלוש זוויות שוות"
+          ],
+          [
+            "ב",
+            "שתי צלעות וזווית שאינה כלואה"
+          ]
+        ]
+      },
+      "figure": {
+        "url": "/noam-ai/native/G8-T39/b/figures/q20_head.svg",
+        "sha256": "7a87c7a316665b454075075abe517abb8e7d8f140906884c6ed69f203d2f2457"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "סווגו את שורות ר,ש כמספיקות או לא מספיקות ונמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q20_head.svg",
+            "sha256": "7a87c7a316665b454075075abe517abb8e7d8f140906884c6ed69f203d2f2457"
+          },
+          "answer": "ר מספיקה לפי צ.צ.צ; ש מספיקה לפי צ.ז.צ בגלל המיקום הכלוא."
+        },
+        {
+          "label": "ב",
+          "text": "סווגו את שורות ת,א ונמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q20_head.svg",
+            "sha256": "7a87c7a316665b454075075abe517abb8e7d8f140906884c6ed69f203d2f2457"
+          },
+          "answer": "ת מספיקה לפי ז.צ.ז; א אינה מספיקה לחפיפה אלא לדמיון."
+        },
+        {
+          "label": "ג",
+          "text": "מדוע שורה ב דורשת בדיקה ולא משפט צ.ז.צ אוטומטי?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q20_head.svg",
+            "sha256": "7a87c7a316665b454075075abe517abb8e7d8f140906884c6ed69f203d2f2457"
+          },
+          "answer": "הזווית אינה כלואה; ייתכנו חלופות שאינן חופפות."
+        },
+        {
+          "label": "ד",
+          "text": "סכמו את ההבדל בין מספר נתונים לבין סוג ומיקום נתונים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q20_head.svg",
+            "sha256": "7a87c7a316665b454075075abe517abb8e7d8f140906884c6ed69f203d2f2457"
+          },
+          "answer": "אותו מספר נתונים עשוי להספיק או לא; צריך להתאים משפט ולבדוק את מיקום הזווית או הצלע."
+        },
+        {
+          "label": "ה",
+          "text": "בלי מידות מספריות, הכינו טבלה עבור $△ABC$: לכל זוג צלעות $AB,AC$; $AB,BC$; $AC,BC$ ציינו את קודקוד המפגש. לכל זוג זוויות $∠BAC,∠ABC$; $∠BAC,∠ACB$; $∠ABC,∠ACB$ ציינו את הצלע שביניהן. השתמשו בשמות הקטעים המלאים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T39/b/figures/q20_head.svg",
+            "sha256": "7a87c7a316665b454075075abe517abb8e7d8f140906884c6ed69f203d2f2457"
+          },
+          "answer": "זוגות הצלעות: $AB,AC$ נפגשות ב־$A$; $AB,BC$ ב־$B$; $AC,BC$ ב־$C$. זוגות הזוויות: הצלע שביניהן $AB$ בזוג $∠BAC,∠ABC$; $AC$ בזוג $∠BAC,∠ACB$; $BC$ בזוג $∠ABC,∠ACB$."
+        }
+      ]
+    }
+  }
+}

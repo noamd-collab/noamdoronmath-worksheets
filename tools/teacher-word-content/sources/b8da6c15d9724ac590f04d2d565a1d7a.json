@@ -1,0 +1,1011 @@
+{
+  "sourceSha256": "64c66eb2f755c165ba4661ac3b48420aeccc4da43259409dcd9bf2126f409b4d",
+  "answerSourceSha256": "616bdf77175f81b78bcc3fb3c09458feb89dc800413316ea74729f4eab248f28",
+  "nativeSha256": "238d92181dcda2a8e420dc4e064c7b513ba12b25b1b6e0991bf11654231e72a9",
+  "questions": {
+    "1": {
+      "id": "b8da6c15d9724ac590f04d2d565a1d7a:1",
+      "q": 1,
+      "grade": 8,
+      "topic": "דמיון משולשים",
+      "levelLabel": "רמה ב׳",
+      "text": "נתון $△BAC∼△EAD$. התחילו מן סדר האותיות, ואחר כך בדקו באיור.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T45/b/figures/q1_head.svg",
+        "sha256": "7b4fee48232d5241ef362b40d88e896a525849a5b17db9ae543447e45947a9d4"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "השלימו: $B$ מתאים ל־___, $A$ ל־___, $C$ ל־___. כתבו גם את כל שלושת שוויונות הזוויות המתאימות.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q1_head.svg",
+            "sha256": "7b4fee48232d5241ef362b40d88e896a525849a5b17db9ae543447e45947a9d4"
+          },
+          "answer": "$B↔E$, $A↔A$, $C↔D$; $∠ABC=∠AED$, $∠BAC=∠EAD$, $∠BCA=∠EDA$."
+        },
+        {
+          "label": "ב",
+          "text": "איזו צלע מתאימה ל־$AC$?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q1_head.svg",
+            "sha256": "7b4fee48232d5241ef362b40d88e896a525849a5b17db9ae543447e45947a9d4"
+          },
+          "answer": "$AD$, לפי התאמת שני הקצוות."
+        },
+        {
+          "label": "ג",
+          "text": "האם $△ABC∼△AED$ היא כתיבה תקפה של אותו דמיון? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q1_head.svg",
+            "sha256": "7b4fee48232d5241ef362b40d88e896a525849a5b17db9ae543447e45947a9d4"
+          },
+          "answer": "כן; הסדר החדש שומר $A↔A$, $B↔E$, $C↔D$."
+        },
+        {
+          "label": "ד",
+          "text": "זווית $BCA$ נתונה ושווה $58°$. חשבו את $∠EDA$ ונמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q1_head.svg",
+            "sha256": "7b4fee48232d5241ef362b40d88e896a525849a5b17db9ae543447e45947a9d4"
+          },
+          "answer": "$58°$; אלה הזוויות בקודקודים המתאימים $C,D$."
+        }
+      ]
+    },
+    "2": {
+      "id": "b8da6c15d9724ac590f04d2d565a1d7a:2",
+      "q": 2,
+      "grade": 8,
+      "topic": "דמיון משולשים",
+      "levelLabel": "רמה ב׳",
+      "text": "במשולש הראשון $∠BAC=52°$, $∠ABC=63°$. במשולש השני $∠AED=65°$, $∠EAD=52°$. לפניכם שני תיקים שאולי מתארים אותה צורה.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T45/b/figures/q2_head.svg",
+        "sha256": "57166dcc0a43c03d7e2edd3c64e2a9535dfda6d85d3bfdf8f90e1c18ce701cda"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "השלימו את הזווית החסרה בכל תיק.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q2_head.svg",
+            "sha256": "57166dcc0a43c03d7e2edd3c64e2a9535dfda6d85d3bfdf8f90e1c18ce701cda"
+          },
+          "answer": "בראשון $65°$, ובשני $63°$, מסכום הזוויות."
+        },
+        {
+          "label": "ב",
+          "text": "חברו כל קודקוד לקודקוד בעל אותה זווית במשולש השני.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q2_head.svg",
+            "sha256": "57166dcc0a43c03d7e2edd3c64e2a9535dfda6d85d3bfdf8f90e1c18ce701cda"
+          },
+          "answer": "$A↔A$, $B↔D$, $C↔E$."
+        },
+        {
+          "label": "ג",
+          "text": "כתבו דמיון בסדר נכון.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q2_head.svg",
+            "sha256": "57166dcc0a43c03d7e2edd3c64e2a9535dfda6d85d3bfdf8f90e1c18ce701cda"
+          },
+          "answer": "$△ABC∼△ADE$."
+        },
+        {
+          "label": "ד",
+          "text": "מדוע מספיקים שני זוגות זוויות שוות, ולא צריך למדוד את הזוג השלישי?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q2_head.svg",
+            "sha256": "57166dcc0a43c03d7e2edd3c64e2a9535dfda6d85d3bfdf8f90e1c18ce701cda"
+          },
+          "answer": "סכום הזוויות בכל משולש $180°$, ולכן גם הזוג שנותר שווה."
+        }
+      ]
+    },
+    "3": {
+      "id": "b8da6c15d9724ac590f04d2d565a1d7a:3",
+      "q": 3,
+      "grade": 8,
+      "topic": "דמיון משולשים",
+      "levelLabel": "רמה ב׳",
+      "text": "הקשתות הן סימוני הזיהוי. אל תתאימו לפי ימין ושמאל בדף.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T45/b/figures/q3_head.svg",
+        "sha256": "faa2cb5f202da0824d46ef6272ab6131b269b6b406aab1ebc91087a8fabebf75"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "רשמו את שלושת זוגות הקודקודים המתאימים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q3_head.svg",
+            "sha256": "faa2cb5f202da0824d46ef6272ab6131b269b6b406aab1ebc91087a8fabebf75"
+          },
+          "answer": "$A↔D$, $B↔E$, $C↔F$."
+        },
+        {
+          "label": "ב",
+          "text": "רשמו איזה זוג צלעות כולל את הקודקודים בעלי קשת אחת ושתי קשתות.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q3_head.svg",
+            "sha256": "faa2cb5f202da0824d46ef6272ab6131b269b6b406aab1ebc91087a8fabebf75"
+          },
+          "answer": "$AB$ ו־$DE$."
+        },
+        {
+          "label": "ג",
+          "text": "נתון $AB=6$, $DE=9$. כתבו את יחס השני לראשון כמנה מצומצמת.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q3_head.svg",
+            "sha256": "faa2cb5f202da0824d46ef6272ab6131b269b6b406aab1ebc91087a8fabebf75"
+          },
+          "answer": "$\\f{DE}{AB}=\\f{9}{6}=\\f{3}{2}$."
+        },
+        {
+          "label": "ד",
+          "text": "מדוע צילום בשחור־לבן וסיבוב הדף אינם מוחקים את ההתאמה?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q3_head.svg",
+            "sha256": "faa2cb5f202da0824d46ef6272ab6131b269b6b406aab1ebc91087a8fabebf75"
+          },
+          "answer": "מספר הקשתות נשמר; ההתאמה תלויה בזוויות ולא בצבע או במיקום."
+        }
+      ]
+    },
+    "4": {
+      "id": "b8da6c15d9724ac590f04d2d565a1d7a:4",
+      "q": 4,
+      "grade": 8,
+      "topic": "דמיון משולשים",
+      "levelLabel": "רמה ב׳",
+      "text": "בזוג $△ABC∼△ADE$ נשמרו $AB=4$, $AD=10$, $DE=20$. שתי מידות נמחקו, אבל נשמר שההפרש $AE−AC=9$. שחזרו את התיק מן ההפרש במקום לקבל אחת משתי הצלעות האלה מראש.",
+      "example": {
+        "title": "דוגמה פתורה",
+        "lines": [
+          "כאשר גורם המעבר הוא $3$, צלע שאורכה $5$ עוברת לצלע שאורכה $15$.",
+          "בכיוון ההפוך מחלקים באותו גורם: $\\f{15}{3}=5$."
+        ]
+      },
+      "figure": {
+        "url": "/noam-ai/native/G8-T45/b/figures/q4_head.svg",
+        "sha256": "0102961cfa0643b5a37f52a5b8fe07ab1e2a97897cd840bd6ff43fb51fef35af"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "נסמן $AC=x$. בטאו את $AE$ וכתבו משוואה מן ההפרש.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q4_head.svg",
+            "sha256": "0102961cfa0643b5a37f52a5b8fe07ab1e2a97897cd840bd6ff43fb51fef35af"
+          },
+          "answer": "$AE=(\\f{5}{2})x$, ולכן $(\\f{5}{2})x−x=9$."
+        },
+        {
+          "label": "ב",
+          "text": "שחזרו את $AC$ ואת $AE$ ובדקו את ההפרש.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q4_head.svg",
+            "sha256": "0102961cfa0643b5a37f52a5b8fe07ab1e2a97897cd840bd6ff43fb51fef35af"
+          },
+          "answer": "$AC=6$, $AE=15$; ההפרש $9$."
+        },
+        {
+          "label": "ג",
+          "text": "שחזרו גם את $BC$, והסבירו מדוע כאן משתמשים בכיוון ההפוך.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q4_head.svg",
+            "sha256": "0102961cfa0643b5a37f52a5b8fe07ab1e2a97897cd840bd6ff43fb51fef35af"
+          },
+          "answer": "$BC=20·\\f{2}{5}=8$; עוברים מהשני לראשון."
+        },
+        {
+          "label": "ד",
+          "text": "אמתו את שלוש מנות הצלעות בדוח המשוחזר.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q4_head.svg",
+            "sha256": "0102961cfa0643b5a37f52a5b8fe07ab1e2a97897cd840bd6ff43fb51fef35af"
+          },
+          "answer": "$\\f{10}{4}=\\f{15}{6}=\\f{20}{8}=\\f{5}{2}$."
+        }
+      ]
+    },
+    "5": {
+      "id": "b8da6c15d9724ac590f04d2d565a1d7a:5",
+      "q": 5,
+      "grade": 8,
+      "topic": "דמיון משולשים",
+      "levelLabel": "רמה ב׳",
+      "text": "תלמיד פתר פרופורציות של צלעות במשולשים דומים. בדקו כל חישוב בנפרד; השרטוט ממחיש את סוג ההתאמה בלבד.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T45/b/figures/q5_head.svg",
+        "sha256": "68edab18f313fc48325dbd7c77ffd405169946c34349aadd3517391edec00517"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "פתרו $\\f{x}{12}=\\f{2}{3}$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q5_head.svg",
+            "sha256": "68edab18f313fc48325dbd7c77ffd405169946c34349aadd3517391edec00517"
+          },
+          "answer": "$3x=24$, ולכן $x=8$."
+        },
+        {
+          "label": "ב",
+          "text": "פתרו $\\f{6}{y}=\\f{3}{4}$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q5_head.svg",
+            "sha256": "68edab18f313fc48325dbd7c77ffd405169946c34349aadd3517391edec00517"
+          },
+          "answer": "$3y=24$, ולכן $y=8$."
+        },
+        {
+          "label": "ג",
+          "text": "בדקו את שתי התוצאות בכפל צולב בפועל, והסבירו מדוע הבדיקה תקפה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q5_head.svg",
+            "sha256": "68edab18f313fc48325dbd7c77ffd405169946c34349aadd3517391edec00517"
+          },
+          "answer": "במשוואה הראשונה $3·8=2·12=24$; בשנייה $4·6=3·8=24$. מכנים חיוביים מאפשרים את הכפל בלי לשנות שוויון."
+        },
+        {
+          "label": "ד",
+          "text": "תלמיד הפך רק את המנה הימנית בסעיף א. האם זו אותה משוואה? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q5_head.svg",
+            "sha256": "68edab18f313fc48325dbd7c77ffd405169946c34349aadd3517391edec00517"
+          },
+          "answer": "לא. כדי להפוך שוויון מנות צריך להפוך את שתי המנות; הפיכה בצד אחד משנה את היחס."
+        }
+      ]
+    },
+    "6": {
+      "id": "b8da6c15d9724ac590f04d2d565a1d7a:6",
+      "q": 6,
+      "grade": 8,
+      "topic": "דמיון משולשים",
+      "levelLabel": "רמה ב׳",
+      "text": "כרטיסי מוט אנכי בגובה $2$ מטרים נמדדו בשני זמנים: בבוקר צלו $5$ מטרים, ובצהריים צלו $8$ מטרים. צל עצם אנכי אחר נמדד בבוקר ואורכו $15$ מטרים. הקרקע אופקית.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T45/b/figures/q6_head.svg",
+        "sha256": "110fc716d9ae40a574ce428c798cf45c78ad81b8c8e7b18008a5917916a40c29"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "בחרו את כרטיס הייחוס המתאים והסבירו מדוע אי אפשר לערבב בין שני הזמנים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q6_head.svg",
+            "sha256": "110fc716d9ae40a574ce428c798cf45c78ad81b8c8e7b18008a5917916a40c29"
+          },
+          "answer": "כרטיס הבוקר; נדרשות קרניים באותו כיוון, ולכן מדידה בו־זמנית. זווית השמש עשויה להשתנות בין הזמנים."
+        },
+        {
+          "label": "ב",
+          "text": "הצדיקו דמיון וכתבו פרופורציה לחישוב הגובה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q6_head.svg",
+            "sha256": "110fc716d9ae40a574ce428c798cf45c78ad81b8c8e7b18008a5917916a40c29"
+          },
+          "answer": "זוויות ישרות וקרניים מקבילות באותו זמן נותנות דמיון; $\\f{DE}{15}=\\f{2}{5}$."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את גובה העצם במטרים ובדקו את היחס מול הכרטיס שבחרתם.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q6_head.svg",
+            "sha256": "110fc716d9ae40a574ce428c798cf45c78ad81b8c8e7b18008a5917916a40c29"
+          },
+          "answer": "$DE=15·\\f{2}{5}=6$ מטרים; $\\f{6}{15}=\\f{2}{5}$."
+        },
+        {
+          "label": "ד",
+          "text": "רשמו את הגובה בסנטימטרים. האם בחירת כרטיס הצהריים הייתה שינוי יחידות בלבד?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q6_head.svg",
+            "sha256": "110fc716d9ae40a574ce428c798cf45c78ad81b8c8e7b18008a5917916a40c29"
+          },
+          "answer": "$600$ ס״מ. לא; היא הייתה מחליפה את התנאי הגאומטרי ואת היחס, ולא את יחידת האורך."
+        }
+      ]
+    },
+    "7": {
+      "id": "b8da6c15d9724ac590f04d2d565a1d7a:7",
+      "q": 7,
+      "grade": 8,
+      "topic": "דמיון משולשים",
+      "levelLabel": "רמה ב׳",
+      "text": "שני משולשים דומים בסדר $△ABC∼△ADE$. הגדולה היא הראשונה: $AB=24$, $AD=8$, $AC=18$, $DE=9$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T45/b/figures/q7_head.svg",
+        "sha256": "7eb0d66321f6f4079f75526370e9ca468b80cc4a862565559693d98cd95b62ad"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "תלמיד כתב שגורם הראשון לשני הוא $3$. הסבירו את הטעות.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q7_head.svg",
+            "sha256": "7eb0d66321f6f4079f75526370e9ca468b80cc4a862565559693d98cd95b62ad"
+          },
+          "answer": "זה הגורם בכיוון ההפוך; הראשון לשני הוא $\\f{8}{24}=\\f{1}{3}$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את $AE$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q7_head.svg",
+            "sha256": "7eb0d66321f6f4079f75526370e9ca468b80cc4a862565559693d98cd95b62ad"
+          },
+          "answer": "$AE=18·\\f{1}{3}=6$."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את $BC$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q7_head.svg",
+            "sha256": "7eb0d66321f6f4079f75526370e9ca468b80cc4a862565559693d98cd95b62ad"
+          },
+          "answer": "$BC=9·3=27$."
+        },
+        {
+          "label": "ד",
+          "text": "מדוע מותר לכפול בשלוש בסעיף ג אך לא בסעיף ב?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q7_head.svg",
+            "sha256": "7eb0d66321f6f4079f75526370e9ca468b80cc4a862565559693d98cd95b62ad"
+          },
+          "answer": "בסעיף ג עוברים מהשני לראשון; בסעיף ב מהראשון לשני."
+        }
+      ]
+    },
+    "8": {
+      "id": "b8da6c15d9724ac590f04d2d565a1d7a:8",
+      "q": 8,
+      "grade": 8,
+      "topic": "דמיון משולשים",
+      "levelLabel": "רמה ב׳",
+      "text": "באיור שני משולשים ישרי זווית, בלי נתון נוסף על זוויותיהם.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T45/b/figures/q8_head.svg",
+        "sha256": "6e29817b237ffb157418ce806ead7e818b7f389e5baf27d20940dcab38ebc2ca"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "האם הזוויות הישרות לבדן מוכיחות דמיון?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q8_head.svg",
+            "sha256": "6e29817b237ffb157418ce806ead7e818b7f389e5baf27d20940dcab38ebc2ca"
+          },
+          "answer": "לא; זוג זוויות אחד אינו מספיק."
+        },
+        {
+          "label": "ב",
+          "text": "הציעו שתי קבוצות זוויות של משולשים ישרי זווית שאינם דומים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q8_head.svg",
+            "sha256": "6e29817b237ffb157418ce806ead7e818b7f389e5baf27d20940dcab38ebc2ca"
+          },
+          "answer": "דוגמה אחת: $90°,30°,60°$ ו־$90°,45°,45°$. כל שני משולשים ישרי זווית שהזוויות החדות בהם שונות מתאימים."
+        },
+        {
+          "label": "ג",
+          "text": "איזה זוג זוויות נוסף היה מספיק באיור?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q8_head.svg",
+            "sha256": "6e29817b237ffb157418ce806ead7e818b7f389e5baf27d20940dcab38ebc2ca"
+          },
+          "answer": "זוג זוויות חדות מתאימות שוות, למשל $∠ABC=∠DEF$ (או $∠ACB=∠DFE$); יחד עם הזוויות הישרות מתקבל דמיון לפי זוויות."
+        },
+        {
+          "label": "ד",
+          "text": "האם השוויון הנוסף דורש גם שוויון אורכים? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q8_head.svg",
+            "sha256": "6e29817b237ffb157418ce806ead7e818b7f389e5baf27d20940dcab38ebc2ca"
+          },
+          "answer": "לא; הדמיון נקבע לפי זוויות, ואורכים עשויים להשתנות בגורם אחיד."
+        }
+      ]
+    },
+    "9": {
+      "id": "b8da6c15d9724ac590f04d2d565a1d7a:9",
+      "q": 9,
+      "grade": 8,
+      "topic": "דמיון משולשים",
+      "levelLabel": "רמה ב׳",
+      "text": "נתון $△ABC∼△ADE$. השלימו את טבלת ההתאמה לפני החישוב.",
+      "table": {
+        "head": [
+          "צלע בראשון",
+          "צלע בשני"
+        ],
+        "rows": [
+          [
+            "AB",
+            "___"
+          ],
+          [
+            "BC",
+            "___"
+          ],
+          [
+            "CA",
+            "___"
+          ]
+        ]
+      },
+      "figure": {
+        "url": "/noam-ai/native/G8-T45/b/figures/q9_head.svg",
+        "sha256": "ef248a486c924617f0ef2c61a1cb89be07713c235c4e36f333e477fd71cec462"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "רשמו בטבלה את הצלעות המתאימות ל־$AB,BC,CA$ בהתאמה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q9_head.svg",
+            "sha256": "ef248a486c924617f0ef2c61a1cb89be07713c235c4e36f333e477fd71cec462"
+          },
+          "answer": "$AD,DE,EA$."
+        },
+        {
+          "label": "ב",
+          "text": "האם הכתיבה $CA$ במקום $AC$ משנה את אורך הצלע או את זוג קצותיה?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q9_head.svg",
+            "sha256": "ef248a486c924617f0ef2c61a1cb89be07713c235c4e36f333e477fd71cec462"
+          },
+          "answer": "לא; זה אותו קטע עם סדר קצוות הפוך."
+        },
+        {
+          "label": "ג",
+          "text": "אם $BC=7$ ו־$DE=14$, מה גורם השני לראשון?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q9_head.svg",
+            "sha256": "ef248a486c924617f0ef2c61a1cb89be07713c235c4e36f333e477fd71cec462"
+          },
+          "answer": "מהשני לראשון: $\\f{BC}{DE}=\\f{7}{14}=\\f{1}{2}$ (מהראשון לשני הגורם הוא $2$)."
+        },
+        {
+          "label": "ד",
+          "text": "אם $AE=12$, מצאו את $CA$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q9_head.svg",
+            "sha256": "ef248a486c924617f0ef2c61a1cb89be07713c235c4e36f333e477fd71cec462"
+          },
+          "answer": "לפי הגורם מסעיף ג, מהשני לראשון: $CA=AE·\\f{1}{2}=12·\\f{1}{2}=6$."
+        }
+      ]
+    },
+    "10": {
+      "id": "b8da6c15d9724ac590f04d2d565a1d7a:10",
+      "q": 10,
+      "grade": 8,
+      "topic": "דמיון משולשים",
+      "levelLabel": "רמה ב׳",
+      "text": "כרטיס ראשון: זוויות $44°$ ו־$71°$. כרטיס שני: זוויות $65°$ ו־$71°$. כרטיס שלישי: זוויות $44°$ ו־$69°$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T45/b/figures/q10_head.svg",
+        "sha256": "79b65fdbb81b79d6f026935d679186261a20518f61cdbdd0f663bcb9016b22c0"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "השלימו את הזווית החסרה בכל אחד משלושת הכרטיסים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q10_head.svg",
+            "sha256": "79b65fdbb81b79d6f026935d679186261a20518f61cdbdd0f663bcb9016b22c0"
+          },
+          "answer": "הראשון $65°$, השני $44°$, השלישי $67°$."
+        },
+        {
+          "label": "ב",
+          "text": "בחרו את זוג הכרטיסים המתארים משולשים דומים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q10_head.svg",
+            "sha256": "79b65fdbb81b79d6f026935d679186261a20518f61cdbdd0f663bcb9016b22c0"
+          },
+          "answer": "הראשון והשני, כי קבוצות הזוויות זהות."
+        },
+        {
+          "label": "ג",
+          "text": "הסבירו מדוע הזווית המשותפת של הראשון והשלישי אינה מספיקה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q10_head.svg",
+            "sha256": "79b65fdbb81b79d6f026935d679186261a20518f61cdbdd0f663bcb9016b22c0"
+          },
+          "answer": "שאר הזוויות שונות; זוג שוויון יחיד לא קובע צורה."
+        },
+        {
+          "label": "ד",
+          "text": "איזה מידע יישאר לא ידוע גם לאחר שהוכחנו דמיון בכרטיסים המתאימים?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q10_head.svg",
+            "sha256": "79b65fdbb81b79d6f026935d679186261a20518f61cdbdd0f663bcb9016b22c0"
+          },
+          "answer": "גורם האורכים והמידות המוחלטות, כל עוד אין אורכי צלעות מתאימות."
+        }
+      ]
+    },
+    "11": {
+      "id": "b8da6c15d9724ac590f04d2d565a1d7a:11",
+      "q": 11,
+      "grade": 8,
+      "topic": "דמיון משולשים",
+      "levelLabel": "רמה ב׳",
+      "text": "משולש קטן הועתק כך שכל צלע בו גדלה באותו גורם. נתון $△ABC∼△ADE$, $AB=5$, $AD=15$, $BC=6$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T45/b/figures/q11_head.svg",
+        "sha256": "ff7f14df4ab5e7760a7ad0975adb648974261aab063e7885ffcd41ded484e227"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מצאו את הגורם וכתבו באיזה כיוון הוא פועל.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q11_head.svg",
+            "sha256": "ff7f14df4ab5e7760a7ad0975adb648974261aab063e7885ffcd41ded484e227"
+          },
+          "answer": "הראשון לשני: $\\f{15}{5}=3$."
+        },
+        {
+          "label": "ב",
+          "text": "מצאו את $DE$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q11_head.svg",
+            "sha256": "ff7f14df4ab5e7760a7ad0975adb648974261aab063e7885ffcd41ded484e227"
+          },
+          "answer": "$DE=6·3=18$."
+        },
+        {
+          "label": "ג",
+          "text": "מדוע לא מוסיפים לכל הצלעות את ההפרש $AD−AB$?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q11_head.svg",
+            "sha256": "ff7f14df4ab5e7760a7ad0975adb648974261aab063e7885ffcd41ded484e227"
+          },
+          "answer": "דמיון שומר מכפלה קבועה ולא הפרש קבוע; צלע אחרת צריכה שינוי המותאם לאורכה."
+        },
+        {
+          "label": "ד",
+          "text": "אם מקטינים כעת את ההעתק בחזרה, איזו פעולה נדרשת לכל צלע?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q11_head.svg",
+            "sha256": "ff7f14df4ab5e7760a7ad0975adb648974261aab063e7885ffcd41ded484e227"
+          },
+          "answer": "חלוקה בשלוש, או כפל ב־$\\f{1}{3}$."
+        }
+      ]
+    },
+    "12": {
+      "id": "b8da6c15d9724ac590f04d2d565a1d7a:12",
+      "q": 12,
+      "grade": 8,
+      "topic": "דמיון משולשים",
+      "levelLabel": "רמה ב׳",
+      "text": "הצללים נמדדו בתנאים המאפשרים דמיון. גובה עצם ראשון $2.4$ מטרים ואורך צלו $3$ מטרים. גובה עצם שני $4$ מטרים; אורך צלו חסר.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T45/b/figures/q12_head.svg",
+        "sha256": "3e8c999cba9808ac29e4cc687b31d6f7959986d34a1a8978ec830a6bd52e61d0"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "כתבו את זוגות הצלעות המתאימות לפי האיור.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q12_head.svg",
+            "sha256": "3e8c999cba9808ac29e4cc687b31d6f7959986d34a1a8978ec830a6bd52e61d0"
+          },
+          "answer": "$AB↔DE$, $AC↔DF$, $BC↔EF$."
+        },
+        {
+          "label": "ב",
+          "text": "בנו פרופורציה שבה אורך הצל החסר נמצא במכנה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q12_head.svg",
+            "sha256": "3e8c999cba9808ac29e4cc687b31d6f7959986d34a1a8978ec830a6bd52e61d0"
+          },
+          "answer": "$\\f{4}{DF}=\\f{2.4}{3}$."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את אורך הצל במטרים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q12_head.svg",
+            "sha256": "3e8c999cba9808ac29e4cc687b31d6f7959986d34a1a8978ec830a6bd52e61d0"
+          },
+          "answer": "$DF=\\f{4·3}{2.4}=5$ מטרים."
+        },
+        {
+          "label": "ד",
+          "text": "בדקו את התוצאה על ידי יחס צל לגובה בשני המשולשים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q12_head.svg",
+            "sha256": "3e8c999cba9808ac29e4cc687b31d6f7959986d34a1a8978ec830a6bd52e61d0"
+          },
+          "answer": "$\\f{3}{2.4}=\\f{5}{4}=1.25$."
+        }
+      ]
+    },
+    "13": {
+      "id": "b8da6c15d9724ac590f04d2d565a1d7a:13",
+      "q": 13,
+      "grade": 8,
+      "topic": "דמיון משולשים",
+      "levelLabel": "רמה ב׳",
+      "text": "האם כל זוג משולשים מן המשפחה הבאה דומה בהכרח? בכל סעיף יש לנמק.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T45/b/figures/q13_head.svg",
+        "sha256": "caf31cd6aac117f0e22218917a32ba3a07d10e1738c94e61171805cfb1e7b74e"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "שני משולשים שווי צלעות.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q13_head.svg",
+            "sha256": "caf31cd6aac117f0e22218917a32ba3a07d10e1738c94e61171805cfb1e7b74e"
+          },
+          "answer": "כן; כל זוויותיהם $60°$, ולכן דמיון לפי זוויות."
+        },
+        {
+          "label": "ב",
+          "text": "שני משולשים שווי שוקיים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q13_head.svg",
+            "sha256": "caf31cd6aac117f0e22218917a32ba3a07d10e1738c94e61171805cfb1e7b74e"
+          },
+          "answer": "לא; למשל זוויות $40°,70°,70°$ לעומת $80°,50°,50°$."
+        },
+        {
+          "label": "ג",
+          "text": "שני משולשים ישרי זווית.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q13_head.svg",
+            "sha256": "caf31cd6aac117f0e22218917a32ba3a07d10e1738c94e61171805cfb1e7b74e"
+          },
+          "answer": "לא; הזוויות החדות עשויות להיות שונות."
+        },
+        {
+          "label": "ד",
+          "text": "שני משולשים ישרי זווית ושווי שוקיים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q13_head.svg",
+            "sha256": "caf31cd6aac117f0e22218917a32ba3a07d10e1738c94e61171805cfb1e7b74e"
+          },
+          "answer": "כן; בכל אחד הזוויות הן $90°,45°,45°$."
+        }
+      ]
+    },
+    "14": {
+      "id": "b8da6c15d9724ac590f04d2d565a1d7a:14",
+      "q": 14,
+      "grade": 8,
+      "topic": "דמיון משולשים",
+      "levelLabel": "רמה ב׳",
+      "text": "הקשתות מזהות שתי זוויות בכל משולש. נתון $AC=9$, $DF=12$, $BC=15$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T45/b/figures/q14_head.svg",
+        "sha256": "585893188b1722708c6345f9fa85cd169d1995649d98e34ad56b65f7829f226b"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "כתבו דמיון מתאים ונמקו לפי הסימונים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q14_head.svg",
+            "sha256": "585893188b1722708c6345f9fa85cd169d1995649d98e34ad56b65f7829f226b"
+          },
+          "answer": "$△ABC∼△DEF$: קשת אחת ב־$A$ וב־$D$ ושתי קשתות ב־$B$ וב־$E$ מסמנות שני זוגות זוויות שוות, ולכן דמיון לפי זוויות, ו־$C↔F$."
+        },
+        {
+          "label": "ב",
+          "text": "מצאו את יחס השני לראשון מן הצלעות הנתונות.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q14_head.svg",
+            "sha256": "585893188b1722708c6345f9fa85cd169d1995649d98e34ad56b65f7829f226b"
+          },
+          "answer": "יחס השני לראשון: $\\f{DF}{AC}=\\f{12}{9}=\\f{4}{3}$."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את $EF$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q14_head.svg",
+            "sha256": "585893188b1722708c6345f9fa85cd169d1995649d98e34ad56b65f7829f226b"
+          },
+          "answer": "$EF=15·\\f{4}{3}=20$."
+        },
+        {
+          "label": "ד",
+          "text": "תלמיד כתב $\\f{AC}{EF}=\\f{DF}{BC}$. הסבירו מדוע עירבב זוגות ותנו שוויון תקף.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q14_head.svg",
+            "sha256": "585893188b1722708c6345f9fa85cd169d1995649d98e34ad56b65f7829f226b"
+          },
+          "answer": "הוא השווה צלעות שאינן מתאימות ובכיוונים שונים. תקף $\\f{DF}{AC}=\\f{EF}{BC}$."
+        }
+      ]
+    },
+    "15": {
+      "id": "b8da6c15d9724ac590f04d2d565a1d7a:15",
+      "q": 15,
+      "grade": 8,
+      "topic": "דמיון משולשים",
+      "levelLabel": "רמה ב׳",
+      "text": "המשולשים דומים לפי הסדר $△ABC∼△ADE$. קטעי המדידה ביחידות שונות: $AB=80$ ס״מ, $AD=1.2$ מטרים, $AC=100$ ס״מ.",
+      "items": [
+        {
+          "label": "א",
+          "text": "המירו את $AD$ לסנטימטרים לפני מציאת יחס.",
+          "answer": "$1.2$ מטרים הם $120$ ס״מ."
+        },
+        {
+          "label": "ב",
+          "text": "מצאו את גורם הראשון לשני.",
+          "answer": "מהראשון לשני: $\\f{AD}{AB}=\\f{120}{80}=\\f{3}{2}$."
+        },
+        {
+          "label": "ג",
+          "text": "מצאו את $AE$ בסנטימטרים ובמטרים.",
+          "answer": "$100·\\f{3}{2}=150$ ס״מ, שהם $1.5$ מטרים."
+        },
+        {
+          "label": "ד",
+          "text": "מדוע המנה $\\f{1.2}{80}$ אינה גורם הדמיון? שרטטו סקיצה מתאימה לשני המשולשים, כך שהנקודות $A,B,D$ על קרן אחת והנקודות $A,C,E$ על קרן אחרת. סמנו את המידות באותה יחידה.",
+          "answer": "המספרים נכתבו ביחידות שונות; תחילה מאחדים יחידות. בסקיצה $AB=80$, $AD=120$, $AC=100$, $AE=150$ בס״מ; $BC∥DE$."
+        }
+      ]
+    },
+    "16": {
+      "id": "b8da6c15d9724ac590f04d2d565a1d7a:16",
+      "q": 16,
+      "grade": 8,
+      "topic": "דמיון משולשים",
+      "levelLabel": "רמה ב׳",
+      "text": "הדמיון נתון: $△ABC∼△ADE$. נתון $AB=7$, $AD=14$ ו־$∠BAC=56°$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T45/b/figures/q16_head.svg",
+        "sha256": "94a2616b50a2181174dd545b05e166cc245453d83972ee0c7c7e476ca3fc6385"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מה $∠DAE$?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q16_head.svg",
+            "sha256": "94a2616b50a2181174dd545b05e166cc245453d83972ee0c7c7e476ca3fc6385"
+          },
+          "answer": "$56°$, כי זוויות מתאימות בדמיון שוות."
+        },
+        {
+          "label": "ב",
+          "text": "האם $∠DAE$ גדול פי שניים מן הזווית בראשון? הסבירו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q16_head.svg",
+            "sha256": "94a2616b50a2181174dd545b05e166cc245453d83972ee0c7c7e476ca3fc6385"
+          },
+          "answer": "לא; גורם האורכים אינו מכפיל זוויות."
+        },
+        {
+          "label": "ג",
+          "text": "במקרה נפרד $△KLM∼△PST$ באותו גורם העברה מהראשון לשני, ו־$LM=9$. חשבו את $ST$ ושרטטו סקיצה נפרדת המתאימה לנתונים האלה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q16_head.svg",
+            "sha256": "94a2616b50a2181174dd545b05e166cc245453d83972ee0c7c7e476ca3fc6385"
+          },
+          "answer": "באותו גורם העברה כמו קודם, $\\f{AD}{AB}=\\f{14}{7}=2$: $ST=9·2=18$, כי $L↔S$ ו־$M↔T$. בסקיצה $ST$ גדול פי $2$ מ־$LM$."
+        },
+        {
+          "label": "ד",
+          "text": "השלימו במילים: בדמיון הזוויות ___, והצלעות המתאימות ___.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q16_head.svg",
+            "sha256": "94a2616b50a2181174dd545b05e166cc245453d83972ee0c7c7e476ca3fc6385"
+          },
+          "answer": "הזוויות שוות; הצלעות פרופורציוניות באותו יחס."
+        }
+      ]
+    },
+    "17": {
+      "id": "b8da6c15d9724ac590f04d2d565a1d7a:17",
+      "q": 17,
+      "grade": 8,
+      "topic": "דמיון משולשים",
+      "levelLabel": "רמה ב׳",
+      "text": "תלמידה טוענת שכל שני משולשים הנראים באותו כיוון הם דומים. הכינו בדיקה לטענה באמצעות שרטוטים משלכם.",
+      "items": [
+        {
+          "label": "א",
+          "text": "האם הכיוון בדף הוא נתון מתמטי מספיק? נמקו.",
+          "answer": "לא; כיוון אינו קובע זוויות או יחס צלעות."
+        },
+        {
+          "label": "ב",
+          "text": "אפשר לסובב אחד מהם. האם סיבוב לבדו יכול להפוך זוג לא דומה לזוג דומה?",
+          "answer": "לא; סיבוב שומר את צורת כל משולש."
+        },
+        {
+          "label": "ג",
+          "text": "רשמו איזה סוג סימונים תוכלו לחפש כדי להוכיח דמיון לפי זוויות.",
+          "answer": "שני זוגות של זוויות שוות, מסומנות באופן תואם."
+        },
+        {
+          "label": "ד",
+          "text": "שרטטו שני משולשים ישרי זווית באותו כיוון, באחד זווית חדה של $30°$ ובאחר של $45°$. הסבירו מדוע אינם דומים.",
+          "answer": "קבוצות הזוויות הן $30°,60°,90°$ ו־$45°,45°,90°$. הן שונות למרות הכיוון והזווית הישרה המשותפים."
+        }
+      ]
+    },
+    "18": {
+      "id": "b8da6c15d9724ac590f04d2d565a1d7a:18",
+      "q": 18,
+      "grade": 8,
+      "topic": "דמיון משולשים",
+      "levelLabel": "רמה ב׳",
+      "text": "מספרים חסרים בטבלת צלעות של $△ABC∼△ADE$. נתון שהשני קטן מן הראשון.",
+      "table": {
+        "head": [
+          "ראשון",
+          "אורך",
+          "שני",
+          "אורך"
+        ],
+        "rows": [
+          [
+            "AB",
+            "15",
+            "AD",
+            "6"
+          ],
+          [
+            "AC",
+            "10",
+            "AE",
+            "?"
+          ],
+          [
+            "BC",
+            "?",
+            "DE",
+            "8"
+          ]
+        ]
+      },
+      "figure": {
+        "url": "/noam-ai/native/G8-T45/b/figures/q18_head.svg",
+        "sha256": "025b9353f56943a718079997cfdd7d506fe3edee82f244c9c10de9df8b0348e8"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "קבעו את גורם הראשון לשני מהשורה המלאה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q18_head.svg",
+            "sha256": "025b9353f56943a718079997cfdd7d506fe3edee82f244c9c10de9df8b0348e8"
+          },
+          "answer": "מהראשון לשני: $\\f{AD}{AB}=\\f{6}{15}=\\f{2}{5}$."
+        },
+        {
+          "label": "ב",
+          "text": "השלימו את החסר בשורה השנייה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q18_head.svg",
+            "sha256": "025b9353f56943a718079997cfdd7d506fe3edee82f244c9c10de9df8b0348e8"
+          },
+          "answer": "$AE=10·\\f{2}{5}=4$."
+        },
+        {
+          "label": "ג",
+          "text": "השלימו את החסר בשורה השלישית.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q18_head.svg",
+            "sha256": "025b9353f56943a718079997cfdd7d506fe3edee82f244c9c10de9df8b0348e8"
+          },
+          "answer": "$BC=8·\\f{5}{2}=20$."
+        },
+        {
+          "label": "ד",
+          "text": "מדוע המילה ״קטן״ עוזרת לבדוק את כיוון המנה, אך אינה מחליפה את החישוב?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q18_head.svg",
+            "sha256": "025b9353f56943a718079997cfdd7d506fe3edee82f244c9c10de9df8b0348e8"
+          },
+          "answer": "גורם הראשון לשני חייב להיות קטן מאחת, אבל ערכו המדויק נקבע באורכים."
+        }
+      ]
+    },
+    "19": {
+      "id": "b8da6c15d9724ac590f04d2d565a1d7a:19",
+      "q": 19,
+      "grade": 8,
+      "topic": "דמיון משולשים",
+      "levelLabel": "רמה ב׳",
+      "text": "שרטטו שני משולשים דומים לפי הסדר $△KLM∼△RST$. המשולש השני גדול פי שניים באורכי צלעותיו.",
+      "items": [
+        {
+          "label": "א",
+          "text": "רשמו את שלוש התאמות הקודקודים.",
+          "answer": "$K↔R$, $L↔S$, $M↔T$."
+        },
+        {
+          "label": "ב",
+          "text": "בחרו שלושה אורכים אפשריים לראשון והשלימו אורכים מתאימים לשני.",
+          "answer": "דוגמה אחת: $KL=5$, $LM=6$, $KM=8$ ולכן $RS=10$, $ST=12$, $RT=16$; המנות $\\f{10}{5}=\\f{12}{6}=\\f{16}{8}=2$. כל שלושה אורכים המקיימים אי־שוויון משולש מתאימים, כשכל אורך בשני כפול מהמתאים בראשון."
+        },
+        {
+          "label": "ג",
+          "text": "שרטטו את שתי הצורות בכיוונים שונים וסמנו זוג זוויות מתאימות בקשת מאותו סוג.",
+          "answer": "דוגמה אחת: $△KLM$ עם הצלעות מסעיף ב ו־$△RST$ מסובב או משתקף. קשת אחת ב־$K$ וב־$R$, שתי קשתות ב־$L$ וב־$S$, שלוש קשתות ב־$M$ וב־$T$. כל שרטוט שמשמר את ההתאמה $K↔R$, $L↔S$, $M↔T$ מתאים."
+        },
+        {
+          "label": "ד",
+          "text": "מה יקרה לכתיבת הדמיון אם מחליפים את סדר $L,M$ בשם הראשון?",
+          "answer": "חייבים להחליף גם את $S,T$ בשם השני: $△KML∼△RTS$."
+        }
+      ]
+    },
+    "20": {
+      "id": "b8da6c15d9724ac590f04d2d565a1d7a:20",
+      "q": 20,
+      "grade": 8,
+      "topic": "דמיון משולשים",
+      "levelLabel": "רמה ב׳",
+      "text": "בדיקת סיום. בכל סעיף הכריעו ונמקו; אין צורך למדוד את האיור.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T45/b/figures/q20_head.svg",
+        "sha256": "7cb643d68314d386e60aaf1cde641273c1436f9d9b8956b1656f5b6565151596"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "בדמיון, שלושה זוגות הזוויות שווים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q20_head.svg",
+            "sha256": "7cb643d68314d386e60aaf1cde641273c1436f9d9b8956b1656f5b6565151596"
+          },
+          "answer": "נכון; זו תכונה של משולשים דומים."
+        },
+        {
+          "label": "ב",
+          "text": "בדמיון, כל הצלעות בשני המשולשים שוות זו לזו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q20_head.svg",
+            "sha256": "7cb643d68314d386e60aaf1cde641273c1436f9d9b8956b1656f5b6565151596"
+          },
+          "answer": "לא; רק יחס הצלעות המתאימות אחיד, והוא לא חייב להיות אחת."
+        },
+        {
+          "label": "ג",
+          "text": "אם יחס השני לראשון הוא $\\f{4}{5}$, אורך בשני מוצאים בכפל אורך מתאים בראשון ב־$\\f{4}{5}$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q20_head.svg",
+            "sha256": "7cb643d68314d386e60aaf1cde641273c1436f9d9b8956b1656f5b6565151596"
+          },
+          "answer": "נכון; זו משמעות הכיוון של היחס."
+        },
+        {
+          "label": "ד",
+          "text": "שני משולשים שווי צלעות שונים בגודל יכולים להיות דומים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q20_head.svg",
+            "sha256": "7cb643d68314d386e60aaf1cde641273c1436f9d9b8956b1656f5b6565151596"
+          },
+          "answer": "נכון; כל הזוויות שוות גם כשהמידות שונות."
+        },
+        {
+          "label": "ה",
+          "text": "באיור, כתבו צלע המתאימה ל־$BC$ והסבירו לפי הזוויות שבקצותיה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T45/b/figures/q20_head.svg",
+            "sha256": "7cb643d68314d386e60aaf1cde641273c1436f9d9b8956b1656f5b6565151596"
+          },
+          "answer": "$EF$; $B↔E$ מהקשתות ו־$C↔F$ מן הזווית השלישית."
+        }
+      ]
+    }
+  }
+}

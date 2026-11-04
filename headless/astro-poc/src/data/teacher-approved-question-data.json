@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 1,
+  "answers": [
+    {
+      "pdfId": "7293e2a2261f426fbdda52a3fee8f0da",
+      "sourceSha256": "c120dda2ffb3913de8cb86c62b76e21248ba4bd9246b03c14b61ec0ac3b44576",
+      "q": 12,
+      "parts": [
+        {
+          "label": "",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">14</span><span class=\"fden\">25</span></span> x <span class=\"frac\"><span class=\"fnum\">15</span><span class=\"fden\">28</span></span></span>"
+        }
+      ]
+    },
+    {
+      "pdfId": "7293e2a2261f426fbdda52a3fee8f0da",
+      "sourceSha256": "c120dda2ffb3913de8cb86c62b76e21248ba4bd9246b03c14b61ec0ac3b44576",
+      "q": 19,
+      "parts": [
+        {
+          "label": "",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">11</span><span class=\"fden\">14</span></span> x <span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">9</span></span></span>"
+        }
+      ]
+    },
+    {
+      "pdfId": "e38b2869141b41fb9f000c5cd3dcad50",
+      "sourceSha256": "4bef19dca2ff0ec82ce5865fb03b6f7c624ad42f4f95a0d0894db326962d1775",
+      "q": 19,
+      "parts": [
+        {
+          "label": "",
+          "html": "<span class=\"ltr\">2 <span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">4</span></span> x 3 <span class=\"frac\"><span class=\"fnum\">1</span><span class=\"fden\">5</span></span></span>"
+        }
+      ]
+    },
+    {
+      "pdfId": "5e27f374f1174eb5bb599e0f376b44d7",
+      "sourceSha256": "ea32b43c419d65288f824299408e2bd2b729e04df655b9a92116ee85c4f63fdd",
+      "q": 13,
+      "parts": [
+        {
+          "label": "",
+          "html": "<span class=\"ltr\">1 <span class=\"frac\"><span class=\"fnum\">5</span><span class=\"fden\">9</span></span> x 2 <span class=\"frac\"><span class=\"fnum\">4</span><span class=\"fden\">7</span></span></span>"
+        }
+      ]
+    },
+    {
+      "pdfId": "8ef7dfbb350a4928a398258415f2f192",
+      "sourceSha256": "3280d1dd2ae90c3982e590ce18486781f0a48b0c5419cb1e589cd54e3d6e1587",
+      "q": 9,
+      "parts": [
+        {
+          "label": "",
+          "html": "<span class=\"ltr\"><span class=\"frac\"><span class=\"fnum\">7</span><span class=\"fden\">12</span></span> x ___ = <span class=\"frac\"><span class=\"fnum\">21</span><span class=\"fden\">40</span></span></span>"
+        }
+      ]
+    },
+    {
+      "pdfId": "1ea1f15a94f34e66b8c2be73548ffc5a",
+      "sourceSha256": "8332a1df789d2716c440e953f50410f55406db1bfb8b55233190e51c28c589e3",
+      "q": 5,
+      "parts": [
+        {
+          "label": "",
+          "html": "<span class=\"ltr\">2.7 x 3.6</span>"
+        }
+      ]
+    },
+    {
+      "pdfId": "2feaa550e5624413850647e884ea7076",
+      "sourceSha256": "e613559a481ef9e807af693e745ae7278f531c64ded486044126f0448784fc27",
+      "q": 5,
+      "parts": [
+        {
+          "label": "",
+          "html": "<span class=\"ltr\">2.45 x 3.18</span>"
+        }
+      ]
+    },
+    {
+      "pdfId": "7ad8b30e2e8f4e64b089a3233e7e6beb",
+      "sourceSha256": "c2a6aecaa4e40e55dec59b84ff539bd02d64dd6c6e57af44fa005389010bc0a2",
+      "q": 5,
+      "parts": [
+        {
+          "label": "",
+          "html": "<span class=\"ltr\">28.35 : 5.4</span>"
+        }
+      ]
+    },
+    {
+      "pdfId": "7ad8b30e2e8f4e64b089a3233e7e6beb",
+      "sourceSha256": "c2a6aecaa4e40e55dec59b84ff539bd02d64dd6c6e57af44fa005389010bc0a2",
+      "q": 12,
+      "parts": [
+        {
+          "label": "",
+          "html": "<span class=\"ltr\">14.3 : 2.6</span>"
+        }
+      ]
+    },
+    {
+      "pdfId": "7ad8b30e2e8f4e64b089a3233e7e6beb",
+      "sourceSha256": "c2a6aecaa4e40e55dec59b84ff539bd02d64dd6c6e57af44fa005389010bc0a2",
+      "q": 18,
+      "parts": [
+        {
+          "label": "",
+          "html": "<span class=\"ltr\">15.4 : 2.8</span>"
+        }
+      ]
+    }
+  ]
+}

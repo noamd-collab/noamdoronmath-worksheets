@@ -1,0 +1,988 @@
+{
+  "sourceSha256": "ac8ba2d3d983f445f50b2de53b153b558068694066cef4ecbd60387b3fd8d6f9",
+  "answerSourceSha256": "8c0d4ccf51fa22db322862fe5a5b5192cc9744babdba34fae0a65e98f78c7083",
+  "nativeSha256": "9d1d90f8e675a729dc9c564aa9449d65a88066fc0e50b6ca598607b83a724dc1",
+  "questions": {
+    "1": {
+      "id": "0da9007ec11b46e1a600689e8e91d880:1",
+      "q": 1,
+      "grade": 8,
+      "topic": "יחס שטחים",
+      "levelLabel": "רמה ב׳",
+      "text": "$△DEF$ דומה ל־$△ABC$ בגורם אורך שניים. $AH,DK$ הם גבהים. נתון $BC=6$, $AH=5$.",
+      "example": {
+        "title": "דוגמה בדרך דומה",
+        "lines": [
+          "כאשר בסיס וגובה מוכפלים בחמש, המכפלה שלהם מוכפלת בעשרים וחמש.",
+          "החלוקה בשניים בנוסחת שטח המשולש אינה משתנה."
+        ]
+      },
+      "figure": {
+        "url": "/noam-ai/native/G8-T47/b/figures/q1_head.svg",
+        "sha256": "00f7fbca25c3ffc93aa787101f02b770ac291a2936efe6d7603be760f45058f7"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מצאו את הבסיס והגובה במשולש השני.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q1_head.svg",
+            "sha256": "00f7fbca25c3ffc93aa787101f02b770ac291a2936efe6d7603be760f45058f7"
+          },
+          "answer": "הבסיס $12$ והגובה $10$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את שני השטחים באמצעות בסיס וגובה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q1_head.svg",
+            "sha256": "00f7fbca25c3ffc93aa787101f02b770ac291a2936efe6d7603be760f45058f7"
+          },
+          "answer": "שטח $△ABC$ הוא $\\f{6·5}{2}=15$, ושטח $△DEF$ הוא $\\f{12·10}{2}=60$."
+        },
+        {
+          "label": "ג",
+          "text": "מצאו את מנת השטחים והשוו אותה לגורם האורך.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q1_head.svg",
+            "sha256": "00f7fbca25c3ffc93aa787101f02b770ac291a2936efe6d7603be760f45058f7"
+          },
+          "answer": "מנת השטחים ארבע, ריבוע גורם האורך שניים."
+        },
+        {
+          "label": "ד",
+          "text": "הסבירו במילים מדוע גורם האורך מוכפל בעצמו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q1_head.svg",
+            "sha256": "00f7fbca25c3ffc93aa787101f02b770ac291a2936efe6d7603be760f45058f7"
+          },
+          "answer": "גם הבסיס וגם הגובה משתנים באותו גורם; מכפלתם מקבלת שני גורמים."
+        }
+      ]
+    },
+    "2": {
+      "id": "0da9007ec11b46e1a600689e8e91d880:2",
+      "q": 2,
+      "grade": 8,
+      "topic": "יחס שטחים",
+      "levelLabel": "רמה ב׳",
+      "text": "שלושת המשולשים דומים לפי הסדר. $△DEF$ הוא הגדלה של $△ABC$ בגורם שניים, ו־$△GHI$ הוא הגדלה של $△DEF$ בגורם $\\f{3}{2}$. שטח הראשון $6$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T47/b/figures/q2_head.svg",
+        "sha256": "2b284fb6b7d6855700dd971bec18a06a13008ad1340bddbac66b2b5925a6b8cf"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מצאו את גורם האורך הכולל.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q2_head.svg",
+            "sha256": "2b284fb6b7d6855700dd971bec18a06a13008ad1340bddbac66b2b5925a6b8cf"
+          },
+          "answer": "הגורם שלושה, מכפלת שני הגורמים."
+        },
+        {
+          "label": "ב",
+          "text": "מצאו את שטח המשולש האמצעי.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q2_head.svg",
+            "sha256": "2b284fb6b7d6855700dd971bec18a06a13008ad1340bddbac66b2b5925a6b8cf"
+          },
+          "answer": "השטח $24$."
+        },
+        {
+          "label": "ג",
+          "text": "מצאו את שטח המשולש האחרון בשתי דרכים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q2_head.svg",
+            "sha256": "2b284fb6b7d6855700dd971bec18a06a13008ad1340bddbac66b2b5925a6b8cf"
+          },
+          "answer": "ישירות $6·9=54$; דרך האמצעי $24·\\f{9}{4}=54$."
+        },
+        {
+          "label": "ד",
+          "text": "תלמיד חיבר את שני גורמי האורך. הסבירו את הטעות.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q2_head.svg",
+            "sha256": "2b284fb6b7d6855700dd971bec18a06a13008ad1340bddbac66b2b5925a6b8cf"
+          },
+          "answer": "שינוי שני פועל על המידות שכבר השתנו; לכן כופלים גורמים ולא מחברים אותם."
+        }
+      ]
+    },
+    "3": {
+      "id": "0da9007ec11b46e1a600689e8e91d880:3",
+      "q": 3,
+      "grade": 8,
+      "topic": "יחס שטחים",
+      "levelLabel": "רמה ב׳",
+      "text": "ב־$△ABC$ נתון $DE∥BC$, $\\f{AD}{AB}=\\f{1}{2}$ ושטח השלם $52$. תלמיד צבע את $△ADE$ ורשם שחצי מן השטח צבוע.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T47/b/figures/q3_head.svg",
+        "sha256": "f70579f2ff756b241fcf9cf7e41e5ca9769a52ae8331f94dc6663f202f1067fd"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "בדקו את הטענה בעזרת שתי המידות המשתנות בדמיון. איזה שבר צבוע באמת?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q3_head.svg",
+            "sha256": "f70579f2ff756b241fcf9cf7e41e5ca9769a52ae8331f94dc6663f202f1067fd"
+          },
+          "answer": "רבע צבוע: גם בסיס וגם גובה קטנים פי שניים."
+        },
+        {
+          "label": "ב",
+          "text": "תקנו את תווית השטח הצבוע, שרשומה בה כעת עשרים ושש.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q3_head.svg",
+            "sha256": "f70579f2ff756b241fcf9cf7e41e5ca9769a52ae8331f94dc6663f202f1067fd"
+          },
+          "answer": "התווית הנכונה שלוש עשרה."
+        },
+        {
+          "label": "ג",
+          "text": "הציעו בדיקת סכום המתאימה לתווית המתוקנת ומצאו את השטח שאינו צבוע.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q3_head.svg",
+            "sha256": "f70579f2ff756b241fcf9cf7e41e5ca9769a52ae8331f94dc6663f202f1067fd"
+          },
+          "answer": "השטח שאינו צבוע שלושים ותשע; יחד חמישים ושתיים."
+        },
+        {
+          "label": "ד",
+          "text": "האם הטענה שחצי מן השטח אינו צבוע נעשית נכונה אחרי התיקון? הסבירו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q3_head.svg",
+            "sha256": "f70579f2ff756b241fcf9cf7e41e5ca9769a52ae8331f94dc6663f202f1067fd"
+          },
+          "answer": "לא; החלק שאינו צבוע הוא שלושה רבעים."
+        }
+      ]
+    },
+    "4": {
+      "id": "0da9007ec11b46e1a600689e8e91d880:4",
+      "q": 4,
+      "grade": 8,
+      "topic": "יחס שטחים",
+      "levelLabel": "רמה ב׳",
+      "text": "$△DEF$ דומה ל־$△ABC$. שטח הראשון $△ABC$ הוא $10$ ושטח השני $250$.",
+      "example": {
+        "title": "דוגמה לפעולה ההפוכה",
+        "lines": [
+          "אם יחס השטחים $16$, יחס האורכים הוא השורש החיובי $\\sqrt{16}=4$.",
+          "בדיקה: $4·4=16$. חלוקה בשניים הייתה נותנת $8$, שריבועו אינו היחס הנתון."
+        ]
+      },
+      "figure": {
+        "url": "/noam-ai/native/G8-T47/b/figures/q4_head.svg",
+        "sha256": "c3525b9f024ee766fef623b5e09f3765e3e20914c99273e2d28a72a7e309d9af"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מצאו את יחס השטחים של השני לראשון.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q4_head.svg",
+            "sha256": "c3525b9f024ee766fef623b5e09f3765e3e20914c99273e2d28a72a7e309d9af"
+          },
+          "answer": "היחס עשרים וחמש."
+        },
+        {
+          "label": "ב",
+          "text": "תלמיד חילק את יחס השטחים בשניים. איזו תוצאה שגויה קיבל?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q4_head.svg",
+            "sha256": "c3525b9f024ee766fef623b5e09f3765e3e20914c99273e2d28a72a7e309d9af"
+          },
+          "answer": "הוא קיבל $12.5$."
+        },
+        {
+          "label": "ג",
+          "text": "מצאו את גורם האורך הנכון ובדקו בריבוע.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q4_head.svg",
+            "sha256": "c3525b9f024ee766fef623b5e09f3765e3e20914c99273e2d28a72a7e309d9af"
+          },
+          "answer": "הגורם חמש; ריבועו עשרים וחמש."
+        },
+        {
+          "label": "ד",
+          "text": "אם אורך צלע בראשון ארבע, מה אורך הצלע המתאימה בשני?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q4_head.svg",
+            "sha256": "c3525b9f024ee766fef623b5e09f3765e3e20914c99273e2d28a72a7e309d9af"
+          },
+          "answer": "האורך עשרים."
+        }
+      ]
+    },
+    "5": {
+      "id": "0da9007ec11b46e1a600689e8e91d880:5",
+      "q": 5,
+      "grade": 8,
+      "topic": "יחס שטחים",
+      "levelLabel": "רמה ב׳",
+      "text": "$△ABO$ ו־$△CDO$ דומים לפי הסדר. נתון $AO=7$, $OC=14$, ושטח $△ABO$ הוא $14$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T47/b/figures/q5_head.svg",
+        "sha256": "0ffc56f31e3a7adace4b936a902dbd6e88344b39b98f369276db41c03d7b9cb3"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מצאו את גורם האורך מן הראשון לשני.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q5_head.svg",
+            "sha256": "0ffc56f31e3a7adace4b936a902dbd6e88344b39b98f369276db41c03d7b9cb3"
+          },
+          "answer": "הגורם שניים."
+        },
+        {
+          "label": "ב",
+          "text": "איזה גורם ישמש לחישוב השטח השני?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q5_head.svg",
+            "sha256": "0ffc56f31e3a7adace4b936a902dbd6e88344b39b98f369276db41c03d7b9cb3"
+          },
+          "answer": "ארבע, ריבוע גורם האורך."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את השטח השני.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q5_head.svg",
+            "sha256": "0ffc56f31e3a7adace4b936a902dbd6e88344b39b98f369276db41c03d7b9cb3"
+          },
+          "answer": "השטח $56$."
+        },
+        {
+          "label": "ד",
+          "text": "כתבו את שני הגורמים בכיוון ההפוך.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q5_head.svg",
+            "sha256": "0ffc56f31e3a7adace4b936a902dbd6e88344b39b98f369276db41c03d7b9cb3"
+          },
+          "answer": "גורם האורך חצי וגורם השטח רבע."
+        }
+      ]
+    },
+    "6": {
+      "id": "0da9007ec11b46e1a600689e8e91d880:6",
+      "q": 6,
+      "grade": 8,
+      "topic": "יחס שטחים",
+      "levelLabel": "רמה ב׳",
+      "text": "עליכם להראות ששטח שווה אינו מספיק כדי להסיק שמשולשים דומים.",
+      "items": [
+        {
+          "label": "א",
+          "text": "בחרו שני משולשים ישרי־זווית בעלי שטח שווה ויחסי ניצבים שונים.",
+          "answer": "דוגמה אחת: ניצבים $3,8$ לעומת $4,6$; בשניהם שטח $12$ ויחסי הניצבים שונים. כל זוג משולשים ישרי־זווית עם אותה מכפלת ניצבים ויחסי ניצבים שונים מתאים."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את השטחים כדי לבדוק את הדוגמה.",
+          "answer": "בשני המשולשים שבדוגמה השטח $12$."
+        },
+        {
+          "label": "ג",
+          "text": "הראו באמצעות יחסי הניצבים מדוע המשולשים שבחרתם אינם דומים.",
+          "answer": "בדוגמה יחס הניצב הקצר לארוך הוא $\\f{3}{8}$ לעומת $\\f{2}{3}$, ולכן אין דמיון."
+        },
+        {
+          "label": "ד",
+          "text": "שרטטו את שני המשולשים וסמנו זווית ישרה ואת המידות שבחרתם.",
+          "answer": "דוגמה אחת: משולש ישר־זווית בניצבים $3,8$ ומשולש ישר־זווית בניצבים $4,6$; זווית ישרה בין הניצבים בכל אחד, ושטח $12$ בשניהם."
+        }
+      ]
+    },
+    "7": {
+      "id": "0da9007ec11b46e1a600689e8e91d880:7",
+      "q": 7,
+      "grade": 8,
+      "topic": "יחס שטחים",
+      "levelLabel": "רמה ב׳",
+      "text": "$△DEF$ דומה ל־$△ABC$ בגורם הקטנה $\\f{1}{3}$. ב־$△ABC$ נתון בסיס $BC=12$ וגובה $AH=3$. $DK$ הוא הגובה המתאים.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T47/b/figures/q7_head.svg",
+        "sha256": "b3b79334917cf639866a88d401231a7a575fe9f43eb351f0a24e30e21c5031b0"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את הבסיס והגובה המוקטנים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q7_head.svg",
+            "sha256": "b3b79334917cf639866a88d401231a7a575fe9f43eb351f0a24e30e21c5031b0"
+          },
+          "answer": "הבסיס $4$ והגובה $1$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את השטח לפני ההקטנה ואחריה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q7_head.svg",
+            "sha256": "b3b79334917cf639866a88d401231a7a575fe9f43eb351f0a24e30e21c5031b0"
+          },
+          "answer": "השטחים $18$ ו־$2$."
+        },
+        {
+          "label": "ג",
+          "text": "מהו היחס בין השטח המוקטן למקורי?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q7_head.svg",
+            "sha256": "b3b79334917cf639866a88d401231a7a575fe9f43eb351f0a24e30e21c5031b0"
+          },
+          "answer": "היחס $\\f{1}{9}$."
+        },
+        {
+          "label": "ד",
+          "text": "האם השטח קטן באותו גורם כמו האורך? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q7_head.svg",
+            "sha256": "b3b79334917cf639866a88d401231a7a575fe9f43eb351f0a24e30e21c5031b0"
+          },
+          "answer": "לא; האורך מוכפל בשליש והשטח בתשיעית, בגלל שני הממדים."
+        }
+      ]
+    },
+    "8": {
+      "id": "0da9007ec11b46e1a600689e8e91d880:8",
+      "q": 8,
+      "grade": 8,
+      "topic": "יחס שטחים",
+      "levelLabel": "רמה ב׳",
+      "text": "מדפיסים איור משולש בהגדלה אחידה פי ארבעה באורך. $△ABC$ הוא המקור ו־$△DEF$ הוא ההדפס. שטח ההדפס $96$ סמ״ר.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T47/b/figures/q8_head.svg",
+        "sha256": "4f4bfb11e3e4016d65b54baacf83da083802ad28fed6e85ec2e944da7be6e398"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מהו גורם השטח בהגדלה?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q8_head.svg",
+            "sha256": "4f4bfb11e3e4016d65b54baacf83da083802ad28fed6e85ec2e944da7be6e398"
+          },
+          "answer": "הגורם $16$."
+        },
+        {
+          "label": "ב",
+          "text": "איזו פעולה תחזיר משטח ההדפס לשטח המקור?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q8_head.svg",
+            "sha256": "4f4bfb11e3e4016d65b54baacf83da083802ad28fed6e85ec2e944da7be6e398"
+          },
+          "answer": "חלוקה בשש עשרה."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את שטח המקור ובדקו באמצעות ההדפס.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q8_head.svg",
+            "sha256": "4f4bfb11e3e4016d65b54baacf83da083802ad28fed6e85ec2e944da7be6e398"
+          },
+          "answer": "השטח $6$ סמ״ר; כפל בשש עשרה נותן $96$."
+        },
+        {
+          "label": "ד",
+          "text": "מה היה השטח אילו האיור המקורי הוגדל רק פי שניים באורך?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q8_head.svg",
+            "sha256": "4f4bfb11e3e4016d65b54baacf83da083802ad28fed6e85ec2e944da7be6e398"
+          },
+          "answer": "השטח $24$ סמ״ר."
+        }
+      ]
+    },
+    "9": {
+      "id": "0da9007ec11b46e1a600689e8e91d880:9",
+      "q": 9,
+      "grade": 8,
+      "topic": "יחס שטחים",
+      "levelLabel": "רמה ב׳",
+      "text": "ב־$△ABC$ שני חתכים מקבילים לבסיס. $\\f{AD}{AB}=\\f{1}{2}$, $\\f{AF}{AB}=\\f{1}{4}$, ושטח השלם $144$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T47/b/figures/q9_head.svg",
+        "sha256": "dc729b9e4abe60c6876d1ceabefb3da769435579ec75e6f8e8d0fed6c061ccb9"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את שטח $△ADE$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q9_head.svg",
+            "sha256": "dc729b9e4abe60c6876d1ceabefb3da769435579ec75e6f8e8d0fed6c061ccb9"
+          },
+          "answer": "השטח $36$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את שטח $△AFG$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q9_head.svg",
+            "sha256": "dc729b9e4abe60c6876d1ceabefb3da769435579ec75e6f8e8d0fed6c061ccb9"
+          },
+          "answer": "השטח $9$."
+        },
+        {
+          "label": "ג",
+          "text": "מצאו את גורם האורך מן המשולש הפנימי ביותר למשולש האמצעי. בדקו דרך השטחים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q9_head.svg",
+            "sha256": "dc729b9e4abe60c6876d1ceabefb3da769435579ec75e6f8e8d0fed6c061ccb9"
+          },
+          "answer": "גורם האורך שניים; יחס השטחים ארבע."
+        },
+        {
+          "label": "ד",
+          "text": "התחילו בשטח הפנימי ביותר ושחזרו את שטח השלם.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q9_head.svg",
+            "sha256": "dc729b9e4abe60c6876d1ceabefb3da769435579ec75e6f8e8d0fed6c061ccb9"
+          },
+          "answer": "גורם האורך ארבע, ולכן גורם השטח שש עשרה; $9·16=144$."
+        }
+      ]
+    },
+    "10": {
+      "id": "0da9007ec11b46e1a600689e8e91d880:10",
+      "q": 10,
+      "grade": 8,
+      "topic": "יחס שטחים",
+      "levelLabel": "רמה ב׳",
+      "text": "$△DEF$ ו־$△GHI$ הם העתקים דומים של $△ABC$. שטחי שלושת המשולשים הם $5$, $20$, $80$, בהתאמה. תווית גורם האורך מן המקור לכל העתק נמחקה.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T47/b/figures/q10_head.svg",
+        "sha256": "04565fc5b0a605a398af907803eea69a9ae160fc22b544454042ebbde3d41eb4"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "שחזרו את שתי תוויות גורם האורך.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q10_head.svg",
+            "sha256": "04565fc5b0a605a398af907803eea69a9ae160fc22b544454042ebbde3d41eb4"
+          },
+          "answer": "הגורמים שניים וארבעה."
+        },
+        {
+          "label": "ב",
+          "text": "נכתב שגורם האורך במעבר מ־$△DEF$ ל־$△GHI$ שווה למנת שטחיהם. תקנו והסבירו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q10_head.svg",
+            "sha256": "04565fc5b0a605a398af907803eea69a9ae160fc22b544454042ebbde3d41eb4"
+          },
+          "answer": "הגורם שניים; ארבע הוא גורם השטח בין ההעתקים."
+        },
+        {
+          "label": "ג",
+          "text": "בדקו את יחס שטחי שני ההעתקים גם ישירות וגם מריבוע גורם האורך.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q10_head.svg",
+            "sha256": "04565fc5b0a605a398af907803eea69a9ae160fc22b544454042ebbde3d41eb4"
+          },
+          "answer": "מנת שטח השלישי לשני ארבע, כמו ריבוע שתיים."
+        },
+        {
+          "label": "ד",
+          "text": "האם מותר לחסר את שתי תוויות הגורם כדי לקבל תמיד את גורם המעבר? הסבירו מדוע ההתאמה כאן מקרית.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q10_head.svg",
+            "sha256": "04565fc5b0a605a398af907803eea69a9ae160fc22b544454042ebbde3d41eb4"
+          },
+          "answer": "לא; כאן ההפרש והמנה שווים לשתיים במקרה. למשל בגורמים שניים ושישה ההפרש ארבע והמנה שלוש."
+        }
+      ]
+    },
+    "11": {
+      "id": "0da9007ec11b46e1a600689e8e91d880:11",
+      "q": 11,
+      "grade": 8,
+      "topic": "יחס שטחים",
+      "levelLabel": "רמה ב׳",
+      "text": "ב־$△ABC$ נתון $DE∥BC$, שטח השלם $75$ ושטח הטרפז $DBCE$ הוא $63$. תלמיד נעצר בחיסור הדרוש לשחזור השטח הפנימי.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T47/b/figures/q11_head.svg",
+        "sha256": "475ee20363ff2ac2c40d184e1782924613c61304fc0e507e35fbf27252c3a41c"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "שחזרו את השטח הפנימי מנתוני השלם והטרפז.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q11_head.svg",
+            "sha256": "475ee20363ff2ac2c40d184e1782924613c61304fc0e507e35fbf27252c3a41c"
+          },
+          "answer": "השטח הפנימי $75−63=12$."
+        },
+        {
+          "label": "ב",
+          "text": "התלמיד טען שאי־יכולתו לסיים את החיסור מוכיחה שחסר נתון לדמיון. הסבירו אילו נתונים מספיקים ומה נשאר לחשב.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q11_head.svg",
+            "sha256": "475ee20363ff2ac2c40d184e1782924613c61304fc0e507e35fbf27252c3a41c"
+          },
+          "answer": "המקבילות מוכיחות דמיון, ושטחי השלם והטרפז מספיקים. נותר רק החיסור $75−63=12$, ולאחריו יחס האורכים."
+        },
+        {
+          "label": "ג",
+          "text": "מצאו את יחס האורכים מן הפנימי לשלם ובדקו באמצעות ריבועו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q11_head.svg",
+            "sha256": "475ee20363ff2ac2c40d184e1782924613c61304fc0e507e35fbf27252c3a41c"
+          },
+          "answer": "יחס השטחים $\\f{12}{75}=\\f{4}{25}$, לכן יחס האורכים $\\f{2}{5}$."
+        },
+        {
+          "label": "ד",
+          "text": "מצאו את מנת שטח הטרפז והפנימי, והסבירו מדוע היא אינה יחס דמיון בין הצורות.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q11_head.svg",
+            "sha256": "475ee20363ff2ac2c40d184e1782924613c61304fc0e507e35fbf27252c3a41c"
+          },
+          "answer": "המנה $\\f{21}{4}$; טרפז ומשולש אינם דומים."
+        }
+      ]
+    },
+    "12": {
+      "id": "0da9007ec11b46e1a600689e8e91d880:12",
+      "q": 12,
+      "grade": 8,
+      "topic": "יחס שטחים",
+      "levelLabel": "רמה ב׳",
+      "text": "המשולשים $△ABO$ ו־$△CDO$ דומים. שטחיהם $9$ ו־$36$, בהתאמה. נתון $AO=6$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T47/b/figures/q12_head.svg",
+        "sha256": "22caf73382a1397132a72031b981ab9f8afa332f7b681b98bbb5e0bdc382e2ec"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מהו יחס השטחים של השני לראשון?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q12_head.svg",
+            "sha256": "22caf73382a1397132a72031b981ab9f8afa332f7b681b98bbb5e0bdc382e2ec"
+          },
+          "answer": "היחס ארבע."
+        },
+        {
+          "label": "ב",
+          "text": "מצאו את גורם האורך ובדקו שהוא חיובי.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q12_head.svg",
+            "sha256": "22caf73382a1397132a72031b981ab9f8afa332f7b681b98bbb5e0bdc382e2ec"
+          },
+          "answer": "הגורם שניים; אורכים חיוביים ולכן בוחרים את השורש החיובי."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו $OC$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q12_head.svg",
+            "sha256": "22caf73382a1397132a72031b981ab9f8afa332f7b681b98bbb5e0bdc382e2ec"
+          },
+          "answer": "$OC=6·2=12$."
+        },
+        {
+          "label": "ד",
+          "text": "כיצד ניתן לשחזר את $AO$ מן התוצאה?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q12_head.svg",
+            "sha256": "22caf73382a1397132a72031b981ab9f8afa332f7b681b98bbb5e0bdc382e2ec"
+          },
+          "answer": "מחלקים בשניים ומקבלים שש."
+        }
+      ]
+    },
+    "13": {
+      "id": "0da9007ec11b46e1a600689e8e91d880:13",
+      "q": 13,
+      "grade": 8,
+      "topic": "יחס שטחים",
+      "levelLabel": "רמה ב׳",
+      "text": "מעצבת יוצרת מדבקה משולשת $△DEF$ הדומה למדבקה הישנה $△ABC$. כל אורך גדל פי שלושה. שטח המדבקה הישנה $12$ סמ״ר.",
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את שטח המדבקה החדשה.",
+          "answer": "השטח $108$ סמ״ר."
+        },
+        {
+          "label": "ב",
+          "text": "מהו גורם ההקטנה באורך אם חוזרים לישנה? ומהו גורם השטח?",
+          "answer": "גורם האורך שליש וגורם השטח תשיעית."
+        },
+        {
+          "label": "ג",
+          "text": "בחרו בסיס וגובה מתאימים לשטח הישן וחשבו את המידות החדשות.",
+          "answer": "דוגמה אחת: בסיס $6$ וגובה $4$ (שטח $12$); בהגדלה בסיס $18$ וגובה $12$. כל בסיס וגובה שמכפלתם $24$ מתאימים."
+        },
+        {
+          "label": "ד",
+          "text": "שרטטו את המדבקות שבחרתם ובדקו בעזרת המידות גם את שטח החדשה.",
+          "answer": "הזוג מסעיף ג: בסיס $6$ וגובה $4$ לעומת בסיס $18$ וגובה $12$. בדיקת שטח החדשה: $\\f{18·12}{2}=108$ סמ״ר, כמו $12·9$."
+        }
+      ]
+    },
+    "14": {
+      "id": "0da9007ec11b46e1a600689e8e91d880:14",
+      "q": 14,
+      "grade": 8,
+      "topic": "יחס שטחים",
+      "levelLabel": "רמה ב׳",
+      "text": "הטבלה מתארת העתקים דומים של אותו משולש. $k$ הוא יחס אורך ההעתק לאורך המקור. האיור מדגים אחד מן ההעתקים בלבד.",
+      "table": {
+        "head": [
+          "גודל",
+          "הקטנה",
+          "ללא שינוי",
+          "הגדלה"
+        ],
+        "rows": [
+          [
+            "גורם אורך $k$",
+            "$\\f{1}{2}$",
+            "$1$",
+            "$3$"
+          ],
+          [
+            "גורם שטח",
+            "______",
+            "______",
+            "______"
+          ]
+        ]
+      },
+      "figure": {
+        "url": "/noam-ai/native/G8-T47/b/figures/q14_head.svg",
+        "sha256": "be7ffaf11e484a088a6d4cd5e8f03fedc08f255300d6d961474444609f26ad92"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "השלימו את גורם השטח בכל עמודה בטבלה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q14_head.svg",
+            "sha256": "be7ffaf11e484a088a6d4cd5e8f03fedc08f255300d6d961474444609f26ad92"
+          },
+          "answer": "לפי הסדר גורמי השטח $\\f{1}{4}$, $1$, $9$."
+        },
+        {
+          "label": "ב",
+          "text": "נסחו כלל קלט־פלט המקשר את שתי השורות.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q14_head.svg",
+            "sha256": "be7ffaf11e484a088a6d4cd5e8f03fedc08f255300d6d961474444609f26ad92"
+          },
+          "answer": "לכל קלט חיובי $k$, הפלט הוא $k^2$."
+        },
+        {
+          "label": "ג",
+          "text": "באיזו עמודה השטח קטן מן המקור ובאיזו גדול ממנו?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q14_head.svg",
+            "sha256": "be7ffaf11e484a088a6d4cd5e8f03fedc08f255300d6d961474444609f26ad92"
+          },
+          "answer": "בקלט חצי השטח קטן; בקלט שלוש הוא גדול; בקלט אחד נשאר שווה."
+        },
+        {
+          "label": "ד",
+          "text": "האם אותו כלל נותן את גורם ההיקף? נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q14_head.svg",
+            "sha256": "be7ffaf11e484a088a6d4cd5e8f03fedc08f255300d6d961474444609f26ad92"
+          },
+          "answer": "לא; היקף משתנה בגורם $k$ עצמו, כסכום אורכים."
+        }
+      ]
+    },
+    "15": {
+      "id": "0da9007ec11b46e1a600689e8e91d880:15",
+      "q": 15,
+      "grade": 8,
+      "topic": "יחס שטחים",
+      "levelLabel": "רמה ב׳",
+      "text": "$△DEF$ דומה ל־$△ABC$ בגורם אורך שלושה. הבסיס והגובה בראשון הם $BC=5$, $AH=4$, ו־$DK$ הגובה המתאים בשני.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T47/b/figures/q15_head.svg",
+        "sha256": "02ccb08f2ee453d75051cc2e77763aec159bf20775f076538e4d3b73e5ee02c5"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את שטח המקור.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q15_head.svg",
+            "sha256": "02ccb08f2ee453d75051cc2e77763aec159bf20775f076538e4d3b73e5ee02c5"
+          },
+          "answer": "השטח $10$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את שטח ההעתק.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q15_head.svg",
+            "sha256": "02ccb08f2ee453d75051cc2e77763aec159bf20775f076538e4d3b73e5ee02c5"
+          },
+          "answer": "השטח $90$."
+        },
+        {
+          "label": "ג",
+          "text": "מי שהגדיל רק את הבסיס קיבל תוצאה אחרת. חשבו אותה.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q15_head.svg",
+            "sha256": "02ccb08f2ee453d75051cc2e77763aec159bf20775f076538e4d3b73e5ee02c5"
+          },
+          "answer": "התוצאה השגויה $30$."
+        },
+        {
+          "label": "ד",
+          "text": "זהו את הממד שנשכח והסבירו כיצד לתקן.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q15_head.svg",
+            "sha256": "02ccb08f2ee453d75051cc2e77763aec159bf20775f076538e4d3b73e5ee02c5"
+          },
+          "answer": "גם הגובה צריך לגדול פי שלושה; לכן כופלים את התוצאה השגויה בעוד שלושה."
+        }
+      ]
+    },
+    "16": {
+      "id": "0da9007ec11b46e1a600689e8e91d880:16",
+      "q": 16,
+      "grade": 8,
+      "topic": "יחס שטחים",
+      "levelLabel": "רמה ב׳",
+      "text": "ב־$△ABC$ שני חתכים מקבילים לבסיס: $\\f{AD}{AB}=\\f{2}{3}$ ו־$\\f{AF}{AB}=\\f{1}{3}$. שטח המשולש השלם $72$.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T47/b/figures/q16_head.svg",
+        "sha256": "9d185287e73aa4c3e93b2a8b1f476d832af93401e409f79755868192513a183f"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את שטחי $△ADE$ ו־$△AFG$.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q16_head.svg",
+            "sha256": "9d185287e73aa4c3e93b2a8b1f476d832af93401e409f79755868192513a183f"
+          },
+          "answer": "השטחים $32$ ו־$8$."
+        },
+        {
+          "label": "ב",
+          "text": "מהו יחס האורכים בין הפנימי ביותר לאמצעי?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q16_head.svg",
+            "sha256": "9d185287e73aa4c3e93b2a8b1f476d832af93401e409f79755868192513a183f"
+          },
+          "answer": "היחס חצי."
+        },
+        {
+          "label": "ג",
+          "text": "בדקו את יחס השטחים ביניהם בעזרת תוצאותיכם.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q16_head.svg",
+            "sha256": "9d185287e73aa4c3e93b2a8b1f476d832af93401e409f79755868192513a183f"
+          },
+          "answer": "יחס השטחים רבע, כריבוע יחס האורכים."
+        },
+        {
+          "label": "ד",
+          "text": "חשבו את השטח שבין שני החתכים, ובדקו שאינו מחצית השטח האמצעי.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q16_head.svg",
+            "sha256": "9d185287e73aa4c3e93b2a8b1f476d832af93401e409f79755868192513a183f"
+          },
+          "answer": "השטח $24$, שהם שלושה רבעים מן השטח האמצעי."
+        }
+      ]
+    },
+    "17": {
+      "id": "0da9007ec11b46e1a600689e8e91d880:17",
+      "q": 17,
+      "grade": 8,
+      "topic": "יחס שטחים",
+      "levelLabel": "רמה ב׳",
+      "text": "$△ABO$ הוא משולש ישר־זווית שצלעותיו $3,4,5$. $△CDO$ דומה לו וכל צלע בו ארוכה פי שלושה.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T47/b/figures/q17_head.svg",
+        "sha256": "eda6d35e666b014bb5657813d528df2c5e58f1fe43cd9a6ece8d589c7929569a"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את היקף המשולש הראשון ואת שטחו.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q17_head.svg",
+            "sha256": "eda6d35e666b014bb5657813d528df2c5e58f1fe43cd9a6ece8d589c7929569a"
+          },
+          "answer": "ההיקף $12$ והשטח $6$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את היקף המשולש השני.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q17_head.svg",
+            "sha256": "eda6d35e666b014bb5657813d528df2c5e58f1fe43cd9a6ece8d589c7929569a"
+          },
+          "answer": "ההיקף $36$."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את שטח המשולש השני.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q17_head.svg",
+            "sha256": "eda6d35e666b014bb5657813d528df2c5e58f1fe43cd9a6ece8d589c7929569a"
+          },
+          "answer": "השטח $54$."
+        },
+        {
+          "label": "ד",
+          "text": "תלמיד כפל גם את ההיקף בתשעה. הסבירו את הטעות.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q17_head.svg",
+            "sha256": "eda6d35e666b014bb5657813d528df2c5e58f1fe43cd9a6ece8d589c7929569a"
+          },
+          "answer": "תשעה הוא גורם שטח; היקף הוא סכום צלעות ולכן מוכפל בשלושה."
+        }
+      ]
+    },
+    "18": {
+      "id": "0da9007ec11b46e1a600689e8e91d880:18",
+      "q": 18,
+      "grade": 8,
+      "topic": "יחס שטחים",
+      "levelLabel": "רמה ב׳",
+      "text": "בתכנית נראית פינת משחק משולשת. קנה המידה הוא $\\f{1}{30}$. שטח הפינה בתכנית $5$ סמ״ר. אין למדוד את האיור המודפס.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T47/b/figures/q18_head.svg",
+        "sha256": "ff00a5847078b28d4823533d0aa76b415ef3e03d30f61f0f8c4b12813ff276f5"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "מהו גורם האורך מתכנית למציאות?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q18_head.svg",
+            "sha256": "ff00a5847078b28d4823533d0aa76b415ef3e03d30f61f0f8c4b12813ff276f5"
+          },
+          "answer": "הגורם שלושים."
+        },
+        {
+          "label": "ב",
+          "text": "מהו גורם השטח? הסבירו מדוע אינו שלושים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q18_head.svg",
+            "sha256": "ff00a5847078b28d4823533d0aa76b415ef3e03d30f61f0f8c4b12813ff276f5"
+          },
+          "answer": "הגורם תשע מאות, משום ששני ממדים מוכפלים בשלושים."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את שטח הפינה במציאות בסמ״ר.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q18_head.svg",
+            "sha256": "ff00a5847078b28d4823533d0aa76b415ef3e03d30f61f0f8c4b12813ff276f5"
+          },
+          "answer": "השטח $4500$ סמ״ר."
+        },
+        {
+          "label": "ד",
+          "text": "תכנית נוספת באותו קנה מידה מציגה פינה ששטחה במציאות $1800$ סמ״ר. מה שטחה בתכנית?",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q18_head.svg",
+            "sha256": "ff00a5847078b28d4823533d0aa76b415ef3e03d30f61f0f8c4b12813ff276f5"
+          },
+          "answer": "השטח $2$ סמ״ר, לאחר חלוקה בתשע מאות."
+        }
+      ]
+    },
+    "19": {
+      "id": "0da9007ec11b46e1a600689e8e91d880:19",
+      "q": 19,
+      "grade": 8,
+      "topic": "יחס שטחים",
+      "levelLabel": "רמה ב׳",
+      "text": "ב־$△ABC$ נתון $DE∥BC$, $\\f{AD}{AB}=\\f{3}{4}$ ושטח השלם $80$. בדו״ח צביעה רשום שהאזור הצבוע תופס $\\f{7}{16}$ מן השלם, אך לא נרשם איזה אזור נצבע.",
+      "figure": {
+        "url": "/noam-ai/native/G8-T47/b/figures/q19_head.svg",
+        "sha256": "b28825fbb7c51716d0ed44459efcec700e9853c687ce0dc42d16d6af394018f1"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "זהו אם נצבע המשולש הפנימי או הטרפז. נמקו באמצעות ריבוע יחס האורכים.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q19_head.svg",
+            "sha256": "b28825fbb7c51716d0ed44459efcec700e9853c687ce0dc42d16d6af394018f1"
+          },
+          "answer": "נצבע הטרפז, כי הפנימי תופס $\\f{9}{16}$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את השטח הצבוע ובדקו את הדו״ח.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q19_head.svg",
+            "sha256": "b28825fbb7c51716d0ed44459efcec700e9853c687ce0dc42d16d6af394018f1"
+          },
+          "answer": "השטח $35$, ומנתו בשמונים היא $\\f{7}{16}$."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את השטח הלא צבוע ואת מנת הצבוע ללא צבוע.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q19_head.svg",
+            "sha256": "b28825fbb7c51716d0ed44459efcec700e9853c687ce0dc42d16d6af394018f1"
+          },
+          "answer": "הלא צבוע $45$, והמנה $\\f{7}{9}$."
+        },
+        {
+          "label": "ד",
+          "text": "מישהו החליף בדו״ח רק את המכנה לשטח הלא צבוע, והשאיר את המנה $\\f{7}{16}$. הסבירו מה צריך לתקן.",
+          "figure": {
+            "url": "/noam-ai/native/G8-T47/b/figures/q19_head.svg",
+            "sha256": "b28825fbb7c51716d0ed44459efcec700e9853c687ce0dc42d16d6af394018f1"
+          },
+          "answer": "צריך לשנות את המנה ל־$\\f{7}{9}$; המכנה הישן היה כל השטח, והחדש רק הפנימי."
+        }
+      ]
+    },
+    "20": {
+      "id": "0da9007ec11b46e1a600689e8e91d880:20",
+      "q": 20,
+      "grade": 8,
+      "topic": "יחס שטחים",
+      "levelLabel": "רמה ב׳",
+      "text": "בחרו משולש $△ABC$ בעל בסיס $8$ וגובה $6$. בנו משולש $△DEF$ שהוא הקטנה דומה שלו בגורם חצי.",
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את שטח המקור.",
+          "answer": "השטח $24$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו בסיס וגובה להקטנה הדומה.",
+          "answer": "הבסיס $4$ והגובה $3$."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את השטח המוקטן ובדקו את יחס השטחים.",
+          "answer": "השטח $6$, רבע מן המקור."
+        },
+        {
+          "label": "ד",
+          "text": "אילו רק הגובה הוקטן לחצי, מה היה השטח? מדוע אין זו אותה הקטנה?",
+          "answer": "השטח היה $12$; הבסיס לא השתנה ולכן אין הקטנה אחידה."
+        },
+        {
+          "label": "ה",
+          "text": "שרטטו מקור, הקטנה דומה, ומשולש שבו רק הגובה הוקטן. סמנו את ההבדלים.",
+          "answer": "$△ABC$ בבסיס $8$ ובגובה $6$ (שטח $24$); הקטנה דומה בבסיס $4$ ובגובה $3$ (שטח $6$, רבע מן המקור); משולש שרק גובהו הוקטן בבסיס $8$ ובגובה $3$ (שטח $12$, חצי מן המקור). ההבדל: בהקטנה דומה שני הממדים קטנים פי $2$, ובמשולש השלישי רק אחד."
+        }
+      ]
+    }
+  }
+}

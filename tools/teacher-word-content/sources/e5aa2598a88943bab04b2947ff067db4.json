@@ -1,0 +1,574 @@
+{
+  "sourceSha256": "e6e9c6adf6680b7494fa83f0432e6a87f8816db62639449c74fb5c0ac68a2308",
+  "answerSourceSha256": "ad76860fae13dbed09974639729737ebb4b382c534ebfcabfefad500f59ebad4",
+  "nativeSha256": "9d3667491a031aa2c702b82c7f96e476b2cf603b7c4ee0c1da52d320de94622a",
+  "questions": {
+    "1": {
+      "id": "e5aa2598a88943bab04b2947ff067db4:1",
+      "q": 1,
+      "grade": 9,
+      "topic": "משפט פיתגורס",
+      "levelLabel": "רמה א׳",
+      "text": "בשרטוט נתון $△ABC$ ישר־זווית. אורכי הצלעות הנתונות נמדדים ביחידות אורך. נתון $AB = 11$;  נתון $AC = 7$; ",
+      "figure": {
+        "url": "/noam-ai/native/G9-T35/a/figures/q1_head.svg",
+        "sha256": "b9152fda12e1fb902eca2e3f30550db1dc3e4a612ec7dbf49a9cda4ffb10e178"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "ציינו את היתר ואת שני הניצבים, ואת הנתון המצדיק שימוש במשפט פיתגורס.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T35/a/figures/q1_head.svg",
+            "sha256": "b9152fda12e1fb902eca2e3f30550db1dc3e4a612ec7dbf49a9cda4ffb10e178"
+          },
+          "answer": "היתר $BC$; הניצבים $AB$ ו־$AC$; הזווית $BAC$ ישרה."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את אורך היתר. כתבו תשובה מדויקת.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T35/a/figures/q1_head.svg",
+            "sha256": "b9152fda12e1fb902eca2e3f30550db1dc3e4a612ec7dbf49a9cda4ffb10e178"
+          },
+          "answer": "$BC = \\sqrt{170}$ יחידות אורך, כי $7 · 7 + 11 · 11 = 170$."
+        },
+        {
+          "label": "ג",
+          "text": "בלי להמיר לשבר עשרוני, קבעו אם היתר ארוך מקטע שאורכו 13 יחידות אורך. נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T35/a/figures/q1_head.svg",
+            "sha256": "b9152fda12e1fb902eca2e3f30550db1dc3e4a612ec7dbf49a9cda4ffb10e178"
+          },
+          "answer": "כן; היתר $BC = \\sqrt{170}$ ארוך מ־13 יחידות אורך, כי $170 > 13 · 13 = 169$ ושני האורכים חיוביים."
+        }
+      ]
+    },
+    "2": {
+      "id": "e5aa2598a88943bab04b2947ff067db4:2",
+      "q": 2,
+      "grade": 9,
+      "topic": "משפט פיתגורס",
+      "levelLabel": "רמה א׳",
+      "text": "ABCD הוא מלבן. האלכסון AC מצויר. מידות המלבן במטרים. נתון $AB = 14$;  נתון $BC = 9$; ",
+      "figure": {
+        "url": "/noam-ai/native/G9-T35/a/figures/q2_head.svg",
+        "sha256": "bc7413bd2c67c6f5440891dc5c88e50e2ccf6cfe5f22f308dd4e884a9dfe6dfd"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את אורך האלכסון.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T35/a/figures/q2_head.svg",
+            "sha256": "bc7413bd2c67c6f5440891dc5c88e50e2ccf6cfe5f22f308dd4e884a9dfe6dfd"
+          },
+          "answer": "$AC = \\sqrt{277}$ מ׳, בקירוב $16.6$ מ׳."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את היקף $△ABC$. תנו ערך מדויק וגם קירוב לעשירית מטר.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T35/a/figures/q2_head.svg",
+            "sha256": "bc7413bd2c67c6f5440891dc5c88e50e2ccf6cfe5f22f308dd4e884a9dfe6dfd"
+          },
+          "answer": "$23 + \\sqrt{277}$ מ׳, בקירוב $39.6$ מ׳."
+        },
+        {
+          "label": "ג",
+          "text": "תלמיד כלל את הצלע AD בחישוב היקף $△ABC$. הסבירו את טעותו וציינו אילו קטעים שייכים להיקף המבוקש.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T35/a/figures/q2_head.svg",
+            "sha256": "bc7413bd2c67c6f5440891dc5c88e50e2ccf6cfe5f22f308dd4e884a9dfe6dfd"
+          },
+          "answer": "$AD$ אינה צלע של $△ABC$; ההיקף כולל רק $AB$, $BC$, $AC$."
+        }
+      ]
+    },
+    "3": {
+      "id": "e5aa2598a88943bab04b2947ff067db4:3",
+      "q": 3,
+      "grade": 9,
+      "topic": "משפט פיתגורס",
+      "levelLabel": "רמה א׳",
+      "text": "ב־$△ABC$ שווה־השוקיים מתקיים AB = AC. הקטע AH הוא גובה לבסיס BC. כל האורכים בסנטימטרים. נתון $AB = 15$;  נתון $BC = 18$; ",
+      "figure": {
+        "url": "/noam-ai/native/G9-T35/a/figures/q3_head.svg",
+        "sha256": "1f794f486775117bcfc878d8e044249ba41968f10b7bcf1cfd9d420443aecc41"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את היקף $△ABC$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T35/a/figures/q3_head.svg",
+            "sha256": "1f794f486775117bcfc878d8e044249ba41968f10b7bcf1cfd9d420443aecc41"
+          },
+          "answer": "$48$ ס״מ; $15 + 15 + 18$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את אורך AH והסבירו מדוע משתמשים במחצית BC.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T35/a/figures/q3_head.svg",
+            "sha256": "1f794f486775117bcfc878d8e044249ba41968f10b7bcf1cfd9d420443aecc41"
+          },
+          "answer": "$AH = 12$ ס״מ; גובה לבסיס במשולש שווה־שוקיים הוא גם תיכון, ולכן $BH = 9$ ו־$AH · AH = 15 · 15 − 9 · 9$."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את שטח $△ABC$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T35/a/figures/q3_head.svg",
+            "sha256": "1f794f486775117bcfc878d8e044249ba41968f10b7bcf1cfd9d420443aecc41"
+          },
+          "answer": "$108$ סמ״ר; $18 · 12$ חלקי $2$."
+        }
+      ]
+    },
+    "4": {
+      "id": "e5aa2598a88943bab04b2947ff067db4:4",
+      "q": 4,
+      "grade": 9,
+      "topic": "משפט פיתגורס",
+      "levelLabel": "רמה א׳",
+      "text": "הנקודות P ו־Q מסומנות ברשת. כל משבצת מייצגת יחידת אורך אחת בכל כיוון.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T35/a/figures/q4_head.svg",
+        "sha256": "b38b956ffaf993aa711a23d53664fc695cd9ad0adab8ae85c661cf7cc3a5c79c"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "קראו מהגרף וכתבו את שיעורי P ו־Q.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T35/a/figures/q4_head.svg",
+            "sha256": "b38b956ffaf993aa711a23d53664fc695cd9ad0adab8ae85c661cf7cc3a5c79c"
+          },
+          "answer": "$P(−3, 2)$; $Q(4, 5)$."
+        },
+        {
+          "label": "ב",
+          "text": "נסחו קשר פיתגורס לחישוב המרחק PQ, באמצעות המרחק האופקי והמרחק האנכי שקראתם.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T35/a/figures/q4_head.svg",
+            "sha256": "b38b956ffaf993aa711a23d53664fc695cd9ad0adab8ae85c661cf7cc3a5c79c"
+          },
+          "answer": "$PQ · PQ = 7 · 7 + 3 · 3$, כאשר $7$ הוא המרחק האופקי בין $P$ ל־$Q$ ו־$3$ הוא המרחק האנכי."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את המרחק PQ.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T35/a/figures/q4_head.svg",
+            "sha256": "b38b956ffaf993aa711a23d53664fc695cd9ad0adab8ae85c661cf7cc3a5c79c"
+          },
+          "answer": "$PQ = \\sqrt{58}$ יחידות אורך."
+        }
+      ]
+    },
+    "5": {
+      "id": "e5aa2598a88943bab04b2947ff067db4:5",
+      "q": 5,
+      "grade": 9,
+      "topic": "משפט פיתגורס",
+      "levelLabel": "רמה א׳",
+      "text": "רחבת הכניסה ABCD היא מלבן. הצלע AB באורך 16 מטרים והצלע BC באורך 7 מטרים. המסלול הישר הוא האלכסון AC.",
+      "items": [
+        {
+          "label": "א",
+          "text": "שרטטו את המלבן ABCD ואת האלכסון AC. סמנו את המידות ואת הזווית הישרה המתאימה וציינו מדוע AC הוא יתר.",
+          "answer": "קבלה: מלבן $ABCD$ עם $AB = 16$ מ׳ ו־$BC = 7$ מ׳, והאלכסון $AC$. הזווית $∠ABC = 90°$, ו־$AC$ מול הזווית הישרה, ולכן $AC$ הוא היתר של $△ABC$ (הצלע הארוכה בו)."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את אורך המסלול. כתבו ערך מדויק וקירוב לעשירית מטר.",
+          "answer": "$\\sqrt{305}$ מ׳, בקירוב $17.5$ מ׳."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את שטח המשולש שהמסלול יוצר עם שתי צלעות הרחבה.",
+          "answer": "$56$ מ״ר; $7 · 16$ חלקי $2$."
+        }
+      ]
+    },
+    "6": {
+      "id": "e5aa2598a88943bab04b2947ff067db4:6",
+      "q": 6,
+      "grade": 9,
+      "topic": "משפט פיתגורס",
+      "levelLabel": "רמה א׳",
+      "text": "ABCD הוא טרפז ישר־זווית, AB מקביל ל־DC ו־AD מאונך לשניהם. המידות ביחידות אורך. נתון $AB = 21$;  נתון $AD = 5$;  נתון $CD = 9$; ",
+      "figure": {
+        "url": "/noam-ai/native/G9-T35/a/figures/q6_head.svg",
+        "sha256": "74269f140a9e463b52df599e21f75eae8869ff25543733923d34c2f3472c6f8d"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "כתבו קשר פיתגורס למציאת השוק BC באמצעות שמות הצלעות הנתונות, לפני הצבת אורכים. הסבירו מה מייצגים שני הניצבים.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T35/a/figures/q6_head.svg",
+            "sha256": "74269f140a9e463b52df599e21f75eae8869ff25543733923d34c2f3472c6f8d"
+          },
+          "answer": "$BC · BC = AD · AD + (AB − DC) · (AB − DC)$; הניצבים הם הגובה והפרש הבסיסים."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את אורך השוק BC.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T35/a/figures/q6_head.svg",
+            "sha256": "74269f140a9e463b52df599e21f75eae8869ff25543733923d34c2f3472c6f8d"
+          },
+          "answer": "$13$ יחידות אורך."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את היקף הטרפז.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T35/a/figures/q6_head.svg",
+            "sha256": "74269f140a9e463b52df599e21f75eae8869ff25543733923d34c2f3472c6f8d"
+          },
+          "answer": "$48$ יחידות אורך; $21 + 9 + 5 + 13$."
+        }
+      ]
+    },
+    "7": {
+      "id": "e5aa2598a88943bab04b2947ff067db4:7",
+      "q": 7,
+      "grade": 9,
+      "topic": "משפט פיתגורס",
+      "levelLabel": "רמה א׳",
+      "text": "ABCDEF הוא מצולע קעור שכל צלעותיו אופקיות או אנכיות. הקטעים AB ו־CD אופקיים. המידות בסנטימטרים. נתון $AB = 17$;  נתון $AF = 13$;  נתון $BC = 8$;  נתון $CD = 6$; ",
+      "figure": {
+        "url": "/noam-ai/native/G9-T35/a/figures/q7_head.svg",
+        "sha256": "f1153793adbbcd1bb6d6fe91ae7dca675b94ed4437cb9b00fe7570908fcfde3f"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את שטח המצולע. הציגו פירוק לשני מלבנים או חיסור מלבן מן המעטפת.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T35/a/figures/q7_head.svg",
+            "sha256": "f1153793adbbcd1bb6d6fe91ae7dca675b94ed4437cb9b00fe7570908fcfde3f"
+          },
+          "answer": "$191$ סמ״ר; גובה המגרעת הוא $13 − 8 = 5$, ולכן $17 · 13 − 6 · 5 = 191$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את אורך הקטע BD בלי להשתמש באלכסון של מלבן המעטפת.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T35/a/figures/q7_head.svg",
+            "sha256": "f1153793adbbcd1bb6d6fe91ae7dca675b94ed4437cb9b00fe7570908fcfde3f"
+          },
+          "answer": "$BD = 10$ ס״מ; ההפרשים המקומיים הם $6$ ו־$8$."
+        },
+        {
+          "label": "ג",
+          "text": "הסבירו מדוע האורכים AB ו־AF אינם שני הניצבים הדרושים לחישוב BD.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T35/a/figures/q7_head.svg",
+            "sha256": "f1153793adbbcd1bb6d6fe91ae7dca675b94ed4437cb9b00fe7570908fcfde3f"
+          },
+          "answer": "$AB$ ו־$AF$ הם צלעות המלבן המקיף ולא ניצבי משולש שהיתרו $BD$. ל־$BD$ הניצבים הם $BC = 8$ ו־$CD = 6$ במשולש $△BCD$ הישר־זווית ב־$C$."
+        }
+      ]
+    },
+    "8": {
+      "id": "e5aa2598a88943bab04b2947ff067db4:8",
+      "q": 8,
+      "grade": 9,
+      "topic": "משפט פיתגורס",
+      "levelLabel": "רמה א׳",
+      "text": "ABCD הוא ריבוע והאלכסון AC מצויר. אורכי הקטעים ביחידות אורך. נסמן את צלעו הכללית של ריבוע באות $s$ ואת אלכסונו באות $d$, כאשר $s > 0$. נתון $AB = 5$; ",
+      "figure": {
+        "url": "/noam-ai/native/G9-T35/a/figures/q8_head.svg",
+        "sha256": "a95b1601d85813a21734801e7ddbbfac5fe7c77136699ad911e2d46d8f5f1b98"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "נסחו קשר פיתגורס בין $d$ ל־$s$. מצאו ממנו את יחס האלכסון לצלע והסבירו מדוע החלפת גודל הריבוע שומרת על היחס.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T35/a/figures/q8_head.svg",
+            "sha256": "a95b1601d85813a21734801e7ddbbfac5fe7c77136699ad911e2d46d8f5f1b98"
+          },
+          "answer": "$d · d = s · s + s · s = 2 · s · s$, לכן $d = s\\sqrt{2}$ והיחס $\\f{d}{s} = \\sqrt{2}$. הגדלת הריבוע משנה את $s$ ואת $d$ באותו גורם ($s$ מצטמצם), ולכן היחס נשמר."
+        },
+        {
+          "label": "ב",
+          "text": "שני חוטים נמתחים על הריבוע הנתון: אחד לאורך AC, והאחר לאורך AB ואחריו BC. חשבו בכמה החוט השני ארוך מהראשון; פשטו את השורש.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T35/a/figures/q8_head.svg",
+            "sha256": "a95b1601d85813a21734801e7ddbbfac5fe7c77136699ad911e2d46d8f5f1b98"
+          },
+          "answer": "החוט הראשון באורך $5\\sqrt{2}$ והשני באורך $10$; ההפרש $10 − 5\\sqrt{2}$ יחידות אורך, ובקירוב $2.9$ יחידות אורך."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את שטח משטח הנייר שצורתו $△ABC$. צרפו יחידה מתאימה והבחינו בינה לבין היחס חסר הממד של האלכסון לצלע.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T35/a/figures/q8_head.svg",
+            "sha256": "a95b1601d85813a21734801e7ddbbfac5fe7c77136699ad911e2d46d8f5f1b98"
+          },
+          "answer": "$12.5$ יחידות שטח; היחס בין שני אורכים חסר יחידה, כי יחידות האורך מצטמצמות."
+        }
+      ]
+    },
+    "9": {
+      "id": "e5aa2598a88943bab04b2947ff067db4:9",
+      "q": 9,
+      "grade": 9,
+      "topic": "משפט פיתגורס",
+      "levelLabel": "רמה א׳",
+      "text": "ב־$△KLM$ נתונה זווית ישרה KLM. המידות בסנטימטרים. נתון $KL = 21$;  נתון $KM = 29$; ",
+      "figure": {
+        "url": "/noam-ai/native/G9-T35/a/figures/q9_head.svg",
+        "sha256": "99d3a33c7b15bf06ec0f0b8c1bb347a4e669b1932a6956a8cf4b355f60fc4de6"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את אורך LM.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T35/a/figures/q9_head.svg",
+            "sha256": "99d3a33c7b15bf06ec0f0b8c1bb347a4e669b1932a6956a8cf4b355f60fc4de6"
+          },
+          "answer": "$20$ ס״מ; $LM · LM = 29 · 29 − 21 · 21 = 400$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את שטח $△KLM$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T35/a/figures/q9_head.svg",
+            "sha256": "99d3a33c7b15bf06ec0f0b8c1bb347a4e669b1932a6956a8cf4b355f60fc4de6"
+          },
+          "answer": "$210$ סמ״ר; שני הניצבים מאונכים זה לזה."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את היקף $△KLM$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T35/a/figures/q9_head.svg",
+            "sha256": "99d3a33c7b15bf06ec0f0b8c1bb347a4e669b1932a6956a8cf4b355f60fc4de6"
+          },
+          "answer": "$70$ ס״מ."
+        }
+      ]
+    },
+    "10": {
+      "id": "e5aa2598a88943bab04b2947ff067db4:10",
+      "q": 10,
+      "grade": 9,
+      "topic": "משפט פיתגורס",
+      "levelLabel": "רמה א׳",
+      "text": "חתך התומך הוא $△ABC$ שווה־שוקיים, כאשר $AB = AC = 17$ סנטימטרים והבסיס $BC = 20$ סנטימטרים. H היא הנקודה שבה הגובה מ־A פוגש את BC.",
+      "items": [
+        {
+          "label": "א",
+          "text": "שרטטו את $△ABC$ ואת הגובה AH. חשבו את אורך AH והסבירו את חלוקת הבסיס. הוסיפו קירוב לעשירית סנטימטר.",
+          "answer": "$AH = 3\\sqrt{21}$ ס״מ, בקירוב $13.7$ ס״מ. בשווה־שוקיים הגובה לבסיס הוא גם תיכון, ולכן $BH = HC = 10$ ס״מ ו־$AH · AH = 17 · 17 − 10 · 10 = 189$."
+        },
+        {
+          "label": "ב",
+          "text": "בדקו, בלי קירוב עשרוני, אם הגובה גדול מ־14 סנטימטרים.",
+          "answer": "לא; ריבוע הגובה הוא $189$ ואילו $14 · 14 = 196$."
+        },
+        {
+          "label": "ג",
+          "text": "מתכנן השתמש ב־20 כניצב מול השוק. הסבירו מדוע המשולש שלו אינו משולש העזר הנכון.",
+          "answer": "משולש העזר נוצר מהגובה וממחצית הבסיס; הבסיס השלם אינו צלע שלו."
+        }
+      ]
+    },
+    "11": {
+      "id": "e5aa2598a88943bab04b2947ff067db4:11",
+      "q": 11,
+      "grade": 9,
+      "topic": "משפט פיתגורס",
+      "levelLabel": "רמה א׳",
+      "text": "בגרף מסומנות שתי עמדות R ו־S. יחידת רשת אחת מייצגת מטר אחד.",
+      "figure": {
+        "url": "/noam-ai/native/G9-T35/a/figures/q11_head.svg",
+        "sha256": "146d9b984e28fed5ad82cc9500c8c77d5e211a55de5fb02e1bbd1e63a19f6b89"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "קראו את הגרף ונסחו קשר למציאת המרחק הישר RS. השתמשו בהפרשי השיעורים.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T35/a/figures/q11_head.svg",
+            "sha256": "146d9b984e28fed5ad82cc9500c8c77d5e211a55de5fb02e1bbd1e63a19f6b89"
+          },
+          "answer": "$RS · RS = 6 · 6 + 9 · 9$; המרחק האופקי $2 − (−4)$ והאנכי $7 − (−2)$."
+        },
+        {
+          "label": "ב",
+          "text": "מה אורך הקטע RS? רשמו את השורש המפושט ולצדו את האורך המדווח במדידה לעשירית מטר.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T35/a/figures/q11_head.svg",
+            "sha256": "146d9b984e28fed5ad82cc9500c8c77d5e211a55de5fb02e1bbd1e63a19f6b89"
+          },
+          "answer": "$3\\sqrt{13}$ מ׳, בקירוב $10.8$ מ׳."
+        },
+        {
+          "label": "ג",
+          "text": "מסלול הליכה נע רק במקביל לצירים, מהעמדה R עד S ללא חזרה לאחור. חשבו בכמה הוא ארוך מן המסלול הישר, בדיוק ולעשירית מטר.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T35/a/figures/q11_head.svg",
+            "sha256": "146d9b984e28fed5ad82cc9500c8c77d5e211a55de5fb02e1bbd1e63a19f6b89"
+          },
+          "answer": "$15 − 3\\sqrt{13}$ מ׳, בקירוב $4.2$ מ׳."
+        }
+      ]
+    },
+    "12": {
+      "id": "e5aa2598a88943bab04b2947ff067db4:12",
+      "q": 12,
+      "grade": 9,
+      "topic": "משפט פיתגורס",
+      "levelLabel": "רמה א׳",
+      "text": "בטרפז ישר־זווית EFGH מתקיים EF מקביל ל־HG ו־EH מאונך לבסיסים. המידות במטרים. נתון $EF = 16$;  נתון $EH = 12$;  נתון $GH = 9$; ",
+      "figure": {
+        "url": "/noam-ai/native/G9-T35/a/figures/q12_head.svg",
+        "sha256": "a55bda1c8d125b7636b4832cc999d029ad13a02a55c3359702ecbcaecf028da5"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "חשבו את היקף הטרפז; כללו בחישוב גם את השוק הנטויה.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T35/a/figures/q12_head.svg",
+            "sha256": "a55bda1c8d125b7636b4832cc999d029ad13a02a55c3359702ecbcaecf028da5"
+          },
+          "answer": "$37 + \\sqrt{193}$ מ׳, בקירוב $50.9$ מ׳; שוק נטויה $\\sqrt{193}$ מ׳."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את שטח $△EFH$.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T35/a/figures/q12_head.svg",
+            "sha256": "a55bda1c8d125b7636b4832cc999d029ad13a02a55c3359702ecbcaecf028da5"
+          },
+          "answer": "$96$ מ״ר; הבסיס $EF$ והגובה $EH$ מאונכים."
+        },
+        {
+          "label": "ג",
+          "text": "השוו ללא קירוב עשרוני את אורך השוק FG לאורך הבסיס EF. נמקו.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T35/a/figures/q12_head.svg",
+            "sha256": "a55bda1c8d125b7636b4832cc999d029ad13a02a55c3359702ecbcaecf028da5"
+          },
+          "answer": "השוק קצרה מן הבסיס; $193 < 16 · 16 = 256$."
+        }
+      ]
+    },
+    "13": {
+      "id": "e5aa2598a88943bab04b2947ff067db4:13",
+      "q": 13,
+      "grade": 9,
+      "topic": "משפט פיתגורס",
+      "levelLabel": "רמה א׳",
+      "text": "ב־$△UVW$ הזווית VUW ישרה ושני הניצבים שווים. אורכם 9 יחידות אורך. נתון $UV = 9$; ",
+      "figure": {
+        "url": "/noam-ai/native/G9-T35/a/figures/q13_head.svg",
+        "sha256": "1e9f20c51873525ab024dbbe13171bd0518cc083cb788f7c900a541294ec8687"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "כתבו קשר פיתגורס למציאת VW, והסבירו כיצד משתמשים בשוויון הניצבים.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T35/a/figures/q13_head.svg",
+            "sha256": "1e9f20c51873525ab024dbbe13171bd0518cc083cb788f7c900a541294ec8687"
+          },
+          "answer": "$VW · VW = UV · UV + UW · UW$. כיוון ש־$UW = UV = 9$, מציבים $9$ בשני הניצבים: $VW · VW = 9 · 9 + 9 · 9 = 162$."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את אורך VW בצורה מפושטת.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T35/a/figures/q13_head.svg",
+            "sha256": "1e9f20c51873525ab024dbbe13171bd0518cc083cb788f7c900a541294ec8687"
+          },
+          "answer": "$9\\sqrt{2}$ יחידות אורך."
+        },
+        {
+          "label": "ג",
+          "text": "חשבו את שטח $△UVW$ וציינו את יחידותיו.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T35/a/figures/q13_head.svg",
+            "sha256": "1e9f20c51873525ab024dbbe13171bd0518cc083cb788f7c900a541294ec8687"
+          },
+          "answer": "$40.5$ יחידות שטח; $9 · 9$ חלקי $2$."
+        }
+      ]
+    },
+    "14": {
+      "id": "e5aa2598a88943bab04b2947ff067db4:14",
+      "q": 14,
+      "grade": 9,
+      "topic": "משפט פיתגורס",
+      "levelLabel": "רמה א׳",
+      "text": "JKLM הוא מלבן, N נמצאת על הצלע JK והאלכסון JL מצויר. האורכים בסנטימטרים. נתון $JN = 6$;  נתון $KL = 24$;  נתון $KN = 4$; ",
+      "figure": {
+        "url": "/noam-ai/native/G9-T35/a/figures/q14_head.svg",
+        "sha256": "59765cba968a70503ee5ba906b193d709f8133104acc22dd9078fe0a2f0e0c36"
+      },
+      "items": [
+        {
+          "label": "א",
+          "text": "תלמיד בחר ב־$△JNL$ כדי לחשב את JL במשפט פיתגורס. הסבירו מדוע בחירתו אינה מוצדקת, ציינו משולש מתאים שבו JK הוא ניצב ומצאו את אורכו משני הקטעים.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T35/a/figures/q14_head.svg",
+            "sha256": "59765cba968a70503ee5ba906b193d709f8133104acc22dd9078fe0a2f0e0c36"
+          },
+          "answer": "בחירתו אינה מוצדקת: $∠JNL$ אינה נתונה כישרה (ואכן $NL$ אינו מאונך ל־$JK$), ולכן אי אפשר ליישם בו את משפט פיתגורס. המשולש המתאים הוא $△JKL$ כי $∠JKL = 90°$; $JK = JN + NK = 6 + 4 = 10$ ס״מ."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את היקף המשולש שבחרתם וגם את היקף המלבן JKLM. הסבירו מהו תפקידו של JL בכל אחד משני חישובי ההיקף.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T35/a/figures/q14_head.svg",
+            "sha256": "59765cba968a70503ee5ba906b193d709f8133104acc22dd9078fe0a2f0e0c36"
+          },
+          "answer": "$JL = 26$ ס״מ, לכן היקף $△JKL$ הוא $60$ ס״מ. היקף המלבן $68$ ס״מ; האלכסון הוא צלע המשולש ואינו חלק מגבול המלבן."
+        },
+        {
+          "label": "ג",
+          "text": "מסגרת דקה בנויה מצלעות המשולש שבחרתם. עומד לרשותכם חוט באורך 57 סנטימטרים. האם הוא מספיק להקפת המסגרת? ציינו את אורך החוט החסר או העודף באמצעות התוצאה הקודמת.",
+          "figure": {
+            "url": "/noam-ai/native/G9-T35/a/figures/q14_head.svg",
+            "sha256": "59765cba968a70503ee5ba906b193d709f8133104acc22dd9078fe0a2f0e0c36"
+          },
+          "answer": "החוט אינו מספיק; חסרים $3$ ס״מ, כי $60 − 57 = 3$."
+        }
+      ]
+    },
+    "15": {
+      "id": "e5aa2598a88943bab04b2947ff067db4:15",
+      "q": 15,
+      "grade": 9,
+      "topic": "משפט פיתגורס",
+      "levelLabel": "רמה א׳",
+      "text": "מסגרת ABCDEF בנויה מצלעות אופקיות ואנכיות. A היא הפינה השמאלית התחתונה. AB נמשך ימינה 19 מטרים; BC עולה 4 מטרים; CD נמשך שמאלה 8 מטרים; DE עולה 7 מטרים; EF נמשך שמאלה עד מעל A; FA סוגר את המסגרת.",
+      "items": [
+        {
+          "label": "א",
+          "text": "שרטטו את המסגרת וסמנו את המידות הנתונות. מצאו את אורכי EF ו־FA מתוך תנאי הסגירה.",
+          "answer": "$EF = 11$ מ׳; $FA = 11$ מ׳; סכומי התזוזות בכל כיוון חייבים להתאפס."
+        },
+        {
+          "label": "ב",
+          "text": "חשבו את השטח הכלוא במסגרת.",
+          "answer": "$153$ מ״ר; $19 · 11 − 8 · 7$."
+        },
+        {
+          "label": "ג",
+          "text": "מקטע BD מיועד לכבל. קבעו את אורכו בשורש מפושט. מהו הקירוב לעשירית מטר?",
+          "answer": "$4\\sqrt{5}$ מ׳, בקירוב $8.9$ מ׳; הפרשים מקומיים $8$ ו־$4$."
+        }
+      ]
+    }
+  }
+}

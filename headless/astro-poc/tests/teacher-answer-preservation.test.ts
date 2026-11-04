@@ -102,7 +102,7 @@ describe('teacher answer preservation', () => {
 
   it('uses complete-answer specifications in the actual print pipeline', async () => {
     const pure = printer.slice(printer.indexOf('function isAnswerHeading'), printer.indexOf('function worksheetTitle'));
-    const measured = printer.slice(printer.indexOf('function selectedAnswerCrops'), printer.indexOf('async function paintAllShort'));
+    const measured = printer.slice(printer.indexOf('function answerDocumentSource'), printer.indexOf('async function paintAllShort'));
     const run = new Function('lines', `${pure}
       const sheetTextLines = async () => lines;
       const answerFallbackSlices = () => { throw new Error('Unexpected fallback for readable answer text'); };
