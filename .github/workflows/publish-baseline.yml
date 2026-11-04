@@ -8,6 +8,8 @@ name: publish-baseline
 # Noam approved teacher answer completion, editable RTL Word download and publication.
 # Release a668e478 preserves the live hero opening and adds only #380 + #389.
 # The unrelated unpublished teachers homepage card is intentionally excluded.
+# Noam, 4.11.2026: then publish the homepage hero random from the whole site (#391).
+# Release b109def8 = live a668e478 + the three #391 files only. Teachers card still excluded.
 
 on:
   workflow_dispatch:
@@ -34,7 +36,7 @@ jobs:
       - name: Check out the live branch
         uses: actions/checkout@v4
         with:
-          ref: release/teacher-word-selected-answers-20261104
+          ref: release/hero-site-wide-20261104
           fetch-depth: 0
 
       - name: Set up Node
@@ -47,11 +49,11 @@ jobs:
       - name: Publish baseline
         env:
           WIX_CLI_API_KEY: ${{ secrets.WIX_CLI_API_KEY }}
-          RELEASE_BRANCH: release/teacher-word-selected-answers-20261104
+          RELEASE_BRANCH: release/hero-site-wide-20261104
         run: |
           if [ -z "${WIX_CLI_API_KEY}" ]; then
             echo "WIX_CLI_API_KEY is not set. The baseline was not published."
             exit 1
           fi
-          git fetch origin release/teacher-word-selected-answers-20261104
-          bash tools/release/release.sh "a668e47831f9c2605c42d4508f974da23dfe61f2"
+          git fetch origin release/hero-site-wide-20261104
+          bash tools/release/release.sh "b109def82fec7fbb823d61b600b682e8abff0ed0"
