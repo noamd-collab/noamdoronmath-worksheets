@@ -5,11 +5,9 @@ name: publish-baseline
 # A push of this file to main also releases once, because the token that
 # merges pull requests cannot call the dispatch API (Actions: write).
 # Release script on baseline installs @wix/cli before login (see #275).
-# Noam approved teacher answer completion, editable RTL Word download and publication.
-# Release a668e478 preserves the live hero opening and adds only #380 + #389.
-# The unrelated unpublished teachers homepage card is intentionally excluded.
-# Noam, 4.11.2026: then publish the homepage hero random from the whole site (#391).
-# Release b109def8 = live a668e478 + the three #391 files only. Teachers card still excluded.
+# Noam, 4.11.2026: publish the homepage hero random from the whole site (#391), SHA 45f9038
+# = live daf9708 + the three #391 files. a668e478 (#380 + #389) failed its build (exit 7)
+# and never went live; build that fix on 45f9038 so the hero change is kept.
 
 on:
   workflow_dispatch:
@@ -36,7 +34,7 @@ jobs:
       - name: Check out the live branch
         uses: actions/checkout@v4
         with:
-          ref: release/hero-site-wide-20261104
+          ref: release/hero-random-opening
           fetch-depth: 0
 
       - name: Set up Node
@@ -49,11 +47,11 @@ jobs:
       - name: Publish baseline
         env:
           WIX_CLI_API_KEY: ${{ secrets.WIX_CLI_API_KEY }}
-          RELEASE_BRANCH: release/hero-site-wide-20261104
+          RELEASE_BRANCH: release/hero-random-opening
         run: |
           if [ -z "${WIX_CLI_API_KEY}" ]; then
             echo "WIX_CLI_API_KEY is not set. The baseline was not published."
             exit 1
           fi
-          git fetch origin release/hero-site-wide-20261104
-          bash tools/release/release.sh "b109def82fec7fbb823d61b600b682e8abff0ed0"
+          git fetch origin release/hero-random-opening
+          bash tools/release/release.sh "45f90387de54aaf065fa5ef4ff69e6fda93a505c"
