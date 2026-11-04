@@ -161,9 +161,14 @@ describe('homepage Harmony parity (HEADLESS-MIGRATION-31)', () => {
     assert.match(index, /class="exact-hero-teachers"[^>]*href="\/teachers"/);
     assert.match(index, /id="for-teachers"/);
     assert.match(index, /במיוחד בשבילך!/);
-    for (const role of ['מורה?', 'מורה פרטי?', 'הורה?']) {
-      assert.ok(index.includes(`exact-hero-teachers__role">${role}<`), `card names ${role}`);
+    for (const role of ['מורה', 'מורה פרטי', 'הורה']) {
+      assert.ok(index.includes(`exact-hero-teachers__role">${role}<span class="exact-hero-teachers__q">?</span></span>`), `card names ${role}?`);
     }
+    // Roll call: one role per line, each marked by a highlighter stroke that
+    // stays put when motion is off.
+    assert.match(css, /\.exact-hero-teachers__who\s*\{[^}]*flex-direction:\s*column/);
+    assert.match(css, /exact-teachers-mark/);
+    assert.match(css, /html\[data-nd-motion="off"\] \.exact-hero-teachers__role/);
     assert.ok(index.indexOf('exact-hero-teachers__who') < index.indexOf('exact-hero-teachers__note">במיוחד בשבילך!'),
       'roles come first, then the handwritten note');
     assert.match(index, /בונים דף עבודה משלכם/);
