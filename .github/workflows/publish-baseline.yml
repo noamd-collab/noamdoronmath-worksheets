@@ -5,8 +5,9 @@ name: publish-baseline
 # A push of this file to main also releases once, because the token that
 # merges pull requests cannot call the dispatch API (Actions: write).
 # Release script on baseline installs @wix/cli before login (see #275).
-# Publish the independently tested Ramzi fix only; teacher answer-content release is on hold.
-# Prepared hints stay in Supabase; Flash-only additional questions and reCAPTCHA remain intact.
+# Noam, 4.11.2026: publish only the homepage hero random-opening change (#386) on top of the
+# live 1ff8d35. Teacher answer printing (#380) and the new teachers card stay off the live site.
+# Built from release/hero-random-opening = 1ff8d35 + the two hero files from #386.
 
 on:
   workflow_dispatch:
@@ -33,7 +34,7 @@ jobs:
       - name: Check out the live branch
         uses: actions/checkout@v4
         with:
-          ref: headless/astro-poc-baseline
+          ref: release/hero-random-opening
           fetch-depth: 0
 
       - name: Set up Node
@@ -46,10 +47,11 @@ jobs:
       - name: Publish baseline
         env:
           WIX_CLI_API_KEY: ${{ secrets.WIX_CLI_API_KEY }}
+          RELEASE_BRANCH: release/hero-random-opening
         run: |
           if [ -z "${WIX_CLI_API_KEY}" ]; then
             echo "WIX_CLI_API_KEY is not set. The baseline was not published."
             exit 1
           fi
-          git fetch origin headless/astro-poc-baseline
-          bash tools/release/release.sh "1ff8d3572910831cac8eeff9f2fd40c5c730889f"
+          git fetch origin release/hero-random-opening
+          bash tools/release/release.sh "daf9708eeb78f162d816f38c54fdd6766a53305f"
