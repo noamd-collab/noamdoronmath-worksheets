@@ -1,5 +1,6 @@
 ---
 import ConceptLoop from './ConceptLoop.astro';
+import HeroRandomOpening from './HeroRandomOpening.astro';
 import { HERO_ROTATION } from '../lib/heroRotation';
 /* Keep in sync with SPECS in ../lib/conceptLoops.ts. Default stays triangle for no-JS/SEO.
    The pool is the inventory the grade player still reconciles against.
@@ -35,6 +36,7 @@ if (HERO_ROTATION[0]?.variant !== DEFAULT) throw new Error('Default hero loop mu
     <ConceptLoop variant={DEFAULT} />
   </div>
 </div>
+<HeroRandomOpening />
 <style>
   .hero-loop .concept-loop__svg {
     aspect-ratio: 560 / 340;
