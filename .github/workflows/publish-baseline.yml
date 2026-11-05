@@ -5,11 +5,11 @@ name: publish-baseline
 # A push of this file to main also releases once, because the token that
 # merges pull requests cannot call the dispatch API (Actions: write).
 # Release script on baseline installs @wix/cli before login (see #275).
-# Noam approved teacher print fixes and editable RTL Word publication.
-# 7124a942 preserves live 16a15cb8 and adds #397: omit the badge only on paper.
-# Its tree matches reviewed baseline 0b592019; screen reCAPTCHA stays active.
-# Live Word and selected-answer printing passed all eight acceptance cases.
-# Build future releases on this SHA so previously published changes are retained.
+# Publish only from the canonical branch, headless/astro-poc-baseline;
+# never publish from separate release/* branches.
+# Changes go through PRs and checks, with Noam's approval for the exact SHA.
+# Noam approved 0b59201995aa7359c21b8cd8ccd320d7952a2ba4 only.
+# Its tree is identical to live 7124a9426f226a639db8dae1ea9a70aba207c597.
 
 on:
   workflow_dispatch:
@@ -36,7 +36,7 @@ jobs:
       - name: Check out the live branch
         uses: actions/checkout@v4
         with:
-          ref: release/teacher-word-selected-answers-20261104
+          ref: headless/astro-poc-baseline
           fetch-depth: 0
 
       - name: Set up Node
@@ -49,11 +49,11 @@ jobs:
       - name: Publish baseline
         env:
           WIX_CLI_API_KEY: ${{ secrets.WIX_CLI_API_KEY }}
-          RELEASE_BRANCH: release/teacher-word-selected-answers-20261104
+          RELEASE_BRANCH: headless/astro-poc-baseline
         run: |
           if [ -z "${WIX_CLI_API_KEY}" ]; then
             echo "WIX_CLI_API_KEY is not set. The baseline was not published."
             exit 1
           fi
-          git fetch origin release/teacher-word-selected-answers-20261104
-          bash tools/release/release.sh "7124a9426f226a639db8dae1ea9a70aba207c597"
+          git fetch origin headless/astro-poc-baseline
+          bash tools/release/release.sh "0b59201995aa7359c21b8cd8ccd320d7952a2ba4"
