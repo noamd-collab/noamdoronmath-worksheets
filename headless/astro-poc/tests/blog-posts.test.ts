@@ -56,13 +56,11 @@ describe('M25 blog pilot', () => {
       assert.ok(/BlogPosting/.test(JSON.stringify(post.jsonLd)), slug);
       assert.equal(post.source.liveUrl.includes('amiramnoam.wixsite.com/my-site/post/'), true);
     }
-    const page = readFileSync('src/pages/post/[...slug].astro', 'utf8');
-    assert.match(page, /audioSlug=\{post\.decodedSlug\}/);
+    // Blog narration was dropped (Noam, 5.11.2026): posts render no audio bar and
+    // make no lookup against the old Wix audio endpoint.
     const tpl = readFileSync('src/components/BlogPostPage.astro', 'utf8');
-    assert.match(tpl, /BlogAudioBar/);
-    assert.match(tpl, /<BlogAudioBar slug=\{audioSlug\} \/>/);
-    const bar = readFileSync('src/components/BlogAudioBar.astro', 'utf8');
-    assert.match(bar, /<noam-audio-player/);
+    assert.doesNotMatch(tpl, /BlogAudioBar/);
+    assert.doesNotMatch(tpl, /noam-audio-player|blog-audio-info/);
   });
 
   it('each pilot has title, description, h1, ordered body, author, schema', () => {

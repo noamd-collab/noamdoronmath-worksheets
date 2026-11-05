@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import BlogAudioBar from './BlogAudioBar.astro';
 import BlogSeoTags from './BlogSeoTags.astro';
 import {
   localizeBlogHref,
@@ -13,10 +12,13 @@ import { storedImageDimensions } from '../lib/blogSeo';
 
 interface Props {
   post: BlogPostContent;
-  /** OPEN-07: live post slug; the bar looks up its audio after the page paints. */
+  /**
+   * Kept so callers still compile. Blog narration was dropped (Noam, 5.11.2026):
+   * the old Wix audio endpoint no longer answers, so no player is rendered and
+   * a post view makes no audio lookup.
+   */
   audioSlug?: string;
 }
-const { audioSlug } = Astro.props;
 const post = isolateBlogPostDisplay(Astro.props.post);
 
 const jsonLdScripts = Array.isArray(post.jsonLd) ? post.jsonLd : [];
@@ -406,7 +408,6 @@ const hasRecent = !!(post.recentPosts?.items && post.recentPosts.items.length > 
         </section>
       )
     }
-    {audioSlug && <BlogAudioBar slug={audioSlug} />}
   </main>
 </BaseLayout>
 
