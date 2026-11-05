@@ -1,7 +1,7 @@
 # Production publication guard
 
 The live site still uses the approved canonical SHA
-`0b59201995aa7359c21b8cd8ccd320d7952a2ba4`. This infrastructure change does not
+`254d7b8093de9ebea9c3608effd76428ee43f810`. This infrastructure change does not
 change a page, worksheet, SEO output, the site SHA pin, or the Wix release script.
 
 ## Controller and state
@@ -40,14 +40,14 @@ Coordinate a quiet publication window: no concurrent publication or rerun during
 this one-time operator step. It rechecks the latest run before writing, but a
 manual initializer cannot lock the legacy workflow or outside Wix credentials.
 
-1. Independently confirm that the live site is still `0b59201995aa7359c21b8cd8ccd320d7952a2ba4`
-   and that run `42014575470` is still the latest publication evidence. If a newer
+1. Independently confirm that the live site is still `254d7b8093de9ebea9c3608effd76428ee43f810`
+   and that run `42015656372` is still the latest publication evidence. If a newer
    run exists, stop and establish the actual live SHA; do not reuse stale evidence.
 2. From this reviewed checkout, provide `GITHUB_TOKEN` with deployment-write
    access through the existing authenticated environment, without saving it.
    Set `GITHUB_REPOSITORY=noamd-collab/noamdoronmath-worksheets`,
-   `RELEASE_SHA=0b59201995aa7359c21b8cd8ccd320d7952a2ba4`,
-   `CONFIRMED_LIVE_SHA` to that same SHA, and `CONFIRMED_RUN_ID=42014575470`.
+   `RELEASE_SHA=254d7b8093de9ebea9c3608effd76428ee43f810`,
+   `CONFIRMED_LIVE_SHA` to that same SHA, and `CONFIRMED_RUN_ID=42015656372`.
 3. Run `node .github/scripts/production-release.mjs initialize` to validate without
    writing. After checking its result, run the same command with `--write` to
    record the already confirmed existing publication.
