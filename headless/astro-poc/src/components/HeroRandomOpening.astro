@@ -1,15 +1,20 @@
 ---
 /* Homepage hero (Noam to Copilot, 4.11.2026): open on a random animation from
    the WHOLE site, not only the nine HERO_ROTATION films, and keep playing them
-   in a random order. ExactHeroControls.astro and heroRotation.ts stay unchanged:
-   1. Before the controls boot, the rotation JSON ([data-hero-rotation]) is
-      replaced by a shuffled copy of HERO_SITE_POOL (every grade-hub loop plus
-      the hero films), so the clock and the shuffle button use the whole site.
-   2. Once the controls are ready, the existing shuffle button is pressed once,
-      so the opening animation is random. The triangle has the same 1/n chance
-      as any other loop.
-   The server-rendered triangle stays for no-JS and SEO. With JS it is hidden
-   until the random loop is mounted; a 2.5 s safety net always reveals it. */
+   in a random order. ExactHeroControls.astro and heroRotation.ts stay unchanged.
+
+   5.11.2026: the hero is no longer hidden while the random loop loads. Hiding
+   it (up to 2.5 s) left an empty box on slow phones and delayed the page's
+   largest paint. Now:
+   1. As soon as this script runs, it picks the opening loop (uniform over the
+      whole pool, triangle included) and starts fetching it, so it is usually
+      in the browser cache by the time the controls boot.
+   2. Before the controls boot, the rotation JSON ([data-hero-rotation]) is
+      replaced by a shuffled copy of HERO_SITE_POOL, so the clock and the
+      shuffle button use the whole site.
+   3. When the controls are ready, the existing shuffle button is pressed once
+      for the chosen loop, with a short fade around the swap.
+   The server-rendered triangle stays visible for first paint, no-JS and SEO. */
 import { HERO_SITE_POOL } from '../lib/heroSitePool';
 ---
 <script type="application/json" data-hero-site-pool set:html={JSON.stringify(HERO_SITE_POOL)} />
@@ -20,20 +25,6 @@ import { HERO_SITE_POOL } from '../lib/heroSitePool';
     if (!hero || !host || hero.dataset.randomOpening) return;
     hero.dataset.randomOpening = '1';
 
-    var shown = false;
-    function reveal() {
-      if (shown) return;
-      shown = true;
-      host.style.opacity = '';
-    }
-    host.style.transition = 'opacity .35s ease';
-    host.style.opacity = '0';
-    setTimeout(reveal, 2500);
-
-    function rotationNode() {
-      return document.querySelector('[data-hero-rotation]');
-    }
-
     function readList(node) {
       try {
         var list = JSON.parse((node && node.textContent) || '[]');
@@ -43,37 +34,84 @@ import { HERO_SITE_POOL } from '../lib/heroSitePool';
       }
     }
 
-    function shuffleRotation() {
-      var node = rotationNode();
-      if (!node || node.dataset.shuffled) return;
-      var list = readList(document.querySelector('[data-hero-site-pool]'));
-      if (list.length < 2) list = readList(node);
-      if (!list.length) return;
-      for (var i = list.length - 1; i > 0; i--) {
+    function shuffled(list) {
+      var copy = list.slice();
+      for (var i = copy.length - 1; i > 0; i--) {
         var j = Math.floor(Math.random() * (i + 1));
-        var t = list[i]; list[i] = list[j]; list[j] = t;
+        var t = copy[i]; copy[i] = copy[j]; copy[j] = t;
       }
-      node.textContent = JSON.stringify(list);
-      node.dataset.shuffled = '1';
+      return copy;
     }
 
-    function openRandom() {
+    var DEFAULT = 'triangle';
+    var pool = shuffled(readList(document.querySelector('[data-hero-site-pool]')));
+    var variants = pool.map(function (entry) { return entry && entry.variant; }).filter(Boolean);
+    var chosen = variants.length ? variants[Math.floor(Math.random() * variants.length)] : DEFAULT;
+
+    // Warm the browser cache for the chosen loop now, instead of after boot.
+    if (chosen !== DEFAULT) {
+      try {
+        fetch('/hero-loops/' + encodeURIComponent(chosen), {
+          credentials: 'same-origin',
+          headers: { Accept: 'text/html' },
+        }).catch(function () { /* The controls fetch it again. */ });
+      } catch (e) { /* Optional. */ }
+    }
+
+    var written = null;
+    function shuffleRotation() {
+      var node = document.querySelector('[data-hero-rotation]');
+      if (!node || node.dataset.shuffled) return;
+      var list = pool.length >= 2 ? pool : shuffled(readList(node));
+      if (!list.length) return;
+      node.textContent = JSON.stringify(list);
+      node.dataset.shuffled = '1';
+      written = list.map(function (entry) { return entry && entry.variant; });
+    }
+
+    function fadeIn() {
+      host.style.opacity = '';
+    }
+
+    function openChosen() {
+      if (chosen === DEFAULT) return;
       var tries = 0;
       (function wait() {
         var button = document.querySelector('[data-exact-shuffle]');
         if (!button || hero.dataset.exactControls !== 'ready') {
-          if (++tries < 60) { setTimeout(wait, 50); return; }
-          reveal();
+          if (++tries < 80) setTimeout(wait, 50);
           return;
         }
-        var count = readList(rotationNode()).length;
-        if (count < 2 || Math.random() < 1 / count) { reveal(); return; }
-        button.click();
+        var onScreen = host.querySelector('[data-loop]');
+        var currentVariant = (onScreen && onScreen.getAttribute('data-loop')) || DEFAULT;
+        // The shuffle button picks Math.random() over the rotation minus the
+        // loop on screen. Steer that one pick to the loop chosen (and fetched)
+        // above, then restore Math.random immediately.
+        var candidates = (written || []).filter(function (v) { return v && v !== currentVariant; });
+        var at = candidates.indexOf(chosen);
+        var original = Math.random;
+        if (at >= 0) {
+          Math.random = function () {
+            Math.random = original;
+            return (at + 0.5) / candidates.length;
+          };
+        }
+        host.style.transition = 'opacity .15s ease';
+        host.style.opacity = '0';
+        try {
+          button.click();
+        } finally {
+          Math.random = original;
+        }
         var checks = 0;
         (function settle() {
           var loop = host.querySelector('[data-loop]');
-          var moved = loop && loop.getAttribute('data-loop') !== 'triangle';
-          if ((moved && !button.hasAttribute('aria-busy')) || ++checks > 50) { reveal(); return; }
+          var moved = loop && loop.getAttribute('data-loop') !== currentVariant;
+          if ((moved && !button.hasAttribute('aria-busy')) || ++checks > 30) {
+            host.style.transition = 'opacity .3s ease';
+            fadeIn();
+            return;
+          }
           setTimeout(settle, 50);
         })();
       })();
@@ -87,10 +125,10 @@ import { HERO_SITE_POOL } from '../lib/heroSitePool';
         document.removeEventListener('readystatechange', once);
         shuffleRotation();
       });
-      document.addEventListener('DOMContentLoaded', openRandom, { once: true });
+      document.addEventListener('DOMContentLoaded', openChosen, { once: true });
     } else {
       shuffleRotation();
-      setTimeout(openRandom, 0);
+      setTimeout(openChosen, 0);
     }
   })();
 </script>
