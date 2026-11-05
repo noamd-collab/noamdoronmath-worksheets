@@ -7,10 +7,9 @@ name: blog-audio
 #   GEMINI_API_KEY             the Google AI Studio key (Gemini API, not Vertex)
 #   NOAM_AUDIO_WORKER_TOKEN    same value as the Wix site secret of that name
 
+# Noam, 5.11.2026: blog narration is dropped. The scheduled run is off, so it
+# no longer fails every six hours. It can still be started by hand.
 on:
-  schedule:
-    # Every six hours, at 07 minutes past, UTC.
-    - cron: '7 */6 * * *'
   workflow_dispatch:
     inputs:
       limit:
