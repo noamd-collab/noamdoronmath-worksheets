@@ -8,8 +8,8 @@ name: publish-baseline
 # Publish only from the canonical branch, headless/astro-poc-baseline;
 # never publish from separate release/* branches.
 # Changes go through PRs and checks, with Noam's approval for the exact SHA.
-# Noam approved 0b59201995aa7359c21b8cd8ccd320d7952a2ba4 only.
-# Its tree is identical to live 7124a9426f226a639db8dae1ea9a70aba207c597.
+# Noam approved 254d7b8093de9ebea9c3608effd76428ee43f810 only.
+# It is 0b59201 plus the Pythagoras promo orange shadow (#401).
 
 on:
   workflow_dispatch:
@@ -56,4 +56,4 @@ jobs:
             exit 1
           fi
           git fetch origin headless/astro-poc-baseline
-          bash tools/release/release.sh "0b59201995aa7359c21b8cd8ccd320d7952a2ba4"
+          bash tools/release/release.sh "254d7b8093de9ebea9c3608effd76428ee43f810"
