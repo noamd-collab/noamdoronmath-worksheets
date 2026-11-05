@@ -1,0 +1,88 @@
+name: Canonical site PR
+
+# Required-check candidates for the live source branch. Keep these job names
+# stable, and add both to branch protection after this workflow is merged.
+# No path filters: every PR must report both required checks, including docs.
+# This workflow has no deployment permissions or production credentials.
+on:
+  pull_request:
+    branches:
+      - headless/astro-poc-baseline
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: canonical-site-pr-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  CI: 'true'
+  ASTRO_TELEMETRY_DISABLED: '1'
+
+defaults:
+  run:
+    working-directory: headless/astro-poc
+
+jobs:
+  build:
+    name: canonical-site-build
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: headless/astro-poc/package-lock.json
+      - name: Install locked dependencies
+        run: npm ci --no-audit --no-fund
+      - name: Validate and generate the production build inputs
+        # Same prebuild as npm run build: answer maps, editable Word bank,
+        # teacher indexes/previews, site guide and native SVG bundle.
+        run: npm run prebuild
+      - name: Build all site routes without production secrets
+        # The local Node adapter compiles the same source pages. Wix's
+        # adapter-specific postbuild requires its worker and stays in release.
+        run: npx astro build --config astro.config.preview.mjs
+
+  unit-tests:
+    name: canonical-unit-tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: headless/astro-poc/package-lock.json
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install PDF test dependencies
+        # These prevent the teacher print regressions from silently skipping.
+        run: python3 -m pip install 'PyMuPDF==1.28.2' 'numpy==2.4.1'
+      - name: Ensure Chromium is available for local browser fixtures
+        run: |
+          if [ ! -x /usr/bin/google-chrome ] && [ ! -x /usr/bin/google-chrome-stable ]; then
+            curl --fail --location --output /tmp/chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+            sudo apt-get update -qq
+            sudo apt-get install -y /tmp/chrome.deb
+          fi
+      - name: Install locked dependencies
+        run: npm ci --no-audit --no-fund
+      - name: Run the complete unit suite and isolated drawing harness
+        # Existing runner propagates both suites' failures. External live-SSR
+        # checks stay separate; this job never changes the production site.
+        run: npm run test:unit
+      - name: Preserve test summaries and failure diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: canonical-unit-test-results
+          path: headless/astro-poc/reports/test-suites/
+          retention-days: 7
+          if-no-files-found: ignore
