@@ -27,7 +27,8 @@ for(const file of ['public/worksheet-viewer-noam.html','../../worksheet-viewer-n
  const typed=extract(source,'function tryNoamLocalVisual','function insertNoamMath');
  const offer=extract(source,'function noamCanOfferDrawing','function noamManualVisual');
  const zoom=extract(source,'function noamAddDiagramExpansion','function noamDiagramRuntime');
- const label=extract(source,'function setNoamDiagramButtonLabel','function addTranscriptBubble');
+ const label=extract(source,'function setNoamDiagramButtonLabel','function ensureNoamGlossaryPopover');
+ const drawingState=extract(source,'function noamRenderDrawingVisual','function noamCanOfferDrawing');
  function fixture(m:any=structuredClone(actual)){
   const {document,window}=parseHTML('<html><body><div id="bubble"><button class="noam-draw-action">retry</button><span class="noam-draw-error">unsupported</span></div></body></html>');
   const create=document.createElement.bind(document);
@@ -36,7 +37,11 @@ for(const file of ['public/worksheet-viewer-noam.html','../../worksheet-viewer-n
   const ex=m.exercises[0],message:any={role:'assistant',text:'בדקו את נתוני השאלה.',diagramError:'unsupported',diagramErrorCode:'DIAGRAM_UNSUPPORTED'};
   const thread={messages:[message],history:[]};
   const context:any={document,window,manifest:m,selectedExercise:ex,pdf:m.pdfHash,pdfDocument:{},
-   exerciseLabel:()=>ex.id,renderNoamChat:()=>calls.push('render'),saveNoamState:()=>{},noamDiagramRefresh:()=>{},
+   exerciseLabel:()=>ex.id,renderNoamChat:()=>calls.push('render'),saveNoamState:()=>{},
+   // These are low-level crop fixtures; the catalog suite enforces the page gate.
+   noamPageAllowsDrawingHint:()=>true,noamStripMarkdownEmphasis:(text:string)=>text,noamAppendSourceDiagramHelp(){},
+   noamDiagramCurrent:(e:any,t:any)=>context.selectedExercise.id===e.id&&t===thread,
+   noamDiagramRefresh:()=>{const host=document.getElementById('bubble')!;host.innerHTML='';thread.messages.forEach((m:any)=>context.addTranscriptBubble(host,m.role,m.text,'',m.visual,m,thread));},
    ensurePdfDocumentForCrop:async()=>{},cropExerciseSegment:async(c:any)=>{calls.push(structuredClone(c));return c;},
    stitchCropSegments:(segments:any[])=>{calls.push({stitched:segments.length});return{width:900,height:420,toDataURL:(type:string)=>{assert.equal(type,'image/png');return 'data:image/png;base64,YQ==';}};},
    noamManifestOcrUnreliable:()=>true,noamRebuildSelectedPartExpression:()=>{throw new Error('source crops must not be rebuilt');},
@@ -44,22 +49,23 @@ for(const file of ['public/worksheet-viewer-noam.html','../../worksheet-viewer-n
    noamConstructedVisual:()=>null,noamPrepareNativeFocus:async()=>null,noamSourceGivens:async()=>null,
    noamDiagramSourceInput:async()=>{calls.push('generation');throw new Error('protected route reached');},
    noamDiagramError:()=> 'unavailable',fetch:()=>{throw new Error('source crops must not fetch a generated image');}};
-  runInNewContext(helpers+'\n'+identity+'\n'+nativeIdentity+'\n'+crops+'\n'+zoom+'\n'+label+'\n'+offer+'\n'+request,context);
+  runInNewContext(helpers+'\n'+identity+'\n'+nativeIdentity+'\n'+crops+'\n'+zoom+'\n'+label+'\n'+drawingState+'\n'+offer+'\n'+request,context);
   return {document,window,context,calls,ex,message,thread,runtime,container:document.getElementById('bubble')!};
  }
- it(file+': G9-T41 q1a displays every reviewed crop, preserving unsupported state and generation retry',async()=>{
-  const f=fixture(),before=JSON.stringify(f.message);
-  f.context.noamAppendSourceCropHelp(f.container,f.ex,f.message);await drain();
+ it(file+': G9-T41 q1a persists every reviewed crop as one drawing and removes the generation action',async()=>{
+  const f=fixture(),before=f.message.text;
+  f.context.noamAppendSourceCropHelp(f.container,f.ex,f.message,f.thread);await drain();
   assert.deepEqual(f.calls.filter(c=>c.page),f.ex.crops);
   assert.deepEqual(f.calls.find(c=>c.stitched),{stitched:3});
-  assert.equal(f.document.querySelector('details')!.open,true);
+  assert.equal(f.document.querySelectorAll('figure').length,1);
   assert.equal(f.document.querySelector('figure')!.getAttribute('data-visual-type'),'source-crop');
   assert.match(f.document.querySelector('figcaption')!.textContent!,/השאלה המקורית.*ללא שרטוט/);
-  assert.equal(f.document.querySelector('.noam-draw-error')!.textContent,'unsupported');
-  f.document.querySelector('figure img')!.dispatchEvent(new f.window.Event('load'));
-  assert.match(f.document.querySelector('.noam-draw-error')!.textContent!,/לא נוצר שרטוט חדש/);
-  assert.match(f.document.querySelector('.noam-draw-action')!.textContent!,/המחשה נוספת/);
-  assert.equal(JSON.stringify(f.message),before);
+  assert.equal(f.document.querySelector('.noam-draw-error'),null);
+  assert.equal(!!f.document.querySelector('.noam-draw-action:not(.noam-diagram-expand)'),false);
+  assert.equal(f.message.text,before);
+  assert.equal(f.message.visual.type,'source-crop');
+  assert.equal(f.message.diagramErrorCode,undefined);
+  assert.equal(f.message.diagramError,undefined);
   f.document.querySelector('.noam-diagram-expand')!.click();
   assert.equal(f.document.querySelector('dialog h2')!.textContent,'השאלה המקורית מהדף');
   assert.ok(f.document.querySelector('dialog img'));
@@ -81,7 +87,7 @@ for(const file of ['public/worksheet-viewer-noam.html','../../worksheet-viewer-n
  });
  it(file+': source fallback is unavailable for network/security errors, answer failures and stale or unchecked crops',async()=>{
   for(const patch of [{diagramErrorCode:'DIAGRAM_UNAVAILABLE'},{diagramErrorCode:'SECURITY'},{diagramErrorCode:undefined},{answerError:true},{role:'user'}]){
-   const f=fixture();Object.assign(f.message,patch);f.context.noamAppendSourceCropHelp(f.container,f.ex,f.message);await drain();assert.equal(f.document.querySelector('details'),null);assert.equal(f.calls.length,0);
+   const f=fixture();Object.assign(f.message,patch);f.context.noamAppendSourceCropHelp(f.container,f.ex,f.message,f.thread);await drain();assert.equal(f.document.querySelector('figure'),null);assert.equal(f.calls.length,0);
   }
   for(const mutate of [(f:any)=>f.context.manifest.reviewRequired=true,(f:any)=>f.ex.crops[0].x=-1,(f:any)=>f.ex.crops[0].page=8,
    (f:any)=>f.ex.nativeQuestionId='q1',(f:any)=>f.context.manifest.sourceSha256='missing']){
@@ -91,18 +97,18 @@ for(const file of ['public/worksheet-viewer-noam.html','../../worksheet-viewer-n
  });
  it(file+': late crops cannot attach to another part, a revised source or a removed message bubble',async()=>{
   for(const mutate of [(f:any)=>f.context.selectedExercise={...f.ex,id:'other'},(f:any)=>f.context.manifest.sourceSha256='b'.repeat(64),(f:any)=>f.container.remove()]){
-   const f=fixture();f.context.noamAppendSourceCropHelp(f.container,f.ex,f.message);mutate(f);await drain();assert.equal(f.document.querySelector('details'),null);
+   const f=fixture();f.context.noamAppendSourceCropHelp(f.container,f.ex,f.message,f.thread);mutate(f);await drain();assert.equal(f.document.querySelector('figure'),null);
   }
  });
- it(file+': explicit original requests bypass generation, stored source intent rehydrates and retry can request a new drawing',async()=>{
+ it(file+': explicit original requests bypass generation, stored source intent rehydrates and repeated requests reuse the one drawing',async()=>{
   const f=fixture(),options={studentMessage:'תראה את השרטוט המקורי מהדף',helpKind:'free_question'};
   f.message.diagramTyped=true;
   const visual=await f.context.requestNoamDiagram(f.ex,f.thread,f.message,options);
   assert.equal(visual.type,'source-crop');assert.equal(visual.dataUrl,undefined);assert.match(f.message.text,/לא נוצר שרטוט חדש/);
   assert.equal(f.calls.includes('generation'),false);assert.equal(f.runtime.messages.size,0);
-  assert.equal(f.context.noamCanOfferDrawing(f.ex,f.thread,f.message),true);
-  f.context.window.NoamDiagramPlan={};await f.context.requestNoamDiagram(f.ex,f.thread,f.message,options);
-  assert.ok(f.calls.includes('generation'),'source viewing does not disable an attempt to create a new drawing');
+  assert.equal(f.context.noamCanOfferDrawing(f.ex,f.thread,f.message),false);
+  f.context.window.NoamDiagramPlan={};assert.equal(await f.context.requestNoamDiagram(f.ex,f.thread,f.message,options),visual);
+  assert.equal(f.calls.includes('generation'),false,'an existing crop occupies the question drawing slot');
   const reload=fixture();
   assert.equal(reload.context.noamRenderSourceCrop({...visual,dataUrl:'https://evil.test/image.png'}),null);await drain();
   const figure=reload.context.noamRenderSourceCrop(visual);assert.equal(figure.querySelector('img').src,'data:image/png;base64,YQ==');
@@ -128,15 +134,16 @@ for(const file of ['public/worksheet-viewer-noam.html','../../worksheet-viewer-n
  });
  it(file+': loading failures show no source success and deleted typed messages cannot receive a result',async()=>{
   const f=fixture();f.context.cropExerciseCanvas=async()=>{throw new Error('PDF unavailable');};
-  f.context.noamAppendSourceCropHelp(f.container,f.ex,f.message);await drain();assert.equal(f.document.querySelector('details'),null);
+  f.context.noamAppendSourceCropHelp(f.container,f.ex,f.message,f.thread);await drain();assert.equal(f.document.querySelector('figure'),null);
   const result=await f.context.requestNoamDiagram(f.ex,f.thread,f.message,{studentMessage:'הצג את המקור'});
   assert.equal(result,null);assert.equal(f.message.diagramErrorCode,'DIAGRAM_UNAVAILABLE');assert.equal(f.message.visual,undefined);
   const g=fixture(),pending=g.context.requestNoamDiagram(g.ex,g.thread,g.message,{studentMessage:'הצג את המקור'});
   g.thread.messages=[];assert.equal(await pending,null);assert.equal(g.message.visual,undefined);assert.equal(g.runtime.messages.size,0);
  });
- it(file+': source image failure removes the aid and restores original failure feedback',async()=>{
-  const f=fixture();f.context.noamAppendSourceCropHelp(f.container,f.ex,f.message);await drain();
-  const image=f.document.querySelector('figure img')!;image.dispatchEvent(new f.window.Event('load'));image.dispatchEvent(new f.window.Event('error'));
-  assert.equal(f.document.querySelector('details'),null);assert.equal(f.document.querySelector('.noam-draw-error')!.textContent,'unsupported');
+ it(file+': source image failure hides the unusable figure and invalidates its loaded crop',async()=>{
+  const f=fixture();f.context.noamAppendSourceCropHelp(f.container,f.ex,f.message,f.thread);await drain();
+  const image=f.document.querySelector('figure img')!;image.dispatchEvent(new f.window.Event('error'));
+  assert.equal(f.document.querySelector('figure')!.hidden,true);
+  assert.equal(f.context.noamQuestionDrawing(f.ex,f.thread),null,'a failed resource cannot count as a displayed drawing');
  });
 }

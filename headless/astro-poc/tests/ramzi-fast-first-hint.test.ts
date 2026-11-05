@@ -21,12 +21,13 @@ function setup(source:string){
   noamDidacticGuide:()=>null,noamDidacticPrompt:()=>'',noamDidacticResponse:()=>null,noamNativeDataUrl:()=>manifest.nativeExportUrl,
   noamQuestionAnalysis:async()=>{counts.analysis++;return {readable:true,transcription:'OCR'};},noamEnrichSourceAnalysis:(_:any,a:any)=>{counts.enrich++;return a;},noamSolverMessage:(s:string)=>s,
   noamGuardGeometryResult:(r:any)=>{counts.repairs++;return r;},noamGuardSignedAddResult:(r:any)=>r,noamClarifySignedAddLanguage:(s:string)=>s,noamResponseVisual:()=>{counts.visuals++;return null;},noamVisualAnswer:(_:any,s:string)=>s,noamAttachSourceHint(){counts.visuals++;},
-  noamPageAllowsDrawingHint:()=>true,noamManifestOcrUnreliable:()=>false,isBotProtectionError:(e:any)=>/^BOT_/.test(e?.code||''),noamVerifiedNativePackages:new Map(),analysisCache:{},console:{warn(){}}};
+  noamPageAllowsDrawingHint:()=>true,noamDiagramRuntime:()=>({messages:new Map()}),noamManifestOcrUnreliable:()=>false,isBotProtectionError:(e:any)=>/^BOT_/.test(e?.code||''),noamVerifiedNativePackages:new Map(),analysisCache:{},console:{warn(){}}};
  function success(){return {ok:true,sourceHintAvailable:true,answer:'איזו צלע מופיעה בשני המשולשים?',sourceVerification:{status:'verified',sha256:manifest.nativeExportSha256,visualStatus:'unverified',verificationScope:'printed_text',exerciseId:exercise.id,selectedPart:exercise.part,questionId:exercise.nativeQuestionId,itemId:exercise.nativeItemId}};}
  c.postJson=async(url:string,payload:any)=>{calls.push({url,payload:JSON.parse(JSON.stringify(payload))});return payload.sourceHintOnly?success():{ok:true,answer:'רמז רגיל'};};
  c.fetch=async(url:string)=>{calls.push({url,method:'GET'});assert.equal(url,manifest.nativeExportUrl);return {ok:true,arrayBuffer:async()=>new TextEncoder().encode(nativeBody).buffer};};
  const load=(...names:string[])=>runInNewContext(names.map(n=>fn(source,n)).join('\n'),c);
- load('noamSourceText','noamPrintedText','noamDeepFreeze','noamVerifiedNativeData','noamPreparedHint','askNoam');
+ load('noamSourceText','noamPrintedText','noamDeepFreeze','noamVerifiedNativeData','noamPreparedHint','askNoam',
+  'noamRenderDrawingVisual','noamQuestionDrawing','noamPendingQuestionDrawing','noamTrimQuestionMessages');
  return {c,exercise,manifest,nativeBody,calls,photos,thread,counts,load,success};
 }
 for(const relative of ['../public/worksheet-viewer-noam.html','../../../worksheet-viewer-noam.html']){

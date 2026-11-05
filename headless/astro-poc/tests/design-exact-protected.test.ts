@@ -316,12 +316,15 @@ describe('exact-design protected live-baseline boundaries', () => {
     // primary Send pointerdown so its layout cannot move before native click.
     // Only main script 7 changes from c356ab7b; no submit on down or cancelled
     // gestures. ramzi-send-focus covers both viewers and keyboard/desktop paths.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '6489924e2cd03a6ff8eeb950ac6d920107441ca0cba6cf427108447ab480179d');
+    // PR384, Noam-requested single-question drawing: preserve one validated visual,
+    // remove generation actions after success, and retain it through history trim.
+    // Drawing lifecycle, source recovery, and catalog-wide DOM tests cover it.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), 'ec8f89774d2e89849aebf4dcf3a14654fd5c41bf25a9142887f30327a1c384da');
     const priorSdkScripts = releasedScripts.map(script => script.replace(
       './noam-bot-client.js?v=20261101-sdk-lifecycle',
       './noam-bot-client.js?v=20261025-execute-ready-guard',
     ));
-    assert.equal(sha256(JSON.stringify(priorSdkScripts)), '19820de4d7182081a007abe19da9d2e6c24c3827fba9de4042740653f491d89e');
+    assert.equal(sha256(JSON.stringify(priorSdkScripts)), '6d9675291fc6d008dbc0742d523467208811800d8ee5353b48416289676a209a');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {

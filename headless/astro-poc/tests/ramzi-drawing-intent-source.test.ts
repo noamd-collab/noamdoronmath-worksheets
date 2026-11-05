@@ -31,10 +31,10 @@ for (const file of ['worksheet-viewer-noam.html', 'headless/astro-poc/public/wor
     const render = fn('renderNoamChat');
     const declarations = [...render.matchAll(/^  var drawingHintsAllowed=[^\n]+;$/gm)];
     assert.equal(declarations.length, 1, 'The composer uses one current page-policy snapshot');
-    const start = render.indexOf('document.getElementById("noamDraw").addEventListener("click",function(){');
-    const end = render.indexOf('\n  });', start);
+    const start = render.indexOf('var drawButton=document.getElementById("noamDraw");');
+    const end = render.indexOf('\n  });}', start);
     assert.ok(start >= 0 && end > start, 'Missing actual composer drawing listener');
-    runInNewContext(declarations[0][0] + '\n' + render.slice(start, end + 6), f.c);
+    runInNewContext(declarations[0][0] + '\n' + render.slice(start, end + 7), f.c);
   }
   function fixture() {
     const { document, window } = parseHTML('<html><body><button id="noamDraw"></button></body></html>');

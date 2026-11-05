@@ -17,11 +17,12 @@ function fixture(part='ב',viewer='../public/worksheet-viewer-noam.html'){
  for(const file of files)runInNewContext(readFileSync(new URL(file,root),'utf8'),c,{filename:file});
  const context=c.NoamNativeVisual.authoredContext(data,exercise,svgText);assert.ok(context);
  const v=readFileSync(new URL(viewer,import.meta.url),'utf8');
- Object.assign(c,{noamCachedSourceVisual:()=>source,noamSourcePanelModuleMissing:()=>false,
+ // These scope checks exercise low-level renderers; catalog tests cover drawing eligibility.
+ Object.assign(c,{noamPageAllowsDrawingHint:()=>true,noamCachedSourceVisual:()=>source,noamSourcePanelModuleMissing:()=>false,
   noamSourcePanelReviewed:(e:any)=>c.NoamSourcePanels.isReviewed(e),
   noamDiagramSourceIdentity:()=> 'current-pdf',noamSourceVisualIdentity:()=> 'current-native',
   noamSourceVisualOptions:(o:any)=>o});
- for(const name of ['noamSourcePresentation','noamTypedVisualContext','noamInspectVisualPlan','noamRenderVisualPlan','noamRenderAiDiagram','noamCanOfferDrawing','noamRenderSourceVisual'])runInNewContext(fn(v,name),c);
+ for(const name of ['noamSourcePresentation','noamTypedVisualContext','noamInspectVisualPlan','noamRenderVisualPlan','noamRenderAiDiagram','noamCanOfferDrawing','noamRenderSourceVisual','noamRenderDrawingVisual','noamQuestionDrawing'])runInNewContext(fn(v,name),c);
  return {c,source,data,exercise,context,svgText};
 }
 function plan(context:any){return {version:2,status:'ok',family:'function',evidence:[{source:'question',quote:context.questionText}]};}

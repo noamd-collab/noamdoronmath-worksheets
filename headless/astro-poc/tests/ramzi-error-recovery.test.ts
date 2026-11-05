@@ -45,7 +45,7 @@ test('security failure stays an error with its retry action through repeated dec
 });
 
 test('a successful geometry hint exposes drawing without special user wording; failure and existing drawings do not', () => {
-  const start = viewer.indexOf('function noamCanOfferDrawing(');
+  const start = viewer.indexOf('function noamRenderDrawingVisual(');
   const end = viewer.indexOf('function noamConstructedVisual(');
   const api = runInNewContext(viewer.slice(start, end) + '\n({noamCanOfferDrawing})', {
     window: { NoamLocalVisual: { wantsVisualSupport: () => false } },
@@ -53,6 +53,7 @@ test('a successful geometry hint exposes drawing without special user wording; f
     noamGeometryContext: (text: string) => /דלתון/.test(text),
     noamNativeDataUrl: () => null,
     noamRenderAiDiagram: () => ({}), noamRenderGeometryGuide: () => ({}),
+    noamPageAllowsDrawingHint: () => true, noamRenderSourceCrop: () => null,
   });
   const user = { role: 'user', kind: 'רמז 1', text: 'אפשר רמז 1?' };
   const answer = { role: 'assistant', text: 'באילו קודקודים נפגשות שתי צלעות השוות זו לזו?' };
@@ -60,7 +61,7 @@ test('a successful geometry hint exposes drawing without special user wording; f
   assert.equal(api.noamCanOfferDrawing({ id: 'kite' }, thread, answer), true);
   assert.equal(api.noamCanOfferDrawing({ id: 'kite' }, thread, { ...answer, answerError: true }), false);
   assert.equal(api.noamCanOfferDrawing({ id: 'kite' }, thread, { ...answer, visual: { type: 'ai-diagram' } }), false);
-  assert.equal(api.noamCanOfferDrawing({ id: 'kite' }, thread, { ...answer, visual: { type: 'source-crop' } }), true, 'viewing the original still permits a new illustration');
+  assert.equal(api.noamCanOfferDrawing({ id: 'kite' }, thread, { ...answer, visual: { type: 'source-crop' } }), true, 'an unavailable saved source crop is retryable');
   assert.equal(api.noamCanOfferDrawing({ id: 'kite' }, { messages: [{ ...user, kind: '', text: 'שלום' }, answer] }, answer), false);
 });
 

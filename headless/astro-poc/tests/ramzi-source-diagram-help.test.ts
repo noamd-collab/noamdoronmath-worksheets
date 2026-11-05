@@ -11,50 +11,125 @@ const data=JSON.parse(readFileSync(new URL('../public/noam-ai/native/G8-T39/a/no
 const manifest=JSON.parse(readFileSync(new URL('../public/noam-ai/manifests/9448157f4ecb463489417696230f0e57.json',import.meta.url),'utf8'));
 const exercise=manifest.exercises.find((e:any)=>e.q===1&&e.part==='ג');
 const legacy='עדיין לא הצלחתי להכין המחשה מדויקת לשלב הזה. אפשר לכתוב אילו קטעים או זוויות להדגיש.';
-const message={role:'assistant',text:'האם שוויון הזוויות נובע מהצלעות השוות או מהצלע המשותפת?',diagramError:legacy};
-function fixture(payload:any=data, ex:any=exercise, msg:any=message){
- const {document,window}=parseHTML('<html><body><div id="bubble"><button class="noam-draw-action">השרטוט לא הופיע — נסו שוב</button><span class="noam-draw-error"></span></div></body></html>');
- document.querySelector('.noam-draw-error')!.textContent=msg.diagramError||'';
- const create=document.createElement.bind(document);
- document.createElement=(name:string)=>{const el=create(name);if(name==='dialog'){el.showModal=()=>el.setAttribute('open','');el.close=()=>el.dispatchEvent(new window.Event('close'));}return el;};
- const calls:string[]=[];
- const context:any={document,window,exercise:ex,message:msg,selectedExercise:ex,exerciseLabel:()=> 'שאלה 1 · סעיף ג',
+const message={diagramErrorCode:'DIAGRAM_UNSUPPORTED',role:'assistant',text:'האם שוויון הזוויות נובע מהצלעות השוות או מהצלע המשותפת?',diagramError:legacy};
+const topicHelpers=source.slice(source.indexOf('var NOAM_DRAWING_HINT_GEOMETRY='),source.indexOf('function noamConstructedVisual('));
+const bubbleHelpers=source.slice(source.indexOf('function setNoamDiagramButtonLabel('),source.indexOf('function ensureNoamGlossaryPopover('));
+function fixture(payload:any=data, ex:any=exercise, msg:any=message, prepare?:Function, start=true){
+ const {document,window}=parseHTML('<html><body><div id="host"><div id="bubble"><button class="noam-draw-action">השרטוט לא הופיע — נסו שוב</button><span class="noam-draw-error"></span></div></div></body></html>');
+ const answer:any=structuredClone(msg), selected:any=structuredClone(ex);
+ const thread={messages:[answer],history:[]};
+ const calls:any[]=[], runtime={messages:new Map(),jobs:new Map(),cache:new Map()};
+ const context:any={document,window:{NoamLocalVisual:{wantsVisualSupport:()=>true}},exercise:selected,message:answer,selectedExercise:selected,thread,
+  manifest:{...manifest,prefix:'G8-T39',exercises:[selected]},exerciseLabel:()=> 'שאלה 1 · סעיף ג',
   noamDiagramSourceIdentity:(e:any)=>e.id+':'+(e.version||''),
-  fetch:async(url:string)=>{calls.push(url);return{ok:true,json:async()=>payload};},container:document.getElementById('bubble')};
- runInNewContext(label+'\n'+helper+'\n'+zoom+';noamAppendSourceDiagramHelp(container,exercise,message);',context);
- return {document,window,context,calls,open:async()=>{const d=document.querySelector('details');if(d){d.open=true;d.dispatchEvent(new window.Event('toggle'));await new Promise(r=>setImmediate(r));}},aid:()=>runInNewContext('noamSourceVertexAid('+JSON.stringify(payload)+',exercise)',context)};
+  noamSourceVisualIdentity:(e:any)=>JSON.stringify([e.id,e.version||'',e.nativeFigureUrl||'']),
+  noamDiagramRuntime:()=>runtime, activeThread:thread,
+  noamDiagramCurrent:(e:any,t:any)=>context.selectedExercise.id===e.id&&context.activeThread===t,
+  noamPrepareSourceVisual:async(e:any,options:any)=>{calls.push(options);return prepare?prepare(e,options):{type:'native-source-visual',exerciseId:e.id,sourceIdentity:context.noamSourceVisualIdentity(e),presentation:'source-context'};},
+  noamRenderSourceVisual:(visual:any)=>{
+   if(visual.sourceIdentity!==context.noamSourceVisualIdentity(selected)||visual.invalid)return null;
+   const figure=document.createElement('figure');figure.className='noam-geometry';return figure;
+  },
+  noamStripMarkdownEmphasis:(value:string)=>value,noamAddDiagramExpansion(){},noamAppendSourceCropHelp(){},
+  saveNoamState(){calls.push('saved');},
+  noamDiagramRefresh(){
+   const host=document.getElementById('host')!;host.innerHTML='';
+   thread.messages.forEach((m:any)=>context.addTranscriptBubble(host,m.role,m.text,'',m.visual,m,thread));
+  },
+  fetch:async(url:string)=>({ok:true,json:async()=>payload}),container:document.getElementById('bubble'),
+ };
+ runInNewContext(helper+'\n'+topicHelpers+'\n'+bubbleHelpers,context);
+ if(start)context.noamAppendSourceDiagramHelp(context.container,selected,answer,thread);
+ return {document,window,context,calls,thread,message:answer,runtime,
+  settle:()=>new Promise(resolve=>setImmediate(resolve)),
+  aid:()=>runInNewContext('noamSourceVertexAid('+JSON.stringify(payload)+',exercise)',context)};
 }
-it('actual G8 saved unsupported reply offers separately labelled source and four unpaired vertices',async()=>{
- const before=JSON.stringify(message),f=fixture();
- assert.match(f.document.querySelector('summary')!.textContent!,/עזר מהדף/);
- assert.deepEqual(f.calls,['/noam-ai/native/G8-T39/a/noam-ai.json'],'only the approved static package is requested');
- await f.open();
- assert.deepEqual(f.calls,['/noam-ai/native/G8-T39/a/noam-ai.json']);
- const buttons=f.document.querySelectorAll('details > button');
- const locate=Array.from(buttons).find(b=>b.textContent==='איתור הקודקודים')!;
- assert.ok(locate);assert.equal(locate.getAttribute('aria-pressed'),'true');
- assert.equal(f.document.querySelector('details')!.open,true,'the verified aid is visible without extra clicks');
- const svg=f.document.querySelector('figure svg')!;
- assert.equal(svg.querySelector('image')!.getAttribute('href'),exercise.nativeFigureUrl);
- assert.equal(svg.querySelectorAll('circle').length,4);
- assert.equal(new Set(Array.from(svg.querySelectorAll('circle')).map(n=>n.getAttribute('stroke'))).size,1);
- assert.equal(svg.querySelectorAll('path,line,text').length,0,'no invented equality, correspondence or geometry');
- assert.match(f.document.querySelector('figcaption')!.textContent!,/אינו נותן את ההתאמה/);
- assert.equal(JSON.stringify(message),before,'history and error are not rewritten');
- f.document.querySelector('.noam-diagram-expand')!.click();
- assert.match(f.document.querySelector('dialog h2')!.textContent!,/השרטוט של השאלה/);
- assert.equal(f.document.querySelectorAll('dialog circle').length,4);
- f.document.querySelector('.noam-diagram-dialog-close')!.click();
- locate.click();assert.equal(f.document.querySelectorAll('figure svg').length,0);
- locate.click();assert.equal(f.document.querySelectorAll('figure circle').length,4);
- assert.equal(f.calls.length,1,'expansion and toggling never request AI');
+
+it('an unsupported source recovery persists one validated drawing and removes the generation action',async()=>{
+ const f=fixture(),originalText=f.message.text;
+ await f.settle();
+ assert.equal(f.message.visual.type,'native-source-visual');
+ assert.equal(f.message.visual.presentation,'source-context');
+ assert.equal(f.message.text,originalText,'keep the historical answer');
+ assert.equal(f.message.diagramError,undefined);
+ assert.equal(f.message.diagramErrorCode,undefined);
+ assert.equal(f.document.querySelectorAll('.noam-geometry').length,1);
+ assert.equal(!!f.document.querySelector('.noam-draw-action'),false,'no regeneration action');
+ assert.equal(f.calls.filter(call=>typeof call==='object').length,1);
+ assert.equal(f.calls[0].studentMessage,'הראה את השרטוט המקורי');
+ assert.equal(f.calls[0].drawCurrentStep,undefined,'recovery requests the source without new construction');
 });
-it('security/network errors, non-assistant messages, absent and external source URLs get no source-success substitute',()=>{
- for(const msg of [{...message,diagramError:'לא הצלחנו להשלים את בדיקת האבטחה.'},
-  {...message,diagramErrorCode:'DIAGRAM_UNAVAILABLE'}, {...message,answerError:true}, {...message,role:'user'}])
-  assert.equal(fixture(data,exercise,msg).document.querySelector('details'),null);
- for(const url of ['', 'https://evil.test/a.svg','/noam-ai/native/G8-T39/a/../q.svg'])
-  assert.equal(fixture(data,{...exercise,nativeFigureUrl:url}).document.querySelector('details'),null);
+
+it('transcript rendering starts source recovery before the new bubble is attached, then completes after attachment',async()=>{
+ const f=fixture(data,exercise,message,undefined,false);
+ const host=f.document.getElementById('host')!;host.innerHTML='';
+ f.context.addTranscriptBubble(host,'assistant',f.message.text,'',null,f.message,f.thread);
+ assert.equal(f.calls.filter(call=>typeof call==='object').length,1,'a newly created bubble is not connected yet');
+ await f.settle();
+ assert.equal(f.message.visual.type,'native-source-visual');
+ assert.equal(f.document.querySelectorAll('.noam-geometry').length,1);
+ assert.equal(!!f.document.querySelector('.noam-draw-action'),false);
+});
+
+it('security and transport failures, non-assistant messages and answer errors never start source recovery',async()=>{
+ for(const msg of [{...message,diagramErrorCode:'DIAGRAM_UNAVAILABLE'},
+  {...message,diagramErrorCode:undefined,diagramError:'לא הצלחנו להשלים את בדיקת האבטחה.'},
+  {...message,answerError:true},{...message,role:'user'}]){
+  const f=fixture(data,exercise,msg);await f.settle();
+  assert.equal(f.calls.length,0);assert.equal(f.message.visual,undefined);
+ }
+});
+
+it('failed, invalid or unrenderable source recovery keeps the original error retryable',async()=>{
+ for(const prepare of [async()=>null,async()=>{throw Error('source unavailable');},async()=>({type:'native-source-visual',invalid:true})]){
+  const f=fixture(data,exercise,message,prepare);await f.settle();
+  assert.equal(f.message.visual,undefined);
+  assert.equal(f.message.diagramError,legacy);
+  assert.equal(f.message.diagramErrorCode,'DIAGRAM_UNSUPPORTED');
+  assert.equal(f.document.querySelectorAll('.noam-geometry').length,0);
+  assert.ok(f.document.querySelector('.noam-draw-action'));
+ }
+});
+
+it('late recovery cannot attach to another section, source revision, reset conversation or detached bubble',async()=>{
+ for(const change of [
+  (f:any)=>{f.context.selectedExercise={...f.context.selectedExercise,id:'other'};},
+  (f:any)=>{f.context.exercise.version='changed';},
+  (f:any)=>{f.context.activeThread={messages:[]};},
+  (f:any)=>{f.context.container.remove();},
+ ]){
+  let resolve!:Function;
+  const gate=new Promise(r=>{resolve=r;});
+  const f=fixture(data,exercise,message,()=>gate),identity=f.context.noamSourceVisualIdentity(f.context.exercise);
+  change(f);
+  resolve({type:'native-source-visual',exerciseId:f.context.exercise.id,sourceIdentity:identity});
+  await f.settle();assert.equal(f.message.visual,undefined);
+  assert.equal(f.calls.includes('saved'),false);
+ }
+});
+
+it('a manual drawing or another pending request wins over late recovery, without a second figure',async()=>{
+ for(const pending of [false,true]){
+  let resolve!:Function;const gate=new Promise(r=>{resolve=r;});
+  const f=fixture(data,exercise,message,()=>gate);
+  const other:any={role:'assistant',text:'תשובה נוספת'};f.thread.messages.push(other);
+  const visual={type:'native-source-visual',exerciseId:f.context.exercise.id,sourceIdentity:f.context.noamSourceVisualIdentity(f.context.exercise)};
+  if(pending)f.runtime.messages.set(other,Promise.resolve(visual));else other.visual=visual;
+  resolve(visual);await f.settle();
+  assert.equal(f.message.visual,undefined,'late recovery must not claim a second drawing slot');
+  assert.equal(f.calls.includes('saved'),false);
+ }
+});
+
+it('two simultaneous source recoveries retain only the first completed drawing',async()=>{
+ const f=fixture();
+ const other:any={role:'assistant',text:'תשובה נוספת',diagramError:legacy,diagramErrorCode:'DIAGRAM_UNSUPPORTED'};
+ f.thread.messages.push(other);
+ f.context.noamAppendSourceDiagramHelp(f.context.container,f.context.exercise,other,f.thread);
+ await f.settle();
+ assert.equal(f.thread.messages.filter((m:any)=>m.visual).length,1);
+ assert.equal(f.document.querySelectorAll('.noam-geometry').length,1);
+ assert.equal(!!f.document.querySelector('.noam-draw-action'),false);
 });
 it('aid is tied to the exact approved subsection, figure and finite named source coordinates',()=>{
  for(const part of ['א','ב','ד'])assert.equal(fixture(data,{...exercise,part}).aid(),null);
@@ -67,38 +142,4 @@ it('aid is tied to the exact approved subsection, figure and finite named source
   const copy=structuredClone(data);mutate(copy.figures.find((f:any)=>f.id==='q1_head'));
   assert.equal(fixture(copy).aid(),null);
  }
-});
-it('a late source fetch cannot attach aid after switching sections or source revisions',async()=>{
- for(const selected of [{...exercise,id:'other'}, {...exercise,version:'changed'}, {...exercise,nativeFigureUrl:'/noam-ai/native/G8-T39/a/figures/q2_head.svg'}]){
-  const f=fixture();f.context.selectedExercise=selected;await f.open();
-  assert.equal(Array.from(f.document.querySelectorAll('button')).some(b=>b.textContent==='איתור הקודקודים'),false);
- }
-});
-it('unavailable or malformed package leaves only the explicitly labelled original, not false highlighted data',async()=>{
- for(const payload of [null,{}, {questions:[]}]){
-  const f=fixture(payload);await f.open();assert.equal(f.document.querySelector('figure svg'),null);
-  assert.equal(f.document.querySelector('figcaption')!.textContent,'השרטוט המקורי — ללא הדגשה נוספת');
- }
-});
-it('broken source image removes the aid and enlargement rather than presenting an empty success',()=>{
- const f=fixture();f.document.querySelector('figure img')!.dispatchEvent(new f.window.Event('error'));
- assert.equal(f.document.querySelector('details'),null);
-});
-it('status acknowledges the source aid only after image load, preserves failure and retry, and restores error if image fails',async()=>{
- const original=JSON.stringify(message),f=fixture();await f.open();
- const image=f.document.querySelector('figure svg image')!;
- const status=f.document.querySelector('.noam-draw-error')!;
- assert.equal(status.textContent,legacy,'a pending image is not successful visual delivery');
- image.dispatchEvent(new f.window.Event('load'));
- assert.match(status.textContent!,/לא נוצר שרטוט חדש.*השרטוט המקורי/);
- assert.match(f.document.querySelector('.noam-draw-action')!.textContent!,/המחשה נוספת/);
- assert.equal(JSON.stringify(message),original,'generation failure remains in history');
- image.dispatchEvent(new f.window.Event('error'));
- assert.equal(status.textContent,legacy);
- assert.equal(f.document.querySelector('details'),null);
-});
-it('late image load cannot announce source aid in another selected section',async()=>{
- const f=fixture();await f.open();f.context.selectedExercise={...exercise,id:'other'};
- f.document.querySelector('figure svg image')!.dispatchEvent(new f.window.Event('load'));
- assert.equal(f.document.querySelector('.noam-draw-error')!.textContent,legacy);
 });

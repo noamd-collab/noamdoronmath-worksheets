@@ -8,8 +8,11 @@
   var page = window.location;
   // Preview hosts cannot call Ramzi's production API. Keep the exact worksheet
   // URL, and replace this history entry so Back cannot return to a broken copy.
+  // An explicit review link keeps the preview UI available for approval.
+  // This does not change API routing or verification requirements.
   if (/^[a-z0-9]{6}-noam-math-astro-poc-amiramnoam-130a\.wix-site-host\.com$/i.test(page.hostname) &&
-      page.pathname === "/worksheet-viewer-noam.html") {
+      page.pathname === "/worksheet-viewer-noam.html" &&
+      new URLSearchParams(page.search).get("review") !== "1") {
     page.replace("https://www.noamdoronmath.co.il" + page.pathname + page.search + page.hash);
   }
 }());
@@ -5871,13 +5874,12 @@ function addTranscriptBubble(container, role, text, kind, visual, message, threa
     bubble.appendChild(retry);
     if(typeof noamAppendOriginalTableRecovery==="function"){noamAppendOriginalTableRecovery(bubble,selectedExercise,thread,message);}
   }
-  // Old unverified question-image replies stay suppressed. Reviewed source-crop
-  // aids are separate from a generated illustration and revalidate on display.
-  if (visual&&visual.type==="question-image"){visual=null;}
+  // A restored conversation may contain duplicates from older viewer versions.
+  // Keep its text, but display only its first valid drawing for this question.
   if (visual){
-    var visualElement=visual.type==="native-original-table" ? noamRenderOriginalTable(visual) : visual.type==="source-crop" ? noamRenderSourceCrop(visual) : visual.type==="native-source-visual" ? noamRenderSourceVisual(visual) : visual.type==="native-source-focus" ? noamRenderNativeFocus(visual) : visual.type==="ai-diagram" ? noamRenderAiDiagram(visual) : visual.type==="geometry-guide"
-      ? noamRenderGeometryGuide(visual)
-      : window.NoamLocalVisual&&window.NoamLocalVisual.render(document,visual);
+    var drawing=thread&&noamQuestionDrawing(selectedExercise,thread);
+    var visualElement=visual.type==="native-original-table" ? noamRenderOriginalTable(visual)
+      : thread ? drawing&&drawing.message===message&&drawing.element : noamRenderDrawingVisual(visual);
     if (visualElement){
       if(noamVisualCanExpand(visual)){noamAddDiagramExpansion(bubble,visualElement);}
       bubble.appendChild(visualElement);
@@ -5888,8 +5890,8 @@ function addTranscriptBubble(container, role, text, kind, visual, message, threa
     drawButton.type="button";
     drawButton.className="noam-draw-action";
     var drawingExercise=selectedExercise;
-    var drawingPending=noamDiagramRuntime().messages.has(message);
-    setNoamDiagramButtonLabel(drawButton,drawingPending?"מכין שרטוט…":message.visual&&message.visual.type==="source-crop"?"נסו ליצור המחשה נוספת":message.diagramError?"השרטוט לא הופיע — נסו שוב":"לא הופיע שרטוט להמחשה? לחצו כאן",!drawingPending);
+    var drawingPending=!!noamPendingQuestionDrawing(thread);
+    setNoamDiagramButtonLabel(drawButton,drawingPending?"מכין שרטוט…":message.diagramError?"השרטוט לא הופיע — נסו שוב":"לא הופיע שרטוט להמחשה? לחצו כאן",!drawingPending);
     drawButton.disabled=drawingPending;
     drawButton.addEventListener("click",function(){
       requestNoamDiagram(drawingExercise,thread,message,Object.assign({},noamMessageVisualOptions(thread,message),{drawCurrentStep:true}));
@@ -5901,8 +5903,8 @@ function addTranscriptBubble(container, role, text, kind, visual, message, threa
       drawError.setAttribute("role","status");
       drawError.textContent=message.diagramError;
       bubble.appendChild(drawError);
-      noamAppendSourceDiagramHelp(bubble,selectedExercise,message);
-      noamAppendSourceCropHelp(bubble,selectedExercise,message);
+      noamAppendSourceDiagramHelp(bubble,selectedExercise,message,thread);
+      noamAppendSourceCropHelp(bubble,selectedExercise,message,thread);
     }
   }
   row.appendChild(bubble);
@@ -6163,6 +6165,7 @@ function renderNoamGlossaryDetail(entryId){
 }
 
 function noamLatestDrawingAnswer(thread){
+  if(noamQuestionDrawing(selectedExercise,thread)){return null;}
   var messages=thread&&thread.messages||[];
   for(var i=messages.length-1;i>=0;i--){
     var message=messages[i];
@@ -6186,7 +6189,7 @@ function renderNoamChat(){
   if(typeof noamReconcilePreparedHints==="function"&&noamReconcilePreparedHints(manifest,selectedExercise,thread)){saveNoamState();}
   var drawingAnswer = noamLatestDrawingAnswer(thread);
   var drawingHintsAllowed=typeof noamPageAllowsDrawingHint!=='function'||noamPageAllowsDrawingHint();
-  var drawingPending = !!(drawingAnswer&&drawingHintsAllowed&&noamDiagramRuntime().messages.has(drawingAnswer));
+  var drawingPending = !!(drawingAnswer&&drawingHintsAllowed&&noamPendingQuestionDrawing(thread));
   var hasConversation = !!(thread.messages.length || thread.history.length || thread.hintIndex);
   var previewing = panelBody.classList.contains("is-previewing");
   var text = selectedExercise.text || selectedExercise.prompt || selectedExercise.context || "";
@@ -6210,7 +6213,7 @@ function renderNoamChat(){
         '<div class="noam-input-actions" role="group" aria-label="עזרה מהירה">' +
           '<button type="button" class="noam-action" id="noamOverview">הסבר כללי</button>' +
           '<button type="button" class="noam-action primary" id="noamHint">רמז</button>' +
-          '<button type="button" class="noam-action" id="noamDraw"'+((drawingAnswer&&drawingHintsAllowed)?'':' hidden')+'>'+(drawingPending?'מכין שרטוט…':'שרטוט להמחשה <small class="noam-draw-beta" dir="ltr">(Beta)</small>')+'</button>' +
+          ((drawingAnswer&&drawingHintsAllowed)?'<button type="button" class="noam-action" id="noamDraw">'+(drawingPending?'מכין שרטוט…':'שרטוט להמחשה <small class="noam-draw-beta" dir="ltr">(Beta)</small>')+'</button>':'') +
           '<button type="button" class="noam-action" id="noamMistake" hidden>טעות נפוצה</button>' +
           '<span class="noam-input-spacer" aria-hidden="true"></span>' +
           '<button type="button" class="noam-math-toggle" id="noamMathToggle" aria-label="פתיחת סימנים מתמטיים" title="סימנים מתמטיים" aria-controls="noamMathKeys" aria-expanded="'+mathKeyboardOpen+'">x²</button>' +
@@ -6300,10 +6303,11 @@ function renderNoamChat(){
   hintButton.disabled = busy || thread.hintIndex>=3;
   document.getElementById("noamMistake").hidden = thread.hintIndex<3;
 
-  document.getElementById("noamDraw").addEventListener("click",function(){
-    if(!drawingHintsAllowed||busy||!drawingAnswer||noamDiagramRuntime().messages.has(drawingAnswer)){return;}
+  var drawButton=document.getElementById("noamDraw");
+  if(drawButton){drawButton.addEventListener("click",function(){
+    if(!drawingHintsAllowed||busy||!drawingAnswer||noamQuestionDrawingBlocked(selectedExercise,thread)){return;}
     requestNoamDiagram(selectedExercise,thread,drawingAnswer,Object.assign({},noamMessageVisualOptions(thread,drawingAnswer),{drawCurrentStep:true}));
-  });
+  });}
   document.getElementById("noamOverview").addEventListener("click",function(){ askNoam("overview","תן לי הסבר כללי קצר על הרעיון הדרוש כאן, בלי לפתור ובלי לגלות את התשובה."); });
   hintButton.addEventListener("click",function(){ askNoam("hint","תן לי רמז אחד בלבד. אל תגלה את התשובה הסופית, ואל תבצע את הצעד במקומי."); });
   document.getElementById("noamMistake").addEventListener("click",function(){ askNoam("common_mistake","מה הטעות הנפוצה שכדאי להיזהר ממנה כאן? בלי לפתור ובלי לגלות את התשובה."); });
@@ -6345,7 +6349,7 @@ function renderNoamChat(){
   });
 
   setNoamBusy(busy);
-  document.getElementById("noamDraw").disabled=!drawingHintsAllowed||busy||drawingPending;
+  if(drawButton){drawButton.disabled=busy||drawingPending;}
   renderPanelMath(panelBody);
   panelBody.querySelectorAll(".noam-row.assistant .noam-bubble,#noamPickedText").forEach(enhanceNoamGlossary);
   renderExercisePreview(selectedExercise,0);
@@ -6392,6 +6396,12 @@ function tryNoamLocalVisual(studentMessage){
   if (!selectedExercise||busy||(!visualRequest&&!retryDrawing)){return false;}
   if (typeof currentAttachments==="function"&&currentAttachments().length){return false;}
   var thread=exerciseThread(selectedExercise.id);
+  var existingDrawing=noamQuestionDrawing(selectedExercise,thread)||noamPendingQuestionDrawing(thread);
+  if(existingDrawing){
+    delete noamDrafts[selectedExercise.id];
+    noamDiagramRefresh(selectedExercise,thread,existingDrawing.message,!existingDrawing.promise);
+    return true;
+  }
   var lastAnswer=(thread.messages||[]).filter(function(item){return item.role==="assistant"&&!item.understood;}).slice(-1)[0];
   var options=noamMessageVisualOptions(thread,lastAnswer);
   if (!retryDrawing){options.studentMessage=studentMessage;}
@@ -6406,7 +6416,7 @@ function tryNoamLocalVisual(studentMessage){
     var drawingReply={role:"assistant",text:sourceCropRequest?"טוען את השאלה המקורית מהדף…":"מכין המחשה לשלב שעליו שאלת.",kind:"",diagramOptions:options,diagramTyped:true};
     if (retryDrawing){drawingReply.diagramError=previousAnswer.diagramError;}
     thread.messages.push({role:"user",text:studentMessage,kind:""},drawingReply);
-    thread.messages=thread.messages.slice(-60);
+    noamTrimQuestionMessages(selectedExercise,thread);
     requestNoamDiagram(drawingExercise,thread,drawingReply,options);
     return true;
   }
@@ -6421,7 +6431,7 @@ function tryNoamLocalVisual(studentMessage){
     {role:"assistant",content:answer+(visual.type==="geometry-guide"?" [הוצג שרטוט גאומטרי מסומן של השלב הנוכחי.]":" [הוצג שרטוט מקומי של הפרבולה והשורשים.]")}
   );
   thread.history=thread.history.slice(-8);
-  thread.messages=thread.messages.slice(-60);
+  noamTrimQuestionMessages(selectedExercise,thread);
   saveNoamState();
   renderNoamChat();
   announceNoam(exerciseLabel(selectedExercise)+". רמזי הציג שרטוט להמחשה.");
@@ -7294,6 +7304,8 @@ function noamRequestSourceCrop(exercise,thread,message,options){
       return null;
     }
     var visual={type:'source-crop',exerciseId:exercise.id,sourceIdentity:identity};
+    var existingVisual=noamReuseQuestionDrawing(exercise,thread,message);
+    if(existingVisual){return existingVisual;}
     message.visual=visual;delete message.diagramError;delete message.diagramErrorCode;
     if(message.diagramTyped){
       message.text='הנה השאלה המקורית מהדף, כולל השרטוט אם הוא מופיע בה. לא נוצר שרטוט חדש.';
@@ -7306,32 +7318,19 @@ function noamRequestSourceCrop(exercise,thread,message,options){
   });
   runtime.messages.set(message,completion);saveNoamState();noamDiagramRefresh(exercise,thread,message,false);return completion;
 }
-function noamAppendSourceCropHelp(container,exercise,message){
+function noamAppendSourceCropHelp(container,exercise,message,thread){
   if(!message||message.role!=='assistant'||message.answerError||message.diagramErrorCode!=='DIAGRAM_UNSUPPORTED'||
       (message.visual&&message.visual.type==='source-crop')||!noamSourceCropExercise(exercise)){return;}
   var identity=noamSourceCropIdentity(exercise);
-  function current(){return container.isConnected&&selectedExercise&&selectedExercise.id===exercise.id&&identity===noamSourceCropIdentity(selectedExercise)&&message.diagramErrorCode==='DIAGRAM_UNSUPPORTED';}
+  function current(){return container.isConnected&&noamDiagramCurrent(exercise,thread)&&(thread.messages||[]).indexOf(message)>=0&&identity===noamSourceCropIdentity(selectedExercise)&&message.diagramErrorCode==='DIAGRAM_UNSUPPORTED'&&!noamQuestionDrawingBlocked(exercise,thread);}
   noamLoadSourceCrop(exercise).then(function(loaded){
     if(!loaded||!current()){return;}
-    var figure=noamRenderSourceCrop({type:'source-crop',exerciseId:exercise.id,sourceIdentity:identity});if(!figure){return;}
-    var details=document.createElement('details'),summary=document.createElement('summary');
-    details.open=true;details.dataset.visualType='source-crop';summary.textContent='עזר מהדף: השאלה המקורית';
-    summary.style.cssText='cursor:pointer;padding:12px 0;font-weight:700';
-    details.appendChild(summary);noamAddDiagramExpansion(details,figure);details.appendChild(figure);container.appendChild(details);
-    figure.querySelector('img').addEventListener('load',function(){
-      if(!current()||!details.isConnected){return;}
-      var status=container.querySelector('.noam-draw-error'),retry=container.querySelector('.noam-draw-action');
-      if(status){status.textContent='לא נוצר שרטוט חדש. מוצגת השאלה המקורית מהדף, כולל השרטוט אם הוא מופיע בה.';status.style.color='inherit';}
-      if(retry){setNoamDiagramButtonLabel(retry,'נסו ליצור המחשה נוספת',true);}
-    });
-    figure.querySelector('img').addEventListener('error',function(){
-      if(current()){
-        var status=container.querySelector('.noam-draw-error'),retry=container.querySelector('.noam-draw-action');
-        if(status){status.textContent=message.diagramError;status.style.color='';}
-        if(retry){setNoamDiagramButtonLabel(retry,'השרטוט לא הופיע — נסו שוב',true);}
-      }
-      details.remove();
-    });
+    var visual={type:'source-crop',exerciseId:exercise.id,sourceIdentity:identity};
+    if(!noamRenderSourceCrop(visual)){return;}
+    // The source aid occupies the same drawing slot as every other renderer.
+    // Persist it so reloads and later hints cannot add a second illustration.
+    message.visual=visual;delete message.diagramError;delete message.diagramErrorCode;
+    saveNoamState();noamDiagramRefresh(exercise,thread,message,true);
   });
 }
 
@@ -8120,6 +8119,8 @@ function noamRequestSourceFirst(exercise,thread,message,providedOptions){
       }
       return requestNoamDiagram(exercise,thread,message,Object.assign({},options,{nativeAttempted:true}));
     }
+    var existingVisual=noamReuseQuestionDrawing(exercise,thread,message);
+    if(existingVisual){saveNoamState();noamDiagramRefresh(exercise,thread,message,true);return existingVisual;}
     message.visual=visual;delete message.diagramError;delete message.diagramErrorCode;
     if(message.diagramTyped){
       message.text=visual.sourcePanelGroup?'הנה לוחות המקור וצילום השאלה עם הכיתובים המקוריים. לא נוצר שרטוט חדש ולא נבחר לוח כתשובה.':visual.presentation==='source-context'?'הנה השרטוט המקורי של הסעיף. לא נוספה אליו בנייה חדשה.':'הנה המחשה של השלב שעליו שאלת.';
@@ -8133,9 +8134,10 @@ function noamRequestSourceFirst(exercise,thread,message,providedOptions){
 function noamAttachSourceHint(exercise,thread,message,options){
   if(typeof noamPageAllowsDrawingHint==='function'&&!noamPageAllowsDrawingHint()){return Promise.resolve(null);}
   if(!window.NoamNativeVisual||!noamNativeDataUrl(exercise)){return Promise.resolve(null);}
+  if(noamQuestionDrawingBlocked(exercise,thread)){return Promise.resolve(null);}
   return noamPrepareSourceVisual(exercise,options).then(function(visual){
     if(!visual||/^source-scaffold-/.test(visual.presentation)||(visual.presentation==='source-context'&&!visual.sourcePanelGroup)||message.visual||message.answerError||
-      (thread.messages||[]).indexOf(message)<0||visual.sourceIdentity!==noamSourceVisualIdentity(exercise)||noamDiagramRuntime().messages.has(message)){return null;}
+      (thread.messages||[]).indexOf(message)<0||visual.sourceIdentity!==noamSourceVisualIdentity(exercise)||noamQuestionDrawingBlocked(exercise,thread)){return null;}
     message.visual=visual;saveNoamState();noamDiagramRefresh(exercise,thread,message,false);return visual;
   }).catch(function(){return null;});
 }
@@ -8322,78 +8324,22 @@ function noamSourceVertexAid(data,exercise){
   return {width:width,height:height,points:points.map(function(p){return {name:p.name,xy:p.svg_xy.slice()};})};
 }
 
-function noamAppendSourceDiagramHelp(container,exercise,message){
-  var legacy="עדיין לא הצלחתי להכין המחשה מדויקת לשלב הזה. אפשר לכתוב אילו קטעים או זוויות להדגיש.";
+function noamAppendSourceDiagramHelp(container,exercise,message,thread){
   if(!exercise||!message||message.answerError||message.role!=="assistant"||
-      !(message.diagramErrorCode==="DIAGRAM_UNSUPPORTED"||(!message.diagramErrorCode&&message.diagramError===legacy))){return;}
-  // Old unsupported conversations get an explicitly labelled source aid, not a
-  // fabricated AI success. The original answer/error and retry action remain.
-  var figure=noamNativeFigure(exercise);
-  if(!figure){return;}
-  figure.querySelector('figcaption').textContent="השרטוט המקורי — ללא הדגשה נוספת";
-  var sourceIdentity=noamDiagramSourceIdentity(exercise);
-  var sourceFigureUrl=exercise.nativeFigureUrl;
-  var details=document.createElement('details'),summary=document.createElement('summary');
-  summary.textContent="עזר מהדף: השרטוט המקורי";
-  summary.style.cssText="cursor:pointer;padding:12px 0;font-weight:700";
-  details.appendChild(summary);noamAddDiagramExpansion(details,figure);details.appendChild(figure);container.appendChild(details);
-  // Charts, graphs and subsection-specific figures are useful even when no
-  // extra overlay can be validated. Show the exact source and label it honestly.
-  details.open=true;
-  function sourceAidLoaded(){
-    if(!details.isConnected||!selectedExercise||selectedExercise.id!==exercise.id||selectedExercise.nativeFigureUrl!==sourceFigureUrl||
-        sourceIdentity!==noamDiagramSourceIdentity(selectedExercise)){return;}
-    var status=container.querySelector('.noam-draw-error'),retry=container.querySelector('.noam-draw-action');
-    if(status){status.textContent='לא נוצר שרטוט חדש. מוצג כאן עזר חזותי על השרטוט המקורי מהדף.';status.style.color='inherit';}
-    if(retry){setNoamDiagramButtonLabel(retry,'נסו ליצור המחשה נוספת',true);}
+      message.diagramErrorCode!=="DIAGRAM_UNSUPPORTED"||!noamPageAllowsDrawingHint()){return;}
+  var identity=noamSourceVisualIdentity(exercise);
+  function current(){
+    return container.isConnected&&noamDiagramCurrent(exercise,thread)&&
+      identity===noamSourceVisualIdentity(exercise)&&!noamQuestionDrawingBlocked(exercise,thread);
   }
-  function sourceAidFailed(){
-    var status=container.querySelector('.noam-draw-error'),retry=container.querySelector('.noam-draw-action');
-    if(status){status.textContent=message.diagramError;status.style.color='';}
-    if(retry){setNoamDiagramButtonLabel(retry,'השרטוט לא הופיע — נסו שוב',true);}
-    details.remove();
-  }
-  figure.querySelector('img').addEventListener('error',sourceAidFailed);
-  figure.querySelector('img').addEventListener('load',sourceAidLoaded);
-  var match=String(exercise.nativeFigureUrl||"").match(/^(\/noam-ai\/native\/[A-Z0-9-]+\/[abc]\/)figures\/[a-zA-Z0-9_-]+\.svg$/);
-  if(!match){return;}
-  fetch(match[1]+'noam-ai.json',{cache:'force-cache'}).then(function(r){return r.ok?r.json():null;}).then(function(data){
-      if(!details.isConnected||!selectedExercise||selectedExercise.id!==exercise.id||selectedExercise.nativeFigureUrl!==sourceFigureUrl||sourceIdentity!==noamDiagramSourceIdentity(selectedExercise)){return;}
-      var aid=noamSourceVertexAid(data,exercise);if(!aid){return;}
-      var button=document.createElement('button');button.type='button';button.className='noam-draw-action';
-      button.style.cssText='min-height:44px;padding:8px 12px;font:inherit';
-      button.textContent='איתור הקודקודים';button.setAttribute('aria-pressed','false');
-      var original=figure.querySelector('img'),caption=figure.querySelector('figcaption'),marked=null;
-      function toggleVertices(){
-        if(button.getAttribute('aria-pressed')==='true'){
-          marked.replaceWith(original);button.setAttribute('aria-pressed','false');
-          caption.textContent='השרטוט המקורי — ללא הדגשה נוספת';return;
-        }
-        var ns='http://www.w3.org/2000/svg';
-        marked=document.createElementNS(ns,'svg');marked.setAttribute('viewBox','0 0 '+aid.width+' '+aid.height);
-        marked.setAttribute('class','noam-geometry-svg');marked.setAttribute('role','img');
-        marked.setAttribute('aria-label','השרטוט המקורי עם סימון כל הקודקודים באותו צבע, ללא התאמה ביניהם');
-        marked.style.cssText='display:block;width:100%;height:auto;background:white';
-        var image=document.createElementNS(ns,'image');image.setAttribute('href',exercise.nativeFigureUrl);
-        // Report the source aid only once the actual original SVG has loaded.
-        // The stored generation error and retry behavior remain intact.
-        image.addEventListener('load',sourceAidLoaded);
-        image.addEventListener('error',sourceAidFailed);
-        image.setAttribute('width',String(aid.width));image.setAttribute('height',String(aid.height));marked.appendChild(image);
-        aid.points.forEach(function(p){
-          var ring=document.createElementNS(ns,'circle');ring.setAttribute('cx',String(p.xy[0]));ring.setAttribute('cy',String(p.xy[1]));
-          ring.setAttribute('r','5');ring.setAttribute('fill','none');ring.setAttribute('stroke','#2677bb');ring.setAttribute('stroke-width','1.8');marked.appendChild(ring);
-        });
-        original.replaceWith(marked);button.setAttribute('aria-pressed','true');
-        caption.textContent='עזר מהדף: כל הקודקודים מודגשים באותו צבע. היעזרו בסדר הקודקודים מהחפיפה שהוכחתם; הסימון אינו נותן את ההתאמה.';
-      }
-      button.addEventListener('click',toggleVertices);
-      details.insertBefore(button,figure);
-      // The verified aid is immediately useful, including on restored chats.
-      // Only the static package is loaded; no retry or model call is performed.
-      summary.textContent='עזר מהדף: איתור הקודקודים';
-      details.open=true;toggleVertices();
-  }).catch(function(){/* The plain approved source remains available. */});
+  if(noamQuestionDrawingBlocked(exercise,thread)){return;}
+  // Source recovery uses the same validated, persisted slot as the draw button.
+  // It must never append a separate figure or offer another generation.
+  noamPrepareSourceVisual(exercise,{studentMessage:'הראה את השרטוט המקורי',helpKind:'free_question'}).then(function(visual){
+    if(!visual||!current()||!noamRenderDrawingVisual(visual)){return;}
+    message.visual=visual;delete message.diagramError;delete message.diagramErrorCode;
+    saveNoamState();noamDiagramRefresh(exercise,thread,message,true);
+  }).catch(function(){/* A failed source recovery leaves the original retry available. */});
 }
 
 function showExercisePreview(exercise,dataUrl){
@@ -9233,7 +9179,7 @@ function noamSolverMessage(studentMessage,thread,topic,guidePrompt,analysis,exer
 
 function noamResponseVisual(exercise,thread,studentMessage,answer,helpKind,hintIndex,imageAnalysis){
   var visualContext=ttl+" "+String(imageAnalysis&&imageAnalysis.diagram_description||"");
-  if (!exercise||!noamVisualNeed(studentMessage,answer,helpKind,hintIndex,visualContext)){return null;}
+  if (!exercise||noamQuestionDrawingBlocked(exercise,thread)||!noamVisualNeed(studentMessage,answer,helpKind,hintIndex,visualContext)){return null;}
   return noamConstructedVisual(exercise,{
     studentMessage:studentMessage,answer:answer,helpKind:helpKind,hintIndex:hintIndex,
     progress:thread&&thread.hintIndex
@@ -9266,12 +9212,64 @@ function noamPageAllowsDrawingHint(){
   return noamDrawingHintTopic(prefix,title)!=='';
 }
 
+function noamRenderDrawingVisual(visual){
+  if(!visual||visual.type==='question-image'||visual.type==='native-original-table'||!noamPageAllowsDrawingHint()){return null;}
+  if(visual.type==='source-crop'){return noamRenderSourceCrop(visual);}
+  if(visual.type==='native-source-visual'){return noamRenderSourceVisual(visual);}
+  if(visual.type==='native-source-focus'){return noamRenderNativeFocus(visual);}
+  if(visual.type==='ai-diagram'){return noamRenderAiDiagram(visual);}
+  if(visual.type==='geometry-guide'){return noamRenderGeometryGuide(visual);}
+  return window.NoamLocalVisual&&window.NoamLocalVisual.render(document,visual);
+}
+
+function noamQuestionDrawing(exercise,thread){
+  var messages=thread&&thread.messages||[];
+  for(var i=0;i<messages.length;i++){
+    var message=messages[i],visual=message&&message.visual;
+    if(!visual||message.role!=='assistant'||(visual.exerciseId&&exercise&&visual.exerciseId!==exercise.id)){continue;}
+    // Revalidate restored drawings against the current source. An invalid or
+    // unrenderable saved result must not permanently suppress the first draw.
+    var element=noamRenderDrawingVisual(visual);
+    if(element){return {message:message,element:element};}
+  }
+  return null;
+}
+
+function noamReuseQuestionDrawing(exercise,thread,message){
+  var existing=noamQuestionDrawing(exercise,thread);
+  if(!existing||existing.message===message){return null;}
+  if(message.diagramTyped){message.text='השרטוט של השאלה כבר מוצג בשיחה.';delete message.diagramTyped;}
+  delete message.diagramError;delete message.diagramErrorCode;
+  return existing.message.visual;
+}
+
+function noamTrimQuestionMessages(exercise,thread){
+  var drawing=noamQuestionDrawing(exercise,thread)||noamPendingQuestionDrawing(thread);
+  var recent=thread.messages.slice(-60);
+  // Keep the question's drawing through long conversations, including reloads.
+  if(drawing&&recent.indexOf(drawing.message)<0){recent.shift();recent.unshift(drawing.message);}
+  thread.messages=recent;
+}
+
+function noamPendingQuestionDrawing(thread){
+  var messages=thread&&thread.messages||[],pending=noamDiagramRuntime().messages;
+  for(var i=0;i<messages.length;i++){
+    if(pending.has(messages[i])){return {message:messages[i],promise:pending.get(messages[i])};}
+  }
+  return null;
+}
+
+function noamQuestionDrawingBlocked(exercise,thread){
+  return !!(noamQuestionDrawing(exercise,thread)||noamPendingQuestionDrawing(thread));
+}
+
 function noamCanOfferDrawing(exercise,thread,message){
   if(typeof noamPageAllowsDrawingHint==='function'&&!noamPageAllowsDrawingHint()){return false;}
   if (!exercise||!thread||!message||message.answerError||message.understood||message.role!=="assistant"||!String(message.text||"").trim()){
     return false;
   }
-  if (message.visual&&message.visual.type==="source-crop"){return true;}
+  if (noamQuestionDrawing(exercise,thread)){return false;}
+  if (message.visual&&message.visual.type==="source-crop"){return !noamRenderSourceCrop(message.visual);}
   if (message.visual&&message.visual.type==="native-source-visual"){return !noamRenderSourceVisual(message.visual);}
   if (message.visual&&message.visual.type==="native-source-focus"){return !noamRenderNativeFocus(message.visual);}
   if (message.visual&&message.visual.type==="geometry-guide"){
@@ -9642,6 +9640,8 @@ function noamDiagramRefresh(exercise,thread,message,complete){
   if (!noamDiagramCurrent(exercise,thread)){return;}
   renderNoamChat();
   if (complete){
+    var existingDrawing=noamQuestionDrawing(exercise,thread);
+    if(existingDrawing){message=existingDrawing.message;}
     var reveal=function(){
       if (!noamDiagramCurrent(exercise,thread)){return;}
       var transcript=document.getElementById("noamTranscript");
@@ -9806,6 +9806,13 @@ function pollNoamDiagramJob(jobId){
 }
 
 function requestNoamDiagram(exercise,thread,message,providedOptions){
+  var existing=noamQuestionDrawing(exercise,thread);
+  if(existing){
+    noamDiagramRefresh(exercise,thread,existing.message,true);
+    return Promise.resolve(existing.message.visual);
+  }
+  var pending=noamPendingQuestionDrawing(thread);
+  if(pending){return pending.promise;}
   var cropOptions=providedOptions||noamMessageVisualOptions(thread,message);
   if(!(message.visual&&message.visual.type==="source-crop")&&noamSourceCropRequested(exercise,cropOptions)){
     return noamRequestSourceCrop(exercise,thread,message,cropOptions);
@@ -9903,6 +9910,8 @@ function requestNoamDiagram(exercise,thread,message,providedOptions){
     if ((thread.messages||[]).indexOf(message)<0){return visual;}
     // A section switch does not cancel a useful result, but it cannot mutate
     // or redraw the new section's conversation.
+    var existingVisual=noamReuseQuestionDrawing(exercise,thread,message);
+    if(existingVisual){return existingVisual;}
     message.visual=visual;delete message.diagramError;
     if (message.diagramTyped){
       message.text="הנה המחשה של השלב שעליו שאלת.";
@@ -9946,7 +9955,7 @@ function noamAnswerUnderstood(reply){
   if (!selectedExercise||busy||!text){return false;}
   var thread=exerciseThread(selectedExercise.id);
   thread.messages.push({role:"user",text:"הבנתי",kind:"",understood:true},{role:"assistant",text:text,kind:"",understood:true});
-  thread.messages=thread.messages.slice(-60);
+  noamTrimQuestionMessages(selectedExercise,thread);
   saveNoamState();renderNoamChat();
   announceNoam(exerciseLabel(selectedExercise) + ". רמזי: " + text);
   return true;
@@ -10124,7 +10133,7 @@ function askNoam(helpKind,studentMessage){
       thread.preparedHintRevision=prepared.revision;
       thread.messages.push({role:"assistant",text:answer,kind:"",preparedHint:true,preparedHintIndex:hintIndex});
       thread.history.push({role:"user",content:historyQuestion,preparedHint:true,preparedHintIndex:hintIndex},{role:"assistant",content:answer,preparedHint:true,preparedHintIndex:hintIndex});
-      thread.history=thread.history.slice(-8);thread.messages=thread.messages.slice(-60);
+      thread.history=thread.history.slice(-8);noamTrimQuestionMessages(exercise,thread);
       thread.hintIndex=hintIndex+1;
       saveNoamState();operation.complete();renderNoamChat();
       if(selectedExercise&&selectedExercise.id===exercise.id){announceNoam(exerciseLabel(exercise)+". רמזי: "+answer);}
@@ -10204,7 +10213,7 @@ function askNoam(helpKind,studentMessage){
       thread.messages.push(deliveredMessage);
       thread.history.push({role:"user",content:historyQuestion},{role:"assistant",content:answer});
       thread.history=thread.history.slice(-8);
-      thread.messages=thread.messages.slice(-60);
+      noamTrimQuestionMessages(exercise,thread);
       if (helpKind==="hint"){thread.hintIndex=Math.min(3,thread.hintIndex+1);}
       if (attachments.length&&typeof clearNoamAttachments==="function"){clearNoamAttachments(exercise.id,attachments);}
       saveNoamState();operation.complete();renderNoamChat();

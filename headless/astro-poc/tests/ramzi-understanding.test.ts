@@ -52,6 +52,8 @@ const guides = (
   }
 ).NoamDidacticGuides;
 const viewer = readFileSync(join(root, 'public/worksheet-viewer-noam.html'), 'utf8');
+const drawingState = ['noamRenderDrawingVisual', 'noamQuestionDrawing', 'noamPendingQuestionDrawing', 'noamTrimQuestionMessages']
+  .map(name => namedFunction(viewer, name)).join('\n');
 const proof = 'G9-T15-E-Q04א';
 const plain = 'G9-T15-E-Q01א';
 
@@ -195,8 +197,9 @@ describe('Ramzi understanding checks', () => {
       selectedExercise: { id: 'ex', q: 1, part: 'א' }, busy: false, noamDrafts: drafts,
       exerciseThread: () => thread, saveNoamState() {}, renderNoamChat() { renders++; },
       announceNoam() {}, exerciseLabel: () => 'שאלה 1 · סעיף א',
+      noamPageAllowsDrawingHint: () => true, noamDiagramRuntime: () => ({ messages: new Map() }),
     };
-    const api = runInNewContext(helper + '\n({noamAnswerUnderstood})', ctx);
+    const api = runInNewContext(drawingState + '\n' + helper + '\n({noamAnswerUnderstood})', ctx);
     assert.equal(ctx.window.noamAnswerUnderstood, api.noamAnswerUnderstood, 'the adapter reaches it through window');
     assert.equal(api.noamAnswerUnderstood(guides.understoodText), true);
     assert.deepEqual(thread.messages.slice(-2).map((m) => [m.role, m.text, m.understood]), [['user', 'הבנתי', true], ['assistant', guides.understoodText, true]]);
@@ -207,7 +210,7 @@ describe('Ramzi understanding checks', () => {
     ctx.busy = true;
     assert.equal(api.noamAnswerUnderstood(guides.understoodText), false);
     const drawing = viewer.slice(viewer.indexOf('function noamLatestDrawingAnswer('), viewer.indexOf('function renderNoamChat('));
-    const pick = runInNewContext(drawing + '\n({noamLatestDrawingAnswer})', {});
+    const pick = runInNewContext(drawingState + '\n' + drawing + '\n({noamLatestDrawingAnswer})', ctx);
     const hintMessage = { role: 'assistant', text: 'רמז 1' };
     assert.equal(pick.noamLatestDrawingAnswer({ messages: [hintMessage, ...thread.messages.slice(-2)] }), hintMessage, 'a drawing still illustrates the hint');
     assert.match(viewer, /message\.answerError\|\|message\.understood\|\|message\.role!=="assistant"/);
@@ -232,6 +235,26 @@ describe('Ramzi understanding checks', () => {
     });
     assert.match(follow.text, /השלב|∠EBD|מקביל/);
     assert.equal(follow.text.startsWith(guides.understoodLead), false);
+  });
+
+  it('an understood exchange trims a long conversation without losing its sole drawing, including after reload', () => {
+    const selectedExercise = { id: 'ex', q: 1, part: 'א' };
+    const firstDrawing = { role: 'assistant', text: 'השרטוט המקורי', visual: { type: 'native-source-visual', exerciseId: 'ex' } };
+    const thread = { hintIndex: 1, history: [], messages: [firstDrawing, ...Array.from({ length: 59 }, (_, index) => ({ role: 'assistant', text: 'הסבר ' + index }))] as any[] };
+    const context = {
+      window: {}, selectedExercise, busy: false, exerciseThread: () => thread,
+      saveNoamState() {}, renderNoamChat() {}, announceNoam() {}, exerciseLabel: () => 'שאלה 1',
+      noamPageAllowsDrawingHint: () => true, noamDiagramRuntime: () => ({ messages: new Map() }),
+      noamRenderSourceVisual: () => ({}),
+    };
+    const api = runInNewContext(drawingState + '\n' + namedFunction(viewer, 'noamAnswerUnderstood') + '\n({noamAnswerUnderstood,noamQuestionDrawing})', context);
+    assert.equal(api.noamAnswerUnderstood(guides.understoodText), true);
+    assert.equal(thread.messages.length, 60);
+    assert.equal(thread.messages[0], firstDrawing);
+    assert.equal(thread.messages.filter(message => message.visual).length, 1);
+    assert.deepEqual(thread.messages.slice(-2).map(message => [message.role, message.understood]), [['user', true], ['assistant', true]]);
+    const restored = JSON.parse(JSON.stringify(thread));
+    assert.equal(api.noamQuestionDrawing(selectedExercise, restored).message.text, firstDrawing.text);
   });
 
   it('asks for a new explanation when there is no guide, and never stitches old replies', () => {
@@ -327,8 +350,9 @@ it('the local understood exchange and closing message have no understanding pair
  const transcript=document.getElementById('noamTranscript')!,thread:any={hintIndex:1,history:[],messages:[{role:'assistant',text:'איזו צלע משותפת?'}]};
  (window as any).NoamDidacticGuides=guides;
  const c:any={document,window,selectedExercise:{id:'ex'},busy:false,pendingCheckFocus:false,noamStripMarkdownEmphasis:(s:string)=>s,noamCanOfferDrawing:()=>false,
+  noamPageAllowsDrawingHint:()=>true,noamDiagramRuntime:()=>({messages:new Map()}),
   exerciseThread:()=>thread,saveNoamState(){},announceNoam(){},exerciseLabel:()=> 'סעיף א'};
- runInNewContext(['addTranscriptBubble','rowText','rowQualifies','makeCheckGroup','placeUnderstandingChecks','noamAnswerUnderstood'].map(n=>namedFunction(viewer,n)).join('\n'),c);
+ runInNewContext(drawingState+'\n'+['addTranscriptBubble','rowText','rowQualifies','makeCheckGroup','placeUnderstandingChecks','noamAnswerUnderstood'].map(n=>namedFunction(viewer,n)).join('\n'),c);
  c.renderNoamChat=()=>{transcript.replaceChildren();thread.messages.forEach((m:any)=>c.addTranscriptBubble(transcript,m.role,m.text,'',null,m,thread));c.placeUnderstandingChecks(transcript);};
  c.renderNoamChat();assert.equal(transcript.querySelectorAll('.ramzi-check').length,1);
  assert.equal(c.noamAnswerUnderstood(guides.understoodText),true);assert.equal(transcript.querySelectorAll('.ramzi-check').length,0);assert.equal(transcript.querySelectorAll('[data-ramzi-understood="1"]').length,2);

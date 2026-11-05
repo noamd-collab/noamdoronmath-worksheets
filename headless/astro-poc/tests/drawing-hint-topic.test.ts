@@ -21,6 +21,7 @@ const topicFns = slice('var NOAM_DRAWING_HINT_GEOMETRY=', 'function noamCanOffer
 const offerFns = slice('function noamCanOfferDrawing(', 'function noamConstructedVisual(');
 const needFn = slice('function noamVisualNeed(', 'function noamRecentThreadText(');
 const bubbleFns = slice('function setNoamDiagramButtonLabel(', 'function ensureNoamGlossaryPopover(');
+const chatFns = slice('function noamLatestDrawingAnswer(', 'function localVisualExerciseSource(');
 
 const catalogStart = indexHtml.indexOf('var DATA = {');
 const catalogEnd = indexHtml.indexOf('/* ===================== מכאן ומטה');
@@ -44,12 +45,23 @@ function expectedKind(topic: { x?: string; g: string; t: string }) {
   return '';
 }
 
+function catalogSource(grade: number, topic: { id: number; x?: string; g: string; t: string }) {
+  const row = DATA[grade].links[topic.id];
+  const prefix = row?.sourcePrefix || topic.x!;
+  const sourceTopic = row?.sourceGrade
+    ? DATA[row.sourceGrade].topics.find((source) => source.x === prefix)
+    : undefined;
+  return { prefix, topic: sourceTopic || topic };
+}
+
 function pageApi(prefix: string, title: string) {
   return runInNewContext(topicFns + offerFns + needFn + '\n({noamDrawingHintTopic,noamPageAllowsDrawingHint,noamCanOfferDrawing,noamVisualNeed})', {
     manifest: { prefix, topic: title },
     x: prefix,
     ttl: title,
-    window: { NoamLocalVisual: { wantsVisualSupport: () => false } },
+    window: { NoamLocalVisual: { wantsVisualSupport: () => true } },
+    noamDiagramRuntime: () => ({ messages: new Map() }),
+    noamRenderDrawingVisual: () => null,
     localVisualExerciseSource: () => 'ריבוע משולש משוואה ושבר',
     noamRecentThreadText: () => '',
     noamGeometryContext: () => true,
@@ -71,13 +83,9 @@ test('catalog topics allow a drawing hint only for geometry and analytic geometr
     for (const topic of DATA[grade].topics) {
       if (!topic.x) continue;
       // Declared reuse opens the original source worksheet and preserves its topic policy.
-      const row = DATA[grade].links[topic.id];
-      const sourcePrefix = row?.sourcePrefix || topic.x;
-      const sourceTopic = row?.sourceGrade
-        ? DATA[row.sourceGrade].topics.find((source) => source.x === sourcePrefix)
-        : undefined;
-      const expected = expectedKind(sourceTopic || topic);
-      const actual = api.noamDrawingHintTopic(sourcePrefix, topic.t);
+      const source = catalogSource(grade, topic);
+      const expected = expectedKind(source.topic);
+      const actual = api.noamDrawingHintTopic(source.prefix, topic.t);
       assert.equal(actual, expected, topic.x + ' ' + topic.t);
       if (expected) seen[expected as 'geometry' | 'analytic-geometry']++;
       else seen.denied++;
@@ -132,49 +140,152 @@ test('geometry and analytic-geometry pages still offer a drawing hint', () => {
   }
 });
 
-test('the transcript drawing-hint button is absent on algebra and present on geometry', () => {
-  function render(prefix: string, title: string) {
-    const { document } = parseHTML('<html><body><div id="host"></div></body></html>');
-    const host = document.getElementById('host')!;
-    const message = { ...hintAnswer };
-    const thread = { messages: [hintUser, message], history: [] };
-    const ctx: Record<string, unknown> = {
-      document,
-      selectedExercise: { id: prefix },
-      manifest: { prefix, topic: title },
-      x: prefix,
-      ttl: title,
-      window: { NoamLocalVisual: { wantsVisualSupport: () => false } },
-      localVisualExerciseSource: () => '',
-      noamRecentThreadText: () => '',
-      noamGeometryContext: () => true,
-      noamNativeDataUrl: () => '/native',
-      noamRenderAiDiagram: () => ({}),
-      noamRenderGeometryGuide: () => ({}),
-      noamRenderSourceVisual: () => ({}),
-      noamRenderNativeFocus: () => ({}),
-      noamDiagramRuntime: () => ({ messages: new Map() }),
-      noamStripMarkdownEmphasis: (value: string) => value,
-      noamVisualCanExpand: () => false,
-      requestNoamDiagram() { throw new Error('algebra must not request a drawing hint'); },
-    };
-    runInNewContext(topicFns + offerFns + bubbleFns, ctx);
-    (ctx.addTranscriptBubble as Function)(host, 'assistant', message.text, '', null, message, thread);
-    return host;
+/** Render the actual composer and transcript; only visual assets and transport are doubles. */
+function chatFixture(prefix: string, title: string) {
+  const { document, window } = parseHTML('<html><body><button id="back"></button><main id="panel"></main></body></html>');
+  const exercise = { id: prefix + '-A-Q01א', text: 'התבוננו בנתונים בשאלה.' };
+  const message: any = { ...hintAnswer };
+  const thread: any = { messages: [{ ...hintUser }, message], history: [], hintIndex: 1 };
+  const runtime = { messages: new Map(), cache: new Map(), jobs: new Map() };
+  const calls: unknown[] = [];
+  const figure = (visual: any) => {
+    if (visual.invalid) return null;
+    const element = document.createElement('figure');
+    element.className = 'noam-geometry';
+    element.dataset.visualType = visual.type;
+    return element;
+  };
+  const c: any = {
+    document, window: { NoamLocalVisual: { wantsVisualSupport: () => true, render: figure } },
+    selectedExercise: exercise, manifest: { prefix, topic: title, exercises: [exercise] }, x: prefix, ttl: title,
+    panelBody: document.getElementById('panel'), panelBack: document.getElementById('back'),
+    threads: { [exercise.id]: thread }, exerciseThread: () => thread, noamDrafts: {},
+    busy: false, mathKeyboardOpen: false, activeGlossaryEntryId: null,
+    localVisualExerciseSource: () => '', noamRecentThreadText: () => '', noamGeometryContext: () => true,
+    noamNativeDataUrl: () => '/native', noamDiagramRuntime: () => runtime,
+    noamRenderAiDiagram: figure, noamRenderGeometryGuide: figure, noamRenderSourceVisual: figure,
+    noamRenderSourceCrop: figure, noamRenderNativeFocus: figure, noamRenderOriginalTable: figure,
+    noamStripMarkdownEmphasis: (value: string) => value, esc: (value: string) => value,
+    exerciseLabel: () => 'שאלה 1 · סעיף א', noamAddDiagramExpansion() {}, noamAppendSourceCropHelp() {}, noamAppendSourceDiagramHelp() {},
+    hideNoamGlossaryPopover() {}, renderNoamAttachments() {}, locateSelectedExercise() {},
+    noamKeepComposerFocusForSend() {},
+    setNoamBusy() {}, renderNoamFractionMarkers() {}, renderPanelMath() {}, enhanceNoamGlossary() {},
+    restoreNoamChatFocus() {}, renderExercisePreview() {}, saveNoamState() {},
+  };
+  runInNewContext(topicFns + offerFns + bubbleFns + chatFns, c);
+  c.requestNoamDiagram = (_exercise: any, _thread: any, answer: any) => {
+    calls.push(answer);
+    answer.visual = { type: 'native-source-visual', exerciseId: exercise.id };
+    c.renderNoamChat();
+    return Promise.resolve(answer.visual);
+  };
+  return { c, document, window, exercise, message, thread, runtime, calls, render: () => c.renderNoamChat() };
+}
+
+const drawingTypes = [
+  { type: 'source-crop' },
+  { type: 'native-source-visual', presentation: 'source-context' },
+  { type: 'native-source-visual', sourcePanelGroup: true },
+  { type: 'geometry-guide' },
+  { type: 'ai-diagram', plan: { version: 1 } },
+  { type: 'ai-diagram', plan: { version: 2 } },
+  { type: 'labeled-triangle' },
+  { type: 'native-source-focus' },
+];
+
+function assertNoDrawingActions(document: any, label: string) {
+  assert.equal(!!document.querySelector('#noamDraw'), false, label + ': composer button is absent, not disabled');
+  assert.equal(!!document.querySelector('.noam-draw-action:not(.noam-diagram-expand)'), false, label + ': no inline retry/regeneration');
+}
+
+test('every catalog page renders the drawing control only on geometry, then removes it after one click', () => {
+  const checked = { allowed: 0, blocked: 0 };
+  for (const grade of [7, 8, 9]) for (const topic of DATA[grade].topics) {
+    if (!topic.x) continue;
+    const source = catalogSource(grade, topic);
+    const f = chatFixture(source.prefix, topic.t);
+    f.render();
+    const button = f.document.getElementById('noamDraw');
+    if (!expectedKind(source.topic)) {
+      checked.blocked++;
+      assertNoDrawingActions(f.document, topic.x);
+      for (const visual of drawingTypes) {
+        f.message.visual = { ...visual, exerciseId: f.exercise.id };
+        f.render();
+        assertNoDrawingActions(f.document, topic.x + ' saved ' + visual.type);
+        assert.equal(!!f.document.querySelector('.noam-geometry'), false, topic.x + ': saved drawing stays suppressed');
+      }
+      assert.equal(f.calls.length, 0);
+      continue;
+    }
+    checked.allowed++;
+    assert.ok(button, topic.x + ': geometry offers one drawing');
+    assert.equal(button!.hidden, false);
+    button!.click();
+    assert.equal(f.calls.length, 1, topic.x + ': one click starts one drawing');
+    assertNoDrawingActions(f.document, topic.x);
+    assert.equal(f.document.querySelectorAll('.noam-geometry').length, 1);
+    button!.click();
+    assert.equal(f.calls.length, 1, topic.x + ': stale click cannot generate again');
+    f.thread.messages.push({ role: 'assistant', text: 'רמז נוסף לאותה השאלה.' });
+    f.render();
+    assertNoDrawingActions(f.document, topic.x + ' later hint');
+    // Rehydrate the persisted transcript as a new set of objects, as after reload.
+    f.thread.messages = JSON.parse(JSON.stringify(f.thread.messages));
+    f.runtime.messages.clear();
+    f.render();
+    assertNoDrawingActions(f.document, topic.x + ' restored');
+    assert.equal(f.document.querySelectorAll('.noam-geometry').length, 1);
   }
-  const algebra = render('G9-T45', 'הפרש ריבועים');
-  assert.equal(algebra.querySelector('.noam-draw-action'), null);
-  assert.equal(algebra.querySelector('#noamDraw'), null);
-  assert.doesNotMatch(algebra.textContent || '', /שרטוט להמחשה|רמז בשרטוט/);
-  const geometry = render('G8-T38', 'חפיפת משולשים');
-  const button = geometry.querySelector('.noam-draw-action');
-  assert.ok(button);
-  assert.match(button!.textContent || '', /שרטוט להמחשה/);
+  assert.ok(checked.allowed > 20);
+  assert.ok(checked.blocked > checked.allowed);
 });
 
-test('the compose control #noamDraw stays hidden unless the page topic allows a drawing hint', () => {
-  assert.match(viewer, /id="noamDraw"'\+\(\(drawingAnswer&&drawingHintsAllowed\)/);
-  assert.match(viewer, /if\(!drawingHintsAllowed\|\|busy\|\|!drawingAnswer/);
-  assert.match(viewer, /if\(typeof noamPageAllowsDrawingHint==='function'&&!noamPageAllowsDrawingHint\(\)\)\{return Promise\.resolve\(null\);\}/);
-  assert.match(viewer, /if\(typeof noamPageAllowsDrawingHint==='function'&&!noamPageAllowsDrawingHint\(\)\)\{return Promise\.resolve\(null\);\}\s*if\(!window\.NoamNativeVisual/);
+test('every permitted topic hides both drawing controls for every supported saved drawing type', () => {
+  for (const grade of [7, 8, 9]) for (const topic of DATA[grade].topics) {
+    if (!topic.x) continue;
+    const source = catalogSource(grade, topic);
+    if (!expectedKind(source.topic)) continue;
+    for (const visual of drawingTypes) {
+      const f = chatFixture(source.prefix, topic.t);
+      f.message.visual = { ...visual, exerciseId: f.exercise.id };
+      f.thread.messages.push({ role: 'assistant', text: 'המשיכו להתבונן באותו שרטוט.' });
+      f.render();
+      assertNoDrawingActions(f.document, topic.x + ' ' + visual.type);
+      assert.equal(f.document.querySelectorAll('.noam-geometry').length, 1, topic.x + ' ' + visual.type);
+    }
+  }
+});
+
+test('saved duplicates keep one drawing and all answer text, with no regenerate action', () => {
+  const f = chatFixture('G7-T17', 'שטחי מקבילית וטרפז');
+  f.message.visual = { type: 'native-source-visual', exerciseId: f.exercise.id };
+  f.thread.messages.push({ role: 'assistant', text: 'תשובה שנייה שנשמרה.', visual: { type: 'geometry-guide', exerciseId: f.exercise.id } });
+  f.render();
+  assert.equal(f.document.querySelectorAll('.noam-geometry').length, 1);
+  assert.match(f.document.getElementById('noamTranscript')!.textContent!, /תשובה שנייה שנשמרה/);
+  assertNoDrawingActions(f.document, 'saved duplicates');
+});
+
+test('a pending request disables drawing across later answers; failure restores a retry', () => {
+  const f = chatFixture('G9-T08', 'גיאומטריה אנליטית');
+  f.runtime.messages.set(f.message, Promise.resolve(null));
+  f.thread.messages.push({ role: 'assistant', text: 'רמז נוסף.' });
+  f.render();
+  assert.equal((f.document.getElementById('noamDraw') as any)?.disabled, true);
+  for (const button of f.document.querySelectorAll('.noam-draw-action:not(.noam-diagram-expand)')) {
+    assert.equal((button as any).disabled, true, 'pending earlier answer disables every generation control');
+  }
+  f.runtime.messages.clear();
+  f.message.diagramError = 'השרטוט עדיין לא מוכן.';
+  f.render();
+  assert.ok(f.document.getElementById('noamDraw'), 'failed first attempt remains retryable');
+});
+
+test('an invalid saved drawing is not treated as successfully rendered', () => {
+  const f = chatFixture('G8-T38', 'חפיפת משולשים');
+  f.message.visual = { type: 'ai-diagram', exerciseId: f.exercise.id, invalid: true };
+  f.render();
+  assert.equal(f.document.querySelectorAll('.noam-geometry').length, 0);
+  assert.ok(f.document.getElementById('noamDraw'));
 });

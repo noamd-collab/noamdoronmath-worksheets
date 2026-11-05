@@ -9,6 +9,12 @@ const source = read('public/worksheet-viewer-noam.html');
 const helpers = 'function noamNativeFigure' + source.split('function noamNativeFigure')[1].split('function showExercisePreview')[0];
 const zoom = 'function noamAddDiagramExpansion' + source.split('function noamAddDiagramExpansion')[1].split('function noamDiagramRuntime')[0];
 const label = 'function setNoamDiagramButtonLabel' + source.split('function setNoamDiagramButtonLabel')[1].split('function addTranscriptBubble')[0];
+const sourceHelpers = 'var noamSourceVisualPackages=' + source.split('var noamSourceVisualPackages=')[1].split('function noamNativeFigure(')[0];
+const modules = ['noam-native-visual.js','noam-source-panels.js'].map(name => read('public/'+name)).join('\n');
+function fn(name:string) {
+ const start=source.indexOf('function '+name+'(');assert.ok(start>=0,name);
+ const tail=source.slice(start);return tail.slice(0,tail.indexOf('\nfunction ',1));
+}
 const rows = ['pilot','next-ten','second-ten','third-ten','fourth-ten','remaining-101'].flatMap(n => JSON.parse(read(`src/data/worksheet-${n}.v1.json`)).sheets);
 const alternate:any[] = [];
 for (const r of rows) {
@@ -20,29 +26,46 @@ for (const r of rows) {
  }
 }
 function fixture(data:any, manifest:any, ex:any) {
- const {document,window}=parseHTML('<html><body><div id="bubble"><button class="noam-draw-action"></button><span class="noam-draw-error">unsupported</span></div></body></html>');
- const calls:string[]=[];
+ const {document,window}=parseHTML('<html><body><div id="noamTranscript"><div id="bubble"><button class="noam-draw-action"></button><span class="noam-draw-error">unsupported</span></div></div></body></html>');
+ const calls:string[]=[],runtime={messages:new Map()},thread:any={messages:[],history:[]};
  const context:any={document,window,manifest,selectedExercise:ex,exerciseLabel:()=>ex.id,
-  noamDiagramSourceIdentity:(e:any)=>e.id,renderNoamChat:()=>{},
-  fetch:async(url:string)=>{calls.push(url);return {ok:true,json:async()=>data};}};
- runInNewContext(label+'\n'+helpers+'\n'+zoom,context);
- return {document,window,context,calls};
+  // This suite checks exact source wiring; catalog tests cover the page-policy gate.
+  noamPageAllowsDrawingHint:()=>true,noamDiagramRuntime:()=>runtime,exerciseThread:()=>thread,
+  noamDiagramSourceIdentity:(e:any)=>e.id,saveNoamState(){},announceNoam(){},
+  noamStripMarkdownEmphasis:(text:string)=>text,
+  cropExerciseCanvas:async()=>({width:640,height:1200,toDataURL:()=> 'data:image/png;base64,QUJD'}),
+  renderNoamChat:()=>{
+   const host=document.getElementById('noamTranscript')!;host.innerHTML='';
+   thread.messages.forEach((message:any)=>context.addTranscriptBubble(host,message.role,message.text,'',message.visual,message,thread));
+  },
+  fetch:async(url:string)=>{calls.push(url);return {ok:true,json:async()=>data,text:async()=>read('public'+url)};}};
+ runInNewContext(modules+'\n'+sourceHelpers+'\n'+label+'\n'+helpers+'\n'+zoom+'\n'+[
+  'noamDiagramCurrent','noamDiagramRefresh','noamRenderDrawingVisual','noamQuestionDrawing',
+  'noamPendingQuestionDrawing','noamQuestionDrawingBlocked','noamCanOfferDrawing','noamVisualCanExpand','addTranscriptBubble'
+ ].map(fn).join('\n'),context);
+ window.NoamNativeVisual=context.NoamNativeVisual;window.NoamSourcePanels=context.NoamSourcePanels;
+ return {document,window,context,calls,thread};
 }
 it('all 85 real subsection-specific figures open their own original after unsupported generation',async()=>{
  assert.equal(alternate.length,85);
  for (const {data,manifest,ex} of alternate) {
-  const f=fixture(data,manifest,ex), message={role:'assistant',text:'בדקו את נתוני הסעיף.',diagramErrorCode:'DIAGRAM_UNSUPPORTED',diagramError:'unsupported'};
-  f.context.noamAppendSourceDiagramHelp(f.document.getElementById('bubble'),ex,message);
+  const f=fixture(data,manifest,ex), message:any={role:'assistant',text:'בדקו את נתוני הסעיף.',diagramErrorCode:'DIAGRAM_UNSUPPORTED',diagramError:'unsupported'};
+  f.thread.messages.push(message);
+  f.context.noamAppendSourceDiagramHelp(f.document.getElementById('bubble'),ex,message,f.thread);
   await new Promise(r=>setImmediate(r));
-  assert.equal(f.document.querySelector('details')!.open,true,ex.id);
-  const image=f.document.querySelector('figure img')!;
-  assert.equal(image.getAttribute('src'),ex.nativeFigureUrl,ex.id);
-  assert.match(f.document.querySelector('figcaption')!.textContent!,/ללא הדגשה נוספת/);
-  image.dispatchEvent(new f.window.Event('load'));
-  assert.match(f.document.querySelector('.noam-draw-error')!.textContent!,/לא נוצר שרטוט חדש/);
-  assert.equal(message.diagramError,'unsupported');
-  assert.equal(f.calls.length,1);
-  assert.match(f.calls[0],/^\/noam-ai\/native\/.*\/noam-ai.json$/);
+  assert.equal(message.visual?.type,'native-source-visual',ex.id);
+  assert.equal(message.visual.presentation,'source-context',ex.id);
+  assert.equal(f.thread.messages.filter((item:any)=>item.visual).length,1,ex.id);
+  assert.equal(f.document.querySelectorAll('.noam-geometry').length,1,ex.id);
+  const sources=Array.from(f.document.querySelectorAll('figure image')).map(image=>image.getAttribute('href'));
+  assert.ok(sources.includes(ex.nativeFigureUrl),ex.id+' must retain its exact subsection figure');
+  assert.match(f.document.querySelector('figcaption')!.textContent!,/מקור/);
+  assert.equal(f.document.querySelector('.noam-draw-action:not(.noam-diagram-expand)'),null,ex.id);
+  assert.equal(f.document.querySelector('.noam-draw-error'),null,ex.id);
+  assert.equal(message.diagramError,undefined,ex.id);
+  assert.equal(message.diagramErrorCode,undefined,ex.id);
+  assert.equal(f.calls.filter(url=>url.endsWith('/noam-ai.json')).length,1,ex.id);
+  assert.ok(f.calls.includes(ex.nativeFigureUrl),ex.id);
  }
 });
 it('coordinate-plane vertices labelled point can highlight an existing edge, preserving the source',async()=>{
