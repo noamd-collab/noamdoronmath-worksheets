@@ -1,6 +1,6 @@
 ---
 /**
- * One existing hero loop, fetched when ↻ נושא אחר needs it.
+ * One existing site loop, fetched when the homepage hero needs it (random opening or ↻ נושא אחר).
  * angle-sum is the vertex-descent film, not a ConceptLoop drawing.
  * Not a site page: no layout, noindex, and absent from the page sitemap
  * (that glob is only src/pages/*.astro).
@@ -9,10 +9,12 @@ import ConceptLoop from '../../components/ConceptLoop.astro';
 import type { Props as ConceptLoopProps } from '../../components/ConceptLoop.astro';
 import TriangleAngleSumLoop from '../../components/TriangleAngleSumLoop.astro';
 import { heroRotationVariant } from '../../lib/heroRotation';
+import { heroSiteVariant } from '../../lib/heroSitePool';
 
 export const prerender = false;
 
-const variant = heroRotationVariant(Astro.params.variant);
+// The homepage opens on, and shuffles through, any loop on the site (HERO_SITE_POOL).
+const variant = heroRotationVariant(Astro.params.variant) ?? heroSiteVariant(Astro.params.variant);
 if (!variant) {
   return new Response('Not Found', {
     status: 404,

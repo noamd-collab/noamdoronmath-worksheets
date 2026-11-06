@@ -2,6 +2,7 @@
 // one API route avoids adding hundreds of files to Wix's static-asset allowance.
 import { readFileSync, writeFileSync } from 'node:fs';
 import { gzipSync } from 'node:zlib';
+import { verifyQuestionPreviewArtifact } from './lib/question-preview-artifact.mjs';
 
 const catalog = JSON.parse(readFileSync(new URL('../public/teachers/teacher-catalog.json', import.meta.url), 'utf8'));
 const previews = {};
@@ -34,7 +35,7 @@ const source = JSON.stringify(previews);
 const output = JSON.stringify({ version: 1, sheets: Object.keys(previews).length, gzipBase64: gzipSync(source, { level: 9 }).toString('base64') }) + '\n';
 const target = new URL('../src/data/teacher-question-previews.json', import.meta.url);
 if (process.argv.includes('--check')) {
-  if (readFileSync(target, 'utf8') !== output) throw new Error('Teacher question preview geometry is stale. Run node scripts/build-teacher-question-previews.mjs');
+  verifyQuestionPreviewArtifact(readFileSync(target, 'utf8'), previews);
 } else {
   writeFileSync(target, output);
 }

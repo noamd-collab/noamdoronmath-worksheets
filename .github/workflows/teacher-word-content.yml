@@ -1,0 +1,32 @@
+name: Teacher Word content
+
+on:
+  pull_request:
+    branches: [headless/astro-poc-baseline, main]
+    paths:
+      - '.github/workflows/teacher-word-content.yml'
+      - 'demos/teacher-word-export.js'
+      - 'tools/teacher-word-content/**'
+      - 'headless/astro-poc/scripts/build-teacher-word-bank.mjs'
+      - 'headless/astro-poc/scripts/lib/word-bank-artifact.mjs'
+      - 'headless/astro-poc/tests/teacher-word-artifact.test.ts'
+      - 'headless/astro-poc/src/data/teacher-word-*.json'
+      - 'headless/astro-poc/public/teachers/sheets/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  word-bank-node22:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate reviewed bank on the production runtime
+        run: node headless/astro-poc/scripts/build-teacher-word-bank.mjs --check
+      - name: Exercise compression portability and stale-content rejection
+        run: node --experimental-strip-types --test headless/astro-poc/tests/teacher-word-artifact.test.ts
