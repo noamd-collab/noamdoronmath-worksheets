@@ -173,29 +173,73 @@ test('undo after narrowing a level cannot restore hidden questions or alter save
   assert.deepEqual(app.state.blocks, saved);
 });
 
-test('the same accessible level radio group moves between setup and question picking without losing its state', () => {
+function wizardView() {
   const { document } = parseHTML(read('../public/teachers/index.html'));
+  const state = {wizard:'setup',level:'b',selected:[] as string[],blocks:[] as {keys:string[]}[]};
+  return new Function('document','state','groupWholeQuestions',`
+    const topicSearch = null;
+    let aiPickPending=0,wizardNavigating=false;
+    const clearPreparedPrint=()=>{};
+    const $=id=>document.getElementById(id),WIZARD_ORDER=['setup','purpose','pick','result'];
+    const source={pdfId:'source'};
+    const library=new Map([
+      ['ex:source:1א',{id:'1א',q:1,source}],
+      ['ex:source:1ב',{id:'1ב',q:1,source}],
+      ['ex:source:2',{id:'2',q:2,source}],
+    ]);
+    ${['allSelectedKeys','blockQuestionCount','levelPrintName','applyWizard'].map(definition).join('\n')}
+    return {document,state,apply:applyWizard,
+      pending(value){aiPickPending=value;applyWizard();},
+      navigating(value){wizardNavigating=value;applyWizard();}};
+  `)(document,state,groupWholeQuestions);
+}
+
+test('one accessible level radio group stays in setup and picking shows its selected level without asking again', () => {
+  const { document, state, apply } = wizardView();
   const field = document.getElementById('teacher-level-choice'); assert.ok(field);
   const group = document.getElementById('level-filter'); assert.ok(group);
   const inputs = [...group.querySelectorAll('input[name=level]')];
   assert.deepEqual(inputs.map(input=>input.getAttribute('value')), ['a','b','c']);
   const selected = inputs.find(input=>input.getAttribute('value')==='b') as any;
   selected.checked = true;
-  const state = {wizard:'setup'};
-  const apply = new Function('document','state',`
-    const topicSearch = null;
-    const clearPreparedPrint=()=>{};
-    const $=id=>document.getElementById(id),WIZARD_ORDER=['setup','purpose','pick','result'];
-    ${definition('applyWizard')}
-    return applyWizard;
-  `)(document,state);
   for (const step of ['setup','pick','purpose','pick','result','setup']) {
     state.wizard = step; apply();
-    assert.equal(field.parentElement?.id, step==='pick'?'pick-level-home':'wizard-level-home');
+    assert.equal(field.parentElement?.id, 'wizard-level-home');
     assert.equal(document.querySelectorAll('#teacher-level-choice').length, 1);
     assert.equal(document.querySelectorAll('input[name=level]').length, 3);
     assert.equal(document.getElementById('level-filter'), group);
-    assert.equal(selected.checked, true, 'Moving the controls must not recreate their inputs');
-    if(step==='pick') assert.equal(field.closest('.wiz-off'), null, 'Level choice remains visible beside the questions');
+    assert.equal(selected.checked, true, 'Changing steps must not recreate or reset the level inputs');
+    assert.equal(field.classList.contains('wiz-off'), step !== 'setup');
+    if(step==='pick') {
+      assert.equal(document.getElementById('pick-level-summary').textContent, 'הרמה שנבחרה: רמה ב׳');
+      const edit = document.querySelector('.pick-level-summary [data-review-edit="setup"]');
+      assert.ok(edit);
+      assert.equal(edit.closest('.wiz-off'), null, 'The chosen level has an explicit route back to settings');
+    }
   }
+});
+
+test('bottom navigation counts unique whole questions and sections and blocks an empty or pending pick', () => {
+  const app = wizardView();
+  const next = app.document.getElementById('wizard-next');
+  const summary = app.document.getElementById('wizard-selection-summary');
+  assert.equal(next.closest('#wizard-actions').id, 'wizard-actions');
+  app.apply();
+  assert.equal(next.disabled, false, 'Setup can continue before questions have been selected');
+  app.state.wizard='pick'; app.apply();
+  assert.equal(next.disabled, true);
+  assert.equal(summary.textContent, 'עדיין לא נבחרו שאלות');
+  app.state.blocks=[{keys:['ex:source:1א','ex:source:1ב']}];
+  app.state.selected=['ex:source:1ב','ex:source:2']; app.apply();
+  assert.equal(summary.textContent, '2 שאלות · 3 סעיפים', 'Saved and current choices are counted without duplicates');
+  assert.equal(next.disabled, false);
+  app.pending(5); assert.equal(next.disabled, true, 'A pending AI choice cannot be printed prematurely');
+  app.pending(0); assert.equal(next.disabled, false);
+  app.navigating(true); assert.equal(next.disabled, true, 'Repeated next actions cannot advance twice');
+  app.navigating(false); assert.equal(next.disabled, false);
+  app.state.selected=[]; app.apply();
+  assert.equal(summary.textContent, 'שאלה אחת · 2 סעיפים');
+  assert.equal(next.disabled, false, 'A saved topic alone remains printable');
+  app.state.wizard='result'; app.apply();
+  assert.equal(next.hidden, true);
 });

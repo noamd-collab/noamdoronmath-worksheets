@@ -117,7 +117,7 @@ export function zipFiles(files) {
   return out;
 }
 
-export async function createTeacherDocx({ questions, title = 'דף עבודה במתמטיקה', note = '' }, loadImage) {
+export async function createTeacherDocx({ questions, title = 'דף עבודה במתמטיקה', note = '', showLevel = true, includeAnswers = true }, loadImage) {
   if (!Array.isArray(questions) || !questions.length || questions.length > 100 || note.length > 600) throw new Error('WORD_SELECTION');
   const numbered = new Map(questions.map((q,i) => [q.id, i+1]));
   questions = questions.map(q => {
@@ -146,17 +146,19 @@ export async function createTeacherDocx({ questions, title = 'דף עבודה ב
   };
   for (let i = 0; i < questions.length; i++) {
     const q = questions[i];
-    if (!q.id || ids.has(q.id) || !Array.isArray(q.items) || !q.items.length || q.items.some((p) => !p.answer?.trim())) throw new Error('WORD_INCOMPLETE_ANSWERS');
+    if (!q.id || ids.has(q.id) || !Array.isArray(q.items) || !q.items.length || (includeAnswers && q.items.some((p) => !p.answer?.trim()))) throw new Error('WORD_INCOMPLETE_ANSWERS');
     ids.add(q.id);
-    body.push(para(`שאלה ${i + 1} · ${q.topic} · ${q.levelLabel}`, { heading: true }));
+    body.push(para([`שאלה ${i + 1}`, q.topic, showLevel ? q.levelLabel : ''].filter(Boolean).join(' · '), { heading: true }));
     const seen = new Set(); await appendContent(q, seen);
     for (const part of q.items) await appendContent({ ...part, text: part.label ? part.label + '. ' + part.text : part.text }, seen);
     body.push(para('________________________________________________________________', { literal: true }));
   }
-  body.push(para('תשובות סופיות', { title: true, pageBreak: true }));
-  for (let i = 0; i < questions.length; i++) {
-    const q = questions[i]; body.push(para(`שאלה ${i + 1} · ${q.topic} · ${q.levelLabel}`, { heading: true }));
-    for (const [index, part] of q.items.entries()) body.push(para((part.label ? part.label + '. ' : '') + part.answer, { keep: index < q.items.length - 1 }));
+  if (includeAnswers) {
+    body.push(para('תשובות סופיות', { title: true, pageBreak: true }));
+    for (let i = 0; i < questions.length; i++) {
+      const q = questions[i]; body.push(para([`שאלה ${i + 1}`, q.topic, showLevel ? q.levelLabel : ''].filter(Boolean).join(' · '), { heading: true }));
+      for (const [index, part] of q.items.entries()) body.push(para((part.label ? part.label + '. ' : '') + part.answer, { keep: index < q.items.length - 1 }));
+    }
   }
   const rel = (id, type, target) => `<Relationship Id="${id}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/${type}" Target="${target}"/>`;
   files['[Content_Types].xml'] = xml('<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Default Extension="png" ContentType="image/png"/>' + ['document','styles','settings','header1','footer1'].map((name) => `<Override PartName="/word/${name}.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.${{document:'document.main',styles:'styles',settings:'settings',header1:'header',footer1:'footer'}[name]}+xml"/>`).join('') + '</Types>');

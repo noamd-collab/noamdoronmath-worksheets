@@ -119,10 +119,11 @@ let startupComplete = false;
 let retryTeacherLoad = null;
 let appLoadId = 0;
 let topicSearch = null;
+let wizardNavigating = false;
 
 function setTeacherAppState(next, message = '') {
   appState = next;
-  for (const workspace of [$('teacher-workspace'), $('wizard-bar')]) {
+  for (const workspace of [$('teacher-workspace'), $('wizard-bar'), $('wizard-actions')]) {
     if (!workspace) continue;
     workspace.inert = next !== 'ready';
     workspace.hidden = !startupComplete && next !== 'ready';
@@ -190,6 +191,7 @@ async function changeTeacherScope(grade, topic) {
   state.selected = [];
   if (gradeChanged) state.blocks = [];
   state.pickNote = '';
+  state.aiPickReasons = {};
   state.lastAiPickCount = 0;
   history = [];
   clearPreparedPrint();
@@ -281,13 +283,12 @@ function interleaveSheets(list) {
   return out;
 }
 
-// Every question, most wanted first for this lesson goal and style.
-
+// Interleave question roles as well as source sheets, so a short selection
+// includes more than the first third of a source worksheet.
 function planOrder(groups, scenario, style) {
   const plan = rolePlan(scenario, style);
-  const lane = (role) => interleaveSheets(groups.filter((group) => group.role === role));
-  if (plan[0] !== 'mix') return plan.flatMap(lane);
-  const lanes = ['basis', 'review', 'creative'].map(lane);
+  const roles = plan[0] === 'mix' ? ['basis', 'review', 'creative'] : plan;
+  const lanes = roles.map((role) => interleaveSheets(groups.filter((group) => group.role === role)));
   const out = [];
   for (let round = 0; lanes.some((list) => round < list.length); round += 1) {
     lanes.forEach((list) => { if (round < list.length) out.push(list[round]); });
@@ -295,29 +296,45 @@ function planOrder(groups, scenario, style) {
   return out;
 }
 
-function smartQuestionPick(groups, count, scenario, style, seedKeys) {
+function smartQuestionPick(groups, count, scenario, style, seedKeys, preserveModel = false, level = '') {
   if (!Array.isArray(groups) || !groups.length) return [];
-  const target = Math.min(Math.max(1, Number(count) || 5), groups.length);
+  const target = Math.min(Math.max(1, Math.floor(Number(count) || 5)), groups.length);
   const byKey = new Map(groups.map((group) => [group.key, group]));
-  const chosen = [];
-  const used = new Set();
+  const ordered = planOrder(groups, scenario, style);
+  const quotas = new Map();
+  ordered.slice(0, target).forEach((group) => quotas.set(group.role, (quotas.get(group.role) || 0) + 1));
+  const chosen = [], used = new Set(), roleCounts = new Map();
+  const roomFor = (group) => group && !used.has(group.key) && (roleCounts.get(group.role) || 0) < (quotas.get(group.role) || 0);
   const addGroup = (group) => {
     if (!group || used.has(group.key) || chosen.length >= target) return;
     used.add(group.key);
     chosen.push(group);
+    roleCounts.set(group.role, (roleCounts.get(group.role) || 0) + 1);
   };
-  (seedKeys || []).forEach((key) => addGroup(byKey.get(key)));
-  const plan = rolePlan(scenario, style);
-  const lane = (role) => interleaveSheets(groups.filter((group) => group.role === role && !used.has(group.key)));
-  if (plan[0] === 'mix') {
-    const lanes = ['basis', 'review', 'creative'].map(lane);
-    for (let round = 0; chosen.length < target && lanes.some((list) => round < list.length); round += 1) {
-      lanes.forEach((list) => addGroup(list[round]));
-    }
-  } else {
-    plan.forEach((role) => lane(role).forEach(addGroup));
-  }
-  groups.forEach(addGroup);
+  const seeds = [...new Set(seedKeys || [])].map((key) => byKey.get(key)).filter(Boolean);
+  // A teacher's explicit AI instruction takes precedence over the default mix.
+  if (preserveModel) seeds.forEach(addGroup);
+  const family = (group) => group.source && group.source.level === 'c2' ? 'c' : group.source && group.source.level;
+  const families = level === 'all' ? ['a', 'b', 'c'].filter((value) => groups.some((group) => family(group) === value)) : [];
+  if (target >= families.length) families.forEach((value) => {
+    if (chosen.some((group) => family(group) === value)) return;
+    const inFamily = (group) => family(group) === value && roomFor(group);
+    addGroup(seeds.find(inFamily) || ordered.find(inFamily));
+  });
+  seeds.forEach((group) => { if (roomFor(group)) addGroup(group); });
+  ordered.forEach((group) => { if (roomFor(group)) addGroup(group); });
+  // A sparse source or a focused teacher request may exhaust a role quota.
+  ordered.forEach(addGroup);
+  // A sparse level can offer only one role. Keep level coverage even when an
+  // earlier family used that role's last slot, preferring a same-role swap.
+  if (target >= families.length) families.forEach((value) => {
+    if (chosen.some((group) => family(group) === value)) return;
+    const replacements = ordered.filter((group) => family(group) === value);
+    const donors = chosen.filter((group) => !families.includes(family(group)) || chosen.filter((item) => family(item) === family(group)).length > 1);
+    const replacement = replacements.find((group) => donors.some((donor) => donor.role === group.role)) || replacements[0];
+    const donor = replacement && (donors.find((group) => group.role === replacement.role) || donors[0]);
+    if (donor) chosen.splice(chosen.indexOf(donor), 1, replacement);
+  });
   chosen.sort((a, b) => a.index - b.index);
   return chosen.map((group) => group.key);
 }
@@ -325,6 +342,16 @@ function smartQuestionPick(groups, count, scenario, style, seedKeys) {
 function teacherAiNote() {
   // Printed instructions remain in teacher-note and never enter AI context.
   return $('teacher-ai-note') ? String($('teacher-ai-note').value || '').trim().slice(0, 400) : '';
+}
+
+// Ordinary classroom context and lesson length do not request a focused set.
+// Preserve model choices when the teacher names constraints or question IDs.
+function teacherAiSelectionIsFocused(note) {
+  const text = String(note || '').trim();
+  return /(?:^|[\s,.;:])(?:רק|בלי|ללא|התמקדו?|התמקדי|להתמקד|התמקדות|דגש\s+על|הימנעו?|להימנע|אל\s+תבחרו?|אל\s+תבחרי|עדיפות\s+ל)/u.test(text)
+    || /\b(?:only|exclude|avoid|focus|without|prioriti[sz]e)\b/i.test(text)
+    || /(?:שאל(?:ה|ות)|תרגיל(?:ים)?)\s*(?:מספר\s*)?\d/u.test(text)
+    || /(?:שאל(?:ה|ות)|תרגיל(?:ים)?)[\s\S]{0,40}(?:מסוף|מתחילת|אחרונ|ראשונ)/u.test(text);
 }
 
 function teacherAiContext(groups, saved) {
@@ -517,8 +544,14 @@ async function pickWithAi(rawCount) {
     seedKeys = exactPlan.questionKeys;
     fromModel = true;
   }
-  const pickedGroups = smartQuestionPick(groups, target, state.scenario, state.style, seedKeys);
+  const pickedGroups = smartQuestionPick(groups, target, state.scenario, state.style, seedKeys, teacherAiSelectionIsFocused(teacherAiNote()), state.level);
   const finalPicked = keysOfQuestions(pickedGroups, groups);
+  const modelKeys = new Set(fromModel ? seedKeys : []);
+  const positions = { basis: 'ביסוס בתחילת דף המקור', review: 'חזרה באמצע דף המקור', creative: 'שאלה יצירתית בסוף דף המקור' };
+  state.aiPickReasons = Object.fromEntries(pickedGroups.map((key) => {
+    const group = groups.find((item) => item.key === key);
+    return [key, `${positions[group.role] || 'שאלה מדף המקור'} · ${modelKeys.has(key) ? 'בחירת AI' : 'השלמה מקומית לגיוון'}`];
+  }));
   const before = selectionKey();
   snapshot();
   state.selected = finalPicked;
@@ -532,11 +565,11 @@ async function pickWithAi(rawCount) {
   if (selectionKey() !== before) clearPreparedPrint();
   render();
   const what = `${pickedGroups.length} שאלות (${finalPicked.length} סעיפים)`;
-  const modelCount = fromModel ? seedKeys.length : 0;
+  const modelCount = pickedGroups.filter((key) => modelKeys.has(key)).length;
   const outcome = modelCount === pickedGroups.length
     ? `נבחרו ${what} עם AI.`
     : modelCount > 0
-      ? `נבחרו ${what}: ${modelCount} עם AI, והשאר הושלמו בבחירה מקומית.`
+      ? `נבחרו ${what}: ${modelCount} עם AI, והשאר הושלמו בבחירה מקומית לגיוון.`
       : `נבחרו ${what} בבחירה אוטומטית מקומית. לא התקבלה בחירה מתאימה מה-AI.`;
   const msg = outcome + (preparedPlan ? ' זו הבחירה שהוכנה בבקשת ה-AI הקודמת.' : '') + (state.pickNote ? ' ' + state.pickNote : '');
   if (status) status.textContent = msg;
@@ -544,6 +577,8 @@ async function pickWithAi(rawCount) {
 }
 
 function paintAiPickButtons() {
+  const next = $('wizard-next');
+  if (next && state.wizard === 'pick') next.disabled = wizardNavigating || aiPickPending > 0 || !allSelectedKeys().length;
   const group = $('ai-pick-group');
   if (!group) return;
   group.hidden = false;
@@ -574,6 +609,7 @@ function paintAiPickButtons() {
 }
 
 function assignWholeQuestions(count, random) {
+  state.aiPickReasons = {};
   const result = pickWholeQuestions(currentExercises(), count, random || Math.random);
   state.lastQuestionCount = count;
   state.pickNote = result.note;
@@ -584,6 +620,7 @@ function pickQuestionCount(count) {
   const result = pickWholeQuestions(currentExercises(), count, mulberry32(randomSeed()));
   const before = selectionKey();
   snapshot();
+  state.aiPickReasons = {};
   state.selected = result.keys;
   state.lastQuestionCount = count;
   state.pickNote = result.note;
@@ -724,6 +761,7 @@ function toggleWholeQuestion(groupKey, on) {
   }
   const before = selectionKey();
   snapshot();
+  state.aiPickReasons = {};
   state.pickNote = '';
   state.lastAiPickCount = 0;
   if ($('ai-suggest-status')) $('ai-suggest-status').textContent = 'הבחירה עודכנה ידנית. אפשר לתת ל-AI לבחור מחדש.';
@@ -947,6 +985,8 @@ function questionCard(group, picked) {
   const contextLabel = contextQuestions.length ? 'כולל נתונים משאלה ' + contextQuestions.join(', ') : '';
   const meta = [levelLabel, partsText, pageText, contextLabel].filter(Boolean).join(' · ');
   const role = QUESTION_ROLES[group.role] || '';
+  const reason = picked && state.aiPickReasons?.[group.key];
+  const reasonHTML = reason ? `<span class="q-reason"><strong>למה נבחרה:</strong> ${escapeHTML(reason)}</span>` : '';
   const answer = group.source.answerMap?.questions?.find((item) => Number(item.q) === Number(group.q));
   const answerNotice = answer?.unavailableReason ? '<span class="q-page" style="display:block">בדף המקור חסרה תשובה מלאה לשאלה זו.</span>' : '';
   // Reserve the full A4 crop height before its bitmap loads, so scrolling to a
@@ -958,7 +998,7 @@ function questionCard(group, picked) {
       previewHeight = slices.reduce((height, slice, index) => height + Math.round(1000 * Math.SQRT2 * slice.box.h / slice.box.w) + (index ? slice.gap : 0), 0) || previewHeight;
     } catch (error) { /* The preview supplies a retry and source link. */ }
   }
-  return `<article class="q-card q-card-whole q-card-pick q-group"><label class="q-select"><input type="checkbox" data-whole-question="${escapeHTML(group.key)}" ${picked ? 'checked' : ''} aria-label="בחירת שאלה ${escapeHTML(group.q)}${levelLabel ? ' ' + escapeHTML(levelLabel) : ''}"><span class="q-content"><span class="q-title-line"><span class="q-title">שאלה ${escapeHTML(group.q)}</span>${role ? `<span class="badge role-${group.role}">${role}</span>` : ''}</span><span class="q-page" style="display:block">${escapeHTML(meta)}</span>${answerNotice}</span></label><div class="q-preview" data-preview-key="${escapeHTML(group.key)}" aria-busy="true"><div class="q-preview-scroll q-preview-placeholder" style="aspect-ratio:1000/${previewHeight}"><p class="q-preview-loading">טוענים את השאלה המלאה מדף המקור…</p></div><button type="button" class="q-preview-zoom" title="הגדלת התצוגה לעיון, בלי לשנות את הבחירה." aria-describedby="help-zoom" disabled>הגדלת השאלה</button><a class="q-source-link" href="${escapeHTML(group.source.pdfUrl)}#page=${group.parts[0].page}" target="_blank" rel="noopener">פתיחת דף המקור</a></div></article>`;
+  return `<article class="q-card q-card-whole q-card-pick q-group"><label class="q-select"><input type="checkbox" data-whole-question="${escapeHTML(group.key)}" ${picked ? 'checked' : ''} aria-label="בחירת שאלה ${escapeHTML(group.q)}${levelLabel ? ' ' + escapeHTML(levelLabel) : ''}"><span class="q-content"><span class="q-title-line"><span class="q-title">שאלה ${escapeHTML(group.q)}</span>${role ? `<span class="badge role-${group.role}">${role}</span>` : ''}</span><span class="q-page" style="display:block">${escapeHTML(meta)}</span>${answerNotice}${reasonHTML}</span></label><div class="q-preview" data-preview-key="${escapeHTML(group.key)}" aria-busy="true"><p class="q-preview-hint q-preview-initial-hint">השאלה מוצגת בגודל קריא. אפשר לגלול לצדדים כדי לראות את כולה.</p><div class="q-preview-scroll q-preview-placeholder" style="--preview-height:${previewHeight}px;aspect-ratio:1000/${previewHeight}"><p class="q-preview-loading">טוענים את השאלה המלאה מדף המקור…</p></div><button type="button" class="q-preview-zoom" title="הגדלת התצוגה לעיון, בלי לשנות את הבחירה." aria-describedby="help-zoom" disabled>הגדלת השאלה</button><a class="q-source-link" href="${escapeHTML(group.source.pdfUrl)}#page=${group.parts[0].page}" target="_blank" rel="noopener">פתיחת דף המקור</a></div></article>`;
 }
 
 // The manifest's crops enclose the WHOLE question, including its instruction,
@@ -1053,6 +1093,12 @@ async function questionPreviewCanvas(group) {
   return canvas;
 }
 
+function setQuestionPreviewZoom(preview, button, zoomed) {
+  preview.classList.toggle('is-zoomed', zoomed);
+  button.setAttribute('aria-pressed', zoomed ? 'true' : 'false');
+  button.textContent = zoomed ? 'התאמה לרוחב' : 'הגדלת השאלה';
+}
+
 function previewSourceLink(group) {
   const link = document.createElement('a');
   link.className = 'q-source-link';
@@ -1082,13 +1128,18 @@ async function runPreviewQueue() {
         scroll.setAttribute('role', 'region');
         scroll.setAttribute('aria-label', `תוכן שאלה ${group.q}`);
         scroll.append(canvas);
+        const hint = document.createElement('p');
+        hint.className = 'q-preview-hint';
+        hint.id = `preview-hint-${group.pdfId}-${group.q}`;
+        hint.textContent = 'השאלה מוצגת בגודל קריא. אפשר לגלול לצדדים כדי לראות את כולה.';
+        scroll.setAttribute('aria-describedby', hint.id);
         const zoom = document.createElement('button');
         zoom.type = 'button';
         zoom.className = 'q-preview-zoom';
         zoom.dataset.previewZoom = group.key;
-        zoom.setAttribute('aria-pressed', 'false');
-        zoom.textContent = 'הגדלת השאלה';
-        target.replaceChildren(scroll, zoom, previewSourceLink(group));
+        const phone = typeof matchMedia === 'function' && matchMedia('(max-width: 767px)').matches;
+        setQuestionPreviewZoom(target, zoom, phone);
+        target.replaceChildren(hint, scroll, zoom, previewSourceLink(group));
         target.dataset.previewState = 'ready';
       } catch (error) {
         if (!target.isConnected) continue;
@@ -1412,6 +1463,7 @@ function selectKey(key, on) {
   const keys = key.startsWith('ex:') ? expandToWholeQuestionKeys(currentExercises(), [key]) : [key];
   const before = selectionKey();
   snapshot();
+  state.aiPickReasons = {};
   state.pickNote = '';
   state.lastAiPickCount = 0;
   if ($('ai-suggest-status')) $('ai-suggest-status').textContent = 'הבחירה עודכנה ידנית. אפשר לתת ל-AI לבחור מחדש.';
@@ -2691,7 +2743,8 @@ function selectedAnswerCrops(group) {
   });
 }
 
-async function answerMeasured(groups) {
+async function answerMeasured(groups, options = {}) {
+  if (options.includeAnswers === false) return [];
   // Saved sections can refer to the same source more than once. Each chosen
   // whole question has one answer, but equal question numbers in other levels
   // remain separate. Even a legacy part selection retains every answer part.
@@ -2710,7 +2763,7 @@ async function answerMeasured(groups) {
       page: crops[0].page, pdfId: group.source.pdfId, gap: 12,
       kind: 'answer-heading', block: 'answer:' + firstKey,
       label: 'תשובות לשאלות שנבחרו',
-      note: [group.source.topic || group.source.title, levelPrintName(group.source.level, group.source.levelLabel)].filter(Boolean).join(' · '),
+      note: [group.source.topic || group.source.title, options.showLevel !== false ? levelPrintName(group.source.level, group.source.levelLabel) : ''].filter(Boolean).join(' · '),
     });
     const labeled = new Set();
     crops.forEach((crop) => {
@@ -2728,7 +2781,7 @@ async function answerMeasured(groups) {
   return measureSlices(slices);
 }
 
-async function paintAllShort(root, chosen, blocks) {
+async function paintAllShort(root, chosen, blocks, options = {}) {
   const sections = blocks && blocks.length
     ? blocks.map((block) => ({ ...block, questions: orderPrintQuestions(block.questions.filter((question) => question && question.source)) }))
     : [{ kind: 'review', title: '', questions: orderPrintQuestions(chosen.filter((question) => question && question.source)) }];
@@ -2767,7 +2820,7 @@ async function paintAllShort(root, chosen, blocks) {
         note: test ? `${points[sectionIndex].length} שאלות · ${sectionTotal} נק׳ מתוך ${TEST_TOTAL_POINTS} בדף` : '',
       });
     }
-    if (question.source.level !== lastLevel) {
+    if (options.showLevel !== false && question.source.level !== lastLevel) {
       slices.push({
         page: part[0].page,
         pdfId: question.source.pdfId,
@@ -2797,7 +2850,7 @@ async function paintAllShort(root, chosen, blocks) {
   });
   });
   const exerciseMeasured = await measureSlices(slices);
-  const answers = await answerMeasured(groups);
+  const answers = await answerMeasured(groups, options);
   await paintPacked(root, exerciseMeasured, answers, worksheetTitle(ordered));
 }
 
@@ -2837,13 +2890,13 @@ function metaHTML(chosen, cfg) {
   return `<div class="plan-meta"><span>${escapeHTML([...grades].filter(Boolean).join(' · '))}</span><span>${escapeHTML([...topics].filter(Boolean).join(' · '))}</span><span>${escapeHTML([...levels].join(' · '))}</span><span>${escapeHTML(scenarioName)}</span></div>`;
 }
 
-async function updateShortPrint(plan, printArea, chosen, note, cfg, blocks) {
+async function updateShortPrint(plan, printArea, chosen, note, cfg, blocks, options = {}) {
   const head = `<p class="plan-notice">דף מצומצם. כל קטע נחתך מדף המקור, עם ההוראה, הנוסח והתרשים המקוריים.</p>${metaHTML(chosen, cfg)}`;
   const foot = `<p class="print-source">מקור: ${escapeHTML(chosen.map((question) => question.source && question.source.title).filter((title, index, all) => title && all.indexOf(title) === index).join(' · '))}</p><p class="plan-notes">${escapeHTML(STYLES[state.style].plan)}</p>${note ? `<div class="plan-notes"><strong>הוראות לתלמיד</strong><br>${escapeHTML(note)}</div>` : ''}`;
   plan.innerHTML = head + '<div class="crop-preview"></div>' + foot;
   printArea.innerHTML = '';
-  await paintAllShort(plan.querySelector('.crop-preview'), chosen, blocks);
-  await paintAllShort(printArea, chosen, blocks);
+  await paintAllShort(plan.querySelector('.crop-preview'), chosen, blocks, options);
+  await paintAllShort(printArea, chosen, blocks, options);
   await attachTeacherNote(printArea, note);
 }
 
@@ -2885,6 +2938,10 @@ async function resolveChosen() {
 let wordPending = false;
 async function downloadTeacherWord() {
   if (wordPending) return;
+  const options = {
+    showLevel: $('print-show-level')?.checked ?? true,
+    includeAnswers: $('print-include-answers')?.checked ?? true,
+  };
   wordPending = true;
   const buttons = [...document.querySelectorAll('[data-word-download]')];
   const messages = [...document.querySelectorAll('[data-word-status]')];
@@ -2892,7 +2949,7 @@ async function downloadTeacherWord() {
     el.textContent = text; el.hidden = !text; el.setAttribute('role', error ? 'alert' : 'status');
   });
   buttons.forEach((b) => { b.disabled = true; b.setAttribute('aria-busy', 'true'); });
-  message('מכינים קובץ Word עם השאלות שנבחרו והתשובות לכל הסעיפים…');
+  message(options.includeAnswers ? 'מכינים קובץ Word עם השאלות שנבחרו והתשובות לכל הסעיפים…' : 'מכינים קובץ Word לתלמיד עם השאלות שנבחרו, ללא תשובות…');
   const generation = printGeneration;
   try {
     const carried = pageBlocks().flatMap((block) => orderPrintQuestions(block.questions));
@@ -2920,13 +2977,13 @@ async function downloadTeacherWord() {
       }
       throw new Error('WORD_REQUEST');
     }
-    const { createTeacherDocx, loadWordFigure } = await import('./teacher-word-export.js?v=20261104-rtl');
-    const bytes = await createTeacherDocx({ questions: result.questions, title: worksheetTitle(all), note: $('teacher-note').value.trim() }, loadWordFigure);
+    const { createTeacherDocx, loadWordFigure } = await import('./teacher-word-export.js?v=20261107-teacher-usability');
+    const bytes = await createTeacherDocx({ questions: result.questions, title: worksheetTitle(all), note: $('teacher-note').value.trim(), ...options }, loadWordFigure);
     if (generation !== printGeneration) { message('הבחירה השתנתה בזמן ההכנה. לחצו שוב כדי להוריד את הבחירה המעודכנת.', true); return; }
     const url = URL.createObjectURL(new Blob([bytes], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' }));
     const link = document.createElement('a'); link.href = url; link.download = 'דף-עבודה-נועם-דורון.docx'; document.body.appendChild(link); link.click(); link.remove();
     window.setTimeout(() => URL.revokeObjectURL(url), 60000);
-    message('קובץ Word מוכן. הטקסט והנוסחאות ניתנים לעריכה; התשובות נמצאות בסוף. שינוי שאלה בקובץ אינו מעדכן אוטומטית את התשובה.');
+    message(options.includeAnswers ? 'קובץ Word מוכן. הטקסט והנוסחאות ניתנים לעריכה; התשובות נמצאות בסוף. שינוי שאלה בקובץ אינו מעדכן אוטומטית את התשובה.' : 'קובץ Word לתלמיד מוכן, ללא תשובות. הטקסט והנוסחאות ניתנים לעריכה.');
   } catch {
     message('לא הצלחנו להכין את קובץ Word. הבחירה נשמרה. נסו שוב בעוד רגע.', true);
   } finally {
@@ -2956,6 +3013,10 @@ function paintTeacherReview(chosen, blocks, note, scenario, style) {
 
 async function updatePrint() {
   const generation = ++printGeneration;
+  const options = {
+    showLevel: $('print-show-level')?.checked ?? true,
+    includeAnswers: $('print-include-answers')?.checked ?? true,
+  };
   if ($('wizard-print')) $('wizard-print').disabled = true;
   renderTeacherPageCount($('wizard-page-count'));
   let mode = printMode;
@@ -3016,11 +3077,11 @@ async function updatePrint() {
       paintTeacherReview(chosen, blocks, note, state.scenario === 'other' ? 'אחר' : cfg.label, STYLES[state.style].label);
     }
     if (mode === 'short') {
-      await updateShortPrint(plan, printArea, chosen, note, cfg, blocks);
+      await updateShortPrint(plan, printArea, chosen, note, cfg, blocks, options);
       return commit();
     }
-    const answers = await answerMeasured(groupsOf(chosen));
-    const head = `<p class="plan-notice">דף המקור המלא. מה שנבחר מסומן על העמוד, והתשובות הסופיות מצורפות בסוף.</p>${metaHTML(chosen, cfg)}`;
+    const answers = await answerMeasured(groupsOf(chosen), options);
+    const head = `<p class="plan-notice">דף המקור המלא. מה שנבחר מסומן על העמוד${options.includeAnswers ? ', והתשובות הסופיות מצורפות בסוף' : ', ללא עמודי תשובות'}.</p>${metaHTML(chosen, cfg)}`;
     const sheetsHtml = markedHTML(chosen);
     const titles = chosen.map((question) => question.source && question.source.pdfUrl).filter((url, index, all) => url && all.indexOf(url) === index);
     const foot = `<p class="print-source">מקור: ${escapeHTML(titles.join(' · '))}</p><p class="plan-notes">${escapeHTML(STYLES[state.style].plan)}</p>${note ? `<div class="plan-notes"><strong>הוראות לתלמיד</strong><br>${escapeHTML(note)}</div>` : ''}`;
@@ -3200,11 +3261,13 @@ function applyWizard() {
     el.classList.toggle('wiz-off', el.dataset.wiz !== step);
   });
   const levelChoice = $('teacher-level-choice');
-  const levelHome = $(step === 'pick' ? 'pick-level-home' : 'wizard-level-home');
+  const levelHome = $('wizard-level-home');
   if (levelChoice && levelHome) {
     if (levelChoice.parentElement !== levelHome) levelHome.appendChild(levelChoice);
-    levelChoice.classList.toggle('wiz-off', step !== 'setup' && step !== 'pick');
+    levelChoice.classList.toggle('wiz-off', step !== 'setup');
   }
+  const levelSummary = $('pick-level-summary');
+  if (levelSummary) levelSummary.textContent = 'הרמה שנבחרה: ' + levelPrintName(state.level, state.level === 'all' ? 'כל הרמות' : '');
   const setup = $('setup-panel');
   if (setup) setup.classList.toggle('wiz-off', step === 'pick' || step === 'result');
   const labels = {
@@ -3219,6 +3282,13 @@ function applyWizard() {
   $('wizard-back').hidden = WIZARD_ORDER.indexOf(step) <= 0;
   $('wizard-next').hidden = step === 'result';
   $('wizard-next').textContent = step === 'pick' ? 'אל הדף' : 'המשך';
+  const selectedKeys = allSelectedKeys();
+  const selectedQuestionCount = blockQuestionCount(selectedKeys);
+  $('wizard-next').disabled = wizardNavigating || (step === 'pick' && (!selectedKeys.length || aiPickPending > 0));
+  const selectionSummary = $('wizard-selection-summary');
+  if (selectionSummary) selectionSummary.textContent = selectedKeys.length
+    ? `${selectedQuestionCount === 1 ? 'שאלה אחת' : selectedQuestionCount + ' שאלות'} · ${selectedKeys.length === 1 ? 'סעיף אחד' : selectedKeys.length + ' סעיפים'}`
+    : 'עדיין לא נבחרו שאלות';
   const anchor = $('wizard-bar');
   if (stepChanged && anchor && anchor.scrollIntoView) anchor.scrollIntoView({ block: 'start', inline: 'nearest' });
   if (stepChanged) {
@@ -3272,9 +3342,7 @@ function bind() {
     const zoom = event.target.closest('[data-preview-zoom]');
     if (zoom) {
       const preview = zoom.closest('[data-preview-key]');
-      const expanded = preview.classList.toggle('is-zoomed');
-      zoom.setAttribute('aria-pressed', expanded ? 'true' : 'false');
-      zoom.textContent = expanded ? 'התאמה לרוחב' : 'הגדלת השאלה';
+      setQuestionPreviewZoom(preview, zoom, !preview.classList.contains('is-zoomed'));
       return;
     }
     const retry = event.target.closest('[data-preview-retry]');
@@ -3315,6 +3383,7 @@ function bind() {
     if (next.join('\n') !== selectionKey()) {
       snapshot();
       state.selected = next;
+      state.aiPickReasons = {};
       clearPreparedPrint();
     }
     render();
@@ -3373,6 +3442,7 @@ function bind() {
   $('undo').addEventListener('click', () => {
     const previous = history.pop();
     if (!previous) return;
+    state.aiPickReasons = {};
     const before = selectionKey();
     const saved = carriedKeys();
     state.selected = expandToWholeQuestionKeys(currentExercises(), keepVisible(previous, visibleSelectionKeys())).filter((key) => !saved.has(key));
@@ -3387,6 +3457,10 @@ function bind() {
     await changeTeacherScope('9', '2');
   });
   $('teacher-note').addEventListener('input', () => clearPreparedPrint());
+  ['print-show-level', 'print-include-answers'].forEach((id) => $(id)?.addEventListener('change', async () => {
+    clearPreparedPrint();
+    if (state.wizard === 'result') await showWizardResult();
+  }));
   $('prepare').addEventListener('click', () => prepare('marked'));
   $('prepare-short').addEventListener('click', () => prepare('short'));
   document.querySelectorAll('[data-word-download]').forEach((button) => button.addEventListener('click', () => { void downloadTeacherWord(); }));
@@ -3397,18 +3471,26 @@ function bind() {
     applyWizard();
   }));
   if ($('wizard-next')) $('wizard-next').addEventListener('click', async () => {
-    const index = WIZARD_ORDER.indexOf(state.wizard || 'setup');
-    state.wizard = WIZARD_ORDER[Math.min(WIZARD_ORDER.length - 1, index + 1)];
-    if (state.wizard === 'pick') {
-      if (topicLoadPromise) await topicLoadPromise;
-      if (!state.selected.length && state.scenario !== 'other') {
-        applyScenario(state.scenario, { quiet: true });
-        return;
+    if (wizardNavigating || (state.wizard === 'pick' && (!allSelectedKeys().length || aiPickPending > 0))) return;
+    wizardNavigating = true;
+    $('wizard-next').disabled = true;
+    try {
+      const index = WIZARD_ORDER.indexOf(state.wizard || 'setup');
+      state.wizard = WIZARD_ORDER[Math.min(WIZARD_ORDER.length - 1, index + 1)];
+      if (state.wizard === 'pick') {
+        if (topicLoadPromise) await topicLoadPromise;
+        if (!state.selected.length && state.scenario !== 'other') {
+          applyScenario(state.scenario, { quiet: true });
+          return;
+        }
+        render();
       }
-      render();
+      applyWizard();
+      if (state.wizard === 'result') await showWizardResult();
+    } finally {
+      wizardNavigating = false;
+      applyWizard();
     }
-    applyWizard();
-    if (state.wizard === 'result') await showWizardResult();
   });
   if ($('wizard-back')) $('wizard-back').addEventListener('click', () => {
     const index = WIZARD_ORDER.indexOf(state.wizard || 'setup');
@@ -3474,6 +3556,7 @@ function bind() {
 
 function applyWizardPrefill(prefill) {
   if (!prefill || !prefill.grade || !prefill.topic) return;
+  state.aiPickReasons = {};
   state.grade = String(prefill.grade);
   state.topic = String(prefill.topic);
   state.level = prefill.level || 'a';
