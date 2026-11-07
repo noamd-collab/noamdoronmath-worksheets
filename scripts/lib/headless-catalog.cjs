@@ -9,11 +9,13 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 const crypto = require('node:crypto');
+const { mergeWorksheetEditions } = require('./worksheet-editions.cjs');
 
 const ROOT = path.join(__dirname, '..', '..');
 const INDEX_PATH = path.join(ROOT, 'index.html');
 const OUT_DIR = path.join(ROOT, 'headless', 'catalog');
 const OUT_JSON = path.join(OUT_DIR, 'catalog.v1.json');
+const EDITIONS_PATH = path.join(OUT_DIR, 'worksheet-editions.v1.json');
 const CONTRACT_VERSION = 1;
 
 /** Default one-level button label from index.html levelLinksHTML (row.oneLabel || …). */
@@ -710,7 +712,8 @@ function exportCatalog(options) {
   const indexPath = opts.indexPath || INDEX_PATH;
   const outPath = opts.outPath || OUT_JSON;
   const raw = loadIndexCatalog(indexPath);
-  const catalog = buildCatalog(raw);
+  const registry = opts.editions || JSON.parse(fs.readFileSync(opts.editionsPath || EDITIONS_PATH, 'utf8'));
+  const catalog = mergeWorksheetEditions(buildCatalog(raw), registry);
   const validation = validateCatalog(catalog, raw);
   const text = stableStringify(catalog);
   const hash = crypto.createHash('sha256').update(text).digest('hex');
@@ -737,6 +740,7 @@ module.exports = {
   INDEX_PATH,
   OUT_DIR,
   OUT_JSON,
+  EDITIONS_PATH,
   CONTRACT_VERSION,
   DEFAULT_ONE_LABEL,
   loadIndexCatalog,

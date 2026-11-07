@@ -175,12 +175,14 @@ export function labelsInText(value) {
 
 export function normalizeLabel(value) {
   const text = String(value || "").replace(/\s+/g, "").replace(/['׳]/g, "");
-  const scoped = text.match(/^(?:(?:[abc]|c2):)?([1-9]\d{0,2})([\u05D0-\u05EA]?)$/i);
+  const scoped = text.match(/^(?:(?:[abc]|c2):(?:[a-f0-9]{32}:)?)?([1-9]\d{0,2})([\u05D0-\u05EA]?)$/i);
   return scoped ? scoped[1] + scoped[2] : "";
 }
 
 function normalizeScopedLabel(value) {
   const text = String(value || "").replace(/\s+/g, "").replace(/['׳]/g, "");
+  const edition = text.match(/^([abc]|c2):([a-f0-9]{32}):([1-9]\d{0,2})([\u05D0-\u05EA]?)$/i);
+  if (edition) return edition[1].toLowerCase() + ":" + edition[2].toLowerCase() + ":" + edition[3] + edition[4];
   const match = text.match(/^([abc]|c2):([1-9]\d{0,2})([\u05D0-\u05EA]?)$/i);
   if (match) return match[1].toLowerCase() + ":" + match[2] + match[3];
   const plain = normalizeLabel(text);
@@ -280,7 +282,7 @@ export function classifierRequestBody(input, index) {
       const availableLabels = [];
       const seen = new Set();
       for (const sheet of matching) {
-        const prefix = matching.length > 1 && /^(?:[abc]|c2)$/.test(sheet.level) ? sheet.level + ":" : "";
+        const prefix = /^(?:[abc]|c2)$/.test(sheet.level) && (matching.length > 1 || sheet.editionId) ? sheet.level + ":" + (sheet.editionId ? sheet.pdfId + ":" : "") : "";
         for (const q of sheet.questions || []) {
           const label = normalizeLabel(q);
           const id = prefix + label;
@@ -329,7 +331,7 @@ function eligibleTeacherQuestions(pool, candidates, hasCandidates) {
     for (const rawLabel of sheet.questions || []) {
       const label = normalizeLabel(rawLabel);
       if (!label) continue;
-      const scoped = /^(?:[abc]|c2)$/.test(String(sheet.level)) ? sheet.level + ":" + label : label;
+      const scoped = /^(?:[abc]|c2)$/.test(String(sheet.level)) ? sheet.level + ":" + (sheet.editionId ? sheet.pdfId + ":" : "") + label : label;
       const key = "ex:" + sheet.pdfId + ":" + label;
       if (seen.has(key) || (allowed && !allowed.has(scoped) && !allowed.has(label))) continue;
       seen.add(key);
@@ -570,7 +572,7 @@ export function selectBatchExercises(pool, count, goal, classified, candidates) 
     for (const rawLabel of sheet.questions || []) {
       const label = String(rawLabel);
       const key = "ex:" + sheet.pdfId + ":" + label;
-      const scoped = /^(?:[abc]|c2)$/.test(String(sheet.level)) ? sheet.level + ":" + label : label;
+      const scoped = /^(?:[abc]|c2)$/.test(String(sheet.level)) ? sheet.level + ":" + (sheet.editionId ? sheet.pdfId + ":" : "") + label : label;
       if (knownKeys.has(key) || (allowed && !allowed.has(scoped) && !allowed.has(label))) continue;
       knownKeys.add(key);
       available.push({

@@ -19,7 +19,7 @@ function setup(source:string,options:any={}){
  const exercise={id,q:20,part:'ב'},manifest={prefix:'G7-T01',levelCode:'B',pdfHash:pdf,nativeExportSha256:native,exercises:[exercise]};
  // A browser reload restores this JSON before the fresh catalog request.
  const thread=JSON.parse(JSON.stringify(options.thread||savedThread())),storage:any={},calls:string[]=[],button={disabled:true};let rendered=0;
- const c:any={Promise,AbortController,setTimeout,clearTimeout,Date,manifest:null,manifestReady:false,aiReady:true,busy:false,threads:{[id]:thread},selectedExercise:exercise,pendingExerciseId:null,
+ const c:any={editionRequested:false,noamManifestLoadVersion:0,location:{search:""},Promise,AbortController,setTimeout,clearTimeout,Date,manifest:null,manifestReady:false,aiReady:true,busy:false,threads:{[id]:thread},selectedExercise:exercise,pendingExerciseId:null,
   analysisCache:{},THREAD_STORAGE_KEY:'threads',ANALYSIS_STORAGE_KEY:'analysis',MANIFEST_PATH:'/manifest',noamDrafts:{[id]:'טיוטה שנשמרת'},photos:[{name:'student-work.png'}],
   NOAM_LEARNING_CONFIG:{url:'https://example123.supabase.co',key:'sb_publishable_fixture'},
   sessionStorage:{setItem:(key:string,value:string)=>storage[key]=value},fab:{classList:{add(){},remove(){}}},renderManifestPins(){},

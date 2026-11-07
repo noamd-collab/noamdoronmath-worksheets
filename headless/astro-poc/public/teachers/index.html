@@ -163,7 +163,7 @@ nav[data-nav-panel] a:hover{background:rgba(42,124,122,.1)}
 .other-field textarea{min-height:110px;resize:vertical}
 .other-field small{display:block;color:var(--quiet);margin-top:6px;font-size:13px}
 .segmented{display:flex;gap:6px;flex-wrap:wrap}
-#level-filter[hidden]{display:none}
+#level-filter[hidden],#edition-filter[hidden]{display:none}
 .segmented label{
   flex:1;position:relative;cursor:pointer;text-align:center;min-height:44px;display:grid;place-items:center;
   font-size:15px;font-weight:700;border:2px solid var(--ink);border-radius:999px;background:#fff;padding:8px 10px;
@@ -580,6 +580,7 @@ body[data-wizard="result"] .wizard-result{scroll-margin-top:164px}
 <aside class="panel setup" id="setup-panel" aria-label="הגדרות השיעור">
 <h2 class="step-title wiz-extra"><span class="step-num">1</span> מתחילים מהכיתה</h2>
 <div class="setup-fields"><div class="field" data-wiz="setup"><label for="grade">כיתה</label><select id="grade"><option value="1">כיתה א׳</option><option value="2">כיתה ב׳</option><option value="3">כיתה ג׳</option><option value="4">כיתה ד׳</option><option value="5">כיתה ה׳</option><option value="6">כיתה ו׳</option><option value="7">כיתה ז׳</option><option value="8">כיתה ח׳</option><option value="9" selected>כיתה ט׳</option></select></div><div class="field" data-wiz="setup"><label for="topic">נושא</label><select id="topic"><option value="2">פירוק לגורמים</option></select></div></div>
+<div class="field" id="edition-filter" hidden><label for="edition">מהדורה</label><select id="edition"><option value="all">כל המהדורות</option></select></div>
 <div id="wizard-level-home"><div class="level-field" id="teacher-level-choice" data-wiz="setup"><span class="style-label" id="level-label">מאילו רמות לבחור שאלות?</span><div class="segmented" id="level-filter" role="radiogroup" aria-labelledby="level-label" aria-describedby="level-help"><label><input type="radio" name="level" value="a" checked>רמה א׳</label><label><input type="radio" name="level" value="b">רמה ב׳</label><label><input type="radio" name="level" value="c">מצוינות</label></div><p class="level-help" id="level-help" aria-live="polite">מוצגות רק שאלות מהרמה שנבחרה. גם ה־AI יבחר מתוך הרמה הזו.</p></div></div>
 <p class="source-mini wiz-extra" id="scope-hint">הבחירה נטענת מקטלוג הדפים של האתר.</p>
 <div class="divider wiz-extra"></div>
@@ -670,7 +671,7 @@ body[data-wizard="result"] .wizard-result{scroll-margin-top:164px}
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js" integrity="sha384-/1qUCSGwTur9vjf/z9lmu/eCUYbpOTgSjmpbMQZ1/CtX2v/WcAIKqRv+U1DUCG6e" crossorigin="anonymous"></script>
-<script type="module" src="/teachers/teacher-factoring-print.js?v=20261107-teacher-usability"></script>
+<script type="module" src="/teachers/teacher-factoring-print.js?v=20261108-teacher-editions"></script>
 
 <script src="/noam-accessibility.js" defer></script>
 <script src="/noam-site-companion.js?v=20261103-note-separation" defer data-avatar="/design-exact/assets/avatar/ramzi-A-idle.svg"></script>

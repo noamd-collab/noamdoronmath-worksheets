@@ -1,4 +1,5 @@
 import type { CatalogTopic, CatalogV1 } from './catalog/types';
+import { resolveEdition } from './catalog/editions';
 
 /** Verified public GitHub Pages base for the live catalog + viewer. */
 export const PUBLIC_WORKSHEETS_BASE =
@@ -35,6 +36,8 @@ export interface WorksheetLinkInput {
   grade: number;
   topic: CatalogTopic;
   levelKey: string;
+  /** Omitted keeps legacy link semantics; UI passes the chosen edition. */
+  editionId?: string;
   /** Optional override; defaults to production catalog back-link for this grade. */
   backPath?: string;
 }
@@ -67,7 +70,10 @@ function defaultBackPath(grade: number): string {
  */
 export function buildWorksheetHref(input: WorksheetLinkInput): string {
   const { catalog, grade, topic } = input;
-  const level = topic.levels.find((l) => l.key === input.levelKey);
+  const edition = resolveEdition(topic, input.editionId ?? 'legacy');
+  const routing = edition.routing;
+  const isNewEdition = edition.editionId !== 'legacy';
+  const level = edition.levels.find((l) => l.key === input.levelKey);
   if (!level) {
     throw new Error(`Missing level ${input.levelKey} on topic ${topic.id}`);
   }
@@ -75,25 +81,27 @@ export function buildWorksheetHref(input: WorksheetLinkInput): string {
   const pdfDirect = catalog.config.pdfBase + level.pdfId + '.pdf';
   const viewerEnabled = !!catalog.config.viewer.enabled;
   const middle = (catalog.config.middleGrades || []).map(Number);
-  const prefix = topic.routing?.resolvedNoamPrefix;
+  const prefix = routing.resolvedNoamPrefix;
   const usesViewer =
     viewerEnabled &&
     !!prefix &&
-    middle.includes(Number(grade)) &&
-    !!topic.routing?.usesViewer;
+    (isNewEdition || middle.includes(Number(grade))) &&
+    !!routing.usesViewer;
 
   if (!usesViewer) return pdfDirect;
 
-  const viewerLevel = level.viewerLevel || (level.key === 'one' ? 'b' : level.key);
+  const declaredLevel = level.viewerLevel || (level.key === 'one' ? 'b' : level.key);
+  const viewerLevel = ({ A: 'a', B: 'b', E: 'c' } as Record<string, string>)[declaredLevel] || declaredLevel;
   const base = viewerDocumentBase();
   const viewerUrl = new URL(catalog.config.viewer.path, base);
-  viewerUrl.searchParams.set('g', String(topic.routing.sourceGrade || grade));
-  viewerUrl.searchParams.set('x', String(topic.routing.sourcePrefix || prefix));
+  viewerUrl.searchParams.set('g', String(routing.sourceGrade || grade));
+  viewerUrl.searchParams.set('x', String(routing.sourcePrefix || prefix));
   viewerUrl.searchParams.set('lv', viewerLevel);
   viewerUrl.searchParams.set('pdf', level.pdfId);
-  viewerUrl.searchParams.set('t', topic.routing.sourceTitle || topic.title);
+  viewerUrl.searchParams.set('t', routing.sourceTitle || topic.title);
+  if (isNewEdition) viewerUrl.searchParams.set('edition', edition.editionId);
 
-  const siblings = topic.routing.siblingPdfQuery || {};
+  const siblings = routing.siblingPdfQuery || {};
   for (const key of ['pa', 'pb', 'pc', 'pc2'] as const) {
     if (siblings[key]) viewerUrl.searchParams.set(key, siblings[key]);
   }

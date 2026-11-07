@@ -9,15 +9,26 @@
   var listeners=[],pending=new Set(),storageError=false;
   function emit(){listeners.forEach(function(fn){fn();});}
   function clean(rows){var out={};if(!rows||typeof rows!=='object'||Array.isArray(rows))return out;
-   Object.keys(rows).slice(0,2000).forEach(function(id){var r=rows[id];if(catalog.has(id)&&r&&Object.hasOwn(STATES,r.status)&&Number.isFinite(Date.parse(r.updated_at)))out[id]={status:r.status,updated_at:r.updated_at};});return out;}
+   catalog.forEach(function(_,id){var r=Object.hasOwn(rows,id)?rows[id]:null;if(r&&Object.hasOwn(STATES,r.status)&&Number.isFinite(Date.parse(r.updated_at)))out[id]={status:r.status,updated_at:r.updated_at};});return out;}
   function guests(){try{return clean(JSON.parse(storage.getItem(KEY)||'{}'));}catch(e){storageError=true;return {};}}
   function saveGuest(data){storage.setItem(KEY,JSON.stringify(clean(data)));storageError=false;}
   function snapshot(){return{user:account,ready:ready,cloudReady:cloudReady,rows:account?Object.assign({},cloud):guests(),guestCount:Object.keys(guests()).length,pending:Array.from(pending),storageError:storageError};}
   async function refresh(){if(!account||!client)return;var version=epoch,user=account.id;cloudReady=false;emit();
-   var result=await client.from('noam_learning_progress').select('worksheet_id,status,updated_at').eq('user_id',user).limit(1000);
-   if(version!==epoch)return;
-   if(result.error)throw result.error;
-   var data={};(result.data||[]).forEach(function(r){data[r.worksheet_id]=r;});cloud=clean(data);cloudReady=true;emit();}
+   // Editions grow beyond one API page. Stable primary-key pagination keeps
+   // every account row, including older editions, without a 1,000-row cutoff.
+   // Publish only a complete read; signing out cancels the remaining pages.
+   var data={},cursor=null,seen=new Set();
+   for(;;){
+    var query=client.from('noam_learning_progress').select('worksheet_id,status,updated_at').eq('user_id',user).order('worksheet_id',{ascending:true}).limit(500);
+    if(cursor!==null)query=query.gt('worksheet_id',cursor);
+    var result=await query;if(version!==epoch)return;
+    if(result.error)throw result.error;
+    var rows=result.data||[];if(!Array.isArray(rows)||rows.length>500)throw Error('INVALID_PROGRESS_PAGE');
+    if(!rows.length)break;
+    rows.forEach(function(r){if(!r||typeof r.worksheet_id!=='string'||!r.worksheet_id||seen.has(r.worksheet_id))throw Error('INVALID_PROGRESS_PAGE');seen.add(r.worksheet_id);data[r.worksheet_id]=r;});
+    cursor=rows[rows.length-1].worksheet_id;
+   }
+   cloud=clean(data);cloudReady=true;emit();}
   async function setUser(user){epoch++;pending.clear();account=user?{id:user.id,email:user.email||''}:null;cloud={};ready=true;cloudReady=false;emit();if(account)await refresh();}
   async function change(id,status){
    if(!catalog.has(id)||status!==null&&!Object.hasOwn(STATES,status))throw Error('INVALID_PROGRESS');

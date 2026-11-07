@@ -3,19 +3,22 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { gzipSync } from 'node:zlib';
 import { verifyQuestionPreviewArtifact } from './lib/question-preview-artifact.mjs';
+import { measuredQuestionPreview } from './lib/measured-worksheet.mjs';
+import { fileURLToPath } from 'node:url';
 
-const catalog = JSON.parse(readFileSync(new URL('../public/teachers/teacher-catalog.json', import.meta.url), 'utf8'));
+export function compileQuestionPreviews(catalog, loadManifest, options) {
 const previews = {};
 for (const grade of catalog.grades) {
   for (const topic of grade.topics) {
     for (const sheet of topic.sheets) {
       if (sheet.mode !== 'exercise') throw new Error('Missing question-level data for ' + sheet.pdfId);
       if (previews[sheet.pdfId]) continue;
-      const manifest = JSON.parse(readFileSync(new URL('../../../noam-ai/manifests/' + sheet.pdfId + '.json', import.meta.url), 'utf8'));
+      const manifest = loadManifest(sheet.pdfId);
+      if (manifest.geometryContract !== undefined && manifest.geometryContract !== 'measured-v1') throw new Error('Unsupported worksheet geometry contract');
       if (!Array.isArray(manifest.exercises) || !manifest.exercises.length) {
         throw new Error('Missing preview exercises for ' + sheet.pdfId);
       }
-      previews[sheet.pdfId] = {
+      previews[sheet.pdfId] = manifest.geometryContract === 'measured-v1' ? measuredQuestionPreview(manifest, options) : {
         sourceSha256: manifest.sourceSha256,
         exercises: manifest.exercises.map((exercise) => {
           const item = { q: exercise.q };
@@ -29,6 +32,12 @@ for (const grade of catalog.grades) {
   }
 }
 if (!Object.keys(previews).length) throw new Error('No active teacher exercise sheets found');
+return previews;
+}
+
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+const catalog = JSON.parse(readFileSync(new URL('../public/teachers/teacher-catalog.json', import.meta.url), 'utf8'));
+const previews = compileQuestionPreviews(catalog, pdfId => JSON.parse(readFileSync(new URL('../../../noam-ai/manifests/' + pdfId + '.json', import.meta.url), 'utf8')));
 // Wix sends server modules in one deployment request. Keep the geometry compact
 // in that request; the endpoint expands it once per running worker.
 const source = JSON.stringify(previews);
@@ -40,3 +49,4 @@ if (process.argv.includes('--check')) {
   writeFileSync(target, output);
 }
 console.log(JSON.stringify({ sheets: Object.keys(previews).length, bytes: Buffer.byteLength(output) }));
+}

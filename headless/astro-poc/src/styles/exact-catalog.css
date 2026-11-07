@@ -338,6 +338,15 @@
 .exact-catalog .trackbar { display: flex; flex-wrap: wrap; gap: 6px; }
 .exact-catalog .tracknote { color: #5a6588; font-weight: 400; }
 .exact-catalog .more-worksheets { margin: 0; }
+.exact-catalog .worksheet-editions { width: 100%; }
+.exact-catalog .worksheet-edition-label { display: block; margin-bottom: 6px; }
+.exact-catalog .worksheet-editions .more-worksheets { margin-top: 8px; }
+.exact-catalog .worksheet-editions summary {
+  cursor: pointer;
+  min-height: 44px;
+  padding: 12px 2px;
+}
+.exact-catalog .worksheet-editions .lvl { min-height: 44px; box-sizing: border-box; }
 .exact-catalog .jump { margin-top: 48px; }
 html.nd-motion-off .exact-catalog .card,
 html.noam-a11y-motion .exact-catalog .card { transition: none; }

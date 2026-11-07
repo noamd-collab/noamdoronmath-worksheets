@@ -100,7 +100,7 @@ test('fresh startup and all real grade/topic handlers choose one available level
       topics += 1; sheetEntries += topic.sheets.length;
     }
   }
-  assert.equal(topics, 330); assert.equal(sheetEntries, 964);
+  assert.equal(topics, 330); assert.equal(sheetEntries - catalog.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.sheets.filter((s: any) => s.editionId))).length, 964);
   t.diagnostic(`Real handlers checked ${topics} topics and ${sheetEntries} catalog sheet entries.`);
 });
 

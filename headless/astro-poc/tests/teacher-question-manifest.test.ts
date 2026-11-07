@@ -25,7 +25,7 @@ test('serves the current factoring release from compiled preview geometry', asyn
 });
 
 test('preview geometry includes every active exercise sheet and no other sheet', () => {
-  assert.equal(activeIds.length, 933);
+  assert.equal(activeIds.filter(id => previews[id].geometryContract !== 'measured-v1').length, 933);
   assert.ok(bundle.gzipBase64.length < 1_000_000, 'geometry must fit in the Wix deployment request');
   assert.deepEqual(Object.keys(previews).sort(), [...activeIds].sort());
   for (const pdfId of activeIds) {
@@ -34,7 +34,11 @@ test('preview geometry includes every active exercise sheet and no other sheet',
     assert.equal(previews[pdfId].exercises.length, manifest.exercises.length, pdfId);
     for (const exercise of previews[pdfId].exercises) {
       assert.ok(exercise.crop || exercise.crops?.length, pdfId + ': ' + exercise.q);
-      assert.ok(Object.keys(exercise).every((key) => ['q', 'crop', 'crops', 'pin', 'contextQuestionNumbers'].includes(key)));
+      if (manifest.geometryContract === 'measured-v1') {
+        const original = manifest.exercises.find((row: any) => row.id === exercise.id);
+        assert.ok(original);
+        for (const [key,value] of Object.entries(exercise)) assert.deepEqual(value,original[key],key);
+      } else assert.ok(Object.keys(exercise).every((key) => ['q', 'crop', 'crops', 'pin', 'contextQuestionNumbers'].includes(key)));
     }
   }
 });
@@ -42,7 +46,7 @@ test('preview geometry includes every active exercise sheet and no other sheet',
 test('every elementary original is mapped to full questions with valid physical crops', async () => {
   let sheets = 0;
   for (const grade of catalog.grades.filter((grade: any) => grade.grade <= 6)) {
-    for (const topic of grade.topics) for (const sheet of topic.sheets) {
+    for (const topic of grade.topics) for (const sheet of topic.sheets.filter((sheet: any) => !sheet.editionId)) {
       sheets += 1;
       assert.equal(sheet.mode, 'exercise', sheet.pdfId);
       const manifest = JSON.parse(readFileSync(new URL('../../../noam-ai/manifests/' + sheet.pdfId + '.json', import.meta.url), 'utf8'));

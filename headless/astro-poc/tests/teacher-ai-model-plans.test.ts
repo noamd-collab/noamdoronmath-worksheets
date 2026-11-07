@@ -183,7 +183,7 @@ test('current numeric and c2 source plans resolve to the exact model-chosen IDs 
     const seen = new Set<number>();
     const candidates = source.questions.filter((label: string) => {
       const q = parseInt(label, 10); if (seen.has(q)) return false; seen.add(q); return true;
-    }).map((label: string) => ({ id: `${source.level}:${label}`, label, text: `שאלה ${parseInt(label, 10)}` }));
+    }).map((label: string) => ({ id: `${source.level}:${source.editionId ? source.pdfId + ":" : ""}${label}`, label, text: `שאלה ${parseInt(label, 10)}` }));
     const input = payload();
     Object.assign(input.teacher, { grade: String(source.grade), topic: source.topicId, level: source.level, candidates });
     const explicit = Object.fromEntries([5, 10, 15].map((count) => [String(count), candidates.slice(-count).map((item: any) => item.id)]));
@@ -215,7 +215,7 @@ test('all actual grade/topic/level scopes retain three independently supplied mo
       const seen = new Set<number>();
       return source.questions.filter((label: string) => {
         const q = parseInt(label, 10); if (seen.has(q)) return false; seen.add(q); return true;
-      }).map((label: string) => ({ id: /^(?:[abc]|c2)$/.test(source.level) ? `${source.level}:${label}` : label,
+      }).map((label: string) => ({ id: /^(?:[abc]|c2)$/.test(source.level) ? `${source.level}:${source.editionId ? source.pdfId + ":" : ""}${label}` : label,
         label, text: `שאלה ${parseInt(label, 10)}`, key: `ex:${source.pdfId}:${label}` }));
     });
     const representatives = level === 'all' ? ['a', 'b', 'c'].map(family => candidates.find((candidate: any) => candidate.id.split(':')[0].replace('c2', 'c') === family)).filter(Boolean) : [];

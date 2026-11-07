@@ -112,6 +112,7 @@ describe('M35 learning auth same-origin callback', () => {
     const upserted: { rows: UpsertRow[]; opts: { ignoreDuplicates?: boolean } }[] = [];
     const client = {
       from() {
+        let after = '';
         const api = {
           select() {
             return api;
@@ -119,11 +120,11 @@ describe('M35 learning auth same-origin callback', () => {
           eq() {
             return api;
           },
-          limit() {
-            return Promise.resolve({
-              data: Object.values(cloudRows),
-              error: null,
-            });
+          order() { return api; },
+          limit() { return api; },
+          gt(_field: string, cursor: string) { after = cursor; return api; },
+          then(resolve: (result: { data: typeof cloudRows.b[]; error: null }) => void) {
+            resolve({ data: Object.values(cloudRows).filter(row => row.worksheet_id > after), error: null });
           },
           upsert(rows: UpsertRow[], opts: { ignoreDuplicates?: boolean }) {
             upserted.push({ rows, opts });

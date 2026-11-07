@@ -56,9 +56,15 @@ const protectedFiles: Record<string, string> = {
   // 2026-11-03: four source-recovered grade 8 worksheets; question pages pixel-identical; final answers appended.
   // Final answers completed for remaining22 sheets; verified source identity with authorized AA-only differences, 2026-11-03.
   'src/data/catalog.v1.json': '4b92aed69a9485557cd83c1e2b0813ee9358a77698f61b96a5204842bb3f9ad3',
-  'src/lib/catalog/loadCatalog.ts': '1a5e54a4c19c016046202f3e0b9bb95203e58fe983dab5a27e6f261abfbc9d95',
+  // 2026-11-07: Noam's elementary worksheet renewal adds published editions
+  // alongside every legacy PDF. worksheet-editions.test.ts verifies the empty
+  // registry leaves the full snapshot and all 507 elementary links unchanged,
+  // rejects unpublished/duplicate identities and keeps level siblings together.
+  // This intentionally extends catalog behavior, not a presentation-only edit.
+  'src/lib/catalog/loadCatalog.ts': '4c05a7c373e7bef46f47d8a5dd74a152eab160de7d46957dcb377ebeb2fdb786',
   // Viewer links forward the c2 sibling as pc2.
-  'src/lib/worksheetLinks.ts': '06bfbaa4b9b778d171ca9d8802eed0ce3fb6c6f15d7d7bff3807dd1f80ce0770',
+  // Explicit edition links are additive; omitted edition preserves legacy URLs.
+  'src/lib/worksheetLinks.ts': '1ed2a623c2dc08d23b9ecfedc9f89120d240dfd72e01d55b93f84614e670826b',
   // Four additive elementary films restored from main (30 October 2026).
   // Existing baseline films and kite rendering remain intact.
   // kite-construct film added for /kite-grade-9 (explicit content, not a design regen).
@@ -81,7 +87,9 @@ const protectedFiles: Record<string, string> = {
   'public/noam-learning.js': 'c6d55b6c39e0a5c5d99ae7b14d5a53fecaf92ad21e80e86ecd5d71013a39cdba',
   'public/noam-learning-boot.js': '8a4976b19a32a4e1820b4c8aa391004973988a3126337fe2b3355406220d8cd1',
   'public/noam-learning-auth-redirect.js': '8fcd0ee6ef88a5816bb220b5a23b63821b65d0b3574dbcbfdcda6fc73cc34147',
-  'public/noam-learning-core.js': 'dcdf50b7448ca7e106ae6e433787018dab7ba9c55fe4d4118dfb71f85584f0b7',
+  // Elementary editions: keyset pagination preserves progress beyond 1,000 rows.
+  // Dedicated tests cover complete reads, partial failure and account switching.
+  'public/noam-learning-core.js': '47024e91c4d9f7c12f85038abe029a336aa312bddc2191a83a23643f8f889264',
   'src/pages/sitemap-index.xml.ts': 'a37b33d949ab71b22bb4672aa646bfd4233cc370874c931cf66602ee23ac08c8',
   'src/pages/sitemap-pages.xml.ts': '08fc6902c46261d6e259c04441ff26822bdb42ffaf380c570f1b40fffff073cf',
   'src/pages/sitemap-blog.xml.ts': '6e43bead2349fb12450625e9e825b612db4e4a601e0a12a6838ad061bb42f3f2',
@@ -130,7 +138,7 @@ describe('exact-design protected live-baseline boundaries', () => {
       '<script src="noam-source-data-visual.js?v=20261028-source-data3"></script>',
       '<script src="noam-source-scaffold.js?v=20261029-scaffold1"></script>',
       // Noam, 2026-10-31: source-bound public catalog supplies all three standard hints.
-      '<script src="noam-curated-hints.js?v=20261102-answers1"></script>',
+      '<script src="noam-curated-hints.js?v=20261107-edition-bindings1"></script>',
     ];
     const allScripts = [...viewerWithNativeRelease.matchAll(/<script\b[^>]*>[\s\S]*?<\/script>/gi)].map(match => match[0]);
     assert.equal(allScripts.length, 27, 'The release adds its ten exact dependencies and curated hints');
@@ -316,12 +324,16 @@ describe('exact-design protected live-baseline boundaries', () => {
     // primary Send pointerdown so its layout cannot move before native click.
     // Only main script 7 changes from c356ab7b; no submit on down or cancelled
     // gestures. ramzi-send-focus covers both viewers and keyboard/desktop paths.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '6489924e2cd03a6ff8eeb950ac6d920107441ca0cba6cf427108447ab480179d');
+    // 7 November: edition hints bind URL/PDF/source/item SHA and isolate saved
+    // state. Elementary editions are prepared-only; legacy server paths, bot
+    // protection, math helpers and drawing-topic lists stay intact. Edition,
+    // curated/revision, deadline and drawing tests cover the separate branches.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), '0f5a6030710a5caaab1baa19361f16e84d2c62e399cdbc8e97002de46485a68d');
     const priorSdkScripts = releasedScripts.map(script => script.replace(
       './noam-bot-client.js?v=20261101-sdk-lifecycle',
       './noam-bot-client.js?v=20261025-execute-ready-guard',
     ));
-    assert.equal(sha256(JSON.stringify(priorSdkScripts)), '19820de4d7182081a007abe19da9d2e6c24c3827fba9de4042740653f491d89e');
+    assert.equal(sha256(JSON.stringify(priorSdkScripts)), '94f82f91dd302eb284b9a6c9f8eee6aa5e4abf9a3c2e228bce71a96980548764');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {

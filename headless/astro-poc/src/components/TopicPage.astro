@@ -10,6 +10,7 @@ import ParallelCointeriorLoop from './ParallelCointeriorLoop.astro';
 import KiteInteractive from './KiteInteractive.astro';
 import { loadCatalog } from '../lib/catalog/loadCatalog';
 import { buildWorksheetHref } from '../lib/worksheetLinks';
+import { resolveEdition } from '../lib/catalog/editions';
 import { topicLandingLoop } from '../lib/landingLoops';
 import {
   loadTopicPage,
@@ -155,7 +156,8 @@ function levelsForTopicId(catTopicId: number | null | undefined, backHref?: stri
     .find((entry) => entry.grade === page.grade)
     ?.topics.find((topic) => topic.id === catTopicId);
   if (!found) return [];
-  return found.levels.map((level) => ({
+  const edition = resolveEdition(found);
+  return edition.levels.map((level) => ({
     key: level.key,
     label: level.label,
     href: buildWorksheetHref({
@@ -163,6 +165,7 @@ function levelsForTopicId(catTopicId: number | null | undefined, backHref?: stri
       grade: page.grade,
       topic: found,
       levelKey: level.key,
+      editionId: edition.editionId,
       backPath: resolveSiteHrefString(backHref || page.catalogCta.href),
     }),
   }));

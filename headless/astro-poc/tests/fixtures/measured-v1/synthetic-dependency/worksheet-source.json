@@ -1,0 +1,5970 @@
+{
+  "sourceFormat": "noam-elementary-source",
+  "schemaVersion": 1,
+  "meta": {
+    "band": "elementary-ab",
+    "grade": "ב",
+    "gradeNumber": 2,
+    "level": "מצוינות",
+    "levelCode": "E",
+    "topic": "צורות וגופים לא אותו דבר",
+    "skill_topic_id": "ב28",
+    "site_topic_id": 28,
+    "site_topic_prefix": "G2-T28",
+    "topicType": "geometry",
+    "worksheetId": "synthetic-dependency-only",
+    "revision": 2,
+    "title": "צוּרוֹת וְגוּפִים — לֹא אוֹתוֹ דָּבָר",
+    "instructions": "קִרְאוּ, הַבִּיטוּ בָּאִיּוּרִים וַעֲנוּ. כִּתְבוּ הֶסְבֵּר קָצָר כְּשֶׁמְּבַקְּשִׁים."
+  },
+  "questions": [
+    {
+      "id": "elm-20261107-g2-s28-E-q001",
+      "n": 1,
+      "text": "חִקְרוּ אֶת לוּחַ הָאִיּוּרִים. אִיּוּר 5 מַצִּיג פִּירָמִידָה שֶׁבְּסִיסָהּ רִבּוּעַ. בְּכָל סָעִיף כִּתְבוּ אֶת כָּל הַמַּתְאִימִים.",
+      "tags": [
+        "representation",
+        "explain"
+      ],
+      "dependsOn": [],
+      "items": [
+        {
+          "id": "elm-20261107-g2-s28-E-q001-i01",
+          "label": "א",
+          "text": "אֵילוּ צוּרוֹת הֵן שְׁטוּחוֹת וּבַעֲלוֹת אַרְבַּע זָוִיּוֹת יְשָׁרוֹת?",
+          "answer": "1 וְ־2: רִבּוּעַ וּמַלְבֵּן.",
+          "evidence": {
+            "caseId": "q001-i01",
+            "method": "figure-assert",
+            "inputs": {
+              "query": "filter",
+              "targetIds": [
+                "square",
+                "rectangle",
+                "circle",
+                "cube",
+                "pyramid"
+              ],
+              "conditions": {
+                "dimension": 2,
+                "rightAngles": 4
+              },
+              "models": {
+                "square": {
+                  "kind": "square",
+                  "dimension": 2,
+                  "points": [
+                    [
+                      0,
+                      0
+                    ],
+                    [
+                      4,
+                      0
+                    ],
+                    [
+                      4,
+                      4
+                    ],
+                    [
+                      0,
+                      4
+                    ]
+                  ],
+                  "closed": true
+                },
+                "rectangle": {
+                  "kind": "rectangle",
+                  "dimension": 2,
+                  "points": [
+                    [
+                      0,
+                      0
+                    ],
+                    [
+                      6,
+                      0
+                    ],
+                    [
+                      6,
+                      3
+                    ],
+                    [
+                      0,
+                      3
+                    ]
+                  ],
+                  "closed": true
+                },
+                "circle": {
+                  "kind": "circle",
+                  "dimension": 2,
+                  "radius": 2
+                },
+                "cube": {
+                  "kind": "cube",
+                  "dimension": 3,
+                  "dimensions": [
+                    3,
+                    3,
+                    3
+                  ],
+                  "vertices": [
+                    [
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      3,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      3,
+                      0
+                    ],
+                    [
+                      3,
+                      3,
+                      0
+                    ],
+                    [
+                      0,
+                      0,
+                      3
+                    ],
+                    [
+                      3,
+                      0,
+                      3
+                    ],
+                    [
+                      0,
+                      3,
+                      3
+                    ],
+                    [
+                      3,
+                      3,
+                      3
+                    ]
+                  ],
+                  "faces": [
+                    [
+                      0,
+                      1,
+                      3,
+                      2
+                    ],
+                    [
+                      4,
+                      6,
+                      7,
+                      5
+                    ],
+                    [
+                      0,
+                      4,
+                      5,
+                      1
+                    ],
+                    [
+                      2,
+                      3,
+                      7,
+                      6
+                    ],
+                    [
+                      0,
+                      2,
+                      6,
+                      4
+                    ],
+                    [
+                      1,
+                      5,
+                      7,
+                      3
+                    ]
+                  ]
+                },
+                "pyramid": {
+                  "kind": "pyramid",
+                  "dimension": 3,
+                  "vertices": [
+                    [
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      4,
+                      0,
+                      0
+                    ],
+                    [
+                      4,
+                      4,
+                      0
+                    ],
+                    [
+                      0,
+                      4,
+                      0
+                    ],
+                    [
+                      2,
+                      2,
+                      4
+                    ]
+                  ],
+                  "faces": [
+                    [
+                      0,
+                      3,
+                      2,
+                      1
+                    ],
+                    [
+                      0,
+                      1,
+                      4
+                    ],
+                    [
+                      1,
+                      2,
+                      4
+                    ],
+                    [
+                      2,
+                      3,
+                      4
+                    ],
+                    [
+                      3,
+                      0,
+                      4
+                    ]
+                  ],
+                  "baseFace": 0
+                }
+              },
+              "figureId": "fig-q001"
+            },
+            "expected": [
+              "square",
+              "rectangle"
+            ],
+            "figureIds": [
+              "fig-q001"
+            ]
+          },
+          "answerLines": 1
+        },
+        {
+          "id": "elm-20261107-g2-s28-E-q001-i02",
+          "label": "ב",
+          "text": "אֵילוּ גּוּפִים בַּלּוּחַ כּוֹלְלִים פָּאָה רִבּוּעִית?",
+          "answer": "4 וְ־5: קֻבִּיָּה וּפִירָמִידָה שֶׁבְּסִיסָהּ רִבּוּעַ.",
+          "evidence": {
+            "caseId": "q001-i02",
+            "method": "figure-assert",
+            "inputs": {
+              "query": "filter",
+              "targetIds": [
+                "square",
+                "rectangle",
+                "circle",
+                "cube",
+                "pyramid"
+              ],
+              "conditions": {
+                "dimension": 3,
+                "hasSquareFace": true
+              },
+              "models": {
+                "square": {
+                  "kind": "square",
+                  "dimension": 2,
+                  "points": [
+                    [
+                      0,
+                      0
+                    ],
+                    [
+                      4,
+                      0
+                    ],
+                    [
+                      4,
+                      4
+                    ],
+                    [
+                      0,
+                      4
+                    ]
+                  ],
+                  "closed": true
+                },
+                "rectangle": {
+                  "kind": "rectangle",
+                  "dimension": 2,
+                  "points": [
+                    [
+                      0,
+                      0
+                    ],
+                    [
+                      6,
+                      0
+                    ],
+                    [
+                      6,
+                      3
+                    ],
+                    [
+                      0,
+                      3
+                    ]
+                  ],
+                  "closed": true
+                },
+                "circle": {
+                  "kind": "circle",
+                  "dimension": 2,
+                  "radius": 2
+                },
+                "cube": {
+                  "kind": "cube",
+                  "dimension": 3,
+                  "dimensions": [
+                    3,
+                    3,
+                    3
+                  ],
+                  "vertices": [
+                    [
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      3,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      3,
+                      0
+                    ],
+                    [
+                      3,
+                      3,
+                      0
+                    ],
+                    [
+                      0,
+                      0,
+                      3
+                    ],
+                    [
+                      3,
+                      0,
+                      3
+                    ],
+                    [
+                      0,
+                      3,
+                      3
+                    ],
+                    [
+                      3,
+                      3,
+                      3
+                    ]
+                  ],
+                  "faces": [
+                    [
+                      0,
+                      1,
+                      3,
+                      2
+                    ],
+                    [
+                      4,
+                      6,
+                      7,
+                      5
+                    ],
+                    [
+                      0,
+                      4,
+                      5,
+                      1
+                    ],
+                    [
+                      2,
+                      3,
+                      7,
+                      6
+                    ],
+                    [
+                      0,
+                      2,
+                      6,
+                      4
+                    ],
+                    [
+                      1,
+                      5,
+                      7,
+                      3
+                    ]
+                  ]
+                },
+                "pyramid": {
+                  "kind": "pyramid",
+                  "dimension": 3,
+                  "vertices": [
+                    [
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      4,
+                      0,
+                      0
+                    ],
+                    [
+                      4,
+                      4,
+                      0
+                    ],
+                    [
+                      0,
+                      4,
+                      0
+                    ],
+                    [
+                      2,
+                      2,
+                      4
+                    ]
+                  ],
+                  "faces": [
+                    [
+                      0,
+                      3,
+                      2,
+                      1
+                    ],
+                    [
+                      0,
+                      1,
+                      4
+                    ],
+                    [
+                      1,
+                      2,
+                      4
+                    ],
+                    [
+                      2,
+                      3,
+                      4
+                    ],
+                    [
+                      3,
+                      0,
+                      4
+                    ]
+                  ],
+                  "baseFace": 0
+                }
+              },
+              "figureId": "fig-q001"
+            },
+            "expected": [
+              "cube",
+              "pyramid"
+            ],
+            "figureIds": [
+              "fig-q001"
+            ]
+          },
+          "answerLines": 1
+        },
+        {
+          "id": "elm-20261107-g2-s28-E-q001-i03",
+          "label": "ג",
+          "text": "אֵיזוֹ צוּרָה שְׁטוּחָה אֵינָהּ מְצֻלָּע?",
+          "answer": "3: עִגּוּל.",
+          "evidence": {
+            "caseId": "q001-i03",
+            "method": "figure-assert",
+            "inputs": {
+              "query": "filter",
+              "targetIds": [
+                "square",
+                "rectangle",
+                "circle",
+                "cube",
+                "pyramid"
+              ],
+              "conditions": {
+                "dimension": 2,
+                "polygon": false
+              },
+              "models": {
+                "square": {
+                  "kind": "square",
+                  "dimension": 2,
+                  "points": [
+                    [
+                      0,
+                      0
+                    ],
+                    [
+                      4,
+                      0
+                    ],
+                    [
+                      4,
+                      4
+                    ],
+                    [
+                      0,
+                      4
+                    ]
+                  ],
+                  "closed": true
+                },
+                "rectangle": {
+                  "kind": "rectangle",
+                  "dimension": 2,
+                  "points": [
+                    [
+                      0,
+                      0
+                    ],
+                    [
+                      6,
+                      0
+                    ],
+                    [
+                      6,
+                      3
+                    ],
+                    [
+                      0,
+                      3
+                    ]
+                  ],
+                  "closed": true
+                },
+                "circle": {
+                  "kind": "circle",
+                  "dimension": 2,
+                  "radius": 2
+                },
+                "cube": {
+                  "kind": "cube",
+                  "dimension": 3,
+                  "dimensions": [
+                    3,
+                    3,
+                    3
+                  ],
+                  "vertices": [
+                    [
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      3,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      3,
+                      0
+                    ],
+                    [
+                      3,
+                      3,
+                      0
+                    ],
+                    [
+                      0,
+                      0,
+                      3
+                    ],
+                    [
+                      3,
+                      0,
+                      3
+                    ],
+                    [
+                      0,
+                      3,
+                      3
+                    ],
+                    [
+                      3,
+                      3,
+                      3
+                    ]
+                  ],
+                  "faces": [
+                    [
+                      0,
+                      1,
+                      3,
+                      2
+                    ],
+                    [
+                      4,
+                      6,
+                      7,
+                      5
+                    ],
+                    [
+                      0,
+                      4,
+                      5,
+                      1
+                    ],
+                    [
+                      2,
+                      3,
+                      7,
+                      6
+                    ],
+                    [
+                      0,
+                      2,
+                      6,
+                      4
+                    ],
+                    [
+                      1,
+                      5,
+                      7,
+                      3
+                    ]
+                  ]
+                },
+                "pyramid": {
+                  "kind": "pyramid",
+                  "dimension": 3,
+                  "vertices": [
+                    [
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      4,
+                      0,
+                      0
+                    ],
+                    [
+                      4,
+                      4,
+                      0
+                    ],
+                    [
+                      0,
+                      4,
+                      0
+                    ],
+                    [
+                      2,
+                      2,
+                      4
+                    ]
+                  ],
+                  "faces": [
+                    [
+                      0,
+                      3,
+                      2,
+                      1
+                    ],
+                    [
+                      0,
+                      1,
+                      4
+                    ],
+                    [
+                      1,
+                      2,
+                      4
+                    ],
+                    [
+                      2,
+                      3,
+                      4
+                    ],
+                    [
+                      3,
+                      0,
+                      4
+                    ]
+                  ],
+                  "baseFace": 0
+                }
+              },
+              "figureId": "fig-q001"
+            },
+            "expected": [
+              "circle"
+            ],
+            "figureIds": [
+              "fig-q001"
+            ]
+          },
+          "answerLines": 1
+        },
+        {
+          "id": "elm-20261107-g2-s28-E-q001-i04",
+          "label": "ד",
+          "text": "אֵיזוֹ צוּרָה שְׁטוּחָה הִיא מְצֻלָּע שֶׁלֹּא כָּל צַלְעוֹתָיו שָׁווֹת?",
+          "answer": "2: מַלְבֵּן שֶׁיֵּשׁ לוֹ צְלָעוֹת אֲרֻכּוֹת וּקְצָרוֹת.",
+          "evidence": {
+            "caseId": "q001-i04",
+            "method": "figure-assert",
+            "inputs": {
+              "query": "filter",
+              "targetIds": [
+                "square",
+                "rectangle",
+                "circle",
+                "cube",
+                "pyramid"
+              ],
+              "conditions": {
+                "dimension": 2,
+                "polygon": true,
+                "allSidesEqual": false
+              },
+              "models": {
+                "square": {
+                  "kind": "square",
+                  "dimension": 2,
+                  "points": [
+                    [
+                      0,
+                      0
+                    ],
+                    [
+                      4,
+                      0
+                    ],
+                    [
+                      4,
+                      4
+                    ],
+                    [
+                      0,
+                      4
+                    ]
+                  ],
+                  "closed": true
+                },
+                "rectangle": {
+                  "kind": "rectangle",
+                  "dimension": 2,
+                  "points": [
+                    [
+                      0,
+                      0
+                    ],
+                    [
+                      6,
+                      0
+                    ],
+                    [
+                      6,
+                      3
+                    ],
+                    [
+                      0,
+                      3
+                    ]
+                  ],
+                  "closed": true
+                },
+                "circle": {
+                  "kind": "circle",
+                  "dimension": 2,
+                  "radius": 2
+                },
+                "cube": {
+                  "kind": "cube",
+                  "dimension": 3,
+                  "dimensions": [
+                    3,
+                    3,
+                    3
+                  ],
+                  "vertices": [
+                    [
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      3,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      3,
+                      0
+                    ],
+                    [
+                      3,
+                      3,
+                      0
+                    ],
+                    [
+                      0,
+                      0,
+                      3
+                    ],
+                    [
+                      3,
+                      0,
+                      3
+                    ],
+                    [
+                      0,
+                      3,
+                      3
+                    ],
+                    [
+                      3,
+                      3,
+                      3
+                    ]
+                  ],
+                  "faces": [
+                    [
+                      0,
+                      1,
+                      3,
+                      2
+                    ],
+                    [
+                      4,
+                      6,
+                      7,
+                      5
+                    ],
+                    [
+                      0,
+                      4,
+                      5,
+                      1
+                    ],
+                    [
+                      2,
+                      3,
+                      7,
+                      6
+                    ],
+                    [
+                      0,
+                      2,
+                      6,
+                      4
+                    ],
+                    [
+                      1,
+                      5,
+                      7,
+                      3
+                    ]
+                  ]
+                },
+                "pyramid": {
+                  "kind": "pyramid",
+                  "dimension": 3,
+                  "vertices": [
+                    [
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      4,
+                      0,
+                      0
+                    ],
+                    [
+                      4,
+                      4,
+                      0
+                    ],
+                    [
+                      0,
+                      4,
+                      0
+                    ],
+                    [
+                      2,
+                      2,
+                      4
+                    ]
+                  ],
+                  "faces": [
+                    [
+                      0,
+                      3,
+                      2,
+                      1
+                    ],
+                    [
+                      0,
+                      1,
+                      4
+                    ],
+                    [
+                      1,
+                      2,
+                      4
+                    ],
+                    [
+                      2,
+                      3,
+                      4
+                    ],
+                    [
+                      3,
+                      0,
+                      4
+                    ]
+                  ],
+                  "baseFace": 0
+                }
+              },
+              "figureId": "fig-q001"
+            },
+            "expected": [
+              "rectangle"
+            ],
+            "figureIds": [
+              "fig-q001"
+            ]
+          },
+          "answerLines": 1
+        },
+        {
+          "id": "elm-20261107-g2-s28-E-q001-i05",
+          "label": "ה",
+          "text": "אֵיזֶה גּוּף כּוֹלֵל גַּם פָּאוֹת מְשֻׁלָּשׁוֹת וְגַם פָּאָה רִבּוּעִית?",
+          "answer": "5: פִּירָמִידָה שֶׁבְּסִיסָהּ רִבּוּעַ.",
+          "evidence": {
+            "caseId": "q001-i05",
+            "method": "figure-assert",
+            "inputs": {
+              "query": "filter",
+              "targetIds": [
+                "square",
+                "rectangle",
+                "circle",
+                "cube",
+                "pyramid"
+              ],
+              "conditions": {
+                "dimension": 3,
+                "hasTriangleFace": true,
+                "hasSquareFace": true
+              },
+              "models": {
+                "square": {
+                  "kind": "square",
+                  "dimension": 2,
+                  "points": [
+                    [
+                      0,
+                      0
+                    ],
+                    [
+                      4,
+                      0
+                    ],
+                    [
+                      4,
+                      4
+                    ],
+                    [
+                      0,
+                      4
+                    ]
+                  ],
+                  "closed": true
+                },
+                "rectangle": {
+                  "kind": "rectangle",
+                  "dimension": 2,
+                  "points": [
+                    [
+                      0,
+                      0
+                    ],
+                    [
+                      6,
+                      0
+                    ],
+                    [
+                      6,
+                      3
+                    ],
+                    [
+                      0,
+                      3
+                    ]
+                  ],
+                  "closed": true
+                },
+                "circle": {
+                  "kind": "circle",
+                  "dimension": 2,
+                  "radius": 2
+                },
+                "cube": {
+                  "kind": "cube",
+                  "dimension": 3,
+                  "dimensions": [
+                    3,
+                    3,
+                    3
+                  ],
+                  "vertices": [
+                    [
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      3,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      3,
+                      0
+                    ],
+                    [
+                      3,
+                      3,
+                      0
+                    ],
+                    [
+                      0,
+                      0,
+                      3
+                    ],
+                    [
+                      3,
+                      0,
+                      3
+                    ],
+                    [
+                      0,
+                      3,
+                      3
+                    ],
+                    [
+                      3,
+                      3,
+                      3
+                    ]
+                  ],
+                  "faces": [
+                    [
+                      0,
+                      1,
+                      3,
+                      2
+                    ],
+                    [
+                      4,
+                      6,
+                      7,
+                      5
+                    ],
+                    [
+                      0,
+                      4,
+                      5,
+                      1
+                    ],
+                    [
+                      2,
+                      3,
+                      7,
+                      6
+                    ],
+                    [
+                      0,
+                      2,
+                      6,
+                      4
+                    ],
+                    [
+                      1,
+                      5,
+                      7,
+                      3
+                    ]
+                  ]
+                },
+                "pyramid": {
+                  "kind": "pyramid",
+                  "dimension": 3,
+                  "vertices": [
+                    [
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      4,
+                      0,
+                      0
+                    ],
+                    [
+                      4,
+                      4,
+                      0
+                    ],
+                    [
+                      0,
+                      4,
+                      0
+                    ],
+                    [
+                      2,
+                      2,
+                      4
+                    ]
+                  ],
+                  "faces": [
+                    [
+                      0,
+                      3,
+                      2,
+                      1
+                    ],
+                    [
+                      0,
+                      1,
+                      4
+                    ],
+                    [
+                      1,
+                      2,
+                      4
+                    ],
+                    [
+                      2,
+                      3,
+                      4
+                    ],
+                    [
+                      3,
+                      0,
+                      4
+                    ]
+                  ],
+                  "baseFace": 0
+                }
+              },
+              "figureId": "fig-q001"
+            },
+            "expected": [
+              "pyramid"
+            ],
+            "figureIds": [
+              "fig-q001"
+            ]
+          },
+          "answerLines": 1
+        }
+      ],
+      "star": false,
+      "layout": "two-column",
+      "pageBreakBefore": false,
+      "figureId": "fig-q001"
+    },
+    {
+      "id": "elm-20261107-g2-s28-E-q002",
+      "n": 2,
+      "text": "מְשֻׁתָּף וְשׁוֹנֶה: הַשְׁווּ בֵּין הַזּוּגוֹת.",
+      "tags": [
+        "explain"
+      ],
+      "dependsOn": [
+        "elm-20261107-g2-s28-E-q001"
+      ],
+      "items": [
+        {
+          "id": "elm-20261107-g2-s28-E-q002-i01",
+          "label": "א",
+          "text": "רִבּוּעַ וְקֻבִּיָּה: הַאִם שְׁנֵיהֶם גּוּפִים? הַסְבִּירוּ.",
+          "answer": "לֹא. הָרִבּוּעַ שָׁטוּחַ וְהַקֻּבִּיָּה הִיא גּוּף.",
+          "evidence": {
+            "caseId": "q002-i01",
+            "method": "geometry-facts",
+            "inputs": {
+              "query": "dimensions",
+              "targetIds": [
+                "square",
+                "cube"
+              ],
+              "models": {
+                "square": {
+                  "kind": "square",
+                  "dimension": 2,
+                  "points": [
+                    [
+                      0,
+                      0
+                    ],
+                    [
+                      4,
+                      0
+                    ],
+                    [
+                      4,
+                      4
+                    ],
+                    [
+                      0,
+                      4
+                    ]
+                  ],
+                  "closed": true
+                },
+                "cube": {
+                  "kind": "cube",
+                  "dimension": 3,
+                  "dimensions": [
+                    3,
+                    3,
+                    3
+                  ],
+                  "vertices": [
+                    [
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      3,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      3,
+                      0
+                    ],
+                    [
+                      3,
+                      3,
+                      0
+                    ],
+                    [
+                      0,
+                      0,
+                      3
+                    ],
+                    [
+                      3,
+                      0,
+                      3
+                    ],
+                    [
+                      0,
+                      3,
+                      3
+                    ],
+                    [
+                      3,
+                      3,
+                      3
+                    ]
+                  ],
+                  "faces": [
+                    [
+                      0,
+                      1,
+                      3,
+                      2
+                    ],
+                    [
+                      4,
+                      6,
+                      7,
+                      5
+                    ],
+                    [
+                      0,
+                      4,
+                      5,
+                      1
+                    ],
+                    [
+                      2,
+                      3,
+                      7,
+                      6
+                    ],
+                    [
+                      0,
+                      2,
+                      6,
+                      4
+                    ],
+                    [
+                      1,
+                      5,
+                      7,
+                      3
+                    ]
+                  ]
+                }
+              }
+            },
+            "expected": [
+              2,
+              3
+            ]
+          },
+          "answerLines": 1
+        },
+        {
+          "id": "elm-20261107-g2-s28-E-q002-i02",
+          "label": "ב",
+          "text": "עִגּוּל וְכַדּוּר: מָה מַבְדִּיל בֵּינֵיהֶם אַף שֶׁשְּׁנֵיהֶם נִרְאִים עֲגֻלִּים?",
+          "answer": "הָעִגּוּל צוּרָה שְׁטוּחָה; הַכַּדּוּר גּוּף.",
+          "evidence": {
+            "caseId": "q002-i02",
+            "method": "geometry-facts",
+            "inputs": {
+              "query": "dimensions",
+              "targetIds": [
+                "circle",
+                "sphere"
+              ],
+              "models": {
+                "circle": {
+                  "kind": "circle",
+                  "dimension": 2,
+                  "radius": 2
+                },
+                "sphere": {
+                  "kind": "sphere",
+                  "dimension": 3,
+                  "radius": 2,
+                  "center": [
+                    0,
+                    0,
+                    0
+                  ]
+                }
+              }
+            },
+            "expected": [
+              2,
+              3
+            ]
+          },
+          "answerLines": 1
+        },
+        {
+          "id": "elm-20261107-g2-s28-E-q002-i03",
+          "label": "ג",
+          "text": "גָּלִיל וְחָרוּט: כַּמָּה בְּסִיסִים עֲגֻלִּים שְׁטוּחִים יֵשׁ לְכָל גּוּף?",
+          "answer": "לַגָּלִיל $2$ בְּסִיסִים כָּאֵלֶּה; לֶחָרוּט בָּסִיס $1$.",
+          "evidence": {
+            "caseId": "q002-i03",
+            "method": "geometry-facts",
+            "inputs": {
+              "query": "across",
+              "targetIds": [
+                "cylinder",
+                "cone"
+              ],
+              "property": "circularBaseCount",
+              "models": {
+                "cylinder": {
+                  "kind": "cylinder",
+                  "dimension": 3,
+                  "radius": 2,
+                  "height": 5,
+                  "circularBases": 2
+                },
+                "cone": {
+                  "kind": "cone",
+                  "dimension": 3,
+                  "radius": 2,
+                  "height": 5,
+                  "circularBases": 1,
+                  "apex": [
+                    0,
+                    0,
+                    5
+                  ]
+                }
+              }
+            },
+            "expected": [
+              2,
+              1
+            ]
+          },
+          "answerLines": 1
+        },
+        {
+          "id": "elm-20261107-g2-s28-E-q002-i04",
+          "label": "ד",
+          "text": "קֻבִּיָּה וּפִירָמִידָה שֶׁבְּסִיסָהּ רִבּוּעַ: לְמִי יֵשׁ גַּם פָּאוֹת מְשֻׁלָּשׁוֹת?",
+          "answer": "לַפִּירָמִידָה. פָּאוֹת הַקֻּבִּיָּה רִבּוּעִיּוֹת.",
+          "evidence": {
+            "caseId": "q002-i04",
+            "method": "geometry-facts",
+            "inputs": {
+              "query": "filter",
+              "targetIds": [
+                "cube",
+                "pyramid"
+              ],
+              "conditions": {
+                "hasTriangleFace": true
+              },
+              "models": {
+                "cube": {
+                  "kind": "cube",
+                  "dimension": 3,
+                  "dimensions": [
+                    3,
+                    3,
+                    3
+                  ],
+                  "vertices": [
+                    [
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      3,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      3,
+                      0
+                    ],
+                    [
+                      3,
+                      3,
+                      0
+                    ],
+                    [
+                      0,
+                      0,
+                      3
+                    ],
+                    [
+                      3,
+                      0,
+                      3
+                    ],
+                    [
+                      0,
+                      3,
+                      3
+                    ],
+                    [
+                      3,
+                      3,
+                      3
+                    ]
+                  ],
+                  "faces": [
+                    [
+                      0,
+                      1,
+                      3,
+                      2
+                    ],
+                    [
+                      4,
+                      6,
+                      7,
+                      5
+                    ],
+                    [
+                      0,
+                      4,
+                      5,
+                      1
+                    ],
+                    [
+                      2,
+                      3,
+                      7,
+                      6
+                    ],
+                    [
+                      0,
+                      2,
+                      6,
+                      4
+                    ],
+                    [
+                      1,
+                      5,
+                      7,
+                      3
+                    ]
+                  ]
+                },
+                "pyramid": {
+                  "kind": "pyramid",
+                  "dimension": 3,
+                  "vertices": [
+                    [
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      4,
+                      0,
+                      0
+                    ],
+                    [
+                      4,
+                      4,
+                      0
+                    ],
+                    [
+                      0,
+                      4,
+                      0
+                    ],
+                    [
+                      2,
+                      2,
+                      4
+                    ]
+                  ],
+                  "faces": [
+                    [
+                      0,
+                      3,
+                      2,
+                      1
+                    ],
+                    [
+                      0,
+                      1,
+                      4
+                    ],
+                    [
+                      1,
+                      2,
+                      4
+                    ],
+                    [
+                      2,
+                      3,
+                      4
+                    ],
+                    [
+                      3,
+                      0,
+                      4
+                    ]
+                  ],
+                  "baseFace": 0
+                }
+              }
+            },
+            "expected": [
+              "pyramid"
+            ]
+          },
+          "answerLines": 1
+        },
+        {
+          "id": "elm-20261107-g2-s28-E-q002-i05",
+          "label": "ה",
+          "text": "מְשֻׁלָּשׁ וּמַלְבֵּן: הַאִם מִסְפַּר הַצְּלָעוֹת זֵהֶה? פָּרְטוּ.",
+          "answer": "לֹא. לַמְּשֻׁלָּשׁ $3$ צְלָעוֹת וְלַמַּלְבֵּן $4$.",
+          "evidence": {
+            "caseId": "q002-i05",
+            "method": "geometry-facts",
+            "inputs": {
+              "query": "across",
+              "targetIds": [
+                "triangle",
+                "rectangle"
+              ],
+              "property": "sideCount",
+              "models": {
+                "triangle": {
+                  "kind": "triangle",
+                  "dimension": 2,
+                  "points": [
+                    [
+                      0,
+                      0
+                    ],
+                    [
+                      5,
+                      0
+                    ],
+                    [
+                      2,
+                      4
+                    ]
+                  ],
+                  "closed": true
+                },
+                "rectangle": {
+                  "kind": "rectangle",
+                  "dimension": 2,
+                  "points": [
+                    [
+                      0,
+                      0
+                    ],
+                    [
+                      6,
+                      0
+                    ],
+                    [
+                      6,
+                      3
+                    ],
+                    [
+                      0,
+                      3
+                    ]
+                  ],
+                  "closed": true
+                }
+              }
+            },
+            "expected": [
+              3,
+              4
+            ]
+          },
+          "answerLines": 1
+        }
+      ],
+      "star": false,
+      "layout": "two-column",
+      "pageBreakBefore": false
+    },
+    {
+      "id": "elm-20261107-g2-s28-E-q003",
+      "n": 3,
+      "text": "חִידוֹת שֶׁל שְׁלִילָה. בַּחֲרוּ מִתּוֹךְ קֻבִּיָּה, גָּלִיל, חָרוּט, כַּדּוּר וּפִירָמִידָה שֶׁבְּסִיסָהּ רִבּוּעַ.",
+      "tags": [
+        "explain"
+      ],
+      "dependsOn": [],
+      "items": [
+        {
+          "id": "elm-20261107-g2-s28-E-q003-i01",
+          "label": "א",
+          "text": "אֲנִי גּוּף. אֵין לִי פָּאוֹת שְׁטוּחוֹת וְאֵין לִי חֹד. מִי אֲנִי?",
+          "answer": "כַּדּוּר.",
+          "evidence": {
+            "caseId": "q003-i01",
+            "method": "geometry-facts",
+            "inputs": {
+              "query": "filter",
+              "targetIds": [
+                "cube",
+                "cylinder",
+                "cone",
+                "sphere",
+                "pyramid"
+              ],
+              "conditions": {
+                "flatFaceCount": 0,
+                "vertexCount": 0
+              },
+              "models": {
+                "cube": {
+                  "kind": "cube",
+                  "dimension": 3,
+                  "dimensions": [
+                    3,
+                    3,
+                    3
+                  ],
+                  "vertices": [
+                    [
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      3,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      3,
+                      0
+                    ],
+                    [
+                      3,
+                      3,
+                      0
+                    ],
+                    [
+                      0,
+                      0,
+                      3
+                    ],
+                    [
+                      3,
+                      0,
+                      3
+                    ],
+                    [
+                      0,
+                      3,
+                      3
+                    ],
+                    [
+                      3,
+                      3,
+                      3
+                    ]
+                  ],
+                  "faces": [
+                    [
+                      0,
+                      1,
+                      3,
+                      2
+                    ],
+                    [
+                      4,
+                      6,
+                      7,
+                      5
+                    ],
+                    [
+                      0,
+                      4,
+                      5,
+                      1
+                    ],
+                    [
+                      2,
+                      3,
+                      7,
+                      6
+                    ],
+                    [
+                      0,
+                      2,
+                      6,
+                      4
+                    ],
+                    [
+                      1,
+                      5,
+                      7,
+                      3
+                    ]
+                  ]
+                },
+                "cylinder": {
+                  "kind": "cylinder",
+                  "dimension": 3,
+                  "radius": 2,
+                  "height": 5,
+                  "circularBases": 2
+                },
+                "cone": {
+                  "kind": "cone",
+                  "dimension": 3,
+                  "radius": 2,
+                  "height": 5,
+                  "circularBases": 1,
+                  "apex": [
+                    0,
+                    0,
+                    5
+                  ]
+                },
+                "sphere": {
+                  "kind": "sphere",
+                  "dimension": 3,
+                  "radius": 2,
+                  "center": [
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                "pyramid": {
+                  "kind": "pyramid",
+                  "dimension": 3,
+                  "vertices": [
+                    [
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      4,
+                      0,
+                      0
+                    ],
+                    [
+                      4,
+                      4,
+                      0
+                    ],
+                    [
+                      0,
+                      4,
+                      0
+                    ],
+                    [
+                      2,
+                      2,
+                      4
+                    ]
+                  ],
+                  "faces": [
+                    [
+                      0,
+                      3,
+                      2,
+                      1
+                    ],
+                    [
+                      0,
+                      1,
+                      4
+                    ],
+                    [
+                      1,
+                      2,
+                      4
+                    ],
+                    [
+                      2,
+                      3,
+                      4
+                    ],
+                    [
+                      3,
+                      0,
+                      4
+                    ]
+                  ],
+                  "baseFace": 0
+                }
+              }
+            },
+            "expected": [
+              "sphere"
+            ]
+          },
+          "answerLines": 1
+        },
+        {
+          "id": "elm-20261107-g2-s28-E-q003-i02",
+          "label": "ב",
+          "text": "יֵשׁ לִי פָּאוֹת שְׁטוּחוֹת, אֲבָל אֵין לִי חֹד וְהַבְּסִיסִים שֶׁלִּי אֵינָם מְצֻלָּעִים. מִי אֲנִי?",
+          "answer": "גָּלִיל.",
+          "evidence": {
+            "caseId": "q003-i02",
+            "method": "geometry-facts",
+            "inputs": {
+              "query": "filter",
+              "targetIds": [
+                "cube",
+                "cylinder",
+                "cone",
+                "sphere",
+                "pyramid"
+              ],
+              "conditions": {
+                "hasFlatFace": true,
+                "vertexCount": 0
+              },
+              "models": {
+                "cube": {
+                  "kind": "cube",
+                  "dimension": 3,
+                  "dimensions": [
+                    3,
+                    3,
+                    3
+                  ],
+                  "vertices": [
+                    [
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      3,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      3,
+                      0
+                    ],
+                    [
+                      3,
+                      3,
+                      0
+                    ],
+                    [
+                      0,
+                      0,
+                      3
+                    ],
+                    [
+                      3,
+                      0,
+                      3
+                    ],
+                    [
+                      0,
+                      3,
+                      3
+                    ],
+                    [
+                      3,
+                      3,
+                      3
+                    ]
+                  ],
+                  "faces": [
+                    [
+                      0,
+                      1,
+                      3,
+                      2
+                    ],
+                    [
+                      4,
+                      6,
+                      7,
+                      5
+                    ],
+                    [
+                      0,
+                      4,
+                      5,
+                      1
+                    ],
+                    [
+                      2,
+                      3,
+                      7,
+                      6
+                    ],
+                    [
+                      0,
+                      2,
+                      6,
+                      4
+                    ],
+                    [
+                      1,
+                      5,
+                      7,
+                      3
+                    ]
+                  ]
+                },
+                "cylinder": {
+                  "kind": "cylinder",
+                  "dimension": 3,
+                  "radius": 2,
+                  "height": 5,
+                  "circularBases": 2
+                },
+                "cone": {
+                  "kind": "cone",
+                  "dimension": 3,
+                  "radius": 2,
+                  "height": 5,
+                  "circularBases": 1,
+                  "apex": [
+                    0,
+                    0,
+                    5
+                  ]
+                },
+                "sphere": {
+                  "kind": "sphere",
+                  "dimension": 3,
+                  "radius": 2,
+                  "center": [
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                "pyramid": {
+                  "kind": "pyramid",
+                  "dimension": 3,
+                  "vertices": [
+                    [
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      4,
+                      0,
+                      0
+                    ],
+                    [
+                      4,
+                      4,
+                      0
+                    ],
+                    [
+                      0,
+                      4,
+                      0
+                    ],
+                    [
+                      2,
+                      2,
+                      4
+                    ]
+                  ],
+                  "faces": [
+                    [
+                      0,
+                      3,
+                      2,
+                      1
+                    ],
+                    [
+                      0,
+                      1,
+                      4
+                    ],
+                    [
+                      1,
+                      2,
+                      4
+                    ],
+                    [
+                      2,
+                      3,
+                      4
+                    ],
+                    [
+                      3,
+                      0,
+                      4
+                    ]
+                  ],
+                  "baseFace": 0
+                }
+              }
+            },
+            "expected": [
+              "cylinder"
+            ]
+          },
+          "answerLines": 1
+        },
+        {
+          "id": "elm-20261107-g2-s28-E-q003-i03",
+          "label": "ג",
+          "text": "אֵין לִי חֵלֶק מְעֻגָּל, וְאֵין לִי פָּאָה מְשֻׁלֶּשֶׁת. מִי אֲנִי?",
+          "answer": "קֻבִּיָּה.",
+          "evidence": {
+            "caseId": "q003-i03",
+            "method": "geometry-facts",
+            "inputs": {
+              "query": "filter",
+              "targetIds": [
+                "cube",
+                "cylinder",
+                "cone",
+                "sphere",
+                "pyramid"
+              ],
+              "conditions": {
+                "curved": false,
+                "hasTriangleFace": false
+              },
+              "models": {
+                "cube": {
+                  "kind": "cube",
+                  "dimension": 3,
+                  "dimensions": [
+                    3,
+                    3,
+                    3
+                  ],
+                  "vertices": [
+                    [
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      3,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      3,
+                      0
+                    ],
+                    [
+                      3,
+                      3,
+                      0
+                    ],
+                    [
+                      0,
+                      0,
+                      3
+                    ],
+                    [
+                      3,
+                      0,
+                      3
+                    ],
+                    [
+                      0,
+                      3,
+                      3
+                    ],
+                    [
+                      3,
+                      3,
+                      3
+                    ]
+                  ],
+                  "faces": [
+                    [
+                      0,
+                      1,
+                      3,
+                      2
+                    ],
+                    [
+                      4,
+                      6,
+                      7,
+                      5
+                    ],
+                    [
+                      0,
+                      4,
+                      5,
+                      1
+                    ],
+                    [
+                      2,
+                      3,
+                      7,
+                      6
+                    ],
+                    [
+                      0,
+                      2,
+                      6,
+                      4
+                    ],
+                    [
+                      1,
+                      5,
+                      7,
+                      3
+                    ]
+                  ]
+                },
+                "cylinder": {
+                  "kind": "cylinder",
+                  "dimension": 3,
+                  "radius": 2,
+                  "height": 5,
+                  "circularBases": 2
+                },
+                "cone": {
+                  "kind": "cone",
+                  "dimension": 3,
+                  "radius": 2,
+                  "height": 5,
+                  "circularBases": 1,
+                  "apex": [
+                    0,
+                    0,
+                    5
+                  ]
+                },
+                "sphere": {
+                  "kind": "sphere",
+                  "dimension": 3,
+                  "radius": 2,
+                  "center": [
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                "pyramid": {
+                  "kind": "pyramid",
+                  "dimension": 3,
+                  "vertices": [
+                    [
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      4,
+                      0,
+                      0
+                    ],
+                    [
+                      4,
+                      4,
+                      0
+                    ],
+                    [
+                      0,
+                      4,
+                      0
+                    ],
+                    [
+                      2,
+                      2,
+                      4
+                    ]
+                  ],
+                  "faces": [
+                    [
+                      0,
+                      3,
+                      2,
+                      1
+                    ],
+                    [
+                      0,
+                      1,
+                      4
+                    ],
+                    [
+                      1,
+                      2,
+                      4
+                    ],
+                    [
+                      2,
+                      3,
+                      4
+                    ],
+                    [
+                      3,
+                      0,
+                      4
+                    ]
+                  ],
+                  "baseFace": 0
+                }
+              }
+            },
+            "expected": [
+              "cube"
+            ]
+          },
+          "answerLines": 1
+        },
+        {
+          "id": "elm-20261107-g2-s28-E-q003-i04",
+          "label": "ד",
+          "text": "יֵשׁ לִי חֹד, אֲבָל הַבָּסִיס שֶׁלִּי אֵינוֹ מְצֻלָּע. מִי אֲנִי?",
+          "answer": "חָרוּט.",
+          "evidence": {
+            "caseId": "q003-i04",
+            "method": "geometry-facts",
+            "inputs": {
+              "query": "filter",
+              "targetIds": [
+                "cube",
+                "cylinder",
+                "cone",
+                "sphere",
+                "pyramid"
+              ],
+              "conditions": {
+                "circularBaseCount": 1
+              },
+              "models": {
+                "cube": {
+                  "kind": "cube",
+                  "dimension": 3,
+                  "dimensions": [
+                    3,
+                    3,
+                    3
+                  ],
+                  "vertices": [
+                    [
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      3,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      3,
+                      0
+                    ],
+                    [
+                      3,
+                      3,
+                      0
+                    ],
+                    [
+                      0,
+                      0,
+                      3
+                    ],
+                    [
+                      3,
+                      0,
+                      3
+                    ],
+                    [
+                      0,
+                      3,
+                      3
+                    ],
+                    [
+                      3,
+                      3,
+                      3
+                    ]
+                  ],
+                  "faces": [
+                    [
+                      0,
+                      1,
+                      3,
+                      2
+                    ],
+                    [
+                      4,
+                      6,
+                      7,
+                      5
+                    ],
+                    [
+                      0,
+                      4,
+                      5,
+                      1
+                    ],
+                    [
+                      2,
+                      3,
+                      7,
+                      6
+                    ],
+                    [
+                      0,
+                      2,
+                      6,
+                      4
+                    ],
+                    [
+                      1,
+                      5,
+                      7,
+                      3
+                    ]
+                  ]
+                },
+                "cylinder": {
+                  "kind": "cylinder",
+                  "dimension": 3,
+                  "radius": 2,
+                  "height": 5,
+                  "circularBases": 2
+                },
+                "cone": {
+                  "kind": "cone",
+                  "dimension": 3,
+                  "radius": 2,
+                  "height": 5,
+                  "circularBases": 1,
+                  "apex": [
+                    0,
+                    0,
+                    5
+                  ]
+                },
+                "sphere": {
+                  "kind": "sphere",
+                  "dimension": 3,
+                  "radius": 2,
+                  "center": [
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                "pyramid": {
+                  "kind": "pyramid",
+                  "dimension": 3,
+                  "vertices": [
+                    [
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      4,
+                      0,
+                      0
+                    ],
+                    [
+                      4,
+                      4,
+                      0
+                    ],
+                    [
+                      0,
+                      4,
+                      0
+                    ],
+                    [
+                      2,
+                      2,
+                      4
+                    ]
+                  ],
+                  "faces": [
+                    [
+                      0,
+                      3,
+                      2,
+                      1
+                    ],
+                    [
+                      0,
+                      1,
+                      4
+                    ],
+                    [
+                      1,
+                      2,
+                      4
+                    ],
+                    [
+                      2,
+                      3,
+                      4
+                    ],
+                    [
+                      3,
+                      0,
+                      4
+                    ]
+                  ],
+                  "baseFace": 0
+                }
+              }
+            },
+            "expected": [
+              "cone"
+            ]
+          },
+          "answerLines": 1
+        },
+        {
+          "id": "elm-20261107-g2-s28-E-q003-i05",
+          "label": "ה",
+          "text": "יֵשׁ לִי פָּאוֹת מְשֻׁלָּשׁוֹת, אֲבָל אֲנִי לֹא מְשֻׁלָּשׁ. מִי אֲנִי?",
+          "answer": "פִּירָמִידָה שֶׁבְּסִיסָהּ רִבּוּעַ; הִיא גּוּף.",
+          "evidence": {
+            "caseId": "q003-i05",
+            "method": "geometry-facts",
+            "inputs": {
+              "query": "filter",
+              "targetIds": [
+                "cube",
+                "cylinder",
+                "cone",
+                "sphere",
+                "pyramid"
+              ],
+              "conditions": {
+                "dimension": 3,
+                "hasTriangleFace": true
+              },
+              "models": {
+                "cube": {
+                  "kind": "cube",
+                  "dimension": 3,
+                  "dimensions": [
+                    3,
+                    3,
+                    3
+                  ],
+                  "vertices": [
+                    [
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      3,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      3,
+                      0
+                    ],
+                    [
+                      3,
+                      3,
+                      0
+                    ],
+                    [
+                      0,
+                      0,
+                      3
+                    ],
+                    [
+                      3,
+                      0,
+                      3
+                    ],
+                    [
+                      0,
+                      3,
+                      3
+                    ],
+                    [
+                      3,
+                      3,
+                      3
+                    ]
+                  ],
+                  "faces": [
+                    [
+                      0,
+                      1,
+                      3,
+                      2
+                    ],
+                    [
+                      4,
+                      6,
+                      7,
+                      5
+                    ],
+                    [
+                      0,
+                      4,
+                      5,
+                      1
+                    ],
+                    [
+                      2,
+                      3,
+                      7,
+                      6
+                    ],
+                    [
+                      0,
+                      2,
+                      6,
+                      4
+                    ],
+                    [
+                      1,
+                      5,
+                      7,
+                      3
+                    ]
+                  ]
+                },
+                "cylinder": {
+                  "kind": "cylinder",
+                  "dimension": 3,
+                  "radius": 2,
+                  "height": 5,
+                  "circularBases": 2
+                },
+                "cone": {
+                  "kind": "cone",
+                  "dimension": 3,
+                  "radius": 2,
+                  "height": 5,
+                  "circularBases": 1,
+                  "apex": [
+                    0,
+                    0,
+                    5
+                  ]
+                },
+                "sphere": {
+                  "kind": "sphere",
+                  "dimension": 3,
+                  "radius": 2,
+                  "center": [
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                "pyramid": {
+                  "kind": "pyramid",
+                  "dimension": 3,
+                  "vertices": [
+                    [
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      4,
+                      0,
+                      0
+                    ],
+                    [
+                      4,
+                      4,
+                      0
+                    ],
+                    [
+                      0,
+                      4,
+                      0
+                    ],
+                    [
+                      2,
+                      2,
+                      4
+                    ]
+                  ],
+                  "faces": [
+                    [
+                      0,
+                      3,
+                      2,
+                      1
+                    ],
+                    [
+                      0,
+                      1,
+                      4
+                    ],
+                    [
+                      1,
+                      2,
+                      4
+                    ],
+                    [
+                      2,
+                      3,
+                      4
+                    ],
+                    [
+                      3,
+                      0,
+                      4
+                    ]
+                  ],
+                  "baseFace": 0
+                }
+              }
+            },
+            "expected": [
+              "pyramid"
+            ]
+          },
+          "answerLines": 1
+        }
+      ],
+      "star": false,
+      "layout": "two-column",
+      "pageBreakBefore": false
+    },
+    {
+      "id": "elm-20261107-g2-s28-E-q004",
+      "n": 4,
+      "text": "כִּתְבוּ רֶמֶז שֶׁיַּבְחִין בֵּין הַמּוּעֲמָדִים. אַל תִּכְתְּבוּ אֶת שֵׁם הַתְּשׁוּבָה בָּרֶמֶז.",
+      "tags": [
+        "open",
+        "explain"
+      ],
+      "dependsOn": [],
+      "items": [
+        {
+          "id": "elm-20261107-g2-s28-E-q004-i01",
+          "label": "א",
+          "text": "רֶמֶז לְקֻבִּיָּה מִתּוֹךְ קֻבִּיָּה וְגָלִיל.",
+          "answer": "דֻּגְמָה: ״כָּל פָּאוֹתַי הַשְּׁטוּחוֹת רִבּוּעִיּוֹת.״ יִתָּכְנוּ רְמָזִים אֲחֵרִים הַמַּתְאִימִים לַקֻּבִּיָּה וְלֹא לַגָּלִיל.",
+          "evidence": {
+            "caseId": "q004-i01",
+            "method": "open-review",
+            "inputs": {
+              "query": "filter",
+              "targetIds": [
+                "cube",
+                "cylinder"
+              ],
+              "conditions": {
+                "allFacesSquare": true
+              },
+              "models": {
+                "cube": {
+                  "kind": "cube",
+                  "dimension": 3,
+                  "dimensions": [
+                    3,
+                    3,
+                    3
+                  ],
+                  "vertices": [
+                    [
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      3,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      3,
+                      0
+                    ],
+                    [
+                      3,
+                      3,
+                      0
+                    ],
+                    [
+                      0,
+                      0,
+                      3
+                    ],
+                    [
+                      3,
+                      0,
+                      3
+                    ],
+                    [
+                      0,
+                      3,
+                      3
+                    ],
+                    [
+                      3,
+                      3,
+                      3
+                    ]
+                  ],
+                  "faces": [
+                    [
+                      0,
+                      1,
+                      3,
+                      2
+                    ],
+                    [
+                      4,
+                      6,
+                      7,
+                      5
+                    ],
+                    [
+                      0,
+                      4,
+                      5,
+                      1
+                    ],
+                    [
+                      2,
+                      3,
+                      7,
+                      6
+                    ],
+                    [
+                      0,
+                      2,
+                      6,
+                      4
+                    ],
+                    [
+                      1,
+                      5,
+                      7,
+                      3
+                    ]
+                  ]
+                },
+                "cylinder": {
+                  "kind": "cylinder",
+                  "dimension": 3,
+                  "radius": 2,
+                  "height": 5,
+                  "circularBases": 2
+                }
+              }
+            },
+            "expected": [
+              "cube"
+            ],
+            "criteria": [
+              "הרמז נכון לקובייה",
+              "הרמז אינו נכון לגליל",
+              "אין ברמז שם הגוף המבוקש"
+            ]
+          },
+          "answerLines": 1
+        },
+        {
+          "id": "elm-20261107-g2-s28-E-q004-i02",
+          "label": "ב",
+          "text": "רֶמֶז לְעִגּוּל מִתּוֹךְ עִגּוּל וְכַדּוּר.",
+          "answer": "דֻּגְמָה: ״אֲנִי צוּרָה שְׁטוּחָה.״ מְקַבְּלִים תֵּאוּר נָכוֹן לָעִגּוּל שֶׁאֵינוֹ מַתְאִים לַכַּדּוּר.",
+          "evidence": {
+            "caseId": "q004-i02",
+            "method": "open-review",
+            "inputs": {
+              "query": "filter",
+              "targetIds": [
+                "circle",
+                "sphere"
+              ],
+              "conditions": {
+                "dimension": 2
+              },
+              "models": {
+                "circle": {
+                  "kind": "circle",
+                  "dimension": 2,
+                  "radius": 2
+                },
+                "sphere": {
+                  "kind": "sphere",
+                  "dimension": 3,
+                  "radius": 2,
+                  "center": [
+                    0,
+                    0,
+                    0
+                  ]
+                }
+              }
+            },
+            "expected": [
+              "circle"
+            ],
+            "criteria": [
+              "הרמז מזהה צורה שטוחה",
+              "הרמז שולל את הכדור",
+              "שם התשובה אינו מופיע ברמז"
+            ]
+          },
+          "answerLines": 1
+        },
+        {
+          "id": "elm-20261107-g2-s28-E-q004-i03",
+          "label": "ג",
+          "text": "רֶמֶז לְחָרוּט מִתּוֹךְ חָרוּט וְגָלִיל.",
+          "answer": "דֻּגְמָה: ״יֵשׁ לִי חֹד.״ מְקַבְּלִים תֵּאוּר נָכוֹן לֶחָרוּט שֶׁאֵינוֹ מַתְאִים לַגָּלִיל.",
+          "evidence": {
+            "caseId": "q004-i03",
+            "method": "open-review",
+            "inputs": {
+              "query": "filter",
+              "targetIds": [
+                "cone",
+                "cylinder"
+              ],
+              "conditions": {
+                "hasApex": true
+              },
+              "models": {
+                "cone": {
+                  "kind": "cone",
+                  "dimension": 3,
+                  "radius": 2,
+                  "height": 5,
+                  "circularBases": 1,
+                  "apex": [
+                    0,
+                    0,
+                    5
+                  ]
+                },
+                "cylinder": {
+                  "kind": "cylinder",
+                  "dimension": 3,
+                  "radius": 2,
+                  "height": 5,
+                  "circularBases": 2
+                }
+              }
+            },
+            "expected": [
+              "cone"
+            ],
+            "criteria": [
+              "תכונה נכונה לחרוט",
+              "התכונה אינה נכונה לגליל",
+              "ללא שם הגוף ברמז"
+            ]
+          },
+          "answerLines": 1
+        },
+        {
+          "id": "elm-20261107-g2-s28-E-q004-i04",
+          "label": "ד",
+          "text": "רֶמֶז לְמְשֻׁלָּשׁ מִתּוֹךְ מְשֻׁלָּשׁ וְרִבּוּעַ.",
+          "answer": "דֻּגְמָה: ״יֵשׁ לִי שָׁלוֹשׁ צְלָעוֹת.״ מְקַבְּלִים תֵּאוּר שֶׁמַּתְאִים לַמְּשֻׁלָּשׁ וְשׁוֹלֵל אֶת הָרִבּוּעַ.",
+          "evidence": {
+            "caseId": "q004-i04",
+            "method": "open-review",
+            "inputs": {
+              "query": "filter",
+              "targetIds": [
+                "triangle",
+                "square"
+              ],
+              "conditions": {
+                "sideCount": 3
+              },
+              "models": {
+                "triangle": {
+                  "kind": "triangle",
+                  "dimension": 2,
+                  "points": [
+                    [
+                      0,
+                      0
+                    ],
+                    [
+                      5,
+                      0
+                    ],
+                    [
+                      2,
+                      4
+                    ]
+                  ],
+                  "closed": true
+                },
+                "square": {
+                  "kind": "square",
+                  "dimension": 2,
+                  "points": [
+                    [
+                      0,
+                      0
+                    ],
+                    [
+                      4,
+                      0
+                    ],
+                    [
+                      4,
+                      4
+                    ],
+                    [
+                      0,
+                      4
+                    ]
+                  ],
+                  "closed": true
+                }
+              }
+            },
+            "expected": [
+              "triangle"
+            ],
+            "criteria": [
+              "שלוש צלעות או תכונה מבדילה תקפה",
+              "התכונה אינה נכונה לריבוע",
+              "ללא שם התשובה ברמז"
+            ]
+          },
+          "answerLines": 1
+        },
+        {
+          "id": "elm-20261107-g2-s28-E-q004-i05",
+          "label": "ה",
+          "text": "רֶמֶז לְכַדּוּר מִתּוֹךְ כַּדּוּר וְקֻבִּיָּה.",
+          "answer": "דֻּגְמָה: ״אֵין לִי פָּאָה שְׁטוּחָה.״ מְקַבְּלִים תֵּאוּר נָכוֹן לַכַּדּוּר שֶׁאֵינוֹ נָכוֹן לַקֻּבִּיָּה.",
+          "evidence": {
+            "caseId": "q004-i05",
+            "method": "open-review",
+            "inputs": {
+              "query": "filter",
+              "targetIds": [
+                "sphere",
+                "cube"
+              ],
+              "conditions": {
+                "flatFaceCount": 0
+              },
+              "models": {
+                "sphere": {
+                  "kind": "sphere",
+                  "dimension": 3,
+                  "radius": 2,
+                  "center": [
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                "cube": {
+                  "kind": "cube",
+                  "dimension": 3,
+                  "dimensions": [
+                    3,
+                    3,
+                    3
+                  ],
+                  "vertices": [
+                    [
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      3,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      3,
+                      0
+                    ],
+                    [
+                      3,
+                      3,
+                      0
+                    ],
+                    [
+                      0,
+                      0,
+                      3
+                    ],
+                    [
+                      3,
+                      0,
+                      3
+                    ],
+                    [
+                      0,
+                      3,
+                      3
+                    ],
+                    [
+                      3,
+                      3,
+                      3
+                    ]
+                  ],
+                  "faces": [
+                    [
+                      0,
+                      1,
+                      3,
+                      2
+                    ],
+                    [
+                      4,
+                      6,
+                      7,
+                      5
+                    ],
+                    [
+                      0,
+                      4,
+                      5,
+                      1
+                    ],
+                    [
+                      2,
+                      3,
+                      7,
+                      6
+                    ],
+                    [
+                      0,
+                      2,
+                      6,
+                      4
+                    ],
+                    [
+                      1,
+                      5,
+                      7,
+                      3
+                    ]
+                  ]
+                }
+              }
+            },
+            "expected": [
+              "sphere"
+            ],
+            "criteria": [
+              "תכונה נכונה לכדור",
+              "התכונה שוללת קובייה",
+              "ללא שם הגוף ברמז"
+            ]
+          },
+          "answerLines": 1
+        }
+      ],
+      "star": false,
+      "layout": "stacked",
+      "pageBreakBefore": false
+    },
+    {
+      "id": "elm-20261107-g2-s28-E-q005",
+      "n": 5,
+      "text": "מַה קּוֹרֶה כְּשֶׁמְּשַׁנִּים? בִּדְקוּ אֶת הַטְּעָנוֹת.",
+      "tags": [
+        "explain"
+      ],
+      "dependsOn": [],
+      "items": [
+        {
+          "id": "elm-20261107-g2-s28-E-q005-i01",
+          "label": "א",
+          "text": "מְסוֹבְבִים מְשֻׁלָּשׁ גָּזוּר בְּלִי לְקַפֵּל אוֹ לִגְזֹר. הַאִם הוּא נִשְׁאַר מְשֻׁלָּשׁ?",
+          "answer": "כֵּן. הַסִּיבוּב שׁוֹמֵר עַל הַגְּבוּל הַסָּגוּר וְעַל שָׁלוֹשׁ הַצְּלָעוֹת.",
+          "evidence": {
+            "caseId": "q005-i01",
+            "method": "geometry-facts",
+            "inputs": {
+              "query": "invariant",
+              "targetIds": [
+                "triangle"
+              ],
+              "operation": "rotate",
+              "models": {
+                "triangle": {
+                  "kind": "triangle",
+                  "dimension": 2,
+                  "points": [
+                    [
+                      0,
+                      0
+                    ],
+                    [
+                      5,
+                      0
+                    ],
+                    [
+                      2,
+                      4
+                    ]
+                  ],
+                  "closed": true
+                }
+              }
+            },
+            "expected": true
+          },
+          "answerLines": 1
+        },
+        {
+          "id": "elm-20261107-g2-s28-E-q005-i02",
+          "label": "ב",
+          "text": "מְצַיְּרִים רִבּוּעַ גָּדוֹל יוֹתֵר. הַאִם מִסְפַּר צַלְעוֹתָיו גָּדֵל?",
+          "answer": "לֹא. לְכָל רִבּוּעַ אַרְבַּע צְלָעוֹת, גַּם אִם הוּא גָּדוֹל יוֹתֵר.",
+          "evidence": {
+            "caseId": "q005-i02",
+            "method": "geometry-facts",
+            "inputs": {
+              "query": "invariant",
+              "targetIds": [
+                "square"
+              ],
+              "operation": "scale",
+              "models": {
+                "square": {
+                  "kind": "square",
+                  "dimension": 2,
+                  "points": [
+                    [
+                      0,
+                      0
+                    ],
+                    [
+                      4,
+                      0
+                    ],
+                    [
+                      4,
+                      4
+                    ],
+                    [
+                      0,
+                      4
+                    ]
+                  ],
+                  "closed": true
+                }
+              }
+            },
+            "expected": true
+          },
+          "answerLines": 1
+        },
+        {
+          "id": "elm-20261107-g2-s28-E-q005-i03",
+          "label": "ג",
+          "text": "מוֹחֲקִים חֵלֶק מִצֶּלַע בְּמַלְבֵּן וּמַשְׁאִירִים פֶּתַח. הַאִם הַקַּו שֶׁנִּשְׁאַר הוּא מְצֻלָּע?",
+          "answer": "לֹא. כָּעֵת הַקַּו פָּתוּחַ.",
+          "evidence": {
+            "caseId": "q005-i03",
+            "method": "geometry-facts",
+            "inputs": {
+              "query": "property",
+              "targetIds": [
+                "open"
+              ],
+              "property": "polygon",
+              "models": {
+                "open": {
+                  "kind": "open",
+                  "dimension": 2,
+                  "points": [
+                    [
+                      0,
+                      0
+                    ],
+                    [
+                      4,
+                      0
+                    ],
+                    [
+                      4,
+                      3
+                    ],
+                    [
+                      1,
+                      3
+                    ]
+                  ],
+                  "closed": false
+                }
+              }
+            },
+            "expected": false
+          },
+          "answerLines": 1
+        },
+        {
+          "id": "elm-20261107-g2-s28-E-q005-i04",
+          "label": "ד",
+          "text": "צוֹבְעִים פָּאָה שֶׁל קֻבִּיָּה בְּצֶבַע אַחֵר. הַאִם צוּרַת הַפָּאָה מִשְׁתַּנָּה?",
+          "answer": "לֹא. הַצֶּבַע מִשְׁתַּנֶּה, אֲבָל הַפָּאָה נִשְׁאֶרֶת רִבּוּעַ.",
+          "evidence": {
+            "caseId": "q005-i04",
+            "method": "geometry-facts",
+            "inputs": {
+              "query": "invariant",
+              "targetIds": [
+                "cube"
+              ],
+              "operation": "color",
+              "models": {
+                "cube": {
+                  "kind": "cube",
+                  "dimension": 3,
+                  "dimensions": [
+                    3,
+                    3,
+                    3
+                  ],
+                  "vertices": [
+                    [
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      3,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      3,
+                      0
+                    ],
+                    [
+                      3,
+                      3,
+                      0
+                    ],
+                    [
+                      0,
+                      0,
+                      3
+                    ],
+                    [
+                      3,
+                      0,
+                      3
+                    ],
+                    [
+                      0,
+                      3,
+                      3
+                    ],
+                    [
+                      3,
+                      3,
+                      3
+                    ]
+                  ],
+                  "faces": [
+                    [
+                      0,
+                      1,
+                      3,
+                      2
+                    ],
+                    [
+                      4,
+                      6,
+                      7,
+                      5
+                    ],
+                    [
+                      0,
+                      4,
+                      5,
+                      1
+                    ],
+                    [
+                      2,
+                      3,
+                      7,
+                      6
+                    ],
+                    [
+                      0,
+                      2,
+                      6,
+                      4
+                    ],
+                    [
+                      1,
+                      5,
+                      7,
+                      3
+                    ]
+                  ]
+                }
+              }
+            },
+            "expected": true
+          },
+          "answerLines": 1
+        },
+        {
+          "id": "elm-20261107-g2-s28-E-q005-i05",
+          "label": "ה",
+          "text": "מְסוֹבְבִים מַלְבֵּן גָּזוּר. הַאִם זָוִיּוֹתָיו הַיְשָׁרוֹת נֶעֱלָמוֹת?",
+          "answer": "לֹא. סִיבוּב אֵינוֹ מְשַׁנֶּה אֶת הַזָּוִיּוֹת.",
+          "evidence": {
+            "caseId": "q005-i05",
+            "method": "geometry-facts",
+            "inputs": {
+              "query": "invariant",
+              "targetIds": [
+                "rectangle"
+              ],
+              "operation": "rotate",
+              "models": {
+                "rectangle": {
+                  "kind": "rectangle",
+                  "dimension": 2,
+                  "points": [
+                    [
+                      0,
+                      0
+                    ],
+                    [
+                      6,
+                      0
+                    ],
+                    [
+                      6,
+                      3
+                    ],
+                    [
+                      0,
+                      3
+                    ]
+                  ],
+                  "closed": true
+                }
+              }
+            },
+            "expected": true
+          },
+          "answerLines": 1
+        }
+      ],
+      "star": false,
+      "layout": "two-column",
+      "pageBreakBefore": false
+    },
+    {
+      "id": "elm-20261107-g2-s28-E-q006",
+      "n": 6,
+      "text": "מִשְׂחַק כַּרְטִיסִים: רִבּוּעַ, מְשֻׁלָּשׁ, עִגּוּל, קֻבִּיָּה, כַּדּוּר. בַּחֲרוּ שְׁנֵי כַּרְטִיסִים שׁוֹנִים. הַסֵּדֶר אֵינוֹ חָשׁוּב.",
+      "tags": [
+        "context",
+        "explain"
+      ],
+      "dependsOn": [],
+      "items": [
+        {
+          "id": "elm-20261107-g2-s28-E-q006-i01",
+          "label": "א",
+          "text": "מִצְאוּ אֶת כָּל הַזּוּגוֹת שֶׁבָּהֶם שְׁנֵי הַכַּרְטִיסִים מְצַיְּנִים צוּרוֹת שְׁטוּחוֹת.",
+          "answer": "רִבּוּעַ וּמְשֻׁלָּשׁ; רִבּוּעַ וְעִגּוּל; מְשֻׁלָּשׁ וְעִגּוּל.",
+          "evidence": {
+            "caseId": "q006-i01",
+            "method": "geometry-facts",
+            "inputs": {
+              "query": "combinations",
+              "targetIds": [
+                "square",
+                "triangle",
+                "circle",
+                "cube",
+                "sphere"
+              ],
+              "size": 2,
+              "conditions": [
+                {
+                  "property": "dimension",
+                  "equals": 2,
+                  "count": 2
+                }
+              ],
+              "models": {
+                "square": {
+                  "kind": "square",
+                  "dimension": 2,
+                  "points": [
+                    [
+                      0,
+                      0
+                    ],
+                    [
+                      4,
+                      0
+                    ],
+                    [
+                      4,
+                      4
+                    ],
+                    [
+                      0,
+                      4
+                    ]
+                  ],
+                  "closed": true
+                },
+                "triangle": {
+                  "kind": "triangle",
+                  "dimension": 2,
+                  "points": [
+                    [
+                      0,
+                      0
+                    ],
+                    [
+                      5,
+                      0
+                    ],
+                    [
+                      2,
+                      4
+                    ]
+                  ],
+                  "closed": true
+                },
+                "circle": {
+                  "kind": "circle",
+                  "dimension": 2,
+                  "radius": 2
+                },
+                "cube": {
+                  "kind": "cube",
+                  "dimension": 3,
+                  "dimensions": [
+                    3,
+                    3,
+                    3
+                  ],
+                  "vertices": [
+                    [
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      3,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      3,
+                      0
+                    ],
+                    [
+                      3,
+                      3,
+                      0
+                    ],
+                    [
+                      0,
+                      0,
+                      3
+                    ],
+                    [
+                      3,
+                      0,
+                      3
+                    ],
+                    [
+                      0,
+                      3,
+                      3
+                    ],
+                    [
+                      3,
+                      3,
+                      3
+                    ]
+                  ],
+                  "faces": [
+                    [
+                      0,
+                      1,
+                      3,
+                      2
+                    ],
+                    [
+                      4,
+                      6,
+                      7,
+                      5
+                    ],
+                    [
+                      0,
+                      4,
+                      5,
+                      1
+                    ],
+                    [
+                      2,
+                      3,
+                      7,
+                      6
+                    ],
+                    [
+                      0,
+                      2,
+                      6,
+                      4
+                    ],
+                    [
+                      1,
+                      5,
+                      7,
+                      3
+                    ]
+                  ]
+                },
+                "sphere": {
+                  "kind": "sphere",
+                  "dimension": 3,
+                  "radius": 2,
+                  "center": [
+                    0,
+                    0,
+                    0
+                  ]
+                }
+              }
+            },
+            "expected": [
+              [
+                "square",
+                "triangle"
+              ],
+              [
+                "square",
+                "circle"
+              ],
+              [
+                "triangle",
+                "circle"
+              ]
+            ]
+          },
+          "answerLines": 2
+        },
+        {
+          "id": "elm-20261107-g2-s28-E-q006-i02",
+          "label": "ב",
+          "text": "מִצְאוּ אֶת כָּל הַזּוּגוֹת שֶׁבָּהֶם מְצֻלָּע וְגוּף.",
+          "answer": "רִבּוּעַ וְקֻבִּיָּה; רִבּוּעַ וְכַדּוּר; מְשֻׁלָּשׁ וְקֻבִּיָּה; מְשֻׁלָּשׁ וְכַדּוּר.",
+          "evidence": {
+            "caseId": "q006-i02",
+            "method": "geometry-facts",
+            "inputs": {
+              "query": "combinations",
+              "targetIds": [
+                "square",
+                "triangle",
+                "circle",
+                "cube",
+                "sphere"
+              ],
+              "size": 2,
+              "conditions": [
+                {
+                  "property": "polygon",
+                  "equals": true,
+                  "count": 1
+                },
+                {
+                  "property": "dimension",
+                  "equals": 3,
+                  "count": 1
+                }
+              ],
+              "models": {
+                "square": {
+                  "kind": "square",
+                  "dimension": 2,
+                  "points": [
+                    [
+                      0,
+                      0
+                    ],
+                    [
+                      4,
+                      0
+                    ],
+                    [
+                      4,
+                      4
+                    ],
+                    [
+                      0,
+                      4
+                    ]
+                  ],
+                  "closed": true
+                },
+                "triangle": {
+                  "kind": "triangle",
+                  "dimension": 2,
+                  "points": [
+                    [
+                      0,
+                      0
+                    ],
+                    [
+                      5,
+                      0
+                    ],
+                    [
+                      2,
+                      4
+                    ]
+                  ],
+                  "closed": true
+                },
+                "circle": {
+                  "kind": "circle",
+                  "dimension": 2,
+                  "radius": 2
+                },
+                "cube": {
+                  "kind": "cube",
+                  "dimension": 3,
+                  "dimensions": [
+                    3,
+                    3,
+                    3
+                  ],
+                  "vertices": [
+                    [
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      3,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      3,
+                      0
+                    ],
+                    [
+                      3,
+                      3,
+                      0
+                    ],
+                    [
+                      0,
+                      0,
+                      3
+                    ],
+                    [
+                      3,
+                      0,
+                      3
+                    ],
+                    [
+                      0,
+                      3,
+                      3
+                    ],
+                    [
+                      3,
+                      3,
+                      3
+                    ]
+                  ],
+                  "faces": [
+                    [
+                      0,
+                      1,
+                      3,
+                      2
+                    ],
+                    [
+                      4,
+                      6,
+                      7,
+                      5
+                    ],
+                    [
+                      0,
+                      4,
+                      5,
+                      1
+                    ],
+                    [
+                      2,
+                      3,
+                      7,
+                      6
+                    ],
+                    [
+                      0,
+                      2,
+                      6,
+                      4
+                    ],
+                    [
+                      1,
+                      5,
+                      7,
+                      3
+                    ]
+                  ]
+                },
+                "sphere": {
+                  "kind": "sphere",
+                  "dimension": 3,
+                  "radius": 2,
+                  "center": [
+                    0,
+                    0,
+                    0
+                  ]
+                }
+              }
+            },
+            "expected": [
+              [
+                "square",
+                "cube"
+              ],
+              [
+                "square",
+                "sphere"
+              ],
+              [
+                "triangle",
+                "cube"
+              ],
+              [
+                "triangle",
+                "sphere"
+              ]
+            ]
+          },
+          "answerLines": 3
+        },
+        {
+          "id": "elm-20261107-g2-s28-E-q006-i03",
+          "label": "ג",
+          "text": "מִצְאוּ זוּג שֶׁבּוֹ שְׁנֵי הַכַּרְטִיסִים מְצַיְּנִים גּוּפִים.",
+          "answer": "קֻבִּיָּה וְכַדּוּר.",
+          "evidence": {
+            "caseId": "q006-i03",
+            "method": "geometry-facts",
+            "inputs": {
+              "query": "combinations",
+              "targetIds": [
+                "square",
+                "triangle",
+                "circle",
+                "cube",
+                "sphere"
+              ],
+              "size": 2,
+              "conditions": [
+                {
+                  "property": "dimension",
+                  "equals": 3,
+                  "count": 2
+                }
+              ],
+              "models": {
+                "square": {
+                  "kind": "square",
+                  "dimension": 2,
+                  "points": [
+                    [
+                      0,
+                      0
+                    ],
+                    [
+                      4,
+                      0
+                    ],
+                    [
+                      4,
+                      4
+                    ],
+                    [
+                      0,
+                      4
+                    ]
+                  ],
+                  "closed": true
+                },
+                "triangle": {
+                  "kind": "triangle",
+                  "dimension": 2,
+                  "points": [
+                    [
+                      0,
+                      0
+                    ],
+                    [
+                      5,
+                      0
+                    ],
+                    [
+                      2,
+                      4
+                    ]
+                  ],
+                  "closed": true
+                },
+                "circle": {
+                  "kind": "circle",
+                  "dimension": 2,
+                  "radius": 2
+                },
+                "cube": {
+                  "kind": "cube",
+                  "dimension": 3,
+                  "dimensions": [
+                    3,
+                    3,
+                    3
+                  ],
+                  "vertices": [
+                    [
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      3,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      3,
+                      0
+                    ],
+                    [
+                      3,
+                      3,
+                      0
+                    ],
+                    [
+                      0,
+                      0,
+                      3
+                    ],
+                    [
+                      3,
+                      0,
+                      3
+                    ],
+                    [
+                      0,
+                      3,
+                      3
+                    ],
+                    [
+                      3,
+                      3,
+                      3
+                    ]
+                  ],
+                  "faces": [
+                    [
+                      0,
+                      1,
+                      3,
+                      2
+                    ],
+                    [
+                      4,
+                      6,
+                      7,
+                      5
+                    ],
+                    [
+                      0,
+                      4,
+                      5,
+                      1
+                    ],
+                    [
+                      2,
+                      3,
+                      7,
+                      6
+                    ],
+                    [
+                      0,
+                      2,
+                      6,
+                      4
+                    ],
+                    [
+                      1,
+                      5,
+                      7,
+                      3
+                    ]
+                  ]
+                },
+                "sphere": {
+                  "kind": "sphere",
+                  "dimension": 3,
+                  "radius": 2,
+                  "center": [
+                    0,
+                    0,
+                    0
+                  ]
+                }
+              }
+            },
+            "expected": [
+              [
+                "cube",
+                "sphere"
+              ]
+            ]
+          },
+          "answerLines": 1
+        },
+        {
+          "id": "elm-20261107-g2-s28-E-q006-i04",
+          "label": "ד",
+          "text": "מִצְאוּ זוּג שֶׁבּוֹ צוּרָה שְׁטוּחָה לְלֹא פִּנּוֹת וְגוּף עִם פָּאוֹת שְׁטוּחוֹת.",
+          "answer": "עִגּוּל וְקֻבִּיָּה.",
+          "evidence": {
+            "caseId": "q006-i04",
+            "method": "geometry-facts",
+            "inputs": {
+              "query": "combinations",
+              "targetIds": [
+                "square",
+                "triangle",
+                "circle",
+                "cube",
+                "sphere"
+              ],
+              "size": 2,
+              "conditions": [
+                {
+                  "property": "flatNoCorners",
+                  "equals": true,
+                  "count": 1
+                },
+                {
+                  "property": "solidWithFlatFace",
+                  "equals": true,
+                  "count": 1
+                }
+              ],
+              "models": {
+                "square": {
+                  "kind": "square",
+                  "dimension": 2,
+                  "points": [
+                    [
+                      0,
+                      0
+                    ],
+                    [
+                      4,
+                      0
+                    ],
+                    [
+                      4,
+                      4
+                    ],
+                    [
+                      0,
+                      4
+                    ]
+                  ],
+                  "closed": true
+                },
+                "triangle": {
+                  "kind": "triangle",
+                  "dimension": 2,
+                  "points": [
+                    [
+                      0,
+                      0
+                    ],
+                    [
+                      5,
+                      0
+                    ],
+                    [
+                      2,
+                      4
+                    ]
+                  ],
+                  "closed": true
+                },
+                "circle": {
+                  "kind": "circle",
+                  "dimension": 2,
+                  "radius": 2
+                },
+                "cube": {
+                  "kind": "cube",
+                  "dimension": 3,
+                  "dimensions": [
+                    3,
+                    3,
+                    3
+                  ],
+                  "vertices": [
+                    [
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      3,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      3,
+                      0
+                    ],
+                    [
+                      3,
+                      3,
+                      0
+                    ],
+                    [
+                      0,
+                      0,
+                      3
+                    ],
+                    [
+                      3,
+                      0,
+                      3
+                    ],
+                    [
+                      0,
+                      3,
+                      3
+                    ],
+                    [
+                      3,
+                      3,
+                      3
+                    ]
+                  ],
+                  "faces": [
+                    [
+                      0,
+                      1,
+                      3,
+                      2
+                    ],
+                    [
+                      4,
+                      6,
+                      7,
+                      5
+                    ],
+                    [
+                      0,
+                      4,
+                      5,
+                      1
+                    ],
+                    [
+                      2,
+                      3,
+                      7,
+                      6
+                    ],
+                    [
+                      0,
+                      2,
+                      6,
+                      4
+                    ],
+                    [
+                      1,
+                      5,
+                      7,
+                      3
+                    ]
+                  ]
+                },
+                "sphere": {
+                  "kind": "sphere",
+                  "dimension": 3,
+                  "radius": 2,
+                  "center": [
+                    0,
+                    0,
+                    0
+                  ]
+                }
+              }
+            },
+            "expected": [
+              [
+                "circle",
+                "cube"
+              ]
+            ]
+          },
+          "answerLines": 1
+        },
+        {
+          "id": "elm-20261107-g2-s28-E-q006-i05",
+          "label": "ה",
+          "text": "מִצְאוּ זוּג שֶׁבּוֹ כָּל כַּרְטִיס מְצַיֵּן מְצֻלָּע.",
+          "answer": "רִבּוּעַ וּמְשֻׁלָּשׁ.",
+          "evidence": {
+            "caseId": "q006-i05",
+            "method": "geometry-facts",
+            "inputs": {
+              "query": "combinations",
+              "targetIds": [
+                "square",
+                "triangle",
+                "circle",
+                "cube",
+                "sphere"
+              ],
+              "size": 2,
+              "conditions": [
+                {
+                  "property": "polygon",
+                  "equals": true,
+                  "count": 2
+                }
+              ],
+              "models": {
+                "square": {
+                  "kind": "square",
+                  "dimension": 2,
+                  "points": [
+                    [
+                      0,
+                      0
+                    ],
+                    [
+                      4,
+                      0
+                    ],
+                    [
+                      4,
+                      4
+                    ],
+                    [
+                      0,
+                      4
+                    ]
+                  ],
+                  "closed": true
+                },
+                "triangle": {
+                  "kind": "triangle",
+                  "dimension": 2,
+                  "points": [
+                    [
+                      0,
+                      0
+                    ],
+                    [
+                      5,
+                      0
+                    ],
+                    [
+                      2,
+                      4
+                    ]
+                  ],
+                  "closed": true
+                },
+                "circle": {
+                  "kind": "circle",
+                  "dimension": 2,
+                  "radius": 2
+                },
+                "cube": {
+                  "kind": "cube",
+                  "dimension": 3,
+                  "dimensions": [
+                    3,
+                    3,
+                    3
+                  ],
+                  "vertices": [
+                    [
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      3,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      3,
+                      0
+                    ],
+                    [
+                      3,
+                      3,
+                      0
+                    ],
+                    [
+                      0,
+                      0,
+                      3
+                    ],
+                    [
+                      3,
+                      0,
+                      3
+                    ],
+                    [
+                      0,
+                      3,
+                      3
+                    ],
+                    [
+                      3,
+                      3,
+                      3
+                    ]
+                  ],
+                  "faces": [
+                    [
+                      0,
+                      1,
+                      3,
+                      2
+                    ],
+                    [
+                      4,
+                      6,
+                      7,
+                      5
+                    ],
+                    [
+                      0,
+                      4,
+                      5,
+                      1
+                    ],
+                    [
+                      2,
+                      3,
+                      7,
+                      6
+                    ],
+                    [
+                      0,
+                      2,
+                      6,
+                      4
+                    ],
+                    [
+                      1,
+                      5,
+                      7,
+                      3
+                    ]
+                  ]
+                },
+                "sphere": {
+                  "kind": "sphere",
+                  "dimension": 3,
+                  "radius": 2,
+                  "center": [
+                    0,
+                    0,
+                    0
+                  ]
+                }
+              }
+            },
+            "expected": [
+              [
+                "square",
+                "triangle"
+              ]
+            ]
+          },
+          "answerLines": 1
+        }
+      ],
+      "star": false,
+      "layout": "stacked",
+      "pageBreakBefore": false
+    },
+    {
+      "id": "elm-20261107-g2-s28-E-q007",
+      "n": 7,
+      "text": "הַאִם הַטַּעֲנָה נְכוֹנָה? אִם לֹא, תְּנוּ דֻּגְמָה נֶגְדִּית מִתּוֹךְ הַשֵּׁמוֹת שֶׁלְּמַטָּה: רִבּוּעַ, עִגּוּל, קֻבִּיָּה, גָּלִיל, כַּדּוּר.",
+      "tags": [
+        "error-analysis",
+        "explain"
+      ],
+      "dependsOn": [],
+      "items": [
+        {
+          "id": "elm-20261107-g2-s28-E-q007-i01",
+          "label": "א",
+          "text": "״כָּל צוּרָה שְׁטוּחָה בָּרְשִׁימָה הִיא מְצֻלָּע.״",
+          "answer": "לֹא. עִגּוּל הוּא צוּרָה שְׁטוּחָה שֶׁאֵינָהּ מְצֻלָּע.",
+          "evidence": {
+            "caseId": "q007-i01",
+            "method": "geometry-facts",
+            "inputs": {
+              "query": "filter",
+              "targetIds": [
+                "square",
+                "circle",
+                "cube",
+                "cylinder",
+                "sphere"
+              ],
+              "conditions": {
+                "dimension": 2,
+                "polygon": false
+              },
+              "models": {
+                "square": {
+                  "kind": "square",
+                  "dimension": 2,
+                  "points": [
+                    [
+                      0,
+                      0
+                    ],
+                    [
+                      4,
+                      0
+                    ],
+                    [
+                      4,
+                      4
+                    ],
+                    [
+                      0,
+                      4
+                    ]
+                  ],
+                  "closed": true
+                },
+                "circle": {
+                  "kind": "circle",
+                  "dimension": 2,
+                  "radius": 2
+                },
+                "cube": {
+                  "kind": "cube",
+                  "dimension": 3,
+                  "dimensions": [
+                    3,
+                    3,
+                    3
+                  ],
+                  "vertices": [
+                    [
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      3,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      3,
+                      0
+                    ],
+                    [
+                      3,
+                      3,
+                      0
+                    ],
+                    [
+                      0,
+                      0,
+                      3
+                    ],
+                    [
+                      3,
+                      0,
+                      3
+                    ],
+                    [
+                      0,
+                      3,
+                      3
+                    ],
+                    [
+                      3,
+                      3,
+                      3
+                    ]
+                  ],
+                  "faces": [
+                    [
+                      0,
+                      1,
+                      3,
+                      2
+                    ],
+                    [
+                      4,
+                      6,
+                      7,
+                      5
+                    ],
+                    [
+                      0,
+                      4,
+                      5,
+                      1
+                    ],
+                    [
+                      2,
+                      3,
+                      7,
+                      6
+                    ],
+                    [
+                      0,
+                      2,
+                      6,
+                      4
+                    ],
+                    [
+                      1,
+                      5,
+                      7,
+                      3
+                    ]
+                  ]
+                },
+                "cylinder": {
+                  "kind": "cylinder",
+                  "dimension": 3,
+                  "radius": 2,
+                  "height": 5,
+                  "circularBases": 2
+                },
+                "sphere": {
+                  "kind": "sphere",
+                  "dimension": 3,
+                  "radius": 2,
+                  "center": [
+                    0,
+                    0,
+                    0
+                  ]
+                }
+              }
+            },
+            "expected": [
+              "circle"
+            ]
+          },
+          "answerLines": 1
+        },
+        {
+          "id": "elm-20261107-g2-s28-E-q007-i02",
+          "label": "ב",
+          "text": "״לְכָל גּוּף בָּרְשִׁימָה יֵשׁ פָּאָה שְׁטוּחָה.״",
+          "answer": "לֹא. לַכַּדּוּר אֵין פָּאָה שְׁטוּחָה.",
+          "evidence": {
+            "caseId": "q007-i02",
+            "method": "geometry-facts",
+            "inputs": {
+              "query": "filter",
+              "targetIds": [
+                "square",
+                "circle",
+                "cube",
+                "cylinder",
+                "sphere"
+              ],
+              "conditions": {
+                "dimension": 3,
+                "flatFaceCount": 0
+              },
+              "models": {
+                "square": {
+                  "kind": "square",
+                  "dimension": 2,
+                  "points": [
+                    [
+                      0,
+                      0
+                    ],
+                    [
+                      4,
+                      0
+                    ],
+                    [
+                      4,
+                      4
+                    ],
+                    [
+                      0,
+                      4
+                    ]
+                  ],
+                  "closed": true
+                },
+                "circle": {
+                  "kind": "circle",
+                  "dimension": 2,
+                  "radius": 2
+                },
+                "cube": {
+                  "kind": "cube",
+                  "dimension": 3,
+                  "dimensions": [
+                    3,
+                    3,
+                    3
+                  ],
+                  "vertices": [
+                    [
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      3,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      3,
+                      0
+                    ],
+                    [
+                      3,
+                      3,
+                      0
+                    ],
+                    [
+                      0,
+                      0,
+                      3
+                    ],
+                    [
+                      3,
+                      0,
+                      3
+                    ],
+                    [
+                      0,
+                      3,
+                      3
+                    ],
+                    [
+                      3,
+                      3,
+                      3
+                    ]
+                  ],
+                  "faces": [
+                    [
+                      0,
+                      1,
+                      3,
+                      2
+                    ],
+                    [
+                      4,
+                      6,
+                      7,
+                      5
+                    ],
+                    [
+                      0,
+                      4,
+                      5,
+                      1
+                    ],
+                    [
+                      2,
+                      3,
+                      7,
+                      6
+                    ],
+                    [
+                      0,
+                      2,
+                      6,
+                      4
+                    ],
+                    [
+                      1,
+                      5,
+                      7,
+                      3
+                    ]
+                  ]
+                },
+                "cylinder": {
+                  "kind": "cylinder",
+                  "dimension": 3,
+                  "radius": 2,
+                  "height": 5,
+                  "circularBases": 2
+                },
+                "sphere": {
+                  "kind": "sphere",
+                  "dimension": 3,
+                  "radius": 2,
+                  "center": [
+                    0,
+                    0,
+                    0
+                  ]
+                }
+              }
+            },
+            "expected": [
+              "sphere"
+            ]
+          },
+          "answerLines": 1
+        },
+        {
+          "id": "elm-20261107-g2-s28-E-q007-i03",
+          "label": "ג",
+          "text": "״כָּל מָה שֶׁנִּרְאֶה עָגֹל בָּרְשִׁימָה הוּא גּוּף.״",
+          "answer": "לֹא. הָעִגּוּל הוּא צוּרָה שְׁטוּחָה.",
+          "evidence": {
+            "caseId": "q007-i03",
+            "method": "geometry-facts",
+            "inputs": {
+              "query": "filter",
+              "targetIds": [
+                "square",
+                "circle",
+                "cube",
+                "cylinder",
+                "sphere"
+              ],
+              "conditions": {
+                "dimension": 2,
+                "curved": true
+              },
+              "models": {
+                "square": {
+                  "kind": "square",
+                  "dimension": 2,
+                  "points": [
+                    [
+                      0,
+                      0
+                    ],
+                    [
+                      4,
+                      0
+                    ],
+                    [
+                      4,
+                      4
+                    ],
+                    [
+                      0,
+                      4
+                    ]
+                  ],
+                  "closed": true
+                },
+                "circle": {
+                  "kind": "circle",
+                  "dimension": 2,
+                  "radius": 2
+                },
+                "cube": {
+                  "kind": "cube",
+                  "dimension": 3,
+                  "dimensions": [
+                    3,
+                    3,
+                    3
+                  ],
+                  "vertices": [
+                    [
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      3,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      3,
+                      0
+                    ],
+                    [
+                      3,
+                      3,
+                      0
+                    ],
+                    [
+                      0,
+                      0,
+                      3
+                    ],
+                    [
+                      3,
+                      0,
+                      3
+                    ],
+                    [
+                      0,
+                      3,
+                      3
+                    ],
+                    [
+                      3,
+                      3,
+                      3
+                    ]
+                  ],
+                  "faces": [
+                    [
+                      0,
+                      1,
+                      3,
+                      2
+                    ],
+                    [
+                      4,
+                      6,
+                      7,
+                      5
+                    ],
+                    [
+                      0,
+                      4,
+                      5,
+                      1
+                    ],
+                    [
+                      2,
+                      3,
+                      7,
+                      6
+                    ],
+                    [
+                      0,
+                      2,
+                      6,
+                      4
+                    ],
+                    [
+                      1,
+                      5,
+                      7,
+                      3
+                    ]
+                  ]
+                },
+                "cylinder": {
+                  "kind": "cylinder",
+                  "dimension": 3,
+                  "radius": 2,
+                  "height": 5,
+                  "circularBases": 2
+                },
+                "sphere": {
+                  "kind": "sphere",
+                  "dimension": 3,
+                  "radius": 2,
+                  "center": [
+                    0,
+                    0,
+                    0
+                  ]
+                }
+              }
+            },
+            "expected": [
+              "circle"
+            ]
+          },
+          "answerLines": 1
+        },
+        {
+          "id": "elm-20261107-g2-s28-E-q007-i04",
+          "label": "ד",
+          "text": "״כָּל הַגּוּפִים בָּרְשִׁימָה הֵם קֻבִּיּוֹת.״ תְּנוּ אֶת כָּל הַדֻּגְמָאוֹת הַנֶּגְדִּיּוֹת.",
+          "answer": "גָּלִיל וְכַדּוּר הֵם גּוּפִים שֶׁאֵינָם קֻבִּיּוֹת.",
+          "evidence": {
+            "caseId": "q007-i04",
+            "method": "geometry-facts",
+            "inputs": {
+              "query": "filter",
+              "targetIds": [
+                "square",
+                "circle",
+                "cube",
+                "cylinder",
+                "sphere"
+              ],
+              "conditions": {
+                "dimension": 3
+              },
+              "exclude": [
+                "cube"
+              ],
+              "models": {
+                "square": {
+                  "kind": "square",
+                  "dimension": 2,
+                  "points": [
+                    [
+                      0,
+                      0
+                    ],
+                    [
+                      4,
+                      0
+                    ],
+                    [
+                      4,
+                      4
+                    ],
+                    [
+                      0,
+                      4
+                    ]
+                  ],
+                  "closed": true
+                },
+                "circle": {
+                  "kind": "circle",
+                  "dimension": 2,
+                  "radius": 2
+                },
+                "cube": {
+                  "kind": "cube",
+                  "dimension": 3,
+                  "dimensions": [
+                    3,
+                    3,
+                    3
+                  ],
+                  "vertices": [
+                    [
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      3,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      3,
+                      0
+                    ],
+                    [
+                      3,
+                      3,
+                      0
+                    ],
+                    [
+                      0,
+                      0,
+                      3
+                    ],
+                    [
+                      3,
+                      0,
+                      3
+                    ],
+                    [
+                      0,
+                      3,
+                      3
+                    ],
+                    [
+                      3,
+                      3,
+                      3
+                    ]
+                  ],
+                  "faces": [
+                    [
+                      0,
+                      1,
+                      3,
+                      2
+                    ],
+                    [
+                      4,
+                      6,
+                      7,
+                      5
+                    ],
+                    [
+                      0,
+                      4,
+                      5,
+                      1
+                    ],
+                    [
+                      2,
+                      3,
+                      7,
+                      6
+                    ],
+                    [
+                      0,
+                      2,
+                      6,
+                      4
+                    ],
+                    [
+                      1,
+                      5,
+                      7,
+                      3
+                    ]
+                  ]
+                },
+                "cylinder": {
+                  "kind": "cylinder",
+                  "dimension": 3,
+                  "radius": 2,
+                  "height": 5,
+                  "circularBases": 2
+                },
+                "sphere": {
+                  "kind": "sphere",
+                  "dimension": 3,
+                  "radius": 2,
+                  "center": [
+                    0,
+                    0,
+                    0
+                  ]
+                }
+              }
+            },
+            "expected": [
+              "cylinder",
+              "sphere"
+            ]
+          },
+          "answerLines": 1
+        },
+        {
+          "id": "elm-20261107-g2-s28-E-q007-i05",
+          "label": "ה",
+          "text": "״הָרִבּוּעַ בָּרְשִׁימָה הוּא גַּם צוּרָה שְׁטוּחָה וְגַם מְצֻלָּע.״",
+          "answer": "נָכוֹן. הוּא שָׁטוּחַ, וּגְבוּלוֹ סָגוּר וּמֻרְכָּב מִצְּלָעוֹת יְשָׁרוֹת.",
+          "evidence": {
+            "caseId": "q007-i05",
+            "method": "geometry-facts",
+            "inputs": {
+              "query": "properties",
+              "targetIds": [
+                "square"
+              ],
+              "properties": [
+                "dimension",
+                "polygon"
+              ],
+              "models": {
+                "square": {
+                  "kind": "square",
+                  "dimension": 2,
+                  "points": [
+                    [
+                      0,
+                      0
+                    ],
+                    [
+                      4,
+                      0
+                    ],
+                    [
+                      4,
+                      4
+                    ],
+                    [
+                      0,
+                      4
+                    ]
+                  ],
+                  "closed": true
+                }
+              }
+            },
+            "expected": [
+              2,
+              true
+            ]
+          },
+          "answerLines": 1
+        }
+      ],
+      "star": true,
+      "layout": "two-column",
+      "pageBreakBefore": false
+    },
+    {
+      "id": "elm-20261107-g2-s28-E-q008",
+      "n": 8,
+      "text": "תַּכְנְנוּ בְּעַצְמְכֶם. אֶפְשָׁר שֶׁתִּהְיֶה יוֹתֵר מִתְּשׁוּבָה מַתְאִימָה אַחַת.",
+      "tags": [
+        "open",
+        "explain"
+      ],
+      "dependsOn": [],
+      "items": [
+        {
+          "id": "elm-20261107-g2-s28-E-q008-i01",
+          "label": "א",
+          "text": "בַּחֲרוּ שְׁלוֹשָׁה שֵׁמוֹת שׁוֹנִים מִבֵּין רִבּוּעַ, מְשֻׁלָּשׁ, עִגּוּל, קֻבִּיָּה וְכַדּוּר: שְׁתֵּי צוּרוֹת שְׁטוּחוֹת וְגוּף.",
+          "answer": "דֻּגְמָה: רִבּוּעַ, עִגּוּל וְקֻבִּיָּה. מְקַבְּלִים כָּל בְּחִירָה מִן הָרְשִׁימָה שֶׁיֵּשׁ בָּהּ בְּדִיּוּק שְׁתֵּי צוּרוֹת שְׁטוּחוֹת וְגוּף אֶחָד.",
+          "evidence": {
+            "caseId": "q008-i01",
+            "method": "open-review",
+            "inputs": {
+              "query": "example",
+              "targetIds": [
+                "square",
+                "circle",
+                "cube"
+              ],
+              "conditions": [
+                {
+                  "property": "dimension",
+                  "equals": 2,
+                  "count": 2
+                },
+                {
+                  "property": "dimension",
+                  "equals": 3,
+                  "count": 1
+                }
+              ],
+              "models": {
+                "square": {
+                  "kind": "square",
+                  "dimension": 2,
+                  "points": [
+                    [
+                      0,
+                      0
+                    ],
+                    [
+                      4,
+                      0
+                    ],
+                    [
+                      4,
+                      4
+                    ],
+                    [
+                      0,
+                      4
+                    ]
+                  ],
+                  "closed": true
+                },
+                "circle": {
+                  "kind": "circle",
+                  "dimension": 2,
+                  "radius": 2
+                },
+                "cube": {
+                  "kind": "cube",
+                  "dimension": 3,
+                  "dimensions": [
+                    3,
+                    3,
+                    3
+                  ],
+                  "vertices": [
+                    [
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      3,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      3,
+                      0
+                    ],
+                    [
+                      3,
+                      3,
+                      0
+                    ],
+                    [
+                      0,
+                      0,
+                      3
+                    ],
+                    [
+                      3,
+                      0,
+                      3
+                    ],
+                    [
+                      0,
+                      3,
+                      3
+                    ],
+                    [
+                      3,
+                      3,
+                      3
+                    ]
+                  ],
+                  "faces": [
+                    [
+                      0,
+                      1,
+                      3,
+                      2
+                    ],
+                    [
+                      4,
+                      6,
+                      7,
+                      5
+                    ],
+                    [
+                      0,
+                      4,
+                      5,
+                      1
+                    ],
+                    [
+                      2,
+                      3,
+                      7,
+                      6
+                    ],
+                    [
+                      0,
+                      2,
+                      6,
+                      4
+                    ],
+                    [
+                      1,
+                      5,
+                      7,
+                      3
+                    ]
+                  ]
+                }
+              }
+            },
+            "expected": true,
+            "criteria": [
+              "שלושה שמות שונים מן הרשימה",
+              "בדיוק שתי צורות שטוחות",
+              "בדיוק גוף אחד"
+            ]
+          },
+          "answerLines": 1
+        },
+        {
+          "id": "elm-20261107-g2-s28-E-q008-i02",
+          "label": "ב",
+          "text": "כִּתְבוּ שְׁאֵלַת כֵּן אוֹ לֹא שֶׁתַּבְדִּיל בֵּין רִבּוּעַ לְעִגּוּל.",
+          "answer": "דֻּגְמָה: ״הַאִם יֵשׁ לְךָ צְלָעוֹת יְשָׁרוֹת?״ לָרִבּוּעַ כֵּן וְלָעִגּוּל לֹא. מְקַבְּלִים שְׁאֵלָה שֶׁתְּשׁוּבוֹתֶיהָ לַצּוּרוֹת שׁוֹנוֹת.",
+          "evidence": {
+            "caseId": "q008-i02",
+            "method": "open-review",
+            "inputs": {
+              "query": "across",
+              "targetIds": [
+                "square",
+                "circle"
+              ],
+              "property": "polygon",
+              "models": {
+                "square": {
+                  "kind": "square",
+                  "dimension": 2,
+                  "points": [
+                    [
+                      0,
+                      0
+                    ],
+                    [
+                      4,
+                      0
+                    ],
+                    [
+                      4,
+                      4
+                    ],
+                    [
+                      0,
+                      4
+                    ]
+                  ],
+                  "closed": true
+                },
+                "circle": {
+                  "kind": "circle",
+                  "dimension": 2,
+                  "radius": 2
+                }
+              }
+            },
+            "expected": [
+              true,
+              false
+            ],
+            "criteria": [
+              "שאלה על תכונה גאומטרית מוכרת",
+              "תשובות שונות לריבוע ולעיגול",
+              "ללא הסתמכות על צבע או גודל שרירותי"
+            ]
+          },
+          "answerLines": 1
+        },
+        {
+          "id": "elm-20261107-g2-s28-E-q008-i03",
+          "label": "ג",
+          "text": "תְּנוּ דֻּגְמָה לְגוּף וְלִצּוּרָה שְׁטוּחָה שֶׁמַּתְאִימָה לְפָאָה שֶׁלּוֹ.",
+          "answer": "דֻּגְמָה: קֻבִּיָּה וְרִבּוּעַ. מְקַבְּלִים כָּל גּוּף מֻכָּר וְשֵׁם נָכוֹן שֶׁל פָּאָה שְׁטוּחָה שֶׁלּוֹ.",
+          "evidence": {
+            "caseId": "q008-i03",
+            "method": "open-review",
+            "inputs": {
+              "query": "property",
+              "targetIds": [
+                "cube"
+              ],
+              "property": "faceShape",
+              "models": {
+                "cube": {
+                  "kind": "cube",
+                  "dimension": 3,
+                  "dimensions": [
+                    3,
+                    3,
+                    3
+                  ],
+                  "vertices": [
+                    [
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      3,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      3,
+                      0
+                    ],
+                    [
+                      3,
+                      3,
+                      0
+                    ],
+                    [
+                      0,
+                      0,
+                      3
+                    ],
+                    [
+                      3,
+                      0,
+                      3
+                    ],
+                    [
+                      0,
+                      3,
+                      3
+                    ],
+                    [
+                      3,
+                      3,
+                      3
+                    ]
+                  ],
+                  "faces": [
+                    [
+                      0,
+                      1,
+                      3,
+                      2
+                    ],
+                    [
+                      4,
+                      6,
+                      7,
+                      5
+                    ],
+                    [
+                      0,
+                      4,
+                      5,
+                      1
+                    ],
+                    [
+                      2,
+                      3,
+                      7,
+                      6
+                    ],
+                    [
+                      0,
+                      2,
+                      6,
+                      4
+                    ],
+                    [
+                      1,
+                      5,
+                      7,
+                      3
+                    ]
+                  ]
+                }
+              }
+            },
+            "expected": "square",
+            "criteria": [
+              "שם של גוף מותר לכיתה",
+              "שם של צורה שטוחה",
+              "הצורה אכן מתאימה לפאה של הגוף"
+            ]
+          },
+          "answerLines": 1
+        },
+        {
+          "id": "elm-20261107-g2-s28-E-q008-i04",
+          "label": "ד",
+          "text": "בַּחֲרוּ מִתּוֹךְ קֻבִּיָּה, גָּלִיל וְכַדּוּר גּוּף שֶׁאֶפְשָׁר לְהַנִּיחַ עַל פָּאָה שְׁטוּחָה. הַסְבִּירוּ.",
+          "answer": "דֻּגְמָה: קֻבִּיָּה, כִּי יֵשׁ לָהּ פָּאוֹת שְׁטוּחוֹת. גַּם גָּלִיל מַתְאִים כְּשֶׁמַּנִּיחִים אוֹתוֹ עַל בָּסִיסוֹ הַשָּׁטוּחַ; כַּדּוּר אֵינוֹ מַתְאִים.",
+          "evidence": {
+            "caseId": "q008-i04",
+            "method": "open-review",
+            "inputs": {
+              "query": "filter",
+              "targetIds": [
+                "cube",
+                "cylinder",
+                "sphere"
+              ],
+              "conditions": {
+                "hasFlatFace": true
+              },
+              "models": {
+                "cube": {
+                  "kind": "cube",
+                  "dimension": 3,
+                  "dimensions": [
+                    3,
+                    3,
+                    3
+                  ],
+                  "vertices": [
+                    [
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      3,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      3,
+                      0
+                    ],
+                    [
+                      3,
+                      3,
+                      0
+                    ],
+                    [
+                      0,
+                      0,
+                      3
+                    ],
+                    [
+                      3,
+                      0,
+                      3
+                    ],
+                    [
+                      0,
+                      3,
+                      3
+                    ],
+                    [
+                      3,
+                      3,
+                      3
+                    ]
+                  ],
+                  "faces": [
+                    [
+                      0,
+                      1,
+                      3,
+                      2
+                    ],
+                    [
+                      4,
+                      6,
+                      7,
+                      5
+                    ],
+                    [
+                      0,
+                      4,
+                      5,
+                      1
+                    ],
+                    [
+                      2,
+                      3,
+                      7,
+                      6
+                    ],
+                    [
+                      0,
+                      2,
+                      6,
+                      4
+                    ],
+                    [
+                      1,
+                      5,
+                      7,
+                      3
+                    ]
+                  ]
+                },
+                "cylinder": {
+                  "kind": "cylinder",
+                  "dimension": 3,
+                  "radius": 2,
+                  "height": 5,
+                  "circularBases": 2
+                },
+                "sphere": {
+                  "kind": "sphere",
+                  "dimension": 3,
+                  "radius": 2,
+                  "center": [
+                    0,
+                    0,
+                    0
+                  ]
+                }
+              }
+            },
+            "expected": [
+              "cube",
+              "cylinder"
+            ],
+            "criteria": [
+              "קובייה או גליל",
+              "הסבר על הפאה או הבסיס השטוחים",
+              "כדור אינו מתקבל"
+            ]
+          },
+          "answerLines": 1
+        },
+        {
+          "id": "elm-20261107-g2-s28-E-q008-i05",
+          "label": "ה",
+          "text": "כִּתְבוּ תֵּאוּר נָכוֹן שֶׁמַּתְאִים גַּם לְמְשֻׁלָּשׁ וְגַם לְרִבּוּעַ, אֲבָל לֹא לְעִגּוּל.",
+          "answer": "דֻּגְמָה: ״צוּרָה שְׁטוּחָה שֶׁגְּבוּלָהּ סָגוּר וּבָנוּי מִצְּלָעוֹת יְשָׁרוֹת.״ מְקַבְּלִים תְּכוּנָה נְכוֹנָה לִשְׁנֵי הַמְּצֻלָּעִים שֶׁאֵינָהּ נְכוֹנָה לָעִגּוּל.",
+          "evidence": {
+            "caseId": "q008-i05",
+            "method": "open-review",
+            "inputs": {
+              "query": "across",
+              "targetIds": [
+                "triangle",
+                "square",
+                "circle"
+              ],
+              "property": "polygon",
+              "models": {
+                "triangle": {
+                  "kind": "triangle",
+                  "dimension": 2,
+                  "points": [
+                    [
+                      0,
+                      0
+                    ],
+                    [
+                      5,
+                      0
+                    ],
+                    [
+                      2,
+                      4
+                    ]
+                  ],
+                  "closed": true
+                },
+                "square": {
+                  "kind": "square",
+                  "dimension": 2,
+                  "points": [
+                    [
+                      0,
+                      0
+                    ],
+                    [
+                      4,
+                      0
+                    ],
+                    [
+                      4,
+                      4
+                    ],
+                    [
+                      0,
+                      4
+                    ]
+                  ],
+                  "closed": true
+                },
+                "circle": {
+                  "kind": "circle",
+                  "dimension": 2,
+                  "radius": 2
+                }
+              }
+            },
+            "expected": [
+              true,
+              true,
+              false
+            ],
+            "criteria": [
+              "התיאור נכון למשולש",
+              "התיאור נכון לריבוע",
+              "התיאור אינו נכון לעיגול"
+            ]
+          },
+          "answerLines": 1
+        }
+      ],
+      "star": true,
+      "layout": "stacked",
+      "pageBreakBefore": true
+    }
+  ],
+  "figures": [
+    {
+      "id": "fig-q001",
+      "path": "figures/fig-q001.svg",
+      "sha256": "4faf2312b086ab430cc5fa8b7cd4276db90caf7f340c1e1930411205faed15f5",
+      "generator": "generate.py",
+      "data": {
+        "kind": "geometry-panel-board",
+        "panelOrder": "1-at-right",
+        "panels": [
+          {
+            "id": "1",
+            "modelId": "square",
+            "model": {
+              "kind": "square",
+              "dimension": 2,
+              "points": [
+                [
+                  0,
+                  0
+                ],
+                [
+                  4,
+                  0
+                ],
+                [
+                  4,
+                  4
+                ],
+                [
+                  0,
+                  4
+                ]
+              ],
+              "closed": true
+            },
+            "rotation": 15.0,
+            "displayScale": 1
+          },
+          {
+            "id": "2",
+            "modelId": "rectangle",
+            "model": {
+              "kind": "rectangle",
+              "dimension": 2,
+              "points": [
+                [
+                  0,
+                  0
+                ],
+                [
+                  6,
+                  0
+                ],
+                [
+                  6,
+                  3
+                ],
+                [
+                  0,
+                  3
+                ]
+              ],
+              "closed": true
+            },
+            "rotation": 0.0,
+            "displayScale": 1
+          },
+          {
+            "id": "3",
+            "modelId": "circle",
+            "model": {
+              "kind": "circle",
+              "dimension": 2,
+              "radius": 2
+            },
+            "rotation": 0,
+            "displayScale": 1
+          },
+          {
+            "id": "4",
+            "modelId": "cube",
+            "model": {
+              "kind": "cube",
+              "dimension": 3,
+              "dimensions": [
+                3,
+                3,
+                3
+              ],
+              "vertices": [
+                [
+                  0,
+                  0,
+                  0
+                ],
+                [
+                  3,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  3,
+                  0
+                ],
+                [
+                  3,
+                  3,
+                  0
+                ],
+                [
+                  0,
+                  0,
+                  3
+                ],
+                [
+                  3,
+                  0,
+                  3
+                ],
+                [
+                  0,
+                  3,
+                  3
+                ],
+                [
+                  3,
+                  3,
+                  3
+                ]
+              ],
+              "faces": [
+                [
+                  0,
+                  1,
+                  3,
+                  2
+                ],
+                [
+                  4,
+                  6,
+                  7,
+                  5
+                ],
+                [
+                  0,
+                  4,
+                  5,
+                  1
+                ],
+                [
+                  2,
+                  3,
+                  7,
+                  6
+                ],
+                [
+                  0,
+                  2,
+                  6,
+                  4
+                ],
+                [
+                  1,
+                  5,
+                  7,
+                  3
+                ]
+              ]
+            },
+            "rotation": 0,
+            "displayScale": 1
+          },
+          {
+            "id": "5",
+            "modelId": "pyramid",
+            "model": {
+              "kind": "pyramid",
+              "dimension": 3,
+              "vertices": [
+                [
+                  0,
+                  0,
+                  0
+                ],
+                [
+                  4,
+                  0,
+                  0
+                ],
+                [
+                  4,
+                  4,
+                  0
+                ],
+                [
+                  0,
+                  4,
+                  0
+                ],
+                [
+                  2,
+                  2,
+                  4
+                ]
+              ],
+              "faces": [
+                [
+                  0,
+                  3,
+                  2,
+                  1
+                ],
+                [
+                  0,
+                  1,
+                  4
+                ],
+                [
+                  1,
+                  2,
+                  4
+                ],
+                [
+                  2,
+                  3,
+                  4
+                ],
+                [
+                  3,
+                  0,
+                  4
+                ]
+              ],
+              "baseFace": 0
+            },
+            "rotation": 0,
+            "displayScale": 1
+          }
+        ]
+      },
+      "alt": "לוּחַ אִיּוּרִים גֵּאוֹמֶטְרִיִּים הַמְּסֻמָּנִים בְּמִסְפָּרִים."
+    }
+  ]
+}
