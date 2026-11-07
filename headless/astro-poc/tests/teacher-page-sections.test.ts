@@ -35,12 +35,12 @@ function pageBuilder(searchEnabled: boolean) {
   const order = printer.match(/const WIZARD_ORDER = (\[[^;]+\]);/);
   assert.ok(order);
   const calls = { invalidations: 0, focus: [] as string[], announcements: [] as string[] };
-  for (const id of ['teacher-workspace', 'wizard-bar']) document.getElementById(id)!.hidden = false;
+  for (const id of ['teacher-workspace', 'wizard-bar', 'wizard-actions']) document.getElementById(id)!.hidden = false;
   for (const id of ['wizard-label', 'topic']) document.getElementById(id)!.focus = () => { calls.focus.push(id); };
   return new Function('document', 'calls', 'searchEnabled', 'SECTION_KINDS', 'sectionKind', 'groupWholeQuestions', `
     const $ = id => document.getElementById(id);
-    const state = { grade: '9', topic: '2', wizard: 'pick', sectionKind: 'review', selected: [], blocks: [], pickNote: '' };
-    let history = [];
+    const state = { grade: '9', topic: '2', level: 'a', wizard: 'pick', sectionKind: 'review', selected: [], blocks: [], pickNote: '' };
+    let history = [], aiPickPending = 0, wizardNavigating = false;
     const WIZARD_ORDER = ${order[1]};
     const topicSearch = searchEnabled ? { close() {}, focus() { calls.focus.push('topic-search'); } } : null;
     const currentTopic = () => ({ title: 'פירוק לגורמים' });
@@ -53,7 +53,7 @@ function pageBuilder(searchEnabled: boolean) {
     const clearPreparedPrint = () => { calls.invalidations += 1; };
     const announce = message => calls.announcements.push(message);
     const render = () => { paintPageBuilder(); applyWizard(); };
-    ${['escapeHTML', 'blockQuestionCount', 'sectionToggleHTML', 'questionCountText', 'carriedKeys',
+    ${['escapeHTML', 'allSelectedKeys', 'levelPrintName', 'blockQuestionCount', 'sectionToggleHTML', 'questionCountText', 'carriedKeys',
       'paintPageBuilder', 'addAnotherTopic', 'applyWizard', 'bind'].map(definition).join('\n')}
     bind();
     render();

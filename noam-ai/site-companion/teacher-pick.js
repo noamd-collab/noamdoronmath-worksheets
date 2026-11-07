@@ -120,6 +120,11 @@ function canonicalTeacher(index, input) {
     if (!byQuestion.has(item.questionKey)) byQuestion.set(item.questionKey, []);
     byQuestion.get(item.questionKey).push(item);
   }
+  const roleByQuestion = new Map();
+  for (const sheet of pool) {
+    const questions = [...new Set(available.filter((item) => item.sheet === sheet).map((item) => item.questionKey))];
+    questions.forEach((key, rank) => roleByQuestion.set(key, rank / questions.length < 1 / 3 ? "ביסוס" : rank / questions.length < 2 / 3 ? "חזרה" : "יצירתית"));
+  }
   const seen = new Set();
   const candidates = [];
   for (const candidate of teacher.candidates) {
@@ -132,7 +137,7 @@ function canonicalTeacher(index, input) {
     // picker. A second part cannot add another question or replace its anchor.
     if (parts[0] !== item || seen.has(item.questionKey)) return reject();
     seen.add(item.questionKey);
-    candidates.push({ id: item.scoped, label: item.label,
+    candidates.push({ id: item.scoped, label: item.label, role: roleByQuestion.get(item.questionKey),
       text: [item.sheet.levelLabel, "שאלה " + parseInt(item.label, 10), parts.length === 1 ? "סעיף אחד" : parts.length + " סעיפים"].filter(Boolean).join(" · ") });
   }
   return { ...teacher, candidates };
@@ -262,10 +267,13 @@ export function classifierRequestBody(input, index) {
     const matching = matchingTeacherSheets(index, teacher);
     const candidates = teacher.candidates;
     if (candidates.length) {
+      lines.push("תפקידי השאלות נקבעו לפי המיקום בדף המקור: ביסוס בתחילה, חזרה באמצע ויצירתית בסוף. אין כאן טקסט מלא של השאלות, ואין להסיק תוכן מתמטי ממספר השאלה.");
+      lines.push("אלא אם הערת המורה מבקשת מיקוד אחר, שלב בבחירה את כל התפקידים הזמינים באופן מאוזן, ולא רק שאלות רצופות מתחילת הדף. בבחירה של 5: שתי שאלות מהתפקיד המועדף, שתיים מהבא ואחת מהשלישי; ב-10 וב-15 המשך באותו סבב לפי זמינות.");
+      lines.push("סדר העדיפות: בדרך כלל ביסוס, חזרה, יצירתית; בסגנון יצירתי: יצירתית, חזרה, ביסוס; בחזרה ספירלית: חזרה, ביסוס, יצירתית; בהכנה למבחן: חזרה, יצירתית, ביסוס. שמור על שילוב הרמות שהתבקש ועל בקשות מפורשות של המורה.");
       lines.push(
         "שאלות קיימות בדף לבחירה: " +
           candidates
-            .map((item) => (item.text ? `${item.id} (${item.text})` : item.id))
+            .map((item) => (item.text ? `${item.id} (${item.text}) [${item.role}]` : item.id))
             .join(" | ")
       );
     } else if (!teacher.hasCandidates && Array.isArray(index) && index.length) {

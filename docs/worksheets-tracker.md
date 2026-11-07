@@ -1,3 +1,11 @@
+## 2026-11-07 — Teacher workflow usability
+
+- Place the introduction before the four-step wizard; keep navigation and unique question/subsection counts at the bottom. Choose level once in setup, with an explicit return link from selection.
+- Balance default AI selections across source-position roles and disclose retained model picks versus local additions with per-question reasons. Explicit teacher instructions remain authoritative.
+- Open phone question crops at readable width with local horizontal scrolling and a fit-to-width control.
+- Add student output options: level labels hidden by default and optional answer appendix, consistently in composed print and editable Word. Original marked PDFs retain embedded headings.
+- Validation results and preview are recorded in the pull request; no new worksheet content or Kahoot functionality.
+
 ## 2026-11-03 — Ramzi phone send focus
 
 - A first tap on Send could blur the focused message field, move the phone composer and lose the click. The primary pointer-down now keeps textarea focus until the ordinary click; it does not submit or synthesize a click.
