@@ -55,7 +55,11 @@ const protectedFiles: Record<string, string> = {
   // Batch 6 (2026-11-03): G8-T65 (3 sheets) republished with final answers; the catalog points at its new PDFs.
   // 2026-11-03: four source-recovered grade 8 worksheets; question pages pixel-identical; final answers appended.
   // Final answers completed for remaining22 sheets; verified source identity with authorized AA-only differences, 2026-11-03.
-  'src/data/catalog.v1.json': '4b92aed69a9485557cd83c1e2b0813ee9358a77698f61b96a5204842bb3f9ad3',
+  // 2026-11-08: Noam's elementary renewal adds the reviewed G3-T10 edition.
+  // Removing only editions/defaultEditionId restores every prior catalog field;
+  // worksheet-editions.test.ts binds the refreshed snapshot to the real registry.
+  // This is an intentional content addition; deployment still needs PR approval.
+  'src/data/catalog.v1.json': '3b4a6667a0ab9871f2cadb717bbe7fec072f579b604f9c9e367cfa5cc040e6a2',
   // 2026-11-07: Noam's elementary worksheet renewal adds published editions
   // alongside every legacy PDF. worksheet-editions.test.ts verifies the empty
   // registry leaves the full snapshot and all 507 elementary links unchanged,

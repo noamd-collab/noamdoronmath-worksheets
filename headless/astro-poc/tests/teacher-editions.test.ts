@@ -14,7 +14,14 @@ import { wizardPrefillFromSearch, replaceWizardScopeUrl } from '../public/teache
 import { createTeacherDocx } from '../public/teachers/teacher-word-export.js';
 
 const read = (path: string) => readFileSync(new URL(path, import.meta.url), 'utf8');
-const raw = JSON.parse(read('../src/data/catalog.v1.json'));
+const committed = JSON.parse(read('../src/data/catalog.v1.json'));
+// Fixture registries must not inherit live published editions from the snapshot.
+const raw = { ...committed, grades: committed.grades.map((g: any) => ({
+  ...g, topics: g.topics.map((t: any) => {
+    const { editions, defaultEditionId, ...legacy } = t;
+    return legacy;
+  }),
+})) };
 const printer = read('../public/teachers/teacher-factoring-print.js');
 const clone = (v: any) => structuredClone(v);
 const sha = (v: Buffer|string) => createHash('sha256').update(v).digest('hex');
@@ -24,6 +31,15 @@ function definition(name: string) {
   return (end < 0 ? tail : tail.slice(0, end)).split('\nstart().catch')[0];
 }
 const built = () => buildTeacherCatalog(raw, editionFixture());
+
+test('the published teacher snapshot matches the real registry and can withdraw its overlays', () => {
+  const registry = JSON.parse(read('../../catalog/worksheet-editions.v1.json'));
+  const current = buildTeacherCatalog(committed);
+  assert.deepEqual(current, buildTeacherCatalog(raw, registry));
+  assert.deepEqual(buildTeacherCatalog(committed, { version: 1, editions: [] }), buildTeacherCatalog(raw));
+  assert.equal(catalogSheets(current).filter((s: any) => s.editionId).length,
+    registry.editions.filter((e: any) => e.status === 'published').length * 3);
+});
 
 test('teacher catalog appends only published editions and leaves every legacy field/order unchanged', () => {
   const old = buildTeacherCatalog(raw), next = built();

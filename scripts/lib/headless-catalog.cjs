@@ -710,9 +710,16 @@ function validateCatalog(catalog, raw) {
 function exportCatalog(options) {
   const opts = options || {};
   const indexPath = opts.indexPath || INDEX_PATH;
-  const outPath = opts.outPath || OUT_JSON;
+  // An alternate index belongs to its own repository. Never combine a fixture
+  // (or another checkout) with this module's live registry/output directory.
+  const catalogDir = path.join(path.dirname(path.resolve(indexPath)), 'headless', 'catalog');
+  const outPath = opts.outPath || path.join(catalogDir, 'catalog.v1.json');
   const raw = loadIndexCatalog(indexPath);
-  const registry = opts.editions || JSON.parse(fs.readFileSync(opts.editionsPath || EDITIONS_PATH, 'utf8'));
+  // Explicit input wins, including invalid values: validation must reject them,
+  // rather than silently falling back to a different registry. Missing local
+  // registries also fail; a legacy-only fixture must provide an empty registry.
+  const registry = Object.hasOwn(opts, 'editions') ? opts.editions :
+    JSON.parse(fs.readFileSync(opts.editionsPath || path.join(catalogDir, 'worksheet-editions.v1.json'), 'utf8'));
   const catalog = mergeWorksheetEditions(buildCatalog(raw), registry);
   const validation = validateCatalog(catalog, raw);
   const text = stableStringify(catalog);

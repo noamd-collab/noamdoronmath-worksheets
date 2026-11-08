@@ -15,7 +15,15 @@ import { editionFixture } from './fixtures/worksheet-editions';
 import { mergeWorksheetEditions, worksheetLearningId } from '../../../scripts/lib/worksheet-editions.cjs';
 
 const require = createRequire(import.meta.url);
-const base = JSON.parse(readFileSync(new URL('../src/data/catalog.v1.json', import.meta.url), 'utf8')) as CatalogV1;
+const committed = JSON.parse(readFileSync(new URL('../src/data/catalog.v1.json', import.meta.url), 'utf8')) as CatalogV1;
+// Synthetic registries start from legacy fields, regardless of which real
+// editions are currently published. Do not use the merger itself as this oracle.
+const base: CatalogV1 = { ...committed, grades: committed.grades.map(g => ({
+  ...g, topics: g.topics.map(t => {
+    const { editions, defaultEditionId, ...legacy } = t;
+    return legacy;
+  }),
+})) };
 const topic = (catalog: CatalogV1, grade = 1, id = 5) => catalog.grades.find(g => g.grade === grade)!.topics.find(t => t.id === id)!;
 const elementary = (catalog: CatalogV1) => catalog.grades.filter(g => g.grade <= 6);
 const registry = () => editionFixture();
@@ -24,6 +32,7 @@ test('empty registry preserves all 169 elementary topics and 507 legacy links by
   const actual = JSON.parse(readFileSync(new URL('../../catalog/worksheet-editions.v1.json', import.meta.url), 'utf8'));
   const merged = mergeWorksheetEditions(base, { version: 1, editions: [] });
   const production = mergeWorksheetEditions(base, actual);
+  assert.deepEqual(production, committed, 'the committed snapshot must include the actual registry');
   for (const g of base.grades) for (const t of g.topics) assert.deepEqual(topic(production, g.grade, t.id).levels, t.levels);
   assert.equal(JSON.stringify(merged), JSON.stringify(base));
   assert.equal(elementary(merged).flatMap(g => g.topics).length, 169);
@@ -32,6 +41,12 @@ test('empty registry preserves all 169 elementary topics and 507 legacy links by
     assert.equal(buildWorksheetHref({ catalog: base, grade: g.grade, topic: t, levelKey: level.key }),
       buildWorksheetHref({ catalog: merged, grade: g.grade, topic: topic(merged, g.grade, t.id), levelKey: level.key, editionId: 'legacy' }));
   }
+});
+
+test('withdrawal removes real published overlays from a refreshed snapshot without changing legacy fields', () => {
+  const before = JSON.stringify(committed);
+  assert.deepEqual(mergeWorksheetEditions(committed, { version: 1, editions: [] }), base);
+  assert.equal(JSON.stringify(committed), before);
 });
 
 test('only published complete editions are merged; original fields and inputs remain intact', () => {
