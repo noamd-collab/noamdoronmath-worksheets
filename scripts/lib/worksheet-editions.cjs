@@ -80,7 +80,9 @@ function mergeWorksheetEditions(catalog, registry) {
     });
     const prefix = `G${row.grade}-T${String(row.topicId).padStart(2, '0')}`;
     const edition = { editionId: row.editionId, label: row.label, status: 'published', levels,
-      routing: { resolvedNoamPrefix: prefix, aiHintShown: false, usesViewer: true,
+      // Noam approved elementary PDF/teacher publication only, without AI or
+      // a database rollout. Keep these editions on the direct PDF path.
+      routing: { resolvedNoamPrefix: prefix, aiHintShown: false, usesViewer: false,
         viewerPath: catalog.config.viewer.path,
         siblingPdfQuery: Object.fromEntries(levels.map(l => ['p' + l.key, l.pdfId])) } };
     const entry = published.get(key) || { editions: [], defaultEditionId: 'legacy' };

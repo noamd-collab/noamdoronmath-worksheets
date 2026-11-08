@@ -59,7 +59,9 @@ const protectedFiles: Record<string, string> = {
   // Removing only editions/defaultEditionId restores every prior catalog field;
   // worksheet-editions.test.ts binds the refreshed snapshot to the real registry.
   // This is an intentional content addition; deployment still needs PR approval.
-  'src/data/catalog.v1.json': '3b4a6667a0ab9871f2cadb717bbe7fec072f579b604f9c9e367cfa5cc040e6a2',
+  // Noam's explicit 8 November publication scope disables the elementary
+  // edition viewer; all old fields and PDFs remain covered by edition tests.
+  'src/data/catalog.v1.json': '6aa8f3fee8aafc82d419f66011dc31ac367d9fe87ee41b9bad525dc10be15214',
   // 2026-11-07: Noam's elementary worksheet renewal adds published editions
   // alongside every legacy PDF. worksheet-editions.test.ts verifies the empty
   // registry leaves the full snapshot and all 507 elementary links unchanged,
@@ -102,7 +104,15 @@ const protectedFiles: Record<string, string> = {
 describe('exact-design protected live-baseline boundaries', () => {
   for (const [file, expected] of Object.entries(protectedFiles)) {
     it(`preserves ${file}`, () => {
-      assert.equal(sha256(readFileSync(join(root, file))), expected, `${file} is outside the approved presentation-only scope`);
+      let content = read(file);
+      if (file === 'public/noam-learning-boot.js') {
+        // Noam approved PDF-only elementary publication, without new DB/auth
+        // activity. Removing this exact early exit restores the old boot.
+        const guard = '  if (window.NOAM_ELEMENTARY_PDF_ONLY) return;\n';
+        assert.equal(content.split(guard).length, 2);
+        content = content.replace(guard, '');
+      }
+      assert.equal(sha256(content), expected, `${file} is outside the approved presentation-only scope`);
     });
   }
 
@@ -121,7 +131,15 @@ describe('exact-design protected live-baseline boundaries', () => {
     // Its early guard has a dedicated behavioral suite. Exclude only that
     // addition so the original head/script hashes continue protecting the
     // unchanged viewer, AI answers, authentication and storage.
-    const viewerWithNativeRelease = read('public/worksheet-viewer-noam.html').replace(
+    const elementaryExit = 'if (window.NOAM_ELEMENTARY_PDF_ONLY) {\n' +
+      '  document.body.textContent = window.NOAM_ELEMENTARY_PDF_URL\n' +
+      '    ? "פותחים את דף העבודה…" : "הקישור לדף העבודה אינו תקין.";\n' +
+      '  return;\n}\n\n';
+    const currentViewer = read('public/worksheet-viewer-noam.html');
+    assert.equal(currentViewer.split(elementaryExit).length, 2);
+    // The scoped exit is covered behaviorally; all prior middle-school script
+    // bytes must still match their historical hashes after removing only it.
+    const viewerWithNativeRelease = currentViewer.replace(elementaryExit, '').replace(
       /<script id="noam-preview-viewer-redirect">[\s\S]*?<\/script>\n/,
       '',
     );

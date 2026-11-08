@@ -2560,7 +2560,7 @@
               "routing": {
                 "resolvedNoamPrefix": "G3-T10",
                 "aiHintShown": false,
-                "usesViewer": true,
+                "usesViewer": false,
                 "viewerPath": "worksheet-viewer-noam.html",
                 "siblingPdfQuery": {
                   "pa": "3d7563584d774bf5958dc6a37ef7e210",

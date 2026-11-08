@@ -962,8 +962,5 @@ insert into public.noam_learning_worksheets (worksheet_id) values
 ('g9-t37-c'),
 ('g9-t38-a'),
 ('g9-t38-b'),
-('g9-t38-c'),
-('g3-t10-a-e-elementary-20261108-r1'),
-('g3-t10-b-e-elementary-20261108-r1'),
-('g3-t10-c-e-elementary-20261108-r1')
+('g9-t38-c')
 on conflict do nothing;

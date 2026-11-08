@@ -450,6 +450,7 @@ function learningOutputs(raw, registry) {
   const catalog = mergeWorksheetEditions(buildCatalog(raw), registry);
   for (const grade of catalog.grades) for (const topic of grade.topics) {
     for (const edition of topic.editions || []) for (const level of edition.levels) {
+      if (!edition.routing.usesViewer) continue;
       items.push({
         id: level.learningId, g: grade.grade, t: topic.id, parent: topic.parent || topic.id,
         title: topic.title, l: level.key, label: level.label + ' — ' + edition.label,

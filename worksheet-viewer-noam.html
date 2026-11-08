@@ -6,6 +6,25 @@
 (function () {
   "use strict";
   var page = window.location;
+  var params = new URLSearchParams(page.search);
+  var elementaryGrade = parseInt(params.get("g"), 10);
+  if (Number.isInteger(elementaryGrade) && elementaryGrade >= 1 && elementaryGrade <= 6) {
+    // Elementary publication is PDF-only. Also handle saved preview/viewer
+    // links before restoring a conversation or requesting hints from the DB.
+    window.NOAM_ELEMENTARY_PDF_ONLY = true;
+    var mediaId = (params.get("pdf") || "").trim().toLowerCase();
+    var edition = params.get("edition") || "";
+    var prefix = params.get("x") || "";
+    var level = params.get("lv") || "";
+    var valid = /^[1-6]$/.test(params.get("g") || "") && /^[0-9a-f]{32}$/.test(mediaId) &&
+      /^[a-z0-9][a-z0-9-]{0,63}$(?![\s\S])/.test(edition) && edition !== "legacy" &&
+      new RegExp("^G" + elementaryGrade + "-T\\d{2}$").test(prefix) && /^[abc]$/.test(level);
+    if (valid) {
+      window.NOAM_ELEMENTARY_PDF_URL = "https://static.wixstatic.com/ugd/d8e7ad_" + mediaId + ".pdf";
+      page.replace(window.NOAM_ELEMENTARY_PDF_URL);
+    }
+    return;
+  }
   // Preview hosts cannot call Ramzi's production API. Keep the exact worksheet
   // URL, and replace this history entry so Back cannot return to a broken copy.
   if (/^[a-z0-9]{6}-noam-math-astro-poc-amiramnoam-130a\.wix-site-host\.com$/i.test(page.hostname) &&
@@ -2690,6 +2709,12 @@ html.nd-motion-off .exact-viewer *,html.noam-a11y-motion .exact-viewer *{scroll-
 (function(){
 
 "use strict";
+
+if (window.NOAM_ELEMENTARY_PDF_ONLY) {
+  document.body.textContent = window.NOAM_ELEMENTARY_PDF_URL
+    ? "פותחים את דף העבודה…" : "הקישור לדף העבודה אינו תקין.";
+  return;
+}
 
 var mobileLayout = window.matchMedia("(max-width:900px)");
 
@@ -9473,6 +9498,7 @@ function esc(s){
    of question selection, answers, PDF rendering, storage, and request timing. */
 (function(){
   'use strict';
+  if (window.NOAM_ELEMENTARY_PDF_ONLY) return;
   var body=document.body, html=document.documentElement;
   var panel=document.getElementById('panel'), panelIn=panel.querySelector('.panel-in');
   var panelBody=document.getElementById('panelBody'), paper=document.querySelector('.pdfwrap');

@@ -2,14 +2,14 @@
 
 This change prepares the first renewed elementary topic, grade 3 topic 10 (division and its inverse relationship with multiplication), alongside all existing worksheets. It is one topic in the larger 169-topic renewal; it does not claim that the remaining topics are complete or published.
 
-The new edition contains three levels, 38 whole questions, 95 subparts and 285 reviewed three-step hints. The PDF sets have 6, 8 and 10 pages for levels B, A and excellence respectively. Source questions, answers, hints, PDF pages and editable Word output were reviewed independently, with later corrections checked against the earlier review. The public data does not contain private review records or local file paths.
+The published edition contains three levels, 38 whole questions and 95 subparts. The 285 reviewed three-step hints remain local preparation and are not activated in this release. The PDF sets have 6, 8 and 10 pages for levels B, A and excellence respectively. Source questions, answers, hints, PDF pages and editable Word output were reviewed independently, with later corrections checked against the earlier review. The public data does not contain private review records or local file paths.
 
 ## User-visible changes
 
-- Topic and worksheet pages show the new edition and retain the previous worksheets. New learning identities keep progress for different editions separate.
+- Topic, search and worksheet pages open the new edition directly as PDFs and retain the previous worksheets. New progress identities are not exposed because this release does not change the database.
 - The teacher workspace can filter new or previous editions while preserving its level selection, saved sections and undo behavior. Selected whole questions retain all parts, their instructions and their answers.
 - Measured PDF fragments preserve source geometry, shared figures and prerequisite questions. The editable Word export retains Hebrew RTL, Office Math and native tables. Edition labels distinguish questions from different sources.
-- Curated hints have an edition-aware lookup and a separate database table. Missing or mismatched new-edition hints cannot fall back to a different edition's answers. Existing hint and progress behavior remains covered by regressions.
+- Elementary worksheets do not open Noam AI or prepared hints. Saved elementary viewer URLs redirect to their PDF before hint or conversation initialization. Existing middle-school hint and progress behavior remains covered by regressions.
 
 ## Reviewed media
 
@@ -37,4 +37,4 @@ Preview: https://vldvhb-noam-math-astro-poc-amiramnoam-130a.wix-site-host.com/te
 
 No production deployment, database migration or hint import has been performed. The migration is included for review; its RLS and binding constraints were exercised locally. The proposed 95-row / 285-hint import remains private and separately hash-bound to the reviewed PDFs. Existing learner data was not queried or changed.
 
-The candidate registry describes the edition that would become available after release. It is not evidence of a live publication. Merge requires Noam's explicit approval of the specific pull request, and publication requires approval and `tools/release/release.sh`. Database rollout and the verified hint import must be completed and checked as part of that coordinated release; no unreviewed hint is advertised as available.
+The candidate registry describes the edition that would become available after release. It is not evidence of a live publication. Merge requires Noam's explicit approval of the specific pull request, and publication requires approval and `tools/release/release.sh`. On 8 November, Noam explicitly approved PR 411 merge and publication only, specifying that elementary has no Noam AI. Accordingly this release uses direct PDFs and teacher tools, retains the existing learning catalog, and executes no database migration or hint import. The reviewed migration and private import are deferred; they are not prerequisites for this static publication.

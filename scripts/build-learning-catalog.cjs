@@ -19,6 +19,9 @@ function buildLearningCatalog(raw, registry) {
   }
   const catalog = mergeWorksheetEditions(buildCatalog(raw), registry);
   for (const g of catalog.grades) for (const t of g.topics) for (const edition of t.editions || []) {
+    // Static PDF editions have no deployed progress identities. Do not expose
+    // account controls whose worksheet IDs would require a database rollout.
+    if (!edition.routing.usesViewer) continue;
     for (const level of edition.levels) items.push({
       id: level.learningId, g: g.grade, t: t.id, parent: t.parent || t.id, title: t.title,
       l: level.key, label: level.label + ' — ' + edition.label, pdf: level.pdfId,

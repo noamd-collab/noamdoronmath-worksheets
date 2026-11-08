@@ -606,12 +606,12 @@ test('explicit registry/path overrides stay isolated and explicit invalid values
   }
 });
 
-test('published editions and learning rows are rebuilt from the audited local registry', async (t) => {
+test('static editions are rebuilt while learning rows retain only deployed identities', async (t) => {
   const root = makeRepo(null, { version: 1, editions: [fixtureEdition()] });
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
   const result = await auditOf(root);
   assert.deepEqual(errors(result), []);
-  assert.equal(result.coverage.learningItems, 10);
+  assert.equal(result.coverage.learningItems, 7);
   const generated = JSON.parse(fs.readFileSync(path.join(root, P.export), 'utf8'));
   const topic = generated.grades[0].topics[0];
   assert.deepEqual(topic.levels.map(level => level.pdfId), [PDFS.g1a, PDFS.g1b, PDFS.g1c]);
@@ -629,14 +629,14 @@ test('published editions and learning rows are rebuilt from the audited local re
     writtenItems.map(item => "('" + item.id + "')").join(',\n') + '\non conflict do nothing;\n');
 });
 
-test('withdrawing an edition exposes stale generated catalogs, learning copies and SQL seed', async (t) => {
+test('withdrawing a static edition exposes stale catalogs without changing learning copies or seed', async (t) => {
   const root = makeRepo(null, { version: 1, editions: [fixtureEdition()] });
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
   editJson(root, P.editions, registry => { registry.editions[0].status = 'reviewed'; });
   const result = await auditOf(root);
   assert.ok(codes(result, 'error').includes('EXPORT_STALE'));
-  assert.equal(errors(result).filter(f => f.code === 'LEARNING_CATALOG_STALE').length, 2);
-  assert.ok(codes(result, 'error').includes('LEARNING_SEED_STALE'));
+  assert.equal(errors(result).filter(f => f.code === 'LEARNING_CATALOG_STALE').length, 0);
+  assert.ok(!codes(result, 'error').includes('LEARNING_SEED_STALE'));
   regenerate(root);
   assert.deepEqual(errors(await auditOf(root)), []);
   assert.equal(exportCatalog({ indexPath: path.join(root, P.index), dryRun: true }).catalog.grades[0].topics[0].editions, undefined);

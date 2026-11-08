@@ -91,7 +91,7 @@ test('two published topics keep distinct media and learning identities without l
   assert.equal(new Set(ids).size, 6);
 });
 
-test('learning generator preserves the existing published catalog and appends only distinct published identities', () => {
+test('static elementary publication preserves the learning catalog without undeployed progress identities', () => {
   const { buildLearningCatalog } = require('../../../scripts/build-learning-catalog.cjs');
   const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
   const scope = { window: { NOAM_LEARNING_CATALOG: [] as any[] } };
@@ -99,14 +99,9 @@ test('learning generator preserves the existing published catalog and appends on
   const legacy = buildLearningCatalog(loadIndexCatalog(), { version: 1, editions: [] });
   assert.equal(JSON.stringify(legacy), JSON.stringify(scope.window.NOAM_LEARNING_CATALOG.filter((item: any) => !item.editionId)));
   const result = buildLearningCatalog(loadIndexCatalog(), registry());
-  assert.deepEqual(result.slice(0, legacy.length), legacy);
-  assert.equal(result.length, legacy.length + 3);
+  assert.deepEqual(result, legacy);
+  assert.equal(result.length, legacy.length);
   assert.equal(new Set(result.map((item: any) => item.id)).size, result.length);
-  for (const item of result.slice(legacy.length)) {
-    assert.equal(item.editionId, 'test-renewal-r1');
-    assert.equal(item.id, `g1-t5-${item.l}-e-test-renewal-r1`);
-    assert.equal(item.siblingPdfQuery['p' + item.l], item.pdf);
-  }
 });
 
 test('bad identity, duplication, incomplete sets and insufficient provenance are rejected', () => {
@@ -129,27 +124,26 @@ test('bad identity, duplication, incomplete sets and insufficient provenance are
   for (const mutate of cases) { const rows = registry(); mutate(rows); assert.throws(() => mergeWorksheetEditions(base, rows), /Worksheet editions:/); }
 });
 
-test('new links retain their edition and siblings, while omitted edition keeps old direct PDF', () => {
+test('new and previous elementary editions open their own PDF without AI or database dependencies', () => {
   const merged = mergeWorksheetEditions(base, registry()); const t = topic(merged); const edition = resolveEdition(t);
   for (const level of edition.levels) {
     const url = new URL(buildWorksheetHref({ catalog: merged, grade: 1, topic: t, levelKey: level.key, editionId: edition.editionId }), 'https://local.test');
-    assert.equal(url.pathname, '/worksheet-viewer-noam.html');
-    assert.equal(url.searchParams.get('edition'), edition.editionId);
-    assert.equal(url.searchParams.get('pdf'), level.pdfId);
-    assert.equal(url.searchParams.get('lv'), level.key);
-    for (const sibling of edition.levels) assert.equal(url.searchParams.get('p' + sibling.key), sibling.pdfId);
+    assert.equal(url.href, base.config.pdfBase + level.pdfId + '.pdf');
+    assert.equal(url.search, '');
+    assert.equal(edition.routing.usesViewer, false);
+    assert.equal(edition.routing.aiHintShown, false);
     assert.equal(buildWorksheetHref({ catalog: merged, grade: 1, topic: t, levelKey: level.key }),
       base.config.pdfBase + t.levels.find(l => l.key === level.key)!.pdfId + '.pdf');
   }
   assert.throws(() => buildWorksheetHref({ catalog: merged, grade: 1, topic: t, levelKey: 'a', editionId: 'missing' }), /Unavailable/);
 });
 
-test('the existing viewer level switch preserves edition and uses only the new sibling set', () => {
+test('the dormant viewer level switch preserves an explicit edition URL and its sibling set', () => {
   const html = readFileSync(new URL('../public/worksheet-viewer-noam.html', import.meta.url), 'utf8');
   const begin = html.indexOf('function buildLevelHref('); const end = html.indexOf('function renderLevelSwitch(', begin);
   assert.ok(begin >= 0 && end > begin);
   const merged = mergeWorksheetEditions(base, registry()); const t = topic(merged); const edition = resolveEdition(t);
-  const href = buildWorksheetHref({ catalog: merged, grade: 1, topic: t, levelKey: 'a', editionId: edition.editionId });
+  const href = '/worksheet-viewer-noam.html?g=1&edition=' + edition.editionId;
   const scope: any = { URL, window: { location: { href: new URL(href, 'https://local.test').href } },
     levelPdfMap: Object.fromEntries(edition.levels.map(l => [l.key, l.pdfId])) };
   runInNewContext(html.slice(begin, end), scope);
@@ -172,7 +166,7 @@ test('search-index construction retains edition information without changing the
   const result = search(prepareIndex(index), 'חיבור בתחום 10', { grade: 1 });
   const hit = result.results.find(r => r.key === 'topic:1:5')!;
   assert.ok(hit); assert.equal(hit.levels.length, 3);
-  for (const link of hit.levels) assert.ok(link.href.includes('edition=test-renewal-r1'));
+  assert.deepEqual(hit.levels.map(link => link.href).sort(), resolveEdition(topic(merged)).levels.map(level => base.config.pdfBase + level.pdfId + '.pdf').sort());
 });
 
 async function renderer() {
@@ -222,7 +216,8 @@ test('desktop and phone let pupils expand previous worksheets without overflow o
       const rect = await card.boundingBox(); assert.ok(rect && rect.x >= 0 && rect.x + rect.width <= width);
       const buttons = await card.$$eval('a.lvl', nodes => nodes.map(n => ({ href: n.getAttribute('href'), height: n.getBoundingClientRect().height })));
       assert.equal(buttons.length, 6); assert.ok(buttons.every(b => b.height >= 44), JSON.stringify({ width, buttons }));
-      assert.equal(buttons.filter(b => b.href?.includes('edition=')).length, 3);
+      assert.equal(buttons.filter(b => b.href?.includes('worksheet-viewer-noam.html')).length, 0);
+      for (const level of resolveEdition(topic(merged)).levels) assert.ok(buttons.some(b => b.href === base.config.pdfBase + level.pdfId + '.pdf'));
       for (const level of topic(base).levels) assert.ok(buttons.some(b => b.href === base.config.pdfBase + level.pdfId + '.pdf'));
       await card.screenshot({ path: `${output}/card-${width}.png` });
       await page.close();
