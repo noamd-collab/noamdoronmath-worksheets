@@ -19,12 +19,12 @@ import {
   mkdirSync,
   readFileSync,
   readdirSync,
-  rmSync,
   writeFileSync,
 } from 'node:fs';
 import { createHash } from 'node:crypto';
-import { dirname, join } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { mergeWorksheetEditions } from '../../../scripts/lib/worksheet-editions.cjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const pocRoot = join(__dirname, '..');
@@ -42,10 +42,13 @@ function sha256File(path) {
   return createHash('sha256').update(readFileSync(path)).digest('hex');
 }
 
-function collectViewerPdfIds(catalog) {
+export function collectViewerPdfIds(catalog) {
   const ids = new Set();
   for (const g of catalog.grades || []) {
     for (const t of g.topics || []) {
+      for (const edition of t.editions || []) if (edition.status === 'published') {
+        for (const level of edition.levels) ids.add(level.pdfId);
+      }
       if (!t.routing?.usesViewer) continue;
       for (const lv of t.levels || []) {
         if (lv.pdfId) ids.add(String(lv.pdfId).toLowerCase());
@@ -60,7 +63,8 @@ function collectViewerPdfIds(catalog) {
 }
 
 function loadCatalog() {
-  return JSON.parse(readFileSync(catalogPath, 'utf8'));
+  return mergeWorksheetEditions(JSON.parse(readFileSync(catalogPath, 'utf8')),
+    JSON.parse(readFileSync(join(repoRoot, 'headless/catalog/worksheet-editions.v1.json'), 'utf8')));
 }
 
 function buildFileMap(pdfIds) {
@@ -124,12 +128,11 @@ function sync() {
   const files = buildFileMap(pdfIds);
 
   mkdirSync(outDir, { recursive: true });
-  // Remove stale copies not in the current selection (keep folder clean).
-  for (const name of readdirSync(outDir)) {
-    if (!name.endsWith('.json')) continue;
-    const id = name.slice(0, -5).toLowerCase();
-    if (!files[id]) rmSync(join(outDir, name));
-  }
+  // Existing public manifests also serve historical releases and original
+  // source references. A new edition must never prune those dependencies.
+  const retainedLegacy = Object.fromEntries(readdirSync(outDir)
+    .filter(name => /^[a-f0-9]{32}\.json$/.test(name) && !files[name.slice(0, -5)])
+    .map(name => [name.slice(0, -5), sha256File(join(outDir, name))]));
 
   for (const id of pdfIds) {
     copyFileSync(join(sourceDir, id + '.json'), join(outDir, id + '.json'));
@@ -145,7 +148,7 @@ function sync() {
     note: 'Sibling-level discovery fallback when pa/pb/pc are incomplete; not the Astro home route.',
   };
 
-  const provenance = writeProvenance(pdfIds, files, { legacyIndex: legacy });
+  const provenance = writeProvenance(pdfIds, files, { legacyIndex: legacy, retainedLegacy });
   const bytes = Object.values(files).reduce((n, f) => n + f.bytes, 0);
   console.log(
     `Synced ${pdfIds.length} manifests → public/noam-ai/manifests/ (${(bytes / 1024 / 1024).toFixed(1)} MiB)`
@@ -192,13 +195,15 @@ function check() {
       throw new Error('Legacy index hash mismatch');
     }
   }
+  for (const [id, digest] of Object.entries(provenance.retainedLegacy || {})) {
+    if (sha256File(join(outDir, id + '.json')) !== digest) throw new Error('Retained legacy manifest changed: ' + id);
+  }
   console.log(
     `OK: ${pdfIds.length} manifests match source+provenance ${provenance.aggregateSha256}`
   );
 }
 
-if (mode === 'check') check();
-else {
-  sync();
-  check();
+if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  if (mode === 'check') check();
+  else { sync(); check(); }
 }

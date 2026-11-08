@@ -89,7 +89,7 @@ if (dryRun) {
 console.log('Wrote ' + outPath);
 // Touch-free confirmation that written bytes round-trip
 const written = fs.readFileSync(outPath, 'utf8');
-if (written !== stableStringify(buildCatalog(loadIndexCatalog()))) {
+if (written !== exportCatalog({ dryRun: true }).text) {
   fail('Post-write deterministic round-trip failed.');
 }
 process.exit(0);

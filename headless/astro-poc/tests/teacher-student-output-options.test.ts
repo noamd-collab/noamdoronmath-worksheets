@@ -83,6 +83,7 @@ test('composed student pages omit level headings while keeping question crops an
     const answerMeasured = async (groups, options) => options.includeAnswers === false ? [] : [{ kind: 'answer', q: groups[0].questions[0].q }];
     const paintPacked = async (root, exercises, answers) => { root.exercises = exercises; root.answers = answers; };
     ${definition('levelPrintName')}
+    ${definition('measuredSourceLabels')}
     ${definition('paintAllShort')}
     return paintAllShort;
   `)();

@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "editions": [
+    {
+      "grade": 3,
+      "topicId": 10,
+      "editionId": "elementary-20261108-r1",
+      "label": "דפים חדשים · נובמבר 2026",
+      "status": "published",
+      "isDefault": true,
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "3d7563584d774bf5958dc6a37ef7e210",
+          "pdfSha256": "465f369f94f96bb086ee8a65be928f5d0397f9320ab8fbfa2da95999685002e3",
+          "worksheetId": "elm-20261107-g3-s10-A",
+          "revision": 3,
+          "canonicalSourceSha256": "8acf4dad1c99e84040e0ffa8425dbb9da0432df1c4bc2aff84c0046d62ce9377",
+          "manifestSha256": "6a3702bc59d0de8401446d2b5044303c39d3608fa0767840970aa6b4b8162e4b",
+          "answerMapSha256": "3b7d24f4da278393fec608d6dc5d48e145632fda11560de1fca4a24153cfd48b",
+          "wordSourceSha256": "906b97630b2be8113cf78c0d4e77d25e0bb66bfed4fe32c14b71e5755c6d0a98",
+          "hintsBundleSha256": "57e076922bcff037b30941171d88fe9be6442bea07f28dc0c788f7a1746be62f"
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "564222bbdc3647a4bc21798f16ff02ac",
+          "pdfSha256": "d27d4edc45cff1236e78bae852fc93a8514768453be692216e39ac7d60b1bd2e",
+          "worksheetId": "elm-20261107-g3-s10-B",
+          "revision": 3,
+          "canonicalSourceSha256": "b37fcf9c65a58da388ffc67161c238032dab2ccba5f6465045229a18b6cdbb0f",
+          "manifestSha256": "78cc884c3a9e2ec90c6ec286bb59003abea980efaa5c7352475f087f06854f0c",
+          "answerMapSha256": "43d72fbb8bc4578529e00931becb186b4181e82ee65a038ea367595cf18150e8",
+          "wordSourceSha256": "cee46575e214771d36d5109e352916be7c10be0e5fae84f290f4d7f37d9bdf2e",
+          "hintsBundleSha256": "4b9da3033d202a3ae2b0d09cf527555924f4a94411ac1bd3e3a0f6b054944421"
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "66b5182b8be74070b1b22b9d393b9b1c",
+          "pdfSha256": "12569b36605cffc24ccfc8d4d72fd28f5072eebe385d07cc9f4d42b381d8df89",
+          "worksheetId": "elm-20261107-g3-s10-E",
+          "revision": 2,
+          "canonicalSourceSha256": "1d48ff6376dd4b69183d60ddc53c9eafaab70c493cb8816487d191589d9ec671",
+          "manifestSha256": "8f069c076ca1788273157e2d369d883e2d9a4b95882fd302125ab77fa907ece8",
+          "answerMapSha256": "b47ccb0e27a82c006e83bbc843cb95ba138102827fc8d671581d1d3b5e48ecc6",
+          "wordSourceSha256": "6337b2c05656bf38688c2a1ba6fe72aacaae94909f09a1116eaef8674e927458",
+          "hintsBundleSha256": "fc6fb768c094c56d93c3a170bb4c2d1b773832e422fbef17e388eb0788dc34e7"
+        }
+      ]
+    }
+  ]
+}

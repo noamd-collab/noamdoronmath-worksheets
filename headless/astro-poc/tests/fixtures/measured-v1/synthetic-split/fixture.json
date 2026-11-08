@@ -1,0 +1,24 @@
+{
+  "testOnly": true,
+  "syntheticSplit": true,
+  "publishable": false,
+  "binding": {
+    "canonicalSourceSha256": "ce091a98b6628932161b873a79b6e922721a3e4f9ba31940aec0d396251fa624",
+    "htmlSha256": "8173e3103260763b566b6ce8aad389110feb7bdf1d4c0678ca7ff7d2f002a76b",
+    "pdfSha256": "853cdc38b03b03502e75c5df2e4382e026c0ae260a7373e68094e132f319138d",
+    "layoutSha256": "1eed726099f4faf51db77400454e5e5d50e34a8858b959660ea47721f68e21c5",
+    "pdfId": null,
+    "editionId": "elementary-20261107-r1",
+    "worksheetId": "measured-fragment-test",
+    "revision": 1,
+    "siteTopicPrefix": "G1-T05",
+    "canonicalTopicPrefix": "G1-T5"
+  },
+  "files": {
+    "draft.json": "58105c33b97fca616312659cfa87895434a3b40fbf30aba1b19f3210c780d600",
+    "sheet.pdf": "853cdc38b03b03502e75c5df2e4382e026c0ae260a7373e68094e132f319138d",
+    "layout.json": "1eed726099f4faf51db77400454e5e5d50e34a8858b959660ea47721f68e21c5",
+    "worksheet-source.json": "ce091a98b6628932161b873a79b6e922721a3e4f9ba31940aec0d396251fa624",
+    "sheet.html": "8173e3103260763b566b6ce8aad389110feb7bdf1d4c0678ca7ff7d2f002a76b"
+  }
+}

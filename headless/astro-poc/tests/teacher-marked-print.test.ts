@@ -3,6 +3,7 @@ import { spawnSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
 import { describe, it } from 'node:test';
 import { fileURLToPath } from 'node:url';
+import { loadCatalog } from '../src/lib/catalog/loadCatalog';
 import { labelAscent, labelLineBox, labelLineHeight, sheetFromManifest } from '../scripts/build-teacher-catalog.mjs';
 
 function servedGaps(questions: { id: string; inkTop: number | null; inkBottom?: number }[]) {
@@ -170,7 +171,7 @@ describe('grade 9 factoring marked source', () => {
 });
 
 describe('teacher catalog picker', () => {
-  const catalog = JSON.parse(readFileSync(new URL('../src/data/catalog.v1.json', import.meta.url), 'utf8'));
+  const catalog = loadCatalog();
   const index = JSON.parse(readFileSync(new URL('../public/teachers/teacher-catalog.json', import.meta.url), 'utf8'));
   const page = readFileSync(new URL('../public/teachers/index.html', import.meta.url), 'utf8');
   const printer = readFileSync(new URL('../public/teachers/teacher-factoring-print.js', import.meta.url), 'utf8');
@@ -179,7 +180,7 @@ describe('teacher catalog picker', () => {
     const sheets = [];
     for (const grade of catalog.grades) {
       for (const topic of grade.topics) {
-        for (const level of topic.levels) {
+        for (const level of [...topic.levels, ...(topic.editions || []).flatMap(edition => edition.levels)]) {
           sheets.push({ grade: grade.grade, topicId: topic.id, pdfId: level.pdfId, level: level.key });
         }
       }
@@ -213,7 +214,7 @@ describe('teacher catalog picker', () => {
       for (const topic of grade.topics) {
         const teacherTopic = teacherGrade.topics.find((item) => item.id === topic.id);
         for (const sheet of teacherTopic.sheets) {
-          for (const key of ['sourceGrade', 'sourcePrefix', 'sourceTitle']) {
+          for (const key of ['sourceGrade', 'sourcePrefix', 'sourceTitle'] as const) {
             assert.equal(sheet[key], topic.routing[key], `${grade.grade}:${topic.id} ${key}`);
           }
         }

@@ -80,3 +80,7 @@ The headless export **reads** `index.html`; it does not replace `tools/validate.
 - Do not delete or rewrite PDF hex IDs.
 - Do not modify `index.html` as part of regenerating this contract.
 - When `DATA` (or related declarations) change in `index.html`, regenerate and commit `catalog.v1.json` in the same change set once this contract is adopted in workflow.
+
+## Additive elementary editions
+
+The separate [worksheet edition registry](worksheet-editions.md) adds published three-level packages while preserving every field and link in the legacy catalog. The initial registry is empty.

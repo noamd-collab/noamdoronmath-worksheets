@@ -1,4 +1,4 @@
-import { useMemo, useState, useId, useCallback, useEffect, useRef } from 'react';
+import { Fragment, useMemo, useState, useId, useCallback, useEffect, useRef } from 'react';
 import '../styles/exact-catalog.css';
 import '../styles/site-search.css';
 import type { CatalogGrade, CatalogGroup, CatalogTopic, CatalogV1 } from '../lib/catalog/types';
@@ -15,6 +15,7 @@ import { catalogSearch, matchingTopicIds } from '../lib/siteSearch/catalogFilter
 import { searchHref } from '../lib/siteSearch/url';
 import { countRenderedTopicCards } from '../lib/catalog/renderedCards';
 import { buildWorksheetHref } from '../lib/worksheetLinks';
+import { resolveEdition, topicEditions } from '../lib/catalog/editions';
 import {
   buildWorksheetsHref,
   parseWorksheetsUrlState,
@@ -316,18 +317,19 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
 
   const backPath = worksheetsBackPath(catalogState);
 
-  function renderLevelButtons(topic: CatalogTopic, gNum: number) {
-    return topic.levels.map((level) => {
+  function renderLevelButtons(topic: CatalogTopic, gNum: number, editionId = 'legacy') {
+    return resolveEdition(topic, editionId).levels.map((level) => {
       const href = buildWorksheetHref({
         catalog,
         grade: gNum,
         topic,
         levelKey: level.key,
+        editionId,
         backPath,
       });
       return (
         <a
-          key={topic.id + '-' + level.key + '-' + gNum}
+          key={topic.id + '-' + level.key + '-' + gNum + '-' + editionId}
           className={levelClass(level.key)}
           href={href}
           target="_blank"
@@ -338,6 +340,22 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
         </a>
       );
     });
+  }
+
+  function renderEditionButtons(topic: CatalogTopic, gNum: number) {
+    const editions = topicEditions(topic);
+    if (editions.length === 1) return renderLevelButtons(topic, gNum);
+    const selected = resolveEdition(topic);
+    return <div className="worksheet-editions">
+      <strong className="worksheet-edition-label">{selected.label}</strong>
+      <div className="worksheet-links">{renderLevelButtons(topic, gNum, selected.editionId)}</div>
+      {editions.filter(e => e.editionId !== selected.editionId).map(edition => (
+        <details className="more-worksheets" key={edition.editionId}>
+          <summary>{edition.label}</summary>
+          <div className="worksheet-links">{renderLevelButtons(topic, gNum, edition.editionId)}</div>
+        </details>
+      ))}
+    </div>;
   }
 
   function renderTopicCard(topic: CatalogTopic, gEntry: CatalogGrade) {
@@ -365,15 +383,15 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
           {children.length ? (
             <>
               <div className="worksheet-links">
-                {children.flatMap((child: CatalogTopic) => renderLevelButtons(child, gEntry.grade))}
+                {children.map((child: CatalogTopic) => <Fragment key={child.id}>{renderEditionButtons(child, gEntry.grade)}</Fragment>)}
               </div>
               <details className="more-worksheets">
                 <summary>תרגול נוסף לפי רמות</summary>
-                <div className="worksheet-links">{renderLevelButtons(topic, gEntry.grade)}</div>
+                <div className="worksheet-links">{renderEditionButtons(topic, gEntry.grade)}</div>
               </details>
             </>
           ) : (
-            renderLevelButtons(topic, gEntry.grade)
+            renderEditionButtons(topic, gEntry.grade)
           )}
         </div>
       </article>

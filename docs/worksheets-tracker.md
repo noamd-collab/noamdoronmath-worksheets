@@ -596,3 +596,12 @@ Word export uses editable RTL text, native Office Math, selected questions only,
 Checks and publication evidence: `docs/teacher-answer-word-20261104.md`.
 
 - 2026-11-05: Word-bank build portability repair validates complete decoded source content while preserving the reviewed compressed artifact; regression coverage rejects stale answers and questions. No worksheet content changed. Elementary replacement planning follows Noam’s updated instruction.
+
+## 2026-11-08 — מהדורה ראשונה בחידוש דפי היסודי
+
+- הוכנה מהדורה חדשה לג׳10, חילוק והקשר ההפוך לכפל: שלוש רמות, 38 שאלות שלמות, 95 סעיפים ו־285 רמזים שנבדקו. יתר 168 הנושאים עדיין בתהליך; אין כאן טענת השלמה של כל היסודי.
+- המהדורה מופיעה בתצוגת בדיקה לצד הדפים הקודמים, עם בחירה לפי מהדורה ורמה, הדפסה מה־PDF ו־Word עריך ב־RTL. כל 964 הרשומות הקודמות נשמרו, ונוספו שלוש.
+- הבנייה ו־2,108 הבדיקות עברו. נבדקו גם הדפסה והורדת Word בתצוגת Wix הרשמית. בדיקת הטיפוסים עדיין נכשלת עם 335 אבחנות; השוואות מבודדות לא מצאו אבחנות חדשות מהדלתה. הראיות והגבולות מפורטים ב־[דוח המהדורה](elementary-renewal-first-edition-20261108.md).
+- לא בוצעו פרסום לאתר הפעיל, מיגרציית מסד נתונים או ייבוא רמזים. אלה יבוצעו במסגרת השחרור המאושר של ה־PR.
+
+- 2026-11-08 — PR #411 scope confirmed by Noam: publish new grade 3 division PDFs and teacher PDF/Word tools only. Elementary links open PDFs directly; saved viewer links bypass hints. No Noam AI, database migration, hint import or new account progress identities in this release. Existing materials remain.

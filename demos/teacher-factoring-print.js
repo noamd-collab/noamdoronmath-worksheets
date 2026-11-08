@@ -1,5 +1,5 @@
 import { dismissTeacherHumanVerification, requestTeacherHumanVerification } from './teacher-human-verification.js?v=20261030-stepup-error-detail';
-import { replaceWizardScopeUrl, wizardPrefillFromSearch } from './wizard-prefill.js?v=20261031-level-choice-help';
+import { replaceWizardScopeUrl, wizardPrefillFromSearch } from './wizard-prefill.js?v=20261108-teacher-editions';
 import { expandToWholeQuestionKeys, groupWholeQuestions, mulberry32, pickWholeQuestions, randomSeed } from './teacher-question-pick.js';
 import { PICK_HEADING, SECTION_KINDS, needsSectionHeadings, pointsLabel, scoreLabel, sectionKind, sectionTitle, testPoints, TEST_TOTAL_POINTS } from './teacher-page-sections.js?v=20261103-add-topic-button';
 import { buildTeacherReview, renderTeacherReview, renderTeacherPageCount } from './teacher-review-summary.js?v=20261103-page-count';
@@ -96,6 +96,7 @@ let state = {
   grade: '9',
   topic: '2',
   level: 'a',
+  edition: 'all',
   wizard: 'setup',
   lastQuestionCount: 5,
   lastAiPickCount: 0,
@@ -187,6 +188,7 @@ async function changeTeacherScope(grade, topic) {
   state.grade = String(grade);
   state.topic = String(topic || '');
   state.level = 'a';
+  state.edition = 'all';
   state.expanded = false;
   state.selected = [];
   if (gradeChanged) state.blocks = [];
@@ -359,7 +361,7 @@ function teacherAiContext(groups, saved) {
     grade: String(state.grade), topic: String(state.topic), level: String(state.level || 'all'),
     goal: String(state.scenario), style: String(state.style), note: teacherAiNote(),
     candidates: planOrder(groups, state.scenario, state.style).map((group) => ({
-      id: (/^(?:[abc]|c2)$/.test(String(group.source && group.source.level)) ? group.source.level + ':' : '') + group.parts[0].id,
+      id: (/^(?:[abc]|c2)$/.test(String(group.source && group.source.level)) ? group.source.level + ':' + (group.source.editionId ? group.source.pdfId + ':' : '') : '') + group.parts[0].id,
       key: group.key, keys: group.keys, role: group.role,
       pdfId: group.pdfId, level: group.source && group.source.level,
       sourceSha256: group.source && group.source.sourceSha256 || '',
@@ -442,9 +444,9 @@ async function pickWithAi(rawCount) {
       planCounts: AI_QUESTION_COUNTS.slice(),
       // Include every available question; ordering guides the lesson without excluding candidates.
       candidates: planOrder(groups, state.scenario, state.style).map((group) => ({
-        id: (/^(?:[abc]|c2)$/.test(String(group.source && group.source.level)) ? group.source.level + ':' : '') + group.parts[0].id,
+        id: (/^(?:[abc]|c2)$/.test(String(group.source && group.source.level)) ? group.source.level + ':' + (group.source.editionId ? group.source.pdfId + ':' : '') : '') + group.parts[0].id,
         label: group.parts[0].id,
-        text: [QUESTION_ROLES[group.role], group.source.levelLabel, 'שאלה ' + group.q, group.keys.length + ' סעיפים'].filter(Boolean).join(' · ').slice(0, 80),
+        text: [QUESTION_ROLES[group.role], group.source.levelLabel, group.source.editionLabel, 'שאלה ' + group.q, group.keys.length + ' סעיפים'].filter(Boolean).join(' · ').slice(0, 80),
       })),
     },
   };
@@ -816,7 +818,9 @@ function pilotOn() {
 }
 
 function topicLevelChoices(topic = currentTopic()) {
-  const levels = new Set((topic && topic.sheets || []).map((sheet) => sheet.level === 'c2' ? 'c' : sheet.level));
+  const levels = new Set((topic && topic.sheets || [])
+    .filter((sheet) => !state.edition || state.edition === 'all' || (sheet.editionId || 'legacy') === state.edition)
+    .map((sheet) => sheet.level === 'c2' ? 'c' : sheet.level));
   return ['a', 'b', 'c'].filter((level) => levels.has(level));
 }
 
@@ -829,11 +833,19 @@ function resolveTopicLevel(value, topic = currentTopic()) {
 function topicSheets() {
   const topic = currentTopic();
   if (!topic) return [];
-  if (state.level === 'all') return topic.sheets;
-  return topic.sheets.filter((sheet) => sheet.level === state.level || (state.level === 'c' && sheet.level === 'c2'));
+  return topic.sheets.filter((sheet) => (!state.edition || state.edition === 'all' || (sheet.editionId || 'legacy') === state.edition)
+    && (state.level === 'all' || sheet.level === state.level || (state.level === 'c' && sheet.level === 'c2')));
 }
 
 function syncLevels() {
+  const editions = new Map((currentTopic()?.sheets || []).map((sheet) => [sheet.editionId || 'legacy', sheet.editionLabel || 'דפים קודמים']));
+  if (editions.size <= 1 || !state.edition || (state.edition !== 'all' && !editions.has(state.edition))) state.edition = 'all';
+  const edition = $('edition');
+  if (edition) {
+    edition.innerHTML = '<option value="all">כל המהדורות</option>' + [...editions].map(([id, label]) => `<option value="${escapeHTML(id)}">${escapeHTML(label)}</option>`).join('');
+    edition.value = state.edition;
+  }
+  if ($('edition-filter')) $('edition-filter').hidden = editions.size <= 1;
   const choices = topicLevelChoices();
   state.level = resolveTopicLevel(state.level);
   document.querySelectorAll('[name=level]').forEach((el) => {
@@ -983,7 +995,7 @@ function questionCard(group, picked) {
   const manifest = previewManifests.get(group.source.pdfId);
   const contextQuestions = [...new Set((manifest && manifest.exercises || []).filter((item) => String(item.q) === String(group.q)).flatMap((item) => item.contextQuestionNumbers || []))];
   const contextLabel = contextQuestions.length ? 'כולל נתונים משאלה ' + contextQuestions.join(', ') : '';
-  const meta = [levelLabel, partsText, pageText, contextLabel].filter(Boolean).join(' · ');
+  const meta = [levelLabel, group.source.editionLabel, partsText, pageText, contextLabel].filter(Boolean).join(' · ');
   const role = QUESTION_ROLES[group.role] || '';
   const reason = picked && state.aiPickReasons?.[group.key];
   const reasonHTML = reason ? `<span class="q-reason"><strong>למה נבחרה:</strong> ${escapeHTML(reason)}</span>` : '';
@@ -998,7 +1010,7 @@ function questionCard(group, picked) {
       previewHeight = slices.reduce((height, slice, index) => height + Math.round(1000 * Math.SQRT2 * slice.box.h / slice.box.w) + (index ? slice.gap : 0), 0) || previewHeight;
     } catch (error) { /* The preview supplies a retry and source link. */ }
   }
-  return `<article class="q-card q-card-whole q-card-pick q-group"><label class="q-select"><input type="checkbox" data-whole-question="${escapeHTML(group.key)}" ${picked ? 'checked' : ''} aria-label="בחירת שאלה ${escapeHTML(group.q)}${levelLabel ? ' ' + escapeHTML(levelLabel) : ''}"><span class="q-content"><span class="q-title-line"><span class="q-title">שאלה ${escapeHTML(group.q)}</span>${role ? `<span class="badge role-${group.role}">${role}</span>` : ''}</span><span class="q-page" style="display:block">${escapeHTML(meta)}</span>${answerNotice}${reasonHTML}</span></label><div class="q-preview" data-preview-key="${escapeHTML(group.key)}" aria-busy="true"><p class="q-preview-hint q-preview-initial-hint">השאלה מוצגת בגודל קריא. אפשר לגלול לצדדים כדי לראות את כולה.</p><div class="q-preview-scroll q-preview-placeholder" style="--preview-height:${previewHeight}px;aspect-ratio:1000/${previewHeight}"><p class="q-preview-loading">טוענים את השאלה המלאה מדף המקור…</p></div><button type="button" class="q-preview-zoom" title="הגדלת התצוגה לעיון, בלי לשנות את הבחירה." aria-describedby="help-zoom" disabled>הגדלת השאלה</button><a class="q-source-link" href="${escapeHTML(group.source.pdfUrl)}#page=${group.parts[0].page}" target="_blank" rel="noopener">פתיחת דף המקור</a></div></article>`;
+  return `<article class="q-card q-card-whole q-card-pick q-group"><label class="q-select"><input type="checkbox" data-whole-question="${escapeHTML(group.key)}" ${picked ? 'checked' : ''} aria-label="בחירת שאלה ${escapeHTML(group.q)}${levelLabel ? ' ' + escapeHTML(levelLabel) : ''}${group.source.editionLabel ? ' ' + escapeHTML(group.source.editionLabel) : ''}"><span class="q-content"><span class="q-title-line"><span class="q-title">שאלה ${escapeHTML(group.q)}</span>${role ? `<span class="badge role-${group.role}">${role}</span>` : ''}</span><span class="q-page" style="display:block">${escapeHTML(meta)}</span>${answerNotice}${reasonHTML}</span></label><div class="q-preview" data-preview-key="${escapeHTML(group.key)}" aria-busy="true"><p class="q-preview-hint q-preview-initial-hint">השאלה מוצגת בגודל קריא. אפשר לגלול לצדדים כדי לראות את כולה.</p><div class="q-preview-scroll q-preview-placeholder" style="--preview-height:${previewHeight}px;aspect-ratio:1000/${previewHeight}"><p class="q-preview-loading">טוענים את השאלה המלאה מדף המקור…</p></div><button type="button" class="q-preview-zoom" title="הגדלת התצוגה לעיון, בלי לשנות את הבחירה." aria-describedby="help-zoom" disabled>הגדלת השאלה</button><a class="q-source-link" href="${escapeHTML(group.source.pdfUrl)}#page=${group.parts[0].page}" target="_blank" rel="noopener">פתיחת דף המקור</a></div></article>`;
 }
 
 // The manifest's crops enclose the WHOLE question, including its instruction,
@@ -1011,6 +1023,9 @@ function questionPreviewSlices(group, manifest) {
 
 function originalQuestionPreviewSlices(group, manifest) {
   group = questionPreviewGroup(group);
+  if (group.source.geometryContract === 'measured-v1' || manifest.geometryContract === 'measured-v1') {
+    return measuredPreviewSlices(group, manifest);
+  }
   const pages = new Map();
   const exactWhole = Boolean(manifest.wholeQuestionGeometry || group.source.wholeQuestionGeometry);
   const exactSlices = [];
@@ -1121,7 +1136,7 @@ async function runPreviewQueue() {
         if (!target.isConnected) continue;
         canvas.className = 'q-preview-page';
         canvas.setAttribute('role', 'img');
-        canvas.setAttribute('aria-label', `שאלה ${group.q}, ${group.source.levelLabel || ''}, מתוך דף המקור, כולל כל הסעיפים`);
+        canvas.setAttribute('aria-label', `שאלה ${group.q}, ${[group.source.levelLabel, group.source.editionLabel].filter(Boolean).join(' · ')}, מתוך דף המקור, כולל כל הסעיפים`);
         const scroll = document.createElement('div');
         scroll.className = 'q-preview-scroll';
         scroll.tabIndex = 0;
@@ -1440,6 +1455,7 @@ async function paintThumb(canvas) {
 
 function levelAllows(source) {
   if (!source) return true;
+  if (state.edition && state.edition !== 'all' && (source.editionId || 'legacy') !== state.edition) return false;
   if (state.level === 'all') return true;
   if (!source.level || source.level === 'one' || source.level === state.level || (state.level === 'c' && source.level === 'c2')) return true;
   return false;
@@ -1894,6 +1910,111 @@ function coverSharedFigure(question, box, laterSelected, selectedIds) {
   return boxWithMasks({ ...box, page }, top, end, masks);
 }
 
+function measuredFragmentSlices(source, references, block, kind) {
+  if (source.geometryContract !== 'measured-v1' || !/^[a-f0-9]{64}$/.test(source.sourceSha256 || '')
+      || !/^[a-f0-9]{64}$/.test(source.layoutSha256 || '') || !source.fragmentLedger) throw new Error('MEASURED_SOURCE');
+  const seen = new Set();
+  return references.flatMap((reference) => {
+    if (seen.has(reference)) return [];
+    seen.add(reference);
+    const fragment = source.fragmentLedger[reference];
+    const box = fragment && fragment.crop;
+    if (!box || !Number.isInteger(box.page) || box.page < 1 || box.page > source.exercisePageCount
+      || !['x', 'y', 'w', 'h'].every(key => Number.isFinite(box[key]))
+      || box.x < 0 || box.y < 0 || box.w <= 0 || box.h <= 0 || box.x + box.w > 1.000001 || box.y + box.h > 1.000001
+      || box.mask || box.masks) throw new Error('MEASURED_FRAGMENT');
+    return [{ page: box.page, box: { ...box }, gap: 6, block, kind: kind || 'row', pdfId: source.pdfId,
+      geometryContract: 'measured-v1', fragmentRef: reference, fragmentRole: fragment.role,
+      ownerId: fragment.canonicalOwnerId, questionId: fragment.questionId, itemId: fragment.itemId }];
+  });
+}
+
+function measuredPreviewSlices(group, manifest) {
+  const source = group.source;
+  if (manifest.geometryContract !== 'measured-v1' || source.geometryContract !== 'measured-v1'
+      || manifest.sourceSha256 !== source.sourceSha256 || manifest.layoutSha256 !== source.layoutSha256) {
+    throw new Error('MEASURED_PREVIEW_BINDING');
+  }
+  const exercises = manifest.exercises.filter(item => String(item.q) === String(group.q));
+  if (!exercises.length) throw new Error('MEASURED_PREVIEW_EMPTY');
+  const references = [];
+  exercises.forEach(item => {
+    const part = source.questions.find(q => q.canonicalItemId === item.canonicalItemId);
+    if (!part || part.q !== item.q || part.part !== item.part || !Array.isArray(item.fragmentRefs)
+      || item.fragmentRefs.length !== item.crops?.length) throw new Error('MEASURED_PREVIEW_PART');
+    item.fragmentRefs.forEach((ref, index) => {
+      const box = source.fragmentLedger[ref]?.crop;
+      if (!box || ['page', 'x', 'y', 'w', 'h'].some(key => box[key] !== item.crops[index][key])) throw new Error('MEASURED_PREVIEW_CROP');
+      references.push(ref);
+    });
+  });
+  return measuredFragmentSlices(source, references, group.key, 'row');
+}
+
+function measuredSourceLabels(chosen) {
+  const ids = [...new Set(chosen.map(question => question.source?.pdfId).filter(Boolean))];
+  return new Map(ids.map((id, index) => [id, ids.length > 1 ? 'דף מקור ' + (index + 1) : '']));
+}
+
+function measuredSourceDescription(source, options = {}) {
+  return [options.sourceLabels?.get(source.pdfId), source.topic || source.title,
+    options.showLevel !== false ? levelPrintName(source.level, source.levelLabel) : '', source.editionLabel].filter(Boolean).join(' · ');
+}
+
+function measuredQuestionHeading(source, question, block, options = {}, dependency = false) {
+  return { kind: 'question-heading', measuredQuestionHeading: true, pdfId: source.pdfId,
+    page: source.fragmentLedger[question.fragmentRefs[0]].crop.page, block, gap: 12,
+    questionNumber: question.q, canonicalQuestionId: question.canonicalQuestionId,
+    label: (dependency ? 'נתונים משאלה ' : 'שאלה ') + question.q,
+    note: measuredSourceDescription(source, options) };
+}
+
+function measuredShortSlices(chosen, options = {}) {
+  const groups = new Map();
+  chosen.forEach(selected => {
+    const source = selected.source || SOURCE;
+    if (!source || source.geometryContract !== 'measured-v1') throw new Error('MEASURED_MIXED_SOURCE');
+    const question = source.questions.find(item => item.id === selected.id && item.canonicalItemId === selected.canonicalItemId);
+    if (!question) throw new Error('MEASURED_SELECTED_ID');
+    const key = source.pdfId + ':q' + question.q;
+    if (!groups.has(key)) groups.set(key, { source, questions: [] });
+    groups.get(key).questions.push(question);
+  });
+  const slices = [];
+  groups.forEach(({ source, questions }, block) => {
+    const selectedItems = new Set(questions.map(q => q.canonicalItemId));
+    const instructions = [...(source.worksheetInstructionFragmentRefs || [])];
+    const dependencyGroups = new Map();
+    questions.forEach(q => q.dependencyFragmentRefs.forEach(ref => {
+      const owner = source.fragmentLedger[ref]?.questionId;
+      if (!owner) throw new Error('MEASURED_DEPENDENCY_OWNER');
+      if (!dependencyGroups.has(owner)) dependencyGroups.set(owner, []);
+      dependencyGroups.get(owner).push(ref);
+    }));
+    let firstDependency = true;
+    dependencyGroups.forEach((refs, owner) => {
+      const dependency = source.wholeQuestions.find(question => question.canonicalQuestionId === owner);
+      if (!dependency) throw new Error('MEASURED_DEPENDENCY_OWNER');
+      const dependencyBlock = block + ':dependency:' + owner;
+      slices.push(measuredQuestionHeading(source, dependency, dependencyBlock, options, true));
+      slices.push(...measuredFragmentSlices(source, [...(firstDependency ? instructions : []), ...refs], dependencyBlock, 'row'));
+      firstDependency = false;
+    });
+    const refs = dependencyGroups.size ? [] : instructions;
+    questions.forEach(q => q.contextFragmentRefs.forEach(ref => {
+      const fragment = source.fragmentLedger[ref];
+      if (!fragment) throw new Error('MEASURED_CONTEXT');
+      // A selected item already includes its own table heading/drawing. Other
+      // occurrences remain context with their original owner, never reparented.
+      if (!fragment.itemId || !selectedItems.has(fragment.itemId)) refs.push(ref);
+    }));
+    questions.forEach(q => refs.push(...q.fragmentRefs));
+    slices.push(measuredQuestionHeading(source, questions[0], block, options));
+    slices.push(...measuredFragmentSlices(source, refs, block, 'row'));
+  });
+  return slices;
+}
+
 function wholeQuestionSlices(chosen) {
   const slices = [];
   const seen = new Set();
@@ -1928,8 +2049,8 @@ function questionDataSlices(source, q, block) {
   });
 }
 
-function shortSlices(chosen) {
-  const original = originalShortSlices(chosen);
+function shortSlices(chosen, options) {
+  const original = originalShortSlices(chosen, options);
   return original.flatMap((slice, index) => {
     if (original[index + 1]?.block === slice.block) return [slice];
     const question = chosen.find(item => slice.block === (item.source?.pdfId || SOURCE.pdfId) + ':q' + item.q || slice.block === 'q' + item.q);
@@ -1937,7 +2058,8 @@ function shortSlices(chosen) {
   });
 }
 
-function originalShortSlices(chosen) {
+function originalShortSlices(chosen, options) {
+  if (SOURCE && SOURCE.geometryContract === 'measured-v1') return measuredShortSlices(chosen, options);
   // These rows already enclose a complete original question and its context.
   // Legacy per-part footer, ink and shared-drawing adjustments would clip them.
   if (SOURCE && SOURCE.wholeQuestionGeometry) return wholeQuestionSlices(chosen);
@@ -2113,6 +2235,41 @@ function packShort(measured, options) {
   const packedBlocks = [];
   for (const block of blocks) {
     const limit = sheetContentLimit(1, false);
+    const measuredLimit = sheetContentLimit(0, true);
+    if (!(options && options.answers) && block.items.some(item => item.slice.geometryContract === 'measured-v1')
+      && contentHeight(block.items) > measuredLimit / 0.85) {
+      // Continue only between complete measured fragments. Repeat the measured
+      // prompt/table heading/shared figure so a continuation keeps its context.
+      const isContent = item => ['item', 'question'].includes(item.slice.fragmentRole);
+      const context = block.items.filter(item => (item.slice.geometryContract === 'measured-v1' || item.slice.measuredQuestionHeading) && !isContent(item));
+      const chunks = [];
+      let chunk = [];
+      for (const item of block.items) {
+        const hasItem = chunk.some(isContent);
+        if (isContent(item) && hasItem && contentHeight(chunk.concat(item)) > measuredLimit / 0.85) {
+          chunks.push(chunk);
+          chunk = context.slice();
+        }
+        chunk.push(item);
+      }
+      if (chunk.length) chunks.push(chunk);
+      // Avoid a continuation containing only a tiny tail. Move complete source
+      // fragments, retaining their order and coordinates, while both pages fit.
+      if (chunks.length > 1) {
+        const tail = chunks[chunks.length - 1], previous = chunks[chunks.length - 2];
+        while (contentHeight(tail) < measuredLimit * 0.4) {
+          const index = previous.findLastIndex(isContent);
+          if (index < 0) break;
+          const remainder = previous.filter((item, i) => i !== index);
+          const insertion = tail.findIndex(isContent);
+          const trial = tail.slice(); trial.splice(insertion < 0 ? tail.length : insertion, 0, previous[index]);
+          if (contentHeight(remainder) < measuredLimit * 0.4 || contentHeight(trial) > measuredLimit / 0.85) break;
+          previous.splice(index, 1); tail.splice(0, tail.length, ...trial);
+        }
+      }
+      chunks.forEach(items => packedBlocks.push({ id: block.id, items }));
+      continue;
+    }
     if (!(options && options.answers) || contentHeight(block.items) <= limit / 0.85) {
       packedBlocks.push(block);
       continue;
@@ -2449,15 +2606,15 @@ async function measureSlices(slices, options) {
   const fullWidth = Boolean(options && options.fullWidth);
   const measured = [];
   for (const slice of slices) {
-    if (slice.kind === 'level' || slice.kind === 'section' || slice.kind === 'points' || slice.kind === 'answer-heading') {
-      const dh = slice.kind === 'answer-heading' ? 66 : slice.kind === 'section' ? (slice.test ? SECTION_TEST_H : SECTION_REVIEW_H) : (slice.kind === 'points' ? 30 : 36);
+    if (slice.kind === 'level' || slice.kind === 'section' || slice.kind === 'points' || slice.kind === 'answer-heading' || slice.kind === 'question-heading') {
+      const dh = slice.kind === 'answer-heading' || slice.kind === 'question-heading' ? 66 : slice.kind === 'section' ? (slice.test ? SECTION_TEST_H : SECTION_REVIEW_H) : (slice.kind === 'points' ? 30 : 36);
       measured.push({ slice, bitmap: null, sw: OUT_W, sh: dh, dh });
       continue;
     }
     const bitmap = await pageBitmap(slice.page, slice.source || sheets.get(slice.pdfId) || SOURCE);
     const sw = Math.max(1, slice.box.w * bitmap.width);
     const sh = Math.max(1, slice.box.h * bitmap.height);
-    const dw = slice.kind === 'answer' || (!fullWidth && slice.box.w < 0.5) ? slice.box.w * OUT_W : OUT_W;
+    const dw = slice.geometryContract === 'measured-v1' || slice.kind === 'answer' || (!fullWidth && slice.box.w < 0.5) ? slice.box.w * OUT_W : OUT_W;
     measured.push({ slice, bitmap, sw, sh, dh: Math.max(1, Math.round(dw * sh / sw)), fullWidth });
   }
   return measured;
@@ -2537,7 +2694,7 @@ function paintMeasuredPage(ctx, items, top, scale) {
   items.forEach((item, itemIndex) => {
     if (itemIndex) y += gapSize(item.slice.gap, fit);
     const dh = Math.max(1, Math.round(item.dh * fit));
-    if (item.slice.kind === 'answer-heading') {
+    if (item.slice.kind === 'answer-heading' || item.slice.kind === 'question-heading') {
       ctx.save();
       ctx.direction = 'rtl';
       ctx.textAlign = 'right';
@@ -2591,8 +2748,8 @@ function paintMeasuredPage(ctx, items, top, scale) {
     } else {
       const sx = item.slice.box.x * item.bitmap.width;
       const sy = item.slice.box.y * item.bitmap.height;
-      const narrow = item.slice.kind === 'answer' || (!item.fullWidth && item.slice.box.w < 0.5);
-      const dx = x0 + (narrow ? (item.slice.kind === 'answer' ? (1 - item.slice.box.w) * drawW : item.slice.box.x * drawW) : 0);
+      const narrow = item.slice.geometryContract === 'measured-v1' || item.slice.kind === 'answer' || (!item.fullWidth && item.slice.box.w < 0.5);
+      const dx = x0 + (narrow ? (item.slice.kind === 'answer' && item.slice.geometryContract !== 'measured-v1' ? (1 - item.slice.box.w) * drawW : item.slice.box.x * drawW) : 0);
       const dw = narrow ? item.slice.box.w * drawW : drawW;
       ctx.drawImage(item.bitmap, sx, sy, item.sw, item.sh, dx, y, dw, dh);
       const masks = item.slice.box.masks && item.slice.box.masks.length ? item.slice.box.masks : (item.slice.box.mask ? [item.slice.box.mask] : []);
@@ -2689,6 +2846,7 @@ function answerDocumentSource(entry, source) {
 
 function selectedAnswerCrops(group) {
   const source = group.source;
+  if (source.geometryContract === 'measured-v1') return measuredAnswerCrops(group);
   const wanted = [...new Set(group.questions.map((question) => Number(question.q)))];
   const missing = (numbers) => {
     const label = source.title || source.topic || levelPrintName(source.level, source.levelLabel);
@@ -2743,6 +2901,25 @@ function selectedAnswerCrops(group) {
   });
 }
 
+function measuredAnswerCrops(group) {
+  const source = group.source;
+  if (source.answerMap?.sourceSha256 !== source.sourceSha256 || !source.fragmentLedger) throw new Error('MEASURED_ANSWER_BINDING');
+  return [...new Set(group.questions.map(q => q.q))].flatMap(q => {
+    const owner = source.wholeQuestions.find(item => item.q === q);
+    const answer = source.answerMap.questions.find(item => item.q === q);
+    const fragments = Object.entries(source.fragmentLedger).filter(([, item]) => item.role === 'answer-question' && item.questionId === owner?.canonicalQuestionId);
+    if (!owner || !fragments.length || !answer || fragments.length !== answer.crops.length) throw new Error('MEASURED_ANSWER_COVERAGE');
+    return fragments.map(([ref, fragment], index) => {
+      const crop = fragment.crop;
+      if (['page', 'x', 'y', 'w', 'h'].some(key => crop[key] !== answer.crops[index][key])
+        || crop.page < source.answerStartPage || crop.page > source.pageCount || crop.mask || crop.masks) throw new Error('MEASURED_ANSWER_CROP');
+      const { page, x, y, w, h } = crop;
+      return { q, page, box: { x, y, w, h }, geometryContract: 'measured-v1', fragmentRef: ref,
+        fragmentRole: fragment.role, ownerId: fragment.canonicalOwnerId, questionId: fragment.questionId, itemId: fragment.itemId };
+    });
+  });
+}
+
 async function answerMeasured(groups, options = {}) {
   if (options.includeAnswers === false) return [];
   // Saved sections can refer to the same source more than once. Each chosen
@@ -2763,7 +2940,8 @@ async function answerMeasured(groups, options = {}) {
       page: crops[0].page, pdfId: group.source.pdfId, gap: 12,
       kind: 'answer-heading', block: 'answer:' + firstKey,
       label: 'תשובות לשאלות שנבחרו',
-      note: [group.source.topic || group.source.title, options.showLevel !== false ? levelPrintName(group.source.level, group.source.levelLabel) : ''].filter(Boolean).join(' · '),
+      note: group.source.geometryContract === 'measured-v1' ? measuredSourceDescription(group.source, options)
+        : [group.source.topic || group.source.title, options.showLevel !== false ? levelPrintName(group.source.level, group.source.levelLabel) : ''].filter(Boolean).join(' · '),
     });
     const labeled = new Set();
     crops.forEach((crop) => {
@@ -2775,6 +2953,9 @@ async function answerMeasured(groups, options = {}) {
       }
       slices.push({ page: crop.page, pdfId: group.source.pdfId, box: crop.box,
         ...(crop.source ? { source: crop.source } : {}),
+        ...(crop.geometryContract === 'measured-v1' ? { geometryContract: crop.geometryContract,
+          fragmentRef: crop.fragmentRef, fragmentRole: crop.fragmentRole, ownerId: crop.ownerId,
+          questionId: crop.questionId, itemId: crop.itemId } : {}),
         gap: 8, block: 'answer:' + answerKey, answerKey, kind: 'answer' });
     });
   }
@@ -2786,20 +2967,22 @@ async function paintAllShort(root, chosen, blocks, options = {}) {
     ? blocks.map((block) => ({ ...block, questions: orderPrintQuestions(block.questions.filter((question) => question && question.source)) }))
     : [{ kind: 'review', title: '', questions: orderPrintQuestions(chosen.filter((question) => question && question.source)) }];
   const headings = needsSectionHeadings(sections);
+  const printOptions = { ...options, sourceLabels: measuredSourceLabels(sections.flatMap(section => section.questions)) };
   const batched = sections.map((section) => batchesOf(section.questions).filter((batch) => {
     SOURCE = batch.questions[0].source;
-    return shortSlices(batch.questions).length > 0;
+    return shortSlices(batch.questions, printOptions).length > 0;
   }));
   const points = testPoints(sections.map((section, index) => ({ kind: section.kind, questions: batched[index].length })));
   const ordered = sections.flatMap((section) => section.questions);
   const slices = [];
   const groups = [];
+  const measuredInstructions = new Set();
   sections.forEach((section, sectionIndex) => {
   let lastLevel = null;
   batched[sectionIndex].forEach((batch, batchIndex) => {
     const question = batch.questions[0];
     SOURCE = question.source;
-    const part = shortSlices(batch.questions);
+    const part = shortSlices(batch.questions, printOptions);
     if (!part.length) return;
     const known = groups.find((group) => group.source.pdfId === question.source.pdfId);
     if (known) batch.questions.forEach((item) => known.questions.push(item));
@@ -2845,12 +3028,17 @@ async function paintAllShort(root, chosen, blocks, options = {}) {
     }
     part.forEach((slice) => {
       slice.pdfId = slice.pdfId || question.source.pdfId;
+      if (slice.geometryContract === 'measured-v1' && slice.fragmentRole === 'worksheet-instructions') {
+        const key = slice.pdfId + ':' + slice.fragmentRef;
+        if (measuredInstructions.has(key)) return;
+        measuredInstructions.add(key);
+      }
       slices.push(slice);
     });
   });
   });
   const exerciseMeasured = await measureSlices(slices);
-  const answers = await answerMeasured(groups, options);
+  const answers = await answerMeasured(groups, printOptions);
   await paintPacked(root, exerciseMeasured, answers, worksheetTitle(ordered));
 }
 
@@ -2865,7 +3053,10 @@ function markedHTML(chosen) {
       // different source page. Include those pages, without moving the primary
       // question's check mark onto unrelated coordinates on the extra page.
       const rows = question.rows && question.rows.length ? question.rows : [question.row];
-      for (const box of rows.concat(question.stem ? [question.stem] : [])) {
+      const context = group.source.geometryContract === 'measured-v1'
+        ? [...(question.contextCrops || []), ...(question.dependencyCrops || [])]
+        : question.stem ? [question.stem] : [];
+      for (const box of rows.concat(context)) {
         const page = box && (box.page || question.page);
         if (Number.isInteger(page) && page > 0 && !byPage.has(page)) byPage.set(page, []);
       }
@@ -2977,8 +3168,12 @@ async function downloadTeacherWord() {
       }
       throw new Error('WORD_REQUEST');
     }
-    const { createTeacherDocx, loadWordFigure } = await import('./teacher-word-export.js?v=20261107-teacher-usability');
-    const bytes = await createTeacherDocx({ questions: result.questions, title: worksheetTitle(all), note: $('teacher-note').value.trim(), ...options }, loadWordFigure);
+    const { createTeacherDocx, loadWordFigure } = await import('./teacher-word-export.js?v=20261108-teacher-editions');
+    const questions = result.questions.map((question) => {
+      const meta = byPdf.get(String(question.id).split(':')[0]);
+      return meta?.editionLabel ? { ...question, editionLabel: meta.editionLabel } : question;
+    });
+    const bytes = await createTeacherDocx({ questions, title: worksheetTitle(all), note: $('teacher-note').value.trim(), ...options }, loadWordFigure);
     if (generation !== printGeneration) { message('הבחירה השתנתה בזמן ההכנה. לחצו שוב כדי להוריד את הבחירה המעודכנת.', true); return; }
     const url = URL.createObjectURL(new Blob([bytes], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' }));
     const link = document.createElement('a'); link.href = url; link.download = 'דף-עבודה-נועם-דורון.docx'; document.body.appendChild(link); link.click(); link.remove();
@@ -3190,6 +3385,12 @@ async function loadExerciseSheet(pdfId) {
   source.mode = source.mode || 'exercise';
   const meta = byPdf.get(pdfId);
   if (meta) {
+    if (meta.editionId && (source.editionId !== meta.editionId || source.pdfId !== meta.pdfId
+      || source.sourceSha256 !== meta.expectedSha256 || source.canonicalSourceSha256 !== meta.canonicalSourceSha256
+      || source.grade !== meta.grade || source.topicId !== meta.topicId || source.level !== meta.level)) {
+      throw new Error('SHEET_EDITION_BINDING_' + pdfId);
+    }
+    if (meta.editionLabel) source.editionLabel = meta.editionLabel;
     source.gradeLabel = meta.gradeLabel;
     source.topic = source.topic || meta.topic;
     source.levelLabel = source.levelLabel || meta.levelLabel;
@@ -3211,6 +3412,7 @@ function indexCatalog() {
       topic.sheets.forEach((sheet) => {
         byPdf.set(sheet.pdfId, {
           ...sheet,
+          ...(topic.sheets.some((entry) => entry.editionId) && !sheet.editionId ? { editionLabel: 'דפים קודמים' } : {}),
           grade: grade.grade,
           gradeLabel: grade.label,
           band: grade.band,
@@ -3388,6 +3590,23 @@ function bind() {
     }
     render();
   }));
+  if ($('edition')) $('edition').addEventListener('change', () => {
+    const previousEdition = state.edition;
+    state.edition = $('edition').value;
+    const next = keepVisible(state.selected, visibleSelectionKeys());
+    if (next.length < state.selected.length && !confirmTeacherReplacement('שינוי המהדורה יסיר מהבחירה שאלות שאינן במהדורה החדשה. להמשיך?')) {
+      state.edition = previousEdition;
+      $('edition').value = previousEdition;
+      return;
+    }
+    if (next.join('\n') !== selectionKey()) snapshot();
+    state.selected = next;
+    state.expanded = false;
+    state.aiPickReasons = {};
+    state.pickNote = '';
+    clearPreparedPrint();
+    render();
+  });
   $('grade').addEventListener('change', async () => {
     await changeTeacherScope($('grade').value, '');
   });
@@ -3560,6 +3779,7 @@ function applyWizardPrefill(prefill) {
   state.grade = String(prefill.grade);
   state.topic = String(prefill.topic);
   state.level = prefill.level || 'a';
+  state.edition = prefill.edition || 'all';
   state.scenario = 'other';
   state.expanded = true;
   fillGrades();

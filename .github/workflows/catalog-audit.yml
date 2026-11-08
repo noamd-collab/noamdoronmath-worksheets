@@ -17,6 +17,8 @@ on:
       - 'headless/astro-poc/public/noam-ai/manifests/**'
       - 'tests/fixtures/middle-school-levels.json'
       - 'scripts/lib/headless-catalog.cjs'
+      - 'scripts/lib/worksheet-editions.cjs'
+      - 'scripts/build-learning-catalog.cjs'
       - 'tools/catalog-audit.cjs'
       - 'tests/catalog-audit.test.cjs'
       - '.github/workflows/catalog-audit.yml'

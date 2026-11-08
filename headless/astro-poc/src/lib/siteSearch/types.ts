@@ -1,4 +1,5 @@
 /** Shapes of the site search index (src/data/search-index.v1.json) and its answers. */
+import type { CatalogEdition } from '../catalog/types';
 
 export type SearchKind = 'topic' | 'page' | 'post';
 
@@ -18,10 +19,12 @@ export interface IndexTopic {
   id: number;
   levels: IndexLevel[];
   routing: IndexRouting;
+  editions?: CatalogEdition[];
+  defaultEditionId?: string;
   /** Grade 9 reduced-program (3 יח״ל) track. */
   reduced?: boolean;
   /** Sub-topics shown inside this card, as on the catalog page. */
-  children?: Array<{ id: number; title: string; levels: IndexLevel[]; routing: IndexRouting }>;
+  children?: Array<Omit<IndexTopic, 'children'> & { title: string }>;
 }
 
 export interface SearchDoc {
