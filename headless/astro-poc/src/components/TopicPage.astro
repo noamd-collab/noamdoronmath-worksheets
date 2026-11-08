@@ -11,7 +11,8 @@ import KiteInteractive from './KiteInteractive.astro';
 import { loadCatalog } from '../lib/catalog/loadCatalog';
 import { buildWorksheetHref } from '../lib/worksheetLinks';
 import { resolveEdition } from '../lib/catalog/editions';
-import { topicLandingLoop } from '../lib/landingLoops';
+import { LANDING_LOOP_ANCHORS, componentLandingLoop, topicLandingLoop } from '../lib/landingLoops';
+import AdjacentVerticalAnglesLoop from './AdjacentVerticalAnglesLoop.astro';
 import {
   loadTopicPage,
   synthesizeBodyFlow,
@@ -137,7 +138,9 @@ const topicJsonLdExtras = jsonLdTypes(page.jsonLd).includes('LearningResource')
    parallel-lines-angles-grade-8 mounts the co-interior angles film. */
 const landingLoop = topicLandingLoop(page);
 const loopVariant = landingLoop.kind === 'concept' ? landingLoop.variant : undefined;
-const cssVariant = landingLoop.kind === 'css' ? landingLoop.variant : undefined;
+const componentLoop = componentLandingLoop(slug);
+const cssVariant = landingLoop.kind === 'css' && !componentLoop ? landingLoop.variant : undefined;
+const demoAnchor = LANDING_LOOP_ANCHORS[slug];
 const filmLoop = landingLoop.kind === 'film';
 const bareFilm =
   filmLoop &&
@@ -264,12 +267,14 @@ function faqHeadingId(groupIndex: number) {
         <div class="exact-topic-hero">
           <div
             class:list={['exact-topic-demo', bareFilm && 'exact-topic-demo--bare']}
+            id={demoAnchor}
             data-landing-loop={loopVariant ? landingLoop.marker : undefined}
             style={`background:${bareFilm ? '#fbfaf5' : page.grade >= 7 ? '#e3f1ec' : '#f8ebe0'}`}
           >
             {slug === 'triangle-area-grade-7' && <TriangleAreaExplorer />}
             {loopVariant && <ConceptLoop variant={loopVariant} />}
             {cssVariant && <LandingLoop variant={cssVariant} />}
+            {componentLoop === 'adjacent-vertical-angles' && <AdjacentVerticalAnglesLoop marker={componentLoop} />}
             {landingLoop.kind === 'film' && landingLoop.marker === 'distance-between-points' && (
               <DistancePointsLoop src={landingLoop.src} marker={landingLoop.marker} />
             )}
