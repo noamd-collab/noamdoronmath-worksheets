@@ -222,10 +222,11 @@ export async function createTeacherDocx({ questions, title = 'דף עבודה ב
       await appendContent({ ...part, text: part.label ? part.label + '. ' + part.text : part.text }, seen, size,
         !canonical || lines > 0 || moreFigureItems);
       if (canonical) for (let line = 0; line < lines; line++) {
-        // Figure and its prompts stay together only within this question.
+        // Keep every declared writing line with this item, including text/table items.
+        // Existing figure grouping stays within this question.
         // Always end the chain before the next selected question.
         body.push(para('________________________________________________', { literal: true, size: 22,
-          keep: !!moreFigureItems || (figureQuestion && line < lines - 1) }));
+          keep: !!moreFigureItems || line < lines - 1 }));
       }
     }
     if (!canonical) body.push(para('________________________________________________________________', { literal: true }));

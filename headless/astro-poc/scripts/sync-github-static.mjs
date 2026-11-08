@@ -4,8 +4,8 @@
  * same-origin preview serving.
  *
  * Selection (generic, no worksheet exceptions):
- *   every pdfId referenced by catalog.v1.json topics with routing.usesViewer
- *   (plus siblingPdfQuery ids). PDFs themselves are NOT copied (Wix Media).
+ *   every published edition PDF needed by teacher tools, plus legacy topics
+ *   with routing.usesViewer (and siblingPdfQuery ids). PDFs are not copied.
  *
  * Source of truth: repo-root noam-ai/manifests/ (mirrors GitHub Pages).
  *
@@ -106,7 +106,7 @@ function writeProvenance(pdfIds, files, extras = {}) {
       note: 'Canonical bytes live in the repo; GitHub Pages serves the same tree. PDFs stay on Wix Media.',
     },
     selection: {
-      rule: 'catalog.v1.json topics with routing.usesViewer (+ siblingPdfQuery)',
+      rule: 'published worksheet editions for teacher tools + legacy topics with routing.usesViewer (+ siblingPdfQuery)',
       catalogPath: 'src/data/catalog.v1.json',
       count: pdfIds.length,
     },

@@ -105,6 +105,24 @@ describe('exact-design protected live-baseline boundaries', () => {
   for (const [file, expected] of Object.entries(protectedFiles)) {
     it(`preserves ${file}`, () => {
       let content = read(file);
+      if (file === 'src/data/catalog.v1.json') {
+        // Noam's elementary renewal adds exactly these four grade-one editions.
+        // Strip only that reviewed addition, then require the complete prior
+        // snapshot hash below, including the already released grade-three edition.
+        const catalog = JSON.parse(content);
+        const grade = catalog.grades.find((g: any) => g.grade === 1);
+        for (const id of [11, 12, 14, 15]) {
+          const topic = grade.topics.find((t: any) => t.id === id);
+          assert.equal(topic.defaultEditionId, 'elementary-20261108-r1');
+          assert.equal(topic.editions.length, 1);
+          assert.equal(topic.editions[0].editionId, 'elementary-20261108-r1');
+          assert.equal(topic.editions[0].routing.usesViewer, false);
+          assert.equal(topic.editions[0].routing.aiHintShown, false);
+          delete topic.editions;
+          delete topic.defaultEditionId;
+        }
+        content = JSON.stringify(catalog, null, 2) + '\n';
+      }
       if (file === 'public/noam-learning-boot.js') {
         // Noam approved PDF-only elementary publication, without new DB/auth
         // activity. Removing this exact early exit restores the old boot.
