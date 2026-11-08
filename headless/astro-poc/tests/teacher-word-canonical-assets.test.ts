@@ -67,7 +67,7 @@ test('canonical writing lines are exact, end keepNext chains, and never enter th
  const doc=new DOMParser().parseFromString(xml,'text/xml');
  const lines=Array.from(doc.getElementsByTagName('w:p')).filter((p:any)=>p.textContent==='_______________________________________________'+'_');
  assert.equal(lines.length,6);
- for(const p of lines as any[])assert.equal(p.getElementsByTagName('w:keepNext').length,0);
+ assert.deepEqual((lines as any[]).map(p=>p.getElementsByTagName('w:keepNext').length),[0,1,0,1,1,0]);
  assert.ok(!xml.split('תשובות סופיות')[1].includes('________________________________________________'));
  delete q.items[0].answerLines;
  const missing=selectWordQuestions({sheets:{[f.pdfId]:sheet}},[choose(f,1)]).questions;

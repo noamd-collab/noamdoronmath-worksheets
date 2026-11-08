@@ -1,3 +1,11 @@
+## 2026-11-08 — Four renewed grade 1 topics
+
+- Prepare 12 new PDFs across patterns and sequences, the hundred chart, word problems, and length comparison, retaining every previous edition.
+- Bind 96 activities and 416 subparts to measured PDF fragments, answer maps and editable RTL Word sources. All 12 remote PDFs match the reviewed local bytes.
+- Keep each item's declared writing lines together in Word; preserve all 869 lines, table content, mathematics and legacy output.
+- Elementary students use PDFs. No database migration, hint import or elementary Noam AI activation is included.
+- Review scope and pagination limits: [grade 1 batch evidence](elementary-grade1-four-topics-20261108.md). This entry describes a candidate pending specific PR merge and publication approval.
+
 ## 2026-11-07 — Teacher workflow usability
 
 - Place the introduction before the four-step wizard; keep navigation and unique question/subsection counts at the bottom. Choose level once in setup, with an explicit return link from selection.
