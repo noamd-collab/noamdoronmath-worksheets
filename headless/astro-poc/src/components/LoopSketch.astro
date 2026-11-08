@@ -129,13 +129,21 @@ const bondThirteen = frameCells(164, 122, 26);
 
     {variant === 'measure' && (
       <>
+        {/* The arc is centred on the vertex (90,190). The paper-coloured half
+            disc turns with the ray and hides the part of the arc beyond it,
+            so the arc always spans exactly the current opening. */}
+        <path class="sk-coral" data-measure-arc d="M150 190 A60 60 0 0 0 120 138.04"></path>
+        <g class="sk-sweep" style="--ox:18.75%;--oy:67.86%">
+          <rect class="sk-stage" x="0" y="0" width="480" height="280"></rect>
+          <path class="sk-measure-cover" fill="#fff" d="M90 190 L166 190 A76 76 0 0 0 14 190 Z"></path>
+        </g>
         <line class="sk-ink" x1="90" y1="190" x2="280" y2="190"></line>
         <g class="sk-sweep" style="--ox:18.75%;--oy:67.86%">
           <rect class="sk-stage" x="0" y="0" width="480" height="280"></rect>
-          <line class="sk-gold" x1="90" y1="190" x2="250" y2="190"></line>
+          <line class="sk-gold" data-measure-ray x1="90" y1="190" x2="250" y2="190"></line>
         </g>
-        <path class="sk-coral sk-in" d="M150 190 A60 60 0 0 1 120 138"></path>
-        <text class="sk-math sk-in" x="168" y="168" font-size="28">60°</text>
+        <circle class="sk-ink-dot" cx="90" cy="190" r="5"></circle>
+        <text class="sk-math sk-measure-label" x="168" y="168" font-size="28">60°</text>
       </>
     )}
 
@@ -1029,6 +1037,8 @@ const bondThirteen = frameCells(164, 122, 26);
   .sk .sk-extrude { animation: sk-extrude 7s ease-in-out infinite; }
   .sk .sk-give { animation: sk-give 7s ease-in-out infinite; }
   .sk .sk-sweep { animation: sk-sweep 6.5s ease-in-out infinite; }
+  /* Same 6.5s clock as sk-sweep: the reading shows only while the ray rests at 60°. */
+  .sk .sk-measure-label { animation: sk-measure-label 6.5s ease-in-out infinite; }
   .sk .sk-scale { animation: sk-scale 7s ease-in-out infinite; }
   .sk .sk-shear { animation: sk-shear 7s ease-in-out infinite; }
   .sk .sk-unroll { animation: sk-unroll 7s ease-in-out infinite; }
@@ -1399,6 +1409,11 @@ const bondThirteen = frameCells(164, 122, 26);
   @keyframes sk-sweep {
     0%, 100% { transform: rotate(0deg); }
     48%, 76% { transform: rotate(-60deg); }
+  }
+  @keyframes sk-measure-label {
+    0%, 48% { opacity: 0; }
+    54%, 72% { opacity: 1; }
+    76%, 100% { opacity: 0; }
   }
   @keyframes sk-scale {
     0%, 10% { transform: scale(0.5); }
