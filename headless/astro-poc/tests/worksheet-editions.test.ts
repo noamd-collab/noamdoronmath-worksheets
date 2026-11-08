@@ -216,9 +216,12 @@ test('desktop and phone let pupils expand previous worksheets without overflow o
       assert.equal(await card.$eval('details', d => d.open), false);
       await summary.click();
       assert.equal(await card.$eval('details', d => d.open), true);
+      // Measure the settled card: a fractional hover translation can report a
+      // 44px button as 43.99997px while its CSS/layout height is exactly 44px.
+      await card.evaluate(node => Promise.all(node.getAnimations({ subtree: true }).map(animation => animation.finished)));
       const rect = await card.boundingBox(); assert.ok(rect && rect.x >= 0 && rect.x + rect.width <= width);
       const buttons = await card.$$eval('a.lvl', nodes => nodes.map(n => ({ href: n.getAttribute('href'), height: n.getBoundingClientRect().height })));
-      assert.equal(buttons.length, 6); assert.ok(buttons.every(b => b.height >= 44));
+      assert.equal(buttons.length, 6); assert.ok(buttons.every(b => b.height >= 44), JSON.stringify({ width, buttons }));
       assert.equal(buttons.filter(b => b.href?.includes('edition=')).length, 3);
       for (const level of topic(base).levels) assert.ok(buttons.some(b => b.href === base.config.pdfBase + level.pdfId + '.pdf'));
       await card.screenshot({ path: `${output}/card-${width}.png` });
