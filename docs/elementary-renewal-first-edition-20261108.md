@@ -23,15 +23,16 @@ All three files were uploaded to Wix media and downloaded again with identical S
 
 ## Validation
 
-- A fresh locked dependency installation passed. After refreshing the catalog, a fresh production build, slash-fraction check and all 2,108 tests passed without skips: 2,099 unit, five isolated drawing-policy and four live SSR tests.
+- A fresh locked dependency installation passed. After refreshing the catalog, a fresh production build, slash-fraction check and all 2,115 tests passed without skips: 2,106 unit, five isolated drawing-policy and four live SSR tests.
 - Root reran 95 focused teacher tests and 14 model-plan identity tests. The latter validated 3,882 supplied plans without live model calls. After normalizing test-only resource paths, all 62 affected fixture tests passed; worksheet bytes and geometry were unchanged.
-- All 964 previous teacher catalog rows remain unchanged; the candidate adds three rows. All 1,777 old teacher source files and 846 restored static manifests retain their original hashes. The refreshed catalog snapshot preserves every legacy field and adds only the grade 3 division edition; its SQL seed retains all 964 old identities and adds the three new identities.
+- All 964 previous teacher catalog rows remain unchanged; the candidate adds three rows. All 1,777 old teacher source files and 846 restored static manifests retain their original hashes. The refreshed catalog snapshot preserves every legacy field and adds only the grade 3 division edition; its learning catalog and SQL seed retain exactly the 964 old identities, without activating elementary progress identities.
 - Catalog export and auditing use the registry belonging to the selected repository. Missing or invalid registries still fail, and withdrawing an edition is checked against generated catalog, learning and SQL copies. All 86 focused audit, catalog-contract and edition tests passed; the full audit has zero errors, with its existing warnings and review findings preserved.
+- The static-only update also passed seven elementary PDF-only regression tests, all seven GitHub checks, 43 catalog audit tests, static synchronization and the production build.
 - Local desktop and phone flows were exercised. A selection spanning all three levels produced a three-page PDF and a three-page editable Word document; all six rendered pages were inspected. Headers, RTL, tables, mathematics and answer matching were checked.
 - The official Wix preview loaded the new edition, rendered a selected question with its answer section, and successfully downloaded an editable Word document.
 - `typecheck:tests` still fails with 335 diagnostics. Two isolated comparisons found no newly introduced diagnostic: the captured-before reconstruction also has 335, and a wider reconstruction has 336. This is a documented reconstruction, not a claim that the complete historical checkout has been typechecked successfully.
 
-Preview: https://vldvhb-noam-math-astro-poc-amiramnoam-130a.wix-site-host.com/teachers/index.html?grade=3&topic=10&level=b&edition=elementary-20261108-r1
+Preview: https://q6nid6-noam-math-astro-poc-amiramnoam-130a.wix-site-host.com/teachers/index.html?grade=3&topic=10&level=b&edition=elementary-20261108-r1
 
 ## Rollout boundary
 
