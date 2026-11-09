@@ -42,6 +42,11 @@
           "productionHref": "https://www.noamdoronmath.co.il/coordinate-plane-grade-8"
         },
         {
+          "path": "/statistics-data-frequency-grade-8",
+          "label": "שכיחות ושכיחות יחסית",
+          "productionHref": "https://www.noamdoronmath.co.il/statistics-data-frequency-grade-8"
+        },
+        {
           "path": "/statistics-grade-8",
           "label": "סטטיסטיקה",
           "productionHref": "https://www.noamdoronmath.co.il/statistics-grade-8"
@@ -189,6 +194,11 @@
       "path": "/coordinate-plane-grade-8",
       "label": "מערכת צירים",
       "productionHref": "https://www.noamdoronmath.co.il/coordinate-plane-grade-8"
+    },
+    {
+      "path": "/statistics-data-frequency-grade-8",
+      "label": "שכיחות ושכיחות יחסית",
+      "productionHref": "https://www.noamdoronmath.co.il/statistics-data-frequency-grade-8"
     },
     {
       "path": "/statistics-grade-8",
