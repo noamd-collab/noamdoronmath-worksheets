@@ -512,14 +512,6 @@ function checkMiddleFixture(au, raw) {
   au.coverage.approvedMiddleLevels = n;
 }
 
-/**
- * Middle-school topics Noam approved to publish as plain PDFs before their
- * Noam AI manifests exist. Their missing manifests are listed for review, not
- * as errors. Noam, 2026-11-09: grade 8 topic 67 (statistics: collecting and
- * reading data, frequency), no Noam prefix, no Ramzi help or teacher picker yet.
- */
-const MANIFEST_PENDING = new Set(['8:67']);
-
 /** Viewer manifests (derived from each PDF by the Noam AI pipeline): grade/topic/level must agree. */
 function checkManifests(au, raw, pdfOwners) {
   const names = listJson(au.root, P.manifests);
@@ -543,10 +535,6 @@ function checkManifests(au, raw, pdfOwners) {
       if (!middle.has(o.grade)) continue; // elementary sheets open as plain PDFs; no viewer manifest
       const m = manifests.get(id);
       const src = `${P.manifests}/${id}.json`;
-      if (!m && MANIFEST_PENDING.has(`${o.grade}:${o.topicId}`)) {
-        au.find('review', 'MANIFEST_PENDING', { grade: o.grade, topicId: o.topicId, level: o.level, pdfId: id, subject: o.title, source: src }, 'middle-school PDF published as a plain PDF; viewer manifest pending (approved exception)');
-        continue;
-      }
       if (!m) {
         au.find('error', 'MANIFEST_MISSING', { grade: o.grade, topicId: o.topicId, level: o.level, pdfId: id, subject: o.title, source: src }, 'middle-school PDF has no viewer manifest (Noam AI help cannot open it)');
         continue;
