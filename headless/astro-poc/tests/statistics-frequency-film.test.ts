@@ -43,6 +43,11 @@ describe('grade 8 statistics film', () => {
     assert.match(film, /aria-label','המשך האנימציה'/);
     assert.match(film, /min-height:44px/);
     assert.match(film, /touch-action:manipulation/);
+    assert.match(film, /#controls\{display:flex;justify-content:center;padding:8px 0 2px;background:transparent/);
+    assert.match(film, /#play\{[^}]*width:auto/);
+    assert.match(film, /border-radius:999px/);
+    assert.equal(film.includes('#play{width:100%'), false);
+    assert.equal(film.includes('min-width:8.5rem'), false);
     for (const id of ['restart', 'chapters', 'mute', 'seek', 'transcript', 'fullscreen', 'usage']) {
       assert.equal(film.includes(`id="${id}"`), false, id);
     }
@@ -68,6 +73,13 @@ describe('grade 8 statistics film', () => {
     for (const [, path] of film.matchAll(/url\((\/loops\/statistics-frequency\/[^)]+)\)/g)) {
       assert.ok(statSync(join(root, 'public', path)).size > 0, path);
     }
+  });
+
+  it('widens this film on a phone and leaves other films alone', () => {
+    assert.match(shell, /@media \(max-width: 767px\)[\s\S]*exact-topic-demo--stats-film[\s\S]*width: calc\(100% \+ 120px\)/);
+    assert.match(topic, /landingLoop\.marker === 'statistics-frequency' && 'exact-topic-demo--stats-film'/);
+    assert.equal(read('src/components/ParallelCointeriorLoop.astro').includes('100vw'), false);
+    assert.equal(read('src/components/TriangleAngleSumLoop.astro').includes('exact-topic-demo--stats-film'), false);
   });
 
   it('hides the duplicate header in embed mode and honours Stop Animations', () => {

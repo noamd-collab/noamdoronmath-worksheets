@@ -10,7 +10,7 @@
 - New grade 8 catalog topic 67, first in the data, statistics and probability group: three levels (רמה א׳, רמה ב׳, רמת מצוינות) from Noam's PDFs, each ending with a final-answers page.
 - New landing page `/statistics-data-frequency-grade-8`, written from the PDFs: explanation, worked example, common mistakes, a self-check with a hidden answer, five FAQ items and FAQ/LearningResource JSON-LD. Linked from the grade 8 hub and the catalog card; listed in the pages sitemap.
 - The topic has no Noam prefix yet, so its levels open the PDFs directly and Ramzi/Noam AI hints are not offered. Manifests and hints are a separate step.
-- The landing card mounts the statistics film (`public/loops/statistics-frequency.html`, about 96 s). It autoplays on load with no audio and no loop, and the only control is pause/resume. The narrated mp3 stays in the repo and is not requested. Stop Animations still pauses it. The frequency table shows stacked fractions instead of `8/20`, per the slash-fraction rule.
+- The landing card mounts the statistics film (`public/loops/statistics-frequency.html`, about 96 s). It autoplays on load with no audio and no loop. The only control is a compact pause/resume button on the picture. On a phone the film uses the page width; the text keeps its gutter. The narrated mp3 stays in the repo and is not requested. Stop Animations still pauses it. The frequency table shows stacked fractions instead of `8/20`, per the slash-fraction rule.
 
 ## 2026-11-08 — Four renewed grade 1 topics
 

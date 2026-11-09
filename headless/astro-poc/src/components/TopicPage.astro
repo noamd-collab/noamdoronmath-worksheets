@@ -269,7 +269,7 @@ function faqHeadingId(groupIndex: number) {
       {hasDemo && (
         <div class="exact-topic-hero">
           <div
-            class:list={['exact-topic-demo', bareFilm && 'exact-topic-demo--bare']}
+            class:list={['exact-topic-demo', bareFilm && 'exact-topic-demo--bare', landingLoop.kind === 'film' && landingLoop.marker === 'statistics-frequency' && 'exact-topic-demo--stats-film']}
             id={demoAnchor}
             data-landing-loop={loopVariant ? landingLoop.marker : undefined}
             style={`background:${bareFilm ? '#fbfaf5' : page.grade >= 7 ? '#e3f1ec' : '#f8ebe0'}`}
