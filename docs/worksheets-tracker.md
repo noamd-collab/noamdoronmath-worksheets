@@ -1,3 +1,10 @@
+## 2026-11-09 — Grade 8 statistics: collecting and reading data, frequency and relative frequency
+
+- New grade 8 catalog topic 67, first in the data, statistics and probability group: three levels (רמה א׳, רמה ב׳, רמת מצוינות) from Noam's PDFs, each ending with a final-answers page.
+- New landing page `/statistics-data-frequency-grade-8`, written from the PDFs: explanation, worked example, common mistakes, a self-check with a hidden answer, five FAQ items and FAQ/LearningResource JSON-LD. Linked from the grade 8 hub and the catalog card; listed in the pages sitemap.
+- The topic has no Noam prefix yet, so its levels open the PDFs directly and Ramzi/Noam AI hints are not offered. Manifests and hints are a separate step.
+- The landing card mounts Noam's narrated statistics film (`public/loops/statistics-frequency.html`, about 96 s). It starts only on a click, loads the narration on demand, hides its own header in embed mode and pauses for Stop Animations. The frequency table now shows stacked fractions instead of `8/20`, per the slash-fraction rule.
+
 ## 2026-11-08 — Four renewed grade 1 topics
 
 - Prepare 12 new PDFs across patterns and sequences, the hundred chart, word problems, and length comparison, retaining every previous edition.
@@ -448,6 +455,7 @@ Columns: grade, topic, levels present, author, reviewed, live, PR.
 | כיתה ח׳ | מעגל ועיגול — היקף ושטח (G8-T63) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ח׳ | משימת הערכה 1 (G8-T64) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ח׳ | הוכחות בחפיפת משולשים (G8-T65) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
+| כיתה ח׳ | סטטיסטיקה: איסוף מידע, קריאת מידע, שכיחות ושכיחות יחסית (id 67) | רמה א׳, רמה ב׳, רמת מצוינות | Noam | unknown | no | unknown |
 | כיתה ט׳ | חוק הפילוג המורחב (G9-T02) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98 |
 | כיתה ט׳ | פירוק לגורמים (G9-T03) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98 |
 | כיתה ט׳ | צמצום שברים אלגבריים (G9-T04) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98 |

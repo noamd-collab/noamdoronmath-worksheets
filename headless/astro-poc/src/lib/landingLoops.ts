@@ -250,6 +250,10 @@ export const FILM_LANDING_LOOPS = {
     marker: 'parallel-cointerior-angles',
     src: '/loops/parallel-cointerior-angles.html',
   },
+  'statistics-data-frequency-grade-8': {
+    marker: 'statistics-frequency',
+    src: '/loops/statistics-frequency.html',
+  },
 } as const;
 
 export type FilmLandingSlug = keyof typeof FILM_LANDING_LOOPS;
