@@ -25,7 +25,7 @@ test('serves the current factoring release from compiled preview geometry', asyn
 });
 
 test('preview geometry includes every active exercise sheet and no other sheet', () => {
-  assert.equal(activeIds.filter(id => previews[id].geometryContract !== 'measured-v1').length, 933);
+  assert.equal(activeIds.filter(id => previews[id].geometryContract !== 'measured-v1').length, 936); // +3 sheets: grade 8 topic 67 (Noam, 2026-11-09)
   assert.ok(bundle.gzipBase64.length < 1_000_000, 'geometry must fit in the Wix deployment request');
   assert.deepEqual(Object.keys(previews).sort(), [...activeIds].sort());
   for (const pdfId of activeIds) {

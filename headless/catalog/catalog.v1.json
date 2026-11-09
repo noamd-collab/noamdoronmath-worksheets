@@ -9150,6 +9150,7 @@
           "description": "איסוף מידע בסקר, קריאת דיאגרמות עמודות, קו, תמונות ועוגה, טבלת שכיחות ושכיחות יחסית בשבר ובאחוזים.",
           "group": "data",
           "icon": "bars",
+          "noamTopicId": "G8-T67",
           "levels": [
             {
               "key": "a",
@@ -9171,11 +9172,15 @@
             }
           ],
           "routing": {
-            "resolvedNoamPrefix": null,
-            "aiHintShown": false,
-            "usesViewer": false,
-            "viewerPath": null,
-            "siblingPdfQuery": {}
+            "resolvedNoamPrefix": "G8-T67",
+            "aiHintShown": true,
+            "usesViewer": true,
+            "viewerPath": "worksheet-viewer-noam.html",
+            "siblingPdfQuery": {
+              "pa": "f34602adb8e048aab957308c7e8c6fcb",
+              "pb": "e67c24ee5b1e4f488c2241fd76d76162",
+              "pc": "d612e5de3fd24ee1a826410e42c3cab0"
+            }
           }
         },
         {

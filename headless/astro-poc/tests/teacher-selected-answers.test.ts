@@ -216,7 +216,7 @@ test('every active source has validated answer geometry or an explicit original-
   const catalog = JSON.parse(readFileSync(new URL('../public/teachers/teacher-catalog.json', import.meta.url), 'utf8'));
   const ids = [...new Set<string>(catalog.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.sheets.map((s: any) => s.pdfId))))];
   assert.equal(report.sheets, ids.length);
-  assert.equal(catalog.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.sheets.filter((s: any) => !s.editionId))).length, 964);
+  assert.equal(catalog.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.sheets.filter((s: any) => !s.editionId))).length, 967); // +3 sheets: grade 8 topic 67 (Noam, 2026-11-09)
   for (const pdfId of ids) {
     const s = JSON.parse(readFileSync(new URL(`../public/teachers/sheets/${pdfId}.json`, import.meta.url), 'utf8'));
     for (const answer of s.answerMap.questions) {

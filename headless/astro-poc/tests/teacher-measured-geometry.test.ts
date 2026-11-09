@@ -199,7 +199,7 @@ test('preview compiler retains all measured part identities while legacy payload
   const expected = JSON.parse(gunzipSync(Buffer.from(old.gzipBase64, 'base64')).toString());
   const computed = compileQuestionPreviews(oldCatalog, (id: string) => JSON.parse(readFileSync(new URL('../../../noam-ai/manifests/' + id + '.json', import.meta.url), 'utf8')));
   assert.deepEqual(computed, expected);
-  assert.equal(Object.values(computed).filter((row: any) => row.geometryContract !== 'measured-v1').length, 933);
+  assert.equal(Object.values(computed).filter((row: any) => row.geometryContract !== 'measured-v1').length, 936); // +3 sheets: grade 8 topic 67 (Noam, 2026-11-09)
 });
 
 test('measured preview refuses another PDF/layout binding and altered geometry', () => {

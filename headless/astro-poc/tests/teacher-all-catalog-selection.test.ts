@@ -95,6 +95,7 @@ test('every catalog grade/topic/level exposes all source questions and supports 
     }
   }
   assert.deepEqual(catalog.grades.map((grade: { grade: number }) => grade.grade), [1, 2, 3, 4, 5, 6, 7, 8, 9]);
-  assert.equal(scopesChecked, 1281, 'Every actual UI scope: c2 belongs to c and one exposes only all');
+  // +4: grade 8 topic 67 adds levels a, b, c and its all scope (Noam, 2026-11-09).
+  assert.equal(scopesChecked, 1285, 'Every actual UI scope: c2 belongs to c and one exposes only all');
   t.diagnostic(`Checked ${sheetsChecked} source sheets, ${scopesChecked} grade/topic/level scopes and ${questionsChecked} whole-question appearances.`);
 });

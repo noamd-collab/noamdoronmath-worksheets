@@ -100,11 +100,12 @@ test('fresh startup and all real grade/topic handlers choose one available level
       topics += 1; sheetEntries += topic.sheets.length;
     }
   }
-  assert.equal(topics, 330); assert.equal(sheetEntries - catalog.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.sheets.filter((s: any) => s.editionId))).length, 964);
+  // +1 topic, +3 sheets: grade 8 topic 67 (Noam, 2026-11-09).
+  assert.equal(topics, 331); assert.equal(sheetEntries - catalog.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.sheets.filter((s: any) => s.editionId))).length, 967);
   t.diagnostic(`Real handlers checked ${topics} topics and ${sheetEntries} catalog sheet entries.`);
 });
 
-test('all 330 topic deep links preserve explicit all and normalize a missing level before exposing candidates', async () => {
+test('all 331 topic deep links preserve explicit all and normalize a missing level before exposing candidates', async () => {
   const app = picker();
   for (const grade of catalog.grades) for (const topic of grade.topics) {
     await app.applyWizardPrefill({grade:grade.grade,topic:topic.id,level:'all',exerciseIds:[]});
