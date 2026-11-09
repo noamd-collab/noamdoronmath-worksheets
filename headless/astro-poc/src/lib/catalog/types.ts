@@ -11,7 +11,8 @@ export interface CatalogLevel {
   pdfId: string;
   labelSource: string;
   /** Published manifest level; single-sheet releases use `one`. */
-  viewerLevel?: 'a' | 'b' | 'c' | 'c2' | 'one';
+  viewerLevel?: 'a' | 'b' | 'c' | 'c2' | 'one' | 'A' | 'B' | 'E';
+  learningId?: string;
 }
 
 export interface CatalogRouting {
@@ -35,6 +36,17 @@ export interface CatalogTopic {
   icon: string;
   parent?: number;
   noamTopicId?: string;
+  levels: CatalogLevel[];
+  routing: CatalogRouting;
+  /** Published additions only; levels/routing above keep their legacy meaning. */
+  editions?: CatalogEdition[];
+  defaultEditionId?: string;
+}
+
+export interface CatalogEdition {
+  editionId: string;
+  label: string;
+  status: 'published';
   levels: CatalogLevel[];
   routing: CatalogRouting;
 }

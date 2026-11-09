@@ -74,6 +74,10 @@ describe('landing loop coverage', () => {
             src: '/loops/parallel-cointerior-angles.html',
             marker: 'parallel-cointerior-angles',
           },
+          'statistics-data-frequency-grade-8': {
+            src: '/loops/statistics-frequency.html',
+            marker: 'statistics-frequency',
+          },
         };
         assert.deepEqual(
           { src: loop.src, marker: loop.marker },
@@ -83,7 +87,7 @@ describe('landing loop coverage', () => {
       }
     }
     assert.equal(counts.concept + counts.css + counts.film, TOPIC_PAGE_SLUGS.length);
-    assert.equal(counts.film, 3);
+    assert.equal(counts.film, 4);
     assert.ok(counts.css > 0);
     assert.ok(counts.concept > 0);
   });

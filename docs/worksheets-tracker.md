@@ -1,3 +1,26 @@
+## 2026-11-09 — Grade 8 statistics: collecting and reading data, frequency and relative frequency
+
+- New grade 8 catalog topic 67, first in the data, statistics and probability group: three levels (רמה א׳, רמה ב׳, רמת מצוינות) from Noam's PDFs, each ending with a final-answers page.
+- New landing page `/statistics-data-frequency-grade-8`, written from the PDFs: explanation, worked example, common mistakes, a self-check with a hidden answer, five FAQ items and FAQ/LearningResource JSON-LD. Linked from the grade 8 hub and the catalog card; listed in the pages sitemap.
+- The topic has no Noam prefix yet, so its levels open the PDFs directly and Ramzi/Noam AI hints are not offered. Manifests and hints are a separate step.
+- The landing card mounts Noam's narrated statistics film (`public/loops/statistics-frequency.html`, about 96 s). It starts only on a click, loads the narration on demand, hides its own header in embed mode and pauses for Stop Animations. The frequency table now shows stacked fractions instead of `8/20`, per the slash-fraction rule.
+
+## 2026-11-08 — Four renewed grade 1 topics
+
+- Prepare 12 new PDFs across patterns and sequences, the hundred chart, word problems, and length comparison, retaining every previous edition.
+- Bind 96 activities and 416 subparts to measured PDF fragments, answer maps and editable RTL Word sources. All 12 remote PDFs match the reviewed local bytes.
+- Keep each item's declared writing lines together in Word; preserve all 869 lines, table content, mathematics and legacy output.
+- Elementary students use PDFs. No database migration, hint import or elementary Noam AI activation is included.
+- Review scope and pagination limits: [grade 1 batch evidence](elementary-grade1-four-topics-20261108.md). This entry describes a candidate pending specific PR merge and publication approval.
+
+## 2026-11-07 — Teacher workflow usability
+
+- Place the introduction before the four-step wizard; keep navigation and unique question/subsection counts at the bottom. Choose level once in setup, with an explicit return link from selection.
+- Balance default AI selections across source-position roles and disclose retained model picks versus local additions with per-question reasons. Explicit teacher instructions remain authoritative.
+- Open phone question crops at readable width with local horizontal scrolling and a fit-to-width control.
+- Add student output options: level labels hidden by default and optional answer appendix, consistently in composed print and editable Word. Original marked PDFs retain embedded headings.
+- Validation results and preview are recorded in the pull request; no new worksheet content or Kahoot functionality.
+
 ## 2026-11-03 — Ramzi phone send focus
 
 - A first tap on Send could blur the focused message field, move the phone composer and lose the click. The primary pointer-down now keeps textarea focus until the ordinary click; it does not submit or synthesize a click.
@@ -432,6 +455,7 @@ Columns: grade, topic, levels present, author, reviewed, live, PR.
 | כיתה ח׳ | מעגל ועיגול — היקף ושטח (G8-T63) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ח׳ | משימת הערכה 1 (G8-T64) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ח׳ | הוכחות בחפיפת משולשים (G8-T65) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
+| כיתה ח׳ | סטטיסטיקה: איסוף מידע, קריאת מידע, שכיחות ושכיחות יחסית (id 67) | רמה א׳, רמה ב׳, רמת מצוינות | Noam | unknown | no | unknown |
 | כיתה ט׳ | חוק הפילוג המורחב (G9-T02) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98 |
 | כיתה ט׳ | פירוק לגורמים (G9-T03) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98 |
 | כיתה ט׳ | צמצום שברים אלגבריים (G9-T04) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98 |
@@ -588,3 +612,12 @@ Word export uses editable RTL text, native Office Math, selected questions only,
 Checks and publication evidence: `docs/teacher-answer-word-20261104.md`.
 
 - 2026-11-05: Word-bank build portability repair validates complete decoded source content while preserving the reviewed compressed artifact; regression coverage rejects stale answers and questions. No worksheet content changed. Elementary replacement planning follows Noam’s updated instruction.
+
+## 2026-11-08 — מהדורה ראשונה בחידוש דפי היסודי
+
+- הוכנה מהדורה חדשה לג׳10, חילוק והקשר ההפוך לכפל: שלוש רמות, 38 שאלות שלמות, 95 סעיפים ו־285 רמזים שנבדקו. יתר 168 הנושאים עדיין בתהליך; אין כאן טענת השלמה של כל היסודי.
+- המהדורה מופיעה בתצוגת בדיקה לצד הדפים הקודמים, עם בחירה לפי מהדורה ורמה, הדפסה מה־PDF ו־Word עריך ב־RTL. כל 964 הרשומות הקודמות נשמרו, ונוספו שלוש.
+- הבנייה ו־2,108 הבדיקות עברו. נבדקו גם הדפסה והורדת Word בתצוגת Wix הרשמית. בדיקת הטיפוסים עדיין נכשלת עם 335 אבחנות; השוואות מבודדות לא מצאו אבחנות חדשות מהדלתה. הראיות והגבולות מפורטים ב־[דוח המהדורה](elementary-renewal-first-edition-20261108.md).
+- לא בוצעו פרסום לאתר הפעיל, מיגרציית מסד נתונים או ייבוא רמזים. אלה יבוצעו במסגרת השחרור המאושר של ה־PR.
+
+- 2026-11-08 — PR #411 scope confirmed by Noam: publish new grade 3 division PDFs and teacher PDF/Word tools only. Elementary links open PDFs directly; saved viewer links bypass hints. No Noam AI, database migration, hint import or new account progress identities in this release. Existing materials remain.

@@ -3,9 +3,10 @@ const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&
 const xml = (s) => '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' + s;
 const ns = 'xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"';
 const symbols = { tri: '△', angle: '∠', leq: '≤', geq: '≥', neq: '≠', pm: '±', cdot: '·', times: '×', div: '÷', perp: '⊥', parallel: '∥', pi: 'π', alpha: 'α', beta: 'β', gamma: 'γ', delta: 'δ', degree: '°', circ: '°', infty: '∞', approx: '≈', sim: '∼', cong: '≅', to: '→', in: '∈', cup: '∪', emptyset: '∅' };
-const mr = (s, plain = false) => `<m:r>${plain ? '<m:rPr><m:nor/></m:rPr>' : ''}<w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:rtl w:val="0"/></w:rPr><m:t xml:space="preserve">${esc(s)}</m:t></m:r>`;
+const mathRun = (s, plain = false, size) => `<m:r>${plain ? '<m:rPr><m:nor/></m:rPr>' : ''}<w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>${size === undefined ? '' : `<w:sz w:val="${size}"/><w:szCs w:val="${size}"/>`}<w:rtl w:val="0"/></w:rPr><m:t xml:space="preserve">${esc(s)}</m:t></m:r>`;
 
-export function mathXml(input) {
+export function mathXml(input, { size } = {}) {
+  const mr = (s, plain = false) => mathRun(s, plain, size);
   let s = String(input), i = 0;
   if (s.length > 12000 || /[\u0000-\u0008\u000b\u000c\u000e-\u001f]/.test(s)) throw new Error('WORD_MATH_INVALID');
   const group = () => {
@@ -66,37 +67,49 @@ export function mathXml(input) {
   return `<m:oMath>${sequence()}</m:oMath>`;
 }
 
-function textRun(text, { bold = false, size = 24 } = {}) {
-  return `<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial"/>${bold ? '<w:b/><w:bCs/>' : ''}<w:color w:val="000000"/><w:sz w:val="${size}"/><w:szCs w:val="${size}"/><w:rtl/><w:lang w:val="he-IL" w:bidi="he-IL"/></w:rPr>${String(text).split('\n').map((s) => `<w:t xml:space="preserve">${esc(s)}</w:t>`).join('<w:br/>')}</w:r>`;
+function textRun(text, { bold = false, size = 24, direction = 'rtl' } = {}) {
+  return `<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial"/>${bold ? '<w:b/><w:bCs/>' : ''}<w:color w:val="000000"/><w:sz w:val="${size}"/><w:szCs w:val="${size}"/>${direction === 'ltr' ? '<w:rtl w:val="0"/>' : '<w:rtl/>'}<w:lang w:val="he-IL" w:bidi="he-IL"/></w:rPr>${String(text).split('\n').map((s) => `<w:t xml:space="preserve">${esc(s)}</w:t>`).join('<w:br/>')}</w:r>`;
 }
 
 export function richXml(text, options = {}) {
   const chunks = String(text).replace(/\$\.\s*$/, '$').split('$');
   if (chunks.length % 2 === 0) throw new Error('WORD_UNBALANCED_MATH');
-  return chunks.map((s, i) => i % 2 ? mathXml(s) : textRun(i && /^[.,;:!?]/.test(s) ? '\u2060' + s : s, options)).join('');
+  return chunks.map((s, i) => i % 2 ? mathXml(s, { size: options.mathSize }) : textRun(i && /^[.,;:!?]/.test(s) ? '\u2060' + s : s, options)).join('');
 }
 
-function para(text, { heading = false, title = false, keep = false, pageBreak = false, literal = false } = {}) {
+function para(text, { heading = false, title = false, keep = false, pageBreak = false, literal = false, direction = 'rtl', size } = {}) {
   // Word interprets left/right relative to bidi. Logical left is the RTL start.
   // Avoid "start", whose compatibility behavior differs in older readers.
   // pPr children follow the OOXML sequence: keep, page-break, bidi, spacing, jc.
-  return `<w:p><w:pPr>${title ? '<w:pStyle w:val="Title"/>' : heading ? '<w:pStyle w:val="Heading1"/>' : ''}${keep || heading ? '<w:keepNext/>' : ''}<w:keepLines/>${pageBreak ? '<w:pageBreakBefore/>' : ''}<w:bidi/><w:spacing w:before="${heading ? 180 : 0}" w:after="120" w:line="300" w:lineRule="auto"/><w:jc w:val="left"/></w:pPr>${literal ? textRun(text) : richXml(text, { bold: heading || title, size: title ? 36 : heading ? 28 : 24 })}</w:p>`;
+  return `<w:p><w:pPr>${title ? '<w:pStyle w:val="Title"/>' : heading ? '<w:pStyle w:val="Heading1"/>' : ''}${keep || heading ? '<w:keepNext/>' : ''}<w:keepLines/>${pageBreak ? '<w:pageBreakBefore/>' : ''}${direction === 'ltr' ? '<w:bidi w:val="0"/>' : '<w:bidi/>'}<w:spacing w:before="${heading ? 180 : 0}" w:after="120" w:line="300" w:lineRule="auto"/><w:jc w:val="left"/>${size === undefined ? '' : `<w:rPr><w:sz w:val="${size}"/><w:szCs w:val="${size}"/></w:rPr>`}</w:pPr>${literal ? textRun(text, { direction, ...(size === undefined ? {} : { size }) }) : richXml(text, { bold: heading || title, size: size ?? (title ? 36 : heading ? 28 : 24), mathSize: size, direction })}</w:p>`;
 }
 
-function tableXml(table) {
+export function tableXml(table, { size, keepAfter = true } = {}) {
   if (!table || !Array.isArray(table.head) || !Array.isArray(table.rows) || !table.head.length || table.head.length > 10) throw new Error('WORD_TABLE');
+  const kind = table.kind === undefined ? 'data' : table.kind;
+  if (!['data', 'vertical-arithmetic'].includes(kind)) throw new Error('WORD_TABLE_KIND');
+  // Legacy data tables retain their RTL column order. Arithmetic columns are
+  // stored left-to-right (operator, hundreds, tens, units), never reversed.
+  const direction = table.direction === undefined ? (kind === 'vertical-arithmetic' ? 'ltr' : 'rtl') : table.direction;
+  if (!['rtl', 'ltr'].includes(direction)) throw new Error('WORD_TABLE_DIRECTION');
+  if (kind === 'vertical-arithmetic' && direction !== 'ltr') throw new Error('WORD_TABLE_ARITHMETIC_DIRECTION');
   const rows = [table.head, ...table.rows];
   if (rows.some((row) => !Array.isArray(row) || row.length !== table.head.length)) throw new Error('WORD_TABLE_COLUMNS');
   const weights = table.head.map((_, i) => Math.max(4, ...rows.map(row => String(row[i]).replace(/\\[A-Za-z]+|[${}\s]/g, '').length)));
   const total = weights.reduce((a,b) => a+b, 0), widths = weights.map(w => Math.floor(9780*w/total));
-  return `<w:tbl><w:tblPr><w:bidiVisual/><w:tblW w:w="9780" w:type="dxa"/><w:jc w:val="left"/><w:tblBorders>${['top','left','bottom','right','insideH','insideV'].map((s) => `<w:${s} w:val="single" w:sz="4" w:color="999999"/>`).join('')}</w:tblBorders><w:tblLayout w:type="fixed"/><w:tblCellMar><w:top w:w="80" w:type="dxa"/><w:left w:w="80" w:type="dxa"/><w:bottom w:w="80" w:type="dxa"/><w:right w:w="80" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid>${widths.map(w => `<w:gridCol w:w="${w}"/>`).join('')}</w:tblGrid>${rows.map((row, index) => `<w:tr><w:trPr><w:cantSplit/>${!index ? '<w:tblHeader/>' : ''}</w:trPr>${row.map((cell, i) => `<w:tc><w:tcPr><w:tcW w:w="${widths[i]}" w:type="dxa"/></w:tcPr>${para(String(cell), { keep: true })}</w:tc>`).join('')}</w:tr>`).join('')}</w:tbl>${para('', { keep: true })}`;
+  const cellXml = (cell) => para(String(cell), {
+    keep: true, size,
+    // A Hebrew heading still reads RTL inside an LTR arithmetic/data table.
+    direction: /[\u0590-\u05ff]/.test(String(cell)) ? 'rtl' : direction,
+  });
+  return `<w:tbl><w:tblPr><w:bidiVisual w:val="${direction === 'rtl' ? 1 : 0}"/><w:tblW w:w="9780" w:type="dxa"/><w:jc w:val="left"/><w:tblBorders>${['top','left','bottom','right','insideH','insideV'].map((s) => `<w:${s} w:val="single" w:sz="4" w:color="999999"/>`).join('')}</w:tblBorders><w:tblLayout w:type="fixed"/><w:tblCellMar><w:top w:w="80" w:type="dxa"/><w:left w:w="80" w:type="dxa"/><w:bottom w:w="80" w:type="dxa"/><w:right w:w="80" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid>${widths.map(w => `<w:gridCol w:w="${w}"/>`).join('')}</w:tblGrid>${rows.map((row, index) => `<w:tr><w:trPr><w:cantSplit/>${!index ? '<w:tblHeader/>' : ''}</w:trPr>${row.map((cell, i) => `<w:tc><w:tcPr><w:tcW w:w="${widths[i]}" w:type="dxa"/></w:tcPr>${cellXml(cell)}</w:tc>`).join('')}</w:tr>`).join('')}</w:tbl>${para('', { keep: keepAfter })}`;
 }
 
-function imageXml(index, image, label) {
+function imageXml(index, image, label, keepAfter = true) {
   const width = Math.min(480, image.width), height = image.height * width / image.width;
   if (!(width > 0 && height > 0 && height < 700)) throw new Error('WORD_FIGURE_SIZE');
   const cx = Math.round(width * 9525), cy = Math.round(height * 9525);
-  return `<w:p><w:pPr><w:keepNext/><w:keepLines/><w:bidi/><w:spacing w:after="120"/><w:jc w:val="center"/></w:pPr><w:r><w:drawing><wp:inline xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" distT="0" distB="0" distL="0" distR="0"><wp:extent cx="${cx}" cy="${cy}"/><wp:docPr id="${index}" name="Figure ${index}" descr="${esc(label)}"/><a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:nvPicPr><pic:cNvPr id="${index}" name="figure.png"/><pic:cNvPicPr/></pic:nvPicPr><pic:blipFill><a:blip r:embed="image${index}"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill><pic:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="${cx}" cy="${cy}"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></pic:spPr></pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing></w:r></w:p>`;
+  return `<w:p><w:pPr>${keepAfter ? '<w:keepNext/>' : ''}<w:keepLines/><w:bidi/><w:spacing w:after="120"/><w:jc w:val="center"/></w:pPr><w:r><w:drawing><wp:inline xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" distT="0" distB="0" distL="0" distR="0"><wp:extent cx="${cx}" cy="${cy}"/><wp:docPr id="${index}" name="Figure ${index}" descr="${esc(label)}"/><a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:nvPicPr><pic:cNvPr id="${index}" name="figure.png"/><pic:cNvPicPr/></pic:nvPicPr><pic:blipFill><a:blip r:embed="image${index}"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill><pic:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="${cx}" cy="${cy}"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></pic:spPr></pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing></w:r></w:p>`;
 }
 
 // Deterministic ZIP (stored entries). Small selected worksheets need no library.
@@ -117,9 +130,48 @@ export function zipFiles(files) {
   return out;
 }
 
-export async function createTeacherDocx({ questions, title = 'דף עבודה במתמטיקה', note = '' }, loadImage) {
+export async function createTeacherDocx({ questions, title = 'דף עבודה במתמטיקה', note = '', showLevel = true, includeAnswers = true }, loadImage) {
   if (!Array.isArray(questions) || !questions.length || questions.length > 100 || note.length > 600) throw new Error('WORD_SELECTION');
+  const sourceContexts = new Map();
+  for (const question of questions) {
+    const source = question.worksheetSource, pdfId = String(question.id).split(':')[0];
+    if (source !== undefined) {
+      if (!source || source.pdfId !== pdfId || !/^[a-f0-9]{32}$/.test(pdfId)
+        || !/^[a-f0-9]{64}$/.test(source.sourceSha256) || !/^[a-f0-9]{64}$/.test(source.canonicalSourceSha256)
+        || typeof source.instructions !== 'string' || !source.instructions.trim()) throw new Error('WORD_INSTRUCTIONS_SOURCE');
+      const digest = [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(source.instructions)))].map(n => n.toString(16).padStart(2, '0')).join('');
+      if (digest !== source.instructionsSha256) throw new Error('WORD_INSTRUCTIONS_CHANGED');
+      if (sourceContexts.has(pdfId) && JSON.stringify(sourceContexts.get(pdfId)) !== JSON.stringify(source)) throw new Error('WORD_INSTRUCTIONS_CONFLICT');
+      sourceContexts.set(pdfId, source);
+      if (!Number.isSafeInteger(question.grade) || question.grade < 1 || question.grade > 6) throw new Error('WORD_CANONICAL_GRADE');
+      for (const part of question.items || []) {
+        const lines = part.answerLines === undefined ? 0 : part.answerLines;
+        if (!Number.isSafeInteger(lines) || lines < 0 || lines > 3) throw new Error('WORD_ANSWER_LINES');
+      }
+    }
+    const figures = new Map();
+    for (const part of [question, ...(question.items || [])]) {
+      if (!part.figure?.binding) {
+        if (source && part.figure) throw new Error('WORD_FIGURE_BINDING');
+        continue;
+      }
+      const figure = part.figure, binding = figure.binding;
+      if (!source || binding.canonicalSourceSha256 !== source.canonicalSourceSha256
+        || binding.questionId !== question.canonicalQuestionId || binding.questionSha256 !== question.canonicalQuestionSha256
+        || !/^[a-f0-9]{64}$/.test(binding.questionSha256) || !/^[a-f0-9]{64}$/.test(binding.sourceSvgSha256)
+        || binding.itemId !== (part === question ? null : part.canonicalItemId)
+        || typeof binding.figureId !== 'string' || !binding.figureId
+        || figure.url !== `/teachers/word-figures/${figure.sha256}.png`
+        || !/^[a-f0-9]{64}$/.test(figure.sha256)) throw new Error('WORD_FIGURE_BINDING');
+      const identity = JSON.stringify([figure.url, figure.sha256, binding.sourceSvgSha256, figure.displayWidthPx]);
+      if (figures.has(binding.figureId) && figures.get(binding.figureId) !== identity) throw new Error('WORD_FIGURE_CONFLICT');
+      figures.set(binding.figureId, identity);
+    }
+  }
   const numbered = new Map(questions.map((q,i) => [q.id, i+1]));
+  for (const [pdfId, source] of sourceContexts) for (const match of source.instructions.matchAll(/(?:ב|מ|ל)?שאלה\s+(\d+)/g)) {
+    if (!numbered.has(pdfId + ':' + Number(match[1]))) throw new Error('WORD_CONTEXT_REQUIRED');
+  }
   questions = questions.map(q => {
     const pdfId = String(q.id).split(':')[0];
     if ((q.requiredQuestions || []).some(n => !numbered.has(pdfId + ':' + n))) throw new Error('WORD_CONTEXT_REQUIRED');
@@ -130,33 +182,61 @@ export async function createTeacherDocx({ questions, title = 'דף עבודה ב
   const ids = new Set(), files = {}, images = [], body = [];
   body.push(para(title, { title: true }), para('שם התלמיד או התלמידה ____________________    תאריך ______________', { literal: true }));
   if (note) body.push(para(note, { literal: true }));
-  const appendContent = async (part, seen) => {
+  const appendContent = async (part, seen, size, keepAfter = true) => {
     if (part.example) {
-      if (part.example.title) body.push(para(part.example.title, { keep: true }));
-      for (const line of part.example.lines || []) body.push(para(line, { keep: true }));
+      if (part.example.title) body.push(para(part.example.title, { keep: true, size }));
+      for (const line of part.example.lines || []) body.push(para(line, { keep: true, size }));
     }
-    if (part.text) body.push(para(part.text, { keep: true }));
-    if (part.table) body.push(tableXml(part.table));
-    if (part.figure && !seen.has(part.figure.url)) {
-      seen.add(part.figure.url);
+    const figureKey = part.figure?.binding?.figureId || part.figure?.url;
+    const hasFigure = part.figure && !seen.has(figureKey);
+    if (part.text) body.push(para(part.text, { keep: keepAfter || !!part.table || !!hasFigure, size }));
+    if (part.table) body.push(tableXml(part.table, { size, keepAfter: keepAfter || !!hasFigure }));
+    if (part.figure && !seen.has(figureKey)) {
+      seen.add(figureKey);
       const image = await loadImage(part.figure); const index = images.length + 1;
       images.push(index); files[`word/media/figure${index}.png`] = image.bytes;
-      body.push(imageXml(index, image, 'השרטוט המקורי של השאלה'));
+      body.push(imageXml(index, image, part.figure.alt || 'השרטוט המקורי של השאלה', keepAfter));
     }
   };
+  const instructedSources = new Set();
   for (let i = 0; i < questions.length; i++) {
     const q = questions[i];
-    if (!q.id || ids.has(q.id) || !Array.isArray(q.items) || !q.items.length || q.items.some((p) => !p.answer?.trim())) throw new Error('WORD_INCOMPLETE_ANSWERS');
+    if (!q.id || ids.has(q.id) || !Array.isArray(q.items) || !q.items.length || (includeAnswers && q.items.some((p) => !p.answer?.trim()))) throw new Error('WORD_INCOMPLETE_ANSWERS');
     ids.add(q.id);
-    body.push(para(`שאלה ${i + 1} · ${q.topic} · ${q.levelLabel}`, { heading: true }));
-    const seen = new Set(); await appendContent(q, seen);
-    for (const part of q.items) await appendContent({ ...part, text: part.label ? part.label + '. ' + part.text : part.text }, seen);
-    body.push(para('________________________________________________________________', { literal: true }));
+    const pdfId = String(q.id).split(':')[0];
+    const canonical = sourceContexts.has(pdfId);
+    const size = canonical && q.grade <= 2 ? 32 : undefined;
+    if (sourceContexts.has(pdfId) && !instructedSources.has(pdfId)) {
+      instructedSources.add(pdfId);
+      body.push(para(['הנחיות', q.topic, showLevel ? q.levelLabel : '', q.editionLabel].filter(Boolean).join(' · '), { heading: true, size }));
+      const instructions = sourceContexts.get(pdfId).instructions.replace(/((?:ב|מ|ל)?שאלה\s+)(\d+)/g,
+        (whole, prefix, n) => prefix + numbered.get(pdfId + ':' + Number(n)));
+      body.push(para(instructions, { keep: true, size }));
+    }
+    body.push(para([`שאלה ${i + 1}`, q.topic, showLevel ? q.levelLabel : '', q.editionLabel].filter(Boolean).join(' · '), { heading: true, size }));
+    const seen = new Set(); await appendContent(q, seen, size);
+    const figureQuestion = canonical && [q, ...q.items].some(part => part.figure);
+    for (const [partIndex, part] of q.items.entries()) {
+      const lines = canonical ? (part.answerLines ?? 0) : 0;
+      const moreFigureItems = figureQuestion && partIndex < q.items.length - 1;
+      await appendContent({ ...part, text: part.label ? part.label + '. ' + part.text : part.text }, seen, size,
+        !canonical || lines > 0 || moreFigureItems);
+      if (canonical) for (let line = 0; line < lines; line++) {
+        // Keep every declared writing line with this item, including text/table items.
+        // Existing figure grouping stays within this question.
+        // Always end the chain before the next selected question.
+        body.push(para('________________________________________________', { literal: true, size: 22,
+          keep: !!moreFigureItems || line < lines - 1 }));
+      }
+    }
+    if (!canonical) body.push(para('________________________________________________________________', { literal: true }));
   }
-  body.push(para('תשובות סופיות', { title: true, pageBreak: true }));
-  for (let i = 0; i < questions.length; i++) {
-    const q = questions[i]; body.push(para(`שאלה ${i + 1} · ${q.topic} · ${q.levelLabel}`, { heading: true }));
-    for (const [index, part] of q.items.entries()) body.push(para((part.label ? part.label + '. ' : '') + part.answer, { keep: index < q.items.length - 1 }));
+  if (includeAnswers) {
+    body.push(para('תשובות סופיות', { title: true, pageBreak: true }));
+    for (let i = 0; i < questions.length; i++) {
+      const q = questions[i]; body.push(para([`שאלה ${i + 1}`, q.topic, showLevel ? q.levelLabel : '', q.editionLabel].filter(Boolean).join(' · '), { heading: true }));
+      for (const [index, part] of q.items.entries()) body.push(para((part.label ? part.label + '. ' : '') + part.answer, { keep: index < q.items.length - 1 }));
+    }
   }
   const rel = (id, type, target) => `<Relationship Id="${id}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/${type}" Target="${target}"/>`;
   files['[Content_Types].xml'] = xml('<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Default Extension="png" ContentType="image/png"/>' + ['document','styles','settings','header1','footer1'].map((name) => `<Override PartName="/word/${name}.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.${{document:'document.main',styles:'styles',settings:'settings',header1:'header',footer1:'footer'}[name]}+xml"/>`).join('') + '</Types>');

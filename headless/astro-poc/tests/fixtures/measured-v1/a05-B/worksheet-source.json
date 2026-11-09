@@ -1,0 +1,828 @@
+{
+  "sourceFormat": "noam-elementary-source",
+  "schemaVersion": 1,
+  "meta": {
+    "band": "elementary-ab",
+    "grade": "א",
+    "gradeNumber": 1,
+    "level": "ב",
+    "levelCode": "B",
+    "topic": "חיבור בתחום 10",
+    "title": "חִבּוּר בִּתְחוּם 10",
+    "instructions": "קִרְאוּ וּפִתְרוּ אֶת הַפְּעִילוּיוֹת:",
+    "skill_topic_id": "א05",
+    "site_topic_id": 5,
+    "site_topic_prefix": "G1-T5",
+    "topicType": "arithmetic",
+    "worksheetId": "elm-20261107-g1-s05-B",
+    "revision": 1
+  },
+  "questions": [
+    {
+      "id": "elm-20261107-g1-s05-B-q001",
+      "n": 1,
+      "text": "חַבְּרוּ וְהַשְׁלִימוּ:",
+      "dependsOn": [],
+      "tags": [
+        "practice"
+      ],
+      "star": false,
+      "layout": "two-column",
+      "items": [
+        {
+          "id": "elm-20261107-g1-s05-B-q001-i01",
+          "label": "א",
+          "text": "$1 + 2 = \\blank$",
+          "answer": "$3$",
+          "evidence": {
+            "caseId": "q001-i01",
+            "method": "integer-add",
+            "inputs": [
+              1,
+              2
+            ],
+            "expected": 3
+          }
+        },
+        {
+          "id": "elm-20261107-g1-s05-B-q001-i02",
+          "label": "ב",
+          "text": "$2 + 3 = \\blank$",
+          "answer": "$5$",
+          "evidence": {
+            "caseId": "q001-i02",
+            "method": "integer-add",
+            "inputs": [
+              2,
+              3
+            ],
+            "expected": 5
+          }
+        },
+        {
+          "id": "elm-20261107-g1-s05-B-q001-i03",
+          "label": "ג",
+          "text": "$4 + 1 = \\blank$",
+          "answer": "$5$",
+          "evidence": {
+            "caseId": "q001-i03",
+            "method": "integer-add",
+            "inputs": [
+              4,
+              1
+            ],
+            "expected": 5
+          }
+        },
+        {
+          "id": "elm-20261107-g1-s05-B-q001-i04",
+          "label": "ד",
+          "text": "$3 + 3 = \\blank$",
+          "answer": "$6$",
+          "evidence": {
+            "caseId": "q001-i04",
+            "method": "integer-add",
+            "inputs": [
+              3,
+              3
+            ],
+            "expected": 6
+          }
+        },
+        {
+          "id": "elm-20261107-g1-s05-B-q001-i05",
+          "label": "ה",
+          "text": "$4 + 2 = \\blank$",
+          "answer": "$6$",
+          "evidence": {
+            "caseId": "q001-i05",
+            "method": "integer-add",
+            "inputs": [
+              4,
+              2
+            ],
+            "expected": 6
+          }
+        }
+      ]
+    },
+    {
+      "id": "elm-20261107-g1-s05-B-q002",
+      "n": 2,
+      "text": "כִּתְבוּ תַּרְגִּיל חִבּוּר וּפִתְרוּ:",
+      "dependsOn": [],
+      "tags": [
+        "representation"
+      ],
+      "star": false,
+      "layout": "two-column",
+      "items": [
+        {
+          "id": "elm-20261107-g1-s05-B-q002-i01",
+          "label": "א",
+          "text": "חַבְּרוּ $2$ וְעוֹד $2$.",
+          "answer": "$2 + 2 = 4$",
+          "evidence": {
+            "caseId": "q002-i01",
+            "method": "integer-add",
+            "inputs": [
+              2,
+              2
+            ],
+            "expected": 4
+          },
+          "answerLines": 1
+        },
+        {
+          "id": "elm-20261107-g1-s05-B-q002-i02",
+          "label": "ב",
+          "text": "חַבְּרוּ $5$ וְעוֹד $1$.",
+          "answer": "$5 + 1 = 6$",
+          "evidence": {
+            "caseId": "q002-i02",
+            "method": "integer-add",
+            "inputs": [
+              5,
+              1
+            ],
+            "expected": 6
+          },
+          "answerLines": 1
+        },
+        {
+          "id": "elm-20261107-g1-s05-B-q002-i03",
+          "label": "ג",
+          "text": "חַבְּרוּ $3$ וְעוֹד $4$.",
+          "answer": "$3 + 4 = 7$",
+          "evidence": {
+            "caseId": "q002-i03",
+            "method": "integer-add",
+            "inputs": [
+              3,
+              4
+            ],
+            "expected": 7
+          },
+          "answerLines": 1
+        },
+        {
+          "id": "elm-20261107-g1-s05-B-q002-i04",
+          "label": "ד",
+          "text": "חַבְּרוּ $6$ וְעוֹד $2$.",
+          "answer": "$6 + 2 = 8$",
+          "evidence": {
+            "caseId": "q002-i04",
+            "method": "integer-add",
+            "inputs": [
+              6,
+              2
+            ],
+            "expected": 8
+          },
+          "answerLines": 1
+        },
+        {
+          "id": "elm-20261107-g1-s05-B-q002-i05",
+          "label": "ה",
+          "text": "חַבְּרוּ $4$ וְעוֹד $5$.",
+          "answer": "$4 + 5 = 9$",
+          "evidence": {
+            "caseId": "q002-i05",
+            "method": "integer-add",
+            "inputs": [
+              4,
+              5
+            ],
+            "expected": 9
+          },
+          "answerLines": 1
+        }
+      ]
+    },
+    {
+      "id": "elm-20261107-g1-s05-B-q003",
+      "n": 3,
+      "text": "חַבְּרוּ עִם אֶפֶס:",
+      "dependsOn": [],
+      "tags": [
+        "practice"
+      ],
+      "star": false,
+      "layout": "two-column",
+      "items": [
+        {
+          "id": "elm-20261107-g1-s05-B-q003-i01",
+          "label": "א",
+          "text": "$3 + 0 = \\blank$",
+          "answer": "$3$",
+          "evidence": {
+            "caseId": "q003-i01",
+            "method": "integer-add",
+            "inputs": [
+              3,
+              0
+            ],
+            "expected": 3
+          }
+        },
+        {
+          "id": "elm-20261107-g1-s05-B-q003-i02",
+          "label": "ב",
+          "text": "$0 + 5 = \\blank$",
+          "answer": "$5$",
+          "evidence": {
+            "caseId": "q003-i02",
+            "method": "integer-add",
+            "inputs": [
+              0,
+              5
+            ],
+            "expected": 5
+          }
+        },
+        {
+          "id": "elm-20261107-g1-s05-B-q003-i03",
+          "label": "ג",
+          "text": "$8 + 0 = \\blank$",
+          "answer": "$8$",
+          "evidence": {
+            "caseId": "q003-i03",
+            "method": "integer-add",
+            "inputs": [
+              8,
+              0
+            ],
+            "expected": 8
+          }
+        },
+        {
+          "id": "elm-20261107-g1-s05-B-q003-i04",
+          "label": "ד",
+          "text": "$0 + 2 = \\blank$",
+          "answer": "$2$",
+          "evidence": {
+            "caseId": "q003-i04",
+            "method": "integer-add",
+            "inputs": [
+              0,
+              2
+            ],
+            "expected": 2
+          }
+        },
+        {
+          "id": "elm-20261107-g1-s05-B-q003-i05",
+          "label": "ה",
+          "text": "$0 + 0 = \\blank$",
+          "answer": "$0$",
+          "evidence": {
+            "caseId": "q003-i05",
+            "method": "integer-add",
+            "inputs": [
+              0,
+              0
+            ],
+            "expected": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "elm-20261107-g1-s05-B-q004",
+      "n": 4,
+      "text": "הַשְׁלִימוּ כַּמָּה יֵשׁ בְּיַחַד:",
+      "dependsOn": [],
+      "tags": [
+        "representation"
+      ],
+      "star": false,
+      "layout": "stacked",
+      "items": [
+        {
+          "id": "elm-20261107-g1-s05-B-q004-i01",
+          "label": "א",
+          "text": "",
+          "answer": "$7$",
+          "evidence": {
+            "caseId": "q004-i01",
+            "method": "integer-add",
+            "inputs": [
+              1,
+              6
+            ],
+            "expected": 7
+          },
+          "table": {
+            "head": [
+              "בְּקֻפְסָה רִאשׁוֹנָה",
+              "בְּקֻפְסָה שְׁנִיָּה",
+              "בְּיַחַד"
+            ],
+            "rows": [
+              [
+                "$1$",
+                "$6$",
+                "$\\blank$"
+              ]
+            ],
+            "direction": "rtl",
+            "kind": "data"
+          }
+        },
+        {
+          "id": "elm-20261107-g1-s05-B-q004-i02",
+          "label": "ב",
+          "text": "",
+          "answer": "$7$",
+          "evidence": {
+            "caseId": "q004-i02",
+            "method": "integer-add",
+            "inputs": [
+              2,
+              5
+            ],
+            "expected": 7
+          },
+          "table": {
+            "head": [
+              "בְּקֻפְסָה רִאשׁוֹנָה",
+              "בְּקֻפְסָה שְׁנִיָּה",
+              "בְּיַחַד"
+            ],
+            "rows": [
+              [
+                "$2$",
+                "$5$",
+                "$\\blank$"
+              ]
+            ],
+            "direction": "rtl",
+            "kind": "data"
+          }
+        },
+        {
+          "id": "elm-20261107-g1-s05-B-q004-i03",
+          "label": "ג",
+          "text": "",
+          "answer": "$8$",
+          "evidence": {
+            "caseId": "q004-i03",
+            "method": "integer-add",
+            "inputs": [
+              3,
+              5
+            ],
+            "expected": 8
+          },
+          "table": {
+            "head": [
+              "בְּקֻפְסָה רִאשׁוֹנָה",
+              "בְּקֻפְסָה שְׁנִיָּה",
+              "בְּיַחַד"
+            ],
+            "rows": [
+              [
+                "$3$",
+                "$5$",
+                "$\\blank$"
+              ]
+            ],
+            "direction": "rtl",
+            "kind": "data"
+          }
+        },
+        {
+          "id": "elm-20261107-g1-s05-B-q004-i04",
+          "label": "ד",
+          "text": "",
+          "answer": "$8$",
+          "evidence": {
+            "caseId": "q004-i04",
+            "method": "integer-add",
+            "inputs": [
+              4,
+              4
+            ],
+            "expected": 8
+          },
+          "table": {
+            "head": [
+              "בְּקֻפְסָה רִאשׁוֹנָה",
+              "בְּקֻפְסָה שְׁנִיָּה",
+              "בְּיַחַד"
+            ],
+            "rows": [
+              [
+                "$4$",
+                "$4$",
+                "$\\blank$"
+              ]
+            ],
+            "direction": "rtl",
+            "kind": "data"
+          }
+        },
+        {
+          "id": "elm-20261107-g1-s05-B-q004-i05",
+          "label": "ה",
+          "text": "",
+          "answer": "$10$",
+          "evidence": {
+            "caseId": "q004-i05",
+            "method": "integer-add",
+            "inputs": [
+              7,
+              3
+            ],
+            "expected": 10
+          },
+          "table": {
+            "head": [
+              "בְּקֻפְסָה רִאשׁוֹנָה",
+              "בְּקֻפְסָה שְׁנִיָּה",
+              "בְּיַחַד"
+            ],
+            "rows": [
+              [
+                "$7$",
+                "$3$",
+                "$\\blank$"
+              ]
+            ],
+            "direction": "rtl",
+            "kind": "data"
+          }
+        }
+      ]
+    },
+    {
+      "id": "elm-20261107-g1-s05-B-q005",
+      "n": 5,
+      "text": "חַבְּרוּ וְהַקִּיפוּ אֶת הַתְּשׁוּבָה הַמַּתְאִימָה:",
+      "dependsOn": [],
+      "tags": [
+        "practice",
+        "explain"
+      ],
+      "star": false,
+      "layout": "two-column",
+      "items": [
+        {
+          "id": "elm-20261107-g1-s05-B-q005-i01",
+          "label": "א",
+          "text": "$2 + 1$     בַּחֲרוּ: $3$ אוֹ $4$",
+          "answer": "$3$",
+          "evidence": {
+            "caseId": "q005-i01",
+            "method": "integer-add",
+            "inputs": [
+              2,
+              1
+            ],
+            "expected": 3
+          }
+        },
+        {
+          "id": "elm-20261107-g1-s05-B-q005-i02",
+          "label": "ב",
+          "text": "$1 + 4$     בַּחֲרוּ: $6$ אוֹ $5$",
+          "answer": "$5$",
+          "evidence": {
+            "caseId": "q005-i02",
+            "method": "integer-add",
+            "inputs": [
+              1,
+              4
+            ],
+            "expected": 5
+          }
+        },
+        {
+          "id": "elm-20261107-g1-s05-B-q005-i03",
+          "label": "ג",
+          "text": "$3 + 2$     בַּחֲרוּ: $4$ אוֹ $5$",
+          "answer": "$5$",
+          "evidence": {
+            "caseId": "q005-i03",
+            "method": "integer-add",
+            "inputs": [
+              3,
+              2
+            ],
+            "expected": 5
+          }
+        },
+        {
+          "id": "elm-20261107-g1-s05-B-q005-i04",
+          "label": "ד",
+          "text": "$2 + 6$     בַּחֲרוּ: $8$ אוֹ $9$",
+          "answer": "$8$",
+          "evidence": {
+            "caseId": "q005-i04",
+            "method": "integer-add",
+            "inputs": [
+              2,
+              6
+            ],
+            "expected": 8
+          }
+        },
+        {
+          "id": "elm-20261107-g1-s05-B-q005-i05",
+          "label": "ה",
+          "text": "$5 + 5$     בַּחֲרוּ: $9$ אוֹ $10$",
+          "answer": "$10$",
+          "evidence": {
+            "caseId": "q005-i05",
+            "method": "integer-add",
+            "inputs": [
+              5,
+              5
+            ],
+            "expected": 10
+          }
+        }
+      ]
+    },
+    {
+      "id": "elm-20261107-g1-s05-B-q006",
+      "n": 6,
+      "text": "קִרְאוּ וּכְתְבוּ תַּרְגִּיל וּתְשׁוּבָה:",
+      "dependsOn": [],
+      "tags": [
+        "context",
+        "representation"
+      ],
+      "star": false,
+      "layout": "stacked",
+      "items": [
+        {
+          "id": "elm-20261107-g1-s05-B-q006-i01",
+          "label": "א",
+          "text": "לְרוֹנִי יֵשׁ $2$ סְפָרִים. הִיא קִבְּלָה עוֹד $2$ סְפָרִים. כַּמָּה סְפָרִים יֵשׁ לָהּ עַכְשָׁו?",
+          "answer": "תַּרְגִּיל: $2 + 2 = 4$. תְּשׁוּבָה: $4$ סְפָרִים.",
+          "evidence": {
+            "caseId": "q006-i01",
+            "method": "integer-add",
+            "inputs": [
+              2,
+              2
+            ],
+            "expected": 4
+          },
+          "answerLines": 2
+        },
+        {
+          "id": "elm-20261107-g1-s05-B-q006-i02",
+          "label": "ב",
+          "text": "בַּקֻּפְסָה יֵשׁ $3$ עֶפְרוֹנוֹת. תָּמָר הוֹסִיפָה עִפָּרוֹן. כַּמָּה עֶפְרוֹנוֹת יֵשׁ עַכְשָׁו?",
+          "answer": "תַּרְגִּיל: $3 + 1 = 4$. תְּשׁוּבָה: $4$ עֶפְרוֹנוֹת.",
+          "evidence": {
+            "caseId": "q006-i02",
+            "method": "integer-add",
+            "inputs": [
+              3,
+              1
+            ],
+            "expected": 4
+          },
+          "answerLines": 2
+        },
+        {
+          "id": "elm-20261107-g1-s05-B-q006-i03",
+          "label": "ג",
+          "text": "עַל הַשֻּׁלְחָן יֵשׁ $4$ מַחְבָּרוֹת. אָסָף הִנִּיחַ עוֹד $3$ מַחְבָּרוֹת. כַּמָּה מַחְבָּרוֹת יֵשׁ עַכְשָׁו?",
+          "answer": "תַּרְגִּיל: $4 + 3 = 7$. תְּשׁוּבָה: $7$ מַחְבָּרוֹת.",
+          "evidence": {
+            "caseId": "q006-i03",
+            "method": "integer-add",
+            "inputs": [
+              4,
+              3
+            ],
+            "expected": 7
+          },
+          "answerLines": 2
+        },
+        {
+          "id": "elm-20261107-g1-s05-B-q006-i04",
+          "label": "ד",
+          "text": "לְשִׁירָה יֵשׁ $5$ מַדְבֵּקוֹת. הִיא קִבְּלָה עוֹד $3$ מַדְבֵּקוֹת. כַּמָּה מַדְבֵּקוֹת יֵשׁ לָהּ עַכְשָׁו?",
+          "answer": "תַּרְגִּיל: $5 + 3 = 8$. תְּשׁוּבָה: $8$ מַדְבֵּקוֹת.",
+          "evidence": {
+            "caseId": "q006-i04",
+            "method": "integer-add",
+            "inputs": [
+              5,
+              3
+            ],
+            "expected": 8
+          },
+          "answerLines": 2
+        },
+        {
+          "id": "elm-20261107-g1-s05-B-q006-i05",
+          "label": "ה",
+          "text": "בַּסַּל יֵשׁ $6$ תַּפּוּחִים. יַעֲרָה הוֹסִיפָה עוֹד $4$ תַּפּוּחִים. כַּמָּה תַּפּוּחִים יֵשׁ בַּסַּל?",
+          "answer": "תַּרְגִּיל: $6 + 4 = 10$. תְּשׁוּבָה: $10$ תַּפּוּחִים.",
+          "evidence": {
+            "caseId": "q006-i05",
+            "method": "integer-add",
+            "inputs": [
+              6,
+              4
+            ],
+            "expected": 10
+          },
+          "answerLines": 2
+        }
+      ]
+    },
+    {
+      "id": "elm-20261107-g1-s05-B-q007",
+      "n": 7,
+      "text": "תַּקְּנוּ אֶת הַסְּכוּם הַשָּׁגוּי. הַסְבִּירוּ בְּעַל־פֶּה אֵיךְ בְּדַקְתֶּם:",
+      "dependsOn": [],
+      "tags": [
+        "error-analysis",
+        "explain"
+      ],
+      "star": true,
+      "layout": "two-column",
+      "items": [
+        {
+          "id": "elm-20261107-g1-s05-B-q007-i01",
+          "label": "א",
+          "text": "$2 + 4 = 7$",
+          "answer": "$2 + 4 = 6$. מַתְחִילִים בְּ־$2$ וּמוֹסִיפִים $4$.",
+          "evidence": {
+            "caseId": "q007-i01",
+            "method": "integer-add",
+            "inputs": [
+              2,
+              4
+            ],
+            "expected": 6
+          },
+          "answerLines": 1
+        },
+        {
+          "id": "elm-20261107-g1-s05-B-q007-i02",
+          "label": "ב",
+          "text": "$3 + 6 = 8$",
+          "answer": "$3 + 6 = 9$. מַתְחִילִים בְּ־$3$ וּמוֹסִיפִים $6$.",
+          "evidence": {
+            "caseId": "q007-i02",
+            "method": "integer-add",
+            "inputs": [
+              3,
+              6
+            ],
+            "expected": 9
+          },
+          "answerLines": 1
+        },
+        {
+          "id": "elm-20261107-g1-s05-B-q007-i03",
+          "label": "ג",
+          "text": "$5 + 4 = 10$",
+          "answer": "$5 + 4 = 9$. מַתְחִילִים בְּ־$5$ וּמוֹסִיפִים $4$.",
+          "evidence": {
+            "caseId": "q007-i03",
+            "method": "integer-add",
+            "inputs": [
+              5,
+              4
+            ],
+            "expected": 9
+          },
+          "answerLines": 1
+        },
+        {
+          "id": "elm-20261107-g1-s05-B-q007-i04",
+          "label": "ד",
+          "text": "$6 + 1 = 6$",
+          "answer": "$6 + 1 = 7$. מַתְחִילִים בְּ־$6$ וּמוֹסִיפִים $1$.",
+          "evidence": {
+            "caseId": "q007-i04",
+            "method": "integer-add",
+            "inputs": [
+              6,
+              1
+            ],
+            "expected": 7
+          },
+          "answerLines": 1
+        },
+        {
+          "id": "elm-20261107-g1-s05-B-q007-i05",
+          "label": "ה",
+          "text": "$8 + 2 = 9$",
+          "answer": "$8 + 2 = 10$. מַתְחִילִים בְּ־$8$ וּמוֹסִיפִים $2$.",
+          "evidence": {
+            "caseId": "q007-i05",
+            "method": "integer-add",
+            "inputs": [
+              8,
+              2
+            ],
+            "expected": 10
+          },
+          "answerLines": 1
+        }
+      ],
+      "pageBreakBefore": true
+    },
+    {
+      "id": "elm-20261107-g1-s05-B-q008",
+      "n": 8,
+      "text": "סַפְּרוּ בְּעַל־פֶּה סִפּוּר הַמַּתְאִים לַתַּרְגִּיל. אִמְרוּ גַּם אֶת הַתְּשׁוּבָה:",
+      "dependsOn": [],
+      "tags": [
+        "context",
+        "open",
+        "explain"
+      ],
+      "star": true,
+      "layout": "stacked",
+      "items": [
+        {
+          "id": "elm-20261107-g1-s05-B-q008-i01",
+          "label": "א",
+          "text": "$1 + 5$",
+          "answer": "דֻּגְמָה: הָיָה סֵפֶר. נוֹסְפוּ $5$ סְפָרִים. עַכְשָׁו יֵשׁ $6$ סְפָרִים. בְּכָל הַסְּעִיפִים מִתְקַבֵּל גַּם סִפּוּר אַחֵר שֶׁמְּצָרֵף אֶת הַכַּמֻּיּוֹת שֶׁבַּתַּרְגִּיל וּמַגִּיעַ לַסְּכוּם הַנָּכוֹן.",
+          "evidence": {
+            "caseId": "q008-i01",
+            "method": "integer-add",
+            "inputs": [
+              1,
+              5
+            ],
+            "expected": 6
+          }
+        },
+        {
+          "id": "elm-20261107-g1-s05-B-q008-i02",
+          "label": "ב",
+          "text": "$4 + 2$",
+          "answer": "דֻּגְמָה: הָיוּ $4$ סְפָרִים. נוֹסְפוּ $2$ סְפָרִים. עַכְשָׁו יֵשׁ $6$ סְפָרִים.",
+          "evidence": {
+            "caseId": "q008-i02",
+            "method": "integer-add",
+            "inputs": [
+              4,
+              2
+            ],
+            "expected": 6
+          }
+        },
+        {
+          "id": "elm-20261107-g1-s05-B-q008-i03",
+          "label": "ג",
+          "text": "$3 + 5$",
+          "answer": "דֻּגְמָה: הָיוּ $3$ סְפָרִים. נוֹסְפוּ $5$ סְפָרִים. עַכְשָׁו יֵשׁ $8$ סְפָרִים.",
+          "evidence": {
+            "caseId": "q008-i03",
+            "method": "integer-add",
+            "inputs": [
+              3,
+              5
+            ],
+            "expected": 8
+          }
+        },
+        {
+          "id": "elm-20261107-g1-s05-B-q008-i04",
+          "label": "ד",
+          "text": "$2 + 7$",
+          "answer": "דֻּגְמָה: הָיוּ $2$ סְפָרִים. נוֹסְפוּ $7$ סְפָרִים. עַכְשָׁו יֵשׁ $9$ סְפָרִים.",
+          "evidence": {
+            "caseId": "q008-i04",
+            "method": "integer-add",
+            "inputs": [
+              2,
+              7
+            ],
+            "expected": 9
+          }
+        },
+        {
+          "id": "elm-20261107-g1-s05-B-q008-i05",
+          "label": "ה",
+          "text": "$5 + 3$",
+          "answer": "דֻּגְמָה: הָיוּ $5$ סְפָרִים. נוֹסְפוּ $3$ סְפָרִים. עַכְשָׁו יֵשׁ $8$ סְפָרִים.",
+          "evidence": {
+            "caseId": "q008-i05",
+            "method": "integer-add",
+            "inputs": [
+              5,
+              3
+            ],
+            "expected": 8
+          }
+        }
+      ]
+    }
+  ],
+  "figures": []
+}

@@ -296,7 +296,8 @@
       "43": "יחס דמיון קנה מידה",
       "47": "נקודת חיתוך שתי משוואות גרפים",
       "54": "אלכסון תיבה מרחב",
-      "65": "הוכחה חפיפה משפטי חפיפה טענה נימוק נתון משותף דף מסכם"
+      "65": "הוכחה חפיפה משפטי חפיפה טענה נימוק נתון משותף דף מסכם",
+      "67": "סטטיסטיקה איסוף מידע סקר קריאת מידע שכיחות שכיחות יחסית טבלת שכיחות סימני ספירה דיאגרמת עמודות דיאגרמת קו פיקטוגרמה עוגה אחוזים"
     },
     "9": {
       "2": "פתיחת סוגריים כפל מקוצר",
@@ -715,7 +716,76 @@
             "usesViewer": false,
             "viewerPath": null,
             "siblingPdfQuery": {}
-          }
+          },
+          "defaultEditionId": "elementary-20261108-r1",
+          "editions": [
+            {
+              "editionId": "elementary-20261108-r1",
+              "label": "דפים חדשים · נובמבר 2026",
+              "levels": [
+                {
+                  "key": "a",
+                  "label": "רמה א׳",
+                  "pdfId": "cb81533917ab49d88b6e14c6bc68d0a1",
+                  "labelSource": "edition",
+                  "viewerLevel": "A",
+                  "answerMapSha256": "645598314808993a3341574051416f2b7de9d230dd3b3584087decec4cc7af62",
+                  "canonicalSourceSha256": "61b3fe2508ef04e0e1712d3bb18cb179628a36e785c97613cf4b920bbf95a117",
+                  "hintsBundleSha256": "8e125a56fd806ce00688ddaede0c5e0dd0dc86fbf832bbbcb78c3ee19532436f",
+                  "learningId": "g1-t11-a-e-elementary-20261108-r1",
+                  "manifestSha256": "9202203d5d49b6fac332e1067e9b707a53fe841cae7fc61075fe2eb100b041c4",
+                  "pdfSha256": "f1488a871aab2c4a97892f2e08da6340b29b98a1065103a80ce75d5e683ab995",
+                  "revision": 1,
+                  "wordSourceSha256": "5ac3f25f21ec10877a6bed86a5c7277615c0dd13e3d1e260140c9989db949653",
+                  "worksheetId": "elm-20261107-g1-s11-A"
+                },
+                {
+                  "key": "b",
+                  "label": "רמה ב׳",
+                  "pdfId": "16ca1c287f1744c996b0bad5151e7865",
+                  "labelSource": "edition",
+                  "viewerLevel": "B",
+                  "answerMapSha256": "f0f150cd777b8ca4b4f099aeb0670c6ba8709cad485705163b84b59bd14ae179",
+                  "canonicalSourceSha256": "a914f8509e4c5bcd56d8dbf666a9991c607fd5bfd0c7095544e428de4fdd7021",
+                  "hintsBundleSha256": "ea1c3e00f3d267d2eebd5c97f63fa07ea970024ac7ac1c0534a8a2c4227b7433",
+                  "learningId": "g1-t11-b-e-elementary-20261108-r1",
+                  "manifestSha256": "ed0f99c992c1c663ef6c08b7152410900863dafabe5b1e0b4f60eb68a6745cf3",
+                  "pdfSha256": "bf8e50c3a7f4f5d9738e52eca80fecd36a8ff6bdf9cc41a6a0402cd1482365f8",
+                  "revision": 1,
+                  "wordSourceSha256": "b458b0801aa19cf465cfddfa49cd5ff2a8eeb813e5344baa33a86945db26ddf6",
+                  "worksheetId": "elm-20261107-g1-s11-B"
+                },
+                {
+                  "key": "c",
+                  "label": "מצוינות",
+                  "pdfId": "34814b941b9340df94756a092cfed368",
+                  "labelSource": "edition",
+                  "viewerLevel": "E",
+                  "answerMapSha256": "c6ae90dfd293f02b25de80278bcfb13bfaf653746ee1faa3d8d57f22579c97c7",
+                  "canonicalSourceSha256": "c3da9823d433701efd35509fe34a2349fbfb6d4fe6972f18fd0684a67de777f7",
+                  "hintsBundleSha256": "ddd32d7d190b3450ffa9891623f835f852a3f1fc3a367e17dcdef752209a47cb",
+                  "learningId": "g1-t11-c-e-elementary-20261108-r1",
+                  "manifestSha256": "16b36fba9eef20efde2e11cc71362e2a7556c95677073ca6cf05950100e1e6b0",
+                  "pdfSha256": "264cd122086bf226449ab64c058e9af1a8d21980debee0efcedf90660604cc3d",
+                  "revision": 1,
+                  "wordSourceSha256": "8357d0055fdac840e571a2ecc8087026142b302b08c1c493be88f6b92acb37ab",
+                  "worksheetId": "elm-20261107-g1-s11-E"
+                }
+              ],
+              "routing": {
+                "resolvedNoamPrefix": "G1-T11",
+                "aiHintShown": false,
+                "usesViewer": false,
+                "viewerPath": "worksheet-viewer-noam.html",
+                "siblingPdfQuery": {
+                  "pa": "cb81533917ab49d88b6e14c6bc68d0a1",
+                  "pb": "16ca1c287f1744c996b0bad5151e7865",
+                  "pc": "34814b941b9340df94756a092cfed368"
+                }
+              },
+              "status": "published"
+            }
+          ]
         },
         {
           "id": 12,
@@ -748,7 +818,76 @@
             "usesViewer": false,
             "viewerPath": null,
             "siblingPdfQuery": {}
-          }
+          },
+          "defaultEditionId": "elementary-20261108-r1",
+          "editions": [
+            {
+              "editionId": "elementary-20261108-r1",
+              "label": "דפים חדשים · נובמבר 2026",
+              "levels": [
+                {
+                  "key": "a",
+                  "label": "רמה א׳",
+                  "pdfId": "9a279a181d1d4d148d93df41e46f1984",
+                  "labelSource": "edition",
+                  "viewerLevel": "A",
+                  "answerMapSha256": "4320db3212a58811b76a1f899f0c25fbbef32fe6c938f5bd7eef2411250ab728",
+                  "canonicalSourceSha256": "9ecf1cdb1f6823fe3398440bcd874d829249e581634f1cfd1e591688ed8f959c",
+                  "hintsBundleSha256": "65655f1ad7d0531550708f3e0ad5d97dda4c810b05a1e6854eb351a565975871",
+                  "learningId": "g1-t12-a-e-elementary-20261108-r1",
+                  "manifestSha256": "61e085d5f38dd531fe89c878428d8d1f450e9b7d39a6128abf4f1d456eece4d2",
+                  "pdfSha256": "cec66e5f0f05a9f8bda6618d96759d2b050fe23a96cc8600c05d0656e5f1fe95",
+                  "revision": 1,
+                  "wordSourceSha256": "f5219001da3de6a16edb8d1f9687c0a62c8ed8b2effa729b932aa310a07cd052",
+                  "worksheetId": "elm-20261107-g1-s12-A"
+                },
+                {
+                  "key": "b",
+                  "label": "רמה ב׳",
+                  "pdfId": "9c3e2de09eb14a69834b11472d89a37d",
+                  "labelSource": "edition",
+                  "viewerLevel": "B",
+                  "answerMapSha256": "07d1b42ec13e44699173d154106de544c0b8cef115ef9692415cb83725b74cbd",
+                  "canonicalSourceSha256": "dfe61e54b402e9af235b68721334b797aafd59a503eafd39d7d31457a509212d",
+                  "hintsBundleSha256": "80c3cc79e8ddc795cdc742c9da6f083734c7eb12ca874f2886f2c1c528599b77",
+                  "learningId": "g1-t12-b-e-elementary-20261108-r1",
+                  "manifestSha256": "c772e9a4a3b1c7954f612ff2ba9fd953eaa31ea7b7c802b45166a949e5806bb1",
+                  "pdfSha256": "a98bc90bcf79e93e7ff62bacf1077f3a1777d8b1b5d764b4837f7a23d95241a3",
+                  "revision": 1,
+                  "wordSourceSha256": "edb870751a83553f0ecd7142f300e984339b6066b2a606d917439dfb9d741986",
+                  "worksheetId": "elm-20261107-g1-s12-B"
+                },
+                {
+                  "key": "c",
+                  "label": "מצוינות",
+                  "pdfId": "1cc8c56846c24a9cabd3f9868739410b",
+                  "labelSource": "edition",
+                  "viewerLevel": "E",
+                  "answerMapSha256": "446ef7b0cea6d2ffec28ee9a8d6aaed6ccbd075fbc91ef11928a5eab0936d069",
+                  "canonicalSourceSha256": "5cd6d903dd375356ebf1739b141923679739184de63d6011be6dd17601e41b70",
+                  "hintsBundleSha256": "eed5a1367176813eedcc14b2a8fc9113c76691b27c4ba120b83d3179b047ff01",
+                  "learningId": "g1-t12-c-e-elementary-20261108-r1",
+                  "manifestSha256": "8cd85ad02dc85ef31f2c1010f2bb3ef0225cfbd7496a322d8f78a42bb0a67aa4",
+                  "pdfSha256": "aad9828bb8381f2e807b9f90847ea1bc655c755a54d0e7d8c18e9d367fd8251d",
+                  "revision": 1,
+                  "wordSourceSha256": "db47c36944e70af5e7a6d335f61773fe150fad0ca5d7e43c6ac8896add1322e3",
+                  "worksheetId": "elm-20261107-g1-s12-E"
+                }
+              ],
+              "routing": {
+                "resolvedNoamPrefix": "G1-T12",
+                "aiHintShown": false,
+                "usesViewer": false,
+                "viewerPath": "worksheet-viewer-noam.html",
+                "siblingPdfQuery": {
+                  "pa": "9a279a181d1d4d148d93df41e46f1984",
+                  "pb": "9c3e2de09eb14a69834b11472d89a37d",
+                  "pc": "1cc8c56846c24a9cabd3f9868739410b"
+                }
+              },
+              "status": "published"
+            }
+          ]
         },
         {
           "id": 13,
@@ -814,7 +953,76 @@
             "usesViewer": false,
             "viewerPath": null,
             "siblingPdfQuery": {}
-          }
+          },
+          "defaultEditionId": "elementary-20261108-r1",
+          "editions": [
+            {
+              "editionId": "elementary-20261108-r1",
+              "label": "דפים חדשים · נובמבר 2026",
+              "levels": [
+                {
+                  "key": "a",
+                  "label": "רמה א׳",
+                  "pdfId": "5fe0ad34a16546f98e1f511a2b2afcd0",
+                  "labelSource": "edition",
+                  "viewerLevel": "A",
+                  "answerMapSha256": "c3cf2f836e97774cdc5a02e87fd7d8cc53d3af96ea59dcd1eb344bcd39c14d06",
+                  "canonicalSourceSha256": "0c52d1f36314199ec520bc0d4d30a546760e31113a2e6cfb4b6405ad1e105666",
+                  "hintsBundleSha256": "77eddc155fedc561398c49672871cc6d450c2702eae67ed3984b618ae32b45d6",
+                  "learningId": "g1-t14-a-e-elementary-20261108-r1",
+                  "manifestSha256": "7f42ed741417092b5a2dff97cb1e0f1901daf92ff3b1525bf647ca9d043f6e2d",
+                  "pdfSha256": "36545762f47fa85866d2db29f82186f63e02903a8f915a7922a61e6c90afb086",
+                  "revision": 2,
+                  "wordSourceSha256": "378a5fc2d3c10a8bfa04b1ab6f88a4359a892da9eadef567d121f7f305d0489b",
+                  "worksheetId": "elm-20261108-g1-s14-A"
+                },
+                {
+                  "key": "b",
+                  "label": "רמה ב׳",
+                  "pdfId": "301d25fcfea24443b10c3523018325ee",
+                  "labelSource": "edition",
+                  "viewerLevel": "B",
+                  "answerMapSha256": "414e32997ee3f58e8810239d7b1ef0b15e1ba757816f00b2091451af4c95f9aa",
+                  "canonicalSourceSha256": "f34a9724c1e063e3721c6e5ed319995f54a81edef9af40cb7d0e94fce644851d",
+                  "hintsBundleSha256": "a72ff4166cc50d55ffea2a9f95cae1d3c5854c06fbd1711766e5606ea26114b0",
+                  "learningId": "g1-t14-b-e-elementary-20261108-r1",
+                  "manifestSha256": "a1705c938005f560f87342c15e4251d0f8ad19bea23d2175ab22ad0705718565",
+                  "pdfSha256": "ae12882001bcd236cd7e92450dce29a98df4d4f89a71da5eaa830b4313e7afa3",
+                  "revision": 2,
+                  "wordSourceSha256": "0c1cfafc14f1617895d058ccc76a0221cb900edf70f8023a5fc4a90eb8e050aa",
+                  "worksheetId": "elm-20261108-g1-s14-B"
+                },
+                {
+                  "key": "c",
+                  "label": "מצוינות",
+                  "pdfId": "8a546481dedc494c885a51438ae35a9e",
+                  "labelSource": "edition",
+                  "viewerLevel": "E",
+                  "answerMapSha256": "80193033075400f28fb017f0721c450b6399ccbb1e1f0e7e63eee7a850175946",
+                  "canonicalSourceSha256": "d2e2d3805202537c8d70b0086d8b5b9baa98f561653391a3acaa232cc5f2d80c",
+                  "hintsBundleSha256": "e076b5706cbebad0b576590aead5f50c637ff4e00d28bcd17a0898280ec7697a",
+                  "learningId": "g1-t14-c-e-elementary-20261108-r1",
+                  "manifestSha256": "3c0c75fc6548f21f9cd6bf7c6c43e62840f6e63f9a437769d69a25d7f38ff9b2",
+                  "pdfSha256": "fe34d09f7019d06a581034107a1ad62c930e9dec698ee3cbbfa02032cf8473d0",
+                  "revision": 2,
+                  "wordSourceSha256": "a9e0ac747abc7a64875970640a7914adc16533c89f0780e0a4de53571ac83a8f",
+                  "worksheetId": "elm-20261108-g1-s14-E"
+                }
+              ],
+              "routing": {
+                "resolvedNoamPrefix": "G1-T14",
+                "aiHintShown": false,
+                "usesViewer": false,
+                "viewerPath": "worksheet-viewer-noam.html",
+                "siblingPdfQuery": {
+                  "pa": "5fe0ad34a16546f98e1f511a2b2afcd0",
+                  "pb": "301d25fcfea24443b10c3523018325ee",
+                  "pc": "8a546481dedc494c885a51438ae35a9e"
+                }
+              },
+              "status": "published"
+            }
+          ]
         },
         {
           "id": 15,
@@ -847,7 +1055,76 @@
             "usesViewer": false,
             "viewerPath": null,
             "siblingPdfQuery": {}
-          }
+          },
+          "defaultEditionId": "elementary-20261108-r1",
+          "editions": [
+            {
+              "editionId": "elementary-20261108-r1",
+              "label": "דפים חדשים · נובמבר 2026",
+              "levels": [
+                {
+                  "key": "a",
+                  "label": "רמה א׳",
+                  "pdfId": "6920ccbcca894f70a973d483b5a1d916",
+                  "labelSource": "edition",
+                  "viewerLevel": "A",
+                  "answerMapSha256": "240a6ac10723b52d8b066d30efaf16b40ad58d6a978ebb5fdd2db0b9620acef2",
+                  "canonicalSourceSha256": "6d6ed74947bfd29772999fb5aa44e143e5256cbcd097e6db86c633fd87efc77e",
+                  "hintsBundleSha256": "23a2c7d76e77c4c7288abff2384ec0256f8b8e5addeb0683af46889e1f085895",
+                  "learningId": "g1-t15-a-e-elementary-20261108-r1",
+                  "manifestSha256": "fb86521bca9e6ef6b10fd6629d7d826e2442c8f16b34c218425c60e78b075ccb",
+                  "pdfSha256": "1caec28dbacf63945ea9e24987cac006a6388efa2875f92a5ce76c42837b23ae",
+                  "revision": 3,
+                  "wordSourceSha256": "0ba0704913bf99a145c7643f8177d2ede5f683050da786fc58282d70f3746a3b",
+                  "worksheetId": "elm-20261108-g1-s15-A"
+                },
+                {
+                  "key": "b",
+                  "label": "רמה ב׳",
+                  "pdfId": "da7f75d49ec04350b839383439b2461e",
+                  "labelSource": "edition",
+                  "viewerLevel": "B",
+                  "answerMapSha256": "9dc88c98be405e55876e49a576cc3631a45d3bde110a6ec7ff3e9a90c46c0a13",
+                  "canonicalSourceSha256": "f89edaf72f8f02460f9b1f5729c483f2906fcf78942374cda5a643f68c6b2001",
+                  "hintsBundleSha256": "1ad3d538eb04bf37266c4d63a7afffe75294402dca2b90e80dbf7d43dbb85188",
+                  "learningId": "g1-t15-b-e-elementary-20261108-r1",
+                  "manifestSha256": "14411967db1da39eb5d6238a4f4c36f8c404367f4afa427a60821cdcf2d87d86",
+                  "pdfSha256": "7e6eac1c6c05c4f4d589aef38fdd2673d877827168f8bebd145eeb0723ea8d49",
+                  "revision": 3,
+                  "wordSourceSha256": "bd17a5bb23b3c5cd925733ce00cb9d5bfe84ebbff60c74c7a4aa771a8945497e",
+                  "worksheetId": "elm-20261108-g1-s15-B"
+                },
+                {
+                  "key": "c",
+                  "label": "מצוינות",
+                  "pdfId": "2140bfbfd1bf4e4e9e01c8965963bc31",
+                  "labelSource": "edition",
+                  "viewerLevel": "E",
+                  "answerMapSha256": "7f69d79bdd19d460cad3fc7cd2d26b72db2aad9bc4d1e7a01e2f207053718354",
+                  "canonicalSourceSha256": "d0c5bda1ced84d29616ad45dc352129ee35506c971454377da9a5e7f42ce2720",
+                  "hintsBundleSha256": "531f9f1f9431312f218fcae416bf4eaba579dff80e02f8a71541e15d24ff68ec",
+                  "learningId": "g1-t15-c-e-elementary-20261108-r1",
+                  "manifestSha256": "789c16b029d37cd8323e849ecceeaa5142636838519a50c7e88f7521f4709f17",
+                  "pdfSha256": "b61e08f4af0afbb3fe9d978976f6bc3b0108454ce86c79156a56c8dc35634033",
+                  "revision": 3,
+                  "wordSourceSha256": "3d64ddf91ba07bf9d6b9978e1a15daf815f0a0a12e46413e8405f2ab5e240ed6",
+                  "worksheetId": "elm-20261108-g1-s15-E"
+                }
+              ],
+              "routing": {
+                "resolvedNoamPrefix": "G1-T15",
+                "aiHintShown": false,
+                "usesViewer": false,
+                "viewerPath": "worksheet-viewer-noam.html",
+                "siblingPdfQuery": {
+                  "pa": "6920ccbcca894f70a973d483b5a1d916",
+                  "pb": "da7f75d49ec04350b839383439b2461e",
+                  "pc": "2140bfbfd1bf4e4e9e01c8965963bc31"
+                }
+              },
+              "status": "published"
+            }
+          ]
         },
         {
           "id": 16,
@@ -2501,7 +2778,76 @@
             "usesViewer": false,
             "viewerPath": null,
             "siblingPdfQuery": {}
-          }
+          },
+          "defaultEditionId": "elementary-20261108-r1",
+          "editions": [
+            {
+              "editionId": "elementary-20261108-r1",
+              "label": "דפים חדשים · נובמבר 2026",
+              "levels": [
+                {
+                  "key": "a",
+                  "label": "רמה א׳",
+                  "pdfId": "3d7563584d774bf5958dc6a37ef7e210",
+                  "labelSource": "edition",
+                  "viewerLevel": "A",
+                  "answerMapSha256": "3b7d24f4da278393fec608d6dc5d48e145632fda11560de1fca4a24153cfd48b",
+                  "canonicalSourceSha256": "8acf4dad1c99e84040e0ffa8425dbb9da0432df1c4bc2aff84c0046d62ce9377",
+                  "hintsBundleSha256": "57e076922bcff037b30941171d88fe9be6442bea07f28dc0c788f7a1746be62f",
+                  "learningId": "g3-t10-a-e-elementary-20261108-r1",
+                  "manifestSha256": "6a3702bc59d0de8401446d2b5044303c39d3608fa0767840970aa6b4b8162e4b",
+                  "pdfSha256": "465f369f94f96bb086ee8a65be928f5d0397f9320ab8fbfa2da95999685002e3",
+                  "revision": 3,
+                  "wordSourceSha256": "906b97630b2be8113cf78c0d4e77d25e0bb66bfed4fe32c14b71e5755c6d0a98",
+                  "worksheetId": "elm-20261107-g3-s10-A"
+                },
+                {
+                  "key": "b",
+                  "label": "רמה ב׳",
+                  "pdfId": "564222bbdc3647a4bc21798f16ff02ac",
+                  "labelSource": "edition",
+                  "viewerLevel": "B",
+                  "answerMapSha256": "43d72fbb8bc4578529e00931becb186b4181e82ee65a038ea367595cf18150e8",
+                  "canonicalSourceSha256": "b37fcf9c65a58da388ffc67161c238032dab2ccba5f6465045229a18b6cdbb0f",
+                  "hintsBundleSha256": "4b9da3033d202a3ae2b0d09cf527555924f4a94411ac1bd3e3a0f6b054944421",
+                  "learningId": "g3-t10-b-e-elementary-20261108-r1",
+                  "manifestSha256": "78cc884c3a9e2ec90c6ec286bb59003abea980efaa5c7352475f087f06854f0c",
+                  "pdfSha256": "d27d4edc45cff1236e78bae852fc93a8514768453be692216e39ac7d60b1bd2e",
+                  "revision": 3,
+                  "wordSourceSha256": "cee46575e214771d36d5109e352916be7c10be0e5fae84f290f4d7f37d9bdf2e",
+                  "worksheetId": "elm-20261107-g3-s10-B"
+                },
+                {
+                  "key": "c",
+                  "label": "מצוינות",
+                  "pdfId": "66b5182b8be74070b1b22b9d393b9b1c",
+                  "labelSource": "edition",
+                  "viewerLevel": "E",
+                  "answerMapSha256": "b47ccb0e27a82c006e83bbc843cb95ba138102827fc8d671581d1d3b5e48ecc6",
+                  "canonicalSourceSha256": "1d48ff6376dd4b69183d60ddc53c9eafaab70c493cb8816487d191589d9ec671",
+                  "hintsBundleSha256": "fc6fb768c094c56d93c3a170bb4c2d1b773832e422fbef17e388eb0788dc34e7",
+                  "learningId": "g3-t10-c-e-elementary-20261108-r1",
+                  "manifestSha256": "8f069c076ca1788273157e2d369d883e2d9a4b95882fd302125ab77fa907ece8",
+                  "pdfSha256": "12569b36605cffc24ccfc8d4d72fd28f5072eebe385d07cc9f4d42b381d8df89",
+                  "revision": 2,
+                  "wordSourceSha256": "6337b2c05656bf38688c2a1ba6fe72aacaae94909f09a1116eaef8674e927458",
+                  "worksheetId": "elm-20261107-g3-s10-E"
+                }
+              ],
+              "routing": {
+                "resolvedNoamPrefix": "G3-T10",
+                "aiHintShown": false,
+                "usesViewer": false,
+                "viewerPath": "worksheet-viewer-noam.html",
+                "siblingPdfQuery": {
+                  "pa": "3d7563584d774bf5958dc6a37ef7e210",
+                  "pb": "564222bbdc3647a4bc21798f16ff02ac",
+                  "pc": "66b5182b8be74070b1b22b9d393b9b1c"
+                }
+              },
+              "status": "published"
+            }
+          ]
         },
         {
           "id": 11,
@@ -8796,6 +9142,40 @@
               "pb": "5cb2c229f1dd44babf5cbb92de74a70e",
               "pc": "f246d1ff6f584f0f8023cd41a9b7099b"
             }
+          }
+        },
+        {
+          "id": 67,
+          "title": "סטטיסטיקה: איסוף מידע, קריאת מידע, שכיחות ושכיחות יחסית",
+          "description": "איסוף מידע בסקר, קריאת דיאגרמות עמודות, קו, תמונות ועוגה, טבלת שכיחות ושכיחות יחסית בשבר ובאחוזים.",
+          "group": "data",
+          "icon": "bars",
+          "levels": [
+            {
+              "key": "a",
+              "label": "רמה א׳",
+              "pdfId": "f34602adb8e048aab957308c7e8c6fcb",
+              "labelSource": "default"
+            },
+            {
+              "key": "b",
+              "label": "רמה ב׳",
+              "pdfId": "e67c24ee5b1e4f488c2241fd76d76162",
+              "labelSource": "default"
+            },
+            {
+              "key": "c",
+              "label": "רמת מצוינות",
+              "pdfId": "d612e5de3fd24ee1a826410e42c3cab0",
+              "labelSource": "default"
+            }
+          ],
+          "routing": {
+            "resolvedNoamPrefix": null,
+            "aiHintShown": false,
+            "usesViewer": false,
+            "viewerPath": null,
+            "siblingPdfQuery": {}
           }
         },
         {

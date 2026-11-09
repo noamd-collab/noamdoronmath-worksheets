@@ -1,0 +1,1827 @@
+{
+  "sourceFormat": "noam-elementary-site-draft",
+  "schemaVersion": 1,
+  "status": "draft",
+  "publishable": false,
+  "validation": {
+    "valid": true,
+    "questions": 8,
+    "items": 40,
+    "mathReview": "required",
+    "visualReview": "not-run",
+    "siteMapping": "crosswalk-verified",
+    "gradeSignsChecked": true
+  },
+  "binding": {
+    "editionId": "elementary-20261107-r1",
+    "worksheetId": "elm-20261107-g2-s28-E",
+    "revision": 2,
+    "pdfId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "pdfSha256": "d93901a1ef8103850ecc83de1c91f637752169ae65e5fb4b198ed4001fb0de7c",
+    "answerPdfSha256": "d93901a1ef8103850ecc83de1c91f637752169ae65e5fb4b198ed4001fb0de7c",
+    "canonicalSourceSha256": "b98740ed29b5dc7c4e2be2803cfdfcd1211da9b9365111bb2be744afb27e87a3",
+    "siteTopicPrefix": "G2-T28",
+    "grade": 2,
+    "topicId": 28,
+    "levelKey": "c",
+    "levelCode": "E"
+  },
+  "wordSource": {
+    "sourceFormat": "noam-canonical-word-source-v1",
+    "worksheetId": "elm-20261107-g2-s28-E",
+    "revision": 2,
+    "sourceSha256": "d93901a1ef8103850ecc83de1c91f637752169ae65e5fb4b198ed4001fb0de7c",
+    "answerSourceSha256": "d93901a1ef8103850ecc83de1c91f637752169ae65e5fb4b198ed4001fb0de7c",
+    "canonicalSourceSha256": "b98740ed29b5dc7c4e2be2803cfdfcd1211da9b9365111bb2be744afb27e87a3",
+    "editionId": "elementary-20261107-r1",
+    "worksheetInstructions": "קִרְאוּ, הַבִּיטוּ בָּאִיּוּרִים וַעֲנוּ. כִּתְבוּ הֶסְבֵּר קָצָר כְּשֶׁמְּבַקְּשִׁים.",
+    "worksheetInstructionsSha256": "30b99f913287f8eec93e261508f428f04d3bf33d63cf022c369aebd1478120cf",
+    "figureAssets": {
+      "sourceFormat": "noam-word-figure-assets",
+      "schemaVersion": 1,
+      "canonicalSourceSha256": "b98740ed29b5dc7c4e2be2803cfdfcd1211da9b9365111bb2be744afb27e87a3",
+      "worksheetId": "elm-20261107-g2-s28-E",
+      "revision": 2,
+      "renderer": {
+        "name": "svg_word/weasyprint+pymupdf",
+        "dpi": 260,
+        "weasyprint": "68.0",
+        "pymupdf": "1.26.5",
+        "fontSha256": "923f06e0f6dc84e1649d8cc5d5e12a8d663adf6aba83ba15baa5d559fb47b86e"
+      },
+      "figures": [
+        {
+          "figureId": "fig-q001",
+          "sourceSvgSha256": "4faf2312b086ab430cc5fa8b7cd4276db90caf7f340c1e1930411205faed15f5",
+          "occurrences": [
+            {
+              "questionId": "elm-20261107-g2-s28-E-q001",
+              "questionSha256": "f25461ed4be3f624dfbe7f176991094a128267a294530e8b9413357ea8ef4edd",
+              "itemId": null
+            }
+          ],
+          "url": "/teachers/word-figures/d088ae6539505b9cf06f4c64c60b3afde1cff53cee93fbccedac2ada2ec997b6.png",
+          "sha256": "d088ae6539505b9cf06f4c64c60b3afde1cff53cee93fbccedac2ada2ec997b6",
+          "widthPx": 1625,
+          "heightPx": 315,
+          "displayWidthPx": 600.0
+        }
+      ]
+    },
+    "questions": {
+      "1": {
+        "text": "חִקְרוּ אֶת לוּחַ הָאִיּוּרִים. אִיּוּר 5 מַצִּיג פִּירָמִידָה שֶׁבְּסִיסָהּ רִבּוּעַ. בְּכָל סָעִיף כִּתְבוּ אֶת כָּל הַמַּתְאִימִים.",
+        "figure": {
+          "url": "/teachers/word-figures/d088ae6539505b9cf06f4c64c60b3afde1cff53cee93fbccedac2ada2ec997b6.png",
+          "sha256": "d088ae6539505b9cf06f4c64c60b3afde1cff53cee93fbccedac2ada2ec997b6",
+          "displayWidthPx": 600.0,
+          "alt": "לוּחַ אִיּוּרִים גֵּאוֹמֶטְרִיִּים הַמְּסֻמָּנִים בְּמִסְפָּרִים.",
+          "binding": {
+            "canonicalSourceSha256": "b98740ed29b5dc7c4e2be2803cfdfcd1211da9b9365111bb2be744afb27e87a3",
+            "sourceSvgSha256": "4faf2312b086ab430cc5fa8b7cd4276db90caf7f340c1e1930411205faed15f5",
+            "figureId": "fig-q001",
+            "questionId": "elm-20261107-g2-s28-E-q001",
+            "questionSha256": "f25461ed4be3f624dfbe7f176991094a128267a294530e8b9413357ea8ef4edd",
+            "itemId": null
+          }
+        },
+        "id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:1",
+        "q": 1,
+        "grade": 2,
+        "topic": "צורות וגופים לא אותו דבר",
+        "canonicalQuestionId": "elm-20261107-g2-s28-E-q001",
+        "canonicalQuestionSha256": "f25461ed4be3f624dfbe7f176991094a128267a294530e8b9413357ea8ef4edd",
+        "levelLabel": "מצוינות",
+        "requiredQuestions": [],
+        "items": [
+          {
+            "text": "אֵילוּ צוּרוֹת הֵן שְׁטוּחוֹת וּבַעֲלוֹת אַרְבַּע זָוִיּוֹת יְשָׁרוֹת?",
+            "canonicalItemId": "elm-20261107-g2-s28-E-q001-i01",
+            "label": "א",
+            "answer": "1 וְ־2: רִבּוּעַ וּמַלְבֵּן.",
+            "answerLines": 1
+          },
+          {
+            "text": "אֵילוּ גּוּפִים בַּלּוּחַ כּוֹלְלִים פָּאָה רִבּוּעִית?",
+            "canonicalItemId": "elm-20261107-g2-s28-E-q001-i02",
+            "label": "ב",
+            "answer": "4 וְ־5: קֻבִּיָּה וּפִירָמִידָה שֶׁבְּסִיסָהּ רִבּוּעַ.",
+            "answerLines": 1
+          },
+          {
+            "text": "אֵיזוֹ צוּרָה שְׁטוּחָה אֵינָהּ מְצֻלָּע?",
+            "canonicalItemId": "elm-20261107-g2-s28-E-q001-i03",
+            "label": "ג",
+            "answer": "3: עִגּוּל.",
+            "answerLines": 1
+          },
+          {
+            "text": "אֵיזוֹ צוּרָה שְׁטוּחָה הִיא מְצֻלָּע שֶׁלֹּא כָּל צַלְעוֹתָיו שָׁווֹת?",
+            "canonicalItemId": "elm-20261107-g2-s28-E-q001-i04",
+            "label": "ד",
+            "answer": "2: מַלְבֵּן שֶׁיֵּשׁ לוֹ צְלָעוֹת אֲרֻכּוֹת וּקְצָרוֹת.",
+            "answerLines": 1
+          },
+          {
+            "text": "אֵיזֶה גּוּף כּוֹלֵל גַּם פָּאוֹת מְשֻׁלָּשׁוֹת וְגַם פָּאָה רִבּוּעִית?",
+            "canonicalItemId": "elm-20261107-g2-s28-E-q001-i05",
+            "label": "ה",
+            "answer": "5: פִּירָמִידָה שֶׁבְּסִיסָהּ רִבּוּעַ.",
+            "answerLines": 1
+          }
+        ]
+      },
+      "2": {
+        "text": "מְשֻׁתָּף וְשׁוֹנֶה: הַשְׁווּ בֵּין הַזּוּגוֹת.",
+        "id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:2",
+        "q": 2,
+        "grade": 2,
+        "topic": "צורות וגופים לא אותו דבר",
+        "canonicalQuestionId": "elm-20261107-g2-s28-E-q002",
+        "canonicalQuestionSha256": "55308f7af3056f3ce49565fae62e9d20f6b83a1bc4613623cc3ec4722481a055",
+        "levelLabel": "מצוינות",
+        "requiredQuestions": [],
+        "items": [
+          {
+            "text": "רִבּוּעַ וְקֻבִּיָּה: הַאִם שְׁנֵיהֶם גּוּפִים? הַסְבִּירוּ.",
+            "canonicalItemId": "elm-20261107-g2-s28-E-q002-i01",
+            "label": "א",
+            "answer": "לֹא. הָרִבּוּעַ שָׁטוּחַ וְהַקֻּבִּיָּה הִיא גּוּף.",
+            "answerLines": 1
+          },
+          {
+            "text": "עִגּוּל וְכַדּוּר: מָה מַבְדִּיל בֵּינֵיהֶם אַף שֶׁשְּׁנֵיהֶם נִרְאִים עֲגֻלִּים?",
+            "canonicalItemId": "elm-20261107-g2-s28-E-q002-i02",
+            "label": "ב",
+            "answer": "הָעִגּוּל צוּרָה שְׁטוּחָה; הַכַּדּוּר גּוּף.",
+            "answerLines": 1
+          },
+          {
+            "text": "גָּלִיל וְחָרוּט: כַּמָּה בְּסִיסִים עֲגֻלִּים שְׁטוּחִים יֵשׁ לְכָל גּוּף?",
+            "canonicalItemId": "elm-20261107-g2-s28-E-q002-i03",
+            "label": "ג",
+            "answer": "לַגָּלִיל $2$ בְּסִיסִים כָּאֵלֶּה; לֶחָרוּט בָּסִיס $1$.",
+            "answerLines": 1
+          },
+          {
+            "text": "קֻבִּיָּה וּפִירָמִידָה שֶׁבְּסִיסָהּ רִבּוּעַ: לְמִי יֵשׁ גַּם פָּאוֹת מְשֻׁלָּשׁוֹת?",
+            "canonicalItemId": "elm-20261107-g2-s28-E-q002-i04",
+            "label": "ד",
+            "answer": "לַפִּירָמִידָה. פָּאוֹת הַקֻּבִּיָּה רִבּוּעִיּוֹת.",
+            "answerLines": 1
+          },
+          {
+            "text": "מְשֻׁלָּשׁ וּמַלְבֵּן: הַאִם מִסְפַּר הַצְּלָעוֹת זֵהֶה? פָּרְטוּ.",
+            "canonicalItemId": "elm-20261107-g2-s28-E-q002-i05",
+            "label": "ה",
+            "answer": "לֹא. לַמְּשֻׁלָּשׁ $3$ צְלָעוֹת וְלַמַּלְבֵּן $4$.",
+            "answerLines": 1
+          }
+        ]
+      },
+      "3": {
+        "text": "חִידוֹת שֶׁל שְׁלִילָה. בַּחֲרוּ מִתּוֹךְ קֻבִּיָּה, גָּלִיל, חָרוּט, כַּדּוּר וּפִירָמִידָה שֶׁבְּסִיסָהּ רִבּוּעַ.",
+        "id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:3",
+        "q": 3,
+        "grade": 2,
+        "topic": "צורות וגופים לא אותו דבר",
+        "canonicalQuestionId": "elm-20261107-g2-s28-E-q003",
+        "canonicalQuestionSha256": "eac4943d81af5a40380dbab1002d20331ffbb3a83e1b7580b01321f387c991c7",
+        "levelLabel": "מצוינות",
+        "requiredQuestions": [],
+        "items": [
+          {
+            "text": "אֲנִי גּוּף. אֵין לִי פָּאוֹת שְׁטוּחוֹת וְאֵין לִי חֹד. מִי אֲנִי?",
+            "canonicalItemId": "elm-20261107-g2-s28-E-q003-i01",
+            "label": "א",
+            "answer": "כַּדּוּר.",
+            "answerLines": 1
+          },
+          {
+            "text": "יֵשׁ לִי פָּאוֹת שְׁטוּחוֹת, אֲבָל אֵין לִי חֹד וְהַבְּסִיסִים שֶׁלִּי אֵינָם מְצֻלָּעִים. מִי אֲנִי?",
+            "canonicalItemId": "elm-20261107-g2-s28-E-q003-i02",
+            "label": "ב",
+            "answer": "גָּלִיל.",
+            "answerLines": 1
+          },
+          {
+            "text": "אֵין לִי חֵלֶק מְעֻגָּל, וְאֵין לִי פָּאָה מְשֻׁלֶּשֶׁת. מִי אֲנִי?",
+            "canonicalItemId": "elm-20261107-g2-s28-E-q003-i03",
+            "label": "ג",
+            "answer": "קֻבִּיָּה.",
+            "answerLines": 1
+          },
+          {
+            "text": "יֵשׁ לִי חֹד, אֲבָל הַבָּסִיס שֶׁלִּי אֵינוֹ מְצֻלָּע. מִי אֲנִי?",
+            "canonicalItemId": "elm-20261107-g2-s28-E-q003-i04",
+            "label": "ד",
+            "answer": "חָרוּט.",
+            "answerLines": 1
+          },
+          {
+            "text": "יֵשׁ לִי פָּאוֹת מְשֻׁלָּשׁוֹת, אֲבָל אֲנִי לֹא מְשֻׁלָּשׁ. מִי אֲנִי?",
+            "canonicalItemId": "elm-20261107-g2-s28-E-q003-i05",
+            "label": "ה",
+            "answer": "פִּירָמִידָה שֶׁבְּסִיסָהּ רִבּוּעַ; הִיא גּוּף.",
+            "answerLines": 1
+          }
+        ]
+      },
+      "4": {
+        "text": "כִּתְבוּ רֶמֶז שֶׁיַּבְחִין בֵּין הַמּוּעֲמָדִים. אַל תִּכְתְּבוּ אֶת שֵׁם הַתְּשׁוּבָה בָּרֶמֶז.",
+        "id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:4",
+        "q": 4,
+        "grade": 2,
+        "topic": "צורות וגופים לא אותו דבר",
+        "canonicalQuestionId": "elm-20261107-g2-s28-E-q004",
+        "canonicalQuestionSha256": "03280887daaf4a615f9a4f81f067e9df15aca3cdba5b5f2bdbd409fdcea0c670",
+        "levelLabel": "מצוינות",
+        "requiredQuestions": [],
+        "items": [
+          {
+            "text": "רֶמֶז לְקֻבִּיָּה מִתּוֹךְ קֻבִּיָּה וְגָלִיל.",
+            "canonicalItemId": "elm-20261107-g2-s28-E-q004-i01",
+            "label": "א",
+            "answer": "דֻּגְמָה: ״כָּל פָּאוֹתַי הַשְּׁטוּחוֹת רִבּוּעִיּוֹת.״ יִתָּכְנוּ רְמָזִים אֲחֵרִים הַמַּתְאִימִים לַקֻּבִּיָּה וְלֹא לַגָּלִיל.",
+            "answerLines": 1
+          },
+          {
+            "text": "רֶמֶז לְעִגּוּל מִתּוֹךְ עִגּוּל וְכַדּוּר.",
+            "canonicalItemId": "elm-20261107-g2-s28-E-q004-i02",
+            "label": "ב",
+            "answer": "דֻּגְמָה: ״אֲנִי צוּרָה שְׁטוּחָה.״ מְקַבְּלִים תֵּאוּר נָכוֹן לָעִגּוּל שֶׁאֵינוֹ מַתְאִים לַכַּדּוּר.",
+            "answerLines": 1
+          },
+          {
+            "text": "רֶמֶז לְחָרוּט מִתּוֹךְ חָרוּט וְגָלִיל.",
+            "canonicalItemId": "elm-20261107-g2-s28-E-q004-i03",
+            "label": "ג",
+            "answer": "דֻּגְמָה: ״יֵשׁ לִי חֹד.״ מְקַבְּלִים תֵּאוּר נָכוֹן לֶחָרוּט שֶׁאֵינוֹ מַתְאִים לַגָּלִיל.",
+            "answerLines": 1
+          },
+          {
+            "text": "רֶמֶז לְמְשֻׁלָּשׁ מִתּוֹךְ מְשֻׁלָּשׁ וְרִבּוּעַ.",
+            "canonicalItemId": "elm-20261107-g2-s28-E-q004-i04",
+            "label": "ד",
+            "answer": "דֻּגְמָה: ״יֵשׁ לִי שָׁלוֹשׁ צְלָעוֹת.״ מְקַבְּלִים תֵּאוּר שֶׁמַּתְאִים לַמְּשֻׁלָּשׁ וְשׁוֹלֵל אֶת הָרִבּוּעַ.",
+            "answerLines": 1
+          },
+          {
+            "text": "רֶמֶז לְכַדּוּר מִתּוֹךְ כַּדּוּר וְקֻבִּיָּה.",
+            "canonicalItemId": "elm-20261107-g2-s28-E-q004-i05",
+            "label": "ה",
+            "answer": "דֻּגְמָה: ״אֵין לִי פָּאָה שְׁטוּחָה.״ מְקַבְּלִים תֵּאוּר נָכוֹן לַכַּדּוּר שֶׁאֵינוֹ נָכוֹן לַקֻּבִּיָּה.",
+            "answerLines": 1
+          }
+        ]
+      },
+      "5": {
+        "text": "מַה קּוֹרֶה כְּשֶׁמְּשַׁנִּים? בִּדְקוּ אֶת הַטְּעָנוֹת.",
+        "id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:5",
+        "q": 5,
+        "grade": 2,
+        "topic": "צורות וגופים לא אותו דבר",
+        "canonicalQuestionId": "elm-20261107-g2-s28-E-q005",
+        "canonicalQuestionSha256": "94f497e584feacb4125b00ac226e1afa354db382e98ae6f04e9139bdccc6ad7a",
+        "levelLabel": "מצוינות",
+        "requiredQuestions": [],
+        "items": [
+          {
+            "text": "מְסוֹבְבִים מְשֻׁלָּשׁ גָּזוּר בְּלִי לְקַפֵּל אוֹ לִגְזֹר. הַאִם הוּא נִשְׁאַר מְשֻׁלָּשׁ?",
+            "canonicalItemId": "elm-20261107-g2-s28-E-q005-i01",
+            "label": "א",
+            "answer": "כֵּן. הַסִּיבוּב שׁוֹמֵר עַל הַגְּבוּל הַסָּגוּר וְעַל שָׁלוֹשׁ הַצְּלָעוֹת.",
+            "answerLines": 1
+          },
+          {
+            "text": "מְצַיְּרִים רִבּוּעַ גָּדוֹל יוֹתֵר. הַאִם מִסְפַּר צַלְעוֹתָיו גָּדֵל?",
+            "canonicalItemId": "elm-20261107-g2-s28-E-q005-i02",
+            "label": "ב",
+            "answer": "לֹא. לְכָל רִבּוּעַ אַרְבַּע צְלָעוֹת, גַּם אִם הוּא גָּדוֹל יוֹתֵר.",
+            "answerLines": 1
+          },
+          {
+            "text": "מוֹחֲקִים חֵלֶק מִצֶּלַע בְּמַלְבֵּן וּמַשְׁאִירִים פֶּתַח. הַאִם הַקַּו שֶׁנִּשְׁאַר הוּא מְצֻלָּע?",
+            "canonicalItemId": "elm-20261107-g2-s28-E-q005-i03",
+            "label": "ג",
+            "answer": "לֹא. כָּעֵת הַקַּו פָּתוּחַ.",
+            "answerLines": 1
+          },
+          {
+            "text": "צוֹבְעִים פָּאָה שֶׁל קֻבִּיָּה בְּצֶבַע אַחֵר. הַאִם צוּרַת הַפָּאָה מִשְׁתַּנָּה?",
+            "canonicalItemId": "elm-20261107-g2-s28-E-q005-i04",
+            "label": "ד",
+            "answer": "לֹא. הַצֶּבַע מִשְׁתַּנֶּה, אֲבָל הַפָּאָה נִשְׁאֶרֶת רִבּוּעַ.",
+            "answerLines": 1
+          },
+          {
+            "text": "מְסוֹבְבִים מַלְבֵּן גָּזוּר. הַאִם זָוִיּוֹתָיו הַיְשָׁרוֹת נֶעֱלָמוֹת?",
+            "canonicalItemId": "elm-20261107-g2-s28-E-q005-i05",
+            "label": "ה",
+            "answer": "לֹא. סִיבוּב אֵינוֹ מְשַׁנֶּה אֶת הַזָּוִיּוֹת.",
+            "answerLines": 1
+          }
+        ]
+      },
+      "6": {
+        "text": "מִשְׂחַק כַּרְטִיסִים: רִבּוּעַ, מְשֻׁלָּשׁ, עִגּוּל, קֻבִּיָּה, כַּדּוּר. בַּחֲרוּ שְׁנֵי כַּרְטִיסִים שׁוֹנִים. הַסֵּדֶר אֵינוֹ חָשׁוּב.",
+        "id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:6",
+        "q": 6,
+        "grade": 2,
+        "topic": "צורות וגופים לא אותו דבר",
+        "canonicalQuestionId": "elm-20261107-g2-s28-E-q006",
+        "canonicalQuestionSha256": "b2913bbf4ba73e61f57a1040f41b257233fcf2afe54ab0d2b58e546aff72f1ad",
+        "levelLabel": "מצוינות",
+        "requiredQuestions": [],
+        "items": [
+          {
+            "text": "מִצְאוּ אֶת כָּל הַזּוּגוֹת שֶׁבָּהֶם שְׁנֵי הַכַּרְטִיסִים מְצַיְּנִים צוּרוֹת שְׁטוּחוֹת.",
+            "canonicalItemId": "elm-20261107-g2-s28-E-q006-i01",
+            "label": "א",
+            "answer": "רִבּוּעַ וּמְשֻׁלָּשׁ; רִבּוּעַ וְעִגּוּל; מְשֻׁלָּשׁ וְעִגּוּל.",
+            "answerLines": 2
+          },
+          {
+            "text": "מִצְאוּ אֶת כָּל הַזּוּגוֹת שֶׁבָּהֶם מְצֻלָּע וְגוּף.",
+            "canonicalItemId": "elm-20261107-g2-s28-E-q006-i02",
+            "label": "ב",
+            "answer": "רִבּוּעַ וְקֻבִּיָּה; רִבּוּעַ וְכַדּוּר; מְשֻׁלָּשׁ וְקֻבִּיָּה; מְשֻׁלָּשׁ וְכַדּוּר.",
+            "answerLines": 3
+          },
+          {
+            "text": "מִצְאוּ זוּג שֶׁבּוֹ שְׁנֵי הַכַּרְטִיסִים מְצַיְּנִים גּוּפִים.",
+            "canonicalItemId": "elm-20261107-g2-s28-E-q006-i03",
+            "label": "ג",
+            "answer": "קֻבִּיָּה וְכַדּוּר.",
+            "answerLines": 1
+          },
+          {
+            "text": "מִצְאוּ זוּג שֶׁבּוֹ צוּרָה שְׁטוּחָה לְלֹא פִּנּוֹת וְגוּף עִם פָּאוֹת שְׁטוּחוֹת.",
+            "canonicalItemId": "elm-20261107-g2-s28-E-q006-i04",
+            "label": "ד",
+            "answer": "עִגּוּל וְקֻבִּיָּה.",
+            "answerLines": 1
+          },
+          {
+            "text": "מִצְאוּ זוּג שֶׁבּוֹ כָּל כַּרְטִיס מְצַיֵּן מְצֻלָּע.",
+            "canonicalItemId": "elm-20261107-g2-s28-E-q006-i05",
+            "label": "ה",
+            "answer": "רִבּוּעַ וּמְשֻׁלָּשׁ.",
+            "answerLines": 1
+          }
+        ]
+      },
+      "7": {
+        "text": "★ הַאִם הַטַּעֲנָה נְכוֹנָה? אִם לֹא, תְּנוּ דֻּגְמָה נֶגְדִּית מִתּוֹךְ הַשֵּׁמוֹת שֶׁלְּמַטָּה: רִבּוּעַ, עִגּוּל, קֻבִּיָּה, גָּלִיל, כַּדּוּר.",
+        "id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:7",
+        "q": 7,
+        "grade": 2,
+        "topic": "צורות וגופים לא אותו דבר",
+        "canonicalQuestionId": "elm-20261107-g2-s28-E-q007",
+        "canonicalQuestionSha256": "62ff1eb0b1a0528154a4100fddea71e580808ddc939a06cd93c001ead24f360c",
+        "levelLabel": "מצוינות",
+        "requiredQuestions": [],
+        "items": [
+          {
+            "text": "״כָּל צוּרָה שְׁטוּחָה בָּרְשִׁימָה הִיא מְצֻלָּע.״",
+            "canonicalItemId": "elm-20261107-g2-s28-E-q007-i01",
+            "label": "א",
+            "answer": "לֹא. עִגּוּל הוּא צוּרָה שְׁטוּחָה שֶׁאֵינָהּ מְצֻלָּע.",
+            "answerLines": 1
+          },
+          {
+            "text": "״לְכָל גּוּף בָּרְשִׁימָה יֵשׁ פָּאָה שְׁטוּחָה.״",
+            "canonicalItemId": "elm-20261107-g2-s28-E-q007-i02",
+            "label": "ב",
+            "answer": "לֹא. לַכַּדּוּר אֵין פָּאָה שְׁטוּחָה.",
+            "answerLines": 1
+          },
+          {
+            "text": "״כָּל מָה שֶׁנִּרְאֶה עָגֹל בָּרְשִׁימָה הוּא גּוּף.״",
+            "canonicalItemId": "elm-20261107-g2-s28-E-q007-i03",
+            "label": "ג",
+            "answer": "לֹא. הָעִגּוּל הוּא צוּרָה שְׁטוּחָה.",
+            "answerLines": 1
+          },
+          {
+            "text": "״כָּל הַגּוּפִים בָּרְשִׁימָה הֵם קֻבִּיּוֹת.״ תְּנוּ אֶת כָּל הַדֻּגְמָאוֹת הַנֶּגְדִּיּוֹת.",
+            "canonicalItemId": "elm-20261107-g2-s28-E-q007-i04",
+            "label": "ד",
+            "answer": "גָּלִיל וְכַדּוּר הֵם גּוּפִים שֶׁאֵינָם קֻבִּיּוֹת.",
+            "answerLines": 1
+          },
+          {
+            "text": "״הָרִבּוּעַ בָּרְשִׁימָה הוּא גַּם צוּרָה שְׁטוּחָה וְגַם מְצֻלָּע.״",
+            "canonicalItemId": "elm-20261107-g2-s28-E-q007-i05",
+            "label": "ה",
+            "answer": "נָכוֹן. הוּא שָׁטוּחַ, וּגְבוּלוֹ סָגוּר וּמֻרְכָּב מִצְּלָעוֹת יְשָׁרוֹת.",
+            "answerLines": 1
+          }
+        ]
+      },
+      "8": {
+        "text": "★ תַּכְנְנוּ בְּעַצְמְכֶם. אֶפְשָׁר שֶׁתִּהְיֶה יוֹתֵר מִתְּשׁוּבָה מַתְאִימָה אַחַת.",
+        "id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:8",
+        "q": 8,
+        "grade": 2,
+        "topic": "צורות וגופים לא אותו דבר",
+        "canonicalQuestionId": "elm-20261107-g2-s28-E-q008",
+        "canonicalQuestionSha256": "5031407893d5baacb4bd32b90c58c25de60e8e24a67b615488d0beabffa7df32",
+        "levelLabel": "מצוינות",
+        "requiredQuestions": [],
+        "items": [
+          {
+            "text": "בַּחֲרוּ שְׁלוֹשָׁה שֵׁמוֹת שׁוֹנִים מִבֵּין רִבּוּעַ, מְשֻׁלָּשׁ, עִגּוּל, קֻבִּיָּה וְכַדּוּר: שְׁתֵּי צוּרוֹת שְׁטוּחוֹת וְגוּף.",
+            "canonicalItemId": "elm-20261107-g2-s28-E-q008-i01",
+            "label": "א",
+            "answer": "דֻּגְמָה: רִבּוּעַ, עִגּוּל וְקֻבִּיָּה. מְקַבְּלִים כָּל בְּחִירָה מִן הָרְשִׁימָה שֶׁיֵּשׁ בָּהּ בְּדִיּוּק שְׁתֵּי צוּרוֹת שְׁטוּחוֹת וְגוּף אֶחָד.",
+            "answerLines": 1
+          },
+          {
+            "text": "כִּתְבוּ שְׁאֵלַת כֵּן אוֹ לֹא שֶׁתַּבְדִּיל בֵּין רִבּוּעַ לְעִגּוּל.",
+            "canonicalItemId": "elm-20261107-g2-s28-E-q008-i02",
+            "label": "ב",
+            "answer": "דֻּגְמָה: ״הַאִם יֵשׁ לְךָ צְלָעוֹת יְשָׁרוֹת?״ לָרִבּוּעַ כֵּן וְלָעִגּוּל לֹא. מְקַבְּלִים שְׁאֵלָה שֶׁתְּשׁוּבוֹתֶיהָ לַצּוּרוֹת שׁוֹנוֹת.",
+            "answerLines": 1
+          },
+          {
+            "text": "תְּנוּ דֻּגְמָה לְגוּף וְלִצּוּרָה שְׁטוּחָה שֶׁמַּתְאִימָה לְפָאָה שֶׁלּוֹ.",
+            "canonicalItemId": "elm-20261107-g2-s28-E-q008-i03",
+            "label": "ג",
+            "answer": "דֻּגְמָה: קֻבִּיָּה וְרִבּוּעַ. מְקַבְּלִים כָּל גּוּף מֻכָּר וְשֵׁם נָכוֹן שֶׁל פָּאָה שְׁטוּחָה שֶׁלּוֹ.",
+            "answerLines": 1
+          },
+          {
+            "text": "בַּחֲרוּ מִתּוֹךְ קֻבִּיָּה, גָּלִיל וְכַדּוּר גּוּף שֶׁאֶפְשָׁר לְהַנִּיחַ עַל פָּאָה שְׁטוּחָה. הַסְבִּירוּ.",
+            "canonicalItemId": "elm-20261107-g2-s28-E-q008-i04",
+            "label": "ד",
+            "answer": "דֻּגְמָה: קֻבִּיָּה, כִּי יֵשׁ לָהּ פָּאוֹת שְׁטוּחוֹת. גַּם גָּלִיל מַתְאִים כְּשֶׁמַּנִּיחִים אוֹתוֹ עַל בָּסִיסוֹ הַשָּׁטוּחַ; כַּדּוּר אֵינוֹ מַתְאִים.",
+            "answerLines": 1
+          },
+          {
+            "text": "כִּתְבוּ תֵּאוּר נָכוֹן שֶׁמַּתְאִים גַּם לְמְשֻׁלָּשׁ וְגַם לְרִבּוּעַ, אֲבָל לֹא לְעִגּוּל.",
+            "canonicalItemId": "elm-20261107-g2-s28-E-q008-i05",
+            "label": "ה",
+            "answer": "דֻּגְמָה: ״צוּרָה שְׁטוּחָה שֶׁגְּבוּלָהּ סָגוּר וּבָנוּי מִצְּלָעוֹת יְשָׁרוֹת.״ מְקַבְּלִים תְּכוּנָה נְכוֹנָה לִשְׁנֵי הַמְּצֻלָּעִים שֶׁאֵינָהּ נְכוֹנָה לָעִגּוּל.",
+            "answerLines": 1
+          }
+        ]
+      }
+    }
+  },
+  "wordSourceSha256": "805c9a07b256779e435a99a6668183c975d893e04a109cebe06f15f3535e043b",
+  "identityMap": [
+    {
+      "canonicalQuestionId": "elm-20261107-g2-s28-E-q001",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q001-i01",
+      "q": 1,
+      "part": "א",
+      "wordQuestionId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:1",
+      "exerciseId": "G2-T28-E-Q01א",
+      "canonicalQuestionSha256": "f25461ed4be3f624dfbe7f176991094a128267a294530e8b9413357ea8ef4edd",
+      "sourceExerciseSha256": "f96bb3dccf124d1569c76b2845800db1c62ec7c392167c3bb57767a26bc31e87"
+    },
+    {
+      "canonicalQuestionId": "elm-20261107-g2-s28-E-q001",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q001-i02",
+      "q": 1,
+      "part": "ב",
+      "wordQuestionId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:1",
+      "exerciseId": "G2-T28-E-Q01ב",
+      "canonicalQuestionSha256": "f25461ed4be3f624dfbe7f176991094a128267a294530e8b9413357ea8ef4edd",
+      "sourceExerciseSha256": "69a35d6f35031aee42683cd0eb1d978fd0be0474c9b6b0f9e7962b7a6248a886"
+    },
+    {
+      "canonicalQuestionId": "elm-20261107-g2-s28-E-q001",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q001-i03",
+      "q": 1,
+      "part": "ג",
+      "wordQuestionId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:1",
+      "exerciseId": "G2-T28-E-Q01ג",
+      "canonicalQuestionSha256": "f25461ed4be3f624dfbe7f176991094a128267a294530e8b9413357ea8ef4edd",
+      "sourceExerciseSha256": "4ba668b71cc44215d9c0ef6a8f249cd1329274549abb57b891d627633a301982"
+    },
+    {
+      "canonicalQuestionId": "elm-20261107-g2-s28-E-q001",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q001-i04",
+      "q": 1,
+      "part": "ד",
+      "wordQuestionId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:1",
+      "exerciseId": "G2-T28-E-Q01ד",
+      "canonicalQuestionSha256": "f25461ed4be3f624dfbe7f176991094a128267a294530e8b9413357ea8ef4edd",
+      "sourceExerciseSha256": "9e22f1a248fe24df34527ab4881287e4a316ca5f96a0a1db2cd58271838d77d0"
+    },
+    {
+      "canonicalQuestionId": "elm-20261107-g2-s28-E-q001",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q001-i05",
+      "q": 1,
+      "part": "ה",
+      "wordQuestionId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:1",
+      "exerciseId": "G2-T28-E-Q01ה",
+      "canonicalQuestionSha256": "f25461ed4be3f624dfbe7f176991094a128267a294530e8b9413357ea8ef4edd",
+      "sourceExerciseSha256": "99b2f7ed765c074cfe85e96815e252e35b13155305bc8eb2adb7e44682e51bd2"
+    },
+    {
+      "canonicalQuestionId": "elm-20261107-g2-s28-E-q002",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q002-i01",
+      "q": 2,
+      "part": "א",
+      "wordQuestionId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:2",
+      "exerciseId": "G2-T28-E-Q02א",
+      "canonicalQuestionSha256": "55308f7af3056f3ce49565fae62e9d20f6b83a1bc4613623cc3ec4722481a055",
+      "sourceExerciseSha256": "3b7e9412476f29426acc5f7eda3256f71e4c3bebe789678920910f3e331a6c26"
+    },
+    {
+      "canonicalQuestionId": "elm-20261107-g2-s28-E-q002",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q002-i02",
+      "q": 2,
+      "part": "ב",
+      "wordQuestionId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:2",
+      "exerciseId": "G2-T28-E-Q02ב",
+      "canonicalQuestionSha256": "55308f7af3056f3ce49565fae62e9d20f6b83a1bc4613623cc3ec4722481a055",
+      "sourceExerciseSha256": "2ea0963b7879376f62d4583eec50adff9286e5eee0debbfb52ce08603f4108ee"
+    },
+    {
+      "canonicalQuestionId": "elm-20261107-g2-s28-E-q002",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q002-i03",
+      "q": 2,
+      "part": "ג",
+      "wordQuestionId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:2",
+      "exerciseId": "G2-T28-E-Q02ג",
+      "canonicalQuestionSha256": "55308f7af3056f3ce49565fae62e9d20f6b83a1bc4613623cc3ec4722481a055",
+      "sourceExerciseSha256": "e5e31b1c4fe9bf64bd8cb0c6b0b001409a1782853ee5bef15ae9156bb644ed40"
+    },
+    {
+      "canonicalQuestionId": "elm-20261107-g2-s28-E-q002",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q002-i04",
+      "q": 2,
+      "part": "ד",
+      "wordQuestionId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:2",
+      "exerciseId": "G2-T28-E-Q02ד",
+      "canonicalQuestionSha256": "55308f7af3056f3ce49565fae62e9d20f6b83a1bc4613623cc3ec4722481a055",
+      "sourceExerciseSha256": "223bbad11072002273e3a17694812d4b780e6d9225e09a7a5081fc51eddde170"
+    },
+    {
+      "canonicalQuestionId": "elm-20261107-g2-s28-E-q002",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q002-i05",
+      "q": 2,
+      "part": "ה",
+      "wordQuestionId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:2",
+      "exerciseId": "G2-T28-E-Q02ה",
+      "canonicalQuestionSha256": "55308f7af3056f3ce49565fae62e9d20f6b83a1bc4613623cc3ec4722481a055",
+      "sourceExerciseSha256": "257f7e7608c063ff6a5c808da83802c80c69bc981c4584e9336a23556281982e"
+    },
+    {
+      "canonicalQuestionId": "elm-20261107-g2-s28-E-q003",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q003-i01",
+      "q": 3,
+      "part": "א",
+      "wordQuestionId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:3",
+      "exerciseId": "G2-T28-E-Q03א",
+      "canonicalQuestionSha256": "eac4943d81af5a40380dbab1002d20331ffbb3a83e1b7580b01321f387c991c7",
+      "sourceExerciseSha256": "ae993b701dc1c1b805934b73a8baa87127ad693d3f4a3a95e6dc147a0542910d"
+    },
+    {
+      "canonicalQuestionId": "elm-20261107-g2-s28-E-q003",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q003-i02",
+      "q": 3,
+      "part": "ב",
+      "wordQuestionId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:3",
+      "exerciseId": "G2-T28-E-Q03ב",
+      "canonicalQuestionSha256": "eac4943d81af5a40380dbab1002d20331ffbb3a83e1b7580b01321f387c991c7",
+      "sourceExerciseSha256": "407dfee363a501411f6f5d8037795aaf7ed036ca8dbb6a13bf16b365e633317b"
+    },
+    {
+      "canonicalQuestionId": "elm-20261107-g2-s28-E-q003",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q003-i03",
+      "q": 3,
+      "part": "ג",
+      "wordQuestionId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:3",
+      "exerciseId": "G2-T28-E-Q03ג",
+      "canonicalQuestionSha256": "eac4943d81af5a40380dbab1002d20331ffbb3a83e1b7580b01321f387c991c7",
+      "sourceExerciseSha256": "c5e9f09623c5decdf924a14ccda9fc19f7d81d1445fd45939079fd0880b1c774"
+    },
+    {
+      "canonicalQuestionId": "elm-20261107-g2-s28-E-q003",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q003-i04",
+      "q": 3,
+      "part": "ד",
+      "wordQuestionId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:3",
+      "exerciseId": "G2-T28-E-Q03ד",
+      "canonicalQuestionSha256": "eac4943d81af5a40380dbab1002d20331ffbb3a83e1b7580b01321f387c991c7",
+      "sourceExerciseSha256": "3e0377d1d8752270b36d501c2835b666a5f4d4683923fe84d29ca2cac3342e79"
+    },
+    {
+      "canonicalQuestionId": "elm-20261107-g2-s28-E-q003",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q003-i05",
+      "q": 3,
+      "part": "ה",
+      "wordQuestionId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:3",
+      "exerciseId": "G2-T28-E-Q03ה",
+      "canonicalQuestionSha256": "eac4943d81af5a40380dbab1002d20331ffbb3a83e1b7580b01321f387c991c7",
+      "sourceExerciseSha256": "dc5839fc11bcf1a4c3f332f8c2bcf060ac198d2cfdb8152075570e2102c8c8f5"
+    },
+    {
+      "canonicalQuestionId": "elm-20261107-g2-s28-E-q004",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q004-i01",
+      "q": 4,
+      "part": "א",
+      "wordQuestionId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:4",
+      "exerciseId": "G2-T28-E-Q04א",
+      "canonicalQuestionSha256": "03280887daaf4a615f9a4f81f067e9df15aca3cdba5b5f2bdbd409fdcea0c670",
+      "sourceExerciseSha256": "db667c7e11c78ef0b49d13cadabac6e2c206436955d55dada3e726b5fe6dab95"
+    },
+    {
+      "canonicalQuestionId": "elm-20261107-g2-s28-E-q004",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q004-i02",
+      "q": 4,
+      "part": "ב",
+      "wordQuestionId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:4",
+      "exerciseId": "G2-T28-E-Q04ב",
+      "canonicalQuestionSha256": "03280887daaf4a615f9a4f81f067e9df15aca3cdba5b5f2bdbd409fdcea0c670",
+      "sourceExerciseSha256": "88f5739131ae3e2d6e7b911bdb1a207795ba4fa0052e013a1c835f27c0a069fd"
+    },
+    {
+      "canonicalQuestionId": "elm-20261107-g2-s28-E-q004",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q004-i03",
+      "q": 4,
+      "part": "ג",
+      "wordQuestionId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:4",
+      "exerciseId": "G2-T28-E-Q04ג",
+      "canonicalQuestionSha256": "03280887daaf4a615f9a4f81f067e9df15aca3cdba5b5f2bdbd409fdcea0c670",
+      "sourceExerciseSha256": "c762159c6b1d02d00ee268c3809fdbb3878a9be499bbd53bdf6f7f64e632a795"
+    },
+    {
+      "canonicalQuestionId": "elm-20261107-g2-s28-E-q004",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q004-i04",
+      "q": 4,
+      "part": "ד",
+      "wordQuestionId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:4",
+      "exerciseId": "G2-T28-E-Q04ד",
+      "canonicalQuestionSha256": "03280887daaf4a615f9a4f81f067e9df15aca3cdba5b5f2bdbd409fdcea0c670",
+      "sourceExerciseSha256": "091ad1baef8aa3eb889014c7c75048392dbde206dbf813ed6a5034fd7b324661"
+    },
+    {
+      "canonicalQuestionId": "elm-20261107-g2-s28-E-q004",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q004-i05",
+      "q": 4,
+      "part": "ה",
+      "wordQuestionId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:4",
+      "exerciseId": "G2-T28-E-Q04ה",
+      "canonicalQuestionSha256": "03280887daaf4a615f9a4f81f067e9df15aca3cdba5b5f2bdbd409fdcea0c670",
+      "sourceExerciseSha256": "5f9082e84dfa2829c2768a86c925200b31559ffbdb8590d2b66601afc034fdd7"
+    },
+    {
+      "canonicalQuestionId": "elm-20261107-g2-s28-E-q005",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q005-i01",
+      "q": 5,
+      "part": "א",
+      "wordQuestionId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:5",
+      "exerciseId": "G2-T28-E-Q05א",
+      "canonicalQuestionSha256": "94f497e584feacb4125b00ac226e1afa354db382e98ae6f04e9139bdccc6ad7a",
+      "sourceExerciseSha256": "64ff97297762d0cbee2309073f6a9d40cfd36d33fae5a190772392e7c9eb4f98"
+    },
+    {
+      "canonicalQuestionId": "elm-20261107-g2-s28-E-q005",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q005-i02",
+      "q": 5,
+      "part": "ב",
+      "wordQuestionId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:5",
+      "exerciseId": "G2-T28-E-Q05ב",
+      "canonicalQuestionSha256": "94f497e584feacb4125b00ac226e1afa354db382e98ae6f04e9139bdccc6ad7a",
+      "sourceExerciseSha256": "b681a15719e500ba7174a8df211bceb0da0ea2ac2c630087a534b7b3830bd3c0"
+    },
+    {
+      "canonicalQuestionId": "elm-20261107-g2-s28-E-q005",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q005-i03",
+      "q": 5,
+      "part": "ג",
+      "wordQuestionId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:5",
+      "exerciseId": "G2-T28-E-Q05ג",
+      "canonicalQuestionSha256": "94f497e584feacb4125b00ac226e1afa354db382e98ae6f04e9139bdccc6ad7a",
+      "sourceExerciseSha256": "b577fb71f3f1f2ed5f60df0fe4bfc32610a44632507fa2886556188ec9bd6d8b"
+    },
+    {
+      "canonicalQuestionId": "elm-20261107-g2-s28-E-q005",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q005-i04",
+      "q": 5,
+      "part": "ד",
+      "wordQuestionId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:5",
+      "exerciseId": "G2-T28-E-Q05ד",
+      "canonicalQuestionSha256": "94f497e584feacb4125b00ac226e1afa354db382e98ae6f04e9139bdccc6ad7a",
+      "sourceExerciseSha256": "7ab68467cb2659c87b53694deb74a7e302e2003842a8cab7dffa71ee68865a3c"
+    },
+    {
+      "canonicalQuestionId": "elm-20261107-g2-s28-E-q005",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q005-i05",
+      "q": 5,
+      "part": "ה",
+      "wordQuestionId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:5",
+      "exerciseId": "G2-T28-E-Q05ה",
+      "canonicalQuestionSha256": "94f497e584feacb4125b00ac226e1afa354db382e98ae6f04e9139bdccc6ad7a",
+      "sourceExerciseSha256": "34c3c7bc3e59984d5b813baa1ff48b4ea680ab1cf9044db33ea5eab78e630d93"
+    },
+    {
+      "canonicalQuestionId": "elm-20261107-g2-s28-E-q006",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q006-i01",
+      "q": 6,
+      "part": "א",
+      "wordQuestionId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:6",
+      "exerciseId": "G2-T28-E-Q06א",
+      "canonicalQuestionSha256": "b2913bbf4ba73e61f57a1040f41b257233fcf2afe54ab0d2b58e546aff72f1ad",
+      "sourceExerciseSha256": "2eee403a0a385fd37d5ba064fb95a0b42fc3ff63f6776016a928bfc38bb3dbe9"
+    },
+    {
+      "canonicalQuestionId": "elm-20261107-g2-s28-E-q006",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q006-i02",
+      "q": 6,
+      "part": "ב",
+      "wordQuestionId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:6",
+      "exerciseId": "G2-T28-E-Q06ב",
+      "canonicalQuestionSha256": "b2913bbf4ba73e61f57a1040f41b257233fcf2afe54ab0d2b58e546aff72f1ad",
+      "sourceExerciseSha256": "cbbe7e85b0c16c61683b9554b3a2cb0cd78a39880d51cc88e674c94e464ea5af"
+    },
+    {
+      "canonicalQuestionId": "elm-20261107-g2-s28-E-q006",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q006-i03",
+      "q": 6,
+      "part": "ג",
+      "wordQuestionId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:6",
+      "exerciseId": "G2-T28-E-Q06ג",
+      "canonicalQuestionSha256": "b2913bbf4ba73e61f57a1040f41b257233fcf2afe54ab0d2b58e546aff72f1ad",
+      "sourceExerciseSha256": "1a1bff808674df2cc1f3e55546350102a9d034ba7adf39ec22e79360ba915308"
+    },
+    {
+      "canonicalQuestionId": "elm-20261107-g2-s28-E-q006",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q006-i04",
+      "q": 6,
+      "part": "ד",
+      "wordQuestionId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:6",
+      "exerciseId": "G2-T28-E-Q06ד",
+      "canonicalQuestionSha256": "b2913bbf4ba73e61f57a1040f41b257233fcf2afe54ab0d2b58e546aff72f1ad",
+      "sourceExerciseSha256": "52c0815bfc2ea5431025cd922d200b9bb451d7c445967294f4f78770e9a63a18"
+    },
+    {
+      "canonicalQuestionId": "elm-20261107-g2-s28-E-q006",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q006-i05",
+      "q": 6,
+      "part": "ה",
+      "wordQuestionId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:6",
+      "exerciseId": "G2-T28-E-Q06ה",
+      "canonicalQuestionSha256": "b2913bbf4ba73e61f57a1040f41b257233fcf2afe54ab0d2b58e546aff72f1ad",
+      "sourceExerciseSha256": "3d67ae8eb14584ed8a5d791c9e138984d15f55dbeb3333ccb711699ed7f562a6"
+    },
+    {
+      "canonicalQuestionId": "elm-20261107-g2-s28-E-q007",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q007-i01",
+      "q": 7,
+      "part": "א",
+      "wordQuestionId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:7",
+      "exerciseId": "G2-T28-E-Q07א",
+      "canonicalQuestionSha256": "62ff1eb0b1a0528154a4100fddea71e580808ddc939a06cd93c001ead24f360c",
+      "sourceExerciseSha256": "1cebb20fa7967672237ea3a225a89628880977df073a6ef5cfc5aa14ec280076"
+    },
+    {
+      "canonicalQuestionId": "elm-20261107-g2-s28-E-q007",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q007-i02",
+      "q": 7,
+      "part": "ב",
+      "wordQuestionId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:7",
+      "exerciseId": "G2-T28-E-Q07ב",
+      "canonicalQuestionSha256": "62ff1eb0b1a0528154a4100fddea71e580808ddc939a06cd93c001ead24f360c",
+      "sourceExerciseSha256": "9f632fe93bf4df0c39552b59af2691fe2c4ad32f175bdcb22d8140f6fce788c9"
+    },
+    {
+      "canonicalQuestionId": "elm-20261107-g2-s28-E-q007",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q007-i03",
+      "q": 7,
+      "part": "ג",
+      "wordQuestionId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:7",
+      "exerciseId": "G2-T28-E-Q07ג",
+      "canonicalQuestionSha256": "62ff1eb0b1a0528154a4100fddea71e580808ddc939a06cd93c001ead24f360c",
+      "sourceExerciseSha256": "cd868bd088bf7c8c92274f9633376975ff7f9661d59232a5b72d4eca2cc465cd"
+    },
+    {
+      "canonicalQuestionId": "elm-20261107-g2-s28-E-q007",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q007-i04",
+      "q": 7,
+      "part": "ד",
+      "wordQuestionId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:7",
+      "exerciseId": "G2-T28-E-Q07ד",
+      "canonicalQuestionSha256": "62ff1eb0b1a0528154a4100fddea71e580808ddc939a06cd93c001ead24f360c",
+      "sourceExerciseSha256": "369f08527bc0d118863e36ea63ed747035f46f37852700acc8a5400ba20f9a7e"
+    },
+    {
+      "canonicalQuestionId": "elm-20261107-g2-s28-E-q007",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q007-i05",
+      "q": 7,
+      "part": "ה",
+      "wordQuestionId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:7",
+      "exerciseId": "G2-T28-E-Q07ה",
+      "canonicalQuestionSha256": "62ff1eb0b1a0528154a4100fddea71e580808ddc939a06cd93c001ead24f360c",
+      "sourceExerciseSha256": "24957680b90e3897fb78ac018f14c88d72957833aa25830ddfd8af540529b2c3"
+    },
+    {
+      "canonicalQuestionId": "elm-20261107-g2-s28-E-q008",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q008-i01",
+      "q": 8,
+      "part": "א",
+      "wordQuestionId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:8",
+      "exerciseId": "G2-T28-E-Q08א",
+      "canonicalQuestionSha256": "5031407893d5baacb4bd32b90c58c25de60e8e24a67b615488d0beabffa7df32",
+      "sourceExerciseSha256": "2ecd8494cbf937f9ceba226e1ac79ec4a5c3471dfccf449027dbb4418230acbd"
+    },
+    {
+      "canonicalQuestionId": "elm-20261107-g2-s28-E-q008",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q008-i02",
+      "q": 8,
+      "part": "ב",
+      "wordQuestionId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:8",
+      "exerciseId": "G2-T28-E-Q08ב",
+      "canonicalQuestionSha256": "5031407893d5baacb4bd32b90c58c25de60e8e24a67b615488d0beabffa7df32",
+      "sourceExerciseSha256": "a783bcad60f2bfa3a74d42c665ca3fe5ff1befa284fce21d49e682803f21ec99"
+    },
+    {
+      "canonicalQuestionId": "elm-20261107-g2-s28-E-q008",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q008-i03",
+      "q": 8,
+      "part": "ג",
+      "wordQuestionId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:8",
+      "exerciseId": "G2-T28-E-Q08ג",
+      "canonicalQuestionSha256": "5031407893d5baacb4bd32b90c58c25de60e8e24a67b615488d0beabffa7df32",
+      "sourceExerciseSha256": "47a536aad52204df20f74f44829c0a39cdec1b87caa06d373b3fd5e4349628e6"
+    },
+    {
+      "canonicalQuestionId": "elm-20261107-g2-s28-E-q008",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q008-i04",
+      "q": 8,
+      "part": "ד",
+      "wordQuestionId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:8",
+      "exerciseId": "G2-T28-E-Q08ד",
+      "canonicalQuestionSha256": "5031407893d5baacb4bd32b90c58c25de60e8e24a67b615488d0beabffa7df32",
+      "sourceExerciseSha256": "798795a55ee7653c51f2b251feef91f43077ff7c5db4d727ff95b69de206b243"
+    },
+    {
+      "canonicalQuestionId": "elm-20261107-g2-s28-E-q008",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q008-i05",
+      "q": 8,
+      "part": "ה",
+      "wordQuestionId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:8",
+      "exerciseId": "G2-T28-E-Q08ה",
+      "canonicalQuestionSha256": "5031407893d5baacb4bd32b90c58c25de60e8e24a67b615488d0beabffa7df32",
+      "sourceExerciseSha256": "4e8d6a782fa83be0be048600130598dc59a6152143b5fd4e422a069289afa2a3"
+    }
+  ],
+  "manifestTaskDraft": [
+    {
+      "id": "G2-T28-E-Q01א",
+      "q": 1,
+      "part": "א",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q001-i01",
+      "text": "קִרְאוּ, הַבִּיטוּ בָּאִיּוּרִים וַעֲנוּ. כִּתְבוּ הֶסְבֵּר קָצָר כְּשֶׁמְּבַקְּשִׁים.\nחִקְרוּ אֶת לוּחַ הָאִיּוּרִים. אִיּוּר 5 מַצִּיג פִּירָמִידָה שֶׁבְּסִיסָהּ רִבּוּעַ. בְּכָל סָעִיף כִּתְבוּ אֶת כָּל הַמַּתְאִימִים.\nא. אֵילוּ צוּרוֹת הֵן שְׁטוּחוֹת וּבַעֲלוֹת אַרְבַּע זָוִיּוֹת יְשָׁרוֹת?",
+      "sourceExerciseSha256": "f96bb3dccf124d1569c76b2845800db1c62ec7c392167c3bb57767a26bc31e87"
+    },
+    {
+      "id": "G2-T28-E-Q01ב",
+      "q": 1,
+      "part": "ב",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q001-i02",
+      "text": "קִרְאוּ, הַבִּיטוּ בָּאִיּוּרִים וַעֲנוּ. כִּתְבוּ הֶסְבֵּר קָצָר כְּשֶׁמְּבַקְּשִׁים.\nחִקְרוּ אֶת לוּחַ הָאִיּוּרִים. אִיּוּר 5 מַצִּיג פִּירָמִידָה שֶׁבְּסִיסָהּ רִבּוּעַ. בְּכָל סָעִיף כִּתְבוּ אֶת כָּל הַמַּתְאִימִים.\nב. אֵילוּ גּוּפִים בַּלּוּחַ כּוֹלְלִים פָּאָה רִבּוּעִית?",
+      "sourceExerciseSha256": "69a35d6f35031aee42683cd0eb1d978fd0be0474c9b6b0f9e7962b7a6248a886"
+    },
+    {
+      "id": "G2-T28-E-Q01ג",
+      "q": 1,
+      "part": "ג",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q001-i03",
+      "text": "קִרְאוּ, הַבִּיטוּ בָּאִיּוּרִים וַעֲנוּ. כִּתְבוּ הֶסְבֵּר קָצָר כְּשֶׁמְּבַקְּשִׁים.\nחִקְרוּ אֶת לוּחַ הָאִיּוּרִים. אִיּוּר 5 מַצִּיג פִּירָמִידָה שֶׁבְּסִיסָהּ רִבּוּעַ. בְּכָל סָעִיף כִּתְבוּ אֶת כָּל הַמַּתְאִימִים.\nג. אֵיזוֹ צוּרָה שְׁטוּחָה אֵינָהּ מְצֻלָּע?",
+      "sourceExerciseSha256": "4ba668b71cc44215d9c0ef6a8f249cd1329274549abb57b891d627633a301982"
+    },
+    {
+      "id": "G2-T28-E-Q01ד",
+      "q": 1,
+      "part": "ד",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q001-i04",
+      "text": "קִרְאוּ, הַבִּיטוּ בָּאִיּוּרִים וַעֲנוּ. כִּתְבוּ הֶסְבֵּר קָצָר כְּשֶׁמְּבַקְּשִׁים.\nחִקְרוּ אֶת לוּחַ הָאִיּוּרִים. אִיּוּר 5 מַצִּיג פִּירָמִידָה שֶׁבְּסִיסָהּ רִבּוּעַ. בְּכָל סָעִיף כִּתְבוּ אֶת כָּל הַמַּתְאִימִים.\nד. אֵיזוֹ צוּרָה שְׁטוּחָה הִיא מְצֻלָּע שֶׁלֹּא כָּל צַלְעוֹתָיו שָׁווֹת?",
+      "sourceExerciseSha256": "9e22f1a248fe24df34527ab4881287e4a316ca5f96a0a1db2cd58271838d77d0"
+    },
+    {
+      "id": "G2-T28-E-Q01ה",
+      "q": 1,
+      "part": "ה",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q001-i05",
+      "text": "קִרְאוּ, הַבִּיטוּ בָּאִיּוּרִים וַעֲנוּ. כִּתְבוּ הֶסְבֵּר קָצָר כְּשֶׁמְּבַקְּשִׁים.\nחִקְרוּ אֶת לוּחַ הָאִיּוּרִים. אִיּוּר 5 מַצִּיג פִּירָמִידָה שֶׁבְּסִיסָהּ רִבּוּעַ. בְּכָל סָעִיף כִּתְבוּ אֶת כָּל הַמַּתְאִימִים.\nה. אֵיזֶה גּוּף כּוֹלֵל גַּם פָּאוֹת מְשֻׁלָּשׁוֹת וְגַם פָּאָה רִבּוּעִית?",
+      "sourceExerciseSha256": "99b2f7ed765c074cfe85e96815e252e35b13155305bc8eb2adb7e44682e51bd2"
+    },
+    {
+      "id": "G2-T28-E-Q02א",
+      "q": 2,
+      "part": "א",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q002-i01",
+      "text": "קִרְאוּ, הַבִּיטוּ בָּאִיּוּרִים וַעֲנוּ. כִּתְבוּ הֶסְבֵּר קָצָר כְּשֶׁמְּבַקְּשִׁים.\nמְשֻׁתָּף וְשׁוֹנֶה: הַשְׁווּ בֵּין הַזּוּגוֹת.\nא. רִבּוּעַ וְקֻבִּיָּה: הַאִם שְׁנֵיהֶם גּוּפִים? הַסְבִּירוּ.",
+      "sourceExerciseSha256": "3b7e9412476f29426acc5f7eda3256f71e4c3bebe789678920910f3e331a6c26"
+    },
+    {
+      "id": "G2-T28-E-Q02ב",
+      "q": 2,
+      "part": "ב",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q002-i02",
+      "text": "קִרְאוּ, הַבִּיטוּ בָּאִיּוּרִים וַעֲנוּ. כִּתְבוּ הֶסְבֵּר קָצָר כְּשֶׁמְּבַקְּשִׁים.\nמְשֻׁתָּף וְשׁוֹנֶה: הַשְׁווּ בֵּין הַזּוּגוֹת.\nב. עִגּוּל וְכַדּוּר: מָה מַבְדִּיל בֵּינֵיהֶם אַף שֶׁשְּׁנֵיהֶם נִרְאִים עֲגֻלִּים?",
+      "sourceExerciseSha256": "2ea0963b7879376f62d4583eec50adff9286e5eee0debbfb52ce08603f4108ee"
+    },
+    {
+      "id": "G2-T28-E-Q02ג",
+      "q": 2,
+      "part": "ג",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q002-i03",
+      "text": "קִרְאוּ, הַבִּיטוּ בָּאִיּוּרִים וַעֲנוּ. כִּתְבוּ הֶסְבֵּר קָצָר כְּשֶׁמְּבַקְּשִׁים.\nמְשֻׁתָּף וְשׁוֹנֶה: הַשְׁווּ בֵּין הַזּוּגוֹת.\nג. גָּלִיל וְחָרוּט: כַּמָּה בְּסִיסִים עֲגֻלִּים שְׁטוּחִים יֵשׁ לְכָל גּוּף?",
+      "sourceExerciseSha256": "e5e31b1c4fe9bf64bd8cb0c6b0b001409a1782853ee5bef15ae9156bb644ed40"
+    },
+    {
+      "id": "G2-T28-E-Q02ד",
+      "q": 2,
+      "part": "ד",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q002-i04",
+      "text": "קִרְאוּ, הַבִּיטוּ בָּאִיּוּרִים וַעֲנוּ. כִּתְבוּ הֶסְבֵּר קָצָר כְּשֶׁמְּבַקְּשִׁים.\nמְשֻׁתָּף וְשׁוֹנֶה: הַשְׁווּ בֵּין הַזּוּגוֹת.\nד. קֻבִּיָּה וּפִירָמִידָה שֶׁבְּסִיסָהּ רִבּוּעַ: לְמִי יֵשׁ גַּם פָּאוֹת מְשֻׁלָּשׁוֹת?",
+      "sourceExerciseSha256": "223bbad11072002273e3a17694812d4b780e6d9225e09a7a5081fc51eddde170"
+    },
+    {
+      "id": "G2-T28-E-Q02ה",
+      "q": 2,
+      "part": "ה",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q002-i05",
+      "text": "קִרְאוּ, הַבִּיטוּ בָּאִיּוּרִים וַעֲנוּ. כִּתְבוּ הֶסְבֵּר קָצָר כְּשֶׁמְּבַקְּשִׁים.\nמְשֻׁתָּף וְשׁוֹנֶה: הַשְׁווּ בֵּין הַזּוּגוֹת.\nה. מְשֻׁלָּשׁ וּמַלְבֵּן: הַאִם מִסְפַּר הַצְּלָעוֹת זֵהֶה? פָּרְטוּ.",
+      "sourceExerciseSha256": "257f7e7608c063ff6a5c808da83802c80c69bc981c4584e9336a23556281982e"
+    },
+    {
+      "id": "G2-T28-E-Q03א",
+      "q": 3,
+      "part": "א",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q003-i01",
+      "text": "קִרְאוּ, הַבִּיטוּ בָּאִיּוּרִים וַעֲנוּ. כִּתְבוּ הֶסְבֵּר קָצָר כְּשֶׁמְּבַקְּשִׁים.\nחִידוֹת שֶׁל שְׁלִילָה. בַּחֲרוּ מִתּוֹךְ קֻבִּיָּה, גָּלִיל, חָרוּט, כַּדּוּר וּפִירָמִידָה שֶׁבְּסִיסָהּ רִבּוּעַ.\nא. אֲנִי גּוּף. אֵין לִי פָּאוֹת שְׁטוּחוֹת וְאֵין לִי חֹד. מִי אֲנִי?",
+      "sourceExerciseSha256": "ae993b701dc1c1b805934b73a8baa87127ad693d3f4a3a95e6dc147a0542910d"
+    },
+    {
+      "id": "G2-T28-E-Q03ב",
+      "q": 3,
+      "part": "ב",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q003-i02",
+      "text": "קִרְאוּ, הַבִּיטוּ בָּאִיּוּרִים וַעֲנוּ. כִּתְבוּ הֶסְבֵּר קָצָר כְּשֶׁמְּבַקְּשִׁים.\nחִידוֹת שֶׁל שְׁלִילָה. בַּחֲרוּ מִתּוֹךְ קֻבִּיָּה, גָּלִיל, חָרוּט, כַּדּוּר וּפִירָמִידָה שֶׁבְּסִיסָהּ רִבּוּעַ.\nב. יֵשׁ לִי פָּאוֹת שְׁטוּחוֹת, אֲבָל אֵין לִי חֹד וְהַבְּסִיסִים שֶׁלִּי אֵינָם מְצֻלָּעִים. מִי אֲנִי?",
+      "sourceExerciseSha256": "407dfee363a501411f6f5d8037795aaf7ed036ca8dbb6a13bf16b365e633317b"
+    },
+    {
+      "id": "G2-T28-E-Q03ג",
+      "q": 3,
+      "part": "ג",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q003-i03",
+      "text": "קִרְאוּ, הַבִּיטוּ בָּאִיּוּרִים וַעֲנוּ. כִּתְבוּ הֶסְבֵּר קָצָר כְּשֶׁמְּבַקְּשִׁים.\nחִידוֹת שֶׁל שְׁלִילָה. בַּחֲרוּ מִתּוֹךְ קֻבִּיָּה, גָּלִיל, חָרוּט, כַּדּוּר וּפִירָמִידָה שֶׁבְּסִיסָהּ רִבּוּעַ.\nג. אֵין לִי חֵלֶק מְעֻגָּל, וְאֵין לִי פָּאָה מְשֻׁלֶּשֶׁת. מִי אֲנִי?",
+      "sourceExerciseSha256": "c5e9f09623c5decdf924a14ccda9fc19f7d81d1445fd45939079fd0880b1c774"
+    },
+    {
+      "id": "G2-T28-E-Q03ד",
+      "q": 3,
+      "part": "ד",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q003-i04",
+      "text": "קִרְאוּ, הַבִּיטוּ בָּאִיּוּרִים וַעֲנוּ. כִּתְבוּ הֶסְבֵּר קָצָר כְּשֶׁמְּבַקְּשִׁים.\nחִידוֹת שֶׁל שְׁלִילָה. בַּחֲרוּ מִתּוֹךְ קֻבִּיָּה, גָּלִיל, חָרוּט, כַּדּוּר וּפִירָמִידָה שֶׁבְּסִיסָהּ רִבּוּעַ.\nד. יֵשׁ לִי חֹד, אֲבָל הַבָּסִיס שֶׁלִּי אֵינוֹ מְצֻלָּע. מִי אֲנִי?",
+      "sourceExerciseSha256": "3e0377d1d8752270b36d501c2835b666a5f4d4683923fe84d29ca2cac3342e79"
+    },
+    {
+      "id": "G2-T28-E-Q03ה",
+      "q": 3,
+      "part": "ה",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q003-i05",
+      "text": "קִרְאוּ, הַבִּיטוּ בָּאִיּוּרִים וַעֲנוּ. כִּתְבוּ הֶסְבֵּר קָצָר כְּשֶׁמְּבַקְּשִׁים.\nחִידוֹת שֶׁל שְׁלִילָה. בַּחֲרוּ מִתּוֹךְ קֻבִּיָּה, גָּלִיל, חָרוּט, כַּדּוּר וּפִירָמִידָה שֶׁבְּסִיסָהּ רִבּוּעַ.\nה. יֵשׁ לִי פָּאוֹת מְשֻׁלָּשׁוֹת, אֲבָל אֲנִי לֹא מְשֻׁלָּשׁ. מִי אֲנִי?",
+      "sourceExerciseSha256": "dc5839fc11bcf1a4c3f332f8c2bcf060ac198d2cfdb8152075570e2102c8c8f5"
+    },
+    {
+      "id": "G2-T28-E-Q04א",
+      "q": 4,
+      "part": "א",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q004-i01",
+      "text": "קִרְאוּ, הַבִּיטוּ בָּאִיּוּרִים וַעֲנוּ. כִּתְבוּ הֶסְבֵּר קָצָר כְּשֶׁמְּבַקְּשִׁים.\nכִּתְבוּ רֶמֶז שֶׁיַּבְחִין בֵּין הַמּוּעֲמָדִים. אַל תִּכְתְּבוּ אֶת שֵׁם הַתְּשׁוּבָה בָּרֶמֶז.\nא. רֶמֶז לְקֻבִּיָּה מִתּוֹךְ קֻבִּיָּה וְגָלִיל.",
+      "sourceExerciseSha256": "db667c7e11c78ef0b49d13cadabac6e2c206436955d55dada3e726b5fe6dab95"
+    },
+    {
+      "id": "G2-T28-E-Q04ב",
+      "q": 4,
+      "part": "ב",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q004-i02",
+      "text": "קִרְאוּ, הַבִּיטוּ בָּאִיּוּרִים וַעֲנוּ. כִּתְבוּ הֶסְבֵּר קָצָר כְּשֶׁמְּבַקְּשִׁים.\nכִּתְבוּ רֶמֶז שֶׁיַּבְחִין בֵּין הַמּוּעֲמָדִים. אַל תִּכְתְּבוּ אֶת שֵׁם הַתְּשׁוּבָה בָּרֶמֶז.\nב. רֶמֶז לְעִגּוּל מִתּוֹךְ עִגּוּל וְכַדּוּר.",
+      "sourceExerciseSha256": "88f5739131ae3e2d6e7b911bdb1a207795ba4fa0052e013a1c835f27c0a069fd"
+    },
+    {
+      "id": "G2-T28-E-Q04ג",
+      "q": 4,
+      "part": "ג",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q004-i03",
+      "text": "קִרְאוּ, הַבִּיטוּ בָּאִיּוּרִים וַעֲנוּ. כִּתְבוּ הֶסְבֵּר קָצָר כְּשֶׁמְּבַקְּשִׁים.\nכִּתְבוּ רֶמֶז שֶׁיַּבְחִין בֵּין הַמּוּעֲמָדִים. אַל תִּכְתְּבוּ אֶת שֵׁם הַתְּשׁוּבָה בָּרֶמֶז.\nג. רֶמֶז לְחָרוּט מִתּוֹךְ חָרוּט וְגָלִיל.",
+      "sourceExerciseSha256": "c762159c6b1d02d00ee268c3809fdbb3878a9be499bbd53bdf6f7f64e632a795"
+    },
+    {
+      "id": "G2-T28-E-Q04ד",
+      "q": 4,
+      "part": "ד",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q004-i04",
+      "text": "קִרְאוּ, הַבִּיטוּ בָּאִיּוּרִים וַעֲנוּ. כִּתְבוּ הֶסְבֵּר קָצָר כְּשֶׁמְּבַקְּשִׁים.\nכִּתְבוּ רֶמֶז שֶׁיַּבְחִין בֵּין הַמּוּעֲמָדִים. אַל תִּכְתְּבוּ אֶת שֵׁם הַתְּשׁוּבָה בָּרֶמֶז.\nד. רֶמֶז לְמְשֻׁלָּשׁ מִתּוֹךְ מְשֻׁלָּשׁ וְרִבּוּעַ.",
+      "sourceExerciseSha256": "091ad1baef8aa3eb889014c7c75048392dbde206dbf813ed6a5034fd7b324661"
+    },
+    {
+      "id": "G2-T28-E-Q04ה",
+      "q": 4,
+      "part": "ה",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q004-i05",
+      "text": "קִרְאוּ, הַבִּיטוּ בָּאִיּוּרִים וַעֲנוּ. כִּתְבוּ הֶסְבֵּר קָצָר כְּשֶׁמְּבַקְּשִׁים.\nכִּתְבוּ רֶמֶז שֶׁיַּבְחִין בֵּין הַמּוּעֲמָדִים. אַל תִּכְתְּבוּ אֶת שֵׁם הַתְּשׁוּבָה בָּרֶמֶז.\nה. רֶמֶז לְכַדּוּר מִתּוֹךְ כַּדּוּר וְקֻבִּיָּה.",
+      "sourceExerciseSha256": "5f9082e84dfa2829c2768a86c925200b31559ffbdb8590d2b66601afc034fdd7"
+    },
+    {
+      "id": "G2-T28-E-Q05א",
+      "q": 5,
+      "part": "א",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q005-i01",
+      "text": "קִרְאוּ, הַבִּיטוּ בָּאִיּוּרִים וַעֲנוּ. כִּתְבוּ הֶסְבֵּר קָצָר כְּשֶׁמְּבַקְּשִׁים.\nמַה קּוֹרֶה כְּשֶׁמְּשַׁנִּים? בִּדְקוּ אֶת הַטְּעָנוֹת.\nא. מְסוֹבְבִים מְשֻׁלָּשׁ גָּזוּר בְּלִי לְקַפֵּל אוֹ לִגְזֹר. הַאִם הוּא נִשְׁאַר מְשֻׁלָּשׁ?",
+      "sourceExerciseSha256": "64ff97297762d0cbee2309073f6a9d40cfd36d33fae5a190772392e7c9eb4f98"
+    },
+    {
+      "id": "G2-T28-E-Q05ב",
+      "q": 5,
+      "part": "ב",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q005-i02",
+      "text": "קִרְאוּ, הַבִּיטוּ בָּאִיּוּרִים וַעֲנוּ. כִּתְבוּ הֶסְבֵּר קָצָר כְּשֶׁמְּבַקְּשִׁים.\nמַה קּוֹרֶה כְּשֶׁמְּשַׁנִּים? בִּדְקוּ אֶת הַטְּעָנוֹת.\nב. מְצַיְּרִים רִבּוּעַ גָּדוֹל יוֹתֵר. הַאִם מִסְפַּר צַלְעוֹתָיו גָּדֵל?",
+      "sourceExerciseSha256": "b681a15719e500ba7174a8df211bceb0da0ea2ac2c630087a534b7b3830bd3c0"
+    },
+    {
+      "id": "G2-T28-E-Q05ג",
+      "q": 5,
+      "part": "ג",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q005-i03",
+      "text": "קִרְאוּ, הַבִּיטוּ בָּאִיּוּרִים וַעֲנוּ. כִּתְבוּ הֶסְבֵּר קָצָר כְּשֶׁמְּבַקְּשִׁים.\nמַה קּוֹרֶה כְּשֶׁמְּשַׁנִּים? בִּדְקוּ אֶת הַטְּעָנוֹת.\nג. מוֹחֲקִים חֵלֶק מִצֶּלַע בְּמַלְבֵּן וּמַשְׁאִירִים פֶּתַח. הַאִם הַקַּו שֶׁנִּשְׁאַר הוּא מְצֻלָּע?",
+      "sourceExerciseSha256": "b577fb71f3f1f2ed5f60df0fe4bfc32610a44632507fa2886556188ec9bd6d8b"
+    },
+    {
+      "id": "G2-T28-E-Q05ד",
+      "q": 5,
+      "part": "ד",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q005-i04",
+      "text": "קִרְאוּ, הַבִּיטוּ בָּאִיּוּרִים וַעֲנוּ. כִּתְבוּ הֶסְבֵּר קָצָר כְּשֶׁמְּבַקְּשִׁים.\nמַה קּוֹרֶה כְּשֶׁמְּשַׁנִּים? בִּדְקוּ אֶת הַטְּעָנוֹת.\nד. צוֹבְעִים פָּאָה שֶׁל קֻבִּיָּה בְּצֶבַע אַחֵר. הַאִם צוּרַת הַפָּאָה מִשְׁתַּנָּה?",
+      "sourceExerciseSha256": "7ab68467cb2659c87b53694deb74a7e302e2003842a8cab7dffa71ee68865a3c"
+    },
+    {
+      "id": "G2-T28-E-Q05ה",
+      "q": 5,
+      "part": "ה",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q005-i05",
+      "text": "קִרְאוּ, הַבִּיטוּ בָּאִיּוּרִים וַעֲנוּ. כִּתְבוּ הֶסְבֵּר קָצָר כְּשֶׁמְּבַקְּשִׁים.\nמַה קּוֹרֶה כְּשֶׁמְּשַׁנִּים? בִּדְקוּ אֶת הַטְּעָנוֹת.\nה. מְסוֹבְבִים מַלְבֵּן גָּזוּר. הַאִם זָוִיּוֹתָיו הַיְשָׁרוֹת נֶעֱלָמוֹת?",
+      "sourceExerciseSha256": "34c3c7bc3e59984d5b813baa1ff48b4ea680ab1cf9044db33ea5eab78e630d93"
+    },
+    {
+      "id": "G2-T28-E-Q06א",
+      "q": 6,
+      "part": "א",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q006-i01",
+      "text": "קִרְאוּ, הַבִּיטוּ בָּאִיּוּרִים וַעֲנוּ. כִּתְבוּ הֶסְבֵּר קָצָר כְּשֶׁמְּבַקְּשִׁים.\nמִשְׂחַק כַּרְטִיסִים: רִבּוּעַ, מְשֻׁלָּשׁ, עִגּוּל, קֻבִּיָּה, כַּדּוּר. בַּחֲרוּ שְׁנֵי כַּרְטִיסִים שׁוֹנִים. הַסֵּדֶר אֵינוֹ חָשׁוּב.\nא. מִצְאוּ אֶת כָּל הַזּוּגוֹת שֶׁבָּהֶם שְׁנֵי הַכַּרְטִיסִים מְצַיְּנִים צוּרוֹת שְׁטוּחוֹת.",
+      "sourceExerciseSha256": "2eee403a0a385fd37d5ba064fb95a0b42fc3ff63f6776016a928bfc38bb3dbe9"
+    },
+    {
+      "id": "G2-T28-E-Q06ב",
+      "q": 6,
+      "part": "ב",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q006-i02",
+      "text": "קִרְאוּ, הַבִּיטוּ בָּאִיּוּרִים וַעֲנוּ. כִּתְבוּ הֶסְבֵּר קָצָר כְּשֶׁמְּבַקְּשִׁים.\nמִשְׂחַק כַּרְטִיסִים: רִבּוּעַ, מְשֻׁלָּשׁ, עִגּוּל, קֻבִּיָּה, כַּדּוּר. בַּחֲרוּ שְׁנֵי כַּרְטִיסִים שׁוֹנִים. הַסֵּדֶר אֵינוֹ חָשׁוּב.\nב. מִצְאוּ אֶת כָּל הַזּוּגוֹת שֶׁבָּהֶם מְצֻלָּע וְגוּף.",
+      "sourceExerciseSha256": "cbbe7e85b0c16c61683b9554b3a2cb0cd78a39880d51cc88e674c94e464ea5af"
+    },
+    {
+      "id": "G2-T28-E-Q06ג",
+      "q": 6,
+      "part": "ג",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q006-i03",
+      "text": "קִרְאוּ, הַבִּיטוּ בָּאִיּוּרִים וַעֲנוּ. כִּתְבוּ הֶסְבֵּר קָצָר כְּשֶׁמְּבַקְּשִׁים.\nמִשְׂחַק כַּרְטִיסִים: רִבּוּעַ, מְשֻׁלָּשׁ, עִגּוּל, קֻבִּיָּה, כַּדּוּר. בַּחֲרוּ שְׁנֵי כַּרְטִיסִים שׁוֹנִים. הַסֵּדֶר אֵינוֹ חָשׁוּב.\nג. מִצְאוּ זוּג שֶׁבּוֹ שְׁנֵי הַכַּרְטִיסִים מְצַיְּנִים גּוּפִים.",
+      "sourceExerciseSha256": "1a1bff808674df2cc1f3e55546350102a9d034ba7adf39ec22e79360ba915308"
+    },
+    {
+      "id": "G2-T28-E-Q06ד",
+      "q": 6,
+      "part": "ד",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q006-i04",
+      "text": "קִרְאוּ, הַבִּיטוּ בָּאִיּוּרִים וַעֲנוּ. כִּתְבוּ הֶסְבֵּר קָצָר כְּשֶׁמְּבַקְּשִׁים.\nמִשְׂחַק כַּרְטִיסִים: רִבּוּעַ, מְשֻׁלָּשׁ, עִגּוּל, קֻבִּיָּה, כַּדּוּר. בַּחֲרוּ שְׁנֵי כַּרְטִיסִים שׁוֹנִים. הַסֵּדֶר אֵינוֹ חָשׁוּב.\nד. מִצְאוּ זוּג שֶׁבּוֹ צוּרָה שְׁטוּחָה לְלֹא פִּנּוֹת וְגוּף עִם פָּאוֹת שְׁטוּחוֹת.",
+      "sourceExerciseSha256": "52c0815bfc2ea5431025cd922d200b9bb451d7c445967294f4f78770e9a63a18"
+    },
+    {
+      "id": "G2-T28-E-Q06ה",
+      "q": 6,
+      "part": "ה",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q006-i05",
+      "text": "קִרְאוּ, הַבִּיטוּ בָּאִיּוּרִים וַעֲנוּ. כִּתְבוּ הֶסְבֵּר קָצָר כְּשֶׁמְּבַקְּשִׁים.\nמִשְׂחַק כַּרְטִיסִים: רִבּוּעַ, מְשֻׁלָּשׁ, עִגּוּל, קֻבִּיָּה, כַּדּוּר. בַּחֲרוּ שְׁנֵי כַּרְטִיסִים שׁוֹנִים. הַסֵּדֶר אֵינוֹ חָשׁוּב.\nה. מִצְאוּ זוּג שֶׁבּוֹ כָּל כַּרְטִיס מְצַיֵּן מְצֻלָּע.",
+      "sourceExerciseSha256": "3d67ae8eb14584ed8a5d791c9e138984d15f55dbeb3333ccb711699ed7f562a6"
+    },
+    {
+      "id": "G2-T28-E-Q07א",
+      "q": 7,
+      "part": "א",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q007-i01",
+      "text": "קִרְאוּ, הַבִּיטוּ בָּאִיּוּרִים וַעֲנוּ. כִּתְבוּ הֶסְבֵּר קָצָר כְּשֶׁמְּבַקְּשִׁים.\nהַאִם הַטַּעֲנָה נְכוֹנָה? אִם לֹא, תְּנוּ דֻּגְמָה נֶגְדִּית מִתּוֹךְ הַשֵּׁמוֹת שֶׁלְּמַטָּה: רִבּוּעַ, עִגּוּל, קֻבִּיָּה, גָּלִיל, כַּדּוּר.\nא. ״כָּל צוּרָה שְׁטוּחָה בָּרְשִׁימָה הִיא מְצֻלָּע.״",
+      "sourceExerciseSha256": "1cebb20fa7967672237ea3a225a89628880977df073a6ef5cfc5aa14ec280076"
+    },
+    {
+      "id": "G2-T28-E-Q07ב",
+      "q": 7,
+      "part": "ב",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q007-i02",
+      "text": "קִרְאוּ, הַבִּיטוּ בָּאִיּוּרִים וַעֲנוּ. כִּתְבוּ הֶסְבֵּר קָצָר כְּשֶׁמְּבַקְּשִׁים.\nהַאִם הַטַּעֲנָה נְכוֹנָה? אִם לֹא, תְּנוּ דֻּגְמָה נֶגְדִּית מִתּוֹךְ הַשֵּׁמוֹת שֶׁלְּמַטָּה: רִבּוּעַ, עִגּוּל, קֻבִּיָּה, גָּלִיל, כַּדּוּר.\nב. ״לְכָל גּוּף בָּרְשִׁימָה יֵשׁ פָּאָה שְׁטוּחָה.״",
+      "sourceExerciseSha256": "9f632fe93bf4df0c39552b59af2691fe2c4ad32f175bdcb22d8140f6fce788c9"
+    },
+    {
+      "id": "G2-T28-E-Q07ג",
+      "q": 7,
+      "part": "ג",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q007-i03",
+      "text": "קִרְאוּ, הַבִּיטוּ בָּאִיּוּרִים וַעֲנוּ. כִּתְבוּ הֶסְבֵּר קָצָר כְּשֶׁמְּבַקְּשִׁים.\nהַאִם הַטַּעֲנָה נְכוֹנָה? אִם לֹא, תְּנוּ דֻּגְמָה נֶגְדִּית מִתּוֹךְ הַשֵּׁמוֹת שֶׁלְּמַטָּה: רִבּוּעַ, עִגּוּל, קֻבִּיָּה, גָּלִיל, כַּדּוּר.\nג. ״כָּל מָה שֶׁנִּרְאֶה עָגֹל בָּרְשִׁימָה הוּא גּוּף.״",
+      "sourceExerciseSha256": "cd868bd088bf7c8c92274f9633376975ff7f9661d59232a5b72d4eca2cc465cd"
+    },
+    {
+      "id": "G2-T28-E-Q07ד",
+      "q": 7,
+      "part": "ד",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q007-i04",
+      "text": "קִרְאוּ, הַבִּיטוּ בָּאִיּוּרִים וַעֲנוּ. כִּתְבוּ הֶסְבֵּר קָצָר כְּשֶׁמְּבַקְּשִׁים.\nהַאִם הַטַּעֲנָה נְכוֹנָה? אִם לֹא, תְּנוּ דֻּגְמָה נֶגְדִּית מִתּוֹךְ הַשֵּׁמוֹת שֶׁלְּמַטָּה: רִבּוּעַ, עִגּוּל, קֻבִּיָּה, גָּלִיל, כַּדּוּר.\nד. ״כָּל הַגּוּפִים בָּרְשִׁימָה הֵם קֻבִּיּוֹת.״ תְּנוּ אֶת כָּל הַדֻּגְמָאוֹת הַנֶּגְדִּיּוֹת.",
+      "sourceExerciseSha256": "369f08527bc0d118863e36ea63ed747035f46f37852700acc8a5400ba20f9a7e"
+    },
+    {
+      "id": "G2-T28-E-Q07ה",
+      "q": 7,
+      "part": "ה",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q007-i05",
+      "text": "קִרְאוּ, הַבִּיטוּ בָּאִיּוּרִים וַעֲנוּ. כִּתְבוּ הֶסְבֵּר קָצָר כְּשֶׁמְּבַקְּשִׁים.\nהַאִם הַטַּעֲנָה נְכוֹנָה? אִם לֹא, תְּנוּ דֻּגְמָה נֶגְדִּית מִתּוֹךְ הַשֵּׁמוֹת שֶׁלְּמַטָּה: רִבּוּעַ, עִגּוּל, קֻבִּיָּה, גָּלִיל, כַּדּוּר.\nה. ״הָרִבּוּעַ בָּרְשִׁימָה הוּא גַּם צוּרָה שְׁטוּחָה וְגַם מְצֻלָּע.״",
+      "sourceExerciseSha256": "24957680b90e3897fb78ac018f14c88d72957833aa25830ddfd8af540529b2c3"
+    },
+    {
+      "id": "G2-T28-E-Q08א",
+      "q": 8,
+      "part": "א",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q008-i01",
+      "text": "קִרְאוּ, הַבִּיטוּ בָּאִיּוּרִים וַעֲנוּ. כִּתְבוּ הֶסְבֵּר קָצָר כְּשֶׁמְּבַקְּשִׁים.\nתַּכְנְנוּ בְּעַצְמְכֶם. אֶפְשָׁר שֶׁתִּהְיֶה יוֹתֵר מִתְּשׁוּבָה מַתְאִימָה אַחַת.\nא. בַּחֲרוּ שְׁלוֹשָׁה שֵׁמוֹת שׁוֹנִים מִבֵּין רִבּוּעַ, מְשֻׁלָּשׁ, עִגּוּל, קֻבִּיָּה וְכַדּוּר: שְׁתֵּי צוּרוֹת שְׁטוּחוֹת וְגוּף.",
+      "sourceExerciseSha256": "2ecd8494cbf937f9ceba226e1ac79ec4a5c3471dfccf449027dbb4418230acbd"
+    },
+    {
+      "id": "G2-T28-E-Q08ב",
+      "q": 8,
+      "part": "ב",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q008-i02",
+      "text": "קִרְאוּ, הַבִּיטוּ בָּאִיּוּרִים וַעֲנוּ. כִּתְבוּ הֶסְבֵּר קָצָר כְּשֶׁמְּבַקְּשִׁים.\nתַּכְנְנוּ בְּעַצְמְכֶם. אֶפְשָׁר שֶׁתִּהְיֶה יוֹתֵר מִתְּשׁוּבָה מַתְאִימָה אַחַת.\nב. כִּתְבוּ שְׁאֵלַת כֵּן אוֹ לֹא שֶׁתַּבְדִּיל בֵּין רִבּוּעַ לְעִגּוּל.",
+      "sourceExerciseSha256": "a783bcad60f2bfa3a74d42c665ca3fe5ff1befa284fce21d49e682803f21ec99"
+    },
+    {
+      "id": "G2-T28-E-Q08ג",
+      "q": 8,
+      "part": "ג",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q008-i03",
+      "text": "קִרְאוּ, הַבִּיטוּ בָּאִיּוּרִים וַעֲנוּ. כִּתְבוּ הֶסְבֵּר קָצָר כְּשֶׁמְּבַקְּשִׁים.\nתַּכְנְנוּ בְּעַצְמְכֶם. אֶפְשָׁר שֶׁתִּהְיֶה יוֹתֵר מִתְּשׁוּבָה מַתְאִימָה אַחַת.\nג. תְּנוּ דֻּגְמָה לְגוּף וְלִצּוּרָה שְׁטוּחָה שֶׁמַּתְאִימָה לְפָאָה שֶׁלּוֹ.",
+      "sourceExerciseSha256": "47a536aad52204df20f74f44829c0a39cdec1b87caa06d373b3fd5e4349628e6"
+    },
+    {
+      "id": "G2-T28-E-Q08ד",
+      "q": 8,
+      "part": "ד",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q008-i04",
+      "text": "קִרְאוּ, הַבִּיטוּ בָּאִיּוּרִים וַעֲנוּ. כִּתְבוּ הֶסְבֵּר קָצָר כְּשֶׁמְּבַקְּשִׁים.\nתַּכְנְנוּ בְּעַצְמְכֶם. אֶפְשָׁר שֶׁתִּהְיֶה יוֹתֵר מִתְּשׁוּבָה מַתְאִימָה אַחַת.\nד. בַּחֲרוּ מִתּוֹךְ קֻבִּיָּה, גָּלִיל וְכַדּוּר גּוּף שֶׁאֶפְשָׁר לְהַנִּיחַ עַל פָּאָה שְׁטוּחָה. הַסְבִּירוּ.",
+      "sourceExerciseSha256": "798795a55ee7653c51f2b251feef91f43077ff7c5db4d727ff95b69de206b243"
+    },
+    {
+      "id": "G2-T28-E-Q08ה",
+      "q": 8,
+      "part": "ה",
+      "canonicalItemId": "elm-20261107-g2-s28-E-q008-i05",
+      "text": "קִרְאוּ, הַבִּיטוּ בָּאִיּוּרִים וַעֲנוּ. כִּתְבוּ הֶסְבֵּר קָצָר כְּשֶׁמְּבַקְּשִׁים.\nתַּכְנְנוּ בְּעַצְמְכֶם. אֶפְשָׁר שֶׁתִּהְיֶה יוֹתֵר מִתְּשׁוּבָה מַתְאִימָה אַחַת.\nה. כִּתְבוּ תֵּאוּר נָכוֹן שֶׁמַּתְאִים גַּם לְמְשֻׁלָּשׁ וְגַם לְרִבּוּעַ, אֲבָל לֹא לְעִגּוּל.",
+      "sourceExerciseSha256": "4e8d6a782fa83be0be048600130598dc59a6152143b5fd4e422a069289afa2a3"
+    }
+  ],
+  "hintRowsDraft": [],
+  "privateHintReviewLedger": [],
+  "layoutRequirements": {
+    "coordinateSystem": "normalized-top-left",
+    "pageBase": 1,
+    "pdfSha256": "d93901a1ef8103850ecc83de1c91f637752169ae65e5fb4b198ed4001fb0de7c",
+    "canonicalSourceSha256": "b98740ed29b5dc7c4e2be2803cfdfcd1211da9b9365111bb2be744afb27e87a3",
+    "items": [
+      {
+        "canonicalItemId": "elm-20261107-g2-s28-E-q001-i01",
+        "questionId": "elm-20261107-g2-s28-E-q001",
+        "q": 1,
+        "part": "א",
+        "htmlId": "elm-20261107-g2-s28-E-q001-i01",
+        "answerHtmlId": "answer-elm-20261107-g2-s28-E-q001-i01",
+        "requiredQuestions": [],
+        "missing": [
+          "pin",
+          "itemCrops",
+          "questionContextCrops",
+          "answerCrops"
+        ]
+      },
+      {
+        "canonicalItemId": "elm-20261107-g2-s28-E-q001-i02",
+        "questionId": "elm-20261107-g2-s28-E-q001",
+        "q": 1,
+        "part": "ב",
+        "htmlId": "elm-20261107-g2-s28-E-q001-i02",
+        "answerHtmlId": "answer-elm-20261107-g2-s28-E-q001-i02",
+        "requiredQuestions": [],
+        "missing": [
+          "pin",
+          "itemCrops",
+          "questionContextCrops",
+          "answerCrops"
+        ]
+      },
+      {
+        "canonicalItemId": "elm-20261107-g2-s28-E-q001-i03",
+        "questionId": "elm-20261107-g2-s28-E-q001",
+        "q": 1,
+        "part": "ג",
+        "htmlId": "elm-20261107-g2-s28-E-q001-i03",
+        "answerHtmlId": "answer-elm-20261107-g2-s28-E-q001-i03",
+        "requiredQuestions": [],
+        "missing": [
+          "pin",
+          "itemCrops",
+          "questionContextCrops",
+          "answerCrops"
+        ]
+      },
+      {
+        "canonicalItemId": "elm-20261107-g2-s28-E-q001-i04",
+        "questionId": "elm-20261107-g2-s28-E-q001",
+        "q": 1,
+        "part": "ד",
+        "htmlId": "elm-20261107-g2-s28-E-q001-i04",
+        "answerHtmlId": "answer-elm-20261107-g2-s28-E-q001-i04",
+        "requiredQuestions": [],
+        "missing": [
+          "pin",
+          "itemCrops",
+          "questionContextCrops",
+          "answerCrops"
+        ]
+      },
+      {
+        "canonicalItemId": "elm-20261107-g2-s28-E-q001-i05",
+        "questionId": "elm-20261107-g2-s28-E-q001",
+        "q": 1,
+        "part": "ה",
+        "htmlId": "elm-20261107-g2-s28-E-q001-i05",
+        "answerHtmlId": "answer-elm-20261107-g2-s28-E-q001-i05",
+        "requiredQuestions": [],
+        "missing": [
+          "pin",
+          "itemCrops",
+          "questionContextCrops",
+          "answerCrops"
+        ]
+      },
+      {
+        "canonicalItemId": "elm-20261107-g2-s28-E-q002-i01",
+        "questionId": "elm-20261107-g2-s28-E-q002",
+        "q": 2,
+        "part": "א",
+        "htmlId": "elm-20261107-g2-s28-E-q002-i01",
+        "answerHtmlId": "answer-elm-20261107-g2-s28-E-q002-i01",
+        "requiredQuestions": [],
+        "missing": [
+          "pin",
+          "itemCrops",
+          "questionContextCrops",
+          "answerCrops"
+        ]
+      },
+      {
+        "canonicalItemId": "elm-20261107-g2-s28-E-q002-i02",
+        "questionId": "elm-20261107-g2-s28-E-q002",
+        "q": 2,
+        "part": "ב",
+        "htmlId": "elm-20261107-g2-s28-E-q002-i02",
+        "answerHtmlId": "answer-elm-20261107-g2-s28-E-q002-i02",
+        "requiredQuestions": [],
+        "missing": [
+          "pin",
+          "itemCrops",
+          "questionContextCrops",
+          "answerCrops"
+        ]
+      },
+      {
+        "canonicalItemId": "elm-20261107-g2-s28-E-q002-i03",
+        "questionId": "elm-20261107-g2-s28-E-q002",
+        "q": 2,
+        "part": "ג",
+        "htmlId": "elm-20261107-g2-s28-E-q002-i03",
+        "answerHtmlId": "answer-elm-20261107-g2-s28-E-q002-i03",
+        "requiredQuestions": [],
+        "missing": [
+          "pin",
+          "itemCrops",
+          "questionContextCrops",
+          "answerCrops"
+        ]
+      },
+      {
+        "canonicalItemId": "elm-20261107-g2-s28-E-q002-i04",
+        "questionId": "elm-20261107-g2-s28-E-q002",
+        "q": 2,
+        "part": "ד",
+        "htmlId": "elm-20261107-g2-s28-E-q002-i04",
+        "answerHtmlId": "answer-elm-20261107-g2-s28-E-q002-i04",
+        "requiredQuestions": [],
+        "missing": [
+          "pin",
+          "itemCrops",
+          "questionContextCrops",
+          "answerCrops"
+        ]
+      },
+      {
+        "canonicalItemId": "elm-20261107-g2-s28-E-q002-i05",
+        "questionId": "elm-20261107-g2-s28-E-q002",
+        "q": 2,
+        "part": "ה",
+        "htmlId": "elm-20261107-g2-s28-E-q002-i05",
+        "answerHtmlId": "answer-elm-20261107-g2-s28-E-q002-i05",
+        "requiredQuestions": [],
+        "missing": [
+          "pin",
+          "itemCrops",
+          "questionContextCrops",
+          "answerCrops"
+        ]
+      },
+      {
+        "canonicalItemId": "elm-20261107-g2-s28-E-q003-i01",
+        "questionId": "elm-20261107-g2-s28-E-q003",
+        "q": 3,
+        "part": "א",
+        "htmlId": "elm-20261107-g2-s28-E-q003-i01",
+        "answerHtmlId": "answer-elm-20261107-g2-s28-E-q003-i01",
+        "requiredQuestions": [],
+        "missing": [
+          "pin",
+          "itemCrops",
+          "questionContextCrops",
+          "answerCrops"
+        ]
+      },
+      {
+        "canonicalItemId": "elm-20261107-g2-s28-E-q003-i02",
+        "questionId": "elm-20261107-g2-s28-E-q003",
+        "q": 3,
+        "part": "ב",
+        "htmlId": "elm-20261107-g2-s28-E-q003-i02",
+        "answerHtmlId": "answer-elm-20261107-g2-s28-E-q003-i02",
+        "requiredQuestions": [],
+        "missing": [
+          "pin",
+          "itemCrops",
+          "questionContextCrops",
+          "answerCrops"
+        ]
+      },
+      {
+        "canonicalItemId": "elm-20261107-g2-s28-E-q003-i03",
+        "questionId": "elm-20261107-g2-s28-E-q003",
+        "q": 3,
+        "part": "ג",
+        "htmlId": "elm-20261107-g2-s28-E-q003-i03",
+        "answerHtmlId": "answer-elm-20261107-g2-s28-E-q003-i03",
+        "requiredQuestions": [],
+        "missing": [
+          "pin",
+          "itemCrops",
+          "questionContextCrops",
+          "answerCrops"
+        ]
+      },
+      {
+        "canonicalItemId": "elm-20261107-g2-s28-E-q003-i04",
+        "questionId": "elm-20261107-g2-s28-E-q003",
+        "q": 3,
+        "part": "ד",
+        "htmlId": "elm-20261107-g2-s28-E-q003-i04",
+        "answerHtmlId": "answer-elm-20261107-g2-s28-E-q003-i04",
+        "requiredQuestions": [],
+        "missing": [
+          "pin",
+          "itemCrops",
+          "questionContextCrops",
+          "answerCrops"
+        ]
+      },
+      {
+        "canonicalItemId": "elm-20261107-g2-s28-E-q003-i05",
+        "questionId": "elm-20261107-g2-s28-E-q003",
+        "q": 3,
+        "part": "ה",
+        "htmlId": "elm-20261107-g2-s28-E-q003-i05",
+        "answerHtmlId": "answer-elm-20261107-g2-s28-E-q003-i05",
+        "requiredQuestions": [],
+        "missing": [
+          "pin",
+          "itemCrops",
+          "questionContextCrops",
+          "answerCrops"
+        ]
+      },
+      {
+        "canonicalItemId": "elm-20261107-g2-s28-E-q004-i01",
+        "questionId": "elm-20261107-g2-s28-E-q004",
+        "q": 4,
+        "part": "א",
+        "htmlId": "elm-20261107-g2-s28-E-q004-i01",
+        "answerHtmlId": "answer-elm-20261107-g2-s28-E-q004-i01",
+        "requiredQuestions": [],
+        "missing": [
+          "pin",
+          "itemCrops",
+          "questionContextCrops",
+          "answerCrops"
+        ]
+      },
+      {
+        "canonicalItemId": "elm-20261107-g2-s28-E-q004-i02",
+        "questionId": "elm-20261107-g2-s28-E-q004",
+        "q": 4,
+        "part": "ב",
+        "htmlId": "elm-20261107-g2-s28-E-q004-i02",
+        "answerHtmlId": "answer-elm-20261107-g2-s28-E-q004-i02",
+        "requiredQuestions": [],
+        "missing": [
+          "pin",
+          "itemCrops",
+          "questionContextCrops",
+          "answerCrops"
+        ]
+      },
+      {
+        "canonicalItemId": "elm-20261107-g2-s28-E-q004-i03",
+        "questionId": "elm-20261107-g2-s28-E-q004",
+        "q": 4,
+        "part": "ג",
+        "htmlId": "elm-20261107-g2-s28-E-q004-i03",
+        "answerHtmlId": "answer-elm-20261107-g2-s28-E-q004-i03",
+        "requiredQuestions": [],
+        "missing": [
+          "pin",
+          "itemCrops",
+          "questionContextCrops",
+          "answerCrops"
+        ]
+      },
+      {
+        "canonicalItemId": "elm-20261107-g2-s28-E-q004-i04",
+        "questionId": "elm-20261107-g2-s28-E-q004",
+        "q": 4,
+        "part": "ד",
+        "htmlId": "elm-20261107-g2-s28-E-q004-i04",
+        "answerHtmlId": "answer-elm-20261107-g2-s28-E-q004-i04",
+        "requiredQuestions": [],
+        "missing": [
+          "pin",
+          "itemCrops",
+          "questionContextCrops",
+          "answerCrops"
+        ]
+      },
+      {
+        "canonicalItemId": "elm-20261107-g2-s28-E-q004-i05",
+        "questionId": "elm-20261107-g2-s28-E-q004",
+        "q": 4,
+        "part": "ה",
+        "htmlId": "elm-20261107-g2-s28-E-q004-i05",
+        "answerHtmlId": "answer-elm-20261107-g2-s28-E-q004-i05",
+        "requiredQuestions": [],
+        "missing": [
+          "pin",
+          "itemCrops",
+          "questionContextCrops",
+          "answerCrops"
+        ]
+      },
+      {
+        "canonicalItemId": "elm-20261107-g2-s28-E-q005-i01",
+        "questionId": "elm-20261107-g2-s28-E-q005",
+        "q": 5,
+        "part": "א",
+        "htmlId": "elm-20261107-g2-s28-E-q005-i01",
+        "answerHtmlId": "answer-elm-20261107-g2-s28-E-q005-i01",
+        "requiredQuestions": [],
+        "missing": [
+          "pin",
+          "itemCrops",
+          "questionContextCrops",
+          "answerCrops"
+        ]
+      },
+      {
+        "canonicalItemId": "elm-20261107-g2-s28-E-q005-i02",
+        "questionId": "elm-20261107-g2-s28-E-q005",
+        "q": 5,
+        "part": "ב",
+        "htmlId": "elm-20261107-g2-s28-E-q005-i02",
+        "answerHtmlId": "answer-elm-20261107-g2-s28-E-q005-i02",
+        "requiredQuestions": [],
+        "missing": [
+          "pin",
+          "itemCrops",
+          "questionContextCrops",
+          "answerCrops"
+        ]
+      },
+      {
+        "canonicalItemId": "elm-20261107-g2-s28-E-q005-i03",
+        "questionId": "elm-20261107-g2-s28-E-q005",
+        "q": 5,
+        "part": "ג",
+        "htmlId": "elm-20261107-g2-s28-E-q005-i03",
+        "answerHtmlId": "answer-elm-20261107-g2-s28-E-q005-i03",
+        "requiredQuestions": [],
+        "missing": [
+          "pin",
+          "itemCrops",
+          "questionContextCrops",
+          "answerCrops"
+        ]
+      },
+      {
+        "canonicalItemId": "elm-20261107-g2-s28-E-q005-i04",
+        "questionId": "elm-20261107-g2-s28-E-q005",
+        "q": 5,
+        "part": "ד",
+        "htmlId": "elm-20261107-g2-s28-E-q005-i04",
+        "answerHtmlId": "answer-elm-20261107-g2-s28-E-q005-i04",
+        "requiredQuestions": [],
+        "missing": [
+          "pin",
+          "itemCrops",
+          "questionContextCrops",
+          "answerCrops"
+        ]
+      },
+      {
+        "canonicalItemId": "elm-20261107-g2-s28-E-q005-i05",
+        "questionId": "elm-20261107-g2-s28-E-q005",
+        "q": 5,
+        "part": "ה",
+        "htmlId": "elm-20261107-g2-s28-E-q005-i05",
+        "answerHtmlId": "answer-elm-20261107-g2-s28-E-q005-i05",
+        "requiredQuestions": [],
+        "missing": [
+          "pin",
+          "itemCrops",
+          "questionContextCrops",
+          "answerCrops"
+        ]
+      },
+      {
+        "canonicalItemId": "elm-20261107-g2-s28-E-q006-i01",
+        "questionId": "elm-20261107-g2-s28-E-q006",
+        "q": 6,
+        "part": "א",
+        "htmlId": "elm-20261107-g2-s28-E-q006-i01",
+        "answerHtmlId": "answer-elm-20261107-g2-s28-E-q006-i01",
+        "requiredQuestions": [],
+        "missing": [
+          "pin",
+          "itemCrops",
+          "questionContextCrops",
+          "answerCrops"
+        ]
+      },
+      {
+        "canonicalItemId": "elm-20261107-g2-s28-E-q006-i02",
+        "questionId": "elm-20261107-g2-s28-E-q006",
+        "q": 6,
+        "part": "ב",
+        "htmlId": "elm-20261107-g2-s28-E-q006-i02",
+        "answerHtmlId": "answer-elm-20261107-g2-s28-E-q006-i02",
+        "requiredQuestions": [],
+        "missing": [
+          "pin",
+          "itemCrops",
+          "questionContextCrops",
+          "answerCrops"
+        ]
+      },
+      {
+        "canonicalItemId": "elm-20261107-g2-s28-E-q006-i03",
+        "questionId": "elm-20261107-g2-s28-E-q006",
+        "q": 6,
+        "part": "ג",
+        "htmlId": "elm-20261107-g2-s28-E-q006-i03",
+        "answerHtmlId": "answer-elm-20261107-g2-s28-E-q006-i03",
+        "requiredQuestions": [],
+        "missing": [
+          "pin",
+          "itemCrops",
+          "questionContextCrops",
+          "answerCrops"
+        ]
+      },
+      {
+        "canonicalItemId": "elm-20261107-g2-s28-E-q006-i04",
+        "questionId": "elm-20261107-g2-s28-E-q006",
+        "q": 6,
+        "part": "ד",
+        "htmlId": "elm-20261107-g2-s28-E-q006-i04",
+        "answerHtmlId": "answer-elm-20261107-g2-s28-E-q006-i04",
+        "requiredQuestions": [],
+        "missing": [
+          "pin",
+          "itemCrops",
+          "questionContextCrops",
+          "answerCrops"
+        ]
+      },
+      {
+        "canonicalItemId": "elm-20261107-g2-s28-E-q006-i05",
+        "questionId": "elm-20261107-g2-s28-E-q006",
+        "q": 6,
+        "part": "ה",
+        "htmlId": "elm-20261107-g2-s28-E-q006-i05",
+        "answerHtmlId": "answer-elm-20261107-g2-s28-E-q006-i05",
+        "requiredQuestions": [],
+        "missing": [
+          "pin",
+          "itemCrops",
+          "questionContextCrops",
+          "answerCrops"
+        ]
+      },
+      {
+        "canonicalItemId": "elm-20261107-g2-s28-E-q007-i01",
+        "questionId": "elm-20261107-g2-s28-E-q007",
+        "q": 7,
+        "part": "א",
+        "htmlId": "elm-20261107-g2-s28-E-q007-i01",
+        "answerHtmlId": "answer-elm-20261107-g2-s28-E-q007-i01",
+        "requiredQuestions": [],
+        "missing": [
+          "pin",
+          "itemCrops",
+          "questionContextCrops",
+          "answerCrops"
+        ]
+      },
+      {
+        "canonicalItemId": "elm-20261107-g2-s28-E-q007-i02",
+        "questionId": "elm-20261107-g2-s28-E-q007",
+        "q": 7,
+        "part": "ב",
+        "htmlId": "elm-20261107-g2-s28-E-q007-i02",
+        "answerHtmlId": "answer-elm-20261107-g2-s28-E-q007-i02",
+        "requiredQuestions": [],
+        "missing": [
+          "pin",
+          "itemCrops",
+          "questionContextCrops",
+          "answerCrops"
+        ]
+      },
+      {
+        "canonicalItemId": "elm-20261107-g2-s28-E-q007-i03",
+        "questionId": "elm-20261107-g2-s28-E-q007",
+        "q": 7,
+        "part": "ג",
+        "htmlId": "elm-20261107-g2-s28-E-q007-i03",
+        "answerHtmlId": "answer-elm-20261107-g2-s28-E-q007-i03",
+        "requiredQuestions": [],
+        "missing": [
+          "pin",
+          "itemCrops",
+          "questionContextCrops",
+          "answerCrops"
+        ]
+      },
+      {
+        "canonicalItemId": "elm-20261107-g2-s28-E-q007-i04",
+        "questionId": "elm-20261107-g2-s28-E-q007",
+        "q": 7,
+        "part": "ד",
+        "htmlId": "elm-20261107-g2-s28-E-q007-i04",
+        "answerHtmlId": "answer-elm-20261107-g2-s28-E-q007-i04",
+        "requiredQuestions": [],
+        "missing": [
+          "pin",
+          "itemCrops",
+          "questionContextCrops",
+          "answerCrops"
+        ]
+      },
+      {
+        "canonicalItemId": "elm-20261107-g2-s28-E-q007-i05",
+        "questionId": "elm-20261107-g2-s28-E-q007",
+        "q": 7,
+        "part": "ה",
+        "htmlId": "elm-20261107-g2-s28-E-q007-i05",
+        "answerHtmlId": "answer-elm-20261107-g2-s28-E-q007-i05",
+        "requiredQuestions": [],
+        "missing": [
+          "pin",
+          "itemCrops",
+          "questionContextCrops",
+          "answerCrops"
+        ]
+      },
+      {
+        "canonicalItemId": "elm-20261107-g2-s28-E-q008-i01",
+        "questionId": "elm-20261107-g2-s28-E-q008",
+        "q": 8,
+        "part": "א",
+        "htmlId": "elm-20261107-g2-s28-E-q008-i01",
+        "answerHtmlId": "answer-elm-20261107-g2-s28-E-q008-i01",
+        "requiredQuestions": [],
+        "missing": [
+          "pin",
+          "itemCrops",
+          "questionContextCrops",
+          "answerCrops"
+        ]
+      },
+      {
+        "canonicalItemId": "elm-20261107-g2-s28-E-q008-i02",
+        "questionId": "elm-20261107-g2-s28-E-q008",
+        "q": 8,
+        "part": "ב",
+        "htmlId": "elm-20261107-g2-s28-E-q008-i02",
+        "answerHtmlId": "answer-elm-20261107-g2-s28-E-q008-i02",
+        "requiredQuestions": [],
+        "missing": [
+          "pin",
+          "itemCrops",
+          "questionContextCrops",
+          "answerCrops"
+        ]
+      },
+      {
+        "canonicalItemId": "elm-20261107-g2-s28-E-q008-i03",
+        "questionId": "elm-20261107-g2-s28-E-q008",
+        "q": 8,
+        "part": "ג",
+        "htmlId": "elm-20261107-g2-s28-E-q008-i03",
+        "answerHtmlId": "answer-elm-20261107-g2-s28-E-q008-i03",
+        "requiredQuestions": [],
+        "missing": [
+          "pin",
+          "itemCrops",
+          "questionContextCrops",
+          "answerCrops"
+        ]
+      },
+      {
+        "canonicalItemId": "elm-20261107-g2-s28-E-q008-i04",
+        "questionId": "elm-20261107-g2-s28-E-q008",
+        "q": 8,
+        "part": "ד",
+        "htmlId": "elm-20261107-g2-s28-E-q008-i04",
+        "answerHtmlId": "answer-elm-20261107-g2-s28-E-q008-i04",
+        "requiredQuestions": [],
+        "missing": [
+          "pin",
+          "itemCrops",
+          "questionContextCrops",
+          "answerCrops"
+        ]
+      },
+      {
+        "canonicalItemId": "elm-20261107-g2-s28-E-q008-i05",
+        "questionId": "elm-20261107-g2-s28-E-q008",
+        "q": 8,
+        "part": "ה",
+        "htmlId": "elm-20261107-g2-s28-E-q008-i05",
+        "answerHtmlId": "answer-elm-20261107-g2-s28-E-q008-i05",
+        "requiredQuestions": [],
+        "missing": [
+          "pin",
+          "itemCrops",
+          "questionContextCrops",
+          "answerCrops"
+        ]
+      }
+    ],
+    "missing": [
+      "rendererIdentityAndSettings",
+      "renderedHtmlSha256",
+      "pageDimensions",
+      "exercisePageCount",
+      "answerStartPage",
+      "headerCrops",
+      "footerCrops",
+      "wholeQuestionCrops",
+      "writingSpaceCrops",
+      "questionAndAnswerCoverageProof"
+    ]
+  },
+  "blockers": [
+    "actual media upload and public byte SHA verification",
+    "final rendered PDF geometry and visual review",
+    "public answer proof and exact answer-map coverage",
+    "independent selected-question Word render review for this package",
+    "edition-aware catalog/viewer/teacher and source-bound hint store",
+    "independent content/hint approval and repository release checks"
+  ]
+}

@@ -873,6 +873,14 @@
       "reason": "links to the topic, same grade, shared title word"
     },
     {
+      "key": "page:/statistics-data-frequency-grade-8",
+      "title": "סטטיסטיקה לכיתה ח׳: איסוף מידע, קריאת מידע, שכיחות ושכיחות יחסית",
+      "linkedTopic": "topic:8:67",
+      "linkedTitle": "סטטיסטיקה: איסוף מידע, קריאת מידע, שכיחות ושכיחות יחסית",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
       "key": "page:/counting-grade-1",
       "title": "מונים בלי לפספס לכיתה א׳",
       "linkedTopic": "topic:1:1",

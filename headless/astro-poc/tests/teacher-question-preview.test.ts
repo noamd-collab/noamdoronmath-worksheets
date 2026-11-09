@@ -240,8 +240,10 @@ test('manual selection keeps every part and preserves earlier test/review sectio
 });
 
 test('ticking a later question does not scroll the unchanged selection step back to the top', () => {
-  const app = new Function(`
-    const state = { wizard: 'pick' };
+  const app = new Function('groupWholeQuestions', `
+    const state = { wizard: 'pick', level: 'a', selected: [], blocks: [] };
+    const library = new Map();
+    let wizardNavigating = false, aiPickPending = 0;
     const clearPreparedPrint = () => {};
     const WIZARD_ORDER = ['setup', 'purpose', 'pick', 'result'];
     const scrolled = [], focused = [];
@@ -264,14 +266,16 @@ test('ticking a later question does not scroll the unchanged selection step back
     };
     const document = { body: { dataset: { wizard: 'pick' } }, querySelectorAll: () => [] };
     const band = () => 'middle';
+    ${['levelPrintName','allSelectedKeys','blockQuestionCount'].map(definition).join('\n')}
     ${definition('applyWizard')}
     return { state, apply: applyWizard, scrolled, focused, controls };
-  `)();
+  `)(groupWholeQuestions);
   app.apply();
   app.apply();
   const levelChoice = app.controls.get('teacher-level-choice');
-  assert.equal(levelChoice.parentElement.id, 'pick-level-home');
-  assert.equal(app.controls.get('pick-level-home').children.length, 1, 'Rerendering does not duplicate the level control');
+  assert.equal(levelChoice.parentElement.id, 'wizard-level-home');
+  assert.equal(app.controls.get('wizard-level-home').children.length, 1, 'Rerendering does not duplicate the level control');
+  assert.equal(app.controls.has('pick-level-home'), false, 'Picking shows the summary instead of moving the level controls');
   assert.deepEqual(app.scrolled, [], 'Selection updates should preserve the teacher’s current scroll position');
   assert.deepEqual(app.focused, [], 'Question selection must not move keyboard focus');
   app.state.wizard = 'result';

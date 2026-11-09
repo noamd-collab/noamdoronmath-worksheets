@@ -1,0 +1,11 @@
+{
+  "testOnly": true,
+  "publishable": false,
+  "syntheticMediaId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "boundMeasuredFixture": "b28-E",
+  "files": {
+    "draft.json": "8d95f2cb6a87dc82443411881a870cb55eeac4e80f4524c1ce6dfc8a728f770e",
+    "figure-assets.json": "b13e09671017fead5e5a6cf962ffaebdd508f32dbc46fc6f7558768dc5921d27",
+    "d088ae6539505b9cf06f4c64c60b3afde1cff53cee93fbccedac2ada2ec997b6.png": "d088ae6539505b9cf06f4c64c60b3afde1cff53cee93fbccedac2ada2ec997b6"
+  }
+}

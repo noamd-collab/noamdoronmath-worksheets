@@ -1,0 +1,1692 @@
+{
+  "sourceFormat": "noam-elementary-pdf-layout",
+  "schemaVersion": 1,
+  "status": "measured-not-reviewed",
+  "publishable": false,
+  "worksheetId": "measured-fragment-test",
+  "revision": 1,
+  "canonicalSourceSha256": "ce091a98b6628932161b873a79b6e922721a3e4f9ba31940aec0d396251fa624",
+  "htmlSha256": "8173e3103260763b566b6ce8aad389110feb7bdf1d4c0678ca7ff7d2f002a76b",
+  "pdfSha256": "853cdc38b03b03502e75c5df2e4382e026c0ae260a7373e68094e132f319138d",
+  "pdfBytes": 6723,
+  "pageCount": 6,
+  "renderer": {
+    "name": "WeasyPrint",
+    "version": "68.0",
+    "python": "3.12.14",
+    "boxApi": "page._page_box",
+    "settings": {
+      "mediaType": "print",
+      "zoom": 1,
+      "stylesheets": null,
+      "attachments": null,
+      "attachment_relationships": null,
+      "pdf_identifier": null,
+      "pdf_variant": null,
+      "pdf_version": null,
+      "pdf_forms": null,
+      "pdf_tags": false,
+      "uncompressed_pdf": false,
+      "xmp_metadata": null,
+      "custom_metadata": false,
+      "presentational_hints": false,
+      "srgb": false,
+      "optimize_images": false,
+      "jpeg_quality": null,
+      "dpi": null,
+      "full_fonts": false,
+      "hinting": false,
+      "cache": null
+    },
+    "resources": {},
+    "sameDocumentForLayoutAndPdf": true
+  },
+  "postprocess": {
+    "operation": "approved build_pdf._fix_weasyprint_tounicode",
+    "scriptSha256": "a899ec7d11ef0c9a28f16682f8ed316a0c46848f9b6eb1ec40aad1cc98b7efbd",
+    "fontSha256": {
+      "DavidLibre-Regular.ttf": "923f06e0f6dc84e1649d8cc5d5e12a8d663adf6aba83ba15baa5d559fb47b86e",
+      "DavidLibre-Medium.ttf": "fa3e35197472768520a489b77009b75bfc55601f61a0c4d0c1b23ca7f87701ce",
+      "DavidLibre-Bold.ttf": "7610819c7888c8e7ecdfc573089113ec5355cf95078614ae0e30b509b05468f8"
+    },
+    "beforePdfSha256": "853cdc38b03b03502e75c5df2e4382e026c0ae260a7373e68094e132f319138d",
+    "changed": false,
+    "pageGeometryAndContentStreamsUnchanged": true
+  },
+  "coordinates": {
+    "origin": "top-left",
+    "pageBase": 1,
+    "cssPixelsPerInch": 96,
+    "pdfPointsPerInch": 72,
+    "pdfPointsPerCssPixel": 0.75,
+    "bounds": "union of renderer border boxes and descendant text/boxes; margins excluded"
+  },
+  "pages": [
+    {
+      "page": 1,
+      "widthCssPx": 360.0,
+      "heightCssPx": 280.0,
+      "widthPt": 270.0,
+      "heightPt": 210.0,
+      "marginBoxes": []
+    },
+    {
+      "page": 2,
+      "widthCssPx": 360.0,
+      "heightCssPx": 280.0,
+      "widthPt": 270.0,
+      "heightPt": 210.0,
+      "marginBoxes": []
+    },
+    {
+      "page": 3,
+      "widthCssPx": 360.0,
+      "heightCssPx": 280.0,
+      "widthPt": 270.0,
+      "heightPt": 210.0,
+      "marginBoxes": []
+    },
+    {
+      "page": 4,
+      "widthCssPx": 360.0,
+      "heightCssPx": 280.0,
+      "widthPt": 270.0,
+      "heightPt": 210.0,
+      "marginBoxes": []
+    },
+    {
+      "page": 5,
+      "widthCssPx": 360.0,
+      "heightCssPx": 280.0,
+      "widthPt": 270.0,
+      "heightPt": 210.0,
+      "marginBoxes": []
+    },
+    {
+      "page": 6,
+      "widthCssPx": 360.0,
+      "heightCssPx": 280.0,
+      "widthPt": 270.0,
+      "heightPt": 210.0,
+      "marginBoxes": []
+    }
+  ],
+  "elements": {
+    "q1": {
+      "role": "question",
+      "canonicalId": "q1",
+      "questionId": "q1",
+      "q": 1,
+      "part": "",
+      "fragments": [
+        {
+          "page": 1,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 18.0,
+              "width": 324.0,
+              "height": 244.0
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 13.5,
+              "width": 243.0,
+              "height": 183.0
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.06428571428571428,
+              "width": 0.9,
+              "height": 0.8714285714285714
+            }
+          },
+          "fragment": 1
+        },
+        {
+          "page": 2,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 18.0,
+              "width": 324.0,
+              "height": 244.0
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 13.5,
+              "width": 243.0,
+              "height": 183.0
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.06428571428571428,
+              "width": 0.9,
+              "height": 0.8714285714285714
+            }
+          },
+          "fragment": 2
+        },
+        {
+          "page": 3,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 18.0,
+              "width": 324.0,
+              "height": 80.0
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 13.5,
+              "width": 243.0,
+              "height": 60.0
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.06428571428571428,
+              "width": 0.9,
+              "height": 0.2857142857142857
+            }
+          },
+          "fragment": 3
+        }
+      ]
+    },
+    "i1": {
+      "role": "item",
+      "canonicalId": "i1",
+      "questionId": "q1",
+      "q": 1,
+      "part": "א",
+      "fragments": [
+        {
+          "page": 1,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 38.0,
+              "width": 324.0,
+              "height": 224.0
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 28.5,
+              "width": 243.0,
+              "height": 168.0
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.1357142857142857,
+              "width": 0.9,
+              "height": 0.8
+            }
+          },
+          "fragment": 1
+        },
+        {
+          "page": 2,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 18.0,
+              "width": 324.0,
+              "height": 244.0
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 13.5,
+              "width": 243.0,
+              "height": 183.0
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.06428571428571428,
+              "width": 0.9,
+              "height": 0.8714285714285714
+            }
+          },
+          "fragment": 2
+        },
+        {
+          "page": 3,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 18.0,
+              "width": 324.0,
+              "height": 60.0
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 13.5,
+              "width": 243.0,
+              "height": 45.0
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.06428571428571428,
+              "width": 0.9,
+              "height": 0.21428571428571427
+            }
+          },
+          "fragment": 3
+        }
+      ]
+    },
+    "i2": {
+      "role": "item",
+      "canonicalId": "i2",
+      "questionId": "q1",
+      "q": 1,
+      "part": "ב",
+      "fragments": [
+        {
+          "page": 3,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 78.0,
+              "width": 324.0,
+              "height": 20.0
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 58.5,
+              "width": 243.0,
+              "height": 15.0
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.2785714285714286,
+              "width": 0.9,
+              "height": 0.07142857142857142
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-q1": {
+      "role": "answer-question",
+      "canonicalId": "q1",
+      "questionId": "q1",
+      "q": 1,
+      "part": "",
+      "fragments": [
+        {
+          "page": 4,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 18.0,
+              "width": 324.0,
+              "height": 244.0
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 13.5,
+              "width": 243.0,
+              "height": 183.0
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.06428571428571428,
+              "width": 0.9,
+              "height": 0.8714285714285714
+            }
+          },
+          "fragment": 1
+        },
+        {
+          "page": 5,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 18.0,
+              "width": 324.0,
+              "height": 244.0
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 13.5,
+              "width": 243.0,
+              "height": 183.0
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.06428571428571428,
+              "width": 0.9,
+              "height": 0.8714285714285714
+            }
+          },
+          "fragment": 2
+        },
+        {
+          "page": 6,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 18.0,
+              "width": 324.0,
+              "height": 40.0
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 13.5,
+              "width": 243.0,
+              "height": 30.0
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.06428571428571428,
+              "width": 0.9,
+              "height": 0.14285714285714285
+            }
+          },
+          "fragment": 3
+        }
+      ]
+    },
+    "answer-i1": {
+      "role": "answer-item",
+      "canonicalId": "i1",
+      "questionId": "q1",
+      "q": 1,
+      "part": "א",
+      "fragments": [
+        {
+          "page": 4,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 19.49267578125,
+              "width": 76.5283203125,
+              "height": 17.0146484375
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 14.6195068359375,
+              "width": 57.396240234375,
+              "height": 12.760986328125
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.06961669921875,
+              "width": 0.2125786675347222,
+              "height": 0.0607666015625
+            }
+          },
+          "fragment": 1
+        },
+        {
+          "page": 4,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 39.49267578125,
+              "width": 76.5283203125,
+              "height": 17.0146484375
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 29.6195068359375,
+              "width": 57.396240234375,
+              "height": 12.760986328125
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.14104527064732142,
+              "width": 0.2125786675347222,
+              "height": 0.0607666015625
+            }
+          },
+          "fragment": 2
+        },
+        {
+          "page": 4,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 59.49267578125,
+              "width": 76.5283203125,
+              "height": 17.0146484375
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 44.6195068359375,
+              "width": 57.396240234375,
+              "height": 12.760986328125
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.21247384207589284,
+              "width": 0.2125786675347222,
+              "height": 0.0607666015625
+            }
+          },
+          "fragment": 3
+        },
+        {
+          "page": 4,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 79.49267578125,
+              "width": 76.5283203125,
+              "height": 17.0146484375
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 59.6195068359375,
+              "width": 57.396240234375,
+              "height": 12.760986328125
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.28390241350446427,
+              "width": 0.2125786675347222,
+              "height": 0.0607666015625
+            }
+          },
+          "fragment": 4
+        },
+        {
+          "page": 4,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 99.49267578125,
+              "width": 76.5283203125,
+              "height": 17.0146484375
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 74.6195068359375,
+              "width": 57.396240234375,
+              "height": 12.760986328125
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.3553309849330357,
+              "width": 0.2125786675347222,
+              "height": 0.0607666015625
+            }
+          },
+          "fragment": 5
+        },
+        {
+          "page": 4,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 119.49267578125,
+              "width": 76.5283203125,
+              "height": 17.0146484375
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 89.6195068359375,
+              "width": 57.396240234375,
+              "height": 12.760986328125
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.4267595563616071,
+              "width": 0.2125786675347222,
+              "height": 0.0607666015625
+            }
+          },
+          "fragment": 6
+        },
+        {
+          "page": 4,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 139.49267578125,
+              "width": 76.5283203125,
+              "height": 17.0146484375
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 104.6195068359375,
+              "width": 57.396240234375,
+              "height": 12.760986328125
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.49818812779017857,
+              "width": 0.2125786675347222,
+              "height": 0.0607666015625
+            }
+          },
+          "fragment": 7
+        },
+        {
+          "page": 4,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 159.49267578125,
+              "width": 76.5283203125,
+              "height": 17.0146484375
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 119.6195068359375,
+              "width": 57.396240234375,
+              "height": 12.760986328125
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.56961669921875,
+              "width": 0.2125786675347222,
+              "height": 0.0607666015625
+            }
+          },
+          "fragment": 8
+        },
+        {
+          "page": 4,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 179.49267578125,
+              "width": 76.5283203125,
+              "height": 17.0146484375
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 134.6195068359375,
+              "width": 57.396240234375,
+              "height": 12.760986328125
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.6410452706473214,
+              "width": 0.2125786675347222,
+              "height": 0.0607666015625
+            }
+          },
+          "fragment": 9
+        },
+        {
+          "page": 4,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 199.49267578125,
+              "width": 76.5283203125,
+              "height": 17.0146484375
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 149.6195068359375,
+              "width": 57.396240234375,
+              "height": 12.760986328125
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.7124738420758928,
+              "width": 0.2125786675347222,
+              "height": 0.0607666015625
+            }
+          },
+          "fragment": 10
+        },
+        {
+          "page": 4,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 219.49267578125,
+              "width": 76.5283203125,
+              "height": 17.0146484375
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 164.6195068359375,
+              "width": 57.396240234375,
+              "height": 12.760986328125
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.7839024135044643,
+              "width": 0.2125786675347222,
+              "height": 0.0607666015625
+            }
+          },
+          "fragment": 11
+        },
+        {
+          "page": 4,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 239.49267578125,
+              "width": 76.5283203125,
+              "height": 17.0146484375
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 179.6195068359375,
+              "width": 57.396240234375,
+              "height": 12.760986328125
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.8553309849330357,
+              "width": 0.2125786675347222,
+              "height": 0.0607666015625
+            }
+          },
+          "fragment": 12
+        },
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 19.49267578125,
+              "width": 76.5283203125,
+              "height": 17.0146484375
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 14.6195068359375,
+              "width": 57.396240234375,
+              "height": 12.760986328125
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.06961669921875,
+              "width": 0.2125786675347222,
+              "height": 0.0607666015625
+            }
+          },
+          "fragment": 13
+        },
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 39.49267578125,
+              "width": 76.5283203125,
+              "height": 17.0146484375
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 29.6195068359375,
+              "width": 57.396240234375,
+              "height": 12.760986328125
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.14104527064732142,
+              "width": 0.2125786675347222,
+              "height": 0.0607666015625
+            }
+          },
+          "fragment": 14
+        },
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 59.49267578125,
+              "width": 76.5283203125,
+              "height": 17.0146484375
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 44.6195068359375,
+              "width": 57.396240234375,
+              "height": 12.760986328125
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.21247384207589284,
+              "width": 0.2125786675347222,
+              "height": 0.0607666015625
+            }
+          },
+          "fragment": 15
+        },
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 79.49267578125,
+              "width": 76.5283203125,
+              "height": 17.0146484375
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 59.6195068359375,
+              "width": 57.396240234375,
+              "height": 12.760986328125
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.28390241350446427,
+              "width": 0.2125786675347222,
+              "height": 0.0607666015625
+            }
+          },
+          "fragment": 16
+        },
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 99.49267578125,
+              "width": 76.5283203125,
+              "height": 17.0146484375
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 74.6195068359375,
+              "width": 57.396240234375,
+              "height": 12.760986328125
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.3553309849330357,
+              "width": 0.2125786675347222,
+              "height": 0.0607666015625
+            }
+          },
+          "fragment": 17
+        },
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 119.49267578125,
+              "width": 76.5283203125,
+              "height": 17.0146484375
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 89.6195068359375,
+              "width": 57.396240234375,
+              "height": 12.760986328125
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.4267595563616071,
+              "width": 0.2125786675347222,
+              "height": 0.0607666015625
+            }
+          },
+          "fragment": 18
+        },
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 139.49267578125,
+              "width": 76.5283203125,
+              "height": 17.0146484375
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 104.6195068359375,
+              "width": 57.396240234375,
+              "height": 12.760986328125
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.49818812779017857,
+              "width": 0.2125786675347222,
+              "height": 0.0607666015625
+            }
+          },
+          "fragment": 19
+        },
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 159.49267578125,
+              "width": 76.5283203125,
+              "height": 17.0146484375
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 119.6195068359375,
+              "width": 57.396240234375,
+              "height": 12.760986328125
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.56961669921875,
+              "width": 0.2125786675347222,
+              "height": 0.0607666015625
+            }
+          },
+          "fragment": 20
+        },
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 179.49267578125,
+              "width": 76.5283203125,
+              "height": 17.0146484375
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 134.6195068359375,
+              "width": 57.396240234375,
+              "height": 12.760986328125
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.6410452706473214,
+              "width": 0.2125786675347222,
+              "height": 0.0607666015625
+            }
+          },
+          "fragment": 21
+        },
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 199.49267578125,
+              "width": 76.5283203125,
+              "height": 17.0146484375
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 149.6195068359375,
+              "width": 57.396240234375,
+              "height": 12.760986328125
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.7124738420758928,
+              "width": 0.2125786675347222,
+              "height": 0.0607666015625
+            }
+          },
+          "fragment": 22
+        },
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 219.49267578125,
+              "width": 76.5283203125,
+              "height": 17.0146484375
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 164.6195068359375,
+              "width": 57.396240234375,
+              "height": 12.760986328125
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.7839024135044643,
+              "width": 0.2125786675347222,
+              "height": 0.0607666015625
+            }
+          },
+          "fragment": 23
+        },
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 239.49267578125,
+              "width": 76.5283203125,
+              "height": 17.0146484375
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 179.6195068359375,
+              "width": 57.396240234375,
+              "height": 12.760986328125
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.8553309849330357,
+              "width": 0.2125786675347222,
+              "height": 0.0607666015625
+            }
+          },
+          "fragment": 24
+        },
+        {
+          "page": 6,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 19.49267578125,
+              "width": 76.5283203125,
+              "height": 17.0146484375
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 14.6195068359375,
+              "width": 57.396240234375,
+              "height": 12.760986328125
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.06961669921875,
+              "width": 0.2125786675347222,
+              "height": 0.0607666015625
+            }
+          },
+          "fragment": 25
+        }
+      ]
+    },
+    "answer-i2": {
+      "role": "answer-item",
+      "canonicalId": "i2",
+      "questionId": "q1",
+      "q": 1,
+      "part": "ב",
+      "fragments": [
+        {
+          "page": 6,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 39.49267578125,
+              "width": 39.8125,
+              "height": 17.0146484375
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 29.6195068359375,
+              "width": 29.859375,
+              "height": 12.760986328125
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.14104527064732142,
+              "width": 0.11059027777777777,
+              "height": 0.0607666015625
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "q2": {
+      "role": "question",
+      "canonicalId": "q2",
+      "questionId": "q2",
+      "q": 2,
+      "part": "",
+      "fragments": [
+        {
+          "page": 3,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 108.0,
+              "width": 324.0,
+              "height": 98.0
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 81.0,
+              "width": 243.0,
+              "height": 73.5
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.38571428571428573,
+              "width": 0.9,
+              "height": 0.35
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "i3": {
+      "role": "item",
+      "canonicalId": "i3",
+      "questionId": "q2",
+      "q": 2,
+      "part": "א",
+      "fragments": [
+        {
+          "page": 3,
+          "boxType": "TableRowBox",
+          "htmlTag": "tr",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 154.0,
+              "width": 324.0,
+              "height": 26.0
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 115.5,
+              "width": 243.0,
+              "height": 19.5
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.55,
+              "width": 0.9,
+              "height": 0.09285714285714286
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "i4": {
+      "role": "item",
+      "canonicalId": "i4",
+      "questionId": "q2",
+      "q": 2,
+      "part": "ב",
+      "fragments": [
+        {
+          "page": 3,
+          "boxType": "TableRowBox",
+          "htmlTag": "tr",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 180.0,
+              "width": 324.0,
+              "height": 26.0
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 135.0,
+              "width": 243.0,
+              "height": 19.5
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.6428571428571429,
+              "width": 0.9,
+              "height": 0.09285714285714286
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-q2": {
+      "role": "answer-question",
+      "canonicalId": "q2",
+      "questionId": "q2",
+      "q": 2,
+      "part": "",
+      "fragments": [
+        {
+          "page": 6,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 58.0,
+              "width": 324.0,
+              "height": 40.0
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 43.5,
+              "width": 243.0,
+              "height": 30.0
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.20714285714285716,
+              "width": 0.9,
+              "height": 0.14285714285714285
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-i3": {
+      "role": "answer-item",
+      "canonicalId": "i3",
+      "questionId": "q2",
+      "q": 2,
+      "part": "א",
+      "fragments": [
+        {
+          "page": 6,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 59.49267578125,
+              "width": 119.21875,
+              "height": 17.0146484375
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 44.6195068359375,
+              "width": 89.4140625,
+              "height": 12.760986328125
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.21247384207589284,
+              "width": 0.3311631944444444,
+              "height": 0.0607666015625
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-i4": {
+      "role": "answer-item",
+      "canonicalId": "i4",
+      "questionId": "q2",
+      "q": 2,
+      "part": "ב",
+      "fragments": [
+        {
+          "page": 6,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 79.49267578125,
+              "width": 130.9287109375,
+              "height": 17.0146484375
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 59.6195068359375,
+              "width": 98.196533203125,
+              "height": 12.760986328125
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.28390241350446427,
+              "width": 0.36369086371527776,
+              "height": 0.0607666015625
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "q3": {
+      "role": "question",
+      "canonicalId": "q3",
+      "questionId": "q3",
+      "q": 3,
+      "part": "",
+      "fragments": [
+        {
+          "page": 3,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 216.0,
+              "width": 324.0,
+              "height": 46.0
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 162.0,
+              "width": 243.0,
+              "height": 34.5
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.7714285714285715,
+              "width": 0.9,
+              "height": 0.16428571428571428
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "i5": {
+      "role": "item",
+      "canonicalId": "i5",
+      "questionId": "q3",
+      "q": 3,
+      "part": "א",
+      "fragments": [
+        {
+          "page": 3,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 21.0,
+              "y": 239.0,
+              "width": 156.0,
+              "height": 20.0
+            },
+            "pdfPt": {
+              "x": 15.75,
+              "y": 179.25,
+              "width": 117.0,
+              "height": 15.0
+            },
+            "normalized": {
+              "x": 0.058333333333333334,
+              "y": 0.8535714285714285,
+              "width": 0.43333333333333335,
+              "height": 0.07142857142857142
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "i6": {
+      "role": "item",
+      "canonicalId": "i6",
+      "questionId": "q3",
+      "q": 3,
+      "part": "ב",
+      "fragments": [
+        {
+          "page": 3,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 183.0,
+              "y": 239.0,
+              "width": 156.0,
+              "height": 20.0
+            },
+            "pdfPt": {
+              "x": 137.25,
+              "y": 179.25,
+              "width": 117.0,
+              "height": 15.0
+            },
+            "normalized": {
+              "x": 0.5083333333333333,
+              "y": 0.8535714285714285,
+              "width": 0.43333333333333335,
+              "height": 0.07142857142857142
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-q3": {
+      "role": "answer-question",
+      "canonicalId": "q3",
+      "questionId": "q3",
+      "q": 3,
+      "part": "",
+      "fragments": [
+        {
+          "page": 6,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 98.0,
+              "width": 324.0,
+              "height": 40.0
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 73.5,
+              "width": 243.0,
+              "height": 30.0
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.35,
+              "width": 0.9,
+              "height": 0.14285714285714285
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-i5": {
+      "role": "answer-item",
+      "canonicalId": "i5",
+      "questionId": "q3",
+      "q": 3,
+      "part": "א",
+      "fragments": [
+        {
+          "page": 6,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 99.49267578125,
+              "width": 54.6806640625,
+              "height": 17.0146484375
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 74.6195068359375,
+              "width": 41.010498046875,
+              "height": 12.760986328125
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.3553309849330357,
+              "width": 0.15189073350694443,
+              "height": 0.0607666015625
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-i6": {
+      "role": "answer-item",
+      "canonicalId": "i6",
+      "questionId": "q3",
+      "q": 3,
+      "part": "ב",
+      "fragments": [
+        {
+          "page": 6,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 119.49267578125,
+              "width": 103.0927734375,
+              "height": 17.0146484375
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 89.6195068359375,
+              "width": 77.319580078125,
+              "height": 12.760986328125
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.4267595563616071,
+              "width": 0.2863688151041667,
+              "height": 0.0607666015625
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    }
+  },
+  "auxiliary": [
+    {
+      "id": "dom-6",
+      "role": "question-prompt",
+      "figureId": null,
+      "ownerId": "q1",
+      "fragments": [
+        {
+          "page": 1,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 18.0,
+              "width": 324.0,
+              "height": 20.0
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 13.5,
+              "width": 243.0,
+              "height": 15.0
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.06428571428571428,
+              "width": 0.9,
+              "height": 0.07142857142857142
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-35",
+      "role": "question-prompt",
+      "figureId": null,
+      "ownerId": "q2",
+      "fragments": [
+        {
+          "page": 3,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 108.0,
+              "width": 324.0,
+              "height": 20.0
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 81.0,
+              "width": 243.0,
+              "height": 15.0
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.38571428571428573,
+              "width": 0.9,
+              "height": 0.07142857142857142
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-37",
+      "role": "table-heading",
+      "figureId": null,
+      "ownerId": "q2",
+      "fragments": [
+        {
+          "page": 3,
+          "boxType": "TableRowGroupBox",
+          "htmlTag": "thead",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 128.0,
+              "width": 324.0,
+              "height": 26.0
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 96.0,
+              "width": 243.0,
+              "height": 19.5
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.45714285714285713,
+              "width": 0.9,
+              "height": 0.09285714285714286
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-49",
+      "role": "question-prompt",
+      "figureId": null,
+      "ownerId": "q3",
+      "fragments": [
+        {
+          "page": 3,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 18.0,
+              "y": 216.0,
+              "width": 324.0,
+              "height": 20.0
+            },
+            "pdfPt": {
+              "x": 13.5,
+              "y": 162.0,
+              "width": 243.0,
+              "height": 15.0
+            },
+            "normalized": {
+              "x": 0.05,
+              "y": 0.7714285714285715,
+              "width": 0.9,
+              "height": 0.07142857142857142
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    }
+  ],
+  "questionPages": [
+    1,
+    2,
+    3
+  ],
+  "answerPages": [
+    4,
+    5,
+    6
+  ],
+  "answerStartPage": 4,
+  "coverage": {
+    "expectedElements": 18,
+    "measuredElements": 18,
+    "missingIds": [],
+    "multiPageIds": [
+      "q1",
+      "i1",
+      "answer-q1",
+      "answer-i1"
+    ]
+  },
+  "requiresReview": [
+    "crop boundaries and printing",
+    "semantic source/HTML correspondence",
+    "math and pedagogy",
+    "all final PDF pages"
+  ]
+}

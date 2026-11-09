@@ -184,6 +184,8 @@ export function buildIndex(input: BuildInput): { index: SearchIndex; report: Bui
         usesViewer: !!x.routing?.usesViewer,
         siblingPdfQuery: { ...(x.routing?.siblingPdfQuery || {}) },
       });
+      const editions = (x: typeof t) => x.editions?.length
+        ? { editions: x.editions, defaultEditionId: x.defaultEditionId } : {};
       docs.push({
         key,
         kind: 'topic',
@@ -196,8 +198,9 @@ export function buildIndex(input: BuildInput): { index: SearchIndex; report: Bui
           id: t.id,
           levels: levels(t.levels),
           routing: routing(t),
+          ...editions(t),
           ...(trackGroups.has(`${g.grade}:${t.group}`) ? { reduced: true } : {}),
-          ...(kids.length ? { children: kids.map((k) => ({ id: k.id, title: k.title, levels: levels(k.levels), routing: routing(k) })) } : {}),
+          ...(kids.length ? { children: kids.map((k) => ({ id: k.id, title: k.title, levels: levels(k.levels), routing: routing(k), ...editions(k) })) } : {}),
         },
         f: fields({
           t: t.title,

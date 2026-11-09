@@ -1,0 +1,25 @@
+{
+  "testOnly": true,
+  "syntheticDependency": false,
+  "publishable": false,
+  "binding": {
+    "canonicalSourceSha256": "b98740ed29b5dc7c4e2be2803cfdfcd1211da9b9365111bb2be744afb27e87a3",
+    "htmlSha256": "18aa11f22f8962dae93340f39b241d949a681ab6e3705ff412c64191e20ed77e",
+    "pdfSha256": "d93901a1ef8103850ecc83de1c91f637752169ae65e5fb4b198ed4001fb0de7c",
+    "layoutSha256": "06c43f8abf33eada0f32f5d0bf1dbc4579c2f04c500f0bac8751cf651a883c9f",
+    "pdfId": null,
+    "editionId": "elementary-20261107-r1",
+    "worksheetId": "elm-20261107-g2-s28-E",
+    "revision": 2,
+    "siteTopicPrefix": "G2-T28",
+    "canonicalTopicPrefix": "G2-T28"
+  },
+  "files": {
+    "draft.json": "bef51a3c3311be41be2c2da3a2756596ee883d8548c310f38b166dc8e2ed7e3e",
+    "sheet.pdf": "d93901a1ef8103850ecc83de1c91f637752169ae65e5fb4b198ed4001fb0de7c",
+    "layout.json": "06c43f8abf33eada0f32f5d0bf1dbc4579c2f04c500f0bac8751cf651a883c9f",
+    "worksheet-source.json": "b98740ed29b5dc7c4e2be2803cfdfcd1211da9b9365111bb2be744afb27e87a3",
+    "sheet.html": "18aa11f22f8962dae93340f39b241d949a681ab6e3705ff412c64191e20ed77e"
+  },
+  "fixtureMetadataNote": "Test-only resource names normalized to portable paths; PDF, HTML, source, measurements and font hashes are unchanged."
+}

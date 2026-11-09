@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+<meta charset="utf-8">
+<title>דף עבודה — יסודי</title>
+<style>
+  /* ===== גופני בית (G45): David Libre נושא את הגוף. שלושת קובצי ה-TTF
+     חייבים לשבת ליד קובץ ה-HTML בזמן הבנייה (build_pdf.py מעתיק אוטומטית). */
+  @font-face { font-family: "David Libre"; src: url("DavidLibre-Regular.ttf");
+               font-weight: 400; font-style: normal; }
+  @font-face { font-family: "David Libre"; src: url("DavidLibre-Bold.ttf");
+               font-weight: 700; font-style: normal; }
+  @font-face { font-family: "David Libre"; src: url("DavidLibre-Medium.ttf");
+               font-weight: 500; font-style: normal; }
+  /* כל סמל ש-David Libre חסר עטוף span.sym (בדוק לפי cmap: ★ ו-☐ חסרים;
+     ° ₪ ׳ ״ קיימים) — אחרת שרשרת ה-fallback בוחרת גופן CJK ו-G45 חוסם
+     (נמדד). ☐ עדיף בכלל כ-span.box (מסגרת CSS), לא כגליף. */
+  .sym { font-family: "DejaVu Serif", "DejaVu Sans", serif; }
+
+  @page {
+    size: A4;
+    margin: 1.6cm 1.8cm 2cm 1.8cm;
+    /* בס"ד בפינה הימנית העליונה של כל עמוד (כלל בית — שער חוסם עמוד בלעדיו) */
+    @top-right {
+      content: "בס״ד";
+      font-family: "David Libre", "DejaVu Serif", serif;
+      font-size: 10pt; color: #444;
+    }
+    /* מותג רץ בראש ובתחתית של כל עמוד (כלל בית — שער חוסם עמוד בלעדיו).
+       המחרוזת המדויקת "מתמטיקה · נועם דורון" עם U+00B7 — אין לשנות! */
+    @top-center {
+      content: "מתמטיקה · נועם דורון";
+      font-family: "David Libre", "DejaVu Serif", serif;
+      font-size: 9pt; color: #555;
+    }
+    @bottom-center {
+      content: "מתמטיקה · נועם דורון · עמוד " counter(page) " מתוך " counter(pages);
+      font-family: "David Libre", "DejaVu Serif", serif;
+      font-size: 9pt; color: #555;
+    }
+    /* S-26: זכויות יוצרים — בלי © (GLYPH_SUSPECT ביסודי); בשוליים, מחוץ ל-Gfill */
+    @bottom-right {
+      content: "כל הזכויות שמורות לנועם דורון";
+      font-family: "David Libre", "DejaVu Serif", serif;
+      font-size: 7pt; color: #888;
+    }
+  }
+  * { box-sizing: border-box; }
+
+  /* ============ תתי-פס: קבעו את מחלקת תגית הגוף: band-ab / band-gd / band-hv ============
+     band-ab = א׳–ב׳: גופן ענק, צבעוני, מסגרות פעילות מעוגלות, ניקוד מלא בטקסט
+     band-gd = ג׳–ד׳: בינוני, צבעוני (v2.0) — כותרת כחולה #1F6FC5, מסגרות כחולות
+     band-hv = ה׳–ו׳: קומפקטי, צבעוני-מאופק (v2.0) — כותרת teal #159E8E */
+  body {
+    font-family: "David Libre", "DejaVu Serif", serif;
+    font-size: 13pt; line-height: 1.7; color: #111; margin: 0;
+    direction: rtl;
+  }
+  body.band-ab { font-size: 16pt; line-height: 1.9; }
+  body.band-gd { font-size: 13pt; line-height: 1.75; }
+  body.band-hv { font-size: 11.5pt; line-height: 1.65; }
+
+  /* --- כותרת יחידה (עמוד 1) --- */
+  .unit { text-align: center; font-weight: bold; margin: 4px 0 2px; }
+  body.band-ab .unit { color: #C00000; font-size: 24pt; }
+  body:not(.band-ab) .unit { font-size: 15pt; }
+  body.band-gd .unit { color: #1F6FC5; }
+  body.band-hv .unit { color: #159E8E; }
+  .unit-rule { border: none; border-top: 2.5px solid #2E9E2E; margin: 4px 0 12px; }
+  body:not(.band-ab) .unit-rule { border-top-width: 2px; }
+  body.band-gd .unit-rule { border-top-color: #1F6FC5; }
+  body.band-hv .unit-rule { border-top-color: #159E8E; }
+  .subtitle { text-align: center; font-size: 0.92em; color: #333; margin-bottom: 10px; }
+  .details { display: flex; justify-content: space-between; gap: 24px;
+             margin: 6px 0 12px; font-size: 0.85em; }
+
+  /* --- כותרת משנה (אדומה; בג׳+ עם קו תחתון, בא׳–ב׳ בלי קו) --- */
+  .redsub { color: #C00000; font-weight: bold; margin: 14px 0 4px; }
+  body:not(.band-ab) .redsub { text-decoration: underline; }
+
+  /* ==== מנוף כיתה ב׳ (מעוגן בדגימת כשרים והקשרים 4–5): הפעילו עם
+       class="band-ab bet" על תגית הגוף — כותרת מג׳נטה + בועת מספר פעילות +
+       צ׳יפס נושאים + תיבת בעל-פה + הערת מורה תחתונה (style.md §2א).
+       כיתה א׳ נשארת אדום/ירוק (ברירת המחדל של band-ab). ==== */
+  body.band-ab.bet .unit { color: #F090F0; }
+  body.band-ab.bet .unit-rule { border-top: 1.5px solid #F090F0; }
+  /* שורת ראש: צ׳יפס מימין + בועת מספר פעילות משמאל.
+     לא position:absolute — abspos עם left/right בעמוד RTL מתנהג לא צפוי
+     ב-WeasyPrint (left נפתר כ-inline-start, right העיף את התיבה מהקנבס —
+     נמדד אוגוסט 2026). flex בזרימה רגילה יציב: בפריסת RTL הפריט הראשון
+     מימין והאחרון משמאל. שימוש:
+     div.pagehead > div.chips + div.actnum */
+  .pagehead { display: flex; justify-content: space-between;
+              align-items: flex-start; margin: 0 0 6px; }
+  /* בועת מספר פעילות — מג׳נטה מלאה, מספר לבן, בקצה השמאלי */
+  .actnum { width: 52px; height: 52px; flex: 0 0 52px;
+            background: #F090F0; border-radius: 50% 50% 50% 6px; color: #fff;
+            font-size: 22pt; font-weight: bold; display: flex; align-items: center;
+            justify-content: center; }
+  /* צ׳יפס נושאים בסבב פסטל (מנוקדים, כתב קטן) — v2.0: צבע במקום אפור */
+  .chips { display: flex; gap: 8px; justify-content: flex-start; flex-wrap: wrap;
+           margin: 2px 0; }  /* RTL: flex-start = מימין */
+  .chips span { background: #DCECFB; border-radius: 12px; padding: 1px 10px;
+                font-size: 0.72em; color: #24507A; }
+  .chips span:nth-child(4n+2) { background: #FDE9D2; color: #8A4E0B; }
+  .chips span:nth-child(4n+3) { background: #D7F0ED; color: #0E5F55; }
+  .chips span:nth-child(4n+4) { background: #FBE4F7; color: #8A3B7C; }
+  /* תיבת "בעל פה" ורוד-בהיר (חימום מנוקד למורה) */
+  .baalpe { background: #FBE4F7; border-radius: 8px; padding: 4px 14px;
+            margin: 4px 0 10px; font-size: 0.85em; }
+  /* הערת מורה בתחתית העמוד — כתב קטן, בלי ניקוד (כך בספרי ב׳) */
+  .teacher-foot { border-top: 0.8px solid #C9A0DC; margin-top: 14px; padding-top: 3px;
+                  font-size: 8.5pt; color: #444; }
+  /* רקע משבצות כתום-בהיר לתרגילי כתיבה/שרטוט (מוסכמת ב׳).
+     אזהרה: מבוסס linear-gradient — חובה לוודא ברינדור ה-PNG שהמשבצות
+     נראות (gradient על פריט flex פנימי נעלם בשקט — pdf-recipe). */
+  .gridbg { background-image: linear-gradient(#F3DDBE 0.8px, transparent 0.8px),
+            linear-gradient(90deg, #F3DDBE 0.8px, transparent 0.8px);
+            background-size: 22px 22px; border-radius: 6px; padding: 8px 12px; }
+
+  /* --- מספור גלובלי דרך CSS counter (הטכניקה המאושרת היחידה — אין לשנות!) --- */
+  body { counter-reset: qnum 0; }
+  ol.questions { list-style: none; margin: 0; padding-right: 4px; }
+  ol.questions > li { margin-bottom: 10px; break-inside: avoid; }
+  ol.questions > li::before {
+    counter-increment: qnum;
+    content: "(" counter(qnum) ") ";
+    font-weight: bold; margin-left: 6px;
+    /* S-29: מספור בסוגריים "(15)" עם direction:ltr — סוגריים ממוסכי-bidi ולכן
+       נכונים חזותית בכל מצב, בניגוד לנקודה שתלויה ב-rtl (S-21 חזר בגלל זה).
+       ltr גם משאיר חילוץ נקי "(15)"; rtl היה מייצר ")15(" ממוסך. */
+    direction: ltr; unicode-bidi: embed;
+  }
+  /* ★ מחוץ ליחידת ה-LTR של המספר, בין המספר לטקסט (כלל בית) */
+  ol.questions > li.starred::before { content: "(" counter(qnum) ") "; }
+  ol.questions > li.starred > .star::after { content: "★"; }
+  .star { font-family: "DejaVu Sans", sans-serif; color: #111; margin-left: 5px; }
+
+  /* --- מקומות תשובה ---
+     G47: לעולם לא dotted על קו לרוחב — WeasyPrint מרחיב נקודה-נקודה
+     לפעולת ציור נפרדת (3.34MB→0.35MB נמדד). dashed בלבד. */
+  .blank { display: inline-block; min-width: 3cm; border-bottom: 1px dashed #333; }
+  .blank.solid { border-bottom: 1.2px solid #333; }
+  .box { display: inline-block; width: 1.5em; height: 1.4em; border: 1.4px solid #111;
+         vertical-align: -0.35em; margin: 0 2px; }
+  .ansline { border-bottom: 1px solid #333; min-height: 1.6em; margin: 2px 0; }
+
+  /* --- שורת תרגיל גדולה (א׳–ב׳) --- */
+  .eq { font-size: 1.35em; margin: 10px 0; }
+  body.band-ab .eq { font-size: 1.5em; letter-spacing: 1px; }
+
+  /* --- טבלת drill (תרגילי שורה/בטור בתאים) --- */
+  table.drill { width: 100%; border-collapse: collapse; margin: 8px 0; }
+  table.drill td { border: 1px solid #2F5B8F; padding: 8px 10px; text-align: center;
+                   font-size: 1.1em; }
+  table.drill th { border: 1px solid #2F5B8F; padding: 8px 10px; text-align: center;
+                   font-size: 1.1em; background: #DCECFB; font-weight: bold; }
+
+  /* --- לוח 100 --- */
+  table.hchart { border-collapse: collapse; margin: 8px auto; }
+  table.hchart td { border: 1px solid #666; width: 34px; height: 34px; text-align: center;
+                    font-size: 0.85em; }
+  table.hchart td.hl { background: #ffe98a; font-weight: bold; }
+  table.hchart td.hlB { background: #DCECFB; font-weight: bold; }
+  table.hchart td.hlG { background: #DDF0DD; font-weight: bold; }
+
+  /* --- מסגרת פעילות מעוגלת (א׳–ב׳ ירוקה/סגולה; בג׳+ כחולה על רקע #F4FAFF) --- */
+  .frame { border: 3px solid #007600; border-radius: 14px; padding: 10px 14px;
+           margin: 12px 0; break-inside: avoid; }
+  .frame.purple { border-color: #7A007A; }
+  /* גרסאות צבע מפורשות (v2.0) — עובדות בכל הפסים */
+  .frame.blue { border-color: #1F6FC5; background: #F4FAFF; }
+  .frame.orange { border-color: #E8821E; background: #FDE9D2; }
+  .frame.teal { border-color: #159E8E; background: #D7F0ED; }
+  body:not(.band-ab) .frame:not(.blue):not(.orange):not(.teal) {
+    border-width: 2px; border-radius: 10px; border-color: #1F6FC5;
+    background: #F4FAFF; }
+
+  /* --- תזכורת כחולה-בהירה ("שעה 1 = 60 דקות") --- */
+  .reminder { background: #DCECFB; border: 1px solid #1F6FC5; border-radius: 6px;
+              padding: 4px 12px; margin: 8px 0; font-size: 0.9em; break-inside: avoid; }
+  /* --- מחסן מילים תכלכל (ה׳–ו׳) --- */
+  .vocab { border: 2px solid #2e7fa3; border-radius: 6px; padding: 4px 12px;
+           margin: 8px 0; color: #134; break-inside: avoid; }
+  /* --- הדגשת מרקר --- */
+  .hl { background: #ffe98a; padding: 0 4px; }
+  /* --- תשובה אדומה בדף פתרונות --- */
+  .red { color: #C00000; font-weight: bold; }
+  /* --- תג "אתגר"/בונוס (v2.0): גלולת זהב קטנה --- */
+  .badge { display: inline-block; background: #F5C542; color: #1A1A2E;
+           font-weight: bold; font-size: 0.78em; border-radius: 12px;
+           padding: 0 10px; border: 1px solid #C29B1F; }
+  /* --- סרט כותרת למבדק (v2.0): רצועה כחולה-בהירה מלאה --- */
+  .banner { background: #DCECFB; border: 2px solid #1F6FC5; border-radius: 10px;
+            padding: 6px 14px; margin: 10px 0; font-weight: bold;
+            text-align: center; break-inside: avoid; }
+
+  .sub { margin: 2px 0; }
+  /* v2.1: שורת פיגום פתרון (מה ידוע / שלב / תשובה עם יחידה) */
+  .scaffold td:first-child { background: #F4FAFF; white-space: nowrap; }
+  .sub .letter { font-weight: bold; margin-left: 6px; }
+  /* G46: שרטוט תמיד בעמודת flex/מיכל ממורכז — לעולם לא float בתוך פריט RTL */
+  .figure { text-align: center; margin: 8px 0; }
+  .twocol { column-count: 2; column-gap: 26px; }
+  .twocol > * { break-inside: avoid; }
+
+  .ltr { direction: ltr; unicode-bidi: embed; white-space: nowrap; }
+  .num { direction: ltr; unicode-bidi: embed; }
+
+  /* שבר מדורג — זהה לתבנית החטיבה (אין לשנות!) */
+  .frac { display: inline-block; vertical-align: middle; text-align: center;
+          direction: ltr; font-size: 0.85em; margin: 0 1px; }
+  .frac .fnum { display: block; border-bottom: 1.2px solid #111; padding: 0 4px; line-height: 1.3; }
+  .frac .fden { display: block; padding: 0 4px; line-height: 1.3; }
+
+  .goodluck { text-align: center; font-weight: bold; font-size: 1.1em; margin: 18px 0;
+              color: #C00000; }
+
+  .answers { break-before: page; }
+  /* v2.0: עמוד התשובות מקבל את צבע הפס (כמו כותרת היחידה) + רקע עדין לפתקית */
+  .answers h2 { text-align: center; font-size: 16pt; margin-bottom: 2px;
+                color: #C00000; }
+  body.band-gd .answers h2 { color: #1F6FC5; }
+  body.band-hv .answers h2 { color: #159E8E; }
+  body.band-ab.bet .answers h2 { color: #D555C6; }
+  .answers .note { font-size: 9.5pt; color: #24507A; text-align: center; margin: 0 auto 10px;
+                   background: #F4FAFF; border: 1px solid #B7D4EE; border-radius: 8px;
+                   padding: 3px 12px; display: inline-block; }
+  .answers h2, .answers .note { page-break-after: avoid; }
+  .answers { text-align: center; }
+  .answers table.ans, .answers .teacher-notes { text-align: right; }
+  table.ans { width: 100%; border-collapse: collapse; font-size: 11pt; }
+  table.ans td { border: 1px solid #bbb; padding: 12px 8px; vertical-align: top;
+                 line-height: 1.9; }
+  table.ans td.qn { font-weight: bold; white-space: nowrap; width: 34px; text-align: center;
+                    color: #1F6FC5;
+                    /* v2.1: בלי direction:ltr הנקודה (תו ניטרלי) קופצת שמאלה
+                       והמספר מודפס ".1" במקום "1." — נמדד ברמת הגליף.
+                       בעמוד התלמיד ::before כבר מטפל בזה; כאן לא. */
+                    direction: ltr; unicode-bidi: embed; }
+  /* כלל בית (bidi): כל תרגיל/רשימת מספרים בעמוד התשובות עטוף span.ltr —
+     בלי זה "52 : 4 = 13 — 13 מטבעות" מתהפך ל"מטבעות 13 — 13 = 4 : 52" */
+  /* בלוק "הערות המורה" בסוף עמוד התשובות — שימושי, וגם מונע עמוד דליל (שער) */
+  .teacher-notes { margin-top: 18px; font-size: 10.5pt; color: #333; }
+  .teacher-notes .tline { border-bottom: 1px dashed #777; height: 2.2em; }
+</style>
+<style>
+      ol.questions > li { margin-bottom: 13pt; }
+      ol.questions { break-after:avoid; }
+      ol.questions > li:last-child { break-after:avoid; }
+      .goodluck { break-before:avoid; }
+      .figure svg { max-width:100%; height:auto; }
+      .qprompt { font-weight: 700; }
+      .parts { width:100%; border-collapse:collapse; margin-top:4pt; }
+      .parts td { width:50%; vertical-align:top; padding:2pt 6pt; border:none; }
+      .parts .ltr { white-space:nowrap; }
+      .part { margin:5pt 0; }
+      .parts .part { margin:3pt 0; }
+      .part-label { font-weight:700; color:#7A007A; margin-left:6pt; }
+      .source-table { border-collapse:collapse; width:100%; margin:6pt 0; font-size:.9em; }
+      .source-table td,.source-table th { border:1px solid #B7D4EE; padding:3pt 7pt; text-align:center; }
+      .source-table th { background:#F4FAFF; font-weight:700; }
+      .answer-line { height:22pt; border-bottom:1px dashed #999; margin:0 0 5pt; }
+      .answers .answer-item { display:inline; margin-left:8pt; }
+      .answers table.ans tr {break-inside:avoid;}
+      .answers table.ans tr:nth-last-child(-n+3) {break-after:avoid;}
+      .answers table.ans {break-after:avoid;}
+      .answers .teacher-notes {break-before:avoid;break-inside:avoid;}
+      body.band-ab .answers {font-size:13pt; line-height:1.55;}
+      body.band-ab .answers table.ans td {padding:5pt 8pt;line-height:1.55;}
+      .source-instructions {font-size:.87em; margin:4pt 0 10pt;}
+    </style></head>
+<body class="band-ab">
+<div class="unit">חִבּוּר בִּתְחוּם 10</div>
+<hr class="unit-rule">
+<div class="subtitle">כִּתָּה א׳ · רָמָה ב׳</div>
+<div class="details"><span>שֵׁם: ____________________</span><span>תַּאֲרִיךְ: __________</span></div>
+<div class="source-instructions">קִרְאוּ וּפִתְרוּ אֶת הַפְּעִילוּיוֹת:</div>
+<ol class="questions">
+<li id="elm-20261107-g1-s05-B-q001" data-question-id="elm-20261107-g1-s05-B-q001">
+<span class="qprompt">חַבְּרוּ וְהַשְׁלִימוּ:</span>
+<table class="parts" dir="rtl"><tbody>
+<tr><td><div class="part" id="elm-20261107-g1-s05-B-q001-i01" data-item-id="elm-20261107-g1-s05-B-q001-i01"><span class="part-label">א.</span> <span class="ltr">1 + 2 = <span class="blank" style="min-width:1.15cm"></span></span></div></td><td><div class="part" id="elm-20261107-g1-s05-B-q001-i02" data-item-id="elm-20261107-g1-s05-B-q001-i02"><span class="part-label">ב.</span> <span class="ltr">2 + 3 = <span class="blank" style="min-width:1.15cm"></span></span></div></td></tr>
+<tr><td><div class="part" id="elm-20261107-g1-s05-B-q001-i03" data-item-id="elm-20261107-g1-s05-B-q001-i03"><span class="part-label">ג.</span> <span class="ltr">4 + 1 = <span class="blank" style="min-width:1.15cm"></span></span></div></td><td><div class="part" id="elm-20261107-g1-s05-B-q001-i04" data-item-id="elm-20261107-g1-s05-B-q001-i04"><span class="part-label">ד.</span> <span class="ltr">3 + 3 = <span class="blank" style="min-width:1.15cm"></span></span></div></td></tr>
+<tr><td><div class="part" id="elm-20261107-g1-s05-B-q001-i05" data-item-id="elm-20261107-g1-s05-B-q001-i05"><span class="part-label">ה.</span> <span class="ltr">4 + 2 = <span class="blank" style="min-width:1.15cm"></span></span></div></td><td></td></tr>
+</tbody></table>
+</li>
+<li id="elm-20261107-g1-s05-B-q002" data-question-id="elm-20261107-g1-s05-B-q002">
+<span class="qprompt">כִּתְבוּ תַּרְגִּיל חִבּוּר וּפִתְרוּ:</span>
+<table class="parts" dir="rtl"><tbody>
+<tr><td><div class="part" id="elm-20261107-g1-s05-B-q002-i01" data-item-id="elm-20261107-g1-s05-B-q002-i01"><span class="part-label">א.</span> חַבְּרוּ <span class="ltr">2</span> וְעוֹד <span class="ltr">2</span>.<div class="ansline answer-line"></div></div></td><td><div class="part" id="elm-20261107-g1-s05-B-q002-i02" data-item-id="elm-20261107-g1-s05-B-q002-i02"><span class="part-label">ב.</span> חַבְּרוּ <span class="ltr">5</span> וְעוֹד <span class="ltr">1</span>.<div class="ansline answer-line"></div></div></td></tr>
+<tr><td><div class="part" id="elm-20261107-g1-s05-B-q002-i03" data-item-id="elm-20261107-g1-s05-B-q002-i03"><span class="part-label">ג.</span> חַבְּרוּ <span class="ltr">3</span> וְעוֹד <span class="ltr">4</span>.<div class="ansline answer-line"></div></div></td><td><div class="part" id="elm-20261107-g1-s05-B-q002-i04" data-item-id="elm-20261107-g1-s05-B-q002-i04"><span class="part-label">ד.</span> חַבְּרוּ <span class="ltr">6</span> וְעוֹד <span class="ltr">2</span>.<div class="ansline answer-line"></div></div></td></tr>
+<tr><td><div class="part" id="elm-20261107-g1-s05-B-q002-i05" data-item-id="elm-20261107-g1-s05-B-q002-i05"><span class="part-label">ה.</span> חַבְּרוּ <span class="ltr">4</span> וְעוֹד <span class="ltr">5</span>.<div class="ansline answer-line"></div></div></td><td></td></tr>
+</tbody></table>
+</li>
+<li id="elm-20261107-g1-s05-B-q003" data-question-id="elm-20261107-g1-s05-B-q003">
+<span class="qprompt">חַבְּרוּ עִם אֶפֶס:</span>
+<table class="parts" dir="rtl"><tbody>
+<tr><td><div class="part" id="elm-20261107-g1-s05-B-q003-i01" data-item-id="elm-20261107-g1-s05-B-q003-i01"><span class="part-label">א.</span> <span class="ltr">3 + 0 = <span class="blank" style="min-width:1.15cm"></span></span></div></td><td><div class="part" id="elm-20261107-g1-s05-B-q003-i02" data-item-id="elm-20261107-g1-s05-B-q003-i02"><span class="part-label">ב.</span> <span class="ltr">0 + 5 = <span class="blank" style="min-width:1.15cm"></span></span></div></td></tr>
+<tr><td><div class="part" id="elm-20261107-g1-s05-B-q003-i03" data-item-id="elm-20261107-g1-s05-B-q003-i03"><span class="part-label">ג.</span> <span class="ltr">8 + 0 = <span class="blank" style="min-width:1.15cm"></span></span></div></td><td><div class="part" id="elm-20261107-g1-s05-B-q003-i04" data-item-id="elm-20261107-g1-s05-B-q003-i04"><span class="part-label">ד.</span> <span class="ltr">0 + 2 = <span class="blank" style="min-width:1.15cm"></span></span></div></td></tr>
+<tr><td><div class="part" id="elm-20261107-g1-s05-B-q003-i05" data-item-id="elm-20261107-g1-s05-B-q003-i05"><span class="part-label">ה.</span> <span class="ltr">0 + 0 = <span class="blank" style="min-width:1.15cm"></span></span></div></td><td></td></tr>
+</tbody></table>
+</li>
+<li id="elm-20261107-g1-s05-B-q004" data-question-id="elm-20261107-g1-s05-B-q004">
+<span class="qprompt">הַשְׁלִימוּ כַּמָּה יֵשׁ בְּיַחַד:</span>
+<table class="source-table"><thead><tr><th></th><th>בְּקֻפְסָה רִאשׁוֹנָה</th><th>בְּקֻפְסָה שְׁנִיָּה</th><th>בְּיַחַד</th></tr></thead><tbody>
+<tr id="elm-20261107-g1-s05-B-q004-i01" data-item-id="elm-20261107-g1-s05-B-q004-i01"><td>א.</td><td><span class="ltr">1</span></td><td><span class="ltr">6</span></td><td><span class="ltr"><span class="blank" style="min-width:1.15cm"></span></span></td></tr>
+<tr id="elm-20261107-g1-s05-B-q004-i02" data-item-id="elm-20261107-g1-s05-B-q004-i02"><td>ב.</td><td><span class="ltr">2</span></td><td><span class="ltr">5</span></td><td><span class="ltr"><span class="blank" style="min-width:1.15cm"></span></span></td></tr>
+<tr id="elm-20261107-g1-s05-B-q004-i03" data-item-id="elm-20261107-g1-s05-B-q004-i03"><td>ג.</td><td><span class="ltr">3</span></td><td><span class="ltr">5</span></td><td><span class="ltr"><span class="blank" style="min-width:1.15cm"></span></span></td></tr>
+<tr id="elm-20261107-g1-s05-B-q004-i04" data-item-id="elm-20261107-g1-s05-B-q004-i04"><td>ד.</td><td><span class="ltr">4</span></td><td><span class="ltr">4</span></td><td><span class="ltr"><span class="blank" style="min-width:1.15cm"></span></span></td></tr>
+<tr id="elm-20261107-g1-s05-B-q004-i05" data-item-id="elm-20261107-g1-s05-B-q004-i05"><td>ה.</td><td><span class="ltr">7</span></td><td><span class="ltr">3</span></td><td><span class="ltr"><span class="blank" style="min-width:1.15cm"></span></span></td></tr>
+</tbody></table>
+</li>
+<li id="elm-20261107-g1-s05-B-q005" data-question-id="elm-20261107-g1-s05-B-q005">
+<span class="qprompt">חַבְּרוּ וְהַקִּיפוּ אֶת הַתְּשׁוּבָה הַמַּתְאִימָה:</span>
+<table class="parts" dir="rtl"><tbody>
+<tr><td><div class="part" id="elm-20261107-g1-s05-B-q005-i01" data-item-id="elm-20261107-g1-s05-B-q005-i01"><span class="part-label">א.</span> <span class="ltr">2 + 1</span>     בַּחֲרוּ: <span class="ltr">3</span> אוֹ <span class="ltr">4</span></div></td><td><div class="part" id="elm-20261107-g1-s05-B-q005-i02" data-item-id="elm-20261107-g1-s05-B-q005-i02"><span class="part-label">ב.</span> <span class="ltr">1 + 4</span>     בַּחֲרוּ: <span class="ltr">6</span> אוֹ <span class="ltr">5</span></div></td></tr>
+<tr><td><div class="part" id="elm-20261107-g1-s05-B-q005-i03" data-item-id="elm-20261107-g1-s05-B-q005-i03"><span class="part-label">ג.</span> <span class="ltr">3 + 2</span>     בַּחֲרוּ: <span class="ltr">4</span> אוֹ <span class="ltr">5</span></div></td><td><div class="part" id="elm-20261107-g1-s05-B-q005-i04" data-item-id="elm-20261107-g1-s05-B-q005-i04"><span class="part-label">ד.</span> <span class="ltr">2 + 6</span>     בַּחֲרוּ: <span class="ltr">8</span> אוֹ <span class="ltr">9</span></div></td></tr>
+<tr><td><div class="part" id="elm-20261107-g1-s05-B-q005-i05" data-item-id="elm-20261107-g1-s05-B-q005-i05"><span class="part-label">ה.</span> <span class="ltr">5 + 5</span>     בַּחֲרוּ: <span class="ltr">9</span> אוֹ <span class="ltr">10</span></div></td><td></td></tr>
+</tbody></table>
+</li>
+<li id="elm-20261107-g1-s05-B-q006" data-question-id="elm-20261107-g1-s05-B-q006">
+<span class="qprompt">קִרְאוּ וּכְתְבוּ תַּרְגִּיל וּתְשׁוּבָה:</span>
+<div class="part" id="elm-20261107-g1-s05-B-q006-i01" data-item-id="elm-20261107-g1-s05-B-q006-i01"><div class="sub"><span class="part-label">א.</span> לְרוֹנִי יֵשׁ <span class="ltr">2</span> סְפָרִים. הִיא קִבְּלָה עוֹד <span class="ltr">2</span> סְפָרִים. כַּמָּה סְפָרִים יֵשׁ לָהּ עַכְשָׁו?</div><div class="ansline answer-line"></div><div class="ansline answer-line"></div></div>
+<div class="part" id="elm-20261107-g1-s05-B-q006-i02" data-item-id="elm-20261107-g1-s05-B-q006-i02"><div class="sub"><span class="part-label">ב.</span> בַּקֻּפְסָה יֵשׁ <span class="ltr">3</span> עֶפְרוֹנוֹת. תָּמָר הוֹסִיפָה עִפָּרוֹן. כַּמָּה עֶפְרוֹנוֹת יֵשׁ עַכְשָׁו?</div><div class="ansline answer-line"></div><div class="ansline answer-line"></div></div>
+<div class="part" id="elm-20261107-g1-s05-B-q006-i03" data-item-id="elm-20261107-g1-s05-B-q006-i03"><div class="sub"><span class="part-label">ג.</span> עַל הַשֻּׁלְחָן יֵשׁ <span class="ltr">4</span> מַחְבָּרוֹת. אָסָף הִנִּיחַ עוֹד <span class="ltr">3</span> מַחְבָּרוֹת. כַּמָּה מַחְבָּרוֹת יֵשׁ עַכְשָׁו?</div><div class="ansline answer-line"></div><div class="ansline answer-line"></div></div>
+<div class="part" id="elm-20261107-g1-s05-B-q006-i04" data-item-id="elm-20261107-g1-s05-B-q006-i04"><div class="sub"><span class="part-label">ד.</span> לְשִׁירָה יֵשׁ <span class="ltr">5</span> מַדְבֵּקוֹת. הִיא קִבְּלָה עוֹד <span class="ltr">3</span> מַדְבֵּקוֹת. כַּמָּה מַדְבֵּקוֹת יֵשׁ לָהּ עַכְשָׁו?</div><div class="ansline answer-line"></div><div class="ansline answer-line"></div></div>
+<div class="part" id="elm-20261107-g1-s05-B-q006-i05" data-item-id="elm-20261107-g1-s05-B-q006-i05"><div class="sub"><span class="part-label">ה.</span> בַּסַּל יֵשׁ <span class="ltr">6</span> תַּפּוּחִים. יַעֲרָה הוֹסִיפָה עוֹד <span class="ltr">4</span> תַּפּוּחִים. כַּמָּה תַּפּוּחִים יֵשׁ בַּסַּל?</div><div class="ansline answer-line"></div><div class="ansline answer-line"></div></div>
+</li>
+<li id="elm-20261107-g1-s05-B-q007" data-question-id="elm-20261107-g1-s05-B-q007" class="starred" style="break-before:page">
+<span class="star"></span>
+<span class="qprompt">תַּקְּנוּ אֶת הַסְּכוּם הַשָּׁגוּי. הַסְבִּירוּ בְּעַל־פֶּה אֵיךְ בְּדַקְתֶּם:</span>
+<table class="parts" dir="rtl"><tbody>
+<tr><td><div class="part" id="elm-20261107-g1-s05-B-q007-i01" data-item-id="elm-20261107-g1-s05-B-q007-i01"><span class="part-label">א.</span> <span class="ltr">2 + 4 = 7</span><div class="ansline answer-line"></div></div></td><td><div class="part" id="elm-20261107-g1-s05-B-q007-i02" data-item-id="elm-20261107-g1-s05-B-q007-i02"><span class="part-label">ב.</span> <span class="ltr">3 + 6 = 8</span><div class="ansline answer-line"></div></div></td></tr>
+<tr><td><div class="part" id="elm-20261107-g1-s05-B-q007-i03" data-item-id="elm-20261107-g1-s05-B-q007-i03"><span class="part-label">ג.</span> <span class="ltr">5 + 4 = 10</span><div class="ansline answer-line"></div></div></td><td><div class="part" id="elm-20261107-g1-s05-B-q007-i04" data-item-id="elm-20261107-g1-s05-B-q007-i04"><span class="part-label">ד.</span> <span class="ltr">6 + 1 = 6</span><div class="ansline answer-line"></div></div></td></tr>
+<tr><td><div class="part" id="elm-20261107-g1-s05-B-q007-i05" data-item-id="elm-20261107-g1-s05-B-q007-i05"><span class="part-label">ה.</span> <span class="ltr">8 + 2 = 9</span><div class="ansline answer-line"></div></div></td><td></td></tr>
+</tbody></table>
+</li>
+<li id="elm-20261107-g1-s05-B-q008" data-question-id="elm-20261107-g1-s05-B-q008" class="starred">
+<span class="star"></span>
+<span class="qprompt">סַפְּרוּ בְּעַל־פֶּה סִפּוּר הַמַּתְאִים לַתַּרְגִּיל. אִמְרוּ גַּם אֶת הַתְּשׁוּבָה:</span>
+<div class="part" id="elm-20261107-g1-s05-B-q008-i01" data-item-id="elm-20261107-g1-s05-B-q008-i01"><div class="sub"><span class="part-label">א.</span> <span class="ltr">1 + 5</span></div></div>
+<div class="part" id="elm-20261107-g1-s05-B-q008-i02" data-item-id="elm-20261107-g1-s05-B-q008-i02"><div class="sub"><span class="part-label">ב.</span> <span class="ltr">4 + 2</span></div></div>
+<div class="part" id="elm-20261107-g1-s05-B-q008-i03" data-item-id="elm-20261107-g1-s05-B-q008-i03"><div class="sub"><span class="part-label">ג.</span> <span class="ltr">3 + 5</span></div></div>
+<div class="part" id="elm-20261107-g1-s05-B-q008-i04" data-item-id="elm-20261107-g1-s05-B-q008-i04"><div class="sub"><span class="part-label">ד.</span> <span class="ltr">2 + 7</span></div></div>
+<div class="part" id="elm-20261107-g1-s05-B-q008-i05" data-item-id="elm-20261107-g1-s05-B-q008-i05"><div class="sub"><span class="part-label">ה.</span> <span class="ltr">5 + 3</span></div></div>
+</li>
+</ol><div class="goodluck">בְּהַצְלָחָה!</div>
+<div class="answers"><h2>תְּשׁוּבוֹת סוֹפִיּוֹת</h2><div class="note">הַתְּשׁוּבוֹת מְיֹעָדוֹת לִבְדִיקָה עַצְמִית אַחֲרֵי הַפִּתְרוֹן. יִתָּכְנוּ תְּשׁוּבוֹת נוֹסָפוֹת בַּסְּעִיפִים הַפְּתוּחִים.</div><table class="ans">
+<tr id="answer-elm-20261107-g1-s05-B-q001"><td class="qn"><span class="ltr">1.</span></td><td><span class="answer-item" id="answer-elm-20261107-g1-s05-B-q001-i01">א. <span class="ltr">3</span></span> ; <span class="answer-item" id="answer-elm-20261107-g1-s05-B-q001-i02">ב. <span class="ltr">5</span></span> ; <span class="answer-item" id="answer-elm-20261107-g1-s05-B-q001-i03">ג. <span class="ltr">5</span></span> ; <span class="answer-item" id="answer-elm-20261107-g1-s05-B-q001-i04">ד. <span class="ltr">6</span></span> ; <span class="answer-item" id="answer-elm-20261107-g1-s05-B-q001-i05">ה. <span class="ltr">6</span></span></td></tr>
+<tr id="answer-elm-20261107-g1-s05-B-q002"><td class="qn"><span class="ltr">2.</span></td><td><span class="answer-item" id="answer-elm-20261107-g1-s05-B-q002-i01">א. <span class="ltr">2 + 2 = 4</span></span> ; <span class="answer-item" id="answer-elm-20261107-g1-s05-B-q002-i02">ב. <span class="ltr">5 + 1 = 6</span></span> ; <span class="answer-item" id="answer-elm-20261107-g1-s05-B-q002-i03">ג. <span class="ltr">3 + 4 = 7</span></span> ; <span class="answer-item" id="answer-elm-20261107-g1-s05-B-q002-i04">ד. <span class="ltr">6 + 2 = 8</span></span> ; <span class="answer-item" id="answer-elm-20261107-g1-s05-B-q002-i05">ה. <span class="ltr">4 + 5 = 9</span></span></td></tr>
+<tr id="answer-elm-20261107-g1-s05-B-q003"><td class="qn"><span class="ltr">3.</span></td><td><span class="answer-item" id="answer-elm-20261107-g1-s05-B-q003-i01">א. <span class="ltr">3</span></span> ; <span class="answer-item" id="answer-elm-20261107-g1-s05-B-q003-i02">ב. <span class="ltr">5</span></span> ; <span class="answer-item" id="answer-elm-20261107-g1-s05-B-q003-i03">ג. <span class="ltr">8</span></span> ; <span class="answer-item" id="answer-elm-20261107-g1-s05-B-q003-i04">ד. <span class="ltr">2</span></span> ; <span class="answer-item" id="answer-elm-20261107-g1-s05-B-q003-i05">ה. <span class="ltr">0</span></span></td></tr>
+<tr id="answer-elm-20261107-g1-s05-B-q004"><td class="qn"><span class="ltr">4.</span></td><td><span class="answer-item" id="answer-elm-20261107-g1-s05-B-q004-i01">א. <span class="ltr">7</span></span> ; <span class="answer-item" id="answer-elm-20261107-g1-s05-B-q004-i02">ב. <span class="ltr">7</span></span> ; <span class="answer-item" id="answer-elm-20261107-g1-s05-B-q004-i03">ג. <span class="ltr">8</span></span> ; <span class="answer-item" id="answer-elm-20261107-g1-s05-B-q004-i04">ד. <span class="ltr">8</span></span> ; <span class="answer-item" id="answer-elm-20261107-g1-s05-B-q004-i05">ה. <span class="ltr">10</span></span></td></tr>
+<tr id="answer-elm-20261107-g1-s05-B-q005"><td class="qn"><span class="ltr">5.</span></td><td><span class="answer-item" id="answer-elm-20261107-g1-s05-B-q005-i01">א. <span class="ltr">3</span></span> ; <span class="answer-item" id="answer-elm-20261107-g1-s05-B-q005-i02">ב. <span class="ltr">5</span></span> ; <span class="answer-item" id="answer-elm-20261107-g1-s05-B-q005-i03">ג. <span class="ltr">5</span></span> ; <span class="answer-item" id="answer-elm-20261107-g1-s05-B-q005-i04">ד. <span class="ltr">8</span></span> ; <span class="answer-item" id="answer-elm-20261107-g1-s05-B-q005-i05">ה. <span class="ltr">10</span></span></td></tr>
+<tr id="answer-elm-20261107-g1-s05-B-q006"><td class="qn"><span class="ltr">6.</span></td><td><span class="answer-item" id="answer-elm-20261107-g1-s05-B-q006-i01">א. תַּרְגִּיל: <span class="ltr">2 + 2 = 4</span>. תְּשׁוּבָה: <span class="ltr">4</span> סְפָרִים.</span><br><span class="answer-item" id="answer-elm-20261107-g1-s05-B-q006-i02">ב. תַּרְגִּיל: <span class="ltr">3 + 1 = 4</span>. תְּשׁוּבָה: <span class="ltr">4</span> עֶפְרוֹנוֹת.</span><br><span class="answer-item" id="answer-elm-20261107-g1-s05-B-q006-i03">ג. תַּרְגִּיל: <span class="ltr">4 + 3 = 7</span>. תְּשׁוּבָה: <span class="ltr">7</span> מַחְבָּרוֹת.</span><br><span class="answer-item" id="answer-elm-20261107-g1-s05-B-q006-i04">ד. תַּרְגִּיל: <span class="ltr">5 + 3 = 8</span>. תְּשׁוּבָה: <span class="ltr">8</span> מַדְבֵּקוֹת.</span><br><span class="answer-item" id="answer-elm-20261107-g1-s05-B-q006-i05">ה. תַּרְגִּיל: <span class="ltr">6 + 4 = 10</span>. תְּשׁוּבָה: <span class="ltr">10</span> תַּפּוּחִים.</span></td></tr>
+<tr id="answer-elm-20261107-g1-s05-B-q007"><td class="qn"><span class="ltr">7.</span></td><td><span class="answer-item" id="answer-elm-20261107-g1-s05-B-q007-i01">א. <span class="ltr">2 + 4 = 6</span>. מַתְחִילִים בְּ־<span class="ltr">2</span> וּמוֹסִיפִים <span class="ltr">4</span>.</span><br><span class="answer-item" id="answer-elm-20261107-g1-s05-B-q007-i02">ב. <span class="ltr">3 + 6 = 9</span>. מַתְחִילִים בְּ־<span class="ltr">3</span> וּמוֹסִיפִים <span class="ltr">6</span>.</span><br><span class="answer-item" id="answer-elm-20261107-g1-s05-B-q007-i03">ג. <span class="ltr">5 + 4 = 9</span>. מַתְחִילִים בְּ־<span class="ltr">5</span> וּמוֹסִיפִים <span class="ltr">4</span>.</span><br><span class="answer-item" id="answer-elm-20261107-g1-s05-B-q007-i04">ד. <span class="ltr">6 + 1 = 7</span>. מַתְחִילִים בְּ־<span class="ltr">6</span> וּמוֹסִיפִים <span class="ltr">1</span>.</span><br><span class="answer-item" id="answer-elm-20261107-g1-s05-B-q007-i05">ה. <span class="ltr">8 + 2 = 10</span>. מַתְחִילִים בְּ־<span class="ltr">8</span> וּמוֹסִיפִים <span class="ltr">2</span>.</span></td></tr>
+<tr id="answer-elm-20261107-g1-s05-B-q008"><td class="qn"><span class="ltr">8.</span></td><td><span class="answer-item" id="answer-elm-20261107-g1-s05-B-q008-i01">א. דֻּגְמָה: הָיָה סֵפֶר. נוֹסְפוּ <span class="ltr">5</span> סְפָרִים. עַכְשָׁו יֵשׁ <span class="ltr">6</span> סְפָרִים. בְּכָל הַסְּעִיפִים מִתְקַבֵּל גַּם סִפּוּר אַחֵר שֶׁמְּצָרֵף אֶת הַכַּמֻּיּוֹת שֶׁבַּתַּרְגִּיל וּמַגִּיעַ לַסְּכוּם הַנָּכוֹן.</span><br><span class="answer-item" id="answer-elm-20261107-g1-s05-B-q008-i02">ב. דֻּגְמָה: הָיוּ <span class="ltr">4</span> סְפָרִים. נוֹסְפוּ <span class="ltr">2</span> סְפָרִים. עַכְשָׁו יֵשׁ <span class="ltr">6</span> סְפָרִים.</span><br><span class="answer-item" id="answer-elm-20261107-g1-s05-B-q008-i03">ג. דֻּגְמָה: הָיוּ <span class="ltr">3</span> סְפָרִים. נוֹסְפוּ <span class="ltr">5</span> סְפָרִים. עַכְשָׁו יֵשׁ <span class="ltr">8</span> סְפָרִים.</span><br><span class="answer-item" id="answer-elm-20261107-g1-s05-B-q008-i04">ד. דֻּגְמָה: הָיוּ <span class="ltr">2</span> סְפָרִים. נוֹסְפוּ <span class="ltr">7</span> סְפָרִים. עַכְשָׁו יֵשׁ <span class="ltr">9</span> סְפָרִים.</span><br><span class="answer-item" id="answer-elm-20261107-g1-s05-B-q008-i05">ה. דֻּגְמָה: הָיוּ <span class="ltr">5</span> סְפָרִים. נוֹסְפוּ <span class="ltr">3</span> סְפָרִים. עַכְשָׁו יֵשׁ <span class="ltr">8</span> סְפָרִים.</span></td></tr>
+</table><div class="teacher-notes">הערות המורה:<div class="tline"></div><div class="tline"></div></div></div></body></html>

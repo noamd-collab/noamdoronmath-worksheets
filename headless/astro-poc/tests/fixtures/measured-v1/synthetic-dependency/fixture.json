@@ -1,0 +1,28 @@
+{
+  "testOnly": true,
+  "syntheticDependency": true,
+  "publishable": false,
+  "binding": {
+    "canonicalSourceSha256": "f8ee406a1780c627a6a256a417da0208ef1b3a14b4778fc36471e48de82c65f3",
+    "htmlSha256": "c1b8146d9dc76ec296d0105955751d45bcf4505de3e370965c3b8476f3b929aa",
+    "pdfSha256": "a9680d24f9b354c343c24acedf5d62bd7df2d3ffd179b3633c485bd1eda89a6e",
+    "layoutSha256": "14564210c78497c26bc2f1077bad4496577edde9464693c310d5bd45c3cbad3a",
+    "pdfId": null,
+    "editionId": "elementary-20261107-r1",
+    "worksheetId": "synthetic-dependency-only",
+    "revision": 2,
+    "siteTopicPrefix": "G2-T28",
+    "canonicalTopicPrefix": "G2-T28"
+  },
+  "files": {
+    "draft.json": "1186b72d8539bca3bd4cb7203a2db2ba63acc6738f8fef71b5de6d235691c680",
+    "DavidLibre-Bold.ttf": "7610819c7888c8e7ecdfc573089113ec5355cf95078614ae0e30b509b05468f8",
+    "sheet.pdf": "a9680d24f9b354c343c24acedf5d62bd7df2d3ffd179b3633c485bd1eda89a6e",
+    "layout.json": "14564210c78497c26bc2f1077bad4496577edde9464693c310d5bd45c3cbad3a",
+    "worksheet-source.json": "f8ee406a1780c627a6a256a417da0208ef1b3a14b4778fc36471e48de82c65f3",
+    "DavidLibre-Regular.ttf": "923f06e0f6dc84e1649d8cc5d5e12a8d663adf6aba83ba15baa5d559fb47b86e",
+    "sheet.html": "c1b8146d9dc76ec296d0105955751d45bcf4505de3e370965c3b8476f3b929aa",
+    "DavidLibre-Medium.ttf": "fa3e35197472768520a489b77009b75bfc55601f61a0c4d0c1b23ca7f87701ce"
+  },
+  "fixtureMetadataNote": "Test-only resource names normalized to portable paths; PDF, HTML, source, measurements and font hashes are unchanged."
+}

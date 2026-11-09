@@ -1,0 +1,6368 @@
+{
+  "sourceFormat": "noam-elementary-pdf-layout",
+  "schemaVersion": 1,
+  "status": "measured-not-reviewed",
+  "publishable": false,
+  "worksheetId": "elm-20261107-g1-s05-B",
+  "revision": 1,
+  "canonicalSourceSha256": "ed2da99b8e893c3f91291c6b7024df20c8a1effe4353ba39ab25a72055382771",
+  "htmlSha256": "7a680b92986b2154035474df2d38ce15dc19cec5c85ccf37c2c84b285d77f76f",
+  "pdfSha256": "917c827a07110193844dc1e8d41f4b178e57de4b490eabcb8bf5267ecbe62602",
+  "pdfBytes": 56175,
+  "pageCount": 5,
+  "renderer": {
+    "name": "WeasyPrint",
+    "version": "68.0",
+    "python": "3.12.14",
+    "boxApi": "page._page_box",
+    "settings": {
+      "mediaType": "print",
+      "zoom": 1,
+      "stylesheets": null,
+      "attachments": null,
+      "attachment_relationships": null,
+      "pdf_identifier": null,
+      "pdf_variant": null,
+      "pdf_version": null,
+      "pdf_forms": null,
+      "pdf_tags": false,
+      "uncompressed_pdf": false,
+      "xmp_metadata": null,
+      "custom_metadata": false,
+      "presentational_hints": false,
+      "srgb": false,
+      "optimize_images": false,
+      "jpeg_quality": null,
+      "dpi": null,
+      "full_fonts": false,
+      "hinting": false,
+      "cache": null
+    },
+    "resources": {
+      "fixture-resources/DavidLibre-Regular.ttf": {
+        "sha256": "923f06e0f6dc84e1649d8cc5d5e12a8d663adf6aba83ba15baa5d559fb47b86e",
+        "bytes": 127740
+      },
+      "fixture-resources/DavidLibre-Bold.ttf": {
+        "sha256": "7610819c7888c8e7ecdfc573089113ec5355cf95078614ae0e30b509b05468f8",
+        "bytes": 132840
+      },
+      "fixture-resources/DavidLibre-Medium.ttf": {
+        "sha256": "fa3e35197472768520a489b77009b75bfc55601f61a0c4d0c1b23ca7f87701ce",
+        "bytes": 129040
+      }
+    },
+    "sameDocumentForLayoutAndPdf": true
+  },
+  "postprocess": {
+    "operation": "approved build_pdf._fix_weasyprint_tounicode",
+    "scriptSha256": "a899ec7d11ef0c9a28f16682f8ed316a0c46848f9b6eb1ec40aad1cc98b7efbd",
+    "fontSha256": {
+      "DavidLibre-Regular.ttf": "923f06e0f6dc84e1649d8cc5d5e12a8d663adf6aba83ba15baa5d559fb47b86e",
+      "DavidLibre-Medium.ttf": "fa3e35197472768520a489b77009b75bfc55601f61a0c4d0c1b23ca7f87701ce",
+      "DavidLibre-Bold.ttf": "7610819c7888c8e7ecdfc573089113ec5355cf95078614ae0e30b509b05468f8"
+    },
+    "beforePdfSha256": "24cb2cd66a96ff0712ad17b2077e813e0155b6f7105bf4d07963fd767f1c8704",
+    "changed": true,
+    "pageGeometryAndContentStreamsUnchanged": true
+  },
+  "coordinates": {
+    "origin": "top-left",
+    "pageBase": 1,
+    "cssPixelsPerInch": 96,
+    "pdfPointsPerInch": 72,
+    "pdfPointsPerCssPixel": 0.75,
+    "bounds": "union of renderer border boxes and descendant text/boxes; margins excluded"
+  },
+  "pages": [
+    {
+      "page": 1,
+      "widthCssPx": 793.7007874015749,
+      "heightCssPx": 1122.5196850393704,
+      "widthPt": 595.2755905511812,
+      "heightPt": 841.8897637795278,
+      "marginBoxes": [
+        {
+          "position": "@top-center",
+          "page": 1,
+          "boxType": "MarginBox",
+          "htmlTag": "",
+          "bounds": {
+            "cssPx": {
+              "x": 342.71562807578744,
+              "y": 0.0,
+              "width": 108.26953125,
+              "height": 60.47244094488189
+            },
+            "pdfPt": {
+              "x": 257.0367210568406,
+              "y": 0.0,
+              "width": 81.2021484375,
+              "height": 45.354330708661415
+            },
+            "normalized": {
+              "x": 0.43179449172247025,
+              "y": 0.0,
+              "width": 0.13641101655505952,
+              "height": 0.053872053872053856
+            }
+          }
+        },
+        {
+          "position": "@top-right",
+          "page": 1,
+          "boxType": "MarginBox",
+          "htmlTag": "",
+          "bounds": {
+            "cssPx": {
+              "x": 699.1458538385828,
+              "y": 0.0,
+              "width": 26.5234375,
+              "height": 60.47244094488189
+            },
+            "pdfPt": {
+              "x": 524.3593903789371,
+              "y": 0.0,
+              "width": 19.892578125,
+              "height": 45.354330708661415
+            },
+            "normalized": {
+              "x": 0.8808682880704365,
+              "y": 0.0,
+              "width": 0.033417426215277775,
+              "height": 0.053872053872053856
+            }
+          }
+        },
+        {
+          "position": "@bottom-center",
+          "page": 1,
+          "boxType": "MarginBox",
+          "htmlTag": "",
+          "bounds": {
+            "cssPx": {
+              "x": 304.71465151328744,
+              "y": 1046.929133858268,
+              "width": 184.271484375,
+              "height": 75.59055118110246
+            },
+            "pdfPt": {
+              "x": 228.53598863496558,
+              "y": 785.196850393701,
+              "width": 138.20361328125,
+              "height": 56.69291338582684
+            },
+            "normalized": {
+              "x": 0.3839162772042411,
+              "y": 0.9326599326599326,
+              "width": 0.23216744559151783,
+              "height": 0.06734006734006741
+            }
+          }
+        },
+        {
+          "position": "@bottom-right",
+          "page": 1,
+          "boxType": "MarginBox",
+          "htmlTag": "",
+          "bounds": {
+            "cssPx": {
+              "x": 608.7015179010828,
+              "y": 1046.929133858268,
+              "width": 116.9677734375,
+              "height": 75.59055118110246
+            },
+            "pdfPt": {
+              "x": 456.52613842581206,
+              "y": 785.196850393701,
+              "width": 87.725830078125,
+              "height": 56.69291338582684
+            },
+            "normalized": {
+              "x": 0.7669156029110863,
+              "y": 0.9326599326599326,
+              "width": 0.14737011137462797,
+              "height": 0.06734006734006741
+            }
+          }
+        }
+      ]
+    },
+    {
+      "page": 2,
+      "widthCssPx": 793.7007874015749,
+      "heightCssPx": 1122.5196850393704,
+      "widthPt": 595.2755905511812,
+      "heightPt": 841.8897637795278,
+      "marginBoxes": [
+        {
+          "position": "@top-center",
+          "page": 2,
+          "boxType": "MarginBox",
+          "htmlTag": "",
+          "bounds": {
+            "cssPx": {
+              "x": 342.71562807578744,
+              "y": 0.0,
+              "width": 108.26953125,
+              "height": 60.47244094488189
+            },
+            "pdfPt": {
+              "x": 257.0367210568406,
+              "y": 0.0,
+              "width": 81.2021484375,
+              "height": 45.354330708661415
+            },
+            "normalized": {
+              "x": 0.43179449172247025,
+              "y": 0.0,
+              "width": 0.13641101655505952,
+              "height": 0.053872053872053856
+            }
+          }
+        },
+        {
+          "position": "@top-right",
+          "page": 2,
+          "boxType": "MarginBox",
+          "htmlTag": "",
+          "bounds": {
+            "cssPx": {
+              "x": 699.1458538385828,
+              "y": 0.0,
+              "width": 26.5234375,
+              "height": 60.47244094488189
+            },
+            "pdfPt": {
+              "x": 524.3593903789371,
+              "y": 0.0,
+              "width": 19.892578125,
+              "height": 45.354330708661415
+            },
+            "normalized": {
+              "x": 0.8808682880704365,
+              "y": 0.0,
+              "width": 0.033417426215277775,
+              "height": 0.053872053872053856
+            }
+          }
+        },
+        {
+          "position": "@bottom-center",
+          "page": 2,
+          "boxType": "MarginBox",
+          "htmlTag": "",
+          "bounds": {
+            "cssPx": {
+              "x": 304.71465151328744,
+              "y": 1046.929133858268,
+              "width": 184.271484375,
+              "height": 75.59055118110246
+            },
+            "pdfPt": {
+              "x": 228.53598863496558,
+              "y": 785.196850393701,
+              "width": 138.20361328125,
+              "height": 56.69291338582684
+            },
+            "normalized": {
+              "x": 0.3839162772042411,
+              "y": 0.9326599326599326,
+              "width": 0.23216744559151783,
+              "height": 0.06734006734006741
+            }
+          }
+        },
+        {
+          "position": "@bottom-right",
+          "page": 2,
+          "boxType": "MarginBox",
+          "htmlTag": "",
+          "bounds": {
+            "cssPx": {
+              "x": 608.7015179010828,
+              "y": 1046.929133858268,
+              "width": 116.9677734375,
+              "height": 75.59055118110246
+            },
+            "pdfPt": {
+              "x": 456.52613842581206,
+              "y": 785.196850393701,
+              "width": 87.725830078125,
+              "height": 56.69291338582684
+            },
+            "normalized": {
+              "x": 0.7669156029110863,
+              "y": 0.9326599326599326,
+              "width": 0.14737011137462797,
+              "height": 0.06734006734006741
+            }
+          }
+        }
+      ]
+    },
+    {
+      "page": 3,
+      "widthCssPx": 793.7007874015749,
+      "heightCssPx": 1122.5196850393704,
+      "widthPt": 595.2755905511812,
+      "heightPt": 841.8897637795278,
+      "marginBoxes": [
+        {
+          "position": "@top-center",
+          "page": 3,
+          "boxType": "MarginBox",
+          "htmlTag": "",
+          "bounds": {
+            "cssPx": {
+              "x": 342.71562807578744,
+              "y": 0.0,
+              "width": 108.26953125,
+              "height": 60.47244094488189
+            },
+            "pdfPt": {
+              "x": 257.0367210568406,
+              "y": 0.0,
+              "width": 81.2021484375,
+              "height": 45.354330708661415
+            },
+            "normalized": {
+              "x": 0.43179449172247025,
+              "y": 0.0,
+              "width": 0.13641101655505952,
+              "height": 0.053872053872053856
+            }
+          }
+        },
+        {
+          "position": "@top-right",
+          "page": 3,
+          "boxType": "MarginBox",
+          "htmlTag": "",
+          "bounds": {
+            "cssPx": {
+              "x": 699.1458538385828,
+              "y": 0.0,
+              "width": 26.5234375,
+              "height": 60.47244094488189
+            },
+            "pdfPt": {
+              "x": 524.3593903789371,
+              "y": 0.0,
+              "width": 19.892578125,
+              "height": 45.354330708661415
+            },
+            "normalized": {
+              "x": 0.8808682880704365,
+              "y": 0.0,
+              "width": 0.033417426215277775,
+              "height": 0.053872053872053856
+            }
+          }
+        },
+        {
+          "position": "@bottom-center",
+          "page": 3,
+          "boxType": "MarginBox",
+          "htmlTag": "",
+          "bounds": {
+            "cssPx": {
+              "x": 304.71465151328744,
+              "y": 1046.929133858268,
+              "width": 184.271484375,
+              "height": 75.59055118110246
+            },
+            "pdfPt": {
+              "x": 228.53598863496558,
+              "y": 785.196850393701,
+              "width": 138.20361328125,
+              "height": 56.69291338582684
+            },
+            "normalized": {
+              "x": 0.3839162772042411,
+              "y": 0.9326599326599326,
+              "width": 0.23216744559151783,
+              "height": 0.06734006734006741
+            }
+          }
+        },
+        {
+          "position": "@bottom-right",
+          "page": 3,
+          "boxType": "MarginBox",
+          "htmlTag": "",
+          "bounds": {
+            "cssPx": {
+              "x": 608.7015179010828,
+              "y": 1046.929133858268,
+              "width": 116.9677734375,
+              "height": 75.59055118110246
+            },
+            "pdfPt": {
+              "x": 456.52613842581206,
+              "y": 785.196850393701,
+              "width": 87.725830078125,
+              "height": 56.69291338582684
+            },
+            "normalized": {
+              "x": 0.7669156029110863,
+              "y": 0.9326599326599326,
+              "width": 0.14737011137462797,
+              "height": 0.06734006734006741
+            }
+          }
+        }
+      ]
+    },
+    {
+      "page": 4,
+      "widthCssPx": 793.7007874015749,
+      "heightCssPx": 1122.5196850393704,
+      "widthPt": 595.2755905511812,
+      "heightPt": 841.8897637795278,
+      "marginBoxes": [
+        {
+          "position": "@top-center",
+          "page": 4,
+          "boxType": "MarginBox",
+          "htmlTag": "",
+          "bounds": {
+            "cssPx": {
+              "x": 342.71562807578744,
+              "y": 0.0,
+              "width": 108.26953125,
+              "height": 60.47244094488189
+            },
+            "pdfPt": {
+              "x": 257.0367210568406,
+              "y": 0.0,
+              "width": 81.2021484375,
+              "height": 45.354330708661415
+            },
+            "normalized": {
+              "x": 0.43179449172247025,
+              "y": 0.0,
+              "width": 0.13641101655505952,
+              "height": 0.053872053872053856
+            }
+          }
+        },
+        {
+          "position": "@top-right",
+          "page": 4,
+          "boxType": "MarginBox",
+          "htmlTag": "",
+          "bounds": {
+            "cssPx": {
+              "x": 699.1458538385828,
+              "y": 0.0,
+              "width": 26.5234375,
+              "height": 60.47244094488189
+            },
+            "pdfPt": {
+              "x": 524.3593903789371,
+              "y": 0.0,
+              "width": 19.892578125,
+              "height": 45.354330708661415
+            },
+            "normalized": {
+              "x": 0.8808682880704365,
+              "y": 0.0,
+              "width": 0.033417426215277775,
+              "height": 0.053872053872053856
+            }
+          }
+        },
+        {
+          "position": "@bottom-center",
+          "page": 4,
+          "boxType": "MarginBox",
+          "htmlTag": "",
+          "bounds": {
+            "cssPx": {
+              "x": 304.71465151328744,
+              "y": 1046.929133858268,
+              "width": 184.271484375,
+              "height": 75.59055118110246
+            },
+            "pdfPt": {
+              "x": 228.53598863496558,
+              "y": 785.196850393701,
+              "width": 138.20361328125,
+              "height": 56.69291338582684
+            },
+            "normalized": {
+              "x": 0.3839162772042411,
+              "y": 0.9326599326599326,
+              "width": 0.23216744559151783,
+              "height": 0.06734006734006741
+            }
+          }
+        },
+        {
+          "position": "@bottom-right",
+          "page": 4,
+          "boxType": "MarginBox",
+          "htmlTag": "",
+          "bounds": {
+            "cssPx": {
+              "x": 608.7015179010828,
+              "y": 1046.929133858268,
+              "width": 116.9677734375,
+              "height": 75.59055118110246
+            },
+            "pdfPt": {
+              "x": 456.52613842581206,
+              "y": 785.196850393701,
+              "width": 87.725830078125,
+              "height": 56.69291338582684
+            },
+            "normalized": {
+              "x": 0.7669156029110863,
+              "y": 0.9326599326599326,
+              "width": 0.14737011137462797,
+              "height": 0.06734006734006741
+            }
+          }
+        }
+      ]
+    },
+    {
+      "page": 5,
+      "widthCssPx": 793.7007874015749,
+      "heightCssPx": 1122.5196850393704,
+      "widthPt": 595.2755905511812,
+      "heightPt": 841.8897637795278,
+      "marginBoxes": [
+        {
+          "position": "@top-center",
+          "page": 5,
+          "boxType": "MarginBox",
+          "htmlTag": "",
+          "bounds": {
+            "cssPx": {
+              "x": 342.71562807578744,
+              "y": 0.0,
+              "width": 108.26953125,
+              "height": 60.47244094488189
+            },
+            "pdfPt": {
+              "x": 257.0367210568406,
+              "y": 0.0,
+              "width": 81.2021484375,
+              "height": 45.354330708661415
+            },
+            "normalized": {
+              "x": 0.43179449172247025,
+              "y": 0.0,
+              "width": 0.13641101655505952,
+              "height": 0.053872053872053856
+            }
+          }
+        },
+        {
+          "position": "@top-right",
+          "page": 5,
+          "boxType": "MarginBox",
+          "htmlTag": "",
+          "bounds": {
+            "cssPx": {
+              "x": 699.1458538385828,
+              "y": 0.0,
+              "width": 26.5234375,
+              "height": 60.47244094488189
+            },
+            "pdfPt": {
+              "x": 524.3593903789371,
+              "y": 0.0,
+              "width": 19.892578125,
+              "height": 45.354330708661415
+            },
+            "normalized": {
+              "x": 0.8808682880704365,
+              "y": 0.0,
+              "width": 0.033417426215277775,
+              "height": 0.053872053872053856
+            }
+          }
+        },
+        {
+          "position": "@bottom-center",
+          "page": 5,
+          "boxType": "MarginBox",
+          "htmlTag": "",
+          "bounds": {
+            "cssPx": {
+              "x": 304.71465151328744,
+              "y": 1046.929133858268,
+              "width": 184.271484375,
+              "height": 75.59055118110246
+            },
+            "pdfPt": {
+              "x": 228.53598863496558,
+              "y": 785.196850393701,
+              "width": 138.20361328125,
+              "height": 56.69291338582684
+            },
+            "normalized": {
+              "x": 0.3839162772042411,
+              "y": 0.9326599326599326,
+              "width": 0.23216744559151783,
+              "height": 0.06734006734006741
+            }
+          }
+        },
+        {
+          "position": "@bottom-right",
+          "page": 5,
+          "boxType": "MarginBox",
+          "htmlTag": "",
+          "bounds": {
+            "cssPx": {
+              "x": 608.7015179010828,
+              "y": 1046.929133858268,
+              "width": 116.9677734375,
+              "height": 75.59055118110246
+            },
+            "pdfPt": {
+              "x": 456.52613842581206,
+              "y": 785.196850393701,
+              "width": 87.725830078125,
+              "height": 56.69291338582684
+            },
+            "normalized": {
+              "x": 0.7669156029110863,
+              "y": 0.9326599326599326,
+              "width": 0.14737011137462797,
+              "height": 0.06734006734006741
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "elements": {
+    "elm-20261107-g1-s05-B-q001": {
+      "role": "question",
+      "canonicalId": "elm-20261107-g1-s05-B-q001",
+      "questionId": "elm-20261107-g1-s05-B-q001",
+      "q": 1,
+      "part": "",
+      "fragments": [
+        {
+          "page": 1,
+          "boxType": "BlockBox",
+          "htmlTag": "li",
+          "bounds": {
+            "cssPx": {
+              "x": 68.03149606299212,
+              "y": 286.1137742782152,
+              "width": 653.6377952755906,
+              "height": 207.46666666666664
+            },
+            "pdfPt": {
+              "x": 51.02362204724409,
+              "y": 214.5853307086614,
+              "width": 490.228346456693,
+              "height": 155.59999999999997
+            },
+            "normalized": {
+              "x": 0.0857142857142857,
+              "y": 0.2548853067714178,
+              "width": 0.8235317460317461,
+              "height": 0.1848222970445192
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "elm-20261107-g1-s05-B-q001-i01": {
+      "role": "item",
+      "canonicalId": "elm-20261107-g1-s05-B-q001-i01",
+      "questionId": "elm-20261107-g1-s05-B-q001",
+      "q": 1,
+      "part": "א",
+      "fragments": [
+        {
+          "page": 1,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 402.85039370078744,
+              "y": 338.64710761154856,
+              "width": 310.8188976377953,
+              "height": 40.5333333333333
+            },
+            "pdfPt": {
+              "x": 302.1377952755906,
+              "y": 253.98533070866142,
+              "width": 233.1141732283465,
+              "height": 30.399999999999977
+            },
+            "normalized": {
+              "x": 0.5075595238095238,
+              "y": 0.30168478301533846,
+              "width": 0.3916071428571429,
+              "height": 0.03610924055368496
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "elm-20261107-g1-s05-B-q001-i02": {
+      "role": "item",
+      "canonicalId": "elm-20261107-g1-s05-B-q001-i02",
+      "questionId": "elm-20261107-g1-s05-B-q001",
+      "q": 1,
+      "part": "ב",
+      "fragments": [
+        {
+          "page": 1,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 76.03149606299212,
+              "y": 338.64710761154856,
+              "width": 310.8188976377953,
+              "height": 40.5333333333333
+            },
+            "pdfPt": {
+              "x": 57.02362204724409,
+              "y": 253.98533070866142,
+              "width": 233.1141732283465,
+              "height": 30.399999999999977
+            },
+            "normalized": {
+              "x": 0.09579365079365078,
+              "y": 0.30168478301533846,
+              "width": 0.3916071428571429,
+              "height": 0.03610924055368496
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "elm-20261107-g1-s05-B-q001-i03": {
+      "role": "item",
+      "canonicalId": "elm-20261107-g1-s05-B-q001-i03",
+      "questionId": "elm-20261107-g1-s05-B-q001",
+      "q": 1,
+      "part": "ג",
+      "fragments": [
+        {
+          "page": 1,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 402.85039370078744,
+              "y": 392.5137742782152,
+              "width": 310.8188976377953,
+              "height": 40.53333333333336
+            },
+            "pdfPt": {
+              "x": 302.1377952755906,
+              "y": 294.3853307086614,
+              "width": 233.1141732283465,
+              "height": 30.40000000000002
+            },
+            "normalized": {
+              "x": 0.5075595238095238,
+              "y": 0.34967206322484085,
+              "width": 0.3916071428571429,
+              "height": 0.03610924055368501
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "elm-20261107-g1-s05-B-q001-i04": {
+      "role": "item",
+      "canonicalId": "elm-20261107-g1-s05-B-q001-i04",
+      "questionId": "elm-20261107-g1-s05-B-q001",
+      "q": 1,
+      "part": "ד",
+      "fragments": [
+        {
+          "page": 1,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 76.03149606299212,
+              "y": 392.5137742782152,
+              "width": 310.8188976377953,
+              "height": 40.53333333333336
+            },
+            "pdfPt": {
+              "x": 57.02362204724409,
+              "y": 294.3853307086614,
+              "width": 233.1141732283465,
+              "height": 30.40000000000002
+            },
+            "normalized": {
+              "x": 0.09579365079365078,
+              "y": 0.34967206322484085,
+              "width": 0.3916071428571429,
+              "height": 0.03610924055368501
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "elm-20261107-g1-s05-B-q001-i05": {
+      "role": "item",
+      "canonicalId": "elm-20261107-g1-s05-B-q001-i05",
+      "questionId": "elm-20261107-g1-s05-B-q001",
+      "q": 1,
+      "part": "ה",
+      "fragments": [
+        {
+          "page": 1,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 402.85039370078744,
+              "y": 446.38044094488185,
+              "width": 310.8188976377953,
+              "height": 40.53333333333336
+            },
+            "pdfPt": {
+              "x": 302.1377952755906,
+              "y": 334.7853307086614,
+              "width": 233.1141732283465,
+              "height": 30.40000000000002
+            },
+            "normalized": {
+              "x": 0.5075595238095238,
+              "y": 0.3976593434343433,
+              "width": 0.3916071428571429,
+              "height": 0.03610924055368501
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-elm-20261107-g1-s05-B-q001": {
+      "role": "answer-question",
+      "canonicalId": "elm-20261107-g1-s05-B-q001",
+      "questionId": "elm-20261107-g1-s05-B-q001",
+      "q": 1,
+      "part": "",
+      "fragments": [
+        {
+          "page": 5,
+          "boxType": "TableRowBox",
+          "htmlTag": "tr",
+          "bounds": {
+            "cssPx": {
+              "x": 68.531496062992,
+              "y": 152.3068094344652,
+              "width": 656.6377952755909,
+              "height": 37.06666666666666
+            },
+            "pdfPt": {
+              "x": 51.398622047244004,
+              "y": 114.2301070758489,
+              "width": 492.47834645669315,
+              "height": 27.799999999999997
+            },
+            "normalized": {
+              "x": 0.08634424603174587,
+              "y": 0.13568297417352046,
+              "width": 0.8273115079365082,
+              "height": 0.033020950243172455
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-elm-20261107-g1-s05-B-q001-i01": {
+      "role": "answer-item",
+      "canonicalId": "elm-20261107-g1-s05-B-q001-i01",
+      "questionId": "elm-20261107-g1-s05-B-q001",
+      "q": 1,
+      "part": "א",
+      "fragments": [
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 654.5394085260826,
+              "y": 163.5068094344652,
+              "width": 24.9560546875,
+              "height": 14.666666666666657
+            },
+            "pdfPt": {
+              "x": 490.90455639456195,
+              "y": 122.6301070758489,
+              "width": 18.717041015625,
+              "height": 10.999999999999993
+            },
+            "normalized": {
+              "x": 0.8246677071707588,
+              "y": 0.14566052748440708,
+              "width": 0.03144264826698909,
+              "height": 0.013065843621399165
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-elm-20261107-g1-s05-B-q001-i02": {
+      "role": "answer-item",
+      "canonicalId": "elm-20261107-g1-s05-B-q001-i02",
+      "questionId": "elm-20261107-g1-s05-B-q001",
+      "q": 1,
+      "part": "ב",
+      "fragments": [
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 609.736023109416,
+              "y": 163.5068094344652,
+              "width": 22.8505859375,
+              "height": 14.666666666666657
+            },
+            "pdfPt": {
+              "x": 457.302017332062,
+              "y": 122.6301070758489,
+              "width": 17.137939453125,
+              "height": 10.999999999999993
+            },
+            "normalized": {
+              "x": 0.7682189973699983,
+              "y": 0.14566052748440708,
+              "width": 0.02878992474268353,
+              "height": 0.013065843621399165
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-elm-20261107-g1-s05-B-q001-i03": {
+      "role": "answer-item",
+      "canonicalId": "elm-20261107-g1-s05-B-q001-i03",
+      "questionId": "elm-20261107-g1-s05-B-q001",
+      "q": 1,
+      "part": "ג",
+      "fragments": [
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 566.9306845677494,
+              "y": 163.5068094344652,
+              "width": 20.8525390625,
+              "height": 14.666666666666657
+            },
+            "pdfPt": {
+              "x": 425.19801342581206,
+              "y": 122.6301070758489,
+              "width": 15.639404296875,
+              "height": 10.999999999999993
+            },
+            "normalized": {
+              "x": 0.7142876680565889,
+              "y": 0.14566052748440708,
+              "width": 0.02627254425533234,
+              "height": 0.013065843621399165
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-elm-20261107-g1-s05-B-q001-i04": {
+      "role": "answer-item",
+      "canonicalId": "elm-20261107-g1-s05-B-q001-i04",
+      "questionId": "elm-20261107-g1-s05-B-q001",
+      "q": 1,
+      "part": "ד",
+      "fragments": [
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 523.8665569635828,
+              "y": 163.5068094344652,
+              "width": 21.111328125,
+              "height": 14.666666666666657
+            },
+            "pdfPt": {
+              "x": 392.89991772268706,
+              "y": 122.6301070758489,
+              "width": 15.83349609375,
+              "height": 10.999999999999993
+            },
+            "normalized": {
+              "x": 0.6600302850632441,
+              "y": 0.14566052748440708,
+              "width": 0.026598597935267854,
+              "height": 0.013065843621399165
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-elm-20261107-g1-s05-B-q001-i05": {
+      "role": "answer-item",
+      "canonicalId": "elm-20261107-g1-s05-B-q001-i05",
+      "questionId": "elm-20261107-g1-s05-B-q001",
+      "q": 1,
+      "part": "ה",
+      "fragments": [
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 477.0143434219161,
+              "y": 163.5068094344652,
+              "width": 24.899414062500057,
+              "height": 14.666666666666657
+            },
+            "pdfPt": {
+              "x": 357.76075756643706,
+              "y": 122.6301070758489,
+              "width": 18.674560546875043,
+              "height": 10.999999999999993
+            },
+            "normalized": {
+              "x": 0.6010002144303903,
+              "y": 0.14566052748440708,
+              "width": 0.03137128557477686,
+              "height": 0.013065843621399165
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "elm-20261107-g1-s05-B-q002": {
+      "role": "question",
+      "canonicalId": "elm-20261107-g1-s05-B-q002",
+      "questionId": "elm-20261107-g1-s05-B-q002",
+      "q": 2,
+      "part": "",
+      "fragments": [
+        {
+          "page": 1,
+          "boxType": "BlockBox",
+          "htmlTag": "li",
+          "bounds": {
+            "cssPx": {
+              "x": 68.03149606299212,
+              "y": 510.91377427821516,
+              "width": 653.6377952755906,
+              "height": 317.8666666666666
+            },
+            "pdfPt": {
+              "x": 51.02362204724409,
+              "y": 383.18533070866135,
+              "width": 490.228346456693,
+              "height": 238.39999999999998
+            },
+            "normalized": {
+              "x": 0.0857142857142857,
+              "y": 0.45514905536849964,
+              "width": 0.8235317460317461,
+              "height": 0.2831724653946875
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "elm-20261107-g1-s05-B-q002-i01": {
+      "role": "item",
+      "canonicalId": "elm-20261107-g1-s05-B-q002-i01",
+      "questionId": "elm-20261107-g1-s05-B-q002",
+      "q": 2,
+      "part": "א",
+      "fragments": [
+        {
+          "page": 1,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 402.85039370078744,
+              "y": 563.4471076115485,
+              "width": 310.8188976377953,
+              "height": 74.66666666666663
+            },
+            "pdfPt": {
+              "x": 302.1377952755906,
+              "y": 422.5853307086614,
+              "width": 233.1141732283465,
+              "height": 55.99999999999997
+            },
+            "normalized": {
+              "x": 0.5075595238095238,
+              "y": 0.5019485316124204,
+              "width": 0.3916071428571429,
+              "height": 0.06651702207257758
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "elm-20261107-g1-s05-B-q002-i02": {
+      "role": "item",
+      "canonicalId": "elm-20261107-g1-s05-B-q002-i02",
+      "questionId": "elm-20261107-g1-s05-B-q002",
+      "q": 2,
+      "part": "ב",
+      "fragments": [
+        {
+          "page": 1,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 76.03149606299212,
+              "y": 563.4471076115485,
+              "width": 310.8188976377953,
+              "height": 74.66666666666663
+            },
+            "pdfPt": {
+              "x": 57.02362204724409,
+              "y": 422.5853307086614,
+              "width": 233.1141732283465,
+              "height": 55.99999999999997
+            },
+            "normalized": {
+              "x": 0.09579365079365078,
+              "y": 0.5019485316124204,
+              "width": 0.3916071428571429,
+              "height": 0.06651702207257758
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "elm-20261107-g1-s05-B-q002-i03": {
+      "role": "item",
+      "canonicalId": "elm-20261107-g1-s05-B-q002-i03",
+      "questionId": "elm-20261107-g1-s05-B-q002",
+      "q": 2,
+      "part": "ג",
+      "fragments": [
+        {
+          "page": 1,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 402.85039370078744,
+              "y": 654.1137742782151,
+              "width": 310.8188976377953,
+              "height": 74.66666666666663
+            },
+            "pdfPt": {
+              "x": 302.1377952755906,
+              "y": 490.58533070866133,
+              "width": 233.1141732283465,
+              "height": 55.99999999999997
+            },
+            "normalized": {
+              "x": 0.5075595238095238,
+              "y": 0.5827192012719788,
+              "width": 0.3916071428571429,
+              "height": 0.06651702207257758
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "elm-20261107-g1-s05-B-q002-i04": {
+      "role": "item",
+      "canonicalId": "elm-20261107-g1-s05-B-q002-i04",
+      "questionId": "elm-20261107-g1-s05-B-q002",
+      "q": 2,
+      "part": "ד",
+      "fragments": [
+        {
+          "page": 1,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 76.03149606299212,
+              "y": 654.1137742782151,
+              "width": 310.8188976377953,
+              "height": 74.66666666666663
+            },
+            "pdfPt": {
+              "x": 57.02362204724409,
+              "y": 490.58533070866133,
+              "width": 233.1141732283465,
+              "height": 55.99999999999997
+            },
+            "normalized": {
+              "x": 0.09579365079365078,
+              "y": 0.5827192012719788,
+              "width": 0.3916071428571429,
+              "height": 0.06651702207257758
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "elm-20261107-g1-s05-B-q002-i05": {
+      "role": "item",
+      "canonicalId": "elm-20261107-g1-s05-B-q002-i05",
+      "questionId": "elm-20261107-g1-s05-B-q002",
+      "q": 2,
+      "part": "ה",
+      "fragments": [
+        {
+          "page": 1,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 402.85039370078744,
+              "y": 744.7804409448818,
+              "width": 310.8188976377953,
+              "height": 74.66666666666663
+            },
+            "pdfPt": {
+              "x": 302.1377952755906,
+              "y": 558.5853307086613,
+              "width": 233.1141732283465,
+              "height": 55.99999999999997
+            },
+            "normalized": {
+              "x": 0.5075595238095238,
+              "y": 0.6634898709315373,
+              "width": 0.3916071428571429,
+              "height": 0.06651702207257758
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-elm-20261107-g1-s05-B-q002": {
+      "role": "answer-question",
+      "canonicalId": "elm-20261107-g1-s05-B-q002",
+      "questionId": "elm-20261107-g1-s05-B-q002",
+      "q": 2,
+      "part": "",
+      "fragments": [
+        {
+          "page": 5,
+          "boxType": "TableRowBox",
+          "htmlTag": "tr",
+          "bounds": {
+            "cssPx": {
+              "x": 68.531496062992,
+              "y": 189.37347610113187,
+              "width": 656.6377952755909,
+              "height": 37.06666666666666
+            },
+            "pdfPt": {
+              "x": 51.398622047244004,
+              "y": 142.0301070758489,
+              "width": 492.47834645669315,
+              "height": 27.799999999999997
+            },
+            "normalized": {
+              "x": 0.08634424603174587,
+              "y": 0.1687039244166929,
+              "width": 0.8273115079365082,
+              "height": 0.033020950243172455
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-elm-20261107-g1-s05-B-q002-i01": {
+      "role": "answer-item",
+      "canonicalId": "elm-20261107-g1-s05-B-q002-i01",
+      "questionId": "elm-20261107-g1-s05-B-q002",
+      "q": 2,
+      "part": "א",
+      "fragments": [
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 613.2347210260824,
+              "y": 200.57347610113186,
+              "width": 66.26074218750011,
+              "height": 14.666666666666657
+            },
+            "pdfPt": {
+              "x": 459.92604076956184,
+              "y": 150.4301070758489,
+              "width": 49.695556640625085,
+              "height": 10.999999999999993
+            },
+            "normalized": {
+              "x": 0.7726270790705602,
+              "y": 0.17868147772757953,
+              "width": 0.08348327636718764,
+              "height": 0.013065843621399165
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-elm-20261107-g1-s05-B-q002-i02": {
+      "role": "answer-item",
+      "canonicalId": "elm-20261107-g1-s05-B-q002-i02",
+      "questionId": "elm-20261107-g1-s05-B-q002",
+      "q": 2,
+      "part": "ב",
+      "fragments": [
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 527.1266481094159,
+              "y": 200.57347610113186,
+              "width": 64.1552734375,
+              "height": 14.666666666666657
+            },
+            "pdfPt": {
+              "x": 395.34498608206195,
+              "y": 150.4301070758489,
+              "width": 48.116455078125,
+              "height": 10.999999999999993
+            },
+            "normalized": {
+              "x": 0.6641377411696013,
+              "y": 0.17868147772757953,
+              "width": 0.08083055284288193,
+              "height": 0.013065843621399165
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-elm-20261107-g1-s05-B-q002-i03": {
+      "role": "answer-item",
+      "canonicalId": "elm-20261107-g1-s05-B-q002-i03",
+      "questionId": "elm-20261107-g1-s05-B-q002",
+      "q": 2,
+      "part": "ג",
+      "fragments": [
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 443.01662206774927,
+              "y": 200.57347610113186,
+              "width": 62.15722656250006,
+              "height": 14.666666666666657
+            },
+            "pdfPt": {
+              "x": 332.26246655081195,
+              "y": 150.4301070758489,
+              "width": 46.61791992187504,
+              "height": 10.999999999999993
+            },
+            "normalized": {
+              "x": 0.5581657837559936,
+              "y": 0.17868147772757953,
+              "width": 0.07831317235553081,
+              "height": 0.013065843621399165
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-elm-20261107-g1-s05-B-q002-i04": {
+      "role": "answer-item",
+      "canonicalId": "elm-20261107-g1-s05-B-q002-i04",
+      "questionId": "elm-20261107-g1-s05-B-q002",
+      "q": 2,
+      "part": "ד",
+      "fragments": [
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 358.64780696358264,
+              "y": 200.57347610113186,
+              "width": 62.41601562500006,
+              "height": 14.666666666666657
+            },
+            "pdfPt": {
+              "x": 268.98585522268695,
+              "y": 150.4301070758489,
+              "width": 46.81201171875004,
+              "height": 10.999999999999993
+            },
+            "normalized": {
+              "x": 0.4518677726624503,
+              "y": 0.17868147772757953,
+              "width": 0.07863922603546633,
+              "height": 0.013065843621399165
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-elm-20261107-g1-s05-B-q002-i05": {
+      "role": "answer-item",
+      "canonicalId": "elm-20261107-g1-s05-B-q002-i05",
+      "questionId": "elm-20261107-g1-s05-B-q002",
+      "q": 2,
+      "part": "ה",
+      "fragments": [
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 270.4909059219159,
+              "y": 200.57347610113186,
+              "width": 66.20410156250023,
+              "height": 14.666666666666657
+            },
+            "pdfPt": {
+              "x": 202.86817944143692,
+              "y": 150.4301070758489,
+              "width": 49.65307617187517,
+              "height": 10.999999999999993
+            },
+            "normalized": {
+              "x": 0.34079707392939795,
+              "y": 0.17868147772757953,
+              "width": 0.08341191367497548,
+              "height": 0.013065843621399165
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "elm-20261107-g1-s05-B-q003": {
+      "role": "question",
+      "canonicalId": "elm-20261107-g1-s05-B-q003",
+      "questionId": "elm-20261107-g1-s05-B-q003",
+      "q": 3,
+      "part": "",
+      "fragments": [
+        {
+          "page": 2,
+          "boxType": "BlockBox",
+          "htmlTag": "li",
+          "bounds": {
+            "cssPx": {
+              "x": 68.03149606299212,
+              "y": 60.47244094488189,
+              "width": 653.6377952755906,
+              "height": 207.46666666666664
+            },
+            "pdfPt": {
+              "x": 51.02362204724409,
+              "y": 45.354330708661415,
+              "width": 490.228346456693,
+              "height": 155.59999999999997
+            },
+            "normalized": {
+              "x": 0.0857142857142857,
+              "y": 0.053872053872053856,
+              "width": 0.8235317460317461,
+              "height": 0.1848222970445192
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "elm-20261107-g1-s05-B-q003-i01": {
+      "role": "item",
+      "canonicalId": "elm-20261107-g1-s05-B-q003-i01",
+      "questionId": "elm-20261107-g1-s05-B-q003",
+      "q": 3,
+      "part": "א",
+      "fragments": [
+        {
+          "page": 2,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 402.85039370078744,
+              "y": 113.00577427821523,
+              "width": 310.8188976377953,
+              "height": 40.53333333333333
+            },
+            "pdfPt": {
+              "x": 302.1377952755906,
+              "y": 84.75433070866143,
+              "width": 233.1141732283465,
+              "height": 30.4
+            },
+            "normalized": {
+              "x": 0.5075595238095238,
+              "y": 0.10067153011597453,
+              "width": 0.3916071428571429,
+              "height": 0.03610924055368499
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "elm-20261107-g1-s05-B-q003-i02": {
+      "role": "item",
+      "canonicalId": "elm-20261107-g1-s05-B-q003-i02",
+      "questionId": "elm-20261107-g1-s05-B-q003",
+      "q": 3,
+      "part": "ב",
+      "fragments": [
+        {
+          "page": 2,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 76.03149606299212,
+              "y": 113.00577427821523,
+              "width": 310.8188976377953,
+              "height": 40.53333333333333
+            },
+            "pdfPt": {
+              "x": 57.02362204724409,
+              "y": 84.75433070866143,
+              "width": 233.1141732283465,
+              "height": 30.4
+            },
+            "normalized": {
+              "x": 0.09579365079365078,
+              "y": 0.10067153011597453,
+              "width": 0.3916071428571429,
+              "height": 0.03610924055368499
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "elm-20261107-g1-s05-B-q003-i03": {
+      "role": "item",
+      "canonicalId": "elm-20261107-g1-s05-B-q003-i03",
+      "questionId": "elm-20261107-g1-s05-B-q003",
+      "q": 3,
+      "part": "ג",
+      "fragments": [
+        {
+          "page": 2,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 402.85039370078744,
+              "y": 166.87244094488187,
+              "width": 310.8188976377953,
+              "height": 40.53333333333333
+            },
+            "pdfPt": {
+              "x": 302.1377952755906,
+              "y": 125.1543307086614,
+              "width": 233.1141732283465,
+              "height": 30.4
+            },
+            "normalized": {
+              "x": 0.5075595238095238,
+              "y": 0.14865881032547693,
+              "width": 0.3916071428571429,
+              "height": 0.03610924055368499
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "elm-20261107-g1-s05-B-q003-i04": {
+      "role": "item",
+      "canonicalId": "elm-20261107-g1-s05-B-q003-i04",
+      "questionId": "elm-20261107-g1-s05-B-q003",
+      "q": 3,
+      "part": "ד",
+      "fragments": [
+        {
+          "page": 2,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 76.03149606299212,
+              "y": 166.87244094488187,
+              "width": 310.8188976377953,
+              "height": 40.53333333333333
+            },
+            "pdfPt": {
+              "x": 57.02362204724409,
+              "y": 125.1543307086614,
+              "width": 233.1141732283465,
+              "height": 30.4
+            },
+            "normalized": {
+              "x": 0.09579365079365078,
+              "y": 0.14865881032547693,
+              "width": 0.3916071428571429,
+              "height": 0.03610924055368499
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "elm-20261107-g1-s05-B-q003-i05": {
+      "role": "item",
+      "canonicalId": "elm-20261107-g1-s05-B-q003-i05",
+      "questionId": "elm-20261107-g1-s05-B-q003",
+      "q": 3,
+      "part": "ה",
+      "fragments": [
+        {
+          "page": 2,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 402.85039370078744,
+              "y": 220.73910761154852,
+              "width": 310.8188976377953,
+              "height": 40.53333333333333
+            },
+            "pdfPt": {
+              "x": 302.1377952755906,
+              "y": 165.55433070866138,
+              "width": 233.1141732283465,
+              "height": 30.4
+            },
+            "normalized": {
+              "x": 0.5075595238095238,
+              "y": 0.19664609053497933,
+              "width": 0.3916071428571429,
+              "height": 0.03610924055368499
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-elm-20261107-g1-s05-B-q003": {
+      "role": "answer-question",
+      "canonicalId": "elm-20261107-g1-s05-B-q003",
+      "questionId": "elm-20261107-g1-s05-B-q003",
+      "q": 3,
+      "part": "",
+      "fragments": [
+        {
+          "page": 5,
+          "boxType": "TableRowBox",
+          "htmlTag": "tr",
+          "bounds": {
+            "cssPx": {
+              "x": 68.531496062992,
+              "y": 226.44014276779853,
+              "width": 656.6377952755909,
+              "height": 37.06666666666666
+            },
+            "pdfPt": {
+              "x": 51.398622047244004,
+              "y": 169.8301070758489,
+              "width": 492.47834645669315,
+              "height": 27.799999999999997
+            },
+            "normalized": {
+              "x": 0.08634424603174587,
+              "y": 0.20172487465986536,
+              "width": 0.8273115079365082,
+              "height": 0.033020950243172455
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-elm-20261107-g1-s05-B-q003-i01": {
+      "role": "answer-item",
+      "canonicalId": "elm-20261107-g1-s05-B-q003-i01",
+      "questionId": "elm-20261107-g1-s05-B-q003",
+      "q": 3,
+      "part": "א",
+      "fragments": [
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 654.5394085260826,
+              "y": 237.64014276779852,
+              "width": 24.9560546875,
+              "height": 14.666666666666657
+            },
+            "pdfPt": {
+              "x": 490.90455639456195,
+              "y": 178.23010707584888,
+              "width": 18.717041015625,
+              "height": 10.999999999999993
+            },
+            "normalized": {
+              "x": 0.8246677071707588,
+              "y": 0.21170242797075198,
+              "width": 0.03144264826698909,
+              "height": 0.013065843621399165
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-elm-20261107-g1-s05-B-q003-i02": {
+      "role": "answer-item",
+      "canonicalId": "elm-20261107-g1-s05-B-q003-i02",
+      "questionId": "elm-20261107-g1-s05-B-q003",
+      "q": 3,
+      "part": "ב",
+      "fragments": [
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 609.736023109416,
+              "y": 237.64014276779852,
+              "width": 22.8505859375,
+              "height": 14.666666666666657
+            },
+            "pdfPt": {
+              "x": 457.302017332062,
+              "y": 178.23010707584888,
+              "width": 17.137939453125,
+              "height": 10.999999999999993
+            },
+            "normalized": {
+              "x": 0.7682189973699983,
+              "y": 0.21170242797075198,
+              "width": 0.02878992474268353,
+              "height": 0.013065843621399165
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-elm-20261107-g1-s05-B-q003-i03": {
+      "role": "answer-item",
+      "canonicalId": "elm-20261107-g1-s05-B-q003-i03",
+      "questionId": "elm-20261107-g1-s05-B-q003",
+      "q": 3,
+      "part": "ג",
+      "fragments": [
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 566.9306845677494,
+              "y": 237.64014276779852,
+              "width": 20.8525390625,
+              "height": 14.666666666666657
+            },
+            "pdfPt": {
+              "x": 425.19801342581206,
+              "y": 178.23010707584888,
+              "width": 15.639404296875,
+              "height": 10.999999999999993
+            },
+            "normalized": {
+              "x": 0.7142876680565889,
+              "y": 0.21170242797075198,
+              "width": 0.02627254425533234,
+              "height": 0.013065843621399165
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-elm-20261107-g1-s05-B-q003-i04": {
+      "role": "answer-item",
+      "canonicalId": "elm-20261107-g1-s05-B-q003-i04",
+      "questionId": "elm-20261107-g1-s05-B-q003",
+      "q": 3,
+      "part": "ד",
+      "fragments": [
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 523.8665569635828,
+              "y": 237.64014276779852,
+              "width": 21.111328125,
+              "height": 14.666666666666657
+            },
+            "pdfPt": {
+              "x": 392.89991772268706,
+              "y": 178.23010707584888,
+              "width": 15.83349609375,
+              "height": 10.999999999999993
+            },
+            "normalized": {
+              "x": 0.6600302850632441,
+              "y": 0.21170242797075198,
+              "width": 0.026598597935267854,
+              "height": 0.013065843621399165
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-elm-20261107-g1-s05-B-q003-i05": {
+      "role": "answer-item",
+      "canonicalId": "elm-20261107-g1-s05-B-q003-i05",
+      "questionId": "elm-20261107-g1-s05-B-q003",
+      "q": 3,
+      "part": "ה",
+      "fragments": [
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 477.0143434219161,
+              "y": 237.64014276779852,
+              "width": 24.899414062500057,
+              "height": 14.666666666666657
+            },
+            "pdfPt": {
+              "x": 357.76075756643706,
+              "y": 178.23010707584888,
+              "width": 18.674560546875043,
+              "height": 10.999999999999993
+            },
+            "normalized": {
+              "x": 0.6010002144303903,
+              "y": 0.21170242797075198,
+              "width": 0.03137128557477686,
+              "height": 0.013065843621399165
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "elm-20261107-g1-s05-B-q004": {
+      "role": "question",
+      "canonicalId": "elm-20261107-g1-s05-B-q004",
+      "questionId": "elm-20261107-g1-s05-B-q004",
+      "q": 4,
+      "part": "",
+      "fragments": [
+        {
+          "page": 2,
+          "boxType": "BlockBox",
+          "htmlTag": "li",
+          "bounds": {
+            "cssPx": {
+              "x": 68.03149606299212,
+              "y": 285.27244094488185,
+              "width": 653.6377952755906,
+              "height": 322.4133333333334
+            },
+            "pdfPt": {
+              "x": 51.02362204724409,
+              "y": 213.9543307086614,
+              "width": 490.228346456693,
+              "height": 241.81000000000006
+            },
+            "normalized": {
+              "x": 0.0857142857142857,
+              "y": 0.2541358024691357,
+              "width": 0.8235317460317461,
+              "height": 0.28722287691732135
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "elm-20261107-g1-s05-B-q004-i01": {
+      "role": "item",
+      "canonicalId": "elm-20261107-g1-s05-B-q004-i01",
+      "questionId": "elm-20261107-g1-s05-B-q004",
+      "q": 4,
+      "part": "א",
+      "fragments": [
+        {
+          "page": 2,
+          "boxType": "TableRowBox",
+          "htmlTag": "tr",
+          "bounds": {
+            "cssPx": {
+              "x": 68.53149606299212,
+              "y": 379.7857742782152,
+              "width": 652.6377952755906,
+              "height": 45.48000000000002
+            },
+            "pdfPt": {
+              "x": 51.39862204724409,
+              "y": 284.83933070866135,
+              "width": 489.478346456693,
+              "height": 34.110000000000014
+            },
+            "normalized": {
+              "x": 0.08634424603174602,
+              "y": 0.33833328656939754,
+              "width": 0.8222718253968254,
+              "height": 0.04051599326599327
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "elm-20261107-g1-s05-B-q004-i02": {
+      "role": "item",
+      "canonicalId": "elm-20261107-g1-s05-B-q004-i02",
+      "questionId": "elm-20261107-g1-s05-B-q004",
+      "q": 4,
+      "part": "ב",
+      "fragments": [
+        {
+          "page": 2,
+          "boxType": "TableRowBox",
+          "htmlTag": "tr",
+          "bounds": {
+            "cssPx": {
+              "x": 68.53149606299212,
+              "y": 425.2657742782152,
+              "width": 652.6377952755906,
+              "height": 45.48000000000002
+            },
+            "pdfPt": {
+              "x": 51.39862204724409,
+              "y": 318.94933070866136,
+              "width": 489.478346456693,
+              "height": 34.110000000000014
+            },
+            "normalized": {
+              "x": 0.08634424603174602,
+              "y": 0.3788492798353908,
+              "width": 0.8222718253968254,
+              "height": 0.04051599326599327
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "elm-20261107-g1-s05-B-q004-i03": {
+      "role": "item",
+      "canonicalId": "elm-20261107-g1-s05-B-q004-i03",
+      "questionId": "elm-20261107-g1-s05-B-q004",
+      "q": 4,
+      "part": "ג",
+      "fragments": [
+        {
+          "page": 2,
+          "boxType": "TableRowBox",
+          "htmlTag": "tr",
+          "bounds": {
+            "cssPx": {
+              "x": 68.53149606299212,
+              "y": 470.7457742782152,
+              "width": 652.6377952755906,
+              "height": 45.48000000000002
+            },
+            "pdfPt": {
+              "x": 51.39862204724409,
+              "y": 353.0593307086614,
+              "width": 489.478346456693,
+              "height": 34.110000000000014
+            },
+            "normalized": {
+              "x": 0.08634424603174602,
+              "y": 0.41936527310138405,
+              "width": 0.8222718253968254,
+              "height": 0.04051599326599327
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "elm-20261107-g1-s05-B-q004-i04": {
+      "role": "item",
+      "canonicalId": "elm-20261107-g1-s05-B-q004-i04",
+      "questionId": "elm-20261107-g1-s05-B-q004",
+      "q": 4,
+      "part": "ד",
+      "fragments": [
+        {
+          "page": 2,
+          "boxType": "TableRowBox",
+          "htmlTag": "tr",
+          "bounds": {
+            "cssPx": {
+              "x": 68.53149606299212,
+              "y": 516.2257742782152,
+              "width": 652.6377952755906,
+              "height": 45.48000000000002
+            },
+            "pdfPt": {
+              "x": 51.39862204724409,
+              "y": 387.1693307086614,
+              "width": 489.478346456693,
+              "height": 34.110000000000014
+            },
+            "normalized": {
+              "x": 0.08634424603174602,
+              "y": 0.45988126636737736,
+              "width": 0.8222718253968254,
+              "height": 0.04051599326599327
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "elm-20261107-g1-s05-B-q004-i05": {
+      "role": "item",
+      "canonicalId": "elm-20261107-g1-s05-B-q004-i05",
+      "questionId": "elm-20261107-g1-s05-B-q004",
+      "q": 4,
+      "part": "ה",
+      "fragments": [
+        {
+          "page": 2,
+          "boxType": "TableRowBox",
+          "htmlTag": "tr",
+          "bounds": {
+            "cssPx": {
+              "x": 68.53149606299212,
+              "y": 561.7057742782152,
+              "width": 652.6377952755906,
+              "height": 45.48000000000002
+            },
+            "pdfPt": {
+              "x": 51.39862204724409,
+              "y": 421.2793307086614,
+              "width": 489.478346456693,
+              "height": 34.110000000000014
+            },
+            "normalized": {
+              "x": 0.08634424603174602,
+              "y": 0.5003972596333706,
+              "width": 0.8222718253968254,
+              "height": 0.04051599326599327
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-elm-20261107-g1-s05-B-q004": {
+      "role": "answer-question",
+      "canonicalId": "elm-20261107-g1-s05-B-q004",
+      "questionId": "elm-20261107-g1-s05-B-q004",
+      "q": 4,
+      "part": "",
+      "fragments": [
+        {
+          "page": 5,
+          "boxType": "TableRowBox",
+          "htmlTag": "tr",
+          "bounds": {
+            "cssPx": {
+              "x": 68.531496062992,
+              "y": 263.5068094344652,
+              "width": 656.6377952755909,
+              "height": 37.06666666666666
+            },
+            "pdfPt": {
+              "x": 51.398622047244004,
+              "y": 197.6301070758489,
+              "width": 492.47834645669315,
+              "height": 27.799999999999997
+            },
+            "normalized": {
+              "x": 0.08634424603174587,
+              "y": 0.2347458249030378,
+              "width": 0.8273115079365082,
+              "height": 0.033020950243172455
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-elm-20261107-g1-s05-B-q004-i01": {
+      "role": "answer-item",
+      "canonicalId": "elm-20261107-g1-s05-B-q004-i01",
+      "questionId": "elm-20261107-g1-s05-B-q004",
+      "q": 4,
+      "part": "א",
+      "fragments": [
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 654.5394085260826,
+              "y": 274.70680943446524,
+              "width": 24.9560546875,
+              "height": 14.666666666666686
+            },
+            "pdfPt": {
+              "x": 490.90455639456195,
+              "y": 206.03010707584895,
+              "width": 18.717041015625,
+              "height": 11.000000000000014
+            },
+            "normalized": {
+              "x": 0.8246677071707588,
+              "y": 0.24472337821392448,
+              "width": 0.03144264826698909,
+              "height": 0.01306584362139919
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-elm-20261107-g1-s05-B-q004-i02": {
+      "role": "answer-item",
+      "canonicalId": "elm-20261107-g1-s05-B-q004-i02",
+      "questionId": "elm-20261107-g1-s05-B-q004",
+      "q": 4,
+      "part": "ב",
+      "fragments": [
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 609.736023109416,
+              "y": 274.70680943446524,
+              "width": 22.8505859375,
+              "height": 14.666666666666686
+            },
+            "pdfPt": {
+              "x": 457.302017332062,
+              "y": 206.03010707584895,
+              "width": 17.137939453125,
+              "height": 11.000000000000014
+            },
+            "normalized": {
+              "x": 0.7682189973699983,
+              "y": 0.24472337821392448,
+              "width": 0.02878992474268353,
+              "height": 0.01306584362139919
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-elm-20261107-g1-s05-B-q004-i03": {
+      "role": "answer-item",
+      "canonicalId": "elm-20261107-g1-s05-B-q004-i03",
+      "questionId": "elm-20261107-g1-s05-B-q004",
+      "q": 4,
+      "part": "ג",
+      "fragments": [
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 566.9306845677494,
+              "y": 274.70680943446524,
+              "width": 20.8525390625,
+              "height": 14.666666666666686
+            },
+            "pdfPt": {
+              "x": 425.19801342581206,
+              "y": 206.03010707584895,
+              "width": 15.639404296875,
+              "height": 11.000000000000014
+            },
+            "normalized": {
+              "x": 0.7142876680565889,
+              "y": 0.24472337821392448,
+              "width": 0.02627254425533234,
+              "height": 0.01306584362139919
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-elm-20261107-g1-s05-B-q004-i04": {
+      "role": "answer-item",
+      "canonicalId": "elm-20261107-g1-s05-B-q004-i04",
+      "questionId": "elm-20261107-g1-s05-B-q004",
+      "q": 4,
+      "part": "ד",
+      "fragments": [
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 523.8665569635828,
+              "y": 274.70680943446524,
+              "width": 21.111328125,
+              "height": 14.666666666666686
+            },
+            "pdfPt": {
+              "x": 392.89991772268706,
+              "y": 206.03010707584895,
+              "width": 15.83349609375,
+              "height": 11.000000000000014
+            },
+            "normalized": {
+              "x": 0.6600302850632441,
+              "y": 0.24472337821392448,
+              "width": 0.026598597935267854,
+              "height": 0.01306584362139919
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-elm-20261107-g1-s05-B-q004-i05": {
+      "role": "answer-item",
+      "canonicalId": "elm-20261107-g1-s05-B-q004-i05",
+      "questionId": "elm-20261107-g1-s05-B-q004",
+      "q": 4,
+      "part": "ה",
+      "fragments": [
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 469.6959840469161,
+              "y": 274.70680943446524,
+              "width": 32.21777343750006,
+              "height": 14.666666666666686
+            },
+            "pdfPt": {
+              "x": 352.27198803518706,
+              "y": 206.03010707584895,
+              "width": 24.163330078125043,
+              "height": 11.000000000000014
+            },
+            "normalized": {
+              "x": 0.591779662440063,
+              "y": 0.24472337821392448,
+              "width": 0.04059183756510423,
+              "height": 0.01306584362139919
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "elm-20261107-g1-s05-B-q005": {
+      "role": "question",
+      "canonicalId": "elm-20261107-g1-s05-B-q005",
+      "questionId": "elm-20261107-g1-s05-B-q005",
+      "q": 5,
+      "part": "",
+      "fragments": [
+        {
+          "page": 2,
+          "boxType": "BlockBox",
+          "htmlTag": "li",
+          "bounds": {
+            "cssPx": {
+              "x": 68.03149606299212,
+              "y": 625.0191076115486,
+              "width": 653.6377952755906,
+              "height": 207.4666666666667
+            },
+            "pdfPt": {
+              "x": 51.02362204724409,
+              "y": 468.7643307086615,
+              "width": 490.228346456693,
+              "height": 155.60000000000002
+            },
+            "normalized": {
+              "x": 0.0857142857142857,
+              "y": 0.5568001309390197,
+              "width": 0.8235317460317461,
+              "height": 0.18482229704451925
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "elm-20261107-g1-s05-B-q005-i01": {
+      "role": "item",
+      "canonicalId": "elm-20261107-g1-s05-B-q005-i01",
+      "questionId": "elm-20261107-g1-s05-B-q005",
+      "q": 5,
+      "part": "א",
+      "fragments": [
+        {
+          "page": 2,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 402.85039370078744,
+              "y": 677.5524409448819,
+              "width": 310.8188976377953,
+              "height": 40.5333333333333
+            },
+            "pdfPt": {
+              "x": 302.1377952755906,
+              "y": 508.16433070866145,
+              "width": 233.1141732283465,
+              "height": 30.399999999999977
+            },
+            "normalized": {
+              "x": 0.5075595238095238,
+              "y": 0.6035996071829404,
+              "width": 0.3916071428571429,
+              "height": 0.03610924055368496
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "elm-20261107-g1-s05-B-q005-i02": {
+      "role": "item",
+      "canonicalId": "elm-20261107-g1-s05-B-q005-i02",
+      "questionId": "elm-20261107-g1-s05-B-q005",
+      "q": 5,
+      "part": "ב",
+      "fragments": [
+        {
+          "page": 2,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 76.03149606299212,
+              "y": 677.5524409448819,
+              "width": 310.8188976377953,
+              "height": 40.5333333333333
+            },
+            "pdfPt": {
+              "x": 57.02362204724409,
+              "y": 508.16433070866145,
+              "width": 233.1141732283465,
+              "height": 30.399999999999977
+            },
+            "normalized": {
+              "x": 0.09579365079365078,
+              "y": 0.6035996071829404,
+              "width": 0.3916071428571429,
+              "height": 0.03610924055368496
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "elm-20261107-g1-s05-B-q005-i03": {
+      "role": "item",
+      "canonicalId": "elm-20261107-g1-s05-B-q005-i03",
+      "questionId": "elm-20261107-g1-s05-B-q005",
+      "q": 5,
+      "part": "ג",
+      "fragments": [
+        {
+          "page": 2,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 402.85039370078744,
+              "y": 731.4191076115486,
+              "width": 310.8188976377953,
+              "height": 40.5333333333333
+            },
+            "pdfPt": {
+              "x": 302.1377952755906,
+              "y": 548.5643307086615,
+              "width": 233.1141732283465,
+              "height": 30.399999999999977
+            },
+            "normalized": {
+              "x": 0.5075595238095238,
+              "y": 0.6515868873924427,
+              "width": 0.3916071428571429,
+              "height": 0.03610924055368496
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "elm-20261107-g1-s05-B-q005-i04": {
+      "role": "item",
+      "canonicalId": "elm-20261107-g1-s05-B-q005-i04",
+      "questionId": "elm-20261107-g1-s05-B-q005",
+      "q": 5,
+      "part": "ד",
+      "fragments": [
+        {
+          "page": 2,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 76.03149606299212,
+              "y": 731.4191076115486,
+              "width": 310.8188976377953,
+              "height": 40.5333333333333
+            },
+            "pdfPt": {
+              "x": 57.02362204724409,
+              "y": 548.5643307086615,
+              "width": 233.1141732283465,
+              "height": 30.399999999999977
+            },
+            "normalized": {
+              "x": 0.09579365079365078,
+              "y": 0.6515868873924427,
+              "width": 0.3916071428571429,
+              "height": 0.03610924055368496
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "elm-20261107-g1-s05-B-q005-i05": {
+      "role": "item",
+      "canonicalId": "elm-20261107-g1-s05-B-q005-i05",
+      "questionId": "elm-20261107-g1-s05-B-q005",
+      "q": 5,
+      "part": "ה",
+      "fragments": [
+        {
+          "page": 2,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 402.85039370078744,
+              "y": 785.2857742782153,
+              "width": 310.8188976377953,
+              "height": 40.5333333333333
+            },
+            "pdfPt": {
+              "x": 302.1377952755906,
+              "y": 588.9643307086615,
+              "width": 233.1141732283465,
+              "height": 30.399999999999977
+            },
+            "normalized": {
+              "x": 0.5075595238095238,
+              "y": 0.6995741676019452,
+              "width": 0.3916071428571429,
+              "height": 0.03610924055368496
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-elm-20261107-g1-s05-B-q005": {
+      "role": "answer-question",
+      "canonicalId": "elm-20261107-g1-s05-B-q005",
+      "questionId": "elm-20261107-g1-s05-B-q005",
+      "q": 5,
+      "part": "",
+      "fragments": [
+        {
+          "page": 5,
+          "boxType": "TableRowBox",
+          "htmlTag": "tr",
+          "bounds": {
+            "cssPx": {
+              "x": 68.531496062992,
+              "y": 300.57347610113186,
+              "width": 656.6377952755909,
+              "height": 37.06666666666666
+            },
+            "pdfPt": {
+              "x": 51.398622047244004,
+              "y": 225.4301070758489,
+              "width": 492.47834645669315,
+              "height": 27.799999999999997
+            },
+            "normalized": {
+              "x": 0.08634424603174587,
+              "y": 0.2677667751462103,
+              "width": 0.8273115079365082,
+              "height": 0.033020950243172455
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-elm-20261107-g1-s05-B-q005-i01": {
+      "role": "answer-item",
+      "canonicalId": "elm-20261107-g1-s05-B-q005-i01",
+      "questionId": "elm-20261107-g1-s05-B-q005",
+      "q": 5,
+      "part": "א",
+      "fragments": [
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 654.5394085260826,
+              "y": 311.7734761011319,
+              "width": 24.9560546875,
+              "height": 14.666666666666686
+            },
+            "pdfPt": {
+              "x": 490.90455639456195,
+              "y": 233.83010707584893,
+              "width": 18.717041015625,
+              "height": 11.000000000000014
+            },
+            "normalized": {
+              "x": 0.8246677071707588,
+              "y": 0.27774432845709696,
+              "width": 0.03144264826698909,
+              "height": 0.01306584362139919
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-elm-20261107-g1-s05-B-q005-i02": {
+      "role": "answer-item",
+      "canonicalId": "elm-20261107-g1-s05-B-q005-i02",
+      "questionId": "elm-20261107-g1-s05-B-q005",
+      "q": 5,
+      "part": "ב",
+      "fragments": [
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 609.736023109416,
+              "y": 311.7734761011319,
+              "width": 22.8505859375,
+              "height": 14.666666666666686
+            },
+            "pdfPt": {
+              "x": 457.302017332062,
+              "y": 233.83010707584893,
+              "width": 17.137939453125,
+              "height": 11.000000000000014
+            },
+            "normalized": {
+              "x": 0.7682189973699983,
+              "y": 0.27774432845709696,
+              "width": 0.02878992474268353,
+              "height": 0.01306584362139919
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-elm-20261107-g1-s05-B-q005-i03": {
+      "role": "answer-item",
+      "canonicalId": "elm-20261107-g1-s05-B-q005-i03",
+      "questionId": "elm-20261107-g1-s05-B-q005",
+      "q": 5,
+      "part": "ג",
+      "fragments": [
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 566.9306845677494,
+              "y": 311.7734761011319,
+              "width": 20.8525390625,
+              "height": 14.666666666666686
+            },
+            "pdfPt": {
+              "x": 425.19801342581206,
+              "y": 233.83010707584893,
+              "width": 15.639404296875,
+              "height": 11.000000000000014
+            },
+            "normalized": {
+              "x": 0.7142876680565889,
+              "y": 0.27774432845709696,
+              "width": 0.02627254425533234,
+              "height": 0.01306584362139919
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-elm-20261107-g1-s05-B-q005-i04": {
+      "role": "answer-item",
+      "canonicalId": "elm-20261107-g1-s05-B-q005-i04",
+      "questionId": "elm-20261107-g1-s05-B-q005",
+      "q": 5,
+      "part": "ד",
+      "fragments": [
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 523.8665569635828,
+              "y": 311.7734761011319,
+              "width": 21.111328125,
+              "height": 14.666666666666686
+            },
+            "pdfPt": {
+              "x": 392.89991772268706,
+              "y": 233.83010707584893,
+              "width": 15.83349609375,
+              "height": 11.000000000000014
+            },
+            "normalized": {
+              "x": 0.6600302850632441,
+              "y": 0.27774432845709696,
+              "width": 0.026598597935267854,
+              "height": 0.01306584362139919
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-elm-20261107-g1-s05-B-q005-i05": {
+      "role": "answer-item",
+      "canonicalId": "elm-20261107-g1-s05-B-q005-i05",
+      "questionId": "elm-20261107-g1-s05-B-q005",
+      "q": 5,
+      "part": "ה",
+      "fragments": [
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 469.6959840469161,
+              "y": 311.7734761011319,
+              "width": 32.21777343750006,
+              "height": 14.666666666666686
+            },
+            "pdfPt": {
+              "x": 352.27198803518706,
+              "y": 233.83010707584893,
+              "width": 24.163330078125043,
+              "height": 11.000000000000014
+            },
+            "normalized": {
+              "x": 0.591779662440063,
+              "y": 0.27774432845709696,
+              "width": 0.04059183756510423,
+              "height": 0.01306584362139919
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "elm-20261107-g1-s05-B-q006": {
+      "role": "question",
+      "canonicalId": "elm-20261107-g1-s05-B-q006",
+      "questionId": "elm-20261107-g1-s05-B-q006",
+      "q": 6,
+      "part": "",
+      "fragments": [
+        {
+          "page": 3,
+          "boxType": "BlockBox",
+          "htmlTag": "li",
+          "bounds": {
+            "cssPx": {
+              "x": 68.03149606299212,
+              "y": 60.47244094488189,
+              "width": 653.6377952755906,
+              "height": 661.1999999999998
+            },
+            "pdfPt": {
+              "x": 51.02362204724409,
+              "y": 45.354330708661415,
+              "width": 490.228346456693,
+              "height": 495.89999999999986
+            },
+            "normalized": {
+              "x": 0.0857142857142857,
+              "y": 0.053872053872053856,
+              "width": 0.8235317460317461,
+              "height": 0.5890319865319862
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "elm-20261107-g1-s05-B-q006-i01": {
+      "role": "item",
+      "canonicalId": "elm-20261107-g1-s05-B-q006-i01",
+      "questionId": "elm-20261107-g1-s05-B-q006",
+      "q": 6,
+      "part": "א",
+      "fragments": [
+        {
+          "page": 3,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 68.03149606299212,
+              "y": 107.6724409448819,
+              "width": 653.6377952755906,
+              "height": 117.46666666666665
+            },
+            "pdfPt": {
+              "x": 51.02362204724409,
+              "y": 80.75433070866143,
+              "width": 490.228346456693,
+              "height": 88.1
+            },
+            "normalized": {
+              "x": 0.0857142857142857,
+              "y": 0.09592031425364757,
+              "width": 0.8235317460317461,
+              "height": 0.10464552936775155
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "elm-20261107-g1-s05-B-q006-i02": {
+      "role": "item",
+      "canonicalId": "elm-20261107-g1-s05-B-q006-i02",
+      "questionId": "elm-20261107-g1-s05-B-q006",
+      "q": 6,
+      "part": "ב",
+      "fragments": [
+        {
+          "page": 3,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 68.03149606299212,
+              "y": 231.8057742782152,
+              "width": 653.6377952755906,
+              "height": 117.4666666666667
+            },
+            "pdfPt": {
+              "x": 51.02362204724409,
+              "y": 173.8543307086614,
+              "width": 490.228346456693,
+              "height": 88.10000000000002
+            },
+            "normalized": {
+              "x": 0.0857142857142857,
+              "y": 0.20650486344930782,
+              "width": 0.8235317460317461,
+              "height": 0.10464552936775158
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "elm-20261107-g1-s05-B-q006-i03": {
+      "role": "item",
+      "canonicalId": "elm-20261107-g1-s05-B-q006-i03",
+      "questionId": "elm-20261107-g1-s05-B-q006",
+      "q": 6,
+      "part": "ג",
+      "fragments": [
+        {
+          "page": 3,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 68.03149606299212,
+              "y": 355.9391076115486,
+              "width": 653.6377952755906,
+              "height": 117.46666666666664
+            },
+            "pdfPt": {
+              "x": 51.02362204724409,
+              "y": 266.9543307086615,
+              "width": 490.228346456693,
+              "height": 88.09999999999998
+            },
+            "normalized": {
+              "x": 0.0857142857142857,
+              "y": 0.31708941264496815,
+              "width": 0.8235317460317461,
+              "height": 0.10464552936775154
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "elm-20261107-g1-s05-B-q006-i04": {
+      "role": "item",
+      "canonicalId": "elm-20261107-g1-s05-B-q006-i04",
+      "questionId": "elm-20261107-g1-s05-B-q006",
+      "q": 6,
+      "part": "ד",
+      "fragments": [
+        {
+          "page": 3,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 68.03149606299212,
+              "y": 480.0724409448819,
+              "width": 653.6377952755906,
+              "height": 117.46666666666658
+            },
+            "pdfPt": {
+              "x": 51.02362204724409,
+              "y": 360.05433070866144,
+              "width": 490.228346456693,
+              "height": 88.09999999999994
+            },
+            "normalized": {
+              "x": 0.0857142857142857,
+              "y": 0.4276739618406284,
+              "width": 0.8235317460317461,
+              "height": 0.10464552936775148
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "elm-20261107-g1-s05-B-q006-i05": {
+      "role": "item",
+      "canonicalId": "elm-20261107-g1-s05-B-q006-i05",
+      "questionId": "elm-20261107-g1-s05-B-q006",
+      "q": 6,
+      "part": "ה",
+      "fragments": [
+        {
+          "page": 3,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 68.03149606299212,
+              "y": 604.2057742782151,
+              "width": 653.6377952755906,
+              "height": 117.46666666666658
+            },
+            "pdfPt": {
+              "x": 51.02362204724409,
+              "y": 453.15433070866135,
+              "width": 490.228346456693,
+              "height": 88.09999999999994
+            },
+            "normalized": {
+              "x": 0.0857142857142857,
+              "y": 0.5382585110362885,
+              "width": 0.8235317460317461,
+              "height": 0.10464552936775148
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-elm-20261107-g1-s05-B-q006": {
+      "role": "answer-question",
+      "canonicalId": "elm-20261107-g1-s05-B-q006",
+      "questionId": "elm-20261107-g1-s05-B-q006",
+      "q": 6,
+      "part": "",
+      "fragments": [
+        {
+          "page": 5,
+          "boxType": "TableRowBox",
+          "htmlTag": "tr",
+          "bounds": {
+            "cssPx": {
+              "x": 68.531496062992,
+              "y": 337.6401427677985,
+              "width": 656.6377952755909,
+              "height": 128.00000000000006
+            },
+            "pdfPt": {
+              "x": 51.398622047244004,
+              "y": 253.23010707584888,
+              "width": 492.47834645669315,
+              "height": 96.00000000000004
+            },
+            "normalized": {
+              "x": 0.08634424603174587,
+              "y": 0.3007877253893827,
+              "width": 0.8273115079365082,
+              "height": 0.11402918069584737
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-elm-20261107-g1-s05-B-q006-i01": {
+      "role": "answer-item",
+      "canonicalId": "elm-20261107-g1-s05-B-q006-i01",
+      "questionId": "elm-20261107-g1-s05-B-q006",
+      "q": 6,
+      "part": "א",
+      "fragments": [
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 459.61362727608264,
+              "y": 348.84014276779857,
+              "width": 219.8818359375001,
+              "height": 14.666666666666686
+            },
+            "pdfPt": {
+              "x": 344.71022045706195,
+              "y": 261.6301070758489,
+              "width": 164.91137695312509,
+              "height": 11.000000000000014
+            },
+            "normalized": {
+              "x": 0.5790766930958581,
+              "y": 0.3107652787002694,
+              "width": 0.27703366234189,
+              "height": 0.01306584362139919
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-elm-20261107-g1-s05-B-q006-i02": {
+      "role": "answer-item",
+      "canonicalId": "elm-20261107-g1-s05-B-q006-i02",
+      "questionId": "elm-20261107-g1-s05-B-q006",
+      "q": 6,
+      "part": "ב",
+      "fragments": [
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 453.47104915108264,
+              "y": 371.5734761011319,
+              "width": 226.0244140625001,
+              "height": 14.666666666666686
+            },
+            "pdfPt": {
+              "x": 340.10328686331195,
+              "y": 278.6801070758489,
+              "width": 169.51831054687509,
+              "height": 11.000000000000014
+            },
+            "normalized": {
+              "x": 0.5713375321645584,
+              "y": 0.3310173363134381,
+              "width": 0.2847728232731896,
+              "height": 0.01306584362139919
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-elm-20261107-g1-s05-B-q006-i03": {
+      "role": "answer-item",
+      "canonicalId": "elm-20261107-g1-s05-B-q006-i03",
+      "questionId": "elm-20261107-g1-s05-B-q006",
+      "q": 6,
+      "part": "ג",
+      "fragments": [
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 454.66636165108264,
+              "y": 394.30680943446526,
+              "width": 224.8291015625001,
+              "height": 14.666666666666686
+            },
+            "pdfPt": {
+              "x": 340.99977123831195,
+              "y": 295.73010707584893,
+              "width": 168.62182617187509,
+              "height": 11.000000000000014
+            },
+            "normalized": {
+              "x": 0.572843531048487,
+              "y": 0.35126939392660683,
+              "width": 0.28326682438926104,
+              "height": 0.01306584362139919
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-elm-20261107-g1-s05-B-q006-i04": {
+      "role": "answer-item",
+      "canonicalId": "elm-20261107-g1-s05-B-q006-i04",
+      "questionId": "elm-20261107-g1-s05-B-q006",
+      "q": 6,
+      "part": "ד",
+      "fragments": [
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 454.40757258858264,
+              "y": 417.0401427677986,
+              "width": 225.0878906250001,
+              "height": 14.666666666666686
+            },
+            "pdfPt": {
+              "x": 340.80567944143695,
+              "y": 312.78010707584895,
+              "width": 168.81591796875009,
+              "height": 11.000000000000014
+            },
+            "normalized": {
+              "x": 0.5725174773685515,
+              "y": 0.3715214515397756,
+              "width": 0.28359287806919653,
+              "height": 0.01306584362139919
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-elm-20261107-g1-s05-B-q006-i05": {
+      "role": "answer-item",
+      "canonicalId": "elm-20261107-g1-s05-B-q006-i05",
+      "questionId": "elm-20261107-g1-s05-B-q006",
+      "q": 6,
+      "part": "ה",
+      "fragments": [
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 437.93784602608264,
+              "y": 439.77347610113196,
+              "width": 241.5576171875001,
+              "height": 14.666666666666686
+            },
+            "pdfPt": {
+              "x": 328.45338451956195,
+              "y": 329.83010707584896,
+              "width": 181.16821289062509,
+              "height": 11.000000000000014
+            },
+            "normalized": {
+              "x": 0.5517669290209573,
+              "y": 0.39177350915294434,
+              "width": 0.3043434264167908,
+              "height": 0.01306584362139919
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "elm-20261107-g1-s05-B-q007": {
+      "role": "question",
+      "canonicalId": "elm-20261107-g1-s05-B-q007",
+      "questionId": "elm-20261107-g1-s05-B-q007",
+      "q": 7,
+      "part": "",
+      "fragments": [
+        {
+          "page": 4,
+          "boxType": "BlockBox",
+          "htmlTag": "li",
+          "bounds": {
+            "cssPx": {
+              "x": 68.03149606299212,
+              "y": 60.47244094488189,
+              "width": 653.6377952755906,
+              "height": 319.9838541666667
+            },
+            "pdfPt": {
+              "x": 51.02362204724409,
+              "y": 45.354330708661415,
+              "width": 490.228346456693,
+              "height": 239.987890625
+            },
+            "normalized": {
+              "x": 0.0857142857142857,
+              "y": 0.053872053872053856,
+              "width": 0.8235317460317461,
+              "height": 0.28505856817597264
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "elm-20261107-g1-s05-B-q007-i01": {
+      "role": "item",
+      "canonicalId": "elm-20261107-g1-s05-B-q007-i01",
+      "questionId": "elm-20261107-g1-s05-B-q007",
+      "q": 7,
+      "part": "א",
+      "fragments": [
+        {
+          "page": 4,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 402.85039370078744,
+              "y": 115.12296177821523,
+              "width": 310.8188976377953,
+              "height": 74.66666666666666
+            },
+            "pdfPt": {
+              "x": 302.1377952755906,
+              "y": 86.34222133366143,
+              "width": 233.1141732283465,
+              "height": 55.99999999999999
+            },
+            "normalized": {
+              "x": 0.5075595238095238,
+              "y": 0.10255763289725961,
+              "width": 0.3916071428571429,
+              "height": 0.0665170220725776
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "elm-20261107-g1-s05-B-q007-i02": {
+      "role": "item",
+      "canonicalId": "elm-20261107-g1-s05-B-q007-i02",
+      "questionId": "elm-20261107-g1-s05-B-q007",
+      "q": 7,
+      "part": "ב",
+      "fragments": [
+        {
+          "page": 4,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 76.03149606299212,
+              "y": 115.12296177821523,
+              "width": 310.8188976377953,
+              "height": 74.66666666666666
+            },
+            "pdfPt": {
+              "x": 57.02362204724409,
+              "y": 86.34222133366143,
+              "width": 233.1141732283465,
+              "height": 55.99999999999999
+            },
+            "normalized": {
+              "x": 0.09579365079365078,
+              "y": 0.10255763289725961,
+              "width": 0.3916071428571429,
+              "height": 0.0665170220725776
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "elm-20261107-g1-s05-B-q007-i03": {
+      "role": "item",
+      "canonicalId": "elm-20261107-g1-s05-B-q007-i03",
+      "questionId": "elm-20261107-g1-s05-B-q007",
+      "q": 7,
+      "part": "ג",
+      "fragments": [
+        {
+          "page": 4,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 402.85039370078744,
+              "y": 205.78962844488186,
+              "width": 310.8188976377953,
+              "height": 74.66666666666666
+            },
+            "pdfPt": {
+              "x": 302.1377952755906,
+              "y": 154.3422213336614,
+              "width": 233.1141732283465,
+              "height": 55.99999999999999
+            },
+            "normalized": {
+              "x": 0.5075595238095238,
+              "y": 0.1833283025568181,
+              "width": 0.3916071428571429,
+              "height": 0.0665170220725776
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "elm-20261107-g1-s05-B-q007-i04": {
+      "role": "item",
+      "canonicalId": "elm-20261107-g1-s05-B-q007-i04",
+      "questionId": "elm-20261107-g1-s05-B-q007",
+      "q": 7,
+      "part": "ד",
+      "fragments": [
+        {
+          "page": 4,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 76.03149606299212,
+              "y": 205.78962844488186,
+              "width": 310.8188976377953,
+              "height": 74.66666666666666
+            },
+            "pdfPt": {
+              "x": 57.02362204724409,
+              "y": 154.3422213336614,
+              "width": 233.1141732283465,
+              "height": 55.99999999999999
+            },
+            "normalized": {
+              "x": 0.09579365079365078,
+              "y": 0.1833283025568181,
+              "width": 0.3916071428571429,
+              "height": 0.0665170220725776
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "elm-20261107-g1-s05-B-q007-i05": {
+      "role": "item",
+      "canonicalId": "elm-20261107-g1-s05-B-q007-i05",
+      "questionId": "elm-20261107-g1-s05-B-q007",
+      "q": 7,
+      "part": "ה",
+      "fragments": [
+        {
+          "page": 4,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 402.85039370078744,
+              "y": 296.45629511154857,
+              "width": 310.8188976377953,
+              "height": 74.66666666666663
+            },
+            "pdfPt": {
+              "x": 302.1377952755906,
+              "y": 222.34222133366143,
+              "width": 233.1141732283465,
+              "height": 55.99999999999997
+            },
+            "normalized": {
+              "x": 0.5075595238095238,
+              "y": 0.2640989722163767,
+              "width": 0.3916071428571429,
+              "height": 0.06651702207257758
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-elm-20261107-g1-s05-B-q007": {
+      "role": "answer-question",
+      "canonicalId": "elm-20261107-g1-s05-B-q007",
+      "questionId": "elm-20261107-g1-s05-B-q007",
+      "q": 7,
+      "part": "",
+      "fragments": [
+        {
+          "page": 5,
+          "boxType": "TableRowBox",
+          "htmlTag": "tr",
+          "bounds": {
+            "cssPx": {
+              "x": 68.531496062992,
+              "y": 465.6401427677986,
+              "width": 656.6377952755909,
+              "height": 128.0
+            },
+            "pdfPt": {
+              "x": 51.398622047244004,
+              "y": 349.23010707584893,
+              "width": 492.47834645669315,
+              "height": 96.0
+            },
+            "normalized": {
+              "x": 0.08634424603174587,
+              "y": 0.4148169060852301,
+              "width": 0.8273115079365082,
+              "height": 0.11402918069584733
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-elm-20261107-g1-s05-B-q007-i01": {
+      "role": "answer-item",
+      "canonicalId": "elm-20261107-g1-s05-B-q007-i01",
+      "questionId": "elm-20261107-g1-s05-B-q007",
+      "q": 7,
+      "part": "א",
+      "fragments": [
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 452.16636165108264,
+              "y": 476.8401427677986,
+              "width": 227.3291015625001,
+              "height": 14.666666666666686
+            },
+            "pdfPt": {
+              "x": 339.12477123831195,
+              "y": 357.63010707584897,
+              "width": 170.49682617187509,
+              "height": 11.000000000000014
+            },
+            "normalized": {
+              "x": 0.5696937294611855,
+              "y": 0.42479445939611676,
+              "width": 0.28641662597656264,
+              "height": 0.01306584362139919
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-elm-20261107-g1-s05-B-q007-i02": {
+      "role": "answer-item",
+      "canonicalId": "elm-20261107-g1-s05-B-q007-i02",
+      "questionId": "elm-20261107-g1-s05-B-q007",
+      "q": 7,
+      "part": "ב",
+      "fragments": [
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 454.27183040108264,
+              "y": 499.573476101132,
+              "width": 225.2236328125001,
+              "height": 14.666666666666629
+            },
+            "pdfPt": {
+              "x": 340.70387280081195,
+              "y": 374.680107075849,
+              "width": 168.91772460937509,
+              "height": 10.999999999999972
+            },
+            "normalized": {
+              "x": 0.572346452985491,
+              "y": 0.4450465170092855,
+              "width": 0.2837639024522571,
+              "height": 0.01306584362139914
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-elm-20261107-g1-s05-B-q007-i03": {
+      "role": "answer-item",
+      "canonicalId": "elm-20261107-g1-s05-B-q007-i03",
+      "questionId": "elm-20261107-g1-s05-B-q007",
+      "q": 7,
+      "part": "ג",
+      "fragments": [
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 456.26987727608264,
+              "y": 522.3068094344652,
+              "width": 223.2255859375001,
+              "height": 14.666666666666629
+            },
+            "pdfPt": {
+              "x": 342.20240795706195,
+              "y": 391.7301070758489,
+              "width": 167.41918945312509,
+              "height": 10.999999999999972
+            },
+            "normalized": {
+              "x": 0.5748638334728422,
+              "y": 0.4652985746224541,
+              "width": 0.28124652196490585,
+              "height": 0.01306584362139914
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-elm-20261107-g1-s05-B-q007-i04": {
+      "role": "answer-item",
+      "canonicalId": "elm-20261107-g1-s05-B-q007-i04",
+      "questionId": "elm-20261107-g1-s05-B-q007",
+      "q": 7,
+      "part": "ד",
+      "fragments": [
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 456.01108821358264,
+              "y": 545.0401427677986,
+              "width": 223.4843750000001,
+              "height": 14.666666666666629
+            },
+            "pdfPt": {
+              "x": 342.00831616018695,
+              "y": 408.78010707584895,
+              "width": 167.61328125000009,
+              "height": 10.999999999999972
+            },
+            "normalized": {
+              "x": 0.5745377797929067,
+              "y": 0.4855506322356229,
+              "width": 0.2815725756448414,
+              "height": 0.01306584362139914
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-elm-20261107-g1-s05-B-q007-i05": {
+      "role": "answer-item",
+      "canonicalId": "elm-20261107-g1-s05-B-q007-i05",
+      "questionId": "elm-20261107-g1-s05-B-q007",
+      "q": 7,
+      "part": "ה",
+      "fragments": [
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 444.90464290108264,
+              "y": 567.7734761011319,
+              "width": 234.5908203125001,
+              "height": 14.666666666666629
+            },
+            "pdfPt": {
+              "x": 333.67848217581195,
+              "y": 425.8301070758489,
+              "width": 175.94311523437509,
+              "height": 10.999999999999972
+            },
+            "normalized": {
+              "x": 0.5605445401630703,
+              "y": 0.5058026898487916,
+              "width": 0.2955658152746777,
+              "height": 0.01306584362139914
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "elm-20261107-g1-s05-B-q008": {
+      "role": "question",
+      "canonicalId": "elm-20261107-g1-s05-B-q008",
+      "questionId": "elm-20261107-g1-s05-B-q008",
+      "q": 8,
+      "part": "",
+      "fragments": [
+        {
+          "page": 4,
+          "boxType": "BlockBox",
+          "htmlTag": "li",
+          "bounds": {
+            "cssPx": {
+              "x": 68.03149606299212,
+              "y": 397.7896284448819,
+              "width": 653.6377952755906,
+              "height": 278.65052083333325
+            },
+            "pdfPt": {
+              "x": 51.02362204724409,
+              "y": 298.3422213336614,
+              "width": 490.228346456693,
+              "height": 208.98789062499992
+            },
+            "normalized": {
+              "x": 0.0857142857142857,
+              "y": 0.3543720736005891,
+              "width": 0.8235317460317461,
+              "height": 0.24823664524293848
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "elm-20261107-g1-s05-B-q008-i01": {
+      "role": "item",
+      "canonicalId": "elm-20261107-g1-s05-B-q008-i01",
+      "questionId": "elm-20261107-g1-s05-B-q008",
+      "q": 8,
+      "part": "א",
+      "fragments": [
+        {
+          "page": 4,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 68.03149606299212,
+              "y": 447.10681594488193,
+              "width": 653.6377952755906,
+              "height": 40.53333333333336
+            },
+            "pdfPt": {
+              "x": 51.02362204724409,
+              "y": 335.33011195866146,
+              "width": 490.228346456693,
+              "height": 30.40000000000002
+            },
+            "normalized": {
+              "x": 0.0857142857142857,
+              "y": 0.39830643676346794,
+              "width": 0.8235317460317461,
+              "height": 0.03610924055368501
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "elm-20261107-g1-s05-B-q008-i02": {
+      "role": "item",
+      "canonicalId": "elm-20261107-g1-s05-B-q008-i02",
+      "questionId": "elm-20261107-g1-s05-B-q008",
+      "q": 8,
+      "part": "ב",
+      "fragments": [
+        {
+          "page": 4,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 68.03149606299212,
+              "y": 494.306815944882,
+              "width": 653.6377952755906,
+              "height": 40.53333333333336
+            },
+            "pdfPt": {
+              "x": 51.02362204724409,
+              "y": 370.7301119586615,
+              "width": 490.228346456693,
+              "height": 30.40000000000002
+            },
+            "normalized": {
+              "x": 0.0857142857142857,
+              "y": 0.44035469714506165,
+              "width": 0.8235317460317461,
+              "height": 0.03610924055368501
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "elm-20261107-g1-s05-B-q008-i03": {
+      "role": "item",
+      "canonicalId": "elm-20261107-g1-s05-B-q008-i03",
+      "questionId": "elm-20261107-g1-s05-B-q008",
+      "q": 8,
+      "part": "ג",
+      "fragments": [
+        {
+          "page": 4,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 68.03149606299212,
+              "y": 541.506815944882,
+              "width": 653.6377952755906,
+              "height": 40.5333333333333
+            },
+            "pdfPt": {
+              "x": 51.02362204724409,
+              "y": 406.1301119586615,
+              "width": 490.228346456693,
+              "height": 30.399999999999977
+            },
+            "normalized": {
+              "x": 0.0857142857142857,
+              "y": 0.48240295752665535,
+              "width": 0.8235317460317461,
+              "height": 0.03610924055368496
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "elm-20261107-g1-s05-B-q008-i04": {
+      "role": "item",
+      "canonicalId": "elm-20261107-g1-s05-B-q008-i04",
+      "questionId": "elm-20261107-g1-s05-B-q008",
+      "q": 8,
+      "part": "ד",
+      "fragments": [
+        {
+          "page": 4,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 68.03149606299212,
+              "y": 588.7068159448819,
+              "width": 653.6377952755906,
+              "height": 40.5333333333333
+            },
+            "pdfPt": {
+              "x": 51.02362204724409,
+              "y": 441.53011195866145,
+              "width": 490.228346456693,
+              "height": 30.399999999999977
+            },
+            "normalized": {
+              "x": 0.0857142857142857,
+              "y": 0.524451217908249,
+              "width": 0.8235317460317461,
+              "height": 0.03610924055368496
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "elm-20261107-g1-s05-B-q008-i05": {
+      "role": "item",
+      "canonicalId": "elm-20261107-g1-s05-B-q008-i05",
+      "questionId": "elm-20261107-g1-s05-B-q008",
+      "q": 8,
+      "part": "ה",
+      "fragments": [
+        {
+          "page": 4,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 68.03149606299212,
+              "y": 635.9068159448818,
+              "width": 653.6377952755906,
+              "height": 40.5333333333333
+            },
+            "pdfPt": {
+              "x": 51.02362204724409,
+              "y": 476.93011195866137,
+              "width": 490.228346456693,
+              "height": 30.399999999999977
+            },
+            "normalized": {
+              "x": 0.0857142857142857,
+              "y": 0.5664994782898426,
+              "width": 0.8235317460317461,
+              "height": 0.03610924055368496
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-elm-20261107-g1-s05-B-q008": {
+      "role": "answer-question",
+      "canonicalId": "elm-20261107-g1-s05-B-q008",
+      "questionId": "elm-20261107-g1-s05-B-q008",
+      "q": 8,
+      "part": "",
+      "fragments": [
+        {
+          "page": 5,
+          "boxType": "TableRowBox",
+          "htmlTag": "tr",
+          "bounds": {
+            "cssPx": {
+              "x": 68.531496062992,
+              "y": 593.6401427677986,
+              "width": 656.6377952755909,
+              "height": 150.73333333333335
+            },
+            "pdfPt": {
+              "x": 51.398622047244004,
+              "y": 445.23010707584893,
+              "width": 492.47834645669315,
+              "height": 113.05000000000001
+            },
+            "normalized": {
+              "x": 0.08634424603174587,
+              "y": 0.5288460867810775,
+              "width": 0.8273115079365082,
+              "height": 0.13428123830901606
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-elm-20261107-g1-s05-B-q008-i01": {
+      "role": "answer-item",
+      "canonicalId": "elm-20261107-g1-s05-B-q008-i01",
+      "questionId": "elm-20261107-g1-s05-B-q008",
+      "q": 8,
+      "part": "א",
+      "fragments": [
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 97.93686946358252,
+              "y": 604.8401427677985,
+              "width": 581.5585937500001,
+              "height": 14.666666666666629
+            },
+            "pdfPt": {
+              "x": 73.4526520976869,
+              "y": 453.63010707584885,
+              "width": 436.1689453125001,
+              "height": 10.999999999999972
+            },
+            "normalized": {
+              "x": 0.12339268275669622,
+              "y": 0.538823640091964,
+              "width": 0.7327176726810517,
+              "height": 0.01306584362139914
+            }
+          },
+          "fragment": 1
+        },
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 462.41245540108264,
+              "y": 627.5734761011319,
+              "width": 217.0830078125001,
+              "height": 14.666666666666629
+            },
+            "pdfPt": {
+              "x": 346.80934155081195,
+              "y": 470.6801070758489,
+              "width": 162.81225585937509,
+              "height": 10.999999999999972
+            },
+            "normalized": {
+              "x": 0.5826029944041418,
+              "y": 0.5590756977051328,
+              "width": 0.2735073610336063,
+              "height": 0.01306584362139914
+            }
+          },
+          "fragment": 2
+        }
+      ]
+    },
+    "answer-elm-20261107-g1-s05-B-q008-i02": {
+      "role": "answer-item",
+      "canonicalId": "elm-20261107-g1-s05-B-q008-i02",
+      "questionId": "elm-20261107-g1-s05-B-q008",
+      "q": 8,
+      "part": "ב",
+      "fragments": [
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 347.83823665108264,
+              "y": 650.3068094344652,
+              "width": 331.6572265625001,
+              "height": 14.666666666666629
+            },
+            "pdfPt": {
+              "x": 260.87867748831195,
+              "y": 487.7301070758489,
+              "width": 248.74291992187509,
+              "height": 10.999999999999972
+            },
+            "normalized": {
+              "x": 0.43824857197110606,
+              "y": 0.5793277553183015,
+              "width": 0.417861783466642,
+              "height": 0.01306584362139914
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-elm-20261107-g1-s05-B-q008-i03": {
+      "role": "answer-item",
+      "canonicalId": "elm-20261107-g1-s05-B-q008-i03",
+      "questionId": "elm-20261107-g1-s05-B-q008",
+      "q": 8,
+      "part": "ג",
+      "fragments": [
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 349.83628352608264,
+              "y": 673.0401427677986,
+              "width": 329.6591796875001,
+              "height": 14.666666666666629
+            },
+            "pdfPt": {
+              "x": 262.37721264456195,
+              "y": 504.78010707584895,
+              "width": 247.24438476562509,
+              "height": 10.999999999999972
+            },
+            "normalized": {
+              "x": 0.44076595245845723,
+              "y": 0.5995798129314702,
+              "width": 0.41534440297929076,
+              "height": 0.01306584362139914
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-elm-20261107-g1-s05-B-q008-i04": {
+      "role": "answer-item",
+      "canonicalId": "elm-20261107-g1-s05-B-q008-i04",
+      "questionId": "elm-20261107-g1-s05-B-q008",
+      "q": 8,
+      "part": "ד",
+      "fragments": [
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 349.57749446358264,
+              "y": 695.7734761011319,
+              "width": 329.9179687500001,
+              "height": 14.666666666666629
+            },
+            "pdfPt": {
+              "x": 262.18312084768695,
+              "y": 521.8301070758489,
+              "width": 247.43847656250009,
+              "height": 10.999999999999972
+            },
+            "normalized": {
+              "x": 0.44043989877852174,
+              "y": 0.619831870544639,
+              "width": 0.4156704566592263,
+              "height": 0.01306584362139914
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    "answer-elm-20261107-g1-s05-B-q008-i05": {
+      "role": "answer-item",
+      "canonicalId": "elm-20261107-g1-s05-B-q008-i05",
+      "questionId": "elm-20261107-g1-s05-B-q008",
+      "q": 8,
+      "part": "ה",
+      "fragments": [
+        {
+          "page": 5,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 345.78940852608264,
+              "y": 718.5068094344653,
+              "width": 333.7060546875001,
+              "height": 14.666666666666629
+            },
+            "pdfPt": {
+              "x": 259.34205639456195,
+              "y": 538.880107075849,
+              "width": 250.27954101562509,
+              "height": 10.999999999999972
+            },
+            "normalized": {
+              "x": 0.4356672111390128,
+              "y": 0.6400839281578077,
+              "width": 0.42044314429873525,
+              "height": 0.01306584362139914
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    }
+  },
+  "auxiliary": [
+    {
+      "id": "dom-7",
+      "role": "worksheet-title",
+      "figureId": null,
+      "ownerId": null,
+      "fragments": [
+        {
+          "page": 1,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 68.03149606299212,
+              "y": 64.4724409448819,
+              "width": 657.6377952755906,
+              "height": 60.8
+            },
+            "pdfPt": {
+              "x": 51.02362204724409,
+              "y": 48.35433070866142,
+              "width": 493.228346456693,
+              "height": 45.599999999999994
+            },
+            "normalized": {
+              "x": 0.0857142857142857,
+              "y": 0.05743546576879909,
+              "width": 0.8285714285714286,
+              "height": 0.05416386083052748
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-9",
+      "role": "worksheet-level",
+      "figureId": null,
+      "ownerId": null,
+      "fragments": [
+        {
+          "page": 1,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 68.03149606299212,
+              "y": 143.7724409448819,
+              "width": 657.6377952755906,
+              "height": 37.29066666666665
+            },
+            "pdfPt": {
+              "x": 51.02362204724409,
+              "y": 107.82933070866143,
+              "width": 493.228346456693,
+              "height": 27.96799999999999
+            },
+            "normalized": {
+              "x": 0.0857142857142857,
+              "y": 0.12808010662177327,
+              "width": 0.8285714285714286,
+              "height": 0.03322050130939017
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-10",
+      "role": "pupil-details",
+      "figureId": null,
+      "ownerId": null,
+      "fragments": [
+        {
+          "page": 1,
+          "boxType": "FlexBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 68.03149606299212,
+              "y": 191.06310761154856,
+              "width": 657.6377952755906,
+              "height": 34.45333333333332
+            },
+            "pdfPt": {
+              "x": 51.02362204724409,
+              "y": 143.29733070866143,
+              "width": 493.228346456693,
+              "height": 25.83999999999999
+            },
+            "normalized": {
+              "x": 0.0857142857142857,
+              "y": 0.1702091376730265,
+              "width": 0.8285714285714286,
+              "height": 0.030692854470632226
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-13",
+      "role": "worksheet-instructions",
+      "figureId": null,
+      "ownerId": null,
+      "fragments": [
+        {
+          "page": 1,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 68.03149606299212,
+              "y": 237.51644094488188,
+              "width": 657.6377952755906,
+              "height": 35.26400000000001
+            },
+            "pdfPt": {
+              "x": 51.02362204724409,
+              "y": 178.1373307086614,
+              "width": 493.228346456693,
+              "height": 26.448000000000008
+            },
+            "normalized": {
+              "x": 0.0857142857142857,
+              "y": 0.21159222783389442,
+              "width": 0.8285714285714286,
+              "height": 0.03141503928170595
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-16",
+      "role": "question-prompt",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q001",
+      "fragments": [
+        {
+          "page": 1,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 556.6897991510828,
+              "y": 295.7137742782152,
+              "width": 128.25,
+              "height": 21.333333333333314
+            },
+            "pdfPt": {
+              "x": 417.51734936331206,
+              "y": 221.78533070866143,
+              "width": 96.1875,
+              "height": 15.999999999999986
+            },
+            "normalized": {
+              "x": 0.7013849652002728,
+              "y": 0.2634374953236064,
+              "width": 0.16158482142857142,
+              "height": 0.019004863449307872
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-22",
+      "role": "item-label",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q001-i01",
+      "fragments": [
+        {
+          "page": 1,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 693.0442913385828,
+              "y": 348.2471076115486,
+              "width": 20.625,
+              "height": 21.333333333333314
+            },
+            "pdfPt": {
+              "x": 519.7832185039371,
+              "y": 261.18533070866147,
+              "width": 15.46875,
+              "height": 15.999999999999986
+            },
+            "normalized": {
+              "x": 0.8731808035714286,
+              "y": 0.31023697156752705,
+              "width": 0.025985863095238093,
+              "height": 0.019004863449307872
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-27",
+      "role": "item-label",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q001-i02",
+      "fragments": [
+        {
+          "page": 1,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 369.21562807578744,
+              "y": 348.2471076115486,
+              "width": 17.634765625,
+              "height": 21.333333333333314
+            },
+            "pdfPt": {
+              "x": 276.9117210568406,
+              "y": 261.18533070866147,
+              "width": 13.22607421875,
+              "height": 15.999999999999986
+            },
+            "normalized": {
+              "x": 0.4651823885478671,
+              "y": 0.31023697156752705,
+              "width": 0.022218405102926584,
+              "height": 0.019004863449307872
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-33",
+      "role": "item-label",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q001-i03",
+      "fragments": [
+        {
+          "page": 1,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 698.8567913385828,
+              "y": 402.1137742782152,
+              "width": 14.8125,
+              "height": 21.333333333333314
+            },
+            "pdfPt": {
+              "x": 524.1425935039371,
+              "y": 301.5853307086614,
+              "width": 11.109375,
+              "height": 15.999999999999986
+            },
+            "normalized": {
+              "x": 0.8805040922619047,
+              "y": 0.35822425177702943,
+              "width": 0.018662574404761902,
+              "height": 0.019004863449307872
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-38",
+      "role": "item-label",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q001-i04",
+      "fragments": [
+        {
+          "page": 1,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 370.85039370078744,
+              "y": 402.1137742782152,
+              "width": 16.0,
+              "height": 21.333333333333314
+            },
+            "pdfPt": {
+              "x": 278.1377952755906,
+              "y": 301.5853307086614,
+              "width": 12.0,
+              "height": 15.999999999999986
+            },
+            "normalized": {
+              "x": 0.4672420634920635,
+              "y": 0.35822425177702943,
+              "width": 0.020158730158730157,
+              "height": 0.019004863449307872
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-44",
+      "role": "item-label",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q001-i05",
+      "fragments": [
+        {
+          "page": 1,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 693.3255413385828,
+              "y": 455.9804409448819,
+              "width": 20.34375,
+              "height": 21.333333333333314
+            },
+            "pdfPt": {
+              "x": 519.9941560039371,
+              "y": 341.9853307086614,
+              "width": 15.2578125,
+              "height": 15.999999999999986
+            },
+            "normalized": {
+              "x": 0.87353515625,
+              "y": 0.40621153198653187,
+              "width": 0.025631510416666666,
+              "height": 0.019004863449307872
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-49",
+      "role": "question-prompt",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q002",
+      "fragments": [
+        {
+          "page": 1,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 480.99253352608275,
+              "y": 520.5137742782152,
+              "width": 203.947265625,
+              "height": 21.33333333333337
+            },
+            "pdfPt": {
+              "x": 360.74440014456206,
+              "y": 390.3853307086614,
+              "width": 152.96044921875,
+              "height": 16.00000000000003
+            },
+            "normalized": {
+              "x": 0.6060124182322669,
+              "y": 0.46370124392068823,
+              "width": 0.25695736839657735,
+              "height": 0.01900486344930792
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-55",
+      "role": "item-label",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q002-i01",
+      "fragments": [
+        {
+          "page": 1,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 693.0442913385828,
+              "y": 573.0471076115485,
+              "width": 20.625,
+              "height": 21.33333333333337
+            },
+            "pdfPt": {
+              "x": 519.7832185039371,
+              "y": 429.7853307086614,
+              "width": 15.46875,
+              "height": 16.00000000000003
+            },
+            "normalized": {
+              "x": 0.8731808035714286,
+              "y": 0.5105007201646089,
+              "width": 0.025985863095238093,
+              "height": 0.01900486344930792
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-58",
+      "role": "writing-space",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q002-i01",
+      "fragments": [
+        {
+          "page": 1,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 402.85039370078744,
+              "y": 603.9804409448818,
+              "width": 310.8188976377953,
+              "height": 34.133333333333326
+            },
+            "pdfPt": {
+              "x": 302.1377952755906,
+              "y": 452.98533070866137,
+              "width": 233.1141732283465,
+              "height": 25.599999999999994
+            },
+            "normalized": {
+              "x": 0.5075595238095238,
+              "y": 0.5380577721661053,
+              "width": 0.3916071428571429,
+              "height": 0.030407781518892615
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-61",
+      "role": "item-label",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q002-i02",
+      "fragments": [
+        {
+          "page": 1,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 369.21562807578744,
+              "y": 573.0471076115485,
+              "width": 17.634765625,
+              "height": 21.33333333333337
+            },
+            "pdfPt": {
+              "x": 276.9117210568406,
+              "y": 429.7853307086614,
+              "width": 13.22607421875,
+              "height": 16.00000000000003
+            },
+            "normalized": {
+              "x": 0.4651823885478671,
+              "y": 0.5105007201646089,
+              "width": 0.022218405102926584,
+              "height": 0.01900486344930792
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-64",
+      "role": "writing-space",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q002-i02",
+      "fragments": [
+        {
+          "page": 1,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 76.03149606299212,
+              "y": 603.9804409448818,
+              "width": 310.8188976377953,
+              "height": 34.133333333333326
+            },
+            "pdfPt": {
+              "x": 57.02362204724409,
+              "y": 452.98533070866137,
+              "width": 233.1141732283465,
+              "height": 25.599999999999994
+            },
+            "normalized": {
+              "x": 0.09579365079365078,
+              "y": 0.5380577721661053,
+              "width": 0.3916071428571429,
+              "height": 0.030407781518892615
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-68",
+      "role": "item-label",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q002-i03",
+      "fragments": [
+        {
+          "page": 1,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 698.8567913385828,
+              "y": 663.7137742782152,
+              "width": 14.8125,
+              "height": 21.33333333333337
+            },
+            "pdfPt": {
+              "x": 524.1425935039371,
+              "y": 497.7853307086614,
+              "width": 11.109375,
+              "height": 16.00000000000003
+            },
+            "normalized": {
+              "x": 0.8805040922619047,
+              "y": 0.5912713898241674,
+              "width": 0.018662574404761902,
+              "height": 0.01900486344930792
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-71",
+      "role": "writing-space",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q002-i03",
+      "fragments": [
+        {
+          "page": 1,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 402.85039370078744,
+              "y": 694.6471076115484,
+              "width": 310.8188976377953,
+              "height": 34.133333333333326
+            },
+            "pdfPt": {
+              "x": 302.1377952755906,
+              "y": 520.9853307086613,
+              "width": 233.1141732283465,
+              "height": 25.599999999999994
+            },
+            "normalized": {
+              "x": 0.5075595238095238,
+              "y": 0.6188284418256638,
+              "width": 0.3916071428571429,
+              "height": 0.030407781518892615
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-74",
+      "role": "item-label",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q002-i04",
+      "fragments": [
+        {
+          "page": 1,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 370.85039370078744,
+              "y": 663.7137742782152,
+              "width": 16.0,
+              "height": 21.33333333333337
+            },
+            "pdfPt": {
+              "x": 278.1377952755906,
+              "y": 497.7853307086614,
+              "width": 12.0,
+              "height": 16.00000000000003
+            },
+            "normalized": {
+              "x": 0.4672420634920635,
+              "y": 0.5912713898241674,
+              "width": 0.020158730158730157,
+              "height": 0.01900486344930792
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-77",
+      "role": "writing-space",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q002-i04",
+      "fragments": [
+        {
+          "page": 1,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 76.03149606299212,
+              "y": 694.6471076115484,
+              "width": 310.8188976377953,
+              "height": 34.133333333333326
+            },
+            "pdfPt": {
+              "x": 57.02362204724409,
+              "y": 520.9853307086613,
+              "width": 233.1141732283465,
+              "height": 25.599999999999994
+            },
+            "normalized": {
+              "x": 0.09579365079365078,
+              "y": 0.6188284418256638,
+              "width": 0.3916071428571429,
+              "height": 0.030407781518892615
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-81",
+      "role": "item-label",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q002-i05",
+      "fragments": [
+        {
+          "page": 1,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 693.3255413385828,
+              "y": 754.3804409448818,
+              "width": 20.34375,
+              "height": 21.33333333333337
+            },
+            "pdfPt": {
+              "x": 519.9941560039371,
+              "y": 565.7853307086614,
+              "width": 15.2578125,
+              "height": 16.00000000000003
+            },
+            "normalized": {
+              "x": 0.87353515625,
+              "y": 0.6720420594837259,
+              "width": 0.025631510416666666,
+              "height": 0.01900486344930792
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-84",
+      "role": "writing-space",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q002-i05",
+      "fragments": [
+        {
+          "page": 1,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 402.85039370078744,
+              "y": 785.3137742782151,
+              "width": 310.8188976377953,
+              "height": 34.133333333333326
+            },
+            "pdfPt": {
+              "x": 302.1377952755906,
+              "y": 588.9853307086613,
+              "width": 233.1141732283465,
+              "height": 25.599999999999994
+            },
+            "normalized": {
+              "x": 0.5075595238095238,
+              "y": 0.6995991114852222,
+              "width": 0.3916071428571429,
+              "height": 0.030407781518892615
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-87",
+      "role": "question-prompt",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q003",
+      "fragments": [
+        {
+          "page": 2,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 564.3987835260828,
+              "y": 70.07244094488188,
+              "width": 120.541015625,
+              "height": 21.33333333333333
+            },
+            "pdfPt": {
+              "x": 423.29908764456206,
+              "y": 52.55433070866141,
+              "width": 90.40576171875,
+              "height": 15.999999999999996
+            },
+            "normalized": {
+              "x": 0.7110976736886161,
+              "y": 0.062424242424242396,
+              "width": 0.15187211294022815,
+              "height": 0.019004863449307883
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-93",
+      "role": "item-label",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q003-i01",
+      "fragments": [
+        {
+          "page": 2,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 693.0442913385828,
+              "y": 122.60577427821524,
+              "width": 20.625,
+              "height": 21.33333333333333
+            },
+            "pdfPt": {
+              "x": 519.7832185039371,
+              "y": 91.95433070866143,
+              "width": 15.46875,
+              "height": 15.999999999999996
+            },
+            "normalized": {
+              "x": 0.8731808035714286,
+              "y": 0.10922371866816309,
+              "width": 0.025985863095238093,
+              "height": 0.019004863449307883
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-98",
+      "role": "item-label",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q003-i02",
+      "fragments": [
+        {
+          "page": 2,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 369.21562807578744,
+              "y": 122.60577427821524,
+              "width": 17.634765625,
+              "height": 21.33333333333333
+            },
+            "pdfPt": {
+              "x": 276.9117210568406,
+              "y": 91.95433070866143,
+              "width": 13.22607421875,
+              "height": 15.999999999999996
+            },
+            "normalized": {
+              "x": 0.4651823885478671,
+              "y": 0.10922371866816309,
+              "width": 0.022218405102926584,
+              "height": 0.019004863449307883
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-104",
+      "role": "item-label",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q003-i03",
+      "fragments": [
+        {
+          "page": 2,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 698.8567913385828,
+              "y": 176.47244094488187,
+              "width": 14.8125,
+              "height": 21.333333333333343
+            },
+            "pdfPt": {
+              "x": 524.1425935039371,
+              "y": 132.3543307086614,
+              "width": 11.109375,
+              "height": 16.000000000000007
+            },
+            "normalized": {
+              "x": 0.8805040922619047,
+              "y": 0.1572109988776655,
+              "width": 0.018662574404761902,
+              "height": 0.019004863449307897
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-109",
+      "role": "item-label",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q003-i04",
+      "fragments": [
+        {
+          "page": 2,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 370.85039370078744,
+              "y": 176.47244094488187,
+              "width": 16.0,
+              "height": 21.333333333333343
+            },
+            "pdfPt": {
+              "x": 278.1377952755906,
+              "y": 132.3543307086614,
+              "width": 12.0,
+              "height": 16.000000000000007
+            },
+            "normalized": {
+              "x": 0.4672420634920635,
+              "y": 0.1572109988776655,
+              "width": 0.020158730158730157,
+              "height": 0.019004863449307897
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-115",
+      "role": "item-label",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q003-i05",
+      "fragments": [
+        {
+          "page": 2,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 693.3255413385828,
+              "y": 230.33910761154854,
+              "width": 20.34375,
+              "height": 21.333333333333343
+            },
+            "pdfPt": {
+              "x": 519.9941560039371,
+              "y": 172.7543307086614,
+              "width": 15.2578125,
+              "height": 16.000000000000007
+            },
+            "normalized": {
+              "x": 0.87353515625,
+              "y": 0.2051982790871679,
+              "width": 0.025631510416666666,
+              "height": 0.019004863449307897
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-120",
+      "role": "question-prompt",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q004",
+      "fragments": [
+        {
+          "page": 2,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 495.95151790108275,
+              "y": 294.8724409448819,
+              "width": 189.0087890625,
+              "height": 21.333333333333314
+            },
+            "pdfPt": {
+              "x": 371.96363842581206,
+              "y": 221.1543307086614,
+              "width": 141.756591796875,
+              "height": 15.999999999999986
+            },
+            "normalized": {
+              "x": 0.6248595513237848,
+              "y": 0.2626879910213243,
+              "width": 0.23813607352120533,
+              "height": 0.019004863449307872
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-122",
+      "role": "table-heading",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q004",
+      "fragments": [
+        {
+          "page": 2,
+          "boxType": "TableRowGroupBox",
+          "htmlTag": "thead",
+          "bounds": {
+            "cssPx": {
+              "x": 68.53149606299212,
+              "y": 334.30577427821515,
+              "width": 652.6377952755906,
+              "height": 45.48000000000002
+            },
+            "pdfPt": {
+              "x": 51.39862204724409,
+              "y": 250.72933070866137,
+              "width": 489.478346456693,
+              "height": 34.110000000000014
+            },
+            "normalized": {
+              "x": 0.08634424603174602,
+              "y": 0.2978172933034043,
+              "width": 0.8222718253968254,
+              "height": 0.04051599326599327
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-175",
+      "role": "question-prompt",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q005",
+      "fragments": [
+        {
+          "page": 2,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 370.23374446358275,
+              "y": 634.6191076115487,
+              "width": 314.7060546875,
+              "height": 21.33333333333337
+            },
+            "pdfPt": {
+              "x": 277.67530834768706,
+              "y": 475.96433070866146,
+              "width": 236.029541015625,
+              "height": 16.00000000000003
+            },
+            "normalized": {
+              "x": 0.46646513439360127,
+              "y": 0.5653523194912083,
+              "width": 0.396504652235243,
+              "height": 0.01900486344930792
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-181",
+      "role": "item-label",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q005-i01",
+      "fragments": [
+        {
+          "page": 2,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 693.0442913385828,
+              "y": 687.152440944882,
+              "width": 20.625,
+              "height": 21.33333333333337
+            },
+            "pdfPt": {
+              "x": 519.7832185039371,
+              "y": 515.3643307086614,
+              "width": 15.46875,
+              "height": 16.00000000000003
+            },
+            "normalized": {
+              "x": 0.8731808035714286,
+              "y": 0.6121517957351289,
+              "width": 0.025985863095238093,
+              "height": 0.01900486344930792
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-187",
+      "role": "item-label",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q005-i02",
+      "fragments": [
+        {
+          "page": 2,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 369.21562807578744,
+              "y": 687.152440944882,
+              "width": 17.634765625,
+              "height": 21.33333333333337
+            },
+            "pdfPt": {
+              "x": 276.9117210568406,
+              "y": 515.3643307086614,
+              "width": 13.22607421875,
+              "height": 16.00000000000003
+            },
+            "normalized": {
+              "x": 0.4651823885478671,
+              "y": 0.6121517957351289,
+              "width": 0.022218405102926584,
+              "height": 0.01900486344930792
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-194",
+      "role": "item-label",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q005-i03",
+      "fragments": [
+        {
+          "page": 2,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 698.8567913385828,
+              "y": 741.0191076115486,
+              "width": 14.8125,
+              "height": 21.33333333333337
+            },
+            "pdfPt": {
+              "x": 524.1425935039371,
+              "y": 555.7643307086614,
+              "width": 11.109375,
+              "height": 16.00000000000003
+            },
+            "normalized": {
+              "x": 0.8805040922619047,
+              "y": 0.6601390759446314,
+              "width": 0.018662574404761902,
+              "height": 0.01900486344930792
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-200",
+      "role": "item-label",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q005-i04",
+      "fragments": [
+        {
+          "page": 2,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 370.85039370078744,
+              "y": 741.0191076115486,
+              "width": 16.0,
+              "height": 21.33333333333337
+            },
+            "pdfPt": {
+              "x": 278.1377952755906,
+              "y": 555.7643307086614,
+              "width": 12.0,
+              "height": 16.00000000000003
+            },
+            "normalized": {
+              "x": 0.4672420634920635,
+              "y": 0.6601390759446314,
+              "width": 0.020158730158730157,
+              "height": 0.01900486344930792
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-207",
+      "role": "item-label",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q005-i05",
+      "fragments": [
+        {
+          "page": 2,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 693.3255413385828,
+              "y": 794.8857742782153,
+              "width": 20.34375,
+              "height": 21.33333333333337
+            },
+            "pdfPt": {
+              "x": 519.9941560039371,
+              "y": 596.1643307086615,
+              "width": 15.2578125,
+              "height": 16.00000000000003
+            },
+            "normalized": {
+              "x": 0.87353515625,
+              "y": 0.7081263561541338,
+              "width": 0.025631510416666666,
+              "height": 0.01900486344930792
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-213",
+      "role": "question-prompt",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q006",
+      "fragments": [
+        {
+          "page": 3,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 453.73276790108275,
+              "y": 70.07244094488188,
+              "width": 231.2275390625,
+              "height": 21.33333333333333
+            },
+            "pdfPt": {
+              "x": 340.29957592581206,
+              "y": 52.55433070866141,
+              "width": 173.420654296875,
+              "height": 15.999999999999996
+            },
+            "normalized": {
+              "x": 0.5716672770182292,
+              "y": 0.062424242424242396,
+              "width": 0.29132834782676087,
+              "height": 0.019004863449307883
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-216",
+      "role": "item-label",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q006-i01",
+      "fragments": [
+        {
+          "page": 3,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 701.0442913385828,
+              "y": 117.2724409448819,
+              "width": 20.625,
+              "height": 21.33333333333333
+            },
+            "pdfPt": {
+              "x": 525.7832185039371,
+              "y": 87.95433070866142,
+              "width": 15.46875,
+              "height": 15.999999999999996
+            },
+            "normalized": {
+              "x": 0.8832601686507937,
+              "y": 0.10447250280583611,
+              "width": 0.025985863095238093,
+              "height": 0.019004863449307883
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-219",
+      "role": "writing-space",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q006-i01",
+      "fragments": [
+        {
+          "page": 3,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 68.03149606299212,
+              "y": 150.20577427821524,
+              "width": 653.6377952755906,
+              "height": 34.133333333333326
+            },
+            "pdfPt": {
+              "x": 51.02362204724409,
+              "y": 112.65433070866143,
+              "width": 490.228346456693,
+              "height": 25.599999999999994
+            },
+            "normalized": {
+              "x": 0.0857142857142857,
+              "y": 0.13381126075570518,
+              "width": 0.8235317460317461,
+              "height": 0.030407781518892615
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-220",
+      "role": "writing-space",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q006-i01",
+      "fragments": [
+        {
+          "page": 3,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 68.03149606299212,
+              "y": 191.00577427821523,
+              "width": 653.6377952755906,
+              "height": 34.133333333333326
+            },
+            "pdfPt": {
+              "x": 51.02362204724409,
+              "y": 143.25433070866143,
+              "width": 490.228346456693,
+              "height": 25.599999999999994
+            },
+            "normalized": {
+              "x": 0.0857142857142857,
+              "y": 0.1701580621025065,
+              "width": 0.8235317460317461,
+              "height": 0.030407781518892615
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-223",
+      "role": "item-label",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q006-i02",
+      "fragments": [
+        {
+          "page": 3,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 704.0345257135828,
+              "y": 241.4057742782152,
+              "width": 17.634765625,
+              "height": 21.333333333333343
+            },
+            "pdfPt": {
+              "x": 528.0258942851871,
+              "y": 181.0543307086614,
+              "width": 13.22607421875,
+              "height": 16.000000000000007
+            },
+            "normalized": {
+              "x": 0.8870276266431052,
+              "y": 0.21505705200149636,
+              "width": 0.022218405102926584,
+              "height": 0.019004863449307897
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-225",
+      "role": "writing-space",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q006-i02",
+      "fragments": [
+        {
+          "page": 3,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 68.03149606299212,
+              "y": 274.33910761154857,
+              "width": 653.6377952755906,
+              "height": 34.133333333333326
+            },
+            "pdfPt": {
+              "x": 51.02362204724409,
+              "y": 205.75433070866143,
+              "width": 490.228346456693,
+              "height": 25.599999999999994
+            },
+            "normalized": {
+              "x": 0.0857142857142857,
+              "y": 0.24439580995136545,
+              "width": 0.8235317460317461,
+              "height": 0.030407781518892615
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-226",
+      "role": "writing-space",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q006-i02",
+      "fragments": [
+        {
+          "page": 3,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 68.03149606299212,
+              "y": 315.1391076115486,
+              "width": 653.6377952755906,
+              "height": 34.133333333333326
+            },
+            "pdfPt": {
+              "x": 51.02362204724409,
+              "y": 236.35433070866145,
+              "width": 490.228346456693,
+              "height": 25.599999999999994
+            },
+            "normalized": {
+              "x": 0.0857142857142857,
+              "y": 0.2807426112981668,
+              "width": 0.8235317460317461,
+              "height": 0.030407781518892615
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-229",
+      "role": "item-label",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q006-i03",
+      "fragments": [
+        {
+          "page": 3,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 706.8567913385828,
+              "y": 365.5391076115486,
+              "width": 14.8125,
+              "height": 21.333333333333314
+            },
+            "pdfPt": {
+              "x": 530.1425935039371,
+              "y": 274.15433070866146,
+              "width": 11.109375,
+              "height": 15.999999999999986
+            },
+            "normalized": {
+              "x": 0.8905834573412699,
+              "y": 0.3256416011971567,
+              "width": 0.018662574404761902,
+              "height": 0.019004863449307872
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-232",
+      "role": "writing-space",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q006-i03",
+      "fragments": [
+        {
+          "page": 3,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 68.03149606299212,
+              "y": 398.4724409448819,
+              "width": 653.6377952755906,
+              "height": 34.133333333333326
+            },
+            "pdfPt": {
+              "x": 51.02362204724409,
+              "y": 298.85433070866145,
+              "width": 490.228346456693,
+              "height": 25.599999999999994
+            },
+            "normalized": {
+              "x": 0.0857142857142857,
+              "y": 0.3549803591470257,
+              "width": 0.8235317460317461,
+              "height": 0.030407781518892615
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-233",
+      "role": "writing-space",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q006-i03",
+      "fragments": [
+        {
+          "page": 3,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 68.03149606299212,
+              "y": 439.2724409448819,
+              "width": 653.6377952755906,
+              "height": 34.133333333333326
+            },
+            "pdfPt": {
+              "x": 51.02362204724409,
+              "y": 329.4543307086614,
+              "width": 490.228346456693,
+              "height": 25.599999999999994
+            },
+            "normalized": {
+              "x": 0.0857142857142857,
+              "y": 0.39132716049382704,
+              "width": 0.8235317460317461,
+              "height": 0.030407781518892615
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-236",
+      "role": "item-label",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q006-i04",
+      "fragments": [
+        {
+          "page": 3,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 705.6692913385828,
+              "y": 489.67244094488194,
+              "width": 16.0,
+              "height": 21.333333333333314
+            },
+            "pdfPt": {
+              "x": 529.2519685039371,
+              "y": 367.2543307086614,
+              "width": 12.0,
+              "height": 15.999999999999986
+            },
+            "normalized": {
+              "x": 0.8890873015873016,
+              "y": 0.436226150392817,
+              "width": 0.020158730158730157,
+              "height": 0.019004863449307872
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-239",
+      "role": "writing-space",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q006-i04",
+      "fragments": [
+        {
+          "page": 3,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 68.03149606299212,
+              "y": 522.6057742782152,
+              "width": 653.6377952755906,
+              "height": 34.133333333333326
+            },
+            "pdfPt": {
+              "x": 51.02362204724409,
+              "y": 391.9543307086614,
+              "width": 490.228346456693,
+              "height": 25.599999999999994
+            },
+            "normalized": {
+              "x": 0.0857142857142857,
+              "y": 0.465564908342686,
+              "width": 0.8235317460317461,
+              "height": 0.030407781518892615
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-240",
+      "role": "writing-space",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q006-i04",
+      "fragments": [
+        {
+          "page": 3,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 68.03149606299212,
+              "y": 563.4057742782152,
+              "width": 653.6377952755906,
+              "height": 34.133333333333326
+            },
+            "pdfPt": {
+              "x": 51.02362204724409,
+              "y": 422.5543307086614,
+              "width": 490.228346456693,
+              "height": 25.599999999999994
+            },
+            "normalized": {
+              "x": 0.0857142857142857,
+              "y": 0.5019117096894873,
+              "width": 0.8235317460317461,
+              "height": 0.030407781518892615
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-243",
+      "role": "item-label",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q006-i05",
+      "fragments": [
+        {
+          "page": 3,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 701.3255413385828,
+              "y": 613.8057742782152,
+              "width": 20.34375,
+              "height": 21.33333333333337
+            },
+            "pdfPt": {
+              "x": 525.9941560039371,
+              "y": 460.35433070866134,
+              "width": 15.2578125,
+              "height": 16.00000000000003
+            },
+            "normalized": {
+              "x": 0.8836145213293651,
+              "y": 0.5468106995884772,
+              "width": 0.025631510416666666,
+              "height": 0.01900486344930792
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-246",
+      "role": "writing-space",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q006-i05",
+      "fragments": [
+        {
+          "page": 3,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 68.03149606299212,
+              "y": 646.7391076115484,
+              "width": 653.6377952755906,
+              "height": 34.133333333333326
+            },
+            "pdfPt": {
+              "x": 51.02362204724409,
+              "y": 485.0543307086613,
+              "width": 490.228346456693,
+              "height": 25.599999999999994
+            },
+            "normalized": {
+              "x": 0.0857142857142857,
+              "y": 0.5761494575383461,
+              "width": 0.8235317460317461,
+              "height": 0.030407781518892615
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-247",
+      "role": "writing-space",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q006-i05",
+      "fragments": [
+        {
+          "page": 3,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 68.03149606299212,
+              "y": 687.5391076115484,
+              "width": 653.6377952755906,
+              "height": 34.133333333333326
+            },
+            "pdfPt": {
+              "x": 51.02362204724409,
+              "y": 515.6543307086613,
+              "width": 490.228346456693,
+              "height": 25.599999999999994
+            },
+            "normalized": {
+              "x": 0.0857142857142857,
+              "y": 0.6124962588851475,
+              "width": 0.8235317460317461,
+              "height": 0.030407781518892615
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-250",
+      "role": "question-prompt",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q007",
+      "fragments": [
+        {
+          "page": 4,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 210.84018977608275,
+              "y": 72.18962844488188,
+              "width": 443.3916015625,
+              "height": 21.33333333333333
+            },
+            "pdfPt": {
+              "x": 158.13014233206206,
+              "y": 54.14222133366141,
+              "width": 332.543701171875,
+              "height": 15.999999999999996
+            },
+            "normalized": {
+              "x": 0.26564190576946933,
+              "y": 0.06431034520552746,
+              "width": 0.5586382281591021,
+              "height": 0.019004863449307883
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-256",
+      "role": "item-label",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q007-i01",
+      "fragments": [
+        {
+          "page": 4,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 693.0442913385828,
+              "y": 124.72296177821524,
+              "width": 20.625,
+              "height": 21.33333333333333
+            },
+            "pdfPt": {
+              "x": 519.7832185039371,
+              "y": 93.54222133366143,
+              "width": 15.46875,
+              "height": 15.999999999999996
+            },
+            "normalized": {
+              "x": 0.8731808035714286,
+              "y": 0.11110982144944817,
+              "width": 0.025985863095238093,
+              "height": 0.019004863449307883
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-258",
+      "role": "writing-space",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q007-i01",
+      "fragments": [
+        {
+          "page": 4,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 402.85039370078744,
+              "y": 155.65629511154856,
+              "width": 310.8188976377953,
+              "height": 34.133333333333326
+            },
+            "pdfPt": {
+              "x": 302.1377952755906,
+              "y": 116.74222133366142,
+              "width": 233.1141732283465,
+              "height": 25.599999999999994
+            },
+            "normalized": {
+              "x": 0.5075595238095238,
+              "y": 0.13866687345094458,
+              "width": 0.3916071428571429,
+              "height": 0.030407781518892615
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-261",
+      "role": "item-label",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q007-i02",
+      "fragments": [
+        {
+          "page": 4,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 369.21562807578744,
+              "y": 124.72296177821524,
+              "width": 17.634765625,
+              "height": 21.33333333333333
+            },
+            "pdfPt": {
+              "x": 276.9117210568406,
+              "y": 93.54222133366143,
+              "width": 13.22607421875,
+              "height": 15.999999999999996
+            },
+            "normalized": {
+              "x": 0.4651823885478671,
+              "y": 0.11110982144944817,
+              "width": 0.022218405102926584,
+              "height": 0.019004863449307883
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-263",
+      "role": "writing-space",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q007-i02",
+      "fragments": [
+        {
+          "page": 4,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 76.03149606299212,
+              "y": 155.65629511154856,
+              "width": 310.8188976377953,
+              "height": 34.133333333333326
+            },
+            "pdfPt": {
+              "x": 57.02362204724409,
+              "y": 116.74222133366142,
+              "width": 233.1141732283465,
+              "height": 25.599999999999994
+            },
+            "normalized": {
+              "x": 0.09579365079365078,
+              "y": 0.13866687345094458,
+              "width": 0.3916071428571429,
+              "height": 0.030407781518892615
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-267",
+      "role": "item-label",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q007-i03",
+      "fragments": [
+        {
+          "page": 4,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 698.8567913385828,
+              "y": 215.38962844488188,
+              "width": 14.8125,
+              "height": 21.333333333333343
+            },
+            "pdfPt": {
+              "x": 524.1425935039371,
+              "y": 161.54222133366142,
+              "width": 11.109375,
+              "height": 16.000000000000007
+            },
+            "normalized": {
+              "x": 0.8805040922619047,
+              "y": 0.19188049110900668,
+              "width": 0.018662574404761902,
+              "height": 0.019004863449307897
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-269",
+      "role": "writing-space",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q007-i03",
+      "fragments": [
+        {
+          "page": 4,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 402.85039370078744,
+              "y": 246.3229617782152,
+              "width": 310.8188976377953,
+              "height": 34.133333333333326
+            },
+            "pdfPt": {
+              "x": 302.1377952755906,
+              "y": 184.7422213336614,
+              "width": 233.1141732283465,
+              "height": 25.599999999999994
+            },
+            "normalized": {
+              "x": 0.5075595238095238,
+              "y": 0.2194375431105031,
+              "width": 0.3916071428571429,
+              "height": 0.030407781518892615
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-272",
+      "role": "item-label",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q007-i04",
+      "fragments": [
+        {
+          "page": 4,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 370.85039370078744,
+              "y": 215.38962844488188,
+              "width": 16.0,
+              "height": 21.333333333333343
+            },
+            "pdfPt": {
+              "x": 278.1377952755906,
+              "y": 161.54222133366142,
+              "width": 12.0,
+              "height": 16.000000000000007
+            },
+            "normalized": {
+              "x": 0.4672420634920635,
+              "y": 0.19188049110900668,
+              "width": 0.020158730158730157,
+              "height": 0.019004863449307897
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-274",
+      "role": "writing-space",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q007-i04",
+      "fragments": [
+        {
+          "page": 4,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 76.03149606299212,
+              "y": 246.3229617782152,
+              "width": 310.8188976377953,
+              "height": 34.133333333333326
+            },
+            "pdfPt": {
+              "x": 57.02362204724409,
+              "y": 184.7422213336614,
+              "width": 233.1141732283465,
+              "height": 25.599999999999994
+            },
+            "normalized": {
+              "x": 0.09579365079365078,
+              "y": 0.2194375431105031,
+              "width": 0.3916071428571429,
+              "height": 0.030407781518892615
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-278",
+      "role": "item-label",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q007-i05",
+      "fragments": [
+        {
+          "page": 4,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 693.3255413385828,
+              "y": 306.0562951115486,
+              "width": 20.34375,
+              "height": 21.333333333333314
+            },
+            "pdfPt": {
+              "x": 519.9941560039371,
+              "y": 229.54222133366144,
+              "width": 15.2578125,
+              "height": 15.999999999999986
+            },
+            "normalized": {
+              "x": 0.87353515625,
+              "y": 0.2726511607685652,
+              "width": 0.025631510416666666,
+              "height": 0.019004863449307872
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-280",
+      "role": "writing-space",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q007-i05",
+      "fragments": [
+        {
+          "page": 4,
+          "boxType": "BlockBox",
+          "htmlTag": "div",
+          "bounds": {
+            "cssPx": {
+              "x": 402.85039370078744,
+              "y": 336.9896284448819,
+              "width": 310.8188976377953,
+              "height": 34.133333333333326
+            },
+            "pdfPt": {
+              "x": 302.1377952755906,
+              "y": 252.7422213336614,
+              "width": 233.1141732283465,
+              "height": 25.599999999999994
+            },
+            "normalized": {
+              "x": 0.5075595238095238,
+              "y": 0.3002082127700616,
+              "width": 0.3916071428571429,
+              "height": 0.030407781518892615
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-284",
+      "role": "question-prompt",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q008",
+      "fragments": [
+        {
+          "page": 4,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 155.47397883858275,
+              "y": 409.5068159448819,
+              "width": 498.7578125,
+              "height": 21.333333333333314
+            },
+            "pdfPt": {
+              "x": 116.60548412893706,
+              "y": 307.1301119586614,
+              "width": 374.068359375,
+              "height": 15.999999999999986
+            },
+            "normalized": {
+              "x": 0.19588487413194453,
+              "y": 0.36481036493406277,
+              "width": 0.6283952597966269,
+              "height": 0.019004863449307872
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-287",
+      "role": "item-label",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q008-i01",
+      "fragments": [
+        {
+          "page": 4,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 701.0442913385828,
+              "y": 456.70681594488195,
+              "width": 20.625,
+              "height": 21.333333333333314
+            },
+            "pdfPt": {
+              "x": 525.7832185039371,
+              "y": 342.53011195866145,
+              "width": 15.46875,
+              "height": 15.999999999999986
+            },
+            "normalized": {
+              "x": 0.8832601686507937,
+              "y": 0.4068586253156565,
+              "width": 0.025985863095238093,
+              "height": 0.019004863449307872
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-291",
+      "role": "item-label",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q008-i02",
+      "fragments": [
+        {
+          "page": 4,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 704.0345257135828,
+              "y": 503.90681594488206,
+              "width": 17.634765625,
+              "height": 21.33333333333337
+            },
+            "pdfPt": {
+              "x": 528.0258942851871,
+              "y": 377.93011195866154,
+              "width": 13.22607421875,
+              "height": 16.00000000000003
+            },
+            "normalized": {
+              "x": 0.8870276266431052,
+              "y": 0.4489068856972503,
+              "width": 0.022218405102926584,
+              "height": 0.01900486344930792
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-295",
+      "role": "item-label",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q008-i03",
+      "fragments": [
+        {
+          "page": 4,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 706.8567913385828,
+              "y": 551.106815944882,
+              "width": 14.8125,
+              "height": 21.33333333333337
+            },
+            "pdfPt": {
+              "x": 530.1425935039371,
+              "y": 413.3301119586615,
+              "width": 11.109375,
+              "height": 16.00000000000003
+            },
+            "normalized": {
+              "x": 0.8905834573412699,
+              "y": 0.49095514607884394,
+              "width": 0.018662574404761902,
+              "height": 0.01900486344930792
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-299",
+      "role": "item-label",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q008-i04",
+      "fragments": [
+        {
+          "page": 4,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 705.6692913385828,
+              "y": 598.3068159448819,
+              "width": 16.0,
+              "height": 21.33333333333337
+            },
+            "pdfPt": {
+              "x": 529.2519685039371,
+              "y": 448.73011195866144,
+              "width": 12.0,
+              "height": 16.00000000000003
+            },
+            "normalized": {
+              "x": 0.8890873015873016,
+              "y": 0.5330034064604375,
+              "width": 0.020158730158730157,
+              "height": 0.01900486344930792
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    },
+    {
+      "id": "dom-303",
+      "role": "item-label",
+      "figureId": null,
+      "ownerId": "elm-20261107-g1-s05-B-q008-i05",
+      "fragments": [
+        {
+          "page": 4,
+          "boxType": "InlineBox",
+          "htmlTag": "span",
+          "bounds": {
+            "cssPx": {
+              "x": 701.3255413385828,
+              "y": 645.5068159448819,
+              "width": 20.34375,
+              "height": 21.33333333333337
+            },
+            "pdfPt": {
+              "x": 525.9941560039371,
+              "y": 484.13011195866136,
+              "width": 15.2578125,
+              "height": 16.00000000000003
+            },
+            "normalized": {
+              "x": 0.8836145213293651,
+              "y": 0.5750516668420312,
+              "width": 0.025631510416666666,
+              "height": 0.01900486344930792
+            }
+          },
+          "fragment": 1
+        }
+      ]
+    }
+  ],
+  "questionPages": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "answerPages": [
+    5
+  ],
+  "answerStartPage": 5,
+  "coverage": {
+    "expectedElements": 96,
+    "measuredElements": 96,
+    "missingIds": [],
+    "multiPageIds": []
+  },
+  "requiresReview": [
+    "crop boundaries and printing",
+    "semantic source/HTML correspondence",
+    "math and pedagogy",
+    "all final PDF pages"
+  ]
+}

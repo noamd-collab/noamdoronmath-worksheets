@@ -26,6 +26,8 @@ const crypto = require('node:crypto');
 
 const { loadIndexCatalog, buildCatalog, validateCatalog, stableStringify, resolvedNoamPrefix } = require('../scripts/lib/headless-catalog.cjs');
 
+const { mergeWorksheetEditions } = require('../scripts/lib/worksheet-editions.cjs');
+
 const SEVERITIES = ['error', 'warning', 'review', 'info'];
 const PDF_ID = /^[0-9a-f]{32}$/;
 const LEVEL_ORDER = { a: 0, b: 1, c: 2, c2: 3, one: 4 };
@@ -33,6 +35,7 @@ const HEB_GRADE = { 1: 'א', 2: 'ב', 3: 'ג', 4: 'ד', 5: 'ה', 6: 'ו', 7: 'ז
 
 const P = {
   index: 'index.html',
+  editions: 'headless/catalog/worksheet-editions.v1.json',
   legacyIndex: 'headless/astro-poc/public/legacy-github/index.html',
   export: 'headless/catalog/catalog.v1.json',
   snapshot: 'headless/astro-poc/src/data/catalog.v1.json',
@@ -361,8 +364,8 @@ function checkTitles(au, topicsByGrade) {
 }
 
 /** Generated copies must equal what their generators would write from index.html today. */
-function checkGenerated(au, raw, rawLegacy) {
-  const built = buildCatalog(raw);
+function checkGenerated(au, raw, rawLegacy, registry) {
+  const built = mergeWorksheetEditions(buildCatalog(raw), registry);
   const v = validateCatalog(built, raw);
   for (const e of v.errors) au.find('error', 'EXPORT_VALIDATION', { source: P.index, evidence: 'scripts/lib/headless-catalog.cjs validateCatalog' }, e);
   for (const w of v.warnings) au.find('warning', 'EXPORT_VALIDATION', { source: P.index, evidence: 'scripts/lib/headless-catalog.cjs validateCatalog' }, w);
@@ -406,7 +409,7 @@ function checkGenerated(au, raw, rawLegacy) {
   }
 
   // learning catalog (built by scripts/build-learning-catalog.cjs)
-  const { items, learningText, seedText } = learningOutputs(raw);
+  const { items, learningText, seedText } = learningOutputs(raw, registry);
   for (const rel of [P.learning, P.learningPublic]) {
     const text = readText(au.root, rel);
     if (text != null && text !== learningText) au.find('error', 'LEARNING_CATALOG_STALE', { source: rel, evidence: describeLearningDiff(text, items) }, `${rel} is not what build-learning-catalog.cjs writes from index.html`);
@@ -417,7 +420,7 @@ function checkGenerated(au, raw, rawLegacy) {
 }
 
 /** What scripts/build-learning-catalog.cjs writes for this index.html (same algorithm, in memory). */
-function learningOutputs(raw) {
+function learningOutputs(raw, registry) {
   const items = [];
   for (const [g, data] of Object.entries(raw.DATA)) {
     for (const t of data.topics) {
@@ -438,6 +441,23 @@ function learningOutputs(raw) {
           x: t.x || (raw.NOAM_PREFIX_FALLBACK[g] || {})[t.id] || '',
         });
       }
+    }
+  }
+  // Reconstruct edition rows too, while keeping the audit able to inspect
+  // deliberately invalid legacy DATA (checkIndexData reports duplicate IDs).
+  // Do not call the writer, which rejects such fixtures before the audit can
+  // name the actual defect. Registry identity validation remains strict.
+  const catalog = mergeWorksheetEditions(buildCatalog(raw), registry);
+  for (const grade of catalog.grades) for (const topic of grade.topics) {
+    for (const edition of topic.editions || []) for (const level of edition.levels) {
+      if (!edition.routing.usesViewer) continue;
+      items.push({
+        id: level.learningId, g: grade.grade, t: topic.id, parent: topic.parent || topic.id,
+        title: topic.title, l: level.key, label: level.label + ' — ' + edition.label,
+        pdf: level.pdfId, viewerLevel: level.key, x: edition.routing.resolvedNoamPrefix,
+        editionId: edition.editionId, editionLabel: edition.label,
+        siblingPdfQuery: edition.routing.siblingPdfQuery,
+      });
     }
   }
   const learningText = '/* Generated from index.html; do not edit by hand. */\nwindow.NOAM_LEARNING_CATALOG=' + JSON.stringify(items) + ';\n';
@@ -492,6 +512,14 @@ function checkMiddleFixture(au, raw) {
   au.coverage.approvedMiddleLevels = n;
 }
 
+/**
+ * Middle-school topics Noam approved to publish as plain PDFs before their
+ * Noam AI manifests exist. Their missing manifests are listed for review, not
+ * as errors. Noam, 2026-11-09: grade 8 topic 67 (statistics: collecting and
+ * reading data, frequency), no Noam prefix, no Ramzi help or teacher picker yet.
+ */
+const MANIFEST_PENDING = new Set(['8:67']);
+
 /** Viewer manifests (derived from each PDF by the Noam AI pipeline): grade/topic/level must agree. */
 function checkManifests(au, raw, pdfOwners) {
   const names = listJson(au.root, P.manifests);
@@ -515,6 +543,10 @@ function checkManifests(au, raw, pdfOwners) {
       if (!middle.has(o.grade)) continue; // elementary sheets open as plain PDFs; no viewer manifest
       const m = manifests.get(id);
       const src = `${P.manifests}/${id}.json`;
+      if (!m && MANIFEST_PENDING.has(`${o.grade}:${o.topicId}`)) {
+        au.find('review', 'MANIFEST_PENDING', { grade: o.grade, topicId: o.topicId, level: o.level, pdfId: id, subject: o.title, source: src }, 'middle-school PDF published as a plain PDF; viewer manifest pending (approved exception)');
+        continue;
+      }
       if (!m) {
         au.find('error', 'MANIFEST_MISSING', { grade: o.grade, topicId: o.topicId, level: o.level, pdfId: id, subject: o.title, source: src }, 'middle-school PDF has no viewer manifest (Noam AI help cannot open it)');
         continue;
@@ -839,6 +871,15 @@ async function runAudit(options = {}) {
   for (const k of ['legacyIndex', 'export', 'snapshot', 'snapshotSha', 'learning', 'learningPublic', 'seed', 'middleFixture', 'manifests', 'manifestsPublic', 'topicPages', 'blogPosts', 'gradeHubs']) au.input(P[k], false);
 
   const raw = loadIndexCatalog(path.join(au.root, P.index));
+  if (!au.input(P.editions, true)) return finish(au);
+  let registry;
+  try {
+    registry = readJson(au.root, P.editions);
+    mergeWorksheetEditions(buildCatalog(raw), registry);
+  } catch (error) {
+    au.find('error', 'EDITIONS_INVALID', { source: P.editions }, String(error.message));
+    return finish(au);
+  }
   let rawLegacy = null;
   if (fs.existsSync(path.join(au.root, P.legacyIndex))) {
     try {
@@ -849,7 +890,7 @@ async function runAudit(options = {}) {
   }
   const { topicsByGrade, pdfOwners } = checkIndexData(au, raw);
   checkTitles(au, topicsByGrade);
-  checkGenerated(au, raw, rawLegacy);
+  checkGenerated(au, raw, rawLegacy, registry);
   checkMiddleFixture(au, raw);
   checkManifests(au, raw, pdfOwners);
   checkPages(au, raw, topicsByGrade);

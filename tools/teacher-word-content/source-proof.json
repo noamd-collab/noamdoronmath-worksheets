@@ -2826,5 +2826,110 @@
     "finalAnswersSha256": "7f92be0f4eefba5df970e54aa46da989b07a479f5d31586dd6737f3e77338fc1",
     "answerPDFSha256": "d7c918c2f83dc44ca755a12f54de7d9f9cbbbb11d3d865c91c0edca6ed298480",
     "sourceQuestionSHA256": "36a4bca9ff29aa923bce785ff4869a9cd6408737bb9b0dc680b1b457181adf9e"
+  },
+  {
+    "pdfId": "3d7563584d774bf5958dc6a37ef7e210",
+    "canonicalSourceSha256": "8acf4dad1c99e84040e0ffa8425dbb9da0432df1c4bc2aff84c0046d62ce9377",
+    "answerPDFSha256": "465f369f94f96bb086ee8a65be928f5d0397f9320ab8fbfa2da95999685002e3",
+    "sourceQuestionSHA256": "906b97630b2be8113cf78c0d4e77d25e0bb66bfed4fe32c14b71e5755c6d0a98",
+    "basis": "Generated from reviewed canonical source and the byte-verified complete worksheet PDF, with answers appended."
+  },
+  {
+    "pdfId": "564222bbdc3647a4bc21798f16ff02ac",
+    "canonicalSourceSha256": "b37fcf9c65a58da388ffc67161c238032dab2ccba5f6465045229a18b6cdbb0f",
+    "answerPDFSha256": "d27d4edc45cff1236e78bae852fc93a8514768453be692216e39ac7d60b1bd2e",
+    "sourceQuestionSHA256": "cee46575e214771d36d5109e352916be7c10be0e5fae84f290f4d7f37d9bdf2e",
+    "basis": "Generated from reviewed canonical source and the byte-verified complete worksheet PDF, with answers appended."
+  },
+  {
+    "pdfId": "66b5182b8be74070b1b22b9d393b9b1c",
+    "canonicalSourceSha256": "1d48ff6376dd4b69183d60ddc53c9eafaab70c493cb8816487d191589d9ec671",
+    "answerPDFSha256": "12569b36605cffc24ccfc8d4d72fd28f5072eebe385d07cc9f4d42b381d8df89",
+    "sourceQuestionSHA256": "6337b2c05656bf38688c2a1ba6fe72aacaae94909f09a1116eaef8674e927458",
+    "basis": "Generated from reviewed canonical source and the byte-verified complete worksheet PDF, with answers appended."
+  },
+  {
+    "pdfId": "16ca1c287f1744c996b0bad5151e7865",
+    "canonicalSourceSha256": "a914f8509e4c5bcd56d8dbf666a9991c607fd5bfd0c7095544e428de4fdd7021",
+    "answerPDFSha256": "bf8e50c3a7f4f5d9738e52eca80fecd36a8ff6bdf9cc41a6a0402cd1482365f8",
+    "sourceQuestionSHA256": "b458b0801aa19cf465cfddfa49cd5ff2a8eeb813e5344baa33a86945db26ddf6",
+    "basis": "Reviewed canonical source, byte-verified remote complete PDF, and selected-question teacher Word/PDF review. Proposed release; publication requires separate PR approval."
+  },
+  {
+    "pdfId": "cb81533917ab49d88b6e14c6bc68d0a1",
+    "canonicalSourceSha256": "61b3fe2508ef04e0e1712d3bb18cb179628a36e785c97613cf4b920bbf95a117",
+    "answerPDFSha256": "f1488a871aab2c4a97892f2e08da6340b29b98a1065103a80ce75d5e683ab995",
+    "sourceQuestionSHA256": "5ac3f25f21ec10877a6bed86a5c7277615c0dd13e3d1e260140c9989db949653",
+    "basis": "Reviewed canonical source, byte-verified remote complete PDF, and selected-question teacher Word/PDF review. Proposed release; publication requires separate PR approval."
+  },
+  {
+    "pdfId": "34814b941b9340df94756a092cfed368",
+    "canonicalSourceSha256": "c3da9823d433701efd35509fe34a2349fbfb6d4fe6972f18fd0684a67de777f7",
+    "answerPDFSha256": "264cd122086bf226449ab64c058e9af1a8d21980debee0efcedf90660604cc3d",
+    "sourceQuestionSHA256": "8357d0055fdac840e571a2ecc8087026142b302b08c1c493be88f6b92acb37ab",
+    "basis": "Reviewed canonical source, byte-verified remote complete PDF, and selected-question teacher Word/PDF review. Proposed release; publication requires separate PR approval."
+  },
+  {
+    "pdfId": "9c3e2de09eb14a69834b11472d89a37d",
+    "canonicalSourceSha256": "dfe61e54b402e9af235b68721334b797aafd59a503eafd39d7d31457a509212d",
+    "answerPDFSha256": "a98bc90bcf79e93e7ff62bacf1077f3a1777d8b1b5d764b4837f7a23d95241a3",
+    "sourceQuestionSHA256": "edb870751a83553f0ecd7142f300e984339b6066b2a606d917439dfb9d741986",
+    "basis": "Reviewed canonical source, byte-verified remote complete PDF, and selected-question teacher Word/PDF review. Proposed release; publication requires separate PR approval."
+  },
+  {
+    "pdfId": "9a279a181d1d4d148d93df41e46f1984",
+    "canonicalSourceSha256": "9ecf1cdb1f6823fe3398440bcd874d829249e581634f1cfd1e591688ed8f959c",
+    "answerPDFSha256": "cec66e5f0f05a9f8bda6618d96759d2b050fe23a96cc8600c05d0656e5f1fe95",
+    "sourceQuestionSHA256": "f5219001da3de6a16edb8d1f9687c0a62c8ed8b2effa729b932aa310a07cd052",
+    "basis": "Reviewed canonical source, byte-verified remote complete PDF, and selected-question teacher Word/PDF review. Proposed release; publication requires separate PR approval."
+  },
+  {
+    "pdfId": "1cc8c56846c24a9cabd3f9868739410b",
+    "canonicalSourceSha256": "5cd6d903dd375356ebf1739b141923679739184de63d6011be6dd17601e41b70",
+    "answerPDFSha256": "aad9828bb8381f2e807b9f90847ea1bc655c755a54d0e7d8c18e9d367fd8251d",
+    "sourceQuestionSHA256": "db47c36944e70af5e7a6d335f61773fe150fad0ca5d7e43c6ac8896add1322e3",
+    "basis": "Reviewed canonical source, byte-verified remote complete PDF, and selected-question teacher Word/PDF review. Proposed release; publication requires separate PR approval."
+  },
+  {
+    "pdfId": "301d25fcfea24443b10c3523018325ee",
+    "canonicalSourceSha256": "f34a9724c1e063e3721c6e5ed319995f54a81edef9af40cb7d0e94fce644851d",
+    "answerPDFSha256": "ae12882001bcd236cd7e92450dce29a98df4d4f89a71da5eaa830b4313e7afa3",
+    "sourceQuestionSHA256": "0c1cfafc14f1617895d058ccc76a0221cb900edf70f8023a5fc4a90eb8e050aa",
+    "basis": "Reviewed canonical source, byte-verified remote complete PDF, and selected-question teacher Word/PDF review. Proposed release; publication requires separate PR approval."
+  },
+  {
+    "pdfId": "5fe0ad34a16546f98e1f511a2b2afcd0",
+    "canonicalSourceSha256": "0c52d1f36314199ec520bc0d4d30a546760e31113a2e6cfb4b6405ad1e105666",
+    "answerPDFSha256": "36545762f47fa85866d2db29f82186f63e02903a8f915a7922a61e6c90afb086",
+    "sourceQuestionSHA256": "378a5fc2d3c10a8bfa04b1ab6f88a4359a892da9eadef567d121f7f305d0489b",
+    "basis": "Reviewed canonical source, byte-verified remote complete PDF, and selected-question teacher Word/PDF review. Proposed release; publication requires separate PR approval."
+  },
+  {
+    "pdfId": "8a546481dedc494c885a51438ae35a9e",
+    "canonicalSourceSha256": "d2e2d3805202537c8d70b0086d8b5b9baa98f561653391a3acaa232cc5f2d80c",
+    "answerPDFSha256": "fe34d09f7019d06a581034107a1ad62c930e9dec698ee3cbbfa02032cf8473d0",
+    "sourceQuestionSHA256": "a9e0ac747abc7a64875970640a7914adc16533c89f0780e0a4de53571ac83a8f",
+    "basis": "Reviewed canonical source, byte-verified remote complete PDF, and selected-question teacher Word/PDF review. Proposed release; publication requires separate PR approval."
+  },
+  {
+    "pdfId": "da7f75d49ec04350b839383439b2461e",
+    "canonicalSourceSha256": "f89edaf72f8f02460f9b1f5729c483f2906fcf78942374cda5a643f68c6b2001",
+    "answerPDFSha256": "7e6eac1c6c05c4f4d589aef38fdd2673d877827168f8bebd145eeb0723ea8d49",
+    "sourceQuestionSHA256": "bd17a5bb23b3c5cd925733ce00cb9d5bfe84ebbff60c74c7a4aa771a8945497e",
+    "basis": "Reviewed canonical source, byte-verified remote complete PDF, and selected-question teacher Word/PDF review. Proposed release; publication requires separate PR approval."
+  },
+  {
+    "pdfId": "6920ccbcca894f70a973d483b5a1d916",
+    "canonicalSourceSha256": "6d6ed74947bfd29772999fb5aa44e143e5256cbcd097e6db86c633fd87efc77e",
+    "answerPDFSha256": "1caec28dbacf63945ea9e24987cac006a6388efa2875f92a5ce76c42837b23ae",
+    "sourceQuestionSHA256": "0ba0704913bf99a145c7643f8177d2ede5f683050da786fc58282d70f3746a3b",
+    "basis": "Reviewed canonical source, byte-verified remote complete PDF, and selected-question teacher Word/PDF review. Proposed release; publication requires separate PR approval."
+  },
+  {
+    "pdfId": "2140bfbfd1bf4e4e9e01c8965963bc31",
+    "canonicalSourceSha256": "d0c5bda1ced84d29616ad45dc352129ee35506c971454377da9a5e7f42ce2720",
+    "answerPDFSha256": "b61e08f4af0afbb3fe9d978976f6bc3b0108454ce86c79156a56c8dc35634033",
+    "sourceQuestionSHA256": "3d64ddf91ba07bf9d6b9978e1a15daf815f0a0a12e46413e8405f2ab5e240ed6",
+    "basis": "Reviewed canonical source, byte-verified remote complete PDF, and selected-question teacher Word/PDF review. Proposed release; publication requires separate PR approval."
   }
 ]

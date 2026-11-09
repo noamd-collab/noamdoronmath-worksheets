@@ -269,6 +269,7 @@ import divideDecimalsGrade6 from '../data/topic-pages/divide-decimals-grade-6.js
 import capacityMlLM3Grade6 from '../data/topic-pages/capacity-ml-l-m3-grade-6.json';
 import ratioGrade6 from '../data/topic-pages/ratio-grade-6.json';
 import scaleMapsGrade6 from '../data/topic-pages/scale-maps-grade-6.json';
+import statisticsDataFrequencyGrade8 from '../data/topic-pages/statistics-data-frequency-grade-8.json';
 import { isolateMathRuns } from './mathDirection';
 import { familyRelatedTopics, type FamilyRelatedTopic } from './topicFamilies';
 
@@ -420,6 +421,13 @@ export const TOPIC_PAGE_M30_UNMIGRATED = [] as const;
 
 /** Grade-9 kite (G9-T46). Not a production capture; authored with the kite loop. */
 export const TOPIC_PAGE_KITE_SLUGS = ['kite-grade-9'] as const;
+
+/**
+ * Grade-8 topic pages authored from Noam's PDFs (no production capture yet),
+ * so the parity gate skips them. G8 catalog topic 67: data collection,
+ * reading data, frequency and relative frequency.
+ */
+export const TOPIC_PAGE_G8_AUTHORED_SLUGS = ['statistics-data-frequency-grade-8'] as const;
 
 /**
  * Elementary topic pages (grades 1–6). Authored from catalog data + the real
@@ -623,6 +631,7 @@ export const TOPIC_PAGE_G2_SLUGS = [
 
 /** Slugs with no production source; the parity fixture gate must skip them. */
 export const TOPIC_PAGE_AUTHORED_SLUGS = [
+  ...TOPIC_PAGE_G8_AUTHORED_SLUGS,
   ...TOPIC_PAGE_G1_SLUGS,
   ...TOPIC_PAGE_G2_SLUGS,
   ...TOPIC_PAGE_G3_SLUGS,
@@ -640,6 +649,7 @@ export const TOPIC_PAGE_SLUGS = [
   ...TOPIC_PAGE_M23_SLUGS,
   ...TOPIC_PAGE_M30_SLUGS,
   ...TOPIC_PAGE_KITE_SLUGS,
+  ...TOPIC_PAGE_G8_AUTHORED_SLUGS,
   ...TOPIC_PAGE_G1_SLUGS,
   ...TOPIC_PAGE_G2_SLUGS,
   ...TOPIC_PAGE_G3_SLUGS,
@@ -858,6 +868,7 @@ const BY_SLUG: Record<string, TopicPageContent> = {
   'special-triangles-grade-7-new': specialTrianglesGrade7New as TopicPageContent,
   'patterns-and-graphs-grade-7': patternsAndGraphsGrade7 as TopicPageContent,
   'kite-grade-9': kiteGrade9 as TopicPageContent,
+  'statistics-data-frequency-grade-8': statisticsDataFrequencyGrade8 as TopicPageContent,
   // Elementary authored pages (G1, catalog order)
   'counting-grade-1': countingGrade1 as TopicPageContent,
   'numbers-to-100-grade-1': numbersTo100Grade1 as TopicPageContent,
