@@ -188,7 +188,7 @@ test('every mapped source label in the active catalog can survive model selectio
 
 test('every actual grade/topic/level preserves model choices for 5, 10 and 15 whole questions', (t) => {
   const index = JSON.parse(readFileSync(new URL('../src/data/teacher-pick-index.json', import.meta.url), 'utf8'));
-  assert.equal(index.filter((row: any) => !row.editionId).length, 964);
+  assert.equal(index.filter((row: any) => !row.editionId).length, 967); // +3 sheets: grade 8 topic 67 (Noam, 2026-11-09)
   assert.ok(index.every((row: any) => row.mode === 'exercise' && row.questions.length));
   const scopes = new Map<string, any[]>();
   for (const row of index) {

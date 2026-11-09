@@ -62,8 +62,9 @@ const protectedFiles: Record<string, string> = {
   // Noam's explicit 8 November publication scope disables the elementary
   // edition viewer; all old fields and PDFs remain covered by edition tests.
   // Noam, 2026-11-09: new grade 8 topic 67 (statistics: collecting and reading data,
-  // frequency and relative frequency), three levels opening their PDFs directly.
-  'src/data/catalog.v1.json': 'ffde25f566598f683a4e76dabfde2abf571a2ccdd1126ce1cfe8231c165b4b70',
+  // frequency and relative frequency), three levels; Noam prefix G8-T67 once its
+  // whole-question manifests were mapped, so the levels open in the viewer.
+  'src/data/catalog.v1.json': '5c41c0f0948ebb64f8688b1ece02979eeff699febd171c9a3ea5fd7c06bedfd7',
   // 2026-11-07: Noam's elementary worksheet renewal adds published editions
   // alongside every legacy PDF. worksheet-editions.test.ts verifies the empty
   // registry leaves the full snapshot and all 507 elementary links unchanged,
