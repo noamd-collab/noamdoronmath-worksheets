@@ -11,10 +11,14 @@ import { existsSync, mkdirSync, readFileSync, rmSync, statSync, writeFileSync } 
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { measuredSheetFromManifest } from './lib/measured-worksheet.mjs';
+import { mergeWorksheetEditions } from '../../../scripts/lib/worksheet-editions.cjs';
+import { createHash } from 'node:crypto';
 
 const scriptDir = dirname(fileURLToPath(import.meta.url));
 const repoRoot = join(scriptDir, '../../..');
 const catalogPath = join(scriptDir, '../src/data/catalog.v1.json');
+const editionsPath = join(repoRoot, 'headless/catalog/worksheet-editions.v1.json');
 const manifestDir = join(repoRoot, 'noam-ai/manifests');
 const richPath = join(repoRoot, 'demos/factoring-grade-9-a-source.json');
 const outDir = join(scriptDir, '../public/teachers');
@@ -278,7 +282,9 @@ function wholeQuestionSheet(meta, manifest) {
   };
 }
 
-export function sheetFromManifest(meta, manifest, gaps) {
+export function sheetFromManifest(meta, manifest, gaps, options) {
+  if (manifest.geometryContract === 'measured-v1') return measuredSheetFromManifest(meta, manifest, options);
+  if (manifest.geometryContract !== undefined) throw new Error('Unsupported worksheet geometry contract');
   if (manifest.wholeQuestionGeometry) return wholeQuestionSheet(meta, manifest);
   const exercises = manifest.exercises || [];
   const first = exercises[0];
@@ -363,7 +369,8 @@ export function sheetFromManifest(meta, manifest, gaps) {
   };
 }
 
-export function buildTeacherCatalog(catalog) {
+export function buildTeacherCatalog(catalog, registry) {
+  if (registry) catalog = mergeWorksheetEditions(catalog, registry);
   const elementary = new Set(catalog.config.elementaryGrades);
   const grades = catalog.grades.map((grade) => ({
     grade: grade.grade,
@@ -372,7 +379,7 @@ export function buildTeacherCatalog(catalog) {
     topics: grade.topics.map((topic) => ({
       id: topic.id,
       title: topic.title,
-      sheets: topic.levels.map((level) => ({
+      sheets: [...topic.levels.map((level) => ({
         pdfId: level.pdfId,
         pdfUrl: pdfUrl(level.pdfId),
         level: level.key,
@@ -380,7 +387,15 @@ export function buildTeacherCatalog(catalog) {
         title: `${topic.title} · ${level.label}`,
         mode: 'exercise',
         ...(topic.routing?.sourceGrade ? { sourceGrade: topic.routing.sourceGrade, sourcePrefix: topic.routing.sourcePrefix, sourceTitle: topic.routing.sourceTitle } : {}),
-      })),
+      })), ...(topic.editions || []).filter((edition) => edition.status === 'published').flatMap((edition) =>
+        edition.levels.map((level) => ({
+          pdfId: level.pdfId, pdfUrl: pdfUrl(level.pdfId), level: level.key, levelLabel: level.label,
+          title: `${topic.title} · ${level.label} · ${edition.label}`, mode: 'exercise',
+          editionId: edition.editionId, editionLabel: edition.label, learningId: level.learningId,
+          prefix: edition.routing.resolvedNoamPrefix, levelCode: level.viewerLevel,
+          expectedSha256: level.pdfSha256, canonicalSourceSha256: level.canonicalSourceSha256,
+          manifestSha256: level.manifestSha256,
+        })))],
     })),
   }));
   return { pdfBase: PDF_BASE, grades };
@@ -494,7 +509,7 @@ export function mergeElementaryCatalog(builtIndex, previous) {
 async function writeOutputs({ elementaryOnly = false } = {}) {
   const catalog = JSON.parse(readFileSync(catalogPath, 'utf8'));
   const rich = JSON.parse(readFileSync(richPath, 'utf8'));
-  const builtIndex = buildTeacherCatalog(catalog);
+  const builtIndex = buildTeacherCatalog(catalog, JSON.parse(readFileSync(editionsPath, 'utf8')));
   // An elementary-only refresh must retain the published middle-school
   // catalog as well as its sheets: the authoring catalog can contain newer
   // middle-school PDF revisions that have not been mapped/published yet.
@@ -510,8 +525,13 @@ async function writeOutputs({ elementaryOnly = false } = {}) {
   for (const sheet of catalogSheets(index)) {
     if (sheet.mode !== 'exercise' || (elementaryOnly && sheet.band !== 'elementary')) continue;
     exerciseSheets += 1;
-    const manifest = JSON.parse(readFileSync(join(manifestDir, sheet.pdfId + '.json'), 'utf8'));
-    if (manifest.wholeQuestionGeometry) {
+    const manifestBytes = readFileSync(join(manifestDir, sheet.pdfId + '.json'));
+    if (sheet.editionId && createHash('sha256').update(manifestBytes).digest('hex') !== sheet.manifestSha256) {
+      throw new Error('TEACHER_EDITION_MANIFEST_SHA:' + sheet.pdfId);
+    }
+    const manifest = JSON.parse(manifestBytes);
+    if (sheet.editionId && manifest.geometryContract !== 'measured-v1') throw new Error('TEACHER_EDITION_REQUIRES_MEASURED');
+    if (manifest.geometryContract === 'measured-v1' || manifest.wholeQuestionGeometry) {
       const source = sheetFromManifest(sheet, manifest);
       writeFileSync(join(sheetDir, sheet.pdfId + '.json'), JSON.stringify(source));
       questions += source.questions.length;

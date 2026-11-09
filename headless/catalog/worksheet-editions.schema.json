@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Additive elementary worksheet editions",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "editions"],
+  "properties": {
+    "version": { "const": 1 },
+    "editions": { "type": "array", "items": { "$ref": "#/$defs/edition" } }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "identity": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,63}$(?![\\s\\S])" },
+    "edition": {
+      "type": "object", "additionalProperties": false,
+      "required": ["grade", "topicId", "editionId", "label", "status", "isDefault", "levels"],
+      "properties": {
+        "grade": { "type": "integer", "minimum": 1, "maximum": 6 },
+        "topicId": { "type": "integer", "minimum": 1 },
+        "editionId": { "$ref": "#/$defs/identity", "not": { "const": "legacy" } },
+        "label": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "status": { "enum": ["draft", "reviewed", "published"] },
+        "isDefault": { "type": "boolean" },
+        "levels": { "type": "array", "minItems": 3, "maxItems": 3, "items": { "$ref": "#/$defs/level" } }
+      }
+    },
+    "level": {
+      "type": "object", "additionalProperties": false,
+      "required": ["key", "viewerLevel", "pdfId", "pdfSha256", "worksheetId", "revision", "canonicalSourceSha256", "manifestSha256", "answerMapSha256", "wordSourceSha256", "hintsBundleSha256"],
+      "properties": {
+        "key": { "enum": ["a", "b", "c"] },
+        "viewerLevel": { "enum": ["A", "B", "E"] },
+        "pdfId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
+        "pdfSha256": { "$ref": "#/$defs/sha256" },
+        "worksheetId": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$" },
+        "revision": { "type": "integer", "minimum": 1 },
+        "canonicalSourceSha256": { "$ref": "#/$defs/sha256" },
+        "manifestSha256": { "$ref": "#/$defs/sha256" },
+        "answerMapSha256": { "$ref": "#/$defs/sha256" },
+        "wordSourceSha256": { "$ref": "#/$defs/sha256" },
+        "hintsBundleSha256": { "$ref": "#/$defs/sha256" }
+      }
+    }
+  }
+}

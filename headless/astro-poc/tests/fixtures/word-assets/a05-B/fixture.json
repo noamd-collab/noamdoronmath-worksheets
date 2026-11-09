@@ -1,0 +1,9 @@
+{
+  "testOnly": true,
+  "publishable": false,
+  "syntheticMediaId": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "boundMeasuredFixture": "a05-B",
+  "files": {
+    "draft.json": "e2ff22c6a2dac5e821e461fb2314c8c8044860d24b1697e30cc6b10b0ee6754e"
+  }
+}

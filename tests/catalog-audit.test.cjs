@@ -17,7 +17,8 @@ const zlib = require('node:zlib');
 const crypto = require('node:crypto');
 
 const audit = require('../tools/catalog-audit.cjs');
-const { exportCatalog, loadIndexCatalog } = require('../scripts/lib/headless-catalog.cjs');
+const { exportCatalog, loadIndexCatalog, assertDeterministic, OUT_JSON } = require('../scripts/lib/headless-catalog.cjs');
+const { buildLearningCatalog } = require('../scripts/build-learning-catalog.cjs');
 
 const P = audit.PATHS;
 const id = (n) => crypto.createHash('md5').update('pdf-' + n).digest('hex');
@@ -96,11 +97,12 @@ function write(root, rel, content) {
 }
 
 /** A consistent repository: index.html plus every generated copy, manifest and page. */
-function makeRepo(mutateData) {
+function makeRepo(mutateData, registry = { version: 1, editions: [] }) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'catalog-audit-'));
   const d = baseData();
   if (mutateData) mutateData(d);
   write(root, P.index, indexHtml(d));
+  write(root, P.editions, registry);
   regenerate(root);
   write(root, P.middleFixture, {
     grades: { 7: [{ id: 1, title: 'Linear Equations', prefix: 'G7-T01', links: { a: PDFS.g7t1a, b: PDFS.g7t1b, c: PDFS.g7t1c } }] },
@@ -134,7 +136,7 @@ function regenerate(root) {
   write(root, P.snapshot, text);
   write(root, P.snapshotSha, crypto.createHash('sha256').update(text).digest('hex') + '\n');
   write(root, P.legacyIndex, fs.readFileSync(path.join(root, P.index)));
-  const { learningText, seedText } = audit.learningOutputs(loadIndexCatalog(path.join(root, P.index)));
+  const { learningText, seedText } = audit.learningOutputs(loadIndexCatalog(path.join(root, P.index)), JSON.parse(fs.readFileSync(path.join(root, P.editions), 'utf8')));
   write(root, P.learning, learningText);
   write(root, P.learningPublic, learningText);
   write(root, P.seed, seedText);
@@ -549,4 +551,117 @@ test('outputs: report sections, JSON summary and CSV headers', async () => {
   assert.equal(json.summary.bySeverity.error, json.findings.filter((f) => f.severity === 'error').length);
   assert.match(fs.readFileSync(path.join(out, 'findings.csv'), 'utf8'), /^﻿severity,code,grade,topic_id,level,pdf_id,subject,message,source_file,evidence\n/);
   assert.match(fs.readFileSync(path.join(out, 'relations.csv'), 'utf8'), /^﻿relation,grade,topic_id,topic_title,level,pdf_id,target,source_file,evidence\n/);
+});
+
+// Registry isolation and generated editions: alternate repositories own all
+// their inputs; an invalid/missing registry must never borrow the live one.
+function fixtureEdition(status = 'published') {
+  const hash = (value) => crypto.createHash('sha256').update(value).digest('hex');
+  return {
+    grade: 1, topicId: 1, editionId: 'fixture-r1', label: 'New counting sheets',
+    status, isDefault: true,
+    levels: ['a', 'b', 'c'].map((key, i) => ({
+      key, viewerLevel: ['A', 'B', 'E'][i], pdfId: id('edition-' + key),
+      worksheetId: 'fixture-g1-t1-' + key, revision: 1,
+      ...Object.fromEntries(['pdfSha256', 'canonicalSourceSha256', 'manifestSha256',
+        'answerMapSha256', 'wordSourceSha256', 'hintsBundleSha256'].map(field => [field, hash(key + ':' + field)])),
+    })),
+  };
+}
+
+test('alternate export uses its local registry and default output, leaving live data unchanged', (t) => {
+  const root = makeRepo();
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  const liveBefore = fs.readFileSync(OUT_JSON);
+  const result = exportCatalog({ indexPath: path.join(root, P.index) });
+  assert.equal(result.outPath, path.join(root, P.export));
+  assert.equal(result.catalog.grades.length, 2);
+  assert.equal(result.catalog.grades[0].topics[0].editions, undefined);
+  assert.deepEqual(fs.readFileSync(OUT_JSON), liveBefore);
+  assert.equal(assertDeterministic(path.join(root, P.index)).text, result.text);
+});
+
+test('a missing local registry fails export and audit instead of borrowing the live registry', async (t) => {
+  const root = makeRepo();
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  fs.unlinkSync(path.join(root, P.editions));
+  assert.throws(() => exportCatalog({ indexPath: path.join(root, P.index), dryRun: true }),
+    error => error.code === 'ENOENT' && error.path === path.join(root, P.editions));
+  const result = await auditOf(root);
+  assert.ok(errors(result).some(f => f.code === 'INPUT_MISSING' && f.source === P.editions));
+});
+
+test('explicit registry/path overrides stay isolated and explicit invalid values are rejected', (t) => {
+  const root = makeRepo();
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  const registry = { version: 1, editions: [fixtureEdition()] };
+  write(root, 'custom-editions.json', registry);
+  const opts = { indexPath: path.join(root, P.index), dryRun: true };
+  const fromPath = exportCatalog({ ...opts, editionsPath: path.join(root, 'custom-editions.json') });
+  const inMemory = exportCatalog({ ...opts, editions: registry, editionsPath: 'must-not-be-read.json' });
+  assert.equal(fromPath.text, inMemory.text);
+  assert.equal(fromPath.catalog.grades[0].topics[0].editions[0].editionId, 'fixture-r1');
+  for (const editions of [null, false, 0, '']) {
+    assert.throws(() => exportCatalog({ ...opts, editions }), /registry must be an object/);
+  }
+});
+
+test('static editions are rebuilt while learning rows retain only deployed identities', async (t) => {
+  const root = makeRepo(null, { version: 1, editions: [fixtureEdition()] });
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  const result = await auditOf(root);
+  assert.deepEqual(errors(result), []);
+  assert.equal(result.coverage.learningItems, 7);
+  const generated = JSON.parse(fs.readFileSync(path.join(root, P.export), 'utf8'));
+  const topic = generated.grades[0].topics[0];
+  assert.deepEqual(topic.levels.map(level => level.pdfId), [PDFS.g1a, PDFS.g1b, PDFS.g1c]);
+  assert.deepEqual(topic.editions[0].levels.map(level => level.learningId),
+    ['a', 'b', 'c'].map(level => `g1-t1-${level}-e-fixture-r1`));
+  assert.ok(result.inputs.some(input => input.path === P.editions && /^[0-9a-f]{64}$/.test(input.sha256)));
+  // Compare the audit's independent reconstruction with the actual writer, not
+  // only with regenerate(), which also uses the audit helper for fixtures.
+  const raw = loadIndexCatalog(path.join(root, P.index));
+  const registry = JSON.parse(fs.readFileSync(path.join(root, P.editions), 'utf8'));
+  const writtenItems = buildLearningCatalog(raw, registry);
+  assert.deepEqual(audit.learningOutputs(raw, registry).items, writtenItems);
+  assert.equal(audit.learningOutputs(raw, registry).seedText,
+    'insert into public.noam_learning_worksheets (worksheet_id) values\n' +
+    writtenItems.map(item => "('" + item.id + "')").join(',\n') + '\non conflict do nothing;\n');
+});
+
+test('withdrawing a static edition exposes stale catalogs without changing learning copies or seed', async (t) => {
+  const root = makeRepo(null, { version: 1, editions: [fixtureEdition()] });
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  editJson(root, P.editions, registry => { registry.editions[0].status = 'reviewed'; });
+  const result = await auditOf(root);
+  assert.ok(codes(result, 'error').includes('EXPORT_STALE'));
+  assert.equal(errors(result).filter(f => f.code === 'LEARNING_CATALOG_STALE').length, 0);
+  assert.ok(!codes(result, 'error').includes('LEARNING_SEED_STALE'));
+  regenerate(root);
+  assert.deepEqual(errors(await auditOf(root)), []);
+  assert.equal(exportCatalog({ indexPath: path.join(root, P.index), dryRun: true }).catalog.grades[0].topics[0].editions, undefined);
+});
+
+for (const [name, mutate, expected] of [
+  ['unknown draft topic', row => { row.status = 'draft'; row.topicId = 999; }, /unknown elementary topic 1:999/],
+  ['reused legacy PDF', row => { row.levels[0].pdfId = PDFS.g1a; }, /media ID reused/],
+  ['malformed source hash', row => { row.levels[1].canonicalSourceSha256 = 'bad'; }, /invalid canonicalSourceSha256/],
+]) {
+  test(`local invalid registry still blocks export and audit: ${name}`, async (t) => {
+    const root = makeRepo();
+    t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+    const row = fixtureEdition(); mutate(row);
+    write(root, P.editions, { version: 1, editions: [row] });
+    assert.throws(() => exportCatalog({ indexPath: path.join(root, P.index), dryRun: true }), expected);
+    const result = await auditOf(root);
+    assert.ok(errors(result).some(f => f.code === 'EDITIONS_INVALID' && expected.test(f.message)));
+  });
+}
+
+test('malformed local registry JSON is an audit error, never an empty registry', async (t) => {
+  const root = makeRepo();
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  write(root, P.editions, '{ broken');
+  const result = await auditOf(root);
+  assert.ok(codes(result, 'error').includes('EDITIONS_INVALID'));
 });

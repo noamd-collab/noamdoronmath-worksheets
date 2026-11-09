@@ -1,4 +1,6 @@
-export type WordSheet = { sourceSha256: string; questions: Record<string, Record<string, unknown>> };
+export type WordSheet = { sourceSha256: string; canonicalSourceSha256?: string;
+  worksheetInstructions?: string; worksheetInstructionsSha256?: string;
+  questions: Record<string, Record<string, unknown>> };
 export type WordBank = { sheets: Record<string, WordSheet> };
 
 // Selection consists only of public worksheet identities. Content and answers
@@ -15,13 +17,27 @@ export function selectWordQuestions(bank: WordBank, value: unknown) {
     seen.add(key);
     const sheet = bank.sheets[item.pdfId], question = sheet?.questions[String(item.q)];
     if (!question || sheet.sourceSha256 !== item.sourceSha256) missing.push(key);
-    else selected.push(question);
+    else {
+      // Carry only the selected source's instructions, not its other questions
+      // or full figure manifest. The checked bank remains the content authority.
+      const context = sheet.worksheetInstructions === undefined ? undefined : {
+        pdfId: item.pdfId, sourceSha256: sheet.sourceSha256,
+        canonicalSourceSha256: sheet.canonicalSourceSha256,
+        instructions: sheet.worksheetInstructions,
+        instructionsSha256: sheet.worksheetInstructionsSha256,
+      };
+      selected.push(context ? { ...question, worksheetSource: context } : question);
+    }
   }
   // A question that refers to another exercise must not become an incomplete
   // worksheet or silently add an unselected exercise to the download.
   const required = selected.flatMap(question => {
     const pdfId = String(question.id).split(':')[0];
-    const dependencies = Array.isArray(question.requiredQuestions) ? question.requiredQuestions : [];
+    const instructions = bank.sheets[pdfId].worksheetInstructions || '';
+    const dependencies = [...new Set([
+      ...(Array.isArray(question.requiredQuestions) ? question.requiredQuestions : []),
+      ...[...instructions.matchAll(/(?:ב|מ|ל)?שאלה\s+(\d+)/g)].map(match => Number(match[1])),
+    ])];
     return dependencies.filter(q => !seen.has(pdfId + ':' + q)).map(q => ({
       pdfId, q, topic: question.topic, levelLabel: question.levelLabel,
     }));

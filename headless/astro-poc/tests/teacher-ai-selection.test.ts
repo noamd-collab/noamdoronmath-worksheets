@@ -48,7 +48,7 @@ function harness(reply: (payload: Payload, state: State, requestOptions: Challen
       'ai-suggest-status': status,
       grade: { selectedOptions: [{ textContent: 'כיתה ט׳' }] },
       topic: { selectedOptions: [{ textContent: 'פירוק לגורמים' }] },
-      'teacher-ai-note': { value: 'לתרגול בכיתה' },
+      'teacher-ai-note': { value: 'בחר רק שאלות מסוף המאגר' },
       'teacher-note': { value: 'הוראות לתלמיד שאינן מיועדות ל־AI' },
       'filter-all': { setAttribute: (...args) => attrs.push(['all', ...args]) },
       'filter-selected': { setAttribute: (...args) => attrs.push(['selected', ...args]) },
@@ -73,7 +73,7 @@ function harness(reply: (payload: Payload, state: State, requestOptions: Challen
       requests.push({ path, payload });
       return await reply(payload, state, requestOptions);
     } });
-    ${['exKey', 'questionPreviewGroup', 'currentQuestions', 'keysOfQuestions', 'rolePlan', 'interleaveSheets', 'planOrder', 'smartQuestionPick', 'carriedKeys', 'selectionKey', 'snapshot', 'teacherAiNote', 'teacherAiContext', 'teacherLevelsCovered', 'verifiedTeacherPlan', 'rememberTeacherPlans', 'confirmTeacherReplacement', 'pickWithAi'].map(definition).join('\n')}
+    ${['exKey', 'questionPreviewGroup', 'currentQuestions', 'keysOfQuestions', 'rolePlan', 'interleaveSheets', 'planOrder', 'smartQuestionPick', 'carriedKeys', 'selectionKey', 'snapshot', 'teacherAiNote', 'teacherAiSelectionIsFocused', 'teacherAiContext', 'teacherLevelsCovered', 'verifiedTeacherPlan', 'rememberTeacherPlans', 'confirmTeacherReplacement', 'pickWithAi'].map(definition).join('\n')}
     return { pick: pickWithAi, state, requests, status, attrs, controls, announcements, confirmations, renders: () => renderCount, dismisses: () => dismissedPanels };
   `)(options.pool || source.questions, groupWholeQuestions, options.savedKeys || groupKeys(groups[0]), reply, options, options.clock || Date, options.timers || globalThis) as {
     pick: (count: number) => Promise<string[]>;

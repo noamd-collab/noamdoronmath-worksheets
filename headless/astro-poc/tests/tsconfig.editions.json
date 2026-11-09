@@ -1,0 +1,10 @@
+{
+  "extends": "../tsconfig.tests.json",
+  "include": [
+    "../src/env.d.ts",
+    "worksheet-editions.test.ts",
+    "../src/lib/catalog/loadCatalog.ts",
+    "../src/components/WorksheetsClient.tsx"
+  ],
+  "exclude": []
+}

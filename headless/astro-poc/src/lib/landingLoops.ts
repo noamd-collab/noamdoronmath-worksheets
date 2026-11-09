@@ -254,6 +254,25 @@ export const FILM_LANDING_LOOPS = {
 
 export type FilmLandingSlug = keyof typeof FILM_LANDING_LOOPS;
 
+/**
+ * Landings whose card mounts an in-page component instead of the CSS sketch.
+ * topicLandingLoop still resolves the page's variant, so the stated idea
+ * (and everything built from it) stays the same; only the picture changes.
+ */
+export const COMPONENT_LANDING_LOOPS = {
+  'adjacent-vertical-angles-grade-7': 'adjacent-vertical-angles',
+} as const;
+
+export function componentLandingLoop(slug: string): string | undefined {
+  return COMPONENT_LANDING_LOOPS[slug as keyof typeof COMPONENT_LANDING_LOOPS];
+}
+
+/** Stable, shareable ids for a landing's demo card. */
+export const LANDING_LOOP_ANCHORS: Record<string, string> = {
+  'angles-introduction-measurement-grade-7': 'angle-measure-animation',
+  'adjacent-vertical-angles-grade-7': 'adjacent-vertical-angles-animation',
+};
+
 export type LandingLoop =
   | { kind: 'concept'; variant: ConceptLoopVariant; marker: string }
   | { kind: 'css'; variant: CssLoopVariant; marker: string }

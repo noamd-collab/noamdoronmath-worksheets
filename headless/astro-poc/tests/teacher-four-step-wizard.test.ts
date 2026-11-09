@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import { parseHTML } from 'linkedom';
+import { groupWholeQuestions } from '../public/teachers/teacher-question-pick.js';
 
 const printer = readFileSync(new URL('../public/teachers/teacher-factoring-print.js', import.meta.url), 'utf8');
 const html = readFileSync(new URL('../public/teachers/index.html', import.meta.url), 'utf8');
@@ -36,23 +37,32 @@ function navigation() {
   document.getElementById('wizard-label')!.focus = () => { focused.push('wizard-label'); };
   // Startup/loading is covered separately. Exercise the actual HTML and
   // shipped step/navigation handlers in their interactive ready state.
-  for (const id of ['teacher-workspace', 'wizard-bar']) document.getElementById(id)!.hidden = false;
-  const app = new Function('document', `
+  for (const id of ['teacher-workspace', 'wizard-bar', 'wizard-actions']) document.getElementById(id)!.hidden = false;
+  const app = new Function('document', 'groupWholeQuestions', `
     let state = ${initial[1]};
+    let wizardNavigating = false, aiPickPending = 0;
     const WIZARD_ORDER = ${order[1]};
     const topicSearch = null;
     const $ = id => document.getElementById(id);
-    const topicLoadPromise = null;
+    let topicLoadPromise = null;
+    const library = new Map([
+      ['ex:current:2א', {id:'2א',q:2,source:{pdfId:'current'}}],
+      ['ex:current:2ב', {id:'2ב',q:2,source:{pdfId:'current'}}],
+      ['ex:saved:1', {id:'1',q:1,source:{pdfId:'saved'}}],
+    ]);
     let resultPreparations = 0, invalidations = 0;
     const clearPreparedPrint = () => { invalidations += 1; };
     const showWizardResult = async () => { resultPreparations += 1; };
     const render = () => applyWizard();
     const applyScenario = () => render();
+    ${['levelPrintName','allSelectedKeys','blockQuestionCount'].map(definition).join('\n')}
     ${definition('applyWizard')}
     ${definition('bind')}
     bind();
-    return { state, apply: applyWizard, order: WIZARD_ORDER, resultPreparations: () => resultPreparations, invalidations: () => invalidations };
-  `)(document);
+    return { state, apply: applyWizard, order: WIZARD_ORDER, resultPreparations: () => resultPreparations, invalidations: () => invalidations,
+      delayTopic(promise) { topicLoadPromise = promise; },
+      pendingAi(count) { aiPickPending = count; applyWizard(); } };
+  `)(document, groupWholeQuestions);
   return { ...app, document, focused, async next() { await events.get('wizard-next')!(); },
     async back() { await events.get('wizard-back')!(); },
     async edit(step: string) { await events.get('edit-' + step)!(); } };
@@ -73,6 +83,7 @@ test('four grouped steps navigate forward and back without losing questions, sec
   const levelInputs = [...levelControl.querySelectorAll('input[name=level]')];
   const levelB = levelInputs.find(input => input.getAttribute('value') === 'b')! as HTMLInputElement;
   levelB.checked = true;
+  app.state.level = 'b';
   (byId('teacher-note') as HTMLTextAreaElement).value = 'הוראות קיימות שנשמרות';
   (byId('teacher-ai-note') as HTMLTextAreaElement).value = 'הנחיה פרטית קיימת ל־AI';
 
@@ -95,9 +106,11 @@ test('four grouped steps navigate forward and back without losing questions, sec
     for (const selector of ['[name=scenario]', '[name=style]', '#teacher-ai-note', '#teacher-note']) assert.equal(visible(selector), step === 'purpose', selector);
     assert.equal(visible('#questions'), step === 'pick');
     assert.equal(visible('#wizard-result'), step === 'result');
-    assert.equal(visible('#teacher-level-choice'), step === 'setup' || step === 'pick');
+    assert.equal(visible('#teacher-level-choice'), step === 'setup');
     assert.equal(document.querySelectorAll('#teacher-level-choice').length, 1);
     assert.equal(byId('teacher-level-choice'), levelControl);
+    assert.equal(levelControl.parentElement?.id, 'wizard-level-home');
+    assert.equal(byId('wizard-selection-summary').textContent, '2 שאלות · 3 סעיפים');
     assert.equal(levelB.checked, true);
     assert.equal((byId('teacher-note') as HTMLTextAreaElement).value, 'הוראות קיימות שנשמרות');
     assert.equal((byId('teacher-ai-note') as HTMLTextAreaElement).value, 'הנחיה פרטית קיימת ל־AI');
@@ -112,7 +125,8 @@ test('four grouped steps navigate forward and back without losing questions, sec
   verify('purpose', 2, 'מטרת התרגול');
   await app.next();
   verify('pick', 3, 'בחירת שאלות');
-  assert.equal(levelControl.parentElement?.id, 'pick-level-home');
+  assert.equal(levelControl.parentElement?.id, 'wizard-level-home');
+  assert.equal(byId('pick-level-summary').textContent, 'הרמה שנבחרה: רמה ב׳');
   const focusBeforeRerender = app.focused.length;
   app.apply();
   assert.equal(app.focused.length, focusBeforeRerender, 'An unchanged step must not steal focus from a question');
@@ -127,6 +141,38 @@ test('four grouped steps navigate forward and back without losing questions, sec
   verify('setup', 1, 'הגדרות התרגול');
   assert.equal(levelControl.parentElement?.id, 'wizard-level-home');
   assert.equal(app.focused.length, 6, 'Each of the six actual transitions announces its destination through heading focus');
+});
+
+test('the real next handler refuses empty or pending selections and prevents a second transition while loading', async () => {
+  const app = navigation();
+  const next = app.document.getElementById('wizard-next') as HTMLButtonElement;
+  app.state.wizard = 'pick'; app.apply();
+  await app.next();
+  assert.equal(app.state.wizard, 'pick');
+  assert.equal(next.disabled, true);
+  assert.equal(app.resultPreparations(), 0);
+
+  app.state.selected = ['ex:current:2א', 'ex:current:2ב'];
+  app.pendingAi(5);
+  await app.next();
+  assert.equal(app.state.wizard, 'pick');
+  assert.equal(app.resultPreparations(), 0);
+  app.pendingAi(0);
+
+  let finishLoad!: () => void;
+  app.delayTopic(new Promise<void>((resolve) => { finishLoad = resolve; }));
+  app.state.wizard = 'purpose'; app.apply();
+  const transition = app.next();
+  assert.equal(app.state.wizard, 'pick');
+  assert.equal(next.disabled, true);
+  await app.next();
+  assert.equal(app.state.wizard, 'pick', 'A repeated click cannot skip from purpose straight to result');
+  assert.equal(app.resultPreparations(), 0);
+  finishLoad(); await transition;
+  assert.equal(next.disabled, false);
+  await app.next();
+  assert.equal(app.state.wizard, 'result');
+  assert.equal(app.resultPreparations(), 1);
 });
 
 

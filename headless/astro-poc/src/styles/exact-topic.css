@@ -68,6 +68,13 @@
   min-width: 0;
   border-radius: 28px;
   padding: 56px 28px 28px;
+  scroll-margin-top: 120px;
+}
+@media (max-width: 560px) {
+  .exact-topic #angle-measure-animation,
+  .exact-topic #adjacent-vertical-angles-animation {
+    padding: 12px;
+  }
 }
 .exact-topic .exact-topic-demo--bare {
   padding: 0;

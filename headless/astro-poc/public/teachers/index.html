@@ -163,7 +163,7 @@ nav[data-nav-panel] a:hover{background:rgba(42,124,122,.1)}
 .other-field textarea{min-height:110px;resize:vertical}
 .other-field small{display:block;color:var(--quiet);margin-top:6px;font-size:13px}
 .segmented{display:flex;gap:6px;flex-wrap:wrap}
-#level-filter[hidden]{display:none}
+#level-filter[hidden],#edition-filter[hidden]{display:none}
 .segmented label{
   flex:1;position:relative;cursor:pointer;text-align:center;min-height:44px;display:grid;place-items:center;
   font-size:15px;font-weight:700;border:2px solid var(--ink);border-radius:999px;background:#fff;padding:8px 10px;
@@ -333,7 +333,7 @@ dialog::backdrop{background:rgba(34,48,90,.46)}
 .print-area{display:none}
 .wiz-off{display:none!important}
 body[data-wizard] .wiz-extra{display:none!important}
-.wizard-bar{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:12px;margin:0 0 16px}
+.wizard-bar{display:block;margin:24px 0 0}
 .wizard-heading{grid-column:2;grid-row:1;min-width:0;text-align:center}
 .wizard-progress{margin:0 0 4px;font-size:14px;font-weight:700;color:var(--teal-dark)}
 #wizard-back{grid-column:1;grid-row:1;min-width:44px;min-height:44px}
@@ -346,8 +346,23 @@ body[data-wizard] .wiz-extra{display:none!important}
 body[data-wizard] .wrap{display:flex;flex-direction:column}
 body[data-wizard] .wizard-bar{order:1}
 body[data-wizard] .workspace{order:2}
-body[data-wizard] .intro{order:3}
+body[data-wizard] .intro{order:0}
 body[data-wizard] .foot{order:4}
+.wizard-actions{order:3;position:fixed;inset-inline:0;bottom:0;z-index:35;display:flex;align-items:center;gap:16px;padding:12px max(24px,calc((100vw - 1152px)/2)) calc(12px + env(safe-area-inset-bottom));background:var(--paper);border-top:2px solid var(--ink);box-shadow:0 -3px 12px #22305a12}
+.wizard-actions #wizard-selection-summary{flex:1;min-width:0;font-weight:700;font-size:15px}
+.wizard-actions button{flex:none;min-height:44px;width:auto}
+body[data-wizard] .app{padding-bottom:100px}
+html:not(.noam-ai-engaged) #noam-site-companion{bottom:calc(96px + env(safe-area-inset-bottom))!important}
+html.noam-ai-engaged .wizard-actions{position:sticky;padding-inline:16px}
+.pick-level-summary{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:0 24px 12px;font-size:15px}
+.print-options{display:flex;gap:8px 24px;flex-wrap:wrap;margin:16px 0;padding:12px 16px;border:2px solid var(--ink);border-radius:12px}
+.print-options legend{padding:0 6px;font-weight:700}
+.print-options label{display:flex;align-items:center;gap:10px;min-height:44px;cursor:pointer}
+.print-options input{width:20px;height:20px;accent-color:var(--teal-dark)}
+.print-options-note{font-size:14px;color:var(--muted);margin-bottom:16px}
+.q-reason{display:block;margin-top:8px;font-size:14px;line-height:1.6;color:var(--teal-dark)}
+@media(max-width:600px){.wizard-actions{gap:10px;padding-inline:16px}.wizard-actions #wizard-selection-summary{font-size:13px}.wizard-actions .primary{padding-inline:16px}.pick-level-summary{padding-inline:16px}.print-options{display:block}.wizard-bar .wizard-heading{text-align:start}}
+@media print{.wizard-actions{display:none!important}}
 body[data-wizard] .setup,body[data-wizard] .results{grid-column:1 / -1}
 body[data-wizard="result"] .wizard-result{scroll-margin-top:164px}
 @media(max-width:600px){
@@ -460,7 +475,7 @@ body[data-wizard="result"] .wizard-result{scroll-margin-top:164px}
   .prepare-bar{flex-direction:column;align-items:stretch}
   .primary{width:100%}
   .wizard-bar{margin-top:18px;padding:12px 14px;background:#fff;border:2px solid var(--ink);border-radius:16px 6px 18px 8px / 8px 18px 6px 16px;box-shadow:3px 3px 0 var(--ink)}
-  .wizard-bar .primary{width:auto;min-height:44px;flex:0 0 auto}
+  .wizard-bar .primary,.wizard-actions .primary{width:auto;min-height:44px;flex:0 0 auto}
   .question-count-group{width:100%}
   .suggestion{flex-wrap:wrap}
   .suggestion button{width:100%}
@@ -559,12 +574,13 @@ body[data-wizard="result"] .wizard-result{scroll-margin-top:164px}
 </header>
 <main class="wrap">
 <section class="panel teacher-load-state" id="teacher-load-state" aria-label="טעינת דפי העבודה"><p id="teacher-loading" role="status">טוענים את דפי העבודה…</p><p id="teacher-load-error" role="alert" hidden></p><button type="button" class="primary" id="teacher-load-retry" hidden>ניסיון נוסף</button></section>
-<div class="wizard-bar" id="wizard-bar" hidden inert><button type="button" class="text-btn" id="wizard-back" hidden>חזרה</button><div class="wizard-heading" aria-current="step"><p class="wizard-progress" id="wizard-progress">שלב 1 מתוך 4</p><h2 class="wizard-label" id="wizard-label" tabindex="-1" aria-describedby="wizard-progress">הגדרות התרגול</h2></div><button type="button" class="primary" id="wizard-next">המשך</button></div>
 <div class="intro"><div><p class="eyebrow">מתכננים את התרגול</p><h1>בוחרים מה לתרגל.</h1><p class="subtitle">כיתה, נושא ומטרת השיעור. מכאן מסמנים שאלות שלמות, ומדפיסים את דף המקור עם סימון.</p><p class="head-meta"><span>מהדפים הקיימים, לשיעור שלכם</span><span class="demo-tag">כיתות א׳–ט׳</span><span class="brand-kicker">מתמטיקה • מרחב למורה</span></p></div><p class="intro-note">בכל הכיתות א׳–ט׳: רואים כל שאלה כפי שהיא בדף המקור ומסמנים את השאלות השלמות שמתאימות, בכל מספר. בלי סעיף חתוך.<br>אפשר לבחור ידנית או לתת ל־AI לבחור 5, 10 או 15 שאלות. ההדפסה מסמנת על דף המקור המלא, או חותכת דף מצומצם מאותו מקור.</p></div>
+<div class="wizard-bar" id="wizard-bar" hidden inert><div class="wizard-heading" aria-current="step"><p class="wizard-progress" id="wizard-progress">שלב 1 מתוך 4</p><h2 class="wizard-label" id="wizard-label" tabindex="-1" aria-describedby="wizard-progress">הגדרות התרגול</h2></div></div>
 <div class="workspace" id="teacher-workspace" hidden inert aria-busy="true">
 <aside class="panel setup" id="setup-panel" aria-label="הגדרות השיעור">
 <h2 class="step-title wiz-extra"><span class="step-num">1</span> מתחילים מהכיתה</h2>
 <div class="setup-fields"><div class="field" data-wiz="setup"><label for="grade">כיתה</label><select id="grade"><option value="1">כיתה א׳</option><option value="2">כיתה ב׳</option><option value="3">כיתה ג׳</option><option value="4">כיתה ד׳</option><option value="5">כיתה ה׳</option><option value="6">כיתה ו׳</option><option value="7">כיתה ז׳</option><option value="8">כיתה ח׳</option><option value="9" selected>כיתה ט׳</option></select></div><div class="field" data-wiz="setup"><label for="topic">נושא</label><select id="topic"><option value="2">פירוק לגורמים</option></select></div></div>
+<div class="field" id="edition-filter" hidden><label for="edition">מהדורה</label><select id="edition"><option value="all">כל המהדורות</option></select></div>
 <div id="wizard-level-home"><div class="level-field" id="teacher-level-choice" data-wiz="setup"><span class="style-label" id="level-label">מאילו רמות לבחור שאלות?</span><div class="segmented" id="level-filter" role="radiogroup" aria-labelledby="level-label" aria-describedby="level-help"><label><input type="radio" name="level" value="a" checked>רמה א׳</label><label><input type="radio" name="level" value="b">רמה ב׳</label><label><input type="radio" name="level" value="c">מצוינות</label></div><p class="level-help" id="level-help" aria-live="polite">מוצגות רק שאלות מהרמה שנבחרה. גם ה־AI יבחר מתוך הרמה הזו.</p></div></div>
 <p class="source-mini wiz-extra" id="scope-hint">הבחירה נטענת מקטלוג הדפים של האתר.</p>
 <div class="divider wiz-extra"></div>
@@ -582,12 +598,12 @@ body[data-wizard="result"] .wizard-result{scroll-margin-top:164px}
 </aside>
 <section class="panel results wiz-off" id="selection" data-wiz="pick" aria-labelledby="result-title" tabindex="-1">
 <div class="results-head"><div><p class="overline">הצעה לבחירה מתוך הדף הקיים</p><h2 id="result-title">מתחילים מגורם משותף</h2><p class="result-summary" id="result-summary">רצף קצר למפגש ראשון עם פירוק לגורמים.</p></div><span class="mini-icon"><svg aria-hidden="true"><use href="#i-list"/></svg></span></div>
-<div id="pick-level-home"></div>
+<div class="pick-level-summary"><span id="pick-level-summary"></span><button type="button" class="text-btn" data-review-edit="setup">שינוי הרמה בהגדרות</button></div>
 <div class="source-line"><span>פירוק לגורמים · כיתה ט׳ · רמה א׳</span><a href="https://static.wixstatic.com/ugd/d8e7ad_6a37fe7160324a17ad107b3dbe43c1db.pdf" target="_blank" rel="noopener noreferrer">פתיחת דף המקור ↗</a></div>
 <div id="available-content"><p class="logic-note"><svg aria-hidden="true"><use href="#i-bulb"/></svg><span id="rationale">תחילה גורם מספרי, אחר כך סימנים וגורם משתנה. אין צורך להתחיל מכל הדף.</span></p>
 <div class="other-note-banner" id="other-banner" hidden><strong>בחירה ידנית עם הוראות לתלמיד</strong><p>הרצף האחרון נשאר כפי שהוא. אפשר לבחור שאלות ולצרף הוראות לדף.</p></div>
 <div class="toolbar"><h3>השאלות לבחירה <span class="toolbar-meta" id="available-count"></span></h3><button class="text-btn" id="undo" disabled title="מחזיר את סימון השאלות למצב שלפני השינוי האחרון." aria-describedby="help-undo"><svg aria-hidden="true"><use href="#i-undo"/></svg>ביטול שינוי</button></div>
-<details class="action-help" id="teacher-action-help"><summary>מה עושה כל פעולה?</summary><dl><dt>בחירת AI: 5, 10 או 15</dt><dd id="help-ai">ה־AI בוחר שאלות שלמות לפי הרמות ומטרת השיעור שבחרתם. הבחירה מחליפה את הסימון בנושא הנוכחי; אפשר לשנות אותה ידנית.</dd><dt>קטע ממבחן</dt><dd id="help-test">ניקוד לכל שאלה ושדה לציון בדף המודפס. 100 נקודות מתחלקות בין כל שאלות המבחן בדף; המורה ממלא את הציון.</dd><dt>דף חזרה</dt><dd id="help-review">שאלות לתרגול וחזרה על חומר, בלי ניקוד ובלי שדה לציון.</dd><dt>כל השאלות</dt><dd id="help-all">מציג את כל השאלות הזמינות ברמות שבחרתם, בלי לשנות את הסימון.</dd><dt>רק הבחירה שלי</dt><dd id="help-selected">מציג רק שאלות שסימנתם בנושא הנוכחי. השאלות האחרות נשארות זמינות.</dd><dt>ביטול שינוי</dt><dd id="help-undo">מחזיר את סימון השאלות למצב שלפני השינוי האחרון.</dd><dt>הוספת נושא</dt><dd id="help-more">שומר את הבחירה הנוכחית בדף ומאפשר להוסיף שאלות מנושא נוסף.</dd><dt>הצגת הדף המסומן</dt><dd id="help-marked">מציג את עמודי המקור המלאים עם סימון הבחירה. כשיש קטע ממבחן או כמה נושאים, נבנה דף מצומצם.</dd><dt>הצגת הדף המצומצם</dt><dd id="help-short">מרכיב דף מהשאלות שנבחרו, כפי שהן במקור, ומצרף את התשובות בסוף.</dd><dt>הגדלת השאלה</dt><dd id="help-zoom">מגדיל את התצוגה לעיון. לחיצה נוספת מחזירה להתאמה לרוחב, בלי לשנות את הבחירה.</dd></dl></details>
+<details class="action-help" id="teacher-action-help"><summary>מה עושה כל פעולה?</summary><dl><dt>בחירת AI: 5, 10 או 15</dt><dd id="help-ai">ה־AI בוחר שאלות שלמות לפי הרמות ומטרת השיעור שבחרתם. הבחירה מחליפה את הסימון בנושא הנוכחי; אפשר לשנות אותה ידנית.</dd><dt>קטע ממבחן</dt><dd id="help-test">ניקוד לכל שאלה ושדה לציון בדף המודפס. 100 נקודות מתחלקות בין כל שאלות המבחן בדף; המורה ממלא את הציון.</dd><dt>דף חזרה</dt><dd id="help-review">שאלות לתרגול וחזרה על חומר, בלי ניקוד ובלי שדה לציון.</dd><dt>כל השאלות</dt><dd id="help-all">מציג את כל השאלות הזמינות ברמות שבחרתם, בלי לשנות את הסימון.</dd><dt>רק הבחירה שלי</dt><dd id="help-selected">מציג רק שאלות שסימנתם בנושא הנוכחי. השאלות האחרות נשארות זמינות.</dd><dt>ביטול שינוי</dt><dd id="help-undo">מחזיר את סימון השאלות למצב שלפני השינוי האחרון.</dd><dt>הוספת נושא</dt><dd id="help-more">שומר את הבחירה הנוכחית בדף ומאפשר להוסיף שאלות מנושא נוסף.</dd><dt>הצגת הדף המסומן</dt><dd id="help-marked">מציג את עמודי המקור המלאים עם סימון הבחירה. כשיש קטע ממבחן או כמה נושאים, נבנה דף מצומצם.</dd><dt>הצגת הדף המצומצם</dt><dd id="help-short">מרכיב דף מהשאלות שנבחרו, כפי שהן במקור, ומצרף את התשובות בסוף.</dd><dt>הגדלת השאלה</dt><dd id="help-zoom">בטלפון השאלה נפתחת בגודל קריא ואפשר לגלול לצדדים. הכפתור מחליף בין הגדלה להתאמה לרוחב, בלי לשנות את הבחירה.</dd></dl></details>
 <style>
 /* Whole questions stay open while the teacher chooses. */
 .question-list:has(.q-group){grid-template-columns:minmax(0,1fr);gap:16px}
@@ -600,6 +616,13 @@ body[data-wizard="result"] .wizard-result{scroll-margin-top:164px}
 .q-preview-page:last-child{margin-bottom:0}
 .q-preview-scroll{max-width:100%;overflow:auto;overscroll-behavior-x:contain}
 .q-preview.is-zoomed .q-preview-page{width:max(100%,900px);max-width:none}
+.q-preview-hint{display:none;margin:0 0 8px;font-size:14px;line-height:1.5;color:var(--muted)}
+.q-preview.is-zoomed .q-preview-hint{display:block}
+@media(max-width:767px){
+  .q-preview.is-zoomed .q-preview-page{width:max(100%,720px)}
+  .q-preview-placeholder{min-height:calc(var(--preview-height, 140px) * .72)}
+  .q-preview-initial-hint{display:block}
+}
 .q-preview-zoom{display:inline-flex;align-items:center;justify-content:center;min-height:44px;margin-bottom:8px;padding:8px 4px;border:0;background:none;color:var(--teal-dark);font:inherit;font-size:14px;font-weight:700;text-decoration:underline;text-underline-offset:4px;cursor:pointer}
 .q-preview-zoom[aria-pressed="true"]{color:var(--ink)}
 .q-preview-zoom:focus-visible,.q-source-link:focus-visible,.q-preview-retry:focus-visible{outline:3px solid var(--teal);outline-offset:3px}
@@ -615,13 +638,14 @@ body[data-wizard="result"] .wizard-result{scroll-margin-top:164px}
 <p class="pick-shortfall" id="ai-available-note" hidden></p>
 <p class="ai-selection-status" id="ai-suggest-status" role="status" aria-live="polite" aria-atomic="true">בחרו ידנית או תנו ל־AI לבחור 5, 10 או 15 שאלות.</p>
 <div class="question-list" id="questions"></div><button class="text-btn show-more" id="show-more">הצגת שאלות נוספות <span class="count-dot" id="more-count"></span></button>
-<details class="details"><summary>מה עומד מאחורי ההצעה?</summary><div class="details-body"><p id="pedagogy-details"></p><p style="margin-top:8px">חיוני = בסיס לרצף המוצע; נוסף = חיזוק לבחירתכם; העמקה = אתגר אפשרי. אלו תיוגים פדגוגיים של ההדגמה, לא תיוגי המחבר.</p><p style="margin-top:8px">השאלות מוצגות מתוך דפי המקור, עם ההוראות וכל הסעיפים. כל שאלה נבחרת בשלמותה.</p></div></details>
+<details class="details"><summary>מה עומד מאחורי ההצעה?</summary><div class="details-body"><p id="pedagogy-details"></p><p style="margin-top:8px">ביסוס, חזרה ויצירתית הם תיוגים לפי מיקום השאלה בתחילת דף המקור, באמצעו ובסופו; אלו אינם תיוגי המחבר. בחירת AI יכולה לכלול השלמה מקומית לגיוון, שמצוינת ליד השאלה.</p><p style="margin-top:8px">השאלות מוצגות מתוך דפי המקור, עם ההוראות וכל הסעיפים. כל שאלה נבחרת בשלמותה.</p></div></details>
 <details class="details"><summary>ומה לגבי הדפסת דף התלמיד?</summary><div class="details-body"><p>שתי דרכי הדפסה, שתיהן מתוך דף המקור:</p><div class="future-modes"><div class="future-mode"><b>הדף המלא, עם סימון</b><span>השאלות שנבחרו מסומנות על גבי דף המקור.</span><br><span class="future-label">המקרה הזה</span></div><div class="future-mode"><b>דף מצומצם מהמקור</b><span>רק הבחירה שלכם, חתוכה מהמקור עם ההוראה, הנוסח והתרשים.</span><br><span class="future-label">המקרה הזה</span></div></div><p>הדף המצומצם אינו ניסוח חדש. כל קטע הוא חיתוך של דף המקור.</p></div></details>
 <div class="prepare-bar"><div class="selection-total" aria-live="polite" aria-atomic="true"><strong id="selection-count">0 נבחרו</strong><span id="selection-composition"></span></div><button type="button" class="primary" id="prepare" title="מציג את עמודי המקור המלאים עם סימון הבחירה. כשיש קטע ממבחן או כמה נושאים, נבנה דף מצומצם." aria-describedby="help-marked"><svg aria-hidden="true"><use href="#i-print"/></svg>הצגת הדף המסומן</button><button type="button" class="text-btn" id="prepare-short" title="מרכיב דף מהשאלות שנבחרו, כפי שהן במקור, ומצרף את התשובות בסוף." aria-describedby="help-short"><svg aria-hidden="true"><use href="#i-print"/></svg>הצגת הדף המצומצם</button></div><button type="button" class="text-btn" data-word-download aria-describedby="word-export-help">הורדה ל־Word לעריכה</button><p data-word-status role="status" aria-live="polite" hidden></p><p class="prepare-hint" id="prepare-hint">דף מלא עם סימון, או דף מצומצם שנחתך מהמקור</p></div>
 <div id="unavailable" class="empty" hidden><h3>אין דפים להצגה בכיתה הזו</h3><p style="margin-top:8px">אפשר לחזור לפירוק לגורמים לכיתה ט׳.</p><button type="button" class="text-btn" id="return-demo">חזרה לפירוק לגורמים</button></div>
 </section>
-<section class="panel wizard-result wiz-off" id="wizard-result" data-wiz="result" aria-label="הדף להדפסה"><h2>הדף להדפסה</h2><p>דף אחד: כותרת ושדה שם פעם אחת, בס״ד בכל עמוד, ובסוף תשובות רק לשאלות שנבחרו, לכל סעיפיהן. השאלות והתשובות נשמרות כפי שהן בדף המקור.</p><section class="teacher-review" id="wizard-review" aria-labelledby="wizard-review-title" hidden><h3 id="wizard-review-title">סיכום הבחירות</h3><div id="wizard-review-content"></div><p class="teacher-page-count" id="wizard-page-count" hidden></p><div class="teacher-review-actions" role="group" aria-label="חזרה לעריכת הבחירות"><button type="button" class="text-btn" data-review-edit="setup">עריכת ההגדרות</button><button type="button" class="text-btn" data-review-edit="purpose">עריכת המטרה וההנחיות</button><button type="button" class="text-btn" data-review-edit="pick">עריכת בחירת השאלות</button></div></section><div id="wizard-preview"></div><div class="teacher-review-actions"><button type="button" class="primary" id="wizard-print">הדפסה</button><button type="button" class="text-btn" data-word-download aria-describedby="word-export-help">הורדה ל־Word לעריכה</button></div><p id="word-export-help">השאלות שנבחרו בלבד, עם טקסט ונוסחאות לעריכה ותשובות לכל הסעיפים בסוף. השרטוטים נשמרים כתמונות. זמין כרגע לרוב דפי החטיבה; ההמרה של דפי היסודי עדיין בעבודה.</p><p data-word-status role="status" aria-live="polite" hidden></p></section>
+<section class="panel wizard-result wiz-off" id="wizard-result" data-wiz="result" aria-label="הדף להדפסה"><h2>הדף להדפסה</h2><p>דף אחד: כותרת ושדה שם פעם אחת, בס״ד בכל עמוד, ואפשרות לצרף בסוף תשובות לשאלות שנבחרו. השאלות והתשובות נשמרות כפי שהן בדף המקור.</p><fieldset class="print-options"><legend>מה יופיע בדף התלמיד?</legend><label><input type="checkbox" id="print-show-level">הצגת שם הרמה</label><label><input type="checkbox" id="print-include-answers" checked>צירוף עמודי תשובות בסוף</label></fieldset><p class="print-options-note">הבחירות חלות גם על Word. להסתרת הרמה בדף התלמיד משתמשים בדף המצומצם; בדף המקור המלא הכותרת נשארת כפי שהיא.</p><section class="teacher-review" id="wizard-review" aria-labelledby="wizard-review-title" hidden><h3 id="wizard-review-title">סיכום הבחירות</h3><div id="wizard-review-content"></div><p class="teacher-page-count" id="wizard-page-count" hidden></p><div class="teacher-review-actions" role="group" aria-label="חזרה לעריכת הבחירות"><button type="button" class="text-btn" data-review-edit="setup">עריכת ההגדרות</button><button type="button" class="text-btn" data-review-edit="purpose">עריכת המטרה וההנחיות</button><button type="button" class="text-btn" data-review-edit="pick">עריכת בחירת השאלות</button></div></section><div id="wizard-preview"></div><div class="teacher-review-actions"><button type="button" class="primary" id="wizard-print">הדפסה</button><button type="button" class="text-btn" data-word-download aria-describedby="word-export-help">הורדה ל־Word לעריכה</button></div><p id="word-export-help">השאלות שנבחרו בלבד, עם טקסט ונוסחאות לעריכה, לפי אפשרויות דף התלמיד שבחרתם. השרטוטים נשמרים כתמונות. זמין כרגע לרוב דפי החטיבה; ההמרה של דפי היסודי עדיין בעבודה.</p><p data-word-status role="status" aria-live="polite" hidden></p></section>
 </div>
+<div class="wizard-actions" id="wizard-actions" hidden inert role="group" aria-label="מעבר בין שלבי הכנת הדף"><button type="button" class="text-btn" id="wizard-back" hidden>חזרה</button><span id="wizard-selection-summary" role="status" aria-live="polite" aria-atomic="true">עדיין לא נבחרו שאלות</span><button type="button" class="primary" id="wizard-next">המשך</button></div>
 <footer class="foot"><div class="foot-grid"><div><strong class="foot-brand">נועם דורון - מתמטיקה</strong><p>דפי עבודה במתמטיקה להורדה בחינם לכיתות א׳–ט׳. תשתית למידה איכותית לכל תלמיד.</p></div><div><h3>צור קשר</h3><p>מורים והורים, נשמח לעזור בכל שאלה.</p><a class="foot-mail" href="mailto:noamd@noamdoronmath.co.il">noamd@noamdoronmath.co.il</a></div><nav aria-label="ניווט מהיר"><h3>ניווט מהיר</h3><a href="https://www.noamdoronmath.co.il/">בית</a><a href="https://www.noamdoronmath.co.il/worksheets">דפי עבודה</a><a href="https://www.noamdoronmath.co.il/aboutus">אודותינו</a><a href="https://www.noamdoronmath.co.il/blog">בלוג</a></nav></div><div class="foot-bottom"><span>בוחרים מתוך דפי האתר בכל הכיתות: ידנית או בעזרת AI. כל שאלה נבחרת עם כל הסעיפים שלה. ההוראות לתלמיד נכנסות להדפסה.</span><span class="footer-source">מקור: דפי העבודה של האתר · כיתות א׳–ט׳</span><span>© 2026 נועם דורון מתמטיקה. כל הזכויות שמורות.</span></div></footer>
 </main></div>
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
@@ -647,7 +671,7 @@ body[data-wizard="result"] .wizard-result{scroll-margin-top:164px}
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js" integrity="sha384-/1qUCSGwTur9vjf/z9lmu/eCUYbpOTgSjmpbMQZ1/CtX2v/WcAIKqRv+U1DUCG6e" crossorigin="anonymous"></script>
-<script type="module" src="/teachers/teacher-factoring-print.js?v=20261104-word-export"></script>
+<script type="module" src="/teachers/teacher-factoring-print.js?v=20261108-teacher-editions"></script>
 
 <script src="/noam-accessibility.js" defer></script>
 <script src="/noam-site-companion.js?v=20261103-note-separation" defer data-avatar="/design-exact/assets/avatar/ramzi-A-idle.svg"></script>

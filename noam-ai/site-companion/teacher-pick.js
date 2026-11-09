@@ -120,6 +120,11 @@ function canonicalTeacher(index, input) {
     if (!byQuestion.has(item.questionKey)) byQuestion.set(item.questionKey, []);
     byQuestion.get(item.questionKey).push(item);
   }
+  const roleByQuestion = new Map();
+  for (const sheet of pool) {
+    const questions = [...new Set(available.filter((item) => item.sheet === sheet).map((item) => item.questionKey))];
+    questions.forEach((key, rank) => roleByQuestion.set(key, rank / questions.length < 1 / 3 ? "ביסוס" : rank / questions.length < 2 / 3 ? "חזרה" : "יצירתית"));
+  }
   const seen = new Set();
   const candidates = [];
   for (const candidate of teacher.candidates) {
@@ -132,7 +137,7 @@ function canonicalTeacher(index, input) {
     // picker. A second part cannot add another question or replace its anchor.
     if (parts[0] !== item || seen.has(item.questionKey)) return reject();
     seen.add(item.questionKey);
-    candidates.push({ id: item.scoped, label: item.label,
+    candidates.push({ id: item.scoped, label: item.label, role: roleByQuestion.get(item.questionKey),
       text: [item.sheet.levelLabel, "שאלה " + parseInt(item.label, 10), parts.length === 1 ? "סעיף אחד" : parts.length + " סעיפים"].filter(Boolean).join(" · ") });
   }
   return { ...teacher, candidates };
@@ -170,12 +175,14 @@ export function labelsInText(value) {
 
 export function normalizeLabel(value) {
   const text = String(value || "").replace(/\s+/g, "").replace(/['׳]/g, "");
-  const scoped = text.match(/^(?:(?:[abc]|c2):)?([1-9]\d{0,2})([\u05D0-\u05EA]?)$/i);
+  const scoped = text.match(/^(?:(?:[abc]|c2):(?:[a-f0-9]{32}:)?)?([1-9]\d{0,2})([\u05D0-\u05EA]?)$/i);
   return scoped ? scoped[1] + scoped[2] : "";
 }
 
 function normalizeScopedLabel(value) {
   const text = String(value || "").replace(/\s+/g, "").replace(/['׳]/g, "");
+  const edition = text.match(/^([abc]|c2):([a-f0-9]{32}):([1-9]\d{0,2})([\u05D0-\u05EA]?)$/i);
+  if (edition) return edition[1].toLowerCase() + ":" + edition[2].toLowerCase() + ":" + edition[3] + edition[4];
   const match = text.match(/^([abc]|c2):([1-9]\d{0,2})([\u05D0-\u05EA]?)$/i);
   if (match) return match[1].toLowerCase() + ":" + match[2] + match[3];
   const plain = normalizeLabel(text);
@@ -262,17 +269,20 @@ export function classifierRequestBody(input, index) {
     const matching = matchingTeacherSheets(index, teacher);
     const candidates = teacher.candidates;
     if (candidates.length) {
+      lines.push("תפקידי השאלות נקבעו לפי המיקום בדף המקור: ביסוס בתחילה, חזרה באמצע ויצירתית בסוף. אין כאן טקסט מלא של השאלות, ואין להסיק תוכן מתמטי ממספר השאלה.");
+      lines.push("אלא אם הערת המורה מבקשת מיקוד אחר, שלב בבחירה את כל התפקידים הזמינים באופן מאוזן, ולא רק שאלות רצופות מתחילת הדף. בבחירה של 5: שתי שאלות מהתפקיד המועדף, שתיים מהבא ואחת מהשלישי; ב-10 וב-15 המשך באותו סבב לפי זמינות.");
+      lines.push("סדר העדיפות: בדרך כלל ביסוס, חזרה, יצירתית; בסגנון יצירתי: יצירתית, חזרה, ביסוס; בחזרה ספירלית: חזרה, ביסוס, יצירתית; בהכנה למבחן: חזרה, יצירתית, ביסוס. שמור על שילוב הרמות שהתבקש ועל בקשות מפורשות של המורה.");
       lines.push(
         "שאלות קיימות בדף לבחירה: " +
           candidates
-            .map((item) => (item.text ? `${item.id} (${item.text})` : item.id))
+            .map((item) => (item.text ? `${item.id} (${item.text}) [${item.role}]` : item.id))
             .join(" | ")
       );
     } else if (!teacher.hasCandidates && Array.isArray(index) && index.length) {
       const availableLabels = [];
       const seen = new Set();
       for (const sheet of matching) {
-        const prefix = matching.length > 1 && /^(?:[abc]|c2)$/.test(sheet.level) ? sheet.level + ":" : "";
+        const prefix = /^(?:[abc]|c2)$/.test(sheet.level) && (matching.length > 1 || sheet.editionId) ? sheet.level + ":" + (sheet.editionId ? sheet.pdfId + ":" : "") : "";
         for (const q of sheet.questions || []) {
           const label = normalizeLabel(q);
           const id = prefix + label;
@@ -321,7 +331,7 @@ function eligibleTeacherQuestions(pool, candidates, hasCandidates) {
     for (const rawLabel of sheet.questions || []) {
       const label = normalizeLabel(rawLabel);
       if (!label) continue;
-      const scoped = /^(?:[abc]|c2)$/.test(String(sheet.level)) ? sheet.level + ":" + label : label;
+      const scoped = /^(?:[abc]|c2)$/.test(String(sheet.level)) ? sheet.level + ":" + (sheet.editionId ? sheet.pdfId + ":" : "") + label : label;
       const key = "ex:" + sheet.pdfId + ":" + label;
       if (seen.has(key) || (allowed && !allowed.has(scoped) && !allowed.has(label))) continue;
       seen.add(key);
@@ -562,7 +572,7 @@ export function selectBatchExercises(pool, count, goal, classified, candidates) 
     for (const rawLabel of sheet.questions || []) {
       const label = String(rawLabel);
       const key = "ex:" + sheet.pdfId + ":" + label;
-      const scoped = /^(?:[abc]|c2)$/.test(String(sheet.level)) ? sheet.level + ":" + label : label;
+      const scoped = /^(?:[abc]|c2)$/.test(String(sheet.level)) ? sheet.level + ":" + (sheet.editionId ? sheet.pdfId + ":" : "") + label : label;
       if (knownKeys.has(key) || (allowed && !allowed.has(scoped) && !allowed.has(label))) continue;
       knownKeys.add(key);
       available.push({

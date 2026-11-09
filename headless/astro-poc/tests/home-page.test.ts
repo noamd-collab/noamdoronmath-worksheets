@@ -138,9 +138,9 @@ describe('homepage Harmony parity (HEADLESS-MIGRATION-31)', () => {
       'מתמטיקה לתיכון',
       'href="/teachers"',
       'למורים',
-      'aria-label="למורים, חדש"',
+      'aria-label="למורים, Beta"',
       'data-peek="teachers"',
-      'חדש',
+      '<span class="exact-nav-new" aria-hidden="true">Beta</span>',
     ]) {
       assert.ok(html.includes(needle), `missing ${needle}`);
     }
@@ -161,6 +161,7 @@ describe('homepage Harmony parity (HEADLESS-MIGRATION-31)', () => {
     assert.match(index, /class="exact-hero-teachers"[^>]*href="\/teachers"/);
     assert.match(index, /id="for-teachers"/);
     assert.match(index, /במיוחד בשבילך!/);
+    assert.match(index, /class="exact-hero-teachers__beta">בטא</);
     for (const role of ['מורה', 'מורה פרטי', 'הורה']) {
       assert.ok(index.includes(`exact-hero-teachers__role">${role}<span class="exact-hero-teachers__q">?</span></span>`), `card names ${role}?`);
     }

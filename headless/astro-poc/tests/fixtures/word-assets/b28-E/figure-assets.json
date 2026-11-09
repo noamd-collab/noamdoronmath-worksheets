@@ -1,0 +1,32 @@
+{
+  "sourceFormat": "noam-word-figure-assets",
+  "schemaVersion": 1,
+  "canonicalSourceSha256": "b98740ed29b5dc7c4e2be2803cfdfcd1211da9b9365111bb2be744afb27e87a3",
+  "worksheetId": "elm-20261107-g2-s28-E",
+  "revision": 2,
+  "renderer": {
+    "name": "svg_word/weasyprint+pymupdf",
+    "dpi": 260,
+    "weasyprint": "68.0",
+    "pymupdf": "1.26.5",
+    "fontSha256": "923f06e0f6dc84e1649d8cc5d5e12a8d663adf6aba83ba15baa5d559fb47b86e"
+  },
+  "figures": [
+    {
+      "figureId": "fig-q001",
+      "sourceSvgSha256": "4faf2312b086ab430cc5fa8b7cd4276db90caf7f340c1e1930411205faed15f5",
+      "occurrences": [
+        {
+          "questionId": "elm-20261107-g2-s28-E-q001",
+          "questionSha256": "f25461ed4be3f624dfbe7f176991094a128267a294530e8b9413357ea8ef4edd",
+          "itemId": null
+        }
+      ],
+      "url": "/teachers/word-figures/d088ae6539505b9cf06f4c64c60b3afde1cff53cee93fbccedac2ada2ec997b6.png",
+      "sha256": "d088ae6539505b9cf06f4c64c60b3afde1cff53cee93fbccedac2ada2ec997b6",
+      "widthPx": 1625,
+      "heightPx": 315,
+      "displayWidthPx": 600.0
+    }
+  ]
+}

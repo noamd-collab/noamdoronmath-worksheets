@@ -37,6 +37,7 @@ for (const grade of catalog.grades || []) {
       if (!questions.length) throw new Error('Empty teacher question source for ' + pdfId);
       sheets.push({
         pdfId,
+        ...(sheet.editionId ? { editionId: sheet.editionId, editionLabel: sheet.editionLabel } : {}),
         grade: Number(grade.grade),
         gradeLabel: String(grade.label || ''),
         band: grade.band === 'elementary' ? 'elementary' : 'middle',

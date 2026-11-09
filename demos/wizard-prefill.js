@@ -4,6 +4,7 @@ export function wizardPrefillFromSearch(search) {
   const grade = params.get("grade") || "";
   const topic = params.get("topic") || "";
   const level = params.has("level") ? params.get("level") : "a";
+  const edition = params.get("edition");
   const minutes = Number(params.get("minutes"));
   const exerciseIds = String(params.get("pick") || "")
     .split(",")
@@ -12,12 +13,14 @@ export function wizardPrefillFromSearch(search) {
   if (!/^[1-9]$/.test(grade) || !/^\d{1,6}$/.test(topic)) return null;
   if (level !== "a" && level !== "b" && level !== "c" && level !== "all") return null;
   if (params.has("pick") && !exerciseIds.length) return null;
+  if (edition !== null && !/^(?:all|legacy|[a-z0-9][a-z0-9-]{0,63})$(?![\s\S])/.test(edition)) return null;
   return {
     grade,
     topic,
     level,
     minutes: minutes >= 5 && minutes <= 180 ? minutes : null,
     exerciseIds,
+    ...(edition ? { edition } : {}),
   };
 }
 
@@ -27,14 +30,19 @@ export function replaceWizardScopeUrl(browser, scope) {
     const grade = String(scope.grade);
     const topic = String(scope.topic);
     const level = String(scope.level);
+    const edition = scope.edition && scope.edition !== 'all' ? String(scope.edition) : '';
     if (!/^[1-9]$/.test(grade) || !/^\d{1,6}$/.test(topic)) return false;
     if (!["all", "a", "b", "c"].includes(level)) return false;
+    if (edition && !/^[a-z0-9][a-z0-9-]{0,63}$(?![\s\S])/.test(edition)) return false;
     const url = new URL(browser.location.href);
     const values = { grade, topic, level };
-    if (Object.entries(values).every(([key, value]) => url.searchParams.get(key) === value && url.searchParams.getAll(key).length === 1)) return false;
+    if (Object.entries(values).every(([key, value]) => url.searchParams.get(key) === value && url.searchParams.getAll(key).length === 1)
+      && (edition ? url.searchParams.get('edition') === edition && url.searchParams.getAll('edition').length === 1 : !url.searchParams.has('edition'))) return false;
     // A handoff pick belongs to its original grade/topic, even for shared PDFs.
-    if (url.searchParams.get("grade") !== grade || url.searchParams.get("topic") !== topic) url.searchParams.delete("pick");
+    if (url.searchParams.get("grade") !== grade || url.searchParams.get("topic") !== topic || (url.searchParams.get('edition') || '') !== edition) url.searchParams.delete("pick");
     Object.entries(values).forEach(([key, value]) => url.searchParams.set(key, value));
+    if (edition) url.searchParams.set('edition', edition);
+    else url.searchParams.delete('edition');
     browser.history.replaceState(browser.history.state, "", url.href);
     return true;
   } catch {

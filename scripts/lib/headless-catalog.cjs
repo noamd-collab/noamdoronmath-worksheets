@@ -9,11 +9,13 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 const crypto = require('node:crypto');
+const { mergeWorksheetEditions } = require('./worksheet-editions.cjs');
 
 const ROOT = path.join(__dirname, '..', '..');
 const INDEX_PATH = path.join(ROOT, 'index.html');
 const OUT_DIR = path.join(ROOT, 'headless', 'catalog');
 const OUT_JSON = path.join(OUT_DIR, 'catalog.v1.json');
+const EDITIONS_PATH = path.join(OUT_DIR, 'worksheet-editions.v1.json');
 const CONTRACT_VERSION = 1;
 
 /** Default one-level button label from index.html levelLinksHTML (row.oneLabel || …). */
@@ -708,9 +710,17 @@ function validateCatalog(catalog, raw) {
 function exportCatalog(options) {
   const opts = options || {};
   const indexPath = opts.indexPath || INDEX_PATH;
-  const outPath = opts.outPath || OUT_JSON;
+  // An alternate index belongs to its own repository. Never combine a fixture
+  // (or another checkout) with this module's live registry/output directory.
+  const catalogDir = path.join(path.dirname(path.resolve(indexPath)), 'headless', 'catalog');
+  const outPath = opts.outPath || path.join(catalogDir, 'catalog.v1.json');
   const raw = loadIndexCatalog(indexPath);
-  const catalog = buildCatalog(raw);
+  // Explicit input wins, including invalid values: validation must reject them,
+  // rather than silently falling back to a different registry. Missing local
+  // registries also fail; a legacy-only fixture must provide an empty registry.
+  const registry = Object.hasOwn(opts, 'editions') ? opts.editions :
+    JSON.parse(fs.readFileSync(opts.editionsPath || path.join(catalogDir, 'worksheet-editions.v1.json'), 'utf8'));
+  const catalog = mergeWorksheetEditions(buildCatalog(raw), registry);
   const validation = validateCatalog(catalog, raw);
   const text = stableStringify(catalog);
   const hash = crypto.createHash('sha256').update(text).digest('hex');
@@ -737,6 +747,7 @@ module.exports = {
   INDEX_PATH,
   OUT_DIR,
   OUT_JSON,
+  EDITIONS_PATH,
   CONTRACT_VERSION,
   DEFAULT_ONE_LABEL,
   loadIndexCatalog,

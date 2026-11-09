@@ -3,6 +3,7 @@
    Google click (window.NoamEnsureSupabase). רמזי does not use this file. */
 (function () {
   'use strict';
+  if (window.NOAM_ELEMENTARY_PDF_ONLY) return;
   var started = false;
   function start() {
     if (started) return;

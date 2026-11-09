@@ -3,6 +3,7 @@
    Not Ramzi. */
 (function () {
   "use strict";
+  if (window.NOAM_ELEMENTARY_PDF_ONLY) return;
   if (window.__noamSiteCompanion) return;
   window.__noamSiteCompanion = true;
 

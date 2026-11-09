@@ -122,8 +122,10 @@ test('catalog failure exposes an actionable error; retry activates the wizard wi
   await app.start();
   assert.equal(app.status(), 'error');
   assert.equal(app.started(), false);
-  assert.equal(app.element('teacher-workspace').inert, true);
-  assert.equal(app.element('teacher-workspace').hidden, true);
+  for (const id of ['teacher-workspace', 'wizard-bar', 'wizard-actions']) {
+    assert.equal(app.element(id).inert, true, `${id} is inactive while startup has failed`);
+    assert.equal(app.element(id).hidden, true, `${id} stays hidden until the catalog is ready`);
+  }
   assert.equal(app.element('teacher-load-error').getAttribute('role'), 'alert');
   assert.match(app.element('teacher-load-error').textContent!, /ניסיון נוסף/);
   assert.equal(app.element('teacher-load-retry').disabled, false);
@@ -131,9 +133,11 @@ test('catalog failure exposes an actionable error; retry activates the wizard wi
   await app.retry();
   assert.equal(app.status(), 'ready');
   assert.equal(app.started(), true);
-  assert.equal(app.element('teacher-workspace').inert, false);
-  assert.equal(app.element('teacher-workspace').hidden, false);
-  assert.equal(app.element('teacher-workspace').getAttribute('aria-busy'), 'false');
+  for (const id of ['teacher-workspace', 'wizard-bar', 'wizard-actions']) {
+    assert.equal(app.element(id).inert, false, `${id} becomes interactive after retry`);
+    assert.equal(app.element(id).hidden, false);
+    assert.equal(app.element(id).getAttribute('aria-busy'), 'false');
+  }
   assert.equal(app.element('teacher-load-state').hidden, true);
   assert.equal(app.element('teacher-load-error').textContent, '');
   assert.equal(app.focused(), app.element('wizard-label'));
@@ -190,16 +194,34 @@ test('failed topic-sheet load retries only that topic and retains the confirmed 
   assert.equal(app.state.topic, '3');
   assert.deepEqual(app.state.blocks, saved);
   assert.deepEqual(app.state.selected, []);
-  assert.equal(app.element('teacher-workspace').hidden, false);
-  assert.equal(app.element('teacher-workspace').inert, true);
+  for (const id of ['teacher-workspace', 'wizard-bar', 'wizard-actions']) {
+    assert.equal(app.element(id).hidden, false, `${id} retains the visible context after a topic error`);
+    assert.equal(app.element(id).inert, true, `${id} cannot advance while source loading has failed`);
+  }
   const urlAtFailure = app.browser.location.href;
   await app.retry();
   assert.equal(app.status(), 'ready');
+  assert.equal(app.element('wizard-actions').inert, false);
+  assert.equal(app.element('wizard-actions').hidden, false);
   assert.equal(app.browser.location.href, urlAtFailure);
   assert.deepEqual(app.state.blocks, saved);
   assert.equal(app.calls.catalog, 1, 'Topic retry must not replay URL prefill');
   assert.equal(app.calls.sheets.filter((id: string) => id === pdfs.second).length, 2);
   assert.equal(app.calls.bind, 1);
+});
+
+test('a topic reload keeps the bottom navigation visible but inactive until the source is ready', async () => {
+  const app = harness();
+  await app.start();
+  app.setTeacherAppState('loading', 'טוענים את שאלות הנושא…');
+  for (const id of ['teacher-workspace', 'wizard-bar', 'wizard-actions']) {
+    assert.equal(app.element(id).hidden, false);
+    assert.equal(app.element(id).inert, true);
+    assert.equal(app.element(id).getAttribute('aria-busy'), 'true');
+  }
+  app.setTeacherAppState('ready');
+  assert.equal(app.element('wizard-actions').inert, false);
+  assert.equal(app.element('wizard-actions').getAttribute('aria-busy'), 'false');
 });
 
 for (const [label, grade, topic] of [['grade', '8', ''], ['topic', '9', '3']]) {

@@ -1,0 +1,467 @@
+---
+/**
+ * Grade-7 adjacent / vertical angles explorer.
+ *
+ * Two chapters on one picture of two crossing lines:
+ *   צמודות     α and β share an arm; their other arms form a straight line, α + β = 180°.
+ *   קודקודיות  α and its partner face each other at the vertex and are equal.
+ * Autoplay turns the line inside each chapter so the relation is seen to
+ * hold for other angles too. Site motion off holds a still frame; the
+ * chapter buttons and the angle slider still work. The loop pauses
+ * off-screen and in a hidden tab.
+ */
+import {
+  AV_FIXED_HALF,
+  AV_LABEL_FONT,
+  AV_MAX,
+  AV_MIN,
+  AV_START,
+  AV_VERTEX,
+  AV_VIEW,
+  avAnnouncement,
+  avFrame,
+  degreeText,
+} from '../lib/adjacentVerticalAngles';
+
+interface Props {
+  marker: string;
+}
+const { marker } = Astro.props;
+const f = avFrame('adjacent', AV_START);
+const keys = ['beta2', 'alpha2', 'beta', 'alpha'] as const;
+const tone = { alpha: 'teal', alpha2: 'teal', beta: 'coral', beta2: 'coral' } as const;
+const value = { alpha: f.alpha, alpha2: f.alpha, beta: f.beta, beta2: f.beta } as const;
+---
+
+<div class="avx" data-av-explorer data-landing-loop={marker} data-mode="adjacent">
+  <svg
+    class="avx__board"
+    viewBox={`0 0 ${AV_VIEW.width} ${AV_VIEW.height}`}
+    role="img"
+    aria-labelledby="avx-title"
+    focusable="false"
+  >
+    <title id="avx-title">שני ישרים נחתכים בקודקוד אחד. הזוויות מסומנות בצבע לפי סוג הקשר ביניהן.</title>
+    <path class="avx__straight" data-av-straight d={f.straight.path}></path>
+    {keys.map((key) => (
+      <g class={`avx__angle avx__angle--${tone[key]}`} data-av-angle={key} data-shown={f.shown[key]}>
+        <path class="avx__sector" data-av-sector d={f.sectors[key]}></path>
+        <path class="avx__arc" data-av-arc d={f.arcs[key]}></path>
+      </g>
+    ))}
+    <g class="avx__ghost" data-av-ghost opacity="0">
+      <path class="avx__ghost-shape" d={f.sectors.alpha}></path>
+    </g>
+    <line
+      class="avx__fixed"
+      x1={AV_VERTEX.x - AV_FIXED_HALF}
+      y1={AV_VERTEX.y}
+      x2={AV_VERTEX.x + AV_FIXED_HALF}
+      y2={AV_VERTEX.y}
+    ></line>
+    <line class="avx__ink" x1={AV_VERTEX.x - AV_FIXED_HALF} y1={AV_VERTEX.y} x2={AV_VERTEX.x + AV_FIXED_HALF} y2={AV_VERTEX.y}></line>
+    <line class="avx__ink avx__turn" data-av-turn x1={f.turnB.x} y1={f.turnB.y} x2={f.turnA.x} y2={f.turnA.y}></line>
+    <line class="avx__shared" data-av-shared x1={AV_VERTEX.x} y1={AV_VERTEX.y} x2={f.turnA.x} y2={f.turnA.y}></line>
+    <circle class="avx__vertex" cx={AV_VERTEX.x} cy={AV_VERTEX.y} r="5.5"></circle>
+    {keys.map((key) => (
+      <text
+        class={`avx__label avx__label--${tone[key]}`}
+        data-av-label={key}
+        data-shown={f.labelled[key] ? 'on' : 'off'}
+        x={f.labels[key].x}
+        y={f.labels[key].y}
+        font-size={AV_LABEL_FONT}
+        text-anchor="middle"
+        dominant-baseline="central"
+        direction="ltr"
+      >{degreeText(value[key])}</text>
+    ))}
+    <text
+      class="avx__label avx__label--gold"
+      data-av-straight-label
+      x={f.straight.label.x}
+      y={f.straight.label.y}
+      font-size={AV_LABEL_FONT - 2}
+      text-anchor="middle"
+      dominant-baseline="central"
+      direction="ltr"
+    >180°</text>
+  </svg>
+
+  <div class="avx__panel" dir="rtl">
+    <div class="avx__chapters" role="group" aria-label="סוג הזוויות">
+      <button type="button" class="avx__chapter" data-av-mode="adjacent" aria-pressed="true">זוויות צמודות</button>
+      <button type="button" class="avx__chapter" data-av-mode="vertical" aria-pressed="false">זוויות קודקודיות</button>
+    </div>
+
+    <div class="avx__explain" data-av-explain="adjacent">
+      <p class="avx__rule">יש להן <strong>שוק משותפת</strong>, והשוקיים האחרות יוצרות <strong>קו ישר</strong>. יחד הן <bdi dir="ltr" class="avx__math">180°</bdi>.</p>
+      <p class="avx__eq" dir="ltr">
+        <span class="avx__chip avx__chip--teal" data-av-val="alpha">{degreeText(f.alpha)}</span>
+        <span class="avx__op">+</span>
+        <span class="avx__chip avx__chip--coral" data-av-val="beta">{degreeText(f.beta)}</span>
+        <span class="avx__op">=</span>
+        <span class="avx__chip avx__chip--gold">180°</span>
+      </p>
+    </div>
+    <div class="avx__explain" data-av-explain="vertical" hidden>
+      <p class="avx__rule">הן נמצאות <strong>זו מול זו</strong> בקודקוד, ולכן הן <strong>שוות</strong>.</p>
+      <p class="avx__eq" dir="ltr">
+        <span class="avx__chip avx__chip--teal" data-av-val="alpha">{degreeText(f.alpha)}</span>
+        <span class="avx__op">=</span>
+        <span class="avx__chip avx__chip--teal" data-av-val="alpha">{degreeText(f.alpha)}</span>
+      </p>
+      <p class="avx__why">כל אחת מהן צמודה לאותה זווית של <bdi dir="ltr" class="avx__math" data-av-val="beta">{degreeText(f.beta)}</bdi>, ולכן שתיהן משלימות אותה ל־<bdi dir="ltr" class="avx__math">180°</bdi>.</p>
+    </div>
+
+    <div class="avx__controls" data-av-controls hidden>
+      <label class="avx__slider">
+        <span>גודל הזווית</span>
+        <input
+          type="range"
+          min={AV_MIN}
+          max={AV_MAX}
+          step="1"
+          value={AV_START}
+          data-av-theta
+          aria-valuetext={`${AV_START} מעלות`}
+        />
+      </label>
+      <button type="button" class="avx__play" data-av-play aria-pressed="false">השהיה</button>
+    </div>
+    <p class="avx__sr" role="status" aria-live="polite" data-av-live>{avAnnouncement('adjacent', AV_START)}</p>
+  </div>
+</div>
+
+<script>
+  import {
+    AV_CHAPTER_SECONDS,
+    AV_GHOST_SECONDS,
+    AV_START,
+    AV_VERTEX,
+    avAnnouncement,
+    avFrame,
+    chapterTheta,
+    degreeText,
+    ghostTurn,
+    type AvAngleKey,
+    type AvMode,
+  } from '../lib/adjacentVerticalAngles';
+  import { sitePrefersReducedMotion } from '../lib/motionPreference.js';
+
+  const KEYS: AvAngleKey[] = ['alpha', 'beta', 'alpha2', 'beta2'];
+
+  function boot(root: HTMLElement) {
+    const q = <T extends Element>(sel: string) => root.querySelector<T>(sel);
+    const qa = <T extends Element>(sel: string) => Array.from(root.querySelectorAll<T>(sel));
+    const slider = q<HTMLInputElement>('[data-av-theta]');
+    const play = q<HTMLButtonElement>('[data-av-play]');
+    const live = q<HTMLElement>('[data-av-live]');
+    const ghost = q<SVGGElement>('[data-av-ghost]');
+    const controls = q<HTMLElement>('[data-av-controls]');
+    if (!slider || !play || !live || !ghost || !controls) return;
+    const sliderEl = slider, playEl = play, liveEl = live, ghostEl = ghost;
+    controls.hidden = false;
+
+    let mode: AvMode = 'adjacent';
+    let theta = AV_START;
+    let clock = 0;
+    let userPaused = false;
+    let inView = true;
+    let last = 0;
+
+    const motionOff = () => {
+      const html = document.documentElement;
+      return sitePrefersReducedMotion()
+        || html.classList.contains('nd-motion-off')
+        || html.classList.contains('noam-a11y-motion');
+    };
+
+    function render() {
+      const f = avFrame(mode, theta);
+      root.dataset.mode = mode;
+      for (const key of KEYS) {
+        const g = q<SVGGElement>(`[data-av-angle="${key}"]`);
+        g?.setAttribute('data-shown', f.shown[key]);
+        g?.querySelector('[data-av-sector]')?.setAttribute('d', f.sectors[key]);
+        g?.querySelector('[data-av-arc]')?.setAttribute('d', f.arcs[key]);
+        const label = q<SVGTextElement>(`[data-av-label="${key}"]`);
+        if (label) {
+          label.setAttribute('x', String(f.labels[key].x));
+          label.setAttribute('y', String(f.labels[key].y));
+          label.setAttribute('data-shown', f.labelled[key] ? 'on' : 'off');
+          label.textContent = degreeText(key.startsWith('alpha') ? f.alpha : f.beta);
+        }
+      }
+      const turn = q<SVGLineElement>('[data-av-turn]');
+      turn?.setAttribute('x1', String(f.turnB.x));
+      turn?.setAttribute('y1', String(f.turnB.y));
+      turn?.setAttribute('x2', String(f.turnA.x));
+      turn?.setAttribute('y2', String(f.turnA.y));
+      const shared = q<SVGLineElement>('[data-av-shared]');
+      shared?.setAttribute('x2', String(f.turnA.x));
+      shared?.setAttribute('y2', String(f.turnA.y));
+      const straightLabel = q<SVGTextElement>('[data-av-straight-label]');
+      straightLabel?.setAttribute('x', String(f.straight.label.x));
+      straightLabel?.setAttribute('y', String(f.straight.label.y));
+      for (const el of qa<HTMLElement>('[data-av-val="alpha"]')) el.textContent = degreeText(f.alpha);
+      for (const el of qa<HTMLElement>('[data-av-val="beta"]')) el.textContent = degreeText(f.beta);
+      for (const el of qa<HTMLElement>('[data-av-explain]')) el.hidden = el.dataset.avExplain !== mode;
+      for (const btn of qa<HTMLButtonElement>('[data-av-mode]')) {
+        btn.setAttribute('aria-pressed', String(btn.dataset.avMode === mode));
+      }
+      const rounded = Math.round(theta);
+      if (Number(sliderEl.value) !== rounded) sliderEl.value = String(rounded);
+      sliderEl.setAttribute('aria-valuetext', `${f.alpha} מעלות`);
+    }
+
+    function showGhost(turn: number, opacity: number) {
+      ghostEl.setAttribute('opacity', String(opacity));
+      ghostEl.setAttribute('transform', `rotate(${-turn} ${AV_VERTEX.x} ${AV_VERTEX.y})`);
+    }
+
+    function syncPlay() {
+      const off = motionOff();
+      playEl.hidden = off;
+      const playing = !off && !userPaused;
+      playEl.textContent = playing ? 'השהיה' : 'הפעלה';
+      playEl.setAttribute('aria-pressed', String(!playing));
+      playEl.setAttribute('aria-label', playing ? 'השהיית ההדגמה' : 'הפעלת ההדגמה');
+    }
+
+    function announce() {
+      liveEl.textContent = avAnnouncement(mode, theta);
+    }
+
+    function setMode(next: AvMode) {
+      mode = next;
+      clock = 0;
+      theta = AV_START;
+      showGhost(0, 0);
+      render();
+      announce();
+    }
+
+    for (const btn of qa<HTMLButtonElement>('[data-av-mode]')) {
+      btn.addEventListener('click', () => setMode(btn.dataset.avMode as AvMode));
+    }
+    sliderEl.addEventListener('input', () => {
+      userPaused = true;
+      showGhost(0, 0);
+      theta = Number(sliderEl.value);
+      syncPlay();
+      render();
+    });
+    sliderEl.addEventListener('change', announce);
+    playEl.addEventListener('click', () => {
+      if (motionOff()) return;
+      userPaused = !userPaused;
+      if (!userPaused) { clock = 0; theta = AV_START; }
+      syncPlay();
+    });
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver((entries) => {
+        inView = entries.some((entry) => entry.isIntersecting);
+      }, { rootMargin: '64px' }).observe(root);
+    }
+
+    function tick(now: number) {
+      const dt = last ? Math.min(0.1, (now - last) / 1000) : 0;
+      last = now;
+      const running = !motionOff() && !userPaused && inView && document.visibilityState !== 'hidden';
+      if (running) {
+        clock += dt;
+        if (clock >= AV_CHAPTER_SECONDS[mode]) {
+          mode = mode === 'adjacent' ? 'vertical' : 'adjacent';
+          clock = 0;
+        }
+        theta = chapterTheta(mode, clock);
+        if (mode === 'vertical' && clock < AV_GHOST_SECONDS + 0.5) {
+          showGhost(ghostTurn(clock), clock < AV_GHOST_SECONDS ? 0.9 : 0.9 * (1 - (clock - AV_GHOST_SECONDS) / 0.5));
+        } else {
+          showGhost(0, 0);
+        }
+        render();
+      } else if (motionOff()) {
+        showGhost(0, 0);
+      }
+      requestAnimationFrame(tick);
+    }
+
+    const resync = () => syncPlay();
+    window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', resync);
+    window.addEventListener('nd:motion-off', resync);
+    new MutationObserver(resync).observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class', 'data-nd-motion'],
+    });
+
+    syncPlay();
+    render();
+    requestAnimationFrame(tick);
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-av-explorer]').forEach(boot);
+</script>
+
+<style>
+  .avx {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    max-width: 520px;
+    margin-inline: auto;
+    padding: 10px 12px 14px;
+    background: #fff;
+    border: 2.5px solid #22305a;
+    border-radius: 24px;
+    color: #22305a;
+    font-family: Heebo, 'Heebo Fallback', sans-serif;
+  }
+  .avx__board {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 480 / 300;
+    direction: ltr;
+  }
+  .avx__ink { stroke: #22305a; stroke-width: 3.5; stroke-linecap: round; fill: none; }
+  .avx__fixed { stroke: #e6a534; stroke-width: 11; stroke-linecap: round; opacity: 0; }
+  .avx[data-mode='adjacent'] .avx__fixed { opacity: 0.55; }
+  .avx__shared { stroke: #1e605e; stroke-width: 6; stroke-linecap: round; opacity: 0; }
+  .avx[data-mode='adjacent'] .avx__shared { opacity: 1; }
+  .avx__vertex { fill: #22305a; }
+  .avx__straight {
+    fill: none;
+    stroke: #c9861a;
+    stroke-width: 3;
+    stroke-dasharray: 7 7;
+    opacity: 0;
+  }
+  .avx[data-mode='adjacent'] .avx__straight { opacity: 0.9; }
+  .avx__sector { stroke: none; }
+  .avx__arc { fill: none; stroke-width: 3; }
+  .avx__angle--teal .avx__sector { fill: #2a7c7a; }
+  .avx__angle--teal .avx__arc { stroke: #1e605e; }
+  .avx__angle--coral .avx__sector { fill: #e5735c; }
+  .avx__angle--coral .avx__arc { stroke: #a84434; }
+  .avx__angle[data-shown='strong'] .avx__sector { opacity: 0.42; }
+  .avx__angle[data-shown='faint'] .avx__sector { opacity: 0.12; }
+  .avx__angle[data-shown='faint'] .avx__arc { opacity: 0.35; }
+  .avx__angle[data-shown='off'] { opacity: 0; }
+  .avx__ghost-shape {
+    fill: none;
+    stroke: #1e605e;
+    stroke-width: 3;
+    stroke-dasharray: 6 5;
+  }
+  .avx__label {
+    font-family: Heebo, 'Heebo Fallback', sans-serif;
+    font-weight: 800;
+    paint-order: stroke;
+    stroke: #fff;
+    stroke-width: 6px;
+    stroke-linejoin: round;
+    unicode-bidi: isolate;
+  }
+  .avx__label--teal { fill: #1e605e; }
+  .avx__label--coral { fill: #a84434; }
+  .avx__label--gold { fill: #8a5a0c; opacity: 0; }
+  .avx[data-mode='adjacent'] .avx__label--gold { opacity: 1; }
+  .avx__label[data-shown='off'] { opacity: 0; }
+
+  .avx__panel { display: flex; flex-direction: column; gap: 10px; }
+  .avx__chapters {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .avx__chapter,
+  .avx__play {
+    min-height: 44px;
+    padding: 8px 12px;
+    border: 2px solid #22305a;
+    border-radius: 14px;
+    background: #fbfaf5;
+    color: #22305a;
+    font: 700 16px/1.2 Heebo, 'Heebo Fallback', sans-serif;
+    cursor: pointer;
+  }
+  .avx__chapter[aria-pressed='true'] {
+    background: #22305a;
+    color: #fbfaf5;
+    box-shadow: 3px 3px 0 #e6a534;
+  }
+  .avx__chapter:focus-visible,
+  .avx__play:focus-visible,
+  .avx__slider input:focus-visible {
+    outline: 3px solid #2a7c7a;
+    outline-offset: 3px;
+  }
+  .avx__explain { display: flex; flex-direction: column; gap: 6px; text-align: center; }
+  .avx__explain[hidden] { display: none; }
+  .avx__rule, .avx__why { margin: 0; font-size: 16px; line-height: 1.5; color: #22305a; }
+  .avx__why { font-size: 15px; color: #3d4870; }
+  .avx__math { direction: ltr; unicode-bidi: isolate; white-space: nowrap; }
+  .avx__eq {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    direction: ltr;
+    unicode-bidi: isolate;
+    font-weight: 800;
+    font-size: 22px;
+    font-variant-numeric: tabular-nums;
+  }
+  .avx__chip {
+    display: inline-block;
+    min-width: 3.4em;
+    padding: 2px 10px;
+    border-radius: 12px;
+    border: 2px solid currentColor;
+    text-align: center;
+  }
+  .avx__chip--teal { color: #1e605e; background: #e3f1ec; }
+  .avx__chip--coral { color: #a84434; background: #fbe6e1; }
+  .avx__chip--gold { color: #7a4f0a; background: #fdf1d8; }
+  .avx__op { color: #22305a; }
+  .avx__controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .avx__controls[hidden] { display: none; }
+  .avx__slider {
+    flex: 1 1 200px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 15px;
+    font-weight: 700;
+  }
+  .avx__slider input { flex: 1; min-width: 0; min-height: 44px; accent-color: #1e605e; }
+  .avx__play { flex: 0 0 auto; min-width: 92px; }
+  .avx__play[hidden] { display: none; }
+  .avx__sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+  @media (max-width: 480px) {
+    .avx { padding: 8px 8px 12px; border-radius: 20px; gap: 10px; }
+    .avx__rule { font-size: 15px; }
+    .avx__why { font-size: 14px; }
+    .avx__eq { font-size: 19px; gap: 6px; }
+    .avx__chip { padding-inline: 6px; }
+    .avx__chapter { font-size: 14px; padding-inline: 4px; }
+  }
+</style>

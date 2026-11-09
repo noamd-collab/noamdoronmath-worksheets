@@ -1,0 +1,195 @@
+{
+  "sourceFormat": "noam-elementary-source",
+  "schemaVersion": 1,
+  "meta": {
+    "band": "elementary-ab",
+    "grade": "א",
+    "gradeNumber": 1,
+    "level": "ב",
+    "levelCode": "B",
+    "topic": "חיבור בתחום 10",
+    "skill_topic_id": "א05",
+    "site_topic_id": 5,
+    "site_topic_prefix": "G1-T5",
+    "topicType": "arithmetic",
+    "worksheetId": "measured-fragment-test",
+    "revision": 1,
+    "title": "חִבּוּר בְּמִסְפָּרִים קְטַנִּים",
+    "instructions": "קִרְאוּ וּפִתְרוּ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "n": 1,
+      "text": "Question 1",
+      "tags": [
+        "practice"
+      ],
+      "dependsOn": [],
+      "items": [
+        {
+          "id": "i1",
+          "label": "א",
+          "text": "QSPLIT000\nQSPLIT001\nQSPLIT002\nQSPLIT003\nQSPLIT004\nQSPLIT005\nQSPLIT006\nQSPLIT007\nQSPLIT008\nQSPLIT009\nQSPLIT010\nQSPLIT011\nQSPLIT012\nQSPLIT013\nQSPLIT014\nQSPLIT015\nQSPLIT016\nQSPLIT017\nQSPLIT018\nQSPLIT019\nQSPLIT020\nQSPLIT021\nQSPLIT022\nQSPLIT023\nQSPLIT024\nQSPLIT025",
+          "answer": "ASPLIT000\nASPLIT001\nASPLIT002\nASPLIT003\nASPLIT004\nASPLIT005\nASPLIT006\nASPLIT007\nASPLIT008\nASPLIT009\nASPLIT010\nASPLIT011\nASPLIT012\nASPLIT013\nASPLIT014\nASPLIT015\nASPLIT016\nASPLIT017\nASPLIT018\nASPLIT019\nASPLIT020\nASPLIT021\nASPLIT022\nASPLIT023\nASPLIT024",
+          "evidence": {
+            "caseId": "i1",
+            "method": "open-review",
+            "inputs": {
+              "fixture": true
+            },
+            "expected": [
+              "QSPLIT000",
+              "QSPLIT001",
+              "QSPLIT002",
+              "QSPLIT003",
+              "QSPLIT004",
+              "QSPLIT005",
+              "QSPLIT006",
+              "QSPLIT007",
+              "QSPLIT008",
+              "QSPLIT009",
+              "QSPLIT010",
+              "QSPLIT011",
+              "QSPLIT012",
+              "QSPLIT013",
+              "QSPLIT014",
+              "QSPLIT015",
+              "QSPLIT016",
+              "QSPLIT017",
+              "QSPLIT018",
+              "QSPLIT019",
+              "QSPLIT020",
+              "QSPLIT021",
+              "QSPLIT022",
+              "QSPLIT023",
+              "QSPLIT024",
+              "QSPLIT025"
+            ],
+            "criteria": [
+              "Layout fixture tokens are preserved."
+            ]
+          }
+        },
+        {
+          "id": "i2",
+          "label": "ב",
+          "text": "QTAIL",
+          "answer": "ATAIL",
+          "evidence": {
+            "caseId": "i2",
+            "method": "open-review",
+            "inputs": {
+              "fixture": true
+            },
+            "expected": [
+              "QTAIL"
+            ],
+            "criteria": [
+              "Layout fixture tokens are preserved."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "n": 2,
+      "text": "Question 2",
+      "tags": [
+        "practice"
+      ],
+      "dependsOn": [],
+      "items": [
+        {
+          "id": "i3",
+          "label": "א",
+          "text": "MERGEDGREEN",
+          "answer": "AMERGEDGREEN",
+          "evidence": {
+            "caseId": "i3",
+            "method": "open-review",
+            "inputs": {
+              "fixture": true
+            },
+            "expected": [
+              "MERGEDGREEN"
+            ],
+            "criteria": [
+              "Layout fixture tokens are preserved."
+            ]
+          }
+        },
+        {
+          "id": "i4",
+          "label": "ב",
+          "text": "MERGEDSECOND",
+          "answer": "AMERGEDSECOND",
+          "evidence": {
+            "caseId": "i4",
+            "method": "open-review",
+            "inputs": {
+              "fixture": true
+            },
+            "expected": [
+              "MERGEDSECOND"
+            ],
+            "criteria": [
+              "Layout fixture tokens are preserved."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "n": 3,
+      "text": "Question 3",
+      "tags": [
+        "practice"
+      ],
+      "dependsOn": [],
+      "items": [
+        {
+          "id": "i5",
+          "label": "א",
+          "text": "PARTSMAGENTA",
+          "answer": "APARTS",
+          "evidence": {
+            "caseId": "i5",
+            "method": "open-review",
+            "inputs": {
+              "fixture": true
+            },
+            "expected": [
+              "PARTSMAGENTA"
+            ],
+            "criteria": [
+              "Layout fixture tokens are preserved."
+            ]
+          }
+        },
+        {
+          "id": "i6",
+          "label": "ב",
+          "text": "PARTSOTHER",
+          "answer": "APARTSOTHER",
+          "evidence": {
+            "caseId": "i6",
+            "method": "open-review",
+            "inputs": {
+              "fixture": true
+            },
+            "expected": [
+              "PARTSOTHER"
+            ],
+            "criteria": [
+              "Layout fixture tokens are preserved."
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "figures": []
+}

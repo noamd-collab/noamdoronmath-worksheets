@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { gunzipSync } from 'node:zlib';
 import { DOMParser } from 'linkedom';
-import { createTeacherDocx, mathXml, richXml } from '../../../demos/teacher-word-export.js';
+import { createTeacherDocx, mathXml, richXml, tableXml } from '../../../demos/teacher-word-export.js';
 import { selectWordQuestions } from '../src/lib/teacherWordSelection';
 
 const encoded = JSON.parse(readFileSync(new URL('../src/data/teacher-word-content.json', import.meta.url), 'utf8'));
@@ -40,6 +40,56 @@ test('Word file contains editable equations and all selected answers after the q
   assert.ok(files['word/settings.xml'].includes('he-IL'));
   assert.ok(!files['word/settings.xml'].includes('documentProtection'));
   assert.ok(!document.includes('altChunk'));
+});
+
+test('legacy and explicit data tables preserve source cells and select their declared column direction', () => {
+  const cells = { head: ['שם', 'מספר'], rows: [['נועם', '12']] };
+  for (const [metadata, expected] of [
+    [{}, '1'], [{ kind: 'data', direction: 'rtl' }, '1'], [{ kind: 'data', direction: 'ltr' }, '0'],
+  ] as const) {
+    const dom = new DOMParser().parseFromString(tableXml({ ...cells, ...metadata }), 'text/xml');
+    assert.equal(dom.getElementsByTagName('w:bidiVisual')[0].getAttribute('w:val'), expected);
+    const rows = [...dom.getElementsByTagName('w:tr')].map(row =>
+      [...row.getElementsByTagName('w:tc')].map(cell => cell.textContent));
+    assert.deepEqual(rows, [cells.head, ...cells.rows]);
+    assert.equal(dom.getElementsByTagName('w:tc')[0].getElementsByTagName('w:bidi')[0].getAttribute('w:val'), null);
+  }
+});
+
+test('editable vertical subtraction keeps hundreds, tens and units LTR while Hebrew headings and the document stay RTL', async () => {
+  const table = {
+    kind: 'vertical-arithmetic', direction: 'ltr', head: ['', 'מאות', 'עשרות', 'יחידות'],
+    rows: [['', '4', '5', '2'], ['−', '1', '3', '7'], ['', '3', '1', '5']],
+  };
+  const question = { ...fixture(), text: 'פתרו בטור:', table, items: [{ label: '', text: '', answer: '$315$' }] };
+  const files = unzipStored(await createTeacherDocx({ questions: [question] }));
+  const dom = new DOMParser().parseFromString(files['word/document.xml'], 'text/xml');
+  const tbl = dom.getElementsByTagName('w:tbl')[0];
+  assert.equal(tbl.getElementsByTagName('w:bidiVisual')[0].getAttribute('w:val'), '0');
+  const rows = [...tbl.getElementsByTagName('w:tr')];
+  assert.deepEqual(rows.map(row => [...row.getElementsByTagName('w:tc')].map(cell => cell.textContent)), [table.head, ...table.rows]);
+  for (const row of rows.slice(1)) for (const cell of row.getElementsByTagName('w:tc')) {
+    assert.equal(cell.getElementsByTagName('w:bidi')[0].getAttribute('w:val'), '0');
+    assert.equal(cell.getElementsByTagName('w:rtl')[0].getAttribute('w:val'), '0');
+  }
+  for (const cell of [...rows[0].getElementsByTagName('w:tc')].slice(1)) {
+    assert.equal(cell.getElementsByTagName('w:bidi')[0].getAttribute('w:val'), null);
+    assert.equal(cell.getElementsByTagName('w:rtl')[0].getAttribute('w:val'), null);
+  }
+  assert.ok(files['word/styles.xml'].includes('<w:pPr><w:bidi/><w:jc w:val="left"/>'));
+  assert.ok(files['word/document.xml'].includes('<w:bidi/></w:sectPr>'));
+  assert.equal(Object.keys(files).some(path => path.includes('/media/')), false);
+  assert.ok(files['word/document.xml'].includes('תשובות סופיות'));
+  assert.ok(tableXml({ ...table, direction: undefined }).includes('<w:bidiVisual w:val="0"/>'));
+});
+
+test('unsupported table metadata and RTL arithmetic fail before an incorrect Word layout is emitted', () => {
+  const table = { head: ['מספר'], rows: [['12']] };
+  assert.throws(() => tableXml({ ...table, direction: 'auto' }), /WORD_TABLE_DIRECTION/);
+  assert.throws(() => tableXml({ ...table, direction: null }), /WORD_TABLE_DIRECTION/);
+  assert.throws(() => tableXml({ ...table, kind: 'diagram' }), /WORD_TABLE_KIND/);
+  assert.throws(() => tableXml({ ...table, kind: 'vertical-arithmetic', direction: 'rtl' }), /WORD_TABLE_ARITHMETIC_DIRECTION/);
+  assert.throws(() => tableXml({ ...table, rows: [['12', '13']] }), /WORD_TABLE_COLUMNS/);
 });
 
 test('selection is strict, deduplicates source/question, keeps same number at other levels, and rejects partial output', () => {

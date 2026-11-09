@@ -17,7 +17,7 @@ function definition(name: string) {
 const api = new Function(`
   const measureSlices = async slices => slices;
   const SHEET_PAGE_H = 1440, SHEET_BASAD_H = 40, SHEET_TITLE_H = 86;
-  ${['levelPrintName', 'answerDocumentSource', 'selectedAnswerCrops', 'answerMeasured', 'contentHeight', 'gapSize', 'fittedHeight', 'fittedScale', 'sheetContentLimit', 'packShort'].map(definition).join('\n')}
+  ${['levelPrintName', 'measuredSourceDescription', 'measuredAnswerCrops', 'answerDocumentSource', 'selectedAnswerCrops', 'answerMeasured', 'contentHeight', 'gapSize', 'fittedHeight', 'fittedScale', 'sheetContentLimit', 'packShort'].map(definition).join('\n')}
   return { selectedAnswerCrops, answerMeasured, packShort, fittedScale, contentHeight };
 `)();
 
@@ -213,9 +213,10 @@ test('runtime verifies supplementary bytes and page count, and cache identity in
 
 test('every active source has validated answer geometry or an explicit original-content gap; selections never add other answers', async () => {
   const report = applyTeacherAnswerMaps({ check: true });
-  assert.equal(report.sheets, 933);
   const catalog = JSON.parse(readFileSync(new URL('../public/teachers/teacher-catalog.json', import.meta.url), 'utf8'));
   const ids = [...new Set<string>(catalog.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.sheets.map((s: any) => s.pdfId))))];
+  assert.equal(report.sheets, ids.length);
+  assert.equal(catalog.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.sheets.filter((s: any) => !s.editionId))).length, 964);
   for (const pdfId of ids) {
     const s = JSON.parse(readFileSync(new URL(`../public/teachers/sheets/${pdfId}.json`, import.meta.url), 'utf8'));
     for (const answer of s.answerMap.questions) {

@@ -200,6 +200,7 @@ html.noam-a11y-motion .exact-home h1[data-lcp] {
 .exact-hero__panel { grid-column: 3; grid-row: 1; }
 .exact-hero__lede { margin: 0 0 32px; }
 .exact-hero-teachers {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -256,6 +257,19 @@ html.noam-a11y-motion .exact-home h1[data-lcp] {
   transform: rotate(-.6deg);
 }
 .exact-hero-teachers__q { color: #c8442f; }
+/* Beta sticker in the empty top corner, the same pill as the menu's Beta. */
+.exact-hero-teachers__beta {
+  position: absolute;
+  inset-block-start: 12px;
+  inset-inline-end: 14px;
+  padding: 1px 10px;
+  border: 1.5px solid #8fbfbd;
+  border-radius: 999px;
+  background: #e8f4f3;
+  color: #1f6462;
+  font: 700 13px/1.6 Heebo, 'Heebo Fallback', sans-serif;
+  transform: rotate(4deg);
+}
 .exact-hero-teachers__note {
   position: relative;
   display: inline-block;
