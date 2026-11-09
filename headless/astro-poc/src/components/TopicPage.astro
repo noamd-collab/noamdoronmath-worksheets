@@ -137,7 +137,8 @@ const topicJsonLdExtras = jsonLdTypes(page.jsonLd).includes('LearningResource')
    triangle-quadrilateral-angle-sum-grade-7 mounts the provided HTML film
    (its own controls and angle readouts stay inside the iframe).
    parallel-lines-angles-grade-8 mounts the co-interior angles film.
-   statistics-data-frequency-grade-8 mounts Noam's narrated statistics film. */
+   statistics-data-frequency-grade-8 mounts the statistics film with its
+   controls and narration turned off (silent autoplay, this page only). */
 const landingLoop = topicLandingLoop(page);
 const loopVariant = landingLoop.kind === 'concept' ? landingLoop.variant : undefined;
 const componentLoop = componentLandingLoop(slug);

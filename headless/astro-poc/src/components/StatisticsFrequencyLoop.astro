@@ -1,17 +1,19 @@
 ---
 /**
  * Grade 8 statistics film: collecting data, frequency, relative frequency.
- * Noam's narrated player (about 96 s, play/restart/chapters/mute/seek and a
- * transcript) stays in public/loops/statistics-frequency.html. It never
- * starts on its own; the narration loads only when the visitor presses play.
- * This wrapper only frames that file and fits the frame to the player.
+ * The page asks the same file for ?embed=1&silent=1. That mode hides every
+ * control and plays the animation on its own, with the narration removed.
+ * The narrated player and its mp3 stay in the file for a direct open.
+ * This wrapper only frames that file and fits the frame to the stage.
+ * The picture is HTML, not a video element, so there is no audio track to
+ * mute and no playsinline attribute to set.
  */
 interface Props {
   src: string;
   marker: string;
 }
 const { src, marker } = Astro.props;
-const frameSrc = `${src}?embed=1`;
+const frameSrc = `${src}?embed=1&silent=1`;
 ---
 
 <div class="stats-film" data-stats-film data-landing-loop={marker}>
@@ -19,10 +21,8 @@ const frameSrc = `${src}?embed=1`;
     class="stats-film__frame"
     src={frameSrc}
     title="סטטיסטיקה: איסוף מידע, שכיחות ושכיחות יחסית"
-    loading="lazy"
+    loading="eager"
     scrolling="no"
-    allow="fullscreen"
-    allowfullscreen
     data-stats-frame
   ></iframe>
 </div>
@@ -39,7 +39,7 @@ const frameSrc = `${src}?embed=1`;
       const shell = doc?.getElementById('player-shell');
       if (!shell) return;
       const h = Math.ceil(shell.getBoundingClientRect().height);
-      if (h > 200 && Math.abs(frame.clientHeight - h) > 2) frame.style.height = `${h}px`;
+      if (h > 120 && Math.abs(frame.clientHeight - h) > 2) frame.style.height = `${h}px`;
     }
 
     // The player pauses itself when the site's Stop Animations control is on.
@@ -78,11 +78,10 @@ const frameSrc = `${src}?embed=1`;
     max-width: 100%;
     border: 0;
     background: #fbfaf5;
-    /* 16:9 stage plus the wrapped control rows and the transcript summary.
+    /* 16:9 stage only. Silent mode has no control row and no transcript.
        The script replaces this estimate with the player's measured height. */
-    height: 520px;
-    height: calc(100cqi * 9 / 16 + 230px);
-    min-height: 320px;
+    height: calc(100cqi * 9 / 16);
+    min-height: 0;
     overflow: hidden;
   }
 </style>
