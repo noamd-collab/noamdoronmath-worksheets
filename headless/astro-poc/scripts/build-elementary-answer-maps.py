@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""Derive answer rectangles from unchanged cached source PDFs; fail on ambiguity."""
+"""Derive answer rectangles from unchanged cached source PDFs; fail on ambiguity.
+
+With --ink-edges, every final crop edge is also checked for clipped ink on a 4x
+raster (answer_ink_edges.py); table borders, rules and tints are not ink."""
 import json,re,hashlib,collections,math,argparse
 from pathlib import Path
 import pymupdf as pdf
@@ -10,6 +13,7 @@ CACHE=None
 OUTPUT=None
 REPORT=None
 KNOWN_GAPS=None
+INK_EDGES=False
 
 def spans(page):
  return [s for b in page.get_text('dict')['blocks'] for l in b.get('lines',[]) for s in l['spans']]
@@ -216,18 +220,27 @@ def runone(source):
      mid=round((top['y']+top['h']+bot['y'])/2,6);botend=bot['y']+bot['h']
      top['h']=round(mid-top['y'],6);bot['y']=mid;bot['h']=round(botend-mid,6)
  if source['grade']==3:align_shared_boundaries(doc,entries)
+ if INK_EDGES:
+  from answer_ink_edges import clipped_ink
+  bypage=collections.defaultdict(list)
+  for q,cs in entries.items():
+   for c in cs:bypage[c['page']].append((q,c))
+  for n,items in sorted(bypage.items()):
+   for f in clipped_ink(doc[n-1],[c for _,c in items]):
+    raise ValueError(f"ink crosses the {f['edge']} edge of q{items[f['crop']][0]} p{n} at {f['box']}")
  result=dict(version=1,sourceSha256=hashlib.sha256(p.read_bytes()).hexdigest(),questions=[dict(q=q,parts=sorted({str(z.get('part',''))for z in source['questions']if int(z['q'])==q and z.get('part')}),crops=entries[q])for q in expected])
  return result,collections.Counter(methods)
 
 def main():
- global W,R,CACHE,OUTPUT,REPORT,KNOWN_GAPS
+ global W,R,CACHE,OUTPUT,REPORT,KNOWN_GAPS,INK_EDGES
  ap=argparse.ArgumentParser(description=__doc__)
  ap.add_argument('--repo',type=Path,required=True,help='Repository root containing headless/astro-poc')
  ap.add_argument('--pdf-cache',type=Path,required=True,help='Read-only source cache named <pdfId>.pdf')
  ap.add_argument('--output',type=Path,required=True,help='Output answer map JSON')
  ap.add_argument('--report',type=Path,required=True,help='Output coverage report JSON')
  ap.add_argument('--known-gaps',type=Path,default=Path(__file__).with_name('elementary-answer-known-gaps.json'),help='Human-verified source content gaps, bound to original PDF hashes')
- args=ap.parse_args();W=args.repo;CACHE=args.pdf_cache;OUTPUT=args.output;REPORT=args.report;KNOWN_GAPS=args.known_gaps
+ ap.add_argument('--ink-edges',action='store_true',help='Fail a source when a crop edge would cut its ink')
+ args=ap.parse_args();W=args.repo;CACHE=args.pdf_cache;OUTPUT=args.output;REPORT=args.report;KNOWN_GAPS=args.known_gaps;INK_EDGES=args.ink_edges
  R=OUTPUT.parent;R.mkdir(parents=True,exist_ok=True);REPORT.parent.mkdir(parents=True,exist_ok=True)
  cat=json.loads((W/'headless/astro-poc/public/teachers/teacher-catalog.json').read_text());sources={}
  for g in cat['grades']:

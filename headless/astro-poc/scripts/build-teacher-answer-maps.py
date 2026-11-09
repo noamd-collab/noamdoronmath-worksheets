@@ -9,6 +9,8 @@ No PDF, worksheet source or teacher sheet is modified.
 
 python3 build-teacher-answer-maps.py --index index.json --out maps --report report.json --raster-check
 Use --check to compare regenerated maps to an existing map directory.
+Add --ink-edges to also check every crop edge for clipped ink on a 4x raster
+(answer_ink_edges.py); row rules, table borders and tints are not ink.
 An input row may set refineInkBoundaries=true for reviewed legacy stretchy-
 parenthesis metrics; this requires --raster-check and verified white gaps.
 """
@@ -46,7 +48,7 @@ def answer_row_rectangle(path, page_width):
     return pymupdf.Rect(outer)
 
 
-def build_answer_map(pdf_path, source, expected_sha256=None, raster_check=False, refine_ink_boundaries=False):
+def build_answer_map(pdf_path, source, expected_sha256=None, raster_check=False, refine_ink_boundaries=False, ink_edges=False):
     data = Path(pdf_path).read_bytes()
     digest = hashlib.sha256(data).hexdigest()
     if expected_sha256 and digest != expected_sha256:
@@ -67,7 +69,7 @@ def build_answer_map(pdf_path, source, expected_sha256=None, raster_check=False,
     audit = {'method': 'visible-number-and-source-answer-row-border-v1',
              'questions': len(expected), 'sourceSubpartRecords': len(source['questions']),
              'answerPages': [], 'visibleTraceCount': 0, 'vectorChecks': 0,
-             'rasterBoundaryChecks': 0, 'skippedClosingPages': [], 'inkBoundaryRefinements': [], 'parenthesisMetricExceptions': 0, 'issues': []}
+             'rasterBoundaryChecks': 0, 'inkEdgeChecks': 0, 'skippedClosingPages': [], 'inkBoundaryRefinements': [], 'parenthesisMetricExceptions': 0, 'issues': []}
     with pymupdf.open(stream=data, filetype='pdf') as document:
         if len(document) != source['pageCount'] or start > len(document):
             raise ValueError('PDF page count disagrees with teacher metadata')
@@ -178,6 +180,13 @@ def build_answer_map(pdf_path, source, expected_sha256=None, raster_check=False,
                         if (raster[pixel, :] < 150).any():
                             raise ValueError(f'Page {number}: dark ink intersects row cut at y={y:.3f}')
                         audit['rasterBoundaryChecks'] += 1
+            if ink_edges:
+                from answer_ink_edges import clipped_ink
+                crops = [result[q]['crops'][0] for q, _ in ordered]
+                for finding in clipped_ink(page, crops):
+                    q = ordered[finding['crop']][0]
+                    raise ValueError(f'Page {number}, question {q}: ink crosses the {finding["edge"]} crop edge at {finding["box"]}')
+                audit['inkEdgeChecks'] += len(crops)
             audit['answerPages'].append({'page': number, 'questions': [q for q, _ in ordered]})
     if set(result) != set(expected):
         raise ValueError(f'Missing final answers: {sorted(set(expected) - set(result))}')
@@ -192,18 +201,20 @@ def main():
     parser.add_argument('--report', type=Path, required=True)
     parser.add_argument('--raster-check', action='store_true')
     parser.add_argument('--check', action='store_true')
+    parser.add_argument('--ink-edges', action='store_true', help='Fail on ink that a crop edge would cut')
     args = parser.parse_args()
     rows = json.loads(args.index.read_text())
     if not args.check:
         args.out.mkdir(parents=True, exist_ok=True)
     report = {'status': 'PASS', 'rows': [], 'mapCount': 0, 'questionCount': 0,
-              'sourceSubpartRecords': 0, 'rasterCheck': args.raster_check}
+              'sourceSubpartRecords': 0, 'rasterCheck': args.raster_check, 'inkEdges': args.ink_edges}
     for i, row in enumerate(rows):
         try:
             source = json.loads(Path(row['sheet']).read_text())
             if source['pdfId'] != row['pdfId']:
                 raise ValueError('Teacher source ID differs from the input index')
-            answer_map, audit = build_answer_map(row['pdf'], source, row.get('expectedSha256'), args.raster_check, row.get('refineInkBoundaries', False))
+            answer_map, audit = build_answer_map(row['pdf'], source, row.get('expectedSha256'), args.raster_check,
+                                                 row.get('refineInkBoundaries', False), args.ink_edges)
             path = args.out / (row['pdfId'] + '.json')
             if args.check:
                 if json.loads(path.read_text()) != answer_map:
