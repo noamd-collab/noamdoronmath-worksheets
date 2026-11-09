@@ -1495,6 +1495,170 @@
         "kind": "notation",
         "reason": "סימני ` של Markdown נשמרו בטקסט ומוצגים באתר כתווים גלויים לצד התרגיל. הוסרו הסימנים; התרגילים עצמם לא שונו."
       }
+    ],
+    "soro-2026-11-01": [
+      {
+        "before": "`4x + 9`",
+        "after": "4x + 9",
+        "kind": "notation",
+        "reason": "הגרשים ההפוכים (backticks) הם תחביר Markdown, אבל BlogPostPage.astro מציג את block.text כטקסט רגיל, ולכן התו ` מופיע בעמוד ליד הביטוי. צריך להסיר אותם; את הכיווניות של הביטוי כבר מטפל בה isolateMathRuns."
+      },
+      {
+        "before": "`x`",
+        "after": "x",
+        "kind": "notation",
+        "reason": "הגרשים ההפוכים (backticks) הם תחביר Markdown, אבל BlogPostPage.astro מציג את block.text כטקסט רגיל, ולכן התו ` מופיע בעמוד ליד הביטוי. צריך להסיר אותם; את הכיווניות של הביטוי כבר מטפל בה isolateMathRuns."
+      },
+      {
+        "before": "`3n - 2`",
+        "after": "3n - 2",
+        "kind": "notation",
+        "reason": "הגרשים ההפוכים (backticks) הם תחביר Markdown, אבל BlogPostPage.astro מציג את block.text כטקסט רגיל, ולכן התו ` מופיע בעמוד ליד הביטוי. צריך להסיר אותם; את הכיווניות של הביטוי כבר מטפל בה isolateMathRuns."
+      },
+      {
+        "before": "`3n - 2 = 10`",
+        "after": "3n - 2 = 10",
+        "kind": "notation",
+        "reason": "הגרשים ההפוכים (backticks) הם תחביר Markdown, אבל BlogPostPage.astro מציג את block.text כטקסט רגיל, ולכן התו ` מופיע בעמוד ליד הביטוי. צריך להסיר אותם; את הכיווניות של הביטוי כבר מטפל בה isolateMathRuns."
+      },
+      {
+        "before": "`n`",
+        "after": "n",
+        "kind": "notation",
+        "reason": "הגרשים ההפוכים (backticks) הם תחביר Markdown, אבל BlogPostPage.astro מציג את block.text כטקסט רגיל, ולכן התו ` מופיע בעמוד ליד הביטוי. צריך להסיר אותם; את הכיווניות של הביטוי כבר מטפל בה isolateMathRuns."
+      },
+      {
+        "before": "`a`",
+        "after": "a",
+        "kind": "notation",
+        "reason": "הגרשים ההפוכים (backticks) הם תחביר Markdown, אבל BlogPostPage.astro מציג את block.text כטקסט רגיל, ולכן התו ` מופיע בעמוד ליד הביטוי. צריך להסיר אותם; את הכיווניות של הביטוי כבר מטפל בה isolateMathRuns."
+      },
+      {
+        "before": "`x + 6`",
+        "after": "x + 6",
+        "kind": "notation",
+        "reason": "הגרשים ההפוכים (backticks) הם תחביר Markdown, אבל BlogPostPage.astro מציג את block.text כטקסט רגיל, ולכן התו ` מופיע בעמוד ליד הביטוי. צריך להסיר אותם; את הכיווניות של הביטוי כבר מטפל בה isolateMathRuns."
+      },
+      {
+        "before": "`x - 6`",
+        "after": "x - 6",
+        "kind": "notation",
+        "reason": "הגרשים ההפוכים (backticks) הם תחביר Markdown, אבל BlogPostPage.astro מציג את block.text כטקסט רגיל, ולכן התו ` מופיע בעמוד ליד הביטוי. צריך להסיר אותם; את הכיווניות של הביטוי כבר מטפל בה isolateMathRuns."
+      },
+      {
+        "before": "`6 - x`",
+        "after": "6 - x",
+        "kind": "notation",
+        "reason": "הגרשים ההפוכים (backticks) הם תחביר Markdown, אבל BlogPostPage.astro מציג את block.text כטקסט רגיל, ולכן התו ` מופיע בעמוד ליד הביטוי. צריך להסיר אותם; את הכיווניות של הביטוי כבר מטפל בה isolateMathRuns."
+      },
+      {
+        "before": "`2(x + 3)`",
+        "after": "2(x + 3)",
+        "kind": "notation",
+        "reason": "הגרשים ההפוכים (backticks) הם תחביר Markdown, אבל BlogPostPage.astro מציג את block.text כטקסט רגיל, ולכן התו ` מופיע בעמוד ליד הביטוי. צריך להסיר אותם; את הכיווניות של הביטוי כבר מטפל בה isolateMathRuns."
+      },
+      {
+        "before": "`2x + 3`",
+        "after": "2x + 3",
+        "kind": "notation",
+        "reason": "הגרשים ההפוכים (backticks) הם תחביר Markdown, אבל BlogPostPage.astro מציג את block.text כטקסט רגיל, ולכן התו ` מופיע בעמוד ליד הביטוי. צריך להסיר אותם; את הכיווניות של הביטוי כבר מטפל בה isolateMathRuns."
+      },
+      {
+        "before": "`5x - 4`",
+        "after": "5x - 4",
+        "kind": "notation",
+        "reason": "הגרשים ההפוכים (backticks) הם תחביר Markdown, אבל BlogPostPage.astro מציג את block.text כטקסט רגיל, ולכן התו ` מופיע בעמוד ליד הביטוי. צריך להסיר אותם; את הכיווניות של הביטוי כבר מטפל בה isolateMathRuns."
+      },
+      {
+        "before": "`x ÷ 3`",
+        "after": "x : 3",
+        "kind": "notation",
+        "reason": "בבית הספר מסמנים חילוק בנקודתיים (:) ולא ב־÷. וגם: הגרשים ההפוכים (backticks) מוצגים כפשוטם בעמוד, ולכן מסירים אותם."
+      },
+      {
+        "before": "`4x`",
+        "after": "4x",
+        "kind": "notation",
+        "reason": "הגרשים ההפוכים (backticks) הם תחביר Markdown, אבל BlogPostPage.astro מציג את block.text כטקסט רגיל, ולכן התו ` מופיע בעמוד ליד הביטוי. צריך להסיר אותם; את הכיווניות של הביטוי כבר מטפל בה isolateMathRuns."
+      },
+      {
+        "before": "`x ÷ 2`",
+        "after": "x : 2",
+        "kind": "notation",
+        "reason": "בבית הספר מסמנים חילוק בנקודתיים (:) ולא ב־÷. וגם: הגרשים ההפוכים (backticks) מוצגים כפשוטם בעמוד, ולכן מסירים אותם."
+      },
+      {
+        "before": "`x/2`",
+        "after": "x/2",
+        "kind": "notation",
+        "reason": "הגרשים ההפוכים (backticks) הם תחביר Markdown, אבל BlogPostPage.astro מציג את block.text כטקסט רגיל, ולכן התו ` מופיע בעמוד ליד הביטוי. צריך להסיר אותם; את הכיווניות של הביטוי כבר מטפל בה isolateMathRuns."
+      },
+      {
+        "before": "`2/x`",
+        "after": "2/x",
+        "kind": "notation",
+        "reason": "הגרשים ההפוכים (backticks) הם תחביר Markdown, אבל BlogPostPage.astro מציג את block.text כטקסט רגיל, ולכן התו ` מופיע בעמוד ליד הביטוי. צריך להסיר אותם; את הכיווניות של הביטוי כבר מטפל בה isolateMathRuns."
+      },
+      {
+        "before": "`x + 5`",
+        "after": "x + 5",
+        "kind": "notation",
+        "reason": "הגרשים ההפוכים (backticks) הם תחביר Markdown, אבל BlogPostPage.astro מציג את block.text כטקסט רגיל, ולכן התו ` מופיע בעמוד ליד הביטוי. צריך להסיר אותם; את הכיווניות של הביטוי כבר מטפל בה isolateMathRuns."
+      },
+      {
+        "before": "`x + 5 = 2x`",
+        "after": "x + 5 = 2x",
+        "kind": "notation",
+        "reason": "הגרשים ההפוכים (backticks) הם תחביר Markdown, אבל BlogPostPage.astro מציג את block.text כטקסט רגיל, ולכן התו ` מופיע בעמוד ליד הביטוי. צריך להסיר אותם; את הכיווניות של הביטוי כבר מטפל בה isolateMathRuns."
+      },
+      {
+        "before": "`x(12 + 3)`",
+        "after": "x(12 + 3)",
+        "kind": "notation",
+        "reason": "הגרשים ההפוכים (backticks) הם תחביר Markdown, אבל BlogPostPage.astro מציג את block.text כטקסט רגיל, ולכן התו ` מופיע בעמוד ליד הביטוי. צריך להסיר אותם; את הכיווניות של הביטוי כבר מטפל בה isolateMathRuns."
+      },
+      {
+        "before": "`12x + 3`",
+        "after": "12x + 3",
+        "kind": "notation",
+        "reason": "הגרשים ההפוכים (backticks) הם תחביר Markdown, אבל BlogPostPage.astro מציג את block.text כטקסט רגיל, ולכן התו ` מופיע בעמוד ליד הביטוי. צריך להסיר אותם; את הכיווניות של הביטוי כבר מטפל בה isolateMathRuns."
+      },
+      {
+        "before": "`7 - x`",
+        "after": "7 - x",
+        "kind": "notation",
+        "reason": "הגרשים ההפוכים (backticks) הם תחביר Markdown, אבל BlogPostPage.astro מציג את block.text כטקסט רגיל, ולכן התו ` מופיע בעמוד ליד הביטוי. צריך להסיר אותם; את הכיווניות של הביטוי כבר מטפל בה isolateMathRuns."
+      },
+      {
+        "before": "`x - 7`",
+        "after": "x - 7",
+        "kind": "notation",
+        "reason": "הגרשים ההפוכים (backticks) הם תחביר Markdown, אבל BlogPostPage.astro מציג את block.text כטקסט רגיל, ולכן התו ` מופיע בעמוד ליד הביטוי. צריך להסיר אותם; את הכיווניות של הביטוי כבר מטפל בה isolateMathRuns."
+      },
+      {
+        "before": "`3x + 2`",
+        "after": "3x + 2",
+        "kind": "notation",
+        "reason": "הגרשים ההפוכים (backticks) הם תחביר Markdown, אבל BlogPostPage.astro מציג את block.text כטקסט רגיל, ולכן התו ` מופיע בעמוד ליד הביטוי. צריך להסיר אותם; את הכיווניות של הביטוי כבר מטפל בה isolateMathRuns."
+      },
+      {
+        "before": "`x3`",
+        "after": "x3",
+        "kind": "notation",
+        "reason": "הגרשים ההפוכים (backticks) הם תחביר Markdown, אבל BlogPostPage.astro מציג את block.text כטקסט רגיל, ולכן התו ` מופיע בעמוד ליד הביטוי. צריך להסיר אותם; את הכיווניות של הביטוי כבר מטפל בה isolateMathRuns."
+      },
+      {
+        "before": "`3x`",
+        "after": "3x",
+        "kind": "notation",
+        "reason": "הגרשים ההפוכים (backticks) הם תחביר Markdown, אבל BlogPostPage.astro מציג את block.text כטקסט רגיל, ולכן התו ` מופיע בעמוד ליד הביטוי. צריך להסיר אותם; את הכיווניות של הביטוי כבר מטפל בה isolateMathRuns."
+      },
+      {
+        "before": "`4(x - 2)`",
+        "after": "4(x - 2)",
+        "kind": "notation",
+        "reason": "הגרשים ההפוכים (backticks) הם תחביר Markdown, אבל BlogPostPage.astro מציג את block.text כטקסט רגיל, ולכן התו ` מופיע בעמוד ליד הביטוי. צריך להסיר אותם; את הכיווניות של הביטוי כבר מטפל בה isolateMathRuns."
+      }
     ]
   },
   "gradeHubs": {
