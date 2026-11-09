@@ -1,3 +1,10 @@
+## 2026-11-09 — Grade 8 topic 67: question mapping, Ramzi and the teacher tool
+
+- Whole-question manifests for the three topic 67 PDFs (5 questions each, part letters listed), built only from the printed "שאלה N" headings, the fixed header and footer and the ink between headings. Questions that continue onto the next page keep both crops. Every crop and every answer rectangle was reviewed visually on the original pages.
+- The topic now has Noam prefix G8-T67: its levels open in the worksheet viewer with Noam AI help, and the learning identities (g8-t67-a/b/c) are unchanged.
+- Teacher tool: the three sheets join the picker with answer maps for the final-answers page (no missing answers). The teacher catalog changed only for topic 67; the previews add exactly these three sheets.
+- The temporary exceptions from the first publication (catalog audit MANIFEST_PENDING and the teacher picker skip) are removed.
+
 ## 2026-11-09 — Grade 8 statistics: collecting and reading data, frequency and relative frequency
 
 - New grade 8 catalog topic 67, first in the data, statistics and probability group: three levels (רמה א׳, רמה ב׳, רמת מצוינות) from Noam's PDFs, each ending with a final-answers page.
@@ -455,7 +462,7 @@ Columns: grade, topic, levels present, author, reviewed, live, PR.
 | כיתה ח׳ | מעגל ועיגול — היקף ושטח (G8-T63) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ח׳ | משימת הערכה 1 (G8-T64) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ח׳ | הוכחות בחפיפת משולשים (G8-T65) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
-| כיתה ח׳ | סטטיסטיקה: איסוף מידע, קריאת מידע, שכיחות ושכיחות יחסית (id 67) | רמה א׳, רמה ב׳, רמת מצוינות | Noam | unknown | no | unknown |
+| כיתה ח׳ | סטטיסטיקה: איסוף מידע, קריאת מידע, שכיחות ושכיחות יחסית (G8-T67) | רמה א׳, רמה ב׳, רמת מצוינות | Noam | yes (#422) | yes (#423) | #422 |
 | כיתה ט׳ | חוק הפילוג המורחב (G9-T02) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98 |
 | כיתה ט׳ | פירוק לגורמים (G9-T03) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98 |
 | כיתה ט׳ | צמצום שברים אלגבריים (G9-T04) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98 |
