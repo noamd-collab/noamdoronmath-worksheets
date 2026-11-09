@@ -9,10 +9,10 @@
   "selection": {
     "rule": "published worksheet editions for teacher tools + legacy topics with routing.usesViewer (+ siblingPdfQuery)",
     "catalogPath": "src/data/catalog.v1.json",
-    "count": 441
+    "count": 444
   },
-  "generatedAt": "2026-11-09T14:51:04.040Z",
-  "aggregateSha256": "7987ef29b327bce585e5c5bc698543d452fc2869e52f68d2dfdc18bfd50830de",
+  "generatedAt": "2026-11-09T16:17:56.305Z",
+  "aggregateSha256": "a96515f7ac24e0f6895a7c4a5bf07db12ee57af905ca1893b999d7932cac1346",
   "files": {
     "00469caa9cc343ab945e5a4a826b6a88": {
       "source": "noam-ai/manifests/00469caa9cc343ab945e5a4a826b6a88.json",
@@ -1869,6 +1869,11 @@
       "sha256": "d99603c6e345205b91899a1b4a1132535fc11c8afe815d3e43d8dcfb1a33844d",
       "bytes": 139784
     },
+    "d612e5de3fd24ee1a826410e42c3cab0": {
+      "source": "noam-ai/manifests/d612e5de3fd24ee1a826410e42c3cab0.json",
+      "sha256": "07d664f262846a6f0c04c0f8c08d09b93dc59496295f678c7a0466ebb376c752",
+      "bytes": 7438
+    },
     "d657709fb27e4bc891e17d2d510c3d7f": {
       "source": "noam-ai/manifests/d657709fb27e4bc891e17d2d510c3d7f.json",
       "sha256": "dd3ab1edf9d669899a4d5be18fb1e7999fb3d95986aa5efeb1e106398452abc9",
@@ -2069,6 +2074,11 @@
       "sha256": "fcf2fd6fbaf6bcb963603b8728c37df2ea80255e0dc5059948b77f6c197623ed",
       "bytes": 198881
     },
+    "e67c24ee5b1e4f488c2241fd76d76162": {
+      "source": "noam-ai/manifests/e67c24ee5b1e4f488c2241fd76d76162.json",
+      "sha256": "f9c0fca5a528f2c60655fd73ee71087768af3b4222f3cdac1bc4810c400cf5e5",
+      "bytes": 7962
+    },
     "e67e7e378ebd44af9750988b85d1295e": {
       "source": "noam-ai/manifests/e67e7e378ebd44af9750988b85d1295e.json",
       "sha256": "8bd9dcf428c4221dd95466c456548443d2e27156c6a11099aacb406f836e3d0a",
@@ -2143,6 +2153,11 @@
       "source": "noam-ai/manifests/f2d78978ee4b4674868c14eca5f8e535.json",
       "sha256": "684b608ef2507d4edd9ec267aff0ed9c35ee7acc8f78437e8fe256b39d583a57",
       "bytes": 124763
+    },
+    "f34602adb8e048aab957308c7e8c6fcb": {
+      "source": "noam-ai/manifests/f34602adb8e048aab957308c7e8c6fcb.json",
+      "sha256": "c2a095ef9df792a3c816650ddd1d2078d00b5546c620b72b4ba956c1223a131f",
+      "bytes": 7436
     },
     "f3beac1ef5ee40eeb4130b6a5fae7ad2": {
       "source": "noam-ai/manifests/f3beac1ef5ee40eeb4130b6a5fae7ad2.json",
@@ -2223,8 +2238,8 @@
   "legacyIndex": {
     "path": "public/legacy-github/index.html",
     "source": "index.html",
-    "sha256": "dc97e1a19bdb0c757a601dd239127f6f9ada1c972c447eba807a236b12c06f89",
-    "bytes": 187301,
+    "sha256": "b94922d0177e509678d07f19da48aa593ff33cd375280b49520ad5a3cd6d964d",
+    "bytes": 187313,
     "note": "Sibling-level discovery fallback when pa/pb/pc are incomplete; not the Astro home route."
   },
   "retainedLegacy": {
