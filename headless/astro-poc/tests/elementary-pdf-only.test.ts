@@ -72,7 +72,7 @@ test('all three real published levels open direct PDFs from catalog and search; 
   const { buildLearningCatalog } = require('../../../scripts/build-learning-catalog.cjs');
   const baseline = buildLearningCatalog(loadIndexCatalog(), { version: 1, editions: [] });
   const published = buildLearningCatalog(loadIndexCatalog(), registry);
-  assert.equal(published.length, 964);
+  assert.equal(published.length, 967); // +3: grade 8 topic 67 (2026-11-09)
   assert.deepEqual(published, baseline, 'no new progress identities without the DB rollout');
   assert.ok(published.every((row: any) => !row.editionId));
 });

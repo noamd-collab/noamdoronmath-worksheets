@@ -50,7 +50,7 @@ test('teacher catalog appends only published editions and leaves every legacy fi
     assert.deepEqual({...topic,sheets:topic.sheets.filter((s: any)=>!s.editionId)}, before);
     legacy += before.sheets.length; added += topic.sheets.filter((s: any)=>s.editionId).length;
   }));
-  assert.equal(legacy, 964); assert.equal(added, 3);
+  assert.equal(legacy, 967); assert.equal(added, 3); // legacy +3: grade 8 topic 67 (2026-11-09)
   const sheets = catalogSheets(next).filter((s: any)=>s.editionId);
   assert.deepEqual(sheets.map((s: any)=>s.level), ['a','b','c']);
   for (const s of sheets) { assert.equal(s.editionLabel,'דפים חדשים'); assert.equal(s.prefix,'G1-T05'); assert.match(s.learningId,/-e-test-renewal-r1$/); assert.ok(s.title.endsWith(' · דפים חדשים')); }
