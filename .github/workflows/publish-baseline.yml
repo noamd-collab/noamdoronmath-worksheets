@@ -2,12 +2,12 @@ name: publish-baseline
 
 # Publish only from headless/astro-poc-baseline, never from release/* branches.
 # Every new site SHA needs Noam's explicit approval and a reviewed PR.
-# Noam approved 8c0cc56b72b72000cf751aecd3f99a444c56886d only (5.11.2026: #407, hero keeps first paint and prefetches the random loop).
+# Noam approved 9794ec4f413f6bf167eb1fc9ed868030df5b667a only (9.11.2026: #414 teachers Beta labels, together with the merged #410-#413).
 # A push publishes only when RELEASE_SHA changes. Infrastructure-only PRs do
 # not republish the site. Manual retries use the same approved pin on main.
 
 env:
-  RELEASE_SHA: 8c0cc56b72b72000cf751aecd3f99a444c56886d
+  RELEASE_SHA: 9794ec4f413f6bf167eb1fc9ed868030df5b667a
 
 on:
   workflow_dispatch:
