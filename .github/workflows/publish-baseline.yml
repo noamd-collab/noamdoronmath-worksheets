@@ -2,12 +2,12 @@ name: publish-baseline
 
 # Publish only from headless/astro-poc-baseline, never from release/* branches.
 # Every new site SHA needs Noam's explicit approval and a reviewed PR.
-# Noam approved 8d0d692213cd5d4900cde50d0f7612cf2062ba9d only (9.11.2026: #427, play the grade 8 statistics film silently on load).
+# Noam approved 7f5f679781ec152850ee4e9e2f112b384b19950b only (10.11.2026: #429, shrink the statistics pause button and widen the phone film).
 # A push publishes only when RELEASE_SHA changes. Infrastructure-only PRs do
 # not republish the site. Manual retries use the same approved pin on main.
 
 env:
-  RELEASE_SHA: 8d0d692213cd5d4900cde50d0f7612cf2062ba9d
+  RELEASE_SHA: 7f5f679781ec152850ee4e9e2f112b384b19950b
 
 on:
   workflow_dispatch:
