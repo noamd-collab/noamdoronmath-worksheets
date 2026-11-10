@@ -14,7 +14,7 @@ import { GradeNav } from './GradeNav';
 import { catalogSearch, matchingTopicIds } from '../lib/siteSearch/catalogFilter';
 import { searchHref } from '../lib/siteSearch/url';
 import { countRenderedTopicCards } from '../lib/catalog/renderedCards';
-import { buildWorksheetHref } from '../lib/worksheetLinks';
+import { buildWorksheetHref, worksheetActionLabel } from '../lib/worksheetLinks';
 import { resolveEdition, topicEditions } from '../lib/catalog/editions';
 import {
   buildWorksheetsHref,
@@ -334,9 +334,9 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
           href={href}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label={`${topic.title} — ${level.label}, קובץ PDF`}
+          aria-label={`${topic.title} — ${worksheetActionLabel(level.label, href)}`}
         >
-          {level.label}
+          {worksheetActionLabel(level.label, href)}
         </a>
       );
     });

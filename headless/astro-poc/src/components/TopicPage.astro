@@ -10,7 +10,8 @@ import ParallelCointeriorLoop from './ParallelCointeriorLoop.astro';
 import StatisticsFrequencyLoop from './StatisticsFrequencyLoop.astro';
 import KiteInteractive from './KiteInteractive.astro';
 import { loadCatalog } from '../lib/catalog/loadCatalog';
-import { buildWorksheetHref } from '../lib/worksheetLinks';
+import { buildWorksheetHref, worksheetActionLabel } from '../lib/worksheetLinks';
+import TopicShareLink from './TopicShareLink.astro';
 import { resolveEdition } from '../lib/catalog/editions';
 import { LANDING_LOOP_ANCHORS, componentLandingLoop, topicLandingLoop } from '../lib/landingLoops';
 import AdjacentVerticalAnglesLoop from './AdjacentVerticalAnglesLoop.astro';
@@ -246,13 +247,13 @@ function faqHeadingId(groupIndex: number) {
                   cta.catalogTopicId != null ? String(cta.catalogTopicId) : undefined
                 }
               >
-                {cta.label}
+                {worksheetActionLabel(cta.label, directHref)}
               </a>
             </p>
             {preLevels.length > 0 && directHref.startsWith('#') && (
               <div class="exact-topic-levels" id={targetId} data-topic-levels>
                 {preLevels.map((level) => (
-                  <a class={`exact-topic-level exact-topic-level--${level.key}`} href={level.href} target="_blank" rel="noopener noreferrer" data-level-key={level.key}>{level.label}</a>
+                  <a class={`exact-topic-level exact-topic-level--${level.key}`} href={level.href} target="_blank" rel="noopener noreferrer" data-level-key={level.key}>{worksheetActionLabel(level.label, level.href)}</a>
                 ))}
               </div>
             )}
@@ -263,6 +264,7 @@ function faqHeadingId(groupIndex: number) {
 
     <header class="topic-page__header">
       <h1>{page.h1}</h1>
+      <TopicShareLink path={page.path} />
     </header>
 
     <div data-body-flow>
@@ -308,7 +310,7 @@ function faqHeadingId(groupIndex: number) {
                       data-catalog-topic={unit.item.catalogTopicId != null ? String(unit.item.catalogTopicId) : undefined}
                       target={directHref.startsWith('#') ? undefined : '_blank'}
                       rel={directHref.startsWith('#') ? undefined : 'noopener noreferrer'}
-                    >{unit.item.label}</a>
+                    >{worksheetActionLabel(unit.item.label, directHref)}</a>
                   </p>
                 );
               }
@@ -317,7 +319,7 @@ function faqHeadingId(groupIndex: number) {
             {topicLevels.length > 0 && (
               <div class="exact-topic-levels" id="topic-levels" data-topic-levels>
                 {topicLevels.map((level) => (
-                  <a class={`exact-topic-level exact-topic-level--${level.key}`} href={level.href} target="_blank" rel="noopener noreferrer" data-level-key={level.key}>{level.label}</a>
+                  <a class={`exact-topic-level exact-topic-level--${level.key}`} href={level.href} target="_blank" rel="noopener noreferrer" data-level-key={level.key}>{worksheetActionLabel(level.label, level.href)}</a>
                 ))}
               </div>
             )}
@@ -356,13 +358,13 @@ function faqHeadingId(groupIndex: number) {
                     target={directHref.startsWith('#') ? undefined : '_blank'}
                     rel={directHref.startsWith('#') ? undefined : 'noopener noreferrer'}
                   >
-                    {block.label}
+                    {worksheetActionLabel(block.label, directHref)}
                   </a>
                 </p>
                 {flowLevels.length > 0 && directHref.startsWith('#') && (
                   <div class="exact-topic-levels" id={targetId} data-topic-levels>
                     {flowLevels.map((level) => (
-                      <a class={`exact-topic-level exact-topic-level--${level.key}`} href={level.href} target="_blank" rel="noopener noreferrer" data-level-key={level.key}>{level.label}</a>
+                      <a class={`exact-topic-level exact-topic-level--${level.key}`} href={level.href} target="_blank" rel="noopener noreferrer" data-level-key={level.key}>{worksheetActionLabel(level.label, level.href)}</a>
                     ))}
                   </div>
                 )}
