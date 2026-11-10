@@ -10,8 +10,8 @@
  *    twitter:title. It can't be switched off from code.
  *
  * BaseLayout now owns one title, description, canonical (production host),
- * robots, and the Open Graph / Twitter set. A client script removes the matching
- * Wix [wix-seo-tag] copies, including ones that pointed at the preview host.
+ * robots, and the Open Graph / Twitter set. Server middleware removes matching
+ * Wix [wix-seo-tag] copies before delivery, preserving preview noindex directives.
  *
  * This module adds only image dimensions Wix and BaseLayout never emit:
  *  - og:image:width and og:image:height, only when the blog JSON stores both on the

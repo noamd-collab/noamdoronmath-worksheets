@@ -89,60 +89,19 @@ const breadcrumbLd = breadcrumbList(crumbItems);
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#fbfaf5" />
-    <meta name="robots" content={robots} />
-    <link rel="canonical" href={canonical} />
-    <title>{resolvedTitle}</title>
-    <meta name="description" content={resolvedDescription} />
+    <meta data-noam-seo name="robots" content={robots} />
+    <link data-noam-seo rel="canonical" href={canonical} />
+    <title data-noam-seo>{resolvedTitle}</title>
+    <meta data-noam-seo name="description" content={resolvedDescription} />
     {social.map((tag) =>
       tag.property ? (
-        <meta property={tag.property} content={tag.content} />
+        <meta data-noam-seo property={tag.property} content={tag.content} />
       ) : (
-        <meta name={tag.name} content={tag.content} />
+        <meta data-noam-seo name={tag.name} content={tag.content} />
       )
     )}
-    {/* Wix injects a second title, description, canonical, robots, og:* and
-        twitter:* (often the preview host and "… | Noam Math Astro POC").
-        Keep the tags above; drop the Wix copies. */}
-    <script is:inline>
-      (function () {
-        function stripWixSeoDupes() {
-          var nodes = document.querySelectorAll('[wix-seo-tag="true"]');
-          for (var i = 0; i < nodes.length; i++) {
-            var el = nodes[i];
-            var tag = el.tagName.toLowerCase();
-            if (tag === 'title') {
-              el.parentNode && el.parentNode.removeChild(el);
-              continue;
-            }
-            if (tag === 'link' && String(el.getAttribute('rel') || '').toLowerCase() === 'canonical') {
-              el.parentNode && el.parentNode.removeChild(el);
-              continue;
-            }
-            if (tag !== 'meta') continue;
-            var name = String(el.getAttribute('name') || '').toLowerCase();
-            var prop = String(el.getAttribute('property') || '').toLowerCase();
-            if (
-              name === 'description' ||
-              name === 'robots' ||
-              name.indexOf('twitter:') === 0 ||
-              prop.indexOf('og:') === 0
-            ) {
-              el.parentNode && el.parentNode.removeChild(el);
-            }
-          }
-        }
-        stripWixSeoDupes();
-        if (typeof MutationObserver === 'function') {
-          new MutationObserver(stripWixSeoDupes).observe(document.documentElement, {
-            childList: true,
-            subtree: true,
-          });
-        }
-      })();
-    </script>
-    {/* Wix-documented slot for item-page SEO (<SEO.Tags slot="seo-tags">).
-        Blog item pages fill this; main pages use props above as the single
-        title/meta source (no "Astro POC" / "Home | …" duplicates). */}
+    {/* Server middleware removes matching Wix defaults before delivery. Blog
+        image dimensions supplement these authored tags through this slot. */}
     <slot name="seo-tags" />
     <link
       rel="preload"

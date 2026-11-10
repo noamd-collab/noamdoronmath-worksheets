@@ -300,6 +300,11 @@
   transition: none;
   white-space: normal;
 }
+.exact-catalog .levels .lvl--pdf {
+  flex: 1 1 135px;
+  min-height: 44px;
+  box-sizing: border-box;
+}
 .exact-catalog .levels .lvl:hover {
   box-shadow: none;
   transform: none;
