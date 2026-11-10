@@ -19,6 +19,8 @@
  * They moved again so the card title follows the film that is playing.
  * They moved again so OS prefers-reduced-motion parks a loop unless the
  * visitor explicitly enables motion on this site.
+ * They moved again for the 10.11.2026 landing animation audit: fade-only
+ * films now move their pieces, and the sas-snap copy is visible.
  */
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
@@ -77,10 +79,10 @@ const protectedFiles: Record<string, string> = {
   // Four additive elementary films restored from main (30 October 2026).
   // Existing baseline films and kite rendering remain intact.
   // kite-construct film added for /kite-grade-9 (explicit content, not a design regen).
-  'src/lib/conceptLoops.ts': '78636536a970ed54e07592c26450aa8f26540e780f9782c7b74482e07669d7e5',
+  'src/lib/conceptLoops.ts': '4bb9672e19a77ed3cb21e33b8592d26156a9edca19f831cc32cf41e689c7e634',
   // Brave motion: site opt-in overrides prefers-reduced-motion inside the film.
   // Kite caption says חלקי 2 instead of a slash fraction.
-  'src/components/ConceptLoop.astro': '24b3e9cddc65d2617755a02ebd8772aaa0a8d74477c913a86e15eff66d1c5131',
+  'src/components/ConceptLoop.astro': '4c616613dede35dc1deb60d11941e4b3b0aa051c3b20b5239b23ec7582036767',
   // HeroLoop.astro is the homepage shell (which loops are emitted). The engine
   // above stays byte-identical; the home hero may lazy-load existing loops.
   // One readout line only: S = (a · h) : 2 school notation, PR #40 via PR #41.
