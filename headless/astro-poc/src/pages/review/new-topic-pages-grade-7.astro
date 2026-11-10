@@ -1,0 +1,7 @@
+---
+import CatalogGapReview from '../../components/CatalogGapReview.astro';
+import { TOPIC_PAGE_G7_AUTHORED_SLUGS } from '../../lib/topicPages';
+
+export const prerender = false;
+---
+<CatalogGapReview grade={7} gradeLabel="ז׳" slugs={TOPIC_PAGE_G7_AUTHORED_SLUGS} />
