@@ -95,12 +95,12 @@ const bondThirteen = frameCells(164, 122, 26);
             <text class="sk-math" x={240 + n * 36} y="156" font-size="18" text-anchor="middle">{signedLabel(n)}</text>
           </g>
         ))}
-        <path class="sk-gold sk-in" d="M96 96 H240"></path>
-        <path class="sk-gold sk-in sk-d1" d="M240 96 H384"></path>
+        <path class="sk-gold mv" style="--from:scaleX(0);--org:100% 50%" d="M96 96 H240"></path>
+        <path class="sk-gold mv" style="--from:scaleX(0);--org:0 50%" d="M240 96 H384"></path>
         <text class="sk-math" x="168" y="84" font-size="16" text-anchor="middle">4</text>
         <text class="sk-math" x="312" y="84" font-size="16" text-anchor="middle">4</text>
-        <circle cx="96" cy="120" r="9" class="sk-dot"></circle>
-        <circle cx="384" cy="120" r="9" class="sk-dot"></circle>
+        <circle class="sk-dot mv" style="--from:translateX(144px)" cx="96" cy="120" r="9"></circle>
+        <circle class="sk-dot mv" style="--from:translateX(-144px)" cx="384" cy="120" r="9"></circle>
         <text class="sk-math" x="240" y="200" font-size="28" text-anchor="middle">|{MINUS}4| = 4</text>
       </>
     )}
@@ -201,29 +201,34 @@ const bondThirteen = frameCells(164, 122, 26);
         <text class="sk-math" x="36" y="90" font-size="32">5 × 3</text>
         <text class="sk-math sk-in" x="36" y="140" font-size="32">= 15</text>
         {areaCells.map((cell) => (
-          <rect class="sk-cell" style={`--i:${cell.i}`} x={cell.x} y={cell.y} width="34" height="34" rx="6"></rect>
+          <rect class="sk-cell mv" style={`--from:translateX(-${60 + (cell.i % 3) * 36}px);--fo:0;--d:${Math.floor(cell.i / 3) * 0.32}s`} x={cell.x} y={cell.y} width="34" height="34" rx="6"></rect>
         ))}
       </>
     )}
 
     {variant === 'area-para' && (
       <>
-        <g class="sk-shear">
-          <rect class="sk-box" x="130" y="48" width="220" height="110" rx="4"></rect>
-        </g>
-        <line class="sk-gold sk-in" x1="168" y1="48" x2="168" y2="158"></line>
-        <text class="sk-math" x="150" y="196" font-size="20">b</text>
-        <text class="sk-math" x="176" y="110" font-size="20">h</text>
-        <text class="sk-math sk-in" x="300" y="196" font-size="24">S = b × h</text>
+        <polygon class="sk-ghost" points="130,158 350,158 381.5,48 161.5,48"></polygon>
+        <polygon class="sk-box" points="161.5,48 381.5,48 350,158 161.5,158"></polygon>
+        <polygon class="sk-box sk-box--gold mv mv-20" style="--from:translateX(-220px)" points="350,158 381.5,48 381.5,158"></polygon>
+        <line class="sk-coral mv" style="--from:scaleY(0);--org:50% 0" x1="161.5" y1="48" x2="161.5" y2="158"></line>
+        <text class="sk-math" x="271" y="186" font-size="20" text-anchor="middle">b</text>
+        <text class="sk-math" x="150" y="110" font-size="20" text-anchor="end">h</text>
+        <text class="sk-math sk-in" x="300" y="222" font-size="24">S = b × h</text>
       </>
     )}
 
     {variant === 'area-split' && (
       <>
-        <rect class="sk-box" x="60" y="48" width="180" height="120"></rect>
-        <rect class="sk-box sk-box--gold sk-in" x="240" y="48" width="120" height="120"></rect>
-        <text class="sk-math" x="150" y="116" font-size="28" text-anchor="middle">6</text>
-        <text class="sk-math sk-in" x="300" y="116" font-size="28" text-anchor="middle">4</text>
+        <rect class="sk-ghost-box" x="60" y="48" width="300" height="120"></rect>
+        <g class="mv" style="--from:translateX(-24px)">
+          <rect class="sk-box" x="60" y="48" width="180" height="120"></rect>
+          <text class="sk-math" x="150" y="116" font-size="28" text-anchor="middle">6</text>
+        </g>
+        <g class="mv mv-20" style="--from:translateX(60px)">
+          <rect class="sk-box sk-box--gold" x="240" y="48" width="120" height="120"></rect>
+          <text class="sk-math" x="300" y="116" font-size="28" text-anchor="middle">4</text>
+        </g>
         <text class="sk-math sk-in sk-d2" x="240" y="206" font-size="28" text-anchor="middle">6 + 4 = 10</text>
       </>
     )}
@@ -231,21 +236,32 @@ const bondThirteen = frameCells(164, 122, 26);
     {variant === 'quads' && (
       <>
         <rect class="sk-ghost-box" x="140" y="52" width="200" height="110"></rect>
-        <g class="sk-shear">
-          <rect class="sk-box" x="140" y="52" width="200" height="110" rx="4"></rect>
-        </g>
+        <polygon class="sk-box" points="140,162 340,162 340,52 180,52"></polygon>
+        <polygon class="sk-box sk-box--coral mv mv-20" style="--from:translateX(-200px)" points="340,162 380,52 340,52"></polygon>
+        <line class="sk-gold mv" style="--from:scaleY(0);--org:50% 100%" x1="240" y1="162" x2="240" y2="52"></line>
+        <text class="sk-math" x="252" y="112" font-size="20">h</text>
+      </>
+    )}
+
+    {variant === 'quad-sides' && (
+      <>
+        <polygon class="sk-box" points="140,162 340,162 380,52 180,52"></polygon>
+        <line class="sk-coral" style="stroke-width:6" x1="180" y1="52" x2="380" y2="52"></line>
+        <line class="sk-teal" style="stroke-width:6" x1="140" y1="162" x2="180" y2="52"></line>
+        <line class="sk-coral mv" style="stroke-width:6;--from:translate(40px,-110px)" x1="140" y1="162" x2="340" y2="162"></line>
+        <line class="sk-teal mv mv-40" style="stroke-width:6;--from:translateX(-200px)" x1="340" y1="162" x2="380" y2="52"></line>
       </>
     )}
 
     {variant === 'rect' && (
       <>
         <rect class="sk-box" x="90" y="40" width="280" height="140"></rect>
-        <path class="sk-gold sk-in" d="M90 70 V40 H120"></path>
-        <path class="sk-gold sk-in" d="M370 70 V40 H340"></path>
-        <path class="sk-gold sk-in" d="M90 150 V180 H120"></path>
-        <path class="sk-gold sk-in" d="M370 150 V180 H340"></path>
-        <line class="sk-coral sk-in sk-d2" x1="90" y1="40" x2="370" y2="180"></line>
-        <line class="sk-coral sk-in sk-d2" x1="370" y1="40" x2="90" y2="180"></line>
+        <path class="sk-gold mv" style="--from:translate(-16px,-16px);--fo:0" d="M90 70 V40 H120"></path>
+        <path class="sk-gold mv" style="--from:translate(16px,-16px);--fo:0;--d:.15s" d="M370 70 V40 H340"></path>
+        <path class="sk-gold mv" style="--from:translate(-16px,16px);--fo:0;--d:.3s" d="M90 150 V180 H120"></path>
+        <path class="sk-gold mv" style="--from:translate(16px,16px);--fo:0;--d:.45s" d="M370 150 V180 H340"></path>
+        <line class="sk-coral" x1="90" y1="40" x2="370" y2="180"></line>
+        <line class="sk-teal mv mv-40" style="--from:rotate(53.13deg)" x1="370" y1="40" x2="90" y2="180"></line>
       </>
     )}
 
@@ -367,6 +383,8 @@ const bondThirteen = frameCells(164, 122, 26);
         <g class="sk-unroll">
           <rect class="sk-box" x="210" y="70" width="200" height="90" rx="6"></rect>
         </g>
+        <circle class="sk-ring mv mv-40" style="--from:translate(-200px,71.83px) scale(1.445,0.503)" cx="310" cy="38.17" r="31.83"></circle>
+        <circle class="sk-ring mv mv-40" style="--from:translate(-200px,-11.83px) scale(1.445,0.503);--d:.3s" cx="310" cy="191.83" r="31.83"></circle>
         <text class="sk-math" x="310" y="122" font-size="18" text-anchor="middle">2πr × h</text>
       </>
     )}
@@ -376,30 +394,35 @@ const bondThirteen = frameCells(164, 122, 26);
         <polygon class="sk-box" points="70,110 180,60 300,110 180,160"></polygon>
         <polygon class="sk-box" points="70,110 180,160 180,220 70,170"></polygon>
         <polygon class="sk-box sk-box--gold" points="180,160 300,110 300,170 180,220"></polygon>
-        <line class="sk-coral sk-edge" x1="70" y1="110" x2="180" y2="160"></line>
-        <line class="sk-gold sk-edge sk-d1" x1="180" y1="160" x2="300" y2="110"></line>
-        <line class="sk-teal sk-edge sk-d2" x1="180" y1="160" x2="180" y2="220"></line>
+        <line class="sk-coral mv" style="stroke-width:6;--from:scale(0);--org:100% 100%" x1="70" y1="110" x2="180" y2="160"></line>
+        <line class="sk-gold mv mv-20" style="stroke-width:6;--from:scale(0);--org:0 100%" x1="180" y1="160" x2="300" y2="110"></line>
+        <line class="sk-teal mv mv-40" style="stroke-width:6;--from:scale(0);--org:50% 0" x1="180" y1="160" x2="180" y2="220"></line>
         <text class="sk-math" x="330" y="150" font-size="22">a × b × c</text>
       </>
     )}
 
     {variant === 'prism-area' && (
       <>
-        <polygon class="sk-box sk-in" points="40,80 90,50 90,120"></polygon>
-        <rect class="sk-box sk-in sk-d1" x="90" y="50" width="70" height="70"></rect>
-        <rect class="sk-box sk-box--gold sk-in sk-d1" x="160" y="50" width="70" height="70"></rect>
-        <rect class="sk-box sk-in sk-d1" x="230" y="50" width="70" height="70"></rect>
-        <polygon class="sk-box sk-in sk-d2" points="300,50 350,80 300,120"></polygon>
+        <rect class="sk-box mv" style="--from:scaleX(0);--org:100% 50%" x="90" y="105" width="70" height="70"></rect>
+        <rect class="sk-box sk-box--gold" x="160" y="105" width="70" height="70"></rect>
+        <rect class="sk-box mv" style="--from:scaleX(0);--org:0 50%;--d:.2s" x="230" y="105" width="70" height="70"></rect>
+        <polygon class="sk-box mv mv-40" style="--from:scaleY(0);--org:50% 100%" points="160,105 230,105 195,44.38"></polygon>
+        <polygon class="sk-box mv mv-40" style="--from:scaleY(0);--org:50% 0;--d:.2s" points="160,175 230,175 195,235.62"></polygon>
       </>
     )}
 
     {variant === 'prism-vol' && (
       <>
         <polygon class="sk-box" points="70,150 150,70 230,150"></polygon>
+        <polygon class="sk-ghost mv" style="--from:translate(-44.8px,7.47px);--fo:0;--o:.7;--d:.35s" points="114.8,142.53 194.8,62.53 274.8,142.53"></polygon>
+        <polygon class="sk-ghost mv" style="--from:translate(-89.6px,14.93px);--fo:0;--o:.7;--d:.7s" points="159.6,135.07 239.6,55.07 319.6,135.07"></polygon>
         <g class="sk-extrude">
           <rect class="sk-stage" x="0" y="0" width="480" height="280"></rect>
           <polygon class="sk-box sk-box--gold" points="70,150 150,70 230,150"></polygon>
         </g>
+        <line class="sk-ink sk-pv-edge" style="stroke-width:2" x1="70" y1="150" x2="204.4" y2="127.6"></line>
+        <line class="sk-ink sk-pv-edge" style="stroke-width:2" x1="150" y1="70" x2="284.4" y2="47.6"></line>
+        <line class="sk-ink sk-pv-edge" style="stroke-width:2" x1="230" y1="150" x2="364.4" y2="127.6"></line>
         <text class="sk-math" x="300" y="214" font-size="22">V = S × ℓ</text>
       </>
     )}
@@ -411,6 +434,14 @@ const bondThirteen = frameCells(164, 122, 26);
         {quadSigns.map((q) => (
           <text class="sk-math" x={q.x} y={q.y} font-size="18">{q.t}</text>
         ))}
+        <g class="sk-qx">
+          <rect class="sk-stage" x="0" y="0" width="480" height="280"></rect>
+          <circle class="sk-ring" style="stroke:#e5735c" cx="0" cy="120" r="9"></circle>
+        </g>
+        <g class="sk-qy">
+          <rect class="sk-stage" x="0" y="0" width="480" height="280"></rect>
+          <circle class="sk-ring" style="stroke:#e5735c" cx="240" cy="0" r="9"></circle>
+        </g>
         <g class="sk-quad">
           <rect class="sk-stage" x="0" y="0" width="480" height="280"></rect>
           <circle class="sk-dot" cx="0" cy="0" r="9"></circle>
@@ -423,8 +454,12 @@ const bondThirteen = frameCells(164, 122, 26);
         <line class="sk-ink" x1="70" y1="210" x2="400" y2="210"></line>
         <line class="sk-ink" x1="80" y1="220" x2="80" y2="20"></line>
         <line class="sk-coral" x1="80" y1="210" x2="200" y2="30"></line>
-        <circle class="sk-dot sk-in" cx="140" cy="120" r="7"></circle>
-        <circle class="sk-dot sk-in sk-d1" cx="200" cy="30" r="7"></circle>
+        <line class="sk-gold mv" style="--from:scaleX(0);--org:0 50%" x1="80" y1="210" x2="140" y2="210"></line>
+        <line class="sk-gold mv mv-20" style="--from:scaleY(0);--org:50% 100%" x1="140" y1="210" x2="140" y2="120"></line>
+        <line class="sk-gold mv mv-40" style="--from:scaleX(0);--org:0 50%" x1="140" y1="120" x2="200" y2="120"></line>
+        <line class="sk-gold mv mv-60" style="--from:scaleY(0);--org:50% 100%" x1="200" y1="120" x2="200" y2="30"></line>
+        <circle class="sk-dot mv mv-20" style="--from:translateY(90px)" cx="140" cy="120" r="7"></circle>
+        <circle class="sk-dot mv mv-60" style="--from:translateY(90px)" cx="200" cy="30" r="7"></circle>
         <text class="sk-math" x="230" y="100" font-size="20">(1, 2) (2, 4)</text>
         <text class="sk-math" x="230" y="132" font-size="20">y = 2x</text>
       </>
@@ -441,7 +476,8 @@ const bondThirteen = frameCells(164, 122, 26);
         ))}
         <path class="sk-gold" d="M100 88 H220"></path>
         <text class="sk-math" x="160" y="76" font-size="18" text-anchor="middle">= 5</text>
-        <path class="sk-coral sk-in" d="M100 48 H340"></path>
+        <path class="sk-coral mv" style="--from:translateY(40px)" d="M100 48 H218"></path>
+        <path class="sk-coral mv mv-40" style="--from:translate(-120px,40px)" d="M222 48 H340"></path>
         <text class="sk-math sk-in" x="220" y="36" font-size="20" text-anchor="middle">= 10</text>
       </>
     )}
@@ -541,10 +577,11 @@ const bondThirteen = frameCells(164, 122, 26);
         <line class="sk-ink" x1="40" y1="200" x2="440" y2="200"></line>
         <line class="sk-ink" x1="240" y1="230" x2="240" y2="24"></line>
         <path class="sk-coral" d="M160 88 Q240 312 320 88" fill="none"></path>
+        <path class="sk-gold mv mv-20 mv--vb" style="stroke-width:6;--from:scaleX(-1);--org:240px 0px" d="M240 200 Q280 200 320 88" fill="none"></path>
         <line class="sk-gold sk-in" x1="160" y1="88" x2="320" y2="88"></line>
         <circle class="sk-dot" cx="160" cy="88" r="7"></circle>
         <circle class="sk-ink-dot" cx="240" cy="200" r="4"></circle>
-        <circle class="sk-dot" cx="320" cy="88" r="7"></circle>
+        <circle class="sk-dot mv mv-20 mv--vb" style="--from:scaleX(-1);--org:240px 0px" cx="320" cy="88" r="7"></circle>
         <text class="sk-math" x="160" y="72" font-size="16" text-anchor="middle">({MINUS}2, 4)</text>
         <text class="sk-math" x="320" y="72" font-size="16" text-anchor="middle">(2, 4)</text>
       </>
@@ -555,8 +592,8 @@ const bondThirteen = frameCells(164, 122, 26);
         <line class="sk-ink" x1="40" y1="160" x2="440" y2="160"></line>
         <line class="sk-ink" x1="240" y1="230" x2="240" y2="30"></line>
         <path class="sk-coral" d="M150 160 Q240 -80 330 160" fill="none"></path>
-        <circle class="sk-dot sk-in" cx="150" cy="160" r="8"></circle>
-        <circle class="sk-dot sk-in" cx="330" cy="160" r="8"></circle>
+        <circle class="sk-dot mv mv-20" style="--from:translateX(90px)" cx="150" cy="160" r="8"></circle>
+        <circle class="sk-dot mv mv-20" style="--from:translateX(-90px)" cx="330" cy="160" r="8"></circle>
         <text class="sk-math" x="150" y="190" font-size="18" text-anchor="middle">x = {MINUS}2</text>
         <text class="sk-math" x="330" y="190" font-size="18" text-anchor="middle">x = 2</text>
       </>
@@ -567,9 +604,9 @@ const bondThirteen = frameCells(164, 122, 26);
         <line class="sk-ink" x1="60" y1="200" x2="420" y2="200"></line>
         <line class="sk-ink" x1="100" y1="220" x2="100" y2="24"></line>
         <path class="sk-coral" d="M100 200 Q220 -40 340 200" fill="none"></path>
-        <line class="sk-gold sk-in" x1="220" y1="200" x2="220" y2="80"></line>
-        <line class="sk-gold sk-in sk-d1" x1="100" y1="80" x2="220" y2="80"></line>
-        <circle class="sk-dot" cx="220" cy="80" r="7"></circle>
+        <line class="sk-gold mv" style="--from:scaleY(0);--org:50% 100%" x1="220" y1="200" x2="220" y2="80"></line>
+        <line class="sk-gold mv mv-20" style="--from:scaleX(0);--org:100% 50%" x1="100" y1="80" x2="220" y2="80"></line>
+        <circle class="sk-dot mv" style="--from:translateY(120px)" cx="220" cy="80" r="7"></circle>
         <text class="sk-math" x="236" y="188" font-size="16">2</text>
         <text class="sk-math" x="88" y="76" font-size="16" text-anchor="end">4</text>
       </>
@@ -579,9 +616,9 @@ const bondThirteen = frameCells(164, 122, 26);
       <>
         <line class="sk-ink" x1="40" y1="200" x2="430" y2="200"></line>
         <line class="sk-ink" x1="80" y1="230" x2="80" y2="24"></line>
-        <line class="sk-coral" x1="80" y1="200" x2="250" y2="30"></line>
-        <line class="sk-gold" x1="80" y1="40" x2="240" y2="200"></line>
-        <circle class="sk-dot sk-in" cx="160" cy="120" r="8"></circle>
+        <line class="sk-coral mv" style="--from:scale(0);--org:0 100%" x1="80" y1="200" x2="250" y2="30"></line>
+        <line class="sk-gold mv" style="--from:scale(0);--org:0 0;--d:.3s" x1="80" y1="40" x2="240" y2="200"></line>
+        <circle class="sk-dot mv mv-40" style="--from:translate(-80px,80px);--fo:0" cx="160" cy="120" r="8"></circle>
         <text class="sk-math" x="176" y="108" font-size="20">(2, 2)</text>
       </>
     )}
@@ -591,6 +628,9 @@ const bondThirteen = frameCells(164, 122, 26);
         <line class="sk-ink" x1="40" y1="120" x2="440" y2="120"></line>
         <path class="sk-ink" d="M428 112 L444 120 L428 128"></path>
         <line class="sk-ray" x1="258" y1="120" x2="420" y2="120"></line>
+        {[300, 350, 400].map((x, i) => (
+          <circle class="sk-dot mv mv-20" style={`--from:translateX(${250 - x}px);--fo:0;--d:${i * 0.3}s`} cx={x} cy="120" r="6"></circle>
+        ))}
         <circle class="sk-open" cx="250" cy="120" r="8"></circle>
         <text class="sk-math" x="250" y="160" font-size="18" text-anchor="middle">2</text>
         <text class="sk-math" x="240" y="70" font-size="28" text-anchor="middle">x &gt; 2</text>
@@ -604,6 +644,12 @@ const bondThirteen = frameCells(164, 122, 26);
         <line class="sk-ray" x1="328" y1="120" x2="424" y2="120"></line>
         <path class="sk-arrow" d="M56 110 L36 120 L56 130"></path>
         <path class="sk-arrow" d="M424 110 L444 120 L424 130"></path>
+        {[120, 80].map((x, i) => (
+          <circle class="sk-dot mv mv-20" style={`--from:translateX(${160 - x}px);--fo:0;--d:${i * 0.3}s`} cx={x} cy="120" r="6"></circle>
+        ))}
+        {[360, 400].map((x, i) => (
+          <circle class="sk-dot mv mv-20" style={`--from:translateX(${320 - x}px);--fo:0;--d:${i * 0.3}s`} cx={x} cy="120" r="6"></circle>
+        ))}
         <circle class="sk-open" cx="160" cy="120" r="8"></circle>
         <circle class="sk-open" cx="320" cy="120" r="8"></circle>
         <text class="sk-math" x="160" y="158" font-size="18" text-anchor="middle">{MINUS}3</text>
@@ -624,7 +670,7 @@ const bondThirteen = frameCells(164, 122, 26);
           <rect class="sk-gift" x="230" y="44" width="48" height="36" rx="6"></rect>
           <text class="sk-math" x="254" y="68" font-size="16" text-anchor="middle">2</text>
         </g>
-        <line class="sk-teal" x1="58" y1="80" x2="300" y2="80"></line>
+        <line class="sk-teal mv mv-40" style="--mvt:7s;--from:scaleX(0);--org:0 50%" x1="58" y1="80" x2="300" y2="80"></line>
         <text class="sk-math" x="94" y="212" font-size="16" text-anchor="middle">4</text>
         <text class="sk-math" x="174" y="212" font-size="16" text-anchor="middle">6</text>
         <text class="sk-math" x="254" y="212" font-size="16" text-anchor="middle">8</text>
@@ -644,6 +690,7 @@ const bondThirteen = frameCells(164, 122, 26);
     {variant === 'transform' && (
       <>
         <polygon class="sk-ghost" points="60,70 150,180 36,180"></polygon>
+        <line class="sk-gold sk-tr-arrow" x1="60" y1="70" x2="261.6" y2="86.8"></line>
         <g class="sk-move">
           <rect class="sk-stage" x="0" y="0" width="480" height="280"></rect>
           <polygon class="sk-box" points="60,70 150,180 36,180"></polygon>
@@ -654,7 +701,9 @@ const bondThirteen = frameCells(164, 122, 26);
     {variant === 'triangle-area' && (
       <>
         <rect class="sk-ghost-box" x="90" y="50" width="180" height="120"></rect>
+        <polygon class="sk-box sk-box--gold mv mv-20 mv--vb" style="fill-opacity:.85;--from:rotate(180deg);--org:180px 110px" points="90,50 270,50 90,170"></polygon>
         <polygon class="sk-box" points="90,170 270,170 270,50"></polygon>
+        <line class="sk-teal mv" style="--from:scaleY(0);--org:50% 100%" x1="270" y1="170" x2="270" y2="50"></line>
         <text class="sk-math" x="180" y="196" font-size="16" text-anchor="middle">6</text>
         <text class="sk-math" x="286" y="116" font-size="16">4</text>
         <text class="sk-math sk-in" x="300" y="70" font-size="18">(6 × 4) : 2 = 12</text>
@@ -664,13 +713,15 @@ const bondThirteen = frameCells(164, 122, 26);
     {variant === 'triangles' && (
       <>
         <polygon class="sk-box" points="240,28 360,150 120,150"></polygon>
-        <path class="sk-coral sk-out" d="M240 58 A24 24 0 0 1 258 70"></path>
-        <path class="sk-gold sk-out" d="M142 140 A22 22 0 0 1 128 124"></path>
-        <path class="sk-teal sk-out" d="M338 140 A22 22 0 0 0 352 124"></path>
+        <g style="opacity:.35">
+          <path class="sk-wedge sk-wedge--coral" transform="translate(-120 -46)" d="M240 196 L266 196 A26 26 0 0 0 258.23 177.46 Z"></path>
+          <path class="sk-wedge" transform="translate(0 -168) rotate(180 240 196)" d="M240 196 L258.23 177.46 A26 26 0 0 0 221.77 177.46 Z"></path>
+          <path class="sk-wedge sk-wedge--teal" transform="translate(120 -46)" d="M240 196 L221.77 177.46 A26 26 0 0 0 214 196 Z"></path>
+        </g>
         <line class="sk-ink" x1="80" y1="196" x2="400" y2="196"></line>
-        <path class="sk-coral sk-in" d="M120 196 A18 18 0 0 1 156 196"></path>
-        <path class="sk-gold sk-in sk-d1" d="M170 196 A18 18 0 0 1 206 196"></path>
-        <path class="sk-teal sk-in sk-d2" d="M220 196 A18 18 0 0 1 256 196"></path>
+        <path class="sk-wedge sk-wedge--coral mv mv--vb" style="--o:.85;--from:translate(-120px,-46px);--org:240px 196px" d="M240 196 L266 196 A26 26 0 0 0 258.23 177.46 Z"></path>
+        <path class="sk-wedge mv mv-20 mv--vb" style="--o:.85;--from:translate(0,-168px) rotate(180deg);--org:240px 196px" d="M240 196 L258.23 177.46 A26 26 0 0 0 221.77 177.46 Z"></path>
+        <path class="sk-wedge sk-wedge--teal mv mv-40 mv--vb" style="--o:.85;--from:translate(120px,-46px);--org:240px 196px" d="M240 196 L221.77 177.46 A26 26 0 0 0 214 196 Z"></path>
         <text class="sk-math sk-in sk-d2" x="300" y="188" font-size="18">180°</text>
       </>
     )}
@@ -689,6 +740,8 @@ const bondThirteen = frameCells(164, 122, 26);
     {variant === 'isosceles' && (
       <>
         <polygon class="sk-box" points="240,30 370,180 110,180"></polygon>
+        <polygon class="sk-box sk-box--gold mv mv-20 mv--vb" style="fill-opacity:.8;--from:scaleX(-1);--org:240px 0px" points="240,30 240,180 110,180"></polygon>
+        <line class="sk-ghost mv" style="--o:.7;--from:scaleY(0);--org:50% 0" x1="240" y1="30" x2="240" y2="180"></line>
         <line class="sk-gold" x1="176" y1="96" x2="196" y2="86"></line>
         <line class="sk-gold" x1="284" y1="86" x2="304" y2="96"></line>
         <path class="sk-coral sk-in" d="M150 168 A22 22 0 0 1 136 148"></path>
@@ -701,15 +754,16 @@ const bondThirteen = frameCells(164, 122, 26);
     {variant === 'median' && (
       <>
         <polygon class="sk-box" points="240,28 390,180 90,180"></polygon>
-        <line class="sk-gold sk-in" x1="240" y1="28" x2="240" y2="180"></line>
-        <line class="sk-coral" x1="200" y1="168" x2="200" y2="180"></line>
-        <line class="sk-coral" x1="280" y1="168" x2="280" y2="180"></line>
-        <text class="sk-math" x="165" y="198" font-size="14" text-anchor="middle">1</text>
-        <line class="sk-bar-line" x1="158" y1="202" x2="172" y2="202"></line>
-        <text class="sk-math" x="165" y="216" font-size="14" text-anchor="middle">2</text>
-        <text class="sk-math" x="315" y="198" font-size="14" text-anchor="middle">1</text>
-        <line class="sk-bar-line" x1="308" y1="202" x2="322" y2="202"></line>
-        <text class="sk-math" x="315" y="216" font-size="14" text-anchor="middle">2</text>
+        <line class="sk-gold mv mv-40" style="--from:scaleY(0);--org:50% 0" x1="240" y1="28" x2="240" y2="180"></line>
+        <line class="sk-coral" x1="165" y1="173" x2="165" y2="187"></line>
+        <line class="sk-coral" x1="315" y1="173" x2="315" y2="187"></line>
+        <circle class="sk-dot mv" style="--from:translateX(-150px)" cx="240" cy="180" r="7"></circle>
+        <text class="sk-math" x="165" y="202" font-size="14" text-anchor="middle">1</text>
+        <line class="sk-bar-line" x1="158" y1="206" x2="172" y2="206"></line>
+        <text class="sk-math" x="165" y="220" font-size="14" text-anchor="middle">2</text>
+        <text class="sk-math" x="315" y="202" font-size="14" text-anchor="middle">1</text>
+        <line class="sk-bar-line" x1="308" y1="206" x2="322" y2="206"></line>
+        <text class="sk-math" x="315" y="220" font-size="14" text-anchor="middle">2</text>
       </>
     )}
 
@@ -728,8 +782,8 @@ const bondThirteen = frameCells(164, 122, 26);
     {variant === 'side-angle' && (
       <>
         <polygon class="sk-box" points="70,170 360,170 200,50"></polygon>
-        <line class="sk-coral" x1="70" y1="170" x2="360" y2="170"></line>
-        <path class="sk-coral sk-in" d="M200 86 A22 22 0 0 1 222 96"></path>
+        <line class="sk-coral mv" style="--from:scaleX(0)" x1="70" y1="170" x2="360" y2="170"></line>
+        <path class="sk-wedge sk-wedge--coral mv mv-40 mv--vb" style="--o:.85;--from:scale(0);--org:200px 50px" d="M200 50 L224 68 A30 30 0 0 1 177.95 70.34 Z"></path>
       </>
     )}
 
@@ -737,9 +791,8 @@ const bondThirteen = frameCells(164, 122, 26);
       <>
         <polygon class="sk-box" points="50,60 160,180 30,180"></polygon>
         <line class="sk-gold" x1="78" y1="112" x2="96" y2="100"></line>
-        <g class="sk-join">
-          <rect class="sk-stage" x="0" y="0" width="480" height="280"></rect>
-          <polygon class="sk-box sk-box--gold" points="250,60 360,180 220,180"></polygon>
+        <g class="mv mv-20" style="--from:translateX(-200px)">
+          <polygon class="sk-box sk-box--gold" points="250,60 360,180 230,180"></polygon>
           <line class="sk-coral" x1="278" y1="112" x2="296" y2="100"></line>
         </g>
         <text class="sk-math" x="200" y="210" font-size="28" text-anchor="middle">≅</text>
@@ -759,20 +812,27 @@ const bondThirteen = frameCells(164, 122, 26);
     {variant === 'similar-area' && (
       <>
         <polygon class="sk-ghost" points="250,36 430,200 70,200"></polygon>
-        <polygon class="sk-box" points="250,118 340,200 160,200"></polygon>
+        <g style="transform:translateX(-90px)">
+          <polygon class="sk-box" points="250,118 340,200 160,200"></polygon>
+        </g>
+        <polygon class="sk-box sk-box--gold mv" style="--from:translate(-180px,0)" points="340,118 430,200 250,200"></polygon>
+        <polygon class="sk-box sk-box--gold mv mv-20" style="--from:translate(-90px,82px)" points="250,36 340,118 160,118"></polygon>
+        <polygon class="sk-box sk-box--coral mv mv-40 mv--vb" style="--from:rotate(180deg);--org:205px 159px" points="160,118 340,118 250,200"></polygon>
         <text class="sk-math" x="70" y="48" font-size="22">×2</text>
-        <text class="sk-math sk-in" x="250" y="48" font-size="22">×4</text>
+        <text class="sk-math sk-in" x="360" y="70" font-size="22">×4</text>
       </>
     )}
 
     {variant === 'similar-aa' && (
       <>
         <polygon class="sk-box" points="70,170 190,170 110,70"></polygon>
-        <polygon class="sk-box sk-box--gold" points="250,180 430,180 310,50"></polygon>
-        <path class="sk-coral sk-in" d="M96 100 A16 16 0 0 1 112 90"></path>
-        <path class="sk-coral sk-in" d="M300 86 A18 18 0 0 1 320 74"></path>
-        <path class="sk-gold sk-in sk-d1" d="M150 158 A16 16 0 0 0 168 146"></path>
-        <path class="sk-gold sk-in sk-d1" d="M360 166 A18 18 0 0 0 382 150"></path>
+        <path class="sk-coral" d="M101.83 90.43 A22 22 0 0 0 123.74 87.18"></path>
+        <path class="sk-gold" d="M168 170 A22 22 0 0 1 176.26 152.82"></path>
+        <g class="mv mv-20" style="--from:translate(-180px,-10px) scale(0.6667);--org:0 100%">
+          <polygon class="sk-box sk-box--gold" points="250,180 430,180 310,30"></polygon>
+          <path class="sk-coral" d="M297.75 60.65 A33 33 0 0 0 330.61 55.77"></path>
+          <path class="sk-gold" d="M397 180 A33 33 0 0 1 409.39 154.23"></path>
+        </g>
         <text class="sk-math sk-in sk-d2" x="220" y="50" font-size="28">∼</text>
       </>
     )}
@@ -794,12 +854,12 @@ const bondThirteen = frameCells(164, 122, 26);
         </g>
         <g class="sk-borrow-stay">
           {Array.from({ length: 5 }, (_, i) => (
-            <rect class="sk-gift" x={264 + i * 30} y="156" width="20" height="20" rx="4"></rect>
+            <rect class="sk-gift mv mv-20" style={`--mvt:7s;--from:translate(${56 - i * 30}px,${i * 20 - 120}px)`} x={264 + i * 30} y="156" width="20" height="20" rx="4"></rect>
           ))}
         </g>
         <g class="sk-borrow-take">
           {Array.from({ length: 5 }, (_, i) => (
-            <rect class="sk-gift" x={264 + i * 30} y="186" width="20" height="20" rx="4"></rect>
+            <rect class="sk-gift mv mv-20" style={`--mvt:7s;--from:translate(${56 - i * 30}px,${i * 20 - 150}px)`} x={264 + i * 30} y="186" width="20" height="20" rx="4"></rect>
           ))}
         </g>
       </>
@@ -840,12 +900,18 @@ const bondThirteen = frameCells(164, 122, 26);
         <line class="sk-ink" x1="88" y1="160" x2="252" y2="160"></line>
         <g class="sk-cm-1">
           <text class="sk-math" x="230" y="200" font-size="34" text-anchor="middle">5</text>
-          <text class="sk-math sk-carry" x="190" y="64" font-size="18" text-anchor="middle">2</text>
+          <g class="mv mv-20" style="--from:translate(40px,136px)">
+            <circle class="sk-ring" style="stroke:#e5735c;stroke-width:2" cx="190" cy="58" r="12"></circle>
+            <text class="sk-math sk-carry" x="190" y="64" font-size="18" text-anchor="middle">2</text>
+          </g>
           <text class="sk-math sk-note" x="286" y="92" font-size="18">5 × 5 = 25</text>
         </g>
         <g class="sk-cm-2">
           <text class="sk-math" x="190" y="200" font-size="34" text-anchor="middle">7</text>
-          <text class="sk-math sk-carry" x="150" y="64" font-size="18" text-anchor="middle">3</text>
+          <g class="mv mv-40" style="--from:translate(40px,136px)">
+            <circle class="sk-ring" style="stroke:#e5735c;stroke-width:2" cx="150" cy="58" r="12"></circle>
+            <text class="sk-math sk-carry" x="150" y="64" font-size="18" text-anchor="middle">3</text>
+          </g>
           <text class="sk-math sk-note" x="286" y="132" font-size="18">7 × 5 + 2 = 37</text>
         </g>
         <g class="sk-cm-3">
@@ -918,10 +984,14 @@ const bondThirteen = frameCells(164, 122, 26);
           <circle class="sk-dot" cx={c.cx} cy={c.cy} r="11"></circle>
         ))}
         {svTen.slice(8).map((c) => (
-          <circle class="sk-dot sk-sv-take2" cx={c.cx} cy={c.cy} r="11"></circle>
+          <g class="mva mva-40" style="--to:scale(0.45)">
+            <circle class="sk-dot sk-sv-take2" cx={c.cx} cy={c.cy} r="11"></circle>
+          </g>
         ))}
         {svFive.map((c) => (
-          <circle class="sk-gift sk-sv-take5" cx={c.cx} cy={c.cy} r="11"></circle>
+          <g class="mva" style="--to:scale(0.45)">
+            <circle class="sk-gift sk-sv-take5" cx={c.cx} cy={c.cy} r="11"></circle>
+          </g>
         ))}
         <text class="sk-math sk-note sk-sv-step1" x="333" y="180" font-size="22" text-anchor="middle">{MINUS}5</text>
         <text class="sk-math sk-note sk-sv-step2" x="192" y="180" font-size="22" text-anchor="middle">{MINUS}2</text>
@@ -985,12 +1055,12 @@ const bondThirteen = frameCells(164, 122, 26);
         ))}
         <g class="sk-bd-fill1">
           {bondSix.slice(6).map((c) => (
-            <circle class="sk-gift" cx={c.cx} cy={c.cy} r="9"></circle>
+            <circle class="sk-gift mv" style="--from:translateX(60px)" cx={c.cx} cy={c.cy} r="9"></circle>
           ))}
         </g>
         <g class="sk-bd-fill2">
           {bondThirteen.slice(3).map((c) => (
-            <circle class="sk-gift" cx={c.cx} cy={c.cy} r="9"></circle>
+            <circle class="sk-gift mv mv-40" style="--from:translateX(60px)" cx={c.cx} cy={c.cy} r="9"></circle>
           ))}
         </g>
         <text class="sk-math sk-bd-eq1" x="316" y="69" font-size="26">6 + 4 = 10</text>
@@ -1015,7 +1085,7 @@ const bondThirteen = frameCells(164, 122, 26);
           <text class="sk-math sk-note" x="263" y="111" font-size="18">257 × 3 = 771</text>
         </g>
         <g class="sk-lm-0">
-          <circle class="sk-coral" cx="217" cy="139" r="16"></circle>
+          <circle class="sk-coral mv mv-40" style="--from:scale(0)" cx="217" cy="139" r="16"></circle>
           <text class="sk-math" x="217" y="149" font-size="28" text-anchor="middle">0</text>
         </g>
         <g class="sk-lm-2">
@@ -1025,7 +1095,7 @@ const bondThirteen = frameCells(164, 122, 26);
           <text class="sk-math sk-note" x="263" y="144" font-size="18">257 × 20 = 5,140</text>
         </g>
         <g class="sk-lm-3">
-          <line class="sk-ink" x1="71" y1="161" x2="237" y2="161"></line>
+          <line class="sk-ink mv mv-60" style="--from:scaleX(0);--org:100% 50%" x1="71" y1="161" x2="237" y2="161"></line>
           <text class="sk-math" x="115" y="193" font-size="28" text-anchor="middle">5</text>
           <text class="sk-math" x="149" y="193" font-size="28" text-anchor="middle">9</text>
           <text class="sk-math" x="183" y="193" font-size="28" text-anchor="middle">1</text>
@@ -1855,5 +1925,79 @@ const bondThirteen = frameCells(164, 122, 26);
     0%, 72% { opacity: 0; }
     78%, 94% { opacity: 1; }
     100% { opacity: 0; }
+  }
+  /* Pieces that travel into their finished place. --from is the start
+     transform; the rest style (none) is the finished frame. Each class is one
+     start slot, so no long delay can push a piece out of its lap. */
+  .sk .mv, .sk .mva { transform-box: fill-box; transform-origin: var(--org, 50% 50%); }
+  .sk .mv--vb { transform-box: view-box; }
+  .sk .mva { transform: var(--to); }
+  .sk .mv { animation: sk-mv-0 var(--mvt, 8s) ease-in-out infinite backwards; animation-delay: var(--d, 0s); }
+  .sk .mv.mv-20 { animation-name: sk-mv-20; }
+  .sk .mv.mv-40 { animation-name: sk-mv-40; }
+  .sk .mv.mv-60 { animation-name: sk-mv-60; }
+  .sk .mva { animation: sk-mva-14 8s ease-in-out infinite; }
+  .sk .mva.mva-40 { animation-name: sk-mva-40; }
+  .sk-wedge--teal { fill: #2a7c7a; }
+  .sk-qx, .sk-qy, .sk-tr-arrow { transform-box: fill-box; transform-origin: 0 0; }
+  .sk-qx { transform: translateX(66%); }
+  .sk-qy { transform: translateY(28%); }
+  .sk .sk-qx { animation: sk-qx 8s linear infinite; }
+  .sk .sk-qy { animation: sk-qy 8s linear infinite; }
+  .sk .sk-tr-arrow { animation: sk-tr-arrow 7s ease-in-out infinite; }
+  .sk-pv-edge { transform-box: fill-box; transform-origin: 0 100%; }
+  .sk .sk-pv-edge { animation: sk-pv-edge 7s ease-in-out infinite; }
+
+  @keyframes sk-mv-0 {
+    0%, 4% { transform: var(--from); opacity: var(--fo, var(--o, 1)); }
+    18%, 88% { transform: none; opacity: var(--o, 1); }
+    96%, 100% { transform: var(--from); opacity: var(--fo, var(--o, 1)); }
+  }
+  @keyframes sk-mv-20 {
+    0%, 20% { transform: var(--from); opacity: var(--fo, var(--o, 1)); }
+    34%, 88% { transform: none; opacity: var(--o, 1); }
+    96%, 100% { transform: var(--from); opacity: var(--fo, var(--o, 1)); }
+  }
+  @keyframes sk-mv-40 {
+    0%, 40% { transform: var(--from); opacity: var(--fo, var(--o, 1)); }
+    54%, 88% { transform: none; opacity: var(--o, 1); }
+    96%, 100% { transform: var(--from); opacity: var(--fo, var(--o, 1)); }
+  }
+  @keyframes sk-mv-60 {
+    0%, 60% { transform: var(--from); opacity: var(--fo, var(--o, 1)); }
+    72%, 88% { transform: none; opacity: var(--o, 1); }
+    96%, 100% { transform: var(--from); opacity: var(--fo, var(--o, 1)); }
+  }
+  /* sub-via-10: the taken counters lift out of the frame with their fade. */
+  @keyframes sk-mva-14 {
+    0%, 14% { transform: none; }
+    22%, 92% { transform: var(--to); }
+    98%, 100% { transform: none; }
+  }
+  @keyframes sk-mva-40 {
+    0%, 40% { transform: none; }
+    48%, 92% { transform: var(--to); }
+    98%, 100% { transform: none; }
+  }
+  /* coords: the axis readouts follow the point, in step with sk-quad. */
+  @keyframes sk-qx {
+    0%, 12% { transform: translateX(66%); }
+    32%, 52% { transform: translateX(30%); }
+    74%, 100% { transform: translateX(66%); }
+  }
+  @keyframes sk-qy {
+    0%, 32% { transform: translateY(28%); }
+    52%, 74% { transform: translateY(62%); }
+    100% { transform: translateY(28%); }
+  }
+  /* transform: the translation arrow grows and shrinks with sk-move. */
+  /* prism-vol: the side edges grow with sk-extrude. */
+  @keyframes sk-pv-edge {
+    0%, 100% { transform: scale(0); }
+    45%, 75% { transform: scale(1); }
+  }
+  @keyframes sk-tr-arrow {
+    0%, 100% { transform: scale(0); }
+    50% { transform: scale(1); }
   }
 </style>
