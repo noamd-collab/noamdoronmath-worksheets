@@ -1,0 +1,314 @@
+{
+  "slug": "equilateral-triangle-grade-9",
+  "path": "/equilateral-triangle-grade-9",
+  "grade": 9,
+  "sourceUrl": "https://www.noamdoronmath.co.il/equilateral-triangle-grade-9",
+  "fetchedAt": "2026-11-10T00:00:00.000Z",
+  "verifiedVia": "authored-catalog-gap-from-noam-pdfs",
+  "title": "משולש שווה־צלעות לכיתה ט׳ — העמקה | דף עבודה חינם",
+  "description": "משולש שווה־צלעות לכיתה ט׳: זוויות של 60°, זיהוי משולש שווה־צלעות לפי שוקיים וזווית, צירוף למעוין ולמשושה והיקפים. דף העמקה אחד, בחינם וללא הרשמה.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "משולש שווה־צלעות לכיתה ט׳: זוויות של 60°, צורות מורכבות והיקפים",
+  "intro": "משולש שווה־צלעות הוא משולש שבו שלוש הצלעות שוות וכל זווית היא 60°. בדף ההעמקה מצרפים משולשים כאלה למעוין, לטרפז ולמשושה, מחשבים היקפים ומנמקים מתי משולש הוא שווה־צלעות. דף העבודה זמין בחינם וללא הרשמה, עם תשובות בסוף הדף.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "במשולש שווה־צלעות שלוש הצלעות שוות, ולכן גם שלוש הזוויות שוות. סכום הזוויות במשולש הוא 180°, ולכן כל זווית היא 180° : 3 = 60°.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "משולש שווה־שוקיים שבו זווית אחת היא 60° הוא שווה־צלעות: זוויות הבסיס שוות, ולכן כל שלוש הזוויות הן 60° וכל הצלעות שוות.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "דוגמה: שישה משולשים שווי־צלעות שאורך צלעם 3 ס״מ מסודרים סביב נקודה אחת, כי 6 × 60° = 360°. נוצר משושה משוכלל, וההיקף שלו הוא 6 × 3 = 18 ס״מ. הצלעות הפנימיות אינן חלק מההיקף.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "סופרים בהיקף גם צלעות פנימיות משותפות. רק הצלעות שעל גבול הצורה נכנסות להיקף.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "מסיקים שמשולש הוא שווה־צלעות רק כי שתי צלעות בו שוות. צריך גם צלע שלישית שווה, או זווית של 60° במשולש שווה־שוקיים.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "במשולש KLM נתון KL = KM ו־∠KLM = 60°. איזה משולש זה, ומה גודל הזווית ∠LKM?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה היא משולש שווה־צלעות, ו־∠LKM = 60°. KL = KM, ולכן ∠KML = ∠KLM = 60°, וגם ∠LKM = 180° − 60° − 60° = 60°.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "משולש שווה־צלעות הוא משולש שבו שלוש הצלעות שוות וכל זווית היא 60°. בדף ההעמקה מצרפים משולשים כאלה למעוין, לטרפז ולמשושה, מחשבים היקפים ומנמקים מתי משולש הוא שווה־צלעות. דף העבודה זמין בחינם וללא הרשמה, עם תשובות בסוף הדף.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דף העבודה",
+      "href": "/worksheets?grade=9&topic=22",
+      "catalogTopicId": 22
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "במשולש שווה־צלעות שלוש הצלעות שוות, ולכן גם שלוש הזוויות שוות. סכום הזוויות במשולש הוא 180°, ולכן כל זווית היא 180° : 3 = 60°.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "משולש שווה־שוקיים שבו זווית אחת היא 60° הוא שווה־צלעות: זוויות הבסיס שוות, ולכן כל שלוש הזוויות הן 60° וכל הצלעות שוות.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "דוגמה: שישה משולשים שווי־צלעות שאורך צלעם 3 ס״מ מסודרים סביב נקודה אחת, כי 6 × 60° = 360°. נוצר משושה משוכלל, וההיקף שלו הוא 6 × 3 = 18 ס״מ. הצלעות הפנימיות אינן חלק מההיקף.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "סופרים בהיקף גם צלעות פנימיות משותפות. רק הצלעות שעל גבול הצורה נכנסות להיקף.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "מסיקים שמשולש הוא שווה־צלעות רק כי שתי צלעות בו שוות. צריך גם צלע שלישית שווה, או זווית של 60° במשולש שווה־שוקיים.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "במשולש KLM נתון KL = KM ו־∠KLM = 60°. איזה משולש זה, ומה גודל הזווית ∠LKM?",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "התשובה היא משולש שווה־צלעות, ו־∠LKM = 60°. KL = KM, ולכן ∠KML = ∠KLM = 60°, וגם ∠LKM = 180° − 60° − 60° = 60°.",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 10.11.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "איך מוכיחים שמשולש הוא שווה־צלעות?",
+      "answer": "מראים ששלוש הצלעות שוות, או ששלוש הזוויות שוות, או שהמשולש שווה־שוקיים ויש בו זווית של 60°."
+    },
+    {
+      "question": "למה שישה משולשים שווי־צלעות יוצרים משושה?",
+      "answer": "סביב נקודה יש 360°, וכל משולש תורם זווית של 60°. 6 × 60° = 360°, ולכן שישה משולשים סוגרים בדיוק את הסיבוב."
+    },
+    {
+      "question": "כמה דפי עבודה יש בנושא?",
+      "answer": "בנושא יש דף עבודה אחד לכל הכיתה, ובסופו תשובות."
+    },
+    {
+      "question": "האם יש תשובות לדפי העבודה?",
+      "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "איך מוכיחים שמשולש הוא שווה־צלעות?",
+          "answer": "מראים ששלוש הצלעות שוות, או ששלוש הזוויות שוות, או שהמשולש שווה־שוקיים ויש בו זווית של 60°."
+        },
+        {
+          "question": "למה שישה משולשים שווי־צלעות יוצרים משושה?",
+          "answer": "סביב נקודה יש 360°, וכל משולש תורם זווית של 60°. 6 × 60° = 360°, ולכן שישה משולשים סוגרים בדיוק את הסיבוב."
+        },
+        {
+          "question": "כמה דפי עבודה יש בנושא?",
+          "answer": "בנושא יש דף עבודה אחד לכל הכיתה, ובסופו תשובות."
+        },
+        {
+          "question": "האם יש תשובות לדפי העבודה?",
+          "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/grade-9",
+      "label": "כל דפי כיתה ט׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-9"
+    },
+    {
+      "path": "/isosceles-triangle-grade-9",
+      "label": "משולש שווה־שוקיים",
+      "productionHref": "https://www.noamdoronmath.co.il/isosceles-triangle-grade-9"
+    },
+    {
+      "path": "/triangle-30-60-90-grade-9",
+      "label": "משולש ישר־זווית 30–60–90",
+      "productionHref": "https://www.noamdoronmath.co.il/triangle-30-60-90-grade-9"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דף העבודה",
+    "href": "/worksheets?grade=9&topic=22",
+    "source": "catalog-g9-t22",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=9&topic=22",
+    "catalogTopicId": 22,
+    "catalogTopicTitle": "משולש שווה־צלעות — העמקה ורשות — לכיתה ט׳"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דף העבודה",
+      "href": "/worksheets?grade=9&topic=22",
+      "source": "catalog-g9-t22",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=9&topic=22",
+      "catalogTopicId": 22,
+      "catalogTopicTitle": "משולש שווה־צלעות — העמקה ורשות — לכיתה ט׳"
+    }
+  ],
+  "gradeHubHref": "/grade-9",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/equilateral-triangle-grade-9#webpage",
+        "url": "https://www.noamdoronmath.co.il/equilateral-triangle-grade-9",
+        "name": "משולש שווה־צלעות לכיתה ט׳ — העמקה | דף עבודה חינם",
+        "description": "משולש שווה־צלעות לכיתה ט׳: זוויות של 60°, זיהוי משולש שווה־צלעות לפי שוקיים וזווית, צירוף למעוין ולמשושה והיקפים. דף העמקה אחד, בחינם וללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/equilateral-triangle-grade-9#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/equilateral-triangle-grade-9#learning-resource",
+        "name": "משולש שווה־צלעות לכיתה ט׳: זוויות של 60°, צורות מורכבות והיקפים",
+        "url": "https://www.noamdoronmath.co.il/equilateral-triangle-grade-9",
+        "description": "משולש שווה־צלעות לכיתה ט׳: זוויות של 60°, זיהוי משולש שווה־צלעות לפי שוקיים וזווית, צירוף למעוין ולמשושה והיקפים. דף העמקה אחד, בחינם וללא הרשמה.",
+        "educationalLevel": "כיתה ט׳",
+        "learningResourceType": "דפי עבודה",
+        "teaches": "משולש שווה־צלעות, זוויות של 60°, צורות מורכבות והיקפים",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/equilateral-triangle-grade-9#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "איך מוכיחים שמשולש הוא שווה־צלעות?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "מראים ששלוש הצלעות שוות, או ששלוש הזוויות שוות, או שהמשולש שווה־שוקיים ויש בו זווית של 60°."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "למה שישה משולשים שווי־צלעות יוצרים משושה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "סביב נקודה יש 360°, וכל משולש תורם זווית של 60°. 6 × 60° = 360°, ולכן שישה משולשים סוגרים בדיוק את הסיבוב."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "כמה דפי עבודה יש בנושא?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "בנושא יש דף עבודה אחד לכל הכיתה, ובסופו תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם יש תשובות לדפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. בסוף כל דף עבודה יש דף תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

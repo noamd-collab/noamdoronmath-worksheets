@@ -269,6 +269,7 @@ import divideDecimalsGrade6 from '../data/topic-pages/divide-decimals-grade-6.js
 import capacityMlLM3Grade6 from '../data/topic-pages/capacity-ml-l-m3-grade-6.json';
 import ratioGrade6 from '../data/topic-pages/ratio-grade-6.json';
 import scaleMapsGrade6 from '../data/topic-pages/scale-maps-grade-6.json';
+import equilateralTriangleGrade9 from '../data/topic-pages/equilateral-triangle-grade-9.json';
 import statisticsDataFrequencyGrade8 from '../data/topic-pages/statistics-data-frequency-grade-8.json';
 import { isolateMathRuns } from './mathDirection';
 import { familyRelatedTopics, type FamilyRelatedTopic } from './topicFamilies';
@@ -498,6 +499,16 @@ export const TOPIC_PAGE_G6_SLUGS = [
   'patterns-multistep-grade-6',
 ] as const;
 
+/**
+ * Grade-9 catalog topics that had no landing page (t22).
+ * Authored from Noam's PDFs, not production captures, so the parity gate
+ * skips them. G9 t41–t43 are child topics of t2 and are covered by
+ * factoring-grade-9.
+ */
+export const TOPIC_PAGE_G9_AUTHORED_SLUGS = [
+  'equilateral-triangle-grade-9',
+] as const;
+
 export const TOPIC_PAGE_G5_SLUGS = [
   'big-numbers-rounding-grade-5',
   'number-sense-tens-hundreds-grade-5',
@@ -638,6 +649,7 @@ export const TOPIC_PAGE_AUTHORED_SLUGS = [
   ...TOPIC_PAGE_G4_SLUGS,
   ...TOPIC_PAGE_G5_SLUGS,
   ...TOPIC_PAGE_G6_SLUGS,
+  ...TOPIC_PAGE_G9_AUTHORED_SLUGS,
 ] as const;
 
 export const TOPIC_PAGE_SLUGS = [
@@ -656,6 +668,7 @@ export const TOPIC_PAGE_SLUGS = [
   ...TOPIC_PAGE_G4_SLUGS,
   ...TOPIC_PAGE_G5_SLUGS,
   ...TOPIC_PAGE_G6_SLUGS,
+  ...TOPIC_PAGE_G9_AUTHORED_SLUGS,
 ] as const;
 
 export type TopicPageSlug = (typeof TOPIC_PAGE_SLUGS)[number];
@@ -868,6 +881,8 @@ const BY_SLUG: Record<string, TopicPageContent> = {
   'special-triangles-grade-7-new': specialTrianglesGrade7New as TopicPageContent,
   'patterns-and-graphs-grade-7': patternsAndGraphsGrade7 as TopicPageContent,
   'kite-grade-9': kiteGrade9 as TopicPageContent,
+  // Grade-9 catalog gaps (כיתה ט׳)
+  'equilateral-triangle-grade-9': equilateralTriangleGrade9 as TopicPageContent,
   'statistics-data-frequency-grade-8': statisticsDataFrequencyGrade8 as TopicPageContent,
   // Elementary authored pages (G1, catalog order)
   'counting-grade-1': countingGrade1 as TopicPageContent,
