@@ -165,6 +165,11 @@
           "path": "/triangle-calculations-grade-9",
           "label": "חישובים במשולשים",
           "productionHref": "https://www.noamdoronmath.co.il/triangle-calculations-grade-9"
+        },
+        {
+          "path": "/equilateral-triangle-grade-9",
+          "label": "משולש שווה־צלעות",
+          "productionHref": "https://www.noamdoronmath.co.il/equilateral-triangle-grade-9"
         }
       ]
     },
@@ -444,6 +449,11 @@
       "path": "/transition-to-high-school-grade-9",
       "label": "מעבר לחטיבה העליונה",
       "productionHref": "https://www.noamdoronmath.co.il/transition-to-high-school-grade-9"
+    },
+    {
+      "path": "/equilateral-triangle-grade-9",
+      "label": "משולש שווה־צלעות",
+      "productionHref": "https://www.noamdoronmath.co.il/equilateral-triangle-grade-9"
     }
   ],
   "catalogCta": {
