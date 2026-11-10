@@ -114,22 +114,30 @@ function seekCard(el: Element, frac: number) {
     film.__loop.seek(frac * (film.__loop.state().duration || 10));
     return;
   }
-  for (const a of el.getAnimations({ subtree: true })) {
+  // One clock for the whole card, in its second lap, as a visitor sees it once
+  // the staggered delays have run out.
+  const anims = el.getAnimations({ subtree: true });
+  const lap = Math.max(0, ...anims.map((a) => Number(a.effect?.getComputedTiming().duration) || 0));
+  for (const a of anims) {
     a.pause();
-    const timing = a.effect?.getComputedTiming();
-    a.currentTime = Math.max(0, Number(timing?.delay) || 0) + frac * (Number(timing?.duration) || 0);
+    a.currentTime = (1 + frac) * lap;
   }
 }
 
 /** Runs in the page: box and stroke dash offset of every visible drawn shape, in DOM order.
+ *  Drawn shapes are SVG shapes and HTML `<i>` pieces that paint a fill or border.
  *  No inner named functions: tsx would add a `__name` helper the page lacks. */
 function shapeBoxes(card: Element): (number[] | null)[] {
-  const shapes = card.querySelectorAll('svg path, svg line, svg rect, svg circle, svg ellipse, svg polygon, svg polyline');
+  const shapes = card.querySelectorAll('svg path, svg line, svg rect, svg circle, svg ellipse, svg polygon, svg polyline, i');
   return [...shapes].map((shape) => {
     if (shape.closest('button') || shape.classList.contains('sk-stage')) return null;
     const own = getComputedStyle(shape);
     const blank = /^(none|transparent|rgba\(0, 0, 0, 0\))$/;
-    if (blank.test(own.fill) && blank.test(own.stroke)) return null;
+    if (shape instanceof SVGElement) {
+      if (blank.test(own.fill) && blank.test(own.stroke)) return null;
+    } else if (blank.test(own.backgroundColor) && own.backgroundImage === 'none' && !(parseFloat(own.borderTopWidth) > 0 && !blank.test(own.borderTopColor))) {
+      return null;
+    }
     let opacity = 1;
     for (let node: Element | null = shape; node && node !== card; node = node.parentElement) {
       const style = getComputedStyle(node);
