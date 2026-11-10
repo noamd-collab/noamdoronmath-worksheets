@@ -144,7 +144,12 @@ describe('Noam AI site manual', () => {
       assert.ok(guideIds.includes(id), id);
     }
     assert.equal(guideIds.includes('6a37fe7160324a17ad107b3dbe43c1db'), false);
-    assert.equal(guide.counts.topic, 266, '96 preserved topic-data records, 169 restored elementary pages and the grade 8 frequency page');
+    const topicPagesDir = fileURLToPath(new URL('../src/data/topic-pages', import.meta.url));
+    const catalogGapPages = readdirSync(topicPagesDir).filter((name) =>
+      name.endsWith('.json') &&
+      String(JSON.parse(readFileSync(`${topicPagesDir}/${name}`, 'utf8')).verifiedVia ?? '').startsWith('authored-catalog-gap'),
+    ).length;
+    assert.equal(guide.counts.topic - catalogGapPages, 266, '96 preserved topic-data records, 169 restored elementary pages and the grade 8 frequency page, plus catalog-gap pages');
     const kite = guide.records.find((row) => row.id === 'topic-kite-grade-9');
     assert.equal(kite && kite.href, '/kite-grade-9');
     assert.equal(kite && kite.topic, 'דלתון');
