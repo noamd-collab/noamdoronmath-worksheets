@@ -37,7 +37,7 @@ const frameSrc = `${src}?embed=1`;
       const shell = doc?.getElementById('player-shell');
       if (!shell) return;
       const h = Math.ceil(shell.getBoundingClientRect().height);
-      if (h > 200 && Math.abs(frame.clientHeight - h) > 2) frame.style.height = `${h}px`;
+      if (h > 80 && Math.abs(frame.clientHeight - h) > 2) frame.style.height = `${h}px`;
     }
 
     // The player pauses itself when the site's Stop Animations control is on.
@@ -76,11 +76,23 @@ const frameSrc = `${src}?embed=1`;
     max-width: 100%;
     border: 0;
     background: #fbfaf5;
-    /* 16:9 stage plus the single pause/resume row.
+    /* 16:9 stage plus the compact pause/resume control.
        The script replaces this estimate with the player's measured height. */
-    height: 420px;
-    height: calc(100cqi * 9 / 16 + 84px);
-    min-height: 160px;
+    height: 360px;
+    height: calc(100cqi * 9 / 16 + 52px);
+    min-height: 180px;
     overflow: hidden;
+  }
+  /* Phone gutter is 60px so the floating buttons miss the text.
+     This film alone cancels that gutter and uses the page width. */
+  @media (max-width: 767px) {
+    :global(.exact-topic-demo--stats-film) {
+      overflow: visible;
+      flex: 1 0 auto;
+      width: calc(100% + 120px);
+      max-width: none;
+      margin-inline: -60px;
+      border-radius: 0;
+    }
   }
 </style>
