@@ -3,7 +3,8 @@ import { test } from 'node:test';
 import { parseHTML } from 'linkedom';
 import { setupTopicSharing } from '../src/lib/topicSharing';
 import { canonicalUrl } from '../src/lib/siteSeo';
-import { buildWorksheetHref, worksheetActionLabel } from '../src/lib/worksheetLinks';
+import { buildWorksheetHref } from '../src/lib/worksheetLinks';
+import { worksheetActionLabel } from '../src/lib/worksheetActions';
 import { loadCatalog } from '../src/lib/catalog/loadCatalog';
 
 const topicUrl = 'https://www.noamdoronmath.co.il/counting-grade-1';

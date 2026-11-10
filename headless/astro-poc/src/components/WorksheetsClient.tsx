@@ -14,7 +14,8 @@ import { GradeNav } from './GradeNav';
 import { catalogSearch, matchingTopicIds } from '../lib/siteSearch/catalogFilter';
 import { searchHref } from '../lib/siteSearch/url';
 import { countRenderedTopicCards } from '../lib/catalog/renderedCards';
-import { buildWorksheetHref, worksheetActionLabel } from '../lib/worksheetLinks';
+import { buildWorksheetHref } from '../lib/worksheetLinks';
+import { worksheetActionLabel } from '../lib/worksheetActions';
 import { resolveEdition, topicEditions } from '../lib/catalog/editions';
 import {
   buildWorksheetsHref,
