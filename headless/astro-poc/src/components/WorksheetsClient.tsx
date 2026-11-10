@@ -15,7 +15,7 @@ import { catalogSearch, matchingTopicIds } from '../lib/siteSearch/catalogFilter
 import { searchHref } from '../lib/siteSearch/url';
 import { countRenderedTopicCards } from '../lib/catalog/renderedCards';
 import { buildWorksheetHref } from '../lib/worksheetLinks';
-import { worksheetActionLabel } from '../lib/worksheetActions';
+import { isDirectWorksheetPdf, worksheetActionLabel } from '../lib/worksheetActions';
 import { resolveEdition, topicEditions } from '../lib/catalog/editions';
 import {
   buildWorksheetsHref,
@@ -331,7 +331,7 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
       return (
         <a
           key={topic.id + '-' + level.key + '-' + gNum + '-' + editionId}
-          className={levelClass(level.key)}
+          className={`${levelClass(level.key)}${isDirectWorksheetPdf(href) ? ' lvl--pdf' : ''}`}
           href={href}
           target="_blank"
           rel="noopener noreferrer"
