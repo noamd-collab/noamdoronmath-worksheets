@@ -1,0 +1,314 @@
+{
+  "slug": "investigation-generalization-grade-8",
+  "path": "/investigation-generalization-grade-8",
+  "grade": 8,
+  "sourceUrl": "https://www.noamdoronmath.co.il/investigation-generalization-grade-8",
+  "fetchedAt": "2026-11-10T00:00:00.000Z",
+  "verifiedVia": "authored-catalog-gap-from-noam-pdfs",
+  "title": "חקר והכללה לכיתה ח׳ — העמקה | דף עבודה חינם",
+  "description": "חקר והכללה לכיתה ח׳: חקר תבניות מספריות וגאומטריות, ניסוח השערה, בדיקה בדוגמאות והכללה מנומקת. דף עבודה אחד, בחינם וללא הרשמה.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "חקר והכללה לכיתה ח׳ — העמקה",
+  "intro": "דף העמקה שבו חוקרים תבניות מספריות וגאומטריות: אוספים דוגמאות, מנסחים השערה, בודקים אותה ומנמקים הכללה בעזרת אלגברה. דף העבודה זמין בחינם וללא הרשמה, עם תשובות בסוף הדף.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "חקר מתחיל בדוגמאות: מחשבים כמה מקרים, מסדרים אותם בטבלה ומחפשים מה חוזר. מכאן מנסחים השערה, משפט שאולי נכון תמיד.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "דוגמאות לא מוכיחות השערה. כדי להכליל כותבים את המקרה הכללי באותיות ומראים שהטענה מתקיימת לכל ערך.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "דוגמה: הסכום של שלושה מספרים שלמים עוקבים מתחלק תמיד ב־3. n + (n + 1) + (n + 2) = 3n + 3 = 3(n + 1).",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "בודקים שתי דוגמאות ומכריזים שהטענה נכונה תמיד. צריך נימוק כללי, ודוגמה נגדית אחת מספיקה כדי להפריך.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "מנסחים השערה מעורפלת. השערה טובה אומרת בדיוק מה מתקיים ולאילו מספרים או צורות.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "כמה מלבנים שונים, שאורכי צלעותיהם מספרים שלמים בס״מ, יש בהיקף 26 ס״מ?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה היא 6 מלבנים: סכום שתי צלעות סמוכות הוא 13, והזוגות הם 1 ו־12, 2 ו־11, 3 ו־10, 4 ו־9, 5 ו־8, 6 ו־7.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "דף העמקה שבו חוקרים תבניות מספריות וגאומטריות: אוספים דוגמאות, מנסחים השערה, בודקים אותה ומנמקים הכללה בעזרת אלגברה. דף העבודה זמין בחינם וללא הרשמה, עם תשובות בסוף הדף.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דף העבודה",
+      "href": "/worksheets?grade=8&topic=57",
+      "catalogTopicId": 57
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "חקר מתחיל בדוגמאות: מחשבים כמה מקרים, מסדרים אותם בטבלה ומחפשים מה חוזר. מכאן מנסחים השערה, משפט שאולי נכון תמיד.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "דוגמאות לא מוכיחות השערה. כדי להכליל כותבים את המקרה הכללי באותיות ומראים שהטענה מתקיימת לכל ערך.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "דוגמה: הסכום של שלושה מספרים שלמים עוקבים מתחלק תמיד ב־3. n + (n + 1) + (n + 2) = 3n + 3 = 3(n + 1).",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "בודקים שתי דוגמאות ומכריזים שהטענה נכונה תמיד. צריך נימוק כללי, ודוגמה נגדית אחת מספיקה כדי להפריך.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "מנסחים השערה מעורפלת. השערה טובה אומרת בדיוק מה מתקיים ולאילו מספרים או צורות.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "כמה מלבנים שונים, שאורכי צלעותיהם מספרים שלמים בס״מ, יש בהיקף 26 ס״מ?",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "התשובה היא 6 מלבנים: סכום שתי צלעות סמוכות הוא 13, והזוגות הם 1 ו־12, 2 ו־11, 3 ו־10, 4 ו־9, 5 ו־8, 6 ו־7.",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 10.11.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "מה ההבדל בין השערה להכללה?",
+      "answer": "השערה היא טענה שנראית נכונה לפי דוגמאות. הכללה היא השערה שהוכחה, למשל בעזרת ביטוי אלגברי."
+    },
+    {
+      "question": "איך מפריכים השערה?",
+      "answer": "מספיקה דוגמה נגדית אחת, מקרה שבו התנאי מתקיים והטענה לא."
+    },
+    {
+      "question": "כמה דפי עבודה יש בנושא?",
+      "answer": "בנושא יש דף עבודה אחד לכל הכיתה, ובסופו תשובות."
+    },
+    {
+      "question": "האם יש תשובות לדפי העבודה?",
+      "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "מה ההבדל בין השערה להכללה?",
+          "answer": "השערה היא טענה שנראית נכונה לפי דוגמאות. הכללה היא השערה שהוכחה, למשל בעזרת ביטוי אלגברי."
+        },
+        {
+          "question": "איך מפריכים השערה?",
+          "answer": "מספיקה דוגמה נגדית אחת, מקרה שבו התנאי מתקיים והטענה לא."
+        },
+        {
+          "question": "כמה דפי עבודה יש בנושא?",
+          "answer": "בנושא יש דף עבודה אחד לכל הכיתה, ובסופו תשובות."
+        },
+        {
+          "question": "האם יש תשובות לדפי העבודה?",
+          "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/grade-8",
+      "label": "כל דפי כיתה ח׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-8"
+    },
+    {
+      "path": "/non-routine-problems-grade-8",
+      "label": "העמקה — בעיות לא שגרתיות",
+      "productionHref": "https://www.noamdoronmath.co.il/non-routine-problems-grade-8"
+    },
+    {
+      "path": "/geometric-proof-grade-8",
+      "label": "הוכחה גאומטרית",
+      "productionHref": "https://www.noamdoronmath.co.il/geometric-proof-grade-8"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דף העבודה",
+    "href": "/worksheets?grade=8&topic=57",
+    "source": "catalog-g8-t57",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=57",
+    "catalogTopicId": 57,
+    "catalogTopicTitle": "העמקה — חקר והכללה"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דף העבודה",
+      "href": "/worksheets?grade=8&topic=57",
+      "source": "catalog-g8-t57",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=57",
+      "catalogTopicId": 57,
+      "catalogTopicTitle": "העמקה — חקר והכללה"
+    }
+  ],
+  "gradeHubHref": "/grade-8",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/investigation-generalization-grade-8#webpage",
+        "url": "https://www.noamdoronmath.co.il/investigation-generalization-grade-8",
+        "name": "חקר והכללה לכיתה ח׳ — העמקה | דף עבודה חינם",
+        "description": "חקר והכללה לכיתה ח׳: חקר תבניות מספריות וגאומטריות, ניסוח השערה, בדיקה בדוגמאות והכללה מנומקת. דף עבודה אחד, בחינם וללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/investigation-generalization-grade-8#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/investigation-generalization-grade-8#learning-resource",
+        "name": "חקר והכללה לכיתה ח׳ — העמקה",
+        "url": "https://www.noamdoronmath.co.il/investigation-generalization-grade-8",
+        "description": "חקר והכללה לכיתה ח׳: חקר תבניות מספריות וגאומטריות, ניסוח השערה, בדיקה בדוגמאות והכללה מנומקת. דף עבודה אחד, בחינם וללא הרשמה.",
+        "educationalLevel": "כיתה ח׳",
+        "learningResourceType": "דפי עבודה",
+        "teaches": "חקר תבניות, ניסוח השערה, בדיקה והכללה",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/investigation-generalization-grade-8#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "מה ההבדל בין השערה להכללה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "השערה היא טענה שנראית נכונה לפי דוגמאות. הכללה היא השערה שהוכחה, למשל בעזרת ביטוי אלגברי."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך מפריכים השערה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "מספיקה דוגמה נגדית אחת, מקרה שבו התנאי מתקיים והטענה לא."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "כמה דפי עבודה יש בנושא?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "בנושא יש דף עבודה אחד לכל הכיתה, ובסופו תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם יש תשובות לדפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. בסוף כל דף עבודה יש דף תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

@@ -1,0 +1,314 @@
+{
+  "slug": "midyear-diagnostic-grade-8",
+  "path": "/midyear-diagnostic-grade-8",
+  "grade": 8,
+  "sourceUrl": "https://www.noamdoronmath.co.il/midyear-diagnostic-grade-8",
+  "fetchedAt": "2026-11-10T00:00:00.000Z",
+  "verifiedVia": "authored-catalog-gap-from-noam-pdfs",
+  "title": "אבחון אמצע שנה לכיתה ח׳ | דף עבודה חינם",
+  "description": "אבחון אמצע שנה לכיתה ח׳: משוואות עם סוגריים ומכנים, אחוזים, פונקציות וגרפים, ובדיקת פתרון בהצבה. דף עבודה אחד, בחינם וללא הרשמה.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "אבחון אמצע שנה לכיתה ח׳",
+  "intro": "דף אבחון לאמצע כיתה ח׳ שבודק את נושאי המחצית הראשונה: משוואות עם סוגריים ועם מכנים, אחוזים, פונקציות וקריאת גרפים. דף העבודה זמין בחינם וללא הרשמה, עם תשובות בסוף הדף.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "האבחון בודק מה כבר יושב טוב ומה צריך חיזוק לפני המחצית השנייה. בחלק מהשאלות מוצג פתרון של תלמיד, וצריך למצוא בו טעות.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "בשאלות המשוואות שמים לב במיוחד לפתיחת סוגריים כשלפניהם מינוס, ולכפל של כל איבר במכנה המשותף.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "דוגמה: 4(x − 3) − 6(x + 2) = 4. פותחים סוגריים: 4x − 12 − 6x − 12 = 4. המינוס שלפני 6 חל גם על 2, ולכן מקבלים −12 ולא +12.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "פותחים סוגריים שלפניהם מינוס בלי להחליף את הסימן של כל האיברים בתוכם.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "לא בודקים את הפתרון. הצבה במשוואה המקורית מגלה מיד אם הייתה טעות בדרך.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "פתרו: 4(x − 3) − 2(x + 1) = 6.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה היא x = 10: 4x − 12 − 2x − 2 = 6, ולכן 2x = 20.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "דף אבחון לאמצע כיתה ח׳ שבודק את נושאי המחצית הראשונה: משוואות עם סוגריים ועם מכנים, אחוזים, פונקציות וקריאת גרפים. דף העבודה זמין בחינם וללא הרשמה, עם תשובות בסוף הדף.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דף העבודה",
+      "href": "/worksheets?grade=8&topic=34",
+      "catalogTopicId": 34
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "האבחון בודק מה כבר יושב טוב ומה צריך חיזוק לפני המחצית השנייה. בחלק מהשאלות מוצג פתרון של תלמיד, וצריך למצוא בו טעות.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "בשאלות המשוואות שמים לב במיוחד לפתיחת סוגריים כשלפניהם מינוס, ולכפל של כל איבר במכנה המשותף.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "דוגמה: 4(x − 3) − 6(x + 2) = 4. פותחים סוגריים: 4x − 12 − 6x − 12 = 4. המינוס שלפני 6 חל גם על 2, ולכן מקבלים −12 ולא +12.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "פותחים סוגריים שלפניהם מינוס בלי להחליף את הסימן של כל האיברים בתוכם.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "לא בודקים את הפתרון. הצבה במשוואה המקורית מגלה מיד אם הייתה טעות בדרך.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "פתרו: 4(x − 3) − 2(x + 1) = 6.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "התשובה היא x = 10: 4x − 12 − 2x − 2 = 6, ולכן 2x = 20.",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 10.11.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "מה בודק אבחון אמצע השנה?",
+      "answer": "משוואות עם סוגריים ועם מכנים, אחוזים, פונקציות וגרפים, כלומר את נושאי המחצית הראשונה."
+    },
+    {
+      "question": "מה עושים עם התוצאות?",
+      "answer": "מסמנים את השאלות שבהן הייתה טעות וחוזרים לדפי העבודה של אותו נושא לפני שממשיכים."
+    },
+    {
+      "question": "כמה דפי עבודה יש בנושא?",
+      "answer": "בנושא יש דף עבודה אחד לכל הכיתה, ובסופו תשובות."
+    },
+    {
+      "question": "האם יש תשובות לדפי העבודה?",
+      "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "מה בודק אבחון אמצע השנה?",
+          "answer": "משוואות עם סוגריים ועם מכנים, אחוזים, פונקציות וגרפים, כלומר את נושאי המחצית הראשונה."
+        },
+        {
+          "question": "מה עושים עם התוצאות?",
+          "answer": "מסמנים את השאלות שבהן הייתה טעות וחוזרים לדפי העבודה של אותו נושא לפני שממשיכים."
+        },
+        {
+          "question": "כמה דפי עבודה יש בנושא?",
+          "answer": "בנושא יש דף עבודה אחד לכל הכיתה, ובסופו תשובות."
+        },
+        {
+          "question": "האם יש תשובות לדפי העבודה?",
+          "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/grade-8",
+      "label": "כל דפי כיתה ח׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-8"
+    },
+    {
+      "path": "/linear-equations-grade-8",
+      "label": "משוואות ליניאריות",
+      "productionHref": "https://www.noamdoronmath.co.il/linear-equations-grade-8"
+    },
+    {
+      "path": "/equations-with-fractions-grade-8",
+      "label": "משוואות עם מכנים מספריים",
+      "productionHref": "https://www.noamdoronmath.co.il/equations-with-fractions-grade-8"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דף העבודה",
+    "href": "/worksheets?grade=8&topic=34",
+    "source": "catalog-g8-t34",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=34",
+    "catalogTopicId": 34,
+    "catalogTopicTitle": "אבחון אמצע שנה"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דף העבודה",
+      "href": "/worksheets?grade=8&topic=34",
+      "source": "catalog-g8-t34",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=34",
+      "catalogTopicId": 34,
+      "catalogTopicTitle": "אבחון אמצע שנה"
+    }
+  ],
+  "gradeHubHref": "/grade-8",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/midyear-diagnostic-grade-8#webpage",
+        "url": "https://www.noamdoronmath.co.il/midyear-diagnostic-grade-8",
+        "name": "אבחון אמצע שנה לכיתה ח׳ | דף עבודה חינם",
+        "description": "אבחון אמצע שנה לכיתה ח׳: משוואות עם סוגריים ומכנים, אחוזים, פונקציות וגרפים, ובדיקת פתרון בהצבה. דף עבודה אחד, בחינם וללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/midyear-diagnostic-grade-8#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/midyear-diagnostic-grade-8#learning-resource",
+        "name": "אבחון אמצע שנה לכיתה ח׳",
+        "url": "https://www.noamdoronmath.co.il/midyear-diagnostic-grade-8",
+        "description": "אבחון אמצע שנה לכיתה ח׳: משוואות עם סוגריים ומכנים, אחוזים, פונקציות וגרפים, ובדיקת פתרון בהצבה. דף עבודה אחד, בחינם וללא הרשמה.",
+        "educationalLevel": "כיתה ח׳",
+        "learningResourceType": "דפי עבודה",
+        "teaches": "בדיקת שליטה בנושאי המחצית הראשונה של כיתה ח׳",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/midyear-diagnostic-grade-8#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "מה בודק אבחון אמצע השנה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "משוואות עם סוגריים ועם מכנים, אחוזים, פונקציות וגרפים, כלומר את נושאי המחצית הראשונה."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "מה עושים עם התוצאות?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "מסמנים את השאלות שבהן הייתה טעות וחוזרים לדפי העבודה של אותו נושא לפני שממשיכים."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "כמה דפי עבודה יש בנושא?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "בנושא יש דף עבודה אחד לכל הכיתה, ובסופו תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם יש תשובות לדפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. בסוף כל דף עבודה יש דף תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}
