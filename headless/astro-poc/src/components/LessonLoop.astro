@@ -5,47 +5,158 @@ interface Props { variant: LessonLoopVariant }
 const { variant } = Astro.props;
 const lesson: Lesson = LESSON_LOOPS[variant];
 const faces = [
-  {x:120,y:10,w:90,h:60,pair:0,label:'2 × 3'},
-  {x:60,y:70,w:60,h:120,pair:1,label:'2 × 4'},
-  {x:120,y:70,w:90,h:120,pair:2,label:'3 × 4'},
-  {x:210,y:70,w:60,h:120,pair:1,label:'2 × 4'},
-  {x:270,y:70,w:90,h:120,pair:2,label:'3 × 4'},
-  {x:120,y:190,w:90,h:60,pair:0,label:'2 × 3'},
+  {x:120,y:10,w:90,h:60,pair:0,label:'2 × 3',axis:'y',origin:'50% 100%',delay:0.1},
+  {x:60,y:70,w:60,h:120,pair:1,label:'2 × 4',axis:'x',origin:'100% 50%',delay:0.4},
+  {x:120,y:70,w:90,h:120,pair:2,label:'3 × 4',axis:'',origin:'',delay:0},
+  {x:210,y:70,w:60,h:120,pair:1,label:'2 × 4',axis:'x',origin:'0 50%',delay:0.7},
+  {x:270,y:70,w:90,h:120,pair:2,label:'3 × 4',axis:'x',origin:'0 50%',delay:1.4},
+  {x:120,y:190,w:90,h:60,pair:0,label:'2 × 3',axis:'y',origin:'50% 0',delay:1.0},
 ];
+
+/* Place-value blocks are fixed-size boxes, so the result row can start every
+   piece exactly on its source piece: rods 12px + 5px gap, ones 9 × 11px on a
+   12 × 14px grid, rows 65px + 10px apart. */
+type PlaceRow = { value: number; label: string };
+const ROW_PITCH = 75;
+const onesTop = (n: number) => (65 - (Math.ceil(n / 4) * 14 - 3)) / 2;
+const placeAt = (row: PlaceRow, kind: 'ten' | 'one', k: number) => {
+  const tens = Math.floor(row.value / 10);
+  return kind === 'ten'
+    ? { x: k * 17, y: 2.5 }
+    : { x: tens * 17 + 5 + (k % 4) * 12, y: onesTop(row.value % 10) + Math.floor(k / 4) * 14 };
+};
+const placeSource = (rows: PlaceRow[], kind: 'ten' | 'one', k: number) => {
+  const take = (v: number) => (kind === 'ten' ? Math.floor(v / 10) : v % 10);
+  const subtract = rows[1].label.trim().startsWith('−');
+  const first = take(rows[0].value);
+  return subtract || k < first ? { row: 0, k } : { row: 1, k: k - first };
+};
+const placeMove = (rows: PlaceRow[], kind: 'ten' | 'one', k: number, order: number) => {
+  const src = placeSource(rows, kind, k);
+  const from = placeAt(rows[src.row], kind, src.k);
+  const to = placeAt(rows[2], kind, k);
+  return `--dx:${from.x - to.x}px;--dy:${from.y - to.y + (src.row - 2) * ROW_PITCH}px;--d:${(order * 0.12).toFixed(2)}s`;
+};
+
+/* Rows fill one after another inside one 9s lap; the reset stays together
+   because each row start lives in its own keyframes, not in a long delay. */
+const ROW_STARTS: Record<number, number[]> = { 1: [0], 2: [0, 33], 3: [0, 33, 66], 4: [0, 22, 44, 66], 5: [0, 16, 33, 49, 66] };
+const rowStart = (row: number, rows: number) => (ROW_STARTS[rows] ?? ROW_STARTS[5])[row] ?? 66;
+const cellDelay = (j: number, filled: number, rows: number) => (j * Math.min(rows === 1 ? 0.35 : 0.12, (rows === 1 ? 2.4 : 1.2) / filled)).toFixed(2);
+
+const meanValues = [8, 12, 6, 10];
+const meanX = (i: number) => 370 - i * 90;
+const meanY = (n: number) => 215 - n * 14;
+const meanPieces = [{ from: 1, to: 2 }, { from: 3, to: 0 }].map(({ from, to }) => {
+  const extra = meanValues[from] - 9;
+  return { x: meanX(from), y: meanY(meanValues[from]), h: extra * 14, dx: meanX(to) - meanX(from), dy: meanY(meanValues[to] + extra) - meanY(meanValues[from]) };
+});
+
+const dotX = (v: number) => 40 + v * 22;
+
+const tiles = Array.from({ length: 15 }, (_, k) => {
+  const x = 46 + k * 26;
+  const half = k < 5;
+  const src = half ? 60 + k * 24 : 200 + (k - 5) * 24;
+  return { x, dx: src - x, half, d: half ? k * 0.12 : (k - 5) * 0.12 };
+});
+
+const roundX = (v: number) => 70 + (v - 300000) / 100000 * 340;
+
+const groupX = (g: number) => 20 + g * 150;
+const rods = Array.from({ length: 6 }, (_, k) => {
+  const g = Math.floor(k / 2);
+  const x = groupX(g) + 14 + (k % 2) * 18;
+  return { x, dx: 150 + k * 18 - x, dy: 10 - 118, d: k * 0.1 };
+});
+const brokenRods = [6, 7].map((k) => 150 + k * 18);
+const units = Array.from({ length: 24 }, (_, n) => {
+  const g = Math.floor(n / 8);
+  const u = n % 8;
+  const x = groupX(g) + 58 + (u % 4) * 12;
+  const y = 140 + Math.floor(u / 4) * 12;
+  const sx = n < 10 ? 260 : n < 20 ? 278 : 300 + ((n - 20) % 2) * 12;
+  const sy = n < 20 ? 10 + (n % 10) * 8 : 50 + Math.floor((n - 20) / 2) * 12;
+  return { x, y, dx: sx - x, dy: sy - y, fromRod: n < 20, d: (u * 0.05).toFixed(2) };
+});
+
+const treeNodes = [
+  { v: 60, x: 210, y: 30, level: 0, prime: false },
+  { v: 2, x: 120, y: 95, level: 1, prime: true },
+  { v: 30, x: 300, y: 95, level: 1, prime: false },
+  { v: 2, x: 240, y: 160, level: 2, prime: true },
+  { v: 15, x: 360, y: 160, level: 2, prime: false },
+  { v: 3, x: 300, y: 225, level: 3, prime: true },
+  { v: 5, x: 420, y: 225, level: 3, prime: true },
+];
+const treeBranches = [[0, 1], [0, 2], [2, 3], [2, 4], [4, 5], [4, 6]].map(([p, c]) => {
+  const a = treeNodes[p];
+  const b = treeNodes[c];
+  return { x1: a.x, y1: a.y, x2: b.x, y2: b.y, level: b.level, origin: b.x < a.x ? '100% 0' : '0 0' };
+});
 ---
 <div class="lesson" data-lesson={variant} dir="rtl">
   {lesson.picture === 'reflection' && <svg role="img" viewBox="0 0 480 230" aria-label="שני חצאים משתקפים סביב קו אנכי">
-    <line x1="240" y1="10" x2="240" y2="215" stroke-dasharray="7 6"/>
+    <line class="mirror-axis" x1="240" y1="10" x2="240" y2="215" stroke-dasharray="7 6"/>
     <path d="M240 35 L130 100 L170 190 L240 155 Z" class="filled"/>
     <g class="mirror"><path d="M240 35 L350 100 L310 190 L240 155 Z" class="gold"/><circle cx="350" cy="100" r="6"/></g>
     <line x1="130" y1="100" x2="350" y2="100" stroke-dasharray="4 4"/>
     <circle cx="130" cy="100" r="6"/>
     <path d="M185 94 V106 M295 94 V106"/>
+    <circle class="traveler" cx="130" cy="100" r="8"/>
   </svg>}
   {lesson.picture === 'net' && <svg role="img" viewBox="0 0 420 260" aria-label="פריסה סכמטית של שש פאות תיבה, המידות קובעות את השטחים">
-    {faces.map(f=><g class={`pair pair-${f.pair}`}><rect x={f.x} y={f.y} width={f.w} height={f.h} class="filled"/><text x={f.x+f.w/2} y={f.y+f.h/2+7}>{f.label}</text></g>)}
+    {faces.map(f=><g class={`pair pair-${f.pair}`}><g class:list={['face',f.axis && `face--${f.axis}`]} style={f.axis ? `transform-origin:${f.origin};--d:${f.delay}s` : undefined}><rect x={f.x} y={f.y} width={f.w} height={f.h} class="filled"/><text x={f.x+f.w/2} y={f.y+f.h/2+7}>{f.label}</text></g></g>)}
   </svg>}
   {lesson.picture === 'chart' && <svg role="img" viewBox="0 0 480 230" aria-label="שלוש עמודות: א שלושה, ב חמישה, ג שניים">
     {[0,1,2,3,4,5].map(n=><><line class="grid" x1="80" x2="430" y1={195-n*32} y2={195-n*32}/><text x="55" y={202-n*32}>{n}</text></>)}
     {[3,5,2].map((n,i)=><g><rect class={`filled bar bar-${i}`} x={320-i*100} y={195-n*32} width="52" height={n*32}/><text x={346-i*100} y="224">{['א','ב','ג'][i]}</text></g>)}
+    <line class="read-line" x1="80" x2="320" y1="99" y2="99" stroke-dasharray="6 5"/>
   </svg>}
   {lesson.picture === 'triangles' && <div class="triangle-cards">
-    {[{name:'חד־זווית',points:'25,130 75,30 135,130',mark:''},{name:'ישר־זווית',points:'25,130 25,30 135,130',mark:'M25 114 H41 V130'},{name:'קהה־זווית',points:'10,130 55,85 140,130',mark:'M44 96 Q56 110 69 93'}].map(t=><div><svg role="img" viewBox="0 0 155 155" aria-label={`משולש ${t.name}`}><polygon points={t.points} class="filled"/><path d={t.mark}/></svg><p>{t.name}</p></div>)}
+    {[{name:'חד־זווית',points:'25,130 75,30 135,130',mark:'',at:'25 130',tester:'M0 -34 L0 0 L34 0'},{name:'ישר־זווית',points:'25,130 25,30 135,130',mark:'M25 114 H41 V130',at:'25 130',tester:'M0 -34 L0 0 L34 0'},{name:'קהה־זווית',points:'10,130 55,85 140,130',mark:'M44 96 Q56 110 69 93',at:'55 85',tester:'M-24 24 L0 0 L24 24'}].map(t=><div><svg role="img" viewBox="0 0 155 155" aria-label={`משולש ${t.name}`}><polygon points={t.points} class="filled"/><path d={t.mark}/><g transform={`translate(${t.at})`}><path class="tester" d={t.tester}/></g></svg><p>{t.name}</p></div>)}
   </div>}
   {lesson.picture === 'linegraph' && <svg role="img" viewBox="0 0 480 260" aria-label="גרף קווי: בשלב א 5, בשלב ב 9 ובשלב ג 10; העלייה הראשונה גדולה יותר">
     {[0,5,10].map(n=><><line class="grid" x1="70" x2="425" y1={210-n*16} y2={210-n*16}/><text x="42" y={217-n*16}>{n}</text></>)}
-    <path d="M70 25 V210 H425"/><path class="graph-line" d="M110 130 L250 66 L390 50"/>
-    {[5,9,10].map((n,i)=><><circle cx={110+i*140} cy={210-n*16} r="6"/><text x={110+i*140} y={194-n*16}>{n}</text><text x={110+i*140} y="246">{['א','ב','ג'][i]}</text></>)}
+    <path d="M70 25 V210 H425"/>
+    <g transform="translate(110 130) rotate(-24.567)"><line class="graph-line seg seg-1" x1="0" y1="0" x2="153.94" y2="0"/></g>
+    <g transform="translate(250 66) rotate(-6.52)"><line class="graph-line seg seg-2" x1="0" y1="0" x2="140.91" y2="0"/></g>
+    <rect class="rise rise-1" x="244" y="66" width="12" height="64"/>
+    <rect class="rise rise-2" x="384" y="50" width="12" height="16"/>
+    {[5,9,10].map((n,i)=><><circle class={`pt pt-${i}`} cx={110+i*140} cy={210-n*16} r="6" style={`--dy:${n*16}px`}/><text x={110+i*140} y={194-n*16}>{n}</text><text x={110+i*140} y="246">{['א','ב','ג'][i]}</text></>)}
   </svg>}
-  {lesson.picture === 'table' && <table><caption>כמות הפריטים בכל קבוצה</caption><thead><tr><th scope="col">קבוצה</th><th scope="col">כמות</th></tr></thead><tbody><tr><th scope="row">א׳</th><td>138</td></tr><tr><th scope="row">ב׳</th><td>161</td></tr></tbody></table>}
-  {lesson.picture === 'mean' && <svg role="img" viewBox="0 0 480 260" aria-label="ערכי הקבוצות: 8, 12, 6, 10. קו מקווקו בגובה הממוצע 9">
+  {lesson.picture === 'table' && <>
+    <table><caption>כמות הפריטים בכל קבוצה</caption><thead><tr><th scope="col">קבוצה</th><th scope="col">כמות</th></tr></thead><tbody><tr><th scope="row">א׳</th><td>138</td></tr><tr><th scope="row">ב׳</th><td>161</td></tr></tbody></table>
+    <svg class="sum-bars" role="img" viewBox="0 0 480 124" aria-label="פס של 138 ופס של 161 מתחברים לפס של 299; ההפרש בין הפסים הוא 23">
+      <rect class="filled grow-x" x="256.8" y="8" width="193.2" height="26"/><text x="353.4" y="28">138</text>
+      <rect class="gold grow-x grow-x--late" x="224.6" y="42" width="225.4" height="26"/><text x="337.3" y="62">161</text>
+      <rect class="filled gather" x="256.8" y="90" width="193.2" height="26" style="--dx:0px;--dy:-82px;--d:0s"/>
+      <rect class="gold gather" x="31.4" y="90" width="225.4" height="26" style="--dx:193.2px;--dy:-48px;--d:.3s"/>
+      <text class="late-label" x="240" y="110">299</text>
+      <rect class="diff" x="224.6" y="42" width="32.2" height="26"/>
+      <text class="diff-label" x="203" y="62">23</text>
+    </svg>
+  </>}
+  {lesson.picture === 'mean' && <svg role="img" viewBox="0 0 480 260" aria-label="ערכי הקבוצות: 8, 12, 6, 10. העודף של 12 ושל 10 עובר אל 6 ואל 8 וכולן בגובה 9, הממוצע">
     {[0,3,6,9,12].map(n=><><line class="grid" x1="65" x2="445" y1={215-n*14} y2={215-n*14}/><text x="40" y={222-n*14}>{n}</text></>)}
-    {[8,12,6,10].map((n,i)=><><rect class="filled" x={370-i*90} y={215-n*14} width="44" height={n*14}/><text x={392-i*90} y={204-n*14}>{n}</text><text x={392-i*90} y="248">{['א','ב','ג','ד'][i]}</text></>)}
+    {meanValues.map((n,i)=><><rect class="filled" x={meanX(i)} y={meanY(Math.min(n,9))} width="44" height={Math.min(n,9)*14}/><text x={meanX(i)+22} y={204-n*14}>{n}</text><text x={meanX(i)+22} y="248">{['א','ב','ג','ד'][i]}</text></>)}
+    {meanPieces.map(p=><rect class="gold level-piece" x={p.x} y={p.y} width="44" height={p.h} style={`--dx:${p.dx}px;--dy:${p.dy}px`}/>)}
     <line class="mean-line" x1="65" x2="445" y1="89" y2="89" stroke-dasharray="6 5"/>
   </svg>}
-  {lesson.picture === 'groups' && <table><caption>אותו ממוצע, טווחים שונים</caption><thead><tr><th scope="col">קבוצה</th><th scope="col">ערכים</th><th scope="col">ממוצע</th><th scope="col">טווח</th></tr></thead><tbody><tr><th scope="row">א׳</th><td><bdi>8, 9, 10</bdi></td><td>9</td><td>2</td></tr><tr><th scope="row">ב׳</th><td><bdi>1, 9, 17</bdi></td><td>9</td><td>16</td></tr></tbody></table>}
+  {lesson.picture === 'groups' && <>
+    <table><caption>אותו ממוצע, טווחים שונים</caption><thead><tr><th scope="col">קבוצה</th><th scope="col">ערכים</th><th scope="col">ממוצע</th><th scope="col">טווח</th></tr></thead><tbody><tr><th scope="row">א׳</th><td><bdi>8, 9, 10</bdi></td><td>9</td><td>2</td></tr><tr><th scope="row">ב׳</th><td><bdi>1, 9, 17</bdi></td><td>9</td><td>16</td></tr></tbody></table>
+    <svg class="dot-plot" role="img" viewBox="0 0 480 182" aria-label="על ישר מ־0 עד 18: ערכי קבוצה א׳ 8, 9, 10 צמודים ל־9, ערכי קבוצה ב׳ 1, 9, 17 מתפזרים; טווח 2 לעומת טווח 16">
+      <path d={`M${dotX(0)} 154 H${dotX(18)}`}/>
+      {[0,9,18].map(v=><><path d={`M${dotX(v)} 148 V160`}/><text x={dotX(v)} y="180">{v}</text></>)}
+      <text x="462" y="57">א׳</text><text x="462" y="129">ב׳</text>
+      <path class="range" d={`M${dotX(8)} 22 V34 M${dotX(8)} 28 H${dotX(10)} M${dotX(10)} 22 V34`}/><text class="range-label" x={dotX(9)} y="16">2</text>
+      <path class="range" d={`M${dotX(1)} 94 V106 M${dotX(1)} 100 H${dotX(17)} M${dotX(17)} 94 V106`}/><text class="range-label" x={dotX(9)} y="89">16</text>
+      {[8,9,10].map(v=><circle class="spread" cx={dotX(v)} cy="50" r="8" style={`--dx:${dotX(9)-dotX(v)}px`}/>)}
+      {[1,9,17].map(v=><circle class="spread spread--b" cx={dotX(v)} cy="122" r="8" style={`--dx:${dotX(9)-dotX(v)}px`}/>)}
+    </svg>
+  </>}
   {lesson.picture === 'numberline' && <div class="numberline" dir="ltr" aria-label="ישר מאפס עד אחד מחולק לשישיות. שליש בשתי שישיות וחצי בשלוש שישיות">
-    <div class="numberline-track">{Array.from({length:7},(_,i)=><span class:list={['tick',[2,3].includes(i)&&'chosen']} style={`left:${i/6*100}%`}><span class="tick-label">{i===0?'0':i===6?'1':i===2?<LessonMath value="1/3"/>:i===3?<LessonMath value="1/2"/>:''}</span></span>)}</div>
+    <div class="numberline-track">{Array.from({length:7},(_,i)=><span class:list={['tick',[2,3].includes(i)&&'chosen',i>0&&i<6&&'tick--mid']} style={`left:${i/6*100}%;--i:${i}`}><span class="tick-label">{i===0?'0':i===6?'1':i===2?<LessonMath value="1/3"/>:i===3?<LessonMath value="1/2"/>:''}</span></span>)}<i class="sixth-hop sixth-hop--half" aria-hidden="true"></i><i class="sixth-hop sixth-hop--third" aria-hidden="true"></i></div>
   </div>}
   {lesson.picture === 'linear' && <>
     <table dir="ltr"><caption>פונקציה קווית: <bdi>y = 3x + 1</bdi></caption><tbody><tr><th scope="row">x</th><td>0</td><td>1</td><td>2</td></tr><tr><th scope="row">y</th><td>1</td><td>4</td><td>7</td></tr></tbody></table>
@@ -55,24 +166,53 @@ const faces = [
   </>}
   {lesson.picture === 'place' && <div class="place-values">
     <p>כל מוט הוא עשרת; כל ריבוע הוא יחידה.</p>
-    {lesson.place?.map(row=><div class="place-row" dir="ltr"><bdi>{row.label}</bdi><div class="place-blocks" role="img" aria-label={`${Math.floor(row.value/10)} עשרות ו־${row.value%10} יחידות`}>
-      {Array.from({length:Math.floor(row.value/10)},()=> <span class="ten">{Array.from({length:10},()=> <i></i>)}</span>)}
-      <span class="ones">{Array.from({length:row.value%10},()=> <i></i>)}</span>
+    {lesson.place?.map((row,r,rows)=><div class="place-row" dir="ltr"><bdi>{row.label}</bdi><div class="place-blocks" role="img" aria-label={`${Math.floor(row.value/10)} עשרות ו־${row.value%10} יחידות`}>
+      {Array.from({length:Math.floor(row.value/10)},(_,k)=> <i class:list={['ten',r===2 && 'gather']} style={r===2 ? placeMove(rows,'ten',k,k) : undefined}>{Array.from({length:10},()=> <i></i>)}</i>)}
+      <span class="ones">{Array.from({length:row.value%10},(_,k)=> <i class:list={[r===2 && 'gather']} style={r===2 ? placeMove(rows,'one',k,Math.floor(row.value/10)+k) : undefined}></i>)}</span>
     </div></div>)}
   </div>}
   {lesson.picture === 'bars' && <div class="fraction-bars" dir="ltr">
     {lesson.bars?.map((b,i)=><div class="fraction-row"><span class="fraction-label"><LessonMath value={b.label}/></span><div class={`cells cells-${i}`} style={`--parts:${b.total}`}>
-      {Array.from({length:b.total},(_,j)=><span class:list={['cell',j<b.filled && 'cell--filled']}></span>)}
+      {Array.from({length:b.total},(_,j)=><span class:list={['cell',j<b.filled && 'cell--filled']}>{b.filled > j && <i class={`fill-${rowStart(i,lesson.bars!.length)}`} style={`--d:${cellDelay(j,b.filled,lesson.bars!.length)}s`}></i>}</span>)}
     </div></div>)}
   </div>}
   {lesson.picture === 'shapes' && <svg role="img" viewBox="0 0 480 220" aria-label="ריבוע וקובייה">
     <rect x="55" y="60" width="105" height="105" class="filled"/>
-    <g class="solid"><path d="M280 80 L325 40 L425 40 L380 80 Z" class="gold"/><path d="M380 80 L425 40 L425 145 L380 185 Z" class="filled"/><rect x="280" y="80" width="100" height="105" class="filled"/></g>
+    <g class="solid"><path d="M280 80 L325 40 L425 40 L380 80 Z" class="gold face-top"/><path d="M380 80 L425 40 L425 145 L380 185 Z" class="filled face-side"/><rect x="280" y="80" width="100" height="105" class="filled face-front"/></g>
+    <rect x="55" y="60" width="105" height="105" class="filled square-copy"/>
   </svg>}
-  {lesson.picture === 'hundred' && <div class="hundred" dir="ltr" aria-label="לוח המאה משמאל לימין, 34 ו־35 באותה שורה ו־44 מתחת ל־34">{Array.from({length:100},(_,i)=><span class:list={[[34,35,44].includes(i+1) && 'selected']}>{i+1}</span>)}</div>}
+  {lesson.picture === 'hundred' && <div class="hundred" dir="ltr" aria-label="לוח המאה משמאל לימין, 34 ו־35 באותה שורה ו־44 מתחת ל־34">{Array.from({length:100},(_,i)=><span class:list={[[34,35,44].includes(i+1) && 'selected']}>{i+1}</span>)}<i class="hop hop--right" aria-hidden="true"></i><i class="hop hop--down" aria-hidden="true"></i></div>}
   {lesson.picture === 'rectangles' && <svg role="img" viewBox="0 0 480 220" aria-label="ריבוע ומלבן עם סימני זווית ישרה">
     <rect x="35" y="45" width="120" height="120" class="filled"/><rect x="235" y="65" width="200" height="100" class="gold"/>
     <path d="M35 60 H50 V45 M140 45 V60 H155 M35 150 H50 V165 M140 165 V150 H155 M235 80 H250 V65 M420 65 V80 H435 M235 150 H250 V165 M420 165 V150 H435"/>
+  </svg>}
+  {lesson.picture === 'weights' && <svg role="img" viewBox="0 0 480 205" aria-label="קילוגרם אחד וחצי קילוגרם מתפרקים ל־15 משקולות של 100 גרם, יחד 1,500 גרם">
+    {tiles.map(t=><rect class:list={['filled','gather',!t.half && 'gather--early']} x={t.x} y="125" width="24" height="40" style={`--dx:${t.dx}px;--dy:-105px;--d:${t.d.toFixed(2)}s`}/>)}
+    <rect class="gold" x="200" y="20" width="240" height="50"/><text x="320" y="53">1 kg</text>
+    <rect class="gold" x="60" y="20" width="120" height="50"/><text x="120" y="53">0.5 kg</text>
+    <text class="small-label" x="240" y="198">15 × 100 g = 1,500 g</text>
+  </svg>}
+  {lesson.picture === 'rounding' && <svg role="img" viewBox="0 0 480 160" aria-label="ישר מספרים מ־300,000 עד 400,000. 347,000 רחוק 47,000 מ־300,000 ו־53,000 מ־400,000, ולכן מתעגל ל־300,000">
+    <path d={`M${roundX(300000)} 100 H${roundX(400000)}`}/>
+    {Array.from({length:11},(_,k)=><path d={`M${roundX(300000+k*10000)} ${k%5===0?90:95} V${k%5===0?110:105}`}/>)}
+    <path class="range range--near" d={`M${roundX(300000)} 50 V62 M${roundX(300000)} 56 H${roundX(347000)} M${roundX(347000)} 50 V62`} style="transform-origin:100% 50%"/>
+    <path class="range range--far" d={`M${roundX(347000)} 50 V62 M${roundX(347000)} 56 H${roundX(400000)} M${roundX(400000)} 50 V62`} style="transform-origin:0 50%"/>
+    <text class="range-label small-label" x={(roundX(300000)+roundX(347000))/2} y="42">47,000</text>
+    <text class="range-label range-label--far small-label" x={(roundX(347000)+roundX(400000))/2} y="42">53,000</text>
+    <text class="small-label" x={roundX(300000)} y="136">300,000</text><text class="small-label" x={roundX(347000)} y="136">347,000</text><text class="small-label" x={roundX(400000)} y="136">400,000</text>
+    <circle class="drop-in" cx={roundX(347000)} cy="100" r="7"/>
+    <circle class="rounded" cx={roundX(300000)} cy="100" r="11" style={`--dx:${roundX(347000)-roundX(300000)}px`}/>
+  </svg>}
+  {lesson.picture === 'division' && <svg role="img" viewBox="0 0 480 250" aria-label="84 הם 8 עשרות ו־4 יחידות. 6 עשרות מתחלקות לשלוש קבוצות, ו־24 היחידות שנשארו מתחלקות 8 לכל קבוצה: 28 בכל קבוצה">
+    <text x="420" y="58">84 ÷ 3</text>
+    {[0,1,2].map(g=><><rect class="group-box" x={groupX(g)} y="105" width="135" height="110" rx="10"/><text x={groupX(g)+67} y="240">28</text></>)}
+    {brokenRods.map(x=><g class="rod broken-rod">{Array.from({length:10},(_,c)=><rect x={x} y={10+c*8} width="12" height="8"/>)}</g>)}
+    {rods.map(r=><g class="rod deal" style={`--dx:${r.dx}px;--dy:${r.dy}px;--d:${r.d}s`}>{Array.from({length:10},(_,c)=><rect x={r.x} y={118+c*8} width="12" height="8"/>)}</g>)}
+    {units.map(u=><rect class:list={['unit',u.fromRod ? 'deal-late' : 'deal-units']} x={u.x} y={u.y} width="8" height="8" style={`--dx:${u.dx}px;--dy:${u.dy}px;--d:${u.d}s`}/>)}
+  </svg>}
+  {lesson.picture === 'factortree' && <svg role="img" viewBox="0 0 480 250" aria-label="עץ גורמים: 60 מתפרק ל־2 ול־30, 30 ל־2 ול־15, ו־15 ל־3 ול־5">
+    {treeBranches.map(b=><line class={`branch branch-${b.level}`} x1={b.x1} y1={b.y1} x2={b.x2} y2={b.y2} style={`transform-origin:${b.origin}`}/>)}
+    {treeNodes.map(n=><g class={`node node-${n.level}`}><circle class:list={[n.prime && 'prime']} cx={n.x} cy={n.y} r="21"/><text x={n.x} y={n.y+8}>{n.v}</text></g>)}
   </svg>}
   <ol class:list={['steps',lesson.picture === 'equation' ? 'steps--large':'']}>
     {lesson.steps.map((s,i)=><li class={`step step-${i}`}><span class="step-number">{i+1}</span><div><p>{s.text}</p>{s.math && <p class="math" dir="ltr"><LessonMath value={s.math}/></p>}</div></li>)}
@@ -101,8 +241,9 @@ const faces = [
   svg line,svg path,svg rect,svg polygon { stroke:#22305a; stroke-width:2.5; fill:none; }
   svg .filled { fill:#d7efe8; } svg .gold { fill:#f7d489; }
   svg text { font:700 23px Heebo,sans-serif; fill:#22305a; text-anchor:middle; direction:ltr; unicode-bidi:isolate; }
+  svg .small-label {font-size:18px;}
   svg circle {fill:#1e605e;} svg .grid {stroke:#dce1e9;stroke-width:1;}
-  .hundred {display:grid;grid-template-columns:repeat(10,1fr);gap:1px;margin:6px 0;background:#dce1e9;}
+  .hundred {display:grid;grid-template-columns:repeat(10,1fr);gap:1px;margin:6px 0;background:#dce1e9;position:relative;}
   .hundred span {display:grid;place-items:center;min-height:24px;font-size:14px;background:#fff;}
   .hundred .selected {background:#f7d489;font-weight:800;}
   .steps { margin:12px 0 0; padding:0; list-style:none; display:grid; gap:8px; }
@@ -117,14 +258,133 @@ const faces = [
   .fraction-row {display:grid;grid-template-columns:95px 1fr;align-items:center;gap:8px;}
   .fraction-label {font-size:16px;font-weight:800;text-align:center;}
   .cells {display:grid;grid-template-columns:repeat(var(--parts),1fr);height:32px;border:2px solid #22305a;}
-  .cell {border-inline-end:1px solid #22305a;background:#fff;} .cell:last-child {border:0;} .cell--filled {background:#e6a534;}
-  .mirror {transform-box:view-box;transform-origin:50% 0;animation:fold 9s ease-in-out infinite;}
-  .bar {animation:highlight 9s ease-in-out infinite;}
-  .bar-1 {animation-delay:.25s;} .bar-2 {animation-delay:.5s;}
-  .step-number,.pair {animation:highlight 9s ease-in-out infinite;}
+  .cell {position:relative;overflow:hidden;border-inline-end:1px solid #22305a;background:#fff;} .cell:last-child {border:0;}
+  .cell--filled i {position:absolute;inset:0;background:#e6a534;}
+
+  /* Every rest style below is the finished picture: Stop and reduced motion drop
+     the animations and keep it. Keyframes start from the unworked state. */
+  svg .read-line {stroke:#e5735c;stroke-width:3;}
+  svg .tester {stroke:#e5735c;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;}
+  svg .rise {fill:#e5735c;fill-opacity:.55;stroke:none;}
+  svg .diff {fill:#e5735c;stroke:#e5735c;}
+  svg .diff-label,svg .range-label {fill:#c4553f;}
+  svg .range {stroke:#e5735c;stroke-width:3;} svg .range--far {stroke:#2a7c7a;} svg .range-label--far {fill:#1e605e;}
+  .sum-bars text {font-size:18px;}
+  svg .level-piece {stroke-dasharray:none;}
+  svg .spread--b {fill:#e6a534;stroke:#22305a;stroke-width:1.5;}
+  svg .traveler {fill:#e5735c;opacity:0;}
+  svg .rounded {fill:none;stroke:#e5735c;stroke-width:3.5;}
+  svg .group-box {fill:#fbfaf5;stroke:#a8b3c7;stroke-width:2;}
+  svg .rod rect {fill:#a8d8cc;stroke:#22305a;stroke-width:1;}
+  svg .unit {fill:#f7d489;stroke:#22305a;stroke-width:1;}
+  svg .broken-rod {opacity:0;}
+  svg .branch {stroke-width:3;}
+  svg .node circle {fill:#fff;stroke:#22305a;stroke-width:2.5;} svg .node .prime {stroke:#e5735c;stroke-width:4;}
+  .hop {position:absolute;inset:0;grid-area:4/4/5/5;border:3px solid #e5735c;border-radius:6px;pointer-events:none;}
+  .hop--right {transform:translateX(calc(100% + 1px));} .hop--down {transform:translateY(calc(100% + 1px));}
+  .sixth-hop {position:absolute;top:-9px;inset-inline-start:-9px;width:calc(100% / 6);height:20px;--c:#2a7c7a;background:radial-gradient(circle at 9px 50%,var(--c) 8.5px,transparent 9.5px);transform:translateX(200%);}
+  .sixth-hop--half {--c:#e5735c;transform:translateX(300%);}
+
+  .bar,.face,.square-copy,.face-top,.face-side,.face-front,svg .range,.grow-x,.diff,.rise,.seg,.mean-line,.node {transform-box:fill-box;}
+  .bar {transform-origin:50% 100%;animation:ls-grow-y 9s ease-out infinite backwards;}
+  .bar-1 {animation-delay:.3s;} .bar-2 {animation-delay:.6s;}
+  svg .read-line {transform-box:fill-box;transform-origin:100% 50%;animation:ls-draw-step-1 9s ease-in-out infinite;}
+  .hop--right {animation:ls-hop-right 9s ease-in-out infinite;}
+  .hop--down {animation:ls-hop-down 9s ease-in-out infinite;}
+  .gather {animation:ls-gather 9s ease-in-out infinite backwards;animation-delay:var(--d,0s);} .gather--early {animation-name:ls-gather-early;}
+  .square-copy {transform-origin:0 0;transform:translate(225px,20px) scaleX(.952);animation:ls-square-copy 9s ease-in-out infinite;}
+  .face-front {animation:ls-front 9s linear infinite;}
+  .face-top {transform-origin:50% 100%;animation:ls-face-y 9s ease-out infinite;}
+  .face-side {transform-origin:0 50%;animation:ls-face-x 9s ease-out infinite;}
+  svg .mirror-axis {transform-box:fill-box;transform-origin:50% 0;animation:ls-grow-y 9s ease-out infinite;}
+  .mirror {transform-box:view-box;transform-origin:50% 0;animation:ls-fold 9s ease-in-out infinite;}
+  svg .traveler {animation:ls-travel 9s ease-in-out infinite;}
+  .tester {animation:ls-tester-0 9s ease-out infinite;}
+  .triangle-cards > div:nth-child(2) .tester {animation-name:ls-tester-33;} .triangle-cards > div:nth-child(3) .tester {animation-name:ls-tester-66;}
+  .pt {animation:ls-rise 9s ease-out infinite backwards;} .pt-1 {animation-delay:.25s;} .pt-2 {animation-delay:.5s;}
+  .seg {transform-origin:0 50%;} .seg-1 {animation:ls-seg-1 9s ease-in-out infinite;} .seg-2 {animation:ls-seg-2 9s ease-in-out infinite;}
+  .rise {transform-origin:50% 100%;} .rise-1 {animation:ls-rise-1 9s ease-out infinite;} .rise-2 {animation:ls-rise-2 9s ease-out infinite;}
+  .grow-x {transform-origin:100% 50%;animation:ls-grow-x 9s ease-out infinite backwards;} .grow-x--late {animation-delay:.3s;}
+  .late-label {animation:ls-late-label 9s linear infinite;}
+  .diff {transform-origin:100% 50%;animation:ls-diff 9s ease-out infinite;} .diff-label {animation:ls-diff-label 9s linear infinite;}
+  .level-piece {animation:ls-level 9s ease-in-out infinite;}
+  svg .mean-line {transform-box:fill-box;transform-origin:100% 50%;animation:ls-draw-step-2 9s ease-in-out infinite;}
+  .spread {animation:ls-spread 9s ease-in-out infinite;}
+  svg .range {transform-origin:50% 50%;animation:ls-range 9s ease-out infinite;}
+  .range-label {animation:ls-range-label 9s linear infinite;}
+  .tick--mid {animation:ls-tick 9s linear infinite backwards;animation-delay:calc(var(--i) * .25s);}
+  .sixth-hop--third {animation:ls-hop-third 9s ease-in-out infinite;}
+  .sixth-hop--half {animation:ls-hop-half 9s ease-in-out infinite;}
+  .cell--filled i {animation:ls-fill-0 9s ease-out infinite backwards;animation-delay:var(--d);}
+  .cell--filled .fill-16 {animation-name:ls-fill-16;} .cell--filled .fill-22 {animation-name:ls-fill-22;} .cell--filled .fill-33 {animation-name:ls-fill-33;} .cell--filled .fill-44 {animation-name:ls-fill-44;} .cell--filled .fill-49 {animation-name:ls-fill-49;} .cell--filled .fill-66 {animation-name:ls-fill-66;}
+  .face--y {animation:ls-grow-y 9s ease-out infinite backwards;animation-delay:var(--d);}
+  .face--x {animation:ls-grow-x 9s ease-out infinite backwards;animation-delay:var(--d);}
+  .drop-in {animation:ls-drop 9s ease-out infinite;}
+  svg .range--near {animation:ls-range-near 9s ease-out infinite;} svg .range--far {animation:ls-range-far 9s ease-out infinite;}
+  .rounded {animation:ls-round 9s ease-in-out infinite;}
+  .deal {animation:ls-deal 9s ease-in-out infinite backwards;animation-delay:var(--d);}
+  .deal-units {animation:ls-deal-units 9s ease-in-out infinite backwards;animation-delay:var(--d);}
+  .deal-late {animation:ls-deal-late 9s ease-in-out infinite backwards;animation-delay:var(--d);}
+  svg .broken-rod {animation:ls-break 9s linear infinite;}
+  .branch {transform-box:fill-box;} .branch-1 {animation:ls-branch-1 9s ease-out infinite;} .branch-2 {animation:ls-branch-2 9s ease-out infinite;} .branch-3 {animation:ls-branch-3 9s ease-out infinite;}
+  .node-1 {animation:ls-node-1 9s ease-out infinite;} .node-2 {animation:ls-node-2 9s ease-out infinite;} .node-3 {animation:ls-node-3 9s ease-out infinite;}
+  .step-number,.pair {animation:ls-highlight 9s ease-in-out infinite;}
   .step-1 .step-number,.pair-1 {animation-delay:3s;} .step-2 .step-number,.pair-2 {animation-delay:6s;}
-  @keyframes highlight {0%,25% {opacity:1;} 35%,100% {opacity:.65;} }
-  @keyframes fold {0%,25%,85%,100% {transform:scaleX(1);opacity:1;} 45%,65% {transform:scaleX(-1);opacity:.45;} }
+
+  @keyframes ls-highlight {0%,25% {opacity:1;} 35%,100% {opacity:.65;} }
+  @keyframes ls-fold {0%,64%,92%,100% {transform:scaleX(1);opacity:1;} 74%,84% {transform:scaleX(-1);opacity:.45;} }
+  @keyframes ls-grow-y {0% {transform:scaleY(.04);} 12%,90% {transform:none;} 100% {transform:scaleY(.04);} }
+  @keyframes ls-grow-x {0% {transform:scaleX(.04);} 12%,90% {transform:none;} 100% {transform:scaleX(.04);} }
+  @keyframes ls-draw-step-1 {0%,30% {transform:scaleX(0);} 42%,90% {transform:none;} 100% {transform:scaleX(0);} }
+  @keyframes ls-draw-step-2 {0%,56% {transform:scaleX(0);} 66%,90% {transform:none;} 100% {transform:scaleX(0);} }
+  @keyframes ls-hop-right {0%,30% {transform:none;} 40%,92% {transform:translateX(calc(100% + 1px));} 100% {transform:none;} }
+  @keyframes ls-hop-down {0%,63% {transform:none;} 73%,92% {transform:translateY(calc(100% + 1px));} 100% {transform:none;} }
+  @keyframes ls-gather {0%,28% {transform:translate(var(--dx),var(--dy));opacity:0;} 30% {transform:translate(var(--dx),var(--dy));opacity:1;} 48%,90% {transform:none;opacity:1;} 95% {transform:none;opacity:0;} 100% {transform:translate(var(--dx),var(--dy));opacity:0;} }
+  @keyframes ls-gather-early {0%,6% {transform:translate(var(--dx),var(--dy));opacity:0;} 8% {transform:translate(var(--dx),var(--dy));opacity:1;} 24%,90% {transform:none;opacity:1;} 95% {transform:none;opacity:0;} 100% {transform:translate(var(--dx),var(--dy));opacity:0;} }
+  @keyframes ls-square-copy {0%,8% {transform:none;opacity:0;} 10% {transform:none;opacity:1;} 30%,90% {transform:translate(225px,20px) scaleX(.952);opacity:1;} 96%,100% {transform:translate(225px,20px) scaleX(.952);opacity:0;} }
+  @keyframes ls-front {0%,29% {opacity:0;} 30%,94% {opacity:1;} 100% {opacity:0;} }
+  @keyframes ls-face-y {0%,32% {transform:scaleY(0);opacity:1;} 44%,92% {transform:none;opacity:1;} 98% {transform:none;opacity:0;} 100% {transform:scaleY(0);opacity:0;} }
+  @keyframes ls-face-x {0%,40% {transform:scaleX(0);opacity:1;} 52%,92% {transform:none;opacity:1;} 98% {transform:none;opacity:0;} 100% {transform:scaleX(0);opacity:0;} }
+  @keyframes ls-travel {0%,30% {transform:none;opacity:0;} 33% {transform:none;opacity:1;} 42%,46% {transform:translateX(110px);opacity:1;} 55%,60% {transform:translateX(220px);opacity:1;} 64%,100% {transform:translateX(220px);opacity:0;} }
+  @keyframes ls-tester-0 {0% {transform:translate(30px,-25px);opacity:0;} 4% {opacity:1;} 14%,88% {transform:none;opacity:1;} 94%,100% {transform:none;opacity:0;} }
+  @keyframes ls-tester-33 {0%,33% {transform:translate(30px,-25px);opacity:0;} 37% {opacity:1;} 47%,88% {transform:none;opacity:1;} 94%,100% {transform:none;opacity:0;} }
+  @keyframes ls-tester-66 {0%,66% {transform:translate(30px,-25px);opacity:0;} 70% {opacity:1;} 80%,88% {transform:none;opacity:1;} 94%,100% {transform:none;opacity:0;} }
+  @keyframes ls-rise {0% {transform:translateY(var(--dy));} 12%,90% {transform:none;} 100% {transform:translateY(var(--dy));} }
+  @keyframes ls-seg-1 {0%,12% {transform:scaleX(0);} 22%,90% {transform:none;} 100% {transform:scaleX(0);} }
+  @keyframes ls-seg-2 {0%,20% {transform:scaleX(0);} 30%,90% {transform:none;} 100% {transform:scaleX(0);} }
+  @keyframes ls-rise-1 {0%,34% {transform:scaleY(0);} 44%,90% {transform:none;} 100% {transform:scaleY(0);} }
+  @keyframes ls-rise-2 {0%,46% {transform:scaleY(0);} 56%,90% {transform:none;} 100% {transform:scaleY(0);} }
+  @keyframes ls-late-label {0%,46% {opacity:0;} 52%,92% {opacity:1;} 98%,100% {opacity:0;} }
+  @keyframes ls-diff {0%,66% {transform:scaleX(0);} 76%,90% {transform:none;} 100% {transform:scaleX(0);} }
+  @keyframes ls-diff-label {0%,74% {opacity:0;} 80%,92% {opacity:1;} 98%,100% {opacity:0;} }
+  @keyframes ls-level {0%,34% {transform:none;} 50%,86% {transform:translate(var(--dx),var(--dy));} 96%,100% {transform:none;} }
+  @keyframes ls-spread {0%,30% {transform:translateX(var(--dx));} 46%,90% {transform:none;} 100% {transform:translateX(var(--dx));} }
+  @keyframes ls-range {0%,46% {transform:scaleX(0);} 58%,90% {transform:none;} 100% {transform:scaleX(0);} }
+  @keyframes ls-range-label {0%,54% {opacity:0;} 60%,92% {opacity:1;} 98%,100% {opacity:0;} }
+  @keyframes ls-tick {0% {opacity:0;} 3%,92% {opacity:1;} 97%,100% {opacity:0;} }
+  @keyframes ls-hop-third {0%,34% {transform:none;} 40%,44% {transform:translateX(100%);} 50%,90% {transform:translateX(200%);} 97%,100% {transform:none;} }
+  @keyframes ls-hop-half {0%,50% {transform:none;} 56%,60% {transform:translateX(100%);} 66%,70% {transform:translateX(200%);} 76%,90% {transform:translateX(300%);} 97%,100% {transform:none;} }
+  @keyframes ls-fill-0 {0% {transform:translateY(-105%);} 5%,90% {transform:none;} 96%,100% {transform:translateY(-105%);} }
+  @keyframes ls-fill-16 {0%,16% {transform:translateY(-105%);} 21%,90% {transform:none;} 96%,100% {transform:translateY(-105%);} }
+  @keyframes ls-fill-22 {0%,22% {transform:translateY(-105%);} 27%,90% {transform:none;} 96%,100% {transform:translateY(-105%);} }
+  @keyframes ls-fill-33 {0%,33% {transform:translateY(-105%);} 38%,90% {transform:none;} 96%,100% {transform:translateY(-105%);} }
+  @keyframes ls-fill-44 {0%,44% {transform:translateY(-105%);} 49%,90% {transform:none;} 96%,100% {transform:translateY(-105%);} }
+  @keyframes ls-fill-49 {0%,49% {transform:translateY(-105%);} 54%,90% {transform:none;} 96%,100% {transform:translateY(-105%);} }
+  @keyframes ls-fill-66 {0%,66% {transform:translateY(-105%);} 71%,90% {transform:none;} 96%,100% {transform:translateY(-105%);} }
+  @keyframes ls-drop {0% {transform:translateY(-60px);opacity:0;} 4% {opacity:1;} 12%,100% {transform:none;opacity:1;} }
+  @keyframes ls-range-near {0%,36% {transform:scaleX(0);} 46%,90% {transform:none;} 100% {transform:scaleX(0);} }
+  @keyframes ls-range-far {0%,42% {transform:scaleX(0);} 52%,90% {transform:none;} 100% {transform:scaleX(0);} }
+  @keyframes ls-round {0%,68% {transform:translateX(var(--dx));opacity:0;} 70% {transform:translateX(var(--dx));opacity:1;} 82%,92% {transform:none;opacity:1;} 98%,100% {transform:none;opacity:0;} }
+  @keyframes ls-deal {0%,28% {transform:translate(var(--dx),var(--dy));opacity:1;} 44%,90% {transform:none;opacity:1;} 95% {transform:none;opacity:0;} 98% {transform:translate(var(--dx),var(--dy));opacity:0;} 100% {transform:translate(var(--dx),var(--dy));opacity:1;} }
+  @keyframes ls-deal-units {0%,50% {transform:translate(var(--dx),var(--dy));opacity:1;} 64%,90% {transform:none;opacity:1;} 95% {transform:none;opacity:0;} 98% {transform:translate(var(--dx),var(--dy));opacity:0;} 100% {transform:translate(var(--dx),var(--dy));opacity:1;} }
+  @keyframes ls-deal-late {0%,50% {transform:translate(var(--dx),var(--dy));opacity:0;} 52% {transform:translate(var(--dx),var(--dy));opacity:1;} 64%,90% {transform:none;opacity:1;} 95% {transform:none;opacity:0;} 100% {transform:translate(var(--dx),var(--dy));opacity:0;} }
+  @keyframes ls-break {0%,50% {opacity:1;} 53%,97% {opacity:0;} 100% {opacity:1;} }
+  @keyframes ls-branch-1 {0%,3% {transform:scale(0);} 12%,92% {transform:none;} 100% {transform:scale(0);} }
+  @keyframes ls-branch-2 {0%,36% {transform:scale(0);} 45%,92% {transform:none;} 100% {transform:scale(0);} }
+  @keyframes ls-branch-3 {0%,69% {transform:scale(0);} 78%,92% {transform:none;} 100% {transform:scale(0);} }
+  @keyframes ls-node-1 {0%,10% {transform:translateY(-16px);opacity:0;} 18%,92% {transform:none;opacity:1;} 98%,100% {transform:none;opacity:0;} }
+  @keyframes ls-node-2 {0%,43% {transform:translateY(-16px);opacity:0;} 51%,92% {transform:none;opacity:1;} 98%,100% {transform:none;opacity:0;} }
+  @keyframes ls-node-3 {0%,76% {transform:translateY(-16px);opacity:0;} 84%,92% {transform:none;opacity:1;} 98%,100% {transform:none;opacity:0;} }
 
   @media(prefers-reduced-motion:reduce) {:global(html:not(.nd-motion-enabled)) *,:global(html:not(.nd-motion-enabled)) *::before,:global(html:not(.nd-motion-enabled)) *::after {animation:none!important;} }
   @media(max-width:480px) {.lesson{padding:14px 10px;} .step {padding:8px;gap:6px;} .step p{font-size:15px;}.steps--large{gap:12px;}}
