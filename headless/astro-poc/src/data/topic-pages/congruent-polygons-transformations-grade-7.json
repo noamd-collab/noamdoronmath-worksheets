@@ -1,0 +1,314 @@
+{
+  "slug": "congruent-polygons-transformations-grade-7",
+  "path": "/congruent-polygons-transformations-grade-7",
+  "grade": 7,
+  "sourceUrl": "https://www.noamdoronmath.co.il/congruent-polygons-transformations-grade-7",
+  "fetchedAt": "2026-11-10T00:00:00.000Z",
+  "verifiedVia": "authored-catalog-gap-from-noam-pdfs",
+  "title": "מצולעים חופפים וטרנספורמציות לכיתה ז׳ | דפי עבודה חינם",
+  "description": "מצולעים חופפים לכיתה ז׳: הזזה, שיקוף וסיבוב על רשת משבצות, התאמת קודקודים ושמירה על אורכים וזוויות. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "מצולעים חופפים וטרנספורמציות לכיתה ז׳",
+  "intro": "לומדים להזיז, לשקף ולסובב מצולעים על רשת משבצות, להתאים כל קודקוד לקודקוד שלו בצורה החדשה ולהסביר מדוע המצולעים חופפים. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "שני מצולעים חופפים אם אפשר להניח אחד על השני כך שיתלכדו בדיוק. במצולעים חופפים כל הצלעות המתאימות שוות וכל הזוויות המתאימות שוות.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "הזזה, שיקוף וסיבוב שומרים על אורכים ועל זוויות, ולכן המצולע החדש תמיד חופף למקורי. בהזזה כל נקודה זזה באותו מרחק ובאותו כיוון. בשיקוף כל נקודה והדמות שלה נמצאות באותו מרחק מציר השיקוף. בסיבוב כל נקודה מסתובבת סביב מרכז הסיבוב באותה זווית.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "דוגמה: מזיזים את המשולש ABC שלוש משבצות ימינה ומקבלים את A′B′C′. הקודקוד A מתאים ל־A′, B ל־B′ ו־C ל־C′, ולכן AB = A′B′ ו־∠A = ∠A′.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "מתאימים קודקודים לפי המיקום בדף ולא לפי הטרנספורמציה. בשיקוף כיוון הקודקודים מתהפך, ולכן בודקים לאן עבר כל קודקוד בנפרד.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "בהזזה סופרים משבצות מקודקוד אחד לקודקוד שאינו מתאים לו. סופרים תמיד מנקודה אל הדמות שלה.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "את הריבוע ABCD שיקפו בציר אנכי וקיבלו את A′B′C′D′. אורך הצלע AB הוא 3 משבצות. מה אורך הצלע A′B′, ומדוע?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה היא 3 משבצות, כי שיקוף שומר על אורכים, והצלע A′B′ מתאימה לצלע AB.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "לומדים להזיז, לשקף ולסובב מצולעים על רשת משבצות, להתאים כל קודקוד לקודקוד שלו בצורה החדשה ולהסביר מדוע המצולעים חופפים. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=7&topic=17",
+      "catalogTopicId": 17
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "שני מצולעים חופפים אם אפשר להניח אחד על השני כך שיתלכדו בדיוק. במצולעים חופפים כל הצלעות המתאימות שוות וכל הזוויות המתאימות שוות.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "הזזה, שיקוף וסיבוב שומרים על אורכים ועל זוויות, ולכן המצולע החדש תמיד חופף למקורי. בהזזה כל נקודה זזה באותו מרחק ובאותו כיוון. בשיקוף כל נקודה והדמות שלה נמצאות באותו מרחק מציר השיקוף. בסיבוב כל נקודה מסתובבת סביב מרכז הסיבוב באותה זווית.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "דוגמה: מזיזים את המשולש ABC שלוש משבצות ימינה ומקבלים את A′B′C′. הקודקוד A מתאים ל־A′, B ל־B′ ו־C ל־C′, ולכן AB = A′B′ ו־∠A = ∠A′.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "מתאימים קודקודים לפי המיקום בדף ולא לפי הטרנספורמציה. בשיקוף כיוון הקודקודים מתהפך, ולכן בודקים לאן עבר כל קודקוד בנפרד.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "בהזזה סופרים משבצות מקודקוד אחד לקודקוד שאינו מתאים לו. סופרים תמיד מנקודה אל הדמות שלה.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "את הריבוע ABCD שיקפו בציר אנכי וקיבלו את A′B′C′D′. אורך הצלע AB הוא 3 משבצות. מה אורך הצלע A′B′, ומדוע?",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "התשובה היא 3 משבצות, כי שיקוף שומר על אורכים, והצלע A′B′ מתאימה לצלע AB.",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 10.11.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "אילו טרנספורמציות שומרות על חפיפה?",
+      "answer": "הזזה, שיקוף וסיבוב. בכל אחת מהן האורכים והזוויות נשמרים, ולכן הצורה החדשה חופפת למקורית."
+    },
+    {
+      "question": "איך יודעים איזה קודקוד מתאים לאיזה?",
+      "answer": "עוקבים אחרי כל קודקוד בנפרד: לאן הוא זז, שוקף או הסתובב. הקודקוד החדש מסומן בדרך כלל באותה אות עם תג, למשל A′."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם יש תשובות לדפי העבודה?",
+      "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "אילו טרנספורמציות שומרות על חפיפה?",
+          "answer": "הזזה, שיקוף וסיבוב. בכל אחת מהן האורכים והזוויות נשמרים, ולכן הצורה החדשה חופפת למקורית."
+        },
+        {
+          "question": "איך יודעים איזה קודקוד מתאים לאיזה?",
+          "answer": "עוקבים אחרי כל קודקוד בנפרד: לאן הוא זז, שוקף או הסתובב. הקודקוד החדש מסומן בדרך כלל באותה אות עם תג, למשל A′."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם יש תשובות לדפי העבודה?",
+          "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/grade-7",
+      "label": "כל דפי כיתה ז׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-7"
+    },
+    {
+      "path": "/congruent-polygons-transformations-grade-9",
+      "label": "טרנספורמציות וצורות חופפות",
+      "productionHref": "https://www.noamdoronmath.co.il/congruent-polygons-transformations-grade-9"
+    },
+    {
+      "path": "/coordinate-plane-four-quadrants-grade-7",
+      "label": "מערכת צירים — ארבעת הרביעים",
+      "productionHref": "https://www.noamdoronmath.co.il/coordinate-plane-four-quadrants-grade-7"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=7&topic=17",
+    "source": "catalog-g7-t17",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=17",
+    "catalogTopicId": 17,
+    "catalogTopicTitle": "מצולעים חופפים וטרנספורמציות"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=7&topic=17",
+      "source": "catalog-g7-t17",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=17",
+      "catalogTopicId": 17,
+      "catalogTopicTitle": "מצולעים חופפים וטרנספורמציות"
+    }
+  ],
+  "gradeHubHref": "/grade-7",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/congruent-polygons-transformations-grade-7#webpage",
+        "url": "https://www.noamdoronmath.co.il/congruent-polygons-transformations-grade-7",
+        "name": "מצולעים חופפים וטרנספורמציות לכיתה ז׳ | דפי עבודה חינם",
+        "description": "מצולעים חופפים לכיתה ז׳: הזזה, שיקוף וסיבוב על רשת משבצות, התאמת קודקודים ושמירה על אורכים וזוויות. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/congruent-polygons-transformations-grade-7#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/congruent-polygons-transformations-grade-7#learning-resource",
+        "name": "מצולעים חופפים וטרנספורמציות לכיתה ז׳",
+        "url": "https://www.noamdoronmath.co.il/congruent-polygons-transformations-grade-7",
+        "description": "מצולעים חופפים לכיתה ז׳: הזזה, שיקוף וסיבוב על רשת משבצות, התאמת קודקודים ושמירה על אורכים וזוויות. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "educationalLevel": "כיתה ז׳",
+        "learningResourceType": "דפי עבודה",
+        "teaches": "מצולעים חופפים, הזזה, שיקוף וסיבוב",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/congruent-polygons-transformations-grade-7#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "אילו טרנספורמציות שומרות על חפיפה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "הזזה, שיקוף וסיבוב. בכל אחת מהן האורכים והזוויות נשמרים, ולכן הצורה החדשה חופפת למקורית."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך יודעים איזה קודקוד מתאים לאיזה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "עוקבים אחרי כל קודקוד בנפרד: לאן הוא זז, שוקף או הסתובב. הקודקוד החדש מסומן בדרך כלל באותה אות עם תג, למשל A′."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם יש תשובות לדפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. בסוף כל דף עבודה יש דף תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}
