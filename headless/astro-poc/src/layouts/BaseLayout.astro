@@ -37,6 +37,7 @@ interface Props {
   activeNav?: ActiveNavKey | null;
   compactBrand?: boolean;
   skipHref?: string;
+  noindex?: boolean;
 }
 const {
   title = DEFAULT_SITE_TITLE,
@@ -48,6 +49,7 @@ const {
   activeNav,
   compactBrand = false,
   skipHref = '#topic-list',
+  noindex = false,
 } = Astro.props;
 
 const { footer } = loadHomePage();
@@ -57,7 +59,7 @@ const useCompactBrand = compactBrand || resolvedNav === 'worksheets';
 const approvedCopy = approvedSeoProposal(seoPath);
 const resolvedTitle = approvedCopy?.title || title;
 const resolvedDescription = approvedCopy?.description || description;
-const robots = robotsContent(Astro.url.hostname);
+const robots = noindex ? 'noindex, nofollow' : robotsContent(Astro.url.hostname);
 const canonical = canonicalUrl(Astro.url.pathname, Astro.url.search);
 const showPreviewNote = isPreviewHost(Astro.url.hostname);
 const social = buildSocialMeta({

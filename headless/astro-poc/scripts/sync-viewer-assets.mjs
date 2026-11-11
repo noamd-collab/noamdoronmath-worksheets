@@ -424,6 +424,12 @@ writeFileSync(learningPath, learning);
 // M36: learning.js PDF construction → CDN (cutover-safe).
 const learningJsPath = join(pub, 'noam-learning.js');
 let learningJs = readFileSync(learningJsPath, 'utf8');
+// Headless-only server logout bridge; the standalone source has no /api routes.
+if (!learningJs.includes("fetch('/api/teacherSession'")) {
+  const authListener = 'client.auth.onAuthStateChange(function(event,session){';
+  if (!learningJs.includes(authListener)) throw new Error('Learning auth listener missing');
+  learningJs = learningJs.replace(authListener, authListener + "if(event==='SIGNED_OUT')fetch('/api/teacherSession',{method:'DELETE',credentials:'same-origin',cache:'no-store'}).catch(function(){});");
+}
 learningJs = learningJs.replaceAll(
   "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_",
   'https://static.wixstatic.com/ugd/d8e7ad_'

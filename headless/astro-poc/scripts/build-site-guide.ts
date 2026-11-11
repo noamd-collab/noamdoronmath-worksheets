@@ -396,16 +396,16 @@ function main() {
     href: TEACHER_LANDING_PATH,
     audience: PK.teachers.tag + ' · ' + mustInclude(teachersHtml, 'כיתות א׳–ט׳'),
     contains: TEACHER_LANDING_DESCRIPTION,
-    how: 'עמוד היכרות עם בחירת שאלות להכנת דף לשיעור. בוחרים כיתה, נושא ורמה, וממשיכים לכלי העבודה כדי לסמן שאלות ולהכין דף להדפסה.',
+    how: 'עמוד בקרוב לציבור עם דוגמה מהמאגר הקיים. השירות בפיתוח ובבדיקות פרטיות, ואינו פתוח לשימוש הציבור. השירות העתידי מתוכנן להיות בתשלום. הכניסה לבדיקות מחייבת התחברות עם Google והרשאה לחשבון הבעלים בלבד; דפי העבודה הקיימים זמינים במאגר הציבורי.',
   });
   push(records, {
     id: 'page-teachers-app',
     type: 'page',
-    title: textOf(teachersHtml, /<h1>([^<]+)<\/h1>/),
+    title: 'בדיקות פרטיות · ' + textOf(teachersHtml, /<h1>([^<]+)<\/h1>/),
     href: TEACHER_TOOL_PATH,
-    audience: PK.teachers.tag + ' · ' + mustInclude(teachersHtml, 'כיתות א׳–ט׳'),
-    contains: PK.teachers.desc,
-    how: teachersHow,
+    audience: 'חשבון הבעלים המורשה בלבד · ' + PK.teachers.tag + ' · ' + mustInclude(teachersHtml, 'כיתות א׳–ט׳'),
+    contains: 'כלי לבדיקות פרטיות בלבד; אינו פתוח לשימוש הציבור. ' + PK.teachers.desc,
+    how: 'בדיקות פרטיות לחשבון הבעלים בלבד, לאחר התחברות עם Google. ' + teachersHow,
   });
   push(records, {
     id: 'page-learning',

@@ -19,8 +19,15 @@ import { resolveRedirect } from './lib/redirects';
 import { PUBLIC_HTML_SHELLS } from './lib/publicHtmlShells';
 import { secretFromEnv } from './lib/noamSecrets';
 import { OTTERLY_API_KEY_NAME, scheduleOtterlyPageLog } from './lib/otterlyAiLogs';
+import { TEACHER_RETURN_COOKIE } from './lib/teacherSession';
 
 export const onRequest = defineMiddleware(async (context, next) => {
+  // Teacher sign-in reuses the existing same-origin Google PKCE callback.
+  // The pending cookie contains only an allowlisted destination, never identity.
+  // OAuth cancellation may arrive in a fragment, which the server cannot see.
+  if (context.url.pathname === '/learning.html' && context.cookies.has(TEACHER_RETURN_COOKIE)) {
+    return context.rewrite(`/teachers/login${context.url.search}`);
+  }
   // AI-crawler log only. waitUntil on Cloudflare, otherwise a detached promise.
   // A secret or logging failure must not change the page response.
   try {

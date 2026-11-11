@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TeacherLanding from '../../components/TeacherLanding.astro';
+import { authorizeTeacherRequest, TEACHER_PRIVATE_HEADERS, sanitizeTeacherReturnTo } from '../../lib/teacherAccess';
+
+export const prerender = false;
+const access = await authorizeTeacherRequest(Astro.request);
+if (!access.ok) {
+  return new Response(null, { status: 303, headers: {
+    ...TEACHER_PRIVATE_HEADERS,
+    location: `/teachers/login?returnTo=${encodeURIComponent(sanitizeTeacherReturnTo(Astro.url.pathname + Astro.url.search))}`,
+  } });
+}
+for (const [name, value] of Object.entries(TEACHER_PRIVATE_HEADERS)) Astro.response.headers.set(name, value);
+---
+<BaseLayout title="אזור המורים · בדיקות פרטיות" description="כניסה פרטית לבדיקת כלי המורים." activeNav="teachers" skipHref="#teacher-start" noindex>
+  <div class="teacher-private-access" data-teacher-auth="workspace">
+    <span>אזור המורים · בדיקות פרטיות</span>
+    <form method="post" action="/api/teacherLogout"><button type="submit" data-teacher-logout>התנתקות</button></form>
+  </div>
+  <TeacherLanding />
+  <script src="/noam-learning-config.js" defer></script>
+  <script src="/vendor/supabase-2.116.0.js" defer></script>
+  <script src="/teachers/auth.js" defer></script>
+  <link rel="stylesheet" href="/teachers/auth.css" />
+</BaseLayout>

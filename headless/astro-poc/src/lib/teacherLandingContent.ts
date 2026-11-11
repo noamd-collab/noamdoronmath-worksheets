@@ -1,10 +1,10 @@
 /** Public landing copy shared by the page, site search and site guide. */
 export const TEACHER_LANDING_PATH = '/teachers';
 export const TEACHER_TOOL_PATH = '/teachers/app';
-export const TEACHER_LANDING_TITLE = 'דפי עבודה מותאמים למורים | נועם דורון מתמטיקה';
-export const TEACHER_LANDING_H1 = 'בוחרים שאלות. מכינים דף לשיעור.';
+export const TEACHER_LANDING_TITLE = 'בקרוב: אזור המורים | נועם דורון מתמטיקה';
+export const TEACHER_LANDING_H1 = 'פחות זמן להכנה. יותר זמן להוראה.';
 export const TEACHER_LANDING_DESCRIPTION =
-  'בוחרים כיתה, נושא ורמה, מסמנים שאלות מדפי המקור של נועם דורון ומכינים תרגול להדפסה לכיתות א׳–ט׳. תצוגה מקדימה ובחירה ידנית.';
+  'אזור המורים בפיתוח ובבדיקות פרטיות: שירות AI עתידי בתשלום, שנועד להתאים דפי עבודה לכיתה, לשלב בתוכנית הלימודים ולשיעור האחרון.';
 
 /** Preserve existing bookmarks and AI handoffs, including partial scopes.
  * The existing wizard remains responsible for validating parameter values.

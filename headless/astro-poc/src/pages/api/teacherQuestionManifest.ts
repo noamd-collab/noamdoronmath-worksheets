@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import bundle from '../../data/teacher-question-previews.json';
+import { authorizeTeacherRequest, teacherAccessFailure, TEACHER_PRIVATE_HEADERS } from '../../lib/teacherAccess';
 
 export const prerender = false;
 
@@ -15,19 +16,21 @@ function loadPreviews() {
   return loading;
 }
 
-export const GET: APIRoute = async ({ url }) => {
+export const GET: APIRoute = async ({ url, request }) => {
+  const access = await authorizeTeacherRequest(request);
+  if (!access.ok) return teacherAccessFailure(access);
   const pdfId = url.searchParams.get('pdfId') || '';
   if (!/^[a-f0-9]{32}$/.test(pdfId)) {
-    return new Response('Invalid worksheet', { status: 400 });
+    return new Response('Invalid worksheet', { status: 400, headers: TEACHER_PRIVATE_HEADERS });
   }
   const previews = await loadPreviews();
   if (!Object.hasOwn(previews, pdfId)) {
-    return new Response('Worksheet not found', { status: 404 });
+    return new Response('Worksheet not found', { status: 404, headers: TEACHER_PRIVATE_HEADERS });
   }
   return new Response(JSON.stringify(previews[pdfId]), {
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
-      'Cache-Control': 'public, max-age=300',
+      ...TEACHER_PRIVATE_HEADERS,
     },
   });
 };

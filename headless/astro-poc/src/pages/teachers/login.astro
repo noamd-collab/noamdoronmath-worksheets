@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { TEACHER_PRIVATE_HEADERS, sanitizeTeacherReturnTo } from '../../lib/teacherAccess';
+import { TEACHER_RETURN_COOKIE } from '../../lib/teacherSession';
+export const prerender = false;
+for (const [name, value] of Object.entries(TEACHER_PRIVATE_HEADERS)) Astro.response.headers.set(name, value);
+Astro.response.headers.set('Referrer-Policy', 'no-referrer');
+const returnTo = sanitizeTeacherReturnTo(Astro.cookies.get(TEACHER_RETURN_COOKIE)?.value || Astro.url.searchParams.get('returnTo'));
+---
+<BaseLayout title="התחברות לאזור המורים | נועם דורון מתמטיקה" description="התחברות מאובטחת לבדיקות פרטיות של אזור המורים." activeNav="teachers" skipHref="#teacher-sign-in" noindex>
+  <main class="teacher-login" id="teacher-sign-in" data-teacher-auth="login" data-return-to={returnTo} tabindex="-1">
+    <p class="teacher-login-eyebrow">בקרוב · אזור המורים</p>
+    <h1>התחברות עם Google</h1>
+    <p>אזור המורים נמצא בפיתוח. הכניסה לכלי מחייבת התחברות, וכרגע זמינה לחשבון הבעלים בלבד.</p>
+    <button id="teacher-google-sign-in" type="button" disabled>התחברות עם Google</button>
+    <p id="teacher-auth-status" role="status" aria-live="polite">טוענים את ההתחברות המאובטחת…</p>
+    <p class="teacher-login-privacy">ההתחברות משמשת לזיהוי החשבון. אין בקשת גישה ל־Gmail או ל־Drive.</p>
+    <a href="/teachers">חזרה לעמוד המורים</a>
+    <noscript><p>כדי להתחבר עם Google יש להפעיל JavaScript. דפי העבודה הציבוריים זמינים כרגיל במאגר.</p></noscript>
+  </main>
+  <link rel="stylesheet" href="/teachers/auth.css" />
+  <script src="/noam-learning-config.js" defer></script>
+  <script src="/vendor/supabase-2.116.0.js" defer></script>
+  <script src="/teachers/auth.js" defer></script>
+</BaseLayout>

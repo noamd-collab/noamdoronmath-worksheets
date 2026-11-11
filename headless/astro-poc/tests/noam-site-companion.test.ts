@@ -186,18 +186,30 @@ describe('Noam AI site manual', () => {
     assert.equal(teachers[0].id, 'page-teachers');
     assert.equal(teachers[0].title, TEACHER_LANDING_TITLE);
     assert.equal(teachers[0].contains, TEACHER_LANDING_DESCRIPTION);
-    assert.match(teachers[0].how, /עמוד היכרות/);
-    assert.match(teachers[0].how, /ממשיכים לכלי העבודה/);
+    assert.match(teachers[0].how, /עמוד בקרוב לציבור/);
+    assert.match(teachers[0].how, /דוגמה מהמאגר הקיים/);
+    assert.match(teachers[0].how, /אינו פתוח לשימוש הציבור/);
+    assert.match(teachers[0].how, /מתוכנן להיות בתשלום/);
+    assert.match(teachers[0].how, /התחברות עם Google/);
+    assert.match(teachers[0].how, /לחשבון הבעלים בלבד/);
+    assert.doesNotMatch(teachers[0].how, /ממשיכים לכלי העבודה/);
     assert.equal(teacherApps[0].id, 'page-teachers-app');
+    assert.match(teacherApps[0].title!, /^בדיקות פרטיות · /);
+    assert.match(teacherApps[0].audience, /חשבון הבעלים המורשה בלבד/);
+    assert.match(teacherApps[0].contains, /אינו פתוח לשימוש הציבור/);
+    assert.match(teacherApps[0].how, /^בדיקות פרטיות לחשבון הבעלים בלבד, לאחר התחברות עם Google\./);
     assert.match(teacherApps[0].how, /כיתה, נושא ומטרת השיעור/);
     assert.match(teacherApps[0].how, /הדף המלא, עם סימון/);
     assert.match(teacherApps[0].how, /דף מצומצם מהמקור/);
+    assert.match(teachers[0].audience, /בקרוב/);
+    assert.match(teacherApps[0].audience, /חשבון הבעלים המורשה בלבד/);
     for (const row of [...teachers, ...teacherApps]) {
-      assert.match(row.audience, /מרחב למורה/);
       assert.match(row.audience, /כיתות א׳–ט׳/);
       assert.equal(row.grade, undefined);
     }
     assert.ok(guide.builtFrom.includes('src/lib/teacherLandingContent.ts'));
+    assert.ok(guide.builtFrom.includes('src/teacher-pages/wizard.html'));
+    assert.equal(guide.builtFrom.includes('public/teachers/index.html'), false);
     assert.ok(guide.records.some((row) => row.type === 'game' && row.href === '/games/kefel-mekutsar-2'));
     assert.ok(guide.records.some((row) => row.id === 'game-pythagoras' && row.href === '/games/eliyahu-pythagoras'));
   });
