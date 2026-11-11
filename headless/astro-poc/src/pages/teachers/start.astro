@@ -16,7 +16,8 @@ for (const [name, value] of Object.entries(TEACHER_PRIVATE_HEADERS)) Astro.respo
 <BaseLayout title="אזור המורים · בדיקות פרטיות" description="כניסה פרטית לבדיקת כלי המורים." activeNav="teachers" skipHref="#teacher-start" noindex>
   <div class="teacher-private-access" data-teacher-auth="workspace">
     <span>אזור המורים · בדיקות פרטיות</span>
-    <form method="post" action="/api/teacherLogout"><button type="submit" data-teacher-logout>התנתקות</button></form>
+    <button type="button" data-teacher-logout>התנתקות</button>
+    <p id="teacher-auth-status" role="status" aria-live="polite"></p>
   </div>
   <TeacherLanding />
   <script src="/noam-learning-config.js" defer></script>

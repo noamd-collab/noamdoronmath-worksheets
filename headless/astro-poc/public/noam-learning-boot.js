@@ -9,7 +9,7 @@
     if (started) return;
     started = true;
     var s = document.createElement('script');
-    s.src = 'noam-learning.js?v=20261111-teacher-session';
+    s.src = 'noam-learning.js?v=20261111-teacher-post-session';
     document.body.append(s);
   }
   function loadLearning() {

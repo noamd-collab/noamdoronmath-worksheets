@@ -7,8 +7,9 @@
 .teacher-login button:disabled{opacity:.6;cursor:wait}
 .teacher-login a{display:inline-flex;align-items:center;min-height:44px;color:#426f70}
 .teacher-login .teacher-login-privacy{font-size:15px;color:#5e6570}
-.teacher-private-access{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:8px 24px;background:#edf4f3;direction:rtl;color:#263158;font:16px system-ui,sans-serif}
-.teacher-private-access form{margin:0}
+.teacher-private-access{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px;padding:8px 24px;background:#edf4f3;direction:rtl;color:#263158;font:16px system-ui,sans-serif}
+.teacher-private-access #teacher-auth-status{flex-basis:100%;margin:0;line-height:1.5}
+.teacher-private-access #teacher-auth-status:empty{display:none}
 .teacher-private-access button{font-size:15px;padding:6px 16px}
 .teacher-private-access a{color:inherit;display:inline-flex;align-items:center;min-height:44px}
 .teacher-login :focus-visible,.teacher-private-access :focus-visible{outline:3px solid #a66b08;outline-offset:4px}

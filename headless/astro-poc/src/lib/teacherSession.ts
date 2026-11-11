@@ -31,14 +31,20 @@ export async function createTeacherSession(request: Request, cookies: AstroCooki
     body = JSON.parse(text);
     if (!body || typeof body !== 'object' || Array.isArray(body)) return json({ code: 'INVALID_REQUEST' }, 400);
   } catch { return json({ code: 'INVALID_REQUEST' }, 400); }
+  // Wix rejects DELETE before the route runs. Keep logout on its supported
+  // JSON POST path, under the same origin and request validation as sign-in.
+  if (body.action === 'logout') {
+    clearTeacherSession(cookies);
+    return json({ ok: true });
+  }
   if (body.action === 'start') {
     clearTeacherSession(cookies);
     cookies.set(TEACHER_RETURN_COOKIE, sanitizeTeacherReturnTo(body.returnTo), {
       ...TEACHER_SESSION_COOKIE_OPTIONS, maxAge: 600,
     });
-    // Reuse the already deployed Google callback and the same-origin PKCE store.
+    // A dedicated SSR route avoids static learning.html shadowing the callback.
     const origin = resolveNativeSvgPublicOrigin(request.url, request.headers.get('x-wix-forwarded-url'))!;
-    return json({ redirectTo: new URL('/learning.html', origin).href });
+    return json({ redirectTo: new URL('/teachers/login', origin).href });
   }
   const token = typeof body.accessToken === 'string' ? body.accessToken : '';
   const access = await verifyTeacherToken(token);

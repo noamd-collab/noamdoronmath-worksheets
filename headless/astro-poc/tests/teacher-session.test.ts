@@ -1,5 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import vm from 'node:vm';
 import type { AstroCookies } from 'astro';
 import { createTeacherSession, clearTeacherSession, sameOriginTeacherMutation, TEACHER_RETURN_COOKIE } from '../src/lib/teacherSession';
 import { TEACHER_ACCESS_CONFIG } from '../src/lib/teacherAccessConfig';
@@ -7,6 +9,7 @@ import { TEACHER_SESSION_COOKIE } from '../src/lib/teacherAccess';
 import { isTeacherToolRequest } from '../src/lib/teacherRequest';
 import { GET as manifest } from '../src/pages/api/teacherQuestionManifest';
 import { POST as word } from '../src/pages/api/teacherWordQuestions';
+import { ensureHeadlessLearningBootVersion, ensureHeadlessLearningSessionLogout } from '../scripts/sync-viewer-assets.mjs';
 
 const origin = 'https://www.noamdoronmath.co.il';
 function request(body: unknown, headers: Record<string, string> = {}, url = origin + '/api/teacherSession') {
@@ -25,7 +28,7 @@ function cookieJar(initial: Record<string, string> = {}) {
 }
 
 test('session mutations reject cross-origin, missing-origin and hostile forwarded URLs', async () => {
-  for (const headers of [{ origin: 'https://attacker.test' }, { origin: 'null' }, { 'sec-fetch-site': 'cross-site' }]) {
+  for (const headers of [{ origin: 'https://attacker.test' }, { origin: 'null' }, { 'sec-fetch-site': 'cross-site' }] as Array<Record<string, string>>) {
     const jar = cookieJar();
     const result = await createTeacherSession(request({ action: 'start' }, headers), jar.cookies);
     assert.equal(result.status, 403);
@@ -44,7 +47,7 @@ test('Wix TLS termination uses only the validated public origin for CSRF and cal
     origin: preview, 'x-wix-forwarded-url': preview + '/api/teacherSession', 'x-forwarded-proto': 'http',
   }, 'http://internal.invalid/api/teacherSession'), jar.cookies);
   assert.equal(result.status, 200);
-  assert.deepEqual(await result.json(), { redirectTo: preview + '/learning.html' });
+  assert.deepEqual(await result.json(), { redirectTo: preview + '/teachers/login' });
   const pending = jar.changes.find(x => x.name === TEACHER_RETURN_COOKIE && !x.deleted)!;
   assert.equal(pending.value, '/teachers/app?grade=3&pick=1%2C2');
   assert.deepEqual(pending.options, { httpOnly: true, secure: true, sameSite: 'lax', path: '/', maxAge: 600 });
@@ -101,6 +104,70 @@ test('logout removes both server cookies with secure root-path scope', () => {
   assert.equal(jar.values.size, 0);
   assert.equal(jar.changes.length, 2);
   for (const item of jar.changes) assert.deepEqual(item.options, { httpOnly: true, secure: true, sameSite: 'lax', path: '/' });
+});
+
+test('JSON POST logout clears both cookies without Auth access, remains private and is idempotent', async (t) => {
+  t.mock.method(globalThis, 'fetch', async () => { throw new Error('Logout must not depend on Auth availability'); });
+  const jar = cookieJar({ [TEACHER_SESSION_COOKIE]: 'old', [TEACHER_RETURN_COOKIE]: '/teachers/app' });
+  for (let n = 0; n < 2; n++) {
+    const response = await createTeacherSession(request({ action: 'logout' }), jar.cookies);
+    assert.equal(response.status, 200);
+    assert.deepEqual(await response.json(), { ok: true });
+    assert.equal(response.headers.get('cache-control'), 'private, no-store');
+    assert.equal(response.headers.get('x-robots-tag'), 'noindex, nofollow');
+    assert.equal(jar.values.size, 0);
+  }
+  assert.ok(jar.changes.every(change => change.deleted));
+});
+
+test('POST logout retains same-origin and JSON checks instead of weakening framework CSRF policy', async () => {
+  for (const headers of [{ origin: 'https://attacker.test' }, { origin: 'null' }, { 'sec-fetch-site': 'cross-site' },
+    { 'content-type': 'application/x-www-form-urlencoded' }, { 'content-type': 'text/plain' }] as Array<Record<string, string>>) {
+    const jar = cookieJar({ [TEACHER_SESSION_COOKIE]: 'old' });
+    const response = await createTeacherSession(request({ action: 'logout' }, headers), jar.cookies);
+    assert.ok([403, 415].includes(response.status));
+    assert.equal(jar.changes.length, 0);
+    assert.equal(jar.values.get(TEACHER_SESSION_COOKIE), 'old');
+  }
+});
+
+test('learning asset sync emits one JSON POST logout hook and migrates the old DELETE without running a build', async () => {
+  const upstream = 'client.auth.onAuthStateChange(function(event,session){ seen.push(event); });';
+  const legacy = upstream.replace(' seen.push', "if(event==='SIGNED_OUT')fetch('/api/teacherSession',{method:'DELETE',credentials:'same-origin',cache:'no-store'}).catch(function(){}); seen.push");
+  const transformed = ensureHeadlessLearningSessionLogout(upstream);
+  assert.equal(ensureHeadlessLearningSessionLogout(transformed), transformed);
+  const migrated = ensureHeadlessLearningSessionLogout(legacy);
+  for (const source of [transformed, migrated]) {
+    assert.equal(source.split("fetch('/api/teacherSession'").length - 1, 1);
+    let listener: (event: string, session: null) => void = () => {};
+    const calls: Array<{ url: string; init: RequestInit }> = [];
+    const seen: string[] = [];
+    vm.runInNewContext(source, { client: { auth: { onAuthStateChange(fn: typeof listener) { listener = fn; } } }, seen,
+      fetch: async (url: string, init: RequestInit) => { calls.push({ url, init }); return Response.json({ ok: true }); },
+    });
+    listener('SIGNED_IN', null);
+    assert.equal(calls.length, 0);
+    listener('SIGNED_OUT', null);
+    assert.deepEqual(seen, ['SIGNED_IN', 'SIGNED_OUT']);
+    assert.equal(calls.length, 1);
+    assert.equal(calls[0].url, '/api/teacherSession');
+    assert.equal(calls[0].init.method, 'POST');
+    assert.equal(new Headers(calls[0].init.headers).get('content-type'), 'application/json');
+    assert.deepEqual(JSON.parse(String(calls[0].init.body)), { action: 'logout' });
+    assert.equal(calls[0].init.credentials, 'same-origin');
+    assert.equal(calls[0].init.cache, 'no-store');
+  }
+  const served = readFileSync(new URL('../public/noam-learning.js', import.meta.url), 'utf8');
+  assert.equal(ensureHeadlessLearningSessionLogout(served), served);
+});
+
+test('learning boot sync preserves the JSON logout client cache version after upstream copies', () => {
+  const upstream = "s.src = 'noam-learning.js?v=20261002-lazy-supabase';";
+  const transformed = ensureHeadlessLearningBootVersion(upstream);
+  assert.equal(transformed, "s.src = 'noam-learning.js?v=20261111-teacher-post-session';");
+  assert.equal(ensureHeadlessLearningBootVersion(transformed), transformed);
+  const served = readFileSync(new URL('../public/noam-learning-boot.js', import.meta.url), 'utf8');
+  assert.equal(ensureHeadlessLearningBootVersion(served), served);
 });
 
 test('teacher operation detection covers intake disguised as another page and ordinary navigation stays public', () => {

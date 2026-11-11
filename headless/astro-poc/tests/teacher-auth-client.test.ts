@@ -52,7 +52,7 @@ async function settle() {
 function harness(options: HarnessOptions = {}) {
   const mode = options.mode ?? 'login';
   const current = new URL(options.href ?? `${origin}/teachers/${mode === 'login' ? 'login' : 'app?grade=8&topic=linear'}`);
-  const button = new Element(), status = new Element(), form = new Element();
+  const button = new Element(), status = new Element(), logoutButton = new Element();
   const requests: FetchCall[] = [], navigations: string[] = [], histories: string[] = [];
   const oauth: Record<string, unknown>[] = [], signOutCalls: unknown[] = [], removedKeys: string[] = [];
   const clientOptions: unknown[] = [], timers: Array<() => unknown> = [];
@@ -97,7 +97,7 @@ function harness(options: HarnessOptions = {}) {
     window, URL, URLSearchParams, location,
     document: {
       querySelector: (selector: string) => selector === '[data-teacher-auth]' ? root : null,
-      querySelectorAll: (selector: string) => selector === '.teacher-private-access form' ? [form] : [],
+      querySelectorAll: (selector: string) => selector === '[data-teacher-logout]' ? [logoutButton] : [],
       getElementById: (id: string) => id === 'teacher-auth-status' ? status : id === 'teacher-google-sign-in' && mode === 'login' ? button : null,
     },
     history: { replaceState(_state: unknown, _title: string, path: string) {
@@ -113,13 +113,13 @@ function harness(options: HarnessOptions = {}) {
       const call = { url: String(url), init, body: init.body ? JSON.parse(String(init.body)) : null };
       requests.push(call);
       if (options.fetch) return options.fetch(call);
-      if (init.method === 'DELETE') return new Response(null, { status: 204 });
-      if (call.body?.action === 'start') return Response.json({ redirectTo: origin + '/learning.html' });
+      if (call.body?.action === 'logout') return Response.json({ ok: true });
+      if (call.body?.action === 'start') return Response.json({ redirectTo: origin + '/teachers/login' });
       return Response.json({ returnTo: '/teachers/start' });
     },
   }, { filename: 'teachers/auth.js', timeout: 1000 });
   return {
-    button, status, form, requests, navigations, histories, oauth, signOutCalls, removedKeys, clientOptions,
+    button, status, logoutButton, requests, navigations, histories, oauth, signOutCalls, removedKeys, clientOptions,
     get sessionReads() { return sessionReads; },
     emit(event: string, session: Session) {
       assert.ok(authListener, 'Expected SDK auth-state subscription');
@@ -131,7 +131,7 @@ function harness(options: HarnessOptions = {}) {
   };
 }
 
-test('teacher Google login uses the existing exact same-origin learning callback and starts only once', async () => {
+test('teacher Google login uses the exact same-origin SSR callback and starts only once', async () => {
   const h = harness({ returnTo: '/teachers/app?grade=8&topic=linear' });
   await settle();
   assert.equal(h.button.disabled, false);
@@ -145,15 +145,15 @@ test('teacher Google login uses the existing exact same-origin learning callback
   assert.equal(h.requests[0].init.cache, 'no-store');
   assert.deepEqual(h.requests[0].body, { action: 'start', returnTo: '/teachers/app?grade=8&topic=linear' });
   assert.deepEqual(h.oauth, [{ provider: 'google', options: {
-    redirectTo: origin + '/learning.html', queryParams: { prompt: 'select_account' },
+    redirectTo: origin + '/teachers/login', queryParams: { prompt: 'select_account' },
   } }]);
   assert.equal(h.button.disabled, true);
   assert.deepEqual(h.navigations, []);
 });
 
 test('invalid callback destinations never reach OAuth and a failed OAuth attempt is retryable', async () => {
-  for (const redirectTo of ['https://other.example.test/learning.html', origin + '/teachers/app',
-    origin + '/learning.html?next=1', origin + '/learning.html#token', 'not-a-url']) {
+  for (const redirectTo of ['https://other.example.test/teachers/login', origin + '/teachers/app',
+    origin + '/teachers/login?next=1', origin + '/teachers/login#token', origin + '/learning.html', 'not-a-url']) {
     const h = harness({ fetch: async () => Response.json({ redirectTo }) });
     await settle();
     await h.button.dispatch('click').completion;
@@ -205,7 +205,7 @@ test('SDK absence, initialization failure, cancelled callbacks and session error
     const h = harness(options);
     await settle();
     assert.deepEqual(h.navigations, []);
-    assert.ok(h.requests.every(call => call.init.method === 'DELETE'), 'A failed or cancelled callback cannot bridge a leftover session');
+    assert.ok(h.requests.every(call => call.body?.action === 'logout'), 'A failed or cancelled callback cannot bridge a leftover session');
     assert.ok(h.status.textContent.length > 0, 'Failure must be visible to the user');
     if (options.sdk) assert.equal(h.button.disabled, true);
     if (options.href) assert.deepEqual(h.histories, ['/teachers/login']);
@@ -232,7 +232,7 @@ test('PKCE initialization must succeed before reading or bridging a previously s
   assert.deepEqual(h.histories, ['/teachers/login']);
   assert.equal(h.requests.length, 1);
   assert.equal(h.requests[0].url, '/api/teacherSession');
-  assert.equal(h.requests[0].init.method, 'DELETE');
+  assert.equal(h.requests[0].init.method, 'POST');
   assert.deepEqual(h.navigations, []);
   assert.match(h.status.textContent, /לא הושלמה/);
 });
@@ -269,6 +269,7 @@ test('workspace token refresh bridges outside the synchronous SDK listener witho
   await h.runTimers();
   assert.equal(h.requests.length, 2);
   assert.deepEqual(h.requests[1].body, { accessToken: 'refreshed-token', returnTo: '/teachers/app?grade=8&topic=linear' });
+  assert.equal(h.status.textContent, '', 'Successful background refresh must clear its verification message');
   assert.deepEqual(h.navigations, []);
 });
 
@@ -285,56 +286,82 @@ test('a rejected refreshed session sends the workspace back to login with its to
 });
 
 test('logout clears the server cookie then checks local SDK sign-out before leaving', async () => {
-  let release: (response: Response) => void = () => { throw new Error('No pending delete'); };
+  let release: (response: Response) => void = () => { throw new Error('No pending logout'); };
   const h = harness({ mode: 'workspace', session: { access_token: 'owner-token' }, fetch: async call => {
-    if (call.init.method === 'DELETE') return new Promise<Response>(resolve => { release = resolve; });
+    if (call.body?.action === 'logout') return new Promise<Response>(resolve => { release = resolve; });
     return Response.json({ returnTo: '/teachers/start' });
   } });
   await settle();
-  const submission = h.form.dispatch('submit');
+  const submission = h.logoutButton.dispatch('click');
   assert.equal(submission.event.prevented, true);
   assert.equal(submission.event.currentTarget, null);
   assert.deepEqual(h.signOutCalls, []);
   assert.deepEqual(h.navigations, []);
+  await settle();
   const deletion = h.requests.at(-1)!;
   assert.equal(deletion.url, '/api/teacherSession');
-  assert.equal(deletion.init.method, 'DELETE');
+  assert.equal(deletion.init.method, 'POST');
+  assert.deepEqual(deletion.body, { action: 'logout' });
+  assert.equal(new Headers(deletion.init.headers).get('content-type'), 'application/json');
   assert.equal(deletion.init.credentials, 'same-origin');
   assert.equal(deletion.init.cache, 'no-store');
-  release(new Response(null, { status: 204 }));
+  release(Response.json({ ok: true }));
   await submission.completion;
   await h.runTimers();
   assert.deepEqual(h.signOutCalls, [{ scope: 'local' }]);
   assert.deepEqual(h.navigations, ['/teachers']);
-  assert.equal(h.form.submissions, 0);
-  assert.equal(h.requests.filter(call => call.init.method === 'DELETE').length, 1, 'SIGNED_OUT during logout must not trigger a second clear');
+  assert.equal(h.logoutButton.submissions, 0);
+  assert.equal(h.requests.filter(call => call.body?.action === 'logout').length, 1, 'SIGNED_OUT during logout must not trigger a second clear');
 });
 
-test('returned signOut errors use the captured form after await and clear persisted local auth', async () => {
+test('after server logout, SDK signOut errors clear local auth and return to the public page', async () => {
   const h = harness({ mode: 'workspace', session: { access_token: 'owner-token' },
     signOut: async () => ({ error: new Error('LOCAL_SIGNOUT_FAILED') }),
   });
   await settle();
-  const submission = h.form.dispatch('submit');
+  const submission = h.logoutButton.dispatch('click');
   assert.equal(submission.event.currentTarget, null);
   await submission.completion;
   assert.deepEqual(h.signOutCalls, [{ scope: 'local' }]);
-  assert.deepEqual(h.navigations, [], 'An SDK error result is not a successful logout');
+  assert.deepEqual(h.navigations, ['/teachers'], 'Server access was removed before provider sign-out');
   assert.deepEqual(h.removedKeys, [authStorageKey]);
-  assert.equal(h.form.submissions, 1, 'Native POST fallback must survive currentTarget being cleared');
+  assert.equal(h.logoutButton.submissions, 0, 'Never use the Wix-blocked native form path');
 });
 
-test('failed cookie clearing uses native logout, including when localStorage is unavailable', async () => {
+test('failed server logout stays private, shows a retry and never claims success or submits a native form', async () => {
   for (const storageThrows of [false, true]) {
     const h = harness({ mode: 'workspace', session: { access_token: 'owner-token' }, storageThrows,
-      fetch: async call => call.init.method === 'DELETE'
+      fetch: async call => call.body?.action === 'logout'
         ? new Response(null, { status: 503 }) : Response.json({ returnTo: '/teachers/start' }),
     });
     await settle();
-    await h.form.dispatch('submit').completion;
+    await h.logoutButton.dispatch('click').completion;
     assert.deepEqual(h.signOutCalls, [], 'Failed server logout must not be treated as a cleared session');
     assert.deepEqual(h.navigations, []);
-    assert.deepEqual(h.removedKeys, [authStorageKey]);
-    assert.equal(h.form.submissions, 1);
+    assert.deepEqual(h.removedKeys, []);
+    assert.equal(h.logoutButton.submissions, 0);
+    assert.equal(h.logoutButton.disabled, false);
+    assert.match(h.status.textContent, /לא ניתן להשלים את ההתנתקות/);
   }
+});
+
+test('logout waits for an earlier token bridge and a queued refresh cannot restore the cleared cookie', async () => {
+  let finishBridge: (response: Response) => void = () => { throw new Error('No bridge'); };
+  const h = harness({ mode: 'workspace', session: { access_token: 'owner-token' },
+    fetch: async call => call.body?.accessToken
+      ? new Promise<Response>(resolve => { finishBridge = resolve; }) : Response.json({ ok: true }),
+  });
+  await settle();
+  h.emit('TOKEN_REFRESHED', { access_token: 'late-refresh' });
+  const logout = h.logoutButton.dispatch('click');
+  await settle();
+  assert.equal(h.requests.length, 1, 'Logout cannot overtake a pending Set-Cookie response');
+  finishBridge(Response.json({ returnTo: '/teachers/app' }));
+  await logout.completion;
+  await h.runTimers();
+  assert.deepEqual(h.requests.map(call => call.body), [
+    { accessToken: 'owner-token', returnTo: '/teachers/app?grade=8&topic=linear' },
+    { action: 'logout' },
+  ]);
+  assert.deepEqual(h.navigations, ['/teachers']);
 });

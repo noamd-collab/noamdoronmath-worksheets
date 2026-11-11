@@ -8,35 +8,45 @@
   var button = document.getElementById('teacher-google-sign-in');
   var cfg = window.NOAM_LEARNING_CONFIG || {};
   var client, pending = false, leaving = false;
+  var sessionMutation = Promise.resolve();
   function tell(text) { if (status) status.textContent = text; }
   function returnPath() {
     if (mode === 'workspace') return location.pathname + location.search;
     return root.getAttribute('data-return-to') || '/teachers/start';
   }
   function loginPath() { return '/teachers/login?returnTo=' + encodeURIComponent(returnPath()); }
+  function postSession(body) {
+    // Finish any earlier refresh bridge before clearing the cookie on logout.
+    var operation = sessionMutation.catch(function () {}).then(function () { return fetch('/api/teacherSession', {
+      method: 'POST', credentials: 'same-origin', cache: 'no-store',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    }); });
+    sessionMutation = operation;
+    return operation;
+  }
   async function clearCookie() {
-    var response = await fetch('/api/teacherSession', { method: 'DELETE', credentials: 'same-origin', cache: 'no-store' });
+    var response = await postSession({ action: 'logout' });
     if (!response.ok) throw new Error('SESSION_CLEAR_FAILED');
   }
   async function bridge(session, navigate) {
+    if (leaving) return;
     if (!session || !session.access_token) {
       if (mode === 'workspace') { leaving = true; location.replace(loginPath()); }
       else tell('יש להתחבר עם חשבון Google המורשה לבדיקות.');
       return;
     }
     tell('מאמתים את החשבון ואת הרשאת הכניסה…');
-    var response = await fetch('/api/teacherSession', {
-      method: 'POST', credentials: 'same-origin', cache: 'no-store',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ accessToken: session.access_token, returnTo: returnPath() }),
-    });
+    var response = await postSession({ accessToken: session.access_token, returnTo: returnPath() });
     var result = await response.json();
+    if (leaving) return;
     if (!response.ok) {
       if (mode === 'workspace') { leaving = true; location.replace(loginPath()); return; }
       tell(response.status === 403 ? 'החשבון הזה אינו מורשה להיכנס לבדיקות. אפשר לבחור חשבון Google אחר.' : 'לא ניתן לאמת את הכניסה כרגע. נסו להתחבר שוב.');
       if (button) button.textContent = 'בחירת חשבון Google אחר';
       return;
     }
+    tell('');
     if (navigate) {
       // The server returns only an allowlisted same-origin teacher path.
       var destination = new URL(result.returnTo, location.origin);
@@ -50,15 +60,11 @@
     pending = true; button.disabled = true;
     tell('פותחים את ההתחברות עם Google…');
     try {
-      var start = await fetch('/api/teacherSession', {
-        method: 'POST', credentials: 'same-origin', cache: 'no-store',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'start', returnTo: returnPath() }),
-      });
+      var start = await postSession({ action: 'start', returnTo: returnPath() });
       if (!start.ok) throw new Error('START_FAILED');
       var body = await start.json();
       var redirectTo = new URL(body.redirectTo);
-      if (redirectTo.origin !== location.origin || redirectTo.pathname !== '/learning.html' || redirectTo.search || redirectTo.hash) throw new Error('INVALID_CALLBACK');
+      if (redirectTo.origin !== location.origin || redirectTo.pathname !== '/teachers/login' || redirectTo.search || redirectTo.hash) throw new Error('INVALID_CALLBACK');
       var result = await client.auth.signInWithOAuth({
         provider: 'google', options: { redirectTo: redirectTo.href, queryParams: { prompt: 'select_account' } },
       });
@@ -69,25 +75,32 @@
     }
   }
   async function logout(event) {
-    var form = event && event.currentTarget;
+    var control = event && event.currentTarget;
     if (event) event.preventDefault();
     if (leaving) return;
     leaving = true;
+    if (control) control.disabled = true;
     try {
       await clearCookie();
+    } catch (_) {
+      leaving = false;
+      if (control) control.disabled = false;
+      tell('לא ניתן להשלים את ההתנתקות כרגע. נסו שוב.');
+      return;
+    }
+    try {
       if (client) {
         var result = await client.auth.signOut({ scope: 'local' });
         if (result.error) throw result.error;
       }
-      location.replace('/teachers');
     } catch (_) {
-      leaving = false;
-      // The server form also works if the SDK or this script cannot finish.
+      // Server access is already cleared. Remove a retained browser session
+      // even when the provider sign-out request cannot finish.
       try { localStorage.removeItem('noam-learning-auth-v1'); } catch (_) {}
-      if (form) form.submit();
     }
+    location.replace('/teachers');
   }
-  document.querySelectorAll('.teacher-private-access form').forEach(function (form) { form.addEventListener('submit', logout); });
+  document.querySelectorAll('[data-teacher-logout]').forEach(function (control) { control.addEventListener('click', logout); });
   if (!cfg.googleEnabled || !cfg.url || !cfg.key || !window.supabase || window.self !== window.top) {
     tell('ההתחברות אינה זמינה כרגע. רעננו את הדף ונסו שוב.');
     return;

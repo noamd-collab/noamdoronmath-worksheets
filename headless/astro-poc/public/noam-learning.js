@@ -119,7 +119,7 @@
  var authWired=false;
  function wireAuth(){if(!client||authWired)return;authWired=true;
   client.auth.onAuthStateChange(function(event,session){
-   if(event==='SIGNED_OUT')fetch('/api/teacherSession',{method:'DELETE',credentials:'same-origin',cache:'no-store'}).catch(function(){});
+   if(event==='SIGNED_OUT')fetch('/api/teacherSession',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'logout'}),credentials:'same-origin',cache:'no-store'}).catch(function(){});
    setTimeout(function(){engine.setUser(session&&session.user).catch(fail);},0);
   });
   client.auth.getSession().then(async function(r){if(r.error){tell('החיבור לחשבון אינו זמין. נסו לרענן את הדף.');}await engine.setUser(r.data&&r.data.session&&r.data.session.user);if(signInRequested&&!r.error)await signInWithGoogle();}).catch(fail);

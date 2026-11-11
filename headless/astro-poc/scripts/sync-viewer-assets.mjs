@@ -18,6 +18,24 @@ const repoRoot = join(pocRoot, '..', '..');
 const pub = join(pocRoot, 'public');
 const vendorPub = join(pub, 'vendor');
 
+/** Reapply the Headless logout bridge without restoring Wix-blocked DELETE. */
+export function ensureHeadlessLearningSessionLogout(source) {
+  const legacy = "fetch('/api/teacherSession',{method:'DELETE',credentials:'same-origin',cache:'no-store'})";
+  const request = "fetch('/api/teacherSession',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'logout'}),credentials:'same-origin',cache:'no-store'})";
+  let result = source.replaceAll(legacy, request);
+  if (result.includes(request)) return result;
+  if (result.includes("fetch('/api/teacherSession'")) throw new Error('Unrecognized learning logout bridge');
+  const listener = 'client.auth.onAuthStateChange(function(event,session){';
+  if (!result.includes(listener)) throw new Error('Learning auth listener missing');
+  return result.replace(listener, listener + "if(event==='SIGNED_OUT')" + request + '.catch(function(){});');
+}
+
+export function ensureHeadlessLearningBootVersion(source) {
+  const script = /(['"])noam-learning\.js(?:\?v=[A-Za-z0-9._-]+)?\1/g;
+  if (!script.test(source)) throw new Error('Learning boot script reference missing');
+  return source.replace(script, "'noam-learning.js?v=20261111-teacher-post-session'");
+}
+
 const FILES = [
   'worksheet-viewer-noam.html',
   'learning.html',
@@ -425,16 +443,16 @@ writeFileSync(learningPath, learning);
 const learningJsPath = join(pub, 'noam-learning.js');
 let learningJs = readFileSync(learningJsPath, 'utf8');
 // Headless-only server logout bridge; the standalone source has no /api routes.
-if (!learningJs.includes("fetch('/api/teacherSession'")) {
-  const authListener = 'client.auth.onAuthStateChange(function(event,session){';
-  if (!learningJs.includes(authListener)) throw new Error('Learning auth listener missing');
-  learningJs = learningJs.replace(authListener, authListener + "if(event==='SIGNED_OUT')fetch('/api/teacherSession',{method:'DELETE',credentials:'same-origin',cache:'no-store'}).catch(function(){});");
-}
+learningJs = ensureHeadlessLearningSessionLogout(learningJs);
 learningJs = learningJs.replaceAll(
   "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_",
   'https://static.wixstatic.com/ugd/d8e7ad_'
 );
 writeFileSync(learningJsPath, learningJs);
+// FILES also copies the upstream boot loader. Keep its Headless script version
+// aligned so a later sync cannot restore a cached pre-logout-bridge client.
+const learningBootPath = join(pub, 'noam-learning-boot.js');
+writeFileSync(learningBootPath, ensureHeadlessLearningBootVersion(readFileSync(learningBootPath, 'utf8')));
 
 console.log('Synced viewer assets → public/ (+ Headless path adapters)');
 console.log('Manifests: run npm run sync:static (same-origin; rollback HEADLESS_USE_LOCAL_MANIFESTS=false)');

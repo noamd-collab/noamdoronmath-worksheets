@@ -4,6 +4,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { describe, it } from 'node:test';
 import { fileURLToPath } from 'node:url';
 import { loadCatalog } from '../src/lib/catalog/loadCatalog';
+import { TEACHER_PRIVATE_HEADERS } from '../src/lib/teacherAccess';
 import { labelAscent, labelLineBox, labelLineHeight, sheetFromManifest } from '../scripts/build-teacher-catalog.mjs';
 
 function servedGaps(questions: { id: string; inkTop: number | null; inkBottom?: number }[]) {
@@ -140,8 +141,10 @@ describe('grade 9 factoring marked source', () => {
     const preview = readFileSync(new URL('../src/teacher-pages/wizard.html', import.meta.url), 'utf8');
     const sitemap = readFileSync(new URL('../src/pages/sitemap-pages.xml.ts', import.meta.url), 'utf8');
     const sitemapLib = readFileSync(new URL('../src/lib/siteSitemaps.ts', import.meta.url), 'utf8');
-    assert.match(route, /x-robots-tag': 'noindex, nofollow'/);
-    assert.match(route, /cache-control': 'no-store'/);
+    assert.match(route, /\.\.\.TEACHER_PRIVATE_HEADERS/);
+    const privateHeaders = new Headers(TEACHER_PRIVATE_HEADERS);
+    assert.equal(privateHeaders.get('x-robots-tag'), 'noindex, nofollow');
+    assert.equal(privateHeaders.get('cache-control'), 'private, no-store');
     assert.match(landing, /<BaseLayout/);
     assert.match(landing, /legacyTeacherToolRedirect/);
     assert.equal(existsSync(new URL('../src/pages/teachers.ts', import.meta.url)), false);

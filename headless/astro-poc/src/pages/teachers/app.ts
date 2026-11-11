@@ -5,7 +5,7 @@ import { authorizeTeacherRequest, TEACHER_PRIVATE_HEADERS, sanitizeTeacherReturn
 
 export const prerender = false;
 
-const ownerChrome = '<link rel="stylesheet" href="/teachers/auth.css"><div class="teacher-private-access" data-teacher-auth="workspace"><a href="/teachers/start">אזור המורים · בדיקות פרטיות</a><form method="post" action="/api/teacherLogout"><button type="submit" data-teacher-logout>התנתקות</button></form></div>';
+const ownerChrome = '<link rel="stylesheet" href="/teachers/auth.css"><div class="teacher-private-access" data-teacher-auth="workspace"><a href="/teachers/start">אזור המורים · בדיקות פרטיות</a><button type="button" data-teacher-logout>התנתקות</button><p id="teacher-auth-status" role="status" aria-live="polite"></p></div>';
 const authScripts = '<script src="/noam-learning-config.js" defer></script><script src="/vendor/supabase-2.116.0.js" defer></script><script src="/teachers/auth.js" defer></script>';
 export const GET: APIRoute = async ({ request, url }) => {
   const access = await authorizeTeacherRequest(request);

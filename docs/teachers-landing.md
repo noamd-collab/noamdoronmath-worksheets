@@ -22,14 +22,14 @@ Legacy query redirects preserve partial and invalid scope values for the wizard 
 The client uses the existing Supabase Google integration with PKCE and the same-origin `noam-learning-auth-v1` storage key. It requests Google identity, with no added Gmail or Drive permissions.
 
 1. A same-origin `POST /api/teacherSession` with `action: start` creates a ten-minute HttpOnly, Secure, SameSite=Lax pending return cookie. That cookie carries only a sanitized teacher destination, never an identity or entitlement.
-2. Google returns through the existing `/learning.html` callback. While the ten-minute pending cookie exists, middleware rewrites that path to the teacher login handler, including OAuth errors in fragments that the server cannot see. Learning visits without that pending state keep their existing route.
+2. Google returns directly to the same-origin SSR `/teachers/login` callback. Production and each tested preview require that exact callback URL in the Supabase redirect allowlist; unknown preview origins must never be treated as working callbacks. The existing static `/learning.html` flow stays separate because Wix can serve static assets before middleware.
 3. The client checks SDK initialization and completes PKCE before removing the one-time callback code. Failed exchanges and provider cancellations never bridge an older stored session. A valid access token is sent only in a same-origin POST body.
 4. The server verifies the token against the fixed Supabase project's Auth user endpoint. It checks the returned user against the configured owner UID, requires a confirmed Google identity, and binds the validated token's subject, issuer, audience and expiry. An email string, client profile, decoded token or user-editable metadata cannot grant access.
 5. Successful verification creates the HttpOnly teacher session cookie and returns an allowlisted destination. The cookie cannot outlive the validated access token. Protected requests revalidate authorization; provider failures deny access.
 
 The owner's entitlement is permanent, while sessions still expire and require valid authentication. Owner identifiers and account details are intentionally omitted from this document. This release does not implement paid customer entitlements or billing.
 
-Session creation and deletion require same-origin requests. Logout clears the teacher session and pending return cookie; the client also signs out its local Supabase session. A server form supplies the logout fallback.
+Session creation and clearing require same-origin JSON POST requests. Logout clears the teacher session and pending return cookie; the client also signs out its local Supabase session. If server clearing fails, the page stays open and presents a retry message. If server clearing succeeds but SDK sign-out fails, the local persisted session is removed before returning to the public page. JSON POST avoids the Wix proxy origin mismatch affecting native form/DELETE submissions without weakening Astro origin protection.
 
 ## Protected actions and public material
 
