@@ -57,7 +57,7 @@ describe('seo audit', () => {
   it('layout emits one title, one description, one canonical, and Hebrew RTL', () => {
     const layout = readFileSync(fromTest('../src/layouts/BaseLayout.astro'), 'utf8');
     assert.equal((layout.match(/<title[\s>]/g) || []).length, 1);
-    assert.equal((layout.match(/<meta name="description"/g) || []).length, 1);
+    assert.equal((layout.match(/<meta\b[^>]*\bname="description"/g) || []).length, 1);
     assert.equal((layout.match(/rel="canonical"/g) || []).length, 1);
     assert.match(layout, /<html lang="he" dir="rtl">/);
     assert.match(layout, /canonicalUrl\(Astro\.url\.pathname/);

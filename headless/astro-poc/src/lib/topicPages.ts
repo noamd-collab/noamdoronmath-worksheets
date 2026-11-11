@@ -267,6 +267,17 @@ import fractionOperationsChooseGrade6 from '../data/topic-pages/fraction-operati
 import multiplyDecimalsGrade6 from '../data/topic-pages/multiply-decimals-grade-6.json';
 import divideDecimalsGrade6 from '../data/topic-pages/divide-decimals-grade-6.json';
 import capacityMlLM3Grade6 from '../data/topic-pages/capacity-ml-l-m3-grade-6.json';
+import equilateralTriangleGrade7 from '../data/topic-pages/equilateral-triangle-grade-7.json';
+import congruentPolygonsTransformationsGrade7 from '../data/topic-pages/congruent-polygons-transformations-grade-7.json';
+import dataCollectionReadingGrade7 from '../data/topic-pages/data-collection-reading-grade-7.json';
+import frequencyGrade7 from '../data/topic-pages/frequency-grade-7.json';
+import relativeFrequencyGrade7 from '../data/topic-pages/relative-frequency-grade-7.json';
+import relativeFrequencyExperimentsGrade7 from '../data/topic-pages/relative-frequency-experiments-grade-7.json';
+import probabilityIntroductionGrade7 from '../data/topic-pages/probability-introduction-grade-7.json';
+import equationsIntroductionEquivalenceGrade7 from '../data/topic-pages/equations-introduction-equivalence-grade-7.json';
+import twoStepEquationsGrade7 from '../data/topic-pages/two-step-equations-grade-7.json';
+import annualReviewGrade7 from '../data/topic-pages/annual-review-grade-7.json';
+import assessmentTask1Grade7 from '../data/topic-pages/assessment-task-1-grade-7.json';
 import ratioGrade6 from '../data/topic-pages/ratio-grade-6.json';
 import scaleMapsGrade6 from '../data/topic-pages/scale-maps-grade-6.json';
 import statisticsDataFrequencyGrade8 from '../data/topic-pages/statistics-data-frequency-grade-8.json';
@@ -458,6 +469,25 @@ export const TOPIC_PAGE_M30_REDIRECTS: ReadonlyArray<{ from: string; to: string 
 ];
 
 export const TOPIC_PAGE_M30_UNMIGRATED = [] as const;
+
+/**
+ * Grade-7 catalog topics that had no landing page (t16, t17, t24, t25, t26, t27, t28, t33, t35, t49, t50).
+ * Authored from Noam's PDFs, not production captures, so the parity gate
+ * skips them. Catalog order.
+ */
+export const TOPIC_PAGE_G7_AUTHORED_SLUGS = [
+  'equilateral-triangle-grade-7',
+  'congruent-polygons-transformations-grade-7',
+  'data-collection-reading-grade-7',
+  'frequency-grade-7',
+  'relative-frequency-grade-7',
+  'relative-frequency-experiments-grade-7',
+  'probability-introduction-grade-7',
+  'equations-introduction-equivalence-grade-7',
+  'two-step-equations-grade-7',
+  'annual-review-grade-7',
+  'assessment-task-1-grade-7',
+] as const;
 
 /** Grade-9 kite (G9-T46). Not a production capture; authored with the kite loop. */
 export const TOPIC_PAGE_KITE_SLUGS = ['kite-grade-9'] as const;
@@ -718,6 +748,7 @@ export const TOPIC_PAGE_G2_SLUGS = [
 
 /** Slugs with no production source; the parity fixture gate must skip them. */
 export const TOPIC_PAGE_AUTHORED_SLUGS = [
+  ...TOPIC_PAGE_G7_AUTHORED_SLUGS,
   ...TOPIC_PAGE_G8_AUTHORED_SLUGS,
   ...TOPIC_PAGE_G1_SLUGS,
   ...TOPIC_PAGE_G2_SLUGS,
@@ -736,6 +767,7 @@ export const TOPIC_PAGE_SLUGS = [
   ...TOPIC_PAGE_M23_SLUGS,
   ...TOPIC_PAGE_M30_SLUGS,
   ...TOPIC_PAGE_KITE_SLUGS,
+  ...TOPIC_PAGE_G7_AUTHORED_SLUGS,
   ...TOPIC_PAGE_G8_AUTHORED_SLUGS,
   ...TOPIC_PAGE_G1_SLUGS,
   ...TOPIC_PAGE_G2_SLUGS,
@@ -954,6 +986,18 @@ const BY_SLUG: Record<string, TopicPageContent> = {
   'triangle-similarity-aa-grade-9': triangleSimilarityAaGrade9 as TopicPageContent,
   'special-triangles-grade-7-new': specialTrianglesGrade7New as TopicPageContent,
   'patterns-and-graphs-grade-7': patternsAndGraphsGrade7 as TopicPageContent,
+  // Grade-7 catalog gaps (כיתה ז׳)
+  'equilateral-triangle-grade-7': equilateralTriangleGrade7 as TopicPageContent,
+  'congruent-polygons-transformations-grade-7': congruentPolygonsTransformationsGrade7 as TopicPageContent,
+  'data-collection-reading-grade-7': dataCollectionReadingGrade7 as TopicPageContent,
+  'frequency-grade-7': frequencyGrade7 as TopicPageContent,
+  'relative-frequency-grade-7': relativeFrequencyGrade7 as TopicPageContent,
+  'relative-frequency-experiments-grade-7': relativeFrequencyExperimentsGrade7 as TopicPageContent,
+  'probability-introduction-grade-7': probabilityIntroductionGrade7 as TopicPageContent,
+  'equations-introduction-equivalence-grade-7': equationsIntroductionEquivalenceGrade7 as TopicPageContent,
+  'two-step-equations-grade-7': twoStepEquationsGrade7 as TopicPageContent,
+  'annual-review-grade-7': annualReviewGrade7 as TopicPageContent,
+  'assessment-task-1-grade-7': assessmentTask1Grade7 as TopicPageContent,
   'kite-grade-9': kiteGrade9 as TopicPageContent,
   'statistics-data-frequency-grade-8': statisticsDataFrequencyGrade8 as TopicPageContent,
   // Grade-8 catalog gaps (כיתה ח׳)
