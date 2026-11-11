@@ -63,8 +63,8 @@
     }
     var CAP = { '-1': '4.7 ÷ 10 = 0.47', '0': '4.7', '1': '4.7 × 10 = 47', '2': '4.7 × 10 × 10 = 470' };
 
-    var mul = ctx.button('כפול בעשר ×10', function () { go(1); }, { target: 'mul' });
-    var div = ctx.button('חלק בעשר ÷10', function () { go(-1); }, { ghost: true, target: 'div' });
+    var mul = ctx.button('כפול בעשר ' + m('×10'), function () { go(1); }, { target: 'mul' });
+    var div = ctx.button('חלק בעשר ' + m('÷10'), function () { go(-1); }, { ghost: true, target: 'div' });
     ctx.register('mul', mul);
     ctx.register('div', div);
 
@@ -227,7 +227,7 @@
     var X0 = 40, LEN = 320, AY = 130;
     var vA = 20, vB = 80, active = null, done = false;
     function xOf(h) { return X0 + LEN * h / 100; }
-    function lensX(h) { return 60 + (h - 40) * 2.8; }
+    function lensX(h) { return 60 + (h - 40) * 28; }
 
     var svg = '<polygon points="' + xOf(40) + ',138 ' + xOf(50) + ',138 340,196 60,196"'
       + ' fill="' + WARM_SOFT + '" stroke="' + WARM + '" stroke-width="1.4"/>'
@@ -256,10 +256,10 @@
       + '<text id="lBt" x="60" y="218" font-size="10" text-anchor="middle" fill="#fff" font-family="' + FONT + '" opacity="0">ב</text>'
       + '<circle cx="86" cy="52" r="12" fill="' + MAIN + '"/>'
       + '<text x="86" y="57" font-size="14" text-anchor="middle" fill="#fff" font-family="' + FONT + '">א</text>'
-      + '<text id="rA" x="106" y="58" font-size="20" fill="' + MAIN + '" font-family="' + FONT + '">0.2</text>'
+      + '<text id="rA" x="106" y="58" font-size="20" direction="ltr" fill="' + MAIN + '" font-family="' + FONT + '">0.2</text>'
       + '<circle cx="246" cy="52" r="12" fill="' + WARM + '"/>'
       + '<text x="246" y="57" font-size="14" text-anchor="middle" fill="#fff" font-family="' + FONT + '">ב</text>'
-      + '<text id="rB" x="266" y="58" font-size="20" fill="' + WARM + '" font-family="' + FONT + '">0.8</text>'
+      + '<text id="rB" x="266" y="58" font-size="20" direction="ltr" fill="' + WARM + '" font-family="' + FONT + '">0.8</text>'
       + '<g id="dB" style="cursor:ew-resize"><circle id="dBc" cx="' + xOf(vB) + '" cy="' + AY + '" r="13" fill="' + WARM + '" stroke="#fff" stroke-width="2"/>'
       + '<text id="dBt" x="' + xOf(vB) + '" y="' + (AY + 5) + '" font-size="14" text-anchor="middle" fill="#fff" font-family="' + FONT + '" pointer-events="none">ב</text></g>'
       + '<g id="dA" style="cursor:ew-resize"><circle id="dAc" cx="' + xOf(vA) + '" cy="' + AY + '" r="13" fill="' + MAIN + '" stroke="#fff" stroke-width="2"/>'
@@ -347,15 +347,17 @@
     ctx.draw(svg);
   }
 
-  /** A hundred square with a given count shaded, as the picture of a question. */
+  /** A hundred square: 0.45 in orange, and 0.5 as the orange plus five blue. */
   function squareStill(ctx) {
-    var CS = 20, OX = 101, OY = 50, svg = '', c, r;
+    var CS = 20, OX = 101, OY = 40, svg = '', c, r;
     for (c = 0; c < 10; c++) {
       for (r = 0; r < 10; r++) {
         svg += '<rect x="' + (OX + c * CS + 1) + '" y="' + (OY + r * CS + 1) + '" width="' + (CS - 2) + '" height="' + (CS - 2) + '"'
-          + ' rx="3" fill="' + (c < 5 ? MAIN : (c === 5 && r < 6 ? WARM : SOFT)) + '" stroke="' + LINE + '" stroke-width="1"/>';
+          + ' rx="3" fill="' + (c < 4 || (c === 4 && r < 5) ? WARM : (c === 4 ? MAIN : SOFT)) + '" stroke="' + LINE + '" stroke-width="1"/>';
       }
     }
+    svg += '<text x="201" y="268" font-size="13" text-anchor="middle" direction="rtl" fill="' + INK + '"'
+      + ' font-family="' + FONT + '">כתום: 0.45. כתום וכחול ביחד: 0.5</text>';
     ctx.draw(svg);
   }
 
@@ -458,7 +460,7 @@
       tip: 'אל תשאל איזה מספר ארוך יותר. שאל איזה מהם רחוק יותר מאפס.',
       btn: 'המשך ←',
       aspect: [W, H],
-      alt: 'ריבוע של מאה משבצות שבו חמישים משבצות צבועות',
+      alt: 'ריבוע של מאה משבצות: ארבעים וחמש משבצות כתומות ועוד חמש כחולות, ביחד חמישים',
       setup: squareStill,
       win: 'בדיוק. ' + m('0.5') + ' זה ' + m('0.50') + ', ו־' + m('50') + ' מאיות גדולות מ־' + m('45') + ' מאיות.',
       wrongSay: 'כתוב את ' + m('0.5') + ' בתור ' + m('0.50') + ' ותשווה מאיות.',
@@ -466,7 +468,7 @@
         { t: m('0.5') + ' גדול יותר', c: true, f: m('0.5 = 0.50') + ', וחמישים מאיות גדולות מארבעים וחמש מאיות.' },
         { t: m('0.45') + ' גדול יותר', f: 'ארבעים וחמש גדול מחמש, אבל כאן מדובר במאיות מול עשיריות. ' + m('0.45') + ' קטן מחצי.' },
         { t: 'הם שווים', f: m('0.5') + ' הוא חצי שלם, ו־' + m('0.45') + ' חסר חמש מאיות לחצי.' },
-        { t: 'אי אפשר לדעת', f: 'אפשר. מספיק להשוות בעמודה אחת, עשיריות ואז מאיות.' }
+        { t: 'אי אפשר לדעת', f: 'אפשר. משווים עמודה אחרי עמודה: קודם עשיריות, ואז מאיות.' }
       ],
       hints: [
         'כתוב את שני המספרים עם אותו מספר ספרות אחרי הנקודה.',
