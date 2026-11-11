@@ -1303,6 +1303,8 @@
       var root = $('app');
       root.setAttribute('data-lesson', spec.slug);
       root.insertAdjacentHTML('afterbegin', SHELL);
+      // Inside the /games wrapper the site header already carries the mark.
+      if (window.self === window.top) $('card').insertAdjacentHTML('afterbegin', '<div class="bsd">בס״ד</div>');
       $('bubbleName').textContent = spec.mascot || 'אליהו';
       this.mountRivo();
       $('soundBtn').addEventListener('click', function () {
