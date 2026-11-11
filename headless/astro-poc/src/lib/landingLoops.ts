@@ -10,6 +10,7 @@
 import { ELEMENTARY_LANDING_LOOPS, ELEMENTARY_CSS_IDEAS, type ElementaryConceptLoopVariant } from './elementaryLandingLoops';
 import topicFamilies from '../data/topicFamilies.json';
 import type { TopicPageContent } from './topicPages';
+import { MIDDLE_LESSON_TOPIC_MAP, MIDDLE_TOPIC_LESSONS } from './middleTopicLessons';
 
 /** Same mount list TopicPage used before this change (F01–F06, F21, F26, F38). */
 export const FAMILY_CONCEPT_LOOP = {
@@ -68,6 +69,8 @@ export type ConceptLoopVariant =
 
 /** CSS/SVG loops. Transform and opacity only. */
 export const CSS_LOOP_VARIANTS = [
+  ...Object.keys(MIDDLE_TOPIC_LESSONS) as (keyof typeof MIDDLE_TOPIC_LESSONS)[],
+  'linear-table',
   'add-no-carry',
   'add-tens',
   'baseten-sub',
@@ -199,6 +202,8 @@ const FAMILY_CSS_LOOP: Record<string, CssLoopVariant> = {
 
 /** Finer than the family when the page's own idea is narrower. */
 const SLUG_CSS_OVERRIDE: Record<string, CssLoopVariant> = {
+  'percent-change-grade-8': 'pct-discount',
+  'rate-of-change-grade-8': 'linear-table',
   'data-collection-reading-grade-7': 'read-linegraph',
   'relative-frequency-grade-7': 'percent',
   'assessment-task-1-grade-7': 'measure',
@@ -227,7 +232,7 @@ const SLUG_CSS_OVERRIDE: Record<string, CssLoopVariant> = {
   'bar-charts-pictograms-grade-8': 'read-bars',
   'function-concept-grade-8': 'pattern-graph',
   'function-notation-grade-8': 'read-graph',
-  'function-representations-grade-8': 'linear',
+  'function-representations-grade-8': 'linear-table',
   'data-range-grade-8': 'compare-groups',
   'data-literacy-grade-8': 'read-bars',
   'lines-parallel-to-axes-grade-8': 'coords',
@@ -336,6 +341,8 @@ function familyOf(page: Pick<TopicPageContent, 'grade' | 'catalogCta'>): string 
 }
 
 export function topicLandingLoop(page: Pick<TopicPageContent, 'slug' | 'grade' | 'catalogCta'>): LandingLoop {
+  const middleLesson = MIDDLE_LESSON_TOPIC_MAP[page.slug as keyof typeof MIDDLE_LESSON_TOPIC_MAP];
+  if (middleLesson) return { kind: 'css', variant: middleLesson, marker: middleLesson };
   if (page.grade >= 1 && page.grade <= 6) {
     const restored = ELEMENTARY_LANDING_LOOPS[page.slug as keyof typeof ELEMENTARY_LANDING_LOOPS];
     if (restored) return restored;
@@ -415,6 +422,8 @@ export function powerMarkup(row: PowerRow): string {
  * and listed in the pull request.
  */
 export const CSS_LOOP_IDEAS = {
+  ...Object.fromEntries(Object.entries(MIDDLE_TOPIC_LESSONS).map(([key, lesson]) => [key, lesson.idea])) as Record<keyof typeof MIDDLE_TOPIC_LESSONS, string>,
+  'linear-table': 'בפונקציה קווית, שינוי קבוע ב־x נותן שינוי קבוע ב־y',
   ...ELEMENTARY_CSS_IDEAS,
   'distrib-area': "מפרקים את 16 ל־10 ועוד 6 ומחברים את שני השטחים: 150 + 90 = 240",
   'frac-div': "בכל שלם יש 4 רבעים, ולכן בשני שלמים יש 8 רבעים",
