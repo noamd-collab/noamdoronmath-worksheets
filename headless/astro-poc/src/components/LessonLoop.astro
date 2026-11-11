@@ -1,6 +1,7 @@
 ---
 import { LESSON_LOOPS, type Lesson, type LessonLoopVariant } from '../lib/lessonLoops';
 import LessonMath from './LessonMath.astro';
+import MiddleLessonPicture from './MiddleLessonPicture.astro';
 interface Props { variant: LessonLoopVariant }
 const { variant } = Astro.props;
 const lesson: Lesson = LESSON_LOOPS[variant];
@@ -96,6 +97,7 @@ const treeBranches = [[0, 1], [0, 2], [2, 3], [2, 4], [4, 5], [4, 6]].map(([p, c
 });
 ---
 <div class="lesson" data-lesson={variant} dir="rtl">
+  <MiddleLessonPicture variant={variant} lesson={lesson} />
   {lesson.picture === 'reflection' && <svg role="img" viewBox="0 0 480 230" aria-label="שני חצאים משתקפים סביב קו אנכי">
     <line class="mirror-axis" x1="240" y1="10" x2="240" y2="215" stroke-dasharray="7 6"/>
     <path d="M240 35 L130 100 L170 190 L240 155 Z" class="filled"/>
@@ -161,7 +163,7 @@ const treeBranches = [[0, 1], [0, 2], [2, 3], [2, 4], [4, 5], [4, 6]].map(([p, c
   {lesson.picture === 'linear' && <>
     <table dir="ltr"><caption>פונקציה קווית: <bdi>y = 3x + 1</bdi></caption><tbody><tr><th scope="row">x</th><td>0</td><td>1</td><td>2</td></tr><tr><th scope="row">y</th><td>1</td><td>4</td><td>7</td></tr></tbody></table>
     <svg role="img" viewBox="0 0 480 255" aria-label="גרף הפונקציה הקווית y שווה 3x ועוד 1, העובר בנקודות אפס ואחת, אחת וארבע, שתיים ושבע">
-      <path d="M80 15 V220 H440"/>{[1,4,7].map((n,i)=><><line class="grid" x1="80" x2="410" y1={220-n*25} y2={220-n*25}/><text x="53" y={227-n*25}>{n}</text><text x={80+i*140} y="248">{i}</text><circle cx={80+i*140} cy={220-n*25} r="6"/></>)}<path class="graph-line" d="M80 195 L388 30"/>
+      <path d="M80 15 V220 H440"/>{[1,4,7].map((n,i)=><><line class="grid" x1="80" x2="410" y1={220-n*25} y2={220-n*25}/><text x="53" y={227-n*25}>{n}</text><text x={80+i*140} y="248">{i}</text><line class="linear-read" x1={80+i*140} x2={80+i*140} y1="220" y2={220-n*25} style={`--d:${i*.3}s`}/><circle class={`pt pt-${i}`} cx={80+i*140} cy={220-n*25} r="6" style={`--dy:${n*25}px`}/></>)}<path class="graph-line" d="M80 195 L388 30"/>
     </svg>
   </>}
   {lesson.picture === 'place' && <div class="place-values">
@@ -224,6 +226,7 @@ const treeBranches = [[0, 1], [0, 2], [2, 3], [2, 4], [4, 5], [4, 6]].map(([p, c
   .triangle-cards {display:grid;grid-template-columns:repeat(3,1fr);gap:3px;text-align:center;}
   .triangle-cards p {font-size:clamp(12px,3.5cqi,18px);margin:0;}
   svg .graph-line {stroke:#1e605e;stroke-width:4;} svg .mean-line {stroke:#a55700;stroke-width:3;}
+  svg .linear-read {stroke:#a55700;stroke-width:2;stroke-dasharray:5 4;transform-box:fill-box;transform-origin:50% 100%;animation:ls-grow-y 9s ease-out infinite;animation-delay:var(--d,0s);}
   .numberline {padding:30px 15px 68px;}
   .numberline-track {height:2px;background:#22305a;position:relative;}
   .tick {position:absolute;top:-6px;height:14px;border-left:2px solid #22305a;}
@@ -307,7 +310,7 @@ const treeBranches = [[0, 1], [0, 2], [2, 3], [2, 4], [4, 5], [4, 6]].map(([p, c
   .grow-x {transform-origin:100% 50%;animation:ls-grow-x 9s ease-out infinite backwards;} .grow-x--late {animation-delay:.3s;}
   .late-label {animation:ls-late-label 9s linear infinite;}
   .diff {transform-origin:100% 50%;animation:ls-diff 9s ease-out infinite;} .diff-label {animation:ls-diff-label 9s linear infinite;}
-  .level-piece {animation:ls-level 9s ease-in-out infinite;}
+  .level-piece {transform:translate(var(--dx),var(--dy));animation:ls-level 9s ease-in-out infinite;}
   svg .mean-line {transform-box:fill-box;transform-origin:100% 50%;animation:ls-draw-step-2 9s ease-in-out infinite;}
   .spread {animation:ls-spread 9s ease-in-out infinite;}
   svg .range {transform-origin:50% 50%;animation:ls-range 9s ease-out infinite;}

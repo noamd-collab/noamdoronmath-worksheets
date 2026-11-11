@@ -1,14 +1,16 @@
+import { MIDDLE_TOPIC_LESSONS } from './middleTopicLessons';
 /** Lesson-specific sequences. Rest/reduced-motion state keeps all worked steps readable. */
 export type LessonStep = { text: string; math: string };
 export type Lesson = {
   idea: string;
-  picture: 'reflection' | 'net' | 'chart' | 'bars' | 'place' | 'equation' | 'shapes' | 'hundred' | 'rectangles' | 'linegraph' | 'table' | 'mean' | 'groups' | 'numberline' | 'triangles' | 'linear' | 'weights' | 'rounding' | 'division' | 'factortree';
+  picture: 'reflection' | 'net' | 'chart' | 'bars' | 'place' | 'equation' | 'shapes' | 'hundred' | 'rectangles' | 'linegraph' | 'table' | 'mean' | 'groups' | 'numberline' | 'triangles' | 'linear' | 'weights' | 'rounding' | 'division' | 'factortree' | 'calculation' | 'median-data' | 'center-choice' | 'truncated-axis' | 'pie-sector' | 'experiment-data' | 'cartesian-topic' | 'equilateral-topic' | 'source-data';
   place?: { value: number; label: string }[];
   steps: [LessonStep, LessonStep, LessonStep];
   bars?: { total: number; filled: number; label: string }[];
 };
 const step = (text: string, math: string): LessonStep => ({ text, math });
 export const LESSON_LOOPS = {
+  ...MIDDLE_TOPIC_LESSONS,
   'triangle-angles': {picture:'triangles',idea:'ממיינים משולשים לפי הזווית הגדולה ביותר שלהם',steps:[step('במשולש חד־זווית כל שלוש הזוויות חדות',''),step('במשולש ישר־זווית יש זווית ישרה אחת',''),step('במשולש קהה־זווית יש זווית קהה אחת','')]},
   'read-linegraph': {picture:'linegraph',idea:'משווים שינוי בין שלבים לפי הפרש הערכים, במרווחי זמן שווים',steps:[step('קוראים את שלושת הערכים','5, 9, 10'),step('מחשבים את השינויים','9 − 5 = 4; 10 − 9 = 1'),step('העלייה הגדולה יותר היא בין א׳ לב׳','4 > 1')]},
   'read-table': {picture:'table',idea:'קוראים את כותרות הטבלה לפני שמחברים או משווים שורות',steps:[step('קוראים את הכמויות של קבוצות א׳ וב׳','138, 161'),step('מחברים למציאת הסכום','138 + 161 = 299'),step('מחסרים למציאת ההפרש','161 − 138 = 23')]},

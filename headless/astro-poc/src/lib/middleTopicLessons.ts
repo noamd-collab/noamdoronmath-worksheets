@@ -1,0 +1,55 @@
+import type { Lesson } from './lessonLoops';
+
+const step = (text: string, math: string) => ({ text, math });
+
+/** Authored demonstrations for the catalog gaps. Each scene teaches this topic,
+ * rather than inheriting a nearby topic's picture from a broad family. */
+export const MIDDLE_TOPIC_LESSONS = {
+  'equilateral-60': { picture: 'equilateral-topic', idea: 'במשולש שווה־צלעות שלוש הזוויות שוות, ולכן כל אחת 60°', steps: [step('שלוש הצלעות שוות, ולכן שלוש הזוויות שוות', 'a = b = c'), step('סכום הזוויות במשולש הוא 180°', '3α = 180°'), step('מחלקים בשלוש', 'α = 60°')] },
+  'experimental-frequency': { picture: 'experiment-data', idea: 'משווים שכיחות יחסית להסתברות במטבע הוגן; יותר ניסויים אינם מבטיחים שיפור בכל שלב', steps: [step('ב־20 הטלות של מטבע הוגן התקבל עץ 13 פעמים', '13/20 = 65%'), step('ב־200 הטלות התקבל עץ 104 פעמים', '104/200 = 52%'), step('בדוגמה זו ההערכה קרובה יותר לחצי; אין בכך הבטחה להטלה הבאה', '50%')] },
+  'relative-frequency': { picture: 'bars', bars: [{ total: 25, filled: 15, label: '15/25' }], idea: 'שכיחות יחסית היא מספר ההצלחות חלקי מספר הניסיונות', steps: [step('15 קליעות מתוך 25 זריקות', '15/25'), step('מצמצמים את השבר', '15/25 = 3/5'), step('כותבים כמספר עשרוני וכאחוז', '3/5 = 0.6 = 60%')] },
+  'two-step-equation': { picture: 'calculation', idea: 'מבודדים את הנעלם בשתי פעולות הפוכות, ומבצעים כל פעולה בשני האגפים', steps: [step('נתונה משוואה דו־שלבית', '3x + 5 = 20'), step('מחסרים 5 משני האגפים', '3x = 15'), step('מחלקים את שני האגפים בשלוש', 'x = 5')] },
+  'axis-intercepts': { picture: 'cartesian-topic', idea: 'בחיתוך עם ציר y מציבים x = 0; בחיתוך עם ציר x מציבים y = 0', steps: [step('נתון הישר', 'y = 2x − 4'), step('מציבים x = 0', '(0, −4)'), step('מציבים y = 0 ופותרים', '2x − 4 = 0; (2, 0)')] },
+  'line-from-points': { picture: 'cartesian-topic', idea: 'שתי נקודות בעלות ערכי x שונים קובעות שיפוע, ואז מוצאים את b', steps: [step('נתונות שתי נקודות על הישר', '(1, 5), (3, 9)'), step('מחשבים את השיפוע', 'm = (9 − 5)/(3 − 1) = 2'), step('מציבים את הנקודה הראשונה', '5 = 2 × 1 + b; y = 2x + 3')] },
+  'numeric-denominators': { picture: 'calculation', idea: 'כופלים כל איבר בכפולה משותפת של המכנים כדי לבטל את השברים', steps: [step('המכנים הם 4 ו־6; כפולה משותפת היא 12', 'x/4 + x/6 = 5'), step('כופלים את כל האיברים ב־12', '3x + 2x = 60'), step('מאחדים איברים ומחלקים בחמש', 'x = 12')] },
+  'graphical-inequality': { picture: 'cartesian-topic', idea: 'קוראים באילו ערכי x הגרף של פונקציה אחת נמצא מתחת לגרף השני', steps: [step('משווים בין שני הגרפים', 'f(x) = x + 1; g(x) = 7 − x'), step('מוצאים את נקודת המפגש', 'x + 1 = 7 − x; x = 3'), step('משמאל למפגש הגרף של f נמוך יותר', 'f(x) < g(x) ⇔ x < 3')] },
+  'linear-interpolation': { picture: 'cartesian-topic', idea: 'באינטרפולציה קווית מעריכים ערך בין שתי מדידות לפי קצב קבוע', steps: [step('ביום 4 נקראו 60 עמודים וביום 10 נקראו 150', '(4, 60), (10, 150)'), step('הקצב הממוצע הוא 15 עמודים ביום', '(150 − 60)/(10 − 4) = 15'), step('לכן ההערכה ליום 6 היא 90 עמודים', '60 + 2 × 15 = 90')] },
+  'axis-parallel-lines': { picture: 'cartesian-topic', idea: 'בישר אנכי x קבוע; בישר אופקי y קבוע', steps: [step('בכל נקודה על הישר האנכי', 'x = 2'), step('בכל נקודה על הישר האופקי', 'y = 3'), step('נקודת המפגש מקיימת את שני התנאים', '(2, 3)')] },
+  'data-median': { picture: 'median-data', idea: 'מסדרים את כל הנתונים, כולל חזרות, ובוחרים את האמצע', steps: [step('הנתונים לפני הסידור', '9, 4, 10, 6, 4'), step('מסדרים מהקטן לגדול', '4, 4, 6, 9, 10'), step('יש חמישה נתונים; השלישי הוא החציון', '6')] },
+  'choose-center': { picture: 'center-choice', idea: 'ערך קיצוני יכול למשוך את הממוצע, בעוד החציון נשאר במרכז הרשימה', steps: [step('זמני ההמתנה בדקות', '14, 15, 15, 17, 49'), step('הממוצע מתחשב גם בערך 49', '110/5 = 22'), step('החציון מתאר כאן טוב יותר המתנה רגילה', '15')] },
+  'truncated-axis': { picture: 'truncated-axis', idea: 'אותם נתונים נראים שונים כשציר העמודות מתחיל ב־90 במקום באפס', steps: [step('משווים שתי כמויות', '100, 120'), step('השינוי האמיתי מחושב מתוך הכמות המקורית', '(120 − 100)/100 = 20%'), step('בציר מקוצר גבהי העמודות הם 10 ו־30; זה אינו יחס הכמויות', '30/10 = 3; 120/100 = 1.2')] },
+  'motion-rate': { picture: 'cartesian-topic', idea: 'במהירות קבועה הדרך היא המהירות כפול הזמן', steps: [step('המהירות היא 40 ק״מ לשעה', 'v = 40'), step('אחרי שעה וחצי', 't = 1.5'), step('הדרך היא 60 ק״מ', 'd = 40 × 1.5 = 60')] },
+  'missing-mean': { picture: 'calculation', idea: 'ממוצע ומספר נתונים קובעים את הסכום; כך מוצאים נתון חסר', steps: [step('בשישה נתונים שהממוצע שלהם 11, הסכום הוא 66', '6 × 11 = 66'), step('חמשת הנתונים הידועים מסתכמים ב־56', '8 + 16 + 9 + 12 + 11 = 56'), step('הנתון השישי הוא ההפרש', '66 − 56 = 10')] },
+  'pie-sector': { picture: 'pie-sector', idea: 'אותו חלק מהשלם קובע גם את מספר הפריטים וגם את זווית הגזרה', steps: [step('גזרה מייצגת 35% מתוך 60 פריטים', '0.35 × 60 = 21'), step('מעגל שלם הוא 360°', '100% = 360°'), step('זווית הגזרה היא 126°', '0.35 × 360° = 126°')] },
+  'successive-percent': { picture: 'calculation', idea: 'שינוי שני באחוזים מחושב מהמחיר החדש; הנחה ועלייה באותו אחוז אינן מבטלות זו את זו', steps: [step('מחיר התחלתי של 200 שקלים יורד ב־20%', '200 × 0.8 = 160'), step('המחיר החדש עולה ב־20%', '160 × 1.2 = 192'), step('המכפיל הכולל הוא 0.96, כלומר ירידה של 4%', '0.8 × 1.2 = 0.96')] },
+  'system-elimination': { picture: 'calculation', idea: 'מחברים שתי משוואות כדי לבטל נעלם, ואז מציבים למציאת הנעלם השני', steps: [step('במערכת המקדם של y מנוגד בשתי המשוואות', '3x + y = 14; x − y = 2'), step('מחברים ומקבלים משוואה בנעלם אחד', '4x = 16; x = 4'), step('מציבים במשוואה השנייה ובודקים בשתיהן', 'y = 2; (x, y) = (4, 2)')] },
+  'system-model': { picture: 'calculation', idea: 'שני תנאים על הכמויות מתורגמים לשתי משוואות באותם נעלמים', steps: [step('b הוא מספר הבנים ו־g מספר הבנות; יחד 32', 'b + g = 32'), step('מספר הבנות גדול ב־6 ממספר הבנים', 'g = b + 6'), step('מציבים ופותרים; בודקים סכום והפרש', 'b = 13; g = 19')] },
+  'compare-sources': { picture: 'source-data', idea: 'כששתי מדידות אמינות במידה שווה מתארות אותה כמות, הממוצע נותן הערכה משולבת', steps: [step('שני מקורות ספרו אותה קבוצה', '23, 27'), step('הפער בין הדיווחים הוא ארבעה', '27 − 23 = 4'), step('בהנחת אמינות שווה, ההערכה המשולבת היא 25', '(23 + 27)/2 = 25')] },
+  'choose-unknown': { picture: 'calculation', idea: 'בוחרים נעלם אחד וכותבים באמצעותו את שאר הגדלים בסיפור', steps: [step('אורך החבל הקצר x, והארוך גדול ממנו ב־2.4 מטרים', 'x; x + 2.4'), step('סכום האורכים הוא 13.6 מטרים', 'x + (x + 2.4) = 13.6'), step('פותרים וחוזרים לגדלים בסיפור', 'x = 5.6; x + 2.4 = 8')] },
+} satisfies Record<string, Lesson>;
+
+export const MIDDLE_LESSON_TOPIC_MAP = {
+  'equilateral-triangle-grade-7': 'equilateral-60',
+  'equilateral-triangle-grade-9': 'equilateral-60',
+  'relative-frequency-experiments-grade-7': 'experimental-frequency',
+  'probability-experiments-fairness-grade-8': 'experimental-frequency',
+  'relative-frequency-grade-7': 'relative-frequency',
+  'two-step-equations-grade-7': 'two-step-equation',
+  'axis-intercepts-grade-8': 'axis-intercepts',
+  'equation-of-a-line-grade-8': 'line-from-points',
+  'equations-with-fractions-grade-8': 'numeric-denominators',
+  'graphical-inequalities-grade-8': 'graphical-inequality',
+  'interpolation-extrapolation-grade-8': 'linear-interpolation',
+  'lines-parallel-to-axes-grade-8': 'axis-parallel-lines',
+  'median-grade-8': 'data-median',
+  'choosing-measure-of-center-grade-8': 'choose-center',
+  'data-literacy-grade-8': 'truncated-axis',
+  'motion-problems-grade-8': 'motion-rate',
+  'non-routine-problems-grade-8': 'missing-mean',
+  'pie-charts-grade-8': 'pie-sector',
+  'successive-percent-changes-grade-8': 'successive-percent',
+  'systems-algebraic-solution-grade-8': 'system-elimination',
+  'systems-word-problems-grade-8': 'system-model',
+  'two-data-sources-grade-8': 'compare-sources',
+  'word-problems-choosing-unknowns-grade-8': 'choose-unknown',
+} as const satisfies Record<string, keyof typeof MIDDLE_TOPIC_LESSONS>;
