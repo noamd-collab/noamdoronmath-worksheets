@@ -78,7 +78,17 @@ const SECTION_4: Record<string, string> = {
   'transition-to-high-school-grade-9': 'quad-factor',
   'fraction-division-algorithm-grade-6': 'frac-recip',
 };
-const ALL = { ...SECTION_3, ...MISSED, ...SECTION_4 };
+/** Newly integrated topic pages that reuse the audited sketches and formulas. */
+const INTEGRATED: Record<string, string> = {
+  'congruent-polygons-transformations-grade-7': 'transform',
+  'prior-knowledge-diagnostic-grade-8': 'order',
+  'square-root-grade-8': 'roots',
+  'function-concept-grade-8': 'pattern-graph',
+  'function-notation-grade-8': 'read-graph',
+  'summary-review-grade-8': 'ineq',
+  'summative-assessment-grade-8': 'coords',
+};
+const ALL = { ...SECTION_3, ...MISSED, ...SECTION_4, ...INTEGRATED };
 /** Pages whose base copy already slid into place; only its shape was wrong. */
 const SAME_MOTION: Record<string, string> = {
   'congruence-theorems-grade-8': 'the copy slid before too, but was not congruent',

@@ -4,13 +4,13 @@ import { launchBrowser, startReviewServer } from './helpers/landingMotion.ts';
 
 /** The fast measurement view must remain the same card, not a separate fixture. */
 describe('preview-only gallery focus preserves the original inventory and cards', { timeout: 120_000 }, () => {
-  it('keeps full A/B inventories, exact card markup and layout, and rejects unknown focus', async () => {
+  it('keeps full A/B/C inventories, exact card markup and layout, and rejects unknown focus', async () => {
     const server = await startReviewServer('/review/landing-loops-pr-a');
     const browser = await launchBrowser();
     const page = await browser.newPage();
     try {
       await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]);
-      for (const [gallery, count] of [['a', 42], ['b', 67]] as const) {
+      for (const [gallery, count] of [['a', 42], ['b', 67], ['c', 61]] as const) {
         const response = await page.goto(`${server.origin}/review/landing-loops-pr-${gallery}`, { waitUntil: 'load' });
         assert.equal(response?.status(), 200);
         const inventory = await page.$$eval('[data-review-slug]', cards => cards.map(card => card.getAttribute('data-review-slug')));
