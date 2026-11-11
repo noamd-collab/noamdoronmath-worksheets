@@ -14,6 +14,10 @@ const plots: Record<string, Plot> = {
   'motion-rate': { bounds: [0, 2.2, 0, 88], segments: [[[0, 0], [2, 80]]], points: [[1.5, 60]], xTicks: [0, 1, 1.5, 2], yTicks: [0, 40, 60, 80], label: 'd = 40t', xLabel: 'שעות', yLabel: 'ק״מ' },
 };
 const plot = plots[variant];
+// These lessons build the actual line, rather than only revealing its thin
+// coordinate guides. Normalized dashes keep every visible portion on the true
+// mathematical path; the non-animated/Stop state is the complete line.
+const developLine = ['axis-intercepts', 'axis-parallel-lines', 'motion-rate'].includes(variant);
 const px = (x: number) => 62 + (x - plot.bounds[0]) / (plot.bounds[1] - plot.bounds[0]) * 356;
 const py = (y: number) => 218 - (y - plot.bounds[2]) / (plot.bounds[3] - plot.bounds[2]) * 170;
 const medianData = [{ value: 9, original: 0 }, { value: 4, original: 1 }, { value: 10, original: 2 }, { value: 6, original: 3 }, { value: 4, original: 4 }].sort((a,b) => a.value - b.value);
@@ -37,7 +41,7 @@ const truncatedCharts = [0, 90].map((base, i) => ({
   <text x="445" y={py(0)+6}>{plot.xLabel || 'x'}</text><text x={px(0)} y="37">{plot.yLabel || 'y'}</text>
   {plot.xTicks.map(x => <><path class="tick" d={`M${px(x)} ${py(0)-4} V${py(0)+4}`}/><text class="tick-label" x={px(x)} y={py(0)+22}>{x}</text></>)}
   {plot.yTicks.filter(y=>y!==0).map(y => <><path class="tick" d={`M${px(0)-4} ${py(y)} H${px(0)+4}`}/><text class="tick-label" x={px(0)-22} y={py(y)+5}>{y}</text></>)}
-  {plot.segments.map(([a,b],i) => <path class:list={['function',i===1&&'function-alt']} d={`M${px(a[0])} ${py(a[1])} L${px(b[0])} ${py(b[1])}`}/>)}
+  {plot.segments.map(([a,b],i) => <path class:list={['function',i===1&&'function-alt',developLine&&'function-develop']} pathLength={developLine ? 100 : undefined} style={developLine ? `--draw-delay:${i*.7}s` : undefined} d={`M${px(a[0])} ${py(a[1])} L${px(b[0])} ${py(b[1])}`}/>)}
   {plot.points.map(([x,y],i) => <>
     <line class="guide grow-x" style={`--delay:${i*.4}s`} x1={px(0)} y1={py(y)} x2={px(x)} y2={py(y)}/>
     <line class="guide grow-y" style={`--delay:${i*.4+.2}s`} x1={px(x)} y1={py(0)} x2={px(x)} y2={py(y)}/>
@@ -118,6 +122,7 @@ const truncatedCharts = [0, 90].map((base, i) => ({
   .heading {font-size:18px;direction:rtl;} .tick-label {font-size:16px;}
   .axis,.tick {stroke:#6c778a;stroke-width:1.7;} .grid {stroke:#dce1e9;stroke-width:1;}
   .function {stroke:#1e605e;stroke-width:3.5;} .function-alt {stroke:#bb6226;}
+  .function-develop {stroke-dasharray:100;stroke-dashoffset:0;animation:mt-plot-line 9s ease-in-out infinite backwards;animation-delay:var(--draw-delay,0s);}
   .guide {stroke:#bb6226;stroke-dasharray:5 4;stroke-width:2;}
   .point,.center-dot {fill:#1e605e;stroke:#fff;stroke-width:1.5;}
   .open-point {fill:#fff;stroke:#bb6226;stroke-width:2.5;}
@@ -147,6 +152,7 @@ const truncatedCharts = [0, 90].map((base, i) => ({
   @keyframes mt-sort {0%,20%{transform:translateX(var(--dx));} 48%,90%{transform:none;} 100%{transform:translateX(var(--dx));}}
   @keyframes mt-spread {0%,18%{transform:translateX(var(--dx));} 45%,90%{transform:none;} 100%{transform:translateX(var(--dx));}}
   @keyframes mt-average {0%,25%{transform:translateX(var(--dx));} 55%,90%{transform:none;} 100%{transform:translateX(var(--dx));}}
+  @keyframes mt-plot-line {0%,14%{stroke-dashoffset:100;} 55%,90%{stroke-dashoffset:0;} 100%{stroke-dashoffset:100;}}
   @media(prefers-reduced-motion:reduce) {:global(html:not(.nd-motion-enabled)) *{animation:none!important;}}
   :global(html.nd-motion-off) *, :global(html.noam-a11y-motion) * {animation:none!important;}
 </style>
