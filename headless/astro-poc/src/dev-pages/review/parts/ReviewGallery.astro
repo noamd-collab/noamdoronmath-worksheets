@@ -70,7 +70,10 @@ const cards = entries.map((entry) => {
 });
 ---
 <!doctype html>
-<html lang="he" dir="rtl">
+<!-- Match the production accessibility bootstrap: lesson motion starts by
+     default even under the OS reduced-motion preference; the site Stop choice
+     remains authoritative. This review route does not load that bootstrap. -->
+<html lang="he" dir="rtl" class="nd-motion-enabled">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -123,6 +126,7 @@ const cards = entries.map((entry) => {
       const button = document.querySelector<HTMLButtonElement>('[data-review-motion]');
       button?.addEventListener('click', () => {
         const off = document.documentElement.classList.toggle('nd-motion-off');
+        document.documentElement.classList.toggle('nd-motion-enabled', !off);
         button.textContent = off ? 'הפעלת אנימציות' : 'עצירת אנימציות';
       });
     </script>

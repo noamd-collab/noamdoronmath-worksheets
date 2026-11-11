@@ -170,6 +170,10 @@ async function measureOnce(browser: Browser, url: string, width: number, side: '
   const page = await browser.newPage();
   try {
     await page.setViewport({ width, height: width < 600 ? 844 : 900, deviceScaleFactor: 1, isMobile: width < 600, hasTouch: width < 600 });
+    // Exercise production's explicit lesson-autoplay policy deterministically,
+    // even on machines whose OS preference is no-preference. Site Stop checks
+    // below still require every animation to stop.
+    await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]);
     const res = await page.goto(url, { waitUntil: 'load', timeout: 120_000 });
     if (!res || res.status() !== 200) throw new Error(`${url} → ${res?.status()}`);
     await page.evaluate(() => ((window as unknown as { __measured?: boolean }).__measured = true));
