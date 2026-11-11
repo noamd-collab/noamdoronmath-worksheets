@@ -5,6 +5,7 @@
  * Not used by `wix build` / `wix release`.
  *   npx astro dev --config astro.config.open07-verify.mjs --host 127.0.0.1 --port 4337
  */
+import { readdirSync } from 'node:fs';
 import { defineConfig, envField } from 'astro/config';
 import react from '@astrojs/react';
 import node from '@astrojs/node';
@@ -24,6 +25,17 @@ const devOnlyRoutes = {
         entrypoint: new URL('./src/dev-pages/dev-loops.astro', import.meta.url),
         prerender: false,
       });
+      // Animation galleries and catalog-gap indexes remain local review routes.
+      const reviewDir = new URL('./src/dev-pages/review/', import.meta.url);
+      for (const file of readdirSync(reviewDir).filter((f) =>
+        /^landing-loops-[\w-]+\.astro$/.test(f) || /^new-topic-pages-grade-[789]\.astro$/.test(f)
+      ).sort()) {
+        injectRoute({
+          pattern: `/review/${file.replace(/\.astro$/, '')}`,
+          entrypoint: new URL(file, reviewDir),
+          prerender: false,
+        });
+      }
     },
   },
 };

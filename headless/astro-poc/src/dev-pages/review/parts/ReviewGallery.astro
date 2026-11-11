@@ -1,0 +1,182 @@
+---
+/**
+ * Review gallery: every changed landing animation, base next to new.
+ * Local preview only (astro.config.preview.mjs injects /review/*). Not in
+ * src/pages, so Wix never lists it; noindex and linked from nowhere.
+ */
+import '../../../styles/fonts.css';
+import '../../../styles/catalog.css';
+import '../../../styles/design-v2.css';
+import '../../../styles/exact-topic.css';
+import ReviewLoop from './ReviewLoop.astro';
+import type { ReviewEntry, ReviewResolvedLoop } from './reviewTypes';
+import { componentLandingLoop, topicLandingLoop } from '../../../lib/landingLoops';
+import {
+  COMPONENT_LANDING_LOOPS as BEFORE_COMPONENTS,
+  topicLandingLoop as beforeTopicLandingLoop,
+} from '../before/landingLoopsBefore';
+
+interface Props {
+  title: string;
+  intro: string;
+  entries: ReviewEntry[];
+}
+const { title, intro, entries } = Astro.props;
+
+type RawTopicPage = { slug: string; h1: string; grade: number; verifiedVia?: string; catalogCta?: { catalogTopicId?: number | null } };
+// Raw JSON, not loadTopicPage: topicPages pulls the catalog loader, which
+// `astro dev` cannot evaluate (scripts/lib/worksheet-editions.cjs).
+const RAW_PAGES = import.meta.glob<RawTopicPage>('../../../data/topic-pages/*.json', { eager: true, import: 'default' });
+const BY_SLUG = new Map(Object.values(RAW_PAGES).map((p) => [p.slug, p]));
+function loadTopicPage(slug: string): RawTopicPage {
+  const page = BY_SLUG.get(slug);
+  if (!page) throw new Error(`review gallery: unknown topic page ${slug}`);
+  return page;
+}
+
+function resolve(slug: string, side: 'before' | 'after'): ReviewResolvedLoop {
+  const page = loadTopicPage(slug);
+  if (side === 'before') {
+    // Catalog-gap pages did not exist in the frozen baseline. Do not invent a
+    // historical animation by running their new metadata through its fallback.
+    if (page.verifiedVia?.startsWith('authored-catalog-gap')) return { kind: 'missing', reason: 'new-page' };
+    const comp = BEFORE_COMPONENTS[slug as keyof typeof BEFORE_COMPONENTS];
+    if (comp) return { kind: 'component', variant: comp, marker: comp };
+    return beforeTopicLandingLoop(page as any) as ReviewResolvedLoop;
+  }
+  const comp = componentLandingLoop(slug);
+  if (comp) return { kind: 'component', variant: comp, marker: comp };
+  return topicLandingLoop(page as any) as ReviewResolvedLoop;
+}
+
+const label = (loop: ReviewResolvedLoop) =>
+  loop.kind === 'missing' ? 'דף חדש — ללא הדגמה קודמת' : loop.kind === 'film' ? `film ${loop.marker}` : `${loop.kind} ${loop.variant}`;
+
+const BARE_FILMS = ['triangle-angle-sum-vertex-descent', 'parallel-cointerior-angles', 'statistics-frequency'];
+const demoClass = (loop: ReviewResolvedLoop) => [
+  'exact-topic-demo',
+  'rv-demo',
+  loop.kind === 'film' && BARE_FILMS.includes(loop.marker) && 'exact-topic-demo--bare',
+  loop.kind === 'film' && loop.marker === 'statistics-frequency' && 'exact-topic-demo--stats-film',
+];
+const demoBackground = (loop: ReviewResolvedLoop, grade: number) =>
+  `background:${loop.kind === 'film' && BARE_FILMS.includes(loop.marker) ? '#fbfaf5' : grade >= 7 ? '#e3f1ec' : '#f8ebe0'}`;
+
+const cards = entries.map((entry) => {
+  const page = loadTopicPage(entry.slug);
+  const before = resolve(entry.slug, 'before');
+  const after = resolve(entry.slug, 'after');
+  return { ...entry, h1: page.h1, grade: page.grade, before, after };
+});
+---
+<!doctype html>
+<!-- Match the production accessibility bootstrap: lesson motion starts by
+     default even under the OS reduced-motion preference; the site Stop choice
+     remains authoritative. This review route does not load that bootstrap. -->
+<html lang="he" dir="rtl" class="nd-motion-enabled">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <main class="rv exact-topic">
+      <p class="rv-basad">בס״ד</p>
+      <h1>{title}</h1>
+      <p class="rv-intro">{intro}</p>
+      <p class="rv-tools">
+        <button type="button" data-review-motion>עצירת אנימציות</button>
+        <span>{cards.length} דפים</span>
+      </p>
+      <ol class="rv-index">
+        {cards.map((c) => (
+          <li><a href={`#${c.slug}`}>{c.h1}</a> <code>{c.slug}</code></li>
+        ))}
+      </ol>
+      {cards.map((c) => (
+        <section class="rv-card" id={c.slug} data-review-slug={c.slug}>
+          <header>
+            <h2>{c.h1}</h2>
+            <p class="rv-meta">
+              <span>סעיף {c.section}</span>
+              <a href={`/${c.slug}`}>פתיחת הדף</a>
+              <a href={`#${c.slug}`}>קישור לכרטיס</a>
+            </p>
+            <p class="rv-note">{c.note}</p>
+          </header>
+          <div class="rv-pair">
+            <figure class="rv-side" data-review-side="before">
+              <figcaption>לפני <code dir="ltr">{label(c.before)}</code></figcaption>
+              <div class:list={demoClass(c.before)} style={demoBackground(c.before, c.grade)}>
+                <ReviewLoop loop={c.before} side="before" />
+              </div>
+            </figure>
+            <figure class="rv-side" data-review-side="after">
+              <figcaption>אחרי <code dir="ltr">{label(c.after)}</code></figcaption>
+              <div class:list={demoClass(c.after)} style={demoBackground(c.after, c.grade)}>
+                <ReviewLoop loop={c.after} side="after" />
+              </div>
+            </figure>
+          </div>
+        </section>
+      ))}
+    </main>
+    <script>
+      const button = document.querySelector<HTMLButtonElement>('[data-review-motion]');
+      button?.addEventListener('click', () => {
+        const off = document.documentElement.classList.toggle('nd-motion-off');
+        document.documentElement.classList.toggle('nd-motion-enabled', !off);
+        button.textContent = off ? 'הפעלת אנימציות' : 'עצירת אנימציות';
+      });
+    </script>
+  </body>
+</html>
+
+<style>
+  :global(body) {
+    margin: 0;
+    background: #fbfaf5;
+    color: #22305a;
+    font-family: Heebo, 'Heebo Fallback', sans-serif;
+  }
+  .rv { max-width: 1200px; margin: 0 auto; padding: 16px 16px 64px; }
+  .rv-basad { margin: 0; text-align: end; font-size: 14px; }
+  h1 { font-family: 'Secular One', 'Secular One Fallback', sans-serif; font-weight: 400; margin: 8px 0; }
+  .rv-intro { max-width: 70ch; line-height: 1.5; }
+  .rv-tools { display: flex; gap: 16px; align-items: center; }
+  .rv-tools button {
+    font: inherit;
+    font-weight: 700;
+    min-height: 44px;
+    padding: 0 16px;
+    border: 2px solid #22305a;
+    border-radius: 12px;
+    background: #fff;
+    color: #22305a;
+    cursor: pointer;
+  }
+  .rv-index { columns: 2 260px; padding-inline-start: 22px; line-height: 1.6; }
+  .rv-index code, .rv-meta code { font-size: 12px; }
+  .rv-card {
+    margin-block: 28px;
+    padding: 16px;
+    border: 2px solid #22305a;
+    border-radius: 18px 6px 20px 8px / 8px 20px 6px 18px;
+    background: #fff;
+    scroll-margin-top: 12px;
+  }
+  .rv-card h2 { margin: 0 0 4px; font-size: 20px; }
+  .rv-meta { display: flex; flex-wrap: wrap; gap: 14px; margin: 0; font-size: 14px; }
+  .rv-meta a { color: #1e605e; font-weight: 700; }
+  .rv-note { margin: 6px 0 12px; line-height: 1.5; }
+  .rv-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .rv-side { margin: 0; min-width: 0; }
+  .rv-side figcaption { font-weight: 700; margin-bottom: 6px; font-size: 14px; }
+  .rv-side figcaption code { font-weight: 400; font-size: 12px; color: #5a6588; }
+  @media (max-width: 767px) {
+    .rv { padding-inline: 10px; }
+    .rv-card { padding: 10px; }
+    .rv-pair { grid-template-columns: 1fr; }
+  }
+</style>

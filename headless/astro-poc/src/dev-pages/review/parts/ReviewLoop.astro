@@ -1,0 +1,37 @@
+---
+/**
+ * Mounts one resolved landing loop the way TopicPage does.
+ * side="before" renders CSS loops from the frozen base copies in ../before,
+ * so the gallery shows the live base picture next to the new one.
+ */
+import ConceptLoop from '../../../components/ConceptLoop.astro';
+import LandingLoop from '../../../components/LandingLoop.astro';
+import DistancePointsLoop from '../../../components/DistancePointsLoop.astro';
+import TriangleAngleSumLoop from '../../../components/TriangleAngleSumLoop.astro';
+import ParallelCointeriorLoop from '../../../components/ParallelCointeriorLoop.astro';
+import StatisticsFrequencyLoop from '../../../components/StatisticsFrequencyLoop.astro';
+import AdjacentVerticalAnglesLoop from '../../../components/AdjacentVerticalAnglesLoop.astro';
+import LandingLoopBefore from '../before/LandingLoopBefore.astro';
+import type { ReviewResolvedLoop } from './reviewTypes';
+
+interface Props {
+  loop: ReviewResolvedLoop;
+  side: 'before' | 'after';
+}
+const { loop, side } = Astro.props;
+const conceptVariant = loop.kind === 'concept' ? (loop.variant as any) : undefined;
+const cssVariant = loop.kind === 'css' ? (loop.variant as any) : undefined;
+---
+{loop.kind === 'missing' && <p class="review-missing" data-review-missing>הדף חדש. לא הייתה כאן הדגמה קודמת.</p>}
+{conceptVariant && <ConceptLoop variant={conceptVariant} />}
+{cssVariant && side === 'after' && <LandingLoop variant={cssVariant} />}
+{cssVariant && side === 'before' && <LandingLoopBefore variant={cssVariant} />}
+{loop.kind === 'component' && <AdjacentVerticalAnglesLoop marker={loop.marker} />}
+{loop.kind === 'film' && loop.marker === 'distance-between-points' && <DistancePointsLoop src={loop.src} marker={loop.marker} />}
+{loop.kind === 'film' && loop.marker === 'triangle-angle-sum-vertex-descent' && <TriangleAngleSumLoop src={loop.src} marker={loop.marker} />}
+{loop.kind === 'film' && loop.marker === 'parallel-cointerior-angles' && <ParallelCointeriorLoop src={loop.src} marker={loop.marker} />}
+{loop.kind === 'film' && loop.marker === 'statistics-frequency' && <StatisticsFrequencyLoop src={loop.src} marker={loop.marker} />}
+
+<style>
+  .review-missing { margin: 0; padding: 24px; text-align: center; line-height: 1.5; }
+</style>

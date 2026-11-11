@@ -644,7 +644,7 @@ export const GRADE_LOOP_HOLD_S: Record<string, number> = {
   pythagoras: 7.6, 'mean-cols': 5.2, 'circ-unroll': 5.4, 'corr-angles': 5.6, exterior: 5.2, 'sas-snap': 5.2,
   'para-perp': 5.2, similar: 5.4, 'cyl-stack': 5.2, slope: 6.2,
   'area-model': 7.5, 'quad-tree': 5.4, transform: 6.8, 'area-x4': 5.2, 'two-coins': 5.2, 'diff-sq': 20.5,
-  parab: 5.2, 'half-eq': 5.2,
+  parab: 5.2, 'half-eq': 5.4,
 };
 
 export function gradeLoopMap(): readonly MappedLoop[] {
