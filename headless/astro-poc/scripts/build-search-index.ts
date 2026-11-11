@@ -20,7 +20,8 @@ import {
   PYTHAGORAS_GAME_H1,
   PYTHAGORAS_GAME_PATH,
 } from '../src/lib/pythagorasGame';
-import { buildIndex, type TermsDecision } from '../src/lib/siteSearch/buildIndex';
+import { buildIndex, type PageInput, type TermsDecision } from '../src/lib/siteSearch/buildIndex';
+import { TEACHER_LANDING_PATH, TEACHER_LANDING_TITLE, TEACHER_LANDING_DESCRIPTION } from '../src/lib/teacherLandingContent';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (p: string) => JSON.parse(readFileSync(join(root, p), 'utf8'));
@@ -29,7 +30,7 @@ export function buildFromRepo() {
   // The site's catalog loader (PDF links on the Wix Media CDN, as the catalog page uses).
   const catalog = loadCatalog();
   const review: { decisions: TermsDecision[] } = read('src/data/search-terms-review.json');
-  const pages = loadAllTopicPages().map((p) => {
+  const pages: PageInput[] = loadAllTopicPages().map((p) => {
     const ctas = p.catalogCtas?.length ? p.catalogCtas : p.catalogCta ? [p.catalogCta] : [];
     return {
       path: p.path,
@@ -45,6 +46,13 @@ export function buildFromRepo() {
     h1: PYTHAGORAS_GAME_H1,
     description: PYTHAGORAS_GAME_DESCRIPTION,
     catalogTopicIds: [PYTHAGORAS_GAME_CATALOG_TOPIC_ID],
+  });
+  pages.push({
+    path: TEACHER_LANDING_PATH,
+    grade: null,
+    h1: TEACHER_LANDING_TITLE,
+    description: TEACHER_LANDING_DESCRIPTION,
+    catalogTopicIds: [],
   });
   const posts = listServedBlogPosts().map((p) => ({
     fileSlug: p.fileSlug,

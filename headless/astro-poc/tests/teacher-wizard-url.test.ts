@@ -217,7 +217,7 @@ test('the deployed teacher module and URL helper invalidate their own caches whi
   assert.equal(printer,readFileSync(new URL('../../../demos/teacher-factoring-print.js',import.meta.url),'utf8'));
   assert.equal(readFileSync(new URL('../public/teachers/wizard-prefill.js',import.meta.url),'utf8'),readFileSync(new URL('../../../demos/wizard-prefill.js',import.meta.url),'utf8'));
   assert.match(printer,/wizard-prefill\.js\?v=20261108-teacher-editions/);
-  assert.match(readFileSync(new URL('../public/teachers/index.html',import.meta.url),'utf8'),/teacher-factoring-print\.js\?v=20261108-teacher-editions/);
+  assert.match(readFileSync(new URL('../src/teacher-pages/wizard.html',import.meta.url),'utf8'),/teacher-factoring-print\.js\?v=20261108-teacher-editions/);
   // The standalone demo retains its own paths and layout; it is not the deployed page.
   assert.match(readFileSync(new URL('../../../demos/teacher-practice-picker-site-style.html',import.meta.url),'utf8'),/teacher-factoring-print\.js\?v=20261108-teacher-editions/);
   assert.match(printer,/NoamBotClient\.version === '20261101-sdk-lifecycle'/);

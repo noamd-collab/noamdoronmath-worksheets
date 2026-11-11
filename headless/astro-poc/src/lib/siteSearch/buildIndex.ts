@@ -22,7 +22,8 @@ export interface TermsDecision {
 
 export interface PageInput {
   path: string;
-  grade: number;
+  /** Null for a public page that serves all grades and has no catalog association. */
+  grade: number | null;
   h1: string;
   description?: string;
   catalogTopicIds: number[];
@@ -251,7 +252,12 @@ export function buildIndex(input: BuildInput): { index: SearchIndex; report: Bui
 
   for (const p of input.pages) {
     const key = `page:${p.path}`;
-    const topicKey = associate(key, p.h1, p.grade, p.catalogTopicIds.map((topic) => ({ grade: p.grade, topic })));
+    const grade = p.grade;
+    if (grade === null && p.catalogTopicIds.length) {
+      throw new Error(`General page ${p.path} cannot claim grade-specific catalog topics`);
+    }
+    const targets = grade === null ? [] : p.catalogTopicIds.map((topic) => ({ grade, topic }));
+    const topicKey = associate(key, p.h1, grade, targets);
     docs.push({
       key,
       kind: 'page',

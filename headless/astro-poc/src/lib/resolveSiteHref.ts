@@ -20,6 +20,8 @@ const LOCAL_SITE_PATHS = new Set([
   '/conditionforfreeworksheets',
   '/high-school-math',
   '/worksheets',
+  '/teachers',
+  '/teachers/app',
   '/learning.html',
   '/worksheet-viewer-noam.html',
   '/games/eliyahu-pythagoras',

@@ -74,12 +74,13 @@ for (const [file, kind] of [
   });
 }
 
-for (const file of ["demos/teacher-practice-picker-site-style.html", "headless/astro-poc/public/teachers/index.html"]) {
+for (const file of ["demos/teacher-practice-picker-site-style.html", "headless/astro-poc/src/teacher-pages/wizard.html"]) {
   test(`${file}: teacher and companion scripts use their independently current cache versions`, () => {
     const html = read(file);
     for (const [asset, expectedVersion] of [
-      ["teacher-factoring-print.js", "20261101-sdk-lifecycle"],
-      ["noam-site-companion.js", version]
+      // Page assets have advanced independently of the shared SDK version.
+      ["teacher-factoring-print.js", "20261108-teacher-editions"],
+      ["noam-site-companion.js", "20261103-note-separation"]
     ]) {
       const escaped = asset.replaceAll(".", "\\.");
       assert.match(html, new RegExp('src="[^"]*' + escaped + '\\?v=' + expectedVersion + '"'));

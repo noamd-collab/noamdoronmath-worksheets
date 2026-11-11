@@ -5,7 +5,7 @@ import { parseHTML } from 'linkedom';
 import { groupWholeQuestions } from '../public/teachers/teacher-question-pick.js';
 
 const printer = readFileSync(new URL('../public/teachers/teacher-factoring-print.js', import.meta.url), 'utf8');
-const html = readFileSync(new URL('../public/teachers/index.html', import.meta.url), 'utf8');
+const html = readFileSync(new URL('../src/teacher-pages/wizard.html', import.meta.url), 'utf8');
 
 function definition(name: string) {
   const start = printer.search(new RegExp(`(?:^|\\n)(?:async )?function ${name}\\(`));
