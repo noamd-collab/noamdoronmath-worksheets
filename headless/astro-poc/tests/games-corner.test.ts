@@ -51,6 +51,7 @@ const specSources = new Map<string, string>(
 const engineJs = readFromTest('../src/games/engine/engine.js');
 const engineCss = readFromTest('../src/games/engine/engine.css');
 const fontsCss = readFromTest('../src/games/engine/fonts.css');
+const fontDir = fromTest('../src/games/engine/fonts');
 const mascotHtml = readFromTest('../src/games/engine/mascot.html');
 const composer = readFromTest('../src/lib/eliyahuGameDocument.ts');
 const playRoute = readFromTest('../src/pages/games/[slug]/play.ts');
@@ -185,10 +186,25 @@ describe('game engine', () => {
     assert.match(engineJs, /boot\s*:/);
   });
 
-  it('embeds the fonts instead of calling a font host', () => {
-    assert.match(fontsCss, /data:font\/woff2;base64,/);
+  it('self-hosts every font face as its own woff2 file', () => {
+    assert.equal(fontsCss.includes('data:'), false);
     assert.equal(fontsCss.includes('fonts.googleapis.com'), false);
     assert.equal(fontsCss.includes('fonts.gstatic.com'), false);
+    const urls = [...fontsCss.matchAll(/url\('([^']+)'\)/g)].map((match) => match[1]);
+    assert.equal(urls.length, (fontsCss.match(/@font-face/g) || []).length);
+    const engineFonts = new Set<string>();
+    for (const url of urls) {
+      // Shared faces are the site's own hashed /fonts/ files; renaming one there
+      // must update fonts.css too.
+      const file = url.startsWith('/fonts/')
+        ? fromTest(`../public${url}`)
+        : url.startsWith('./fonts/')
+          ? `${fontDir}/${url.slice('./fonts/'.length)}`
+          : assert.fail(`${url} is neither a site font nor an engine font`);
+      if (url.startsWith('./fonts/')) engineFonts.add(url.slice('./fonts/'.length));
+      assert.equal(readFileSync(file).subarray(0, 4).toString('latin1'), 'wOF2', url);
+    }
+    assert.deepEqual([...engineFonts].sort(), readdirSync(fontDir).sort());
     assert.match(mascotHtml, /<svg/);
   });
 
@@ -200,14 +216,18 @@ describe('game engine', () => {
 });
 
 describe('game routes', () => {
-  it('builds one self-contained document per game', () => {
-    assert.match(composer, /engine\/fonts\.css\?raw/);
-    assert.match(composer, /engine\/engine\.css\?raw/);
-    assert.match(composer, /engine\/engine\.js\?raw/);
-    assert.match(composer, /engine\/mascot\.html\?raw/);
-    assert.match(composer, /import\.meta\.glob\('\.\.\/games\/specs\/\*\.js'/);
-    assert.equal(composer.includes('<script src='), false);
-    assert.equal(composer.includes('<link rel="stylesheet"'), false);
+  it('keeps the engine, specs and fonts out of the server bundle', () => {
+    // Only the small font-face rules and the mascot sprite are inlined; the rest
+    // is emitted as hashed static files, which the Wix worker payload excludes.
+    const rawImports = [...composer.matchAll(/from '([^']+)\?raw'/g)].map((match) => match[1]);
+    assert.deepEqual(rawImports.sort(), ['../games/engine/fonts.css', '../games/engine/mascot.html']);
+    assert.ok(Buffer.byteLength(fontsCss) < 32_000, 'fonts.css must hold font-face rules, not font data');
+    assert.ok(Buffer.byteLength(mascotHtml) < 16_000, 'mascot.html grew past the inline budget');
+    assert.match(composer, /engine\/engine\.css\?url/);
+    assert.match(composer, /engine\/engine\.js\?url/);
+    assert.match(composer, /import\.meta\.glob\('\.\.\/games\/specs\/\*\.js', \{ query: '\?url'/);
+    assert.match(composer, /import\.meta\.glob\('\.\.\/games\/engine\/fonts\/\*\.woff2', \{ query: '\?url'/);
+    assert.match(composer, /<script src="\$\{engineJsUrl\}"><\/script>\n<script src="\$\{specUrl\}"><\/script>/);
     assert.match(composer, /lang="he"/);
     assert.match(composer, /dir="rtl"/);
   });

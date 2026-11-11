@@ -1,37 +1,57 @@
 /**
  * Compose one playable game document.
  *
- * The result is a single self-contained HTML file: embedded fonts, the shared
- * engine stylesheet and runtime, the mascot sprite sheet, and the game's own
- * spec. Nothing is fetched at runtime, so the document keeps working inside the
- * iframe on the wrapper page and in an offline preview.
+ * The HTML itself is a small shell: the font faces, the theme and the mascot
+ * sprite sheet. The fonts, the engine stylesheet and runtime, and the game's
+ * own spec are content-hashed static files under /_astro/, so they stay out of
+ * the Wix server bundle and are cached once for every game. Everything is
+ * same-origin; nothing comes from a third-party host.
  */
-import fontsCss from '../games/engine/fonts.css?raw';
-import engineCss from '../games/engine/engine.css?raw';
-import engineJs from '../games/engine/engine.js?raw';
+import fontFacesCss from '../games/engine/fonts.css?raw';
+import engineCssUrl from '../games/engine/engine.css?url';
+import engineJsUrl from '../games/engine/engine.js?url';
 import mascotHtml from '../games/engine/mascot.html?raw';
 import type { EliyahuGame, GameTheme } from './eliyahuGames';
 
-const specModules = import.meta.glob('../games/specs/*.js', {
-  query: '?raw',
-  import: 'default',
-  eager: true
-}) as Record<string, string>;
+function byFileName(modules: Record<string, string>, extension: RegExp): Record<string, string> {
+  return Object.fromEntries(
+    Object.entries(modules).map(([path, url]) => [path.split('/').pop()!.replace(extension, ''), url])
+  );
+}
 
-/** Spec source by slug, keyed off the file name. */
-const SPECS: Record<string, string> = Object.fromEntries(
-  Object.entries(specModules).map(([path, source]) => {
-    const slug = path.split('/').pop()!.replace(/\.js$/, '');
-    return [slug, source];
-  })
+const SPEC_URLS = byFileName(
+  import.meta.glob('../games/specs/*.js', { query: '?url', import: 'default', eager: true }) as Record<string, string>,
+  /\.js$/
 );
 
+const FONT_URLS = byFileName(
+  import.meta.glob('../games/engine/fonts/*.woff2', { query: '?url', import: 'default', eager: true }) as Record<string, string>,
+  /\.woff2$/
+);
+
+function fontUrl(name: string): string {
+  const url = FONT_URLS[name];
+  if (!url) throw new Error(`Missing game font ${name}.woff2`);
+  return url;
+}
+
+/**
+ * Heebo is a variable font, so every weight shares one file per subset. The
+ * Hebrew and Latin subsets are the site's own /fonts/ files, which the wrapper
+ * page has already loaded; the other subsets ship with the engine.
+ */
+const FONT_FACES = fontFacesCss.replace(/url\('\.\/fonts\/([\w-]+)\.woff2'\)/g, (_, name: string) => `url('${fontUrl(name)}')`);
+
+const FONT_PRELOADS = [...new Set([...fontFacesCss.matchAll(/url\('(\/fonts\/[\w.-]+\.woff2)'\)/g)].map((match) => match[1]))]
+  .map((url) => `<link rel="preload" href="${url}" as="font" type="font/woff2" crossorigin>`)
+  .join('\n');
+
 export function hasSpec(slug: string): boolean {
-  return Object.prototype.hasOwnProperty.call(SPECS, slug);
+  return Object.prototype.hasOwnProperty.call(SPEC_URLS, slug);
 }
 
 export function listSpecSlugs(): string[] {
-  return Object.keys(SPECS).sort();
+  return Object.keys(SPEC_URLS).sort();
 }
 
 function themeVars(theme: GameTheme): string {
@@ -56,8 +76,8 @@ function escapeAttribute(value: string): string {
  * It is noindex on purpose: the wrapper page at /games/<slug> is canonical.
  */
 export function renderGameDocument(game: EliyahuGame): string {
-  const spec = SPECS[game.slug];
-  if (!spec) throw new Error(`No game spec for ${game.slug}`);
+  const specUrl = SPEC_URLS[game.slug];
+  if (!specUrl) throw new Error(`No game spec for ${game.slug}`);
   return `<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
@@ -66,24 +86,21 @@ export function renderGameDocument(game: EliyahuGame): string {
 <title>${escapeAttribute(game.h1)}</title>
 <meta name="description" content="${escapeAttribute(game.description)}">
 <meta name="robots" content="noindex, nofollow">
-<style id="offline-fonts">
-${fontsCss}
+${FONT_PRELOADS}
+<style id="game-fonts">
+${FONT_FACES}
 </style>
+<link rel="stylesheet" href="${engineCssUrl}">
 <style>
-${engineCss}
-/* The game's own palette, last so it wins over the engine defaults. */
+/* The game's own palette, after the engine stylesheet so it wins over the defaults. */
 :root{${themeVars(game.theme)}}
 </style>
 </head>
 <body>
 <div id="app" dir="rtl" lang="he"></div>
 ${mascotHtml}
-<script>
-${engineJs}
-</script>
-<script>
-${spec}
-</script>
+<script src="${engineJsUrl}"></script>
+<script src="${specUrl}"></script>
 </body>
 </html>
 `;

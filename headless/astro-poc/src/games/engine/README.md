@@ -6,10 +6,13 @@ the finish report, so a new game is a single file in `src/games/specs/`.
 
 ## How a game is served
 
-`src/lib/eliyahuGameDocument.ts` glues four files into one self-contained HTML
-document: `fonts.css` (base64 Heebo and Secular One), `engine.css`, the mascot
-sprite sheet in `mascot.html`, `engine.js`, and the game's own spec. Nothing is
-fetched at runtime.
+`src/lib/eliyahuGameDocument.ts` renders a small HTML shell: the font faces
+from `fonts.css`, the theme, and the mascot sprite sheet in `mascot.html`. The
+Hebrew and Latin faces point at the site's own `/fonts/` files; the remaining
+subsets in `fonts/`, `engine.css`, `engine.js` and the game's own spec are
+imported with `?url`, so Vite emits them as hashed static files under `/_astro/`. Keep it that way: anything imported with `?raw` lands in
+the Wix server bundle, which has a size budget
+(`scripts/check-wix-worker-payload.mjs`). Specs never call `fetch`.
 
 `/games/<slug>` is the indexable wrapper page; it embeds `/games/<slug>/play`,
 which carries `noindex`. Both routes are driven by `src/lib/eliyahuGames.ts`,
