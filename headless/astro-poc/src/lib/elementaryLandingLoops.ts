@@ -68,7 +68,7 @@ export const ELEMENTARY_LANDING_LOOPS = {
   'polygons-sides-vertices-grade-3': { kind: 'concept', variant: 'polygon', marker: 'concept-polygon' },
   'perimeter-polygons-grade-3': { kind: 'concept', variant: 'peri-rect', marker: 'concept-peri-rect' },
   'classify-triangles-grade-3': { kind: 'css', variant: 'triangle-angles', marker: 'triangle-angles' },
-  'quadrilaterals-properties-grade-3': { kind: 'css', variant: 'quads', marker: 'quads' },
+  'quadrilaterals-properties-grade-3': { kind: 'css', variant: 'quad-sides', marker: 'quad-sides' },
   'shapes-on-grid-grade-3': { kind: 'concept', variant: 'polygon', marker: 'concept-polygon' },
   'time-weight-measures-grade-3': { kind: 'concept', variant: 'clock-span', marker: 'concept-clock-span' },
   'read-bar-diagram-grade-3': { kind: 'css', variant: 'read-bars', marker: 'read-bars' },

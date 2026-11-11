@@ -12,9 +12,34 @@ const { variant } = Astro.props;
 const even = POWERS_ROWS[0];
 const plain = POWERS_ROWS[1];
 const odd = POWERS_ROWS[2];
+/* Section 4 of the 10.11.2026 audit: a small picture beside the formula moves
+   into its finished place. Rest style is the finished picture. */
+const PICTURE_VARIANTS = ['powers', 'exp-rules', 'order', 'signed-mul', 'signed-div', 'proof', 'quad-factor', 'frac-recip'];
+const picture = PICTURE_VARIANTS.includes(variant);
+const PICTURE_VIEWBOX: Record<string, string> = {
+  powers: '0 20 180 180',
+  'exp-rules': '0 50 170 110',
+  order: '0 15 160 175',
+  'signed-mul': '0 30 180 150',
+  'signed-div': '50 15 130 165',
+  proof: '0 30 180 135',
+  'quad-factor': '0 25 180 185',
+  'frac-recip': '0 30 180 145',
+};
+const orderSlot = (s: number) => ({ x: 20 + (s % 7) * 20, y: 150 + Math.floor(s / 7) * 26 });
+const orderChips = Array.from({ length: 12 }, (_, j) => {
+  const rest = orderSlot(j);
+  const from = { x: 20 + (j % 4) * 20, y: 30 + Math.floor(j / 4) * 28 };
+  return { ...rest, dx: from.x - rest.x, dy: from.y - rest.y, d: Math.floor(j / 4) * 0.25 };
+});
+const orderPair = [0, 1].map((k) => {
+  const rest = orderSlot(12 + k);
+  return { ...rest, dx: 130 + k * 20 - rest.x, dy: 30 - rest.y };
+});
+const lineTicks = [-6, -4, -2, 0, 2, 4, 6].map((n) => 90 + n * 12);
 ---
 
-<div class="lf">
+<div class:list={['lf', picture && 'lf--pic']}>
   {variant === 'powers' && (
     <div class="ll-compare">
       <div class="ll-row ll-row-0">
@@ -46,7 +71,7 @@ const odd = POWERS_ROWS[2];
   {variant === 'roots' && (
     <div class="ll-stack">
       <div class="ll-cells" aria-hidden="true">
-        {Array.from({ length: 9 }, (_, i) => <i class="ll-cell" style={`--i:${i}`}></i>)}
+        {Array.from({ length: 9 }, (_, i) => <i class="ll-cell" style={`--i:${i};--dx:${(i - (i % 3)) * 8}cqi;--dy:${-Math.floor(i / 3) * 8}cqi`}></i>)}
       </div>
       <p class="ll-eq" dir="ltr">3<sup>2</sup> = 9</p>
       <p class="ll-eq ll-late" dir="ltr">√9 = 3</p>
@@ -131,6 +156,126 @@ const odd = POWERS_ROWS[2];
       <p class="ll-eq ll-on-dark ll-late" dir="ltr">2 × 4 = 8</p>
       <p class="ll-cap ll-cap--light" dir="rtl" set:html={captionMathHtml(CSS_LOOP_IDEAS.tools)}></p>
     </div>
+  )}
+  {picture && (
+    <svg class="lf-pic" viewBox={PICTURE_VIEWBOX[variant]} aria-hidden="true" focusable="false">
+      {variant === 'powers' && (
+        <>
+          <rect class="lf-bar" x="30" y="42" width="30" height="8" rx="3"></rect>
+          <rect class="lf-bar lf-mv" style="--mvt:12s;--from:translate(50px,0) rotate(-90deg)" x="41" y="31" width="8" height="30" rx="3"></rect>
+          <rect class="lf-bar" x="30" y="106" width="30" height="8" rx="3"></rect>
+          {Array.from({ length: 9 }, (_, i) => (
+            <rect class="lf-cell lf-mv lf-mv-40" style={`--mvt:12s;--from:scale(0);--d:${i * 0.05}s`} x={80 + (i % 3) * 12} y={94 + Math.floor(i / 3) * 12} width="10" height="10" rx="2"></rect>
+          ))}
+          <rect class="lf-bar" x="30" y="170" width="30" height="8" rx="3"></rect>
+          <rect class="lf-bar lf-mv lf-mv-60" style="--mvt:12s;--d:1s;--from:translate(50px,0) rotate(-90deg)" x="41" y="159" width="8" height="30" rx="3"></rect>
+          <rect class="lf-bar" x="130" y="170" width="30" height="8" rx="3"></rect>
+        </>
+      )}
+      {variant === 'exp-rules' && (
+        <>
+          {[12, 42, 72].map((x) => (
+            <g>
+              <rect class="lf-tile" x={x} y="70" width="26" height="26" rx="4"></rect>
+              <text class="lf-t lf-t--on" x={x + 13} y="88">2</text>
+            </g>
+          ))}
+          {[102, 132].map((x, k) => (
+            <g class="lf-mv lf-mv-20" style={`--from:translate(-90px,50px);--d:${k * 0.2}s`}>
+              <rect class="lf-tile lf-tile--gold" x={x} y="70" width="26" height="26" rx="4"></rect>
+              <text class="lf-t" x={x + 13} y="88">2</text>
+            </g>
+          ))}
+        </>
+      )}
+      {variant === 'order' && (
+        <>
+          {orderChips.map((c) => (
+            <circle class="lf-chip lf-mv lf-mv-20" style={`--from:translate(${c.dx}px,${c.dy}px);--d:${c.d}s`} cx={c.x} cy={c.y} r="7"></circle>
+          ))}
+          {orderPair.map((c) => (
+            <circle class="lf-chip lf-chip--b lf-mv lf-mv-60" style={`--from:translate(${c.dx}px,${c.dy}px)`} cx={c.x} cy={c.y} r="7"></circle>
+          ))}
+        </>
+      )}
+      {variant === 'signed-mul' && (
+        <>
+          {[60, 150].map((y) => (
+            <g>
+              <line class="lf-ink" x1="10" y1={y} x2="170" y2={y}></line>
+              {lineTicks.map((x) => <line class="lf-ink lf-ink--thin" x1={x} y1={y - 5} x2={x} y2={y + 5}></line>)}
+              <text class="lf-t" x="90" y={y + 22}>0</text>
+            </g>
+          ))}
+          <text class="lf-t" x="162" y="82">6</text>
+          <text class="lf-t" x="18" y="172">{MINUS}6</text>
+          {[0, 1, 2].map((k) => (
+            <line class="lf-hop lf-mv" style={`--from:translateX(${24 * k}px);--d:${k * 0.35}s`} x1={90 - 24 * (k + 1) + 3} y1="140" x2={90 - 24 * k - 3} y2="140"></line>
+          ))}
+          <circle class="lf-dot lf-mv" style="--from:translateX(72px);--d:.7s" cx="18" cy="150" r="5"></circle>
+          {[0, 1, 2].map((k) => (
+            <line class="lf-hop lf-mv lf-mv-40 lf-mv--vb" style={`--from:scaleX(-1);--org:90px 0px;--d:${k * 0.15}s`} x1={90 + 24 * k + 3} y1="50" x2={90 + 24 * (k + 1) - 3} y2="50"></line>
+          ))}
+          <circle class="lf-dot lf-mv lf-mv-40 lf-mv--vb" style="--from:scaleX(-1);--org:90px 0px;--d:.3s" cx="162" cy="60" r="5"></circle>
+        </>
+      )}
+      {variant === 'signed-div' && (
+        <>
+          {[50, 150].map((y) => (
+            <g>
+              <line class="lf-ink" x1="60" y1={y} x2="170" y2={y}></line>
+              {[70, 110, 150].map((x) => <line class="lf-ink lf-ink--thin" x1={x} y1={y - 5} x2={x} y2={y + 5}></line>)}
+            </g>
+          ))}
+          <text class="lf-t" x="70" y="30">{MINUS}8</text>
+          <text class="lf-t" x="150" y="30">0</text>
+          <rect class="lf-ghost" x="70" y="34" width="80" height="10" rx="2"></rect>
+          {[0, 1, 2, 3].map((k) => (
+            <g>
+              <rect class="lf-piece lf-mv" style={`--from:translate(${-5 * k}px,-30px);--d:${k * 0.3}s`} x={70 + 25 * k} y="64" width="20" height="10" rx="2"></rect>
+              <text class="lf-t lf-t--small" x={80 + 25 * k} y="92">{k + 1}</text>
+            </g>
+          ))}
+          <rect class="lf-bar" x="70" y="134" width="40" height="10" rx="2"></rect>
+          <rect class="lf-bar lf-mv lf-mv-40" style="--from:translate(40px,-24px);--d:.8s" x="70" y="158" width="40" height="10" rx="2"></rect>
+          <text class="lf-t lf-t--small" x="128" y="142">{MINUS}4</text>
+          <text class="lf-t lf-t--small" x="128" y="167">{MINUS}4</text>
+        </>
+      )}
+      {variant === 'proof' && (
+        <>
+          <path class="lf-wedge" d="M90 150 L40 150 A50 50 0 0 1 90 100 Z"></path>
+          <path class="lf-wedge lf-wedge--coral lf-mv lf-mv-40 lf-mv--vb" style="--mvt:12s;--from:scaleX(-1);--org:90px 0px;--fo:0" d="M90 150 L90 100 A50 50 0 0 1 140 150 Z"></path>
+          <line class="lf-ink" x1="10" y1="150" x2="170" y2="150"></line>
+          <line class="lf-ray lf-mv" style="--mvt:12s;--from:scaleY(0);--org:50% 100%" x1="90" y1="150" x2="90" y2="40"></line>
+          <path class="lf-ink lf-ink--thin lf-mv lf-mv-60" style="--mvt:12s;--d:1s;--from:scale(0);--org:0 100%" d="M90 132 H108 V150"></path>
+          <text class="lf-t" x="52" y="128">α</text>
+          <text class="lf-t" x="126" y="128">β</text>
+        </>
+      )}
+      {variant === 'quad-factor' && (
+        <>
+          <line class="lf-ink" x1="10" y1="150" x2="170" y2="150"></line>
+          <line class="lf-ink" x1="10" y1="30" x2="10" y2="205"></line>
+          <path class="lf-curve lf-mv" style="--from:translateY(-40px);--fo:0" d="M74 60.4 Q110 319.6 146 60.4"></path>
+          <circle class="lf-dot lf-mv lf-mv-40" style="--from:translateX(20px)" cx="90" cy="150" r="6"></circle>
+          <circle class="lf-dot lf-mv lf-mv-40" style="--from:translateX(-20px)" cx="130" cy="150" r="6"></circle>
+          <text class="lf-t" x="84" y="136">2</text>
+          <text class="lf-t" x="136" y="136">3</text>
+        </>
+      )}
+      {variant === 'frac-recip' && (
+        <>
+          <rect class="lf-half" x="10" y="60" width="80" height="34"></rect>
+          <rect class="lf-piece lf-mv lf-mv-20" style="--from:translateY(80px)" x="10" y="60" width="40" height="34"></rect>
+          <rect class="lf-piece lf-mv lf-mv-40" style="--from:translate(-40px,80px)" x="50" y="60" width="40" height="34"></rect>
+          <rect class="lf-ghost" x="10" y="60" width="160" height="34"></rect>
+          {[50, 90, 130].map((x) => <line class="lf-ink lf-ink--thin" x1={x} y1="60" x2={x} y2="94"></line>)}
+          <text class="lf-t" x="30" y="50">1</text>
+          <text class="lf-t" x="70" y="50">2</text>
+        </>
+      )}
+    </svg>
   )}
 </div>
 
@@ -290,7 +435,7 @@ const odd = POWERS_ROWS[2];
   .ll-d1 { animation-delay: 0.6s; }
   .ll-d2 { animation-delay: 1.4s; }
   .ll-late { opacity: 1; animation: ll-in 8s ease-in-out infinite; }
-  .ll-cell { animation: ll-pop 8s ease-in-out infinite; animation-delay: calc(var(--i) * 0.12s); }
+  .ll-cell { animation: ll-fold 8s ease-in-out infinite backwards; animation-delay: calc(var(--i) * 0.06s); }
 
   @keyframes ll-focus {
     0%, 28% { opacity: 1; }
@@ -305,6 +450,75 @@ const odd = POWERS_ROWS[2];
     0%, 36% { opacity: 0.25; }
     48%, 82% { opacity: 1; }
     100% { opacity: 0.25; }
+  }
+  /* Picture beside the formula, in the empty half of the card. */
+  .lf--pic {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 40%;
+    align-items: center;
+    padding-inline-end: 4%;
+  }
+  .lf--pic .ll-eq { font-size: 5cqi; }
+  .lf-pic { display: block; width: 100%; height: 86%; }
+  .lf-t {
+    font-family: Heebo, 'Heebo Fallback', sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    fill: #22305a;
+    text-anchor: middle;
+  }
+  .lf-t--small { font-size: 12px; }
+  .lf-t--on { fill: #fbfaf5; }
+  .lf-ink { stroke: #22305a; stroke-width: 2.5; fill: none; stroke-linecap: round; }
+  .lf-ink--thin { stroke-width: 1.8; }
+  .lf-ghost { fill: none; stroke: #22305a; stroke-width: 2; }
+  .lf-bar { fill: #e5735c; }
+  .lf-cell { fill: #2a7c7a; }
+  .lf-tile { fill: #2a7c7a; }
+  .lf-tile--gold { fill: #fdf1d8; stroke: #e6a534; stroke-width: 2; }
+  .lf-chip { fill: #e5735c; stroke: #22305a; stroke-width: 1.5; }
+  .lf-chip--b { stroke: #e6a534; stroke-width: 3; }
+  .lf-hop { stroke: #e6a534; stroke-width: 6; stroke-linecap: round; }
+  .lf-dot { fill: #e5735c; stroke: #22305a; stroke-width: 1.5; }
+  .lf-piece { fill: #e6a534; stroke: #22305a; stroke-width: 1.5; }
+  .lf-half { fill: #f7cfc4; }
+  .lf-wedge { fill: #e6a534; opacity: 0.8; }
+  .lf-wedge--coral { fill: #e5735c; }
+  .lf-ray { stroke: #2a7c7a; stroke-width: 4; stroke-linecap: round; }
+  .lf-curve { fill: none; stroke: #e5735c; stroke-width: 3.5; }
+
+  .lf-mv { transform-box: fill-box; transform-origin: var(--org, 50% 50%); }
+  .lf-mv--vb { transform-box: view-box; }
+  .lf-mv { animation: lf-mv-0 var(--mvt, 8s) ease-in-out infinite backwards; animation-delay: var(--d, 0s); }
+  .lf-mv.lf-mv-20 { animation-name: lf-mv-20; }
+  .lf-mv.lf-mv-40 { animation-name: lf-mv-40; }
+  .lf-mv.lf-mv-60 { animation-name: lf-mv-60; }
+  .lf-wedge.lf-mv { --o: 0.8; }
+  @keyframes lf-mv-0 {
+    0%, 4% { transform: var(--from); opacity: var(--fo, var(--o, 1)); }
+    18%, 88% { transform: none; opacity: var(--o, 1); }
+    96%, 100% { transform: var(--from); opacity: var(--fo, var(--o, 1)); }
+  }
+  @keyframes lf-mv-20 {
+    0%, 20% { transform: var(--from); opacity: var(--fo, var(--o, 1)); }
+    34%, 88% { transform: none; opacity: var(--o, 1); }
+    96%, 100% { transform: var(--from); opacity: var(--fo, var(--o, 1)); }
+  }
+  @keyframes lf-mv-40 {
+    0%, 40% { transform: var(--from); opacity: var(--fo, var(--o, 1)); }
+    54%, 88% { transform: none; opacity: var(--o, 1); }
+    96%, 100% { transform: var(--from); opacity: var(--fo, var(--o, 1)); }
+  }
+  @keyframes lf-mv-60 {
+    0%, 60% { transform: var(--from); opacity: var(--fo, var(--o, 1)); }
+    72%, 88% { transform: none; opacity: var(--o, 1); }
+    96%, 100% { transform: var(--from); opacity: var(--fo, var(--o, 1)); }
+  }
+  /* roots: nine cells fold from one row into the 3 × 3 square. */
+  @keyframes ll-fold {
+    0%, 8% { transform: translate(var(--dx), var(--dy)); }
+    30%, 84% { transform: none; }
+    94%, 100% { transform: translate(var(--dx), var(--dy)); }
   }
 
   @media (prefers-reduced-motion: reduce) {
