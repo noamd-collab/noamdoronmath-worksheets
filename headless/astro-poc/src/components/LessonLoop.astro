@@ -166,7 +166,7 @@ const treeBranches = [[0, 1], [0, 2], [2, 3], [2, 4], [4, 5], [4, 6]].map(([p, c
   {lesson.picture === 'linear' && <>
     <table dir="ltr"><caption>פונקציה קווית: <bdi>y = 3x + 1</bdi></caption><tbody><tr><th scope="row">x</th><td>0</td><td>1</td><td>2</td></tr><tr><th scope="row">y</th><td>1</td><td>4</td><td>7</td></tr></tbody></table>
     <svg role="img" viewBox="0 0 480 255" aria-label="גרף הפונקציה הקווית y שווה 3x ועוד 1, העובר בנקודות אפס ואחת, אחת וארבע, שתיים ושבע">
-      <path d="M80 15 V220 H440"/>{[1,4,7].map((n,i)=><><line class="grid" x1="80" x2="410" y1={220-n*25} y2={220-n*25}/><text x="53" y={227-n*25}>{n}</text><text x={80+i*140} y="248">{i}</text><line class="linear-read" x1={80+i*140} x2={80+i*140} y1="220" y2={220-n*25} style={`--d:${i*.3}s`}/><circle class={`pt pt-${i}`} cx={80+i*140} cy={220-n*25} r="6" style={`--dy:${n*25}px`}/></>)}<path class="graph-line" d="M80 195 L388 30"/>
+      <path d="M80 15 V220 H440"/>{[1,4,7].map((n,i)=><><line class="grid" x1="80" x2="410" y1={220-n*25} y2={220-n*25}/><text x="53" y={227-n*25}>{n}</text><text x={80+i*140} y="248">{i}</text><line class="linear-read" x1={80+i*140} x2={80+i*140} y1="220" y2={220-n*25} style={`--d:${i*.3}s`}/><circle class={`pt pt-${i}`} cx={80+i*140} cy={220-n*25} r="6" style={`--dy:${n*25}px`}/></>)}<path class="graph-line linear-function-line" pathLength="100" d="M80 195 L388 30"/>
     </svg>
   </>}
   {lesson.picture === 'place' && <div class="place-values">
@@ -230,6 +230,9 @@ const treeBranches = [[0, 1], [0, 2], [2, 3], [2, 4], [4, 5], [4, 6]].map(([p, c
   .triangle-cards p {font-size:clamp(12px,3.5cqi,18px);margin:0;}
   svg .graph-line {stroke:#1e605e;stroke-width:4;} svg .mean-line {stroke:#a55700;stroke-width:3;}
   svg .linear-read {stroke:#a55700;stroke-width:2;stroke-dasharray:5 4;transform-box:fill-box;transform-origin:50% 100%;animation:ls-grow-y 9s ease-out infinite;animation-delay:var(--d,0s);}
+  /* Draw the actual y = 3x + 1 path after locating its table values. Keeping
+     the geometry fixed avoids implying a changing slope; Stop shows it all. */
+  svg .linear-function-line {stroke-dasharray:100;stroke-dashoffset:0;animation:ls-linear-line 9s ease-in-out infinite backwards;}
   .numberline {padding:30px 15px 68px;}
   .numberline-track {height:2px;background:#22305a;position:relative;}
   .tick {position:absolute;top:-6px;height:14px;border-left:2px solid #22305a;}
@@ -338,6 +341,7 @@ const treeBranches = [[0, 1], [0, 2], [2, 3], [2, 4], [4, 5], [4, 6]].map(([p, c
   .step-1 .step-number,.pair-1 {animation-delay:3s;} .step-2 .step-number,.pair-2 {animation-delay:6s;}
 
   @keyframes ls-highlight {0%,25% {opacity:1;} 35%,100% {opacity:.65;} }
+  @keyframes ls-linear-line {0%,18% {stroke-dashoffset:100;} 62%,92% {stroke-dashoffset:0;} 100% {stroke-dashoffset:100;} }
   @keyframes ls-fold {0%,64%,92%,100% {transform:scaleX(1);opacity:1;} 74%,84% {transform:scaleX(-1);opacity:.45;} }
   @keyframes ls-grow-y {0% {transform:scaleY(.04);} 12%,90% {transform:none;} 100% {transform:scaleY(.04);} }
   @keyframes ls-grow-x {0% {transform:scaleX(.04);} 12%,90% {transform:none;} 100% {transform:scaleX(.04);} }
