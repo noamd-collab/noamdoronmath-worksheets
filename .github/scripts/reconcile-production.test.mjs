@@ -6,7 +6,7 @@ import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'nod
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { INCIDENT, EVIDENCE_PATH, reconcileProduction, validateEvidence, writeConfirmation } from './reconcile-production.mjs';
-import { readLiveDeployment, publicationRequested } from './production-release.mjs';
+import { readLiveDeployment, publicationRequested, readApprovedSha } from './production-release.mjs';
 
 const NOW = Date.parse('2026-11-11T10:00:00Z');
 const hash = value => createHash('sha256').update(value).digest('hex');
@@ -256,7 +256,7 @@ test('workflow defaults to locked dry-run and bounds publication without changin
   assert.doesNotMatch(recovery, /run:.*(?:wix release|release\.sh|initialize)/);
   assert.match(publish, /id: release\s+#.*\s+timeout-minutes: 25/);
   assert.match(publish, /timeout-minutes: 90/); assert.match(publish, /if: always\(\) && steps.guard.outputs.deployment_id/);
-  assert.equal(publicationRequested({ eventName: 'push', ref: 'refs/heads/main', beforeWorkflow: publish, approvedSha: INCIDENT.failedSha }), false);
+  assert.equal(publicationRequested({ eventName: 'push', ref: 'refs/heads/main', beforeWorkflow: publish, approvedSha: readApprovedSha(publish) }), false);
 });
 
 test('CLI refuses execution outside a manual main workflow before touching APIs', () => {
