@@ -25,9 +25,11 @@ const devOnlyRoutes = {
         entrypoint: new URL('./src/dev-pages/dev-loops.astro', import.meta.url),
         prerender: false,
       });
-      // Landing-animation review galleries, one per PR: /review/landing-loops-pr-*.
+      // Animation galleries and catalog-gap indexes remain local review routes.
       const reviewDir = new URL('./src/dev-pages/review/', import.meta.url);
-      for (const file of readdirSync(reviewDir).filter((f) => /^landing-loops-[\w-]+\.astro$/.test(f)).sort()) {
+      for (const file of readdirSync(reviewDir).filter((f) =>
+        /^landing-loops-[\w-]+\.astro$/.test(f) || /^new-topic-pages-grade-[789]\.astro$/.test(f)
+      ).sort()) {
         injectRoute({
           pattern: `/review/${file.replace(/\.astro$/, '')}`,
           entrypoint: new URL(file, reviewDir),

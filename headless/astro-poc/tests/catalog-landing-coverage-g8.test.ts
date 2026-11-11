@@ -67,7 +67,7 @@ describe(`grade ${GRADE} catalog landing coverage`, () => {
   });
 
   it('review index is noindex, outside the sitemap glob and the site navigation', () => {
-    const file = `src/pages/review/new-topic-pages-grade-${GRADE}.astro`;
+    const file = `src/dev-pages/review/new-topic-pages-grade-${GRADE}.astro`;
     assert.ok(existsSync(join(root, file)));
     const page = read(file);
     assert.match(page, new RegExp(`TOPIC_PAGE_G${GRADE}_CATALOG_GAP_SLUGS`));
