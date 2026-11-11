@@ -86,13 +86,11 @@ describe('siteSeo preview vs production', () => {
     assert.doesNotMatch(DEFAULT_SITE_DESCRIPTION, /Astro POC/i);
   });
 
-  it('BaseLayout strips conflicting Wix SEO title/canonical/og:title tags', () => {
+  it('BaseLayout marks authored metadata for server deduplication', () => {
     const src = readFileSync('src/layouts/BaseLayout.astro', 'utf8');
-    assert.match(src, /stripWixSeoDupes/);
-    assert.match(src, /wix-seo-tag/);
+    assert.match(src, /data-noam-seo/);
+    assert.doesNotMatch(src, /stripWixSeoDupes|MutationObserver/);
     assert.match(src, /buildSocialMeta/);
-    assert.match(src, /twitter:/);
-    assert.match(src, /indexOf\('og:'\)/);
     assert.match(src, /lang="he"/);
     assert.match(src, /dir="rtl"/);
     assert.match(src, /showPreviewNote=\{showPreviewNote\}/);

@@ -1,0 +1,29 @@
+---
+import { canonicalUrl } from '../lib/siteSeo';
+interface Props { path: string; }
+const shareUrl = canonicalUrl(Astro.props.path);
+---
+<div class="topic-share" data-topic-share>
+  <button type="button" data-copy-topic-url>העתקת קישור לנושא</button>
+  <span role="status" aria-live="polite" data-topic-share-status></span>
+  <label hidden data-topic-share-fallback>
+    הקישור לנושא
+    <input type="text" value={shareUrl} readonly dir="ltr" />
+  </label>
+</div>
+<script>
+  import { setupTopicSharing } from '../lib/topicSharing';
+  setupTopicSharing();
+  document.addEventListener('astro:page-load', () => setupTopicSharing());
+</script>
+<style>
+  .topic-share { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 12px; margin-top: 16px; }
+  .topic-share button { min-height: 44px; padding: 8px 14px; border: 1px solid #1e605e; border-radius: 10px; background: #fff; color: #1e605e; font: 700 14px/1.4 Heebo, sans-serif; cursor: pointer; }
+  .topic-share button:hover { background: #eaf4f3; }
+  .topic-share button:focus-visible, .topic-share input:focus-visible { outline: 3px solid #e6a534; outline-offset: 3px; }
+  .topic-share button:disabled { cursor: progress; }
+  .topic-share span, .topic-share label { font-size: 14px; line-height: 1.5; color: #3d4870; }
+  .topic-share label { flex-basis: 100%; min-width: 0; }
+  .topic-share [hidden] { display: none; }
+  .topic-share input { display: block; box-sizing: border-box; width: 100%; max-width: 620px; min-height: 44px; margin-top: 6px; padding: 8px; border: 1px solid #1e605e; border-radius: 6px; background: #fff; color: #22305a; font-size: 14px; }
+</style>

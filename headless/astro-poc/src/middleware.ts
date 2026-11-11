@@ -12,6 +12,7 @@
  * the bundled HTML body instead so the browser URL (and location.search) stay.
  */
 import { defineMiddleware } from 'astro:middleware';
+import { deduplicateSeoResponse } from './lib/serverSeo';
 import { OTTERLY_API_KEY } from 'astro:env/server';
 import { redirectTargetForSiteUgdPath } from './lib/wixMedia';
 import { resolveRedirect } from './lib/redirects';
@@ -67,5 +68,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
   if (response.ok && (path.startsWith('/_astro/') || versionedFont)) {
     response.headers.set('Cache-Control', 'public, max-age=31536000, immutable');
   }
-  return response;
+  // @wix/astro HTML embeds run as post middleware. At this point their tags
+  // are in the response stream, so crawlers receive one authored metadata set.
+  return deduplicateSeoResponse(response);
 });
