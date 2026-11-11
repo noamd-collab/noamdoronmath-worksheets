@@ -13,7 +13,9 @@ export const GET: APIRoute = async ({ request, url }) => {
     ...TEACHER_PRIVATE_HEADERS,
     location: `/teachers/login?returnTo=${encodeURIComponent(sanitizeTeacherReturnTo(url.pathname + url.search))}`,
   } });
-  const privatePage = page.replace(/(<body\b[^>]*>)/i, `$1${ownerChrome}`).replace('</body>', `${authScripts}</body>`);
+  const privatePage = page.replace(/(<body\b[^>]*>)/i, `$1${ownerChrome}`)
+    .replace('/noam-site-companion.js?v=20261103-note-separation', '/noam-site-companion.js?v=20261111-teacher-access')
+    .replace('</body>', `${authScripts}</body>`);
   return new Response(privatePage, { headers: {
     ...TEACHER_PRIVATE_HEADERS, 'content-type': 'text/html; charset=utf-8',
   } });

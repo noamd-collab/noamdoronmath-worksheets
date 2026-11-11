@@ -106,5 +106,5 @@ test("the shared site layout invalidates cached companion loaders", () => {
   const source = read("headless/astro-poc/src/layouts/BaseLayout.astro");
   const urls = [...source.matchAll(/<script src="(\/noam-site-companion\.js[^\"]*)" defer><\/script>/g)];
   assert.equal(urls.length, 1);
-  assert.equal(urls[0][1], "/noam-site-companion.js?v=" + version);
+  assert.equal(urls[0][1], "/noam-site-companion.js?v=20261111-teacher-access");
 });

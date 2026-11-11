@@ -33,7 +33,7 @@ Session creation and clearing require same-origin JSON POST requests. Logout cle
 
 ## Protected actions and public material
 
-Authorization protects the start page, wizard, teacher question-manifest API, teacher Word-selection API and teacher-selection/intake actions routed through the site companion. General public site-guide navigation remains separate. Existing reCAPTCHA verification remains required for protected AI requests; Google authorization does not replace it.
+Authorization protects the start page, wizard, teacher question-manifest API, teacher Word-selection API and teacher-selection/intake actions routed through the site companion. General public site-guide navigation remains separate. When a visitor requests a protected teacher action, the guide shows Hebrew sign-in guidance and a fixed `/teachers/login` link instead of a raw authorization error. Existing reCAPTCHA verification remains required for protected AI requests; Google authorization does not replace it.
 
 Published worksheets, the worksheet catalog, source previews and existing public Word assets remain public. The gate protects the private tool and its API actions; it does not retrospectively make previously published educational material private.
 
