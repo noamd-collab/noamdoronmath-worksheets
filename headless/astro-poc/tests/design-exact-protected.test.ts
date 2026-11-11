@@ -134,12 +134,35 @@ describe('exact-design protected live-baseline boundaries', () => {
         }
         content = JSON.stringify(catalog, null, 2) + '\n';
       }
+      if (file === 'public/noam-learning.js') {
+        // Noam's private teacher access adds exactly one same-origin JSON POST
+        // logout bridge to the existing learning auth listener (PR448). Reverse
+        // this reviewed addition, including its line breaks, then retain the
+        // pre-teacher c6d55b6c hash. Every other learning byte stays protected.
+        // teacher-session/client tests exercise the new logout behavior.
+        const approvedListener =
+          "  client.auth.onAuthStateChange(function(event,session){\n" +
+          "   if(event==='SIGNED_OUT')fetch('/api/teacherSession',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'logout'}),credentials:'same-origin',cache:'no-store'}).catch(function(){});\n" +
+          "   setTimeout(function(){engine.setUser(session&&session.user).catch(fail);},0);\n" +
+          "  });";
+        const priorListener =
+          "  client.auth.onAuthStateChange(function(event,session){setTimeout(function(){engine.setUser(session&&session.user).catch(fail);},0);});";
+        assert.equal(content.split(approvedListener).length, 2, 'exactly one approved JSON logout bridge');
+        content = content.replace(approvedListener, priorListener);
+      }
       if (file === 'public/noam-learning-boot.js') {
         // Noam approved PDF-only elementary publication, without new DB/auth
         // activity. Removing this exact early exit restores the old boot.
         const guard = '  if (window.NOAM_ELEMENTARY_PDF_ONLY) return;\n';
         assert.equal(content.split(guard).length, 2);
         content = content.replace(guard, '');
+        // The authorized teacher logout bridge requires a new client version.
+        // Normalize only that exact query; SDK loading, guest behavior and the
+        // existing elementary early exit remain independently fenced.
+        const approvedScript = "    s.src = 'noam-learning.js?v=20261111-teacher-post-session';";
+        const priorScript = "    s.src = 'noam-learning.js?v=20261002-lazy-supabase';";
+        assert.equal(content.split(approvedScript).length, 2, 'exactly one approved learning client version');
+        content = content.replace(approvedScript, priorScript);
       }
       assert.equal(sha256(content), expected, `${file} is outside the approved presentation-only scope`);
     });
