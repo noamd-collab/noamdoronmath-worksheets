@@ -872,6 +872,9 @@
         /** Pointer drag on an SVG element, reported in viewBox units. */
         drag: function (el, handlers) {
           var active = false;
+          // Chrome ignores touch-action on SVG shapes; without it on the root a
+          // touch drag is cancelled as a page scroll after a few moves.
+          svg.style.touchAction = 'none';
           var move = function (ev) {
             if (!active) return;
             ev.preventDefault();
@@ -904,6 +907,7 @@
             window.removeEventListener('pointermove', move);
             window.removeEventListener('pointerup', up);
             window.removeEventListener('pointercancel', up);
+            svg.style.touchAction = '';
             if (prevTeardown) prevTeardown();
           };
         }
