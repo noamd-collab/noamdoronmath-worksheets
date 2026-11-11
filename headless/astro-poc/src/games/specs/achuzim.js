@@ -99,7 +99,7 @@
       + '<text id="payTxt" x="201" y="108" font-size="22" fill="#fff" text-anchor="middle" direction="ltr"'
       + ' font-family="Secular One, sans-serif">150 ₪</text>'
       + '<text id="saveTxt" x="201" y="160" font-size="15" fill="' + WARM + '" text-anchor="middle"'
-      + ' direction="ltr" font-family="Secular One, sans-serif"> </text>'
+      + ' direction="rtl" font-family="Secular One, sans-serif"> </text>'
       + '<line x1="' + TX + '" y1="' + TY + '" x2="' + (TX + TW) + '" y2="' + TY + '" stroke="' + LINE
       + '" stroke-width="6" stroke-linecap="round"/>'
       + '<line id="fill" x1="' + TX + '" y1="' + TY + '" x2="' + TX + '" y2="' + TY + '" stroke="' + WARM
@@ -135,7 +135,7 @@
       box.querySelector('[data-v="p"]').textContent = p + '%';
       box.querySelector('[data-v="s"]').textContent = save + ' ₪';
       box.querySelector('[data-v="a"]').textContent = pay + ' ₪';
-      ctx.caption(m(PRICE + ' − ' + p + '% = ' + pay));
+      ctx.caption(m(PRICE + ' − ' + save + ' = ' + pay));
       if (!done) {
         ctx.note('ההנחה היא ' + pct(p) + ', ואתה משלם ' + shekel(pay) + '. צריך ' + pct(20) + '.');
       }
@@ -355,7 +355,7 @@
       opts: [
         { t: '25%', c: true, f: m('15 × 4 = 60') + ', לכן ' + m('15') + ' הם רבע, וזה ' + pct(25) + '.' },
         { t: '15%', f: 'זה המספר שלקחת מהשאלה. מצאת תלמידים, לא אחוזים.' },
-        { t: '40%', f: 'זה ' + m('60 ÷ 15 = 4') + '. ארבע הוא מספר הקבוצות, לא האחוז.' },
+        { t: '4%', f: 'זה ' + m('60 ÷ 15 = 4') + '. ארבע הוא מספר הקבוצות, לא האחוז.' },
         { t: '45%', f: 'זה ' + m('60 − 15') + '. החיסור לא נותן אחוז.' }
       ],
       hints: [
@@ -400,7 +400,7 @@
     steps: steps,
     skills: [
       { step: 2, name: 'אחוז כחלק מהכמות', math: '0.25 × 80' },
-      { step: 4, name: 'מחיר אחרי הנחה', math: '150 − 20%' },
+      { step: 4, name: 'מחיר אחרי הנחה', math: '150 − 30 = 120' },
       { step: 6, name: 'מחלק לאחוזים', math: '15 : 60' },
       { step: 7, name: 'השוואת הנחות', math: '30% > 25%' }
     ],
@@ -414,7 +414,7 @@
         var price = 80, p = 25, open = false;
         box.innerHTML = '<div class="bTitle">מכונת ההנחות</div>'
           + '<div class="bSub">חשב בראש כמה תשלם, ואז בדוק.</div>'
-          + '<div class="bChip" data-ex dir="ltr"></div>'
+          + '<div class="bChip" data-ex dir="rtl"></div>'
           + '<div class="bForms" data-sol dir="ltr" hidden></div>'
           + '<button type="button" class="bDice" data-roll>🏷️ הנחה חדשה</button>'
           + '<button type="button" class="bDice" data-show>גלה את התשובה</button>';
@@ -422,13 +422,13 @@
         var sol = box.querySelector('[data-sol]');
         function draw() {
           var save = price * p / 100;
-          chip.textContent = price + ' ₪, ' + p + '% off';
+          chip.textContent = 'מחיר ' + m(price + ' ₪') + ', הנחה ' + m(p + '%');
           var how = p === 10 ? price + ' ÷ 10 = ' + save
             : p === 20 ? '2 × (' + price + ' ÷ 10) = ' + save
             : p === 25 ? price + ' ÷ 4 = ' + save
             : p === 50 ? price + ' ÷ 2 = ' + save
             : '3 × (' + price + ' ÷ 4) = ' + save;
-          sol.innerHTML = '<div>' + p + '% = ' + how + '</div>'
+          sol.innerHTML = '<div>' + p + '% × ' + price + ' = ' + how + '</div>'
             + '<div>' + price + ' − ' + save + ' = ' + (price - save) + '</div>';
           sol.hidden = !open;
         }
