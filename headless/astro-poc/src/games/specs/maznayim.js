@@ -109,7 +109,8 @@
     function render(angle, l, r) {
       ctx.draw(drawScale({ angle: angle, L: side(2, l === undefined ? Lw : l), R: rep('w', r === undefined ? Rw : r) }));
     }
-    function caption() { ctx.caption(m('2x + ' + Lw + ' = ' + Rw)); }
+    function eq() { return '2x' + (Lw ? ' + ' + Lw : '') + ' = ' + Rw; }
+    function caption() { ctx.caption(m(eq())); }
     function check() {
       if (!done && triedA && triedB) {
         done = true;
@@ -153,7 +154,7 @@
         caption();
         busy = false;
         ctx.busy(false);
-        say('הקורה נשארה ישרה. הורדת אותה כמות משני הצדדים, אז המשוואה ' + m('2x + ' + Lw + ' = ' + Rw)
+        say('הקורה נשארה ישרה. הורדת אותה כמות משני הצדדים, אז המשוואה ' + m(eq())
           + ' עדיין נכונה.', false);
         btnB.disabled = Lw < 1;
         triedB = true;
@@ -164,7 +165,7 @@
     ctx.register('btnB', btnB);
     render(0);
     caption();
-    ctx.note('בכף אחת שני שקים של ' + m('x') + ' ועוד שלוש משקולות. בכף השנייה אחת עשרה משקולות.');
+    ctx.note('בהתחלה: בכף אחת שני שקים של ' + m('x') + ' ועוד שלוש משקולות. בכף השנייה אחת עשרה משקולות.');
   }
 
   /* ---------- scene 2: solve 3x + 2 = 11 ---------- */
@@ -206,6 +207,7 @@
       btns.forEach(function (b, i) {
         b.textContent = ch ? ch[i].t : '';
         b.disabled = !ch;
+        b.hidden = !ch;
       });
       if (stage === 0) ctx.note('המטרה: להשאיר שק ' + m('x') + ' אחד לבד. בחר פעולה.');
       else if (stage === 1) ctx.note('עכשיו יש שלושה שקים ותשע משקולות. מה עושים?');
@@ -347,7 +349,7 @@
       tA: 'פותרים צעד אחר צעד',
       sub: 'בכל צעד בחר את הפעולה החוקית שמקרבת אותך לשק אחד לבד.',
       tip: 'עכשיו תפתור בעצמך את ' + m('3x + 2 = 11') + '. רק פעולה אחת בכל צעד נכונה.',
-      cue: 'בחר פעולה עד שתגיע ל־x = 3',
+      cue: 'בחר פעולה עד שתגיע ל־' + m('x = 3'),
       cueDone: 'פתרת את המשוואה. אפשר להמשיך ←',
       btn: 'המשך ←',
       aspect: [W, H],
