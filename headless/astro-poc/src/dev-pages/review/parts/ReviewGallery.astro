@@ -68,6 +68,12 @@ const cards = entries.map((entry) => {
   const after = resolve(entry.slug, 'after');
   return { ...entry, h1: page.h1, grade: page.grade, before, after };
 });
+// Focus is a preview-only measurement aid: the complete inventory remains in
+// the index, while one unchanged before/after card is mounted, as on a topic page.
+const focus = Astro.url.searchParams.get('focus');
+const focusedCards = focus ? cards.filter((card) => card.slug === focus) : cards;
+const unknownFocus = Boolean(focus && focusedCards.length !== 1);
+if (unknownFocus) Astro.response.status = 404;
 ---
 <!doctype html>
 <!-- Match the production accessibility bootstrap: lesson motion starts by
@@ -81,7 +87,7 @@ const cards = entries.map((entry) => {
     <title>{title}</title>
   </head>
   <body>
-    <main class="rv exact-topic">
+    <main class="rv exact-topic" data-review-total={cards.length} data-review-focus={focus || undefined}>
       <p class="rv-basad">בס״ד</p>
       <h1>{title}</h1>
       <p class="rv-intro">{intro}</p>
@@ -94,7 +100,8 @@ const cards = entries.map((entry) => {
           <li><a href={`#${c.slug}`}>{c.h1}</a> <code>{c.slug}</code></li>
         ))}
       </ol>
-      {cards.map((c) => (
+      {unknownFocus && <p data-review-focus-error>לא נמצא כרטיס לבדיקה.</p>}
+      {focusedCards.map((c) => (
         <section class="rv-card" id={c.slug} data-review-slug={c.slug}>
           <header>
             <h2>{c.h1}</h2>

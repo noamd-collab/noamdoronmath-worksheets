@@ -182,14 +182,36 @@ async function measureOnce(browser: Browser, url: string, width: number, side: '
     // even on machines whose OS preference is no-preference. Site Stop checks
     // below still require every animation to stop.
     await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]);
-    const res = await page.goto(url, { waitUntil: 'load', timeout: 120_000 });
+    // Discover the complete inventory before focusing; a caller cannot silently
+    // narrow the required cases by supplying its own focus query.
+    const inventoryUrl = new URL(url);
+    inventoryUrl.searchParams.delete('focus');
+    const res = await page.goto(inventoryUrl.href, { waitUntil: 'load', timeout: 120_000 });
     if (!res || res.status() !== 200) throw new Error(`${url} → ${res?.status()}`);
     await page.evaluate(() => ((window as unknown as { __measured?: boolean }).__measured = true));
     await new Promise((r) => setTimeout(r, 500));
     if (await page.$('vite-error-overlay')) throw new Error(`${url} shows a Vite error overlay`);
     const slugs: string[] = await page.$$eval('[data-review-slug]', (els) => els.map((e) => e.getAttribute('data-review-slug') || ''));
+    if (!slugs.length || slugs.some((slug) => !slug) || new Set(slugs).size !== slugs.length) {
+      throw new Error(`${url} has an empty or duplicate gallery inventory`);
+    }
     const out: CardMotion[] = [];
     for (const slug of slugs) {
+      // Check the previous document before an intentional navigation, then give
+      // this card its own sentinel. Unexpected Vite reloads retain the existing
+      // retry behavior instead of being mistaken for our focus navigation.
+      if (!(await page.evaluate(() => (window as unknown as { __measured?: boolean }).__measured === true))) return null;
+      const focusedUrl = new URL(inventoryUrl);
+      focusedUrl.searchParams.set('focus', slug);
+      const focusedResponse = await page.goto(focusedUrl.href, { waitUntil: 'load', timeout: 120_000 });
+      if (!focusedResponse || focusedResponse.status() !== 200) throw new Error(`${focusedUrl.href} → ${focusedResponse?.status()}`);
+      await page.evaluate(() => ((window as unknown as { __measured?: boolean }).__measured = true));
+      await new Promise((r) => setTimeout(r, 500));
+      if (await page.$('vite-error-overlay')) throw new Error(`${focusedUrl.href} shows a Vite error overlay`);
+      const focusedSlugs = await page.$$eval('[data-review-slug]', (els) => els.map((e) => e.getAttribute('data-review-slug')));
+      if (focusedSlugs.length !== 1 || focusedSlugs[0] !== slug) {
+        throw new Error(`${focusedUrl.href} must render exactly the requested card`);
+      }
       const sel = `[data-review-slug="${slug}"] [data-review-side="${side}"] .exact-topic-demo`;
       await page.$eval(sel, (el) => el.scrollIntoView({ block: 'center' }));
       await new Promise((r) => setTimeout(r, 700));
