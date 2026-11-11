@@ -873,6 +873,94 @@
       "reason": "links to the topic, same grade, shared title word"
     },
     {
+      "key": "page:/equilateral-triangle-grade-7",
+      "title": "משולש שווה־צלעות לכיתה ז׳ — העמקה ורשות",
+      "linkedTopic": "topic:7:16",
+      "linkedTitle": "משולש שווה־צלעות — העמקה ורשות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/congruent-polygons-transformations-grade-7",
+      "title": "מצולעים חופפים וטרנספורמציות לכיתה ז׳",
+      "linkedTopic": "topic:7:17",
+      "linkedTitle": "מצולעים חופפים וטרנספורמציות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/data-collection-reading-grade-7",
+      "title": "איסוף וקריאת מידע לכיתה ז׳",
+      "linkedTopic": "topic:7:24",
+      "linkedTitle": "איסוף וקריאת מידע",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/frequency-grade-7",
+      "title": "שכיחות לכיתה ז׳: טבלת שכיחות, שכיח ודיאגרמת נקודות",
+      "linkedTopic": "topic:7:25",
+      "linkedTitle": "שכיחות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/relative-frequency-grade-7",
+      "title": "שכיחות יחסית לכיתה ז׳ — היכרות",
+      "linkedTopic": "topic:7:26",
+      "linkedTitle": "שכיחות יחסית חלק 1 — היכרות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/relative-frequency-experiments-grade-7",
+      "title": "שכיחות יחסית בניסויים ויציבות התוצאות לכיתה ז׳",
+      "linkedTopic": "topic:7:27",
+      "linkedTitle": "שכיחות יחסית חלק 2 — ניסויים ויציבות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/probability-introduction-grade-7",
+      "title": "הסתברות לכיתה ז׳ — היכרות",
+      "linkedTopic": "topic:7:28",
+      "linkedTitle": "הסתברות — היכרות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/equations-introduction-equivalence-grade-7",
+      "title": "משוואות ופתרונן לכיתה ז׳ — מבוא: שקילות ובדיקת פתרון",
+      "linkedTopic": "topic:7:33",
+      "linkedTitle": "משוואות ופתרונן חלק 1 — מבוא",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/two-step-equations-grade-7",
+      "title": "משוואות דו־שלביות לכיתה ז׳",
+      "linkedTopic": "topic:7:35",
+      "linkedTitle": "משוואות דו־שלביות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/annual-review-grade-7",
+      "title": "חזרה שנתית לכיתה ז׳",
+      "linkedTopic": "topic:7:49",
+      "linkedTitle": "חזרה שנתית",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/assessment-task-1-grade-7",
+      "title": "משימת הערכה ⁦1⁩ לכיתה ז׳: זוויות, מספרים מכוונים ומערכת צירים",
+      "linkedTopic": "topic:7:50",
+      "linkedTitle": "משימת הערכה 1",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
       "key": "page:/statistics-data-frequency-grade-8",
       "title": "סטטיסטיקה לכיתה ח׳: איסוף מידע, קריאת מידע, שכיחות ושכיחות יחסית",
       "linkedTopic": "topic:8:67",

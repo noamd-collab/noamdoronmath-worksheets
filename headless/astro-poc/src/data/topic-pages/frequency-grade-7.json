@@ -1,0 +1,314 @@
+{
+  "slug": "frequency-grade-7",
+  "path": "/frequency-grade-7",
+  "grade": 7,
+  "sourceUrl": "https://www.noamdoronmath.co.il/frequency-grade-7",
+  "fetchedAt": "2026-11-10T00:00:00.000Z",
+  "verifiedVia": "authored-catalog-gap-from-noam-pdfs",
+  "title": "שכיחות לכיתה ז׳: טבלת שכיחות ושכיח | דפי עבודה חינם",
+  "description": "שכיחות לכיתה ז׳: בניית טבלת שכיחות, מציאת השכיח ושכיחותו, דיאגרמת נקודות, טווח וממוצע. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "שכיחות לכיתה ז׳: טבלת שכיחות, שכיח ודיאגרמת נקודות",
+  "intro": "לומדים לסדר נתונים בטבלת שכיחות, למצוא את הערך השכיח ואת שכיחותו, לקרוא דיאגרמת נקודות ולחשב טווח וממוצע מתוך הטבלה. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "שכיחות של ערך היא מספר הפעמים שהוא מופיע בנתונים. בטבלת שכיחות רושמים כל ערך פעם אחת, ולידו את השכיחות שלו. סכום השכיחויות שווה למספר כל הנתונים.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "השכיח הוא הערך שמופיע הכי הרבה פעמים. שימו לב להבדל: השכיח הוא הערך עצמו, והשכיחות שלו היא מספר הפעמים שהוא מופיע.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "דוגמה: מספר האחים של 10 תלמידים הוא 1, 2, 2, 0, 3, 2, 1, 2, 4, 1. השכיחות של 2 היא 4, והיא הגדולה ביותר, ולכן השכיח הוא 2. הטווח הוא 4 − 0 = 4.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "עונים שהשכיח הוא 4 כי זו השכיחות הגדולה ביותר. השכיח הוא הערך שמופיע הכי הרבה פעמים, כאן 2.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "בחישוב ממוצע מתוך טבלת שכיחות מחלקים במספר השורות. מחלקים במספר כל הנתונים, שהוא סכום השכיחויות.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "בטבלת שכיחות של ציונים הציון 70 מופיע 3 פעמים, הציון 80 מופיע 5 פעמים והציון 90 מופיע פעמיים. כמה תלמידים יש, ומהו השכיח?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה היא 10 תלמידים, כי 3 + 5 + 2 = 10, והשכיח הוא 80, כי הוא מופיע הכי הרבה פעמים.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "לומדים לסדר נתונים בטבלת שכיחות, למצוא את הערך השכיח ואת שכיחותו, לקרוא דיאגרמת נקודות ולחשב טווח וממוצע מתוך הטבלה. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=7&topic=25",
+      "catalogTopicId": 25
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "שכיחות של ערך היא מספר הפעמים שהוא מופיע בנתונים. בטבלת שכיחות רושמים כל ערך פעם אחת, ולידו את השכיחות שלו. סכום השכיחויות שווה למספר כל הנתונים.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "השכיח הוא הערך שמופיע הכי הרבה פעמים. שימו לב להבדל: השכיח הוא הערך עצמו, והשכיחות שלו היא מספר הפעמים שהוא מופיע.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "דוגמה: מספר האחים של 10 תלמידים הוא 1, 2, 2, 0, 3, 2, 1, 2, 4, 1. השכיחות של 2 היא 4, והיא הגדולה ביותר, ולכן השכיח הוא 2. הטווח הוא 4 − 0 = 4.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "עונים שהשכיח הוא 4 כי זו השכיחות הגדולה ביותר. השכיח הוא הערך שמופיע הכי הרבה פעמים, כאן 2.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "בחישוב ממוצע מתוך טבלת שכיחות מחלקים במספר השורות. מחלקים במספר כל הנתונים, שהוא סכום השכיחויות.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "בטבלת שכיחות של ציונים הציון 70 מופיע 3 פעמים, הציון 80 מופיע 5 פעמים והציון 90 מופיע פעמיים. כמה תלמידים יש, ומהו השכיח?",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "התשובה היא 10 תלמידים, כי 3 + 5 + 2 = 10, והשכיח הוא 80, כי הוא מופיע הכי הרבה פעמים.",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 10.11.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "מה ההבדל בין שכיח לשכיחות?",
+      "answer": "שכיחות היא מספר הפעמים שערך מופיע. השכיח הוא הערך שהשכיחות שלו הגדולה ביותר."
+    },
+    {
+      "question": "איך מחשבים ממוצע מטבלת שכיחות?",
+      "answer": "כופלים כל ערך בשכיחות שלו, מחברים את כל המכפלות ומחלקים בסכום השכיחויות."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם יש תשובות לדפי העבודה?",
+      "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "מה ההבדל בין שכיח לשכיחות?",
+          "answer": "שכיחות היא מספר הפעמים שערך מופיע. השכיח הוא הערך שהשכיחות שלו הגדולה ביותר."
+        },
+        {
+          "question": "איך מחשבים ממוצע מטבלת שכיחות?",
+          "answer": "כופלים כל ערך בשכיחות שלו, מחברים את כל המכפלות ומחלקים בסכום השכיחויות."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם יש תשובות לדפי העבודה?",
+          "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/grade-7",
+      "label": "כל דפי כיתה ז׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-7"
+    },
+    {
+      "path": "/data-collection-reading-grade-7",
+      "label": "איסוף וקריאת מידע",
+      "productionHref": "https://www.noamdoronmath.co.il/data-collection-reading-grade-7"
+    },
+    {
+      "path": "/relative-frequency-grade-7",
+      "label": "שכיחות יחסית — היכרות",
+      "productionHref": "https://www.noamdoronmath.co.il/relative-frequency-grade-7"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=7&topic=25",
+    "source": "catalog-g7-t25",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=25",
+    "catalogTopicId": 25,
+    "catalogTopicTitle": "שכיחות"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=7&topic=25",
+      "source": "catalog-g7-t25",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=25",
+      "catalogTopicId": 25,
+      "catalogTopicTitle": "שכיחות"
+    }
+  ],
+  "gradeHubHref": "/grade-7",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/frequency-grade-7#webpage",
+        "url": "https://www.noamdoronmath.co.il/frequency-grade-7",
+        "name": "שכיחות לכיתה ז׳: טבלת שכיחות ושכיח | דפי עבודה חינם",
+        "description": "שכיחות לכיתה ז׳: בניית טבלת שכיחות, מציאת השכיח ושכיחותו, דיאגרמת נקודות, טווח וממוצע. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/frequency-grade-7#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/frequency-grade-7#learning-resource",
+        "name": "שכיחות לכיתה ז׳: טבלת שכיחות, שכיח ודיאגרמת נקודות",
+        "url": "https://www.noamdoronmath.co.il/frequency-grade-7",
+        "description": "שכיחות לכיתה ז׳: בניית טבלת שכיחות, מציאת השכיח ושכיחותו, דיאגרמת נקודות, טווח וממוצע. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "educationalLevel": "כיתה ז׳",
+        "learningResourceType": "דפי עבודה",
+        "teaches": "טבלת שכיחות, שכיח, דיאגרמת נקודות, טווח וממוצע",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/frequency-grade-7#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "מה ההבדל בין שכיח לשכיחות?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "שכיחות היא מספר הפעמים שערך מופיע. השכיח הוא הערך שהשכיחות שלו הגדולה ביותר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך מחשבים ממוצע מטבלת שכיחות?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כופלים כל ערך בשכיחות שלו, מחברים את כל המכפלות ומחלקים בסכום השכיחויות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם יש תשובות לדפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. בסוף כל דף עבודה יש דף תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

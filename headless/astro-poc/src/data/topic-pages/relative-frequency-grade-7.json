@@ -1,0 +1,314 @@
+{
+  "slug": "relative-frequency-grade-7",
+  "path": "/relative-frequency-grade-7",
+  "grade": 7,
+  "sourceUrl": "https://www.noamdoronmath.co.il/relative-frequency-grade-7",
+  "fetchedAt": "2026-11-10T00:00:00.000Z",
+  "verifiedVia": "authored-catalog-gap-from-noam-pdfs",
+  "title": "שכיחות יחסית לכיתה ז׳ — היכרות | דפי עבודה חינם",
+  "description": "שכיחות יחסית לכיתה ז׳: חלק מהנתונים כשבר, כמספר עשרוני וכאחוז, והשוואה בין קבוצות בגודל שונה. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "שכיחות יחסית לכיתה ז׳ — היכרות",
+  "intro": "לומדים לחשב שכיחות יחסית, לכתוב אותה כשבר, כמספר עשרוני וכאחוז, ולהשוות בין קבוצות בגודל שונה לפי החלק היחסי ולא לפי מספר הפעמים. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "שכיחות יחסית של ערך היא השכיחות שלו חלקי מספר כל הנתונים: ⟨השכיחות¦מספר כל הנתונים⟩. היא מראה איזה חלק מהנתונים שייך לערך.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "את השכיחות היחסית אפשר לכתוב כשבר, כמספר עשרוני או כאחוז. סכום השכיחויות היחסיות של כל הערכים הוא 1, כלומר 100%.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "דוגמה: בכיתה א׳ 12 מתוך 30 תלמידים מנגנים, ובכיתה ב׳ 10 מתוך 20. בכיתה א׳ מנגנים ⟨12¦30⟩ = 0.4 = 40%, ובכיתה ב׳ ⟨10¦20⟩ = 0.5 = 50%. בכיתה ב׳ מנגנים פחות תלמידים, אבל החלק היחסי שלהם גדול יותר.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "משווים קבוצות בגודל שונה לפי מספר הפעמים בלבד. כשהקבוצות שונות בגודלן משווים שכיחויות יחסיות.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "מחלקים במספר הערכים השונים במקום במספר כל הנתונים.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "מתוך 25 זריקות לסל, 15 נכנסו. מהי השכיחות היחסית של קליעה, כשבר מצומצם, כמספר עשרוני וכאחוז?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה היא ⟨3¦5⟩, כלומר 0.6 או 60%, כי ⟨15¦25⟩ = ⟨3¦5⟩.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "לומדים לחשב שכיחות יחסית, לכתוב אותה כשבר, כמספר עשרוני וכאחוז, ולהשוות בין קבוצות בגודל שונה לפי החלק היחסי ולא לפי מספר הפעמים. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=7&topic=26",
+      "catalogTopicId": 26
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "שכיחות יחסית של ערך היא השכיחות שלו חלקי מספר כל הנתונים: ⟨השכיחות¦מספר כל הנתונים⟩. היא מראה איזה חלק מהנתונים שייך לערך.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "את השכיחות היחסית אפשר לכתוב כשבר, כמספר עשרוני או כאחוז. סכום השכיחויות היחסיות של כל הערכים הוא 1, כלומר 100%.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "דוגמה: בכיתה א׳ 12 מתוך 30 תלמידים מנגנים, ובכיתה ב׳ 10 מתוך 20. בכיתה א׳ מנגנים ⟨12¦30⟩ = 0.4 = 40%, ובכיתה ב׳ ⟨10¦20⟩ = 0.5 = 50%. בכיתה ב׳ מנגנים פחות תלמידים, אבל החלק היחסי שלהם גדול יותר.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "משווים קבוצות בגודל שונה לפי מספר הפעמים בלבד. כשהקבוצות שונות בגודלן משווים שכיחויות יחסיות.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "מחלקים במספר הערכים השונים במקום במספר כל הנתונים.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "מתוך 25 זריקות לסל, 15 נכנסו. מהי השכיחות היחסית של קליעה, כשבר מצומצם, כמספר עשרוני וכאחוז?",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "התשובה היא ⟨3¦5⟩, כלומר 0.6 או 60%, כי ⟨15¦25⟩ = ⟨3¦5⟩.",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 10.11.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "מה ההבדל בין שכיחות לשכיחות יחסית?",
+      "answer": "שכיחות היא מספר הפעמים שערך מופיע. שכיחות יחסית היא השכיחות חלקי מספר כל הנתונים, וכותבים אותה כשבר, כמספר עשרוני או כאחוז."
+    },
+    {
+      "question": "למה משווים קבוצות לפי שכיחות יחסית?",
+      "answer": "כי בקבוצה גדולה יותר יש בדרך כלל יותר פעמים מכל דבר. השכיחות היחסית מראה איזה חלק מכל קבוצה, ולכן אפשר להשוות ביניהן בהגינות."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם יש תשובות לדפי העבודה?",
+      "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "מה ההבדל בין שכיחות לשכיחות יחסית?",
+          "answer": "שכיחות היא מספר הפעמים שערך מופיע. שכיחות יחסית היא השכיחות חלקי מספר כל הנתונים, וכותבים אותה כשבר, כמספר עשרוני או כאחוז."
+        },
+        {
+          "question": "למה משווים קבוצות לפי שכיחות יחסית?",
+          "answer": "כי בקבוצה גדולה יותר יש בדרך כלל יותר פעמים מכל דבר. השכיחות היחסית מראה איזה חלק מכל קבוצה, ולכן אפשר להשוות ביניהן בהגינות."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם יש תשובות לדפי העבודה?",
+          "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/grade-7",
+      "label": "כל דפי כיתה ז׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-7"
+    },
+    {
+      "path": "/frequency-grade-7",
+      "label": "שכיחות",
+      "productionHref": "https://www.noamdoronmath.co.il/frequency-grade-7"
+    },
+    {
+      "path": "/relative-frequency-experiments-grade-7",
+      "label": "שכיחות יחסית בניסויים",
+      "productionHref": "https://www.noamdoronmath.co.il/relative-frequency-experiments-grade-7"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=7&topic=26",
+    "source": "catalog-g7-t26",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=26",
+    "catalogTopicId": 26,
+    "catalogTopicTitle": "שכיחות יחסית חלק 1 — היכרות"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=7&topic=26",
+      "source": "catalog-g7-t26",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=26",
+      "catalogTopicId": 26,
+      "catalogTopicTitle": "שכיחות יחסית חלק 1 — היכרות"
+    }
+  ],
+  "gradeHubHref": "/grade-7",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/relative-frequency-grade-7#webpage",
+        "url": "https://www.noamdoronmath.co.il/relative-frequency-grade-7",
+        "name": "שכיחות יחסית לכיתה ז׳ — היכרות | דפי עבודה חינם",
+        "description": "שכיחות יחסית לכיתה ז׳: חלק מהנתונים כשבר, כמספר עשרוני וכאחוז, והשוואה בין קבוצות בגודל שונה. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/relative-frequency-grade-7#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/relative-frequency-grade-7#learning-resource",
+        "name": "שכיחות יחסית לכיתה ז׳ — היכרות",
+        "url": "https://www.noamdoronmath.co.il/relative-frequency-grade-7",
+        "description": "שכיחות יחסית לכיתה ז׳: חלק מהנתונים כשבר, כמספר עשרוני וכאחוז, והשוואה בין קבוצות בגודל שונה. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "educationalLevel": "כיתה ז׳",
+        "learningResourceType": "דפי עבודה",
+        "teaches": "שכיחות יחסית כשבר, כמספר עשרוני וכאחוז, והשוואת קבוצות",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/relative-frequency-grade-7#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "מה ההבדל בין שכיחות לשכיחות יחסית?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "שכיחות היא מספר הפעמים שערך מופיע. שכיחות יחסית היא השכיחות חלקי מספר כל הנתונים, וכותבים אותה כשבר, כמספר עשרוני או כאחוז."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "למה משווים קבוצות לפי שכיחות יחסית?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כי בקבוצה גדולה יותר יש בדרך כלל יותר פעמים מכל דבר. השכיחות היחסית מראה איזה חלק מכל קבוצה, ולכן אפשר להשוות ביניהן בהגינות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם יש תשובות לדפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. בסוף כל דף עבודה יש דף תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

@@ -1,0 +1,314 @@
+{
+  "slug": "two-step-equations-grade-7",
+  "path": "/two-step-equations-grade-7",
+  "grade": 7,
+  "sourceUrl": "https://www.noamdoronmath.co.il/two-step-equations-grade-7",
+  "fetchedAt": "2026-11-10T00:00:00.000Z",
+  "verifiedVia": "authored-catalog-gap-from-noam-pdfs",
+  "title": "משוואות דו־שלביות לכיתה ז׳ | דפי עבודה חינם",
+  "description": "משוואות דו־שלביות לכיתה ז׳: פתרון משוואות כמו 3x + 5 = 20 בשני צעדים, בסדר הפוך, ובדיקה בהצבה. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "משוואות דו־שלביות לכיתה ז׳",
+  "intro": "פותרים משוואות שבהן צריך שתי פעולות כדי לבודד את הנעלם, כמו 3x + 5 = 20 או ⟨x¦4⟩ − 2 = 3, ובודקים כל פתרון בהצבה. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "במשוואה דו־שלבית הנעלם עבר שתי פעולות, למשל כפל ואחריו חיבור. כדי לבודד אותו מבטלים את הפעולות בסדר הפוך: קודם את החיבור או החיסור, ואחר כך את הכפל או החילוק.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "דוגמה: 3x + 5 = 20. מחסרים 5 משני האגפים: 3x = 15. מחלקים את שני האגפים ב־3: x = 5. בדיקה: 3 × 5 + 5 = 20.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "דוגמה עם מקדם שלילי: −2x + 7 = 1. מחסרים 7: −2x = −6. מחלקים ב־(−2): x = 3. בדיקה: −2 × 3 + 7 = 1.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "מחלקים קודם ומשאירים את המספר החופשי. ב־3x + 5 = 20 מחלקים ב־3 רק אחרי שמחסרים 5, אחרת צריך לחלק גם את ה־5.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "שוכחים את הסימן של המקדם. כשמחלקים ב־(−2), גם התוצאה מחליפה סימן.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "פתרו: 4x − 3 = 21.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה היא x = 6, כי 4x = 24. בדיקה: 4 × 6 − 3 = 21.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "פותרים משוואות שבהן צריך שתי פעולות כדי לבודד את הנעלם, כמו 3x + 5 = 20 או ⟨x¦4⟩ − 2 = 3, ובודקים כל פתרון בהצבה. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=7&topic=35",
+      "catalogTopicId": 35
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "במשוואה דו־שלבית הנעלם עבר שתי פעולות, למשל כפל ואחריו חיבור. כדי לבודד אותו מבטלים את הפעולות בסדר הפוך: קודם את החיבור או החיסור, ואחר כך את הכפל או החילוק.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "דוגמה: 3x + 5 = 20. מחסרים 5 משני האגפים: 3x = 15. מחלקים את שני האגפים ב־3: x = 5. בדיקה: 3 × 5 + 5 = 20.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "דוגמה עם מקדם שלילי: −2x + 7 = 1. מחסרים 7: −2x = −6. מחלקים ב־(−2): x = 3. בדיקה: −2 × 3 + 7 = 1.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "מחלקים קודם ומשאירים את המספר החופשי. ב־3x + 5 = 20 מחלקים ב־3 רק אחרי שמחסרים 5, אחרת צריך לחלק גם את ה־5.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "שוכחים את הסימן של המקדם. כשמחלקים ב־(−2), גם התוצאה מחליפה סימן.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "פתרו: 4x − 3 = 21.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "התשובה היא x = 6, כי 4x = 24. בדיקה: 4 × 6 − 3 = 21.",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 10.11.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "מהי משוואה דו־שלבית?",
+      "answer": "משוואה שבה צריך שתי פעולות כדי לבודד את הנעלם, למשל 2x + 3 = 11: קודם מחסרים 3 ואחר כך מחלקים ב־2."
+    },
+    {
+      "question": "באיזה סדר פותרים משוואה דו־שלבית?",
+      "answer": "בסדר הפוך לסדר הפעולות: קודם מבטלים חיבור או חיסור, ואחר כך מבטלים כפל או חילוק."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם יש תשובות לדפי העבודה?",
+      "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "מהי משוואה דו־שלבית?",
+          "answer": "משוואה שבה צריך שתי פעולות כדי לבודד את הנעלם, למשל 2x + 3 = 11: קודם מחסרים 3 ואחר כך מחלקים ב־2."
+        },
+        {
+          "question": "באיזה סדר פותרים משוואה דו־שלבית?",
+          "answer": "בסדר הפוך לסדר הפעולות: קודם מבטלים חיבור או חיסור, ואחר כך מבטלים כפל או חילוק."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם יש תשובות לדפי העבודה?",
+          "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/grade-7",
+      "label": "כל דפי כיתה ז׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-7"
+    },
+    {
+      "path": "/equations-basics-grade-7",
+      "label": "משוואות בסיס",
+      "productionHref": "https://www.noamdoronmath.co.il/equations-basics-grade-7"
+    },
+    {
+      "path": "/equations-advanced-grade-7",
+      "label": "משוואות מתקדמות",
+      "productionHref": "https://www.noamdoronmath.co.il/equations-advanced-grade-7"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=7&topic=35",
+    "source": "catalog-g7-t35",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=35",
+    "catalogTopicId": 35,
+    "catalogTopicTitle": "משוואות דו־שלביות"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=7&topic=35",
+      "source": "catalog-g7-t35",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=35",
+      "catalogTopicId": 35,
+      "catalogTopicTitle": "משוואות דו־שלביות"
+    }
+  ],
+  "gradeHubHref": "/grade-7",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/two-step-equations-grade-7#webpage",
+        "url": "https://www.noamdoronmath.co.il/two-step-equations-grade-7",
+        "name": "משוואות דו־שלביות לכיתה ז׳ | דפי עבודה חינם",
+        "description": "משוואות דו־שלביות לכיתה ז׳: פתרון משוואות כמו 3x + 5 = 20 בשני צעדים, בסדר הפוך, ובדיקה בהצבה. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/two-step-equations-grade-7#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/two-step-equations-grade-7#learning-resource",
+        "name": "משוואות דו־שלביות לכיתה ז׳",
+        "url": "https://www.noamdoronmath.co.il/two-step-equations-grade-7",
+        "description": "משוואות דו־שלביות לכיתה ז׳: פתרון משוואות כמו 3x + 5 = 20 בשני צעדים, בסדר הפוך, ובדיקה בהצבה. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "educationalLevel": "כיתה ז׳",
+        "learningResourceType": "דפי עבודה",
+        "teaches": "פתרון משוואות דו־שלביות ובדיקה בהצבה",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/two-step-equations-grade-7#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "מהי משוואה דו־שלבית?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "משוואה שבה צריך שתי פעולות כדי לבודד את הנעלם, למשל 2x + 3 = 11: קודם מחסרים 3 ואחר כך מחלקים ב־2."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "באיזה סדר פותרים משוואה דו־שלבית?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "בסדר הפוך לסדר הפעולות: קודם מבטלים חיבור או חיסור, ואחר כך מבטלים כפל או חילוק."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם יש תשובות לדפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. בסוף כל דף עבודה יש דף תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

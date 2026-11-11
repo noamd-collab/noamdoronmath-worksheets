@@ -26,6 +26,8 @@ export const FAMILY_CONCEPT_LOOP = {
 
 /** One page whose own idea has its own ConceptLoop film (Kimi's L14 v6). */
 const SLUG_CONCEPT_OVERRIDE = {
+  'frequency-grade-7': 'data',
+  'annual-review-grade-7': 'signed-jump',
   'difference-of-squares-grade-9': 'diff-sq',
   'kite-grade-9': 'kite-construct',
 } as const;
@@ -166,6 +168,9 @@ const FAMILY_CSS_LOOP: Record<string, CssLoopVariant> = {
 
 /** Finer than the family when the page's own idea is narrower. */
 const SLUG_CSS_OVERRIDE: Record<string, CssLoopVariant> = {
+  'data-collection-reading-grade-7': 'read-linegraph',
+  'relative-frequency-grade-7': 'percent',
+  'assessment-task-1-grade-7': 'measure',
   'triangle-area-grade-7': 'triangle-area',
   'square-root-grade-7': 'roots',
   'square-roots-grade-9': 'roots',

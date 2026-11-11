@@ -1,0 +1,314 @@
+{
+  "slug": "annual-review-grade-7",
+  "path": "/annual-review-grade-7",
+  "grade": 7,
+  "sourceUrl": "https://www.noamdoronmath.co.il/annual-review-grade-7",
+  "fetchedAt": "2026-11-10T00:00:00.000Z",
+  "verifiedVia": "authored-catalog-gap-from-noam-pdfs",
+  "title": "חזרה שנתית לכיתה ז׳ | דפי עבודה חינם",
+  "description": "חזרה שנתית לכיתה ז׳: מספרים מכוונים, סדר פעולות, חזקות, ביטויים ומשוואות, מערכת צירים וגאומטריה. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "חזרה שנתית לכיתה ז׳",
+  "intro": "דפי חזרה על נושאי כיתה ז׳: מספרים מכוונים וישר המספרים, סדר פעולות, חזקות ושורשים, ביטויים אלגבריים, משוואות ובעיות מילוליות, מערכת צירים וגאומטריה. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "דף החזרה בנוי כמו מבחן מסכם: כל שאלה עוסקת בנושא אחר משנת הלימודים, ולפעמים שאלה אחת משלבת שני נושאים, למשל משוואה שפותרים מתוך שרטוט.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "סדר עבודה מומלץ: קוראים את כל השאלה, מסמנים מה נתון ומה מבקשים, כותבים את הדרך ולא רק את התוצאה, ובסוף בודקים את התשובה בדף התשובות.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "דוגמה מחלק המספרים המכוונים: −3 + 2 × (−4) = −3 + (−8) = −11. קודם כופלים, ורק אחר כך מחברים.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "מחברים לפני שכופלים. גם במספרים מכוונים כפל וחילוק קודמים לחיבור ולחיסור.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "בשאלות על זוויות מסתמכים על מראה השרטוט. מחשבים רק לפי הנתונים ולפי משפטים מוכרים, כמו זוויות צמודות שסכומן 180°.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "פתרו: 3(x − 2) + 4 = x + 8.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה היא x = 5: פותחים סוגריים ומקבלים 3x − 2 = x + 8, ולכן 2x = 10.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "דפי חזרה על נושאי כיתה ז׳: מספרים מכוונים וישר המספרים, סדר פעולות, חזקות ושורשים, ביטויים אלגבריים, משוואות ובעיות מילוליות, מערכת צירים וגאומטריה. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=7&topic=49",
+      "catalogTopicId": 49
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "דף החזרה בנוי כמו מבחן מסכם: כל שאלה עוסקת בנושא אחר משנת הלימודים, ולפעמים שאלה אחת משלבת שני נושאים, למשל משוואה שפותרים מתוך שרטוט.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "סדר עבודה מומלץ: קוראים את כל השאלה, מסמנים מה נתון ומה מבקשים, כותבים את הדרך ולא רק את התוצאה, ובסוף בודקים את התשובה בדף התשובות.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "דוגמה מחלק המספרים המכוונים: −3 + 2 × (−4) = −3 + (−8) = −11. קודם כופלים, ורק אחר כך מחברים.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "מחברים לפני שכופלים. גם במספרים מכוונים כפל וחילוק קודמים לחיבור ולחיסור.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "בשאלות על זוויות מסתמכים על מראה השרטוט. מחשבים רק לפי הנתונים ולפי משפטים מוכרים, כמו זוויות צמודות שסכומן 180°.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "פתרו: 3(x − 2) + 4 = x + 8.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "התשובה היא x = 5: פותחים סוגריים ומקבלים 3x − 2 = x + 8, ולכן 2x = 10.",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 10.11.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "אילו נושאים יש בחזרה השנתית?",
+      "answer": "מספרים מכוונים וסדר פעולות, חזקות ושורשים, ביטויים אלגבריים, משוואות ובעיות מילוליות, מערכת צירים וגאומטריה."
+    },
+    {
+      "question": "איך כדאי להשתמש בדפי החזרה?",
+      "answer": "פותרים שאלה אחר שאלה ובודקים בדף התשובות. בנושא שבו יש טעויות חוזרים לדף העבודה שלו ברמה המתאימה."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם יש תשובות לדפי העבודה?",
+      "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "אילו נושאים יש בחזרה השנתית?",
+          "answer": "מספרים מכוונים וסדר פעולות, חזקות ושורשים, ביטויים אלגבריים, משוואות ובעיות מילוליות, מערכת צירים וגאומטריה."
+        },
+        {
+          "question": "איך כדאי להשתמש בדפי החזרה?",
+          "answer": "פותרים שאלה אחר שאלה ובודקים בדף התשובות. בנושא שבו יש טעויות חוזרים לדף העבודה שלו ברמה המתאימה."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם יש תשובות לדפי העבודה?",
+          "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/grade-7",
+      "label": "כל דפי כיתה ז׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-7"
+    },
+    {
+      "path": "/signed-numbers-grade-7",
+      "label": "חיבור וחיסור מספרים מכוונים",
+      "productionHref": "https://www.noamdoronmath.co.il/signed-numbers-grade-7"
+    },
+    {
+      "path": "/equations-advanced-grade-7",
+      "label": "משוואות מתקדמות",
+      "productionHref": "https://www.noamdoronmath.co.il/equations-advanced-grade-7"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=7&topic=49",
+    "source": "catalog-g7-t49",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=49",
+    "catalogTopicId": 49,
+    "catalogTopicTitle": "חזרה שנתית"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=7&topic=49",
+      "source": "catalog-g7-t49",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=49",
+      "catalogTopicId": 49,
+      "catalogTopicTitle": "חזרה שנתית"
+    }
+  ],
+  "gradeHubHref": "/grade-7",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/annual-review-grade-7#webpage",
+        "url": "https://www.noamdoronmath.co.il/annual-review-grade-7",
+        "name": "חזרה שנתית לכיתה ז׳ | דפי עבודה חינם",
+        "description": "חזרה שנתית לכיתה ז׳: מספרים מכוונים, סדר פעולות, חזקות, ביטויים ומשוואות, מערכת צירים וגאומטריה. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/annual-review-grade-7#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/annual-review-grade-7#learning-resource",
+        "name": "חזרה שנתית לכיתה ז׳",
+        "url": "https://www.noamdoronmath.co.il/annual-review-grade-7",
+        "description": "חזרה שנתית לכיתה ז׳: מספרים מכוונים, סדר פעולות, חזקות, ביטויים ומשוואות, מערכת צירים וגאומטריה. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "educationalLevel": "כיתה ז׳",
+        "learningResourceType": "דפי עבודה",
+        "teaches": "חזרה על נושאי כיתה ז׳ באלגברה, בגאומטריה ובנתונים",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/annual-review-grade-7#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "אילו נושאים יש בחזרה השנתית?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "מספרים מכוונים וסדר פעולות, חזקות ושורשים, ביטויים אלגבריים, משוואות ובעיות מילוליות, מערכת צירים וגאומטריה."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך כדאי להשתמש בדפי החזרה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "פותרים שאלה אחר שאלה ובודקים בדף התשובות. בנושא שבו יש טעויות חוזרים לדף העבודה שלו ברמה המתאימה."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם יש תשובות לדפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. בסוף כל דף עבודה יש דף תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}
