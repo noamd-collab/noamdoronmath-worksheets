@@ -9,6 +9,7 @@ import { readdirSync } from 'node:fs';
 import { defineConfig, envField } from 'astro/config';
 import react from '@astrojs/react';
 import node from '@astrojs/node';
+import compactServerBuild from './scripts/lib/compact-server-build.mjs';
 
 /**
  * DEV/QA-only routes. They live outside src/pages so @wix/astro-pages never
@@ -41,7 +42,7 @@ const devOnlyRoutes = {
 };
 
 export default defineConfig({
-  integrations: [react(), devOnlyRoutes],
+  integrations: [react(), devOnlyRoutes, compactServerBuild()],
   output: 'server',
   adapter: node({ mode: 'standalone' }),
   server: { host: '127.0.0.1', port: 4337 },
