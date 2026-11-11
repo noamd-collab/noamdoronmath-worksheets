@@ -52,7 +52,7 @@
     for (i = -3; i <= 3; i++) {
       if (i !== 0) out += '<text x="' + (OX - 6) + '" y="' + (py(i) + 3.5) + '" text-anchor="end">' + num(i) + '</text>';
     }
-    out += '</g><g font-family="Secular One, sans-serif" font-size="13" fill="' + INK + '">'
+    out += '</g><g font-family="Secular One, sans-serif" font-size="13" fill="' + INK + '" direction="ltr">'
       + '<text x="' + (px(6) + 6) + '" y="' + (OY + 4) + '">x</text>'
       + '<text x="' + (OX + 8) + '" y="' + (py(4) - 3) + '">y</text></g>';
     return out;
@@ -96,7 +96,7 @@
       + '<line id="legRun" x1="0" y1="0" x2="0" y2="0" stroke="' + WARM + '" stroke-width="3.5" stroke-linecap="round"/>'
       + '<line id="legRise" x1="0" y1="0" x2="0" y2="0" stroke="' + MAIN + '" stroke-width="3.5" stroke-linecap="round"/>'
       + '<text id="tRun" x="0" y="0" text-anchor="middle" font-size="15" fill="' + RED + '" font-family="Secular One, sans-serif"></text>'
-      + '<text id="tRise" x="0" y="0" text-anchor="start" font-size="15" fill="' + MAIN + '" font-family="Secular One, sans-serif"></text>'
+      + '<text id="tRise" x="0" y="0" text-anchor="start" direction="ltr" font-size="15" fill="' + MAIN + '" font-family="Secular One, sans-serif"></text>'
       + '<g id="pts">' + pointG('pA') + pointG('pB') + '</g>');
     var gA = ctx.el('pA'), gB = ctx.el('pB');
     function setStrip(k, v) { strip.querySelector('[data-v="' + k + '"]').textContent = v; }
@@ -292,7 +292,7 @@
     {
       mode: 'intro',
       tA: 'השיפוע של הישר',
-      tM: ' y = mx + b',
+      tM: 'y = mx + b',
       sub: 'כמה אתה עולה על כל צעד ימינה, ומאיפה אתה מתחיל.',
       tip: 'שלום, אני אליהו. היום נלמד לקרוא ישר כמו מדרגות: כמה עולים בכל צעד.',
       emoji: '📈',
@@ -476,7 +476,7 @@
         var ok = box.querySelector('[data-ok]');
         var gEl = box.querySelector('[data-g]');
         function draw() {
-          chip.textContent = 'A(' + p.x1 + ', ' + p.y1 + ')   B(' + p.x2 + ', ' + p.y2 + ')';
+          chip.textContent = 'A(' + num(p.x1) + ', ' + num(p.y1) + ')   B(' + num(p.x2) + ', ' + num(p.y2) + ')';
           gEl.textContent = num(guess);
           sol.hidden = true;
           ok.hidden = true;
