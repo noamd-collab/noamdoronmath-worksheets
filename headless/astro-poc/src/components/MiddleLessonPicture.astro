@@ -1,6 +1,6 @@
 ---
 import type { Lesson, LessonLoopVariant } from '../lib/lessonLoops';
-import LessonMath from './LessonMath.astro';
+import LessonMathLines from './LessonMathLines.astro';
 interface Props { variant: LessonLoopVariant; lesson: Lesson }
 const { variant, lesson } = Astro.props;
 type Point = [number, number];
@@ -27,7 +27,7 @@ const truncatedCharts = [0, 90].map((base, i) => ({
 }));
 ---
 {lesson.picture === 'calculation' && <div class="calculation" dir="ltr" aria-label="שלושת שלבי החישוב">
-  {lesson.steps.map((s,i) => <div class={`math-panel scene-enter enter-${i}`}><i aria-hidden="true"></i><LessonMath value={s.math}/></div>)}
+  {lesson.steps.map((s,i) => <div class={`math-panel scene-enter enter-${i}`}><i aria-hidden="true"></i><LessonMathLines value={s.math}/></div>)}
 </div>}
 
 {lesson.picture === 'cartesian-topic' && plot && <svg viewBox="0 0 480 270" role="img" aria-label={plot.label}>

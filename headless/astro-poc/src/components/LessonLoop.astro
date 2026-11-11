@@ -2,9 +2,12 @@
 import { LESSON_LOOPS, type Lesson, type LessonLoopVariant } from '../lib/lessonLoops';
 import LessonMath from './LessonMath.astro';
 import MiddleLessonPicture from './MiddleLessonPicture.astro';
+import LessonMathLines from './LessonMathLines.astro';
+import { MIDDLE_TOPIC_LESSONS } from '../lib/middleTopicLessons';
 interface Props { variant: LessonLoopVariant }
 const { variant } = Astro.props;
 const lesson: Lesson = LESSON_LOOPS[variant];
+const middleLesson = Object.hasOwn(MIDDLE_TOPIC_LESSONS, variant);
 const faces = [
   {x:120,y:10,w:90,h:60,pair:0,label:'2 × 3',axis:'y',origin:'50% 100%',delay:0.1},
   {x:60,y:70,w:60,h:120,pair:1,label:'2 × 4',axis:'x',origin:'100% 50%',delay:0.4},
@@ -217,7 +220,7 @@ const treeBranches = [[0, 1], [0, 2], [2, 3], [2, 4], [4, 5], [4, 6]].map(([p, c
     {treeNodes.map(n=><g class={`node node-${n.level}`}><circle class:list={[n.prime && 'prime']} cx={n.x} cy={n.y} r="21"/><text x={n.x} y={n.y+8}>{n.v}</text></g>)}
   </svg>}
   <ol class:list={['steps',lesson.picture === 'equation' ? 'steps--large':'']}>
-    {lesson.steps.map((s,i)=><li class={`step step-${i}`}><span class="step-number">{i+1}</span><div><p>{s.text}</p>{s.math && <p class="math" dir="ltr"><LessonMath value={s.math}/></p>}</div></li>)}
+    {lesson.steps.map((s,i)=><li class={`step step-${i}`}><span class="step-number">{i+1}</span><div><p>{s.text}</p>{s.math && <p class="math" dir="ltr">{middleLesson ? <LessonMathLines value={s.math}/> : <LessonMath value={s.math}/>}</p>}</div></li>)}
   </ol>
 </div>
 <style>

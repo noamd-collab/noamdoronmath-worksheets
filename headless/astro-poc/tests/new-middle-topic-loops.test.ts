@@ -67,7 +67,7 @@ const EXPECTED = {
 
 describe('52 new topic landing demonstrations', () => {
   it('compiles the actual Astro scenes to valid JavaScript', async () => {
-    for (const name of ['MiddleLessonPicture', 'LessonLoop']) {
+    for (const name of ['MiddleLessonPicture', 'LessonLoop', 'LessonMathLines']) {
       const filename = new URL(`../src/components/${name}.astro`, import.meta.url);
       const compiled = await compileAstro(readFileSync(filename, 'utf8'), { filename: filename.pathname });
       await parseJavaScript(compiled.code, { loader: 'ts' });
