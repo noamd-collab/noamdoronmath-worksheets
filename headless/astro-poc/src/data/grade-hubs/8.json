@@ -162,6 +162,231 @@
           "productionHref": "https://www.noamdoronmath.co.il/cone-grade-8"
         }
       ]
+    },
+    {
+      "heading": "יחס, אחוזים ושורשים",
+      "links": [
+        {
+          "path": "/ratio-proportion-grade-8",
+          "label": "יחס ופרופורציה",
+          "productionHref": "https://www.noamdoronmath.co.il/ratio-proportion-grade-8"
+        },
+        {
+          "path": "/scale-grade-8",
+          "label": "קנה מידה",
+          "productionHref": "https://www.noamdoronmath.co.il/scale-grade-8"
+        },
+        {
+          "path": "/percent-representations-grade-8",
+          "label": "אחוזים — ייצוגים",
+          "productionHref": "https://www.noamdoronmath.co.il/percent-representations-grade-8"
+        },
+        {
+          "path": "/percent-change-grade-8",
+          "label": "שינוי באחוזים",
+          "productionHref": "https://www.noamdoronmath.co.il/percent-change-grade-8"
+        },
+        {
+          "path": "/successive-percent-changes-grade-8",
+          "label": "שינויים עוקבים באחוזים",
+          "productionHref": "https://www.noamdoronmath.co.il/successive-percent-changes-grade-8"
+        },
+        {
+          "path": "/square-root-grade-8",
+          "label": "שורש ריבועי",
+          "productionHref": "https://www.noamdoronmath.co.il/square-root-grade-8"
+        }
+      ]
+    },
+    {
+      "heading": "פונקציות וישרים",
+      "links": [
+        {
+          "path": "/function-concept-grade-8",
+          "label": "מושג הפונקציה",
+          "productionHref": "https://www.noamdoronmath.co.il/function-concept-grade-8"
+        },
+        {
+          "path": "/function-notation-grade-8",
+          "label": "סימון פונקציה",
+          "productionHref": "https://www.noamdoronmath.co.il/function-notation-grade-8"
+        },
+        {
+          "path": "/function-representations-grade-8",
+          "label": "מעבר בין ייצוגים של פונקציה",
+          "productionHref": "https://www.noamdoronmath.co.il/function-representations-grade-8"
+        },
+        {
+          "path": "/rate-of-change-grade-8",
+          "label": "קצב השתנות",
+          "productionHref": "https://www.noamdoronmath.co.il/rate-of-change-grade-8"
+        },
+        {
+          "path": "/slope-line-through-origin-grade-8",
+          "label": "שיפוע וישר דרך הראשית",
+          "productionHref": "https://www.noamdoronmath.co.il/slope-line-through-origin-grade-8"
+        },
+        {
+          "path": "/axis-intercepts-grade-8",
+          "label": "חיתוך עם הצירים",
+          "productionHref": "https://www.noamdoronmath.co.il/axis-intercepts-grade-8"
+        },
+        {
+          "path": "/equation-of-a-line-grade-8",
+          "label": "משוואת ישר",
+          "productionHref": "https://www.noamdoronmath.co.il/equation-of-a-line-grade-8"
+        },
+        {
+          "path": "/lines-parallel-to-axes-grade-8",
+          "label": "ישרים מקבילים לצירים",
+          "productionHref": "https://www.noamdoronmath.co.il/lines-parallel-to-axes-grade-8"
+        }
+      ]
+    },
+    {
+      "heading": "משוואות, מערכות ובעיות מילוליות",
+      "links": [
+        {
+          "path": "/equations-with-fractions-grade-8",
+          "label": "משוואות עם מכנים מספריים",
+          "productionHref": "https://www.noamdoronmath.co.il/equations-with-fractions-grade-8"
+        },
+        {
+          "path": "/motion-problems-grade-8",
+          "label": "בעיות תנועה",
+          "productionHref": "https://www.noamdoronmath.co.il/motion-problems-grade-8"
+        },
+        {
+          "path": "/word-problems-choosing-unknowns-grade-8",
+          "label": "בעיות מילוליות — בחירת נעלם",
+          "productionHref": "https://www.noamdoronmath.co.il/word-problems-choosing-unknowns-grade-8"
+        },
+        {
+          "path": "/systems-algebraic-solution-grade-8",
+          "label": "מערכות משוואות — פתרון אלגברי",
+          "productionHref": "https://www.noamdoronmath.co.il/systems-algebraic-solution-grade-8"
+        },
+        {
+          "path": "/systems-word-problems-grade-8",
+          "label": "מערכות משוואות — בעיות מילוליות",
+          "productionHref": "https://www.noamdoronmath.co.il/systems-word-problems-grade-8"
+        },
+        {
+          "path": "/graphical-inequalities-grade-8",
+          "label": "אי־שוויון גרפי",
+          "productionHref": "https://www.noamdoronmath.co.il/graphical-inequalities-grade-8"
+        }
+      ]
+    },
+    {
+      "heading": "סטטיסטיקה והסתברות",
+      "links": [
+        {
+          "path": "/bar-charts-pictograms-grade-8",
+          "label": "עמודות ופיקטוגרמות",
+          "productionHref": "https://www.noamdoronmath.co.il/bar-charts-pictograms-grade-8"
+        },
+        {
+          "path": "/pie-charts-grade-8",
+          "label": "דיאגרמת עוגה",
+          "productionHref": "https://www.noamdoronmath.co.il/pie-charts-grade-8"
+        },
+        {
+          "path": "/data-range-grade-8",
+          "label": "טווח הנתונים",
+          "productionHref": "https://www.noamdoronmath.co.il/data-range-grade-8"
+        },
+        {
+          "path": "/mean-grade-8",
+          "label": "הממוצע",
+          "productionHref": "https://www.noamdoronmath.co.il/mean-grade-8"
+        },
+        {
+          "path": "/median-grade-8",
+          "label": "החציון",
+          "productionHref": "https://www.noamdoronmath.co.il/median-grade-8"
+        },
+        {
+          "path": "/choosing-measure-of-center-grade-8",
+          "label": "בחירת מדד מרכזי",
+          "productionHref": "https://www.noamdoronmath.co.il/choosing-measure-of-center-grade-8"
+        },
+        {
+          "path": "/data-literacy-grade-8",
+          "label": "אוריינות וביקורת ייצוג",
+          "productionHref": "https://www.noamdoronmath.co.il/data-literacy-grade-8"
+        },
+        {
+          "path": "/interpolation-extrapolation-grade-8",
+          "label": "אינטרפולציה ואקסטרפולציה",
+          "productionHref": "https://www.noamdoronmath.co.il/interpolation-extrapolation-grade-8"
+        },
+        {
+          "path": "/two-data-sources-grade-8",
+          "label": "שני מקורות מידע",
+          "productionHref": "https://www.noamdoronmath.co.il/two-data-sources-grade-8"
+        },
+        {
+          "path": "/probability-sample-space-grade-8",
+          "label": "הסתברות — מרחב תוצאות",
+          "productionHref": "https://www.noamdoronmath.co.il/probability-sample-space-grade-8"
+        },
+        {
+          "path": "/probability-experiments-fairness-grade-8",
+          "label": "הסתברות — ניסוי והוגנות",
+          "productionHref": "https://www.noamdoronmath.co.il/probability-experiments-fairness-grade-8"
+        }
+      ]
+    },
+    {
+      "heading": "אבחון, חזרה והעמקה",
+      "links": [
+        {
+          "path": "/prior-knowledge-diagnostic-grade-8",
+          "label": "אבחון קדם־ידע",
+          "productionHref": "https://www.noamdoronmath.co.il/prior-knowledge-diagnostic-grade-8"
+        },
+        {
+          "path": "/midyear-diagnostic-grade-8",
+          "label": "אבחון אמצע שנה",
+          "productionHref": "https://www.noamdoronmath.co.il/midyear-diagnostic-grade-8"
+        },
+        {
+          "path": "/gap-bridging-review-grade-8",
+          "label": "גישור ותיקון פערים",
+          "productionHref": "https://www.noamdoronmath.co.il/gap-bridging-review-grade-8"
+        },
+        {
+          "path": "/assessment-task-1-grade-8",
+          "label": "משימת הערכה 1",
+          "productionHref": "https://www.noamdoronmath.co.il/assessment-task-1-grade-8"
+        },
+        {
+          "path": "/non-routine-problems-grade-8",
+          "label": "העמקה — בעיות לא שגרתיות",
+          "productionHref": "https://www.noamdoronmath.co.il/non-routine-problems-grade-8"
+        },
+        {
+          "path": "/investigation-generalization-grade-8",
+          "label": "העמקה — חקר והכללה",
+          "productionHref": "https://www.noamdoronmath.co.il/investigation-generalization-grade-8"
+        },
+        {
+          "path": "/summary-review-grade-8",
+          "label": "חזרה מסכמת",
+          "productionHref": "https://www.noamdoronmath.co.il/summary-review-grade-8"
+        },
+        {
+          "path": "/summative-assessment-grade-8",
+          "label": "הערכה מסכמת",
+          "productionHref": "https://www.noamdoronmath.co.il/summative-assessment-grade-8"
+        },
+        {
+          "path": "/end-of-year-diagnostic-grade-8",
+          "label": "אבחון סוף שנה",
+          "productionHref": "https://www.noamdoronmath.co.il/end-of-year-diagnostic-grade-8"
+        }
+      ]
     }
   ],
   "topicLinks": [
@@ -299,6 +524,206 @@
       "path": "/cone-grade-8",
       "label": "חרוט",
       "productionHref": "https://www.noamdoronmath.co.il/cone-grade-8"
+    },
+    {
+      "path": "/ratio-proportion-grade-8",
+      "label": "יחס ופרופורציה",
+      "productionHref": "https://www.noamdoronmath.co.il/ratio-proportion-grade-8"
+    },
+    {
+      "path": "/scale-grade-8",
+      "label": "קנה מידה",
+      "productionHref": "https://www.noamdoronmath.co.il/scale-grade-8"
+    },
+    {
+      "path": "/percent-representations-grade-8",
+      "label": "אחוזים — ייצוגים",
+      "productionHref": "https://www.noamdoronmath.co.il/percent-representations-grade-8"
+    },
+    {
+      "path": "/percent-change-grade-8",
+      "label": "שינוי באחוזים",
+      "productionHref": "https://www.noamdoronmath.co.il/percent-change-grade-8"
+    },
+    {
+      "path": "/successive-percent-changes-grade-8",
+      "label": "שינויים עוקבים באחוזים",
+      "productionHref": "https://www.noamdoronmath.co.il/successive-percent-changes-grade-8"
+    },
+    {
+      "path": "/square-root-grade-8",
+      "label": "שורש ריבועי",
+      "productionHref": "https://www.noamdoronmath.co.il/square-root-grade-8"
+    },
+    {
+      "path": "/function-concept-grade-8",
+      "label": "מושג הפונקציה",
+      "productionHref": "https://www.noamdoronmath.co.il/function-concept-grade-8"
+    },
+    {
+      "path": "/function-notation-grade-8",
+      "label": "סימון פונקציה",
+      "productionHref": "https://www.noamdoronmath.co.il/function-notation-grade-8"
+    },
+    {
+      "path": "/function-representations-grade-8",
+      "label": "מעבר בין ייצוגים של פונקציה",
+      "productionHref": "https://www.noamdoronmath.co.il/function-representations-grade-8"
+    },
+    {
+      "path": "/rate-of-change-grade-8",
+      "label": "קצב השתנות",
+      "productionHref": "https://www.noamdoronmath.co.il/rate-of-change-grade-8"
+    },
+    {
+      "path": "/slope-line-through-origin-grade-8",
+      "label": "שיפוע וישר דרך הראשית",
+      "productionHref": "https://www.noamdoronmath.co.il/slope-line-through-origin-grade-8"
+    },
+    {
+      "path": "/axis-intercepts-grade-8",
+      "label": "חיתוך עם הצירים",
+      "productionHref": "https://www.noamdoronmath.co.il/axis-intercepts-grade-8"
+    },
+    {
+      "path": "/equation-of-a-line-grade-8",
+      "label": "משוואת ישר",
+      "productionHref": "https://www.noamdoronmath.co.il/equation-of-a-line-grade-8"
+    },
+    {
+      "path": "/lines-parallel-to-axes-grade-8",
+      "label": "ישרים מקבילים לצירים",
+      "productionHref": "https://www.noamdoronmath.co.il/lines-parallel-to-axes-grade-8"
+    },
+    {
+      "path": "/equations-with-fractions-grade-8",
+      "label": "משוואות עם מכנים מספריים",
+      "productionHref": "https://www.noamdoronmath.co.il/equations-with-fractions-grade-8"
+    },
+    {
+      "path": "/motion-problems-grade-8",
+      "label": "בעיות תנועה",
+      "productionHref": "https://www.noamdoronmath.co.il/motion-problems-grade-8"
+    },
+    {
+      "path": "/word-problems-choosing-unknowns-grade-8",
+      "label": "בעיות מילוליות — בחירת נעלם",
+      "productionHref": "https://www.noamdoronmath.co.il/word-problems-choosing-unknowns-grade-8"
+    },
+    {
+      "path": "/systems-algebraic-solution-grade-8",
+      "label": "מערכות משוואות — פתרון אלגברי",
+      "productionHref": "https://www.noamdoronmath.co.il/systems-algebraic-solution-grade-8"
+    },
+    {
+      "path": "/systems-word-problems-grade-8",
+      "label": "מערכות משוואות — בעיות מילוליות",
+      "productionHref": "https://www.noamdoronmath.co.il/systems-word-problems-grade-8"
+    },
+    {
+      "path": "/graphical-inequalities-grade-8",
+      "label": "אי־שוויון גרפי",
+      "productionHref": "https://www.noamdoronmath.co.il/graphical-inequalities-grade-8"
+    },
+    {
+      "path": "/bar-charts-pictograms-grade-8",
+      "label": "עמודות ופיקטוגרמות",
+      "productionHref": "https://www.noamdoronmath.co.il/bar-charts-pictograms-grade-8"
+    },
+    {
+      "path": "/pie-charts-grade-8",
+      "label": "דיאגרמת עוגה",
+      "productionHref": "https://www.noamdoronmath.co.il/pie-charts-grade-8"
+    },
+    {
+      "path": "/data-range-grade-8",
+      "label": "טווח הנתונים",
+      "productionHref": "https://www.noamdoronmath.co.il/data-range-grade-8"
+    },
+    {
+      "path": "/mean-grade-8",
+      "label": "הממוצע",
+      "productionHref": "https://www.noamdoronmath.co.il/mean-grade-8"
+    },
+    {
+      "path": "/median-grade-8",
+      "label": "החציון",
+      "productionHref": "https://www.noamdoronmath.co.il/median-grade-8"
+    },
+    {
+      "path": "/choosing-measure-of-center-grade-8",
+      "label": "בחירת מדד מרכזי",
+      "productionHref": "https://www.noamdoronmath.co.il/choosing-measure-of-center-grade-8"
+    },
+    {
+      "path": "/data-literacy-grade-8",
+      "label": "אוריינות וביקורת ייצוג",
+      "productionHref": "https://www.noamdoronmath.co.il/data-literacy-grade-8"
+    },
+    {
+      "path": "/interpolation-extrapolation-grade-8",
+      "label": "אינטרפולציה ואקסטרפולציה",
+      "productionHref": "https://www.noamdoronmath.co.il/interpolation-extrapolation-grade-8"
+    },
+    {
+      "path": "/two-data-sources-grade-8",
+      "label": "שני מקורות מידע",
+      "productionHref": "https://www.noamdoronmath.co.il/two-data-sources-grade-8"
+    },
+    {
+      "path": "/probability-sample-space-grade-8",
+      "label": "הסתברות — מרחב תוצאות",
+      "productionHref": "https://www.noamdoronmath.co.il/probability-sample-space-grade-8"
+    },
+    {
+      "path": "/probability-experiments-fairness-grade-8",
+      "label": "הסתברות — ניסוי והוגנות",
+      "productionHref": "https://www.noamdoronmath.co.il/probability-experiments-fairness-grade-8"
+    },
+    {
+      "path": "/prior-knowledge-diagnostic-grade-8",
+      "label": "אבחון קדם־ידע",
+      "productionHref": "https://www.noamdoronmath.co.il/prior-knowledge-diagnostic-grade-8"
+    },
+    {
+      "path": "/midyear-diagnostic-grade-8",
+      "label": "אבחון אמצע שנה",
+      "productionHref": "https://www.noamdoronmath.co.il/midyear-diagnostic-grade-8"
+    },
+    {
+      "path": "/gap-bridging-review-grade-8",
+      "label": "גישור ותיקון פערים",
+      "productionHref": "https://www.noamdoronmath.co.il/gap-bridging-review-grade-8"
+    },
+    {
+      "path": "/assessment-task-1-grade-8",
+      "label": "משימת הערכה 1",
+      "productionHref": "https://www.noamdoronmath.co.il/assessment-task-1-grade-8"
+    },
+    {
+      "path": "/non-routine-problems-grade-8",
+      "label": "העמקה — בעיות לא שגרתיות",
+      "productionHref": "https://www.noamdoronmath.co.il/non-routine-problems-grade-8"
+    },
+    {
+      "path": "/investigation-generalization-grade-8",
+      "label": "העמקה — חקר והכללה",
+      "productionHref": "https://www.noamdoronmath.co.il/investigation-generalization-grade-8"
+    },
+    {
+      "path": "/summary-review-grade-8",
+      "label": "חזרה מסכמת",
+      "productionHref": "https://www.noamdoronmath.co.il/summary-review-grade-8"
+    },
+    {
+      "path": "/summative-assessment-grade-8",
+      "label": "הערכה מסכמת",
+      "productionHref": "https://www.noamdoronmath.co.il/summative-assessment-grade-8"
+    },
+    {
+      "path": "/end-of-year-diagnostic-grade-8",
+      "label": "אבחון סוף שנה",
+      "productionHref": "https://www.noamdoronmath.co.il/end-of-year-diagnostic-grade-8"
     }
   ],
   "catalogCta": {

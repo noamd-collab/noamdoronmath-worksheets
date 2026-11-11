@@ -628,3 +628,9 @@ Checks and publication evidence: `docs/teacher-answer-word-20261104.md`.
 - לא בוצעו פרסום לאתר הפעיל, מיגרציית מסד נתונים או ייבוא רמזים. אלה יבוצעו במסגרת השחרור המאושר של ה־PR.
 
 - 2026-11-08 — PR #411 scope confirmed by Noam: publish new grade 3 division PDFs and teacher PDF/Word tools only. Elementary links open PDFs directly; saved viewer links bypass hints. No Noam AI, database migration, hint import or new account progress identities in this release. Existing materials remain.
+
+## 2026-11-10 — קישורי דפי עבודה ומטא־נתונים בחיפוש
+
+- בעקבות הדיווח על „מונים בלי לפספס” בכיתה א׳, כפתורים שמובילים ישירות לקובץ מסומנים „פתיחת PDF” בדפי הנושא ובקטלוג. נוסף בדפי הנושא כפתור להעתקת הכתובת הקבועה באתר, כולל חלופה ידנית אם ההעתקה חסומה בדפדפן.
+- כפילויות SEO ש־Wix מוסיף מוסרות בתשובת השרת כאשר קיימת תגית מקור תואמת של האתר. הכותרת העברית, הכתובת הקנונית, הוראות האינדוקס ונתוני השיתוף נשמרים; תצוגות בדיקה נשארות noindex. בדיקת ההמשך מתועדת ב־PR ובדוח הפרסום.
+- נועם אישר בשיחה לתקן ולפרסם את התיקון הזה. תוכן קובצי ה־PDF, כתובות ההורדה, רמזים ומסד הנתונים אינם משתנים במסגרת תיקון הקישורים וה־SEO. בעיות הניסוח והעימוד בתשובות שב־PDF דורשות תיקון תוכן נפרד.

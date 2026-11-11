@@ -1,0 +1,314 @@
+{
+  "slug": "end-of-year-diagnostic-grade-8",
+  "path": "/end-of-year-diagnostic-grade-8",
+  "grade": 8,
+  "sourceUrl": "https://www.noamdoronmath.co.il/end-of-year-diagnostic-grade-8",
+  "fetchedAt": "2026-11-10T00:00:00.000Z",
+  "verifiedVia": "authored-catalog-gap-from-noam-pdfs",
+  "title": "אבחון סוף שנה לכיתה ח׳ | דף עבודה חינם",
+  "description": "אבחון סוף שנה לכיתה ח׳: מיפוי הידע לקראת כיתה ט׳ בקנה מידה, חזקות, ביטויים, משוואות וגרפים. דף עבודה אחד, בחינם וללא הרשמה.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "אבחון סוף שנה לכיתה ח׳: לקראת כיתה ט׳",
+  "intro": "דף אבחון לסוף כיתה ח׳ שממפה מה צריך לחזק לפני כיתה ט׳: קנה מידה, חזקות, ביטויים ומשוואות, פונקציות וגרפים. דף העבודה זמין בחינם וללא הרשמה, עם תשובות בסוף הדף.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "אבחון סוף השנה אינו מבחן לציון. הוא מראה אילו נושאים מכיתה ח׳ מוכנים לכיתה ט׳, ואילו כדאי לחזק בחופשה.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "השאלות קצרות ועוסקות בנושאי יסוד: קנה מידה בתוכנית, כללי חזקות, פתיחת סוגריים, משוואות וקריאת גרף.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "דוגמה מכללי החזקות: 2³ × 2⁴ = 2⁷ = 128. בכפל חזקות עם אותו בסיס מחברים את המעריכים.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "בכפל חזקות כופלים את המעריכים. 2³ × 2⁴ הוא 2⁷, לא 2¹².",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "בתוכנית בקנה מידה שוכחים להמיר ס״מ למטרים בסוף החישוב.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "בתוכנית בקנה מידה 1 : 250 אורך הגינה 8 ס״מ. מה אורכה במציאות, במטרים?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה היא 20 מטרים, כי 8 × 250 = 2000 ס״מ.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "דף אבחון לסוף כיתה ח׳ שממפה מה צריך לחזק לפני כיתה ט׳: קנה מידה, חזקות, ביטויים ומשוואות, פונקציות וגרפים. דף העבודה זמין בחינם וללא הרשמה, עם תשובות בסוף הדף.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דף העבודה",
+      "href": "/worksheets?grade=8&topic=60",
+      "catalogTopicId": 60
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "אבחון סוף השנה אינו מבחן לציון. הוא מראה אילו נושאים מכיתה ח׳ מוכנים לכיתה ט׳, ואילו כדאי לחזק בחופשה.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "השאלות קצרות ועוסקות בנושאי יסוד: קנה מידה בתוכנית, כללי חזקות, פתיחת סוגריים, משוואות וקריאת גרף.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "דוגמה מכללי החזקות: 2³ × 2⁴ = 2⁷ = 128. בכפל חזקות עם אותו בסיס מחברים את המעריכים.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "בכפל חזקות כופלים את המעריכים. 2³ × 2⁴ הוא 2⁷, לא 2¹².",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "בתוכנית בקנה מידה שוכחים להמיר ס״מ למטרים בסוף החישוב.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "בתוכנית בקנה מידה 1 : 250 אורך הגינה 8 ס״מ. מה אורכה במציאות, במטרים?",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "התשובה היא 20 מטרים, כי 8 × 250 = 2000 ס״מ.",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 10.11.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "למה עושים אבחון בסוף השנה?",
+      "answer": "כדי לדעת לפני כיתה ט׳ אילו נושאים יושבים טוב ואילו צריכים חיזוק."
+    },
+    {
+      "question": "מה עושים עם התוצאות?",
+      "answer": "בכל נושא שבו הייתה טעות חוזרים לדף העבודה שלו בכיתה ח׳, ובודקים שוב לפני תחילת כיתה ט׳."
+    },
+    {
+      "question": "כמה דפי עבודה יש בנושא?",
+      "answer": "בנושא יש דף עבודה אחד לכל הכיתה, ובסופו תשובות."
+    },
+    {
+      "question": "האם יש תשובות לדפי העבודה?",
+      "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "למה עושים אבחון בסוף השנה?",
+          "answer": "כדי לדעת לפני כיתה ט׳ אילו נושאים יושבים טוב ואילו צריכים חיזוק."
+        },
+        {
+          "question": "מה עושים עם התוצאות?",
+          "answer": "בכל נושא שבו הייתה טעות חוזרים לדף העבודה שלו בכיתה ח׳, ובודקים שוב לפני תחילת כיתה ט׳."
+        },
+        {
+          "question": "כמה דפי עבודה יש בנושא?",
+          "answer": "בנושא יש דף עבודה אחד לכל הכיתה, ובסופו תשובות."
+        },
+        {
+          "question": "האם יש תשובות לדפי העבודה?",
+          "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/grade-8",
+      "label": "כל דפי כיתה ח׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-8"
+    },
+    {
+      "path": "/summative-assessment-grade-8",
+      "label": "הערכה מסכמת",
+      "productionHref": "https://www.noamdoronmath.co.il/summative-assessment-grade-8"
+    },
+    {
+      "path": "/transition-to-high-school-grade-9",
+      "label": "מעבר לחטיבה העליונה",
+      "productionHref": "https://www.noamdoronmath.co.il/transition-to-high-school-grade-9"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דף העבודה",
+    "href": "/worksheets?grade=8&topic=60",
+    "source": "catalog-g8-t60",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=60",
+    "catalogTopicId": 60,
+    "catalogTopicTitle": "אבחון סוף שנה"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דף העבודה",
+      "href": "/worksheets?grade=8&topic=60",
+      "source": "catalog-g8-t60",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=60",
+      "catalogTopicId": 60,
+      "catalogTopicTitle": "אבחון סוף שנה"
+    }
+  ],
+  "gradeHubHref": "/grade-8",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/end-of-year-diagnostic-grade-8#webpage",
+        "url": "https://www.noamdoronmath.co.il/end-of-year-diagnostic-grade-8",
+        "name": "אבחון סוף שנה לכיתה ח׳ | דף עבודה חינם",
+        "description": "אבחון סוף שנה לכיתה ח׳: מיפוי הידע לקראת כיתה ט׳ בקנה מידה, חזקות, ביטויים, משוואות וגרפים. דף עבודה אחד, בחינם וללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/end-of-year-diagnostic-grade-8#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/end-of-year-diagnostic-grade-8#learning-resource",
+        "name": "אבחון סוף שנה לכיתה ח׳: לקראת כיתה ט׳",
+        "url": "https://www.noamdoronmath.co.il/end-of-year-diagnostic-grade-8",
+        "description": "אבחון סוף שנה לכיתה ח׳: מיפוי הידע לקראת כיתה ט׳ בקנה מידה, חזקות, ביטויים, משוואות וגרפים. דף עבודה אחד, בחינם וללא הרשמה.",
+        "educationalLevel": "כיתה ח׳",
+        "learningResourceType": "דפי עבודה",
+        "teaches": "מיפוי ידע בסוף כיתה ח׳ לקראת המעבר לכיתה ט׳",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/end-of-year-diagnostic-grade-8#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "למה עושים אבחון בסוף השנה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כדי לדעת לפני כיתה ט׳ אילו נושאים יושבים טוב ואילו צריכים חיזוק."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "מה עושים עם התוצאות?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "בכל נושא שבו הייתה טעות חוזרים לדף העבודה שלו בכיתה ח׳, ובודקים שוב לפני תחילת כיתה ט׳."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "כמה דפי עבודה יש בנושא?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "בנושא יש דף עבודה אחד לכל הכיתה, ובסופו תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם יש תשובות לדפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. בסוף כל דף עבודה יש דף תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

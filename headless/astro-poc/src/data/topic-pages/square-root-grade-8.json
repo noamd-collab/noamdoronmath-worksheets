@@ -1,0 +1,314 @@
+{
+  "slug": "square-root-grade-8",
+  "path": "/square-root-grade-8",
+  "grade": 8,
+  "sourceUrl": "https://www.noamdoronmath.co.il/square-root-grade-8",
+  "fetchedAt": "2026-11-10T00:00:00.000Z",
+  "verifiedVia": "authored-catalog-gap-from-noam-pdfs",
+  "title": "שורש ריבועי לכיתה ח׳ | דפי עבודה חינם",
+  "description": "שורש ריבועי לכיתה ח׳: משמעות השורש, ריבועים שלמים, אומדן שורש בין שני מספרים ופתרון x² = a. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "שורש ריבועי לכיתה ח׳: משמעות, אומדן ומשוואות",
+  "intro": "לומדים מהו שורש ריבועי, מחשבים שורשים של ריבועים שלמים בלי מחשבון, אומדים שורש שאינו שלם ופותרים משוואות כמו x² = 49. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "השורש הריבועי של מספר אי־שלילי a הוא המספר האי־שלילי שבריבוע נותן a. √169 = 13, כי 13² = 169. השורש הוא תמיד אי־שלילי.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "שורש של מספר שאינו ריבוע שלם נמצא בין שני מספרים שלמים. מוצאים את הריבועים השלמים הקרובים מלמטה ומלמעלה.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "דוגמה: חצר ריבועית ששטחה 225 מ״ר. אורך הצלע הוא √225 = 15 מטרים. במשוואה x² = 225 יש שני פתרונות: x = 15 או x = −15, אבל אורך צלע הוא רק 15.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "כותבים √100 = −10 או √100 = ±10. הסימן √ מציין רק את השורש האי־שלילי, 10. שני הפתרונות מופיעים במשוואה x² = 100.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "חושבים ש־√(a + b) = √a + √b. למשל √(9 + 16) = √25 = 5, אבל √9 + √16 = 7.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "בין אילו שני מספרים שלמים עוקבים נמצא √90?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה היא בין 9 ל־10, כי 9² = 81 ו־10² = 100.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "לומדים מהו שורש ריבועי, מחשבים שורשים של ריבועים שלמים בלי מחשבון, אומדים שורש שאינו שלם ופותרים משוואות כמו x² = 49. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=8&topic=10",
+      "catalogTopicId": 10
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "השורש הריבועי של מספר אי־שלילי a הוא המספר האי־שלילי שבריבוע נותן a. √169 = 13, כי 13² = 169. השורש הוא תמיד אי־שלילי.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "שורש של מספר שאינו ריבוע שלם נמצא בין שני מספרים שלמים. מוצאים את הריבועים השלמים הקרובים מלמטה ומלמעלה.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "דוגמה: חצר ריבועית ששטחה 225 מ״ר. אורך הצלע הוא √225 = 15 מטרים. במשוואה x² = 225 יש שני פתרונות: x = 15 או x = −15, אבל אורך צלע הוא רק 15.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "כותבים √100 = −10 או √100 = ±10. הסימן √ מציין רק את השורש האי־שלילי, 10. שני הפתרונות מופיעים במשוואה x² = 100.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "חושבים ש־√(a + b) = √a + √b. למשל √(9 + 16) = √25 = 5, אבל √9 + √16 = 7.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "בין אילו שני מספרים שלמים עוקבים נמצא √90?",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "התשובה היא בין 9 ל־10, כי 9² = 81 ו־10² = 100.",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 10.11.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "למה השורש הריבועי אינו שלילי?",
+      "answer": "כך הוא מוגדר: √a הוא המספר האי־שלילי שבריבוע נותן a. במשוואה x² = a מוסיפים את הפתרון השלילי בנפרד."
+    },
+    {
+      "question": "איך אומדים שורש בלי מחשבון?",
+      "answer": "מוצאים את שני הריבועים השלמים הקרובים. למשל 49 < 55 < 64, ולכן √55 נמצא בין 7 ל־8."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם יש תשובות לדפי העבודה?",
+      "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "למה השורש הריבועי אינו שלילי?",
+          "answer": "כך הוא מוגדר: √a הוא המספר האי־שלילי שבריבוע נותן a. במשוואה x² = a מוסיפים את הפתרון השלילי בנפרד."
+        },
+        {
+          "question": "איך אומדים שורש בלי מחשבון?",
+          "answer": "מוצאים את שני הריבועים השלמים הקרובים. למשל 49 < 55 < 64, ולכן √55 נמצא בין 7 ל־8."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם יש תשובות לדפי העבודה?",
+          "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/grade-8",
+      "label": "כל דפי כיתה ח׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-8"
+    },
+    {
+      "path": "/pythagorean-theorem-grade-8",
+      "label": "משפט פיתגורס",
+      "productionHref": "https://www.noamdoronmath.co.il/pythagorean-theorem-grade-8"
+    },
+    {
+      "path": "/square-roots-grade-9",
+      "label": "שורשים",
+      "productionHref": "https://www.noamdoronmath.co.il/square-roots-grade-9"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=8&topic=10",
+    "source": "catalog-g8-t10",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=10",
+    "catalogTopicId": 10,
+    "catalogTopicTitle": "שורש ריבועי"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=8&topic=10",
+      "source": "catalog-g8-t10",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=10",
+      "catalogTopicId": 10,
+      "catalogTopicTitle": "שורש ריבועי"
+    }
+  ],
+  "gradeHubHref": "/grade-8",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/square-root-grade-8#webpage",
+        "url": "https://www.noamdoronmath.co.il/square-root-grade-8",
+        "name": "שורש ריבועי לכיתה ח׳ | דפי עבודה חינם",
+        "description": "שורש ריבועי לכיתה ח׳: משמעות השורש, ריבועים שלמים, אומדן שורש בין שני מספרים ופתרון x² = a. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/square-root-grade-8#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/square-root-grade-8#learning-resource",
+        "name": "שורש ריבועי לכיתה ח׳: משמעות, אומדן ומשוואות",
+        "url": "https://www.noamdoronmath.co.il/square-root-grade-8",
+        "description": "שורש ריבועי לכיתה ח׳: משמעות השורש, ריבועים שלמים, אומדן שורש בין שני מספרים ופתרון x² = a. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "educationalLevel": "כיתה ח׳",
+        "learningResourceType": "דפי עבודה",
+        "teaches": "משמעות השורש הריבועי, אומדן שורשים ומשוואות מהצורה x² = a",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/square-root-grade-8#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "למה השורש הריבועי אינו שלילי?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כך הוא מוגדר: √a הוא המספר האי־שלילי שבריבוע נותן a. במשוואה x² = a מוסיפים את הפתרון השלילי בנפרד."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך אומדים שורש בלי מחשבון?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "מוצאים את שני הריבועים השלמים הקרובים. למשל 49 < 55 < 64, ולכן √55 נמצא בין 7 ל־8."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם יש תשובות לדפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. בסוף כל דף עבודה יש דף תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

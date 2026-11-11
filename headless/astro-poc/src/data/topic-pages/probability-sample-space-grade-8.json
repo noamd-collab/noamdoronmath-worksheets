@@ -1,0 +1,314 @@
+{
+  "slug": "probability-sample-space-grade-8",
+  "path": "/probability-sample-space-grade-8",
+  "grade": 8,
+  "sourceUrl": "https://www.noamdoronmath.co.il/probability-sample-space-grade-8",
+  "fetchedAt": "2026-11-10T00:00:00.000Z",
+  "verifiedVia": "authored-catalog-gap-from-noam-pdfs",
+  "title": "הסתברות ומרחב תוצאות לכיתה ח׳ | דפי עבודה חינם",
+  "description": "הסתברות לכיתה ח׳: מרחב התוצאות, מאורע, ספירת תוצאות, הסתברות במרחב אחיד והמאורע המשלים. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "הסתברות לכיתה ח׳: מרחב תוצאות ומאורע",
+  "intro": "לומדים לרשום את מרחב התוצאות של ניסוי, לספור את התוצאות של מאורע ולחשב את ההסתברות שלו כשכל התוצאות שוות סיכוי. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "מרחב התוצאות הוא רשימת כל התוצאות האפשריות. מאורע הוא חלק מהתוצאות, למשל ״מספר זוגי״ בהטלת קובייה.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "במרחב אחיד, שבו לכל תוצאה אותו סיכוי, ההסתברות של מאורע היא ⟨מספר התוצאות במאורע¦מספר כל התוצאות⟩.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "דוגמה: בוחרים מעטפה מתוך שש מעטפות שעליהן 2, 4, 7, 9, 12, 15. במאורע ״מספר זוגי״ יש 3 תוצאות: 2, 4 ו־12, ולכן ההסתברות היא ⟨3¦6⟩ = ⟨1¦2⟩.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "סופרים צבעים במקום עצמים. אם בשקית 3 אסימונים אפורים ו־2 לבנים, יש 5 תוצאות שוות סיכוי, לא 2.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "שוכחים לצמצם או לבדוק שההסתברות בין 0 ל־1.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "במחוג 8 גזרות שוות, ממוספרות 1 עד 8. מהי ההסתברות לקבל מספר גדול מ־5?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה היא ⟨3¦8⟩, כי המספרים 6, 7 ו־8 גדולים מ־5.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "לומדים לרשום את מרחב התוצאות של ניסוי, לספור את התוצאות של מאורע ולחשב את ההסתברות שלו כשכל התוצאות שוות סיכוי. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=8&topic=50",
+      "catalogTopicId": 50
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "מרחב התוצאות הוא רשימת כל התוצאות האפשריות. מאורע הוא חלק מהתוצאות, למשל ״מספר זוגי״ בהטלת קובייה.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "במרחב אחיד, שבו לכל תוצאה אותו סיכוי, ההסתברות של מאורע היא ⟨מספר התוצאות במאורע¦מספר כל התוצאות⟩.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "דוגמה: בוחרים מעטפה מתוך שש מעטפות שעליהן 2, 4, 7, 9, 12, 15. במאורע ״מספר זוגי״ יש 3 תוצאות: 2, 4 ו־12, ולכן ההסתברות היא ⟨3¦6⟩ = ⟨1¦2⟩.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "סופרים צבעים במקום עצמים. אם בשקית 3 אסימונים אפורים ו־2 לבנים, יש 5 תוצאות שוות סיכוי, לא 2.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "שוכחים לצמצם או לבדוק שההסתברות בין 0 ל־1.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "במחוג 8 גזרות שוות, ממוספרות 1 עד 8. מהי ההסתברות לקבל מספר גדול מ־5?",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "התשובה היא ⟨3¦8⟩, כי המספרים 6, 7 ו־8 גדולים מ־5.",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 10.11.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "מהו מרחב תוצאות אחיד?",
+      "answer": "מרחב שבו לכל תוצאה אותו סיכוי, כמו קובייה הוגנת או בחירה של אסימון מתוך שקית מעורבבת."
+    },
+    {
+      "question": "מהי הסתברות של מאורע משלים?",
+      "answer": "1 פחות ההסתברות של המאורע. אם ההסתברות לזכות היא ⟨2¦5⟩, ההסתברות לא לזכות היא ⟨3¦5⟩."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם יש תשובות לדפי העבודה?",
+      "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "מהו מרחב תוצאות אחיד?",
+          "answer": "מרחב שבו לכל תוצאה אותו סיכוי, כמו קובייה הוגנת או בחירה של אסימון מתוך שקית מעורבבת."
+        },
+        {
+          "question": "מהי הסתברות של מאורע משלים?",
+          "answer": "1 פחות ההסתברות של המאורע. אם ההסתברות לזכות היא ⟨2¦5⟩, ההסתברות לא לזכות היא ⟨3¦5⟩."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם יש תשובות לדפי העבודה?",
+          "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/grade-8",
+      "label": "כל דפי כיתה ח׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-8"
+    },
+    {
+      "path": "/probability-experiments-fairness-grade-8",
+      "label": "הסתברות — ניסוי והוגנות",
+      "productionHref": "https://www.noamdoronmath.co.il/probability-experiments-fairness-grade-8"
+    },
+    {
+      "path": "/probability-grade-9",
+      "label": "הסתברות",
+      "productionHref": "https://www.noamdoronmath.co.il/probability-grade-9"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=8&topic=50",
+    "source": "catalog-g8-t50",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=50",
+    "catalogTopicId": 50,
+    "catalogTopicTitle": "הסתברות — מרחב תוצאות"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=8&topic=50",
+      "source": "catalog-g8-t50",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=50",
+      "catalogTopicId": 50,
+      "catalogTopicTitle": "הסתברות — מרחב תוצאות"
+    }
+  ],
+  "gradeHubHref": "/grade-8",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/probability-sample-space-grade-8#webpage",
+        "url": "https://www.noamdoronmath.co.il/probability-sample-space-grade-8",
+        "name": "הסתברות ומרחב תוצאות לכיתה ח׳ | דפי עבודה חינם",
+        "description": "הסתברות לכיתה ח׳: מרחב התוצאות, מאורע, ספירת תוצאות, הסתברות במרחב אחיד והמאורע המשלים. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/probability-sample-space-grade-8#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/probability-sample-space-grade-8#learning-resource",
+        "name": "הסתברות לכיתה ח׳: מרחב תוצאות ומאורע",
+        "url": "https://www.noamdoronmath.co.il/probability-sample-space-grade-8",
+        "description": "הסתברות לכיתה ח׳: מרחב התוצאות, מאורע, ספירת תוצאות, הסתברות במרחב אחיד והמאורע המשלים. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "educationalLevel": "כיתה ח׳",
+        "learningResourceType": "דפי עבודה",
+        "teaches": "מרחב תוצאות, מאורע והסתברות במרחב אחיד",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/probability-sample-space-grade-8#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "מהו מרחב תוצאות אחיד?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "מרחב שבו לכל תוצאה אותו סיכוי, כמו קובייה הוגנת או בחירה של אסימון מתוך שקית מעורבבת."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "מהי הסתברות של מאורע משלים?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "1 פחות ההסתברות של המאורע. אם ההסתברות לזכות היא ⟨2¦5⟩, ההסתברות לא לזכות היא ⟨3¦5⟩."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם יש תשובות לדפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. בסוף כל דף עבודה יש דף תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

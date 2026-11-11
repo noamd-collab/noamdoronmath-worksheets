@@ -145,7 +145,11 @@ describe('exact-design protected live-baseline boundaries', () => {
     // and a wider Wix-duplicate strip. Reviewed on purpose; not a design tweak.
     // SEO stage 4: title/description/OG/breadcrumb read approvedSeoProposal(seoPath)
     // (only rows with approved: true). Reviewed on purpose; not a design tweak.
-    assert.equal(sha256(head), '97ad7597489241c3478c4e978ee84dc0d3ca081fc5488e06eb43aba838ae9435');
+    // Noam, 2026-11-10: explicitly approved fixing and publishing duplicate SEO.
+    // Authored metadata gains ownership markers; server-seo.test.ts verifies
+    // removal of matching Wix defaults before delivery instead of client JS.
+    // Existing fonts, icons, schema and metadata values remain protected here.
+    assert.equal(sha256(head), 'dc55bfedb5005d62e74aa6bd198f92ef02eaeeadf1f9a5002e1c8d5d2cc242d8');
   });
 
   it('preserves viewer head and every existing script, including AI answers and storage', () => {

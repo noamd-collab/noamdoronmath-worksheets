@@ -1,0 +1,314 @@
+{
+  "slug": "two-data-sources-grade-8",
+  "path": "/two-data-sources-grade-8",
+  "grade": 8,
+  "sourceUrl": "https://www.noamdoronmath.co.il/two-data-sources-grade-8",
+  "fetchedAt": "2026-11-10T00:00:00.000Z",
+  "verifiedVia": "authored-catalog-gap-from-noam-pdfs",
+  "title": "שני מקורות מידע לכיתה ח׳: השוואת נתונים | דפי עבודה חינם",
+  "description": "שני מקורות מידע לכיתה ח׳: קריאת נתונים משני מקורות, השוואה ביניהם, הפרשים, ממוצע ושילוב להערכה אחת. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "שני מקורות מידע לכיתה ח׳: השוואה ושילוב של נתונים",
+  "intro": "לומדים לקרוא את אותם נתונים משני מקורות שונים, למשל מצלמה ומתנדבים, להשוות ביניהם, לחשב הפרשים וממוצעים ולשלב אותם להערכה אחת. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "כששני מקורות מודדים את אותו דבר, התוצאות לא תמיד זהות. קוראים את הנתונים של כל מקור בנפרד, ומשווים בכל קבוצה או בכל יום.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "ההפרש בין המקורות מראה כמה הם רחוקים זה מזה. אם מקור אחד גבוה יותר בעקביות, ייתכן שהוא סופר משהו שהשני מפספס.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "דוגמה: ביום ראשון ספרה המצלמה 23 פרפרים והמתנדבים 27. ההפרש הוא 4, והממוצע של שני המקורות הוא 25.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "משווים בין המקורות לפי גובה העמודות בלי לבדוק שהצירים זהים בשני הגרפים.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "מחשבים ממוצע של כל הנתונים יחד בלי לשים לב שבאחד המקורות חסרה מדידה.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "מקור א׳ דיווח על 4, 6 ו־8 תלמידים בשלושה חוגים, ומקור ב׳ על 5, 5 ו־11. מה הממוצע לחוג לפי כל מקור?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה היא 6 לפי מקור א׳ ו־7 לפי מקור ב׳, כי 18 : 3 = 6 ו־21 : 3 = 7.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "לומדים לקרוא את אותם נתונים משני מקורות שונים, למשל מצלמה ומתנדבים, להשוות ביניהם, לחשב הפרשים וממוצעים ולשלב אותם להערכה אחת. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=8&topic=66",
+      "catalogTopicId": 66
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "כששני מקורות מודדים את אותו דבר, התוצאות לא תמיד זהות. קוראים את הנתונים של כל מקור בנפרד, ומשווים בכל קבוצה או בכל יום.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "ההפרש בין המקורות מראה כמה הם רחוקים זה מזה. אם מקור אחד גבוה יותר בעקביות, ייתכן שהוא סופר משהו שהשני מפספס.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "דוגמה: ביום ראשון ספרה המצלמה 23 פרפרים והמתנדבים 27. ההפרש הוא 4, והממוצע של שני המקורות הוא 25.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "משווים בין המקורות לפי גובה העמודות בלי לבדוק שהצירים זהים בשני הגרפים.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "מחשבים ממוצע של כל הנתונים יחד בלי לשים לב שבאחד המקורות חסרה מדידה.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "מקור א׳ דיווח על 4, 6 ו־8 תלמידים בשלושה חוגים, ומקור ב׳ על 5, 5 ו־11. מה הממוצע לחוג לפי כל מקור?",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "התשובה היא 6 לפי מקור א׳ ו־7 לפי מקור ב׳, כי 18 : 3 = 6 ו־21 : 3 = 7.",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 10.11.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "למה שני מקורות נותנים תוצאות שונות?",
+      "answer": "כי כל מקור מודד בדרך אחרת. מצלמה יכולה לפספס פרפר שמסתתר, ומתנדב יכול לספור פרפר פעמיים."
+    },
+    {
+      "question": "איך משלבים שני מקורות?",
+      "answer": "משווים קודם ובודקים אם יש מקור שגבוה או נמוך בעקביות. אם אין סיבה להעדיף מקור, אפשר להשתמש בממוצע שלהם."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם יש תשובות לדפי העבודה?",
+      "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "למה שני מקורות נותנים תוצאות שונות?",
+          "answer": "כי כל מקור מודד בדרך אחרת. מצלמה יכולה לפספס פרפר שמסתתר, ומתנדב יכול לספור פרפר פעמיים."
+        },
+        {
+          "question": "איך משלבים שני מקורות?",
+          "answer": "משווים קודם ובודקים אם יש מקור שגבוה או נמוך בעקביות. אם אין סיבה להעדיף מקור, אפשר להשתמש בממוצע שלהם."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם יש תשובות לדפי העבודה?",
+          "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/grade-8",
+      "label": "כל דפי כיתה ח׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-8"
+    },
+    {
+      "path": "/statistics-grade-8",
+      "label": "סטטיסטיקה",
+      "productionHref": "https://www.noamdoronmath.co.il/statistics-grade-8"
+    },
+    {
+      "path": "/interpolation-extrapolation-grade-8",
+      "label": "אינטרפולציה ואקסטרפולציה",
+      "productionHref": "https://www.noamdoronmath.co.il/interpolation-extrapolation-grade-8"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=8&topic=66",
+    "source": "catalog-g8-t66",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=66",
+    "catalogTopicId": 66,
+    "catalogTopicTitle": "שני מקורות מידע"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=8&topic=66",
+      "source": "catalog-g8-t66",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=66",
+      "catalogTopicId": 66,
+      "catalogTopicTitle": "שני מקורות מידע"
+    }
+  ],
+  "gradeHubHref": "/grade-8",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/two-data-sources-grade-8#webpage",
+        "url": "https://www.noamdoronmath.co.il/two-data-sources-grade-8",
+        "name": "שני מקורות מידע לכיתה ח׳: השוואת נתונים | דפי עבודה חינם",
+        "description": "שני מקורות מידע לכיתה ח׳: קריאת נתונים משני מקורות, השוואה ביניהם, הפרשים, ממוצע ושילוב להערכה אחת. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/two-data-sources-grade-8#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/two-data-sources-grade-8#learning-resource",
+        "name": "שני מקורות מידע לכיתה ח׳: השוואה ושילוב של נתונים",
+        "url": "https://www.noamdoronmath.co.il/two-data-sources-grade-8",
+        "description": "שני מקורות מידע לכיתה ח׳: קריאת נתונים משני מקורות, השוואה ביניהם, הפרשים, ממוצע ושילוב להערכה אחת. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "educationalLevel": "כיתה ח׳",
+        "learningResourceType": "דפי עבודה",
+        "teaches": "השוואה ושילוב של נתונים משני מקורות מידע",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/two-data-sources-grade-8#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "למה שני מקורות נותנים תוצאות שונות?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כי כל מקור מודד בדרך אחרת. מצלמה יכולה לפספס פרפר שמסתתר, ומתנדב יכול לספור פרפר פעמיים."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך משלבים שני מקורות?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "משווים קודם ובודקים אם יש מקור שגבוה או נמוך בעקביות. אם אין סיבה להעדיף מקור, אפשר להשתמש בממוצע שלהם."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם יש תשובות לדפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. בסוף כל דף עבודה יש דף תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}
