@@ -1,0 +1,314 @@
+{
+  "slug": "data-range-grade-8",
+  "path": "/data-range-grade-8",
+  "grade": 8,
+  "sourceUrl": "https://www.noamdoronmath.co.il/data-range-grade-8",
+  "fetchedAt": "2026-11-10T00:00:00.000Z",
+  "verifiedVia": "authored-catalog-gap-from-noam-pdfs",
+  "title": "טווח הנתונים לכיתה ח׳ | דפי עבודה חינם",
+  "description": "טווח הנתונים לכיתה ח׳: חישוב הטווח, ערכים קיצוניים, נתונים שליליים ומשמעות הפיזור בהשוואת קבוצות. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "טווח הנתונים לכיתה ח׳: חישוב ומשמעות הפיזור",
+  "intro": "לומדים לחשב את הטווח, ההפרש בין הנתון הגדול ביותר לקטן ביותר, להבין מה הוא אומר על הפיזור ולהשוות בעזרתו בין קבוצות. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "הטווח הוא הנתון הגדול ביותר פחות הנתון הקטן ביותר. הוא מודד כמה הנתונים מפוזרים: טווח קטן אומר שהנתונים קרובים זה לזה.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "הטווח תלוי רק בשני ערכים. ערך קיצוני אחד, גבוה מאוד או נמוך מאוד, יכול להגדיל אותו הרבה.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "דוגמה: ברשימה −6, 15, 2 הנתון הגדול הוא 15 והקטן הוא −6, ולכן הטווח הוא 15 − (−6) = 21.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "מחסירים את הנתון הראשון מהאחרון בלי לסדר. הטווח הוא הגדול פחות הקטן, בכל סדר שבו הנתונים כתובים.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "עם מספרים שליליים מחסירים לא נכון: 15 − (−6) הוא 21, לא 9.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "מהו הטווח של הנתונים 23, 8, 15, 31, 12?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה היא 23, כי 31 − 8 = 23.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "לומדים לחשב את הטווח, ההפרש בין הנתון הגדול ביותר לקטן ביותר, להבין מה הוא אומר על הפיזור ולהשוות בעזרתו בין קבוצות. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=8&topic=22",
+      "catalogTopicId": 22
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "הטווח הוא הנתון הגדול ביותר פחות הנתון הקטן ביותר. הוא מודד כמה הנתונים מפוזרים: טווח קטן אומר שהנתונים קרובים זה לזה.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "הטווח תלוי רק בשני ערכים. ערך קיצוני אחד, גבוה מאוד או נמוך מאוד, יכול להגדיל אותו הרבה.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "דוגמה: ברשימה −6, 15, 2 הנתון הגדול הוא 15 והקטן הוא −6, ולכן הטווח הוא 15 − (−6) = 21.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "מחסירים את הנתון הראשון מהאחרון בלי לסדר. הטווח הוא הגדול פחות הקטן, בכל סדר שבו הנתונים כתובים.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "עם מספרים שליליים מחסירים לא נכון: 15 − (−6) הוא 21, לא 9.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "מהו הטווח של הנתונים 23, 8, 15, 31, 12?",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "התשובה היא 23, כי 31 − 8 = 23.",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 10.11.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "מה הטווח אומר על הנתונים?",
+      "answer": "כמה רחוק הנתון הגדול ביותר מהקטן ביותר. הוא מודד פיזור, ולא מה ערך טיפוסי."
+    },
+    {
+      "question": "האם שתי קבוצות עם אותו טווח דומות?",
+      "answer": "לא בהכרח. הטווח מתייחס רק לקצוות, ובאמצע הנתונים יכולים להיות מסודרים אחרת לגמרי."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם יש תשובות לדפי העבודה?",
+      "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "מה הטווח אומר על הנתונים?",
+          "answer": "כמה רחוק הנתון הגדול ביותר מהקטן ביותר. הוא מודד פיזור, ולא מה ערך טיפוסי."
+        },
+        {
+          "question": "האם שתי קבוצות עם אותו טווח דומות?",
+          "answer": "לא בהכרח. הטווח מתייחס רק לקצוות, ובאמצע הנתונים יכולים להיות מסודרים אחרת לגמרי."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם יש תשובות לדפי העבודה?",
+          "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/grade-8",
+      "label": "כל דפי כיתה ח׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-8"
+    },
+    {
+      "path": "/mean-grade-8",
+      "label": "הממוצע",
+      "productionHref": "https://www.noamdoronmath.co.il/mean-grade-8"
+    },
+    {
+      "path": "/statistics-grade-8",
+      "label": "סטטיסטיקה",
+      "productionHref": "https://www.noamdoronmath.co.il/statistics-grade-8"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=8&topic=22",
+    "source": "catalog-g8-t22",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=22",
+    "catalogTopicId": 22,
+    "catalogTopicTitle": "טווח הנתונים"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=8&topic=22",
+      "source": "catalog-g8-t22",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=22",
+      "catalogTopicId": 22,
+      "catalogTopicTitle": "טווח הנתונים"
+    }
+  ],
+  "gradeHubHref": "/grade-8",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/data-range-grade-8#webpage",
+        "url": "https://www.noamdoronmath.co.il/data-range-grade-8",
+        "name": "טווח הנתונים לכיתה ח׳ | דפי עבודה חינם",
+        "description": "טווח הנתונים לכיתה ח׳: חישוב הטווח, ערכים קיצוניים, נתונים שליליים ומשמעות הפיזור בהשוואת קבוצות. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/data-range-grade-8#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/data-range-grade-8#learning-resource",
+        "name": "טווח הנתונים לכיתה ח׳: חישוב ומשמעות הפיזור",
+        "url": "https://www.noamdoronmath.co.il/data-range-grade-8",
+        "description": "טווח הנתונים לכיתה ח׳: חישוב הטווח, ערכים קיצוניים, נתונים שליליים ומשמעות הפיזור בהשוואת קבוצות. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "educationalLevel": "כיתה ח׳",
+        "learningResourceType": "דפי עבודה",
+        "teaches": "טווח הנתונים, ערכים קיצוניים ופיזור",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/data-range-grade-8#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "מה הטווח אומר על הנתונים?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כמה רחוק הנתון הגדול ביותר מהקטן ביותר. הוא מודד פיזור, ולא מה ערך טיפוסי."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם שתי קבוצות עם אותו טווח דומות?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא בהכרח. הטווח מתייחס רק לקצוות, ובאמצע הנתונים יכולים להיות מסודרים אחרת לגמרי."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם יש תשובות לדפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. בסוף כל דף עבודה יש דף תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

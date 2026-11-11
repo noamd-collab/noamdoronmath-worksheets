@@ -1,0 +1,314 @@
+{
+  "slug": "percent-change-grade-8",
+  "path": "/percent-change-grade-8",
+  "grade": 8,
+  "sourceUrl": "https://www.noamdoronmath.co.il/percent-change-grade-8",
+  "fetchedAt": "2026-11-10T00:00:00.000Z",
+  "verifiedVia": "authored-catalog-gap-from-noam-pdfs",
+  "title": "שינוי באחוזים לכיתה ח׳: עלייה וירידה | דפי עבודה חינם",
+  "description": "שינוי באחוזים לכיתה ח׳: עלייה וירידה באחוזים, מקדם השינוי, חישוב אחוז השינוי והשוואת שינויים. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "שינוי באחוזים לכיתה ח׳: עלייה, ירידה ומקדם שינוי",
+  "intro": "לומדים לחשב עלייה וירידה באחוזים בעזרת מקדם שינוי, למצוא בכמה אחוזים השתנה ערך, ולהשוות בין שינויים שגודלם שונה. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "מקדם השינוי הוא המספר שבו כופלים את הערך ההתחלתי. עלייה של 7% היא כפל ב־1.07, וירידה של 7% היא כפל ב־0.93. מקדם גדול מ־1 הוא עלייה, ומקדם קטן מ־1 הוא ירידה.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "אחוז השינוי הוא השינוי חלקי הערך ההתחלתי, כפול 100. משווים תמיד לערך שהיה לפני השינוי.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "דוגמה: כלב שקל 20 ק״ג ועכשיו הוא שוקל 27 ק״ג. השינוי הוא 7 ק״ג, ו־⟨7¦20⟩ = 0.35, כלומר עלייה של 35%.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "מחלקים בערך החדש במקום בערך ההתחלתי. אחוז השינוי מחושב ביחס למה שהיה לפני השינוי.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "משווים שינויים לפי מספר היחידות בלבד. תוספת של 72 מבקרים מתוך 800 היא 9%, ותוספת של 25 מתוך 125 היא 20%.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "מחיר של 80 שקלים ירד ב־15%. מה המחיר החדש?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה היא 68 שקלים, כי 80 × 0.85 = 68.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "לומדים לחשב עלייה וירידה באחוזים בעזרת מקדם שינוי, למצוא בכמה אחוזים השתנה ערך, ולהשוות בין שינויים שגודלם שונה. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=8&topic=8",
+      "catalogTopicId": 8
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "מקדם השינוי הוא המספר שבו כופלים את הערך ההתחלתי. עלייה של 7% היא כפל ב־1.07, וירידה של 7% היא כפל ב־0.93. מקדם גדול מ־1 הוא עלייה, ומקדם קטן מ־1 הוא ירידה.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "אחוז השינוי הוא השינוי חלקי הערך ההתחלתי, כפול 100. משווים תמיד לערך שהיה לפני השינוי.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "דוגמה: כלב שקל 20 ק״ג ועכשיו הוא שוקל 27 ק״ג. השינוי הוא 7 ק״ג, ו־⟨7¦20⟩ = 0.35, כלומר עלייה של 35%.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "מחלקים בערך החדש במקום בערך ההתחלתי. אחוז השינוי מחושב ביחס למה שהיה לפני השינוי.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "משווים שינויים לפי מספר היחידות בלבד. תוספת של 72 מבקרים מתוך 800 היא 9%, ותוספת של 25 מתוך 125 היא 20%.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "מחיר של 80 שקלים ירד ב־15%. מה המחיר החדש?",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "התשובה היא 68 שקלים, כי 80 × 0.85 = 68.",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 10.11.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "מהו מקדם שינוי?",
+      "answer": "המספר שבו כופלים את הערך ההתחלתי כדי לקבל את הערך החדש. עלייה של p% היא כפל ב־(1 + ⟨p¦100⟩)."
+    },
+    {
+      "question": "איך מחשבים בכמה אחוזים השתנה ערך?",
+      "answer": "מחלקים את השינוי בערך ההתחלתי וכופלים ב־100. אם הערך ירד, אחוז השינוי שלילי."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם יש תשובות לדפי העבודה?",
+      "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "מהו מקדם שינוי?",
+          "answer": "המספר שבו כופלים את הערך ההתחלתי כדי לקבל את הערך החדש. עלייה של p% היא כפל ב־(1 + ⟨p¦100⟩)."
+        },
+        {
+          "question": "איך מחשבים בכמה אחוזים השתנה ערך?",
+          "answer": "מחלקים את השינוי בערך ההתחלתי וכופלים ב־100. אם הערך ירד, אחוז השינוי שלילי."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם יש תשובות לדפי העבודה?",
+          "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/grade-8",
+      "label": "כל דפי כיתה ח׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-8"
+    },
+    {
+      "path": "/successive-percent-changes-grade-8",
+      "label": "שינויים עוקבים באחוזים",
+      "productionHref": "https://www.noamdoronmath.co.il/successive-percent-changes-grade-8"
+    },
+    {
+      "path": "/percentage-problems-grade-8",
+      "label": "בעיות אחוזים",
+      "productionHref": "https://www.noamdoronmath.co.il/percentage-problems-grade-8"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=8&topic=8",
+    "source": "catalog-g8-t8",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=8",
+    "catalogTopicId": 8,
+    "catalogTopicTitle": "שינוי באחוזים"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=8&topic=8",
+      "source": "catalog-g8-t8",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=8",
+      "catalogTopicId": 8,
+      "catalogTopicTitle": "שינוי באחוזים"
+    }
+  ],
+  "gradeHubHref": "/grade-8",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/percent-change-grade-8#webpage",
+        "url": "https://www.noamdoronmath.co.il/percent-change-grade-8",
+        "name": "שינוי באחוזים לכיתה ח׳: עלייה וירידה | דפי עבודה חינם",
+        "description": "שינוי באחוזים לכיתה ח׳: עלייה וירידה באחוזים, מקדם השינוי, חישוב אחוז השינוי והשוואת שינויים. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/percent-change-grade-8#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/percent-change-grade-8#learning-resource",
+        "name": "שינוי באחוזים לכיתה ח׳: עלייה, ירידה ומקדם שינוי",
+        "url": "https://www.noamdoronmath.co.il/percent-change-grade-8",
+        "description": "שינוי באחוזים לכיתה ח׳: עלייה וירידה באחוזים, מקדם השינוי, חישוב אחוז השינוי והשוואת שינויים. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "educationalLevel": "כיתה ח׳",
+        "learningResourceType": "דפי עבודה",
+        "teaches": "עלייה וירידה באחוזים, מקדם שינוי ואחוז השינוי",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/percent-change-grade-8#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "מהו מקדם שינוי?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "המספר שבו כופלים את הערך ההתחלתי כדי לקבל את הערך החדש. עלייה של p% היא כפל ב־(1 + ⟨p¦100⟩)."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך מחשבים בכמה אחוזים השתנה ערך?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "מחלקים את השינוי בערך ההתחלתי וכופלים ב־100. אם הערך ירד, אחוז השינוי שלילי."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם יש תשובות לדפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. בסוף כל דף עבודה יש דף תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

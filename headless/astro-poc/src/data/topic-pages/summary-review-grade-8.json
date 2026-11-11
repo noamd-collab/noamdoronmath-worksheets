@@ -1,0 +1,314 @@
+{
+  "slug": "summary-review-grade-8",
+  "path": "/summary-review-grade-8",
+  "grade": 8,
+  "sourceUrl": "https://www.noamdoronmath.co.il/summary-review-grade-8",
+  "fetchedAt": "2026-11-10T00:00:00.000Z",
+  "verifiedVia": "authored-catalog-gap-from-noam-pdfs",
+  "title": "חזרה מסכמת לכיתה ח׳ | דף עבודה חינם",
+  "description": "חזרה מסכמת לכיתה ח׳: שאלות משולבות באלגברה, פונקציות, תנועה, קנה מידה, נתונים וגאומטריה. דף עבודה אחד, בחינם וללא הרשמה.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "חזרה מסכמת לכיתה ח׳",
+  "intro": "דף חזרה רוחבי על כל פרקי כיתה ח׳: שאלות משולבות באלגברה ובפונקציות, בעיות תנועה, קנה מידה, נתונים וגאומטריה. דף העבודה זמין בחינם וללא הרשמה, עם תשובות בסוף הדף.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "בחזרה המסכמת כל שאלה משלבת כמה נושאים. למשל, בעיית תנועה שנפתרת במשוואה, או תוכנית בקנה מידה שבה מחשבים שטח.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "לפני הפתרון מזהים איזה נושא כל חלק של השאלה בודק, ואיזה כלי מתאים: משוואה, מערכת, נוסחת ישר או משפט בגאומטריה.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "דוגמה לאי־שוויון: 5 − 2x ≥ 1. מחסירים 5: −2x ≥ −4. מחלקים ב־(−2) והופכים את כיוון הסימן: x ≤ 2.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "שוכחים להפוך את כיוון אי־השוויון כשמחלקים או כופלים במספר שלילי.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "פותרים חלק אחד של שאלה משולבת ושוכחים לחזור לשאלה המקורית.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "פתרו: −2x + 3 > 11.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה היא x < −4: −2x > 8, ובחילוק ב־(−2) כיוון הסימן מתהפך.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "דף חזרה רוחבי על כל פרקי כיתה ח׳: שאלות משולבות באלגברה ובפונקציות, בעיות תנועה, קנה מידה, נתונים וגאומטריה. דף העבודה זמין בחינם וללא הרשמה, עם תשובות בסוף הדף.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דף העבודה",
+      "href": "/worksheets?grade=8&topic=58",
+      "catalogTopicId": 58
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "בחזרה המסכמת כל שאלה משלבת כמה נושאים. למשל, בעיית תנועה שנפתרת במשוואה, או תוכנית בקנה מידה שבה מחשבים שטח.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "לפני הפתרון מזהים איזה נושא כל חלק של השאלה בודק, ואיזה כלי מתאים: משוואה, מערכת, נוסחת ישר או משפט בגאומטריה.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "דוגמה לאי־שוויון: 5 − 2x ≥ 1. מחסירים 5: −2x ≥ −4. מחלקים ב־(−2) והופכים את כיוון הסימן: x ≤ 2.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "שוכחים להפוך את כיוון אי־השוויון כשמחלקים או כופלים במספר שלילי.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "פותרים חלק אחד של שאלה משולבת ושוכחים לחזור לשאלה המקורית.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "פתרו: −2x + 3 > 11.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "התשובה היא x < −4: −2x > 8, ובחילוק ב־(−2) כיוון הסימן מתהפך.",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 10.11.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "אילו נושאים יש בחזרה המסכמת?",
+      "answer": "משוואות ומערכות, פונקציות וישרים, אחוזים, בעיות תנועה, קנה מידה, נתונים וגאומטריה."
+    },
+    {
+      "question": "מתי כדאי לפתור את דף החזרה?",
+      "answer": "לפני מבחן סוף שנה או הערכה מסכמת, אחרי שסיימתם את כל פרקי השנה."
+    },
+    {
+      "question": "כמה דפי עבודה יש בנושא?",
+      "answer": "בנושא יש דף עבודה אחד לכל הכיתה, ובסופו תשובות."
+    },
+    {
+      "question": "האם יש תשובות לדפי העבודה?",
+      "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "אילו נושאים יש בחזרה המסכמת?",
+          "answer": "משוואות ומערכות, פונקציות וישרים, אחוזים, בעיות תנועה, קנה מידה, נתונים וגאומטריה."
+        },
+        {
+          "question": "מתי כדאי לפתור את דף החזרה?",
+          "answer": "לפני מבחן סוף שנה או הערכה מסכמת, אחרי שסיימתם את כל פרקי השנה."
+        },
+        {
+          "question": "כמה דפי עבודה יש בנושא?",
+          "answer": "בנושא יש דף עבודה אחד לכל הכיתה, ובסופו תשובות."
+        },
+        {
+          "question": "האם יש תשובות לדפי העבודה?",
+          "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/grade-8",
+      "label": "כל דפי כיתה ח׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-8"
+    },
+    {
+      "path": "/summative-assessment-grade-8",
+      "label": "הערכה מסכמת",
+      "productionHref": "https://www.noamdoronmath.co.il/summative-assessment-grade-8"
+    },
+    {
+      "path": "/linear-equations-grade-8",
+      "label": "משוואות ליניאריות",
+      "productionHref": "https://www.noamdoronmath.co.il/linear-equations-grade-8"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דף העבודה",
+    "href": "/worksheets?grade=8&topic=58",
+    "source": "catalog-g8-t58",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=58",
+    "catalogTopicId": 58,
+    "catalogTopicTitle": "חזרה מסכמת"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דף העבודה",
+      "href": "/worksheets?grade=8&topic=58",
+      "source": "catalog-g8-t58",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=58",
+      "catalogTopicId": 58,
+      "catalogTopicTitle": "חזרה מסכמת"
+    }
+  ],
+  "gradeHubHref": "/grade-8",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/summary-review-grade-8#webpage",
+        "url": "https://www.noamdoronmath.co.il/summary-review-grade-8",
+        "name": "חזרה מסכמת לכיתה ח׳ | דף עבודה חינם",
+        "description": "חזרה מסכמת לכיתה ח׳: שאלות משולבות באלגברה, פונקציות, תנועה, קנה מידה, נתונים וגאומטריה. דף עבודה אחד, בחינם וללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/summary-review-grade-8#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/summary-review-grade-8#learning-resource",
+        "name": "חזרה מסכמת לכיתה ח׳",
+        "url": "https://www.noamdoronmath.co.il/summary-review-grade-8",
+        "description": "חזרה מסכמת לכיתה ח׳: שאלות משולבות באלגברה, פונקציות, תנועה, קנה מידה, נתונים וגאומטריה. דף עבודה אחד, בחינם וללא הרשמה.",
+        "educationalLevel": "כיתה ח׳",
+        "learningResourceType": "דפי עבודה",
+        "teaches": "חזרה רוחבית על נושאי כיתה ח׳",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/summary-review-grade-8#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "אילו נושאים יש בחזרה המסכמת?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "משוואות ומערכות, פונקציות וישרים, אחוזים, בעיות תנועה, קנה מידה, נתונים וגאומטריה."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "מתי כדאי לפתור את דף החזרה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לפני מבחן סוף שנה או הערכה מסכמת, אחרי שסיימתם את כל פרקי השנה."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "כמה דפי עבודה יש בנושא?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "בנושא יש דף עבודה אחד לכל הכיתה, ובסופו תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם יש תשובות לדפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. בסוף כל דף עבודה יש דף תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

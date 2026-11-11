@@ -1,0 +1,314 @@
+{
+  "slug": "systems-word-problems-grade-8",
+  "path": "/systems-word-problems-grade-8",
+  "grade": 8,
+  "sourceUrl": "https://www.noamdoronmath.co.il/systems-word-problems-grade-8",
+  "fetchedAt": "2026-11-10T00:00:00.000Z",
+  "verifiedVia": "authored-catalog-gap-from-noam-pdfs",
+  "title": "בעיות מילוליות במערכת משוואות לכיתה ח׳ | דפי עבודה חינם",
+  "description": "מערכות משוואות לכיתה ח׳: תרגום בעיה מילולית לשתי משוואות בשני נעלמים, פתרון ופירוש התשובה. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "מערכת משוואות לכיתה ח׳: בעיות מילוליות ומידול",
+  "intro": "לומדים לתרגם בעיה מילולית לשתי משוואות בשני נעלמים: מסמנים כל נעלם, כותבים משוואה לכל תנאי בסיפור, פותרים ומפרשים את הפתרון. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "כשבסיפור יש שני גדלים לא ידועים ושני תנאים, מסמנים כל גודל באות משלו וכותבים משוואה לכל תנאי.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "תנאי נפוץ אחד הוא מספר הפריטים, ותנאי שני הוא הסכום שהם עולים או שוקלים. טבלה עם עמודות של כמות, מחיר וסכום עוזרת לכתוב את המשוואות.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "דוגמה: נמכרו 30 כוסות מיץ, תפוזים ב־8 שקלים ולימונדה ב־6 שקלים, ב־204 שקלים. t + l = 30 ו־8t + 6l = 204. הפתרון: t = 12 ו־l = 18.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "כותבים משוואה אחת לשני תנאים יחד, או מערבבים כמות עם מחיר באותה משוואה.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "מקבלים פתרון שלא מתאים לסיפור, כמו מספר שלילי של כוסות, ולא חוזרים לבדוק את המשוואות.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "בכיתה 32 תלמידים, ומספר הבנות גדול ב־6 ממספר הבנים. כמה בנים וכמה בנות יש בכיתה?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה היא 13 בנים ו־19 בנות, כי b + g = 32 ו־g = b + 6.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "לומדים לתרגם בעיה מילולית לשתי משוואות בשני נעלמים: מסמנים כל נעלם, כותבים משוואה לכל תנאי בסיפור, פותרים ומפרשים את הפתרון. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=8&topic=49",
+      "catalogTopicId": 49
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "כשבסיפור יש שני גדלים לא ידועים ושני תנאים, מסמנים כל גודל באות משלו וכותבים משוואה לכל תנאי.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "תנאי נפוץ אחד הוא מספר הפריטים, ותנאי שני הוא הסכום שהם עולים או שוקלים. טבלה עם עמודות של כמות, מחיר וסכום עוזרת לכתוב את המשוואות.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "דוגמה: נמכרו 30 כוסות מיץ, תפוזים ב־8 שקלים ולימונדה ב־6 שקלים, ב־204 שקלים. t + l = 30 ו־8t + 6l = 204. הפתרון: t = 12 ו־l = 18.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "כותבים משוואה אחת לשני תנאים יחד, או מערבבים כמות עם מחיר באותה משוואה.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "מקבלים פתרון שלא מתאים לסיפור, כמו מספר שלילי של כוסות, ולא חוזרים לבדוק את המשוואות.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "בכיתה 32 תלמידים, ומספר הבנות גדול ב־6 ממספר הבנים. כמה בנים וכמה בנות יש בכיתה?",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "התשובה היא 13 בנים ו־19 בנות, כי b + g = 32 ו־g = b + 6.",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 10.11.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "כמה משוואות צריך?",
+      "answer": "בבעיות שבדף מסמנים שני נעלמים וכותבים שתי משוואות משני תנאים שונים בסיפור. שתי משוואות אינן מבטיחות תמיד פתרון יחיד; לאחר הפתרון בודקים שהזוג מקיים את שני התנאים."
+    },
+    {
+      "question": "איך בודקים את הפתרון?",
+      "answer": "מציבים את שני הערכים בסיפור עצמו ובודקים שכל התנאים מתקיימים, ושהערכים הגיוניים, למשל שלמים וחיוביים."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם יש תשובות לדפי העבודה?",
+      "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "כמה משוואות צריך?",
+          "answer": "בבעיות שבדף מסמנים שני נעלמים וכותבים שתי משוואות משני תנאים שונים בסיפור. שתי משוואות אינן מבטיחות תמיד פתרון יחיד; לאחר הפתרון בודקים שהזוג מקיים את שני התנאים."
+        },
+        {
+          "question": "איך בודקים את הפתרון?",
+          "answer": "מציבים את שני הערכים בסיפור עצמו ובודקים שכל התנאים מתקיימים, ושהערכים הגיוניים, למשל שלמים וחיוביים."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם יש תשובות לדפי העבודה?",
+          "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/grade-8",
+      "label": "כל דפי כיתה ח׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-8"
+    },
+    {
+      "path": "/systems-of-equations-grade-8",
+      "label": "מערכות משוואות",
+      "productionHref": "https://www.noamdoronmath.co.il/systems-of-equations-grade-8"
+    },
+    {
+      "path": "/systems-algebraic-solution-grade-8",
+      "label": "מערכות משוואות — פתרון אלגברי",
+      "productionHref": "https://www.noamdoronmath.co.il/systems-algebraic-solution-grade-8"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=8&topic=49",
+    "source": "catalog-g8-t49",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=49",
+    "catalogTopicId": 49,
+    "catalogTopicTitle": "מערכות — מידול"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=8&topic=49",
+      "source": "catalog-g8-t49",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=49",
+      "catalogTopicId": 49,
+      "catalogTopicTitle": "מערכות — מידול"
+    }
+  ],
+  "gradeHubHref": "/grade-8",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/systems-word-problems-grade-8#webpage",
+        "url": "https://www.noamdoronmath.co.il/systems-word-problems-grade-8",
+        "name": "בעיות מילוליות במערכת משוואות לכיתה ח׳ | דפי עבודה חינם",
+        "description": "מערכות משוואות לכיתה ח׳: תרגום בעיה מילולית לשתי משוואות בשני נעלמים, פתרון ופירוש התשובה. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/systems-word-problems-grade-8#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/systems-word-problems-grade-8#learning-resource",
+        "name": "מערכת משוואות לכיתה ח׳: בעיות מילוליות ומידול",
+        "url": "https://www.noamdoronmath.co.il/systems-word-problems-grade-8",
+        "description": "מערכות משוואות לכיתה ח׳: תרגום בעיה מילולית לשתי משוואות בשני נעלמים, פתרון ופירוש התשובה. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "educationalLevel": "כיתה ח׳",
+        "learningResourceType": "דפי עבודה",
+        "teaches": "מידול בעיות מילוליות במערכת של שתי משוואות",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/systems-word-problems-grade-8#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "כמה משוואות צריך?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "בבעיות שבדף מסמנים שני נעלמים וכותבים שתי משוואות משני תנאים שונים בסיפור. שתי משוואות אינן מבטיחות תמיד פתרון יחיד; לאחר הפתרון בודקים שהזוג מקיים את שני התנאים."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בודקים את הפתרון?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "מציבים את שני הערכים בסיפור עצמו ובודקים שכל התנאים מתקיימים, ושהערכים הגיוניים, למשל שלמים וחיוביים."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם יש תשובות לדפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. בסוף כל דף עבודה יש דף תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

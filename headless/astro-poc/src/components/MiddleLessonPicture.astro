@@ -1,0 +1,158 @@
+---
+import type { Lesson, LessonLoopVariant } from '../lib/lessonLoops';
+import LessonMathLines from './LessonMathLines.astro';
+interface Props { variant: LessonLoopVariant; lesson: Lesson }
+const { variant, lesson } = Astro.props;
+type Point = [number, number];
+type Plot = { bounds: [number, number, number, number]; segments: [Point, Point][]; points: Point[]; xTicks: number[]; yTicks: number[]; label: string; xLabel?: string; yLabel?: string };
+const plots: Record<string, Plot> = {
+  'axis-intercepts': { bounds: [-1, 4, -5, 5], segments: [[[-.5, -5], [4, 4]]], points: [[0, -4], [2, 0]], xTicks: [0, 2, 4], yTicks: [-4, 0, 4], label: 'y = 2x − 4' },
+  'line-from-points': { bounds: [-1, 4, 0, 12], segments: [[[-1, 1], [4, 11]]], points: [[1, 5], [3, 9]], xTicks: [0, 1, 3], yTicks: [0, 5, 9], label: 'y = 2x + 3' },
+  'graphical-inequality': { bounds: [-1, 6, -1, 8], segments: [[[-1, 0], [6, 7]], [[-1, 8], [6, 1]]], points: [[3, 4]], xTicks: [0, 3, 6], yTicks: [0, 4, 7], label: 'f(x) = x + 1; g(x) = 7 − x' },
+  'linear-interpolation': { bounds: [0, 11, 0, 165], segments: [[[4, 60], [10, 150]]], points: [[4, 60], [6, 90], [10, 150]], xTicks: [0, 4, 6, 10], yTicks: [0, 60, 90, 150], label: 'הערכה ליום 6: 90 עמודים', xLabel: 'יום', yLabel: 'עמודים' },
+  'axis-parallel-lines': { bounds: [-2, 5, -1, 6], segments: [[[2, -1], [2, 6]], [[-2, 3], [5, 3]]], points: [[2, 3], [2, 1], [4, 3]], xTicks: [0, 2, 4], yTicks: [0, 1, 3], label: 'x = 2; y = 3' },
+  'motion-rate': { bounds: [0, 2.2, 0, 88], segments: [[[0, 0], [2, 80]]], points: [[1.5, 60]], xTicks: [0, 1, 1.5, 2], yTicks: [0, 40, 60, 80], label: 'd = 40t', xLabel: 'שעות', yLabel: 'ק״מ' },
+};
+const plot = plots[variant];
+// These lessons build the actual line, rather than only revealing its thin
+// coordinate guides. Normalized dashes keep every visible portion on the true
+// mathematical path; the non-animated/Stop state is the complete line.
+const developLine = ['axis-intercepts', 'axis-parallel-lines', 'motion-rate'].includes(variant);
+const px = (x: number) => 62 + (x - plot.bounds[0]) / (plot.bounds[1] - plot.bounds[0]) * 356;
+const py = (y: number) => 218 - (y - plot.bounds[2]) / (plot.bounds[3] - plot.bounds[2]) * 170;
+const medianData = [{ value: 9, original: 0 }, { value: 4, original: 1 }, { value: 10, original: 2 }, { value: 6, original: 3 }, { value: 4, original: 4 }].sort((a,b) => a.value - b.value);
+const sourceX = (v: number) => 75 + (v - 20) * 33;
+const centerX = (v: number) => 35 + v * 8;
+const sectorEnd: Point = [240 + 88 * Math.sin(126 * Math.PI / 180), 126 - 88 * Math.cos(126 * Math.PI / 180)];
+const truncatedCharts = [0, 90].map((base, i) => ({
+  base,
+  i,
+  bars: [100, 120].map((value, j) => ({ value, j, height: (value - base) / (120 - base) * 150 })),
+}));
+---
+{lesson.picture === 'calculation' && <div class="calculation" dir="ltr" aria-label="שלושת שלבי החישוב">
+  {lesson.steps.map((s,i) => <div class={`math-panel scene-enter enter-${i}`}><i aria-hidden="true"></i><LessonMathLines value={s.math}/></div>)}
+</div>}
+
+{lesson.picture === 'cartesian-topic' && plot && <svg viewBox="0 0 480 270" role="img" aria-label={plot.label}>
+  <text class="heading" x="240" y="23">{plot.label}</text>
+  {variant === 'graphical-inequality' && <rect class="solution grow-x" x={px(-1)} y="48" width={px(3)-px(-1)} height="170"/>}
+  <path d={`M${px(0)} 40 V225 M55 ${py(0)} H430`} class="axis"/>
+  <text x="445" y={py(0)+6}>{plot.xLabel || 'x'}</text><text x={px(0)} y="37">{plot.yLabel || 'y'}</text>
+  {plot.xTicks.map(x => <><path class="tick" d={`M${px(x)} ${py(0)-4} V${py(0)+4}`}/><text class="tick-label" x={px(x)} y={py(0)+22}>{x}</text></>)}
+  {plot.yTicks.filter(y=>y!==0).map(y => <><path class="tick" d={`M${px(0)-4} ${py(y)} H${px(0)+4}`}/><text class="tick-label" x={px(0)-22} y={py(y)+5}>{y}</text></>)}
+  {plot.segments.map(([a,b],i) => <path class:list={['function',i===1&&'function-alt',developLine&&'function-develop']} pathLength={developLine ? 100 : undefined} style={developLine ? `--draw-delay:${i*.7}s` : undefined} d={`M${px(a[0])} ${py(a[1])} L${px(b[0])} ${py(b[1])}`}/>)}
+  {plot.points.map(([x,y],i) => <>
+    <line class="guide grow-x" style={`--delay:${i*.4}s`} x1={px(0)} y1={py(y)} x2={px(x)} y2={py(y)}/>
+    <line class="guide grow-y" style={`--delay:${i*.4+.2}s`} x1={px(x)} y1={py(0)} x2={px(x)} y2={py(y)}/>
+    <circle class="point" cx={px(x)} cy={py(y)} r="5"/>
+  </>)}
+  {variant === 'graphical-inequality' && <><circle class="open-point" cx={px(3)} cy={py(0)} r="6"/><text x={px(1)} y="257">x &lt; 3</text></>}
+</svg>}
+
+{lesson.picture === 'equilateral-topic' && <svg viewBox="0 0 480 265" role="img" aria-label="משולש שווה־צלעות; שלוש צלעות שוות ושלוש זוויות של 60 מעלות">
+  <polygon class="soft" points="120,220 360,220 240,12.154"/>
+  <g class="side-mark grow-x"><path d="M232 211 V229 M242 211 V229"/></g>
+  <g class="side-mark grow-y"><path d="M171 110 L187 119 M176 101 L192 110"/></g>
+  <g class="side-mark grow-y" style="--delay:.5s"><path d="M288 110 L304 101 M293 119 L309 110"/></g>
+  <path class="angle grow-x" d="M156 220 A36 36 0 0 0 138 188.82"/>
+  <path class="angle grow-x" style="--delay:.3s" d="M342 188.82 A36 36 0 0 0 324 220"/>
+  <path class="angle grow-y" style="--delay:.6s" d="M222 43.33 A36 36 0 0 0 258 43.33"/>
+  <text x="162" y="202">60°</text><text x="318" y="202">60°</text><text x="240" y="67">60°</text>
+</svg>}
+
+{lesson.picture === 'median-data' && <svg viewBox="0 0 480 220" role="img" aria-label="המספרים 9,4,10,6,4 מסתדרים ל־4,4,6,9,10; המספר האמצעי הוא 6">
+  <text class="heading" x="240" y="30">מסדרים ואז בוחרים את האמצע</text>
+  {medianData.map((item,i)=><g class="sort-item" style={`--dx:${(item.original-i)*80}px`}>
+    <rect class:list={['data-box',i===2&&'selected']} x={47+i*80} y="78" width="66" height="60" rx="12"/>
+    <text x={80+i*80} y="117">{item.value}</text>
+  </g>)}
+  <path class="median-marker grow-y" d="M240 195 V150 M231 160 L240 150 L249 160"/>
+  <text x="240" y="215">חציון: 6</text>
+</svg>}
+
+{lesson.picture === 'center-choice' && <svg viewBox="0 0 480 215" role="img" aria-label="הנתונים 14,15,15,17,49; החציון 15 והממוצע 22">
+  <path class="axis" d="M35 135 H450"/>
+  {[0,15,22,49].map(v=><><path d={`M${centerX(v)} 130 V140`}/><text class="tick-label" x={centerX(v)} y="161">{v}</text></>)}
+  {[14,15,15,17,49].map((v,i)=><circle class="center-dot" cx={centerX(v)} cy={i===2?99:118} r="7" style={`--dx:${centerX(22)-centerX(v)}px`}/>)}
+  <path class="median-marker grow-y" d={`M${centerX(15)} 35 V87`}/><text x={centerX(15)} y="25">חציון 15</text>
+  <path class="mean-marker grow-y" style="--delay:.5s" d={`M${centerX(22)} 65 V112`}/><text x="285" y="58">ממוצע 22</text>
+  <text class="heading" x="240" y="199">49 מושך את הממוצע כלפי מעלה</text>
+</svg>}
+
+{lesson.picture === 'truncated-axis' && <svg viewBox="0 0 480 250" role="img" aria-label="אותם נתונים, 100 ו־120: ציר שמתחיל באפס וציר שמתחיל ב־90">
+  {truncatedCharts.map(({base,i,bars})=><g>
+    <text class="heading" x={125+i*235} y="25">{base===0?'ציר מלא':'ציר מקוצר'}</text>
+    <path class="axis" d={`M${35+i*235} 42 V205 H${215+i*235}`}/>
+    <text class="tick-label" x={18+i*235} y="211">{base}</text>
+    {bars.map(({value,j,height})=><g><rect class:list={['chart-bar','grow-y',j===1&&'gold']} style={`--delay:${j*.6}s`} x={67+i*235+j*80} y={205-height} width="46" height={height}/><text class="tick-label" x={90+i*235+j*80} y={195-height}>{value}</text></g>)}
+  </g>)}
+  <text class="heading" x="240" y="240">בשני הגרפים: עלייה של 20%</text>
+</svg>}
+
+{lesson.picture === 'pie-sector' && <svg viewBox="0 0 480 250" role="img" aria-label="גזרה של 35 אחוזים, זווית 126 מעלות, 21 מתוך 60 פריטים">
+  <circle class="pie-base" cx="240" cy="126" r="88"/>
+  <path class="pie-fill grow-x" d={`M240 126 L240 38 A88 88 0 0 1 ${sectorEnd[0]} ${sectorEnd[1]} Z`}/>
+  <path class="pie-radius grow-y" d="M240 126 V38"/>
+  <path class="pie-radius grow-x" d={`M240 126 L${sectorEnd[0]} ${sectorEnd[1]}`}/>
+  <text x="280" y="96">35%</text><text x="265" y="145">126°</text>
+  <text class="heading" x="240" y="239">21 מתוך 60 פריטים</text>
+</svg>}
+
+{lesson.picture === 'experiment-data' && <svg viewBox="0 0 480 255" role="img" aria-label="במדגם של 20 הטלות 65 אחוזי עץ, ובמדגם של 200 הטלות 52 אחוזי עץ; קו ההסתברות 50 אחוזים">
+  <path class="axis" d="M65 35 V205 H430"/>
+  {[0,50,100].map(v=><><path class="grid" d={`M65 ${205-v*1.6} H430`}/><text class="tick-label" x="37" y={210-v*1.6}>{v}%</text></>)}
+  {[65,52].map((v,i)=><g><rect class="chart-bar grow-y" style={`--delay:${i*.8}s`} x={130+i*160} y={205-v*1.6} width="60" height={v*1.6}/><text x={160+i*160} y={190-v*1.6}>{v}%</text><text class="tick-label" x={160+i*160} y="234">{i===0?'20 הטלות':'200 הטלות'}</text></g>)}
+  <path class="mean-marker grow-x" d="M65 125 H430"/>
+</svg>}
+
+{lesson.picture === 'source-data' && <svg viewBox="0 0 480 215" role="img" aria-label="שני מקורות מדדו 23 ו־27; הממוצע 25 והמרחק מכל מדידה לממוצע 2">
+  <path class="axis" d="M65 135 H425"/>
+  {[20,23,25,27,30].map(v=><><path d={`M${sourceX(v)} 129 V141`}/><text class="tick-label" x={sourceX(v)} y="166">{v}</text></>)}
+  {[23,27].map(v=><g class="source-move" style={`--dx:${sourceX(v)-sourceX(25)}px`}><circle class="point" cx={sourceX(25)} cy="103" r="11"/></g>)}
+  <path class="guide grow-x" d={`M${sourceX(23)} 65 H${sourceX(27)}`}/>
+  <text class="heading" x="240" y="35">הפרש 4; הערכה משולבת 25</text>
+  <text class="heading" x="240" y="205">בהנחת אמינות שווה של שני המקורות</text>
+</svg>}
+
+<style>
+  svg {display:block;width:100%;height:auto;max-height:250px;overflow:visible;margin:0 auto 12px;direction:ltr;}
+  path,line,polygon,rect,circle {stroke:#22305a;stroke-width:2;fill:none;}
+  text {font:700 21px Heebo,sans-serif;fill:#22305a;text-anchor:middle;direction:ltr;unicode-bidi:isolate;}
+  .heading {font-size:18px;direction:rtl;} .tick-label {font-size:16px;}
+  .axis,.tick {stroke:#6c778a;stroke-width:1.7;} .grid {stroke:#dce1e9;stroke-width:1;}
+  .function {stroke:#1e605e;stroke-width:3.5;} .function-alt {stroke:#bb6226;}
+  .function-develop {stroke-dasharray:100;stroke-dashoffset:0;animation:mt-plot-line 9s ease-in-out infinite backwards;animation-delay:var(--draw-delay,0s);}
+  .guide {stroke:#bb6226;stroke-dasharray:5 4;stroke-width:2;}
+  .point,.center-dot {fill:#1e605e;stroke:#fff;stroke-width:1.5;}
+  .open-point {fill:#fff;stroke:#bb6226;stroke-width:2.5;}
+  .solution {fill:#d7efe8;stroke:none;opacity:.65;}
+  .soft,.pie-base,.chart-bar {fill:#d7efe8;} .gold,.pie-fill {fill:#f7d489;}
+  .side-mark path {stroke-width:3;} .angle {stroke:#bb6226;stroke-width:3;}
+  .data-box {fill:#fff;stroke:#8798af;} .selected {fill:#f7d489;stroke:#bb6226;stroke-width:3;}
+  .median-marker {stroke:#1e605e;stroke-width:3;} .mean-marker {stroke:#bb6226;stroke-width:3;stroke-dasharray:6 4;}
+  .pie-radius {stroke-width:3;}
+  .calculation {display:grid;gap:12px;padding:8px 0;margin-bottom:14px;overflow:hidden;}
+  .math-panel {position:relative;min-height:59px;display:flex;align-items:center;justify-content:center;padding:12px 9px;font-size:clamp(13px,3.9cqi,22px);font-weight:800;text-align:center;}
+  .math-panel i {position:absolute;inset:0;border:2px solid #91a7ab;border-radius:12px;background:#eaf4ef;z-index:-1;}
+  .math-panel:nth-child(2) i {background:#fff6e1;border-color:#cda858;}
+  .math-panel:nth-child(3) i {background:#d7efe8;border-color:#1e605e;}
+  .scene-enter {isolation:isolate;animation:mt-enter-0 9s ease-in-out infinite;}
+  .enter-1 {animation-name:mt-enter-1;} .enter-2 {animation-name:mt-enter-2;}
+  .grow-x {transform-box:fill-box;transform-origin:0 50%;animation:mt-grow-x 9s ease-in-out infinite;animation-delay:var(--delay,0s);}
+  .grow-y {transform-box:fill-box;transform-origin:50% 100%;animation:mt-grow-y 9s ease-in-out infinite;animation-delay:var(--delay,0s);}
+  .sort-item {animation:mt-sort 9s ease-in-out infinite;}
+  .center-dot {animation:mt-spread 9s ease-in-out infinite;}
+  .source-move {animation:mt-average 9s ease-in-out infinite;}
+  @keyframes mt-enter-0 {0%,4%{transform:translateX(85%);opacity:0;} 15%,91%{transform:none;opacity:1;} 98%,100%{transform:translateX(-85%);opacity:0;}}
+  @keyframes mt-enter-1 {0%,30%{transform:translateX(85%);opacity:0;} 42%,91%{transform:none;opacity:1;} 98%,100%{transform:translateX(-85%);opacity:0;}}
+  @keyframes mt-enter-2 {0%,58%{transform:translateX(85%);opacity:0;} 70%,91%{transform:none;opacity:1;} 98%,100%{transform:translateX(-85%);opacity:0;}}
+  @keyframes mt-grow-x {0%,16%{transform:scaleX(.02);} 40%,90%{transform:none;} 100%{transform:scaleX(.02);}}
+  @keyframes mt-grow-y {0%,25%{transform:scaleY(.02);} 50%,90%{transform:none;} 100%{transform:scaleY(.02);}}
+  @keyframes mt-sort {0%,20%{transform:translateX(var(--dx));} 48%,90%{transform:none;} 100%{transform:translateX(var(--dx));}}
+  @keyframes mt-spread {0%,18%{transform:translateX(var(--dx));} 45%,90%{transform:none;} 100%{transform:translateX(var(--dx));}}
+  @keyframes mt-average {0%,25%{transform:translateX(var(--dx));} 55%,90%{transform:none;} 100%{transform:translateX(var(--dx));}}
+  @keyframes mt-plot-line {0%,14%{stroke-dashoffset:100;} 55%,90%{stroke-dashoffset:0;} 100%{stroke-dashoffset:100;}}
+  @media(prefers-reduced-motion:reduce) {:global(html:not(.nd-motion-enabled)) *{animation:none!important;}}
+  :global(html.nd-motion-off) *, :global(html.noam-a11y-motion) * {animation:none!important;}
+</style>

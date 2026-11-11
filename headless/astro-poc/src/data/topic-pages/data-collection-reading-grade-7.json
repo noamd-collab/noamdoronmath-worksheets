@@ -1,0 +1,314 @@
+{
+  "slug": "data-collection-reading-grade-7",
+  "path": "/data-collection-reading-grade-7",
+  "grade": 7,
+  "sourceUrl": "https://www.noamdoronmath.co.il/data-collection-reading-grade-7",
+  "fetchedAt": "2026-11-10T00:00:00.000Z",
+  "verifiedVia": "authored-catalog-gap-from-noam-pdfs",
+  "title": "איסוף וקריאת מידע לכיתה ז׳ | דפי עבודה חינם",
+  "description": "איסוף וקריאת מידע לכיתה ז׳: דיאגרמות קו ותמונות, טבלאות, חלק מהנשאלים כשבר ומסקנות מנתונים. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "איסוף וקריאת מידע לכיתה ז׳",
+  "intro": "לומדים לקרוא נתונים מדיאגרמת קו, מדיאגרמת תמונות ומטבלת שכיחות, לחשב איזה חלק מהנשאלים בחר בכל תשובה ולבדוק אם מסקנה באמת נובעת מהנתונים. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "לפני שקוראים נתונים בודקים מה מופיע בכל ציר, באילו יחידות ומה הכותרת של הדיאגרמה. בדיאגרמת תמונות קוראים במקרא כמה מייצג כל ציור.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "בדיאגרמת קו כל נקודה היא מדידה, והקו מראה איך הערך משתנה מזמן לזמן. כשהקו עולה הערך גדל, וכשהוא יורד הערך קטן.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "דוגמה: בסקר השתתפו 30 תלמידים, ו־12 מהם בחרו בכדורסל. החלק שבחר בכדורסל הוא ⟨12¦30⟩ = ⟨2¦5⟩ מהנשאלים.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "שוכחים את המקרא בדיאגרמת תמונות. אם כל ציור מייצג 5 תלמידים, ארבעה ציורים הם 20 תלמידים ולא 4.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "מסיקים מסקנה על כל בית הספר מסקר שנערך בכיתה אחת. מסקנה טובה מתייחסת רק לקבוצה שנשאלה, או לקבוצה שהיא מייצגת.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "בדיאגרמת תמונות כל ציור של ספר מייצג 4 ספרים. ליד שם הספרייה מופיעים 6 ציורים. כמה ספרים הושאלו בספרייה?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה היא 24 ספרים, כי 6 × 4 = 24.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "לומדים לקרוא נתונים מדיאגרמת קו, מדיאגרמת תמונות ומטבלת שכיחות, לחשב איזה חלק מהנשאלים בחר בכל תשובה ולבדוק אם מסקנה באמת נובעת מהנתונים. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=7&topic=24",
+      "catalogTopicId": 24
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "לפני שקוראים נתונים בודקים מה מופיע בכל ציר, באילו יחידות ומה הכותרת של הדיאגרמה. בדיאגרמת תמונות קוראים במקרא כמה מייצג כל ציור.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "בדיאגרמת קו כל נקודה היא מדידה, והקו מראה איך הערך משתנה מזמן לזמן. כשהקו עולה הערך גדל, וכשהוא יורד הערך קטן.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "דוגמה: בסקר השתתפו 30 תלמידים, ו־12 מהם בחרו בכדורסל. החלק שבחר בכדורסל הוא ⟨12¦30⟩ = ⟨2¦5⟩ מהנשאלים.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "שוכחים את המקרא בדיאגרמת תמונות. אם כל ציור מייצג 5 תלמידים, ארבעה ציורים הם 20 תלמידים ולא 4.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "מסיקים מסקנה על כל בית הספר מסקר שנערך בכיתה אחת. מסקנה טובה מתייחסת רק לקבוצה שנשאלה, או לקבוצה שהיא מייצגת.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "בדיאגרמת תמונות כל ציור של ספר מייצג 4 ספרים. ליד שם הספרייה מופיעים 6 ציורים. כמה ספרים הושאלו בספרייה?",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "התשובה היא 24 ספרים, כי 6 × 4 = 24.",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 10.11.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "מה בודקים לפני שקוראים דיאגרמה?",
+      "answer": "את הכותרת, את שמות הצירים ואת היחידות. בדיאגרמת תמונות בודקים גם במקרא כמה מייצג כל ציור."
+    },
+    {
+      "question": "איך יודעים אם מסקנה נכונה?",
+      "answer": "בודקים שהיא נובעת ישירות מהנתונים ושהיא מתייחסת לקבוצה שנבדקה. אם הנתונים לא מספיקים כדי להכריע, המסקנה אינה מבוססת."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם יש תשובות לדפי העבודה?",
+      "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "מה בודקים לפני שקוראים דיאגרמה?",
+          "answer": "את הכותרת, את שמות הצירים ואת היחידות. בדיאגרמת תמונות בודקים גם במקרא כמה מייצג כל ציור."
+        },
+        {
+          "question": "איך יודעים אם מסקנה נכונה?",
+          "answer": "בודקים שהיא נובעת ישירות מהנתונים ושהיא מתייחסת לקבוצה שנבדקה. אם הנתונים לא מספיקים כדי להכריע, המסקנה אינה מבוססת."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם יש תשובות לדפי העבודה?",
+          "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/grade-7",
+      "label": "כל דפי כיתה ז׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-7"
+    },
+    {
+      "path": "/frequency-grade-7",
+      "label": "שכיחות",
+      "productionHref": "https://www.noamdoronmath.co.il/frequency-grade-7"
+    },
+    {
+      "path": "/statistics-data-frequency-grade-8",
+      "label": "שכיחות ושכיחות יחסית",
+      "productionHref": "https://www.noamdoronmath.co.il/statistics-data-frequency-grade-8"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=7&topic=24",
+    "source": "catalog-g7-t24",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=24",
+    "catalogTopicId": 24,
+    "catalogTopicTitle": "איסוף וקריאת מידע"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=7&topic=24",
+      "source": "catalog-g7-t24",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=24",
+      "catalogTopicId": 24,
+      "catalogTopicTitle": "איסוף וקריאת מידע"
+    }
+  ],
+  "gradeHubHref": "/grade-7",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/data-collection-reading-grade-7#webpage",
+        "url": "https://www.noamdoronmath.co.il/data-collection-reading-grade-7",
+        "name": "איסוף וקריאת מידע לכיתה ז׳ | דפי עבודה חינם",
+        "description": "איסוף וקריאת מידע לכיתה ז׳: דיאגרמות קו ותמונות, טבלאות, חלק מהנשאלים כשבר ומסקנות מנתונים. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/data-collection-reading-grade-7#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/data-collection-reading-grade-7#learning-resource",
+        "name": "איסוף וקריאת מידע לכיתה ז׳",
+        "url": "https://www.noamdoronmath.co.il/data-collection-reading-grade-7",
+        "description": "איסוף וקריאת מידע לכיתה ז׳: דיאגרמות קו ותמונות, טבלאות, חלק מהנשאלים כשבר ומסקנות מנתונים. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "educationalLevel": "כיתה ז׳",
+        "learningResourceType": "דפי עבודה",
+        "teaches": "איסוף מידע, קריאת דיאגרמות וטבלאות וניסוח מסקנות",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/data-collection-reading-grade-7#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "מה בודקים לפני שקוראים דיאגרמה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "את הכותרת, את שמות הצירים ואת היחידות. בדיאגרמת תמונות בודקים גם במקרא כמה מייצג כל ציור."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך יודעים אם מסקנה נכונה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "בודקים שהיא נובעת ישירות מהנתונים ושהיא מתייחסת לקבוצה שנבדקה. אם הנתונים לא מספיקים כדי להכריע, המסקנה אינה מבוססת."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם יש תשובות לדפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. בסוף כל דף עבודה יש דף תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

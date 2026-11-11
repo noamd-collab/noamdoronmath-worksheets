@@ -152,9 +152,10 @@ describe('protected math sources stay pinned after the L01 removal', () => {
   // Moved again so the card title follows whichever film is playing.
   // Brave motion opt-in inside the film (sitePrefersReducedMotion). Not a design regen.
   // conceptLoops.ts parks on OS reduced motion unless the site opts in.
+  // Moved again for the 10.11.2026 audit: fade-only films move their pieces.
   const expected = {
-    'src/components/ConceptLoop.astro': '24b3e9cddc65d2617755a02ebd8772aaa0a8d74477c913a86e15eff66d1c5131',
-    'src/lib/conceptLoops.ts': '78636536a970ed54e07592c26450aa8f26540e780f9782c7b74482e07669d7e5',
+    'src/components/ConceptLoop.astro': '4c616613dede35dc1deb60d11941e4b3b0aa051c3b20b5239b23ec7582036767',
+    'src/lib/conceptLoops.ts': '4bb9672e19a77ed3cb21e33b8592d26156a9edca19f831cc32cf41e689c7e634',
   };
   for (const [file, digest] of Object.entries(expected)) {
     it(file, () => {

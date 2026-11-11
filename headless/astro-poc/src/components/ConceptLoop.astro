@@ -1216,6 +1216,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
         <svg class="concept-loop__svg" viewBox="0 0 560 340" role="img" aria-label={ariaLabels[variant]}>
           <polygon class="cl-line cl-fill-a" data-el="shape" points="160,240 400,240 472,128 232,128" />
           <line class="cl-dash" data-el="height" x1="160" y1="240" x2="160" y2="128" />
+          <line class="cl-hl cl-hl-c" data-el="h2" x1="232" y1="128" x2="232" y2="240" style="opacity:0" />
           <text class="cl-t cl-num" data-el="lbl-h" x="128" y="190" style="opacity:0">h</text>
           <text class="cl-t" data-el="lbl-same" x="280" y="196" text-anchor="middle" style="opacity:0">אותו שטח</text>
         </svg>
@@ -1252,13 +1253,14 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
           <line class="cl-line-thin" x1="80" y1="300" x2="500" y2="300" />
           <line class="cl-line-thin" x1="120" y1="320" x2="120" y2="40" />
           <line class="cl-line cl-stroke-a" data-el="line" x1="150" y1="280" x2="270" y2="40" pathLength="1" style="opacity:0" />
-          <path class="cl-line" data-el="tri1" d="M150 280 L210 280 L210 160" style="opacity:0" />
+          <path class="cl-line" data-el="tri1" d="M150 280 L210 280 L210 160" pathLength="1" style="opacity:0" />
           <text class="cl-t cl-num" data-el="run1" x="168" y="296" style="opacity:0">1</text>
           <text class="cl-t cl-num" data-el="rise1" x="218" y="226" style="opacity:0">2</text>
-          <path class="cl-line" data-el="tri2" d="M210 160 L270 160 L270 40" style="opacity:0" />
+          <path class="cl-line" data-el="tri2" d="M210 160 L270 160 L270 40" pathLength="1" style="opacity:0" />
           <text class="cl-t cl-num" data-el="run2" x="228" y="176" style="opacity:0">1</text>
           <text class="cl-t cl-num" data-el="rise2" x="278" y="106" style="opacity:0">2</text>
           <text class="cl-t cl-num cl-ok" data-el="lbl2" x="300" y="70" style="opacity:0">2</text>
+          <circle data-el="walker" cx="150" cy="280" r="7" fill="#ea580c" style="opacity:0" />
         </svg>
       )
     }
@@ -1286,6 +1288,8 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
           <polygon class="cl-line cl-stroke-a" points="160,250 240,250 160,190" />
           <path class="cl-line cl-stroke-a" d="M160 228 L182 228 L182 250" />
           <polygon class="cl-line cl-fill-b cl-stroke-b" data-el="big" points="160,250 240,250 160,190" style="opacity:0" />
+          <path class="cl-fill-c" data-el="ang-b" d="M240 250 L218 250 A22 22 0 0 1 222.4 236.8 Z" stroke="#ea580c" stroke-width="1.5" style="opacity:0" />
+          <path class="cl-fill-c" data-el="ang-a" d="M160 190 L160 212 A22 22 0 0 0 177.6 203.2 Z" stroke="#ea580c" stroke-width="1.5" style="opacity:0" />
           <path class="cl-line cl-stroke-b" data-el="arc-big" d="M160 214 L196 214 L196 250" style="opacity:0" />
           <text class="cl-t cl-num" data-el="lbl-leg" x="200" y="268" text-anchor="middle" style="opacity:0">4</text>
           <text class="cl-t cl-num" data-el="lbl-ht" x="142" y="225" text-anchor="end" style="opacity:0">3</text>
@@ -1559,6 +1563,8 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
           <line class="cl-dash" x1="212" y1="122" x2="212" y2="230" />
           <path class="cl-line" d="M212 214 L228 214 L228 230" />
           <text class="cl-t cl-num" data-el="lbl-h" x="224" y="208">h = 3</text>
+          <line class="cl-hl cl-hl-b" data-el="ta" x1="140" y1="230" x2="356" y2="230" style="opacity:0" />
+          <line class="cl-hl cl-hl-c" data-el="tb" x1="212" y1="122" x2="284" y2="122" style="opacity:0" />
           <line class="cl-line cl-stroke-a" data-el="mid" x1="176" y1="176" x2="320" y2="176" pathLength="1" style="opacity:0" />
           <text class="cl-t cl-num cl-ok" data-el="lbl-m" x="330" y="180" style="opacity:0">m = 4</text>
         </svg>
@@ -1609,6 +1615,11 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
           <circle class="cl-line" cx="150" cy="130" r="35" />
           <line class="cl-line cl-stroke-a" x1="115" y1="130" x2="185" y2="130" />
           <text class="cl-t cl-num" x="150" y="118" text-anchor="middle">d</text>
+          <g data-el="wheel" style="opacity:0">
+            <circle class="cl-line" cx="230" cy="195" r="35" />
+            <line class="cl-line cl-stroke-a" x1="230" y1="195" x2="230" y2="230" />
+            <circle cx="230" cy="230" r="4" fill="#ea580c" />
+          </g>
           <line class="cl-line" data-el="seg0" x1="230" y1="230" x2="300" y2="230" pathLength="1" style="opacity:0" />
           <line class="cl-line" data-el="seg1" x1="300" y1="230" x2="370" y2="230" pathLength="1" style="opacity:0" />
           <line class="cl-line" data-el="seg2" x1="370" y1="230" x2="440" y2="230" pathLength="1" style="opacity:0" />
@@ -1663,10 +1674,14 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
             <line class="cl-dash" x1="300" y1="96" x2="450" y2="150" />
           </g>
           <g data-el="kids" style="opacity:0">
-            <rect class="cl-line" x="70" y="150" width="120" height="56" />
-            <text class="cl-t" x="130" y="182" text-anchor="middle">מלבן</text>
-            <polygon class="cl-line" points="390,178 445,150 500,178 445,206" />
-            <text class="cl-t" x="445" y="182" text-anchor="middle">מעוין</text>
+            <g data-el="kid-r">
+              <rect class="cl-line" x="70" y="150" width="120" height="56" />
+              <text class="cl-t" x="130" y="182" text-anchor="middle">מלבן</text>
+            </g>
+            <g data-el="kid-m">
+              <polygon class="cl-line" points="390,178 445,150 500,178 445,206" />
+              <text class="cl-t" x="445" y="182" text-anchor="middle">מעוין</text>
+            </g>
           </g>
           <g data-el="down" style="opacity:0">
             <line class="cl-dash" x1="130" y1="206" x2="250" y2="250" />
@@ -1879,14 +1894,12 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
           <text class="cl-t cl-num" x="180" y="75" text-anchor="middle">ע</text>
           <text class="cl-t cl-num" x="250" y="75" text-anchor="middle">פ</text>
           <g data-el="grid" style="opacity:0">
-            <rect class="cl-line" x="70" y="140" width="90" height="70" />
-            <rect class="cl-line" x="176" y="140" width="90" height="70" />
-            <rect class="cl-line" x="282" y="140" width="90" height="70" />
-            <rect class="cl-line" x="388" y="140" width="90" height="70" />
-            <text class="cl-t cl-num" x="115" y="180" text-anchor="middle">עע</text>
-            <text class="cl-t cl-num" x="221" y="180" text-anchor="middle">עפ</text>
-            <text class="cl-t cl-num" x="327" y="180" text-anchor="middle">פע</text>
-            <text class="cl-t cl-num" x="433" y="180" text-anchor="middle">פפ</text>
+            {['עע', 'עפ', 'פע', 'פפ'].map((pair, i) => (
+              <g data-el={`cell${i}`}>
+                <rect class="cl-line" x={70 + i * 106} y="140" width="90" height="70" />
+                <text class="cl-t cl-num" x={115 + i * 106} y="180" text-anchor="middle">{pair}</text>
+              </g>
+            ))}
           </g>
           <rect class="cl-stroke-a" data-el="pick" x="70" y="140" width="90" height="70" fill="none" style="opacity:0" />
           <StackedFraction n="1" d="4" x={115} y={248} anchor="middle" el="pick-lbl" hidden />
@@ -2045,7 +2058,8 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
       variant === 'half-eq' && (
         <svg class="concept-loop__svg" viewBox="0 0 560 360" role="img" aria-label={ariaLabels[variant]}>
           <polygon class="cl-line" points="240,131.4 160,270 320,270" />
-          <line class="cl-stroke-a" data-el="alt" x1="240" y1="131.4" x2="240" y2="270" style="opacity:0" />
+          <polygon class="cl-line cl-fill-a" data-el="left" points="240,131.4 160,270 240,270" style="opacity:0" />
+          <line class="cl-stroke-a" data-el="alt" x1="240" y1="131.4" x2="240" y2="270" pathLength="1" style="opacity:0" />
           <path class="cl-line" data-el="sq" d="M240 254 L256 254 L256 270" style="opacity:0" />
           <path class="cl-stroke-a" data-el="a30" d="M240 157.4 A26 26 0 0 1 253 153.9" style="fill:none;opacity:0" />
           <text class="cl-t cl-num cl-small" data-el="a30t" x="258" y="206" text-anchor="middle" style="opacity:0">30°</text>
@@ -2088,6 +2102,9 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
         <svg class="concept-loop__svg" viewBox="0 0 560 340" role="img" aria-label={ariaLabels[variant]}>
           <rect class="cl-line" data-el="sq" x="180" y="90" width="56" height="56" />
           <rect class="cl-dash-strong" x="180" y="90" width="56" height="56" />
+          <rect class="cl-fill-a" data-el="c2" x="236" y="90" width="56" height="56" style="opacity:0" />
+          <rect class="cl-fill-a" data-el="c3" x="180" y="146" width="56" height="56" style="opacity:0" />
+          <rect class="cl-fill-a" data-el="c4" x="236" y="146" width="56" height="56" style="opacity:0" />
           <line class="cl-line" data-el="mv" x1="236" y1="90" x2="236" y2="202" style="opacity:0" />
           <line class="cl-line" data-el="mh" x1="180" y1="146" x2="292" y2="146" style="opacity:0" />
           <text class="cl-t cl-num" data-el="n1" x="208" y="124" text-anchor="middle">1</text>
@@ -2101,15 +2118,24 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
       variant === 'cube-8' && (
         <svg class="concept-loop__svg" viewBox="0 0 560 340" role="img" aria-label={ariaLabels[variant]}>
           <g data-el="cube" style="opacity:0">
-            <polygon class="cl-fill-b cl-line" points="290,150 290,230 338,202 338,122" />
-            <polygon class="cl-fill-c cl-line" points="210,150 290,150 338,122 258,122" />
-            <polygon class="cl-fill-a cl-line" points="210,150 290,150 290,230 210,230" />
-            <line class="cl-line" x1="250" y1="150" x2="250" y2="230" />
-            <line class="cl-line" x1="210" y1="190" x2="290" y2="190" />
-            <line class="cl-line" x1="250" y1="150" x2="298" y2="122" />
-            <line class="cl-line" x1="234" y1="136" x2="314" y2="136" />
-            <line class="cl-line" x1="290" y1="190" x2="338" y2="162" />
-            <line class="cl-line" x1="314" y1="136" x2="314" y2="216" />
+            <g data-el="lo">
+              <polygon class="cl-fill-c cl-line" points="210,190 290,190 338,162 258,162" />
+              <line class="cl-line" x1="250" y1="190" x2="298" y2="162" />
+              <line class="cl-line" x1="234" y1="176" x2="314" y2="176" />
+              <polygon class="cl-fill-b cl-line" points="290,190 290,230 338,202 338,162" />
+              <polygon class="cl-fill-a cl-line" points="210,190 290,190 290,230 210,230" />
+              <line class="cl-line" x1="250" y1="190" x2="250" y2="230" />
+              <line class="cl-line" x1="314" y1="176" x2="314" y2="216" />
+            </g>
+            <g data-el="hi">
+              <polygon class="cl-fill-b cl-line" points="290,150 290,190 338,162 338,122" />
+              <polygon class="cl-fill-c cl-line" points="210,150 290,150 338,122 258,122" />
+              <polygon class="cl-fill-a cl-line" points="210,150 290,150 290,190 210,190" />
+              <line class="cl-line" x1="250" y1="150" x2="250" y2="190" />
+              <line class="cl-line" x1="250" y1="150" x2="298" y2="122" />
+              <line class="cl-line" x1="234" y1="136" x2="314" y2="136" />
+              <line class="cl-line" x1="314" y1="136" x2="314" y2="176" />
+            </g>
           </g>
           <g data-el="edges" style="opacity:0">
             <line class="cl-line-thin" x1="250" y1="230" x2="250" y2="244" />
@@ -2231,6 +2257,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
           <text class="cl-t cl-num" x="140" y="176" text-anchor="middle">200</text>
           <text class="cl-t cl-num" x="180" y="176" text-anchor="middle">300</text>
           <text class="cl-t cl-num" x="460" y="176" text-anchor="middle">1000</text>
+          <line class="cl-hl cl-hl-c" data-el="gap" x1="140" y1="150" x2="180" y2="150" pathLength="1" style="opacity:0" />
           <circle data-el="dot" cx="160" cy="150" r="7" fill="#1e3a5f" style="opacity:0" />
           <text class="cl-t cl-num cl-ok" data-el="lab" x="160" y="128" text-anchor="middle" style="opacity:0">250</text>
         </svg>

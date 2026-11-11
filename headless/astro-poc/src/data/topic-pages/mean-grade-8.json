@@ -1,0 +1,314 @@
+{
+  "slug": "mean-grade-8",
+  "path": "/mean-grade-8",
+  "grade": 8,
+  "sourceUrl": "https://www.noamdoronmath.co.il/mean-grade-8",
+  "fetchedAt": "2026-11-10T00:00:00.000Z",
+  "verifiedVia": "authored-catalog-gap-from-noam-pdfs",
+  "title": "הממוצע לכיתה ח׳: חישוב ונתון חסר | דפי עבודה חינם",
+  "description": "הממוצע לכיתה ח׳: חישוב ממוצע, סכום מתוך ממוצע, מציאת נתון חסר והשפעת שינוי נתון על הממוצע. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "הממוצע לכיתה ח׳: חישוב, נתון חסר והשפעת שינוי",
+  "intro": "לומדים לחשב ממוצע, למצוא את הסכום מתוך הממוצע, להשלים נתון חסר כדי לקבל ממוצע רצוי ולבדוק מה קורה לממוצע כשנתון משתנה. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "הממוצע הוא סכום הנתונים חלקי מספר הנתונים. אפשר לחשוב עליו כחלוקה שווה: אילו כל הנתונים היו שווים, כל אחד היה הממוצע.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "אם יודעים את הממוצע ואת מספר הנתונים, יודעים גם את הסכום: הסכום הוא הממוצע כפול מספר הנתונים. כך מוצאים נתון חסר.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "דוגמה: הממוצע של 4 מדידות הוא 6, ולכן סכומן 24. אם שלוש מהן 5, 8 ו־3, המדידה הרביעית היא 24 − 16 = 8.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "מחלקים במספר הנתונים השונים במקום במספר כל הנתונים. נתון שחוזר נספר בכל פעם שהוא מופיע.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "חושבים שהממוצע חייב להיות אחד הנתונים. הממוצע של 3, 9, 10 ו־6 הוא 7, למרות ש־7 אינו ברשימה.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "הממוצע של 6 מספרים הוא 9. חמישה מהם הם 7, 10, 8, 12 ו־6. מהו המספר השישי?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה היא 11, כי הסכום הוא 6 × 9 = 54, ו־54 − 43 = 11.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "לומדים לחשב ממוצע, למצוא את הסכום מתוך הממוצע, להשלים נתון חסר כדי לקבל ממוצע רצוי ולבדוק מה קורה לממוצע כשנתון משתנה. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=8&topic=23",
+      "catalogTopicId": 23
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "הממוצע הוא סכום הנתונים חלקי מספר הנתונים. אפשר לחשוב עליו כחלוקה שווה: אילו כל הנתונים היו שווים, כל אחד היה הממוצע.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "אם יודעים את הממוצע ואת מספר הנתונים, יודעים גם את הסכום: הסכום הוא הממוצע כפול מספר הנתונים. כך מוצאים נתון חסר.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "דוגמה: הממוצע של 4 מדידות הוא 6, ולכן סכומן 24. אם שלוש מהן 5, 8 ו־3, המדידה הרביעית היא 24 − 16 = 8.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "מחלקים במספר הנתונים השונים במקום במספר כל הנתונים. נתון שחוזר נספר בכל פעם שהוא מופיע.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "חושבים שהממוצע חייב להיות אחד הנתונים. הממוצע של 3, 9, 10 ו־6 הוא 7, למרות ש־7 אינו ברשימה.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "הממוצע של 6 מספרים הוא 9. חמישה מהם הם 7, 10, 8, 12 ו־6. מהו המספר השישי?",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "התשובה היא 11, כי הסכום הוא 6 × 9 = 54, ו־54 − 43 = 11.",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 10.11.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "איך מוצאים נתון חסר כשיודעים את הממוצע?",
+      "answer": "כופלים את הממוצע במספר הנתונים כדי לקבל את הסכום, ומחסירים ממנו את הנתונים הידועים."
+    },
+    {
+      "question": "מה קורה לממוצע כשמוסיפים נתון גדול ממנו?",
+      "answer": "הממוצע עולה. נתון קטן מהממוצע מוריד אותו, ונתון ששווה לממוצע אינו משנה אותו."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם יש תשובות לדפי העבודה?",
+      "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "איך מוצאים נתון חסר כשיודעים את הממוצע?",
+          "answer": "כופלים את הממוצע במספר הנתונים כדי לקבל את הסכום, ומחסירים ממנו את הנתונים הידועים."
+        },
+        {
+          "question": "מה קורה לממוצע כשמוסיפים נתון גדול ממנו?",
+          "answer": "הממוצע עולה. נתון קטן מהממוצע מוריד אותו, ונתון ששווה לממוצע אינו משנה אותו."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם יש תשובות לדפי העבודה?",
+          "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/grade-8",
+      "label": "כל דפי כיתה ח׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-8"
+    },
+    {
+      "path": "/median-grade-8",
+      "label": "החציון",
+      "productionHref": "https://www.noamdoronmath.co.il/median-grade-8"
+    },
+    {
+      "path": "/statistics-grade-8",
+      "label": "סטטיסטיקה",
+      "productionHref": "https://www.noamdoronmath.co.il/statistics-grade-8"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=8&topic=23",
+    "source": "catalog-g8-t23",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=23",
+    "catalogTopicId": 23,
+    "catalogTopicTitle": "הממוצע"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=8&topic=23",
+      "source": "catalog-g8-t23",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=23",
+      "catalogTopicId": 23,
+      "catalogTopicTitle": "הממוצע"
+    }
+  ],
+  "gradeHubHref": "/grade-8",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/mean-grade-8#webpage",
+        "url": "https://www.noamdoronmath.co.il/mean-grade-8",
+        "name": "הממוצע לכיתה ח׳: חישוב ונתון חסר | דפי עבודה חינם",
+        "description": "הממוצע לכיתה ח׳: חישוב ממוצע, סכום מתוך ממוצע, מציאת נתון חסר והשפעת שינוי נתון על הממוצע. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/mean-grade-8#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/mean-grade-8#learning-resource",
+        "name": "הממוצע לכיתה ח׳: חישוב, נתון חסר והשפעת שינוי",
+        "url": "https://www.noamdoronmath.co.il/mean-grade-8",
+        "description": "הממוצע לכיתה ח׳: חישוב ממוצע, סכום מתוך ממוצע, מציאת נתון חסר והשפעת שינוי נתון על הממוצע. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "educationalLevel": "כיתה ח׳",
+        "learningResourceType": "דפי עבודה",
+        "teaches": "חישוב ממוצע, נתון חסר והשפעת שינוי על הממוצע",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/mean-grade-8#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "איך מוצאים נתון חסר כשיודעים את הממוצע?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כופלים את הממוצע במספר הנתונים כדי לקבל את הסכום, ומחסירים ממנו את הנתונים הידועים."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "מה קורה לממוצע כשמוסיפים נתון גדול ממנו?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "הממוצע עולה. נתון קטן מהממוצע מוריד אותו, ונתון ששווה לממוצע אינו משנה אותו."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם יש תשובות לדפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. בסוף כל דף עבודה יש דף תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

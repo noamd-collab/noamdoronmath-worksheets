@@ -1,0 +1,314 @@
+{
+  "slug": "successive-percent-changes-grade-8",
+  "path": "/successive-percent-changes-grade-8",
+  "grade": 8,
+  "sourceUrl": "https://www.noamdoronmath.co.il/successive-percent-changes-grade-8",
+  "fetchedAt": "2026-11-10T00:00:00.000Z",
+  "verifiedVia": "authored-catalog-gap-from-noam-pdfs",
+  "title": "שינויים עוקבים באחוזים לכיתה ח׳ | דפי עבודה חינם",
+  "description": "שינויים עוקבים באחוזים לכיתה ח׳: מכפיל כולל, אחוז השינוי הכולל ולמה ירידה ועלייה שוות לא מחזירות למקור. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "שינויים עוקבים באחוזים לכיתה ח׳",
+  "intro": "כשמחיר משתנה פעמיים או יותר ברצף, כופלים את מקדמי השינוי. לומדים למצוא את המכפיל הכולל, את אחוז השינוי הכולל ואת הערך המקורי. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "כל שינוי באחוזים הוא כפל במקדם. בשני שינויים ברצף כופלים בשני המקדמים, ומכפלתם היא המכפיל הכולל.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "אחוזים עוקבים אינם מתחברים. עלייה של 10% ואחריה עוד עלייה של 10% היא כפל ב־1.1 × 1.1 = 1.21, כלומר עלייה של 21%.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "דוגמה: מחיר של 200 שקלים ירד ב־20% ואחר כך עלה ב־20%. 200 × 0.8 × 1.2 = 192. המחיר לא חזר ל־200, כי העלייה חושבה מהמחיר הנמוך.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "מחברים את האחוזים. הנחה של 12% ואחריה הנחה של 75% אינן הנחה של 87%: 0.88 × 0.25 = 0.22, כלומר הנחה של 78%.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "מחשבים את השינוי השני מהמחיר המקורי. כל שינוי מחושב מהמחיר שהיה ממש לפניו.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "מחיר של 500 שקלים עלה ב־10% ואחר כך עוד ב־10%. מה המחיר בסוף, ובכמה אחוזים עלה בסך הכול?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה היא 605 שקלים, עלייה של 21%, כי 500 × 1.1 × 1.1 = 605.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "כשמחיר משתנה פעמיים או יותר ברצף, כופלים את מקדמי השינוי. לומדים למצוא את המכפיל הכולל, את אחוז השינוי הכולל ואת הערך המקורי. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=8&topic=9",
+      "catalogTopicId": 9
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "כל שינוי באחוזים הוא כפל במקדם. בשני שינויים ברצף כופלים בשני המקדמים, ומכפלתם היא המכפיל הכולל.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "אחוזים עוקבים אינם מתחברים. עלייה של 10% ואחריה עוד עלייה של 10% היא כפל ב־1.1 × 1.1 = 1.21, כלומר עלייה של 21%.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "דוגמה: מחיר של 200 שקלים ירד ב־20% ואחר כך עלה ב־20%. 200 × 0.8 × 1.2 = 192. המחיר לא חזר ל־200, כי העלייה חושבה מהמחיר הנמוך.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "מחברים את האחוזים. הנחה של 12% ואחריה הנחה של 75% אינן הנחה של 87%: 0.88 × 0.25 = 0.22, כלומר הנחה של 78%.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "מחשבים את השינוי השני מהמחיר המקורי. כל שינוי מחושב מהמחיר שהיה ממש לפניו.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "מחיר של 500 שקלים עלה ב־10% ואחר כך עוד ב־10%. מה המחיר בסוף, ובכמה אחוזים עלה בסך הכול?",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "התשובה היא 605 שקלים, עלייה של 21%, כי 500 × 1.1 × 1.1 = 605.",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 10.11.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "למה ירידה של 20% ועלייה של 20% לא מחזירות למחיר המקורי?",
+      "answer": "כי העלייה מחושבת מהמחיר שאחרי הירידה. 0.8 × 1.2 = 0.96, כלומר בסוף המחיר נמוך ב־4% מהמקורי."
+    },
+    {
+      "question": "איך מוצאים את אחוז השינוי הכולל?",
+      "answer": "כופלים את כל מקדמי השינוי. אם המכפיל הכולל הוא 1.21 זו עלייה של 21%, ואם הוא 0.78 זו ירידה של 22%."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם יש תשובות לדפי העבודה?",
+      "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "למה ירידה של 20% ועלייה של 20% לא מחזירות למחיר המקורי?",
+          "answer": "כי העלייה מחושבת מהמחיר שאחרי הירידה. 0.8 × 1.2 = 0.96, כלומר בסוף המחיר נמוך ב־4% מהמקורי."
+        },
+        {
+          "question": "איך מוצאים את אחוז השינוי הכולל?",
+          "answer": "כופלים את כל מקדמי השינוי. אם המכפיל הכולל הוא 1.21 זו עלייה של 21%, ואם הוא 0.78 זו ירידה של 22%."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם יש תשובות לדפי העבודה?",
+          "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/grade-8",
+      "label": "כל דפי כיתה ח׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-8"
+    },
+    {
+      "path": "/percent-change-grade-8",
+      "label": "שינוי באחוזים",
+      "productionHref": "https://www.noamdoronmath.co.il/percent-change-grade-8"
+    },
+    {
+      "path": "/percentage-problems-grade-8",
+      "label": "בעיות אחוזים",
+      "productionHref": "https://www.noamdoronmath.co.il/percentage-problems-grade-8"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=8&topic=9",
+    "source": "catalog-g8-t9",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=9",
+    "catalogTopicId": 9,
+    "catalogTopicTitle": "שינויים עוקבים"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=8&topic=9",
+      "source": "catalog-g8-t9",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=9",
+      "catalogTopicId": 9,
+      "catalogTopicTitle": "שינויים עוקבים"
+    }
+  ],
+  "gradeHubHref": "/grade-8",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/successive-percent-changes-grade-8#webpage",
+        "url": "https://www.noamdoronmath.co.il/successive-percent-changes-grade-8",
+        "name": "שינויים עוקבים באחוזים לכיתה ח׳ | דפי עבודה חינם",
+        "description": "שינויים עוקבים באחוזים לכיתה ח׳: מכפיל כולל, אחוז השינוי הכולל ולמה ירידה ועלייה שוות לא מחזירות למקור. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/successive-percent-changes-grade-8#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/successive-percent-changes-grade-8#learning-resource",
+        "name": "שינויים עוקבים באחוזים לכיתה ח׳",
+        "url": "https://www.noamdoronmath.co.il/successive-percent-changes-grade-8",
+        "description": "שינויים עוקבים באחוזים לכיתה ח׳: מכפיל כולל, אחוז השינוי הכולל ולמה ירידה ועלייה שוות לא מחזירות למקור. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "educationalLevel": "כיתה ח׳",
+        "learningResourceType": "דפי עבודה",
+        "teaches": "שינויים עוקבים באחוזים ומכפיל כולל",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/successive-percent-changes-grade-8#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "למה ירידה של 20% ועלייה של 20% לא מחזירות למחיר המקורי?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כי העלייה מחושבת מהמחיר שאחרי הירידה. 0.8 × 1.2 = 0.96, כלומר בסוף המחיר נמוך ב־4% מהמקורי."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך מוצאים את אחוז השינוי הכולל?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כופלים את כל מקדמי השינוי. אם המכפיל הכולל הוא 1.21 זו עלייה של 21%, ואם הוא 0.78 זו ירידה של 22%."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם יש תשובות לדפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. בסוף כל דף עבודה יש דף תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

@@ -1,0 +1,314 @@
+{
+  "slug": "equations-introduction-equivalence-grade-7",
+  "path": "/equations-introduction-equivalence-grade-7",
+  "grade": 7,
+  "sourceUrl": "https://www.noamdoronmath.co.il/equations-introduction-equivalence-grade-7",
+  "fetchedAt": "2026-11-10T00:00:00.000Z",
+  "verifiedVia": "authored-catalog-gap-from-noam-pdfs",
+  "title": "משוואות ופתרונן לכיתה ז׳ — מבוא ושקילות | דפי עבודה חינם",
+  "description": "משוואות לכיתה ז׳, מבוא: מהי משוואה, בדיקת פתרון בהצבה, כללי שקילות ופעולה זהה בשני האגפים. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "משוואות ופתרונן לכיתה ז׳ — מבוא: שקילות ובדיקת פתרון",
+  "intro": "מכירים את המשוואה כשוויון בין שני ביטויים, בודקים אם מספר הוא פתרון בעזרת הצבה, ולומדים אילו פעולות על שני האגפים שומרות על אותו פתרון. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "משוואה היא שוויון בין שני ביטויים שיש בו נעלם. פתרון המשוואה הוא מספר שכאשר מציבים אותו במקום הנעלם, שני האגפים שווים.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "כללי שקילות: מותר להוסיף או לחסר אותו מספר בשני האגפים, ומותר לכפול או לחלק את שני האגפים באותו מספר שאינו 0. משוואה שמתקבלת כך שקולה למקורית, כלומר יש לה אותו פתרון.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "דוגמה: האם 4 הוא פתרון של 3x − 2 = 10? מציבים: 3 × 4 − 2 = 12 − 2 = 10. שני האגפים שווים, ולכן 4 הוא פתרון.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "מבצעים פעולה רק באגף אחד. כל פעולה נעשית בשני האגפים, אחרת השוויון נשבר.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "כופלים את שני האגפים ב־0. כפל ב־0 הופך כל משוואה ל־0 = 0 ומאבד את המידע, ולכן הוא אינו פעולה שקולה.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "האם x = 5 הוא פתרון של המשוואה 2x + 3 = 15? בדקו בהצבה.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה היא לא. מציבים: 2 × 5 + 3 = 13, ו־13 אינו שווה ל־15.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "מכירים את המשוואה כשוויון בין שני ביטויים, בודקים אם מספר הוא פתרון בעזרת הצבה, ולומדים אילו פעולות על שני האגפים שומרות על אותו פתרון. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=7&topic=33",
+      "catalogTopicId": 33
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "משוואה היא שוויון בין שני ביטויים שיש בו נעלם. פתרון המשוואה הוא מספר שכאשר מציבים אותו במקום הנעלם, שני האגפים שווים.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "כללי שקילות: מותר להוסיף או לחסר אותו מספר בשני האגפים, ומותר לכפול או לחלק את שני האגפים באותו מספר שאינו 0. משוואה שמתקבלת כך שקולה למקורית, כלומר יש לה אותו פתרון.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "דוגמה: האם 4 הוא פתרון של 3x − 2 = 10? מציבים: 3 × 4 − 2 = 12 − 2 = 10. שני האגפים שווים, ולכן 4 הוא פתרון.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "מבצעים פעולה רק באגף אחד. כל פעולה נעשית בשני האגפים, אחרת השוויון נשבר.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "כופלים את שני האגפים ב־0. כפל ב־0 הופך כל משוואה ל־0 = 0 ומאבד את המידע, ולכן הוא אינו פעולה שקולה.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "האם x = 5 הוא פתרון של המשוואה 2x + 3 = 15? בדקו בהצבה.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "התשובה היא לא. מציבים: 2 × 5 + 3 = 13, ו־13 אינו שווה ל־15.",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 10.11.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "איך בודקים אם מספר הוא פתרון של משוואה?",
+      "answer": "מציבים אותו במקום הנעלם ומחשבים כל אגף בנפרד. אם שני האגפים שווים, המספר הוא פתרון."
+    },
+    {
+      "question": "מה הן משוואות שקולות?",
+      "answer": "משוואות שיש להן אותו פתרון. מקבלים אותן כשמוסיפים, מחסרים, כופלים או מחלקים את שני האגפים באותו מספר, ובכפל ובחילוק המספר אינו 0."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם יש תשובות לדפי העבודה?",
+      "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "איך בודקים אם מספר הוא פתרון של משוואה?",
+          "answer": "מציבים אותו במקום הנעלם ומחשבים כל אגף בנפרד. אם שני האגפים שווים, המספר הוא פתרון."
+        },
+        {
+          "question": "מה הן משוואות שקולות?",
+          "answer": "משוואות שיש להן אותו פתרון. מקבלים אותן כשמוסיפים, מחסרים, כופלים או מחלקים את שני האגפים באותו מספר, ובכפל ובחילוק המספר אינו 0."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם יש תשובות לדפי העבודה?",
+          "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/grade-7",
+      "label": "כל דפי כיתה ז׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-7"
+    },
+    {
+      "path": "/equations-basics-grade-7",
+      "label": "משוואות בסיס",
+      "productionHref": "https://www.noamdoronmath.co.il/equations-basics-grade-7"
+    },
+    {
+      "path": "/two-step-equations-grade-7",
+      "label": "משוואות דו־שלביות",
+      "productionHref": "https://www.noamdoronmath.co.il/two-step-equations-grade-7"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=7&topic=33",
+    "source": "catalog-g7-t33",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=33",
+    "catalogTopicId": 33,
+    "catalogTopicTitle": "משוואות ופתרונן חלק 1 — מבוא"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=7&topic=33",
+      "source": "catalog-g7-t33",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=33",
+      "catalogTopicId": 33,
+      "catalogTopicTitle": "משוואות ופתרונן חלק 1 — מבוא"
+    }
+  ],
+  "gradeHubHref": "/grade-7",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/equations-introduction-equivalence-grade-7#webpage",
+        "url": "https://www.noamdoronmath.co.il/equations-introduction-equivalence-grade-7",
+        "name": "משוואות ופתרונן לכיתה ז׳ — מבוא ושקילות | דפי עבודה חינם",
+        "description": "משוואות לכיתה ז׳, מבוא: מהי משוואה, בדיקת פתרון בהצבה, כללי שקילות ופעולה זהה בשני האגפים. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/equations-introduction-equivalence-grade-7#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/equations-introduction-equivalence-grade-7#learning-resource",
+        "name": "משוואות ופתרונן לכיתה ז׳ — מבוא: שקילות ובדיקת פתרון",
+        "url": "https://www.noamdoronmath.co.il/equations-introduction-equivalence-grade-7",
+        "description": "משוואות לכיתה ז׳, מבוא: מהי משוואה, בדיקת פתרון בהצבה, כללי שקילות ופעולה זהה בשני האגפים. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "educationalLevel": "כיתה ז׳",
+        "learningResourceType": "דפי עבודה",
+        "teaches": "משמעות הפתרון של משוואה, בדיקה בהצבה וכללי שקילות",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/equations-introduction-equivalence-grade-7#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "איך בודקים אם מספר הוא פתרון של משוואה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "מציבים אותו במקום הנעלם ומחשבים כל אגף בנפרד. אם שני האגפים שווים, המספר הוא פתרון."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "מה הן משוואות שקולות?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "משוואות שיש להן אותו פתרון. מקבלים אותן כשמוסיפים, מחסרים, כופלים או מחלקים את שני האגפים באותו מספר, ובכפל ובחילוק המספר אינו 0."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם יש תשובות לדפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. בסוף כל דף עבודה יש דף תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

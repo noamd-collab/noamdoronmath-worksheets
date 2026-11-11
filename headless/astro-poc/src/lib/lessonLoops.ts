@@ -1,14 +1,16 @@
+import { MIDDLE_TOPIC_LESSONS } from './middleTopicLessons';
 /** Lesson-specific sequences. Rest/reduced-motion state keeps all worked steps readable. */
 export type LessonStep = { text: string; math: string };
 export type Lesson = {
   idea: string;
-  picture: 'reflection' | 'net' | 'chart' | 'bars' | 'place' | 'equation' | 'shapes' | 'hundred' | 'rectangles' | 'linegraph' | 'table' | 'mean' | 'groups' | 'numberline' | 'triangles' | 'linear';
+  picture: 'reflection' | 'net' | 'chart' | 'bars' | 'place' | 'equation' | 'shapes' | 'hundred' | 'rectangles' | 'linegraph' | 'table' | 'mean' | 'groups' | 'numberline' | 'triangles' | 'linear' | 'weights' | 'rounding' | 'division' | 'factortree' | 'calculation' | 'median-data' | 'center-choice' | 'truncated-axis' | 'pie-sector' | 'experiment-data' | 'cartesian-topic' | 'equilateral-topic' | 'source-data';
   place?: { value: number; label: string }[];
   steps: [LessonStep, LessonStep, LessonStep];
   bars?: { total: number; filled: number; label: string }[];
 };
 const step = (text: string, math: string): LessonStep => ({ text, math });
 export const LESSON_LOOPS = {
+  ...MIDDLE_TOPIC_LESSONS,
   'triangle-angles': {picture:'triangles',idea:'ממיינים משולשים לפי הזווית הגדולה ביותר שלהם',steps:[step('במשולש חד־זווית כל שלוש הזוויות חדות',''),step('במשולש ישר־זווית יש זווית ישרה אחת',''),step('במשולש קהה־זווית יש זווית קהה אחת','')]},
   'read-linegraph': {picture:'linegraph',idea:'משווים שינוי בין שלבים לפי הפרש הערכים, במרווחי זמן שווים',steps:[step('קוראים את שלושת הערכים','5, 9, 10'),step('מחשבים את השינויים','9 − 5 = 4; 10 − 9 = 1'),step('העלייה הגדולה יותר היא בין א׳ לב׳','4 > 1')]},
   'read-table': {picture:'table',idea:'קוראים את כותרות הטבלה לפני שמחברים או משווים שורות',steps:[step('קוראים את הכמויות של קבוצות א׳ וב׳','138, 161'),step('מחברים למציאת הסכום','138 + 161 = 299'),step('מחסרים למציאת ההפרש','161 − 138 = 23')]},
@@ -22,7 +24,7 @@ export const LESSON_LOOPS = {
   'box-net': { picture: 'net', idea: 'בתיבה יש שישה מלבנים: שלושה זוגות של פאות שוות', steps: [step('זוג פאות ראשון', '2 × (2 × 3) = 12'),step('מחברים את שלושת הזוגות', '2 × 6 + 2 × 8 + 2 × 12'),step('שטח הפנים בסנטימטרים רבועים', 'S = 52')] },
   'read-bars': { picture: 'chart', idea: 'גובה העמודה מראה כמה פריטים יש בכל קבוצה', steps: [step('קוראים את גובה העמודה הראשונה', '3'),step('משווים בין הקבוצות', '5 > 3 > 2'),step('כמה פריטים יש בסך הכול?', '3 + 5 + 2 = 10')] },
   'capacity-units': { picture: 'bars', bars: [{total:10,filled:10,label:'1 L'},{total:10,filled:5,label:'0.5 L'}], idea:'ליטר אחד שווה לאלף מיליליטרים; חצי ליטר הוא חמש מאות',steps:[step('ליטר אחד', '1 L = 1,000 mL'),step('חצי מהכמות', '0.5 L = 500 mL'),step('קשר לנפח', '1 m³ = 1,000 L')] },
-  'weight-units': {picture:'equation',idea:'בהמרת קילוגרמים לגרמים כופלים באלף',steps:[step('יחידת המידה', '1 kg = 1,000 g'),step('ממירים קילוגרם וחצי', '1.5 × 1,000 = 1,500'),step('בודקים את היחידות', '1.5 kg = 1,500 g')]},
+  'weight-units': {picture:'weights',idea:'בהמרת קילוגרמים לגרמים כופלים באלף',steps:[step('יחידת המידה', '1 kg = 1,000 g'),step('ממירים קילוגרם וחצי', '1.5 × 1,000 = 1,500'),step('בודקים את היחידות', '1.5 kg = 1,500 g')]},
   'fraction-count': {picture:'bars',bars:[{total:12,filled:7,label:'7/12'}],idea:'החלק מתוך הכמות הוא מספר הפריטים שנבחרו חלקי מספר הפריטים הכולל',steps:[step('נבחרו 35 מתוך 60 פריטים', '35/60'),step('מחלקים מונה ומכנה בחמש', '(35 ÷ 5)/(60 ÷ 5)'),step('אותו חלק בצמצום', '7/12')]},
   'fraction-add': {picture:'bars',bars:[{total:6,filled:3,label:'1/2 = 3/6'},{total:6,filled:2,label:'1/3 = 2/6'},{total:6,filled:5,label:'5/6'}],idea:'מחברים שברים רק אחרי שמחלקים את השלם לחלקים שווים באותו גודל',steps:[step('מוצאים מכנה משותף', '1/2 + 1/3'),step('ממירים לשישיות', '3/6 + 2/6'),step('מחברים את המונים', '5/6')]},
   'fraction-complete': {picture:'bars',bars:[{total:3,filled:1,label:'1/3'},{total:3,filled:2,label:'2/3'}],idea:'משלימים לשלם באמצעות חיסור, ובודקים בחיבור',steps:[step('מה חסר לשלם?', '1/3 + □ = 1'),step('מחסרים את החלק הידוע', '1 − 1/3 = 2/3'),step('בודקים', '1/3 + 2/3 = 1')]},
@@ -43,12 +45,12 @@ export const LESSON_LOOPS = {
   'binomial-square': {picture:'equation',idea:'בריבוע סכום מופיע גם האיבר האמצעי, פעמיים המכפלה',steps:[step('ריבוע הוא כפל הביטוי בעצמו', '(x + 3)² = (x + 3)(x + 3)'),step('כופלים כל איבר בכל איבר', 'x² + 3x + 3x + 9'),step('מאחדים איברים דומים', 'x² + 6x + 9')]},
   'percent-quantity': {picture:'bars',bars:[{total:20,filled:20,label:'100% = 200'},{total:20,filled:9,label:'45% = 90'}],idea:'כדי לחשב אחוז מכמות, מוצאים אחוז אחד ומכפילים במספר האחוזים',steps:[step('מוצאים אחוז אחד מתוך מאתיים', '200 ÷ 100 = 2'),step('מחשבים ארבעים וחמישה אחוזים', '2 × 45'),step('התוצאה', '90')]},
   'percent-whole': {picture:'bars',bars:[{total:4,filled:1,label:'25% = 30'},{total:4,filled:4,label:'100% = 120'}],idea:'אם רבע מהכמות הוא שלושים, הכמות השלמה היא ארבע פעמים שלושים',steps:[step('נתון החלק', '25% = 30'),step('מוצאים אחוז אחד', '30 ÷ 25 = 1.2'),step('מחשבים מאה אחוזים', '1.2 × 100 = 120')]},
-  'long-division': {picture:'equation',idea:'בחילוק ארוך מחלקים לפי ערך המקום, מהעשרות אל היחידות',steps:[step('מחלקים 84 לשלוש קבוצות', '84 ÷ 3'),step('תחילה 60, ואז 24', '60 ÷ 3 = 20; 24 ÷ 3 = 8'),step('מחברים ובודקים בכפל', '28; 28 × 3 = 84')]},
+  'long-division': {picture:'division',idea:'בחילוק ארוך מחלקים לפי ערך המקום, מהעשרות אל היחידות',steps:[step('מחלקים 84 לשלוש קבוצות', '84 ÷ 3'),step('תחילה 60, ואז 24', '60 ÷ 3 = 20; 24 ÷ 3 = 8'),step('מחברים ובודקים בכפל', '28; 28 × 3 = 84')]},
   'hundred-chart': {picture:'hundred',idea:'בלוח המאה, צעד ימינה מוסיף אחד וצעד מטה מוסיף עשר',steps:[step('מתחילים במספר 34','34'),step('משבצת אחת ימינה','34 + 1 = 35'),step('מהמספר 34, שורה אחת למטה','34 + 10 = 44')]},
   'square-rectangle': {picture:'rectangles',idea:'למלבן ארבע זוויות ישרות; בריבוע גם כל הצלעות שוות',steps:[step('מזהים ארבע פינות ישרות',''),step('במלבן הצלעות שממול שוות',''),step('בריבוע כל ארבע הצלעות שוות','')]},
-  'prime-factorization': {picture:'equation',idea:'מפרקים מספר למכפלה של מספרים ראשוניים',steps:[step('מתחילים מגורם ראשוני','60 = 2 × 30'),step('ממשיכים לפרק את 30','60 = 2 × 2 × 15'),step('כל הגורמים כעת ראשוניים','60 = 2 × 2 × 3 × 5')]},
+  'prime-factorization': {picture:'factortree',idea:'מפרקים מספר למכפלה של מספרים ראשוניים',steps:[step('מתחילים מגורם ראשוני','60 = 2 × 30'),step('ממשיכים לפרק את 30','60 = 2 × 2 × 15'),step('כל הגורמים כעת ראשוניים','60 = 2 × 2 × 3 × 5')]},
   'compare-fractions': {picture:'bars',bars:[{total:4,filled:2,label:'1/2 = 2/4'},{total:4,filled:3,label:'3/4'}],idea:'כדי להשוות שברים משווים חלקים מאותו שלם ובאותו גודל',steps:[step('כותבים את החצי ברבעים','1/2 = 2/4'),step('משווים מספרי רבעים','2/4 < 3/4'),step('חוזרים לשברים המקוריים','1/2 < 3/4')]},
-  'round-large': {picture:'equation',idea:'בעיגול בוחרים את המספר העגול הקרוב ביותר',steps:[step('מעגלים את 347,000 למאות אלפים','300,000 < 347,000 < 400,000'),step('משווים מרחקים','47,000 < 53,000'),step('קרובים יותר לשלוש מאות אלף','347,000 ≈ 300,000')]},
+  'round-large': {picture:'rounding',idea:'בעיגול בוחרים את המספר העגול הקרוב ביותר',steps:[step('מעגלים את 347,000 למאות אלפים','300,000 < 347,000 < 400,000'),step('משווים מרחקים','47,000 < 53,000'),step('קרובים יותר לשלוש מאות אלף','347,000 ≈ 300,000')]},
   'divide-remainder': {picture:'equation',idea:'בחילוק עם שארית בודקים שהשארית קטנה מהמחלק',steps:[step('כמה פעמים 4 נכנס ב־85?','85 ÷ 4'),step('עשרים פעמים, ונשאר 5; מוסיפים עוד קבוצה','85 = 4 × 21 + 1'),step('בודקים שהשארית קטנה מהמחלק','1 < 4')]},
   'shape-solid': {picture:'shapes',idea:'ריבוע הוא צורה במישור; קובייה היא גוף בעל נפח',steps:[step('לריבוע ארבע צלעות', ''),step('בקובייה שש פאות ריבועיות', ''),step('צורה שטוחה לעומת גוף תלת־ממדי', '')]},
 } satisfies Record<string,Lesson>;

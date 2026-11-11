@@ -10,6 +10,7 @@
 import { ELEMENTARY_LANDING_LOOPS, ELEMENTARY_CSS_IDEAS, type ElementaryConceptLoopVariant } from './elementaryLandingLoops';
 import topicFamilies from '../data/topicFamilies.json';
 import type { TopicPageContent } from './topicPages';
+import { MIDDLE_LESSON_TOPIC_MAP, MIDDLE_TOPIC_LESSONS } from './middleTopicLessons';
 
 /** Same mount list TopicPage used before this change (F01–F06, F21, F26, F38). */
 export const FAMILY_CONCEPT_LOOP = {
@@ -24,10 +25,41 @@ export const FAMILY_CONCEPT_LOOP = {
   F38: 'pythagoras',
 } as const;
 
-/** One page whose own idea has its own ConceptLoop film (Kimi's L14 v6). */
+/** Pages whose own idea has its own ConceptLoop film. */
 const SLUG_CONCEPT_OVERRIDE = {
+  'frequency-grade-7': 'data',
+  'annual-review-grade-7': 'signed-jump',
   'difference-of-squares-grade-9': 'diff-sq',
   'kite-grade-9': 'kite-construct',
+  'ratio-proportion-grade-8': 'ratio-beads',
+  'scale-grade-8': 'map-scale',
+  'percent-representations-grade-8': 'pct-25',
+  'pie-charts-grade-8': 'data',
+  'mean-grade-8': 'mean-cols',
+  'slope-line-through-origin-grade-8': 'slope',
+  'midyear-diagnostic-grade-8': 'balance',
+  'end-of-year-diagnostic-grade-8': 'map-scale',
+  'angles-review-grade-7': 'sup-angles',
+  'coordinate-plane-grade-8': 'coord-walk',
+  'equations-basics-grade-7': 'balance',
+  'signed-numbers-grade-7': 'signed-jump',
+  'solids-box-cube-prism-grade-7': 'cube-8',
+  'circle-area-circumference-grade-8': 'circ-unroll',
+  'cylinder-volume-grade-8': 'cyl-stack',
+  'exterior-angle-triangle-grade-8': 'exterior',
+  'linear-function-grade-8': 'slope',
+  'similar-triangles-grade-8': 'similar',
+  'statistics-grade-8': 'mean-cols',
+  'triangle-congruence-grade-8': 'sas-snap',
+  'linear-function-grade-9': 'slope',
+  'parallelogram-trapezoid-area-grade-9': 'para-rect',
+  'probability-grade-9': 'two-coins',
+  'quadratic-function-grade-9': 'parab',
+  'similar-triangles-grade-9': 'similar',
+  'statistics-grade-9': 'mean-cols',
+  'square-grade-9': 'quad-tree',
+  'trapezoid-grade-9': 'trap-area',
+  'triangle-30-60-90-grade-9': 'half-eq',
 } as const;
 
 export type ConceptLoopVariant =
@@ -37,6 +69,8 @@ export type ConceptLoopVariant =
 
 /** CSS/SVG loops. Transform and opacity only. */
 export const CSS_LOOP_VARIANTS = [
+  ...Object.keys(MIDDLE_TOPIC_LESSONS) as (keyof typeof MIDDLE_TOPIC_LESSONS)[],
+  'linear-table',
   'add-no-carry',
   'add-tens',
   'baseten-sub',
@@ -90,6 +124,7 @@ export const CSS_LOOP_VARIANTS = [
   'absolute',
   'order',
   'percent',
+  'pct-discount',
   'angles',
   'measure',
   'parallel',
@@ -97,6 +132,7 @@ export const CSS_LOOP_VARIANTS = [
   'area-para',
   'area-split',
   'quads',
+  'quad-sides',
   'rect',
   'rhombus',
   'square',
@@ -112,6 +148,7 @@ export const CSS_LOOP_VARIANTS = [
   'pattern-graph',
   'scale',
   'distance',
+  'axis-rect',
   'linear',
   'parabola',
   'quad-eq',
@@ -166,10 +203,14 @@ const FAMILY_CSS_LOOP: Record<string, CssLoopVariant> = {
 
 /** Finer than the family when the page's own idea is narrower. */
 const SLUG_CSS_OVERRIDE: Record<string, CssLoopVariant> = {
+  'percent-change-grade-8': 'pct-discount',
+  'rate-of-change-grade-8': 'linear-table',
+  'data-collection-reading-grade-7': 'read-linegraph',
+  'relative-frequency-grade-7': 'percent',
+  'assessment-task-1-grade-7': 'measure',
   'triangle-area-grade-7': 'triangle-area',
   'square-root-grade-7': 'roots',
   'square-roots-grade-9': 'roots',
-  'cylinder-volume-grade-8': 'round-solid',
   'transition-to-high-school-grade-9': 'quad-factor',
   'geometric-proof-grade-8': 'proof',
   'exponent-rules-grade-9': 'exp-rules',
@@ -181,15 +222,29 @@ const SLUG_CSS_OVERRIDE: Record<string, CssLoopVariant> = {
   'composite-polygons-area-grade-9': 'area-split',
   'rectangle-grade-9': 'rect',
   'rhombus-grade-9': 'rhombus',
-  'square-grade-9': 'square',
-  'trapezoid-grade-9': 'trapezoid',
   'cone-grade-8': 'cone',
+  'percentage-problems-grade-8': 'pct-discount',
   'cylinder-surface-area-grade-8': 'cyl-area',
   'triangular-prism-surface-area-grade-9': 'prism-area',
   'triangular-prism-volume-grade-9': 'prism-vol',
   'patterns-and-graphs-grade-7': 'pattern-graph',
+  'prior-knowledge-diagnostic-grade-8': 'order',
+  'square-root-grade-8': 'roots',
+  'bar-charts-pictograms-grade-8': 'read-bars',
+  'function-concept-grade-8': 'pattern-graph',
+  'function-notation-grade-8': 'read-graph',
+  'function-representations-grade-8': 'linear-table',
+  'data-range-grade-8': 'compare-groups',
+  'data-literacy-grade-8': 'read-bars',
+  'lines-parallel-to-axes-grade-8': 'coords',
+  'motion-problems-grade-8': 'linear',
+  'gap-bridging-review-grade-8': 'signed',
+  'summary-review-grade-8': 'ineq',
+  'interpolation-extrapolation-grade-8': 'read-linegraph',
+  'assessment-task-1-grade-8': 'parallel',
+  'two-data-sources-grade-8': 'compare-groups',
   'coordinate-plane-scale-grade-7': 'scale',
-  'coordinate-plane-applications-grade-7': 'distance',
+  'coordinate-plane-applications-grade-7': 'axis-rect',
   'coordinate-plane-applications-grade-9': 'distance',
   'quadratic-equations-grade-9': 'quad-eq',
   'reading-graphs-grade-9': 'read-graph',
@@ -199,8 +254,6 @@ const SLUG_CSS_OVERRIDE: Record<string, CssLoopVariant> = {
   'isosceles-triangle-grade-9': 'isosceles',
   'isosceles-triangle-properties-grade-8': 'isosceles',
   'special-triangles-grade-7-new': 'isosceles',
-  'exterior-angle-triangle-grade-8': 'exterior',
-  'triangle-30-60-90-grade-9': 't306090',
   'triangle-median-grade-8': 'median',
   'triangle-sides-angles-grade-9': 'side-angle',
   'similar-triangles-area-ratio-grade-8': 'similar-area',
@@ -289,6 +342,8 @@ function familyOf(page: Pick<TopicPageContent, 'grade' | 'catalogCta'>): string 
 }
 
 export function topicLandingLoop(page: Pick<TopicPageContent, 'slug' | 'grade' | 'catalogCta'>): LandingLoop {
+  const middleLesson = MIDDLE_LESSON_TOPIC_MAP[page.slug as keyof typeof MIDDLE_LESSON_TOPIC_MAP];
+  if (middleLesson) return { kind: 'css', variant: middleLesson, marker: middleLesson };
   if (page.grade >= 1 && page.grade <= 6) {
     const restored = ELEMENTARY_LANDING_LOOPS[page.slug as keyof typeof ELEMENTARY_LANDING_LOOPS];
     if (restored) return restored;
@@ -368,6 +423,8 @@ export function powerMarkup(row: PowerRow): string {
  * and listed in the pull request.
  */
 export const CSS_LOOP_IDEAS = {
+  ...Object.fromEntries(Object.entries(MIDDLE_TOPIC_LESSONS).map(([key, lesson]) => [key, lesson.idea])) as Record<keyof typeof MIDDLE_TOPIC_LESSONS, string>,
+  'linear-table': 'בפונקציה קווית, שינוי קבוע ב־x נותן שינוי קבוע ב־y',
   ...ELEMENTARY_CSS_IDEAS,
   'distrib-area': "מפרקים את 16 ל־10 ועוד 6 ומחברים את שני השטחים: 150 + 90 = 240",
   'frac-div': "בכל שלם יש 4 רבעים, ולכן בשני שלמים יש 8 רבעים",
@@ -380,7 +437,8 @@ export const CSS_LOOP_IDEAS = {
   'signed-div': 'בחילוק, סימנים זהים נותנים פלוס וסימנים שונים נותנים מינוס',
   absolute: `ערך מוחלט הוא המרחק מאפס, ולכן |${MINUS}4| ו־|4| שניהם 4`,
   order: `קודם כופלים 3 × (${MINUS}4), ורק אחר כך מחברים ל־${MINUS}2`,
-  percent: 'רבע מהשלם הוא 25%, והחלק הצבוע הוא אחד מארבעה',
+  percent: 'אותו רבע של השלם נכתב כשבר, כמספר עשרוני וכאחוז',
+  'pct-discount': 'הנחה של 20% מ־250 היא 50, ולכן המחיר אחריה הוא 200',
   angles: 'זוויות קודקודיות שוות, וצמודות משלימות ל־180°',
   measure: 'מודדים זווית לפי פתיחת הקרן: כאן הקרן נפתחת עד 60°',
   parallel: 'חותך בין ישרים מקבילים יוצר זוויות מתאימות שוות',
@@ -388,8 +446,9 @@ export const CSS_LOOP_IDEAS = {
   'area-para': 'שטח מקבילית הוא בסיס כפול הגובה המאונך, לא הצלע האלכסונית',
   'area-split': 'מצולע מורכב נחתך למלבנים, והשטחים מחוברים',
   quads: 'גזירת מלבן נותנת מקבילית בלי לשנות את השטח',
+  'quad-sides': 'במקבילית כל שתי צלעות נגדיות שוות זו לזו ומקבילות',
   rect: 'במלבן כל הזוויות ישרות, והאלכסונים שווים זה לזה',
-  rhombus: 'במעוין כל ארבע הצלעות שוות',
+  rhombus: 'במעוין האלכסונים מאונכים זה לזה וחוצים זה את זה',
   square: 'בריבוע כל הצלעות שוות ויש זווית ישרה',
   trapezoid: 'בטרפז יש בדיוק זוג אחד של צלעות מקבילות',
   circle: 'הקוטר הוא שני רדיוסים, ההיקף 2πr והשטח πr²',
@@ -402,7 +461,8 @@ export const CSS_LOOP_IDEAS = {
   coords: 'הנקודה עוברת בין הרביעים, ובכל רביע סימני x ו־y מתחלפים',
   'pattern-graph': 'הנקודות על הגרף מקיימות את אותה חוקיות, כאן y = 2x',
   scale: 'יחידה אחת על הציר מייצגת 5, ולכן שתי יחידות הן 10',
-  distance: 'המרחק בין שתי נקודות הוא אלכסון של הפרש ה־x והפרש ה־y',
+  distance: 'הפרש ה־x והפרש ה־y הם הניצבים, והמרחק בין הנקודות הוא היתר',
+  'axis-rect': 'צלע אופקית היא הפרש ה־x, וצלע אנכית היא הפרש ה־y',
   linear: 'שיפוע 2: על כל צעד ימינה עולים שני צעדים',
   parabola: `לפרבולה y = x² יש סימטריה: ל־x ול־${MINUS}x אותו y`,
   'quad-eq': 'פתרונות המשוואה הריבועית הם נקודות החיתוך עם ציר x',

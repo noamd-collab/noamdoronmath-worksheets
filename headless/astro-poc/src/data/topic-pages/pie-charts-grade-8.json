@@ -1,0 +1,314 @@
+{
+  "slug": "pie-charts-grade-8",
+  "path": "/pie-charts-grade-8",
+  "grade": 8,
+  "sourceUrl": "https://www.noamdoronmath.co.il/pie-charts-grade-8",
+  "fetchedAt": "2026-11-10T00:00:00.000Z",
+  "verifiedVia": "authored-catalog-gap-from-noam-pdfs",
+  "title": "דיאגרמת עוגה לכיתה ח׳: אחוזים וזוויות | דפי עבודה חינם",
+  "description": "דיאגרמת עוגה לכיתה ח׳: חישוב אחוזים וזוויות של גזרות, בניית עוגה מטבלה וקריאת כמויות מתוכה. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "דיאגרמת עוגה לכיתה ח׳: אחוזים, זוויות ובנייה מטבלה",
+  "intro": "לומדים לקרוא דיאגרמת עוגה, לחשב כמה פריטים יש בכל גזרה מתוך האחוז, לחשב את זווית הגזרה ולבנות עוגה מתוך טבלה. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "דיאגרמת עוגה מראה איך שלם מתחלק לחלקים. כל העוגה היא 100% ו־360°, וסכום כל הגזרות הוא בדיוק השלם.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "כדי למצוא את זווית הגזרה כופלים את החלק ב־360°. גזרה של 25% היא ⟨1¦4⟩ מהעוגה, כלומר 90°.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "דוגמה: בחוג 60 חברים, ו־35% מהם בחרו בציור. בציור בחרו 0.35 × 60 = 21 חברים, וזווית הגזרה היא 0.35 × 360° = 126°.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "משווים גזרות משתי עוגות לפי האחוז בלבד. 40% מ־480 הם יותר מ־40% מ־270, ולכן צריך לדעת גם את גודל השלם.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "בבניית עוגה שוכחים לבדוק שסכום הזוויות הוא 360°.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "בגינה 42 שתילים הם עגבניות, והם 35% מכל השתילים. כמה שתילים יש בגינה?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה היא 120 שתילים, כי 42 : 0.35 = 120.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "לומדים לקרוא דיאגרמת עוגה, לחשב כמה פריטים יש בכל גזרה מתוך האחוז, לחשב את זווית הגזרה ולבנות עוגה מתוך טבלה. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=8&topic=18",
+      "catalogTopicId": 18
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "דיאגרמת עוגה מראה איך שלם מתחלק לחלקים. כל העוגה היא 100% ו־360°, וסכום כל הגזרות הוא בדיוק השלם.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "כדי למצוא את זווית הגזרה כופלים את החלק ב־360°. גזרה של 25% היא ⟨1¦4⟩ מהעוגה, כלומר 90°.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "דוגמה: בחוג 60 חברים, ו־35% מהם בחרו בציור. בציור בחרו 0.35 × 60 = 21 חברים, וזווית הגזרה היא 0.35 × 360° = 126°.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "משווים גזרות משתי עוגות לפי האחוז בלבד. 40% מ־480 הם יותר מ־40% מ־270, ולכן צריך לדעת גם את גודל השלם.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "בבניית עוגה שוכחים לבדוק שסכום הזוויות הוא 360°.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "בגינה 42 שתילים הם עגבניות, והם 35% מכל השתילים. כמה שתילים יש בגינה?",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "התשובה היא 120 שתילים, כי 42 : 0.35 = 120.",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 10.11.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "איך מחשבים זווית של גזרה?",
+      "answer": "כופלים את החלק של הגזרה ב־360°. למשל, גזרה של 20% היא 0.2 × 360° = 72°."
+    },
+    {
+      "question": "אפשר להשוות שתי עוגות?",
+      "answer": "רק אם יודעים את גודל השלם בכל אחת. אותו אחוז בשתי עוגות יכול לייצג כמויות שונות."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם יש תשובות לדפי העבודה?",
+      "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "איך מחשבים זווית של גזרה?",
+          "answer": "כופלים את החלק של הגזרה ב־360°. למשל, גזרה של 20% היא 0.2 × 360° = 72°."
+        },
+        {
+          "question": "אפשר להשוות שתי עוגות?",
+          "answer": "רק אם יודעים את גודל השלם בכל אחת. אותו אחוז בשתי עוגות יכול לייצג כמויות שונות."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם יש תשובות לדפי העבודה?",
+          "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/grade-8",
+      "label": "כל דפי כיתה ח׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-8"
+    },
+    {
+      "path": "/bar-charts-pictograms-grade-8",
+      "label": "עמודות ופיקטוגרמות",
+      "productionHref": "https://www.noamdoronmath.co.il/bar-charts-pictograms-grade-8"
+    },
+    {
+      "path": "/percent-representations-grade-8",
+      "label": "אחוזים — ייצוגים",
+      "productionHref": "https://www.noamdoronmath.co.il/percent-representations-grade-8"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=8&topic=18",
+    "source": "catalog-g8-t18",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=18",
+    "catalogTopicId": 18,
+    "catalogTopicTitle": "דיאגרמת עוגה"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=8&topic=18",
+      "source": "catalog-g8-t18",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=18",
+      "catalogTopicId": 18,
+      "catalogTopicTitle": "דיאגרמת עוגה"
+    }
+  ],
+  "gradeHubHref": "/grade-8",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/pie-charts-grade-8#webpage",
+        "url": "https://www.noamdoronmath.co.il/pie-charts-grade-8",
+        "name": "דיאגרמת עוגה לכיתה ח׳: אחוזים וזוויות | דפי עבודה חינם",
+        "description": "דיאגרמת עוגה לכיתה ח׳: חישוב אחוזים וזוויות של גזרות, בניית עוגה מטבלה וקריאת כמויות מתוכה. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/pie-charts-grade-8#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/pie-charts-grade-8#learning-resource",
+        "name": "דיאגרמת עוגה לכיתה ח׳: אחוזים, זוויות ובנייה מטבלה",
+        "url": "https://www.noamdoronmath.co.il/pie-charts-grade-8",
+        "description": "דיאגרמת עוגה לכיתה ח׳: חישוב אחוזים וזוויות של גזרות, בניית עוגה מטבלה וקריאת כמויות מתוכה. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "educationalLevel": "כיתה ח׳",
+        "learningResourceType": "דפי עבודה",
+        "teaches": "דיאגרמת עוגה: אחוזים, זוויות של גזרות וקריאת כמויות",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/pie-charts-grade-8#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "איך מחשבים זווית של גזרה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כופלים את החלק של הגזרה ב־360°. למשל, גזרה של 20% היא 0.2 × 360° = 72°."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "אפשר להשוות שתי עוגות?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רק אם יודעים את גודל השלם בכל אחת. אותו אחוז בשתי עוגות יכול לייצג כמויות שונות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם יש תשובות לדפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. בסוף כל דף עבודה יש דף תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

@@ -59,7 +59,11 @@ for(const relative of ['../public/worksheet-viewer-noam.html','../../../workshee
  });
  it(label+': expired prepared read cannot append to or unlock a newer freeform operation',async()=>{
   const f=setup(source),pending=deferred(),next=deferred();let expire:any;
-  f.c.setTimeout=(cb:any,ms:number)=>{if(ms>=55000){expire=cb;return 0;}return setTimeout(cb,ms);};
+  // A real deadline shrinks between its creation and setTimeout.
+  const clockStart=Date.now();let clockTicks=0;
+  f.c.Date=class extends Date {static now(){return clockStart+clockTicks++;}};
+  // Capture the first timer by its role, not an exact 55-second delay.
+  f.c.setTimeout=(cb:any,ms:number)=>{if(!expire){assert.ok(ms>0&&ms<55000);expire=cb;return 0;}return setTimeout(cb,ms);};
   f.c.window.NoamCuratedHints={prefetch:()=>pending.promise,get:()=>({hints:['one','two','three'],revision:'same'})};
   f.c.askNoam('hint',standard);await drain();expire();assert.equal(f.c.busy,false);assert.equal(f.thread.messages.at(-1).answerErrorCode,'HINT_REQUEST_TIMEOUT');
   f.c.noamQuestionAnalysis=()=>next.promise;f.c.askNoam('free_question','אפשר להסביר את הנתון?');await drain();const count=f.thread.messages.length;

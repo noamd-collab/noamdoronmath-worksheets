@@ -28,7 +28,7 @@ interface LoopDebug {
   seek: (t: number) => void;
   pause: () => void;
   play: () => void;
-  state: () => { t: number; playing: boolean; laps: number; done: boolean; static: boolean };
+  state: () => { t: number; duration: number; playing: boolean; laps: number; done: boolean; static: boolean };
 }
 
 /* ——— easing: exact cubic-bezier(.16,1,.3,1) via Newton–Raphson ——— */
@@ -898,6 +898,13 @@ function renderParaRect(root: LoopRoot, t: number) {
   const s = 72 * (1 - flat);
   const shape = q(root, 'shape');
   if (shape) shape.setAttribute('points', `160,240 400,240 ${r2(400 + s)},128 ${r2(160 + s)},128`);
+  // a height hangs from the sliding top corner: it stays 112 the whole way
+  const h2 = q(root, 'h2');
+  if (h2) {
+    h2.setAttribute('x1', String(r2(160 + s)));
+    h2.setAttribute('x2', String(r2(160 + s)));
+  }
+  op(h2, ph(t, 0.6, 1.0) * (1 - ph(t, 2.7, 3.0)) + ph(t, 8.1, 8.4) * (1 - ph(t, 9.5, 9.9)));
   op(q(root, 'height'), 1);
   op(q(root, 'lbl-h'), ph(t, 0.6, 1.0));
   op(q(root, 'lbl-same'), ph(t, 2.8, 3.3) * (1 - ph(t, 8.0, 8.6)));
@@ -958,10 +965,20 @@ function renderSlope(root: LoopRoot, t: number) {
   const line = q(root, 'line');
   op(line, ph(t, 0.5, 0.8) * fade);
   draw(line, ph(t, 0.6, 1.8));
-  op(q(root, 'tri1'), ph(t, 2.0, 2.6) * fade);
+  // a walker steps 1 right and 2 up along the line, twice, drawing each step behind it
+  const tri1 = q(root, 'tri1');
+  const tri2 = q(root, 'tri2');
+  op(tri1, ph(t, 2.0, 2.1) * fade);
+  draw(tri1, (60 * ph(t, 2.0, 2.4) + 120 * ph(t, 2.5, 3.1)) / 180);
+  op(tri2, ph(t, 3.3, 3.4) * fade);
+  draw(tri2, (60 * ph(t, 3.3, 3.7) + 120 * ph(t, 3.8, 4.3)) / 180);
+  const walker = q(root, 'walker');
+  const wx = 60 * (ph(t, 2.0, 2.4) + ph(t, 3.3, 3.7));
+  const wy = -120 * (ph(t, 2.5, 3.1) + ph(t, 3.8, 4.3));
+  shift(walker, r2(wx), r2(wy));
+  op(walker, ph(t, 1.8, 2.0) * fade);
   op(q(root, 'run1'), ph(t, 2.2, 2.6) * fade);
   op(q(root, 'rise1'), ph(t, 2.6, 3.1) * fade);
-  op(q(root, 'tri2'), ph(t, 3.3, 3.9) * fade);
   op(q(root, 'run2'), ph(t, 3.5, 3.9) * fade);
   op(q(root, 'rise2'), ph(t, 3.9, 4.3) * fade);
   op(q(root, 'lbl2'), ph(t, 4.3, 4.7) * (1 - ph(t, 8.0, 8.6)));
@@ -994,8 +1011,13 @@ function renderSimilar(root: LoopRoot, t: number) {
   const bx = lerp(240, 320, grow);
   const cy = lerp(190, 130, grow);
   if (big) big.setAttribute('points', `160,250 ${r2(bx)},250 160,${r2(cy)}`);
+  // the acute angles ride on the moving vertices and keep their size
+  shift(q(root, 'ang-b'), r2(bx - 240), 0);
+  shift(q(root, 'ang-a'), 0, r2(cy - 190));
   const vis = ph(t, 0.8, 1.2) * (1 - ph(t, 9.2, 9.7));
   op(big, vis);
+  op(q(root, 'ang-b'), vis);
+  op(q(root, 'ang-a'), vis);
   op(q(root, 'lbl-leg'), vis);
   op(q(root, 'lbl-ht'), vis);
   op(q(root, 'arc-big'), ph(t, 2.4, 2.9) * (1 - ph(t, 8.4, 9.0)));
@@ -1368,6 +1390,8 @@ function renderSasSnap(root: LoopRoot, t: number) {
   const p = ph(t, 1.2, 2.6) - ph(t, 8.2, 9.3);
   const g = q(root, 'copy');
   if (g) g.setAttribute('transform', `translate(${r2(190 * (1 - p))} ${r2(-16 * (1 - p))})`);
+  // the shared transient rule hides every [data-el="copy"] until the engine shows it
+  op(g, 1);
   op(q(root, 'ghost'), (1 - p) * (1 - ph(t, 8.6, 9.2)));
   const show = ph(t, 2.8, 3.2) * (1 - ph(t, 8.0, 8.6));
   op(q(root, 'same'), show);
@@ -1401,7 +1425,10 @@ function renderBoxVol(root: LoopRoot, t: number) {
   const fade = 1 - ph(t, 8.3, 9.1);
   for (let i = 0; i < 12; i++) {
     const start = 0.6 + (i / 12) * 2.6;
-    op(q(root, `k${i}`), ph(t, start, start + 0.25) * fade);
+    const el = q(root, `k${i}`);
+    // each unit cube drops into its place, bottom layer first
+    shift(el, 0, r2(-60 * (1 - ph(t, start, start + 0.35))));
+    op(el, ph(t, start, start + 0.2) * fade);
   }
   const show = ph(t, 3.5, 3.9) * (1 - ph(t, 8.0, 8.6));
   op(q(root, 'dims'), show);
@@ -1415,9 +1442,28 @@ const BOX_VOL_HOLD = 5.6;
 
 function renderTrapArea(root: LoopRoot, t: number) {
   const fade = 1 - ph(t, 8.2, 9.0);
+  // the bases a = 6 (140–356) and b = 2 (212–284) slide to mid-height and meet as m = 4 (176–320)
+  const meet = ph(t, 1.0, 2.0);
+  const ta = q(root, 'ta');
+  const tb = q(root, 'tb');
+  if (ta) {
+    ta.setAttribute('x1', String(r2(lerp(140, 176, meet))));
+    ta.setAttribute('x2', String(r2(lerp(356, 320, meet))));
+    ta.setAttribute('y1', String(r2(lerp(230, 176, meet))));
+    ta.setAttribute('y2', String(r2(lerp(230, 176, meet))));
+  }
+  if (tb) {
+    tb.setAttribute('x1', String(r2(lerp(212, 176, meet))));
+    tb.setAttribute('x2', String(r2(lerp(284, 320, meet))));
+    tb.setAttribute('y1', String(r2(lerp(122, 176, meet))));
+    tb.setAttribute('y2', String(r2(lerp(122, 176, meet))));
+  }
+  const slide = ph(t, 0.7, 1.0) * (1 - ph(t, 2.1, 2.4));
+  op(ta, slide);
+  op(tb, slide);
   const mid = q(root, 'mid');
-  op(mid, ph(t, 1.4, 1.8) * fade);
-  draw(mid, ph(t, 1.5, 2.3));
+  op(mid, ph(t, 1.9, 2.1) * fade);
+  draw(mid, 1);
   op(q(root, 'lbl-m'), ph(t, 2.3, 2.7) * fade);
   const show = ph(t, 2.9, 3.3) * (1 - ph(t, 8.0, 8.6));
   op(q(root, 'lbl-h'), 1);
@@ -1481,15 +1527,21 @@ const BIRDS_SUB_HOLD = 5.0;
 
 function renderCircUnroll(root: LoopRoot, t: number) {
   const fade = 1 - ph(t, 8.2, 9.0);
+  // a wheel of diameter 70 rolls one full turn (πd ≈ 219.9 px) and lays its rim down as the segments
+  const roll = Math.min(1, Math.max(0, (t - 1.1) / 2.0));
+  const dx = 219.9 * roll;
+  const wheel = q(root, 'wheel');
+  if (wheel) wheel.setAttribute('transform', `translate(${r2(dx)} 0) rotate(${r2(360 * roll)} 230 195)`);
+  op(wheel, ph(t, 0.6, 0.9) * (1 - ph(t, 3.3, 3.7)));
   for (let i = 0; i < 3; i++) {
     const seg = q(root, `seg${i}`);
-    op(seg, ph(t, 1.0 + i * 0.55, 1.3 + i * 0.55) * fade);
-    draw(seg, ph(t, 1.1 + i * 0.55, 1.7 + i * 0.55));
-    op(q(root, `sd${i}`), ph(t, 1.6 + i * 0.55, 2.0 + i * 0.55) * fade);
+    op(seg, (dx > 70 * i ? 1 : 0) * fade);
+    draw(seg, Math.min(1, Math.max(0, (dx - 70 * i) / 70)));
+    op(q(root, `sd${i}`), ph(t, 1.6 + i * 0.65, 2.0 + i * 0.65) * fade);
   }
   const extra = q(root, 'extra');
-  op(extra, ph(t, 2.6, 3.0) * fade);
-  draw(extra, ph(t, 2.7, 3.1));
+  op(extra, (dx > 210 ? 1 : 0) * fade);
+  draw(extra, Math.min(1, Math.max(0, (dx - 210) / 9.9)));
   op(q(root, 'extra-lbl'), ph(t, 2.8, 3.2) * (1 - ph(t, 8.0, 8.6)));
   const show = ph(t, 3.2, 3.6) * (1 - ph(t, 8.0, 8.6));
   const fxs = qa(root, '[data-fx]');
@@ -1539,9 +1591,16 @@ const L_SPLIT_HOLD = 5.0;
 function renderQuadTree(root: LoopRoot, t: number) {
   const fade = 1 - ph(t, 8.2, 9.0);
   op(q(root, 'arms'), ph(t, 1.0, 1.4) * fade);
-  op(q(root, 'kids'), ph(t, 1.4, 1.9) * fade);
+  // each special case slides out of the shape above it, along its arm
+  const kid = 1 - ph(t, 1.0, 1.9);
+  shift(q(root, 'kid-r'), r2(170 * kid), r2(-106 * kid));
+  shift(q(root, 'kid-m'), r2(-145 * kid), r2(-106 * kid));
+  op(q(root, 'kids'), ph(t, 1.0, 1.3) * fade);
   op(q(root, 'down'), ph(t, 2.2, 2.6) * fade);
-  op(q(root, 'sq'), ph(t, 2.6, 3.1) * fade);
+  const sq = q(root, 'sq');
+  const low = 1 - ph(t, 2.4, 3.1);
+  shift(sq, r2(7.5 * low), r2(-102 * low));
+  op(sq, ph(t, 2.4, 2.7) * fade);
   const show = ph(t, 3.2, 3.6) * (1 - ph(t, 8.0, 8.6));
   const fxs = qa(root, '[data-fx]');
   op(fxs[0], show);
@@ -1647,19 +1706,27 @@ function renderClockSpan(root: LoopRoot, t: number) {
 const CLOCK_SPAN_HOLD = 5.0;
 
 /* ═══════════════ L35 — exterior: 90° + 60° = 150° (D = 10 s) ═══════════════
-   30-60-90 triangle. Exterior at the 30° vertex is exactly 150°. */
+   30-60-90 triangle. Exterior at the 30° vertex is exactly 150°.
+   The 90° wedge slides up from C(200,220) and the 60° wedge travels from
+   B(269.3,220) turning half a turn, both landing at the apex A(200,100). */
 
 function renderExterior(root: LoopRoot, t: number) {
   const fade = 1 - ph(t, 8.2, 9.0);
-  op(q(root, 'w90'), ph(t, 1.2, 1.8) * fade);
-  op(q(root, 'w60'), ph(t, 1.9, 2.5) * fade);
-  op(q(root, 'a90'), ph(t, 1.5, 1.9) * fade);
-  op(q(root, 'a60'), ph(t, 2.2, 2.6) * fade);
-  op(q(root, 'a150'), ph(t, 2.6, 3.0) * (1 - ph(t, 8.0, 8.6)));
-  const show = ph(t, 2.8, 3.2) * (1 - ph(t, 8.0, 8.6));
+  const w90 = q(root, 'w90');
+  const w60 = q(root, 'w60');
+  const p90 = 1 - ph(t, 1.2, 2.2);
+  const p60 = 1 - ph(t, 1.9, 3.0);
+  if (w90) w90.setAttribute('transform', `translate(0 ${r2(120 * p90)})`);
+  if (w60) w60.setAttribute('transform', `translate(${r2(69.3 * p60)} ${r2(120 * p60)}) rotate(${r2(180 * p60)} 200 100)`);
+  op(w90, ph(t, 0.8, 1.1) * fade);
+  op(w60, ph(t, 1.5, 1.8) * fade);
+  op(q(root, 'a90'), ph(t, 2.1, 2.5) * fade);
+  op(q(root, 'a60'), ph(t, 2.8, 3.1) * fade);
+  op(q(root, 'a150'), ph(t, 3.1, 3.4) * (1 - ph(t, 8.0, 8.6)));
+  const show = ph(t, 3.3, 3.7) * (1 - ph(t, 8.0, 8.6));
   const fxs = qa(root, '[data-fx]');
   op(fxs[0], show);
-  op(fxs[1], ph(t, 3.2, 3.6) * (1 - ph(t, 8.0, 8.6)));
+  op(fxs[1], ph(t, 3.7, 4.1) * (1 - ph(t, 8.0, 8.6)));
 }
 const EXTERIOR_HOLD = 5.2;
 
@@ -1695,13 +1762,22 @@ const QUARTER12_HOLD = 4.8;
 
 function renderTwoCoins(root: LoopRoot, t: number) {
   const fade = 1 - ph(t, 8.2, 9.0);
-  op(q(root, 'grid'), ph(t, 1.2, 1.8) * fade);
-  op(q(root, 'pick'), ph(t, 2.2, 2.7) * fade);
-  op(q(root, 'pick-lbl'), ph(t, 2.4, 2.8) * (1 - ph(t, 8.0, 8.6)));
-  const show = ph(t, 2.8, 3.2) * (1 - ph(t, 8.0, 8.6));
+  op(q(root, 'grid'), ph(t, 0.9, 1.1) * fade);
+  // each outcome card is dealt from the two coins (centre 215,70) into its slot
+  for (let i = 0; i < 4; i++) {
+    const p = 1 - ph(t, 1.0 + i * 0.3, 1.5 + i * 0.3);
+    shift(q(root, `cell${i}`), r2((215 - (115 + i * 106)) * p), r2(-105 * p));
+  }
+  // the frame starts around all four outcomes and closes on the one עע card
+  const pick = q(root, 'pick');
+  const k = ph(t, 2.5, 3.1);
+  if (pick) pick.setAttribute('width', String(r2(lerp(408, 90, k))));
+  op(pick, ph(t, 2.2, 2.5) * fade);
+  op(q(root, 'pick-lbl'), ph(t, 3.1, 3.4) * (1 - ph(t, 8.0, 8.6)));
+  const show = ph(t, 3.3, 3.7) * (1 - ph(t, 8.0, 8.6));
   const fxs = qa(root, '[data-fx]');
   op(fxs[0], show);
-  op(fxs[1], ph(t, 3.2, 3.6) * (1 - ph(t, 8.0, 8.6)));
+  op(fxs[1], ph(t, 3.7, 4.1) * (1 - ph(t, 8.0, 8.6)));
 }
 const TWO_COINS_HOLD = 5.2;
 
@@ -1728,14 +1804,21 @@ const MAP_SCALE_HOLD = 5.2;
 
 function renderUnitFrac(root: LoopRoot, t: number) {
   const fade = 1 - ph(t, 8.2, 9.0);
-  op(q(root, 'h'), ph(t, 0.6, 1.1) * fade);
-  op(q(root, 't'), ph(t, 1.2, 1.7) * fade);
-  op(q(root, 'q'), ph(t, 1.8, 2.3) * fade);
-  op(q(root, 'labs'), ph(t, 2.2, 2.6) * fade);
-  const show = ph(t, 2.8, 3.2) * (1 - ph(t, 8.0, 8.6));
+  // each part steps along its bar: it fits 2, 3 and 4 times, then returns home
+  const parts: [string, number, number][] = [['h', 90, 2], ['t', 60, 3], ['q', 45, 4]];
+  for (const [name, w, n] of parts) {
+    let steps = 0;
+    for (let j = 0; j < n - 1; j++) steps += ph(t, 1.0 + j * 0.45, 1.3 + j * 0.45);
+    steps -= (n - 1) * ph(t, 1.0 + (n - 1) * 0.45, 1.5 + (n - 1) * 0.45);
+    const el = q(root, name);
+    shift(el, r2(w * steps), 0);
+    op(el, ph(t, 0.5, 0.9) * fade);
+  }
+  op(q(root, 'labs'), ph(t, 2.6, 3.0) * fade);
+  const show = ph(t, 3.0, 3.4) * (1 - ph(t, 8.0, 8.6));
   const fxs = qa(root, '[data-fx]');
   op(fxs[0], show);
-  op(fxs[1], ph(t, 3.2, 3.6) * (1 - ph(t, 8.0, 8.6)));
+  op(fxs[1], ph(t, 3.4, 3.8) * (1 - ph(t, 8.0, 8.6)));
 }
 const UNIT_FRAC_HOLD = 5.0;
 
@@ -1847,20 +1930,26 @@ const EQUIV_HALF_HOLD = 5.2;
 
 function renderHalfEq(root: LoopRoot, t: number) {
   const fade = 1 - ph(t, 8.2, 9.0);
-  const cut = ph(t, 1.0, 1.6) * fade;
-  op(q(root, 'alt'), cut);
+  const alt = q(root, 'alt');
+  op(alt, ph(t, 0.9, 1.1) * fade);
+  draw(alt, ph(t, 1.0, 1.6));
+  // the left half folds over the height onto the right half, then folds back
+  const left = q(root, 'left');
+  const s = 1 - 2 * (ph(t, 1.8, 2.6) - ph(t, 3.4, 4.2));
+  if (left) left.setAttribute('transform', `matrix(${r2(s)} 0 0 1 ${r2(240 * (1 - s))} 0)`);
+  op(left, ph(t, 1.6, 1.8) * (1 - ph(t, 4.2, 4.6)));
   op(q(root, 'sq'), ph(t, 1.6, 2.0) * fade);
-  op(q(root, 'a30'), ph(t, 1.8, 2.2) * fade);
-  op(q(root, 'a30t'), ph(t, 1.8, 2.2) * fade);
-  op(q(root, 'a60'), ph(t, 2.0, 2.4) * fade);
-  op(q(root, 'a60t'), ph(t, 2.0, 2.4) * fade);
-  op(q(root, 'dims'), ph(t, 2.3, 2.8) * fade);
-  const show = ph(t, 2.9, 3.3) * (1 - ph(t, 8.0, 8.6));
+  op(q(root, 'a30'), ph(t, 2.6, 2.9) * fade);
+  op(q(root, 'a30t'), ph(t, 2.6, 2.9) * fade);
+  op(q(root, 'a60'), ph(t, 2.8, 3.1) * fade);
+  op(q(root, 'a60t'), ph(t, 2.8, 3.1) * fade);
+  op(q(root, 'dims'), ph(t, 3.0, 3.4) * fade);
+  const show = ph(t, 4.2, 4.6) * (1 - ph(t, 8.0, 8.6));
   const fxs = qa(root, '[data-fx]');
   op(fxs[0], show);
-  op(fxs[1], ph(t, 3.3, 3.7) * (1 - ph(t, 8.0, 8.6)));
+  op(fxs[1], ph(t, 4.6, 5.0) * (1 - ph(t, 8.0, 8.6)));
 }
-const HALF_EQ_HOLD = 5.2;
+const HALF_EQ_HOLD = 5.4;
 
 /* ═══════════════ L47 — sq-stretch: square 100×100 becomes a 180×100 rectangle ═══════════════ */
 
@@ -1893,6 +1982,13 @@ function renderAreaX4(root: LoopRoot, t: number) {
     sq.setAttribute('width', String(s));
     sq.setAttribute('height', String(s));
   }
+  // three copies of the 56×56 square slide out of it and fill the doubled square
+  const cells: [string, number, number][] = [['c2', -56, 0], ['c3', 0, -56], ['c4', -56, -56]];
+  for (const [name, dx, dy] of cells) {
+    const el = q(root, name);
+    shift(el, r2(dx * (1 - g)), r2(dy * (1 - g)));
+    op(el, ph(t, 1.0, 1.2) * (1 - ph(t, 8.8, 9.2)));
+  }
   const grid = ph(t, 2.5, 2.9) * fade;
   op(q(root, 'mv'), grid);
   op(q(root, 'mh'), grid);
@@ -1910,12 +2006,14 @@ const AREA_X4_HOLD = 5.2;
 
 function renderCube8(root: LoopRoot, t: number) {
   const fade = 1 - ph(t, 8.2, 9.0);
-  op(q(root, 'cube'), ph(t, 0.7, 1.6) * fade);
-  op(q(root, 'edges'), ph(t, 1.8, 2.3) * (1 - ph(t, 8.0, 8.6)));
-  const show = ph(t, 3.0, 3.4) * (1 - ph(t, 8.0, 8.6));
+  op(q(root, 'cube'), ph(t, 0.5, 1.0) * fade);
+  // the top layer of four lifts off the bottom layer of four, then settles back
+  shift(q(root, 'hi'), 0, r2(-44 * (ph(t, 1.0, 1.6) - ph(t, 2.4, 3.0))));
+  op(q(root, 'edges'), ph(t, 3.0, 3.4) * (1 - ph(t, 8.0, 8.6)));
+  const show = ph(t, 3.3, 3.7) * (1 - ph(t, 8.0, 8.6));
   const fxs = qa(root, '[data-fx]');
   op(fxs[0], show);
-  op(fxs[1], ph(t, 3.4, 3.8) * (1 - ph(t, 8.0, 8.6)));
+  op(fxs[1], ph(t, 3.7, 4.1) * (1 - ph(t, 8.0, 8.6)));
 }
 const CUBE8_HOLD = 5.2;
 
@@ -1980,13 +2078,19 @@ const TOPIC_CARD_HOLD = 4.8;
 
 function renderMark250(root: LoopRoot, t: number) {
   const fade = 1 - ph(t, 8.2, 9.0);
-  const on = ph(t, 1.2, 1.8) * fade;
-  op(q(root, 'dot'), on);
-  op(q(root, 'lab'), ph(t, 1.6, 2.1) * (1 - ph(t, 8.0, 8.6)));
-  const show = ph(t, 2.2, 2.6) * (1 - ph(t, 8.0, 8.6));
+  // the dot hops 0 → 100 → 200 (40 px each), the 200–300 gap lights up, then a half hop to 250
+  const dot = q(root, 'dot');
+  const x = -100 + 40 * (ph(t, 0.9, 1.3) + ph(t, 1.4, 1.8)) + 20 * ph(t, 2.4, 2.9);
+  shift(dot, r2(x), 0);
+  op(dot, ph(t, 0.5, 0.8) * fade);
+  const gap = q(root, 'gap');
+  op(gap, ph(t, 1.8, 2.0) * fade);
+  draw(gap, ph(t, 1.9, 2.4));
+  op(q(root, 'lab'), ph(t, 2.8, 3.2) * (1 - ph(t, 8.0, 8.6)));
+  const show = ph(t, 3.1, 3.5) * (1 - ph(t, 8.0, 8.6));
   const fxs = qa(root, '[data-fx]');
   op(fxs[0], show);
-  op(fxs[1], ph(t, 2.6, 3.0) * (1 - ph(t, 8.0, 8.6)));
+  op(fxs[1], ph(t, 3.5, 3.9) * (1 - ph(t, 8.0, 8.6)));
 }
 const MARK250_HOLD = 4.8;
 
@@ -2430,7 +2534,7 @@ function setupLoop(root: LoopRoot) {
     },
     pause,
     play,
-    state: () => ({ t, playing, laps: lap, done, static: isStatic }),
+    state: () => ({ t, duration: spec.duration, playing, laps: lap, done, static: isStatic }),
   };
 }
 
