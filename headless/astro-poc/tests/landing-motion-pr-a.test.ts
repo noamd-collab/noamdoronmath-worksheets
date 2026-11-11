@@ -44,6 +44,12 @@ const FILMS: Record<string, string> = {
   'quadratic-function-grade-9': 'parab',
   'similar-triangles-grade-9': 'similar',
   'statistics-grade-9': 'mean-cols',
+  'frequency-grade-7': 'data',
+  'equations-introduction-equivalence-grade-7': 'balance',
+  'annual-review-grade-7': 'signed-jump',
+  'mean-grade-8': 'mean-cols',
+  'slope-line-through-origin-grade-8': 'slope',
+  'midyear-diagnostic-grade-8': 'balance',
 };
 
 const SCENES: Record<string, string> = {
@@ -53,6 +59,7 @@ const SCENES: Record<string, string> = {
   'percentage-problems-grade-8': 'pct-discount',
   'coordinate-plane-applications-grade-9': 'distance',
   'rhombus-grade-9': 'rhombus',
+  'percent-change-grade-8': 'pct-discount',
 };
 
 /** Audit section 5 films that stay off topic pages, and why. */

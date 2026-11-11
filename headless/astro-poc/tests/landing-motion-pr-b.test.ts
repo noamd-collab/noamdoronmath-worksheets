@@ -33,6 +33,37 @@ const SECTION_2 = [
 const NOW_FILMS = ['square-rectangle-grade-1', 'collecting-data-grade-3', 'long-division-remainder-grade-4'];
 /** Lesson landing the audit missed: only its mirror half moved. */
 const MISSED = ['reflection-symmetry-grade-2'];
+/** Newly integrated topic pages that reuse the audited lesson pictures. */
+const INTEGRATED_LESSONS: Record<string, string> = {
+  'data-collection-reading-grade-7': 'read-linegraph',
+  'bar-charts-pictograms-grade-8': 'read-bars',
+  'data-range-grade-8': 'compare-groups',
+  'equilateral-triangle-grade-7': 'equilateral-60',
+  'equilateral-triangle-grade-9': 'equilateral-60',
+  'relative-frequency-experiments-grade-7': 'experimental-frequency',
+  'probability-experiments-fairness-grade-8': 'experimental-frequency',
+  'relative-frequency-grade-7': 'relative-frequency',
+  'two-step-equations-grade-7': 'two-step-equation',
+  'axis-intercepts-grade-8': 'axis-intercepts',
+  'equation-of-a-line-grade-8': 'line-from-points',
+  'equations-with-fractions-grade-8': 'numeric-denominators',
+  'graphical-inequalities-grade-8': 'graphical-inequality',
+  'interpolation-extrapolation-grade-8': 'linear-interpolation',
+  'lines-parallel-to-axes-grade-8': 'axis-parallel-lines',
+  'median-grade-8': 'data-median',
+  'choosing-measure-of-center-grade-8': 'choose-center',
+  'data-literacy-grade-8': 'truncated-axis',
+  'motion-problems-grade-8': 'motion-rate',
+  'non-routine-problems-grade-8': 'missing-mean',
+  'pie-charts-grade-8': 'pie-sector',
+  'successive-percent-changes-grade-8': 'successive-percent',
+  'systems-algebraic-solution-grade-8': 'system-elimination',
+  'systems-word-problems-grade-8': 'system-model',
+  'two-data-sources-grade-8': 'compare-sources',
+  'word-problems-choosing-unknowns-grade-8': 'choose-unknown',
+  'function-representations-grade-8': 'linear-table',
+  'rate-of-change-grade-8': 'linear-table',
+};
 /** Lessons that had no picture at all, only their three steps. */
 const NEW_PICTURES = { 'weight-units': 'weights', 'round-large': 'rounding', 'long-division': 'division', 'prime-factorization': 'factortree' };
 
@@ -43,6 +74,9 @@ describe('audit section 2: wiring', () => {
       assert.equal(loop.kind === 'css' && isLessonLoop(loop.variant), true, slug);
     }
     for (const slug of NOW_FILMS) assert.equal(topicLandingLoop(loadTopicPage(slug)).kind, 'concept', slug);
+    for (const [slug, variant] of Object.entries(INTEGRATED_LESSONS)) {
+      assert.deepEqual(topicLandingLoop(loadTopicPage(slug)), { kind: 'css', variant, marker: variant }, slug);
+    }
   });
 
   it('covers every lesson landing on the site, and gives the four step-only lessons a picture', () => {
@@ -50,7 +84,7 @@ describe('audit section 2: wiring', () => {
       const loop = topicLandingLoop(loadTopicPage(slug));
       return loop.kind === 'css' && isLessonLoop(loop.variant);
     });
-    assert.deepEqual([...lessonPages].sort(), [...SECTION_2, ...MISSED].sort());
+    assert.deepEqual([...lessonPages].sort(), [...SECTION_2, ...MISSED, ...Object.keys(INTEGRATED_LESSONS)].sort());
     for (const [variant, picture] of Object.entries(NEW_PICTURES)) {
       assert.equal(LESSON_LOOPS[variant as keyof typeof LESSON_LOOPS].picture, picture, variant);
     }
@@ -81,7 +115,7 @@ describe('audit section 2: real motion in the browser', { timeout: 15 * 60 * 100
   });
 
   it('measures every gallery card at 390 and 1280', () => {
-    const expected = SECTION_2.length + MISSED.length;
+    const expected = SECTION_2.length + MISSED.length + Object.keys(INTEGRATED_LESSONS).length;
     assert.equal(cards.filter((c) => c.width === 390).length, expected);
     assert.equal(cards.filter((c) => c.width === 1280).length, expected);
   });
@@ -113,6 +147,50 @@ describe('audit section 2: real motion in the browser', { timeout: 15 * 60 * 100
       assert.equal(card.stableHeight, true, `${id} changes height`);
       assert.equal(card.overflowX, false, `${id} scrolls sideways`);
       assert.equal(card.runningAfterStop, 0, `${id} keeps running after Stop`);
+    }
+  });
+
+  it('keeps the mean bars balanced at nine when motion is stopped', async () => {
+    const page = await browser.newPage();
+    try {
+      await page.goto(`${server.origin}/review/landing-loops-pr-b`, { waitUntil: 'load' });
+      const pieces = '[data-review-slug="collect-represent-data-grade-6"] [data-review-side="after"] .level-piece';
+      for (const stopClass of ['nd-motion-off', 'noam-a11y-motion']) {
+        await page.evaluate((name) => {
+          document.documentElement.classList.remove('nd-motion-off', 'noam-a11y-motion');
+          document.documentElement.classList.add(name);
+        }, stopClass);
+        const positions = await page.$$eval(pieces, (elements) => elements.map((el) => {
+          const style = getComputedStyle(el);
+          const matrix = new DOMMatrixReadOnly(style.transform);
+          return { x: matrix.m41, y: matrix.m42, animation: style.animationName };
+        }));
+        assert.deepEqual(positions, [
+          { x: -90, y: 42, animation: 'none' },
+          { x: 270, y: 14, animation: 'none' },
+        ], stopClass);
+      }
+    } finally {
+      await page.close();
+    }
+  });
+
+  it('renders new pages with an honest missing-before state and their current lesson', async () => {
+    const page = await browser.newPage();
+    try {
+      const response = await page.goto(`${server.origin}/review/landing-loops-pr-b`, { waitUntil: 'load' });
+      assert.equal(response?.status(), 200);
+      for (const [slug, variant] of Object.entries(INTEGRATED_LESSONS)) {
+        const card = `[data-review-slug="${slug}"]`;
+        assert.ok(await page.$(`${card} [data-review-side="before"] [data-review-missing]`), slug);
+        assert.equal(await page.$(`${card} [data-review-side="before"] [data-landing-loop]`), null, slug);
+        assert.ok(await page.$(`${card} [data-review-side="after"] [data-lesson="${variant}"]`), slug);
+      }
+      for (const slug of [...SECTION_2, ...MISSED]) {
+        assert.equal(await page.$(`[data-review-slug="${slug}"] [data-review-side="before"] [data-review-missing]`), null, slug);
+      }
+    } finally {
+      await page.close();
     }
   });
 });
