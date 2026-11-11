@@ -663,7 +663,7 @@
           badge: B[0], badgeBg: B[1], badgeFg: B[2], badgeBd: B[3], barC: barC, barPct: barPct,
           detail: detail,
           hasWrong: w.length > 0,
-          wrongText: w.length ? 'בחרת ' + m(S.opts[w[0]].t) + ' — ' + S.opts[w[0]].f : '',
+          wrongText: w.length ? 'בחרת ' + (hebrew(S.opts[w[0]].t) ? S.opts[w[0]].t : m(S.opts[w[0]].t)) + ' — ' + S.opts[w[0]].f : '',
           canRetry: !!r && lv !== 'strong'
         };
       });
@@ -845,6 +845,7 @@
           var cap = $('sceneCap');
           if (!text) { cap.hidden = true; return; }
           cap.hidden = false;
+          cap.style.direction = hebrew(text) ? 'rtl' : '';
           fillRich(cap, text);
           self.fitBox(cap);
         },
@@ -955,8 +956,14 @@
       var title = $('title');
       title.textContent = '';
       title.append(document.createTextNode(S.tA || ''));
-      if (S.tM) title.append(mathNode(S.tM + (S.tB || '')));
-      else if (S.tB) title.append(document.createTextNode(S.tB));
+      if (S.tM) {
+        if (/[\u05D0-\u05EA]$/.test(S.tA || '')) title.append(document.createTextNode(' '));
+        if (hebrew(S.tB || '')) {
+          var tail = document.createElement('span');
+          fillRich(tail, S.tB);
+          title.append(mathNode(S.tM), tail);
+        } else title.append(mathNode(S.tM + (S.tB || '')));
+      } else if (S.tB) title.append(document.createTextNode(S.tB));
       fillRich($('sub'), S.sub || '');
       var ready = this.canNext();
       var cue = S.cue || '';
@@ -994,6 +1001,7 @@
     paintIntro: function (S) {
       $('heroEmoji').textContent = S.emoji || '🧩';
       fillRich($('heroEq'), S.eq || '');
+      $('heroEq').style.direction = hebrew(S.eq || '') ? 'rtl' : '';
       var art = $('heroArt');
       if (S.art) { art.hidden = false; art.innerHTML = S.art; } else { art.hidden = true; art.innerHTML = ''; }
       $('heroNote').innerHTML = richHtml(S.note || '');
@@ -1065,6 +1073,7 @@
       $('weakText').textContent = weak.join(' · ') || 'אין. הכול חזק!';
       $('finalLead').textContent = S.finalLead || 'מה שלמדת:';
       $('finalEq').innerHTML = richHtml(S.formula || '');
+      $('finalEq').style.direction = hebrew(S.formula || '') ? 'rtl' : '';
       var wrap = $('skillRows');
       wrap.innerHTML = R.rows.map(function (r) {
         return '<div class="skill" data-row>'
