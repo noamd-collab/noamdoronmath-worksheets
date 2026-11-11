@@ -1,0 +1,314 @@
+{
+  "slug": "median-grade-8",
+  "path": "/median-grade-8",
+  "grade": 8,
+  "sourceUrl": "https://www.noamdoronmath.co.il/median-grade-8",
+  "fetchedAt": "2026-11-10T00:00:00.000Z",
+  "verifiedVia": "authored-catalog-gap-from-noam-pdfs",
+  "title": "החציון לכיתה ח׳ | דפי עבודה חינם",
+  "description": "החציון לכיתה ח׳: סידור הנתונים, חציון במספר זוגי ואי־זוגי של נתונים והשוואה בין חציון לממוצע. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "החציון לכיתה ח׳: מספר זוגי ואי־זוגי של נתונים",
+  "intro": "לומדים למצוא את החציון, הנתון שבאמצע הרשימה המסודרת, כשמספר הנתונים אי־זוגי וכשהוא זוגי, ולהשוות בין החציון לממוצע. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "החציון הוא הערך שבמרכז הנתונים אחרי שמסדרים אותם מהקטן לגדול. לפחות מחצית מהנתונים קטנים ממנו או שווים לו, ולפחות מחצית גדולים ממנו או שווים לו.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "כשמספר הנתונים אי־זוגי יש נתון אמצעי אחד. כשמספר הנתונים זוגי יש שני נתונים אמצעיים, והחציון הוא הממוצע שלהם.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "דוגמה: 5, 13, 3, 10, 16, 8, 15, 4. מסדרים: 3, 4, 5, 8, 10, 13, 15, 16. יש 8 נתונים, והאמצעיים הם 8 ו־10, ולכן החציון הוא 9.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "לוקחים את הנתון שבאמצע הרשימה כפי שהיא כתובה. קודם מסדרים, ורק אחר כך מחפשים את האמצע.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "מוחקים נתון שחוזר. כל נתון נכתב ברשימה המסודרת בכל פעם שהוא מופיע.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "מהו החציון של 4, 9, 4, 6, 10, 4, 8?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה היא 6: ברשימה המסודרת 4, 4, 4, 6, 8, 9, 10 הנתון הרביעי הוא 6.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "לומדים למצוא את החציון, הנתון שבאמצע הרשימה המסודרת, כשמספר הנתונים אי־זוגי וכשהוא זוגי, ולהשוות בין החציון לממוצע. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=8&topic=24",
+      "catalogTopicId": 24
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "החציון הוא הערך שבמרכז הנתונים אחרי שמסדרים אותם מהקטן לגדול. לפחות מחצית מהנתונים קטנים ממנו או שווים לו, ולפחות מחצית גדולים ממנו או שווים לו.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "כשמספר הנתונים אי־זוגי יש נתון אמצעי אחד. כשמספר הנתונים זוגי יש שני נתונים אמצעיים, והחציון הוא הממוצע שלהם.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "דוגמה: 5, 13, 3, 10, 16, 8, 15, 4. מסדרים: 3, 4, 5, 8, 10, 13, 15, 16. יש 8 נתונים, והאמצעיים הם 8 ו־10, ולכן החציון הוא 9.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "לוקחים את הנתון שבאמצע הרשימה כפי שהיא כתובה. קודם מסדרים, ורק אחר כך מחפשים את האמצע.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "מוחקים נתון שחוזר. כל נתון נכתב ברשימה המסודרת בכל פעם שהוא מופיע.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "מהו החציון של 4, 9, 4, 6, 10, 4, 8?",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "התשובה היא 6: ברשימה המסודרת 4, 4, 4, 6, 8, 9, 10 הנתון הרביעי הוא 6.",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 10.11.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "מה עושים כשמספר הנתונים זוגי?",
+      "answer": "לוקחים את שני הנתונים האמצעיים ברשימה המסודרת ומחשבים את הממוצע שלהם."
+    },
+    {
+      "question": "מתי החציון שונה מאוד מהממוצע?",
+      "answer": "כשיש ערך קיצוני. ערך גבוה מאוד מושך את הממוצע למעלה, אבל החציון כמעט לא משתנה."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם יש תשובות לדפי העבודה?",
+      "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "מה עושים כשמספר הנתונים זוגי?",
+          "answer": "לוקחים את שני הנתונים האמצעיים ברשימה המסודרת ומחשבים את הממוצע שלהם."
+        },
+        {
+          "question": "מתי החציון שונה מאוד מהממוצע?",
+          "answer": "כשיש ערך קיצוני. ערך גבוה מאוד מושך את הממוצע למעלה, אבל החציון כמעט לא משתנה."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם יש תשובות לדפי העבודה?",
+          "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/grade-8",
+      "label": "כל דפי כיתה ח׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-8"
+    },
+    {
+      "path": "/mean-grade-8",
+      "label": "הממוצע",
+      "productionHref": "https://www.noamdoronmath.co.il/mean-grade-8"
+    },
+    {
+      "path": "/choosing-measure-of-center-grade-8",
+      "label": "בחירת מדד מרכזי",
+      "productionHref": "https://www.noamdoronmath.co.il/choosing-measure-of-center-grade-8"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=8&topic=24",
+    "source": "catalog-g8-t24",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=24",
+    "catalogTopicId": 24,
+    "catalogTopicTitle": "החציון"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=8&topic=24",
+      "source": "catalog-g8-t24",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=24",
+      "catalogTopicId": 24,
+      "catalogTopicTitle": "החציון"
+    }
+  ],
+  "gradeHubHref": "/grade-8",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/median-grade-8#webpage",
+        "url": "https://www.noamdoronmath.co.il/median-grade-8",
+        "name": "החציון לכיתה ח׳ | דפי עבודה חינם",
+        "description": "החציון לכיתה ח׳: סידור הנתונים, חציון במספר זוגי ואי־זוגי של נתונים והשוואה בין חציון לממוצע. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/median-grade-8#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/median-grade-8#learning-resource",
+        "name": "החציון לכיתה ח׳: מספר זוגי ואי־זוגי של נתונים",
+        "url": "https://www.noamdoronmath.co.il/median-grade-8",
+        "description": "החציון לכיתה ח׳: סידור הנתונים, חציון במספר זוגי ואי־זוגי של נתונים והשוואה בין חציון לממוצע. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "educationalLevel": "כיתה ח׳",
+        "learningResourceType": "דפי עבודה",
+        "teaches": "מציאת החציון ברשימה מסודרת והשוואה לממוצע",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/median-grade-8#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "מה עושים כשמספר הנתונים זוגי?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לוקחים את שני הנתונים האמצעיים ברשימה המסודרת ומחשבים את הממוצע שלהם."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "מתי החציון שונה מאוד מהממוצע?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כשיש ערך קיצוני. ערך גבוה מאוד מושך את הממוצע למעלה, אבל החציון כמעט לא משתנה."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם יש תשובות לדפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. בסוף כל דף עבודה יש דף תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

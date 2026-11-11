@@ -969,6 +969,326 @@
       "reason": "links to the topic, same grade, shared title word"
     },
     {
+      "key": "page:/prior-knowledge-diagnostic-grade-8",
+      "title": "אבחון קדם־ידע לכיתה ח׳: מה זוכרים מכיתה ז׳",
+      "linkedTopic": "topic:8:1",
+      "linkedTitle": "אבחון קדם־ידע",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/equations-with-fractions-grade-8",
+      "title": "משוואות עם מכנים מספריים לכיתה ח׳",
+      "linkedTopic": "topic:8:3",
+      "linkedTitle": "מכנים מספריים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/ratio-proportion-grade-8",
+      "title": "יחס ופרופורציה לכיתה ח׳",
+      "linkedTopic": "topic:8:4",
+      "linkedTitle": "יחס ופרופורציה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/scale-grade-8",
+      "title": "קנה מידה לכיתה ח׳: מפות, תוכניות ושטחים",
+      "linkedTopic": "topic:8:5",
+      "linkedTitle": "קנה מידה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/percent-representations-grade-8",
+      "title": "אחוזים לכיתה ח׳: מעבר בין שבר, מספר עשרוני ואחוז",
+      "linkedTopic": "topic:8:6",
+      "linkedTitle": "אחוזים — ייצוגים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/percent-change-grade-8",
+      "title": "שינוי באחוזים לכיתה ח׳: עלייה, ירידה ומקדם שינוי",
+      "linkedTopic": "topic:8:8",
+      "linkedTitle": "שינוי באחוזים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/successive-percent-changes-grade-8",
+      "title": "שינויים עוקבים באחוזים לכיתה ח׳",
+      "linkedTopic": "topic:8:9",
+      "linkedTitle": "שינויים עוקבים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/square-root-grade-8",
+      "title": "שורש ריבועי לכיתה ח׳: משמעות, אומדן ומשוואות",
+      "linkedTopic": "topic:8:10",
+      "linkedTitle": "שורש ריבועי",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/bar-charts-pictograms-grade-8",
+      "title": "דיאגרמת עמודות ופיקטוגרמה לכיתה ח׳",
+      "linkedTopic": "topic:8:17",
+      "linkedTitle": "עמודות ופיקטוגרמות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/pie-charts-grade-8",
+      "title": "דיאגרמת עוגה לכיתה ח׳: אחוזים, זוויות ובנייה מטבלה",
+      "linkedTopic": "topic:8:18",
+      "linkedTitle": "דיאגרמת עוגה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/function-concept-grade-8",
+      "title": "מושג הפונקציה לכיתה ח׳: קלט, פלט והתאמה",
+      "linkedTopic": "topic:8:19",
+      "linkedTitle": "מושג הפונקציה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/function-notation-grade-8",
+      "title": "סימון פונקציה לכיתה ח׳: ⁦f(x)⁩, ערך הפונקציה ומקור",
+      "linkedTopic": "topic:8:20",
+      "linkedTitle": "סימון פונקציה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/function-representations-grade-8",
+      "title": "מעבר בין ייצוגים של פונקציה לכיתה ח׳",
+      "linkedTopic": "topic:8:21",
+      "linkedTitle": "מעבר בין ייצוגים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/data-range-grade-8",
+      "title": "טווח הנתונים לכיתה ח׳: חישוב ומשמעות הפיזור",
+      "linkedTopic": "topic:8:22",
+      "linkedTitle": "טווח הנתונים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/mean-grade-8",
+      "title": "הממוצע לכיתה ח׳: חישוב, נתון חסר והשפעת שינוי",
+      "linkedTopic": "topic:8:23",
+      "linkedTitle": "הממוצע",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/median-grade-8",
+      "title": "החציון לכיתה ח׳: מספר זוגי ואי־זוגי של נתונים",
+      "linkedTopic": "topic:8:24",
+      "linkedTitle": "החציון",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/choosing-measure-of-center-grade-8",
+      "title": "בחירת מדד מרכזי לכיתה ח׳: ממוצע, חציון או שכיח",
+      "linkedTopic": "topic:8:25",
+      "linkedTitle": "בחירת מדד",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/data-literacy-grade-8",
+      "title": "אוריינות נתונים וביקורת ייצוג לכיתה ח׳",
+      "linkedTopic": "topic:8:26",
+      "linkedTitle": "אוריינות וביקורת ייצוג",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/rate-of-change-grade-8",
+      "title": "קצב השתנות לכיתה ח׳: מטבלה ומגרף",
+      "linkedTopic": "topic:8:27",
+      "linkedTitle": "קצב השתנות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/slope-line-through-origin-grade-8",
+      "title": "שיפוע וישר דרך הראשית לכיתה ח׳: ⁦y = mx⁩",
+      "linkedTopic": "topic:8:28",
+      "linkedTitle": "שיפוע וישר y=mx",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/axis-intercepts-grade-8",
+      "title": "חיתוך ישר עם הצירים לכיתה ח׳",
+      "linkedTopic": "topic:8:30",
+      "linkedTitle": "חיתוך צירים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/equation-of-a-line-grade-8",
+      "title": "משוואת ישר לכיתה ח׳: משתי נקודות או מנקודה ושיפוע",
+      "linkedTopic": "topic:8:31",
+      "linkedTitle": "משוואת ישר",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/lines-parallel-to-axes-grade-8",
+      "title": "ישרים מקבילים לצירים לכיתה ח׳: ⁦y = k⁩ ו־⁦x = k⁩",
+      "linkedTopic": "topic:8:32",
+      "linkedTitle": "ישרים מקבילים לצירים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/motion-problems-grade-8",
+      "title": "בעיות תנועה לכיתה ח׳: דרך, מהירות וזמן",
+      "linkedTopic": "topic:8:33",
+      "linkedTitle": "תנועה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/midyear-diagnostic-grade-8",
+      "title": "אבחון אמצע שנה לכיתה ח׳",
+      "linkedTopic": "topic:8:34",
+      "linkedTitle": "אבחון אמצע שנה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/gap-bridging-review-grade-8",
+      "title": "גישור ותיקון פערים לכיתה ח׳",
+      "linkedTopic": "topic:8:35",
+      "linkedTitle": "גישור ותיקון פערים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/word-problems-choosing-unknowns-grade-8",
+      "title": "בעיות מילוליות לכיתה ח׳: בחירת נעלם ובניית משוואה",
+      "linkedTopic": "topic:8:46",
+      "linkedTitle": "מילוליות — בחירת נעלמים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/systems-algebraic-solution-grade-8",
+      "title": "מערכת משוואות לכיתה ח׳: שיטת ההצבה ושיטת החיבור",
+      "linkedTopic": "topic:8:48",
+      "linkedTitle": "מערכות — פתרון אלגברי",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/systems-word-problems-grade-8",
+      "title": "מערכת משוואות לכיתה ח׳: בעיות מילוליות ומידול",
+      "linkedTopic": "topic:8:49",
+      "linkedTitle": "מערכות — מידול",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/probability-sample-space-grade-8",
+      "title": "הסתברות לכיתה ח׳: מרחב תוצאות ומאורע",
+      "linkedTopic": "topic:8:50",
+      "linkedTitle": "הסתברות — מרחב תוצאות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/probability-experiments-fairness-grade-8",
+      "title": "הסתברות לכיתה ח׳: ניסוי, שכיחות יחסית והוגנות",
+      "linkedTopic": "topic:8:51",
+      "linkedTitle": "הסתברות — ניסוי והוגנות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/graphical-inequalities-grade-8",
+      "title": "אי־שוויון גרפי לכיתה ח׳: השוואה בין שני ישרים",
+      "linkedTopic": "topic:8:53",
+      "linkedTitle": "אי־שוויון גרפי",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/non-routine-problems-grade-8",
+      "title": "בעיות לא שגרתיות לכיתה ח׳ — העמקה",
+      "linkedTopic": "topic:8:56",
+      "linkedTitle": "העמקה — בעיות לא שגרתיות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/investigation-generalization-grade-8",
+      "title": "חקר והכללה לכיתה ח׳ — העמקה",
+      "linkedTopic": "topic:8:57",
+      "linkedTitle": "העמקה — חקר והכללה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/summary-review-grade-8",
+      "title": "חזרה מסכמת לכיתה ח׳",
+      "linkedTopic": "topic:8:58",
+      "linkedTitle": "חזרה מסכמת",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/summative-assessment-grade-8",
+      "title": "הערכה מסכמת לכיתה ח׳",
+      "linkedTopic": "topic:8:59",
+      "linkedTitle": "הערכה מסכמת",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/end-of-year-diagnostic-grade-8",
+      "title": "אבחון סוף שנה לכיתה ח׳: לקראת כיתה ט׳",
+      "linkedTopic": "topic:8:60",
+      "linkedTitle": "אבחון סוף שנה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/interpolation-extrapolation-grade-8",
+      "title": "אינטרפולציה ואקסטרפולציה לכיתה ח׳: הערכה מתוך מדידות",
+      "linkedTopic": "topic:8:61",
+      "linkedTitle": "אינטרפולציה ואקסטרפולציה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/assessment-task-1-grade-8",
+      "title": "משימת הערכה ⁦1⁩ לכיתה ח׳: פיתגורס, אחוזים, מעגל וזוויות",
+      "linkedTopic": "topic:8:64",
+      "linkedTitle": "משימת הערכה 1",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/two-data-sources-grade-8",
+      "title": "שני מקורות מידע לכיתה ח׳: השוואה ושילוב של נתונים",
+      "linkedTopic": "topic:8:66",
+      "linkedTitle": "שני מקורות מידע",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
       "key": "page:/counting-grade-1",
       "title": "מונים בלי לפספס לכיתה א׳",
       "linkedTopic": "topic:1:1",

@@ -1,0 +1,314 @@
+{
+  "slug": "rate-of-change-grade-8",
+  "path": "/rate-of-change-grade-8",
+  "grade": 8,
+  "sourceUrl": "https://www.noamdoronmath.co.il/rate-of-change-grade-8",
+  "fetchedAt": "2026-11-10T00:00:00.000Z",
+  "verifiedVia": "authored-catalog-gap-from-noam-pdfs",
+  "title": "קצב השתנות לכיתה ח׳ | דפי עבודה חינם",
+  "description": "קצב השתנות לכיתה ח׳: שינוי קבוע מול שינוי משתנה, חישוב קצב מטבלה ומגרף ומשמעותו בהקשר. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "קצב השתנות לכיתה ח׳: מטבלה ומגרף",
+  "intro": "לומדים לחשב קצב השתנות, כמה משתנה הפלט על כל יחידה של קלט, מתוך טבלה ומתוך גרף, ולזהות מתי הקצב קבוע ומתי לא. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "קצב ההשתנות הוא השינוי בפלט חלקי השינוי בקלט. אם מכל נמלא ב־12 ליטרים ב־4 דקות, הקצב הוא 3 ליטרים לדקה.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "בקצב קבוע הגרף הוא ישר. בגרף שבור לכל קטע יש קצב משלו, וקטע אופקי פירושו שאין שינוי.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "דוגמה: בטבלה בזמן 2 שניות האורך 7 ס״מ, ובזמן 5 שניות האורך 16 ס״מ. הקצב הוא ⟨16 − 7¦5 − 2⟩ = ⟨9¦3⟩ = 3 ס״מ לשנייה.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "מחלקים את הפלט בקלט בנקודה אחת במקום לחלק שינוי בשינוי. אם בזמן 0 כבר היו 4 ליטרים במכל, ⟨y¦x⟩ אינו הקצב.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "בטבלה עם מרווחים לא שווים מחשבים קצב בין כל שתי שורות בלי לחלק בגודל המרווח.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "צמח היה בגובה 3 ס״מ, ואחרי 8 ימים הגיע ל־19 ס״מ. מה קצב הגדילה, אם הוא קבוע?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה היא 2 ס״מ ליום, כי (19 − 3) : 8 = 2.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "לומדים לחשב קצב השתנות, כמה משתנה הפלט על כל יחידה של קלט, מתוך טבלה ומתוך גרף, ולזהות מתי הקצב קבוע ומתי לא. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=8&topic=27",
+      "catalogTopicId": 27
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "קצב ההשתנות הוא השינוי בפלט חלקי השינוי בקלט. אם מכל נמלא ב־12 ליטרים ב־4 דקות, הקצב הוא 3 ליטרים לדקה.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "בקצב קבוע הגרף הוא ישר. בגרף שבור לכל קטע יש קצב משלו, וקטע אופקי פירושו שאין שינוי.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "דוגמה: בטבלה בזמן 2 שניות האורך 7 ס״מ, ובזמן 5 שניות האורך 16 ס״מ. הקצב הוא ⟨16 − 7¦5 − 2⟩ = ⟨9¦3⟩ = 3 ס״מ לשנייה.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "מחלקים את הפלט בקלט בנקודה אחת במקום לחלק שינוי בשינוי. אם בזמן 0 כבר היו 4 ליטרים במכל, ⟨y¦x⟩ אינו הקצב.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "בטבלה עם מרווחים לא שווים מחשבים קצב בין כל שתי שורות בלי לחלק בגודל המרווח.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "צמח היה בגובה 3 ס״מ, ואחרי 8 ימים הגיע ל־19 ס״מ. מה קצב הגדילה, אם הוא קבוע?",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "התשובה היא 2 ס״מ ליום, כי (19 − 3) : 8 = 2.",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 10.11.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "איך מחשבים קצב השתנות מגרף?",
+      "answer": "בוחרים שתי נקודות על הגרף, מחשבים את ההפרש בגובה ואת ההפרש בציר האופקי, ומחלקים."
+    },
+    {
+      "question": "מה פירוש קצב שלילי?",
+      "answer": "שהפלט יורד כשהקלט עולה, למשל כמות מים במכל שמתרוקן."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם יש תשובות לדפי העבודה?",
+      "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "איך מחשבים קצב השתנות מגרף?",
+          "answer": "בוחרים שתי נקודות על הגרף, מחשבים את ההפרש בגובה ואת ההפרש בציר האופקי, ומחלקים."
+        },
+        {
+          "question": "מה פירוש קצב שלילי?",
+          "answer": "שהפלט יורד כשהקלט עולה, למשל כמות מים במכל שמתרוקן."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם יש תשובות לדפי העבודה?",
+          "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/grade-8",
+      "label": "כל דפי כיתה ח׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-8"
+    },
+    {
+      "path": "/slope-line-through-origin-grade-8",
+      "label": "שיפוע וישר דרך הראשית",
+      "productionHref": "https://www.noamdoronmath.co.il/slope-line-through-origin-grade-8"
+    },
+    {
+      "path": "/linear-function-grade-8",
+      "label": "פונקציה קווית",
+      "productionHref": "https://www.noamdoronmath.co.il/linear-function-grade-8"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=8&topic=27",
+    "source": "catalog-g8-t27",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=27",
+    "catalogTopicId": 27,
+    "catalogTopicTitle": "קצב השתנות"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=8&topic=27",
+      "source": "catalog-g8-t27",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=27",
+      "catalogTopicId": 27,
+      "catalogTopicTitle": "קצב השתנות"
+    }
+  ],
+  "gradeHubHref": "/grade-8",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/rate-of-change-grade-8#webpage",
+        "url": "https://www.noamdoronmath.co.il/rate-of-change-grade-8",
+        "name": "קצב השתנות לכיתה ח׳ | דפי עבודה חינם",
+        "description": "קצב השתנות לכיתה ח׳: שינוי קבוע מול שינוי משתנה, חישוב קצב מטבלה ומגרף ומשמעותו בהקשר. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/rate-of-change-grade-8#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/rate-of-change-grade-8#learning-resource",
+        "name": "קצב השתנות לכיתה ח׳: מטבלה ומגרף",
+        "url": "https://www.noamdoronmath.co.il/rate-of-change-grade-8",
+        "description": "קצב השתנות לכיתה ח׳: שינוי קבוע מול שינוי משתנה, חישוב קצב מטבלה ומגרף ומשמעותו בהקשר. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "educationalLevel": "כיתה ח׳",
+        "learningResourceType": "דפי עבודה",
+        "teaches": "קצב השתנות קבוע ומשתנה, חישוב מטבלה ומגרף",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/rate-of-change-grade-8#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "איך מחשבים קצב השתנות מגרף?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "בוחרים שתי נקודות על הגרף, מחשבים את ההפרש בגובה ואת ההפרש בציר האופקי, ומחלקים."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "מה פירוש קצב שלילי?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "שהפלט יורד כשהקלט עולה, למשל כמות מים במכל שמתרוקן."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם יש תשובות לדפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. בסוף כל דף עבודה יש דף תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

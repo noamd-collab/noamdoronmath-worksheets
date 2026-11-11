@@ -1,0 +1,314 @@
+{
+  "slug": "scale-grade-8",
+  "path": "/scale-grade-8",
+  "grade": 8,
+  "sourceUrl": "https://www.noamdoronmath.co.il/scale-grade-8",
+  "fetchedAt": "2026-11-10T00:00:00.000Z",
+  "verifiedVia": "authored-catalog-gap-from-noam-pdfs",
+  "title": "קנה מידה לכיתה ח׳: מפות ותוכניות | דפי עבודה חינם",
+  "description": "קנה מידה לכיתה ח׳: מאורך בתוכנית לאורך במציאות ובחזרה, מציאת קנה מידה, הגדלה והשפעה על שטח. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "קנה מידה לכיתה ח׳: מפות, תוכניות ושטחים",
+  "intro": "לומדים לקרוא תוכניות ומפות: מחשבים אורך אמיתי מתוך אורך בשרטוט, אורך בשרטוט מתוך אורך אמיתי, מוצאים קנה מידה ובודקים מה קורה לשטח. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "קנה מידה 1 : 60 אומר שכל ס״מ בתוכנית מייצג 60 ס״מ במציאות. כדי לעבור מהתוכנית למציאות כופלים ב־60, ומהמציאות לתוכנית מחלקים ב־60.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "לפני שמשווים אורכים מעבירים לאותן יחידות: מטר הוא 100 ס״מ, וק״מ הוא 100000 ס״מ. בתמונה מוגדלת קנה המידה גדול מ־1, למשל 30 : 1.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "דוגמה: בתוכנית בקנה מידה 1 : 80 אורך הסלון 7 ס״מ. במציאות הוא 7 × 80 = 560 ס״מ, כלומר 5.6 מטר. בשטח גורם ההגדלה מוכפל בעצמו, ולכן כל סמ״ר בתוכנית מייצג 80 × 80 = 6400 סמ״ר.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "מחלקים במקום לכפול. התוכנית קטנה מהמציאות, ולכן האורך האמיתי גדול מהאורך בתוכנית.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "מכפילים שטח בקנה המידה פעם אחת. בשטח כופלים בקנה המידה בריבוע.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "בתוכנית בקנה מידה 1 : 50 אורך החדר 8 ס״מ. מה אורך החדר במציאות, במטרים?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה היא 4 מטרים, כי 8 × 50 = 400 ס״מ.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "לומדים לקרוא תוכניות ומפות: מחשבים אורך אמיתי מתוך אורך בשרטוט, אורך בשרטוט מתוך אורך אמיתי, מוצאים קנה מידה ובודקים מה קורה לשטח. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=8&topic=5",
+      "catalogTopicId": 5
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "קנה מידה 1 : 60 אומר שכל ס״מ בתוכנית מייצג 60 ס״מ במציאות. כדי לעבור מהתוכנית למציאות כופלים ב־60, ומהמציאות לתוכנית מחלקים ב־60.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "לפני שמשווים אורכים מעבירים לאותן יחידות: מטר הוא 100 ס״מ, וק״מ הוא 100000 ס״מ. בתמונה מוגדלת קנה המידה גדול מ־1, למשל 30 : 1.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "דוגמה: בתוכנית בקנה מידה 1 : 80 אורך הסלון 7 ס״מ. במציאות הוא 7 × 80 = 560 ס״מ, כלומר 5.6 מטר. בשטח גורם ההגדלה מוכפל בעצמו, ולכן כל סמ״ר בתוכנית מייצג 80 × 80 = 6400 סמ״ר.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "מחלקים במקום לכפול. התוכנית קטנה מהמציאות, ולכן האורך האמיתי גדול מהאורך בתוכנית.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "מכפילים שטח בקנה המידה פעם אחת. בשטח כופלים בקנה המידה בריבוע.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "בתוכנית בקנה מידה 1 : 50 אורך החדר 8 ס״מ. מה אורך החדר במציאות, במטרים?",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "התשובה היא 4 מטרים, כי 8 × 50 = 400 ס״מ.",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 10.11.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "מה פירוש קנה מידה 1 : 100?",
+      "answer": "כל ס״מ בתוכנית מייצג 100 ס״מ, כלומר מטר אחד, במציאות."
+    },
+    {
+      "question": "מה קורה לשטח כשמשנים קנה מידה?",
+      "answer": "כשהאורכים גדלים פי k, השטח גדל פי k × k. למשל, אורכים פי 3 נותנים שטח פי 9."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם יש תשובות לדפי העבודה?",
+      "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "מה פירוש קנה מידה 1 : 100?",
+          "answer": "כל ס״מ בתוכנית מייצג 100 ס״מ, כלומר מטר אחד, במציאות."
+        },
+        {
+          "question": "מה קורה לשטח כשמשנים קנה מידה?",
+          "answer": "כשהאורכים גדלים פי k, השטח גדל פי k × k. למשל, אורכים פי 3 נותנים שטח פי 9."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם יש תשובות לדפי העבודה?",
+          "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/grade-8",
+      "label": "כל דפי כיתה ח׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-8"
+    },
+    {
+      "path": "/ratio-proportion-grade-8",
+      "label": "יחס ופרופורציה",
+      "productionHref": "https://www.noamdoronmath.co.il/ratio-proportion-grade-8"
+    },
+    {
+      "path": "/similar-triangles-grade-8",
+      "label": "דמיון משולשים",
+      "productionHref": "https://www.noamdoronmath.co.il/similar-triangles-grade-8"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=8&topic=5",
+    "source": "catalog-g8-t5",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=5",
+    "catalogTopicId": 5,
+    "catalogTopicTitle": "קנה מידה"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=8&topic=5",
+      "source": "catalog-g8-t5",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=5",
+      "catalogTopicId": 5,
+      "catalogTopicTitle": "קנה מידה"
+    }
+  ],
+  "gradeHubHref": "/grade-8",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/scale-grade-8#webpage",
+        "url": "https://www.noamdoronmath.co.il/scale-grade-8",
+        "name": "קנה מידה לכיתה ח׳: מפות ותוכניות | דפי עבודה חינם",
+        "description": "קנה מידה לכיתה ח׳: מאורך בתוכנית לאורך במציאות ובחזרה, מציאת קנה מידה, הגדלה והשפעה על שטח. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/scale-grade-8#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/scale-grade-8#learning-resource",
+        "name": "קנה מידה לכיתה ח׳: מפות, תוכניות ושטחים",
+        "url": "https://www.noamdoronmath.co.il/scale-grade-8",
+        "description": "קנה מידה לכיתה ח׳: מאורך בתוכנית לאורך במציאות ובחזרה, מציאת קנה מידה, הגדלה והשפעה על שטח. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "educationalLevel": "כיתה ח׳",
+        "learningResourceType": "דפי עבודה",
+        "teaches": "קנה מידה במפות ובתוכניות, המרת יחידות והשפעת קנה המידה על שטח",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/scale-grade-8#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "מה פירוש קנה מידה 1 : 100?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כל ס״מ בתוכנית מייצג 100 ס״מ, כלומר מטר אחד, במציאות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "מה קורה לשטח כשמשנים קנה מידה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כשהאורכים גדלים פי k, השטח גדל פי k × k. למשל, אורכים פי 3 נותנים שטח פי 9."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם יש תשובות לדפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. בסוף כל דף עבודה יש דף תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}
