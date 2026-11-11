@@ -7,6 +7,7 @@
  */
 import redirectsMap from '../data/redirects.json';
 import { BLOG_SITEMAP_PATH } from './blogSitemap';
+import { listGamePaths } from './eliyahuGames';
 import { PUBLIC_LESSON_PATH } from './publicLesson';
 import { PYTHAGORAS_GAME_PATH } from './pythagorasGame';
 import { REDIRECT_RULES } from './redirects';
@@ -51,6 +52,10 @@ export function listMainPagePaths(pageModuleKeys: readonly string[]): string[] {
   // glob; the public lesson lives under it in the menu, so it is listed too.
   if (!paths.includes(PUBLIC_LESSON_PATH)) paths.push(PUBLIC_LESSON_PATH);
   if (!paths.includes(PYTHAGORAS_GAME_PATH)) paths.push(PYTHAGORAS_GAME_PATH);
+  // The games corner and every engine game live under /games/**, also nested.
+  for (const gamePath of listGamePaths()) {
+    if (!paths.includes(gamePath)) paths.push(gamePath);
+  }
   return paths.sort((a, b) => a.localeCompare(b));
 }
 

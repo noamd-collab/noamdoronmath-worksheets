@@ -54,7 +54,8 @@ export function resolveActiveNav(pathname: string): ActiveNavKey | null {
 
   if (path === '/') return 'home';
   if (path === '/aboutus') return 'about';
-  if (path === '/math-tools' || path === '/games/kefel-mekutsar-2' || path === '/games/eliyahu-pythagoras') return 'tools';
+  // /math-tools and the whole games corner share the "משחקים" nav item.
+  if (path === '/math-tools' || path === '/games' || path.startsWith('/games/')) return 'tools';
   if (path === '/search') return 'search';
   if (path === '/high-school-math' || path === '/high-school-math-1') {
     return 'highschool';

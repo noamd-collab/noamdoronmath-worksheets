@@ -37,6 +37,9 @@ const NON_LANDING_PAGES = new Set([
   'blog/categories/[slug].astro',
   'post/[...slug].astro',
   'games/eliyahu-pythagoras/index.astro',
+  // The games corner: a card grid and the game wrappers, no marketing hero.
+  'games/index.astro',
+  'games/[slug]/index.astro',
 ]);
 
 function astroPages(dir: string): string[] {

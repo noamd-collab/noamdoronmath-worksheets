@@ -61,6 +61,8 @@ export function isLocallyServedPath(pathname: string): boolean {
   if (LOCAL_SITE_PATHS.has(path)) return true;
   if (/^\/grade-[1-9]$/.test(path)) return true;
   if (path.startsWith('/worksheets')) return true;
+  // The games corner: the index, every game page and its /play document.
+  if (path === '/games' || path.startsWith('/games/')) return true;
   if (BLOG_ARCHIVE_PATHS.has(path)) return true;
   if ((BLOG_POST_SERVED_PATHS as readonly string[]).some((p) => pathsEqual(p, path))) {
     return true;
