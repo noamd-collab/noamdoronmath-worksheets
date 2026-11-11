@@ -93,6 +93,8 @@ jobs:
 
       - name: Publish the approved baseline
         id: release
+        # Leave time for the always-run guard step even if the Wix PTY hangs.
+        timeout-minutes: 25
         working-directory: site
         env:
           WIX_CLI_API_KEY: ${{ secrets.WIX_CLI_API_KEY }}
