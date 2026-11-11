@@ -267,9 +267,61 @@ import fractionOperationsChooseGrade6 from '../data/topic-pages/fraction-operati
 import multiplyDecimalsGrade6 from '../data/topic-pages/multiply-decimals-grade-6.json';
 import divideDecimalsGrade6 from '../data/topic-pages/divide-decimals-grade-6.json';
 import capacityMlLM3Grade6 from '../data/topic-pages/capacity-ml-l-m3-grade-6.json';
+import equilateralTriangleGrade7 from '../data/topic-pages/equilateral-triangle-grade-7.json';
+import congruentPolygonsTransformationsGrade7 from '../data/topic-pages/congruent-polygons-transformations-grade-7.json';
+import dataCollectionReadingGrade7 from '../data/topic-pages/data-collection-reading-grade-7.json';
+import frequencyGrade7 from '../data/topic-pages/frequency-grade-7.json';
+import relativeFrequencyGrade7 from '../data/topic-pages/relative-frequency-grade-7.json';
+import relativeFrequencyExperimentsGrade7 from '../data/topic-pages/relative-frequency-experiments-grade-7.json';
+import probabilityIntroductionGrade7 from '../data/topic-pages/probability-introduction-grade-7.json';
+import equationsIntroductionEquivalenceGrade7 from '../data/topic-pages/equations-introduction-equivalence-grade-7.json';
+import twoStepEquationsGrade7 from '../data/topic-pages/two-step-equations-grade-7.json';
+import annualReviewGrade7 from '../data/topic-pages/annual-review-grade-7.json';
+import assessmentTask1Grade7 from '../data/topic-pages/assessment-task-1-grade-7.json';
 import ratioGrade6 from '../data/topic-pages/ratio-grade-6.json';
 import scaleMapsGrade6 from '../data/topic-pages/scale-maps-grade-6.json';
+import equilateralTriangleGrade9 from '../data/topic-pages/equilateral-triangle-grade-9.json';
 import statisticsDataFrequencyGrade8 from '../data/topic-pages/statistics-data-frequency-grade-8.json';
+import priorKnowledgeDiagnosticGrade8 from '../data/topic-pages/prior-knowledge-diagnostic-grade-8.json';
+import equationsWithFractionsGrade8 from '../data/topic-pages/equations-with-fractions-grade-8.json';
+import ratioProportionGrade8 from '../data/topic-pages/ratio-proportion-grade-8.json';
+import scaleGrade8 from '../data/topic-pages/scale-grade-8.json';
+import percentRepresentationsGrade8 from '../data/topic-pages/percent-representations-grade-8.json';
+import percentChangeGrade8 from '../data/topic-pages/percent-change-grade-8.json';
+import successivePercentChangesGrade8 from '../data/topic-pages/successive-percent-changes-grade-8.json';
+import squareRootGrade8 from '../data/topic-pages/square-root-grade-8.json';
+import barChartsPictogramsGrade8 from '../data/topic-pages/bar-charts-pictograms-grade-8.json';
+import pieChartsGrade8 from '../data/topic-pages/pie-charts-grade-8.json';
+import functionConceptGrade8 from '../data/topic-pages/function-concept-grade-8.json';
+import functionNotationGrade8 from '../data/topic-pages/function-notation-grade-8.json';
+import functionRepresentationsGrade8 from '../data/topic-pages/function-representations-grade-8.json';
+import dataRangeGrade8 from '../data/topic-pages/data-range-grade-8.json';
+import meanGrade8 from '../data/topic-pages/mean-grade-8.json';
+import medianGrade8 from '../data/topic-pages/median-grade-8.json';
+import choosingMeasureOfCenterGrade8 from '../data/topic-pages/choosing-measure-of-center-grade-8.json';
+import dataLiteracyGrade8 from '../data/topic-pages/data-literacy-grade-8.json';
+import rateOfChangeGrade8 from '../data/topic-pages/rate-of-change-grade-8.json';
+import slopeLineThroughOriginGrade8 from '../data/topic-pages/slope-line-through-origin-grade-8.json';
+import axisInterceptsGrade8 from '../data/topic-pages/axis-intercepts-grade-8.json';
+import equationOfALineGrade8 from '../data/topic-pages/equation-of-a-line-grade-8.json';
+import linesParallelToAxesGrade8 from '../data/topic-pages/lines-parallel-to-axes-grade-8.json';
+import motionProblemsGrade8 from '../data/topic-pages/motion-problems-grade-8.json';
+import midyearDiagnosticGrade8 from '../data/topic-pages/midyear-diagnostic-grade-8.json';
+import gapBridgingReviewGrade8 from '../data/topic-pages/gap-bridging-review-grade-8.json';
+import wordProblemsChoosingUnknownsGrade8 from '../data/topic-pages/word-problems-choosing-unknowns-grade-8.json';
+import systemsAlgebraicSolutionGrade8 from '../data/topic-pages/systems-algebraic-solution-grade-8.json';
+import systemsWordProblemsGrade8 from '../data/topic-pages/systems-word-problems-grade-8.json';
+import probabilitySampleSpaceGrade8 from '../data/topic-pages/probability-sample-space-grade-8.json';
+import probabilityExperimentsFairnessGrade8 from '../data/topic-pages/probability-experiments-fairness-grade-8.json';
+import graphicalInequalitiesGrade8 from '../data/topic-pages/graphical-inequalities-grade-8.json';
+import nonRoutineProblemsGrade8 from '../data/topic-pages/non-routine-problems-grade-8.json';
+import investigationGeneralizationGrade8 from '../data/topic-pages/investigation-generalization-grade-8.json';
+import summaryReviewGrade8 from '../data/topic-pages/summary-review-grade-8.json';
+import summativeAssessmentGrade8 from '../data/topic-pages/summative-assessment-grade-8.json';
+import endOfYearDiagnosticGrade8 from '../data/topic-pages/end-of-year-diagnostic-grade-8.json';
+import interpolationExtrapolationGrade8 from '../data/topic-pages/interpolation-extrapolation-grade-8.json';
+import assessmentTask1Grade8 from '../data/topic-pages/assessment-task-1-grade-8.json';
+import twoDataSourcesGrade8 from '../data/topic-pages/two-data-sources-grade-8.json';
 import { isolateMathRuns } from './mathDirection';
 import { familyRelatedTopics, type FamilyRelatedTopic } from './topicFamilies';
 
@@ -419,6 +471,25 @@ export const TOPIC_PAGE_M30_REDIRECTS: ReadonlyArray<{ from: string; to: string 
 
 export const TOPIC_PAGE_M30_UNMIGRATED = [] as const;
 
+/**
+ * Grade-7 catalog topics that had no landing page (t16, t17, t24, t25, t26, t27, t28, t33, t35, t49, t50).
+ * Authored from Noam's PDFs, not production captures, so the parity gate
+ * skips them. Catalog order.
+ */
+export const TOPIC_PAGE_G7_AUTHORED_SLUGS = [
+  'equilateral-triangle-grade-7',
+  'congruent-polygons-transformations-grade-7',
+  'data-collection-reading-grade-7',
+  'frequency-grade-7',
+  'relative-frequency-grade-7',
+  'relative-frequency-experiments-grade-7',
+  'probability-introduction-grade-7',
+  'equations-introduction-equivalence-grade-7',
+  'two-step-equations-grade-7',
+  'annual-review-grade-7',
+  'assessment-task-1-grade-7',
+] as const;
+
 /** Grade-9 kite (G9-T46). Not a production capture; authored with the kite loop. */
 export const TOPIC_PAGE_KITE_SLUGS = ['kite-grade-9'] as const;
 
@@ -427,7 +498,54 @@ export const TOPIC_PAGE_KITE_SLUGS = ['kite-grade-9'] as const;
  * so the parity gate skips them. G8 catalog topic 67: data collection,
  * reading data, frequency and relative frequency.
  */
-export const TOPIC_PAGE_G8_AUTHORED_SLUGS = ['statistics-data-frequency-grade-8'] as const;
+export const TOPIC_PAGE_G8_CATALOG_GAP_SLUGS = [
+  // Grade-8 catalog topics that had no landing page (t1, t3, t4, t5, t6, t8, t9, t10, t17, t18, t19, t20, t21, t22, t23, t24, t25, t26, t27, t28, t30, t31, t32, t33, t34, t35, t46, t48, t49, t50, t51, t53, t56, t57, t58, t59, t60, t61, t64, t66).
+  'prior-knowledge-diagnostic-grade-8',
+  'equations-with-fractions-grade-8',
+  'ratio-proportion-grade-8',
+  'scale-grade-8',
+  'percent-representations-grade-8',
+  'percent-change-grade-8',
+  'successive-percent-changes-grade-8',
+  'square-root-grade-8',
+  'bar-charts-pictograms-grade-8',
+  'pie-charts-grade-8',
+  'function-concept-grade-8',
+  'function-notation-grade-8',
+  'function-representations-grade-8',
+  'data-range-grade-8',
+  'mean-grade-8',
+  'median-grade-8',
+  'choosing-measure-of-center-grade-8',
+  'data-literacy-grade-8',
+  'rate-of-change-grade-8',
+  'slope-line-through-origin-grade-8',
+  'axis-intercepts-grade-8',
+  'equation-of-a-line-grade-8',
+  'lines-parallel-to-axes-grade-8',
+  'motion-problems-grade-8',
+  'midyear-diagnostic-grade-8',
+  'gap-bridging-review-grade-8',
+  'word-problems-choosing-unknowns-grade-8',
+  'systems-algebraic-solution-grade-8',
+  'systems-word-problems-grade-8',
+  'probability-sample-space-grade-8',
+  'probability-experiments-fairness-grade-8',
+  'graphical-inequalities-grade-8',
+  'non-routine-problems-grade-8',
+  'investigation-generalization-grade-8',
+  'summary-review-grade-8',
+  'summative-assessment-grade-8',
+  'end-of-year-diagnostic-grade-8',
+  'interpolation-extrapolation-grade-8',
+  'assessment-task-1-grade-8',
+  'two-data-sources-grade-8',
+] as const;
+
+export const TOPIC_PAGE_G8_AUTHORED_SLUGS = [
+  'statistics-data-frequency-grade-8',
+  ...TOPIC_PAGE_G8_CATALOG_GAP_SLUGS,
+] as const;
 
 /**
  * Elementary topic pages (grades 1–6). Authored from catalog data + the real
@@ -496,6 +614,16 @@ export const TOPIC_PAGE_G6_SLUGS = [
   'compare-groups-conclusions-grade-6',
   'scaling-dimensions-grade-6',
   'patterns-multistep-grade-6',
+] as const;
+
+/**
+ * Grade-9 catalog topics that had no landing page (t22).
+ * Authored from Noam's PDFs, not production captures, so the parity gate
+ * skips them. G9 t41–t43 are child topics of t2 and are covered by
+ * factoring-grade-9.
+ */
+export const TOPIC_PAGE_G9_AUTHORED_SLUGS = [
+  'equilateral-triangle-grade-9',
 ] as const;
 
 export const TOPIC_PAGE_G5_SLUGS = [
@@ -631,6 +759,7 @@ export const TOPIC_PAGE_G2_SLUGS = [
 
 /** Slugs with no production source; the parity fixture gate must skip them. */
 export const TOPIC_PAGE_AUTHORED_SLUGS = [
+  ...TOPIC_PAGE_G7_AUTHORED_SLUGS,
   ...TOPIC_PAGE_G8_AUTHORED_SLUGS,
   ...TOPIC_PAGE_G1_SLUGS,
   ...TOPIC_PAGE_G2_SLUGS,
@@ -638,6 +767,7 @@ export const TOPIC_PAGE_AUTHORED_SLUGS = [
   ...TOPIC_PAGE_G4_SLUGS,
   ...TOPIC_PAGE_G5_SLUGS,
   ...TOPIC_PAGE_G6_SLUGS,
+  ...TOPIC_PAGE_G9_AUTHORED_SLUGS,
 ] as const;
 
 export const TOPIC_PAGE_SLUGS = [
@@ -649,6 +779,7 @@ export const TOPIC_PAGE_SLUGS = [
   ...TOPIC_PAGE_M23_SLUGS,
   ...TOPIC_PAGE_M30_SLUGS,
   ...TOPIC_PAGE_KITE_SLUGS,
+  ...TOPIC_PAGE_G7_AUTHORED_SLUGS,
   ...TOPIC_PAGE_G8_AUTHORED_SLUGS,
   ...TOPIC_PAGE_G1_SLUGS,
   ...TOPIC_PAGE_G2_SLUGS,
@@ -656,6 +787,7 @@ export const TOPIC_PAGE_SLUGS = [
   ...TOPIC_PAGE_G4_SLUGS,
   ...TOPIC_PAGE_G5_SLUGS,
   ...TOPIC_PAGE_G6_SLUGS,
+  ...TOPIC_PAGE_G9_AUTHORED_SLUGS,
 ] as const;
 
 export type TopicPageSlug = (typeof TOPIC_PAGE_SLUGS)[number];
@@ -867,8 +999,63 @@ const BY_SLUG: Record<string, TopicPageContent> = {
   'triangle-similarity-aa-grade-9': triangleSimilarityAaGrade9 as TopicPageContent,
   'special-triangles-grade-7-new': specialTrianglesGrade7New as TopicPageContent,
   'patterns-and-graphs-grade-7': patternsAndGraphsGrade7 as TopicPageContent,
+  // Grade-7 catalog gaps (כיתה ז׳)
+  'equilateral-triangle-grade-7': equilateralTriangleGrade7 as TopicPageContent,
+  'congruent-polygons-transformations-grade-7': congruentPolygonsTransformationsGrade7 as TopicPageContent,
+  'data-collection-reading-grade-7': dataCollectionReadingGrade7 as TopicPageContent,
+  'frequency-grade-7': frequencyGrade7 as TopicPageContent,
+  'relative-frequency-grade-7': relativeFrequencyGrade7 as TopicPageContent,
+  'relative-frequency-experiments-grade-7': relativeFrequencyExperimentsGrade7 as TopicPageContent,
+  'probability-introduction-grade-7': probabilityIntroductionGrade7 as TopicPageContent,
+  'equations-introduction-equivalence-grade-7': equationsIntroductionEquivalenceGrade7 as TopicPageContent,
+  'two-step-equations-grade-7': twoStepEquationsGrade7 as TopicPageContent,
+  'annual-review-grade-7': annualReviewGrade7 as TopicPageContent,
+  'assessment-task-1-grade-7': assessmentTask1Grade7 as TopicPageContent,
   'kite-grade-9': kiteGrade9 as TopicPageContent,
+  // Grade-9 catalog gaps (כיתה ט׳)
+  'equilateral-triangle-grade-9': equilateralTriangleGrade9 as TopicPageContent,
   'statistics-data-frequency-grade-8': statisticsDataFrequencyGrade8 as TopicPageContent,
+  // Grade-8 catalog gaps (כיתה ח׳)
+  'prior-knowledge-diagnostic-grade-8': priorKnowledgeDiagnosticGrade8 as TopicPageContent,
+  'equations-with-fractions-grade-8': equationsWithFractionsGrade8 as TopicPageContent,
+  'ratio-proportion-grade-8': ratioProportionGrade8 as TopicPageContent,
+  'scale-grade-8': scaleGrade8 as TopicPageContent,
+  'percent-representations-grade-8': percentRepresentationsGrade8 as TopicPageContent,
+  'percent-change-grade-8': percentChangeGrade8 as TopicPageContent,
+  'successive-percent-changes-grade-8': successivePercentChangesGrade8 as TopicPageContent,
+  'square-root-grade-8': squareRootGrade8 as TopicPageContent,
+  'bar-charts-pictograms-grade-8': barChartsPictogramsGrade8 as TopicPageContent,
+  'pie-charts-grade-8': pieChartsGrade8 as TopicPageContent,
+  'function-concept-grade-8': functionConceptGrade8 as TopicPageContent,
+  'function-notation-grade-8': functionNotationGrade8 as TopicPageContent,
+  'function-representations-grade-8': functionRepresentationsGrade8 as TopicPageContent,
+  'data-range-grade-8': dataRangeGrade8 as TopicPageContent,
+  'mean-grade-8': meanGrade8 as TopicPageContent,
+  'median-grade-8': medianGrade8 as TopicPageContent,
+  'choosing-measure-of-center-grade-8': choosingMeasureOfCenterGrade8 as TopicPageContent,
+  'data-literacy-grade-8': dataLiteracyGrade8 as TopicPageContent,
+  'rate-of-change-grade-8': rateOfChangeGrade8 as TopicPageContent,
+  'slope-line-through-origin-grade-8': slopeLineThroughOriginGrade8 as TopicPageContent,
+  'axis-intercepts-grade-8': axisInterceptsGrade8 as TopicPageContent,
+  'equation-of-a-line-grade-8': equationOfALineGrade8 as TopicPageContent,
+  'lines-parallel-to-axes-grade-8': linesParallelToAxesGrade8 as TopicPageContent,
+  'motion-problems-grade-8': motionProblemsGrade8 as TopicPageContent,
+  'midyear-diagnostic-grade-8': midyearDiagnosticGrade8 as TopicPageContent,
+  'gap-bridging-review-grade-8': gapBridgingReviewGrade8 as TopicPageContent,
+  'word-problems-choosing-unknowns-grade-8': wordProblemsChoosingUnknownsGrade8 as TopicPageContent,
+  'systems-algebraic-solution-grade-8': systemsAlgebraicSolutionGrade8 as TopicPageContent,
+  'systems-word-problems-grade-8': systemsWordProblemsGrade8 as TopicPageContent,
+  'probability-sample-space-grade-8': probabilitySampleSpaceGrade8 as TopicPageContent,
+  'probability-experiments-fairness-grade-8': probabilityExperimentsFairnessGrade8 as TopicPageContent,
+  'graphical-inequalities-grade-8': graphicalInequalitiesGrade8 as TopicPageContent,
+  'non-routine-problems-grade-8': nonRoutineProblemsGrade8 as TopicPageContent,
+  'investigation-generalization-grade-8': investigationGeneralizationGrade8 as TopicPageContent,
+  'summary-review-grade-8': summaryReviewGrade8 as TopicPageContent,
+  'summative-assessment-grade-8': summativeAssessmentGrade8 as TopicPageContent,
+  'end-of-year-diagnostic-grade-8': endOfYearDiagnosticGrade8 as TopicPageContent,
+  'interpolation-extrapolation-grade-8': interpolationExtrapolationGrade8 as TopicPageContent,
+  'assessment-task-1-grade-8': assessmentTask1Grade8 as TopicPageContent,
+  'two-data-sources-grade-8': twoDataSourcesGrade8 as TopicPageContent,
   // Elementary authored pages (G1, catalog order)
   'counting-grade-1': countingGrade1 as TopicPageContent,
   'numbers-to-100-grade-1': numbersTo100Grade1 as TopicPageContent,

@@ -1,0 +1,314 @@
+{
+  "slug": "word-problems-choosing-unknowns-grade-8",
+  "path": "/word-problems-choosing-unknowns-grade-8",
+  "grade": 8,
+  "sourceUrl": "https://www.noamdoronmath.co.il/word-problems-choosing-unknowns-grade-8",
+  "fetchedAt": "2026-11-10T00:00:00.000Z",
+  "verifiedVia": "authored-catalog-gap-from-noam-pdfs",
+  "title": "בעיות מילוליות ובחירת נעלם לכיתה ח׳ | דפי עבודה חינם",
+  "description": "בעיות מילוליות לכיתה ח׳: בחירת נעלם מתאים, ביטוי לכל גודל, בניית משוואה, פתרון ובדיקה בסיפור. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "בעיות מילוליות לכיתה ח׳: בחירת נעלם ובניית משוואה",
+  "intro": "לומדים לפתור בעיה מילולית בשלבים: מה נתון ומה מבקשים, בוחרים נעלם, כותבים ביטוי לכל גודל, בונים משוואה ובודקים את התשובה בסיפור. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "בוחרים נעלם לגודל שאחרים מתוארים לפיו. אם בחודש השני חסכו 12 שקלים יותר מבראשון, נוח לסמן ב־x את החיסכון בחודש הראשון.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "כותבים ביטוי בעזרת x לכל גודל בסיפור, ואז משפט שוויון אחד: למשל, הסכום של כל החלקים שווה לכמות הכוללת.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "דוגמה: חבל של 13.6 מטרים נחתך לשני חלקים, ואחד ארוך מהשני ב־2.4 מטרים. x + (x + 2.4) = 13.6, ולכן 2x = 11.2 ו־x = 5.6. החלקים הם 5.6 ו־8 מטרים.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "עונים במספר x בלי לבדוק מה הוא מייצג. אחרי הפתרון חוזרים לסיפור ועונים על השאלה ששאלו.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "מתרגמים ״קטן ב־3״ לכפל או לחילוק. ״קטן ב־3״ הוא חיסור של 3, ו״קטן פי 3״ הוא חילוק ב־3.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "לנגה היו 120 שקלים. היא קנתה 4 ספרים באותו מחיר, ונשארו לה 32 שקלים. כמה עלה כל ספר?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה היא 22 שקלים: 120 − 4x = 32, ולכן 4x = 88.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "לומדים לפתור בעיה מילולית בשלבים: מה נתון ומה מבקשים, בוחרים נעלם, כותבים ביטוי לכל גודל, בונים משוואה ובודקים את התשובה בסיפור. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=8&topic=46",
+      "catalogTopicId": 46
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "בוחרים נעלם לגודל שאחרים מתוארים לפיו. אם בחודש השני חסכו 12 שקלים יותר מבראשון, נוח לסמן ב־x את החיסכון בחודש הראשון.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "כותבים ביטוי בעזרת x לכל גודל בסיפור, ואז משפט שוויון אחד: למשל, הסכום של כל החלקים שווה לכמות הכוללת.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "דוגמה: חבל של 13.6 מטרים נחתך לשני חלקים, ואחד ארוך מהשני ב־2.4 מטרים. x + (x + 2.4) = 13.6, ולכן 2x = 11.2 ו־x = 5.6. החלקים הם 5.6 ו־8 מטרים.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "עונים במספר x בלי לבדוק מה הוא מייצג. אחרי הפתרון חוזרים לסיפור ועונים על השאלה ששאלו.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "מתרגמים ״קטן ב־3״ לכפל או לחילוק. ״קטן ב־3״ הוא חיסור של 3, ו״קטן פי 3״ הוא חילוק ב־3.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "לנגה היו 120 שקלים. היא קנתה 4 ספרים באותו מחיר, ונשארו לה 32 שקלים. כמה עלה כל ספר?",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "התשובה היא 22 שקלים: 120 − 4x = 32, ולכן 4x = 88.",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 10.11.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "את מה כדאי לסמן ב־x?",
+      "answer": "בדרך כלל את הגודל הקטן ביותר, או את הגודל שכל האחרים מתוארים לפיו. כך הביטויים יוצאים פשוטים."
+    },
+    {
+      "question": "איך בודקים תשובה של בעיה מילולית?",
+      "answer": "מציבים את התשובה בסיפור עצמו, לא רק במשוואה. אם כל התנאים מתקיימים, התשובה נכונה."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם יש תשובות לדפי העבודה?",
+      "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "את מה כדאי לסמן ב־x?",
+          "answer": "בדרך כלל את הגודל הקטן ביותר, או את הגודל שכל האחרים מתוארים לפיו. כך הביטויים יוצאים פשוטים."
+        },
+        {
+          "question": "איך בודקים תשובה של בעיה מילולית?",
+          "answer": "מציבים את התשובה בסיפור עצמו, לא רק במשוואה. אם כל התנאים מתקיימים, התשובה נכונה."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם יש תשובות לדפי העבודה?",
+          "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/grade-8",
+      "label": "כל דפי כיתה ח׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-8"
+    },
+    {
+      "path": "/linear-equations-grade-8",
+      "label": "משוואות ליניאריות",
+      "productionHref": "https://www.noamdoronmath.co.il/linear-equations-grade-8"
+    },
+    {
+      "path": "/systems-word-problems-grade-8",
+      "label": "מערכות משוואות — בעיות מילוליות",
+      "productionHref": "https://www.noamdoronmath.co.il/systems-word-problems-grade-8"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=8&topic=46",
+    "source": "catalog-g8-t46",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=46",
+    "catalogTopicId": 46,
+    "catalogTopicTitle": "מילוליות — בחירת נעלמים"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=8&topic=46",
+      "source": "catalog-g8-t46",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=46",
+      "catalogTopicId": 46,
+      "catalogTopicTitle": "מילוליות — בחירת נעלמים"
+    }
+  ],
+  "gradeHubHref": "/grade-8",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/word-problems-choosing-unknowns-grade-8#webpage",
+        "url": "https://www.noamdoronmath.co.il/word-problems-choosing-unknowns-grade-8",
+        "name": "בעיות מילוליות ובחירת נעלם לכיתה ח׳ | דפי עבודה חינם",
+        "description": "בעיות מילוליות לכיתה ח׳: בחירת נעלם מתאים, ביטוי לכל גודל, בניית משוואה, פתרון ובדיקה בסיפור. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/word-problems-choosing-unknowns-grade-8#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/word-problems-choosing-unknowns-grade-8#learning-resource",
+        "name": "בעיות מילוליות לכיתה ח׳: בחירת נעלם ובניית משוואה",
+        "url": "https://www.noamdoronmath.co.il/word-problems-choosing-unknowns-grade-8",
+        "description": "בעיות מילוליות לכיתה ח׳: בחירת נעלם מתאים, ביטוי לכל גודל, בניית משוואה, פתרון ובדיקה בסיפור. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "educationalLevel": "כיתה ח׳",
+        "learningResourceType": "דפי עבודה",
+        "teaches": "בחירת נעלם, בניית משוואה מסיפור ופירוש הפתרון",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/word-problems-choosing-unknowns-grade-8#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "את מה כדאי לסמן ב־x?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "בדרך כלל את הגודל הקטן ביותר, או את הגודל שכל האחרים מתוארים לפיו. כך הביטויים יוצאים פשוטים."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בודקים תשובה של בעיה מילולית?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "מציבים את התשובה בסיפור עצמו, לא רק במשוואה. אם כל התנאים מתקיימים, התשובה נכונה."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם יש תשובות לדפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. בסוף כל דף עבודה יש דף תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

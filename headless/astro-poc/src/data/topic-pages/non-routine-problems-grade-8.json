@@ -1,0 +1,314 @@
+{
+  "slug": "non-routine-problems-grade-8",
+  "path": "/non-routine-problems-grade-8",
+  "grade": 8,
+  "sourceUrl": "https://www.noamdoronmath.co.il/non-routine-problems-grade-8",
+  "fetchedAt": "2026-11-10T00:00:00.000Z",
+  "verifiedVia": "authored-catalog-gap-from-noam-pdfs",
+  "title": "בעיות לא שגרתיות לכיתה ח׳ — העמקה | דף עבודה חינם",
+  "description": "בעיות לא שגרתיות לכיתה ח׳: בעיות חשיבה ואתגר בהסתברות, ממוצע, אלגברה וגאומטריה, ואסטרטגיות פתרון. דף עבודה אחד, בחינם וללא הרשמה.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "בעיות לא שגרתיות לכיתה ח׳ — העמקה",
+  "intro": "דף העמקה עם בעיות חשיבה שאין להן דרך פתרון אחת מוכנה: בעיות בהסתברות, בממוצע, באלגברה ובגאומטריה, שבהן בוחרים אסטרטגיה ומנמקים. דף העבודה זמין בחינם וללא הרשמה, עם תשובות בסוף הדף.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "בבעיה לא שגרתית לא ברור מראש איזו נוסחה להפעיל. מתחילים בקריאה מדויקת, מסמנים מה נתון ומה מבקשים, ומנסים מקרה קטן או דוגמה.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "אסטרטגיות נפוצות: לעבוד מהסוף להתחלה, לבנות טבלה של כל האפשרויות, לסמן נעלם ולכתוב משוואה, או לחפש תבנית.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "דוגמה: בשש מדידות 8, 16, 9, 12, 11 ו־x הממוצע הוא 11. הסכום צריך להיות 6 × 11 = 66, והחמש הידועות מסתכמות ב־56, ולכן x = 10.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "מנחשים תשובה ולא מנמקים. בבעיית אתגר הנימוק חשוב כמו התשובה.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "מפספסים אפשרויות. כשסופרים מקרים, בונים רשימה מסודרת כדי לוודא שלא חסר מקרה.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "הממוצע של 5 מספרים הוא 10. מוסיפים מספר שישי, והממוצע עולה ל־11. מהו המספר השישי?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה היא 16, כי הסכום גדל מ־50 ל־66.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "דף העמקה עם בעיות חשיבה שאין להן דרך פתרון אחת מוכנה: בעיות בהסתברות, בממוצע, באלגברה ובגאומטריה, שבהן בוחרים אסטרטגיה ומנמקים. דף העבודה זמין בחינם וללא הרשמה, עם תשובות בסוף הדף.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דף העבודה",
+      "href": "/worksheets?grade=8&topic=56",
+      "catalogTopicId": 56
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "בבעיה לא שגרתית לא ברור מראש איזו נוסחה להפעיל. מתחילים בקריאה מדויקת, מסמנים מה נתון ומה מבקשים, ומנסים מקרה קטן או דוגמה.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "אסטרטגיות נפוצות: לעבוד מהסוף להתחלה, לבנות טבלה של כל האפשרויות, לסמן נעלם ולכתוב משוואה, או לחפש תבנית.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "דוגמה: בשש מדידות 8, 16, 9, 12, 11 ו־x הממוצע הוא 11. הסכום צריך להיות 6 × 11 = 66, והחמש הידועות מסתכמות ב־56, ולכן x = 10.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "מנחשים תשובה ולא מנמקים. בבעיית אתגר הנימוק חשוב כמו התשובה.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "מפספסים אפשרויות. כשסופרים מקרים, בונים רשימה מסודרת כדי לוודא שלא חסר מקרה.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "הממוצע של 5 מספרים הוא 10. מוסיפים מספר שישי, והממוצע עולה ל־11. מהו המספר השישי?",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "התשובה היא 16, כי הסכום גדל מ־50 ל־66.",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 10.11.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "למי מתאים דף ההעמקה?",
+      "answer": "לתלמידים שסיימו את התרגול הרגיל ורוצים אתגר, וגם להכנה לתחרויות ולמצוינות."
+    },
+    {
+      "question": "מה עושים כשנתקעים?",
+      "answer": "מנסים מקרה קטן יותר, בונים טבלה או סרטוט, ובודקים אם אפשר לעבוד מהסוף להתחלה."
+    },
+    {
+      "question": "כמה דפי עבודה יש בנושא?",
+      "answer": "בנושא יש דף עבודה אחד לכל הכיתה, ובסופו תשובות."
+    },
+    {
+      "question": "האם יש תשובות לדפי העבודה?",
+      "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "למי מתאים דף ההעמקה?",
+          "answer": "לתלמידים שסיימו את התרגול הרגיל ורוצים אתגר, וגם להכנה לתחרויות ולמצוינות."
+        },
+        {
+          "question": "מה עושים כשנתקעים?",
+          "answer": "מנסים מקרה קטן יותר, בונים טבלה או סרטוט, ובודקים אם אפשר לעבוד מהסוף להתחלה."
+        },
+        {
+          "question": "כמה דפי עבודה יש בנושא?",
+          "answer": "בנושא יש דף עבודה אחד לכל הכיתה, ובסופו תשובות."
+        },
+        {
+          "question": "האם יש תשובות לדפי העבודה?",
+          "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/grade-8",
+      "label": "כל דפי כיתה ח׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-8"
+    },
+    {
+      "path": "/investigation-generalization-grade-8",
+      "label": "העמקה — חקר והכללה",
+      "productionHref": "https://www.noamdoronmath.co.il/investigation-generalization-grade-8"
+    },
+    {
+      "path": "/mean-grade-8",
+      "label": "הממוצע",
+      "productionHref": "https://www.noamdoronmath.co.il/mean-grade-8"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דף העבודה",
+    "href": "/worksheets?grade=8&topic=56",
+    "source": "catalog-g8-t56",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=56",
+    "catalogTopicId": 56,
+    "catalogTopicTitle": "העמקה — בעיות לא שגרתיות"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דף העבודה",
+      "href": "/worksheets?grade=8&topic=56",
+      "source": "catalog-g8-t56",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=56",
+      "catalogTopicId": 56,
+      "catalogTopicTitle": "העמקה — בעיות לא שגרתיות"
+    }
+  ],
+  "gradeHubHref": "/grade-8",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/non-routine-problems-grade-8#webpage",
+        "url": "https://www.noamdoronmath.co.il/non-routine-problems-grade-8",
+        "name": "בעיות לא שגרתיות לכיתה ח׳ — העמקה | דף עבודה חינם",
+        "description": "בעיות לא שגרתיות לכיתה ח׳: בעיות חשיבה ואתגר בהסתברות, ממוצע, אלגברה וגאומטריה, ואסטרטגיות פתרון. דף עבודה אחד, בחינם וללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/non-routine-problems-grade-8#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/non-routine-problems-grade-8#learning-resource",
+        "name": "בעיות לא שגרתיות לכיתה ח׳ — העמקה",
+        "url": "https://www.noamdoronmath.co.il/non-routine-problems-grade-8",
+        "description": "בעיות לא שגרתיות לכיתה ח׳: בעיות חשיבה ואתגר בהסתברות, ממוצע, אלגברה וגאומטריה, ואסטרטגיות פתרון. דף עבודה אחד, בחינם וללא הרשמה.",
+        "educationalLevel": "כיתה ח׳",
+        "learningResourceType": "דפי עבודה",
+        "teaches": "בעיות חשיבה, אסטרטגיות פתרון ושאלות אתגר",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/non-routine-problems-grade-8#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "למי מתאים דף ההעמקה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לתלמידים שסיימו את התרגול הרגיל ורוצים אתגר, וגם להכנה לתחרויות ולמצוינות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "מה עושים כשנתקעים?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "מנסים מקרה קטן יותר, בונים טבלה או סרטוט, ובודקים אם אפשר לעבוד מהסוף להתחלה."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "כמה דפי עבודה יש בנושא?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "בנושא יש דף עבודה אחד לכל הכיתה, ובסופו תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם יש תשובות לדפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. בסוף כל דף עבודה יש דף תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

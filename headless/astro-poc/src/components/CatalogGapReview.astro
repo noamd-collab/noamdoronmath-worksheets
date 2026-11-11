@@ -1,0 +1,76 @@
+---
+/**
+ * Review index for new catalog-gap topic pages. Not a site page: no layout,
+ * no navigation, noindex, and outside the page sitemap (nested route).
+ */
+import { topicLandingLoop } from '../lib/landingLoops';
+import { loadTopicPage } from '../lib/topicPages';
+
+interface Props {
+  grade: number;
+  gradeLabel: string;
+  slugs: readonly string[];
+}
+
+const { grade, gradeLabel, slugs } = Astro.props;
+const rows = slugs.map((slug) => {
+  const page = loadTopicPage(slug);
+  const loop = topicLandingLoop(page);
+  return {
+    href: page.path,
+    h1: page.h1,
+    topicId: page.catalogCta?.catalogTopicId,
+    topicTitle: page.catalogCta?.catalogTopicTitle,
+    worksheets: page.catalogCta?.href,
+    loop: loop.kind === 'film' ? `סרט: ${loop.marker}` : loop.marker,
+  };
+});
+
+Astro.response.headers.set('X-Robots-Tag', 'noindex, nofollow');
+Astro.response.headers.set('Cache-Control', 'no-store');
+---
+<!doctype html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>{`בדיקה: דפי נושא חדשים לכיתה ${gradeLabel}`}</title>
+    <style>
+      body { margin: 0; font-family: system-ui, 'Segoe UI', Arial, sans-serif; color: #1f2937; background: #f8fafc; line-height: 1.5; }
+      main { max-inline-size: 60rem; margin-inline: auto; padding-block: 1.5rem 3rem; padding-inline: 1rem; }
+      .bsd { margin: 0; text-align: end; font-size: 0.875rem; }
+      h1 { font-size: 1.5rem; margin-block: 0.5rem 0.25rem; }
+      .note { margin-block: 0 1.25rem; color: #4b5563; }
+      ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.75rem; }
+      li { background: #fff; border: 1px solid #e5e7eb; border-radius: 0.75rem; padding-block: 0.75rem; padding-inline: 1rem; }
+      .num { color: #6b7280; font-variant-numeric: tabular-nums; margin-inline-end: 0.5rem; }
+      .page { font-weight: 600; font-size: 1.05rem; color: #1d4ed8; }
+      .meta { display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; margin-block-start: 0.25rem; font-size: 0.9rem; color: #4b5563; }
+      .meta a { color: #1d4ed8; }
+      code { direction: ltr; unicode-bidi: isolate; font-size: 0.85rem; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p class="bsd">בס״ד</p>
+      <h1>{`דפי נושא חדשים לכיתה ${gradeLabel}`}</h1>
+      <p class="note">{`דף בדיקה פנימי, ללא אינדוקס, מחוץ לניווט ולמפת האתר. ${rows.length} דפים.`}</p>
+      <ol>
+        {rows.map((row, index) => (
+          <li>
+            <span class="num">{index + 1}.</span>
+            <a class="page" href={row.href}>{row.h1}</a>
+            <div class="meta">
+              <span>{`נושא ${row.topicId} בקטלוג: ${row.topicTitle}`}</span>
+              <a href={row.worksheets}>דפי העבודה בקטלוג</a>
+              <span>אנימציה: <code>{row.loop}</code></span>
+              <span>נתיב: <code>{row.href}</code></span>
+            </div>
+          </li>
+        ))}
+      </ol>
+      <p class="note"><a href={`/grade-${grade}`}>{`דף כיתה ${gradeLabel}`}</a></p>
+    </main>
+  </body>
+</html>

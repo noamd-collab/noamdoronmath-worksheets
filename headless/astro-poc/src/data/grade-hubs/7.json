@@ -151,6 +151,71 @@
           "path": "/patterns-and-graphs-grade-7",
           "label": "דפוסים וגרפים",
           "productionHref": "https://www.noamdoronmath.co.il/patterns-and-graphs-grade-7"
+        },
+        {
+          "path": "/equilateral-triangle-grade-7",
+          "label": "משולש שווה־צלעות",
+          "productionHref": "https://www.noamdoronmath.co.il/equilateral-triangle-grade-7"
+        },
+        {
+          "path": "/congruent-polygons-transformations-grade-7",
+          "label": "מצולעים חופפים וטרנספורמציות",
+          "productionHref": "https://www.noamdoronmath.co.il/congruent-polygons-transformations-grade-7"
+        },
+        {
+          "path": "/equations-introduction-equivalence-grade-7",
+          "label": "משוואות — מבוא ושקילות",
+          "productionHref": "https://www.noamdoronmath.co.il/equations-introduction-equivalence-grade-7"
+        },
+        {
+          "path": "/two-step-equations-grade-7",
+          "label": "משוואות דו־שלביות",
+          "productionHref": "https://www.noamdoronmath.co.il/two-step-equations-grade-7"
+        }
+      ]
+    },
+    {
+      "heading": "סטטיסטיקה והסתברות",
+      "links": [
+        {
+          "path": "/data-collection-reading-grade-7",
+          "label": "איסוף וקריאת מידע",
+          "productionHref": "https://www.noamdoronmath.co.il/data-collection-reading-grade-7"
+        },
+        {
+          "path": "/frequency-grade-7",
+          "label": "שכיחות",
+          "productionHref": "https://www.noamdoronmath.co.il/frequency-grade-7"
+        },
+        {
+          "path": "/relative-frequency-grade-7",
+          "label": "שכיחות יחסית — היכרות",
+          "productionHref": "https://www.noamdoronmath.co.il/relative-frequency-grade-7"
+        },
+        {
+          "path": "/relative-frequency-experiments-grade-7",
+          "label": "שכיחות יחסית בניסויים",
+          "productionHref": "https://www.noamdoronmath.co.il/relative-frequency-experiments-grade-7"
+        },
+        {
+          "path": "/probability-introduction-grade-7",
+          "label": "הסתברות — היכרות",
+          "productionHref": "https://www.noamdoronmath.co.il/probability-introduction-grade-7"
+        }
+      ]
+    },
+    {
+      "heading": "חזרה והערכה",
+      "links": [
+        {
+          "path": "/annual-review-grade-7",
+          "label": "חזרה שנתית",
+          "productionHref": "https://www.noamdoronmath.co.il/annual-review-grade-7"
+        },
+        {
+          "path": "/assessment-task-1-grade-7",
+          "label": "משימת הערכה 1",
+          "productionHref": "https://www.noamdoronmath.co.il/assessment-task-1-grade-7"
         }
       ]
     }
@@ -295,6 +360,61 @@
       "path": "/patterns-and-graphs-grade-7",
       "label": "דפוסים וגרפים",
       "productionHref": "https://www.noamdoronmath.co.il/patterns-and-graphs-grade-7"
+    },
+    {
+      "path": "/equilateral-triangle-grade-7",
+      "label": "משולש שווה־צלעות",
+      "productionHref": "https://www.noamdoronmath.co.il/equilateral-triangle-grade-7"
+    },
+    {
+      "path": "/congruent-polygons-transformations-grade-7",
+      "label": "מצולעים חופפים וטרנספורמציות",
+      "productionHref": "https://www.noamdoronmath.co.il/congruent-polygons-transformations-grade-7"
+    },
+    {
+      "path": "/equations-introduction-equivalence-grade-7",
+      "label": "משוואות — מבוא ושקילות",
+      "productionHref": "https://www.noamdoronmath.co.il/equations-introduction-equivalence-grade-7"
+    },
+    {
+      "path": "/two-step-equations-grade-7",
+      "label": "משוואות דו־שלביות",
+      "productionHref": "https://www.noamdoronmath.co.il/two-step-equations-grade-7"
+    },
+    {
+      "path": "/data-collection-reading-grade-7",
+      "label": "איסוף וקריאת מידע",
+      "productionHref": "https://www.noamdoronmath.co.il/data-collection-reading-grade-7"
+    },
+    {
+      "path": "/frequency-grade-7",
+      "label": "שכיחות",
+      "productionHref": "https://www.noamdoronmath.co.il/frequency-grade-7"
+    },
+    {
+      "path": "/relative-frequency-grade-7",
+      "label": "שכיחות יחסית — היכרות",
+      "productionHref": "https://www.noamdoronmath.co.il/relative-frequency-grade-7"
+    },
+    {
+      "path": "/relative-frequency-experiments-grade-7",
+      "label": "שכיחות יחסית בניסויים",
+      "productionHref": "https://www.noamdoronmath.co.il/relative-frequency-experiments-grade-7"
+    },
+    {
+      "path": "/probability-introduction-grade-7",
+      "label": "הסתברות — היכרות",
+      "productionHref": "https://www.noamdoronmath.co.il/probability-introduction-grade-7"
+    },
+    {
+      "path": "/annual-review-grade-7",
+      "label": "חזרה שנתית",
+      "productionHref": "https://www.noamdoronmath.co.il/annual-review-grade-7"
+    },
+    {
+      "path": "/assessment-task-1-grade-7",
+      "label": "משימת הערכה 1",
+      "productionHref": "https://www.noamdoronmath.co.il/assessment-task-1-grade-7"
     }
   ],
   "catalogCta": {

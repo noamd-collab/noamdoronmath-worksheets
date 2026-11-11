@@ -1,0 +1,314 @@
+{
+  "slug": "equation-of-a-line-grade-8",
+  "path": "/equation-of-a-line-grade-8",
+  "grade": 8,
+  "sourceUrl": "https://www.noamdoronmath.co.il/equation-of-a-line-grade-8",
+  "fetchedAt": "2026-11-10T00:00:00.000Z",
+  "verifiedVia": "authored-catalog-gap-from-noam-pdfs",
+  "title": "משוואת ישר לכיתה ח׳ | דפי עבודה חינם",
+  "description": "משוואת ישר לכיתה ח׳: מציאת y = mx + b לפי שתי נקודות או לפי נקודה ושיפוע, ובדיקה אם נקודה על הישר. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "משוואת ישר לכיתה ח׳: משתי נקודות או מנקודה ושיפוע",
+  "intro": "לומדים למצוא משוואת ישר מהצורה y = mx + b כשנתונות שתי נקודות, או נקודה ושיפוע, ולבדוק בהצבה אם נקודה נמצאת על הישר. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "בישר y = mx + b המספר m הוא השיפוע, ו־b הוא שיעור ה־y של נקודת החיתוך עם ציר y, שהיא (0, b). כדי לכתוב משוואה צריך למצוא את שניהם.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "משתי נקודות שערכי ה־x שלהן שונים מחשבים שיפוע: ההפרש בין ערכי y חלקי ההפרש בין ערכי x. אחר כך מציבים נקודה אחת ומוצאים את b.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "דוגמה: הישר עובר ב־(1, 5) וב־(3, 9). השיפוע הוא ⟨9 − 5¦3 − 1⟩ = 2. מציבים (1, 5): 5 = 2 × 1 + b, ולכן b = 3 והמשוואה y = 2x + 3.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "מחסירים בסדר שונה במונה ובמכנה. אם במונה התחלתם מהנקודה השנייה, גם במכנה מתחילים ממנה.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "בודקים נקודה אחת בלבד. משוואה נכונה מתקיימת בכל הנקודות הנתונות, ולכן מציבים את כולן.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "מצאו את משוואת הישר שעובר ב־(0, −2) וב־(2, 4).",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה היא y = 3x − 2: השיפוע הוא ⟨6¦2⟩ = 3, ונקודת החיתוך עם ציר y היא (0, −2).",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "לומדים למצוא משוואת ישר מהצורה y = mx + b כשנתונות שתי נקודות, או נקודה ושיפוע, ולבדוק בהצבה אם נקודה נמצאת על הישר. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=8&topic=31",
+      "catalogTopicId": 31
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "בישר y = mx + b המספר m הוא השיפוע, ו־b הוא שיעור ה־y של נקודת החיתוך עם ציר y, שהיא (0, b). כדי לכתוב משוואה צריך למצוא את שניהם.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "משתי נקודות שערכי ה־x שלהן שונים מחשבים שיפוע: ההפרש בין ערכי y חלקי ההפרש בין ערכי x. אחר כך מציבים נקודה אחת ומוצאים את b.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "דוגמה: הישר עובר ב־(1, 5) וב־(3, 9). השיפוע הוא ⟨9 − 5¦3 − 1⟩ = 2. מציבים (1, 5): 5 = 2 × 1 + b, ולכן b = 3 והמשוואה y = 2x + 3.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "מחסירים בסדר שונה במונה ובמכנה. אם במונה התחלתם מהנקודה השנייה, גם במכנה מתחילים ממנה.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "בודקים נקודה אחת בלבד. משוואה נכונה מתקיימת בכל הנקודות הנתונות, ולכן מציבים את כולן.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "מצאו את משוואת הישר שעובר ב־(0, −2) וב־(2, 4).",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "התשובה היא y = 3x − 2: השיפוע הוא ⟨6¦2⟩ = 3, ונקודת החיתוך עם ציר y היא (0, −2).",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 10.11.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "איך בודקים אם נקודה נמצאת על ישר?",
+      "answer": "מציבים את שיעור x של הנקודה במשוואה. אם מתקבל שיעור y שלה, הנקודה על הישר."
+    },
+    {
+      "question": "מה עושים כשנתונים נקודה ושיפוע?",
+      "answer": "מציבים את השיפוע במקום m ואת שיעורי הנקודה במקום x ו־y, ופותרים כדי למצוא את b."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם יש תשובות לדפי העבודה?",
+      "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "איך בודקים אם נקודה נמצאת על ישר?",
+          "answer": "מציבים את שיעור x של הנקודה במשוואה. אם מתקבל שיעור y שלה, הנקודה על הישר."
+        },
+        {
+          "question": "מה עושים כשנתונים נקודה ושיפוע?",
+          "answer": "מציבים את השיפוע במקום m ואת שיעורי הנקודה במקום x ו־y, ופותרים כדי למצוא את b."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם יש תשובות לדפי העבודה?",
+          "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/grade-8",
+      "label": "כל דפי כיתה ח׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-8"
+    },
+    {
+      "path": "/axis-intercepts-grade-8",
+      "label": "חיתוך עם הצירים",
+      "productionHref": "https://www.noamdoronmath.co.il/axis-intercepts-grade-8"
+    },
+    {
+      "path": "/lines-parallel-to-axes-grade-8",
+      "label": "ישרים מקבילים לצירים",
+      "productionHref": "https://www.noamdoronmath.co.il/lines-parallel-to-axes-grade-8"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=8&topic=31",
+    "source": "catalog-g8-t31",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=31",
+    "catalogTopicId": 31,
+    "catalogTopicTitle": "משוואת ישר"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=8&topic=31",
+      "source": "catalog-g8-t31",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=31",
+      "catalogTopicId": 31,
+      "catalogTopicTitle": "משוואת ישר"
+    }
+  ],
+  "gradeHubHref": "/grade-8",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/equation-of-a-line-grade-8#webpage",
+        "url": "https://www.noamdoronmath.co.il/equation-of-a-line-grade-8",
+        "name": "משוואת ישר לכיתה ח׳ | דפי עבודה חינם",
+        "description": "משוואת ישר לכיתה ח׳: מציאת y = mx + b לפי שתי נקודות או לפי נקודה ושיפוע, ובדיקה אם נקודה על הישר. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/equation-of-a-line-grade-8#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/equation-of-a-line-grade-8#learning-resource",
+        "name": "משוואת ישר לכיתה ח׳: משתי נקודות או מנקודה ושיפוע",
+        "url": "https://www.noamdoronmath.co.il/equation-of-a-line-grade-8",
+        "description": "משוואת ישר לכיתה ח׳: מציאת y = mx + b לפי שתי נקודות או לפי נקודה ושיפוע, ובדיקה אם נקודה על הישר. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "educationalLevel": "כיתה ח׳",
+        "learningResourceType": "דפי עבודה",
+        "teaches": "מציאת משוואת ישר ובדיקת שייכות נקודה לישר",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/equation-of-a-line-grade-8#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "איך בודקים אם נקודה נמצאת על ישר?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "מציבים את שיעור x של הנקודה במשוואה. אם מתקבל שיעור y שלה, הנקודה על הישר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "מה עושים כשנתונים נקודה ושיפוע?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "מציבים את השיפוע במקום m ואת שיעורי הנקודה במקום x ו־y, ופותרים כדי למצוא את b."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם יש תשובות לדפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. בסוף כל דף עבודה יש דף תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

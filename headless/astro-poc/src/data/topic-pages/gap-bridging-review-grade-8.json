@@ -1,0 +1,314 @@
+{
+  "slug": "gap-bridging-review-grade-8",
+  "path": "/gap-bridging-review-grade-8",
+  "grade": 8,
+  "sourceUrl": "https://www.noamdoronmath.co.il/gap-bridging-review-grade-8",
+  "fetchedAt": "2026-11-10T00:00:00.000Z",
+  "verifiedVia": "authored-catalog-gap-from-noam-pdfs",
+  "title": "גישור ותיקון פערים לכיתה ח׳ | דף עבודה חינם",
+  "description": "גישור ותיקון פערים לכיתה ח׳: מספרים מכוונים, משוואות עם מקדם שלילי, ביטויים ושברים, צעד אחר צעד. דף עבודה אחד, בחינם וללא הרשמה.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "גישור ותיקון פערים לכיתה ח׳",
+  "intro": "דף תרגול ממוקד לסגירת פערים בסיסיים: פעולות במספרים מכוונים, משוואות עם מקדם שלילי, ביטויים אלגבריים ושברים, לפני שממשיכים לנושאים הבאים. דף העבודה זמין בחינם וללא הרשמה, עם תשובות בסוף הדף.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "הדף בנוי בצעדים קטנים: כל שאלה מתמקדת במיומנות אחת, ומתקדמת מתרגיל פשוט לתרגיל שמשלב כמה מיומנויות.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "במספרים מכוונים בודקים גם את הפעולה וגם את הסימן. −9 + 14 = 5, כי מתחילים ב־−9 ומתקדמים 14 צעדים ימינה.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "דוגמה למשוואה עם מקדם שלילי: −3x + 5 = 20. מחסירים 5: −3x = 15. מחלקים ב־(−3): x = −5.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "שוכחים את הסימן כשמחלקים במקדם שלילי. חלוקה במספר שלילי מחליפה את סימן התוצאה.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "מחברים שני מספרים שליליים ומקבלים חיובי. −4 + (−6) = −10. רק בכפל וחילוק שני סימני מינוס נותנים פלוס.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "פתרו: −4x + 7 = 19.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה היא x = −3: −4x = 12, ומחלקים ב־(−4).",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "דף תרגול ממוקד לסגירת פערים בסיסיים: פעולות במספרים מכוונים, משוואות עם מקדם שלילי, ביטויים אלגבריים ושברים, לפני שממשיכים לנושאים הבאים. דף העבודה זמין בחינם וללא הרשמה, עם תשובות בסוף הדף.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דף העבודה",
+      "href": "/worksheets?grade=8&topic=35",
+      "catalogTopicId": 35
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "הדף בנוי בצעדים קטנים: כל שאלה מתמקדת במיומנות אחת, ומתקדמת מתרגיל פשוט לתרגיל שמשלב כמה מיומנויות.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "במספרים מכוונים בודקים גם את הפעולה וגם את הסימן. −9 + 14 = 5, כי מתחילים ב־−9 ומתקדמים 14 צעדים ימינה.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "דוגמה למשוואה עם מקדם שלילי: −3x + 5 = 20. מחסירים 5: −3x = 15. מחלקים ב־(−3): x = −5.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "שוכחים את הסימן כשמחלקים במקדם שלילי. חלוקה במספר שלילי מחליפה את סימן התוצאה.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "מחברים שני מספרים שליליים ומקבלים חיובי. −4 + (−6) = −10. רק בכפל וחילוק שני סימני מינוס נותנים פלוס.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "פתרו: −4x + 7 = 19.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "התשובה היא x = −3: −4x = 12, ומחלקים ב־(−4).",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 10.11.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "למי מתאים דף הגישור?",
+      "answer": "לכל תלמיד שהאבחון הראה אצלו פער במספרים מכוונים, במשוואות או בשברים, וגם לחזרה לפני מבחן."
+    },
+    {
+      "question": "איך כדאי לעבוד עם הדף?",
+      "answer": "פותרים לפי הסדר ובודקים כל שאלה בדף התשובות. אם יש טעות, חוזרים על השאלה לפני שממשיכים."
+    },
+    {
+      "question": "כמה דפי עבודה יש בנושא?",
+      "answer": "בנושא יש דף עבודה אחד לכל הכיתה, ובסופו תשובות."
+    },
+    {
+      "question": "האם יש תשובות לדפי העבודה?",
+      "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "למי מתאים דף הגישור?",
+          "answer": "לכל תלמיד שהאבחון הראה אצלו פער במספרים מכוונים, במשוואות או בשברים, וגם לחזרה לפני מבחן."
+        },
+        {
+          "question": "איך כדאי לעבוד עם הדף?",
+          "answer": "פותרים לפי הסדר ובודקים כל שאלה בדף התשובות. אם יש טעות, חוזרים על השאלה לפני שממשיכים."
+        },
+        {
+          "question": "כמה דפי עבודה יש בנושא?",
+          "answer": "בנושא יש דף עבודה אחד לכל הכיתה, ובסופו תשובות."
+        },
+        {
+          "question": "האם יש תשובות לדפי העבודה?",
+          "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/grade-8",
+      "label": "כל דפי כיתה ח׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-8"
+    },
+    {
+      "path": "/prior-knowledge-diagnostic-grade-8",
+      "label": "אבחון קדם־ידע",
+      "productionHref": "https://www.noamdoronmath.co.il/prior-knowledge-diagnostic-grade-8"
+    },
+    {
+      "path": "/linear-equations-grade-8",
+      "label": "משוואות ליניאריות",
+      "productionHref": "https://www.noamdoronmath.co.il/linear-equations-grade-8"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דף העבודה",
+    "href": "/worksheets?grade=8&topic=35",
+    "source": "catalog-g8-t35",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=35",
+    "catalogTopicId": 35,
+    "catalogTopicTitle": "גישור ותיקון פערים"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דף העבודה",
+      "href": "/worksheets?grade=8&topic=35",
+      "source": "catalog-g8-t35",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=35",
+      "catalogTopicId": 35,
+      "catalogTopicTitle": "גישור ותיקון פערים"
+    }
+  ],
+  "gradeHubHref": "/grade-8",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/gap-bridging-review-grade-8#webpage",
+        "url": "https://www.noamdoronmath.co.il/gap-bridging-review-grade-8",
+        "name": "גישור ותיקון פערים לכיתה ח׳ | דף עבודה חינם",
+        "description": "גישור ותיקון פערים לכיתה ח׳: מספרים מכוונים, משוואות עם מקדם שלילי, ביטויים ושברים, צעד אחר צעד. דף עבודה אחד, בחינם וללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/gap-bridging-review-grade-8#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/gap-bridging-review-grade-8#learning-resource",
+        "name": "גישור ותיקון פערים לכיתה ח׳",
+        "url": "https://www.noamdoronmath.co.il/gap-bridging-review-grade-8",
+        "description": "גישור ותיקון פערים לכיתה ח׳: מספרים מכוונים, משוואות עם מקדם שלילי, ביטויים ושברים, צעד אחר צעד. דף עבודה אחד, בחינם וללא הרשמה.",
+        "educationalLevel": "כיתה ח׳",
+        "learningResourceType": "דפי עבודה",
+        "teaches": "סגירת פערים במספרים מכוונים, משוואות, ביטויים ושברים",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/gap-bridging-review-grade-8#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "למי מתאים דף הגישור?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לכל תלמיד שהאבחון הראה אצלו פער במספרים מכוונים, במשוואות או בשברים, וגם לחזרה לפני מבחן."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך כדאי לעבוד עם הדף?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "פותרים לפי הסדר ובודקים כל שאלה בדף התשובות. אם יש טעות, חוזרים על השאלה לפני שממשיכים."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "כמה דפי עבודה יש בנושא?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "בנושא יש דף עבודה אחד לכל הכיתה, ובסופו תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם יש תשובות לדפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. בסוף כל דף עבודה יש דף תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

@@ -1,0 +1,314 @@
+{
+  "slug": "function-notation-grade-8",
+  "path": "/function-notation-grade-8",
+  "grade": 8,
+  "sourceUrl": "https://www.noamdoronmath.co.il/function-notation-grade-8",
+  "fetchedAt": "2026-11-10T00:00:00.000Z",
+  "verifiedVia": "authored-catalog-gap-from-noam-pdfs",
+  "title": "סימון פונקציה f(x) לכיתה ח׳ | דפי עבודה חינם",
+  "description": "סימון פונקציה לכיתה ח׳: הסימון f(x), חישוב ערך הפונקציה, מציאת קלט לפי פלט וקריאת ערכים מגרף. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "סימון פונקציה לכיתה ח׳: f(x), ערך הפונקציה ומקור",
+  "intro": "לומדים לקרוא ולכתוב את הסימון f(x): מחשבים ערך של פונקציה בקלט נתון, מוצאים איזה קלט נותן פלט נתון וקוראים ערכים מגרף. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "f(x) קוראים ״f של x״. f הוא שם הפונקציה, x הוא הקלט, ו־f(x) הוא הפלט. f(3) הוא הערך שהפונקציה נותנת לקלט 3.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "יש שני כיוונים של שאלה: לחשב את f(3), כלומר להציב קלט, או למצוא x שבו f(x) = 11, כלומר לפתור משוואה.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "דוגמה: p(x) = 3x − 7. p(4) = 3 × 4 − 7 = 5. כדי למצוא קלט שבו p(x) = 8 פותרים 3x − 7 = 8, ומקבלים x = 5.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "קוראים את f(3) כ־f כפול 3. הסוגריים בסימון פונקציה מציינים קלט, לא כפל.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "מבלבלים בין f(2) לבין הקלט שבו f(x) = 2. הראשון הוא פלט של קלט נתון, והשני הוא קלט של פלט נתון.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "g(x) = 2x + 5. חשבו את g(3), ומצאו x שבו g(x) = 1.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה היא g(3) = 11, ו־x = −2, כי 2x + 5 = 1 נותן 2x = −4.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "לומדים לקרוא ולכתוב את הסימון f(x): מחשבים ערך של פונקציה בקלט נתון, מוצאים איזה קלט נותן פלט נתון וקוראים ערכים מגרף. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=8&topic=20",
+      "catalogTopicId": 20
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "f(x) קוראים ״f של x״. f הוא שם הפונקציה, x הוא הקלט, ו־f(x) הוא הפלט. f(3) הוא הערך שהפונקציה נותנת לקלט 3.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "יש שני כיוונים של שאלה: לחשב את f(3), כלומר להציב קלט, או למצוא x שבו f(x) = 11, כלומר לפתור משוואה.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "דוגמה: p(x) = 3x − 7. p(4) = 3 × 4 − 7 = 5. כדי למצוא קלט שבו p(x) = 8 פותרים 3x − 7 = 8, ומקבלים x = 5.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "קוראים את f(3) כ־f כפול 3. הסוגריים בסימון פונקציה מציינים קלט, לא כפל.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "מבלבלים בין f(2) לבין הקלט שבו f(x) = 2. הראשון הוא פלט של קלט נתון, והשני הוא קלט של פלט נתון.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "g(x) = 2x + 5. חשבו את g(3), ומצאו x שבו g(x) = 1.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "התשובה היא g(3) = 11, ו־x = −2, כי 2x + 5 = 1 נותן 2x = −4.",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 10.11.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "מה פירוש f(5)?",
+      "answer": "הפלט של הפונקציה f כשהקלט הוא 5. בגרף זה גובה הנקודה שבה x = 5."
+    },
+    {
+      "question": "איך מוצאים קלט לפי פלט?",
+      "answer": "משווים את נוסחת הפונקציה לפלט ופותרים את המשוואה. בגרף מחפשים את הנקודות שגובהן שווה לפלט."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם יש תשובות לדפי העבודה?",
+      "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "מה פירוש f(5)?",
+          "answer": "הפלט של הפונקציה f כשהקלט הוא 5. בגרף זה גובה הנקודה שבה x = 5."
+        },
+        {
+          "question": "איך מוצאים קלט לפי פלט?",
+          "answer": "משווים את נוסחת הפונקציה לפלט ופותרים את המשוואה. בגרף מחפשים את הנקודות שגובהן שווה לפלט."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם יש תשובות לדפי העבודה?",
+          "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/grade-8",
+      "label": "כל דפי כיתה ח׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-8"
+    },
+    {
+      "path": "/function-concept-grade-8",
+      "label": "מושג הפונקציה",
+      "productionHref": "https://www.noamdoronmath.co.il/function-concept-grade-8"
+    },
+    {
+      "path": "/function-representations-grade-8",
+      "label": "מעבר בין ייצוגים של פונקציה",
+      "productionHref": "https://www.noamdoronmath.co.il/function-representations-grade-8"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=8&topic=20",
+    "source": "catalog-g8-t20",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=20",
+    "catalogTopicId": 20,
+    "catalogTopicTitle": "סימון פונקציה"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=8&topic=20",
+      "source": "catalog-g8-t20",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=20",
+      "catalogTopicId": 20,
+      "catalogTopicTitle": "סימון פונקציה"
+    }
+  ],
+  "gradeHubHref": "/grade-8",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/function-notation-grade-8#webpage",
+        "url": "https://www.noamdoronmath.co.il/function-notation-grade-8",
+        "name": "סימון פונקציה f(x) לכיתה ח׳ | דפי עבודה חינם",
+        "description": "סימון פונקציה לכיתה ח׳: הסימון f(x), חישוב ערך הפונקציה, מציאת קלט לפי פלט וקריאת ערכים מגרף. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/function-notation-grade-8#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/function-notation-grade-8#learning-resource",
+        "name": "סימון פונקציה לכיתה ח׳: f(x), ערך הפונקציה ומקור",
+        "url": "https://www.noamdoronmath.co.il/function-notation-grade-8",
+        "description": "סימון פונקציה לכיתה ח׳: הסימון f(x), חישוב ערך הפונקציה, מציאת קלט לפי פלט וקריאת ערכים מגרף. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "educationalLevel": "כיתה ח׳",
+        "learningResourceType": "דפי עבודה",
+        "teaches": "הסימון f(x), חישוב ערך פונקציה ומציאת קלט לפי פלט",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/function-notation-grade-8#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "מה פירוש f(5)?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "הפלט של הפונקציה f כשהקלט הוא 5. בגרף זה גובה הנקודה שבה x = 5."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך מוצאים קלט לפי פלט?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "משווים את נוסחת הפונקציה לפלט ופותרים את המשוואה. בגרף מחפשים את הנקודות שגובהן שווה לפלט."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם יש תשובות לדפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. בסוף כל דף עבודה יש דף תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}
