@@ -1,4 +1,5 @@
 export type ReviewResolvedLoop =
+  | { kind: 'missing'; reason: 'new-page' }
   | { kind: 'concept'; variant: string; marker: string }
   | { kind: 'css'; variant: string; marker: string }
   | { kind: 'film'; marker: string; src: string }

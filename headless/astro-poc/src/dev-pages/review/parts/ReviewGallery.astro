@@ -23,7 +23,7 @@ interface Props {
 }
 const { title, intro, entries } = Astro.props;
 
-type RawTopicPage = { slug: string; h1: string; grade: number; catalogCta?: { catalogTopicId?: number | null } };
+type RawTopicPage = { slug: string; h1: string; grade: number; verifiedVia?: string; catalogCta?: { catalogTopicId?: number | null } };
 // Raw JSON, not loadTopicPage: topicPages pulls the catalog loader, which
 // `astro dev` cannot evaluate (scripts/lib/worksheet-editions.cjs).
 const RAW_PAGES = import.meta.glob<RawTopicPage>('../../../data/topic-pages/*.json', { eager: true, import: 'default' });
@@ -37,6 +37,9 @@ function loadTopicPage(slug: string): RawTopicPage {
 function resolve(slug: string, side: 'before' | 'after'): ReviewResolvedLoop {
   const page = loadTopicPage(slug);
   if (side === 'before') {
+    // Catalog-gap pages did not exist in the frozen baseline. Do not invent a
+    // historical animation by running their new metadata through its fallback.
+    if (page.verifiedVia?.startsWith('authored-catalog-gap')) return { kind: 'missing', reason: 'new-page' };
     const comp = BEFORE_COMPONENTS[slug as keyof typeof BEFORE_COMPONENTS];
     if (comp) return { kind: 'component', variant: comp, marker: comp };
     return beforeTopicLandingLoop(page as any) as ReviewResolvedLoop;
@@ -47,7 +50,7 @@ function resolve(slug: string, side: 'before' | 'after'): ReviewResolvedLoop {
 }
 
 const label = (loop: ReviewResolvedLoop) =>
-  loop.kind === 'film' ? `film ${loop.marker}` : `${loop.kind} ${loop.variant}`;
+  loop.kind === 'missing' ? 'דף חדש — ללא הדגמה קודמת' : loop.kind === 'film' ? `film ${loop.marker}` : `${loop.kind} ${loop.variant}`;
 
 const BARE_FILMS = ['triangle-angle-sum-vertex-descent', 'parallel-cointerior-angles', 'statistics-frequency'];
 const demoClass = (loop: ReviewResolvedLoop) => [
