@@ -280,6 +280,7 @@ import annualReviewGrade7 from '../data/topic-pages/annual-review-grade-7.json';
 import assessmentTask1Grade7 from '../data/topic-pages/assessment-task-1-grade-7.json';
 import ratioGrade6 from '../data/topic-pages/ratio-grade-6.json';
 import scaleMapsGrade6 from '../data/topic-pages/scale-maps-grade-6.json';
+import equilateralTriangleGrade9 from '../data/topic-pages/equilateral-triangle-grade-9.json';
 import statisticsDataFrequencyGrade8 from '../data/topic-pages/statistics-data-frequency-grade-8.json';
 import priorKnowledgeDiagnosticGrade8 from '../data/topic-pages/prior-knowledge-diagnostic-grade-8.json';
 import equationsWithFractionsGrade8 from '../data/topic-pages/equations-with-fractions-grade-8.json';
@@ -615,6 +616,16 @@ export const TOPIC_PAGE_G6_SLUGS = [
   'patterns-multistep-grade-6',
 ] as const;
 
+/**
+ * Grade-9 catalog topics that had no landing page (t22).
+ * Authored from Noam's PDFs, not production captures, so the parity gate
+ * skips them. G9 t41–t43 are child topics of t2 and are covered by
+ * factoring-grade-9.
+ */
+export const TOPIC_PAGE_G9_AUTHORED_SLUGS = [
+  'equilateral-triangle-grade-9',
+] as const;
+
 export const TOPIC_PAGE_G5_SLUGS = [
   'big-numbers-rounding-grade-5',
   'number-sense-tens-hundreds-grade-5',
@@ -756,6 +767,7 @@ export const TOPIC_PAGE_AUTHORED_SLUGS = [
   ...TOPIC_PAGE_G4_SLUGS,
   ...TOPIC_PAGE_G5_SLUGS,
   ...TOPIC_PAGE_G6_SLUGS,
+  ...TOPIC_PAGE_G9_AUTHORED_SLUGS,
 ] as const;
 
 export const TOPIC_PAGE_SLUGS = [
@@ -775,6 +787,7 @@ export const TOPIC_PAGE_SLUGS = [
   ...TOPIC_PAGE_G4_SLUGS,
   ...TOPIC_PAGE_G5_SLUGS,
   ...TOPIC_PAGE_G6_SLUGS,
+  ...TOPIC_PAGE_G9_AUTHORED_SLUGS,
 ] as const;
 
 export type TopicPageSlug = (typeof TOPIC_PAGE_SLUGS)[number];
@@ -999,6 +1012,8 @@ const BY_SLUG: Record<string, TopicPageContent> = {
   'annual-review-grade-7': annualReviewGrade7 as TopicPageContent,
   'assessment-task-1-grade-7': assessmentTask1Grade7 as TopicPageContent,
   'kite-grade-9': kiteGrade9 as TopicPageContent,
+  // Grade-9 catalog gaps (כיתה ט׳)
+  'equilateral-triangle-grade-9': equilateralTriangleGrade9 as TopicPageContent,
   'statistics-data-frequency-grade-8': statisticsDataFrequencyGrade8 as TopicPageContent,
   // Grade-8 catalog gaps (כיתה ח׳)
   'prior-knowledge-diagnostic-grade-8': priorKnowledgeDiagnosticGrade8 as TopicPageContent,

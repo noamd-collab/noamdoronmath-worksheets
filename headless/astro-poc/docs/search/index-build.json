@@ -2641,6 +2641,14 @@
       "reason": "links to the topic, same grade, shared title word"
     },
     {
+      "key": "page:/equilateral-triangle-grade-9",
+      "title": "משולש שווה־צלעות לכיתה ט׳: זוויות של ⁦60°⁩, צורות מורכבות והיקפים",
+      "linkedTopic": "topic:9:22",
+      "linkedTitle": "משולש שווה־צלעות — העמקה ורשות — לכיתה ט׳",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
       "key": "page:/games/eliyahu-pythagoras",
       "title": "משחק משפט פיתגורס עם אליהו",
       "linkedTopic": "topic:8:11",
