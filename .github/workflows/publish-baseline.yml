@@ -4,11 +4,12 @@ name: publish-baseline
 # Every new site SHA needs Noam's explicit approval and a reviewed PR.
 # Noam authorized review, fixes, merge and publication of the landing updates (11.11.2026: #434, #435, #436, #438, #439, #441, #442).
 # Payload-size retry: reviewed #444; reconcile the failed #443 marker through #445 before merging this pin.
+# Games corner: Noam approved shrink, merge and publication of #437 (11.11.2026); budgeted payload 19,201,099 bytes.
 # A push publishes only when RELEASE_SHA changes. Infrastructure-only PRs do
 # not republish the site. Manual retries use the same approved pin on main.
 
 env:
-  RELEASE_SHA: 2867bb530dc7c1678de4988b6778298acfb43b52
+  RELEASE_SHA: 059acd60ceead0e53cb563973e94e3be68cc4924
 
 on:
   workflow_dispatch:
