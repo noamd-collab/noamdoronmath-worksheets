@@ -1,0 +1,75 @@
+name: Reconcile failed landing publication
+
+# Records verified existing production only. Never invokes Wix or republishes.
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Dry-run first; write only after Noam approves that exact plan
+        type: choice
+        options: [dry-run, write]
+        default: dry-run
+      failed_deployment_id:
+        description: Exact failed deployment ID
+        type: string
+        required: true
+        default: '7706338816'
+      failed_run_id:
+        description: Exact failed publication run ID
+        type: string
+        required: true
+        default: '42994193052'
+      confirmed_live_sha:
+        description: Independently confirmed unchanged live SHA (full 40 characters)
+        type: string
+        required: true
+      evidence_sha256:
+        description: SHA-256 of the reviewed committed landing-release-413.json evidence
+        type: string
+        required: true
+      approved_plan_sha256:
+        description: Exact dry-run plan digest approved for write (empty for dry-run)
+        type: string
+        required: false
+      confirmation:
+        description: Exact NOAM APPROVED RECONCILIATION ... phrase, only after his separate approval
+        type: string
+        required: false
+
+permissions:
+  contents: read
+
+jobs:
+  reconcile:
+    if: github.ref == 'refs/heads/main'
+    concurrency:
+      group: wix-production
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      actions: read
+      deployments: write
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Fetch canonical history for unchanged live ancestry checks
+        run: git fetch origin headless/astro-poc-baseline:refs/remotes/origin/headless/astro-poc-baseline
+      - name: Inspect or record the explicitly confirmed existing live version
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          RECONCILE_MODE: ${{ inputs.mode }}
+          FAILED_DEPLOYMENT_ID: ${{ inputs.failed_deployment_id }}
+          FAILED_RUN_ID: ${{ inputs.failed_run_id }}
+          CONFIRMED_LIVE_SHA: ${{ inputs.confirmed_live_sha }}
+          EVIDENCE_SHA256: ${{ inputs.evidence_sha256 }}
+          APPROVED_PLAN_SHA256: ${{ inputs.approved_plan_sha256 }}
+          RECONCILE_CONFIRMATION: ${{ inputs.confirmation }}
+        run: node .github/scripts/reconcile-production.mjs

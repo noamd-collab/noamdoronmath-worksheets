@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "failedDeploymentId": 7706338816,
+  "failedRunId": 42994193052,
+  "failedSha": "457971e7da5d2f7e819f99860126685e154b311f",
+  "previousDeploymentId": 7669709987,
+  "confirmedLiveSha": "7f5f679781ec152850ee4e9e2f112b384b19950b",
+  "observedAt": "2026-11-11T09:52:54.962Z",
+  "prePromotionFailureVerified": true,
+  "fullSourceShaProven": false,
+  "observationConclusion": "consistent-with-previous-confirmed-live",
+  "evidenceSummary": "The prior guard record confirms successful publication of 7f5f679. The failed candidate received HTTP 413 in completeAppDeployment, which the audited Wix CLI awaits before creating a preview and promoting production. Its run is terminal cancelled and its guard record is error. Ordinary and cache-busted public index bytes exactly match the prior Git commit, while two new candidate routes return 404. These observations support reconciling to the previous confirmed live SHA; they do not independently prove provider production topology or the complete live source commit.",
+  "evidenceUrl": "https://github.com/noamd-collab/noamdoronmath-worksheets/actions/runs/42994193052",
+  "publicIndexSha256": "4c1288bd7f0f0ba67e4c34cdffd4b4bcb1b0643ea261bc765620755a1d0ee545",
+  "publicIndexBytes": 571448,
+  "publicIndexDocuments": 688,
+  "publicObservations": [
+    { "path": "/search-index.v1.json", "status": 200, "ordinaryAndCacheBustedMatch": true, "matchesPreviousGitObject": true, "matchesFailedCandidate": false },
+    { "path": "/median-grade-8", "status": 404, "alsoCheckedWithUniqueQuery": true },
+    { "path": "/function-representations-grade-8", "status": 404, "alsoCheckedWithUniqueQuery": true },
+    { "path": "/collect-represent-data-grade-6", "status": 200, "expectedMarker": "data-mean" },
+    { "path": "/noam-site-companion.js", "status": 200, "bytes": 36699, "sha256": "6c57ef4a944dcd01f89e1412180dd9a67373a17b2a76a1a0bf79f303a0a4f5aa", "distinguishesCandidate": false },
+    { "path": "/_astro/aboutus.B_yivW5q.css", "status": 200, "bytes": 33115, "sha256": "69a3696ddd8c07a3a84278e5c68de98730ea90197754ca8398da6e9208c80db4", "referenceBuildSha": "085bbdb962b56963f51b6f64c677bacb19d0eb4d", "absentFromFailedBuild": true, "supportingEvidenceOnly": true }
+  ],
+  "failureEvidence": {
+    "classification": "FailedFinalizingAppDeployment",
+    "httpStatus": 413,
+    "observedAt": "2026-11-11T09:22:04.1374971Z",
+    "phase": "completeAppDeployment",
+    "auditedCliVersion": "1.1.249",
+    "ordering": "completeAppDeployment -> preview creation -> onPreviewCreated -> releaseHeadlessProject -> production topology update",
+    "failedRunConclusion": "cancelled",
+    "failedRunUpdatedAt": "2026-11-11T09:48:04Z",
+    "failedDeploymentState": "error",
+    "failedStatusId": 21934891324,
+    "failedDeploymentUpdatedAt": "2026-11-11T09:48:01Z",
+    "previousSuccessfulRunId": 42726514437,
+    "previousSuccessAt": "2026-11-10T00:15:02Z"
+  },
+  "proofLimits": [
+    "Public observations cover the checked resources, edge and time only; they do not prove every origin, backend, cache, secret or full source commit.",
+    "No independent Wix production-topology attestation was obtained. Pre-promotion failure is supported by HTTP rejection and audited CLI ordering.",
+    "The CSS comparison uses an older available local build at 085bbdb, not an exact retained 7f5f679 binary build; it is supporting evidence only.",
+    "The companion asset is unchanged between releases and therefore does not distinguish the failed candidate.",
+    "This evidence records observations, not Noam's approval. A separate explicit approval of the exact dry-run plan is required before write mode."
+  ]
+}
