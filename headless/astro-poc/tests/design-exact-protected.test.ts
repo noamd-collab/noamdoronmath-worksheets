@@ -43,7 +43,12 @@ const protectedFiles: Record<string, string> = {
   // Noam, 2026-10-30: add only optional server-secret schemas for the v2
   // human challenge. Removing those two lines exactly restores live 64933173.
   // Existing reCAPTCHA v3 settings and every other config byte are unchanged.
-  'astro.config.mjs': '7db60ed41d0c192a6112254e1d1d4503a15e5b321acab9e45333a911a9b0d4f0',
+  // Reviewed 2026-11-11 packaging fix for the authorized landing publication:
+  // add only compactServerBuild's import and integration registration. Removing
+  // exactly those additions restores 7db60ed4. All 40 client assets are identical;
+  // 376 routes, 104 built-page checks and six motion/Stop checks were verified.
+  // Preserve this exact-file fence; no other configuration is relaxed.
+  'astro.config.mjs': '674ebc6bc49af4471f7bc1439ae5643a39a57311a0faa89145a4011436799423',
   // Noam requested restoring main's reviewed native PDF catalog on baseline
   // (30 October 2026), keeping the baseline Hebrew title corrections.
   // G9 PDF v2, G8 PDF v2 (two c2 levels), and G7 PDF v2.
