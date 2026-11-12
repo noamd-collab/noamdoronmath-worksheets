@@ -5,7 +5,7 @@
   "scope": "Offline fixed fixtures and mocked unit tests only; coordinator live authoring attempts are reported separately.",
   "dbChanges": false,
   "published": false,
-  "unitTests": 41,
+  "unitTests": 53,
   "cases": [
     {
       "case": "pilot-elementary",
@@ -74,7 +74,201 @@
     "redirects": false,
     "usageMetadata": "mock response tested; no billed call by this agent",
     "strictSchema": true,
+    "authorContract": "worksheet-parameters/2",
+    "trustedQuestionPlan": "Kind/star are assigned by trusted plan; author sends parameters only, with per-position bounds",
+    "derivation": "All raw parameters validated before explicit canonical v1 construction; original math/duplicate/volume/layout gates retained",
     "safeValidationDetails": true,
     "benchmarkDryRun": "PASS; zero author attempts; locked runtime and skill preflight"
+  },
+  "livePilot": {
+    "date": "2026-11-12",
+    "provider": "qwen3.8-flash",
+    "purpose": "authoring only; no model review",
+    "performedBy": "coordinator; review subagent made zero provider calls",
+    "recordedProviderResponses": 7,
+    "failedDevelopmentResponses": [
+      {
+        "trial": "elementary-json-object",
+        "error": "INVALID_MODEL_OUTPUT",
+        "inputTokens": 695,
+        "outputTokens": 1733,
+        "authorSeconds": 164.21,
+        "detail": "Specific raw validation failure was not retained"
+      },
+      {
+        "trial": "elementary-generic-strict-schema",
+        "error": "UNSUPPORTED_CHALLENGE",
+        "inputTokens": 776,
+        "outputTokens": 762,
+        "authorSeconds": 159.912
+      },
+      {
+        "trial": "middle-generic-strict-schema",
+        "error": "UNSUPPORTED_CHALLENGE",
+        "inputTokens": 737,
+        "outputTokens": 2900,
+        "authorSeconds": 174.755
+      },
+      {
+        "trial": "elementary-fixed-plan",
+        "error": "WRONG_ANSWER",
+        "inputTokens": 930,
+        "outputTokens": 758,
+        "authorSeconds": 160.51
+      },
+      {
+        "trial": "middle-fixed-plan",
+        "error": "DUPLICATE_ITEM",
+        "inputTokens": 977,
+        "outputTokens": 1241,
+        "authorSeconds": 170.56
+      }
+    ],
+    "v2AutomatedPasses": 2,
+    "humanAcceptedWorksheets": 0,
+    "successfulParameterTrials": [
+      {
+        "topic": "elementary",
+        "authorContract": "worksheet-parameters/2",
+        "benchmarkReport": "local-output/live-parameters-elementary-20261112/benchmark-report.json",
+        "benchmarkReportSha256": "c4a7f5dde752c638a3d226ee525699b146010f71032b6a53420b2ff7c5291154",
+        "originalBenchmarkUnchanged": true,
+        "authorUsage": {
+          "prompt_tokens": 870,
+          "total_tokens": 1278,
+          "completion_tokens": 408,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "authorSeconds": 158.886,
+        "initialCompleteRunSeconds": 161.41,
+        "estimatedAuthorApiUsd": {
+          "low": "0.000254166",
+          "high": "0.000322260"
+        },
+        "initialAutomatedChecksPassed": true,
+        "offlineRefinement": {
+          "manifest": "local-output/live-parameters-elementary-release-20261112/manifest.json",
+          "additionalProviderCalls": 0,
+          "canonicalInputUnchanged": true,
+          "modelInputSha256": "f92ed532dc540f10a2606c1da63a30e88d8b6ccc8d8f30ac50e6ab79f6386b0e",
+          "adapterSha256": "1c1118d84f17494ad8882f081946c7d660452072caebc14081517e0ac747cee8",
+          "automatedChecksPassed": true,
+          "artifacts": [
+            {
+              "path": "sheet.pdf",
+              "sha256": "c4b543c64e455d88ee13f8ce008622b15a11a2d0278ade0c988ce683f32c785d",
+              "bytes": 29201,
+              "kind": "pdf"
+            },
+            {
+              "path": "sheet.docx",
+              "sha256": "11baf0ed5bf48ed59274a8de7f839ed6d515ddd15ff83f8ba3a9fa64614ebe0c",
+              "bytes": 40920,
+              "kind": "docx"
+            }
+          ],
+          "visualPdf": {
+            "status": "PASS",
+            "reviewedAllPages": true,
+            "pages": 4,
+            "reviewer": "coordinator",
+            "findings": "Hebrew/RTL, math order, answer key, writing space and page fill visually checked; no clipping or sparse final answer page.",
+            "evidence": "Final PDF byte-identical to coordinator-reviewed four-page refined PDF; nine multiplication-check answers reviewed by coordinator."
+          },
+          "visualWord": {
+            "status": "BLOCKED",
+            "reason": "Actual Word rendering unavailable after computer-use server timeout; XML editability/RTL gates do not substitute for visual review"
+          }
+        },
+        "humanAccepted": false,
+        "publicationApproved": false
+      },
+      {
+        "topic": "middle",
+        "authorContract": "worksheet-parameters/2",
+        "benchmarkReport": "local-output/live-parameters-middle-20261112/benchmark-report.json",
+        "benchmarkReportSha256": "1708b9871ae4e58d06f54c9da798e2ebd9836bcfaf49704b6d13fd8aa9a01610",
+        "originalBenchmarkUnchanged": true,
+        "authorUsage": {
+          "prompt_tokens": 929,
+          "total_tokens": 3032,
+          "completion_tokens": 2103,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "authorSeconds": 173.382,
+        "initialCompleteRunSeconds": 180.123,
+        "estimatedAuthorApiUsd": {
+          "low": "0.000908323",
+          "high": "0.001127760"
+        },
+        "initialAutomatedChecksPassed": true,
+        "offlineRefinement": {
+          "manifest": "local-output/live-parameters-middle-final-20261112/manifest.json",
+          "additionalProviderCalls": 0,
+          "canonicalInputUnchanged": true,
+          "modelInputSha256": "d5e6b306811018639c02bd9efde7af262be002339446047694cc021c8bf4cec8",
+          "adapterSha256": "1c1118d84f17494ad8882f081946c7d660452072caebc14081517e0ac747cee8",
+          "automatedChecksPassed": true,
+          "artifacts": [
+            {
+              "path": "out/deliver/b/sheet.pdf",
+              "sha256": "eb89550ba2f76e70013dcfd882cd77274284802a3d71ce318cd7146534bf5d07",
+              "bytes": 63906,
+              "kind": "pdf"
+            },
+            {
+              "path": "out/docx/b/sheet.docx",
+              "sha256": "41b821823fcb84e09005915e34adb85844b05f7d1780806ae349e2ad2b26898a",
+              "bytes": 13694,
+              "kind": "docx"
+            }
+          ],
+          "visualPdf": {
+            "status": "PASS",
+            "reviewedAllPages": true,
+            "pages": 8,
+            "reviewer": "independent Codex subagent",
+            "findings": "Hebrew/RTL, math order, answer key, writing space and page fill visually checked; no clipping or sparse final answer page.",
+            "evidence": "Original eight pages and refined nine pages all visually reviewed. Final pages 1–5 have identical PNG bytes to reviewed originals; final pages 6–7 differ from reviewed refined pages only in footer page-count digit (bbox456,1366..461,1374 at120dpi). Final page8 independently inspected again.",
+            "independentMathematics": {
+              "baseSolutionsChecked": 60,
+              "deliberatelyWrongProposalsChecked": 21,
+              "additionalChallengeResultsChecked": 6,
+              "result": "PASS"
+            },
+            "lessonScope": {
+              "grade": 7,
+              "level": "b",
+              "topic": "g7:equations",
+              "declaredPrerequisites": "Signed-number operations, variables, equations; last lesson first-degree equations and substitution",
+              "result": "Matches declared broad topic; exact teaching pace is not independently established",
+              "timing": "60 parts for requested45 minutes; not classroom-timed"
+            }
+          },
+          "visualWord": {
+            "status": "BLOCKED",
+            "reason": "Actual Word rendering unavailable after computer-use server timeout; XML editability/RTL gates do not substitute for visual review"
+          }
+        },
+        "humanAccepted": false,
+        "publicationApproved": false
+      }
+    ],
+    "allSevenResponseUsage": {
+      "inputTokens": 5914,
+      "outputTokens": 9905,
+      "estimatedAuthorApiUsd": {
+        "low": "0.004451992",
+        "high": "0.005542450"
+      },
+      "asOf": "2026-11-12",
+      "source": "https://www.alibabacloud.com/help/en/model-studio/model-pricing",
+      "scope": "Frankfurt Global/EU standard token-price scenarios; excludes rendering, hosting, storage, review, tax and cache/promotional adjustments"
+    },
+    "interpretation": "Parameter selection plus trusted construction architecture; not evidence of independent model arithmetic. Earlier failures used different contracts; two current samples do not establish production reliability. All failed costs remain included; human-accepted cost is undefined."
   }
 }

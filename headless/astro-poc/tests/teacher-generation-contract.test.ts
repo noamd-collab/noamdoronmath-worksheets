@@ -132,6 +132,8 @@ test('context fields are bounded and class label excludes contact details and di
   rejects({ lastLesson: ' ' }, 'INVALID_LAST_LESSON');
   rejects({ lastLesson: 'א'.repeat(1001) }, 'INVALID_LAST_LESSON');
   rejects({ alreadyLearned: [null] }, 'INVALID_LEARNED_CONTEXT');
+  assert.equal(check({ alreadyLearned: ['א'.repeat(120)] }).ok, true);
+  rejects({ alreadyLearned: ['א'.repeat(121)] }, 'INVALID_LEARNED_CONTEXT');
   rejects({ alreadyLearned: Array(41).fill('חיבור') }, 'INVALID_LEARNED_CONTEXT');
   for (const classLabel of ['student@example.test', '050-1234567', 'ג\u202e2', '']) rejects({ classLabel }, 'INVALID_CLASS_LABEL');
   assert.equal(check({ classLabel: undefined, alreadyLearned: [] }).ok, true);

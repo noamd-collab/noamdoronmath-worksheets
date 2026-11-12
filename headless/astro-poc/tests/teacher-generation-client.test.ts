@@ -47,7 +47,7 @@ function harness(options: { online?: boolean; jobs?: any[]; captcha?: boolean } 
   Object.defineProperty(document, 'hidden', { value: false });
   let online = options.online ?? true, jobs = options.jobs || [], uuid = 0, timer = 0;
   const timers = new Map<number, { callback: () => unknown; delay: number }>();
-  const calls: { url: string; init: any }[] = [], posts: any[] = [], pendingReplies: Reply[] = [];
+  const calls: { url: string; init: any }[] = [], posts: any[] = [], pendingReplies: Reply[] = [], pendingReads: Reply[] = [];
   let tokenPromise: Promise<string> | null = null;
   const verification = { ready: (cb: () => void) => cb(), execute: () => tokenPromise || Promise.resolve('local-verification-token') };
   (window as any).grecaptcha = options.captcha !== false ? verification : undefined;
@@ -61,7 +61,9 @@ function harness(options: { online?: boolean; jobs?: any[]; captcha?: boolean } 
       if (reply.error) throw reply.error;
       return { ok: reply.ok ?? true, json: async () => reply.body || { ok: true } };
     }
-    return { ok: true, json: async () => ({ ok: true, online, jobs: structuredClone(jobs), capabilities: { topics: [topic, middle, disabled] } }) };
+    const reply = pendingReads.shift() || {};
+    if (reply.error) throw reply.error;
+    return { ok: reply.ok ?? true, json: async () => reply.body || ({ ok: true, online, jobs: structuredClone(jobs), capabilities: { topics: [topic, middle, disabled] } }) };
   };
   vm.runInNewContext(shipped, {
     document, window, fetch: fetchLocal, crypto: { randomUUID: () => `00000000-0000-4000-8000-${String(++uuid).padStart(12, '0')}` },
@@ -73,13 +75,14 @@ function harness(options: { online?: boolean; jobs?: any[]; captcha?: boolean } 
   const element = (id: string) => document.getElementById(id) as any;
   const field = (name: string) => fields.get(name) as any;
   const dispatch = async (el: any, type: string) => { el.dispatchEvent(new window.Event(type, { bubbles: true, cancelable: true })); await flush(); };
-  return { document, window, form, field, element, calls, posts, pendingReplies, timers, flush,
+  return { document, window, form, field, element, calls, posts, pendingReplies, pendingReads, timers, flush,
     setOnline(value: boolean) { online = value; }, setJobs(value: any[]) { jobs = value; },
     holdToken(value: Promise<string>) { tokenPromise = value; },
     async choose(grade = '3', id = 'ג10') { field('gradeNumber').value = grade; await dispatch(field('gradeNumber'), 'change'); field('topicId').value = id; await dispatch(field('topicId'), 'change'); },
     submit: () => dispatch(form, 'submit'), click: (id: string) => dispatch(element(id), 'click'),
     visible: () => dispatch(document, 'visibilitychange'),
     async poll() { const selected = [...timers].find(([, task]) => task.delay === 4000); assert.ok(selected, 'poll scheduled'); timers.delete(selected[0]); await selected[1].callback(); await flush(); },
+    async nextRetry() { const selected = [...timers][0]; assert.ok(selected, 'retry scheduled'); timers.delete(selected[0]); await selected[1].callback(); await flush(); return selected[1].delay; },
   };
 }
 
@@ -118,10 +121,62 @@ test('network retry preserves idempotency, editing creates a new request key', a
   const app = harness(); await app.flush(); await app.choose(); await app.submit();
   app.pendingReplies.push({ error: new Error('Temporary local transport failure') }); await app.click('create-button');
   assert.equal(app.element('edit-plan').disabled, false); assert.equal(app.posts.length, 1);
+  await app.click('refresh-generation'); assert.equal(app.posts.length, 1, 'manual status check does not enqueue');
   await app.click('create-button'); assert.equal(app.posts.length, 2); assert.equal(app.posts[0].requestKey, app.posts[1].requestKey);
   assert.deepEqual(app.posts[1].lesson.alreadyLearned, ['כפל', 'חילוק', 'מספרים']);
   await app.click('edit-plan'); app.field('lastLesson').value = 'תרגול חדש בתוך אותו נושא'; await app.submit(); await app.click('create-button');
   assert.notEqual(app.posts[2].requestKey, app.posts[0].requestKey);
+});
+
+test('completed and failed requests need an explicit new-draft action before a fresh key is issued', async () => {
+  for (const terminalStatus of ['needs_review', 'failed']) {
+    const app = harness(); await app.flush(); await app.choose(); await app.submit();
+    const active = { id: 'first-job', status: 'running', phase: 'rendering', created_at: '2026-11-12T00:00:00Z', lesson: { topicId: 'ג10' } };
+    app.pendingReplies.push({ body: { ok: true, job: { id: active.id } } }); app.setJobs([active]);
+    await app.click('create-button'); assert.equal(app.posts.length, 1);
+    app.setJobs([{ ...active, status: terminalStatus, phase: terminalStatus, result: { automatedChecksPassed: terminalStatus === 'needs_review' } }]);
+    await app.poll();
+    assert.equal(app.element('create-button').hidden, true); assert.equal(app.element('new-generation').hidden, false);
+    await app.click('create-button'); assert.equal(app.posts.length, 1, 'old creation control cannot resubmit a terminal request');
+    await app.click('new-generation'); assert.equal(app.form.hidden, false); assert.equal(app.element('generation-plan').hidden, true);
+    await app.submit(); app.pendingReplies.push({ body: { ok: true, job: { id: 'second-job' } } });
+    app.setJobs([{ ...active, id: 'second-job' }]); await app.click('create-button');
+    assert.equal(app.posts.length, 2); assert.notEqual(app.posts[0].requestKey, app.posts[1].requestKey);
+  }
+});
+
+test('one failed poll recovers with a bounded GET retry and never enqueues again', async () => {
+  const active = { id: 'active', status: 'running', phase: 'rendering', created_at: '2026-11-12T00:00:00Z', lesson: {} };
+  const app = harness({ jobs: [active] }); await app.flush();
+  app.pendingReads.push({ error: new Error('Transient local poll failure') }); await app.poll();
+  assert.equal(app.element('refresh-generation').hidden, false); assert.equal(app.element('create-button').disabled, true);
+  app.setJobs([{ ...active, status: 'needs_review', result: { automatedChecksPassed: true } }]);
+  assert.equal(await app.nextRetry(), 2000);
+  assert.equal(app.element('edit-plan').disabled, false); assert.equal(app.document.querySelectorAll('#generation-jobs a').length, 2);
+  assert.equal(app.posts.length, 0);
+});
+
+test('poll failures stop after three automatic retries and visible manual refresh recovers', async () => {
+  const active = { id: 'active', status: 'running', phase: 'rendering', created_at: '2026-11-12T00:00:00Z', lesson: {} };
+  const app = harness({ jobs: [active] }); await app.flush();
+  app.pendingReads.push(...Array.from({ length: 4 }, () => ({ error: new Error('Offline fixture') })));
+  await app.poll();
+  for (const delay of [2000, 4000, 8000]) assert.equal(await app.nextRetry(), delay);
+  assert.equal(app.timers.size, 0, 'automatic retries are bounded');
+  assert.equal(app.element('refresh-generation').hidden, false); assert.equal(app.element('refresh-generation').disabled, false);
+  assert.equal(app.element('create-button').disabled, true, 'unknown running state must not permit a fresh task');
+  assert.match(app.element('generation-status').textContent, /רענון מצב היצירה/);
+  app.setJobs([{ ...active, status: 'failed', phase: 'failed' }]); await app.click('refresh-generation');
+  assert.equal(app.element('edit-plan').disabled, false); assert.equal(app.posts.length, 0);
+});
+
+test('knowledge context accepts120 characters and rejects121 before planning or CAPTCHA', async () => {
+  const app = harness(); await app.flush(); await app.choose();
+  app.field('alreadyLearned').value = 'א'.repeat(120); await app.submit(); assert.equal(app.form.hidden, true);
+  await app.click('edit-plan'); app.field('alreadyLearned').value = 'א'.repeat(121); await app.submit();
+  assert.equal(app.form.hidden, false); assert.equal(app.element('generation-plan').hidden, true);
+  assert.match(app.element('generation-status').textContent, /120/);
+  assert.equal(app.posts.length, 0); assert.equal(app.calls.some(call => call.url === '/api/noamBotConfig'), false);
 });
 
 test('completion unlocks editing and exposes only gated PDF/Word download links', async () => {

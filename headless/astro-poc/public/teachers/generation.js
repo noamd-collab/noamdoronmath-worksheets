@@ -7,17 +7,36 @@
  const labels = {queued:'ממתין ליצירה',authoring:'מכינים את השאלות',checking:'בודקים את התוכן והתשובות',rendering:'מפיקים PDF ו־Word',needs_review:'טיוטה מוכנה לעיון שלך',failed:'היצירה נעצרה בבדיקה'};
  const errors = {TEACHER_SIGN_IN_REQUIRED:'החיבור פג. יש להתחבר שוב עם Google.',TEACHER_ACCESS_DENIED:'יצירת הדפים החדשה עדיין זמינה רק לנועם.',GENERATOR_OFFLINE:'מנוע היצירה אינו מחובר כרגע. לא נוצרה בקשה חדשה.',GENERATION_UNAVAILABLE:'היצירה אינה זמינה כרגע. אפשר לנסות שוב; אותה בקשה לא תיווצר פעמיים.',GENERATION_LIMIT:'כבר יש יצירה פעילה, או שהגעת למכסת חמש היצירות ליום בשלב הזה.',BOT_VERIFICATION_FAILED:'אימות הדפדפן לא הושלם. נסה שוב; אם הבעיה נמשכת, יש לאפשר את רכיב Google בדפדפן.',TOPIC_NOT_SUPPORTED_YET:'הנושא או סוג הדף עדיין אינם זמינים ליצירה.',REQUEST_CONFLICT:'הבקשה השתנתה. חזור לפרטים ואשר אותם מחדש.',LESSON_INVALID:'יש לתקן את פרטי השיעור לפני היצירה.'};
  let capabilities = [], online = false, planned = null, requestKey = null, polling = null, clock = null, startedAt = null, busy = false, submitting = false;
+ let submittedJobId = null, terminal = false, pollFailures = 0, refreshing = null, initialized = false;
  const field = name => form.elements.namedItem(name);
  const node = (tag,text,cls) => { const el=document.createElement(tag); if(text) el.textContent=text; if(cls) el.className=cls; return el; };
+ const refreshButton=node('button','רענון מצב היצירה');refreshButton.type='button';refreshButton.id='refresh-generation';$('generation-status').after(refreshButton);
+ const newDraftButton=node('button','הכנת דף נוסף','primary');newDraftButton.type='button';newDraftButton.id='new-generation';newDraftButton.hidden=true;$('edit-plan').parentNode.append(newDraftButton);
  async function read(url, init) {
   const response=await fetch(url,{credentials:'same-origin',cache:'no-store',signal:AbortSignal.timeout(15000),...init});
   const body=await response.json();
-  if(!response.ok || !body.ok) { const err=new Error(errors[body.code || body.error] || 'לא הצלחנו להשלים את הבקשה.'); err.issues=body.issues; throw err; }
+  if(!response.ok || !body.ok) { const err=new Error(errors[body.code || body.error] || 'לא הצלחנו להשלים את הבקשה.'); err.issues=body.issues;err.status=response.status; throw err; }
   return body;
  }
  function status(text) { $('generation-status').textContent=text; }
  function stopClock() { clearInterval(clock); clock=null; startedAt=null; }
  function tick(phase) { if(!startedAt) startedAt=Date.now(); clearInterval(clock); const show=()=>status((labels[phase]||labels.queued)+'… '+Math.floor((Date.now()-startedAt)/1000)+' שניות'); show(); clock=setInterval(show,1000); }
+ function scheduleRefresh(delay) {clearTimeout(polling);polling=setTimeout(()=>requestRefresh(),delay);}
+ function refreshFailed(error) {
+  stopClock();clearTimeout(polling);polling=null;pollFailures++;
+  const retry=pollFailures<=3 && error.status!==401 && error.status!==403;
+  status(error.message+(retry?' ננסה לבדוק שוב את המצב.':' אפשר לבדוק שוב באמצעות „רענון מצב היצירה”.'));
+  if(!initialized)$('generator-availability').textContent='לא הצלחנו לבדוק את זמינות היצירה כרגע.';
+  if(retry)scheduleRefresh(2000*2**(pollFailures-1));
+  return null;
+ }
+ function requestRefresh(resetRetries=false) {
+  if(resetRetries)pollFailures=0;
+  if(refreshing)return refreshing;
+  clearTimeout(polling);polling=null;refreshButton.disabled=true;
+  refreshing=refresh().catch(refreshFailed).finally(()=>{refreshing=null;refreshButton.disabled=false;});
+  return refreshing;
+ }
  function updateTopics() {
   const grade=Number(field('gradeNumber').value), select=field('topicId'); select.replaceChildren(node('option','בחירת נושא'));
   select.options[0].value='';
@@ -27,7 +46,7 @@
   field('questionCount').min=String(floor);field('questionCount').value=String(floor);
   $('volume-help').textContent=`לפחות ${floor} שאלות ראשיות בשלב הזה, עם סעיפים לפי הצורך.`;
   $('plan-button').disabled=busy || !online || select.disabled;
-  if(grade && select.disabled) status('לכיתה הזו עדיין אין נושא שמוכן לניסיון יצירה. אפשר להשתמש בכלי המורים הקיים.'); else status('');
+  if(!busy) {if(grade && select.disabled) status('לכיתה הזו עדיין אין נושא שמוכן לניסיון יצירה. אפשר להשתמש בכלי המורים הקיים.'); else status('');}
  }
  function renderJobs(jobs) {
   const root=$('generation-jobs');root.replaceChildren();$('history-empty').hidden=jobs.length>0;
@@ -47,13 +66,18 @@
   }
  }
  async function refresh() {
-  const data=await read(api);online=data.online===true;
+  const data=await read(api);online=data.online===true;pollFailures=0;
   capabilities=Array.isArray(data.capabilities?.topics)?data.capabilities.topics.filter(t=>t.enabled===true && t.e2eVerified===true):[];
   $('generator-availability').textContent=online?'היצירה זמינה בחלק מהנושאים. רק נושאים שיש להם מסלול הפקה יוצגו בבחירה.':'מנוע היצירה אינו מחובר כרגע. הדפים שכבר נוצרו נשארים זמינים.';
   renderJobs(Array.isArray(data.jobs)?data.jobs:[]);
+  const current=data.jobs?.find(j=>(submittedJobId && j.id===submittedJobId) || (requestKey && j.request_key===requestKey));
+  if(current && ['needs_review','failed'].includes(current.status))terminal=true;
   const active=data.jobs?.find(j=>['queued','running'].includes(j.status));
-  if(active) { busy=true;tick(active.phase);$('create-button').disabled=true;$('edit-plan').disabled=true;clearTimeout(polling);polling=setTimeout(()=>refresh().catch(e=>{stopClock();status(e.message);}),4000); }
-  else if(!submitting) { const wasBusy=busy;busy=false;stopClock();$('create-button').disabled=!online;$('edit-plan').disabled=false;$('plan-button').disabled=!online || field('topicId').disabled;if(wasBusy) status('היצירה הסתיימה. התוצאה מופיעה ברשימת הדפים שלך.'); }
+  const awaitingCurrent=submittedJobId && !current && !terminal;
+  if(active || awaitingCurrent) {busy=true;tick(active?.phase || 'queued');$('create-button').disabled=true;$('edit-plan').disabled=true;scheduleRefresh(4000);}
+  else if(!submitting) { const wasBusy=busy;busy=false;stopClock();$('create-button').disabled=!online || terminal;$('edit-plan').disabled=false;$('plan-button').disabled=!online || field('topicId').disabled;if(wasBusy) status('היצירה הסתיימה. התוצאה מופיעה ברשימת הדפים שלך.'); }
+  $('create-button').hidden=terminal;$('edit-plan').hidden=terminal;newDraftButton.hidden=!terminal;newDraftButton.disabled=busy || !online;
+  if(!initialized) {initialized=true;updateTopics();}
   return data;
  }
  function readLesson() {
@@ -74,13 +98,22 @@
  form.addEventListener('submit',event=>{
   event.preventDefault();if(!form.reportValidity() || !online || busy)return;
   const lesson=readLesson(), topic=capabilities.find(t=>t.topicId===lesson.topicId && t.gradeNumber===lesson.gradeNumber);
+  if(lesson.alreadyLearned.length>40 || lesson.alreadyLearned.some(item=>item.length>120)) {status('יש לכתוב עד 40 תיאורים של ידע קודם, עד 120 תווים בכל תיאור.');return;}
   if(!topic || !topic.levels?.includes(lesson.level) || !topic.questionCounts?.includes(lesson.questionCount)) { status(errors.TOPIC_NOT_SUPPORTED_YET);return; }
-  planned=lesson;requestKey=crypto.randomUUID();
+  planned=lesson;requestKey=crypto.randomUUID();submittedJobId=null;terminal=false;
   const details=$('plan-details');details.replaceChildren();
   for(const [title,value] of [['כיתה',field('gradeNumber').selectedOptions[0].textContent],['נושא',topic?.title],['רמה',field('level').selectedOptions[0].textContent],['נקודת העצירה',planned.lastLesson],['מושגים מוכרים',planned.alreadyLearned.join(' · ')||'לפי תיאור השיעור האחרון'],['היקף',planned.questionCount+' שאלות · '+planned.minutes+' דקות']]) details.append(node('dt',title),node('dd',value));
   form.hidden=true;$('generation-plan').hidden=false;$('create-button').disabled=false;$('plan-title').tabIndex=-1;$('plan-title').focus();status('');
  });
- $('edit-plan').addEventListener('click',()=>{if(busy)return;planned=null;requestKey=null;form.hidden=false;$('generation-plan').hidden=true;$('plan-button').focus();});
+ function prepareNewDraft() {
+  if(busy)return;
+  planned=null;requestKey=null;submittedJobId=null;terminal=false;
+  form.hidden=false;$('generation-plan').hidden=true;$('create-button').hidden=false;$('edit-plan').hidden=false;newDraftButton.hidden=true;
+  $('plan-button').focus();status('');
+ }
+ $('edit-plan').addEventListener('click',prepareNewDraft);
+ newDraftButton.addEventListener('click',prepareNewDraft);
+ refreshButton.addEventListener('click',()=>requestRefresh(true));
  let captchaScript;
  async function botToken() {
   const config=await read('/api/noamBotConfig');
@@ -92,15 +125,16 @@
   return new Promise((resolve,reject)=>{const timer=setTimeout(()=>reject(new Error('אימות הדפדפן ארך יותר מדי זמן.')),12000);window.grecaptcha.ready(()=>window.grecaptcha.execute(config.siteKey,{action:'teacher_worksheet_generate'}).then(v=>{clearTimeout(timer);resolve(v);},e=>{clearTimeout(timer);reject(e);}));});
  }
  $('create-button').addEventListener('click',async()=>{
-  if(!planned || busy || !online)return;busy=true;submitting=true;$('create-button').disabled=true;$('edit-plan').disabled=true;tick('queued');
+  if(!planned || busy || !online || terminal)return;busy=true;submitting=true;$('create-button').disabled=true;$('edit-plan').disabled=true;tick('queued');
   try {
    const verification=await botToken();
-   await read(api,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({requestKey,lesson:planned,botToken:verification})});
+   const created=await read(api,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({requestKey,lesson:planned,botToken:verification})});
+   submittedJobId=created.job?.id || submittedJobId;
    submitting=false;
-   await refresh();
+   await requestRefresh();
   } catch(e) {submitting=false;busy=false;stopClock();status(e.message+(e.issues?.length?' '+e.issues.map(i=>i.message).join(' '):''));$('create-button').disabled=!online;}
   finally {$('edit-plan').disabled=busy;}
  });
- document.addEventListener('visibilitychange',()=>{if(!document.hidden)refresh().catch(e=>status(e.message));});
- refresh().then(updateTopics).catch(e=>{$('generator-availability').textContent=e.message;});
+ document.addEventListener('visibilitychange',()=>{if(!document.hidden)requestRefresh(true);});
+ requestRefresh();
 })();

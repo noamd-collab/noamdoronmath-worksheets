@@ -91,6 +91,7 @@ test('malformed, oversized and unsupported intake stop before bot or enqueue', a
     [input({ requestKey: '../bad' }), 400, 'INVALID_REQUEST'],
     [input({ lesson: { ...lesson, topicId: 'ג99' } }), 422, 'LESSON_INVALID'],
     [input({ lesson: { ...lesson, gradeNumber: 4 } }), 422, 'LESSON_INVALID'],
+    [input({ lesson: { ...lesson, alreadyLearned: ['א'.repeat(121)] } }), 422, 'LESSON_INVALID'],
     [input({ extra: 'x'.repeat(25000) }), 413, 'REQUEST_TOO_LARGE'],
   ] as const) {
     const f = fixture(); await code(await handleTeacherGeneration(post(body), f.deps), status, expected);

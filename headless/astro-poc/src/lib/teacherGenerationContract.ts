@@ -163,8 +163,8 @@ export function validateTeacherGenerationIntake(input: unknown, curriculum: Teac
   }
   if (!isText(raw.lastLesson, 1000)) add('lastLesson', 'INVALID_LAST_LESSON', 'יש לתאר בקצרה מה נלמד בשיעור האחרון.');
   const learned = raw.alreadyLearned;
-  const validLearned = Array.isArray(learned) && learned.length <= 40 && learned.every(item => isText(item, 160));
-  if (!validLearned) add('alreadyLearned', 'INVALID_LEARNED_CONTEXT', 'הידע הקודם צריך להיות רשימה של עד 40 תיאורים קצרים.');
+  const validLearned = Array.isArray(learned) && learned.length <= 40 && learned.every(item => isText(item, 120));
+  if (!validLearned) add('alreadyLearned', 'INVALID_LEARNED_CONTEXT', 'הידע הקודם צריך להיות רשימה של עד 40 תיאורים, עד 120 תווים בכל תיאור.');
   if (typeof raw.minutes !== 'number' || !Number.isInteger(raw.minutes) || raw.minutes < 10 || raw.minutes > 120) {
     add('minutes', 'INVALID_MINUTES', 'משך השיעור צריך להיות בין 10 ל־120 דקות.');
   }

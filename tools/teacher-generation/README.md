@@ -154,11 +154,39 @@ Qwen for review. Hosts/path match the site's `qwenChatUrlFrom` allowlist;
 redirects are disabled. HTTPS uses the pinned `certifi` CA bundle with
 certificate/hostname verification enabled. Structured JSON authoring sends
 `enable_thinking: false`, as the existing site companion does, and a strict
-per-lesson JSON Schema with exact question count, item count bounds, topic
-operation enums, closed objects and numeric bounds. The provider's documented
+per-lesson parameter schema with exact question count, item count bounds,
+closed objects and numeric bounds. A trusted `questionPlan`
+derives each question's kind and challenge flag from `requiredKindCounts`:
+three structural challenges for elementary, two for middle, never ordinary
+calculation/solve questions. The author must not supply `kind` or `star`.
+Supported `prefixItems` constraints fix each position's parameter schema;
+local `$defs` references avoid repeating large item definitions.
+
+The **author-only v2 contract** is
+`{"version":2,"questions":[{"items":[...]}]}`. Each question has 3–6 items:
+
+- Grade 3 division: `{"divisor":3,"quotient":4}`. Divisor is 1–10; quotient
+  is 0–10, or 1–10 in a missing-divisor position to keep its solution unique.
+  Trusted code constructs `left = divisor × quotient`, `right = divisor` and
+  `answer = quotient`, with operation fixed to division.
+- Grade 7 equations: `{"a":2,"b":3,"solution":4}`. Bounds are a 1–12,
+  b −100..100 and solution −20..20. Trusted code constructs
+  `c = a × solution + b` for `a × x + b = c`; c outside −250..250 is rejected.
+  Here solution is a design parameter for a newly constructed equation, not
+  the model's claimed solution to a pre-existing equation.
+
+The complete raw object is checked for exact shape, types and bounds before
+any derivation. Extra `answer`, `c`, `kind`, `star` or other fields fail closed.
+Canonical renderer v1 remains unchanged. All its math, duplicates, volume,
+task-balance and layout gates still run; no missing items are filled in and
+no failed output is retried. This is explicit construction from parameters,
+not repair of an incorrect answer that the model asserted. The model selects
+parameters in the teacher's learned-topic context; that context is not itself
+an independently verified knowledge map.
+The provider's documented
 [structured output support](https://www.alibabacloud.com/help/en/model-studio/qwen-structured-output)
 includes Qwen3.8-Flash. Semantic validation still independently checks answers,
-task balance, stars and duplicate items. `{"version":1,"questions":[]}` is the
+task balance, stars and duplicate items. `{"version":2,"questions":[]}` is the
 schema-compatible inability response; it fails closed as `AUTHOR_UNSUPPORTED`,
 never a short worksheet. The 14,000 output-token limit remains bounded.
 Provider bodies, headers and credentials are never
@@ -167,7 +195,9 @@ automatic billed retry. These implementation tests made **no provider calls**.
 
 An optional `metadata={}` argument is filled with requested/returned model,
 elapsed seconds, bounded token-usage counts and validation status; the function
-still returns only the validated payload. Usage is retained when a response is
+returns only validated canonical v1 data. Metadata also records
+`authorContract: worksheet-parameters/2` and `derivation` (canonical version,
+fixed construction rule and whether construction completed). Usage is retained when a response is
 truncated or fails validation, because a failed output can still incur cost.
 `validationError` contains only the local validator's fixed code/message; it
 never contains HTTP bodies or model-provided values. No currency cost is
@@ -197,7 +227,7 @@ statuses and safe errors even after failure; artifacts appear only after all
 blocking gates and both expected formats pass. `render/manifest.json` and
 private logs retain rendering details. Missing usage is unknown cost, not zero.
 The measured dry run in `local-output/benchmark-dry-run-20261112` passed its
-locked preflight with **zero authoring attempts**. The 41 unit tests include
+locked preflight with **zero authoring attempts**. The 53 unit tests include
 mocked one-attempt/failure/cost/no-overwrite checks; they made no provider calls.
 
 For `qwen3.8-flash` only, the report estimates author API cost using the
@@ -213,13 +243,69 @@ The report separates automated gate success from human acceptance, which stays
 pending. Cost per accepted worksheet is undefined when none was accepted. A
 single sample is not a reliability estimate or evidence of broad topic quality.
 
-Live provider status as of this implementation: the coordinator's first actual
-Qwen3.8-Flash response failed `INVALID_MODEL_OUTPUT` after 164.21 seconds, with
-695 input and 1,733 output tokens. That attempt did not retain a validation
-detail, so its specific cause is unknown. The strict-schema follow-up is
-pending coordinator results; no successful live authoring integration is claimed
-here. Actual Word rendering remains unverified after a computer-use server
-timeout, independently of passing editable-XML checks.
+Live provider status before the parameter-contract v2 trial (all
+Qwen3.8-Flash, authoring only):
+
+| Trial | Result | Input/output tokens | Author seconds |
+|---|---|---|---|
+| Elementary, initial JSON object | `INVALID_MODEL_OUTPUT`, specific cause unknown because detail was not retained | 695 / 1,733 | 164.210 |
+| Elementary, generic strict schema | `UNSUPPORTED_CHALLENGE`: calculation question labeled as a challenge | 776 / 762 | 159.912 |
+| Middle, generic strict schema | `UNSUPPORTED_CHALLENGE`: ordinary solve question labeled as a challenge | 737 / 2,900 | 174.755 |
+| Elementary, fixed question plan | `WRONG_ANSWER`: rejected by the independent arithmetic check; specific raw item was not retained | 930 / 758 | 160.510 |
+| Middle, fixed question plan | `DUPLICATE_ITEM`: rejected by the independent duplicate-task check | 977 / 1,241 | 170.560 |
+
+All five failures remain failures; they were not repaired or counted as
+accepted worksheets. They motivated a separate **architecture trial** with
+parameter construction. The coordinator's two v2 calls both passed the
+unchanged canonical validation and complete applicable render/gate pipeline:
+
+| v2 author trial | Input/output tokens | Author seconds | Initial complete run seconds | Estimated author API USD |
+|---|---|---|---|---|
+| Grade 3 division | 870 / 408 | 158.886 | 161.410 | 0.000254166–0.000322260 |
+| Grade 7 first-degree equations | 929 / 2,103 | 173.382 | 180.123 | 0.000908323–0.001127760 |
+
+Original measurements remain unchanged in
+`local-output/live-parameters-elementary-20261112/benchmark-report.json` and
+`local-output/live-parameters-middle-20261112/benchmark-report.json`.
+These runs demonstrate the parameter-selection-plus-builder architecture;
+they do not demonstrate Qwen's independent arithmetic ability or establish a
+reliability rate from two samples. Including the five failed development
+responses, reported API token usage totals an estimated $0.004451992–$0.005542450.
+The five earlier calls used different contracts, so 2/7 is not a measured
+production success rate. Human-accepted cost remains undefined pending review.
+
+Visual/pedagogical review found that a star merely repeated an earlier task
+structure. Trusted adapter changes now add a multiplication check in elementary
+starred questions. Middle starred construction asks for the new left-hand side
+when x increases by one and an explanation of the change; starred error checking
+also asks for a right-hand side that makes the proposed value a solution.
+Answer keys include these additional results and starred items get more writing
+space. A first middle refinement spilled its last answer onto a nearly empty
+ninth page; concise equivalent answer wording removed that extra page.
+
+The **final offline refinements** reused the exact validated canonical data,
+made **zero additional model calls**, and passed all applicable gates:
+
+- `local-output/live-parameters-elementary-release-20261112/manifest.json`
+  records the final four-page PDF and editable Word pair. The coordinator
+  reviewed all PDF pages; final PDF bytes match the reviewed refined output.
+- `local-output/live-parameters-middle-final-20261112/manifest.json`
+  records the final eight-page PDF and editable Word pair. An independent
+  Codex subagent reviewed every PDF page, including answers, Hebrew/RTL,
+  negative numbers, part order, writing space and page fill. Pages 1–5 match
+  the reviewed original PNGs exactly; pages 6–7 match the reviewed refined
+  bodies with only the footer page count changed; the final answer page was
+  inspected again. All 60 base solutions and 21 deliberately wrong proposed
+  values were independently checked, plus the six extra challenge results.
+
+Final hashes and provenance links are in `pilot-evidence.json`; benchmark
+reports were not rewritten to include later offline refinements. The grade 7
+sample stays within the declared first-degree equations, substitution and
+signed-number scope. Its 60 parts have not been classroom-timed for the requested
+45 minutes, and exact taught-through progression remains a teacher judgment.
+**Actual Word visual review is still BLOCKED** by the computer-use server
+timeout. Editable-XML checks are not visual approval; neither sample is
+human-approved for publication or public catalog delivery.
 
 ## Hosting boundary
 

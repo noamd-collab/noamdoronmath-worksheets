@@ -26,6 +26,10 @@ class ValidationTests(unittest.TestCase):
         validate_model(self.lesson,self.payload)
         validate_model(read_json(HERE/'examples/middle-lesson.json'),read_json(HERE/'examples/middle-model.json'))
 
+    def test_learned_context_uses_same_120_character_boundary_as_web_intake(self):
+        validate_model(dict(self.lesson, alreadyLearned=['א' * 120]), self.payload)
+        self.fails('INVALID_LESSON', lesson=dict(self.lesson, alreadyLearned=['א' * 121]))
+
     def test_model_cannot_supply_code_html_paths_or_approvals(self):
         for field in ['python','html','svg','path','outputDir','approved','STRICT_FIGURES']:
             payload=copy.deepcopy(self.payload);payload[field]='__import__("os").system("id")'

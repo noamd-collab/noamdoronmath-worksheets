@@ -48,7 +48,11 @@ const protectedFiles: Record<string, string> = {
   // exactly those additions restores 7db60ed4. All 40 client assets are identical;
   // 376 routes, 104 built-page checks and six motion/Stop checks were verified.
   // Preserve this exact-file fence; no other configuration is relaxed.
-  'astro.config.mjs': '674ebc6bc49af4471f7bc1439ae5643a39a57311a0faa89145a4011436799423',
+  // 2026-11-12: Noam requested private skill-based worksheet generation.
+  // Add only the optional server-secret TEACHER_GENERATION_SERVICE_KEY schema.
+  // Removing that single line restores the preceding protected hash exactly;
+  // no value is committed, client-exposed or required by existing teacher tools.
+  'astro.config.mjs': 'ee86254e32a78e36ee35bdb98c193c82982a949cabff8da91e65b66715cff745',
   // Noam requested restoring main's reviewed native PDF catalog on baseline
   // (30 October 2026), keeping the baseline Hebrew title corrections.
   // G9 PDF v2, G8 PDF v2 (two c2 levels), and G7 PDF v2.

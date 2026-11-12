@@ -143,11 +143,14 @@ heartbeat will expire; stopping the worker does not itself erase queue rows or
 private files. Do not restart it merely to clear an interrupted task: queued jobs
 will otherwise become eligible for work, and a new owner request can spend again.
 
-If the website change must be rolled back, release the reviewed prior website
-revision through the same repository release/approval path. Keep the isolated
-tables and private bucket in place during rollback; no destructive down migration,
-policy broadening, public-bucket conversion or reset of existing teacher data is
-needed. A separately authorized operator may mark this pilot's queued/running
+If the website behavior must be rolled back, prepare a new revert PR on the
+current canonical branch so the replacement site commit remains a descendant of
+the last live SHA. After Noam approves that exact revert PR and a new release-pin
+PR, publish through the guarded repository release path. Never move the pin
+directly to an older SHA: the production release guard rejects that history.
+Keep the isolated tables and private bucket in place during rollback; no
+destructive down migration, policy broadening, public-bucket conversion or reset
+of existing teacher data is needed. A separately authorized operator may mark this pilot's queued/running
 jobs failed after the worker has stopped. Preserve their IDs and audit evidence;
 do not reset them to queued or reuse a consumed request key.
 

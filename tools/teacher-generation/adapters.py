@@ -48,6 +48,10 @@ def elementary(lesson, payload, cap, skill, work):
         return (H.blank("1cm") if blank else number(l)) + " " + H.op(OPS[item["op"]],grade) + " " + number(r)
     qs, source_questions = [], []
     for n,q in enumerate(payload["questions"],1):
+        # A starred division task adds an inverse-operation justification, not
+        # merely different numbers in the same task as an earlier question.
+        inverse_check = q["star"] and cap["topicId"] == "ג10"
+        instruction = labels[q["kind"]] + (" כתבו גם תרגיל כפל מתאים לבדיקת כל תשובה." if inverse_check else "")
         items, answers, source_items = [], [], []
         for j,it in enumerate(q["items"]):
             l,r,a = (frac(it[k]) for k in ("left","right","answer"))
@@ -66,11 +70,14 @@ def elementary(lesson, payload, cap, skill, work):
                 answer=H.text_answer(prefix)+H.ltr(expression(it)+" = "+number(a))+H.text_answer(suffix)
             else:
                 text=H.ltr(expression(it)+" = "+H.blank("1.5cm")); answer=H.ltr(number(a))
+            if inverse_check:
+                text += '<div class="ansline"></div>'
+                answer += H.text_answer(" בדיקה בכפל: ")+H.ltr(number(a)+" "+H.op("*",grade)+" "+number(r)+" = "+number(l))
             items.append(f'<div class="sub">{LETTERS[j]}. {text}</div>')
             answers.append(answer)
             source_items.append({"id":f"q{n}-i{j+1}","label":LETTERS[j],"text":H.plain(text),"answer":H.plain(answer),"math":it,"verificationId":f"{n}.{j+1}"})
-        qs.append({"n":str(n),"intro":labels[q["kind"]],"items":[H.plain(s) for s in items],"answer":H.plain(H.keyed(answers)),"html":"".join(items),"answersHtml":H.keyed(answers),"star":q["star"]})
-        source_questions.append({"id":f"q{n}","n":n,"instruction":labels[q["kind"]],"items":source_items})
+        qs.append({"n":str(n),"intro":instruction,"items":[H.plain(s) for s in items],"answer":H.plain(H.keyed(answers)),"html":"".join(items),"answersHtml":H.keyed(answers),"star":q["star"]})
+        source_questions.append({"id":f"q{n}","n":n,"instruction":instruction,"items":source_items})
     ledger.save()
     meta={"band":band,"grade":grade,"level":level,"topic":cap["title"],"topic_id":cap["sourceTopicId"],"domain":cap["domain"]}
     dump(work/"content.json",{"meta":meta,"questions":[{k:v for k,v in q.items() if k not in ("html","answersHtml")} for q in qs]})
@@ -98,6 +105,10 @@ def middle(lesson,payload,cap,skill,work):
     def eq(a,b,c): return (f"{a}x" if a != 1 else "x")+(f" + {b}" if b>=0 else f" − {-b}")+f" = {c}"
     for n,q in enumerate(payload["questions"],1):
         intro={"solve":"פתרו את המשוואות:","check_solution":"הפתרונות המוצעים שגויים. תקנו והסבירו:","construct":"מצאו את המספר החסר כך שהערך הנתון יהיה פתרון המשוואה:"}[q["kind"]]
+        if q["star"] and q["kind"] == "check_solution":
+            intro += " שנו גם את אגף ימין בלבד כך שהפתרון המוצע יהיה נכון."
+        elif q["star"] and q["kind"] == "construct":
+            intro += " חשבו גם את אגף שמאל כשערך המשתנה גדל ב־1, והסבירו בכמה השתנה."
         items,answers,canon=[],[],[]
         for j,it in enumerate(q["items"]):
             a,b,c,x=(it[k] for k in ("a","b","c","solution"))
@@ -107,12 +118,16 @@ def middle(lesson,payload,cap,skill,work):
             elif q["kind"]=="check_solution":
                 text=f'${eq(a,b,c)}$, הפתרון המוצע: $x = {signed(x+1)}$.'
                 ans=f'לא. בהצבה מתקבל ${a*(x+1)+b}$ באגף שמאל לעומת ${signed(c)}$ באגף ימין. הפתרון הנכון: $x = {signed(x)}$.'
+                if q["star"]:
+                    ans = f'$x = {signed(x)}$. בהצבה השגויה: ${signed(a*(x+1)+b)}$ לעומת ${signed(c)}$. המשוואה המתוקנת: ${eq(a,b,a*(x+1)+b)}$.'
             else:
                 text=f'${eq(a,b,"k")}$, כאשר $x = {signed(x)}$.'
                 ans=f'$k = {signed(c)}$';target="k";value=c;variables=["x","k"]
+                if q["star"]:
+                    ans += f'. עבור $x = {signed(x+1)}$: אגף שמאל הוא ${signed(c+a)}$, גידול של ${a}$ (מקדם המשתנה).'
             label=LETTERS[j]
             # Algebraic wording is a datum string, not a geometry-constraint dict.
-            items.append({"label":label,"text":text,"space":34,"variables":variables,"given":[text],"to_prove":[{"type":"find","quantity":"variable","of":target,"value":value}],"answer":ans})
+            items.append({"label":label,"text":text,"space":54 if q["star"] else 34,"variables":variables,"given":[text],"to_prove":[{"type":"find","quantity":"variable","of":target,"value":value}],"answer":ans})
             answers.append([label,ans]); canon.append({"id":f"q{n}-i{j+1}","label":label,"text":text,"answer":ans,"math":it})
         # This instruction requests an explanation, not a geometric proposition.
         qs.append({"n":n,"intro":intro,"star":q["star"],"items":items,"to_prove":[]})
