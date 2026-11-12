@@ -1,0 +1,51 @@
+---
+import { TEACHER_LANDING_H1 } from '../lib/teacherLandingContent';
+import '../styles/teacher-landing.css';
+---
+<main class="teacher-landing teacher-coming-soon" id="teacher-coming-soon">
+  <section class="hero wrap" aria-labelledby="teacher-coming-soon-title">
+    <div class="hero-content" id="teacher-start" tabindex="-1">
+      <p class="eyebrow"><span aria-hidden="true"></span>בקרוב · אזור המורים</p>
+      <h1 id="teacher-coming-soon-title">{TEACHER_LANDING_H1}</h1>
+      <p class="intro">דף עבודה שמתאים לכיתה שלך, לתוכנית הלימודים ולמקום שבו עצרתם.</p>
+      <p class="coming-soon-vision">אנחנו מפתחים עוזר AI למורים, שנועד להקל על הכנת התרגול ולהשאיר יותר מקום להוראה. המטרה היא לבנות דפים מתוך ההקשר של הכיתה: מה לומדים עכשיו, מה כבר נלמד ומה כדאי לתרגל בהמשך.</p>
+
+      <div class="coming-soon-status">
+        <h2>בפיתוח ובבדיקות פרטיות</h2>
+        <p>השירות עדיין אינו פתוח לשימוש הציבור. הכניסה לבדיקות זמינה למשתמשים מורשים באמצעות חשבון Google.</p>
+        <p class="coming-soon-paid">השירות מתוכנן להיות בתשלום בהמשך. פרטי ההשקה והתמחור יפורסמו בהמשך.</p>
+      </div>
+      <div class="coming-soon-actions">
+        <a class="button primary" href="/teachers/login">כניסה לבדיקות <span aria-hidden="true">←</span></a>
+        <a class="coming-soon-catalog" href="/worksheets">לדפי העבודה הקיימים <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+
+    <figure class="example coming-soon-example">
+      <div class="example-top"><span class="badge">דוגמה מהמאגר הקיים</span></div>
+      <a class="sheet-button" href="https://static.wixstatic.com/ugd/d8e7ad_3d7563584d774bf5958dc6a37ef7e210.pdf" target="_blank" rel="noopener" aria-label="פתיחת דף המקור: חילוק והקשר לכפל לכיתה ג׳, PDF בלשונית חדשה">
+        <img src="/teachers/landing/division-grade-3-preview.png" width="990" height="1400" alt="עמוד ראשון מתוך דף המקור בחילוק וכפל לכיתה ג׳, עם שאלות, נימוקים ומקום לכתיבה">
+        <span class="zoom-label">לפתיחת דף המקור <span aria-hidden="true">↗</span></span>
+      </a>
+      <figcaption>
+        <div class="example-caption">
+          <div><strong>חילוק והקשר ההפוך לכפל</strong><span>כיתה ג׳ · רמה א׳ · עמוד 1 מתוך 8</span></div>
+          <a href="/division-inverse-multiplication-grade-3">לנושא באתר <span aria-hidden="true">↗</span></a>
+        </div>
+        <p class="example-note">דף מקור שכבר פורסם באתר, להמחשת סגנון התרגול במאגר.</p>
+      </figcaption>
+    </figure>
+  </section>
+
+  <section class="coming-soon-context wrap" aria-labelledby="coming-soon-context-title">
+    <div class="section-heading">
+      <p class="eyebrow">מה אנחנו בונים?</p>
+      <h2 id="coming-soon-context-title">תרגול שמתחיל במה שקורה בכיתה.</h2>
+    </div>
+    <ul class="coming-soon-context-list">
+      <li><h3>הכיתה שלך</h3><p>התאמה מתוכננת לרמה, לצרכים ולמטרת התרגול של התלמידים.</p></li>
+      <li><h3>השלב בתוכנית הלימודים</h3><p>בחירת תרגול לפי הנושא והשלב שאליהם הגעתם במהלך השנה.</p></li>
+      <li><h3>השיעור האחרון</h3><p>חיבור בין מה שנלמד לאחרונה לבין החזרה וההמשך שתרצו להכין.</p></li>
+    </ul>
+  </section>
+</main>

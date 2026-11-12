@@ -26,6 +26,8 @@ import { secretFromEnv } from '../../lib/noamSecrets';
 import { runtimeProcessEnv } from '../../lib/runtimeEnv';
 import { createWixRateBackend } from '../../lib/noamRateStore';
 import { createWixCaptchaUseStore } from '../../lib/noamCaptchaUses';
+import { authorizeTeacherRequest, teacherAccessFailure, TEACHER_PRIVATE_HEADERS } from '../../lib/teacherAccess';
+import { isTeacherToolRequest } from '../../lib/teacherRequest';
 
 export const prerender = false;
 
@@ -84,6 +86,15 @@ function requestHostOf(request: Request): string {
 
 async function respond(context: Parameters<APIRoute>[0]): Promise<Response> {
   const requestHost = requestHostOf(context.request);
+  let payload: unknown;
+  if (context.request.method === 'POST') {
+    try { payload = await context.request.json(); } catch { payload = {}; }
+  }
+  const teacherRequest = isTeacherToolRequest(payload);
+  if (teacherRequest) {
+    const access = await authorizeTeacherRequest(context.request);
+    if (!access.ok) return teacherAccessFailure(access);
+  }
   const result = await handleNoamSiteCompanion(context.request, {
     ...keys(),
     origin: context.request.headers.get('origin') || '',
@@ -92,13 +103,16 @@ async function respond(context: Parameters<APIRoute>[0]): Promise<Response> {
     catalog,
     guide,
     teacherIndex,
+    payload,
     fetch: globalThis.fetch.bind(globalThis),
     recaptchaBypass: recaptchaBypassFromEnv(runtimeProcessEnv(), requestHost),
     rateBackend: sharedRate,
     captchaUses,
     log: logCompanionDiagnostic,
   });
-  return send(result);
+  const response = send(result);
+  if (teacherRequest) for (const [name, value] of Object.entries(TEACHER_PRIVATE_HEADERS)) response.headers.set(name, value);
+  return response;
 }
 
 export const POST: APIRoute = (context) => respond(context);

@@ -74,12 +74,13 @@ for (const [file, kind] of [
   });
 }
 
-for (const file of ["demos/teacher-practice-picker-site-style.html", "headless/astro-poc/public/teachers/index.html"]) {
+for (const file of ["demos/teacher-practice-picker-site-style.html", "headless/astro-poc/src/teacher-pages/wizard.html"]) {
   test(`${file}: teacher and companion scripts use their independently current cache versions`, () => {
     const html = read(file);
     for (const [asset, expectedVersion] of [
-      ["teacher-factoring-print.js", "20261101-sdk-lifecycle"],
-      ["noam-site-companion.js", version]
+      // Page assets have advanced independently of the shared SDK version.
+      ["teacher-factoring-print.js", "20261108-teacher-editions"],
+      ["noam-site-companion.js", "20261103-note-separation"]
     ]) {
       const escaped = asset.replaceAll(".", "\\.");
       assert.match(html, new RegExp('src="[^"]*' + escaped + '\\?v=' + expectedVersion + '"'));
@@ -105,5 +106,5 @@ test("the shared site layout invalidates cached companion loaders", () => {
   const source = read("headless/astro-poc/src/layouts/BaseLayout.astro");
   const urls = [...source.matchAll(/<script src="(\/noam-site-companion\.js[^\"]*)" defer><\/script>/g)];
   assert.equal(urls.length, 1);
-  assert.equal(urls[0][1], "/noam-site-companion.js?v=" + version);
+  assert.equal(urls[0][1], "/noam-site-companion.js?v=20261111-teacher-access");
 });

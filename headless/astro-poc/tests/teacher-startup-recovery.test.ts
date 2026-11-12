@@ -7,7 +7,7 @@ import { replaceWizardScopeUrl, wizardPrefillFromSearch } from '../public/teache
 
 const moduleUrl = new URL('../public/teachers/teacher-factoring-print.js', import.meta.url);
 const printer = readFileSync(moduleUrl, 'utf8');
-const page = readFileSync(new URL('../public/teachers/index.html', import.meta.url), 'utf8');
+const page = readFileSync(new URL('../src/teacher-pages/wizard.html', import.meta.url), 'utf8');
 const pdfs = { first: 'a'.repeat(32), second: 'b'.repeat(32), otherGrade: 'c'.repeat(32) };
 const meta = (pdfId: string) => ({ pdfId, level: 'a', levelLabel: 'רמה א׳', title: 'מקור בדיקה' });
 const catalog = { grades: [

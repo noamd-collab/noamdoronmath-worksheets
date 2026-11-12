@@ -1,0 +1,67 @@
+---
+import { getTeacherLandingPickerData } from '../lib/teacherLandingCatalog';
+import '../styles/teacher-landing.css';
+const picker = getTeacherLandingPickerData();
+const defaultGrade = picker.grades.find(grade => grade.grade === picker.defaultScope.grade)!;
+const defaultTopic = defaultGrade.topics.find(topic => topic.id === picker.defaultScope.topic)!;
+// The same catalog supplies SSR defaults and client options. Escape script delimiters.
+const pickerJson = JSON.stringify(picker).replace(/</g, '\\u003c');
+---
+<main class="teacher-landing" id="teacher-landing">
+    <section class="hero wrap" aria-labelledby="hero-title">
+      <div class="hero-content">
+        <p class="eyebrow"><span></span> מהמאגר של נועם, לשיעור שלכם</p>
+        <h1 id="hero-title">בוחרים שאלות.<br>מכינים דף <span class="underline">לשיעור.</span></h1>
+        <p class="intro">התרגול שמתאים לכיתה שלכם, מתוך דפי המקור באתר. בוחרים שאלות, רואים את הדף ומדפיסים.</p>
+        <form id="teacher-start" class="picker" tabindex="-1" aria-labelledby="picker-title">
+          <div class="picker-heading"><h2 id="picker-title">מה מלמדים היום?</h2><button id="show-sample-link" type="button" class="sample-link" aria-haspopup="dialog">לראות דוגמה <span aria-hidden="true">↙</span></button></div>
+          <div class="fields">
+            <label for="grade">כיתה<select id="grade" name="grade" disabled>{picker.grades.map(grade => <option value={grade.grade} selected={grade.grade === picker.defaultScope.grade}>{grade.label}</option>)}</select></label>
+            <label for="topic">נושא<select id="topic" name="topic" disabled>{defaultGrade.topics.map(topic => <option value={topic.id} selected={topic.id === picker.defaultScope.topic}>{topic.title}</option>)}</select></label>
+          </div>
+          <fieldset id="levels"><legend>רמת התרגול</legend><div id="level-options" class="level-options">{defaultTopic.levels.map(level => <label><input type="radio" name="level" value={level.value} checked={level.value === picker.defaultScope.level} disabled /><span>{level.label}</span></label>)}</div></fieldset>
+          <p id="edition-label" class="edition" hidden={defaultTopic.edition.id === 'all' || defaultTopic.edition.id === 'legacy'}>{defaultTopic.edition.label}</p>
+          <a id="open-tool" class="button primary" href={picker.defaultTeacherPath}>לבחירת השאלות <span aria-hidden="true">←</span></a>
+          <p class="under-button">הבחירה נפתחת בכלי הקיים. אפשר לשנות ולעיין לפני ההדפסה.</p>
+          <p id="catalog-status" class="status" role="status"></p>
+          <noscript><p class="under-button">לשינוי הכיתה והנושא אפשר <a href="/teachers/app">לפתוח את כלי המורים</a>.</p></noscript>
+        </form>
+      </div>
+      <div class="example">
+        <div class="example-top"><span class="badge">דף אמיתי מתוך המאגר</span><span class="pencil-note">ככה זה נראה על הדף</span></div>
+        <button id="show-preview" class="sheet-button" type="button" aria-haspopup="dialog" aria-label="הגדלת דף הדוגמה: חילוק והקשר לכפל, כיתה ג׳">
+          <img src="/teachers/landing/division-grade-3-preview.png" width="990" height="1400" alt="עמוד ראשון מתוך דף חילוק וכפל לכיתה ג׳, עם שאלות ונימוקים ומקום לכתיבה">
+          <span class="zoom-label"><span aria-hidden="true">⤢</span> להגדלת הדף</span>
+        </button>
+        <div class="example-caption"><div><strong>חילוק והקשר ההפוך לכפל</strong><span>כיתה ג׳ · רמה א׳ · עמוד 1 מתוך 8</span></div><a href="/division-inverse-multiplication-grade-3">לנושא באתר <span aria-hidden="true">↗</span></a></div>
+        <p class="example-note">דוגמה קבועה להמחשה. את הדף שלכם מרכיבים לפי הכיתה והנושא שבחרתם.</p>
+      </div>
+    </section>
+    <section id="how" class="how-section" aria-labelledby="how-title">
+      <div class="wrap">
+        <div class="section-heading"><p class="eyebrow">הדפים שלנו. הבחירה שלכם.</p><h2 id="how-title">מהנושא של היום, לדף ביד.</h2></div>
+        <ol class="steps">
+          <li><span class="step-number">01</span><div><h3>מתחילים בכיתה ובנושא</h3><p>מגדירים מה מתרגלים ואת רמת התרגול המתאימה.</p></div></li>
+          <li><span class="step-number">02</span><div><h3>בוחרים את השאלות</h3><p>מעיינים בשאלות השלמות מתוך המקור ומסמנים מה נכנס.</p></div></li>
+          <li><span class="step-number">03</span><div><h3>בודקים ומדפיסים</h3><p>רואים את הדף, בוחרים אם לצרף תשובות וממשיכים להדפסה.</p></div></li>
+        </ol>
+      </div>
+    </section>
+    <section class="details-section wrap" aria-labelledby="details-title">
+      <div><p class="eyebrow">לפני שמתחילים</p><h2 id="details-title">כמה דברים שכדאי לדעת.</h2><p>הכלי עוזר להרכיב את התרגול.<br>הבחירה הפדגוגית נשארת שלכם.</p></div>
+      <div class="faqs">
+        <details><summary>מה ההבדל בין המאגר לכלי למורים?</summary><p>במאגר פותחים דפי עבודה קיימים. בכלי למורים בוחרים שאלות שלמות מתוכם, כדי להתאים את התרגול לשיעור. אפשר להוסיף גם הוראות לתלמידים.</p></details>
+        <details><summary>אפשר להוריד גם ל־Word?</summary><p>בחלק מהמקורות אפשר להוריד את השאלות שנבחרו לקובץ Word לעריכה. האפשרות זמינה כיום בעיקר בדפי החטיבה; ההמרה של דפי היסודי עדיין בעבודה. הכלי מציג את הזמינות לפי הבחירה.</p></details>
+        <details><summary>צריך להשתמש ב־AI?</summary><p>לא. אפשר לבחור את השאלות ידנית ולהתקדם לתצוגה ולהדפסה. בכל מסלול כדאי לבדוק שהשאלות והתשובות מתאימות למטרת השיעור.</p></details>
+        <details><summary>הבחירה שלי נשמרת לפעם הבאה?</summary><p>בכלי הקיים, הקישור שומר את הכיתה, הנושא והרמה, אך אינו שומר את כל הדף שהרכבתם. את התוצר אפשר לשמור דרך חלון ההדפסה כ־PDF, או להוריד ל־Word כאשר האפשרות זמינה.</p></details>
+      </div>
+    </section>
+
+  <dialog id="preview" aria-labelledby="preview-title">
+    <div class="dialog-header"><div><h2 id="preview-title">חילוק והקשר ההפוך לכפל</h2><p>דף מקור · כיתה ג׳ · רמה א׳ · עמוד 1 מתוך 8</p></div><button id="close-preview" class="close-button" type="button" aria-label="סגירת תצוגת הדוגמה">✕</button></div>
+    <div class="dialog-body"><img src="/teachers/landing/division-grade-3-preview.png" width="990" height="1400" alt="עמוד המקור המלא: חילוק וכפל, בעיות הפוכות, סוגריים ונימוקים. בכפתור הבא אפשר לפתוח את כל שמונת עמודי ה־PDF."></div>
+    <div class="dialog-footer"><a class="button primary" href="https://static.wixstatic.com/ugd/d8e7ad_3d7563584d774bf5958dc6a37ef7e210.pdf" target="_blank" rel="noopener">לפתיחת ה־PDF המלא <span aria-hidden="true">↗</span></a><a href="/teachers/app?grade=3&topic=10&level=a&edition=elementary-20261108-r1">לבחירת שאלות בנושא הזה</a></div>
+  </dialog>
+</main>
+<script id="teacher-landing-data" type="application/json" set:html={pickerJson} />
+<script src="/teachers/landing.js" defer></script>

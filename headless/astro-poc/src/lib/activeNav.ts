@@ -74,7 +74,7 @@ export function resolveActiveNav(pathname: string): ActiveNavKey | null {
   if (path === '/blog' || path.startsWith('/blog/') || path.startsWith('/post/')) {
     return 'blog';
   }
-  if (path === '/teachers') return 'teachers';
+  if (path === '/teachers' || path === '/teachers/app') return 'teachers';
 
   // Legal / policy / other site pages — do not fake "home"
   return null;

@@ -6,6 +6,8 @@ import ts from 'typescript';
 import * as endpoint from '../../../noam-ai/site-companion/endpoint.js';
 import * as guard from '../../../noam-ai/site-companion/bot-guard.js';
 import { logTeacherSelection } from '../../../noam-ai/site-companion/teacher-pick.js';
+import * as teacherAccess from '../src/lib/teacherAccess';
+import { isTeacherToolRequest } from '../src/lib/teacherRequest';
 
 const source = readFileSync(new URL('../src/pages/api/noamSiteCompanion.ts', import.meta.url), 'utf8');
 const compiled = ts.transpileModule(source, {
@@ -13,7 +15,7 @@ const compiled = ts.transpileModule(source, {
 }).outputText;
 const copy = (value: unknown) => JSON.parse(JSON.stringify(value));
 
-function route(options: { realEndpoint?: boolean; monitoringFailure?: 'lookup' | 'capture' } = {}) {
+function route(options: { realEndpoint?: boolean; monitoringFailure?: 'lookup' | 'capture'; identity?: 'owner' | 'anonymous' | 'non-owner' } = {}) {
   const captures: any[] = [], consoleEntries: any[] = [], calls: string[] = [];
   let callback: (entry: unknown) => void;
   const keys = {
@@ -23,6 +25,11 @@ function route(options: { realEndpoint?: boolean; monitoringFailure?: 'lookup' |
     NOAM_RECAPTCHA_SECRET_KEY: 'PRIVATE_SYNTHETIC_CAPTCHA_KEY',
   };
   const result = { status: 200, headers: { 'Content-Type': 'application/json' }, body: { ok: false, code: 'SENTINEL' } };
+  const authConfig = { supabaseUrl: 'https://testproject.supabase.co', supabaseAnonKey: 'synthetic-public-key-for-offline-tests',
+    ownerUserId: '11111111-2222-4333-8444-555555555555' };
+  const userId = options.identity === 'non-owner' ? '99999999-2222-4333-8444-555555555555' : authConfig.ownerUserId;
+  const token = 'header.' + Buffer.from(JSON.stringify({ sub: userId, iss: authConfig.supabaseUrl + '/auth/v1',
+    aud: 'authenticated', exp: Math.floor(Date.now() / 1000) + 600 })).toString('base64url') + '.synthetic-signature';
   const imports: Record<string, unknown> = {
     '@wix/essentials': { monitoring: { getMonitoringClient() {
       if (options.monitoringFailure === 'lookup') throw new Error('PRIVATE_MONITOR_LOOKUP');
@@ -48,6 +55,19 @@ function route(options: { realEndpoint?: boolean; monitoringFailure?: 'lookup' |
     '../../lib/runtimeEnv': { runtimeProcessEnv: () => ({}) },
     '../../lib/noamRateStore': { createWixRateBackend: () => ({ async take() { calls.push('rate'); return true; } }) },
     '../../lib/noamCaptchaUses': { createWixCaptchaUseStore: () => ({ async consume() { return true; } }) },
+    '../../lib/teacherAccess': {
+      ...teacherAccess,
+      authorizeTeacherRequest: async (request: Request) => {
+        calls.push('auth');
+        return teacherAccess.authorizeTeacherRequest(request, { config: authConfig, fetch: async (url, init) => {
+          assert.equal(url, authConfig.supabaseUrl + '/auth/v1/user');
+          assert.equal(new Headers(init?.headers).get('authorization'), 'Bearer ' + token);
+          return Response.json({ id: userId, email: 'fixture@example.test', email_confirmed_at: '2026-01-01T00:00:00Z',
+            app_metadata: { provider: 'google' }, identities: [{ provider: 'google', user_id: userId }] });
+        } });
+      },
+    },
+    '../../lib/teacherRequest': { isTeacherToolRequest },
   };
   const exported: any = {};
   runInNewContext(compiled, {
@@ -67,7 +87,8 @@ function route(options: { realEndpoint?: boolean; monitoringFailure?: 'lookup' |
   async function post() {
     const request = new Request('https://www.noamdoronmath.co.il/api/noamSiteCompanion', {
       method: 'POST',
-      headers: { Origin: 'https://www.noamdoronmath.co.il', 'Content-Type': 'application/json', 'true-client-ip': '203.0.113.49' },
+      headers: { Origin: 'https://www.noamdoronmath.co.il', 'Content-Type': 'application/json', 'true-client-ip': '203.0.113.49',
+        ...(options.identity === 'anonymous' ? {} : { cookie: teacherAccess.TEACHER_SESSION_COOKIE + '=' + token }) },
       body: JSON.stringify({ message: 'בחר 5 שאלות', page: { kind: 'teachers', path: '/teachers' },
         teacher: { grade: '1', topic: '21', level: 'all', count: 5, planCounts: [5, 10, 15], note: 'PRIVATE_TEACHER_NOTE' },
         botVerification: { provider: 'recaptcha-v3', token: 'PRIVATE_SYNTHETIC_TOKEN' } }),
@@ -88,7 +109,7 @@ test('the real route forwards only sanitized teacher enums and bounded counts to
       requestedCount: 60, primaryCount: 5, planCount: 3, completionTokens: 100000, finishReason: 'length' } },
   } }]);
   assert.doesNotMatch(JSON.stringify([...run.captures, ...run.consoleEntries]), /PRIVATE_/);
-  assert.deepEqual(run.calls, []);
+  assert.deepEqual(run.calls, ['auth']);
 });
 
 test('unknown events, invalid enums, invalid counts and arbitrary finish reasons cannot enter Wix Logs', async () => {
@@ -121,7 +142,7 @@ test('a real guarded endpoint parser failure reaches monitoring without exposing
   assert.equal(body.code, 'MODEL_RESPONSE_FAILED');
   assert.equal(body.selectionError, undefined);
   assert.equal(body.model, null);
-  assert.deepEqual(run.calls, ['rate', 'verify', 'model']);
+  assert.deepEqual(run.calls, ['auth', 'rate', 'verify', 'model']);
   assert.equal(run.captures.length, 1);
   assert.deepEqual(run.captures[0].context.contexts.selection, { event: 'noam-teacher-selection',
     code: 'MODEL_RESPONSE_TRUNCATED', reason: 'length-limit', requestedCount: 5, completionTokens: 1200, finishReason: 'length' });
@@ -134,8 +155,22 @@ for (const monitoringFailure of ['lookup', 'capture'] as const) {
     const run = route({ realEndpoint: true, monitoringFailure }); const response = await run.post();
     assert.equal(response.status, 200);
     assert.deepEqual(await response.json(), expected);
-    assert.deepEqual(run.calls, ['rate', 'verify', 'model']);
+    assert.deepEqual(run.calls, ['auth', 'rate', 'verify', 'model']);
     assert.equal(run.captures.length, 0);
     assert.doesNotMatch(JSON.stringify(run.consoleEntries), /PRIVATE_/);
   });
 }
+
+test('unauthorized teacher requests stop before rate, CAPTCHA, model and monitoring work', async () => {
+  for (const identity of ['anonymous', 'non-owner'] as const) {
+    const run = route({ realEndpoint: true, identity });
+    const response = await run.post();
+    assert.equal(response.status, identity === 'anonymous' ? 401 : 403);
+    assert.equal(response.headers.get('cache-control'), 'private, no-store');
+    assert.deepEqual(await response.json(), { ok: false,
+      error: identity === 'anonymous' ? 'TEACHER_SIGN_IN_REQUIRED' : 'TEACHER_ACCESS_DENIED' });
+    assert.deepEqual(run.calls, ['auth']);
+    assert.deepEqual(run.captures, []);
+    assert.deepEqual(run.consoleEntries, []);
+  }
+});

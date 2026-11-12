@@ -1,0 +1,17 @@
+.teacher-login{max-width:620px;margin:64px auto;padding:32px 24px;text-align:center;direction:rtl;color:#263158}
+.teacher-login h1{font-size:clamp(30px,6vw,44px);line-height:1.2;margin:16px 0}
+.teacher-login p{line-height:1.7;font-size:18px}
+.teacher-login .teacher-login-eyebrow{color:#426f70;font-weight:700}
+.teacher-login button,.teacher-private-access button{font:inherit;min-height:44px;border:2px solid #263158;border-radius:12px;padding:10px 24px;cursor:pointer;background:white;color:#263158}
+.teacher-login button{font-size:19px;font-weight:700;min-height:52px;margin:12px 0}
+.teacher-login button:disabled{opacity:.6;cursor:wait}
+.teacher-login a{display:inline-flex;align-items:center;min-height:44px;color:#426f70}
+.teacher-login .teacher-login-privacy{font-size:15px;color:#5e6570}
+.teacher-private-access{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px;padding:8px 24px;background:#edf4f3;direction:rtl;color:#263158;font:16px system-ui,sans-serif}
+.teacher-private-access #teacher-auth-status{flex-basis:100%;margin:0;line-height:1.5}
+.teacher-private-access #teacher-auth-status:empty{display:none}
+.teacher-private-access button{font-size:15px;padding:6px 16px}
+.teacher-private-access a{color:inherit;display:inline-flex;align-items:center;min-height:44px}
+.teacher-login :focus-visible,.teacher-private-access :focus-visible{outline:3px solid #a66b08;outline-offset:4px}
+@media(max-width:600px){.teacher-login{margin:24px auto;padding:24px 20px}.teacher-private-access{padding:8px 12px;font-size:14px}}
+@media print{.teacher-private-access{display:none!important}}

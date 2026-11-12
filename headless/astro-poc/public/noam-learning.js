@@ -118,7 +118,10 @@
  function update(){var active=document.activeElement,box=active&&active.closest('[data-learning-id]'),id=box&&box.dataset.learningId,status=active&&active.dataset.status;renderAuth();renderPortal();refreshControls();if(id&&status!==undefined){var target=document.querySelector('[data-learning-id="'+id+'"] button[data-status="'+status+'"]');if(target&&!target.disabled&&!target.hidden)target.focus({preventScroll:true});}}
  var authWired=false;
  function wireAuth(){if(!client||authWired)return;authWired=true;
-  client.auth.onAuthStateChange(function(event,session){setTimeout(function(){engine.setUser(session&&session.user).catch(fail);},0);});
+  client.auth.onAuthStateChange(function(event,session){
+   if(event==='SIGNED_OUT')fetch('/api/teacherSession',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'logout'}),credentials:'same-origin',cache:'no-store'}).catch(function(){});
+   setTimeout(function(){engine.setUser(session&&session.user).catch(fail);},0);
+  });
   client.auth.getSession().then(async function(r){if(r.error){tell('החיבור לחשבון אינו זמין. נסו לרענן את הדף.');}await engine.setUser(r.data&&r.data.session&&r.data.session.user);if(signInRequested&&!r.error)await signInWithGoogle();}).catch(fail);
   if(new URL(location.href).searchParams.has('code')){
    client.auth.getSession().finally(function(){

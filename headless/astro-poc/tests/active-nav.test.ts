@@ -80,8 +80,16 @@ describe('M37 resolveActiveNav', () => {
     assert.equal(resolveActiveNav('/accessibilityadaptation'), null);
     assert.equal(resolveActiveNav('/conditionforfreeworksheets'), null);
     assert.equal(resolveActiveNav('/worksheet-viewer-noam.html'), null);
-    assert.equal(resolveActiveNav('/teachers'), 'teachers');
-    assert.notEqual(resolveActiveNav('/teachers'), 'home');
+  });
+
+  it('maps both teacher pages without treating their static assets as destinations', () => {
+    for (const path of ['/teachers', '/teachers/', '/teachers/app', '/teachers/app/']) {
+      assert.equal(resolveActiveNav(path), 'teachers', path);
+      assert.equal(resolveWorksheetsNavBand(path), null, path);
+    }
+    for (const path of ['/teachers/teacher-catalog.json', '/teachers/app/unknown', '/teachers-other']) {
+      assert.equal(resolveActiveNav(path), null, path);
+    }
   });
 
   it('SiteHeader sets aria-current=page only on the matching destination', async () => {

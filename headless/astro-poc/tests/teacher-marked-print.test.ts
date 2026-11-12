@@ -4,6 +4,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { describe, it } from 'node:test';
 import { fileURLToPath } from 'node:url';
 import { loadCatalog } from '../src/lib/catalog/loadCatalog';
+import { TEACHER_PRIVATE_HEADERS } from '../src/lib/teacherAccess';
 import { labelAscent, labelLineBox, labelLineHeight, sheetFromManifest } from '../scripts/build-teacher-catalog.mjs';
 
 function servedGaps(questions: { id: string; inkTop: number | null; inkBottom?: number }[]) {
@@ -71,7 +72,7 @@ describe('grade 9 factoring marked source', () => {
     assert.match(printer, /printOpener/);
     assert.match(printer, /packShort/);
     assert.match(page, /rel="icon"/);
-    assert.match(readFileSync(new URL('../public/teachers/index.html', import.meta.url), 'utf8'), /rel="icon"/);
+    assert.match(readFileSync(new URL('../src/teacher-pages/wizard.html', import.meta.url), 'utf8'), /rel="icon"/);
   });
 
   it('shows every picked item and does not leave a bare digit after a letter', () => {
@@ -84,7 +85,7 @@ describe('grade 9 factoring marked source', () => {
     assert.match(printer, /<bdi dir="ltr" class="math">/);
     assert.match(page, /\.q-desc bdi\.math\{white-space:nowrap/);
     const previewJs = readFileSync(new URL('../public/teachers/teacher-factoring-print.js', import.meta.url), 'utf8');
-    const previewPage = readFileSync(new URL('../public/teachers/index.html', import.meta.url), 'utf8');
+    const previewPage = readFileSync(new URL('../src/teacher-pages/wizard.html', import.meta.url), 'utf8');
     assert.equal(previewJs, printer);
     assert.match(previewPage, /\.q-desc bdi\.math\{white-space:nowrap/);
     const questionTextHTML = new Function(
@@ -132,14 +133,21 @@ describe('grade 9 factoring marked source', () => {
     }
   });
 
-  it('serves /teachers and does not keep the temporary demo preview route', () => {
+  it('keeps the teacher tool private to indexing while the public entry uses the site layout', () => {
     assert.equal(existsSync(new URL('../src/pages/teachers-demo-preview.ts', import.meta.url)), false);
     assert.equal(existsSync(new URL('../public/teachers-demo-preview/index.html', import.meta.url)), false);
-    const route = readFileSync(new URL('../src/pages/teachers.ts', import.meta.url), 'utf8');
-    const preview = readFileSync(new URL('../public/teachers/index.html', import.meta.url), 'utf8');
+    const route = readFileSync(new URL('../src/pages/teachers/app.ts', import.meta.url), 'utf8');
+    const landing = readFileSync(new URL('../src/pages/teachers.astro', import.meta.url), 'utf8');
+    const preview = readFileSync(new URL('../src/teacher-pages/wizard.html', import.meta.url), 'utf8');
     const sitemap = readFileSync(new URL('../src/pages/sitemap-pages.xml.ts', import.meta.url), 'utf8');
     const sitemapLib = readFileSync(new URL('../src/lib/siteSitemaps.ts', import.meta.url), 'utf8');
-    assert.match(route, /x-robots-tag': 'noindex, nofollow'/);
+    assert.match(route, /\.\.\.TEACHER_PRIVATE_HEADERS/);
+    const privateHeaders = new Headers(TEACHER_PRIVATE_HEADERS);
+    assert.equal(privateHeaders.get('x-robots-tag'), 'noindex, nofollow');
+    assert.equal(privateHeaders.get('cache-control'), 'private, no-store');
+    assert.match(landing, /<BaseLayout/);
+    assert.match(landing, /legacyTeacherToolRedirect/);
+    assert.equal(existsSync(new URL('../src/pages/teachers.ts', import.meta.url)), false);
     assert.match(preview, /noindex, nofollow/);
     assert.match(preview, /\/teachers\/teacher-factoring-print\.js/);
     assert.equal(preview.includes('teachers-demo-preview'), false);
@@ -162,7 +170,7 @@ describe('grade 9 factoring marked source', () => {
     assert.match(page, /\.print-area \.crop-sheet\.has-teacher-note canvas\{width:auto;height:auto;max-width:180mm;max-height:calc\(246mm - var\(--note-h, 0mm\)\)/);
     assert.match(page, /\.print-area \.source-sheet\.has-teacher-note\{[^}]*overflow:visible/);
     assert.match(page, /\.print-area \.source-sheet\{[^}]*height:281mm/);
-    const served = readFileSync(new URL('../public/teachers/index.html', import.meta.url), 'utf8');
+    const served = readFileSync(new URL('../src/teacher-pages/wizard.html', import.meta.url), 'utf8');
     assert.match(served, /\.print-area \.teacher-print-note\{[^}]*direction:rtl[^}]*break-inside:avoid;page-break-inside:avoid/);
     assert.match(served, /הוראות לתלמיד — מודפסות/);
     assert.match(served, /\.print-area \.crop-sheet\.has-teacher-note canvas\{width:auto;height:auto;max-width:180mm/);
@@ -173,7 +181,7 @@ describe('grade 9 factoring marked source', () => {
 describe('teacher catalog picker', () => {
   const catalog = loadCatalog();
   const index = JSON.parse(readFileSync(new URL('../public/teachers/teacher-catalog.json', import.meta.url), 'utf8'));
-  const page = readFileSync(new URL('../public/teachers/index.html', import.meta.url), 'utf8');
+  const page = readFileSync(new URL('../src/teacher-pages/wizard.html', import.meta.url), 'utf8');
   const printer = readFileSync(new URL('../public/teachers/teacher-factoring-print.js', import.meta.url), 'utf8');
 
   function catalogSheets() {
@@ -362,7 +370,7 @@ describe('teacher catalog picker', () => {
     assert.match(resolve, /return questionsForKeys\(keys\)/);
     assert.doesNotMatch(preview, /mode === 'short' && band\(\) === 'elementary'/, 'Elementary questions use the same source-question print pipeline');
     assert.match(preview, /question\.rows && question\.rows\.length \? question\.rows : \[question\.row\]/);
-    const html = readFileSync(new URL('../public/teachers/index.html', import.meta.url), 'utf8');
+    const html = readFileSync(new URL('../src/teacher-pages/wizard.html', import.meta.url), 'utf8');
     assert.match(html, /\.skip\{display:none!important\}/);
     assert.match(html, /\.q-thumb\{[^}]*max-height:120px/);
     assert.match(html, /unicode-bidi:isolate/);
@@ -567,7 +575,7 @@ describe('teacher catalog picker', () => {
   });
 
   it('offers manual whole-question selection and AI counts 5, 10 and 15 with a visible status', () => {
-    const publicHtml = readFileSync(new URL('../public/teachers/index.html', import.meta.url), 'utf8');
+    const publicHtml = readFileSync(new URL('../src/teacher-pages/wizard.html', import.meta.url), 'utf8');
     for (const html of [page, publicHtml]) {
       for (const count of [5, 10, 15]) {
         assert.match(html, new RegExp(`id="ai-pick-${count}"[^>]*data-ai-pick="${count}"`));

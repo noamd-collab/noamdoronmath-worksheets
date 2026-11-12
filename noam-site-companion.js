@@ -622,6 +622,23 @@
     }).catch(function (error) {
       streaming = false;
       var text = (error && error.message) || FALLBACK;
+      var status = error && (error.status || error.httpStatus);
+      var authCode = error && error.code && error.code !== "HTTP_ERROR"
+        ? error.code : text;
+      var signInRequired = status === 401 && authCode === "TEACHER_SIGN_IN_REQUIRED";
+      var accessDenied = status === 403 && authCode === "TEACHER_ACCESS_DENIED";
+      if (signInRequired || accessDenied) {
+        var authMessage = signInRequired
+          ? "כדי לבנות שיעור, יש להתחבר לחשבון Google המורשה."
+          : "החשבון הזה אינו מורשה לאזור המורים.";
+        showResult({
+          answer: authMessage,
+          details: authMessage + "\nאזור המורים נמצא כעת בבדיקות פרטיות.",
+          primary: { href: "/teachers/login", label: accessDenied ? "התחברות עם חשבון אחר" : "התחברות לאזור המורים" },
+          chips: [],
+        });
+        return;
+      }
       var teacher = pageKind() === "teachers";
       showResult({
         answer: text,
