@@ -47,6 +47,20 @@ describe('redirect map reflects what production serves', () => {
     assert.match(read('src/dev-pages/dev-loops.astro'), /import\.meta\.env\.DEV/);
   });
 
+  it('Wix page list drops /404 and /dev-loops, and neither is redirected', async () => {
+    const { filterWixPagesModuleSource } = await import('../scripts/lib/omit-wix-sitemap-paths.mjs');
+    const source = "export const pages = handlePages(pagesGlob, [], 'src/pages');";
+    const filtered = filterWixPagesModuleSource(source);
+    assert.match(filtered, /page\.path !== "\/404"/);
+    assert.match(filtered, /page\.path !== "\/dev-loops"/);
+    assert.match(read('astro.config.mjs'), /omitWixSitemapPaths\(\)/);
+    assert.equal(existsSync(new URL('../src/pages/404.astro', import.meta.url)), true);
+    assert.doesNotMatch(read('src/pages/404.astro'), /Response\.redirect|status = 301|status = 302/);
+    const home = read('src/pages/index.astro');
+    assert.match(home, /דפי עבודה שעושים/);
+    assert.match(home, /דפי עבודה במתמטיקה בחינם לכיתות א׳–ט׳/);
+  });
+
   it('/dev-loops is not a Wix page, so Wix cannot list it in /pages-sitemap.xml', () => {
     // @wix/astro-pages lists every src/pages/**/*.astro file in /_wix/pages.json.
     assert.equal(existsSync(new URL('../src/pages/dev-loops.astro', import.meta.url)), false);

@@ -1,6 +1,10 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { describe, it } from 'node:test';
+import { GAMES_INDEX_TITLE } from '../src/lib/eliyahuGames';
+import { loadGradeHub } from '../src/lib/gradeHubs';
+import { loadHomePage } from '../src/lib/homePage';
+import { loadTopicPage } from '../src/lib/topicPages';
 import {
   DEFAULT_SITE_DESCRIPTION,
   DEFAULT_SITE_TITLE,
@@ -10,6 +14,8 @@ import {
   isProductionHost,
   renderRobotsTxt,
   robotsContent,
+  shortHebrewTitle,
+  worksheetsDocumentTitle,
 } from '../src/lib/siteSeo';
 
 describe('siteSeo preview vs production', () => {
@@ -91,9 +97,43 @@ describe('siteSeo preview vs production', () => {
     assert.match(src, /data-noam-seo/);
     assert.doesNotMatch(src, /stripWixSeoDupes|MutationObserver/);
     assert.match(src, /buildSocialMeta/);
+    assert.match(src, /shortHebrewTitle\(/);
     assert.match(src, /lang="he"/);
     assert.match(src, /dir="rtl"/);
     assert.match(src, /showPreviewNote=\{showPreviewNote\}/);
+  });
+
+  it('document titles are short Hebrew, without a repeated site name or English slug', () => {
+    const home = loadHomePage();
+    const grade = loadGradeHub(7);
+    const topic = loadTopicPage('triangle-area-grade-7');
+    const samples: Array<[string, string, string]> = [
+      [home.title, '/', 'דפי עבודה במתמטיקה בחינם לכיתות א׳-ט׳'],
+      [grade.title, '/grade-7', 'דפי עבודה במתמטיקה לכיתה ז׳ להדפסה בחינם'],
+      [topic.title, '/triangle-area-grade-7', 'שטח משולש לכיתה ז׳'],
+      [GAMES_INDEX_TITLE, '/games', 'פינת המשחקים של אליהו'],
+      ['דפי עבודה למורים במתמטיקה שמקצרים הכנה לשיעור', '/post/teachers', 'דפי עבודה למורים במתמטיקה שמקצרים הכנה לשיעור'],
+      ['שטח משולש לכיתה ז׳ | triangle-area-grade-7 | נועם דורון מתמטיקה', '/triangle-area-grade-7', 'שטח משולש לכיתה ז׳'],
+      ['triangle-area-grade-7 | נועם דורון מתמטיקה', '/triangle-area-grade-7', 'דפי עבודה במתמטיקה'],
+      ['מי אני | נועם דורון, מורה למתמטיקה', '/aboutus', 'מי אני | נועם דורון, מורה למתמטיקה'],
+    ];
+    for (const [raw, path, expected] of samples) {
+      const title = shortHebrewTitle(raw, path);
+      assert.equal(title, expected, path);
+      assert.equal(/[A-Za-z]{3,}/.test(title.replace(/AI/g, '')), false, title);
+      assert.equal(title.endsWith('נועם דורון'), false, title);
+      assert.equal(title.endsWith('נועם דורון מתמטיקה'), false, title);
+    }
+    assert.equal(
+      shortHebrewTitle('זוויות צמודות וקודקודיות לכיתה ז׳ | דפי עבודה חינם – נועם דורון', '/angles-grade-7'),
+      'זוויות צמודות, משלימות וחוצה זווית לכיתה ז׳',
+    );
+    assert.notEqual(
+      shortHebrewTitle('זוויות צמודות וקודקודיות לכיתה ז׳ | דפי עבודה חינם', '/adjacent-vertical-angles-grade-7'),
+      shortHebrewTitle('זוויות צמודות וקודקודיות לכיתה ז׳ | דפי עבודה חינם – נועם דורון', '/angles-grade-7'),
+    );
+    assert.equal(worksheetsDocumentTitle('כיתה ז׳', 'זוויות'), 'זוויות · כיתה ז׳');
+    assert.equal(worksheetsDocumentTitle('כיתה א׳'), 'דפי עבודה · כיתה א׳');
   });
 
   it('SiteFooter preview note is gated off production hosts', () => {
