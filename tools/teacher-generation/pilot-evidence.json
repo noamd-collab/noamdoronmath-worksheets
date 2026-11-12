@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "date": "2026-11-12",
+  "providerCalls": 0,
+  "scope": "Offline fixed fixtures and mocked unit tests only; coordinator live authoring attempts are reported separately.",
+  "dbChanges": false,
+  "published": false,
+  "unitTests": 41,
+  "cases": [
+    {
+      "case": "pilot-elementary",
+      "status": "needs_review",
+      "automatedChecksPassed": true,
+      "artifacts": [
+        {
+          "path": "sheet.pdf",
+          "sha256": "02fcb1bb123db8fa4fe6cb35a14915ead10a4a8282313204decf6845c584ed53",
+          "bytes": 28181,
+          "kind": "pdf"
+        },
+        {
+          "path": "sheet.docx",
+          "sha256": "a57abc13959d31f5e97b3e6f9a46208db8937ed61750de70918b8ee6819d9b76",
+          "bytes": 40720,
+          "kind": "docx"
+        }
+      ],
+      "visualPdf": {
+        "reviewedAllPages": true,
+        "pages": 4,
+        "findings": "No clipped math/answers, broken Hebrew or split questions in the final reviewed pages."
+      },
+      "visualWord": "unverified; coordinator computer-use attempt hit server timeout, so Word XML is not a visual PASS",
+      "isolatedRuntimeCase": "venv-elementary"
+    },
+    {
+      "case": "pilot-middle",
+      "status": "needs_review",
+      "automatedChecksPassed": true,
+      "artifacts": [
+        {
+          "path": "out/deliver/b/sheet.pdf",
+          "sha256": "5a7d65615f60b514aa4cecfb2e2d1682fd731e79989456a97063f99082d87112",
+          "bytes": 62668,
+          "kind": "pdf"
+        },
+        {
+          "path": "out/docx/b/sheet.docx",
+          "sha256": "5110b05e06b1d9b5fef5133c251740a7cc442c349e9015820eaacd9c433801f1",
+          "bytes": 13344,
+          "kind": "docx"
+        }
+      ],
+      "visualPdf": {
+        "reviewedAllPages": true,
+        "pages": 8,
+        "findings": "No clipped math/answers, broken Hebrew or split questions in the final reviewed pages."
+      },
+      "visualWord": "unverified; coordinator computer-use attempt hit server timeout, so Word XML is not a visual PASS",
+      "isolatedRuntimeCase": "venv-middle"
+    }
+  ],
+  "isolatedRuntime": "tools/teacher-generation/.venv (Python 3.12.7)",
+  "clientRegression": {
+    "tests": 8,
+    "passed": 8,
+    "externalNetwork": false
+  },
+  "providerTests": {
+    "networkCalls": 0,
+    "certifiVersion": "2026.1.4",
+    "certificateVerification": true,
+    "hostnameVerification": true,
+    "redirects": false,
+    "usageMetadata": "mock response tested; no billed call by this agent",
+    "strictSchema": true,
+    "safeValidationDetails": true,
+    "benchmarkDryRun": "PASS; zero author attempts; locked runtime and skill preflight"
+  }
+}
