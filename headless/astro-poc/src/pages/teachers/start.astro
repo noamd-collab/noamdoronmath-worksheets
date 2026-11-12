@@ -1,10 +1,10 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import TeacherLanding from '../../components/TeacherLanding.astro';
-import { authorizeTeacherRequest, TEACHER_PRIVATE_HEADERS, sanitizeTeacherReturnTo } from '../../lib/teacherAccess';
+import { requireGoogleTeacher, TEACHER_PRIVATE_HEADERS, sanitizeTeacherReturnTo } from '../../lib/teacherAccess';
 
 export const prerender = false;
-const access = await authorizeTeacherRequest(Astro.request);
+const access = await requireGoogleTeacher(Astro.request);
 if (!access.ok) {
   return new Response(null, { status: 303, headers: {
     ...TEACHER_PRIVATE_HEADERS,
@@ -13,9 +13,9 @@ if (!access.ok) {
 }
 for (const [name, value] of Object.entries(TEACHER_PRIVATE_HEADERS)) Astro.response.headers.set(name, value);
 ---
-<BaseLayout title="אזור המורים · בדיקות פרטיות" description="כניסה פרטית לבדיקת כלי המורים." activeNav="teachers" skipHref="#teacher-start" noindex>
+<BaseLayout title="אזור המורים · כלי עבודה" description="בחירת שאלות והכנת דפי עבודה לאחר התחברות עם Google." activeNav="teachers" skipHref="#teacher-start" noindex>
   <div class="teacher-private-access" data-teacher-auth="workspace">
-    <span>אזור המורים · בדיקות פרטיות</span>
+    <span>אזור המורים · כלי עבודה</span>
     <button type="button" data-teacher-logout>התנתקות</button>
     <p id="teacher-auth-status" role="status" aria-live="polite"></p>
   </div>

@@ -33,7 +33,7 @@
     if (leaving) return;
     if (!session || !session.access_token) {
       if (mode === 'workspace') { leaving = true; location.replace(loginPath()); }
-      else tell('יש להתחבר עם חשבון Google המורשה לבדיקות.');
+      else tell('יש להתחבר עם חשבון Google כדי להשתמש בכלי המורים.');
       return;
     }
     tell('מאמתים את החשבון ואת הרשאת הכניסה…');
@@ -42,7 +42,7 @@
     if (leaving) return;
     if (!response.ok) {
       if (mode === 'workspace') { leaving = true; location.replace(loginPath()); return; }
-      tell(response.status === 403 ? 'החשבון הזה אינו מורשה להיכנס לבדיקות. אפשר לבחור חשבון Google אחר.' : 'לא ניתן לאמת את הכניסה כרגע. נסו להתחבר שוב.');
+      tell(response.status === 403 ? 'נדרש חשבון Google מאומת כדי להשתמש בכלי המורים. אפשר לבחור חשבון Google אחר.' : 'לא ניתן לאמת את הכניסה כרגע. נסו להתחבר שוב.');
       if (button) button.textContent = 'בחירת חשבון Google אחר';
       return;
     }
