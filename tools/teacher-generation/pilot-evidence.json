@@ -1,8 +1,8 @@
 {
   "version": 1,
   "date": "2026-11-12",
-  "providerCalls": 0,
-  "scope": "Offline fixed fixtures and mocked unit tests only; coordinator live authoring attempts are reported separately.",
+  "providerCalls": 7,
+  "scope": "Historical fixed-fixture/mocked evidence plus seven coordinator authoring responses; two v2 samples passed automated gates and final PDF review. Actual Word visual remains blocked.",
   "dbChanges": false,
   "published": false,
   "unitTests": 53,
@@ -62,8 +62,8 @@
   ],
   "isolatedRuntime": "tools/teacher-generation/.venv (Python 3.12.7)",
   "clientRegression": {
-    "tests": 8,
-    "passed": 8,
+    "tests": 12,
+    "passed": 12,
     "externalNetwork": false
   },
   "providerTests": {
@@ -270,5 +270,6 @@
       "scope": "Frankfurt Global/EU standard token-price scenarios; excludes rendering, hosting, storage, review, tax and cache/promotional adjustments"
     },
     "interpretation": "Parameter selection plus trusted construction architecture; not evidence of independent model arithmetic. Earlier failures used different contracts; two current samples do not establish production reliability. All failed costs remain included; human-accepted cost is undefined."
-  }
+  },
+  "offlineFixtureProviderCalls": 0
 }
