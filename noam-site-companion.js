@@ -629,11 +629,11 @@
       var accessDenied = status === 403 && authCode === "TEACHER_ACCESS_DENIED";
       if (signInRequired || accessDenied) {
         var authMessage = signInRequired
-          ? "כדי לבנות שיעור, יש להתחבר לחשבון Google המורשה."
-          : "החשבון הזה אינו מורשה לאזור המורים.";
+          ? "כדי לבנות שיעור, יש להתחבר לחשבון Google."
+          : "נדרש חשבון Google מאומת כדי להיכנס לאזור המורים.";
         showResult({
           answer: authMessage,
-          details: authMessage + "\nאזור המורים נמצא כעת בבדיקות פרטיות.",
+          details: authMessage + "\nכלי המורים הקיימים זמינים לאחר התחברות עם Google.",
           primary: { href: "/teachers/login", label: accessDenied ? "התחברות עם חשבון אחר" : "התחברות לאזור המורים" },
           chips: [],
         });

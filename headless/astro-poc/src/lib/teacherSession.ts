@@ -1,5 +1,5 @@
 import type { AstroCookies } from 'astro';
-import { TEACHER_SESSION_COOKIE, TEACHER_PRIVATE_HEADERS, TEACHER_SESSION_COOKIE_OPTIONS, sanitizeTeacherReturnTo, teacherAccessFailure, verifyTeacherToken } from './teacherAccess';
+import { TEACHER_SESSION_COOKIE, TEACHER_PRIVATE_HEADERS, TEACHER_SESSION_COOKIE_OPTIONS, sanitizeTeacherReturnTo, teacherAccessFailure, verifyGoogleTeacherToken } from './teacherAccess';
 import { resolveNativeSvgPublicOrigin } from './nativeSvgResponse';
 
 export const TEACHER_RETURN_COOKIE = '__Host-noam_teacher_return';
@@ -47,7 +47,7 @@ export async function createTeacherSession(request: Request, cookies: AstroCooki
     return json({ redirectTo: new URL('/teachers/login', origin).href });
   }
   const token = typeof body.accessToken === 'string' ? body.accessToken : '';
-  const access = await verifyTeacherToken(token);
+  const access = await verifyGoogleTeacherToken(token);
   if (!access.ok) {
     clearTeacherSession(cookies);
     return teacherAccessFailure(access);

@@ -7,11 +7,11 @@ for (const [name, value] of Object.entries(TEACHER_PRIVATE_HEADERS)) Astro.respo
 Astro.response.headers.set('Referrer-Policy', 'no-referrer');
 const returnTo = sanitizeTeacherReturnTo(Astro.cookies.get(TEACHER_RETURN_COOKIE)?.value || Astro.url.searchParams.get('returnTo'));
 ---
-<BaseLayout title="התחברות לאזור המורים | נועם דורון מתמטיקה" description="התחברות מאובטחת לבדיקות פרטיות של אזור המורים." activeNav="teachers" skipHref="#teacher-sign-in" noindex>
+<BaseLayout title="התחברות לאזור המורים | נועם דורון מתמטיקה" description="התחברות עם Google לבחירת שאלות ולהכנת דפי עבודה מהמאגר." activeNav="teachers" skipHref="#teacher-sign-in" noindex>
   <main class="teacher-login" id="teacher-sign-in" data-teacher-auth="login" data-return-to={returnTo} tabindex="-1">
-    <p class="teacher-login-eyebrow">בקרוב · אזור המורים</p>
+    <p class="teacher-login-eyebrow">אזור המורים</p>
     <h1>התחברות עם Google</h1>
-    <p>אזור המורים נמצא בפיתוח. הכניסה לכלי מחייבת התחברות, וכרגע זמינה לחשבון הבעלים בלבד.</p>
+    <p>כלי בחירת השאלות, ההדפסה והייצוא ל־Word זמינים לכל מי שמתחבר עם Google.</p>
     <button id="teacher-google-sign-in" type="button" disabled>התחברות עם Google</button>
     <p id="teacher-auth-status" role="status" aria-live="polite">טוענים את ההתחברות המאובטחת…</p>
     <p class="teacher-login-privacy">ההתחברות משמשת לזיהוי החשבון. אין בקשת גישה ל־Gmail או ל־Drive.</p>

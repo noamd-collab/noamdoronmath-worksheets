@@ -246,7 +246,7 @@ test('server denial never opens the tool even when a browser has a valid-looking
     assert.equal(h.requests.length, 1);
     assert.deepEqual(h.navigations, [], String(status));
     assert.equal(h.button.disabled, false);
-    assert.match(h.status.textContent, status === 403 ? /אינו מורשה/ : /לא ניתן לאמת/);
+    assert.match(h.status.textContent, status === 403 ? /נדרש חשבון Google מאומת/ : /לא ניתן לאמת/);
   }
 });
 
