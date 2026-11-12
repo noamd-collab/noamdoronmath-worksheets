@@ -53,7 +53,7 @@ describe('redirect map reflects what production serves', () => {
     const filtered = filterWixPagesModuleSource(source);
     assert.match(filtered, /page\.path !== "\/404"/);
     assert.match(filtered, /page\.path !== "\/dev-loops"/);
-    assert.match(read('astro.config.mjs'), /omitWixSitemapPaths\(\)/);
+    assert.match(read('scripts/lib/compact-server-build.mjs'), /filterWixPagesModuleSource/);
     assert.equal(existsSync(new URL('../src/pages/404.astro', import.meta.url)), true);
     assert.doesNotMatch(read('src/pages/404.astro'), /Response\.redirect|status = 301|status = 302/);
     const home = read('src/pages/index.astro');

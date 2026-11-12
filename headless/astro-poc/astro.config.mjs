@@ -5,7 +5,6 @@ import wix from '@wix/astro';
 import wixPages from '@wix/astro-pages';
 import wixHosting from '@wix/astro-wix-hosting-adapter';
 import compactServerBuild from './scripts/lib/compact-server-build.mjs';
-import omitWixSitemapPaths from './scripts/lib/omit-wix-sitemap-paths.mjs';
 
 /**
  * Astro 5 + React POC linked to a NEW free Wix-managed Headless project.
@@ -15,7 +14,7 @@ export default defineConfig({
   // robots: false — do not register Wix's /robots.txt. That route overwrites
   // src/pages/robots.txt.ts and Astro warns about the collision. Our route
   // allows www and disallows preview hosts.
-  integrations: [react(), wix({ robots: false }), wixPages(), omitWixSitemapPaths(), compactServerBuild()],
+  integrations: [react(), wix({ robots: false }), wixPages(), compactServerBuild()],
   output: 'server',
   adapter: wixHosting(),
 
