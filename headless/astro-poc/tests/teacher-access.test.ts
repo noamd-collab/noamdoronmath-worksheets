@@ -248,7 +248,7 @@ test('owner cookies and all failure responses remain private and non-indexable',
 });
 
 test('return path preserves teacher scope encoding and rejects other routes, tokens and URL tricks', () => {
-  for (const path of ['/teachers/app', '/teachers/start',
+  for (const path of ['/teachers/app', '/teachers/start', '/teachers/generate',
     '/teachers/app?grade=3&topic=10&level=a&edition=elementary-20261108-r1&minutes=20&pick=1%2C2',
     '/teachers/start?note=%D7%A9%D7%9C%D7%95%D7%9D']) assert.equal(sanitizeTeacherReturnTo(path), path);
   for (const attack of [

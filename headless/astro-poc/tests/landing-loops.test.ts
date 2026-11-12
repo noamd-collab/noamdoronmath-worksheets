@@ -37,6 +37,7 @@ const NON_LANDING_PAGES = new Set([
   'teachers.astro',
   'teachers/start.astro',
   'teachers/login.astro',
+  'teachers/generate.astro', // Authenticated owner form; not a topic landing.
   'hero-loops/[variant].astro',
   'blog/index.astro',
   'blog/categories/[slug].astro',

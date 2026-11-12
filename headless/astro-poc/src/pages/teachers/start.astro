@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import TeacherLanding from '../../components/TeacherLanding.astro';
 import { requireGoogleTeacher, TEACHER_PRIVATE_HEADERS, sanitizeTeacherReturnTo } from '../../lib/teacherAccess';
+import { TEACHER_ACCESS_CONFIG } from '../../lib/teacherAccessConfig';
 
 export const prerender = false;
 const access = await requireGoogleTeacher(Astro.request);
@@ -16,6 +17,7 @@ for (const [name, value] of Object.entries(TEACHER_PRIVATE_HEADERS)) Astro.respo
 <BaseLayout title="אזור המורים · כלי עבודה" description="בחירת שאלות והכנת דפי עבודה לאחר התחברות עם Google." activeNav="teachers" skipHref="#teacher-start" noindex>
   <div class="teacher-private-access" data-teacher-auth="workspace">
     <span>אזור המורים · כלי עבודה</span>
+    {access.userId === TEACHER_ACCESS_CONFIG.ownerUserId && <a href="/teachers/generate">יצירת דף חדש · ניסיון אישי</a>}
     <button type="button" data-teacher-logout>התנתקות</button>
     <p id="teacher-auth-status" role="status" aria-live="polite"></p>
   </div>

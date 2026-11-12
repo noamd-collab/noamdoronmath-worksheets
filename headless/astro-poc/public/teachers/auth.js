@@ -50,7 +50,7 @@
     if (navigate) {
       // The server returns only an allowlisted same-origin teacher path.
       var destination = new URL(result.returnTo, location.origin);
-      if (destination.origin !== location.origin || !/^\/teachers\/(start|app)$/.test(destination.pathname)) throw new Error('INVALID_RETURN');
+      if (destination.origin !== location.origin || !/^\/teachers\/(start|app|generate)$/.test(destination.pathname)) throw new Error('INVALID_RETURN');
       leaving = true;
       location.replace(destination.pathname + destination.search);
     }

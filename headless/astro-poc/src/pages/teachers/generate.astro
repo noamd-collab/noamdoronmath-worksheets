@@ -1,0 +1,41 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { requireOwnerTeacher, TEACHER_PRIVATE_HEADERS } from '../../lib/teacherAccess';
+export const prerender = false;
+const access = await requireOwnerTeacher(Astro.request);
+if (!access.ok) return new Response(null, {status: access.status === 401 ? 303 : access.status, headers: {
+  ...TEACHER_PRIVATE_HEADERS, ...(access.status === 401 ? {location:'/teachers/login?returnTo=%2Fteachers%2Fgenerate'} : {}),
+}});
+for (const [key,value] of Object.entries(TEACHER_PRIVATE_HEADERS)) Astro.response.headers.set(key,value);
+---
+<BaseLayout title="יצירת דף לשיעור | אזור המורים" description="יצירת טיוטת דף המותאמת למה שכבר נלמד בכיתה." activeNav="teachers" skipHref="#generation" noindex>
+ <main id="generation" class="generation" dir="rtl">
+  <nav class="generation-top" data-teacher-auth="workspace"><a href="/teachers/start">חזרה לאזור המורים</a><span>יצירה חדשה · גישה אישית לנועם</span><button type="button" data-teacher-logout>התנתקות</button><p id="teacher-auth-status" role="status" aria-live="polite"></p></nav>
+  <header><p class="eyebrow">מהשיעור האחרון, לדף הבא</p><h1>מה הכיתה צריכה לתרגל?</h1><p>מגדירים מה כבר נלמד ואיפה עצרתם. מכינים טיוטה חדשה, בודקים אותה ומורידים להדפסה או לעריכה.</p></header>
+  <p id="generator-availability" class="notice" role="status">בודקים אילו נושאים זמינים ליצירה…</p>
+  <form id="generation-form">
+   <div class="fields">
+    <label>כיתה<select name="gradeNumber" required><option value="">בחירת כיתה</option>{['א׳','ב׳','ג׳','ד׳','ה׳','ו׳','ז׳','ח׳','ט׳'].map((label,i)=><option value={i+1}>כיתה {label}</option>)}</select></label>
+    <label>מה מתרגלים?<select name="topicId" required disabled><option value="">קודם בוחרים כיתה</option></select></label>
+    <label>רמת התרגול<select name="level"><option value="b">רמה ב׳ · בסיסית</option><option value="a">רמה א׳ · מתקדמת</option><option value="e">מצוינות</option></select></label>
+    <label>מטרת הדף<select name="lessonGoal"><option value="practice">תרגול החומר שנלמד</option><option value="review">חזרה על חומר קודם</option></select></label>
+   </div>
+   <label>איפה עצרתם בשיעור האחרון?<textarea name="lastLesson" rows="3" maxlength="700" minlength="8" required placeholder="למשל: תרגלנו חילוק ללא שארית עד 100. עדיין לא עברנו לחילוק עם שארית."></textarea><small>נכתוב רק לפי מה שכבר נלמד. אין צורך בשמות תלמידים או בפרטים אישיים שלהם.</small></label>
+   <label>מה כבר מוכר לכיתה?<textarea name="alreadyLearned" rows="2" maxlength="1200" placeholder="למשל: לוח הכפל, הקשר בין כפל לחילוק. אפשר להפריד בין מושגים בשורה חדשה."></textarea></label>
+   <div class="fields">
+    <label>זמן לתרגול בדקות<input name="minutes" type="number" min="10" max="120" value="30" required /></label>
+    <label>מספר שאלות ראשיות<input name="questionCount" type="number" min="8" max="30" value="12" required /><small id="volume-help">ייתכנו כמה סעיפים בכל שאלה.</small></label>
+   </div>
+   <p class="muted">ההתאמה מבוססת על הנושא ועל ההתקדמות שתיארת. היא אינה קובעת אוטומטית מה הספקתם לפי החודש בשנה.</p>
+   <button class="primary" id="plan-button" type="submit" disabled>בדיקת פרטי הדף</button>
+  </form>
+  <section id="generation-plan" hidden aria-labelledby="plan-title"><h2 id="plan-title">זה הדף שנכין</h2><dl id="plan-details"></dl><p>תיווצר טיוטה חדשה עם תשובות. לפני השימוש בכיתה יש לעיין בניסוח, בהתאמה לשיעור ובתצוגת PDF ו־Word.</p><div class="actions"><button id="create-button" class="primary" type="button">יצירת טיוטה חדשה</button><button id="edit-plan" type="button">שינוי הפרטים</button></div></section>
+  <p id="generation-status" role="status" aria-live="polite"></p>
+  <section id="generation-history" aria-labelledby="history-title"><h2 id="history-title">הדפים שלך</h2><p id="history-empty">הדפים שתיצור יופיעו כאן. יצירת דף אינה מסמנת שהחומר כבר נלמד בכיתה.</p><div id="generation-jobs"></div></section>
+ </main>
+ <script src="/noam-learning-config.js" defer></script>
+ <script src="/vendor/supabase-2.116.0.js" defer></script>
+ <script src="/teachers/auth.js" defer></script>
+ <script src="/teachers/generation.js" defer></script>
+ <link rel="stylesheet" href="/teachers/generation.css" />
+</BaseLayout>

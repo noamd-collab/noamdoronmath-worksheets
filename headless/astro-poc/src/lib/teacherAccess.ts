@@ -174,10 +174,10 @@ export function teacherAccessFailure(result: TeacherAccessFailure): Response {
 export function sanitizeTeacherReturnTo(value: unknown): string {
   const fallback = '/teachers/start';
   if (typeof value !== 'string' || value.length > 4096 || /[\\#\u0000-\u0020\u007f]/.test(value)) return fallback;
-  if (!/^\/teachers\/(?:start|app)(?:\?|$)/.test(value)) return fallback;
+  if (!/^\/teachers\/(?:start|app|generate)(?:\?|$)/.test(value)) return fallback;
   try {
     const url = new URL(value, 'https://teacher-return.invalid');
-    if (!['/teachers/start', '/teachers/app'].includes(url.pathname) || url.hash) return fallback;
+    if (!['/teachers/start', '/teachers/app', '/teachers/generate'].includes(url.pathname) || url.hash) return fallback;
     for (const [key, val] of url.searchParams) {
       if (/(?:access|refresh|id)[_-]?token|authorization|^code$|^state$/i.test(key) ||
         /[\\\u0000-\u001f\u007f]/.test(key + val)) return fallback;
