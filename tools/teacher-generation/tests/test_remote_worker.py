@@ -58,6 +58,7 @@ class WorkerTests(unittest.TestCase):
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name).resolve()
         self.lesson = json.loads((HERE / 'examples/elementary-lesson.json').read_text())
+        self.lesson.update(version=2, lessonBoundary={'version':1,'kind':'division_facts','allowedDivisors':list(range(1,11)),'maxDividend':100})
         self.job = {'id': JOB_ID, 'owner_id': worker.OWNER, 'lease_token': LEASE, 'status': 'running',
                     'lease_until': (datetime.now(timezone.utc) + timedelta(minutes=20)).isoformat(), 'lesson': self.lesson}
         self.remote = FakeRemote()
@@ -74,6 +75,16 @@ class WorkerTests(unittest.TestCase):
                 'skill': {'name': 'elementary', 'version': '1.0.5-noam', 'sha256': 'a' * 64},
                 'steps': [{'name': 'fixture-check', 'status': 'PASS', 'log': '/private/sensitive-log.txt'}],
                 'artifacts': artifacts, 'debug': 'private model source and local path'}
+
+    def test_queued_legacy_intake_is_rejected_before_any_paid_call(self):
+        self.lesson['version'] = 1
+        del self.lesson['lessonBoundary']
+        with patch.object(worker, 'author_lesson') as author, patch.object(worker, 'render_job') as renderer:
+            with self.assertRaises(GenerationError) as caught:
+                worker.process_job(self.remote, self.job, self.root)
+            self.assertEqual(caught.exception.code, 'LESSON_VERSION_REQUIRES_NEW_DRAFT')
+            author.assert_not_called(); renderer.assert_not_called()
+            self.assertEqual(self.remote.calls, [])
 
     def test_startup_readiness_failure_never_constructs_remote_or_advertises(self):
         with patch.object(sys, 'argv', ['worker', '--once', '--work-dir', str(self.root)]), \
@@ -102,6 +113,7 @@ class WorkerTests(unittest.TestCase):
         self.assertIn('/rpc/claim_teacher_generation_job', self.remote.calls[2][0])
         self.assertIn('noam_teacher_generation_workers', self.remote.calls[3][0])
         self.assertEqual(self.root.stat().st_mode & 0o777, 0o700)
+        self.assertEqual(self.remote.calls[3][2]['capabilities']['acceptedIntakeVersions'], [2])
         advertised = self.remote.calls[3][2]['capabilities']['topics']
         enabled = {cap['topicId']: cap for cap in advertised if cap.get('enabled')}
         self.assertEqual(set(enabled), {'ג10', 'g7:equations'})

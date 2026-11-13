@@ -13,7 +13,7 @@ const valid = (changes: Record<string, unknown> = {}) => ({
   lastLesson: 'סיימנו חילוק בתחום לוח הכפל', alreadyLearned: ['כפל בתחום לוח הכפל'],
   minutes: 45, questionCount: 12, explicitShortSheet: false, ...changes,
 });
-const check = (changes: Record<string, unknown> = {}) => validateTeacherGenerationIntake(valid(changes), curriculum);
+const check = (changes: Record<string, unknown> = {}) => validateTeacherGenerationIntake(valid(changes), curriculum, { allowLegacy: true });
 function rejects(changes: Record<string, unknown>, code: string) {
   const result = check(changes);
   assert.equal(result.ok, false, JSON.stringify(changes));
@@ -145,5 +145,25 @@ test('server contract does not bundle the public curriculum or invoke filesystem
   assert.doesNotMatch(source, /import[\s\S]*?from\s+['"][^'"]*generation-curriculum\.json/);
   assert.doesNotMatch(source, /(?:from\s+['"]node:|process\.|require\()/);
   const payload: TeacherGenerationIntake = valid() as TeacherGenerationIntake;
-  assert.equal(validateTeacherGenerationIntake(payload, curriculum).ok, true);
+  assert.equal(validateTeacherGenerationIntake(payload, curriculum, { allowLegacy: true }).ok, true);
+});
+
+test('new drafts require v2 explicit topic-specific teaching limits; legacy is opt-in only', () => {
+  assert.equal(validateTeacherGenerationIntake(valid(), curriculum).ok, false);
+  const boundary = {version: 1, kind: 'division_facts', allowedDivisors: [5, 2], maxDividend: 50};
+  const result = validateTeacherGenerationIntake(valid({version: 2, lessonBoundary: boundary}), curriculum);
+  assert.equal(result.ok, true);
+  if(result.ok) assert.deepEqual(result.value.lessonBoundary, {...boundary, allowedDivisors:[2,5]});
+  for (const lessonBoundary of [undefined, null, {...boundary, allowedDivisors:[2,2]},
+    {...boundary, allowedDivisors:[true]}, {...boundary, maxDividend:101}, {...boundary, extra:1},
+    {...boundary, allowedDivisors:[10], maxDividend:80}]) {
+    assert.equal(validateTeacherGenerationIntake(valid({version:2, lessonBoundary}), curriculum).ok, false);
+  }
+  assert.equal(validateTeacherGenerationIntake(valid({version:1, lessonBoundary:boundary}), curriculum, {allowLegacy:true}).ok, false);
+  for(const allowSignedNumbers of [true,false]) {
+    assert.equal(validateTeacherGenerationIntake(valid({version:2, gradeNumber:7, topicId:'g7:equations', questionCount:20,
+      lessonBoundary:{version:1,kind:'linear_equations',allowSignedNumbers}}), curriculum).ok, true);
+  }
+  assert.equal(validateTeacherGenerationIntake(valid({version:2, gradeNumber:7, topicId:'g7:equations', questionCount:20,
+    lessonBoundary:{version:1,kind:'linear_equations',allowSignedNumbers:'false'}}), curriculum).ok, false);
 });

@@ -23,6 +23,7 @@ NS = {"w": W[1:-1]}
 WORK_MARKER = "NoamTeacherWork_"
 CHECK_INSTRUCTION = "הפתרונות הבאים שגויים. תקנו והסבירו:"
 INVERSE_INSTRUCTION = " כתבו גם תרגיל כפל מתאים לבדיקת כל תשובה."
+INVERSE_INSTRUCTION_V2 = ". כתבו גם תרגיל כפל מתאים לבדיקת כל תשובה:"
 
 
 def _work_line_count(question):
@@ -35,9 +36,13 @@ def _work_line_count(question):
     if type(star) is not bool or not isinstance(intro, str):
         raise ValueError("DOCX_LAYOUT_MISMATCH: missing trusted instruction")
     if star:
-        if not intro.endswith(INVERSE_INSTRUCTION):
+        if intro.endswith(INVERSE_INSTRUCTION_V2):
+            intro = intro[:-len(INVERSE_INSTRUCTION_V2)] + ":"
+        elif intro.endswith(INVERSE_INSTRUCTION):
+            # Explicit compatibility for already-produced, trusted pilot sheets.
+            intro = intro[:-len(INVERSE_INSTRUCTION)]
+        else:
             raise ValueError("DOCX_LAYOUT_MISMATCH: challenge instruction")
-        intro = intro[:-len(INVERSE_INSTRUCTION)]
     if intro not in ("פתרו:", "השלימו את המספר החסר:", CHECK_INSTRUCTION):
         raise ValueError("DOCX_LAYOUT_MISMATCH: unknown trusted instruction")
     return int(intro == CHECK_INSTRUCTION) + int(star)

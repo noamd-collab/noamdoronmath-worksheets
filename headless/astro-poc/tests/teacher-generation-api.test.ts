@@ -17,7 +17,7 @@ const requestKey = '11111111-1111-4111-8111-111111111111';
 const jobId = '22222222-2222-4222-8222-222222222222';
 const rawCurriculum = readFileSync(new URL('../public/teachers/generation-curriculum.json', import.meta.url));
 const curriculum = parseTeacherGenerationCurriculum(JSON.parse(rawCurriculum.toString()));
-const lesson = { version: 1, gradeNumber: 3, topicId: 'ג10', level: 'b', lessonGoal: 'practice',
+const lesson = { version: 2, lessonBoundary: {version: 1, kind: 'division_facts', allowedDivisors: [1,2,3,4,5,6,7,8,9,10], maxDividend: 100}, gradeNumber: 3, topicId: 'ג10', level: 'b', lessonGoal: 'practice',
   lastLesson: 'חילוק בתחום לוח הכפל', alreadyLearned: ['כפל'], minutes: 45, questionCount: 12, explicitShortSheet: false };
 const requestHash = createHash('sha256').update(JSON.stringify(lesson)).digest('hex');
 const job = { id: jobId, request_key: requestKey, request_hash: requestHash, status: 'queued', lesson };
@@ -30,7 +30,7 @@ function post(body: unknown = input(), headers: Record<string, string> = {}) {
 function fixture() {
   const calls: string[] = [];
   const store = {
-    health: async () => { calls.push('health'); return { online: true, capabilities: { topics: [{ topicId: 'ג10', gradeNumber: 3,
+    health: async () => { calls.push('health'); return { online: true, capabilities: { acceptedIntakeVersions: [2], topics: [{ topicId: 'ג10', gradeNumber: 3,
       enabled: true, e2eVerified: true, levels: ['b'], questionCounts: [12] }] } }; },
     list: async () => { calls.push('list'); return []; },
     get: async (_id: string): Promise<any> => { calls.push('get'); return job; },
@@ -118,16 +118,16 @@ test('a duplicate-key race returns the original job only when request hashes mat
 });
 
 test('offline or unsupported worker capability prevents bot and enqueue', async () => {
-  const offline = fixture(); offline.store.health = async () => ({ online: false, capabilities: { topics: [] } });
+  const offline = fixture(); offline.store.health = async () => ({ online: false, capabilities: { acceptedIntakeVersions: [2], topics: [] } });
   await code(await handleTeacherGeneration(post(), offline.deps), 503, 'GENERATOR_OFFLINE');
   assert.ok(!offline.calls.includes('bot') && !offline.calls.includes('enqueue'));
   for (const changed of [{ lessonGoal: 'assessment' }, { explicitShortSheet: true }, { topicId: 'ג09' }, { level: 'a' }, { questionCount: 13 }]) {
-    const f = fixture(); await code(await handleTeacherGeneration(post(input({ lesson: { ...lesson, ...changed } })), f.deps), 422, 'TOPIC_NOT_SUPPORTED_YET');
+    const f = fixture(); await code(await handleTeacherGeneration(post(input({ lesson: { ...lesson, ...changed } })), f.deps), 422, 'topicId' in changed ? 'LESSON_INVALID' : 'TOPIC_NOT_SUPPORTED_YET');
     assert.ok(!f.calls.includes('bot') && !f.calls.includes('enqueue'));
   }
   for (const changed of [{ enabled: false }, { e2eVerified: false }, { levels: [] }, { questionCounts: [] }]) {
     const f = fixture();
-    f.store.health = async () => ({ online: true, capabilities: { topics: [{ topicId: 'ג10', gradeNumber: 3,
+    f.store.health = async () => ({ online: true, capabilities: { acceptedIntakeVersions: [2], topics: [{ topicId: 'ג10', gradeNumber: 3,
       enabled: true, e2eVerified: true, levels: ['b'], questionCounts: [12], ...changed }] } });
     await code(await handleTeacherGeneration(post(), f.deps), 422, 'TOPIC_NOT_SUPPORTED_YET');
     assert.ok(!f.calls.includes('bot') && !f.calls.includes('enqueue'));
@@ -193,7 +193,7 @@ test('store reads use the user token; only enqueue uses the server key, and path
 
 test('store heartbeat expires, rejects future clocks, and provider errors reveal no SQL or secrets', async () => {
   for (const [date, expected] of [[Date.now(), true], [Date.now() - 100000, false], [Date.now() + 30000, false], [NaN, false]] as const) {
-    const store = createGenerationStore('token', async () => Response.json([{ updated_at: Number.isFinite(date) ? new Date(date).toISOString() : 'bad', capabilities: {} }]));
+    const store = createGenerationStore('token', async () => Response.json([{ updated_at: Number.isFinite(date) ? new Date(date).toISOString() : 'bad', capabilities: { acceptedIntakeVersions: [2] } }]));
     assert.equal((await store.health()).online, expected);
   }
   const store = createGenerationStore('token', async () => new Response('secret SQL row', { status: 500 }));
@@ -210,4 +210,36 @@ test('curriculum loader rejects tampering and oversized content before caching a
   });
   assert.equal(destination, origin + '/teachers/generation-curriculum.json'); assert.equal(loaded.topics.length, 232);
   assert.equal(await loadGenerationCurriculum(origin, async () => { throw Error('verified cache should avoid fetch'); }), loaded);
+});
+
+test('old intake and impossible teaching bounds fail before bot verification or enqueue', async () => {
+  const old = {...lesson,version:1}; delete (old as any).lessonBoundary;
+  for(const value of [old, {...lesson,lessonBoundary:undefined},
+    {...lesson,lessonBoundary:{version:1,kind:'division_facts',allowedDivisors:[10],maxDividend:10}}]) {
+    const f=fixture(); const response=await handleTeacherGeneration(post(input({lesson:value})),f.deps);
+    assert.equal(response.status,422);
+    assert.ok(!f.calls.includes('bot') && !f.calls.includes('enqueue'));
+  }
+});
+
+test('completed legacy job remains readable and downloadable without intake revalidation', async () => {
+  const f=fixture(); const old={...lesson,version:1}; delete (old as any).lessonBoundary;
+  f.store.get=async()=>({...job,lesson:old,status:'needs_review',result:{automatedChecksPassed:true}});
+  assert.equal((await handleTeacherGeneration(new Request(origin+'/api/teacherGeneration?id='+jobId),f.deps)).status,200);
+  assert.equal((await handleTeacherGeneration(new Request(origin+'/api/teacherGeneration?id='+jobId+'&file=pdf'),f.deps)).status,200);
+});
+
+
+test('fresh old-worker heartbeats cannot advertise v2 readiness or enqueue but history remains available', async () => {
+  for(const acceptedIntakeVersions of [undefined, [1], ['2'], null]) {
+    const f=fixture();
+    f.store.health=async()=>({online:true,capabilities:{acceptedIntakeVersions,topics:[]}} as any);
+    f.store.list=async()=>[{...job,lesson:{...lesson,version:1}}] as any;
+    const status=await handleTeacherGeneration(new Request(origin+'/api/teacherGeneration'),f.deps);
+    const body=await status.json(); assert.equal(body.online,false); assert.equal(body.jobs.length,1);
+    await code(await handleTeacherGeneration(post(),f.deps),503,'GENERATOR_OFFLINE');
+    assert.ok(!f.calls.includes('bot') && !f.calls.includes('enqueue'));
+    const store=createGenerationStore('token',async()=>Response.json([{updated_at:new Date().toISOString(),capabilities:{acceptedIntakeVersions}}]));
+    assert.equal((await store.health()).online,false);
+  }
 });

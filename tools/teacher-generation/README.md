@@ -46,13 +46,24 @@ the provider or access the database/network queue. It performs validation,
 verifies all skill file hashes, then executes fixed adapters and skill tools
 in subprocesses. Each job must have its own empty directory.
 
-Intake v1: `gradeNumber`, `topicId`, `level`, `lessonGoal`, `lastLesson`,
+New jobs require intake v2: `gradeNumber`, `topicId`, `level`, `lessonGoal`, `lastLesson`,
 `alreadyLearned`, `minutes`, `questionCount`, optional `classLabel`,
-`taughtThroughTopicId`, `explicitShortSheet`. The web intake validates the
+`taughtThroughTopicId`, `explicitShortSheet`, and `lessonBoundary`. Division
+boundaries specify `allowedDivisors` and `maxDividend`; equations require an
+explicit `allowSignedNumbers` choice. Both the input and canonical numbers
+are checked. Impossible division limits with fewer than nine distinct positive
+facts fail before any billed author request. Derived distractors, substitutions
+and challenge values are checked before markup too. The web intake validates the
 complete curriculum selection. This runner additionally checks its narrow
 capability and the requested volume. In this pilot the taught-through topic
 must equal the chosen topic. Free-text progress informs authoring; it is not
 an independently verified knowledge map or permission to introduce concepts.
+`minutes` is authoring context, not a calibrated time-to-volume planner. The
+pilot keeps its fixed 12/20 question counts and does not promise an exact lesson
+duration. Legacy v1 fixtures require the explicit **offline-only**
+`--allow-legacy-intake` / `allow_legacy=True` option; the website worker denies
+them and advertises accepted intake version 2. Free text is not parsed as an
+alternative to the structured boundary.
 
 The output structure is documented in `model-output.schema.json`; the
 authoritative semantic validator is `validation.py`. Arithmetic uses bounded
@@ -107,11 +118,11 @@ renderer check; `provider.configured=false` then explicitly remains visible.
 ```sh
 python3 -m unittest discover -s tools/teacher-generation/tests -v
 python3 tools/teacher-generation/runner.py \
-  --lesson tools/teacher-generation/examples/elementary-lesson.json \
+  --allow-legacy-intake --lesson tools/teacher-generation/examples/elementary-lesson.json \
   --model-output tools/teacher-generation/examples/elementary-model.json \
   --out tools/teacher-generation/local-output/elementary
 python3 tools/teacher-generation/runner.py \
-  --lesson tools/teacher-generation/examples/middle-lesson.json \
+  --allow-legacy-intake --lesson tools/teacher-generation/examples/middle-lesson.json \
   --model-output tools/teacher-generation/examples/middle-model.json \
   --out tools/teacher-generation/local-output/middle
 ```
@@ -128,9 +139,10 @@ answer layout. No diagrams are emitted.
 
 Middle: trusted fixed `content.py` loads data in `levels.json` →
 `build_v72.py --pkg JOB` → unchanged `build_plus.py` → four independent
-checkers → DOCX from the same IR → Word RTL/parity gates. All strict defaults
-remain on. This is a full broad worksheet, without `SHEET`: section-specific
-G85–G92 and catalog/landing steps explicitly report **SKIP (legacy)**, never
+checkers → DOCX from the same IR → Word RTL/parity gates → the scoped
+`docx_web_layout.py` repair → final Word RTL/parity gates again. All strict
+defaults remain on. This is a full broad worksheet, without `SHEET`: section-specific
+G85–G89/G92 and catalog/landing steps explicitly report **SKIP (legacy)**, never
 PASS. It is not the new subtopic-sectioned pipeline. Native `wspec/1` JSON
 exists in the skill, but its geometry-centric schema is not substituted for
 the native algebra builder by pretending unsupported constraints exist.
@@ -163,12 +175,16 @@ Supported `prefixItems` constraints fix each position's parameter schema;
 local `$defs` references avoid repeating large item definitions.
 
 The author-only object is `{"version":N,"questions":[{"items":[...]}]}`.
-Each question has 3–6 items. The exact enabled topic fixes the version:
+Each question has 3–6 items unless the tighter boundary below applies.
+The exact enabled topic fixes the version:
 
 - Grade 3 division uses **version 2**: `{"divisor":3,"quotient":4}`. Divisor is 1–10; quotient
   is 0–10, or 1–10 in a missing-divisor position to keep its solution unique.
   Trusted code constructs `left = divisor × quotient`, `right = divisor` and
-  `answer = quotient`, with operation fixed to division.
+  `answer = quotient`, with operation fixed to division. The per-lesson schema
+  restricts the divisor and maximum quotient for each allowed divisor so the
+  product cannot exceed `maxDividend`. Item count is capped when the selected
+  fact set cannot support six distinct parts in every question of a kind.
 - Grade 7 equations use **version 3**: `{"a":2,"solution":4}`. Bounds are
   a 1–12 and solution −15..15. Trusted code assigns a distinct b to each of
   the 120 available item positions: +1, −1, +2, −2, …, +60, −60. A question
@@ -179,6 +195,11 @@ Each question has 3–6 items. The exact enabled topic fixes the version:
   in the November 13 owner trial without removing the duplicate validator.
   Here solution is a design parameter for a newly constructed equation, not
   the model's claimed solution to a pre-existing equation.
+  With `allowSignedNumbers: false`, each question instead has **exactly three**
+  items, solution 0..15 and `b = questionIndex × 3 + itemIndex + 1` (zero-based
+  indices). Thus the 60 offsets are distinct positive integers, c stays in
+  1..240, and no signed numbers are introduced. The canonical 3–6 item rule is
+  unchanged; this authoring profile is intentionally narrower.
 
 The complete raw object is checked for exact shape, types and bounds before
 any derivation. Extra `answer`, `c`, `kind`, `star` or other fields fail closed.
@@ -187,7 +208,55 @@ task-balance and layout gates still run; no missing items are filled in and
 no failed output is automatically retried. This is explicit construction from parameters,
 not repair of an incorrect answer that the model asserted. The model selects
 parameters in the teacher's learned-topic context; that context is not itself
-an independently verified knowledge map.
+an independently verified knowledge map. Numeric examples are no longer sent
+in the prompt. Its schema and task plan describe the structure without anchoring
+the first exercise to fixed sample numbers.
+
+### Additional pilot didactic checks
+
+`author_quality.py` runs after exact canonical validation in the provider and
+again in the trusted adapter, so offline input cannot bypass it. These are
+bounded quality checks, not proof of complete pedagogy:
+
+- `AUTHOR_EXAMPLE_COPY` rejects a first question starting with the exact three
+  parameter pairs previously used as the fixed prompt demonstration.
+- `AUTHOR_NUMERIC_PATTERN` rejects a joint whole-sheet pattern on at least
+  24 equation parts: both coefficient and solution streams must be regular to
+  trigger it. Regular means an exact period of at most 12 repeated at least
+  three times, or unit steps in at least 90% of adjacent pairs. The intentionally
+  derived b stream is excluded. A short warm-up, or a single fixed coefficient
+  with varied solutions, does not by itself fail. These thresholds are an
+  explicit pilot policy, not a numerical threshold claimed by the skills.
+- `AUTHOR_ANSWER_CONCENTRATION` rejects one value accounting for at least 90%
+  of at least 24 answers. For equations this measures the solution x even in
+  construct tasks; otherwise changing the requested unknown could hide a whole
+  sheet of equations solved by x=0. For arithmetic it measures the actual
+  requested answer (quotient, missing dividend or missing divisor). Short drills
+  are excluded. This is a documented pilot threshold, not semantic evaluation.
+- `AUTHOR_DIVISION_TEMPLATE` rejects only the combined whole-sheet pattern of
+  at least 24 parts, exactly the same ordered divisor triple in every question,
+  and a uniform quotient within each question. The same three teacher-selected
+  divisors alone remain allowed when the quotient combinations vary. This rule
+  does not ban every repeated fact or claim that retrieval practice is wrong.
+- `distractors.py` selects named mistakes such as confusing divisor with
+  quotient, subtracting only once, omitting division by a coefficient or using
+  the wrong inverse operation. Every proposed value is independently checked
+  as false and bounded; the sheet must use at least three mistake families and
+  three different answer offsets when it has six or more error-check parts.
+  `AUTHOR_DISTRACTOR_VARIETY` blocks parameters that cannot meet that rule.
+
+Correct authored exercises are never shuffled or changed to disguise a failed
+pattern. Failed output is not retried automatically. `didactic-evidence.json`
+records the quality policy and each selected mistake in the private work
+directory; only PDF/DOCX are uploaded. The deliberate `x+1` comparison in a
+construct challenge remains: it teaches change by one and is not a wrong-answer
+distractor. Challenge instructions now place the colon after the entire
+instruction; the DOCX adapter explicitly recognizes both the new and historical
+wording while preserving all answer-writing lines. Existing frozen trial
+results below are historical and are not fresh acceptance for this policy.
+The elementary PDF answer block stays together with its heading; the installed
+skill files remain unchanged.
+
 The provider's documented
 [structured output support](https://www.alibabacloud.com/help/en/model-studio/qwen-structured-output)
 includes Qwen3.8-Flash. Semantic validation still independently checks answers,
@@ -338,10 +407,45 @@ The grade 7
 sample stays within the declared first-degree equations, substitution and
 signed-number scope. Its 60 parts have not been classroom-timed for the requested
 45 minutes, and exact taught-through progression remains a teacher judgment.
-**LibreOffice visual review passed; actual Microsoft Word application review
-is still BLOCKED** by the computer-use server timeout. These are separate
-checks. Neither sample is human-approved for public catalog delivery; the
+At that historical checkpoint, **LibreOffice visual review passed while actual
+Microsoft Word application review was BLOCKED** by the computer-use server
+timeout. The subsequent Word-web findings and repair are recorded below.
+Neither sample is human-approved for public catalog delivery; the
 owner pilot still leaves worksheet acceptance to the teacher.
+
+### Word-web repair verified on November 13
+
+Actual Word web reproduced overlapping inline equations and Hebrew in the
+grade 7 file, despite its clean LibreOffice rendering. Removing OMML boxes
+alone did not fix the defect. The final repair is restricted to **grade 7,
+`g7:equations`, level B, integer linear expressions**. It converts the pinned
+emitter's simple x/k expressions to editable Cambria Math text with explicit
+LTR direction and LRM boundaries, an alternative explicitly allowed by the
+pinned checker's R7/R8 contract. These are editable mathematical text runs,
+**not native Word equation objects**. Fractions, roots, powers, unknown symbols,
+unknown formatting properties and other topic/grade families fail closed.
+No installed skill or checker was changed.
+
+Each answer subitem uses its own paragraph; `keepLines`, within-answer
+`keepNext`, and `cantSplit` keep its answer group together. Actual Word web
+confirmed the final representative file has no observed overlaps and keeps
+answer 11's three subitems on one page (10 pages in Word web, 9 in LibreOffice).
+The verified representative DOCX SHA256 is
+`0d294e26096d8bc40ba1c07af1b0ef15e154ba5079f6c2495bef564fb85cf7d1`.
+The signed and positive-only offline fixtures also passed G90/G91 and a
+complete nine-page LibreOffice review each. This does not automatically approve
+future generated worksheets, and desktop Word was not tested by this check.
+
+The runner preserves `out/docx/b/sheet.docx` and `out/v72-report.json` unchanged.
+It writes the repaired copy to `out/docx/b/sheet-web.docx`, runs final G90/G91
+against `out/deliver/b/sheet.json`, and exposes only that copy as the final
+Word artifact. The outer manifest records the postprocessor hash, original
+and final DOCX hashes, unchanged upstream-report hash and final gate report.
+Failed conversion, source-parity verification or final gates expose no
+downloadable artifacts. Publication uses an atomic no-overwrite operation;
+an I/O error leaves no partially written destination. All printed text,
+mathematical values, their order and bookmarks are checked for preservation.
+The complete Python suite passed **120/120** tests after this integration.
 
 ## Hosting boundary
 

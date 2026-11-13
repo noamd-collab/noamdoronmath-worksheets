@@ -3,6 +3,10 @@ import { TEACHER_SESSION_COOKIE } from './teacherAccess';
 
 export const GENERATION_BUCKET = 'teacher-generation-private';
 export const GENERATION_STATES = ['queued', 'running', 'needs_review', 'failed'] as const;
+/** A fresh heartbeat alone is not enough during an intake-contract rollout. */
+export function workerAcceptsCurrentIntake(capabilities: any): boolean {
+  return Array.isArray(capabilities?.acceptedIntakeVersions) && capabilities.acceptedIntakeVersions.includes(2);
+}
 export type GenerationState = typeof GENERATION_STATES[number];
 export const uuid = (v: unknown): v is string => typeof v === 'string' && /^[a-f0-9]{8}-[a-f0-9]{4}-[1-5][a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/.test(v);
 export class GenerationStoreError extends Error {
@@ -66,7 +70,7 @@ export function createGenerationStore(token: string, fetcher: typeof fetch = fet
       const rows = await request('/rest/v1/noam_teacher_generation_workers?id=eq.primary&select=updated_at,capabilities&limit=1');
       const row = Array.isArray(rows) ? rows[0] : null;
       const age = Date.now() - Date.parse(row?.updated_at);
-      return { online: Number.isFinite(age) && age >= -10000 && age < 90000, capabilities: row?.capabilities ?? null };
+      return { online: Number.isFinite(age) && age >= -10000 && age < 90000 && workerAcceptsCurrentIntake(row?.capabilities), capabilities: row?.capabilities ?? null };
     },
     async list() { return request('/rest/v1/noam_teacher_generation_jobs?select=' + columns + '&order=created_at.desc&limit=20'); },
     async get(id: string) {

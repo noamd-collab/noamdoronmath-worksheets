@@ -4,6 +4,7 @@ from __future__ import annotations
 import json
 from fractions import Fraction
 from pathlib import Path
+from lesson_boundary import validated_boundary, validate_boundary_item
 
 HERE = Path(__file__).resolve().parent
 MAX_JSON_BYTES = 200_000
@@ -36,8 +37,8 @@ def capabilities():
 
 def capability(lesson):
     if not isinstance(lesson,dict): reject("INVALID_LESSON", "Expected a lesson object")
-    if type(lesson.get("gradeNumber")) is not int or type(lesson.get("version")) is not int or lesson.get("version") != 1:
-        reject("INVALID_LESSON", "Expected version 1 and integer gradeNumber")
+    if type(lesson.get("gradeNumber")) is not int or type(lesson.get("version")) is not int or lesson.get("version") not in (1, 2):
+        reject("INVALID_LESSON", "Expected a supported intake version and integer gradeNumber")
     for cap in capabilities()["topics"]:
         if cap["topicId"] == lesson.get("topicId") and cap["gradeNumber"] == lesson["gradeNumber"]:
             if not cap.get("enabled"):
@@ -69,8 +70,9 @@ def calculate(left, op, right):
     reject("INVALID_MODEL_OUTPUT", "Unknown operation or division by zero")
 
 
-def validate_lesson(lesson):
+def validate_lesson(lesson, *, allow_legacy=False):
     cap = capability(lesson)
+    validated_boundary(lesson, allow_legacy=allow_legacy)
     if lesson.get("level") not in ("a", "b", "e"):
         reject("INVALID_LESSON", "Expected level a, b or e")
     if lesson["level"] not in cap.get("levels", []):
@@ -104,8 +106,9 @@ def validate_lesson(lesson):
     return cap
 
 
-def validate_model(lesson, payload):
-    cap = validate_lesson(lesson)
+def validate_model(lesson, payload, *, allow_legacy=False):
+    cap = validate_lesson(lesson, allow_legacy=allow_legacy)
+    boundary = validated_boundary(lesson, allow_legacy=allow_legacy)
     if len(json.dumps(payload, ensure_ascii=False).encode()) > MAX_JSON_BYTES:
         reject("INVALID_MODEL_OUTPUT", "Model output too large")
     exact(payload, ("version", "questions"), "root")
@@ -162,6 +165,7 @@ def validate_model(lesson, payload):
                     for place in (1, 10, 100, 1000, 10000):
                         if item["op"] == "add" and (la//place%10)+(rb//place%10) >= 10: reject("INVALID_MODEL_OUTPUT", "Regrouping before taught")
                         if item["op"] == "subtract" and la//place%10 < rb//place%10: reject("INVALID_MODEL_OUTPUT", "Borrowing before taught")
+            validate_boundary_item(boundary, item)
             fingerprint = (q["kind"], json.dumps(item, sort_keys=True))
             if fingerprint in seen: reject("DUPLICATE_ITEM", "Duplicate task in worksheet")
             seen.add(fingerprint)

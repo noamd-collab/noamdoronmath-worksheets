@@ -29,14 +29,19 @@ def verify_skill(kind, path):
     return root,pin
 
 
-def render_job(lesson, model_payload, workdir, skill_paths=None):
+def render_job(lesson, model_payload, workdir, skill_paths=None, *, allow_legacy=False):
     """Validate first, build into a new directory, return manifest. No provider calls.
 
     Ready-for-human-review is never publication approval. A failed gate returns
     status failed with no downloadable artifacts. Caller owns authorization,
     job leasing and storage. skill_paths is trusted operator configuration only.
     """
-    cap=validate_model(lesson,model_payload)
+    cap=validate_model(lesson,model_payload,allow_legacy=allow_legacy)
+    if cap['skill']=='middle' and not (
+        lesson['gradeNumber']==7 and lesson['topicId']=='g7:equations'
+        and lesson['level']=='b' and cap['family']=='linear_equation'
+    ):
+        reject('UNSUPPORTED_WORD_LAYOUT','The verified Word-web repair covers only the grade 7 basic linear-equation pilot')
     paths=skill_paths or {k:os.environ.get(v) for k,v in [('elementary','ELEMENTARY_SKILL_PATH'),('middle','MIDDLE_SKILL_PATH')]}
     if not paths.get(cap['skill']): reject('RUNTIME_NOT_CONFIGURED','Set the configured skill path on the runner')
     skill,pin=verify_skill(cap['skill'],paths[cap['skill']])
@@ -59,8 +64,9 @@ def render_job(lesson, model_payload, workdir, skill_paths=None):
             return ok
         except subprocess.TimeoutExpired:
             steps.append({'name':name,'status':'FAIL','reason':'RENDER_TIMEOUT'});return False
-    ok=run('trusted-adapter',[HERE/'adapters.py','--skill',skill,'--work',work])
+    ok=run('trusted-adapter',[HERE/'adapters.py','--skill',skill,'--work',work]+(['--allow-legacy-intake'] if allow_legacy else []))
     outputs=[]
+    word_postprocess=None
     if ok and cap['skill']=='elementary':
         for name,args in [
             ('content-truth',[skill/'scripts/lib/content_truth.py','--work',work,'--quiet']),
@@ -77,7 +83,39 @@ def render_job(lesson, model_payload, workdir, skill_paths=None):
     elif ok:
         ok=run('middle-build',[skill/'build_v72.py','--pkg',work])
         key={'a':'a','b':'b','e':'c'}[lesson['level']]
-        outputs=[f'out/deliver/{key}/sheet.pdf',f'out/docx/{key}/sheet.docx']
+        original=f'out/docx/{key}/sheet.docx'
+        final=f'out/docx/{key}/sheet-web.docx'
+        upstream_report=work/'out/v72-report.json'
+        if ok and (not (work/original).is_file() or not upstream_report.is_file()):
+            ok=False;steps.append({'name':'word-upstream-presence','status':'FAIL'})
+        if ok:
+            original_sha=sha(work/original)
+            upstream_sha=sha(upstream_report)
+            ok=run('word-web-layout',[HERE/'docx_web_layout.py','--input',work/original,
+                '--output',work/final,'--manifest',work/'logs/word-web-layout.json'])
+            if ok:
+                # Preserve the upstream build's hash-bearing files and report.
+                provenance=read_json(work/'logs/word-web-layout.json')
+                intact=(sha(work/original)==original_sha and sha(upstream_report)==upstream_sha
+                    and provenance.get('sourceSha256')==original_sha
+                    and (work/final).is_file() and provenance.get('outputSha256')==sha(work/final)
+                    and provenance.get('printedTextSequencePreserved') is True
+                    and provenance.get('bookmarksPreserved') is True)
+                steps.append({'name':'word-source-provenance','status':'PASS' if intact else 'FAIL'})
+                ok=intact
+            if ok:
+                ok=run('word-web-rtl-parity',[skill/'check_docx_rtl.py',work/final,
+                    '--source',work/f'out/deliver/{key}/sheet.json',
+                    '--json',work/'logs/word-web-rtl-parity.json'])
+            if ok:
+                word_postprocess={'scope':'grade7/basic/linear_equation','format':'editable-ltr-math-text',
+                    'postprocessorSha256':sha(HERE/'docx_web_layout.py'),
+                    'sourceDocx':{'path':original,'sha256':original_sha},
+                    'upstreamBuildReport':{'path':'out/v72-report.json','sha256':upstream_sha},
+                    'finalDocx':{'path':final,'sha256':sha(work/final)},
+                    'provenanceReport':'logs/word-web-layout.json',
+                    'finalGateReport':'logs/word-web-rtl-parity.json'}
+        outputs=[f'out/deliver/{key}/sheet.pdf',final]
     artifacts=[]
     if ok:
         for name in outputs:
@@ -85,16 +123,20 @@ def render_job(lesson, model_payload, workdir, skill_paths=None):
             if not path.is_file(): ok=False;steps.append({'name':'artifact-presence','status':'FAIL'});break
             artifacts.append({'path':name,'sha256':sha(path),'bytes':path.stat().st_size,'kind':'pdf' if name.endswith('.pdf') else 'docx'})
     manifest={'version':1,'status':'needs_review' if ok else 'failed','automatedChecksPassed':bool(ok and len(artifacts)==2 and all(s['status']=='PASS' for s in steps)),'skill':{'name':cap['skill'],'version':pin['version'],'sha256':pin['sha256']},'topicId':lesson['topicId'],'gradeNumber':lesson['gradeNumber'],'modelInputSha256':sha(work/'model-output.json'),'adapterSha256':sha(HERE/'adapters.py'),'steps':steps,'artifacts':artifacts if ok else [],'review':{'mathematical':'exact typed arithmetic verified; prose/template review pending','visual':'pending; every final PDF page and actual Word rendering must be inspected','curriculum':'bounded topic allowlist; free-text progress is not independently verified','publication':'not approved; private owner preview only'}}
+    manifest['lessonBoundary']=lesson.get('lessonBoundary')
+    manifest['legacyIntakeOffline']=bool(allow_legacy and lesson.get('version')==1)
     manifest['docxLayoutSha256']=sha(HERE/'docx_layout.py')
+    if word_postprocess is not None:
+        manifest['wordPostprocess']=word_postprocess
     dump(work/'manifest.json',manifest)
     return manifest
 
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--lesson',required=True);p.add_argument('--model-output',required=True);p.add_argument('--out',required=True)
+    p=argparse.ArgumentParser();p.add_argument('--lesson',required=True);p.add_argument('--model-output',required=True);p.add_argument('--out',required=True);p.add_argument('--allow-legacy-intake',action='store_true',help='Offline reproduction of v1 intake only; never permitted for queued jobs')
     a=p.parse_args()
     try:
-        m=render_job(read_json(a.lesson),read_json(a.model_output),a.out)
+        m=render_job(read_json(a.lesson),read_json(a.model_output),a.out,allow_legacy=a.allow_legacy_intake)
         print(json.dumps({'status':m['status'],'manifest':str(Path(a.out)/'manifest.json'),'artifacts':m['artifacts']},ensure_ascii=False))
         sys.exit(0 if m['status']=='needs_review' else 1)
     except GenerationError as e:
