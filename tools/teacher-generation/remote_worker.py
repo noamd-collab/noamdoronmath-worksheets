@@ -18,7 +18,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from urllib.request import Request, build_opener, HTTPRedirectHandler, HTTPSHandler
 from urllib.error import HTTPError
-from provider import author_lesson
+from provider import author_lesson, safe_usage
 from runner import render_job
 from validation import GenerationError, capabilities, validate_lesson
 from preflight import check as check_readiness
@@ -83,6 +83,78 @@ def update_job(remote, job, values):
                      'PATCH',values,prefer='return=representation')
     if not isinstance(rows,list) or len(rows)!=1: raise RuntimeError('JOB_LEASE_LOST')
 
+def safe_validation_detail(value):
+    """Retain known local validation rules, never arbitrary exception/model text."""
+    fixed = {
+        'Duplicate model JSON key', 'Nonfinite number',
+        'Expected author parameter contract version 2',
+        'Expected author parameter contract version 3',
+        'Author question count must match the trusted plan',
+        'Expected 3–6 author parameter items per question',
+        'Author could not meet the requested topic/progress boundary',
+        'Duplicate task in worksheet', 'Equation solution does not satisfy the equation',
+        'Question kind/star must exactly match the trusted question plan',
+        'Model output too large', 'Unsupported model schema',
+        'Question count must match the requested count',
+    }
+    patterns = (
+        r'author root: expected fields version,questions',
+        r'author question [1-9][0-9]{0,2}: expected fields items',
+        r'author question [1-9][0-9]{0,2} item [1-9][0-9]?: expected fields (?:a,b,solution|a,solution|divisor,quotient)',
+        r'author question [1-9][0-9]{0,2} item [1-9][0-9]? (?:a|b|solution|derived c|divisor|quotient): integer outside allowed range',
+        r'(?:a|b|c|solution): integer outside allowed range',
+    )
+    if isinstance(value, str) and len(value) <= 240 and (value in fixed or any(re.fullmatch(p, value) for p in patterns)):
+        return value
+    return None
+
+
+def save_author_diagnostics(root, job_id, metadata, failure=None):
+    """Bounded private operator evidence, kept outside render/upload directories.
+
+    The author returns only sanitized measurements. Explicitly allowlist those
+    fields again here; no raw response, headers, lesson or credentials persist.
+    A diagnostics I/O failure must not replace the original authoring result.
+    """
+    try:
+        if not UUID.fullmatch(str(job_id)): return False
+        record = {'version': 1, 'jobId': job_id, 'recordedAt': utc().isoformat(),
+                  'stage': 'authoring', 'outcome': 'failed' if failure else 'passed'}
+        for key in ('responseReceived', 'validated'):
+            if type(metadata.get(key)) is bool: record[key] = metadata[key]
+        for key in ('requestedModel', 'responseModel'):
+            value = metadata.get(key)
+            if isinstance(value, str) and re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._-]{0,127}', value): record[key] = value
+        elapsed = metadata.get('elapsedSeconds')
+        if type(elapsed) in (int, float) and 0 <= elapsed <= 86400: record['elapsedSeconds'] = round(elapsed, 3)
+        record['usage'] = safe_usage(metadata.get('usage'))
+        if metadata.get('authorContract') in ('worksheet-parameters/2', 'worksheet-parameters/3'):
+            record['authorContract'] = metadata['authorContract']
+        derivation = metadata.get('derivation')
+        if isinstance(derivation, dict) and type(derivation.get('performed')) is bool:
+            record['derivationPerformed'] = derivation['performed']
+        validation = metadata.get('validationError')
+        validation = validation if isinstance(validation, dict) else {}
+        code = failure.code if isinstance(failure, GenerationError) else validation.get('code')
+        if isinstance(code, str) and re.fullmatch(r'[A-Z_]{1,60}', code): record['errorCode'] = code
+        detail = safe_validation_detail(validation.get('detail'))
+        if detail is None and isinstance(failure, GenerationError): detail = safe_validation_detail(str(failure))
+        if detail is not None: record['validationDetail'] = detail
+        data = (json.dumps(record, ensure_ascii=False, indent=2) + '\n').encode()
+        if len(data) > 8192: return False
+        folder = root / 'author-diagnostics'
+        if folder.is_symlink(): return False
+        folder.mkdir(mode=0o700, exist_ok=True)
+        folder.chmod(0o700)
+        path = folder / (job_id + '.json')
+        flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, 'O_NOFOLLOW', 0)
+        with os.fdopen(os.open(path, flags, 0o600), 'wb') as output:
+            output.write(data)
+        return True
+    except (OSError, TypeError, ValueError):
+        return False
+
+
 def process_job(remote, job, root):
     if job.get('owner_id')!=OWNER or not UUID.fullmatch(str(job.get('id',''))): raise RuntimeError('JOB_OWNER_DENIED')
     if job.get('status')!='running' or not UUID.fullmatch(str(job.get('lease_token',''))): raise RuntimeError('JOB_LEASE_LOST')
@@ -108,7 +180,15 @@ def process_job(remote, job, root):
     thread=threading.Thread(target=renew,daemon=True);thread.start()
     try:
         # One model invocation per claimed job. Failures require a new owner request.
-        payload=author_lesson(lesson)
+        metadata = {}; author_failure = None
+        try:
+            payload=author_lesson(lesson, metadata=metadata)
+        except Exception as exc:
+            author_failure = exc
+            raise
+        finally:
+            if not save_author_diagnostics(root, job['id'], metadata, author_failure):
+                print(json.dumps({'event':'author_diagnostics_unavailable','jobId':job['id']}),flush=True)
         if lost.is_set(): raise RuntimeError('JOB_LEASE_LOST')
         update_job(remote,job,{'phase':'rendering'})
         manifest=render_job(lesson,payload,target)

@@ -162,16 +162,21 @@ calculation/solve questions. The author must not supply `kind` or `star`.
 Supported `prefixItems` constraints fix each position's parameter schema;
 local `$defs` references avoid repeating large item definitions.
 
-The **author-only v2 contract** is
-`{"version":2,"questions":[{"items":[...]}]}`. Each question has 3–6 items:
+The author-only object is `{"version":N,"questions":[{"items":[...]}]}`.
+Each question has 3–6 items. The exact enabled topic fixes the version:
 
-- Grade 3 division: `{"divisor":3,"quotient":4}`. Divisor is 1–10; quotient
+- Grade 3 division uses **version 2**: `{"divisor":3,"quotient":4}`. Divisor is 1–10; quotient
   is 0–10, or 1–10 in a missing-divisor position to keep its solution unique.
   Trusted code constructs `left = divisor × quotient`, `right = divisor` and
   `answer = quotient`, with operation fixed to division.
-- Grade 7 equations: `{"a":2,"b":3,"solution":4}`. Bounds are a 1–12,
-  b −100..100 and solution −20..20. Trusted code constructs
-  `c = a × solution + b` for `a × x + b = c`; c outside −250..250 is rejected.
+- Grade 7 equations use **version 3**: `{"a":2,"solution":4}`. Bounds are
+  a 1–12 and solution −15..15. Trusted code assigns a distinct b to each of
+  the 120 available item positions: +1, −1, +2, −2, …, +60, −60. A question
+  reserves six positions even when it contains fewer items. It then constructs
+  `c = a × solution + b` for `a × x + b = c`. Every allowed combination has
+  c within −240..240, and no two complete equations share the same b.
+  The model cannot supply b. This prevents the repeated-equation failure seen
+  in the November 13 owner trial without removing the duplicate validator.
   Here solution is a design parameter for a newly constructed equation, not
   the model's claimed solution to a pre-existing equation.
 
@@ -179,15 +184,16 @@ The complete raw object is checked for exact shape, types and bounds before
 any derivation. Extra `answer`, `c`, `kind`, `star` or other fields fail closed.
 Canonical renderer v1 remains unchanged. All its math, duplicates, volume,
 task-balance and layout gates still run; no missing items are filled in and
-no failed output is retried. This is explicit construction from parameters,
+no failed output is automatically retried. This is explicit construction from parameters,
 not repair of an incorrect answer that the model asserted. The model selects
 parameters in the teacher's learned-topic context; that context is not itself
 an independently verified knowledge map.
 The provider's documented
 [structured output support](https://www.alibabacloud.com/help/en/model-studio/qwen-structured-output)
 includes Qwen3.8-Flash. Semantic validation still independently checks answers,
-task balance, stars and duplicate items. `{"version":2,"questions":[]}` is the
-schema-compatible inability response; it fails closed as `AUTHOR_UNSUPPORTED`,
+task balance, stars and duplicate items. An empty questions array with the
+topic's expected version is the schema-compatible inability response;
+it fails closed as `AUTHOR_UNSUPPORTED`,
 never a short worksheet. The 14,000 output-token limit remains bounded.
 Provider bodies, headers and credentials are never
 logged. Truncated/invalid/unsupported model output is rejected, with no
@@ -196,12 +202,19 @@ automatic billed retry. These implementation tests made **no provider calls**.
 An optional `metadata={}` argument is filled with requested/returned model,
 elapsed seconds, bounded token-usage counts and validation status; the function
 returns only validated canonical v1 data. Metadata also records
-`authorContract: worksheet-parameters/2` and `derivation` (canonical version,
+`authorContract: worksheet-parameters/2` or `/3` and `derivation` (canonical version,
 fixed construction rule and whether construction completed). Usage is retained when a response is
 truncated or fails validation, because a failed output can still incur cost.
 `validationError` contains only the local validator's fixed code/message; it
 never contains HTTP bodies or model-provided values. No currency cost is
 guessed by this module; the operator applies the verified provider/model price.
+
+The remote worker saves a second allowlisted subset in the private
+`jobs/author-diagnostics/<jobId>.json` (directory 0700, file 0600), including
+safe validation detail and usage for failed attempts. These files are never
+uploaded or returned by the website. The earlier trial lacking this metadata
+cannot be retroactively diagnosed. Distinct equations alone do not prove
+pedagogic variety; teacher review remains necessary.
 
 ## One-attempt authoring benchmark
 

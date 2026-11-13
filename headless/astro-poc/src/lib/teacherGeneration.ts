@@ -45,7 +45,7 @@ export async function handleTeacherGeneration(request: Request, deps: Generation
       return new Response(file.body, { headers: { ...TEACHER_PRIVATE_HEADERS,
         'Content-Type': kind === 'pdf' ? 'application/pdf' : 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
         'Content-Length': String(length), 'Content-Disposition': `attachment; filename="worksheet-${id}.${kind}"`,
-        'Content-Security-Policy': "default-src 'none'; sandbox",
+        'Content-Security-Policy': "default-src 'none'; sandbox allow-downloads",
       } });
     }
     if (!deps.enqueueKey && !deps.store) return error('GENERATION_UNAVAILABLE', 503);
