@@ -7,6 +7,7 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { describe, it } from 'node:test';
 import corrections from '../src/data/content-corrections.json';
 import { META_FIELDS, applyContentCorrections, topicPageCorrections } from '../src/lib/parity/contentCorrections.ts';
+import { restoreBeforePdfCopy } from './fixtures/pdf-only-topic-copy';
 
 type Fix = { before?: string; after?: string; swap?: string[]; reason: string };
 const byKind: Record<'topicPages' | 'blogPosts' | 'gradeHubs', Record<string, Fix[]>> = corrections;
@@ -27,7 +28,8 @@ describe('documented content corrections are applied', () => {
       const map = byKind[key];
       for (const [slug, fixes] of Object.entries(map)) {
         // Head meta is SEO copy and is not corrected here (see META_FIELDS).
-        const page = JSON.parse(read(kind, slug)) as Record<string, unknown>;
+        const stored = JSON.parse(read(kind, slug)) as Record<string, unknown>;
+        const page = kind === 'topic-pages' ? restoreBeforePdfCopy(slug, stored) : stored;
         for (const field of META_FIELDS) delete page[field];
         const text = JSON.stringify(page);
         for (const fix of fixes) {
@@ -78,7 +80,7 @@ describe('stored content keeps school notation', () => {
     assert.ok(slugs.length >= 90, `only ${slugs.length} production fixtures`);
     for (const slug of slugs) {
       const production = JSON.parse(readFileSync(new URL(`${slug}.production.json`, fixtures), 'utf8'));
-      const page = JSON.parse(read('topic-pages', slug));
+      const page = restoreBeforePdfCopy(slug, JSON.parse(read('topic-pages', slug)));
       assert.equal(page.title, production.title, `${slug}: title`);
       assert.equal(page.description, production.description, `${slug}: description`);
     }
