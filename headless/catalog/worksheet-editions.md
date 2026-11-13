@@ -1,8 +1,9 @@
 # Worksheet editions
 
-`worksheet-editions.v1.json` is an additive registry for elementary topics.
-It is intentionally empty until a complete reviewed three-level package is
-ready for publication. Synthetic examples live only under the Astro tests.
+`worksheet-editions.v1.json` is an additive registry for worksheet topics.
+It contains reviewed elementary publications. Middle-school support is staged;
+no middle-school publication is added by the adapter change. Synthetic examples
+live only under the Astro tests.
 
 `scripts/lib/worksheet-editions.cjs` validates the registry and merges it into
 the index-derived export and the Astro catalog loader. The schema describes the
@@ -15,6 +16,20 @@ Each row identifies a grade/topic, an immutable `editionId`, a pupil-facing
 canonical level codes `A`, `B`, `E`. The hashes name the actual PDF, canonical
 source, manifest, answer map, Word source and hints bundle. Structural validation
 does not itself verify those artifacts or confer review approval.
+
+Grades 7–9 additionally require an explicit `nativePrefix` belonging to that
+grade, and a `nativeExportSha256` for each level's public `noam-ai.json`.
+The native prefix is independent of the site's topic number: for example,
+topic 7/17 can bind to native package G7-T86, while topic 8/14 binds to G8-T84.
+The merger rejects missing or cross-grade bindings, even for unpublished rows.
+Elementary records retain their existing contract and reject these native fields.
+
+All editions currently open their own PDF directly (`usesViewer: false`,
+`aiHintShown: false`). Recording native provenance does not activate Noam AI,
+teacher-bank import or hints. The middle-school release still needs actual
+uploaded media IDs, verified measured manifests, answer/Word bindings and the
+separate server integration. No placeholder media IDs or hint hashes belong in
+the production registry. Noam supplies the three hints for each subitem.
 
 Only `published` rows reach the public catalog. `draft` and `reviewed` rows are
 still validated but never rendered. At most one published row per topic may set
@@ -43,7 +58,8 @@ node --import tsx --test tests/worksheet-editions.test.ts
 node node_modules/typescript/bin/tsc --noEmit -p tests/tsconfig.editions.json
 ```
 
-The tests preserve all 169 elementary topics and 507 old links, exercise two
-synthetic editions, check unpublished/default/rollback behavior, reject invalid
+The tests preserve all 169 elementary topics and 507 old links, plus all existing
+middle-school links. They exercise elementary and middle-school synthetic
+editions, check unpublished/default/rollback behavior, reject invalid
 identity reuse, execute the existing viewer's level-switch function, verify
 search links and inspect the card on desktop and phone in an isolated browser.

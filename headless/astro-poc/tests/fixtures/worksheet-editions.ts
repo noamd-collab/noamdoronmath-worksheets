@@ -16,3 +16,14 @@ function edition(grade: number, topicId: number, status: string) {
 export function editionFixture() {
   return { version: 1, editions: [edition(1, 5, 'published'), edition(2, 28, 'reviewed')] };
 }
+
+export function middleEditionFixture() {
+  return { version: 1, editions: [
+    [7, 17, 'G7-T86'], [8, 14, 'G8-T84'], [8, 15, 'G8-T87'], [9, 7, 'G9-T85'],
+  ].map(([grade, topicId, prefix]) => {
+    const row = edition(Number(grade), Number(topicId), 'published');
+    return { ...row, isDefault: false, nativePrefix: String(prefix), levels: row.levels.map(level => ({
+      ...level, nativeExportSha256: sha(`test-native-${prefix}-${level.key}`),
+    })) };
+  }) };
+}

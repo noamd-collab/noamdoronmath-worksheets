@@ -11,7 +11,7 @@ import { resolveEdition, topicEditions } from '../src/lib/catalog/editions';
 import { buildWorksheetHref } from '../src/lib/worksheetLinks';
 import { buildIndex } from '../src/lib/siteSearch/buildIndex';
 import { prepareIndex, search } from '../src/lib/siteSearch/engine';
-import { editionFixture } from './fixtures/worksheet-editions';
+import { editionFixture, middleEditionFixture } from './fixtures/worksheet-editions';
 import { mergeWorksheetEditions, worksheetLearningId } from '../../../scripts/lib/worksheet-editions.cjs';
 
 const require = createRequire(import.meta.url);
@@ -136,6 +136,49 @@ test('new and previous elementary editions open their own PDF without AI or data
       base.config.pdfBase + t.levels.find(l => l.key === level.key)!.pdfId + '.pdf');
   }
   assert.throws(() => buildWorksheetHref({ catalog: merged, grade: 1, topic: t, levelKey: 'a', editionId: 'missing' }), /Unavailable/);
+});
+
+test('middle-school native identities remain separate from topic IDs and preserve every existing edition', () => {
+  const actual = JSON.parse(readFileSync(new URL('../../catalog/worksheet-editions.v1.json', import.meta.url), 'utf8'));
+  const middle = middleEditionFixture();
+  const merged = mergeWorksheetEditions(committed, { version: 1, editions: [...actual.editions, ...middle.editions] });
+  assert.deepEqual(elementary(merged), elementary(committed));
+  for (const g of committed.grades) for (const t of g.topics) {
+    assert.deepEqual(topic(merged, g.grade, t.id).levels, t.levels);
+    assert.deepEqual(topic(merged, g.grade, t.id).routing, t.routing);
+  }
+  for (const row of middle.editions) {
+    const t = topic(merged, row.grade, row.topicId);
+    assert.equal(resolveEdition(t).editionId, 'legacy');
+    const edition = resolveEdition(t, row.editionId);
+    assert.equal(edition.routing.resolvedNoamPrefix, row.nativePrefix);
+    assert.equal(edition.routing.usesViewer, false);
+    assert.equal(edition.routing.aiHintShown, false);
+    for (const level of edition.levels) {
+      assert.equal(buildWorksheetHref({ catalog: merged, grade: row.grade, topic: t, levelKey: level.key, editionId: row.editionId }),
+        base.config.pdfBase + level.pdfId + '.pdf');
+    }
+  }
+  assert.deepEqual(mergeWorksheetEditions(merged, actual), committed, 'withdrawing only the middle editions restores the prior catalog');
+  middle.editions.forEach(row => { row.status = 'reviewed'; });
+  assert.deepEqual(mergeWorksheetEditions(committed, { version: 1, editions: [...actual.editions, ...middle.editions] }), committed);
+});
+
+test('middle-school rows reject missing or cross-grade native provenance before publication', () => {
+  for (const prefix of [undefined, '', 'G8-T86', 'G7-T86\n', 'G7-T86/../../', 'G7-T8']) {
+    const rows = middleEditionFixture();
+    (rows.editions[0] as any).nativePrefix = prefix;
+    rows.editions[0].status = 'draft';
+    assert.throws(() => mergeWorksheetEditions(base, rows), /nativePrefix/);
+  }
+  for (const hash of [undefined, '', 'a'.repeat(63), 'a'.repeat(64) + '\n']) {
+    const rows = middleEditionFixture();
+    (rows.editions[0].levels[0] as any).nativeExportSha256 = hash;
+    assert.throws(() => mergeWorksheetEditions(base, rows), /nativeExportSha256/);
+  }
+  const rows = registry();
+  (rows.editions[0] as any).nativePrefix = 'G7-T86';
+  assert.throws(() => mergeWorksheetEditions(base, rows), /nativePrefix/);
 });
 
 test('the dormant viewer level switch preserves an explicit edition URL and its sibling set', () => {
