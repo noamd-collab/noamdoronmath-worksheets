@@ -103,19 +103,25 @@ umask 077
 mkdir -p "$task_state/jobs" "$task_state/logs"
 chmod 700 "$task_state" "$task_state/jobs" "$task_state/logs"
 "$task_python" -B - "$task_repo" "$task_env" "$task_state" <<'PY'
-import os, plistlib, sys
+import os, plistlib, shutil, sys
 from pathlib import Path
 repo, env, state = map(Path, sys.argv[1:])
 program = repo / 'tools/teacher-generation'
 assert env.is_file() and not env.is_symlink()
 assert env.stat().st_uid == os.getuid() and env.stat().st_mode & 0o077 == 0
+helpers = [shutil.which(name) for name in ('pdfinfo', 'pdftoppm')]
+assert all(helpers), 'Install/verify PDF helpers before provisioning the service'
+paths = list(dict.fromkeys([str(program / '.venv/bin')]
+             + [str(Path(helper).parent) for helper in helpers]
+             + ['/opt/homebrew/bin', '/usr/local/bin', '/usr/bin', '/bin', '/usr/sbin', '/sbin']))
 config = {
     'Label': 'il.co.noamdoronmath.teacher-generation',
     'ProgramArguments': [str(program / '.venv/bin/python'), '-B',
                          str(program / 'remote_worker.py'), '--env-file', str(env),
                          '--work-dir', str(state / 'jobs')],
     'WorkingDirectory': str(repo),
-    'EnvironmentVariables': {'DYLD_FALLBACK_LIBRARY_PATH': '/opt/homebrew/lib'},
+    'EnvironmentVariables': {'DYLD_FALLBACK_LIBRARY_PATH': '/opt/homebrew/lib',
+                             'PATH': os.pathsep.join(paths)},
     'RunAtLoad': True, 'KeepAlive': True, 'ThrottleInterval': 30, 'Umask': 0o077,
     'StandardOutPath': str(state / 'logs/worker.log'),
     'StandardErrorPath': str(state / 'logs/worker-error.log'),
@@ -133,6 +139,9 @@ The exclusive plist creation intentionally refuses an overwrite. Inspect/reuse
 the existing reviewed plist for a restart; do not create a second worker or
 silently replace an active service. A process being present is not evidence of
 readiness: confirm a fresh heartbeat and the authenticated website status.
+The explicit nonsecret PATH preserves the verified PDF helpers under launchd's
+otherwise minimal environment. Run `--check-only` with this same environment,
+not only in an interactive shell.
 
 ```sh
 # Exact dedicated service status; does not print the secret env file.
@@ -178,3 +187,11 @@ Supabase CLI was not installed, its known token files/project link were absent,
 and its expected Keychain service entry was absent. No secret values were read
 into tool output. Runtime/server secret provisioning remains the root operator's
 responsibility; this snapshot is not a later deployment assertion.
+
+Subsequently, the root operator provisioned the existing project service-role
+JWT. This agent created the private env file and dedicated plist exclusively,
+verified their modes and parsed plist, and ran `--check-only` successfully with
+the minimal launch environment plus its explicit helper PATH. The real response
+was `worker_preflight_pass`, `claimVerified:false`, `providerCalled:false`,
+`heartbeatWritten:false`. No worker was started; startup awaits the final Word
+fix/freeze and the root operator's readiness signal.
