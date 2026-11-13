@@ -396,16 +396,16 @@ function main() {
     href: TEACHER_LANDING_PATH,
     audience: PK.teachers.tag + ' · ' + mustInclude(teachersHtml, 'כיתות א׳–ט׳'),
     contains: TEACHER_LANDING_DESCRIPTION,
-    how: 'עמוד בקרוב לציבור עם דוגמה מהמאגר הקיים. השירות בפיתוח ובבדיקות פרטיות, ואינו פתוח לשימוש הציבור. השירות העתידי מתוכנן להיות בתשלום. הכניסה לבדיקות מחייבת התחברות עם Google והרשאה לחשבון הבעלים בלבד; דפי העבודה הקיימים זמינים במאגר הציבורי.',
+    how: 'עמוד ציבורי עם דוגמה מהמאגר הקיים. כלי בחירת השאלות, ההדפסה והייצוא ל־Word זמינים לכל מי שמתחבר עם Google. בקרוב: יצירת דפי עבודה חדשים עם AI; השירות החדש בפיתוח ומתוכנן להיות בתשלום. דפי העבודה הקיימים זמינים גם במאגר הציבורי.',
   });
   push(records, {
     id: 'page-teachers-app',
     type: 'page',
-    title: 'בדיקות פרטיות · ' + textOf(teachersHtml, /<h1>([^<]+)<\/h1>/),
+    title: 'כלי המורים · ' + textOf(teachersHtml, /<h1>([^<]+)<\/h1>/),
     href: TEACHER_TOOL_PATH,
-    audience: 'חשבון הבעלים המורשה בלבד · ' + PK.teachers.tag + ' · ' + mustInclude(teachersHtml, 'כיתות א׳–ט׳'),
-    contains: 'כלי לבדיקות פרטיות בלבד; אינו פתוח לשימוש הציבור. ' + PK.teachers.desc,
-    how: 'בדיקות פרטיות לחשבון הבעלים בלבד, לאחר התחברות עם Google. ' + teachersHow,
+    audience: 'כל מי שמתחבר עם Google · ' + PK.teachers.tag + ' · ' + mustInclude(teachersHtml, 'כיתות א׳–ט׳'),
+    contains: 'בחירת שאלות, הדפסה וייצוא ל־Word מתוך המאגר הקיים לאחר התחברות עם Google.',
+    how: 'כלי העבודה הקיימים זמינים לכל מי שמתחבר עם Google. ' + teachersHow,
   });
   push(records, {
     id: 'page-learning',

@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs';
 import vm from 'node:vm';
 import {
   authorizeTeacherRequest, sanitizeTeacherReturnTo, teacherAccessFailure, verifyTeacherToken,
+  requireGoogleTeacher, requireOwnerTeacher, verifyGoogleTeacherToken,
   TEACHER_PRIVATE_HEADERS, TEACHER_SESSION_COOKIE, TEACHER_SESSION_COOKIE_OPTIONS,
 } from '../src/lib/teacherAccess';
 import { TEACHER_ACCESS_CONFIG, type TeacherAccessConfig } from '../src/lib/teacherAccessConfig';
@@ -30,6 +31,61 @@ const options = (user: unknown = owner()) => ({ config, now: () => now,
 const required = { ok: false, status: 401, code: 'TEACHER_SIGN_IN_REQUIRED' };
 const denied = { ok: false, status: 403, code: 'TEACHER_ACCESS_DENIED' };
 const unavailable = { ok: false, status: 503, code: 'TEACHER_AUTH_UNAVAILABLE' };
+const teacher = () => ({ ...owner(), id: '99999999-2222-4333-8444-555555555555',
+  identities: [{ provider: 'google', user_id: '99999999-2222-4333-8444-555555555555' }] });
+
+test('every verified Google teacher can use existing tools, while new generation remains owner-only', async () => {
+  for (const user of [owner(), teacher()]) {
+    const credential = token({ sub: user.id });
+    const request = new Request('https://www.noamdoronmath.co.il/teachers/app', {
+      headers: { cookie: `${TEACHER_SESSION_COOKIE}=${credential}` },
+    });
+    const accepted = { ok: true, userId: user.id, expiresAt: expiry };
+    assert.deepEqual(await verifyGoogleTeacherToken(credential, options(user)), accepted);
+    assert.deepEqual(await requireGoogleTeacher(request, options(user)), accepted);
+    assert.deepEqual(await requireOwnerTeacher(request, options(user)), user.id === config.ownerUserId ? accepted : denied);
+    assert.deepEqual(await authorizeTeacherRequest(request, options(user)), user.id === config.ownerUserId ? accepted : denied,
+      'The former authorizer retains its stricter owner policy for unconverted callers');
+  }
+});
+
+test('client metadata and an owner-looking email never upgrade another Google teacher to owner', async () => {
+  const user = { ...teacher(), user_metadata: { id: config.ownerUserId, ownerUserId: config.ownerUserId,
+    role: 'owner', teacherAccess: 'owner', email: 'owner@example.test' } };
+  const credential = token({ sub: user.id, role: 'owner', ownerUserId: config.ownerUserId });
+  assert.deepEqual(await verifyGoogleTeacherToken(credential, options(user)), { ok: true, userId: user.id, expiresAt: expiry });
+  assert.deepEqual(await verifyTeacherToken(credential, options(user)), denied);
+});
+
+test('Google tool access does not depend on owner configuration; owner generation fails closed when it is invalid', async () => {
+  const user = teacher(), credential = token({ sub: user.id });
+  for (const ownerUserId of ['', 'owner@example.test']) {
+    const configured = { ...options(user), config: { ...config, ownerUserId } };
+    assert.deepEqual(await verifyGoogleTeacherToken(credential, configured), { ok: true, userId: user.id, expiresAt: expiry });
+    assert.deepEqual(await verifyTeacherToken(credential, { ...configured, fetch: async () => {
+      assert.fail('Invalid owner configuration must not request upstream identity');
+    } }), unavailable);
+  }
+});
+
+test('Google access still rejects stale/forged identities and duplicate cookies before downstream work', async () => {
+  const user = teacher(), credential = token({ sub: user.id });
+  for (const altered of [
+    { ...user, email_confirmed_at: null }, { ...user, is_anonymous: true },
+    { ...user, app_metadata: { provider: 'email' }, user_metadata: { provider: 'google' } },
+    { ...user, identities: [{ provider: 'google', user_id: config.ownerUserId }] },
+  ]) assert.deepEqual(await verifyGoogleTeacherToken(credential, options(altered)), denied);
+  assert.deepEqual(await verifyGoogleTeacherToken(token({ sub: user.id, exp: now / 1000 }), options(user)), required);
+  assert.deepEqual(await verifyGoogleTeacherToken(token({ sub: config.ownerUserId }), options(user)), required);
+  for (const headers of [
+    { authorization: 'Bearer ' + credential },
+    { cookie: `${TEACHER_SESSION_COOKIE}=${credential}; ${TEACHER_SESSION_COOKIE}=${credential}` },
+  ]) for (const gate of [requireGoogleTeacher, requireOwnerTeacher]) {
+    assert.deepEqual(await gate(new Request('https://www.noamdoronmath.co.il/teachers/app', { headers }), {
+      ...options(user), fetch: async () => { assert.fail('Untrusted request credentials must not reach Auth'); },
+    }), required);
+  }
+});
 
 test('teacher config matches existing public Supabase project and uses only a publishable or anon key', () => {
   const context = { window: {} as { NOAM_LEARNING_CONFIG?: { url: string; key: string } } };
@@ -192,7 +248,7 @@ test('owner cookies and all failure responses remain private and non-indexable',
 });
 
 test('return path preserves teacher scope encoding and rejects other routes, tokens and URL tricks', () => {
-  for (const path of ['/teachers/app', '/teachers/start',
+  for (const path of ['/teachers/app', '/teachers/start', '/teachers/generate',
     '/teachers/app?grade=3&topic=10&level=a&edition=elementary-20261108-r1&minutes=20&pick=1%2C2',
     '/teachers/start?note=%D7%A9%D7%9C%D7%95%D7%9D']) assert.equal(sanitizeTeacherReturnTo(path), path);
   for (const attack of [

@@ -83,14 +83,14 @@ for (const [name, path] of clients) {
   test(`${name}: owner-gate errors render Hebrew guidance and one same-origin login link`, { timeout: 3000 }, async () => {
     for (const teacher of [false, true]) {
       for (const [status, code, expected] of [
-        [401, 'TEACHER_SIGN_IN_REQUIRED', 'כדי לבנות שיעור, יש להתחבר לחשבון Google המורשה.'],
-        [403, 'TEACHER_ACCESS_DENIED', 'החשבון הזה אינו מורשה לאזור המורים.'],
+        [401, 'TEACHER_SIGN_IN_REQUIRED', 'כדי לבנות שיעור, יש להתחבר לחשבון Google.'],
+        [403, 'TEACHER_ACCESS_DENIED', 'נדרש חשבון Google מאומת כדי להיכנס לאזור המורים.'],
       ] as const) {
         const h = widget(source, teacher);
         await h.submit({ error: responseError({ status }, { ok: false, error: code }) });
         const primary = h.document.getElementById('primary')!;
         assert.equal(h.document.getElementById('answer')!.textContent, expected);
-        assert.match(h.document.getElementById('details')!.textContent!, /בבדיקות פרטיות/);
+        assert.match(h.document.getElementById('details')!.textContent!, /זמינים לאחר התחברות עם Google/);
         assert.doesNotMatch(h.document.body.textContent!, /TEACHER_|existing export note/);
         assert.equal(primary.hidden, false);
         assert.equal(primary.getAttribute('href'), '/teachers/login');

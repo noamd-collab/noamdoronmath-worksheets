@@ -39,6 +39,7 @@ export default defineConfig({
       // Optional. Empty keeps the Token Plan default. A Model Studio key needs the matching base URL and model.
       QWEN_BASE_URL: envField.string({ context: 'server', access: 'secret', optional: true }),
       QWEN_MODEL: envField.string({ context: 'server', access: 'secret', optional: true }),
+      TEACHER_GENERATION_SERVICE_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
       NOAM_RECAPTCHA_SECRET_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
       NOAM_RECAPTCHA_V2_SITE_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
       NOAM_RECAPTCHA_V2_SECRET_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
