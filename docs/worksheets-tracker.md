@@ -1,3 +1,10 @@
+## 2026-11-13 — Six follow-up parallelogram PDFs, separate from PR456
+
+- Add MS-PROD-002 (G9-PAR-02 / G9-T88: proofs and symmetry) and MS-PROD-003 (G9-PAR-03 / G9-T89: converse theorems and identification), three levels each, to the existing grade-nine parallelogram topic. Focused labels describe the actual contents; no whole-topic replacement is claimed.
+- The six frozen PDFs total 69 pages and 274 subitems. Saved Wix upload receipts and 18 returned/CDN/site downloads match the exact frozen PDF SHA-256 digests; source sheet.json and native-export provenance are real. See [follow-up evidence](middle-school-followup-pdf-20261113.json).
+- Previous PDFs remain the default. All six links open PDFs directly; no Word download, Noam AI activation, teacher-picker entries, native asset publication or hint/DB import is introduced by these rows.
+- Local candidate only: these six files were not in PR456. No new PR number, GitHub merge, preview, deployment or live catalog publication is asserted here. The review/deployment gate remains separate.
+
 ## 2026-11-13 — Twelve middle-school PDFs, with previous editions retained
 
 - Add three levels each for grade 7 congruent shapes, transformations and symmetry; grade 8 cylinders; grade 8 cones; and grade 9 parallelograms. Show the additional editions in the worksheet catalog and all four matching landing pages.

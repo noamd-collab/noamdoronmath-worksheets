@@ -1,10 +1,17 @@
 # Worksheet editions
 
 `worksheet-editions.v1.json` is an additive registry for worksheet topics.
-It contains reviewed elementary publications and four middle-school PDF-only
-editions (12 PDFs). Synthetic examples live only under the Astro tests.
+It contains reviewed elementary publications and six middle-school PDF-only
+editions (18 PDFs). The first four sets (12 PDFs) are the PR456 scope; the two
+additional grade-nine parallelogram sets (6 PDFs) are a separate local candidate. Synthetic examples live only under the Astro tests.
 The middle-school publication evidence is recorded in
-`docs/middle-school-pdf-first-20261113.json`.
+`docs/middle-school-pdf-first-20261113.json`. The follow-up evidence is in
+`docs/middle-school-followup-pdf-20261113.json`: MS-PROD-002 contains proofs and
+symmetry; MS-PROD-003 contains converse theorems and identification. Both bind
+to site topic 9/7 with independent native prefixes G9-T88 and G9-T89. Their
+registry `published` status enables the candidate build only; it does not claim
+a live deployment. Legacy remains default, and Word, AI and teacher selection
+remain unavailable for these PDF-only additions.
 
 `scripts/lib/worksheet-editions.cjs` validates the registry and merges it into
 the index-derived export and the Astro catalog loader. The schema describes the

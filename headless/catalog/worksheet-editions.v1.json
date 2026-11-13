@@ -413,6 +413,90 @@
           "sourceSha256": "751da636ed85cdad991b5a886924f72a6c4a3deaf30a425f336369ddb03a896c"
         }
       ]
+    },
+    {
+      "grade": 9,
+      "topicId": 7,
+      "editionId": "ms-20261113-par-02-r1",
+      "label": "מקבילית — הוכחות וסימטריה · PDF",
+      "status": "published",
+      "isDefault": false,
+      "publicationMode": "pdf-only",
+      "nativePrefix": "G9-T88",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "b1e2fc9246c24ab5a2893fb47edab594",
+          "pdfSha256": "ee2eba0f636c4bf76ea49ddc743d80d86bff4e88593bccf175479bc690299370",
+          "worksheetId": "ms-g9-par-02-a-r1",
+          "revision": 1,
+          "nativeExportSha256": "806c6d00148f7f5b3784192213ef9d4ac47873e26c2a2ddf7e32cb92358f3f7b",
+          "sourceSha256": "d68928e139e54674b9d1ff7b0c0f36b23dc15321e28de8561d54ab8724afcc94"
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "23fff0c52ad54c9abebd49c036a5cb16",
+          "pdfSha256": "ad1b760479890bc85c1ca20ac55f552dfbc662adca89459dd6d7aad3c1005b0d",
+          "worksheetId": "ms-g9-par-02-b-r1",
+          "revision": 1,
+          "nativeExportSha256": "a1c0b46b742329433096412ec4a04014a6c515a38535d8599c9b6ad9b6619df0",
+          "sourceSha256": "1553a2afa9e158f22b08b5bb447fcfd8db26fdb0b657d903221406eb3afda5d2"
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "75d689c5b5a349e694c2e4f63978daac",
+          "pdfSha256": "6cb5228e0958fc593b5f77a77e85641726766a2841f06617bb4ab283215ea3ae",
+          "worksheetId": "ms-g9-par-02-c-r1",
+          "revision": 1,
+          "nativeExportSha256": "45bfe6066d20b5f18b1418c9cd8307abe70a173eab4fe86de19c931c919ddf15",
+          "sourceSha256": "fbfaadb83e337be49a8ab8161cc2b54e30998bc65ff66c9e9df4ca0c99a052c6"
+        }
+      ]
+    },
+    {
+      "grade": 9,
+      "topicId": 7,
+      "editionId": "ms-20261113-par-03-r1",
+      "label": "מקבילית — משפטים הפוכים וזיהוי · PDF",
+      "status": "published",
+      "isDefault": false,
+      "publicationMode": "pdf-only",
+      "nativePrefix": "G9-T89",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "26c3fb6b6b834a4b83a00a1f3efcbba5",
+          "pdfSha256": "c05ad358b83cc4ac6b1b67e6a0a38ae91c6a5e56e879e2cc7de0fe1e605e91af",
+          "worksheetId": "ms-g9-par-03-a-r1",
+          "revision": 1,
+          "nativeExportSha256": "5be27974f8b9bbb7d2d0a95c314376ce72f7d9196d529c7b24e53d6078644b79",
+          "sourceSha256": "c97af6f597947fe72873fb346a427a4a457d18b79d5e521eaa870dd29ff9f23e"
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "4a20f98d630b4c478a0876dd52b9ed40",
+          "pdfSha256": "a40ef513792a4a9e5a67f62b3f7a0030a9251a77f9d86378ec9e82aa1564299e",
+          "worksheetId": "ms-g9-par-03-b-r1",
+          "revision": 1,
+          "nativeExportSha256": "74255149ce477142196d7a17c38105c4e06c6e9acc552606fa8a50bc47e2d236",
+          "sourceSha256": "82b414cabdbd694a3a2819e70b588dbf36e0f26a5350b72c45a35686789d775e"
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "46f9202e918441928447db3c441f3d3f",
+          "pdfSha256": "7711a4eca4081b861960eab93288c153e7ef66f0b5c745347fde867abb3e62bd",
+          "worksheetId": "ms-g9-par-03-c-r1",
+          "revision": 1,
+          "nativeExportSha256": "18d389ff8899ab2a5706d83edd579701badbf94f639f7441be225298c4533b19",
+          "sourceSha256": "45607e250e9d7ba9aca4764062878a89249d9b5a2fe9a5c29f8f0aa96c99ee0b"
+        }
+      ]
     }
   ]
 }
