@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 import bundle from '../../data/teacher-question-previews.json';
-import { authorizeTeacherRequest, teacherAccessFailure, TEACHER_PRIVATE_HEADERS } from '../../lib/teacherAccess';
+import { requireGoogleTeacher, teacherAccessFailure, TEACHER_PRIVATE_HEADERS } from '../../lib/teacherAccess';
 
 export const prerender = false;
 
@@ -17,7 +17,7 @@ function loadPreviews() {
 }
 
 export const GET: APIRoute = async ({ url, request }) => {
-  const access = await authorizeTeacherRequest(request);
+  const access = await requireGoogleTeacher(request);
   if (!access.ok) return teacherAccessFailure(access);
   const pdfId = url.searchParams.get('pdfId') || '';
   if (!/^[a-f0-9]{32}$/.test(pdfId)) {

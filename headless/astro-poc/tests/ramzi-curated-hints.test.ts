@@ -69,6 +69,26 @@ it('canonical T40 manifest IDs cannot load old T32 hints, including matching has
  assert.equal(bank.get(sheet,old),null);assert.deepEqual(Array.from(bank.get(sheet,target).hints),hints);
  assert.equal(await bank.prefetch({...sheet,exercises:[{...sheet.exercises[0],id:old}]},{fetch:fetchRows([correct],calls)}),0);assert.equal(calls.length,1);
 });
+it('T67 whole-question ladders load under A/B/E, preserving exact PDF ownership and rejecting old C IDs',async()=>{
+ const rows=JSON.parse(readFileSync(new URL('../../../learning/ramzi-hints.json',import.meta.url),'utf8'));
+ for(const [level,pdf]of [['A','f34602adb8e048aab957308c7e8c6fcb'],['B','e67c24ee5b1e4f488c2241fd76d76162'],['E','d612e5de3fd24ee1a826410e42c3cab0']]){
+  const sheet=JSON.parse(read('noam-ai/manifests/'+pdf+'.json')),calls:any[]=[],{bank}=setup();
+  const current=rows.filter((r:any)=>r.exercise_id.startsWith('G8-T67-'+level+'-'));
+  assert.equal(sheet.levelCode,level);assert.equal(sheet.wholeQuestionGeometry,true);assert.equal(current.length,5);
+  const response=current.map((r:any)=>({exercise_id:r.exercise_id,hint_1:r.hints[0],hint_2:r.hints[1],hint_3:r.hints[2],source_pdf_hash:r.source_pdf_hash,source_native_sha256:r.source_native_sha256}));
+  assert.equal(await bank.prefetch(sheet,{fetch:fetchRows(response,calls)}),5);
+  assert.equal(new URL(calls[0].url).searchParams.get('exercise_id'),'like.G8-T67-'+level+'-Q*');
+  for(const r of current)assert.deepEqual(Array.from(bank.get(sheet,r.exercise_id).hints),r.hints);
+  const {bank:wrongPdf}=setup();
+  assert.equal(await wrongPdf.prefetch(sheet,{fetch:fetchRows(response.map((r:any)=>({...r,source_pdf_hash:'a'.repeat(32)})))}),0);
+  if(level==='E'){
+   assert.equal(bank.get(sheet,'G8-T67-C-Q01'),null);
+   const {bank:legacy}=setup();
+   assert.equal(await legacy.prefetch({...sheet,levelCode:'C',exercises:sheet.exercises.map((ex:any)=>({...ex,id:ex.id.replace('-E-','-C-')}))},{fetch:fetchRows(response,calls)}),0);
+   assert.equal(calls.length,1,'unsupported C cannot start a catalogue request');
+  }
+ }
+});
 it('invalid manifest hashes, levels and configured hosts never send a request',async()=>{
  const calls:any[]=[];
  for(const extra of [{pdfHash:'x'},{nativeExportSha256:'x'},{levelCode:'AB'},{prefix:'G9-T39&x=1'},{exercises:[]}]){const {bank}=setup();assert.equal(await bank.prefetch(manifest(extra),{fetch:fetchRows([],calls)}),0);}

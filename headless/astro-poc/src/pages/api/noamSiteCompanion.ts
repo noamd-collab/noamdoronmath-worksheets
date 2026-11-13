@@ -26,7 +26,7 @@ import { secretFromEnv } from '../../lib/noamSecrets';
 import { runtimeProcessEnv } from '../../lib/runtimeEnv';
 import { createWixRateBackend } from '../../lib/noamRateStore';
 import { createWixCaptchaUseStore } from '../../lib/noamCaptchaUses';
-import { authorizeTeacherRequest, teacherAccessFailure, TEACHER_PRIVATE_HEADERS } from '../../lib/teacherAccess';
+import { requireGoogleTeacher, teacherAccessFailure, TEACHER_PRIVATE_HEADERS } from '../../lib/teacherAccess';
 import { isTeacherToolRequest } from '../../lib/teacherRequest';
 
 export const prerender = false;
@@ -92,7 +92,7 @@ async function respond(context: Parameters<APIRoute>[0]): Promise<Response> {
   }
   const teacherRequest = isTeacherToolRequest(payload);
   if (teacherRequest) {
-    const access = await authorizeTeacherRequest(context.request);
+    const access = await requireGoogleTeacher(context.request);
     if (!access.ok) return teacherAccessFailure(access);
   }
   const result = await handleNoamSiteCompanion(context.request, {

@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "gradeNumber": 3,
+  "topicId": "ג10",
+  "level": "b",
+  "lessonGoal": "practice",
+  "lastLesson": "חילוק בתחום לוח הכפל ובדיקה בכפל",
+  "alreadyLearned": [
+    "כפל",
+    "חילוק"
+  ],
+  "minutes": 45,
+  "questionCount": 12,
+  "explicitShortSheet": false
+}

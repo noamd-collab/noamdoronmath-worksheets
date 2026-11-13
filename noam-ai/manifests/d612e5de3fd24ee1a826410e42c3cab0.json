@@ -7,7 +7,7 @@
   "prefix": "G8-T67",
   "topic": "סטטיסטיקה: איסוף מידע, קריאת מידע, שכיחות ושכיחות יחסית",
   "level": "c",
-  "levelCode": "C",
+  "levelCode": "E",
   "pageCount": 6,
   "exercisePageCount": 5,
   "answerStartPage": 6,
@@ -78,7 +78,7 @@
   ],
   "exercises": [
     {
-      "id": "G8-T67-C-Q01",
+      "id": "G8-T67-E-Q01",
       "q": 1,
       "part": "",
       "pin": {
@@ -110,7 +110,7 @@
       "geometryMethod": "question-heading"
     },
     {
-      "id": "G8-T67-C-Q02",
+      "id": "G8-T67-E-Q02",
       "q": 2,
       "part": "",
       "pin": {
@@ -142,7 +142,7 @@
       "geometryMethod": "question-heading"
     },
     {
-      "id": "G8-T67-C-Q03",
+      "id": "G8-T67-E-Q03",
       "q": 3,
       "part": "",
       "pin": {
@@ -174,7 +174,7 @@
       "geometryMethod": "question-heading"
     },
     {
-      "id": "G8-T67-C-Q04",
+      "id": "G8-T67-E-Q04",
       "q": 4,
       "part": "",
       "pin": {
@@ -213,7 +213,7 @@
       "geometryMethod": "question-heading"
     },
     {
-      "id": "G8-T67-C-Q05",
+      "id": "G8-T67-E-Q05",
       "q": 5,
       "part": "",
       "pin": {

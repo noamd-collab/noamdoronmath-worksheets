@@ -15,7 +15,7 @@ const compiled = ts.transpileModule(source, {
 }).outputText;
 const copy = (value: unknown) => JSON.parse(JSON.stringify(value));
 
-function route(options: { realEndpoint?: boolean; monitoringFailure?: 'lookup' | 'capture'; identity?: 'owner' | 'anonymous' | 'non-owner' } = {}) {
+function route(options: { realEndpoint?: boolean; monitoringFailure?: 'lookup' | 'capture'; identity?: 'owner' | 'anonymous' | 'non-owner' | 'non-google' } = {}) {
   const captures: any[] = [], consoleEntries: any[] = [], calls: string[] = [];
   let callback: (entry: unknown) => void;
   const keys = {
@@ -57,13 +57,13 @@ function route(options: { realEndpoint?: boolean; monitoringFailure?: 'lookup' |
     '../../lib/noamCaptchaUses': { createWixCaptchaUseStore: () => ({ async consume() { return true; } }) },
     '../../lib/teacherAccess': {
       ...teacherAccess,
-      authorizeTeacherRequest: async (request: Request) => {
+      requireGoogleTeacher: async (request: Request) => {
         calls.push('auth');
-        return teacherAccess.authorizeTeacherRequest(request, { config: authConfig, fetch: async (url, init) => {
+        return teacherAccess.requireGoogleTeacher(request, { config: authConfig, fetch: async (url, init) => {
           assert.equal(url, authConfig.supabaseUrl + '/auth/v1/user');
           assert.equal(new Headers(init?.headers).get('authorization'), 'Bearer ' + token);
           return Response.json({ id: userId, email: 'fixture@example.test', email_confirmed_at: '2026-01-01T00:00:00Z',
-            app_metadata: { provider: 'google' }, identities: [{ provider: 'google', user_id: userId }] });
+            app_metadata: { provider: options.identity === 'non-google' ? 'email' : 'google' }, identities: [{ provider: 'google', user_id: userId }] });
         } });
       },
     },
@@ -161,8 +161,17 @@ for (const monitoringFailure of ['lookup', 'capture'] as const) {
   });
 }
 
-test('unauthorized teacher requests stop before rate, CAPTCHA, model and monitoring work', async () => {
-  for (const identity of ['anonymous', 'non-owner'] as const) {
+test('a non-owner Google teacher reaches existing selection only after the unchanged rate and CAPTCHA gates', async () => {
+  const run = route({ realEndpoint: true, identity: 'non-owner' });
+  const response = await run.post();
+  assert.equal(response.status, 200);
+  assert.equal((await response.json()).code, 'MODEL_RESPONSE_FAILED');
+  assert.deepEqual(run.calls, ['auth', 'rate', 'verify', 'model']);
+  assert.equal(response.headers.get('cache-control'), 'private, no-store');
+});
+
+test('anonymous and non-Google teacher requests stop before rate, CAPTCHA, model and monitoring work', async () => {
+  for (const identity of ['anonymous', 'non-google'] as const) {
     const run = route({ realEndpoint: true, identity });
     const response = await run.post();
     assert.equal(response.status, identity === 'anonymous' ? 401 : 403);

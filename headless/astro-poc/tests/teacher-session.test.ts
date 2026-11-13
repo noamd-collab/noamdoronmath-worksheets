@@ -62,9 +62,10 @@ test('OAuth start cannot plant an external destination or retain an earlier owne
   assert.equal(jar.values.get(TEACHER_RETURN_COOKIE), '/teachers/start');
 });
 
-test('session bridge accepts only the server-verified owner and caps cookie lifetime to token expiry', async (t) => {
+for (const userId of [TEACHER_ACCESS_CONFIG.ownerUserId, '99999999-2222-4333-8444-555555555555']) {
+test(`session bridge accepts verified Google identity ${userId === TEACHER_ACCESS_CONFIG.ownerUserId ? 'owner' : 'teacher'} and caps cookie lifetime`, async (t) => {
   const expiry = Math.floor(Date.now() / 1000) + 120;
-  const claims = { sub: TEACHER_ACCESS_CONFIG.ownerUserId, iss: TEACHER_ACCESS_CONFIG.supabaseUrl + '/auth/v1', aud: 'authenticated', exp: expiry };
+  const claims = { sub: userId, iss: TEACHER_ACCESS_CONFIG.supabaseUrl + '/auth/v1', aud: 'authenticated', exp: expiry };
   const token = 'header.' + Buffer.from(JSON.stringify(claims)).toString('base64url') + '.signature';
   let calls = 0;
   t.mock.method(globalThis, 'fetch', async (url: string, options: RequestInit) => {
@@ -88,6 +89,7 @@ test('session bridge accepts only the server-verified owner and caps cookie life
   assert.ok(session.options.maxAge > 0 && session.options.maxAge <= 120);
   assert.equal(jar.values.has(TEACHER_RETURN_COOKIE), false);
 });
+}
 
 test('rejected token never sets a session and removes pending browser state', async (t) => {
   t.mock.method(globalThis, 'fetch', async () => new Response(null, { status: 401 }));
@@ -189,4 +191,27 @@ test('direct question and Word APIs deny anonymous requests before content looku
     assert.equal(response.headers.get('x-robots-tag'), 'noindex, nofollow');
     assert.equal((await response.json()).error, 'TEACHER_SIGN_IN_REQUIRED');
   }
+});
+
+test('existing question and Word APIs admit a verified non-owner Google teacher to input validation', async (t) => {
+  const userId = '99999999-2222-4333-8444-555555555555';
+  const claims = { sub: userId, iss: TEACHER_ACCESS_CONFIG.supabaseUrl + '/auth/v1', aud: 'authenticated', exp: Math.floor(Date.now() / 1000) + 120 };
+  const credential = 'header.' + Buffer.from(JSON.stringify(claims)).toString('base64url') + '.signature';
+  const headers = { cookie: `${TEACHER_SESSION_COOKIE}=${credential}` };
+  let calls = 0;
+  t.mock.method(globalThis, 'fetch', async (url: string) => {
+    calls++;
+    assert.equal(url, TEACHER_ACCESS_CONFIG.supabaseUrl + '/auth/v1/user');
+    return Response.json({ id: userId, email: 'teacher@example.test', email_confirmed_at: '2026-01-01T00:00:00Z',
+      app_metadata: { provider: 'google' }, identities: [{ user_id: userId, provider: 'google' }] });
+  });
+  const url = new URL(origin + '/api/teacherQuestionManifest?pdfId=invalid');
+  const preview = await manifest({ request: new Request(url, { headers }), url } as Parameters<typeof manifest>[0]);
+  assert.equal(preview.status, 400);
+  assert.equal(await preview.text(), 'Invalid worksheet');
+  const exported = await word({ request: request({}, { ...headers, 'content-type': 'text/plain' }, origin + '/api/teacherWordQuestions') } as Parameters<typeof word>[0]);
+  assert.equal(exported.status, 415);
+  assert.deepEqual(await exported.json(), { error: 'INVALID_REQUEST' });
+  assert.equal(calls, 2, 'Each operation revalidates the Google identity, without loading content for invalid input');
+  for (const response of [preview, exported]) assert.equal(response.headers.get('cache-control'), 'private, no-store');
 });

@@ -19,8 +19,8 @@ function request(query: string, token?: string) {
   }) } as Parameters<typeof GET>[0]);
 }
 
-/** Exercise the real route and owner verifier while isolating every Auth request. */
-function ownerRequests(t: TestContext, userId = TEACHER_ACCESS_CONFIG.ownerUserId) {
+/** Exercise the real route and Google verifier while isolating every Auth request. */
+function googleRequests(t: TestContext, userId = TEACHER_ACCESS_CONFIG.ownerUserId) {
   const token = 'header.' + Buffer.from(JSON.stringify({ sub: userId,
     iss: TEACHER_ACCESS_CONFIG.supabaseUrl + '/auth/v1', aud: 'authenticated',
     exp: Math.floor(Date.now() / 1000) + 600 })).toString('base64url') + '.synthetic-signature';
@@ -35,14 +35,14 @@ function ownerRequests(t: TestContext, userId = TEACHER_ACCESS_CONFIG.ownerUserI
   return async (query: string) => {
     const before = authCalls;
     const response = await request(query, token);
-    assert.equal(authCalls, before + 1, 'Every geometry request verifies the owner before serving content');
+    assert.equal(authCalls, before + 1, 'Every geometry request verifies the Google identity before serving content');
     for (const [key, value] of Object.entries(TEACHER_PRIVATE_HEADERS)) assert.equal(response.headers.get(key), value);
     return response;
   };
 }
 
 test('serves the current factoring release from compiled preview geometry to the authenticated owner', async (t) => {
-  const request = ownerRequests(t);
+  const request = googleRequests(t);
   const factoring = catalog.grades.find((grade: any) => grade.grade === 9).topics.find((topic: any) => topic.id === 2);
   const sheet = factoring.sheets.find((sheet: any) => sheet.level === 'a');
   assert.equal(sheet.pdfId, '2a6385d4e649433e89a2636d05be7e99');
@@ -74,7 +74,7 @@ test('preview geometry includes every active exercise sheet and no other sheet',
 });
 
 test('every elementary original is mapped to full questions with valid physical crops', async (t) => {
-  const request = ownerRequests(t);
+  const request = googleRequests(t);
   let sheets = 0;
   for (const grade of catalog.grades.filter((grade: any) => grade.grade <= 6)) {
     for (const topic of grade.topics) for (const sheet of topic.sheets.filter((sheet: any) => !sheet.editionId)) {
@@ -130,7 +130,7 @@ test('kite excellence includes starred questions 14, 16 and 20 with unique physi
 });
 
 test('rejects malformed identifiers and never serves a nonactive worksheet for the authenticated owner', async (t) => {
-  const request = ownerRequests(t);
+  const request = googleRequests(t);
   for (const query of ['', 'pdfId=../../secret', 'pdfId=constructor', 'pdfId=not-a-pdf']) {
     assert.equal((await request(query)).status, 400);
   }
@@ -150,11 +150,12 @@ test('anonymous preview requests are denied before identifier validation without
   assert.equal(fetches, 0);
 });
 
-test('a valid Google session belonging to another user cannot read active preview geometry', async (t) => {
-  const request = ownerRequests(t, '99999999-2222-4333-8444-555555555555');
+test('a verified Google account other than the owner can read active preview geometry', async (t) => {
+  const request = googleRequests(t, '99999999-2222-4333-8444-555555555555');
   const response = await request('pdfId=' + activeIds[0]);
-  assert.equal(response.status, 403);
-  assert.deepEqual(await response.json(), { ok: false, error: 'TEACHER_ACCESS_DENIED' });
+  assert.equal(response.status, 200);
+  const body = await response.json();
+  assert.deepEqual(body, previews[activeIds[0]]);
 });
 
 test('committed geometry matches the current source manifests and teacher catalog', () => {

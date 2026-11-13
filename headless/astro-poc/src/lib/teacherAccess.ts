@@ -39,10 +39,9 @@ const unavailable = (): TeacherAccessFailure => ({ ok: false, status: 503, code:
 const record = (value: unknown): value is Record<string, unknown> =>
   value !== null && typeof value === 'object' && !Array.isArray(value);
 
-function validConfig(config: Readonly<TeacherAccessConfig>): boolean {
+function validAuthConfig(config: Readonly<TeacherAccessConfig>): boolean {
   return /^https:\/\/[a-z0-9]+\.supabase\.co$/.test(config.supabaseUrl) &&
-    /^[A-Za-z0-9._-]{20,4096}$/.test(config.supabaseAnonKey) &&
-    /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/.test(config.ownerUserId);
+    /^[A-Za-z0-9._-]{20,4096}$/.test(config.supabaseAnonKey);
 }
 
 async function readBoundedUser(response: Response, signal: AbortSignal): Promise<unknown> {
@@ -76,11 +75,11 @@ async function readBoundedUser(response: Response, signal: AbortSignal): Promise
  * No client profile, unverified JWT claim or user_metadata authorizes access.
  * No successful authorization is cached across requests.
  */
-export async function verifyTeacherToken(token: unknown, options: TeacherAccessOptions = {}): Promise<TeacherAccessResult> {
+export async function verifyGoogleTeacherToken(token: unknown, options: TeacherAccessOptions = {}): Promise<TeacherAccessResult> {
   if (typeof token !== 'string' || token.length > MAX_TOKEN_CHARS ||
     !/^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/.test(token)) return required();
   const config = options.config ?? TEACHER_ACCESS_CONFIG;
-  if (!validConfig(config)) return unavailable();
+  if (!validAuthConfig(config)) return unavailable();
   const controller = new AbortController();
   const timeout = Number.isFinite(options.timeoutMs)
     ? Math.max(1, Math.min(AUTH_TIMEOUT_MS, options.timeoutMs!)) : AUTH_TIMEOUT_MS;
@@ -96,7 +95,6 @@ export async function verifyTeacherToken(token: unknown, options: TeacherAccessO
       if (!response.ok) return unavailable();
       const user = await readBoundedUser(response, controller.signal);
       if (!record(user) || typeof user.id !== 'string') return unavailable();
-      if (user.id !== config.ownerUserId) return denied();
       const metadata = user.app_metadata;
       if (user.is_anonymous === true || !record(metadata) || metadata.provider !== 'google' ||
         !Array.isArray(user.identities) || !user.identities.some(identity =>
@@ -134,13 +132,34 @@ export async function verifyTeacherToken(token: unknown, options: TeacherAccessO
   }
 }
 
-export async function authorizeTeacherRequest(request: Request, options: TeacherAccessOptions = {}): Promise<TeacherAccessResult> {
-  const header = request.headers.get('cookie') ?? '';
-  if (header.length > 16384) return required();
-  const matches = header.split(';').map(part => part.trim()).filter(part => part.startsWith(TEACHER_SESSION_COOKIE + '='));
-  if (matches.length !== 1) return required();
-  return verifyTeacherToken(matches[0].slice(TEACHER_SESSION_COOKIE.length + 1), options);
+/** Owner entitlement is separate from Google sign-in and never comes from a client profile. */
+export async function verifyTeacherToken(token: unknown, options: TeacherAccessOptions = {}): Promise<TeacherAccessResult> {
+  const config = options.config ?? TEACHER_ACCESS_CONFIG;
+  if (!/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/.test(config.ownerUserId)) return unavailable();
+  const access = await verifyGoogleTeacherToken(token, options);
+  if (!access.ok) return access;
+  return access.userId === config.ownerUserId ? access : denied();
 }
+
+function sessionToken(request: Request): string | null {
+  const header = request.headers.get('cookie') ?? '';
+  if (header.length > 16384) return null;
+  const matches = header.split(';').map(part => part.trim()).filter(part => part.startsWith(TEACHER_SESSION_COOKIE + '='));
+  return matches.length === 1 ? matches[0].slice(TEACHER_SESSION_COOKIE.length + 1) : null;
+}
+
+/** Existing worksheet selection, printing and Word tools require a verified Google account. */
+export async function requireGoogleTeacher(request: Request, options: TeacherAccessOptions = {}): Promise<TeacherAccessResult> {
+  return verifyGoogleTeacherToken(sessionToken(request), options);
+}
+
+/** New worksheet generation must call this gate unconditionally before any model or job cost. */
+export async function requireOwnerTeacher(request: Request, options: TeacherAccessOptions = {}): Promise<TeacherAccessResult> {
+  return verifyTeacherToken(sessionToken(request), options);
+}
+
+/** Keep the former entry point owner-only so an unconverted caller cannot silently gain access. */
+export const authorizeTeacherRequest = requireOwnerTeacher;
 
 export function teacherAccessFailure(result: TeacherAccessFailure): Response {
   return new Response(JSON.stringify({ ok: false, error: result.code }), {
@@ -155,10 +174,10 @@ export function teacherAccessFailure(result: TeacherAccessFailure): Response {
 export function sanitizeTeacherReturnTo(value: unknown): string {
   const fallback = '/teachers/start';
   if (typeof value !== 'string' || value.length > 4096 || /[\\#\u0000-\u0020\u007f]/.test(value)) return fallback;
-  if (!/^\/teachers\/(?:start|app)(?:\?|$)/.test(value)) return fallback;
+  if (!/^\/teachers\/(?:start|app|generate)(?:\?|$)/.test(value)) return fallback;
   try {
     const url = new URL(value, 'https://teacher-return.invalid');
-    if (!['/teachers/start', '/teachers/app'].includes(url.pathname) || url.hash) return fallback;
+    if (!['/teachers/start', '/teachers/app', '/teachers/generate'].includes(url.pathname) || url.hash) return fallback;
     for (const [key, val] of url.searchParams) {
       if (/(?:access|refresh|id)[_-]?token|authorization|^code$|^state$/i.test(key) ||
         /[\\\u0000-\u001f\u007f]/.test(key + val)) return fallback;

@@ -5,6 +5,13 @@
 - Direct PDF publication does not require future measured manifests, Word integration or hint bundles. It records the actual PDF, source and native-export digests. Previous editions remain the default; the additions do not activate Noam AI, worksheet-viewer routing, the teacher picker or a database import.
 - This entry is a publication candidate in PR #456. Website buttons are not live until the approved merge and release. Noam supplies the three prepared hints per subpart; the subsequent integration is assigned to Gemini Flash in Antigravity.
 
+## 2026-11-13 — Grade 8 T67 prepared-hint coverage repair
+
+- Normalize the excellence manifest and exercise IDs to runtime E; keep catalog level c, learning IDs, PDFs, question geometry and teacher selection intact.
+- Add 15 source-bound whole-question ladders after reading all 22 original question crops. Codex root independently reviewed all 45 hint texts; these are not separate ladders for each of the 76 printed subparts.
+- Preserve all existing hint content. Pin source and review hashes, regenerate the seed, and require full coverage, privacy and exact-PDF runtime checks. No external model call or live database write is part of this repair.
+- Candidate only: merge, seed deployment and publication are handled separately. See [source review and scope](ramzi-curated-hints-20261030.md#grade-8-t67-source-bound-repair--13-november-2026).
+
 ## 2026-11-09 — Grade 8 topic 67: question mapping, Ramzi and the teacher tool
 
 - Whole-question manifests for the three topic 67 PDFs (5 questions each, part letters listed), built only from the printed "שאלה N" headings, the fixed header and footer and the ink between headings. Questions that continue onto the next page keep both crops. Every crop and every answer rectangle was reviewed visually on the original pages.
