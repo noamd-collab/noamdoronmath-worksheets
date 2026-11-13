@@ -2,7 +2,7 @@
   "version": 1,
   "date": "2026-10-31",
   "scope": "Prepared hints for current canonical worksheet parts. Exact coverage is recorded separately; first-part coverage does not mean every part is covered.",
-  "limitations": "Previously reviewed rows retain their original provenance. Rows labelled machine_generated_flash_automatic_checks_no_model_review were authored with qwen3.8-flash and passed source-binding and automatic builder checks under Noam's explicit instruction. They did not receive an independent model or human content review. The two rows with editorial_revisions dated 2026-11-01 received owner-authorized notation or source-specific wording corrections by Codex after original Flash generation, with zero new model calls and no independent model review. Their historical authoring provenance is retained; the revision records describe the changes. On 2026-11-02, by Noam's instruction, the three G8-T65 and 401 other republished PDFs were withdrawn the same day, and G9-T07 was republished alone, rebuilt from its package source with a final-answers page; its question pages are pixel-identical. Its 123 rows carry a source_rebindings record here. Production Supabase was deliberately not changed: the site accepts the original PDF through questionPagesIdenticalTo, so production rows keep the original source_pdf_hash. Batch 2 (G9-T04, G9-T05, G9-T10, G9-T11) followed the same way: 619 rows. Batch batch3 (G9-T17, G9-T18, G9-T19, G9-T20) followed the same way: 649 rows. Batch batch4 (G7-T01, G7-T02, G7-T05, G7-T06, G7-T07, G7-T08, G7-T09, G7-T11, G7-T12, G7-T13, G7-T15, G7-T20, G7-T22, G7-T24, G7-T25, G7-T26, G7-T27, G7-T28, G7-T29, G7-T30, G7-T31, G7-T33, G7-T37, G7-T40, G7-T44, G7-T49, G7-T50, G8-T04, G8-T05, G8-T06, G8-T10, G8-T11, G8-T12, G8-T13, G8-T14, G8-T16, G8-T17, G8-T18, G8-T19, G8-T20, G8-T28, G8-T29, G8-T31, G8-T34, G8-T36, G8-T37, G8-T38, G8-T39, G8-T40, G8-T41, G8-T42, G8-T43, G8-T44, G8-T45, G8-T46, G8-T47, G8-T48, G8-T49, G8-T50, G8-T51, G8-T52, G8-T53, G8-T54, G8-T55, G8-T61, G8-T62, G8-T63, G8-T64, G8-T66, G9-T01, G9-T02, G9-T08, G9-T12, G9-T13, G9-T21, G9-T22, G9-T23, G9-T24, G9-T26, G9-T27, G9-T28, G9-T29, G9-T32, G9-T33, G9-T34, G9-T35, G9-T36, G9-T37, G9-T38, G9-T39, G9-T40, G9-T46) followed the same way: 21079 rows. Batch batch5 (G7-T03, G7-T04, G7-T21, G7-T23, G7-T32, G7-T34, G7-T35, G7-T36, G7-T38, G7-T39, G7-T41, G8-T01, G8-T02, G8-T03, G8-T07, G8-T08, G8-T09, G8-T21, G8-T22, G8-T24, G8-T25, G8-T26, G8-T32, G8-T33, G8-T34, G8-T35, G8-T58, G8-T59, G8-T60, G9-T03, G9-T16) followed the same way: 5699 rows. Batch g8t65 (G8-T65) followed the same way: 123 rows. Batch recovered4-20261103 (G8-T45, G8-T51, G8-T56, G8-T57) followed the same way: 325 rows. Batch remaining22-20261103 (G7-T03, G8-T15, G8-T22, G8-T23, G8-T24, G8-T30, G9-T06, G9-T09, G9-T31) followed the same way: 1735 rows.",
+  "limitations": "Previously reviewed rows retain their original provenance. Rows labelled machine_generated_flash_automatic_checks_no_model_review were authored with qwen3.8-flash and passed source-binding and automatic builder checks under Noam's explicit instruction. They did not receive an independent model or human content review. The two rows with editorial_revisions dated 2026-11-01 received owner-authorized notation or source-specific wording corrections by Codex after original Flash generation, with zero new model calls and no independent model review. Their historical authoring provenance is retained; the revision records describe the changes. On 2026-11-02, by Noam's instruction, the three G8-T65 and 401 other republished PDFs were withdrawn the same day, and G9-T07 was republished alone, rebuilt from its package source with a final-answers page; its question pages are pixel-identical. Its 123 rows carry a source_rebindings record here. Production Supabase was deliberately not changed: the site accepts the original PDF through questionPagesIdenticalTo, so production rows keep the original source_pdf_hash. Batch 2 (G9-T04, G9-T05, G9-T10, G9-T11) followed the same way: 619 rows. Batch batch3 (G9-T17, G9-T18, G9-T19, G9-T20) followed the same way: 649 rows. Batch batch4 (G7-T01, G7-T02, G7-T05, G7-T06, G7-T07, G7-T08, G7-T09, G7-T11, G7-T12, G7-T13, G7-T15, G7-T20, G7-T22, G7-T24, G7-T25, G7-T26, G7-T27, G7-T28, G7-T29, G7-T30, G7-T31, G7-T33, G7-T37, G7-T40, G7-T44, G7-T49, G7-T50, G8-T04, G8-T05, G8-T06, G8-T10, G8-T11, G8-T12, G8-T13, G8-T14, G8-T16, G8-T17, G8-T18, G8-T19, G8-T20, G8-T28, G8-T29, G8-T31, G8-T34, G8-T36, G8-T37, G8-T38, G8-T39, G8-T40, G8-T41, G8-T42, G8-T43, G8-T44, G8-T45, G8-T46, G8-T47, G8-T48, G8-T49, G8-T50, G8-T51, G8-T52, G8-T53, G8-T54, G8-T55, G8-T61, G8-T62, G8-T63, G8-T64, G8-T66, G9-T01, G9-T02, G9-T08, G9-T12, G9-T13, G9-T21, G9-T22, G9-T23, G9-T24, G9-T26, G9-T27, G9-T28, G9-T29, G9-T32, G9-T33, G9-T34, G9-T35, G9-T36, G9-T37, G9-T38, G9-T39, G9-T40, G9-T46) followed the same way: 21079 rows. Batch batch5 (G7-T03, G7-T04, G7-T21, G7-T23, G7-T32, G7-T34, G7-T35, G7-T36, G7-T38, G7-T39, G7-T41, G8-T01, G8-T02, G8-T03, G8-T07, G8-T08, G8-T09, G8-T21, G8-T22, G8-T24, G8-T25, G8-T26, G8-T32, G8-T33, G8-T34, G8-T35, G8-T58, G8-T59, G8-T60, G9-T03, G9-T16) followed the same way: 5699 rows. Batch g8t65 (G8-T65) followed the same way: 123 rows. Batch recovered4-20261103 (G8-T45, G8-T51, G8-T56, G8-T57) followed the same way: 325 rows. Batch remaining22-20261103 (G7-T03, G8-T15, G8-T22, G8-T23, G8-T24, G8-T30, G9-T06, G9-T09, G9-T31) followed the same way: 1735 rows. On 2026-11-13, 15 G8-T67 whole-question ladders were authored by Codex against all printed question crops and checked by their author. Codex root independently reviewed all 45 hints against all 22 printed question crops and passed their mathematical fit, guidance progression and absence of answers or new drawings. They are not 76 separate subpart ladders. Exact PDF bytes, manifest, source packet, crop and reviewed authoring-file hashes are pinned per new row. Human approval and live seed deployment are not claimed.",
   "proposalInputs": [
     {
       "file": "ramzi-hints-grade79-updates.json",
@@ -580946,6 +580946,313 @@
           "model_calls": 0
         }
       ]
+    },
+    {
+      "exercise_id": "G8-T67-A-Q01",
+      "source_pdf_hash": "f34602adb8e048aab957308c7e8c6fcb",
+      "source_native_sha256": null,
+      "source_exercise_sha256": "5e41467f1b0952ad1f967217da79d88a2df20ac36f52463fccaf3eb11374803b",
+      "hints_sha256": "4bba4ad456f04ce0bf832bac0ad4eff6d4b13c4249c1d65e9db19b14aeb0606b",
+      "review": "authored_against_printed_pdf_source_agent_reviewed_pending_noam_approval",
+      "authoring_agent": "Codex",
+      "review_date": "2026-11-13",
+      "review_scope": "whole_question",
+      "source_pdf_bytes_sha256": "8f2ca38f3963aa0a1d36b31d48980e988f23f3b65b4ea102b6017da7ebf51188",
+      "source_manifest_sha256": "c2a095ef9df792a3c816650ddd1d2078d00b5546c620b72b4ba956c1223a131f",
+      "source_packet_sha256": "a681da2fe17b434753d18f39dd932dbb1220db237f3e25c083c3330e91863d7f",
+      "question_crop_sha256": [
+        "34765c6aba10e449ad1e602af28756fa60cccf863ebf1056aa3e2dd92ecc45e5",
+        "996e9b95b9b79cabb60fcde18bf836a90c7bf2690fa18794bcc9d989a1799a55"
+      ],
+      "approval": "pending_noam_pr_merge_and_seed_deployment",
+      "independent_reviewer": "Codex root",
+      "reviewed_authoring_file_sha256": "2a53f6da5dd810a98d9cb873fe46e4d6858f18d56a1f074f10f93613a5ade885"
+    },
+    {
+      "exercise_id": "G8-T67-A-Q02",
+      "source_pdf_hash": "f34602adb8e048aab957308c7e8c6fcb",
+      "source_native_sha256": null,
+      "source_exercise_sha256": "e5cbb6d8b853f6e35d5ef03cadfaf9c83466a8c13a22a9974471d67d72c7a5b0",
+      "hints_sha256": "d1b8b07e174cf8a75f41b7f90f8cce9d46ed436d136732d989fd2a84a86b0376",
+      "review": "authored_against_printed_pdf_source_agent_reviewed_pending_noam_approval",
+      "authoring_agent": "Codex",
+      "review_date": "2026-11-13",
+      "review_scope": "whole_question",
+      "source_pdf_bytes_sha256": "8f2ca38f3963aa0a1d36b31d48980e988f23f3b65b4ea102b6017da7ebf51188",
+      "source_manifest_sha256": "c2a095ef9df792a3c816650ddd1d2078d00b5546c620b72b4ba956c1223a131f",
+      "source_packet_sha256": "64ebca7cef6bd11f7af86e4f7a9771a6df2af6f4e54297e3b204d08e5759564b",
+      "question_crop_sha256": [
+        "717eb6e26d941863e63ac2c0d54e3f91cb74a71b255402f47fe3d2dbfdba5fbf"
+      ],
+      "approval": "pending_noam_pr_merge_and_seed_deployment",
+      "independent_reviewer": "Codex root",
+      "reviewed_authoring_file_sha256": "2a53f6da5dd810a98d9cb873fe46e4d6858f18d56a1f074f10f93613a5ade885"
+    },
+    {
+      "exercise_id": "G8-T67-A-Q03",
+      "source_pdf_hash": "f34602adb8e048aab957308c7e8c6fcb",
+      "source_native_sha256": null,
+      "source_exercise_sha256": "78c022258154a515399130c8ef0cac590ff8971ab21317bb58b60b45071e278d",
+      "hints_sha256": "06f56cb9a82037f8f5e7d0a31bff72cc4233b09b228e57e79d7d3fc3ed201408",
+      "review": "authored_against_printed_pdf_source_agent_reviewed_pending_noam_approval",
+      "authoring_agent": "Codex",
+      "review_date": "2026-11-13",
+      "review_scope": "whole_question",
+      "source_pdf_bytes_sha256": "8f2ca38f3963aa0a1d36b31d48980e988f23f3b65b4ea102b6017da7ebf51188",
+      "source_manifest_sha256": "c2a095ef9df792a3c816650ddd1d2078d00b5546c620b72b4ba956c1223a131f",
+      "source_packet_sha256": "370ffb1df0d2cfea70ec538b06419ec62000d2ce02802b729eccc778bc446c70",
+      "question_crop_sha256": [
+        "cc20472f28af453a56dae0af82801dbd3e52ce9a38770751d2fcc7ba097c9e1c"
+      ],
+      "approval": "pending_noam_pr_merge_and_seed_deployment",
+      "independent_reviewer": "Codex root",
+      "reviewed_authoring_file_sha256": "2a53f6da5dd810a98d9cb873fe46e4d6858f18d56a1f074f10f93613a5ade885"
+    },
+    {
+      "exercise_id": "G8-T67-A-Q04",
+      "source_pdf_hash": "f34602adb8e048aab957308c7e8c6fcb",
+      "source_native_sha256": null,
+      "source_exercise_sha256": "1caa4c675e6d4e572af923e9bf26c034edd3cd371cf9590d00108a9a7c2d1857",
+      "hints_sha256": "38cca8306aba508333378d1ad650686af79bd5a0e9aea1cce82e22cc209edb53",
+      "review": "authored_against_printed_pdf_source_agent_reviewed_pending_noam_approval",
+      "authoring_agent": "Codex",
+      "review_date": "2026-11-13",
+      "review_scope": "whole_question",
+      "source_pdf_bytes_sha256": "8f2ca38f3963aa0a1d36b31d48980e988f23f3b65b4ea102b6017da7ebf51188",
+      "source_manifest_sha256": "c2a095ef9df792a3c816650ddd1d2078d00b5546c620b72b4ba956c1223a131f",
+      "source_packet_sha256": "0cbbebd142fa4666c5aae72138db36405d35611e558cde0842e9e842359c5725",
+      "question_crop_sha256": [
+        "6ba690e615a87c7ac12d66b78494255cdc3e39a59b411c736af5bda53a834c12"
+      ],
+      "approval": "pending_noam_pr_merge_and_seed_deployment",
+      "independent_reviewer": "Codex root",
+      "reviewed_authoring_file_sha256": "2a53f6da5dd810a98d9cb873fe46e4d6858f18d56a1f074f10f93613a5ade885"
+    },
+    {
+      "exercise_id": "G8-T67-A-Q05",
+      "source_pdf_hash": "f34602adb8e048aab957308c7e8c6fcb",
+      "source_native_sha256": null,
+      "source_exercise_sha256": "78ea764f03e78aba40131d58f490c9bfbc3c52534113209148955358fa02de78",
+      "hints_sha256": "ba33b17461d2f976c04444cf80ca9217e097adce816b9db70965c77c84ab7bee",
+      "review": "authored_against_printed_pdf_source_agent_reviewed_pending_noam_approval",
+      "authoring_agent": "Codex",
+      "review_date": "2026-11-13",
+      "review_scope": "whole_question",
+      "source_pdf_bytes_sha256": "8f2ca38f3963aa0a1d36b31d48980e988f23f3b65b4ea102b6017da7ebf51188",
+      "source_manifest_sha256": "c2a095ef9df792a3c816650ddd1d2078d00b5546c620b72b4ba956c1223a131f",
+      "source_packet_sha256": "22a7f619203c6ece67f7cdec5420a339e7b27b9d184202f921faef1411dbadc0",
+      "question_crop_sha256": [
+        "a1c0266e80f677ba0c97de48d66444c3b417d04b2c610d36263714e6d0fac50c"
+      ],
+      "approval": "pending_noam_pr_merge_and_seed_deployment",
+      "independent_reviewer": "Codex root",
+      "reviewed_authoring_file_sha256": "2a53f6da5dd810a98d9cb873fe46e4d6858f18d56a1f074f10f93613a5ade885"
+    },
+    {
+      "exercise_id": "G8-T67-B-Q01",
+      "source_pdf_hash": "e67c24ee5b1e4f488c2241fd76d76162",
+      "source_native_sha256": null,
+      "source_exercise_sha256": "5e41467f1b0952ad1f967217da79d88a2df20ac36f52463fccaf3eb11374803b",
+      "hints_sha256": "ea485ee3540adca183b39b8171ca574d7dcf87192627e74e6d975a0f9f9efd4d",
+      "review": "authored_against_printed_pdf_source_agent_reviewed_pending_noam_approval",
+      "authoring_agent": "Codex",
+      "review_date": "2026-11-13",
+      "review_scope": "whole_question",
+      "source_pdf_bytes_sha256": "1afa333f82cee57741c26bf30520c2a6ef43248618f74b10503121d57ba778eb",
+      "source_manifest_sha256": "f9c0fca5a528f2c60655fd73ee71087768af3b4222f3cdac1bc4810c400cf5e5",
+      "source_packet_sha256": "ab72f3cfbf1eb7b78b479fe44f01d4d1d7351d1668d1e9631d8a235fae5d22b5",
+      "question_crop_sha256": [
+        "8a2b613700256695ee87aeac66f7d24f0ddc69cc628cdb926d5cda1ddb814d7e",
+        "568ce08363ce2a99e3681024fdbe26e29090d5cb8ae533fd3152ee3c081fd57b"
+      ],
+      "approval": "pending_noam_pr_merge_and_seed_deployment",
+      "independent_reviewer": "Codex root",
+      "reviewed_authoring_file_sha256": "2a53f6da5dd810a98d9cb873fe46e4d6858f18d56a1f074f10f93613a5ade885"
+    },
+    {
+      "exercise_id": "G8-T67-B-Q02",
+      "source_pdf_hash": "e67c24ee5b1e4f488c2241fd76d76162",
+      "source_native_sha256": null,
+      "source_exercise_sha256": "e5cbb6d8b853f6e35d5ef03cadfaf9c83466a8c13a22a9974471d67d72c7a5b0",
+      "hints_sha256": "8ca548f579961862187cd7bb8432664e82c5eac1b32b8c36f1df48f2f4b44630",
+      "review": "authored_against_printed_pdf_source_agent_reviewed_pending_noam_approval",
+      "authoring_agent": "Codex",
+      "review_date": "2026-11-13",
+      "review_scope": "whole_question",
+      "source_pdf_bytes_sha256": "1afa333f82cee57741c26bf30520c2a6ef43248618f74b10503121d57ba778eb",
+      "source_manifest_sha256": "f9c0fca5a528f2c60655fd73ee71087768af3b4222f3cdac1bc4810c400cf5e5",
+      "source_packet_sha256": "7e7143b4e344a97cb1297fbc33e0d2454c2dda67ed7535139668ac597e36e57a",
+      "question_crop_sha256": [
+        "b22984cecef8218917fc44436e2c0248d71f94060fdc5fb96efd9e18d9f37711",
+        "c809fa5f135e72f6ece9e8fdcd8c6590bd030b705b52ee321c4f85e7b8b7275f"
+      ],
+      "approval": "pending_noam_pr_merge_and_seed_deployment",
+      "independent_reviewer": "Codex root",
+      "reviewed_authoring_file_sha256": "2a53f6da5dd810a98d9cb873fe46e4d6858f18d56a1f074f10f93613a5ade885"
+    },
+    {
+      "exercise_id": "G8-T67-B-Q03",
+      "source_pdf_hash": "e67c24ee5b1e4f488c2241fd76d76162",
+      "source_native_sha256": null,
+      "source_exercise_sha256": "78c022258154a515399130c8ef0cac590ff8971ab21317bb58b60b45071e278d",
+      "hints_sha256": "785fc189c87cd6c5a6e64f098801cf6a8cbbbb0184afb5c16b11bc7f996ef49d",
+      "review": "authored_against_printed_pdf_source_agent_reviewed_pending_noam_approval",
+      "authoring_agent": "Codex",
+      "review_date": "2026-11-13",
+      "review_scope": "whole_question",
+      "source_pdf_bytes_sha256": "1afa333f82cee57741c26bf30520c2a6ef43248618f74b10503121d57ba778eb",
+      "source_manifest_sha256": "f9c0fca5a528f2c60655fd73ee71087768af3b4222f3cdac1bc4810c400cf5e5",
+      "source_packet_sha256": "8c5b951cdeea91136a73a23c21fb7b5c40d3f00668d9ba81fefcfaae117bafbb",
+      "question_crop_sha256": [
+        "f2042787cf2a0e805350531a6d3cf1984f223e9584e72a01fc49f6deb8a7d3e4",
+        "9ff4ab65cd6f529b0248ffb22a43e203dcbbf637a5016b1967b817c98008fbbb"
+      ],
+      "approval": "pending_noam_pr_merge_and_seed_deployment",
+      "independent_reviewer": "Codex root",
+      "reviewed_authoring_file_sha256": "2a53f6da5dd810a98d9cb873fe46e4d6858f18d56a1f074f10f93613a5ade885"
+    },
+    {
+      "exercise_id": "G8-T67-B-Q04",
+      "source_pdf_hash": "e67c24ee5b1e4f488c2241fd76d76162",
+      "source_native_sha256": null,
+      "source_exercise_sha256": "1caa4c675e6d4e572af923e9bf26c034edd3cd371cf9590d00108a9a7c2d1857",
+      "hints_sha256": "f3c4ebc798c683585dcaeeb2ef554fcc918140f366f704f4a59b10617e38a2c1",
+      "review": "authored_against_printed_pdf_source_agent_reviewed_pending_noam_approval",
+      "authoring_agent": "Codex",
+      "review_date": "2026-11-13",
+      "review_scope": "whole_question",
+      "source_pdf_bytes_sha256": "1afa333f82cee57741c26bf30520c2a6ef43248618f74b10503121d57ba778eb",
+      "source_manifest_sha256": "f9c0fca5a528f2c60655fd73ee71087768af3b4222f3cdac1bc4810c400cf5e5",
+      "source_packet_sha256": "1c52d4f03ed5ec31efd3d7da662eca3f527af83a2ce5744aab3ac2f9bf493089",
+      "question_crop_sha256": [
+        "3baddcd087b4269f26974cfb0e09520a59466267db30bf70730ab5a749718414",
+        "3167292c06da50b4962d6d92598de5603f207cb18ab3d78b03b65b3bebc28ff5"
+      ],
+      "approval": "pending_noam_pr_merge_and_seed_deployment",
+      "independent_reviewer": "Codex root",
+      "reviewed_authoring_file_sha256": "2a53f6da5dd810a98d9cb873fe46e4d6858f18d56a1f074f10f93613a5ade885"
+    },
+    {
+      "exercise_id": "G8-T67-B-Q05",
+      "source_pdf_hash": "e67c24ee5b1e4f488c2241fd76d76162",
+      "source_native_sha256": null,
+      "source_exercise_sha256": "78ea764f03e78aba40131d58f490c9bfbc3c52534113209148955358fa02de78",
+      "hints_sha256": "35b722354e35b3057213fbb2e444c2992088ae0e7185f91c11184279b8d1a792",
+      "review": "authored_against_printed_pdf_source_agent_reviewed_pending_noam_approval",
+      "authoring_agent": "Codex",
+      "review_date": "2026-11-13",
+      "review_scope": "whole_question",
+      "source_pdf_bytes_sha256": "1afa333f82cee57741c26bf30520c2a6ef43248618f74b10503121d57ba778eb",
+      "source_manifest_sha256": "f9c0fca5a528f2c60655fd73ee71087768af3b4222f3cdac1bc4810c400cf5e5",
+      "source_packet_sha256": "17a400610400613f1a12ca1482bd42361f7fd9508d983008ec70de8e727f72da",
+      "question_crop_sha256": [
+        "a3ec4433cde0f108fb191f4437df93bc792d2688bd128995bbd15b48a869c858",
+        "6259d27df4cc6f5d459d9c999685c79d41f2395ac47f4cbf87b8a4503be3ba08"
+      ],
+      "approval": "pending_noam_pr_merge_and_seed_deployment",
+      "independent_reviewer": "Codex root",
+      "reviewed_authoring_file_sha256": "2a53f6da5dd810a98d9cb873fe46e4d6858f18d56a1f074f10f93613a5ade885"
+    },
+    {
+      "exercise_id": "G8-T67-E-Q01",
+      "source_pdf_hash": "d612e5de3fd24ee1a826410e42c3cab0",
+      "source_native_sha256": null,
+      "source_exercise_sha256": "5e41467f1b0952ad1f967217da79d88a2df20ac36f52463fccaf3eb11374803b",
+      "hints_sha256": "d9c64c3226e23ac57e6d81abcbd9ac165ae3b962c074e128efd9a06306cbd884",
+      "review": "authored_against_printed_pdf_source_agent_reviewed_pending_noam_approval",
+      "authoring_agent": "Codex",
+      "review_date": "2026-11-13",
+      "review_scope": "whole_question",
+      "source_pdf_bytes_sha256": "6627da7d5528eff66ac0c97331eae3a7ff6a2486d2259f3aa185b289e3913dfb",
+      "source_manifest_sha256": "d422acfbc543b5e0d80727ff1a63f3e810b8e586b07e57be152e4a2d507a2b3c",
+      "source_packet_sha256": "cfd28e9708a97507aa8b861c96aad9a3f2777796d917a7e3e67de020f9204047",
+      "question_crop_sha256": [
+        "57d4b6bce7682038ec1eec172e324d551f9efbf5c07a67d916216170af026481"
+      ],
+      "approval": "pending_noam_pr_merge_and_seed_deployment",
+      "independent_reviewer": "Codex root",
+      "reviewed_authoring_file_sha256": "2a53f6da5dd810a98d9cb873fe46e4d6858f18d56a1f074f10f93613a5ade885"
+    },
+    {
+      "exercise_id": "G8-T67-E-Q02",
+      "source_pdf_hash": "d612e5de3fd24ee1a826410e42c3cab0",
+      "source_native_sha256": null,
+      "source_exercise_sha256": "e5cbb6d8b853f6e35d5ef03cadfaf9c83466a8c13a22a9974471d67d72c7a5b0",
+      "hints_sha256": "4a7bc65ca1cd771fd12eb814da2fe7d61fa1936b8e56fdcfaeae981b37febb4f",
+      "review": "authored_against_printed_pdf_source_agent_reviewed_pending_noam_approval",
+      "authoring_agent": "Codex",
+      "review_date": "2026-11-13",
+      "review_scope": "whole_question",
+      "source_pdf_bytes_sha256": "6627da7d5528eff66ac0c97331eae3a7ff6a2486d2259f3aa185b289e3913dfb",
+      "source_manifest_sha256": "d422acfbc543b5e0d80727ff1a63f3e810b8e586b07e57be152e4a2d507a2b3c",
+      "source_packet_sha256": "5eeb3883a28b9cbfc7a0c9583d59dee307134fd9d5c742a299b024509234d8f9",
+      "question_crop_sha256": [
+        "dadf2d7ea3a2d3edc73a4841ecda3a510763cf5d74af4a2143d8115030690bef"
+      ],
+      "approval": "pending_noam_pr_merge_and_seed_deployment",
+      "independent_reviewer": "Codex root",
+      "reviewed_authoring_file_sha256": "2a53f6da5dd810a98d9cb873fe46e4d6858f18d56a1f074f10f93613a5ade885"
+    },
+    {
+      "exercise_id": "G8-T67-E-Q03",
+      "source_pdf_hash": "d612e5de3fd24ee1a826410e42c3cab0",
+      "source_native_sha256": null,
+      "source_exercise_sha256": "78c022258154a515399130c8ef0cac590ff8971ab21317bb58b60b45071e278d",
+      "hints_sha256": "a6ba05151ddf86ee57bb290676742e76b7e27b84c8b8a33a8079c64bb276bb84",
+      "review": "authored_against_printed_pdf_source_agent_reviewed_pending_noam_approval",
+      "authoring_agent": "Codex",
+      "review_date": "2026-11-13",
+      "review_scope": "whole_question",
+      "source_pdf_bytes_sha256": "6627da7d5528eff66ac0c97331eae3a7ff6a2486d2259f3aa185b289e3913dfb",
+      "source_manifest_sha256": "d422acfbc543b5e0d80727ff1a63f3e810b8e586b07e57be152e4a2d507a2b3c",
+      "source_packet_sha256": "f831302dce52f466fa4c820926833da1e07e06c35b7536fff8f816ffa10a3748",
+      "question_crop_sha256": [
+        "c990fd72acf7178ef52b79f65d48f584afd289f46f20d79c2dd97c5935970bf6"
+      ],
+      "approval": "pending_noam_pr_merge_and_seed_deployment",
+      "independent_reviewer": "Codex root",
+      "reviewed_authoring_file_sha256": "2a53f6da5dd810a98d9cb873fe46e4d6858f18d56a1f074f10f93613a5ade885"
+    },
+    {
+      "exercise_id": "G8-T67-E-Q04",
+      "source_pdf_hash": "d612e5de3fd24ee1a826410e42c3cab0",
+      "source_native_sha256": null,
+      "source_exercise_sha256": "1caa4c675e6d4e572af923e9bf26c034edd3cd371cf9590d00108a9a7c2d1857",
+      "hints_sha256": "7a2990dbcce9c577a76eba9a5fd0bf9b3420290ae038bd2f8b39a48ce50f6504",
+      "review": "authored_against_printed_pdf_source_agent_reviewed_pending_noam_approval",
+      "authoring_agent": "Codex",
+      "review_date": "2026-11-13",
+      "review_scope": "whole_question",
+      "source_pdf_bytes_sha256": "6627da7d5528eff66ac0c97331eae3a7ff6a2486d2259f3aa185b289e3913dfb",
+      "source_manifest_sha256": "d422acfbc543b5e0d80727ff1a63f3e810b8e586b07e57be152e4a2d507a2b3c",
+      "source_packet_sha256": "d189fc44c527fde83ee302db42c5ba83301ae3712b595bf8eb4b06ecc319735d",
+      "question_crop_sha256": [
+        "97ebe40acc8b86c7397eca33a1ec2fe8f8551b8a9d9015ce1e99bcf55fc00661",
+        "a9fb965d25657caa7043f2a7f382dc5e450ce3168c8d19a4751e19457430e430"
+      ],
+      "approval": "pending_noam_pr_merge_and_seed_deployment",
+      "independent_reviewer": "Codex root",
+      "reviewed_authoring_file_sha256": "2a53f6da5dd810a98d9cb873fe46e4d6858f18d56a1f074f10f93613a5ade885"
+    },
+    {
+      "exercise_id": "G8-T67-E-Q05",
+      "source_pdf_hash": "d612e5de3fd24ee1a826410e42c3cab0",
+      "source_native_sha256": null,
+      "source_exercise_sha256": "78ea764f03e78aba40131d58f490c9bfbc3c52534113209148955358fa02de78",
+      "hints_sha256": "7f3758b4e2ea81f49dcdca29a4d3ffcb8cf0314c4c2daf771cc1064bdea6aa15",
+      "review": "authored_against_printed_pdf_source_agent_reviewed_pending_noam_approval",
+      "authoring_agent": "Codex",
+      "review_date": "2026-11-13",
+      "review_scope": "whole_question",
+      "source_pdf_bytes_sha256": "6627da7d5528eff66ac0c97331eae3a7ff6a2486d2259f3aa185b289e3913dfb",
+      "source_manifest_sha256": "d422acfbc543b5e0d80727ff1a63f3e810b8e586b07e57be152e4a2d507a2b3c",
+      "source_packet_sha256": "e527c8f3a5cc447206575c07cef1c014bf092f072c24574c304ece98a341b718",
+      "question_crop_sha256": [
+        "fceb97dcb0e61ff94ce515a9c9f9cea1d60a3d8dbec4bbcbd613ef200344a440"
+      ],
+      "approval": "pending_noam_pr_merge_and_seed_deployment",
+      "independent_reviewer": "Codex root",
+      "reviewed_authoring_file_sha256": "2a53f6da5dd810a98d9cb873fe46e4d6858f18d56a1f074f10f93613a5ade885"
     },
     {
       "exercise_id": "G9-T01-A-Q01א",

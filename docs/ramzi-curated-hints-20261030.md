@@ -108,3 +108,31 @@ This change adds ladders for those three parts only. They were written against t
 
 Most of PR316's other 39 trapezoid rows (34) fail this builder's gates. In most, the first hint has a cardinal word such as שני, שתי or אחד; several later hints contain an equation or equality, and some give the full equation with its numbers. Those rows need a content rewrite, not only a token substitution, before they can be imported.
 
+
+## Grade 8 T67 source-bound repair — 13 November 2026
+
+The November 9 T67 manifests introduced 15 whole-question selections without
+prepared hint rows. Their excellence manifest also used the unsupported runtime
+code `C`. The repair uses canonical `E` manifest/exercise IDs while retaining the
+catalog level `c`, the original PDF and the `g8-t67-c` learning identity. Question
+geometry, teacher selection, original diagrams and printed answers are unchanged.
+
+- Add 15 three-step ladders, one per current whole-question selection: five A,
+  five B and five E. These are **not 76 separate subpart ladders**.
+- Codex authored the hints after reading all 22 printed question crops. The
+  downloaded bytes of all three PDFs matched their existing `sourceSha256`.
+  Codex root independently reviewed all 45 hints against those same 22 crops;
+  the review passed mathematical fit, source alignment and absence of final
+  answers or new drawings. No Qwen or DeepSeek authoring/review call was made.
+- Each new ledger row pins the hint, selected-text, PDF-byte, manifest, private
+  source-packet and crop hashes. It also records the independently reviewed
+  authoring-file hash and `whole_question` scope. Raw source packets stay outside
+  the repository. The new source label is `ramzi-printed-source-20261113`.
+- All 31,670 existing rows and their review entries are preserved. The candidate
+  now contains 31,685 rows; grade 8 contains 13,688 current selections, and the
+  all-current-Q01 check covers 1,656 selections. Existing coverage/source/privacy
+  assertions remain active; runtime tests cover all three levels and deny old C
+  IDs and mismatched PDFs.
+- The new ledger entries are agent reviewed and pending Noam's PR/deployment
+  approval. Generating the seed is not a live database update; deployment and
+  public readback remain separate release actions.
