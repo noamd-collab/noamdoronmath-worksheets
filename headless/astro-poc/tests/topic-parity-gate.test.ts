@@ -38,6 +38,7 @@ import {
 } from '../src/lib/parity/topicParity.ts';
 import { contentToParitySnapshot } from '../src/lib/parity/contentToParitySnapshot.ts';
 import { applyContentCorrections, topicPageCorrections } from '../src/lib/parity/contentCorrections.ts';
+import { restoreBeforePdfCopy } from './fixtures/pdf-only-topic-copy';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const fixtureDir = join(root, 'tests', 'fixtures', 'topic-parity');
@@ -105,7 +106,7 @@ describe('topic SOURCE→content parity gate (M19/M20)', () => {
   it('migrated content matches production fixtures (SEO, intro, sections, FAQ, CTAs, JSON-LD)', () => {
     for (const slug of migratedSlugs) {
       const source = loadProductionFixture(slug);
-      const page = loadTopicPage(slug);
+      const page = restoreBeforePdfCopy(slug, loadTopicPage(slug));
       const preview = contentToParitySnapshot(page, 'preview');
 
       assert.ok(source.intro && source.intro.length >= 40, `${slug}: fixture intro`);

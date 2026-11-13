@@ -3,6 +3,7 @@
   "include": [
     "../src/env.d.ts",
     "worksheet-editions.test.ts",
+    "worksheet-editions-pdf-only.test.ts",
     "../src/lib/catalog/loadCatalog.ts",
     "../src/components/WorksheetsClient.tsx"
   ],

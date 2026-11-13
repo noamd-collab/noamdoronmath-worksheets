@@ -387,7 +387,9 @@ export function buildTeacherCatalog(catalog, registry) {
         title: `${topic.title} · ${level.label}`,
         mode: 'exercise',
         ...(topic.routing?.sourceGrade ? { sourceGrade: topic.routing.sourceGrade, sourcePrefix: topic.routing.sourcePrefix, sourceTitle: topic.routing.sourceTitle } : {}),
-      })), ...(topic.editions || []).filter((edition) => edition.status === 'published').flatMap((edition) =>
+      })), ...(topic.editions || []).filter((edition) =>
+        // A downloadable PDF is not yet a measured exercise source.
+        edition.status === 'published' && edition.publicationMode !== 'pdf-only').flatMap((edition) =>
         edition.levels.map((level) => ({
           pdfId: level.pdfId, pdfUrl: pdfUrl(level.pdfId), level: level.key, levelLabel: level.label,
           title: `${topic.title} · ${level.label} · ${edition.label}`, mode: 'exercise',

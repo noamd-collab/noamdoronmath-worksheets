@@ -643,7 +643,7 @@ test('withdrawing a static edition exposes stale catalogs without changing learn
 });
 
 for (const [name, mutate, expected] of [
-  ['unknown draft topic', row => { row.status = 'draft'; row.topicId = 999; }, /unknown elementary topic 1:999/],
+  ['unknown draft topic', row => { row.status = 'draft'; row.topicId = 999; }, /unknown worksheet topic 1:999/],
   ['reused legacy PDF', row => { row.levels[0].pdfId = PDFS.g1a; }, /media ID reused/],
   ['malformed source hash', row => { row.levels[1].canonicalSourceSha256 = 'bad'; }, /invalid canonicalSourceSha256/],
 ]) {

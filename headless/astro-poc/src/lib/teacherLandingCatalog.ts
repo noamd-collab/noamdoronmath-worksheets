@@ -81,7 +81,8 @@ export function buildTeacherLandingCatalog(catalog: Pick<CatalogV1, 'grades'>): 
     topics: grade.topics.map(topic => {
       const sources = [
         { id: 'legacy', label: 'דפים קודמים', levels: topic.levels },
-        ...(topic.editions || []).filter(edition => edition.status === 'published').map(edition => ({
+        ...(topic.editions || []).filter(edition =>
+          edition.status === 'published' && edition.publicationMode !== 'pdf-only').map(edition => ({
           id: edition.editionId, label: edition.label, levels: edition.levels,
         })),
       ];
@@ -89,7 +90,11 @@ export function buildTeacherLandingCatalog(catalog: Pick<CatalogV1, 'grades'>): 
       const allLevels = sources.flatMap(source => source.levels);
       catalogEntries += allLevels.length;
       allLevels.forEach(level => pdfIds.add(level.pdfId));
-      const canonicalDefault = topic.defaultEditionId || 'legacy';
+      // PDF-only may be the pupil-facing default without being a teacher-bank
+      // source. Fall back only for that explicit mode; malformed defaults fail.
+      const selectedEdition = topic.editions?.find(edition => edition.editionId === topic.defaultEditionId);
+      const canonicalDefault = selectedEdition?.publicationMode === 'pdf-only'
+        ? 'legacy' : topic.defaultEditionId || 'legacy';
       if (!sources.some(source => source.id === canonicalDefault)) throw new Error('Unavailable teacher default edition: ' + canonicalDefault);
       // The existing tool normalizes a single available edition to "all".
       const defaultEditionId = sources.length === 1 ? 'all' : canonicalDefault;

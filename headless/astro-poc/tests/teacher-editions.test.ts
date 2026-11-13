@@ -38,7 +38,7 @@ test('the published teacher snapshot matches the real registry and can withdraw 
   assert.deepEqual(current, buildTeacherCatalog(raw, registry));
   assert.deepEqual(buildTeacherCatalog(committed, { version: 1, editions: [] }), buildTeacherCatalog(raw));
   assert.equal(catalogSheets(current).filter((s: any) => s.editionId).length,
-    registry.editions.filter((e: any) => e.status === 'published').length * 3);
+    registry.editions.filter((e: any) => e.status === 'published' && e.publicationMode !== 'pdf-only').length * 3);
 });
 
 test('teacher catalog appends only published editions and leaves every legacy field/order unchanged', () => {

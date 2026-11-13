@@ -22,6 +22,7 @@ import {
   withGrade,
 } from '../scripts/lib/seo-copy.mjs';
 import { EXACT, KEEP_CURRENT, NEEDS_DECISION } from '../scripts/lib/seo-overrides.mjs';
+import { PDF_ONLY_TOPIC_COPY } from './fixtures/pdf-only-topic-copy';
 
 type Item = {
   path: string;
@@ -51,10 +52,24 @@ const gradeLabel = new Map<number, string>(catalog.grades.map((g: { grade: numbe
 const copy = (item: Item) => `${item.title} ${item.description}`;
 
 describe('seo proposals – generator and coverage', () => {
-  it('committed files are exactly what the generator builds, with no build errors', () => {
+  it('the generator preserves the historical proposal batch plus the exact PDF-only copy updates', () => {
     const { proposals, errors } = buildProposals(root);
     assert.deepEqual(errors, []);
-    assert.deepEqual(proposals, committed);
+    const expected = structuredClone(committed);
+    for (const [slug, copy] of Object.entries(PDF_ONLY_TOPIC_COPY)) {
+      const row = expected.find(item => item.path === '/' + slug)!;
+      assert.equal(row.currentDescription, copy.beforeDescription);
+      row.currentDescription = copy.description;
+      if (slug === 'cylinder-volume-grade-8') {
+        // The new precise description fits the existing generator's current-copy
+        // rule; the longer historical description previously fell back to intro.
+        assert.equal(row.description, 'מחשבים נפח גליל באמצעות שטח הבסיס והגובה ומקפידים על יחידות נפח. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.');
+        assert.equal(row.source, 'title:current|description:page-intro');
+        row.description = copy.description;
+        row.source = 'title:current|description:current';
+      }
+    }
+    assert.deepEqual(proposals, expected);
   });
 
   it('the historical review scope has explicit provenance and unique input identities', () => {

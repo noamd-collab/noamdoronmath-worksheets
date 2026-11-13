@@ -349,10 +349,12 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
     const selected = resolveEdition(topic);
     return <div className="worksheet-editions">
       <strong className="worksheet-edition-label">{selected.label}</strong>
+      {selected.publicationMode === 'pdf-only' && <p className="note">קובצי PDF להדפסה</p>}
       <div className="worksheet-links">{renderLevelButtons(topic, gNum, selected.editionId)}</div>
       {editions.filter(e => e.editionId !== selected.editionId).map(edition => (
         <details className="more-worksheets" key={edition.editionId}>
           <summary>{edition.label}</summary>
+          {edition.publicationMode === 'pdf-only' && <p className="note">קובצי PDF להדפסה</p>}
           <div className="worksheet-links">{renderLevelButtons(topic, gNum, edition.editionId)}</div>
         </details>
       ))}
@@ -363,6 +365,8 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
     const childrenMap = childrenByParentByGrade.get(gEntry.grade) || new Map<number, CatalogTopic[]>();
     const children: CatalogTopic[] = childrenMap.get(topic.id) || [];
     const pageHref = topicPageHrefs[`${gEntry.grade}:${topic.id}`];
+    const selectedEdition = resolveEdition(topic);
+    const multipleEditions = topicEditions(topic).length > 1;
     return (
       <article
         key={`${gEntry.grade}-${topic.id}`}
@@ -377,8 +381,10 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
         </div>
         {topic.description ? <p className="exact-card-description">{topic.description}</p> : null}
         {topic.note ? <p className="note">{topic.note}</p> : null}
-        {topic.routing.aiHintShown ? (
-          <span className="aihint">✦ רמזי AI זמין בדף הזה</span>
+        {selectedEdition.routing.aiHintShown ? (
+          <span className="aihint">{multipleEditions
+            ? (selectedEdition.editionId === 'legacy' ? '✦ רמזי AI בדפים קודמים' : `✦ רמזי AI · ${selectedEdition.label}`)
+            : '✦ רמזי AI זמין בדף הזה'}</span>
         ) : null}
         <div className={`levels${children.length ? ' levels--bundle' : ''}`}>
           {children.length ? (
