@@ -18,6 +18,18 @@
         { "if": { "properties": { "grade": { "minimum": 7 } } },
           "then": { "required": ["nativePrefix"], "properties": { "levels": { "items": { "required": ["nativeExportSha256"] } } } },
           "else": { "properties": { "nativePrefix": false, "levels": { "items": { "properties": { "nativeExportSha256": false } } } } } },
+        { "if": { "required": ["publicationMode"], "properties": { "publicationMode": { "const": "pdf-only" } } },
+          "then": { "properties": {
+            "grade": { "minimum": 7 },
+            "levels": { "items": { "required": ["sourceSha256"], "properties": {
+              "canonicalSourceSha256": false, "manifestSha256": false, "answerMapSha256": false,
+              "wordSourceSha256": false, "hintsBundleSha256": false
+            } } }
+          } },
+          "else": { "properties": { "levels": { "items": {
+            "required": ["canonicalSourceSha256", "manifestSha256", "answerMapSha256", "wordSourceSha256", "hintsBundleSha256"],
+            "properties": { "sourceSha256": false }
+          } } } } },
         { "if": { "properties": { "grade": { "const": 7 } } }, "then": { "properties": { "nativePrefix": { "pattern": "^G7-" } } } },
         { "if": { "properties": { "grade": { "const": 8 } } }, "then": { "properties": { "nativePrefix": { "pattern": "^G8-" } } } },
         { "if": { "properties": { "grade": { "const": 9 } } }, "then": { "properties": { "nativePrefix": { "pattern": "^G9-" } } } }
@@ -25,6 +37,7 @@
       "properties": {
         "grade": { "type": "integer", "minimum": 1, "maximum": 9 },
         "nativePrefix": { "type": "string", "pattern": "^G[7-9]-T[0-9]{2,3}$(?![\\s\\S])" },
+        "publicationMode": { "const": "pdf-only" },
         "topicId": { "type": "integer", "minimum": 1 },
         "editionId": { "$ref": "#/$defs/identity", "not": { "const": "legacy" } },
         "label": { "type": "string", "minLength": 1, "maxLength": 80 },
@@ -35,12 +48,13 @@
     },
     "level": {
       "type": "object", "additionalProperties": false,
-      "required": ["key", "viewerLevel", "pdfId", "pdfSha256", "worksheetId", "revision", "canonicalSourceSha256", "manifestSha256", "answerMapSha256", "wordSourceSha256", "hintsBundleSha256"],
+      "required": ["key", "viewerLevel", "pdfId", "pdfSha256", "worksheetId", "revision"],
       "properties": {
         "key": { "enum": ["a", "b", "c"] },
         "viewerLevel": { "enum": ["A", "B", "E"] },
         "pdfId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
         "pdfSha256": { "$ref": "#/$defs/sha256" },
+        "sourceSha256": { "$ref": "#/$defs/sha256" },
         "worksheetId": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$" },
         "revision": { "type": "integer", "minimum": 1 },
         "canonicalSourceSha256": { "$ref": "#/$defs/sha256" },

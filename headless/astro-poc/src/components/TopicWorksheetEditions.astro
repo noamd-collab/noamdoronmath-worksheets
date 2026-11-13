@@ -1,0 +1,38 @@
+---
+import type { TopicWorksheetEditionLinks } from '../lib/topicWorksheetEditions';
+import { worksheetActionLabel } from '../lib/worksheetActions';
+
+interface Props {
+  id: string;
+  editions: TopicWorksheetEditionLinks[];
+}
+const { id, editions } = Astro.props;
+const multiple = editions.length > 1;
+---
+<div id={id} data-topic-levels class:list={{ 'topic-worksheet-editions': multiple }}>
+  {editions.map(edition => (
+    <div data-edition-id={edition.editionId}>
+      {multiple && <strong class="topic-worksheet-edition-label">{edition.label}</strong>}
+      {edition.pdfOnly && <p class="topic-worksheet-edition-note">קובצי PDF להדפסה</p>}
+      <div class="exact-topic-levels">
+        {edition.levels.map(level => (
+          <a class={`exact-topic-level exact-topic-level--${level.key}`} href={level.href}
+            target="_blank" rel="noopener noreferrer" data-level-key={level.key}
+            data-edition-id={edition.editionId}>
+            {worksheetActionLabel(level.label, level.href)}
+          </a>
+        ))}
+      </div>
+    </div>
+  ))}
+</div>
+
+<style>
+  [data-topic-levels] { scroll-margin-top: 120px; }
+  .topic-worksheet-editions { display: grid; gap: 18px; margin-top: 18px; }
+  .topic-worksheet-edition-label { display: block; color: #22305a; font-size: 16px; }
+  .topic-worksheet-edition-note { margin: 4px 0 0; color: #5a6588; font-size: 14px; }
+  :global([data-topic-levels].is-highlighted .exact-topic-level) {
+    box-shadow: 0 0 0 3px #e6a534, 4px 4px 0 #22305a;
+  }
+</style>

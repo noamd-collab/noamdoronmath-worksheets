@@ -5,6 +5,7 @@
 const LEVELS = { a: ['A', 'רמה א׳'], b: ['B', 'רמה ב׳'], c: ['E', 'מצוינות'] };
 const HASH_FIELDS = ['pdfSha256', 'canonicalSourceSha256', 'manifestSha256',
   'answerMapSha256', 'wordSourceSha256', 'hintsBundleSha256'];
+const PDF_ONLY_HASH_FIELDS = ['pdfSha256', 'sourceSha256'];
 const ID = /^[a-z0-9][a-z0-9-]{0,63}$(?![\s\S])/;
 const SHA = /^[0-9a-f]{64}$/;
 function requireValue(ok, message) { if (!ok) throw new Error('Worksheet editions: ' + message); }
@@ -40,12 +41,16 @@ function mergeWorksheetEditions(catalog, registry) {
   const records = new Set(); const canonicalRevisions = new Set(); const defaults = new Set();
   const published = new Map();
   for (const row of registry.editions) {
-    keys(row, ['grade', 'topicId', 'editionId', 'label', 'status', 'isDefault', 'levels', 'nativePrefix'], 'edition');
+    keys(row, ['grade', 'topicId', 'editionId', 'label', 'status', 'isDefault', 'levels', 'nativePrefix', 'publicationMode'], 'edition');
     const key = `${row.grade}:${row.topicId}`;
     const topic = topics.get(key);
     requireValue(Number.isInteger(row.grade) && row.grade >= 1 && row.grade <= 9 &&
       Number.isInteger(row.topicId) && topic, 'unknown worksheet topic ' + key);
     const middle = row.grade >= 7;
+    const pdfOnly = row.publicationMode === 'pdf-only';
+    requireValue(!Object.hasOwn(row, 'publicationMode') || (pdfOnly && middle),
+      'publicationMode must be pdf-only for middle school only');
+    const hashFields = pdfOnly ? PDF_ONLY_HASH_FIELDS : HASH_FIELDS;
     // Native package numbers are independent of catalog topic IDs. Never
     // silently send a new edition to the legacy topic's question/hint bank.
     requireValue(middle ? typeof row.nativePrefix === 'string' &&
@@ -61,7 +66,7 @@ function mergeWorksheetEditions(catalog, registry) {
     requireValue(Array.isArray(row.levels) && row.levels.length === 3, 'edition requires exactly a/b/c');
     const seenLevels = new Set();
     for (const level of row.levels) {
-      keys(level, ['key', 'viewerLevel', 'pdfId', 'worksheetId', 'revision', ...HASH_FIELDS,
+      keys(level, ['key', 'viewerLevel', 'pdfId', 'worksheetId', 'revision', ...hashFields,
         ...(middle ? ['nativeExportSha256'] : [])], 'level');
       requireValue(Object.hasOwn(LEVELS, level.key) && !seenLevels.has(level.key), 'duplicate/invalid level');
       seenLevels.add(level.key);
@@ -73,7 +78,7 @@ function mergeWorksheetEditions(catalog, registry) {
       requireValue(Number.isInteger(level.revision) && level.revision >= 1, 'invalid revision');
       const canonicalKey = level.worksheetId + ':' + level.revision;
       requireValue(!canonicalRevisions.has(canonicalKey), 'canonical revision reused'); canonicalRevisions.add(canonicalKey);
-      for (const field of HASH_FIELDS) requireValue(typeof level[field] === 'string' && SHA.test(level[field]), 'invalid ' + field);
+      for (const field of hashFields) requireValue(typeof level[field] === 'string' && SHA.test(level[field]), 'invalid ' + field);
       if (middle) requireValue(typeof level.nativeExportSha256 === 'string' && SHA.test(level.nativeExportSha256),
         'invalid nativeExportSha256');
       requireValue(!pdfHashes.has(level.pdfSha256), 'identical PDF content reused'); pdfHashes.add(level.pdfSha256);
@@ -89,6 +94,7 @@ function mergeWorksheetEditions(catalog, registry) {
     });
     const prefix = middle ? row.nativePrefix : `G${row.grade}-T${String(row.topicId).padStart(2, '0')}`;
     const edition = { editionId: row.editionId, label: row.label, status: 'published', levels,
+      ...(pdfOnly ? { publicationMode: 'pdf-only' } : {}),
       // This registry never enables AI. Measured manifests, native bindings,
       // reviewed hints and the server rollout require separate integration.
       routing: { resolvedNoamPrefix: prefix, aiHintShown: false, usesViewer: false,
