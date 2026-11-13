@@ -215,6 +215,38 @@ class ProviderTests(unittest.TestCase):
             build.assert_not_called()
         self.assertEqual(caught.exception.code,'BOUNDARY_TOO_NARROW')
 
+    def test_missing_divisor_prompt_matches_multi_single_and_legacy_domains(self):
+        for domain in ('multi','single','legacy'):
+            with self.subTest(domain=domain):
+                self.use_fixture('elementary')
+                if domain=='multi':
+                    self.lesson['lessonBoundary'].update(allowedDivisors=[2,5],maxDividend=30)
+                elif domain=='single':
+                    self.lesson['lessonBoundary'].update(allowedDivisors=[5],maxDividend=50)
+                else:
+                    self.lesson=read_json(HERE/'examples/elementary-lesson.json')
+                original=copy.deepcopy(self.lesson)
+                # A mocked explicit unsupported response lets this request-only
+                # test inspect guidance without generating/retrying a draft.
+                self.payload={'version':2,'questions':[]}
+                with patch('provider.build_opener') as build:
+                    build.return_value.open.return_value=Response(self.envelope())
+                    with self.assertRaises(GenerationError) as caught:
+                        provider.author_lesson(self.lesson,allow_legacy=domain=='legacy',**self.config)
+                    build.return_value.open.assert_called_once()
+                    body=json.loads(build.return_value.open.call_args.args[0].data)
+                self.assertEqual(caught.exception.code,'AUTHOR_UNSUPPORTED')
+                self.assertEqual(self.lesson,original)
+                system=body['messages'][0]['content']
+                if domain=='single':
+                    self.assertIn('the taught domain contains only one divisor; use that divisor',system)
+                    self.assertIn('does not apply to this single-divisor boundary',system)
+                    self.assertNotIn('use at least two distinct divisors',system)
+                else:
+                    self.assertIn('For every missing_right question, use at least two distinct divisors from the allowed domain',system)
+                    self.assertIn('Do not make every part ask for the same missing divisor',system)
+                    self.assertNotIn('does not apply to this single-divisor boundary',system)
+
     def test_known_long_pattern_and_example_are_rejected_after_one_call_without_repair(self):
         for copied in (False,True):
             self.use_fixture('middle')

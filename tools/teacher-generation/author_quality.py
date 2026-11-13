@@ -5,10 +5,11 @@ pedagogical assessment or a purported numerical rule from the installed skill.
 No repair, reordering, clamping, randomization or provider retry happens here.
 """
 from collections import Counter
+from itertools import combinations
 from validation import reject
 from distractors import plan_distractors
 
-POLICY = 'pilot-didactic-quality/2'
+POLICY = 'pilot-didactic-quality/3'
 MIN_PATTERN_ITEMS = 24
 MIN_REPETITIONS = 3
 
@@ -130,11 +131,45 @@ def division_order(payload):
     The two rank bases describe tables with quotients 1..10 or 0..10. At least
     90% of positions must fit one consecutive table, with two actual divisors
     among the fitting positions. This is stricter than merely being sorted.
+    Dominant adjacent table steps also detect partial-width and quotient-major
+    tables. A short run alone is evidence, not a rejection condition.
     No requirement is made to use every teacher-allowed divisor.
     """
     from itertools import groupby
     facts=[(item['right'],item['answer']) for q in payload['questions'] for item in q['items']]
     divisors=[d for d,q in facts]
+    pairs=max(0,len(facts)-1)
+    counts=Counter(divisors);full_order=sorted(counts)
+    def measure_steps(order):
+        rank={d:i for i,d in enumerate(order)}
+        steps=0;run=0;longest=0;contributing=set()
+        for (d,q),(other_d,other_q) in zip(facts,facts[1:]):
+            # Excluded occurrences remain in place and break both edges.
+            is_step=d in rank and other_d in rank and (
+                (d==other_d and abs(q-other_q)==1) or
+                (q==other_q and abs(rank[d]-rank[other_d])==1))
+            if is_step:
+                steps+=1;run+=1;longest=max(longest,run);contributing.update((d,other_d))
+            else:run=0
+        return {'pairs':pairs,'steps':steps,'longestRun':longest,
+                'contributingDivisors':len(contributing),'divisorOrder':order,
+                'retainedItems':sum(counts[d] for d in order),
+                'excludedDivisors':[d for d in full_order if d not in rank],
+                'dominant':pairs>0 and len(contributing)>1 and 5*steps>=3*pairs}
+    adjacent=measure_steps(full_order)
+    # A rare inserted divisor must not change the ranks of the entire sheet.
+    # At most ten validated divisors exist; consider only subsets retaining
+    # >=90% of item positions, without removing positions from the sequence.
+    max_excluded=len(facts)//10
+    rare=[d for d in full_order if counts[d]<=max_excluded]
+    for size in range(1,len(rare)+1):
+        for excluded in combinations(rare,size):
+            if sum(counts[d] for d in excluded)>max_excluded:continue
+            order=[d for d in full_order if d not in excluded]
+            if len(order)<2:continue
+            candidate=measure_steps(order)
+            score=lambda result:(result['dominant'],result['steps'],result['retainedItems'])
+            if score(candidate)>score(adjacent):adjacent=candidate
     ordered=all(a<=b for a,b in zip(divisors,divisors[1:])) or all(a>=b for a,b in zip(divisors,divisors[1:]))
     blocks=[[q for d,q in group] for divisor,group in groupby(facts,key=lambda pair:pair[0])]
     consecutive=bool(blocks) and all(len(block)>=2 and
@@ -153,8 +188,9 @@ def division_order(payload):
     return {'items':len(facts),'distinctDivisors':len(set(divisors)),
             'orderedDivisorBlocks':ordered,'consecutiveQuotientsInEveryBlock':consecutive,
             'dominantConsecutiveTable':dominant,
+            'adjacentTableSteps':adjacent,
             'sortedFactTable':len(facts)>=MIN_PATTERN_ITEMS and len(set(divisors))>1 and
-                ((ordered and consecutive) or near_table)}
+                ((ordered and consecutive) or near_table or adjacent['dominant'])}
 
 
 def missing_divisor_variety(lesson,payload):

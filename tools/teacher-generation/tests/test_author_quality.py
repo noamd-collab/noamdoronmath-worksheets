@@ -262,6 +262,86 @@ class AuthorQualityTests(unittest.TestCase):
         facts=[(d,q) for d in range(2,6) for q in range(11)]
         self.assertTrue(division_order({'questions':[{'items':[{'right':d,'answer':q} for d,q in facts]}]})['sortedFactTable'])
 
+    def test_partial_width_and_quotient_major_report_cases_are_rejected(self):
+        context=lesson('elementary');cap=validate_lesson(context)
+        partial=[(2,q) for q in range(1,11)]+[(d,q) for d in (3,4,5,6) for q in range(1,7)]+[(7,1),(7,2)]
+        cases=[partial]
+        for index,pair in [(13,(3,8)),(25,(8,4))]:
+            changed=list(partial);changed[index]=pair;cases.append(changed)
+        cases.append([(d,q) for q in range(1,10) for d in (2,3,4,5)])
+        for divisors in [(2,3,4,5),(4,2,5,3),(7,3,9,5)]:
+            facts=[(d,q) for d in divisors for q in range(1,10)]
+            for index,pair in [(9,(10,1)),(21,(10,2)),(33,(10,3))]:facts[index]=pair
+            cases.append(facts)
+        for number,facts in enumerate(cases):
+            with self.subTest(case=number):
+                raw={'version':2,'questions':[{'items':[{'divisor':d,'quotient':q} for d,q in facts[i:i+3]]}
+                                             for i in range(0,36,3)]}
+                payload=derive_author_parameters(context,cap,raw);validate_model(context,payload)
+                before=copy.deepcopy(payload);stats=division_order(payload)['adjacentTableSteps']
+                self.assertTrue(stats['dominant'])
+                self.assertGreaterEqual(stats['contributingDivisors'],2)
+                with self.assertRaises(GenerationError) as caught:prepare_didactics(context,payload,cap)
+                self.assertEqual(caught.exception.code,'AUTHOR_DIVISION_ORDER')
+                self.assertEqual(payload,before)
+
+    def test_table_adjacency_is_order_independent_and_single_run_is_not_a_gate(self):
+        # Nonconsecutive taught divisors have a deterministic sorted rank.
+        facts=[(d,q) for q in range(1,11) for d in (2,5)]
+        payload={'questions':[{'items':[{'right':d,'answer':q} for d,q in facts]}]}
+        stats=division_order(payload)
+        self.assertEqual(stats['adjacentTableSteps']['divisorOrder'],[2,5])
+        self.assertEqual(stats['adjacentTableSteps']['steps'],10)
+        self.assertFalse(stats['sortedFactTable'])  # short drill, below 24 parts
+        # Nine deliberate warm-up facts do not condemn the mixed whole sheet.
+        warmup=[(2,q) for q in range(1,10)]
+        remaining=random.Random(20261117).sample([(d,q) for d in range(3,11) for q in range(1,11)],27)
+        facts=warmup+remaining;context=lesson('elementary');cap=validate_lesson(context)
+        raw={'version':2,'questions':[{'items':[{'divisor':d,'quotient':q} for d,q in facts[i:i+3]]}
+                                     for i in range(0,36,3)]}
+        payload=derive_author_parameters(context,cap,raw);validate_model(context,payload)
+        stats=division_order(payload)
+        self.assertGreaterEqual(stats['adjacentTableSteps']['longestRun'],8)
+        self.assertFalse(stats['sortedFactTable'])
+
+    def test_rare_divisor_cannot_change_rank_of_the_whole_table(self):
+        context=lesson('elementary');cap=validate_lesson(context)
+        original=[(d,q) for q in range(1,10) for d in (2,5,8,10)]
+        for edits in ([(14,(3,4))],[(14,(3,4)),(25,(6,7))],
+                      [(14,(3,4)),(25,(6,7)),(32,(9,9))]):
+            facts=list(original)
+            for index,pair in edits:facts[index]=pair
+            raw={'version':2,'questions':[{'items':[{'divisor':d,'quotient':q} for d,q in facts[i:i+3]]}
+                                         for i in range(0,36,3)]}
+            payload=derive_author_parameters(context,cap,raw);validate_model(context,payload)
+            before=copy.deepcopy(payload);stats=division_order(payload)['adjacentTableSteps']
+            self.assertEqual(stats['pairs'],35)  # no deletion or joining across an outlier
+            self.assertGreaterEqual(stats['retainedItems'],33)
+            self.assertTrue(stats['dominant'])
+            self.assertIn(3,stats['excludedDivisors'])
+            with self.assertRaises(GenerationError) as caught:prepare_didactics(context,payload,cap)
+            self.assertEqual(caught.exception.code,'AUTHOR_DIVISION_ORDER')
+            self.assertEqual(payload,before)
+
+    def test_random_narrow_capacity_nine_and_single_divisor_are_not_table_patterns(self):
+        # Capacity is exactly nine positive facts for [9,10], maxDividend45.
+        # Facts may recur across different task kinds; canonical validation
+        # forbids duplicates within one kind. Each seed is tested once.
+        for allowed,maximum in [([9,10],45),([2,5],30),([5],50)]:
+            context=lesson('elementary')
+            context['lessonBoundary'].update(allowedDivisors=allowed,maxDividend=maximum)
+            cap=validate_lesson(context);plan=question_plan(context,cap)
+            facts=[(d,q) for d in allowed for q in range(1,min(10,maximum//d)+1)]
+            for seed in range(20):
+                rng=random.Random(20261120+seed)
+                pools={kind:rng.sample(facts,9) for kind in cap['questionKinds']}
+                raw={'version':2,'questions':[]}
+                for q in plan:
+                    chosen=pools[q['kind']][:3];del pools[q['kind']][:3]
+                    raw['questions'].append({'items':[{'divisor':d,'quotient':v} for d,v in chosen]})
+                payload=derive_author_parameters(context,cap,raw);validate_model(context,payload)
+                self.assertFalse(division_order(payload)['sortedFactTable'],(allowed,seed))
+
     def test_mixed_sheet_rejects_uniform_missing_divisor_without_mutation(self):
         context=lesson('elementary');cap=validate_lesson(context)
         fixed=[(3,1),(3,4),(3,9)]

@@ -279,6 +279,14 @@ def author_lesson(lesson, *, api_key=None, base_url=None, model=None, timeout=90
         system += (' The structured lesson boundary is mandatory: use only divisors '+
             json.dumps(boundary['allowedDivisors'])+' and divisor*quotient <= '+str(boundary['maxDividend'])+
             '. Respect each question schema maximum item count; there must be enough distinct facts for each task kind.')
+    if cap['family']=='arithmetic':
+        allowed_divisors=boundary.get('allowedDivisors',list(range(1,11)))
+        if len(allowed_divisors)>1:
+            system += (' For every missing_right question, use at least two distinct divisors from the allowed domain. '
+                'Do not make every part ask for the same missing divisor.')
+        else:
+            system += (' For missing_right questions, the taught domain contains only one divisor; use that divisor. '
+                'The requirement for two distinct divisors does not apply to this single-divisor boundary.')
     body={'model':chosen,'messages':[{'role':'system','content':system},{'role':'user','content':json.dumps({'lesson':lesson,'capability':cap,'questionPlan':plan},ensure_ascii=False)}],'response_format':{'type':'json_schema','json_schema':{'name':'worksheet_author_data','strict':True,'schema':author_schema(lesson,cap)}},'enable_thinking':False,'max_tokens':14000,'temperature':0.35}
     req=Request(target,data=json.dumps(body).encode(),headers={'Authorization':'Bearer '+key,'Content-Type':'application/json'},method='POST')
     measured=metadata if isinstance(metadata,dict) else {}

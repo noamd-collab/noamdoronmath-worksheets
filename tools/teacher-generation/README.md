@@ -216,8 +216,9 @@ the first exercise to fixed sample numbers.
 
 `author_quality.py` runs after exact canonical validation in the provider and
 again in the trusted adapter, so offline input cannot bypass it. These are
-bounded quality checks under `pilot-didactic-quality/2`, not proof of complete
-pedagogy. Version 2 closes the reviewed near-pattern and sorted-fact-table gaps:
+bounded quality checks under `pilot-didactic-quality/3`, not proof of complete
+pedagogy. Version 3 adds partial-width and quotient-major table detection to the
+previous near-pattern checks; the grade-7 thresholds are unchanged:
 
 - `AUTHOR_EXAMPLE_COPY` rejects a first question starting with the exact three
   parameter pairs previously used as the fixed prompt demonstration.
@@ -254,10 +255,28 @@ pedagogy. Version 2 closes the reviewed near-pattern and sorted-fact-table gaps:
   count. This catches one to three changed facts in a 36-item enumeration; it
   does not reject every monotonic list, a single-divisor drill or a short warm-up,
   and does not require coverage of all teacher-allowed divisors.
+  A separate width-independent check counts adjacent table steps: the same
+  divisor with quotient changing by one, or the same quotient with divisors
+  adjacent in the sorted order of divisors actually present. At least 60% of
+  adjacent pairs must be such steps, with at least two contributing divisors and
+  at least 24 items. Rank is also evaluated on divisor subsets covering at least
+  90% of item positions, so one rare inserted divisor cannot change the ranks of
+  the entire sheet. Excluded occurrences remain at their original positions and
+  break both adjacent edges; positions are never deleted or joined. There are at
+  most ten validated divisors, so this search is bounded. Evidence records the
+  chosen subset, retained-item count and excluded divisors. This detects the reviewed partial-width blocks and
+  quotient-major grid even after the reported local edits. Evidence records
+  steps, pairs, divisor order and longest run. A run of eight steps alone is
+  deliberately not a rejection condition: a short deliberate warm-up followed
+  by varied practice remains valid. Like all thresholds here, this is a bounded
+  pilot detector, not a claim to recognize every possible mechanical ordering.
 - `AUTHOR_MISSING_DIVISOR_CONSTANT` rejects a missing-divisor question with
   three or more parts all asking for the same divisor when the teacher's taught
   domain permits multiple divisors. A teacher-selected single divisor remains
   allowed. The rule measures the requested answer, not merely repeated wording.
+  The provider prompt explicitly states this existing constraint for every
+  `missing_right` row, and explicitly exempts a single-divisor boundary. This
+  guidance changes no schema or parameters and adds no automatic retry or call.
 - `distractors.py` selects named mistakes such as confusing divisor with
   quotient, subtracting only once, omitting division by a coefficient or using
   the wrong inverse operation. Every proposed value is independently checked
@@ -270,7 +289,9 @@ value cap can remove every available named mistake for otherwise valid boundary
 equations. Current checks still verify each proposal is false, within existing
 numeric limits and respects the signed-number boundary; that is not a claim
 that every proposal is equally suitable for basic practice. No new cap or
-change to the deterministic b sequence is included in policy 2.
+change to the deterministic b sequence is included in policy 3. The reviewer’s
+remaining grade-7 examples beyond the documented cycle/edit budget are also
+deferred for this owner-reviewed pilot; version 3 does not broaden the N1 rules.
 
 Correct authored exercises are never shuffled or changed to disguise a failed
 pattern. Failed output is not retried automatically. `didactic-evidence.json`
