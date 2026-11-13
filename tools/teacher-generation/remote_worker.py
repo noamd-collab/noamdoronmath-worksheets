@@ -26,6 +26,8 @@ from preflight import check as check_readiness
 ORIGIN = 'https://ouzquolkeuceektfihss.supabase.co'
 OWNER = '80da2957-9492-4a9d-babb-28ba70dedd12'
 BUCKET = 'teacher-generation-private'
+ARTIFACT_LIMIT = 15728640
+ARTIFACT_MIMES = {'application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'}
 UUID = re.compile(r'^[a-f0-9]{8}-[a-f0-9]{4}-[1-5][a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$')
 HERE = Path(__file__).resolve().parent
 
@@ -53,6 +55,22 @@ class Remote:
             raise RuntimeError('REMOTE_HTTP_'+str(e.code)) from None
 
 def utc(): return datetime.now(timezone.utc)
+def check_transport(remote):
+    """Read-only schema/storage readiness. Never claims a job or advertises health.
+
+    The claim RPC is deliberately verified by a successful real claim in the
+    run loop, not by a pretend dry run that could start a paid job.
+    """
+    bucket = remote.call('/storage/v1/bucket/' + BUCKET)
+    if (not isinstance(bucket, dict) or bucket.get('id') != BUCKET or bucket.get('public') is not False
+            or bucket.get('file_size_limit') != ARTIFACT_LIMIT
+            or not isinstance(bucket.get('allowed_mime_types'), list)
+            or len(bucket['allowed_mime_types']) != 2 or set(bucket['allowed_mime_types']) != ARTIFACT_MIMES):
+        raise RuntimeError('PRIVATE_BUCKET_NOT_READY')
+    # Validate every worker-used column without reading any user's lesson/result.
+    rows = remote.call('/rest/v1/noam_teacher_generation_jobs?select=id,owner_id,lesson,status,phase,result,error_code,lease_token,lease_until,updated_at&limit=0')
+    if rows != []: raise RuntimeError('QUEUE_NOT_READY')
+
 def heartbeat(remote):
     remote.call('/rest/v1/noam_teacher_generation_workers?on_conflict=id','POST',
                 {'id':'primary','updated_at':utc().isoformat(),'capabilities':capabilities()},prefer='resolution=merge-duplicates')
@@ -82,8 +100,9 @@ def process_job(remote, job, root):
     def renew():
         while not stop.wait(25):
             try:
-                heartbeat(remote)
+                check_transport(remote)
                 update_job(remote,job,{'lease_until':(utc()+timedelta(minutes=20)).isoformat()})
+                heartbeat(remote)
             except Exception:
                 lost.set();return
     thread=threading.Thread(target=renew,daemon=True);thread.start()
@@ -99,13 +118,14 @@ def process_job(remote, job, root):
         passed=passed and bool(manifest.get('steps')) and all(s.get('status')=='PASS' for s in manifest['steps'])
         if not passed or {a.get('kind') for a in artifacts}!={'pdf','docx'} or len(artifacts)!=2:
             raise GenerationError('QUALITY_GATE_FAILED','A required output gate failed')
+        check_transport(remote)
         published=[]
         for item in artifacts:
             if (target/item['path']).is_symlink(): raise RuntimeError('ARTIFACT_PATH_DENIED')
             path=(target/item['path']).resolve()
             if not path.is_relative_to(target) or path.is_symlink(): raise RuntimeError('ARTIFACT_PATH_DENIED')
             blob=path.read_bytes()
-            if not 0<len(blob)<=15728640 or hashlib.sha256(blob).hexdigest()!=item['sha256']: raise RuntimeError('ARTIFACT_HASH_MISMATCH')
+            if not 0<len(blob)<=ARTIFACT_LIMIT or hashlib.sha256(blob).hexdigest()!=item['sha256']: raise RuntimeError('ARTIFACT_HASH_MISMATCH')
             mime='application/pdf' if item['kind']=='pdf' else 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
             remote.call('/storage/v1/object/'+BUCKET+'/'+OWNER+'/'+job['id']+'/sheet.'+item['kind'],'POST',raw=blob,mime=mime)
             published.append({'kind':item['kind'],'sha256':item['sha256'],'bytes':len(blob)})
@@ -129,18 +149,33 @@ def load_env(path):
         os.environ[key]=value
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--env-file',action='append',default=[]);p.add_argument('--work-dir',required=True);p.add_argument('--once',action='store_true')
+    p=argparse.ArgumentParser();p.add_argument('--env-file',action='append',default=[]);p.add_argument('--work-dir');p.add_argument('--once',action='store_true')
+    p.add_argument('--check-only',action='store_true',help='Check local runtime and remote schema/private bucket without claim, heartbeat, uploads or model calls')
     args=p.parse_args()
+    if not args.check_only and not args.work_dir:p.error('--work-dir is required unless --check-only')
     for path in args.env_file:load_env(path)
     if not check_readiness(require_provider=True)['ready']:
         print(json.dumps({'event':'worker_not_ready'}),flush=True)
         raise SystemExit(1)
+    try:
+        remote=Remote(os.environ.get('TEACHER_GENERATION_SERVICE_KEY'))
+        if args.check_only:
+            check_transport(remote)
+            print(json.dumps({'event':'worker_preflight_pass','claimVerified':False,'providerCalled':False,'heartbeatWritten':False}),flush=True)
+            return
+    except Exception:
+        print(json.dumps({'event':'worker_not_ready'}),flush=True)
+        raise SystemExit(1)
     root=Path(args.work_dir).resolve();root.mkdir(parents=True,exist_ok=True);root.chmod(0o700)
-    remote=Remote(os.environ.get('TEACHER_GENERATION_SERVICE_KEY'))
     while True:
         try:
-            heartbeat(remote)
+            check_transport(remote)
             rows=remote.call('/rest/v1/rpc/claim_teacher_generation_job','POST',{})
+            if not isinstance(rows,list) or len(rows)>1 or (rows and not isinstance(rows[0],dict)):
+                raise RuntimeError('QUEUE_NOT_READY')
+            # A recurring claim failure must never keep the UI "online".
+            # Existing heartbeats expire after 90 seconds on the website.
+            heartbeat(remote)
             if rows:
                 job=rows[0]
                 try:process_job(remote,job,root)

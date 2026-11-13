@@ -29,11 +29,19 @@ class FakeRemote:
         self.claims = []
         self.fail_updates = False
         self.fail_upload = False
+        self.fail_claim = False
+        self.bucket = {'id': worker.BUCKET, 'public': False, 'file_size_limit': worker.ARTIFACT_LIMIT,
+                       'allowed_mime_types': sorted(worker.ARTIFACT_MIMES)}
 
     def call(self, path, method='GET', value=None, **kwargs):
         self.calls.append((path, method, copy.deepcopy(value), kwargs))
         if '/rpc/claim_' in path:
+            if self.fail_claim: raise RuntimeError('private SQL details')
             return self.claims
+        if path == '/storage/v1/bucket/' + worker.BUCKET:
+            return self.bucket
+        if method == 'GET' and 'limit=0' in path:
+            return []
         if method == 'PATCH':
             return [] if self.fail_updates else [{'id': JOB_ID}]
         if '/storage/' in path and self.fail_upload:
@@ -41,7 +49,7 @@ class FakeRemote:
         return None
 
     def uploads(self):
-        return [call for call in self.calls if '/storage/' in call[0]]
+        return [call for call in self.calls if '/storage/v1/object/' in call[0] and call[1] == 'POST']
 
 
 class WorkerTests(unittest.TestCase):
@@ -89,16 +97,66 @@ class WorkerTests(unittest.TestCase):
              patch.object(worker, 'check_readiness', side_effect=ready), patch.object(worker, 'Remote', side_effect=remote):
             worker.main()
         self.assertEqual(order, ['readiness', 'remote'])
-        self.assertIn('noam_teacher_generation_workers', self.remote.calls[0][0])
-        self.assertIn('/rpc/claim_teacher_generation_job', self.remote.calls[1][0])
+        self.assertIn('/storage/v1/bucket/', self.remote.calls[0][0])
+        self.assertIn('noam_teacher_generation_jobs?', self.remote.calls[1][0])
+        self.assertIn('/rpc/claim_teacher_generation_job', self.remote.calls[2][0])
+        self.assertIn('noam_teacher_generation_workers', self.remote.calls[3][0])
         self.assertEqual(self.root.stat().st_mode & 0o777, 0o700)
-        advertised = self.remote.calls[0][2]['capabilities']['topics']
+        advertised = self.remote.calls[3][2]['capabilities']['topics']
         enabled = {cap['topicId']: cap for cap in advertised if cap.get('enabled')}
         self.assertEqual(set(enabled), {'ג10', 'g7:equations'})
         for topic, count in [('ג10', 12), ('g7:equations', 20)]:
             self.assertIs(enabled[topic]['e2eVerified'], True)
             self.assertEqual(enabled[topic]['levels'], ['b'])
             self.assertEqual(enabled[topic]['questionCounts'], [count])
+
+    def test_check_only_reads_transport_without_claim_heartbeat_model_or_work_directory(self):
+        work = self.root / 'must-not-exist'
+        with patch.object(sys, 'argv', ['worker', '--check-only', '--work-dir', str(work)]), \
+             patch.object(worker, 'check_readiness', return_value={'ready': True}), \
+             patch.object(worker, 'Remote', return_value=self.remote), \
+             patch.object(worker, 'author_lesson') as author, redirect_stdout(io.StringIO()) as output:
+            worker.main()
+        author.assert_not_called(); self.assertFalse(work.exists())
+        self.assertEqual([c[1] for c in self.remote.calls], ['GET', 'GET'])
+        self.assertEqual(json.loads(output.getvalue()), {'event': 'worker_preflight_pass', 'claimVerified': False,
+                                                       'providerCalled': False, 'heartbeatWritten': False})
+
+    def test_missing_or_public_or_misconfigured_bucket_never_advertises_or_claims(self):
+        for bucket in (None, {}, dict(self.remote.bucket, public=True),
+                       dict(self.remote.bucket, file_size_limit=1),
+                       dict(self.remote.bucket, allowed_mime_types=['application/pdf'])):
+            with self.subTest(bucket=bucket), \
+                 patch.object(sys, 'argv', ['worker', '--once', '--work-dir', str(self.root)]), \
+                 patch.object(worker, 'check_readiness', return_value={'ready': True}), \
+                 patch.object(worker, 'Remote', return_value=self.remote), \
+                 patch.object(worker, 'author_lesson') as author, redirect_stdout(io.StringIO()) as output:
+                self.remote.calls.clear(); self.remote.bucket = bucket
+                with self.assertRaises(SystemExit): worker.main()
+                self.assertEqual(json.loads(output.getvalue()), {'event': 'worker_unavailable'})
+                self.assertTrue(all(c[1] == 'GET' for c in self.remote.calls)); author.assert_not_called()
+
+    def test_failed_claim_never_refreshes_online_heartbeat_or_calls_model(self):
+        self.remote.fail_claim = True
+        with patch.object(sys, 'argv', ['worker', '--once', '--work-dir', str(self.root)]), \
+             patch.object(worker, 'check_readiness', return_value={'ready': True}), \
+             patch.object(worker, 'Remote', return_value=self.remote), \
+             patch.object(worker, 'author_lesson') as author, redirect_stdout(io.StringIO()) as output:
+            with self.assertRaises(SystemExit): worker.main()
+        self.assertEqual(json.loads(output.getvalue()), {'event': 'worker_unavailable'})
+        self.assertFalse(any('noam_teacher_generation_workers' in c[0] for c in self.remote.calls))
+        author.assert_not_called()
+
+    def test_bucket_becoming_public_during_render_blocks_upload(self):
+        def render(lesson, payload, target):
+            manifest = self.rendered(lesson, payload, target)
+            self.remote.bucket['public'] = True
+            return manifest
+        with patch.object(worker, 'author_lesson', return_value={}) as paid, \
+             patch.object(worker, 'render_job', side_effect=render):
+            with self.assertRaisesRegex(RuntimeError, 'PRIVATE_BUCKET_NOT_READY'):
+                worker.process_job(self.remote, self.job, self.root)
+        paid.assert_called_once(); self.assertEqual(self.remote.uploads(), [])
 
     def test_invalid_owner_topic_or_lease_is_denied_before_paid_authoring(self):
         changes = [{'owner_id': '33333333-3333-4333-8333-333333333333'}, {'id': '../escape'},

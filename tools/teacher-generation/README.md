@@ -317,3 +317,11 @@ transport's responsibility. Every status/download lookup must reauthorize the
 owner; general teacher Google access must not grant AI generation access.
 No runner service has been installed or started by this module, no DB change
 is implied, and nothing is automatically added to the public catalog/site.
+
+See [worker-operations.md](worker-operations.md) for the separate operator
+preflight, private credential requirements, truthful heartbeat behavior and
+reviewable macOS LaunchAgent start/stop commands. `remote_worker.py --check-only`
+never claims a job, writes a heartbeat or calls the paid author. The normal
+worker only advertises health after runtime, private storage, queue schema and
+an actual claim RPC have succeeded. Local Mac operation remains dependent on
+the user session and an awake machine.
