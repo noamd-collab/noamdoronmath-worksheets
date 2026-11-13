@@ -3,7 +3,9 @@
 - Add MS-PROD-002 (G9-PAR-02 / G9-T88: proofs and symmetry) and MS-PROD-003 (G9-PAR-03 / G9-T89: converse theorems and identification), three levels each, to the existing grade-nine parallelogram topic. Focused labels describe the actual contents; no whole-topic replacement is claimed.
 - The six frozen PDFs total 69 pages and 274 subitems. Saved Wix upload receipts and 18 returned/CDN/site downloads match the exact frozen PDF SHA-256 digests; source sheet.json and native-export provenance are real. See [follow-up evidence](middle-school-followup-pdf-20261113.json).
 - Previous PDFs remain the default. All six links open PDFs directly; no Word download, Noam AI activation, teacher-picker entries, native asset publication or hint/DB import is introduced by these rows.
-- Local candidate only: these six files were not in PR456. No new PR number, GitHub merge, preview, deployment or live catalog publication is asserted here. The review/deployment gate remains separate.
+- Included in PR #461, separate from the twelve PDFs in PR #456. Reviewed preview: https://zwqzfd-noam-math-astro-poc-amiramnoam-130a.wix-site-host.com/parallelogram-grade-9. Catalog, landing page and search were checked on phone and desktop; legacy viewer links remain unchanged. Production merge and publication are pending specific approval.
+- PR #461 also stages twelve disabled, source-bound measured manifests and their public native assets for the first batch, and fixes the selected-question card and single feedback pair. This prepares the connection; it does not activate the new editions or import hints.
+- Validation: all 2,379 unit tests, five isolated drawing tests and four live SSR checks passed; the build passed with 214,252 bytes of worker-payload headroom. Test TypeScript still has 342 existing baseline diagnostics, with zero new diagnostics. The regenerated search index includes these editions.
 
 ## 2026-11-13 — Twelve middle-school PDFs, with previous editions retained
 

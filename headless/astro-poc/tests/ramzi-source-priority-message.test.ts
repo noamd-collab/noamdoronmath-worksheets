@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { measuredViewerDependencies } from './helpers/measured-viewer-dependencies';
 import { readFileSync } from 'node:fs';
 import { runInNewContext } from 'node:vm';
 import { it } from 'node:test';
@@ -11,13 +12,13 @@ function fixture(v:string,kind='dots'){
  const id=kind==='dots'?'8474535578894a669c6847e57a83dc30':'c5910c37949b48a488ec5e3732c48601';
  const manifest=JSON.parse(read('noam-ai/manifests/'+id+'.json')),exercise=manifest.exercises.find((e:any)=>e.nativeItemId===(kind==='dots'?'q21d':'q7b'));
  const {document,window}=parseHTML('<html><body></body></html>'),calls:string[]=[],attachments:any[]=[],thread:any={messages:[],history:[],hintIndex:0};
- const c:any={document,window,manifest,selectedExercise:exercise,pdf:id,Promise,Map,WeakMap,WeakSet,currentAttachments:()=>attachments,
+ const c:any={document,window,manifestReady:true,manifest,selectedExercise:exercise,pdf:id,Promise,Map,WeakMap,WeakSet,currentAttachments:()=>attachments,
   noamNativeFocusUrl:()=>manifest.nativeExportUrl,exerciseThread:()=>thread,saveNoamState(){},renderNoamChat(){},announceNoam(){},
   cropExerciseCanvas:async()=>({width:640,height:1200,toDataURL:()=> 'data:image/png;base64,QUJD'}),
   fetch:async(url:string)=>{calls.push(url);const body=read(url.slice(1));return {ok:true,json:async()=>JSON.parse(body),text:async()=>body,arrayBuffer:async()=>new TextEncoder().encode(body).buffer};},TextDecoder};
  runInNewContext(read('noam-native-visual.js')+'\n'+read('noam-source-panels.js'),c);window.NoamNativeVisual=c.NoamNativeVisual;window.NoamSourcePanels=c.NoamSourcePanels;
  const helpers='var noamSourceVisualPackages='+v.split('var noamSourceVisualPackages=')[1].split('function noamNativeFigure(')[0];
- runInNewContext(v.slice(v.indexOf('var SOLVER_MESSAGE_MAX ='),v.indexOf('var GRADE_NAME ='))+'\n'+fn(v,'noamDiagramSourceIdentity')+'\n'+fn(v,'noamManifestOcrUnreliable')+'\n'+fn(v,'noamExerciseSectionLabel')+'\n'+helpers+'\n'+v.slice(v.indexOf('function noamGeometryContext(text){'),v.indexOf('function postJson(')),c);
+ runInNewContext(measuredViewerDependencies(v)+v.slice(v.indexOf('var SOLVER_MESSAGE_MAX ='),v.indexOf('var GRADE_NAME ='))+'\n'+fn(v,'noamDiagramSourceIdentity')+'\n'+fn(v,'noamManifestOcrUnreliable')+'\n'+fn(v,'noamExerciseSectionLabel')+'\n'+helpers+'\n'+v.slice(v.indexOf('function noamGeometryContext(text){'),v.indexOf('function postJson(')),c);
  return {c,exercise,manifest,calls,attachments,thread};
 }
 function contradictory(){return {readable:true,transcription:'OCR: n²',math_content:'n²',problem_statement:'OCR square pattern',diagram_description:'OCR:9,16,25',extracted_entities:{expressions:['n²'],numbers:[9,16,25]}};}

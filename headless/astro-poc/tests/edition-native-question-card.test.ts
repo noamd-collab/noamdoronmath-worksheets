@@ -45,7 +45,7 @@ for(const [variant,path] of [['public','../public/worksheet-viewer-noam.html'],[
   const root=document.querySelector('.noam-native-source')!;assert(root.firstElementChild!.classList.contains('noam-native-selected-item'));
   assert.equal(root.querySelectorAll('.noam-native-selected-item').length,1);assert(!root.textContent.includes('השוו בין הגופים.'));
   assert.equal(root.querySelectorAll('img').length,3);assert.equal(root.querySelectorAll('table').length,1);assert.equal(root.querySelectorAll('tbody tr').length,2);assert.match(root.textContent,/underline/);assert.doesNotMatch(root.textContent,/PRIVATE_/);
-  assert(!root.querySelector('.noam-native-context')!.open);c.noamSetMeasuredContextExpanded(true);assert(root.querySelector('.noam-native-context')!.open);c.noamSetMeasuredContextExpanded(false);assert(!root.querySelector('.noam-native-context')!.open);
+  assert(!(root.querySelector('.noam-native-context') as HTMLDetailsElement).open);c.noamSetMeasuredContextExpanded(true);assert((root.querySelector('.noam-native-context') as HTMLDetailsElement).open);c.noamSetMeasuredContextExpanded(false);assert(!(root.querySelector('.noam-native-context') as HTMLDetailsElement).open);
   const second=c.noamBuildMeasuredQuestion(clone(native),{...c.selectedExercise,part:'ב',nativeItemId:'q1b'},c.manifest);assert.equal(second.querySelectorAll('table').length,2);assert.match(second.firstElementChild.textContent,/השוו/);assert(!second.textContent.includes('חשבו את נפח'));assert.equal(JSON.stringify(native),body);
  });
  test(variant+': wrong item/level/question/figure/table fails closed',()=>{
@@ -101,14 +101,14 @@ function isolatedScripts(html:string){
  runInNewContext(startup(adapter,adapterStartup),c);
  assert.equal(c.noamHasMeasuredNativeQuestion,undefined,'owner function must remain private');
  assert.equal(c.selectedExercise,undefined,'selection must remain private');
- assert.equal(window.manifest,undefined,'manifest must remain private');
+ assert.equal((window as any).manifest,undefined,'manifest must remain private');
  return {c,window,document,thread,probe,seed};
 }
 test('public: complete owner and adapter scripts communicate only through an immutable bound bridge',()=>{
  const html=readFileSync(new URL('../public/worksheet-viewer-noam.html',import.meta.url),'utf8');
  const {window,document,thread,probe,seed}=isolatedScripts(html);
  probe.place(); // Regression: the pre-bridge adapter throws a private-scope ReferenceError here.
- const bridge=window.NoamMeasuredFeedback;assert(Object.isFrozen(bridge));
+ const bridge=(window as any).NoamMeasuredFeedback;assert(Object.isFrozen(bridge));
  assert.deepEqual(Object.keys(bridge).sort(),['respond','snapshot']);
  const state=bridge.snapshot();assert(Object.isFrozen(state));assert.deepEqual(Object.keys(state).sort(),['binding','target']);assert.equal(state.target,'question');
  const buttons=()=>Array.from(document.querySelectorAll('.ramzi-check button')) as any[];

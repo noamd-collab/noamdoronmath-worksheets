@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {readFileSync} from 'node:fs';
+import {readFileSync,readdirSync} from 'node:fs';
 import {createRequire} from 'node:module';
 import {runInNewContext} from 'node:vm';
 import {fileURLToPath} from 'node:url';
@@ -45,8 +45,34 @@ for(const name of ['worksheet-viewer-noam.html','headless/astro-poc/public/works
     for(const id of [...c.NOAM_NUMBER_SUMMARY_PDFS,'ddfdb423c2dc4e9d925ee5be56971195']){const ctx:any={pdf:id,HEADLESS_MANIFEST_BASE:'/noam-ai/manifests/'};runInNewContext(block,ctx);assert.equal(ctx.ANALYSIS_STORAGE_KEY.endsWith(':number-summary-v1'),c.NOAM_NUMBER_SUMMARY_PDFS.includes(id));assert.equal(ctx.THREAD_STORAGE_KEY,'noam-static-threads-v1:'+id);assert.match(ctx.MANIFEST_PATH,/20261028-item-figure-scope-number-summary/);}
   });
 }
-it('all412 canonical manifests pass the source-bound regeneration guard and retain all762 native summaries',()=>{
-  const r=scan(fileURLToPath(root));assert.equal(r.nativeManifests,412);assert.equal(r.mainQuestions,8178);assert.equal(r.strictSummaryEntries,762);assert.equal(r.affectedManifests,0);assert.equal(r.removedLineOccurrences,0);
+it('412 legacy manifests retain all762 summaries; the12 measured additions stay disabled and source-bound',()=>{
+  // Explicit first-batch allowlist, not a blanket exclusion of disabled/new manifests.
+  const batches=[['G7-T86','ms-20261113-trn-r1'],['G8-T84','ms-20261113-cyl-r1'],['G8-T87','ms-20261113-con-r1'],['G9-T85','ms-20261113-par-r1']];
+  const expected=new Map(batches.flatMap(([prefix,editionId])=>['a','b','c'].map(level=>[
+    `/noam-ai/native/${prefix}/${level}/noam-ai.json`,{prefix,editionId,level},
+  ] as const)));
+  const registry=JSON.parse(readFileSync(new URL('headless/catalog/worksheet-editions.v1.json',root),'utf8'));
+  const seen:string[]=[];let addedQuestions=0,addedParts=0,addedSummaries=0;
+  for(const file of readdirSync(new URL('noam-ai/manifests/',root))){
+    if(!file.endsWith('.json'))continue;
+    const m=JSON.parse(readFileSync(new URL('noam-ai/manifests/'+file,root),'utf8')),binding=expected.get(m.nativeExportUrl);
+    if(!binding)continue;
+    assert.equal(m.questionPagesIdenticalTo,undefined);assert.equal(m.publishable,false);assert.equal(m.reviewRequired,true);assert.equal(m.nativeExportPublished,false);
+    assert.equal(m.geometryContract,'measured-v1');assert.equal(m.editionId,binding.editionId);assert.equal(m.prefix,binding.prefix);assert.equal(m.nativeLevel,binding.level);
+    const edition=registry.editions.find((e:any)=>e.editionId===binding.editionId),level=edition?.levels.find((l:any)=>l.key===binding.level);
+    assert.equal(edition?.nativePrefix,binding.prefix);assert.equal(edition?.publicationMode,'pdf-only');assert.equal(file,level?.pdfId+'.json');
+    assert.equal(m.sourceSha256,level?.pdfSha256);assert.equal(m.sourceNativeExportSha256,level?.nativeExportSha256);
+    const native=JSON.parse(readFileSync(new URL(m.nativeExportUrl.slice(1),root),'utf8'));
+    addedQuestions+=native.questions.length;addedParts+=m.exercises.length;
+    addedSummaries+=native.questions.reduce((n:number,q:any)=>n+(q.given||[]).filter(isGenericNumberSummary).length,0);
+    seen.push(m.nativeExportUrl);
+  }
+  assert.deepEqual(seen.sort(),[...expected.keys()].sort());assert.equal(seen.length,12);
+  assert.equal(addedQuestions,135);assert.equal(addedParts,567);assert.equal(addedSummaries,0);
+  // scan still visits ALL424, checking native hashes, both mirrors and regeneration safety.
+  const r=scan(fileURLToPath(root));assert.equal(r.nativeManifests,412+seen.length);assert.equal(r.nativeManifests-seen.length,412);
+  assert.equal(r.mainQuestions-addedQuestions,8178);assert.equal(r.strictSummaryEntries-addedSummaries,762);
+  assert.equal(r.strictSummaryEntries,762);assert.equal(r.affectedManifests,0);assert.equal(r.removedLineOccurrences,0);
 });
 it('typed native context still uses exact printed introduction/item/table and ignores generic given arrays',()=>{
   const c:any={};runInNewContext(readFileSync(new URL('noam-native-visual.js',root),'utf8'),c);

@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { measuredViewerDependencies } from './helpers/measured-viewer-dependencies';
 import { readFileSync } from 'node:fs';
 import { runInNewContext } from 'node:vm';
 import { it } from 'node:test';
@@ -45,13 +46,13 @@ function fixture(v:string,key:string,edit?:(data:any,manifest:any,exercise:any)=
  let nativeBody=manifest.nativeExportUrl?read(manifest.nativeExportUrl.slice(1)):'';
  if(edit){edit(data,manifest,exercise);nativeBody=JSON.stringify(data);if(!keepHash)manifest.nativeExportSha256=createHash('sha256').update(nativeBody).digest('hex');}
  const {document,window}=parseHTML('<html><body></body></html>'),calls:string[]=[],attachments:any[]=[],thread:any={messages:[],history:[],hintIndex:0};
- const c:any={document,window,manifest,selectedExercise:exercise,pdf,Promise,Map,WeakMap,WeakSet,Set,currentAttachments:()=>attachments,
+ const c:any={document,window,manifestReady:true,manifest,selectedExercise:exercise,pdf,Promise,Map,WeakMap,WeakSet,Set,currentAttachments:()=>attachments,
   noamNativeFocusUrl:()=>manifest.nativeExportUrl,exerciseThread:()=>thread,saveNoamState(){},renderNoamChat(){},announceNoam(){},analysisCache:{},
   cropExerciseCanvas:async()=>({width:640,height:1200,toDataURL:()=> 'data:image/png;base64,QUJD'}),
   fetch:async(url:string)=>{calls.push(url);const body=url===manifest.nativeExportUrl?nativeBody:read(url.slice(1));return {ok:true,json:async()=>JSON.parse(body),text:async()=>body,arrayBuffer:async()=>new TextEncoder().encode(body).buffer};},TextDecoder};
  runInNewContext(modules,c);for(const k of Object.keys(c))if(k.startsWith('Noam'))window[k]=c[k];
  const helpers='var noamSourceVisualPackages='+v.split('var noamSourceVisualPackages=')[1].split('function noamNativeFigure(')[0];
- runInNewContext(v.slice(v.indexOf('var SOLVER_MESSAGE_MAX ='),v.indexOf('var GRADE_NAME ='))+'\n'+fn(v,'noamDiagramSourceIdentity')+'\n'+fn(v,'noamManifestOcrUnreliable')+'\n'+fn(v,'noamExerciseSectionLabel')+'\n'+fn(v,'localVisualExerciseSource')+'\n'+helpers+'\n'+v.slice(v.indexOf('function noamGeometryContext(text){'),v.indexOf('function postJson(')),c);
+ runInNewContext(measuredViewerDependencies(v)+v.slice(v.indexOf('var SOLVER_MESSAGE_MAX ='),v.indexOf('var GRADE_NAME ='))+'\n'+fn(v,'noamDiagramSourceIdentity')+'\n'+fn(v,'noamManifestOcrUnreliable')+'\n'+fn(v,'noamExerciseSectionLabel')+'\n'+fn(v,'localVisualExerciseSource')+'\n'+helpers+'\n'+v.slice(v.indexOf('function noamGeometryContext(text){'),v.indexOf('function postJson(')),c);
  return {c,exercise,manifest,data,calls,attachments,thread};
 }
 function wireAdditionalQuestion(f:any,analysis:any=contradictory()){

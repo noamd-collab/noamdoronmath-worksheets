@@ -52,9 +52,28 @@ for(const name of ['worksheet-viewer-noam.html','headless/astro-poc/public/works
  const visual=await s.noamPrepareSourceVisual(f.exercise,options);assert.equal(visual.presentation,'typed-operations');assert.equal(visual.options.drawCurrentStep,true);assert.ok(s.noamRenderSourceVisual(JSON.parse(JSON.stringify(visual))));const saved=JSON.parse(JSON.stringify(visual));cache=null;assert.equal(s.noamRenderSourceVisual(saved),null);await Promise.resolve();assert.equal(refresh,1);assert.ok(s.noamRenderSourceVisual(saved));identity='another-source';assert.equal(s.noamRenderSourceVisual(saved),null);identity='sha-exact';saved.options.drawCurrentStep=false;assert.equal(s.noamRenderSourceVisual(saved),null);
  const t=worked('ג'),table=s.noamSourcePresentation({data:t.data,svgText:''},t.exercise,options);assert.equal(table.kind,'source-context');assert.match(table.figure.textContent,/טבלת השלבים המקורית/);const row=rowTable('ג'),rowView=s.noamSourcePresentation({data:row.data,svgText:''},row.exercise,options);assert.equal(rowView.kind,'source-context');assert.match(rowView.figure.textContent,/השורה הראשונה נשמרה כדוגמה המקורית/);assert.equal(s.noamSourcePresentation({data:f.data,svgText:''},f.exercise,{...options,drawCurrentStep:false}),null);s.NoamSourceDataVisual=undefined;assert.equal(s.noamSourcePresentation({data:f.data,svgText:''},f.exercise,options),null);
 });
-it('whole canonical corpus retains the seven original cases and bounds generic table/expression impact',()=>{
- const affected:string[]=[],kinds:Record<string,number>={};let manifests=0,parts=0;for(const file of readdirSync(new URL('noam-ai/manifests/',pub))){const m=JSON.parse(readFileSync(new URL('noam-ai/manifests/'+file,pub),'utf8'));if(!m.nativeExportUrl||m.questionPagesIdenticalTo)continue;manifests++;c.raw=readFileSync(new URL(m.nativeExportUrl.slice(1),pub),'utf8');const d=runInNewContext('JSON.parse(raw)',c);for(const e of m.exercises){parts++;if(e.nativeFigureId)continue;const ctx=c.NoamNativeVisual.authoredContext(d,e,'');const scene=ctx&&resolve(ctx);if(scene){affected.push(e.id);kinds[scene.kind]=(kinds[scene.kind]||0)+1;}}}
+it('whole corpus preserves412 legacy manifests and independently bounds12 disabled measured additions',()=>{
+ const measuredPaths=new Set(['G7-T86','G8-T84','G8-T87','G9-T85'].flatMap(prefix=>['a','b','c'].map(level=>`/noam-ai/native/${prefix}/${level}/noam-ai.json`)));
+ const legacy={manifests:0,parts:0,affected:[] as string[],kinds:{} as Record<string,number>},measured={manifests:0,parts:0,affected:[] as string[],kinds:{} as Record<string,number>},seen:string[]=[];
+ for(const file of readdirSync(new URL('noam-ai/manifests/',pub))){
+   const m=JSON.parse(readFileSync(new URL('noam-ai/manifests/'+file,pub),'utf8'));if(!m.nativeExportUrl||m.questionPagesIdenticalTo)continue;
+   const isMeasured=measuredPaths.has(m.nativeExportUrl),group=isMeasured?measured:legacy;
+   if(isMeasured){seen.push(m.nativeExportUrl);assert.equal(m.publishable,false);assert.equal(m.reviewRequired,true);assert.equal(m.nativeExportPublished,false);assert.equal(m.geometryContract,'measured-v1');}
+   group.manifests++;const bytes=readFileSync(new URL(m.nativeExportUrl.slice(1),pub));assert.equal(createHash('sha256').update(bytes).digest('hex'),m.nativeExportSha256,file);
+   c.raw=bytes.toString();const d=runInNewContext('JSON.parse(raw)',c);
+   // Exercise the source-only resolver for every manifest, including staged assets;
+   // a source table being renderable does NOT authorize its disabled viewer edition.
+   for(const e of m.exercises){group.parts++;if(e.nativeFigureId)continue;const ctx=c.NoamNativeVisual.authoredContext(d,e,'');const scene=ctx&&resolve(ctx);if(scene){group.affected.push(e.id);group.kinds[scene.kind]=(group.kinds[scene.kind]||0)+1;}}
+ }
  // The approved T40 manifest ID correction renames four affected entries from
- // T32 to T40; all 3,977 scenes, their kinds and printed source remain unchanged.
- assert.equal(manifests,412);assert.equal(parts,30972);assert.deepEqual(kinds,{'typed-table':3582,'typed-operations':395});for(const id of ['G7-T04-B-Q02א','G7-T04-B-Q02ב','G7-T04-B-Q02ג','G7-T36-B-Q13ג','G9-T02-B-Q17א','G9-T02-B-Q17ב','G9-T02-B-Q21ג'])assert.ok(affected.includes(id),id);assert.equal(createHash('sha256').update(affected.sort().join('\n')).digest('hex'),'0908c186f5a4d477ae5147326d2ce661e3befc9c0ab65e27d2fb6a50cf2e9964');assert.equal(readFileSync(new URL('noam-source-data-visual.js',root),'utf8'),readFileSync(new URL('noam-source-data-visual.js',pub),'utf8'));
+ // T32 to T40; all3,977 legacy scenes, their kinds and printed source remain unchanged.
+ assert.equal(legacy.manifests,412);assert.equal(legacy.parts,30972);assert.deepEqual(legacy.kinds,{'typed-table':3582,'typed-operations':395});
+ for(const id of ['G7-T04-B-Q02א','G7-T04-B-Q02ב','G7-T04-B-Q02ג','G7-T36-B-Q13ג','G9-T02-B-Q17א','G9-T02-B-Q17ב','G9-T02-B-Q21ג'])assert.ok(legacy.affected.includes(id),id);
+ assert.equal(createHash('sha256').update(legacy.affected.sort().join('\n')).digest('hex'),'0908c186f5a4d477ae5147326d2ce661e3befc9c0ab65e27d2fb6a50cf2e9964');
+ assert.deepEqual(seen.sort(),[...measuredPaths].sort());assert.equal(measured.manifests,12);assert.equal(measured.parts,567);assert.deepEqual(measured.kinds,{'typed-table':37});
+ // These eight printed tables produce37 selected-item source views; no new operation scene.
+ const tableParts=[['G7-T86-A-Q08','אבגד'],['G7-T86-B-Q05','אבגדהו'],['G7-T86-E-Q09','אבגדה'],['G8-T84-A-Q10','אבגד'],['G8-T84-B-Q02','אבגד'],['G8-T84-E-Q02','אבגד'],['G8-T84-E-Q06','אבגדהו'],['G9-T85-E-Q06','אבגד']];
+ assert.deepEqual(measured.affected.sort(),tableParts.flatMap(([question,parts])=>[...parts].map(part=>question+part)).sort());
+ assert.equal(legacy.manifests+measured.manifests,424);assert.equal(legacy.parts+measured.parts,31539);
+ assert.equal(readFileSync(new URL('noam-source-data-visual.js',root),'utf8'),readFileSync(new URL('noam-source-data-visual.js',pub),'utf8'));
 });

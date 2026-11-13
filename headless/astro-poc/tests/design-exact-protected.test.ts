@@ -218,7 +218,18 @@ describe('exact-design protected live-baseline boundaries', () => {
       '  document.body.textContent = window.NOAM_ELEMENTARY_PDF_URL\n' +
       '    ? "פותחים את דף העבודה…" : "הקישור לדף העבודה אינו תקין.";\n' +
       '  return;\n}\n\n';
-    const currentViewer = read('public/worksheet-viewer-noam.html');
+    // PR461 deliberately adds measured cards/feedback and a selection announcement.
+    // Reverse only the 12 reviewed, exact byte hunks; keep every pre-existing
+    // head/script SHA below. An edited/new/missing hunk or unrelated byte fails.
+    const deltaText = read('tests/fixtures/measured-viewer-reviewed-delta.json');
+    assert.equal(sha256(deltaText), '5263c24c35ea4fab909d6da593a365976778f7b75f82b276fa9e85da0c2d0482');
+    const delta = JSON.parse(deltaText);
+    let currentViewer = read('public/worksheet-viewer-noam.html');
+    for (const hunk of delta.hunks) {
+      assert.equal(currentViewer.split(hunk.after).length, 2, 'one exact reviewed viewer hunk');
+      currentViewer = currentViewer.replace(hunk.after, hunk.before);
+    }
+    assert.equal(sha256(currentViewer), delta.baseline_sha256, 'all bytes outside the reviewed delta retain the baseline');
     assert.equal(currentViewer.split(elementaryExit).length, 2);
     // The scoped exit is covered behaviorally; all prior middle-school script
     // bytes must still match their historical hashes after removing only it.
