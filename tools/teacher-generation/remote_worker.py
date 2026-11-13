@@ -88,6 +88,7 @@ def safe_validation_detail(value):
     fixed = {
         'Duplicate model JSON key', 'Nonfinite number',
         'Expected author parameter contract version 2',
+        'Expected author parameter contract version 3',
         'Author question count must match the trusted plan',
         'Expected 3–6 author parameter items per question',
         'Author could not meet the requested topic/progress boundary',
@@ -99,7 +100,7 @@ def safe_validation_detail(value):
     patterns = (
         r'author root: expected fields version,questions',
         r'author question [1-9][0-9]{0,2}: expected fields items',
-        r'author question [1-9][0-9]{0,2} item [1-9][0-9]?: expected fields (?:a,b,solution|divisor,quotient)',
+        r'author question [1-9][0-9]{0,2} item [1-9][0-9]?: expected fields (?:a,b,solution|a,solution|divisor,quotient)',
         r'author question [1-9][0-9]{0,2} item [1-9][0-9]? (?:a|b|solution|derived c|divisor|quotient): integer outside allowed range',
         r'(?:a|b|c|solution): integer outside allowed range',
     )
@@ -127,7 +128,8 @@ def save_author_diagnostics(root, job_id, metadata, failure=None):
         elapsed = metadata.get('elapsedSeconds')
         if type(elapsed) in (int, float) and 0 <= elapsed <= 86400: record['elapsedSeconds'] = round(elapsed, 3)
         record['usage'] = safe_usage(metadata.get('usage'))
-        if metadata.get('authorContract') == 'worksheet-parameters/2': record['authorContract'] = metadata['authorContract']
+        if metadata.get('authorContract') in ('worksheet-parameters/2', 'worksheet-parameters/3'):
+            record['authorContract'] = metadata['authorContract']
         derivation = metadata.get('derivation')
         if isinstance(derivation, dict) and type(derivation.get('performed')) is bool:
             record['derivationPerformed'] = derivation['performed']

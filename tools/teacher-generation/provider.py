@@ -81,17 +81,29 @@ def validate_author_plan(lesson, cap, payload):
             reject('AUTHOR_PLAN_MISMATCH','Question kind/star must exactly match the trusted question plan')
 
 
+def author_contract_version(lesson, cap):
+    """Version changes are scoped to the exact enabled grade/topic adapter."""
+    if (lesson['gradeNumber']==7 and lesson['topicId']=='g7:equations'
+            and cap['gradeNumber']==7 and cap['topicId']=='g7:equations'
+            and cap['family']=='linear_equation' and cap.get('enabled') is True):
+        return 3
+    if lesson['gradeNumber']==3 and cap['topicId']=='ג10':
+        return 2
+    reject('AUTHOR_PARAMETERS_UNSUPPORTED','No trusted parameter construction for this exact topic')
+
+
 def author_schema(lesson, cap):
-    """Author contract v2: parameters only, not answers or task/challenge labels."""
+    """Topic-versioned parameters only, not answers or task/challenge labels."""
+    version=author_contract_version(lesson,cap)
     def obj(properties):
         return {'type':'object','properties':properties,'required':list(properties),'additionalProperties':False}
     def integer(low,high):
         return {'type':'integer','minimum':low,'maximum':high}
     definitions={};positions=[]
     for planned in question_plan(lesson,cap):
-        if cap['family']=='linear_equation':
+        if version==3:
             name='equation_parameters'
-            item=obj({'a':integer(1,12),'b':integer(-100,100),'solution':integer(-20,20)})
+            item=obj({'a':integer(1,12),'solution':integer(-15,15)})
         elif lesson['gradeNumber']==3 and cap['topicId']=='ג10':
             positive=planned['kind']=='missing_right'
             name='division_positive_quotient' if positive else 'division_parameters'
@@ -103,16 +115,17 @@ def author_schema(lesson, cap):
     # Position determines the trusted question kind; the author cannot label it.
     questions={'type':'array','minItems':lesson['questionCount'],'maxItems':lesson['questionCount'],'prefixItems':positions}
     # An empty array is an explicit inability signal, never a shorter worksheet.
-    schema=obj({'version':{'type':'integer','enum':[2]},'questions':{'anyOf':[questions,{'type':'array','maxItems':0}]}})
+    schema=obj({'version':{'type':'integer','enum':[version]},'questions':{'anyOf':[questions,{'type':'array','maxItems':0}]}})
     schema['$defs']=definitions
     return schema
 
 
 def validate_author_parameters(lesson, cap, payload):
-    """Validate the complete raw v2 object before computing any derived fields."""
+    """Validate the entire raw topic contract before computing derived fields."""
+    version=author_contract_version(lesson,cap)
     exact(payload,('version','questions'),'author root')
-    if type(payload['version']) is not int or payload['version']!=2:
-        reject('INVALID_MODEL_OUTPUT','Expected author parameter contract version 2')
+    if type(payload['version']) is not int or payload['version']!=version:
+        reject('INVALID_MODEL_OUTPUT',f'Expected author parameter contract version {version}')
     if not isinstance(payload['questions'],list) or len(payload['questions'])!=lesson['questionCount']:
         reject('INVALID_MODEL_OUTPUT','Author question count must match the trusted plan')
     for qi,(question,planned) in enumerate(zip(payload['questions'],question_plan(lesson,cap),strict=True)):
@@ -121,10 +134,10 @@ def validate_author_parameters(lesson, cap, payload):
             reject('INVALID_MODEL_OUTPUT','Expected 3–6 author parameter items per question')
         for ii,item in enumerate(question['items']):
             where=f'author question {qi+1} item {ii+1}'
-            if cap['family']=='linear_equation':
-                exact(item,('a','b','solution'),where)
-                integer(item['a'],1,12,where+' a');integer(item['b'],-100,100,where+' b')
-                integer(item['solution'],-20,20,where+' solution')
+            if version==3:
+                exact(item,('a','solution'),where)
+                integer(item['a'],1,12,where+' a')
+                integer(item['solution'],-15,15,where+' solution')
             elif lesson['gradeNumber']==3 and cap['topicId']=='ג10':
                 exact(item,('divisor','quotient'),where)
                 integer(item['divisor'],1,10,where+' divisor')
@@ -145,9 +158,14 @@ def derive_author_parameters(lesson, cap, payload):
         items=[]
         for ii,item in enumerate(question['items']):
             if cap['family']=='linear_equation':
-                c=item['a']*item['solution']+item['b']
-                integer(c,-250,250,f'author question {qi+1} item {ii+1} derived c')
-                items.append({'a':item['a'],'b':item['b'],'c':c,'solution':item['solution']})
+                # Reserve six positions per question even when it has fewer
+                # items. The fixed signed offset is unique across all 120 slots;
+                # the author never submits an offset or a claimed equation RHS.
+                slot=qi*6+ii
+                b=(slot//2+1)*(1 if slot%2==0 else -1)
+                c=item['a']*item['solution']+b
+                integer(c,-240,240,f'author question {qi+1} item {ii+1} derived c')
+                items.append({'a':item['a'],'b':b,'c':c,'solution':item['solution']})
             else:
                 items.append({'left':item['divisor']*item['quotient'],'op':'divide',
                               'right':item['divisor'],'answer':item['quotient']})
@@ -158,7 +176,7 @@ def derive_author_parameters(lesson, cap, payload):
 def author_lesson(lesson, *, api_key=None, base_url=None, model=None, timeout=90, metadata=None):
     """One explicitly requested, billed authoring call; never called by render_job.
 
-    Returns validated canonical v1 data constructed from raw v2 parameters.
+    Returns canonical v1 data from elementary v2 / grade-7-equations v3 parameters.
     Caller must enforce owner auth, quota and
     job idempotency before calling. No credentials or provider response bodies
     are written to disk or included in errors. Optional metadata dict receives
@@ -175,7 +193,8 @@ def author_lesson(lesson, *, api_key=None, base_url=None, model=None, timeout=90
     target=qwen_chat_url(base)
     if not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._-]{0,63}',chosen):
         reject('PROVIDER_CONFIG_INVALID','Invalid configured Qwen model')
-    equations=[{'a':2,'b':3,'solution':4},{'a':3,'b':2,'solution':5},{'a':4,'b':1,'solution':6}]
+    version=author_contract_version(lesson,cap)
+    equations=[{'a':2,'solution':4},{'a':3,'solution':5},{'a':4,'solution':6}]
     arithmetic=[{'divisor':3,'quotient':4},{'divisor':5,'quotient':6},{'divisor':7,'quotient':8}]
     plan=question_plan(lesson,cap)
     example={'items':equations if cap['family']=='linear_equation' else arithmetic}
@@ -200,13 +219,29 @@ def author_lesson(lesson, *, api_key=None, base_url=None, model=None, timeout=90
         'If that is impossible, return {"version":2,"questions":[]}; this signals unsupported and is rejected, never a short worksheet. '
         'Do not silently switch topic.'
     )
+    if version==3:
+        # The elementary v2 request remains unchanged. This explicit new
+        # parameter contract discloses construction before the author chooses.
+        system=system.replace('"version":2','"version":3').replace(
+            'Do not supply answer, c, left, right, op, kind or star fields.',
+            'Do not supply b, c, answer, left, right, op, kind or star fields.'
+        ).replace(
+            'For equations choose integer a 1–12, b -100..100 and solution -20..20. '
+            'The code constructs c=a*solution+b in a*x+b=c; choose parameters that keep c between -250 and 250. ',
+            'For equations choose only integer a 1–12 and solution -15..15. '
+            'The trusted renderer assigns b from the zero-based global slot=questionIndex*6+itemIndex: '
+            '+1,-1,+2,-2,...,+60,-60, with six reserved slots per question even when it has fewer items. '
+            'It constructs c=a*solution+b in a*x+b=c; c is always between -240 and 240. '
+            'If these fixed signed offsets conflict with the declared already-learned boundary, '
+            'return {"version":3,"questions":[]} rather than adding untaught content. '
+        )
     body={'model':chosen,'messages':[{'role':'system','content':system},{'role':'user','content':json.dumps({'lesson':lesson,'capability':cap,'questionPlan':plan,'one_question_example_only':example},ensure_ascii=False)}],'response_format':{'type':'json_schema','json_schema':{'name':'worksheet_author_data','strict':True,'schema':author_schema(lesson,cap)}},'enable_thinking':False,'max_tokens':14000,'temperature':0.35}
     req=Request(target,data=json.dumps(body).encode(),headers={'Authorization':'Bearer '+key,'Content-Type':'application/json'},method='POST')
     measured=metadata if isinstance(metadata,dict) else {}
     measured.update({'purpose':'authoring','requestedModel':chosen,'validated':False,'responseReceived':False,
-                     'authorContract':'worksheet-parameters/2',
+                     'authorContract':f'worksheet-parameters/{version}',
                      'derivation':{'canonicalVersion':1,'performed':False,
-                                   'rule':'c=a*solution+b' if cap['family']=='linear_equation' else 'left=divisor*quotient; right=divisor; answer=quotient'}})
+                                   'rule':'slot=questionIndex*6+itemIndex; b=alternatingSignedOffset(slot); c=a*solution+b' if version==3 else 'left=divisor*quotient; right=divisor; answer=quotient'}})
     started=time.monotonic()
     try:
         with build_opener(NoRedirects(),HTTPSHandler(context=verified_tls_context())).open(req,timeout=timeout) as response:
@@ -244,7 +279,7 @@ def author_lesson(lesson, *, api_key=None, base_url=None, model=None, timeout=90
     finally:
         measured['elapsedSeconds']=round(time.monotonic()-started,3)
     try:
-        if payload=={'version':2,'questions':[]}:
+        if payload=={'version':version,'questions':[]}:
             reject('AUTHOR_UNSUPPORTED','Author could not meet the requested topic/progress boundary')
         canonical=derive_author_parameters(lesson,cap,payload)
         measured['derivation']['performed']=True

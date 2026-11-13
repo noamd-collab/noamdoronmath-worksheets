@@ -246,6 +246,31 @@ class WorkerTests(unittest.TestCase):
         self.assertEqual(self.remote.uploads(), [])
         self.assertFalse(any('validationDetail' in json.dumps(c) for c in self.remote.calls))
 
+    def test_diagnostics_keep_only_known_author_contract_versions(self):
+        for index, contract in enumerate(('worksheet-parameters/2', 'worksheet-parameters/3',
+                                          'worksheet-parameters/4', 'PRIVATE_SECRET', None, {'raw': 'PRIVATE_SECRET'})):
+            with self.subTest(contract=contract):
+                job_id = '33333333-3333-4333-8333-%012d' % index
+                self.assertTrue(worker.save_author_diagnostics(self.root, job_id, {'authorContract': contract}))
+                path = self.root / 'author-diagnostics' / (job_id + '.json')
+                record = json.loads(path.read_text())
+                if index < 2:
+                    self.assertEqual(record['authorContract'], contract)
+                else:
+                    self.assertNotIn('authorContract', record)
+                self.assertNotIn('PRIVATE_SECRET', path.read_text())
+
+    def test_safe_validation_details_include_exact_v3_rules_only(self):
+        for detail in ('Expected author parameter contract version 3',
+                       'author question 20 item 6: expected fields a,solution'):
+            with self.subTest(detail=detail):
+                self.assertEqual(worker.safe_validation_detail(detail), detail)
+        for detail in ('Expected author parameter contract version 4',
+                       'author question 20 item 6: expected fields a,solution,PRIVATE_SECRET',
+                       'author question 20 item 6: expected fields a,solution\nPRIVATE_SECRET'):
+            with self.subTest(detail=detail):
+                self.assertIsNone(worker.safe_validation_detail(detail))
+
     def test_diagnostics_omit_arbitrary_exception_content_and_keep_parse_rule(self):
         metadata = {'validationError': {'code': 'INVALID_MODEL_OUTPUT', 'detail': 'PRIVATE_SECRET'},
                     'usage': {'total_tokens': -1}, 'responseModel': 'PRIVATE/SECRET', 'elapsedSeconds': float('inf')}

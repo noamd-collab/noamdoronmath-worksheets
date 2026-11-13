@@ -33,10 +33,13 @@ class ProviderTests(unittest.TestCase):
         groups={kind:[] for kind in self.cap['questionKinds']}
         for q in source['questions']:groups[q['kind']].append(q)
         self.expected={'version':1,'questions':[{**groups[p['kind']].pop(0),'star':p['star']} for p in provider.question_plan(self.lesson,self.cap)]}
-        self.payload={'version':2,'questions':[]}
-        for q in self.expected['questions']:
-            items=[{k:item[k] for k in ('a','b','solution')} if family=='middle' else {'divisor':item['right'],'quotient':item['answer']} for item in q['items']]
+        self.payload={'version':3 if family=='middle' else 2,'questions':[]}
+        for qi,q in enumerate(self.expected['questions']):
+            items=[{'a':item['a'],'solution':(-15,-7,0,4,15)[(qi+ii)%5]} if family=='middle' else {'divisor':item['right'],'quotient':item['answer']} for ii,item in enumerate(q['items'])]
             self.payload['questions'].append({'items':items})
+            if family=='middle':
+                offsets=[sign*n for n in range(qi*3+1,qi*3+4) for sign in (1,-1)]
+                q['items']=[{**item,'b':b,'c':item['a']*item['solution']+b} for item,b in zip(items,offsets)]
 
     def envelope(self,finish='stop'):
         return {'model':'qwen3.8-flash','usage':{'prompt_tokens':123,'completion_tokens':456,'total_tokens':579,'api_key':'must-not-survive','prompt_tokens_details':{'cached_tokens':0,'unsafe':'omit'}},'choices':[{'finish_reason':finish,'message':{'content':json.dumps(self.payload,ensure_ascii=False)}}]}
@@ -74,12 +77,18 @@ class ProviderTests(unittest.TestCase):
                     sent=json.loads(body['messages'][1]['content'])
                     self.assertEqual(set(sent['one_question_example_only']),{'items'})
                     self.assertEqual(len(sent['one_question_example_only']['items']),3)
+                    self.assertEqual(body['response_format']['json_schema']['schema']['properties']['version']['enum'],[self.payload['version']])
+                    self.assertIn('"version":'+str(self.payload['version']),body['messages'][0]['content'])
+                    if family=='middle':
+                        self.assertEqual(set(sent['one_question_example_only']['items'][0]),{'a','solution'})
+                        self.assertIn('zero-based global slot=questionIndex*6+itemIndex',body['messages'][0]['content'])
+                        self.assertIn('fixed signed offsets conflict',body['messages'][0]['content'])
                     build.return_value.open.assert_called_once()
                 self.assertEqual(result,self.expected)
                 self.assertEqual(self.payload,original)
                 validate_model(self.lesson,result)
                 self.assertTrue(metadata['validated'])
-                self.assertEqual(metadata['authorContract'],'worksheet-parameters/2')
+                self.assertEqual(metadata['authorContract'],f"worksheet-parameters/{self.payload['version']}")
                 self.assertTrue(metadata['derivation']['performed'])
                 self.assertEqual(metadata['derivation']['canonicalVersion'],1)
                 self.assertEqual(metadata['requestedModel'],'qwen3.8-flash')
@@ -107,17 +116,19 @@ class ProviderTests(unittest.TestCase):
             self.assertEqual(item['properties']['divisor'],{'type':'integer','minimum':1,'maximum':10})
             self.assertEqual(item['properties']['quotient']['minimum'],1 if plan['kind']=='missing_right' else 0)
 
-    def test_middle_schema_omits_c_and_all_answer_fields(self):
+    def test_middle_v3_schema_omits_b_c_and_all_answer_fields(self):
         self.use_fixture('middle');schema=provider.author_schema(self.lesson,self.cap)
+        self.assertEqual(schema['properties']['version']['enum'],[3])
         full=schema['properties']['questions']['anyOf'][0]
         self.assertEqual((full['minItems'],full['maxItems']),(20,20))
         item=schema['$defs']['equation_parameters']['properties']['items']['items']
-        self.assertEqual(set(item['required']),{'a','b','solution'})
-        self.assertEqual(item['properties']['solution'],{'type':'integer','minimum':-20,'maximum':20})
+        self.assertEqual(set(item['required']),{'a','solution'})
+        self.assertEqual(item['properties']['a'],{'type':'integer','minimum':1,'maximum':12})
+        self.assertEqual(item['properties']['solution'],{'type':'integer','minimum':-15,'maximum':15})
         self.assertFalse(item['additionalProperties'])
 
     def test_injected_answer_or_equation_c_is_rejected_before_derivation(self):
-        for family,field in (('elementary','answer'),('middle','c')):
+        for family,field in (('elementary','answer'),('middle','b'),('middle','c'),('middle','answer')):
             with self.subTest(family=family):
                 self.use_fixture(family);self.payload['questions'][0]['items'][0][field]='never-store-this'
                 metadata=self.fail_author()
@@ -149,19 +160,77 @@ class ProviderTests(unittest.TestCase):
         self.assertEqual(canonical['questions'][0]['items'][0],{'left':0,'op':'divide','right':10,'answer':0})
         validate_model(self.lesson,canonical)
 
-    def test_out_of_range_derived_c_is_rejected_not_clamped(self):
-        self.use_fixture('middle');self.payload['questions'][0]['items'][0]={'a':12,'b':100,'solution':20}
-        metadata=self.fail_author()
-        self.assertIn('derived c',metadata['validationError']['detail'])
-        self.assertFalse(metadata['derivation']['performed'])
+    def test_v3_parameter_ranges_and_types_are_rejected_not_clamped(self):
+        for field,values in [('a',(0,13,True,1.5,'2',None)),('solution',(-16,16,True,1.5,'2',None))]:
+            for value in values:
+                with self.subTest(field=field,value=value):
+                    self.use_fixture('middle')
+                    self.payload['questions'][0]['items'][0][field]=value
+                    metadata=self.fail_author()
+                    self.assertFalse(metadata['derivation']['performed'])
 
     def test_all_raw_parameters_are_validated_before_derivation(self):
         self.use_fixture('middle')
-        self.payload['questions'][0]['items'][0]={'a':12,'b':100,'solution':20}
         self.payload['questions'][-1]['items'][-1]['c']=123
-        metadata=self.fail_author()
-        self.assertIn('expected fields a,b,solution',metadata['validationError']['detail'])
-        self.assertNotIn('derived c',metadata['validationError']['detail'])
+        with patch('provider.integer',wraps=provider.integer) as checked:
+            metadata=self.fail_author()
+        self.assertIn('expected fields a,solution',metadata['validationError']['detail'])
+        self.assertFalse(metadata['derivation']['performed'])
+        self.assertFalse(any('derived c' in call.args[-1] for call in checked.call_args_list))
+
+    def test_v3_all_120_slots_are_distinct_and_bounded_at_parameter_corners(self):
+        self.use_fixture('middle')
+        expected_offsets=[sign*n for n in range(1,61) for sign in (1,-1)]
+        for a in (1,12):
+            for solution in (-15,15):
+                with self.subTest(a=a,solution=solution):
+                    raw={'version':3,'questions':[{'items':[{'a':a,'solution':solution} for _ in range(6)]} for _ in range(20)]}
+                    original=copy.deepcopy(raw)
+                    result=provider.derive_author_parameters(self.lesson,self.cap,raw)
+                    items=[item for question in result['questions'] for item in question['items']]
+                    self.assertEqual([item['b'] for item in items],expected_offsets)
+                    self.assertEqual(len({(item['a'],item['b'],item['c']) for item in items}),120)
+                    self.assertTrue(all(-240<=item['c']<=240 and item['a']*solution+item['b']==item['c'] for item in items))
+                    if a==12:self.assertIn(240 if solution==15 else -240,[item['c'] for item in items])
+                    self.assertEqual(raw,original)
+                    validate_model(self.lesson,result)
+                    provider.validate_author_plan(self.lesson,self.cap,result)
+
+    def test_v3_variable_item_counts_reserve_six_slots_without_reordering(self):
+        self.use_fixture('middle')
+        for counts in ([3]*20,[4]*20,[5]*20,[6]*20,[3,4,5,6]*5):
+            with self.subTest(counts=counts):
+                raw={'version':3,'questions':[{'items':[{'a':1,'solution':0} for _ in range(count)]} for count in counts]}
+                result=provider.derive_author_parameters(self.lesson,self.cap,raw)
+                self.assertEqual([len(q['items']) for q in result['questions']],counts)
+                self.assertEqual([q['items'][0]['b'] for q in result['questions']],list(range(1,59,3)))
+                self.assertEqual([q['items'][1]['b'] for q in result['questions']],list(range(-1,-59,-3)))
+                all_items=[item for q in result['questions'] for item in q['items']]
+                self.assertEqual(len({item['b'] for item in all_items}),sum(counts))
+                validate_model(self.lesson,result)
+                provider.validate_author_plan(self.lesson,self.cap,result)
+
+    def test_v3_is_exact_topic_only_not_other_linear_equation_candidates(self):
+        self.use_fixture('middle')
+        for change in ('grade','topic','disabled'):
+            lesson=copy.deepcopy(self.lesson);cap=copy.deepcopy(self.cap)
+            if change=='grade':lesson['gradeNumber']=cap['gradeNumber']=9
+            elif change=='topic':lesson['topicId']=cap['topicId']='g9m:equations'
+            else:cap['enabled']=False
+            with self.assertRaises(GenerationError) as caught:provider.author_schema(lesson,cap)
+            self.assertEqual(caught.exception.code,'AUTHOR_PARAMETERS_UNSUPPORTED')
+
+    def test_v3_does_not_relax_the_original_canonical_duplicate_or_math_gates(self):
+        self.use_fixture('middle')
+        canonical=provider.derive_author_parameters(self.lesson,self.cap,self.payload)
+        repeat=next(i for i,q in enumerate(canonical['questions'][1:],1) if q['kind']==canonical['questions'][0]['kind'])
+        duplicate=copy.deepcopy(canonical)
+        duplicate['questions'][repeat]['items'][0]=copy.deepcopy(duplicate['questions'][0]['items'][0])
+        with self.assertRaises(GenerationError) as caught:validate_model(self.lesson,duplicate)
+        self.assertEqual(caught.exception.code,'DUPLICATE_ITEM')
+        wrong=copy.deepcopy(canonical);wrong['questions'][0]['items'][0]['c']+=1
+        with self.assertRaises(GenerationError) as caught:validate_model(self.lesson,wrong)
+        self.assertEqual(caught.exception.code,'WRONG_ANSWER')
 
     def test_duplicate_parameters_still_fail_original_canonical_duplicate_gate(self):
         plan=provider.question_plan(self.lesson,self.cap)
@@ -177,6 +246,21 @@ class ProviderTests(unittest.TestCase):
             elif change=='item':self.payload['questions'][0]['items']=self.payload['questions'][0]['items'][:2]
             else:self.payload['version']=1
             self.assertFalse(self.fail_author()['derivation']['performed'])
+
+    def test_v3_rejects_v2_wrong_counts_and_fields_at_every_level_before_construction(self):
+        for change in ('version2','version1','version_bool','short_questions','long_questions','few_items','many_items','root_field','question_field','item_field','missing_solution'):
+            with self.subTest(change=change):
+                self.use_fixture('middle')
+                if change.startswith('version'):self.payload['version']={'version2':2,'version1':1,'version_bool':True}[change]
+                elif change=='short_questions':self.payload['questions'].pop()
+                elif change=='long_questions':self.payload['questions'].append(copy.deepcopy(self.payload['questions'][0]))
+                elif change=='few_items':self.payload['questions'][0]['items']=self.payload['questions'][0]['items'][:2]
+                elif change=='many_items':self.payload['questions'][0]['items']=[{'a':1,'solution':0} for _ in range(7)]
+                elif change=='root_field':self.payload['private_field']='do-not-store'
+                elif change=='question_field':self.payload['questions'][0]['star']=True
+                elif change=='item_field':self.payload['questions'][0]['items'][0]['b']=1
+                else:self.payload['questions'][0]['items'][0].pop('solution')
+                self.assertFalse(self.fail_author()['derivation']['performed'])
 
     def test_truncation_keeps_billable_usage_and_does_not_retry(self):
         metadata={}
@@ -199,8 +283,10 @@ class ProviderTests(unittest.TestCase):
         self.assertNotIn(self.config['api_key'],json.dumps(metadata)+str(caught.exception))
 
     def test_empty_questions_is_explicit_unsupported_not_short_sheet(self):
-        self.payload={'version':2,'questions':[]}
-        self.fail_author('AUTHOR_UNSUPPORTED')
+        for family,version in (('elementary',2),('middle',3)):
+            self.use_fixture(family)
+            self.payload={'version':version,'questions':[]}
+            self.fail_author('AUTHOR_UNSUPPORTED')
 
     def test_plan_retains_exact_balance_and_noncalculation_challenges(self):
         for fixture in ('elementary','middle'):
