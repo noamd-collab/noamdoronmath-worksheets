@@ -66,6 +66,7 @@ def render_job(lesson, model_payload, workdir, skill_paths=None):
             ('content-truth',[skill/'scripts/lib/content_truth.py','--work',work,'--quiet']),
             ('pdf',[skill/'scripts/build_pdf.py',work/'sheet.html',work/'sheet.pdf']),
             ('word',[skill/'scripts/build_docx.py',work/'sheet.html',work/'sheet.docx']),
+            ('word-layout',[HERE/'docx_layout.py','--docx',work/'sheet.docx','--content',work/'content.json']),
             ('worksheet',[skill/'scripts/check_worksheet.py',work/'sheet.pdf',work/'preview','--band','elementary-ab' if lesson['gradeNumber']<=2 else 'elementary']),
             ('output-gates',[HERE/'output_gates.py','--skill',skill,'--pdf',work/'sheet.pdf','--band','elementary-ab' if lesson['gradeNumber']<=2 else 'elementary']),
             ('house-gates',[skill/'scripts/lib/house_gates.py','--html',work/'sheet.html','--pdf',work/'sheet.pdf','--gen',HERE/'adapters.py','--content',work/'content.json','--figdir',work/'figures','--grade','אבגדהו'[lesson['gradeNumber']-1],'--level',{'a':'א','b':'ב','e':'מצוינות'}[lesson['level']],'--docx',work/'sheet.docx']),
@@ -84,6 +85,7 @@ def render_job(lesson, model_payload, workdir, skill_paths=None):
             if not path.is_file(): ok=False;steps.append({'name':'artifact-presence','status':'FAIL'});break
             artifacts.append({'path':name,'sha256':sha(path),'bytes':path.stat().st_size,'kind':'pdf' if name.endswith('.pdf') else 'docx'})
     manifest={'version':1,'status':'needs_review' if ok else 'failed','automatedChecksPassed':bool(ok and len(artifacts)==2 and all(s['status']=='PASS' for s in steps)),'skill':{'name':cap['skill'],'version':pin['version'],'sha256':pin['sha256']},'topicId':lesson['topicId'],'gradeNumber':lesson['gradeNumber'],'modelInputSha256':sha(work/'model-output.json'),'adapterSha256':sha(HERE/'adapters.py'),'steps':steps,'artifacts':artifacts if ok else [],'review':{'mathematical':'exact typed arithmetic verified; prose/template review pending','visual':'pending; every final PDF page and actual Word rendering must be inspected','curriculum':'bounded topic allowlist; free-text progress is not independently verified','publication':'not approved; private owner preview only'}}
+    manifest['docxLayoutSha256']=sha(HERE/'docx_layout.py')
     dump(work/'manifest.json',manifest)
     return manifest
 
