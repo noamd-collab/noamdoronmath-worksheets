@@ -2,7 +2,7 @@
   "version": 1,
   "date": "2026-11-12",
   "providerCalls": 7,
-  "scope": "Historical fixed-fixture/mocked evidence plus seven coordinator authoring responses; two v2 samples passed automated gates and final PDF review. Actual Word visual remains blocked.",
+  "scope": "Historical fixture/mocked evidence and seven coordinator authoring responses retained. Two final PDF samples reviewed; 2026-11-13 DOCX postprocess and bundled LibreOffice review passed. Actual Microsoft Word application review remains blocked.",
   "dbChanges": false,
   "published": false,
   "unitTests": 53,
@@ -271,5 +271,229 @@
     },
     "interpretation": "Parameter selection plus trusted construction architecture; not evidence of independent model arithmetic. Earlier failures used different contracts; two current samples do not establish production reliability. All failed costs remain included; human-accepted cost is undefined."
   },
-  "offlineFixtureProviderCalls": 0
+  "offlineFixtureProviderCalls": 0,
+  "wordLayoutRelease": {
+    "date": "2026-11-13",
+    "codeCommit": "370e19ff",
+    "additionalProviderCalls": 0,
+    "unitTests": {
+      "focusedWordLayout": {
+        "passed": 4,
+        "failed": 0
+      },
+      "completePythonSuite": {
+        "passed": 61,
+        "failed": 0,
+        "reportedBy": "coordinator",
+        "sourceHead": "90d9a15b570144f292959d934b62c007e7fa5fe1"
+      }
+    },
+    "initialFindings": [
+      {
+        "severity": "blocking layout defect",
+        "skill": "elementary",
+        "finding": "Question 9 split between pages 1 and 2; its third subpart orphaned."
+      },
+      {
+        "severity": "blocking layout defect",
+        "skill": "elementary",
+        "finding": "Answer equations in rows 3 and 7 broke immediately before result 2 or 5."
+      }
+    ],
+    "fix": "Isolated DOCX postprocess preserves complete question paragraphs and protects explicitly LTR-isolated math runs with nonbreaking spaces. Installed skill files, arithmetic and PDF outputs unchanged.",
+    "cases": [
+      {
+        "skill": "elementary",
+        "manifest": "local-output/release-elementary-final-20261113/manifest.json",
+        "additionalProviderCalls": 0,
+        "modelInputSha256": "f92ed532dc540f10a2606c1da63a30e88d8b6ccc8d8f30ac50e6ab79f6386b0e",
+        "canonicalInputUnchanged": true,
+        "automatedChecksPassed": true,
+        "steps": [
+          {
+            "name": "trusted-adapter",
+            "status": "PASS",
+            "exitCode": 0,
+            "log": "logs/trusted-adapter.txt"
+          },
+          {
+            "name": "content-truth",
+            "status": "PASS",
+            "exitCode": 0,
+            "log": "logs/content-truth.txt"
+          },
+          {
+            "name": "pdf",
+            "status": "PASS",
+            "exitCode": 0,
+            "log": "logs/pdf.txt"
+          },
+          {
+            "name": "word",
+            "status": "PASS",
+            "exitCode": 0,
+            "log": "logs/word.txt"
+          },
+          {
+            "name": "word-layout",
+            "status": "PASS",
+            "exitCode": 0,
+            "log": "logs/word-layout.txt"
+          },
+          {
+            "name": "worksheet",
+            "status": "PASS",
+            "exitCode": 0,
+            "log": "logs/worksheet.txt"
+          },
+          {
+            "name": "output-gates",
+            "status": "PASS",
+            "exitCode": 0,
+            "log": "logs/output-gates.txt"
+          },
+          {
+            "name": "house-gates",
+            "status": "PASS",
+            "exitCode": 0,
+            "log": "logs/house-gates.txt"
+          }
+        ],
+        "artifacts": [
+          {
+            "path": "sheet.pdf",
+            "sha256": "c4b543c64e455d88ee13f8ce008622b15a11a2d0278ade0c988ce683f32c785d",
+            "bytes": 29201,
+            "kind": "pdf"
+          },
+          {
+            "path": "sheet.docx",
+            "sha256": "1be17701bf41e13fecec0693be45a1c2ab0b60c5b9a31554d625691ebb22f3d8",
+            "bytes": 40975,
+            "kind": "docx"
+          }
+        ],
+        "pdfUnchangedFromReviewedRefinement": true,
+        "docxChangedUnzippedMembers": [
+          "word/document.xml"
+        ],
+        "visualDocxLibreOffice": {
+          "status": "PASS",
+          "pages": 3,
+          "reviewedAllPages": true,
+          "renderer": "Codex bundled render_docx.py / LibreOffice",
+          "rendererBundleVersion": "26.1111.10934",
+          "artifactDirectory": "work/teacher-ai-generation-20261112/docx-render-review-20261113/elementary-exact",
+          "pngs": [
+            {
+              "page": 1,
+              "sha256": "cd65a2dc6adb97389d0fb08dc8b52b20ee334de5bc191fc4ceea56523494432f"
+            },
+            {
+              "page": 2,
+              "sha256": "a1081faafc308012e7797d844c1596cc26acb7b9dfc62722f24f8d03f2e351cb"
+            },
+            {
+              "page": 3,
+              "sha256": "306f170c0c491254a9cc9aebd84a7e1336f83f3e7474e378033537ac31f01adc"
+            }
+          ],
+          "findings": "RTL, math direction, answer order, headers, pagination and clipping checked. Question 9 is together on page 2; answer equations 18 : 9 = 2 and 15 : 3 = 5 remain intact on page 3. No forced extra page."
+        },
+        "actualMicrosoftWordVisual": {
+          "status": "BLOCKED",
+          "reason": "Computer-use Word UI timed out; LibreOffice visual PASS is separate evidence, not a Microsoft Word application check."
+        },
+        "docxLayoutSha256": "f499ecd1382d98f83427831c3f13aa65e329b01012d43b36f66562871bb2c690"
+      },
+      {
+        "skill": "middle",
+        "manifest": "local-output/release-middle-docx-20261113/manifest.json",
+        "additionalProviderCalls": 0,
+        "modelInputSha256": "d5e6b306811018639c02bd9efde7af262be002339446047694cc021c8bf4cec8",
+        "canonicalInputUnchanged": true,
+        "automatedChecksPassed": true,
+        "steps": [
+          {
+            "name": "trusted-adapter",
+            "status": "PASS",
+            "exitCode": 0,
+            "log": "logs/trusted-adapter.txt"
+          },
+          {
+            "name": "middle-build",
+            "status": "PASS",
+            "exitCode": 0,
+            "log": "logs/middle-build.txt"
+          }
+        ],
+        "artifacts": [
+          {
+            "path": "out/deliver/b/sheet.pdf",
+            "sha256": "eb89550ba2f76e70013dcfd882cd77274284802a3d71ce318cd7146534bf5d07",
+            "bytes": 63906,
+            "kind": "pdf"
+          },
+          {
+            "path": "out/docx/b/sheet.docx",
+            "sha256": "171a8ba245869e2602de64b94abd275056ce3b8af2b3db3b6599989ed2ec0674",
+            "bytes": 13695,
+            "kind": "docx"
+          }
+        ],
+        "pdfUnchangedFromReviewedRefinement": true,
+        "docxChangedUnzippedMembers": [
+          "docProps/core.xml"
+        ],
+        "visualDocxLibreOffice": {
+          "status": "PASS",
+          "pages": 8,
+          "reviewedAllPages": true,
+          "renderer": "Codex bundled render_docx.py / LibreOffice",
+          "rendererBundleVersion": "26.1111.10934",
+          "artifactDirectory": "work/teacher-ai-generation-20261112/docx-render-review-20261113/middle-exact",
+          "pngs": [
+            {
+              "page": 1,
+              "sha256": "13af213fa6479a751e593e42bb94a7afb83bb2a9562a16b5efd14201e124b007"
+            },
+            {
+              "page": 2,
+              "sha256": "d754d99aa5a0b7012e23d01812fc4240d63ef7eda9a4ebd9a3408515ac080a4e"
+            },
+            {
+              "page": 3,
+              "sha256": "b2315b726a8ca8ad40c70d155f7f85728cd25d3498f9cff495890a675b60d2d2"
+            },
+            {
+              "page": 4,
+              "sha256": "8ef956a1e57eb965dde9d551bd44210748bf604048fe0e51fa88d2928d59d739"
+            },
+            {
+              "page": 5,
+              "sha256": "c5bcb854af6ac299bccc8c5d3071418f2390bf7c92906aa7c5bb0cc416da44bc"
+            },
+            {
+              "page": 6,
+              "sha256": "c79631aee70515be377b01d96a33f62640a82573544c118fe5e24ed7a602f088"
+            },
+            {
+              "page": 7,
+              "sha256": "e02e340ae04154ec00dc176c45b8eb62b7dce626cb712a8bc76a85704280b0a0"
+            },
+            {
+              "page": 8,
+              "sha256": "3089029ba78ef33802a8cd42ff5dc703343f48e08b419ca90d8afb092ac0fd07"
+            }
+          ],
+          "findings": "RTL, math direction, answer order, headers, pagination and clipping checked. All eight rendered PNGs are byte-identical to the individually inspected earlier render; only core document metadata changed."
+        },
+        "actualMicrosoftWordVisual": {
+          "status": "BLOCKED",
+          "reason": "Computer-use Word UI timed out; LibreOffice visual PASS is separate evidence, not a Microsoft Word application check."
+        }
+      }
+    ],
+    "limits": "Owner pilot for two proved topics only; not classroom timing or all-grades coverage; individual worksheets still require teacher judgment."
+  }
 }

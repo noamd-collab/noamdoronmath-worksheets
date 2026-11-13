@@ -283,7 +283,7 @@ Answer keys include these additional results and starred items get more writing
 space. A first middle refinement spilled its last answer onto a nearly empty
 ninth page; concise equivalent answer wording removed that extra page.
 
-The **final offline refinements** reused the exact validated canonical data,
+The **November 12 offline refinements** reused the exact validated canonical data,
 made **zero additional model calls**, and passed all applicable gates:
 
 - `local-output/live-parameters-elementary-release-20261112/manifest.json`
@@ -298,14 +298,37 @@ made **zero additional model calls**, and passed all applicable gates:
   inspected again. All 60 base solutions and 21 deliberately wrong proposed
   values were independently checked, plus the six extra challenge results.
 
-Final hashes and provenance links are in `pilot-evidence.json`; benchmark
-reports were not rewritten to include later offline refinements. The grade 7
+The **November 13 release samples** retain those exact PDF bytes and canonical
+inputs, with zero additional model calls:
+
+- `local-output/release-elementary-final-20261113/manifest.json`: all eight
+  automated steps passed. Its three-page Word export keeps each question
+  together and uses nonbreaking spaces inside the skill's isolated math runs.
+  This fixes question 9 splitting across pages and two answer equations
+  breaking immediately before their results. Every final rendered page was
+  inspected with the bundled LibreOffice renderer. Word uses its own page
+  metrics; forced four-question pages were rejected because they left an
+  unnecessarily sparse page.
+- `local-output/release-middle-docx-20261113/manifest.json`: all applicable
+  gates passed. All eight final Word page PNGs are byte-identical to the eight
+  individually inspected pages; only core document metadata changed.
+
+Current hashes, page-image hashes and the original failure evidence are in
+`pilot-evidence.json` under `wordLayoutRelease`. The new `word-layout` step
+runs before the elementary output gates, fails closed for an unexpected
+question structure, and records its helper hash in the manifest. Four focused
+regression tests and the complete 61-test Python suite passed. Installed skills
+remain pinned and unchanged. Historical benchmark reports and all seven calls'
+usage/cost records were preserved.
+
+The grade 7
 sample stays within the declared first-degree equations, substitution and
 signed-number scope. Its 60 parts have not been classroom-timed for the requested
 45 minutes, and exact taught-through progression remains a teacher judgment.
-**Actual Word visual review is still BLOCKED** by the computer-use server
-timeout. Editable-XML checks are not visual approval; neither sample is
-human-approved for publication or public catalog delivery.
+**LibreOffice visual review passed; actual Microsoft Word application review
+is still BLOCKED** by the computer-use server timeout. These are separate
+checks. Neither sample is human-approved for public catalog delivery; the
+owner pilot still leaves worksheet acceptance to the teacher.
 
 ## Hosting boundary
 
