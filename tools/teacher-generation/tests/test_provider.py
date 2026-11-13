@@ -1,5 +1,6 @@
 import json
 import copy
+import random
 from collections import Counter
 from pathlib import Path
 import ssl
@@ -32,17 +33,27 @@ class ProviderTests(unittest.TestCase):
         self.lesson['lessonBoundary']=({'version':1,'kind':'division_facts','allowedDivisors':list(range(1,11)),'maxDividend':100}
             if family=='elementary' else {'version':1,'kind':'linear_equations','allowSignedNumbers':True})
         self.cap=validate_lesson(self.lesson)
-        source=read_json(HERE/f'examples/{family}-model.json')
-        groups={kind:[] for kind in self.cap['questionKinds']}
-        for q in source['questions']:groups[q['kind']].append(q)
-        self.expected={'version':1,'questions':[{**groups[p['kind']].pop(0),'star':p['star']} for p in provider.question_plan(self.lesson,self.cap)]}
+        plan=provider.question_plan(self.lesson,self.cap)
+        self.expected={'version':1,'questions':[]}
         self.payload={'version':3 if family=='middle' else 2,'questions':[]}
-        for qi,q in enumerate(self.expected['questions']):
-            items=[{'a':item['a'],'solution':(-15,-7,0,4,15)[(qi+ii)%5]} if family=='middle' else {'divisor':item['right'],'quotient':item['answer']} for ii,item in enumerate(q['items'])]
-            self.payload['questions'].append({'items':items})
+        # Fixed once, before quality evaluation: no seed search or gate-driven
+        # retries. Valid fixtures vary both parameters instead of enumerating a
+        # fact table or repeating a short cycle. Rejection cases below remain
+        # explicit mechanical inputs.
+        rng=random.Random(20261113)
+        pairs=rng.sample([(a,x) for a in range(1,13) for x in range(-15,16)],3*len(plan)) if family=='middle' else None
+        quotients={d:rng.sample(list(range(1,11)),10) for d in range(1,11)} if family=='elementary' else None
+        for qi,p in enumerate(plan):
             if family=='middle':
-                offsets=[sign*n for n in range(qi*3+1,qi*3+4) for sign in (1,-1)]
-                q['items']=[{**item,'b':b,'c':item['a']*item['solution']+b} for item,b in zip(items,offsets)]
+                items=[{'a':a,'solution':x} for a,x in pairs[qi*3:qi*3+3]]
+                offsets=[qi*3+1,-(qi*3+1),qi*3+2]
+                expected=[{**item,'b':b,'c':item['a']*item['solution']+b} for item,b in zip(items,offsets)]
+            else:
+                divisors=rng.sample([d for d,values in quotients.items() if values],3)
+                items=[{'divisor':d,'quotient':quotients[d].pop()} for d in divisors]
+                expected=[{'left':item['divisor']*item['quotient'],'op':'divide','right':item['divisor'],'answer':item['quotient']} for item in items]
+            self.payload['questions'].append({'items':items})
+            self.expected['questions'].append({'kind':p['kind'],'star':p['star'],'items':expected})
 
     def envelope(self,finish='stop'):
         return {'model':'qwen3.8-flash','usage':{'prompt_tokens':123,'completion_tokens':456,'total_tokens':579,'api_key':'must-not-survive','prompt_tokens_details':{'cached_tokens':0,'unsafe':'omit'}},'choices':[{'finish_reason':finish,'message':{'content':json.dumps(self.payload,ensure_ascii=False)}}]}
@@ -160,9 +171,10 @@ class ProviderTests(unittest.TestCase):
 
     def test_positive_only_prompt_and_derived_outputs_are_consistent(self):
         self.use_fixture('middle');self.lesson['lessonBoundary']['allowSignedNumbers']=False
-        values=[0,4,9,2,13,7,6,15,1,11,14,8,5,12,10,3]
+        pairs=random.Random(20261113).sample([(a,x) for a in range(1,13) for x in range(16)],60)
         for qi,q in enumerate(self.payload['questions']):
-            for ii,it in enumerate(q['items']):it['solution']=values[(qi*3+ii)%len(values)]
+            for ii,it in enumerate(q['items']):
+                a,x=pairs[qi*3+ii];it.update(a=a,solution=x)
         with patch('provider.build_opener') as build:
             build.return_value.open.return_value=Response(self.envelope())
             result=provider.author_lesson(self.lesson,**self.config)

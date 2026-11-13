@@ -216,17 +216,23 @@ the first exercise to fixed sample numbers.
 
 `author_quality.py` runs after exact canonical validation in the provider and
 again in the trusted adapter, so offline input cannot bypass it. These are
-bounded quality checks, not proof of complete pedagogy:
+bounded quality checks under `pilot-didactic-quality/2`, not proof of complete
+pedagogy. Version 2 closes the reviewed near-pattern and sorted-fact-table gaps:
 
 - `AUTHOR_EXAMPLE_COPY` rejects a first question starting with the exact three
   parameter pairs previously used as the fixed prompt demonstration.
-- `AUTHOR_NUMERIC_PATTERN` rejects a joint whole-sheet pattern on at least
-  24 equation parts: both coefficient and solution streams must be regular to
-  trigger it. Regular means an exact period of at most 12 repeated at least
-  three times, or unit steps in at least 90% of adjacent pairs. The intentionally
-  derived b stream is excluded. A short warm-up, or a single fixed coefficient
-  with varied solutions, does not by itself fail. These thresholds are an
-  explicit pilot policy, not a numerical threshold claimed by the skills.
+- `AUTHOR_NUMERIC_PATTERN` evaluates the solution stream independently on at
+  least 24 equation parts. It rejects a cycle of length 2 through `floor(n/3)`
+  (at least three repeats) with no more than `floor(n/20)` differing positions.
+  Phase-majority counts measure that distance exactly. It also rejects a stream
+  within that same edit budget of having unit steps in at least 90% of adjacent
+  pairs, measured by bounded dynamic programming. Thus three isolated changes
+  cannot disguise the 60-item pilot's answer progression. These computations
+  measure input; they never change it. A fixed coefficient alone, short warm-up,
+  or mixed order within a restricted root domain remains allowed. A constant
+  root is handled by the concentration check below. The intentionally derived
+  b stream is excluded. These are explicit pilot thresholds, not numerical
+  requirements attributed to the installed skills.
 - `AUTHOR_ANSWER_CONCENTRATION` rejects one value accounting for at least 90%
   of at least 24 answers. For equations this measures the solution x even in
   construct tasks; otherwise changing the requested unknown could hide a whole
@@ -238,12 +244,33 @@ bounded quality checks, not proof of complete pedagogy:
   and a uniform quotient within each question. The same three teacher-selected
   divisors alone remain allowed when the quotient combinations vary. This rule
   does not ban every repeated fact or claim that retrieval practice is wrong.
+- `AUTHOR_DIVISION_ORDER` rejects a whole-sheet fact enumeration of at least
+  24 parts: either ordered divisor blocks each containing consecutive
+  quotients, or at least 90% of all positions fitting one consecutive fact table
+  in either direction. The latter uses ranks `divisor*10+quotient` or
+  `divisor*11+quotient` for the domains 1–10 or 0–10, with a common intercept
+  against the item index. At least two actual divisors must occur among the
+  matching facts. Evidence records rank width, direction, intercept and matching
+  count. This catches one to three changed facts in a 36-item enumeration; it
+  does not reject every monotonic list, a single-divisor drill or a short warm-up,
+  and does not require coverage of all teacher-allowed divisors.
+- `AUTHOR_MISSING_DIVISOR_CONSTANT` rejects a missing-divisor question with
+  three or more parts all asking for the same divisor when the teacher's taught
+  domain permits multiple divisors. A teacher-selected single divisor remains
+  allowed. The rule measures the requested answer, not merely repeated wording.
 - `distractors.py` selects named mistakes such as confusing divisor with
   quotient, subtracting only once, omitting division by a coefficient or using
   the wrong inverse operation. Every proposed value is independently checked
   as false and bounded; the sheet must use at least three mistake families and
   three different answer offsets when it has six or more error-check parts.
   `AUTHOR_DISTRACTOR_VARIETY` blocks parameters that cannot meet that rule.
+
+The reviewed large-substitution distractor concern remains deferred: a tighter
+value cap can remove every available named mistake for otherwise valid boundary
+equations. Current checks still verify each proposal is false, within existing
+numeric limits and respects the signed-number boundary; that is not a claim
+that every proposal is equally suitable for basic practice. No new cap or
+change to the deterministic b sequence is included in policy 2.
 
 Correct authored exercises are never shuffled or changed to disguise a failed
 pattern. Failed output is not retried automatically. `didactic-evidence.json`

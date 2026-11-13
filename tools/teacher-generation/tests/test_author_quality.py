@@ -9,7 +9,8 @@ from unittest.mock import patch
 
 HERE=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(HERE))
-from author_quality import answer_concentration, division_template, numerical_pattern, prepare_didactics
+from author_quality import (answer_concentration, division_template, division_order,
+    missing_divisor_variety, numerical_pattern, prepare_didactics, unit_step_edit_distance)
 from distractors import candidates, plan_distractors
 from provider import derive_author_parameters, question_plan
 from validation import GenerationError, read_json, validate_lesson, validate_model
@@ -29,13 +30,15 @@ def equations(known_pattern=False, shifted=False, signed=True):
     varied_x=[-12,4,9,-2,0,13,-7,6,15,-4,11,-14,1,8,-9,5,-15,12,-1,10,-8,3,14,-5,7,-10,2,-13,-3,-11]
     positive_x=[0,4,9,2,13,7,6,15,1,11,14,8,5,12,10,3]
     observed_x=list(range(1,16))+list(range(-1,-16,-1))
+    pool=[(a,x) for a in range(1,13) for x in range(-15 if signed else 0,16)]
+    sampled=random.Random(20261113 if signed else 20261114).sample(pool,60)
     raw={'version':3,'questions':[]}
     for qi in range(20):
         items=[]
         for ii in range(3):
             index=qi*3+ii
-            a=(index+1)%12+1 if known_pattern else varied_a[index%12]
-            x=observed_x[(index+3+int(shifted))%30] if known_pattern else (varied_x[index%30] if signed else positive_x[index%16])
+            a=(index+1)%12+1 if known_pattern else sampled[index][0]
+            x=observed_x[(index+3+int(shifted))%30] if known_pattern else sampled[index][1]
             items.append({'a':a,'solution':x})
         raw['questions'].append({'items':items})
     payload=derive_author_parameters(context,cap,raw)
@@ -63,6 +66,67 @@ class AuthorQualityTests(unittest.TestCase):
         with self.assertRaises(GenerationError) as caught:prepare_didactics(context,payload,cap)
         self.assertEqual(caught.exception.code,'AUTHOR_NUMERIC_PATTERN')
         self.assertEqual(payload,before)
+
+    def test_original_680_with_one_to_three_local_edits_is_blocked(self):
+        for edited_indices in ([2],[0],[2,20],[2,20,40],[0,1,2],[2,3,4]):
+            with self.subTest(edited_indices=edited_indices):
+                context,payload,cap=equations(known_pattern=True)
+                flat=[v for q in payload['questions'] for v in q['items']]
+                for index in edited_indices:
+                    item=flat[index]
+                    item['solution']=7 if index==2 else 0
+                    item['c']=item['a']*item['solution']+item['b']
+                validate_model(context,payload)
+                before=copy.deepcopy(payload)
+                with self.assertRaises(GenerationError) as caught:
+                    prepare_didactics(context,payload,cap)
+                self.assertEqual(caught.exception.code,'AUTHOR_NUMERIC_PATTERN')
+                self.assertEqual(payload,before)
+                self.assertLessEqual(numerical_pattern(payload)['solutionUnitStepEdits'],len(edited_indices))
+
+    def test_independent_cycles_and_near_cycles_are_blocked(self):
+        context,payload,cap=equations(signed=False)
+        coefficients=[2,7,3,11,4,9,6,12,5,8,1,10]
+        roots=[0,4,9,2,13,7,6,15,1,11,14,8,5,12,10,3]
+        flat=[v for q in payload['questions'] for v in q['items']]
+        for index,item in enumerate(flat):
+            item.update(a=coefficients[index%12],solution=roots[index%16])
+            item['c']=item['a']*item['solution']+item['b']
+        validate_model(context,payload)
+        stats=numerical_pattern(payload)
+        self.assertEqual(stats['coefficientPeriod'],12)
+        self.assertEqual(stats['solutionPeriod'],16)
+        for edit_count in range(4):
+            changed=copy.deepcopy(payload)
+            flat=[v for q in changed['questions'] for v in q['items']]
+            for index in [2,20,40][:edit_count]:
+                flat[index]['solution']=(flat[index]['solution']+3)%16
+                flat[index]['c']=flat[index]['a']*flat[index]['solution']+flat[index]['b']
+            validate_model(context,changed)
+            with self.assertRaises(GenerationError) as caught:
+                prepare_didactics(context,changed,cap)
+            self.assertEqual(caught.exception.code,'AUTHOR_NUMERIC_PATTERN')
+
+    def test_solution_cycle_is_measured_independently_of_coefficients(self):
+        context,payload,cap=equations(signed=False)
+        roots=[0,4,9,2,13,7,6,15,1,11,14,8,5,12,10,3]
+        for index,item in enumerate(v for q in payload['questions'] for v in q['items']):
+            item['solution']=roots[index%16]
+            item['c']=item['a']*item['solution']+item['b']
+        validate_model(context,payload)
+        self.assertIsNone(numerical_pattern(payload)['coefficientPeriod'])
+        with self.assertRaises(GenerationError) as caught:prepare_didactics(context,payload,cap)
+        self.assertEqual(caught.exception.code,'AUTHOR_NUMERIC_PATTERN')
+
+    def test_narrow_solution_domain_is_not_itself_a_pattern(self):
+        context,payload,cap=equations(signed=False)
+        rng=random.Random(113)
+        for item in (v for q in payload['questions'] for v in q['items']):
+            item.update(a=2,solution=rng.choice([0,1]))
+            item['c']=2*item['solution']+item['b']
+        validate_model(context,payload)
+        self.assertFalse(numerical_pattern(payload)['strongRepeatedPattern'])
+        self.assertTrue(prepare_didactics(context,payload,cap)[0]['passed'])
 
     def test_varied_parameters_and_short_deliberate_warmup_are_allowed(self):
         context,payload,cap=equations()
@@ -144,6 +208,77 @@ class AuthorQualityTests(unittest.TestCase):
         self.assertFalse(division_template(payload)['strongRepeatedTemplate'])
         payload={'questions':[{'items':[{'right':3,'answer':q+ii} for ii in range(3)]} for q in range(12)]}
         self.assertFalse(division_template(payload)['strongRepeatedTemplate'])
+
+    def test_sorted_division_fixture_is_rejected_without_requiring_all_divisors(self):
+        context=lesson('elementary');cap=validate_lesson(context)
+        facts=[(d,q) for d in range(2,6) for q in range(1,11)][:36]
+        raw={'version':2,'questions':[{'items':[{'divisor':d,'quotient':q} for d,q in facts[i:i+3]]} for i in range(0,36,3)]}
+        payload=derive_author_parameters(context,cap,raw)
+        validate_model(context,payload)
+        self.assertTrue(division_order(payload)['sortedFactTable'])
+        with self.assertRaises(GenerationError) as caught:prepare_didactics(context,payload,cap)
+        self.assertEqual(caught.exception.code,'AUTHOR_DIVISION_ORDER')
+        self.assertFalse(division_order({'questions':payload['questions'][:4]})['sortedFactTable'])
+        reversed_payload=copy.deepcopy(payload)
+        reversed_payload['questions'].reverse()
+        for q in reversed_payload['questions']:q['items'].reverse()
+        self.assertTrue(division_order(reversed_payload)['sortedFactTable'])
+
+    def test_constant_missing_divisor_is_conditional_on_teacher_domain(self):
+        context=lesson('elementary')
+        payload={'questions':[{'kind':'missing_right','items':[{'right':3,'answer':q} for q in (2,6,9)]}]}
+        self.assertTrue(missing_divisor_variety(context,payload)['degenerateQuestion'])
+        context['lessonBoundary']['allowedDivisors']=[3]
+        self.assertFalse(missing_divisor_variety(context,payload)['degenerateQuestion'])
+        self.assertFalse(division_order(payload)['sortedFactTable'])
+        context['lessonBoundary']['allowedDivisors']=[2,3,5]
+        for item,d in zip(payload['questions'][0]['items'],(2,3,5)):item['right']=d
+        self.assertFalse(missing_divisor_variety(context,payload)['degenerateQuestion'])
+
+    def test_fact_table_cannot_hide_behind_one_to_three_edits(self):
+        context=lesson('elementary');cap=validate_lesson(context)
+        facts=[(d,q) for d in range(2,6) for q in range(1,11)][:36]
+        for changed in ([0],[17],[0,1],[5,19],[0,1,2],[5,19,31]):
+            with self.subTest(changed=changed):
+                edited=list(facts)
+                for i,index in enumerate(changed):edited[index]=(10,i+1)
+                raw={'version':2,'questions':[{'items':[{'divisor':d,'quotient':q} for d,q in edited[i:i+3]]}
+                                             for i in range(0,36,3)]}
+                payload=derive_author_parameters(context,cap,raw)
+                validate_model(context,payload)
+                before=copy.deepcopy(payload)
+                self.assertTrue(division_order(payload)['sortedFactTable'])
+                self.assertEqual(payload,before)
+                reverse={'questions':[{'items':[{'right':d,'answer':q} for d,q in reversed(edited)]}]}
+                self.assertTrue(division_order(reverse)['sortedFactTable'])
+
+    def test_fact_table_rule_allows_bounded_focused_and_merely_sorted_controls(self):
+        controls=[[(3,q) for q in range(11)]*3,
+                  [(d,q) for d in range(2,11) for q in (1,3,6,10)],
+                  random.Random(20261116).sample([(d,q) for d in (2,3,5) for q in range(11)],27)]
+        for facts in controls:
+            payload={'questions':[{'items':[{'right':d,'answer':q} for d,q in facts]}]}
+            self.assertFalse(division_order(payload)['sortedFactTable'])
+        facts=[(d,q) for d in range(2,6) for q in range(11)]
+        self.assertTrue(division_order({'questions':[{'items':[{'right':d,'answer':q} for d,q in facts]}]})['sortedFactTable'])
+
+    def test_mixed_sheet_rejects_uniform_missing_divisor_without_mutation(self):
+        context=lesson('elementary');cap=validate_lesson(context)
+        fixed=[(3,1),(3,4),(3,9)]
+        available=[(d,q) for d in range(2,11) for q in range(1,11) if (d,q) not in fixed]
+        flat=random.Random(20261115).sample(available,33)
+        plan=question_plan(context,cap)
+        target=next(i for i,q in enumerate(plan) if q['kind']=='missing_right')
+        flat[target*3:target*3]=fixed
+        raw={'version':2,'questions':[{'items':[{'divisor':d,'quotient':q} for d,q in flat[i:i+3]]}
+                                     for i in range(0,36,3)]}
+        payload=derive_author_parameters(context,cap,raw)
+        validate_model(context,payload)
+        self.assertFalse(division_order(payload)['sortedFactTable'])
+        before=copy.deepcopy(payload)
+        with self.assertRaises(GenerationError) as caught:prepare_didactics(context,payload,cap)
+        self.assertEqual(caught.exception.code,'AUTHOR_MISSING_DIVISOR_CONSTANT')
+        self.assertEqual(payload,before)
 
     def test_elementary_reserved_example_is_blocked(self):
         context=lesson('elementary');cap=validate_lesson(context)
