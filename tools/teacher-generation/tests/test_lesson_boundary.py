@@ -8,7 +8,8 @@ from fractions import Fraction
 
 HERE = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(HERE))
-from lesson_boundary import validated_boundary, validate_render_values
+from lesson_boundary import (validated_boundary, validate_render_values,
+    MISSING_DIVISOR_QUESTIONS, MINIMUM_QUESTION_ITEMS)
 from validation import GenerationError, validate_lesson, validate_model
 
 
@@ -53,6 +54,30 @@ class BoundaryTests(unittest.TestCase):
         self.rejects('BOUNDARY_TOO_NARROW', lambda: validate_lesson(value))
         value['lessonBoundary']['maxDividend'] = 90
         validate_lesson(value)  # Exactly 9 positive facts is feasible.
+
+    def test_mixed_divisor_feasibility_matches_fixed_plan_without_widening(self):
+        value=lesson();cap=validate_lesson(value)
+        self.assertEqual(cap['requiredKindCounts']['missing_right'],MISSING_DIVISOR_QUESTIONS)
+        self.assertEqual(MINIMUM_QUESTION_ITEMS,3)
+        for divisors,maximum in [([1,10],10),([1,10],20),([1,9,10],10)]:
+            with self.subTest(divisors=divisors,maximum=maximum):
+                value=lesson();value['lessonBoundary'].update(allowedDivisors=divisors,maxDividend=maximum)
+                before=copy.deepcopy(value)
+                self.rejects('BOUNDARY_TOO_NARROW',lambda:validate_lesson(value))
+                self.assertEqual(value,before)
+
+    def test_feasible_mixed_and_single_divisor_controls_have_explicit_witnesses(self):
+        cases=[([1,10],30,[[(1,2),(1,4),(10,1)],[(1,5),(1,7),(10,2)],[(1,8),(1,10),(10,3)]]),
+               ([1,8,9,10],10,[[(1,1),(1,2),(8,1)],[(1,3),(1,4),(9,1)],[(1,5),(1,6),(10,1)]]),
+               ([10],90,[[(10,q) for q in range(start,start+3)] for start in (1,4,7)])]
+        for divisors,maximum,rows in cases:
+            with self.subTest(divisors=divisors,maximum=maximum):
+                value=lesson();value['lessonBoundary'].update(allowedDivisors=divisors,maxDividend=maximum)
+                before=copy.deepcopy(value);validate_lesson(value)
+                self.assertEqual(value,before)
+                self.assertEqual(len(set(pair for row in rows for pair in row)),9)
+                self.assertTrue(all(d in divisors and 1<=q<=10 and d*q<=maximum for row in rows for d,q in row))
+                if len(divisors)>1:self.assertTrue(all(len({d for d,q in row})>=2 for row in rows))
 
     def test_canonical_arithmetic_rejects_untaught_divisor_and_large_dividend(self):
         payload = json.loads((HERE / 'examples/elementary-model.json').read_text())

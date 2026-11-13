@@ -167,3 +167,29 @@ test('new drafts require v2 explicit topic-specific teaching limits; legacy is o
   assert.equal(validateTeacherGenerationIntake(valid({version:2, gradeNumber:7, topicId:'g7:equations', questionCount:20,
     lessonBoundary:{version:1,kind:'linear_equations',allowSignedNumbers:'false'}}), curriculum).ok, false);
 });
+
+test('division bounds can supply three varied missing-divisor rows without expanding taught content', () => {
+  for (const [allowedDivisors, maxDividend] of [
+    [[1,10],10], [[1,9,10],10], [[1,10],20],
+  ] as const) {
+    const input = valid({version:2, lessonBoundary:{version:1,kind:'division_facts',allowedDivisors:[...allowedDivisors],maxDividend}});
+    const before = structuredClone(input);
+    const result = validateTeacherGenerationIntake(input, curriculum);
+    assert.equal(result.ok, false, JSON.stringify({allowedDivisors, maxDividend}));
+    if (!result.ok) {
+      const issue = result.issues.find(issue => issue.code === 'BOUNDARY_TOO_NARROW');
+      assert.equal(issue?.field, 'lessonBoundary');
+      assert.match(issue!.message, /מחלק אחד לתרגול ממוקד/);
+      assert.match(issue!.message, /רק אם כבר נלמדו/);
+    }
+    assert.deepEqual(input, before, 'validation must not silently widen the taught boundary');
+  }
+  for (const [allowedDivisors, maxDividend] of [
+    [[1,10],30], [[1,8,9,10],10], [[10],90], [[4,5,6,7,8,9,10],10],
+  ] as const) {
+    const lessonBoundary = {version:1,kind:'division_facts',allowedDivisors:[...allowedDivisors],maxDividend};
+    const result = validateTeacherGenerationIntake(valid({version:2,lessonBoundary}), curriculum);
+    assert.equal(result.ok, true, JSON.stringify(lessonBoundary));
+    if (result.ok) assert.deepEqual(result.value.lessonBoundary, lessonBoundary);
+  }
+});

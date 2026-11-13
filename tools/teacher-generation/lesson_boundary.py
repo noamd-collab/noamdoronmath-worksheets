@@ -1,6 +1,9 @@
 """Explicit teaching limits, independent of model prose or author instructions."""
 from fractions import Fraction
 
+MISSING_DIVISOR_QUESTIONS = 3  # Fixed grade-3 pilot task plan.
+MINIMUM_QUESTION_ITEMS = 3
+
 
 def _reject(code, detail):
     # validation imports this module; keep the error class single without a cycle.
@@ -33,8 +36,15 @@ def validated_boundary(lesson, *, allow_legacy=False):
             _reject('INVALID_LESSON_BOUNDARY', 'Invalid allowed divisors or maximum dividend')
         # The fixed pilot has 3 missing-divisor questions with >=3 parts each.
         # Zero quotients cannot produce a uniquely solvable missing divisor.
-        if sum(min(10, maximum // d) for d in divisors) < 9:
+        capacities = [min(10, maximum // d) for d in divisors]
+        total = sum(capacities)
+        if total < MISSING_DIVISOR_QUESTIONS * MINIMUM_QUESTION_ITEMS:
             _reject('BOUNDARY_TOO_NARROW', 'Teaching limits cannot supply nine distinct positive division facts')
+        # Each mixed row needs a fact outside the most frequent divisor.
+        # Distinct facts cannot be reused across the three missing_right rows.
+        # A selected single divisor is intentionally exempt from row variety.
+        if len(divisors) > 1 and total - max(capacities) < MISSING_DIVISOR_QUESTIONS:
+            _reject('BOUNDARY_TOO_NARROW', 'Teaching limits cannot supply three mixed-divisor questions with distinct facts')
     elif topic == (7, 'g7:equations'):
         if (set(value) != {'version', 'kind', 'allowSignedNumbers'}
                 or value.get('kind') != 'linear_equations'

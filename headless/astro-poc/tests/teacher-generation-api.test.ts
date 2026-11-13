@@ -222,6 +222,27 @@ test('old intake and impossible teaching bounds fail before bot verification or 
   }
 });
 
+test('insufficient minority division facts fail before any store call or paid job creation', async () => {
+  for (const [allowedDivisors, maxDividend] of [[[1,10],10], [[1,9,10],10], [[1,10],20]] as const) {
+    const f = fixture();
+    const value = {...lesson, lessonBoundary:{version:1,kind:'division_facts',allowedDivisors:[...allowedDivisors],maxDividend}};
+    const response = await handleTeacherGeneration(post(input({lesson:value})), f.deps);
+    assert.equal(response.status, 422);
+    const body = await response.json();
+    assert.equal(body.code, 'LESSON_INVALID');
+    assert.ok(body.issues.some((issue: any) => issue.field === 'lessonBoundary' && issue.code === 'BOUNDARY_TOO_NARROW'));
+    assert.match(response.headers.get('cache-control')!, /no-store/);
+    assert.deepEqual(f.calls, ['auth','curriculum'], 'no request lookup, worker health, CAPTCHA or create RPC');
+  }
+  for (const [allowedDivisors, maxDividend] of [[[1,10],30], [[1,8,9,10],10], [[10],90]] as const) {
+    const f = fixture();
+    const value = {...lesson, lessonBoundary:{version:1,kind:'division_facts',allowedDivisors:[...allowedDivisors],maxDividend}};
+    const response = await handleTeacherGeneration(post(input({lesson:value})), f.deps);
+    assert.equal(response.status, 202);
+    assert.deepEqual(f.calls, ['auth','curriculum','find','health','bot','enqueue']);
+  }
+});
+
 test('completed legacy job remains readable and downloadable without intake revalidation', async () => {
   const f=fixture(); const old={...lesson,version:1}; delete (old as any).lessonBoundary;
   f.store.get=async()=>({...job,lesson:old,status:'needs_review',result:{automatedChecksPassed:true}});

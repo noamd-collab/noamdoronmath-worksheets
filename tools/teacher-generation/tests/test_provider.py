@@ -209,11 +209,15 @@ class ProviderTests(unittest.TestCase):
             self.assertFalse(self.fail_author('OUTSIDE_LESSON_BOUNDARY')['derivation']['performed'])
 
     def test_impossible_division_boundary_is_rejected_before_billed_request(self):
-        self.lesson['lessonBoundary'].update(allowedDivisors=[10],maxDividend=10)
-        with patch('provider.build_opener') as build:
-            with self.assertRaises(GenerationError) as caught:provider.author_lesson(self.lesson,**self.config)
-            build.assert_not_called()
-        self.assertEqual(caught.exception.code,'BOUNDARY_TOO_NARROW')
+        for divisors,maximum in [([10],10),([1,10],10),([1,10],20),([1,9,10],10)]:
+            with self.subTest(divisors=divisors,maximum=maximum):
+                self.lesson['lessonBoundary'].update(allowedDivisors=divisors,maxDividend=maximum)
+                before=copy.deepcopy(self.lesson)
+                with patch('provider.build_opener') as build:
+                    with self.assertRaises(GenerationError) as caught:provider.author_lesson(self.lesson,**self.config)
+                    build.assert_not_called()
+                self.assertEqual(caught.exception.code,'BOUNDARY_TOO_NARROW')
+                self.assertEqual(self.lesson,before)
 
     def test_missing_divisor_prompt_matches_multi_single_and_legacy_domains(self):
         for domain in ('multi','single','legacy'):

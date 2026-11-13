@@ -52,7 +52,15 @@ New jobs require intake v2: `gradeNumber`, `topicId`, `level`, `lessonGoal`, `la
 boundaries specify `allowedDivisors` and `maxDividend`; equations require an
 explicit `allowSignedNumbers` choice. Both the input and canonical numbers
 are checked. Impossible division limits with fewer than nine distinct positive
-facts fail before any billed author request. Derived distractors, substitutions
+facts fail before enqueueing or any billed author request. When multiple
+divisors are selected, at least three facts must also lie outside the most
+frequent divisor: for capacities `min(10, maxDividend // divisor)`, require
+`total - max(capacities) >= 3`. This makes three distinct mixed-divisor questions
+possible; `[1,10]` with maximum10 fails even though it contains eleven facts.
+A single selected divisor remains exempt from row variety. The teacher may
+choose one divisor for focused practice or widen only to already taught facts;
+the system never expands the learning boundary automatically.
+Derived distractors, substitutions
 and challenge values are checked before markup too. The web intake validates the
 complete curriculum selection. This runner additionally checks its narrow
 capability and the requested volume. In this pilot the taught-through topic

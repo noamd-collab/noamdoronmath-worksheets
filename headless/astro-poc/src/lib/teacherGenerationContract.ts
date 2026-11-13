@@ -167,9 +167,15 @@ export function validateTeacherGenerationIntake(input: unknown, curriculum: Teac
           boundary.kind !== 'division_facts' || !Array.isArray(divisors) || divisors.length < 1 || divisors.length > 10 ||
           divisors.some(d => typeof d !== 'number' || !Number.isInteger(d) || d < 1 || d > 10) ||
           new Set(divisors).size !== divisors.length || typeof maximum !== 'number' || !Number.isInteger(maximum) || maximum < 10 || maximum > 100) boundaryError();
-      else if (divisors.reduce((count, divisor) => count + Math.min(10, Math.floor(maximum / divisor)), 0) < 9) {
-        add('lessonBoundary', 'BOUNDARY_TOO_NARROW', 'הטווח שנבחר אינו מספיק לדף בהיקף הזה. הוסיפו מחלקים או הגדילו את הטווח.');
-      } else lessonBoundary = { version: 1, kind: 'division_facts', allowedDivisors: [...divisors].sort((a,b) => a-b), maxDividend: maximum };
+      else {
+        const counts = divisors.map(divisor => Math.min(10, Math.floor(maximum / divisor)));
+        const total = counts.reduce((sum, count) => sum + count, 0);
+        // Three missing-divisor rows need nine distinct positive facts. With
+        // multiple divisors, each row also needs a fact outside the largest group.
+        if (total < 9 || (divisors.length > 1 && total - Math.max(...counts) < 3)) {
+          add('lessonBoundary', 'BOUNDARY_TOO_NARROW', 'הטווח שנבחר אינו מספיק לדף הניסיון. אפשר לבחור מחלק אחד לתרגול ממוקד, או להרחיב את המחלקים או הטווח רק אם כבר נלמדו.');
+        } else lessonBoundary = { version: 1, kind: 'division_facts', allowedDivisors: [...divisors].sort((a,b) => a-b), maxDividend: maximum };
+      }
     } else if (raw.gradeNumber === 7 && raw.topicId === 'g7:equations') {
       if (Object.keys(boundary).sort().join(',') !== 'allowSignedNumbers,kind,version' ||
           boundary.kind !== 'linear_equations' || typeof boundary.allowSignedNumbers !== 'boolean') boundaryError();
