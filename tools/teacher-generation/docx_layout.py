@@ -20,6 +20,73 @@ from lxml import etree as ET
 
 W = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
 NS = {"w": W[1:-1]}
+WORK_MARKER = "NoamTeacherWork_"
+CHECK_INSTRUCTION = "הפתרונות הבאים שגויים. תקנו והסבירו:"
+INVERSE_INSTRUCTION = " כתבו גם תרגיל כפל מתאים לבדיקת כל תשובה."
+
+
+def _work_line_count(question):
+    """Closed contract for the trusted adapter's existing elementary wording.
+
+    The model supplies neither instructions nor layout. Unknown wording must
+    be reviewed with the adapter instead of silently dropping answer space.
+    """
+    intro, star = question.get("intro"), question.get("star")
+    if type(star) is not bool or not isinstance(intro, str):
+        raise ValueError("DOCX_LAYOUT_MISMATCH: missing trusted instruction")
+    if star:
+        if not intro.endswith(INVERSE_INSTRUCTION):
+            raise ValueError("DOCX_LAYOUT_MISMATCH: challenge instruction")
+        intro = intro[:-len(INVERSE_INSTRUCTION)]
+    if intro not in ("פתרו:", "השלימו את המספר החסר:", CHECK_INSTRUCTION):
+        raise ValueError("DOCX_LAYOUT_MISMATCH: unknown trusted instruction")
+    return int(intro == CHECK_INSTRUCTION) + int(star)
+
+
+def _work_line(name, bookmark_id):
+    paragraph = ET.Element(W + "p")
+    props = ET.SubElement(paragraph, W + "pPr")
+    borders = ET.SubElement(props, W + "pBdr")
+    # 'between' preserves both writing rules when two empty paragraphs abut.
+    for side in ("bottom", "between"):
+        border = ET.SubElement(borders, W + side)
+        for key, value in {"val": "single", "sz": "4", "space": "0", "color": "A0A0A0"}.items():
+            border.set(W + key, value)
+    ET.SubElement(props, W + "bidi").set(W + "val", "1")
+    spacing = ET.SubElement(props, W + "spacing")
+    for key, value in {"before": "0", "after": "80", "line": "360", "lineRule": "atLeast"}.items():
+        spacing.set(W + key, value)
+    start = ET.SubElement(paragraph, W + "bookmarkStart")
+    start.set(W + "id", str(bookmark_id)); start.set(W + "name", name)
+    ET.SubElement(paragraph, W + "bookmarkEnd").set(W + "id", str(bookmark_id))
+    return paragraph
+
+
+def _owned_line(paragraph, name):
+    if paragraph.tag != W + "p":
+        return False
+    marks = paragraph.findall(W + "bookmarkStart")
+    if not marks or marks[0].get(W + "name") != name:
+        return False
+    ends = paragraph.findall(W + "bookmarkEnd")
+    if (len(marks) != 1 or len(ends) != 1 or _text(paragraph)
+            or [node.tag for node in paragraph] != [W + "pPr", W + "bookmarkStart", W + "bookmarkEnd"]
+            or marks[0].get(W + "id") != ends[0].get(W + "id")):
+        raise ValueError("DOCX_LAYOUT_MISMATCH: modified work paragraph")
+    props = paragraph.find(W + "pPr")
+    if [node.tag for node in props] != [W + tag for tag in ("keepNext", "keepLines", "pBdr", "bidi", "spacing")]:
+        raise ValueError("DOCX_LAYOUT_MISMATCH: modified work layout")
+    # Repeated repair must recognize exactly our own layout, not arbitrary blank
+    # paragraphs. Keep flags are checked separately as part of the whole group.
+    expected = _work_line(name, marks[0].get(W + "id"))
+    for tag in ("pBdr", "bidi", "spacing"):
+        actual_prop = paragraph.find("w:pPr/w:" + tag, NS)
+        expected_prop = expected.find("w:pPr/w:" + tag, NS)
+        if actual_prop is None or ET.tostring(actual_prop) != ET.tostring(expected_prop):
+            # Namespace prefixes can differ after ZIP/XML round trips.
+            if actual_prop is None or [(e.tag, dict(e.attrib)) for e in actual_prop.iter()] != [(e.tag, dict(e.attrib)) for e in expected_prop.iter()]:
+                raise ValueError("DOCX_LAYOUT_MISMATCH: modified work layout")
+    return True
 
 
 def _text(element):
@@ -59,20 +126,43 @@ def repair_elementary_docx(docx_path, content):
     if len(headings) != len(questions):
         raise ValueError("DOCX_LAYOUT_MISMATCH: question heading count")
     groups = []
+    existing_lines = 0
+    expected_lines = 0
+    additions = []
+    bookmark_ids = [int(node.get(W + "id")) for node in root.iter(W + "bookmarkStart")]
+    next_bookmark_id = max(bookmark_ids, default=0) + 1
     for index, ((offset, heading), question) in enumerate(zip(headings, questions)):
-        if not _text(heading).startswith(f"{index + 1}. "):
+        line_count = _work_line_count(question)
+        expected_heading = f"{index + 1}. " + ("★ " if question["star"] else "") + question["intro"]
+        if " ".join(_text(heading).split()) != " ".join(expected_heading.split()):
             raise ValueError("DOCX_LAYOUT_MISMATCH: question sequence")
         count = len(question["items"])
-        group = elements[offset:offset + count + 1]
-        if len(group) != count + 1 or any(p.tag != W + "p" for p in group):
+        if not 3 <= count <= 6:
             raise ValueError("DOCX_LAYOUT_MISMATCH: question paragraph group")
-        if index + 1 < len(headings) and offset + count + 1 != headings[index + 1][0]:
-            raise ValueError("DOCX_LAYOUT_MISMATCH: unexpected question paragraphs")
-        for label, paragraph in zip("אבגדהוזחטי", group[1:]):
-            if not _text(paragraph).startswith(label + ". "):
+        group = [heading]
+        cursor = offset + 1
+        for item_index, label in enumerate("אבגדהוזחטי"[:count], 1):
+            if cursor >= len(elements) or elements[cursor].tag != W + "p" or not _text(elements[cursor]).startswith(label + ". "):
                 raise ValueError("DOCX_LAYOUT_MISMATCH: subquestion sequence")
+            paragraph = elements[cursor]; group.append(paragraph); cursor += 1
+            previous = paragraph
+            for line_index in range(1, line_count + 1):
+                expected_lines += 1
+                name = f"{WORK_MARKER}q{index + 1:02}_i{item_index:02}_l{line_index:02}"
+                if cursor < len(elements) and _owned_line(elements[cursor], name):
+                    line = elements[cursor]; cursor += 1; existing_lines += 1
+                else:
+                    line = _work_line(name, next_bookmark_id); next_bookmark_id += 1
+                    additions.append((previous, line))
+                group.append(line); previous = line
+        if index + 1 < len(headings) and cursor != headings[index + 1][0]:
+            raise ValueError("DOCX_LAYOUT_MISMATCH: unexpected question paragraphs")
         groups.append(group)
+    if existing_lines not in (0, expected_lines):
+        raise ValueError("DOCX_LAYOUT_MISMATCH: incomplete work paragraphs")
     # Only after the entire structure is verified do we alter the in-memory XML.
+    for previous, line in additions:
+        previous.addnext(line)
     for group in groups:
         for offset, paragraph in enumerate(group):
             _flag(paragraph, "keepLines", True)
@@ -102,7 +192,8 @@ def repair_elementary_docx(docx_path, content):
     finally:
         if temporary is not None:
             temporary.unlink(missing_ok=True)
-    return {"questionsKeptTogether": len(groups), "mathRunsProtected": protected}
+    return {"questionsKeptTogether": len(groups), "mathRunsProtected": protected,
+            "answerLines": expected_lines, "answerLinesAdded": len(additions)}
 
 
 if __name__ == "__main__":

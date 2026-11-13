@@ -211,12 +211,76 @@ class WorkerTests(unittest.TestCase):
         self.assertEqual(self.remote.uploads(), [])
 
     def test_lease_loss_after_model_call_does_not_retry_or_render(self):
-        def author(_):
+        def author(_, **kwargs):
             self.remote.fail_updates = True; return {'synthetic': True}
         with patch.object(worker, 'author_lesson', side_effect=author) as paid, patch.object(worker, 'render_job') as renderer:
             with self.assertRaisesRegex(RuntimeError, 'JOB_LEASE_LOST'):
                 worker.process_job(self.remote, self.job, self.root)
         paid.assert_called_once(); renderer.assert_not_called(); self.assertEqual(self.remote.uploads(), [])
+
+    def test_failed_author_keeps_safe_detail_and_usage_privately_without_retry(self):
+        detail = 'author question 4 item 2 derived c: integer outside allowed range'
+        def author(lesson, *, metadata):
+            metadata.update({'responseReceived': True, 'validated': False, 'requestedModel': 'unit-model',
+                             'elapsedSeconds': 3.25, 'authorContract': 'worksheet-parameters/2',
+                             'usage': {'prompt_tokens': 100, 'completion_tokens': 150, 'raw': 'PRIVATE_SECRET'},
+                             'derivation': {'performed': False, 'raw': 'PRIVATE_SECRET'},
+                             'validationError': {'code': 'INVALID_MODEL_OUTPUT', 'detail': detail},
+                             'headers': {'Authorization': 'PRIVATE_SECRET'}, 'response': 'PRIVATE_SECRET'})
+            raise GenerationError('INVALID_MODEL_OUTPUT', detail)
+        with patch.object(worker, 'author_lesson', side_effect=author) as paid, patch.object(worker, 'render_job') as renderer:
+            with self.assertRaisesRegex(GenerationError, 'derived c'):
+                worker.process_job(self.remote, self.job, self.root)
+        paid.assert_called_once(); renderer.assert_not_called()
+        path = self.root / 'author-diagnostics' / (JOB_ID + '.json')
+        record = json.loads(path.read_text())
+        self.assertEqual(record['validationDetail'], detail)
+        self.assertEqual(record['usage'], {'prompt_tokens': 100, 'completion_tokens': 150})
+        self.assertFalse(record['derivationPerformed'])
+        self.assertEqual(record['outcome'], 'failed')
+        self.assertNotIn('PRIVATE_', path.read_text())
+        self.assertNotIn('lesson', record)
+        self.assertEqual(path.stat().st_mode & 0o777, 0o600)
+        self.assertEqual(path.parent.stat().st_mode & 0o777, 0o700)
+        self.assertFalse((self.root / JOB_ID).exists())
+        self.assertEqual(self.remote.uploads(), [])
+        self.assertFalse(any('validationDetail' in json.dumps(c) for c in self.remote.calls))
+
+    def test_diagnostics_omit_arbitrary_exception_content_and_keep_parse_rule(self):
+        metadata = {'validationError': {'code': 'INVALID_MODEL_OUTPUT', 'detail': 'PRIVATE_SECRET'},
+                    'usage': {'total_tokens': -1}, 'responseModel': 'PRIVATE/SECRET', 'elapsedSeconds': float('inf')}
+        self.assertTrue(worker.save_author_diagnostics(self.root, JOB_ID, metadata,
+                        GenerationError('INVALID_MODEL_OUTPUT', 'Duplicate model JSON key')))
+        record = (self.root / 'author-diagnostics' / (JOB_ID + '.json')).read_text()
+        self.assertNotIn('PRIVATE_', record)
+        self.assertIn('Duplicate model JSON key', record)
+        other_id = '33333333-3333-4333-8333-333333333333'
+        self.assertTrue(worker.save_author_diagnostics(self.root, other_id, metadata,
+                        GenerationError('INVALID_MODEL_OUTPUT', 'PRIVATE_SECRET')))
+        second = (self.root / 'author-diagnostics' / (other_id + '.json')).read_text()
+        self.assertNotIn('PRIVATE_', second)
+        self.assertNotIn('validationDetail', second)
+
+    def test_diagnostics_refuse_symlinks_and_preserve_existing_attempt_evidence(self):
+        other = self.root / 'other'; other.mkdir()
+        folder = self.root / 'author-diagnostics'
+        folder.symlink_to(other, target_is_directory=True)
+        self.assertFalse(worker.save_author_diagnostics(self.root, JOB_ID, {}))
+        self.assertEqual(list(other.iterdir()), [])
+        folder.unlink(); folder.mkdir()
+        evidence = folder / (JOB_ID + '.json'); evidence.write_text('earlier attempt')
+        self.assertFalse(worker.save_author_diagnostics(self.root, JOB_ID, {}))
+        self.assertEqual(evidence.read_text(), 'earlier attempt')
+
+    def test_diagnostic_io_failure_preserves_original_failure_and_no_retry(self):
+        with patch.object(worker, 'author_lesson', side_effect=GenerationError('INVALID_MODEL_OUTPUT', 'PRIVATE_SECRET')) as paid, \
+             patch.object(worker, 'save_author_diagnostics', return_value=False), \
+             patch.object(worker, 'render_job') as renderer, redirect_stdout(io.StringIO()) as output:
+            with self.assertRaises(GenerationError) as caught:
+                worker.process_job(self.remote, self.job, self.root)
+        self.assertEqual(caught.exception.code, 'INVALID_MODEL_OUTPUT')
+        paid.assert_called_once(); renderer.assert_not_called()
+        self.assertNotIn('PRIVATE_', output.getvalue())
 
     def test_success_uploads_only_hash_verified_two_artifacts_and_bounded_public_provenance(self):
         with patch.object(worker, 'author_lesson', return_value={'synthetic': True}) as paid, \

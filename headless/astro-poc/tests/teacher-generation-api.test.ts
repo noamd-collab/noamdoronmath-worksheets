@@ -6,7 +6,7 @@ import { handleTeacherGeneration, type GenerationDependencies } from '../src/lib
 import { createGenerationStore, GenerationStoreError, generationSessionToken } from '../src/lib/teacherGenerationStore';
 import { loadGenerationCurriculum } from '../src/lib/teacherGenerationCurriculum';
 import { parseTeacherGenerationCurriculum } from '../src/lib/teacherGenerationContract';
-import { authorizeTeacherRequest, TEACHER_SESSION_COOKIE } from '../src/lib/teacherAccess';
+import { authorizeTeacherRequest, TEACHER_SESSION_COOKIE, TEACHER_PRIVATE_HEADERS } from '../src/lib/teacherAccess';
 import { TEACHER_ACCESS_CONFIG } from '../src/lib/teacherAccessConfig';
 
 // All Auth, CAPTCHA and transport substitutes below are in-process fixtures.
@@ -151,12 +151,19 @@ test('draft downloads require a completed review-state job and passing automated
     await code(response, candidate ? 409 : 404, candidate ? 'DRAFT_NOT_AVAILABLE' : 'JOB_NOT_FOUND');
     assert.ok(!f.calls.includes('download'));
   }
-  const f = fixture(); f.store.get = async () => ({ ...job, status: 'needs_review', result: { automatedChecksPassed: true } });
-  const response = await handleTeacherGeneration(new Request(origin + '/api/teacherGeneration?id=' + jobId + '&file=pdf'), f.deps);
-  assert.equal(response.status, 200); assert.equal(await response.text(), 'PDF');
-  assert.equal(response.headers.get('content-type'), 'application/pdf');
-  assert.match(response.headers.get('content-security-policy')!, /sandbox/);
-  assert.match(response.headers.get('cache-control')!, /no-store/);
+  for (const [kind, mime] of [['pdf', 'application/pdf'], ['docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']]) {
+    const f = fixture(); f.store.get = async () => { f.calls.push('get'); return { ...job, status: 'needs_review', result: { automatedChecksPassed: true } }; };
+    const response = await handleTeacherGeneration(new Request(origin + '/api/teacherGeneration?id=' + jobId + '&file=' + kind), f.deps);
+    assert.equal(response.status, 200); assert.equal(await response.text(), 'PDF');
+    assert.equal(response.headers.get('content-type'), mime);
+    assert.equal(response.headers.get('content-disposition'), `attachment; filename="worksheet-${jobId}.${kind}"`);
+    assert.equal(response.headers.get('content-length'), '3');
+    // A bare sandbox blocks even a normal navigation to an attachment. Only
+    // permit downloads: scripts, same-origin privileges and popups stay denied.
+    assert.equal(response.headers.get('content-security-policy'), "default-src 'none'; sandbox allow-downloads");
+    for (const [name, value] of Object.entries(TEACHER_PRIVATE_HEADERS)) assert.equal(response.headers.get(name), value);
+    assert.deepEqual(f.calls, ['auth', 'get', 'download']);
+  }
 });
 
 test('download IDs, file kinds and missing or oversized response lengths fail closed', async () => {
