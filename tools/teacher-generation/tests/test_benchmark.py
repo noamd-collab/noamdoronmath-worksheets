@@ -16,7 +16,10 @@ class BenchmarkTests(unittest.TestCase):
         self.tmp = tempfile.TemporaryDirectory()
         self.addCleanup(self.tmp.cleanup)
         self.out = Path(self.tmp.name) / 'new-attempt'
-        self.lesson = HERE / 'examples/elementary-lesson.json'
+        self.lesson = Path(self.tmp.name) / 'lesson-v2.json'
+        lesson = json.loads((HERE / 'examples/elementary-lesson.json').read_text())
+        lesson.update(version=2, lessonBoundary={'version':1,'kind':'division_facts','allowedDivisors':list(range(1,11)),'maxDividend':100})
+        self.lesson.write_text(json.dumps(lesson))
         self.metadata = {'requestedModel': 'qwen3.8-flash', 'responseModel': 'qwen3.8-flash',
                          'usage': {'prompt_tokens': 1000, 'completion_tokens': 2000}, 'elapsedSeconds': 1.2}
 
@@ -27,6 +30,16 @@ class BenchmarkTests(unittest.TestCase):
     def manifest(self, passed=True):
         return {'automatedChecksPassed': passed, 'steps': [{'name': 'fixture-gate', 'status': 'PASS' if passed else 'FAIL'}],
                 'artifacts': [{'kind': 'pdf', 'path': 'sheet.pdf'}, {'kind': 'docx', 'path': 'sheet.docx'}] if passed else []}
+
+    def test_legacy_benchmark_requires_explicit_offline_opt_in(self):
+        legacy = HERE / 'examples/elementary-lesson.json'
+        with patch('benchmark.check', return_value={'ready': True}), patch('benchmark.author_lesson') as author:
+            denied = benchmark.run_benchmark(legacy, self.out)
+            self.assertEqual(denied['status'], 'failed')
+            self.assertEqual(denied['error']['code'], 'LESSON_VERSION_REQUIRES_NEW_DRAFT')
+            allowed = benchmark.run_benchmark(legacy, self.out.parent / 'legacy-explicit', allow_legacy=True)
+            self.assertEqual(allowed['status'], 'dry_run_ready')
+            author.assert_not_called()
 
     def test_default_dry_run_never_authors_or_renders(self):
         with patch('benchmark.check', return_value={'ready': True}) as check, patch('benchmark.author_lesson') as author, patch('benchmark.render_job') as render:

@@ -8,30 +8,62 @@ if (!access.ok) return new Response(null, {status: access.status === 401 ? 303 :
 }});
 for (const [key,value] of Object.entries(TEACHER_PRIVATE_HEADERS)) Astro.response.headers.set(key,value);
 ---
-<BaseLayout title="יצירת דף לשיעור | אזור המורים" description="יצירת טיוטת דף המותאמת למה שכבר נלמד בכיתה." activeNav="teachers" skipHref="#generation" noindex>
+<BaseLayout title="יצירת דף לשיעור | אזור המורים" description="יצירת טיוטת דף לפי נושא ופרטי השיעור." activeNav="teachers" skipHref="#generation" noindex>
  <main id="generation" class="generation" dir="rtl">
   <nav class="generation-top" data-teacher-auth="workspace"><a href="/teachers/start">חזרה לאזור המורים</a><span>יצירה חדשה · גישה אישית לנועם</span><button type="button" data-teacher-logout>התנתקות</button><p id="teacher-auth-status" role="status" aria-live="polite"></p></nav>
-  <header><p class="eyebrow">מהשיעור האחרון, לדף הבא</p><h1>מה הכיתה צריכה לתרגל?</h1><p>מגדירים מה כבר נלמד ואיפה עצרתם. מכינים טיוטה חדשה, בודקים אותה ומורידים להדפסה או לעריכה.</p></header>
-  <p id="generator-availability" class="notice" role="status">בודקים אילו נושאים זמינים ליצירה…</p>
-  <form id="generation-form">
-   <div class="fields">
-    <label>כיתה<select name="gradeNumber" required><option value="">בחירת כיתה</option>{['א׳','ב׳','ג׳','ד׳','ה׳','ו׳','ז׳','ח׳','ט׳'].map((label,i)=><option value={i+1}>כיתה {label}</option>)}</select></label>
-    <label>מה מתרגלים?<select name="topicId" required disabled><option value="">קודם בוחרים כיתה</option></select></label>
-    <label>רמת התרגול<select name="level"><option value="b">רמה ב׳ · בסיסית</option><option value="a">רמה א׳ · מתקדמת</option><option value="e">מצוינות</option></select></label>
-    <label>מטרת הדף<select name="lessonGoal"><option value="practice">תרגול החומר שנלמד</option><option value="review">חזרה על חומר קודם</option></select></label>
-   </div>
-   <label>איפה עצרתם בשיעור האחרון?<textarea name="lastLesson" rows="3" maxlength="700" minlength="8" required placeholder="למשל: תרגלנו חילוק ללא שארית עד 100. עדיין לא עברנו לחילוק עם שארית."></textarea><small>נכתוב רק לפי מה שכבר נלמד. אין צורך בשמות תלמידים או בפרטים אישיים שלהם.</small></label>
-   <label>מה כבר מוכר לכיתה?<textarea name="alreadyLearned" rows="2" maxlength="1200" placeholder="למשל: לוח הכפל, הקשר בין כפל לחילוק. אפשר להפריד בין מושגים בשורה חדשה."></textarea></label>
-   <div class="fields">
-    <label>זמן לתרגול בדקות<input name="minutes" type="number" min="10" max="120" value="30" required /></label>
-    <label>מספר שאלות ראשיות<input name="questionCount" type="number" min="8" max="30" value="12" required /><small id="volume-help">ייתכנו כמה סעיפים בכל שאלה.</small></label>
-   </div>
-   <p class="muted">ההתאמה מבוססת על הנושא ועל ההתקדמות שתיארת. היא אינה קובעת אוטומטית מה הספקתם לפי החודש בשנה.</p>
-   <button class="primary" id="plan-button" type="submit" disabled>בדיקת פרטי הדף</button>
+  <header><p class="eyebrow">מהשיעור האחרון, לדף הבא</p><h1>מכינים דף לשיעור</h1><p>בוחרים כיתה, נושא ורמה. ממשיכים לפרטי השיעור ולאישור הטיוטה.</p></header>
+  <p id="generator-availability" class="availability" role="status">בודקים אילו נושאים זמינים ליצירה…</p>
+  <form id="generation-form" novalidate>
+   <p id="wizard-progress" class="wizard-progress" role="status" aria-live="polite" aria-atomic="true">שלב 1 מתוך 5 · כיתה</p>
+   <ol class="wizard-steps" aria-label="שלבי הכנת הדף"><li aria-current="step">כיתה</li><li>נושא</li><li>רמה</li><li>השיעור</li><li>אישור</li></ol>
+   <fieldset data-generation-step aria-labelledby="grade-title">
+    <h2 id="grade-title" tabindex="-1">לאיזו כיתה מכינים את הדף?</h2>
+    <label for="generation-grade" class="visually-hidden">כיתה</label>
+    <select id="generation-grade" name="gradeNumber" required><option value="">בחירת כיתה</option><option value="1">כיתה א׳</option><option value="2">כיתה ב׳</option><option value="3">כיתה ג׳</option><option value="4">כיתה ד׳</option><option value="5">כיתה ה׳</option><option value="6">כיתה ו׳</option><option value="7">כיתה ז׳</option><option value="8">כיתה ח׳</option><option value="9">כיתה ט׳</option></select>
+   </fieldset>
+   <fieldset data-generation-step aria-labelledby="topic-title" hidden disabled>
+    <h2 id="topic-title" tabindex="-1">מה מתרגלים?</h2>
+    <label for="generation-topic" class="visually-hidden">נושא התרגול</label>
+    <select id="generation-topic" name="topicId" required disabled><option value="">קודם בוחרים כיתה</option></select>
+    <div id="topic-unavailable" class="notice" hidden><p>לכיתה הזו עדיין אין נושא זמין ליצירה. אפשר לחזור ולבחור כיתה אחרת, או להכין דף מתוך החומרים הקיימים.</p><a href="/teachers/app">לכלי המורים הקיימים</a></div>
+   </fieldset>
+   <fieldset data-generation-step aria-labelledby="level-title" hidden disabled>
+    <h2 id="level-title" tabindex="-1">באיזו רמת תרגול?</h2>
+    <label for="generation-level" class="visually-hidden">רמת התרגול</label>
+    <select id="generation-level" name="level" required><option value="">בחירת רמה</option><option value="b">רמה ב׳ · בסיסית</option><option value="a">רמה א׳ · מתקדמת</option><option value="e">מצוינות</option></select>
+    <p class="muted">מוצגות לבחירה רק הרמות שכבר זמינות בנושא הזה.</p>
+   </fieldset>
+   <fieldset data-generation-step aria-labelledby="lesson-title" hidden disabled>
+    <h2 id="lesson-title" tabindex="-1">עד איפה הכיתה הגיעה?</h2>
+    <fieldset id="boundary-division" class="lesson-boundary" hidden disabled>
+     <legend>באילו מחלקים כבר תרגלתם?</legend>
+     <p class="muted">סמנו רק את המחלקים שכבר נלמדו.</p>
+     <div class="divisor-choices">
+      <label><input type="checkbox" name="learnedDivisor" value="1" />1</label><label><input type="checkbox" name="learnedDivisor" value="2" />2</label><label><input type="checkbox" name="learnedDivisor" value="3" />3</label><label><input type="checkbox" name="learnedDivisor" value="4" />4</label><label><input type="checkbox" name="learnedDivisor" value="5" />5</label><label><input type="checkbox" name="learnedDivisor" value="6" />6</label><label><input type="checkbox" name="learnedDivisor" value="7" />7</label><label><input type="checkbox" name="learnedDivisor" value="8" />8</label><label><input type="checkbox" name="learnedDivisor" value="9" />9</label><label><input type="checkbox" name="learnedDivisor" value="10" />10</label>
+     </div>
+     <label>המחולק הגדול ביותר שכבר תרגלתם<input name="boundaryMaxDividend" type="number" min="10" max="100" step="1" required placeholder="10–100" /></label>
+    </fieldset>
+    <fieldset id="boundary-equations" class="lesson-boundary" hidden disabled>
+     <label>האם כבר נלמדו מספרים שליליים?<select name="boundarySignedNumbers" required><option value="">בחירה לפי מה שכבר נלמד</option><option value="yes">כן, נלמדו גם מספרים שליליים</option><option value="no">לא, עדיין ללא מספרים שליליים</option></select></label>
+    </fieldset>
+    <label for="generation-last-lesson">איפה עצרתם בשיעור האחרון?</label>
+    <textarea id="generation-last-lesson" name="lastLesson" rows="3" maxlength="700" minlength="8" required aria-describedby="lesson-help" placeholder="למשל: תרגלנו חילוק ללא שארית עד 100. עדיין לא עברנו לחילוק עם שארית."></textarea>
+    <p id="lesson-help" class="muted">גבולות התרגול שבחרתם ייבדקו בדף. התיאור הנוסף ינחה את היצירה; לפני השימוש יש לבדוק את ההתאמה לשיעור. אין צורך בפרטים אישיים של תלמידים.</p>
+    <details id="lesson-options" class="lesson-options"><summary>ידע קודם ופרטים נוספים</summary>
+     <label>מה כבר מוכר לכיתה?<textarea name="alreadyLearned" rows="2" maxlength="1200" placeholder="למשל: לוח הכפל, הקשר בין כפל לחילוק. אפשר להפריד בין מושגים בשורה חדשה."></textarea></label>
+     <label>מטרת הדף<select name="lessonGoal"><option value="practice">תרגול החומר שנלמד</option><option value="review">חזרה על חומר קודם</option></select></label>
+     <div class="fields">
+      <label>משך התרגול המבוקש בדקות<input name="minutes" type="number" min="10" max="120" value="30" required /><small>בשלב הניסיון היקף הדף קבוע; התאמה אוטומטית לזמן עדיין אינה זמינה.</small></label>
+      <label>מספר שאלות ראשיות<input name="questionCount" type="number" min="8" max="30" value="12" required /><small id="volume-help">ייתכנו כמה סעיפים בכל שאלה.</small></label>
+     </div>
+    </details>
+    <p class="muted">אין קביעה אוטומטית של ההתקדמות לפי החודש בשנה.</p>
+   </fieldset>
+   <div class="wizard-navigation"><button id="wizard-back" type="button" hidden>חזרה</button><button class="primary" id="plan-button" type="submit" disabled>המשך</button></div>
   </form>
-  <section id="generation-plan" hidden aria-labelledby="plan-title"><h2 id="plan-title">זה הדף שנכין</h2><dl id="plan-details"></dl><p>תיווצר טיוטה חדשה עם תשובות. לפני השימוש בכיתה יש לעיין בניסוח, בהתאמה לשיעור ובתצוגת PDF ו־Word.</p><div class="actions"><button id="create-button" class="primary" type="button">יצירת טיוטה חדשה</button><button id="edit-plan" type="button">שינוי הפרטים</button></div></section>
+  <section id="generation-plan" hidden aria-labelledby="plan-title"><p class="wizard-progress">שלב 5 מתוך 5 · אישור</p><h2 id="plan-title" tabindex="-1">זה הדף שנכין</h2><dl id="plan-details"></dl><p>תיווצר טיוטה חדשה עם תשובות. לפני השימוש בכיתה יש לעיין בניסוח, בהתאמה לשיעור ובתצוגת PDF ו־Word.</p><div class="actions"><button id="create-button" class="primary" type="button">יצירת טיוטה חדשה</button><button id="edit-plan" type="button">שינוי הפרטים</button></div></section>
   <p id="generation-status" role="status" aria-live="polite"></p>
-  <section id="generation-history" aria-labelledby="history-title"><h2 id="history-title">הדפים שלך</h2><p id="history-empty">הדפים שתיצור יופיעו כאן. יצירת דף אינה מסמנת שהחומר כבר נלמד בכיתה.</p><div id="generation-jobs"></div></section>
+  <details id="generation-history" class="generation-history"><summary id="history-title">הדפים שלי</summary><p id="history-empty">הדפים שתיצור יופיעו כאן. יצירת דף אינה מסמנת שהחומר כבר נלמד בכיתה.</p><div id="generation-jobs"></div></details>
  </main>
  <script src="/noam-learning-config.js" defer></script>
  <script src="/vendor/supabase-2.116.0.js" defer></script>

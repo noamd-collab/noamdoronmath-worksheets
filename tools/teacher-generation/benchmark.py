@@ -55,7 +55,7 @@ def api_cost(metadata):
     return result
 
 
-def run_benchmark(lesson_file, output_dir, *, call=False):
+def run_benchmark(lesson_file, output_dir, *, call=False, allow_legacy=False):
     """No queue, DB, heartbeat, upload, review model, auto retry or publication."""
     output = Path(output_dir).absolute()
     try:
@@ -72,11 +72,11 @@ def run_benchmark(lesson_file, output_dir, *, call=False):
         'automatedChecksPassed': False, 'gates': [], 'artifacts': [],
         'humanReview': {'status': 'pending', 'acceptedWorksheetCount': 0,
                         'note': 'PDF pages, actual Word rendering, pedagogy and progress alignment require independent review.'},
-        'publication': 'not performed',
+        'publication': 'not performed', 'legacyIntakeOfflineAllowed': bool(allow_legacy),
     }
     try:
         lesson = read_json(lesson_file)
-        cap = validate_lesson(lesson)
+        cap = validate_lesson(lesson, allow_legacy=allow_legacy)
         report['lesson'] = {key: lesson[key] for key in ('gradeNumber', 'topicId', 'level', 'lessonGoal', 'questionCount', 'minutes')}
         report['lessonSha256'] = hashlib.sha256(json.dumps(lesson, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
         report['capability'] = {'skill': cap['skill'], 'family': cap['family']}
@@ -94,11 +94,11 @@ def run_benchmark(lesson_file, output_dir, *, call=False):
                   'createdAt': datetime.now(timezone.utc).isoformat()})
         phase = 'authoring'
         report['authorAttempts'] = 1
-        payload = author_lesson(lesson, metadata=metadata)
+        payload = author_lesson(lesson, metadata=metadata, **({'allow_legacy': True} if allow_legacy else {}))
         phase = 'rendering'
         render_started = time.monotonic()
         try:
-            manifest = render_job(lesson, payload, output / 'render')
+            manifest = render_job(lesson, payload, output / 'render', **({'allow_legacy': True} if allow_legacy else {}))
         finally:
             report['renderElapsedSeconds'] = round(time.monotonic() - render_started, 3)
         report['gates'] = [{key: step[key] for key in ('name', 'status', 'exitCode', 'reason') if key in step} for step in manifest['steps']]
@@ -144,9 +144,10 @@ def main(argv=None):
     parser.add_argument('--lesson', required=True)
     parser.add_argument('--out', required=True, help='New private directory; existing directories are always rejected')
     parser.add_argument('--call', action='store_true', help='Explicitly perform exactly one billed authoring attempt and offline rendering')
+    parser.add_argument('--allow-legacy-intake', action='store_true', help='Explicit offline v1 reproduction; not available to queued jobs')
     args = parser.parse_args(argv)
     try:
-        result = run_benchmark(args.lesson, args.out, call=args.call)
+        result = run_benchmark(args.lesson, args.out, call=args.call, allow_legacy=args.allow_legacy_intake)
     except GenerationError as exc:
         print(json.dumps({'status': 'failed', 'error': exc.code}))
         return 2

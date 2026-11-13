@@ -4,6 +4,8 @@ import { test } from 'node:test';
 import vm from 'node:vm';
 import { parseHTML } from 'linkedom';
 
+const pageSource = readFileSync(new URL('../src/pages/teachers/generate.astro', import.meta.url), 'utf8');
+const markup = pageSource.match(/<main[\s\S]*?<\/main>/)![0];
 const shipped = readFileSync(new URL('../public/teachers/generation.js', import.meta.url), 'utf8');
 const topic = { topicId: 'ג10', gradeNumber: 3, title: 'חילוק', enabled: true, e2eVerified: true, levels: ['b'], questionCounts: [12] };
 const middle = { ...topic, topicId: 'g7:equations', gradeNumber: 7, title: 'משוואות', questionCounts: [20] };
@@ -11,20 +13,7 @@ const disabled = { ...topic, topicId: 'candidate', gradeNumber: 3, enabled: fals
 type Reply = { ok?: boolean; body?: any; error?: Error };
 
 function harness(options: { online?: boolean; jobs?: any[]; captcha?: boolean } = {}) {
-  const { document, window } = parseHTML(`<!doctype html><html><head></head><body>
-    <p id="generator-availability"></p><form id="generation-form">
-      <select name="gradeNumber" required><option value="">בחרו</option><option value="3">כיתה ג׳</option><option value="7">כיתה ז׳</option><option value="8">כיתה ח׳</option></select>
-      <select name="topicId" required disabled><option value="">בחרו</option></select>
-      <select name="level"><option value="b">רמה ב׳</option><option value="a">רמה א׳</option><option value="e">מצוינות</option></select>
-      <select name="lessonGoal"><option value="practice">תרגול</option><option value="review">חזרה</option></select>
-      <textarea name="lastLesson" required>חילוק בתחום לוח הכפל</textarea><textarea name="alreadyLearned">כפל; חילוק\nמספרים</textarea>
-      <input name="minutes" type="number" value="30" min="10" max="120" required>
-      <input name="questionCount" type="number" value="12" min="8" max="30" required>
-      <p id="volume-help"></p><button id="plan-button" type="submit" disabled>תכנון</button>
-    </form>
-    <section id="generation-plan" hidden><h2 id="plan-title"></h2><dl id="plan-details"></dl><button id="create-button">יצירה</button><button id="edit-plan">שינוי</button></section>
-    <p id="generation-status"></p><p id="history-empty"></p><div id="generation-jobs"></div>
-  </body></html>`);
+  const { document, window } = parseHTML(`<!doctype html><html><head></head><body>${markup}</body></html>`);
   const form = document.getElementById('generation-form') as any;
   const fields = new Map(Array.from(form.querySelectorAll('[name]')).map((el: any) => [el.getAttribute('name'), el]));
   Object.defineProperty(form, 'elements', { value: { namedItem: (name: string) => fields.get(name) } });
@@ -38,12 +27,21 @@ function harness(options: { online?: boolean; jobs?: any[]; captcha?: boolean } 
     });
     Object.defineProperty(select, 'selectedOptions', { get: () => select.options.filter((o: any) => o.value === select.value) });
   }
-  form.reportValidity = () => [...fields.values()].every((el: any) => {
-    if (el.disabled) return true;
-    if (el.hasAttribute('required') && !el.value) return false;
-    return el.type !== 'number' || (Number(el.value) >= Number(el.min || '-Infinity') && Number(el.value) <= Number(el.max || 'Infinity'));
-  });
-  for (const el of document.querySelectorAll('[id]') as any) el.focus = () => {};
+  for (const el of form.querySelectorAll('[name]') as any) {
+    if (el.type === 'checkbox') Object.defineProperty(el, 'checked', { get: () => el.hasAttribute('checked'), set: (value: boolean) => { if(value)el.setAttribute('checked','');else el.removeAttribute('checked'); } });
+    el.checkValidity = () => {
+      if (el.disabled || el.closest('fieldset')?.disabled) return true;
+      if (el.hasAttribute('required') && !el.value) return false;
+      if (el.hasAttribute('minlength') && el.value.length < Number(el.getAttribute('minlength'))) return false;
+      return el.type !== 'number' || (Number(el.value) >= Number(el.min || el.getAttribute('min') || '-Infinity') && Number(el.value) <= Number(el.max || el.getAttribute('max') || 'Infinity'));
+    };
+    el.reportValidity = el.checkValidity;
+  }
+  form.reportValidity = () => [...fields.values()].every((el: any) => el.checkValidity());
+  let focused = '';
+  for (const el of document.querySelectorAll('[id], [name]') as any) el.focus = () => { focused = el.id || el.name; };
+  (fields.get('lastLesson') as any).value = 'חילוק בתחום לוח הכפל';
+  (fields.get('alreadyLearned') as any).value = 'כפל; חילוק\nמספרים';
   Object.defineProperty(document, 'hidden', { value: false });
   let online = options.online ?? true, jobs = options.jobs || [], uuid = 0, timer = 0;
   const timers = new Map<number, { callback: () => unknown; delay: number }>();
@@ -75,10 +73,18 @@ function harness(options: { online?: boolean; jobs?: any[]; captcha?: boolean } 
   const element = (id: string) => document.getElementById(id) as any;
   const field = (name: string) => fields.get(name) as any;
   const dispatch = async (el: any, type: string) => { el.dispatchEvent(new window.Event(type, { bubbles: true, cancelable: true })); await flush(); };
-  return { document, window, form, field, element, calls, posts, pendingReplies, pendingReads, timers, flush,
+  return { document, window, form, field, element, calls, posts, pendingReplies, pendingReads, timers, flush, dispatch, focused: () => focused,
     setOnline(value: boolean) { online = value; }, setJobs(value: any[]) { jobs = value; },
     holdToken(value: Promise<string>) { tokenPromise = value; },
-    async choose(grade = '3', id = 'ג10') { field('gradeNumber').value = grade; await dispatch(field('gradeNumber'), 'change'); field('topicId').value = id; await dispatch(field('topicId'), 'change'); },
+    async choose(grade = '3', id = 'ג10') {
+      for (let i=0;i<3 && !element('wizard-back').hidden;i++) await dispatch(element('wizard-back'), 'click');
+      field('gradeNumber').value = grade; await dispatch(field('gradeNumber'), 'change'); await dispatch(form, 'submit');
+      if (!id) return;
+      field('topicId').value = id; await dispatch(field('topicId'), 'change'); await dispatch(form, 'submit');
+      field('level').value = 'b'; await dispatch(field('level'), 'change'); await dispatch(form, 'submit');
+      if (id === 'ג10') { form.querySelectorAll('[name=learnedDivisor]').forEach((input: any) => { input.checked = true; }); field('boundaryMaxDividend').value = '100'; }
+      else field('boundarySignedNumbers').value = 'yes';
+    },
     submit: () => dispatch(form, 'submit'), click: (id: string) => dispatch(element(id), 'click'),
     visible: () => dispatch(document, 'visibilitychange'),
     async poll() { const selected = [...timers].find(([, task]) => task.delay === 4000); assert.ok(selected, 'poll scheduled'); timers.delete(selected[0]); await selected[1].callback(); await flush(); },
@@ -211,4 +217,85 @@ test('captcha script failure permits a fresh load on retry without creating a jo
 test('unsupported grade cannot be planned through an implicit form submit', async () => {
   const app = harness(); await app.flush(); await app.choose('8', ''); await app.submit();
   assert.equal(app.form.hidden, false); assert.equal(app.element('generation-plan').hidden, true);
+});
+
+test('wizard presents one question at a time and focuses each new screen heading', async () => {
+  const app = harness(); await app.flush();
+  const screens = () => [...app.form.querySelectorAll('[data-generation-step]')] as any[];
+  const visible = () => screens().filter(screen => !screen.hidden);
+  assert.equal(visible().length, 1); assert.equal(visible()[0].getAttribute('aria-labelledby'), 'grade-title');
+  assert.equal(app.element('wizard-back').hidden, true);
+  await app.submit(); assert.equal(visible()[0].getAttribute('aria-labelledby'), 'grade-title', 'empty required grade cannot advance');
+  for (const [name, value, next] of [['gradeNumber', '3', 'topic-title'], ['topicId', 'ג10', 'level-title'], ['level', 'b', 'lesson-title']]) {
+    app.field(name).value = value; await app.dispatch(app.field(name), 'change'); await app.submit();
+    assert.equal(visible().length, 1); assert.equal(visible()[0].getAttribute('aria-labelledby'), next);
+    assert.equal(app.focused(), next);
+    assert.ok(screens().filter(screen => screen.hidden).every(screen => screen.disabled));
+  }
+  assert.match(app.element('wizard-progress').textContent, /שלב 4 מתוך 5/);
+  assert.equal(app.posts.length, 0); assert.equal(app.calls.some(c => c.url === '/api/noamBotConfig'), false);
+});
+
+test('back preserves input while changing grade clears dependent choices and uses only available capabilities', async () => {
+  const app = harness(); await app.flush(); await app.choose();
+  app.field('lastLesson').value = 'התקדמות שנשמרת במעבר אחורה'; app.field('minutes').value = '45';
+  await app.click('wizard-back'); assert.equal(app.field('level').value, 'b');
+  await app.click('wizard-back'); assert.equal(app.field('topicId').value, 'ג10');
+  await app.click('wizard-back'); assert.equal(app.field('gradeNumber').value, '3');
+  app.field('gradeNumber').value = '9'; await app.dispatch(app.field('gradeNumber'), 'change'); await app.submit();
+  assert.equal(app.field('topicId').value, ''); assert.equal(app.field('level').value, '');
+  assert.equal(app.element('topic-unavailable').hidden, false); assert.equal(app.element('plan-button').disabled, true);
+  assert.equal(app.document.querySelector('#topic-unavailable a')?.getAttribute('href'), '/teachers/app');
+  assert.equal(app.field('lastLesson').value, 'התקדמות שנשמרת במעבר אחורה'); assert.equal(app.field('minutes').value, '45');
+  await app.choose('7', 'g7:equations');
+  assert.equal(app.element('topic-unavailable').hidden, true); assert.equal(app.field('questionCount').value, '20');
+  assert.match(app.field('lastLesson').placeholder,/פעולות הפוכות/);
+  assert.doesNotMatch(app.field('lastLesson').placeholder,/חילוק/);
+  await app.click('wizard-back'); await app.click('wizard-back');
+  await app.dispatch(app.field('topicId'), 'change');
+  assert.equal(app.field('level').value, '', 'a new topic choice requires a new explicit level choice');
+  assert.equal(app.posts.length, 0);
+});
+
+test('optional invalid details open before focus and history stays compact until a current job is active', async () => {
+  const old = { id: 'old', status: 'needs_review', phase: 'needs_review', created_at: '2026-11-12T00:00:00Z', lesson: {}, result: { automatedChecksPassed: true } };
+  const app = harness({ jobs: [old] }); await app.flush(); await app.choose();
+  assert.equal(app.element('generation-history').hasAttribute('open'), false);
+  app.field('minutes').value = '9'; await app.submit();
+  assert.equal(app.element('lesson-options').open, true); assert.equal(app.form.hidden, false);
+  app.field('minutes').value = '30'; await app.submit();
+  app.setJobs([{ ...old, id: 'current', status: 'running', phase: 'authoring' }, old]); await app.click('create-button');
+  assert.equal(app.element('generation-history').open, true);
+  assert.equal(app.posts.length, 1);
+});
+
+test('version2 division boundary is explicit, closed and preserved in confirmation and enqueue', async () => {
+  const app=harness();await app.flush();await app.choose();
+  app.form.querySelectorAll('[name=learnedDivisor]').forEach((input: any)=>{input.checked=false;});
+  await app.submit();assert.equal(app.form.hidden,false);assert.match(app.element('generation-status').textContent,/מחלק אחד/);
+  app.form.querySelector('[name=learnedDivisor][value="2"]').checked=true;
+  app.form.querySelector('[name=learnedDivisor][value="5"]').checked=true;
+  app.field('boundaryMaxDividend').value='50';await app.submit();
+  assert.match(app.element('plan-details').textContent,/מחולק עד 50/);await app.click('create-button');
+  assert.equal(app.posts[0].lesson.version,2);
+  assert.deepEqual(app.posts[0].lesson.lessonBoundary,{version:1,kind:'division_facts',allowedDivisors:[2,5],maxDividend:50});
+  assert.equal('allowSignedNumbers' in app.posts[0].lesson.lessonBoundary,false);
+});
+
+test('signed-number boundary requires a choice and preserves explicit false without guessing from text', async () => {
+  const app=harness();await app.flush();await app.choose('7','g7:equations');
+  app.field('boundarySignedNumbers').value='';await app.submit();assert.equal(app.form.hidden,false);
+  app.field('boundarySignedNumbers').value='no';await app.submit();
+  assert.match(app.element('plan-details').textContent,/ללא מספרים שליליים/);await app.click('create-button');
+  assert.deepEqual(app.posts[0].lesson.lessonBoundary,{version:1,kind:'linear_equations',allowSignedNumbers:false});
+  assert.equal('allowedDivisors' in app.posts[0].lesson.lessonBoundary,false);
+});
+
+test('topic change invalidates learned boundary but plain Back preserves it', async () => {
+  const app=harness();await app.flush();await app.choose();app.field('boundaryMaxDividend').value='40';
+  await app.click('wizard-back');await app.submit();assert.equal(app.field('boundaryMaxDividend').value,'40');
+  await app.click('wizard-back');await app.click('wizard-back');await app.dispatch(app.field('topicId'),'change');
+  assert.equal(app.field('boundaryMaxDividend').value,'');
+  assert.equal(app.form.querySelectorAll('[name=learnedDivisor]:checked').length,0);
+  assert.equal(app.field('boundarySignedNumbers').value,'');
 });

@@ -1,6 +1,6 @@
 import { requireOwnerTeacher, teacherAccessFailure, TEACHER_PRIVATE_HEADERS, type TeacherAccessResult } from './teacherAccess';
 import { sameOriginTeacherMutation } from './teacherSession';
-import { createGenerationStore, generationSessionToken, GenerationStoreError, uuid } from './teacherGenerationStore';
+import { createGenerationStore, generationSessionToken, GenerationStoreError, uuid, workerAcceptsCurrentIntake } from './teacherGenerationStore';
 import { validateTeacherGenerationIntake, type TeacherGenerationCurriculum } from './teacherGenerationContract';
 
 const reply = (body: unknown, status = 200) => Response.json(body, { status, headers: TEACHER_PRIVATE_HEADERS });
@@ -31,7 +31,10 @@ export async function handleTeacherGeneration(request: Request, deps: Generation
     if (request.method === 'GET') {
       const id = query.get('id');
       if (id && !uuid(id)) return error('INVALID_JOB');
-      if (!id) return reply({ ok: true, ...await store.health(), jobs: await store.list() });
+      if (!id) {
+        const health = await store.health();
+        return reply({ ok: true, ...health, online: health.online && workerAcceptsCurrentIntake(health.capabilities), jobs: await store.list() });
+      }
       const job = await store.get(id);
       if (!job) return error('JOB_NOT_FOUND', 404);
       const kind = query.get('file');
@@ -64,7 +67,7 @@ export async function handleTeacherGeneration(request: Request, deps: Generation
     const existing = await store.findRequest(input.requestKey);
     if (existing) return existing.request_hash === requestHash ? reply({ ok: true, job: existing, reused: true }) : error('REQUEST_CONFLICT', 409);
     const health = await store.health();
-    if (!health.online) return error('GENERATOR_OFFLINE', 503);
+    if (!health.online || !workerAcceptsCurrentIntake(health.capabilities)) return error('GENERATOR_OFFLINE', 503);
     const capability = health.capabilities?.topics?.find((t: any) => t.topicId === checked.value.topicId && t.gradeNumber === checked.value.gradeNumber);
     if (!capability || capability.enabled !== true || capability.e2eVerified !== true ||
       !Array.isArray(capability.levels) || !capability.levels.includes(checked.value.level) ||

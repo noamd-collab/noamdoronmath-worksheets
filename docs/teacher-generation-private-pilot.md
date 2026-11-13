@@ -1,13 +1,23 @@
 # Private worksheet-generation pilot
 
-Status recorded on 12 November 2026: implementation and local checks exist; the
-new database migration has **not** been applied to the live project. No complete
-model-authored output has yet passed the complete pipeline. Verified TLS now
-works; the first Qwen 3.8 Flash response failed structural validation and was
-not delivered. Its measured usage was 695 input and 1,733 output tokens, with
-164.21 seconds for the author request. The two fixed renderer examples have passed their automated gates;
-that is separate evidence. Actual Word visual review remains pending. Do not
-describe this as a published or fully validated AI service.
+Status recorded on 13 November 2026: source `680ae1f7` was published through the
+guarded release workflow after PRs 457 and 458. The isolated database migration,
+private bucket and worker are configured. Two owner-created drafts passed the
+automated pipeline; two other attempts failed validation and delivered no files.
+Noam reported that a manual PDF download succeeded. Earlier automated attempts
+in the owner's Brave profile were blocked; their cause remains undiagnosed.
+
+Microsoft Copilot Cowork independently reviewed the code and both draft pairs
+and returned **REJECT**, despite confirming all 96 arithmetic answers. Confirmed
+issues include repetitive parameters, uniformly `correct + 1` distractors and
+the absence of enforcement of the free-text learning boundary. Copilot also
+reported overlap in the middle-school DOCX in Word for the web; Codex reproduced
+it independently in another browser. The corrected pilot DOCX was then checked
+in actual Word for the web: the affected equations are readable and all parts of
+answer 11 stay together on one page. LibreOffice rendering remains separate
+evidence and cannot establish Word-web correctness.
+The wizard and boundary/quality corrections in this checkout are under review;
+they have not yet received external approval. This remains a private pilot.
 
 ## Access and scope
 
@@ -30,8 +40,34 @@ Both `enabled` and `e2eVerified` must be boolean `true`; the requested level and
 question count must be explicitly listed. Disabled adapter candidates and the
 planning catalog do not grant a generation capability. Introduction, assessment,
 short sheets, advanced/excellence levels and other topics currently fail closed.
-Free-text teaching progress is context, not a verified calendar or evidence that
-new concepts have been taught. The catalog makes no verified official-month claim.
+New requests use intake version 2 and an explicit `lessonBoundary`. The division
+pilot records the divisors already taught and the maximum dividend; the equation
+pilot records whether signed numbers have been taught. The server checks these
+choices before enqueueing. The worker checks model parameters, canonical items
+and trusted derived values before producing a document. A boundary too narrow
+for the pilot's fixed number of distinct tasks is rejected before authoring.
+Completed version-1 drafts remain readable; a new request cannot omit the new
+boundary by submitting version 1. Explicit legacy reproduction is offline only.
+
+Free-text teaching progress is authoring context, not a semantically enforced
+rule, a verified calendar or evidence of prerequisite mastery. The requested
+minutes do not automatically change the fixed pilot question counts. The UI must
+state these limits. The catalog makes no verified official-month claim.
+
+The intake is presented one step at a time: grade, topic, level, lesson boundary
+and details, then review. Previous drafts are under a collapsed “הדפים שלי”.
+The first steps do not request a model call; only the final explicit creation
+action verifies CAPTCHA and submits a new job.
+
+For the enabled grade-7 equation pilot only, a strict postprocessor creates a
+separate Word-compatible DOCX. It converts the pinned emitter's simple linear
+equation objects to editable, left-to-right mathematical text and keeps answer
+parts together. It rejects complex math or unrecognized formatting instead of
+silently simplifying them. The original skill output and its report are retained;
+the PDF is unchanged. The final DOCX is checked again with the existing RTL gates,
+and source/final hashes are recorded. This is not a general conversion for other
+topics, fractions or structured mathematical objects. New drafts still require
+teacher review.
 
 ## Components and pins
 
@@ -58,11 +94,16 @@ new concepts have been taught. The catalog makes no verified official-month clai
 
 The web API authorizes the owner, checks origin, validates input and advertised
 capability, verifies CAPTCHA and then enqueues. It does not call a model. A
-manually started Python process makes outbound requests to claim work; it has no
-inbound listener and installs no daemon. One claim gets one authoring attempt.
+separately managed Python process makes outbound requests to claim work; it has
+no inbound listener and the application does not install a daemon. The current
+operator-configured macOS LaunchAgent requires an awake, logged-in Mac. One
+claim gets one authoring attempt.
 Leases last 20 minutes and are renewed while work proceeds. Expired running work
 is marked failed on a later claim; it is not automatically retried against a paid
-provider. A stale heartbeat is treated as offline after 90 seconds.
+provider. A stale heartbeat is treated as offline after 90 seconds. The version-2
+web API also requires the heartbeat to advertise `acceptedIntakeVersions: [2]`;
+a fresh version-1 worker is intentionally shown as offline for new generation.
+Existing completed drafts and their downloads do not depend on worker readiness.
 
 ## Setup, without applying production changes
 
@@ -100,9 +141,24 @@ key, and must never be sent to the browser. The existing
 enqueue secret absent, POST generation is unavailable; existing teacher access
 does not depend on this secret.
 
-## Controlled rollout
+## Version-2 update of the existing pilot
 
-1. Finish the TLS repair and verify one genuine authored result through every
+The database, bucket and server secrets already exist. This update requires no
+new migration or broader access. Preserve the currently published worker checkout
+while reviewing the replacement. Before switching workers, confirm there are no
+queued or running jobs; do not interrupt an owner request or reset quota/history.
+Stop the old worker, publish the reviewed site through the guarded source/pin PR
+flow, then start the replacement from the exact frozen checkout. Check the queue
+again before startup, runtime/skill pins, the version-2 heartbeat, and owner access.
+The new site refuses to enqueue against the old worker during this transition.
+
+Offline fixtures verify both equation boundaries and the division path without
+spending a provider request. They are not evidence of a fresh live-model trial.
+Preserve the owner's remaining trial instead of silently retrying failed work.
+
+## Initial setup reference
+
+1. Verify provider TLS and one genuine authored result through every
    required gate, with its lesson, pin versions and output hashes recorded
    privately. Inspect the complete PDF and actual Word rendering, including RTL,
    answer order and Hebrew. Keep `needs_review` distinct from publication approval.

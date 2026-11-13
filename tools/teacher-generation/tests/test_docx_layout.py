@@ -9,7 +9,7 @@ from lxml import etree as ET
 
 HERE = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(HERE))
-from docx_layout import CHECK_INSTRUCTION, INVERSE_INSTRUCTION, NS, W, WORK_MARKER, repair_elementary_docx
+from docx_layout import CHECK_INSTRUCTION, INVERSE_INSTRUCTION, INVERSE_INSTRUCTION_V2, NS, W, WORK_MARKER, repair_elementary_docx
 
 
 class WordLayoutTests(unittest.TestCase):
@@ -46,15 +46,21 @@ class WordLayoutTests(unittest.TestCase):
         with ZipFile(self.path, 'w') as archive:
             for name, data in members.items(): archive.writestr(name, data)
 
-    def use_live_grade3_instruction_plan(self):
+    def use_live_grade3_instruction_plan(self, legacy=False):
         root = self.read_xml()
         headings = root.find(W + 'body').findall(W + 'p')[::4]
         for number, (question, heading) in enumerate(zip(self.content['questions'], headings), 1):
             base = CHECK_INSTRUCTION if number in (3, 7, 11) else 'פתרו:' if number in (1, 5, 9) else 'השלימו את המספר החסר:'
             question['star'] = number >= 10
-            question['intro'] = base + (INVERSE_INSTRUCTION if question['star'] else '')
+            question['intro'] = (base + INVERSE_INSTRUCTION if legacy else base.rstrip(':') + INVERSE_INSTRUCTION_V2) if question['star'] else base
             heading.find('.//w:t', NS).text = f'{number}. ' + ('★  ' if question['star'] else '') + question['intro']
         self.write_xml(root)
+
+    def test_legacy_challenge_wording_preserves_all_eighteen_writing_lines(self):
+        self.use_live_grade3_instruction_plan(legacy=True)
+        result = repair_elementary_docx(self.path, self.content)
+        self.assertEqual(result['answerLines'], 18)
+        self.assertEqual(result['answerLinesAdded'], 18)
 
     def test_split_ninth_question_and_detached_result_are_prevented(self):
         original_text = ''.join(self.read_xml().itertext())

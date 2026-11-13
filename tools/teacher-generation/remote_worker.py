@@ -73,7 +73,7 @@ def check_transport(remote):
 
 def heartbeat(remote):
     remote.call('/rest/v1/noam_teacher_generation_workers?on_conflict=id','POST',
-                {'id':'primary','updated_at':utc().isoformat(),'capabilities':capabilities()},prefer='resolution=merge-duplicates')
+                {'id':'primary','updated_at':utc().isoformat(),'capabilities':{**capabilities(), 'acceptedIntakeVersions':[2]}},prefer='resolution=merge-duplicates')
 
 def update_job(remote, job, values):
     for key in ('id','lease_token'):
@@ -96,6 +96,14 @@ def safe_validation_detail(value):
         'Question kind/star must exactly match the trusted question plan',
         'Model output too large', 'Unsupported model schema',
         'Question count must match the requested count',
+        'Choose a new first question instead of the reserved demonstration',
+        'Choose varied parameters instead of a long predictable numeric pattern',
+        'Choose parameters permitting varied verified mistake families',
+        'Expected exactly 3 author parameter items per positive-only question',
+        'Create a new draft with explicit teaching limits',
+        'Division fact exceeds the selected teaching limits',
+        'Signed equation outside the selected teaching limits',
+        'Negative derived value outside the selected teaching limits',
     }
     patterns = (
         r'author root: expected fields version,questions',
@@ -161,7 +169,7 @@ def process_job(remote, job, root):
     try: expires=datetime.fromisoformat(job.get('lease_until','').replace('Z','+00:00'))
     except (ValueError,TypeError,AttributeError): raise RuntimeError('JOB_LEASE_LOST') from None
     if expires.tzinfo is None or expires<=utc(): raise RuntimeError('JOB_LEASE_LOST')
-    lesson=job.get('lesson');validate_lesson(lesson)
+    lesson=job.get('lesson');validate_lesson(lesson, allow_legacy=False)
     raw_target=root/job['id']
     if raw_target.is_symlink(): raise RuntimeError('JOB_PATH_DENIED')
     target=raw_target.resolve()
