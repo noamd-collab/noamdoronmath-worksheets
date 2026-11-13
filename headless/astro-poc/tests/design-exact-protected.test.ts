@@ -136,6 +136,27 @@ describe('exact-design protected live-baseline boundaries', () => {
           delete topic.editions;
           delete topic.defaultEditionId;
         }
+        // Noam's 13 November PDF-first publication adds four focused sets.
+        // Bind every byte of each reviewed addition, strip only those overlays,
+        // and keep the original complete legacy catalog hash below unchanged.
+        const middleAdditions = [
+          [7, 17, 'ms-20261113-trn-r1', '3e3929a160636aabc2e27f8dedff16dbff4eda435b6c4155f50cb61134c5381c'],
+          [8, 14, 'ms-20261113-cyl-r1', '3f476e3666dbb952773355bbb8b98d1a03d2ad3733cac819c0b210d0a792edbb'],
+          [8, 15, 'ms-20261113-con-r1', 'e3e8dfde45ca70dbf15c20a264cf34cb329d9700f9e361917da796e454a9cc3d'],
+          [9, 7, 'ms-20261113-par-r1', '41cfe3e7b3ef5295bf38e7cd14e488fd5f5ea5f549363355f474dc8f43eae797'],
+        ] as const;
+        for (const [gradeId, topicId, editionId, additionSha256] of middleAdditions) {
+          const topic = catalog.grades.find((g: any) => g.grade === gradeId).topics.find((t: any) => t.id === topicId);
+          assert.equal(topic.defaultEditionId, 'legacy');
+          assert.equal(topic.editions.length, 1);
+          assert.equal(topic.editions[0].editionId, editionId);
+          assert.equal(topic.editions[0].publicationMode, 'pdf-only');
+          assert.equal(topic.editions[0].routing.usesViewer, false);
+          assert.equal(topic.editions[0].routing.aiHintShown, false);
+          assert.equal(sha256(JSON.stringify(topic.editions)), additionSha256);
+          delete topic.editions;
+          delete topic.defaultEditionId;
+        }
         content = JSON.stringify(catalog, null, 2) + '\n';
       }
       if (file === 'public/noam-learning.js') {

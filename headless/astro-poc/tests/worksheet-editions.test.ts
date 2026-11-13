@@ -4,6 +4,7 @@ import { mkdirSync, readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { runInNewContext } from 'node:vm';
 import { build } from 'esbuild';
+import { parseHTML } from 'linkedom';
 import puppeteer from 'puppeteer-core';
 import { resolveTestBrowser } from './helpers/chromium';
 import type { CatalogTopic, CatalogV1 } from '../src/lib/catalog/types';
@@ -234,6 +235,30 @@ test('catalog UI renders new and previous links, and no technical metadata or un
   const grade2 = render(merged, 2);
   assert.ok(!grade2.includes('worksheet-editions'));
   for (const level of registry().editions[1].levels) assert.ok(!grade2.includes(level.pdfId));
+});
+
+test('catalog AI badge names only the selected edition and PDF-only additions state their print action', async () => {
+  const render = await renderer();
+  const card = (catalog: CatalogV1) => parseHTML(render(catalog, 7)).document.querySelector('[data-topic-id="17"]')!;
+  const current = card(committed);
+  assert.equal(current.querySelector('.aihint')?.textContent, '✦ רמזי AI בדפים קודמים');
+  const addition = current.querySelector('.worksheet-editions details')!;
+  assert.equal(addition.querySelector('.note')?.textContent, 'קובצי PDF להדפסה');
+  assert.equal(addition.querySelector('.aihint'), null);
+  assert.equal(addition.querySelectorAll('a.lvl--pdf').length, 3);
+  assert.equal(card(base).querySelector('.aihint')?.textContent, '✦ רמזי AI זמין בדף הזה');
+
+  const pdfDefault = structuredClone(committed);
+  const pdfTopic = topic(pdfDefault, 7, 17);
+  pdfTopic.defaultEditionId = pdfTopic.editions!.find(e => e.publicationMode === 'pdf-only')!.editionId;
+  assert.equal(card(pdfDefault).querySelector('.aihint'), null, 'legacy AI must not label a selected PDF-only set');
+  assert.equal(card(pdfDefault).querySelector('.worksheet-editions > .note')?.textContent, 'קובצי PDF להדפסה');
+
+  const other = mergeWorksheetEditions(base, middleEditionFixture());
+  const otherTopic = topic(other, 7, 17), selected = otherTopic.editions![0];
+  otherTopic.defaultEditionId = selected.editionId;
+  selected.routing.aiHintShown = true; // Synthetic future edition to check badge scoping, not a publication.
+  assert.equal(card(other).querySelector('.aihint')?.textContent, `✦ רמזי AI · ${selected.label}`);
 });
 
 test('desktop and phone let pupils expand previous worksheets without overflow or mixing links', async () => {

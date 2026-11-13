@@ -50,8 +50,8 @@ All editions currently open their own PDF directly (`usesViewer: false`,
 teacher-bank import or hints. PDF-only publication needs the reviewed PDFs,
 real uploaded media IDs and the provenance above; measured manifests, answer/Word
 bindings, hints and server integration are later work. No placeholder media IDs
-or hint hashes belong in the production registry. Noam supplies the three hints
-for each subitem.
+or hint hashes belong in the production registry. Under Noam’s current assignment, Gemini Flash in Antigravity authors the three
+hints for each subitem; Codex reviews them and implements the Supabase/Ramzi binding.
 
 Only `published` rows reach the public catalog. `draft` and `reviewed` rows are
 still validated but never rendered. At most one published row per topic may set

@@ -3,7 +3,7 @@
 - Add three levels each for grade 7 congruent shapes, transformations and symmetry; grade 8 cylinders; grade 8 cones; and grade 9 parallelograms. Show the additional editions in the worksheet catalog and all four matching landing pages.
 - All 12 media files were uploaded to Wix and downloaded through the site's PDF URLs; their SHA-256 digests match the reviewed, frozen 7.3.2 source release. See [publication evidence](middle-school-pdf-first-20261113.json).
 - Direct PDF publication does not require future measured manifests, Word integration or hint bundles. It records the actual PDF, source and native-export digests. Previous editions remain the default; the additions do not activate Noam AI, worksheet-viewer routing, the teacher picker or a database import.
-- This entry is a publication candidate in PR #456. Website buttons are not live until the approved merge and release. Noam supplies the three prepared hints per subpart; the subsequent integration is assigned to Gemini Flash in Antigravity.
+- This entry is a publication candidate in PR #456. Website buttons are not live until the approved merge and release. Gemini Flash in Antigravity will author three prepared hints per subpart; Codex will review, bind and integrate them into Supabase and Ramzi.
 
 ## 2026-11-13 — Grade 8 T67 prepared-hint coverage repair
 

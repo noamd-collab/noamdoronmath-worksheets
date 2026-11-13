@@ -64,7 +64,8 @@ test('all emitted scopes round-trip and select exactly the actual teacher-tool P
 });
 
 test('published canonical defaults resolve exclusively to their own sources, including the preview topic', () => {
-  for (const edition of registry.editions.filter((row: any) => row.status === 'published' && row.isDefault)) {
+  for (const edition of registry.editions.filter((row: any) =>
+    row.status === 'published' && row.isDefault && row.publicationMode !== 'pdf-only')) {
     const scope = getTeacherLandingScope({ grade: edition.grade, topic: edition.topicId });
     assert.ok(scope);
     assert.equal(scope.edition, edition.editionId);

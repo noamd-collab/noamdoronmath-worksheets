@@ -9,6 +9,8 @@ import { buildWorksheetHref } from '../src/lib/worksheetLinks';
 import { buildIndex } from '../src/lib/siteSearch/buildIndex';
 import { prepareIndex, search } from '../src/lib/siteSearch/engine';
 import { mergeWorksheetEditions } from '../../../scripts/lib/worksheet-editions.cjs';
+import { buildTeacherCatalog } from '../scripts/build-teacher-catalog.mjs';
+import { buildTeacherLandingCatalog, getTeacherLandingScope } from '../src/lib/teacherLandingCatalog';
 import { editionFixture, middleEditionFixture } from './fixtures/worksheet-editions';
 
 const sha = (text: string) => createHash('sha256').update(text).digest('hex');
@@ -92,6 +94,35 @@ test('PDF-only search links select the explicit default PDF and do not turn on l
   const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
   const raw = loadIndexCatalog();
   assert.deepEqual(buildLearningCatalog(raw, rows), buildLearningCatalog(raw, { version: 1, editions: [] }));
+});
+
+test('PDF-only downloads never enter teacher exercise sources or landing scopes, even as the site default', () => {
+  const existing = editionFixture();
+  const prior = mergeWorksheetEditions(base, existing);
+  const expectedTeacher = buildTeacherCatalog(prior);
+  const expectedLanding = buildTeacherLandingCatalog(prior);
+  for (const isDefault of [false, true]) {
+    const pdf = pdfOnlyFixture(); pdf.editions.forEach(row => { row.isDefault = isDefault; });
+    const registry = { version: 1, editions: [...existing.editions, ...pdf.editions] };
+    const merged = mergeWorksheetEditions(base, registry);
+    const before = JSON.stringify(merged);
+    assert.deepEqual(buildTeacherCatalog(base, registry), expectedTeacher);
+    assert.deepEqual(buildTeacherCatalog(merged), expectedTeacher);
+    const landing = buildTeacherLandingCatalog(merged);
+    assert.deepEqual(landing, expectedLanding);
+    for (const row of pdf.editions) {
+      assert.equal(getTeacherLandingScope({ grade: row.grade, topic: row.topicId, edition: row.editionId }, landing), null);
+      const scope = getTeacherLandingScope({ grade: row.grade, topic: row.topicId }, landing)!;
+      assert.deepEqual(scope.pdfIds, [topic(base, row.grade, row.topicId).levels[0].pdfId]);
+      const selected = resolveEdition(topic(merged, row.grade, row.topicId), row.editionId);
+      for (const level of selected.levels) assert.equal(
+        buildWorksheetHref({ catalog: merged, grade: row.grade, topic: topic(merged, row.grade, row.topicId),
+          levelKey: level.key, editionId: row.editionId }), base.config.pdfBase + level.pdfId + '.pdf');
+    }
+    assert.equal(JSON.stringify(merged), before, 'teacher projections must not alter student editions');
+    topic(merged, pdf.editions[0].grade, pdf.editions[0].topicId).defaultEditionId = 'unavailable';
+    assert.throws(() => buildTeacherLandingCatalog(merged), /Unavailable teacher default edition/);
+  }
 });
 
 test('PDF-only mode rejects absent or invalid provenance, including unpublished rows', () => {
