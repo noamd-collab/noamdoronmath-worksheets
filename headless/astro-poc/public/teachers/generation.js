@@ -5,9 +5,10 @@
  if (!form) return;
  const api = '/api/teacherGeneration';
  const labels = {queued:'ממתין ליצירה',authoring:'מכינים את השאלות',checking:'בודקים את התוכן והתשובות',rendering:'מפיקים PDF ו־Word',needs_review:'טיוטה מוכנה לעיון שלך',failed:'היצירה נעצרה בבדיקה'};
- const errors = {TEACHER_SIGN_IN_REQUIRED:'החיבור פג. יש להתחבר שוב עם Google.',TEACHER_ACCESS_DENIED:'יצירת הדפים החדשה עדיין זמינה רק לנועם.',GENERATOR_OFFLINE:'מנוע היצירה אינו מחובר כרגע. לא נוצרה בקשה חדשה.',GENERATION_UNAVAILABLE:'היצירה אינה זמינה כרגע. אפשר לנסות שוב; אותה בקשה לא תיווצר פעמיים.',GENERATION_LIMIT:'כבר יש יצירה פעילה, או שהגעת למכסת חמש היצירות ליום בשלב הזה.',BOT_VERIFICATION_FAILED:'אימות הדפדפן לא הושלם. נסה שוב; אם הבעיה נמשכת, יש לאפשר את רכיב Google בדפדפן.',TOPIC_NOT_SUPPORTED_YET:'הנושא או סוג הדף עדיין אינם זמינים ליצירה.',REQUEST_CONFLICT:'הבקשה השתנתה. חזור לפרטים ואשר אותם מחדש.',LESSON_INVALID:'יש לתקן את פרטי השיעור לפני היצירה.'};
+ const errors = {TEACHER_SIGN_IN_REQUIRED:'החיבור פג. יש להתחבר שוב עם Google.',TEACHER_ACCESS_DENIED:'יצירת הדפים החדשה עדיין זמינה רק לנועם.',GENERATOR_OFFLINE:'מנוע היצירה אינו מחובר כרגע. לא נוצרה בקשה חדשה.',GENERATOR_WAKING:'ממתינים למנוע היצירה. לא נוצרה בקשה חדשה; כשהמנוע יהיה מוכן אפשר יהיה ללחוץ שוב על יצירה.',GENERATION_UNAVAILABLE:'היצירה אינה זמינה כרגע. אפשר לנסות שוב; אותה בקשה לא תיווצר פעמיים.',GENERATION_LIMIT:'כבר יש יצירה פעילה, או שהגעת למכסת חמש היצירות ליום בשלב הזה.',BOT_VERIFICATION_FAILED:'אימות הדפדפן לא הושלם. נסה שוב; אם הבעיה נמשכת, יש לאפשר את רכיב Google בדפדפן.',TOPIC_NOT_SUPPORTED_YET:'הנושא או סוג הדף עדיין אינם זמינים ליצירה.',REQUEST_CONFLICT:'הבקשה השתנתה. חזור לפרטים ואשר אותם מחדש.',LESSON_INVALID:'יש לתקן את פרטי השיעור לפני היצירה.'};
  let capabilities = [], online = false, planned = null, requestKey = null, polling = null, clock = null, startedAt = null, busy = false, submitting = false;
- let submittedJobId = null, terminal = false, pollFailures = 0, refreshing = null, initialized = false;
+ let submittedJobId = null, terminal = false, pollFailures = 0, refreshing = null, initialized = false, dispatchPending = false;
+ let wakingUntil = null, wakingChecks = 0;
  const field = name => form.elements.namedItem(name);
  const steps=Array.from(form.querySelectorAll('[data-generation-step]')), stepNames=['כיתה','נושא','רמה','השיעור'];
  let step=0;
@@ -17,7 +18,7 @@
  async function read(url, init) {
   const response=await fetch(url,{credentials:'same-origin',cache:'no-store',signal:AbortSignal.timeout(15000),...init});
   const body=await response.json();
-  if(!response.ok || !body.ok) { const err=new Error(errors[body.code || body.error] || 'לא הצלחנו להשלים את הבקשה.'); err.issues=body.issues;err.status=response.status; throw err; }
+  if(!response.ok || !body.ok) { const err=new Error(errors[body.code || body.error] || 'לא הצלחנו להשלים את הבקשה.'); err.issues=body.issues;err.status=response.status;err.code=body.code || body.error; throw err; }
   return body;
  }
  function status(text) { $('generation-status').textContent=text; }
@@ -31,7 +32,7 @@
   if(focus)steps[step].querySelector('h2').focus();
  }
  function showStep(index) {step=index;updateWizard(true);}
- function clearPlan() {planned=null;requestKey=null;submittedJobId=null;terminal=false;}
+ function clearPlan() {planned=null;requestKey=null;submittedJobId=null;terminal=false;dispatchPending=false;}
  function resetBoundary() {
   form.querySelectorAll('[name=learnedDivisor]').forEach(input=>{input.checked=false;});
   field('boundaryMaxDividend').value='';field('boundarySignedNumbers').value='';
@@ -53,18 +54,18 @@
   return true;
  }
  function stopClock() { clearInterval(clock); clock=null; startedAt=null; }
- function tick(phase) { if(!startedAt) startedAt=Date.now(); clearInterval(clock); const show=()=>status((labels[phase]||labels.queued)+'… '+Math.floor((Date.now()-startedAt)/1000)+' שניות'); show(); clock=setInterval(show,1000); }
+ function tick(phase) { if(!startedAt) startedAt=Date.now(); clearInterval(clock); const show=()=>status((dispatchPending && phase==='queued'?'הבקשה נשמרה בתור, אך העבודה עדיין לא התחילה. רענון המצב ינסה להעיר את המנוע בלי ליצור בקשה נוספת.':(labels[phase]||labels.queued))+'… '+Math.floor((Date.now()-startedAt)/1000)+' שניות'); show(); clock=setInterval(show,1000); }
  function scheduleRefresh(delay) {clearTimeout(polling);polling=setTimeout(()=>requestRefresh(),delay);}
  function refreshFailed(error) {
   stopClock();clearTimeout(polling);polling=null;pollFailures++;
-  const retry=pollFailures<=3 && error.status!==401 && error.status!==403;
+  const retry=pollFailures<=3 && error.status!==401 && error.status!==403 && (wakingUntil===null || Date.now()<wakingUntil);
   status(error.message+(retry?' ננסה לבדוק שוב את המצב.':' אפשר לבדוק שוב באמצעות „רענון מצב היצירה”.'));
   if(!initialized){$('generator-availability').textContent='לא הצלחנו לבדוק את זמינות היצירה כרגע.';$('generator-availability').classList.add('notice');}
   if(retry)scheduleRefresh(2000*2**(pollFailures-1));
   return null;
  }
  function requestRefresh(resetRetries=false) {
-  if(resetRetries)pollFailures=0;
+  if(resetRetries){pollFailures=0;wakingUntil=null;wakingChecks=0;}
   if(refreshing)return refreshing;
   clearTimeout(polling);polling=null;refreshButton.disabled=true;
   refreshing=refresh().catch(refreshFailed).finally(()=>{refreshing=null;refreshButton.disabled=false;});
@@ -103,19 +104,28 @@
  }
  async function refresh() {
   const data=await read(api);online=data.online===true;pollFailures=0;
+  if(online){wakingUntil=null;wakingChecks=0;}
+  if(!online && data.waking===true && wakingUntil===null)wakingUntil=Date.now()+90000;
+  const waking=!online && data.waking===true && Date.now()<wakingUntil && wakingChecks<18;
+  const hadCapabilities=capabilities.length>0;
   capabilities=Array.isArray(data.capabilities?.topics)?data.capabilities.topics.filter(t=>t.enabled===true && t.e2eVerified===true):[];
-  $('generator-availability').textContent=online?'היצירה זמינה בנושאים המופיעים לבחירה.':'מנוע היצירה אינו מחובר כרגע. הדפים שכבר נוצרו נשארים זמינים.';
+  $('generator-availability').textContent=online?'היצירה זמינה בנושאים המופיעים לבחירה.':waking
+   ? 'מתחברים למנוע היצירה. אחרי זמן ללא שימוש ההתעוררות עשויה להימשך כדקה. לא נוצרת בקשה חדשה.'
+   : data.waking===true ? 'המנוע עדיין אינו מוכן. אפשר לנסות שוב באמצעות „רענון מצב היצירה”. הדפים שכבר נוצרו נשארים זמינים.'
+   : 'מנוע היצירה אינו מחובר כרגע. הדפים שכבר נוצרו נשארים זמינים.';
   $('generator-availability').classList.toggle('notice',!online);
   renderJobs(Array.isArray(data.jobs)?data.jobs:[]);
   const current=data.jobs?.find(j=>(submittedJobId && j.id===submittedJobId) || (requestKey && j.request_key===requestKey));
+  if(current && current.status!=='queued')dispatchPending=false;
   if(current && ['needs_review','failed'].includes(current.status))terminal=true;
   const active=data.jobs?.find(j=>['queued','running'].includes(j.status));
   if(active || (current && terminal) || (busy && !submitting))$('generation-history').open=true;
   const awaitingCurrent=submittedJobId && !current && !terminal;
   if(active || awaitingCurrent) {busy=true;tick(active?.phase || 'queued');$('create-button').disabled=true;$('edit-plan').disabled=true;scheduleRefresh(4000);}
   else if(!submitting) { const wasBusy=busy;busy=false;stopClock();$('create-button').disabled=!online || terminal;$('edit-plan').disabled=false;$('plan-button').disabled=!online || field('topicId').disabled;if(wasBusy) status('היצירה הסתיימה. התוצאה מופיעה ברשימת הדפים שלך.'); }
+  if(waking && !active && !awaitingCurrent){wakingChecks++;scheduleRefresh(Math.min(5000,Math.max(1,wakingUntil-Date.now())));}
   $('create-button').hidden=terminal;$('edit-plan').hidden=terminal;newDraftButton.hidden=!terminal;newDraftButton.disabled=busy || !online;
-  if(!initialized) {initialized=true;updateTopics();}
+  if(!initialized || (!hadCapabilities && capabilities.length)) {initialized=true;updateTopics();}
   updateWizard();
   return data;
  }
@@ -185,12 +195,14 @@
   try {
    const verification=await botToken();
    const created=await read(api,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({requestKey,lesson:planned,botToken:verification})});
-   submittedJobId=created.job?.id || submittedJobId;
+   submittedJobId=created.job?.id || submittedJobId;dispatchPending=created.dispatchPending===true;
    submitting=false;
    await requestRefresh();
-  } catch(e) {submitting=false;busy=false;stopClock();status(e.message+(e.issues?.length?' '+e.issues.map(i=>i.message).join(' '):''));$('create-button').disabled=!online;}
+  } catch(e) {submitting=false;busy=false;stopClock();status(e.message+(e.issues?.length?' '+e.issues.map(i=>i.message).join(' '):''));
+   if(e.code==='GENERATOR_WAKING'){online=false;await requestRefresh(true);}
+   $('create-button').disabled=!online;}
   finally {$('edit-plan').disabled=busy;updateWizard();}
  });
- document.addEventListener('visibilitychange',()=>{if(!document.hidden)requestRefresh(true);});
+ document.addEventListener('visibilitychange',()=>{if(!document.hidden)requestRefresh();});
  updateWizard();requestRefresh();
 })();

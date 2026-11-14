@@ -8,6 +8,7 @@ import { loadGenerationCurriculum } from '../src/lib/teacherGenerationCurriculum
 import { parseTeacherGenerationCurriculum } from '../src/lib/teacherGenerationContract';
 import { authorizeTeacherRequest, TEACHER_SESSION_COOKIE, TEACHER_PRIVATE_HEADERS } from '../src/lib/teacherAccess';
 import { TEACHER_ACCESS_CONFIG } from '../src/lib/teacherAccessConfig';
+import { createTeacherWorkerWake } from '../src/lib/teacherWorkerWake';
 
 // All Auth, CAPTCHA and transport substitutes below are in-process fixtures.
 // This suite never contacts a live Auth, CAPTCHA, storage or model endpoint.
@@ -50,6 +51,130 @@ async function code(response: Response, status: number, expected: string) {
   assert.equal(body.code ?? body.error, expected);
   assert.match(response.headers.get('cache-control')!, /no-store/);
 }
+
+test('anonymous and non-owner requests never wake cloud compute, including health GET', async () => {
+  for (const status of [401, 403] as const) for (const request of [post(), new Request(origin + '/api/teacherGeneration')]) {
+    const f = fixture();
+    f.deps.authorize = async () => { f.calls.push('auth'); return { ok: false, status, code: status === 401 ? 'TEACHER_SIGN_IN_REQUIRED' : 'TEACHER_ACCESS_DENIED' }; };
+    f.deps.wake = async () => { f.calls.push('wake'); return 'accepted'; };
+    assert.equal((await handleTeacherGeneration(request, f.deps)).status, status);
+    assert.deepEqual(f.calls, ['auth']);
+  }
+});
+
+test('owner health may request a wake but only a fresh compatible heartbeat makes it online', async () => {
+  const f = fixture();
+  f.deps.wake = async () => { f.calls.push('wake'); return 'accepted'; };
+  const health = await f.store.health(); f.calls.length = 0;
+  for (const [online, versions, expected] of [[false, [2], false], [true, [1], false], [true, [2], true]] as const) {
+    f.store.health = async () => { f.calls.push('health'); return { ...health, online, capabilities: { ...health.capabilities, acceptedIntakeVersions: [...versions] } }; };
+    const response = await handleTeacherGeneration(new Request(origin + '/api/teacherGeneration'), f.deps);
+    const body = await response.json();
+    assert.equal(body.online, expected); assert.equal(body.waking, !expected);
+    assert.deepEqual(f.calls, ['auth','wake','health','list']); f.calls.length = 0;
+  }
+});
+
+test('malformed configured cloud fails closed despite a live local heartbeat, while history stays readable', async () => {
+  const f = fixture(); let networkCalls = 0;
+  f.deps.wake = createTeacherWorkerWake({ url: 'http://localhost', secret: '1'.repeat(64) }, async () => { networkCalls++; throw Error('must not fetch'); });
+  const body = await (await handleTeacherGeneration(new Request(origin + '/api/teacherGeneration'), f.deps)).json();
+  assert.equal(body.online, false); assert.equal(body.waking, false); assert.deepEqual(body.jobs, []);
+  await code(await handleTeacherGeneration(post(), f.deps), 503, 'GENERATOR_OFFLINE');
+  assert.equal(networkCalls, 0); assert.ok(!f.calls.includes('bot') && !f.calls.includes('enqueue'));
+});
+
+test('cold create requests stop after validation and idempotency, before CAPTCHA, quota or paid enqueue', async () => {
+  const f = fixture();
+  f.deps.wake = async () => { f.calls.push('wake'); return 'accepted'; };
+  const health = await f.store.health(); f.calls.length = 0;
+  f.store.health = async () => { f.calls.push('health'); return { ...health, online: false }; };
+  await code(await handleTeacherGeneration(post(), f.deps), 503, 'GENERATOR_WAKING');
+  assert.deepEqual(f.calls, ['auth','curriculum','find','wake','health']);
+  f.calls.length = 0;
+  f.store.findRequest = async () => { f.calls.push('find'); return job; };
+  const reused = await (await handleTeacherGeneration(post(), f.deps)).json();
+  assert.equal(reused.reused, true);
+  assert.deepEqual(f.calls, ['auth','curriculum','find','wake'], 'queued retry only dispatches the original job, without another enqueue or CAPTCHA');
+});
+
+test('a wake timeout cannot reuse an old fresh heartbeat as cloud readiness', async () => {
+  const f = fixture(); f.deps.wake = async () => { f.calls.push('wake'); return 'pending'; };
+  const status = await (await handleTeacherGeneration(new Request(origin + '/api/teacherGeneration'), f.deps)).json();
+  assert.equal(status.online, false); assert.equal(status.waking, true);
+  f.calls.length = 0;
+  await code(await handleTeacherGeneration(post(), f.deps), 503, 'GENERATOR_WAKING');
+  assert.deepEqual(f.calls, ['auth','curriculum','find','wake','health']);
+});
+
+test('a warm cloud still uses the unchanged CAPTCHA and database quota gates exactly once', async () => {
+  for (const limited of [false, true]) {
+    const f = fixture(); f.deps.wake = async () => { f.calls.push('wake'); return 'accepted'; };
+    if (limited) f.store.enqueue = async () => { f.calls.push('enqueue'); throw new GenerationStoreError('GENERATION_LIMIT', 429); };
+    const response = await handleTeacherGeneration(post(), f.deps);
+    assert.equal(response.status, limited ? 429 : 202);
+    if (limited) assert.equal((await response.json()).code, 'GENERATION_LIMIT');
+    assert.deepEqual(f.calls, ['auth','curriculum','find','wake','health','bot','enqueue',...(limited ? [] : ['wake'])]);
+  }
+});
+
+test('a prior consumer failure cannot remove the post-enqueue dispatch request', async () => {
+  const f=fixture();let consumer=true,wakes=0;
+  f.deps.wake=async()=>{f.calls.push('wake');if(++wakes===2)consumer=true;return 'accepted';};
+  f.deps.verifyBot=async()=>{f.calls.push('bot');consumer=false;return true;};
+  f.store.enqueue=async()=>{f.calls.push('enqueue');assert.equal(consumer,false);return job;};
+  const response=await handleTeacherGeneration(post(),f.deps);const body=await response.json();
+  assert.equal(response.status,202);assert.equal(body.job.id,jobId);assert.equal(body.dispatchPending,false);assert.equal(consumer,true);
+  assert.deepEqual(f.calls,['auth','curriculum','find','wake','health','bot','enqueue','wake']);
+});
+
+test('post-enqueue wake failure preserves one queued job and same-key retry only dispatches it', async () => {
+  for(const outcome of ['pending','unavailable','throw'] as const){
+    const f=fixture();let wakes=0;
+    f.deps.wake=async()=>{f.calls.push('wake');if(++wakes===1)return 'accepted';if(outcome==='throw')throw Error('local transport fixture');return outcome;};
+    const response=await handleTeacherGeneration(post(),f.deps);const body=await response.json();
+    assert.equal(response.status,202);assert.equal(body.job.id,jobId);assert.equal(body.job.request_key,requestKey);assert.equal(body.dispatchPending,true);
+    assert.equal(f.calls.filter(c=>c==='enqueue').length,1);assert.equal(f.calls.filter(c=>c==='bot').length,1);
+    f.calls.length=0;f.store.findRequest=async()=>{f.calls.push('find');return job;};
+    f.deps.wake=async()=>{f.calls.push('wake');return 'accepted';};
+    const reused=await (await handleTeacherGeneration(post(),f.deps)).json();
+    assert.equal(reused.reused,true);assert.equal(reused.job.id,jobId);assert.equal(reused.job.request_key,requestKey);assert.equal(reused.dispatchPending,false);
+    assert.deepEqual(f.calls,['auth','curriculum','find','wake']);
+  }
+});
+
+test('same-key active or terminal replay never dispatches or retries a model', async () => {
+  for(const status of ['running','needs_review','failed']){
+    const f=fixture();f.store.findRequest=async()=>{f.calls.push('find');return {...job,status};};
+    f.deps.wake=async()=>{throw Error('must not wake');};
+    const response=await handleTeacherGeneration(post(),f.deps);const body=await response.json();
+    assert.equal(response.status,200);assert.equal(body.reused,true);assert.equal(body.job.status,status);assert.equal('dispatchPending' in body,false);
+    assert.deepEqual(f.calls,['auth','curriculum','find']);
+  }
+});
+
+test('an enqueue conflict dispatches the original queued job without a second reservation', async () => {
+  const f=fixture();let finds=0;f.store.findRequest=async()=>{f.calls.push('find');return ++finds===1?null:job;};
+  f.store.enqueue=async()=>{f.calls.push('enqueue');throw new GenerationStoreError('REQUEST_CONFLICT',409);};
+  f.deps.wake=async()=>{f.calls.push('wake');return 'accepted';};
+  const response=await handleTeacherGeneration(post(),f.deps);const body=await response.json();
+  assert.equal(response.status,200);assert.equal(body.reused,true);assert.equal(body.job.id,jobId);assert.equal(body.dispatchPending,false);
+  assert.deepEqual(f.calls,['auth','curriculum','find','wake','health','bot','enqueue','find','wake']);
+});
+
+test('invalid input and cross-origin POST cannot wake, while job and download GETs do not wake unnecessarily', async () => {
+  for (const request of [post(input(), { origin: 'https://evil.test' }), post(input({ lesson: { ...lesson, version: 1 } }))]) {
+    const f = fixture(); f.deps.wake = async () => { f.calls.push('wake'); return 'accepted'; };
+    assert.ok((await handleTeacherGeneration(request, f.deps)).status >= 400);
+    assert.ok(!f.calls.includes('wake'));
+  }
+  for (const suffix of ['', '&file=pdf', '&file=docx']) {
+    const f = fixture(); f.deps.wake = async () => { f.calls.push('wake'); return 'accepted'; };
+    f.store.get = async () => { f.calls.push('get'); return { ...job, status: 'needs_review', result: { automatedChecksPassed: true } }; };
+    assert.equal((await handleTeacherGeneration(new Request(origin + '/api/teacherGeneration?id=' + jobId + suffix), f.deps)).status, 200);
+    assert.ok(!f.calls.includes('wake'));
+  }
+});
 
 test('no session and authenticated non-owner stop before curriculum, bot or storage work', async () => {
   const f = fixture(); delete f.deps.authorize;

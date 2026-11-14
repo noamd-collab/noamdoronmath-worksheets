@@ -1,6 +1,7 @@
 import type { APIRoute } from 'astro';
-import { TEACHER_GENERATION_SERVICE_KEY, NOAM_RECAPTCHA_SECRET_KEY } from 'astro:env/server';
+import { TEACHER_GENERATION_SERVICE_KEY, NOAM_RECAPTCHA_SECRET_KEY, WORKER_URL, WORKER_WAKE_SECRET } from 'astro:env/server';
 import { handleTeacherGeneration } from '../../lib/teacherGeneration';
+import { createTeacherWorkerWake } from '../../lib/teacherWorkerWake';
 import { loadGenerationCurriculum } from '../../lib/teacherGenerationCurriculum';
 import { resolveNativeSvgPublicOrigin } from '../../lib/nativeSvgResponse';
 import { secretFromEnv } from '../../lib/noamSecrets';
@@ -8,6 +9,7 @@ import { verifyRecaptcha } from '../../../../../noam-ai/site-companion/bot-guard
 export const prerender = false;
 const respond: APIRoute = ({request}) => handleTeacherGeneration(request, {
   enqueueKey: secretFromEnv('TEACHER_GENERATION_SERVICE_KEY',TEACHER_GENERATION_SERVICE_KEY),
+  wake: createTeacherWorkerWake({url:secretFromEnv('WORKER_URL',WORKER_URL),secret:secretFromEnv('WORKER_WAKE_SECRET',WORKER_WAKE_SECRET)}),
   loadCurriculum: async()=>{
     const origin=resolveNativeSvgPublicOrigin(request.url,request.headers.get('x-wix-forwarded-url'));
     if(!origin)throw new Error('INVALID_ORIGIN');

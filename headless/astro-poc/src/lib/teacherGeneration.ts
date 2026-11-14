@@ -2,6 +2,7 @@ import { requireOwnerTeacher, teacherAccessFailure, TEACHER_PRIVATE_HEADERS, typ
 import { sameOriginTeacherMutation } from './teacherSession';
 import { createGenerationStore, generationSessionToken, GenerationStoreError, uuid, workerAcceptsCurrentIntake } from './teacherGenerationStore';
 import { validateTeacherGenerationIntake, type TeacherGenerationCurriculum } from './teacherGenerationContract';
+import type { TeacherWorkerWake } from './teacherWorkerWake';
 
 const reply = (body: unknown, status = 200) => Response.json(body, { status, headers: TEACHER_PRIVATE_HEADERS });
 export interface GenerationDependencies {
@@ -10,6 +11,7 @@ export interface GenerationDependencies {
   loadCurriculum: () => Promise<TeacherGenerationCurriculum>;
   verifyBot: (token: unknown) => Promise<boolean>;
   enqueueKey?: string;
+  wake?: TeacherWorkerWake;
 }
 const error = (code: string, status = 400) => reply({ ok: false, code }, status);
 async function boundedBody(request: Request): Promise<string | null> {
@@ -18,6 +20,19 @@ async function boundedBody(request: Request): Promise<string | null> {
   let bytes=0,text='';
   try {for(;;){const part=await reader.read();if(part.done)break;bytes+=part.value.length;if(bytes>24000)return null;text+=decoder.decode(part.value,{stream:true});}return text+decoder.decode();}
   finally {void reader.cancel().catch(()=>{});reader.releaseLock();}
+}
+async function workerReadiness(store: ReturnType<typeof createGenerationStore>, wake?: TeacherWorkerWake) {
+  const wakeResult = wake ? await wake() : undefined;
+  const health = await store.health();
+  const online = (wakeResult === undefined || wakeResult === 'accepted') && health.online && workerAcceptsCurrentIntake(health.capabilities);
+  return { ...health, online, waking: !online && (wakeResult === 'accepted' || wakeResult === 'pending') };
+}
+async function queuedDispatch(job: { status?: string }, wake?: TeacherWorkerWake) {
+  if (!wake || job.status !== 'queued') return {};
+  // The durable job already exists. A dispatch failure must never turn this
+  // into another enqueue, quota reservation, or retry of an authored job.
+  try { return { dispatchPending: await wake() !== 'accepted' }; }
+  catch { return { dispatchPending: true }; }
 }
 export async function handleTeacherGeneration(request: Request, deps: GenerationDependencies): Promise<Response> {
   // Always owner-only. Never classify a request by browser-controlled intent.
@@ -32,8 +47,8 @@ export async function handleTeacherGeneration(request: Request, deps: Generation
       const id = query.get('id');
       if (id && !uuid(id)) return error('INVALID_JOB');
       if (!id) {
-        const health = await store.health();
-        return reply({ ok: true, ...health, online: health.online && workerAcceptsCurrentIntake(health.capabilities), jobs: await store.list() });
+        const health = await workerReadiness(store, deps.wake);
+        return reply({ ok: true, ...health, jobs: await store.list() });
       }
       const job = await store.get(id);
       if (!job) return error('JOB_NOT_FOUND', 404);
@@ -65,9 +80,10 @@ export async function handleTeacherGeneration(request: Request, deps: Generation
     const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(JSON.stringify(checked.value)));
     const requestHash = Array.from(new Uint8Array(digest), n => n.toString(16).padStart(2, '0')).join('');
     const existing = await store.findRequest(input.requestKey);
-    if (existing) return existing.request_hash === requestHash ? reply({ ok: true, job: existing, reused: true }) : error('REQUEST_CONFLICT', 409);
-    const health = await store.health();
-    if (!health.online || !workerAcceptsCurrentIntake(health.capabilities)) return error('GENERATOR_OFFLINE', 503);
+    if (existing) return existing.request_hash === requestHash
+      ? reply({ ok: true, job: existing, reused: true, ...await queuedDispatch(existing, deps.wake) }) : error('REQUEST_CONFLICT', 409);
+    const health = await workerReadiness(store, deps.wake);
+    if (!health.online) return error(health.waking ? 'GENERATOR_WAKING' : 'GENERATOR_OFFLINE', 503);
     const capability = health.capabilities?.topics?.find((t: any) => t.topicId === checked.value.topicId && t.gradeNumber === checked.value.gradeNumber);
     if (!capability || capability.enabled !== true || capability.e2eVerified !== true ||
       !Array.isArray(capability.levels) || !capability.levels.includes(checked.value.level) ||
@@ -76,12 +92,12 @@ export async function handleTeacherGeneration(request: Request, deps: Generation
     if (!await deps.verifyBot(input.botToken)) return error('BOT_VERIFICATION_FAILED', 403);
     try {
       const job = await store.enqueue({ owner_id: access.userId, request_key: input.requestKey, request_hash: requestHash, lesson: checked.value });
-      return reply({ ok: true, job }, 202);
+      return reply({ ok: true, job, ...await queuedDispatch(job, deps.wake) }, 202);
     } catch (e) {
       // A network retry with the same key never starts a second paid task.
       if (e instanceof GenerationStoreError && e.code === 'REQUEST_CONFLICT') {
         const raced = await store.findRequest(input.requestKey);
-        if (raced?.request_hash === requestHash) return reply({ ok: true, job: raced, reused: true });
+        if (raced?.request_hash === requestHash) return reply({ ok: true, job: raced, reused: true, ...await queuedDispatch(raced, deps.wake) });
       }
       throw e;
     }

@@ -1,0 +1,28 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "noam-teacher-generation",
+  "account_id": "94be626240d3c682145e18cf9d2790e7",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-11-13",
+  "workers_dev": true,
+  "preview_urls": false,
+  "version_metadata": { "binding": "CF_VERSION_METADATA" },
+  "observability": { "enabled": true },
+  "triggers": { "crons": ["* * * * *"] },
+  "vars": { "SOURCE_SHA": "SET_BY_REVIEWED_RELEASE" },
+  "containers": [{
+    "class_name": "TeacherGenerationContainer",
+    "scheduling_policy": "durable_object",
+    "images": { "worker": {
+      "dockerfile": "../container/Dockerfile",
+      "build_context": "../../../.."
+    } },
+    "observability": { "enabled": true }
+  }],
+  "durable_objects": { "bindings": [{
+    "name": "GENERATOR", "class_name": "TeacherGenerationContainer"
+  }] },
+  "exports": { "TeacherGenerationContainer": {
+    "type": "durable-object", "storage": "sqlite"
+  } }
+}

@@ -12,7 +12,7 @@ const middle = { ...topic, topicId: 'g7:equations', gradeNumber: 7, title: 'מש
 const disabled = { ...topic, topicId: 'candidate', gradeNumber: 3, enabled: false };
 type Reply = { ok?: boolean; body?: any; error?: Error };
 
-function harness(options: { online?: boolean; jobs?: any[]; captcha?: boolean } = {}) {
+function harness(options: { online?: boolean; waking?: boolean; jobs?: any[]; captcha?: boolean; emptyCapabilities?: boolean } = {}) {
   const { document, window } = parseHTML(`<!doctype html><html><head></head><body>${markup}</body></html>`);
   const form = document.getElementById('generation-form') as any;
   const fields = new Map(Array.from(form.querySelectorAll('[name]')).map((el: any) => [el.getAttribute('name'), el]));
@@ -43,7 +43,9 @@ function harness(options: { online?: boolean; jobs?: any[]; captcha?: boolean } 
   (fields.get('lastLesson') as any).value = 'חילוק בתחום לוח הכפל';
   (fields.get('alreadyLearned') as any).value = 'כפל; חילוק\nמספרים';
   Object.defineProperty(document, 'hidden', { value: false });
-  let online = options.online ?? true, jobs = options.jobs || [], uuid = 0, timer = 0;
+  let online = options.online ?? true, waking = options.waking ?? false, jobs = options.jobs || [], uuid = 0, timer = 0;
+  let now = Date.now(), emptyCapabilities = options.emptyCapabilities ?? false;
+  class LocalDate extends Date { static now() { return now; } }
   const timers = new Map<number, { callback: () => unknown; delay: number }>();
   const calls: { url: string; init: any }[] = [], posts: any[] = [], pendingReplies: Reply[] = [], pendingReads: Reply[] = [];
   let tokenPromise: Promise<string> | null = null;
@@ -61,11 +63,11 @@ function harness(options: { online?: boolean; jobs?: any[]; captcha?: boolean } 
     }
     const reply = pendingReads.shift() || {};
     if (reply.error) throw reply.error;
-    return { ok: reply.ok ?? true, json: async () => reply.body || ({ ok: true, online, jobs: structuredClone(jobs), capabilities: { topics: [topic, middle, disabled] } }) };
+    return { ok: reply.ok ?? true, json: async () => reply.body || ({ ok: true, online, waking, jobs: structuredClone(jobs), capabilities: { topics: emptyCapabilities ? [] : [topic, middle, disabled] } }) };
   };
   vm.runInNewContext(shipped, {
     document, window, fetch: fetchLocal, crypto: { randomUUID: () => `00000000-0000-4000-8000-${String(++uuid).padStart(12, '0')}` },
-    AbortSignal: { timeout: () => undefined }, Date, console,
+    AbortSignal: { timeout: () => undefined }, Date: LocalDate, console,
     setTimeout: (callback: () => unknown, delay: number) => { timers.set(++timer, { callback, delay }); return timer; },
     clearTimeout: (id: number) => timers.delete(id), setInterval: () => ++timer, clearInterval: () => {},
   });
@@ -75,6 +77,8 @@ function harness(options: { online?: boolean; jobs?: any[]; captcha?: boolean } 
   const dispatch = async (el: any, type: string) => { el.dispatchEvent(new window.Event(type, { bubbles: true, cancelable: true })); await flush(); };
   return { document, window, form, field, element, calls, posts, pendingReplies, pendingReads, timers, flush, dispatch, focused: () => focused,
     setOnline(value: boolean) { online = value; }, setJobs(value: any[]) { jobs = value; },
+    setWaking(value: boolean) { waking = value; }, advance(ms: number) { now += ms; },
+    setEmptyCapabilities(value: boolean) { emptyCapabilities = value; },
     holdToken(value: Promise<string>) { tokenPromise = value; },
     async choose(grade = '3', id = 'ג10') {
       for (let i=0;i<3 && !element('wizard-back').hidden;i++) await dispatch(element('wizard-back'), 'click');
@@ -98,6 +102,65 @@ test('offline state blocks planning and emits no creation or verification reques
   assert.equal(app.form.hidden, false);
   assert.equal(app.posts.length, 0);
   assert.equal(app.calls.some(c => c.url === '/api/noamBotConfig'), false);
+});
+
+test('cold wake polls only health for at most90 seconds, then requires explicit manual retry', async () => {
+  const app = harness({ online: false, waking: true }); await app.flush();
+  assert.match(app.element('generator-availability').textContent, /מתחברים למנוע היצירה/);
+  assert.equal(app.element('create-button').disabled, true);
+  for (let i=0;i<18;i++) { app.advance(5000); assert.equal(await app.nextRetry(), 5000); }
+  assert.equal(app.timers.size, 0);
+  assert.match(app.element('generator-availability').textContent, /רענון מצב היצירה/);
+  await app.visible(); assert.equal(app.timers.size, 0, 'visibility does not restart the exhausted wake window');
+  assert.equal(app.posts.length, 0);
+  assert.equal(app.calls.some(call => call.url === '/api/noamBotConfig'), false);
+  await app.click('refresh-generation'); assert.equal(app.timers.size, 1);
+  app.setOnline(true); app.setWaking(false); app.advance(5000); await app.nextRetry();
+  assert.equal(app.timers.size, 0); assert.match(app.element('generator-availability').textContent, /היצירה זמינה/);
+  assert.equal(app.posts.length, 0, 'readiness never automatically creates a draft');
+});
+
+test('first cloud heartbeat populates previously missing capabilities without hiding completed downloads', async () => {
+  const jobs = [{ id: 'completed', status: 'needs_review', phase: 'needs_review', created_at: '2026-11-14T00:00:00Z', lesson: {}, result: { automatedChecksPassed: true } }];
+  const app = harness({ online: false, waking: true, emptyCapabilities: true, jobs }); await app.flush();
+  app.field('gradeNumber').value = '3'; await app.dispatch(app.field('gradeNumber'), 'change');
+  assert.equal(app.field('topicId').disabled, true);
+  assert.equal(app.document.querySelectorAll('a.download').length, 2);
+  app.setEmptyCapabilities(false); app.setOnline(true); app.setWaking(false);
+  app.advance(5000); await app.nextRetry();
+  assert.equal(app.field('topicId').disabled, false);
+  assert.deepEqual(Array.from(app.field('topicId').options, (o:any) => o.value), ['', 'ג10']);
+  assert.equal(app.posts.length, 0);
+});
+
+test('a POST cold-start refusal retains its idempotency key and requires a new user click after readiness', async () => {
+  const app = harness(); await app.flush(); await app.choose(); await app.submit();
+  app.pendingReplies.push({ ok: false, body: { ok: false, code: 'GENERATOR_WAKING' } });
+  app.setOnline(false); app.setWaking(true); await app.click('create-button');
+  assert.equal(app.posts.length, 1); assert.equal(app.element('create-button').disabled, true);
+  app.setOnline(true); app.setWaking(false); app.advance(5000); await app.nextRetry();
+  assert.equal(app.posts.length, 1); assert.equal(app.element('create-button').disabled, false);
+  await app.click('create-button');
+  assert.equal(app.posts.length, 2); assert.equal(app.posts[1].requestKey, app.posts[0].requestKey);
+});
+
+test('pending dispatch is visible and refresh retains the original queued job without another creation', async () => {
+  const app=harness();await app.flush();await app.choose();await app.submit();
+  const queued={id:'preserved-job',status:'queued',phase:'queued',created_at:'2026-11-14T00:00:00Z',lesson:{topicId:'ג10'}};
+  app.pendingReplies.push({body:{ok:true,job:queued,dispatchPending:true}});app.setJobs([queued]);
+  await app.click('create-button');
+  const key=app.posts[0].requestKey;
+  assert.match(app.element('generation-status').textContent,/הבקשה נשמרה בתור/);
+  assert.match(app.element('generation-status').textContent,/בלי ליצור בקשה נוספת/);
+  assert.equal(app.element('create-button').disabled,true);assert.equal(app.element('edit-plan').disabled,true);
+  await app.click('create-button');await app.click('refresh-generation');await app.poll();
+  assert.equal(app.posts.length,1);assert.equal(app.posts[0].requestKey,key);
+  assert.equal(app.calls.filter(c=>c.url==='/api/noamBotConfig').length,1);
+  assert.match(app.element('generation-status').textContent,/הבקשה נשמרה בתור/);
+  app.setJobs([{...queued,status:'running',phase:'authoring'}]);await app.poll();
+  assert.match(app.element('generation-status').textContent,/מכינים את השאלות/);
+  assert.doesNotMatch(app.element('generation-status').textContent,/הבקשה נשמרה בתור/);
+  assert.equal(app.posts.length,1);
 });
 
 test('planning uses enabled exact topic/level/count and makes no billed request', async () => {
