@@ -24,6 +24,7 @@ const LOCAL_SITE_PATHS = new Set([
   '/teachers/app',
   '/learning.html',
   '/worksheet-viewer-noam.html',
+  '/teachers',
   '/games/eliyahu-pythagoras',
   '/games/eliyahu-pythagoras/play',
 ]);

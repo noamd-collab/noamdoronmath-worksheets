@@ -1,4 +1,5 @@
 import { transform } from 'esbuild';
+import { filterWixPagesModuleSource } from './omit-wix-sitemap-paths.mjs';
 
 /**
  * Wix sends server modules as base64 JSON. Compact generated JavaScript before
@@ -15,6 +16,24 @@ export default function compactServerBuild() {
   return {
     name: 'noam-compact-server-build',
     hooks: {
+      // /404 and /dev-loops answer 404 and have no replacement. Drop them from
+      // the Wix page list so /pages-sitemap.xml cannot advertise them.
+      // astro.config.mjs stays byte-for-byte; this hook is the registered integration.
+      'astro:config:setup': ({ updateConfig }) => {
+        updateConfig({
+          vite: {
+            plugins: [{
+              name: 'noam-omit-wix-sitemap-paths',
+              enforce: 'post',
+              transform(code, id) {
+                if (!String(id).includes('wix:astro:pages')) return null;
+                const next = filterWixPagesModuleSource(code);
+                return next === code ? null : next;
+              },
+            }],
+          },
+        });
+      },
       'astro:build:setup': ({ target, updateConfig }) => {
         if (target !== 'server') return;
         updateConfig({

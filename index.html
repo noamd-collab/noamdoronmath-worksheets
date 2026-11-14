@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>דפי עבודה במתמטיקה · נועם דורון</title>
+<link rel="canonical" href="https://www.noamdoronmath.co.il/">
+<meta name="robots" content="noindex,follow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://static.wixstatic.com" crossorigin>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -872,6 +874,16 @@ var BASE = "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_";
    נושא ללא שדה x (כל היסודי, וכל דפי "one") ממשיך לקישור PDF ישיר.
    ========================================================================= */
 var VIEWER = { enabled: true, path: "worksheet-viewer-noam.html" };
+if (typeof location !== "undefined" && location.hostname === "noamd-collab.github.io") {
+  VIEWER.path = "https://www.noamdoronmath.co.il/worksheet-viewer-noam.html";
+  var ghParams = new URLSearchParams(location.search);
+  var ghTarget = (ghParams.has("grade") || ghParams.has("topic"))
+    ? "https://www.noamdoronmath.co.il/worksheets" + location.search + location.hash
+    : "https://www.noamdoronmath.co.il/";
+  var ghCanonical = document.querySelector('link[rel="canonical"]');
+  if (ghCanonical) ghCanonical.setAttribute("href", ghTarget.split("#")[0]);
+  location.replace(ghTarget);
+}
 
 var NOAM_PREFIX_FALLBACK = {
   7:{ 16:"G7-T16" },

@@ -6,6 +6,7 @@ import { topicPageHrefByCatalogTopic } from '../lib/elementaryTopicNav';
 import { familyOf, resolveWorksheetsGrade, worksheetsHref, type GradeNum } from '../lib/grades';
 import { parseWorksheetsUrlState, trackForPinnedTopic } from '../lib/worksheetsUrlState';
 import { educationalLevelForGrade, learningResourceJsonLd } from '../lib/structuredData';
+import { worksheetsDocumentTitle } from '../lib/siteSeo';
 
 export const prerender = false;
 
@@ -36,6 +37,13 @@ const hasExplicitGradeChoice =
   Astro.url.searchParams.has('q');
 const urlState = parseWorksheetsUrlState(Astro.url.searchParams, grade || 7);
 const highlightTopicId = urlState.topic;
+const selectedTopic =
+  gradeEntry && highlightTopicId != null
+    ? gradeEntry.topics.find((topic) => topic.id === highlightTopicId)
+    : undefined;
+const worksheetsTitle = gradeEntry
+  ? worksheetsDocumentTitle(gradeEntry.label, selectedTopic?.title)
+  : 'דפי עבודה';
 const initialUrlState = {
   q: urlState.q,
   group: urlState.group,
@@ -82,7 +90,7 @@ const initialUrlState = {
     </BaseLayout>
   ) : (
     <BaseLayout
-      title={`דפי עבודה · ${gradeEntry!.label}`}
+      title={worksheetsTitle}
       crumbs={[
         { name: 'בית', path: '/' },
         { name: 'דפי עבודה', path: '/worksheets' },
@@ -100,7 +108,7 @@ const initialUrlState = {
         type="application/ld+json"
         set:html={JSON.stringify(
           learningResourceJsonLd({
-            name: `דפי עבודה · ${gradeEntry!.label}`,
+            name: worksheetsTitle,
             path: `/worksheets?grade=${grade}`,
             description: `דפי עבודה במתמטיקה ל${gradeEntry!.label}, בחינם וללא הרשמה.`,
             educationalLevel: educationalLevelForGrade(grade!),
