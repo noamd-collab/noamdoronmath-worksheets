@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "level": "b",
+  "lessonGoal": "practice",
+  "minutes": 40,
+  "explicitShortSheet": false,
+  "gradeNumber": 7,
+  "topicId": "g7:equations",
+  "questionCount": 20,
+  "lastLesson": "תרגלנו משוואות פשוטות, הצבה ופעולות הפוכות כולל מספרים מכוונים.",
+  "alreadyLearned": [
+    "הצבה במשוואה",
+    "פעולות הפוכות",
+    "מספרים מכוונים"
+  ],
+  "lessonBoundary": {
+    "version": 1,
+    "kind": "linear_equations",
+    "allowSignedNumbers": true
+  }
+}

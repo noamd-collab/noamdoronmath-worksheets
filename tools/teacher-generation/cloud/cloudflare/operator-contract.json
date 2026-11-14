@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "workerName": "noam-teacher-generation",
+  "accountId": "94be626240d3c682145e18cf9d2790e7",
+  "className": "TeacherGenerationContainer",
+  "binding": "GENERATOR",
+  "singletonName": "primary",
+  "authentication": "Authorization: Bearer <TEACHER_CLOUD_OPERATOR_KEY>; no browser Origin",
+  "sourceShaVariable": "SOURCE_SHA",
+  "versionMetadataBinding": "CF_VERSION_METADATA",
+  "routes": {
+    "GET /operator/status": "Sanitized status only; never starts or claims work",
+    "POST /operator/preflight": "Empty object; disabled mode only; fixed --check-only command; returns status",
+    "POST /operator/activate": "Exact sourceSha,imageRef,versionId object; fresh matching preflight required; returns status",
+    "POST /operator/deactivate": "Empty object; stops future cycles, lets current cycle drain; returns status",
+    "POST /operator/tick": "Empty object; only an approved active release may start one queue cycle"
+  },
+  "statusFields": ["schemaVersion", "sourceSha", "versionId", "imageRef", "observedImage", "doId", "mode", "running", "preflight", "approved", "lastCycle", "nextAttemptAt"],
+  "preflightPass": {
+    "status": "PASS",
+    "sourceSha": "exact reviewed 40-hex commit",
+    "imageRef": "exact digest-pinned runtime image",
+    "observedImage": "must equal imageRef",
+    "versionId": "exact Cloudflare Worker version",
+    "checkedAt": "ISO 8601 UTC; maximum activation age 15 minutes",
+    "claimVerified": false,
+    "providerCalled": false,
+    "heartbeatWritten": false
+  }
+}

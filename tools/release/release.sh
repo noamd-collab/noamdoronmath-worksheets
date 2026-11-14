@@ -3,6 +3,15 @@
 # Usage: tools/release/release.sh <expected-commit-sha> [repo-dir]
 # Env (see tools/.env.example): WIX_CLI_API_KEY (optional, for non-interactive login), NODE_BIN, RELEASE_BRANCH (default: headless/astro-poc-baseline until the main switch merges)
 set -u
+# Cloud worker releases have a separate account, ledger and activation gate.
+# Dispatch before loading Wix credentials or mutating the site checkout.
+case "${RELEASE_TARGET:-wix}" in
+  teacher-cloudflare)
+    exec python3 "$(dirname "$0")/teacher-cloudflare-release.py" "$@"
+    ;;
+  wix) ;;
+  *) echo "Unknown RELEASE_TARGET" >&2; exit 64 ;;
+esac
 [ -f "$(dirname "$0")/../.env" ] && set -a && . "$(dirname "$0")/../.env" && set +a
 EXPECT="${1:?expected commit sha}"; REPO="${2:-$(git rev-parse --show-toplevel)}"
 BRANCH="${RELEASE_BRANCH:-headless/astro-poc-baseline}"

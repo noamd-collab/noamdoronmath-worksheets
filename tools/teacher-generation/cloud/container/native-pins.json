@@ -1,0 +1,78 @@
+{
+  "version": 1,
+  "snapshot": "20261114T000000Z",
+  "image": "python:3.12-slim-bookworm@sha256:0f086103b026048cc50cb5da25ec435c023c5241a83fc44daea593377abc61c4",
+  "pythonVersion": "3.12.16",
+  "pythonSourceSha256": "b5796915dc45ff745cfb4e990a7e7c93d6f546328a102ce31448d69ebc37575c",
+  "architecture": "linux/amd64",
+  "indexes": [
+    {
+      "url": "https://snapshot.debian.org/archive/debian/20261114T000000Z/dists/bookworm/main/binary-amd64/Packages.xz",
+      "sha256": "9e0b5aabb2465b3d2e7a7fe27f9913846277833f7a2826e7767acccff5b588c5"
+    },
+    {
+      "url": "https://snapshot.debian.org/archive/debian/20261114T000000Z/dists/bookworm-updates/main/binary-amd64/Packages.xz",
+      "sha256": "87e7e94047fb7fb6f4ceecc7022d4bee55b66031cc2a7666d3196f3e0aabb846"
+    },
+    {
+      "url": "https://snapshot.debian.org/archive/debian-security/20261114T000000Z/dists/bookworm-security/main/binary-amd64/Packages.xz",
+      "sha256": "945e933490e07cbe79628499e1572d9dd224815267bba4e887cb39ae54a3ab25"
+    }
+  ],
+  "packages": {
+    "ca-certificates": {
+      "version": "20250419~deb12u2",
+      "debSha256": "b9f76b5271a7ac373fd5e7e1b5b826a71ddd702b42a0d104955ecb1acfffc94b",
+      "archive": "debian-security",
+      "filename": "pool/updates/main/c/ca-certificates/ca-certificates_20250419~deb12u2_all.deb"
+    },
+    "chromium": {
+      "version": "156.0.8078.79-1~deb12u1",
+      "debSha256": "8f1f898bd42225ffb0dd2ca0234505ab9e9a2fc1493f996a091afe32218d8996",
+      "archive": "debian-security",
+      "filename": "pool/updates/main/c/chromium/chromium_156.0.8078.79-1~deb12u1_amd64.deb"
+    },
+    "fontconfig": {
+      "version": "2.14.1-4",
+      "debSha256": "010e57c24a983eecc39aab8a84219a716c10901e03bacd1927331388656f890f",
+      "archive": "debian",
+      "filename": "pool/main/f/fontconfig/fontconfig_2.14.1-4_amd64.deb"
+    },
+    "fonts-dejavu-core": {
+      "version": "2.37-6",
+      "debSha256": "8892669e51aab4dc56682c8e39d8ddb7d70fad83c369344e1e240bf3ca22bb76",
+      "archive": "debian",
+      "filename": "pool/main/f/fonts-dejavu/fonts-dejavu-core_2.37-6_all.deb"
+    },
+    "libharfbuzz-subset0": {
+      "version": "6.0.0+dfsg-3",
+      "debSha256": "020de1eeba5fb56052a6ca71b259f8cbe3f6fce5038f4caca751c7e4867ca33f",
+      "archive": "debian",
+      "filename": "pool/main/h/harfbuzz/libharfbuzz-subset0_6.0.0+dfsg-3_amd64.deb"
+    },
+    "libpango-1.0-0": {
+      "version": "1.50.12+ds-1",
+      "debSha256": "851720de07441ae6bb6a7f51fc0f2edb4db7aa6f25b5bf1bf7b72dcab8947b7f",
+      "archive": "debian",
+      "filename": "pool/main/p/pango1.0/libpango-1.0-0_1.50.12+ds-1_amd64.deb"
+    },
+    "libpangoft2-1.0-0": {
+      "version": "1.50.12+ds-1",
+      "debSha256": "78da3f494109f6e7a39c4626aaae7571c600c5854cecda0bc0c902224986a63b",
+      "archive": "debian",
+      "filename": "pool/main/p/pango1.0/libpangoft2-1.0-0_1.50.12+ds-1_amd64.deb"
+    },
+    "poppler-utils": {
+      "version": "22.12.0-2+deb12u3",
+      "debSha256": "7e328919d626d9d988832eb1e4adff4ceed275abcdabcb61ec0b3bf2dc64260d",
+      "archive": "debian-security",
+      "filename": "pool/updates/main/p/poppler/poppler-utils_22.12.0-2+deb12u3_amd64.deb"
+    },
+    "tini": {
+      "version": "0.19.0-1+b3",
+      "debSha256": "7d1947665fa40e55f218fefad773dc6de66458d0b39eaa292cdcadfc7c996632",
+      "archive": "debian",
+      "filename": "pool/main/t/tini/tini_0.19.0-1+b3_amd64.deb"
+    }
+  }
+}

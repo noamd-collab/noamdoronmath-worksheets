@@ -1,0 +1,35 @@
+[
+  {
+    "case": "grade3-division",
+    "label": "OFFLINE_FIXED_SEED_FIXTURE_NOT_LIVE_AI",
+    "seed": "Noam-offline-review2-grade3-20261113",
+    "method": "Four independently shuffled divisor permutations; independently sampled distinct quotients for each divisor. All selected divisors appear by fixture design, not by an API requirement.",
+    "seedSearch": false,
+    "parameterChangesAfterGate": false,
+    "questions": 12,
+    "items": 36,
+    "authorParametersSha256": "c63493a12ead921efad46493b55fe9492d219116199b1b435320cab0b60ad8f8"
+  },
+  {
+    "case": "grade7-positive",
+    "label": "OFFLINE_FIXED_SEED_FIXTURE_NOT_LIVE_AI",
+    "seed": "Noam-offline-review2-grade7-positive-20261113",
+    "method": "One fixed-seed sample without replacement of 60 coefficient/solution pairs from the complete allowed parameter grid; no short modular construction or seed search.",
+    "seedSearch": false,
+    "parameterChangesAfterGate": false,
+    "questions": 20,
+    "items": 60,
+    "authorParametersSha256": "3be634d62b4f51c365a52b00948cf5af2d9d1ce1e9cc9ed3f8cccd52bc89f537"
+  },
+  {
+    "case": "grade7-signed",
+    "label": "OFFLINE_FIXED_SEED_FIXTURE_NOT_LIVE_AI",
+    "seed": "Noam-offline-review2-grade7-signed-20261113",
+    "method": "One fixed-seed sample without replacement of 60 coefficient/solution pairs from the complete allowed parameter grid; no short modular construction or seed search.",
+    "seedSearch": false,
+    "parameterChangesAfterGate": false,
+    "questions": 20,
+    "items": 60,
+    "authorParametersSha256": "514457749ccc766ea3751379ab5d44c1ff5be5dc6a374660f7653f78699cec31"
+  }
+]
