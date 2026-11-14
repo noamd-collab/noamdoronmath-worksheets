@@ -8,6 +8,7 @@ import { buildWorksheetHref } from '../src/lib/worksheetLinks';
 import { topicWorksheetEditionLinks } from '../src/lib/topicWorksheetEditions';
 import { buildTeacherCatalog } from '../scripts/build-teacher-catalog.mjs';
 import { buildTeacherLandingCatalog, getTeacherLandingScope } from '../src/lib/teacherLandingCatalog';
+import { readFirst567Activation } from './helpers/first567Activation';
 
 const read = (path: string) => JSON.parse(readFileSync(new URL(path, import.meta.url), 'utf8'));
 const registry = read('../../catalog/worksheet-editions.v1.json');
@@ -15,8 +16,10 @@ const catalog = read('../src/data/catalog.v1.json') as CatalogV1;
 const evidence = read('../../../docs/middle-school-followup-pdf-20261113.json');
 const ids = ['ms-20261113-par-02-r1', 'ms-20261113-par-03-r1'];
 const additions = registry.editions.filter((row: any) => ids.includes(row.editionId));
+const activation = readFirst567Activation();
+assert.deepEqual(catalog.ramziActivation, activation.ready);
 const previous = mergeWorksheetEditions(catalog, { version: 1,
-  editions: registry.editions.filter((row: any) => !ids.includes(row.editionId)) });
+  editions: registry.editions.filter((row: any) => !ids.includes(row.editionId)) }, activation.ready);
 const topic = (value: CatalogV1) => value.grades.find(g => g.grade === 9)!.topics.find(t => t.id === 7)!;
 
 test('six follow-up PDF files retain frozen provenance and are separate from PR456', () => {
@@ -91,7 +94,7 @@ test('the six new PDF-only levels never enter teacher selection or change prior 
   assert.equal(JSON.stringify(catalog), before);
 });
 
-test('manifest sync omits PDF-only editions without dropping legacy or older edition dependencies', async () => {
+test('manifest sync omits unactivated PDFs while retaining legacy and verified edition dependencies', async () => {
   const { collectViewerPdfIds } = await import('../scripts/sync-github-static.mjs');
   const fixture = { grades: [{ topics: [{
     routing: { usesViewer: true, siblingPdfQuery: { pa: 'legacy-a', pb: 'legacy-b' } },
@@ -107,5 +110,8 @@ test('manifest sync omits PDF-only editions without dropping legacy or older edi
   const selected = new Set(collectViewerPdfIds(catalog));
   const allPdfOnly = registry.editions.filter((e: any) => e.publicationMode === 'pdf-only');
   assert.equal(allPdfOnly.flatMap((e: any) => e.levels).length, 18);
-  for (const e of allPdfOnly) for (const level of e.levels) assert.equal(selected.has(level.pdfId), false);
+  for (const e of allPdfOnly) for (const level of e.levels) {
+    assert.equal(selected.has(level.pdfId), activation.units.has(level.pdfId), `${e.editionId}/${level.key}`);
+  }
+  for (const e of additions) for (const level of e.levels) assert.equal(selected.has(level.pdfId), false);
 });
