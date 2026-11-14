@@ -1,0 +1,164 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "First 567 worksheet items: reviewed local activation with verified live source assets and database readback",
+  "description": "This is preparation for a later deployment. Runtime build validation additionally checks all bytes, receipts, cross-field identities and complete four-edition coverage.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "status",
+    "finalManifestsPublished",
+    "contentReviewedHead",
+    "deployedCommit",
+    "itemCount",
+    "hintCount",
+    "hintReviewSha256",
+    "releaseReceiptSha256",
+    "payloadSha256",
+    "publicationReceiptSha256",
+    "finalManifestReviewReceiptSha256",
+    "verifiedDbReadbackReceiptSha256",
+    "learningWorksheetsReceiptSha256",
+    "units"
+  ],
+  "properties": {
+    "schema": {
+      "const": "noam-first567-activation-ready/v1"
+    },
+    "status": {
+      "const": "ready_for_activation"
+    },
+    "finalManifestsPublished": {
+      "const": false
+    },
+    "contentReviewedHead": {
+      "const": "4f155ebb1f1c1bf85f91dba313df1be3d1cc7217"
+    },
+    "deployedCommit": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$(?![\\s\\S])"
+    },
+    "itemCount": {
+      "const": 567
+    },
+    "hintCount": {
+      "const": 1701
+    },
+    "hintReviewSha256": {
+      "const": "3a2438b4076088398e0fb5b167051eb1d57b7a2c1911fcca427abcc35348bd50"
+    },
+    "releaseReceiptSha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$(?![\\s\\S])"
+    },
+    "payloadSha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$(?![\\s\\S])"
+    },
+    "publicationReceiptSha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$(?![\\s\\S])"
+    },
+    "finalManifestReviewReceiptSha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$(?![\\s\\S])"
+    },
+    "verifiedDbReadbackReceiptSha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$(?![\\s\\S])"
+    },
+    "learningWorksheetsReceiptSha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$(?![\\s\\S])"
+    },
+    "units": {
+      "type": "array",
+      "minItems": 12,
+      "maxItems": 12,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "editionId",
+          "prefix",
+          "level",
+          "worksheetId",
+          "revision",
+          "pdfId",
+          "pdfSha256",
+          "sourceNativeExportSha256",
+          "nativeExportSha256",
+          "canonicalSourceSha256",
+          "manifestSha256",
+          "itemCount",
+          "hintCount"
+        ],
+        "properties": {
+          "editionId": {
+            "enum": [
+              "ms-20261113-trn-r1",
+              "ms-20261113-cyl-r1",
+              "ms-20261113-con-r1",
+              "ms-20261113-par-r1"
+            ]
+          },
+          "prefix": {
+            "enum": [
+              "G7-T86",
+              "G8-T84",
+              "G8-T87",
+              "G9-T85"
+            ]
+          },
+          "level": {
+            "enum": [
+              "a",
+              "b",
+              "c"
+            ]
+          },
+          "worksheetId": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$(?![\\s\\S])"
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "pdfId": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$(?![\\s\\S])"
+          },
+          "pdfSha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$(?![\\s\\S])"
+          },
+          "sourceNativeExportSha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$(?![\\s\\S])"
+          },
+          "nativeExportSha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$(?![\\s\\S])"
+          },
+          "canonicalSourceSha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$(?![\\s\\S])"
+          },
+          "manifestSha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$(?![\\s\\S])"
+          },
+          "itemCount": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "hintCount": {
+            "type": "integer",
+            "minimum": 3
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,3 +1,4 @@
+import { readFirst567Activation } from './helpers/first567Activation';
 /**
  * Exact-design release fence. These SHA-256 values were read from the verified
  * live baseline 8a098020, not from the redesigned candidate. They protect the
@@ -32,6 +33,23 @@ import { describe, it } from 'node:test';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const sha256 = (value: string | Buffer) => createHash('sha256').update(value).digest('hex');
 const read = (file: string) => readFileSync(join(root, file), 'utf8');
+
+// The activation changes only reviewed exact hunks. Reversing them restores the
+// already protected baseline; no historical whole-file hash is replaced.
+const activationDeltaText = read('tests/fixtures/ramzi-activation-reviewed-delta.json');
+assert.equal(sha256(activationDeltaText), 'c7bf20747e0a0e196f15474c283d91736843110c3299e13ad4cf465d3ce76606');
+const activationDeltas = JSON.parse(activationDeltaText).files;
+function beforeActivation(file: string, content: string): string {
+  const delta = activationDeltas.find((entry: any) => entry.file === file);
+  if (!delta) return content;
+  assert.equal(sha256(content), delta.candidateSha256, file + ' exact activation candidate');
+  for (const hunk of delta.hunks) {
+    assert.equal(content.split(hunk.after).length, 2, file + ' one exact activation hunk');
+    content = content.replace(hunk.after, hunk.before);
+  }
+  assert.equal(sha256(content), delta.baselineSha256, file + ' unchanged bytes outside activation');
+  return content;
+}
 
 const protectedFiles: Record<string, string> = {
   // Optional server secrets QWEN_API_KEY and NOAM_RECAPTCHA_SECRET_KEY were
@@ -119,12 +137,31 @@ const protectedFiles: Record<string, string> = {
 describe('exact-design protected live-baseline boundaries', () => {
   for (const [file, expected] of Object.entries(protectedFiles)) {
     it(`preserves ${file}`, () => {
-      let content = read(file);
+      let content = beforeActivation(file, read(file));
       if (file === 'src/data/catalog.v1.json') {
         // Noam's elementary renewal adds exactly these four grade-one editions.
         // Strip only that reviewed addition, then require the complete prior
         // snapshot hash below, including the already released grade-three edition.
         const catalog = JSON.parse(content);
+        const activation = readFirst567Activation();
+        assert.deepEqual(catalog.ramziActivation, activation.ready, 'snapshot matches the real receipt bundle');
+        if (activation.ready) {
+          delete catalog.ramziActivation;
+          for (const grade of catalog.grades) for (const topic of grade.topics) for (const edition of topic.editions || []) {
+            const readyLevels = edition.levels.filter((level: any) => activation.ramzi.has(edition.editionId + ':' + level.key));
+            if (!readyLevels.length) continue;
+            assert.equal(readyLevels.length, 3, 'only complete three-level activation');
+            assert.equal(edition.routing.usesViewer, true); assert.equal(edition.routing.aiHintShown, true);
+            for (const level of readyLevels) {
+              assert.deepEqual(level.ramzi, activation.ramzi.get(edition.editionId + ':' + level.key));
+              delete level.ramzi;
+            }
+            // Reverse only the reviewed readiness overlay, retaining every old
+            // addition hash below and every legacy catalog byte.
+            edition.routing.usesViewer = false; edition.routing.aiHintShown = false;
+          }
+        }
+
         const grade = catalog.grades.find((g: any) => g.grade === 1);
         for (const id of [11, 12, 14, 15]) {
           const topic = grade.topics.find((t: any) => t.id === id);
@@ -224,7 +261,7 @@ describe('exact-design protected live-baseline boundaries', () => {
     const deltaText = read('tests/fixtures/measured-viewer-reviewed-delta.json');
     assert.equal(sha256(deltaText), '5263c24c35ea4fab909d6da593a365976778f7b75f82b276fa9e85da0c2d0482');
     const delta = JSON.parse(deltaText);
-    let currentViewer = read('public/worksheet-viewer-noam.html');
+    let currentViewer = beforeActivation('public/worksheet-viewer-noam.html', read('public/worksheet-viewer-noam.html'));
     for (const hunk of delta.hunks) {
       assert.equal(currentViewer.split(hunk.after).length, 2, 'one exact reviewed viewer hunk');
       currentViewer = currentViewer.replace(hunk.after, hunk.before);
@@ -379,7 +416,7 @@ describe('exact-design protected live-baseline boundaries', () => {
     // This source-only recovery retains the error and never invokes a protected endpoint.
     // The reviewed glossary distinguishes shapes, powers and pronouns; refresh its asset only.
     assert.match(viewerWithNativeRelease, /noam-glossary\.js\?v=20261029-context6/);
-    assert.match(readFileSync(join(root, '../../worksheet-viewer-noam.html'), 'utf8'), /noam-glossary\.js\?v=20261029-context6/);
+    assert.match(readFileSync(join(root, '../../worksheet-viewer-noam.html'), 'utf8'), /noam-glossary\.js\?v=20261114-trapezoid-context1/);
     // Privately verified source facts add a bounded priority/no-disclosure instruction to the existing request.
     // 2026-10-29: image-read hints with fully verified native aids send a canonical source
     // analysis instead of OCR; the endpoint, auth, cache and request count are unchanged.

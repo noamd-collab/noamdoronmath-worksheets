@@ -13,7 +13,7 @@ const multiple = editions.length > 1;
   {editions.map(edition => (
     <div data-edition-id={edition.editionId}>
       {multiple && <strong class="topic-worksheet-edition-label">{edition.label}</strong>}
-      {edition.pdfOnly && <p class="topic-worksheet-edition-note">קובצי PDF להדפסה</p>}
+      {edition.note && <p class="topic-worksheet-edition-note">{edition.note}</p>}
       <div class="exact-topic-levels">
         {edition.levels.map(level => (
           <a class={`exact-topic-level exact-topic-level--${level.key}`} href={level.href}
