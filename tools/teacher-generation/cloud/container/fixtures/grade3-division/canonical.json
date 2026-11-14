@@ -1,0 +1,293 @@
+{
+  "version": 1,
+  "questions": [
+    {
+      "kind": "calculate",
+      "star": false,
+      "items": [
+        {
+          "left": 50,
+          "op": "divide",
+          "right": 10,
+          "answer": 5
+        },
+        {
+          "left": 27,
+          "op": "divide",
+          "right": 9,
+          "answer": 3
+        },
+        {
+          "left": 24,
+          "op": "divide",
+          "right": 8,
+          "answer": 3
+        }
+      ]
+    },
+    {
+      "kind": "missing_operand",
+      "star": false,
+      "items": [
+        {
+          "left": 12,
+          "op": "divide",
+          "right": 2,
+          "answer": 6
+        },
+        {
+          "left": 42,
+          "op": "divide",
+          "right": 7,
+          "answer": 6
+        },
+        {
+          "left": 24,
+          "op": "divide",
+          "right": 6,
+          "answer": 4
+        }
+      ]
+    },
+    {
+      "kind": "check_solution",
+      "star": false,
+      "items": [
+        {
+          "left": 32,
+          "op": "divide",
+          "right": 4,
+          "answer": 8
+        },
+        {
+          "left": 30,
+          "op": "divide",
+          "right": 5,
+          "answer": 6
+        },
+        {
+          "left": 15,
+          "op": "divide",
+          "right": 3,
+          "answer": 5
+        }
+      ]
+    },
+    {
+      "kind": "missing_right",
+      "star": false,
+      "items": [
+        {
+          "left": 30,
+          "op": "divide",
+          "right": 10,
+          "answer": 3
+        },
+        {
+          "left": 20,
+          "op": "divide",
+          "right": 2,
+          "answer": 10
+        },
+        {
+          "left": 63,
+          "op": "divide",
+          "right": 9,
+          "answer": 7
+        }
+      ]
+    },
+    {
+      "kind": "calculate",
+      "star": false,
+      "items": [
+        {
+          "left": 40,
+          "op": "divide",
+          "right": 8,
+          "answer": 5
+        },
+        {
+          "left": 25,
+          "op": "divide",
+          "right": 5,
+          "answer": 5
+        },
+        {
+          "left": 36,
+          "op": "divide",
+          "right": 6,
+          "answer": 6
+        }
+      ]
+    },
+    {
+      "kind": "missing_operand",
+      "star": false,
+      "items": [
+        {
+          "left": 40,
+          "op": "divide",
+          "right": 4,
+          "answer": 10
+        },
+        {
+          "left": 30,
+          "op": "divide",
+          "right": 3,
+          "answer": 10
+        },
+        {
+          "left": 14,
+          "op": "divide",
+          "right": 7,
+          "answer": 2
+        }
+      ]
+    },
+    {
+      "kind": "check_solution",
+      "star": false,
+      "items": [
+        {
+          "left": 60,
+          "op": "divide",
+          "right": 6,
+          "answer": 10
+        },
+        {
+          "left": 21,
+          "op": "divide",
+          "right": 3,
+          "answer": 7
+        },
+        {
+          "left": 8,
+          "op": "divide",
+          "right": 8,
+          "answer": 1
+        }
+      ]
+    },
+    {
+      "kind": "missing_right",
+      "star": false,
+      "items": [
+        {
+          "left": 40,
+          "op": "divide",
+          "right": 10,
+          "answer": 4
+        },
+        {
+          "left": 49,
+          "op": "divide",
+          "right": 7,
+          "answer": 7
+        },
+        {
+          "left": 12,
+          "op": "divide",
+          "right": 4,
+          "answer": 3
+        }
+      ]
+    },
+    {
+      "kind": "calculate",
+      "star": false,
+      "items": [
+        {
+          "left": 5,
+          "op": "divide",
+          "right": 5,
+          "answer": 1
+        },
+        {
+          "left": 36,
+          "op": "divide",
+          "right": 9,
+          "answer": 4
+        },
+        {
+          "left": 8,
+          "op": "divide",
+          "right": 2,
+          "answer": 4
+        }
+      ]
+    },
+    {
+      "kind": "missing_operand",
+      "star": true,
+      "items": [
+        {
+          "left": 10,
+          "op": "divide",
+          "right": 10,
+          "answer": 1
+        },
+        {
+          "left": 28,
+          "op": "divide",
+          "right": 4,
+          "answer": 7
+        },
+        {
+          "left": 35,
+          "op": "divide",
+          "right": 5,
+          "answer": 7
+        }
+      ]
+    },
+    {
+      "kind": "check_solution",
+      "star": true,
+      "items": [
+        {
+          "left": 35,
+          "op": "divide",
+          "right": 7,
+          "answer": 5
+        },
+        {
+          "left": 9,
+          "op": "divide",
+          "right": 3,
+          "answer": 3
+        },
+        {
+          "left": 45,
+          "op": "divide",
+          "right": 9,
+          "answer": 5
+        }
+      ]
+    },
+    {
+      "kind": "missing_right",
+      "star": true,
+      "items": [
+        {
+          "left": 72,
+          "op": "divide",
+          "right": 8,
+          "answer": 9
+        },
+        {
+          "left": 4,
+          "op": "divide",
+          "right": 2,
+          "answer": 2
+        },
+        {
+          "left": 54,
+          "op": "divide",
+          "right": 6,
+          "answer": 9
+        }
+      ]
+    }
+  ]
+}
