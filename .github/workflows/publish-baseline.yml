@@ -7,9 +7,10 @@ name: publish-baseline
 # Games corner: Noam approved shrink, merge and publication of #437 (11.11.2026); budgeted payload 19,201,099 bytes.
 # A push publishes only when RELEASE_SHA changes. Infrastructure-only PRs do
 # not republish the site. Manual retries use the same approved pin on main.
+# Merge only after PR #463 and the PR #461 release-ledger reconciliation; Noam's approval is still required.
 
 env:
-  RELEASE_SHA: 8cab25576e7bbcd73bb990dfdd483615d7751780
+  RELEASE_SHA: ccadcb0cbfe241ad500962e5f83d0cacdcbc37f1
 
 on:
   workflow_dispatch:
