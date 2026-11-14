@@ -51,7 +51,18 @@
   if(item.g<7||!item.x)return full;
   var u=new URL('worksheet-viewer-noam.html',location.href),p=u.searchParams;
   p.set('g',item.sourceGrade||item.g);p.set('x',item.sourcePrefix||item.x);p.set('lv',item.viewerLevel||(item.l==='one'?'b':item.l));p.set('pdf',raw);p.set('t',item.sourceTitle||item.title);p.set('topic',item.parent);p.set('back',new URL('learning.html',location.href).pathname);
-  catalog.filter(function(x){return x.g===item.g&&x.t===item.t;}).forEach(function(x){if(x.l!=='one')p.set('p'+x.l,x.pdf);});return u.href;
+  var edition=item.editionId||'legacy';
+  if(edition!=='legacy')p.set('edition',edition);
+  catalog.filter(function(x){return x.g===item.g&&x.t===item.t&&(x.editionId||'legacy')===edition;}).forEach(function(x){if(x.l!=='one')p.set('p'+x.l,x.pdf);});return u.href;
+ }
+ function viewerLearningItem(params){
+  var edition=params.has('edition')?params.get('edition'):'legacy';
+  if(!edition)return undefined;
+  return catalog.find(function(item){
+   if((item.editionId||'legacy')!==edition||item.g!==Number(params.get('g'))||item.pdf!==params.get('pdf')||(item.l!==params.get('lv')&&item.l!=='one'))return false;
+   // A new edition never borrows another package's progress identity.
+   return edition==='legacy'||(item.sourcePrefix||item.x)===params.get('x');
+  });
  }
  function controls(item){var box=el('div',undefined,'nl-controls');box.dataset.learningId=item.id;box.setAttribute('role','group');box.setAttribute('aria-label',item.title+' — '+item.label+' — מצב עבודה');
   Object.keys(Core.states).forEach(function(s){var b=button(Core.states[s],function(){engine.change(item.id,s).then(function(){tell(engine.snapshot().user?'המצב נשמר בחשבון.':'המצב נשמר במכשיר הזה. אין צורך להתחבר.');}).catch(fail);});b.dataset.status=s;b.setAttribute('aria-pressed','false');box.append(b);});
@@ -110,7 +121,7 @@
   document.getElementById('list').addEventListener('click',function(e){var b=e.target.closest('[data-learning-id] button[data-status]');if(!b)return;var id=b.closest('[data-learning-id]').dataset.learningId;engine.change(id,b.dataset.status||null).then(function(){tell(engine.snapshot().user?'המצב נשמר בחשבון.':'המצב נשמר במכשיר הזה.');}).catch(fail);});
   var oldRender=render;render=function(){oldRender();refreshControls();};render();
  }else{
-  var p=new URL(location.href).searchParams,item=catalog.find(function(x){return x.g===Number(p.get('g'))&&x.pdf===p.get('pdf')&&(x.l===p.get('lv')||x.l==='one');});
+  var p=new URL(location.href).searchParams,item=viewerLearningItem(p);
   var nav=document.querySelector('.header-actions')||document.querySelector('header');
   if(nav){var a=link('הלמידה שלי',portal);a.className='nl-viewer-link';nav.append(a);}
   if(item){var holder=el('details',undefined,'nl-viewer-progress');holder.append(el('summary','מצב העבודה שלי'),controls(item),authBox,message);var main=document.querySelector('main');main.before(holder);}

@@ -178,3 +178,49 @@ test('the compose control #noamDraw stays hidden unless the page topic allows a 
   assert.match(viewer, /if\(typeof noamPageAllowsDrawingHint==='function'&&!noamPageAllowsDrawingHint\(\)\)\{return Promise\.resolve\(null\);\}/);
   assert.match(viewer, /if\(typeof noamPageAllowsDrawingHint==='function'&&!noamPageAllowsDrawingHint\(\)\)\{return Promise\.resolve\(null\);\}\s*if\(!window\.NoamNativeVisual/);
 });
+
+test('the twelve first567 geometry editions offer drawing hints in both viewer mirrors', () => {
+  const ready = JSON.parse(readFileSync(new URL('../../../headless/catalog/worksheet-ramzi-ready.v1.json', import.meta.url), 'utf8'));
+  const prefixes = ['G7-T86', 'G8-T84', 'G8-T87', 'G9-T85'];
+  assert.equal(ready.units.length, 12);
+  for (const prefix of prefixes) assert.deepEqual(ready.units.filter((u: any) => u.prefix === prefix).map((u: any) => u.level), ['a', 'b', 'c']);
+  for (const path of ['../public/worksheet-viewer-noam.html', '../../../worksheet-viewer-noam.html']) {
+    const html = readFileSync(new URL(path, import.meta.url), 'utf8');
+    const policy = html.slice(html.indexOf('var NOAM_DRAWING_HINT_GEOMETRY='), html.indexOf('function noamConstructedVisual('));
+    for (const unit of ready.units) {
+      const manifest = JSON.parse(readFileSync(new URL('../public/noam-ai/manifests/' + unit.pdfId + '.json', import.meta.url), 'utf8'));
+      assert.ok(prefixes.includes(manifest.prefix)); assert.equal(manifest.prefix, unit.prefix);
+      const api = runInNewContext(policy + '\n({noamPageAllowsDrawingHint,noamCanOfferDrawing})', {
+        manifest, x: 'G8-T02', ttl: 'unrelated URL title',
+        window: { NoamLocalVisual: { wantsVisualSupport: () => true } },
+        noamMessageVisualOptions: () => ({ helpKind: 'hint', studentMessage: 'אפשר רמז 1?' }),
+        localVisualExerciseSource: () => '', noamRecentThreadText: () => '',
+        noamNativeDataUrl: () => manifest.nativeExportUrl, noamGeometryContext: () => true,
+      });
+      const message = { role: 'assistant', text: 'התבוננו בנתונים המקוריים.', preparedHint: true };
+      assert.equal(api.noamPageAllowsDrawingHint(), true, unit.prefix + '/' + unit.level);
+      assert.equal(api.noamCanOfferDrawing(manifest.exercises[0], { messages: [hintUser, message] }, message), true);
+    }
+  }
+});
+
+test('unreviewed native identities stay denied despite analytic titles and explicit drawing requests', () => {
+  for (const prefix of ['G7-T02', 'G8-T02', 'G9-T45', 'G9-T88', 'G9-T89', 'G9-T90', 'G9-T99']) {
+    const api = pageApi(prefix, 'גיאומטריה אנליטית');
+    const message = { ...hintAnswer, diagramOptions: { studentMessage: 'סמן בשרטוט את הנקודה A' } };
+    assert.equal(api.noamPageAllowsDrawingHint(), false, prefix);
+    assert.equal(api.noamCanOfferDrawing({ id: prefix }, { messages: [hintUser, message] }, message), false, prefix);
+    assert.equal(api.noamVisualNeed('סמן בשרטוט את הנקודה A', message.text, 'hint', 1, 'גיאומטריה'), false, prefix);
+  }
+});
+
+test('the narrow addition preserves the historical helper title fallback without admitting invalid viewer IDs', () => {
+  for (const prefix of ['', 'not-a-prefix']) {
+    const api = pageApi(prefix, 'גיאומטריה אנליטית');
+    // Existing helper behavior, not a new authorization path: the real viewer
+    // requires a numbered x and binds it to the manifest before enabling hints.
+    assert.equal(api.noamDrawingHintTopic(prefix, 'גיאומטריה אנליטית'), 'analytic-geometry');
+    assert.equal(api.noamDrawingHintTopic(prefix, 'אלגברה'), '');
+    assert.equal(/^G[1-9]-T\d{2}$/.test(prefix), false);
+  }
+});

@@ -1,3 +1,4 @@
+import {readFirst567Activation,assertFirst567Phase} from './helpers/first567Activation';
 import assert from 'node:assert/strict';
 import { readFileSync,readdirSync } from 'node:fs';
 import { createHash } from 'node:crypto';
@@ -52,17 +53,18 @@ for(const name of ['worksheet-viewer-noam.html','headless/astro-poc/public/works
  const visual=await s.noamPrepareSourceVisual(f.exercise,options);assert.equal(visual.presentation,'typed-operations');assert.equal(visual.options.drawCurrentStep,true);assert.ok(s.noamRenderSourceVisual(JSON.parse(JSON.stringify(visual))));const saved=JSON.parse(JSON.stringify(visual));cache=null;assert.equal(s.noamRenderSourceVisual(saved),null);await Promise.resolve();assert.equal(refresh,1);assert.ok(s.noamRenderSourceVisual(saved));identity='another-source';assert.equal(s.noamRenderSourceVisual(saved),null);identity='sha-exact';saved.options.drawCurrentStep=false;assert.equal(s.noamRenderSourceVisual(saved),null);
  const t=worked('ג'),table=s.noamSourcePresentation({data:t.data,svgText:''},t.exercise,options);assert.equal(table.kind,'source-context');assert.match(table.figure.textContent,/טבלת השלבים המקורית/);const row=rowTable('ג'),rowView=s.noamSourcePresentation({data:row.data,svgText:''},row.exercise,options);assert.equal(rowView.kind,'source-context');assert.match(rowView.figure.textContent,/השורה הראשונה נשמרה כדוגמה המקורית/);assert.equal(s.noamSourcePresentation({data:f.data,svgText:''},f.exercise,{...options,drawCurrentStep:false}),null);s.NoamSourceDataVisual=undefined;assert.equal(s.noamSourcePresentation({data:f.data,svgText:''},f.exercise,options),null);
 });
-it('whole corpus preserves412 legacy manifests and independently bounds12 disabled measured additions',()=>{
+it('whole corpus preserves412 legacy manifests and independently bounds12 evidence-gated measured additions',()=>{
+ const phase=readFirst567Activation();
  const measuredPaths=new Set(['G7-T86','G8-T84','G8-T87','G9-T85'].flatMap(prefix=>['a','b','c'].map(level=>`/noam-ai/native/${prefix}/${level}/noam-ai.json`)));
  const legacy={manifests:0,parts:0,affected:[] as string[],kinds:{} as Record<string,number>},measured={manifests:0,parts:0,affected:[] as string[],kinds:{} as Record<string,number>},seen:string[]=[];
  for(const file of readdirSync(new URL('noam-ai/manifests/',pub))){
    const m=JSON.parse(readFileSync(new URL('noam-ai/manifests/'+file,pub),'utf8'));if(!m.nativeExportUrl||m.questionPagesIdenticalTo)continue;
    const isMeasured=measuredPaths.has(m.nativeExportUrl),group=isMeasured?measured:legacy;
-   if(isMeasured){seen.push(m.nativeExportUrl);assert.equal(m.publishable,false);assert.equal(m.reviewRequired,true);assert.equal(m.nativeExportPublished,false);assert.equal(m.geometryContract,'measured-v1');}
+   if(isMeasured){seen.push(m.nativeExportUrl);assertFirst567Phase(m,readFileSync(new URL('noam-ai/manifests/'+file,pub)),phase);assert.equal(m.geometryContract,'measured-v1');}
    group.manifests++;const bytes=readFileSync(new URL(m.nativeExportUrl.slice(1),pub));assert.equal(createHash('sha256').update(bytes).digest('hex'),m.nativeExportSha256,file);
    c.raw=bytes.toString();const d=runInNewContext('JSON.parse(raw)',c);
    // Exercise the source-only resolver for every manifest, including staged assets;
-   // a source table being renderable does NOT authorize its disabled viewer edition.
+   // a renderable source table alone does NOT authorize an edition; receipts do.
    for(const e of m.exercises){group.parts++;if(e.nativeFigureId)continue;const ctx=c.NoamNativeVisual.authoredContext(d,e,'');const scene=ctx&&resolve(ctx);if(scene){group.affected.push(e.id);group.kinds[scene.kind]=(group.kinds[scene.kind]||0)+1;}}
  }
  // The approved T40 manifest ID correction renames four affected entries from

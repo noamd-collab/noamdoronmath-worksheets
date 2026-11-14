@@ -166,7 +166,7 @@ test('learning asset sync emits one JSON POST logout hook and migrates the old D
 test('learning boot sync preserves the JSON logout client cache version after upstream copies', () => {
   const upstream = "s.src = 'noam-learning.js?v=20261002-lazy-supabase';";
   const transformed = ensureHeadlessLearningBootVersion(upstream);
-  assert.equal(transformed, "s.src = 'noam-learning.js?v=20261111-teacher-post-session';");
+  assert.equal(transformed, "s.src = 'noam-learning.js?v=20261114-edition-learning1';");
   assert.equal(ensureHeadlessLearningBootVersion(transformed), transformed);
   const served = readFileSync(new URL('../public/noam-learning-boot.js', import.meta.url), 'utf8');
   assert.equal(ensureHeadlessLearningBootVersion(served), served);

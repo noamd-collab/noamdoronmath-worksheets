@@ -10,6 +10,7 @@ const path = require('node:path');
 const vm = require('node:vm');
 const crypto = require('node:crypto');
 const { mergeWorksheetEditions } = require('./worksheet-editions.cjs');
+const { loadRamziActivationEvidence, validateRamziActivation } = require('./worksheet-ramzi-activation.cjs');
 
 const ROOT = path.join(__dirname, '..', '..');
 const INDEX_PATH = path.join(ROOT, 'index.html');
@@ -720,7 +721,10 @@ function exportCatalog(options) {
   // registries also fail; a legacy-only fixture must provide an empty registry.
   const registry = Object.hasOwn(opts, 'editions') ? opts.editions :
     JSON.parse(fs.readFileSync(opts.editionsPath || path.join(catalogDir, 'worksheet-editions.v1.json'), 'utf8'));
-  const catalog = mergeWorksheetEditions(buildCatalog(raw), registry);
+  const activationEvidence = Object.hasOwn(opts, 'ramziActivation') ? opts.ramziActivation :
+    loadRamziActivationEvidence(catalogDir, path.join(path.dirname(path.resolve(indexPath)), 'headless/astro-poc/public'));
+  validateRamziActivation(registry, activationEvidence);
+  const catalog = mergeWorksheetEditions(buildCatalog(raw), registry, activationEvidence?.ready);
   const validation = validateCatalog(catalog, raw);
   const text = stableStringify(catalog);
   const hash = crypto.createHash('sha256').update(text).digest('hex');

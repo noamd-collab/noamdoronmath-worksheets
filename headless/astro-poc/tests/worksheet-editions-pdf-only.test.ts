@@ -15,7 +15,8 @@ import { editionFixture, middleEditionFixture } from './fixtures/worksheet-editi
 
 const sha = (text: string) => createHash('sha256').update(text).digest('hex');
 const committed = JSON.parse(readFileSync(new URL('../src/data/catalog.v1.json', import.meta.url), 'utf8')) as CatalogV1;
-const base: CatalogV1 = { ...committed, grades: committed.grades.map(g => ({ ...g,
+const { ramziActivation: _activationSummary, ...committedWithoutActivation } = committed;
+const base: CatalogV1 = { ...committedWithoutActivation, grades: committed.grades.map(g => ({ ...g,
   topics: g.topics.map(t => { const { editions, defaultEditionId, ...legacy } = t; return legacy; }),
 })) };
 const topic = (catalog: CatalogV1, grade: number, id: number) => catalog.grades.find(g => g.grade === grade)!.topics.find(t => t.id === id)!;
