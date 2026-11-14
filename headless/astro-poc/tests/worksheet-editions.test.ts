@@ -1,3 +1,4 @@
+import { readFirst567Activation } from './helpers/first567Activation';
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { mkdirSync, readFileSync } from 'node:fs';
@@ -16,10 +17,12 @@ import { editionFixture, middleEditionFixture } from './fixtures/worksheet-editi
 import { mergeWorksheetEditions, worksheetLearningId } from '../../../scripts/lib/worksheet-editions.cjs';
 
 const require = createRequire(import.meta.url);
+const activation = readFirst567Activation();
 const committed = JSON.parse(readFileSync(new URL('../src/data/catalog.v1.json', import.meta.url), 'utf8')) as CatalogV1;
+const { ramziActivation: _activationSummary, ...committedWithoutActivation } = committed;
 // Synthetic registries start from legacy fields, regardless of which real
 // editions are currently published. Do not use the merger itself as this oracle.
-const base: CatalogV1 = { ...committed, grades: committed.grades.map(g => ({
+const base: CatalogV1 = { ...committedWithoutActivation, grades: committed.grades.map(g => ({
   ...g, topics: g.topics.map(t => {
     const { editions, defaultEditionId, ...legacy } = t;
     return legacy;
@@ -32,7 +35,7 @@ const registry = () => editionFixture();
 test('empty registry preserves all 169 elementary topics and 507 legacy links byte-for-byte', () => {
   const actual = JSON.parse(readFileSync(new URL('../../catalog/worksheet-editions.v1.json', import.meta.url), 'utf8'));
   const merged = mergeWorksheetEditions(base, { version: 1, editions: [] });
-  const production = mergeWorksheetEditions(base, actual);
+  const production = mergeWorksheetEditions(base, actual, activation.ready);
   assert.deepEqual(production, committed, 'the committed snapshot must include the actual registry');
   for (const g of base.grades) for (const t of g.topics) assert.deepEqual(topic(production, g.grade, t.id).levels, t.levels);
   assert.equal(JSON.stringify(merged), JSON.stringify(base));
@@ -142,7 +145,7 @@ test('new and previous elementary editions open their own PDF without AI or data
 test('middle-school native identities remain separate from topic IDs and preserve every existing edition', () => {
   const actual = JSON.parse(readFileSync(new URL('../../catalog/worksheet-editions.v1.json', import.meta.url), 'utf8'));
   const middle = middleEditionFixture();
-  const merged = mergeWorksheetEditions(committed, { version: 1, editions: [...actual.editions, ...middle.editions] });
+  const merged = mergeWorksheetEditions(committed, { version: 1, editions: [...actual.editions, ...middle.editions] }, activation.ready);
   assert.deepEqual(elementary(merged), elementary(committed));
   for (const g of committed.grades) for (const t of g.topics) {
     assert.deepEqual(topic(merged, g.grade, t.id).levels, t.levels);
@@ -160,9 +163,9 @@ test('middle-school native identities remain separate from topic IDs and preserv
         base.config.pdfBase + level.pdfId + '.pdf');
     }
   }
-  assert.deepEqual(mergeWorksheetEditions(merged, actual), committed, 'withdrawing only the middle editions restores the prior catalog');
+  assert.deepEqual(mergeWorksheetEditions(merged, actual, activation.ready), committed, 'withdrawing only the middle editions restores the prior catalog');
   middle.editions.forEach(row => { row.status = 'reviewed'; });
-  assert.deepEqual(mergeWorksheetEditions(committed, { version: 1, editions: [...actual.editions, ...middle.editions] }), committed);
+  assert.deepEqual(mergeWorksheetEditions(committed, { version: 1, editions: [...actual.editions, ...middle.editions] }, activation.ready), committed);
 });
 
 test('middle-school rows reject missing or cross-grade native provenance before publication', () => {
@@ -241,14 +244,18 @@ test('catalog AI badge names only the selected edition and PDF-only additions st
   const render = await renderer();
   const card = (catalog: CatalogV1) => parseHTML(render(catalog, 7)).document.querySelector('[data-topic-id="17"]')!;
   const current = card(committed);
-  assert.equal(current.querySelector('.aihint')?.textContent, '✦ רמזי AI בדפים קודמים');
+  assert.equal(current.querySelector('.aihint')?.textContent, activation.ready ? '✦ רמזי AI' : '✦ רמזי AI בדפים קודמים');
   const addition = current.querySelector('.worksheet-editions details')!;
-  assert.equal(addition.querySelector('.note')?.textContent, 'קובצי PDF להדפסה');
+  assert.equal(addition.querySelector('.note')?.textContent, activation.ready ? 'קובצי PDF להדפסה · רמזים בשלוש דרגות' : 'קובצי PDF להדפסה');
   assert.equal(addition.querySelector('.aihint'), null);
-  assert.equal(addition.querySelectorAll('a.lvl--pdf').length, 3);
+  assert.equal(addition.querySelectorAll('a.lvl--pdf').length, activation.ready ? 0 : 3);
+  if (activation.ready) for (const link of addition.querySelectorAll('a.lvl')) {
+    assert.match(link.getAttribute('href') || '', /edition=ms-20261113-trn-r1/);
+  }
   assert.equal(card(base).querySelector('.aihint')?.textContent, '✦ רמזי AI זמין בדף הזה');
 
-  const pdfDefault = structuredClone(committed);
+  // An unready PDF-only set still must not inherit legacy AI badges.
+  const pdfDefault = mergeWorksheetEditions(committed, JSON.parse(readFileSync(new URL('../../catalog/worksheet-editions.v1.json', import.meta.url), 'utf8')));
   const pdfTopic = topic(pdfDefault, 7, 17);
   pdfTopic.defaultEditionId = pdfTopic.editions!.find(e => e.publicationMode === 'pdf-only')!.editionId;
   assert.equal(card(pdfDefault).querySelector('.aihint'), null, 'legacy AI must not label a selected PDF-only set');

@@ -33,7 +33,7 @@ export function ensureHeadlessLearningSessionLogout(source) {
 export function ensureHeadlessLearningBootVersion(source) {
   const script = /(['"])noam-learning\.js(?:\?v=[A-Za-z0-9._-]+)?\1/g;
   if (!script.test(source)) throw new Error('Learning boot script reference missing');
-  return source.replace(script, "'noam-learning.js?v=20261111-teacher-post-session'");
+  return source.replace(script, "'noam-learning.js?v=20261114-edition-learning1'");
 }
 
 const FILES = [

@@ -222,6 +222,7 @@ test('the real static-sync CLI preserves historical public manifests absent from
  try {
   const put=(p:string,text:string)=>{const dest=join(dir,p);mkdirSync(dirname(dest),{recursive:true});writeFileSync(dest,text);};
   put('scripts/lib/worksheet-editions.cjs',read('../../../scripts/lib/worksheet-editions.cjs'));
+  put('scripts/lib/worksheet-editions.mjs',read('../../../scripts/lib/worksheet-editions.mjs'));
   put('headless/astro-poc/scripts/sync-github-static.mjs',read('../scripts/sync-github-static.mjs'));
   const active='a'.repeat(32),historical='b'.repeat(32);
   put('headless/astro-poc/src/data/catalog.v1.json',JSON.stringify({config:{elementaryGrades:[1]},grades:[{grade:1,topics:[{id:1,levels:[{pdfId:active}],routing:{usesViewer:true}}]}]}));

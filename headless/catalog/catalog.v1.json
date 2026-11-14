@@ -7141,6 +7141,17 @@
                   "learningId": "g7-t17-a-e-ms-20261113-trn-r1",
                   "nativeExportSha256": "f9d0364e1069c086de35fbea075def1baac650686f3b67d4de1e8daa9038fd7b",
                   "pdfSha256": "c77a43f81c6fe47ba76dfa33d3abf2dec609f32ab870066a5afd1fcf3d9edc20",
+                  "ramzi": {
+                    "canonicalSourceSha256": "ef68dcbe5e7eb517780500aa74ef15ab5e98b10da999644eadf6d6af47a3ad30",
+                    "hintCount": 159,
+                    "itemCount": 53,
+                    "manifestSha256": "904c7e12bcdffee45f6926cd7dd9900dd80e44495e2a7dd2b2a510d8933fa97d",
+                    "nativeExportSha256": "6d0140f355dec8d52508a5fc6a29244b74966a65868d66a79368d6835b8d5770",
+                    "payloadSha256": "18556e703b4af97a75e5f27eab32336b6e55290fb0ae8077fd0e2b2a89ff3b22",
+                    "sourceNativeExportSha256": "f9d0364e1069c086de35fbea075def1baac650686f3b67d4de1e8daa9038fd7b",
+                    "status": "ready",
+                    "verifiedDbReadbackReceiptSha256": "bd2f58db3ad0afd5a29291d7a74cc27597be84b403f9183c60202c5b577aff85"
+                  },
                   "revision": 1,
                   "sourceSha256": "3e70499b80ba3e674bcabcb44eca2070dd9fbcc8d4e535fd59088c311c0eb1a4",
                   "worksheetId": "ms-g7-trn-01-a-r1"
@@ -7154,6 +7165,17 @@
                   "learningId": "g7-t17-b-e-ms-20261113-trn-r1",
                   "nativeExportSha256": "d2b157c9c72d42f989ecc71be111743f5eac32b93081a27b13cbf9d5a71ea4a0",
                   "pdfSha256": "aa949b0a983eeb27a4ceff136a7742d1cc7acfdb8607638d4d995d8e3eb1374c",
+                  "ramzi": {
+                    "canonicalSourceSha256": "27d39c85fbc3bf3ba73d385a271132f6f8f180afcd8d0dadba7ccdeb73483ad9",
+                    "hintCount": 171,
+                    "itemCount": 57,
+                    "manifestSha256": "71277396c904d321cf9c010da330e4bb19b6ffdc177d0cf11c908042cc0eb8a1",
+                    "nativeExportSha256": "a5ffb15c66e0c49f9a7319c267179b33c5b0e9cf4bcdd6645f14badadd25b76d",
+                    "payloadSha256": "18556e703b4af97a75e5f27eab32336b6e55290fb0ae8077fd0e2b2a89ff3b22",
+                    "sourceNativeExportSha256": "d2b157c9c72d42f989ecc71be111743f5eac32b93081a27b13cbf9d5a71ea4a0",
+                    "status": "ready",
+                    "verifiedDbReadbackReceiptSha256": "bd2f58db3ad0afd5a29291d7a74cc27597be84b403f9183c60202c5b577aff85"
+                  },
                   "revision": 1,
                   "sourceSha256": "b7405715ea03ca9a2fc14b5f41a695c34b0cd08cda92018709f4973b1a3df3be",
                   "worksheetId": "ms-g7-trn-01-b-r1"
@@ -7167,6 +7189,17 @@
                   "learningId": "g7-t17-c-e-ms-20261113-trn-r1",
                   "nativeExportSha256": "ab46b97bdaf090fddd2be314c902f5a27199624a3453cceca573897a90d7b637",
                   "pdfSha256": "43adc3be6a9c4c89671189dac8c14979f8e716e48b219f87c19a49b94f4abfdc",
+                  "ramzi": {
+                    "canonicalSourceSha256": "b7714857369b9665fd00ed02653c47164427f98bc581483dfea92f0417b1ca2c",
+                    "hintCount": 174,
+                    "itemCount": 58,
+                    "manifestSha256": "c480373f32a1ffbfac59ea5ae8b2bfa204f8e1fc50be38419c79e4a593e74918",
+                    "nativeExportSha256": "b62d53a288c102e76ce8a425ecd1cf04959a9fad547583422c1819719dc391c0",
+                    "payloadSha256": "18556e703b4af97a75e5f27eab32336b6e55290fb0ae8077fd0e2b2a89ff3b22",
+                    "sourceNativeExportSha256": "ab46b97bdaf090fddd2be314c902f5a27199624a3453cceca573897a90d7b637",
+                    "status": "ready",
+                    "verifiedDbReadbackReceiptSha256": "bd2f58db3ad0afd5a29291d7a74cc27597be84b403f9183c60202c5b577aff85"
+                  },
                   "revision": 1,
                   "sourceSha256": "25f55280284ff0bd604c5b67704e1a1f12041e1b2dc4a7d88dc7f6edcde79722",
                   "worksheetId": "ms-g7-trn-01-c-r1"
@@ -7175,8 +7208,8 @@
               "publicationMode": "pdf-only",
               "routing": {
                 "resolvedNoamPrefix": "G7-T86",
-                "aiHintShown": false,
-                "usesViewer": false,
+                "aiHintShown": true,
+                "usesViewer": true,
                 "viewerPath": "worksheet-viewer-noam.html",
                 "siblingPdfQuery": {
                   "pa": "d78a4f9509dd4f61b6910f6ed05f8a49",
@@ -9180,6 +9213,17 @@
                   "learningId": "g8-t14-a-e-ms-20261113-cyl-r1",
                   "nativeExportSha256": "92086004d8949ee0688d664b9b40c68a59881c9a1626fb1d9d0f82662843ed3c",
                   "pdfSha256": "553c909e73e620de5062751c6a7bc4190a4d84ce2a86bc5e748c41571aab66b2",
+                  "ramzi": {
+                    "canonicalSourceSha256": "6fb2c737d16dd853410df82768ea7171c56615dff0689b886d300706be707b01",
+                    "hintCount": 156,
+                    "itemCount": 52,
+                    "manifestSha256": "859ec5cd2d432e90c330ae29eaa4d90cd50c82074e9341d7843014527b4025d8",
+                    "nativeExportSha256": "92086004d8949ee0688d664b9b40c68a59881c9a1626fb1d9d0f82662843ed3c",
+                    "payloadSha256": "18556e703b4af97a75e5f27eab32336b6e55290fb0ae8077fd0e2b2a89ff3b22",
+                    "sourceNativeExportSha256": "92086004d8949ee0688d664b9b40c68a59881c9a1626fb1d9d0f82662843ed3c",
+                    "status": "ready",
+                    "verifiedDbReadbackReceiptSha256": "bd2f58db3ad0afd5a29291d7a74cc27597be84b403f9183c60202c5b577aff85"
+                  },
                   "revision": 1,
                   "sourceSha256": "ff98939fe719204ba771ce9a36a84c59e1ba79488408d239f632c3588afabba6",
                   "worksheetId": "ms-g8-cyl-01-a-r1"
@@ -9193,6 +9237,17 @@
                   "learningId": "g8-t14-b-e-ms-20261113-cyl-r1",
                   "nativeExportSha256": "89e7d569c9418efd62ba6fdee28b0aba4be3f0fcb019c25dda321ddf47b4bcdc",
                   "pdfSha256": "e188f7ca77956ebd418b3fb4d2eed1930e6f04757e090b2511ca5fe8efcfef56",
+                  "ramzi": {
+                    "canonicalSourceSha256": "deca2d9e2087b3cb5ca6eded7044d22b890eff2af997b284b9f480c6183d54d9",
+                    "hintCount": 162,
+                    "itemCount": 54,
+                    "manifestSha256": "7e0206032ca48b21c25c01277e618fe5421f0bfc15cc70d88b93e0816ae1c06f",
+                    "nativeExportSha256": "89e7d569c9418efd62ba6fdee28b0aba4be3f0fcb019c25dda321ddf47b4bcdc",
+                    "payloadSha256": "18556e703b4af97a75e5f27eab32336b6e55290fb0ae8077fd0e2b2a89ff3b22",
+                    "sourceNativeExportSha256": "89e7d569c9418efd62ba6fdee28b0aba4be3f0fcb019c25dda321ddf47b4bcdc",
+                    "status": "ready",
+                    "verifiedDbReadbackReceiptSha256": "bd2f58db3ad0afd5a29291d7a74cc27597be84b403f9183c60202c5b577aff85"
+                  },
                   "revision": 1,
                   "sourceSha256": "87de4cd462eb9bbf1a331530d824e86f659ad4019eae2547cea5a9c613910f3c",
                   "worksheetId": "ms-g8-cyl-01-b-r1"
@@ -9206,6 +9261,17 @@
                   "learningId": "g8-t14-c-e-ms-20261113-cyl-r1",
                   "nativeExportSha256": "c18d2637caf8045f33ca26054c234ca1310f24fc2e89f0d17904f3ddf6c9ec4d",
                   "pdfSha256": "36bc7f2f00389cf11f718ff764a69d01164f277a58c915b7c1733dee2379c68b",
+                  "ramzi": {
+                    "canonicalSourceSha256": "3904925f8a1c591b3f7fe2e3b9c5f792c83e022fd430b770f18fa422a04d18f9",
+                    "hintCount": 183,
+                    "itemCount": 61,
+                    "manifestSha256": "67d6a962ee1e672363f856524ba7f82b6897a5ac90b12e0a183d095dd44ba2ce",
+                    "nativeExportSha256": "c18d2637caf8045f33ca26054c234ca1310f24fc2e89f0d17904f3ddf6c9ec4d",
+                    "payloadSha256": "18556e703b4af97a75e5f27eab32336b6e55290fb0ae8077fd0e2b2a89ff3b22",
+                    "sourceNativeExportSha256": "c18d2637caf8045f33ca26054c234ca1310f24fc2e89f0d17904f3ddf6c9ec4d",
+                    "status": "ready",
+                    "verifiedDbReadbackReceiptSha256": "bd2f58db3ad0afd5a29291d7a74cc27597be84b403f9183c60202c5b577aff85"
+                  },
                   "revision": 1,
                   "sourceSha256": "82f5e56a1404752387b9f28e50701450777f5536d1ba65bf52f9bbc2409d62b5",
                   "worksheetId": "ms-g8-cyl-01-c-r1"
@@ -9214,8 +9280,8 @@
               "publicationMode": "pdf-only",
               "routing": {
                 "resolvedNoamPrefix": "G8-T84",
-                "aiHintShown": false,
-                "usesViewer": false,
+                "aiHintShown": true,
+                "usesViewer": true,
                 "viewerPath": "worksheet-viewer-noam.html",
                 "siblingPdfQuery": {
                   "pa": "70b137d10a3241178ca02d6c9f369742",
@@ -9280,6 +9346,17 @@
                   "learningId": "g8-t15-a-e-ms-20261113-con-r1",
                   "nativeExportSha256": "c47d1cbee65cdfcfe3f25147d0b45cb396e09b27dad934338476947a4a74e38e",
                   "pdfSha256": "6e24115eebe1f77bc8290bdbebc2499bf3dc618603c68d28ce96aa9e419d5f72",
+                  "ramzi": {
+                    "canonicalSourceSha256": "6ec9f9e6cc75bf00569b5b95e8f93d460f2a6bf3090e093bf50feab492d3acc0",
+                    "hintCount": 96,
+                    "itemCount": 32,
+                    "manifestSha256": "f2acd2c027f6308a914f683b65263bbbbb42ef3751926ab76a973859e35144c9",
+                    "nativeExportSha256": "c47d1cbee65cdfcfe3f25147d0b45cb396e09b27dad934338476947a4a74e38e",
+                    "payloadSha256": "18556e703b4af97a75e5f27eab32336b6e55290fb0ae8077fd0e2b2a89ff3b22",
+                    "sourceNativeExportSha256": "c47d1cbee65cdfcfe3f25147d0b45cb396e09b27dad934338476947a4a74e38e",
+                    "status": "ready",
+                    "verifiedDbReadbackReceiptSha256": "bd2f58db3ad0afd5a29291d7a74cc27597be84b403f9183c60202c5b577aff85"
+                  },
                   "revision": 1,
                   "sourceSha256": "b61f645fd51b7885e00640cd7f274c7c3bd091e6fe338222fa5a7945707456bf",
                   "worksheetId": "ms-g8-con-01-a-r1"
@@ -9293,6 +9370,17 @@
                   "learningId": "g8-t15-b-e-ms-20261113-con-r1",
                   "nativeExportSha256": "dfa33744e8032f5b132b33a41de6d33dcdb34ac93f3265f7070cef5be13189ac",
                   "pdfSha256": "e014386cb6b7867e4fdcd3ea3b284c24e0b49d28b7bbb30ceff3f76f631a159a",
+                  "ramzi": {
+                    "canonicalSourceSha256": "1a07cd20f3abb693a762711ec3a8e2211ff8a70cfb4d6f02f744e83fc3c2e23b",
+                    "hintCount": 96,
+                    "itemCount": 32,
+                    "manifestSha256": "7585d2ca8d271577e423daea80b1c7ff57c414606f54e4ed59d3d3aa08c64581",
+                    "nativeExportSha256": "dfa33744e8032f5b132b33a41de6d33dcdb34ac93f3265f7070cef5be13189ac",
+                    "payloadSha256": "18556e703b4af97a75e5f27eab32336b6e55290fb0ae8077fd0e2b2a89ff3b22",
+                    "sourceNativeExportSha256": "dfa33744e8032f5b132b33a41de6d33dcdb34ac93f3265f7070cef5be13189ac",
+                    "status": "ready",
+                    "verifiedDbReadbackReceiptSha256": "bd2f58db3ad0afd5a29291d7a74cc27597be84b403f9183c60202c5b577aff85"
+                  },
                   "revision": 1,
                   "sourceSha256": "3c05eb3af9ed00aaa43e279628503e4e8cb1eb6d6e6759bb668e80e94757014a",
                   "worksheetId": "ms-g8-con-01-b-r1"
@@ -9306,6 +9394,17 @@
                   "learningId": "g8-t15-c-e-ms-20261113-con-r1",
                   "nativeExportSha256": "75594e72abe8152cf2c82d6bc2d6028b3660a8ae9cbdc9107a7c8c744f49d72e",
                   "pdfSha256": "9bcf7d2f94c22a2aac67af91882e47fa60f921700e6a3c9ebbdfebc5b62cea77",
+                  "ramzi": {
+                    "canonicalSourceSha256": "d49ece18033ee21c2b167fd48c200755b0d96405e7445b92dc75f508e8c9d4b0",
+                    "hintCount": 96,
+                    "itemCount": 32,
+                    "manifestSha256": "52aa255c9afb5ab63bc95922af4be4eafe6374fc9ea336af637dab4f220a2919",
+                    "nativeExportSha256": "75594e72abe8152cf2c82d6bc2d6028b3660a8ae9cbdc9107a7c8c744f49d72e",
+                    "payloadSha256": "18556e703b4af97a75e5f27eab32336b6e55290fb0ae8077fd0e2b2a89ff3b22",
+                    "sourceNativeExportSha256": "75594e72abe8152cf2c82d6bc2d6028b3660a8ae9cbdc9107a7c8c744f49d72e",
+                    "status": "ready",
+                    "verifiedDbReadbackReceiptSha256": "bd2f58db3ad0afd5a29291d7a74cc27597be84b403f9183c60202c5b577aff85"
+                  },
                   "revision": 1,
                   "sourceSha256": "0c3b2150c11a02b20b68123ff4cc07c2d7e3f821f8c36fec9a8e3fb1d581aafa",
                   "worksheetId": "ms-g8-con-01-c-r1"
@@ -9314,8 +9413,8 @@
               "publicationMode": "pdf-only",
               "routing": {
                 "resolvedNoamPrefix": "G8-T87",
-                "aiHintShown": false,
-                "usesViewer": false,
+                "aiHintShown": true,
+                "usesViewer": true,
                 "viewerPath": "worksheet-viewer-noam.html",
                 "siblingPdfQuery": {
                   "pa": "40a31c3a95dc42ccb6e5bee798964482",
@@ -11777,6 +11876,17 @@
                   "learningId": "g9-t7-a-e-ms-20261113-par-r1",
                   "nativeExportSha256": "e59c88ead7045b5a57dcaacab460e04a561eae714c3441a1d6d1a26a0fa8d6b9",
                   "pdfSha256": "29ab6a72af7ecf32a4eff9be60d02c290ff5a8ad2df694dcbc7249ad4dc9b7de",
+                  "ramzi": {
+                    "canonicalSourceSha256": "44fc60256987ef804563f84cd7032d69cd9a904702b3069555f3e6a9a8f55afb",
+                    "hintCount": 138,
+                    "itemCount": 46,
+                    "manifestSha256": "48d05ef6d2fec377525e20ad96edb546c1bdbe1340b9dcf0c7004e4746282280",
+                    "nativeExportSha256": "257aa507083772550d4802d7979fac7497cdb2b138ac0aaa0858b85f0ff7aa0d",
+                    "payloadSha256": "18556e703b4af97a75e5f27eab32336b6e55290fb0ae8077fd0e2b2a89ff3b22",
+                    "sourceNativeExportSha256": "e59c88ead7045b5a57dcaacab460e04a561eae714c3441a1d6d1a26a0fa8d6b9",
+                    "status": "ready",
+                    "verifiedDbReadbackReceiptSha256": "bd2f58db3ad0afd5a29291d7a74cc27597be84b403f9183c60202c5b577aff85"
+                  },
                   "revision": 1,
                   "sourceSha256": "fb338a0227435f45f4423a4bbb8c02551e48bd59a9a9cee17c7cef92dbfbaeaa",
                   "worksheetId": "ms-g9-par-01-a-r1"
@@ -11790,6 +11900,17 @@
                   "learningId": "g9-t7-b-e-ms-20261113-par-r1",
                   "nativeExportSha256": "15b95940e48e48388f82b663f16378a74f6328b5e415ca2089f16ba7b89d0ed2",
                   "pdfSha256": "f9ffb366b5379c432f23b5ffa9d7fce2e680123fdae09d8a96d693cbf6ecf2ac",
+                  "ramzi": {
+                    "canonicalSourceSha256": "2e5a59f271949168070162bc1aa4aa29ac195e2fc5031e027efeacc1199209c9",
+                    "hintCount": 132,
+                    "itemCount": 44,
+                    "manifestSha256": "80a9a61070f8d184202d2f82459667296f49adb3b0a7ab482893e791c3c6e1ce",
+                    "nativeExportSha256": "ffb911d66a2ac3fba7c83b0efc20131d0e3d6da84a8aff52b3471d88e0111df0",
+                    "payloadSha256": "18556e703b4af97a75e5f27eab32336b6e55290fb0ae8077fd0e2b2a89ff3b22",
+                    "sourceNativeExportSha256": "15b95940e48e48388f82b663f16378a74f6328b5e415ca2089f16ba7b89d0ed2",
+                    "status": "ready",
+                    "verifiedDbReadbackReceiptSha256": "bd2f58db3ad0afd5a29291d7a74cc27597be84b403f9183c60202c5b577aff85"
+                  },
                   "revision": 1,
                   "sourceSha256": "474709649580f511bf652cc9c4644e8a75252f34dd9e1a399900b4880232f6ea",
                   "worksheetId": "ms-g9-par-01-b-r1"
@@ -11803,6 +11924,17 @@
                   "learningId": "g9-t7-c-e-ms-20261113-par-r1",
                   "nativeExportSha256": "523150bc775cac5bb58487c94fa5c1e83416f7c87a2d09e99f4d1513f9148a62",
                   "pdfSha256": "697075480ed7ea106610ba624f584ad53f0803a1e7f9272e1c22455322f2a94b",
+                  "ramzi": {
+                    "canonicalSourceSha256": "c08966a26378c3b8351ad95ec49ab8a048f85ac5dcddb4fb3d4683d36b888926",
+                    "hintCount": 138,
+                    "itemCount": 46,
+                    "manifestSha256": "4ec21b8c0f9e011b60c3ac68aca665a1a46b9eecde69bab65a0a67b34e1343f9",
+                    "nativeExportSha256": "523150bc775cac5bb58487c94fa5c1e83416f7c87a2d09e99f4d1513f9148a62",
+                    "payloadSha256": "18556e703b4af97a75e5f27eab32336b6e55290fb0ae8077fd0e2b2a89ff3b22",
+                    "sourceNativeExportSha256": "523150bc775cac5bb58487c94fa5c1e83416f7c87a2d09e99f4d1513f9148a62",
+                    "status": "ready",
+                    "verifiedDbReadbackReceiptSha256": "bd2f58db3ad0afd5a29291d7a74cc27597be84b403f9183c60202c5b577aff85"
+                  },
                   "revision": 1,
                   "sourceSha256": "751da636ed85cdad991b5a886924f72a6c4a3deaf30a425f336369ddb03a896c",
                   "worksheetId": "ms-g9-par-01-c-r1"
@@ -11811,8 +11943,8 @@
               "publicationMode": "pdf-only",
               "routing": {
                 "resolvedNoamPrefix": "G9-T85",
-                "aiHintShown": false,
-                "usesViewer": false,
+                "aiHintShown": true,
+                "usesViewer": true,
                 "viewerPath": "worksheet-viewer-noam.html",
                 "siblingPdfQuery": {
                   "pa": "a6a84c2e19124d8eb16e0c4dc8eb01d4",
@@ -13219,5 +13351,203 @@
         }
       ]
     }
-  ]
+  ],
+  "ramziActivation": {
+    "contentReviewedHead": "4f155ebb1f1c1bf85f91dba313df1be3d1cc7217",
+    "deployedCommit": "cfe85a520af1e1a0a06526438dbd33c134cc21b1",
+    "finalManifestReviewReceiptSha256": "1ee0f1d9c8f002999bfa8a32e24cda80c16817d5cc362f011a4faf68943bf808",
+    "finalManifestsPublished": false,
+    "hintCount": 1701,
+    "hintReviewSha256": "3a2438b4076088398e0fb5b167051eb1d57b7a2c1911fcca427abcc35348bd50",
+    "itemCount": 567,
+    "learningWorksheetsReceiptSha256": "ff20a043c0977832bdf45054f08cf0d9b3f18cdc9a158282a5dfc2d82fd341c5",
+    "payloadSha256": "18556e703b4af97a75e5f27eab32336b6e55290fb0ae8077fd0e2b2a89ff3b22",
+    "publicationReceiptSha256": "27a72ef854ccba9347d8477eb4aac8d2576ccb5200c7a1525be80d0a7eed0c3f",
+    "releaseReceiptSha256": "6505e2f754bcf1421b8adbef47acb9e6dcbadef87c802ad8030ea80d93b03698",
+    "schema": "noam-first567-activation-ready/v1",
+    "status": "ready_for_activation",
+    "units": [
+      {
+        "canonicalSourceSha256": "ef68dcbe5e7eb517780500aa74ef15ab5e98b10da999644eadf6d6af47a3ad30",
+        "editionId": "ms-20261113-trn-r1",
+        "hintCount": 159,
+        "itemCount": 53,
+        "level": "a",
+        "manifestSha256": "904c7e12bcdffee45f6926cd7dd9900dd80e44495e2a7dd2b2a510d8933fa97d",
+        "nativeExportSha256": "6d0140f355dec8d52508a5fc6a29244b74966a65868d66a79368d6835b8d5770",
+        "pdfId": "d78a4f9509dd4f61b6910f6ed05f8a49",
+        "pdfSha256": "c77a43f81c6fe47ba76dfa33d3abf2dec609f32ab870066a5afd1fcf3d9edc20",
+        "prefix": "G7-T86",
+        "revision": 1,
+        "sourceNativeExportSha256": "f9d0364e1069c086de35fbea075def1baac650686f3b67d4de1e8daa9038fd7b",
+        "worksheetId": "ms-g7-trn-01-a-r1"
+      },
+      {
+        "canonicalSourceSha256": "27d39c85fbc3bf3ba73d385a271132f6f8f180afcd8d0dadba7ccdeb73483ad9",
+        "editionId": "ms-20261113-trn-r1",
+        "hintCount": 171,
+        "itemCount": 57,
+        "level": "b",
+        "manifestSha256": "71277396c904d321cf9c010da330e4bb19b6ffdc177d0cf11c908042cc0eb8a1",
+        "nativeExportSha256": "a5ffb15c66e0c49f9a7319c267179b33c5b0e9cf4bcdd6645f14badadd25b76d",
+        "pdfId": "ae405a96035b40188cafa046d2796cb5",
+        "pdfSha256": "aa949b0a983eeb27a4ceff136a7742d1cc7acfdb8607638d4d995d8e3eb1374c",
+        "prefix": "G7-T86",
+        "revision": 1,
+        "sourceNativeExportSha256": "d2b157c9c72d42f989ecc71be111743f5eac32b93081a27b13cbf9d5a71ea4a0",
+        "worksheetId": "ms-g7-trn-01-b-r1"
+      },
+      {
+        "canonicalSourceSha256": "b7714857369b9665fd00ed02653c47164427f98bc581483dfea92f0417b1ca2c",
+        "editionId": "ms-20261113-trn-r1",
+        "hintCount": 174,
+        "itemCount": 58,
+        "level": "c",
+        "manifestSha256": "c480373f32a1ffbfac59ea5ae8b2bfa204f8e1fc50be38419c79e4a593e74918",
+        "nativeExportSha256": "b62d53a288c102e76ce8a425ecd1cf04959a9fad547583422c1819719dc391c0",
+        "pdfId": "6322003fe1264207a32e58f7ea094125",
+        "pdfSha256": "43adc3be6a9c4c89671189dac8c14979f8e716e48b219f87c19a49b94f4abfdc",
+        "prefix": "G7-T86",
+        "revision": 1,
+        "sourceNativeExportSha256": "ab46b97bdaf090fddd2be314c902f5a27199624a3453cceca573897a90d7b637",
+        "worksheetId": "ms-g7-trn-01-c-r1"
+      },
+      {
+        "canonicalSourceSha256": "6fb2c737d16dd853410df82768ea7171c56615dff0689b886d300706be707b01",
+        "editionId": "ms-20261113-cyl-r1",
+        "hintCount": 156,
+        "itemCount": 52,
+        "level": "a",
+        "manifestSha256": "859ec5cd2d432e90c330ae29eaa4d90cd50c82074e9341d7843014527b4025d8",
+        "nativeExportSha256": "92086004d8949ee0688d664b9b40c68a59881c9a1626fb1d9d0f82662843ed3c",
+        "pdfId": "70b137d10a3241178ca02d6c9f369742",
+        "pdfSha256": "553c909e73e620de5062751c6a7bc4190a4d84ce2a86bc5e748c41571aab66b2",
+        "prefix": "G8-T84",
+        "revision": 1,
+        "sourceNativeExportSha256": "92086004d8949ee0688d664b9b40c68a59881c9a1626fb1d9d0f82662843ed3c",
+        "worksheetId": "ms-g8-cyl-01-a-r1"
+      },
+      {
+        "canonicalSourceSha256": "deca2d9e2087b3cb5ca6eded7044d22b890eff2af997b284b9f480c6183d54d9",
+        "editionId": "ms-20261113-cyl-r1",
+        "hintCount": 162,
+        "itemCount": 54,
+        "level": "b",
+        "manifestSha256": "7e0206032ca48b21c25c01277e618fe5421f0bfc15cc70d88b93e0816ae1c06f",
+        "nativeExportSha256": "89e7d569c9418efd62ba6fdee28b0aba4be3f0fcb019c25dda321ddf47b4bcdc",
+        "pdfId": "bf67b5305ff84bb7821cf1385c950911",
+        "pdfSha256": "e188f7ca77956ebd418b3fb4d2eed1930e6f04757e090b2511ca5fe8efcfef56",
+        "prefix": "G8-T84",
+        "revision": 1,
+        "sourceNativeExportSha256": "89e7d569c9418efd62ba6fdee28b0aba4be3f0fcb019c25dda321ddf47b4bcdc",
+        "worksheetId": "ms-g8-cyl-01-b-r1"
+      },
+      {
+        "canonicalSourceSha256": "3904925f8a1c591b3f7fe2e3b9c5f792c83e022fd430b770f18fa422a04d18f9",
+        "editionId": "ms-20261113-cyl-r1",
+        "hintCount": 183,
+        "itemCount": 61,
+        "level": "c",
+        "manifestSha256": "67d6a962ee1e672363f856524ba7f82b6897a5ac90b12e0a183d095dd44ba2ce",
+        "nativeExportSha256": "c18d2637caf8045f33ca26054c234ca1310f24fc2e89f0d17904f3ddf6c9ec4d",
+        "pdfId": "98de3d9eed564ebdaea91266b3b84cca",
+        "pdfSha256": "36bc7f2f00389cf11f718ff764a69d01164f277a58c915b7c1733dee2379c68b",
+        "prefix": "G8-T84",
+        "revision": 1,
+        "sourceNativeExportSha256": "c18d2637caf8045f33ca26054c234ca1310f24fc2e89f0d17904f3ddf6c9ec4d",
+        "worksheetId": "ms-g8-cyl-01-c-r1"
+      },
+      {
+        "canonicalSourceSha256": "6ec9f9e6cc75bf00569b5b95e8f93d460f2a6bf3090e093bf50feab492d3acc0",
+        "editionId": "ms-20261113-con-r1",
+        "hintCount": 96,
+        "itemCount": 32,
+        "level": "a",
+        "manifestSha256": "f2acd2c027f6308a914f683b65263bbbbb42ef3751926ab76a973859e35144c9",
+        "nativeExportSha256": "c47d1cbee65cdfcfe3f25147d0b45cb396e09b27dad934338476947a4a74e38e",
+        "pdfId": "40a31c3a95dc42ccb6e5bee798964482",
+        "pdfSha256": "6e24115eebe1f77bc8290bdbebc2499bf3dc618603c68d28ce96aa9e419d5f72",
+        "prefix": "G8-T87",
+        "revision": 1,
+        "sourceNativeExportSha256": "c47d1cbee65cdfcfe3f25147d0b45cb396e09b27dad934338476947a4a74e38e",
+        "worksheetId": "ms-g8-con-01-a-r1"
+      },
+      {
+        "canonicalSourceSha256": "1a07cd20f3abb693a762711ec3a8e2211ff8a70cfb4d6f02f744e83fc3c2e23b",
+        "editionId": "ms-20261113-con-r1",
+        "hintCount": 96,
+        "itemCount": 32,
+        "level": "b",
+        "manifestSha256": "7585d2ca8d271577e423daea80b1c7ff57c414606f54e4ed59d3d3aa08c64581",
+        "nativeExportSha256": "dfa33744e8032f5b132b33a41de6d33dcdb34ac93f3265f7070cef5be13189ac",
+        "pdfId": "6f8b8cb06307457d8441232220d39e82",
+        "pdfSha256": "e014386cb6b7867e4fdcd3ea3b284c24e0b49d28b7bbb30ceff3f76f631a159a",
+        "prefix": "G8-T87",
+        "revision": 1,
+        "sourceNativeExportSha256": "dfa33744e8032f5b132b33a41de6d33dcdb34ac93f3265f7070cef5be13189ac",
+        "worksheetId": "ms-g8-con-01-b-r1"
+      },
+      {
+        "canonicalSourceSha256": "d49ece18033ee21c2b167fd48c200755b0d96405e7445b92dc75f508e8c9d4b0",
+        "editionId": "ms-20261113-con-r1",
+        "hintCount": 96,
+        "itemCount": 32,
+        "level": "c",
+        "manifestSha256": "52aa255c9afb5ab63bc95922af4be4eafe6374fc9ea336af637dab4f220a2919",
+        "nativeExportSha256": "75594e72abe8152cf2c82d6bc2d6028b3660a8ae9cbdc9107a7c8c744f49d72e",
+        "pdfId": "1cc31e126fe547d79d900ca9cc2cfe3a",
+        "pdfSha256": "9bcf7d2f94c22a2aac67af91882e47fa60f921700e6a3c9ebbdfebc5b62cea77",
+        "prefix": "G8-T87",
+        "revision": 1,
+        "sourceNativeExportSha256": "75594e72abe8152cf2c82d6bc2d6028b3660a8ae9cbdc9107a7c8c744f49d72e",
+        "worksheetId": "ms-g8-con-01-c-r1"
+      },
+      {
+        "canonicalSourceSha256": "44fc60256987ef804563f84cd7032d69cd9a904702b3069555f3e6a9a8f55afb",
+        "editionId": "ms-20261113-par-r1",
+        "hintCount": 138,
+        "itemCount": 46,
+        "level": "a",
+        "manifestSha256": "48d05ef6d2fec377525e20ad96edb546c1bdbe1340b9dcf0c7004e4746282280",
+        "nativeExportSha256": "257aa507083772550d4802d7979fac7497cdb2b138ac0aaa0858b85f0ff7aa0d",
+        "pdfId": "a6a84c2e19124d8eb16e0c4dc8eb01d4",
+        "pdfSha256": "29ab6a72af7ecf32a4eff9be60d02c290ff5a8ad2df694dcbc7249ad4dc9b7de",
+        "prefix": "G9-T85",
+        "revision": 1,
+        "sourceNativeExportSha256": "e59c88ead7045b5a57dcaacab460e04a561eae714c3441a1d6d1a26a0fa8d6b9",
+        "worksheetId": "ms-g9-par-01-a-r1"
+      },
+      {
+        "canonicalSourceSha256": "2e5a59f271949168070162bc1aa4aa29ac195e2fc5031e027efeacc1199209c9",
+        "editionId": "ms-20261113-par-r1",
+        "hintCount": 132,
+        "itemCount": 44,
+        "level": "b",
+        "manifestSha256": "80a9a61070f8d184202d2f82459667296f49adb3b0a7ab482893e791c3c6e1ce",
+        "nativeExportSha256": "ffb911d66a2ac3fba7c83b0efc20131d0e3d6da84a8aff52b3471d88e0111df0",
+        "pdfId": "2560b554a1184197be749aef6655bb1e",
+        "pdfSha256": "f9ffb366b5379c432f23b5ffa9d7fce2e680123fdae09d8a96d693cbf6ecf2ac",
+        "prefix": "G9-T85",
+        "revision": 1,
+        "sourceNativeExportSha256": "15b95940e48e48388f82b663f16378a74f6328b5e415ca2089f16ba7b89d0ed2",
+        "worksheetId": "ms-g9-par-01-b-r1"
+      },
+      {
+        "canonicalSourceSha256": "c08966a26378c3b8351ad95ec49ab8a048f85ac5dcddb4fb3d4683d36b888926",
+        "editionId": "ms-20261113-par-r1",
+        "hintCount": 138,
+        "itemCount": 46,
+        "level": "c",
+        "manifestSha256": "4ec21b8c0f9e011b60c3ac68aca665a1a46b9eecde69bab65a0a67b34e1343f9",
+        "nativeExportSha256": "523150bc775cac5bb58487c94fa5c1e83416f7c87a2d09e99f4d1513f9148a62",
+        "pdfId": "fa4d110e7808468491c54abb6af38be2",
+        "pdfSha256": "697075480ed7ea106610ba624f584ad53f0803a1e7f9272e1c22455322f2a94b",
+        "prefix": "G9-T85",
+        "revision": 1,
+        "sourceNativeExportSha256": "523150bc775cac5bb58487c94fa5c1e83416f7c87a2d09e99f4d1513f9148a62",
+        "worksheetId": "ms-g9-par-01-c-r1"
+      }
+    ],
+    "verifiedDbReadbackReceiptSha256": "bd2f58db3ad0afd5a29291d7a74cc27597be84b403f9183c60202c5b577aff85"
+  }
 }
