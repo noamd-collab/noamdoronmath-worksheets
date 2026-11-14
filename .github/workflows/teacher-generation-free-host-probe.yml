@@ -1,0 +1,54 @@
+name: Teacher generation free host resource probe
+on:
+  pull_request:
+    branches: [headless/astro-poc-baseline]
+    paths:
+      - '.github/workflows/teacher-generation-free-host-probe.yml'
+      - '.github/scripts/teacher-free-host-probe.py'
+      - '.github/scripts/tests/test_teacher_free_host_probe.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: teacher-free-probe-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  resources:
+    name: teacher-free-512mb-01cpu
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    env:
+      PROBE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+      BASE_SOURCE: bc10e1cafca7eac106fec173db4b2b0c05dc1216
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.PROBE_SHA }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f
+      - name: Verify frozen image inputs and probe tests
+        run: |
+          git merge-base --is-ancestor "$BASE_SOURCE" HEAD
+          git diff --exit-code "$BASE_SOURCE" -- tools/teacher-generation
+          python3 -m unittest discover -s .github/scripts/tests -p 'test_teacher_free_host_probe.py' -v
+      - name: Build the frozen runtime once without credentials
+        run: |
+          docker buildx build --load --platform linux/amd64 --provenance=false --sbom=false \
+            --label "org.opencontainers.image.revision=$BASE_SOURCE" \
+            --file tools/teacher-generation/cloud/container/Dockerfile \
+            --tag noam-teacher-free-probe:frozen .
+      - name: Measure every fixture and Chromium under the free resource limits
+        run: |
+          python3 .github/scripts/teacher-free-host-probe.py host \
+            --image noam-teacher-free-probe:frozen --out "$RUNNER_TEMP/teacher-free-probe"
+      - name: Preserve success or failure and resource evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: teacher-free-probe-${{ env.PROBE_SHA }}
+          path: ${{ runner.temp }}/teacher-free-probe/
+          retention-days: 7
+          if-no-files-found: warn

@@ -1,0 +1,485 @@
+{
+  "version": 1,
+  "questions": [
+    {
+      "kind": "solve",
+      "star": false,
+      "items": [
+        {
+          "a": 3,
+          "b": 1,
+          "c": 13,
+          "solution": 4
+        },
+        {
+          "a": 4,
+          "b": -1,
+          "c": 35,
+          "solution": 9
+        },
+        {
+          "a": 7,
+          "b": 2,
+          "c": 51,
+          "solution": 7
+        }
+      ]
+    },
+    {
+      "kind": "check_solution",
+      "star": false,
+      "items": [
+        {
+          "a": 11,
+          "b": 4,
+          "c": 92,
+          "solution": 8
+        },
+        {
+          "a": 4,
+          "b": -4,
+          "c": -40,
+          "solution": -9
+        },
+        {
+          "a": 4,
+          "b": 5,
+          "c": -39,
+          "solution": -11
+        }
+      ]
+    },
+    {
+      "kind": "construct",
+      "star": false,
+      "items": [
+        {
+          "a": 3,
+          "b": 7,
+          "c": 49,
+          "solution": 14
+        },
+        {
+          "a": 10,
+          "b": -7,
+          "c": 33,
+          "solution": 4
+        },
+        {
+          "a": 4,
+          "b": 8,
+          "c": 48,
+          "solution": 10
+        }
+      ]
+    },
+    {
+      "kind": "solve",
+      "star": false,
+      "items": [
+        {
+          "a": 3,
+          "b": 10,
+          "c": -2,
+          "solution": -4
+        },
+        {
+          "a": 8,
+          "b": -10,
+          "c": -74,
+          "solution": -8
+        },
+        {
+          "a": 8,
+          "b": 11,
+          "c": -45,
+          "solution": -7
+        }
+      ]
+    },
+    {
+      "kind": "check_solution",
+      "star": false,
+      "items": [
+        {
+          "a": 3,
+          "b": 13,
+          "c": 16,
+          "solution": 1
+        },
+        {
+          "a": 9,
+          "b": -13,
+          "c": 41,
+          "solution": 6
+        },
+        {
+          "a": 2,
+          "b": 14,
+          "c": 42,
+          "solution": 14
+        }
+      ]
+    },
+    {
+      "kind": "construct",
+      "star": false,
+      "items": [
+        {
+          "a": 2,
+          "b": 16,
+          "c": 18,
+          "solution": 1
+        },
+        {
+          "a": 12,
+          "b": -16,
+          "c": 92,
+          "solution": 9
+        },
+        {
+          "a": 3,
+          "b": 17,
+          "c": 38,
+          "solution": 7
+        }
+      ]
+    },
+    {
+      "kind": "solve",
+      "star": false,
+      "items": [
+        {
+          "a": 11,
+          "b": 19,
+          "c": -36,
+          "solution": -5
+        },
+        {
+          "a": 12,
+          "b": -19,
+          "c": 137,
+          "solution": 13
+        },
+        {
+          "a": 6,
+          "b": 20,
+          "c": -40,
+          "solution": -10
+        }
+      ]
+    },
+    {
+      "kind": "check_solution",
+      "star": false,
+      "items": [
+        {
+          "a": 7,
+          "b": 22,
+          "c": -41,
+          "solution": -9
+        },
+        {
+          "a": 6,
+          "b": -22,
+          "c": -22,
+          "solution": 0
+        },
+        {
+          "a": 5,
+          "b": 23,
+          "c": 48,
+          "solution": 5
+        }
+      ]
+    },
+    {
+      "kind": "construct",
+      "star": false,
+      "items": [
+        {
+          "a": 6,
+          "b": 25,
+          "c": 97,
+          "solution": 12
+        },
+        {
+          "a": 1,
+          "b": -25,
+          "c": -30,
+          "solution": -5
+        },
+        {
+          "a": 2,
+          "b": 26,
+          "c": 50,
+          "solution": 12
+        }
+      ]
+    },
+    {
+      "kind": "solve",
+      "star": false,
+      "items": [
+        {
+          "a": 1,
+          "b": 28,
+          "c": 17,
+          "solution": -11
+        },
+        {
+          "a": 8,
+          "b": -28,
+          "c": 60,
+          "solution": 11
+        },
+        {
+          "a": 4,
+          "b": 29,
+          "c": 89,
+          "solution": 15
+        }
+      ]
+    },
+    {
+      "kind": "check_solution",
+      "star": false,
+      "items": [
+        {
+          "a": 5,
+          "b": 31,
+          "c": -4,
+          "solution": -7
+        },
+        {
+          "a": 11,
+          "b": -31,
+          "c": 2,
+          "solution": 3
+        },
+        {
+          "a": 10,
+          "b": 32,
+          "c": 52,
+          "solution": 2
+        }
+      ]
+    },
+    {
+      "kind": "construct",
+      "star": false,
+      "items": [
+        {
+          "a": 9,
+          "b": 34,
+          "c": -20,
+          "solution": -6
+        },
+        {
+          "a": 3,
+          "b": -34,
+          "c": -10,
+          "solution": 8
+        },
+        {
+          "a": 9,
+          "b": 35,
+          "c": -55,
+          "solution": -10
+        }
+      ]
+    },
+    {
+      "kind": "solve",
+      "star": false,
+      "items": [
+        {
+          "a": 4,
+          "b": 37,
+          "c": 37,
+          "solution": 0
+        },
+        {
+          "a": 9,
+          "b": -37,
+          "c": -28,
+          "solution": 1
+        },
+        {
+          "a": 1,
+          "b": 38,
+          "c": 30,
+          "solution": -8
+        }
+      ]
+    },
+    {
+      "kind": "check_solution",
+      "star": false,
+      "items": [
+        {
+          "a": 10,
+          "b": 40,
+          "c": -90,
+          "solution": -13
+        },
+        {
+          "a": 7,
+          "b": -40,
+          "c": 30,
+          "solution": 10
+        },
+        {
+          "a": 3,
+          "b": 41,
+          "c": 80,
+          "solution": 13
+        }
+      ]
+    },
+    {
+      "kind": "construct",
+      "star": false,
+      "items": [
+        {
+          "a": 4,
+          "b": 43,
+          "c": 39,
+          "solution": -1
+        },
+        {
+          "a": 5,
+          "b": -43,
+          "c": -68,
+          "solution": -5
+        },
+        {
+          "a": 2,
+          "b": 44,
+          "c": 30,
+          "solution": -7
+        }
+      ]
+    },
+    {
+      "kind": "solve",
+      "star": false,
+      "items": [
+        {
+          "a": 9,
+          "b": 46,
+          "c": 28,
+          "solution": -2
+        },
+        {
+          "a": 1,
+          "b": -46,
+          "c": -58,
+          "solution": -12
+        },
+        {
+          "a": 11,
+          "b": 47,
+          "c": -74,
+          "solution": -11
+        }
+      ]
+    },
+    {
+      "kind": "check_solution",
+      "star": false,
+      "items": [
+        {
+          "a": 5,
+          "b": 49,
+          "c": 29,
+          "solution": -4
+        },
+        {
+          "a": 7,
+          "b": -49,
+          "c": -49,
+          "solution": 0
+        },
+        {
+          "a": 7,
+          "b": 50,
+          "c": 1,
+          "solution": -7
+        }
+      ]
+    },
+    {
+      "kind": "construct",
+      "star": true,
+      "items": [
+        {
+          "a": 7,
+          "b": 52,
+          "c": 150,
+          "solution": 14
+        },
+        {
+          "a": 12,
+          "b": -52,
+          "c": -28,
+          "solution": 2
+        },
+        {
+          "a": 3,
+          "b": 53,
+          "c": 23,
+          "solution": -10
+        }
+      ]
+    },
+    {
+      "kind": "solve",
+      "star": false,
+      "items": [
+        {
+          "a": 5,
+          "b": 55,
+          "c": -15,
+          "solution": -14
+        },
+        {
+          "a": 8,
+          "b": -55,
+          "c": -79,
+          "solution": -3
+        },
+        {
+          "a": 10,
+          "b": 56,
+          "c": 206,
+          "solution": 15
+        }
+      ]
+    },
+    {
+      "kind": "check_solution",
+      "star": true,
+      "items": [
+        {
+          "a": 11,
+          "b": 58,
+          "c": -30,
+          "solution": -8
+        },
+        {
+          "a": 3,
+          "b": -58,
+          "c": -76,
+          "solution": -6
+        },
+        {
+          "a": 5,
+          "b": 59,
+          "c": 124,
+          "solution": 13
+        }
+      ]
+    }
+  ]
+}

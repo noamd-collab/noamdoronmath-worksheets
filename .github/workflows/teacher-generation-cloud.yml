@@ -1,0 +1,128 @@
+name: Teacher generation cloud qualification
+
+# Builds and tests an inert image. No cloud credentials, deployment, queue or model calls.
+on:
+  pull_request:
+    branches: [headless/astro-poc-baseline]
+    paths:
+      - 'tools/teacher-generation/**'
+      - 'tools/release/teacher-cloudflare-release.py'
+      - 'tools/release/teacher_cloudflare_image.py'
+      - 'tools/release/release.sh'
+      - 'tools/release/tests/test_teacher_cloudflare_*.py'
+      - '.github/workflows/teacher-generation-cloud.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: teacher-cloud-qualification-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+  CI: 'true'
+  WRANGLER_SEND_METRICS: 'false'
+
+jobs:
+  linux:
+    name: teacher-cloud-linux
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.SOURCE_SHA }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: tools/teacher-generation/cloud/cloudflare/package-lock.json
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f
+      - name: Check the exact supervisor and operator boundary
+        working-directory: tools/teacher-generation/cloud/cloudflare
+        run: |
+          npm ci --ignore-scripts --no-audit --no-fund
+          npm run check
+          npm test
+      - name: Check release plan and image verification guards
+        run: python3 -m unittest discover -s tools/release/tests -p 'test_teacher_cloudflare_*.py' -v
+      - name: Build Linux image and run all offline render gates
+        run: bash tools/teacher-generation/cloud/container/ci_check.sh "$RUNNER_TEMP/teacher-cloud-evidence"
+      - name: Export the same qualified image for a separately approved release
+        run: |
+          docker buildx build --platform linux/amd64 --provenance=false --sbom=false \
+            --label "org.opencontainers.image.revision=$SOURCE_SHA" \
+            --metadata-file "$RUNNER_TEMP/teacher-cloud-evidence/image-export-metadata.json" \
+            --file tools/teacher-generation/cloud/container/Dockerfile \
+            --output "type=oci,dest=$RUNNER_TEMP/teacher-worker.oci.tar" .
+          python3 - <<'PY'
+          import hashlib, json, os, re, subprocess, sys, tarfile
+          from pathlib import Path
+          sys.path.insert(0, 'tools/release')
+          from teacher_cloudflare_image import inspect_archive
+          root = Path(os.environ['RUNNER_TEMP'])
+          archive = root / 'teacher-worker.oci.tar'
+          digest = hashlib.file_digest(archive.open('rb'), 'sha256').hexdigest()
+          with tarfile.open(archive, 'r:*') as bundle:
+              index = json.load(bundle.extractfile('index.json'))
+          manifests = index['manifests']
+          assert len(manifests) == 1, 'Expected exactly one Linux image manifest'
+          image_digest = manifests[0]['digest']
+          assert re.fullmatch(r'sha256:[a-f0-9]{64}', image_digest)
+          inspect_archive(archive, archive_sha=digest, archive_bytes=archive.stat().st_size,
+                          image_digest=image_digest, source_sha=os.environ['SOURCE_SHA'])
+          with tarfile.open(archive, 'r:*') as bundle:
+              manifest = json.load(bundle.extractfile('blobs/sha256/' + image_digest[7:]))
+          tested_config = subprocess.check_output(
+              ['docker', 'image', 'inspect', '--format', '{{.Id}}', 'noam-teacher-generation:test'],
+              text=True).strip()
+          assert manifest['config']['digest'] == tested_config, 'Export differs from the tested image'
+          record = {'sourceSha': os.environ['SOURCE_SHA'], 'archive': archive.name,
+                    'archiveSha256': digest, 'archiveBytes': archive.stat().st_size,
+                    'imageDigest': image_digest,
+                    'platform': 'linux/amd64', 'modelCalled': False, 'deployed': False}
+          (root / 'teacher-cloud-evidence' / 'image-metadata.json').write_text(json.dumps(record, indent=2) + '\n')
+          (root / 'teacher-worker.oci.tar.sha256').write_text(digest + '  teacher-worker.oci.tar\n')
+          PY
+      - name: Bundle the supervisor with the qualified image without deploying
+        run: |
+          python3 - <<'PY'
+          import json, os, pathlib, subprocess, tempfile
+          cloud = pathlib.Path('tools/teacher-generation/cloud/cloudflare').resolve()
+          evidence = pathlib.Path(os.environ['RUNNER_TEMP']) / 'teacher-cloud-evidence'
+          record = json.loads((evidence / 'image-metadata.json').read_text())
+          config = json.loads((cloud / 'wrangler.jsonc').read_text())
+          config['main'] = str(cloud / 'src/index.ts')
+          config['vars']['SOURCE_SHA'] = os.environ['SOURCE_SHA']
+          config['containers'][0]['images']['worker'] = {
+              'image': 'registry.cloudflare.com/' + config['account_id'] + '/noam-teacher-generation@' + record['imageDigest']}
+          with tempfile.TemporaryDirectory(prefix='supervisor-dry-run-') as tmp:
+              path = pathlib.Path(tmp) / 'wrangler.json'
+              path.write_text(json.dumps(config))
+              subprocess.run(['node', str(cloud / 'node_modules/wrangler/bin/wrangler.js'),
+                              'deploy', '--dry-run', '--config', str(path),
+                              '--outdir', str(evidence / 'supervisor-bundle')], check=True)
+          PY
+      - name: Preserve qualified image for the guarded operator release
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: teacher-cloud-image-${{ env.SOURCE_SHA }}
+          path: |
+            ${{ runner.temp }}/teacher-worker.oci.tar
+            ${{ runner.temp }}/teacher-worker.oci.tar.sha256
+          compression-level: 0
+          retention-days: 1
+          if-no-files-found: error
+      - name: Preserve render evidence and build identity
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: teacher-cloud-qualification-${{ env.SOURCE_SHA }}
+          path: ${{ runner.temp }}/teacher-cloud-evidence/
+          retention-days: 7
+          if-no-files-found: warn

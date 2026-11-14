@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "description": "Offline fixed-seed fixtures; no live model call or real classroom/person data. Exact prior validated input bytes retained.",
+  "sourcePolicyVerified": "pilot-didactic-quality/3",
+  "files": {
+    "grade3-division/lesson.json": {
+      "sha256": "86dd26390c6dd4abffd51c269abe6d2104138f88d5a00a9506f6f77cca97e34a",
+      "bytes": 683
+    },
+    "grade3-division/canonical.json": {
+      "sha256": "a3aaf68057038a8ca813dc4b7ab2842c98e1d54cf86a59525afab243cfca0db7",
+      "bytes": 5173
+    },
+    "grade3-division/author-parameters.json": {
+      "sha256": "c63493a12ead921efad46493b55fe9492d219116199b1b435320cab0b60ad8f8",
+      "bytes": 2976
+    },
+    "grade7-positive/lesson.json": {
+      "sha256": "856b29bd90b97f5006fdc49ade451ad6b7687dbd999430e15e3c1f1d2f68acfc",
+      "bytes": 614
+    },
+    "grade7-positive/canonical.json": {
+      "sha256": "5b7c134e41321fea0100f036ce2da9bdeecaaa5b7c5f28c289847ccd50f08238",
+      "bytes": 7855
+    },
+    "grade7-positive/author-parameters.json": {
+      "sha256": "3be634d62b4f51c365a52b00948cf5af2d9d1ce1e9cc9ed3f8cccd52bc89f537",
+      "bytes": 4600
+    },
+    "grade7-signed/lesson.json": {
+      "sha256": "6e9d8e734025c5686fbd5e14b25172487880de0fd1c4312d6963cfc5d99b1c57",
+      "bytes": 552
+    },
+    "grade7-signed/canonical.json": {
+      "sha256": "65c9ba8fbc551f7f1d4eacf90f06d03daa9148e725d311e910c722fcc6d19e34",
+      "bytes": 7903
+    },
+    "grade7-signed/author-parameters.json": {
+      "sha256": "514457749ccc766ea3751379ab5d44c1ff5be5dc6a374660f7653f78699cec31",
+      "bytes": 4622
+    }
+  }
+}
