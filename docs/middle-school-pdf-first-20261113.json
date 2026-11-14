@@ -1,0 +1,178 @@
+{
+  "date": "2026-11-13",
+  "release": "MS-PROD-001-7.3.2",
+  "scope": "PDF-only; website buttons pending PR #456 approval and release",
+  "verified_count": 12,
+  "method": "Wix upload then HTTPS download of each site URL; byte SHA-256 compared to frozen release",
+  "pdfBase": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_",
+  "editions": [
+    {
+      "grade": 7,
+      "topicId": 17,
+      "editionId": "ms-20261113-trn-r1",
+      "label": "צורות חופפות, טרנספורמציות וסימטריה · PDF",
+      "status": "published",
+      "isDefault": false,
+      "publicationMode": "pdf-only",
+      "nativePrefix": "G7-T86",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "d78a4f9509dd4f61b6910f6ed05f8a49",
+          "pdfSha256": "c77a43f81c6fe47ba76dfa33d3abf2dec609f32ab870066a5afd1fcf3d9edc20",
+          "worksheetId": "ms-g7-trn-01-a-r1",
+          "revision": 1,
+          "nativeExportSha256": "f9d0364e1069c086de35fbea075def1baac650686f3b67d4de1e8daa9038fd7b",
+          "sourceSha256": "3e70499b80ba3e674bcabcb44eca2070dd9fbcc8d4e535fd59088c311c0eb1a4"
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "ae405a96035b40188cafa046d2796cb5",
+          "pdfSha256": "aa949b0a983eeb27a4ceff136a7742d1cc7acfdb8607638d4d995d8e3eb1374c",
+          "worksheetId": "ms-g7-trn-01-b-r1",
+          "revision": 1,
+          "nativeExportSha256": "d2b157c9c72d42f989ecc71be111743f5eac32b93081a27b13cbf9d5a71ea4a0",
+          "sourceSha256": "b7405715ea03ca9a2fc14b5f41a695c34b0cd08cda92018709f4973b1a3df3be"
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "6322003fe1264207a32e58f7ea094125",
+          "pdfSha256": "43adc3be6a9c4c89671189dac8c14979f8e716e48b219f87c19a49b94f4abfdc",
+          "worksheetId": "ms-g7-trn-01-c-r1",
+          "revision": 1,
+          "nativeExportSha256": "ab46b97bdaf090fddd2be314c902f5a27199624a3453cceca573897a90d7b637",
+          "sourceSha256": "25f55280284ff0bd604c5b67704e1a1f12041e1b2dc4a7d88dc7f6edcde79722"
+        }
+      ]
+    },
+    {
+      "grade": 8,
+      "topicId": 14,
+      "editionId": "ms-20261113-cyl-r1",
+      "label": "מעגל וגליל — נפח ושטח פנים · PDF",
+      "status": "published",
+      "isDefault": false,
+      "publicationMode": "pdf-only",
+      "nativePrefix": "G8-T84",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "70b137d10a3241178ca02d6c9f369742",
+          "pdfSha256": "553c909e73e620de5062751c6a7bc4190a4d84ce2a86bc5e748c41571aab66b2",
+          "worksheetId": "ms-g8-cyl-01-a-r1",
+          "revision": 1,
+          "nativeExportSha256": "92086004d8949ee0688d664b9b40c68a59881c9a1626fb1d9d0f82662843ed3c",
+          "sourceSha256": "ff98939fe719204ba771ce9a36a84c59e1ba79488408d239f632c3588afabba6"
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "bf67b5305ff84bb7821cf1385c950911",
+          "pdfSha256": "e188f7ca77956ebd418b3fb4d2eed1930e6f04757e090b2511ca5fe8efcfef56",
+          "worksheetId": "ms-g8-cyl-01-b-r1",
+          "revision": 1,
+          "nativeExportSha256": "89e7d569c9418efd62ba6fdee28b0aba4be3f0fcb019c25dda321ddf47b4bcdc",
+          "sourceSha256": "87de4cd462eb9bbf1a331530d824e86f659ad4019eae2547cea5a9c613910f3c"
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "98de3d9eed564ebdaea91266b3b84cca",
+          "pdfSha256": "36bc7f2f00389cf11f718ff764a69d01164f277a58c915b7c1733dee2379c68b",
+          "worksheetId": "ms-g8-cyl-01-c-r1",
+          "revision": 1,
+          "nativeExportSha256": "c18d2637caf8045f33ca26054c234ca1310f24fc2e89f0d17904f3ddf6c9ec4d",
+          "sourceSha256": "82f5e56a1404752387b9f28e50701450777f5536d1ba65bf52f9bbc2409d62b5"
+        }
+      ]
+    },
+    {
+      "grade": 8,
+      "topicId": 15,
+      "editionId": "ms-20261113-con-r1",
+      "label": "חרוט — נפח וחתך צירי · PDF",
+      "status": "published",
+      "isDefault": false,
+      "publicationMode": "pdf-only",
+      "nativePrefix": "G8-T87",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "40a31c3a95dc42ccb6e5bee798964482",
+          "pdfSha256": "6e24115eebe1f77bc8290bdbebc2499bf3dc618603c68d28ce96aa9e419d5f72",
+          "worksheetId": "ms-g8-con-01-a-r1",
+          "revision": 1,
+          "nativeExportSha256": "c47d1cbee65cdfcfe3f25147d0b45cb396e09b27dad934338476947a4a74e38e",
+          "sourceSha256": "b61f645fd51b7885e00640cd7f274c7c3bd091e6fe338222fa5a7945707456bf"
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "6f8b8cb06307457d8441232220d39e82",
+          "pdfSha256": "e014386cb6b7867e4fdcd3ea3b284c24e0b49d28b7bbb30ceff3f76f631a159a",
+          "worksheetId": "ms-g8-con-01-b-r1",
+          "revision": 1,
+          "nativeExportSha256": "dfa33744e8032f5b132b33a41de6d33dcdb34ac93f3265f7070cef5be13189ac",
+          "sourceSha256": "3c05eb3af9ed00aaa43e279628503e4e8cb1eb6d6e6759bb668e80e94757014a"
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "1cc31e126fe547d79d900ca9cc2cfe3a",
+          "pdfSha256": "9bcf7d2f94c22a2aac67af91882e47fa60f921700e6a3c9ebbdfebc5b62cea77",
+          "worksheetId": "ms-g8-con-01-c-r1",
+          "revision": 1,
+          "nativeExportSha256": "75594e72abe8152cf2c82d6bc2d6028b3660a8ae9cbdc9107a7c8c744f49d72e",
+          "sourceSha256": "0c3b2150c11a02b20b68123ff4cc07c2d7e3f821f8c36fec9a8e3fb1d581aafa"
+        }
+      ]
+    },
+    {
+      "grade": 9,
+      "topicId": 7,
+      "editionId": "ms-20261113-par-r1",
+      "label": "מקבילית — תכונות ותנאי זיהוי · PDF",
+      "status": "published",
+      "isDefault": false,
+      "publicationMode": "pdf-only",
+      "nativePrefix": "G9-T85",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "a6a84c2e19124d8eb16e0c4dc8eb01d4",
+          "pdfSha256": "29ab6a72af7ecf32a4eff9be60d02c290ff5a8ad2df694dcbc7249ad4dc9b7de",
+          "worksheetId": "ms-g9-par-01-a-r1",
+          "revision": 1,
+          "nativeExportSha256": "e59c88ead7045b5a57dcaacab460e04a561eae714c3441a1d6d1a26a0fa8d6b9",
+          "sourceSha256": "fb338a0227435f45f4423a4bbb8c02551e48bd59a9a9cee17c7cef92dbfbaeaa"
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "2560b554a1184197be749aef6655bb1e",
+          "pdfSha256": "f9ffb366b5379c432f23b5ffa9d7fce2e680123fdae09d8a96d693cbf6ecf2ac",
+          "worksheetId": "ms-g9-par-01-b-r1",
+          "revision": 1,
+          "nativeExportSha256": "15b95940e48e48388f82b663f16378a74f6328b5e415ca2089f16ba7b89d0ed2",
+          "sourceSha256": "474709649580f511bf652cc9c4644e8a75252f34dd9e1a399900b4880232f6ea"
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "fa4d110e7808468491c54abb6af38be2",
+          "pdfSha256": "697075480ed7ea106610ba624f584ad53f0803a1e7f9272e1c22455322f2a94b",
+          "worksheetId": "ms-g9-par-01-c-r1",
+          "revision": 1,
+          "nativeExportSha256": "523150bc775cac5bb58487c94fa5c1e83416f7c87a2d09e99f4d1513f9148a62",
+          "sourceSha256": "751da636ed85cdad991b5a886924f72a6c4a3deaf30a425f336369ddb03a896c"
+        }
+      ]
+    }
+  ]
+}

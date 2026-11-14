@@ -10,10 +10,10 @@ import ParallelCointeriorLoop from './ParallelCointeriorLoop.astro';
 import StatisticsFrequencyLoop from './StatisticsFrequencyLoop.astro';
 import KiteInteractive from './KiteInteractive.astro';
 import { loadCatalog } from '../lib/catalog/loadCatalog';
-import { buildWorksheetHref } from '../lib/worksheetLinks';
 import { worksheetActionLabel } from '../lib/worksheetActions';
 import TopicShareLink from './TopicShareLink.astro';
-import { resolveEdition } from '../lib/catalog/editions';
+import TopicWorksheetEditions from './TopicWorksheetEditions.astro';
+import { topicWorksheetEditionLinks } from '../lib/topicWorksheetEditions';
 import { LANDING_LOOP_ANCHORS, componentLandingLoop, topicLandingLoop } from '../lib/landingLoops';
 import AdjacentVerticalAnglesLoop from './AdjacentVerticalAnglesLoop.astro';
 import {
@@ -158,28 +158,17 @@ const heroUnits = hasDemo ? bodyUnits.slice(0, heroEnd) : [];
 const flowUnits = hasDemo ? bodyUnits.slice(heroEnd) : bodyUnits;
 const catalog = loadCatalog();
 const topicId = page.catalogCta?.catalogTopicId ?? null;
-function levelsForTopicId(catTopicId: number | null | undefined, backHref?: string) {
-  if (catTopicId == null) return [];
-  const found = catalog.grades
-    .find((entry) => entry.grade === page.grade)
-    ?.topics.find((topic) => topic.id === catTopicId);
-  if (!found) return [];
-  const edition = resolveEdition(found);
-  return edition.levels.map((level) => ({
-    key: level.key,
-    label: level.label,
-    href: buildWorksheetHref({
-      catalog,
-      grade: page.grade,
-      topic: found,
-      levelKey: level.key,
-      editionId: edition.editionId,
-      backPath: resolveSiteHrefString(backHref || page.catalogCta.href),
-    }),
-  }));
+function editionsForTopicId(catTopicId: number | null | undefined, backHref?: string) {
+  return topicWorksheetEditionLinks(catalog, page.grade, catTopicId,
+    resolveSiteHrefString(backHref || page.catalogCta.href));
 }
 
-const topicLevels = levelsForTopicId(topicId, page.catalogCta?.href);
+function levelsForTopicId(catTopicId: number | null | undefined, backHref?: string) {
+  return editionsForTopicId(catTopicId, backHref)[0]?.levels || [];
+}
+
+const topicEditions = editionsForTopicId(topicId, page.catalogCta?.href);
+const topicLevels = topicEditions[0]?.levels || [];
 
 function ctaTargetHref(cta: { label: string; href: string; catalogTopicId?: number | null }, targetId: string) {
   const levels = levelsForTopicId(cta.catalogTopicId ?? topicId, cta.href);
@@ -234,7 +223,7 @@ function faqHeadingId(groupIndex: number) {
 
     {
       (page.preH1Ctas || []).map((cta, idx) => {
-        const preLevels = levelsForTopicId(cta.catalogTopicId ?? topicId, cta.href);
+        const preEditions = editionsForTopicId(cta.catalogTopicId ?? topicId, cta.href);
         const targetId = idx === 0 && !hasDemo ? 'topic-levels' : `topic-levels-pre-${idx}`;
         const directHref = ctaTargetHref(cta, targetId);
         return (
@@ -251,12 +240,8 @@ function faqHeadingId(groupIndex: number) {
                 {worksheetActionLabel(cta.label, directHref)}
               </a>
             </p>
-            {preLevels.length > 0 && directHref.startsWith('#') && (
-              <div class="exact-topic-levels" id={targetId} data-topic-levels>
-                {preLevels.map((level) => (
-                  <a class={`exact-topic-level exact-topic-level--${level.key}`} href={level.href} target="_blank" rel="noopener noreferrer" data-level-key={level.key}>{worksheetActionLabel(level.label, level.href)}</a>
-                ))}
-              </div>
+            {preEditions.length > 0 && (directHref.startsWith('#') || preEditions.length > 1) && (
+              <TopicWorksheetEditions id={targetId} editions={preEditions} />
             )}
           </div>
         );
@@ -318,11 +303,7 @@ function faqHeadingId(groupIndex: number) {
               return null;
             })}
             {topicLevels.length > 0 && (
-              <div class="exact-topic-levels" id="topic-levels" data-topic-levels>
-                {topicLevels.map((level) => (
-                  <a class={`exact-topic-level exact-topic-level--${level.key}`} href={level.href} target="_blank" rel="noopener noreferrer" data-level-key={level.key}>{worksheetActionLabel(level.label, level.href)}</a>
-                ))}
-              </div>
+              <TopicWorksheetEditions id="topic-levels" editions={topicEditions} />
             )}
           </div>
         </div>
@@ -341,7 +322,7 @@ function faqHeadingId(groupIndex: number) {
           }
           if (unit.kind === 'cta') {
             const block = unit.item;
-            const flowLevels = levelsForTopicId(block.catalogTopicId ?? topicId, block.href);
+            const flowEditions = editionsForTopicId(block.catalogTopicId ?? topicId, block.href);
             const targetId = !hasDemo && topicLevels.length > 0 && block.catalogTopicId === topicId
               ? 'topic-levels'
               : `topic-levels-${block.catalogTopicId ?? 'main'}`;
@@ -362,12 +343,8 @@ function faqHeadingId(groupIndex: number) {
                     {worksheetActionLabel(block.label, directHref)}
                   </a>
                 </p>
-                {flowLevels.length > 0 && directHref.startsWith('#') && (
-                  <div class="exact-topic-levels" id={targetId} data-topic-levels>
-                    {flowLevels.map((level) => (
-                      <a class={`exact-topic-level exact-topic-level--${level.key}`} href={level.href} target="_blank" rel="noopener noreferrer" data-level-key={level.key}>{worksheetActionLabel(level.label, level.href)}</a>
-                    ))}
-                  </div>
+                {flowEditions.length > 0 && (directHref.startsWith('#') || flowEditions.length > 1) && (
+                  <TopicWorksheetEditions id={targetId} editions={flowEditions} />
                 )}
               </div>
             );

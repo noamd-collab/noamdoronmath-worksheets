@@ -75,7 +75,7 @@ async function fixture() {
   await copyFile(join(source, 'fig1.svg'), join(root, 'dist/noam-ai/native/G9-T40/a/figures/fig1.svg'));
   await writeFile(join(root, 'dist/noam-ai/native/G9-T40/a/noam-ai.json'), '{"unchanged":true}');
   await writeFile(join(root, 'dist/keep.txt'), 'keep exact bytes\r\n');
-  const endpoint = { routeData: { route: '/noam-ai/native/[...asset]', type: 'endpoint', prerender: false, segments: [[{ content: 'noam-ai', dynamic: false }], [{ content: 'native', dynamic: false }], [{ content: '...asset', dynamic: true, spread: true }]] } };
+  const endpoint = { styles: [], routeData: { route: '/noam-ai/native/[...asset]', type: 'endpoint', prerender: false, segments: [[{ content: 'noam-ai', dynamic: false }], [{ content: 'native', dynamic: false }], [{ content: '...asset', dynamic: true, spread: true }]] } };
   const manifest = { base: '/', routes: [endpoint], assets: ['/noam-ai/native/G9-T40/a/figures/fig1.svg', '/noam-ai/native/G9-T40/a/noam-ai.json', '/keep.txt'], renderers: [], entryModules: {}, adapterName: 'test', hrefRoot: 'file:///tmp/native-svg-test/' };
   const baseline = await baselineRoutesFromManifest(manifest, root);
   await writeFile(join(root, 'dist/_routes.json'), JSON.stringify(baseline));

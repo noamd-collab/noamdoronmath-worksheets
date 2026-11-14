@@ -43,13 +43,29 @@ export interface CatalogTopic {
   defaultEditionId?: string;
 }
 
-export interface CatalogEdition {
+/** PDF-only provenance names existing files, not future measured/hint artifacts. */
+export interface CatalogPdfOnlyLevel extends CatalogLevel {
+  key: 'a' | 'b' | 'c';
+  viewerLevel: 'A' | 'B' | 'E';
+  worksheetId: string;
+  revision: number;
+  pdfSha256: string;
+  /** SHA-256 of the frozen worksheet source sheet.json bytes. */
+  sourceSha256: string;
+  nativeExportSha256: string;
+}
+
+interface CatalogEditionBase {
   editionId: string;
   label: string;
   status: 'published';
-  levels: CatalogLevel[];
   routing: CatalogRouting;
 }
+
+export type CatalogEdition = CatalogEditionBase & (
+  | { publicationMode: 'pdf-only'; levels: CatalogPdfOnlyLevel[] }
+  | { publicationMode?: never; levels: CatalogLevel[] }
+);
 
 export interface CatalogGroup {
   key: string;

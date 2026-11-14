@@ -1,0 +1,230 @@
+{
+  "schema": "noam-middle-school-followup-pdf-evidence/v1",
+  "date": "2026-11-13",
+  "scope": "Six additional PDF-only files from MS-PROD-002 and MS-PROD-003. Not part of PR456. Local candidate catalog changes; no merge/deployment/publication is claimed.",
+  "catalog_status_semantics": "Registry status published selects the candidate build overlay; it is not evidence the website deployment occurred.",
+  "verified_count": 6,
+  "verified_download_count": 18,
+  "uploaded_media": true,
+  "live_catalog_linked": false,
+  "live_published": false,
+  "included_in_pr456": false,
+  "default_edition": "legacy",
+  "AI_activated": false,
+  "Word_available": false,
+  "teacher_picker_added": false,
+  "native_export_hash_purpose": "Frozen source provenance only. No native export or hints are published for these six files.",
+  "method": "Read canonical frozen PDFs, source sheet.json and native export; compare byte SHA to frozen manifest and saved Wix returned/CDN/site download verification. No new upload or HTTP request in this catalog task.",
+  "editions": [
+    {
+      "grade": 9,
+      "topicId": 7,
+      "editionId": "ms-20261113-par-02-r1",
+      "label": "מקבילית — הוכחות וסימטריה · PDF",
+      "status": "published",
+      "isDefault": false,
+      "publicationMode": "pdf-only",
+      "nativePrefix": "G9-T88",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "b1e2fc9246c24ab5a2893fb47edab594",
+          "pdfSha256": "ee2eba0f636c4bf76ea49ddc743d80d86bff4e88593bccf175479bc690299370",
+          "worksheetId": "ms-g9-par-02-a-r1",
+          "revision": 1,
+          "nativeExportSha256": "806c6d00148f7f5b3784192213ef9d4ac47873e26c2a2ddf7e32cb92358f3f7b",
+          "sourceSha256": "d68928e139e54674b9d1ff7b0c0f36b23dc15321e28de8561d54ab8724afcc94"
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "23fff0c52ad54c9abebd49c036a5cb16",
+          "pdfSha256": "ad1b760479890bc85c1ca20ac55f552dfbc662adca89459dd6d7aad3c1005b0d",
+          "worksheetId": "ms-g9-par-02-b-r1",
+          "revision": 1,
+          "nativeExportSha256": "a1c0b46b742329433096412ec4a04014a6c515a38535d8599c9b6ad9b6619df0",
+          "sourceSha256": "1553a2afa9e158f22b08b5bb447fcfd8db26fdb0b657d903221406eb3afda5d2"
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "75d689c5b5a349e694c2e4f63978daac",
+          "pdfSha256": "6cb5228e0958fc593b5f77a77e85641726766a2841f06617bb4ab283215ea3ae",
+          "worksheetId": "ms-g9-par-02-c-r1",
+          "revision": 1,
+          "nativeExportSha256": "45bfe6066d20b5f18b1418c9cd8307abe70a173eab4fe86de19c931c919ddf15",
+          "sourceSha256": "fbfaadb83e337be49a8ab8161cc2b54e30998bc65ff66c9e9df4ca0c99a052c6"
+        }
+      ]
+    },
+    {
+      "grade": 9,
+      "topicId": 7,
+      "editionId": "ms-20261113-par-03-r1",
+      "label": "מקבילית — משפטים הפוכים וזיהוי · PDF",
+      "status": "published",
+      "isDefault": false,
+      "publicationMode": "pdf-only",
+      "nativePrefix": "G9-T89",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "26c3fb6b6b834a4b83a00a1f3efcbba5",
+          "pdfSha256": "c05ad358b83cc4ac6b1b67e6a0a38ae91c6a5e56e879e2cc7de0fe1e605e91af",
+          "worksheetId": "ms-g9-par-03-a-r1",
+          "revision": 1,
+          "nativeExportSha256": "5be27974f8b9bbb7d2d0a95c314376ce72f7d9196d529c7b24e53d6078644b79",
+          "sourceSha256": "c97af6f597947fe72873fb346a427a4a457d18b79d5e521eaa870dd29ff9f23e"
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "4a20f98d630b4c478a0876dd52b9ed40",
+          "pdfSha256": "a40ef513792a4a9e5a67f62b3f7a0030a9251a77f9d86378ec9e82aa1564299e",
+          "worksheetId": "ms-g9-par-03-b-r1",
+          "revision": 1,
+          "nativeExportSha256": "74255149ce477142196d7a17c38105c4e06c6e9acc552606fa8a50bc47e2d236",
+          "sourceSha256": "82b414cabdbd694a3a2819e70b588dbf36e0f26a5350b72c45a35686789d775e"
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "46f9202e918441928447db3c441f3d3f",
+          "pdfSha256": "7711a4eca4081b861960eab93288c153e7ef66f0b5c745347fde867abb3e62bd",
+          "worksheetId": "ms-g9-par-03-c-r1",
+          "revision": 1,
+          "nativeExportSha256": "18d389ff8899ab2a5706d83edd579701badbf94f639f7441be225298c4533b19",
+          "sourceSha256": "45607e250e9d7ba9aca4764062878a89249d9b5a2fe9a5c29f8f0aa96c99ee0b"
+        }
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "batch": "MS-PROD-002",
+      "sheet_id": "G9-PAR-02",
+      "native_package": "G9-T88",
+      "editionId": "ms-20261113-par-02-r1",
+      "grade": 9,
+      "site_topic_id": 7,
+      "source_title": "מקבילית: הוכחות מן ההגדרה, חוצי זוויות וחצי סיבוב",
+      "frozen_content_sha256": "78745cb2cde44bf00981d6f47ee0d3c31ab6eef91d30cad34bd82f7d3334876f",
+      "upload_receipt_sha256": "c69d2467b95d40688cb542f0e921f4d70169e60f3ceb1dce45661e3c0255aed0",
+      "verified_media_sha256": "fd6c13ad9056d041d0acc193b94d6128dcbdc270c08b5d69a18d21df4f652417",
+      "levels": [
+        {
+          "level": "a",
+          "pdfId": "b1e2fc9246c24ab5a2893fb47edab594",
+          "pdfSha256": "ee2eba0f636c4bf76ea49ddc743d80d86bff4e88593bccf175479bc690299370",
+          "sourceSha256": "d68928e139e54674b9d1ff7b0c0f36b23dc15321e28de8561d54ab8724afcc94",
+          "nativeExportSha256": "806c6d00148f7f5b3784192213ef9d4ac47873e26c2a2ddf7e32cb92358f3f7b",
+          "bytes": 154830,
+          "pages": 14,
+          "questions": 13,
+          "subitems": 65,
+          "verified_urls": [
+            "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_b1e2fc9246c24ab5a2893fb47edab594.pdf",
+            "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_b1e2fc9246c24ab5a2893fb47edab594.pdf",
+            "https://static.wixstatic.com/ugd/d8e7ad_b1e2fc9246c24ab5a2893fb47edab594.pdf"
+          ]
+        },
+        {
+          "level": "b",
+          "pdfId": "23fff0c52ad54c9abebd49c036a5cb16",
+          "pdfSha256": "ad1b760479890bc85c1ca20ac55f552dfbc662adca89459dd6d7aad3c1005b0d",
+          "sourceSha256": "1553a2afa9e158f22b08b5bb447fcfd8db26fdb0b657d903221406eb3afda5d2",
+          "nativeExportSha256": "a1c0b46b742329433096412ec4a04014a6c515a38535d8599c9b6ad9b6619df0",
+          "bytes": 149080,
+          "pages": 14,
+          "questions": 13,
+          "subitems": 55,
+          "verified_urls": [
+            "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_23fff0c52ad54c9abebd49c036a5cb16.pdf",
+            "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_23fff0c52ad54c9abebd49c036a5cb16.pdf",
+            "https://static.wixstatic.com/ugd/d8e7ad_23fff0c52ad54c9abebd49c036a5cb16.pdf"
+          ]
+        },
+        {
+          "level": "c",
+          "pdfId": "75d689c5b5a349e694c2e4f63978daac",
+          "pdfSha256": "6cb5228e0958fc593b5f77a77e85641726766a2841f06617bb4ab283215ea3ae",
+          "sourceSha256": "fbfaadb83e337be49a8ab8161cc2b54e30998bc65ff66c9e9df4ca0c99a052c6",
+          "nativeExportSha256": "45bfe6066d20b5f18b1418c9cd8307abe70a173eab4fe86de19c931c919ddf15",
+          "bytes": 151442,
+          "pages": 14,
+          "questions": 13,
+          "subitems": 54,
+          "verified_urls": [
+            "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_75d689c5b5a349e694c2e4f63978daac.pdf",
+            "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_75d689c5b5a349e694c2e4f63978daac.pdf",
+            "https://static.wixstatic.com/ugd/d8e7ad_75d689c5b5a349e694c2e4f63978daac.pdf"
+          ]
+        }
+      ]
+    },
+    {
+      "batch": "MS-PROD-003",
+      "sheet_id": "G9-PAR-03",
+      "native_package": "G9-T89",
+      "editionId": "ms-20261113-par-03-r1",
+      "grade": 9,
+      "site_topic_id": 7,
+      "source_title": "מקבילית: משפטים הפוכים וזיהוי",
+      "frozen_content_sha256": "cb0e4e830cb75584b14e06c06de8bf3ffd13ff2b6ac8c16856649465eb86a2ae",
+      "upload_receipt_sha256": "eacb5825c8205a657c9728f095579b489dfa0fc612a7bb5730f1e162016e6b8b",
+      "verified_media_sha256": "64a368bca404608c36209055091c2733427cf543f441537adfb8c7607d1c9fc5",
+      "levels": [
+        {
+          "level": "a",
+          "pdfId": "26c3fb6b6b834a4b83a00a1f3efcbba5",
+          "pdfSha256": "c05ad358b83cc4ac6b1b67e6a0a38ae91c6a5e56e879e2cc7de0fe1e605e91af",
+          "sourceSha256": "c97af6f597947fe72873fb346a427a4a457d18b79d5e521eaa870dd29ff9f23e",
+          "nativeExportSha256": "5be27974f8b9bbb7d2d0a95c314376ce72f7d9196d529c7b24e53d6078644b79",
+          "bytes": 97765,
+          "pages": 9,
+          "questions": 8,
+          "subitems": 38,
+          "verified_urls": [
+            "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_26c3fb6b6b834a4b83a00a1f3efcbba5.pdf",
+            "https://static.wixstatic.com/ugd/d8e7ad_26c3fb6b6b834a4b83a00a1f3efcbba5.pdf",
+            "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_26c3fb6b6b834a4b83a00a1f3efcbba5.pdf"
+          ]
+        },
+        {
+          "level": "b",
+          "pdfId": "4a20f98d630b4c478a0876dd52b9ed40",
+          "pdfSha256": "a40ef513792a4a9e5a67f62b3f7a0030a9251a77f9d86378ec9e82aa1564299e",
+          "sourceSha256": "82b414cabdbd694a3a2819e70b588dbf36e0f26a5350b72c45a35686789d775e",
+          "nativeExportSha256": "74255149ce477142196d7a17c38105c4e06c6e9acc552606fa8a50bc47e2d236",
+          "bytes": 93887,
+          "pages": 9,
+          "questions": 8,
+          "subitems": 31,
+          "verified_urls": [
+            "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_4a20f98d630b4c478a0876dd52b9ed40.pdf",
+            "https://static.wixstatic.com/ugd/d8e7ad_4a20f98d630b4c478a0876dd52b9ed40.pdf",
+            "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_4a20f98d630b4c478a0876dd52b9ed40.pdf"
+          ]
+        },
+        {
+          "level": "c",
+          "pdfId": "46f9202e918441928447db3c441f3d3f",
+          "pdfSha256": "7711a4eca4081b861960eab93288c153e7ef66f0b5c745347fde867abb3e62bd",
+          "sourceSha256": "45607e250e9d7ba9aca4764062878a89249d9b5a2fe9a5c29f8f0aa96c99ee0b",
+          "nativeExportSha256": "18d389ff8899ab2a5706d83edd579701badbf94f639f7441be225298c4533b19",
+          "bytes": 91751,
+          "pages": 9,
+          "questions": 8,
+          "subitems": 31,
+          "verified_urls": [
+            "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_46f9202e918441928447db3c441f3d3f.pdf",
+            "https://static.wixstatic.com/ugd/d8e7ad_46f9202e918441928447db3c441f3d3f.pdf",
+            "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_46f9202e918441928447db3c441f3d3f.pdf"
+          ]
+        }
+      ]
+    }
+  ]
+}

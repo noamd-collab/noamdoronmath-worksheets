@@ -136,6 +136,29 @@ describe('exact-design protected live-baseline boundaries', () => {
           delete topic.editions;
           delete topic.defaultEditionId;
         }
+        // Noam's 13 November PDF-first work adds four initial focused sets,
+        // plus two separately reviewed parallelogram follow-ups (not PR456).
+        // Bind every byte of each reviewed addition, strip only those overlays,
+        // and keep the original complete legacy catalog hash below unchanged.
+        const middleAdditions = [
+          [7, 17, ['ms-20261113-trn-r1'], '3e3929a160636aabc2e27f8dedff16dbff4eda435b6c4155f50cb61134c5381c'],
+          [8, 14, ['ms-20261113-cyl-r1'], '3f476e3666dbb952773355bbb8b98d1a03d2ad3733cac819c0b210d0a792edbb'],
+          [8, 15, ['ms-20261113-con-r1'], 'e3e8dfde45ca70dbf15c20a264cf34cb329d9700f9e361917da796e454a9cc3d'],
+          [9, 7, ['ms-20261113-par-r1', 'ms-20261113-par-02-r1', 'ms-20261113-par-03-r1'], '659b7c7c0b509660b7ad814a9c99c41adab03a3b32036d1c0d4538e916273bf6'],
+        ] as const;
+        for (const [gradeId, topicId, editionIds, additionSha256] of middleAdditions) {
+          const topic = catalog.grades.find((g: any) => g.grade === gradeId).topics.find((t: any) => t.id === topicId);
+          assert.equal(topic.defaultEditionId, 'legacy');
+          assert.deepEqual(topic.editions.map((edition: any) => edition.editionId), editionIds);
+          for (const edition of topic.editions) {
+            assert.equal(edition.publicationMode, 'pdf-only');
+            assert.equal(edition.routing.usesViewer, false);
+            assert.equal(edition.routing.aiHintShown, false);
+          }
+          assert.equal(sha256(JSON.stringify(topic.editions)), additionSha256);
+          delete topic.editions;
+          delete topic.defaultEditionId;
+        }
         content = JSON.stringify(catalog, null, 2) + '\n';
       }
       if (file === 'public/noam-learning.js') {
@@ -195,7 +218,18 @@ describe('exact-design protected live-baseline boundaries', () => {
       '  document.body.textContent = window.NOAM_ELEMENTARY_PDF_URL\n' +
       '    ? "פותחים את דף העבודה…" : "הקישור לדף העבודה אינו תקין.";\n' +
       '  return;\n}\n\n';
-    const currentViewer = read('public/worksheet-viewer-noam.html');
+    // PR461 deliberately adds measured cards/feedback and a selection announcement.
+    // Reverse only the 12 reviewed, exact byte hunks; keep every pre-existing
+    // head/script SHA below. An edited/new/missing hunk or unrelated byte fails.
+    const deltaText = read('tests/fixtures/measured-viewer-reviewed-delta.json');
+    assert.equal(sha256(deltaText), '5263c24c35ea4fab909d6da593a365976778f7b75f82b276fa9e85da0c2d0482');
+    const delta = JSON.parse(deltaText);
+    let currentViewer = read('public/worksheet-viewer-noam.html');
+    for (const hunk of delta.hunks) {
+      assert.equal(currentViewer.split(hunk.after).length, 2, 'one exact reviewed viewer hunk');
+      currentViewer = currentViewer.replace(hunk.after, hunk.before);
+    }
+    assert.equal(sha256(currentViewer), delta.baseline_sha256, 'all bytes outside the reviewed delta retain the baseline');
     assert.equal(currentViewer.split(elementaryExit).length, 2);
     // The scoped exit is covered behaviorally; all prior middle-school script
     // bytes must still match their historical hashes after removing only it.

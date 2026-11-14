@@ -4,7 +4,7 @@
  * same-origin preview serving.
  *
  * Selection (generic, no worksheet exceptions):
- *   every published edition PDF needed by teacher tools, plus legacy topics
+ *   published non-PDF-only edition PDFs not explicitly disabled, plus legacy topics
  *   with routing.usesViewer (and siblingPdfQuery ids). PDFs are not copied.
  *
  * Source of truth: repo-root noam-ai/manifests/ (mirrors GitHub Pages).
@@ -46,8 +46,8 @@ export function collectViewerPdfIds(catalog) {
   const ids = new Set();
   for (const g of catalog.grades || []) {
     for (const t of g.topics || []) {
-      for (const edition of t.editions || []) if (edition.status === 'published') {
-        for (const level of edition.levels) ids.add(level.pdfId);
+      for (const edition of t.editions || []) if (edition.status === 'published' && edition.publicationMode !== 'pdf-only') {
+        for (const level of edition.levels) if (level.aiReady !== false) ids.add(level.pdfId);
       }
       if (!t.routing?.usesViewer) continue;
       for (const lv of t.levels || []) {
@@ -106,7 +106,7 @@ function writeProvenance(pdfIds, files, extras = {}) {
       note: 'Canonical bytes live in the repo; GitHub Pages serves the same tree. PDFs stay on Wix Media.',
     },
     selection: {
-      rule: 'published worksheet editions for teacher tools + legacy topics with routing.usesViewer (+ siblingPdfQuery)',
+      rule: 'published non-PDF-only worksheet editions unless level.aiReady=false + legacy topics with routing.usesViewer (+ siblingPdfQuery)',
       catalogPath: 'src/data/catalog.v1.json',
       count: pdfIds.length,
     },
