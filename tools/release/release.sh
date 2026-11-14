@@ -3,6 +3,12 @@
 # Usage: tools/release/release.sh <expected-commit-sha> [repo-dir]
 # Env (see tools/.env.example): WIX_CLI_API_KEY (optional, for non-interactive login), NODE_BIN, RELEASE_BRANCH (default: main)
 set -u
+# Configuration-only guard: dispatch before loading any Wix env or publishing.
+if [ "${RELEASE_TARGET:-wix}" = "teacher-wix-wake-env" ]; then
+  exec env -u NODE_DEBUG -u NODE_DEBUG_NATIVE -u NODE_OPTIONS -u DEBUG \
+    -u SSLKEYLOGFILE -u NODE_V8_COVERAGE -u NODE_TLS_REJECT_UNAUTHORIZED \
+    "${NODE_BIN:+$NODE_BIN/}node" "$(dirname "$0")/teacher-wix-wake-env.mjs" "$@"
+fi
 [ -f "$(dirname "$0")/../.env" ] && set -a && . "$(dirname "$0")/../.env" && set +a
 EXPECT="${1:?expected commit sha}"; REPO="${2:-$(git rev-parse --show-toplevel)}"
 BRANCH="${RELEASE_BRANCH:-main}"

@@ -18,3 +18,5 @@ jobs:
           node-version: '22'
       - name: Test publication intent, Git history and durable deployment state
         run: node --test .github/scripts/production-release.test.mjs .github/scripts/reconcile-production.test.mjs
+      - name: Test guarded Wix wake configuration without provider requests
+        run: node --test tools/release/tests/teacher-wix-wake-env.test.mjs
