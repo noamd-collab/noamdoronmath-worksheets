@@ -1,0 +1,128 @@
+name: publish-baseline
+
+# Publish only from headless/astro-poc-baseline, never from release/* branches.
+# Every new site SHA needs Noam's explicit approval and a reviewed PR.
+# Noam authorized review, fixes, merge and publication of the landing updates (11.11.2026: #434, #435, #436, #438, #439, #441, #442).
+# Payload-size retry: reviewed #444; reconcile the failed #443 marker through #445 before merging this pin.
+# Games corner: Noam approved shrink, merge and publication of #437 (11.11.2026); budgeted payload 19,201,099 bytes.
+# A push publishes only when RELEASE_SHA changes. Infrastructure-only PRs do
+# not republish the site. Manual retries use the same approved pin on main.
+# Merge only after PR #463 and Noam's approval of this pin and its one-time
+# PR #461 metadata reconciliation. The reconciliation runs under the publish lock.
+
+env:
+  RELEASE_SHA: 12e6995241cad679260fee8ad34e3fcf76224745
+
+on:
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: Publish the approved canonical site SHA
+        type: boolean
+        default: true
+  push:
+    branches: [main]
+    paths: [.github/workflows/publish-baseline.yml]
+
+permissions:
+  contents: read
+
+jobs:
+  release-request:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      publish: ${{ steps.intent.outputs.publish }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check whether an approved publication was requested
+        id: intent
+        env:
+          INPUT_PUBLISH: ${{ inputs.publish }}
+        run: node .github/scripts/production-release.mjs intent
+
+  publish:
+    needs: release-request
+    if: needs.release-request.outputs.publish == 'true'
+    # Read the production marker only after acquiring this lock. Never cancel
+    # an active deployment; its final state must be recorded before the next.
+    concurrency:
+      group: wix-production
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      actions: read
+      deployments: write
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Check out the reviewed release controller
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: controller
+          persist-credentials: false
+
+      - name: Check out the exact approved site commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.RELEASE_SHA }}
+          path: site
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: site/headless/astro-poc/package-lock.json
+
+      - name: Fetch the current canonical branch
+        run: git -C site fetch origin headless/astro-poc-baseline:refs/remotes/origin/headless/astro-poc-baseline
+
+      - name: Reconcile the verified PR461 local publication under the release lock
+        # PR461 / target PR463 only. Remove this step in the separately approved
+        # controller PR for a future target after reconciliation; keep the guard/lock.
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          SITE_DIR: ${{ github.workspace }}/site
+        run: node controller/.github/scripts/reconcile-pr461.mjs --write
+
+      - name: Reject rollback and record the deployment before publication
+        id: guard
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          SITE_DIR: ${{ github.workspace }}/site
+        run: node controller/.github/scripts/production-release.mjs begin
+
+      - name: Publish the approved baseline
+        id: release
+        # Leave time for the always-run guard step even if the Wix PTY hangs.
+        timeout-minutes: 25
+        working-directory: site
+        env:
+          WIX_CLI_API_KEY: ${{ secrets.WIX_CLI_API_KEY }}
+          RELEASE_BRANCH: headless/astro-poc-baseline
+        run: |
+          if [ -z "${WIX_CLI_API_KEY}" ]; then
+            echo "WIX_CLI_API_KEY is not set. The baseline was not published."
+            exit 1
+          fi
+          bash tools/release/release.sh "$RELEASE_SHA"
+
+      - name: Record confirmed success or block subsequent releases
+        if: always() && steps.guard.outputs.deployment_id != ''
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          DEPLOYMENT_ID: ${{ steps.guard.outputs.deployment_id }}
+          RELEASE_OUTCOME: ${{ steps.release.outcome }}
+        run: node controller/.github/scripts/production-release.mjs finish

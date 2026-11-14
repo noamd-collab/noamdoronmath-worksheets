@@ -7,11 +7,9 @@ name: publish-baseline
 # Games corner: Noam approved shrink, merge and publication of #437 (11.11.2026); budgeted payload 19,201,099 bytes.
 # A push publishes only when RELEASE_SHA changes. Infrastructure-only PRs do
 # not republish the site. Manual retries use the same approved pin on main.
-# Merge only after PR #463 and Noam's approval of this pin and its one-time
-# PR #461 metadata reconciliation. The reconciliation runs under the publish lock.
 
 env:
-  RELEASE_SHA: 12e6995241cad679260fee8ad34e3fcf76224745
+  RELEASE_SHA: 8a815b44c4ee225b65edef67d72b1fdd7a395a9d
 
 on:
   workflow_dispatch:
@@ -59,7 +57,6 @@ jobs:
       cancel-in-progress: false
     permissions:
       contents: read
-      actions: read
       deployments: write
     runs-on: ubuntu-latest
     timeout-minutes: 90
@@ -88,14 +85,6 @@ jobs:
 
       - name: Fetch the current canonical branch
         run: git -C site fetch origin headless/astro-poc-baseline:refs/remotes/origin/headless/astro-poc-baseline
-
-      - name: Reconcile the verified PR461 local publication under the release lock
-        # PR461 / target PR463 only. Remove this step in the separately approved
-        # controller PR for a future target after reconciliation; keep the guard/lock.
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-          SITE_DIR: ${{ github.workspace }}/site
-        run: node controller/.github/scripts/reconcile-pr461.mjs --write
 
       - name: Reject rollback and record the deployment before publication
         id: guard
