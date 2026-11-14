@@ -9,6 +9,9 @@ case "${RELEASE_TARGET:-wix}" in
   teacher-cloudflare)
     exec python3 "$(dirname "$0")/teacher-cloudflare-release.py" "$@"
     ;;
+  teacher-render-free)
+    exec python3 "$(dirname "$0")/teacher-render-release.py" "$@"
+    ;;
   wix) ;;
   *) echo "Unknown RELEASE_TARGET" >&2; exit 64 ;;
 esac

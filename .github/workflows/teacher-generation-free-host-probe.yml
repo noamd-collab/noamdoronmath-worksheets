@@ -32,7 +32,19 @@ jobs:
       - name: Verify frozen image inputs and probe tests
         run: |
           git merge-base --is-ancestor "$BASE_SOURCE" HEAD
-          git diff --exit-code "$BASE_SOURCE" -- tools/teacher-generation
+          # The separate HTTP package is not part of this image's exact
+          # Docker allowlist. Freeze every original image input, including the
+          # allowlist itself, rather than rejecting unrelated new files.
+          python3 - <<'PY'
+          import json, os, subprocess
+          base = os.environ['BASE_SOURCE']
+          manifest = 'tools/teacher-generation/cloud/container/context-files.json'
+          original = subprocess.check_output(['git', 'show', base + ':' + manifest])
+          files = json.loads(original)['files']
+          assert manifest in files
+          assert 'tools/teacher-generation/cloud/container/Dockerfile.dockerignore' in files
+          subprocess.run(['git', 'diff', '--exit-code', base, '--', *files], check=True)
+          PY
           python3 -m unittest discover -s .github/scripts/tests -p 'test_teacher_free_host_probe.py' -v
       - name: Build the frozen runtime once without credentials
         run: |
