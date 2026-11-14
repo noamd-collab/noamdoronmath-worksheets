@@ -58,3 +58,9 @@
 !tools/teacher-generation/tests/test_validation.py
 !tools/teacher-generation/tests/test_worker_shutdown.py
 !tools/teacher-generation/validation.py
+!tools/teacher-generation/elementary_pdf_order.py
+!tools/teacher-generation/tests/test_elementary_pdf_order.py
+!tools/teacher-generation/tests/fixtures/elementary-answer-order/answers.html
+!tools/teacher-generation/tests/fixtures/elementary-answer-order/chromium-broken.pdf
+!tools/teacher-generation/tests/fixtures/elementary-answer-order/weasyprint.pdf
+!tools/teacher-generation/tests/fixtures/elementary-answer-order/README.md

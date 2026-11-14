@@ -91,6 +91,9 @@ def elementary(lesson, payload, cap, skill, work):
     dump(work/"worksheet-source.json",{"version":1,"meta":dict(meta,gradeNumber=lesson["gradeNumber"],levelCode={"a":"A","b":"B","e":"E"}[lesson["level"]]),"questions":source_questions})
     template=(skill/"assets/worksheet_template_elementary.html").read_text(encoding="utf-8")
     head=template.split("<body",1)[0]
+    # Keep answer-key math isolated from adjacent Hebrew in Chromium as well as
+    # WeasyPrint. This fixed override leaves the locked skill template untouched.
+    head=head.replace('</head>', '<style>\n.answers span.ltr { direction: ltr; unicode-bidi: isolate; display: inline-block; white-space: nowrap; }\n</style>\n</head>', 1)
     # Fixed markup; only escaped catalog text and trusted math helpers enter HTML.
     body=[f'<body class="{"band-ab" if ab else "band-gd" if lesson["gradeNumber"]<=4 else "band-hv"}">',f'<div class="unit">{html.escape(title)}</div><hr class="unit-rule">',f'<div class="subtitle">{LEVELS[lesson["level"]]} · כיתה {grade}׳</div>', '<div class="details"><span>שם: ____________________</span><span>כיתה: ________</span><span>תאריך: __________</span></div>', '<ol class="questions">']
     for qi,q in enumerate(qs):
