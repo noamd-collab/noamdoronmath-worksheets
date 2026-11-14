@@ -52,7 +52,12 @@ const protectedFiles: Record<string, string> = {
   // Add only the optional server-secret TEACHER_GENERATION_SERVICE_KEY schema.
   // Removing that single line restores the preceding protected hash exactly;
   // no value is committed, client-exposed or required by existing teacher tools.
-  'astro.config.mjs': 'ee86254e32a78e36ee35bdb98c193c82982a949cabff8da91e65b66715cff745',
+  // 2026-11-14: Noam requested moving private generation off the Mac.
+  // Add only optional server-secret WORKER_URL and WORKER_WAKE_SECRET schemas.
+  // Removing those two exact lines restores ee86254e above; all other config
+  // bytes stay unchanged. Auth/API tests and the client bundle scan preserve
+  // owner-only generation and keep both fields out of browser assets.
+  'astro.config.mjs': '2b0d764bd82c356ee210b9ed80941192a7748c8141440d3a5ec8420a00aff707',
   // Noam requested restoring main's reviewed native PDF catalog on baseline
   // (30 October 2026), keeping the baseline Hebrew title corrections.
   // G9 PDF v2, G8 PDF v2 (two c2 levels), and G7 PDF v2.
