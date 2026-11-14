@@ -1,9 +1,18 @@
+## 2026-11-14 — Prepared Ramzi hints for the first twelve middle-school editions
+
+- PR #461 was explicitly approved, merged at `cfe85a520af1e1a0a06526438dbd33c134cc21b1` and published through the release script. All eighteen new PDFs are live; the first twelve source-bound manifests and their native assets were published with activation disabled.
+- Imported 567 verified, PDF-bound subitem rows with 1,701 reviewed hints into Supabase, and added exactly twelve edition-specific learning identities. Full readback matches every imported field and hint. All 31,761 previous hint rows and all 956 previous learning identities were preserved.
+- The public Supabase API and the actual prepared-hint client returned all three expected hints for every subitem across twelve editions, after exact PDF/source binding. The remaining 346 reviewed subitems have not been imported.
+- This change prepares the first twelve editions for Ramzi in the catalog, matching landing pages and learning route. Build validation requires matching publication, manifest-review, exact database-readback and learning-identity evidence; runtime checks retain the verified edition identity. Previous edition links and teacher-picker contents remain intact.
+- Correct the glossary match for a right-angled trapezoid, which previously linked to the right-triangle definition. The reviewed hint text and worksheet content are unchanged.
+- New activation is a separate publication candidate. Its merge and publication require specific approval; the completed PR #461 approval is not reused. Live activation and its post-publication UI check remain pending.
+
 ## 2026-11-13 — Six follow-up parallelogram PDFs, separate from PR456
 
 - Add MS-PROD-002 (G9-PAR-02 / G9-T88: proofs and symmetry) and MS-PROD-003 (G9-PAR-03 / G9-T89: converse theorems and identification), three levels each, to the existing grade-nine parallelogram topic. Focused labels describe the actual contents; no whole-topic replacement is claimed.
 - The six frozen PDFs total 69 pages and 274 subitems. Saved Wix upload receipts and 18 returned/CDN/site downloads match the exact frozen PDF SHA-256 digests; source sheet.json and native-export provenance are real. See [follow-up evidence](middle-school-followup-pdf-20261113.json).
 - Previous PDFs remain the default. All six links open PDFs directly; no Word download, Noam AI activation, teacher-picker entries, native asset publication or hint/DB import is introduced by these rows.
-- Included in PR #461, separate from the twelve PDFs in PR #456. Reviewed preview: https://zwqzfd-noam-math-astro-poc-amiramnoam-130a.wix-site-host.com/parallelogram-grade-9. Catalog, landing page and search were checked on phone and desktop; legacy viewer links remain unchanged. Production merge and publication are pending specific approval.
+- Included in PR #461, separate from the twelve PDFs in PR #456. Reviewed preview: https://zwqzfd-noam-math-astro-poc-amiramnoam-130a.wix-site-host.com/parallelogram-grade-9. Catalog, landing page and search were checked on phone and desktop; legacy viewer links remain unchanged. PR #461 was approved, merged and published on 14 November; see the entry above for the separate hint activation.
 - PR #461 also stages twelve disabled, source-bound measured manifests and their public native assets for the first batch, and fixes the selected-question card and single feedback pair. This prepares the connection; it does not activate the new editions or import hints.
 - Validation: all 2,379 unit tests, five isolated drawing tests and four live SSR checks passed; the build passed with 214,252 bytes of worker-payload headroom. Test TypeScript still has 342 existing baseline diagnostics, with zero new diagnostics. The regenerated search index includes these editions.
 

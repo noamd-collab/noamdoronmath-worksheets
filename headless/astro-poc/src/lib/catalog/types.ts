@@ -44,6 +44,18 @@ export interface CatalogTopic {
 }
 
 /** PDF-only provenance names existing files, not future measured/hint artifacts. */
+export interface CatalogRamziReadiness {
+  status: 'ready';
+  manifestSha256: string;
+  nativeExportSha256: string;
+  sourceNativeExportSha256: string;
+  canonicalSourceSha256: string;
+  itemCount: number;
+  hintCount: number;
+  payloadSha256: string;
+  verifiedDbReadbackReceiptSha256: string;
+}
+
 export interface CatalogPdfOnlyLevel extends CatalogLevel {
   key: 'a' | 'b' | 'c';
   viewerLevel: 'A' | 'B' | 'E';
@@ -53,6 +65,8 @@ export interface CatalogPdfOnlyLevel extends CatalogLevel {
   /** SHA-256 of the frozen worksheet source sheet.json bytes. */
   sourceSha256: string;
   nativeExportSha256: string;
+  /** Independently verified viewer readiness; it does not claim Word availability. */
+  ramzi?: CatalogRamziReadiness;
 }
 
 interface CatalogEditionBase {
@@ -82,6 +96,8 @@ export interface CatalogGrade {
 }
 
 export interface CatalogV1 {
+  /** Build-verified, public-only activation proof summary; revalidated against registry at load. */
+  ramziActivation?: unknown;
   contractVersion: number;
   sourceOfTruth: { path: string; authoritative: boolean; note?: string };
   config: {

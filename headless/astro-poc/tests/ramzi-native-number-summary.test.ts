@@ -1,3 +1,4 @@
+import {readFirst567Activation,assertFirst567Phase} from './helpers/first567Activation';
 import assert from 'node:assert/strict';
 import {readFileSync,readdirSync} from 'node:fs';
 import {createRequire} from 'node:module';
@@ -45,19 +46,20 @@ for(const name of ['worksheet-viewer-noam.html','headless/astro-poc/public/works
     for(const id of [...c.NOAM_NUMBER_SUMMARY_PDFS,'ddfdb423c2dc4e9d925ee5be56971195']){const ctx:any={pdf:id,HEADLESS_MANIFEST_BASE:'/noam-ai/manifests/'};runInNewContext(block,ctx);assert.equal(ctx.ANALYSIS_STORAGE_KEY.endsWith(':number-summary-v1'),c.NOAM_NUMBER_SUMMARY_PDFS.includes(id));assert.equal(ctx.THREAD_STORAGE_KEY,'noam-static-threads-v1:'+id);assert.match(ctx.MANIFEST_PATH,/20261028-item-figure-scope-number-summary/);}
   });
 }
-it('412 legacy manifests retain all762 summaries; the12 measured additions stay disabled and source-bound',()=>{
+it('412 legacy manifests retain all762 summaries; the12 measured additions stay evidence-gated and source-bound',()=>{
   // Explicit first-batch allowlist, not a blanket exclusion of disabled/new manifests.
   const batches=[['G7-T86','ms-20261113-trn-r1'],['G8-T84','ms-20261113-cyl-r1'],['G8-T87','ms-20261113-con-r1'],['G9-T85','ms-20261113-par-r1']];
   const expected=new Map(batches.flatMap(([prefix,editionId])=>['a','b','c'].map(level=>[
     `/noam-ai/native/${prefix}/${level}/noam-ai.json`,{prefix,editionId,level},
   ] as const)));
   const registry=JSON.parse(readFileSync(new URL('headless/catalog/worksheet-editions.v1.json',root),'utf8'));
+  const phase=readFirst567Activation();
   const seen:string[]=[];let addedQuestions=0,addedParts=0,addedSummaries=0;
   for(const file of readdirSync(new URL('noam-ai/manifests/',root))){
     if(!file.endsWith('.json'))continue;
     const m=JSON.parse(readFileSync(new URL('noam-ai/manifests/'+file,root),'utf8')),binding=expected.get(m.nativeExportUrl);
     if(!binding)continue;
-    assert.equal(m.questionPagesIdenticalTo,undefined);assert.equal(m.publishable,false);assert.equal(m.reviewRequired,true);assert.equal(m.nativeExportPublished,false);
+    assert.equal(m.questionPagesIdenticalTo,undefined);assertFirst567Phase(m,readFileSync(new URL('noam-ai/manifests/'+file,root)),phase);
     assert.equal(m.geometryContract,'measured-v1');assert.equal(m.editionId,binding.editionId);assert.equal(m.prefix,binding.prefix);assert.equal(m.nativeLevel,binding.level);
     const edition=registry.editions.find((e:any)=>e.editionId===binding.editionId),level=edition?.levels.find((l:any)=>l.key===binding.level);
     assert.equal(edition?.nativePrefix,binding.prefix);assert.equal(edition?.publicationMode,'pdf-only');assert.equal(file,level?.pdfId+'.json');

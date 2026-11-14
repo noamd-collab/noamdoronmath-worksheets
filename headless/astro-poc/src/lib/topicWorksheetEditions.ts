@@ -1,11 +1,12 @@
 import type { CatalogV1 } from './catalog/types';
-import { resolveEdition, topicEditions } from './catalog/editions';
+import { resolveEdition, topicEditions, worksheetEditionNote } from './catalog/editions';
 import { buildWorksheetHref } from './worksheetLinks';
 
 export interface TopicWorksheetEditionLinks {
   editionId: string;
   label: string;
   pdfOnly: boolean;
+  note: string | null;
   levels: Array<{ key: string; label: string; href: string }>;
 }
 
@@ -25,6 +26,7 @@ export function topicWorksheetEditionLinks(
     editionId: edition.editionId,
     label: edition.label,
     pdfOnly: edition.publicationMode === 'pdf-only',
+    note: worksheetEditionNote(edition),
     levels: edition.levels.map(level => ({
       key: level.key,
       label: level.label,

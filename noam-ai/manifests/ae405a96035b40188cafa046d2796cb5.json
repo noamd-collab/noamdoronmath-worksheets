@@ -4,8 +4,8 @@
   "layoutSha256": "5abe40c6da50df2b4e79fa7f572ddccd62a078d9f5b25a01339d3d8cc1911592",
   "editionId": "ms-20261113-trn-r1",
   "geometryContract": "measured-v1",
-  "reviewRequired": true,
-  "publishable": false,
+  "reviewRequired": false,
+  "publishable": true,
   "pageCount": 14,
   "exercisePageCount": 13,
   "answerStartPage": 14,
@@ -12020,8 +12020,8 @@
       "layoutSha256": "5abe40c6da50df2b4e79fa7f572ddccd62a078d9f5b25a01339d3d8cc1911592",
       "editionId": "ms-20261113-trn-r1",
       "geometryContract": "measured-v1",
-      "reviewRequired": true,
-      "publishable": false,
+      "reviewRequired": false,
+      "publishable": true,
       "pageCount": 14,
       "exercisePageCount": 13,
       "answerStartPage": 14,
@@ -18906,11 +18906,16 @@
       }
     ]
   },
-  "nativeExportPublished": false,
+  "nativeExportPublished": true,
   "geometryVisualReview": {
-    "status": "pending_new_adapter_overlays",
-    "priorConeQuestionGeometryReview": false,
-    "viewerCompositionTested": false
+    "status": "reviewed_static_geometry_and_sampled_ui",
+    "staticOverlayPages": 133,
+    "staticOverlayReviewSha256": "3e6c8e634540ffe4c0220c19e68d54b5ec7562b475c0f79c3d3824a5e433b0ab",
+    "viewerCompositionTested": true,
+    "viewerCompositionScope": "sampled_public_ui",
+    "viewerReviewSha256": "d5c2e8a2de27e5baca33e1abd9bd497a838478fa5aaa5e64f125843e14bc7014",
+    "publisherDecisionSha256": "58e0984c10a8858979a003d846c4fdd5f4c98cc8c2e69ab1b08f2c49b78d9020",
+    "publishedAssetReceiptSha256": "c625ef4408cf6bb809be0de57a84a6d7805b4fd7a2865fbbbce9983996fe9665"
   },
   "nativeLevel": "b"
 }

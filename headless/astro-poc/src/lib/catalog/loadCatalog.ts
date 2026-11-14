@@ -16,7 +16,7 @@ import raw from '../../data/catalog.v1.json';
 import type { CatalogV1 } from './types';
 import { normalizePdfBase } from '../wixMedia';
 import editionRegistry from '../../../../catalog/worksheet-editions.v1.json';
-import { mergeWorksheetEditions } from '../../../../../scripts/lib/worksheet-editions.cjs';
+import { mergeWorksheetEditions } from '../../../../../scripts/lib/worksheet-editions.mjs';
 
 export function loadCatalog(): CatalogV1 {
   const data = { ...(raw as CatalogV1) };
@@ -27,7 +27,7 @@ export function loadCatalog(): CatalogV1 {
     ...data.config,
     pdfBase: normalizePdfBase(data.config.pdfBase),
   };
-  return mergeWorksheetEditions(data, editionRegistry) as CatalogV1;
+  return mergeWorksheetEditions(data, editionRegistry, data.ramziActivation) as CatalogV1;
 }
 
 export type { CatalogV1 };

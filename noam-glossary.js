@@ -684,11 +684,29 @@
     return numeric?"numeric":"geometric";
   }
 
+  // A trapezoid's adjective is not a triangle definition. Reserve the whole
+  // modifier so spaced spelling cannot fall back to the unrelated line entry.
+  // Only a local grammatical owner counts; a triangle elsewhere stays linkable.
+  function trapezoidModifierContext(source,index,end){
+    var start=Math.max(0,index-100);
+    var context=canonicalizeGlossaryText(String(source||"").slice(start,end+40))
+      .replace(/[*_`~\u200e\u200f\u202a-\u202e\u2066-\u2069]/g," ");
+    var pattern=/(?:^|[^א-תA-Za-z0-9])[ובכלמהש]{0,3}טרפז(?:ים)?\s+(?:[A-Za-z]{4}\s+)?(?:(?:הנתון|המסומן|זה|אלה|אלו)\s+)?(?:(?:הוא|הם|שהוא|שהם|יהיה|יהיו)\s+)?(?:(?:אינו|אינם|שאינו|שאינם|לא)\s+)?([ובהלכמ]{0,2}(?:ישר(?:י)?[־\s]+ה?זווית|שוו(?:ה|י)[־\s]+ה?שוקיים))(?![א-תA-Za-z0-9])/g;
+    var match;
+    while((match=pattern.exec(context))!==null){
+      var modifierEnd=start+match.index+match[0].length;
+      var modifierStart=modifierEnd-match[1].length;
+      if(index>=modifierStart&&end<=modifierEnd){return true;}
+    }
+    return false;
+  }
+
   // "ביחס ל…" is positional Hebrew ("with respect to"), not the numeric ratio concept.
   // Keep bare "יחס" / "היחס" / "יחס בין…" linkable.
   // Pythagoras "ריבועים" is a², not the quadrilateral.
   function contextAllowsMatch(entry,source,index,end){
     if(!entry){return true;}
+    if(trapezoidModifierContext(source,index,end)){return false;}
     // "ממנה" is the pronoun "from it/her", not מ־ + the quotient "מנה".
     if(/^ו?ממנה$/.test(canonicalizeGlossaryText(source.slice(index,end)))){return false;}
     if(entry.id==="variable"&&canonicalizeGlossaryText(source.slice(index,end))==="משתנה"){

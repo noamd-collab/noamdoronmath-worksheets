@@ -3,8 +3,9 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { loadIndexCatalog, buildCatalog, EDITIONS_PATH } = require('./lib/headless-catalog.cjs');
 const { mergeWorksheetEditions } = require('./lib/worksheet-editions.cjs');
+const { loadRamziActivationEvidence, validateRamziActivation } = require('./lib/worksheet-ramzi-activation.cjs');
 
-function buildLearningCatalog(raw, registry) {
+function buildLearningCatalog(raw, registry, activationEvidence) {
   const items = [];
   // Preserve every pre-edition ID, field, label and order exactly.
   for (const [g, data] of Object.entries(raw.DATA)) for (const t of data.topics) {
@@ -17,7 +18,8 @@ function buildLearningCatalog(raw, registry) {
       x: t.x || (raw.NOAM_PREFIX_FALLBACK[g] || {})[t.id] || '',
     });
   }
-  const catalog = mergeWorksheetEditions(buildCatalog(raw), registry);
+  validateRamziActivation(registry, activationEvidence);
+  const catalog = mergeWorksheetEditions(buildCatalog(raw), registry, activationEvidence?.ready);
   for (const g of catalog.grades) for (const t of g.topics) for (const edition of t.editions || []) {
     // Static PDF editions have no deployed progress identities. Do not expose
     // account controls whose worksheet IDs would require a database rollout.
@@ -36,7 +38,8 @@ function buildLearningCatalog(raw, registry) {
 
 function main() {
   const root = path.join(__dirname, '..');
-  const items = buildLearningCatalog(loadIndexCatalog(), JSON.parse(fs.readFileSync(EDITIONS_PATH, 'utf8')));
+  const evidence = loadRamziActivationEvidence(path.dirname(EDITIONS_PATH), path.join(root, 'headless/astro-poc/public'));
+  const items = buildLearningCatalog(loadIndexCatalog(), JSON.parse(fs.readFileSync(EDITIONS_PATH, 'utf8')), evidence);
   const text = '/* Generated from index.html; do not edit by hand. */\nwindow.NOAM_LEARNING_CATALOG=' + JSON.stringify(items) + ';\n';
   const output = path.join(root, 'noam-learning-catalog.js');
   if (process.argv.includes('--check')) {
