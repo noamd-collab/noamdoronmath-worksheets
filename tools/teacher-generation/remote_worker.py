@@ -10,10 +10,11 @@ import hashlib
 import json
 import os
 import re
+import signal
 import ssl
 import certifi
 import threading
-import time
+from contextlib import contextmanager
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from urllib.request import Request, build_opener, HTTPRedirectHandler, HTTPSHandler
@@ -236,15 +237,28 @@ def load_env(path):
         if len(value)>1 and value[0]==value[-1] and value[0] in ('"',"'"):value=value[1:-1]
         os.environ[key]=value
 
-def main():
-    p=argparse.ArgumentParser();p.add_argument('--env-file',action='append',default=[]);p.add_argument('--work-dir');p.add_argument('--once',action='store_true')
-    p.add_argument('--check-only',action='store_true',help='Check local runtime and remote schema/private bucket without claim, heartbeat, uploads or model calls')
-    args=p.parse_args()
-    if not args.check_only and not args.work_dir:p.error('--work-dir is required unless --check-only')
+@contextmanager
+def shutdown_signals():
+    """Request a drain without interrupting an in-flight claim or paid job."""
+    shutdown = threading.Event()
+    previous = {}
+    def request_stop(signum, frame):
+        shutdown.set()
+    try:
+        for signum in (signal.SIGTERM, signal.SIGINT):
+            previous[signum] = signal.signal(signum, request_stop)
+        yield shutdown
+    finally:
+        for signum, handler in previous.items():
+            signal.signal(signum, handler)
+
+
+def run_worker(args, shutdown):
     for path in args.env_file:load_env(path)
     if not check_readiness(require_provider=True)['ready']:
         print(json.dumps({'event':'worker_not_ready'}),flush=True)
         raise SystemExit(1)
+    if shutdown.is_set():return
     try:
         remote=Remote(os.environ.get('TEACHER_GENERATION_SERVICE_KEY'))
         if args.check_only:
@@ -255,9 +269,10 @@ def main():
         print(json.dumps({'event':'worker_not_ready'}),flush=True)
         raise SystemExit(1)
     root=Path(args.work_dir).resolve();root.mkdir(parents=True,exist_ok=True);root.chmod(0o700)
-    while True:
+    while not shutdown.is_set():
         try:
             check_transport(remote)
+            if shutdown.is_set():return
             rows=remote.call('/rest/v1/rpc/claim_teacher_generation_job','POST',{})
             if not isinstance(rows,list) or len(rows)>1 or (rows and not isinstance(rows[0],dict)):
                 raise RuntimeError('QUEUE_NOT_READY')
@@ -265,6 +280,8 @@ def main():
             # Existing heartbeats expire after 90 seconds on the website.
             heartbeat(remote)
             if rows:
+                # A signal may arrive while the claim is in flight. Finish that
+                # owned job; its separate lease-renewal event stays untouched.
                 job=rows[0]
                 try:process_job(remote,job,root)
                 except Exception as e:
@@ -278,6 +295,15 @@ def main():
         except Exception:
             print(json.dumps({'event':'worker_unavailable'}),flush=True)
             if args.once:raise SystemExit(1)
-        time.sleep(5)
+        shutdown.wait(5)
+
+
+def main():
+    p=argparse.ArgumentParser();p.add_argument('--env-file',action='append',default=[]);p.add_argument('--work-dir');p.add_argument('--once',action='store_true')
+    p.add_argument('--check-only',action='store_true',help='Check local runtime and remote schema/private bucket without claim, heartbeat, uploads or model calls')
+    args=p.parse_args()
+    if not args.check_only and not args.work_dir:p.error('--work-dir is required unless --check-only')
+    with shutdown_signals() as shutdown:
+        run_worker(args, shutdown)
 
 if __name__=='__main__':main()
