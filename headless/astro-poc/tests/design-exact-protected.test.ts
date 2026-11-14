@@ -66,8 +66,21 @@ it('first567 drawing policy changes only the reviewed line in the root mirror', 
   assert.throws(() => beforeActivation('public/worksheet-viewer-noam.html', publicViewer.replace('function noamPreparedHint(', 'function changedHint(')));
 });
 
+// The report-control observer fix changes only this exact assignment. Reverse
+// it to the published 12e activation candidate before all existing fences.
+function beforeReportObserverFix(content: string): string {
+  assert.equal(sha256(content), '46232c6d67eefdeed286f74895cce4b5c4a2463d1965427d32ce006b58d348d2', 'exact report observer candidate');
+  const previous = "    button.hidden=!document.querySelector('.noam-exercise-pin.is-active');";
+  const current = "    var hidden=!document.querySelector('.noam-exercise-pin.is-active');\n    if(button.hidden!==hidden){button.hidden=hidden;}";
+  assert.equal(content.split(current).length, 2, 'one exact report observer hunk');
+  const restored = content.replace(current, previous);
+  assert.equal(sha256(restored), '054e601e3aa5e653419f625d3d53c13fde31f47e0e1ed696e8334e5929605f7e', 'unchanged published activation candidate');
+  return restored;
+}
+
 function beforeActivation(file: string, content: string): string {
   if (file === 'public/worksheet-viewer-noam.html') {
+    content = beforeReportObserverFix(content);
     assert.equal(sha256(content), '054e601e3aa5e653419f625d3d53c13fde31f47e0e1ed696e8334e5929605f7e', 'exact public drawing policy candidate');
     content = beforeDrawingPolicy(content);
   }
