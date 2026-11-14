@@ -86,6 +86,17 @@ must work; repair/use a valid trust store if necessary, never disable verificati
    site's guarded publication path. Do not have two active claimants during the
    cutover. Do not stop the Mac before the disabled cloud preflight succeeds.
 
+`activeJobs` is the count of both `queued` and `running` rows for the owner,
+without any lease-time filter. A read-only request selecting IDs with
+`status=in.(queued,running)` must return an empty array after drain and again
+immediately before activation. An empty queued subset is insufficient.
+`macWorkerStopped` requires more than a successful stop command: back up the
+LaunchAgent plist, boot out and disable `il.co.noamdoronmath.teacher-generation`,
+verify the service is absent, and verify the recorded worker PID and its
+descendants have exited. Do not kill unrelated processes or merely stop a
+process that launchd can restart. Record these real observations, not assumed
+values, with the fresh timestamps required by the guard.
+
 `GET /healthz` reports only the HTTP listener. It never advertises DB readiness.
 The release guard has no `/wake` operation. Runtime readiness requires the site's
 authorized owner wake and a genuine fresh worker DB heartbeat. The current DB
@@ -97,9 +108,26 @@ empty-queue heartbeat only when the owner is not concurrently creating a job;
 leave the reserved final generation trial to Noam.
 
 The request budget is bounded: one serial worker, a 60-second admission window,
-and a maximum child cycle including drain below 13 minutes. The guard and worker
+and a maximum child cycle including drain of 13 minutes. The guard and worker
 never retry a failed model job automatically. Provider termination can still
 interrupt a job; the existing lease and failure semantics apply.
+The site sends one additional wake after the durable enqueue. If dispatch is
+not acknowledged, it retains that same job/key and displays that work is still
+waiting; it never reserves another quota slot or automatically posts a new job.
+An old child cannot erase a newer, still-valid wake, including near the end of
+the window. If that child remains blocked beyond the full 60-second admission
+window, a later owner refresh is required; the server does not extend the
+14-minute budget. An accepted wake therefore is not a guarantee that closing
+the browser will allow every transport-failure case to complete unattended.
+
+A hard kill can leave a job `running` until its last renewed 20-minute lease
+expires. Expiry alone does not update the row: the next worker claim marks it
+`failed` with `WORKER_INTERRUPTED`; it never returns that job to `queued` or
+repeats its model call. If the host remains asleep, recovery waits for a later
+owner wake/refresh. During this interval the UI can show the existing active-job
+or quota-limit message. This is a known Free-pilot recovery limitation. Do not
+shorten a lease blindly, clear ownership while a child may still run, refund
+quota, or create another job as an automatic recovery action.
 
 ## Uncertainty and receipts
 

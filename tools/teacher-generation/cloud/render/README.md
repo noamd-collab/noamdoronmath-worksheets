@@ -53,12 +53,34 @@ hosting availability. The guarded operator flow owns this provenance check.
 ## Lifecycle and limits
 
 One supervisor runs fixed `remote_worker.py --once --work-dir /work/jobs` children
-serially, with a five-second pause between cycles. It starts only after an
+serially, normally with a five-second pause between cycles. It starts only after an
 authenticated wake and admits no further cycle after the 60-second window.
 Another authenticated wake extends that window. A job already claimed may drain
-beyond the idle window. Failed process/transport cycles close the window, so the
-adapter does not create an automatic failure retry loop. Existing worker logic
-also never retries a failed model job; a new owner request is required.
+beyond the idle window. Each cycle snapshots the latest accepted wake epoch.
+A failed process/transport cycle closes the window unless a newer wake is still
+valid. That later request admits one following attempt immediately, avoiding a
+five-second pause that could consume its remaining window. The same immediate
+handoff applies after an older successful empty claim. The following cycle
+snapshots the new epoch; if it fails without another wake, admission stops.
+The deadline is never extended by a cycle finishing or failing. Existing worker
+logic never retries a failed model job; a new owner request is required.
+
+The site requests one wake after a successful enqueue, separately from its
+pre-enqueue readiness check. A failed post-enqueue dispatch returns the same
+durable job with `dispatchPending:true`, not a second enqueue or quota charge.
+The UI says that the request is saved and waiting to start, keeps the job/key,
+and uses status refreshes rather than automatically submitting another draft.
+A same-key retry may dispatch that original job only while it is still queued;
+running and terminal jobs are never retried. A wake acknowledgement is not proof
+that a job has been claimed.
+
+The fixed admission limit still applies: if a post-enqueue wake occurs at t=0
+but an older child remains blocked until t=61, its 60-second window has already
+expired. The supervisor does not start another full child past that deadline.
+The queued job remains durable and needs a later owner wake/refresh; closing the
+browser does not guarantee immediate consumption under this transport failure.
+This deliberate availability limit preserves the 14-minute budget rather than
+silently extending it or retrying a model request.
 
 Each child has at most 745 seconds of normal runtime, then up to 30 seconds to
 drain and five seconds to reap its process group: 780 seconds total (13 minutes).

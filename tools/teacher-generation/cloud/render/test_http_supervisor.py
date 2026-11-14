@@ -122,6 +122,61 @@ class SupervisorTests(unittest.TestCase):
         s.wake(); r.finish.set(); settle(s)
         self.assertEqual(r.calls,[False]); self.assertEqual(s.until,0)
 
+    def test_post_enqueue_wake_survives_an_older_child_failure(self):
+        now=[100.0]; queued=[]; consumed=[]; started=threading.Event(); finish=threading.Event()
+        class Runner:
+            calls=0
+            def run(self,check,stop):
+                self.calls+=1
+                if self.calls==1:
+                    started.set(); self.assert_finished=finish.wait(1)
+                    return False
+                consumed.extend(queued);queued.clear();now[0]=162.0
+                return True
+        r=Runner();s=m.Supervisor(enabled=True,runner=r,clock=lambda:now[0])
+        with patch.object(m,'POLL_SECONDS',0.01):
+            s.wake();self.assertTrue(started.wait(1));now[0]=101.0
+            queued.append('one-unique-job')
+            self.assertEqual(s.wake(),(202,{'ok':True,'state':'running'}));self.assertEqual(s.until,161.0)
+            finish.set();settle(s)
+        self.assertTrue(r.assert_finished);self.assertEqual(r.calls,2);self.assertEqual(consumed,['one-unique-job']);self.assertEqual(queued,[])
+        self.assertIsNone(s.thread)
+
+    def test_new_wake_grants_one_attempt_not_an_unbounded_failure_retry(self):
+        r=FakeRunner(False);s=m.Supervisor(enabled=True,runner=r)
+        with patch.object(m,'POLL_SECONDS',0.01):
+            s.wake();self.assertTrue(r.started.wait(1));self.assertEqual(s.wake()[0],202)
+            r.finish.set();settle(s)
+        self.assertEqual(r.calls,[False,False]);self.assertEqual(s.until,0);self.assertIsNone(s.thread)
+
+    def test_new_wake_cannot_extend_its_deadline_by_failing_later(self):
+        now=[100.0];r=FakeRunner(False);s=m.Supervisor(enabled=True,runner=r,clock=lambda:now[0])
+        s.wake();self.assertTrue(r.started.wait(1));now[0]=101.0;s.wake()
+        self.assertEqual(s.until,161.0);now[0]=162.0;r.finish.set();settle(s)
+        self.assertEqual(r.calls,[False]);self.assertEqual(s.until,0);self.assertIsNone(s.thread)
+
+    def test_later_wake_near_deadline_is_not_lost_to_idle_pause(self):
+        for old_ok in (False, True):
+            with self.subTest(old_cycle_succeeded=old_ok):
+                now=[100.0];started=threading.Event();finish=threading.Event();attempt_times=[]
+                class Runner:
+                    def run(self,check,stop):
+                        attempt_times.append(now[0])
+                        if len(attempt_times)==1:
+                            started.set();finish.wait(1);return old_ok
+                        now[0]=162.0
+                        return False
+                s=m.Supervisor(enabled=True,runner=Runner(),clock=lambda:now[0])
+                real_wait=s.stop.wait
+                def idle_wait(seconds):
+                    now[0]+=seconds
+                    return real_wait(0)
+                with patch.object(s.stop,'wait',side_effect=idle_wait):
+                    s.wake();self.assertTrue(started.wait(1));now[0]=101.0;s.wake()
+                    now[0]=159.0;finish.set();settle(s)
+                self.assertEqual(attempt_times,[100.0,159.0])
+                self.assertIsNone(s.thread)
+
     def test_preflight_only_and_cached_then_expires(self):
         now=[1]; r=FakeRunner(); s=m.Supervisor(enabled=False,runner=r,clock=lambda:now[0])
         self.assertEqual(s.preflight()[0],202); self.assertTrue(r.started.wait(1))

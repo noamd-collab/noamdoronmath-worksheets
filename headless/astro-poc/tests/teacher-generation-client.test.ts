@@ -144,6 +144,25 @@ test('a POST cold-start refusal retains its idempotency key and requires a new u
   assert.equal(app.posts.length, 2); assert.equal(app.posts[1].requestKey, app.posts[0].requestKey);
 });
 
+test('pending dispatch is visible and refresh retains the original queued job without another creation', async () => {
+  const app=harness();await app.flush();await app.choose();await app.submit();
+  const queued={id:'preserved-job',status:'queued',phase:'queued',created_at:'2026-11-14T00:00:00Z',lesson:{topicId:'ג10'}};
+  app.pendingReplies.push({body:{ok:true,job:queued,dispatchPending:true}});app.setJobs([queued]);
+  await app.click('create-button');
+  const key=app.posts[0].requestKey;
+  assert.match(app.element('generation-status').textContent,/הבקשה נשמרה בתור/);
+  assert.match(app.element('generation-status').textContent,/בלי ליצור בקשה נוספת/);
+  assert.equal(app.element('create-button').disabled,true);assert.equal(app.element('edit-plan').disabled,true);
+  await app.click('create-button');await app.click('refresh-generation');await app.poll();
+  assert.equal(app.posts.length,1);assert.equal(app.posts[0].requestKey,key);
+  assert.equal(app.calls.filter(c=>c.url==='/api/noamBotConfig').length,1);
+  assert.match(app.element('generation-status').textContent,/הבקשה נשמרה בתור/);
+  app.setJobs([{...queued,status:'running',phase:'authoring'}]);await app.poll();
+  assert.match(app.element('generation-status').textContent,/מכינים את השאלות/);
+  assert.doesNotMatch(app.element('generation-status').textContent,/הבקשה נשמרה בתור/);
+  assert.equal(app.posts.length,1);
+});
+
 test('planning uses enabled exact topic/level/count and makes no billed request', async () => {
   const app = harness(); await app.flush(); await app.choose();
   assert.deepEqual(Array.from(app.field('topicId').options, (o: any) => o.value), ['', 'ג10']);

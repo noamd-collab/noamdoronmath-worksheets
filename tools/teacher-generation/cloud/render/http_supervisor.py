@@ -147,6 +147,7 @@ class Supervisor:
         self.lock = threading.Lock()
         self.stop = threading.Event()
         self.until = 0.0
+        self.wake_epoch = 0
         self.thread = None
         self.child_running = False
         self.checking = False
@@ -162,6 +163,7 @@ class Supervisor:
             if self.checking:
                 return 503, {'ok': False, 'state': 'unavailable'}
             self.until = self.clock() + WINDOW_SECONDS
+            self.wake_epoch += 1
             state = 'running' if self.child_running else 'starting'
             if self.thread is None:
                 self.thread = threading.Thread(target=self._cycles, daemon=True)
@@ -203,18 +205,32 @@ class Supervisor:
                     self.child_running = False
                     return
                 self.child_running = True
+                cycle_epoch = self.wake_epoch
             try:
                 ok = self.runner.run(False, self.stop)
             except Exception:
                 ok = False
             with self.lock:
                 self.child_running = False
-                if not ok:
+                later_wake = self.wake_epoch != cycle_epoch
+                if not ok and (self.stop.is_set() or self.clock() >= self.until
+                               or not later_wake):
                     # A failing transport/process cycle must not produce an
                     # automatic retry storm. A new intentional wake is needed.
                     self.until = 0.0
                     self.thread = None
                     return
+                # A later accepted wake is a new admission request, not an
+                # automatic retry of the failed cycle/job. Preserve it so an
+                # old child's failure cannot erase post-enqueue dispatch. The
+                # next cycle snapshots this epoch; if it fails without another
+                # wake, the branch above stops instead of retrying indefinitely.
+            if later_wake:
+                # Do not spend the last seconds of a still-valid admission on
+                # the ordinary idle pause. This also covers an old empty claim
+                # that succeeds just after a job was enqueued. The loop's locked
+                # entry rechecks stop and the original deadline; no extension.
+                continue
             # Including a completed job, wait five seconds before another
             # claim. Existing worker semantics never retry the failed job.
             self.stop.wait(POLL_SECONDS)

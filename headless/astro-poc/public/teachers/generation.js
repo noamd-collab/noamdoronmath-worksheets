@@ -7,7 +7,7 @@
  const labels = {queued:'ממתין ליצירה',authoring:'מכינים את השאלות',checking:'בודקים את התוכן והתשובות',rendering:'מפיקים PDF ו־Word',needs_review:'טיוטה מוכנה לעיון שלך',failed:'היצירה נעצרה בבדיקה'};
  const errors = {TEACHER_SIGN_IN_REQUIRED:'החיבור פג. יש להתחבר שוב עם Google.',TEACHER_ACCESS_DENIED:'יצירת הדפים החדשה עדיין זמינה רק לנועם.',GENERATOR_OFFLINE:'מנוע היצירה אינו מחובר כרגע. לא נוצרה בקשה חדשה.',GENERATOR_WAKING:'ממתינים למנוע היצירה. לא נוצרה בקשה חדשה; כשהמנוע יהיה מוכן אפשר יהיה ללחוץ שוב על יצירה.',GENERATION_UNAVAILABLE:'היצירה אינה זמינה כרגע. אפשר לנסות שוב; אותה בקשה לא תיווצר פעמיים.',GENERATION_LIMIT:'כבר יש יצירה פעילה, או שהגעת למכסת חמש היצירות ליום בשלב הזה.',BOT_VERIFICATION_FAILED:'אימות הדפדפן לא הושלם. נסה שוב; אם הבעיה נמשכת, יש לאפשר את רכיב Google בדפדפן.',TOPIC_NOT_SUPPORTED_YET:'הנושא או סוג הדף עדיין אינם זמינים ליצירה.',REQUEST_CONFLICT:'הבקשה השתנתה. חזור לפרטים ואשר אותם מחדש.',LESSON_INVALID:'יש לתקן את פרטי השיעור לפני היצירה.'};
  let capabilities = [], online = false, planned = null, requestKey = null, polling = null, clock = null, startedAt = null, busy = false, submitting = false;
- let submittedJobId = null, terminal = false, pollFailures = 0, refreshing = null, initialized = false;
+ let submittedJobId = null, terminal = false, pollFailures = 0, refreshing = null, initialized = false, dispatchPending = false;
  let wakingUntil = null, wakingChecks = 0;
  const field = name => form.elements.namedItem(name);
  const steps=Array.from(form.querySelectorAll('[data-generation-step]')), stepNames=['כיתה','נושא','רמה','השיעור'];
@@ -32,7 +32,7 @@
   if(focus)steps[step].querySelector('h2').focus();
  }
  function showStep(index) {step=index;updateWizard(true);}
- function clearPlan() {planned=null;requestKey=null;submittedJobId=null;terminal=false;}
+ function clearPlan() {planned=null;requestKey=null;submittedJobId=null;terminal=false;dispatchPending=false;}
  function resetBoundary() {
   form.querySelectorAll('[name=learnedDivisor]').forEach(input=>{input.checked=false;});
   field('boundaryMaxDividend').value='';field('boundarySignedNumbers').value='';
@@ -54,7 +54,7 @@
   return true;
  }
  function stopClock() { clearInterval(clock); clock=null; startedAt=null; }
- function tick(phase) { if(!startedAt) startedAt=Date.now(); clearInterval(clock); const show=()=>status((labels[phase]||labels.queued)+'… '+Math.floor((Date.now()-startedAt)/1000)+' שניות'); show(); clock=setInterval(show,1000); }
+ function tick(phase) { if(!startedAt) startedAt=Date.now(); clearInterval(clock); const show=()=>status((dispatchPending && phase==='queued'?'הבקשה נשמרה בתור, אך העבודה עדיין לא התחילה. רענון המצב ינסה להעיר את המנוע בלי ליצור בקשה נוספת.':(labels[phase]||labels.queued))+'… '+Math.floor((Date.now()-startedAt)/1000)+' שניות'); show(); clock=setInterval(show,1000); }
  function scheduleRefresh(delay) {clearTimeout(polling);polling=setTimeout(()=>requestRefresh(),delay);}
  function refreshFailed(error) {
   stopClock();clearTimeout(polling);polling=null;pollFailures++;
@@ -116,6 +116,7 @@
   $('generator-availability').classList.toggle('notice',!online);
   renderJobs(Array.isArray(data.jobs)?data.jobs:[]);
   const current=data.jobs?.find(j=>(submittedJobId && j.id===submittedJobId) || (requestKey && j.request_key===requestKey));
+  if(current && current.status!=='queued')dispatchPending=false;
   if(current && ['needs_review','failed'].includes(current.status))terminal=true;
   const active=data.jobs?.find(j=>['queued','running'].includes(j.status));
   if(active || (current && terminal) || (busy && !submitting))$('generation-history').open=true;
@@ -194,7 +195,7 @@
   try {
    const verification=await botToken();
    const created=await read(api,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({requestKey,lesson:planned,botToken:verification})});
-   submittedJobId=created.job?.id || submittedJobId;
+   submittedJobId=created.job?.id || submittedJobId;dispatchPending=created.dispatchPending===true;
    submitting=false;
    await requestRefresh();
   } catch(e) {submitting=false;busy=false;stopClock();status(e.message+(e.issues?.length?' '+e.issues.map(i=>i.message).join(' '):''));
