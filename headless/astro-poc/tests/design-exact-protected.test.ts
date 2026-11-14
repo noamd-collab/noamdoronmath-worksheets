@@ -39,7 +39,38 @@ const read = (file: string) => readFileSync(join(root, file), 'utf8');
 const activationDeltaText = read('tests/fixtures/ramzi-activation-reviewed-delta.json');
 assert.equal(sha256(activationDeltaText), 'c7bf20747e0a0e196f15474c283d91736843110c3299e13ad4cf465d3ce76606');
 const activationDeltas = JSON.parse(activationDeltaText).files;
+// First567 drawing policy changes exactly one allowlist line. Reverse only the
+// four reviewed geometry prefixes before the existing activation/file fences.
+// Unknown identities, title fallback, guards and all remaining bytes stay fenced.
+function beforeDrawingPolicy(content: string): string {
+  const lines = content.match(/^var NOAM_DRAWING_HINT_GEOMETRY='[^'\n]+';$/gm) || [];
+  assert.equal(lines.length, 1, 'one geometry allowlist');
+  assert.equal(sha256(lines[0]), '98499f802c9e026f7d76ca770705e5ddcd513d3498f67ba171fd7264b52a2966', 'exact first567 policy line');
+  let previous = lines[0];
+  for (const prefix of ['G7-T86', 'G8-T84', 'G8-T87', 'G9-T85']) {
+    assert.equal(previous.split(',' + prefix).length, 2, 'one added geometry prefix');
+    previous = previous.replace(',' + prefix, '');
+  }
+  assert.equal(sha256(previous), '5467306fc61baacfd636d58909ffa943357b85931efe63fcec9f5236b982c31f', 'unchanged historical policy');
+  return content.replace(lines[0], previous);
+}
+
+it('first567 drawing policy changes only the reviewed line in the root mirror', () => {
+  const current = readFileSync(join(root, '../../worksheet-viewer-noam.html'), 'utf8');
+  assert.equal(sha256(current), '232f80e06dea7d7f410c2a03ad0c09ffbd6bfb9721bd5542e2a98260d7d2d6a9', 'exact root drawing policy candidate');
+  assert.equal(sha256(beforeDrawingPolicy(current)), '91433585be9d6d4ec2bf3887bbafecec5b310f235382f56ebfcbe23de645e05c');
+  assert.throws(() => beforeDrawingPolicy(current.replace('G7-T86', 'G7-T99')));
+  assert.throws(() => beforeDrawingPolicy(current.replace('G9-T85', 'G9-T85,G9-T88')));
+  const publicViewer = read('public/worksheet-viewer-noam.html');
+  assert.throws(() => beforeActivation('public/worksheet-viewer-noam.html', publicViewer + '\n'));
+  assert.throws(() => beforeActivation('public/worksheet-viewer-noam.html', publicViewer.replace('function noamPreparedHint(', 'function changedHint(')));
+});
+
 function beforeActivation(file: string, content: string): string {
+  if (file === 'public/worksheet-viewer-noam.html') {
+    assert.equal(sha256(content), '054e601e3aa5e653419f625d3d53c13fde31f47e0e1ed696e8334e5929605f7e', 'exact public drawing policy candidate');
+    content = beforeDrawingPolicy(content);
+  }
   const delta = activationDeltas.find((entry: any) => entry.file === file);
   if (!delta) return content;
   assert.equal(sha256(content), delta.candidateSha256, file + ' exact activation candidate');
