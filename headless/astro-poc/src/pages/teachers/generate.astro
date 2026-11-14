@@ -3,12 +3,14 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { requireOwnerTeacher, TEACHER_PRIVATE_HEADERS } from '../../lib/teacherAccess';
 export const prerender = false;
 const access = await requireOwnerTeacher(Astro.request);
-if (!access.ok) return new Response(null, {status: access.status === 401 ? 303 : access.status, headers: {
+if (!access.ok && access.status !== 403) return new Response(null, {status: access.status === 401 ? 303 : access.status, headers: {
   ...TEACHER_PRIVATE_HEADERS, ...(access.status === 401 ? {location:'/teachers/login?returnTo=%2Fteachers%2Fgenerate'} : {}),
 }});
 for (const [key,value] of Object.entries(TEACHER_PRIVATE_HEADERS)) Astro.response.headers.set(key,value);
+if (!access.ok) Astro.response.status = 403;
 ---
-<BaseLayout title="יצירת דף לשיעור | אזור המורים" description="יצירת טיוטת דף לפי נושא ופרטי השיעור." activeNav="teachers" skipHref="#generation" noindex>
+<BaseLayout title={access.ok ? 'יצירת דף לשיעור | אזור המורים' : 'בקרוב · יצירת דפי עבודה חדשים עם AI | אזור המורים'} description="יצירת טיוטת דף לפי נושא ופרטי השיעור." activeNav="teachers" skipHref="#generation" noindex>
+ {access.ok ? <Fragment>
  <main id="generation" class="generation" dir="rtl">
   <nav class="generation-top" data-teacher-auth="workspace"><a href="/teachers/start">חזרה לאזור המורים</a><span>יצירה חדשה · גישה אישית לנועם</span><button type="button" data-teacher-logout>התנתקות</button><p id="teacher-auth-status" role="status" aria-live="polite"></p></nav>
   <header><p class="eyebrow">מהשיעור האחרון, לדף הבא</p><h1>מכינים דף לשיעור</h1><p>בוחרים כיתה, נושא ורמה. ממשיכים לפרטי השיעור ולאישור הטיוטה.</p></header>
@@ -70,4 +72,18 @@ for (const [key,value] of Object.entries(TEACHER_PRIVATE_HEADERS)) Astro.respons
  <script src="/teachers/auth.js" defer></script>
  <script src="/teachers/generation.js" defer></script>
  <link rel="stylesheet" href="/teachers/generation.css" />
+ </Fragment> : <main id="generation" class="generator-coming-soon" dir="rtl" aria-labelledby="coming-soon-title">
+  <p class="coming-soon-label">בקרוב</p>
+  <h1 id="coming-soon-title">יצירת דפי עבודה חדשים עם AI</h1>
+  <p>הכלי החדש נמצא בבדיקות ואינו פתוח עדיין לשימוש.</p>
+  <p>כלי המורים הקיימים זמינים לכם כרגיל: בחירת חומר, הרכבת דף והורדה.</p>
+  <a href="/teachers/start">לכלי המורים הקיימים</a>
+ </main>}
 </BaseLayout>
+<style>
+ .generator-coming-soon { max-width: 42rem; margin: 3rem auto; padding: 1.5rem; line-height: 1.8; }
+ .coming-soon-label { font-weight: 700; color: #315f75; }
+ .generator-coming-soon h1 { font-size: clamp(1.65rem, 4vw, 2.4rem); line-height: 1.35; }
+ .generator-coming-soon a { display: inline-flex; align-items: center; min-height: 44px; padding: .6rem 1rem; margin-top: .5rem; border-radius: .6rem; background: #173f55; color: #fff; font-weight: 700; }
+ .generator-coming-soon a:focus-visible { outline: 3px solid #315f75; outline-offset: 4px; }
+</style>
