@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "repository": "noamd-collab/noamdoronmath-worksheets",
+  "approvedTargetSha": "ccadcb0cbfe241ad500962e5f83d0cacdcbc37f1",
+  "confirmedLiveSha": "cfe85a520af1e1a0a06526438dbd33c134cc21b1",
+  "prNumber": 461,
+  "localPublishObservedAt": "2026-11-14T11:50:35.344596+00:00",
+  "originalPublicationRunId": null,
+  "republicationPerformed": false,
+  "evidenceScope": "Reviewed successful local release log plus exact asset-byte receipts; fresh observation sampled two source assets and one landing. No claim of a fresh complete site audit. This file records evidence, not human approval.",
+  "proofSha256": {
+    "releaseReceipt": "6505e2f754bcf1421b8adbef47acb9e6dcbadef87c802ad8030ea80d93b03698",
+    "releaseLog": "d15d369acda9fc89d6121c1d908a1d9506e4379a93502133203417f00a494a95",
+    "completeAssetVerification": "c625ef4408cf6bb809be0de57a84a6d7805b4fd7a2865fbbbce9983996fe9665",
+    "freshAssets": "6cd7741f58f64e7c23c4fc9a5c0f363b2b78aea6273492940ca27db04625b153",
+    "apiPreimage": "ffc9fe1cb6b17f679f10c690dd0e0d414683a65ca6b220a262cdf9d8a9eadd54"
+  },
+  "expectedDeployment": {
+    "id": 7776754145,
+    "node_id": "DE_kwDOUA0KF88AAAABz4fZ4Q",
+    "sha": "8cab25576e7bbcd73bb990dfdd483615d7751780",
+    "ref": "8cab25576e7bbcd73bb990dfdd483615d7751780",
+    "task": "wix-publish",
+    "environment": "wix-production",
+    "original_environment": "wix-production",
+    "production_environment": true,
+    "transient_environment": false,
+    "description": "Approved site release; unfinished state blocks subsequent publication",
+    "created_at": "2026-11-13T21:21:18Z",
+    "updated_at": "2026-11-13T21:22:26Z",
+    "url": "https://api.github.com/repos/noamd-collab/noamdoronmath-worksheets/deployments/7776754145",
+    "statuses_url": "https://api.github.com/repos/noamd-collab/noamdoronmath-worksheets/deployments/7776754145/statuses",
+    "repository_url": "https://api.github.com/repos/noamd-collab/noamdoronmath-worksheets",
+    "payload": {
+      "releaseGuardVersion": 1,
+      "runId": "43509763952",
+      "controllerSha": "7e3884472144aa10509f9886fca425ee96eafd0c",
+      "previousLiveSha": "680ae1f739830fccb1c2b560dc8233ad2a987447"
+    },
+    "creator": {
+      "id": 41898282,
+      "login": "github-actions[bot]",
+      "type": "Bot"
+    }
+  },
+  "expectedStatuses": [
+    {
+      "id": 22157544033,
+      "node_id": "DES_kwDOUA0KF88AAAAFKLFKYQ",
+      "state": "success",
+      "environment": "wix-production",
+      "description": "Wix confirmed publication of the approved SHA",
+      "created_at": "2026-11-13T21:22:26Z",
+      "updated_at": "2026-11-13T21:22:26Z",
+      "url": "https://api.github.com/repos/noamd-collab/noamdoronmath-worksheets/deployments/7776754145/statuses/22157544033",
+      "deployment_url": "https://api.github.com/repos/noamd-collab/noamdoronmath-worksheets/deployments/7776754145",
+      "repository_url": "https://api.github.com/repos/noamd-collab/noamdoronmath-worksheets",
+      "environment_url": "https://www.noamdoronmath.co.il/",
+      "log_url": "https://github.com/noamd-collab/noamdoronmath-worksheets/actions/runs/43509763952",
+      "target_url": "https://github.com/noamd-collab/noamdoronmath-worksheets/actions/runs/43509763952",
+      "creator": {
+        "id": 41898282,
+        "login": "github-actions[bot]",
+        "type": "Bot"
+      }
+    },
+    {
+      "id": 22157473233,
+      "node_id": "DES_kwDOUA0KF88AAAAFKLA10Q",
+      "state": "in_progress",
+      "environment": "wix-production",
+      "description": "History verified; publication in progress",
+      "created_at": "2026-11-13T21:21:18Z",
+      "updated_at": "2026-11-13T21:21:18Z",
+      "url": "https://api.github.com/repos/noamd-collab/noamdoronmath-worksheets/deployments/7776754145/statuses/22157473233",
+      "deployment_url": "https://api.github.com/repos/noamd-collab/noamdoronmath-worksheets/deployments/7776754145",
+      "repository_url": "https://api.github.com/repos/noamd-collab/noamdoronmath-worksheets",
+      "environment_url": "",
+      "log_url": "https://github.com/noamd-collab/noamdoronmath-worksheets/actions/runs/43509763952",
+      "target_url": "https://github.com/noamd-collab/noamdoronmath-worksheets/actions/runs/43509763952",
+      "creator": {
+        "id": 41898282,
+        "login": "github-actions[bot]",
+        "type": "Bot"
+      }
+    }
+  ]
+}
