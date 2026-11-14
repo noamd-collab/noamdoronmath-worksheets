@@ -3,6 +3,15 @@
 # Usage: tools/release/release.sh <expected-commit-sha> [repo-dir]
 # Env (see tools/.env.example): WIX_CLI_API_KEY (optional, for non-interactive login), NODE_BIN, RELEASE_BRANCH (default: main)
 set -u
+# The independent Cloudflare controller must not load Wix credentials or change
+# the website checkout. Its runtime source and reviewed controller are separate.
+case "${RELEASE_TARGET:-wix}" in
+  teacher-cloudflare)
+    exec python3 "$(dirname "$0")/teacher-cloudflare-release.py" "$@"
+    ;;
+  wix) ;;
+  *) echo "Unknown RELEASE_TARGET" >&2; exit 64 ;;
+esac
 [ -f "$(dirname "$0")/../.env" ] && set -a && . "$(dirname "$0")/../.env" && set +a
 EXPECT="${1:?expected commit sha}"; REPO="${2:-$(git rev-parse --show-toplevel)}"
 BRANCH="${RELEASE_BRANCH:-main}"

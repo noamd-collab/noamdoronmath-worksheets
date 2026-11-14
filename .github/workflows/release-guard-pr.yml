@@ -18,3 +18,8 @@ jobs:
           node-version: '22'
       - name: Test publication intent, Git history and durable deployment state
         run: node --test .github/scripts/production-release.test.mjs .github/scripts/reconcile-production.test.mjs .github/scripts/reconcile-pr461.test.mjs
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test Cloudflare controller, image guard and preflight recovery offline
+        run: python3 -B -m unittest discover -s tools/release/tests -p 'test_teacher_cloudflare_*.py' -v
