@@ -1,5 +1,6 @@
 import json
 import copy
+import random
 from collections import Counter
 from pathlib import Path
 import ssl
@@ -28,18 +29,31 @@ class ProviderTests(unittest.TestCase):
 
     def use_fixture(self,family):
         self.lesson=read_json(HERE/f'examples/{family}-lesson.json')
+        self.lesson['version']=2
+        self.lesson['lessonBoundary']=({'version':1,'kind':'division_facts','allowedDivisors':list(range(1,11)),'maxDividend':100}
+            if family=='elementary' else {'version':1,'kind':'linear_equations','allowSignedNumbers':True})
         self.cap=validate_lesson(self.lesson)
-        source=read_json(HERE/f'examples/{family}-model.json')
-        groups={kind:[] for kind in self.cap['questionKinds']}
-        for q in source['questions']:groups[q['kind']].append(q)
-        self.expected={'version':1,'questions':[{**groups[p['kind']].pop(0),'star':p['star']} for p in provider.question_plan(self.lesson,self.cap)]}
+        plan=provider.question_plan(self.lesson,self.cap)
+        self.expected={'version':1,'questions':[]}
         self.payload={'version':3 if family=='middle' else 2,'questions':[]}
-        for qi,q in enumerate(self.expected['questions']):
-            items=[{'a':item['a'],'solution':(-15,-7,0,4,15)[(qi+ii)%5]} if family=='middle' else {'divisor':item['right'],'quotient':item['answer']} for ii,item in enumerate(q['items'])]
-            self.payload['questions'].append({'items':items})
+        # Fixed once, before quality evaluation: no seed search or gate-driven
+        # retries. Valid fixtures vary both parameters instead of enumerating a
+        # fact table or repeating a short cycle. Rejection cases below remain
+        # explicit mechanical inputs.
+        rng=random.Random(20261113)
+        pairs=rng.sample([(a,x) for a in range(1,13) for x in range(-15,16)],3*len(plan)) if family=='middle' else None
+        quotients={d:rng.sample(list(range(1,11)),10) for d in range(1,11)} if family=='elementary' else None
+        for qi,p in enumerate(plan):
             if family=='middle':
-                offsets=[sign*n for n in range(qi*3+1,qi*3+4) for sign in (1,-1)]
-                q['items']=[{**item,'b':b,'c':item['a']*item['solution']+b} for item,b in zip(items,offsets)]
+                items=[{'a':a,'solution':x} for a,x in pairs[qi*3:qi*3+3]]
+                offsets=[qi*3+1,-(qi*3+1),qi*3+2]
+                expected=[{**item,'b':b,'c':item['a']*item['solution']+b} for item,b in zip(items,offsets)]
+            else:
+                divisors=rng.sample([d for d,values in quotients.items() if values],3)
+                items=[{'divisor':d,'quotient':quotients[d].pop()} for d in divisors]
+                expected=[{'left':item['divisor']*item['quotient'],'op':'divide','right':item['divisor'],'answer':item['quotient']} for item in items]
+            self.payload['questions'].append({'items':items})
+            self.expected['questions'].append({'kind':p['kind'],'star':p['star'],'items':expected})
 
     def envelope(self,finish='stop'):
         return {'model':'qwen3.8-flash','usage':{'prompt_tokens':123,'completion_tokens':456,'total_tokens':579,'api_key':'must-not-survive','prompt_tokens_details':{'cached_tokens':0,'unsafe':'omit'}},'choices':[{'finish_reason':finish,'message':{'content':json.dumps(self.payload,ensure_ascii=False)}}]}
@@ -75,12 +89,11 @@ class ProviderTests(unittest.TestCase):
                     self.assertEqual(body['response_format']['type'],'json_schema')
                     self.assertTrue(body['response_format']['json_schema']['strict'])
                     sent=json.loads(body['messages'][1]['content'])
-                    self.assertEqual(set(sent['one_question_example_only']),{'items'})
-                    self.assertEqual(len(sent['one_question_example_only']['items']),3)
+                    self.assertEqual(set(sent),{'lesson','capability','questionPlan'})
+                    self.assertNotIn('example',body['messages'][1]['content'])
                     self.assertEqual(body['response_format']['json_schema']['schema']['properties']['version']['enum'],[self.payload['version']])
                     self.assertIn('"version":'+str(self.payload['version']),body['messages'][0]['content'])
                     if family=='middle':
-                        self.assertEqual(set(sent['one_question_example_only']['items'][0]),{'a','solution'})
                         self.assertIn('zero-based global slot=questionIndex*6+itemIndex',body['messages'][0]['content'])
                         self.assertIn('fixed signed offsets conflict',body['messages'][0]['content'])
                     build.return_value.open.assert_called_once()
@@ -88,6 +101,7 @@ class ProviderTests(unittest.TestCase):
                 self.assertEqual(self.payload,original)
                 validate_model(self.lesson,result)
                 self.assertTrue(metadata['validated'])
+                self.assertTrue(metadata['authorQuality']['passed'])
                 self.assertEqual(metadata['authorContract'],f"worksheet-parameters/{self.payload['version']}")
                 self.assertTrue(metadata['derivation']['performed'])
                 self.assertEqual(metadata['derivation']['canonicalVersion'],1)
@@ -97,6 +111,18 @@ class ProviderTests(unittest.TestCase):
                 self.assertNotIn('api_key',metadata['usage'])
                 self.assertNotIn('unsafe',metadata['usage']['prompt_tokens_details'])
                 self.assertGreaterEqual(metadata['elapsedSeconds'],0)
+
+    def test_legacy_intake_needs_explicit_offline_opt_in_before_provider_call(self):
+        self.lesson=read_json(HERE/'examples/elementary-lesson.json')
+        with patch('provider.build_opener') as build:
+            with self.assertRaises(GenerationError) as caught:
+                provider.author_lesson(self.lesson,**self.config)
+            build.assert_not_called()
+        self.assertEqual(caught.exception.code,'LESSON_VERSION_REQUIRES_NEW_DRAFT')
+        with patch('provider.build_opener') as build:
+            build.return_value.open.return_value=Response(self.envelope())
+            provider.author_lesson(self.lesson,allow_legacy=True,**self.config)
+            build.return_value.open.assert_called_once()
 
     def test_schema_allows_parameters_only_and_unique_missing_divisor(self):
         schema=provider.author_schema(self.lesson,self.cap)
@@ -126,6 +152,114 @@ class ProviderTests(unittest.TestCase):
         self.assertEqual(item['properties']['a'],{'type':'integer','minimum':1,'maximum':12})
         self.assertEqual(item['properties']['solution'],{'type':'integer','minimum':-15,'maximum':15})
         self.assertFalse(item['additionalProperties'])
+
+    def test_positive_only_contract_has_three_parts_and_sixty_unique_positive_offsets(self):
+        self.use_fixture('middle');self.lesson['lessonBoundary']['allowSignedNumbers']=False
+        schema=provider.author_schema(self.lesson,self.cap)
+        array=schema['$defs']['equation_parameters']['properties']['items']
+        self.assertEqual((array['minItems'],array['maxItems']),(3,3))
+        self.assertEqual(array['items']['properties']['solution'],{'type':'integer','minimum':0,'maximum':15})
+        for a in (1,12):
+            for x in (0,15):
+                raw={'version':3,'questions':[{'items':[{'a':a,'solution':x} for _ in range(3)]} for _ in range(20)]}
+                result=provider.derive_author_parameters(self.lesson,self.cap,raw)
+                items=[it for q in result['questions'] for it in q['items']]
+                self.assertEqual([it['b'] for it in items],list(range(1,61)))
+                self.assertTrue(all(0<=it['c']<=240 for it in items))
+                self.assertEqual(len({(it['a'],it['b'],it['c']) for it in items}),60)
+                validate_model(self.lesson,result)
+
+    def test_positive_only_prompt_and_derived_outputs_are_consistent(self):
+        self.use_fixture('middle');self.lesson['lessonBoundary']['allowSignedNumbers']=False
+        pairs=random.Random(20261113).sample([(a,x) for a in range(1,13) for x in range(16)],60)
+        for qi,q in enumerate(self.payload['questions']):
+            for ii,it in enumerate(q['items']):
+                a,x=pairs[qi*3+ii];it.update(a=a,solution=x)
+        with patch('provider.build_opener') as build:
+            build.return_value.open.return_value=Response(self.envelope())
+            result=provider.author_lesson(self.lesson,**self.config)
+            body=json.loads(build.return_value.open.call_args.args[0].data)
+            self.assertIn('exactly 3 items per question',body['messages'][0]['content'])
+            self.assertIn('b=questionIndex*3+itemIndex+1',body['messages'][0]['content'])
+            self.assertNotIn('solution -15..15',body['messages'][0]['content'])
+            self.assertNotIn('six reserved slots',body['messages'][0]['content'])
+            self.assertNotIn('one_question_example_only',body['messages'][1]['content'])
+        self.assertTrue(all(v>=0 for q in result['questions'] for item in q['items'] for v in item.values()))
+
+    def test_positive_only_rejects_negative_parameters_or_four_parts_without_clamping(self):
+        for variant in ('negative','four_parts'):
+            self.use_fixture('middle');self.lesson['lessonBoundary']['allowSignedNumbers']=False
+            for q in self.payload['questions']:
+                for it in q['items']:it['solution']=abs(it['solution'])
+            if variant=='negative':self.payload['questions'][0]['items'][0]['solution']=-1
+            else:self.payload['questions'][0]['items'].append({'a':2,'solution':4})
+            metadata=self.fail_author()
+            self.assertFalse(metadata['derivation']['performed'])
+
+    def test_restricted_division_schema_and_validator_enforce_product_and_divisor(self):
+        self.lesson['lessonBoundary'].update(allowedDivisors=[2,5],maxDividend=20)
+        self.cap=validate_lesson(self.lesson)
+        schema=provider.author_schema(self.lesson,self.cap)
+        missing=schema['$defs']['division_positive_quotient']['properties']['items']
+        self.assertEqual(missing['maxItems'],4)
+        variants=missing['items']['anyOf']
+        self.assertEqual([(v['properties']['divisor']['enum'],v['properties']['quotient']['maximum']) for v in variants],[([2],10),([5],4)])
+        for d,q in ((7,1),(5,5)):
+            self.payload['questions'][0]['items'][0]={'divisor':d,'quotient':q}
+            self.assertFalse(self.fail_author('OUTSIDE_LESSON_BOUNDARY')['derivation']['performed'])
+
+    def test_impossible_division_boundary_is_rejected_before_billed_request(self):
+        for divisors,maximum in [([10],10),([1,10],10),([1,10],20),([1,9,10],10)]:
+            with self.subTest(divisors=divisors,maximum=maximum):
+                self.lesson['lessonBoundary'].update(allowedDivisors=divisors,maxDividend=maximum)
+                before=copy.deepcopy(self.lesson)
+                with patch('provider.build_opener') as build:
+                    with self.assertRaises(GenerationError) as caught:provider.author_lesson(self.lesson,**self.config)
+                    build.assert_not_called()
+                self.assertEqual(caught.exception.code,'BOUNDARY_TOO_NARROW')
+                self.assertEqual(self.lesson,before)
+
+    def test_missing_divisor_prompt_matches_multi_single_and_legacy_domains(self):
+        for domain in ('multi','single','legacy'):
+            with self.subTest(domain=domain):
+                self.use_fixture('elementary')
+                if domain=='multi':
+                    self.lesson['lessonBoundary'].update(allowedDivisors=[2,5],maxDividend=30)
+                elif domain=='single':
+                    self.lesson['lessonBoundary'].update(allowedDivisors=[5],maxDividend=50)
+                else:
+                    self.lesson=read_json(HERE/'examples/elementary-lesson.json')
+                original=copy.deepcopy(self.lesson)
+                # A mocked explicit unsupported response lets this request-only
+                # test inspect guidance without generating/retrying a draft.
+                self.payload={'version':2,'questions':[]}
+                with patch('provider.build_opener') as build:
+                    build.return_value.open.return_value=Response(self.envelope())
+                    with self.assertRaises(GenerationError) as caught:
+                        provider.author_lesson(self.lesson,allow_legacy=domain=='legacy',**self.config)
+                    build.return_value.open.assert_called_once()
+                    body=json.loads(build.return_value.open.call_args.args[0].data)
+                self.assertEqual(caught.exception.code,'AUTHOR_UNSUPPORTED')
+                self.assertEqual(self.lesson,original)
+                system=body['messages'][0]['content']
+                if domain=='single':
+                    self.assertIn('the taught domain contains only one divisor; use that divisor',system)
+                    self.assertIn('does not apply to this single-divisor boundary',system)
+                    self.assertNotIn('use at least two distinct divisors',system)
+                else:
+                    self.assertIn('For every missing_right question, use at least two distinct divisors from the allowed domain',system)
+                    self.assertIn('Do not make every part ask for the same missing divisor',system)
+                    self.assertNotIn('does not apply to this single-divisor boundary',system)
+
+    def test_known_long_pattern_and_example_are_rejected_after_one_call_without_repair(self):
+        for copied in (False,True):
+            self.use_fixture('middle')
+            values=list(range(1,16))+list(range(-1,-16,-1))
+            for qi,q in enumerate(self.payload['questions']):
+                for ii,it in enumerate(q['items']):
+                    index=qi*3+ii;it.update(a=(index+1)%12+1,solution=values[(index+(3 if copied else 4))%30])
+            metadata=self.fail_author('AUTHOR_EXAMPLE_COPY' if copied else 'AUTHOR_NUMERIC_PATTERN')
+            self.assertTrue(metadata['derivation']['performed'])
 
     def test_injected_answer_or_equation_c_is_rejected_before_derivation(self):
         for family,field in (('elementary','answer'),('middle','b'),('middle','c'),('middle','answer')):

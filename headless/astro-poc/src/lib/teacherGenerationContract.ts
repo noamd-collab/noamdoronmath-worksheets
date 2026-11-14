@@ -1,7 +1,11 @@
 export type TeacherGenerationLevel = 'b' | 'a' | 'e';
 export type TeacherGenerationGoal = 'practice' | 'review' | 'introduce' | 'assessment';
+export type TeacherLessonBoundary =
+  | { version: 1; kind: 'division_facts'; allowedDivisors: number[]; maxDividend: number }
+  | { version: 1; kind: 'linear_equations'; allowSignedNumbers: boolean };
 export interface TeacherGenerationIntake {
-  version: 1;
+  version: 1 | 2;
+  lessonBoundary?: TeacherLessonBoundary;
   gradeNumber: number;
   topicId: string;
   level: TeacherGenerationLevel;
@@ -127,7 +131,7 @@ export function getTeacherGenerationMinimumQuestionCount(gradeNumber: number): n
   return gradeNumber <= 2 ? 8 : gradeNumber <= 4 ? 12 : gradeNumber <= 6 ? 14 : 20;
 }
 
-const FIELDS = new Set(['version', 'gradeNumber', 'topicId', 'level', 'lessonGoal', 'lastLesson',
+const FIELDS = new Set(['version', 'lessonBoundary', 'gradeNumber', 'topicId', 'level', 'lessonGoal', 'lastLesson',
   'alreadyLearned', 'minutes', 'questionCount', 'classLabel', 'taughtThroughTopicId', 'explicitShortSheet']);
 const CONTROLS = /[\u0000-\u0008\u000b-\u001f\u007f\u202a-\u202e\u2066-\u2069]/u;
 const isText = (value: unknown, maximum: number): value is string => typeof value === 'string' &&
@@ -139,7 +143,8 @@ const exactTerm = (text: string) => text.normalize('NFC').replace(/[\u0591-\u05b
  * and explicit forbidden terms can be checked here; generation still needs pedagogical review.
  * Class labels are generic group labels, never a student record or a claim of PII detection.
  */
-export function validateTeacherGenerationIntake(input: unknown, curriculum: TeacherGenerationCurriculum): TeacherGenerationValidation {
+export function validateTeacherGenerationIntake(input: unknown, curriculum: TeacherGenerationCurriculum,
+  options: { allowLegacy?: boolean } = {}): TeacherGenerationValidation {
   const issues: TeacherGenerationIssue[] = [];
   const add = (field: string, code: string, message: string) => { issues.push({ field, code, message }); };
   if (!input || typeof input !== 'object' || Array.isArray(input)) {
@@ -147,7 +152,36 @@ export function validateTeacherGenerationIntake(input: unknown, curriculum: Teac
   }
   const raw = input as Record<string, unknown>;
   for (const field of Object.keys(raw)) if (!FIELDS.has(field)) add(field, 'UNKNOWN_FIELD', 'שדה שאינו נתמך במפרט השיעור.');
-  if (raw.version !== 1) add('version', 'UNSUPPORTED_VERSION', 'גרסת מפרט השיעור אינה נתמכת.');
+  const legacy = raw.version === 1 && options.allowLegacy === true;
+  if (raw.version !== 2 && !legacy) add('version', 'UNSUPPORTED_VERSION', 'יש לפתוח טיוטה חדשה ולבחור מה כבר נלמד.');
+  let lessonBoundary: TeacherLessonBoundary | undefined;
+  const boundary = raw.lessonBoundary;
+  const boundaryError = () => add('lessonBoundary', 'INVALID_LESSON_BOUNDARY', 'יש לבחור במפורש את גבולות החומר שנלמד בנושא הזה.');
+  if (legacy) {
+    if (boundary !== undefined) boundaryError();
+  } else if (raw.version === 2) {
+    if (!isRecord(boundary) || boundary.version !== 1) boundaryError();
+    else if (raw.gradeNumber === 3 && raw.topicId === 'ג10') {
+      const divisors = boundary.allowedDivisors, maximum = boundary.maxDividend;
+      if (Object.keys(boundary).sort().join(',') !== 'allowedDivisors,kind,maxDividend,version' ||
+          boundary.kind !== 'division_facts' || !Array.isArray(divisors) || divisors.length < 1 || divisors.length > 10 ||
+          divisors.some(d => typeof d !== 'number' || !Number.isInteger(d) || d < 1 || d > 10) ||
+          new Set(divisors).size !== divisors.length || typeof maximum !== 'number' || !Number.isInteger(maximum) || maximum < 10 || maximum > 100) boundaryError();
+      else {
+        const counts = divisors.map(divisor => Math.min(10, Math.floor(maximum / divisor)));
+        const total = counts.reduce((sum, count) => sum + count, 0);
+        // Three missing-divisor rows need nine distinct positive facts. With
+        // multiple divisors, each row also needs a fact outside the largest group.
+        if (total < 9 || (divisors.length > 1 && total - Math.max(...counts) < 3)) {
+          add('lessonBoundary', 'BOUNDARY_TOO_NARROW', 'הטווח שנבחר אינו מספיק לדף הניסיון. אפשר לבחור מחלק אחד לתרגול ממוקד, או להרחיב את המחלקים או הטווח רק אם כבר נלמדו.');
+        } else lessonBoundary = { version: 1, kind: 'division_facts', allowedDivisors: [...divisors].sort((a,b) => a-b), maxDividend: maximum };
+      }
+    } else if (raw.gradeNumber === 7 && raw.topicId === 'g7:equations') {
+      if (Object.keys(boundary).sort().join(',') !== 'allowSignedNumbers,kind,version' ||
+          boundary.kind !== 'linear_equations' || typeof boundary.allowSignedNumbers !== 'boolean') boundaryError();
+      else lessonBoundary = { version: 1, kind: 'linear_equations', allowSignedNumbers: boundary.allowSignedNumbers };
+    } else add('lessonBoundary', 'UNSUPPORTED_LESSON_BOUNDARY', 'בחירת גבולות החומר זמינה כרגע בשני נושאי הניסיון בלבד.');
+  }
   const grade = raw.gradeNumber;
   if (typeof grade !== 'number' || !Number.isInteger(grade) || grade < 1 || grade > 9) {
     add('gradeNumber', 'INVALID_GRADE', 'יש לבחור כיתה א׳ עד ט׳.');
@@ -222,7 +256,7 @@ export function validateTeacherGenerationIntake(input: unknown, curriculum: Teac
   }
   if (issues.length || !known) return { ok: false, issues };
   const value: TeacherGenerationIntake = {
-    version: 1, gradeNumber: grade as number, topicId: known.topicId,
+    version: legacy ? 1 : 2, ...(lessonBoundary ? { lessonBoundary } : {}), gradeNumber: grade as number, topicId: known.topicId,
     level: raw.level as TeacherGenerationLevel, lessonGoal: raw.lessonGoal as TeacherGenerationGoal,
     lastLesson: (raw.lastLesson as string).trim(), alreadyLearned: [...new Set((learned as string[]).map(item => item.trim()))],
     minutes: raw.minutes as number, questionCount: raw.questionCount as number,

@@ -15,6 +15,7 @@ from provider import qwen_chat_url, NoRedirects
 class ValidationTests(unittest.TestCase):
     def setUp(self):
         self.lesson=read_json(HERE/'examples/elementary-lesson.json')
+        self.lesson.update(version=2, lessonBoundary={'version':1,'kind':'division_facts','allowedDivisors':list(range(1,11)),'maxDividend':100})
         self.payload=read_json(HERE/'examples/elementary-model.json')
 
     def fails(self, code, payload=None, lesson=None):
@@ -24,7 +25,7 @@ class ValidationTests(unittest.TestCase):
 
     def test_fixtures(self):
         validate_model(self.lesson,self.payload)
-        validate_model(read_json(HERE/'examples/middle-lesson.json'),read_json(HERE/'examples/middle-model.json'))
+        validate_model(read_json(HERE/'examples/middle-lesson.json'),read_json(HERE/'examples/middle-model.json'), allow_legacy=True)
 
     def test_learned_context_uses_same_120_character_boundary_as_web_intake(self):
         validate_model(dict(self.lesson, alreadyLearned=['א' * 120]), self.payload)
