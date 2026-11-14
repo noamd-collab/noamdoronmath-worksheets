@@ -11,7 +11,7 @@ name: publish-baseline
 # PR #461 metadata reconciliation. The reconciliation runs under the publish lock.
 
 env:
-  RELEASE_SHA: ccadcb0cbfe241ad500962e5f83d0cacdcbc37f1
+  RELEASE_SHA: 12e6995241cad679260fee8ad34e3fcf76224745
 
 on:
   workflow_dispatch:

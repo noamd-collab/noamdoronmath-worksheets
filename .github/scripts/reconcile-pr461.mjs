@@ -10,10 +10,10 @@ import { ENVIRONMENT, TASK, githubApi, readApprovedSha } from './production-rele
 // owns the existing wix-production lock for this step AND normal begin/finish.
 export const EVIDENCE_PATH = '.github/release-evidence/pr461-local-publication.json';
 const rawEvidence = readFileSync(new URL('../release-evidence/pr461-local-publication.json', import.meta.url));
-export const EVIDENCE_SHA256 = '9cdfebb89ebaa6cf4a173c4b0e443e84276b0ef7832e318453f8f1c809097f08';
+export const EVIDENCE_SHA256 = 'aae716c72727a0ab0e8bdb93183c33af7421f0fbf1d1f440624779ca89817704';
 if (createHash('sha256').update(rawEvidence).digest('hex') !== EVIDENCE_SHA256) throw new Error('Pinned PR461 evidence changed');
 export const EVIDENCE = JSON.parse(rawEvidence);
-export const TARGET = 'ccadcb0cbfe241ad500962e5f83d0cacdcbc37f1';
+export const TARGET = '12e6995241cad679260fee8ad34e3fcf76224745';
 export const LIVE = 'cfe85a520af1e1a0a06526438dbd33c134cc21b1';
 export const OLD = '8cab25576e7bbcd73bb990dfdd483615d7751780';
 export const REPOSITORY = 'noamd-collab/noamdoronmath-worksheets';

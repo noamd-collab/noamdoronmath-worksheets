@@ -86,6 +86,7 @@ function fixture() {
 }
 
 test('pins the exact incident, both old statuses and truthful proof provenance', () => {
+  assert.equal(TARGET, '12e6995241cad679260fee8ad34e3fcf76224745');
   assert.equal(EVIDENCE.expectedDeployment.id, 7776754145); assert.equal(EVIDENCE.expectedDeployment.sha, OLD);
   assert.equal(EVIDENCE.expectedStatuses[0].id, 22157544033); assert.equal(EVIDENCE.expectedStatuses[0].state, 'success');
   assert.equal(EVIDENCE.confirmedLiveSha, LIVE); assert.equal(EVIDENCE.approvedTargetSha, TARGET);
@@ -290,6 +291,7 @@ test('execution context requires the exact Actions/main/repository/job/target/ru
   assert.equal(executionContext(env).approvedSha, TARGET);
   for (const key of Object.keys(env)) assert.throws(() => executionContext({ ...env, [key]: '' }), key);
   assert.throws(() => executionContext({ ...env, RELEASE_SHA: LIVE }));
+  assert.throws(() => executionContext({ ...env, RELEASE_SHA: 'ccadcb0cbfe241ad500962e5f83d0cacdcbc37f1' }));
 });
 test('workflow uses the SAME publish lock, before unchanged begin, with read-only Actions permission', () => {
   const workflow = readFileSync(new URL('../workflows/publish-baseline.yml', import.meta.url), 'utf8');
