@@ -39,6 +39,24 @@ const read = (file: string) => readFileSync(join(root, file), 'utf8');
 const activationDeltaText = read('tests/fixtures/ramzi-activation-reviewed-delta.json');
 assert.equal(sha256(activationDeltaText), 'c7bf20747e0a0e196f15474c283d91736843110c3299e13ad4cf465d3ce76606');
 const activationDeltas = JSON.parse(activationDeltaText).files;
+// Noam's legal audit, 2026-11-15: the privacy policy moved to its own /privacy
+// page and the Ramzi chat gained a short AI privacy notice. Reverse only these
+// reviewed exact hunks before every older fence; no historical hash is replaced.
+const legalPrivacyDeltaText = read('tests/fixtures/legal-privacy-reviewed-delta.json');
+assert.equal(sha256(legalPrivacyDeltaText), '3953c82c1b08b81cf1b2bf76d977f11d6457f0cdeed2c74c2de4cacbe0b38753');
+const legalPrivacyDeltas = JSON.parse(legalPrivacyDeltaText).files;
+function beforeLegalPrivacy(file: string, content: string): string {
+  const delta = legalPrivacyDeltas.find((entry: any) => entry.file === file);
+  if (!delta) return content;
+  assert.equal(sha256(content), delta.candidateSha256, file + ' exact legal privacy candidate');
+  for (const hunk of delta.hunks) {
+    const parts = content.split(hunk.after);
+    assert.equal(parts.length, 2, file + ' one exact legal privacy hunk');
+    content = parts.join(hunk.before);
+  }
+  assert.equal(sha256(content), delta.baselineSha256, file + ' unchanged bytes outside the legal privacy hunks');
+  return content;
+}
 // First567 drawing policy changes exactly one allowlist line. Reverse only the
 // four reviewed geometry prefixes before the existing activation/file fences.
 // Unknown identities, title fallback, guards and all remaining bytes stay fenced.
@@ -87,6 +105,7 @@ function beforeReportObserverFix(content: string): string {
 }
 
 function beforeActivation(file: string, content: string): string {
+  content = beforeLegalPrivacy(file, content);
   if (file === 'src/lib/catalog/loadCatalog.ts') {
     // Reverse only the optional correction argument, then retain the complete
     // previous activation and historical file hashes below.
@@ -121,11 +140,20 @@ it('hint-correction loader reversal preserves all earlier exact fences', () => {
 
 it('temporary drawing-control pause reverses exactly without weakening original figure or script fences', () => {
   const current = read('public/worksheet-viewer-noam.html');
-  assert.equal(sha256(beforeDrawingControlPause(current)), '46232c6d67eefdeed286f74895cce4b5c4a2463d1965427d32ce006b58d348d2');
+  assert.equal(sha256(beforeDrawingControlPause(beforeLegalPrivacy('public/worksheet-viewer-noam.html', current))), '46232c6d67eefdeed286f74895cce4b5c4a2463d1965427d32ce006b58d348d2');
   assert.throws(() => beforeDrawingControlPause(current.replace(':not(.noam-diagram-expand)', '')));
   const pause = current.match(/\/\* Temporary drawing-request pause[^]*?display:none!important}\n/)![0];
   assert.throws(() => beforeDrawingControlPause(current + '\n' + pause));
   assert.throws(() => beforeActivation('public/worksheet-viewer-noam.html', current.replace('function noamAddDiagramExpansion(', 'function changedExpansion(')));
+});
+
+it('legal privacy reversal accepts only the reviewed exact hunks', () => {
+  for (const file of ['src/data/home-page.json', 'public/learning.html', 'public/worksheet-viewer-noam.html']) {
+    const current = read(file);
+    assert.doesNotThrow(() => beforeLegalPrivacy(file, current));
+    assert.throws(() => beforeLegalPrivacy(file, current + '\n'));
+    assert.throws(() => beforeLegalPrivacy(file, current.replace('/privacy', '/privacy-unreviewed')));
+  }
 });
 
 const protectedFiles: Record<string, string> = {

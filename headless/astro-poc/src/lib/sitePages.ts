@@ -2,6 +2,7 @@ import aboutus from '../data/site-pages/aboutus.json';
 import mathTools from '../data/site-pages/math-tools.json';
 import accessibilityadaptation from '../data/site-pages/accessibilityadaptation.json';
 import terms from '../data/site-pages/terms.json';
+import privacy from '../data/site-pages/privacy.json';
 import conditionforfreeworksheets from '../data/site-pages/conditionforfreeworksheets.json';
 import highSchoolMath from '../data/site-pages/high-school-math.json';
 
@@ -12,7 +13,7 @@ type RegionMark = { region?: SitePageRegion };
 
 /** Ordered content blocks for non-topic site / policy pages (M24). */
 export type SitePageBlock =
-  | ({ type: 'h2' | 'h3' | 'h4'; text: string } & RegionMark)
+  | ({ type: 'h2' | 'h3' | 'h4'; text: string; /** Stable anchor, e.g. /privacy#ai. */ id?: string } & RegionMark)
   | ({
       type: 'p';
       text: string;
@@ -69,6 +70,7 @@ export const SITE_PAGE_M24_SLUGS = [
   'terms',
   'conditionforfreeworksheets',
   'high-school-math',
+  'privacy',
 ] as const;
 
 /** Production redirects, served by the middleware from src/data/redirects.json (OPEN-15). */
@@ -82,6 +84,7 @@ export const SITE_PAGE_POLICY_SLUGS = [
   'accessibilityadaptation',
   'terms',
   'conditionforfreeworksheets',
+  'privacy',
 ] as const;
 
 export const SITE_PAGE_M24_UNMIGRATED: readonly string[] = [];
@@ -93,6 +96,7 @@ const BY_SLUG: Record<string, SitePageContent> = {
   terms: terms as SitePageContent,
   conditionforfreeworksheets: conditionforfreeworksheets as SitePageContent,
   'high-school-math': highSchoolMath as SitePageContent,
+  privacy: privacy as SitePageContent,
 };
 
 export function loadSitePage(slug: string): SitePageContent {

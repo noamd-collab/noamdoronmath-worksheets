@@ -337,19 +337,6 @@ function main() {
       contains: page.description,
       how,
     });
-    if (page.slug === 'accessibilityadaptation') {
-      const blocks = page.blocks || [];
-      const index = blocks.findIndex((block: { text?: string }) => block.text === 'מדיניות פרטיות');
-      const next = index >= 0 ? blocks.slice(index + 1).find((block: { type?: string; text?: string }) => block.type === 'p' && block.text) : null;
-      push(records, {
-        id: 'page-privacy',
-        type: 'page',
-        title: 'מדיניות פרטיות',
-        href: '/accessibilityadaptation#privacy-policy',
-        contains: next ? next.text : page.description,
-        how: next ? next.text : '',
-      });
-    }
   }
 
   push(records, {

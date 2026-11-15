@@ -17,6 +17,7 @@ const LOCAL_SITE_PATHS = new Set([
   '/math-tools',
   '/terms',
   '/accessibilityadaptation',
+  '/privacy',
   '/conditionforfreeworksheets',
   '/high-school-math',
   '/worksheets',

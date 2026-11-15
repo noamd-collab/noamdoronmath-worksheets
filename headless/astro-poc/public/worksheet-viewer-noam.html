@@ -1733,6 +1733,8 @@ textarea:focus{
 }
 .noam-compose textarea:focus,.noam-compose textarea:focus-visible{outline:none;box-shadow:none}
 .noam-compose-help{margin:4px 2px 0;color:var(--muted);font-size:12px}
+.noam-privacy-note{margin:2px 2px 0;color:#3d4870;font-size:12px;line-height:1.35}
+.noam-privacy-note a{display:inline-flex;align-items:center;min-height:44px;vertical-align:middle;color:inherit;font-weight:700;text-decoration:underline}
 .noam-ai-feedback{
   display:block;
   width:max-content;
@@ -2413,6 +2415,7 @@ body.exact-viewer{
 }
 .exact-viewer .exact-message-row .noam-send:hover{background:#174b49}
 .exact-viewer .exact-compose .noam-compose-help{margin:0;padding:0 12px 8px;font-size:12px}
+.exact-viewer .exact-compose .noam-privacy-note{margin:0;padding:0 12px 2px}
 .exact-viewer.exact-narrow .exact-viewer-header{display:flex;gap:8px;padding:6px 12px;flex:none}
 .exact-viewer.exact-narrow .exact-viewer-header img{height:34px}
 .exact-viewer.exact-narrow .exact-viewer-header nav{display:none}
@@ -6457,7 +6460,7 @@ function renderNoamChat(){
           '<button type="button" class="noam-action" id="noamMistake" hidden>טעות נפוצה</button>' +
           '<span class="noam-input-spacer" aria-hidden="true"></span>' +
           '<button type="button" class="noam-math-toggle" id="noamMathToggle" aria-label="פתיחת סימנים מתמטיים" title="סימנים מתמטיים" aria-controls="noamMathKeys" aria-expanded="'+mathKeyboardOpen+'">x²</button>' +
-          '<button type="button" class="noam-attach-button" id="noamAttachButton" aria-label="צירוף צילום או קובץ" title="צירוף צילום או קובץ"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 12.5 15 6a3.5 3.5 0 0 1 5 5l-8.5 8.5a5 5 0 0 1-7-7L13 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>' +
+          '<button type="button" class="noam-attach-button" id="noamAttachButton" aria-label="צירוף צילום או קובץ. מצלמים רק את התרגיל, בלי שם, בלי פנים ובלי פרטים אישיים" title="מצלמים רק את התרגיל, בלי שם, בלי פנים ובלי פרטים אישיים. הקובץ נשלח לעיבוד אצל ספק AI"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 12.5 15 6a3.5 3.5 0 0 1 5 5l-8.5 8.5a5 5 0 0 1-7-7L13 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>' +
           '<input type="file" id="noamAttachInput" accept="image/*,application/pdf" multiple hidden>' +
         '</div>' +
         '<div class="noam-math-keys" id="noamMathKeys" role="group" aria-label="סימנים מתמטיים"'+(mathKeyboardOpen?'':' hidden')+'>' +
@@ -6476,6 +6479,7 @@ function renderNoamChat(){
         '<textarea id="noamQuestion" maxlength="700" placeholder="למשל: איך מתחילים?" aria-describedby="noamComposeHelp">'+esc(noamDrafts[selectedExercise.id]||"")+'</textarea>' +
       '</div>' +
       '<div class="noam-compose-help" id="noamComposeHelp"><span dir="ltr">Enter</span> לשליחה · <span dir="ltr">Shift+Enter</span> לשורה חדשה</div>' +
+      '<p class="noam-privacy-note" id="noamPrivacyNote" data-ai-privacy-note>רמזי הוא בינה מלאכותית ועלול לטעות. ההודעות והקבצים נשלחים לספק AI חיצוני, אז שולחים רק את התרגיל, בלי פרטים אישיים. <a href="/privacy#ai" target="_blank" rel="noopener">מה קורה למידע?</a></p>' +
       '<button type="button" class="noam-send" id="noamSend">שלח לרמזי</button>' +
     '</div>' +
     (hasAssistantAnswer

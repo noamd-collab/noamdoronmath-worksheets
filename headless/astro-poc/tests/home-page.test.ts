@@ -22,7 +22,7 @@ describe('homepage Harmony parity (HEADLESS-MIGRATION-31)', () => {
     }
   });
 
-  it('preserves search CTA, learning/Google, WhatsApp; privacy links to combined page', () => {
+  it('preserves search CTA, learning/Google, WhatsApp; privacy links to the standalone policy', () => {
     assert.equal(home.hero.searchCta.label, 'למציאת משימת תרגול');
     assert.equal(home.hero.searchCta.href, '/worksheets');
     assert.equal(home.learning.googleHref, '/learning.html?signin=google');
@@ -39,8 +39,8 @@ describe('homepage Harmony parity (HEADLESS-MIGRATION-31)', () => {
     assert.equal(byLabel['תקנון שימוש בדפי עבודה חינמיים'].href, '/conditionforfreeworksheets');
     assert.equal(byLabel['תנאי השימוש'].href, '/terms');
     assert.equal(byLabel['הצהרת נגישות'].href, '/accessibilityadaptation');
-    // Combined accessibility+privacy page (verified); stable privacy-section anchor.
-    assert.equal(byLabel['מדיניות פרטיות'].href, '/accessibilityadaptation#privacy-policy');
+    // Standalone privacy policy (legal audit 2026-11-15); the accessibility page keeps an anchor that points here.
+    assert.equal(byLabel['מדיניות פרטיות'].href, '/privacy');
     assert.notEqual(byLabel['מדיניות פרטיות'].knownGap, true);
     assert.match(home.footer.privacyNote, /פרטיות/);
     assert.doesNotMatch(home.footer.privacyNote, /פער ידוע|אין יעד תקף|מסומן ולא כקישור/);
@@ -81,7 +81,7 @@ describe('homepage Harmony parity (HEADLESS-MIGRATION-31)', () => {
     assert.ok(!layout.includes('EducationalOrganization'));
   });
 
-  it('index page wires fixture sections and does not invent privacy URL /privacy', () => {
+  it('index page wires fixture sections; legal links come from footer data, not hard-coded', () => {
     const index = readFileSync(join(root, 'src', 'pages', 'index.astro'), 'utf8');
     assert.ok(!index.includes('data-home-dev-notice'));
     assert.ok(!index.includes('home-notice'));
@@ -198,7 +198,7 @@ describe('homepage Harmony parity (HEADLESS-MIGRATION-31)', () => {
     assert.ok(hrefs.includes('/high-school-math'));
     assert.ok(!hrefs.includes('/high-school-math-1'), 'link the target, not the 301');
     assert.ok(hrefs.includes('/accessibilityadaptation'));
-    assert.ok(hrefs.includes('/accessibilityadaptation#privacy-policy'));
+    assert.ok(hrefs.includes('/privacy'));
     assert.ok(hrefs.includes('mailto:noamd@noamdoronmath.co.il'));
   });
 });
