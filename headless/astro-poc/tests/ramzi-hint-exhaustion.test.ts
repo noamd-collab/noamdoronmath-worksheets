@@ -136,8 +136,8 @@ it('keeps hidden drawing controls out of both released layouts at desktop and ph
         assert.equal(await page.$eval('#noamMistake', element => getComputedStyle(element).display), 'none');
         assert.equal(await page.$eval('#visibleControl', element => element.getClientRects().length > 0), true);
         await page.$eval('#noamDraw', element => { element.hidden = false; });
-        assert.equal(await page.$eval('#noamDraw', element => element.getClientRects().length > 0), true,
-          'A drawing control that policy permits must remain available');
+        assert.equal(await page.$eval('#noamDraw', element => element.getClientRects().length), 0,
+          'The temporary request-control pause remains effective when the topic policy permits drawing');
       }
     }
   } finally {

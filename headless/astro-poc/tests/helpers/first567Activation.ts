@@ -14,7 +14,7 @@ export function readFirst567Activation() {
   const ramzi = validateRamziActivation(registry, evidence);
   const ready = evidence?.ready;
   const units = new Map<string, any>((ready?.units || []).map((unit: any) => [unit.pdfId, unit]));
-  return { ready, units, ramzi };
+  return { ready, units, ramzi, hintCorrection: evidence?.hintCorrection };
 }
 export function assertFirst567Phase(manifest: any, bytes: Buffer, phase: ReturnType<typeof readFirst567Activation>) {
   const active = phase.ready !== undefined;

@@ -3,7 +3,7 @@
   "status": "review_candidate_not_published",
   "dependency": {
     "pr": 478,
-    "head": "4d6aaa00b2b28a8a263bd58dd93001e97b2a3fe8"
+    "head": "6d1b68da59b4e58d755592b71fb79167c8b57aa1"
   },
   "grade": 9,
   "topicId": 7,
@@ -108,5 +108,17 @@
     "teacherQuestionSelection": false,
     "learningChanges": false
   },
-  "M03": "Public-native source projection only, separate from accepted PDF bytes; neither original nor derived native exports are published by this change."
+  "M03": "Public-native source projection only, separate from accepted PDF bytes; neither original nor derived native exports are published by this change.",
+  "inheritedReviewCandidates": [
+    {
+      "pr": 480,
+      "head": "9f60d1e1e19982b8a39352c38fe83df79be4aea5",
+      "scope": "temporary drawing-request CSS controls only"
+    },
+    {
+      "pr": 481,
+      "head": "c2ba1375457fe183b6ba4e99cf70572ae112924d",
+      "scope": "passive first15 correction-evidence compatibility; no applied record or DB write"
+    }
+  ]
 }

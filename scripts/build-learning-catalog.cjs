@@ -23,7 +23,7 @@ function buildLearningCatalog(raw, registry, activationEvidence) {
     });
   }
   validateRamziActivation(registry, activationEvidence);
-  const catalog = mergeWorksheetEditions(baseCatalog, registry, activationEvidence?.ready);
+  const catalog = mergeWorksheetEditions(baseCatalog, registry, activationEvidence?.ready, activationEvidence?.hintCorrection);
   for (const g of catalog.grades) for (const t of g.topics) for (const edition of t.editions || []) {
     // Static PDF editions have no deployed progress identities. Do not expose
     // account controls whose worksheet IDs would require a database rollout.

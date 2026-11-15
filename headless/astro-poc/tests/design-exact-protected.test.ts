@@ -55,8 +55,16 @@ function beforeDrawingPolicy(content: string): string {
   return content.replace(lines[0], previous);
 }
 
+// Remove only the temporary CSS pause before every historical whole-file fence.
+function beforeDrawingControlPause(content: string): string {
+  const pause = '/* Temporary drawing-request pause; keep existing source-diagram enlargement available. */\n' +
+    '#noamDraw,.noam-draw-action:not(.noam-diagram-expand){display:none!important}\n';
+  assert.equal(content.split(pause).length, 2, 'one exact temporary drawing-request CSS block');
+  return content.replace(pause, '');
+}
+
 it('first567 drawing policy changes only the reviewed line in the root mirror', () => {
-  const current = readFileSync(join(root, '../../worksheet-viewer-noam.html'), 'utf8');
+  const current = beforeDrawingControlPause(readFileSync(join(root, '../../worksheet-viewer-noam.html'), 'utf8'));
   assert.equal(sha256(current), '232f80e06dea7d7f410c2a03ad0c09ffbd6bfb9721bd5542e2a98260d7d2d6a9', 'exact root drawing policy candidate');
   assert.equal(sha256(beforeDrawingPolicy(current)), '91433585be9d6d4ec2bf3887bbafecec5b310f235382f56ebfcbe23de645e05c');
   assert.throws(() => beforeDrawingPolicy(current.replace('G7-T86', 'G7-T99')));
@@ -79,7 +87,16 @@ function beforeReportObserverFix(content: string): string {
 }
 
 function beforeActivation(file: string, content: string): string {
+  if (file === 'src/lib/catalog/loadCatalog.ts') {
+    // Reverse only the optional correction argument, then retain the complete
+    // previous activation and historical file hashes below.
+    const previous = '  return mergeWorksheetEditions(data, editionRegistry, data.ramziActivation) as CatalogV1;';
+    const current = '  return mergeWorksheetEditions(data, editionRegistry, data.ramziActivation, data.ramziHintCorrection) as CatalogV1;';
+    assert.equal(content.split(current).length, 2, 'one exact optional correction argument');
+    content = content.replace(current, previous);
+  }
   if (file === 'public/worksheet-viewer-noam.html') {
+    content = beforeDrawingControlPause(content);
     content = beforeReportObserverFix(content);
     assert.equal(sha256(content), '054e601e3aa5e653419f625d3d53c13fde31f47e0e1ed696e8334e5929605f7e', 'exact public drawing policy candidate');
     content = beforeDrawingPolicy(content);
@@ -94,6 +111,22 @@ function beforeActivation(file: string, content: string): string {
   assert.equal(sha256(content), delta.baselineSha256, file + ' unchanged bytes outside activation');
   return content;
 }
+
+it('hint-correction loader reversal preserves all earlier exact fences', () => {
+  const file = 'src/lib/catalog/loadCatalog.ts', current = read(file);
+  assert.doesNotThrow(() => beforeActivation(file, current));
+  assert.throws(() => beforeActivation(file, current.replace('data.ramziHintCorrection', 'data.unreviewedCorrection')));
+  assert.throws(() => beforeActivation(file, current + '\n'));
+});
+
+it('temporary drawing-control pause reverses exactly without weakening original figure or script fences', () => {
+  const current = read('public/worksheet-viewer-noam.html');
+  assert.equal(sha256(beforeDrawingControlPause(current)), '46232c6d67eefdeed286f74895cce4b5c4a2463d1965427d32ce006b58d348d2');
+  assert.throws(() => beforeDrawingControlPause(current.replace(':not(.noam-diagram-expand)', '')));
+  const pause = current.match(/\/\* Temporary drawing-request pause[^]*?display:none!important}\n/)![0];
+  assert.throws(() => beforeDrawingControlPause(current + '\n' + pause));
+  assert.throws(() => beforeActivation('public/worksheet-viewer-noam.html', current.replace('function noamAddDiagramExpansion(', 'function changedExpansion(')));
+});
 
 const protectedFiles: Record<string, string> = {
   // Optional server secrets QWEN_API_KEY and NOAM_RECAPTCHA_SECRET_KEY were
@@ -222,8 +255,11 @@ describe('exact-design protected live-baseline boundaries', () => {
         delete catalog.searchTerms['9']['47'];
         const activation = readFirst567Activation();
         assert.deepEqual(catalog.ramziActivation, activation.ready, 'snapshot matches the real receipt bundle');
+        assert.deepEqual(catalog.ramziHintCorrection, activation.hintCorrection, 'optional correction matches the verified receipt bundle');
         if (activation.ready) {
           delete catalog.ramziActivation;
+          // Strip only the correction already verified against its real readback.
+          delete catalog.ramziHintCorrection;
           for (const grade of catalog.grades) for (const topic of grade.topics) for (const edition of topic.editions || []) {
             const readyLevels = edition.levels.filter((level: any) => activation.ramzi.has(edition.editionId + ':' + level.key));
             if (!readyLevels.length) continue;
