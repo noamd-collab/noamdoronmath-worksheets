@@ -198,7 +198,12 @@ describe('exact-design protected live-baseline boundaries', () => {
         assert.equal(medGrade.topics.filter((t: any) => t.id === 48).length, 1);
         assert.equal(medGrade.topics[medIndex - 1].id, 10);
         assert.equal(medGrade.topics[medIndex + 1].id, 11);
-        assert.equal(sha256(JSON.stringify(medGrade.topics[medIndex])), 'd683e8256684af760b0bbb594139abf22d4593a35cc231832f9ab8c5765bf1b2');
+        // The shared content gate requires the Hebrew maqaf in the catalog title.
+        // Reverse only that spelling correction before the original topic fence.
+        const medTopic = medGrade.topics[medIndex];
+        assert.equal(medTopic.title, 'משולש ישר־זווית — התיכון ליתר');
+        const medBeforeMaqaf = { ...medTopic, title: 'משולש ישר זווית — התיכון ליתר' };
+        assert.equal(sha256(JSON.stringify(medBeforeMaqaf)), 'd683e8256684af760b0bbb594139abf22d4593a35cc231832f9ab8c5765bf1b2');
         assert.equal(catalog.searchTerms['9']['48'], 'משולש ישר זווית התיכון ליתר חצי היתר אמצע היתר משפט הפוך מרובעים מלבן מערכת צירים');
         medGrade.topics.splice(medIndex, 1);
         delete catalog.searchTerms['9']['48'];
