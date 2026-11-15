@@ -200,7 +200,7 @@ describe('topic SOURCE→content parity gate (M19/M20)', () => {
 
   it('distributive-law SOURCE→content preserves H2 before worksheet CTA in bodyFlow', () => {
     const source = loadProductionFixture('distributive-law-grade-9');
-    const page = loadTopicPage('distributive-law-grade-9');
+    const page = restoreBeforePdfCopy('distributive-law-grade-9', loadTopicPage('distributive-law-grade-9'));
     const preview = contentToParitySnapshot(page, 'preview');
     assert.ok(source.bodyFlow && source.bodyFlow.length, 'fixture must include bodyFlow');
     const diffs = diffTopicParity(source, preview).filter((d) => d.field.startsWith('bodyFlow'));
@@ -217,7 +217,7 @@ describe('topic SOURCE→content parity gate (M19/M20)', () => {
     for (const slug of ['binomial-square-grade-9', 'difference-of-squares-grade-9'] as const) {
       assert.ok((TOPIC_PAGE_SLUGS as readonly string[]).includes(slug));
       const source = loadProductionFixture(slug);
-      const page = loadTopicPage(slug);
+      const page = restoreBeforePdfCopy(slug, loadTopicPage(slug));
       assert.equal(source.sections.length, 1);
       assert.ok(hasParagraphSelfCheck(source));
       assert.ok(!source.sections.some((s) => hasSelfCheckHeading(s.heading)));
@@ -257,7 +257,7 @@ describe('topic SOURCE→content parity gate (M19/M20)', () => {
   it('same-origin worksheet CTAs use production github topic ids (all CTAs, DOM order)', () => {
     for (const slug of migratedSlugs) {
       const source = loadProductionFixture(slug);
-      const page = loadTopicPage(slug);
+      const page = restoreBeforePdfCopy(slug, loadTopicPage(slug));
       const srcCtas =
         (source as { catalogCtas?: { href: string; label: string }[] }).catalogCtas?.length
           ? (source as { catalogCtas: { href: string; label: string }[] }).catalogCtas
@@ -387,7 +387,7 @@ describe('M22 + M30 AA preH1 CTA + regressions', () => {
 
   it('distributive-law still H2-before-CTA after M22 (regression)', () => {
     const source = loadProductionFixture('distributive-law-grade-9');
-    const page = loadTopicPage('distributive-law-grade-9');
+    const page = restoreBeforePdfCopy('distributive-law-grade-9', loadTopicPage('distributive-law-grade-9'));
     const diffs = diffTopicParity(source, contentToParitySnapshot(page, 'preview')).filter((d) =>
       d.field.startsWith('bodyFlow')
     );

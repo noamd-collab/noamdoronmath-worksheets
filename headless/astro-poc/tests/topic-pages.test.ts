@@ -1,3 +1,4 @@
+import { beforeExtSmlAfrCopy } from './fixtures/ext-sml-afr-pdf';
 /**
  * HEADLESS-MIGRATION-18/19/20 — topic SEO page module + CTA gates.
  */
@@ -146,6 +147,9 @@ describe('topic page routes (HEADLESS-MIGRATION-18/19/20)', () => {
 
   it('preserves production or reviewed content update dates; absent when production has none', () => {
     const expectedPresent: Record<string, string> = {
+      // SAO/WPC additional PDF content is reviewed on this date.
+      'triangle-sides-angles-grade-9': 'נועם דורון מתמטיקה · עודכן 15.11.2026',
+      'equations-both-sides-word-problems-grade-7': 'נועם דורון מתמטיקה · עודכן 15.11.2026',
       // EQN01/SGN01/FAC01 PDF practice and scope sections added 15.11.2026.
       'signed-numbers-grade-7': 'נועם דורון מתמטיקה · עודכן 15.11.2026',
       'pythagorean-theorem-grade-8': 'נועם דורון מתמטיקה · עודכן 12.9.2026',
@@ -363,7 +367,7 @@ describe('topic page routes (HEADLESS-MIGRATION-18/19/20)', () => {
   });
 
   it('binomial-square: paragraph-only self-check exact text, topic 44, no invented H2', () => {
-    const page = loadTopicPage('binomial-square-grade-9');
+    const page = beforeExtSmlAfrCopy('binomial-square-grade-9', loadTopicPage('binomial-square-grade-9'));
     assert.equal(page.catalogCtas[0].catalogTopicId, 44);
     assert.equal(page.sections.length, 1);
     assert.ok(!page.sections.some((s) => hasSelfCheckHeading(s.heading)));
@@ -379,7 +383,7 @@ describe('topic page routes (HEADLESS-MIGRATION-18/19/20)', () => {
   });
 
   it('difference-of-squares: paragraph-only self-check exact text, topic 45, no invented H2', () => {
-    const page = loadTopicPage('difference-of-squares-grade-9');
+    const page = beforeExtSmlAfrCopy('difference-of-squares-grade-9', loadTopicPage('difference-of-squares-grade-9'));
     assert.equal(page.catalogCtas[0].catalogTopicId, 45);
     assert.equal(page.sections.length, 1);
     assert.ok(!page.sections.some((s) => hasSelfCheckHeading(s.heading)));

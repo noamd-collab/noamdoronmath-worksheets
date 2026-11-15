@@ -9,7 +9,10 @@
     "../src/lib/catalog/loadCatalog.ts",
     "../src/components/WorksheetsClient.tsx",
     "next-nine-pdf-intake.test.ts",
-    "eqn-sgn-fac-pdf-intake.test.ts"
+    "eqn-sgn-fac-pdf-intake.test.ts",
+    "ext-sml-afr-pdf-intake.test.ts",
+    "sao-wpc-pdf-intake.test.ts",
+    "extra15-pdf-integration.test.ts"
   ],
   "exclude": []
 }

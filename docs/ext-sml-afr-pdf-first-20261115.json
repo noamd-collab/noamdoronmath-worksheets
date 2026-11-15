@@ -1,0 +1,452 @@
+{
+  "schema": "noam-additive-pdf-provenance/v1",
+  "status": "LOCAL_SITE_CANDIDATE_MEDIA_VERIFIED",
+  "date": "2026-11-15",
+  "skillVersion": "7.3.2-noam.codex",
+  "mode": "pdf-only",
+  "reviewSha256": "1c5e9b8aaeec810d75abeb7ac8e6ec259ba8c0fc4170496c67a9c7a6c2b553dc",
+  "rootDecisionSha256": "d112ad4058bcb42fd18d9d8b986ac78c9b9ec97e6feced0f4cf729e8bea86efa",
+  "mediaReadbackSha256": "ead1d1d3f5c1dc6ca0b9ed82e3efe1e4ff3e4253ed0069b6c618ef2884e8d8ad",
+  "scope": {
+    "packages": [
+      "EXT01",
+      "SML01",
+      "AFR01"
+    ],
+    "PDFs": 9,
+    "pages": 55,
+    "subitems": 216,
+    "uniquePdfHashes": 9
+  },
+  "editions": [
+    {
+      "grade": 9,
+      "topicId": 1,
+      "editionId": "ms-20261115-ext-01-r1",
+      "label": "חוק הפילוג המורחב: פישוט, משוואות והשוואת שטחים — PDF",
+      "nativePrefix": "G9-T70",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "status": "published",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "c915f782c63d4e10ab1e38589ca0b199",
+          "pdfSha256": "9e71f6fd6afe00347eb4e48e9bf18409fa367585db35c499e1770db565b710e8",
+          "sourceSha256": "4d2c2c0bd6c09f6507baddbcc21135c56e664033c5c62c6d7d570af44426c1a0",
+          "nativeExportSha256": "d30eebdb60aad198614ce0f09a3db765483275bd972268ba44ce1d1340b6c6fc",
+          "worksheetId": "ms-g9-ext-01-a-r1",
+          "revision": 1
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "8dac449d76c840a18a8bb6bf9b3679ab",
+          "pdfSha256": "6f7988e31ccce6e72c84b7086ff155c2f108f13f6223b211653b377461c01bf6",
+          "sourceSha256": "0b06c82f3d8177bf273e2749059c4a919ccd2ce6fdb1c1a1ee049b6078ab53b1",
+          "nativeExportSha256": "c0f8d39f8363d75c5f1c71e88cdfe9a9851abe70808eecb4a0abe31e06d82006",
+          "worksheetId": "ms-g9-ext-01-b-r1",
+          "revision": 1
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "6e2117181a8e43cfb8a8d5afaad21ab5",
+          "pdfSha256": "2ea4258eba9af1f31a8a04cde0e5102a4e97facc74bdadb3b6b62405b9f57dc9",
+          "sourceSha256": "2eee60d67d0859921b18088d7c3215a96603e7898710c49b64215310185244ab",
+          "nativeExportSha256": "b959c0ad5a5fb8d2afe61a7631d3309f5eff52cb2d0e45a6849ab4e051fb9686",
+          "worksheetId": "ms-g9-ext-01-c-r1",
+          "revision": 1
+        }
+      ]
+    },
+    {
+      "grade": 9,
+      "topicId": 44,
+      "editionId": "ms-20261115-sml-01-r1",
+      "label": "נוסחאות הכפל המקוצר: ריבוע סכום והפרש והפרש ריבועים — PDF",
+      "nativePrefix": "G9-T71",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "status": "published",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "c6360174b8264607aaa768f9f029262a",
+          "pdfSha256": "226ffeeecba617eeaf655fc770392e6acb54d9174a9b716e17509ada4e79f61e",
+          "sourceSha256": "54fca9992debe3c7dbee94e1be564c80955b004a6a70a0efe8dbcf399ad1a5c6",
+          "nativeExportSha256": "8599ccfec1cf34e50a5f5e61f6aff8b6ff7c9c5da8a41274679ba8cd511654f9",
+          "worksheetId": "ms-g9-sml-01-a-r1",
+          "revision": 1
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "8e8ecb6ff6cb4033bc442cd891a17515",
+          "pdfSha256": "ab4dc4d8f9a0c74816762b93e215a11bd53a717c188351c483a9ffa43b3d6888",
+          "sourceSha256": "8973614f7bbf41b7fc32f0b944576135c024703b15c5136a0adbe1fda16254fc",
+          "nativeExportSha256": "479ab745650a1f09950dad92eba75f5bbd88ae84d8100c2e890cbe661a1e7c19",
+          "worksheetId": "ms-g9-sml-01-b-r1",
+          "revision": 1
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "00de21b0dd8e4c24bcc91b6a703a3be4",
+          "pdfSha256": "2597b4d8c394a74ac265bd2433bc8137d9b06545ba08e88604d60129a6a413e2",
+          "sourceSha256": "65bc46ca4bd3197049561f53bd314d87b4aba5236e9f0993eea618bfb00d67af",
+          "nativeExportSha256": "975cf7f280f103f69072f49f8e90728f7be20b42659c93069aee2aee6bd33622",
+          "worksheetId": "ms-g9-sml-01-c-r1",
+          "revision": 1
+        }
+      ]
+    },
+    {
+      "grade": 9,
+      "topicId": 3,
+      "editionId": "ms-20261115-afr-01-r1",
+      "label": "שברים אלגבריים: תחום הצבה, צמצום, כפל וחילוק — PDF",
+      "nativePrefix": "G9-T72",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "status": "published",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "7ed50f3d7f8145acad25939beaabc293",
+          "pdfSha256": "369d853654e2cb74f7730afded5e1e4451317bf1febaa843707b555368ec6775",
+          "sourceSha256": "a405a265d6938d8472cc0f3e9b0e867475e40c1545f50a368b0ce330a9ce8b14",
+          "nativeExportSha256": "729de8daeb3b1ba33f6e4f1e398e56cd17cf401547dcf3c9c198d0c6a5d7378c",
+          "worksheetId": "ms-g9-afr-01-a-r1",
+          "revision": 1
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "908c1f5a2ce5426d88fc03a67e6d4e29",
+          "pdfSha256": "920fdc2dc86f40d9a9465dee66cafd96fc3ee89bce984381b6c07b0aef876837",
+          "sourceSha256": "9beb686f8ea3b02f16bd80c95c8dde956f6a237aca44480750b6e1d538a92239",
+          "nativeExportSha256": "74aef2b5f0f0ecf9beee7b7ce17c0e8dd26df186421de2e3573f979975076e75",
+          "worksheetId": "ms-g9-afr-01-b-r1",
+          "revision": 1
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "df74b8a1382c4bc3952f3c8a3d6bfa43",
+          "pdfSha256": "13c77ff370852e3168efa678a58a3a2d67a318901bdd8880a8cd3d220507abc3",
+          "sourceSha256": "52c60aa848bc8f1025296c2382ee3675eaaf0046f471527fd911f78cfa9223c5",
+          "nativeExportSha256": "30d2f0cb7d8a79defc95cc5982405f77555da1fcec39a2c75076bfb7431ce63c",
+          "worksheetId": "ms-g9-afr-01-c-r1",
+          "revision": 1
+        }
+      ]
+    }
+  ],
+  "noNativeHintWordActivation": true,
+  "websitePublished": false,
+  "sitePublicationClaimed": false,
+  "review": {
+    "sourceSubitemsReviewed": 216,
+    "pdfPagesReviewed": 55,
+    "level": "independent essential PDF intake plus Root scoped review",
+    "reviewer": "Codex independent intake reviewer",
+    "preserveDensityReviewCount": 6,
+    "WordHintsNativeApproved": false,
+    "pdfPageReviewMethod": "55 page layout overviews; all9 final-answer pages individually magnified; not glyph-by-glyph re-transcription",
+    "rootVisualScope": "EXT A six-page contact sheet; SML C6 question close-up and excellence final-answer page"
+  },
+  "packages": [
+    {
+      "grade": 9,
+      "topicId": 1,
+      "editionId": "ms-20261115-ext-01-r1",
+      "label": "חוק הפילוג המורחב: פישוט, משוואות והשוואת שטחים — PDF",
+      "nativePrefix": "G9-T70",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "status": "published",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "c915f782c63d4e10ab1e38589ca0b199",
+          "pdfSha256": "9e71f6fd6afe00347eb4e48e9bf18409fa367585db35c499e1770db565b710e8",
+          "sourceSha256": "4d2c2c0bd6c09f6507baddbcc21135c56e664033c5c62c6d7d570af44426c1a0",
+          "nativeExportSha256": "d30eebdb60aad198614ce0f09a3db765483275bd972268ba44ce1d1340b6c6fc",
+          "worksheetId": "ms-g9-ext-01-a-r1",
+          "revision": 1,
+          "downloadChecks": [
+            {
+              "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_c915f782c63d4e10ab1e38589ca0b199.pdf",
+              "status": 200,
+              "sha256": "9e71f6fd6afe00347eb4e48e9bf18409fa367585db35c499e1770db565b710e8",
+              "bytes": 43903,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_c915f782c63d4e10ab1e38589ca0b199.pdf",
+              "status": 200,
+              "sha256": "9e71f6fd6afe00347eb4e48e9bf18409fa367585db35c499e1770db565b710e8",
+              "bytes": 43903,
+              "matchesFrozenPdf": true
+            }
+          ],
+          "pages": 6,
+          "subitems": 24
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "8dac449d76c840a18a8bb6bf9b3679ab",
+          "pdfSha256": "6f7988e31ccce6e72c84b7086ff155c2f108f13f6223b211653b377461c01bf6",
+          "sourceSha256": "0b06c82f3d8177bf273e2749059c4a919ccd2ce6fdb1c1a1ee049b6078ab53b1",
+          "nativeExportSha256": "c0f8d39f8363d75c5f1c71e88cdfe9a9851abe70808eecb4a0abe31e06d82006",
+          "worksheetId": "ms-g9-ext-01-b-r1",
+          "revision": 1,
+          "downloadChecks": [
+            {
+              "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_8dac449d76c840a18a8bb6bf9b3679ab.pdf",
+              "status": 200,
+              "sha256": "6f7988e31ccce6e72c84b7086ff155c2f108f13f6223b211653b377461c01bf6",
+              "bytes": 43018,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_8dac449d76c840a18a8bb6bf9b3679ab.pdf",
+              "status": 200,
+              "sha256": "6f7988e31ccce6e72c84b7086ff155c2f108f13f6223b211653b377461c01bf6",
+              "bytes": 43018,
+              "matchesFrozenPdf": true
+            }
+          ],
+          "pages": 5,
+          "subitems": 24
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "6e2117181a8e43cfb8a8d5afaad21ab5",
+          "pdfSha256": "2ea4258eba9af1f31a8a04cde0e5102a4e97facc74bdadb3b6b62405b9f57dc9",
+          "sourceSha256": "2eee60d67d0859921b18088d7c3215a96603e7898710c49b64215310185244ab",
+          "nativeExportSha256": "b959c0ad5a5fb8d2afe61a7631d3309f5eff52cb2d0e45a6849ab4e051fb9686",
+          "worksheetId": "ms-g9-ext-01-c-r1",
+          "revision": 1,
+          "downloadChecks": [
+            {
+              "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_6e2117181a8e43cfb8a8d5afaad21ab5.pdf",
+              "status": 200,
+              "sha256": "2ea4258eba9af1f31a8a04cde0e5102a4e97facc74bdadb3b6b62405b9f57dc9",
+              "bytes": 43440,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_6e2117181a8e43cfb8a8d5afaad21ab5.pdf",
+              "status": 200,
+              "sha256": "2ea4258eba9af1f31a8a04cde0e5102a4e97facc74bdadb3b6b62405b9f57dc9",
+              "bytes": 43440,
+              "matchesFrozenPdf": true
+            }
+          ],
+          "pages": 5,
+          "subitems": 24
+        }
+      ]
+    },
+    {
+      "grade": 9,
+      "topicId": 44,
+      "editionId": "ms-20261115-sml-01-r1",
+      "label": "נוסחאות הכפל המקוצר: ריבוע סכום והפרש והפרש ריבועים — PDF",
+      "nativePrefix": "G9-T71",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "status": "published",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "c6360174b8264607aaa768f9f029262a",
+          "pdfSha256": "226ffeeecba617eeaf655fc770392e6acb54d9174a9b716e17509ada4e79f61e",
+          "sourceSha256": "54fca9992debe3c7dbee94e1be564c80955b004a6a70a0efe8dbcf399ad1a5c6",
+          "nativeExportSha256": "8599ccfec1cf34e50a5f5e61f6aff8b6ff7c9c5da8a41274679ba8cd511654f9",
+          "worksheetId": "ms-g9-sml-01-a-r1",
+          "revision": 1,
+          "downloadChecks": [
+            {
+              "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_c6360174b8264607aaa768f9f029262a.pdf",
+              "status": 200,
+              "sha256": "226ffeeecba617eeaf655fc770392e6acb54d9174a9b716e17509ada4e79f61e",
+              "bytes": 43810,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_c6360174b8264607aaa768f9f029262a.pdf",
+              "status": 200,
+              "sha256": "226ffeeecba617eeaf655fc770392e6acb54d9174a9b716e17509ada4e79f61e",
+              "bytes": 43810,
+              "matchesFrozenPdf": true
+            }
+          ],
+          "pages": 6,
+          "subitems": 24
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "8e8ecb6ff6cb4033bc442cd891a17515",
+          "pdfSha256": "ab4dc4d8f9a0c74816762b93e215a11bd53a717c188351c483a9ffa43b3d6888",
+          "sourceSha256": "8973614f7bbf41b7fc32f0b944576135c024703b15c5136a0adbe1fda16254fc",
+          "nativeExportSha256": "479ab745650a1f09950dad92eba75f5bbd88ae84d8100c2e890cbe661a1e7c19",
+          "worksheetId": "ms-g9-sml-01-b-r1",
+          "revision": 1,
+          "downloadChecks": [
+            {
+              "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_8e8ecb6ff6cb4033bc442cd891a17515.pdf",
+              "status": 200,
+              "sha256": "ab4dc4d8f9a0c74816762b93e215a11bd53a717c188351c483a9ffa43b3d6888",
+              "bytes": 43799,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_8e8ecb6ff6cb4033bc442cd891a17515.pdf",
+              "status": 200,
+              "sha256": "ab4dc4d8f9a0c74816762b93e215a11bd53a717c188351c483a9ffa43b3d6888",
+              "bytes": 43799,
+              "matchesFrozenPdf": true
+            }
+          ],
+          "pages": 6,
+          "subitems": 24
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "00de21b0dd8e4c24bcc91b6a703a3be4",
+          "pdfSha256": "2597b4d8c394a74ac265bd2433bc8137d9b06545ba08e88604d60129a6a413e2",
+          "sourceSha256": "65bc46ca4bd3197049561f53bd314d87b4aba5236e9f0993eea618bfb00d67af",
+          "nativeExportSha256": "975cf7f280f103f69072f49f8e90728f7be20b42659c93069aee2aee6bd33622",
+          "worksheetId": "ms-g9-sml-01-c-r1",
+          "revision": 1,
+          "downloadChecks": [
+            {
+              "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_00de21b0dd8e4c24bcc91b6a703a3be4.pdf",
+              "status": 200,
+              "sha256": "2597b4d8c394a74ac265bd2433bc8137d9b06545ba08e88604d60129a6a413e2",
+              "bytes": 45421,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_00de21b0dd8e4c24bcc91b6a703a3be4.pdf",
+              "status": 200,
+              "sha256": "2597b4d8c394a74ac265bd2433bc8137d9b06545ba08e88604d60129a6a413e2",
+              "bytes": 45421,
+              "matchesFrozenPdf": true
+            }
+          ],
+          "pages": 6,
+          "subitems": 24
+        }
+      ]
+    },
+    {
+      "grade": 9,
+      "topicId": 3,
+      "editionId": "ms-20261115-afr-01-r1",
+      "label": "שברים אלגבריים: תחום הצבה, צמצום, כפל וחילוק — PDF",
+      "nativePrefix": "G9-T72",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "status": "published",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "7ed50f3d7f8145acad25939beaabc293",
+          "pdfSha256": "369d853654e2cb74f7730afded5e1e4451317bf1febaa843707b555368ec6775",
+          "sourceSha256": "a405a265d6938d8472cc0f3e9b0e867475e40c1545f50a368b0ce330a9ce8b14",
+          "nativeExportSha256": "729de8daeb3b1ba33f6e4f1e398e56cd17cf401547dcf3c9c198d0c6a5d7378c",
+          "worksheetId": "ms-g9-afr-01-a-r1",
+          "revision": 1,
+          "downloadChecks": [
+            {
+              "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_7ed50f3d7f8145acad25939beaabc293.pdf",
+              "status": 200,
+              "sha256": "369d853654e2cb74f7730afded5e1e4451317bf1febaa843707b555368ec6775",
+              "bytes": 45228,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_7ed50f3d7f8145acad25939beaabc293.pdf",
+              "status": 200,
+              "sha256": "369d853654e2cb74f7730afded5e1e4451317bf1febaa843707b555368ec6775",
+              "bytes": 45228,
+              "matchesFrozenPdf": true
+            }
+          ],
+          "pages": 7,
+          "subitems": 24
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "908c1f5a2ce5426d88fc03a67e6d4e29",
+          "pdfSha256": "920fdc2dc86f40d9a9465dee66cafd96fc3ee89bce984381b6c07b0aef876837",
+          "sourceSha256": "9beb686f8ea3b02f16bd80c95c8dde956f6a237aca44480750b6e1d538a92239",
+          "nativeExportSha256": "74aef2b5f0f0ecf9beee7b7ce17c0e8dd26df186421de2e3573f979975076e75",
+          "worksheetId": "ms-g9-afr-01-b-r1",
+          "revision": 1,
+          "downloadChecks": [
+            {
+              "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_908c1f5a2ce5426d88fc03a67e6d4e29.pdf",
+              "status": 200,
+              "sha256": "920fdc2dc86f40d9a9465dee66cafd96fc3ee89bce984381b6c07b0aef876837",
+              "bytes": 45441,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_908c1f5a2ce5426d88fc03a67e6d4e29.pdf",
+              "status": 200,
+              "sha256": "920fdc2dc86f40d9a9465dee66cafd96fc3ee89bce984381b6c07b0aef876837",
+              "bytes": 45441,
+              "matchesFrozenPdf": true
+            }
+          ],
+          "pages": 7,
+          "subitems": 24
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "df74b8a1382c4bc3952f3c8a3d6bfa43",
+          "pdfSha256": "13c77ff370852e3168efa678a58a3a2d67a318901bdd8880a8cd3d220507abc3",
+          "sourceSha256": "52c60aa848bc8f1025296c2382ee3675eaaf0046f471527fd911f78cfa9223c5",
+          "nativeExportSha256": "30d2f0cb7d8a79defc95cc5982405f77555da1fcec39a2c75076bfb7431ce63c",
+          "worksheetId": "ms-g9-afr-01-c-r1",
+          "revision": 1,
+          "downloadChecks": [
+            {
+              "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_df74b8a1382c4bc3952f3c8a3d6bfa43.pdf",
+              "status": 200,
+              "sha256": "13c77ff370852e3168efa678a58a3a2d67a318901bdd8880a8cd3d220507abc3",
+              "bytes": 46818,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_df74b8a1382c4bc3952f3c8a3d6bfa43.pdf",
+              "status": 200,
+              "sha256": "13c77ff370852e3168efa678a58a3a2d67a318901bdd8880a8cd3d220507abc3",
+              "bytes": 46818,
+              "matchesFrozenPdf": true
+            }
+          ],
+          "pages": 7,
+          "subitems": 24
+        }
+      ]
+    }
+  ]
+}
