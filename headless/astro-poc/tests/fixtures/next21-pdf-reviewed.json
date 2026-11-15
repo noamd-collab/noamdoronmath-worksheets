@@ -1,0 +1,4026 @@
+{
+  "schema": "next21-reviewed-additive-pdf-fixture/v1",
+  "baselineCommit": "45146993b11782a0554cc29061d6d9adc96c6a1f",
+  "baselineCatalogSha256": "3f344c73b5f0f678d9258c243049534b47b2949dcde8d7a2be915c927479a010",
+  "baselineRegistrySha256": "207736707d3e8de70ac01407ba4b38bad0f5a1e43d166ffc0c05392ed6489b9d",
+  "additions": [
+    {
+      "grade": 7,
+      "topicId": 19,
+      "editionId": "ms-20261115-atq-01-r1",
+      "pdfIds": [
+        "e69ccc7e9e9346669ae8bdb7b8acce83",
+        "f2eb2d3db12c4e70a9d47b8ff51b53f4",
+        "7580de19cf604ce39b57c885cbac98a6"
+      ],
+      "edition": {
+        "grade": 7,
+        "topicId": 19,
+        "editionId": "ms-20261115-atq-01-r1",
+        "label": "שטח משולש ומרובע שאלכסוניו מאונכים · PDF",
+        "nativePrefix": "G7-T57",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "e69ccc7e9e9346669ae8bdb7b8acce83",
+            "pdfSha256": "9ef6a3a5bda350375fde995e4e646111830dada138ac9a37d459ff9e415fc023",
+            "sourceSha256": "fdd5970e91aa94f1821e8fc46fb7504cc12b5c55481420447016d1cc5416e7e0",
+            "nativeExportSha256": "366b30f0257764194438d1e15f8f290e0efdd4521997524851ae7dcbcecbbd88",
+            "worksheetId": "ms-g7-atq-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "f2eb2d3db12c4e70a9d47b8ff51b53f4",
+            "pdfSha256": "8045a72cf4916c472d5eab9d59a7f58b7ddb397736eb7ba8050c61baeab4418c",
+            "sourceSha256": "1c745d476ddedba065f9b9ffa16834934ff7c7170aa964b55512948275a7feec",
+            "nativeExportSha256": "d0fe6b8c0672f33e6dd7bb9ed9ce9fb7c9e3a1234d7dccd01f39e5fe34927ffb",
+            "worksheetId": "ms-g7-atq-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "7580de19cf604ce39b57c885cbac98a6",
+            "pdfSha256": "4b7df6d2e09c7e099d4bbfafe3fc9b9a201f87abd848ba82fa4ec34bcf54da23",
+            "sourceSha256": "4ed7887c1455d03063b9b8dce7dcd0d38fea8652a695ff188177d8cd288a0b43",
+            "nativeExportSha256": "6f18ca22ca95bd42e72dd350b85a82d6a57d68a7ac69ec2db1d688589761e78c",
+            "worksheetId": "ms-g7-atq-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "slug": "triangle-area-grade-7",
+      "generatedEditionSha256": "85c93ae152d1da8fc452c20cfefd4edf6f512bf594eb7e8effff5bba3658ab4b",
+      "baselineTopicSha256": "e7362f5822a032e06fd63e3436de3bfcc758e25f1928adcaad5e1996cbc77427"
+    },
+    {
+      "grade": 7,
+      "topicId": 45,
+      "editionId": "ms-20261115-apt-01-r1",
+      "pdfIds": [
+        "c88fd53420e3453faa750d2bef87606b",
+        "0e92791368cd437cb51646743d386d74",
+        "34173090bfe14f1da13165d1f09e94cd"
+      ],
+      "edition": {
+        "grade": 7,
+        "topicId": 45,
+        "editionId": "ms-20261115-apt-01-r1",
+        "label": "שטח מקבילית וטרפז — תרגול וצורות מורכבות · PDF",
+        "nativePrefix": "G7-T58",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "c88fd53420e3453faa750d2bef87606b",
+            "pdfSha256": "8ea384c05b31e78f77f3cd892a067505f4150285ac23ca52aada1725fd0904b5",
+            "sourceSha256": "f19ba2132405f15691768e67f3bc175477f0d849a2194af4d357361b518a2c8e",
+            "nativeExportSha256": "5c1c8b661008cdd4902a79f53d7745f4b9eb508b311a8d53e1d6e064a464a6e2",
+            "worksheetId": "ms-g7-apt-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "0e92791368cd437cb51646743d386d74",
+            "pdfSha256": "cde6829fb85e43cb2d41de22792c53cac43924cbb9890f848e475431ac92de35",
+            "sourceSha256": "fb9779ec4c4b865edf6412ee99056d895f09df6b0658b2e5ca9a759b6934c267",
+            "nativeExportSha256": "2376c3042137c6a22d260118f4a128f754a7cea3364c97b1efcbff217f6a920e",
+            "worksheetId": "ms-g7-apt-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "34173090bfe14f1da13165d1f09e94cd",
+            "pdfSha256": "a1adc7fe6198c9af512f3763633403d44645838006ba6283a58d4a000408b758",
+            "sourceSha256": "7200dbebcc9571faae19964b367b2b161bae5f6c83cc3eb928bc1e23d670dc35",
+            "nativeExportSha256": "01600c67ca5be917b5f46821fdef2802f3572024d75f2cf8c6c1870302516e2a",
+            "worksheetId": "ms-g7-apt-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "slug": "area-parallelogram-trapezoid-composite-grade-7",
+      "generatedEditionSha256": "28e1caef7df991bd9ef92a6076e2d13d7e9a831ada730ec958e12b910299c7f1",
+      "baselineTopicSha256": "ff14a27c04873ea790ffe48f92af2b93fed75f94a84bd635b7c0e7c8adfb0cd5"
+    },
+    {
+      "grade": 7,
+      "topicId": 42,
+      "editionId": "ms-20261115-pyt-01-r1",
+      "pdfIds": [
+        "0d20f5866d2a433fb37341a21b818dfa",
+        "d77649a4b3654347a2fc3bb37cf85556",
+        "397806a630a74d6bb1a02b6be40f0328"
+      ],
+      "edition": {
+        "grade": 7,
+        "topicId": 42,
+        "editionId": "ms-20261115-pyt-01-r1",
+        "label": "משפט פיתגורס — חישוב אורך צלע · PDF",
+        "nativePrefix": "G7-T59",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "0d20f5866d2a433fb37341a21b818dfa",
+            "pdfSha256": "b699e940e7bfeca1d53e1e69d8f7d402464a936aa02a94b93d897a09b62335b6",
+            "sourceSha256": "54c2aa4f925cc149b739427620bdac3510d490d138ec05d24a658af0c6847580",
+            "nativeExportSha256": "eaad33527fd4cdcc9916c94f7f3a0fc86c472683fc00ec07c93a1819edce7062",
+            "worksheetId": "ms-g7-pyt-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "d77649a4b3654347a2fc3bb37cf85556",
+            "pdfSha256": "48a76ee4d76505acbf237967e1a31ff425e4e1df6f49453b7a235366834d021c",
+            "sourceSha256": "c378f72c9314d0a97a48a55b087b2068aa5a190e176acc9b345c1b1317b8ae3b",
+            "nativeExportSha256": "4d4cc8f02fa0ab339e1b525068e1fd031d02ac34a22df12e27cfec7f02b381b7",
+            "worksheetId": "ms-g7-pyt-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "397806a630a74d6bb1a02b6be40f0328",
+            "pdfSha256": "0e4e469181b0b2b6ddb0a0553c301080d30417b9518671915436ea40d493ce9f",
+            "sourceSha256": "ac3ea9d0ace1a3fe0b4f7de23f7d7ee53734666020f752e0443e2ce0234e0ad0",
+            "nativeExportSha256": "7a421672b1bd2462877ca9f5a5cfcbb1c79d08be5c11fa4c20620512b97968b2",
+            "worksheetId": "ms-g7-pyt-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "slug": "pythagorean-theorem-grade-7",
+      "generatedEditionSha256": "3ce4cd70311c90735004ed3b694c70385558e49c99a291b1e88a3e43fa1da854",
+      "baselineTopicSha256": "c6a1b1cb9d050a243a128de5b0dee30df744b29de953f1fc1cd827c35cee76e6"
+    },
+    {
+      "grade": 7,
+      "topicId": 43,
+      "editionId": "ms-20261115-pya-01-r1",
+      "pdfIds": [
+        "89f5a3a8f0304a81a7d090eb3ef7a559",
+        "b07ff81e9bb54bcbb52a6b8a3dc3711b",
+        "2c6df4fe8f3c4e348ce031524b277cfa"
+      ],
+      "edition": {
+        "grade": 7,
+        "topicId": 43,
+        "editionId": "ms-20261115-pya-01-r1",
+        "label": "יישומים של משפט פיתגורס — תרגול במצבים גיאומטריים · PDF",
+        "nativePrefix": "G7-T60",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "89f5a3a8f0304a81a7d090eb3ef7a559",
+            "pdfSha256": "ec17f1074c2fc0fdba6593ae954284c30e8ffaab7e54f55109c0141f91cb9032",
+            "sourceSha256": "a31e39f7ac7a9fe32d2181dd7d0ff2d7d8302a6150e063254e5a1a2810bcebb7",
+            "nativeExportSha256": "92edb444be1edef55e3151e31032343abd202719891dfe5fc7f5d8b9c3bfa2ef",
+            "worksheetId": "ms-g7-pya-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "b07ff81e9bb54bcbb52a6b8a3dc3711b",
+            "pdfSha256": "5b72d7e76148b8f3f30bebf0fea330f69747b068198a4e3eafbdcead28aa0dd7",
+            "sourceSha256": "1ad7aa9058ffe0fddaec93ab00d0a4bda3430ab874e0a261dabe71c98a348a1f",
+            "nativeExportSha256": "fc7e05bcae75384b601be6b9bd88aff0725127b538cd0bd3768776d912ad6292",
+            "worksheetId": "ms-g7-pya-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "2c6df4fe8f3c4e348ce031524b277cfa",
+            "pdfSha256": "33d1176ffcdb04bf2d4dfe5e4a6b3627f46ab6e35374608a02adbbc386f41978",
+            "sourceSha256": "ee66f6e7855f1e9e60b84b9b5d455bbc96e665e6083e3c56aab92d10f9a7821e",
+            "nativeExportSha256": "65c59de08037ada5a14551b0349af47f7046ae8c3de3422c202dea920b547f94",
+            "worksheetId": "ms-g7-pya-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "slug": "pythagoras-applications-grade-7",
+      "generatedEditionSha256": "7c45e9b84c8c66f852cd2a86cdbf975a02b53c4138ef7174122d7cc2921ba95b",
+      "baselineTopicSha256": "b529bf7176c9e737a4401f1ee00aeaf8e506cd9b6f47e629e979b58c50146a5f"
+    },
+    {
+      "grade": 7,
+      "topicId": 6,
+      "editionId": "ms-20261115-grw-01-r1",
+      "pdfIds": [
+        "ce0b362ddf06467f8d4212a9ffc79cb0",
+        "08df4e0b868841d99006035c69da9577",
+        "7ce52cd98765448d8698554323eb8376"
+      ],
+      "edition": {
+        "grade": 7,
+        "topicId": 6,
+        "editionId": "ms-20261115-grw-01-r1",
+        "label": "חזקות — גדילה והקטנה · PDF",
+        "nativePrefix": "G7-T61",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "ce0b362ddf06467f8d4212a9ffc79cb0",
+            "pdfSha256": "8904453c459e0b0c613c2ccaa14ede4b5d47d3ae74b943156c41e5e45160ecf3",
+            "sourceSha256": "a01117a2e84fd8fbbaa8d606b6fef57e820e446aaf9532cfc8a8e1df0d868e58",
+            "nativeExportSha256": "fc568746bccbdbeb01402e0feef9b9afaf6477e77572a3237c98bf93396f711b",
+            "worksheetId": "ms-g7-grw-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "08df4e0b868841d99006035c69da9577",
+            "pdfSha256": "3b485e37a3dc0cb2a9fb26c50b209593f18dd8eaa36b4ab505f380461316bf7f",
+            "sourceSha256": "e828edcb4bb6cca4ced94042a24b0aa3f3656632a8adf0809edc65cbaaa99bc7",
+            "nativeExportSha256": "d624ac684319b2751a556b7649b58e04b951ae0dc220850d9e0ac68042ade4f5",
+            "worksheetId": "ms-g7-grw-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "7ce52cd98765448d8698554323eb8376",
+            "pdfSha256": "957e3923ab6473a77db89f29689710ca7c543bd4e1c795a4ad0df69b6885a092",
+            "sourceSha256": "c47a2a486b9e17a6b1d5efb7d141e5a0b7c0437cedfaa154cb36fcb1b916a88c",
+            "nativeExportSha256": "89187c675b7393ce1b3f58778474546ad8ff4900f0d7a0e6284875dd5fa4e382",
+            "worksheetId": "ms-g7-grw-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "slug": "powers-grade-7",
+      "generatedEditionSha256": "7cede23b275bf0e8656ddce81e6adf9bf8e992375190e871aa9b7f291e861741",
+      "baselineTopicSha256": "9debc723aec22906f68f8cfd77c1c4c5171cdcdf61de21291070d4ae27f5720f"
+    },
+    {
+      "grade": 9,
+      "topicId": 33,
+      "editionId": "ms-20261115-ctm-01-r1",
+      "pdfIds": [
+        "964e80fa1694483287eab8bbf1295210",
+        "75866ad396124dd184d4d86537811398",
+        "3942feef94f2483b94a16f1bb8d9ae3c"
+      ],
+      "edition": {
+        "grade": 9,
+        "topicId": 33,
+        "editionId": "ms-20261115-ctm-01-r1",
+        "label": "משולשים בחישוב — תוכנית מצומצמת · PDF",
+        "nativePrefix": "G9-T56",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "964e80fa1694483287eab8bbf1295210",
+            "pdfSha256": "f2de9a2487cfe0bc877c7b1415b3b813c54d823731fbc29f7efa94fb85b5f152",
+            "sourceSha256": "06d350e9271175fdde8204635a65e24d389ed61be3da806cbeaeb64942f58890",
+            "nativeExportSha256": "4278448c353636329d31fb3f702acc4128944deff5ca96164d26648e79acdafc",
+            "worksheetId": "ms-g9-ctm-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "75866ad396124dd184d4d86537811398",
+            "pdfSha256": "b78fe630a359d049f7d680984da36d18388900d66adcc10194cd2a17ce465cc5",
+            "sourceSha256": "a3fb5f6d79475716b81c32b7cbd4620c45bea9447a51a20aa1e35d8e89ad93dc",
+            "nativeExportSha256": "d2fb38823038b9ef4e8f93a3c57ca0ab333d65a2d60c8f8628d154c1953b486e",
+            "worksheetId": "ms-g9-ctm-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "3942feef94f2483b94a16f1bb8d9ae3c",
+            "pdfSha256": "3dc49e2e8fdb716111dda45d4634c44e1563a0678d3f5197caee159f11c7d938",
+            "sourceSha256": "b7fa7fe898d3f82d2bbd32cefd77eecec744d6dfce80adfa38524e5cee306b08",
+            "nativeExportSha256": "878cc15aead932beb320178f1824dc394f5ebe73500365e5b9b4eefaa36b9811",
+            "worksheetId": "ms-g9-ctm-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "slug": "triangle-calculations-grade-9",
+      "generatedEditionSha256": "7fd182d6723928bfa32be2ead4f23403ba7008b9e3a10ec14ba9f86cdc49f6dd",
+      "baselineTopicSha256": "5ef20406deac81029c4aa3f2281fed6b60c8ee03a0a5424fed0946d2b30e2630"
+    },
+    {
+      "grade": 7,
+      "topicId": 31,
+      "editionId": "ms-20261115-q1g-01-r1",
+      "pdfIds": [
+        "c3bdf86fc4d2475fa04517ef0ff1a1f4",
+        "b3d98594ae154e26a90ec76d88d395c7",
+        "17f612216a5c472c87fbf6537fca0d51"
+      ],
+      "edition": {
+        "grade": 7,
+        "topicId": 31,
+        "editionId": "ms-20261115-q1g-01-r1",
+        "label": "נקודות על גרף ברביע הראשון — קריאת גרפים שימושיים · PDF",
+        "nativePrefix": "G7-T62",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "c3bdf86fc4d2475fa04517ef0ff1a1f4",
+            "pdfSha256": "3e1d119e36f5f2f4519bad9fbc095f38bcc022ee8bb8e3bd70fe346a6b9ada21",
+            "sourceSha256": "2862f512a524568ffe329ae1441893cd34acd6f9d0b717c0739c6487fccffd3e",
+            "nativeExportSha256": "fc0f924ed53620d6491d8ca3e3e713b5ffadae60adb55a7ca49988427e10c100",
+            "worksheetId": "ms-g7-q1g-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "b3d98594ae154e26a90ec76d88d395c7",
+            "pdfSha256": "790011a680d911742d5770ebb22b454f33440d3fdd2a6ae12506ec8c7ae7f997",
+            "sourceSha256": "84b1822c3825305acb87c834abc2995a16183c5eaf00a60ed519f024e27c29d4",
+            "nativeExportSha256": "17cbd43c4daeb8185e90c5de63c1fbecd0b0715d34796d2021755c5e70d9dfc9",
+            "worksheetId": "ms-g7-q1g-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "17f612216a5c472c87fbf6537fca0d51",
+            "pdfSha256": "f681fe39487638fab8dc404b7466f58001e70c3521eb743019c6489e34063083",
+            "sourceSha256": "e4fb7038a5a0b2102857885d52bfd8d0a13080798b77d51eb98dd450204f029c",
+            "nativeExportSha256": "f9dd0d254082f214d507959cc54e83562be9457aff36d50a875e8446ab6c23e2",
+            "worksheetId": "ms-g7-q1g-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "slug": "patterns-and-graphs-grade-7",
+      "generatedEditionSha256": "a29e79d1157a33818dae2426d5d14ebf89dd47b39d5d3af15b643d9491341722",
+      "baselineTopicSha256": "8ffc005c135ab5897d300269152f938da7b8bcbd1ad42d4ff4fd97a7d0c00d6c"
+    }
+  ],
+  "landingDeltas": [
+    {
+      "slug": "triangle-area-grade-7",
+      "baselineSha256": "85f878c92468e3f39470d0764eba58f596fabc38ee12527bd6c1bb7ab09b709d",
+      "fields": [
+        {
+          "path": [
+            "description"
+          ],
+          "existedBefore": true,
+          "before": "מפשטים ואז פותרים לכיתה ז עם הסבר ברור על שטח משולש ודפי עבודה חינמיים להדפסה. היכנסו והתחילו לתרגל עכשיו.",
+          "after": "שטח משולש ושטח מרובע שאלכסוניו מאונכים לכיתה ז׳: בסיס, גובה פנימי וחיצוני והשוואת שטחים. דפי PDF בשלוש רמות עם תשובות סופיות."
+        },
+        {
+          "path": [
+            "intro"
+          ],
+          "existedBefore": true,
+          "before": "לומדים לחשב שטח משולש לפי בסיס וגובה, ולזהות את הגובה המאונך גם בשרטוטים שונים. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+          "after": "לומדים לחשב שטח משולש לפי בסיס וגובה ולזהות גובה פנימי וחיצוני. לצד הדפים הקיימים נוספו קובצי PDF בשטח משולש ובשטח מרובע שאלכסוניו מאונכים. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+        },
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "שטח משולש מחושב לפי בסיס × גובה : 2. הגובה חייב להיות מאונך לבסיס, ולעיתים הוא נמצא מחוץ למשולש.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: בסיס 12 ס״מ וגובה 5 ס״מ: השטח 12×5:2=30 סמ״ר.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "צלע אלכסונית אינה בהכרח גובה; קודם מזהים את הקטע המאונך לבסיס שנבחר.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בסיס 9 ס״מ, גובה 6 ס״מ. מהו שטח המשולש?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: 27 סמ״ר, כי 9×6:2=27.",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "שטח משולש מחושב לפי בסיס × גובה : 2. הגובה חייב להיות מאונך לבסיס, ולעיתים הוא נמצא מחוץ למשולש.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: בסיס 12 ס״מ וגובה 5 ס״מ: השטח 12×5:2=30 סמ״ר.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "צלע אלכסונית אינה בהכרח גובה; קודם מזהים את הקטע המאונך לבסיס שנבחר.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בסיס 9 ס״מ, גובה 6 ס״מ. מהו שטח המשולש?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: 27 סמ״ר, כי 9×6:2=27.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "שטח משולש ומרובע שאלכסוניו מאונכים — דפי PDF",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מתרגלים זיהוי בסיס וגובה פנימי או חיצוני, חישוב שטח משולש ומציאת מידה חסרה מתוך נתוני השטח.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "מתרגלים גם חישוב שטח מרובע שאלכסוניו מאונכים והשוואת שטחים על פי המידות הנתונות בשרטוט.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "updatedLine"
+          ],
+          "existedBefore": true,
+          "before": "נועם דורון מתמטיקה · עודכן 12.9.2026",
+          "after": "נועם דורון מתמטיקה · עודכן 15.11.2026"
+        },
+        {
+          "path": [
+            "faq"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "question": "האם דפי העבודה בנושא שטח משולש לכיתה ז׳ מתאימים לכיתה ז׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          ],
+          "after": [
+            {
+              "question": "האם דפי העבודה בנושא שטח משולש לכיתה ז׳ מתאימים לכיתה ז׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            },
+            {
+              "question": "מה כוללים קובצי ה־PDF הנוספים?",
+              "answer": "מתרגלים זיהוי בסיס וגובה פנימי או חיצוני, חישוב שטח משולש ומציאת מידה חסרה מתוך נתוני השטח. מתרגלים גם חישוב שטח מרובע שאלכסוניו מאונכים והשוואת שטחים על פי המידות הנתונות בשרטוט. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+            },
+            {
+              "question": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+              "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+            }
+          ]
+        },
+        {
+          "path": [
+            "faqGroups"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "jsonld-visibility-correction",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא שטח משולש לכיתה ז׳ מתאימים לכיתה ז׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "jsonld-visibility-correction",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא שטח משולש לכיתה ז׳ מתאימים לכיתה ז׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                },
+                {
+                  "question": "מה כוללים קובצי ה־PDF הנוספים?",
+                  "answer": "מתרגלים זיהוי בסיס וגובה פנימי או חיצוני, חישוב שטח משולש ומציאת מידה חסרה מתוך נתוני השטח. מתרגלים גם חישוב שטח מרובע שאלכסוניו מאונכים והשוואת שטחים על פי המידות הנתונות בשרטוט. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+                },
+                {
+                  "question": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+                  "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "jsonLd"
+          ],
+          "existedBefore": true,
+          "before": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/triangle-area-grade-7#webpage",
+                "url": "https://www.noamdoronmath.co.il/triangle-area-grade-7",
+                "name": "שטח משולש לכיתה ז׳ | דפי עבודה במתמטיקה – נועם דורון",
+                "description": "שטח משולש לכיתה ז׳: בסיס, גובה וחישוב שטח במגוון צורות. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/triangle-area-grade-7#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/triangle-area-grade-7#learning-resource",
+                "name": "שטח משולש לכיתה ז׳",
+                "url": "https://www.noamdoronmath.co.il/triangle-area-grade-7",
+                "description": "שטח משולש לכיתה ז׳: בסיס, גובה וחישוב שטח במגוון צורות. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+                "educationalLevel": "כיתה ז׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/triangle-area-grade-7#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא שטח משולש לכיתה ז׳ מתאימים לכיתה ז׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "after": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/triangle-area-grade-7#webpage",
+                "url": "https://www.noamdoronmath.co.il/triangle-area-grade-7",
+                "name": "שטח משולש לכיתה ז׳ | דפי עבודה במתמטיקה – נועם דורון",
+                "description": "שטח משולש ושטח מרובע שאלכסוניו מאונכים לכיתה ז׳: בסיס, גובה פנימי וחיצוני והשוואת שטחים. דפי PDF בשלוש רמות עם תשובות סופיות.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/triangle-area-grade-7#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/triangle-area-grade-7#learning-resource",
+                "name": "שטח משולש לכיתה ז׳",
+                "url": "https://www.noamdoronmath.co.il/triangle-area-grade-7",
+                "description": "שטח משולש ושטח מרובע שאלכסוניו מאונכים לכיתה ז׳: בסיס, גובה פנימי וחיצוני והשוואת שטחים. דפי PDF בשלוש רמות עם תשובות סופיות.",
+                "educationalLevel": "כיתה ז׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/triangle-area-grade-7#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא שטח משולש לכיתה ז׳ מתאימים לכיתה ז׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "מה כוללים קובצי ה־PDF הנוספים?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "מתרגלים זיהוי בסיס וגובה פנימי או חיצוני, חישוב שטח משולש ומציאת מידה חסרה מתוך נתוני השטח. מתרגלים גם חישוב שטח מרובע שאלכסוניו מאונכים והשוואת שטחים על פי המידות הנתונות בשרטוט. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "path": [
+            "bodyFlow"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "type": "paragraph",
+              "text": "לומדים לחשב שטח משולש לפי בסיס וגובה, ולזהות את הגובה המאונך גם בשרטוטים שונים. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "פתיחת דפי העבודה ובחירת רמה",
+              "href": "/worksheets?grade=7&topic=19",
+              "catalogTopicId": 19
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "שטח משולש מחושב לפי בסיס × גובה : 2. הגובה חייב להיות מאונך לבסיס, ולעיתים הוא נמצא מחוץ למשולש.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "דוגמה: בסיס 12 ס״מ וגובה 5 ס״מ: השטח 12×5:2=30 סמ״ר.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טעויות נפוצות"
+            },
+            {
+              "type": "paragraph",
+              "text": "צלע אלכסונית אינה בהכרח גובה; קודם מזהים את הקטע המאונך לבסיס שנבחר.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "בסיס 9 ס״מ, גובה 6 ס״מ. מהו שטח המשולש?",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "תשובה: 27 סמ״ר, כי 9×6:2=27.",
+              "role": "body"
+            }
+          ],
+          "after": [
+            {
+              "type": "paragraph",
+              "text": "לומדים לחשב שטח משולש לפי בסיס וגובה ולזהות גובה פנימי וחיצוני. לצד הדפים הקיימים נוספו קובצי PDF בשטח משולש ובשטח מרובע שאלכסוניו מאונכים. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "פתיחת דפי העבודה ובחירת רמה",
+              "href": "/worksheets?grade=7&topic=19",
+              "catalogTopicId": 19
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "שטח משולש מחושב לפי בסיס × גובה : 2. הגובה חייב להיות מאונך לבסיס, ולעיתים הוא נמצא מחוץ למשולש.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "דוגמה: בסיס 12 ס״מ וגובה 5 ס״מ: השטח 12×5:2=30 סמ״ר.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טעויות נפוצות"
+            },
+            {
+              "type": "paragraph",
+              "text": "צלע אלכסונית אינה בהכרח גובה; קודם מזהים את הקטע המאונך לבסיס שנבחר.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "בסיס 9 ס״מ, גובה 6 ס״מ. מהו שטח המשולש?",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "תשובה: 27 סמ״ר, כי 9×6:2=27.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "שטח משולש ומרובע שאלכסוניו מאונכים — דפי PDF"
+            },
+            {
+              "type": "paragraph",
+              "text": "מתרגלים זיהוי בסיס וגובה פנימי או חיצוני, חישוב שטח משולש ומציאת מידה חסרה מתוך נתוני השטח.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "מתרגלים גם חישוב שטח מרובע שאלכסוניו מאונכים והשוואת שטחים על פי המידות הנתונות בשרטוט.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+              "role": "body"
+            }
+          ]
+        }
+      ],
+      "appendedSection": {
+        "heading": "שטח משולש ומרובע שאלכסוניו מאונכים — דפי PDF",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "מתרגלים זיהוי בסיס וגובה פנימי או חיצוני, חישוב שטח משולש ומציאת מידה חסרה מתוך נתוני השטח.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "מתרגלים גם חישוב שטח מרובע שאלכסוניו מאונכים והשוואת שטחים על פי המידות הנתונות בשרטוט.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+            "links": []
+          }
+        ]
+      }
+    },
+    {
+      "slug": "area-parallelogram-trapezoid-composite-grade-7",
+      "baselineSha256": "234265dcd7829aa905b0830b3736c67c879add5af80015e6915fe4ceed5e0cd6",
+      "fields": [
+        {
+          "path": [
+            "description"
+          ],
+          "existedBefore": true,
+          "before": "שטח מקבילית וטרפז, פירוק מצולעים וחיסור שטחים לכיתה ז׳. דפי עבודה חינם — נועם דורון.",
+          "after": "שטח מקבילית, טרפז ומצולעים מורכבים לכיתה ז׳. דפי PDF נוספים לחישוב שטחים ומידות חסרות, בשלוש רמות ועם תשובות סופיות."
+        },
+        {
+          "path": [
+            "intro"
+          ],
+          "existedBefore": true,
+          "before": "מחשבים שטח מקבילית וטרפז, מזהים גובה ומפרקים מצולעים מורכבים לצורות מוכרות. תרגול ברמות שונות — בחינם.",
+          "after": "מחשבים שטח מקבילית וטרפז, מזהים גובה ומפרקים מצולעים מורכבים לצורות מוכרות. נוספה סדרת PDF בנושא מקבילית וטרפז, לצד הדפים הקיימים בשני הנושאים. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+        },
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "שטח מקבילית = בסיס×גובה. שטח טרפז = (סכום הבסיסים)×גובה:2. במצולע מורכב מפרקים לצורות מוכרות או מחסרים שטחים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "טרפז עם בסיסים 6 ו־10 וגובה 4: שטח (6+10)×4:2=32.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "טעות נפוצה: להשתמש בצלע אלכסונית במקום בגובה המאונך לבסיס.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מקבילית בסיס 9 וגובה 5. מה השטח?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: 45 יחידות שטח.",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "שטח מקבילית = בסיס×גובה. שטח טרפז = (סכום הבסיסים)×גובה:2. במצולע מורכב מפרקים לצורות מוכרות או מחסרים שטחים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "טרפז עם בסיסים 6 ו־10 וגובה 4: שטח (6+10)×4:2=32.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "טעות נפוצה: להשתמש בצלע אלכסונית במקום בגובה המאונך לבסיס.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מקבילית בסיס 9 וגובה 5. מה השטח?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: 45 יחידות שטח.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "שטח מקבילית וטרפז — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מתרגלים חישוב שטח מקבילית וטרפז, זיהוי גובה, מציאת מידה חסרה והשוואת שטחים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "הדפים כוללים גם פירוק צורות מורכבות לצורות מוכרות וחיסור שטחים, לפי המידות הנתונות בשרטוט.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "bodyFlow"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "type": "paragraph",
+              "text": "מחשבים שטח מקבילית וטרפז, מזהים גובה ומפרקים מצולעים מורכבים לצורות מוכרות. תרגול ברמות שונות — בחינם.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "מצולעים מורכבים — בחירת דף ורמה",
+              "href": "/worksheets?grade=7&topic=46",
+              "catalogTopicId": 46
+            },
+            {
+              "type": "cta",
+              "label": "מקבילית וטרפז — בחירת דף ורמה",
+              "href": "/worksheets?grade=7&topic=45",
+              "catalogTopicId": 45
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "שטח מקבילית = בסיס×גובה. שטח טרפז = (סכום הבסיסים)×גובה:2. במצולע מורכב מפרקים לצורות מוכרות או מחסרים שטחים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "טרפז עם בסיסים 6 ו־10 וגובה 4: שטח (6+10)×4:2=32.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טעויות נפוצות"
+            },
+            {
+              "type": "paragraph",
+              "text": "טעות נפוצה: להשתמש בצלע אלכסונית במקום בגובה המאונך לבסיס.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "מקבילית בסיס 9 וגובה 5. מה השטח?",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "תשובה: 45 יחידות שטח.",
+              "role": "body"
+            }
+          ],
+          "after": [
+            {
+              "type": "paragraph",
+              "text": "מחשבים שטח מקבילית וטרפז, מזהים גובה ומפרקים מצולעים מורכבים לצורות מוכרות. נוספה סדרת PDF בנושא מקבילית וטרפז, לצד הדפים הקיימים בשני הנושאים. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "מצולעים מורכבים — בחירת דף ורמה",
+              "href": "/worksheets?grade=7&topic=46",
+              "catalogTopicId": 46
+            },
+            {
+              "type": "cta",
+              "label": "מקבילית וטרפז — בחירת דף ורמה",
+              "href": "/worksheets?grade=7&topic=45",
+              "catalogTopicId": 45
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "שטח מקבילית = בסיס×גובה. שטח טרפז = (סכום הבסיסים)×גובה:2. במצולע מורכב מפרקים לצורות מוכרות או מחסרים שטחים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "טרפז עם בסיסים 6 ו־10 וגובה 4: שטח (6+10)×4:2=32.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טעויות נפוצות"
+            },
+            {
+              "type": "paragraph",
+              "text": "טעות נפוצה: להשתמש בצלע אלכסונית במקום בגובה המאונך לבסיס.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "מקבילית בסיס 9 וגובה 5. מה השטח?",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "תשובה: 45 יחידות שטח.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "שטח מקבילית וטרפז — דפי PDF נוספים"
+            },
+            {
+              "type": "paragraph",
+              "text": "מתרגלים חישוב שטח מקבילית וטרפז, זיהוי גובה, מציאת מידה חסרה והשוואת שטחים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "הדפים כוללים גם פירוק צורות מורכבות לצורות מוכרות וחיסור שטחים, לפי המידות הנתונות בשרטוט.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+              "role": "body"
+            }
+          ]
+        },
+        {
+          "path": [
+            "updatedLine"
+          ],
+          "existedBefore": true,
+          "before": "נועם דורון מתמטיקה · עודכן 12.9.2026",
+          "after": "נועם דורון מתמטיקה · עודכן 15.11.2026"
+        },
+        {
+          "path": [
+            "faq"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "question": "האם דפי העבודה בנושא שטח מקבילית, טרפז ומצולעים מורכבים לכיתה ז׳ מתאימים לכיתה ז׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          ],
+          "after": [
+            {
+              "question": "האם דפי העבודה בנושא שטח מקבילית, טרפז ומצולעים מורכבים לכיתה ז׳ מתאימים לכיתה ז׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            },
+            {
+              "question": "מה כוללים קובצי ה־PDF הנוספים?",
+              "answer": "מתרגלים חישוב שטח מקבילית וטרפז, זיהוי גובה, מציאת מידה חסרה והשוואת שטחים. הדפים כוללים גם פירוק צורות מורכבות לצורות מוכרות וחיסור שטחים, לפי המידות הנתונות בשרטוט. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+            },
+            {
+              "question": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+              "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+            }
+          ]
+        },
+        {
+          "path": [
+            "faqGroups"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא שטח מקבילית, טרפז ומצולעים מורכבים לכיתה ז׳ מתאימים לכיתה ז׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא שטח מקבילית, טרפז ומצולעים מורכבים לכיתה ז׳ מתאימים לכיתה ז׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                },
+                {
+                  "question": "מה כוללים קובצי ה־PDF הנוספים?",
+                  "answer": "מתרגלים חישוב שטח מקבילית וטרפז, זיהוי גובה, מציאת מידה חסרה והשוואת שטחים. הדפים כוללים גם פירוק צורות מורכבות לצורות מוכרות וחיסור שטחים, לפי המידות הנתונות בשרטוט. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+                },
+                {
+                  "question": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+                  "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "jsonLd"
+          ],
+          "existedBefore": true,
+          "before": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/area-parallelogram-trapezoid-composite-grade-7#webpage",
+                "url": "https://www.noamdoronmath.co.il/area-parallelogram-trapezoid-composite-grade-7",
+                "name": "שטח מקבילית, טרפז ומצולעים מורכבים לכיתה ז׳ | דפי עבודה חינם",
+                "description": "שטח מקבילית וטרפז, פירוק מצולעים וחיסור שטחים לכיתה ז׳. דפי עבודה חינם — נועם דורון.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/area-parallelogram-trapezoid-composite-grade-7#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/area-parallelogram-trapezoid-composite-grade-7#learning-resource",
+                "name": "שטח מקבילית, טרפז ומצולעים מורכבים לכיתה ז׳",
+                "url": "https://www.noamdoronmath.co.il/area-parallelogram-trapezoid-composite-grade-7",
+                "description": "שטח מקבילית וטרפז, פירוק מצולעים וחיסור שטחים לכיתה ז׳. דפי עבודה חינם — נועם דורון.",
+                "educationalLevel": "כיתה ז׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/area-parallelogram-trapezoid-composite-grade-7#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא שטח מקבילית, טרפז ומצולעים מורכבים לכיתה ז׳ מתאימים לכיתה ז׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "after": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/area-parallelogram-trapezoid-composite-grade-7#webpage",
+                "url": "https://www.noamdoronmath.co.il/area-parallelogram-trapezoid-composite-grade-7",
+                "name": "שטח מקבילית, טרפז ומצולעים מורכבים לכיתה ז׳ | דפי עבודה חינם",
+                "description": "שטח מקבילית, טרפז ומצולעים מורכבים לכיתה ז׳. דפי PDF נוספים לחישוב שטחים ומידות חסרות, בשלוש רמות ועם תשובות סופיות.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/area-parallelogram-trapezoid-composite-grade-7#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/area-parallelogram-trapezoid-composite-grade-7#learning-resource",
+                "name": "שטח מקבילית, טרפז ומצולעים מורכבים לכיתה ז׳",
+                "url": "https://www.noamdoronmath.co.il/area-parallelogram-trapezoid-composite-grade-7",
+                "description": "שטח מקבילית, טרפז ומצולעים מורכבים לכיתה ז׳. דפי PDF נוספים לחישוב שטחים ומידות חסרות, בשלוש רמות ועם תשובות סופיות.",
+                "educationalLevel": "כיתה ז׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/area-parallelogram-trapezoid-composite-grade-7#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא שטח מקבילית, טרפז ומצולעים מורכבים לכיתה ז׳ מתאימים לכיתה ז׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "מה כוללים קובצי ה־PDF הנוספים?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "מתרגלים חישוב שטח מקבילית וטרפז, זיהוי גובה, מציאת מידה חסרה והשוואת שטחים. הדפים כוללים גם פירוק צורות מורכבות לצורות מוכרות וחיסור שטחים, לפי המידות הנתונות בשרטוט. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "appendedSection": {
+        "heading": "שטח מקבילית וטרפז — דפי PDF נוספים",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "מתרגלים חישוב שטח מקבילית וטרפז, זיהוי גובה, מציאת מידה חסרה והשוואת שטחים.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "הדפים כוללים גם פירוק צורות מורכבות לצורות מוכרות וחיסור שטחים, לפי המידות הנתונות בשרטוט.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+            "links": []
+          }
+        ]
+      }
+    },
+    {
+      "slug": "pythagorean-theorem-grade-7",
+      "baselineSha256": "895ffa20be253b3e7d329735f33da556e5086a3e2c553bc35a5f8ce7a713a368",
+      "fields": [
+        {
+          "path": [
+            "description"
+          ],
+          "existedBefore": true,
+          "before": "משפט פיתגורס לכיתה ז׳: הסבר קצר, דוגמה פתורה, טעויות נפוצות ושאלת בדיקה. קישורים לדפי עבודה בשלוש רמות, בחינם וללא הרשמה, לתרגול בכיתה ובבית עם נועם AI.",
+          "after": "משפט פיתגורס לכיתה ז׳: זיהוי היתר והניצבים וחישוב אורך צלע במשולש ישר־זווית. דפי PDF נוספים בשלוש רמות, עם תשובות סופיות."
+        },
+        {
+          "path": [
+            "intro"
+          ],
+          "existedBefore": true,
+          "before": "לומדים לזהות משולש ישר־זווית ולחשב צלע חסרה בעזרת משפט פיתגורס. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+          "after": "לומדים לזהות משולש ישר־זווית ולחשב צלע חסרה בעזרת משפט פיתגורס. לצד הדפים הקיימים נוספו קובצי PDF לתרגול חישוב אורכי צלעות. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+        },
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "במשולש ישר־זווית, אם a ו־b הם הניצבים ו־c הוא היתר שמול הזווית הישרה, אז a²+b²=c².",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: אורכי הניצבים הם 6 ו־8. לכן c²=6²+8²=36+64=100, ומכאן שאורך היתר הוא c=10.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "לפני החישוב מזהים את היתר: זו הצלע שמול הזווית הישרה. המשפט מתאים רק למשולש ישר־זווית, ואורך של צלע תמיד חיובי.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "במשולש ישר־זווית אורכי הניצבים הם 5 ו־12. מהו אורך היתר?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: 13, כי 5²+12²=25+144=169=13².",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "במשולש ישר־זווית, אם a ו־b הם הניצבים ו־c הוא היתר שמול הזווית הישרה, אז a²+b²=c².",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: אורכי הניצבים הם 6 ו־8. לכן c²=6²+8²=36+64=100, ומכאן שאורך היתר הוא c=10.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "לפני החישוב מזהים את היתר: זו הצלע שמול הזווית הישרה. המשפט מתאים רק למשולש ישר־זווית, ואורך של צלע תמיד חיובי.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "במשולש ישר־זווית אורכי הניצבים הם 5 ו־12. מהו אורך היתר?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: 13, כי 5²+12²=25+144=169=13².",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "משפט פיתגורס — היכרות וחישוב בדפי PDF",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מתרגלים זיהוי היתר והניצבים, התאמת הקשר בין ריבועי אורכי הצלעות וחישוב אורך חסר.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "הדפים משלבים שרטוטים ונתונים גיאומטריים כדי לתרגל בחירת משולש ישר־זווית מתאים ובדיקת התוצאה.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "updatedLine"
+          ],
+          "existedBefore": true,
+          "before": "נועם דורון מתמטיקה · עודכן 12.9.2026",
+          "after": "נועם דורון מתמטיקה · עודכן 15.11.2026"
+        },
+        {
+          "path": [
+            "faq"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "question": "האם דפי העבודה בנושא משפט פיתגורס לכיתה ז׳ מתאימים לכיתה ז׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          ],
+          "after": [
+            {
+              "question": "האם דפי העבודה בנושא משפט פיתגורס לכיתה ז׳ מתאימים לכיתה ז׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            },
+            {
+              "question": "מה כוללים קובצי ה־PDF הנוספים?",
+              "answer": "מתרגלים זיהוי היתר והניצבים, התאמת הקשר בין ריבועי אורכי הצלעות וחישוב אורך חסר. הדפים משלבים שרטוטים ונתונים גיאומטריים כדי לתרגל בחירת משולש ישר־זווית מתאים ובדיקת התוצאה. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+            },
+            {
+              "question": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+              "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+            }
+          ]
+        },
+        {
+          "path": [
+            "faqGroups"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא משפט פיתגורס לכיתה ז׳ מתאימים לכיתה ז׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא משפט פיתגורס לכיתה ז׳ מתאימים לכיתה ז׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                },
+                {
+                  "question": "מה כוללים קובצי ה־PDF הנוספים?",
+                  "answer": "מתרגלים זיהוי היתר והניצבים, התאמת הקשר בין ריבועי אורכי הצלעות וחישוב אורך חסר. הדפים משלבים שרטוטים ונתונים גיאומטריים כדי לתרגל בחירת משולש ישר־זווית מתאים ובדיקת התוצאה. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+                },
+                {
+                  "question": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+                  "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "jsonLd"
+          ],
+          "existedBefore": true,
+          "before": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/pythagorean-theorem-grade-7#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא משפט פיתגורס לכיתה ז׳ מתאימים לכיתה ז׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "after": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/pythagorean-theorem-grade-7#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא משפט פיתגורס לכיתה ז׳ מתאימים לכיתה ז׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "מה כוללים קובצי ה־PDF הנוספים?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "מתרגלים זיהוי היתר והניצבים, התאמת הקשר בין ריבועי אורכי הצלעות וחישוב אורך חסר. הדפים משלבים שרטוטים ונתונים גיאומטריים כדי לתרגל בחירת משולש ישר־זווית מתאים ובדיקת התוצאה. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "appendedSection": {
+        "heading": "משפט פיתגורס — היכרות וחישוב בדפי PDF",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "מתרגלים זיהוי היתר והניצבים, התאמת הקשר בין ריבועי אורכי הצלעות וחישוב אורך חסר.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "הדפים משלבים שרטוטים ונתונים גיאומטריים כדי לתרגל בחירת משולש ישר־זווית מתאים ובדיקת התוצאה.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+            "links": []
+          }
+        ]
+      }
+    },
+    {
+      "slug": "pythagoras-applications-grade-7",
+      "baselineSha256": "ce0e2fcd4fa0afe9fe5eb972bff711919530da50361bfbe57d325179eb3ae953",
+      "fields": [
+        {
+          "path": [
+            "description"
+          ],
+          "existedBefore": true,
+          "before": "שימושי משפט פיתגורס במלבן, טרפז, גובה משולש ובעיות מהחיים לכיתה ז׳. דפי עבודה חינם — נועם דורון.",
+          "after": "יישומים של משפט פיתגורס לכיתה ז׳: אורכים, גבהים ומרחקים בצורות ובבעיות מהחיים. דפי PDF נוספים בשלוש רמות, עם תשובות סופיות."
+        },
+        {
+          "path": [
+            "intro"
+          ],
+          "existedBefore": true,
+          "before": "מיישמים את משפט פיתגורס במלבן, בטרפז, בגובה במשולש ובבעיות מהחיים. דפי תרגול ברמות שונות — בחינם.",
+          "after": "מיישמים את משפט פיתגורס בחישוב אורכים, גבהים ומרחקים בצורות גיאומטריות ובמצבים מהחיים. לצד הדפים הקיימים נוספו קובצי PDF לתרגול יישומים. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+        },
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "במלבן שצלעותיו 3 ו־4, אורך האלכסון הוא 5, כי 3²+4²=5².",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "טעות נפוצה: לבלבל בין היתר לניצב, או להשתמש במשפט פיתגורס במשולש שאינו ישר־זווית.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "ניצבים 6 ו־8. מה אורך היתר?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: 10.",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "במלבן שצלעותיו 3 ו־4, אורך האלכסון הוא 5, כי 3²+4²=5².",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "טעות נפוצה: לבלבל בין היתר לניצב, או להשתמש במשפט פיתגורס במשולש שאינו ישר־זווית.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "ניצבים 6 ו־8. מה אורך היתר?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: 10.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "יישומים של משפט פיתגורס — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מזהים משולש ישר־זווית בתוך צורה ומחשבים אורכים חסרים בעזרת משפט פיתגורס.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "מתרגלים שימוש בנתוני שרטוט, בגבהים ובמידות של צורות לצורך חישובים ובעיות יישומיות.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "bodyFlow"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "type": "paragraph",
+              "text": "מיישמים את משפט פיתגורס במלבן, בטרפז, בגובה במשולש ובבעיות מהחיים. דפי תרגול ברמות שונות — בחינם.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "פיתגורס — שימושים — בחירת דף ורמה",
+              "href": "/worksheets?grade=7&topic=43",
+              "catalogTopicId": 43
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "במלבן שצלעותיו 3 ו־4, אורך האלכסון הוא 5, כי 3²+4²=5².",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טעויות נפוצות"
+            },
+            {
+              "type": "paragraph",
+              "text": "טעות נפוצה: לבלבל בין היתר לניצב, או להשתמש במשפט פיתגורס במשולש שאינו ישר־זווית.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "ניצבים 6 ו־8. מה אורך היתר?",
+              "role": "body"
+            }
+          ],
+          "after": [
+            {
+              "type": "paragraph",
+              "text": "מיישמים את משפט פיתגורס בחישוב אורכים, גבהים ומרחקים בצורות גיאומטריות ובמצבים מהחיים. לצד הדפים הקיימים נוספו קובצי PDF לתרגול יישומים. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "פיתגורס — שימושים — בחירת דף ורמה",
+              "href": "/worksheets?grade=7&topic=43",
+              "catalogTopicId": 43
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "במלבן שצלעותיו 3 ו־4, אורך האלכסון הוא 5, כי 3²+4²=5².",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טעויות נפוצות"
+            },
+            {
+              "type": "paragraph",
+              "text": "טעות נפוצה: לבלבל בין היתר לניצב, או להשתמש במשפט פיתגורס במשולש שאינו ישר־זווית.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "ניצבים 6 ו־8. מה אורך היתר?",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "יישומים של משפט פיתגורס — דפי PDF נוספים"
+            },
+            {
+              "type": "paragraph",
+              "text": "מזהים משולש ישר־זווית בתוך צורה ומחשבים אורכים חסרים בעזרת משפט פיתגורס.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "מתרגלים שימוש בנתוני שרטוט, בגבהים ובמידות של צורות לצורך חישובים ובעיות יישומיות.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+              "role": "body"
+            }
+          ]
+        },
+        {
+          "path": [
+            "updatedLine"
+          ],
+          "existedBefore": true,
+          "before": "נועם דורון מתמטיקה · עודכן 12.9.2026",
+          "after": "נועם דורון מתמטיקה · עודכן 15.11.2026"
+        },
+        {
+          "path": [
+            "faq"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "question": "האם דפי העבודה בנושא פיתגורס — שימושים לכיתה ז׳ מתאימים לכיתה ז׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          ],
+          "after": [
+            {
+              "question": "האם דפי העבודה בנושא פיתגורס — שימושים לכיתה ז׳ מתאימים לכיתה ז׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            },
+            {
+              "question": "מה כוללים קובצי ה־PDF הנוספים?",
+              "answer": "מזהים משולש ישר־זווית בתוך צורה ומחשבים אורכים חסרים בעזרת משפט פיתגורס. מתרגלים שימוש בנתוני שרטוט, בגבהים ובמידות של צורות לצורך חישובים ובעיות יישומיות. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+            },
+            {
+              "question": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+              "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+            }
+          ]
+        },
+        {
+          "path": [
+            "faqGroups"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא פיתגורס — שימושים לכיתה ז׳ מתאימים לכיתה ז׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא פיתגורס — שימושים לכיתה ז׳ מתאימים לכיתה ז׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                },
+                {
+                  "question": "מה כוללים קובצי ה־PDF הנוספים?",
+                  "answer": "מזהים משולש ישר־זווית בתוך צורה ומחשבים אורכים חסרים בעזרת משפט פיתגורס. מתרגלים שימוש בנתוני שרטוט, בגבהים ובמידות של צורות לצורך חישובים ובעיות יישומיות. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+                },
+                {
+                  "question": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+                  "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "jsonLd"
+          ],
+          "existedBefore": true,
+          "before": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/pythagoras-applications-grade-7#webpage",
+                "url": "https://www.noamdoronmath.co.il/pythagoras-applications-grade-7",
+                "name": "פיתגורס — שימושים לכיתה ז׳ | דפי עבודה חינם",
+                "description": "שימושי משפט פיתגורס במלבן, טרפז, גובה משולש ובעיות מהחיים לכיתה ז׳. דפי עבודה חינם — נועם דורון.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/pythagoras-applications-grade-7#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/pythagoras-applications-grade-7#learning-resource",
+                "name": "פיתגורס — שימושים לכיתה ז׳",
+                "url": "https://www.noamdoronmath.co.il/pythagoras-applications-grade-7",
+                "description": "שימושי משפט פיתגורס במלבן, טרפז, גובה משולש ובעיות מהחיים לכיתה ז׳. דפי עבודה חינם — נועם דורון.",
+                "educationalLevel": "כיתה ז׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/pythagoras-applications-grade-7#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא פיתגורס — שימושים לכיתה ז׳ מתאימים לכיתה ז׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "after": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/pythagoras-applications-grade-7#webpage",
+                "url": "https://www.noamdoronmath.co.il/pythagoras-applications-grade-7",
+                "name": "פיתגורס — שימושים לכיתה ז׳ | דפי עבודה חינם",
+                "description": "יישומים של משפט פיתגורס לכיתה ז׳: אורכים, גבהים ומרחקים בצורות ובבעיות מהחיים. דפי PDF נוספים בשלוש רמות, עם תשובות סופיות.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/pythagoras-applications-grade-7#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/pythagoras-applications-grade-7#learning-resource",
+                "name": "פיתגורס — שימושים לכיתה ז׳",
+                "url": "https://www.noamdoronmath.co.il/pythagoras-applications-grade-7",
+                "description": "יישומים של משפט פיתגורס לכיתה ז׳: אורכים, גבהים ומרחקים בצורות ובבעיות מהחיים. דפי PDF נוספים בשלוש רמות, עם תשובות סופיות.",
+                "educationalLevel": "כיתה ז׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/pythagoras-applications-grade-7#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא פיתגורס — שימושים לכיתה ז׳ מתאימים לכיתה ז׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "מה כוללים קובצי ה־PDF הנוספים?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "מזהים משולש ישר־זווית בתוך צורה ומחשבים אורכים חסרים בעזרת משפט פיתגורס. מתרגלים שימוש בנתוני שרטוט, בגבהים ובמידות של צורות לצורך חישובים ובעיות יישומיות. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "appendedSection": {
+        "heading": "יישומים של משפט פיתגורס — דפי PDF נוספים",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "מזהים משולש ישר־זווית בתוך צורה ומחשבים אורכים חסרים בעזרת משפט פיתגורס.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "מתרגלים שימוש בנתוני שרטוט, בגבהים ובמידות של צורות לצורך חישובים ובעיות יישומיות.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+            "links": []
+          }
+        ]
+      }
+    },
+    {
+      "slug": "powers-grade-7",
+      "baselineSha256": "76957e0aea09ba9e0c01c1941d032ad9c5c5821fd1980018f6f46dfce2825d72",
+      "fields": [
+        {
+          "path": [
+            "description"
+          ],
+          "existedBefore": true,
+          "before": "חזקות לכיתה ז׳: חוקי חזקות, כפל וחילוק חזקות וחזקה של חזקה. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+          "after": "חזקות עם מעריך טבעי לכיתה ז׳: כפל חוזר, בסיס ומעריך. דפי PDF נוספים על גדילה והקטנה חוזרות ושטח ריבוע, עם תשובות סופיות."
+        },
+        {
+          "path": [
+            "intro"
+          ],
+          "existedBefore": true,
+          "before": "לומדים לכתוב כפל חוזר בעזרת חזקות, לזהות בסיס ומעריך ולחשב ביטויים פשוטים. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+          "after": "לומדים לכתוב כפל חוזר בעזרת חזקות, לזהות בסיס ומעריך ולחשב ביטויים פשוטים. לצד הדפים הקיימים נוספו קובצי PDF המתמקדים בגדילה ובהקטנה. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+        },
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בביטוי 3⁴ המספר 3 הוא הבסיס ו־4 הוא המעריך; לכן 3⁴=3×3×3×3. חזקה מתארת כפל חוזר, ולא חיבור חוזר.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: 2³+3²=8+9=17.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "המעריך אינו מספר שמכפילים בו את הבסיס: 5² אינו 10 אלא 5×5=25.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "חשבו: 5²−4².",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: 9, כי 25−16=9.",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בביטוי 3⁴ המספר 3 הוא הבסיס ו־4 הוא המעריך; לכן 3⁴=3×3×3×3. חזקה מתארת כפל חוזר, ולא חיבור חוזר.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: 2³+3²=8+9=17.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "המעריך אינו מספר שמכפילים בו את הבסיס: 5² אינו 10 אלא 5×5=25.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "חשבו: 5²−4².",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: 9, כי 25−16=9.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "חזקות עם מעריך טבעי — גדילה והקטנה בדפי PDF",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מתרגלים כפל חוזר ותהליכי גדילה והקטנה, ומתארים כמויות המשתנות במספר שלבים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "התרגול כולל גם חישובים מספריים של שטח ריבוע ושינוי אורכי צלעות. זו סדרה ממוקדת המצטרפת לדפים הקיימים בחזקות.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "updatedLine"
+          ],
+          "existedBefore": true,
+          "before": "נועם דורון מתמטיקה · עודכן 12.9.2026",
+          "after": "נועם דורון מתמטיקה · עודכן 15.11.2026"
+        },
+        {
+          "path": [
+            "faq"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "question": "האם דפי העבודה בנושא חזקות לכיתה ז׳ מתאימים לכיתה ז׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          ],
+          "after": [
+            {
+              "question": "האם דפי העבודה בנושא חזקות לכיתה ז׳ מתאימים לכיתה ז׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            },
+            {
+              "question": "מה כוללים קובצי ה־PDF הנוספים?",
+              "answer": "מתרגלים כפל חוזר ותהליכי גדילה והקטנה, ומתארים כמויות המשתנות במספר שלבים. התרגול כולל גם חישובים מספריים של שטח ריבוע ושינוי אורכי צלעות. זו סדרה ממוקדת המצטרפת לדפים הקיימים בחזקות. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+            },
+            {
+              "question": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+              "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+            }
+          ]
+        },
+        {
+          "path": [
+            "faqGroups"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא חזקות לכיתה ז׳ מתאימים לכיתה ז׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא חזקות לכיתה ז׳ מתאימים לכיתה ז׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                },
+                {
+                  "question": "מה כוללים קובצי ה־PDF הנוספים?",
+                  "answer": "מתרגלים כפל חוזר ותהליכי גדילה והקטנה, ומתארים כמויות המשתנות במספר שלבים. התרגול כולל גם חישובים מספריים של שטח ריבוע ושינוי אורכי צלעות. זו סדרה ממוקדת המצטרפת לדפים הקיימים בחזקות. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+                },
+                {
+                  "question": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+                  "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "jsonLd"
+          ],
+          "existedBefore": true,
+          "before": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/powers-grade-7#webpage",
+                "url": "https://www.noamdoronmath.co.il/powers-grade-7",
+                "name": "חזקות לכיתה ז׳ | דפי עבודה במתמטיקה – נועם דורון",
+                "description": "חזקות לכיתה ז׳: חוקי חזקות, כפל וחילוק חזקות וחזקה של חזקה. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/powers-grade-7#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/powers-grade-7#learning-resource",
+                "name": "חזקות לכיתה ז׳",
+                "url": "https://www.noamdoronmath.co.il/powers-grade-7",
+                "description": "חזקות לכיתה ז׳: חוקי חזקות, כפל וחילוק חזקות וחזקה של חזקה. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+                "educationalLevel": "כיתה ז׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/powers-grade-7#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא חזקות לכיתה ז׳ מתאימים לכיתה ז׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "after": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/powers-grade-7#webpage",
+                "url": "https://www.noamdoronmath.co.il/powers-grade-7",
+                "name": "חזקות לכיתה ז׳ | דפי עבודה במתמטיקה – נועם דורון",
+                "description": "חזקות עם מעריך טבעי לכיתה ז׳: כפל חוזר, בסיס ומעריך. דפי PDF נוספים על גדילה והקטנה חוזרות ושטח ריבוע, עם תשובות סופיות.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/powers-grade-7#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/powers-grade-7#learning-resource",
+                "name": "חזקות לכיתה ז׳",
+                "url": "https://www.noamdoronmath.co.il/powers-grade-7",
+                "description": "חזקות עם מעריך טבעי לכיתה ז׳: כפל חוזר, בסיס ומעריך. דפי PDF נוספים על גדילה והקטנה חוזרות ושטח ריבוע, עם תשובות סופיות.",
+                "educationalLevel": "כיתה ז׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/powers-grade-7#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא חזקות לכיתה ז׳ מתאימים לכיתה ז׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "מה כוללים קובצי ה־PDF הנוספים?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "מתרגלים כפל חוזר ותהליכי גדילה והקטנה, ומתארים כמויות המשתנות במספר שלבים. התרגול כולל גם חישובים מספריים של שטח ריבוע ושינוי אורכי צלעות. זו סדרה ממוקדת המצטרפת לדפים הקיימים בחזקות. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "appendedSection": {
+        "heading": "חזקות עם מעריך טבעי — גדילה והקטנה בדפי PDF",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "מתרגלים כפל חוזר ותהליכי גדילה והקטנה, ומתארים כמויות המשתנות במספר שלבים.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "התרגול כולל גם חישובים מספריים של שטח ריבוע ושינוי אורכי צלעות. זו סדרה ממוקדת המצטרפת לדפים הקיימים בחזקות.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+            "links": []
+          }
+        ]
+      }
+    },
+    {
+      "slug": "triangle-calculations-grade-9",
+      "baselineSha256": "072204343854b180a2f21ecd04cedddfccb34fca4710c254cbd860f1de0ee9e5",
+      "fields": [
+        {
+          "path": [
+            "description"
+          ],
+          "existedBefore": true,
+          "before": "תרגול חישובי זוויות, אורכים ושטחים במשולשים לכיתה ט׳. דפי עבודה חינמיים ברמות א׳, ב׳ ומצוינות, עם דוגמה, בדיקה עצמית ורמזי נועם AI.",
+          "after": "גיאומטריה חישובית — משולש לכיתה ט׳. דפי PDF נוספים לתוכנית המצומצמת: זוויות, קטעים, גובה, שטח והיקף, עם תשובות סופיות."
+        },
+        {
+          "path": [
+            "intro"
+          ],
+          "existedBefore": true,
+          "before": "בוחרים כלי מתאים לחישוב זוויות, אורכים ושטחים במשולשים. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+          "after": "בוחרים כלי מתאים לחישוב זוויות, אורכים ושטחים במשולשים. לצד הדפים הקיימים נוספה סדרת PDF לתוכנית המצומצמת בכיתה ט׳, ברמות א׳, ב׳ ומצוינות. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+        },
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "במשולש שווה־שוקיים אורך כל שוק 10 ס״מ ואורך הבסיס 12 ס״מ. הגובה לבסיס מחלק אותו לשני קטעים של 6 ס״מ. לפי משפט פיתגורס אורך הגובה 8 ס״מ, ולכן שטח המשולש 48 סמ״ר.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "אין להשתמש בתכונה של משולש מיוחד לפני שידוע שהמשולש אכן כזה. מציינים יחידות ומבדילים בין אורך לשטח.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מה שטח משולש בעל בסיס 10 ס״מ וגובה מתאים 7 ס״מ? תשובה: 35 סמ״ר.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "במשולש שווה־שוקיים אורך כל שוק 10 ס״מ ואורך הבסיס 12 ס״מ. הגובה לבסיס מחלק אותו לשני קטעים של 6 ס״מ. לפי משפט פיתגורס אורך הגובה 8 ס״מ, ולכן שטח המשולש 48 סמ״ר.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "אין להשתמש בתכונה של משולש מיוחד לפני שידוע שהמשולש אכן כזה. מציינים יחידות ומבדילים בין אורך לשטח.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מה שטח משולש בעל בסיס 10 ס״מ וגובה מתאים 7 ס״מ? תשובה: 35 סמ״ר.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "גיאומטריה חישובית — משולש: PDF לתוכנית המצומצמת",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "הסדרה לתוכנית המצומצמת מתמקדת בחישוב זוויות, בחוצה זווית ובתיכון, בזיהוי גובה ובחישובי שטח והיקף של משולשים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "התרגול כולל קריאת נתונים במערכת הצירים וסקיצה לפי תיאור. בכל שלוש הרמות זו סדרה חישובית ממוקדת, ללא שימוש במשפט פיתגורס.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "bodyFlow"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "type": "paragraph",
+              "text": "בוחרים כלי מתאים לחישוב זוויות, אורכים ושטחים במשולשים. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "פתיחת דפי העבודה ובחירת רמה",
+              "href": "/worksheets?grade=9&topic=33",
+              "catalogTopicId": 33
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "במשולש שווה־שוקיים אורך כל שוק 10 ס״מ ואורך הבסיס 12 ס״מ. הגובה לבסיס מחלק אותו לשני קטעים של 6 ס״מ. לפי משפט פיתגורס אורך הגובה 8 ס״מ, ולכן שטח המשולש 48 סמ״ר.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טעויות נפוצות"
+            },
+            {
+              "type": "paragraph",
+              "text": "אין להשתמש בתכונה של משולש מיוחד לפני שידוע שהמשולש אכן כזה. מציינים יחידות ומבדילים בין אורך לשטח.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "מה שטח משולש בעל בסיס 10 ס״מ וגובה מתאים 7 ס״מ? תשובה: 35 סמ״ר.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+              "role": "body"
+            }
+          ],
+          "after": [
+            {
+              "type": "paragraph",
+              "text": "בוחרים כלי מתאים לחישוב זוויות, אורכים ושטחים במשולשים. לצד הדפים הקיימים נוספה סדרת PDF לתוכנית המצומצמת בכיתה ט׳, ברמות א׳, ב׳ ומצוינות. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "פתיחת דפי העבודה ובחירת רמה",
+              "href": "/worksheets?grade=9&topic=33",
+              "catalogTopicId": 33
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "במשולש שווה־שוקיים אורך כל שוק 10 ס״מ ואורך הבסיס 12 ס״מ. הגובה לבסיס מחלק אותו לשני קטעים של 6 ס״מ. לפי משפט פיתגורס אורך הגובה 8 ס״מ, ולכן שטח המשולש 48 סמ״ר.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טעויות נפוצות"
+            },
+            {
+              "type": "paragraph",
+              "text": "אין להשתמש בתכונה של משולש מיוחד לפני שידוע שהמשולש אכן כזה. מציינים יחידות ומבדילים בין אורך לשטח.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "מה שטח משולש בעל בסיס 10 ס״מ וגובה מתאים 7 ס״מ? תשובה: 35 סמ״ר.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "גיאומטריה חישובית — משולש: PDF לתוכנית המצומצמת"
+            },
+            {
+              "type": "paragraph",
+              "text": "הסדרה לתוכנית המצומצמת מתמקדת בחישוב זוויות, בחוצה זווית ובתיכון, בזיהוי גובה ובחישובי שטח והיקף של משולשים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "התרגול כולל קריאת נתונים במערכת הצירים וסקיצה לפי תיאור. בכל שלוש הרמות זו סדרה חישובית ממוקדת, ללא שימוש במשפט פיתגורס.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+              "role": "body"
+            }
+          ]
+        },
+        {
+          "path": [
+            "updatedLine"
+          ],
+          "existedBefore": true,
+          "before": null,
+          "after": "נועם דורון מתמטיקה · עודכן 15.11.2026"
+        },
+        {
+          "path": [
+            "updatedLinePlacement"
+          ],
+          "existedBefore": true,
+          "before": "absent",
+          "after": "after-sections"
+        },
+        {
+          "path": [
+            "faq"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "question": "האם דפי העבודה בנושא חישובים במשולשים לכיתה ט׳ מתאימים לכיתה ט׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          ],
+          "after": [
+            {
+              "question": "האם דפי העבודה בנושא חישובים במשולשים לכיתה ט׳ מתאימים לכיתה ט׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            },
+            {
+              "question": "מה כוללים קובצי ה־PDF הנוספים?",
+              "answer": "הסדרה לתוכנית המצומצמת מתמקדת בחישוב זוויות, בחוצה זווית ובתיכון, בזיהוי גובה ובחישובי שטח והיקף של משולשים. התרגול כולל קריאת נתונים במערכת הצירים וסקיצה לפי תיאור. בכל שלוש הרמות זו סדרה חישובית ממוקדת, ללא שימוש במשפט פיתגורס. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+            },
+            {
+              "question": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+              "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+            }
+          ]
+        },
+        {
+          "path": [
+            "faqGroups"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא חישובים במשולשים לכיתה ט׳ מתאימים לכיתה ט׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא חישובים במשולשים לכיתה ט׳ מתאימים לכיתה ט׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                },
+                {
+                  "question": "מה כוללים קובצי ה־PDF הנוספים?",
+                  "answer": "הסדרה לתוכנית המצומצמת מתמקדת בחישוב זוויות, בחוצה זווית ובתיכון, בזיהוי גובה ובחישובי שטח והיקף של משולשים. התרגול כולל קריאת נתונים במערכת הצירים וסקיצה לפי תיאור. בכל שלוש הרמות זו סדרה חישובית ממוקדת, ללא שימוש במשפט פיתגורס. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+                },
+                {
+                  "question": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+                  "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "jsonLd"
+          ],
+          "existedBefore": true,
+          "before": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/triangle-calculations-grade-9#webpage",
+                "url": "https://www.noamdoronmath.co.il/triangle-calculations-grade-9",
+                "name": "חישובים במשולשים לכיתה ט׳ | נועם דורון",
+                "description": "תרגול חישובי זוויות, אורכים ושטחים במשולשים לכיתה ט׳. דפי עבודה חינמיים ברמות א׳, ב׳ ומצוינות, עם דוגמה, בדיקה עצמית ורמזי נועם AI.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/triangle-calculations-grade-9#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/triangle-calculations-grade-9#learning-resource",
+                "name": "חישובים במשולשים לכיתה ט׳",
+                "url": "https://www.noamdoronmath.co.il/triangle-calculations-grade-9",
+                "description": "תרגול חישובי זוויות, אורכים ושטחים במשולשים לכיתה ט׳. דפי עבודה חינמיים ברמות א׳, ב׳ ומצוינות, עם דוגמה, בדיקה עצמית ורמזי נועם AI.",
+                "educationalLevel": "כיתה ט׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/triangle-calculations-grade-9#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא חישובים במשולשים לכיתה ט׳ מתאימים לכיתה ט׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "after": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/triangle-calculations-grade-9#webpage",
+                "url": "https://www.noamdoronmath.co.il/triangle-calculations-grade-9",
+                "name": "חישובים במשולשים לכיתה ט׳ | נועם דורון",
+                "description": "גיאומטריה חישובית — משולש לכיתה ט׳. דפי PDF נוספים לתוכנית המצומצמת: זוויות, קטעים, גובה, שטח והיקף, עם תשובות סופיות.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/triangle-calculations-grade-9#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/triangle-calculations-grade-9#learning-resource",
+                "name": "חישובים במשולשים לכיתה ט׳",
+                "url": "https://www.noamdoronmath.co.il/triangle-calculations-grade-9",
+                "description": "גיאומטריה חישובית — משולש לכיתה ט׳. דפי PDF נוספים לתוכנית המצומצמת: זוויות, קטעים, גובה, שטח והיקף, עם תשובות סופיות.",
+                "educationalLevel": "כיתה ט׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/triangle-calculations-grade-9#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא חישובים במשולשים לכיתה ט׳ מתאימים לכיתה ט׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "מה כוללים קובצי ה־PDF הנוספים?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "הסדרה לתוכנית המצומצמת מתמקדת בחישוב זוויות, בחוצה זווית ובתיכון, בזיהוי גובה ובחישובי שטח והיקף של משולשים. התרגול כולל קריאת נתונים במערכת הצירים וסקיצה לפי תיאור. בכל שלוש הרמות זו סדרה חישובית ממוקדת, ללא שימוש במשפט פיתגורס. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "appendedSection": {
+        "heading": "גיאומטריה חישובית — משולש: PDF לתוכנית המצומצמת",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "הסדרה לתוכנית המצומצמת מתמקדת בחישוב זוויות, בחוצה זווית ובתיכון, בזיהוי גובה ובחישובי שטח והיקף של משולשים.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "התרגול כולל קריאת נתונים במערכת הצירים וסקיצה לפי תיאור. בכל שלוש הרמות זו סדרה חישובית ממוקדת, ללא שימוש במשפט פיתגורס.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+            "links": []
+          }
+        ]
+      }
+    },
+    {
+      "slug": "patterns-and-graphs-grade-7",
+      "baselineSha256": "62b73c065d51928f1609af0a20ccec71cef6ea08c0e27f7bd25c850cfa7d30f8",
+      "fields": [
+        {
+          "path": [
+            "description"
+          ],
+          "existedBefore": true,
+          "before": "חוקיות וסדרות, וסימון נקודות על גרף ברביע הראשון לכיתה ז׳. דפי עבודה חינם — נועם דורון.",
+          "after": "חוקיות ונקודות על גרף ברביע הראשון לכיתה ז׳. דפי PDF נוספים לקריאת גרפים שימושיים, השוואת מצבים ועלייה וירידה, עם תשובות סופיות."
+        },
+        {
+          "path": [
+            "intro"
+          ],
+          "existedBefore": true,
+          "before": "מזהים חוקיות ומנסחים כלל, ומסמנים נקודות על גרף ברביע הראשון. תרגול ברמות שונות — בחינם.",
+          "after": "מזהים חוקיות ומנסחים כלל, וקוראים נקודות על גרף ברביע הראשון. בנושא הגרפים נוספה סדרת PDF לקריאת מידע ולתיאור תהליכים מחיי היום־יום. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+        },
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בחוקיות מחפשים כלל שמקדם את הסדרה: במילים ובביטוי. בגרף ברביע הראשון כל נקודה היא זוג סדור (x,y) עם ערכים אי־שליליים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "סדרה 2,5,8,11… הכלל: מוסיפים 3 בכל פעם. הנקודה (2,5) נמצאת 2 יחידות ימינה ו־5 יחידות למעלה מראשית הצירים.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "טעות נפוצה: להחליף בין x ל־y בסימון נקודה, או לנסח כלל שאינו מתאים לכל איברי הסדרה.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "שאלות נפוצות ובדיקה עצמית",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מה האיבר הבא אחרי 4,7,10,13?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: 16.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "כיצד מזהים חוקיות בסדרה?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "משווים בין איברים עוקבים ובודקים אם נוסף או מוכפל מספר קבוע, ואז מנסחים כלל שמתאים לכל האיברים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "כיצד מסמנים נקודה (x,y)?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "מתקדמים קודם לפי x על הציר האופקי ואחר כך לפי y על הציר האנכי.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "האם אפשר לבחור רמת קושי?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "כן. בדפי העבודה אפשר לבחור רמה בסיסית, מתקדמת או מצוינות.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "איך משתמשים בכלי נועם AI?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בזמן הצפייה בדף העבודה, תוכלו להפעיל את העוזר הדיגיטלי לקבלת הסברים, רמזים ופתרונות שלב אחר שלב.",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בחוקיות מחפשים כלל שמקדם את הסדרה: במילים ובביטוי. בגרף ברביע הראשון כל נקודה היא זוג סדור (x,y) עם ערכים אי־שליליים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "סדרה 2,5,8,11… הכלל: מוסיפים 3 בכל פעם. הנקודה (2,5) נמצאת 2 יחידות ימינה ו־5 יחידות למעלה מראשית הצירים.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "טעות נפוצה: להחליף בין x ל־y בסימון נקודה, או לנסח כלל שאינו מתאים לכל איברי הסדרה.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "שאלות נפוצות ובדיקה עצמית",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מה האיבר הבא אחרי 4,7,10,13?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: 16.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "כיצד מזהים חוקיות בסדרה?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "משווים בין איברים עוקבים ובודקים אם נוסף או מוכפל מספר קבוע, ואז מנסחים כלל שמתאים לכל האיברים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "כיצד מסמנים נקודה (x,y)?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "מתקדמים קודם לפי x על הציר האופקי ואחר כך לפי y על הציר האנכי.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "האם אפשר לבחור רמת קושי?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "כן. בדפי העבודה אפשר לבחור רמה בסיסית, מתקדמת או מצוינות.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "איך משתמשים בכלי נועם AI?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בזמן הצפייה בדף העבודה, תוכלו להפעיל את העוזר הדיגיטלי לקבלת הסברים, רמזים ופתרונות שלב אחר שלב.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "נקודות על גרף ברביע הראשון — קריאת גרפים שימושיים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "קוראים ערכים ויחידות בצירים, משווים מצבים ומזהים עלייה, ירידה וקביעות בגרפים שימושיים ברביע הראשון.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "מתרגלים קריאת נקודות וטווחים ושרטוט גרף מתוך סיפור. הדפים מתמקדים בקריאת גרפים; דפי החוקיות בסדרות נשארים זמינים בנפרד.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "bodyFlow"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "type": "paragraph",
+              "text": "מזהים חוקיות ומנסחים כלל, ומסמנים נקודות על גרף ברביע הראשון. תרגול ברמות שונות — בחינם.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "נקודות על גרף ברביע הראשון — בחירת דף ורמה",
+              "href": "/worksheets?grade=7&topic=31",
+              "catalogTopicId": 31
+            },
+            {
+              "type": "cta",
+              "label": "חוקיות בסדרות — בחירת דף ורמה",
+              "href": "/worksheets?grade=7&topic=21",
+              "catalogTopicId": 21
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "בחוקיות מחפשים כלל שמקדם את הסדרה: במילים ובביטוי. בגרף ברביע הראשון כל נקודה היא זוג סדור (x,y) עם ערכים אי־שליליים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "סדרה 2,5,8,11… הכלל: מוסיפים 3 בכל פעם. הנקודה (2,5) נמצאת 2 יחידות ימינה ו־5 יחידות למעלה מראשית הצירים.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טעויות נפוצות"
+            },
+            {
+              "type": "paragraph",
+              "text": "טעות נפוצה: להחליף בין x ל־y בסימון נקודה, או לנסח כלל שאינו מתאים לכל איברי הסדרה.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "שאלות נפוצות ובדיקה עצמית"
+            },
+            {
+              "type": "paragraph",
+              "text": "מה האיבר הבא אחרי 4,7,10,13?",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "תשובה: 16.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "כיצד מזהים חוקיות בסדרה?",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "משווים בין איברים עוקבים ובודקים אם נוסף או מוכפל מספר קבוע, ואז מנסחים כלל שמתאים לכל האיברים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "כיצד מסמנים נקודה (x,y)?",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "מתקדמים קודם לפי x על הציר האופקי ואחר כך לפי y על הציר האנכי.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "האם אפשר לבחור רמת קושי?",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "כן. בדפי העבודה אפשר לבחור רמה בסיסית, מתקדמת או מצוינות.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "איך משתמשים בכלי נועם AI?",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "בזמן הצפייה בדף העבודה, תוכלו להפעיל את העוזר הדיגיטלי לקבלת הסברים, רמזים ופתרונות שלב אחר שלב.",
+              "role": "body"
+            }
+          ],
+          "after": [
+            {
+              "type": "paragraph",
+              "text": "מזהים חוקיות ומנסחים כלל, וקוראים נקודות על גרף ברביע הראשון. בנושא הגרפים נוספה סדרת PDF לקריאת מידע ולתיאור תהליכים מחיי היום־יום. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "נקודות על גרף ברביע הראשון — בחירת דף ורמה",
+              "href": "/worksheets?grade=7&topic=31",
+              "catalogTopicId": 31
+            },
+            {
+              "type": "cta",
+              "label": "חוקיות בסדרות — בחירת דף ורמה",
+              "href": "/worksheets?grade=7&topic=21",
+              "catalogTopicId": 21
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "בחוקיות מחפשים כלל שמקדם את הסדרה: במילים ובביטוי. בגרף ברביע הראשון כל נקודה היא זוג סדור (x,y) עם ערכים אי־שליליים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "סדרה 2,5,8,11… הכלל: מוסיפים 3 בכל פעם. הנקודה (2,5) נמצאת 2 יחידות ימינה ו־5 יחידות למעלה מראשית הצירים.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טעויות נפוצות"
+            },
+            {
+              "type": "paragraph",
+              "text": "טעות נפוצה: להחליף בין x ל־y בסימון נקודה, או לנסח כלל שאינו מתאים לכל איברי הסדרה.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "שאלות נפוצות ובדיקה עצמית"
+            },
+            {
+              "type": "paragraph",
+              "text": "מה האיבר הבא אחרי 4,7,10,13?",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "תשובה: 16.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "כיצד מזהים חוקיות בסדרה?",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "משווים בין איברים עוקבים ובודקים אם נוסף או מוכפל מספר קבוע, ואז מנסחים כלל שמתאים לכל האיברים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "כיצד מסמנים נקודה (x,y)?",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "מתקדמים קודם לפי x על הציר האופקי ואחר כך לפי y על הציר האנכי.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "האם אפשר לבחור רמת קושי?",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "כן. בדפי העבודה אפשר לבחור רמה בסיסית, מתקדמת או מצוינות.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "איך משתמשים בכלי נועם AI?",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "בזמן הצפייה בדף העבודה, תוכלו להפעיל את העוזר הדיגיטלי לקבלת הסברים, רמזים ופתרונות שלב אחר שלב.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "נקודות על גרף ברביע הראשון — קריאת גרפים שימושיים"
+            },
+            {
+              "type": "paragraph",
+              "text": "קוראים ערכים ויחידות בצירים, משווים מצבים ומזהים עלייה, ירידה וקביעות בגרפים שימושיים ברביע הראשון.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "מתרגלים קריאת נקודות וטווחים ושרטוט גרף מתוך סיפור. הדפים מתמקדים בקריאת גרפים; דפי החוקיות בסדרות נשארים זמינים בנפרד.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+              "role": "body"
+            }
+          ]
+        },
+        {
+          "path": [
+            "updatedLine"
+          ],
+          "existedBefore": true,
+          "before": null,
+          "after": "נועם דורון מתמטיקה · עודכן 15.11.2026"
+        },
+        {
+          "path": [
+            "updatedLinePlacement"
+          ],
+          "existedBefore": true,
+          "before": "absent",
+          "after": "after-sections"
+        },
+        {
+          "path": [
+            "faq"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "question": "האם דפי העבודה בנושא חוקיות ונקודות על גרף לכיתה ז׳ מתאימים לכיתה ז׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          ],
+          "after": [
+            {
+              "question": "האם דפי העבודה בנושא חוקיות ונקודות על גרף לכיתה ז׳ מתאימים לכיתה ז׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            },
+            {
+              "question": "מה כוללים קובצי ה־PDF הנוספים?",
+              "answer": "קוראים ערכים ויחידות בצירים, משווים מצבים ומזהים עלייה, ירידה וקביעות בגרפים שימושיים ברביע הראשון. מתרגלים קריאת נקודות וטווחים ושרטוט גרף מתוך סיפור. הדפים מתמקדים בקריאת גרפים; דפי החוקיות בסדרות נשארים זמינים בנפרד. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+            },
+            {
+              "question": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+              "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+            }
+          ]
+        },
+        {
+          "path": [
+            "faqGroups"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא חוקיות ונקודות על גרף לכיתה ז׳ מתאימים לכיתה ז׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא חוקיות ונקודות על גרף לכיתה ז׳ מתאימים לכיתה ז׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                },
+                {
+                  "question": "מה כוללים קובצי ה־PDF הנוספים?",
+                  "answer": "קוראים ערכים ויחידות בצירים, משווים מצבים ומזהים עלייה, ירידה וקביעות בגרפים שימושיים ברביע הראשון. מתרגלים קריאת נקודות וטווחים ושרטוט גרף מתוך סיפור. הדפים מתמקדים בקריאת גרפים; דפי החוקיות בסדרות נשארים זמינים בנפרד. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+                },
+                {
+                  "question": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+                  "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "jsonLd"
+          ],
+          "existedBefore": true,
+          "before": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/patterns-and-graphs-grade-7#webpage",
+                "url": "https://www.noamdoronmath.co.il/patterns-and-graphs-grade-7",
+                "name": "חוקיות ונקודות על גרף לכיתה ז׳ | דפי עבודה חינם",
+                "description": "חוקיות וסדרות, וסימון נקודות על גרף ברביע הראשון לכיתה ז׳. דפי עבודה חינם — נועם דורון.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/patterns-and-graphs-grade-7#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/patterns-and-graphs-grade-7#learning-resource",
+                "name": "חוקיות ונקודות על גרף לכיתה ז׳",
+                "url": "https://www.noamdoronmath.co.il/patterns-and-graphs-grade-7",
+                "description": "חוקיות וסדרות, וסימון נקודות על גרף ברביע הראשון לכיתה ז׳. דפי עבודה חינם — נועם דורון.",
+                "educationalLevel": "כיתה ז׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/patterns-and-graphs-grade-7#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא חוקיות ונקודות על גרף לכיתה ז׳ מתאימים לכיתה ז׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "after": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/patterns-and-graphs-grade-7#webpage",
+                "url": "https://www.noamdoronmath.co.il/patterns-and-graphs-grade-7",
+                "name": "חוקיות ונקודות על גרף לכיתה ז׳ | דפי עבודה חינם",
+                "description": "חוקיות ונקודות על גרף ברביע הראשון לכיתה ז׳. דפי PDF נוספים לקריאת גרפים שימושיים, השוואת מצבים ועלייה וירידה, עם תשובות סופיות.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/patterns-and-graphs-grade-7#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/patterns-and-graphs-grade-7#learning-resource",
+                "name": "חוקיות ונקודות על גרף לכיתה ז׳",
+                "url": "https://www.noamdoronmath.co.il/patterns-and-graphs-grade-7",
+                "description": "חוקיות ונקודות על גרף ברביע הראשון לכיתה ז׳. דפי PDF נוספים לקריאת גרפים שימושיים, השוואת מצבים ועלייה וירידה, עם תשובות סופיות.",
+                "educationalLevel": "כיתה ז׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/patterns-and-graphs-grade-7#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא חוקיות ונקודות על גרף לכיתה ז׳ מתאימים לכיתה ז׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "מה כוללים קובצי ה־PDF הנוספים?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "קוראים ערכים ויחידות בצירים, משווים מצבים ומזהים עלייה, ירידה וקביעות בגרפים שימושיים ברביע הראשון. מתרגלים קריאת נקודות וטווחים ושרטוט גרף מתוך סיפור. הדפים מתמקדים בקריאת גרפים; דפי החוקיות בסדרות נשארים זמינים בנפרד. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "appendedSection": {
+        "heading": "נקודות על גרף ברביע הראשון — קריאת גרפים שימושיים",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "קוראים ערכים ויחידות בצירים, משווים מצבים ומזהים עלייה, ירידה וקביעות בגרפים שימושיים ברביע הראשון.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "מתרגלים קריאת נקודות וטווחים ושרטוט גרף מתוך סיפור. הדפים מתמקדים בקריאת גרפים; דפי החוקיות בסדרות נשארים זמינים בנפרד.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+            "links": []
+          }
+        ]
+      }
+    }
+  ]
+}

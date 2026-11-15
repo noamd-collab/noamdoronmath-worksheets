@@ -1,0 +1,698 @@
+{
+  "schema": "noam-student-pdf-publication-evidence/v1",
+  "status": "REVIEWED_MEDIA_SITE_CANDIDATE_NOT_PUBLISHED",
+  "preparedDate": "2026-11-15",
+  "publicationMode": "pdf-only",
+  "sourceProvenanceOnly": true,
+  "sitePublicationClaimed": false,
+  "scope": {
+    "packages": 7,
+    "pdfs": 21,
+    "pages": 137,
+    "subitems": 405,
+    "landingRoutes": 7
+  },
+  "mediaReadbackSha256": "1535a330308ccfe76cabf589e2f0926f21105c5db71024e29c8b4bb8325f1d35",
+  "frozenPublishManifestSha256": "6963b8fb8ced064d42e50492e4d14e1ceb4b89d46a4bf4043d6662ebc9a2e5b4",
+  "queueAcceptanceSha256": "a46040037da854174b01fa294d7272a29c4747ab11e71445e3e713983ee3c030",
+  "review": {
+    "attribution": "Frozen independent PDF reviews accepted the seven student sets; integration verifies current byte pins without claiming a new full math or PDF visual review.",
+    "wordVisual": "NOT_RUN",
+    "nativeOrHintsAcceptance": false,
+    "allGatesPass": false,
+    "retainedLimits": [
+      "Existing density and semantic REVIEW notes remain.",
+      "Claude027 obsolete private keys and detailed strings cannot feed hints or answer checking.",
+      "CTM is focused computational practice for the reduced track.",
+      "GRW is focused growth/shrink practice, not full powers coverage.",
+      "Producer prefixes are provenance only; no new native assets or AI activation."
+    ]
+  },
+  "packages": [
+    {
+      "sheetId": "G7-ATQ-01",
+      "grade": 7,
+      "topicId": 19,
+      "editionId": "ms-20261115-atq-01-r1",
+      "nativePrefixProvenanceOnly": "G7-T57",
+      "label": "שטח משולש ומרובע שאלכסוניו מאונכים · PDF",
+      "isDefault": false,
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "e69ccc7e9e9346669ae8bdb7b8acce83",
+          "pdfSha256": "9ef6a3a5bda350375fde995e4e646111830dada138ac9a37d459ff9e415fc023",
+          "sourceSha256": "fdd5970e91aa94f1821e8fc46fb7504cc12b5c55481420447016d1cc5416e7e0",
+          "nativeExportSha256": "366b30f0257764194438d1e15f8f290e0efdd4521997524851ae7dcbcecbbd88",
+          "worksheetId": "ms-g7-atq-01-a-r1",
+          "revision": 1,
+          "pages": 6,
+          "subitems": 19,
+          "downloadChecks": [
+            {
+              "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_e69ccc7e9e9346669ae8bdb7b8acce83.pdf",
+              "status": 200,
+              "sha256": "9ef6a3a5bda350375fde995e4e646111830dada138ac9a37d459ff9e415fc023",
+              "bytes": 61768,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_e69ccc7e9e9346669ae8bdb7b8acce83.pdf",
+              "status": 200,
+              "sha256": "9ef6a3a5bda350375fde995e4e646111830dada138ac9a37d459ff9e415fc023",
+              "bytes": 61768,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "f2eb2d3db12c4e70a9d47b8ff51b53f4",
+          "pdfSha256": "8045a72cf4916c472d5eab9d59a7f58b7ddb397736eb7ba8050c61baeab4418c",
+          "sourceSha256": "1c745d476ddedba065f9b9ffa16834934ff7c7170aa964b55512948275a7feec",
+          "nativeExportSha256": "d0fe6b8c0672f33e6dd7bb9ed9ce9fb7c9e3a1234d7dccd01f39e5fe34927ffb",
+          "worksheetId": "ms-g7-atq-01-b-r1",
+          "revision": 1,
+          "pages": 7,
+          "subitems": 19,
+          "downloadChecks": [
+            {
+              "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_f2eb2d3db12c4e70a9d47b8ff51b53f4.pdf",
+              "status": 200,
+              "sha256": "8045a72cf4916c472d5eab9d59a7f58b7ddb397736eb7ba8050c61baeab4418c",
+              "bytes": 64348,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_f2eb2d3db12c4e70a9d47b8ff51b53f4.pdf",
+              "status": 200,
+              "sha256": "8045a72cf4916c472d5eab9d59a7f58b7ddb397736eb7ba8050c61baeab4418c",
+              "bytes": 64348,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "7580de19cf604ce39b57c885cbac98a6",
+          "pdfSha256": "4b7df6d2e09c7e099d4bbfafe3fc9b9a201f87abd848ba82fa4ec34bcf54da23",
+          "sourceSha256": "4ed7887c1455d03063b9b8dce7dcd0d38fea8652a695ff188177d8cd288a0b43",
+          "nativeExportSha256": "6f18ca22ca95bd42e72dd350b85a82d6a57d68a7ac69ec2db1d688589761e78c",
+          "worksheetId": "ms-g7-atq-01-c-r1",
+          "revision": 1,
+          "pages": 7,
+          "subitems": 18,
+          "downloadChecks": [
+            {
+              "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_7580de19cf604ce39b57c885cbac98a6.pdf",
+              "status": 200,
+              "sha256": "4b7df6d2e09c7e099d4bbfafe3fc9b9a201f87abd848ba82fa4ec34bcf54da23",
+              "bytes": 65211,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_7580de19cf604ce39b57c885cbac98a6.pdf",
+              "status": 200,
+              "sha256": "4b7df6d2e09c7e099d4bbfafe3fc9b9a201f87abd848ba82fa4ec34bcf54da23",
+              "bytes": 65211,
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sheetId": "G7-APT-01",
+      "grade": 7,
+      "topicId": 45,
+      "editionId": "ms-20261115-apt-01-r1",
+      "nativePrefixProvenanceOnly": "G7-T58",
+      "label": "שטח מקבילית וטרפז — תרגול וצורות מורכבות · PDF",
+      "isDefault": false,
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "c88fd53420e3453faa750d2bef87606b",
+          "pdfSha256": "8ea384c05b31e78f77f3cd892a067505f4150285ac23ca52aada1725fd0904b5",
+          "sourceSha256": "f19ba2132405f15691768e67f3bc175477f0d849a2194af4d357361b518a2c8e",
+          "nativeExportSha256": "5c1c8b661008cdd4902a79f53d7745f4b9eb508b311a8d53e1d6e064a464a6e2",
+          "worksheetId": "ms-g7-apt-01-a-r1",
+          "revision": 1,
+          "pages": 7,
+          "subitems": 18,
+          "downloadChecks": [
+            {
+              "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_c88fd53420e3453faa750d2bef87606b.pdf",
+              "status": 200,
+              "sha256": "8ea384c05b31e78f77f3cd892a067505f4150285ac23ca52aada1725fd0904b5",
+              "bytes": 64276,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_c88fd53420e3453faa750d2bef87606b.pdf",
+              "status": 200,
+              "sha256": "8ea384c05b31e78f77f3cd892a067505f4150285ac23ca52aada1725fd0904b5",
+              "bytes": 64276,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "0e92791368cd437cb51646743d386d74",
+          "pdfSha256": "cde6829fb85e43cb2d41de22792c53cac43924cbb9890f848e475431ac92de35",
+          "sourceSha256": "fb9779ec4c4b865edf6412ee99056d895f09df6b0658b2e5ca9a759b6934c267",
+          "nativeExportSha256": "2376c3042137c6a22d260118f4a128f754a7cea3364c97b1efcbff217f6a920e",
+          "worksheetId": "ms-g7-apt-01-b-r1",
+          "revision": 1,
+          "pages": 7,
+          "subitems": 18,
+          "downloadChecks": [
+            {
+              "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_0e92791368cd437cb51646743d386d74.pdf",
+              "status": 200,
+              "sha256": "cde6829fb85e43cb2d41de22792c53cac43924cbb9890f848e475431ac92de35",
+              "bytes": 65170,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_0e92791368cd437cb51646743d386d74.pdf",
+              "status": 200,
+              "sha256": "cde6829fb85e43cb2d41de22792c53cac43924cbb9890f848e475431ac92de35",
+              "bytes": 65170,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "34173090bfe14f1da13165d1f09e94cd",
+          "pdfSha256": "a1adc7fe6198c9af512f3763633403d44645838006ba6283a58d4a000408b758",
+          "sourceSha256": "7200dbebcc9571faae19964b367b2b161bae5f6c83cc3eb928bc1e23d670dc35",
+          "nativeExportSha256": "01600c67ca5be917b5f46821fdef2802f3572024d75f2cf8c6c1870302516e2a",
+          "worksheetId": "ms-g7-apt-01-c-r1",
+          "revision": 1,
+          "pages": 7,
+          "subitems": 18,
+          "downloadChecks": [
+            {
+              "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_34173090bfe14f1da13165d1f09e94cd.pdf",
+              "status": 200,
+              "sha256": "a1adc7fe6198c9af512f3763633403d44645838006ba6283a58d4a000408b758",
+              "bytes": 67142,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_34173090bfe14f1da13165d1f09e94cd.pdf",
+              "status": 200,
+              "sha256": "a1adc7fe6198c9af512f3763633403d44645838006ba6283a58d4a000408b758",
+              "bytes": 67142,
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sheetId": "G7-PYT-01",
+      "grade": 7,
+      "topicId": 42,
+      "editionId": "ms-20261115-pyt-01-r1",
+      "nativePrefixProvenanceOnly": "G7-T59",
+      "label": "משפט פיתגורס — חישוב אורך צלע · PDF",
+      "isDefault": false,
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "0d20f5866d2a433fb37341a21b818dfa",
+          "pdfSha256": "b699e940e7bfeca1d53e1e69d8f7d402464a936aa02a94b93d897a09b62335b6",
+          "sourceSha256": "54c2aa4f925cc149b739427620bdac3510d490d138ec05d24a658af0c6847580",
+          "nativeExportSha256": "eaad33527fd4cdcc9916c94f7f3a0fc86c472683fc00ec07c93a1819edce7062",
+          "worksheetId": "ms-g7-pyt-01-a-r1",
+          "revision": 1,
+          "pages": 6,
+          "subitems": 18,
+          "downloadChecks": [
+            {
+              "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_0d20f5866d2a433fb37341a21b818dfa.pdf",
+              "status": 200,
+              "sha256": "b699e940e7bfeca1d53e1e69d8f7d402464a936aa02a94b93d897a09b62335b6",
+              "bytes": 59528,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_0d20f5866d2a433fb37341a21b818dfa.pdf",
+              "status": 200,
+              "sha256": "b699e940e7bfeca1d53e1e69d8f7d402464a936aa02a94b93d897a09b62335b6",
+              "bytes": 59528,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "d77649a4b3654347a2fc3bb37cf85556",
+          "pdfSha256": "48a76ee4d76505acbf237967e1a31ff425e4e1df6f49453b7a235366834d021c",
+          "sourceSha256": "c378f72c9314d0a97a48a55b087b2068aa5a190e176acc9b345c1b1317b8ae3b",
+          "nativeExportSha256": "4d4cc8f02fa0ab339e1b525068e1fd031d02ac34a22df12e27cfec7f02b381b7",
+          "worksheetId": "ms-g7-pyt-01-b-r1",
+          "revision": 1,
+          "pages": 6,
+          "subitems": 18,
+          "downloadChecks": [
+            {
+              "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_d77649a4b3654347a2fc3bb37cf85556.pdf",
+              "status": 200,
+              "sha256": "48a76ee4d76505acbf237967e1a31ff425e4e1df6f49453b7a235366834d021c",
+              "bytes": 61865,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_d77649a4b3654347a2fc3bb37cf85556.pdf",
+              "status": 200,
+              "sha256": "48a76ee4d76505acbf237967e1a31ff425e4e1df6f49453b7a235366834d021c",
+              "bytes": 61865,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "397806a630a74d6bb1a02b6be40f0328",
+          "pdfSha256": "0e4e469181b0b2b6ddb0a0553c301080d30417b9518671915436ea40d493ce9f",
+          "sourceSha256": "ac3ea9d0ace1a3fe0b4f7de23f7d7ee53734666020f752e0443e2ce0234e0ad0",
+          "nativeExportSha256": "7a421672b1bd2462877ca9f5a5cfcbb1c79d08be5c11fa4c20620512b97968b2",
+          "worksheetId": "ms-g7-pyt-01-c-r1",
+          "revision": 1,
+          "pages": 6,
+          "subitems": 18,
+          "downloadChecks": [
+            {
+              "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_397806a630a74d6bb1a02b6be40f0328.pdf",
+              "status": 200,
+              "sha256": "0e4e469181b0b2b6ddb0a0553c301080d30417b9518671915436ea40d493ce9f",
+              "bytes": 64203,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_397806a630a74d6bb1a02b6be40f0328.pdf",
+              "status": 200,
+              "sha256": "0e4e469181b0b2b6ddb0a0553c301080d30417b9518671915436ea40d493ce9f",
+              "bytes": 64203,
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sheetId": "G7-PYA-01",
+      "grade": 7,
+      "topicId": 43,
+      "editionId": "ms-20261115-pya-01-r1",
+      "nativePrefixProvenanceOnly": "G7-T60",
+      "label": "יישומים של משפט פיתגורס — תרגול במצבים גיאומטריים · PDF",
+      "isDefault": false,
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "89f5a3a8f0304a81a7d090eb3ef7a559",
+          "pdfSha256": "ec17f1074c2fc0fdba6593ae954284c30e8ffaab7e54f55109c0141f91cb9032",
+          "sourceSha256": "a31e39f7ac7a9fe32d2181dd7d0ff2d7d8302a6150e063254e5a1a2810bcebb7",
+          "nativeExportSha256": "92edb444be1edef55e3151e31032343abd202719891dfe5fc7f5d8b9c3bfa2ef",
+          "worksheetId": "ms-g7-pya-01-a-r1",
+          "revision": 1,
+          "pages": 7,
+          "subitems": 18,
+          "downloadChecks": [
+            {
+              "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_89f5a3a8f0304a81a7d090eb3ef7a559.pdf",
+              "status": 200,
+              "sha256": "ec17f1074c2fc0fdba6593ae954284c30e8ffaab7e54f55109c0141f91cb9032",
+              "bytes": 66944,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_89f5a3a8f0304a81a7d090eb3ef7a559.pdf",
+              "status": 200,
+              "sha256": "ec17f1074c2fc0fdba6593ae954284c30e8ffaab7e54f55109c0141f91cb9032",
+              "bytes": 66944,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "b07ff81e9bb54bcbb52a6b8a3dc3711b",
+          "pdfSha256": "5b72d7e76148b8f3f30bebf0fea330f69747b068198a4e3eafbdcead28aa0dd7",
+          "sourceSha256": "1ad7aa9058ffe0fddaec93ab00d0a4bda3430ab874e0a261dabe71c98a348a1f",
+          "nativeExportSha256": "fc7e05bcae75384b601be6b9bd88aff0725127b538cd0bd3768776d912ad6292",
+          "worksheetId": "ms-g7-pya-01-b-r1",
+          "revision": 1,
+          "pages": 7,
+          "subitems": 18,
+          "downloadChecks": [
+            {
+              "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_b07ff81e9bb54bcbb52a6b8a3dc3711b.pdf",
+              "status": 200,
+              "sha256": "5b72d7e76148b8f3f30bebf0fea330f69747b068198a4e3eafbdcead28aa0dd7",
+              "bytes": 66491,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_b07ff81e9bb54bcbb52a6b8a3dc3711b.pdf",
+              "status": 200,
+              "sha256": "5b72d7e76148b8f3f30bebf0fea330f69747b068198a4e3eafbdcead28aa0dd7",
+              "bytes": 66491,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "2c6df4fe8f3c4e348ce031524b277cfa",
+          "pdfSha256": "33d1176ffcdb04bf2d4dfe5e4a6b3627f46ab6e35374608a02adbbc386f41978",
+          "sourceSha256": "ee66f6e7855f1e9e60b84b9b5d455bbc96e665e6083e3c56aab92d10f9a7821e",
+          "nativeExportSha256": "65c59de08037ada5a14551b0349af47f7046ae8c3de3422c202dea920b547f94",
+          "worksheetId": "ms-g7-pya-01-c-r1",
+          "revision": 1,
+          "pages": 7,
+          "subitems": 18,
+          "downloadChecks": [
+            {
+              "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_2c6df4fe8f3c4e348ce031524b277cfa.pdf",
+              "status": 200,
+              "sha256": "33d1176ffcdb04bf2d4dfe5e4a6b3627f46ab6e35374608a02adbbc386f41978",
+              "bytes": 69664,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_2c6df4fe8f3c4e348ce031524b277cfa.pdf",
+              "status": 200,
+              "sha256": "33d1176ffcdb04bf2d4dfe5e4a6b3627f46ab6e35374608a02adbbc386f41978",
+              "bytes": 69664,
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sheetId": "G7-GRW-01",
+      "grade": 7,
+      "topicId": 6,
+      "editionId": "ms-20261115-grw-01-r1",
+      "nativePrefixProvenanceOnly": "G7-T61",
+      "label": "חזקות — גדילה והקטנה · PDF",
+      "isDefault": false,
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "ce0b362ddf06467f8d4212a9ffc79cb0",
+          "pdfSha256": "8904453c459e0b0c613c2ccaa14ede4b5d47d3ae74b943156c41e5e45160ecf3",
+          "sourceSha256": "a01117a2e84fd8fbbaa8d606b6fef57e820e446aaf9532cfc8a8e1df0d868e58",
+          "nativeExportSha256": "fc568746bccbdbeb01402e0feef9b9afaf6477e77572a3237c98bf93396f711b",
+          "worksheetId": "ms-g7-grw-01-a-r1",
+          "revision": 1,
+          "pages": 5,
+          "subitems": 18,
+          "downloadChecks": [
+            {
+              "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_ce0b362ddf06467f8d4212a9ffc79cb0.pdf",
+              "status": 200,
+              "sha256": "8904453c459e0b0c613c2ccaa14ede4b5d47d3ae74b943156c41e5e45160ecf3",
+              "bytes": 36134,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_ce0b362ddf06467f8d4212a9ffc79cb0.pdf",
+              "status": 200,
+              "sha256": "8904453c459e0b0c613c2ccaa14ede4b5d47d3ae74b943156c41e5e45160ecf3",
+              "bytes": 36134,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "08df4e0b868841d99006035c69da9577",
+          "pdfSha256": "3b485e37a3dc0cb2a9fb26c50b209593f18dd8eaa36b4ab505f380461316bf7f",
+          "sourceSha256": "e828edcb4bb6cca4ced94042a24b0aa3f3656632a8adf0809edc65cbaaa99bc7",
+          "nativeExportSha256": "d624ac684319b2751a556b7649b58e04b951ae0dc220850d9e0ac68042ade4f5",
+          "worksheetId": "ms-g7-grw-01-b-r1",
+          "revision": 1,
+          "pages": 5,
+          "subitems": 18,
+          "downloadChecks": [
+            {
+              "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_08df4e0b868841d99006035c69da9577.pdf",
+              "status": 200,
+              "sha256": "3b485e37a3dc0cb2a9fb26c50b209593f18dd8eaa36b4ab505f380461316bf7f",
+              "bytes": 35533,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_08df4e0b868841d99006035c69da9577.pdf",
+              "status": 200,
+              "sha256": "3b485e37a3dc0cb2a9fb26c50b209593f18dd8eaa36b4ab505f380461316bf7f",
+              "bytes": 35533,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "7ce52cd98765448d8698554323eb8376",
+          "pdfSha256": "957e3923ab6473a77db89f29689710ca7c543bd4e1c795a4ad0df69b6885a092",
+          "sourceSha256": "c47a2a486b9e17a6b1d5efb7d141e5a0b7c0437cedfaa154cb36fcb1b916a88c",
+          "nativeExportSha256": "89187c675b7393ce1b3f58778474546ad8ff4900f0d7a0e6284875dd5fa4e382",
+          "worksheetId": "ms-g7-grw-01-c-r1",
+          "revision": 1,
+          "pages": 5,
+          "subitems": 18,
+          "downloadChecks": [
+            {
+              "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_7ce52cd98765448d8698554323eb8376.pdf",
+              "status": 200,
+              "sha256": "957e3923ab6473a77db89f29689710ca7c543bd4e1c795a4ad0df69b6885a092",
+              "bytes": 35777,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_7ce52cd98765448d8698554323eb8376.pdf",
+              "status": 200,
+              "sha256": "957e3923ab6473a77db89f29689710ca7c543bd4e1c795a4ad0df69b6885a092",
+              "bytes": 35777,
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sheetId": "G9-CTM-01",
+      "grade": 9,
+      "topicId": 33,
+      "editionId": "ms-20261115-ctm-01-r1",
+      "nativePrefixProvenanceOnly": "G9-T56",
+      "label": "משולשים בחישוב — תוכנית מצומצמת · PDF",
+      "isDefault": false,
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "964e80fa1694483287eab8bbf1295210",
+          "pdfSha256": "f2de9a2487cfe0bc877c7b1415b3b813c54d823731fbc29f7efa94fb85b5f152",
+          "sourceSha256": "06d350e9271175fdde8204635a65e24d389ed61be3da806cbeaeb64942f58890",
+          "nativeExportSha256": "4278448c353636329d31fb3f702acc4128944deff5ca96164d26648e79acdafc",
+          "worksheetId": "ms-g9-ctm-01-a-r1",
+          "revision": 1,
+          "pages": 7,
+          "subitems": 24,
+          "downloadChecks": [
+            {
+              "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_964e80fa1694483287eab8bbf1295210.pdf",
+              "status": 200,
+              "sha256": "f2de9a2487cfe0bc877c7b1415b3b813c54d823731fbc29f7efa94fb85b5f152",
+              "bytes": 79268,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_964e80fa1694483287eab8bbf1295210.pdf",
+              "status": 200,
+              "sha256": "f2de9a2487cfe0bc877c7b1415b3b813c54d823731fbc29f7efa94fb85b5f152",
+              "bytes": 79268,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "75866ad396124dd184d4d86537811398",
+          "pdfSha256": "b78fe630a359d049f7d680984da36d18388900d66adcc10194cd2a17ce465cc5",
+          "sourceSha256": "a3fb5f6d79475716b81c32b7cbd4620c45bea9447a51a20aa1e35d8e89ad93dc",
+          "nativeExportSha256": "d2fb38823038b9ef4e8f93a3c57ca0ab333d65a2d60c8f8628d154c1953b486e",
+          "worksheetId": "ms-g9-ctm-01-b-r1",
+          "revision": 1,
+          "pages": 7,
+          "subitems": 24,
+          "downloadChecks": [
+            {
+              "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_75866ad396124dd184d4d86537811398.pdf",
+              "status": 200,
+              "sha256": "b78fe630a359d049f7d680984da36d18388900d66adcc10194cd2a17ce465cc5",
+              "bytes": 81662,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_75866ad396124dd184d4d86537811398.pdf",
+              "status": 200,
+              "sha256": "b78fe630a359d049f7d680984da36d18388900d66adcc10194cd2a17ce465cc5",
+              "bytes": 81662,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "3942feef94f2483b94a16f1bb8d9ae3c",
+          "pdfSha256": "3dc49e2e8fdb716111dda45d4634c44e1563a0678d3f5197caee159f11c7d938",
+          "sourceSha256": "b7fa7fe898d3f82d2bbd32cefd77eecec744d6dfce80adfa38524e5cee306b08",
+          "nativeExportSha256": "878cc15aead932beb320178f1824dc394f5ebe73500365e5b9b4eefaa36b9811",
+          "worksheetId": "ms-g9-ctm-01-c-r1",
+          "revision": 1,
+          "pages": 7,
+          "subitems": 24,
+          "downloadChecks": [
+            {
+              "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_3942feef94f2483b94a16f1bb8d9ae3c.pdf",
+              "status": 200,
+              "sha256": "3dc49e2e8fdb716111dda45d4634c44e1563a0678d3f5197caee159f11c7d938",
+              "bytes": 84923,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_3942feef94f2483b94a16f1bb8d9ae3c.pdf",
+              "status": 200,
+              "sha256": "3dc49e2e8fdb716111dda45d4634c44e1563a0678d3f5197caee159f11c7d938",
+              "bytes": 84923,
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sheetId": "G7-Q1G-01",
+      "grade": 7,
+      "topicId": 31,
+      "editionId": "ms-20261115-q1g-01-r1",
+      "nativePrefixProvenanceOnly": "G7-T62",
+      "label": "נקודות על גרף ברביע הראשון — קריאת גרפים שימושיים · PDF",
+      "isDefault": false,
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "c3bdf86fc4d2475fa04517ef0ff1a1f4",
+          "pdfSha256": "3e1d119e36f5f2f4519bad9fbc095f38bcc022ee8bb8e3bd70fe346a6b9ada21",
+          "sourceSha256": "2862f512a524568ffe329ae1441893cd34acd6f9d0b717c0739c6487fccffd3e",
+          "nativeExportSha256": "fc0f924ed53620d6491d8ca3e3e713b5ffadae60adb55a7ca49988427e10c100",
+          "worksheetId": "ms-g7-q1g-01-a-r1",
+          "revision": 1,
+          "pages": 7,
+          "subitems": 22,
+          "downloadChecks": [
+            {
+              "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_c3bdf86fc4d2475fa04517ef0ff1a1f4.pdf",
+              "status": 200,
+              "sha256": "3e1d119e36f5f2f4519bad9fbc095f38bcc022ee8bb8e3bd70fe346a6b9ada21",
+              "bytes": 69075,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_c3bdf86fc4d2475fa04517ef0ff1a1f4.pdf",
+              "status": 200,
+              "sha256": "3e1d119e36f5f2f4519bad9fbc095f38bcc022ee8bb8e3bd70fe346a6b9ada21",
+              "bytes": 69075,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "b3d98594ae154e26a90ec76d88d395c7",
+          "pdfSha256": "790011a680d911742d5770ebb22b454f33440d3fdd2a6ae12506ec8c7ae7f997",
+          "sourceSha256": "84b1822c3825305acb87c834abc2995a16183c5eaf00a60ed519f024e27c29d4",
+          "nativeExportSha256": "17cbd43c4daeb8185e90c5de63c1fbecd0b0715d34796d2021755c5e70d9dfc9",
+          "worksheetId": "ms-g7-q1g-01-b-r1",
+          "revision": 1,
+          "pages": 7,
+          "subitems": 20,
+          "downloadChecks": [
+            {
+              "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_b3d98594ae154e26a90ec76d88d395c7.pdf",
+              "status": 200,
+              "sha256": "790011a680d911742d5770ebb22b454f33440d3fdd2a6ae12506ec8c7ae7f997",
+              "bytes": 66744,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_b3d98594ae154e26a90ec76d88d395c7.pdf",
+              "status": 200,
+              "sha256": "790011a680d911742d5770ebb22b454f33440d3fdd2a6ae12506ec8c7ae7f997",
+              "bytes": 66744,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "17f612216a5c472c87fbf6537fca0d51",
+          "pdfSha256": "f681fe39487638fab8dc404b7466f58001e70c3521eb743019c6489e34063083",
+          "sourceSha256": "e4fb7038a5a0b2102857885d52bfd8d0a13080798b77d51eb98dd450204f029c",
+          "nativeExportSha256": "f9dd0d254082f214d507959cc54e83562be9457aff36d50a875e8446ab6c23e2",
+          "worksheetId": "ms-g7-q1g-01-c-r1",
+          "revision": 1,
+          "pages": 7,
+          "subitems": 19,
+          "downloadChecks": [
+            {
+              "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_17f612216a5c472c87fbf6537fca0d51.pdf",
+              "status": 200,
+              "sha256": "f681fe39487638fab8dc404b7466f58001e70c3521eb743019c6489e34063083",
+              "bytes": 68035,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_17f612216a5c472c87fbf6537fca0d51.pdf",
+              "status": 200,
+              "sha256": "f681fe39487638fab8dc404b7466f58001e70c3521eb743019c6489e34063083",
+              "bytes": 68035,
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

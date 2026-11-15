@@ -1,3 +1,11 @@
+## 2026-11-15 — seven additional student PDF editions (candidate)
+
+- ATQ7:19, APT7:45, PYT7:42, PYA7:43, GRW7:6, CTM9:33 and Q1G7:31:21PDFs,137pages,405parts. Existing defaults,973legacy links and28preceding editions are preserved.
+- Seven existing landings describe the exact practice scope. APT retains separate CTA46 then45; Q1G retains31 then21. CTM remains explicitly reduced-track; GRW is focused growth/shrink practice.
+- Exact reviewed PDF bytes were frozen, uploaded and downloaded from both media routes:42matching reads. Independent PDF quality is attributed to the frozen reviews, not repeated here. Details: `docs/next21-pdf-first-20261115.json`.
+- New editions open PDFs directly. No Word, native assets, teacher selection, learning activation, hints or database activation. Q1G private-key HOLD and all retained review notes remain.
+- This is a source candidate, not a publication claim. Build, tests, bundle measurement, independent review and desktop/mobile evidence are recorded in the PR package.
+
 ## 2026-11-15 — TRP / SIM9 / RSC / PER: twelve additional student PDFs (candidate)
 
 - Based on reviewed combined PR490; preserves all preceding editions, default PDFs, native/Ramzi, teacher and learning sources.
