@@ -7,11 +7,13 @@ import { join } from 'node:path';
 import { createHash } from 'node:crypto';
 import { EVIDENCE, EVIDENCE_SHA256, TARGET, LIVE, OLD, REPOSITORY, STEP,
   reconcilePr461, executionContext, assertAncestry } from './reconcile-pr461.mjs';
-import { readLiveDeployment, assertReleaseHistory } from './production-release.mjs';
+import { readLiveDeployment, assertReleaseHistory, readApprovedSha } from './production-release.mjs';
 
 const copy = value => structuredClone(value);
 const CONTROLLER = 'ab'.repeat(20), RUN = '50000000000';
 const OLD_CONTROLLER = '7e3884472144aa10509f9886fca425ee96eafd0c';
+const INCIDENT_WORKFLOW = new URL('./fixtures/publish-baseline-feb8029.yml', import.meta.url);
+const INCIDENT_WORKFLOW_SHA256 = 'e6fdfcfd2bdc3434a68e25ac255870bcbd9a62eceb20029c840e6bff81d9ed76';
 const url = run => `https://github.com/${REPOSITORY}/actions/runs/${run}`;
 function fixture() {
   const old = copy(EVIDENCE.expectedDeployment);
@@ -24,13 +26,16 @@ function fixture() {
     state.jobs.set(runId, [{ id: Number(runId) + 1, name: 'publish', status, run_attempt: 1, steps: [] }]);
   };
   addRun(RUN);
+  state.contents.set(`.github/workflows/publish-baseline.yml@${CONTROLLER}`, readFileSync(INCIDENT_WORKFLOW));
   const queued = ({ workflow = 'publish-baseline.yml', controller = OLD_CONTROLLER, jobStatus = 'queued', runStatus = 'in_progress' } = {}) => {
     const runId = '70000000000', publish = workflow === 'publish-baseline.yml';
     const run = { id: Number(runId), head_sha: controller, head_branch: 'main', path: `.github/workflows/${workflow}`,
       repository: { full_name: REPOSITORY }, event: publish ? 'push' : 'workflow_dispatch', status: runStatus, conclusion: null, run_attempt: 2 };
     state.runs.set(runId, run);
     state.jobs.set(runId, [{ id: Number(runId) + 1, name: publish ? 'publish' : 'reconcile', status: jobStatus, run_attempt: 2, run_id: Number(runId), steps: [] }]);
-    const source = readFileSync(new URL(publish && controller === OLD_CONTROLLER ? './fixtures/publish-baseline-7e388.yml' : `../workflows/${workflow}`, import.meta.url));
+    const source = readFileSync(publish
+      ? (controller === OLD_CONTROLLER ? new URL('./fixtures/publish-baseline-7e388.yml', import.meta.url) : INCIDENT_WORKFLOW)
+      : new URL(`../workflows/${workflow}`, import.meta.url));
     state.contents.set(`${run.path}@${controller}`, source);
     return { run, job: state.jobs.get(runId)[0], sourceKey: `${run.path}@${controller}` };
   };
@@ -293,8 +298,9 @@ test('execution context requires the exact Actions/main/repository/job/target/ru
   assert.throws(() => executionContext({ ...env, RELEASE_SHA: LIVE }));
   assert.throws(() => executionContext({ ...env, RELEASE_SHA: 'ccadcb0cbfe241ad500962e5f83d0cacdcbc37f1' }));
 });
-test('workflow uses the SAME publish lock, before unchanged begin, with read-only Actions permission', () => {
-  const workflow = readFileSync(new URL('../workflows/publish-baseline.yml', import.meta.url), 'utf8');
+test('historical incident workflow used the SAME publish lock, before unchanged begin, with read-only Actions permission', () => {
+  const workflow = readFileSync(INCIDENT_WORKFLOW, 'utf8');
+  assert.equal(createHash('sha256').update(workflow).digest('hex'), INCIDENT_WORKFLOW_SHA256);
   assert.equal((workflow.match(/group: wix-production/g) || []).length, 1);
   assert.match(workflow, /cancel-in-progress: false/); assert.match(workflow, /contents: read\n      actions: read\n      deployments: write/);
   const helper = workflow.indexOf('reconcile-pr461.mjs --write'), begin = workflow.indexOf('production-release.mjs begin');
@@ -304,4 +310,25 @@ test('workflow uses the SAME publish lock, before unchanged begin, with read-onl
   const ci = readFileSync(new URL('../workflows/release-guard-pr.yml', import.meta.url), 'utf8');
   assert.match(ci, /branches: \[main\]/); assert.doesNotMatch(ci, /\bpaths(?:-ignore)?:/);
   assert.match(ci, /node --test .*production-release\.test\.mjs .*reconcile-production\.test\.mjs .*reconcile-pr461\.test\.mjs/);
+});
+
+const ACTIVE_RELEASE_TARGET = 'b6f2c52e30a36e7808d49b6195f2c4e3384da92c';
+const COMPLETED_INCIDENT_COMMENTS = "# Merge only after PR #463 and Noam's approval of this pin and its one-time\n# PR #461 metadata reconciliation. The reconciliation runs under the publish lock.\n";
+const COMPLETED_INCIDENT_HOOK = "      - name: Reconcile the verified PR461 local publication under the release lock\n        # PR461 / target PR463 only. Remove this step in the separately approved\n        # controller PR for a future target after reconciliation; keep the guard/lock.\n        env:\n          GITHUB_TOKEN: ${{ github.token }}\n          SITE_DIR: ${{ github.workspace }}/site\n        run: node controller/.github/scripts/reconcile-pr461.mjs --write\n\n";
+
+test('current publisher removes only completed reconciliation and its Actions permission; guards and lock remain exact', () => {
+  const historical = readFileSync(INCIDENT_WORKFLOW, 'utf8');
+  const current = readFileSync(new URL('../workflows/publish-baseline.yml', import.meta.url), 'utf8');
+  assert.equal(readApprovedSha(current), ACTIVE_RELEASE_TARGET);
+  const expected = historical.replace(COMPLETED_INCIDENT_COMMENTS, '').replace(COMPLETED_INCIDENT_HOOK, '').replace('      actions: read\n', '')
+    .replace(`  RELEASE_SHA: ${TARGET}\n`, `  RELEASE_SHA: ${ACTIVE_RELEASE_TARGET}\n`);
+  assert.equal(current, expected);
+  assert.doesNotMatch(current, /reconcile-pr461|production-release\.mjs initialize/);
+});
+
+test('closed incident cannot authorize the new cleanup controller as a queued publisher', async () => {
+  const f = fixture(), q = f.queued({ controller: CONTROLLER });
+  f.state.contents.set(q.sourceKey, readFileSync(new URL('../workflows/publish-baseline.yml', import.meta.url)));
+  await assert.rejects(f.run({ write: true }), /one allowed target|exact reviewed/);
+  assert.equal(f.writes().length, 0);
 });

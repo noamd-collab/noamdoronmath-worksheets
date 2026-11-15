@@ -26,7 +26,8 @@ const digest = bytes => createHash('sha256').update(bytes).digest('hex');
 // Exact reviewed lock contracts, not a text search for a concurrency label.
 // The old 7e388 controller may already have a retry waiting for this job's lock.
 const OLD_PUBLISH_WORKFLOW = 'da7689feaa7915c65e9979a8703250113ea3a5668be7b9c5508e7c153f5dbed9';
-const CURRENT_PUBLISH_WORKFLOW = digest(readFileSync(new URL('../workflows/publish-baseline.yml', import.meta.url)));
+// The completed incident keeps its exact historical controller contract.
+const CURRENT_PUBLISH_WORKFLOW = 'e6fdfcfd2bdc3434a68e25ac255870bcbd9a62eceb20029c840e6bff81d9ed76';
 const RECONCILE_WORKFLOW = 'cf52733425781ef5179f68524236595994983b07563efa0ae78705e270eb3ffe';
 const GUARD_CODE = 'd632a389dae17449365fbf4d94c6c072716a9f11cc303358bab4fc6be1805e80';
 const RECONCILE_CODE = '1836a9c9a6b6f33b6bf189494d597ed838f98b751d727bf025538de98e1c7ee3';
