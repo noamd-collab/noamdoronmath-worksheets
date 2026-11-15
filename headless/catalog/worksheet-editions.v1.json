@@ -539,6 +539,48 @@
           "sourceSha256": "aee059511db361badb5b6a56a53a445f80d09b494ad31d6c6ce5da80079d539c"
         }
       ]
+    },
+    {
+      "grade": 7,
+      "topicId": 26,
+      "editionId": "ms-20261115-frq-01-r1",
+      "label": "טבלאות שכיחות ושכיחות יחסית — PDF",
+      "status": "published",
+      "isDefault": false,
+      "publicationMode": "pdf-only",
+      "nativePrefix": "G7-T88",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "941793a9b6614849bd5b7465c894ba87",
+          "pdfSha256": "b2aea9500e62220cd66322cb775b4db49b52234bbaa18a80680c257c33514a75",
+          "worksheetId": "ms-g7-frq-01-a-r1",
+          "revision": 1,
+          "nativeExportSha256": "afb1bb278a4d3ddf999e237ee467e8e4e554bf55944e5f11ef18853bcd853670",
+          "sourceSha256": "e89fb1933f5670a99acab2df044c527095369b627f14ed62fd09b49c9271361a"
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "6cdddaac6d8c472580f2be5b4bdd0323",
+          "pdfSha256": "5f411b0cb2ceaa8ddab056a3ce12ed20afa6fa4b152261372892a0d31601f351",
+          "worksheetId": "ms-g7-frq-01-b-r1",
+          "revision": 1,
+          "nativeExportSha256": "621b26a78b958b750610494d56ca1f5d782392705b0868c32b1d53933c7ea3d4",
+          "sourceSha256": "15e8467532b95f6a9f0b0be0b3be36f49be1485f22d49225eb0948e4ba595720"
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "659db2eb8dab43aaae976e9a669d503b",
+          "pdfSha256": "6ab22a1ee2a572ca44ac2c827ae2339b431b716ee4e534d1fff22ec78bc616f9",
+          "worksheetId": "ms-g7-frq-01-c-r1",
+          "revision": 1,
+          "nativeExportSha256": "6e7003641486b86681c439548dd210088aea37584c87f57e57fc9005d90e5963",
+          "sourceSha256": "0cdae0abf7028495ddcae052a4c06173db81c0d5eb23809094479f178631a130"
+        }
+      ]
     }
   ]
 }

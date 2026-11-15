@@ -192,6 +192,19 @@ describe('exact-design protected live-baseline boundaries', () => {
         // Strip only that reviewed addition, then require the complete prior
         // snapshot hash below, including the already released grade-three edition.
         const catalog = JSON.parse(content);
+        // The first RAT01 publication adds one exact base PDF-only topic and its
+        // search terms. Reverse only this addition; keep every historical hash.
+        const ratGrade = catalog.grades.find((g: any) => g.grade === 9);
+        const ratIndex = ratGrade.topics.findIndex((t: any) => t.id === 47);
+        assert.equal(ratGrade.topics.filter((t: any) => t.id === 47).length, 1);
+        assert.equal(ratGrade.topics[ratIndex - 1].id, 6);
+        assert.equal(ratGrade.topics[ratIndex + 1].id, 46);
+        assert.equal(sha256(JSON.stringify(ratGrade.topics[ratIndex])),
+          'df7b3dc4135a9296bcd868cf03b19b1be231d5f09b146d04792640f280ea2685', 'exact RAT01 base topic');
+        assert.equal(catalog.searchTerms['9']['47'],
+          'משוואות רציונליות שברים אלגבריים מכנה משתנה פירוק מכנים תחום הצבה קבילות פתרונות פסילת פתרון מכנה משותף');
+        ratGrade.topics.splice(ratIndex, 1);
+        delete catalog.searchTerms['9']['47'];
         const activation = readFirst567Activation();
         assert.deepEqual(catalog.ramziActivation, activation.ready, 'snapshot matches the real receipt bundle');
         if (activation.ready) {
@@ -231,6 +244,7 @@ describe('exact-design protected live-baseline boundaries', () => {
         const middleAdditions = [
           [7, 17, ['ms-20261113-trn-r1'], '3e3929a160636aabc2e27f8dedff16dbff4eda435b6c4155f50cb61134c5381c'],
           [7, 22, ['ms-20261115-alg-01-r1'], 'b22196453ef7444643d3b428208d9f76a5108c0fa4cdbf6640da4f413d8b0b76'],
+          [7, 26, ['ms-20261115-frq-01-r1'], 'e68a3fce9c1de1ae2385341ead023c96066a8f20a52d35f34f03f6120b457000'],
           [8, 14, ['ms-20261113-cyl-r1'], '3f476e3666dbb952773355bbb8b98d1a03d2ad3733cac819c0b210d0a792edbb'],
           [8, 15, ['ms-20261113-con-r1'], 'e3e8dfde45ca70dbf15c20a264cf34cb329d9700f9e361917da796e454a9cc3d'],
           [9, 7, ['ms-20261113-par-r1', 'ms-20261113-par-02-r1', 'ms-20261113-par-03-r1'], '659b7c7c0b509660b7ad814a9c99c41adab03a3b32036d1c0d4538e916273bf6'],

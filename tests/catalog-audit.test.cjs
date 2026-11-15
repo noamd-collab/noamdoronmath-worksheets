@@ -629,6 +629,33 @@ test('static editions are rebuilt while learning rows retain only deployed ident
     writtenItems.map(item => "('" + item.id + "')").join(',\n') + '\non conflict do nothing;\n');
 });
 
+test('explicit base PDF publication omits progress and viewer requirements without relaxing old manifests', async (t) => {
+  const pdfs = { a: id('pdf-only-a'), b: id('pdf-only-b'), c: id('pdf-only-c') };
+  const root = makeRepo(data => {
+    data.DATA[7].topics.push({ id: 3, ic: 'plus', g: 'alg', t: 'Rational equations', publicationMode: 'pdf-only' });
+    data.DATA[7].links[3] = pdfs;
+  });
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  const result = await auditOf(root);
+  assert.deepEqual(errors(result), []);
+  assert.equal(result.coverage.learningItems, 7);
+  const raw = loadIndexCatalog(path.join(root, P.index));
+  const registry = { version: 1, editions: [] };
+  assert.deepEqual(audit.learningOutputs(raw, registry).items, buildLearningCatalog(raw, registry));
+  assert.equal(audit.learningOutputs(raw, registry).seedText.includes('g7-t3-'), false);
+
+  fs.rmSync(path.join(root, P.manifests, PDFS.g7t1a + '.json'));
+  const missingOld = errors(await auditOf(root)).filter(finding => finding.code === 'MANIFEST_MISSING');
+  assert.deepEqual(missingOld.map(finding => finding.pdfId), [PDFS.g7t1a]);
+
+  // Missing a prefix alone does not exempt any middle-school PDF.
+  delete raw.DATA[7].topics.find(topic => topic.id === 3).publicationMode;
+  write(root, P.index, indexHtml(raw));
+  regenerate(root);
+  const unmarked = errors(await auditOf(root)).filter(finding => finding.code === 'MANIFEST_MISSING');
+  assert.deepEqual(new Set(unmarked.map(finding => finding.pdfId)), new Set([PDFS.g7t1a, ...Object.values(pdfs)]));
+});
+
 test('withdrawing a static edition exposes stale catalogs without changing learning copies or seed', async (t) => {
   const root = makeRepo(null, { version: 1, editions: [fixtureEdition()] });
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));

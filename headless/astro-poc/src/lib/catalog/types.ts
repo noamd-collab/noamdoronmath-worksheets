@@ -36,6 +36,8 @@ export interface CatalogTopic {
   icon: string;
   parent?: number;
   noamTopicId?: string;
+  /** First publication: files only, before teacher questions or progress integration. */
+  publicationMode?: 'pdf-only';
   levels: CatalogLevel[];
   routing: CatalogRouting;
   /** Published additions only; levels/routing above keep their legacy meaning. */
