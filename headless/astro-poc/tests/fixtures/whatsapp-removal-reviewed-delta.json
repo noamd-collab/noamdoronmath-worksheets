@@ -1,0 +1,42 @@
+{
+  "reason": "Noam, 2026-11-15: remove the WhatsApp group from the site (home card, footer link, home-page data and its type). Reversing these exact hunks restores the previously fenced files; no historical hash is replaced.",
+  "files": [
+    {
+      "file": "src/data/home-page.json",
+      "candidateSha256": "40b4ea3068463f0a395b861a48515b1092c55cbc87557ae7631e7d6b6c37417e",
+      "baselineSha256": "793470f3bdc94c5e1165490c26e5966441d4ebe006c95b482d6ca493ef496976",
+      "hunks": [
+        {
+          "before": "  },\n  \"whatsapp\": {\n    \"kicker\": \"הצטרפו למאות תלמידים שכבר מצליחים.\",\n    \"heading\": \"נפגשים גם בוואטסאפ\",\n    \"body\": \"הצטרפו לקבוצת הוואטסאפ של נועם דורון מתמטיקה, והישארו בקשר גם בין דפי העבודה.\",\n    \"ctaLabel\": \"להצטרפות לקבוצת הוואטסאפ\",\n    \"ctaHref\": \"https://chat.whatsapp.com/DOepmlK5bKxCBbbGMusLdF?mode=gi_t\",\n    \"note\": \"ההצטרפות לבחירתכם. כל דפי העבודה פתוחים גם בלי להצטרף.\",\n    \"qrAlt\": \"קוד QR להזמנה לקבוצת הוואטסאפ של נועם דורון מתמטיקה\",\n    \"qrSrc\": \"/brand/whatsapp-group-qr.png\",\n    \"qrCaption\": \"אפשר גם לסרוק ולהצטרף\"\n  },\n  \"footer\": {\n",
+          "after": "  },\n  \"footer\": {\n"
+        }
+      ]
+    },
+    {
+      "file": "public/learning.html",
+      "candidateSha256": "9ff11bb7fcab9ab4f083620a8bd3a997e2b8b942fd4aa3804b46e6a94d41ef0e",
+      "baselineSha256": "a35cc034de7792ed50d7b85038a2ec8573704f34c38b4409e26009b15a1df291",
+      "hunks": [
+        {
+          "before": "        <li><a class=\"exact-social\" href=\"https://www.facebook.com/profile.php?id=61593749281930\" target=\"_blank\" rel=\"noopener\" aria-label=\"פייסבוק של נועם דורון מתמטיקה\"><svg viewBox=\"0 0 24 24\" width=\"22\" height=\"22\" aria-hidden=\"true\" focusable=\"false\"><path fill=\"currentColor\" d=\"M14.2 20v-6.2h2.1l.3-2.4h-2.4V9.9c0-.7.2-1.2 1.2-1.2h1.3V6.6c-.2 0-1-.1-1.9-.1-1.9 0-3.2 1.2-3.2 3.3v1.6H9.4v2.4h2.2V20h2.6Z\"></path></svg></a></li>\n        <li><a class=\"exact-social\" href=\"https://chat.whatsapp.com/DOepmlK5bKxCBbbGMusLdF?mode=gi_t\" target=\"_blank\" rel=\"noopener\" aria-label=\"הצטרפות לקבוצת הוואטסאפ של נועם דורון מתמטיקה\"><svg viewBox=\"0 0 24 24\" width=\"22\" height=\"22\" aria-hidden=\"true\" focusable=\"false\"><path fill=\"currentColor\" d=\"M12 3.1A8.4 8.4 0 0 0 4.7 15.4L3.5 20.3l5-1.3A8.4 8.4 0 1 0 12 3.1Zm0 1.7a6.7 6.7 0 0 1 5.7 10.1 6.7 6.7 0 0 1-9.4 2l-.4-.2-2.6.7.7-2.5-.2-.4A6.7 6.7 0 0 1 12 4.8Zm3.7 9.6c-.2.5-1 .9-1.4 1-.4.1-.8.2-2.6-.5-2.2-.9-3.6-3.1-3.7-3.3-.1-.2-.9-1.2-.9-2.2s.6-1.6.8-1.8c.2-.2.4-.3.6-.3h.4c.1 0 .3 0 .4.3.2.4.6 1.4.6 1.5.1.1.1.3 0 .4l-.3.5c-.1.1-.2.3-.1.5.1.2.5.8 1.1 1.3.8.7 1.4.9 1.6 1 .2.1.3.1.5-.1l.6-.7c.1-.2.3-.2.5-.1.2.1 1.3.6 1.5.7.2.1.4.2.4.3 0 .1 0 .6-.2 1.1Z\"></path></svg></a></li>\n      </ul>\n",
+          "after": "        <li><a class=\"exact-social\" href=\"https://www.facebook.com/profile.php?id=61593749281930\" target=\"_blank\" rel=\"noopener\" aria-label=\"פייסבוק של נועם דורון מתמטיקה\"><svg viewBox=\"0 0 24 24\" width=\"22\" height=\"22\" aria-hidden=\"true\" focusable=\"false\"><path fill=\"currentColor\" d=\"M14.2 20v-6.2h2.1l.3-2.4h-2.4V9.9c0-.7.2-1.2 1.2-1.2h1.3V6.6c-.2 0-1-.1-1.9-.1-1.9 0-3.2 1.2-3.2 3.3v1.6H9.4v2.4h2.2V20h2.6Z\"></path></svg></a></li>\n      </ul>\n"
+        }
+      ]
+    },
+    {
+      "file": "src/lib/homePage.ts",
+      "candidateSha256": "65dc337ea24d8ace5f899769b8a719ac272b996d6ff333e7fe8f4e329f50bf73",
+      "baselineSha256": "26a884245860716a5b6dd3aa6189c9d07fcd99e21dc50fca8cf70116a3ba67fb",
+      "hunks": [
+        {
+          "before": "    items: { title: string; body: string; href: string }[];\n  };\n  whatsapp: {\n    kicker: string;\n    heading: string;\n    body: string;\n    ctaLabel: string;\n    ctaHref: string;\n    note: string;\n    qrAlt: string;\n    qrSrc: string;\n    qrCaption: string;\n  };\n",
+          "after": "    items: { title: string; body: string; href: string }[];\n  };\n"
+        },
+        {
+          "before": "    '/accessibilityadaptation',\n    home.whatsapp.ctaHref,\n    `mailto:${home.footer.email}`,\n",
+          "after": "    '/accessibilityadaptation',\n    `mailto:${home.footer.email}`,\n"
+        }
+      ]
+    }
+  ]
+}
