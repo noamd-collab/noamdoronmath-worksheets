@@ -91,6 +91,10 @@
 }
 .exact-topic .topic-page__cta-row { margin: 0; }
 .exact-topic .topic-page__cta-row + .topic-page__cta-row { margin-top: 18px; }
+/* Keep the perimeter downloads separate from the following area group. */
+.exact-topic[data-topic-slug="area-rectangle-perimeter-grade-7"] .exact-topic-copy > [data-topic-levels] + .topic-page__cta-row {
+  margin-block-start: 24px;
+}
 .exact-topic .topic-page__cta {
   display: inline-block;
   padding: 14px 26px;

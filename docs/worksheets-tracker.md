@@ -2,9 +2,10 @@
 
 - Based on reviewed combined PR490; preserves all preceding editions, default PDFs, native/Ramzi, teacher and learning sources.
 - Four nondefault PDF-only editions: TRP9:39, SIM9:19, RSC7:18, PER7:44. Twelve distinct PDFs,96pages,288parts. RSC/PER share the existing landing and preserve CTA44then18; no new slug or legacy replacement.
-- Original named reviewers assessed all72parts/24pages per package; this integration rechecks exact source/PDF pins and24actual media downloads. No claim of repeated full visual/math review. SIM9 exportK6/D8 and all density/Word/hint holds remain.
+- Attributed independent review reports assess 72 parts and 24 pages per package; this integration rechecks exact source/PDF pins and 24 actual media downloads. No claim of repeated full visual/math review. SIM9 exportK6/D8 and all density/Word/hint holds remain.
 - Three existing landing pages distinguish printable PDFs from existing Ramzi worksheets. No sourcePDF edits, new native/hint activation, database writes, model changes or publication.
 - Exact sanitized binding: `docs/next12-pdf-first-20261115.json`. Focused checks are recorded externally; this draft does not claim full CI/build/UI completion.
+- Preview review found the perimeter downloads touching the next area CTA. A selector limited to this landing adds 24px between the two groups; links, internal controls and PDF bytes are unchanged. Visual recheck is recorded separately.
 
 ## 15 November 2026 — Combined EXT/SML/AFR/SAO/WPC PDF candidate
 

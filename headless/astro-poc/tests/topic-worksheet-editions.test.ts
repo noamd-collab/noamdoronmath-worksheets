@@ -340,6 +340,12 @@ test('real next12 pages expose twelve PDFs and preserve shared perimeter44 then 
     const topics = slug === 'area-rectangle-perimeter-grade-7' ? [44, 18] : [additions[0].topicId];
     const ctas = [...hero.querySelectorAll('a[data-catalog-topic]')];
     assert.deepEqual(ctas.map(a => Number(a.getAttribute('data-catalog-topic'))), topics);
+    const separated = [...document.querySelectorAll('.exact-topic[data-topic-slug="area-rectangle-perimeter-grade-7"] .exact-topic-copy > [data-topic-levels] + .topic-page__cta-row')];
+    assert.equal(separated.length, topics.length === 2 ? 1 : 0);
+    if (separated.length) {
+      assert.equal(separated[0], ctas[1].parentElement, 'only the following area group receives separation');
+      assert.equal(separated[0].previousElementSibling?.id, 'topic-levels');
+    }
     for (const [index, topicId] of topics.entries()) {
       const addition = additions.find(a => a.topicId === topicId)!;
       const target = index === 0 ? '#topic-levels' : `#topic-levels-hero-${topicId}`;

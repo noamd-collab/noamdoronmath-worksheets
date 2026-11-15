@@ -23,7 +23,7 @@
   "rootMappingSpecSha256": "58300934d428af755d3455865f451ccf9c571dbfd9ca53843102e3da29cc7be2",
   "latestPerDeltaSha256": "1654bcbf1bcf90510d9093a8a27b34c46f303a8ded54d42a2adaa5603985368d",
   "review": {
-    "attribution": "Four original named independent reviewers assessed72parts/24pages each. Implementation independently verifies exact file pins and source mapping; no repeated full PDF visual/math review claimed.",
+    "attribution": "Attributed independent review reports assess 72 parts and 24 pages per package. Implementation independently verifies exact file pins and source mapping; no repeated full PDF visual/math review claimed.",
     "totalPages": 96,
     "subitems": 288,
     "nativeOrHintsAcceptance": false,
