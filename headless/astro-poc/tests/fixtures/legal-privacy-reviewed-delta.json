@@ -1,0 +1,62 @@
+{
+  "reason": "Noam's legal audit, 2026-11-15: the privacy policy moved to a standalone /privacy page (footer and learning links), learning.html gained an under-13 note, and the Ramzi chat gained a short AI privacy notice and attach-button hint. Reversing these exact hunks restores the previously fenced bytes; no historical hash is replaced.",
+  "files": [
+    {
+      "file": "src/data/home-page.json",
+      "candidateSha256": "793470f3bdc94c5e1165490c26e5966441d4ebe006c95b482d6ca493ef496976",
+      "baselineSha256": "af14191d863d623cfb95e65f28ca258663d4b8be01a1ef07d520c8b1e47ff73b",
+      "hunks": [
+        {
+          "before": "        \"note\": \"Combined accessibility + privacy page (verified).\"\n",
+          "after": "        \"note\": \"Accessibility statement only; privacy moved to /privacy (legal audit 2026-11-15).\"\n"
+        },
+        {
+          "before": "        \"href\": \"/accessibilityadaptation#privacy-policy\",\n        \"note\": \"Same combined page; stable anchor to H2 מדיניות פרטיות. Existence verified on production and preview — not a missing-policy gap.\"\n",
+          "after": "        \"href\": \"/privacy\",\n        \"note\": \"Standalone privacy policy page (legal audit 2026-11-15).\"\n"
+        },
+        {
+          "before": "    \"privacyNote\": \"אנו מכבדים את פרטיותכם. מדיניות הפרטיות והצהרת הנגישות מופיעות בעמוד הנגישות והפרטיות. לשאלות: noamd@noamdoronmath.co.il.\",\n",
+          "after": "    \"privacyNote\": \"אנו מכבדים את פרטיותכם. פרטים מלאים בעמוד מדיניות הפרטיות. לשאלות: noamd@noamdoronmath.co.il.\",\n"
+        }
+      ]
+    },
+    {
+      "file": "public/learning.html",
+      "candidateSha256": "a35cc034de7792ed50d7b85038a2ec8573704f34c38b4409e26009b15a1df291",
+      "baselineSha256": "3afddc9cf9aa12d5549d783ddf3d829d8153b6d0ce0631006703b590317de29b",
+      "hunks": [
+        {
+          "before": "<details class=\"nl-privacy\"><summary>איך נשמר המידע שלי?</summary><p>ללא כניסה: נשמרים במכשיר הזה רק מזהה דף, מצב עבודה ומועד העדכון. מחיקת נתוני הדפדפן מסירה את הסימונים המקומיים.</p><p>עם כניסה באמצעות Google: נוצר חשבון למידה באמצעות שם, כתובת דוא״ל ומזהה חשבון. סימוני העבודה נשמרים בחשבון לצורך המשך ממכשירים אחרים. אין צורך בגישה לתיבת הדואר, לקבצי Drive או לתשובות בכתב יד. הסימונים אינם ציונים ואינם משותפים אוטומטית עם מורים או הורים.</p><p>אפשר לייצא ולמחוק את סימוני ההתקדמות באמצעות הכפתורים בעמוד. לבקשת מחיקת חשבון למידה: <a href=\"mailto:noamd@noamdoronmath.co.il\">noamd@noamdoronmath.co.il</a>. <a href=\"/accessibilityadaptation\">מדיניות האתר</a>.</p></details>\n",
+          "after": "<details class=\"nl-privacy\"><summary>איך נשמר המידע שלי?</summary><p>ללא כניסה: נשמרים במכשיר הזה רק מזהה דף, מצב עבודה ומועד העדכון. מחיקת נתוני הדפדפן מסירה את הסימונים המקומיים.</p><p>עם כניסה באמצעות Google: נוצר חשבון למידה באמצעות שם, כתובת דוא״ל ומזהה חשבון. סימוני העבודה נשמרים בחשבון לצורך המשך ממכשירים אחרים. אין צורך בגישה לתיבת הדואר, לקבצי Drive או לתשובות בכתב יד. הסימונים אינם ציונים ואינם משותפים אוטומטית עם מורים או הורים.</p><p>אפשר לייצא ולמחוק את סימוני ההתקדמות באמצעות הכפתורים בעמוד. לבקשת מחיקת חשבון למידה: <a href=\"mailto:noamd@noamdoronmath.co.il\">noamd@noamdoronmath.co.il</a>. <a href=\"/privacy\">מדיניות הפרטיות</a>.</p><p>מתחת לגיל 13? מתחברים רק בליווי ובהסכמה של הורה. אפשר תמיד ללמוד גם בלי להתחבר, וההתקדמות תישמר רק במכשיר הזה.</p></details>\n"
+        },
+        {
+          "before": "        <a href=\"/accessibilityadaptation#privacy-policy\">מדיניות פרטיות</a>\n",
+          "after": "        <a href=\"/privacy\">מדיניות פרטיות</a>\n"
+        }
+      ]
+    },
+    {
+      "file": "public/worksheet-viewer-noam.html",
+      "candidateSha256": "6c31d98881918532cc32ce38cf82a2602dad5b817abbad99760235533434e183",
+      "baselineSha256": "d43cc914c23ec0c436d0ee774d810429199c7c079393a90cae3f4b7c16b75f73",
+      "hunks": [
+        {
+          "before": ".noam-compose-help{margin:4px 2px 0;color:var(--muted);font-size:12px}\n",
+          "after": ".noam-compose-help{margin:4px 2px 0;color:var(--muted);font-size:12px}\n.noam-privacy-note{margin:2px 2px 0;color:#3d4870;font-size:12px;line-height:1.35}\n.noam-privacy-note a{display:inline-flex;align-items:center;min-height:44px;vertical-align:middle;color:inherit;font-weight:700;text-decoration:underline}\n"
+        },
+        {
+          "before": ".exact-viewer .exact-compose .noam-compose-help{margin:0;padding:0 12px 8px;font-size:12px}\n",
+          "after": ".exact-viewer .exact-compose .noam-compose-help{margin:0;padding:0 12px 8px;font-size:12px}\n.exact-viewer .exact-compose .noam-privacy-note{margin:0;padding:0 12px 2px}\n"
+        },
+        {
+          "before": "          '<button type=\"button\" class=\"noam-attach-button\" id=\"noamAttachButton\" aria-label=\"צירוף צילום או קובץ\" title=\"צירוף צילום או קובץ\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M8.5 12.5 15 6a3.5 3.5 0 0 1 5 5l-8.5 8.5a5 5 0 0 1-7-7L13 4\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></button>' +\n",
+          "after": "          '<button type=\"button\" class=\"noam-attach-button\" id=\"noamAttachButton\" aria-label=\"צירוף צילום או קובץ. מצלמים רק את התרגיל, בלי שם, בלי פנים ובלי פרטים אישיים\" title=\"מצלמים רק את התרגיל, בלי שם, בלי פנים ובלי פרטים אישיים. הקובץ נשלח לעיבוד אצל ספק AI\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M8.5 12.5 15 6a3.5 3.5 0 0 1 5 5l-8.5 8.5a5 5 0 0 1-7-7L13 4\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></button>' +\n"
+        },
+        {
+          "before": "      '<div class=\"noam-compose-help\" id=\"noamComposeHelp\"><span dir=\"ltr\">Enter</span> לשליחה · <span dir=\"ltr\">Shift+Enter</span> לשורה חדשה</div>' +\n",
+          "after": "      '<div class=\"noam-compose-help\" id=\"noamComposeHelp\"><span dir=\"ltr\">Enter</span> לשליחה · <span dir=\"ltr\">Shift+Enter</span> לשורה חדשה</div>' +\n      '<p class=\"noam-privacy-note\" id=\"noamPrivacyNote\" data-ai-privacy-note>רמזי הוא בינה מלאכותית ועלול לטעות. ההודעות והקבצים נשלחים לספק AI חיצוני, אז שולחים רק את התרגיל, בלי פרטים אישיים. <a href=\"/privacy#ai\" target=\"_blank\" rel=\"noopener\">מה קורה למידע?</a></p>' +\n"
+        }
+      ]
+    }
+  ]
+}
