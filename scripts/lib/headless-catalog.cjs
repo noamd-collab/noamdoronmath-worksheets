@@ -733,7 +733,7 @@ function exportCatalog(options) {
   const activationEvidence = Object.hasOwn(opts, 'ramziActivation') ? opts.ramziActivation :
     loadRamziActivationEvidence(catalogDir, path.join(path.dirname(path.resolve(indexPath)), 'headless/astro-poc/public'));
   validateRamziActivation(registry, activationEvidence);
-  const catalog = mergeWorksheetEditions(buildCatalog(raw), registry, activationEvidence?.ready);
+  const catalog = mergeWorksheetEditions(buildCatalog(raw), registry, activationEvidence?.ready, activationEvidence?.hintCorrection);
   const validation = validateCatalog(catalog, raw);
   const text = stableStringify(catalog);
   const hash = crypto.createHash('sha256').update(text).digest('hex');

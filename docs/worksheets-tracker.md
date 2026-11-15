@@ -1,3 +1,9 @@
+## 2026-11-15 — Passive compatibility for 15 reviewed first567 hint corrections
+
+- Prepare an optional, source-pinned correction evidence overlay for 15 subitems / 45 hints across five existing worksheet levels. The selected corrections passed independent semantic review and Root acceptance; the remaining 552 subitems are preserved, not newly certified as a whole.
+- Preserve every v1 readiness/receipt byte, PDF, native source, manifest and learning identity. Without a correction file the generated outputs are byte-identical. Shared build/SSR checks reject out-of-scope source changes and require exact before/after hint hashes, the original approval pins and a separately verified database readback.
+- Passive code only: no correction file, database write, import, activation or publication is included. Actual CAS, rollback, readback and subsequent evidence publication remain separate. See [correction evidence contract](first567-hint-correction-evidence.md).
+
 ## 2026-11-15 — Temporary pause of drawing-request buttons
 
 - Hide the main drawing-request button and message-level request/retry controls in both viewer mirrors, including restored conversations. Preserve enlargement of existing source diagrams, original question graphics and textual hints.
@@ -717,3 +723,8 @@ Checks and publication evidence: `docs/teacher-answer-word-20261104.md`.
 - בבדיקה חיה לאחר פרסום PR #463, מעבר מסעיף א׳ לסעיף ד׳ בדף מקבילית ברמה ב׳ הפעיל לולאת עדכונים בכפתור הדיווח. הכפתור מעדכן כעת את מצב ההסתרה רק כשהמצב משתנה, ולכן המעבר יכול להסתיים והרמזים מתאפסים לסעיף החדש.
 - בדיקת הרגרסיה מפעילה MutationObserver אמיתי, משחזרת את הכשל בקוד הקודם ובודקת התכנסות במעבר סעיף ושימור פעולת הדיווח. המסלול המקומי נבדק במחשב ובטלפון עם איור המקור, מיקוד הזוויות DBC/ABD והגדלה.
 - השינוי אינו משנה דפי PDF, תוכן רמזים, מזהי סעיפים או מדיניות שרטוטים. פרסום התיקון והבדיקה החיה שלו דורשים אישור נפרד ל־PR ולגרסת הפרסום.
+
+
+### First567 correction evidence v2 — passive packing
+
+Moved the exact 15-row source/old/new hash proof to a required content-addressed build-only file and fixed scope module. Public record/readback and SSR retain the pinned scope digest, 15/45 counts and all baseline/review/payload/readback pins. No applied receipt or DB update is included. Focused tamper, regeneration and loader checks cover the split; final build budget is recorded in the private handoff.

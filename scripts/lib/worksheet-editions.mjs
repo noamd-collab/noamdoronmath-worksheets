@@ -1,4 +1,5 @@
 'use strict';
+import { validateHintCorrection } from './worksheet-hint-correction.mjs';
 // Self-contained pure overlay for Node builds and Vite SSR; one readiness implementation.
 const validateRamziReadiness = (() => {
 const SHA=/^[0-9a-f]{64}$(?![\s\S])/;
@@ -55,13 +56,15 @@ function worksheetLearningId(grade, topicId, levelKey, editionId = 'legacy') {
   return `g${grade}-t${topicId}-${levelKey}` + (editionId === 'legacy' ? '' : `-e-${editionId}`);
 }
 
-function mergeWorksheetEditions(catalog, registry, readiness) {
+function mergeWorksheetEditions(catalog, registry, readiness, hintCorrection) {
   keys(registry, ['version', 'editions'], 'registry');
   requireValue(registry.version === 1 && Array.isArray(registry.editions), 'unsupported registry');
   const ramzi = validateRamziReadiness(registry, readiness);
+  const correction = validateHintCorrection(readiness, hintCorrection);
+  if (correction) for (const [key, unit] of ramzi) ramzi.set(key, { ...unit, ...correction });
   // Withdrawal must also remove stale public readiness from refreshed snapshots.
-  if (Object.hasOwn(catalog, 'ramziActivation')) {
-    const { ramziActivation, ...withoutReadiness } = catalog; catalog = withoutReadiness;
+  if (Object.hasOwn(catalog, 'ramziActivation') || Object.hasOwn(catalog, 'ramziHintCorrection')) {
+    const { ramziActivation, ramziHintCorrection, ...withoutReadiness } = catalog; catalog = withoutReadiness;
   }
   // A refreshed snapshot may already contain an overlay. Rebuild it from the
   // registry so a withdrawn publication cannot survive in a stale snapshot.
@@ -146,7 +149,7 @@ function mergeWorksheetEditions(catalog, registry, readiness) {
     published.set(key, entry);
   }
   if (!published.size) return catalog;
-  return { ...catalog, ...(readiness ? { ramziActivation: readiness } : {}), grades: catalog.grades.map(g => ({ ...g, topics: g.topics.map(t => {
+  return { ...catalog, ...(readiness ? { ramziActivation: readiness } : {}), ...(correction ? { ramziHintCorrection: hintCorrection } : {}), grades: catalog.grades.map(g => ({ ...g, topics: g.topics.map(t => {
     const extra = published.get(`${g.grade}:${t.id}`);
     return extra ? { ...t, ...extra } : t;
   }) })) };
