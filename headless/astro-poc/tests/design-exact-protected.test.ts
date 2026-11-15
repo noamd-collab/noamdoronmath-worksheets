@@ -79,6 +79,14 @@ function beforeReportObserverFix(content: string): string {
 }
 
 function beforeActivation(file: string, content: string): string {
+  if (file === 'src/lib/catalog/loadCatalog.ts') {
+    // Reverse only the optional correction argument, then retain the complete
+    // previous activation and historical file hashes below.
+    const previous = '  return mergeWorksheetEditions(data, editionRegistry, data.ramziActivation) as CatalogV1;';
+    const current = '  return mergeWorksheetEditions(data, editionRegistry, data.ramziActivation, data.ramziHintCorrection) as CatalogV1;';
+    assert.equal(content.split(current).length, 2, 'one exact optional correction argument');
+    content = content.replace(current, previous);
+  }
   if (file === 'public/worksheet-viewer-noam.html') {
     content = beforeReportObserverFix(content);
     assert.equal(sha256(content), '054e601e3aa5e653419f625d3d53c13fde31f47e0e1ed696e8334e5929605f7e', 'exact public drawing policy candidate');
@@ -94,6 +102,13 @@ function beforeActivation(file: string, content: string): string {
   assert.equal(sha256(content), delta.baselineSha256, file + ' unchanged bytes outside activation');
   return content;
 }
+
+it('hint-correction loader reversal preserves all earlier exact fences', () => {
+  const file = 'src/lib/catalog/loadCatalog.ts', current = read(file);
+  assert.doesNotThrow(() => beforeActivation(file, current));
+  assert.throws(() => beforeActivation(file, current.replace('data.ramziHintCorrection', 'data.unreviewedCorrection')));
+  assert.throws(() => beforeActivation(file, current + '\n'));
+});
 
 const protectedFiles: Record<string, string> = {
   // Optional server secrets QWEN_API_KEY and NOAM_RECAPTCHA_SECRET_KEY were
@@ -194,8 +209,11 @@ describe('exact-design protected live-baseline boundaries', () => {
         const catalog = JSON.parse(content);
         const activation = readFirst567Activation();
         assert.deepEqual(catalog.ramziActivation, activation.ready, 'snapshot matches the real receipt bundle');
+        assert.deepEqual(catalog.ramziHintCorrection, activation.hintCorrection, 'optional correction matches the verified receipt bundle');
         if (activation.ready) {
           delete catalog.ramziActivation;
+          // Strip only the correction already verified against its real readback.
+          delete catalog.ramziHintCorrection;
           for (const grade of catalog.grades) for (const topic of grade.topics) for (const edition of topic.editions || []) {
             const readyLevels = edition.levels.filter((level: any) => activation.ramzi.has(edition.editionId + ':' + level.key));
             if (!readyLevels.length) continue;

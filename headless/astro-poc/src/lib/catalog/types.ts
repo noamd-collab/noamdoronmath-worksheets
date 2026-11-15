@@ -98,6 +98,8 @@ export interface CatalogGrade {
 export interface CatalogV1 {
   /** Build-verified, public-only activation proof summary; revalidated against registry at load. */
   ramziActivation?: unknown;
+  /** Optional applied correction evidence; the original activation remains historical and immutable. */
+  ramziHintCorrection?: unknown;
   contractVersion: number;
   sourceOfTruth: { path: string; authoritative: boolean; note?: string };
   config: {

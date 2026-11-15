@@ -3,6 +3,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
+const { validateHintCorrection, hintCorrectionScope, SOURCE_BINDING_FIELDS } = require('./worksheet-hint-correction.mjs');
 const SHA = /^[0-9a-f]{64}$(?![\s\S])/;
 const COMMIT = /^[0-9a-f]{40}$(?![\s\S])/;
 const REVIEW = '3a2438b4076088398e0fb5b167051eb1d57b7a2c1911fcca427abcc35348bd50';
@@ -38,7 +39,7 @@ function noPrivateValues(value) {
 function sameFields(a,b,fields,label) { for (const f of fields) must(a[f] === b[f], label + ' ' + f + ' mismatch'); }
 function validateRamziActivation(registry, bundle) {
   if (bundle === undefined) return new Map();
-  object(bundle, ['ready','receipts','manifests','nativeExports'], 'evidence bundle');
+  object(bundle, ['ready','receipts','manifests','nativeExports','hintCorrection'], 'evidence bundle', ['ready','receipts','manifests','nativeExports']);
   const r = bundle.ready;
   object(r, ['schema','status','finalManifestsPublished','contentReviewedHead','deployedCommit','releaseReceiptSha256',
     'itemCount','hintCount','hintReviewSha256','payloadSha256',...Object.keys(RECEIPTS),'units'], 'ready');
@@ -101,13 +102,31 @@ function validateRamziActivation(registry, bundle) {
       must(Array.isArray(receipt.learningIds) && JSON.stringify([...receipt.learningIds].sort())===JSON.stringify(ids),'learning ID readback');
     }
   }
+  const correction = validateHintCorrection(r, bundle.hintCorrection);
+  if (correction) {
+    const scope = hintCorrectionScope();
+    must(hash(JSON.stringify(bundle.hintCorrection.readback, null, 2) + '\n') ===
+      bundle.hintCorrection.record.readbackReceiptSha256, 'correction readback content hash');
+    must(hash(JSON.stringify(r)) === scope.pins.baselineReadyObjectSha256, 'correction baseline changed');
+    for (const row of scope.rows) {
+      const matches = r.units.flatMap(u => JSON.parse(bundle.manifests[u.pdfId]).exercises
+        .filter(e => u.editionId === row.editionId && e.id === row.exerciseId).map(e => ({ u, e })));
+      must(matches.length === 1, 'correction exact source mapping');
+      const { u, e } = matches[0];
+      const binding = { edition_id: u.editionId, exercise_id: e.id, source_pdf_hash: u.pdfId, source_pdf_sha256: u.pdfSha256,
+        canonical_source_sha256: u.canonicalSourceSha256, canonical_question_sha256: e.canonicalQuestionSha256,
+        canonical_item_id: e.canonicalItemId, source_exercise_sha256: e.sourceExerciseSha256 };
+      must(hash(JSON.stringify(SOURCE_BINDING_FIELDS.map(f => binding[f]))) === row.sourceBindingSha256, 'correction frozen source binding');
+    }
+  }
   return new Map(r.units.map(u=>[key(u),{status:'ready',manifestSha256:u.manifestSha256,nativeExportSha256:u.nativeExportSha256,
     sourceNativeExportSha256:u.sourceNativeExportSha256,canonicalSourceSha256:u.canonicalSourceSha256,itemCount:u.itemCount,hintCount:u.hintCount,
-    payloadSha256:r.payloadSha256,verifiedDbReadbackReceiptSha256:r.verifiedDbReadbackReceiptSha256}]));
+    payloadSha256:r.payloadSha256,verifiedDbReadbackReceiptSha256:r.verifiedDbReadbackReceiptSha256, ...(correction || {})}]));
 }
 function loadRamziActivationEvidence(catalogDir, publicDir) {
   const readyPath=path.join(catalogDir,'worksheet-ramzi-ready.v1.json');
-  if(!fs.existsSync(readyPath)) return undefined;
+  const correctionPath=path.join(catalogDir,'worksheet-ramzi-hint-correction.v1.json');
+  if(!fs.existsSync(readyPath)) { must(!fs.existsSync(correctionPath), 'correction without baseline'); return undefined; }
   const ready=JSON.parse(fs.readFileSync(readyPath,'utf8'));
   // Check path-bearing fields before reading anything outside fixed directories.
   must(Array.isArray(ready.units) && ready.units.length === 12,'ready units');
@@ -121,6 +140,16 @@ function loadRamziActivationEvidence(catalogDir, publicDir) {
     manifests[u.pdfId]=fs.readFileSync(path.join(publicDir,'noam-ai/manifests',u.pdfId+'.json'));
     nativeExports[u.prefix+'/'+u.level]=fs.readFileSync(path.join(publicDir,'noam-ai/native',u.prefix,u.level,'noam-ai.json'));
   }
-  return {ready,receipts,manifests,nativeExports};
+  let hintCorrection;
+  if (fs.existsSync(correctionPath)) {
+    must(hash(fs.readFileSync(readyPath)) === hintCorrectionScope().pins.baselineReadySha256, 'correction baseline bytes');
+    const record = JSON.parse(fs.readFileSync(correctionPath, 'utf8'));
+    must(typeof record.readbackReceiptSha256 === 'string' && SHA.test(record.readbackReceiptSha256), 'correction receipt hash path');
+    const bytes = fs.readFileSync(path.join(catalogDir, 'ramzi-evidence', record.readbackReceiptSha256 + '.json'));
+    const readback = parsed(bytes, record.readbackReceiptSha256, 'correction readback');
+    hintCorrection = { record, readback };
+    validateHintCorrection(ready, hintCorrection);
+  }
+  return {ready,receipts,manifests,nativeExports, ...(hintCorrection ? { hintCorrection } : {})};
 }
 module.exports={validateRamziActivation,loadRamziActivationEvidence};

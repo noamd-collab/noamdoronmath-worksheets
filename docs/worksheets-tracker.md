@@ -1,3 +1,9 @@
+## 2026-11-15 — Passive compatibility for 15 reviewed first567 hint corrections
+
+- Prepare an optional, source-pinned correction evidence overlay for 15 subitems / 45 hints across five existing worksheet levels. The selected corrections passed independent semantic review and Root acceptance; the remaining 552 subitems are preserved, not newly certified as a whole.
+- Preserve every v1 readiness/receipt byte, PDF, native source, manifest and learning identity. Without a correction file the generated outputs are byte-identical. Shared build/SSR checks reject out-of-scope source changes and require exact before/after hint hashes, the original approval pins and a separately verified database readback.
+- Passive code only: no correction file, database write, import, activation or publication is included. Actual CAS, rollback, readback and subsequent evidence publication remain separate. See [correction evidence contract](first567-hint-correction-evidence.md).
+
 ## 2026-11-15 — Three grade-seven variable and expression-language PDFs
 
 - Add G7-ALG-01 / G7-T87 as an additional PDF-only edition of site topic 7/22, visible on the existing algebraic-expressions landing page and worksheet catalog. Keep the old PDFs and default unchanged; this focused opening unit does not replace substitution, patterns or the whole algebra sequence.
