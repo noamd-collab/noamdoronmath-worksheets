@@ -22,6 +22,18 @@ export const PDF_ONLY_TOPIC_COPY = {
 } as const;
 
 export function restoreBeforePdfCopy<T>(slug: string, page: T): T {
+  // New PDF editions added real content on this date; retain old live captures.
+  const previousUpdates: Record<string, string> = {
+    'rectangle-grade-9': 'נועם דורון מתמטיקה · עודכן 12.9.2026',
+    'relative-frequency-experiments-grade-7': 'נועם דורון מתמטיקה · עודכן 10.11.2026',
+  };
+  const previousUpdate = previousUpdates[slug];
+  if (previousUpdate) {
+    const restored: any = structuredClone(page);
+    assert.equal(restored.updatedLine, 'נועם דורון מתמטיקה · עודכן 15.11.2026');
+    restored.updatedLine = previousUpdate;
+    return restored;
+  }
   const change = PDF_ONLY_TOPIC_COPY[slug as keyof typeof PDF_ONLY_TOPIC_COPY];
   if (!change) return page;
   const restored: any = structuredClone(page);
