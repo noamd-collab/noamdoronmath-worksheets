@@ -26,6 +26,7 @@ export function restoreBeforePdfCopy<T>(slug: string, page: T): T {
   const previousUpdates: Record<string, string> = {
     'rectangle-grade-9': 'נועם דורון מתמטיקה · עודכן 12.9.2026',
     'relative-frequency-experiments-grade-7': 'נועם דורון מתמטיקה · עודכן 10.11.2026',
+    'parallelogram-grade-9': 'נועם דורון מתמטיקה · עודכן 16.9.2026',
   };
   const previousUpdate = previousUpdates[slug];
   if (previousUpdate) {
