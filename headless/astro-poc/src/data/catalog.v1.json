@@ -7414,7 +7414,68 @@
               "pb": "41840861c0a4494f94f3a54fbd4d9943",
               "pc": "90d77da84da74766aa7d844e5fd3faaa"
             }
-          }
+          },
+          "defaultEditionId": "legacy",
+          "editions": [
+            {
+              "editionId": "ms-20261115-alg-01-r1",
+              "label": "משתנים וביטויים אלגבריים — שפת הביטויים · PDF",
+              "levels": [
+                {
+                  "key": "a",
+                  "label": "רמה א׳",
+                  "pdfId": "b376976911234b758027329c9ea05cbf",
+                  "labelSource": "edition",
+                  "viewerLevel": "A",
+                  "learningId": "g7-t22-a-e-ms-20261115-alg-01-r1",
+                  "nativeExportSha256": "6368fcc065859f822b490c3275edfb2ef780840b23f5ad8dc7265d6681f3ed03",
+                  "pdfSha256": "a54c97a44fd1317d6b10497252e22c41884573bcd4ccb864ab000f6675eefe2e",
+                  "revision": 1,
+                  "sourceSha256": "b0197b7a16ff436f11b07ccd534ea5f6ade97e10db96950f30a1d1b0f2776712",
+                  "worksheetId": "ms-g7-alg-01-a-r1"
+                },
+                {
+                  "key": "b",
+                  "label": "רמה ב׳",
+                  "pdfId": "b6a76fb3eccd477b9788958efefbded2",
+                  "labelSource": "edition",
+                  "viewerLevel": "B",
+                  "learningId": "g7-t22-b-e-ms-20261115-alg-01-r1",
+                  "nativeExportSha256": "bb565c626d77abaf5fd89d9b6c0762c16ff5e245735f523eeaf361448aa07765",
+                  "pdfSha256": "30a29943c91cc3e8571a76692f00e7d870164defded7ad33e508626412a87598",
+                  "revision": 1,
+                  "sourceSha256": "58d7c70a4e8432ab3d85f50385814c72da04e0887b86126d98f8021dfe0e982a",
+                  "worksheetId": "ms-g7-alg-01-b-r1"
+                },
+                {
+                  "key": "c",
+                  "label": "מצוינות",
+                  "pdfId": "0fe476657595498194b93cdc46e39e5f",
+                  "labelSource": "edition",
+                  "viewerLevel": "E",
+                  "learningId": "g7-t22-c-e-ms-20261115-alg-01-r1",
+                  "nativeExportSha256": "400122554c711f4170f9ae3ef52c43625ba911cbb70eba9bd2e3bfb2171bcada",
+                  "pdfSha256": "fe5923fe5f82985dbde4090063335c8c19e05467ab083388a35ab4105dc75540",
+                  "revision": 1,
+                  "sourceSha256": "aee059511db361badb5b6a56a53a445f80d09b494ad31d6c6ce5da80079d539c",
+                  "worksheetId": "ms-g7-alg-01-c-r1"
+                }
+              ],
+              "publicationMode": "pdf-only",
+              "routing": {
+                "resolvedNoamPrefix": "G7-T87",
+                "aiHintShown": false,
+                "usesViewer": false,
+                "viewerPath": "worksheet-viewer-noam.html",
+                "siblingPdfQuery": {
+                  "pa": "b376976911234b758027329c9ea05cbf",
+                  "pb": "b6a76fb3eccd477b9788958efefbded2",
+                  "pc": "0fe476657595498194b93cdc46e39e5f"
+                }
+              },
+              "status": "published"
+            }
+          ]
         },
         {
           "id": 23,

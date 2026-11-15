@@ -169,6 +169,25 @@ function levelsForTopicId(catTopicId: number | null | undefined, backHref?: stri
 
 const topicEditions = editionsForTopicId(topicId, page.catalogCta?.href);
 const topicLevels = topicEditions[0]?.levels || [];
+// A hero may offer several topics; each CTA must reach its own downloads.
+const heroEditionGroups: Array<{
+  topicId: number | null;
+  targetId: string;
+  firstUnit: number;
+  editions: ReturnType<typeof editionsForTopicId>;
+}> = [];
+heroUnits.forEach((unit, index) => {
+  if (unit.kind !== 'cta') return;
+  const id = unit.item.catalogTopicId ?? topicId;
+  if (heroEditionGroups.some(group => group.topicId === id)) return;
+  heroEditionGroups.push({ topicId: id, firstUnit: index,
+    targetId: id === topicId ? 'topic-levels' : `topic-levels-hero-${id}`,
+    editions: editionsForTopicId(id, unit.item.href) });
+});
+if (!heroEditionGroups.length) {
+  heroEditionGroups.push({ topicId, targetId: 'topic-levels', firstUnit: -1, editions: topicEditions });
+}
+const multipleHeroTopics = heroEditionGroups.length > 1;
 
 function ctaTargetHref(cta: { label: string; href: string; catalogTopicId?: number | null }, targetId: string) {
   const levels = levelsForTopicId(cta.catalogTopicId ?? topicId, cta.href);
@@ -281,13 +300,15 @@ function faqHeadingId(groupIndex: number) {
             {slug === 'kite-grade-9' && <KiteInteractive />}
           </div>
           <div class="exact-topic-copy">
-            {heroUnits.map((unit) => {
+            {heroUnits.map((unit, index) => {
               if (unit.kind === 'intro') return (
                 <p class="topic-page__intro" data-flow="paragraph" data-role="intro"><TopicInline text={unit.text} /></p>
               );
               if (unit.kind === 'cta') {
-                const directHref = ctaTargetHref(unit.item, 'topic-levels');
+                const group = heroEditionGroups.find(group => group.topicId === (unit.item.catalogTopicId ?? topicId))!;
+                const directHref = ctaTargetHref(unit.item, group.targetId);
                 return (
+                  <Fragment>
                   <p class="topic-page__cta-row" data-flow="cta" data-catalog-ctas>
                     <a
                       class="cta cta--mid topic-page__cta"
@@ -298,12 +319,16 @@ function faqHeadingId(groupIndex: number) {
                       rel={directHref.startsWith('#') ? undefined : 'noopener noreferrer'}
                     >{worksheetActionLabel(unit.item.label, directHref)}</a>
                   </p>
+                  {multipleHeroTopics && group.firstUnit === index && group.editions.length > 0 && (
+                    <TopicWorksheetEditions id={group.targetId} editions={group.editions} />
+                  )}
+                  </Fragment>
                 );
               }
               return null;
             })}
-            {topicLevels.length > 0 && (
-              <TopicWorksheetEditions id="topic-levels" editions={topicEditions} />
+            {!multipleHeroTopics && heroEditionGroups[0].editions.length > 0 && (
+              <TopicWorksheetEditions id={heroEditionGroups[0].targetId} editions={heroEditionGroups[0].editions} />
             )}
           </div>
         </div>

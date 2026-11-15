@@ -1,3 +1,12 @@
+## 2026-11-15 — Three grade-seven variable and expression-language PDFs
+
+- Add G7-ALG-01 / G7-T87 as an additional PDF-only edition of site topic 7/22, visible on the existing algebraic-expressions landing page and worksheet catalog. Keep the old PDFs and default unchanged; this focused opening unit does not replace substitution, patterns or the whole algebra sequence.
+- Three student PDFs contain 6 questions and 18 subitems per level (54 total), with final answers: 4, 4 and 5 pages. All nine downloads from the returned media, CDN and site URLs match the frozen PDF hashes. See [PDF publication evidence](middle-school-g7-alg01-pdf-20261115.json).
+- Fix multi-topic landing CTAs that all pointed to the primary topic: each topic now gets one distinct download group. The algebra landing exposes topics 30, 23 and 22 with their matching levels, including the new PDFs; single-topic direct level links retain their behavior.
+- Only the student PDFs are uploaded. Detailed worked solutions, source files and native JSON remain private. The new edition opens free PDFs directly; it does not enable Ramzi, Word, teacher-picker sources or database writes.
+- PDF essentials passed the author/reviewer release check; the full package is not claimed as PASS. D12 native-export checks remain open, G92 records the narrower reminder and embedded guided example, and G94 flags the last question pages while preserving writing space. These do not activate or publish the unfinished native export.
+- This is a publication candidate. Uploaded media alone does not mean the new catalog buttons are live; the new PR needs its own merge and publication approval.
+
 ## 2026-11-14 — Prepared Ramzi hints for the first twelve middle-school editions
 
 - PR #461 was explicitly approved, merged at `cfe85a520af1e1a0a06526438dbd33c134cc21b1` and published through the release script. All eighteen new PDFs are live; the first twelve source-bound manifests and their native assets were published with activation disabled.
