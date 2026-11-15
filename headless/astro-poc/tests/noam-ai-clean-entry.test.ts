@@ -75,7 +75,8 @@ describe('clean worksheet before Noam AI', () => {
       'פתיחת רמזי לשאלה 1 סעיף א',
       'פתיחת רמזי לשאלה 3',
     ]);
-    assert.match(adapter, /button\.hidden=!document\.querySelector\('\.noam-exercise-pin\.is-active'\)/);
+    assert.match(adapter, /var hidden=!document\.querySelector\('\.noam-exercise-pin\.is-active'\)/);
+    assert.match(adapter, /if\(button\.hidden!==hidden\)\{button\.hidden=hidden;\}/);
     assert.match(adapter, /closest\('\[data-exercise-id\]'\)/);
     assert.match(adapter, /match\.classList\.add\('is-active'\)/);
     assert.match(adapter, /document\.addEventListener\('focusin'/);
