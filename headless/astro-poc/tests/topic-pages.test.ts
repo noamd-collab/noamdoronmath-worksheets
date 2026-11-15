@@ -172,6 +172,9 @@ describe('topic page routes (HEADLESS-MIGRATION-18/19/20)', () => {
       // T90 PDF practice and scope section added 15.11.2026.
       'parallelogram-grade-9': 'נועם דורון מתמטיקה · עודכן 15.11.2026',
       'square-grade-9': 'נועם דורון מתמטיקה · עודכן 12.9.2026',
+      'trapezoid-grade-9': 'נועם דורון מתמטיקה · עודכן 15.11.2026',
+      'similar-triangles-grade-9': 'נועם דורון מתמטיקה · עודכן 15.11.2026',
+      'area-rectangle-perimeter-grade-7': 'נועם דורון מתמטיקה · עודכן 15.11.2026',
     };
     for (const [slug, line] of Object.entries(expectedPresent)) {
       assert.equal(loadTopicPage(slug).updatedLine, line);

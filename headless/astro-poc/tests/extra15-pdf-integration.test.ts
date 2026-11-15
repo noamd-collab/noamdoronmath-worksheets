@@ -1,3 +1,4 @@
+import { beforeNext12Catalog, beforeNext12Registry } from './fixtures/next12-pdf';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
@@ -20,10 +21,11 @@ test('all fifteen PDFs coexist and both exact reversals recover the complete can
   const previous = beforeExtra15Catalog(raw);
   assert.equal(sha(previous), reviewedExtSmlAfr.baselineCatalogSha256);
   assert.equal(sha(beforeExtra15Registry(registry)), reviewedExtSmlAfr.baselineRegistrySha256);
-  assert.deepEqual(beforeExtSmlAfrCatalog(beforeSaoWpcCatalog(raw)), beforeSaoWpcCatalog(beforeExtSmlAfrCatalog(raw)));
-  assert.equal(registry.editions.length, 24);
-  assert.equal(registry.editions.flatMap((e: any) => e.levels).length, 72);
-  assert.equal(new Set(registry.editions.map((e: any) => `${e.grade}:${e.topicId}:${e.editionId}`)).size, 24);
+  assert.deepEqual(beforeExtSmlAfrCatalog(beforeSaoWpcCatalog(beforeNext12Catalog(raw))), beforeSaoWpcCatalog(beforeExtSmlAfrCatalog(beforeNext12Catalog(raw))));
+  const precedingRegistry = beforeNext12Registry(registry);
+  assert.equal(precedingRegistry.editions.length, 24);
+  assert.equal(precedingRegistry.editions.flatMap((e: any) => e.levels).length, 72);
+  assert.equal(new Set(precedingRegistry.editions.map((e: any) => `${e.grade}:${e.topicId}:${e.editionId}`)).size, 24);
   const catalog = loadCatalog();
   const links = new Set<string>();
   for (const addition of reviewedExtra15) {

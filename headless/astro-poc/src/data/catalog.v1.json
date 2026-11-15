@@ -7399,7 +7399,68 @@
               "pb": "f0bddd29b1474f23bf0984116c46854d",
               "pc": "9b91eb7cc20b4ad9bc48ac99c4ac87cc"
             }
-          }
+          },
+          "defaultEditionId": "legacy",
+          "editions": [
+            {
+              "editionId": "ms-20261115-rsc-01-r1",
+              "label": "שטח והיקף של מלבן וריבוע — PDF",
+              "levels": [
+                {
+                  "key": "a",
+                  "label": "רמה א׳",
+                  "pdfId": "81fbcf9f34e2473aac82467d74fd1466",
+                  "labelSource": "edition",
+                  "viewerLevel": "A",
+                  "learningId": "g7-t18-a-e-ms-20261115-rsc-01-r1",
+                  "nativeExportSha256": "cd67b548cb0e6383a620700cb317a5b58362a0686c9ea06deb21f6ac707ea66b",
+                  "pdfSha256": "1d323006d7392aa7b2f5deaa6eac58ec658fa8e99407f094b5b367d112ce79c1",
+                  "revision": 1,
+                  "sourceSha256": "aaf6db1994d37f567d801f51d7ed4fef0428aa9a98f1fdd612dc7b2b64df326c",
+                  "worksheetId": "ms-g7-rsc-01-a-r1"
+                },
+                {
+                  "key": "b",
+                  "label": "רמה ב׳",
+                  "pdfId": "77c2e0ac02ad43f3b6692e7f1fc53ca3",
+                  "labelSource": "edition",
+                  "viewerLevel": "B",
+                  "learningId": "g7-t18-b-e-ms-20261115-rsc-01-r1",
+                  "nativeExportSha256": "fc30a91a8b80a7ab1388aa275ea7b4f14a4ce58cf0683638ebd3efc0610c5c80",
+                  "pdfSha256": "d47d71dc1aba20eed39709e7a8d086204b8adb48ea9e8e519dbd8bb56d52d2a4",
+                  "revision": 1,
+                  "sourceSha256": "8ddcdcf08a3aac3bf6a4993d57933798999854b274197df7e51ac0988bb3678b",
+                  "worksheetId": "ms-g7-rsc-01-b-r1"
+                },
+                {
+                  "key": "c",
+                  "label": "מצוינות",
+                  "pdfId": "c8cc14aad06b4fd394caea61571c44a1",
+                  "labelSource": "edition",
+                  "viewerLevel": "E",
+                  "learningId": "g7-t18-c-e-ms-20261115-rsc-01-r1",
+                  "nativeExportSha256": "3f74d027d5b337635fb39165a536c0b12d4e5a6f3fe1a4980857e882e317cc31",
+                  "pdfSha256": "5bfc796d7cee59b945029771469473798fafec5753bfdb8700685e5df4ad27c0",
+                  "revision": 1,
+                  "sourceSha256": "7dd37a7e355576c5d6e5ebb5ef5c4443b2f0e6ba47896c3dcd9d0245775a8aeb",
+                  "worksheetId": "ms-g7-rsc-01-c-r1"
+                }
+              ],
+              "publicationMode": "pdf-only",
+              "routing": {
+                "resolvedNoamPrefix": "G7-T74",
+                "aiHintShown": false,
+                "usesViewer": false,
+                "viewerPath": "worksheet-viewer-noam.html",
+                "siblingPdfQuery": {
+                  "pa": "81fbcf9f34e2473aac82467d74fd1466",
+                  "pb": "77c2e0ac02ad43f3b6692e7f1fc53ca3",
+                  "pc": "c8cc14aad06b4fd394caea61571c44a1"
+                }
+              },
+              "status": "published"
+            }
+          ]
         },
         {
           "id": 19,
@@ -8796,7 +8857,68 @@
               "pb": "fc32a25c1b6540a98347a850013d6163",
               "pc": "f1615cfe97d04f13bcd9233fe93ec09b"
             }
-          }
+          },
+          "defaultEditionId": "legacy",
+          "editions": [
+            {
+              "editionId": "ms-20261115-per-01-r1",
+              "label": "היקפים של צורות מורכבות ואורכי מסלולים — PDF",
+              "levels": [
+                {
+                  "key": "a",
+                  "label": "רמה א׳",
+                  "pdfId": "3bd8969ae28240e9bfe1b77e81170804",
+                  "labelSource": "edition",
+                  "viewerLevel": "A",
+                  "learningId": "g7-t44-a-e-ms-20261115-per-01-r1",
+                  "nativeExportSha256": "35a09dbeddc510163b85f8ac232a3072566bfa5e82ef04e60553c3bd6a1c4b05",
+                  "pdfSha256": "821dd1b9146e5874af5dd8ab00d6001fcdd49222793f18f4fb36a96dfbffd589",
+                  "revision": 1,
+                  "sourceSha256": "3e59b03ba783ae379154a3366695d66bb3b80ac67644c83be31f26e3414d0cb9",
+                  "worksheetId": "ms-g7-per-01-a-r1"
+                },
+                {
+                  "key": "b",
+                  "label": "רמה ב׳",
+                  "pdfId": "21cd875e8a8947afae1f0b3415a99942",
+                  "labelSource": "edition",
+                  "viewerLevel": "B",
+                  "learningId": "g7-t44-b-e-ms-20261115-per-01-r1",
+                  "nativeExportSha256": "230840ba3d2cbdad0a63b7e721213568103a95401e45337c8add28a0976a6cf8",
+                  "pdfSha256": "2f6921868a11b97e31e88e9424984f6010f37b00b52c29ffa05071fa6db7c508",
+                  "revision": 1,
+                  "sourceSha256": "f4d0cc729ff77b1c8ca8a958a6e19c9a695e9096ed97c53138b5dab87f1a0fdf",
+                  "worksheetId": "ms-g7-per-01-b-r1"
+                },
+                {
+                  "key": "c",
+                  "label": "מצוינות",
+                  "pdfId": "fb3125f910bb47d19a75e050bbbf0396",
+                  "labelSource": "edition",
+                  "viewerLevel": "E",
+                  "learningId": "g7-t44-c-e-ms-20261115-per-01-r1",
+                  "nativeExportSha256": "a3269da526c7e0d3d2f5714e13f85b34e549ee4e153171e004853e24cd0afd57",
+                  "pdfSha256": "2758d599faef1b5e2fe95b8e2b566fde92082a4f6a767b5b99121e7d2f3801db",
+                  "revision": 1,
+                  "sourceSha256": "9344dd2180c3024806527a4e3784241e4aca3088d0ca92605cbfdf6aadeca0c5",
+                  "worksheetId": "ms-g7-per-01-c-r1"
+                }
+              ],
+              "publicationMode": "pdf-only",
+              "routing": {
+                "resolvedNoamPrefix": "G7-T75",
+                "aiHintShown": false,
+                "usesViewer": false,
+                "viewerPath": "worksheet-viewer-noam.html",
+                "siblingPdfQuery": {
+                  "pa": "3bd8969ae28240e9bfe1b77e81170804",
+                  "pb": "21cd875e8a8947afae1f0b3415a99942",
+                  "pc": "fb3125f910bb47d19a75e050bbbf0396"
+                }
+              },
+              "status": "published"
+            }
+          ]
         },
         {
           "id": 47,
@@ -13183,7 +13305,68 @@
               "pb": "7eb2f143944b4a3aa8620fb81f73a8e9",
               "pc": "1c676026e49d4adeae45864911235727"
             }
-          }
+          },
+          "defaultEditionId": "legacy",
+          "editions": [
+            {
+              "editionId": "ms-20261115-trp-01-r1",
+              "label": "טרפז: שטח, גובה, היקף והשוואת שטחים — PDF",
+              "levels": [
+                {
+                  "key": "a",
+                  "label": "רמה א׳",
+                  "pdfId": "e3a500d6b1514ffbb91d35568e49b1ca",
+                  "labelSource": "edition",
+                  "viewerLevel": "A",
+                  "learningId": "g9-t39-a-e-ms-20261115-trp-01-r1",
+                  "nativeExportSha256": "2711604fcb88201b2c3ff4da27418639cac1b5c49110c4733cc7cb70206fa229",
+                  "pdfSha256": "0bf17fb174a7061b3a2524db06426395626d33215ce3449feadf769670466256",
+                  "revision": 1,
+                  "sourceSha256": "5d49114659de8a4f127f19175996602d28c238739e9874dc5f45df32217693a6",
+                  "worksheetId": "ms-g9-trp-01-a-r1"
+                },
+                {
+                  "key": "b",
+                  "label": "רמה ב׳",
+                  "pdfId": "1d1755c92ace438a9c9b1b5cc3e62f8e",
+                  "labelSource": "edition",
+                  "viewerLevel": "B",
+                  "learningId": "g9-t39-b-e-ms-20261115-trp-01-r1",
+                  "nativeExportSha256": "acd628113c2df9c95facf640165ff48cc7a35905b4db9751f607bf2f38524945",
+                  "pdfSha256": "6c95ca2df2d78583f8e61699f7a6d40f737d299c131d078710a89787bb2ef197",
+                  "revision": 1,
+                  "sourceSha256": "702d96365a2dd7b91623837d2629f14362bfe2f93faa5e7d80d39207829a105d",
+                  "worksheetId": "ms-g9-trp-01-b-r1"
+                },
+                {
+                  "key": "c",
+                  "label": "מצוינות",
+                  "pdfId": "a2c928a7422b46e4a6e065357e396d53",
+                  "labelSource": "edition",
+                  "viewerLevel": "E",
+                  "learningId": "g9-t39-c-e-ms-20261115-trp-01-r1",
+                  "nativeExportSha256": "c5c06e7e7eb28bebb7f7ae11fed8f8356e31856a8c44b256dec92d32591435d8",
+                  "pdfSha256": "bc24ca57c3659e41a5579a2e29c92c423342dbbc087f3ec093f016a9539cc5f1",
+                  "revision": 1,
+                  "sourceSha256": "9b93993e42861a8bfd63cef7689d958a807fe4517e323ea5d6fe17976e41e37f",
+                  "worksheetId": "ms-g9-trp-01-c-r1"
+                }
+              ],
+              "publicationMode": "pdf-only",
+              "routing": {
+                "resolvedNoamPrefix": "G9-T78",
+                "aiHintShown": false,
+                "usesViewer": false,
+                "viewerPath": "worksheet-viewer-noam.html",
+                "siblingPdfQuery": {
+                  "pa": "e3a500d6b1514ffbb91d35568e49b1ca",
+                  "pb": "1d1755c92ace438a9c9b1b5cc3e62f8e",
+                  "pc": "a2c928a7422b46e4a6e065357e396d53"
+                }
+              },
+              "status": "published"
+            }
+          ]
         },
         {
           "id": 15,
@@ -13417,7 +13600,68 @@
               "pb": "2c6b61aee35a48aa8d4a0560a3612eae",
               "pc": "41d812848a9b439c8c4c330a838e6616"
             }
-          }
+          },
+          "defaultEditionId": "legacy",
+          "editions": [
+            {
+              "editionId": "ms-20261115-sim9-01-r1",
+              "label": "דמיון משולשים: יחס שטחים ושטחים שנותרו — PDF",
+              "levels": [
+                {
+                  "key": "a",
+                  "label": "רמה א׳",
+                  "pdfId": "11e0c8c7852c40ae92322d93add6b065",
+                  "labelSource": "edition",
+                  "viewerLevel": "A",
+                  "learningId": "g9-t19-a-e-ms-20261115-sim9-01-r1",
+                  "nativeExportSha256": "a374217eeca0baac7a2b2328d94d25b10c9cc6666f69ab84cd58b98c5e6ed417",
+                  "pdfSha256": "5c7b1a8db41d2f004f3e915b3782d603cb2604c4014d2a615c55a5f0263de802",
+                  "revision": 1,
+                  "sourceSha256": "700897bcb68bb73c5fcad91385a94776239b71870cd78b16d432b4c5cd349f10",
+                  "worksheetId": "ms-g9-sim-01-a-r1"
+                },
+                {
+                  "key": "b",
+                  "label": "רמה ב׳",
+                  "pdfId": "d860019845524719af4b615bd86f79c7",
+                  "labelSource": "edition",
+                  "viewerLevel": "B",
+                  "learningId": "g9-t19-b-e-ms-20261115-sim9-01-r1",
+                  "nativeExportSha256": "4807075cc74348d30d707a042ec7e454ed929afa36f1b16286992583c4078de7",
+                  "pdfSha256": "71872b5cae73937c4a3fb38a8a2ac9b68b165675e3c33efcd6a390ff8f71e251",
+                  "revision": 1,
+                  "sourceSha256": "0fcd41a6279170d29654674e37fd383a7131b8b8a36ace4fee8cb867185e1fd4",
+                  "worksheetId": "ms-g9-sim-01-b-r1"
+                },
+                {
+                  "key": "c",
+                  "label": "מצוינות",
+                  "pdfId": "0c977c7773864510886049c01c92280e",
+                  "labelSource": "edition",
+                  "viewerLevel": "E",
+                  "learningId": "g9-t19-c-e-ms-20261115-sim9-01-r1",
+                  "nativeExportSha256": "c564ef8d2546fd5cb7ca1d513971c791996b18be926ba0c2c60370f0ae72447a",
+                  "pdfSha256": "195ebd2d8c32bbb294059254fbe26e71f287988f293867440377f69627983a9c",
+                  "revision": 1,
+                  "sourceSha256": "81212ac9320d8c1173f443ecaeba9bddfa3edf2e1e52e8c451afa38fbc682f43",
+                  "worksheetId": "ms-g9-sim-01-c-r1"
+                }
+              ],
+              "publicationMode": "pdf-only",
+              "routing": {
+                "resolvedNoamPrefix": "G9-T79",
+                "aiHintShown": false,
+                "usesViewer": false,
+                "viewerPath": "worksheet-viewer-noam.html",
+                "siblingPdfQuery": {
+                  "pa": "11e0c8c7852c40ae92322d93add6b065",
+                  "pb": "d860019845524719af4b615bd86f79c7",
+                  "pc": "0c977c7773864510886049c01c92280e"
+                }
+              },
+              "status": "published"
+            }
+          ]
         },
         {
           "id": 20,

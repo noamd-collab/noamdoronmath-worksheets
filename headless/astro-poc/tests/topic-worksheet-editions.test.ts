@@ -1,3 +1,4 @@
+import { reviewedNext12 } from './fixtures/next12-pdf';
 import { reviewedSaoWpc } from './fixtures/sao-wpc-pdf';
 import { reviewedExtSmlAfr } from './fixtures/ext-sml-afr-pdf';
 import assert from 'node:assert/strict';
@@ -329,4 +330,31 @@ test('actual SAO/WPC pages expose six PDFs while preserving legacy 38 and 41/40/
     const text = document.querySelector('main')!.textContent.replace(/[\u2066-\u2069]/g, '');
     assert.ok(text.includes(reviewedSaoWpc.landingDeltas.find(d => d.slug === addition.slug)!.appendedSection.blocks[0].text));
   }
+});
+
+test('real next12 pages expose twelve PDFs and preserve shared perimeter44 then area18 with six old links', async () => {
+  const catalog = loadCatalog(), urls = new Set<string>();
+  for (const slug of ['trapezoid-grade-9', 'similar-triangles-grade-9', 'area-rectangle-perimeter-grade-7']) {
+    const document = await renderTopic(slug), hero = document.querySelector('.exact-topic-copy')!;
+    const additions = reviewedNext12.additions.filter(a => a.slug === slug);
+    const topics = slug === 'area-rectangle-perimeter-grade-7' ? [44, 18] : [additions[0].topicId];
+    const ctas = [...hero.querySelectorAll('a[data-catalog-topic]')];
+    assert.deepEqual(ctas.map(a => Number(a.getAttribute('data-catalog-topic'))), topics);
+    for (const [index, topicId] of topics.entries()) {
+      const addition = additions.find(a => a.topicId === topicId)!;
+      const target = index === 0 ? '#topic-levels' : `#topic-levels-hero-${topicId}`;
+      assert.equal(ctas[index].getAttribute('href'), target);
+      const controls = hero.querySelector(target)!;
+      const links = [...controls.querySelectorAll(`a[data-edition-id="${addition.editionId}"]`)];
+      assert.deepEqual(links.map(a => a.getAttribute('href')), addition.pdfIds.map(id => `${catalog.config.pdfBase}${id}.pdf`));
+      assert.ok(links.every(a => a.textContent.includes('פתיחת PDF') && !a.textContent.includes('רמזי')));
+      links.forEach(a => urls.add(a.getAttribute('href')!));
+      const expectedOld = topicWorksheetEditionLinks(catalog, addition.grade, topicId, `/worksheets?grade=${addition.grade}&topic=${topicId}`)[0].levels.map(l => l.href);
+      assert.deepEqual([...controls.querySelectorAll('a[data-edition-id="legacy"]')].map(a => a.getAttribute('href')), expectedOld);
+    }
+    assert.equal(hero.querySelectorAll('a[data-edition-id="legacy"]').length, topics.length * 3);
+    const ids = [...document.querySelectorAll('[id]')].map(e => e.id);
+    assert.equal(new Set(ids).size, ids.length);
+  }
+  assert.equal(urls.size, 12);
 });

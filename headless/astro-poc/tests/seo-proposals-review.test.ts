@@ -1,3 +1,4 @@
+import { reviewedNext12 } from './fixtures/next12-pdf';
 import { reviewedSaoWpc } from './fixtures/sao-wpc-pdf';
 import { reviewedExtSmlAfr } from './fixtures/ext-sml-afr-pdf';
 /**
@@ -101,6 +102,22 @@ describe('seo proposals – generator and coverage', () => {
     saoRow.currentDescription = String(saoCopy.after);
     saoRow.description = String(saoCopy.after);
     saoRow.source = 'title:current|description:current';
+    for (const delta of reviewedNext12.landingDeltas) {
+      const copy = delta.fields.find(d => d.path[0] === 'description')!;
+      const row = expected.find(item => item.path === '/' + delta.slug)!;
+      assert.equal(row.currentDescription, copy.before);
+      row.currentDescription = String(copy.after);
+      if (delta.slug === 'similar-triangles-grade-9') {
+        const intro = delta.fields.find(d => d.path[0] === 'intro')!;
+        assert.equal(row.description, intro.before);
+        assert.equal(row.source, 'title:current|description:page-intro');
+        row.source = 'title:current|description:current';
+      } else {
+        assert.equal(row.description, copy.before);
+        assert.equal(row.source, 'title:current|description:current');
+      }
+      row.description = String(copy.after);
+    }
     assert.deepEqual(proposals, expected);
   });
 

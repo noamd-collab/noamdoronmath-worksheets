@@ -12,7 +12,8 @@
     "eqn-sgn-fac-pdf-intake.test.ts",
     "ext-sml-afr-pdf-intake.test.ts",
     "sao-wpc-pdf-intake.test.ts",
-    "extra15-pdf-integration.test.ts"
+    "extra15-pdf-integration.test.ts",
+    "next12-pdf-intake.test.ts"
   ],
   "exclude": []
 }
