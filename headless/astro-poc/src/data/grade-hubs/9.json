@@ -175,6 +175,11 @@
           "path": "/equilateral-triangle-grade-9",
           "label": "משולש שווה־צלעות",
           "productionHref": "https://www.noamdoronmath.co.il/equilateral-triangle-grade-9"
+        },
+        {
+          "path": "/median-to-hypotenuse-grade-9",
+          "label": "משולש ישר זווית — התיכון ליתר",
+          "productionHref": "https://www.noamdoronmath.co.il/median-to-hypotenuse-grade-9"
         }
       ]
     },
@@ -464,6 +469,11 @@
       "path": "/equilateral-triangle-grade-9",
       "label": "משולש שווה־צלעות",
       "productionHref": "https://www.noamdoronmath.co.il/equilateral-triangle-grade-9"
+    },
+    {
+      "path": "/median-to-hypotenuse-grade-9",
+      "label": "משולש ישר זווית — התיכון ליתר",
+      "productionHref": "https://www.noamdoronmath.co.il/median-to-hypotenuse-grade-9"
     }
   ],
   "catalogCta": {

@@ -1,5 +1,14 @@
 ## 2026-11-15 — Frequency-table and relative-frequency student PDFs
 
+## 2026-11-15 — MED01, PRB01 and REC01 PDF candidate (not published)
+
+- Add nine independently reviewed PDFs: median to the hypotenuse (grade9, new logical topic48), probability estimated from experiments (grade7, topic27) and rectangle properties/converses (grade9, topic11). Total:180 subitems,56 pages.
+- MED01 uses the curriculum wording **משולש ישר זווית — התיכון ליתר** and `/median-to-hypotenuse-grade-9`; local `prisa_9A.pdf` page7 confirms the median and quadrilateral-practice scope. Topic47 and every preceding topic remain.
+- PRB01 and REC01 are nondefault PDF-only editions. Preserve all existing PDF links, native viewer routes, teacher choices and learning/progress identities.
+- All27 media readbacks match the frozen PDF hashes. Public integration contains no private solutions, source exports, Word files or hints; native package IDs are provenance only. REC's D12 native-export findings remain held.
+- Candidate implementation is local and uncommitted. Focused checks, build and UI review are recorded in the handoff; no merge or publication is claimed.
+
+
 - Add a non-default PDF-only edition to grade-seven topic 26: **טבלאות שכיחות ושכיחות יחסית — PDF**. Three reviewed files contain 54 subitems across 17 pages, with final answers and preserved working areas. Four minor explanation notes remain documented; the student PDFs were accepted in this limited scope.
 - Keep every previous topic, PDF, routing and default, including topics 25–27. The new edition uses direct PDF links and is excluded from teacher exercise sources, learning/progress generation and viewer/hint activation. G7-T88 is a provenance binding; native exports, Word, hints and Supabase are outside this publication.
 - Both existing frequency landing pages expose the three additions: the relative-frequency page uses topic 26 directly, while the frequency page retains primary topic 25 and adds a clearly labeled secondary topic 26 action. Real component rendering verifies all six new links and preserves the previous downloads.

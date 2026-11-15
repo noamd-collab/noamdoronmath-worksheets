@@ -1,0 +1,171 @@
+{
+  "schema": "noam-reviewed-pdf-publication/v1",
+  "status": "review_candidate_not_published",
+  "grade": 9,
+  "topicId": 11,
+  "editionId": "ms-20261115-rec-01-r1",
+  "isDefault": false,
+  "publicationMode": "pdf-only",
+  "sourcePackage": "G9-T95",
+  "sourceSheetId": "G9-REC-01",
+  "sourceProvenanceOnly": true,
+  "landing": "/rectangle-grade-9",
+  "levels": [
+    {
+      "key": "a",
+      "viewerLevel": "A",
+      "pdfId": "d9db352e798e4dc78df2602580adef0b",
+      "pdfSha256": "562d22df09dd1290c32780c2a7a06ce3cd909b01f03745a1811ce4ab486ed1c5",
+      "sourceSha256": "b5544c8335d26441887c2d3769235b86b87cffd4e101d3274267fc7b7288e6e4",
+      "nativeExportSha256": "bfa6447dd8921210fe6393abeff01e8bea01ff6dea13e9e754b0db8c9690d095",
+      "worksheetId": "ms-g9-rec-01-a-r1",
+      "revision": 1,
+      "downloadChecks": [
+        {
+          "level": "a",
+          "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_d9db352e798e4dc78df2602580adef0b.pdf",
+          "finalUrl": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_d9db352e798e4dc78df2602580adef0b.pdf",
+          "status": 200,
+          "contentType": "application/pdf",
+          "bytes": 84292,
+          "sha256": "562d22df09dd1290c32780c2a7a06ce3cd909b01f03745a1811ce4ab486ed1c5",
+          "expectedSha256": "562d22df09dd1290c32780c2a7a06ce3cd909b01f03745a1811ce4ab486ed1c5",
+          "match": true
+        },
+        {
+          "level": "a",
+          "url": "https://static.wixstatic.com/ugd/d8e7ad_d9db352e798e4dc78df2602580adef0b.pdf",
+          "finalUrl": "https://static.wixstatic.com/ugd/d8e7ad_d9db352e798e4dc78df2602580adef0b.pdf",
+          "status": 200,
+          "contentType": "application/pdf",
+          "bytes": 84292,
+          "sha256": "562d22df09dd1290c32780c2a7a06ce3cd909b01f03745a1811ce4ab486ed1c5",
+          "expectedSha256": "562d22df09dd1290c32780c2a7a06ce3cd909b01f03745a1811ce4ab486ed1c5",
+          "match": true
+        },
+        {
+          "level": "a",
+          "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_d9db352e798e4dc78df2602580adef0b.pdf",
+          "finalUrl": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_d9db352e798e4dc78df2602580adef0b.pdf",
+          "status": 200,
+          "contentType": "application/pdf",
+          "bytes": 84292,
+          "sha256": "562d22df09dd1290c32780c2a7a06ce3cd909b01f03745a1811ce4ab486ed1c5",
+          "expectedSha256": "562d22df09dd1290c32780c2a7a06ce3cd909b01f03745a1811ce4ab486ed1c5",
+          "match": true
+        }
+      ]
+    },
+    {
+      "key": "b",
+      "viewerLevel": "B",
+      "pdfId": "ea3bd0b483644b61bb001e56b8bba09d",
+      "pdfSha256": "6b9bd976d0cc8eb0ae9d48e446d86d9699c8151fe7fdf7b33ef0d45768bb4a7c",
+      "sourceSha256": "64be0f6b1264a29175cd4ebae27c1fa2e7e6981d1e079a2a8724c51c9dec058f",
+      "nativeExportSha256": "6b8b3ccfea3d0006f5c007e225214daaa0a571dd0aa6574da337c8225b32877a",
+      "worksheetId": "ms-g9-rec-01-b-r1",
+      "revision": 1,
+      "downloadChecks": [
+        {
+          "level": "b",
+          "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_ea3bd0b483644b61bb001e56b8bba09d.pdf",
+          "finalUrl": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_ea3bd0b483644b61bb001e56b8bba09d.pdf",
+          "status": 200,
+          "contentType": "application/pdf",
+          "bytes": 87205,
+          "sha256": "6b9bd976d0cc8eb0ae9d48e446d86d9699c8151fe7fdf7b33ef0d45768bb4a7c",
+          "expectedSha256": "6b9bd976d0cc8eb0ae9d48e446d86d9699c8151fe7fdf7b33ef0d45768bb4a7c",
+          "match": true
+        },
+        {
+          "level": "b",
+          "url": "https://static.wixstatic.com/ugd/d8e7ad_ea3bd0b483644b61bb001e56b8bba09d.pdf",
+          "finalUrl": "https://static.wixstatic.com/ugd/d8e7ad_ea3bd0b483644b61bb001e56b8bba09d.pdf",
+          "status": 200,
+          "contentType": "application/pdf",
+          "bytes": 87205,
+          "sha256": "6b9bd976d0cc8eb0ae9d48e446d86d9699c8151fe7fdf7b33ef0d45768bb4a7c",
+          "expectedSha256": "6b9bd976d0cc8eb0ae9d48e446d86d9699c8151fe7fdf7b33ef0d45768bb4a7c",
+          "match": true
+        },
+        {
+          "level": "b",
+          "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_ea3bd0b483644b61bb001e56b8bba09d.pdf",
+          "finalUrl": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_ea3bd0b483644b61bb001e56b8bba09d.pdf",
+          "status": 200,
+          "contentType": "application/pdf",
+          "bytes": 87205,
+          "sha256": "6b9bd976d0cc8eb0ae9d48e446d86d9699c8151fe7fdf7b33ef0d45768bb4a7c",
+          "expectedSha256": "6b9bd976d0cc8eb0ae9d48e446d86d9699c8151fe7fdf7b33ef0d45768bb4a7c",
+          "match": true
+        }
+      ]
+    },
+    {
+      "key": "c",
+      "viewerLevel": "E",
+      "pdfId": "e5c9abeff29046cd87e733db0b4debc9",
+      "pdfSha256": "aed3ad4cdeddfd7db2f49a3a454a854edbca684c60f0c1abd80d42e27e1637f9",
+      "sourceSha256": "3b77b54d3cf48d688072fde328824ef5af68b3fc7c06646b27e753a356bfc73c",
+      "nativeExportSha256": "5edc0863b32fca3d5496446c1f68ad54ca874d5b8e445604b5f212a15ce6665b",
+      "worksheetId": "ms-g9-rec-01-c-r1",
+      "revision": 1,
+      "downloadChecks": [
+        {
+          "level": "c",
+          "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_e5c9abeff29046cd87e733db0b4debc9.pdf",
+          "finalUrl": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_e5c9abeff29046cd87e733db0b4debc9.pdf",
+          "status": 200,
+          "contentType": "application/pdf",
+          "bytes": 88476,
+          "sha256": "aed3ad4cdeddfd7db2f49a3a454a854edbca684c60f0c1abd80d42e27e1637f9",
+          "expectedSha256": "aed3ad4cdeddfd7db2f49a3a454a854edbca684c60f0c1abd80d42e27e1637f9",
+          "match": true
+        },
+        {
+          "level": "c",
+          "url": "https://static.wixstatic.com/ugd/d8e7ad_e5c9abeff29046cd87e733db0b4debc9.pdf",
+          "finalUrl": "https://static.wixstatic.com/ugd/d8e7ad_e5c9abeff29046cd87e733db0b4debc9.pdf",
+          "status": 200,
+          "contentType": "application/pdf",
+          "bytes": 88476,
+          "sha256": "aed3ad4cdeddfd7db2f49a3a454a854edbca684c60f0c1abd80d42e27e1637f9",
+          "expectedSha256": "aed3ad4cdeddfd7db2f49a3a454a854edbca684c60f0c1abd80d42e27e1637f9",
+          "match": true
+        },
+        {
+          "level": "c",
+          "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_e5c9abeff29046cd87e733db0b4debc9.pdf",
+          "finalUrl": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_e5c9abeff29046cd87e733db0b4debc9.pdf",
+          "status": 200,
+          "contentType": "application/pdf",
+          "bytes": 88476,
+          "sha256": "aed3ad4cdeddfd7db2f49a3a454a854edbca684c60f0c1abd80d42e27e1637f9",
+          "expectedSha256": "aed3ad4cdeddfd7db2f49a3a454a854edbca684c60f0c1abd80d42e27e1637f9",
+          "match": true
+        }
+      ]
+    }
+  ],
+  "review": {
+    "independentReviewSha256": "90a76c76680f7c3dde3b81709d43876ba59513def1762727c3a131f44151e69a",
+    "reviewedPages": 23,
+    "reviewedSubitems": 72,
+    "wholePackagePass": false,
+    "mediaReadbackSha256": "21b778b2a5198ff2705f911f9bbe8f8e6f54a28b2e2f41b67bb34b302de3f85f",
+    "rootDecisionSha256": "10cffc8a35683733e428610ea4cfbe2d95bc95ba5834a73d75984e73cdc270be",
+    "retainedHolds": [
+      "D12 native export FAIL on aQ5a/cQ5a",
+      "G94 whitespace retained for working/figures",
+      "Private solution/key/source not uploaded"
+    ]
+  },
+  "notActivated": [
+    "Ramzi or question-level hints",
+    "public native viewer or manifest",
+    "teacher question bank",
+    "learning/progress identities",
+    "Word",
+    "Supabase"
+  ]
+}
