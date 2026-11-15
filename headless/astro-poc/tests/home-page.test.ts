@@ -144,7 +144,7 @@ describe('homepage Harmony parity (HEADLESS-MIGRATION-31)', () => {
     ]) {
       assert.ok(html.includes(needle), `missing ${needle}`);
     }
-    assert.match(html, /href="\/high-school-math"[^>]*>\s*מתמטיקה לתיכון\s*(?:↗|\(חיצוני\))\s*<\/a>/,
+    assert.match(html, /href="\/high-school-math"[^>]*>\s*מתמטיקה לתיכון\s*(?:<span[^>]*>\s*)?(?:↗|\(חיצוני\))\s*(?:<\/span>\s*)?<\/a>/,
       'high-school destination retains its visible external indicator');
     assert.equal(html.includes('הביינים'), false, 'must use הביניים spelling');
     assert.doesNotMatch(html, /href="\/worksheets"[^>]*>\s*דפי עבודה\s*</,

@@ -166,10 +166,12 @@ body.nl-page .exact-nav-drop a:hover{
 }
 body.nl-page .exact-nav-tools:focus-within .exact-nav-drop,
 body.nl-page .exact-nav-tools[data-open] .exact-nav-drop{opacity:1;visibility:visible;pointer-events:auto;}
-body.nl-page .exact-nav-teachers{display:inline-flex;align-items:center;}
+body.nl-page .exact-nav-external,
+body.nl-page .exact-nav-teachers{display:inline-flex;align-items:center;gap:4px;}
+body.nl-page .exact-nav-ext{line-height:1;}
 body.nl-page .exact-nav-new{
   display:inline-block;
-  margin-inline-start:6px;
+  margin:0;
   padding:0 6px;
   border-radius:999px;
   background:#e8f4f3;
@@ -214,7 +216,9 @@ body.nl-page .exact-nav-search-mobile{display:none!important;}
 @media (min-width: 900px) {
   body.nl-page .nl-header.exact-header {height:90px;box-sizing:border-box;}
   body.nl-page .nl-header__row {flex-wrap:nowrap!important;gap:8px!important;height:100%;box-sizing:border-box;padding-top:0!important;padding-bottom:0!important;padding-inline:12px!important;}
-  body.nl-page .nl-primary-nav {flex-wrap:nowrap!important;gap:0!important;min-width:0;font-size:14px;}
+  body.nl-page .nl-primary-nav {flex-wrap:nowrap!important;justify-content:space-between;gap:4px!important;min-width:0;font-size:14px;}
+  body.nl-page .nl-primary-nav > a,
+  body.nl-page .nl-primary-nav > .exact-nav-tools {flex:0 0 auto;}
   body.nl-page .nl-primary-nav > a,
   body.nl-page .exact-nav-tools__btn {padding:6px 7px!important;white-space:nowrap;}
   body.nl-page .exact-header__learn {padding:8px 12px!important;font-size:14px!important;white-space:nowrap;}
@@ -225,7 +229,7 @@ body.nl-page .exact-nav-search-mobile{display:none!important;}
   body.nl-page .nl-primary-nav > a,
   body.nl-page .exact-nav-tools__btn {padding:6px 3px!important;}
   body.nl-page .exact-header__learn {padding:8px 8px!important;font-size:13px!important;}
-  body.nl-page .exact-nav-new {margin-inline-start:4px;padding:0 4px;}
+  body.nl-page .exact-nav-new {padding:0 4px;}
 }
 @media (min-width: 900px) and (max-width: 1023.98px) {
   body.nl-page .nl-header__row {gap:6px!important;padding-inline:6px!important;}
@@ -233,6 +237,11 @@ body.nl-page .exact-nav-search-mobile{display:none!important;}
   body.nl-page .nl-primary-nav > a,
   body.nl-page .exact-nav-tools__btn {padding:6px 5px!important;}
   body.nl-page .exact-header__learn {padding:8px 8px!important;font-size:12px!important;}
+}
+@media (min-width: 1100px) and (max-width: 1279px) {
+  body.nl-page .nl-primary-nav {font-size:15px!important;}
+  body.nl-page .nl-primary-nav > a,
+  body.nl-page .exact-nav-tools__btn {padding:6px 7px!important;}
 }
 @media(max-width:899.98px){
   body.nl-page .nl-shell{padding:20px 60px 88px;}
