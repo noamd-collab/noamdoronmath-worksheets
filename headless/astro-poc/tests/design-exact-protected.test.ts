@@ -1,4 +1,5 @@
 import { readFirst567Activation } from './helpers/first567Activation';
+import { beforeEqnSgnFacCatalog } from './fixtures/eqn-sgn-fac-pdf';
 /**
  * Exact-design release fence. These SHA-256 values were read from the verified
  * live baseline 8a098020, not from the redesigned candidate. They protect the
@@ -55,8 +56,16 @@ function beforeDrawingPolicy(content: string): string {
   return content.replace(lines[0], previous);
 }
 
+// Remove only the temporary CSS pause before every historical whole-file fence.
+function beforeDrawingControlPause(content: string): string {
+  const pause = '/* Temporary drawing-request pause; keep existing source-diagram enlargement available. */\n' +
+    '#noamDraw,.noam-draw-action:not(.noam-diagram-expand){display:none!important}\n';
+  assert.equal(content.split(pause).length, 2, 'one exact temporary drawing-request CSS block');
+  return content.replace(pause, '');
+}
+
 it('first567 drawing policy changes only the reviewed line in the root mirror', () => {
-  const current = readFileSync(join(root, '../../worksheet-viewer-noam.html'), 'utf8');
+  const current = beforeDrawingControlPause(readFileSync(join(root, '../../worksheet-viewer-noam.html'), 'utf8'));
   assert.equal(sha256(current), '232f80e06dea7d7f410c2a03ad0c09ffbd6bfb9721bd5542e2a98260d7d2d6a9', 'exact root drawing policy candidate');
   assert.equal(sha256(beforeDrawingPolicy(current)), '91433585be9d6d4ec2bf3887bbafecec5b310f235382f56ebfcbe23de645e05c');
   assert.throws(() => beforeDrawingPolicy(current.replace('G7-T86', 'G7-T99')));
@@ -66,8 +75,30 @@ it('first567 drawing policy changes only the reviewed line in the root mirror', 
   assert.throws(() => beforeActivation('public/worksheet-viewer-noam.html', publicViewer.replace('function noamPreparedHint(', 'function changedHint(')));
 });
 
+// The report-control observer fix changes only this exact assignment. Reverse
+// it to the published 12e activation candidate before all existing fences.
+function beforeReportObserverFix(content: string): string {
+  assert.equal(sha256(content), '46232c6d67eefdeed286f74895cce4b5c4a2463d1965427d32ce006b58d348d2', 'exact report observer candidate');
+  const previous = "    button.hidden=!document.querySelector('.noam-exercise-pin.is-active');";
+  const current = "    var hidden=!document.querySelector('.noam-exercise-pin.is-active');\n    if(button.hidden!==hidden){button.hidden=hidden;}";
+  assert.equal(content.split(current).length, 2, 'one exact report observer hunk');
+  const restored = content.replace(current, previous);
+  assert.equal(sha256(restored), '054e601e3aa5e653419f625d3d53c13fde31f47e0e1ed696e8334e5929605f7e', 'unchanged published activation candidate');
+  return restored;
+}
+
 function beforeActivation(file: string, content: string): string {
+  if (file === 'src/lib/catalog/loadCatalog.ts') {
+    // Reverse only the optional correction argument, then retain the complete
+    // previous activation and historical file hashes below.
+    const previous = '  return mergeWorksheetEditions(data, editionRegistry, data.ramziActivation) as CatalogV1;';
+    const current = '  return mergeWorksheetEditions(data, editionRegistry, data.ramziActivation, data.ramziHintCorrection) as CatalogV1;';
+    assert.equal(content.split(current).length, 2, 'one exact optional correction argument');
+    content = content.replace(current, previous);
+  }
   if (file === 'public/worksheet-viewer-noam.html') {
+    content = beforeDrawingControlPause(content);
+    content = beforeReportObserverFix(content);
     assert.equal(sha256(content), '054e601e3aa5e653419f625d3d53c13fde31f47e0e1ed696e8334e5929605f7e', 'exact public drawing policy candidate');
     content = beforeDrawingPolicy(content);
   }
@@ -81,6 +112,22 @@ function beforeActivation(file: string, content: string): string {
   assert.equal(sha256(content), delta.baselineSha256, file + ' unchanged bytes outside activation');
   return content;
 }
+
+it('hint-correction loader reversal preserves all earlier exact fences', () => {
+  const file = 'src/lib/catalog/loadCatalog.ts', current = read(file);
+  assert.doesNotThrow(() => beforeActivation(file, current));
+  assert.throws(() => beforeActivation(file, current.replace('data.ramziHintCorrection', 'data.unreviewedCorrection')));
+  assert.throws(() => beforeActivation(file, current + '\n'));
+});
+
+it('temporary drawing-control pause reverses exactly without weakening original figure or script fences', () => {
+  const current = read('public/worksheet-viewer-noam.html');
+  assert.equal(sha256(beforeDrawingControlPause(current)), '46232c6d67eefdeed286f74895cce4b5c4a2463d1965427d32ce006b58d348d2');
+  assert.throws(() => beforeDrawingControlPause(current.replace(':not(.noam-diagram-expand)', '')));
+  const pause = current.match(/\/\* Temporary drawing-request pause[^]*?display:none!important}\n/)![0];
+  assert.throws(() => beforeDrawingControlPause(current + '\n' + pause));
+  assert.throws(() => beforeActivation('public/worksheet-viewer-noam.html', current.replace('function noamAddDiagramExpansion(', 'function changedExpansion(')));
+});
 
 const protectedFiles: Record<string, string> = {
   // Optional server secrets QWEN_API_KEY and NOAM_RECAPTCHA_SECRET_KEY were
@@ -178,11 +225,43 @@ describe('exact-design protected live-baseline boundaries', () => {
         // Noam's elementary renewal adds exactly these four grade-one editions.
         // Strip only that reviewed addition, then require the complete prior
         // snapshot hash below, including the already released grade-three edition.
-        const catalog = JSON.parse(content);
+        // Reverse the exact three additional PDF overlays before all older fences.
+        const catalog = beforeEqnSgnFacCatalog(JSON.parse(content));
+        // Reverse only the exact MED01 base topic; retain RAT47 and all older fences.
+        const medGrade = catalog.grades.find((g: any) => g.grade === 9);
+        const medIndex = medGrade.topics.findIndex((t: any) => t.id === 48);
+        assert.equal(medGrade.topics.filter((t: any) => t.id === 48).length, 1);
+        assert.equal(medGrade.topics[medIndex - 1].id, 10);
+        assert.equal(medGrade.topics[medIndex + 1].id, 11);
+        // The shared content gate requires the Hebrew maqaf in the catalog title.
+        // Reverse only that spelling correction before the original topic fence.
+        const medTopic = medGrade.topics[medIndex];
+        assert.equal(medTopic.title, 'משולש ישר־זווית — התיכון ליתר');
+        const medBeforeMaqaf = { ...medTopic, title: 'משולש ישר זווית — התיכון ליתר' };
+        assert.equal(sha256(JSON.stringify(medBeforeMaqaf)), 'd683e8256684af760b0bbb594139abf22d4593a35cc231832f9ab8c5765bf1b2');
+        assert.equal(catalog.searchTerms['9']['48'], 'משולש ישר זווית התיכון ליתר חצי היתר אמצע היתר משפט הפוך מרובעים מלבן מערכת צירים');
+        medGrade.topics.splice(medIndex, 1);
+        delete catalog.searchTerms['9']['48'];
+        // The first RAT01 publication adds one exact base PDF-only topic and its
+        // search terms. Reverse only this addition; keep every historical hash.
+        const ratGrade = catalog.grades.find((g: any) => g.grade === 9);
+        const ratIndex = ratGrade.topics.findIndex((t: any) => t.id === 47);
+        assert.equal(ratGrade.topics.filter((t: any) => t.id === 47).length, 1);
+        assert.equal(ratGrade.topics[ratIndex - 1].id, 6);
+        assert.equal(ratGrade.topics[ratIndex + 1].id, 46);
+        assert.equal(sha256(JSON.stringify(ratGrade.topics[ratIndex])),
+          'df7b3dc4135a9296bcd868cf03b19b1be231d5f09b146d04792640f280ea2685', 'exact RAT01 base topic');
+        assert.equal(catalog.searchTerms['9']['47'],
+          'משוואות רציונליות שברים אלגבריים מכנה משתנה פירוק מכנים תחום הצבה קבילות פתרונות פסילת פתרון מכנה משותף');
+        ratGrade.topics.splice(ratIndex, 1);
+        delete catalog.searchTerms['9']['47'];
         const activation = readFirst567Activation();
         assert.deepEqual(catalog.ramziActivation, activation.ready, 'snapshot matches the real receipt bundle');
+        assert.deepEqual(catalog.ramziHintCorrection, activation.hintCorrection, 'optional correction matches the verified receipt bundle');
         if (activation.ready) {
           delete catalog.ramziActivation;
+          // Strip only the correction already verified against its real readback.
+          delete catalog.ramziHintCorrection;
           for (const grade of catalog.grades) for (const topic of grade.topics) for (const edition of topic.editions || []) {
             const readyLevels = edition.levels.filter((level: any) => activation.ramzi.has(edition.editionId + ':' + level.key));
             if (!readyLevels.length) continue;
@@ -211,10 +290,22 @@ describe('exact-design protected live-baseline boundaries', () => {
         }
         // Noam's 13 November PDF-first work adds four initial focused sets,
         // plus two separately reviewed parallelogram follow-ups (not PR456).
+        // The 15 November G7 expression-language set is one further PDF-only
+        // overlay; its exact bytes are fenced without replacing any old hash.
         // Bind every byte of each reviewed addition, strip only those overlays,
         // and keep the original complete legacy catalog hash below unchanged.
+        // Bind the T90 PDF-only addition, then retain every preceding fence.
+        const parallelogram = catalog.grades.find((g: any) => g.grade === 9).topics.find((t: any) => t.id === 7);
+        const t90 = parallelogram.editions.filter((e: any) => e.editionId === 'ms-20261113-par-04-r1');
+        assert.equal(t90.length, 1);
+        assert.equal(sha256(JSON.stringify(t90[0])), 'aa6d8b18e75c1af716d4ae06b059831fc27c397cf4fd70bb992afea991a03ed9');
+        parallelogram.editions = parallelogram.editions.filter((e: any) => e.editionId !== 'ms-20261113-par-04-r1');
         const middleAdditions = [
+          [7, 27, ['ms-20261115-prb-01-r1'], '09e21b513798a95301d3e36dafae17da22951560715163bcad102336010de544'],
+          [9, 11, ['ms-20261115-rec-01-r1'], '875222897fc221a7b3d3b245d4333fed9b88bdde86c7eba6d1eeb5c4eb4f292e'],
           [7, 17, ['ms-20261113-trn-r1'], '3e3929a160636aabc2e27f8dedff16dbff4eda435b6c4155f50cb61134c5381c'],
+          [7, 22, ['ms-20261115-alg-01-r1'], 'b22196453ef7444643d3b428208d9f76a5108c0fa4cdbf6640da4f413d8b0b76'],
+          [7, 26, ['ms-20261115-frq-01-r1'], 'e68a3fce9c1de1ae2385341ead023c96066a8f20a52d35f34f03f6120b457000'],
           [8, 14, ['ms-20261113-cyl-r1'], '3f476e3666dbb952773355bbb8b98d1a03d2ad3733cac819c0b210d0a792edbb'],
           [8, 15, ['ms-20261113-con-r1'], 'e3e8dfde45ca70dbf15c20a264cf34cb329d9700f9e361917da796e454a9cc3d'],
           [9, 7, ['ms-20261113-par-r1', 'ms-20261113-par-02-r1', 'ms-20261113-par-03-r1'], '659b7c7c0b509660b7ad814a9c99c41adab03a3b32036d1c0d4538e916273bf6'],

@@ -1,5 +1,6 @@
 import { loadCatalog } from './catalog/loadCatalog';
 import type { CatalogLevel, CatalogV1 } from './catalog/types';
+import { isPdfOnlyTopic } from '../../../../scripts/lib/base-worksheet-publication.mjs';
 
 export type TeacherLandingLevel = 'a' | 'b' | 'c' | 'all';
 export interface TeacherLandingScope {
@@ -78,14 +79,16 @@ export function buildTeacherLandingCatalog(catalog: Pick<CatalogV1, 'grades'>): 
   const grades = catalog.grades.map(grade => ({
     grade: grade.grade,
     label: grade.label,
-    topics: grade.topics.map(topic => {
+    topics: grade.topics.flatMap(topic => {
       const sources = [
-        { id: 'legacy', label: 'דפים קודמים', levels: topic.levels },
+        ...(isPdfOnlyTopic(topic) ? [] : [{ id: 'legacy', label: 'דפים קודמים', levels: topic.levels }]),
         ...(topic.editions || []).filter(edition =>
           edition.status === 'published' && edition.publicationMode !== 'pdf-only').map(edition => ({
           id: edition.editionId, label: edition.label, levels: edition.levels,
         })),
       ];
+      // Files without measured questions are not selectable teacher sources.
+      if (!sources.length) return [];
       if (sources.some(source => !source.levels.length)) throw new Error('Empty teacher source: ' + grade.grade + ':' + topic.id);
       const allLevels = sources.flatMap(source => source.levels);
       catalogEntries += allLevels.length;
@@ -108,8 +111,8 @@ export function buildTeacherLandingCatalog(catalog: Pick<CatalogV1, 'grades'>): 
         levels: levelChoices(grade.grade, topic.id, edition.id, edition.levels),
       }));
       const selected = editions.find(edition => edition.isDefault)!;
-      return { id: topic.id, title: topic.title, defaultEditionId,
-        defaultLevel: selected.levels[0].value, editions };
+      return [{ id: topic.id, title: topic.title, defaultEditionId,
+        defaultLevel: selected.levels[0].value, editions }];
     }),
   }));
   // Start beside the real division preview when available; no edition ID is

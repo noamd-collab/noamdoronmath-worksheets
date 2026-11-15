@@ -188,6 +188,7 @@ describe('teacher catalog picker', () => {
     const sheets = [];
     for (const grade of catalog.grades) {
       for (const topic of grade.topics) {
+        if (topic.publicationMode === 'pdf-only') continue;
         for (const level of [...topic.levels, ...(topic.editions || [])
           .filter(edition => edition.status === 'published' && edition.publicationMode !== 'pdf-only')
           .flatMap(edition => edition.levels)]) {
@@ -210,7 +211,7 @@ describe('teacher catalog picker', () => {
     return sheets;
   }
 
-  it('reaches every exercise-ready catalog sheet and excludes PDF-only editions from the picker', () => {
+  it('reaches every exercise-ready catalog sheet and excludes PDF-only topics and editions from the picker', () => {
     const fromCatalog = catalogSheets();
     const fromPicker = indexSheets();
     assert.ok(fromCatalog.length > 0);
@@ -219,15 +220,31 @@ describe('teacher catalog picker', () => {
       fromCatalog,
       'The teacher picker must use exactly the exercise-ready catalog topics, PDFs and levels',
     );
-    const pdfOnly = catalog.grades.flatMap(grade => grade.topics.flatMap(topic =>
-      (topic.editions || []).filter(edition => edition.publicationMode === 'pdf-only').flatMap(edition => edition.levels)));
+    const basePdfOnly = catalog.grades.flatMap(grade => grade.topics
+      .filter(topic => topic.publicationMode === 'pdf-only')
+      .map(topic => ({ grade: grade.grade, topicId: topic.id, pdfIds: topic.levels.map(level => level.pdfId) })));
+    assert.deepEqual(basePdfOnly, [{ grade: 9, topicId: 47, pdfIds: [
+      '04786c9d5ed04b30a67480e192b4706f',
+      '54ed203698a141cda131ccf08f274a2c',
+      '1bbc10333cf74e6fa251ed34575e6320',
+    ] }, { grade: 9, topicId: 48, pdfIds: ['eb99b4fb3e4d47f5b96e4f2dcfb10bf2', '703b2b73edb949e4a06efa8a02d7476e', 'ce41b853212749c09efc3d466a8e9ddf'] }], 'Only the exact RAT and MED base topics are PDF-only; every old exercise-ready topic retains teacher access');
+    const pdfOnly = catalog.grades.flatMap(grade => grade.topics.flatMap(topic => [
+      ...(topic.publicationMode === 'pdf-only' ? topic.levels : []),
+      ...(topic.editions || []).filter(edition => edition.publicationMode === 'pdf-only').flatMap(edition => edition.levels),
+    ]));
     assert.ok(pdfOnly.length > 0, 'the current PDF-only publications exercise this boundary');
     for (const level of pdfOnly) assert.ok(!fromPicker.some(sheet => sheet.pdfId === level.pdfId),
       `PDF-only asset must not offer unavailable per-question crops: ${level.pdfId}`);
     for (const grade of catalog.grades) {
       const teacherGrade = index.grades.find((item) => item.grade === grade.grade);
+      assert.ok(teacherGrade, `Teacher grade ${grade.grade} remains available`);
       for (const topic of grade.topics) {
         const teacherTopic = teacherGrade.topics.find((item) => item.id === topic.id);
+        if (topic.publicationMode === 'pdf-only') {
+          assert.equal(teacherTopic, undefined, `PDF-only topic ${grade.grade}:${topic.id} must not offer teacher questions`);
+          continue;
+        }
+        assert.ok(teacherTopic, `Exercise-ready topic ${grade.grade}:${topic.id} remains available`);
         for (const sheet of teacherTopic.sheets) {
           for (const key of ['sourceGrade', 'sourcePrefix', 'sourceTitle'] as const) {
             assert.equal(sheet[key], topic.routing[key], `${grade.grade}:${topic.id} ${key}`);

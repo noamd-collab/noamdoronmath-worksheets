@@ -40,8 +40,9 @@ function route(options: { realEndpoint?: boolean; monitoringFailure?: 'lookup' |
     } } },
     'astro:env/server': keys,
     '../../data/catalog.v1.json': { grades: [] },
-    '../../data/site-guide.v1.json': {},
-    '../../data/teacher-pick-index.json': [],
+    '../../lib/companionWorkerData': {
+      loadCompanionWorkerData: async () => ({ guide: {}, teacherIndex: [] }),
+    },
     '../../../../../noam-ai/site-companion/endpoint.js': {
       ...endpoint,
       handleNoamSiteCompanion: async (request: Request, settings: any) => {

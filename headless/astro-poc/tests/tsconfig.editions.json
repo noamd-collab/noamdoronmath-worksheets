@@ -4,8 +4,12 @@
     "../src/env.d.ts",
     "worksheet-editions.test.ts",
     "worksheet-editions-pdf-only.test.ts",
+    "base-pdf-only-publication.test.ts",
+    "frequency-pdf-edition.test.ts",
     "../src/lib/catalog/loadCatalog.ts",
-    "../src/components/WorksheetsClient.tsx"
+    "../src/components/WorksheetsClient.tsx",
+    "next-nine-pdf-intake.test.ts",
+    "eqn-sgn-fac-pdf-intake.test.ts"
   ],
   "exclude": []
 }

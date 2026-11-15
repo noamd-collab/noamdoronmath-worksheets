@@ -281,6 +281,8 @@ import assessmentTask1Grade7 from '../data/topic-pages/assessment-task-1-grade-7
 import ratioGrade6 from '../data/topic-pages/ratio-grade-6.json';
 import scaleMapsGrade6 from '../data/topic-pages/scale-maps-grade-6.json';
 import equilateralTriangleGrade9 from '../data/topic-pages/equilateral-triangle-grade-9.json';
+import rationalEquationsGrade9 from '../data/topic-pages/rational-equations-grade-9.json';
+import medianToHypotenuseGrade9 from '../data/topic-pages/median-to-hypotenuse-grade-9.json';
 import statisticsDataFrequencyGrade8 from '../data/topic-pages/statistics-data-frequency-grade-8.json';
 import priorKnowledgeDiagnosticGrade8 from '../data/topic-pages/prior-knowledge-diagnostic-grade-8.json';
 import equationsWithFractionsGrade8 from '../data/topic-pages/equations-with-fractions-grade-8.json';
@@ -323,7 +325,7 @@ import interpolationExtrapolationGrade8 from '../data/topic-pages/interpolation-
 import assessmentTask1Grade8 from '../data/topic-pages/assessment-task-1-grade-8.json';
 import twoDataSourcesGrade8 from '../data/topic-pages/two-data-sources-grade-8.json';
 import { isolateMathRuns } from './mathDirection';
-import { familyRelatedTopics, type FamilyRelatedTopic } from './topicFamilies';
+import { familyRelatedTopics, gradeHubRelatedTopic, type FamilyRelatedTopic } from './topicFamilies';
 
 /** M18 pilot (3). */
 export const TOPIC_PAGE_PILOT_SLUGS = [
@@ -624,6 +626,8 @@ export const TOPIC_PAGE_G6_SLUGS = [
  */
 export const TOPIC_PAGE_G9_AUTHORED_SLUGS = [
   'equilateral-triangle-grade-9',
+  'rational-equations-grade-9',
+  'median-to-hypotenuse-grade-9',
 ] as const;
 
 export const TOPIC_PAGE_G5_SLUGS = [
@@ -1014,6 +1018,8 @@ const BY_SLUG: Record<string, TopicPageContent> = {
   'kite-grade-9': kiteGrade9 as TopicPageContent,
   // Grade-9 catalog gaps (כיתה ט׳)
   'equilateral-triangle-grade-9': equilateralTriangleGrade9 as TopicPageContent,
+  'rational-equations-grade-9': rationalEquationsGrade9 as TopicPageContent,
+  'median-to-hypotenuse-grade-9': medianToHypotenuseGrade9 as TopicPageContent,
   'statistics-data-frequency-grade-8': statisticsDataFrequencyGrade8 as TopicPageContent,
   // Grade-8 catalog gaps (כיתה ח׳)
   'prior-knowledge-diagnostic-grade-8': priorKnowledgeDiagnosticGrade8 as TopicPageContent,
@@ -1267,11 +1273,16 @@ function isolateRelatedLabel(rel: FamilyRelatedTopic): FamilyRelatedTopic {
 /** Classified related block for rendering. Captured links stay on sourceRelatedTopics. */
 function presentRelatedTopics(data: TopicPageContent): FamilyRelatedTopic[] {
   const classified = familyRelatedTopics(data.slug, data.grade);
-  const rows = classified.length ? classified : data.relatedTopics || [];
+  // This focused new lesson has authored prerequisite/application links.
+  const rows = data.slug === 'median-to-hypotenuse-grade-9'
+    ? [gradeHubRelatedTopic(data.grade), ...data.relatedTopics]
+    : classified.length ? classified : data.relatedTopics || [];
   // Family blocks replace captured related links. Keep an explicit game link
   // from the page JSON so it still renders on the theorem pages.
   const extra = (data.relatedTopics || []).filter(
-    (rel) => rel.path.startsWith('/games/') && !rows.some((row) => row.path === rel.path)
+    (rel) => (rel.path.startsWith('/games/') ||
+      (data.slug === 'rectangle-grade-9' && rel.path === '/median-to-hypotenuse-grade-9')) &&
+      !rows.some((row) => row.path === rel.path)
   );
   return [...rows, ...extra].map(isolateRelatedLabel);
 }

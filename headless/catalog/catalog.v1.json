@@ -314,7 +314,9 @@
       "39": "טרפז בסיסים שוקיים שווה שוקיים ישר זווית שטח היקף",
       "44": "דו איבר דו־איבר דו-איבר ריבוע דו איבר ריבוע סכום ריבוע הפרש נוסחאות כפל מקוצר נוסחות פתיחת סוגריים פישוט ביטויים",
       "45": "הפרש ריבועים נוסחאות כפל מקוצר נוסחות מכפלת סכום והפרש פירוק לגורמים ריבועים אלגברה",
-      "46": "דלתון צלעות סמוכות אלכסון ראשי קודקוד ראש שטח היקף"
+      "46": "דלתון צלעות סמוכות אלכסון ראשי קודקוד ראש שטח היקף",
+      "47": "משוואות רציונליות שברים אלגבריים מכנה משתנה פירוק מכנים תחום הצבה קבילות פתרונות פסילת פתרון מכנה משותף",
+      "48": "משולש ישר זווית התיכון ליתר חצי היתר אמצע היתר משפט הפוך מרובעים מלבן מערכת צירים"
     }
   },
   "grades": [
@@ -6735,7 +6737,68 @@
               "pb": "0acb5790d6d3433280de4e783969c488",
               "pc": "d80559e91b1e45848a6421eceb6bd24c"
             }
-          }
+          },
+          "defaultEditionId": "legacy",
+          "editions": [
+            {
+              "editionId": "ms-20261115-sgn-01-r1",
+              "label": "חיבור וחיסור מספרים מכוונים — PDF",
+              "levels": [
+                {
+                  "key": "a",
+                  "label": "רמה א׳",
+                  "pdfId": "17d11119121447229e07c86da98ef6c5",
+                  "labelSource": "edition",
+                  "viewerLevel": "A",
+                  "learningId": "g7-t2-a-e-ms-20261115-sgn-01-r1",
+                  "nativeExportSha256": "9a5248c2ab509ff2c63d7c894aa679d38f8f6b0051a4a83701afbea6c1310227",
+                  "pdfSha256": "0a1d0fdf59a1a9019a28ac3fda31e902e98e4dd19d1d0f4bbe41af632eacf95a",
+                  "revision": 1,
+                  "sourceSha256": "fe0596fd34edc2ade810d6ab6d2d82ee7b4bd637c3613c4a90086914e40fc3fa",
+                  "worksheetId": "ms-g7-sgn-01-a-r1"
+                },
+                {
+                  "key": "b",
+                  "label": "רמה ב׳",
+                  "pdfId": "02768a8216e04f3cb2ef06e168d2fb3d",
+                  "labelSource": "edition",
+                  "viewerLevel": "B",
+                  "learningId": "g7-t2-b-e-ms-20261115-sgn-01-r1",
+                  "nativeExportSha256": "baef5e6533988d702904dcdfcf2e63c2e0185be71eb0b3242c6967acc6134c83",
+                  "pdfSha256": "86a23efc4cbfaa8661091e21b40ba91cbb7652ef2d0008db1c80a593bb2b85eb",
+                  "revision": 1,
+                  "sourceSha256": "c5ee850689ddd2d5073e435e399d0b530e44535a205742d71380df380c6635f4",
+                  "worksheetId": "ms-g7-sgn-01-b-r1"
+                },
+                {
+                  "key": "c",
+                  "label": "מצוינות",
+                  "pdfId": "9bcde832879d4dd785b2ad8b94d62ac9",
+                  "labelSource": "edition",
+                  "viewerLevel": "E",
+                  "learningId": "g7-t2-c-e-ms-20261115-sgn-01-r1",
+                  "nativeExportSha256": "58c208bddb74f7ed77da5a2399ba4946f299416dca266268a65b702635293761",
+                  "pdfSha256": "93232ad104639fb54f55138ccc35f2b04fc37693e13efb9be4878d64d900f717",
+                  "revision": 1,
+                  "sourceSha256": "4054daf9fe9fc4c606cff62d18160d77ae6672d17be7bb543b969bf0c71eb7a1",
+                  "worksheetId": "ms-g7-sgn-01-c-r1"
+                }
+              ],
+              "publicationMode": "pdf-only",
+              "routing": {
+                "resolvedNoamPrefix": "G7-T91",
+                "aiHintShown": false,
+                "usesViewer": false,
+                "viewerPath": "worksheet-viewer-noam.html",
+                "siblingPdfQuery": {
+                  "pa": "17d11119121447229e07c86da98ef6c5",
+                  "pb": "02768a8216e04f3cb2ef06e168d2fb3d",
+                  "pc": "9bcde832879d4dd785b2ad8b94d62ac9"
+                }
+              },
+              "status": "published"
+            }
+          ]
         },
         {
           "id": 9,
@@ -7414,7 +7477,68 @@
               "pb": "41840861c0a4494f94f3a54fbd4d9943",
               "pc": "90d77da84da74766aa7d844e5fd3faaa"
             }
-          }
+          },
+          "defaultEditionId": "legacy",
+          "editions": [
+            {
+              "editionId": "ms-20261115-alg-01-r1",
+              "label": "משתנים וביטויים אלגבריים — שפת הביטויים · PDF",
+              "levels": [
+                {
+                  "key": "a",
+                  "label": "רמה א׳",
+                  "pdfId": "b376976911234b758027329c9ea05cbf",
+                  "labelSource": "edition",
+                  "viewerLevel": "A",
+                  "learningId": "g7-t22-a-e-ms-20261115-alg-01-r1",
+                  "nativeExportSha256": "6368fcc065859f822b490c3275edfb2ef780840b23f5ad8dc7265d6681f3ed03",
+                  "pdfSha256": "a54c97a44fd1317d6b10497252e22c41884573bcd4ccb864ab000f6675eefe2e",
+                  "revision": 1,
+                  "sourceSha256": "b0197b7a16ff436f11b07ccd534ea5f6ade97e10db96950f30a1d1b0f2776712",
+                  "worksheetId": "ms-g7-alg-01-a-r1"
+                },
+                {
+                  "key": "b",
+                  "label": "רמה ב׳",
+                  "pdfId": "b6a76fb3eccd477b9788958efefbded2",
+                  "labelSource": "edition",
+                  "viewerLevel": "B",
+                  "learningId": "g7-t22-b-e-ms-20261115-alg-01-r1",
+                  "nativeExportSha256": "bb565c626d77abaf5fd89d9b6c0762c16ff5e245735f523eeaf361448aa07765",
+                  "pdfSha256": "30a29943c91cc3e8571a76692f00e7d870164defded7ad33e508626412a87598",
+                  "revision": 1,
+                  "sourceSha256": "58d7c70a4e8432ab3d85f50385814c72da04e0887b86126d98f8021dfe0e982a",
+                  "worksheetId": "ms-g7-alg-01-b-r1"
+                },
+                {
+                  "key": "c",
+                  "label": "מצוינות",
+                  "pdfId": "0fe476657595498194b93cdc46e39e5f",
+                  "labelSource": "edition",
+                  "viewerLevel": "E",
+                  "learningId": "g7-t22-c-e-ms-20261115-alg-01-r1",
+                  "nativeExportSha256": "400122554c711f4170f9ae3ef52c43625ba911cbb70eba9bd2e3bfb2171bcada",
+                  "pdfSha256": "fe5923fe5f82985dbde4090063335c8c19e05467ab083388a35ab4105dc75540",
+                  "revision": 1,
+                  "sourceSha256": "aee059511db361badb5b6a56a53a445f80d09b494ad31d6c6ce5da80079d539c",
+                  "worksheetId": "ms-g7-alg-01-c-r1"
+                }
+              ],
+              "publicationMode": "pdf-only",
+              "routing": {
+                "resolvedNoamPrefix": "G7-T87",
+                "aiHintShown": false,
+                "usesViewer": false,
+                "viewerPath": "worksheet-viewer-noam.html",
+                "siblingPdfQuery": {
+                  "pa": "b376976911234b758027329c9ea05cbf",
+                  "pb": "b6a76fb3eccd477b9788958efefbded2",
+                  "pc": "0fe476657595498194b93cdc46e39e5f"
+                }
+              },
+              "status": "published"
+            }
+          ]
         },
         {
           "id": 23,
@@ -7687,7 +7811,68 @@
               "pb": "662bd4d64bbf461ea044fa2e125fec26",
               "pc": "0e23e46e04054092a612f406d2f41efd"
             }
-          }
+          },
+          "defaultEditionId": "legacy",
+          "editions": [
+            {
+              "editionId": "ms-20261115-frq-01-r1",
+              "label": "טבלאות שכיחות ושכיחות יחסית — PDF",
+              "levels": [
+                {
+                  "key": "a",
+                  "label": "רמה א׳",
+                  "pdfId": "941793a9b6614849bd5b7465c894ba87",
+                  "labelSource": "edition",
+                  "viewerLevel": "A",
+                  "learningId": "g7-t26-a-e-ms-20261115-frq-01-r1",
+                  "nativeExportSha256": "afb1bb278a4d3ddf999e237ee467e8e4e554bf55944e5f11ef18853bcd853670",
+                  "pdfSha256": "b2aea9500e62220cd66322cb775b4db49b52234bbaa18a80680c257c33514a75",
+                  "revision": 1,
+                  "sourceSha256": "e89fb1933f5670a99acab2df044c527095369b627f14ed62fd09b49c9271361a",
+                  "worksheetId": "ms-g7-frq-01-a-r1"
+                },
+                {
+                  "key": "b",
+                  "label": "רמה ב׳",
+                  "pdfId": "6cdddaac6d8c472580f2be5b4bdd0323",
+                  "labelSource": "edition",
+                  "viewerLevel": "B",
+                  "learningId": "g7-t26-b-e-ms-20261115-frq-01-r1",
+                  "nativeExportSha256": "621b26a78b958b750610494d56ca1f5d782392705b0868c32b1d53933c7ea3d4",
+                  "pdfSha256": "5f411b0cb2ceaa8ddab056a3ce12ed20afa6fa4b152261372892a0d31601f351",
+                  "revision": 1,
+                  "sourceSha256": "15e8467532b95f6a9f0b0be0b3be36f49be1485f22d49225eb0948e4ba595720",
+                  "worksheetId": "ms-g7-frq-01-b-r1"
+                },
+                {
+                  "key": "c",
+                  "label": "מצוינות",
+                  "pdfId": "659db2eb8dab43aaae976e9a669d503b",
+                  "labelSource": "edition",
+                  "viewerLevel": "E",
+                  "learningId": "g7-t26-c-e-ms-20261115-frq-01-r1",
+                  "nativeExportSha256": "6e7003641486b86681c439548dd210088aea37584c87f57e57fc9005d90e5963",
+                  "pdfSha256": "6ab22a1ee2a572ca44ac2c827ae2339b431b716ee4e534d1fff22ec78bc616f9",
+                  "revision": 1,
+                  "sourceSha256": "0cdae0abf7028495ddcae052a4c06173db81c0d5eb23809094479f178631a130",
+                  "worksheetId": "ms-g7-frq-01-c-r1"
+                }
+              ],
+              "publicationMode": "pdf-only",
+              "routing": {
+                "resolvedNoamPrefix": "G7-T88",
+                "aiHintShown": false,
+                "usesViewer": false,
+                "viewerPath": "worksheet-viewer-noam.html",
+                "siblingPdfQuery": {
+                  "pa": "941793a9b6614849bd5b7465c894ba87",
+                  "pb": "6cdddaac6d8c472580f2be5b4bdd0323",
+                  "pc": "659db2eb8dab43aaae976e9a669d503b"
+                }
+              },
+              "status": "published"
+            }
+          ]
         },
         {
           "id": 27,
@@ -7726,7 +7911,68 @@
               "pb": "55d4e3af5dc9475280503de2dcbf4902",
               "pc": "f07c6f55faa6446a8bde6cf01fbf3850"
             }
-          }
+          },
+          "defaultEditionId": "legacy",
+          "editions": [
+            {
+              "editionId": "ms-20261115-prb-01-r1",
+              "label": "הערכת הסתברות לפי תוצאות ניסוי — PDF",
+              "levels": [
+                {
+                  "key": "a",
+                  "label": "רמה א׳",
+                  "pdfId": "763682ee83fd45fb97d463ad89dfebcc",
+                  "labelSource": "edition",
+                  "viewerLevel": "A",
+                  "learningId": "g7-t27-a-e-ms-20261115-prb-01-r1",
+                  "nativeExportSha256": "9c164afc180f47b265e644c383a4503f3ddb89ac2338b9e66f82283d7bb61cdc",
+                  "pdfSha256": "a5eeb6949ee106af666afa0b3a38ae781455acdbc931fe10b8e309369e38727e",
+                  "revision": 1,
+                  "sourceSha256": "5b482f3b19ec1924d7d1e3e3911cb36b777214a1db8166fdd628218b3f5a39fc",
+                  "worksheetId": "ms-g7-prb-01-a-r1"
+                },
+                {
+                  "key": "b",
+                  "label": "רמה ב׳",
+                  "pdfId": "152537d8312b4902a23b53d68e21004a",
+                  "labelSource": "edition",
+                  "viewerLevel": "B",
+                  "learningId": "g7-t27-b-e-ms-20261115-prb-01-r1",
+                  "nativeExportSha256": "0f3d40ed08464271a76d7fd6744a8973a02dc5cb3ec4c785aca24df4d6df30e1",
+                  "pdfSha256": "8ea7f49ad6cf7ce51aad054ce8acff014407140648e298e89065d7a3cdbdc4af",
+                  "revision": 1,
+                  "sourceSha256": "6d02c5dfaba73449c087a2bd07e650d91082fc3d71005f2fdde47c1df82ba865",
+                  "worksheetId": "ms-g7-prb-01-b-r1"
+                },
+                {
+                  "key": "c",
+                  "label": "מצוינות",
+                  "pdfId": "3fce9fe16ea24b419abc6e25b987e066",
+                  "labelSource": "edition",
+                  "viewerLevel": "E",
+                  "learningId": "g7-t27-c-e-ms-20261115-prb-01-r1",
+                  "nativeExportSha256": "40b9712a3c17a8cc5c16f42a33463ed58e66006a737cf417bd85191158119bfd",
+                  "pdfSha256": "b5830939b847a0a0e70aa599d8764f4305823d3285654c144bf6e5339da6f901",
+                  "revision": 1,
+                  "sourceSha256": "04c5b3a7ca663e120f05e35f16e2f423438c0e992b1f9667f2b19086ba7766ff",
+                  "worksheetId": "ms-g7-prb-01-c-r1"
+                }
+              ],
+              "publicationMode": "pdf-only",
+              "routing": {
+                "resolvedNoamPrefix": "G7-T89",
+                "aiHintShown": false,
+                "usesViewer": false,
+                "viewerPath": "worksheet-viewer-noam.html",
+                "siblingPdfQuery": {
+                  "pa": "763682ee83fd45fb97d463ad89dfebcc",
+                  "pb": "152537d8312b4902a23b53d68e21004a",
+                  "pc": "3fce9fe16ea24b419abc6e25b987e066"
+                }
+              },
+              "status": "published"
+            }
+          ]
         },
         {
           "id": 28,
@@ -7882,7 +8128,68 @@
               "pb": "65bc6fe3c0564a31a48c1ba0583f4345",
               "pc": "548d397fab67450a8b66e950ecb5dd0e"
             }
-          }
+          },
+          "defaultEditionId": "legacy",
+          "editions": [
+            {
+              "editionId": "ms-20261115-eqn-01-r1",
+              "label": "משוואה וזיהוי פתרון בהצבה — PDF",
+              "levels": [
+                {
+                  "key": "a",
+                  "label": "רמה א׳",
+                  "pdfId": "d71017280a0a4961bbe47cdc90b28799",
+                  "labelSource": "edition",
+                  "viewerLevel": "A",
+                  "learningId": "g7-t32-a-e-ms-20261115-eqn-01-r1",
+                  "nativeExportSha256": "9f2036522d8094eba9253f9f8f2b1acec72a9f3af838a13b7eb798e55fd7e5d9",
+                  "pdfSha256": "bfdfda38b18589bc667b8579e5b3a4d113db542f372b85fed557a141a5b67044",
+                  "revision": 1,
+                  "sourceSha256": "ad83aeac07734ca61a6df57e5c7f94a30ce0ce7f615000c7244d54e7c7ead784",
+                  "worksheetId": "ms-g7-eqn-01-a-r1"
+                },
+                {
+                  "key": "b",
+                  "label": "רמה ב׳",
+                  "pdfId": "05f5738c957d49109e8941a6c107b6c1",
+                  "labelSource": "edition",
+                  "viewerLevel": "B",
+                  "learningId": "g7-t32-b-e-ms-20261115-eqn-01-r1",
+                  "nativeExportSha256": "bd6535e61bc0c3f973f637019b94264835203de3028adc0a0c9c7c4dbbf40bdf",
+                  "pdfSha256": "d440dc8ffc40617b48a527c0170e263391217ef48f2a5cb305a0c846f53bae17",
+                  "revision": 1,
+                  "sourceSha256": "10f02ac62a16583a67568abbc4b91d245137939db17e6e07b9d363d551aebaab",
+                  "worksheetId": "ms-g7-eqn-01-b-r1"
+                },
+                {
+                  "key": "c",
+                  "label": "מצוינות",
+                  "pdfId": "a6012afd8d2f4766a2b664163e468280",
+                  "labelSource": "edition",
+                  "viewerLevel": "E",
+                  "learningId": "g7-t32-c-e-ms-20261115-eqn-01-r1",
+                  "nativeExportSha256": "347d4e61a9571a1d9435ed6f4aae83b4f7dba944bae651313195722007846883",
+                  "pdfSha256": "3e4abeaa3802bf806c592891cd499e23008ae6b92280aff2084dcbc5b05a9693",
+                  "revision": 1,
+                  "sourceSha256": "0fd8687a7ca99299f194bba27cf49ef481cc1ff895ab9ae949d62c696dbd1884",
+                  "worksheetId": "ms-g7-eqn-01-c-r1"
+                }
+              ],
+              "publicationMode": "pdf-only",
+              "routing": {
+                "resolvedNoamPrefix": "G7-T90",
+                "aiHintShown": false,
+                "usesViewer": false,
+                "viewerPath": "worksheet-viewer-noam.html",
+                "siblingPdfQuery": {
+                  "pa": "d71017280a0a4961bbe47cdc90b28799",
+                  "pb": "05f5738c957d49109e8941a6c107b6c1",
+                  "pc": "a6012afd8d2f4766a2b664163e468280"
+                }
+              },
+              "status": "published"
+            }
+          ]
         },
         {
           "id": 34,
@@ -11548,7 +11855,68 @@
               "pb": "d30723feb0db4613bd2be70218a022fd",
               "pc": "75190762fa9f4ea68781ee676892b877"
             }
-          }
+          },
+          "defaultEditionId": "legacy",
+          "editions": [
+            {
+              "editionId": "ms-20261115-fac-01-r1",
+              "label": "פירוק לגורמים ופתרון משוואות ריבועיות בסיסיות — PDF",
+              "levels": [
+                {
+                  "key": "a",
+                  "label": "רמה א׳",
+                  "pdfId": "2d4ba0fc410d4aadb67c9a2caa548b02",
+                  "labelSource": "edition",
+                  "viewerLevel": "A",
+                  "learningId": "g9-t2-a-e-ms-20261115-fac-01-r1",
+                  "nativeExportSha256": "516cb93b598e70c29baa121887f2b9995dabeeac9899b31daba8593ca5bea2cd",
+                  "pdfSha256": "91cef40f14474fde848c8ed3af30fda5952e00c8a9bc423fc9091c5614569725",
+                  "revision": 1,
+                  "sourceSha256": "4b4a4b47098ec69d8e2bc5098e18060395038191086503fc1b4ab345ce672bf6",
+                  "worksheetId": "ms-g9-fac-01-a-r1"
+                },
+                {
+                  "key": "b",
+                  "label": "רמה ב׳",
+                  "pdfId": "0b462c30ee8844c5b4d131c84ba73b4d",
+                  "labelSource": "edition",
+                  "viewerLevel": "B",
+                  "learningId": "g9-t2-b-e-ms-20261115-fac-01-r1",
+                  "nativeExportSha256": "9032f33650a4b4b679a0308c1643f70c16e698d578e3502318ea1f302cc99abe",
+                  "pdfSha256": "12b488b679e8caab336a07dd8e1b8be01ce1a978ab1e8a435fe36bbe46fe73be",
+                  "revision": 1,
+                  "sourceSha256": "de99997578904d3153747c17eb6c775e8c7bdac957b62fb2d71689dec692058a",
+                  "worksheetId": "ms-g9-fac-01-b-r1"
+                },
+                {
+                  "key": "c",
+                  "label": "מצוינות",
+                  "pdfId": "7480f758805b4ae9aea2cc4bcc57100a",
+                  "labelSource": "edition",
+                  "viewerLevel": "E",
+                  "learningId": "g9-t2-c-e-ms-20261115-fac-01-r1",
+                  "nativeExportSha256": "585e043032618e705b1e13844d196e08992b1bf9419c47daa21cf09d7e0c4b82",
+                  "pdfSha256": "d36ee58b1ef7a0d8d56ad12c83ac67f9f412c2602635d23c912e9320bab76ae1",
+                  "revision": 1,
+                  "sourceSha256": "90a85a76b2cb0854bed42e2067010e71c4fc35d101f5994fcbe1d9a8929d4a5a",
+                  "worksheetId": "ms-g9-fac-01-c-r1"
+                }
+              ],
+              "publicationMode": "pdf-only",
+              "routing": {
+                "resolvedNoamPrefix": "G9-T87",
+                "aiHintShown": false,
+                "usesViewer": false,
+                "viewerPath": "worksheet-viewer-noam.html",
+                "siblingPdfQuery": {
+                  "pa": "2d4ba0fc410d4aadb67c9a2caa548b02",
+                  "pb": "0b462c30ee8844c5b4d131c84ba73b4d",
+                  "pc": "7480f758805b4ae9aea2cc4bcc57100a"
+                }
+              },
+              "status": "published"
+            }
+          ]
         },
         {
           "id": 41,
@@ -11782,6 +12150,41 @@
               "pb": "633bb6f33db64de2ad892ef5fd645407",
               "pc": "93dabb7c536e4aff911389c28531c691"
             }
+          }
+        },
+        {
+          "id": 47,
+          "title": "משוואות רציונליות",
+          "description": "תחום הצבה, פירוק מכנים לגורמים וקבילות פתרונות. קובצי PDF בשלוש רמות.",
+          "group": "alg",
+          "icon": "frac",
+          "publicationMode": "pdf-only",
+          "levels": [
+            {
+              "key": "a",
+              "label": "רמה א׳",
+              "pdfId": "04786c9d5ed04b30a67480e192b4706f",
+              "labelSource": "default"
+            },
+            {
+              "key": "b",
+              "label": "רמה ב׳",
+              "pdfId": "54ed203698a141cda131ccf08f274a2c",
+              "labelSource": "default"
+            },
+            {
+              "key": "c",
+              "label": "רמת מצוינות",
+              "pdfId": "1bbc10333cf74e6fa251ed34575e6320",
+              "labelSource": "default"
+            }
+          ],
+          "routing": {
+            "resolvedNoamPrefix": null,
+            "aiHintShown": false,
+            "usesViewer": false,
+            "viewerPath": null,
+            "siblingPdfQuery": {}
           }
         },
         {
@@ -12069,6 +12472,64 @@
                 }
               },
               "status": "published"
+            },
+            {
+              "editionId": "ms-20261113-par-04-r1",
+              "label": "טרפז שווה־שוקיים: תוצאות מתכונות המקבילית · PDF",
+              "levels": [
+                {
+                  "key": "a",
+                  "label": "רמה א׳",
+                  "pdfId": "d1af58a5e73745faba0aba254b4e2c6c",
+                  "labelSource": "edition",
+                  "viewerLevel": "A",
+                  "learningId": "g9-t7-a-e-ms-20261113-par-04-r1",
+                  "nativeExportSha256": "0c766fa48c85fd3300e2bbbfd029567a6c5ff89904a6d55fa3ffe742106c4d6e",
+                  "pdfSha256": "ec202fb447f9aeea0ef1b0593e7bb22092280dfa422184e5c7d54209afcd6aaa",
+                  "revision": 1,
+                  "sourceSha256": "eaab4d520ec37605a74611c2623bf608af49ee26f2f0af804cb3266076be0d87",
+                  "worksheetId": "ms-g9-par-04-a-r1"
+                },
+                {
+                  "key": "b",
+                  "label": "רמה ב׳",
+                  "pdfId": "e957f5b06d514375a1fc32c468a250a1",
+                  "labelSource": "edition",
+                  "viewerLevel": "B",
+                  "learningId": "g9-t7-b-e-ms-20261113-par-04-r1",
+                  "nativeExportSha256": "f94b6288907f3dbf96c078f1a57b6e2654ccc59dee2f2193ec2eef90015e574a",
+                  "pdfSha256": "3a19bdd58a942b5766b97bf5e826bde1ef9fcc08ae58bbce51fe5e7bba093a8d",
+                  "revision": 1,
+                  "sourceSha256": "d4252a5c4b2ef4faaecf45c3edb85c4f92e19955acab76a25d4ccfb13753a742",
+                  "worksheetId": "ms-g9-par-04-b-r1"
+                },
+                {
+                  "key": "c",
+                  "label": "מצוינות",
+                  "pdfId": "bf58cc24b85643c798c77049ebf619b8",
+                  "labelSource": "edition",
+                  "viewerLevel": "E",
+                  "learningId": "g9-t7-c-e-ms-20261113-par-04-r1",
+                  "nativeExportSha256": "20ab9c26aabd95c9dcc6fe292e6b750035d62cbea0978baabc18297e8a648a6b",
+                  "pdfSha256": "eb2e4e9dc34210626e5b4b1bed8ed479e119decb2cda7f5928d979030af33365",
+                  "revision": 1,
+                  "sourceSha256": "125b29153709c540f407920595bf7691b8bc55ecd5b655e415d2ea9fcdf4df84",
+                  "worksheetId": "ms-g9-par-04-c-r1"
+                }
+              ],
+              "publicationMode": "pdf-only",
+              "routing": {
+                "resolvedNoamPrefix": "G9-T90",
+                "aiHintShown": false,
+                "usesViewer": false,
+                "viewerPath": "worksheet-viewer-noam.html",
+                "siblingPdfQuery": {
+                  "pa": "d1af58a5e73745faba0aba254b4e2c6c",
+                  "pb": "e957f5b06d514375a1fc32c468a250a1",
+                  "pc": "bf58cc24b85643c798c77049ebf619b8"
+                }
+              },
+              "status": "published"
             }
           ]
         },
@@ -12190,6 +12651,41 @@
           }
         },
         {
+          "id": 48,
+          "title": "משולש ישר־זווית — התיכון ליתר",
+          "description": "התיכון ליתר, המשפט ההפוך ותרגול בשילוב מרובעים ומערכת צירים. קובצי PDF בשלוש רמות.",
+          "group": "geo",
+          "icon": "tritick",
+          "publicationMode": "pdf-only",
+          "levels": [
+            {
+              "key": "a",
+              "label": "רמה א׳",
+              "pdfId": "eb99b4fb3e4d47f5b96e4f2dcfb10bf2",
+              "labelSource": "default"
+            },
+            {
+              "key": "b",
+              "label": "רמה ב׳",
+              "pdfId": "703b2b73edb949e4a06efa8a02d7476e",
+              "labelSource": "default"
+            },
+            {
+              "key": "c",
+              "label": "רמת מצוינות",
+              "pdfId": "ce41b853212749c09efc3d466a8e9ddf",
+              "labelSource": "default"
+            }
+          ],
+          "routing": {
+            "resolvedNoamPrefix": null,
+            "aiHintShown": false,
+            "usesViewer": false,
+            "viewerPath": null,
+            "siblingPdfQuery": {}
+          }
+        },
+        {
           "id": 11,
           "title": "המלבן",
           "description": "זיהוי מלבן, תכונות הצלעות והזוויות, אלכסונים, פיתגורס, שטח, היקף והוכחות.",
@@ -12226,7 +12722,68 @@
               "pb": "543140ba72214305b7f76c4318d6c941",
               "pc": "594e3b89f7194ad49c73b740f40dd37f"
             }
-          }
+          },
+          "defaultEditionId": "legacy",
+          "editions": [
+            {
+              "editionId": "ms-20261115-rec-01-r1",
+              "label": "מלבן — תכונות ומשפטים הפוכים — PDF",
+              "levels": [
+                {
+                  "key": "a",
+                  "label": "רמה א׳",
+                  "pdfId": "d9db352e798e4dc78df2602580adef0b",
+                  "labelSource": "edition",
+                  "viewerLevel": "A",
+                  "learningId": "g9-t11-a-e-ms-20261115-rec-01-r1",
+                  "nativeExportSha256": "bfa6447dd8921210fe6393abeff01e8bea01ff6dea13e9e754b0db8c9690d095",
+                  "pdfSha256": "562d22df09dd1290c32780c2a7a06ce3cd909b01f03745a1811ce4ab486ed1c5",
+                  "revision": 1,
+                  "sourceSha256": "b5544c8335d26441887c2d3769235b86b87cffd4e101d3274267fc7b7288e6e4",
+                  "worksheetId": "ms-g9-rec-01-a-r1"
+                },
+                {
+                  "key": "b",
+                  "label": "רמה ב׳",
+                  "pdfId": "ea3bd0b483644b61bb001e56b8bba09d",
+                  "labelSource": "edition",
+                  "viewerLevel": "B",
+                  "learningId": "g9-t11-b-e-ms-20261115-rec-01-r1",
+                  "nativeExportSha256": "6b8b3ccfea3d0006f5c007e225214daaa0a571dd0aa6574da337c8225b32877a",
+                  "pdfSha256": "6b9bd976d0cc8eb0ae9d48e446d86d9699c8151fe7fdf7b33ef0d45768bb4a7c",
+                  "revision": 1,
+                  "sourceSha256": "64be0f6b1264a29175cd4ebae27c1fa2e7e6981d1e079a2a8724c51c9dec058f",
+                  "worksheetId": "ms-g9-rec-01-b-r1"
+                },
+                {
+                  "key": "c",
+                  "label": "מצוינות",
+                  "pdfId": "e5c9abeff29046cd87e733db0b4debc9",
+                  "labelSource": "edition",
+                  "viewerLevel": "E",
+                  "learningId": "g9-t11-c-e-ms-20261115-rec-01-r1",
+                  "nativeExportSha256": "5edc0863b32fca3d5496446c1f68ad54ca874d5b8e445604b5f212a15ce6665b",
+                  "pdfSha256": "aed3ad4cdeddfd7db2f49a3a454a854edbca684c60f0c1abd80d42e27e1637f9",
+                  "revision": 1,
+                  "sourceSha256": "3b77b54d3cf48d688072fde328824ef5af68b3fc7c06646b27e753a356bfc73c",
+                  "worksheetId": "ms-g9-rec-01-c-r1"
+                }
+              ],
+              "publicationMode": "pdf-only",
+              "routing": {
+                "resolvedNoamPrefix": "G9-T95",
+                "aiHintShown": false,
+                "usesViewer": false,
+                "viewerPath": "worksheet-viewer-noam.html",
+                "siblingPdfQuery": {
+                  "pa": "d9db352e798e4dc78df2602580adef0b",
+                  "pb": "ea3bd0b483644b61bb001e56b8bba09d",
+                  "pc": "e5c9abeff29046cd87e733db0b4debc9"
+                }
+              },
+              "status": "published"
+            }
+          ]
         },
         {
           "id": 12,

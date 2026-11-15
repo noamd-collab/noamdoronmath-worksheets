@@ -1,0 +1,199 @@
+{
+  "slug": "median-to-hypotenuse-grade-9",
+  "path": "/median-to-hypotenuse-grade-9",
+  "grade": 9,
+  "sourceUrl": "https://www.noamdoronmath.co.il/median-to-hypotenuse-grade-9",
+  "fetchedAt": "2026-11-15T10:41:37.997807+00:00",
+  "verifiedVia": "authored-catalog-gap-med01-pdf-review-20261115",
+  "title": "משולש ישר זווית — התיכון ליתר לכיתה ט׳ | נועם דורון",
+  "description": "דפי עבודה לכיתה ט׳ בנושא התיכון ליתר במשולש ישר זווית: חישוב אורכים, נימוק ושילוב המשפט במרובעים ובמערכת צירים. שלוש רמות PDF עם תשובות סופיות.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "משולש ישר זווית — התיכון ליתר לכיתה ט׳",
+  "intro": "במשולש ישר זווית, התיכון ליתר שווה למחצית היתר. מתרגלים זיהוי של התיכון, חישוב אורכים ונימוקים, ובהמשך משלבים את המשפט במרובעים ובמערכת צירים. כאן זמינים שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+  "sections": [
+    {
+      "heading": "מה מתרגלים בדפים?",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "התרגול מתמקד בתיכון ליתר במשולש ישר זווית, במשפט ההפוך ובשילוב במרובעים ובמערכת צירים. זו חבילת תרגול ממוקדת; לפני שימוש במשפט בודקים שהזווית ישרה ושהקטע מגיע לאמצע היתר.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "דוגמה פתורה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "במשולש ABC הזווית A ישרה. הנקודה M היא אמצע היתר BC, ואורך BC הוא 16 ס״מ. לפי משפט התיכון ליתר, AM שווה למחצית BC ולכן אורכו 8 ס״מ. גם BM ו־CM שווים ל־8 ס״מ.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "במשולש ישר זווית אורך התיכון ליתר הוא 11 ס״מ. מה אורך היתר? לפי המשפט, היתר ארוך פי שניים מהתיכון ולכן אורכו 22 ס״מ.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "updatedLine": null,
+  "updatedLinePlacement": "absent",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "מה אומר משפט התיכון ליתר?",
+      "answer": "במשולש ישר זווית, התיכון היוצא מקודקוד הזווית הישרה אל היתר שווה למחצית היתר."
+    },
+    {
+      "question": "מתי אפשר להשתמש במשפט ההפוך?",
+      "answer": "כאשר במשולש תיכון לצלע שווה למחצית אותה צלע, הזווית שמול הצלע היא זווית ישרה. יש לוודא שהקטע הנתון הוא תיכון."
+    },
+    {
+      "question": "מה כוללים דפי העבודה?",
+      "answer": "שלוש רמות: א׳, ב׳ ומצוינות. בכל קובץ שש שאלות ובהן שמונה־עשר סעיפים, מקום לפתרון ולשרטוט ותשובות סופיות בסוף."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "authored-visible+jsonld",
+      "items": [
+        {
+          "question": "מה אומר משפט התיכון ליתר?",
+          "answer": "במשולש ישר זווית, התיכון היוצא מקודקוד הזווית הישרה אל היתר שווה למחצית היתר."
+        },
+        {
+          "question": "מתי אפשר להשתמש במשפט ההפוך?",
+          "answer": "כאשר במשולש תיכון לצלע שווה למחצית אותה צלע, הזווית שמול הצלע היא זווית ישרה. יש לוודא שהקטע הנתון הוא תיכון."
+        },
+        {
+          "question": "מה כוללים דפי העבודה?",
+          "answer": "שלוש רמות: א׳, ב׳ ומצוינות. בכל קובץ שש שאלות ובהן שמונה־עשר סעיפים, מקום לפתרון ולשרטוט ותשובות סופיות בסוף."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/triangle-median-grade-8",
+      "label": "תיכון במשולש",
+      "productionHref": "https://www.noamdoronmath.co.il/triangle-median-grade-8"
+    },
+    {
+      "path": "/rectangle-grade-9",
+      "label": "המלבן",
+      "productionHref": "https://www.noamdoronmath.co.il/rectangle-grade-9"
+    },
+    {
+      "path": "/analytic-geometry-grade-9",
+      "label": "גיאומטריה אנליטית",
+      "productionHref": "https://www.noamdoronmath.co.il/analytic-geometry-grade-9"
+    }
+  ],
+  "catalogCta": {
+    "href": "/worksheets?grade=9&topic=48",
+    "catalogTopicId": 48,
+    "catalogTopicTitle": "משולש ישר־זווית — התיכון ליתר",
+    "label": "בחירת רמה ופתיחת PDF",
+    "source": "authored-reviewed-pdf-intake"
+  },
+  "catalogCtas": [
+    {
+      "href": "/worksheets?grade=9&topic=48",
+      "catalogTopicId": 48,
+      "catalogTopicTitle": "משולש ישר־זווית — התיכון ליתר",
+      "label": "בחירת רמה ופתיחת PDF",
+      "source": "authored-reviewed-pdf-intake"
+    }
+  ],
+  "gradeHubHref": "/grade-9",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/median-to-hypotenuse-grade-9#webpage",
+        "url": "https://www.noamdoronmath.co.il/median-to-hypotenuse-grade-9",
+        "name": "משולש ישר זווית — התיכון ליתר לכיתה ט׳ | נועם דורון",
+        "description": "דפי עבודה לכיתה ט׳ בנושא התיכון ליתר במשולש ישר זווית: חישוב אורכים, נימוק ושילוב המשפט במרובעים ובמערכת צירים. שלוש רמות PDF עם תשובות סופיות.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/median-to-hypotenuse-grade-9#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/median-to-hypotenuse-grade-9#learning-resource",
+        "name": "משולש ישר זווית — התיכון ליתר לכיתה ט׳",
+        "url": "https://www.noamdoronmath.co.il/median-to-hypotenuse-grade-9",
+        "description": "דפי עבודה לכיתה ט׳ בנושא התיכון ליתר במשולש ישר זווית: חישוב אורכים, נימוק ושילוב המשפט במרובעים ובמערכת צירים. שלוש רמות PDF עם תשובות סופיות.",
+        "educationalLevel": "כיתה ט׳",
+        "learningResourceType": "דפי עבודה",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/median-to-hypotenuse-grade-9#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "מה אומר משפט התיכון ליתר?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "במשולש ישר זווית, התיכון היוצא מקודקוד הזווית הישרה אל היתר שווה למחצית היתר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "מתי אפשר להשתמש במשפט ההפוך?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כאשר במשולש תיכון לצלע שווה למחצית אותה צלע, הזווית שמול הצלע היא זווית ישרה. יש לוודא שהקטע הנתון הוא תיכון."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "מה כוללים דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "שלוש רמות: א׳, ב׳ ומצוינות. בכל קובץ שש שאלות ובהן שמונה־עשר סעיפים, מקום לפתרון ולשרטוט ותשובות סופיות בסוף."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

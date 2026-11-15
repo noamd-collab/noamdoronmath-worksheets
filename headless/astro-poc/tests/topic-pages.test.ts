@@ -144,26 +144,29 @@ describe('topic page routes (HEADLESS-MIGRATION-18/19/20)', () => {
     }
   });
 
-  it('preserves production updatedLine when present; absent when production has none', () => {
+  it('preserves production or reviewed content update dates; absent when production has none', () => {
     const expectedPresent: Record<string, string> = {
-      'signed-numbers-grade-7': 'נועם דורון מתמטיקה · עודכן 8.9.2026',
+      // EQN01/SGN01/FAC01 PDF practice and scope sections added 15.11.2026.
+      'signed-numbers-grade-7': 'נועם דורון מתמטיקה · עודכן 15.11.2026',
       'pythagorean-theorem-grade-8': 'נועם דורון מתמטיקה · עודכן 12.9.2026',
       'quadratic-function-grade-9': 'נועם דורון מתמטיקה · עודכן 12.9.2026',
-      'equations-basics-grade-7': 'נועם דורון מתמטיקה · עודכן 12.9.2026',
+      'equations-basics-grade-7': 'נועם דורון מתמטיקה · עודכן 15.11.2026',
       'linear-function-grade-8': 'נועם דורון מתמטיקה · עודכן 16.9.2026',
       'triangle-congruence-grade-8': 'נועם דורון מתמטיקה · עודכן 12.9.2026',
       // Content added 2.11.2026 (content-corrections.json, SEO audit M03).
       'quadratic-equations-grade-9': 'נועם דורון מתמטיקה · עודכן 2.11.2026',
-      'rectangle-grade-9': 'נועם דורון מתמטיקה · עודכן 12.9.2026',
+      // Additional PDF content and related lesson link added 15.11.2026 (PR478).
+      'rectangle-grade-9': 'נועם דורון מתמטיקה · עודכן 15.11.2026',
       'pythagorean-theorem-grade-7': 'נועם דורון מתמטיקה · עודכן 12.9.2026',
       'algebraic-expressions-grade-7': 'נועם דורון מתמטיקה · עודכן 12.9.2026',
       'powers-grade-7': 'נועם דורון מתמטיקה · עודכן 12.9.2026',
       'systems-of-equations-grade-8': 'נועם דורון מתמטיקה · עודכן 12.9.2026',
       'statistics-grade-8': 'נועם דורון מתמטיקה · עודכן 16.9.2026',
       'similar-triangles-grade-8': 'נועם דורון מתמטיקה · עודכן 12.9.2026',
-      'factoring-grade-9': 'נועם דורון מתמטיקה · עודכן 12.9.2026',
+      'factoring-grade-9': 'נועם דורון מתמטיקה · עודכן 15.11.2026',
       'linear-function-grade-9': 'נועם דורון מתמטיקה · עודכן 16.9.2026',
-      'parallelogram-grade-9': 'נועם דורון מתמטיקה · עודכן 16.9.2026',
+      // T90 PDF practice and scope section added 15.11.2026.
+      'parallelogram-grade-9': 'נועם דורון מתמטיקה · עודכן 15.11.2026',
       'square-grade-9': 'נועם דורון מתמטיקה · עודכן 12.9.2026',
     };
     for (const [slug, line] of Object.entries(expectedPresent)) {

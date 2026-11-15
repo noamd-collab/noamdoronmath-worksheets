@@ -1562,6 +1562,8 @@ textarea:focus{
   outline-offset:2px;
 }
 .noam-draw-action:disabled{cursor:wait;opacity:.65}
+/* Temporary drawing-request pause; keep existing source-diagram enlargement available. */
+#noamDraw,.noam-draw-action:not(.noam-diagram-expand){display:none!important}
 /* Expand an existing diagram independently of the short chat scrollport. */
 .noam-diagram-expand{min-height:44px;font-size:15px}
 .noam-diagram-expandable{cursor:pointer}

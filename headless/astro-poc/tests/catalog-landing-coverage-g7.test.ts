@@ -36,7 +36,17 @@ describe(`grade ${GRADE} catalog landing coverage`, () => {
       const page = loadTopicPage(slug);
       assert.equal(page.grade, GRADE, slug);
       assert.match(page.verifiedVia ?? '', /^authored-catalog-gap/, slug);
-      assert.equal(page.catalogCtas.length, 1, slug);
+      const isFrequencyWithReviewedSupplement = slug === 'frequency-grade-7';
+      assert.equal(page.catalogCtas.length, isFrequencyWithReviewedSupplement ? 2 : 1, slug);
+      if (isFrequencyWithReviewedSupplement) {
+        assert.deepEqual(page.catalogCtas.map((cta) => cta.catalogTopicId), [25, 26],
+          'Keep frequency topic 25 primary and add only the reviewed topic 26 supplement');
+        const supplement = page.catalogCtas[1];
+        assert.equal(supplement.href, '/worksheets?grade=7&topic=26');
+        assert.equal(supplement.catalogTopicTitle, topics.get(26)!.title);
+        assert.equal(supplement.label, 'טבלאות שכיחות ושכיחות יחסית — תרגול נוסף');
+        assert.ok(topics.get(26)!.levels.every((level) => level.pdfId));
+      }
       const topicId = page.catalogCtas[0].catalogTopicId!;
       assert.equal(page.catalogCtas[0].href, `/worksheets?grade=${GRADE}&topic=${topicId}`, slug);
       const topic = topics.get(topicId);

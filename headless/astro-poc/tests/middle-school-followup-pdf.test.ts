@@ -9,6 +9,7 @@ import { topicWorksheetEditionLinks } from '../src/lib/topicWorksheetEditions';
 import { buildTeacherCatalog } from '../scripts/build-teacher-catalog.mjs';
 import { buildTeacherLandingCatalog, getTeacherLandingScope } from '../src/lib/teacherLandingCatalog';
 import { readFirst567Activation } from './helpers/first567Activation';
+import { reviewedEqnSgnFacIds } from './fixtures/eqn-sgn-fac-pdf';
 
 const read = (path: string) => JSON.parse(readFileSync(new URL(path, import.meta.url), 'utf8'));
 const registry = read('../../catalog/worksheet-editions.v1.json');
@@ -66,7 +67,7 @@ test('parallelogram landing exposes all focused sets without changing legacy def
       previous.grades.find(g => g.grade === grade.grade)!.topics.find(before => before.id === t.id));
   }
   const groups = topicWorksheetEditionLinks(catalog, 9, 7, '/worksheets?grade=9&topic=7');
-  assert.deepEqual(groups.map(g => g.editionId), ['legacy', 'ms-20261113-par-r1', ...ids]);
+  assert.deepEqual(groups.map(g => g.editionId), ['legacy', 'ms-20261113-par-r1', ...ids, 'ms-20261113-par-04-r1']);
   assert.deepEqual(groups[0], topicWorksheetEditionLinks(previous, 9, 7, '/worksheets?grade=9&topic=7')[0]);
   for (const row of additions) {
     const selected = resolveEdition(currentTopic, row.editionId);
@@ -109,7 +110,33 @@ test('manifest sync omits unactivated PDFs while retaining legacy and verified e
   assert.deepEqual(collectViewerPdfIds(catalog), collectViewerPdfIds(previous));
   const selected = new Set(collectViewerPdfIds(catalog));
   const allPdfOnly = registry.editions.filter((e: any) => e.publicationMode === 'pdf-only');
-  assert.equal(allPdfOnly.flatMap((e: any) => e.levels).length, 18);
+  // Preserve the original eighteen-level boundary and separately fence the
+  // later algebra and frequency PDFs, which must not gain viewer/hint activation.
+  const algebraId = 'ms-20261115-alg-01-r1';
+  const frequencyId = 'ms-20261115-frq-01-r1';
+  assert.equal(allPdfOnly.filter((e: any) => ![algebraId, frequencyId, 'ms-20261115-prb-01-r1', 'ms-20261115-rec-01-r1', 'ms-20261113-par-04-r1', ...reviewedEqnSgnFacIds].includes(e.editionId)).flatMap((e: any) => e.levels).length, 18);
+  const algebra = allPdfOnly.filter((e: any) => e.editionId === algebraId);
+  assert.equal(algebra.length, 1);
+  assert.equal(algebra[0].grade, 7); assert.equal(algebra[0].topicId, 22);
+  assert.equal(algebra[0].nativePrefix, 'G7-T87');
+  const algebraPdfIds = ['b376976911234b758027329c9ea05cbf',
+    'b6a76fb3eccd477b9788958efefbded2', '0fe476657595498194b93cdc46e39e5f'];
+  assert.deepEqual(algebra[0].levels.map((level: any) => level.pdfId), algebraPdfIds);
+  for (const pdfId of algebraPdfIds) {
+    assert.equal(activation.units.has(pdfId), false, 'new algebra PDF has no activation');
+    assert.equal(selected.has(pdfId), false, 'new algebra PDF stays out of viewer sync');
+  }
+  const frequency = allPdfOnly.filter((e: any) => e.editionId === frequencyId);
+  assert.equal(frequency.length, 1);
+  assert.equal(frequency[0].grade, 7); assert.equal(frequency[0].topicId, 26);
+  assert.equal(frequency[0].nativePrefix, 'G7-T88');
+  const frequencyPdfIds = ['941793a9b6614849bd5b7465c894ba87',
+    '6cdddaac6d8c472580f2be5b4bdd0323', '659db2eb8dab43aaae976e9a669d503b'];
+  assert.deepEqual(frequency[0].levels.map((level: any) => level.pdfId), frequencyPdfIds);
+  for (const pdfId of frequencyPdfIds) {
+    assert.equal(activation.units.has(pdfId), false, 'new frequency PDF has no activation');
+    assert.equal(selected.has(pdfId), false, 'new frequency PDF stays out of viewer sync');
+  }
   for (const e of allPdfOnly) for (const level of e.levels) {
     assert.equal(selected.has(level.pdfId), activation.units.has(level.pdfId), `${e.editionId}/${level.key}`);
   }

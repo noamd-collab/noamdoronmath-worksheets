@@ -27,6 +27,7 @@ const crypto = require('node:crypto');
 const { loadIndexCatalog, buildCatalog, validateCatalog, stableStringify, resolvedNoamPrefix } = require('../scripts/lib/headless-catalog.cjs');
 
 const { mergeWorksheetEditions } = require('../scripts/lib/worksheet-editions.cjs');
+const { isPdfOnlyTopic } = require('../scripts/lib/base-worksheet-publication.mjs');
 const { loadRamziActivationEvidence, validateRamziActivation } = require('../scripts/lib/worksheet-ramzi-activation.cjs');
 
 const SEVERITIES = ['error', 'warning', 'review', 'info'];
@@ -427,6 +428,7 @@ function learningOutputs(raw, registry, activationEvidence) {
   const items = [];
   for (const [g, data] of Object.entries(raw.DATA)) {
     for (const t of data.topics) {
+      if (isPdfOnlyTopic(t)) continue;
       const row = data.links[t.id] || {};
       for (const l of ['a', 'b', 'c', 'c2', 'one']) {
         if (!row[l]) continue;
@@ -536,6 +538,8 @@ function checkManifests(au, raw, pdfOwners) {
   for (const [id, owners] of [...pdfOwners.entries()].sort((a, b) => cmp(a[0], b[0]))) {
     for (const o of owners) {
       if (!middle.has(o.grade)) continue; // elementary sheets open as plain PDFs; no viewer manifest
+      const topic = raw.DATA[o.grade]?.topics?.find((item) => item.id === o.topicId);
+      if (isPdfOnlyTopic(topic)) continue; // explicitly validated first PDF publication, not viewer-ready
       const m = manifests.get(id);
       const src = `${P.manifests}/${id}.json`;
       if (!m) {
@@ -543,7 +547,6 @@ function checkManifests(au, raw, pdfOwners) {
         continue;
       }
       matched++;
-      const topic = raw.DATA[o.grade]?.topics?.find((item) => item.id === o.topicId);
       const row = raw.DATA[o.grade]?.links?.[o.topicId] || {};
       const sourceGrade = row.sourceGrade || o.grade;
       const prefix = row.sourcePrefix || (topic && resolvedNoamPrefix(topic, o.grade, raw.NOAM_PREFIX_FALLBACK));

@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { beforeEqnSgnFacCopy } from './eqn-sgn-fac-pdf';
 
 /** PR456's exact reviewed copy change. Historical production captures stay intact.
  * Tests reverse only these five fields per page, after requiring their new values;
@@ -22,6 +23,20 @@ export const PDF_ONLY_TOPIC_COPY = {
 } as const;
 
 export function restoreBeforePdfCopy<T>(slug: string, page: T): T {
+  page = beforeEqnSgnFacCopy(slug, page);
+  // New PDF editions added real content on this date; retain old live captures.
+  const previousUpdates: Record<string, string> = {
+    'rectangle-grade-9': 'נועם דורון מתמטיקה · עודכן 12.9.2026',
+    'relative-frequency-experiments-grade-7': 'נועם דורון מתמטיקה · עודכן 10.11.2026',
+    'parallelogram-grade-9': 'נועם דורון מתמטיקה · עודכן 16.9.2026',
+  };
+  const previousUpdate = previousUpdates[slug];
+  if (previousUpdate) {
+    const restored: any = structuredClone(page);
+    assert.equal(restored.updatedLine, 'נועם דורון מתמטיקה · עודכן 15.11.2026');
+    restored.updatedLine = previousUpdate;
+    return restored;
+  }
   const change = PDF_ONLY_TOPIC_COPY[slug as keyof typeof PDF_ONLY_TOPIC_COPY];
   if (!change) return page;
   const restored: any = structuredClone(page);

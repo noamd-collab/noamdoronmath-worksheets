@@ -36,6 +36,8 @@ export interface CatalogTopic {
   icon: string;
   parent?: number;
   noamTopicId?: string;
+  /** First publication: files only, before teacher questions or progress integration. */
+  publicationMode?: 'pdf-only';
   levels: CatalogLevel[];
   routing: CatalogRouting;
   /** Published additions only; levels/routing above keep their legacy meaning. */
@@ -98,6 +100,8 @@ export interface CatalogGrade {
 export interface CatalogV1 {
   /** Build-verified, public-only activation proof summary; revalidated against registry at load. */
   ramziActivation?: unknown;
+  /** Optional applied correction evidence; the original activation remains historical and immutable. */
+  ramziHintCorrection?: unknown;
   contractVersion: number;
   sourceOfTruth: { path: string; authoritative: boolean; note?: string };
   config: {

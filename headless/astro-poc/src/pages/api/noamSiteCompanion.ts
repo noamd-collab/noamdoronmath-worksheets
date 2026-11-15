@@ -8,8 +8,7 @@ import type { APIRoute } from 'astro';
 import { monitoring } from '@wix/essentials';
 import { NOAM_RECAPTCHA_SECRET_KEY, NOAM_RECAPTCHA_V2_SITE_KEY, NOAM_RECAPTCHA_V2_SECRET_KEY, QWEN_API_KEY, QWEN_BASE_URL, QWEN_MODEL } from 'astro:env/server';
 import catalog from '../../data/catalog.v1.json';
-import guide from '../../data/site-guide.v1.json';
-import teacherIndex from '../../data/teacher-pick-index.json';
+import { loadCompanionWorkerData } from '../../lib/companionWorkerData';
 import {
   NOAM_RECAPTCHA_SECRET_NAME,
   NOAM_RECAPTCHA_V2_SITE_KEY_NAME,
@@ -101,8 +100,7 @@ async function respond(context: Parameters<APIRoute>[0]): Promise<Response> {
     requestHost,
     clientIp: clientIpOf(context),
     catalog,
-    guide,
-    teacherIndex,
+    loadStaticData: loadCompanionWorkerData,
     payload,
     fetch: globalThis.fetch.bind(globalThis),
     recaptchaBypass: recaptchaBypassFromEnv(runtimeProcessEnv(), requestHost),

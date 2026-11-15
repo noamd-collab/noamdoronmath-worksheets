@@ -27,7 +27,7 @@ export function loadCatalog(): CatalogV1 {
     ...data.config,
     pdfBase: normalizePdfBase(data.config.pdfBase),
   };
-  return mergeWorksheetEditions(data, editionRegistry, data.ramziActivation) as CatalogV1;
+  return mergeWorksheetEditions(data, editionRegistry, data.ramziActivation, data.ramziHintCorrection) as CatalogV1;
 }
 
 export type { CatalogV1 };

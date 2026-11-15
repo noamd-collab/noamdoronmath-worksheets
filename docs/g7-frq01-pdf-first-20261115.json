@@ -1,0 +1,160 @@
+{
+  "schema": "noam-pdf-only-edition-publication/v1",
+  "status": "review_candidate_not_published",
+  "grade": 7,
+  "topicId": 26,
+  "editionId": "ms-20261115-frq-01-r1",
+  "label": "טבלאות שכיחות ושכיחות יחסית — PDF",
+  "scope": "טבלאות שכיחות, שכיחות יחסית והשוואת חלקים בקבוצות; תרגול ממוקד עם תשובות סופיות.",
+  "isDefault": false,
+  "publicationMode": "pdf-only",
+  "sourcePackage": "G7-T88",
+  "sourceSheetId": "G7-FRQ-01",
+  "sourceProvenanceOnly": true,
+  "landing": "/relative-frequency-grade-7",
+  "levels": [
+    {
+      "key": "a",
+      "viewerLevel": "A",
+      "pdfId": "941793a9b6614849bd5b7465c894ba87",
+      "pdfSha256": "b2aea9500e62220cd66322cb775b4db49b52234bbaa18a80680c257c33514a75",
+      "worksheetId": "ms-g7-frq-01-a-r1",
+      "revision": 1,
+      "nativeExportSha256": "afb1bb278a4d3ddf999e237ee467e8e4e554bf55944e5f11ef18853bcd853670",
+      "sourceSha256": "e89fb1933f5670a99acab2df044c527095369b627f14ed62fd09b49c9271361a",
+      "pages": 6,
+      "questions": 6,
+      "subitems": 18,
+      "downloadChecks": [
+        {
+          "level": "a",
+          "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_941793a9b6614849bd5b7465c894ba87.pdf",
+          "pdfId": "941793a9b6614849bd5b7465c894ba87",
+          "sha256": "b2aea9500e62220cd66322cb775b4db49b52234bbaa18a80680c257c33514a75",
+          "bytes": 40382,
+          "matchesFrozenPdf": true
+        },
+        {
+          "level": "a",
+          "url": "https://static.wixstatic.com/ugd/d8e7ad_941793a9b6614849bd5b7465c894ba87.pdf",
+          "pdfId": "941793a9b6614849bd5b7465c894ba87",
+          "sha256": "b2aea9500e62220cd66322cb775b4db49b52234bbaa18a80680c257c33514a75",
+          "bytes": 40382,
+          "matchesFrozenPdf": true
+        },
+        {
+          "level": "a",
+          "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_941793a9b6614849bd5b7465c894ba87.pdf",
+          "pdfId": "941793a9b6614849bd5b7465c894ba87",
+          "sha256": "b2aea9500e62220cd66322cb775b4db49b52234bbaa18a80680c257c33514a75",
+          "bytes": 40382,
+          "matchesFrozenPdf": true
+        }
+      ]
+    },
+    {
+      "key": "b",
+      "viewerLevel": "B",
+      "pdfId": "6cdddaac6d8c472580f2be5b4bdd0323",
+      "pdfSha256": "5f411b0cb2ceaa8ddab056a3ce12ed20afa6fa4b152261372892a0d31601f351",
+      "worksheetId": "ms-g7-frq-01-b-r1",
+      "revision": 1,
+      "nativeExportSha256": "621b26a78b958b750610494d56ca1f5d782392705b0868c32b1d53933c7ea3d4",
+      "sourceSha256": "15e8467532b95f6a9f0b0be0b3be36f49be1485f22d49225eb0948e4ba595720",
+      "pages": 5,
+      "questions": 6,
+      "subitems": 18,
+      "downloadChecks": [
+        {
+          "level": "b",
+          "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_6cdddaac6d8c472580f2be5b4bdd0323.pdf",
+          "pdfId": "6cdddaac6d8c472580f2be5b4bdd0323",
+          "sha256": "5f411b0cb2ceaa8ddab056a3ce12ed20afa6fa4b152261372892a0d31601f351",
+          "bytes": 38767,
+          "matchesFrozenPdf": true
+        },
+        {
+          "level": "b",
+          "url": "https://static.wixstatic.com/ugd/d8e7ad_6cdddaac6d8c472580f2be5b4bdd0323.pdf",
+          "pdfId": "6cdddaac6d8c472580f2be5b4bdd0323",
+          "sha256": "5f411b0cb2ceaa8ddab056a3ce12ed20afa6fa4b152261372892a0d31601f351",
+          "bytes": 38767,
+          "matchesFrozenPdf": true
+        },
+        {
+          "level": "b",
+          "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_6cdddaac6d8c472580f2be5b4bdd0323.pdf",
+          "pdfId": "6cdddaac6d8c472580f2be5b4bdd0323",
+          "sha256": "5f411b0cb2ceaa8ddab056a3ce12ed20afa6fa4b152261372892a0d31601f351",
+          "bytes": 38767,
+          "matchesFrozenPdf": true
+        }
+      ]
+    },
+    {
+      "key": "c",
+      "viewerLevel": "E",
+      "pdfId": "659db2eb8dab43aaae976e9a669d503b",
+      "pdfSha256": "6ab22a1ee2a572ca44ac2c827ae2339b431b716ee4e534d1fff22ec78bc616f9",
+      "worksheetId": "ms-g7-frq-01-c-r1",
+      "revision": 1,
+      "nativeExportSha256": "6e7003641486b86681c439548dd210088aea37584c87f57e57fc9005d90e5963",
+      "sourceSha256": "0cdae0abf7028495ddcae052a4c06173db81c0d5eb23809094479f178631a130",
+      "pages": 6,
+      "questions": 6,
+      "subitems": 18,
+      "downloadChecks": [
+        {
+          "level": "c",
+          "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_659db2eb8dab43aaae976e9a669d503b.pdf",
+          "pdfId": "659db2eb8dab43aaae976e9a669d503b",
+          "sha256": "6ab22a1ee2a572ca44ac2c827ae2339b431b716ee4e534d1fff22ec78bc616f9",
+          "bytes": 40434,
+          "matchesFrozenPdf": true
+        },
+        {
+          "level": "c",
+          "url": "https://static.wixstatic.com/ugd/d8e7ad_659db2eb8dab43aaae976e9a669d503b.pdf",
+          "pdfId": "659db2eb8dab43aaae976e9a669d503b",
+          "sha256": "6ab22a1ee2a572ca44ac2c827ae2339b431b716ee4e534d1fff22ec78bc616f9",
+          "bytes": 40434,
+          "matchesFrozenPdf": true
+        },
+        {
+          "level": "c",
+          "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_659db2eb8dab43aaae976e9a669d503b.pdf",
+          "pdfId": "659db2eb8dab43aaae976e9a669d503b",
+          "sha256": "6ab22a1ee2a572ca44ac2c827ae2339b431b716ee4e534d1fff22ec78bc616f9",
+          "bytes": 40434,
+          "matchesFrozenPdf": true
+        }
+      ]
+    }
+  ],
+  "review": {
+    "status": "PDF_INTAKE_PASS_WITH_MINOR_NOTES",
+    "reviewedPages": 17,
+    "reviewedSubitems": 54,
+    "independentReviewSha256": "2d955a907987b9152fc14e22b0aa03e74480a17ae60bcdb875c45d7e29f5edca",
+    "minorNonblockingNotes": 4,
+    "writingSpacePreserved": true,
+    "wholePackagePass": false,
+    "mediaReadbackSha256": "b9c59f5e01db6fdd3f19889290f47b41c93c1d0f38131260d8e1d24cbf56384a",
+    "intakeManifestSha256": "bd98f4e5e92c4aea3b30b0a61e7139ec88176511077d1a9b4c11f171713b8d68",
+    "metadataSha256": "d904ce133d0f75d514141238d3ee8beca2e7353cefb96bdedae9a44e03801e43",
+    "rootDecisionSha256": "2994855ce2fe286f4bc2f9b837e23209a123087407deed15a26cd1008b8e7914"
+  },
+  "legacyPreserved": [
+    "grade 7 topics 25, 26 and 27",
+    "all prior PDFs, routing and defaults",
+    "learning/progress and teacher choices"
+  ],
+  "notActivated": [
+    "Ramzi or question-level hints",
+    "public native viewer or manifest",
+    "teacher question bank",
+    "learning/progress identities",
+    "Word",
+    "Supabase"
+  ]
+}

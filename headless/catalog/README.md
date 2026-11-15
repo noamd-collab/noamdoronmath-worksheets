@@ -84,3 +84,13 @@ The headless export **reads** `index.html`; it does not replace `tools/validate.
 ## Additive worksheet editions
 
 The separate [worksheet edition registry](worksheet-editions.md) adds published three-level packages while preserving every field and link in the legacy catalog. Existing elementary editions remain published; middle-school native bindings are supported without adding or activating any new publication.
+
+## First middle-school PDF publications
+
+A new base topic may explicitly set `publicationMode: "pdf-only"` in `index.html`.
+It still requires three real a/b/c PDF links; no empty legacy topic or synthetic
+media IDs are allowed. The marker survives the deterministic export and snapshot.
+It forbids native/viewer/hint routing and keeps the topic out of teacher question
+sources and learning/progress generation until a separately reviewed activation.
+The absence of a native prefix alone never changes existing legacy eligibility.
+This base-topic mode does not add an edition or waive edition provenance rules.
