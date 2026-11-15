@@ -313,6 +313,11 @@ test('actual SAO/WPC pages expose six PDFs while preserving legacy 38 and 41/40/
     assert.ok(links.every(l => l.textContent.includes('פתיחת PDF') && !l.textContent.includes('רמזי')));
     const ctas = [...hero.querySelectorAll('a[data-catalog-topic]')], topics = addition.grade === 7 ? [41, 40, 39] : [38];
     assert.deepEqual(ctas.map(l => Number(l.getAttribute('data-catalog-topic'))), topics);
+    const followingGroups = [...document.querySelectorAll('.exact-topic[data-topic-slug="equations-both-sides-word-problems-grade-7"] .exact-topic-copy > [data-topic-levels] + .topic-page__cta-row')];
+    assert.deepEqual(followingGroups, addition.grade === 7 ? ctas.slice(1).map(cta => cta.parentElement) : [],
+      'only the second and third WPC groups receive separation; not the first CTA or SAO');
+    assert.deepEqual(followingGroups.map(group => group.previousElementSibling?.id),
+      addition.grade === 7 ? ['topic-levels', 'topic-levels-hero-40'] : []);
     let legacyLinks = 0;
     for (const [i, cta] of ctas.entries()) {
       const topicId = topics[i], target = cta.getAttribute('href')!;

@@ -5,7 +5,7 @@
 - Attributed independent review reports assess 72 parts and 24 pages per package; this integration rechecks exact source/PDF pins and 24 actual media downloads. No claim of repeated full visual/math review. SIM9 exportK6/D8 and all density/Word/hint holds remain.
 - Three existing landing pages distinguish printable PDFs from existing Ramzi worksheets. No sourcePDF edits, new native/hint activation, database writes, model changes or publication.
 - Exact sanitized binding: `docs/next12-pdf-first-20261115.json`. Focused checks are recorded externally; this draft does not claim full CI/build/UI completion.
-- Preview review found the perimeter downloads touching the next area CTA. A selector limited to this landing adds 24px between the two groups; links, internal controls and PDF bytes are unchanged. Visual recheck is recorded separately.
+- Preview review found consecutive worksheet groups touching on `area-rectangle-perimeter-grade-7` and `equations-both-sides-word-problems-grade-7`. Selectors limited to these two routes add 24px before each following group, including both boundaries between the three WPC topics; first CTAs, links, internal controls and PDF bytes are unchanged. Visual rechecks are recorded separately.
 
 ## 15 November 2026 — Combined EXT/SML/AFR/SAO/WPC PDF candidate
 
