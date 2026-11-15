@@ -13,6 +13,7 @@
 - PRB01 and REC01 are nondefault PDF-only editions. Preserve all existing PDF links, native viewer routes, teacher choices and learning/progress identities.
 - All27 media readbacks match the frozen PDF hashes. Public integration contains no private solutions, source exports, Word files or hints; native package IDs are provenance only. REC's D12 native-export findings remain held.
 - Candidate implementation is local and uncommitted. Focused checks, build and UI review are recorded in the handoff; no merge or publication is claimed.
+- PR478 SEO review: retain MED's authored prerequisite/application links, add its reciprocal rectangle link, synchronize the legacy catalog spelling, and update the two expanded landings to 15.11.2026. Worked examples now use 16→8 and 11→22, distinct from the frozen PDF problems; worksheet bytes and activation remain unchanged.
 
 
 - Add a non-default PDF-only edition to grade-seven topic 26: **טבלאות שכיחות ושכיחות יחסית — PDF**. Three reviewed files contain 54 subitems across 17 pages, with final answers and preserved working areas. Four minor explanation notes remain documented; the student PDFs were accepted in this limited scope.

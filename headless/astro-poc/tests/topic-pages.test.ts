@@ -154,7 +154,8 @@ describe('topic page routes (HEADLESS-MIGRATION-18/19/20)', () => {
       'triangle-congruence-grade-8': 'נועם דורון מתמטיקה · עודכן 12.9.2026',
       // Content added 2.11.2026 (content-corrections.json, SEO audit M03).
       'quadratic-equations-grade-9': 'נועם דורון מתמטיקה · עודכן 2.11.2026',
-      'rectangle-grade-9': 'נועם דורון מתמטיקה · עודכן 12.9.2026',
+      // Additional PDF content and related lesson link added 15.11.2026 (PR478).
+      'rectangle-grade-9': 'נועם דורון מתמטיקה · עודכן 15.11.2026',
       'pythagorean-theorem-grade-7': 'נועם דורון מתמטיקה · עודכן 12.9.2026',
       'algebraic-expressions-grade-7': 'נועם דורון מתמטיקה · עודכן 12.9.2026',
       'powers-grade-7': 'נועם דורון מתמטיקה · עודכן 12.9.2026',
