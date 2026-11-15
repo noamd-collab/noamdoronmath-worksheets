@@ -434,7 +434,7 @@ export async function handleNoamBotConfig(deps) {
 }
 
 export async function handleNoamSiteCompanion(request, deps) {
-  const settings = deps || {};
+  const settings = { ...(deps || {}) };
   const origin = settings.origin || "";
   const method = String((request && request.method) || "POST").toUpperCase();
   if (method === "OPTIONS") {
@@ -486,6 +486,17 @@ export async function handleNoamSiteCompanion(request, deps) {
       if (limited.wixError) probe.wixError = String(limited.wixError).slice(0, 300);
     }
     return jsonResponse(200, probe, origin);
+  }
+  // Worker-only lossless static data. Keep all prior admission/rate checks and
+  // OPTIONS/inactive responses ahead of loading; legacy callers remain direct.
+  if (typeof settings.loadStaticData === "function") {
+    try {
+      const data = await settings.loadStaticData();
+      settings.guide = data.guide;
+      settings.teacherIndex = data.teacherIndex;
+    } catch {
+      return jsonResponse(503, unavailableBody(), origin);
+    }
   }
   // Guide, topic order, and lesson picking do not call the model.
   // Answer them before reCAPTCHA so a failed check does not block a real visitor.
