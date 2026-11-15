@@ -1,3 +1,10 @@
+## 15 November 2026 — EQN01, SGN01 and FAC01 PDF candidate
+
+- Add nine exact student PDFs as three non-default editions: equation meaning and substitution (grade7/topic32), signed-number addition/subtraction (grade7/topic2), and factoring/basic quadratic equations (grade9/topic2). Preserve all legacy PDFs and existing defaults, including the equations landing’s topics23/34/32.
+- 234 source subitems passed independent mathematical review (208 recomputations and26 open/conceptual checks);27 of56 PDF pages were visually sampled, plus Root’s separate7-page sample. The producer attributes a complete56-page review to another task; no separate reviewer artifact is bound. Source/PDF bytes and working areas are unchanged; one minor SGN wording note remains.
+- All nine CDN responses matched the frozen PDF hashes. Public evidence contains only source hashes and sanitized review scope, not private answers or local paths. See [PDF provenance](eqn-sgn-fac-pdf-first-20261115.json).
+- Existing landing pages gain precise PDF scope and the real update date15.11.2026; general hint promises distinguish legacy viewer support from the additional PDFs. No native, Ramzi, teacher-question, learning, Word or Supabase activation is included. This is a local candidate, not publication approval or a live-site claim.
+
 ## 15 November 2026 — T90 isosceles trapezoid PDF candidate
 
 - Adds three non-default PDF worksheets on grade 9/topic 7, labelled “טרפז שווה־שוקיים: תוצאות מתכונות המקבילית · PDF”, through the existing parallelogram landing. The package has 72 subitems and 31 pages (10/10/11); original PDFs and writing space are unchanged.

@@ -1,4 +1,5 @@
 import { readFirst567Activation } from './helpers/first567Activation';
+import { beforeEqnSgnFacCatalog } from './fixtures/eqn-sgn-fac-pdf';
 /**
  * Exact-design release fence. These SHA-256 values were read from the verified
  * live baseline 8a098020, not from the redesigned candidate. They protect the
@@ -224,7 +225,8 @@ describe('exact-design protected live-baseline boundaries', () => {
         // Noam's elementary renewal adds exactly these four grade-one editions.
         // Strip only that reviewed addition, then require the complete prior
         // snapshot hash below, including the already released grade-three edition.
-        const catalog = JSON.parse(content);
+        // Reverse the exact three additional PDF overlays before all older fences.
+        const catalog = beforeEqnSgnFacCatalog(JSON.parse(content));
         // Reverse only the exact MED01 base topic; retain RAT47 and all older fences.
         const medGrade = catalog.grades.find((g: any) => g.grade === 9);
         const medIndex = medGrade.topics.findIndex((t: any) => t.id === 48);

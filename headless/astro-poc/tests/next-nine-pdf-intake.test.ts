@@ -13,6 +13,7 @@ import { loadTopicPage, extractJsonLdFaq, synthesizeBodyFlow } from '../src/lib/
 import { loadGradeHub } from '../src/lib/gradeHubs';
 import { topicLandingLoop } from '../src/lib/landingLoops';
 import { LESSON_LOOPS } from '../src/lib/lessonLoops';
+import { beforeEqnSgnFacCatalog } from './fixtures/eqn-sgn-fac-pdf';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -43,7 +44,7 @@ const registry = read('headless/catalog/worksheet-editions.v1.json');
 const priorRegistry = { ...registry, editions: registry.editions.filter((e: any) => !additions.some(a => a.editionId === e.editionId)) };
 
 test('the nine exact PDF additions reverse to the complete preceding catalog, including RAT47 and FRQ', () => {
-  const rawPrevious = read('headless/astro-poc/src/data/catalog.v1.json');
+  const rawPrevious = beforeEqnSgnFacCatalog(read('headless/astro-poc/src/data/catalog.v1.json'));
   const parallelogram = rawPrevious.grades.find((g: any) => g.grade === 9).topics.find((t: any) => t.id === 7);
   const t90 = parallelogram.editions.filter((e: any) => e.editionId === 'ms-20261113-par-04-r1');
   assert.equal(t90.length, 1);
