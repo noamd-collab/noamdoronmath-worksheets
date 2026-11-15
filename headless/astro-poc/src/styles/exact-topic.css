@@ -91,6 +91,11 @@
 }
 .exact-topic .topic-page__cta-row { margin: 0; }
 .exact-topic .topic-page__cta-row + .topic-page__cta-row { margin-top: 18px; }
+/* Separate only consecutive worksheet groups on these two multi-topic landings. */
+.exact-topic[data-topic-slug="area-rectangle-perimeter-grade-7"] .exact-topic-copy > [data-topic-levels] + .topic-page__cta-row,
+.exact-topic[data-topic-slug="equations-both-sides-word-problems-grade-7"] .exact-topic-copy > [data-topic-levels] + .topic-page__cta-row {
+  margin-block-start: 24px;
+}
 .exact-topic .topic-page__cta {
   display: inline-block;
   padding: 14px 26px;

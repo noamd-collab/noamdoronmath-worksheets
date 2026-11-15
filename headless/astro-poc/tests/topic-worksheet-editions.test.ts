@@ -1,3 +1,6 @@
+import { reviewedNext12 } from './fixtures/next12-pdf';
+import { reviewedSaoWpc } from './fixtures/sao-wpc-pdf';
+import { reviewedExtSmlAfr } from './fixtures/ext-sml-afr-pdf';
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { readFileSync } from 'node:fs';
@@ -270,4 +273,99 @@ test('both frequency landings expose six direct FRQ links while keeping their or
     assert.equal(new Set(ids).size, ids.length);
   }
   assert.equal(additions, 6);
+});
+
+
+test('real EXT/SML/AFR pages expose nine distinct PDFs, with the shared SML secondary route preserving topic45', async () => {
+  const catalog = loadCatalog();
+  const urls = new Set<string>();
+  for (const slug of [...reviewedExtSmlAfr.additions.map(a => a.slug), 'difference-of-squares-grade-9']) {
+    const addition = reviewedExtSmlAfr.additions.find(a => a.slug === slug)
+      ?? reviewedExtSmlAfr.additions.find(a => a.topicId === 44)!;
+    const document = await renderTopic(slug);
+    const hero = document.querySelector('.exact-topic-copy')!;
+    const controls = slug === 'difference-of-squares-grade-9' ? document : hero;
+    const links = [...controls.querySelectorAll(`a[data-edition-id="${addition.editionId}"]`)];
+    assert.deepEqual(links.map(a => a.getAttribute('href')), addition.pdfIds.map(id => `${catalog.config.pdfBase}${id}.pdf`));
+    assert.ok(links.every(a => a.textContent.includes('פתיחת PDF') && !a.textContent.includes('רמזי')));
+    for (const a of links) urls.add(a.getAttribute('href')!);
+    const anchors = [...document.querySelectorAll('[id]')].map(e => e.id);
+    assert.equal(new Set(anchors).size, anchors.length, `${slug}: unique anchors`);
+    const legacy = [...hero.querySelectorAll('a[data-edition-id="legacy"]')];
+    assert.ok(legacy.length >= 3, `${slug}: old PDFs retained`);
+    if (slug === 'difference-of-squares-grade-9') {
+      assert.deepEqual([...document.querySelectorAll('a[data-catalog-topic]')].map(a => a.getAttribute('data-catalog-topic')), ['45', '44']);
+      const secondaryCta = document.querySelector('a[data-catalog-topic="44"]')!;
+      const secondary = document.querySelector(secondaryCta.getAttribute('href')!)!;
+      assert.ok(secondary);
+      assert.equal(secondary.querySelectorAll(`a[data-edition-id="${addition.editionId}"]`).length, 3);
+    }
+  }
+  assert.equal(urls.size, 9, 'secondary SML links do not duplicate worksheet inventory');
+});
+
+test('actual SAO/WPC pages expose six PDFs while preserving legacy 38 and 41/40/39 controls', async () => {
+  const catalog = loadCatalog();
+  for (const addition of reviewedSaoWpc.additions) {
+    const document = await renderTopic(addition.slug), hero = document.querySelector('.exact-topic-copy')!;
+    const links = [...hero.querySelectorAll(`a[data-edition-id="${addition.editionId}"]`)];
+    assert.deepEqual(links.map(l => l.getAttribute('href')), addition.pdfIds.map(id => `${catalog.config.pdfBase}${id}.pdf`));
+    assert.ok(links.every(l => l.textContent.includes('פתיחת PDF') && !l.textContent.includes('רמזי')));
+    const ctas = [...hero.querySelectorAll('a[data-catalog-topic]')], topics = addition.grade === 7 ? [41, 40, 39] : [38];
+    assert.deepEqual(ctas.map(l => Number(l.getAttribute('data-catalog-topic'))), topics);
+    const followingGroups = [...document.querySelectorAll('.exact-topic[data-topic-slug="equations-both-sides-word-problems-grade-7"] .exact-topic-copy > [data-topic-levels] + .topic-page__cta-row')];
+    assert.deepEqual(followingGroups, addition.grade === 7 ? ctas.slice(1).map(cta => cta.parentElement) : [],
+      'only the second and third WPC groups receive separation; not the first CTA or SAO');
+    assert.deepEqual(followingGroups.map(group => group.previousElementSibling?.id),
+      addition.grade === 7 ? ['topic-levels', 'topic-levels-hero-40'] : []);
+    let legacyLinks = 0;
+    for (const [i, cta] of ctas.entries()) {
+      const topicId = topics[i], target = cta.getAttribute('href')!;
+      assert.equal(target, i === 0 ? '#topic-levels' : `#topic-levels-hero-${topicId}`);
+      const control = hero.querySelector(target)!;
+      const expected = topicWorksheetEditionLinks(catalog, addition.grade, topicId, `/worksheets?grade=${addition.grade}&topic=${topicId}`);
+      assert.deepEqual([...control.querySelectorAll('a')].map(a => a.getAttribute('href')), expected.flatMap(e => e.levels.map(l => l.href)));
+      const legacy = [...control.querySelectorAll('a[data-edition-id="legacy"]')];
+      assert.equal(legacy.length, 3); legacyLinks += legacy.length;
+      assert.equal(control.querySelectorAll(`a[data-edition-id="${addition.editionId}"]`).length, i === 0 ? 3 : 0);
+    }
+    assert.equal(legacyLinks, addition.grade === 7 ? 9 : 3);
+    const ids = [...document.querySelectorAll('[id]')].map(e => e.id);
+    assert.equal(new Set(ids).size, ids.length);
+    const text = document.querySelector('main')!.textContent.replace(/[\u2066-\u2069]/g, '');
+    assert.ok(text.includes(reviewedSaoWpc.landingDeltas.find(d => d.slug === addition.slug)!.appendedSection.blocks[0].text));
+  }
+});
+
+test('real next12 pages expose twelve PDFs and preserve shared perimeter44 then area18 with six old links', async () => {
+  const catalog = loadCatalog(), urls = new Set<string>();
+  for (const slug of ['trapezoid-grade-9', 'similar-triangles-grade-9', 'area-rectangle-perimeter-grade-7']) {
+    const document = await renderTopic(slug), hero = document.querySelector('.exact-topic-copy')!;
+    const additions = reviewedNext12.additions.filter(a => a.slug === slug);
+    const topics = slug === 'area-rectangle-perimeter-grade-7' ? [44, 18] : [additions[0].topicId];
+    const ctas = [...hero.querySelectorAll('a[data-catalog-topic]')];
+    assert.deepEqual(ctas.map(a => Number(a.getAttribute('data-catalog-topic'))), topics);
+    const separated = [...document.querySelectorAll('.exact-topic[data-topic-slug="area-rectangle-perimeter-grade-7"] .exact-topic-copy > [data-topic-levels] + .topic-page__cta-row')];
+    assert.equal(separated.length, topics.length === 2 ? 1 : 0);
+    if (separated.length) {
+      assert.equal(separated[0], ctas[1].parentElement, 'only the following area group receives separation');
+      assert.equal(separated[0].previousElementSibling?.id, 'topic-levels');
+    }
+    for (const [index, topicId] of topics.entries()) {
+      const addition = additions.find(a => a.topicId === topicId)!;
+      const target = index === 0 ? '#topic-levels' : `#topic-levels-hero-${topicId}`;
+      assert.equal(ctas[index].getAttribute('href'), target);
+      const controls = hero.querySelector(target)!;
+      const links = [...controls.querySelectorAll(`a[data-edition-id="${addition.editionId}"]`)];
+      assert.deepEqual(links.map(a => a.getAttribute('href')), addition.pdfIds.map(id => `${catalog.config.pdfBase}${id}.pdf`));
+      assert.ok(links.every(a => a.textContent.includes('פתיחת PDF') && !a.textContent.includes('רמזי')));
+      links.forEach(a => urls.add(a.getAttribute('href')!));
+      const expectedOld = topicWorksheetEditionLinks(catalog, addition.grade, topicId, `/worksheets?grade=${addition.grade}&topic=${topicId}`)[0].levels.map(l => l.href);
+      assert.deepEqual([...controls.querySelectorAll('a[data-edition-id="legacy"]')].map(a => a.getAttribute('href')), expectedOld);
+    }
+    assert.equal(hero.querySelectorAll('a[data-edition-id="legacy"]').length, topics.length * 3);
+    const ids = [...document.querySelectorAll('[id]')].map(e => e.id);
+    assert.equal(new Set(ids).size, ids.length);
+  }
+  assert.equal(urls.size, 12);
 });

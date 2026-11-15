@@ -1,3 +1,32 @@
+## 2026-11-15 — TRP / SIM9 / RSC / PER: twelve additional student PDFs (candidate)
+
+- Based on reviewed combined PR490; preserves all preceding editions, default PDFs, native/Ramzi, teacher and learning sources.
+- Four nondefault PDF-only editions: TRP9:39, SIM9:19, RSC7:18, PER7:44. Twelve distinct PDFs,96pages,288parts. RSC/PER share the existing landing and preserve CTA44then18; no new slug or legacy replacement.
+- Attributed independent review reports assess 72 parts and 24 pages per package; this integration rechecks exact source/PDF pins and 24 actual media downloads. No claim of repeated full visual/math review. SIM9 exportK6/D8 and all density/Word/hint holds remain.
+- Three existing landing pages distinguish printable PDFs from existing Ramzi worksheets. No sourcePDF edits, new native/hint activation, database writes, model changes or publication.
+- Exact sanitized binding: `docs/next12-pdf-first-20261115.json`. Focused checks are recorded externally; this draft does not claim full CI/build/UI completion.
+- Preview review found consecutive worksheet groups touching on `area-rectangle-perimeter-grade-7` and `equations-both-sides-word-problems-grade-7`. Selectors limited to these two routes add 24px before each following group, including both boundaries between the three WPC topics; first CTAs, links, internal controls and PDF bytes are unchanged. Visual rechecks are recorded separately.
+
+## 15 November 2026 — Combined EXT/SML/AFR/SAO/WPC PDF candidate
+
+- Combine the exact reviewed additions from PR487 and PR488 over the current canonical PR485 baseline: five nondefault editions, fifteen unique PDFs,97 pages and360 subitems. Keep every old PDF, edition and default. The six existing landing routes include the SML secondary link to the same three PDFs, counted once.
+- Both original source and PDF provenance records remain unchanged. Preserve their distinct visual-review scopes and unresolved native-export/density notes; this integration does not create a new full-PDF visual review or claim all-package PASS.
+- Regenerate catalog, search, guide and lossless worker data from their authoritative sources. Both exact reviewed reversals apply before every historical catalog/landing fence. Teacher sources, learning, native assets, prepared hints, database, models and security settings are unchanged.
+- This separate combined candidate replaces neither original draft without coordinator action and grants no merge/publication approval. Its full tests, build and preview require their own receipts; previous Node26 timeouts remain historical failures, separate from the passed original CI runs.
+
+## 15 November 2026 — EXT01, SML01 and AFR01 PDF candidate
+
+- Add nine nondefault PDF worksheets (55 pages, 216 subitems): extended distribution on grade9/topic1; integrated sum/difference squares and difference of squares on topic44; algebraic fraction domain, reduction, multiplication and division on topic3. Preserve every old PDF and default. Topic45 retains its original materials and links to the same topic44 addition; count the three shared SML PDFs once.
+- Independent intake reviewed all216 source subitems, observed55 page layout overviews and magnified all9 final-answer pages. This is not a glyph-by-glyph visual claim. Root accepted the bounded review and exact landing copy after its own limited visual sample. Six G94 workspace notes remain REVIEW with documented reasons to keep the original writing space. All source and student PDF bytes match the accepted receipts and pinned7.3.2 runtime. See [PDF provenance](ext-sml-afr-pdf-first-20261115.json).
+- Nine media files were read back through both CDN routes with exact SHA matches. Four landing pages gain precise scope and conditional wording for existing Ramzi support. EXT describes worded area comparison; SML describes algebraic practice. No geometric demonstration, whole-unit duration, Word, native, new Ramzi, teacher-question, learning or Supabase activation is promised.
+- This is an isolated site candidate based on PR485; it is not publication approval. WQP/WPM revisions and SAO/WPC are outside this change.
+
+## 15 November 2026 — SAO01 and WPC01 PDF candidate
+
+- Add six non-default student PDFs (42 pages, 144 parts) to the existing grade 9/topic 38 side-angle landing and grade 7/topic 41 word-equation landing. Preserve every legacy link, default and the 41/40/39 CTA order.
+- SAO covers side-angle order; WPC covers equation solving and checking the answer in context. The new copy distinguishes downloadable PDFs from existing viewer hints. Independent full-source reports and bounded 22-page visual review support PDF acceptance; Root separately sampled three of those same 22 pages (overlapping, not 25 unique). G94 density notes and all solution/diagram workspace are preserved.
+- All six media files were read back through two URLs with exact hashes. The public evidence contains hashes only; SAO N4/K22 native-export HOLD is retained. No private source, native/teacher/Ramzi/learning/Word activation, Supabase change or publication is included. See [PDF provenance](sao-wpc-pdf-first-20261115.json).
+
 ## 15 November 2026 — EQN01, SGN01 and FAC01 PDF candidate
 
 - Add nine exact student PDFs as three non-default editions: equation meaning and substitution (grade7/topic32), signed-number addition/subtraction (grade7/topic2), and factoring/basic quadratic equations (grade9/topic2). Preserve all legacy PDFs and existing defaults, including the equations landing’s topics23/34/32.

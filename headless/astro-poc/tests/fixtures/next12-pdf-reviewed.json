@@ -1,0 +1,1896 @@
+{
+  "schema": "next12-reviewed-additive-pdf-fixture/v1",
+  "baselineCommit": "dda9c37024b072e2fea15a65999abb5333f01b1a",
+  "baselineCatalogSha256": "be18bcee7c042af3a5aefd978d83b4643cac6f5d0777ed40e04af0984f5d09d4",
+  "baselineRegistrySha256": "bb6d25f66e96ff3e6003b02e00789c22311d4f3bc74a001a43df91ccab862382",
+  "additions": [
+    {
+      "grade": 9,
+      "topicId": 39,
+      "editionId": "ms-20261115-trp-01-r1",
+      "pdfIds": [
+        "e3a500d6b1514ffbb91d35568e49b1ca",
+        "1d1755c92ace438a9c9b1b5cc3e62f8e",
+        "a2c928a7422b46e4a6e065357e396d53"
+      ],
+      "edition": {
+        "grade": 9,
+        "topicId": 39,
+        "editionId": "ms-20261115-trp-01-r1",
+        "label": "טרפז: שטח, גובה, היקף והשוואת שטחים — PDF",
+        "nativePrefix": "G9-T78",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "e3a500d6b1514ffbb91d35568e49b1ca",
+            "pdfSha256": "0bf17fb174a7061b3a2524db06426395626d33215ce3449feadf769670466256",
+            "sourceSha256": "5d49114659de8a4f127f19175996602d28c238739e9874dc5f45df32217693a6",
+            "nativeExportSha256": "2711604fcb88201b2c3ff4da27418639cac1b5c49110c4733cc7cb70206fa229",
+            "worksheetId": "ms-g9-trp-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "1d1755c92ace438a9c9b1b5cc3e62f8e",
+            "pdfSha256": "6c95ca2df2d78583f8e61699f7a6d40f737d299c131d078710a89787bb2ef197",
+            "sourceSha256": "702d96365a2dd7b91623837d2629f14362bfe2f93faa5e7d80d39207829a105d",
+            "nativeExportSha256": "acd628113c2df9c95facf640165ff48cc7a35905b4db9751f607bf2f38524945",
+            "worksheetId": "ms-g9-trp-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "a2c928a7422b46e4a6e065357e396d53",
+            "pdfSha256": "bc24ca57c3659e41a5579a2e29c92c423342dbbc087f3ec093f016a9539cc5f1",
+            "sourceSha256": "9b93993e42861a8bfd63cef7689d958a807fe4517e323ea5d6fe17976e41e37f",
+            "nativeExportSha256": "c5c06e7e7eb28bebb7f7ae11fed8f8356e31856a8c44b256dec92d32591435d8",
+            "worksheetId": "ms-g9-trp-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "007a51339eb0ecf3b81f8ccf874d317c46c4eb12731749b6a39c709be6de4695",
+      "baselineTopicSha256": "773cad6a0a90135c7bd5965b0f0eaca74045a060584ebe0f052013a2755b7521",
+      "slug": "trapezoid-grade-9"
+    },
+    {
+      "grade": 9,
+      "topicId": 19,
+      "editionId": "ms-20261115-sim9-01-r1",
+      "pdfIds": [
+        "11e0c8c7852c40ae92322d93add6b065",
+        "d860019845524719af4b615bd86f79c7",
+        "0c977c7773864510886049c01c92280e"
+      ],
+      "edition": {
+        "grade": 9,
+        "topicId": 19,
+        "editionId": "ms-20261115-sim9-01-r1",
+        "label": "דמיון משולשים: יחס שטחים ושטחים שנותרו — PDF",
+        "nativePrefix": "G9-T79",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "11e0c8c7852c40ae92322d93add6b065",
+            "pdfSha256": "5c7b1a8db41d2f004f3e915b3782d603cb2604c4014d2a615c55a5f0263de802",
+            "sourceSha256": "700897bcb68bb73c5fcad91385a94776239b71870cd78b16d432b4c5cd349f10",
+            "nativeExportSha256": "a374217eeca0baac7a2b2328d94d25b10c9cc6666f69ab84cd58b98c5e6ed417",
+            "worksheetId": "ms-g9-sim-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "d860019845524719af4b615bd86f79c7",
+            "pdfSha256": "71872b5cae73937c4a3fb38a8a2ac9b68b165675e3c33efcd6a390ff8f71e251",
+            "sourceSha256": "0fcd41a6279170d29654674e37fd383a7131b8b8a36ace4fee8cb867185e1fd4",
+            "nativeExportSha256": "4807075cc74348d30d707a042ec7e454ed929afa36f1b16286992583c4078de7",
+            "worksheetId": "ms-g9-sim-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "0c977c7773864510886049c01c92280e",
+            "pdfSha256": "195ebd2d8c32bbb294059254fbe26e71f287988f293867440377f69627983a9c",
+            "sourceSha256": "81212ac9320d8c1173f443ecaeba9bddfa3edf2e1e52e8c451afa38fbc682f43",
+            "nativeExportSha256": "c564ef8d2546fd5cb7ca1d513971c791996b18be926ba0c2c60370f0ae72447a",
+            "worksheetId": "ms-g9-sim-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "a5e0b778f76b180aa4e6a5dbe9d421154e5fe10c742446bad47d87a7bff40e4e",
+      "baselineTopicSha256": "0517bdd89c5d093eed597346631e2c0b1085faedc6d258d4dae006a445858f4c",
+      "slug": "similar-triangles-grade-9"
+    },
+    {
+      "grade": 7,
+      "topicId": 18,
+      "editionId": "ms-20261115-rsc-01-r1",
+      "pdfIds": [
+        "81fbcf9f34e2473aac82467d74fd1466",
+        "77c2e0ac02ad43f3b6692e7f1fc53ca3",
+        "c8cc14aad06b4fd394caea61571c44a1"
+      ],
+      "edition": {
+        "grade": 7,
+        "topicId": 18,
+        "editionId": "ms-20261115-rsc-01-r1",
+        "label": "שטח והיקף של מלבן וריבוע — PDF",
+        "nativePrefix": "G7-T74",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "81fbcf9f34e2473aac82467d74fd1466",
+            "pdfSha256": "1d323006d7392aa7b2f5deaa6eac58ec658fa8e99407f094b5b367d112ce79c1",
+            "sourceSha256": "aaf6db1994d37f567d801f51d7ed4fef0428aa9a98f1fdd612dc7b2b64df326c",
+            "nativeExportSha256": "cd67b548cb0e6383a620700cb317a5b58362a0686c9ea06deb21f6ac707ea66b",
+            "worksheetId": "ms-g7-rsc-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "77c2e0ac02ad43f3b6692e7f1fc53ca3",
+            "pdfSha256": "d47d71dc1aba20eed39709e7a8d086204b8adb48ea9e8e519dbd8bb56d52d2a4",
+            "sourceSha256": "8ddcdcf08a3aac3bf6a4993d57933798999854b274197df7e51ac0988bb3678b",
+            "nativeExportSha256": "fc30a91a8b80a7ab1388aa275ea7b4f14a4ce58cf0683638ebd3efc0610c5c80",
+            "worksheetId": "ms-g7-rsc-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "c8cc14aad06b4fd394caea61571c44a1",
+            "pdfSha256": "5bfc796d7cee59b945029771469473798fafec5753bfdb8700685e5df4ad27c0",
+            "sourceSha256": "7dd37a7e355576c5d6e5ebb5ef5c4443b2f0e6ba47896c3dcd9d0245775a8aeb",
+            "nativeExportSha256": "3f74d027d5b337635fb39165a536c0b12d4e5a6f3fe1a4980857e882e317cc31",
+            "worksheetId": "ms-g7-rsc-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "1739c99234629c25dda273947e51438424987fd6b9938dcc165f5c6bdef0902a",
+      "baselineTopicSha256": "5b42dc16e13208da219053a8a82c037c7632b364aaf8973541b68c5fbf3d7047",
+      "slug": "area-rectangle-perimeter-grade-7"
+    },
+    {
+      "grade": 7,
+      "topicId": 44,
+      "editionId": "ms-20261115-per-01-r1",
+      "pdfIds": [
+        "3bd8969ae28240e9bfe1b77e81170804",
+        "21cd875e8a8947afae1f0b3415a99942",
+        "fb3125f910bb47d19a75e050bbbf0396"
+      ],
+      "edition": {
+        "grade": 7,
+        "topicId": 44,
+        "editionId": "ms-20261115-per-01-r1",
+        "label": "היקפים של צורות מורכבות ואורכי מסלולים — PDF",
+        "nativePrefix": "G7-T75",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "3bd8969ae28240e9bfe1b77e81170804",
+            "pdfSha256": "821dd1b9146e5874af5dd8ab00d6001fcdd49222793f18f4fb36a96dfbffd589",
+            "sourceSha256": "3e59b03ba783ae379154a3366695d66bb3b80ac67644c83be31f26e3414d0cb9",
+            "nativeExportSha256": "35a09dbeddc510163b85f8ac232a3072566bfa5e82ef04e60553c3bd6a1c4b05",
+            "worksheetId": "ms-g7-per-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "21cd875e8a8947afae1f0b3415a99942",
+            "pdfSha256": "2f6921868a11b97e31e88e9424984f6010f37b00b52c29ffa05071fa6db7c508",
+            "sourceSha256": "f4d0cc729ff77b1c8ca8a958a6e19c9a695e9096ed97c53138b5dab87f1a0fdf",
+            "nativeExportSha256": "230840ba3d2cbdad0a63b7e721213568103a95401e45337c8add28a0976a6cf8",
+            "worksheetId": "ms-g7-per-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "fb3125f910bb47d19a75e050bbbf0396",
+            "pdfSha256": "2758d599faef1b5e2fe95b8e2b566fde92082a4f6a767b5b99121e7d2f3801db",
+            "sourceSha256": "9344dd2180c3024806527a4e3784241e4aca3088d0ca92605cbfdf6aadeca0c5",
+            "nativeExportSha256": "a3269da526c7e0d3d2f5714e13f85b34e549ee4e153171e004853e24cd0afd57",
+            "worksheetId": "ms-g7-per-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "a44a610640f1635b0d3a7f23d3f8ff1c4979e111f2f89c4f2e48c228e57dcef3",
+      "baselineTopicSha256": "16cdea64a6110a3e49617015a370a29215aaeb38c90fa48d082ecf75f48d2c6e",
+      "slug": "area-rectangle-perimeter-grade-7"
+    }
+  ],
+  "landingDeltas": [
+    {
+      "slug": "trapezoid-grade-9",
+      "baselineSha256": "aefa6ceb9d7783954c786b04baba3f1b337c9f8992040dfd397ae470a71d299c",
+      "fields": [
+        {
+          "path": [
+            "description"
+          ],
+          "existedBefore": true,
+          "before": "טרפז לכיתה ט׳: תכונות הטרפז, זוויות, בסיסים ושטח. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+          "after": "טרפז לכיתה ט׳: בסיסים, זוויות, שטח והיקף. דפי PDF נוספים לחישוב גובה ומידות חסרות ולהשוואת שטחים, בשלוש רמות ועם תשובות."
+        },
+        {
+          "path": [
+            "intro"
+          ],
+          "existedBefore": true,
+          "before": "לומדים לזהות טרפז, לעבוד עם בסיסים וזוויות ולחשב שטח. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+          "after": "לומדים לזהות טרפז, לעבוד עם בסיסים וזוויות ולחשב שטח. לצד הדפים הקיימים נוספו קובצי PDF לתרגול שטח, גובה, היקף והשוואת שטחים, ברמות א׳, ב׳ ומצוינות. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+        },
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בטרפז יש זוג אחד של צלעות נגדיות מקבילות, הנקראות בסיסים. הגובה הוא קטע המאונך לשני הבסיסים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: בטרפז בסיסים באורך 10 ו־6 ס״מ וגובה 4 ס״מ. השטח הוא (10+6)×4:2=32 סמ״ר.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "שוק הטרפז אינה בהכרח הגובה. בחישוב שטח משתמשים רק בקטע המאונך לבסיסים.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "לטרפז בסיסים באורך 12 ו־8 ס״מ וגובה 5 ס״מ. מה שטחו?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: 50 סמ״ר, כי (12+8)×5:2=50.",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בטרפז יש זוג אחד של צלעות נגדיות מקבילות, הנקראות בסיסים. הגובה הוא קטע המאונך לשני הבסיסים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: בטרפז בסיסים באורך 10 ו־6 ס״מ וגובה 4 ס״מ. השטח הוא (10+6)×4:2=32 סמ״ר.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "שוק הטרפז אינה בהכרח הגובה. בחישוב שטח משתמשים רק בקטע המאונך לבסיסים.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "לטרפז בסיסים באורך 12 ו־8 ס״מ וגובה 5 ס״מ. מה שטחו?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: 50 סמ״ר, כי (12+8)×5:2=50.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "דפי PDF נוספים: שטח והיקף בטרפז",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בדפים הנוספים מתרגלים חישובי שטח והיקף בטרפז, מציאת גובה ובסיס חסרים, קריאת קודקודים במערכת הצירים והשוואת שטחים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "התרגול כולל טרפז כללי וישר־זווית, שימוש במשפט פיתגורס, בעיות עלות ותכנון טרפז לפי נתונים. הוא מצטרף לדפים הקיימים בנושא.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF להורדה ולהדפסה ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "bodyFlow"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "type": "paragraph",
+              "text": "לומדים לזהות טרפז, לעבוד עם בסיסים וזוויות ולחשב שטח. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "פתיחת דפי העבודה ובחירת רמה",
+              "href": "/worksheets?grade=9&topic=39",
+              "catalogTopicId": 39
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "בטרפז יש זוג אחד של צלעות נגדיות מקבילות, הנקראות בסיסים. הגובה הוא קטע המאונך לשני הבסיסים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "דוגמה: בטרפז בסיסים באורך 10 ו־6 ס״מ וגובה 4 ס״מ. השטח הוא (10+6)×4:2=32 סמ״ר.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טעויות נפוצות"
+            },
+            {
+              "type": "paragraph",
+              "text": "שוק הטרפז אינה בהכרח הגובה. בחישוב שטח משתמשים רק בקטע המאונך לבסיסים.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "לטרפז בסיסים באורך 12 ו־8 ס״מ וגובה 5 ס״מ. מה שטחו?",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "תשובה: 50 סמ״ר, כי (12+8)×5:2=50.",
+              "role": "body"
+            }
+          ],
+          "after": [
+            {
+              "type": "paragraph",
+              "text": "לומדים לזהות טרפז, לעבוד עם בסיסים וזוויות ולחשב שטח. לצד הדפים הקיימים נוספו קובצי PDF לתרגול שטח, גובה, היקף והשוואת שטחים, ברמות א׳, ב׳ ומצוינות. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "פתיחת דפי העבודה ובחירת רמה",
+              "href": "/worksheets?grade=9&topic=39",
+              "catalogTopicId": 39
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "בטרפז יש זוג אחד של צלעות נגדיות מקבילות, הנקראות בסיסים. הגובה הוא קטע המאונך לשני הבסיסים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "דוגמה: בטרפז בסיסים באורך 10 ו־6 ס״מ וגובה 4 ס״מ. השטח הוא (10+6)×4:2=32 סמ״ר.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טעויות נפוצות"
+            },
+            {
+              "type": "paragraph",
+              "text": "שוק הטרפז אינה בהכרח הגובה. בחישוב שטח משתמשים רק בקטע המאונך לבסיסים.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "לטרפז בסיסים באורך 12 ו־8 ס״מ וגובה 5 ס״מ. מה שטחו?",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "תשובה: 50 סמ״ר, כי (12+8)×5:2=50.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "דפי PDF נוספים: שטח והיקף בטרפז"
+            },
+            {
+              "type": "paragraph",
+              "text": "בדפים הנוספים מתרגלים חישובי שטח והיקף בטרפז, מציאת גובה ובסיס חסרים, קריאת קודקודים במערכת הצירים והשוואת שטחים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "התרגול כולל טרפז כללי וישר־זווית, שימוש במשפט פיתגורס, בעיות עלות ותכנון טרפז לפי נתונים. הוא מצטרף לדפים הקיימים בנושא.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "שלושה קובצי PDF להורדה ולהדפסה ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף.",
+              "role": "body"
+            }
+          ]
+        },
+        {
+          "path": [
+            "updatedLine"
+          ],
+          "existedBefore": true,
+          "before": "נועם דורון מתמטיקה · עודכן 12.9.2026",
+          "after": "נועם דורון מתמטיקה · עודכן 15.11.2026"
+        },
+        {
+          "path": [
+            "faq"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "question": "האם דפי העבודה בנושא טרפז לכיתה ט׳ מתאימים לכיתה ט׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          ],
+          "after": [
+            {
+              "question": "האם דפי העבודה בנושא טרפז לכיתה ט׳ מתאימים לכיתה ט׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            },
+            {
+              "question": "מה כוללים קובצי ה־PDF הנוספים?",
+              "answer": "בדפים הנוספים מתרגלים חישובי שטח והיקף בטרפז, מציאת גובה ובסיס חסרים, קריאת קודקודים במערכת הצירים והשוואת שטחים. התרגול כולל טרפז כללי וישר־זווית, שימוש במשפט פיתגורס, בעיות עלות ותכנון טרפז לפי נתונים. הוא מצטרף לדפים הקיימים בנושא. שלושה קובצי PDF להורדה ולהדפסה ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף."
+            },
+            {
+              "question": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+              "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+            }
+          ]
+        },
+        {
+          "path": [
+            "faqGroups"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא טרפז לכיתה ט׳ מתאימים לכיתה ט׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא טרפז לכיתה ט׳ מתאימים לכיתה ט׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                },
+                {
+                  "question": "מה כוללים קובצי ה־PDF הנוספים?",
+                  "answer": "בדפים הנוספים מתרגלים חישובי שטח והיקף בטרפז, מציאת גובה ובסיס חסרים, קריאת קודקודים במערכת הצירים והשוואת שטחים. התרגול כולל טרפז כללי וישר־זווית, שימוש במשפט פיתגורס, בעיות עלות ותכנון טרפז לפי נתונים. הוא מצטרף לדפים הקיימים בנושא. שלושה קובצי PDF להורדה ולהדפסה ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף."
+                },
+                {
+                  "question": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+                  "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "jsonLd"
+          ],
+          "existedBefore": true,
+          "before": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/trapezoid-grade-9#webpage",
+                "url": "https://www.noamdoronmath.co.il/trapezoid-grade-9",
+                "name": "טרפז לכיתה ט׳ | דפי עבודה במתמטיקה – נועם דורון",
+                "description": "טרפז לכיתה ט׳: תכונות הטרפז, זוויות, בסיסים ושטח. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/trapezoid-grade-9#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/trapezoid-grade-9#learning-resource",
+                "name": "טרפז לכיתה ט׳",
+                "url": "https://www.noamdoronmath.co.il/trapezoid-grade-9",
+                "description": "טרפז לכיתה ט׳: תכונות הטרפז, זוויות, בסיסים ושטח. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+                "educationalLevel": "כיתה ט׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/trapezoid-grade-9#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא טרפז לכיתה ט׳ מתאימים לכיתה ט׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "after": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/trapezoid-grade-9#webpage",
+                "url": "https://www.noamdoronmath.co.il/trapezoid-grade-9",
+                "name": "טרפז לכיתה ט׳ | דפי עבודה במתמטיקה – נועם דורון",
+                "description": "טרפז לכיתה ט׳: בסיסים, זוויות, שטח והיקף. דפי PDF נוספים לחישוב גובה ומידות חסרות ולהשוואת שטחים, בשלוש רמות ועם תשובות.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/trapezoid-grade-9#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/trapezoid-grade-9#learning-resource",
+                "name": "טרפז לכיתה ט׳",
+                "url": "https://www.noamdoronmath.co.il/trapezoid-grade-9",
+                "description": "טרפז לכיתה ט׳: בסיסים, זוויות, שטח והיקף. דפי PDF נוספים לחישוב גובה ומידות חסרות ולהשוואת שטחים, בשלוש רמות ועם תשובות.",
+                "educationalLevel": "כיתה ט׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/trapezoid-grade-9#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא טרפז לכיתה ט׳ מתאימים לכיתה ט׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "מה כוללים קובצי ה־PDF הנוספים?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "בדפים הנוספים מתרגלים חישובי שטח והיקף בטרפז, מציאת גובה ובסיס חסרים, קריאת קודקודים במערכת הצירים והשוואת שטחים. התרגול כולל טרפז כללי וישר־זווית, שימוש במשפט פיתגורס, בעיות עלות ותכנון טרפז לפי נתונים. הוא מצטרף לדפים הקיימים בנושא. שלושה קובצי PDF להורדה ולהדפסה ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "appendedSection": {
+        "heading": "דפי PDF נוספים: שטח והיקף בטרפז",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "בדפים הנוספים מתרגלים חישובי שטח והיקף בטרפז, מציאת גובה ובסיס חסרים, קריאת קודקודים במערכת הצירים והשוואת שטחים.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "התרגול כולל טרפז כללי וישר־זווית, שימוש במשפט פיתגורס, בעיות עלות ותכנון טרפז לפי נתונים. הוא מצטרף לדפים הקיימים בנושא.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "שלושה קובצי PDF להורדה ולהדפסה ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף.",
+            "links": []
+          }
+        ]
+      }
+    },
+    {
+      "slug": "similar-triangles-grade-9",
+      "baselineSha256": "626fe2374ca5202af36114d5ea9b85e81d598d0e98081a352363cfcbae534dec",
+      "fields": [
+        {
+          "path": [
+            "description"
+          ],
+          "existedBefore": true,
+          "before": "דמיון משולשים לכיתה ט׳: יחסי צלעות, היקפים ושטחים במשולשים דומים, עם הסברים ודוגמאות. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה, לתרגול בכיתה ובבית.",
+          "after": "דמיון משולשים לכיתה ט׳: יחסי צלעות, היקפים ושטחים. דפי PDF נוספים לתרגול יחס שטחים, סכום והפרש שטחים ושטחים שנותרו, עם תשובות."
+        },
+        {
+          "path": [
+            "intro"
+          ],
+          "existedBefore": true,
+          "before": "מתרגלים יחסי צלעות, היקפים ושטחים במשולשים דומים, בשלוש רמות: א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+          "after": "מתרגלים יחסי צלעות, היקפים ושטחים במשולשים דומים. לצד הדפים הקיימים נוספו קובצי PDF המתמקדים ביחסי שטחים, ברמות א׳, ב׳ ומצוינות. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+        },
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "יחסי צלעות והיקפים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "כאשר יחס הדמיון הוא 3:5, גם יחס ההיקפים הוא 3:5.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "יחס שטחים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "יחס השטחים הוא ריבוע יחס הדמיון, ולכן 9:25.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "דמיון וחפיפה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בחפיפה כל הצלעות המתאימות שוות; בדמיון נשמר היחס.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "היקף משולש קטן 18 ויחס הדמיון קטן:גדול הוא 2:3. מה היקף הגדול? תשובה: 27.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "לכל דפי העבודה של כיתה ט׳",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "יחסי צלעות והיקפים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "כאשר יחס הדמיון הוא 3:5, גם יחס ההיקפים הוא 3:5.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "יחס שטחים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "יחס השטחים הוא ריבוע יחס הדמיון, ולכן 9:25.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "דמיון וחפיפה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בחפיפה כל הצלעות המתאימות שוות; בדמיון נשמר היחס.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "היקף משולש קטן 18 ויחס הדמיון קטן:גדול הוא 2:3. מה היקף הגדול? תשובה: 27.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "לכל דפי העבודה של כיתה ט׳",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "דפי PDF נוספים: יחס שטחים במשולשים דומים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בדפים הנוספים מתרגלים את הקשר בין יחס הדמיון ליחס השטחים, חישוב שטח מתוך סכום או הפרש שטחים ושטחים שנותרו לאחר חיתוך במשולש.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "התרגול כולל קטעים מקבילים בתוך משולש, משולשים מקוננים ומשימות במערכת הצירים. זו הרחבה בתחום יחסי השטחים, לצד דפי הדמיון הקיימים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF להורדה ולהדפסה ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "bodyFlow"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "type": "paragraph",
+              "text": "מתרגלים יחסי צלעות, היקפים ושטחים במשולשים דומים, בשלוש רמות: א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "פתיחת דפי העבודה ובחירת רמה",
+              "href": "/worksheets?grade=9&topic=19",
+              "catalogTopicId": 19
+            },
+            {
+              "type": "heading",
+              "text": "יחסי צלעות והיקפים"
+            },
+            {
+              "type": "paragraph",
+              "text": "כאשר יחס הדמיון הוא 3:5, גם יחס ההיקפים הוא 3:5.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "יחס שטחים"
+            },
+            {
+              "type": "paragraph",
+              "text": "יחס השטחים הוא ריבוע יחס הדמיון, ולכן 9:25.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "דמיון וחפיפה"
+            },
+            {
+              "type": "paragraph",
+              "text": "בחפיפה כל הצלעות המתאימות שוות; בדמיון נשמר היחס.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "היקף משולש קטן 18 ויחס הדמיון קטן:גדול הוא 2:3. מה היקף הגדול? תשובה: 27.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "לכל דפי העבודה של כיתה ט׳",
+              "role": "body"
+            }
+          ],
+          "after": [
+            {
+              "type": "paragraph",
+              "text": "מתרגלים יחסי צלעות, היקפים ושטחים במשולשים דומים. לצד הדפים הקיימים נוספו קובצי PDF המתמקדים ביחסי שטחים, ברמות א׳, ב׳ ומצוינות. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "פתיחת דפי העבודה ובחירת רמה",
+              "href": "/worksheets?grade=9&topic=19",
+              "catalogTopicId": 19
+            },
+            {
+              "type": "heading",
+              "text": "יחסי צלעות והיקפים"
+            },
+            {
+              "type": "paragraph",
+              "text": "כאשר יחס הדמיון הוא 3:5, גם יחס ההיקפים הוא 3:5.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "יחס שטחים"
+            },
+            {
+              "type": "paragraph",
+              "text": "יחס השטחים הוא ריבוע יחס הדמיון, ולכן 9:25.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "דמיון וחפיפה"
+            },
+            {
+              "type": "paragraph",
+              "text": "בחפיפה כל הצלעות המתאימות שוות; בדמיון נשמר היחס.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "היקף משולש קטן 18 ויחס הדמיון קטן:גדול הוא 2:3. מה היקף הגדול? תשובה: 27.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "לכל דפי העבודה של כיתה ט׳",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "דפי PDF נוספים: יחס שטחים במשולשים דומים"
+            },
+            {
+              "type": "paragraph",
+              "text": "בדפים הנוספים מתרגלים את הקשר בין יחס הדמיון ליחס השטחים, חישוב שטח מתוך סכום או הפרש שטחים ושטחים שנותרו לאחר חיתוך במשולש.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "התרגול כולל קטעים מקבילים בתוך משולש, משולשים מקוננים ומשימות במערכת הצירים. זו הרחבה בתחום יחסי השטחים, לצד דפי הדמיון הקיימים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "שלושה קובצי PDF להורדה ולהדפסה ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף.",
+              "role": "body"
+            }
+          ]
+        },
+        {
+          "path": [
+            "updatedLine"
+          ],
+          "existedBefore": true,
+          "before": null,
+          "after": "נועם דורון מתמטיקה · עודכן 15.11.2026"
+        },
+        {
+          "path": [
+            "updatedLinePlacement"
+          ],
+          "existedBefore": true,
+          "before": "absent",
+          "after": "after-sections"
+        },
+        {
+          "path": [
+            "faq"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "question": "האם דפי העבודה בנושא דמיון משולשים לכיתה ט׳ מתאימים לכיתה ט׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          ],
+          "after": [
+            {
+              "question": "האם דפי העבודה בנושא דמיון משולשים לכיתה ט׳ מתאימים לכיתה ט׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            },
+            {
+              "question": "מה כוללים קובצי ה־PDF הנוספים?",
+              "answer": "בדפים הנוספים מתרגלים את הקשר בין יחס הדמיון ליחס השטחים, חישוב שטח מתוך סכום או הפרש שטחים ושטחים שנותרו לאחר חיתוך במשולש. התרגול כולל קטעים מקבילים בתוך משולש, משולשים מקוננים ומשימות במערכת הצירים. זו הרחבה בתחום יחסי השטחים, לצד דפי הדמיון הקיימים. שלושה קובצי PDF להורדה ולהדפסה ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף."
+            },
+            {
+              "question": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+              "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+            }
+          ]
+        },
+        {
+          "path": [
+            "faqGroups"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא דמיון משולשים לכיתה ט׳ מתאימים לכיתה ט׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא דמיון משולשים לכיתה ט׳ מתאימים לכיתה ט׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                },
+                {
+                  "question": "מה כוללים קובצי ה־PDF הנוספים?",
+                  "answer": "בדפים הנוספים מתרגלים את הקשר בין יחס הדמיון ליחס השטחים, חישוב שטח מתוך סכום או הפרש שטחים ושטחים שנותרו לאחר חיתוך במשולש. התרגול כולל קטעים מקבילים בתוך משולש, משולשים מקוננים ומשימות במערכת הצירים. זו הרחבה בתחום יחסי השטחים, לצד דפי הדמיון הקיימים. שלושה קובצי PDF להורדה ולהדפסה ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף."
+                },
+                {
+                  "question": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+                  "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "jsonLd"
+          ],
+          "existedBefore": true,
+          "before": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/similar-triangles-grade-9#webpage",
+                "url": "https://www.noamdoronmath.co.il/similar-triangles-grade-9",
+                "name": "דמיון משולשים לכיתה ט׳ | דפי עבודה במתמטיקה – נועם דורון",
+                "description": "דמיון משולשים לכיתה ט׳: יחסי צלעות, היקפים ושטחים במשולשים דומים, עם הסברים ודוגמאות. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה, לתרגול בכיתה ובבית.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/similar-triangles-grade-9#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/similar-triangles-grade-9#learning-resource",
+                "name": "דמיון משולשים לכיתה ט׳",
+                "url": "https://www.noamdoronmath.co.il/similar-triangles-grade-9",
+                "description": "דמיון משולשים לכיתה ט׳: יחסי צלעות, היקפים ושטחים במשולשים דומים, עם הסברים ודוגמאות. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה, לתרגול בכיתה ובבית.",
+                "educationalLevel": "כיתה ט׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/similar-triangles-grade-9#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא דמיון משולשים לכיתה ט׳ מתאימים לכיתה ט׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "after": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/similar-triangles-grade-9#webpage",
+                "url": "https://www.noamdoronmath.co.il/similar-triangles-grade-9",
+                "name": "דמיון משולשים לכיתה ט׳ | דפי עבודה במתמטיקה – נועם דורון",
+                "description": "דמיון משולשים לכיתה ט׳: יחסי צלעות, היקפים ושטחים. דפי PDF נוספים לתרגול יחס שטחים, סכום והפרש שטחים ושטחים שנותרו, עם תשובות.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/similar-triangles-grade-9#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/similar-triangles-grade-9#learning-resource",
+                "name": "דמיון משולשים לכיתה ט׳",
+                "url": "https://www.noamdoronmath.co.il/similar-triangles-grade-9",
+                "description": "דמיון משולשים לכיתה ט׳: יחסי צלעות, היקפים ושטחים. דפי PDF נוספים לתרגול יחס שטחים, סכום והפרש שטחים ושטחים שנותרו, עם תשובות.",
+                "educationalLevel": "כיתה ט׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/similar-triangles-grade-9#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא דמיון משולשים לכיתה ט׳ מתאימים לכיתה ט׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "מה כוללים קובצי ה־PDF הנוספים?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "בדפים הנוספים מתרגלים את הקשר בין יחס הדמיון ליחס השטחים, חישוב שטח מתוך סכום או הפרש שטחים ושטחים שנותרו לאחר חיתוך במשולש. התרגול כולל קטעים מקבילים בתוך משולש, משולשים מקוננים ומשימות במערכת הצירים. זו הרחבה בתחום יחסי השטחים, לצד דפי הדמיון הקיימים. שלושה קובצי PDF להורדה ולהדפסה ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "appendedSection": {
+        "heading": "דפי PDF נוספים: יחס שטחים במשולשים דומים",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "בדפים הנוספים מתרגלים את הקשר בין יחס הדמיון ליחס השטחים, חישוב שטח מתוך סכום או הפרש שטחים ושטחים שנותרו לאחר חיתוך במשולש.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "התרגול כולל קטעים מקבילים בתוך משולש, משולשים מקוננים ומשימות במערכת הצירים. זו הרחבה בתחום יחסי השטחים, לצד דפי הדמיון הקיימים.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "שלושה קובצי PDF להורדה ולהדפסה ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף.",
+            "links": []
+          }
+        ]
+      }
+    },
+    {
+      "slug": "area-rectangle-perimeter-grade-7",
+      "baselineSha256": "e44171f947284c7cb95750f7875e3647d9116915d36a27cee9debc63d94aae28",
+      "fields": [
+        {
+          "path": [
+            "description"
+          ],
+          "existedBefore": true,
+          "before": "שטח מלבן וריבוע, צלע חסרה והיקף צורות מורכבות באלגברה לכיתה ז׳. דפי עבודה חינם — נועם דורון.",
+          "after": "שטח מלבן וריבוע והיקף צורות מורכבות לכיתה ז׳. דפי PDF נוספים למציאת צלע חסרה, השוואת שטחים, מגרעות ואורכי מסלולים, עם תשובות."
+        },
+        {
+          "path": [
+            "intro"
+          ],
+          "existedBefore": true,
+          "before": "מחשבים שטח מלבן וריבוע, מוצאים צלע חסרה ומבטאים היקף של צורות מורכבות. תרגול ברמות שונות — בחינם.",
+          "after": "מחשבים שטח מלבן וריבוע, מוצאים צלע חסרה ומבטאים היקף של צורות מורכבות. לצד הדפים הקיימים נוספו שתי סדרות PDF: שטח והיקף של מלבן וריבוע, והיקפים של צורות מורכבות ואורכי מסלולים. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+        },
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "שטח מלבן = אורך×רוחב. שטח ריבוע = צלע². היקף הוא סכום כל הצלעות; בצורות מורכבות מפרקים לצורות מוכרות או מסמנים צלעות חסרות.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "מלבן 5×8: שטח 40. ריבוע צלע 6: שטח 36. היקף מלבן 5×8: 26.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "טעות נפוצה: לערבב בין שטח להיקף, לכלול בהיקף צלעות פנימיות שאינן חלק מגבול הצורה, או לשכוח צלע חיצונית.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מלבן ששטחו 24 ואורכו 8. מה רוחבו?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: 3.",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "שטח מלבן = אורך×רוחב. שטח ריבוע = צלע². היקף הוא סכום כל הצלעות; בצורות מורכבות מפרקים לצורות מוכרות או מסמנים צלעות חסרות.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "מלבן 5×8: שטח 40. ריבוע צלע 6: שטח 36. היקף מלבן 5×8: 26.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "טעות נפוצה: לערבב בין שטח להיקף, לכלול בהיקף צלעות פנימיות שאינן חלק מגבול הצורה, או לשכוח צלע חיצונית.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מלבן ששטחו 24 ואורכו 8. מה רוחבו?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: 3.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "דפי PDF נוספים: מלבן, ריבוע וצורות מורכבות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בדפים הנוספים מתרגלים שטח והיקף של מלבן וריבוע, מציאת צלע חסרה והשוואה בין צורות בעלות אותו שטח או אותו היקף.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "התרגול כולל ביטויים אלגבריים, קודקודים במערכת הצירים, חישוב שטח שנותר ובעיות ריצוף ותכנון. הדפים מצטרפים לתרגול הקיים בעמוד.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בסדרת ההיקפים מתרגלים גבולות של מצולעים עם צלעות אופקיות ואנכיות, מגרעות וצלעות חסרות, מסלולים במערכת הצירים, המרת יחידות ובעיות גידור והליכה. התרגול מתמקד בצורות אלה ואינו כולל חישוב צלעות משופעות.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "לכל סדרה שלושה קובצי PDF להורדה ולהדפסה ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "bodyFlow"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "type": "paragraph",
+              "text": "מחשבים שטח מלבן וריבוע, מוצאים צלע חסרה ומבטאים היקף של צורות מורכבות. תרגול ברמות שונות — בחינם.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "היקף צורות מורכבות — בחירת דף ורמה",
+              "href": "/worksheets?grade=7&topic=44",
+              "catalogTopicId": 44
+            },
+            {
+              "type": "cta",
+              "label": "שטח מלבן וריבוע — בחירת דף ורמה",
+              "href": "/worksheets?grade=7&topic=18",
+              "catalogTopicId": 18
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "שטח מלבן = אורך×רוחב. שטח ריבוע = צלע². היקף הוא סכום כל הצלעות; בצורות מורכבות מפרקים לצורות מוכרות או מסמנים צלעות חסרות.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "מלבן 5×8: שטח 40. ריבוע צלע 6: שטח 36. היקף מלבן 5×8: 26.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טעויות נפוצות"
+            },
+            {
+              "type": "paragraph",
+              "text": "טעות נפוצה: לערבב בין שטח להיקף, לכלול בהיקף צלעות פנימיות שאינן חלק מגבול הצורה, או לשכוח צלע חיצונית.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "מלבן ששטחו 24 ואורכו 8. מה רוחבו?",
+              "role": "body"
+            }
+          ],
+          "after": [
+            {
+              "type": "paragraph",
+              "text": "מחשבים שטח מלבן וריבוע, מוצאים צלע חסרה ומבטאים היקף של צורות מורכבות. לצד הדפים הקיימים נוספו שתי סדרות PDF: שטח והיקף של מלבן וריבוע, והיקפים של צורות מורכבות ואורכי מסלולים. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "היקף צורות מורכבות — בחירת דף ורמה",
+              "href": "/worksheets?grade=7&topic=44",
+              "catalogTopicId": 44
+            },
+            {
+              "type": "cta",
+              "label": "שטח מלבן וריבוע — בחירת דף ורמה",
+              "href": "/worksheets?grade=7&topic=18",
+              "catalogTopicId": 18
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "שטח מלבן = אורך×רוחב. שטח ריבוע = צלע². היקף הוא סכום כל הצלעות; בצורות מורכבות מפרקים לצורות מוכרות או מסמנים צלעות חסרות.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "מלבן 5×8: שטח 40. ריבוע צלע 6: שטח 36. היקף מלבן 5×8: 26.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טעויות נפוצות"
+            },
+            {
+              "type": "paragraph",
+              "text": "טעות נפוצה: לערבב בין שטח להיקף, לכלול בהיקף צלעות פנימיות שאינן חלק מגבול הצורה, או לשכוח צלע חיצונית.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "מלבן ששטחו 24 ואורכו 8. מה רוחבו?",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "דפי PDF נוספים: מלבן, ריבוע וצורות מורכבות"
+            },
+            {
+              "type": "paragraph",
+              "text": "בדפים הנוספים מתרגלים שטח והיקף של מלבן וריבוע, מציאת צלע חסרה והשוואה בין צורות בעלות אותו שטח או אותו היקף.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "התרגול כולל ביטויים אלגבריים, קודקודים במערכת הצירים, חישוב שטח שנותר ובעיות ריצוף ותכנון. הדפים מצטרפים לתרגול הקיים בעמוד.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "בסדרת ההיקפים מתרגלים גבולות של מצולעים עם צלעות אופקיות ואנכיות, מגרעות וצלעות חסרות, מסלולים במערכת הצירים, המרת יחידות ובעיות גידור והליכה. התרגול מתמקד בצורות אלה ואינו כולל חישוב צלעות משופעות.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "לכל סדרה שלושה קובצי PDF להורדה ולהדפסה ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף.",
+              "role": "body"
+            }
+          ]
+        },
+        {
+          "path": [
+            "updatedLine"
+          ],
+          "existedBefore": true,
+          "before": "נועם דורון מתמטיקה · עודכן 12.9.2026",
+          "after": "נועם דורון מתמטיקה · עודכן 15.11.2026"
+        },
+        {
+          "path": [
+            "faq"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "question": "האם דפי העבודה בנושא שטח מלבן וריבוע והיקף צורות לכיתה ז׳ מתאימים לכיתה ז׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          ],
+          "after": [
+            {
+              "question": "האם דפי העבודה בנושא שטח מלבן וריבוע והיקף צורות לכיתה ז׳ מתאימים לכיתה ז׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            },
+            {
+              "question": "מה כוללים קובצי ה־PDF הנוספים?",
+              "answer": "בדפים הנוספים מתרגלים שטח והיקף של מלבן וריבוע, מציאת צלע חסרה והשוואה בין צורות בעלות אותו שטח או אותו היקף. התרגול כולל ביטויים אלגבריים, קודקודים במערכת הצירים, חישוב שטח שנותר ובעיות ריצוף ותכנון. הדפים מצטרפים לתרגול הקיים בעמוד. בסדרת ההיקפים מתרגלים גבולות של מצולעים עם צלעות אופקיות ואנכיות, מגרעות וצלעות חסרות, מסלולים במערכת הצירים, המרת יחידות ובעיות גידור והליכה. התרגול מתמקד בצורות אלה ואינו כולל חישוב צלעות משופעות. לכל סדרה שלושה קובצי PDF להורדה ולהדפסה ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף."
+            },
+            {
+              "question": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+              "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+            }
+          ]
+        },
+        {
+          "path": [
+            "faqGroups"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא שטח מלבן וריבוע והיקף צורות לכיתה ז׳ מתאימים לכיתה ז׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא שטח מלבן וריבוע והיקף צורות לכיתה ז׳ מתאימים לכיתה ז׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                },
+                {
+                  "question": "מה כוללים קובצי ה־PDF הנוספים?",
+                  "answer": "בדפים הנוספים מתרגלים שטח והיקף של מלבן וריבוע, מציאת צלע חסרה והשוואה בין צורות בעלות אותו שטח או אותו היקף. התרגול כולל ביטויים אלגבריים, קודקודים במערכת הצירים, חישוב שטח שנותר ובעיות ריצוף ותכנון. הדפים מצטרפים לתרגול הקיים בעמוד. בסדרת ההיקפים מתרגלים גבולות של מצולעים עם צלעות אופקיות ואנכיות, מגרעות וצלעות חסרות, מסלולים במערכת הצירים, המרת יחידות ובעיות גידור והליכה. התרגול מתמקד בצורות אלה ואינו כולל חישוב צלעות משופעות. לכל סדרה שלושה קובצי PDF להורדה ולהדפסה ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף."
+                },
+                {
+                  "question": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+                  "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "jsonLd"
+          ],
+          "existedBefore": true,
+          "before": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/area-rectangle-perimeter-grade-7#webpage",
+                "url": "https://www.noamdoronmath.co.il/area-rectangle-perimeter-grade-7",
+                "name": "שטח מלבן וריבוע והיקף צורות לכיתה ז׳ | דפי עבודה חינם",
+                "description": "שטח מלבן וריבוע, צלע חסרה והיקף צורות מורכבות באלגברה לכיתה ז׳. דפי עבודה חינם — נועם דורון.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/area-rectangle-perimeter-grade-7#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/area-rectangle-perimeter-grade-7#learning-resource",
+                "name": "שטח מלבן וריבוע והיקף צורות לכיתה ז׳",
+                "url": "https://www.noamdoronmath.co.il/area-rectangle-perimeter-grade-7",
+                "description": "שטח מלבן וריבוע, צלע חסרה והיקף צורות מורכבות באלגברה לכיתה ז׳. דפי עבודה חינם — נועם דורון.",
+                "educationalLevel": "כיתה ז׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/area-rectangle-perimeter-grade-7#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא שטח מלבן וריבוע והיקף צורות לכיתה ז׳ מתאימים לכיתה ז׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "after": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/area-rectangle-perimeter-grade-7#webpage",
+                "url": "https://www.noamdoronmath.co.il/area-rectangle-perimeter-grade-7",
+                "name": "שטח מלבן וריבוע והיקף צורות לכיתה ז׳ | דפי עבודה חינם",
+                "description": "שטח מלבן וריבוע והיקף צורות מורכבות לכיתה ז׳. דפי PDF נוספים למציאת צלע חסרה, השוואת שטחים, מגרעות ואורכי מסלולים, עם תשובות.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/area-rectangle-perimeter-grade-7#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/area-rectangle-perimeter-grade-7#learning-resource",
+                "name": "שטח מלבן וריבוע והיקף צורות לכיתה ז׳",
+                "url": "https://www.noamdoronmath.co.il/area-rectangle-perimeter-grade-7",
+                "description": "שטח מלבן וריבוע והיקף צורות מורכבות לכיתה ז׳. דפי PDF נוספים למציאת צלע חסרה, השוואת שטחים, מגרעות ואורכי מסלולים, עם תשובות.",
+                "educationalLevel": "כיתה ז׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/area-rectangle-perimeter-grade-7#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא שטח מלבן וריבוע והיקף צורות לכיתה ז׳ מתאימים לכיתה ז׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "מה כוללים קובצי ה־PDF הנוספים?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "בדפים הנוספים מתרגלים שטח והיקף של מלבן וריבוע, מציאת צלע חסרה והשוואה בין צורות בעלות אותו שטח או אותו היקף. התרגול כולל ביטויים אלגבריים, קודקודים במערכת הצירים, חישוב שטח שנותר ובעיות ריצוף ותכנון. הדפים מצטרפים לתרגול הקיים בעמוד. בסדרת ההיקפים מתרגלים גבולות של מצולעים עם צלעות אופקיות ואנכיות, מגרעות וצלעות חסרות, מסלולים במערכת הצירים, המרת יחידות ובעיות גידור והליכה. התרגול מתמקד בצורות אלה ואינו כולל חישוב צלעות משופעות. לכל סדרה שלושה קובצי PDF להורדה ולהדפסה ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "appendedSection": {
+        "heading": "דפי PDF נוספים: מלבן, ריבוע וצורות מורכבות",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "בדפים הנוספים מתרגלים שטח והיקף של מלבן וריבוע, מציאת צלע חסרה והשוואה בין צורות בעלות אותו שטח או אותו היקף.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "התרגול כולל ביטויים אלגבריים, קודקודים במערכת הצירים, חישוב שטח שנותר ובעיות ריצוף ותכנון. הדפים מצטרפים לתרגול הקיים בעמוד.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "בסדרת ההיקפים מתרגלים גבולות של מצולעים עם צלעות אופקיות ואנכיות, מגרעות וצלעות חסרות, מסלולים במערכת הצירים, המרת יחידות ובעיות גידור והליכה. התרגול מתמקד בצורות אלה ואינו כולל חישוב צלעות משופעות.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "לכל סדרה שלושה קובצי PDF להורדה ולהדפסה ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף.",
+            "links": []
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,4 +1,7 @@
+import { beforeNext12Copy } from './next12-pdf';
+import { beforeSaoWpcCopy } from './sao-wpc-pdf';
 import assert from 'node:assert/strict';
+import { beforeExtSmlAfrCopy } from './ext-sml-afr-pdf';
 import { beforeEqnSgnFacCopy } from './eqn-sgn-fac-pdf';
 
 /** PR456's exact reviewed copy change. Historical production captures stay intact.
@@ -23,7 +26,7 @@ export const PDF_ONLY_TOPIC_COPY = {
 } as const;
 
 export function restoreBeforePdfCopy<T>(slug: string, page: T): T {
-  page = beforeEqnSgnFacCopy(slug, page);
+  page = beforeSaoWpcCopy(slug, beforeEqnSgnFacCopy(slug, beforeExtSmlAfrCopy(slug, beforeNext12Copy(slug, page))));
   // New PDF editions added real content on this date; retain old live captures.
   const previousUpdates: Record<string, string> = {
     'rectangle-grade-9': 'נועם דורון מתמטיקה · עודכן 12.9.2026',

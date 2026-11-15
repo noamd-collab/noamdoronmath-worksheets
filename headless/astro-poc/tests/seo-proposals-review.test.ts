@@ -1,3 +1,6 @@
+import { reviewedNext12 } from './fixtures/next12-pdf';
+import { reviewedSaoWpc } from './fixtures/sao-wpc-pdf';
+import { reviewedExtSmlAfr } from './fixtures/ext-sml-afr-pdf';
 /**
  * Regression tests for the PR 46 content review of the SEO proposals (390 rows).
  * Each block maps to a review finding or one of the seven review criteria.
@@ -78,6 +81,43 @@ describe('seo proposals – generator and coverage', () => {
     assert.equal(factoringRow.description, factoringCopy.before);
     factoringRow.currentDescription = factoringCopy.after;
     factoringRow.description = factoringCopy.after;
+    for (const delta of reviewedExtSmlAfr.landingDeltas) {
+      const copy = delta.fields.find(d => d.path.length === 1 && d.path[0] === 'description')!;
+      const row = expected.find(item => item.path === '/' + delta.slug)!;
+      assert.equal(row.currentDescription, copy.before);
+      row.currentDescription = copy.after as string;
+      // The pre-existing SML review override remains authoritative; the other
+      // three rows use current copy, with their complete old value asserted.
+      if (delta.slug !== 'binomial-square-grade-9') {
+        assert.equal(row.description, copy.before);
+        row.description = copy.after as string;
+      }
+    }
+    const saoCopy = reviewedSaoWpc.landingDeltas.find(d => d.slug === 'triangle-sides-angles-grade-9')!
+      .fields.find(d => d.path.length === 1 && d.path[0] === 'description')!;
+    const saoRow = expected.find(item => item.path === '/triangle-sides-angles-grade-9')!;
+    assert.equal(saoRow.currentDescription, saoCopy.before);
+    assert.equal(saoRow.description, 'לומדים להשוות בין צלעות לזוויות שמולן ולהשתמש באי־שוויון המשולש. שלוש רמות תרגול, בחינם וללא הרשמה.');
+    assert.equal(saoRow.source, 'title:current|description:page-intro');
+    saoRow.currentDescription = String(saoCopy.after);
+    saoRow.description = String(saoCopy.after);
+    saoRow.source = 'title:current|description:current';
+    for (const delta of reviewedNext12.landingDeltas) {
+      const copy = delta.fields.find(d => d.path[0] === 'description')!;
+      const row = expected.find(item => item.path === '/' + delta.slug)!;
+      assert.equal(row.currentDescription, copy.before);
+      row.currentDescription = String(copy.after);
+      if (delta.slug === 'similar-triangles-grade-9') {
+        const intro = delta.fields.find(d => d.path[0] === 'intro')!;
+        assert.equal(row.description, intro.before);
+        assert.equal(row.source, 'title:current|description:page-intro');
+        row.source = 'title:current|description:current';
+      } else {
+        assert.equal(row.description, copy.before);
+        assert.equal(row.source, 'title:current|description:current');
+      }
+      row.description = String(copy.after);
+    }
     assert.deepEqual(proposals, expected);
   });
 
