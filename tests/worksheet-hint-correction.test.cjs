@@ -6,6 +6,7 @@ const root = path.resolve(__dirname, '..'), catalogDir = path.join(root, 'headle
 const { loadRamziActivationEvidence, validateRamziActivation } = require('../scripts/lib/worksheet-ramzi-activation.cjs');
 const { mergeWorksheetEditions } = require('../scripts/lib/worksheet-editions.cjs');
 const { validateHintCorrection, hintCorrectionScope } = require('../scripts/lib/worksheet-hint-correction.mjs');
+const { hintCorrectionBuildScope, validateHintCorrectionRows } = require('../scripts/lib/worksheet-hint-correction-build.cjs');
 const { exportCatalog, loadIndexCatalog } = require('../scripts/lib/headless-catalog.cjs');
 const { buildLearningCatalog } = require('../scripts/build-learning-catalog.cjs');
 const registry = JSON.parse(fs.readFileSync(path.join(catalogDir, 'worksheet-editions.v1.json')));
@@ -18,16 +19,16 @@ function baseline() { return loadRamziActivationEvidence(catalogDir, pub); }
 // The private proposal hashes are real pinned proposals, not executed transactions.
 // This fixture never creates an applied correction file in the production catalog.
 function fixture() {
-  const b = baseline(), scope = hintCorrectionScope();
+  const b = baseline(), scope = hintCorrectionBuildScope();
   const pins = { ...scope.pins }; delete pins.baselineReadyObjectSha256;
   const common = { ...pins, ...scope.payloads, authorId: 'antigravity-flash', reviewerId: 'codex-root' };
-  const readback = { schema: 'noam-first567-hint-correction-db-readback/v1', status: 'verified_exact_readback', ...common,
+  const readback = { schema: 'noam-first567-hint-correction-db-readback/v2', status: 'verified_exact_readback', ...common,
     sourceReceiptSha256: hash('synthetic actual-readback-shaped test receipt only'), observedAt: '2026-11-15T12:10:00.000Z',
     counts: { correctedRows: 15, correctedHints: 45, first567Rows: 567, unchangedRows: 552, legacyRows: 31761, learningRows: 968 },
-    before: clone(scope.preserved), after: clone(scope.preserved), rows: clone(scope.rows) };
-  const record = { schema: 'noam-first567-hint-correction/v1', status: 'applied_verified', ...common,
-    readbackReceiptSha256: hash(bytes(readback)), rows: clone(scope.rows) };
-  b.hintCorrection = { record, readback }; return b;
+    before: clone(scope.preserved), after: clone(scope.preserved), ...scope.rowScope };
+  const record = { schema: 'noam-first567-hint-correction/v2', status: 'applied_verified', ...common,
+    readbackReceiptSha256: hash(bytes(readback)), ...scope.rowScope };
+  b.hintCorrection = { record, readback }; b.hintCorrectionRows = Buffer.from(JSON.stringify(scope.rows)); return b;
 }
 function rejectedEverywhere(b) {
   assert.throws(() => validateRamziActivation(registry, b), /Hint correction|Ramzi activation/);
@@ -88,20 +89,16 @@ for (const [name, mutate] of [
   ['readback invalid date', b => b.hintCorrection.readback.observedAt = '2026-02-31T00:00:00.000Z'],
   ['readback older than before snapshot', b => b.hintCorrection.readback.observedAt = '2026-11-14T12:10:00.000Z'],
   ['future readback date', b => b.hintCorrection.readback.observedAt = new Date(Date.now() + 86_400_000).toISOString()],
-  ['missing target', b => b.hintCorrection.record.rows.pop()],
-  ['sixteenth target', b => b.hintCorrection.record.rows.push(clone(b.hintCorrection.record.rows[0]))],
-  ['duplicate target', b => b.hintCorrection.record.rows[1] = clone(b.hintCorrection.record.rows[0])],
-  ['different target order', b => b.hintCorrection.record.rows.reverse()],
-  ['out of scope exercise', b => b.hintCorrection.record.rows[0].exerciseId = 'G9-T88-A-Q06ב'],
-  ['out of scope edition', b => b.hintCorrection.record.rows[0].editionId = 'ms-20261113-par2-r1'],
-  ['different canonical ID', b => b.hintCorrection.record.rows[0].canonicalItemId += '.other'],
-  ['different source/PDF binding', b => b.hintCorrection.record.rows[0].sourceBindingSha256 = 'a'.repeat(64)],
-  ['unreviewed new hint', b => b.hintCorrection.record.rows[0].afterHintSha256[1] = 'a'.repeat(64)],
-  ['different original hint', b => b.hintCorrection.record.rows[0].beforeHintSha256[2] = 'a'.repeat(64)],
-  ['only two new tiers', b => b.hintCorrection.record.rows[0].afterHintSha256.pop()],
-  ['sparse tier array', b => delete b.hintCorrection.record.rows[0].afterHintSha256[1]],
-  ['readback wrong hint', b => b.hintCorrection.readback.rows[14].afterHintSha256[0] = 'a'.repeat(64)],
-  ['readback missing target', b => b.hintCorrection.readback.rows.pop()],
+  ['v1 public record', b => b.hintCorrection.record.schema = 'noam-first567-hint-correction/v1'],
+  ['v1 public readback', b => b.hintCorrection.readback.schema = 'noam-first567-hint-correction-db-readback/v1'],
+  ['full rows leaked into public record', b => b.hintCorrection.record.rows = hintCorrectionBuildScope().rows],
+  ['missing scope digest', b => delete b.hintCorrection.record.rowScopeSha256],
+  ['different public scope digest', b => b.hintCorrection.record.rowScopeSha256 = 'a'.repeat(64)],
+  ['matching substituted public scope digests', b => b.hintCorrection.record.rowScopeSha256 = b.hintCorrection.readback.rowScopeSha256 = 'a'.repeat(64)],
+  ['different public row count', b => b.hintCorrection.record.rowCount = 14],
+  ['different public hint count', b => b.hintCorrection.record.hintCount = 44],
+  ['different readback scope digest', b => b.hintCorrection.readback.rowScopeSha256 = 'a'.repeat(64)],
+  ['different readback row count', b => b.hintCorrection.readback.rowCount = 16],
   ['changed preserved row digest', b => b.hintCorrection.readback.after.unchangedRowsSha256 = 'a'.repeat(64)],
   ['forged equal preserved digests', b => b.hintCorrection.readback.before.unchangedRowsSha256 = b.hintCorrection.readback.after.unchangedRowsSha256 = 'a'.repeat(64)],
   ['changed legacy digest', b => b.hintCorrection.readback.after.legacyRowsSha256 = 'a'.repeat(64)],
@@ -115,6 +112,57 @@ for (const [name, mutate] of [
   if (b.hintCorrection?.record && b.hintCorrection?.readback)
     b.hintCorrection.record.readbackReceiptSha256 = hash(bytes(b.hintCorrection.readback));
   rejectedEverywhere(b);
+});
+
+
+// Full row proof is build-only. A substituted scope cannot pass SSR either,
+// even after a caller recomputes both public hashes around its changed rows.
+for (const [name, mutate] of [
+  ['missing target', rows => rows.pop()],
+  ['sixteenth target', rows => rows.push(clone(rows[0]))],
+  ['duplicate target', rows => rows[1] = clone(rows[0])],
+  ['different target order', rows => rows.reverse()],
+  ['out of scope exercise', rows => rows[0].exerciseId = 'G9-T88-A-Q06ב'],
+  ['out of scope edition', rows => rows[0].editionId = 'ms-20261113-par2-r1'],
+  ['different canonical ID', rows => rows[0].canonicalItemId += '.other'],
+  ['different source/PDF binding', rows => rows[0].sourceBindingSha256 = 'a'.repeat(64)],
+  ['unreviewed new hint', rows => rows[0].afterHintSha256[1] = 'a'.repeat(64)],
+  ['different original hint', rows => rows[0].beforeHintSha256[2] = 'a'.repeat(64)],
+  ['only two new tiers', rows => rows[0].afterHintSha256.pop()],
+  ['sparse tier array', rows => delete rows[0].afterHintSha256[1]],
+  ['readback wrong hint', rows => rows[14].afterHintSha256[0] = 'a'.repeat(64)],
+  ['readback missing target', rows => rows.pop()],
+]) test('build and SSR reject repacked ' + name, () => {
+  const b = fixture(), rows = hintCorrectionBuildScope().rows;
+  mutate(rows); b.hintCorrectionRows = Buffer.from(JSON.stringify(rows));
+  const forgedScope = hash(b.hintCorrectionRows);
+  b.hintCorrection.record.rowScopeSha256 = forgedScope;
+  b.hintCorrection.readback.rowScopeSha256 = forgedScope;
+  b.hintCorrection.record.readbackReceiptSha256 = hash(bytes(b.hintCorrection.readback));
+  rejectedEverywhere(b);
+  assert.throws(() => validateHintCorrectionRows(b.hintCorrectionRows), /row proof hash|exact 15/);
+});
+
+test('full build requires hash-bound row proof, independent of unchanged public claims', () => {
+  for (const mode of ['absent', 'changed', 'whitespace']) {
+    const b = fixture();
+    if (mode === 'absent') delete b.hintCorrectionRows;
+    else if (mode === 'whitespace') b.hintCorrectionRows = Buffer.concat([b.hintCorrectionRows, Buffer.from(' ')]);
+    else { const rows = hintCorrectionBuildScope().rows; rows[0].afterHintSha256[0] = 'a'.repeat(64); b.hintCorrectionRows = Buffer.from(JSON.stringify(rows)); }
+    assert.throws(() => validateRamziActivation(registry, b), /row proof/);
+    // SSR consumes the build-verified compact projection; raw proof is not in its API.
+    assert.doesNotThrow(() => validateHintCorrection(b.ready, b.hintCorrection));
+  }
+});
+test('orphan full proof is rejected and compact output contains no row identities', () => {
+  const b = fixture();
+  assert.equal(hash(b.hintCorrectionRows), hintCorrectionScope().rowScope.rowScopeSha256);
+  assert.equal(validateHintCorrectionRows(b.hintCorrectionRows).length, 15);
+  assert(!JSON.stringify(b.hintCorrection).includes('canonicalItemId'));
+  const snapshot = mergeWorksheetEditions(catalog, registry, b.ready, b.hintCorrection);
+  assert(!Object.hasOwn(snapshot, 'hintCorrectionRows'));
+  delete b.hintCorrection;
+  assert.throws(() => validateRamziActivation(registry, b), /orphan correction/);
 });
 
 test('SSR compares the entire baseline independently of object property order', () => {
@@ -142,7 +190,7 @@ test('loader hashes both original v1 bytes and new readback and refuses orphan e
   const temp = fs.mkdtempSync(path.join(os.tmpdir(), 'noam-hint-correction-'));
   try {
     fs.mkdirSync(path.join(temp, 'ramzi-evidence')); const b = fixture();
-    const correctionPath = path.join(temp, 'worksheet-ramzi-hint-correction.v1.json');
+    const correctionPath = path.join(temp, 'worksheet-ramzi-hint-correction.v2.json');
     fs.writeFileSync(correctionPath, bytes(b.hintCorrection.record));
     assert.throws(() => loadRamziActivationEvidence(temp, pub), /correction without baseline/);
     fs.copyFileSync(path.join(catalogDir, 'worksheet-ramzi-ready.v1.json'), path.join(temp, 'worksheet-ramzi-ready.v1.json'));
@@ -150,11 +198,17 @@ test('loader hashes both original v1 bytes and new readback and refuses orphan e
     assert.throws(() => loadRamziActivationEvidence(temp, pub), /ENOENT/);
     const receipt = path.join(temp, 'ramzi-evidence', b.hintCorrection.record.readbackReceiptSha256 + '.json');
     fs.writeFileSync(receipt, bytes(b.hintCorrection.readback));
+    assert.throws(() => loadRamziActivationEvidence(temp, pub), /ENOENT/);
+    const rowsPath = path.join(temp, 'ramzi-evidence', b.hintCorrection.record.rowScopeSha256 + '.json');
+    fs.writeFileSync(rowsPath, b.hintCorrectionRows);
     assert.deepEqual(loadRamziActivationEvidence(temp, pub).hintCorrection, b.hintCorrection);
     assert.equal(validateRamziActivation(registry, loadRamziActivationEvidence(temp, pub)).size, 12);
     fs.appendFileSync(receipt, ' ');
     assert.throws(() => loadRamziActivationEvidence(temp, pub), /correction readback hash mismatch/);
     fs.writeFileSync(receipt, bytes(b.hintCorrection.readback));
+    fs.appendFileSync(rowsPath, ' ');
+    assert.throws(() => loadRamziActivationEvidence(temp, pub), /row proof hash/);
+    fs.writeFileSync(rowsPath, b.hintCorrectionRows);
     fs.appendFileSync(path.join(temp, 'worksheet-ramzi-ready.v1.json'), ' ');
     assert.throws(() => loadRamziActivationEvidence(temp, pub), /correction baseline bytes/);
   } finally { fs.rmSync(temp, { recursive: true }); }

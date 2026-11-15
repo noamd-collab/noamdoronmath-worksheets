@@ -3,7 +3,8 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
-const { validateHintCorrection, hintCorrectionScope, SOURCE_BINDING_FIELDS } = require('./worksheet-hint-correction.mjs');
+const { validateHintCorrection, hintCorrectionScope } = require('./worksheet-hint-correction.mjs');
+const { validateHintCorrectionRows, SOURCE_BINDING_FIELDS } = require('./worksheet-hint-correction-build.cjs');
 const SHA = /^[0-9a-f]{64}$(?![\s\S])/;
 const COMMIT = /^[0-9a-f]{40}$(?![\s\S])/;
 const REVIEW = '3a2438b4076088398e0fb5b167051eb1d57b7a2c1911fcca427abcc35348bd50';
@@ -39,7 +40,7 @@ function noPrivateValues(value) {
 function sameFields(a,b,fields,label) { for (const f of fields) must(a[f] === b[f], label + ' ' + f + ' mismatch'); }
 function validateRamziActivation(registry, bundle) {
   if (bundle === undefined) return new Map();
-  object(bundle, ['ready','receipts','manifests','nativeExports','hintCorrection'], 'evidence bundle', ['ready','receipts','manifests','nativeExports']);
+  object(bundle, ['ready','receipts','manifests','nativeExports','hintCorrection','hintCorrectionRows'], 'evidence bundle', ['ready','receipts','manifests','nativeExports']);
   const r = bundle.ready;
   object(r, ['schema','status','finalManifestsPublished','contentReviewedHead','deployedCommit','releaseReceiptSha256',
     'itemCount','hintCount','hintReviewSha256','payloadSha256',...Object.keys(RECEIPTS),'units'], 'ready');
@@ -103,12 +104,13 @@ function validateRamziActivation(registry, bundle) {
     }
   }
   const correction = validateHintCorrection(r, bundle.hintCorrection);
+  must(correction || !Object.hasOwn(bundle, 'hintCorrectionRows'), 'orphan correction row proof');
   if (correction) {
     const scope = hintCorrectionScope();
     must(hash(JSON.stringify(bundle.hintCorrection.readback, null, 2) + '\n') ===
       bundle.hintCorrection.record.readbackReceiptSha256, 'correction readback content hash');
     must(hash(JSON.stringify(r)) === scope.pins.baselineReadyObjectSha256, 'correction baseline changed');
-    for (const row of scope.rows) {
+    for (const row of validateHintCorrectionRows(bundle.hintCorrectionRows)) {
       const matches = r.units.flatMap(u => JSON.parse(bundle.manifests[u.pdfId]).exercises
         .filter(e => u.editionId === row.editionId && e.id === row.exerciseId).map(e => ({ u, e })));
       must(matches.length === 1, 'correction exact source mapping');
@@ -125,7 +127,8 @@ function validateRamziActivation(registry, bundle) {
 }
 function loadRamziActivationEvidence(catalogDir, publicDir) {
   const readyPath=path.join(catalogDir,'worksheet-ramzi-ready.v1.json');
-  const correctionPath=path.join(catalogDir,'worksheet-ramzi-hint-correction.v1.json');
+  const correctionPath=path.join(catalogDir,'worksheet-ramzi-hint-correction.v2.json');
+  must(!fs.existsSync(path.join(catalogDir,'worksheet-ramzi-hint-correction.v1.json')), 'unsupported unactivated correction v1');
   if(!fs.existsSync(readyPath)) { must(!fs.existsSync(correctionPath), 'correction without baseline'); return undefined; }
   const ready=JSON.parse(fs.readFileSync(readyPath,'utf8'));
   // Check path-bearing fields before reading anything outside fixed directories.
@@ -140,7 +143,7 @@ function loadRamziActivationEvidence(catalogDir, publicDir) {
     manifests[u.pdfId]=fs.readFileSync(path.join(publicDir,'noam-ai/manifests',u.pdfId+'.json'));
     nativeExports[u.prefix+'/'+u.level]=fs.readFileSync(path.join(publicDir,'noam-ai/native',u.prefix,u.level,'noam-ai.json'));
   }
-  let hintCorrection;
+  let hintCorrection, hintCorrectionRows;
   if (fs.existsSync(correctionPath)) {
     must(hash(fs.readFileSync(readyPath)) === hintCorrectionScope().pins.baselineReadySha256, 'correction baseline bytes');
     const record = JSON.parse(fs.readFileSync(correctionPath, 'utf8'));
@@ -149,7 +152,9 @@ function loadRamziActivationEvidence(catalogDir, publicDir) {
     const readback = parsed(bytes, record.readbackReceiptSha256, 'correction readback');
     hintCorrection = { record, readback };
     validateHintCorrection(ready, hintCorrection);
+    hintCorrectionRows = fs.readFileSync(path.join(catalogDir, 'ramzi-evidence', record.rowScopeSha256 + '.json'));
+    validateHintCorrectionRows(hintCorrectionRows);
   }
-  return {ready,receipts,manifests,nativeExports, ...(hintCorrection ? { hintCorrection } : {})};
+  return {ready,receipts,manifests,nativeExports, ...(hintCorrection ? { hintCorrection, hintCorrectionRows } : {})};
 }
 module.exports={validateRamziActivation,loadRamziActivationEvidence};

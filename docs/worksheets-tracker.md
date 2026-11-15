@@ -707,3 +707,8 @@ Checks and publication evidence: `docs/teacher-answer-word-20261104.md`.
 - בבדיקה חיה לאחר פרסום PR #463, מעבר מסעיף א׳ לסעיף ד׳ בדף מקבילית ברמה ב׳ הפעיל לולאת עדכונים בכפתור הדיווח. הכפתור מעדכן כעת את מצב ההסתרה רק כשהמצב משתנה, ולכן המעבר יכול להסתיים והרמזים מתאפסים לסעיף החדש.
 - בדיקת הרגרסיה מפעילה MutationObserver אמיתי, משחזרת את הכשל בקוד הקודם ובודקת התכנסות במעבר סעיף ושימור פעולת הדיווח. המסלול המקומי נבדק במחשב ובטלפון עם איור המקור, מיקוד הזוויות DBC/ABD והגדלה.
 - השינוי אינו משנה דפי PDF, תוכן רמזים, מזהי סעיפים או מדיניות שרטוטים. פרסום התיקון והבדיקה החיה שלו דורשים אישור נפרד ל־PR ולגרסת הפרסום.
+
+
+### First567 correction evidence v2 — passive packing
+
+Moved the exact 15-row source/old/new hash proof to a required content-addressed build-only file and fixed scope module. Public record/readback and SSR retain the pinned scope digest, 15/45 counts and all baseline/review/payload/readback pins. No applied receipt or DB update is included. Focused tamper, regeneration and loader checks cover the split; final build budget is recorded in the private handoff.
