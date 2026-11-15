@@ -4,6 +4,20 @@
 - Preserve every v1 readiness/receipt byte, PDF, native source, manifest and learning identity. Without a correction file the generated outputs are byte-identical. Shared build/SSR checks reject out-of-scope source changes and require exact before/after hint hashes, the original approval pins and a separately verified database readback.
 - Passive code only: no correction file, database write, import, activation or publication is included. Actual CAS, rollback, readback and subsequent evidence publication remain separate. See [correction evidence contract](first567-hint-correction-evidence.md).
 
+## 2026-11-15 — Frequency-table and relative-frequency student PDFs
+
+- Add a non-default PDF-only edition to grade-seven topic 26: **טבלאות שכיחות ושכיחות יחסית — PDF**. Three reviewed files contain 54 subitems across 17 pages, with final answers and preserved working areas. Four minor explanation notes remain documented; the student PDFs were accepted in this limited scope.
+- Keep every previous topic, PDF, routing and default, including topics 25–27. The new edition uses direct PDF links and is excluded from teacher exercise sources, learning/progress generation and viewer/hint activation. G7-T88 is a provenance binding; native exports, Word, hints and Supabase are outside this publication.
+- Both existing frequency landing pages expose the three additions: the relative-frequency page uses topic 26 directly, while the frequency page retains primary topic 25 and adds a clearly labeled secondary topic 26 action. Real component rendering verifies all six new links and preserves the previous downloads.
+- See [PDF provenance](g7-frq01-pdf-first-20261115.json). This remains a local review candidate until the batch receives its required release approval.
+
+## 2026-11-15 — Rational equations: three student PDFs and a dedicated topic
+
+- Add grade-nine topic 47, **משוואות רציונליות**, and `/rational-equations-grade-9`. The three 5-page PDFs cover domain and admissible solutions, with denominator factorization and equation solving; they do not replace the complete eight-hour unit. All old topics, links and PDFs remain, including algebraic-fraction reduction and quadratic equations.
+- All 54 subitems, 45 equations and 15 pages passed independent student-PDF review. Nine readbacks across returned media, CDN and site URLs match the exact PDFs. See [PDF provenance](g9-rat01-pdf-first-20261115.json). G94 b4/c4 remains documented REVIEW with writing space preserved; this is not an all-package PASS.
+- The explicit base-topic `pdf-only` mode preserves direct student downloads while excluding these files from teacher-picker sources, future teacher regeneration and future learning/progress IDs. No native prefix or fallback is activated. G9-T93/G9-RAT-01 and source hashes are provenance for later integration only; Word, hints, native exports and private solutions remain outside this publication.
+- Focused regressions exercise export/source validation, direct student and Noam-guide links, unavailable teacher scopes, full teacher/learning regeneration and unchanged old rows. Full site CI and desktop/mobile preview remain with the release coordinator. This is a review candidate, not a live-publication claim.
+
 ## 2026-11-15 — Three grade-seven variable and expression-language PDFs
 
 - Add G7-ALG-01 / G7-T87 as an additional PDF-only edition of site topic 7/22, visible on the existing algebraic-expressions landing page and worksheet catalog. Keep the old PDFs and default unchanged; this focused opening unit does not replace substitution, patterns or the whole algebra sequence.

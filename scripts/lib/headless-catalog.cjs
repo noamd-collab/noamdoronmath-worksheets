@@ -10,6 +10,7 @@ const path = require('node:path');
 const vm = require('node:vm');
 const crypto = require('node:crypto');
 const { mergeWorksheetEditions } = require('./worksheet-editions.cjs');
+const { basePublicationErrors } = require('./base-worksheet-publication.mjs');
 const { loadRamziActivationEvidence, validateRamziActivation } = require('./worksheet-ramzi-activation.cjs');
 
 const ROOT = path.join(__dirname, '..', '..');
@@ -148,6 +149,7 @@ const ORDERS = {
     'icon',
     'parent',
     'noamTopicId',
+    'publicationMode',
     'levels',
     'routing',
   ],
@@ -368,6 +370,9 @@ function buildCatalog(raw) {
       if (t.n != null && t.n !== '') topic.note = t.n;
       if (t.parent !== undefined) topic.parent = t.parent;
       if (t.x != null && t.x !== '') topic.noamTopicId = t.x;
+      if (Object.hasOwn(t, 'publicationMode')) topic.publicationMode = t.publicationMode;
+      const publicationErrors = basePublicationErrors(t, grade, topic.levels, prefix || linkRow.sourcePrefix);
+      if (publicationErrors.length) throw new Error(`Topic ${grade}:${t.id}: ${publicationErrors.join('; ')}`);
 
       // Derived routing facts — documented in schema; not present as fields in DATA.
       topic.routing = {
@@ -569,6 +574,10 @@ function validateCatalog(catalog, raw) {
         errors.push(key + ' parent mismatch');
       }
       if ((ct.noamTopicId || null) !== (rt.x || null)) errors.push(key + ' noamTopicId/x mismatch');
+      if (ct.publicationMode !== rt.publicationMode) errors.push(key + ' publicationMode mismatch');
+      for (const message of basePublicationErrors(ct, g.grade, ct.levels, ct.routing?.resolvedNoamPrefix)) {
+        errors.push(key + ': ' + message);
+      }
       if (!groupKeys.has(ct.group)) errors.push(key + ' orphan group "' + ct.group + '"');
       if (!raw.ICONS[ct.icon]) errors.push(key + ' unknown icon "' + ct.icon + '"');
 

@@ -1,0 +1,209 @@
+{
+  "slug": "rational-equations-grade-9",
+  "path": "/rational-equations-grade-9",
+  "grade": 9,
+  "sourceUrl": "https://www.noamdoronmath.co.il/rational-equations-grade-9",
+  "fetchedAt": "2026-11-15T09:10:36.875188+00:00",
+  "verifiedVia": "authored-catalog-gap-rat01-pdf-review-20261115",
+  "title": "משוואות רציונליות לכיתה ט׳ — דפי עבודה ותחום הצבה | נועם דורון",
+  "description": "דפי עבודה במשוואות רציונליות לכיתה ט׳: תחום הצבה, פירוק מכנים לגורמים ובדיקת קבילות פתרונות. שלוש רמות להורדה ולהדפסה, עם תשובות סופיות.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "משוואות רציונליות לכיתה ט׳",
+  "intro": "מתרגלים משוואות רציונליות: קובעים תחום הצבה מהמכנים המקוריים, פותרים ובודקים אילו פתרונות מותרים. כאן זמינים שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+  "sections": [
+    {
+      "heading": "מה מתרגלים בדפים?",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "התרגול מתמקד בתחום ההצבה, בפירוק מכנים לגורמים, בפתרון משוואות ובפסילת ערכים שאינם מותרים. זו חבילת תרגול ממוקדת בתוך הנושא משוואות רציונליות.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "תחום ההצבה נקבע לפני צמצום. גם כאשר גורם מצטמצם, הערך שאיפס את המכנה המקורי נשאר אסור.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "דוגמה פתורה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "במשוואה ⟨8¦(x−1)⟩=2 קובעים תחילה x≠1. כופלים ב־x−1 ומקבלים 8=2(x−1), ולכן x=5. בהצבה במשוואה המקורית מתקבל ⟨8¦4⟩=2, ולכן הפתרון מותר.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "במשוואה ⟨(x²−16)¦(x−4)⟩=0, האם x=4 הוא פתרון? לא: הוא מאפס את המכנה. תחום ההצבה הוא x≠4, והפתרון הוא x=−4.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "updatedLine": null,
+  "updatedLinePlacement": "absent",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "מה כולל התרגול במשוואות רציונליות?",
+      "answer": "קביעת תחום הצבה, פירוק מכנים לגורמים, פתרון משוואות ובדיקת קבילות הפתרונות. הדפים מתמקדים במיומנויות האלה."
+    },
+    {
+      "question": "האם יש תשובות בדפי העבודה?",
+      "answer": "כן. בסוף כל קובץ PDF מופיעות תשובות סופיות. בשאלות הדורשות נימוק יש לכתוב גם דרך פתרון."
+    },
+    {
+      "question": "באילו רמות זמינים הדפים?",
+      "answer": "ברמה א׳, ברמה ב׳ ובמצוינות. בכל רמה שש שאלות ובהן שמונה־עשר סעיפים."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "authored-visible+jsonld",
+      "items": [
+        {
+          "question": "מה כולל התרגול במשוואות רציונליות?",
+          "answer": "קביעת תחום הצבה, פירוק מכנים לגורמים, פתרון משוואות ובדיקת קבילות הפתרונות. הדפים מתמקדים במיומנויות האלה."
+        },
+        {
+          "question": "האם יש תשובות בדפי העבודה?",
+          "answer": "כן. בסוף כל קובץ PDF מופיעות תשובות סופיות. בשאלות הדורשות נימוק יש לכתוב גם דרך פתרון."
+        },
+        {
+          "question": "באילו רמות זמינים הדפים?",
+          "answer": "ברמה א׳, ברמה ב׳ ובמצוינות. בכל רמה שש שאלות ובהן שמונה־עשר סעיפים."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/factoring-grade-9",
+      "label": "פירוק לגורמים",
+      "productionHref": "https://www.noamdoronmath.co.il/factoring-grade-9"
+    },
+    {
+      "path": "/quadratic-equations-grade-9",
+      "label": "משוואות ריבועיות",
+      "productionHref": "https://www.noamdoronmath.co.il/quadratic-equations-grade-9"
+    },
+    {
+      "path": "/quadratic-function-grade-9",
+      "label": "הפונקציה הריבועית",
+      "productionHref": "https://www.noamdoronmath.co.il/quadratic-function-grade-9"
+    },
+    {
+      "path": "/algebraic-fractions-grade-9",
+      "label": "שברים אלגבריים",
+      "productionHref": "https://www.noamdoronmath.co.il/algebraic-fractions-grade-9"
+    }
+  ],
+  "catalogCta": {
+    "href": "/worksheets?grade=9&topic=47",
+    "catalogTopicId": 47,
+    "catalogTopicTitle": "משוואות רציונליות",
+    "label": "בחירת רמה ופתיחת PDF",
+    "source": "authored-reviewed-pdf-intake"
+  },
+  "catalogCtas": [
+    {
+      "href": "/worksheets?grade=9&topic=47",
+      "catalogTopicId": 47,
+      "catalogTopicTitle": "משוואות רציונליות",
+      "label": "בחירת רמה ופתיחת PDF",
+      "source": "authored-reviewed-pdf-intake"
+    }
+  ],
+  "gradeHubHref": "/grade-9",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/rational-equations-grade-9#webpage",
+        "url": "https://www.noamdoronmath.co.il/rational-equations-grade-9",
+        "name": "משוואות רציונליות לכיתה ט׳ — דפי עבודה ותחום הצבה | נועם דורון",
+        "description": "דפי עבודה במשוואות רציונליות לכיתה ט׳: תחום הצבה, פירוק מכנים לגורמים ובדיקת קבילות פתרונות. שלוש רמות להורדה ולהדפסה, עם תשובות סופיות.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/rational-equations-grade-9#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/rational-equations-grade-9#learning-resource",
+        "name": "משוואות רציונליות לכיתה ט׳",
+        "url": "https://www.noamdoronmath.co.il/rational-equations-grade-9",
+        "description": "דפי עבודה במשוואות רציונליות לכיתה ט׳: תחום הצבה, פירוק מכנים לגורמים ובדיקת קבילות פתרונות. שלוש רמות להורדה ולהדפסה, עם תשובות סופיות.",
+        "educationalLevel": "כיתה ט׳",
+        "learningResourceType": "דפי עבודה",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/rational-equations-grade-9#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "מה כולל התרגול במשוואות רציונליות?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "קביעת תחום הצבה, פירוק מכנים לגורמים, פתרון משוואות ובדיקת קבילות הפתרונות. הדפים מתמקדים במיומנויות האלה."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם יש תשובות בדפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. בסוף כל קובץ PDF מופיעות תשובות סופיות. בשאלות הדורשות נימוק יש לכתוב גם דרך פתרון."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "באילו רמות זמינים הדפים?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "ברמה א׳, ברמה ב׳ ובמצוינות. בכל רמה שש שאלות ובהן שמונה־עשר סעיפים."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

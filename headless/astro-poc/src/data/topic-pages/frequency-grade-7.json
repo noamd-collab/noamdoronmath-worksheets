@@ -75,6 +75,12 @@
       "catalogTopicId": 25
     },
     {
+      "type": "cta",
+      "label": "טבלאות שכיחות ושכיחות יחסית — תרגול נוסף",
+      "href": "/worksheets?grade=7&topic=26",
+      "catalogTopicId": 26
+    },
+    {
       "type": "heading",
       "text": "הסבר ודוגמה"
     },
@@ -217,6 +223,14 @@
       "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=25",
       "catalogTopicId": 25,
       "catalogTopicTitle": "שכיחות"
+    },
+    {
+      "label": "טבלאות שכיחות ושכיחות יחסית — תרגול נוסף",
+      "href": "/worksheets?grade=7&topic=26",
+      "source": "reviewed-frq01-pdf-edition",
+      "productionHref": "https://www.noamdoronmath.co.il/worksheets?grade=7&topic=26",
+      "catalogTopicId": 26,
+      "catalogTopicTitle": "שכיחות יחסית חלק 1 — היכרות"
     }
   ],
   "gradeHubHref": "/grade-7",

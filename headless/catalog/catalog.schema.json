@@ -235,6 +235,10 @@
           "type": "string",
           "description": "Optional. From topics[].x when present. Explicit Noam AI topic id (also drives the catalog AI hint badge)."
         },
+        "publicationMode": {
+          "const": "pdf-only",
+          "description": "Optional. Explicit first middle-school PDF publication before teacher questions or progress integration. Requires a/b/c files and no native, viewer or hint routing; unlike an edition this is the topic's base publication."
+        },
         "levels": {
           "type": "array",
           "minItems": 1,
