@@ -3,12 +3,16 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { loadIndexCatalog, buildCatalog, EDITIONS_PATH } = require('./lib/headless-catalog.cjs');
 const { mergeWorksheetEditions } = require('./lib/worksheet-editions.cjs');
+const { isPdfOnlyTopic } = require('./lib/base-worksheet-publication.mjs');
 const { loadRamziActivationEvidence, validateRamziActivation } = require('./lib/worksheet-ramzi-activation.cjs');
 
 function buildLearningCatalog(raw, registry, activationEvidence) {
+  // Validate base publication modes even when this generator runs independently.
+  const baseCatalog = buildCatalog(raw);
   const items = [];
   // Preserve every pre-edition ID, field, label and order exactly.
   for (const [g, data] of Object.entries(raw.DATA)) for (const t of data.topics) {
+    if (isPdfOnlyTopic(t)) continue;
     const row = data.links[t.id] || {};
     for (const l of ['a', 'b', 'c', 'c2', 'one']) if (row[l]) items.push({
       id: `g${g}-t${t.id}-${l}`, g: Number(g), t: t.id, parent: t.parent || t.id, title: t.t, l,
@@ -19,7 +23,7 @@ function buildLearningCatalog(raw, registry, activationEvidence) {
     });
   }
   validateRamziActivation(registry, activationEvidence);
-  const catalog = mergeWorksheetEditions(buildCatalog(raw), registry, activationEvidence?.ready);
+  const catalog = mergeWorksheetEditions(baseCatalog, registry, activationEvidence?.ready);
   for (const g of catalog.grades) for (const t of g.topics) for (const edition of t.editions || []) {
     // Static PDF editions have no deployed progress identities. Do not expose
     // account controls whose worksheet IDs would require a database rollout.

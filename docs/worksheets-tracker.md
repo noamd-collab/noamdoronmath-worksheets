@@ -1,3 +1,10 @@
+## 2026-11-15 — Rational equations: three student PDFs and a dedicated topic
+
+- Add grade-nine topic 47, **משוואות רציונליות**, and `/rational-equations-grade-9`. The three 5-page PDFs cover domain and admissible solutions, with denominator factorization and equation solving; they do not replace the complete eight-hour unit. All old topics, links and PDFs remain, including algebraic-fraction reduction and quadratic equations.
+- All 54 subitems, 45 equations and 15 pages passed independent student-PDF review. Nine readbacks across returned media, CDN and site URLs match the exact PDFs. See [PDF provenance](g9-rat01-pdf-first-20261115.json). G94 b4/c4 remains documented REVIEW with writing space preserved; this is not an all-package PASS.
+- The explicit base-topic `pdf-only` mode preserves direct student downloads while excluding these files from teacher-picker sources, future teacher regeneration and future learning/progress IDs. No native prefix or fallback is activated. G9-T93/G9-RAT-01 and source hashes are provenance for later integration only; Word, hints, native exports and private solutions remain outside this publication.
+- Focused regressions exercise export/source validation, direct student and Noam-guide links, unavailable teacher scopes, full teacher/learning regeneration and unchanged old rows. Full site CI and desktop/mobile preview remain with the release coordinator. This is a review candidate, not a live-publication claim.
+
 ## 2026-11-15 — Three grade-seven variable and expression-language PDFs
 
 - Add G7-ALG-01 / G7-T87 as an additional PDF-only edition of site topic 7/22, visible on the existing algebraic-expressions landing page and worksheet catalog. Keep the old PDFs and default unchanged; this focused opening unit does not replace substitution, patterns or the whole algebra sequence.

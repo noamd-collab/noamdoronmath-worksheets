@@ -192,6 +192,19 @@ describe('exact-design protected live-baseline boundaries', () => {
         // Strip only that reviewed addition, then require the complete prior
         // snapshot hash below, including the already released grade-three edition.
         const catalog = JSON.parse(content);
+        // The first RAT01 publication adds one exact base PDF-only topic and its
+        // search terms. Reverse only this addition; keep every historical hash.
+        const ratGrade = catalog.grades.find((g: any) => g.grade === 9);
+        const ratIndex = ratGrade.topics.findIndex((t: any) => t.id === 47);
+        assert.equal(ratGrade.topics.filter((t: any) => t.id === 47).length, 1);
+        assert.equal(ratGrade.topics[ratIndex - 1].id, 6);
+        assert.equal(ratGrade.topics[ratIndex + 1].id, 46);
+        assert.equal(sha256(JSON.stringify(ratGrade.topics[ratIndex])),
+          'df7b3dc4135a9296bcd868cf03b19b1be231d5f09b146d04792640f280ea2685', 'exact RAT01 base topic');
+        assert.equal(catalog.searchTerms['9']['47'],
+          'משוואות רציונליות שברים אלגבריים מכנה משתנה פירוק מכנים תחום הצבה קבילות פתרונות פסילת פתרון מכנה משותף');
+        ratGrade.topics.splice(ratIndex, 1);
+        delete catalog.searchTerms['9']['47'];
         const activation = readFirst567Activation();
         assert.deepEqual(catalog.ramziActivation, activation.ready, 'snapshot matches the real receipt bundle');
         if (activation.ready) {

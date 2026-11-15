@@ -2649,6 +2649,14 @@
       "reason": "links to the topic, same grade, shared title word"
     },
     {
+      "key": "page:/rational-equations-grade-9",
+      "title": "משוואות רציונליות לכיתה ט׳",
+      "linkedTopic": "topic:9:47",
+      "linkedTitle": "משוואות רציונליות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
       "key": "page:/games/eliyahu-pythagoras",
       "title": "משחק משפט פיתגורס עם אליהו",
       "linkedTopic": "topic:8:11",

@@ -16,6 +16,7 @@
 var fs = require('fs');
 var path = require('path');
 var cp = require('child_process');
+var basePublicationErrors = require('../scripts/lib/base-worksheet-publication.mjs').basePublicationErrors;
 
 var file = process.argv[2];
 if (!file){ console.error('שימוש: node validate.js <path-to-index.html>'); process.exit(2); }
@@ -97,6 +98,8 @@ Object.keys(DATA).forEach(function(gk){
 
     var L = gd.links ? gd.links[t.id] : undefined;
     if (!L){ errors.push('כיתה ' + g + ' נושא ' + t.id + ' ("' + t.t + '"): אין רשומת links תואמת (יתום)'); return; }
+    basePublicationErrors(t, g, rowLevels(L).map(function(key){ return {key:key,pdfId:L[key]}; }), topicPrefix(t,g) || L.sourcePrefix)
+      .forEach(function(message){ errors.push('כיתה ' + g + ' נושא ' + t.id + ': ' + message); });
     var reuseValid = false;
     if (['sourceGrade','sourcePrefix','sourceTitle'].some(function(key){ return L[key] !== undefined; })){
       var sourceData = DATA[L.sourceGrade];

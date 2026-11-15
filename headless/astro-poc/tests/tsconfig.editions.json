@@ -4,6 +4,7 @@
     "../src/env.d.ts",
     "worksheet-editions.test.ts",
     "worksheet-editions-pdf-only.test.ts",
+    "base-pdf-only-publication.test.ts",
     "../src/lib/catalog/loadCatalog.ts",
     "../src/components/WorksheetsClient.tsx"
   ],
