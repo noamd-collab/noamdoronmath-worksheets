@@ -62,7 +62,7 @@
       ]
     }
   ],
-  "updatedLine": "נועם דורון מתמטיקה · עודכן 12.9.2026",
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 15.11.2026",
   "updatedLinePlacement": "after-sections",
   "faqHeading": "שאלות נפוצות",
   "faq": [
@@ -123,6 +123,11 @@
       "path": "/square-grade-9",
       "label": "ריבוע",
       "productionHref": "https://www.noamdoronmath.co.il/square-grade-9"
+    },
+    {
+      "path": "/median-to-hypotenuse-grade-9",
+      "label": "התיכון ליתר במשולש ישר זווית",
+      "productionHref": "https://www.noamdoronmath.co.il/median-to-hypotenuse-grade-9"
     }
   ],
   "catalogCta": {

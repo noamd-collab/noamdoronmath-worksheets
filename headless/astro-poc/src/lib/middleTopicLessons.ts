@@ -5,7 +5,7 @@ const step = (text: string, math: string) => ({ text, math });
 /** Authored demonstrations for the catalog gaps. Each scene teaches this topic,
  * rather than inheriting a nearby topic's picture from a broad family. */
 export const MIDDLE_TOPIC_LESSONS = {
-  'hypotenuse-median': { picture: 'calculation', idea: 'במשולש ישר זווית, התיכון ליתר שווה למחצית היתר', steps: [step('הזווית A ישרה; M הוא אמצע היתר BC', '∠A = 90°; BC = 10'), step('לפי משפט התיכון ליתר', 'AM = ⟨BC¦2⟩'), step('מחצית היתר היא אורך התיכון', 'AM = 5')] },
+  'hypotenuse-median': { picture: 'calculation', idea: 'במשולש ישר זווית, התיכון ליתר שווה למחצית היתר', steps: [step('הזווית A ישרה; M הוא אמצע היתר BC', '∠A = 90°; BC = 16'), step('לפי משפט התיכון ליתר', 'AM = ⟨BC¦2⟩'), step('מחצית היתר היא אורך התיכון', 'AM = 8')] },
   'rational-domain': { picture: 'calculation', idea: 'פתרון מותר חייב לקיים גם את המשוואה וגם את תחום ההצבה המקורי', steps: [step('קובעים תחום הצבה לפני כל שינוי', '⟨(x²−16)¦(x−4)⟩ = 0; x ≠ 4'), step('אפסי המונה הם מועמדים לפתרון', 'x² − 16 = 0; x = −4, x = 4'), step('הערך 4 אסור; בודקים ומשאירים את הפתרון המותר', 'x = −4')] },
   'equilateral-60': { picture: 'equilateral-topic', idea: 'במשולש שווה־צלעות שלוש הזוויות שוות, ולכן כל אחת 60°', steps: [step('שלוש הצלעות שוות, ולכן שלוש הזוויות שוות', 'a = b = c'), step('סכום הזוויות במשולש הוא 180°', '3α = 180°'), step('מחלקים בשלוש', 'α = 60°')] },
   'experimental-frequency': { picture: 'experiment-data', idea: 'משווים שכיחות יחסית להסתברות במטבע הוגן; יותר ניסויים אינם מבטיחים שיפור בכל שלב', steps: [step('ב־20 הטלות של מטבע הוגן התקבל עץ 13 פעמים', '13/20 = 65%'), step('ב־200 הטלות התקבל עץ 104 פעמים', '104/200 = 52%'), step('בדוגמה זו ההערכה קרובה יותר לחצי; אין בכך הבטחה להטלה הבאה', '50%')] },

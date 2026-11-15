@@ -325,7 +325,7 @@ import interpolationExtrapolationGrade8 from '../data/topic-pages/interpolation-
 import assessmentTask1Grade8 from '../data/topic-pages/assessment-task-1-grade-8.json';
 import twoDataSourcesGrade8 from '../data/topic-pages/two-data-sources-grade-8.json';
 import { isolateMathRuns } from './mathDirection';
-import { familyRelatedTopics, type FamilyRelatedTopic } from './topicFamilies';
+import { familyRelatedTopics, gradeHubRelatedTopic, type FamilyRelatedTopic } from './topicFamilies';
 
 /** M18 pilot (3). */
 export const TOPIC_PAGE_PILOT_SLUGS = [
@@ -1273,11 +1273,16 @@ function isolateRelatedLabel(rel: FamilyRelatedTopic): FamilyRelatedTopic {
 /** Classified related block for rendering. Captured links stay on sourceRelatedTopics. */
 function presentRelatedTopics(data: TopicPageContent): FamilyRelatedTopic[] {
   const classified = familyRelatedTopics(data.slug, data.grade);
-  const rows = classified.length ? classified : data.relatedTopics || [];
+  // This focused new lesson has authored prerequisite/application links.
+  const rows = data.slug === 'median-to-hypotenuse-grade-9'
+    ? [gradeHubRelatedTopic(data.grade), ...data.relatedTopics]
+    : classified.length ? classified : data.relatedTopics || [];
   // Family blocks replace captured related links. Keep an explicit game link
   // from the page JSON so it still renders on the theorem pages.
   const extra = (data.relatedTopics || []).filter(
-    (rel) => rel.path.startsWith('/games/') && !rows.some((row) => row.path === rel.path)
+    (rel) => (rel.path.startsWith('/games/') ||
+      (data.slug === 'rectangle-grade-9' && rel.path === '/median-to-hypotenuse-grade-9')) &&
+      !rows.some((row) => row.path === rel.path)
   );
   return [...rows, ...extra].map(isolateRelatedLabel);
 }
