@@ -29,7 +29,6 @@ type HomeSnap = {
   hasGoogle: boolean;
   hasLearning: boolean;
   hasValues: boolean;
-  hasWhatsapp: boolean;
   hasFooter: boolean;
   hrefs: (string | null)[];
   bodyHasEmail: boolean;
@@ -52,7 +51,7 @@ function asHomeSnap(value: unknown): HomeSnap {
     typeof v.clientWidth === 'number' &&
     isStrOrNullArray(v.grades) &&
     isStrOrNullArray(v.hrefs) &&
-    ['hasDev', 'hasSearch', 'hasGoogle', 'hasLearning', 'hasValues', 'hasWhatsapp', 'hasFooter', 'bodyHasEmail'].every(
+    ['hasDev', 'hasSearch', 'hasGoogle', 'hasLearning', 'hasValues', 'hasFooter', 'bodyHasEmail'].every(
       (k) => typeof v[k] === 'boolean'
     ) &&
     !!v.ssrVisible &&
@@ -82,7 +81,6 @@ async function checkViewport(label: string, width: number, height: number) {
       hasGoogle: !!document.querySelector('[data-home-google]'),
       hasLearning: !!document.querySelector('[data-home-learning]'),
       hasValues: !!document.querySelector('[data-home-values]'),
-      hasWhatsapp: !!document.querySelector('[data-home-whatsapp]'),
       hasFooter: !!document.querySelector('[data-home-footer]'),
       hrefs,
       bodyHasEmail: document.body.innerText.includes('noamd@noamdoronmath.co.il'),
@@ -101,7 +99,7 @@ async function checkViewport(label: string, width: number, height: number) {
         ),
         privacyGapAbsent: !document.querySelector('[data-legal-gap="privacy"]'),
         privacyAnchorPresent: !!document.querySelector('a[href="/privacy"]'),
-        waNote: document.body.innerText.includes('ההצטרפות לבחירתכם'),
+        noWhatsappGroup: !document.querySelector('a[href*="chat.whatsapp.com"]'),
         heroArtHiddenOrClear: (() => {
           const art = document.querySelector('.hero-art');
           if (!art) return true;
@@ -136,14 +134,6 @@ async function checkViewport(label: string, width: number, height: number) {
     }
     linkResults.push({ path, fetchPath, status, ok: status >= 200 && status < 400 });
   }
-  let waOk = false;
-  try {
-    const wr = await fetch(home.whatsapp.ctaHref, { redirect: 'follow' });
-    waOk = wr.status < 500;
-  } catch {
-    waOk = false;
-  }
-
   const failLinks = linkResults.filter((x) => !x.ok);
   const result = {
     label,
@@ -159,7 +149,6 @@ async function checkViewport(label: string, width: number, height: number) {
       hasGoogle: snap.hasGoogle,
       hasLearning: snap.hasLearning,
       hasValues: snap.hasValues,
-      hasWhatsapp: snap.hasWhatsapp,
       hasFooter: snap.hasFooter,
       bodyHasEmail: snap.bodyHasEmail,
       ssrVisible: snap.ssrVisible,
@@ -167,7 +156,6 @@ async function checkViewport(label: string, width: number, height: number) {
     },
     internalLinkCount: linkResults.length,
     failLinks,
-    waOk,
   };
   await page.close();
   return result;
@@ -195,7 +183,7 @@ const coreSsrKeys = [
   'privacyLinked',
   'privacyGapAbsent',
   'privacyAnchorPresent',
-  'waNote',
+  'noWhatsappGroup',
 ] as const;
 const coreSsrOk = (flags: typeof desktop.flags) =>
   coreSsrKeys.every((k) => Boolean(flags.ssrVisible[k]));
@@ -226,7 +214,6 @@ console.log(
         heroArtHidden: mobile.flags.ssrVisible.heroArtHiddenOrClear,
         valueCardsAutoHeight: mobile.flags.ssrVisible.valueCardsAutoHeight,
       },
-      waOk: desktop.waOk,
     },
     null,
     2

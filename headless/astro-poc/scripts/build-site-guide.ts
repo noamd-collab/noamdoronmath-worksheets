@@ -430,16 +430,6 @@ function main() {
     contains: [PYTHAGORAS_GAME_DESCRIPTION, textOf(pythagorasHtml, /<title>([^<]+)<\/title>/)].join(' '),
     how: mustInclude(pythagorasHtml, 'שלב 1 מתוך 9'),
   });
-  if (home.whatsapp && home.whatsapp.ctaHref) {
-    push(records, {
-      id: 'page-whatsapp',
-      type: 'page',
-      title: home.whatsapp.heading,
-      href: home.whatsapp.ctaHref,
-      contains: home.whatsapp.body,
-      how: home.whatsapp.ctaLabel + ' · ' + home.whatsapp.note,
-    });
-  }
 
   const seen = new Set<string>();
   for (const record of records) {

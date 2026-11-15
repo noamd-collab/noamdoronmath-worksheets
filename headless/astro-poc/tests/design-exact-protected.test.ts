@@ -58,6 +58,24 @@ function beforeLegalPrivacy(file: string, content: string): string {
   assert.equal(sha256(content), delta.baselineSha256, file + ' unchanged bytes outside the legal privacy hunks');
   return content;
 }
+// Noam, 2026-11-15: the WhatsApp group was removed from the site (home card,
+// footer link, home-page data and its type). Reverse only these reviewed exact
+// hunks before the legal privacy reversal; no historical hash is replaced.
+const whatsappRemovalDeltaText = read('tests/fixtures/whatsapp-removal-reviewed-delta.json');
+assert.equal(sha256(whatsappRemovalDeltaText), '34a79baa893980f0fee9d54f09d1d10ebd195fd89aa8b5775a5a4b95c70ffd6a');
+const whatsappRemovalDeltas = JSON.parse(whatsappRemovalDeltaText).files;
+function beforeWhatsappRemoval(file: string, content: string): string {
+  const delta = whatsappRemovalDeltas.find((entry: any) => entry.file === file);
+  if (!delta) return content;
+  assert.equal(sha256(content), delta.candidateSha256, file + ' exact WhatsApp removal candidate');
+  for (const hunk of delta.hunks) {
+    const parts = content.split(hunk.after);
+    assert.equal(parts.length, 2, file + ' one exact WhatsApp removal hunk');
+    content = parts.join(hunk.before);
+  }
+  assert.equal(sha256(content), delta.baselineSha256, file + ' unchanged bytes outside the WhatsApp removal hunks');
+  return content;
+}
 // First567 drawing policy changes exactly one allowlist line. Reverse only the
 // four reviewed geometry prefixes before the existing activation/file fences.
 // Unknown identities, title fallback, guards and all remaining bytes stay fenced.
@@ -106,7 +124,7 @@ function beforeReportObserverFix(content: string): string {
 }
 
 function beforeActivation(file: string, content: string): string {
-  content = beforeLegalPrivacy(file, content);
+  content = beforeLegalPrivacy(file, beforeWhatsappRemoval(file, content));
   if (file === 'src/lib/catalog/loadCatalog.ts') {
     // Reverse only the optional correction argument, then retain the complete
     // previous activation and historical file hashes below.
@@ -150,10 +168,21 @@ it('temporary drawing-control pause reverses exactly without weakening original 
 
 it('legal privacy reversal accepts only the reviewed exact hunks', () => {
   for (const file of ['src/data/home-page.json', 'public/learning.html', 'public/worksheet-viewer-noam.html']) {
-    const current = read(file);
+    const current = beforeWhatsappRemoval(file, read(file));
     assert.doesNotThrow(() => beforeLegalPrivacy(file, current));
     assert.throws(() => beforeLegalPrivacy(file, current + '\n'));
     assert.throws(() => beforeLegalPrivacy(file, current.replace('/privacy', '/privacy-unreviewed')));
+  }
+});
+
+it('WhatsApp removal reversal accepts only the reviewed exact hunks', () => {
+  for (const file of ['src/data/home-page.json', 'public/learning.html', 'src/lib/homePage.ts']) {
+    const current = read(file);
+    assert.ok(!current.includes('chat.whatsapp.com'), file + ' has no WhatsApp group link');
+    assert.doesNotThrow(() => beforeWhatsappRemoval(file, current));
+    assert.ok(beforeWhatsappRemoval(file, current).toLowerCase().includes('whatsapp'), file + ' reversal restores the removed hunks');
+    assert.throws(() => beforeWhatsappRemoval(file, current + '\n'));
+    assert.throws(() => beforeWhatsappRemoval(file, ' ' + current));
   }
 });
 
@@ -225,6 +254,8 @@ const protectedFiles: Record<string, string> = {
   // above stays byte-identical; the home hero may lazy-load existing loops.
   // One readout line only: S = (a · h) : 2 school notation, PR #40 via PR #41.
   'src/components/TriangleAreaExplorer.astro': 'b2760424b5735dcf4340e5fe95aa306d19e2dd7043e841c5d12092c0fa6a01b6',
+  // Noam, 2026-11-15: WhatsApp group removed from homePage.ts, home-page.json and
+  // learning.html; beforeWhatsappRemoval reverses only those reviewed hunks.
   'src/lib/homePage.ts': '26a884245860716a5b6dd3aa6189c9d07fcd99e21dc50fca8cf70116a3ba67fb',
   'src/data/home-page.json': 'af14191d863d623cfb95e65f28ca258663d4b8be01a1ef07d520c8b1e47ff73b',
   // Head favicon/manifest/theme-color tags (b7eab08, PR #34) + noam-site-companion.js (20d0ad0f, PR #82).
