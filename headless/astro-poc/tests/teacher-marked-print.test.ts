@@ -227,7 +227,7 @@ describe('teacher catalog picker', () => {
       '04786c9d5ed04b30a67480e192b4706f',
       '54ed203698a141cda131ccf08f274a2c',
       '1bbc10333cf74e6fa251ed34575e6320',
-    ] }], 'The reviewed RAT base topic is explicitly PDF-only; no other base topic loses teacher access');
+    ] }, { grade: 9, topicId: 48, pdfIds: ['eb99b4fb3e4d47f5b96e4f2dcfb10bf2', '703b2b73edb949e4a06efa8a02d7476e', 'ce41b853212749c09efc3d466a8e9ddf'] }], 'Only the exact RAT and MED base topics are PDF-only; every old exercise-ready topic retains teacher access');
     const pdfOnly = catalog.grades.flatMap(grade => grade.topics.flatMap(topic => [
       ...(topic.publicationMode === 'pdf-only' ? topic.levels : []),
       ...(topic.editions || []).filter(edition => edition.publicationMode === 'pdf-only').flatMap(edition => edition.levels),

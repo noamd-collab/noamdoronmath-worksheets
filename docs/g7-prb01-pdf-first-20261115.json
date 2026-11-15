@@ -1,0 +1,142 @@
+{
+  "schema": "noam-reviewed-pdf-publication/v1",
+  "status": "review_candidate_not_published",
+  "grade": 7,
+  "topicId": 27,
+  "publicationMode": "pdf-only",
+  "sourcePackage": "G7-T89",
+  "sourceSheetId": "G7-PRB-01",
+  "sourceProvenanceOnly": true,
+  "landing": "/relative-frequency-experiments-grade-7",
+  "levels": [
+    {
+      "key": "a",
+      "viewerLevel": "A",
+      "pdfId": "763682ee83fd45fb97d463ad89dfebcc",
+      "pdfSha256": "a5eeb6949ee106af666afa0b3a38ae781455acdbc931fe10b8e309369e38727e",
+      "sourceSha256": "5b482f3b19ec1924d7d1e3e3911cb36b777214a1db8166fdd628218b3f5a39fc",
+      "nativeExportSha256": "9c164afc180f47b265e644c383a4503f3ddb89ac2338b9e66f82283d7bb61cdc",
+      "worksheetId": "ms-g7-prb-01-a-r1",
+      "revision": 1,
+      "downloadChecks": [
+        {
+          "level": "a",
+          "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_763682ee83fd45fb97d463ad89dfebcc.pdf",
+          "pdfId": "763682ee83fd45fb97d463ad89dfebcc",
+          "sha256": "a5eeb6949ee106af666afa0b3a38ae781455acdbc931fe10b8e309369e38727e",
+          "bytes": 38290,
+          "matchesFrozenPdf": true
+        },
+        {
+          "level": "a",
+          "url": "https://static.wixstatic.com/ugd/d8e7ad_763682ee83fd45fb97d463ad89dfebcc.pdf",
+          "pdfId": "763682ee83fd45fb97d463ad89dfebcc",
+          "sha256": "a5eeb6949ee106af666afa0b3a38ae781455acdbc931fe10b8e309369e38727e",
+          "bytes": 38290,
+          "matchesFrozenPdf": true
+        },
+        {
+          "level": "a",
+          "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_763682ee83fd45fb97d463ad89dfebcc.pdf",
+          "pdfId": "763682ee83fd45fb97d463ad89dfebcc",
+          "sha256": "a5eeb6949ee106af666afa0b3a38ae781455acdbc931fe10b8e309369e38727e",
+          "bytes": 38290,
+          "matchesFrozenPdf": true
+        }
+      ],
+      "pages": 5
+    },
+    {
+      "key": "b",
+      "viewerLevel": "B",
+      "pdfId": "152537d8312b4902a23b53d68e21004a",
+      "pdfSha256": "8ea7f49ad6cf7ce51aad054ce8acff014407140648e298e89065d7a3cdbdc4af",
+      "sourceSha256": "6d02c5dfaba73449c087a2bd07e650d91082fc3d71005f2fdde47c1df82ba865",
+      "nativeExportSha256": "0f3d40ed08464271a76d7fd6744a8973a02dc5cb3ec4c785aca24df4d6df30e1",
+      "worksheetId": "ms-g7-prb-01-b-r1",
+      "revision": 1,
+      "downloadChecks": [
+        {
+          "level": "b",
+          "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_152537d8312b4902a23b53d68e21004a.pdf",
+          "pdfId": "152537d8312b4902a23b53d68e21004a",
+          "sha256": "8ea7f49ad6cf7ce51aad054ce8acff014407140648e298e89065d7a3cdbdc4af",
+          "bytes": 37893,
+          "matchesFrozenPdf": true
+        },
+        {
+          "level": "b",
+          "url": "https://static.wixstatic.com/ugd/d8e7ad_152537d8312b4902a23b53d68e21004a.pdf",
+          "pdfId": "152537d8312b4902a23b53d68e21004a",
+          "sha256": "8ea7f49ad6cf7ce51aad054ce8acff014407140648e298e89065d7a3cdbdc4af",
+          "bytes": 37893,
+          "matchesFrozenPdf": true
+        },
+        {
+          "level": "b",
+          "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_152537d8312b4902a23b53d68e21004a.pdf",
+          "pdfId": "152537d8312b4902a23b53d68e21004a",
+          "sha256": "8ea7f49ad6cf7ce51aad054ce8acff014407140648e298e89065d7a3cdbdc4af",
+          "bytes": 37893,
+          "matchesFrozenPdf": true
+        }
+      ],
+      "pages": 5
+    },
+    {
+      "key": "c",
+      "viewerLevel": "E",
+      "pdfId": "3fce9fe16ea24b419abc6e25b987e066",
+      "pdfSha256": "b5830939b847a0a0e70aa599d8764f4305823d3285654c144bf6e5339da6f901",
+      "sourceSha256": "04c5b3a7ca663e120f05e35f16e2f423438c0e992b1f9667f2b19086ba7766ff",
+      "nativeExportSha256": "40b9712a3c17a8cc5c16f42a33463ed58e66006a737cf417bd85191158119bfd",
+      "worksheetId": "ms-g7-prb-01-c-r1",
+      "revision": 1,
+      "downloadChecks": [
+        {
+          "level": "c",
+          "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_3fce9fe16ea24b419abc6e25b987e066.pdf",
+          "pdfId": "3fce9fe16ea24b419abc6e25b987e066",
+          "sha256": "b5830939b847a0a0e70aa599d8764f4305823d3285654c144bf6e5339da6f901",
+          "bytes": 37679,
+          "matchesFrozenPdf": true
+        },
+        {
+          "level": "c",
+          "url": "https://static.wixstatic.com/ugd/d8e7ad_3fce9fe16ea24b419abc6e25b987e066.pdf",
+          "pdfId": "3fce9fe16ea24b419abc6e25b987e066",
+          "sha256": "b5830939b847a0a0e70aa599d8764f4305823d3285654c144bf6e5339da6f901",
+          "bytes": 37679,
+          "matchesFrozenPdf": true
+        },
+        {
+          "level": "c",
+          "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_3fce9fe16ea24b419abc6e25b987e066.pdf",
+          "pdfId": "3fce9fe16ea24b419abc6e25b987e066",
+          "sha256": "b5830939b847a0a0e70aa599d8764f4305823d3285654c144bf6e5339da6f901",
+          "bytes": 37679,
+          "matchesFrozenPdf": true
+        }
+      ],
+      "pages": 5
+    }
+  ],
+  "review": {
+    "independentReviewSha256": "79c349986d6494caea867a7727f888c1293342113f0b7d792416167d8d09f49e",
+    "reviewedPages": 15,
+    "reviewedSubitems": 54,
+    "wholePackagePass": false,
+    "mediaReadbackSha256": "1a60ebdc97ededb828da8ad65e164bfecd85bf65ff647364a4e41975ec80862a",
+    "rootDecisionSha256": "1a5583afad51c7a8639e0d76ce5f45ed96f1a8a2aa24f19450922931639ceae3"
+  },
+  "notActivated": [
+    "Ramzi or question-level hints",
+    "public native viewer or manifest",
+    "teacher question bank",
+    "learning/progress identities",
+    "Word",
+    "Supabase"
+  ],
+  "editionId": "ms-20261115-prb-01-r1",
+  "isDefault": false
+}

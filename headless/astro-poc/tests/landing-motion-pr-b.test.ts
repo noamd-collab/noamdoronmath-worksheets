@@ -48,6 +48,7 @@ const INTEGRATED_LESSONS: Record<string, string> = {
   'equation-of-a-line-grade-8': 'line-from-points',
   'equations-with-fractions-grade-8': 'numeric-denominators',
   'rational-equations-grade-9': 'rational-domain',
+  'median-to-hypotenuse-grade-9': 'hypotenuse-median',
   'graphical-inequalities-grade-8': 'graphical-inequality',
   'interpolation-extrapolation-grade-8': 'linear-interpolation',
   'lines-parallel-to-axes-grade-8': 'axis-parallel-lines',

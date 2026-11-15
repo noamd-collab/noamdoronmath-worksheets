@@ -55,8 +55,16 @@ function beforeDrawingPolicy(content: string): string {
   return content.replace(lines[0], previous);
 }
 
+// Remove only the temporary CSS pause before every historical whole-file fence.
+function beforeDrawingControlPause(content: string): string {
+  const pause = '/* Temporary drawing-request pause; keep existing source-diagram enlargement available. */\n' +
+    '#noamDraw,.noam-draw-action:not(.noam-diagram-expand){display:none!important}\n';
+  assert.equal(content.split(pause).length, 2, 'one exact temporary drawing-request CSS block');
+  return content.replace(pause, '');
+}
+
 it('first567 drawing policy changes only the reviewed line in the root mirror', () => {
-  const current = readFileSync(join(root, '../../worksheet-viewer-noam.html'), 'utf8');
+  const current = beforeDrawingControlPause(readFileSync(join(root, '../../worksheet-viewer-noam.html'), 'utf8'));
   assert.equal(sha256(current), '232f80e06dea7d7f410c2a03ad0c09ffbd6bfb9721bd5542e2a98260d7d2d6a9', 'exact root drawing policy candidate');
   assert.equal(sha256(beforeDrawingPolicy(current)), '91433585be9d6d4ec2bf3887bbafecec5b310f235382f56ebfcbe23de645e05c');
   assert.throws(() => beforeDrawingPolicy(current.replace('G7-T86', 'G7-T99')));
@@ -88,6 +96,7 @@ function beforeActivation(file: string, content: string): string {
     content = content.replace(current, previous);
   }
   if (file === 'public/worksheet-viewer-noam.html') {
+    content = beforeDrawingControlPause(content);
     content = beforeReportObserverFix(content);
     assert.equal(sha256(content), '054e601e3aa5e653419f625d3d53c13fde31f47e0e1ed696e8334e5929605f7e', 'exact public drawing policy candidate');
     content = beforeDrawingPolicy(content);
@@ -108,6 +117,15 @@ it('hint-correction loader reversal preserves all earlier exact fences', () => {
   assert.doesNotThrow(() => beforeActivation(file, current));
   assert.throws(() => beforeActivation(file, current.replace('data.ramziHintCorrection', 'data.unreviewedCorrection')));
   assert.throws(() => beforeActivation(file, current + '\n'));
+});
+
+it('temporary drawing-control pause reverses exactly without weakening original figure or script fences', () => {
+  const current = read('public/worksheet-viewer-noam.html');
+  assert.equal(sha256(beforeDrawingControlPause(current)), '46232c6d67eefdeed286f74895cce4b5c4a2463d1965427d32ce006b58d348d2');
+  assert.throws(() => beforeDrawingControlPause(current.replace(':not(.noam-diagram-expand)', '')));
+  const pause = current.match(/\/\* Temporary drawing-request pause[^]*?display:none!important}\n/)![0];
+  assert.throws(() => beforeDrawingControlPause(current + '\n' + pause));
+  assert.throws(() => beforeActivation('public/worksheet-viewer-noam.html', current.replace('function noamAddDiagramExpansion(', 'function changedExpansion(')));
 });
 
 const protectedFiles: Record<string, string> = {
@@ -207,6 +225,21 @@ describe('exact-design protected live-baseline boundaries', () => {
         // Strip only that reviewed addition, then require the complete prior
         // snapshot hash below, including the already released grade-three edition.
         const catalog = JSON.parse(content);
+        // Reverse only the exact MED01 base topic; retain RAT47 and all older fences.
+        const medGrade = catalog.grades.find((g: any) => g.grade === 9);
+        const medIndex = medGrade.topics.findIndex((t: any) => t.id === 48);
+        assert.equal(medGrade.topics.filter((t: any) => t.id === 48).length, 1);
+        assert.equal(medGrade.topics[medIndex - 1].id, 10);
+        assert.equal(medGrade.topics[medIndex + 1].id, 11);
+        // The shared content gate requires the Hebrew maqaf in the catalog title.
+        // Reverse only that spelling correction before the original topic fence.
+        const medTopic = medGrade.topics[medIndex];
+        assert.equal(medTopic.title, 'משולש ישר־זווית — התיכון ליתר');
+        const medBeforeMaqaf = { ...medTopic, title: 'משולש ישר זווית — התיכון ליתר' };
+        assert.equal(sha256(JSON.stringify(medBeforeMaqaf)), 'd683e8256684af760b0bbb594139abf22d4593a35cc231832f9ab8c5765bf1b2');
+        assert.equal(catalog.searchTerms['9']['48'], 'משולש ישר זווית התיכון ליתר חצי היתר אמצע היתר משפט הפוך מרובעים מלבן מערכת צירים');
+        medGrade.topics.splice(medIndex, 1);
+        delete catalog.searchTerms['9']['48'];
         // The first RAT01 publication adds one exact base PDF-only topic and its
         // search terms. Reverse only this addition; keep every historical hash.
         const ratGrade = catalog.grades.find((g: any) => g.grade === 9);
@@ -260,6 +293,8 @@ describe('exact-design protected live-baseline boundaries', () => {
         // Bind every byte of each reviewed addition, strip only those overlays,
         // and keep the original complete legacy catalog hash below unchanged.
         const middleAdditions = [
+          [7, 27, ['ms-20261115-prb-01-r1'], '09e21b513798a95301d3e36dafae17da22951560715163bcad102336010de544'],
+          [9, 11, ['ms-20261115-rec-01-r1'], '875222897fc221a7b3d3b245d4333fed9b88bdde86c7eba6d1eeb5c4eb4f292e'],
           [7, 17, ['ms-20261113-trn-r1'], '3e3929a160636aabc2e27f8dedff16dbff4eda435b6c4155f50cb61134c5381c'],
           [7, 22, ['ms-20261115-alg-01-r1'], 'b22196453ef7444643d3b428208d9f76a5108c0fa4cdbf6640da4f413d8b0b76'],
           [7, 26, ['ms-20261115-frq-01-r1'], 'e68a3fce9c1de1ae2385341ead023c96066a8f20a52d35f34f03f6120b457000'],

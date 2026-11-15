@@ -282,6 +282,7 @@ import ratioGrade6 from '../data/topic-pages/ratio-grade-6.json';
 import scaleMapsGrade6 from '../data/topic-pages/scale-maps-grade-6.json';
 import equilateralTriangleGrade9 from '../data/topic-pages/equilateral-triangle-grade-9.json';
 import rationalEquationsGrade9 from '../data/topic-pages/rational-equations-grade-9.json';
+import medianToHypotenuseGrade9 from '../data/topic-pages/median-to-hypotenuse-grade-9.json';
 import statisticsDataFrequencyGrade8 from '../data/topic-pages/statistics-data-frequency-grade-8.json';
 import priorKnowledgeDiagnosticGrade8 from '../data/topic-pages/prior-knowledge-diagnostic-grade-8.json';
 import equationsWithFractionsGrade8 from '../data/topic-pages/equations-with-fractions-grade-8.json';
@@ -626,6 +627,7 @@ export const TOPIC_PAGE_G6_SLUGS = [
 export const TOPIC_PAGE_G9_AUTHORED_SLUGS = [
   'equilateral-triangle-grade-9',
   'rational-equations-grade-9',
+  'median-to-hypotenuse-grade-9',
 ] as const;
 
 export const TOPIC_PAGE_G5_SLUGS = [
@@ -1017,6 +1019,7 @@ const BY_SLUG: Record<string, TopicPageContent> = {
   // Grade-9 catalog gaps (כיתה ט׳)
   'equilateral-triangle-grade-9': equilateralTriangleGrade9 as TopicPageContent,
   'rational-equations-grade-9': rationalEquationsGrade9 as TopicPageContent,
+  'median-to-hypotenuse-grade-9': medianToHypotenuseGrade9 as TopicPageContent,
   'statistics-data-frequency-grade-8': statisticsDataFrequencyGrade8 as TopicPageContent,
   // Grade-8 catalog gaps (כיתה ח׳)
   'prior-knowledge-diagnostic-grade-8': priorKnowledgeDiagnosticGrade8 as TopicPageContent,
