@@ -115,9 +115,9 @@ test('the MED landing states the precise curriculum topic and a correct worked e
   assert.deepEqual(extractJsonLdFaq(page.jsonLd), page.faqGroups.flatMap(g => g.items));
   assert.deepEqual(topicLandingLoop(page), { kind: 'css', variant: 'hypotenuse-median', marker: 'hypotenuse-median' });
   const lesson = LESSON_LOOPS['hypotenuse-median'];
-  assert.match(lesson.steps[0].math, /∠A = 90°; BC = 10/);
+  assert.match(lesson.steps[0].math, /∠A = 90°; BC = 16/);
   assert.match(lesson.steps[1].math, /AM = ⟨BC¦2⟩/);
-  assert.equal(lesson.steps[2].math, 'AM = 5'); assert.equal(10 / 2, 5);
+  assert.equal(lesson.steps[2].math, 'AM = 8'); assert.equal(16 / 2, 8);
   const hub = loadGradeHub(9);
   for (const links of [hub.topicLinks, hub.topicSections.flatMap(s => s.links)]) {
     assert.equal(links.filter(l => l.path === page.path).length, 1);
