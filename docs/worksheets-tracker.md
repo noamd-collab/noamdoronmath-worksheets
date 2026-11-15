@@ -1,3 +1,9 @@
+## 2026-11-15 — Temporary pause of drawing-request buttons
+
+- Hide the main drawing-request button and message-level request/retry controls in both viewer mirrors, including restored conversations. Preserve enlargement of existing source diagrams, original question graphics and textual hints.
+- This is a CSS-only UI pause. Drawing services, JavaScript handlers, topic restrictions, model settings, reCAPTCHA, permissions and stored data remain unchanged. Removing the exact two-line CSS block restores each previous viewer byte-for-byte, including the published `46232c6d…348d2` viewer.
+- The reviewed candidate requires its own publication approval. Browser checks cover desktop/phone visibility, keyboard focus, first/restored/retry controls and source-image enlargement; no database change is included.
+
 ## 2026-11-15 — Frequency-table and relative-frequency student PDFs
 
 - Add a non-default PDF-only edition to grade-seven topic 26: **טבלאות שכיחות ושכיחות יחסית — PDF**. Three reviewed files contain 54 subitems across 17 pages, with final answers and preserved working areas. Four minor explanation notes remain documented; the student PDFs were accepted in this limited scope.
