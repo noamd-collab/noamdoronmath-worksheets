@@ -1,3 +1,10 @@
+## 2026-11-15 — Frequency-table and relative-frequency student PDFs
+
+- Add a non-default PDF-only edition to grade-seven topic 26: **טבלאות שכיחות ושכיחות יחסית — PDF**. Three reviewed files contain 54 subitems across 17 pages, with final answers and preserved working areas. Four minor explanation notes remain documented; the student PDFs were accepted in this limited scope.
+- Keep every previous topic, PDF, routing and default, including topics 25–27. The new edition uses direct PDF links and is excluded from teacher exercise sources, learning/progress generation and viewer/hint activation. G7-T88 is a provenance binding; native exports, Word, hints and Supabase are outside this publication.
+- Both existing frequency landing pages expose the three additions: the relative-frequency page uses topic 26 directly, while the frequency page retains primary topic 25 and adds a clearly labeled secondary topic 26 action. Real component rendering verifies all six new links and preserves the previous downloads.
+- See [PDF provenance](g7-frq01-pdf-first-20261115.json). This remains a local review candidate until the batch receives its required release approval.
+
 ## 2026-11-15 — Rational equations: three student PDFs and a dedicated topic
 
 - Add grade-nine topic 47, **משוואות רציונליות**, and `/rational-equations-grade-9`. The three 5-page PDFs cover domain and admissible solutions, with denominator factorization and equation solving; they do not replace the complete eight-hour unit. All old topics, links and PDFs remain, including algebraic-fraction reduction and quadratic equations.

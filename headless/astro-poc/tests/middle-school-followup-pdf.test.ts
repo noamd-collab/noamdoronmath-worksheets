@@ -110,9 +110,10 @@ test('manifest sync omits unactivated PDFs while retaining legacy and verified e
   const selected = new Set(collectViewerPdfIds(catalog));
   const allPdfOnly = registry.editions.filter((e: any) => e.publicationMode === 'pdf-only');
   // Preserve the original eighteen-level boundary and separately fence the
-  // three later algebra PDFs, which must not gain viewer/hint activation.
+  // later algebra and frequency PDFs, which must not gain viewer/hint activation.
   const algebraId = 'ms-20261115-alg-01-r1';
-  assert.equal(allPdfOnly.filter((e: any) => e.editionId !== algebraId).flatMap((e: any) => e.levels).length, 18);
+  const frequencyId = 'ms-20261115-frq-01-r1';
+  assert.equal(allPdfOnly.filter((e: any) => ![algebraId, frequencyId].includes(e.editionId)).flatMap((e: any) => e.levels).length, 18);
   const algebra = allPdfOnly.filter((e: any) => e.editionId === algebraId);
   assert.equal(algebra.length, 1);
   assert.equal(algebra[0].grade, 7); assert.equal(algebra[0].topicId, 22);
@@ -123,6 +124,17 @@ test('manifest sync omits unactivated PDFs while retaining legacy and verified e
   for (const pdfId of algebraPdfIds) {
     assert.equal(activation.units.has(pdfId), false, 'new algebra PDF has no activation');
     assert.equal(selected.has(pdfId), false, 'new algebra PDF stays out of viewer sync');
+  }
+  const frequency = allPdfOnly.filter((e: any) => e.editionId === frequencyId);
+  assert.equal(frequency.length, 1);
+  assert.equal(frequency[0].grade, 7); assert.equal(frequency[0].topicId, 26);
+  assert.equal(frequency[0].nativePrefix, 'G7-T88');
+  const frequencyPdfIds = ['941793a9b6614849bd5b7465c894ba87',
+    '6cdddaac6d8c472580f2be5b4bdd0323', '659db2eb8dab43aaae976e9a669d503b'];
+  assert.deepEqual(frequency[0].levels.map((level: any) => level.pdfId), frequencyPdfIds);
+  for (const pdfId of frequencyPdfIds) {
+    assert.equal(activation.units.has(pdfId), false, 'new frequency PDF has no activation');
+    assert.equal(selected.has(pdfId), false, 'new frequency PDF stays out of viewer sync');
   }
   for (const e of allPdfOnly) for (const level of e.levels) {
     assert.equal(selected.has(level.pdfId), activation.units.has(level.pdfId), `${e.editionId}/${level.key}`);

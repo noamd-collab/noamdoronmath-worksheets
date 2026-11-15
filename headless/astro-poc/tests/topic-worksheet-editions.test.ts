@@ -208,3 +208,36 @@ test('real single-topic hero retains one download group and direct level-B/excel
     groups.flatMap(group => group.levels.map(level => level.href)));
   assert.equal(hero.querySelector('[data-topic-levels]')?.previousElementSibling, ctas.at(-1)!.parentElement);
 });
+
+test('both frequency landings expose six direct FRQ links while keeping their original topics and downloads', async () => {
+  const catalog = loadCatalog();
+  const editionId = 'ms-20261115-frq-01-r1';
+  const pdfIds = ['941793a9b6614849bd5b7465c894ba87', '6cdddaac6d8c472580f2be5b4bdd0323', '659db2eb8dab43aaae976e9a669d503b'];
+  let additions = 0;
+  for (const [slug, expectedTopicIds] of [
+    ['relative-frequency-grade-7', [26]], ['frequency-grade-7', [25, 26]],
+  ] as const) {
+    const page = loadTopicPage(slug);
+    assert.equal(page.catalogCta.catalogTopicId, expectedTopicIds[0]);
+    const document = await renderTopic(slug);
+    const hero = document.querySelector('.exact-topic-copy')!;
+    const ctas = [...hero.querySelectorAll('a[data-catalog-topic]')];
+    assert.deepEqual(ctas.map(a => Number(a.getAttribute('data-catalog-topic'))), [...expectedTopicIds]);
+    const expectedLegacy = expectedTopicIds.flatMap(topicId =>
+      topicWorksheetEditionLinks(catalog, 7, topicId, `/worksheets?grade=7&topic=${topicId}`)
+        .find(group => group.editionId === 'legacy')!.levels.map(level => level.href));
+    assert.deepEqual([...hero.querySelectorAll('a[data-edition-id="legacy"]')].map(a => a.getAttribute('href')), expectedLegacy);
+    const pdfLinks = [...hero.querySelectorAll(`a[data-edition-id="${editionId}"]`)];
+    assert.deepEqual(pdfLinks.map(a => a.getAttribute('href')), pdfIds.map(id => `${catalog.config.pdfBase}${id}.pdf`));
+    assert.ok(pdfLinks.every(a => a.textContent.includes('פתיחת PDF') && !a.textContent.includes('רמז')));
+    additions += pdfLinks.length;
+    if (slug === 'frequency-grade-7') {
+      assert.equal(ctas[1].getAttribute('href'), '#topic-levels-hero-26');
+      assert.ok(ctas[1].textContent.includes('תרגול נוסף'));
+      assert.equal(hero.querySelectorAll('#topic-levels-hero-26').length, 1);
+    }
+    const ids = [...document.querySelectorAll('[id]')].map(element => element.id);
+    assert.equal(new Set(ids).size, ids.length);
+  }
+  assert.equal(additions, 6);
+});
