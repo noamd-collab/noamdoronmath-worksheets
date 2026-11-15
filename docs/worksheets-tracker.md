@@ -1,3 +1,9 @@
+## 15 November 2026 — T90 isosceles trapezoid PDF candidate
+
+- Adds three non-default PDF worksheets on grade 9/topic 7, labelled “טרפז שווה־שוקיים: תוצאות מתכונות המקבילית · PDF”, through the existing parallelogram landing. The package has 72 subitems and 31 pages (10/10/11); original PDFs and writing space are unchanged.
+- Source acceptance retains 24 automated passes and 1 CLI visual-evidence skip, with the separate documented 31-page visual review and mathematical closure. Word and native M03 projection remain separate; no Ramzi, teacher-selection or learning activation is included.
+- Candidate branch depends on PR #478 at 4d6aaa00. No commit, PR, merge or publication is represented by this tracker entry. Evidence: `docs/g9-t90-pdf-first-20261115.json`.
+
 ## 2026-11-15 — Frequency-table and relative-frequency student PDFs
 
 ## 2026-11-15 — MED01, PRB01 and REC01 PDF candidate (not published)

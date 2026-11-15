@@ -256,6 +256,12 @@ describe('exact-design protected live-baseline boundaries', () => {
         // overlay; its exact bytes are fenced without replacing any old hash.
         // Bind every byte of each reviewed addition, strip only those overlays,
         // and keep the original complete legacy catalog hash below unchanged.
+        // Bind the T90 PDF-only addition, then retain every preceding fence.
+        const parallelogram = catalog.grades.find((g: any) => g.grade === 9).topics.find((t: any) => t.id === 7);
+        const t90 = parallelogram.editions.filter((e: any) => e.editionId === 'ms-20261113-par-04-r1');
+        assert.equal(t90.length, 1);
+        assert.equal(sha256(JSON.stringify(t90[0])), 'aa6d8b18e75c1af716d4ae06b059831fc27c397cf4fd70bb992afea991a03ed9');
+        parallelogram.editions = parallelogram.editions.filter((e: any) => e.editionId !== 'ms-20261113-par-04-r1');
         const middleAdditions = [
           [7, 27, ['ms-20261115-prb-01-r1'], '09e21b513798a95301d3e36dafae17da22951560715163bcad102336010de544'],
           [9, 11, ['ms-20261115-rec-01-r1'], '875222897fc221a7b3d3b245d4333fed9b88bdde86c7eba6d1eeb5c4eb4f292e'],
