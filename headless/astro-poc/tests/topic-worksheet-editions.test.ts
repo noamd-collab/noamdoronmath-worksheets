@@ -13,6 +13,7 @@ import { topicWorksheetEditionLinks } from '../src/lib/topicWorksheetEditions';
 import { buildWorksheetHref } from '../src/lib/worksheetLinks';
 import { loadCatalog } from '../src/lib/catalog/loadCatalog';
 import { loadTopicPage } from '../src/lib/topicPages';
+import { reviewedEqnSgnFac } from './fixtures/eqn-sgn-fac-pdf';
 
 const require = createRequire(import.meta.url);
 const routes = [
@@ -161,6 +162,35 @@ async function renderTopic(slug: string) {
   });
   return parseHTML(html).document;
 }
+
+test('real equation, signed-number and factoring landings expose nine PDF links with the correct topic groups', async () => {
+  const catalog = loadCatalog();
+  for (const addition of reviewedEqnSgnFac.additions) {
+    const document = await renderTopic(addition.slug);
+    const hero = document.querySelector('.exact-topic-copy')!;
+    const links = [...hero.querySelectorAll(`a[data-edition-id="${addition.editionId}"]`)];
+    assert.deepEqual(links.map(link => link.getAttribute('href')), addition.pdfIds.map(id => `${catalog.config.pdfBase}${id}.pdf`));
+    assert.ok(links.every(link => link.textContent.includes('פתיחת PDF')));
+    assert.ok(links.every(link => !link.textContent.includes('רמזי') && !link.getAttribute('href')!.includes('viewer')));
+    const text = document.querySelector('main')!.textContent.replace(/[\u2066-\u2069]/g, '');
+    assert.ok(text.includes(reviewedEqnSgnFac.landingDeltas.find(d => d.slug === addition.slug)!.appendedSection.blocks[0].text));
+    const ids = [...document.querySelectorAll('[id]')].map(e => e.id);
+    assert.equal(new Set(ids).size, ids.length, `${addition.slug}: unique anchors`);
+    if (addition.topicId === 32) {
+      const ctas = [...hero.querySelectorAll('a[data-catalog-topic]')];
+      assert.deepEqual(ctas.map(link => link.getAttribute('data-catalog-topic')), ['23', '34', '32']);
+      for (const cta of ctas) {
+        const topicId = Number(cta.getAttribute('data-catalog-topic'));
+        const target = cta.getAttribute('href')!;
+        assert.equal(target, topicId === 23 ? '#topic-levels' : `#topic-levels-hero-${topicId}`);
+        const control = hero.querySelector(target)!;
+        const expected = topicWorksheetEditionLinks(catalog, 7, topicId, `/worksheets?grade=7&topic=${topicId}`);
+        assert.deepEqual([...control.querySelectorAll('a')].map(a => a.getAttribute('href')), expected.flatMap(e => e.levels.map(l => l.href)));
+        assert.equal(control.querySelectorAll(`a[data-edition-id="${addition.editionId}"]`).length, topicId === 32 ? 3 : 0);
+      }
+    }
+  }
+});
 
 test('real algebra landing routes all three hero topics to distinct groups and exposes the three new PDFs', async () => {
   const document = await renderTopic('algebraic-expressions-grade-7');

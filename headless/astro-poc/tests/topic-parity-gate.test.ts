@@ -277,7 +277,7 @@ describe('topic SOURCE→content parity gate (M19/M20)', () => {
   it('FAQ parity is semantic Q&A (not markup-dependent on summary/details)', () => {
     for (const slug of migratedSlugs) {
       const source = loadProductionFixture(slug);
-      const page = loadTopicPage(slug);
+      const page = restoreBeforePdfCopy(slug, loadTopicPage(slug));
       const srcFaq = source.faqGroups.flatMap((g) => g.items);
       const pageFaq = page.faqGroups.flatMap((g) => g.items);
       for (const item of srcFaq) {

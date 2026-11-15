@@ -23,6 +23,7 @@ import {
 } from '../scripts/lib/seo-copy.mjs';
 import { EXACT, KEEP_CURRENT, NEEDS_DECISION } from '../scripts/lib/seo-overrides.mjs';
 import { PDF_ONLY_TOPIC_COPY } from './fixtures/pdf-only-topic-copy';
+import { reviewedEqnSgnFac } from './fixtures/eqn-sgn-fac-pdf';
 
 type Item = {
   path: string;
@@ -69,6 +70,14 @@ describe('seo proposals – generator and coverage', () => {
         row.source = 'title:current|description:current';
       }
     }
+    // The factoring PDF addition changes only these two current-copy fields.
+    const factoringCopy = reviewedEqnSgnFac.landingDeltas.find(d => d.slug === 'factoring-grade-9')!
+      .fields.find(d => d.path.length === 1 && d.path[0] === 'description')!;
+    const factoringRow = expected.find(item => item.path === '/factoring-grade-9')!;
+    assert.equal(factoringRow.currentDescription, factoringCopy.before);
+    assert.equal(factoringRow.description, factoringCopy.before);
+    factoringRow.currentDescription = factoringCopy.after;
+    factoringRow.description = factoringCopy.after;
     assert.deepEqual(proposals, expected);
   });
 

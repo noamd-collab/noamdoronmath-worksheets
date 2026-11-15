@@ -8,7 +8,8 @@
     "frequency-pdf-edition.test.ts",
     "../src/lib/catalog/loadCatalog.ts",
     "../src/components/WorksheetsClient.tsx",
-    "next-nine-pdf-intake.test.ts"
+    "next-nine-pdf-intake.test.ts",
+    "eqn-sgn-fac-pdf-intake.test.ts"
   ],
   "exclude": []
 }
