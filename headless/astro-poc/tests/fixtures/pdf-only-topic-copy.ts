@@ -1,3 +1,4 @@
+import { beforeSaoWpcCopy } from './sao-wpc-pdf';
 import assert from 'node:assert/strict';
 import { beforeEqnSgnFacCopy } from './eqn-sgn-fac-pdf';
 
@@ -23,7 +24,7 @@ export const PDF_ONLY_TOPIC_COPY = {
 } as const;
 
 export function restoreBeforePdfCopy<T>(slug: string, page: T): T {
-  page = beforeEqnSgnFacCopy(slug, page);
+  page = beforeSaoWpcCopy(slug, beforeEqnSgnFacCopy(slug, page));
   // New PDF editions added real content on this date; retain old live captures.
   const previousUpdates: Record<string, string> = {
     'rectangle-grade-9': 'נועם דורון מתמטיקה · עודכן 12.9.2026',

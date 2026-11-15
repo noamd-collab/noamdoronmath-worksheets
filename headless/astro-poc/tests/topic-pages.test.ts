@@ -146,6 +146,9 @@ describe('topic page routes (HEADLESS-MIGRATION-18/19/20)', () => {
 
   it('preserves production or reviewed content update dates; absent when production has none', () => {
     const expectedPresent: Record<string, string> = {
+      // SAO/WPC additional PDF content is reviewed on this date.
+      'triangle-sides-angles-grade-9': 'נועם דורון מתמטיקה · עודכן 15.11.2026',
+      'equations-both-sides-word-problems-grade-7': 'נועם דורון מתמטיקה · עודכן 15.11.2026',
       // EQN01/SGN01/FAC01 PDF practice and scope sections added 15.11.2026.
       'signed-numbers-grade-7': 'נועם דורון מתמטיקה · עודכן 15.11.2026',
       'pythagorean-theorem-grade-8': 'נועם דורון מתמטיקה · עודכן 12.9.2026',

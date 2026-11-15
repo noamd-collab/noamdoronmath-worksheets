@@ -8579,7 +8579,68 @@
               "pb": "de46359e8a624fdfadaef12b31fd7198",
               "pc": "c71d485429794a3babd539808721d40f"
             }
-          }
+          },
+          "defaultEditionId": "legacy",
+          "editions": [
+            {
+              "editionId": "ms-20261115-wpc-01-r1",
+              "label": "פתרון בעיות מילוליות במשוואה ובדיקת התאמה להקשר — PDF",
+              "levels": [
+                {
+                  "key": "a",
+                  "label": "רמה א׳",
+                  "pdfId": "50901031d953471497b540fabdcf5da5",
+                  "labelSource": "edition",
+                  "viewerLevel": "A",
+                  "learningId": "g7-t41-a-e-ms-20261115-wpc-01-r1",
+                  "nativeExportSha256": "6cb77c4f8b95d0fe29ae59ad39b24f73d984e70f8395a029c3ce18a96cbe9940",
+                  "pdfSha256": "c2334c1414e45f8b5c50e3988ebb35ae0f02cc029aeb7d49b8d1464d9ead19c2",
+                  "revision": 1,
+                  "sourceSha256": "4c44f356358310f155f37335d923d7ab03ffcb6fbfcef3eecbda66d0d09dd8c7",
+                  "worksheetId": "ms-g7-wpc-01-a-r1"
+                },
+                {
+                  "key": "b",
+                  "label": "רמה ב׳",
+                  "pdfId": "91a70d8e7fd946e3978383bf862b3bb5",
+                  "labelSource": "edition",
+                  "viewerLevel": "B",
+                  "learningId": "g7-t41-b-e-ms-20261115-wpc-01-r1",
+                  "nativeExportSha256": "86b4a62a2f0a86f283185440f956fe13b1588a98b14c61df2d1b9fb2ccdcfa69",
+                  "pdfSha256": "b407b5dd09930dd61dd7f57f20087f32d8cfca15851216f5a9cde9a47b446d83",
+                  "revision": 1,
+                  "sourceSha256": "d09d3796eea1631a6f631286b45edd7283284ca5d91bb8b8db8abbad43524831",
+                  "worksheetId": "ms-g7-wpc-01-b-r1"
+                },
+                {
+                  "key": "c",
+                  "label": "מצוינות",
+                  "pdfId": "034912232f7f4b61a14e237c76ae8268",
+                  "labelSource": "edition",
+                  "viewerLevel": "E",
+                  "learningId": "g7-t41-c-e-ms-20261115-wpc-01-r1",
+                  "nativeExportSha256": "3d3873a6bce1e8c01615a4c2e7c622bd6d62c36351283c5d14067b26aeb1a592",
+                  "pdfSha256": "23cae15c2bfe28f643bdf95855dcd2c28bd621d939a83f89193ee81d9232b851",
+                  "revision": 1,
+                  "sourceSha256": "534869dea5f23dbd8367ded0e473aa3221b3f09bf4377a050a773b4cdd322915",
+                  "worksheetId": "ms-g7-wpc-01-c-r1"
+                }
+              ],
+              "publicationMode": "pdf-only",
+              "routing": {
+                "resolvedNoamPrefix": "G7-T71",
+                "aiHintShown": false,
+                "usesViewer": false,
+                "viewerPath": "worksheet-viewer-noam.html",
+                "siblingPdfQuery": {
+                  "pa": "50901031d953471497b540fabdcf5da5",
+                  "pb": "91a70d8e7fd946e3978383bf862b3bb5",
+                  "pc": "034912232f7f4b61a14e237c76ae8268"
+                }
+              },
+              "status": "published"
+            }
+          ]
         },
         {
           "id": 45,
@@ -13904,7 +13965,68 @@
               "pb": "da384a477a124b1fbfe2ec2a1c7d6971",
               "pc": "bf0b89ae4eb8453e9291d2834ab3c3f3"
             }
-          }
+          },
+          "defaultEditionId": "legacy",
+          "editions": [
+            {
+              "editionId": "ms-20261115-sao-01-r1",
+              "label": "יחסי סדר בין צלעות וזוויות במשולש — PDF",
+              "levels": [
+                {
+                  "key": "a",
+                  "label": "רמה א׳",
+                  "pdfId": "ee21342759364dfe8944372bc97c8291",
+                  "labelSource": "edition",
+                  "viewerLevel": "A",
+                  "learningId": "g9-t38-a-e-ms-20261115-sao-01-r1",
+                  "nativeExportSha256": "494ea82e05c25847e809d4315007bb1d2184aaaa4c417dbf2b0919a97ad380c5",
+                  "pdfSha256": "8a2c6108f255b3a46fe5e07ea0671660e7f8cab243dc5c35bbb529c335a7bb1f",
+                  "revision": 1,
+                  "sourceSha256": "410c8cb0bca6184871142fde6a24e2c5ed7ac090a03b6c89a1d85fed464fdd22",
+                  "worksheetId": "ms-g9-sao-01-a-r1"
+                },
+                {
+                  "key": "b",
+                  "label": "רמה ב׳",
+                  "pdfId": "3f17f8456b0e4ac89302ccb4e446035b",
+                  "labelSource": "edition",
+                  "viewerLevel": "B",
+                  "learningId": "g9-t38-b-e-ms-20261115-sao-01-r1",
+                  "nativeExportSha256": "7ef0337a69948482e2683abfcf6fd7c2a76ac1ac2b90778bef2a4bea951df96a",
+                  "pdfSha256": "77b7fa9d0200540b7b65dff2c613e439af93925dffd7dd65650649163dbacf83",
+                  "revision": 1,
+                  "sourceSha256": "cd56e5d46e1a3661fdac57c4b4f1e8c5e01b8ba81c1ef0a1336c607b9a14e7e7",
+                  "worksheetId": "ms-g9-sao-01-b-r1"
+                },
+                {
+                  "key": "c",
+                  "label": "מצוינות",
+                  "pdfId": "7bb642d85512403c9833f969f5a8c308",
+                  "labelSource": "edition",
+                  "viewerLevel": "E",
+                  "learningId": "g9-t38-c-e-ms-20261115-sao-01-r1",
+                  "nativeExportSha256": "985ab6ea347c9fdbdaae1f1d90f62ca892b9c5d03597e00627179dcd29b39e01",
+                  "pdfSha256": "16f84551630f4426e91316bb376c6c790aef6c971a2190fa82606c73854ceb39",
+                  "revision": 1,
+                  "sourceSha256": "5c5f7f0ce43ddf2e93783fc1b60f5fe886c5d53080914a4d5703fe909049dde4",
+                  "worksheetId": "ms-g9-sao-01-c-r1"
+                }
+              ],
+              "publicationMode": "pdf-only",
+              "routing": {
+                "resolvedNoamPrefix": "G9-T74",
+                "aiHintShown": false,
+                "usesViewer": false,
+                "viewerPath": "worksheet-viewer-noam.html",
+                "siblingPdfQuery": {
+                  "pa": "ee21342759364dfe8944372bc97c8291",
+                  "pb": "3f17f8456b0e4ac89302ccb4e446035b",
+                  "pc": "7bb642d85512403c9833f969f5a8c308"
+                }
+              },
+              "status": "published"
+            }
+          ]
         }
       ]
     }

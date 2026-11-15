@@ -13,6 +13,7 @@ import { topicWorksheetEditionLinks } from '../src/lib/topicWorksheetEditions';
 import { buildWorksheetHref } from '../src/lib/worksheetLinks';
 import { loadCatalog } from '../src/lib/catalog/loadCatalog';
 import { loadTopicPage } from '../src/lib/topicPages';
+import { reviewedSaoWpc } from './fixtures/sao-wpc-pdf';
 import { reviewedEqnSgnFac } from './fixtures/eqn-sgn-fac-pdf';
 
 const require = createRequire(import.meta.url);
@@ -270,4 +271,32 @@ test('both frequency landings expose six direct FRQ links while keeping their or
     assert.equal(new Set(ids).size, ids.length);
   }
   assert.equal(additions, 6);
+});
+
+test('actual SAO/WPC pages expose six PDFs while preserving legacy 38 and 41/40/39 controls', async () => {
+  const catalog = loadCatalog();
+  for (const addition of reviewedSaoWpc.additions) {
+    const document = await renderTopic(addition.slug), hero = document.querySelector('.exact-topic-copy')!;
+    const links = [...hero.querySelectorAll(`a[data-edition-id="${addition.editionId}"]`)];
+    assert.deepEqual(links.map(l => l.getAttribute('href')), addition.pdfIds.map(id => `${catalog.config.pdfBase}${id}.pdf`));
+    assert.ok(links.every(l => l.textContent.includes('פתיחת PDF') && !l.textContent.includes('רמזי')));
+    const ctas = [...hero.querySelectorAll('a[data-catalog-topic]')], topics = addition.grade === 7 ? [41, 40, 39] : [38];
+    assert.deepEqual(ctas.map(l => Number(l.getAttribute('data-catalog-topic'))), topics);
+    let legacyLinks = 0;
+    for (const [i, cta] of ctas.entries()) {
+      const topicId = topics[i], target = cta.getAttribute('href')!;
+      assert.equal(target, i === 0 ? '#topic-levels' : `#topic-levels-hero-${topicId}`);
+      const control = hero.querySelector(target)!;
+      const expected = topicWorksheetEditionLinks(catalog, addition.grade, topicId, `/worksheets?grade=${addition.grade}&topic=${topicId}`);
+      assert.deepEqual([...control.querySelectorAll('a')].map(a => a.getAttribute('href')), expected.flatMap(e => e.levels.map(l => l.href)));
+      const legacy = [...control.querySelectorAll('a[data-edition-id="legacy"]')];
+      assert.equal(legacy.length, 3); legacyLinks += legacy.length;
+      assert.equal(control.querySelectorAll(`a[data-edition-id="${addition.editionId}"]`).length, i === 0 ? 3 : 0);
+    }
+    assert.equal(legacyLinks, addition.grade === 7 ? 9 : 3);
+    const ids = [...document.querySelectorAll('[id]')].map(e => e.id);
+    assert.equal(new Set(ids).size, ids.length);
+    const text = document.querySelector('main')!.textContent.replace(/[\u2066-\u2069]/g, '');
+    assert.ok(text.includes(reviewedSaoWpc.landingDeltas.find(d => d.slug === addition.slug)!.appendedSection.blocks[0].text));
+  }
 });

@@ -23,6 +23,7 @@ import {
 } from '../scripts/lib/seo-copy.mjs';
 import { EXACT, KEEP_CURRENT, NEEDS_DECISION } from '../scripts/lib/seo-overrides.mjs';
 import { PDF_ONLY_TOPIC_COPY } from './fixtures/pdf-only-topic-copy';
+import { reviewedSaoWpc } from './fixtures/sao-wpc-pdf';
 import { reviewedEqnSgnFac } from './fixtures/eqn-sgn-fac-pdf';
 
 type Item = {
@@ -78,6 +79,15 @@ describe('seo proposals – generator and coverage', () => {
     assert.equal(factoringRow.description, factoringCopy.before);
     factoringRow.currentDescription = factoringCopy.after;
     factoringRow.description = factoringCopy.after;
+    const saoCopy = reviewedSaoWpc.landingDeltas.find(d => d.slug === 'triangle-sides-angles-grade-9')!
+      .fields.find(d => d.path.length === 1 && d.path[0] === 'description')!;
+    const saoRow = expected.find(item => item.path === '/triangle-sides-angles-grade-9')!;
+    assert.equal(saoRow.currentDescription, saoCopy.before);
+    assert.equal(saoRow.description, 'לומדים להשוות בין צלעות לזוויות שמולן ולהשתמש באי־שוויון המשולש. שלוש רמות תרגול, בחינם וללא הרשמה.');
+    assert.equal(saoRow.source, 'title:current|description:page-intro');
+    saoRow.currentDescription = String(saoCopy.after);
+    saoRow.description = String(saoCopy.after);
+    saoRow.source = 'title:current|description:current';
     assert.deepEqual(proposals, expected);
   });
 

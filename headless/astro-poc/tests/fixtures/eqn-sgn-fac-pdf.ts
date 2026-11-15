@@ -1,3 +1,4 @@
+import { beforeSaoWpcCatalog } from './sao-wpc-pdf';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import reviewed from './eqn-sgn-fac-pdf-reviewed.json';
@@ -8,7 +9,7 @@ const sha = (value: unknown) => createHash('sha256').update(JSON.stringify(value
 
 /** Reverse only this reviewed additive batch before older complete catalog fences. */
 export function beforeEqnSgnFacCatalog<T>(catalog: T): T {
-  const restored: any = structuredClone(catalog);
+  const restored: any = structuredClone(beforeSaoWpcCatalog(catalog));
   for (const addition of reviewed.additions) {
     const topic = restored.grades.find((g: any) => g.grade === addition.grade).topics.find((t: any) => t.id === addition.topicId);
     assert.equal(topic.defaultEditionId, 'legacy');

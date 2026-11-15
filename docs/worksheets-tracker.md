@@ -1,3 +1,9 @@
+## 15 November 2026 — SAO01 and WPC01 PDF candidate
+
+- Add six non-default student PDFs (42 pages, 144 parts) to the existing grade 9/topic 38 side-angle landing and grade 7/topic 41 word-equation landing. Preserve every legacy link, default and the 41/40/39 CTA order.
+- SAO covers side-angle order; WPC covers equation solving and checking the answer in context. The new copy distinguishes downloadable PDFs from existing viewer hints. Independent full-source reports and bounded 22-page visual review support PDF acceptance; Root separately sampled three of those same 22 pages (overlapping, not 25 unique). G94 density notes and all solution/diagram workspace are preserved.
+- All six media files were read back through two URLs with exact hashes. The public evidence contains hashes only; SAO N4/K22 native-export HOLD is retained. No private source, native/teacher/Ramzi/learning/Word activation, Supabase change or publication is included. See [PDF provenance](sao-wpc-pdf-first-20261115.json).
+
 ## 15 November 2026 — EQN01, SGN01 and FAC01 PDF candidate
 
 - Add nine exact student PDFs as three non-default editions: equation meaning and substitution (grade7/topic32), signed-number addition/subtraction (grade7/topic2), and factoring/basic quadratic equations (grade9/topic2). Preserve all legacy PDFs and existing defaults, including the equations landing’s topics23/34/32.
