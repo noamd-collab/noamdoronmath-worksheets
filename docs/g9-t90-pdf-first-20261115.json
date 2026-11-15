@@ -1,0 +1,124 @@
+{
+  "schema": "noam-reviewed-pdf-publication/v1",
+  "status": "review_candidate_not_published",
+  "dependency": {
+    "pr": 478,
+    "head": "6d1b68da59b4e58d755592b71fb79167c8b57aa1"
+  },
+  "grade": 9,
+  "topicId": 7,
+  "editionId": "ms-20261113-par-04-r1",
+  "label": "טרפז שווה־שוקיים: תוצאות מתכונות המקבילית · PDF",
+  "isDefault": false,
+  "publicationMode": "pdf-only",
+  "sourcePackage": "G9-T90",
+  "sourceSheetId": "G9-PAR-04",
+  "sourceProvenanceOnly": true,
+  "landing": "/parallelogram-grade-9",
+  "officialMapping": {
+    "heading": "מקבילית",
+    "subtopic": "st.g9r.parallelogram.def_properties",
+    "scope": "טרפז שווה־שוקיים: תוצאות מתכונות המקבילית",
+    "wholeTopicReplacement": false
+  },
+  "levels": [
+    {
+      "key": "a",
+      "viewerLevel": "A",
+      "pdfId": "d1af58a5e73745faba0aba254b4e2c6c",
+      "pdfSha256": "ec202fb447f9aeea0ef1b0593e7bb22092280dfa422184e5c7d54209afcd6aaa",
+      "worksheetId": "ms-g9-par-04-a-r1",
+      "revision": 1,
+      "nativeExportSha256": "0c766fa48c85fd3300e2bbbfd029567a6c5ff89904a6d55fa3ffe742106c4d6e",
+      "sourceSha256": "eaab4d520ec37605a74611c2623bf608af49ee26f2f0af804cb3266076be0d87"
+    },
+    {
+      "key": "b",
+      "viewerLevel": "B",
+      "pdfId": "e957f5b06d514375a1fc32c468a250a1",
+      "pdfSha256": "3a19bdd58a942b5766b97bf5e826bde1ef9fcc08ae58bbce51fe5e7bba093a8d",
+      "worksheetId": "ms-g9-par-04-b-r1",
+      "revision": 1,
+      "nativeExportSha256": "f94b6288907f3dbf96c078f1a57b6e2654ccc59dee2f2193ec2eef90015e574a",
+      "sourceSha256": "d4252a5c4b2ef4faaecf45c3edb85c4f92e19955acab76a25d4ccfb13753a742"
+    },
+    {
+      "key": "c",
+      "viewerLevel": "E",
+      "pdfId": "bf58cc24b85643c798c77049ebf619b8",
+      "pdfSha256": "eb2e4e9dc34210626e5b4b1bed8ed479e119decb2cda7f5928d979030af33365",
+      "worksheetId": "ms-g9-par-04-c-r1",
+      "revision": 1,
+      "nativeExportSha256": "20ab9c26aabd95c9dcc6fe292e6b750035d62cbea0978baabc18297e8a648a6b",
+      "sourceSha256": "125b29153709c540f407920595bf7691b8bc55ecd5b655e415d2ea9fcdf4df84"
+    }
+  ],
+  "counts": {
+    "pdfs": 3,
+    "pages": 31,
+    "subitems": 72,
+    "pagesByLevel": {
+      "a": 10,
+      "b": 10,
+      "c": 11
+    }
+  },
+  "review": {
+    "acceptedPdfOnly": true,
+    "wholePackagePass": false,
+    "automatedPass": 24,
+    "automatedSkip": 1,
+    "skip": "CLI render evidence absent; separate prior31-page visual review plus exact27-page carryover/4-page delta covers finalPDFs.",
+    "mathReviewedSubitems": 72,
+    "visualPagesAccountedFor": 31,
+    "pdfBlockingFindings": 0,
+    "sourceReviewSHA": "28b08a60242e32ab21077e502ad3181aabef1f0231f3a38d70c25644d9e99130",
+    "rootCandidateReviewSHA": "6e5bbe8391efd2687880f529a4e968d08aaa6103c369c45e69c4ac84a125e434",
+    "handoffSHA": "ba07f738529700218dfb02c60094c4d251b69ebab2e899dc2addfa1d6fed7001",
+    "candidateEntrySHA": "f5f5a375da5f63511cc3fda7ee5201c1201990116843e1b93c3d93a1fdf31ac1",
+    "mediaReviewSHA": "3141051b9dd6570310dcf8a416bcebef96d37ffe1bd05b5de1e96ced2f77fc89",
+    "subsequentAuthorSelfCheck": {
+      "readyReceiptSha256": "fce8e16a684601b8b05990d4622bf6ed459425dc41a343676b9c97c0cfae618d",
+      "selfCheckSha256": "45013aedc809a4000802952da4c1c9b69c4a392e289c9277a987f3b291e763ca",
+      "exactRunCounts": {
+        "PASS": 24,
+        "REVIEW": 0,
+        "FAIL": 0,
+        "SKIP": 1
+      },
+      "freshRenderedRunCounts": {
+        "PASS": 28,
+        "REVIEW": 0,
+        "FAIL": 0,
+        "SKIP": 0
+      },
+      "independentReview": false,
+      "wordPublication": false,
+      "rootVerifiedReleaseFiles": 91
+    }
+  },
+  "preservation": {
+    "defaultEdition": "legacy",
+    "oldPdfs": true,
+    "sourcePdfsUnchanged": true,
+    "studentWorkspaceUnchanged": true,
+    "nativeActivation": false,
+    "hintsActivation": false,
+    "wordPublication": false,
+    "teacherQuestionSelection": false,
+    "learningChanges": false
+  },
+  "M03": "Public-native source projection only, separate from accepted PDF bytes; neither original nor derived native exports are published by this change.",
+  "inheritedReviewCandidates": [
+    {
+      "pr": 480,
+      "head": "9f60d1e1e19982b8a39352c38fe83df79be4aea5",
+      "scope": "temporary drawing-request CSS controls only"
+    },
+    {
+      "pr": 481,
+      "head": "c2ba1375457fe183b6ba4e99cf70572ae112924d",
+      "scope": "passive first15 correction-evidence compatibility; no applied record or DB write"
+    }
+  ]
+}

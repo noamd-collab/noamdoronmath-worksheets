@@ -665,6 +665,48 @@
       "grade": 9,
       "topicId": 11,
       "nativePrefix": "G9-T95"
+    },
+    {
+      "grade": 9,
+      "topicId": 7,
+      "editionId": "ms-20261113-par-04-r1",
+      "label": "טרפז שווה־שוקיים: תוצאות מתכונות המקבילית · PDF",
+      "status": "published",
+      "isDefault": false,
+      "publicationMode": "pdf-only",
+      "nativePrefix": "G9-T90",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "d1af58a5e73745faba0aba254b4e2c6c",
+          "pdfSha256": "ec202fb447f9aeea0ef1b0593e7bb22092280dfa422184e5c7d54209afcd6aaa",
+          "worksheetId": "ms-g9-par-04-a-r1",
+          "revision": 1,
+          "nativeExportSha256": "0c766fa48c85fd3300e2bbbfd029567a6c5ff89904a6d55fa3ffe742106c4d6e",
+          "sourceSha256": "eaab4d520ec37605a74611c2623bf608af49ee26f2f0af804cb3266076be0d87"
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "e957f5b06d514375a1fc32c468a250a1",
+          "pdfSha256": "3a19bdd58a942b5766b97bf5e826bde1ef9fcc08ae58bbce51fe5e7bba093a8d",
+          "worksheetId": "ms-g9-par-04-b-r1",
+          "revision": 1,
+          "nativeExportSha256": "f94b6288907f3dbf96c078f1a57b6e2654ccc59dee2f2193ec2eef90015e574a",
+          "sourceSha256": "d4252a5c4b2ef4faaecf45c3edb85c4f92e19955acab76a25d4ccfb13753a742"
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "bf58cc24b85643c798c77049ebf619b8",
+          "pdfSha256": "eb2e4e9dc34210626e5b4b1bed8ed479e119decb2cda7f5928d979030af33365",
+          "worksheetId": "ms-g9-par-04-c-r1",
+          "revision": 1,
+          "nativeExportSha256": "20ab9c26aabd95c9dcc6fe292e6b750035d62cbea0978baabc18297e8a648a6b",
+          "sourceSha256": "125b29153709c540f407920595bf7691b8bc55ecd5b655e415d2ea9fcdf4df84"
+        }
+      ]
     }
   ]
 }

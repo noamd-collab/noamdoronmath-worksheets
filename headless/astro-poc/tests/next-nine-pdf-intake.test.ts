@@ -44,6 +44,12 @@ const priorRegistry = { ...registry, editions: registry.editions.filter((e: any)
 
 test('the nine exact PDF additions reverse to the complete preceding catalog, including RAT47 and FRQ', () => {
   const rawPrevious = read('headless/astro-poc/src/data/catalog.v1.json');
+  const parallelogram = rawPrevious.grades.find((g: any) => g.grade === 9).topics.find((t: any) => t.id === 7);
+  const t90 = parallelogram.editions.filter((e: any) => e.editionId === 'ms-20261113-par-04-r1');
+  assert.equal(t90.length, 1);
+  assert.equal(createHash('sha256').update(JSON.stringify(t90[0])).digest('hex'),
+    'aa6d8b18e75c1af716d4ae06b059831fc27c397cf4fd70bb992afea991a03ed9');
+  parallelogram.editions = parallelogram.editions.filter((e: any) => e.editionId !== 'ms-20261113-par-04-r1');
   rawPrevious.grades.find((g: any) => g.grade === 9).topics = rawPrevious.grades.find((g: any) => g.grade === 9).topics.filter((t: any) => t.id !== 48);
   delete rawPrevious.searchTerms['9']['48'];
   for (const [grade, id] of [[7, 27], [9, 11]]) {
