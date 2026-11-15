@@ -108,7 +108,7 @@ test('the MED landing states the precise curriculum topic and a correct worked e
   const page = loadTopicPage('median-to-hypotenuse-grade-9');
   assert.equal(page.h1, 'משולש ישר זווית — התיכון ליתר לכיתה ט׳');
   assert.equal(page.catalogCta.catalogTopicId, 48);
-  assert.equal(page.catalogCta.catalogTopicTitle, 'משולש ישר זווית — התיכון ליתר');
+  assert.equal(page.catalogCta.catalogTopicTitle, 'משולש ישר־זווית — התיכון ליתר');
   const visible = [page.title, page.description, page.intro, ...page.sections.flatMap(s => s.blocks.map(b => b.text ?? '')), ...page.faq.flatMap(f => [f.question, f.answer])].join('\n');
   assert.match(visible, /חבילת תרגול ממוקדת/);
   assert.doesNotMatch(visible, /נועם AI|רמזי|\bWord\b|יחידה מלאה|כל יחידת/);
