@@ -46,11 +46,13 @@ test('FRQ adds exact reviewed PDFs while preserving the legacy default and every
       buildWorksheetHref({ catalog: before, grade: 7, topic: priorTopic, levelKey: level.key }));
   }
   const snapshot = JSON.parse(read('headless/astro-poc/src/data/catalog.v1.json'));
-  // Later MED/PRB/REC additions have their own exact preservation fence. Remove
+  // Later MED/PRB/REC/T90 additions have their own exact preservation fence. Remove
   // only those additions before checking the historical pre-FRQ snapshot.
   const g9 = snapshot.grades.find((g: any) => g.grade === 9);
   g9.topics = g9.topics.filter((topic: any) => topic.id !== 48);
   delete snapshot.searchTerms['9']['48'];
+  const parallelogram = g9.topics.find((topic: any) => topic.id === 7);
+  parallelogram.editions = parallelogram.editions.filter((edition: any) => edition.editionId !== 'ms-20261113-par-04-r1');
   for (const [grade, topicId] of [[7, 27], [9, 11]]) {
     const later = snapshot.grades.find((g: any) => g.grade === grade).topics.find((t: any) => t.id === topicId);
     delete later.editions; delete later.defaultEditionId;
