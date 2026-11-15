@@ -9,6 +9,7 @@ import { buildWorksheetHref } from '../src/lib/worksheetLinks';
 import { buildTeacherCatalog } from '../scripts/build-teacher-catalog.mjs';
 import { buildTeacherLandingCatalog, getTeacherLandingScope } from '../src/lib/teacherLandingCatalog';
 import { collectViewerPdfIds } from '../scripts/sync-github-static.mjs';
+import { beforeEqnSgnFacCatalog } from './fixtures/eqn-sgn-fac-pdf';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -45,7 +46,7 @@ test('FRQ adds exact reviewed PDFs while preserving the legacy default and every
     assert.equal(buildWorksheetHref({ catalog, grade: 7, topic, levelKey: level.key }),
       buildWorksheetHref({ catalog: before, grade: 7, topic: priorTopic, levelKey: level.key }));
   }
-  const snapshot = JSON.parse(read('headless/astro-poc/src/data/catalog.v1.json'));
+  const snapshot = beforeEqnSgnFacCatalog(JSON.parse(read('headless/astro-poc/src/data/catalog.v1.json')));
   // Later MED/PRB/REC/T90 additions have their own exact preservation fence. Remove
   // only those additions before checking the historical pre-FRQ snapshot.
   const g9 = snapshot.grades.find((g: any) => g.grade === 9);

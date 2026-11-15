@@ -9,6 +9,7 @@ import { topicWorksheetEditionLinks } from '../src/lib/topicWorksheetEditions';
 import { buildTeacherCatalog } from '../scripts/build-teacher-catalog.mjs';
 import { buildTeacherLandingCatalog, getTeacherLandingScope } from '../src/lib/teacherLandingCatalog';
 import { collectViewerPdfIds } from '../scripts/sync-github-static.mjs';
+import { beforeEqnSgnFacCatalog } from './fixtures/eqn-sgn-fac-pdf';
 
 const read = (p: string) => JSON.parse(readFileSync(new URL(p, import.meta.url), 'utf8'));
 const require = createRequire(import.meta.url);
@@ -23,7 +24,7 @@ const topic = catalog.grades.find(g => g.grade === 9)!.topics.find(t => t.id ===
 previous.grades.find(g => g.grade === 9)!.topics.find(t => t.id === 7)!.editions = topic.editions!.filter(e => e.editionId !== id);
 
 test('T90 adds exactly the three frozen PDFs while every prior catalog byte remains intact', () => {
-  const raw = read('../src/data/catalog.v1.json');
+  const raw = beforeEqnSgnFacCatalog(read('../src/data/catalog.v1.json'));
   const t = raw.grades.find((g: any) => g.grade === 9).topics.find((t: any) => t.id === 7);
   const additions = t.editions.filter((e: any) => e.editionId === id);
   assert.equal(additions.length, 1);
