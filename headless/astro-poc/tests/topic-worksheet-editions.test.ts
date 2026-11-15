@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { readFileSync } from 'node:fs';
-import { dirname } from 'node:path';
+import { dirname, basename, resolve } from 'node:path';
 import { createRequire } from 'node:module';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { transform as compileAstro } from '@astrojs/compiler';
@@ -11,6 +11,8 @@ import { parseHTML } from 'linkedom';
 import type { CatalogEdition, CatalogV1 } from '../src/lib/catalog/types';
 import { topicWorksheetEditionLinks } from '../src/lib/topicWorksheetEditions';
 import { buildWorksheetHref } from '../src/lib/worksheetLinks';
+import { loadCatalog } from '../src/lib/catalog/loadCatalog';
+import { loadTopicPage } from '../src/lib/topicPages';
 
 const require = createRequire(import.meta.url);
 const routes = [
@@ -114,13 +116,95 @@ test('the real Astro control renders visible edition labels and every level link
   assert.equal(one.querySelectorAll('strong, .topic-worksheet-edition-note').length, 0);
 });
 
-test('TopicPage uses the shared control at all three download locations and compiles', async () => {
+test('TopicPage uses the shared control in the header, hero and body and compiles', async () => {
   const file = new URL('../src/components/TopicPage.astro', import.meta.url);
   const source = readFileSync(file, 'utf8');
-  assert.equal((source.match(/<TopicWorksheetEditions\b/g) || []).length, 3);
   assert.match(source, /editions=\{preEditions\}/);
-  assert.match(source, /editions=\{topicEditions\}/);
+  assert.match(source, /editions=\{group.editions\}/);
   assert.match(source, /editions=\{flowEditions\}/);
   const compiled = await compileAstro(source, { filename: fileURLToPath(file) });
   await parseJavaScript(compiled.code, { loader: 'ts' });
+});
+
+// Render the actual page, catalog loader and download controls together. Only
+// the unrelated site shell/animations are omitted; no CTA or edition fixtures
+// replace the production data, selection logic or href builder.
+let topicPageComponent: Promise<any> | undefined;
+function realTopicPage() {
+  return topicPageComponent ??= (async () => {
+    const file = new URL('../src/components/TopicPage.astro', import.meta.url);
+    const options = { internalURL: 'astro/compiler-runtime', resultScopedSlot: true,
+      renderScript: true, resolvePath: (specifier: string) => specifier };
+    const bundled = await build({
+      entryPoints: [fileURLToPath(file)], bundle: true, write: false,
+      format: 'esm', platform: 'node',
+      plugins: [{ name: 'topic-page-render-test', setup(builder) {
+        builder.onResolve({ filter: /\?astro&type=style|\.css$/ }, args => ({ path: args.path, namespace: 'style' }));
+        builder.onLoad({ filter: /.*/, namespace: 'style' }, () => ({ contents: '', loader: 'js' }));
+        builder.onResolve({ filter: /\.astro$/ }, args => ({ path: resolve(args.resolveDir, args.path), namespace: 'astro-test' }));
+        builder.onLoad({ filter: /.*/, namespace: 'astro-test' }, async args => {
+          const real = ['TopicPage.astro', 'TopicWorksheetEditions.astro', 'TopicInline.astro'].includes(basename(args.path));
+          const compiled = await compileAstro(real ? readFileSync(args.path, 'utf8') : '<slot />', { ...options, filename: args.path });
+          return { contents: compiled.code, loader: 'ts', resolveDir: dirname(args.path) };
+        });
+        builder.onResolve({ filter: /^astro\/(compiler-runtime|runtime\/)/ }, args => ({ path: pathToFileURL(require.resolve(args.path)).href, external: true }));
+      } }],
+    });
+    return (await import(`data:text/javascript;base64,${Buffer.from(bundled.outputFiles[0].text).toString('base64')}`)).default;
+  })();
+}
+
+async function renderTopic(slug: string) {
+  const container = await AstroContainer.create();
+  const html = await container.renderToString(await realTopicPage(), {
+    props: { slug }, request: new Request(`https://topic.test/${slug}`),
+  });
+  return parseHTML(html).document;
+}
+
+test('real algebra landing routes all three hero topics to distinct groups and exposes the three new PDFs', async () => {
+  const document = await renderTopic('algebraic-expressions-grade-7');
+  const hero = document.querySelector('.exact-topic-copy')!;
+  const ctas = [...hero.querySelectorAll('a[data-catalog-topic]')];
+  assert.deepEqual(ctas.map(a => a.getAttribute('data-catalog-topic')), ['30', '23', '22']);
+  const catalog = loadCatalog();
+  const expectedLegacy: string[] = [];
+  for (const cta of ctas) {
+    const topicId = Number(cta.getAttribute('data-catalog-topic'));
+    const target = cta.getAttribute('href')!;
+    assert.equal(target, topicId === 30 ? '#topic-levels' : `#topic-levels-hero-${topicId}`);
+    const controls = hero.querySelectorAll(target);
+    assert.equal(controls.length, 1, `one target for topic ${topicId}`);
+    const groups = topicWorksheetEditionLinks(catalog, 7, topicId, `/worksheets?grade=7&topic=${topicId}`);
+    assert.deepEqual([...controls[0].querySelectorAll('a')].map(a => a.getAttribute('href')),
+      groups.flatMap(group => group.levels.map(level => level.href)));
+    expectedLegacy.push(...groups.find(group => group.editionId === 'legacy')!.levels.map(level => level.href));
+  }
+  assert.equal(expectedLegacy.length, 9);
+  assert.deepEqual([...hero.querySelectorAll('a[data-edition-id="legacy"]')].map(a => a.getAttribute('href')), expectedLegacy);
+  const newPdfIds = ['b376976911234b758027329c9ea05cbf', 'b6a76fb3eccd477b9788958efefbded2', '0fe476657595498194b93cdc46e39e5f'];
+  const additions = [...hero.querySelectorAll('a[data-edition-id="ms-20261115-alg-01-r1"]')];
+  assert.deepEqual(additions.map(a => a.getAttribute('href')), newPdfIds.map(id => `${catalog.config.pdfBase}${id}.pdf`));
+  assert.ok(additions.every(a => a.textContent.includes('פתיחת PDF') && !a.getAttribute('href')!.includes('viewer')));
+  const ids = [...document.querySelectorAll('[id]')].map(e => e.id);
+  assert.equal(new Set(ids).size, ids.length, 'no duplicate anchors');
+});
+
+test('real single-topic hero retains one download group and direct level-B/excellence CTAs', async () => {
+  const slug = 'congruence-theorems-grade-8';
+  const document = await renderTopic(slug);
+  const hero = document.querySelector('.exact-topic-copy')!;
+  const page = loadTopicPage(slug);
+  assert.deepEqual(page.catalogCtas.map(c => c.catalogTopicId), [37, 37, 37]);
+  const groups = topicWorksheetEditionLinks(loadCatalog(), 8, 37, '/worksheets?grade=8&topic=37');
+  assert.equal(hero.querySelectorAll('[data-topic-levels]').length, 1);
+  const control = hero.querySelector('[data-topic-levels]')!;
+  assert.equal(control.id, 'topic-levels');
+  const ctas = [...hero.querySelectorAll('a[data-catalog-topic]')];
+  assert.deepEqual(ctas.map(a => a.getAttribute('href')), ['#topic-levels',
+    groups[0].levels.find(level => level.key === 'b')!.href,
+    groups[0].levels.find(level => level.key === 'c')!.href]);
+  assert.deepEqual([...control.querySelectorAll('a')].map(a => a.getAttribute('href')),
+    groups.flatMap(group => group.levels.map(level => level.href)));
+  assert.equal(hero.querySelector('[data-topic-levels]')?.previousElementSibling, ctas.at(-1)!.parentElement);
 });
