@@ -1,3 +1,4 @@
+import { reviewedExtSmlAfr } from './fixtures/ext-sml-afr-pdf';
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { readFileSync } from 'node:fs';
@@ -270,4 +271,33 @@ test('both frequency landings expose six direct FRQ links while keeping their or
     assert.equal(new Set(ids).size, ids.length);
   }
   assert.equal(additions, 6);
+});
+
+
+test('real EXT/SML/AFR pages expose nine distinct PDFs, with the shared SML secondary route preserving topic45', async () => {
+  const catalog = loadCatalog();
+  const urls = new Set<string>();
+  for (const slug of [...reviewedExtSmlAfr.additions.map(a => a.slug), 'difference-of-squares-grade-9']) {
+    const addition = reviewedExtSmlAfr.additions.find(a => a.slug === slug)
+      ?? reviewedExtSmlAfr.additions.find(a => a.topicId === 44)!;
+    const document = await renderTopic(slug);
+    const hero = document.querySelector('.exact-topic-copy')!;
+    const controls = slug === 'difference-of-squares-grade-9' ? document : hero;
+    const links = [...controls.querySelectorAll(`a[data-edition-id="${addition.editionId}"]`)];
+    assert.deepEqual(links.map(a => a.getAttribute('href')), addition.pdfIds.map(id => `${catalog.config.pdfBase}${id}.pdf`));
+    assert.ok(links.every(a => a.textContent.includes('פתיחת PDF') && !a.textContent.includes('רמזי')));
+    for (const a of links) urls.add(a.getAttribute('href')!);
+    const anchors = [...document.querySelectorAll('[id]')].map(e => e.id);
+    assert.equal(new Set(anchors).size, anchors.length, `${slug}: unique anchors`);
+    const legacy = [...hero.querySelectorAll('a[data-edition-id="legacy"]')];
+    assert.ok(legacy.length >= 3, `${slug}: old PDFs retained`);
+    if (slug === 'difference-of-squares-grade-9') {
+      assert.deepEqual([...document.querySelectorAll('a[data-catalog-topic]')].map(a => a.getAttribute('data-catalog-topic')), ['45', '44']);
+      const secondaryCta = document.querySelector('a[data-catalog-topic="44"]')!;
+      const secondary = document.querySelector(secondaryCta.getAttribute('href')!)!;
+      assert.ok(secondary);
+      assert.equal(secondary.querySelectorAll(`a[data-edition-id="${addition.editionId}"]`).length, 3);
+    }
+  }
+  assert.equal(urls.size, 9, 'secondary SML links do not duplicate worksheet inventory');
 });

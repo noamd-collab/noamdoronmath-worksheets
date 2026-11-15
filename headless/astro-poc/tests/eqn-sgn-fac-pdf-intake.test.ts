@@ -1,3 +1,4 @@
+import { beforeExtSmlAfrRegistry } from './fixtures/ext-sml-afr-pdf';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
@@ -20,7 +21,7 @@ const root = new URL('../../../', import.meta.url);
 const read = (path: string) => JSON.parse(readFileSync(new URL(path, root), 'utf8'));
 const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(value, null, 2) + '\n').digest('hex');
 const registry = read('headless/catalog/worksheet-editions.v1.json');
-const priorRegistry = { ...registry, editions: registry.editions.filter((e: any) => !ids.includes(e.editionId)) };
+const priorRegistry = { ...registry, editions: beforeExtSmlAfrRegistry(registry).editions.filter((e: any) => !ids.includes(e.editionId)) };
 const catalog = loadCatalog();
 const rawCatalog = read('headless/astro-poc/src/data/catalog.v1.json');
 const previous = beforeEqnSgnFacCatalog(rawCatalog);

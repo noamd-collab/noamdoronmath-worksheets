@@ -1,3 +1,10 @@
+## 15 November 2026 — EXT01, SML01 and AFR01 PDF candidate
+
+- Add nine nondefault PDF worksheets (55 pages, 216 subitems): extended distribution on grade9/topic1; integrated sum/difference squares and difference of squares on topic44; algebraic fraction domain, reduction, multiplication and division on topic3. Preserve every old PDF and default. Topic45 retains its original materials and links to the same topic44 addition; count the three shared SML PDFs once.
+- Independent intake reviewed all216 source subitems, observed55 page layout overviews and magnified all9 final-answer pages. This is not a glyph-by-glyph visual claim. Root accepted the bounded review and exact landing copy after its own limited visual sample. Six G94 workspace notes remain REVIEW with documented reasons to keep the original writing space. All source and student PDF bytes match the accepted receipts and pinned7.3.2 runtime. See [PDF provenance](ext-sml-afr-pdf-first-20261115.json).
+- Nine media files were read back through both CDN routes with exact SHA matches. Four landing pages gain precise scope and conditional wording for existing Ramzi support. EXT describes worded area comparison; SML describes algebraic practice. No geometric demonstration, whole-unit duration, Word, native, new Ramzi, teacher-question, learning or Supabase activation is promised.
+- This is an isolated site candidate based on PR485; it is not publication approval. WQP/WPM revisions and SAO/WPC are outside this change.
+
 ## 15 November 2026 — EQN01, SGN01 and FAC01 PDF candidate
 
 - Add nine exact student PDFs as three non-default editions: equation meaning and substitution (grade7/topic32), signed-number addition/subtraction (grade7/topic2), and factoring/basic quadratic equations (grade9/topic2). Preserve all legacy PDFs and existing defaults, including the equations landing’s topics23/34/32.

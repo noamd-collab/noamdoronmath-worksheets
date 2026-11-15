@@ -1,3 +1,4 @@
+import { reviewedExtSmlAfr } from './fixtures/ext-sml-afr-pdf';
 /**
  * Regression tests for the PR 46 content review of the SEO proposals (390 rows).
  * Each block maps to a review finding or one of the seven review criteria.
@@ -78,6 +79,18 @@ describe('seo proposals – generator and coverage', () => {
     assert.equal(factoringRow.description, factoringCopy.before);
     factoringRow.currentDescription = factoringCopy.after;
     factoringRow.description = factoringCopy.after;
+    for (const delta of reviewedExtSmlAfr.landingDeltas) {
+      const copy = delta.fields.find(d => d.path.length === 1 && d.path[0] === 'description')!;
+      const row = expected.find(item => item.path === '/' + delta.slug)!;
+      assert.equal(row.currentDescription, copy.before);
+      row.currentDescription = copy.after as string;
+      // The pre-existing SML review override remains authoritative; the other
+      // three rows use current copy, with their complete old value asserted.
+      if (delta.slug !== 'binomial-square-grade-9') {
+        assert.equal(row.description, copy.before);
+        row.description = copy.after as string;
+      }
+    }
     assert.deepEqual(proposals, expected);
   });
 

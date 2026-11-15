@@ -1,3 +1,4 @@
+import { beforeExtSmlAfrCopy } from './fixtures/ext-sml-afr-pdf';
 /**
  * HEADLESS-MIGRATION-18/19/20 — topic SEO page module + CTA gates.
  */
@@ -363,7 +364,7 @@ describe('topic page routes (HEADLESS-MIGRATION-18/19/20)', () => {
   });
 
   it('binomial-square: paragraph-only self-check exact text, topic 44, no invented H2', () => {
-    const page = loadTopicPage('binomial-square-grade-9');
+    const page = beforeExtSmlAfrCopy('binomial-square-grade-9', loadTopicPage('binomial-square-grade-9'));
     assert.equal(page.catalogCtas[0].catalogTopicId, 44);
     assert.equal(page.sections.length, 1);
     assert.ok(!page.sections.some((s) => hasSelfCheckHeading(s.heading)));
@@ -379,7 +380,7 @@ describe('topic page routes (HEADLESS-MIGRATION-18/19/20)', () => {
   });
 
   it('difference-of-squares: paragraph-only self-check exact text, topic 45, no invented H2', () => {
-    const page = loadTopicPage('difference-of-squares-grade-9');
+    const page = beforeExtSmlAfrCopy('difference-of-squares-grade-9', loadTopicPage('difference-of-squares-grade-9'));
     assert.equal(page.catalogCtas[0].catalogTopicId, 45);
     assert.equal(page.sections.length, 1);
     assert.ok(!page.sections.some((s) => hasSelfCheckHeading(s.heading)));
