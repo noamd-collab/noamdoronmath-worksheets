@@ -581,6 +581,90 @@
           "sourceSha256": "0cdae0abf7028495ddcae052a4c06173db81c0d5eb23809094479f178631a130"
         }
       ]
+    },
+    {
+      "editionId": "ms-20261115-prb-01-r1",
+      "label": "הערכת הסתברות לפי תוצאות ניסוי — PDF",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "status": "published",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "763682ee83fd45fb97d463ad89dfebcc",
+          "pdfSha256": "a5eeb6949ee106af666afa0b3a38ae781455acdbc931fe10b8e309369e38727e",
+          "sourceSha256": "5b482f3b19ec1924d7d1e3e3911cb36b777214a1db8166fdd628218b3f5a39fc",
+          "nativeExportSha256": "9c164afc180f47b265e644c383a4503f3ddb89ac2338b9e66f82283d7bb61cdc",
+          "worksheetId": "ms-g7-prb-01-a-r1",
+          "revision": 1
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "152537d8312b4902a23b53d68e21004a",
+          "pdfSha256": "8ea7f49ad6cf7ce51aad054ce8acff014407140648e298e89065d7a3cdbdc4af",
+          "sourceSha256": "6d02c5dfaba73449c087a2bd07e650d91082fc3d71005f2fdde47c1df82ba865",
+          "nativeExportSha256": "0f3d40ed08464271a76d7fd6744a8973a02dc5cb3ec4c785aca24df4d6df30e1",
+          "worksheetId": "ms-g7-prb-01-b-r1",
+          "revision": 1
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "3fce9fe16ea24b419abc6e25b987e066",
+          "pdfSha256": "b5830939b847a0a0e70aa599d8764f4305823d3285654c144bf6e5339da6f901",
+          "sourceSha256": "04c5b3a7ca663e120f05e35f16e2f423438c0e992b1f9667f2b19086ba7766ff",
+          "nativeExportSha256": "40b9712a3c17a8cc5c16f42a33463ed58e66006a737cf417bd85191158119bfd",
+          "worksheetId": "ms-g7-prb-01-c-r1",
+          "revision": 1
+        }
+      ],
+      "grade": 7,
+      "topicId": 27,
+      "nativePrefix": "G7-T89"
+    },
+    {
+      "editionId": "ms-20261115-rec-01-r1",
+      "label": "מלבן — תכונות ומשפטים הפוכים — PDF",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "status": "published",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "d9db352e798e4dc78df2602580adef0b",
+          "pdfSha256": "562d22df09dd1290c32780c2a7a06ce3cd909b01f03745a1811ce4ab486ed1c5",
+          "sourceSha256": "b5544c8335d26441887c2d3769235b86b87cffd4e101d3274267fc7b7288e6e4",
+          "nativeExportSha256": "bfa6447dd8921210fe6393abeff01e8bea01ff6dea13e9e754b0db8c9690d095",
+          "worksheetId": "ms-g9-rec-01-a-r1",
+          "revision": 1
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "ea3bd0b483644b61bb001e56b8bba09d",
+          "pdfSha256": "6b9bd976d0cc8eb0ae9d48e446d86d9699c8151fe7fdf7b33ef0d45768bb4a7c",
+          "sourceSha256": "64be0f6b1264a29175cd4ebae27c1fa2e7e6981d1e079a2a8724c51c9dec058f",
+          "nativeExportSha256": "6b8b3ccfea3d0006f5c007e225214daaa0a571dd0aa6574da337c8225b32877a",
+          "worksheetId": "ms-g9-rec-01-b-r1",
+          "revision": 1
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "e5c9abeff29046cd87e733db0b4debc9",
+          "pdfSha256": "aed3ad4cdeddfd7db2f49a3a454a854edbca684c60f0c1abd80d42e27e1637f9",
+          "sourceSha256": "3b77b54d3cf48d688072fde328824ef5af68b3fc7c06646b27e753a356bfc73c",
+          "nativeExportSha256": "5edc0863b32fca3d5496446c1f68ad54ca874d5b8e445604b5f212a15ce6665b",
+          "worksheetId": "ms-g9-rec-01-c-r1",
+          "revision": 1
+        }
+      ],
+      "grade": 9,
+      "topicId": 11,
+      "nativePrefix": "G9-T95"
     }
   ]
 }

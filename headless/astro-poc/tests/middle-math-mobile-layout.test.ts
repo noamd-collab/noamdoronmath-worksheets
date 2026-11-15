@@ -47,12 +47,12 @@ describe('middle lesson equations at phone width', { timeout: 180_000 }, () => {
           assert.ok(statements.some(s => s.text === 'f(x) = x + 1'));
           assert.ok(statements.some(s => s.text === 'g(x) = 7 − x'));
         }
-        if (['graphical-inequality', 'line-from-points', 'missing-mean', 'numeric-denominators', 'system-elimination', 'rational-domain'].includes(variant)) {
+        if (['graphical-inequality', 'line-from-points', 'missing-mean', 'numeric-denominators', 'system-elimination', 'rational-domain', 'hypotenuse-median'].includes(variant)) {
           const scene = await page.$(selector);
           await scene!.screenshot({ path: `reports/middle-math-mobile/${variant}-390.png` });
         }
       }
-      assert.equal(variants.size, 22);
+      assert.equal(variants.size, 23);
     } finally {
       await page.close();
       await browser.close();

@@ -2665,6 +2665,14 @@
       "reason": "links to the topic, same grade, shared title word"
     },
     {
+      "key": "page:/median-to-hypotenuse-grade-9",
+      "title": "משולש ישר זווית — התיכון ליתר לכיתה ט׳",
+      "linkedTopic": "topic:9:48",
+      "linkedTitle": "משולש ישר־זווית — התיכון ליתר",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
       "key": "page:/games/eliyahu-pythagoras",
       "title": "משחק משפט פיתגורס עם אליהו",
       "linkedTopic": "topic:8:11",

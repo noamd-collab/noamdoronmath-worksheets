@@ -1,0 +1,148 @@
+{
+  "schema": "noam-reviewed-pdf-publication/v1",
+  "status": "review_candidate_not_published",
+  "grade": 9,
+  "topicId": 48,
+  "publicationMode": "pdf-only",
+  "sourcePackage": "G9-T94",
+  "sourceSheetId": "G9-MED-01",
+  "sourceProvenanceOnly": true,
+  "landing": "/median-to-hypotenuse-grade-9",
+  "levels": [
+    {
+      "key": "a",
+      "label": "רמה א׳",
+      "pdfId": "eb99b4fb3e4d47f5b96e4f2dcfb10bf2",
+      "pdfSha256": "f507a95ca138b8dc4868ce2e7f16cf89c08137d6e4856221fd70f8b3dc161020",
+      "sourceSha256": "f6485280137ad5a1aa780e5824709a5e2441ad0dade843cee39238e38a47898a",
+      "nativeExportSha256": "e0fa8fe4ea31a5b0050e6f12ba68b1c60400f83dcc5acf540d1ab9c5230e372f",
+      "pages": 6,
+      "subitems": 18,
+      "downloadChecks": [
+        {
+          "level": "a",
+          "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_eb99b4fb3e4d47f5b96e4f2dcfb10bf2.pdf",
+          "pdfId": "eb99b4fb3e4d47f5b96e4f2dcfb10bf2",
+          "sha256": "f507a95ca138b8dc4868ce2e7f16cf89c08137d6e4856221fd70f8b3dc161020",
+          "bytes": 69751,
+          "matchesFrozenPdf": true
+        },
+        {
+          "level": "a",
+          "url": "https://static.wixstatic.com/ugd/d8e7ad_eb99b4fb3e4d47f5b96e4f2dcfb10bf2.pdf",
+          "pdfId": "eb99b4fb3e4d47f5b96e4f2dcfb10bf2",
+          "sha256": "f507a95ca138b8dc4868ce2e7f16cf89c08137d6e4856221fd70f8b3dc161020",
+          "bytes": 69751,
+          "matchesFrozenPdf": true
+        },
+        {
+          "level": "a",
+          "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_eb99b4fb3e4d47f5b96e4f2dcfb10bf2.pdf",
+          "pdfId": "eb99b4fb3e4d47f5b96e4f2dcfb10bf2",
+          "sha256": "f507a95ca138b8dc4868ce2e7f16cf89c08137d6e4856221fd70f8b3dc161020",
+          "bytes": 69751,
+          "matchesFrozenPdf": true
+        }
+      ]
+    },
+    {
+      "key": "b",
+      "label": "רמה ב׳",
+      "pdfId": "703b2b73edb949e4a06efa8a02d7476e",
+      "pdfSha256": "286781b2f19604a06d37f9e5ccaa885136166f2e3efc003be287c541f0220fa5",
+      "sourceSha256": "b15f78c4b6595f4b7484da9322cbf7eac0475f50bfdfdbc2512652f58d6e6a0c",
+      "nativeExportSha256": "a3a8e47ba5249bee54b569fac603e32933c98f0e45bf6e178b1a19f785bc34d2",
+      "pages": 6,
+      "subitems": 18,
+      "downloadChecks": [
+        {
+          "level": "b",
+          "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_703b2b73edb949e4a06efa8a02d7476e.pdf",
+          "pdfId": "703b2b73edb949e4a06efa8a02d7476e",
+          "sha256": "286781b2f19604a06d37f9e5ccaa885136166f2e3efc003be287c541f0220fa5",
+          "bytes": 76364,
+          "matchesFrozenPdf": true
+        },
+        {
+          "level": "b",
+          "url": "https://static.wixstatic.com/ugd/d8e7ad_703b2b73edb949e4a06efa8a02d7476e.pdf",
+          "pdfId": "703b2b73edb949e4a06efa8a02d7476e",
+          "sha256": "286781b2f19604a06d37f9e5ccaa885136166f2e3efc003be287c541f0220fa5",
+          "bytes": 76364,
+          "matchesFrozenPdf": true
+        },
+        {
+          "level": "b",
+          "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_703b2b73edb949e4a06efa8a02d7476e.pdf",
+          "pdfId": "703b2b73edb949e4a06efa8a02d7476e",
+          "sha256": "286781b2f19604a06d37f9e5ccaa885136166f2e3efc003be287c541f0220fa5",
+          "bytes": 76364,
+          "matchesFrozenPdf": true
+        }
+      ]
+    },
+    {
+      "key": "c",
+      "label": "מצוינות",
+      "pdfId": "ce41b853212749c09efc3d466a8e9ddf",
+      "pdfSha256": "e02277ba319fefd427f9b08b0f05e3040d9d204316dbb89d82964e74e42b3cff",
+      "sourceSha256": "a533ff10050bad73a002a4a40a03ccf322040e4244f3b3c3b85a7dfa6e827987",
+      "nativeExportSha256": "e5f10f58a505c4336891b75cbf12aad213708063169cc4150f5ed1879734afd6",
+      "pages": 6,
+      "subitems": 18,
+      "downloadChecks": [
+        {
+          "level": "c",
+          "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_ce41b853212749c09efc3d466a8e9ddf.pdf",
+          "pdfId": "ce41b853212749c09efc3d466a8e9ddf",
+          "sha256": "e02277ba319fefd427f9b08b0f05e3040d9d204316dbb89d82964e74e42b3cff",
+          "bytes": 79342,
+          "matchesFrozenPdf": true
+        },
+        {
+          "level": "c",
+          "url": "https://static.wixstatic.com/ugd/d8e7ad_ce41b853212749c09efc3d466a8e9ddf.pdf",
+          "pdfId": "ce41b853212749c09efc3d466a8e9ddf",
+          "sha256": "e02277ba319fefd427f9b08b0f05e3040d9d204316dbb89d82964e74e42b3cff",
+          "bytes": 79342,
+          "matchesFrozenPdf": true
+        },
+        {
+          "level": "c",
+          "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_ce41b853212749c09efc3d466a8e9ddf.pdf",
+          "pdfId": "ce41b853212749c09efc3d466a8e9ddf",
+          "sha256": "e02277ba319fefd427f9b08b0f05e3040d9d204316dbb89d82964e74e42b3cff",
+          "bytes": 79342,
+          "matchesFrozenPdf": true
+        }
+      ]
+    }
+  ],
+  "review": {
+    "independentReviewSha256": "4342855d3f10794b22a5196b88e8b0b36fedf3c96c954036c838b9200bd61c59",
+    "reviewedPages": 18,
+    "reviewedSubitems": 54,
+    "wholePackagePass": false,
+    "mediaReadbackSha256": "cd3393328cb1b6274b112927a62c281e9ff810d4a4d98df06b64d8fac1e63412",
+    "rootDecisionSha256": "af8ba1e56d66bda12933bf962e1a893127f7eace00894380dd39211261cf1124"
+  },
+  "notActivated": [
+    "Ramzi or question-level hints",
+    "public native viewer or manifest",
+    "teacher question bank",
+    "learning/progress identities",
+    "Word",
+    "Supabase"
+  ],
+  "officialMapping": {
+    "sha256": "a6832b146c58323bcb427a483235a1af4e6dadf75e1dd5b70cf90f4415c33690",
+    "page": 7,
+    "month": "אפריל",
+    "hours": 3,
+    "topic": "משולש ישר זווית",
+    "content": "התיכון ליתר; תרגול המשפט בשילוב מרובעים",
+    "verification": "Relevant complete page visually inspected locally; no fresh web/source audit.",
+    "sourceFile": "prisa_9A.pdf",
+    "scopeLimit": "Local prisa confirms median-to-hypotenuse and quadrilateral practice; converse is supported by the reviewed worksheet mathematics, not claimed as independently verified from detailed curriculum page125."
+  }
+}
