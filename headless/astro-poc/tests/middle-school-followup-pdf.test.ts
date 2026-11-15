@@ -109,7 +109,21 @@ test('manifest sync omits unactivated PDFs while retaining legacy and verified e
   assert.deepEqual(collectViewerPdfIds(catalog), collectViewerPdfIds(previous));
   const selected = new Set(collectViewerPdfIds(catalog));
   const allPdfOnly = registry.editions.filter((e: any) => e.publicationMode === 'pdf-only');
-  assert.equal(allPdfOnly.flatMap((e: any) => e.levels).length, 18);
+  // Preserve the original eighteen-level boundary and separately fence the
+  // three later algebra PDFs, which must not gain viewer/hint activation.
+  const algebraId = 'ms-20261115-alg-01-r1';
+  assert.equal(allPdfOnly.filter((e: any) => e.editionId !== algebraId).flatMap((e: any) => e.levels).length, 18);
+  const algebra = allPdfOnly.filter((e: any) => e.editionId === algebraId);
+  assert.equal(algebra.length, 1);
+  assert.equal(algebra[0].grade, 7); assert.equal(algebra[0].topicId, 22);
+  assert.equal(algebra[0].nativePrefix, 'G7-T87');
+  const algebraPdfIds = ['b376976911234b758027329c9ea05cbf',
+    'b6a76fb3eccd477b9788958efefbded2', '0fe476657595498194b93cdc46e39e5f'];
+  assert.deepEqual(algebra[0].levels.map((level: any) => level.pdfId), algebraPdfIds);
+  for (const pdfId of algebraPdfIds) {
+    assert.equal(activation.units.has(pdfId), false, 'new algebra PDF has no activation');
+    assert.equal(selected.has(pdfId), false, 'new algebra PDF stays out of viewer sync');
+  }
   for (const e of allPdfOnly) for (const level of e.levels) {
     assert.equal(selected.has(level.pdfId), activation.units.has(level.pdfId), `${e.editionId}/${level.key}`);
   }

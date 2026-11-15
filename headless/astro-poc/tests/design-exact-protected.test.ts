@@ -224,10 +224,13 @@ describe('exact-design protected live-baseline boundaries', () => {
         }
         // Noam's 13 November PDF-first work adds four initial focused sets,
         // plus two separately reviewed parallelogram follow-ups (not PR456).
+        // The 15 November G7 expression-language set is one further PDF-only
+        // overlay; its exact bytes are fenced without replacing any old hash.
         // Bind every byte of each reviewed addition, strip only those overlays,
         // and keep the original complete legacy catalog hash below unchanged.
         const middleAdditions = [
           [7, 17, ['ms-20261113-trn-r1'], '3e3929a160636aabc2e27f8dedff16dbff4eda435b6c4155f50cb61134c5381c'],
+          [7, 22, ['ms-20261115-alg-01-r1'], 'b22196453ef7444643d3b428208d9f76a5108c0fa4cdbf6640da4f413d8b0b76'],
           [8, 14, ['ms-20261113-cyl-r1'], '3f476e3666dbb952773355bbb8b98d1a03d2ad3733cac819c0b210d0a792edbb'],
           [8, 15, ['ms-20261113-con-r1'], 'e3e8dfde45ca70dbf15c20a264cf34cb329d9700f9e361917da796e454a9cc3d'],
           [9, 7, ['ms-20261113-par-r1', 'ms-20261113-par-02-r1', 'ms-20261113-par-03-r1'], '659b7c7c0b509660b7ad814a9c99c41adab03a3b32036d1c0d4538e916273bf6'],
