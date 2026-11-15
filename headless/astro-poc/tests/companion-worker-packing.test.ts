@@ -2,19 +2,29 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
-import { gunzipSync } from 'node:zlib';
+import { gunzipSync, gzipSync } from 'node:zlib';
 import packed from '../src/data/companion-worker-data.json';
 import { createCompanionPackLoader, decompressCompanionPack, PACKED_DATA_UNAVAILABLE } from '../src/lib/packedCompanionData';
 import { loadCompanionWorkerData } from '../src/lib/companionWorkerData';
-import { compileCompanionData } from '../scripts/build-companion-data.mjs';
+import { compileCompanionData, validateCompanionData } from '../scripts/build-companion-data.mjs';
 import { handleNoamSiteCompanion } from '../../../noam-ai/site-companion/endpoint.js';
 const data = new URL('../src/data/', import.meta.url);
 const original = { guide: JSON.parse(readFileSync(new URL('site-guide.v1.json',data),'utf8')), teacherIndex: JSON.parse(readFileSync(new URL('teacher-pick-index.json',data),'utf8')) };
 const catalog = JSON.parse(readFileSync(new URL('catalog.v1.json',data),'utf8'));
-test('deterministic packs round-trip every original byte, count, ID, and nested field', async()=>{
- assert.equal(compileCompanionData(),readFileSync(new URL('companion-worker-data.json',data),'utf8'));
+test('committed and freshly generated packs preserve every original byte, count, ID, and nested field', async()=>{
+ assert.equal(validateCompanionData(packed),true);
+ assert.equal(validateCompanionData(JSON.parse(compileCompanionData())),true);
  for(const [key,name] of [['guide','site-guide.v1.json'],['teacherIndex','teacher-pick-index.json']] as const){const raw=readFileSync(new URL(name,data)),p=packed[key];assert.deepEqual(gunzipSync(Buffer.from(p.gzipBase64,'base64')),raw);assert.equal(createHash('sha256').update(raw).digest('hex'),p.sha256);assert.equal(p.rawBytes,raw.length);}
  assert.deepEqual(await loadCompanionWorkerData(),original);
+});
+test('source validation accepts alternate lossless gzip encodings but rejects stale metadata or bytes',()=>{
+ const alternate=structuredClone(packed);
+ for(const key of ['guide','teacherIndex'] as const) alternate[key].gzipBase64=gzipSync(gunzipSync(Buffer.from(packed[key].gzipBase64,'base64')),{level:1}).toString('base64');
+ assert.notEqual(alternate.guide.gzipBase64,packed.guide.gzipBase64);
+ assert.equal(validateCompanionData(alternate),true);
+ for(const delta of [{sha256:'0'.repeat(64)},{count:1},{rawBytes:1},{kind:'teacherIndex'},{version:2},{gzipBase64:packed.guide.gzipBase64+'!!'},{gzipBase64:gzipSync(Buffer.from('{}')).toString('base64')}]){
+  const bad=structuredClone(packed);Object.assign(bad.guide,delta);assert.throws(()=>validateCompanionData(bad));
+ }
 });
 test('cold concurrent calls share one decode, warm calls preserve object and promise identity',async()=>{
  let decodes=0;const load=createCompanionPackLoader(packed.guide,async p=>{decodes++;return decompressCompanionPack(p);});const cold=load();assert.equal(cold,load());const results=await Promise.all(Array.from({length:20},()=>load()));assert.equal(decodes,1);assert(results.every(x=>x===results[0]));assert.equal(load(),cold);assert.equal(await load(),results[0]);
