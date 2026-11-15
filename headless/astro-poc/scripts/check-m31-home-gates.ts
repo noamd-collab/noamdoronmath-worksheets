@@ -97,12 +97,10 @@ async function checkViewport(label: string, width: number, height: number) {
         privacyLinked: !![...document.querySelectorAll('.site-footer__legal a')].some(
           (a) =>
             (a.textContent || '').includes('מדיניות פרטיות') &&
-            (a.getAttribute('href') || '') === '/accessibilityadaptation#privacy-policy'
+            (a.getAttribute('href') || '') === '/privacy'
         ),
         privacyGapAbsent: !document.querySelector('[data-legal-gap="privacy"]'),
-        privacyAnchorPresent: !!document.querySelector(
-          'a[href="/accessibilityadaptation#privacy-policy"]'
-        ),
+        privacyAnchorPresent: !!document.querySelector('a[href="/privacy"]'),
         waNote: document.body.innerText.includes('ההצטרפות לבחירתכם'),
         heroArtHiddenOrClear: (() => {
           const art = document.querySelector('.hero-art');
