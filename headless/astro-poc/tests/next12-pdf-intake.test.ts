@@ -12,6 +12,7 @@ import { collectViewerPdfIds } from '../scripts/sync-github-static.mjs';
 import { loadTopicPage, extractJsonLdFaq, synthesizeBodyFlow } from '../src/lib/topicPages';
 import { beforeNext12Catalog, beforeNext12Registry, beforeNext12Copy,
   reviewedNext12 as reviewed, reviewedNext12Ids as ids } from './fixtures/next12-pdf';
+import { beforeNext21Registry } from './fixtures/next21-pdf';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -92,8 +93,9 @@ test('three exact landing deltas preserve old H1/title/primary CTAs and synchron
   const shared = loadTopicPage('area-rectangle-perimeter-grade-7');
   assert.equal(shared.catalogCta.catalogTopicId, 44);
   assert.deepEqual(shared.catalogCtas.map(c => c.catalogTopicId), [44, 18]);
-  assert.equal(registry.editions.length, 28);
-  assert.equal(registry.editions.flatMap((e: any) => e.levels).length, 84);
+  const next12Registry = beforeNext21Registry(registry);
+  assert.equal(next12Registry.editions.length, 28);
+  assert.equal(next12Registry.editions.flatMap((e: any) => e.levels).length, 84);
 });
 
 test('exact reversals reject altered old materials, new media/source substitutions and unsupported copy', () => {

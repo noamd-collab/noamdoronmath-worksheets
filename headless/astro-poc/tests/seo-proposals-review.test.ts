@@ -1,4 +1,5 @@
 import { reviewedNext12 } from './fixtures/next12-pdf';
+import { reviewedNext21 } from './fixtures/next21-pdf';
 import { reviewedSaoWpc } from './fixtures/sao-wpc-pdf';
 import { reviewedExtSmlAfr } from './fixtures/ext-sml-afr-pdf';
 /**
@@ -117,6 +118,27 @@ describe('seo proposals – generator and coverage', () => {
         assert.equal(row.source, 'title:current|description:current');
       }
       row.description = String(copy.after);
+    }
+    for (const delta of reviewedNext21.landingDeltas) {
+      const copy = delta.fields.find(d => d.path.length === 1 && d.path[0] === 'description')!;
+      const row = expected.find(item => item.path === '/' + delta.slug)!;
+      assert.equal(row.currentDescription, copy.before, `${delta.slug}: historical current description`);
+      row.currentDescription = String(copy.after);
+      if (delta.slug === 'powers-grade-7') {
+        // The independently reviewed powers override stays authoritative.
+        assert.equal(row.source, 'title:current|description:review-fix');
+        assert.equal(row.description, 'חזקות לכיתה ז׳: כפל חוזר, בסיס ומעריך וחישוב ביטויים פשוטים. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.');
+      } else {
+        if (delta.slug === 'triangle-area-grade-7') {
+          assert.equal(row.source, 'title:current|description:page-intro');
+          assert.equal(row.description, 'לומדים לחשב שטח משולש לפי בסיס וגובה, ולזהות את הגובה המאונך גם בשרטוטים שונים. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.');
+          row.source = 'title:current|description:current';
+        } else {
+          assert.equal(row.source, 'title:current|description:current');
+          assert.equal(row.description, copy.before);
+        }
+        row.description = String(copy.after);
+      }
     }
     assert.deepEqual(proposals, expected);
   });

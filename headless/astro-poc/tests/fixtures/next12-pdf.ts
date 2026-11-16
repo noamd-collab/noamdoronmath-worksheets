@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import reviewed from './next12-pdf-reviewed.json';
+import { beforeNext21Catalog, beforeNext21Registry, beforeNext21Copy } from './next21-pdf';
 
 export { reviewed as reviewedNext12 };
 export const reviewedNext12Ids = reviewed.additions.map(a => a.editionId);
@@ -11,7 +12,7 @@ const plain = (value: unknown): unknown => typeof value === 'string' ? value.rep
 
 /** Undo only four fixed overlays before the complete historical catalog fences. */
 export function beforeNext12Catalog<T>(catalog: T): T {
-  const restored: any = structuredClone(catalog);
+  const restored: any = beforeNext21Catalog(catalog);
   for (const a of reviewed.additions) {
     const t = restored.grades.find((g: any) => g.grade === a.grade).topics.find((t: any) => t.id === a.topicId);
     assert.equal(t.defaultEditionId, 'legacy');
@@ -24,7 +25,7 @@ export function beforeNext12Catalog<T>(catalog: T): T {
 }
 
 export function beforeNext12Registry<T>(registry: T): T {
-  const restored: any = structuredClone(registry);
+  const restored: any = beforeNext21Registry(registry);
   for (const a of reviewed.additions) {
     const matches = restored.editions.filter((e: any) => e.editionId === a.editionId);
     assert.deepEqual(matches, [a.edition]);
@@ -35,6 +36,7 @@ export function beforeNext12Registry<T>(registry: T): T {
 
 /** Require every reviewed new value before reversing its exact baseline field. */
 export function beforeNext12Copy<T>(slug: string, page: T): T {
+  page = beforeNext21Copy(slug, page);
   const d = reviewed.landingDeltas.find(d => d.slug === slug);
   if (!d) return page;
   const restored: any = structuredClone(page);
