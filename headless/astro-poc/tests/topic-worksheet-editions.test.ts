@@ -400,7 +400,7 @@ test('real next21 pages expose twenty-one PDFs only in their mapped groups and p
   assert.equal(urls.size, 21);
 });
 
-test('real batch-01 pages expose fifteen PDFs in their single topic group after every earlier choice', async () => {
+test('real batch-01 pages expose twelve PDFs in their single topic group after every earlier choice', async () => {
   const catalog = loadCatalog(), urls = new Set<string>();
   for (const addition of reviewedBatch01.additions) {
     const document = await renderTopic(addition.slug), hero = document.querySelector('.exact-topic-copy')!;
@@ -422,5 +422,5 @@ test('real batch-01 pages expose fifteen PDFs in their single topic group after 
     const anchors = [...document.querySelectorAll('[id]')].map(e => e.id);
     assert.equal(new Set(anchors).size, anchors.length, `${addition.slug}: unique anchors`);
   }
-  assert.equal(urls.size, 15);
+  assert.equal(urls.size, 12);
 });

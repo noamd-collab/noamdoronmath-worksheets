@@ -72,9 +72,7 @@ test('parallelogram landing exposes all focused sets without changing legacy def
       previous.grades.find(g => g.grade === grade.grade)!.topics.find(before => before.id === t.id));
   }
   const groups = topicWorksheetEditionLinks(catalog, 9, 7, '/worksheets?grade=9&topic=7');
-  // Later reviewed additions (T90, then batch-01 PAR-05) append after these sets.
-  assert.deepEqual(groups.map(g => g.editionId), ['legacy', 'ms-20261113-par-r1', ...ids, 'ms-20261113-par-04-r1',
-    ...reviewedBatch01Ids.filter(id => id === 'ms-20261116-par-05-r1')]);
+  assert.deepEqual(groups.map(g => g.editionId), ['legacy', 'ms-20261113-par-r1', ...ids, 'ms-20261113-par-04-r1']);
   assert.deepEqual(groups[0], topicWorksheetEditionLinks(previous, 9, 7, '/worksheets?grade=9&topic=7')[0]);
   for (const row of additions) {
     const selected = resolveEdition(currentTopic, row.editionId);

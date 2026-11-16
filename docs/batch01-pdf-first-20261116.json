@@ -6,25 +6,24 @@
   "sourceProvenanceOnly": true,
   "sitePublicationClaimed": false,
   "scope": {
-    "packages": 5,
-    "pdfs": 15,
-    "pages": 101,
-    "subitems": 468,
-    "landingRoutes": 5
+    "packages": 4,
+    "pdfs": 12,
+    "pages": 83,
+    "subitems": 372,
+    "landingRoutes": 4
   },
   "baselineCommit": "92bb57b5ee9acbca4032837c93690e3cec7e03db",
   "mediaReadbackSha256": "bb0cf0236b36bd1256e807be50408dacc1b2646cccc8d25523930e4dcaba8714",
   "pdfManifestSha256": "84ff9b60d8a591a1b0ba566bedbc107835c764274973964086f0261fbc6187af",
   "wixImportIdsSha256": "093394ae3868bf05163edec76352648da4fc06bf12b208b86869193090ae1d13",
   "review": {
-    "attribution": "Each student PDF set is bound by exact SHA-256 to a passing independent review by a different agent than its author. Four Carbon sets passed an r02 delta that closed every essential finding of a prior full review; G8-P3D-01 passed a full independent review. This integration rechecks the byte pins and media downloads and does not claim a new full math or visual review.",
+    "attribution": "Each student PDF set is bound by exact SHA-256 to a passing independent review by a different agent than its author. Three Carbon sets passed an r02 delta that closed every essential finding of a prior full review; G8-P3D-01 passed a full independent review. This integration rechecks the byte pins and media downloads and does not claim a new full math or visual review.",
     "wordVisual": "NOT_RUN",
     "nativeOrHintsAcceptance": false,
     "allGatesPass": false,
     "retainedLimits": [
       "PDF publication only. Word files, private keys, didactic notes, hints and native exports stay outside the site.",
       "G8-P3D-01 supplies levels a, b and c; the legacy topic 8/54 keeps its fourth level c2 unchanged.",
-      "G9-PAR-05 is a focused construction series; the four earlier parallelogram PDF series and the legacy set stay unchanged.",
       "Producer prefixes are provenance only; no new native assets, viewer routing, teacher selection, learning identities or AI activation."
     ]
   },
@@ -479,121 +478,6 @@
               "status": 200,
               "sha256": "c0f0f305265db3dacf1ab2f93ca2ecc5b2811bf6c0adaf93f976c98628b31f5c",
               "bytes": 122103,
-              "matchesFrozenPdf": true
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "sheetId": "G9-PAR-05",
-      "producerPackage": "G9-T66",
-      "title": "בניית מקבילית משתי צלעות וזווית חדה כלואה ומשתי צלעות ואלכסון",
-      "author": "Antigravity / Gemini 4 Carbon (High)",
-      "reviewer": "Astra independent QA (a different agent and model from the Carbon author)",
-      "reviewReceiptSha256": "85db6971042fa6eeb95871f6355c281e6d02aa75866f7b0ad2dfbe095d7c8587",
-      "reviewReceipts": [
-        {
-          "role": "r02 delta (PASS_STUDENT_PDF_ESSENTIALS)",
-          "sha256": "85db6971042fa6eeb95871f6355c281e6d02aa75866f7b0ad2dfbe095d7c8587"
-        },
-        {
-          "role": "prior full review of r01 (HOLD_THREE_ESSENTIAL_CORRECTIONS, closed by the delta)",
-          "sha256": "2442cd706e239563ce319a92af7b0b31fbcb93830aab964118d3517cfcd24599"
-        }
-      ],
-      "reviewVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
-      "grade": 9,
-      "topicId": 7,
-      "landing": "/parallelogram-grade-9",
-      "editionId": "ms-20261116-par-05-r1",
-      "nativePrefixProvenanceOnly": "G9-T66",
-      "label": "בניית מקבילית בסרגל ובמחוגה — מצלעות, זווית ואלכסון · PDF",
-      "isDefault": false,
-      "levels": [
-        {
-          "key": "a",
-          "viewerLevel": "A",
-          "pdfId": "60948665263c479689c0caef30639347",
-          "pdfSha256": "67737c262dceea87ca9a1b017ad0ed8937828cf1d4956d7814abf3d61fad3495",
-          "sourceSha256": "57784e60eb5fc294486320885b0b757d1e5cbf8d20b7b49f548dfd44dfe6ee7a",
-          "nativeExportSha256": "51e4a129167dd875fcd24d9ead9e01bd5bf3f01a2b994509b4ccdfaa63d54033",
-          "worksheetId": "ms-g9-par-05-a-r1",
-          "revision": 1,
-          "pages": 6,
-          "subitems": 32,
-          "bytes": 86406,
-          "downloadChecks": [
-            {
-              "url": "https://static.wixstatic.com/ugd/d8e7ad_60948665263c479689c0caef30639347.pdf",
-              "status": 200,
-              "sha256": "67737c262dceea87ca9a1b017ad0ed8937828cf1d4956d7814abf3d61fad3495",
-              "bytes": 86406,
-              "matchesFrozenPdf": true
-            },
-            {
-              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_60948665263c479689c0caef30639347.pdf",
-              "status": 200,
-              "sha256": "67737c262dceea87ca9a1b017ad0ed8937828cf1d4956d7814abf3d61fad3495",
-              "bytes": 86406,
-              "matchesFrozenPdf": true
-            }
-          ]
-        },
-        {
-          "key": "b",
-          "viewerLevel": "B",
-          "pdfId": "3c148a618bc741f6aa4de867a1f7ac4e",
-          "pdfSha256": "f03e6f89a562608744b4034b31368592583468e19364fc41fc8fa3b5e73bb1f7",
-          "sourceSha256": "75e16cb49b10cba42bc7b638b4d0f6a884de5a35294ffcb748d3d417e0b6d1ef",
-          "nativeExportSha256": "3c8b669a6f17e55249c76973b0b644ce9ceaae5ac9b1898201050a37815e8377",
-          "worksheetId": "ms-g9-par-05-b-r1",
-          "revision": 1,
-          "pages": 6,
-          "subitems": 32,
-          "bytes": 90387,
-          "downloadChecks": [
-            {
-              "url": "https://static.wixstatic.com/ugd/d8e7ad_3c148a618bc741f6aa4de867a1f7ac4e.pdf",
-              "status": 200,
-              "sha256": "f03e6f89a562608744b4034b31368592583468e19364fc41fc8fa3b5e73bb1f7",
-              "bytes": 90387,
-              "matchesFrozenPdf": true
-            },
-            {
-              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_3c148a618bc741f6aa4de867a1f7ac4e.pdf",
-              "status": 200,
-              "sha256": "f03e6f89a562608744b4034b31368592583468e19364fc41fc8fa3b5e73bb1f7",
-              "bytes": 90387,
-              "matchesFrozenPdf": true
-            }
-          ]
-        },
-        {
-          "key": "c",
-          "viewerLevel": "E",
-          "pdfId": "3bbdde3be7664df2bd415ed258d7813e",
-          "pdfSha256": "9c2a8060ae8a03b8776da057e61d4e16d62d78bbf870c1961541edccdc84ff4c",
-          "sourceSha256": "24aeee45b4bb2e622b948376310ba429d1cb9487f6a22e2193510c859af00bd3",
-          "nativeExportSha256": "1d4789c4b10e20d147147395b63d73b09397ff59845d32b709dea50490325381",
-          "worksheetId": "ms-g9-par-05-c-r1",
-          "revision": 1,
-          "pages": 6,
-          "subitems": 32,
-          "bytes": 96170,
-          "downloadChecks": [
-            {
-              "url": "https://static.wixstatic.com/ugd/d8e7ad_3bbdde3be7664df2bd415ed258d7813e.pdf",
-              "status": 200,
-              "sha256": "9c2a8060ae8a03b8776da057e61d4e16d62d78bbf870c1961541edccdc84ff4c",
-              "bytes": 96170,
-              "matchesFrozenPdf": true
-            },
-            {
-              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_3bbdde3be7664df2bd415ed258d7813e.pdf",
-              "status": 200,
-              "sha256": "9c2a8060ae8a03b8776da057e61d4e16d62d78bbf870c1961541edccdc84ff4c",
-              "bytes": 96170,
               "matchesFrozenPdf": true
             }
           ]

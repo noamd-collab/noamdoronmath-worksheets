@@ -48,13 +48,9 @@ const PINS: Record<string, Array<[string, string]>> = {
     ['72aa12ad8cc14765b5d5e0b6b8f14d2d', '3c1a868fb763de1b55e1979e5cca0188e92be0fb245b5aa25d1b37c455fb5320'],
     ['f28834f3cb914480a03d0ea1ece2b8de', '0607feb15c41a69e7b4f3d04bf975123bcc1a09f2f41212dc36229fedf8d1a77'],
     ['7f03347f55494219ac80d1f98bda317b', 'c0f0f305265db3dacf1ab2f93ca2ecc5b2811bf6c0adaf93f976c98628b31f5c']],
-  'ms-20261116-par-05-r1': [
-    ['60948665263c479689c0caef30639347', '67737c262dceea87ca9a1b017ad0ed8937828cf1d4956d7814abf3d61fad3495'],
-    ['3c148a618bc741f6aa4de867a1f7ac4e', 'f03e6f89a562608744b4034b31368592583468e19364fc41fc8fa3b5e73bb1f7'],
-    ['3bbdde3be7664df2bd415ed258d7813e', '9c2a8060ae8a03b8776da057e61d4e16d62d78bbf870c1961541edccdc84ff4c']],
 };
 
-test('five fixed mappings add fifteen frozen PDFs and recover the independently pinned 92bb57b5e baseline', () => {
+test('four fixed mappings add twelve frozen PDFs and recover the independently pinned 92bb57b5e baseline', () => {
   // Read from the exact baseline git blobs before implementation.
   const baselineCatalog = '17bedac54256640c2de45a4d311af4cd7c1d56e7fe7473313d30ef19f6dc4ce8';
   const baselineRegistry = '1dfb2f600477fb79ee6ce10ce9a6a2b8d1e6d26499c97b9a1548ea5fff9c1143';
@@ -65,9 +61,11 @@ test('five fixed mappings add fifteen frozen PDFs and recover the independently 
   assert.equal(digest(priorRegistry), baselineRegistry);
   assert.deepEqual(reviewed.additions.map(a => [a.grade, a.topicId, a.slug]), [
     [8, 47, 'systems-of-equations-grade-8'], [8, 48, 'systems-algebraic-solution-grade-8'],
-    [8, 39, 'exterior-angle-triangle-grade-8'], [8, 54, 'pythagoras-in-space-grade-8'], [9, 7, 'parallelogram-grade-9']]);
-  assert.deepEqual(ids, ['sys-01', 'sys-02', 'tri-03', 'p3d-01', 'par-05'].map(key => `ms-20261116-${key}-r1`));
-  assert.deepEqual(reviewed.additions.map(a => a.nativePrefix), ['G8-T76', 'G8-T77', 'G8-T74', 'G8-T90', 'G9-T66']);
+    [8, 39, 'exterior-angle-triangle-grade-8'], [8, 54, 'pythagoras-in-space-grade-8']]);
+  assert.deepEqual(ids, ['sys-01', 'sys-02', 'tri-03', 'p3d-01'].map(key => `ms-20261116-${key}-r1`));
+  assert.deepEqual(reviewed.additions.map(a => a.nativePrefix), ['G8-T76', 'G8-T77', 'G8-T74', 'G8-T90']);
+  // Every batch-01 topic had no edition before; each gains exactly one.
+  assert.ok(reviewed.additions.every(a => a.baselineEditionIds.length === 0));
   assert.deepEqual(Object.keys(PINS), ids);
   for (const addition of reviewed.additions) {
     assert.deepEqual(addition.edition.levels.map(l => [l.pdfId, l.pdfSha256]), PINS[addition.editionId]);
@@ -75,16 +73,17 @@ test('five fixed mappings add fifteen frozen PDFs and recover the independently 
     assert.deepEqual(addition.edition.levels.map(l => l.worksheetId), ['a', 'b', 'c'].map(k => `ms-${sheetId.toLowerCase()}-${k}-r1`));
     assert.match(addition.edition.label, / · PDF$/);
   }
-  assert.equal(new Set(reviewed.additions.flatMap(a => a.pdfIds)).size, 15);
-  assert.equal(new Set(reviewed.additions.flatMap(a => a.edition.levels.map(l => l.pdfSha256))).size, 15);
-  assert.equal(registry.editions.length, 40);
-  assert.equal(registry.editions.flatMap((e: any) => e.levels).length, 120);
+  assert.equal(new Set(reviewed.additions.flatMap(a => a.pdfIds)).size, 12);
+  assert.equal(new Set(reviewed.additions.flatMap(a => a.edition.levels.map(l => l.pdfSha256))).size, 12);
+  assert.equal(registry.editions.length, 39);
+  assert.equal(registry.editions.flatMap((e: any) => e.levels).length, 117);
   assert.equal(priorRegistry.editions.length, 35);
   assert.equal(priorRegistry.editions.flatMap((e: any) => e.levels).length, 105);
   assert.deepEqual(registry.editions.slice(0, 35), priorRegistry.editions);
   assert.deepEqual(registry.editions.slice(35), reviewed.additions.map(a => a.edition));
   assert.equal(raw.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 973);
-  assert.deepEqual(receipt.scope, { packages: 5, pdfs: 15, pages: 101, subitems: 468, landingRoutes: 5 });
+  assert.deepEqual(receipt.scope, { packages: 4, pdfs: 12, pages: 83, subitems: 372, landingRoutes: 4 });
+  assert.deepEqual(receipt.packages.map((p: any) => p.editionId), ids);
   assert.equal(receipt.sitePublicationClaimed, false);
   assert.equal(receipt.review.allGatesPass, false);
   assert.equal(receipt.review.nativeOrHintsAcceptance, false);
@@ -93,7 +92,7 @@ test('five fixed mappings add fifteen frozen PDFs and recover the independently 
   assert.deepEqual(catalog, expectedSsr);
 });
 
-test('all fifteen additions open their own reviewed PDF directly while every previous choice remains', () => {
+test('all twelve additions open their own reviewed PDF directly while every previous choice remains', () => {
   for (const addition of reviewed.additions) {
     const topic = catalog.grades.find(g => g.grade === addition.grade)!.topics.find(t => t.id === addition.topicId)!;
     const edition = topic.editions!.find(e => e.editionId === addition.editionId)!;
@@ -136,9 +135,6 @@ test('all fifteen additions open their own reviewed PDF directly while every pre
   const p3d = catalog.grades.find(g => g.grade === 8)!.topics.find(t => t.id === 54)!;
   assert.deepEqual(p3d.levels.map(l => l.key), ['a', 'b', 'c', 'c2']);
   assert.deepEqual(p3d.editions!.at(-1)!.levels.map(l => l.key), ['a', 'b', 'c']);
-  const par = catalog.grades.find(g => g.grade === 9)!.topics.find(t => t.id === 7)!;
-  assert.deepEqual(par.editions!.map(e => e.editionId), ['ms-20261113-par-r1', 'ms-20261113-par-02-r1',
-    'ms-20261113-par-03-r1', 'ms-20261113-par-04-r1', 'ms-20261116-par-05-r1']);
 });
 
 test('new PDFs cannot enter teacher, learning, viewer or Ramzi banks', () => {
@@ -156,15 +152,15 @@ test('new PDFs cannot enter teacher, learning, viewer or Ramzi banks', () => {
   assert.deepEqual(raw.ramziActivation, (previous as any).ramziActivation);
 });
 
-test('five landing updates keep titles and CTAs and describe the actual series in synchronized copy and FAQ schema', () => {
-  assert.equal(reviewed.landingDeltas.length, 5);
+test('four landing updates keep titles and CTAs and describe the actual series in synchronized copy and FAQ schema', () => {
+  assert.equal(reviewed.landingDeltas.length, 4);
   const scope: Record<string, string[]> = {
     'systems-of-equations-grade-8': ['נקודת החיתוך', 'ישרים מקבילים', 'מספר הפתרונות'],
     'systems-algebraic-solution-grade-8': ['השוואת מקדמים', 'מערכות מיוחדות', 'שאלות מילוליות'],
     'exterior-angle-triangle-grade-8': ['הזווית החיצונית', 'משוואות', 'מערכת צירים'],
     'pythagoras-in-space-grade-8': ['אלכסון מרחבי', 'בתיבה ובקובייה', 'במנסרה, בחרוט ובגליל'],
-    'parallelogram-grade-9': ['בניית מקבילית בסרגל ובמחוגה'],
   };
+  assert.deepEqual(reviewed.landingDeltas.map(d => d.slug), Object.keys(scope));
   for (const delta of reviewed.landingDeltas) {
     const pageRaw = read(`headless/astro-poc/src/data/topic-pages/${delta.slug}.json`);
     const restored = beforeBatch01Copy(delta.slug, pageRaw) as any;
@@ -180,6 +176,10 @@ test('five landing updates keep titles and CTAs and describe the actual series i
     const added: any = pageRaw.sections.at(-1);
     assert.deepEqual(added, delta.appendedSection as any);
     assert.equal(added.blocks.at(-1).text, 'שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.');
+    // TopicPage's setupSelfCheckReveal() hides the second paragraph of a section whose heading
+    // looks like a self-check; the new sections are plain copy and must stay fully visible.
+    assert.ok(!/בדקו|בדיקה/.test(added.heading) && !/\?$/.test(added.heading)
+      && !/^(חשבו|פתרו|מהו|באיזה|מצאו)/.test(added.heading), `${delta.slug}: heading would hide copy behind הצג תשובה`);
     for (const text of [pageRaw.description, pageRaw.intro, added.heading, ...added.blocks.map((b: any) => b.text),
       ...pageRaw.faq.slice(-2).flatMap((f: any) => [f.question, f.answer])]) {
       assert.ok(!text.includes('/'), `${delta.slug}: no slash fractions`);
@@ -197,26 +197,26 @@ test('five landing updates keep titles and CTAs and describe the actual series i
       assert.equal(node.dateModified, '2026-11-16');
     }
   }
-  // The parallelogram page keeps the earlier T90 section and names this series in its FAQ.
-  const par = read('headless/astro-poc/src/data/topic-pages/parallelogram-grade-9.json');
-  assert.equal(par.sections.filter((s: any) => s.heading === 'תרגול נוסף: טרפז שווה־שוקיים — תוצאות מתכונות המקבילית').length, 1);
-  assert.deepEqual(par.faq.slice(-2).map((f: any) => f.question), ['מה כוללים דפי ה־PDF בבניית מקבילית?', 'האם דפי ה־PDF בבניית מקבילית כוללים רמזי?']);
 });
 
 test('preservation fences reject changed old links, substitutions, reordering, duplicates and unsupported landing claims', () => {
   const old = structuredClone(raw);
   old.grades.find((g: any) => g.grade === 8).topics.find((t: any) => t.id === 54).levels[3].pdfId = 'old-link-changed';
   assert.throws(() => beforeBatch01Catalog(old));
-  const earlier = structuredClone(raw);
-  earlier.grades.find((g: any) => g.grade === 9).topics.find((t: any) => t.id === 7).editions[0].levels[0].pdfId = 'f'.repeat(32);
-  assert.throws(() => beforeBatch01Catalog(earlier));
+  const inserted = structuredClone(raw);
+  const sysTopic = inserted.grades.find((g: any) => g.grade === 8).topics.find((t: any) => t.id === 47);
+  sysTopic.editions.unshift({ ...structuredClone(sysTopic.editions[0]), editionId: 'ms-unreviewed-r1' });
+  assert.throws(() => beforeBatch01Catalog(inserted));
   const changed = structuredClone(raw);
   changed.grades.find((g: any) => g.grade === 8).topics.find((t: any) => t.id === 47).editions[0].levels[0].sourceSha256 = '0'.repeat(64);
   assert.throws(() => beforeBatch01Catalog(changed));
   const reordered = structuredClone(raw);
-  const parTopic = reordered.grades.find((g: any) => g.grade === 9).topics.find((t: any) => t.id === 7);
-  parTopic.editions.unshift(parTopic.editions.pop());
+  reordered.grades.find((g: any) => g.grade === 8).topics.find((t: any) => t.id === 54).levels.reverse();
   assert.throws(() => beforeBatch01Catalog(reordered));
+  const swapped = structuredClone(raw);
+  const [t47, t48] = [47, 48].map(id => swapped.grades.find((g: any) => g.grade === 8).topics.find((t: any) => t.id === id));
+  [t47.editions, t48.editions] = [t48.editions, t47.editions];
+  assert.throws(() => beforeBatch01Catalog(swapped));
   const defaultFlip = structuredClone(raw);
   defaultFlip.grades.find((g: any) => g.grade === 8).topics.find((t: any) => t.id === 39).defaultEditionId = ids[2];
   assert.throws(() => beforeBatch01Catalog(defaultFlip));
@@ -224,7 +224,7 @@ test('preservation fences reject changed old links, substitutions, reordering, d
   duplicate.editions.push(structuredClone(reviewed.additions[0].edition));
   assert.throws(() => beforeBatch01Registry(duplicate));
   const registryDefault = structuredClone(registry);
-  registryDefault.editions.find((e: any) => e.editionId === ids[4]).isDefault = true;
+  registryDefault.editions.find((e: any) => e.editionId === ids[3]).isDefault = true;
   assert.throws(() => beforeBatch01Registry(registryDefault));
   const page = read('headless/astro-poc/src/data/topic-pages/pythagoras-in-space-grade-8.json');
   page.intro += ' כל PDF כולל רמזי ופתרון מלא';
