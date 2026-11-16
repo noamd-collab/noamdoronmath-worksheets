@@ -1,0 +1,2722 @@
+{
+  "schema": "batch01-reviewed-additive-pdf-fixture/v1",
+  "baselineCommit": "92bb57b5ee9acbca4032837c93690e3cec7e03db",
+  "baselineCatalogSha256": "17bedac54256640c2de45a4d311af4cd7c1d56e7fe7473313d30ef19f6dc4ce8",
+  "baselineRegistrySha256": "1dfb2f600477fb79ee6ce10ce9a6a2b8d1e6d26499c97b9a1548ea5fff9c1143",
+  "additions": [
+    {
+      "grade": 8,
+      "topicId": 47,
+      "editionId": "ms-20261116-sys-01-r1",
+      "nativePrefix": "G8-T76",
+      "slug": "systems-of-equations-grade-8",
+      "pdfIds": [
+        "9f34fe91d16048e4a01182a4225ef8dd",
+        "99d49eb57b3f44c1b9da694de64dd784",
+        "0da4a3b18ac542cba22c8d6ef261f14a"
+      ],
+      "edition": {
+        "grade": 8,
+        "topicId": 47,
+        "editionId": "ms-20261116-sys-01-r1",
+        "label": "מערכת שתי משוואות — משמעות גרפית ונקודת חיתוך · PDF",
+        "nativePrefix": "G8-T76",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "9f34fe91d16048e4a01182a4225ef8dd",
+            "pdfSha256": "2c4d7593f268f48155ea093c8661334fb56e9b34bbb601ec40673cb542c6f354",
+            "sourceSha256": "b1cefd37a269837794a1352d295320fb4531269c41d49564ece438deedc62710",
+            "nativeExportSha256": "2a7b63ee1dca7efa35c0bd0b8ff71b7c59a39a7f7f2bceec036fa753ec6f534f",
+            "worksheetId": "ms-g8-sys-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "99d49eb57b3f44c1b9da694de64dd784",
+            "pdfSha256": "7220fb8cf22ddf3794860d946c01038fb6d884f4f77693ed52f5773d3bb9c7cb",
+            "sourceSha256": "ed2549783b87f8bb1700c0546024440688cc17b3fc544b4b80b65cfe02a941ac",
+            "nativeExportSha256": "2e196e16967877b8a7eedbb12d078b061a6923481703815d0a90bfdfb3f87ce7",
+            "worksheetId": "ms-g8-sys-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "0da4a3b18ac542cba22c8d6ef261f14a",
+            "pdfSha256": "47a3e6ed6c094a237274ed358940363a52b0ed6d0499f24771dbf12fe8be66ae",
+            "sourceSha256": "f4f59ff6ec79f46b848ff0df3b3ae71fbed5a59e529b3779c9ee7555215ae20b",
+            "nativeExportSha256": "1ad54065fd5031677dbb15cd4931031f1350bb438e4f090696a525271817d3ca",
+            "worksheetId": "ms-g8-sys-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "f602c58ede5a862a5b86bc3c14900b0bc7f5c09b1da82d908ef55e2a4f6e44f2",
+      "baselineTopicSha256": "ef2e2cf50725b72455bb8f419d7f42a2b8121cc8698992ec809734a943a61aa3",
+      "baselineEditionIds": []
+    },
+    {
+      "grade": 8,
+      "topicId": 48,
+      "editionId": "ms-20261116-sys-02-r1",
+      "nativePrefix": "G8-T77",
+      "slug": "systems-algebraic-solution-grade-8",
+      "pdfIds": [
+        "41331d06b2fd4252b9ba4ca4d821c1bc",
+        "8fd491d30fb94f34b8b360e72940b8cf",
+        "3cd341ef5c2f4f029ef2cb18de0a482f"
+      ],
+      "edition": {
+        "grade": 8,
+        "topicId": 48,
+        "editionId": "ms-20261116-sys-02-r1",
+        "label": "פתרון אלגברי של מערכת משוואות ושאלות מילוליות · PDF",
+        "nativePrefix": "G8-T77",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "41331d06b2fd4252b9ba4ca4d821c1bc",
+            "pdfSha256": "efb4faed8e122809e9079acdbf52d3f8166d8a0eaa69090f96daa1eea9cbf64a",
+            "sourceSha256": "9e7124d0ed54cd7a0931cf6630fed5ba964e49a61624a145d8cc1dfc8dffe511",
+            "nativeExportSha256": "081f03d51faa88747b3237838b8537c1de341d48b1a92c9e7a8a7d823ad125dc",
+            "worksheetId": "ms-g8-sys-02-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "8fd491d30fb94f34b8b360e72940b8cf",
+            "pdfSha256": "985a85bc6cbd939ba3f03d00373b274b53eb0cbc84941eab71b66efe5cc1122d",
+            "sourceSha256": "6fe50cd5922dfb47c5f2286f36c46c5a6f917253c24fdd50dc09a1c0ba133eaa",
+            "nativeExportSha256": "f947385ba714916a4d2c215fc3368d864de3e47f9aa34551024bd816786dfd49",
+            "worksheetId": "ms-g8-sys-02-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "3cd341ef5c2f4f029ef2cb18de0a482f",
+            "pdfSha256": "bfd27c6279ec62a2c1e963e73ef7597f2d5f85df31bea9a67a6eececc8430a39",
+            "sourceSha256": "4f7d78aad2b31dd5c83e54ea529386ce063eb6fdf6e89c48b577388856927d92",
+            "nativeExportSha256": "8f8f4e3f5ec9e555e7edcb8b57dc0892e85313b196a248fad8bcd5bbed01e7ee",
+            "worksheetId": "ms-g8-sys-02-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "92ef6b6dce0a6452a1a7904c50cfd0ccf4b7a841e61f09e916ff55cd86d10d38",
+      "baselineTopicSha256": "c0d23c540ba7639e37187565917fa5300932c9e24f96898d6821eb8d8f60848e",
+      "baselineEditionIds": []
+    },
+    {
+      "grade": 8,
+      "topicId": 39,
+      "editionId": "ms-20261116-tri-03-r1",
+      "nativePrefix": "G8-T74",
+      "slug": "exterior-angle-triangle-grade-8",
+      "pdfIds": [
+        "5644fcd61f6147b5a5b951933aae2484",
+        "aba931d4fa104724861715f6371ea6a8",
+        "1cd7f1fd17dd452b9cfbf9ac67ced3e2"
+      ],
+      "edition": {
+        "grade": 8,
+        "topicId": 39,
+        "editionId": "ms-20261116-tri-03-r1",
+        "label": "זווית חיצונית למשולש — חישוב, משוואות והוכחה · PDF",
+        "nativePrefix": "G8-T74",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "5644fcd61f6147b5a5b951933aae2484",
+            "pdfSha256": "5dc990973034bcb88f31723af700e29046de61ecf77dc4fba9a1ce24915d6d31",
+            "sourceSha256": "fcce57307ca8555719fc989f4a631988467e1bf6bc9ddf3cad4474d14ef9bf81",
+            "nativeExportSha256": "b278aa0c9e1aedd26ae06803356d698d45bcecf50686e0c3d31ff980b35eefc9",
+            "worksheetId": "ms-g8-tri-03-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "aba931d4fa104724861715f6371ea6a8",
+            "pdfSha256": "83ec5a5f73a90a614aed3c9be05a49a38a926f196300a3d2693b6bcad9f9b767",
+            "sourceSha256": "f05c086a361af7966998809f3a063e3ec829f31b7cd2ae0eed2cfc4bef7debcc",
+            "nativeExportSha256": "7ffb39d26682bd980a02febbdda5d158a2ada437e7f10b5e41154a889526a4fe",
+            "worksheetId": "ms-g8-tri-03-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "1cd7f1fd17dd452b9cfbf9ac67ced3e2",
+            "pdfSha256": "33c04186f533db3e2fa0c2a384f7445130cb92bb00140dbd4c41bf161f035f5b",
+            "sourceSha256": "c16341904e404cac1593980cde2ea6ac0741f47368cbccb83fbeadca1d89e1e5",
+            "nativeExportSha256": "f65b40e8a9efe934d046832f8b36c86d90a6a043f9fee674d75c9b64bfe77191",
+            "worksheetId": "ms-g8-tri-03-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "5e9df15f6bf0fe015cfd373c4dcc32d1df64b2c5a982107ba989ac5a72f0881c",
+      "baselineTopicSha256": "05f82d49b6fa24f55f69672cc8930bf92bffc69dc48d3fb4258ecbaa908947db",
+      "baselineEditionIds": []
+    },
+    {
+      "grade": 8,
+      "topicId": 54,
+      "editionId": "ms-20261116-p3d-01-r1",
+      "nativePrefix": "G8-T90",
+      "slug": "pythagoras-in-space-grade-8",
+      "pdfIds": [
+        "72aa12ad8cc14765b5d5e0b6b8f14d2d",
+        "f28834f3cb914480a03d0ea1ece2b8de",
+        "7f03347f55494219ac80d1f98bda317b"
+      ],
+      "edition": {
+        "grade": 8,
+        "topicId": 54,
+        "editionId": "ms-20261116-p3d-01-r1",
+        "label": "משפט פיתגורס במרחב — תיבה, קובייה, מנסרה, חרוט וגליל · PDF",
+        "nativePrefix": "G8-T90",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "72aa12ad8cc14765b5d5e0b6b8f14d2d",
+            "pdfSha256": "3c1a868fb763de1b55e1979e5cca0188e92be0fb245b5aa25d1b37c455fb5320",
+            "sourceSha256": "8f585152d370d26b6422ad7002d6bea681bfebddc9efa645c7ca26b1e657dbe0",
+            "nativeExportSha256": "3107c38cdb6704ac549007fe43e75793915d2bbef8f608a2a016b748f00b6a4b",
+            "worksheetId": "ms-g8-p3d-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "f28834f3cb914480a03d0ea1ece2b8de",
+            "pdfSha256": "0607feb15c41a69e7b4f3d04bf975123bcc1a09f2f41212dc36229fedf8d1a77",
+            "sourceSha256": "4d8addf7e08bf95224dc8aa346b36b425770915434b0c9231d0130a7a6c67488",
+            "nativeExportSha256": "529acf7462783c920d3d7589bb3956d3aa3fb60a39a997269827e20b2b5f9f9a",
+            "worksheetId": "ms-g8-p3d-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "7f03347f55494219ac80d1f98bda317b",
+            "pdfSha256": "c0f0f305265db3dacf1ab2f93ca2ecc5b2811bf6c0adaf93f976c98628b31f5c",
+            "sourceSha256": "9c3f4fc6cf2fa6c11e6eb4ed40c5994af39d4292edcf1b062efa6de37c3ed666",
+            "nativeExportSha256": "2a86dd7af878791031877720717d693b880a2b7f70c0c6ccd2364ec83bb70923",
+            "worksheetId": "ms-g8-p3d-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "fca076fca4f3d8bad80e0cdd3ddcd5b57aa3cb14ce0f931c1a6564f7bf30bb0e",
+      "baselineTopicSha256": "a8cddffb156e6b961ff3cf9d26c67395fe07a7f822a6ffe9b0bc097d4b3dad92",
+      "baselineEditionIds": []
+    },
+    {
+      "grade": 9,
+      "topicId": 7,
+      "editionId": "ms-20261116-par-05-r1",
+      "nativePrefix": "G9-T66",
+      "slug": "parallelogram-grade-9",
+      "pdfIds": [
+        "60948665263c479689c0caef30639347",
+        "3c148a618bc741f6aa4de867a1f7ac4e",
+        "3bbdde3be7664df2bd415ed258d7813e"
+      ],
+      "edition": {
+        "grade": 9,
+        "topicId": 7,
+        "editionId": "ms-20261116-par-05-r1",
+        "label": "בניית מקבילית בסרגל ובמחוגה — מצלעות, זווית ואלכסון · PDF",
+        "nativePrefix": "G9-T66",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "60948665263c479689c0caef30639347",
+            "pdfSha256": "67737c262dceea87ca9a1b017ad0ed8937828cf1d4956d7814abf3d61fad3495",
+            "sourceSha256": "57784e60eb5fc294486320885b0b757d1e5cbf8d20b7b49f548dfd44dfe6ee7a",
+            "nativeExportSha256": "51e4a129167dd875fcd24d9ead9e01bd5bf3f01a2b994509b4ccdfaa63d54033",
+            "worksheetId": "ms-g9-par-05-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "3c148a618bc741f6aa4de867a1f7ac4e",
+            "pdfSha256": "f03e6f89a562608744b4034b31368592583468e19364fc41fc8fa3b5e73bb1f7",
+            "sourceSha256": "75e16cb49b10cba42bc7b638b4d0f6a884de5a35294ffcb748d3d417e0b6d1ef",
+            "nativeExportSha256": "3c8b669a6f17e55249c76973b0b644ce9ceaae5ac9b1898201050a37815e8377",
+            "worksheetId": "ms-g9-par-05-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "3bbdde3be7664df2bd415ed258d7813e",
+            "pdfSha256": "9c2a8060ae8a03b8776da057e61d4e16d62d78bbf870c1961541edccdc84ff4c",
+            "sourceSha256": "24aeee45b4bb2e622b948376310ba429d1cb9487f6a22e2193510c859af00bd3",
+            "nativeExportSha256": "1d4789c4b10e20d147147395b63d73b09397ff59845d32b709dea50490325381",
+            "worksheetId": "ms-g9-par-05-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "77d301fcd44d8f00854cf119859c32dfb7be66428cae07cabe336ced7fae38f2",
+      "baselineTopicSha256": "293d7dbb617d7a6fb1e9cefae936baa82f15c5888c0d24b43399b3ac94c3f3b7",
+      "baselineEditionIds": [
+        "ms-20261113-par-r1",
+        "ms-20261113-par-02-r1",
+        "ms-20261113-par-03-r1",
+        "ms-20261113-par-04-r1"
+      ]
+    }
+  ],
+  "landingDeltas": [
+    {
+      "slug": "systems-of-equations-grade-8",
+      "baselineSha256": "ed74a455639656091d6408df35d4dc50b77c2b68aeb09393ab75200c20a0f8d2",
+      "fields": [
+        {
+          "path": [
+            "description"
+          ],
+          "existedBefore": true,
+          "before": "מערכות משוואות לכיתה ח׳: פתרון בשיטת ההצבה ובשיטת החיבור, ובדיקת הפתרון. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+          "after": "מערכות משוואות לכיתה ח׳: הצבה, חיבור ופתרון גרפי. דפי PDF נוספים על נקודת החיתוך כפתרון, ישרים מקבילים ומספר הפתרונות, בשלוש רמות ועם תשובות סופיות."
+        },
+        {
+          "path": [
+            "intro"
+          ],
+          "existedBefore": true,
+          "before": "לומדים לפתור שתי משוואות בשני נעלמים, בעזרת הצבה, חיבור וחיסור משוואות או גרף. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+          "after": "לומדים לפתור שתי משוואות בשני נעלמים בעזרת הצבה, חיבור וחיסור משוואות או גרף. לצד הדפים הקיימים נוספו קובצי PDF על המשמעות הגרפית של מערכת משוואות, ברמות א׳, ב׳ ומצוינות. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+        },
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "פתרון המערכת הוא זוג מספרים שמקיים את שתי המשוואות. בגרף הוא נקודת החיתוך של הישרים; אפשר למצוא אותו גם בהצבה או בחיבור וחיסור משוואות.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: x+y=7, x−y=1, ולכן x=4 ו־y=3.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "זוג הפתרונות חייב לקיים את שתי המשוואות, לא רק אחת מהן.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "פתרו: x+y=10, x−y=2.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: x=6, y=4.",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "פתרון המערכת הוא זוג מספרים שמקיים את שתי המשוואות. בגרף הוא נקודת החיתוך של הישרים; אפשר למצוא אותו גם בהצבה או בחיבור וחיסור משוואות.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: x+y=7, x−y=1, ולכן x=4 ו־y=3.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "זוג הפתרונות חייב לקיים את שתי המשוואות, לא רק אחת מהן.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "פתרו: x+y=10, x−y=2.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: x=6, y=4.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "מערכת משוואות ומשמעותה הגרפית — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "קוראים שני ישרים במערכת צירים ומזהים את נקודת החיתוך כפתרון של המערכת. בודקים זוגות סדורים בטבלת ערכים, משווים בין ישרים נחתכים לישרים מקבילים ומחשבים שטחים של צורות שהישרים יוצרים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "ברמה ב׳ עובדים גם עם משוואות בצורה כללית וקובעים כמה פתרונות יש למערכת. במצוינות חוקרים פרמטרים ופותרים בעיות תנועה בעזרת גרף. בכל הרמות יש גם שאלה מחיי היום־יום שמתוארת בגרף.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "updatedLine"
+          ],
+          "existedBefore": true,
+          "before": "נועם דורון מתמטיקה · עודכן 12.9.2026",
+          "after": "נועם דורון מתמטיקה · עודכן 16.11.2026"
+        },
+        {
+          "path": [
+            "faq"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "question": "האם דפי העבודה בנושא מערכות משוואות לכיתה ח׳ מתאימים לכיתה ח׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ח׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          ],
+          "after": [
+            {
+              "question": "האם דפי העבודה בנושא מערכות משוואות לכיתה ח׳ מתאימים לכיתה ח׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ח׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            },
+            {
+              "question": "מה כוללים קובצי ה־PDF הנוספים?",
+              "answer": "קוראים שני ישרים במערכת צירים ומזהים את נקודת החיתוך כפתרון של המערכת. בודקים זוגות סדורים בטבלת ערכים, משווים בין ישרים נחתכים לישרים מקבילים ומחשבים שטחים של צורות שהישרים יוצרים. ברמה ב׳ עובדים גם עם משוואות בצורה כללית וקובעים כמה פתרונות יש למערכת. במצוינות חוקרים פרמטרים ופותרים בעיות תנועה בעזרת גרף. בכל הרמות יש גם שאלה מחיי היום־יום שמתוארת בגרף. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+            },
+            {
+              "question": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+              "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+            }
+          ]
+        },
+        {
+          "path": [
+            "faqGroups"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא מערכות משוואות לכיתה ח׳ מתאימים לכיתה ח׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ח׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא מערכות משוואות לכיתה ח׳ מתאימים לכיתה ח׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ח׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                },
+                {
+                  "question": "מה כוללים קובצי ה־PDF הנוספים?",
+                  "answer": "קוראים שני ישרים במערכת צירים ומזהים את נקודת החיתוך כפתרון של המערכת. בודקים זוגות סדורים בטבלת ערכים, משווים בין ישרים נחתכים לישרים מקבילים ומחשבים שטחים של צורות שהישרים יוצרים. ברמה ב׳ עובדים גם עם משוואות בצורה כללית וקובעים כמה פתרונות יש למערכת. במצוינות חוקרים פרמטרים ופותרים בעיות תנועה בעזרת גרף. בכל הרמות יש גם שאלה מחיי היום־יום שמתוארת בגרף. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+                },
+                {
+                  "question": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+                  "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "jsonLd"
+          ],
+          "existedBefore": true,
+          "before": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/systems-of-equations-grade-8#webpage",
+                "url": "https://www.noamdoronmath.co.il/systems-of-equations-grade-8",
+                "name": "מערכות משוואות לכיתה ח׳ | דפי עבודה במתמטיקה – נועם דורון",
+                "description": "מערכות משוואות לכיתה ח׳: פתרון בשיטת ההצבה ובשיטת החיבור, ובדיקת הפתרון. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/systems-of-equations-grade-8#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/systems-of-equations-grade-8#learning-resource",
+                "name": "מערכות משוואות לכיתה ח׳",
+                "url": "https://www.noamdoronmath.co.il/systems-of-equations-grade-8",
+                "description": "מערכות משוואות לכיתה ח׳: פתרון בשיטת ההצבה ובשיטת החיבור, ובדיקת הפתרון. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+                "educationalLevel": "כיתה ח׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/systems-of-equations-grade-8#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא מערכות משוואות לכיתה ח׳ מתאימים לכיתה ח׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ח׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "after": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/systems-of-equations-grade-8#webpage",
+                "url": "https://www.noamdoronmath.co.il/systems-of-equations-grade-8",
+                "name": "מערכות משוואות לכיתה ח׳ | דפי עבודה במתמטיקה – נועם דורון",
+                "description": "מערכות משוואות לכיתה ח׳: הצבה, חיבור ופתרון גרפי. דפי PDF נוספים על נקודת החיתוך כפתרון, ישרים מקבילים ומספר הפתרונות, בשלוש רמות ועם תשובות סופיות.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/systems-of-equations-grade-8#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/systems-of-equations-grade-8#learning-resource",
+                "name": "מערכות משוואות לכיתה ח׳",
+                "url": "https://www.noamdoronmath.co.il/systems-of-equations-grade-8",
+                "description": "מערכות משוואות לכיתה ח׳: הצבה, חיבור ופתרון גרפי. דפי PDF נוספים על נקודת החיתוך כפתרון, ישרים מקבילים ומספר הפתרונות, בשלוש רמות ועם תשובות סופיות.",
+                "educationalLevel": "כיתה ח׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/systems-of-equations-grade-8#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא מערכות משוואות לכיתה ח׳ מתאימים לכיתה ח׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ח׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "מה כוללים קובצי ה־PDF הנוספים?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "קוראים שני ישרים במערכת צירים ומזהים את נקודת החיתוך כפתרון של המערכת. בודקים זוגות סדורים בטבלת ערכים, משווים בין ישרים נחתכים לישרים מקבילים ומחשבים שטחים של צורות שהישרים יוצרים. ברמה ב׳ עובדים גם עם משוואות בצורה כללית וקובעים כמה פתרונות יש למערכת. במצוינות חוקרים פרמטרים ופותרים בעיות תנועה בעזרת גרף. בכל הרמות יש גם שאלה מחיי היום־יום שמתוארת בגרף. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "appendedSection": {
+        "heading": "מערכת משוואות ומשמעותה הגרפית — דפי PDF נוספים",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "קוראים שני ישרים במערכת צירים ומזהים את נקודת החיתוך כפתרון של המערכת. בודקים זוגות סדורים בטבלת ערכים, משווים בין ישרים נחתכים לישרים מקבילים ומחשבים שטחים של צורות שהישרים יוצרים.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "ברמה ב׳ עובדים גם עם משוואות בצורה כללית וקובעים כמה פתרונות יש למערכת. במצוינות חוקרים פרמטרים ופותרים בעיות תנועה בעזרת גרף. בכל הרמות יש גם שאלה מחיי היום־יום שמתוארת בגרף.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+            "links": []
+          }
+        ]
+      }
+    },
+    {
+      "slug": "systems-algebraic-solution-grade-8",
+      "baselineSha256": "3660d78120d42d0c70329d6ec47207544fad7657ba3db1de771dc3ff8ca3a482",
+      "fields": [
+        {
+          "path": [
+            "description"
+          ],
+          "existedBefore": true,
+          "before": "מערכות של שתי משוואות לכיתה ח׳: שיטת ההצבה, שיטת החיבור והחיסור, בחירת השיטה ובדיקת הפתרון. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+          "after": "מערכת משוואות לכיתה ח׳: הצבה וחיבור. דפי PDF נוספים בשלוש רמות: השוואת מקדמים, סוגריים ומכנים, מערכות מיוחדות ושאלות מילוליות, עם תשובות סופיות."
+        },
+        {
+          "path": [
+            "intro"
+          ],
+          "existedBefore": true,
+          "before": "פותרים מערכת של שתי משוואות בשני נעלמים בדרך אלגברית: בשיטת ההצבה או בשיטת החיבור והחיסור, ובודקים את הזוג שהתקבל בשתי המשוואות. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+          "after": "פותרים מערכת של שתי משוואות בשני נעלמים בדרך אלגברית: בשיטת ההצבה או בשיטת החיבור והחיסור, ובודקים את הזוג שהתקבל בשתי המשוואות. לצד הדפים הקיימים נוספו קובצי PDF לפתרון אלגברי ולשאלות מילוליות, ברמות א׳, ב׳ ומצוינות. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+        },
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "פתרון של מערכת הוא זוג (x, y) שמקיים את שתי המשוואות יחד. בגרף זו נקודת החיתוך של שני הישרים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בשיטת ההצבה מבודדים נעלם באחת המשוואות ומציבים בשנייה. בשיטת החיבור כופלים משוואות כך שלנעלם אחד יהיו מקדמים נגדיים, ומחברים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: 4x + 3y = 23 ו־5x − 3y = 22. מחברים את המשוואות: 9x = 45, ולכן x = 5. מציבים: 20 + 3y = 23, ולכן y = 1. הפתרון (5, 1).",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בודקים את הפתרון רק במשוואה אחת. זוג נכון מקיים את שתי המשוואות.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "כופלים רק את האגף השמאלי כדי להשוות מקדמים. כופלים את כל המשוואה, כולל האגף הימני.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "פתרו את המערכת: 3x + y = 14 ו־x − y = 2.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "התשובה היא (4, 2): מחברים ומקבלים 4x = 16, ואז y = 14 − 12 = 2.",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "פתרון של מערכת הוא זוג (x, y) שמקיים את שתי המשוואות יחד. בגרף זו נקודת החיתוך של שני הישרים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בשיטת ההצבה מבודדים נעלם באחת המשוואות ומציבים בשנייה. בשיטת החיבור כופלים משוואות כך שלנעלם אחד יהיו מקדמים נגדיים, ומחברים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: 4x + 3y = 23 ו־5x − 3y = 22. מחברים את המשוואות: 9x = 45, ולכן x = 5. מציבים: 20 + 3y = 23, ולכן y = 1. הפתרון (5, 1).",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בודקים את הפתרון רק במשוואה אחת. זוג נכון מקיים את שתי המשוואות.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "כופלים רק את האגף השמאלי כדי להשוות מקדמים. כופלים את כל המשוואה, כולל האגף הימני.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "פתרו את המערכת: 3x + y = 14 ו־x − y = 2.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "התשובה היא (4, 2): מחברים ומקבלים 4x = 16, ואז y = 14 − 12 = 2.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "פתרון אלגברי ושאלות מילוליות — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "פותרים מערכות בשיטת ההצבה ובשיטת השוואת המקדמים: מבודדים נעלם, מחברים או מחסרים משוואות וכופלים משוואה במספר מתאים. ברמה ב׳ פותחים סוגריים, מבטלים מכנים מספריים ומזהים מערכות שאין להן פתרון או שיש להן אינסוף פתרונות.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בכל רמה יש שאלות מילוליות: מגדירים שני נעלמים, בונים מערכת ופותרים, למשל בשאלות על קנייה, על היקף של צורה ועל מחירי כרטיסים. במצוינות יש גם מקדמים עשרוניים, פרמטרים ושאלות על ספרות, תערובות ושיט עם הזרם ונגד הזרם.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "bodyFlow"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "type": "paragraph",
+              "text": "פותרים מערכת של שתי משוואות בשני נעלמים בדרך אלגברית: בשיטת ההצבה או בשיטת החיבור והחיסור, ובודקים את הזוג שהתקבל בשתי המשוואות. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "פתיחת דפי העבודה ובחירת רמה",
+              "href": "/worksheets?grade=8&topic=48",
+              "catalogTopicId": 48
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "פתרון של מערכת הוא זוג (x, y) שמקיים את שתי המשוואות יחד. בגרף זו נקודת החיתוך של שני הישרים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "בשיטת ההצבה מבודדים נעלם באחת המשוואות ומציבים בשנייה. בשיטת החיבור כופלים משוואות כך שלנעלם אחד יהיו מקדמים נגדיים, ומחברים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "דוגמה: 4x + 3y = 23 ו־5x − 3y = 22. מחברים את המשוואות: 9x = 45, ולכן x = 5. מציבים: 20 + 3y = 23, ולכן y = 1. הפתרון (5, 1).",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טעויות נפוצות"
+            },
+            {
+              "type": "paragraph",
+              "text": "בודקים את הפתרון רק במשוואה אחת. זוג נכון מקיים את שתי המשוואות.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "כופלים רק את האגף השמאלי כדי להשוות מקדמים. כופלים את כל המשוואה, כולל האגף הימני.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "פתרו את המערכת: 3x + y = 14 ו־x − y = 2.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "התשובה היא (4, 2): מחברים ומקבלים 4x = 16, ואז y = 14 − 12 = 2.",
+              "role": "body"
+            }
+          ],
+          "after": [
+            {
+              "type": "paragraph",
+              "text": "פותרים מערכת של שתי משוואות בשני נעלמים בדרך אלגברית: בשיטת ההצבה או בשיטת החיבור והחיסור, ובודקים את הזוג שהתקבל בשתי המשוואות. לצד הדפים הקיימים נוספו קובצי PDF לפתרון אלגברי ולשאלות מילוליות, ברמות א׳, ב׳ ומצוינות. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "פתיחת דפי העבודה ובחירת רמה",
+              "href": "/worksheets?grade=8&topic=48",
+              "catalogTopicId": 48
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "פתרון של מערכת הוא זוג (x, y) שמקיים את שתי המשוואות יחד. בגרף זו נקודת החיתוך של שני הישרים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "בשיטת ההצבה מבודדים נעלם באחת המשוואות ומציבים בשנייה. בשיטת החיבור כופלים משוואות כך שלנעלם אחד יהיו מקדמים נגדיים, ומחברים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "דוגמה: 4x + 3y = 23 ו־5x − 3y = 22. מחברים את המשוואות: 9x = 45, ולכן x = 5. מציבים: 20 + 3y = 23, ולכן y = 1. הפתרון (5, 1).",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טעויות נפוצות"
+            },
+            {
+              "type": "paragraph",
+              "text": "בודקים את הפתרון רק במשוואה אחת. זוג נכון מקיים את שתי המשוואות.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "כופלים רק את האגף השמאלי כדי להשוות מקדמים. כופלים את כל המשוואה, כולל האגף הימני.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "פתרו את המערכת: 3x + y = 14 ו־x − y = 2.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "התשובה היא (4, 2): מחברים ומקבלים 4x = 16, ואז y = 14 − 12 = 2.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "פתרון אלגברי ושאלות מילוליות — דפי PDF נוספים"
+            },
+            {
+              "type": "paragraph",
+              "text": "פותרים מערכות בשיטת ההצבה ובשיטת השוואת המקדמים: מבודדים נעלם, מחברים או מחסרים משוואות וכופלים משוואה במספר מתאים. ברמה ב׳ פותחים סוגריים, מבטלים מכנים מספריים ומזהים מערכות שאין להן פתרון או שיש להן אינסוף פתרונות.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "בכל רמה יש שאלות מילוליות: מגדירים שני נעלמים, בונים מערכת ופותרים, למשל בשאלות על קנייה, על היקף של צורה ועל מחירי כרטיסים. במצוינות יש גם מקדמים עשרוניים, פרמטרים ושאלות על ספרות, תערובות ושיט עם הזרם ונגד הזרם.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+              "role": "body"
+            }
+          ]
+        },
+        {
+          "path": [
+            "updatedLine"
+          ],
+          "existedBefore": true,
+          "before": "נועם דורון מתמטיקה · עודכן 10.11.2026",
+          "after": "נועם דורון מתמטיקה · עודכן 16.11.2026"
+        },
+        {
+          "path": [
+            "faq"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "question": "מתי עדיפה שיטת ההצבה?",
+              "answer": "כשבאחת המשוואות יש נעלם עם מקדם 1 או −1, כי קל לבודד אותו בלי שברים."
+            },
+            {
+              "question": "מתי עדיפה שיטת החיבור?",
+              "answer": "כשלנעלם אחד כבר יש מקדמים נגדיים או שווים, או כשקל להגיע לכך בכפל במספר קטן."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם יש תשובות לדפי העבודה?",
+              "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          ],
+          "after": [
+            {
+              "question": "מתי עדיפה שיטת ההצבה?",
+              "answer": "כשבאחת המשוואות יש נעלם עם מקדם 1 או −1, כי קל לבודד אותו בלי שברים."
+            },
+            {
+              "question": "מתי עדיפה שיטת החיבור?",
+              "answer": "כשלנעלם אחד כבר יש מקדמים נגדיים או שווים, או כשקל להגיע לכך בכפל במספר קטן."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם יש תשובות לדפי העבודה?",
+              "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            },
+            {
+              "question": "מה כוללים קובצי ה־PDF הנוספים?",
+              "answer": "פותרים מערכות בשיטת ההצבה ובשיטת השוואת המקדמים: מבודדים נעלם, מחברים או מחסרים משוואות וכופלים משוואה במספר מתאים. ברמה ב׳ פותחים סוגריים, מבטלים מכנים מספריים ומזהים מערכות שאין להן פתרון או שיש להן אינסוף פתרונות. בכל רמה יש שאלות מילוליות: מגדירים שני נעלמים, בונים מערכת ופותרים, למשל בשאלות על קנייה, על היקף של צורה ועל מחירי כרטיסים. במצוינות יש גם מקדמים עשרוניים, פרמטרים ושאלות על ספרות, תערובות ושיט עם הזרם ונגד הזרם. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+            },
+            {
+              "question": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+              "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+            }
+          ]
+        },
+        {
+          "path": [
+            "faqGroups"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "מתי עדיפה שיטת ההצבה?",
+                  "answer": "כשבאחת המשוואות יש נעלם עם מקדם 1 או −1, כי קל לבודד אותו בלי שברים."
+                },
+                {
+                  "question": "מתי עדיפה שיטת החיבור?",
+                  "answer": "כשלנעלם אחד כבר יש מקדמים נגדיים או שווים, או כשקל להגיע לכך בכפל במספר קטן."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם יש תשובות לדפי העבודה?",
+                  "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "מתי עדיפה שיטת ההצבה?",
+                  "answer": "כשבאחת המשוואות יש נעלם עם מקדם 1 או −1, כי קל לבודד אותו בלי שברים."
+                },
+                {
+                  "question": "מתי עדיפה שיטת החיבור?",
+                  "answer": "כשלנעלם אחד כבר יש מקדמים נגדיים או שווים, או כשקל להגיע לכך בכפל במספר קטן."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם יש תשובות לדפי העבודה?",
+                  "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                },
+                {
+                  "question": "מה כוללים קובצי ה־PDF הנוספים?",
+                  "answer": "פותרים מערכות בשיטת ההצבה ובשיטת השוואת המקדמים: מבודדים נעלם, מחברים או מחסרים משוואות וכופלים משוואה במספר מתאים. ברמה ב׳ פותחים סוגריים, מבטלים מכנים מספריים ומזהים מערכות שאין להן פתרון או שיש להן אינסוף פתרונות. בכל רמה יש שאלות מילוליות: מגדירים שני נעלמים, בונים מערכת ופותרים, למשל בשאלות על קנייה, על היקף של צורה ועל מחירי כרטיסים. במצוינות יש גם מקדמים עשרוניים, פרמטרים ושאלות על ספרות, תערובות ושיט עם הזרם ונגד הזרם. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+                },
+                {
+                  "question": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+                  "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "jsonLd"
+          ],
+          "existedBefore": true,
+          "before": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/systems-algebraic-solution-grade-8#webpage",
+                "url": "https://www.noamdoronmath.co.il/systems-algebraic-solution-grade-8",
+                "name": "מערכת משוואות: הצבה וחיבור לכיתה ח׳ | דפי עבודה חינם",
+                "description": "מערכות של שתי משוואות לכיתה ח׳: שיטת ההצבה, שיטת החיבור והחיסור, בחירת השיטה ובדיקת הפתרון. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/systems-algebraic-solution-grade-8#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/systems-algebraic-solution-grade-8#learning-resource",
+                "name": "מערכת משוואות לכיתה ח׳: שיטת ההצבה ושיטת החיבור",
+                "url": "https://www.noamdoronmath.co.il/systems-algebraic-solution-grade-8",
+                "description": "מערכות של שתי משוואות לכיתה ח׳: שיטת ההצבה, שיטת החיבור והחיסור, בחירת השיטה ובדיקת הפתרון. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+                "educationalLevel": "כיתה ח׳",
+                "learningResourceType": "דפי עבודה",
+                "teaches": "פתרון אלגברי של מערכת משוואות בשיטת ההצבה ובשיטת החיבור",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/systems-algebraic-solution-grade-8#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "מתי עדיפה שיטת ההצבה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כשבאחת המשוואות יש נעלם עם מקדם 1 או −1, כי קל לבודד אותו בלי שברים."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "מתי עדיפה שיטת החיבור?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כשלנעלם אחד כבר יש מקדמים נגדיים או שווים, או כשקל להגיע לכך בכפל במספר קטן."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם יש תשובות לדפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. בסוף כל דף עבודה יש דף תשובות."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "after": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/systems-algebraic-solution-grade-8#webpage",
+                "url": "https://www.noamdoronmath.co.il/systems-algebraic-solution-grade-8",
+                "name": "מערכת משוואות: הצבה וחיבור לכיתה ח׳ | דפי עבודה חינם",
+                "description": "מערכת משוואות לכיתה ח׳: הצבה וחיבור. דפי PDF נוספים בשלוש רמות: השוואת מקדמים, סוגריים ומכנים, מערכות מיוחדות ושאלות מילוליות, עם תשובות סופיות.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/systems-algebraic-solution-grade-8#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/systems-algebraic-solution-grade-8#learning-resource",
+                "name": "מערכת משוואות לכיתה ח׳: שיטת ההצבה ושיטת החיבור",
+                "url": "https://www.noamdoronmath.co.il/systems-algebraic-solution-grade-8",
+                "description": "מערכת משוואות לכיתה ח׳: הצבה וחיבור. דפי PDF נוספים בשלוש רמות: השוואת מקדמים, סוגריים ומכנים, מערכות מיוחדות ושאלות מילוליות, עם תשובות סופיות.",
+                "educationalLevel": "כיתה ח׳",
+                "learningResourceType": "דפי עבודה",
+                "teaches": "פתרון אלגברי של מערכת משוואות בשיטת ההצבה ובשיטת החיבור",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/systems-algebraic-solution-grade-8#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "מתי עדיפה שיטת ההצבה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כשבאחת המשוואות יש נעלם עם מקדם 1 או −1, כי קל לבודד אותו בלי שברים."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "מתי עדיפה שיטת החיבור?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כשלנעלם אחד כבר יש מקדמים נגדיים או שווים, או כשקל להגיע לכך בכפל במספר קטן."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם יש תשובות לדפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. בסוף כל דף עבודה יש דף תשובות."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "מה כוללים קובצי ה־PDF הנוספים?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "פותרים מערכות בשיטת ההצבה ובשיטת השוואת המקדמים: מבודדים נעלם, מחברים או מחסרים משוואות וכופלים משוואה במספר מתאים. ברמה ב׳ פותחים סוגריים, מבטלים מכנים מספריים ומזהים מערכות שאין להן פתרון או שיש להן אינסוף פתרונות. בכל רמה יש שאלות מילוליות: מגדירים שני נעלמים, בונים מערכת ופותרים, למשל בשאלות על קנייה, על היקף של צורה ועל מחירי כרטיסים. במצוינות יש גם מקדמים עשרוניים, פרמטרים ושאלות על ספרות, תערובות ושיט עם הזרם ונגד הזרם. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "appendedSection": {
+        "heading": "פתרון אלגברי ושאלות מילוליות — דפי PDF נוספים",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "פותרים מערכות בשיטת ההצבה ובשיטת השוואת המקדמים: מבודדים נעלם, מחברים או מחסרים משוואות וכופלים משוואה במספר מתאים. ברמה ב׳ פותחים סוגריים, מבטלים מכנים מספריים ומזהים מערכות שאין להן פתרון או שיש להן אינסוף פתרונות.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "בכל רמה יש שאלות מילוליות: מגדירים שני נעלמים, בונים מערכת ופותרים, למשל בשאלות על קנייה, על היקף של צורה ועל מחירי כרטיסים. במצוינות יש גם מקדמים עשרוניים, פרמטרים ושאלות על ספרות, תערובות ושיט עם הזרם ונגד הזרם.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+            "links": []
+          }
+        ]
+      }
+    },
+    {
+      "slug": "exterior-angle-triangle-grade-8",
+      "baselineSha256": "bcc13339700b1d33f8e9747b761da306ac14deed6c5c137a5d888cac92cbac28",
+      "fields": [
+        {
+          "path": [
+            "description"
+          ],
+          "existedBefore": true,
+          "before": "דפי עבודה חינמיים בזווית חיצונית במשולש לכיתה ח׳, בשלוש רמות: א׳, ב׳ ומצוינות. למדו את משפט הזווית החיצונית, פתרו תרגילים וקבלו רמז מנועם AI ללא הרשמה היום.",
+          "after": "זווית חיצונית במשולש לכיתה ח׳: משפט הזווית החיצונית, חישוב זוויות ומשוואות. דפי PDF נוספים בשלוש רמות, עם שרטוטים, מערכת צירים ותשובות סופיות."
+        },
+        {
+          "path": [
+            "intro"
+          ],
+          "existedBefore": true,
+          "before": "משתמשים במשפט הזווית החיצונית במשולש ומבחינים בינה לבין הזווית הפנימית הצמודה לה. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+          "after": "משתמשים במשפט הזווית החיצונית במשולש ומבחינים בינה לבין הזווית הפנימית הצמודה לה. לצד הדפים הקיימים נוספו קובצי PDF לתרגול המשפט, ברמות א׳, ב׳ ומצוינות. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+        },
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "זווית חיצונית שווה לסכום שתי הזוויות הפנימיות שאינן צמודות לה. אם שתי הזוויות הללו הן 45° ו־65°, הזווית החיצונית היא 110°.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "אין לחבר את הזווית הפנימית הצמודה לזווית החיצונית בתוך סכום שתי הזוויות המרוחקות.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "זווית חיצונית היא 125° ואחת הזוויות הפנימיות שאינן צמודות לה היא 50°. מהי האחרת? תשובה: 75°. בדף העבודה אפשר לבקש רמז מנועם AI ולהמשיך לנסות באופן עצמאי.",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "זווית חיצונית שווה לסכום שתי הזוויות הפנימיות שאינן צמודות לה. אם שתי הזוויות הללו הן 45° ו־65°, הזווית החיצונית היא 110°.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "אין לחבר את הזווית הפנימית הצמודה לזווית החיצונית בתוך סכום שתי הזוויות המרוחקות.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "זווית חיצונית היא 125° ואחת הזוויות הפנימיות שאינן צמודות לה היא 50°. מהי האחרת? תשובה: 75°. בדף העבודה אפשר לבקש רמז מנועם AI ולהמשיך לנסות באופן עצמאי.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "זווית חיצונית למשולש — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מזהים זווית חיצונית בשרטוט ומחשבים אותה מתוך שתי הזוויות הפנימיות שאינן צמודות לה, וגם בכיוון ההפוך. פותרים משוואות שבהן הזוויות נתונות בביטויים אלגבריים, ומוכיחים טענות על זוויות חיצוניות.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "ברמה ב׳ עובדים גם עם משולש קהה־זווית ועם חוצה של זווית חיצונית. במצוינות משלבים משולשים חופפים, סכום הזוויות החיצוניות וחוצי זווית. בכל הרמות משרטטים משולש לפי נתונים, ופותרים שאלות על משולש במערכת צירים משובצת.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "updatedLine"
+          ],
+          "existedBefore": true,
+          "before": null,
+          "after": "נועם דורון מתמטיקה · עודכן 16.11.2026"
+        },
+        {
+          "path": [
+            "updatedLinePlacement"
+          ],
+          "existedBefore": true,
+          "before": "absent",
+          "after": "after-sections"
+        },
+        {
+          "path": [
+            "faq"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "question": "האם דפי העבודה בנושא זווית חיצונית במשולש לכיתה ח׳ מתאימים לכיתה ח׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ח׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          ],
+          "after": [
+            {
+              "question": "האם דפי העבודה בנושא זווית חיצונית במשולש לכיתה ח׳ מתאימים לכיתה ח׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ח׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            },
+            {
+              "question": "מה כוללים קובצי ה־PDF הנוספים?",
+              "answer": "מזהים זווית חיצונית בשרטוט ומחשבים אותה מתוך שתי הזוויות הפנימיות שאינן צמודות לה, וגם בכיוון ההפוך. פותרים משוואות שבהן הזוויות נתונות בביטויים אלגבריים, ומוכיחים טענות על זוויות חיצוניות. ברמה ב׳ עובדים גם עם משולש קהה־זווית ועם חוצה של זווית חיצונית. במצוינות משלבים משולשים חופפים, סכום הזוויות החיצוניות וחוצי זווית. בכל הרמות משרטטים משולש לפי נתונים, ופותרים שאלות על משולש במערכת צירים משובצת. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+            },
+            {
+              "question": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+              "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+            }
+          ]
+        },
+        {
+          "path": [
+            "faqGroups"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא זווית חיצונית במשולש לכיתה ח׳ מתאימים לכיתה ח׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ח׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא זווית חיצונית במשולש לכיתה ח׳ מתאימים לכיתה ח׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ח׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                },
+                {
+                  "question": "מה כוללים קובצי ה־PDF הנוספים?",
+                  "answer": "מזהים זווית חיצונית בשרטוט ומחשבים אותה מתוך שתי הזוויות הפנימיות שאינן צמודות לה, וגם בכיוון ההפוך. פותרים משוואות שבהן הזוויות נתונות בביטויים אלגבריים, ומוכיחים טענות על זוויות חיצוניות. ברמה ב׳ עובדים גם עם משולש קהה־זווית ועם חוצה של זווית חיצונית. במצוינות משלבים משולשים חופפים, סכום הזוויות החיצוניות וחוצי זווית. בכל הרמות משרטטים משולש לפי נתונים, ופותרים שאלות על משולש במערכת צירים משובצת. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+                },
+                {
+                  "question": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+                  "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "jsonLd"
+          ],
+          "existedBefore": true,
+          "before": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/exterior-angle-triangle-grade-8#webpage",
+                "url": "https://www.noamdoronmath.co.il/exterior-angle-triangle-grade-8",
+                "name": "זווית חיצונית במשולש לכיתה ח׳ | דפי עבודה חינם",
+                "description": "דפי עבודה חינמיים בזווית חיצונית במשולש לכיתה ח׳, בשלוש רמות: א׳, ב׳ ומצוינות. למדו את משפט הזווית החיצונית, פתרו תרגילים וקבלו רמז מנועם AI ללא הרשמה היום.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/exterior-angle-triangle-grade-8#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/exterior-angle-triangle-grade-8#learning-resource",
+                "name": "זווית חיצונית במשולש לכיתה ח׳",
+                "url": "https://www.noamdoronmath.co.il/exterior-angle-triangle-grade-8",
+                "description": "דפי עבודה חינמיים בזווית חיצונית במשולש לכיתה ח׳, בשלוש רמות: א׳, ב׳ ומצוינות. למדו את משפט הזווית החיצונית, פתרו תרגילים וקבלו רמז מנועם AI ללא הרשמה היום.",
+                "educationalLevel": "כיתה ח׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/exterior-angle-triangle-grade-8#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא זווית חיצונית במשולש לכיתה ח׳ מתאימים לכיתה ח׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ח׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "after": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/exterior-angle-triangle-grade-8#webpage",
+                "url": "https://www.noamdoronmath.co.il/exterior-angle-triangle-grade-8",
+                "name": "זווית חיצונית במשולש לכיתה ח׳ | דפי עבודה חינם",
+                "description": "זווית חיצונית במשולש לכיתה ח׳: משפט הזווית החיצונית, חישוב זוויות ומשוואות. דפי PDF נוספים בשלוש רמות, עם שרטוטים, מערכת צירים ותשובות סופיות.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/exterior-angle-triangle-grade-8#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/exterior-angle-triangle-grade-8#learning-resource",
+                "name": "זווית חיצונית במשולש לכיתה ח׳",
+                "url": "https://www.noamdoronmath.co.il/exterior-angle-triangle-grade-8",
+                "description": "זווית חיצונית במשולש לכיתה ח׳: משפט הזווית החיצונית, חישוב זוויות ומשוואות. דפי PDF נוספים בשלוש רמות, עם שרטוטים, מערכת צירים ותשובות סופיות.",
+                "educationalLevel": "כיתה ח׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/exterior-angle-triangle-grade-8#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא זווית חיצונית במשולש לכיתה ח׳ מתאימים לכיתה ח׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ח׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "מה כוללים קובצי ה־PDF הנוספים?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "מזהים זווית חיצונית בשרטוט ומחשבים אותה מתוך שתי הזוויות הפנימיות שאינן צמודות לה, וגם בכיוון ההפוך. פותרים משוואות שבהן הזוויות נתונות בביטויים אלגבריים, ומוכיחים טענות על זוויות חיצוניות. ברמה ב׳ עובדים גם עם משולש קהה־זווית ועם חוצה של זווית חיצונית. במצוינות משלבים משולשים חופפים, סכום הזוויות החיצוניות וחוצי זווית. בכל הרמות משרטטים משולש לפי נתונים, ופותרים שאלות על משולש במערכת צירים משובצת. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "appendedSection": {
+        "heading": "זווית חיצונית למשולש — דפי PDF נוספים",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "מזהים זווית חיצונית בשרטוט ומחשבים אותה מתוך שתי הזוויות הפנימיות שאינן צמודות לה, וגם בכיוון ההפוך. פותרים משוואות שבהן הזוויות נתונות בביטויים אלגבריים, ומוכיחים טענות על זוויות חיצוניות.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "ברמה ב׳ עובדים גם עם משולש קהה־זווית ועם חוצה של זווית חיצונית. במצוינות משלבים משולשים חופפים, סכום הזוויות החיצוניות וחוצי זווית. בכל הרמות משרטטים משולש לפי נתונים, ופותרים שאלות על משולש במערכת צירים משובצת.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+            "links": []
+          }
+        ]
+      }
+    },
+    {
+      "slug": "pythagoras-in-space-grade-8",
+      "baselineSha256": "23a566d34858c75e58d93d4729127716c89874c2a63efcb06b934b9915671960",
+      "fields": [
+        {
+          "path": [
+            "description"
+          ],
+          "existedBefore": true,
+          "before": "פיתגורס במרחב לכיתה ח׳: זיהוי משולשים ישרי זווית וחישוב אלכסונים בגופים. דפי עבודה בחינם בשלוש רמות, ללא הרשמה, עם הסבר, דוגמה ורמזים של נועם AI.",
+          "after": "פיתגורס במרחב לכיתה ח׳: אלכסון פאה ואלכסון מרחבי בתיבה ובקובייה, וחישובים במנסרה, בחרוט ובגליל. דפי PDF נוספים בשלוש רמות, עם תשובות סופיות."
+        },
+        {
+          "path": [
+            "intro"
+          ],
+          "existedBefore": true,
+          "before": "משתמשים במשפט פיתגורס כדי לחשב אלכסונים בפאות ובגופים תלת־ממדיים. מזהים בכל שלב משולש ישר־זווית, מחשבים אורך חסר וממשיכים לפי הצורך. דפי העבודה קיימים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+          "after": "משתמשים במשפט פיתגורס כדי לחשב אלכסונים בפאות ובגופים תלת־ממדיים. מזהים בכל שלב משולש ישר־זווית, מחשבים אורך חסר וממשיכים לפי הצורך. לצד הדפים הקיימים נוספו קובצי PDF ברמות א׳, ב׳ ומצוינות. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+        },
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בתיבה אפשר לחשב תחילה אלכסון של פאה מלבנית, ואז להשתמש בו עם המקצוע המתאים כדי לחשב אלכסון נוסף.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "יש לוודא שבכל שימוש במשפט פיתגורס עובדים עם משולש ישר־זווית ושמזהים נכון את היתר.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בתיבה שאורכי מקצועות הבסיס שלה 3 ו־4 ס״מ וגובהה 12 ס״מ, אלכסון הבסיס הוא 5 ס״מ ואלכסון התיבה הוא 13 ס״מ. בדף העבודה אפשר לבקש רמז מנועם AI ולהמשיך לנסות באופן עצמאי.",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בתיבה אפשר לחשב תחילה אלכסון של פאה מלבנית, ואז להשתמש בו עם המקצוע המתאים כדי לחשב אלכסון נוסף.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "יש לוודא שבכל שימוש במשפט פיתגורס עובדים עם משולש ישר־זווית ושמזהים נכון את היתר.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בתיבה שאורכי מקצועות הבסיס שלה 3 ו־4 ס״מ וגובהה 12 ס״מ, אלכסון הבסיס הוא 5 ס״מ ואלכסון התיבה הוא 13 ס״מ. בדף העבודה אפשר לבקש רמז מנועם AI ולהמשיך לנסות באופן עצמאי.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "משפט פיתגורס במרחב — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מחשבים אלכסון פאה ואלכסון מרחבי בתיבה ובקובייה, ומשתמשים במשפט פיתגורס גם במנסרה ישרה, בחרוט ובגליל. בחלק מהשאלות בסיס הגוף מסורטט במערכת צירים, ומחשבים ממנו אורכים בגוף.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "ברמה ב׳ מחשבים גם בכיוון ההפוך: מוצאים מקצוע חסר מתוך אלכסון ופותרים משוואות. במצוינות עובדים עם יחסים בין מקצועות, עם מנסרה שבסיסה טרפז ועם המשפט ההפוך של פיתגורס במרחב. יש גם שאלות מחיי היום־יום, כמו ארגז ואולם בצורת תיבה.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "bodyFlow"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "type": "paragraph",
+              "text": "משתמשים במשפט פיתגורס כדי לחשב אלכסונים בפאות ובגופים תלת־ממדיים. מזהים בכל שלב משולש ישר־זווית, מחשבים אורך חסר וממשיכים לפי הצורך. דפי העבודה קיימים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "פתיחת דפי העבודה ובחירת רמה",
+              "href": "/worksheets?grade=8&topic=54",
+              "catalogTopicId": 54
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "בתיבה אפשר לחשב תחילה אלכסון של פאה מלבנית, ואז להשתמש בו עם המקצוע המתאים כדי לחשב אלכסון נוסף.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טעויות נפוצות"
+            },
+            {
+              "type": "paragraph",
+              "text": "יש לוודא שבכל שימוש במשפט פיתגורס עובדים עם משולש ישר־זווית ושמזהים נכון את היתר.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "בתיבה שאורכי מקצועות הבסיס שלה 3 ו־4 ס״מ וגובהה 12 ס״מ, אלכסון הבסיס הוא 5 ס״מ ואלכסון התיבה הוא 13 ס״מ. בדף העבודה אפשר לבקש רמז מנועם AI ולהמשיך לנסות באופן עצמאי.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "לכל דפי כיתה ח׳",
+              "role": "body"
+            }
+          ],
+          "after": [
+            {
+              "type": "paragraph",
+              "text": "משתמשים במשפט פיתגורס כדי לחשב אלכסונים בפאות ובגופים תלת־ממדיים. מזהים בכל שלב משולש ישר־זווית, מחשבים אורך חסר וממשיכים לפי הצורך. לצד הדפים הקיימים נוספו קובצי PDF ברמות א׳, ב׳ ומצוינות. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "פתיחת דפי העבודה ובחירת רמה",
+              "href": "/worksheets?grade=8&topic=54",
+              "catalogTopicId": 54
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "בתיבה אפשר לחשב תחילה אלכסון של פאה מלבנית, ואז להשתמש בו עם המקצוע המתאים כדי לחשב אלכסון נוסף.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טעויות נפוצות"
+            },
+            {
+              "type": "paragraph",
+              "text": "יש לוודא שבכל שימוש במשפט פיתגורס עובדים עם משולש ישר־זווית ושמזהים נכון את היתר.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "בתיבה שאורכי מקצועות הבסיס שלה 3 ו־4 ס״מ וגובהה 12 ס״מ, אלכסון הבסיס הוא 5 ס״מ ואלכסון התיבה הוא 13 ס״מ. בדף העבודה אפשר לבקש רמז מנועם AI ולהמשיך לנסות באופן עצמאי.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "לכל דפי כיתה ח׳",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "משפט פיתגורס במרחב — דפי PDF נוספים"
+            },
+            {
+              "type": "paragraph",
+              "text": "מחשבים אלכסון פאה ואלכסון מרחבי בתיבה ובקובייה, ומשתמשים במשפט פיתגורס גם במנסרה ישרה, בחרוט ובגליל. בחלק מהשאלות בסיס הגוף מסורטט במערכת צירים, ומחשבים ממנו אורכים בגוף.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "ברמה ב׳ מחשבים גם בכיוון ההפוך: מוצאים מקצוע חסר מתוך אלכסון ופותרים משוואות. במצוינות עובדים עם יחסים בין מקצועות, עם מנסרה שבסיסה טרפז ועם המשפט ההפוך של פיתגורס במרחב. יש גם שאלות מחיי היום־יום, כמו ארגז ואולם בצורת תיבה.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+              "role": "body"
+            }
+          ]
+        },
+        {
+          "path": [
+            "updatedLine"
+          ],
+          "existedBefore": true,
+          "before": null,
+          "after": "נועם דורון מתמטיקה · עודכן 16.11.2026"
+        },
+        {
+          "path": [
+            "updatedLinePlacement"
+          ],
+          "existedBefore": true,
+          "before": "absent",
+          "after": "after-sections"
+        },
+        {
+          "path": [
+            "faq"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "question": "האם דפי העבודה בנושא פיתגורס במרחב לכיתה ח׳ מתאימים לכיתה ח׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ח׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          ],
+          "after": [
+            {
+              "question": "האם דפי העבודה בנושא פיתגורס במרחב לכיתה ח׳ מתאימים לכיתה ח׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ח׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            },
+            {
+              "question": "מה כוללים קובצי ה־PDF הנוספים?",
+              "answer": "מחשבים אלכסון פאה ואלכסון מרחבי בתיבה ובקובייה, ומשתמשים במשפט פיתגורס גם במנסרה ישרה, בחרוט ובגליל. בחלק מהשאלות בסיס הגוף מסורטט במערכת צירים, ומחשבים ממנו אורכים בגוף. ברמה ב׳ מחשבים גם בכיוון ההפוך: מוצאים מקצוע חסר מתוך אלכסון ופותרים משוואות. במצוינות עובדים עם יחסים בין מקצועות, עם מנסרה שבסיסה טרפז ועם המשפט ההפוך של פיתגורס במרחב. יש גם שאלות מחיי היום־יום, כמו ארגז ואולם בצורת תיבה. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+            },
+            {
+              "question": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+              "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+            }
+          ]
+        },
+        {
+          "path": [
+            "faqGroups"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא פיתגורס במרחב לכיתה ח׳ מתאימים לכיתה ח׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ח׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא פיתגורס במרחב לכיתה ח׳ מתאימים לכיתה ח׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ח׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                },
+                {
+                  "question": "מה כוללים קובצי ה־PDF הנוספים?",
+                  "answer": "מחשבים אלכסון פאה ואלכסון מרחבי בתיבה ובקובייה, ומשתמשים במשפט פיתגורס גם במנסרה ישרה, בחרוט ובגליל. בחלק מהשאלות בסיס הגוף מסורטט במערכת צירים, ומחשבים ממנו אורכים בגוף. ברמה ב׳ מחשבים גם בכיוון ההפוך: מוצאים מקצוע חסר מתוך אלכסון ופותרים משוואות. במצוינות עובדים עם יחסים בין מקצועות, עם מנסרה שבסיסה טרפז ועם המשפט ההפוך של פיתגורס במרחב. יש גם שאלות מחיי היום־יום, כמו ארגז ואולם בצורת תיבה. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+                },
+                {
+                  "question": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+                  "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "jsonLd"
+          ],
+          "existedBefore": true,
+          "before": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/pythagoras-in-space-grade-8#webpage",
+                "url": "https://www.noamdoronmath.co.il/pythagoras-in-space-grade-8",
+                "name": "פיתגורס במרחב לכיתה ח׳ | נועם דורון - מתמטיקה דפי מתמטיקה בחינם",
+                "description": "פיתגורס במרחב לכיתה ח׳: זיהוי משולשים ישרי־זווית וחישוב אלכסונים בגופים. דפי עבודה בחינם בשלוש רמות, ללא הרשמה, עם הסבר, דוגמה ורמזים של נועם AI.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/pythagoras-in-space-grade-8#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/pythagoras-in-space-grade-8#learning-resource",
+                "name": "פיתגורס במרחב לכיתה ח׳",
+                "url": "https://www.noamdoronmath.co.il/pythagoras-in-space-grade-8",
+                "description": "פיתגורס במרחב לכיתה ח׳: זיהוי משולשים ישרי־זווית וחישוב אלכסונים בגופים. דפי עבודה בחינם בשלוש רמות, ללא הרשמה, עם הסבר, דוגמה ורמזים של נועם AI.",
+                "educationalLevel": "כיתה ח׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/pythagoras-in-space-grade-8#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא פיתגורס במרחב לכיתה ח׳ מתאימים לכיתה ח׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ח׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "after": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/pythagoras-in-space-grade-8#webpage",
+                "url": "https://www.noamdoronmath.co.il/pythagoras-in-space-grade-8",
+                "name": "פיתגורס במרחב לכיתה ח׳ | נועם דורון - מתמטיקה דפי מתמטיקה בחינם",
+                "description": "פיתגורס במרחב לכיתה ח׳: אלכסון פאה ואלכסון מרחבי בתיבה ובקובייה, וחישובים במנסרה, בחרוט ובגליל. דפי PDF נוספים בשלוש רמות, עם תשובות סופיות.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/pythagoras-in-space-grade-8#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/pythagoras-in-space-grade-8#learning-resource",
+                "name": "פיתגורס במרחב לכיתה ח׳",
+                "url": "https://www.noamdoronmath.co.il/pythagoras-in-space-grade-8",
+                "description": "פיתגורס במרחב לכיתה ח׳: אלכסון פאה ואלכסון מרחבי בתיבה ובקובייה, וחישובים במנסרה, בחרוט ובגליל. דפי PDF נוספים בשלוש רמות, עם תשובות סופיות.",
+                "educationalLevel": "כיתה ח׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/pythagoras-in-space-grade-8#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא פיתגורס במרחב לכיתה ח׳ מתאימים לכיתה ח׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ח׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "מה כוללים קובצי ה־PDF הנוספים?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "מחשבים אלכסון פאה ואלכסון מרחבי בתיבה ובקובייה, ומשתמשים במשפט פיתגורס גם במנסרה ישרה, בחרוט ובגליל. בחלק מהשאלות בסיס הגוף מסורטט במערכת צירים, ומחשבים ממנו אורכים בגוף. ברמה ב׳ מחשבים גם בכיוון ההפוך: מוצאים מקצוע חסר מתוך אלכסון ופותרים משוואות. במצוינות עובדים עם יחסים בין מקצועות, עם מנסרה שבסיסה טרפז ועם המשפט ההפוך של פיתגורס במרחב. יש גם שאלות מחיי היום־יום, כמו ארגז ואולם בצורת תיבה. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "appendedSection": {
+        "heading": "משפט פיתגורס במרחב — דפי PDF נוספים",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "מחשבים אלכסון פאה ואלכסון מרחבי בתיבה ובקובייה, ומשתמשים במשפט פיתגורס גם במנסרה ישרה, בחרוט ובגליל. בחלק מהשאלות בסיס הגוף מסורטט במערכת צירים, ומחשבים ממנו אורכים בגוף.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "ברמה ב׳ מחשבים גם בכיוון ההפוך: מוצאים מקצוע חסר מתוך אלכסון ופותרים משוואות. במצוינות עובדים עם יחסים בין מקצועות, עם מנסרה שבסיסה טרפז ועם המשפט ההפוך של פיתגורס במרחב. יש גם שאלות מחיי היום־יום, כמו ארגז ואולם בצורת תיבה.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+            "links": []
+          }
+        ]
+      }
+    },
+    {
+      "slug": "parallelogram-grade-9",
+      "baselineSha256": "05200bf22ecb23037388d9e23d92e7f9e97ea32453e6b21ee9951558805a3d99",
+      "fields": [
+        {
+          "path": [
+            "description"
+          ],
+          "existedBefore": true,
+          "before": "מקבילית לכיתה ט׳: תכונות הצלעות והזוויות, אלכסונים והוכחות. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+          "after": "מקבילית לכיתה ט׳: תכונות הצלעות והזוויות, אלכסונים, הוכחות ובניית מקבילית בסרגל ובמחוגה. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה."
+        },
+        {
+          "path": [
+            "intro"
+          ],
+          "existedBefore": true,
+          "before": "לומדים לזהות מקבילית, להשתמש בתכונות הצלעות והזוויות ולפתור שאלות על אלכסונים. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+          "after": "לומדים לזהות מקבילית, להשתמש בתכונות הצלעות והזוויות ולפתור שאלות על אלכסונים. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה. נוספו גם קובצי PDF לבניית מקבילית בסרגל ובמחוגה. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+        },
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "במקבילית כל זוג צלעות נגדיות מקבילות ושוות. זוויות נגדיות שוות, וזוויות סמוכות משלימות ל־180°.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: במקבילית, אם זווית אחת היא 68°, הזווית הנגדית לה גם 68° וכל זווית סמוכה לה היא 112°.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "שוויון של זוג צלעות אחד בלבד אינו מספיק להוכיח שמרובע הוא מקבילית. לעומת זאת, מרובע שכל ארבע צלעותיו שוות הוא מעוין, ולכן גם מקבילית. אפשר להוכיח מקבילית באמצעות שני זוגות של צלעות נגדיות מקבילות, או שני זוגות של צלעות נגדיות שוות.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "במקבילית אחת הזוויות היא 73°. מהן מידות שלוש הזוויות האחרות?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: הזווית הנגדית היא 73° ושתי הזוויות הסמוכות הן 107°.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "תרגול נוסף: טרפז שווה־שוקיים — תוצאות מתכונות המקבילית",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "שלושה דפי PDF ברמות א׳, ב׳ ומצוינות עוסקים בטרפז שווה־שוקיים באמצעות תכונות המקבילית: נימוקים, שאלות שרטוט ושילוב מערכת צירים. בכל דף 6 שאלות ו־24 סעיפים, מקום לפתרון ולשרטוט ותשובות סופיות בסוף. התרגול מתמקד בתוצאות מתכונות המקבילית ואינו מחליף את דפי המקבילית הקיימים.",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "במקבילית כל זוג צלעות נגדיות מקבילות ושוות. זוויות נגדיות שוות, וזוויות סמוכות משלימות ל־180°.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: במקבילית, אם זווית אחת היא 68°, הזווית הנגדית לה גם 68° וכל זווית סמוכה לה היא 112°.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "שוויון של זוג צלעות אחד בלבד אינו מספיק להוכיח שמרובע הוא מקבילית. לעומת זאת, מרובע שכל ארבע צלעותיו שוות הוא מעוין, ולכן גם מקבילית. אפשר להוכיח מקבילית באמצעות שני זוגות של צלעות נגדיות מקבילות, או שני זוגות של צלעות נגדיות שוות.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "במקבילית אחת הזוויות היא 73°. מהן מידות שלוש הזוויות האחרות?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: הזווית הנגדית היא 73° ושתי הזוויות הסמוכות הן 107°.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "תרגול נוסף: טרפז שווה־שוקיים — תוצאות מתכונות המקבילית",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "שלושה דפי PDF ברמות א׳, ב׳ ומצוינות עוסקים בטרפז שווה־שוקיים באמצעות תכונות המקבילית: נימוקים, שאלות שרטוט ושילוב מערכת צירים. בכל דף 6 שאלות ו־24 סעיפים, מקום לפתרון ולשרטוט ותשובות סופיות בסוף. התרגול מתמקד בתוצאות מתכונות המקבילית ואינו מחליף את דפי המקבילית הקיימים.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "תרגול נוסף: בניית מקבילית בסרגל ובמחוגה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בונים מקבילית משתי צלעות והזווית החדה שביניהן, או משתי צלעות ואלכסון: משלימים משולש למקבילית בעזרת קשתות מחוגה, ומנמקים לפי ההגדרה מדוע המרובע שהתקבל הוא מקבילית.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בודקים בעזרת אי־שוויון המשולש מתי אפשר לבנות את המקבילית. ברמה ב׳ ובמצוינות מוכיחים לפי ההגדרה, ובמצוינות גם מוצאים תחום ערכים של פרמטר ובודקים מתי הבנייה יחידה. בכל הרמות יש גם שאלות על מקבילית במערכת צירים משובצת.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "updatedLine"
+          ],
+          "existedBefore": true,
+          "before": "נועם דורון מתמטיקה · עודכן 15.11.2026",
+          "after": "נועם דורון מתמטיקה · עודכן 16.11.2026"
+        },
+        {
+          "path": [
+            "faq"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "question": "האם דפי העבודה בנושא מקבילית לכיתה ט׳ מתאימים לכיתה ט׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          ],
+          "after": [
+            {
+              "question": "האם דפי העבודה בנושא מקבילית לכיתה ט׳ מתאימים לכיתה ט׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            },
+            {
+              "question": "מה כוללים דפי ה־PDF בבניית מקבילית?",
+              "answer": "בונים מקבילית משתי צלעות והזווית החדה שביניהן, או משתי צלעות ואלכסון: משלימים משולש למקבילית בעזרת קשתות מחוגה, ומנמקים לפי ההגדרה מדוע המרובע שהתקבל הוא מקבילית. בודקים בעזרת אי־שוויון המשולש מתי אפשר לבנות את המקבילית. ברמה ב׳ ובמצוינות מוכיחים לפי ההגדרה, ובמצוינות גם מוצאים תחום ערכים של פרמטר ובודקים מתי הבנייה יחידה. בכל הרמות יש גם שאלות על מקבילית במערכת צירים משובצת. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+            },
+            {
+              "question": "האם דפי ה־PDF בבניית מקבילית כוללים רמזי?",
+              "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+            }
+          ]
+        },
+        {
+          "path": [
+            "faqGroups"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא מקבילית לכיתה ט׳ מתאימים לכיתה ט׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא מקבילית לכיתה ט׳ מתאימים לכיתה ט׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                },
+                {
+                  "question": "מה כוללים דפי ה־PDF בבניית מקבילית?",
+                  "answer": "בונים מקבילית משתי צלעות והזווית החדה שביניהן, או משתי צלעות ואלכסון: משלימים משולש למקבילית בעזרת קשתות מחוגה, ומנמקים לפי ההגדרה מדוע המרובע שהתקבל הוא מקבילית. בודקים בעזרת אי־שוויון המשולש מתי אפשר לבנות את המקבילית. ברמה ב׳ ובמצוינות מוכיחים לפי ההגדרה, ובמצוינות גם מוצאים תחום ערכים של פרמטר ובודקים מתי הבנייה יחידה. בכל הרמות יש גם שאלות על מקבילית במערכת צירים משובצת. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+                },
+                {
+                  "question": "האם דפי ה־PDF בבניית מקבילית כוללים רמזי?",
+                  "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "jsonLd"
+          ],
+          "existedBefore": true,
+          "before": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/parallelogram-grade-9#webpage",
+                "url": "https://www.noamdoronmath.co.il/parallelogram-grade-9",
+                "name": "מקבילית לכיתה ט׳ | דפי עבודה במתמטיקה – נועם דורון",
+                "description": "מקבילית לכיתה ט׳: תכונות הצלעות והזוויות, אלכסונים והוכחות. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/parallelogram-grade-9#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/parallelogram-grade-9#learning-resource",
+                "name": "מקבילית לכיתה ט׳",
+                "url": "https://www.noamdoronmath.co.il/parallelogram-grade-9",
+                "description": "מקבילית לכיתה ט׳: תכונות הצלעות והזוויות, אלכסונים והוכחות. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+                "educationalLevel": "כיתה ט׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/parallelogram-grade-9#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא מקבילית לכיתה ט׳ מתאימים לכיתה ט׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "after": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/parallelogram-grade-9#webpage",
+                "url": "https://www.noamdoronmath.co.il/parallelogram-grade-9",
+                "name": "מקבילית לכיתה ט׳ | דפי עבודה במתמטיקה – נועם דורון",
+                "description": "מקבילית לכיתה ט׳: תכונות הצלעות והזוויות, אלכסונים, הוכחות ובניית מקבילית בסרגל ובמחוגה. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/parallelogram-grade-9#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/parallelogram-grade-9#learning-resource",
+                "name": "מקבילית לכיתה ט׳",
+                "url": "https://www.noamdoronmath.co.il/parallelogram-grade-9",
+                "description": "מקבילית לכיתה ט׳: תכונות הצלעות והזוויות, אלכסונים, הוכחות ובניית מקבילית בסרגל ובמחוגה. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+                "educationalLevel": "כיתה ט׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/parallelogram-grade-9#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא מקבילית לכיתה ט׳ מתאימים לכיתה ט׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "מה כוללים דפי ה־PDF בבניית מקבילית?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "בונים מקבילית משתי צלעות והזווית החדה שביניהן, או משתי צלעות ואלכסון: משלימים משולש למקבילית בעזרת קשתות מחוגה, ומנמקים לפי ההגדרה מדוע המרובע שהתקבל הוא מקבילית. בודקים בעזרת אי־שוויון המשולש מתי אפשר לבנות את המקבילית. ברמה ב׳ ובמצוינות מוכיחים לפי ההגדרה, ובמצוינות גם מוצאים תחום ערכים של פרמטר ובודקים מתי הבנייה יחידה. בכל הרמות יש גם שאלות על מקבילית במערכת צירים משובצת. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי ה־PDF בבניית מקבילית כוללים רמזי?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "appendedSection": {
+        "heading": "תרגול נוסף: בניית מקבילית בסרגל ובמחוגה",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "בונים מקבילית משתי צלעות והזווית החדה שביניהן, או משתי צלעות ואלכסון: משלימים משולש למקבילית בעזרת קשתות מחוגה, ומנמקים לפי ההגדרה מדוע המרובע שהתקבל הוא מקבילית.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "בודקים בעזרת אי־שוויון המשולש מתי אפשר לבנות את המקבילית. ברמה ב׳ ובמצוינות מוכיחים לפי ההגדרה, ובמצוינות גם מוצאים תחום ערכים של פרמטר ובודקים מתי הבנייה יחידה. בכל הרמות יש גם שאלות על מקבילית במערכת צירים משובצת.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+            "links": []
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -10,6 +10,7 @@ import { buildTeacherCatalog } from '../scripts/build-teacher-catalog.mjs';
 import { buildTeacherLandingCatalog, getTeacherLandingScope } from '../src/lib/teacherLandingCatalog';
 import { collectViewerPdfIds } from '../scripts/sync-github-static.mjs';
 import { beforeEqnSgnFacCatalog } from './fixtures/eqn-sgn-fac-pdf';
+import { beforeBatch01Copy } from './fixtures/batch01-pdf';
 
 const read = (p: string) => JSON.parse(readFileSync(new URL(p, import.meta.url), 'utf8'));
 const require = createRequire(import.meta.url);
@@ -65,7 +66,8 @@ test('T90 stays a non-default direct-PDF edition with no teacher, learning, or n
 });
 
 test('the existing parallelogram landing describes the precise T90 scope and retains its canonical identity', () => {
-  const page = read('../src/data/topic-pages/parallelogram-grade-9.json');
+  // Batch 01 later appended the PAR-05 series; reverse exactly that reviewed delta first.
+  const page = beforeBatch01Copy('parallelogram-grade-9', read('../src/data/topic-pages/parallelogram-grade-9.json'));
   assert.equal(page.path, '/parallelogram-grade-9'); assert.equal(page.h1, 'מקבילית לכיתה ט׳');
   assert.equal(page.updatedLine, 'נועם דורון מתמטיקה · עודכן 15.11.2026');
   assert.equal(page.title, 'מקבילית לכיתה ט׳ | דפי עבודה במתמטיקה – נועם דורון');

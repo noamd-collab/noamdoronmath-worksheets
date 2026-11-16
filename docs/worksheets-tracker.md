@@ -1,3 +1,11 @@
+## 2026-11-16 — batch 01: five reviewed student PDF editions (candidate)
+
+- SYS-01 8:47, SYS-02 8:48, TRI-03 8:39, P3D-01 8:54 and PAR-05 9:7: 15 PDFs, 101 pages, 468 parts. Every existing default, legacy link and the 35 preceding editions are preserved; topic 8:54 keeps its legacy c2 level.
+- Five existing landings describe the exact practice scope of the new series. Titles, H1 and CTA order are unchanged; PAR-05 sits beside the four earlier parallelogram PDF series.
+- Exact reviewed PDF bytes were uploaded and downloaded from both media routes: 30 matching reads. Independent PDF reviews (Astra r02 deltas; claude007 for P3D-01) are attributed by exact SHA-256, not repeated here. Details: `docs/batch01-pdf-first-20261116.json`.
+- New editions open PDFs directly. No Word, native assets, teacher selection, learning activation, hints or database activation.
+- This is a source candidate, not a publication claim. Build, tests, payload measurement and desktop/phone evidence are recorded in the PR package.
+
 ## 2026-11-15 — seven additional student PDF editions (candidate)
 
 - ATQ7:19, APT7:45, PYT7:42, PYA7:43, GRW7:6, CTM9:33 and Q1G7:31:21PDFs,137pages,405parts. Existing defaults,973legacy links and28preceding editions are preserved.
