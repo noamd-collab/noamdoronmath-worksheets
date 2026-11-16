@@ -1,3 +1,11 @@
+## 2026-11-17 — batch 02a: sixteen reviewed student PDF editions (candidate)
+
+- SQR9:14, RHB9:13, ISO9:4, POW9:16, MPL9:18, PYD9:35, TRI8:42, TRI8:40, WPE8:3, WPE8:46, DAT8:66, SLP8:29, PRB8:50, Q1C7:8, MUL7:3 and EQN7:37: 48 PDFs, 385 pages, 1431 parts. Every existing default, legacy link and the 39 preceding editions are preserved.
+- Sixteen existing landings describe the exact practice scope of the new series. Titles, H1 and CTA order are unchanged. PYD is labelled as a reduced-track (מצומצמת) series.
+- Exact reviewed PDF bytes were downloaded from both media routes: 96 matching reads. Independent PDF reviews (Claude Opus 5.5 for fifteen sets of other authors; claude007 for EQN-02) are attributed by exact SHA-256, not repeated here. Details: `docs/batch02a-pdf-first-20261117.json`.
+- New editions open PDFs directly. No Word, native assets, teacher selection, learning activation, hints or database activation.
+- This is a source candidate, not a publication claim. Build, tests and desktop/phone evidence are recorded in the PR package; the Wix payload has only a proxy estimate (+239,784 bytes, about 17.56 MB) and still needs a credentialed `npm run build`; the release job's postbuild budget check stops a release over 19,500,000 bytes.
+
 ## 2026-11-16 — batch 01: four reviewed student PDF editions (candidate)
 
 - SYS-01 8:47, SYS-02 8:48, TRI-03 8:39 and P3D-01 8:54: 12 PDFs, 83 pages, 372 parts. Every existing default, legacy link and the 35 preceding editions are preserved; topic 8:54 keeps its legacy c2 level.
