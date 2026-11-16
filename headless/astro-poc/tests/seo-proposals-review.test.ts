@@ -1,3 +1,4 @@
+import { reviewedProbabilityNine } from './fixtures/probability-nine-pdf';
 import { reviewedNext12 } from './fixtures/next12-pdf';
 import { reviewedNext21 } from './fixtures/next21-pdf';
 import { reviewedSaoWpc } from './fixtures/sao-wpc-pdf';
@@ -140,6 +141,18 @@ describe('seo proposals – generator and coverage', () => {
         row.description = String(copy.after);
       }
     }
+    // Apply only the independently reviewed probability description delta;
+    // retain the complete historical proposal batch and all other fields.
+    assert.equal(reviewedProbabilityNine.landingDeltas.length, 1);
+    const probabilityDelta = reviewedProbabilityNine.landingDeltas[0];
+    assert.equal(probabilityDelta.slug, 'probability-grade-9');
+    const probabilityCopy = probabilityDelta.fields.find(d => d.path.length === 1 && d.path[0] === 'description')!;
+    const probabilityRow = expected.find(item => item.path === '/probability-grade-9')!;
+    assert.equal(probabilityRow.currentDescription, probabilityCopy.before);
+    assert.equal(probabilityRow.description, probabilityCopy.before);
+    assert.equal(probabilityRow.source, 'title:current|description:current');
+    probabilityRow.currentDescription = String(probabilityCopy.after);
+    probabilityRow.description = String(probabilityCopy.after);
     assert.deepEqual(proposals, expected);
   });
 
