@@ -1,3 +1,11 @@
+## 2026-11-16 — batch 01: four reviewed student PDF editions (candidate)
+
+- SYS-01 8:47, SYS-02 8:48, TRI-03 8:39 and P3D-01 8:54: 12 PDFs, 83 pages, 372 parts. Every existing default, legacy link and the 35 preceding editions are preserved; topic 8:54 keeps its legacy c2 level.
+- Four existing landings describe the exact practice scope of the new series. Titles, H1 and CTA order are unchanged.
+- Exact reviewed PDF bytes were uploaded and downloaded from both media routes: 24 matching reads. Independent PDF reviews (Astra r02 deltas; claude007 for P3D-01) are attributed by exact SHA-256, not repeated here. Details: `docs/batch01-pdf-first-20261116.json`.
+- New editions open PDFs directly. No Word, native assets, teacher selection, learning activation, hints or database activation.
+- This is a source candidate, not a publication claim. Build, tests and desktop/phone evidence are recorded in the PR package; the Wix payload has only a proxy estimate (+54,960 bytes, about 17.32 MB) and still needs a credentialed `npm run build`; the release job's postbuild budget check stops a release over 19,500,000 bytes.
+
 ## 2026-11-15 — seven additional student PDF editions (candidate)
 
 - ATQ7:19, APT7:45, PYT7:42, PYA7:43, GRW7:6, CTM9:33 and Q1G7:31:21PDFs,137pages,405parts. Existing defaults,973legacy links and28preceding editions are preserved.
