@@ -104,6 +104,19 @@ test('a disabled source manifest cannot activate merely by adding matching evide
  const b=fixture(registry);rebindSynthetic(b,(s,b)=>{const u=s.batch.units[0],m=JSON.parse(b.assets.manifests[u.pdfId]);m.publishable=false;m.reviewRequired=true;const raw=bytes(m);b.assets.manifests[u.pdfId]=raw;u.manifestSha256=hash(raw);});
  assert.throws(()=>build(b),/MEASURED_UNREVIEWED_DRAFT/);
 });
+for(const [name,mutate,error] of [
+ ['PDF bytes differ from the accepted CDN and DB source',m=>JSON.parse(JSON.stringify(m).replaceAll(m.sourceSha256,'a'.repeat(64))),/manifest identity/],
+ ['grade differs from the reviewed batch',m=>({...m,grade:m.grade===9?7:9}),/manifest curriculum\/level identity/],
+ ['topic differs from the reviewed batch',m=>({...m,topicId:m.topicId+1}),/manifest curriculum\/level identity/],
+])test('re-pinned manifest cannot substitute its source: '+name,()=>{
+ const b=fixture(registry);rebindSynthetic(b,(s,b)=>{
+  const u=s.batch.units[0],m=mutate(JSON.parse(b.assets.manifests[u.pdfId]));
+  const raw=bytes(m);b.assets.manifests[u.pdfId]=raw;u.manifestSha256=hash(raw);
+ });
+ // Scope, trust and asset receipts match the altered manifest's new bytes.
+ // Accepted PDF/DB identity remains unchanged, so byte hashing alone is insufficient.
+ assert.throws(()=>build(b),error);
+});
 test('reviewed scope requires actual bounded tool lists',()=>{
  const b=fixture(registry);rebindSynthetic(b,(s,b)=>{const p=JSON.parse(b.assets.learningScopes[b.requests.batches[0].scopeId]);p.permittedTools=[];const raw=bytes(p);b.assets.learningScopes[p.scopeId]=raw;s.batch.learningScopeSha256=hash(raw);});assert.throws(()=>build(b),/bounded scope tools/);
 });

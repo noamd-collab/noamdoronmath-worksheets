@@ -45,7 +45,8 @@ function validateAdditionalEvidence(catalog,registry,bundle){
    publicOnly(manifest);validateMeasuredManifest(manifest);
    const native=artifact(bundle.assets,'nativeExports',b.nativePrefix+'/'+u.level,u.nativeExportSha256);
    publicOnly(native);
-   must(manifest.pdfHash===u.pdfId&&manifest.editionId===b.editionId&&manifest.prefix===b.nativePrefix&&manifest.level===u.level&&manifest.canonicalSourceSha256===u.canonicalSourceSha256,'manifest identity');
+   must(manifest.pdfHash===u.pdfId&&manifest.sourceSha256===u.pdfSha256&&manifest.editionId===b.editionId&&manifest.prefix===b.nativePrefix&&manifest.level===u.level&&manifest.canonicalSourceSha256===u.canonicalSourceSha256,'manifest identity');
+   must(manifest.grade===b.grade&&manifest.topicId===b.topicId&&manifest.levelCode===({a:'A',b:'B',c:'E'}[u.level]),'manifest curriculum/level identity');
    must(manifest.nativeExportSha256===u.nativeExportSha256&&manifest.sourceNativeExportSha256===u.sourceNativeExportSha256&&native.package===b.nativePrefix&&native.level===u.level,'native identity');
    must(manifest.reviewRequired===false&&manifest.publishable===true,'final locally reviewed manifest required');
    must(Array.isArray(manifest.exercises)&&manifest.exercises.length===u.itemCount,'manifest item count');
