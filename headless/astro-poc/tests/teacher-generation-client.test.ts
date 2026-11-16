@@ -3,6 +3,8 @@ import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import vm from 'node:vm';
 import { parseHTML } from 'linkedom';
+import { webcrypto } from 'node:crypto';
+import { GENERATION_CURRICULUM_SHA256, parseTeacherGenerationCurriculum, getTeacherGenerationMinimumQuestionCount } from '../src/lib/teacherGenerationContract';
 
 const pageSource = readFileSync(new URL('../src/pages/teachers/generate.astro', import.meta.url), 'utf8');
 const markup = pageSource.match(/<main[\s\S]*?<\/main>/)![0];
@@ -10,11 +12,19 @@ const shipped = readFileSync(new URL('../public/teachers/generation.js', import.
 const topic = { topicId: 'ג10', gradeNumber: 3, title: 'חילוק', enabled: true, e2eVerified: true, levels: ['b'], questionCounts: [12] };
 const middle = { ...topic, topicId: 'g7:equations', gradeNumber: 7, title: 'משוואות', questionCounts: [20] };
 const disabled = { ...topic, topicId: 'candidate', gradeNumber: 3, enabled: false };
+const catalogBytes=readFileSync(new URL('../public/teachers/generation-curriculum.json',import.meta.url));
+const curriculum=parseTeacherGenerationCurriculum(JSON.parse(catalogBytes.toString()));
+const generalCapabilities={profile:'general-skill-source/v1',curriculumSha256:GENERATION_CURRICULUM_SHA256,acceptedIntakeVersions:[2,3],
+ topics:curriculum.topics.map(t=>({...t,enabled:true,readiness:'private_draft',e2eVerified:false,
+  levels:t.topicId.startsWith('g9m:')?['b']:t.topicId.startsWith('g9r:')?['a','e']:['b','a','e'],
+  questionCounts:Array.from({length:31-getTeacherGenerationMinimumQuestionCount(t.gradeNumber)!},(_,i)=>getTeacherGenerationMinimumQuestionCount(t.gradeNumber)!+i)}))};
 type Reply = { ok?: boolean; body?: any; error?: Error };
 
-function harness(options: { online?: boolean; waking?: boolean; jobs?: any[]; captcha?: boolean; emptyCapabilities?: boolean } = {}) {
+function harness(options: { online?: boolean; waking?: boolean; jobs?: any[]; captcha?: boolean; emptyCapabilities?: boolean; general?: boolean; catalogMismatch?: boolean } = {}) {
   const { document, window } = parseHTML(`<!doctype html><html><head></head><body>${markup}</body></html>`);
   const form = document.getElementById('generation-form') as any;
+  (window.HTMLInputElement.prototype as any).checkValidity=()=>true;
+  Object.defineProperty(window.HTMLInputElement.prototype,'checked',{configurable:true,get(){return this.hasAttribute('checked');},set(value){if(value)this.setAttribute('checked','');else this.removeAttribute('checked');}});
   const fields = new Map(Array.from(form.querySelectorAll('[name]')).map((el: any) => [el.getAttribute('name'), el]));
   Object.defineProperty(form, 'elements', { value: { namedItem: (name: string) => fields.get(name) } });
   // Browser properties absent/incomplete in linkedom; user handlers remain unmodified.
@@ -53,6 +63,7 @@ function harness(options: { online?: boolean; waking?: boolean; jobs?: any[]; ca
   (window as any).grecaptcha = options.captcha !== false ? verification : undefined;
   const fetchLocal = async (url: string, init: any = {}) => {
     calls.push({ url, init });
+    if(url==='/teachers/generation-curriculum.json')return {ok:true,arrayBuffer:async()=>Uint8Array.from(options.catalogMismatch?Buffer.from('{}'):catalogBytes).buffer};
     if (url === '/api/noamBotConfig') return { ok: true, json: async () => ({ ok: true, active: true, siteKey: 'K'.repeat(40) }) };
     assert.equal(url, '/api/teacherGeneration', 'all requests are intercepted locally');
     if (init.method === 'POST') {
@@ -63,15 +74,15 @@ function harness(options: { online?: boolean; waking?: boolean; jobs?: any[]; ca
     }
     const reply = pendingReads.shift() || {};
     if (reply.error) throw reply.error;
-    return { ok: reply.ok ?? true, json: async () => reply.body || ({ ok: true, online, waking, jobs: structuredClone(jobs), capabilities: { topics: emptyCapabilities ? [] : [topic, middle, disabled] } }) };
+    return { ok: reply.ok ?? true, json: async () => reply.body || ({ ok: true, online, waking, jobs: structuredClone(jobs), capabilities: options.general?{...generalCapabilities,topics:emptyCapabilities?[]:generalCapabilities.topics}:{ acceptedIntakeVersions:[2],topics: emptyCapabilities ? [] : [topic, middle, disabled] } }) };
   };
   vm.runInNewContext(shipped, {
-    document, window, fetch: fetchLocal, crypto: { randomUUID: () => `00000000-0000-4000-8000-${String(++uuid).padStart(12, '0')}` },
+    document, window, TextDecoder, fetch: fetchLocal, crypto: { subtle:webcrypto.subtle,randomUUID: () => `00000000-0000-4000-8000-${String(++uuid).padStart(12, '0')}` },
     AbortSignal: { timeout: () => undefined }, Date: LocalDate, console,
     setTimeout: (callback: () => unknown, delay: number) => { timers.set(++timer, { callback, delay }); return timer; },
     clearTimeout: (id: number) => timers.delete(id), setInterval: () => ++timer, clearInterval: () => {},
   });
-  const flush = async () => { await new Promise(resolve => setImmediate(resolve)); await new Promise(resolve => setImmediate(resolve)); };
+  const flush = async () => { for(let i=0;i<8;i++)await new Promise(resolve => setImmediate(resolve)); };
   const element = (id: string) => document.getElementById(id) as any;
   const field = (name: string) => fields.get(name) as any;
   const dispatch = async (el: any, type: string) => { el.dispatchEvent(new window.Event(type, { bubbles: true, cancelable: true })); await flush(); };
@@ -86,7 +97,8 @@ function harness(options: { online?: boolean; waking?: boolean; jobs?: any[]; ca
       if (!id) return;
       field('topicId').value = id; await dispatch(field('topicId'), 'change'); await dispatch(form, 'submit');
       field('level').value = 'b'; await dispatch(field('level'), 'change'); await dispatch(form, 'submit');
-      if (id === 'ג10') { form.querySelectorAll('[name=learnedDivisor]').forEach((input: any) => { input.checked = true; }); field('boundaryMaxDividend').value = '100'; }
+      if(options.general || !['ג10','g7:equations'].includes(id)) {const input=form.querySelector('[name=learnedConcept]');if(input)input.checked=true;}
+      else if (id === 'ג10') { form.querySelectorAll('[name=learnedDivisor]').forEach((input: any) => { input.checked = true; }); field('boundaryMaxDividend').value = '100'; }
       else field('boundarySignedNumbers').value = 'yes';
     },
     submit: () => dispatch(form, 'submit'), click: (id: string) => dispatch(element(id), 'click'),
@@ -96,10 +108,10 @@ function harness(options: { online?: boolean; waking?: boolean; jobs?: any[]; ca
   };
 }
 
-test('offline state blocks planning and emits no creation or verification request', async () => {
+test('offline state permits planning but emits no creation or verification request', async () => {
   const app = harness({ online: false }); await app.flush(); await app.choose(); await app.submit(); await app.click('create-button');
-  assert.equal(app.element('plan-button').disabled, true);
-  assert.equal(app.form.hidden, false);
+  assert.equal(app.element('create-button').disabled, true);
+  assert.equal(app.form.hidden, true);
   assert.equal(app.posts.length, 0);
   assert.equal(app.calls.some(c => c.url === '/api/noamBotConfig'), false);
 });
@@ -116,7 +128,7 @@ test('cold wake polls only health for at most90 seconds, then requires explicit 
   assert.equal(app.calls.some(call => call.url === '/api/noamBotConfig'), false);
   await app.click('refresh-generation'); assert.equal(app.timers.size, 1);
   app.setOnline(true); app.setWaking(false); app.advance(5000); await app.nextRetry();
-  assert.equal(app.timers.size, 0); assert.match(app.element('generator-availability').textContent, /היצירה זמינה/);
+  assert.equal(app.timers.size, 0); assert.match(app.element('generator-availability').textContent, /אפשר לתכנן דף בכל נושא/);
   assert.equal(app.posts.length, 0, 'readiness never automatically creates a draft');
 });
 
@@ -124,12 +136,12 @@ test('first cloud heartbeat populates previously missing capabilities without hi
   const jobs = [{ id: 'completed', status: 'needs_review', phase: 'needs_review', created_at: '2026-11-14T00:00:00Z', lesson: {}, result: { automatedChecksPassed: true } }];
   const app = harness({ online: false, waking: true, emptyCapabilities: true, jobs }); await app.flush();
   app.field('gradeNumber').value = '3'; await app.dispatch(app.field('gradeNumber'), 'change');
-  assert.equal(app.field('topicId').disabled, true);
+  assert.equal(app.field('topicId').disabled, false);
   assert.equal(app.document.querySelectorAll('a.download').length, 2);
   app.setEmptyCapabilities(false); app.setOnline(true); app.setWaking(false);
   app.advance(5000); await app.nextRetry();
   assert.equal(app.field('topicId').disabled, false);
-  assert.deepEqual(Array.from(app.field('topicId').options, (o:any) => o.value), ['', 'ג10']);
+  assert.equal(app.field('topicId').options.length,26);
   assert.equal(app.posts.length, 0);
 });
 
@@ -165,7 +177,7 @@ test('pending dispatch is visible and refresh retains the original queued job wi
 
 test('planning uses enabled exact topic/level/count and makes no billed request', async () => {
   const app = harness(); await app.flush(); await app.choose();
-  assert.deepEqual(Array.from(app.field('topicId').options, (o: any) => o.value), ['', 'ג10']);
+  assert.equal(app.field('topicId').options.length,26);
   assert.equal(app.field('questionCount').value, '12'); assert.equal(app.field('questionCount').readOnly, true);
   assert.equal(app.field('level').options.find((o: any) => o.value === 'a').disabled, true);
   assert.equal(app.field('level').options.find((o: any) => o.value === 'e').disabled, true);
@@ -307,7 +319,7 @@ test('back preserves input while changing grade clears dependent choices and use
   await app.click('wizard-back'); assert.equal(app.field('gradeNumber').value, '3');
   app.field('gradeNumber').value = '9'; await app.dispatch(app.field('gradeNumber'), 'change'); await app.submit();
   assert.equal(app.field('topicId').value, ''); assert.equal(app.field('level').value, '');
-  assert.equal(app.element('topic-unavailable').hidden, false); assert.equal(app.element('plan-button').disabled, true);
+  assert.equal(app.element('topic-unavailable').hidden, true); assert.equal(app.element('plan-button').disabled, false);
   assert.equal(app.document.querySelector('#topic-unavailable a')?.getAttribute('href'), '/teachers/app');
   assert.equal(app.field('lastLesson').value, 'התקדמות שנשמרת במעבר אחורה'); assert.equal(app.field('minutes').value, '45');
   await app.choose('7', 'g7:equations');
@@ -361,4 +373,66 @@ test('topic change invalidates learned boundary but plain Back preserves it', as
   assert.equal(app.field('boundaryMaxDividend').value,'');
   assert.equal(app.form.querySelectorAll('[name=learnedDivisor]:checked').length,0);
   assert.equal(app.field('boundarySignedNumbers').value,'');
+});
+
+test('grade8 traverses the real five-step flow, retains explicit scope on refresh and enqueues only matching private runtime',async()=>{
+ const app=harness({general:true});await app.flush();await app.choose('8','g8:congruence');
+ assert.equal(app.field('topicId').options.length,18);
+ assert.equal(app.element('boundary-curriculum').hidden,false);
+ const selected=app.form.querySelector('[name=learnedConcept]:checked') as any;
+ assert.equal(selected.value,'g8:congruence#0');
+ app.field('lastLesson').value='סיימנו לתרגל זיהוי משולשים חופפים';
+ await app.click('refresh-generation');assert.equal(app.field('topicId').value,'g8:congruence');assert.equal(selected.checked,true);
+ await app.submit();assert.equal(app.form.hidden,true);assert.equal(app.element('create-button').disabled,false);
+ assert.match(app.element('plan-details').textContent,/חפיפה|חופפים/);
+ assert.equal(app.posts.length,0,'planning and refresh never enqueue');
+ await app.click('create-button');assert.equal(app.posts.length,1);
+ assert.equal(app.posts[0].lesson.version,3);
+ assert.deepEqual(app.posts[0].lesson.lessonBoundary,{version:1,kind:'curriculum_scope',curriculumSha256:GENERATION_CURRICULUM_SHA256,conceptIds:['g8:congruence#0']});
+});
+test('all topics remain plannable while worker is unready, but even a direct creation click cannot enqueue',async()=>{
+ const app=harness({general:true,emptyCapabilities:true});await app.flush();await app.choose('8','g8:congruence');await app.submit();
+ assert.equal(app.form.hidden,true);assert.equal(app.element('create-button').disabled,true);await app.click('create-button');
+ assert.equal(app.posts.length,0);assert.equal(app.calls.some(c=>c.url==='/api/noamBotConfig'),false);
+ app.setEmptyCapabilities(false);await app.click('refresh-generation');assert.equal(app.element('create-button').disabled,false);
+ assert.equal(app.posts.length,0,'readiness does not auto-create');
+});
+test('grade9 tracks are distinct and only expose their own level choices',async()=>{
+ const app=harness({general:true});await app.flush();await app.choose('9','g9m:equations');
+ assert.equal(app.field('topicId').options.length,43);
+ assert.match(app.field('topicId').selectedOptions[0].textContent,/מצומצמת/);
+ assert.equal(app.field('level').options.find((o:any)=>o.value==='a').disabled,true);
+ await app.click('wizard-back');await app.click('wizard-back');app.field('topicId').value='g9r:alg_technique';await app.dispatch(app.field('topicId'),'change');
+ assert.match(app.field('topicId').selectedOptions[0].textContent,/רגילה/);
+ assert.equal(app.field('level').options.find((o:any)=>o.value==='b').disabled,true);
+ assert.equal(app.field('level').options.find((o:any)=>o.value==='e').disabled,false);
+});
+test('catalog tampering and revoked owner access fail closed before any creation',async()=>{
+ const invalid=harness({general:true,catalogMismatch:true});await invalid.flush();await invalid.click('create-button');
+ assert.equal(invalid.element('plan-button').disabled,true);assert.equal(invalid.posts.length,0);
+ const app=harness({general:true});await app.flush();await app.choose('8','g8:congruence');await app.submit();
+ app.pendingReads.push({ok:false,body:{ok:false,code:'TEACHER_ACCESS_DENIED'}});await app.click('refresh-generation');await app.click('create-button');
+ assert.equal(app.element('create-button').disabled,true);assert.equal(app.posts.length,0);
+ assert.equal(app.calls.some(c=>c.url==='/api/noamBotConfig'),false);
+});
+
+test('general review drafts disclose human review and never expose a failed output as downloadable',async()=>{
+ const result={authoringProfile:'general-skill-source/v1',automatedChecksPassed:false,renderingChecksPassed:true,humanReviewRequired:true,checks:[{status:'PASS'},{status:'REVIEW'}]};
+ const job={id:'review-draft',status:'needs_review',created_at:'2026-11-16T00:00:00Z',lesson:{topicId:'g8:congruence'},result};
+ const app=harness({general:true,jobs:[job]});await app.flush();
+ assert.equal(app.document.querySelectorAll('a.download').length,2);assert.match(app.element('generation-jobs').textContent,/ההסברים או ההוכחות דורשים בדיקה שלך/);
+ assert.doesNotMatch(app.element('generation-jobs').textContent,/הבדיקות האוטומטיות עברו/);
+ for(const change of [{checks:[{status:'FAIL'}]},{checks:[]},{renderingChecksPassed:false},{automatedChecksPassed:true,checks:[{status:'FAIL'}]}]) {
+  app.setJobs([{...job,result:{...result,...change}}]);await app.visible();assert.equal(app.document.querySelectorAll('a.download').length,0);
+ }
+});
+
+test('punctuation aliases share one explicit choice while preserving every selected source concept ID',async()=>{
+ const app=harness({general:true});await app.flush();await app.choose('8','g8:congruence');
+ const inputs=Array.from(app.form.querySelectorAll('[name=learnedConcept]')) as any[];
+ assert.ok(inputs.length<curriculum.topics.find(t=>t.topicId==='g8:congruence')!.allowedConcepts.length);
+ const group=inputs.find(input=>JSON.parse(input.dataset.conceptIds).length>1);assert.ok(group);
+ inputs.forEach(input=>{input.checked=false;});group.checked=true;
+ await app.submit();await app.click('create-button');
+ assert.deepEqual(app.posts[0].lesson.lessonBoundary.conceptIds,JSON.parse(group.dataset.conceptIds));
 });

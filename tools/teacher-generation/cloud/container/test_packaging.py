@@ -108,7 +108,9 @@ class PackagingTests(unittest.TestCase):
             self.assertIn(package + '=' + info['version'], docker)
         locked = (HERE / 'requirements-linux-amd64.lock').read_text()
         wheels = json.loads((HERE / 'python-wheels.json').read_text())['wheels']
-        self.assertEqual(len(wheels), 29)
+        self.assertEqual(len(wheels), 31)
+        self.assertEqual({item['name']: item['version'] for item in wheels if item['name'] in ('sympy', 'mpmath')},
+                         {'sympy': '1.14.0', 'mpmath': '1.3.0'})
         for item in wheels:
             self.assertIn(item['name'] + '==' + item['version'] + ' --hash=sha256:' + item['sha256'], locked)
         for line in (APP / 'requirements.txt').read_text().splitlines():

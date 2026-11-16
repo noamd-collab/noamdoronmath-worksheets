@@ -1,10 +1,33 @@
 export type TeacherGenerationLevel = 'b' | 'a' | 'e';
 export type TeacherGenerationGoal = 'practice' | 'review' | 'introduce' | 'assessment';
+export const GENERATION_CURRICULUM_SHA256 = '57adca1891cbc2ef333709a6adee18045da23035f9e981f091673d2f8547527b';
+export const GENERAL_GENERATION_PROFILE = 'general-skill-source/v1';
+/** Only worker-authored private drafts with successful rendering may download.
+ * REVIEW is human work, never an automated PASS. A reported FAIL always denies. */
+export function isTeacherGenerationDraftReady(result: any): boolean {
+  if (!result || typeof result !== 'object') return false;
+  const checks = result.checks;
+  if (result.automatedChecksPassed === true) {
+    return checks === undefined || (Array.isArray(checks) && checks.every(check => check?.status === 'PASS'));
+  }
+  return result.automatedChecksPassed === false && result.authoringProfile === GENERAL_GENERATION_PROFILE &&
+    result.renderingChecksPassed === true && result.humanReviewRequired === true &&
+    Array.isArray(checks) && checks.length > 0 && checks.every(check => check?.status === 'PASS' || check?.status === 'REVIEW');
+}
+export interface GeneralTeacherGenerationCapabilities {
+  profile: typeof GENERAL_GENERATION_PROFILE;
+  curriculumSha256: typeof GENERATION_CURRICULUM_SHA256;
+  acceptedIntakeVersions: number[];
+  topics: { topicId: string; gradeNumber: number; title?: string; enabled: boolean;
+    readiness: 'private_draft'; levels: TeacherGenerationLevel[]; questionCounts: number[];
+    legacy?: {intakeVersion: 2; e2eVerified: true; levels: TeacherGenerationLevel[]; questionCounts: number[]} }[];
+}
 export type TeacherLessonBoundary =
   | { version: 1; kind: 'division_facts'; allowedDivisors: number[]; maxDividend: number }
-  | { version: 1; kind: 'linear_equations'; allowSignedNumbers: boolean };
+  | { version: 1; kind: 'linear_equations'; allowSignedNumbers: boolean }
+  | { version: 1; kind: 'curriculum_scope'; curriculumSha256: string; conceptIds: string[] };
 export interface TeacherGenerationIntake {
-  version: 1 | 2;
+  version: 1 | 2 | 3;
   lessonBoundary?: TeacherLessonBoundary;
   gradeNumber: number;
   topicId: string;
@@ -153,7 +176,7 @@ export function validateTeacherGenerationIntake(input: unknown, curriculum: Teac
   const raw = input as Record<string, unknown>;
   for (const field of Object.keys(raw)) if (!FIELDS.has(field)) add(field, 'UNKNOWN_FIELD', 'שדה שאינו נתמך במפרט השיעור.');
   const legacy = raw.version === 1 && options.allowLegacy === true;
-  if (raw.version !== 2 && !legacy) add('version', 'UNSUPPORTED_VERSION', 'יש לפתוח טיוטה חדשה ולבחור מה כבר נלמד.');
+  if (raw.version !== 2 && raw.version !== 3 && !legacy) add('version', 'UNSUPPORTED_VERSION', 'יש לפתוח טיוטה חדשה ולבחור מה כבר נלמד.');
   let lessonBoundary: TeacherLessonBoundary | undefined;
   const boundary = raw.lessonBoundary;
   const boundaryError = () => add('lessonBoundary', 'INVALID_LESSON_BOUNDARY', 'יש לבחור במפורש את גבולות החומר שנלמד בנושא הזה.');
@@ -191,6 +214,20 @@ export function validateTeacherGenerationIntake(input: unknown, curriculum: Teac
   const known = typeof topicId === 'string' ? byId.get(topicId) : undefined;
   if (!known) add('topicId', 'UNKNOWN_TOPIC', 'יש לבחור נושא קיים מהרשימה, ללא שינוי המזהה.');
   else if (known.gradeNumber !== grade) add('topicId', 'GRADE_TOPIC_MISMATCH', 'הנושא אינו שייך לכיתה שנבחרה.');
+  if (raw.version === 3) {
+    if (!isRecord(boundary) || Object.keys(boundary).sort().join(',') !== 'conceptIds,curriculumSha256,kind,version' ||
+        boundary.version !== 1 || boundary.kind !== 'curriculum_scope') boundaryError();
+    else if (boundary.curriculumSha256 !== GENERATION_CURRICULUM_SHA256) {
+      add('lessonBoundary', 'CURRICULUM_SCOPE_HASH_MISMATCH', 'רשימת הנושאים התעדכנה. יש לרענן ולבחור שוב את החומר שנלמד.');
+    } else if (known) {
+      const ids = boundary.conceptIds, validIds = known.allowedConcepts.map((_, index) => `${known.topicId}#${index}`);
+      if (!Array.isArray(ids) || ids.length < 1 || ids.length > validIds.length ||
+          ids.some(id => typeof id !== 'string' || !validIds.includes(id)) || new Set(ids).size !== ids.length) {
+        add('lessonBoundary', 'INVALID_CONCEPT_SELECTION', 'יש לסמן לפחות חלק אחד מתוך החומר שנלמד בנושא שנבחר.');
+      } else lessonBoundary = { version: 1, kind: 'curriculum_scope', curriculumSha256: GENERATION_CURRICULUM_SHA256,
+        conceptIds: validIds.filter(id => ids.includes(id)) };
+    }
+  }
   if (!['b', 'a', 'e'].includes(raw.level as string)) add('level', 'INVALID_LEVEL', 'יש לבחור רמה ב׳, רמה א׳ או מצוינות.');
   if (!['practice', 'review', 'introduce', 'assessment'].includes(raw.lessonGoal as string)) {
     add('lessonGoal', 'INVALID_GOAL', 'יש לבחור מטרת שיעור.');
@@ -256,7 +293,7 @@ export function validateTeacherGenerationIntake(input: unknown, curriculum: Teac
   }
   if (issues.length || !known) return { ok: false, issues };
   const value: TeacherGenerationIntake = {
-    version: legacy ? 1 : 2, ...(lessonBoundary ? { lessonBoundary } : {}), gradeNumber: grade as number, topicId: known.topicId,
+    version: legacy ? 1 : raw.version === 3 ? 3 : 2, ...(lessonBoundary ? { lessonBoundary } : {}), gradeNumber: grade as number, topicId: known.topicId,
     level: raw.level as TeacherGenerationLevel, lessonGoal: raw.lessonGoal as TeacherGenerationGoal,
     lastLesson: (raw.lastLesson as string).trim(), alreadyLearned: [...new Set((learned as string[]).map(item => item.trim()))],
     minutes: raw.minutes as number, questionCount: raw.questionCount as number,

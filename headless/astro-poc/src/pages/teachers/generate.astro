@@ -27,16 +27,21 @@ if (!access.ok) Astro.response.status = 403;
     <h2 id="topic-title" tabindex="-1">מה מתרגלים?</h2>
     <label for="generation-topic" class="visually-hidden">נושא התרגול</label>
     <select id="generation-topic" name="topicId" required disabled><option value="">קודם בוחרים כיתה</option></select>
-    <div id="topic-unavailable" class="notice" hidden><p>לכיתה הזו עדיין אין נושא זמין ליצירה. אפשר לחזור ולבחור כיתה אחרת, או להכין דף מתוך החומרים הקיימים.</p><a href="/teachers/app">לכלי המורים הקיימים</a></div>
+    <div id="topic-unavailable" class="notice" hidden><p>רשימת הנושאים עדיין נטענת. אפשר לרענן את המצב, או להכין דף מתוך החומרים הקיימים.</p><a href="/teachers/app">לכלי המורים הקיימים</a></div>
    </fieldset>
    <fieldset data-generation-step aria-labelledby="level-title" hidden disabled>
     <h2 id="level-title" tabindex="-1">באיזו רמת תרגול?</h2>
     <label for="generation-level" class="visually-hidden">רמת התרגול</label>
     <select id="generation-level" name="level" required><option value="">בחירת רמה</option><option value="b">רמה ב׳ · בסיסית</option><option value="a">רמה א׳ · מתקדמת</option><option value="e">מצוינות</option></select>
-    <p class="muted">מוצגות לבחירה רק הרמות שכבר זמינות בנושא הזה.</p>
+    <p class="muted">הרמות מתאימות לכיתה ולמסלול שנבחרו.</p>
    </fieldset>
    <fieldset data-generation-step aria-labelledby="lesson-title" hidden disabled>
     <h2 id="lesson-title" tabindex="-1">עד איפה הכיתה הגיעה?</h2>
+    <fieldset id="boundary-curriculum" class="lesson-boundary" tabindex="-1" hidden disabled>
+     <legend>מה מתוך הנושא כבר נלמד?</legend>
+     <p class="muted">סמנו את החומר שמתאים לדף הבא. היצירה תישאר בתוך הבחירה שלכם ותיעזר בתיאור השיעור האחרון.</p>
+     <div id="curriculum-concepts" class="concept-choices"></div>
+    </fieldset>
     <fieldset id="boundary-division" class="lesson-boundary" hidden disabled>
      <legend>באילו מחלקים כבר תרגלתם?</legend>
      <p class="muted">סמנו רק את המחלקים שכבר נלמדו.</p>
@@ -55,7 +60,7 @@ if (!access.ok) Astro.response.status = 403;
      <label>מה כבר מוכר לכיתה?<textarea name="alreadyLearned" rows="2" maxlength="1200" placeholder="למשל: לוח הכפל, הקשר בין כפל לחילוק. אפשר להפריד בין מושגים בשורה חדשה."></textarea></label>
      <label>מטרת הדף<select name="lessonGoal"><option value="practice">תרגול החומר שנלמד</option><option value="review">חזרה על חומר קודם</option></select></label>
      <div class="fields">
-      <label>משך התרגול המבוקש בדקות<input name="minutes" type="number" min="10" max="120" value="30" required /><small>בשלב הניסיון היקף הדף קבוע; התאמה אוטומטית לזמן עדיין אינה זמינה.</small></label>
+      <label>משך התרגול המבוקש בדקות<input name="minutes" type="number" min="10" max="120" value="30" required /><small>הזמן ינחה את הכנת הדף; קצב העבודה משתנה מכיתה לכיתה.</small></label>
       <label>מספר שאלות ראשיות<input name="questionCount" type="number" min="8" max="30" value="12" required /><small id="volume-help">ייתכנו כמה סעיפים בכל שאלה.</small></label>
      </div>
     </details>
