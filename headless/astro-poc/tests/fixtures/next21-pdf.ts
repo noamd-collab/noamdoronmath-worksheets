@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import reviewed from './next21-pdf-reviewed.json';
+import { beforeProbabilityNineCatalog, beforeProbabilityNineRegistry, beforeProbabilityNineCopy } from './probability-nine-pdf';
 
 export { reviewed as reviewedNext21 };
 export const reviewedNext21Ids = reviewed.additions.map(a => a.editionId);
@@ -11,7 +12,7 @@ const plain = (value: unknown): unknown => typeof value === 'string' ? value.rep
 
 /** Require the complete seven-edition overlay before recovering canonical451e. */
 export function beforeNext21Catalog<T>(catalog: T): T {
-  const restored: any = structuredClone(catalog);
+  const restored: any = beforeProbabilityNineCatalog(catalog);
   for (const addition of reviewed.additions) {
     const topic = restored.grades.find((g: any) => g.grade === addition.grade)
       .topics.find((t: any) => t.id === addition.topicId);
@@ -27,7 +28,7 @@ export function beforeNext21Catalog<T>(catalog: T): T {
 
 /** Exact rows, not a broad ID filter: substitutions and duplicate rows must fail. */
 export function beforeNext21Registry<T>(registry: T): T {
-  const restored: any = structuredClone(registry);
+  const restored: any = beforeProbabilityNineRegistry(registry);
   for (const addition of reviewed.additions) {
     const matches = restored.editions.filter((e: any) => e.editionId === addition.editionId);
     assert.deepEqual(matches, [addition.edition], `${addition.editionId}: exact reviewed registry row`);
@@ -38,6 +39,7 @@ export function beforeNext21Registry<T>(registry: T): T {
 
 /** Preserve historical snapshots by validating each new field before reversing it. */
 export function beforeNext21Copy<T>(slug: string, page: T): T {
+  page = beforeProbabilityNineCopy(slug, page);
   const delta = reviewed.landingDeltas.find(d => d.slug === slug);
   if (!delta) return page;
   const restored: any = structuredClone(page);

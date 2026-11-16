@@ -1505,6 +1505,132 @@
           "revision": 1
         }
       ]
+    },
+    {
+      "grade": 9,
+      "topicId": 10,
+      "editionId": "ms-20261116-prc-01-r1",
+      "label": "הסתברות בניסוי חד־שלבי: שכיחות יחסית ומאורע משלים — PDF",
+      "nativePrefix": "G9-T60",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "levels": [
+        {
+          "viewerLevel": "A",
+          "pdfId": "fc3d4dccf1af451bbb9ad46581480ee6",
+          "sourceSha256": "db1606cdc780a31e9dbed61016d30a4f456a088b0b2f804b24004aeff6819ac6",
+          "nativeExportSha256": "0f17c87b9d67d9088885aaad1b298125b35c6ecba2acb3e92a9b5b2aba170760",
+          "worksheetId": "ms-g9-prc-01-a-r1",
+          "revision": 1,
+          "key": "a",
+          "pdfSha256": "a0b6c63f37db8d2f47c86ed14ba2b4498ef52a45f1c9fdeb48784054b39338b2"
+        },
+        {
+          "viewerLevel": "B",
+          "pdfId": "86662699e40146c4b8e1f48c1f6dbfc6",
+          "sourceSha256": "2e58ba034e850a9b463c42c7761ef9e4d16848e500a4a7f7fd08ae9381dc0671",
+          "nativeExportSha256": "79d0e84c4219d6c565f159091479fbe0761e6d2176ff4bc506e9a0b5036847b2",
+          "worksheetId": "ms-g9-prc-01-b-r1",
+          "revision": 1,
+          "key": "b",
+          "pdfSha256": "411cbad93315815e274779239903873ebb3876fd6cd27e548c0558e8691f1604"
+        },
+        {
+          "viewerLevel": "E",
+          "pdfId": "3af3ed8d30b54e41ac7fad49c7d090f6",
+          "sourceSha256": "ab9e943011bfffc5da0bfcbe9272d01431219d7069644fa0f105e30a757a23cc",
+          "nativeExportSha256": "b95db5b76e4f5f915d7e6f52f90986dc563e4ce262d6e1b6112ef5eec4a7d199",
+          "worksheetId": "ms-g9-prc-01-c-r1",
+          "revision": 1,
+          "key": "c",
+          "pdfSha256": "153857a5c4c63ea5de77e26f78d055108b56036bb640ac0d37f9415c30b099a2"
+        }
+      ],
+      "status": "published"
+    },
+    {
+      "grade": 9,
+      "topicId": 10,
+      "editionId": "ms-20261116-prt-01-r1",
+      "label": "ניסוי דו־שלבי עם החזרה: שלבים בלתי־תלויים — PDF",
+      "nativePrefix": "G9-T61",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "levels": [
+        {
+          "viewerLevel": "A",
+          "pdfId": "f8358246328743b29a01dbe0ad7d45bb",
+          "sourceSha256": "1f3564e36dc431778b199d4f2fa7e50f82eb1f3becbadd3ae84ad02b9bf7ab2b",
+          "nativeExportSha256": "3a77d9e6b8eff8c38f78b6b95ed9725eda7f216e188acdc315f9f452c1963c5a",
+          "worksheetId": "ms-g9-prt-01-a-r1",
+          "revision": 1,
+          "key": "a",
+          "pdfSha256": "ef825ffc16f2cbf24d25ff372996be504af6df277b6507cc70eba67b57552521"
+        },
+        {
+          "viewerLevel": "B",
+          "pdfId": "894406739f3c4a87b8e07acb228fec68",
+          "sourceSha256": "1176254cc968c9934a64f37880e55988f1912e7fb69ecadddb43fe523803a007",
+          "nativeExportSha256": "5f0254dfbaf5e53fca59be1ab81e7b65288efc04c64d5cafa86234528879b2c4",
+          "worksheetId": "ms-g9-prt-01-b-r1",
+          "revision": 1,
+          "key": "b",
+          "pdfSha256": "a49b342f92f31065f70acc87e39143ece9a3a5bd932ac5ca42e8751995c408c4"
+        },
+        {
+          "viewerLevel": "E",
+          "pdfId": "742baf66b75245ef8593c5b50b343cde",
+          "sourceSha256": "21e43552ccbe989f393d2e332b9eb1a80de52b44bc17fd518d4409ed5af35d0b",
+          "nativeExportSha256": "e3fc1ee4dfd909a1569fd8a58b32cc90f8f0a9de7bcce5c6f1f97637a4611517",
+          "worksheetId": "ms-g9-prt-01-c-r1",
+          "revision": 1,
+          "key": "c",
+          "pdfSha256": "052983455218329ba53c5d39ec927d3a307796a4a8bb4e63a57cca3638d5d0f7"
+        }
+      ],
+      "status": "published"
+    },
+    {
+      "grade": 9,
+      "topicId": 10,
+      "editionId": "ms-20261116-prw-01-r1",
+      "label": "ניסוי דו־שלבי בלי החזרה: הסתברויות משתנות — PDF",
+      "nativePrefix": "G9-T62",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "levels": [
+        {
+          "viewerLevel": "A",
+          "pdfId": "3e1dbd50ab9c40debde8d01b2c93c3cf",
+          "sourceSha256": "6520cea54a1487f610ce64187cd65b8e149e13fb4690afcbff22974bab202179",
+          "nativeExportSha256": "8d9230db8ec31929d6f49ce408eaec104be4e7d548d5d62de2de7af6c307488b",
+          "worksheetId": "ms-g9-prw-01-a-r1",
+          "revision": 1,
+          "key": "a",
+          "pdfSha256": "43272f5b49ef2acbef8fa1df646dd2b06e60c33c69c5fa00affc4b360cf6d810"
+        },
+        {
+          "viewerLevel": "B",
+          "pdfId": "07c2a60830574f41aa54d49296e89111",
+          "sourceSha256": "71ab9b06377f66eae21eb404e45ce2b0121ec0d85d1eed21292bf703a7279bac",
+          "nativeExportSha256": "0844ca9a247c1925150775e3ef70e8b85722cf7443521d77a936650d330f3f93",
+          "worksheetId": "ms-g9-prw-01-b-r1",
+          "revision": 1,
+          "key": "b",
+          "pdfSha256": "3be00b17a0865d90c95ba11de6083c6273a3260106cf27044373d38c719bb3d6"
+        },
+        {
+          "viewerLevel": "E",
+          "pdfId": "0daf689cd1014571ab478c659af2b08c",
+          "sourceSha256": "9548b868f27826ab58d0cb41fae128d0b8f72c6d843c121672623c68b3382d61",
+          "nativeExportSha256": "247facdc01e9ad9d70d5e406cb27e46304ff8d4a41594cc3fbd1ce126bf29018",
+          "worksheetId": "ms-g9-prw-01-c-r1",
+          "revision": 1,
+          "key": "c",
+          "pdfSha256": "5efc5fc4e0b907ce36d5176efe7fb188e0fabc86c0e0168f1f4d82eb17f6f38a"
+        }
+      ],
+      "status": "published"
     }
   ]
 }

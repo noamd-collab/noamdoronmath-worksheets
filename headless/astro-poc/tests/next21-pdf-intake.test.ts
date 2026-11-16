@@ -12,6 +12,7 @@ import { collectViewerPdfIds } from '../scripts/sync-github-static.mjs';
 import { loadTopicPage, extractJsonLdFaq, synthesizeBodyFlow } from '../src/lib/topicPages';
 import { beforeNext21Catalog, beforeNext21Registry, beforeNext21Copy,
   reviewedNext21 as reviewed, reviewedNext21Ids as ids } from './fixtures/next21-pdf';
+import { beforeProbabilityNineRegistry } from './fixtures/probability-nine-pdf';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -41,8 +42,9 @@ test('seven fixed mappings add twenty-one frozen PDFs and recover the independen
   assert.deepEqual(ids, ['atq', 'apt', 'pyt', 'pya', 'grw', 'ctm', 'q1g'].map(key => `ms-20261115-${key}-01-r1`));
   assert.equal(new Set(reviewed.additions.flatMap(a => a.pdfIds)).size, 21);
   assert.equal(new Set(reviewed.additions.flatMap(a => a.edition.levels.map(l => l.pdfSha256))).size, 21);
-  assert.equal(registry.editions.length, 35);
-  assert.equal(registry.editions.flatMap((e: any) => e.levels).length, 105);
+  const afterNext21Registry = beforeProbabilityNineRegistry(registry);
+  assert.equal(afterNext21Registry.editions.length, 35);
+  assert.equal(afterNext21Registry.editions.flatMap((e: any) => e.levels).length, 105);
   assert.equal(priorRegistry.editions.length, 28);
   assert.equal(priorRegistry.editions.flatMap((e: any) => e.levels).length, 84);
   assert.equal(raw.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 973);

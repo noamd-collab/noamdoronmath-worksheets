@@ -1,0 +1,652 @@
+{
+  "baselineCommit": "58f2892dfcefcb2795689d16e9414ad085f471fb",
+  "baselineCatalogSha256": "17bedac54256640c2de45a4d311af4cd7c1d56e7fe7473313d30ef19f6dc4ce8",
+  "baselineRegistrySha256": "1dfb2f600477fb79ee6ce10ce9a6a2b8d1e6d26499c97b9a1548ea5fff9c1143",
+  "baselineLandingSha256": "96b802d9e0a2adbaa1a11f6dac9711ab4a2ffa7b428a67150c69cd8d097bd042",
+  "additions": [
+    {
+      "grade": 9,
+      "topicId": 10,
+      "editionId": "ms-20261116-prc-01-r1",
+      "nativePrefix": "G9-T60",
+      "slug": "probability-grade-9",
+      "pdfIds": [
+        "fc3d4dccf1af451bbb9ad46581480ee6",
+        "86662699e40146c4b8e1f48c1f6dbfc6",
+        "3af3ed8d30b54e41ac7fad49c7d090f6"
+      ],
+      "edition": {
+        "grade": 9,
+        "topicId": 10,
+        "editionId": "ms-20261116-prc-01-r1",
+        "label": "הסתברות בניסוי חד־שלבי: שכיחות יחסית ומאורע משלים — PDF",
+        "nativePrefix": "G9-T60",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "levels": [
+          {
+            "viewerLevel": "A",
+            "pdfId": "fc3d4dccf1af451bbb9ad46581480ee6",
+            "sourceSha256": "db1606cdc780a31e9dbed61016d30a4f456a088b0b2f804b24004aeff6819ac6",
+            "nativeExportSha256": "0f17c87b9d67d9088885aaad1b298125b35c6ecba2acb3e92a9b5b2aba170760",
+            "worksheetId": "ms-g9-prc-01-a-r1",
+            "revision": 1,
+            "key": "a",
+            "pdfSha256": "a0b6c63f37db8d2f47c86ed14ba2b4498ef52a45f1c9fdeb48784054b39338b2"
+          },
+          {
+            "viewerLevel": "B",
+            "pdfId": "86662699e40146c4b8e1f48c1f6dbfc6",
+            "sourceSha256": "2e58ba034e850a9b463c42c7761ef9e4d16848e500a4a7f7fd08ae9381dc0671",
+            "nativeExportSha256": "79d0e84c4219d6c565f159091479fbe0761e6d2176ff4bc506e9a0b5036847b2",
+            "worksheetId": "ms-g9-prc-01-b-r1",
+            "revision": 1,
+            "key": "b",
+            "pdfSha256": "411cbad93315815e274779239903873ebb3876fd6cd27e548c0558e8691f1604"
+          },
+          {
+            "viewerLevel": "E",
+            "pdfId": "3af3ed8d30b54e41ac7fad49c7d090f6",
+            "sourceSha256": "ab9e943011bfffc5da0bfcbe9272d01431219d7069644fa0f105e30a757a23cc",
+            "nativeExportSha256": "b95db5b76e4f5f915d7e6f52f90986dc563e4ce262d6e1b6112ef5eec4a7d199",
+            "worksheetId": "ms-g9-prc-01-c-r1",
+            "revision": 1,
+            "key": "c",
+            "pdfSha256": "153857a5c4c63ea5de77e26f78d055108b56036bb640ac0d37f9415c30b099a2"
+          }
+        ],
+        "status": "published"
+      },
+      "generatedEditionSha256": "7a48518415dcf9be412c0817a121eb1e015df578452d4905e2f842b3156aa51a"
+    },
+    {
+      "grade": 9,
+      "topicId": 10,
+      "editionId": "ms-20261116-prt-01-r1",
+      "nativePrefix": "G9-T61",
+      "slug": "probability-grade-9",
+      "pdfIds": [
+        "f8358246328743b29a01dbe0ad7d45bb",
+        "894406739f3c4a87b8e07acb228fec68",
+        "742baf66b75245ef8593c5b50b343cde"
+      ],
+      "edition": {
+        "grade": 9,
+        "topicId": 10,
+        "editionId": "ms-20261116-prt-01-r1",
+        "label": "ניסוי דו־שלבי עם החזרה: שלבים בלתי־תלויים — PDF",
+        "nativePrefix": "G9-T61",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "levels": [
+          {
+            "viewerLevel": "A",
+            "pdfId": "f8358246328743b29a01dbe0ad7d45bb",
+            "sourceSha256": "1f3564e36dc431778b199d4f2fa7e50f82eb1f3becbadd3ae84ad02b9bf7ab2b",
+            "nativeExportSha256": "3a77d9e6b8eff8c38f78b6b95ed9725eda7f216e188acdc315f9f452c1963c5a",
+            "worksheetId": "ms-g9-prt-01-a-r1",
+            "revision": 1,
+            "key": "a",
+            "pdfSha256": "ef825ffc16f2cbf24d25ff372996be504af6df277b6507cc70eba67b57552521"
+          },
+          {
+            "viewerLevel": "B",
+            "pdfId": "894406739f3c4a87b8e07acb228fec68",
+            "sourceSha256": "1176254cc968c9934a64f37880e55988f1912e7fb69ecadddb43fe523803a007",
+            "nativeExportSha256": "5f0254dfbaf5e53fca59be1ab81e7b65288efc04c64d5cafa86234528879b2c4",
+            "worksheetId": "ms-g9-prt-01-b-r1",
+            "revision": 1,
+            "key": "b",
+            "pdfSha256": "a49b342f92f31065f70acc87e39143ece9a3a5bd932ac5ca42e8751995c408c4"
+          },
+          {
+            "viewerLevel": "E",
+            "pdfId": "742baf66b75245ef8593c5b50b343cde",
+            "sourceSha256": "21e43552ccbe989f393d2e332b9eb1a80de52b44bc17fd518d4409ed5af35d0b",
+            "nativeExportSha256": "e3fc1ee4dfd909a1569fd8a58b32cc90f8f0a9de7bcce5c6f1f97637a4611517",
+            "worksheetId": "ms-g9-prt-01-c-r1",
+            "revision": 1,
+            "key": "c",
+            "pdfSha256": "052983455218329ba53c5d39ec927d3a307796a4a8bb4e63a57cca3638d5d0f7"
+          }
+        ],
+        "status": "published"
+      },
+      "generatedEditionSha256": "51cf533fa381393f3e63d89b0a2ed221e802d2d76418bf5c0bb4679f2d86f657"
+    },
+    {
+      "grade": 9,
+      "topicId": 10,
+      "editionId": "ms-20261116-prw-01-r1",
+      "nativePrefix": "G9-T62",
+      "slug": "probability-grade-9",
+      "pdfIds": [
+        "3e1dbd50ab9c40debde8d01b2c93c3cf",
+        "07c2a60830574f41aa54d49296e89111",
+        "0daf689cd1014571ab478c659af2b08c"
+      ],
+      "edition": {
+        "grade": 9,
+        "topicId": 10,
+        "editionId": "ms-20261116-prw-01-r1",
+        "label": "ניסוי דו־שלבי בלי החזרה: הסתברויות משתנות — PDF",
+        "nativePrefix": "G9-T62",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "levels": [
+          {
+            "viewerLevel": "A",
+            "pdfId": "3e1dbd50ab9c40debde8d01b2c93c3cf",
+            "sourceSha256": "6520cea54a1487f610ce64187cd65b8e149e13fb4690afcbff22974bab202179",
+            "nativeExportSha256": "8d9230db8ec31929d6f49ce408eaec104be4e7d548d5d62de2de7af6c307488b",
+            "worksheetId": "ms-g9-prw-01-a-r1",
+            "revision": 1,
+            "key": "a",
+            "pdfSha256": "43272f5b49ef2acbef8fa1df646dd2b06e60c33c69c5fa00affc4b360cf6d810"
+          },
+          {
+            "viewerLevel": "B",
+            "pdfId": "07c2a60830574f41aa54d49296e89111",
+            "sourceSha256": "71ab9b06377f66eae21eb404e45ce2b0121ec0d85d1eed21292bf703a7279bac",
+            "nativeExportSha256": "0844ca9a247c1925150775e3ef70e8b85722cf7443521d77a936650d330f3f93",
+            "worksheetId": "ms-g9-prw-01-b-r1",
+            "revision": 1,
+            "key": "b",
+            "pdfSha256": "3be00b17a0865d90c95ba11de6083c6273a3260106cf27044373d38c719bb3d6"
+          },
+          {
+            "viewerLevel": "E",
+            "pdfId": "0daf689cd1014571ab478c659af2b08c",
+            "sourceSha256": "9548b868f27826ab58d0cb41fae128d0b8f72c6d843c121672623c68b3382d61",
+            "nativeExportSha256": "247facdc01e9ad9d70d5e406cb27e46304ff8d4a41594cc3fbd1ce126bf29018",
+            "worksheetId": "ms-g9-prw-01-c-r1",
+            "revision": 1,
+            "key": "c",
+            "pdfSha256": "5efc5fc4e0b907ce36d5176efe7fb188e0fabc86c0e0168f1f4d82eb17f6f38a"
+          }
+        ],
+        "status": "published"
+      },
+      "generatedEditionSha256": "0f92205125ccd10ef9d6cdcaf61a6c3078739a3833b9d8956fcc8c977e1c9744"
+    }
+  ],
+  "landingDeltas": [
+    {
+      "slug": "probability-grade-9",
+      "fields": [
+        {
+          "path": [
+            "description"
+          ],
+          "before": "הסתברות לכיתה ט׳: מרחב מדגם, מאורעות וחישוב הסתברות. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+          "after": "הסתברות לכיתה ט׳: ניסוי חד־שלבי, שכיחות יחסית ומאורע משלים, וניסוי דו־שלבי עם החזרה ובלי החזרה. דפי PDF בשלוש רמות עם תשובות בסוף."
+        },
+        {
+          "path": [
+            "intro"
+          ],
+          "before": "לומדים לתאר מרחב תוצאות, לחשב הסתברות של מאורע ולבדוק תשובות. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+          "after": "לומדים לתאר מרחב תוצאות ולחשב הסתברות של מאורע. דפי העבודה כוללים ניסוי חד־שלבי, שכיחות יחסית ומאורע משלים, וגם ניסוי דו־שלבי עם החזרה ובלי החזרה. התרגול זמין ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה עם תשובות בסוף."
+        },
+        {
+          "path": [
+            "sections"
+          ],
+          "before": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "כאשר כל התוצאות שוות הסתברות, ההסתברות למאורע היא מספר התוצאות הרצויות חלקי מספר כל התוצאות האפשריות.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: בהטלת קובייה הוגנת ההסתברות לקבל מספר זוגי היא ⟨3¦6⟩=⟨1¦2⟩.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "הסתברות היא מספר בין 0 ל־1. בודקים שכל התוצאות במרחב התוצאות נספרו פעם אחת בלבד.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בשקית 3 כדורים אדומים ו־5 כחולים. מה ההסתברות להוציא כדור אדום?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: ⟨3¦8⟩.",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "כאשר כל התוצאות שוות הסתברות, ההסתברות למאורע היא מספר התוצאות הרצויות חלקי מספר כל התוצאות האפשריות.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: בהטלת קובייה הוגנת ההסתברות לקבל מספר זוגי היא ⟨3¦6⟩=⟨1¦2⟩.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "הסתברות היא מספר בין 0 ל־1. בודקים שכל התוצאות במרחב התוצאות נספרו פעם אחת בלבד.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בשקית 3 כדורים אדומים ו־5 כחולים. מה ההסתברות להוציא כדור אדום?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: ⟨3¦8⟩.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "דפי עבודה בהסתברות: ניסוי חד־שלבי ודו־שלבי",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "שלוש סדרות PDF עם תשובות בסוף, ברמות א׳, ב׳ ומצוינות: ניסוי חד־שלבי — שכיחות יחסית ומאורע משלים; ניסוי דו־שלבי עם החזרה — שלבים בלתי־תלויים; וניסוי דו־שלבי בלי החזרה — הסתברויות המשתנות בין השלבים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "משתמשים בטבלאות ובחישוב מכפלות כדי לתאר תוצאות ולהשוות הסתברויות. בחלק מהשאלות מתבקשים לשרטט עץ באופן עצמאי, במרחב הפתרון שבדף.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "bodyFlow"
+          ],
+          "before": [
+            {
+              "type": "paragraph",
+              "text": "לומדים לתאר מרחב תוצאות, לחשב הסתברות של מאורע ולבדוק תשובות. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "פתיחת דפי העבודה ובחירת רמה",
+              "href": "/worksheets?grade=9&topic=10",
+              "catalogTopicId": 10
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "כאשר כל התוצאות שוות הסתברות, ההסתברות למאורע היא מספר התוצאות הרצויות חלקי מספר כל התוצאות האפשריות.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "דוגמה: בהטלת קובייה הוגנת ההסתברות לקבל מספר זוגי היא ⟨3¦6⟩=⟨1¦2⟩.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טעויות נפוצות"
+            },
+            {
+              "type": "paragraph",
+              "text": "הסתברות היא מספר בין 0 ל־1. בודקים שכל התוצאות במרחב התוצאות נספרו פעם אחת בלבד.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "בשקית 3 כדורים אדומים ו־5 כחולים. מה ההסתברות להוציא כדור אדום?",
+              "role": "body"
+            }
+          ],
+          "after": [
+            {
+              "type": "paragraph",
+              "text": "לומדים לתאר מרחב תוצאות ולחשב הסתברות של מאורע. דפי העבודה כוללים ניסוי חד־שלבי, שכיחות יחסית ומאורע משלים, וגם ניסוי דו־שלבי עם החזרה ובלי החזרה. התרגול זמין ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה עם תשובות בסוף.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "פתיחת דפי העבודה ובחירת רמה",
+              "href": "/worksheets?grade=9&topic=10",
+              "catalogTopicId": 10
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "כאשר כל התוצאות שוות הסתברות, ההסתברות למאורע היא מספר התוצאות הרצויות חלקי מספר כל התוצאות האפשריות.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "דוגמה: בהטלת קובייה הוגנת ההסתברות לקבל מספר זוגי היא ⟨3¦6⟩=⟨1¦2⟩.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טעויות נפוצות"
+            },
+            {
+              "type": "paragraph",
+              "text": "הסתברות היא מספר בין 0 ל־1. בודקים שכל התוצאות במרחב התוצאות נספרו פעם אחת בלבד.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "בשקית 3 כדורים אדומים ו־5 כחולים. מה ההסתברות להוציא כדור אדום?",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "דפי עבודה בהסתברות: ניסוי חד־שלבי ודו־שלבי"
+            },
+            {
+              "type": "paragraph",
+              "text": "שלוש סדרות PDF עם תשובות בסוף, ברמות א׳, ב׳ ומצוינות: ניסוי חד־שלבי — שכיחות יחסית ומאורע משלים; ניסוי דו־שלבי עם החזרה — שלבים בלתי־תלויים; וניסוי דו־שלבי בלי החזרה — הסתברויות המשתנות בין השלבים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "משתמשים בטבלאות ובחישוב מכפלות כדי לתאר תוצאות ולהשוות הסתברויות. בחלק מהשאלות מתבקשים לשרטט עץ באופן עצמאי, במרחב הפתרון שבדף.",
+              "role": "body"
+            }
+          ]
+        },
+        {
+          "path": [
+            "updatedLine"
+          ],
+          "before": "נועם דורון מתמטיקה · עודכן 12.9.2026",
+          "after": "נועם דורון מתמטיקה · עודכן 16.11.2026"
+        },
+        {
+          "path": [
+            "faq"
+          ],
+          "before": [
+            {
+              "question": "האם דפי העבודה בנושא הסתברות לכיתה ט׳ מתאימים לכיתה ט׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          ],
+          "after": [
+            {
+              "question": "האם דפי העבודה בנושא הסתברות לכיתה ט׳ מתאימים לכיתה ט׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            },
+            {
+              "question": "מה ההבדל בין ניסוי עם החזרה לניסוי בלי החזרה?",
+              "answer": "עם החזרה, הרכב הקבוצה נשאר קבוע לאחר כל הוצאה, ולכן ההסתברויות בשלב הבא נשארות זהות. בלי החזרה, הרכב הקבוצה משתנה, ולכן מחשבים את הסתברויות השלב הבא לפי מה שכבר הוצא."
+            }
+          ]
+        },
+        {
+          "path": [
+            "faqGroups"
+          ],
+          "before": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא הסתברות לכיתה ט׳ מתאימים לכיתה ט׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא הסתברות לכיתה ט׳ מתאימים לכיתה ט׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                },
+                {
+                  "question": "מה ההבדל בין ניסוי עם החזרה לניסוי בלי החזרה?",
+                  "answer": "עם החזרה, הרכב הקבוצה נשאר קבוע לאחר כל הוצאה, ולכן ההסתברויות בשלב הבא נשארות זהות. בלי החזרה, הרכב הקבוצה משתנה, ולכן מחשבים את הסתברויות השלב הבא לפי מה שכבר הוצא."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "jsonLd"
+          ],
+          "before": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/probability-grade-9#webpage",
+                "url": "https://www.noamdoronmath.co.il/probability-grade-9",
+                "name": "הסתברות לכיתה ט׳ | דפי עבודה במתמטיקה – נועם דורון",
+                "description": "הסתברות לכיתה ט׳: מרחב מדגם, מאורעות וחישוב הסתברות. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/probability-grade-9#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/probability-grade-9#learning-resource",
+                "name": "הסתברות לכיתה ט׳",
+                "url": "https://www.noamdoronmath.co.il/probability-grade-9",
+                "description": "הסתברות לכיתה ט׳: מרחב מדגם, מאורעות וחישוב הסתברות. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+                "educationalLevel": "כיתה ט׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/probability-grade-9#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא הסתברות לכיתה ט׳ מתאימים לכיתה ט׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "after": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/probability-grade-9#webpage",
+                "url": "https://www.noamdoronmath.co.il/probability-grade-9",
+                "name": "הסתברות לכיתה ט׳ | דפי עבודה במתמטיקה – נועם דורון",
+                "description": "הסתברות לכיתה ט׳: ניסוי חד־שלבי, שכיחות יחסית ומאורע משלים, וניסוי דו־שלבי עם החזרה ובלי החזרה. דפי PDF בשלוש רמות עם תשובות בסוף.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/probability-grade-9#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/probability-grade-9#learning-resource",
+                "name": "הסתברות לכיתה ט׳",
+                "url": "https://www.noamdoronmath.co.il/probability-grade-9",
+                "description": "הסתברות לכיתה ט׳: ניסוי חד־שלבי, שכיחות יחסית ומאורע משלים, וניסוי דו־שלבי עם החזרה ובלי החזרה. דפי PDF בשלוש רמות עם תשובות בסוף.",
+                "educationalLevel": "כיתה ט׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/probability-grade-9#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא הסתברות לכיתה ט׳ מתאימים לכיתה ט׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "מה ההבדל בין ניסוי עם החזרה לניסוי בלי החזרה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "עם החזרה, הרכב הקבוצה נשאר קבוע לאחר כל הוצאה, ולכן ההסתברויות בשלב הבא נשארות זהות. בלי החזרה, הרכב הקבוצה משתנה, ולכן מחשבים את הסתברויות השלב הבא לפי מה שכבר הוצא."
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "baselineTopicSha256": "bf397ba5571403c2c5b416c5e14d8dbe586a60e09f1d0eb07daafb2683e6b604"
+}
