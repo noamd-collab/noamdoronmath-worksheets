@@ -2,9 +2,11 @@ import type { CatalogEdition, CatalogTopic } from './types';
 
 /** The old fields remain authoritative for all pre-edition links. */
 export function topicEditions(topic: CatalogTopic): CatalogEdition[] {
-  return [{ editionId: 'legacy', label: 'דפים קודמים', status: 'published',
-    levels: topic.levels, routing: topic.routing },
-  ...(topic.editions || []).filter(e => e.status === 'published')];
+  const binding = topic.reviewedBaseBinding;
+  const base: CatalogEdition = binding
+    ? { ...binding, editionId: 'legacy', viewerEditionId: binding.editionId }
+    : { editionId: 'legacy', label: 'דפים קודמים', status: 'published', levels: topic.levels, routing: topic.routing };
+  return [base, ...(topic.editions || []).filter(e => e.status === 'published')];
 }
 
 /** Missing default falls back; an explicit unknown edition never does. */

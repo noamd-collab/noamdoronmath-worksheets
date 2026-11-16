@@ -778,3 +778,28 @@ Checks and publication evidence: `docs/teacher-answer-word-20261104.md`.
 ### First567 correction evidence v2 — passive packing
 
 Moved the exact 15-row source/old/new hash proof to a required content-addressed build-only file and fixed scope module. Public record/readback and SSR retain the pinned scope digest, 15/45 counts and all baseline/review/payload/readback pins. No applied receipt or DB update is included. Focused tamper, regeneration and loader checks cover the split; final build budget is recorded in the private handoff.
+
+
+### 2026-11-16 — passive generic Ramzi integration and GRW source coverage
+
+- Ported the reviewed additional-edition contract and Noam AI guide navigation onto the published baseline. All existing PDF editions, defaults and historical first567/first15 contracts remain unchanged.
+- Nine PDF levels (RAT01, FRQ01, GRW01) have exact disabled measured/native source assets; production trust remains empty, with no activation request or claimed database/server receipt.
+- GRW01 adds 54 real exercise identities to fixtures and validates the same generic path, correct topic/native/edition routing, learning-ID append/withdrawal, source/tier mismatches and drawing denial. Positive receipts exist only in memory in tests.
+- Database imports, enforced server profiles, accepted final manifests, live activation and publication remain separate work. No source PDF, hint text or writing space changes here.
+
+
+### 2026-11-16 — actual first15 correction metadata
+
+- Added only the three hash-verified public metadata files from Root's independently checked database correction/readback: 15 subitems and 45 hint cells. The full 567-row post-update payload was verified; the other 552 rows, legacy bank and learning rows are preserved.
+- Regenerated the catalog and client snapshot with the strict existing correction contract. Historical v1 proof, PDF sources, native exports, worksheet identities, routing, learning catalog and drawing policy are unchanged.
+- The generic additional-edition path remains passive. This entry records candidate metadata, not publication or new full-bank semantic approval; public deployment and live hint verification remain separate.
+
+### 2026-11-16 — 33 additional passive source levels
+
+- Added the exact reviewed disabled manifests and public native exports for SGN01, ALG01, PRB01, EQN01, EXT01, SML01, FAC01, AFR01, PAR02, PAR03 and PAR04: 33 PDF levels and 904 exercise identities.
+- Added only the 71 original SVG files referenced by the nine PAR exports. The existing native SVG bundle includes them through its unchanged packing path. No drawing hints are enabled on nongeometry topics.
+- Source hashes and public URLs are recorded in `docs/ramzi-additional-source-assets-20261116.json`. All manifests remain `publishable: false` and `reviewRequired: true`; catalog, PDF URLs, worksheet/learning identities, trust, requests and routing remain unchanged.
+- This prepares source files only. It contains no hint text, full solutions, database receipt, activation or publication claim. RAT/FRQ/GRW source levels were already prepared separately.
+- Regression checks now distinguish the exact applied first15 metadata from the frozen historical catalog, and inventory the 42 disabled source levels separately from the 412 legacy and 12 active measured manifests. The regenerated search index changes only the two verified payload/readback hashes on those 12 already active levels; PDF links, search text and routing stay unchanged.
+
+- 2026-11-16: PR499 test-only follow-up fixes the protected-design catalog fence to compare each correction phase against its exact receipt; historical hashes unchanged. Full frozen run 2534/2535, drawing 8/8, SSR 4/4; repaired focused checks 41/41. Draft deferred for PDF-first work; no further full run or deployment.
