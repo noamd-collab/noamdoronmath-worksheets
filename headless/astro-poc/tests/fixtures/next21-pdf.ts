@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import reviewed from './next21-pdf-reviewed.json';
+import { beforeFirst15Correction } from '../helpers/beforeFirst15Correction';
 
 export { reviewed as reviewedNext21 };
 export const reviewedNext21Ids = reviewed.additions.map(a => a.editionId);
@@ -11,7 +12,7 @@ const plain = (value: unknown): unknown => typeof value === 'string' ? value.rep
 
 /** Require the complete seven-edition overlay before recovering canonical451e. */
 export function beforeNext21Catalog<T>(catalog: T): T {
-  const restored: any = structuredClone(catalog);
+  const restored: any = beforeFirst15Correction(catalog);
   for (const addition of reviewed.additions) {
     const topic = restored.grades.find((g: any) => g.grade === addition.grade)
       .topics.find((t: any) => t.id === addition.topicId);
