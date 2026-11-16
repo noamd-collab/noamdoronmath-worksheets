@@ -4,7 +4,7 @@
 - Five existing landings describe the exact practice scope of the new series. Titles, H1 and CTA order are unchanged; PAR-05 sits beside the four earlier parallelogram PDF series.
 - Exact reviewed PDF bytes were uploaded and downloaded from both media routes: 30 matching reads. Independent PDF reviews (Astra r02 deltas; claude007 for P3D-01) are attributed by exact SHA-256, not repeated here. Details: `docs/batch01-pdf-first-20261116.json`.
 - New editions open PDFs directly. No Word, native assets, teacher selection, learning activation, hints or database activation.
-- This is a source candidate, not a publication claim. Build, tests, payload measurement and desktop/phone evidence are recorded in the PR package.
+- This is a source candidate, not a publication claim. Build, tests and desktop/phone evidence are recorded in the PR package; the Wix payload has only a proxy estimate (+68,480 bytes, about 17.34 MB) and still needs a credentialed `npm run build`.
 
 ## 2026-11-15 — seven additional student PDF editions (candidate)
 

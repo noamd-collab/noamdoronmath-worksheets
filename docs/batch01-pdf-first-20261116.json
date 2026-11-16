@@ -14,7 +14,7 @@
   },
   "baselineCommit": "92bb57b5ee9acbca4032837c93690e3cec7e03db",
   "mediaReadbackSha256": "bb0cf0236b36bd1256e807be50408dacc1b2646cccc8d25523930e4dcaba8714",
-  "pdfManifestSha256": "469847134d27e00c4d6a5a1c05e8fa78cbd1a7c4018bf6432103815d89fe64ba",
+  "pdfManifestSha256": "84ff9b60d8a591a1b0ba566bedbc107835c764274973964086f0261fbc6187af",
   "wixImportIdsSha256": "093394ae3868bf05163edec76352648da4fc06bf12b208b86869193090ae1d13",
   "review": {
     "attribution": "Each student PDF set is bound by exact SHA-256 to a passing independent review by a different agent than its author. Four Carbon sets passed an r02 delta that closed every essential finding of a prior full review; G8-P3D-01 passed a full independent review. This integration rechecks the byte pins and media downloads and does not claim a new full math or visual review.",
