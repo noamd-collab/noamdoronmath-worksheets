@@ -368,7 +368,7 @@ function checkTitles(au, topicsByGrade) {
 
 /** Generated copies must equal what their generators would write from index.html today. */
 function checkGenerated(au, raw, rawLegacy, registry, activationEvidence) {
-  const built = mergeWorksheetEditions(buildCatalog(raw), registry, activationEvidence?.ready);
+  const built = mergeWorksheetEditions(buildCatalog(raw), registry, activationEvidence?.ready, activationEvidence?.hintCorrection);
   const v = validateCatalog(built, raw);
   for (const e of v.errors) au.find('error', 'EXPORT_VALIDATION', { source: P.index, evidence: 'scripts/lib/headless-catalog.cjs validateCatalog' }, e);
   for (const w of v.warnings) au.find('warning', 'EXPORT_VALIDATION', { source: P.index, evidence: 'scripts/lib/headless-catalog.cjs validateCatalog' }, w);
@@ -452,7 +452,7 @@ function learningOutputs(raw, registry, activationEvidence) {
   // deliberately invalid legacy DATA (checkIndexData reports duplicate IDs).
   // Do not call the writer, which rejects such fixtures before the audit can
   // name the actual defect. Registry identity validation remains strict.
-  const catalog = mergeWorksheetEditions(buildCatalog(raw), registry, activationEvidence?.ready);
+  const catalog = mergeWorksheetEditions(buildCatalog(raw), registry, activationEvidence?.ready, activationEvidence?.hintCorrection);
   for (const grade of catalog.grades) for (const topic of grade.topics) {
     for (const edition of topic.editions || []) for (const level of edition.levels) {
       if (!edition.routing.usesViewer) continue;
@@ -874,7 +874,7 @@ async function runAudit(options = {}) {
     validateRamziActivation(registry, activationEvidence);
     if (activationEvidence) au.input(P.activation, true);
     validationStage = 'registry';
-    mergeWorksheetEditions(buildCatalog(raw), registry, activationEvidence?.ready);
+    mergeWorksheetEditions(buildCatalog(raw), registry, activationEvidence?.ready, activationEvidence?.hintCorrection);
   } catch (error) {
     au.find('error', validationStage === 'activation' ? 'RAMZI_ACTIVATION_INVALID' : 'EDITIONS_INVALID',
       { source: validationStage === 'activation' ? P.activation : P.editions }, String(error.message));

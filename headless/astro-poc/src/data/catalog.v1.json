@@ -7210,10 +7210,10 @@
                     "itemCount": 53,
                     "manifestSha256": "904c7e12bcdffee45f6926cd7dd9900dd80e44495e2a7dd2b2a510d8933fa97d",
                     "nativeExportSha256": "6d0140f355dec8d52508a5fc6a29244b74966a65868d66a79368d6835b8d5770",
-                    "payloadSha256": "18556e703b4af97a75e5f27eab32336b6e55290fb0ae8077fd0e2b2a89ff3b22",
+                    "payloadSha256": "1a90e0be1dc8dced441ff37415de84ebab7f72c964cd633fb4d937ffccfbefee",
                     "sourceNativeExportSha256": "f9d0364e1069c086de35fbea075def1baac650686f3b67d4de1e8daa9038fd7b",
                     "status": "ready",
-                    "verifiedDbReadbackReceiptSha256": "bd2f58db3ad0afd5a29291d7a74cc27597be84b403f9183c60202c5b577aff85"
+                    "verifiedDbReadbackReceiptSha256": "01e60d4e1c477c53685bc95ec6e35bbd03520bdc59dce6f7e186e2f395188cf6"
                   },
                   "revision": 1,
                   "sourceSha256": "3e70499b80ba3e674bcabcb44eca2070dd9fbcc8d4e535fd59088c311c0eb1a4",
@@ -7234,10 +7234,10 @@
                     "itemCount": 57,
                     "manifestSha256": "71277396c904d321cf9c010da330e4bb19b6ffdc177d0cf11c908042cc0eb8a1",
                     "nativeExportSha256": "a5ffb15c66e0c49f9a7319c267179b33c5b0e9cf4bcdd6645f14badadd25b76d",
-                    "payloadSha256": "18556e703b4af97a75e5f27eab32336b6e55290fb0ae8077fd0e2b2a89ff3b22",
+                    "payloadSha256": "1a90e0be1dc8dced441ff37415de84ebab7f72c964cd633fb4d937ffccfbefee",
                     "sourceNativeExportSha256": "d2b157c9c72d42f989ecc71be111743f5eac32b93081a27b13cbf9d5a71ea4a0",
                     "status": "ready",
-                    "verifiedDbReadbackReceiptSha256": "bd2f58db3ad0afd5a29291d7a74cc27597be84b403f9183c60202c5b577aff85"
+                    "verifiedDbReadbackReceiptSha256": "01e60d4e1c477c53685bc95ec6e35bbd03520bdc59dce6f7e186e2f395188cf6"
                   },
                   "revision": 1,
                   "sourceSha256": "b7405715ea03ca9a2fc14b5f41a695c34b0cd08cda92018709f4973b1a3df3be",
@@ -7258,10 +7258,10 @@
                     "itemCount": 58,
                     "manifestSha256": "c480373f32a1ffbfac59ea5ae8b2bfa204f8e1fc50be38419c79e4a593e74918",
                     "nativeExportSha256": "b62d53a288c102e76ce8a425ecd1cf04959a9fad547583422c1819719dc391c0",
-                    "payloadSha256": "18556e703b4af97a75e5f27eab32336b6e55290fb0ae8077fd0e2b2a89ff3b22",
+                    "payloadSha256": "1a90e0be1dc8dced441ff37415de84ebab7f72c964cd633fb4d937ffccfbefee",
                     "sourceNativeExportSha256": "ab46b97bdaf090fddd2be314c902f5a27199624a3453cceca573897a90d7b637",
                     "status": "ready",
-                    "verifiedDbReadbackReceiptSha256": "bd2f58db3ad0afd5a29291d7a74cc27597be84b403f9183c60202c5b577aff85"
+                    "verifiedDbReadbackReceiptSha256": "01e60d4e1c477c53685bc95ec6e35bbd03520bdc59dce6f7e186e2f395188cf6"
                   },
                   "revision": 1,
                   "sourceSha256": "25f55280284ff0bd604c5b67704e1a1f12041e1b2dc4a7d88dc7f6edcde79722",
@@ -10075,10 +10075,10 @@
                     "itemCount": 52,
                     "manifestSha256": "859ec5cd2d432e90c330ae29eaa4d90cd50c82074e9341d7843014527b4025d8",
                     "nativeExportSha256": "92086004d8949ee0688d664b9b40c68a59881c9a1626fb1d9d0f82662843ed3c",
-                    "payloadSha256": "18556e703b4af97a75e5f27eab32336b6e55290fb0ae8077fd0e2b2a89ff3b22",
+                    "payloadSha256": "1a90e0be1dc8dced441ff37415de84ebab7f72c964cd633fb4d937ffccfbefee",
                     "sourceNativeExportSha256": "92086004d8949ee0688d664b9b40c68a59881c9a1626fb1d9d0f82662843ed3c",
                     "status": "ready",
-                    "verifiedDbReadbackReceiptSha256": "bd2f58db3ad0afd5a29291d7a74cc27597be84b403f9183c60202c5b577aff85"
+                    "verifiedDbReadbackReceiptSha256": "01e60d4e1c477c53685bc95ec6e35bbd03520bdc59dce6f7e186e2f395188cf6"
                   },
                   "revision": 1,
                   "sourceSha256": "ff98939fe719204ba771ce9a36a84c59e1ba79488408d239f632c3588afabba6",
@@ -10099,10 +10099,10 @@
                     "itemCount": 54,
                     "manifestSha256": "7e0206032ca48b21c25c01277e618fe5421f0bfc15cc70d88b93e0816ae1c06f",
                     "nativeExportSha256": "89e7d569c9418efd62ba6fdee28b0aba4be3f0fcb019c25dda321ddf47b4bcdc",
-                    "payloadSha256": "18556e703b4af97a75e5f27eab32336b6e55290fb0ae8077fd0e2b2a89ff3b22",
+                    "payloadSha256": "1a90e0be1dc8dced441ff37415de84ebab7f72c964cd633fb4d937ffccfbefee",
                     "sourceNativeExportSha256": "89e7d569c9418efd62ba6fdee28b0aba4be3f0fcb019c25dda321ddf47b4bcdc",
                     "status": "ready",
-                    "verifiedDbReadbackReceiptSha256": "bd2f58db3ad0afd5a29291d7a74cc27597be84b403f9183c60202c5b577aff85"
+                    "verifiedDbReadbackReceiptSha256": "01e60d4e1c477c53685bc95ec6e35bbd03520bdc59dce6f7e186e2f395188cf6"
                   },
                   "revision": 1,
                   "sourceSha256": "87de4cd462eb9bbf1a331530d824e86f659ad4019eae2547cea5a9c613910f3c",
@@ -10123,10 +10123,10 @@
                     "itemCount": 61,
                     "manifestSha256": "67d6a962ee1e672363f856524ba7f82b6897a5ac90b12e0a183d095dd44ba2ce",
                     "nativeExportSha256": "c18d2637caf8045f33ca26054c234ca1310f24fc2e89f0d17904f3ddf6c9ec4d",
-                    "payloadSha256": "18556e703b4af97a75e5f27eab32336b6e55290fb0ae8077fd0e2b2a89ff3b22",
+                    "payloadSha256": "1a90e0be1dc8dced441ff37415de84ebab7f72c964cd633fb4d937ffccfbefee",
                     "sourceNativeExportSha256": "c18d2637caf8045f33ca26054c234ca1310f24fc2e89f0d17904f3ddf6c9ec4d",
                     "status": "ready",
-                    "verifiedDbReadbackReceiptSha256": "bd2f58db3ad0afd5a29291d7a74cc27597be84b403f9183c60202c5b577aff85"
+                    "verifiedDbReadbackReceiptSha256": "01e60d4e1c477c53685bc95ec6e35bbd03520bdc59dce6f7e186e2f395188cf6"
                   },
                   "revision": 1,
                   "sourceSha256": "82f5e56a1404752387b9f28e50701450777f5536d1ba65bf52f9bbc2409d62b5",
@@ -10208,10 +10208,10 @@
                     "itemCount": 32,
                     "manifestSha256": "f2acd2c027f6308a914f683b65263bbbbb42ef3751926ab76a973859e35144c9",
                     "nativeExportSha256": "c47d1cbee65cdfcfe3f25147d0b45cb396e09b27dad934338476947a4a74e38e",
-                    "payloadSha256": "18556e703b4af97a75e5f27eab32336b6e55290fb0ae8077fd0e2b2a89ff3b22",
+                    "payloadSha256": "1a90e0be1dc8dced441ff37415de84ebab7f72c964cd633fb4d937ffccfbefee",
                     "sourceNativeExportSha256": "c47d1cbee65cdfcfe3f25147d0b45cb396e09b27dad934338476947a4a74e38e",
                     "status": "ready",
-                    "verifiedDbReadbackReceiptSha256": "bd2f58db3ad0afd5a29291d7a74cc27597be84b403f9183c60202c5b577aff85"
+                    "verifiedDbReadbackReceiptSha256": "01e60d4e1c477c53685bc95ec6e35bbd03520bdc59dce6f7e186e2f395188cf6"
                   },
                   "revision": 1,
                   "sourceSha256": "b61f645fd51b7885e00640cd7f274c7c3bd091e6fe338222fa5a7945707456bf",
@@ -10232,10 +10232,10 @@
                     "itemCount": 32,
                     "manifestSha256": "7585d2ca8d271577e423daea80b1c7ff57c414606f54e4ed59d3d3aa08c64581",
                     "nativeExportSha256": "dfa33744e8032f5b132b33a41de6d33dcdb34ac93f3265f7070cef5be13189ac",
-                    "payloadSha256": "18556e703b4af97a75e5f27eab32336b6e55290fb0ae8077fd0e2b2a89ff3b22",
+                    "payloadSha256": "1a90e0be1dc8dced441ff37415de84ebab7f72c964cd633fb4d937ffccfbefee",
                     "sourceNativeExportSha256": "dfa33744e8032f5b132b33a41de6d33dcdb34ac93f3265f7070cef5be13189ac",
                     "status": "ready",
-                    "verifiedDbReadbackReceiptSha256": "bd2f58db3ad0afd5a29291d7a74cc27597be84b403f9183c60202c5b577aff85"
+                    "verifiedDbReadbackReceiptSha256": "01e60d4e1c477c53685bc95ec6e35bbd03520bdc59dce6f7e186e2f395188cf6"
                   },
                   "revision": 1,
                   "sourceSha256": "3c05eb3af9ed00aaa43e279628503e4e8cb1eb6d6e6759bb668e80e94757014a",
@@ -10256,10 +10256,10 @@
                     "itemCount": 32,
                     "manifestSha256": "52aa255c9afb5ab63bc95922af4be4eafe6374fc9ea336af637dab4f220a2919",
                     "nativeExportSha256": "75594e72abe8152cf2c82d6bc2d6028b3660a8ae9cbdc9107a7c8c744f49d72e",
-                    "payloadSha256": "18556e703b4af97a75e5f27eab32336b6e55290fb0ae8077fd0e2b2a89ff3b22",
+                    "payloadSha256": "1a90e0be1dc8dced441ff37415de84ebab7f72c964cd633fb4d937ffccfbefee",
                     "sourceNativeExportSha256": "75594e72abe8152cf2c82d6bc2d6028b3660a8ae9cbdc9107a7c8c744f49d72e",
                     "status": "ready",
-                    "verifiedDbReadbackReceiptSha256": "bd2f58db3ad0afd5a29291d7a74cc27597be84b403f9183c60202c5b577aff85"
+                    "verifiedDbReadbackReceiptSha256": "01e60d4e1c477c53685bc95ec6e35bbd03520bdc59dce6f7e186e2f395188cf6"
                   },
                   "revision": 1,
                   "sourceSha256": "0c3b2150c11a02b20b68123ff4cc07c2d7e3f821f8c36fec9a8e3fb1d581aafa",
@@ -13017,10 +13017,10 @@
                     "itemCount": 46,
                     "manifestSha256": "48d05ef6d2fec377525e20ad96edb546c1bdbe1340b9dcf0c7004e4746282280",
                     "nativeExportSha256": "257aa507083772550d4802d7979fac7497cdb2b138ac0aaa0858b85f0ff7aa0d",
-                    "payloadSha256": "18556e703b4af97a75e5f27eab32336b6e55290fb0ae8077fd0e2b2a89ff3b22",
+                    "payloadSha256": "1a90e0be1dc8dced441ff37415de84ebab7f72c964cd633fb4d937ffccfbefee",
                     "sourceNativeExportSha256": "e59c88ead7045b5a57dcaacab460e04a561eae714c3441a1d6d1a26a0fa8d6b9",
                     "status": "ready",
-                    "verifiedDbReadbackReceiptSha256": "bd2f58db3ad0afd5a29291d7a74cc27597be84b403f9183c60202c5b577aff85"
+                    "verifiedDbReadbackReceiptSha256": "01e60d4e1c477c53685bc95ec6e35bbd03520bdc59dce6f7e186e2f395188cf6"
                   },
                   "revision": 1,
                   "sourceSha256": "fb338a0227435f45f4423a4bbb8c02551e48bd59a9a9cee17c7cef92dbfbaeaa",
@@ -13041,10 +13041,10 @@
                     "itemCount": 44,
                     "manifestSha256": "80a9a61070f8d184202d2f82459667296f49adb3b0a7ab482893e791c3c6e1ce",
                     "nativeExportSha256": "ffb911d66a2ac3fba7c83b0efc20131d0e3d6da84a8aff52b3471d88e0111df0",
-                    "payloadSha256": "18556e703b4af97a75e5f27eab32336b6e55290fb0ae8077fd0e2b2a89ff3b22",
+                    "payloadSha256": "1a90e0be1dc8dced441ff37415de84ebab7f72c964cd633fb4d937ffccfbefee",
                     "sourceNativeExportSha256": "15b95940e48e48388f82b663f16378a74f6328b5e415ca2089f16ba7b89d0ed2",
                     "status": "ready",
-                    "verifiedDbReadbackReceiptSha256": "bd2f58db3ad0afd5a29291d7a74cc27597be84b403f9183c60202c5b577aff85"
+                    "verifiedDbReadbackReceiptSha256": "01e60d4e1c477c53685bc95ec6e35bbd03520bdc59dce6f7e186e2f395188cf6"
                   },
                   "revision": 1,
                   "sourceSha256": "474709649580f511bf652cc9c4644e8a75252f34dd9e1a399900b4880232f6ea",
@@ -13065,10 +13065,10 @@
                     "itemCount": 46,
                     "manifestSha256": "4ec21b8c0f9e011b60c3ac68aca665a1a46b9eecde69bab65a0a67b34e1343f9",
                     "nativeExportSha256": "523150bc775cac5bb58487c94fa5c1e83416f7c87a2d09e99f4d1513f9148a62",
-                    "payloadSha256": "18556e703b4af97a75e5f27eab32336b6e55290fb0ae8077fd0e2b2a89ff3b22",
+                    "payloadSha256": "1a90e0be1dc8dced441ff37415de84ebab7f72c964cd633fb4d937ffccfbefee",
                     "sourceNativeExportSha256": "523150bc775cac5bb58487c94fa5c1e83416f7c87a2d09e99f4d1513f9148a62",
                     "status": "ready",
-                    "verifiedDbReadbackReceiptSha256": "bd2f58db3ad0afd5a29291d7a74cc27597be84b403f9183c60202c5b577aff85"
+                    "verifiedDbReadbackReceiptSha256": "01e60d4e1c477c53685bc95ec6e35bbd03520bdc59dce6f7e186e2f395188cf6"
                   },
                   "revision": 1,
                   "sourceSha256": "751da636ed85cdad991b5a886924f72a6c4a3deaf30a425f336369ddb03a896c",
@@ -15082,5 +15082,64 @@
       }
     ],
     "verifiedDbReadbackReceiptSha256": "bd2f58db3ad0afd5a29291d7a74cc27597be84b403f9183c60202c5b577aff85"
+  },
+  "ramziHintCorrection": {
+    "readback": {
+      "after": {
+        "learningRowsSha256": "0a075a04d8acbf67e7b2d26c9ad5d71089939bc98ef19f545b16ae2d32d79d41",
+        "legacyRowsSha256": "37dbedff9816a741081f34585f9d99f2502a836ba51fc6580578b5423a8e4f8e",
+        "unchangedRowsSha256": "34f250ecbdbf10bea05394cba79780dd1f83456ddbc695dd743f10e4e5c9f61b"
+      },
+      "authorId": "antigravity-flash",
+      "baselineDbReadbackReceiptSha256": "bd2f58db3ad0afd5a29291d7a74cc27597be84b403f9183c60202c5b577aff85",
+      "baselinePayloadSha256": "18556e703b4af97a75e5f27eab32336b6e55290fb0ae8077fd0e2b2a89ff3b22",
+      "baselineReadySha256": "bb9561f9b878f7ddf8c95b64785ba0a2426e53aba531f519b75b2c2809aafc5d",
+      "before": {
+        "learningRowsSha256": "0a075a04d8acbf67e7b2d26c9ad5d71089939bc98ef19f545b16ae2d32d79d41",
+        "legacyRowsSha256": "37dbedff9816a741081f34585f9d99f2502a836ba51fc6580578b5423a8e4f8e",
+        "unchangedRowsSha256": "34f250ecbdbf10bea05394cba79780dd1f83456ddbc695dd743f10e4e5c9f61b"
+      },
+      "beforeSnapshotSha256": "54e03d2cced524d1fc50126c624dcc395239541bb5d1a1eeae589aaa06e53ab1",
+      "correctedCsvSha256": "161a1f971deb0b6a75697d1a9abb4f4f0145c36cd0ecb1cdc272a3ba231363ca",
+      "correctionPayloadSha256": "50d3a0133e94938c5b055d85fd3787fb26ca5b927c10f4a80b5f25a80167591b",
+      "counts": {
+        "correctedHints": 45,
+        "correctedRows": 15,
+        "first567Rows": 567,
+        "learningRows": 968,
+        "legacyRows": 31761,
+        "unchangedRows": 552
+      },
+      "effectivePayloadSha256": "1a90e0be1dc8dced441ff37415de84ebab7f72c964cd633fb4d937ffccfbefee",
+      "hintCount": 45,
+      "observedAt": "2026-11-16T15:43:13.045Z",
+      "reviewerId": "codex-root",
+      "rootAcceptanceSha256": "e2f3b99244496aaea513bf558d9d3763e6ced5f335daaabf90c1a670818a78a2",
+      "rowCount": 15,
+      "rowScopeSha256": "c0374126e3b7b1cfb086ee84e38536dc9c0e3928b733c37dc3b1961c6b23b47f",
+      "schema": "noam-first567-hint-correction-db-readback/v2",
+      "semanticReviewSha256": "d4d24d5b351acaac3107cdfd2371823e4134542ab60cf482a37769e7d50ccde1",
+      "sourceReceiptSha256": "0b8ebd7a0e2a1c868cd47e198240b667816e1f5b5d5aaa9195f838f85e0c35da",
+      "status": "verified_exact_readback"
+    },
+    "record": {
+      "authorId": "antigravity-flash",
+      "baselineDbReadbackReceiptSha256": "bd2f58db3ad0afd5a29291d7a74cc27597be84b403f9183c60202c5b577aff85",
+      "baselinePayloadSha256": "18556e703b4af97a75e5f27eab32336b6e55290fb0ae8077fd0e2b2a89ff3b22",
+      "baselineReadySha256": "bb9561f9b878f7ddf8c95b64785ba0a2426e53aba531f519b75b2c2809aafc5d",
+      "beforeSnapshotSha256": "54e03d2cced524d1fc50126c624dcc395239541bb5d1a1eeae589aaa06e53ab1",
+      "correctedCsvSha256": "161a1f971deb0b6a75697d1a9abb4f4f0145c36cd0ecb1cdc272a3ba231363ca",
+      "correctionPayloadSha256": "50d3a0133e94938c5b055d85fd3787fb26ca5b927c10f4a80b5f25a80167591b",
+      "effectivePayloadSha256": "1a90e0be1dc8dced441ff37415de84ebab7f72c964cd633fb4d937ffccfbefee",
+      "hintCount": 45,
+      "readbackReceiptSha256": "01e60d4e1c477c53685bc95ec6e35bbd03520bdc59dce6f7e186e2f395188cf6",
+      "reviewerId": "codex-root",
+      "rootAcceptanceSha256": "e2f3b99244496aaea513bf558d9d3763e6ced5f335daaabf90c1a670818a78a2",
+      "rowCount": 15,
+      "rowScopeSha256": "c0374126e3b7b1cfb086ee84e38536dc9c0e3928b733c37dc3b1961c6b23b47f",
+      "schema": "noam-first567-hint-correction/v2",
+      "semanticReviewSha256": "d4d24d5b351acaac3107cdfd2371823e4134542ab60cf482a37769e7d50ccde1",
+      "status": "applied_verified"
+    }
   }
 }
