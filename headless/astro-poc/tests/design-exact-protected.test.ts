@@ -315,7 +315,11 @@ describe('exact-design protected live-baseline boundaries', () => {
         // Strip only that reviewed addition, then require the complete prior
         // snapshot hash below, including the already released grade-three edition.
         // Reverse the exact three additional PDF overlays before all older fences.
-        const catalog = beforeEqnSgnFacCatalog(JSON.parse(content));
+        const publishedCatalog = JSON.parse(content);
+        const activation = readFirst567Activation();
+        assert.deepEqual(publishedCatalog.ramziHintCorrection, activation.hintCorrection,
+          'current snapshot correction matches the verified receipt bundle');
+        const catalog = beforeEqnSgnFacCatalog(publishedCatalog);
         // Reverse only the exact MED01 base topic; retain RAT47 and all older fences.
         const medGrade = catalog.grades.find((g: any) => g.grade === 9);
         const medIndex = medGrade.topics.findIndex((t: any) => t.id === 48);
@@ -344,20 +348,22 @@ describe('exact-design protected live-baseline boundaries', () => {
           'משוואות רציונליות שברים אלגבריים מכנה משתנה פירוק מכנים תחום הצבה קבילות פתרונות פסילת פתרון מכנה משותף');
         ratGrade.topics.splice(ratIndex, 1);
         delete catalog.searchTerms['9']['47'];
-        const activation = readFirst567Activation();
         assert.deepEqual(catalog.ramziActivation, activation.ready, 'snapshot matches the real receipt bundle');
-        assert.deepEqual(catalog.ramziHintCorrection, activation.hintCorrection, 'optional correction matches the verified receipt bundle');
+        assert.equal(Object.hasOwn(catalog, 'ramziHintCorrection'), false,
+          'the strict historical projection already reversed the verified correction');
         if (activation.ready) {
           delete catalog.ramziActivation;
-          // Strip only the correction already verified against its real readback.
-          delete catalog.ramziHintCorrection;
           for (const grade of catalog.grades) for (const topic of grade.topics) for (const edition of topic.editions || []) {
             const readyLevels = edition.levels.filter((level: any) => activation.ramzi.has(edition.editionId + ':' + level.key));
             if (!readyLevels.length) continue;
             assert.equal(readyLevels.length, 3, 'only complete three-level activation');
             assert.equal(edition.routing.usesViewer, true); assert.equal(edition.routing.aiHintShown, true);
             for (const level of readyLevels) {
-              assert.deepEqual(level.ramzi, activation.ramzi.get(edition.editionId + ':' + level.key));
+              assert.deepEqual(level.ramzi, {
+                ...activation.ramzi.get(edition.editionId + ':' + level.key),
+                payloadSha256: activation.ready.payloadSha256,
+                verifiedDbReadbackReceiptSha256: activation.ready.verifiedDbReadbackReceiptSha256,
+              }, 'the projected unit retains the exact pre-correction activation');
               delete level.ramzi;
             }
             // Reverse only the reviewed readiness overlay, retaining every old
