@@ -16,7 +16,17 @@ import { listBlogSitemapEntries, renderBlogSitemapXml } from '../src/lib/blogSit
 import { collectBlogPostHrefs, listServedBlogPosts, localizeBlogHref } from '../src/lib/blogPosts.ts';
 import { loadAllGradeHubs } from '../src/lib/gradeHubs.ts';
 import { homePageJsonLd, loadHomePage } from '../src/lib/homePage.ts';
-import { renderLlmsTxt } from '../src/lib/llmsTxt.ts';
+import { didacticSequence } from '../../../noam-ai/site-companion/topic-order.js';
+import { loadCatalog } from '../src/lib/catalog/loadCatalog.ts';
+import {
+  LLMS_FULL_TOPICS_HEADING,
+  LLMS_FULL_UNPLACED_GROUP,
+  landingScopeSentence,
+  llmsFullTracks,
+  plainText,
+  renderLlmsFullTxt,
+} from '../src/lib/llmsFullTxt.ts';
+import { oneLine, renderLlmsTxt } from '../src/lib/llmsTxt.ts';
 import { REDIRECT_RULES } from '../src/lib/redirects.ts';
 import { resolveSiteHref } from '../src/lib/resolveSiteHref.ts';
 import { listMainPagePaths, renderPagesSitemapXml, renderSitemapIndexXml } from '../src/lib/siteSitemaps.ts';
@@ -228,5 +238,183 @@ describe('seo audit', () => {
     }
     assert.ok(text.includes(`${SITE_CANONICAL_ORIGIN}/blog`));
     assert.equal((text.match(/https:\/\/www\.noamdoronmath\.co\.il\/grade-[1-9]/g) || []).length >= 9, true);
+    assert.ok(text.includes(`(${SITE_CANONICAL_ORIGIN}/llms-full.txt)`), 'llms.txt links the full map');
+  });
+
+  it('llms-full.txt route is bundled data, announced in robots.txt and llms.txt', () => {
+    const route = readFileSync(fromTest('../src/pages/llms-full.txt.ts'), 'utf8');
+    assert.equal(route.includes('node:fs'), false);
+    assert.equal(route.includes('readdirSync'), false);
+    assert.match(route, /export const prerender = false;/);
+    assert.match(route, /renderLlmsFullTxt\(\)/);
+    assert.match(route, /'content-type': 'text\/plain; charset=utf-8'/);
+    assert.equal(existsSync(fromTest('../public/llms-full.txt')), false);
+    for (const indexable of [true, false]) {
+      assert.match(
+        renderRobotsTxt(indexable),
+        /^# LLM index: https:\/\/www\.noamdoronmath\.co\.il\/llms-full\.txt$/m,
+      );
+    }
+  });
+
+  it('llms-full.txt lists every topic landing once, by grade, track and catalog order', () => {
+    const text = renderLlmsFullTxt();
+    assert.match(text, /^# נועם דורון מתמטיקה/u);
+    assert.equal(text.includes('wix-site-host'), false);
+    for (const hub of loadAllGradeHubs()) {
+      assert.ok(text.includes(`(${SITE_CANONICAL_ORIGIN}${hub.path})`), hub.path);
+    }
+    assert.ok(text.includes(`(${SITE_CANONICAL_ORIGIN}/blog)`));
+
+    const lines = text.split('\n');
+    const start = lines.indexOf(LLMS_FULL_TOPICS_HEADING);
+    const end = lines.indexOf('## בלוג');
+    assert.ok(start > 0 && end > start, 'topic map sits between the grade hubs and the blog');
+    const section = lines.slice(start + 1, end);
+    assert.equal(/[‎‏‪-‮⁦-⁩]/.test(section.join('\n')), false, 'no bidi controls');
+
+    // Parse ### track / #### group / landing lines.
+    const LINE = /^- \[([^\]]+)\]\(https:\/\/www\.noamdoronmath\.co\.il(\/[^)\s]+)\): (.+)$/u;
+    const tracks: Array<{ heading: string; groups: Array<{ label: string; paths: string[] }> }> = [];
+    const scopeByPath = new Map<string, string>();
+    const titleByPath = new Map<string, string>();
+    for (const line of section) {
+      if (line.startsWith('### ')) tracks.push({ heading: line.slice(4), groups: [] });
+      else if (line.startsWith('#### ')) tracks.at(-1)?.groups.push({ label: line.slice(5), paths: [] });
+      else if (line.startsWith('- ')) {
+        const match = LINE.exec(line);
+        assert.ok(match, `landing line shape: ${line}`);
+        const group = tracks.at(-1)?.groups.at(-1);
+        assert.ok(group, `landing line outside a group: ${line}`);
+        group.paths.push(match[2]);
+        titleByPath.set(match[2], match[1]);
+        scopeByPath.set(match[2], match[3]);
+      } else {
+        assert.ok(line === '' || line.startsWith('> '), `unexpected line: ${line}`);
+      }
+    }
+
+    assert.deepEqual(
+      tracks.map((track) => track.heading),
+      [
+        'כיתה א׳',
+        'כיתה ב׳',
+        'כיתה ג׳',
+        'כיתה ד׳',
+        'כיתה ה׳',
+        'כיתה ו׳',
+        'כיתה ז׳',
+        'כיתה ח׳',
+        'כיתה ט׳ רגילה',
+        'כיתה ט׳ מצומצמת',
+      ],
+    );
+
+    // Every served landing exactly once, and every listed path is a routed page.
+    const redirected = new Set(REDIRECT_RULES.map((rule) => rule.from));
+    const pages = loadAllTopicPages().filter((page) => !redirected.has(page.path));
+    const listed = tracks.flatMap((track) => track.groups.flatMap((group) => group.paths));
+    assert.equal(new Set(listed).size, listed.length, 'no landing listed twice');
+    assert.deepEqual([...listed].sort(), pages.map((page) => page.path).sort());
+    for (const path of listed) {
+      assert.ok(existsSync(fromTest(`../src/pages${path}.astro`)), `route for ${path}`);
+    }
+    assert.equal(
+      tracks.some((track) => track.groups.some((group) => group.label === LLMS_FULL_UNPLACED_GROUP)),
+      false,
+      'every landing CTA resolves to a catalog topic; fix the landing CTA instead of listing it unplaced',
+    );
+
+    // Catalog order: group headings follow catalog groups, landings follow didacticSequence().
+    const catalog = loadCatalog();
+    const sequence = didacticSequence(catalog) as Array<{ grade: number; topicId: number; index: number }>;
+    const rank = new Map(sequence.map((item) => [`${item.grade}:${item.topicId}`, item.index]));
+    const byPath = new Map(pages.map((page) => [page.path, page]));
+    const trackPages = new Map(tracks.map((track) => [track.heading, track]));
+    for (const grade of catalog.grades) {
+      for (const reduced of [false, true]) {
+        const groups = grade.groups.filter((group) => group.reducedProgram === reduced);
+        if (!groups.length) continue;
+        const heading = grade.groups.some((group) => group.reducedProgram)
+          ? `${grade.label} ${reduced ? 'מצומצמת' : 'רגילה'}`
+          : grade.label;
+        const track = trackPages.get(heading);
+        assert.ok(track, heading);
+        const labels = groups.map((group) => group.label);
+        const shown = track.groups.map((group) => group.label);
+        assert.deepEqual(shown, labels.filter((label) => shown.includes(label)), `${heading} group order`);
+        let last = -1;
+        for (const group of track.groups) {
+          for (const path of group.paths) {
+            const page = byPath.get(path);
+            assert.ok(page, path);
+            assert.equal(page.grade, grade.grade, `${path} sits under its own grade`);
+            let topicId = page.catalogCta.catalogTopicId ?? Number(/[?&]topic=(\d+)/.exec(page.catalogCta.href)?.[1]);
+            const topic = grade.topics.find((entry) => entry.id === topicId);
+            assert.ok(topic, `${path} CTA topic ${topicId} is in the grade ${grade.grade} catalog`);
+            if (topic.parent != null) topicId = topic.parent;
+            const catalogGroup = grade.groups.find((entry) => entry.key === topic.group);
+            assert.equal(catalogGroup?.label, group.label, `${path} under its catalog group`);
+            assert.equal(Boolean(catalogGroup?.reducedProgram), reduced, `${path} under its catalog track`);
+            const position = rank.get(`${grade.grade}:${topicId}`);
+            assert.ok(position != null && position >= last, `${path} keeps catalog order`);
+            last = position;
+          }
+        }
+      }
+    }
+    assert.deepEqual(
+      trackPages.get('כיתה ז׳')?.groups.map((group) => group.label),
+      catalog.grades.find((grade) => grade.grade === 7)?.groups.map((group) => group.label),
+      'grade 7 runs by month, September to June',
+    );
+    assert.deepEqual(
+      trackPages.get('כיתה ט׳ מצומצמת')?.groups.map((group) => group.label),
+      ['ספטמבר', 'אוקטובר'],
+    );
+    assert.deepEqual(
+      trackPages.get('כיתה ט׳ מצומצמת')?.groups.flatMap((group) => group.paths).sort(),
+      [
+        '/linear-function-grade-9',
+        '/pythagorean-theorem-grade-9',
+        '/reading-graphs-grade-9',
+        '/triangle-calculations-grade-9',
+      ],
+    );
+    assert.deepEqual(
+      llmsFullTracks().map((track) => track.groups.reduce((n, group) => n + group.pages.length, 0)),
+      tracks.map((track) => track.groups.reduce((n, group) => n + group.paths.length, 0)),
+    );
+
+    // One line per landing: page title, then one sentence taken from its own description.
+    for (const path of listed) {
+      const page = byPath.get(path);
+      assert.ok(page, path);
+      assert.equal(titleByPath.get(path), oneLine(plainText(page.h1), 80), path);
+      const scope = scopeByPath.get(path) ?? '';
+      assert.equal(scope, landingScopeSentence(page.description), path);
+      assert.equal(scope.split(/(?<=[.!?])\s+/u).length, 1, `${path} scope is one sentence`);
+      assert.ok(plainText(page.description).includes(scope.replace(/…$/u, '')), `${path} scope comes from the description`);
+      assert.equal(/\d\s*\/\s*\d/.test(`${titleByPath.get(path)} ${scope}`), false, `${path} has no slash fraction`);
+    }
+  });
+
+  it('llms-full scope sentence skips sentences that only advertise the sheets', () => {
+    assert.equal(
+      landingScopeSentence('דפי עבודה בזוויות לכיתה ז׳ בשלוש רמות, בחינם וללא הרשמה. מזהים זוויות צמודות וקודקודיות.'),
+      'מזהים זוויות צמודות וקודקודיות.',
+    );
+    assert.equal(
+      landingScopeSentence('משפט פיתגורס לכיתה ז׳: זיהוי היתר והניצבים. דפי PDF נוספים בשלוש רמות, עם תשובות סופיות.'),
+      'משפט פיתגורס לכיתה ז׳: זיהוי היתר והניצבים.',
+    );
+    assert.equal(
+      landingScopeSentence('שיפוע לכיתה ח׳: הישר ⁦y = 0.5x⁩ ומשמעותו. בחינם.'),
+      'שיפוע לכיתה ח׳: הישר y = 0.5x ומשמעותו.',
+    );
+    assert.equal(
+      landingScopeSentence('דפי עבודה חינמיים בנפח חרוט לכיתה ח׳. הורידו בחינם.'),
+      'דפי עבודה חינמיים בנפח חרוט לכיתה ח׳.',
+    );
   });
 });

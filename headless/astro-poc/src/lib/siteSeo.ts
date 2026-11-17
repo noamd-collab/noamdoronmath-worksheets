@@ -77,6 +77,7 @@ export function renderRobotsTxt(indexable: boolean): string {
     '',
     `Sitemap: ${SITE_CANONICAL_ORIGIN}/sitemap-index.xml`,
     `# ${SITE_CANONICAL_ORIGIN}/llms.txt`,
+    `# LLM index: ${SITE_CANONICAL_ORIGIN}/llms-full.txt`,
     '',
   );
   return lines.join('\n');
