@@ -28,7 +28,7 @@ export interface LlmsFullTrack {
   grade: number;
   reduced: boolean;
   heading: string;
-  /** Set on a reduced track: what the track is, and that only some regular pages are also in it. */
+  /** Set on a reduced track: what the track is, and that only some regular topics are also in it. */
   note?: string;
   groups: LlmsFullGroup[];
 }
@@ -47,9 +47,11 @@ interface DidacticItem {
   index: number;
 }
 
-const BIDI_CONTROLS = /[‎‏‪-‮⁦-⁩]/g;
-/** Sentences that only say the sheets are free or downloadable are not scope. */
-const PROMO_SENTENCE = /בחינם|ללא הרשמה|חינמי|להורדה/;
+const BIDI_CONTROLS = /[\u200E\u200F\u202A-\u202E\u2066-\u2069]/g;
+/** Words that only say the sheets are free or downloadable; they are not scope. */
+const PROMO_PHRASE = /בחינם|ללא הרשמה|חינמי|להורדה/;
+/** Clause boundaries inside a sentence: a comma or semicolon, or a spaced dash. */
+const CLAUSE_SEPARATOR = /(\s*[,;]\s+|\s+[—–-]\s+)/u;
 
 /** Visible text without invisible direction marks, on one line. */
 export function plainText(value: string): string {
@@ -59,14 +61,64 @@ export function plainText(value: string): string {
     .trim();
 }
 
-/** The first sentence of the page description that says what the topic covers. */
+/**
+ * The sentence without its promo clauses, or null when the promo is the
+ * sentence itself. A clause that holds a promo phrase is dropped from its
+ * last "ו…" word before the phrase ("…המשולש וקבלו רמז ללא הרשמה" keeps
+ * "…המשולש"), or whole when no such word precedes it (", ללא הרשמה").
+ * A promo in the opening clause ("דפי עבודה חינמיים ב…") means the sentence
+ * is about the free sheets, so it is not kept. What remains must still be a
+ * sentence of at least three words with no promo phrase.
+ */
+export function withoutPromoClauses(sentence: string): string | null {
+  if (!PROMO_PHRASE.test(sentence)) return sentence;
+  const end = /[.!?]$/u.exec(sentence)?.[0] ?? '';
+  const parts = (end ? sentence.slice(0, -end.length) : sentence).split(CLAUSE_SEPARATOR);
+  const kept: string[] = [];
+  // split() with a capturing group alternates clause, separator, clause, ...
+  for (let index = 0; index < parts.length; index += 2) {
+    const clause = parts[index];
+    const promo = PROMO_PHRASE.exec(clause);
+    let keep = clause;
+    if (promo) {
+      const before = clause.slice(0, promo.index).trim().split(/\s+/u).filter(Boolean);
+      let cut = -1;
+      for (let word = before.length - 1; word >= 1; word -= 1) {
+        if (/^ו\S/u.test(before[word])) {
+          cut = word;
+          break;
+        }
+      }
+      if (cut === -1) {
+        if (index === 0) return null;
+        continue;
+      }
+      keep = before.slice(0, cut).join(' ');
+    }
+    if (kept.length) kept.push(parts[index - 1]);
+    kept.push(keep);
+  }
+  const result = kept.join('').trim();
+  if (PROMO_PHRASE.test(result) || result.split(/\s+/u).filter(Boolean).length < 3) return null;
+  return `${result}${end}`;
+}
+
+/**
+ * The first sentence of the page description that says what the topic covers:
+ * the first sentence with no promo phrase; else the first one that is still a
+ * sentence once its promo clauses are removed; else the first sentence.
+ */
 export function landingScopeSentence(description: string): string {
   const text = plainText(description);
   const sentences = text
     .split(/(?<=[.!?])\s+/u)
     .map((sentence) => sentence.trim())
     .filter(Boolean);
-  const scope = sentences.find((sentence) => !PROMO_SENTENCE.test(sentence)) ?? sentences[0] ?? text;
+  const scope =
+    sentences.find((sentence) => !PROMO_PHRASE.test(sentence)) ??
+    sentences.map(withoutPromoClauses).find((sentence): sentence is string => sentence != null) ??
+    sentences[0] ??
+    text;
   return oneLine(scope);
 }
 
@@ -136,7 +188,7 @@ export function llmsFullTracks(catalog: CatalogV1 = loadCatalog()): LlmsFullTrac
         ...(reduced && grade
           ? {
               // The track description is the site's own wording (WorksheetsClient.tsx tracknote).
-              note: `כאן מופיעים רק נושאי הקטלוג שסומנו למסלול המצומצם (מסלול נפרד לקראת 3 יח״ל, לפי פריסת תשפ״ז). חלק מדפי ${trackHeading(grade, false)} שלמעלה נלמדים גם במסלול המצומצם.`,
+              note: `כאן מופיעים רק נושאי הקטלוג שסומנו למסלול המצומצם (מסלול נפרד לקראת 3 יח״ל, לפי פריסת תשפ״ז). חלק מהנושאים של ${trackHeading(grade, false)} שלמעלה נלמדים גם במסלול המצומצם.`,
             }
           : {}),
         groups,

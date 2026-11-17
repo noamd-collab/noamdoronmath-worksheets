@@ -25,6 +25,7 @@ import {
   llmsFullTracks,
   plainText,
   renderLlmsFullTxt,
+  withoutPromoClauses,
 } from '../src/lib/llmsFullTxt.ts';
 import { oneLine, renderLlmsTxt } from '../src/lib/llmsTxt.ts';
 import { REDIRECT_RULES } from '../src/lib/redirects.ts';
@@ -41,6 +42,7 @@ import {
 } from '../src/lib/structuredData.ts';
 import { nextGradeRelatedTopics } from '../src/lib/topicFamilies.ts';
 import { loadAllTopicPages } from '../src/lib/topicPages.ts';
+import { GET as getLlmsFullTxt } from '../src/pages/llms-full.txt.ts';
 
 function fromTest(relativePath: string): string {
   return fileURLToPath(new URL(relativePath, import.meta.url));
@@ -248,6 +250,7 @@ describe('seo audit', () => {
     assert.match(route, /export const prerender = false;/);
     assert.match(route, /renderLlmsFullTxt\(\)/);
     assert.match(route, /'content-type': 'text\/plain; charset=utf-8'/);
+    assert.match(route, /'x-robots-tag': 'noindex'/);
     assert.equal(existsSync(fromTest('../public/llms-full.txt')), false);
     for (const indexable of [true, false]) {
       assert.match(
@@ -255,6 +258,15 @@ describe('seo audit', () => {
         /^# LLM index: https:\/\/www\.noamdoronmath\.co\.il\/llms-full\.txt$/m,
       );
     }
+  });
+
+  it('llms-full.txt is served as plain text that search engines do not index', async () => {
+    const response = await getLlmsFullTxt({} as never);
+    assert.equal(response.status, 200);
+    assert.equal(response.headers.get('content-type'), 'text/plain; charset=utf-8');
+    assert.equal(response.headers.get('cache-control'), 'public, max-age=3600');
+    assert.equal(response.headers.get('x-robots-tag'), 'noindex', 'a text copy of all landings must not rank against them');
+    assert.equal(await response.text(), renderLlmsFullTxt());
   });
 
   it('llms-full.txt lists every topic landing once, by grade, track and catalog order', () => {
@@ -271,7 +283,7 @@ describe('seo audit', () => {
     const end = lines.indexOf('## בלוג');
     assert.ok(start > 0 && end > start, 'topic map sits between the grade hubs and the blog');
     const section = lines.slice(start + 1, end);
-    assert.equal(/[‎‏‪-‮⁦-⁩]/.test(section.join('\n')), false, 'no bidi controls');
+    assert.equal(/[\u200E\u200F\u202A-\u202E\u2066-\u2069]/.test(section.join('\n')), false, 'no bidi controls');
 
     // Parse ### track / #### group / landing lines.
     const LINE = /^- \[([^\]]+)\]\(https:\/\/www\.noamdoronmath\.co\.il(\/[^)\s]+)\): (.+)$/u;
@@ -368,24 +380,40 @@ describe('seo audit', () => {
       catalog.grades.find((grade) => grade.grade === 7)?.groups.map((group) => group.label),
       'grade 7 runs by month, September to June',
     );
-    assert.deepEqual(
-      trackPages.get('כיתה ט׳ מצומצמת')?.groups.map((group) => group.label),
-      ['ספטמבר', 'אוקטובר'],
-    );
-    assert.deepEqual(
-      trackPages.get('כיתה ט׳ מצומצמת')?.groups.flatMap((group) => group.paths).sort(),
-      [
-        '/linear-function-grade-9',
-        '/pythagorean-theorem-grade-9',
-        '/reading-graphs-grade-9',
-        '/triangle-calculations-grade-9',
-      ],
-    );
+    // The reduced track holds exactly the landings whose CTA topic sits in a
+    // reducedProgram catalog group, under those groups in catalog order. Derived
+    // from the catalog so new reduced-track topics and months need no test edit.
+    for (const grade of catalog.grades.filter((entry) => entry.groups.some((group) => group.reducedProgram))) {
+      const reducedGroups = grade.groups.filter((group) => group.reducedProgram);
+      const groupOfLanding = (page: (typeof pages)[number]) => {
+        let topicId = page.catalogCta.catalogTopicId ?? Number(/[?&]topic=(\d+)/.exec(page.catalogCta.href)?.[1]);
+        const topic = grade.topics.find((entry) => entry.id === topicId);
+        if (topic?.parent != null) topicId = topic.parent;
+        const group = grade.topics.find((entry) => entry.id === topicId)?.group;
+        return reducedGroups.find((entry) => entry.key === group);
+      };
+      const reducedLandings = pages.filter((page) => page.grade === grade.grade && groupOfLanding(page));
+      const reducedTrack = trackPages.get(`${grade.label} מצומצמת`);
+      assert.ok(reducedLandings.length > 0, `${grade.label}: the catalog marks reduced-track topics with landings`);
+      assert.ok(reducedTrack, `${grade.label} מצומצמת is listed`);
+      assert.deepEqual(
+        reducedTrack.groups.map((group) => group.label),
+        reducedGroups
+          .filter((group) => reducedLandings.some((page) => groupOfLanding(page) === group))
+          .map((group) => group.label),
+        `${grade.label} מצומצמת groups follow the reducedProgram catalog groups`,
+      );
+      assert.deepEqual(
+        reducedTrack.groups.flatMap((group) => group.paths).sort(),
+        reducedLandings.map((page) => page.path).sort(),
+        `${grade.label} מצומצמת lists exactly the reduced-track landings`,
+      );
+    }
     // The reduced-track note must not say every regular ט׳ page is in the reduced track.
     const reducedNote = llmsFullTracks().find((track) => track.reduced)?.note ?? '';
     assert.ok(reducedNote.includes('מסלול נפרד לקראת 3 יח״ל'), 'reduced track described in the site wording');
-    assert.ok(reducedNote.includes('חלק מדפי כיתה ט׳ רגילה'), 'only some regular pages are shared');
-    assert.equal(/משמשים גם|כל דפי/u.test(reducedNote), false, 'no claim that all regular pages are shared');
+    assert.ok(reducedNote.includes('חלק מהנושאים של כיתה ט׳ רגילה'), 'only some regular topics are shared');
+    assert.equal(/משמשים גם|כל דפי|כל הנושאים/u.test(reducedNote), false, 'no claim that all regular topics are shared');
     assert.ok(lines.includes(`> ${reducedNote}`), 'reduced-track note is printed under its heading');
     assert.deepEqual(
       llmsFullTracks().map((track) => track.groups.reduce((n, group) => n + group.pages.length, 0)),
@@ -400,7 +428,20 @@ describe('seo audit', () => {
       const scope = scopeByPath.get(path) ?? '';
       assert.equal(scope, landingScopeSentence(page.description), path);
       assert.equal(scope.split(/(?<=[.!?])\s+/u).length, 1, `${path} scope is one sentence`);
-      assert.ok(plainText(page.description).includes(scope.replace(/…$/u, '')), `${path} scope comes from the description`);
+      // Words of the scope appear in the description in the same order (promo clauses may be cut).
+      const bare = (word: string) => word.replace(/[,;:.!?]$/u, '');
+      const descriptionWords = plainText(page.description).split(' ');
+      const scopeWords = scope.replace(/…$/u, '').split(' ');
+      let from = 0;
+      scopeWords.forEach((word, position) => {
+        const truncatedWord = scope.endsWith('…') && position === scopeWords.length - 1;
+        const at = descriptionWords.findIndex(
+          (candidate, index) =>
+            index >= from && (truncatedWord ? candidate.startsWith(word) : bare(candidate) === bare(word)),
+        );
+        assert.ok(at >= 0, `${path} scope comes from the description, in order: ${word}`);
+        from = at + 1;
+      });
       assert.equal(/\d\s*\/\s*\d/.test(`${titleByPath.get(path)} ${scope}`), false, `${path} has no slash fraction`);
     }
   });
@@ -415,12 +456,58 @@ describe('seo audit', () => {
       'משפט פיתגורס לכיתה ז׳: זיהוי היתר והניצבים.',
     );
     assert.equal(
-      landingScopeSentence('שיפוע לכיתה ח׳: הישר ⁦y = 0.5x⁩ ומשמעותו. בחינם.'),
+      landingScopeSentence('שיפוע לכיתה ח׳: הישר \u2066y = 0.5x\u2069 ומשמעותו. בחינם.'),
       'שיפוע לכיתה ח׳: הישר y = 0.5x ומשמעותו.',
     );
+    // No sentence survives without its promo text: the first sentence is kept.
     assert.equal(
       landingScopeSentence('דפי עבודה חינמיים בנפח חרוט לכיתה ח׳. הורידו בחינם.'),
       'דפי עבודה חינמיים בנפח חרוט לכיתה ח׳.',
     );
+  });
+
+  it('llms-full scope sentence strips a promo clause and keeps the scope sentence', () => {
+    // isosceles-triangle-properties-grade-8 as it read at 37213b1c, before batch 2a
+    // rewrote it: both sentences carry a promo phrase. The first is about the free
+    // sheets; the second is the scope once its "ללא הרשמה" clause is removed.
+    assert.equal(
+      landingScopeSentence(
+        'דפי עבודה חינמיים במשולש שווה שוקיים לכיתה ח׳, בשלוש רמות: א׳, ב׳ ומצוינות. תרגלו זוויות בסיס, זווית ראש ותכונות המשולש וקבלו רמז מנועם AI ללא הרשמה בבית היום.',
+      ),
+      'תרגלו זוויות בסיס, זווית ראש ותכונות המשולש.',
+    );
+    const isosceles = loadAllTopicPages().find((page) => page.slug === 'isosceles-triangle-properties-grade-8');
+    assert.ok(isosceles, 'isosceles-triangle-properties-grade-8 landing');
+    assert.equal(
+      /בחינם|ללא הרשמה|חינמי|להורדה/u.test(landingScopeSentence(isosceles.description)),
+      false,
+      'the live isosceles landing scope carries no promo text',
+    );
+
+    // A promo clause after a comma or a dash goes whole; the rest of the sentence stays.
+    assert.equal(
+      withoutPromoClauses('תרגלו הצבה בנוסחה πr²h, פתרו בעיות נפח והורידו דפי תרגול עם תשובות להדפסה, ללא הרשמה.'),
+      'תרגלו הצבה בנוסחה πr²h, פתרו בעיות נפח והורידו דפי תרגול עם תשובות להדפסה.',
+    );
+    assert.equal(
+      withoutPromoClauses('קישורים לדפי עבודה בשלוש רמות, בחינם וללא הרשמה, לתרגול בכיתה ובבית עם נועם AI.'),
+      'קישורים לדפי עבודה בשלוש רמות, לתרגול בכיתה ובבית עם נועם AI.',
+    );
+    assert.equal(
+      withoutPromoClauses('בוחרים דפי עבודה קיימים ברמות א׳, ב׳ ומצוינות — בחינם וללא הרשמה.'),
+      'בוחרים דפי עבודה קיימים ברמות א׳, ב׳ ומצוינות.',
+    );
+    // A clause that joins with "ו…" is cut from that word.
+    assert.equal(
+      withoutPromoClauses('למדו לחשב מעטפת ושני בסיסים, פתרו תרגילים וקבלו רמז מנועם AI ללא הרשמה בכל עת בבית.'),
+      'למדו לחשב מעטפת ושני בסיסים, פתרו תרגילים.',
+    );
+    // Nothing meaningful left, or the promo opens the sentence: not kept.
+    assert.equal(withoutPromoClauses('דפי עבודה בחינם וללא הרשמה.'), null);
+    assert.equal(withoutPromoClauses('הורידו בחינם.'), null);
+    assert.equal(withoutPromoClauses('דפי עבודה חינמיים בנפח חרוט לכיתה ח׳, בשלוש רמות: א׳, ב׳ ומצוינות.'), null);
+    assert.equal(withoutPromoClauses('בחינם וללא הרשמה, עם אפשרות לבקש רמז מנועם AI.'), null);
+    // A sentence with no promo phrase is returned unchanged.
+    assert.equal(withoutPromoClauses('מזהים זוויות צמודות וקודקודיות.'), 'מזהים זוויות צמודות וקודקודיות.');
   });
 });
