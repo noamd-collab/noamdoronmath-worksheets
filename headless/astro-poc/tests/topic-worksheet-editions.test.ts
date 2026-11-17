@@ -4,6 +4,7 @@ import { reviewedBatch01 } from './fixtures/batch01-pdf';
 import { reviewedBatch02a } from './fixtures/batch02a-pdf';
 import { reviewedBatch03 } from './fixtures/batch03-pdf';
 import { reviewedProbabilityNine } from './fixtures/probability-nine-pdf';
+import { reviewedBatch04 } from './fixtures/batch04-pdf';
 import { reviewedSaoWpc } from './fixtures/sao-wpc-pdf';
 import { reviewedExtSmlAfr } from './fixtures/ext-sml-afr-pdf';
 import assert from 'node:assert/strict';
@@ -515,4 +516,49 @@ test('the real grade-9 probability page exposes nine PDFs in three series after 
   const anchors = [...document.querySelectorAll('[id]')].map(e => e.id);
   assert.equal(new Set(anchors).size, anchors.length, 'unique anchors');
   assert.equal(urls.size, 9);
+});
+
+test('real batch-04 pages expose twelve PDFs only in their mapped group and preserve every CTA and old link', async () => {
+  const catalog = loadCatalog(), urls = new Set<string>();
+  for (const addition of reviewedBatch04.additions) {
+    const document = await renderTopic(addition.slug), hero = document.querySelector('.exact-topic-copy')!;
+    // solids-box-cube-prism-grade-7 keeps its three hero topics (48, 47, 20); the prism edition joins 48 only.
+    const topics = addition.ctaTopics;
+    assert.ok(topics.includes(addition.topicId), addition.slug);
+    assert.deepEqual(addition.baselineEditionIds, []);
+    const ctas = [...hero.querySelectorAll('a[data-catalog-topic]')];
+    assert.deepEqual(ctas.map(a => Number(a.getAttribute('data-catalog-topic'))), topics);
+    let legacyLinks = 0;
+    for (const [index, topicId] of topics.entries()) {
+      const target = index === 0 ? '#topic-levels' : `#topic-levels-hero-${topicId}`;
+      assert.equal(ctas[index].getAttribute('href'), target);
+      const controls = hero.querySelector(target)!;
+      assert.ok(controls, `${addition.slug}: group${topicId}`);
+      const links = [...controls.querySelectorAll(`a[data-edition-id="${addition.editionId}"]`)];
+      assert.deepEqual(links.map(a => a.getAttribute('href')), topicId === addition.topicId
+        ? addition.pdfIds.map(id => `${catalog.config.pdfBase}${id}.pdf`) : []);
+      assert.ok(links.every(a => a.textContent.includes('פתיחת PDF') && !a.textContent.includes('רמזי')));
+      links.forEach(a => urls.add(a.getAttribute('href')!));
+      const groups = topicWorksheetEditionLinks(catalog, addition.grade, topicId, `/worksheets?grade=${addition.grade}&topic=${topicId}`);
+      const legacy = [...controls.querySelectorAll('a[data-edition-id="legacy"]')].map(a => a.getAttribute('href'));
+      assert.deepEqual(legacy, groups[0].levels.map(l => l.href));
+      // Topic 8/43 keeps its four legacy levels (a, b, c, c2); every other topic here has three.
+      assert.equal(legacy.length, addition.grade === 8 && topicId === 43 ? 4 : 3);
+      legacyLinks += legacy.length;
+      const order = [...controls.querySelectorAll('a[data-edition-id]')].map(a => a.getAttribute('data-edition-id'));
+      assert.deepEqual([...new Set(order)], topicId === addition.topicId ? ['legacy', addition.editionId] : groups.map(g => g.editionId));
+    }
+    assert.equal(hero.querySelectorAll('a[data-edition-id="legacy"]').length, legacyLinks);
+    assert.equal(hero.querySelectorAll(`a[data-edition-id="${addition.editionId}"]`).length, 3);
+    // As #494 did for its multi-topic landings, the shared grade-7 landing separates consecutive
+    // worksheet groups: the second and third hero groups, not the first CTA and not the other pages.
+    const separated = [...document.querySelectorAll('.exact-topic[data-topic-slug="solids-box-cube-prism-grade-7"] .exact-topic-copy > [data-topic-levels] + .topic-page__cta-row')];
+    assert.deepEqual(separated, topics.length > 1 ? ctas.slice(1).map(cta => cta.parentElement) : []);
+    assert.deepEqual(separated.map(group => group.previousElementSibling?.id), topics.length > 1 ? ['topic-levels', 'topic-levels-hero-47'] : []);
+    const anchors = [...document.querySelectorAll('[id]')].map(e => e.id);
+    assert.equal(new Set(anchors).size, anchors.length, `${addition.slug}: unique anchors`);
+  }
+  assert.equal(urls.size, 12);
+  assert.match(readFileSync(new URL('../src/styles/exact-topic.css', import.meta.url), 'utf8'),
+    /\.exact-topic\[data-topic-slug="solids-box-cube-prism-grade-7"\] \.exact-topic-copy > \[data-topic-levels\] \+ \.topic-page__cta-row,\n/);
 });

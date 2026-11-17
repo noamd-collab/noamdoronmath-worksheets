@@ -1,3 +1,12 @@
+## 2026-11-17 — batch 04: four reviewed Astra-authored student PDF editions (candidate)
+
+- KTE9:46, R30 9:37, PRS7:48 and SIM8:43: 12 PDFs, 114 pages, 342 parts. Every existing default, legacy link and the 66 preceding editions are preserved.
+- Four existing landings describe the exact practice scope of the new series. Titles, H1 and CTA order are unchanged. PRS joins topic 7:48 on the landing it shares with 7:47 and 7:20; topic 8:43 keeps its four legacy levels. Both grade-9 series are regular-track. The grade-8 similarity copy names the AA theorem (ז.ז) only.
+- Exact reviewed PDF bytes were read back from both media routes: 24 matching reads. Astra (Codex) authored all four sets; each passed an independent review by Claude, which is not the author, attributed by exact SHA-256 and not repeated here.
+- No producer v72 report is PASS. Each non-PASS gate is covered by a per-finding waiver decided by the production manager under Noam's rule of 17.11.2026: checker false positives, accepted G94 pages, the G87 layout conflict (PRS) and the G92 registry-text error (SIM). Details and SHA-256 of the waiver files: `docs/batch04-pdf-first-20261117.json`.
+- New editions open PDFs directly. No Word, native assets, teacher selection, learning activation, hints or database activation.
+- This is a source candidate, not a publication claim. Build, tests and desktop/phone evidence are recorded in the PR package; the Wix payload has only a proxy estimate (+67,056 bytes, about 17.75 MB) and still needs a credentialed `npm run build`; the release job's postbuild budget check stops a release over 19,500,000 bytes.
+
 ## 2026-11-17 — grade-9 probability: three reviewed Claude-authored student PDF editions (candidate, replaces draft #500)
 
 - PRC9:10, PRT9:10 and PRW9:10 (single-stage with relative frequency and complement; two-stage with replacement; two-stage without replacement): 9 PDFs, 47 pages, 169 parts. The legacy default, its links and the 63 preceding editions are preserved.
