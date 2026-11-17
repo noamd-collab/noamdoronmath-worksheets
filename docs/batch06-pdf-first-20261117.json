@@ -28,7 +28,7 @@
       "producerPackage": "G7-T95",
       "title": "שוויון בין ביטויים אלגבריים (זהות)",
       "author": "Claude (Anthropic)",
-      "originalReviewer": "Google Antigravity — Gemini 4 Carbon Medium (independent; not the author)",
+      "originalReviewer": "Google Antigravity — Gemini 4 Carbon High (independent; not the author)",
       "deltaReviewer": "Google Antigravity — Gemini 4 Carbon Medium (independent; not the author)",
       "reviewVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
       "deltaVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
@@ -55,7 +55,7 @@
       "topicId": 29,
       "landing": "/combining-like-terms-grade-7",
       "editionId": "ms-20261117-alg-02-r1",
-      "label": "כינוס איברים וחוק הפילוג · PDF",
+      "label": "שוויון בין ביטויים אלגבריים (זהות) · PDF",
       "isDefault": false,
       "levels": [
         {
@@ -152,7 +152,7 @@
       "producerPackage": "G7-T97",
       "title": "חוק הפילוג בביטויים אלגבריים",
       "author": "Claude (Anthropic)",
-      "originalReviewer": "Google Antigravity — Gemini 4 Carbon Medium (independent; not the author)",
+      "originalReviewer": "Google Antigravity — Gemini 4 Carbon High (independent; not the author)",
       "deltaReviewer": "Google Antigravity — Gemini 4 Carbon Medium (independent; not the author)",
       "reviewVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
       "deltaVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
@@ -276,7 +276,7 @@
       "producerPackage": "G7-T80",
       "title": "מערכת צירים בארבעה רביעים",
       "author": "Claude (Anthropic)",
-      "originalReviewer": "Google Antigravity — Gemini 4 Carbon Medium (independent; not the author)",
+      "originalReviewer": "Google Antigravity — Gemini 4 Carbon High (independent; not the author)",
       "deltaReviewer": "Google Antigravity — Gemini 4 Carbon Medium (independent; not the author)",
       "reviewVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
       "deltaVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
@@ -400,7 +400,7 @@
       "producerPackage": "G8-T80",
       "title": "אי־שוויון: פתרונות והצגה על ציר המספרים",
       "author": "Claude (Anthropic)",
-      "originalReviewer": "Google Antigravity — Gemini 4 Carbon Medium (independent; not the author)",
+      "originalReviewer": "Google Antigravity — Gemini 4 Carbon High (independent; not the author)",
       "deltaReviewer": "Google Antigravity — Gemini 4 Carbon Medium (independent; not the author)",
       "reviewVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
       "deltaVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
@@ -524,7 +524,7 @@
       "producerPackage": "G9-T53",
       "title": "תכונות של פונקציה מתוך גרף ומשוואות כנקודות חיתוך",
       "author": "Claude (Anthropic)",
-      "originalReviewer": "Google Antigravity — Gemini 4 Carbon (Medium) (independent; not the author)",
+      "originalReviewer": "Google Antigravity — Gemini 4 Carbon High (independent; not the author)",
       "deltaReviewer": "Google Antigravity — Gemini 4 Carbon (Medium) (independent; not the author)",
       "reviewVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
       "deltaVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
@@ -551,7 +551,7 @@
       "topicId": 12,
       "landing": "/precalculus-functions-graphs-grade-9",
       "editionId": "ms-20261117-fpr-01-r1",
-      "label": "תכונות של פונקציה מתוך גרף ומשוואות · PDF",
+      "label": "תכונות פונקציה מתוך גרף ומשוואות כנקודות חיתוך · PDF",
       "isDefault": false,
       "levels": [
         {
@@ -648,7 +648,7 @@
       "producerPackage": "G9-T54",
       "title": "הזזה ושיקוף של פונקציה: מה קורה לגרף ולתכונות",
       "author": "Claude (Anthropic)",
-      "originalReviewer": "Google Antigravity — Gemini 4 Carbon Medium (independent; not the author)",
+      "originalReviewer": "Google Antigravity — Gemini 4 Carbon High (independent; not the author)",
       "deltaReviewer": "Google Antigravity — Gemini 4 Carbon Medium (independent; not the author)",
       "reviewVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
       "deltaVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
@@ -772,7 +772,7 @@
       "producerPackage": "G9-T63",
       "title": "קריאת גרפים של תופעות: ערכים, מגמות ונקודות מפגש",
       "author": "Claude (Anthropic)",
-      "originalReviewer": "Google Antigravity — Gemini 4 Carbon (Medium) (independent; not the author)",
+      "originalReviewer": "Google Antigravity — Gemini 4 Carbon High (independent; not the author)",
       "deltaReviewer": "Google Antigravity — Gemini 4 Carbon (Medium) (independent; not the author)",
       "reviewVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
       "deltaVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
@@ -897,9 +897,9 @@
       "title": "הסתברות: מושגים בסיסיים, שכיחות יחסית ומאורע משלים",
       "author": "Claude (Anthropic)",
       "originalReviewer": "Google Antigravity — Gemini 4 Carbon Medium (independent; not the author)",
-      "deltaReviewer": "Google Antigravity — Gemini 4 Carbon Medium (independent; not the author)",
+      "deltaReviewer": null,
       "reviewVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
-      "deltaVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
+      "deltaVerdict": null,
       "reviewReceipts": [
         {
           "role": "original independent review (Google Antigravity; verdict PASS_STUDENT_PDF_ESSENTIALS)",
@@ -1016,9 +1016,9 @@
       "title": "פתרון משוואות ריבועיות בנוסחת השורשים: מקדמים, מספר הפתרונות ופתרונות מעוגלים",
       "author": "Claude (Anthropic)",
       "originalReviewer": "Google Antigravity — Gemini 4 Carbon Medium (independent; not the author)",
-      "deltaReviewer": "Google Antigravity — Gemini 4 Carbon Medium (independent; not the author)",
+      "deltaReviewer": null,
       "reviewVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
-      "deltaVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
+      "deltaVerdict": null,
       "reviewReceipts": [
         {
           "role": "original independent review (Google Antigravity; verdict PASS_STUDENT_PDF_ESSENTIALS)",
@@ -1134,7 +1134,7 @@
       "producerPackage": "G9-T50",
       "title": "פונקציה ריבועית: הצבה, טבלת ערכים ופתרון משוואה",
       "author": "Claude (Anthropic)",
-      "originalReviewer": "Google Antigravity — Gemini 4 Carbon Medium (independent; not the author)",
+      "originalReviewer": "Google Antigravity — Gemini 4 Carbon High (independent; not the author)",
       "deltaReviewer": "Google Antigravity — Gemini 4 Carbon Medium (independent; not the author)",
       "reviewVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
       "deltaVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
@@ -1258,7 +1258,7 @@
       "producerPackage": "G9-T47",
       "title": "צורות דומות, הגדלה והקטנה, ומשפט דמיון ז.ז",
       "author": "Claude (Anthropic)",
-      "originalReviewer": "Google Antigravity — Gemini 4 Carbon Medium (independent; not the author)",
+      "originalReviewer": "Google Antigravity — Gemini 4 Carbon High (independent; not the author)",
       "deltaReviewer": "Google Antigravity — Gemini 4 Carbon Medium (independent; not the author)",
       "reviewVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
       "deltaVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
@@ -1285,7 +1285,7 @@
       "topicId": 40,
       "landing": "/triangle-similarity-aa-grade-9",
       "editionId": "ms-20261117-smm-01-r1",
-      "label": "ט׳ מצומצמת · דמיון משולשים, הגדלה והקטנה ומשפט דמיון ז.ז · PDF",
+      "label": "ט׳ מצומצמת · צורות דומות, הגדלה והקטנה ומשפט דמיון ז.ז · PDF",
       "isDefault": false,
       "levels": [
         {
@@ -1518,16 +1518,16 @@
               ]
             },
             {
-              "heading": "כינוס איברים וחוק הפילוג — דפי PDF נוספים",
+              "heading": "שוויון בין ביטויים וחוק הפילוג — דפי PDF נוספים",
               "blocks": [
                 {
                   "type": "paragraph",
-                  "text": "בודקים אם שני ביטויים אלגבריים שקולים, מכירים את המושג זהות ומיישמים את חוק הפילוג גם עם מספרים שליליים, שברים ועשרוניים.",
+                  "text": "בודקים אם שני ביטויים אלגבריים שקולים באמצעות הצבה, דוגמה נגדית, חוקי החילוף והקיבוץ וקו השבר כסימן חילוק, ומכירים את המושג זהות.",
                   "links": []
                 },
                 {
                   "type": "paragraph",
-                  "text": "מתרגלים הצבה ודוגמה נגדית, חוקי החילוף והקיבוץ, מינוס לפני סוגריים וכינוס איברים דומים אחרי פתיחת סוגריים.",
+                  "text": "מיישמים את חוק הפילוג בחישוב בעל־פה ובביטויים אלגבריים (כולל שברים, ובהמשך גם מכפילים שליליים, מינוס לפני סוגריים ומספר עשרוני), מכנסים איברים דומים אחרי פתיחת סוגריים ומשלימים גורם או איבר חסר.",
                   "links": []
                 },
                 {
@@ -1541,16 +1541,16 @@
         }
       ],
       "appendedSection": {
-        "heading": "כינוס איברים וחוק הפילוג — דפי PDF נוספים",
+        "heading": "שוויון בין ביטויים וחוק הפילוג — דפי PDF נוספים",
         "blocks": [
           {
             "type": "paragraph",
-            "text": "בודקים אם שני ביטויים אלגבריים שקולים, מכירים את המושג זהות ומיישמים את חוק הפילוג גם עם מספרים שליליים, שברים ועשרוניים.",
+            "text": "בודקים אם שני ביטויים אלגבריים שקולים באמצעות הצבה, דוגמה נגדית, חוקי החילוף והקיבוץ וקו השבר כסימן חילוק, ומכירים את המושג זהות.",
             "links": []
           },
           {
             "type": "paragraph",
-            "text": "מתרגלים הצבה ודוגמה נגדית, חוקי החילוף והקיבוץ, מינוס לפני סוגריים וכינוס איברים דומים אחרי פתיחת סוגריים.",
+            "text": "מיישמים את חוק הפילוג בחישוב בעל־פה ובביטויים אלגבריים (כולל שברים, ובהמשך גם מכפילים שליליים, מינוס לפני סוגריים ומספר עשרוני), מכנסים איברים דומים אחרי פתיחת סוגריים ומשלימים גורם או איבר חסר.",
             "links": []
           },
           {
@@ -1991,7 +1991,7 @@
               ]
             },
             {
-              "heading": "אי־שוויונות — דפי PDF נוספים",
+              "heading": "אי־שוויון: פתרונות והצגה על ציר המספרים — דפי PDF נוספים",
               "blocks": [
                 {
                   "type": "paragraph",
@@ -2000,7 +2000,7 @@
                 },
                 {
                   "type": "paragraph",
-                  "text": "קוראים ומסרטטים את קבוצת הפתרונות על ציר המספרים, עם עיגול ריק או מלא וקרן, ומתרגמים בין מילים, אי־שוויון וציר.",
+                  "text": "קוראים ומסרטטים את קבוצת הפתרונות על ציר המספרים, עם עיגול ריק או מלא וקרן (ובמצוינות גם אי־שוויון כפול וקטע), ומתרגמים בין מילים, אי־שוויון וציר.",
                   "links": []
                 },
                 {
@@ -2014,7 +2014,7 @@
         }
       ],
       "appendedSection": {
-        "heading": "אי־שוויונות — דפי PDF נוספים",
+        "heading": "אי־שוויון: פתרונות והצגה על ציר המספרים — דפי PDF נוספים",
         "blocks": [
           {
             "type": "paragraph",
@@ -2023,7 +2023,7 @@
           },
           {
             "type": "paragraph",
-            "text": "קוראים ומסרטטים את קבוצת הפתרונות על ציר המספרים, עם עיגול ריק או מלא וקרן, ומתרגמים בין מילים, אי־שוויון וציר.",
+            "text": "קוראים ומסרטטים את קבוצת הפתרונות על ציר המספרים, עם עיגול ריק או מלא וקרן (ובמצוינות גם אי־שוויון כפול וקטע), ומתרגמים בין מילים, אי־שוויון וציר.",
             "links": []
           },
           {
@@ -2137,7 +2137,7 @@
               "blocks": [
                 {
                   "type": "paragraph",
-                  "text": "קוראים מתוך גרף את תכונות הפונקציה: נקודות חיתוך עם הצירים, תחומי חיוביות ושליליות, נקודות קיצון ותחומי עלייה וירידה, ומוצאים נקודות חיתוך גם מתוך משוואות.",
+                  "text": "קוראים מתוך גרף את תכונות הפונקציה: נקודות חיתוך עם הצירים, תחומי חיוביות ושליליות, נקודות קיצון, תחומי עלייה וירידה ותחומים שבהם הפונקציה קבועה; פותרים משוואות ואי־שוויונות בעזרת הגרף ונקודות החיתוך, ומסרטטים סקיצה של גרף לפי תכונות נתונות.",
                   "links": []
                 },
                 {
@@ -2264,7 +2264,7 @@
             },
             {
               "type": "paragraph",
-              "text": "קוראים מתוך גרף את תכונות הפונקציה: נקודות חיתוך עם הצירים, תחומי חיוביות ושליליות, נקודות קיצון ותחומי עלייה וירידה, ומוצאים נקודות חיתוך גם מתוך משוואות.",
+              "text": "קוראים מתוך גרף את תכונות הפונקציה: נקודות חיתוך עם הצירים, תחומי חיוביות ושליליות, נקודות קיצון, תחומי עלייה וירידה ותחומים שבהם הפונקציה קבועה; פותרים משוואות ואי־שוויונות בעזרת הגרף ונקודות החיתוך, ומסרטטים סקיצה של גרף לפי תכונות נתונות.",
               "role": "body"
             },
             {
@@ -2301,7 +2301,7 @@
         "blocks": [
           {
             "type": "paragraph",
-            "text": "קוראים מתוך גרף את תכונות הפונקציה: נקודות חיתוך עם הצירים, תחומי חיוביות ושליליות, נקודות קיצון ותחומי עלייה וירידה, ומוצאים נקודות חיתוך גם מתוך משוואות.",
+            "text": "קוראים מתוך גרף את תכונות הפונקציה: נקודות חיתוך עם הצירים, תחומי חיוביות ושליליות, נקודות קיצון, תחומי עלייה וירידה ותחומים שבהם הפונקציה קבועה; פותרים משוואות ואי־שוויונות בעזרת הגרף ונקודות החיתוך, ומסרטטים סקיצה של גרף לפי תכונות נתונות.",
             "links": []
           },
           {
@@ -2434,7 +2434,7 @@
                 },
                 {
                   "type": "paragraph",
-                  "text": "משווים בין גרף לתיאור מילולי ומסבירים מה אומרת כל נקודה על התופעה.",
+                  "text": "בודקים טענות מילוליות מול הגרף, מפרשים נקודות בגרף וקנה מידה בצירים, ומסרטטים גרף מתוך סיפור.",
                   "links": []
                 },
                 {
@@ -2581,7 +2581,7 @@
             },
             {
               "type": "paragraph",
-              "text": "משווים בין גרף לתיאור מילולי ומסבירים מה אומרת כל נקודה על התופעה.",
+              "text": "בודקים טענות מילוליות מול הגרף, מפרשים נקודות בגרף וקנה מידה בצירים, ומסרטטים גרף מתוך סיפור.",
               "role": "body"
             },
             {
@@ -2618,7 +2618,7 @@
           },
           {
             "type": "paragraph",
-            "text": "משווים בין גרף לתיאור מילולי ומסבירים מה אומרת כל נקודה על התופעה.",
+            "text": "בודקים טענות מילוליות מול הגרף, מפרשים נקודות בגרף וקנה מידה בצירים, ומסרטטים גרף מתוך סיפור.",
             "links": []
           },
           {
@@ -3145,12 +3145,12 @@
               "blocks": [
                 {
                   "type": "paragraph",
-                  "text": "מזהים את המקדמים a, b ו־c ופותרים משוואות ריבועיות בעזרת נוסחת השורשים.",
+                  "text": "מסדרים משוואות לצורה ax²+bx+c=0, מזהים את המקדמים a, b ו־c ופותרים בעזרת נוסחת השורשים.",
                   "links": []
                 },
                 {
                   "type": "paragraph",
-                  "text": "קובעים כמה פתרונות יש למשוואה ומעגלים פתרונות שאינם מספרים שלמים.",
+                  "text": "קובעים כמה פתרונות יש למשוואה לפי הביטוי שמתחת לשורש, ומעגלים פתרונות שבהם השורש אינו מספר שלם.",
                   "links": []
                 },
                 {
@@ -3168,12 +3168,12 @@
         "blocks": [
           {
             "type": "paragraph",
-            "text": "מזהים את המקדמים a, b ו־c ופותרים משוואות ריבועיות בעזרת נוסחת השורשים.",
+            "text": "מסדרים משוואות לצורה ax²+bx+c=0, מזהים את המקדמים a, b ו־c ופותרים בעזרת נוסחת השורשים.",
             "links": []
           },
           {
             "type": "paragraph",
-            "text": "קובעים כמה פתרונות יש למשוואה ומעגלים פתרונות שאינם מספרים שלמים.",
+            "text": "קובעים כמה פתרונות יש למשוואה לפי הביטוי שמתחת לשורש, ומעגלים פתרונות שבהם השורש אינו מספר שלם.",
             "links": []
           },
           {
@@ -3286,12 +3286,12 @@
               "blocks": [
                 {
                   "type": "paragraph",
-                  "text": "מציבים ערכים בפונקציה ריבועית, בונים טבלת ערכים ומקשרים בין הערכים לבין פתרון משוואה ריבועית.",
+                  "text": "מציבים ערכים בפונקציה ריבועית, משלימים טבלאות ערכים ומקשרים בין ערכי הפונקציה לבין פתרון משוואה ריבועית.",
                   "links": []
                 },
                 {
                   "type": "paragraph",
-                  "text": "מוצאים מטבלה או מגרף את ערכי x שבהם y=0, פותרים משוואות מהצורה x²=k ועובדים בהקשרים של גובה כדור, שטח מלבן ורווח.",
+                  "text": "מוצאים מטבלה או מגרף עבור אילו ערכי x מתקבל ערך y נתון (ובפרט y=0), משווים ערכים של שתי פונקציות ומתרגלים בהקשרים כמו גובה כדור, שטח מלבן או רווח.",
                   "links": []
                 },
                 {
@@ -3317,12 +3317,12 @@
         "blocks": [
           {
             "type": "paragraph",
-            "text": "מציבים ערכים בפונקציה ריבועית, בונים טבלת ערכים ומקשרים בין הערכים לבין פתרון משוואה ריבועית.",
+            "text": "מציבים ערכים בפונקציה ריבועית, משלימים טבלאות ערכים ומקשרים בין ערכי הפונקציה לבין פתרון משוואה ריבועית.",
             "links": []
           },
           {
             "type": "paragraph",
-            "text": "מוצאים מטבלה או מגרף את ערכי x שבהם y=0, פותרים משוואות מהצורה x²=k ועובדים בהקשרים של גובה כדור, שטח מלבן ורווח.",
+            "text": "מוצאים מטבלה או מגרף עבור אילו ערכי x מתקבל ערך y נתון (ובפרט y=0), משווים ערכים של שתי פונקציות ומתרגלים בהקשרים כמו גובה כדור, שטח מלבן או רווח.",
             "links": []
           },
           {
