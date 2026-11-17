@@ -141,7 +141,9 @@ test('sixteen fixed mappings add forty-eight frozen PDFs and recover the indepen
   assert.equal(priorRegistry.editions.flatMap((e: any) => e.levels).length, 117);
   assert.deepEqual(afterBatch02aRegistry.editions.slice(0, 39), priorRegistry.editions);
   assert.deepEqual(afterBatch02aRegistry.editions.slice(39), reviewed.additions.map(a => a.edition));
-  assert.equal(raw.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 973);
+  // Editions never add base levels; EQM49 (17.11) is the only later base topic (+3 levels).
+  assert.equal(raw.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 976);
+  assert.equal(previous.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 973);
   assert.deepEqual(receipt.scope, { packages: 16, pdfs: 48, pages: 385, subitems: 1431, landingRoutes: 16 });
   assert.deepEqual(receipt.packages.map((p: any) => p.editionId), ids);
   assert.equal(receipt.sitePublicationClaimed, false);

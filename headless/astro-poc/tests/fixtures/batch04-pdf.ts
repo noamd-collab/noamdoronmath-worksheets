@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import reviewed from './batch04-pdf-reviewed.json';
+import { beforeEqm49Catalog } from './eqm49-pdf';
 
 export { reviewed as reviewedBatch04 };
 export const reviewedBatch04Ids = reviewed.additions.map(a => a.editionId);
@@ -15,7 +16,8 @@ const plain = (value: unknown): unknown => typeof value === 'string' ? value.rep
  * topics gains its first edition); the remaining topic must equal the pinned baseline topic.
  */
 export function beforeBatch04Catalog<T>(catalog: T): T {
-  const restored: any = structuredClone(catalog);
+  // EQM49 (base topic 9/49, 17 Nov 2026) is merged after batch 04: reverse it first.
+  const restored: any = beforeEqm49Catalog(catalog);
   const groups = new Map<string, typeof reviewed.additions>();
   for (const addition of reviewed.additions) {
     const key = `${addition.grade}:${addition.topicId}`;

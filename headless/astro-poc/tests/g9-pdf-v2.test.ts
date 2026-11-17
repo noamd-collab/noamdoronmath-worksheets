@@ -97,14 +97,21 @@ describe('grade 9 PDF v2 replacements', () => {
     assert.ok(rational, 'Reviewed rational-equation PDFs add topic 47');
     assert.equal(rational.parent, undefined);
     assert.equal(rational.publicationMode, 'pdf-only');
-    assert.equal(countRenderedTopicCards({ ...grade9, topics: grade9.topics.filter((topic) => ![47, 48].includes(topic.id)) }, 'reg'), 38,
+    assert.equal(countRenderedTopicCards({ ...grade9, topics: grade9.topics.filter((topic) => ![47, 48, 49].includes(topic.id)) }, 'reg'), 38,
       'The original regular-track cards remain present');
     const median = grade9.topics.find((topic) => topic.id === 48)!;
     assert.equal(median.title, 'משולש ישר־זווית — התיכון ליתר');
     assert.equal(median.publicationMode, 'pdf-only');
     assert.equal(countRenderedTopicCards({ ...grade9, topics: grade9.topics.filter((topic) => topic.id !== 48) }, 'reg'), 39);
     assert.equal(countRenderedTopicCards(grade9, 'reg'), 40);
-    assert.equal(countRenderedTopicCards(grade9, 'red'), 4);
+    // EQM01 (topic 49) is the first card of the new reduced-track month group r9jan.
+    const eqm = grade9.topics.find((topic) => topic.id === 49)!;
+    assert.equal(eqm.title, 'משוואות עם מכנה מספרי');
+    assert.equal(eqm.group, 'r9jan');
+    assert.equal(eqm.publicationMode, 'pdf-only');
+    assert.equal(countRenderedTopicCards({ ...grade9, topics: grade9.topics.filter((topic) => topic.id !== 49) }, 'red'), 4,
+      'The four original reduced-track cards remain present');
+    assert.equal(countRenderedTopicCards(grade9, 'red'), 5);
     for (const grade of catalog.grades) {
       if (grade.grade === 9) continue;
       const topLevel = grade.topics.filter((topic) => topic.parent === undefined).length;

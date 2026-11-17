@@ -5,6 +5,7 @@ const step = (text: string, math: string) => ({ text, math });
 /** Authored demonstrations for the catalog gaps. Each scene teaches this topic,
  * rather than inheriting a nearby topic's picture from a broad family. */
 export const MIDDLE_TOPIC_LESSONS = {
+  'minus-before-fraction': { picture: 'calculation', idea: 'סימן חיסור לפני שבר חל על כל המונה, ולכן אחרי הכפל במכנה המשותף שמים את המונה בסוגריים', steps: [step('המכנים הם 3 ו־4; המכנה המשותף הוא 12', '⟨x¦3⟩ − ⟨x − 2¦4⟩ = 2'), step('כופלים כל איבר ב־12 ושמים את המונה בסוגריים', '4x − 3(x − 2) = 24'), step('פותחים סוגריים ופותרים', 'x + 6 = 24; x = 18')] },
   'hypotenuse-median': { picture: 'calculation', idea: 'במשולש ישר זווית, התיכון ליתר שווה למחצית היתר', steps: [step('הזווית A ישרה; M הוא אמצע היתר BC', '∠A = 90°; BC = 16'), step('לפי משפט התיכון ליתר', 'AM = ⟨BC¦2⟩'), step('מחצית היתר היא אורך התיכון', 'AM = 8')] },
   'rational-domain': { picture: 'calculation', idea: 'פתרון מותר חייב לקיים גם את המשוואה וגם את תחום ההצבה המקורי', steps: [step('קובעים תחום הצבה לפני כל שינוי', '⟨(x²−16)¦(x−4)⟩ = 0; x ≠ 4'), step('אפסי המונה הם מועמדים לפתרון', 'x² − 16 = 0; x = −4, x = 4'), step('הערך 4 אסור; בודקים ומשאירים את הפתרון המותר', 'x = −4')] },
   'equilateral-60': { picture: 'equilateral-topic', idea: 'במשולש שווה־צלעות שלוש הזוויות שוות, ולכן כל אחת 60°', steps: [step('שלוש הצלעות שוות, ולכן שלוש הזוויות שוות', 'a = b = c'), step('סכום הזוויות במשולש הוא 180°', '3α = 180°'), step('מחלקים בשלוש', 'α = 60°')] },
@@ -33,6 +34,7 @@ export const MIDDLE_TOPIC_LESSONS = {
 export const MIDDLE_LESSON_TOPIC_MAP = {
   'rational-equations-grade-9': 'rational-domain',
   'median-to-hypotenuse-grade-9': 'hypotenuse-median',
+  'equations-numeric-denominator-grade-9': 'minus-before-fraction',
   'equilateral-triangle-grade-7': 'equilateral-60',
   'equilateral-triangle-grade-9': 'equilateral-60',
   'relative-frequency-experiments-grade-7': 'experimental-frequency',

@@ -19,7 +19,8 @@
     "batch02a-pdf-intake.test.ts",
     "batch03-pdf-intake.test.ts",
     "probability-nine-pdf-intake.test.ts",
-    "batch04-pdf-intake.test.ts"
+    "batch04-pdf-intake.test.ts",
+    "equations-numeric-denominator-landing.test.ts"
   ],
   "exclude": []
 }
