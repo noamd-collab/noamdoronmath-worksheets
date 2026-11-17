@@ -5,7 +5,7 @@
 - Exact reviewed PDF bytes were read back from both media routes: 24 matching reads. Astra (Codex) authored all four sets; each passed an independent review by Claude, which is not the author, attributed by exact SHA-256 and not repeated here.
 - No producer v72 report is PASS. Each non-PASS gate is covered by a per-finding waiver decided by the production manager under Noam's rule of 17.11.2026: checker false positives, accepted G94 pages, the G87 layout conflict (PRS) and the G92 registry-text error (SIM). Details and SHA-256 of the waiver files: `docs/batch04-pdf-first-20261117.json`.
 - New editions open PDFs directly. No Word, native assets, teacher selection, learning activation, hints or database activation.
-- This is a source candidate, not a publication claim. Build, tests and desktop/phone evidence are recorded in the PR package; the Wix payload has only a proxy estimate (+66,948 bytes, about 17.75 MB) and still needs a credentialed `npm run build`; the release job's postbuild budget check stops a release over 19,500,000 bytes.
+- This is a source candidate, not a publication claim. Build, tests and desktop/phone evidence are recorded in the PR package; the Wix payload has only a proxy estimate (+67,056 bytes, about 17.75 MB) and still needs a credentialed `npm run build`; the release job's postbuild budget check stops a release over 19,500,000 bytes.
 
 ## 2026-11-17 — batch 03: eight reviewed Claude-authored student PDF editions (candidate)
 

@@ -305,6 +305,13 @@ test('four landing updates keep titles and CTAs and describe the actual series i
   assert.ok(text('kite-grade-9').includes('תכונות הזוויות בדלתון') && text('kite-grade-9').includes('באלכסון הראשי בדלתון ובשטח דלתון'));
   assert.ok(page('triangle-30-60-90-grade-9').sections.at(-1).heading.startsWith('משולש ישר־זווית שזוויותיו 30°, 60°, 90° והמשפט ההפוך'));
   assert.ok(text('solids-box-cube-prism-grade-7').includes('מנסרה משולשת ישרה') && text('solids-box-cube-prism-grade-7').includes('שטח הפנים'));
+  // Kite, questions 1-3: levels a and b are given both head angles and find the side angles;
+  // only the excellence level finds the head angles there (review of 0e736a6d).
+  assert.ok(text('kite-grade-9').includes('מוצאים זוויות צד, ובמצוינות גם את זוויות הראש,'));
+  assert.ok(!JSON.stringify(page('kite-grade-9')).includes('מוצאים את זוויות הצד ואת זוויות הראש'));
+  // One spelling inside the prism paragraph (משורטט, משרטטים).
+  assert.ok(text('solids-box-cube-prism-grade-7').includes('בסיס משולש שמשורטט במערכת צירים'));
+  assert.ok(!JSON.stringify(page('solids-box-cube-prism-grade-7')).includes('מסורטט'));
   // Grade 8: the similarity copy names the AA theorem and nothing else.
   assert.ok(text('similar-triangles-grade-8').includes('דמיון משולשים לפי זוויות (ז.ז)'));
   // The shared grade-7 landing keeps its box and cube sentences and gains a prism sentence.
