@@ -18,7 +18,8 @@ import { shortHebrewTitle, worksheetsDocumentTitle } from '../src/lib/seoTitles'
 import { listMainPagePaths } from '../src/lib/siteSitemaps';
 import { loadAllTopicPages, loadTopicPage } from '../src/lib/topicPages';
 import { VIEWER_PATH, VIEWER_SEO_HEAD, withViewerSeoHead } from '../src/lib/viewerSeo';
-import { gradeHubPath, worksheetsSeo } from '../src/lib/worksheetsSeo';
+import { breadcrumbList, learningResourceJsonLd, validateJsonLdDocument } from '../src/lib/structuredData';
+import { gradeHubPath, worksheetsSeo, worksheetsStructuredData } from '../src/lib/worksheetsSeo';
 import {
   DEFAULT_SITE_DESCRIPTION,
   DEFAULT_SITE_TITLE,
@@ -182,6 +183,24 @@ describe('SEO-1: short Hebrew titles (re-applied from PR #449)', () => {
     assert.match(page, /worksheetsDocumentTitle\(gradeEntry\.label, seo\.topicTitle\)/);
     assert.match(page, /title=\{worksheetsTitle\}\s+canonicalPath=\{seo\.canonicalPath\}\s+noindexFollow=\{seo\.noindexFollow\}/);
   });
+
+  it('drops only real lowercase page slugs, so COVID-19 and similar words stay', () => {
+    assert.equal(shortHebrewTitle('נתוני תחלואה · COVID-19'), 'נתוני תחלואה · COVID-19');
+    assert.equal(shortHebrewTitle('נתוני תחלואה | COVID-19 | נועם דורון'), 'נתוני תחלואה | COVID-19');
+    assert.equal(shortHebrewTitle('COVID-19 בכיתה – גרפים וטבלאות'), 'COVID-19 בכיתה – גרפים וטבלאות');
+    assert.equal(shortHebrewTitle('חיבור Wi-Fi לכיתה · 2024-2025'), 'חיבור Wi-Fi לכיתה · 2024-2025');
+    assert.equal(shortHebrewTitle('מבחן · Triangle-Area-Grade-7'), 'מבחן · Triangle-Area-Grade-7');
+    assert.equal(shortHebrewTitle('שטח משולש · triangle-area-grade-7'), 'שטח משולש');
+  });
+
+  it('keeps the original separators of the parts that remain', () => {
+    assert.equal(shortHebrewTitle('שטח משולש · triangle-area-grade-7 · דפי עבודה'), 'שטח משולש · דפי עבודה');
+    assert.equal(shortHebrewTitle('triangle-area-grade-7 | שטח משולש · כיתה ז׳'), 'שטח משולש · כיתה ז׳');
+    assert.equal(shortHebrewTitle('שטח משולש – triangle-area-grade-7 | דפי עבודה'), 'שטח משולש | דפי עבודה');
+    assert.equal(shortHebrewTitle('זוויות · כיתה ז׳ – דפי עבודה'), 'זוויות · כיתה ז׳ – דפי עבודה');
+    assert.equal(shortHebrewTitle('דלתון · כיתה ט׳ · נועם דורון'), 'דלתון · כיתה ט׳');
+    assert.equal(shortHebrewTitle('triangle-area-grade-7 · נועם דורון מתמטיקה'), 'דפי עבודה במתמטיקה');
+  });
 });
 
 describe('SEO-1: /worksheets canonical points at the page that should rank', () => {
@@ -256,6 +275,74 @@ describe('SEO-1: /worksheets canonical points at the page that should rank', () 
     assert.equal(noindexFollowRobots('127.0.0.1', {}), 'noindex,nofollow');
   });
 
+  it('the BreadcrumbList and LearningResource name the canonical target, never a URL that canonicalizes away', () => {
+    let checked = 0;
+    for (const entry of catalog.grades) {
+      const hub = gradeHubPath(entry.grade);
+      const cases: Array<number | null> = [null, 999, ...entry.topics.map((topic) => topic.id)];
+      for (const topicId of cases) {
+        const seo = worksheetsSeo({
+          grade: entry.grade, gradeExplicit: true, topics: entry.topics, topicId, topicPageHrefs: hrefs,
+        });
+        const { crumbs, resource } = worksheetsStructuredData({ grade: entry.grade, gradeLabel: entry.label, seo });
+        const label = `${entry.grade}:${topicId}`;
+        assert.deepEqual(crumbs.slice(0, 3), [
+          { name: 'בית', path: '/' },
+          { name: 'דפי עבודה', path: '/worksheets' },
+          { name: entry.label, path: hub },
+        ], label);
+        assert.equal(resource.path, crumbs[crumbs.length - 1].path, label);
+        for (const path of [...crumbs.map((crumb) => crumb.path), resource.path]) {
+          assert.equal(path.includes('?'), false, `${label} names a catalog query URL: ${path}`);
+          assert.ok(path === '/' || routeExists(path), `${label}: no route for ${path}`);
+        }
+        if (seo.canonicalPath) {
+          assert.equal(resource.path, seo.canonicalPath, label);
+          assert.equal(crumbs.length, seo.canonicalPath === hub ? 3 : 4, label);
+        } else {
+          assert.equal(resource.path, hub, label);
+        }
+        const docs = [breadcrumbList(crumbs), learningResourceJsonLd({
+          name: resource.name, path: resource.path, description: 'דפי עבודה', educationalLevel: entry.label,
+        })];
+        assert.deepEqual(validateJsonLdDocument(docs), [], label);
+        checked += 1;
+      }
+    }
+    assert.ok(checked >= 340, `catalog URLs checked: ${checked}`);
+
+    const nine = catalog.grades.find((g) => g.grade === 9)!;
+    const kite = worksheetsStructuredData({
+      grade: 9, gradeLabel: nine.label,
+      seo: worksheetsSeo({ grade: 9, gradeExplicit: true, topics: nine.topics, topicId: 46, topicPageHrefs: hrefs }),
+    });
+    assert.deepEqual(kite.crumbs.slice(2), [{ name: nine.label, path: '/grade-9' }, { name: 'דלתון', path: '/kite-grade-9' }]);
+    assert.deepEqual(kite.resource, { name: `דלתון · ${nine.label}`, path: '/kite-grade-9' });
+    const factoring = worksheetsStructuredData({
+      grade: 9, gradeLabel: nine.label,
+      seo: worksheetsSeo({ grade: 9, gradeExplicit: true, topics: nine.topics, topicId: 41, topicPageHrefs: hrefs }),
+    });
+    assert.deepEqual(factoring.crumbs[3], { name: 'פירוק לגורמים', path: '/factoring-grade-9' });
+    assert.deepEqual(factoring.resource, { name: `פירוק לגורמים · ${nine.label}`, path: '/factoring-grade-9' });
+    const gradeOnly = worksheetsStructuredData({
+      grade: 9, gradeLabel: nine.label,
+      seo: worksheetsSeo({ grade: 9, gradeExplicit: true, topics: nine.topics, topicId: null, topicPageHrefs: hrefs }),
+    });
+    assert.deepEqual(gradeOnly.resource, { name: `דפי עבודה · ${nine.label}`, path: '/grade-9' });
+    const seven = catalog.grades.find((g) => g.grade === 7)!;
+    const bare = worksheetsStructuredData({
+      grade: 7, gradeLabel: seven.label,
+      seo: worksheetsSeo({ grade: 7, gradeExplicit: false, topics: seven.topics, topicId: null, topicPageHrefs: hrefs }),
+    });
+    assert.deepEqual(bare.resource, { name: `דפי עבודה · ${seven.label}`, path: '/grade-7' });
+
+    const page = readFileSync('src/pages/worksheets.astro', 'utf8');
+    assert.match(page, /worksheetsStructuredData\(\{ grade, gradeLabel: gradeEntry\.label, seo \}\)/);
+    assert.match(page, /crumbs=\{structured!\.crumbs\}/);
+    assert.match(page, /name: structured!\.resource\.name,\s+path: structured!\.resource\.path,/);
+    assert.equal(page.includes('path: `/worksheets?grade=${grade}`'), false);
+  });
+
   it('BaseLayout emits the override as both rel=canonical and og:url, and the robots choice', () => {
     const layout = readFileSync('src/layouts/BaseLayout.astro', 'utf8');
     assert.match(layout, /canonicalPath\s*\?\s*canonicalUrl\(canonicalPath\)\s*:\s*canonicalUrl\(Astro\.url\.pathname, Astro\.url\.search\)/);
@@ -267,15 +354,17 @@ describe('SEO-1: /worksheets canonical points at the page that should rank', () 
   });
 });
 
-describe('SEO-1: worksheet viewer is noindex,follow with one canonical', () => {
+describe('SEO-1: worksheet viewer is noindex,follow without a canonical', () => {
   const viewerFile = readFileSync('public/worksheet-viewer-noam.html', 'utf8');
 
-  it('the served viewer head gains exactly the two tags, and nothing else changes', () => {
+  it('the served viewer head gains exactly the robots tag, and nothing else changes', () => {
     const served = withViewerSeoHead(viewerFile);
     const head = served.slice(0, served.indexOf('</head>'));
-    assert.equal((head.match(/rel="canonical"/g) || []).length, 1);
+    // The bare viewer path is served statically and is indexable, so a canonical
+    // to it next to noindex would send mixed signals.
+    assert.equal(VIEWER_SEO_HEAD, '<meta name="robots" content="noindex,follow">\n');
+    assert.equal((head.match(/rel="canonical"/g) || []).length, 0);
     assert.equal((head.match(/name="robots"/g) || []).length, 1);
-    assert.ok(head.includes('<link rel="canonical" href="https://www.noamdoronmath.co.il/worksheet-viewer-noam.html">'));
     assert.ok(head.includes('<meta name="robots" content="noindex,follow">'));
     assert.ok(served.startsWith('<!DOCTYPE html>\n<html lang="he" dir="rtl">\n<head>\n<meta charset="utf-8">\n' + VIEWER_SEO_HEAD));
     assert.equal(served.replace(VIEWER_SEO_HEAD, ''), viewerFile);
@@ -323,6 +412,7 @@ describe('SEO-1: worksheet viewer is noindex,follow with one canonical', () => {
     const html = await response.text();
     assert.equal(html, withViewerSeoHead(viewerFile));
     assert.ok(html.includes(VIEWER_SEO_HEAD));
+    assert.equal(/rel=["']?canonical/i.test(html.slice(0, html.indexOf('</head>'))), false);
   });
 });
 

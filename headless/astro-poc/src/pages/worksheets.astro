@@ -7,7 +7,7 @@ import { familyOf, resolveWorksheetsGrade, worksheetsHref, type GradeNum } from 
 import { parseWorksheetsUrlState, trackForPinnedTopic } from '../lib/worksheetsUrlState';
 import { educationalLevelForGrade, learningResourceJsonLd } from '../lib/structuredData';
 import { worksheetsDocumentTitle } from '../lib/seoTitles';
-import { worksheetsSeo, type WorksheetsSeo } from '../lib/worksheetsSeo';
+import { worksheetsSeo, worksheetsStructuredData, type WorksheetsSeo } from '../lib/worksheetsSeo';
 
 export const prerender = false;
 
@@ -54,6 +54,12 @@ const seo: WorksheetsSeo =
 const worksheetsTitle = gradeEntry
   ? worksheetsDocumentTitle(gradeEntry.label, seo.topicTitle)
   : 'דפי עבודה';
+// The BreadcrumbList and LearningResource name the canonical target too, not
+// the /worksheets?grade=N URL that canonicalizes away.
+const structured =
+  gradeEntry && grade
+    ? worksheetsStructuredData({ grade, gradeLabel: gradeEntry.label, seo })
+    : undefined;
 const initialUrlState = {
   q: urlState.q,
   group: urlState.group,
@@ -103,11 +109,7 @@ const initialUrlState = {
       title={worksheetsTitle}
       canonicalPath={seo.canonicalPath}
       noindexFollow={seo.noindexFollow}
-      crumbs={[
-        { name: 'בית', path: '/' },
-        { name: 'דפי עבודה', path: '/worksheets' },
-        { name: gradeEntry!.label, path: `/worksheets?grade=${grade}` },
-      ]}
+      crumbs={structured!.crumbs}
       seoPath={
         highlightTopicId
           ? `/worksheets?grade=${grade}&topic=${highlightTopicId}`
@@ -120,8 +122,8 @@ const initialUrlState = {
         type="application/ld+json"
         set:html={JSON.stringify(
           learningResourceJsonLd({
-            name: `דפי עבודה · ${gradeEntry!.label}`,
-            path: `/worksheets?grade=${grade}`,
+            name: structured!.resource.name,
+            path: structured!.resource.path,
             description: `דפי עבודה במתמטיקה ל${gradeEntry!.label}, בחינם וללא הרשמה.`,
             educationalLevel: educationalLevelForGrade(grade!),
           })
