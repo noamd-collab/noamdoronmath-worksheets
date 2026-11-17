@@ -25,6 +25,7 @@ import { buildWorksheetHref } from '../src/lib/worksheetLinks';
 import { loadCatalog } from '../src/lib/catalog/loadCatalog';
 import { loadTopicPage } from '../src/lib/topicPages';
 import { reviewedEqnSgnFac } from './fixtures/eqn-sgn-fac-pdf';
+import { reviewedBatch07 } from './fixtures/batch07-pdf';
 
 const require = createRequire(import.meta.url);
 const routes = [
@@ -487,8 +488,10 @@ test('real batch-03 pages expose twenty-four PDFs only in their mapped group, tw
     const sameTopic = reviewedBatch03.additions.filter(a => a.grade === addition.grade && a.topicId === addition.topicId).map(a => a.editionId);
     const laterBatch06 = reviewedBatch06.additions
       .filter(a => a.grade === addition.grade && a.topicId === addition.topicId).map(a => a.editionId);
+    const laterBatch07 = reviewedBatch07.additions
+      .filter(a => a.grade === addition.grade && a.topicId === addition.topicId).map(a => a.editionId);
     const order = [...controls.querySelectorAll('a[data-edition-id]')].map(a => a.getAttribute('data-edition-id'));
-    assert.deepEqual([...new Set(order)], ['legacy', ...addition.baselineEditionIds, ...sameTopic, ...laterBatch06]);
+    assert.deepEqual([...new Set(order)], ['legacy', ...addition.baselineEditionIds, ...sameTopic, ...laterBatch06, ...laterBatch07]);
     for (const earlier of addition.baselineEditionIds) assert.equal(controls.querySelectorAll(`a[data-edition-id="${earlier}"]`).length, 3);
     const anchors = [...document.querySelectorAll('[id]')].map(e => e.id);
     assert.equal(new Set(anchors).size, anchors.length, `${addition.slug}: unique anchors`);
@@ -628,6 +631,36 @@ test('real batch-06 pages expose all 33 direct PDFs in their mapped edition grou
   const reduced = reviewedBatch06.additions.filter(addition =>
     ['G9-GRD-01', 'G9-PBM-01', 'G9-QFM-01', 'G9-QVL-01', 'G9-SMM-01'].includes(addition.sheetId));
   assert.equal(reduced.length, 5);
+  assert.ok(reduced.every(addition => addition.track === 'ט_מצומצמת'
+    && addition.edition.label.includes('ט׳ מצומצמת')));
+});
+
+test('real batch-07 pages expose all 9 direct PDFs in their mapped edition groups', async () => {
+  const urls = new Set<string>();
+  const slugs = [...new Set(reviewedBatch07.additions.map(addition => addition.slug))];
+  for (const slug of slugs) {
+    const document = await renderTopic(slug), hero = document.querySelector('.exact-topic-copy')!;
+    const additions = reviewedBatch07.additions.filter(addition => addition.slug === slug);
+    for (const addition of additions) {
+      const links = [...hero.querySelectorAll(`a[data-edition-id="${addition.editionId}"]`)];
+      assert.deepEqual(links.map(link => link.getAttribute('href')),
+        addition.edition.levels.map(level => `https://static.wixstatic.com/ugd/d8e7ad_${level.pdfId}.pdf`));
+      assert.equal(links.length, 3, `${slug}/${addition.editionId}: all three levels`);
+      assert.ok(links.every(link => link.textContent.includes('פתיחת PDF')
+        && !link.textContent.includes('רמזי') && !link.getAttribute('href')!.includes('viewer')));
+      links.forEach(link => urls.add(link.getAttribute('href')!));
+    }
+    const delta = reviewedBatch07.landingDeltas.find(item => item.slug === slug)!;
+    const mainText = document.querySelector('main')!.textContent.replace(/[\u2066-\u2069]/g, '');
+    assert.ok(mainText.includes(delta.appendedSection.blocks[0].text), `${slug}: reviewed landing section`);
+    assert.ok(hero.querySelectorAll('a[data-edition-id="legacy"]').length >= 3, `${slug}: old downloads remain`);
+    const anchors = [...document.querySelectorAll('[id]')].map(element => element.id);
+    assert.equal(new Set(anchors).size, anchors.length, `${slug}: unique anchors`);
+  }
+  assert.equal(slugs.length, 3);
+  assert.equal(urls.size, 9);
+  const reduced = reviewedBatch07.additions.filter(addition => addition.sheetId === 'G9-LNM-01');
+  assert.equal(reduced.length, 1);
   assert.ok(reduced.every(addition => addition.track === 'ט_מצומצמת'
     && addition.edition.label.includes('ט׳ מצומצמת')));
 });

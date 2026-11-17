@@ -3899,6 +3899,132 @@
           "revision": 1
         }
       ]
+    },
+    {
+      "grade": 9,
+      "topicId": 39,
+      "editionId": "ms-20261117-trp-02-r1",
+      "label": "הכרת הטרפז, זוויות ליד שוק והוכחת טרפז · PDF",
+      "nativePrefix": "G9-T82",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "status": "published",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "7193f26728714f8d8636012ece48bfaa",
+          "pdfSha256": "60b1edb772e4be68f52a2916b682952c1706f6ef7d2f77204b47512603de6f2a",
+          "sourceSha256": "30a0474cc12356baaf87e02e1fff3600f709f566dc51d6a5d4d093f396b54f78",
+          "nativeExportSha256": "57bba14775d198ab3c456db8d1479702a4dcb587cf83600a4a0799ff1e3ef345",
+          "worksheetId": "ms-g9-trp-02-a-r1",
+          "revision": 1
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "43c42469f72148039315d7957076bb5c",
+          "pdfSha256": "058fb33976fc68af35e28f6a30844ffcddcb4f32ceecbd17467d1582ac7c6e18",
+          "sourceSha256": "591de0416982412b0af64b1ea33a441b8c7c38891c42232ed717c8fc10aba569",
+          "nativeExportSha256": "4697a32d7f7a0b6393f8fb3694099c56e266332968889f89d621cb753dbb6995",
+          "worksheetId": "ms-g9-trp-02-b-r1",
+          "revision": 1
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "b5b5968044ec475ba118e62e1be3857f",
+          "pdfSha256": "103289876709627a13476863c42928327aeed375a5f47ee99130dd5124c3f608",
+          "sourceSha256": "4e513256ca5917a4d6515002aec0595988e70b7a8d48a658041aa48b96ed5b68",
+          "nativeExportSha256": "f7fadc9338add59a9aaf536cd70c5e78ce40afca56c3ea1b81b33a4dbb2d43ed",
+          "worksheetId": "ms-g9-trp-02-c-r1",
+          "revision": 1
+        }
+      ]
+    },
+    {
+      "grade": 9,
+      "topicId": 34,
+      "editionId": "ms-20261117-lnm-01-r1",
+      "label": "ט׳ מצומצמת · פונקציה קווית: שיפוע, חיתוך עם הצירים וישרים מקבילים · PDF",
+      "nativePrefix": "G9-T64",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "status": "published",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "ecaf240714494fa5bc15fa436626587c",
+          "pdfSha256": "a504630bd5a158269712c8a668a42cd82086f0088951553026d60ed02c393b1e",
+          "sourceSha256": "3465422569e0add8135d854e9098200716636c1a3698e0676231fa15a6f2303b",
+          "nativeExportSha256": "e8a69fc605cc7ddb3b111fea43ad28368ffbd190e5ae3348e58058a56fc36f0e",
+          "worksheetId": "ms-g9-lnm-01-a-r1",
+          "revision": 1
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "4b80c8a6e1604a4693ec3f2ddea59a66",
+          "pdfSha256": "d5afdc979c62980e3862586a2792b7964d887f790a24918109b48c6665ecbe5b",
+          "sourceSha256": "80f82ea7fc7aa272d5ae4c6be866d1699fee23a66da904d6450a8ea1781e5344",
+          "nativeExportSha256": "d0c2dfbdb13e047402dac34eece772ca45f61dee994cb5b4ff96e70c59ceb90b",
+          "worksheetId": "ms-g9-lnm-01-b-r1",
+          "revision": 1
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "c65d1550945c49a4acde12b8bd8a977b",
+          "pdfSha256": "c29b179148cc21d32488ee549342aaa2d2eaf64d2a4f99b8f887a7542a320b7d",
+          "sourceSha256": "23005bbd9a0ad34b56e9d95563107ce2c03242be6ea26cda161b29fced61c86c",
+          "nativeExportSha256": "0bded90cfa011b09ff8bf49720bbe220327f1b1bc40c9782136b32c00d3f403c",
+          "worksheetId": "ms-g9-lnm-01-c-r1",
+          "revision": 1
+        }
+      ]
+    },
+    {
+      "grade": 7,
+      "topicId": 22,
+      "editionId": "ms-20261117-alg-05-r1",
+      "label": "ביטוי אלגברי לחוקיות בסדרה וכינוס איברים בשני משתנים · PDF",
+      "nativePrefix": "G7-T105",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "status": "published",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "770cbafac9ae4a4f8238b779f8f6eb6f",
+          "pdfSha256": "5c4c09520fe7711a12001297024912ff2388b3de2e0ba401767d56b7749c6708",
+          "sourceSha256": "8aea6f0d409ecc7c7e7a9699f77f999c3355b1960dfa8332e814def9f6bcd4c5",
+          "nativeExportSha256": "90653eb94693c1ce946f935791c74978ded511eeddf1ddad232de70290258e14",
+          "worksheetId": "ms-g7-alg-05-a-r1",
+          "revision": 1
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "1cf0a9ab309d4e189a1029b1a5b6fbef",
+          "pdfSha256": "ee19ba9f0749105638a4eb30ab845434220066ed0becd8fb98a088b069a10a93",
+          "sourceSha256": "1cbc59d1cbe84ca31fda9c7c95807a4a230fdb12265b82f37f8b3c8384a6a37e",
+          "nativeExportSha256": "bc5ba56454ef6b8a2d1ec94eebc98f6f8afec522c74134e23218e37db5d3cba3",
+          "worksheetId": "ms-g7-alg-05-b-r1",
+          "revision": 1
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "2f3e68107653463b94fefeb5c99d86b0",
+          "pdfSha256": "3f871b3e25d7ab0cf3d985b6bbd7a7512312adf103e546764140895dd0a381d8",
+          "sourceSha256": "8e70df055fc6b45af7657c923cddcb3aa47abe6e30e79ce0edb859a2cc7aabf9",
+          "nativeExportSha256": "c1783a53367e320f5d484ff13bd43d10ed923e7934d512831f405f04d224cf64",
+          "worksheetId": "ms-g7-alg-05-c-r1",
+          "revision": 1
+        }
+      ]
     }
   ]
 }
