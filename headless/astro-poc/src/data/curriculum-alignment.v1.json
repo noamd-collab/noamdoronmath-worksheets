@@ -7,22 +7,26 @@
     "url": "https://pop.education.gov.il/tchumey_daat/matmatika/chativat-beynayim/teaching-mathematics/tohnit-limudim/"
   },
   "source": {
+    "generator": "headless/astro-poc/scripts/build-curriculum-alignment.py",
     "units": {
-      "path": "פרויקט החלפת דפי חטיבת הביניים/reports/curriculum-mapping-20261116/all-units.csv",
-      "sha256": "ea7641d4a492833a933c4e4f9d05d49b2f206c0755c771b479d09753fa9e232e",
+      "path": "headless/astro-poc/scripts/data/curriculum-alignment-sources.v1.json",
+      "sha256": "63490501743a8e8070f1a4d4414d871dbf08346636ad1bbe17aba6cebb24258f",
       "rows": 173,
-      "idColumn": "יחידה",
-      "trackColumn": "מסלול",
-      "nameColumn": "נושא"
+      "officialLayouts": {
+        "ז": "https://meyda.education.gov.il/files/Pop/0files/matmatika/Chativat-Beynayim/tashpaz/prisa_7.pdf",
+        "ח": "https://meyda.education.gov.il/files/Pop/0files/matmatika/Chativat-Beynayim/tashpaz/prisa_8.pdf",
+        "ט_רגילה": "https://meyda.education.gov.il/files/Pop/0files/matmatika/Chativat-Beynayim/tashpaz/prisa_9A.pdf",
+        "ט_מצומצמת": "https://meyda.education.gov.il/files/Pop/0files/matmatika/Chativat-Beynayim/tashpaz/prisa_9B.pdf"
+      }
     },
     "pages": {
-      "path": "פרויקט החלפת דפי חטיבת הביניים/submissions/Claude/MANAGER-20261116/landing-plan/coverage.json",
-      "sha256": "25a776f0dadb5ec971c1ec735c5b2490a13dae28736355844c3299ecfe2e1a07",
+      "path": "headless/astro-poc/scripts/data/curriculum-alignment-sources.v1.json",
+      "sha256": "63490501743a8e8070f1a4d4414d871dbf08346636ad1bbe17aba6cebb24258f",
       "rule": "covered_by_landing -> teaches; partial -> educationalSubject; other statuses are not aligned"
     },
     "corrections": {
-      "path": "פרויקט החלפת דפי חטיבת הביניים/submissions/Claude/MANAGER-20261116/landing-plan/verify.json",
-      "sha256": "040ab35a5779a218e42cca029507d77e213b02d76268adcab922488cb2e38805",
+      "path": "headless/astro-poc/scripts/build-curriculum-alignment.py",
+      "upstreamSha256": "040ab35a5779a218e42cca029507d77e213b02d76268adcab922488cb2e38805",
       "applied": [
         {
           "unit": "st.g7.word_problems.modeling_linear",
@@ -37,12 +41,7 @@
         {
           "unit": "st.g9r.square.def_properties_converse",
           "status": "partial",
-          "reason": "verify.json coverage_errors[1]: square-grade-9 states no converse theorem"
-        },
-        {
-          "unit": "st.g9r.rhombus.converse_theorems",
-          "status": "partial",
-          "reason": "verify.json coverage_errors[1]: rhombus-grade-9 never states a converse"
+          "reason": "verify.json coverage_errors[1]: square-grade-9 states no converse theorem (re-checked at 118b4d90: the copy says to reason by the converse theorems but states none)"
         },
         {
           "unit": "st.g9m.quad_partial.table_and_graph",
@@ -53,6 +52,180 @@
           "unit": "st.g9m.quad_partial.table_and_graph",
           "exclude": "quadratic-function-grade-9",
           "reason": "verify.json missed[4]: prisa_9B excludes quadratic-function properties for the reduced track"
+        }
+      ]
+    },
+    "rejudged": {
+      "path": "headless/astro-poc/scripts/build-curriculum-alignment.py",
+      "against": "headless/astro-poc-baseline 118b4d90 (batch 2a merged)",
+      "evidence": "headless/astro-poc/src/data/topic-pages",
+      "applied": [
+        {
+          "unit": "st.g7.coordinate_system.segments_shapes_q1",
+          "status": "covered_by_landing",
+          "pages": [
+            "coordinate-plane-applications-grade-7",
+            "coordinate-plane-scale-grade-7"
+          ],
+          "reason": "unchanged: the first-quadrant segments and rectangles section is now on the page"
+        },
+        {
+          "unit": "st.g7.directed_numbers.mul_div",
+          "status": "covered_by_landing",
+          "pages": [
+            "multiplying-signed-numbers-grade-7",
+            "dividing-signed-numbers-grade-7",
+            "order-of-operations-signed-numbers-grade-7"
+          ],
+          "reason": "unchanged: the reciprocal, missing before, is now in the copy"
+        },
+        {
+          "unit": "st.g8.triangle_parts.triangle_inequality",
+          "status": "covered_by_landing",
+          "pages": [
+            "triangle-median-grade-8"
+          ],
+          "reason": "no_topic -> covered: the median page now has a triangle-inequality section"
+        },
+        {
+          "unit": "st.g8.triangle_parts.median",
+          "status": "covered_by_landing",
+          "pages": [
+            "triangle-median-grade-8"
+          ],
+          "reason": "unchanged: the median-splits-area facet, missing before, is now in the copy"
+        },
+        {
+          "unit": "st.g8.triangle_parts.isosceles_converse",
+          "status": "covered_by_landing",
+          "pages": [
+            "isosceles-triangle-properties-grade-8"
+          ],
+          "reason": "topic_exists_no_landing_copy -> covered on isosceles-triangle-properties-grade-8; isosceles-triangle-grade-8 still states no converse"
+        },
+        {
+          "unit": "st.g8.functions_intro.inc_dec_linear_graphs",
+          "status": "partial",
+          "pages": [
+            "function-representations-grade-8",
+            "linear-function-grade-8"
+          ],
+          "reason": "unchanged partial: rising, falling and horizontal lines are linear only; intervals of increase, decrease and constancy of a function are still one clause"
+        },
+        {
+          "unit": "st.g8.word_problems_eq.special_denominators",
+          "status": "covered_by_landing",
+          "pages": [
+            "equations-with-fractions-grade-8"
+          ],
+          "reason": "partial -> covered: special equations are now in the copy"
+        },
+        {
+          "unit": "st.g9r.powers.power_of_product",
+          "status": "covered_by_landing",
+          "pages": [
+            "exponent-rules-grade-9"
+          ],
+          "reason": "topic_exists_no_landing_copy -> covered"
+        },
+        {
+          "unit": "st.g9r.powers.power_of_quotient",
+          "status": "covered_by_landing",
+          "pages": [
+            "exponent-rules-grade-9"
+          ],
+          "reason": "topic_exists_no_landing_copy -> covered"
+        },
+        {
+          "unit": "st.g9r.powers.zero_exponent",
+          "status": "covered_by_landing",
+          "pages": [
+            "exponent-rules-grade-9"
+          ],
+          "reason": "topic_exists_no_landing_copy -> covered"
+        },
+        {
+          "unit": "st.g9r.powers.sqrt_laws",
+          "status": "partial",
+          "pages": [
+            "square-roots-grade-9",
+            "exponent-rules-grade-9"
+          ],
+          "reason": "partial, exponent-rules-grade-9 added: it practises the square-root laws but, like square-roots-grade-9, does not state the product and quotient laws"
+        },
+        {
+          "unit": "st.g9r.word_problems.quadratic_geometric",
+          "status": "partial",
+          "pages": [
+            "word-problems-grade-9"
+          ],
+          "reason": "unchanged partial: second-degree equations now appear in motion, percent and work problems, but no geometric problem is solved with one and no system of equations is named"
+        },
+        {
+          "unit": "st.g9r.word_problems.motion_percent_literacy",
+          "status": "covered_by_landing",
+          "pages": [
+            "word-problems-grade-9"
+          ],
+          "reason": "topic_exists_no_landing_copy -> covered"
+        },
+        {
+          "unit": "st.g9r.isosceles_converse.theorems_and_coord",
+          "status": "covered_by_landing",
+          "pages": [
+            "isosceles-triangle-grade-9"
+          ],
+          "reason": "topic_exists_no_landing_copy -> covered, including the coordinate-plane check"
+        },
+        {
+          "unit": "st.g9m.word_problems.general_and_quadratic",
+          "status": "covered_by_landing",
+          "pages": [
+            "word-problems-grade-9"
+          ],
+          "reason": "partial -> covered: quadratic and literacy questions are now in the copy"
+        },
+        {
+          "unit": "st.g9m.pythagoras.composite_areas_perim",
+          "status": "covered_by_landing",
+          "pages": [
+            "pythagoras-applications-grade-9",
+            "composite-polygons-area-grade-9",
+            "pythagorean-theorem-grade-9"
+          ],
+          "reason": "unchanged, pythagorean-theorem-grade-9 added: it carries the reduced-track series"
+        },
+        {
+          "unit": "st.g9m.kite_and_isosceles.isosceles_converse",
+          "status": "covered_by_landing",
+          "pages": [
+            "isosceles-triangle-grade-9"
+          ],
+          "reason": "partial -> covered: identifying an isosceles triangle by the converse is now in the copy"
+        },
+        {
+          "unit": "st.g9m.rhombus.area_pythagoras",
+          "status": "partial",
+          "pages": [
+            "rhombus-grade-9"
+          ],
+          "reason": "topic_exists_no_landing_copy -> partial: area and perimeter are in the copy; half the product of the diagonals and Pythagoras are not stated"
+        },
+        {
+          "unit": "st.g9m.square.area_pythagoras",
+          "status": "partial",
+          "pages": [
+            "square-grade-9"
+          ],
+          "reason": "unchanged partial: diagonal length is now in the copy; half the product of the diagonals and Pythagoras are still not stated"
+        },
+        {
+          "unit": "st.g9r.rhombus.converse_theorems",
+          "status": "covered_by_landing",
+          "pages": [
+            "rhombus-grade-9"
+          ],
+          "reason": "verify.json coverage_errors[1] made this partial because rhombus-grade-9 stated no converse; the merged copy states them, so the coverage status (covered) stands"
         }
       ]
     }
@@ -141,8 +314,10 @@
     "st.g8.systems_basic.algebraic_solving": {"track": "ח", "name": "פתרון אלגברי של מערכת משוואות (הצבה והשוואת מקדמים) ושאלות מילוליות"},
     "st.g8.systems_basic.graphical_meaning": {"track": "ח", "name": "מערכת של שתי משוואות קוויות בשני נעלמים ומשמעותה הגרפית"},
     "st.g8.triangle_parts.exterior_angle": {"track": "ח", "name": "זווית חיצונית למשולש ותכונתה"},
+    "st.g8.triangle_parts.isosceles_converse": {"track": "ח", "name": "משפטים הפוכים לזיהוי משולש שווה־שוקיים"},
     "st.g8.triangle_parts.isosceles_properties": {"track": "ח", "name": "משולש שווה־שוקיים: זוויות הבסיס והתלכדות תיכון, גובה וחוצה זווית הראש"},
     "st.g8.triangle_parts.median": {"track": "ח", "name": "תיכון במשולש וחלוקת שטח המשולש"},
+    "st.g8.triangle_parts.triangle_inequality": {"track": "ח", "name": "צלעות המשולש (אי־שוויון המשולש)"},
     "st.g8.word_problems_eq.motion_percent_problems": {"track": "ח", "name": "שאלות מילוליות בעזרת משוואות: תנועה, אחוזים ויחס"},
     "st.g8.word_problems_eq.special_denominators": {"track": "ח", "name": "משוואות ממעלה ראשונה עם מכנים מספריים ומשוואות מיוחדות"},
     "st.g9m.alg_technique_basic.distributive_extended": {"track": "ט_מצומצמת", "name": "חוק הפילוג וחוק הפילוג המורחב"},
@@ -167,6 +342,7 @@
     "st.g9m.quad_partial.quadratic_formula": {"track": "ט_מצומצמת", "name": "פתרון משוואות ריבועיות באמצעות נוסחת השורשים"},
     "st.g9m.rectangle.def_properties": {"track": "ט_מצומצמת", "name": "הגדרת המלבן ותכונות הצלעות, הזוויות והאלכסונים"},
     "st.g9m.rectangle.sides_perim_area": {"track": "ט_מצומצמת", "name": "חישובי צלעות, אלכסונים, היקפים ושטחים במלבן"},
+    "st.g9m.rhombus.area_pythagoras": {"track": "ט_מצומצמת", "name": "חישובי שטח והיקף של מעוין (כולל מחצית מכפלת האלכסונים ומשפט פיתגורס)"},
     "st.g9m.rhombus.def_properties": {"track": "ט_מצומצמת", "name": "הגדרת המעוין ותכונות הצלעות, הזוויות והאלכסונים"},
     "st.g9m.similarity.aa_calculations": {"track": "ט_מצומצמת", "name": "משפט דמיון ז.ז וחישובי צלעות וזוויות במשולשים דומים"},
     "st.g9m.similarity.concept_scale": {"track": "ט_מצומצמת", "name": "המושג צורות דומות, הגדלה והקטנה וצלעות פרופורציונליות"},
@@ -181,6 +357,7 @@
     "st.g9r.alg_technique.extended_distributive": {"track": "ט_רגילה", "name": "חוק הפילוג המורחב, פישוט ביטויים, משוואות והשוואת שטחים"},
     "st.g9r.alg_technique.factoring": {"track": "ט_רגילה", "name": "פירוק לגורמים (גורם משותף, נוסחאות כפל מקוצר וטרינום) ופתרון משוואות ריבועיות בסיסיות"},
     "st.g9r.alg_technique.short_multiplication": {"track": "ט_רגילה", "name": "נוסחאות הכפל המקוצר (הפרש ריבועים וריבוע של סכום או הפרש)"},
+    "st.g9r.isosceles_converse.theorems_and_coord": {"track": "ט_רגילה", "name": "משפטים הפוכים להוכחה שמשולש הוא שווה־שוקיים (כולל במערכת צירים)"},
     "st.g9r.kite.definition_angles": {"track": "ט_רגילה", "name": "הכרת הדלתון, הגדרתו ותכונות הזוויות בדלתון"},
     "st.g9r.kite.main_diagonal_area": {"track": "ט_רגילה", "name": "האלכסון הראשי בדלתון ושטח דלתון"},
     "st.g9r.parallelogram.converse_theorems": {"track": "ט_רגילה", "name": "משפטים הפוכים להוכחה שמרובע הוא מקבילית"},
@@ -190,9 +367,12 @@
     "st.g9r.parallels_trapezoid.trapezoid_intro": {"track": "ט_רגילה", "name": "הכרת הטרפז, תכונות זוויות בטרפז והוכחה שמרובע הוא טרפז"},
     "st.g9r.powers.natural_review": {"track": "ט_רגילה", "name": "חזקה עם מעריך טבעי: חזרה"},
     "st.g9r.powers.power_of_power": {"track": "ט_רגילה", "name": "חזקה של חזקה"},
+    "st.g9r.powers.power_of_product": {"track": "ט_רגילה", "name": "חזקה של מכפלה"},
+    "st.g9r.powers.power_of_quotient": {"track": "ט_רגילה", "name": "חזקה של מנה"},
     "st.g9r.powers.product_same_base": {"track": "ט_רגילה", "name": "כפל חזקות בעלות בסיס שווה"},
     "st.g9r.powers.quotient_same_base": {"track": "ט_רגילה", "name": "חילוק חזקות בעלות בסיס שווה"},
     "st.g9r.powers.sqrt_laws": {"track": "ט_רגילה", "name": "חוקי שורש ריבועי"},
+    "st.g9r.powers.zero_exponent": {"track": "ט_רגילה", "name": "חזקה עם מעריך אפס"},
     "st.g9r.probability.single_stage_complement": {"track": "ט_רגילה", "name": "מושגי יסוד בהסתברות, שכיחות יחסית ומאורע משלים"},
     "st.g9r.quad_eq_applications.technique_and_graphs": {"track": "ט_רגילה", "name": "פתרון משוואות ריבועיות משולבות בטכניקה אלגברית ויישומים בפרבולות"},
     "st.g9r.quad_func_and_eq.factored_standard_formula": {"track": "ט_רגילה", "name": "הצגה כמכפלה, הצגה סטנדרטית ופתרון משוואות ריבועיות בנוסחת השורשים"},
@@ -210,6 +390,7 @@
     "st.g9r.similarity.area_ratio": {"track": "ט_רגילה", "name": "דמיון משולשים ויחס השטחים בין משולשים דומים"},
     "st.g9r.square.def_properties_converse": {"track": "ט_רגילה", "name": "הגדרת הריבוע, תכונותיו ומשפטים הפוכים להוכחה שמרובע הוא ריבוע"},
     "st.g9r.system_degree_2.line_parabola_system": {"track": "ט_רגילה", "name": "מערכת משוואות ממעלה שנייה (ישר ופרבולה או שתי פרבולות): פתרון אלגברי וגרפי"},
+    "st.g9r.word_problems.motion_percent_literacy": {"track": "ט_רגילה", "name": "שאלות תנועה, אחוזים ושאלות אוריינות"},
     "st.g9r.word_problems.quadratic_geometric": {"track": "ט_רגילה", "name": "שאלות מילוליות הנדסיות וכלליות בעזרת משוואה ריבועית או מערכת משוואות"}
   },
   "pages": {
@@ -246,9 +427,9 @@
     "equations-basics-grade-7": [{"unit": "st.g7.equations.solution_meaning", "alignmentType": "teaches"}],
     "equations-both-sides-word-problems-grade-7": [{"unit": "st.g7.equations.linear_solving", "alignmentType": "teaches"}, {"unit": "st.g7.word_problems.modeling_linear", "alignmentType": "educationalSubject"}, {"unit": "st.g7.word_problems.context_problems", "alignmentType": "educationalSubject"}],
     "equations-introduction-equivalence-grade-7": [{"unit": "st.g7.equations.solution_meaning", "alignmentType": "teaches"}],
-    "equations-with-fractions-grade-8": [{"unit": "st.g8.word_problems_eq.special_denominators", "alignmentType": "educationalSubject"}],
+    "equations-with-fractions-grade-8": [{"unit": "st.g8.word_problems_eq.special_denominators", "alignmentType": "teaches"}],
     "equilateral-triangle-grade-7": [{"unit": "st.g7.angles.equilateral", "alignmentType": "teaches"}],
-    "exponent-rules-grade-9": [{"unit": "st.g9r.powers.natural_review", "alignmentType": "teaches"}, {"unit": "st.g9r.powers.product_same_base", "alignmentType": "teaches"}, {"unit": "st.g9r.powers.quotient_same_base", "alignmentType": "teaches"}, {"unit": "st.g9r.powers.power_of_power", "alignmentType": "teaches"}],
+    "exponent-rules-grade-9": [{"unit": "st.g9r.powers.natural_review", "alignmentType": "teaches"}, {"unit": "st.g9r.powers.product_same_base", "alignmentType": "teaches"}, {"unit": "st.g9r.powers.quotient_same_base", "alignmentType": "teaches"}, {"unit": "st.g9r.powers.power_of_product", "alignmentType": "teaches"}, {"unit": "st.g9r.powers.power_of_quotient", "alignmentType": "teaches"}, {"unit": "st.g9r.powers.power_of_power", "alignmentType": "teaches"}, {"unit": "st.g9r.powers.zero_exponent", "alignmentType": "teaches"}, {"unit": "st.g9r.powers.sqrt_laws", "alignmentType": "educationalSubject"}],
     "exterior-angle-triangle-grade-8": [{"unit": "st.g8.triangle_parts.exterior_angle", "alignmentType": "teaches"}],
     "factoring-grade-9": [{"unit": "st.g9r.alg_technique.factoring", "alignmentType": "teaches"}],
     "frequency-grade-7": [{"unit": "st.g7.data_frequency.collect_represent", "alignmentType": "teaches"}, {"unit": "st.g7.data_frequency.frequency_relative", "alignmentType": "teaches"}],
@@ -260,8 +441,8 @@
     "inequalities-grade-8": [{"unit": "st.g8.inequalities.concept_number_line", "alignmentType": "teaches"}, {"unit": "st.g8.inequalities.linear_solving", "alignmentType": "teaches"}],
     "interpolation-extrapolation-grade-8": [{"unit": "st.g8.inter_extrapolation.estimate_from_trend", "alignmentType": "teaches"}],
     "isosceles-triangle-grade-8": [{"unit": "st.g8.triangle_parts.isosceles_properties", "alignmentType": "teaches"}],
-    "isosceles-triangle-grade-9": [{"unit": "st.g9m.kite_and_isosceles.isosceles_converse", "alignmentType": "educationalSubject"}],
-    "isosceles-triangle-properties-grade-8": [{"unit": "st.g8.triangle_parts.isosceles_properties", "alignmentType": "teaches"}],
+    "isosceles-triangle-grade-9": [{"unit": "st.g9r.isosceles_converse.theorems_and_coord", "alignmentType": "teaches"}, {"unit": "st.g9m.kite_and_isosceles.isosceles_converse", "alignmentType": "teaches"}],
+    "isosceles-triangle-properties-grade-8": [{"unit": "st.g8.triangle_parts.isosceles_properties", "alignmentType": "teaches"}, {"unit": "st.g8.triangle_parts.isosceles_converse", "alignmentType": "teaches"}],
     "kite-grade-9": [{"unit": "st.g9r.kite.definition_angles", "alignmentType": "teaches"}, {"unit": "st.g9r.kite.main_diagonal_area", "alignmentType": "teaches"}, {"unit": "st.g9m.kite_and_isosceles.kite_properties", "alignmentType": "teaches"}],
     "linear-function-grade-8": [{"unit": "st.g8.functions_intro.inc_dec_linear_graphs", "alignmentType": "educationalSubject"}, {"unit": "st.g8.slope_linear.algebraic_linear", "alignmentType": "teaches"}],
     "linear-function-grade-9": [{"unit": "st.g9m.linear_function.slope_rate_meaning", "alignmentType": "educationalSubject"}, {"unit": "st.g9m.linear_function.points_intercepts_parallels", "alignmentType": "educationalSubject"}, {"unit": "st.g9m.linear_function.line_equation_optional", "alignmentType": "educationalSubject"}],
@@ -290,7 +471,7 @@
     "pythagoras-in-space-grade-8": [{"unit": "st.g8.pythagoras_3d.space_diagonals", "alignmentType": "teaches"}],
     "pythagorean-theorem-grade-7": [{"unit": "st.g7.pythagoras.right_triangle_legs", "alignmentType": "teaches"}],
     "pythagorean-theorem-grade-8": [{"unit": "st.g8.pythagoras.theorem_converse", "alignmentType": "teaches"}],
-    "pythagorean-theorem-grade-9": [{"unit": "st.g9m.pythagoras.right_triangle_sides", "alignmentType": "teaches"}],
+    "pythagorean-theorem-grade-9": [{"unit": "st.g9m.pythagoras.right_triangle_sides", "alignmentType": "teaches"}, {"unit": "st.g9m.pythagoras.composite_areas_perim", "alignmentType": "teaches"}],
     "quadratic-equations-grade-9": [{"unit": "st.g9r.quad_func_and_eq.factored_standard_formula", "alignmentType": "teaches"}, {"unit": "st.g9r.quad_eq_applications.technique_and_graphs", "alignmentType": "educationalSubject"}, {"unit": "st.g9m.quad_partial.quadratic_formula", "alignmentType": "teaches"}],
     "quadratic-function-grade-9": [{"unit": "st.g9r.quad_func_and_eq.parabola_intro_qualitative", "alignmentType": "teaches"}, {"unit": "st.g9r.quad_func_and_eq.shifts_vertex_form", "alignmentType": "educationalSubject"}, {"unit": "st.g9r.quad_func_and_eq.factored_standard_formula", "alignmentType": "teaches"}],
     "quadratic-inequalities-systems-grade-9": [{"unit": "st.g9r.quad_inequalities.graphical_parabola", "alignmentType": "teaches"}, {"unit": "st.g9r.system_degree_2.line_parabola_system", "alignmentType": "teaches"}],
@@ -302,7 +483,7 @@
     "rectangle-square-area-grade-9": [{"unit": "st.g9m.rectangle.sides_perim_area", "alignmentType": "teaches"}],
     "relative-frequency-experiments-grade-7": [{"unit": "st.g7.data_frequency.probability_relative_freq", "alignmentType": "teaches"}],
     "relative-frequency-grade-7": [{"unit": "st.g7.data_frequency.frequency_relative", "alignmentType": "teaches"}],
-    "rhombus-grade-9": [{"unit": "st.g9r.rhombus.def_properties", "alignmentType": "teaches"}, {"unit": "st.g9r.rhombus.converse_theorems", "alignmentType": "educationalSubject"}, {"unit": "st.g9m.rhombus.def_properties", "alignmentType": "teaches"}],
+    "rhombus-grade-9": [{"unit": "st.g9r.rhombus.def_properties", "alignmentType": "teaches"}, {"unit": "st.g9r.rhombus.converse_theorems", "alignmentType": "teaches"}, {"unit": "st.g9m.rhombus.def_properties", "alignmentType": "teaches"}, {"unit": "st.g9m.rhombus.area_pythagoras", "alignmentType": "educationalSubject"}],
     "scale-grade-8": [{"unit": "st.g8.ratio_scale.scale", "alignmentType": "teaches"}],
     "signed-numbers-grade-7": [{"unit": "st.g7.directed_numbers.addition", "alignmentType": "teaches"}, {"unit": "st.g7.directed_numbers.subtraction", "alignmentType": "teaches"}],
     "similar-triangles-grade-8": [{"unit": "st.g8.similarity.similar_polygons_ratio", "alignmentType": "teaches"}, {"unit": "st.g8.similarity.criteria", "alignmentType": "teaches"}],
@@ -327,7 +508,7 @@
     "triangle-calculations-grade-9": [{"unit": "st.g9m.computational_triangle.angles_and_lines", "alignmentType": "teaches"}, {"unit": "st.g9m.computational_triangle.area_perim_coord", "alignmentType": "teaches"}],
     "triangle-congruence-grade-8": [{"unit": "st.g8.congruence.criteria_sas_asa_sss", "alignmentType": "teaches"}],
     "triangle-congruence-proofs-grade-8": [{"unit": "st.g8.congruence.deductive_proof", "alignmentType": "teaches"}],
-    "triangle-median-grade-8": [{"unit": "st.g8.triangle_parts.median", "alignmentType": "teaches"}],
+    "triangle-median-grade-8": [{"unit": "st.g8.triangle_parts.triangle_inequality", "alignmentType": "teaches"}, {"unit": "st.g8.triangle_parts.median", "alignmentType": "teaches"}],
     "triangle-quadrilateral-angle-sum-grade-7": [{"unit": "st.g7.angles.triangle_sum", "alignmentType": "teaches"}, {"unit": "st.g7.angles.quad_sum", "alignmentType": "teaches"}],
     "triangle-sides-angles-grade-9": [{"unit": "st.g9r.side_angle_relations.order_theorems", "alignmentType": "teaches"}],
     "triangle-similarity-aa-grade-9": [{"unit": "st.g9m.similarity.aa_calculations", "alignmentType": "teaches"}],
@@ -335,6 +516,6 @@
     "two-data-sources-grade-8": [{"unit": "st.g8.data_center.two_sources", "alignmentType": "teaches"}],
     "two-step-equations-grade-7": [{"unit": "st.g7.equations.linear_solving", "alignmentType": "teaches"}],
     "word-problems-choosing-unknowns-grade-8": [{"unit": "st.g8.word_problems_eq.motion_percent_problems", "alignmentType": "teaches"}],
-    "word-problems-grade-9": [{"unit": "st.g9r.word_problems.quadratic_geometric", "alignmentType": "educationalSubject"}, {"unit": "st.g9m.word_problems.general_and_quadratic", "alignmentType": "educationalSubject"}]
+    "word-problems-grade-9": [{"unit": "st.g9r.word_problems.quadratic_geometric", "alignmentType": "educationalSubject"}, {"unit": "st.g9r.word_problems.motion_percent_literacy", "alignmentType": "teaches"}, {"unit": "st.g9m.word_problems.general_and_quadratic", "alignmentType": "teaches"}]
   }
 }

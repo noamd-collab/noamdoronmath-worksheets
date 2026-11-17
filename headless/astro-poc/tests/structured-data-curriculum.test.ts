@@ -4,8 +4,13 @@
  * no bidi isolate controls; the home page names each entity once.
  */
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { spawnSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
+import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { describe, it } from 'node:test';
+import { fileURLToPath } from 'node:url';
 import alignmentFile from '../src/data/curriculum-alignment.v1.json';
 import { loadCatalog } from '../src/lib/catalog/loadCatalog.ts';
 import { loadAllGradeHubs } from '../src/lib/gradeHubs.ts';
@@ -42,7 +47,13 @@ const PDI = '⁩';
 const catalog = loadCatalog();
 const file = alignmentFile as {
   framework: { name: string; url: string };
-  source: Record<string, { path: string; sha256: string; rows?: number }>;
+  source: {
+    generator: string;
+    units: { path: string; sha256: string; rows: number; officialLayouts: Record<string, string> };
+    pages: { path: string; sha256: string };
+    corrections: { path: string; applied: Array<{ unit: string }> };
+    rejudged: { path: string; against: string; applied: Array<{ unit: string; status: string; pages: string[] }> };
+  };
   tracks: Record<string, string>;
   units: Record<string, { track: string; name: string }>;
   pages: Record<string, Array<{ unit: string; alignmentType: string }>>;
@@ -63,13 +74,41 @@ function learningResources(blocks: readonly unknown[]): Node[] {
 }
 
 describe('curriculum-alignment.v1.json', () => {
-  it('records its sources with sha256 and the 173-unit official list', () => {
+  it('records repo-relative sources with sha256 and the official layouts of the 173 units', () => {
     assert.equal(file.framework.name, CURRICULUM_FRAMEWORK);
     assert.equal(file.framework.url, CURRICULUM_TARGET_URL);
-    assert.match(file.source.units.path, /reports\/curriculum-mapping-20261116\/all-units\.csv$/);
-    assert.equal(file.source.units.rows, 173);
-    for (const key of ['units', 'pages', 'corrections']) {
-      assert.match(file.source[key].sha256, /^[0-9a-f]{64}$/, key);
+    const repoRoot = fileURLToPath(new URL('../../../', import.meta.url));
+    const { generator, units, pages, corrections, rejudged } = file.source;
+    for (const path of [generator, units.path, pages.path, corrections.path, rejudged.path]) {
+      assert.match(path, /^headless\/astro-poc\//, path);
+      assert.ok(existsSync(join(repoRoot, path)), path);
+    }
+    const sourcesSha = createHash('sha256').update(readFileSync(join(repoRoot, units.path))).digest('hex');
+    assert.equal(units.sha256, sourcesSha);
+    assert.equal(pages.sha256, sourcesSha);
+    assert.equal(units.rows, 173);
+    assert.deepEqual(Object.keys(units.officialLayouts).sort(), Object.keys(file.tracks).sort());
+    for (const url of Object.values(units.officialLayouts)) {
+      assert.match(url, /^https:\/\/meyda\.education\.gov\.il\/files\/Pop\/0files\/matmatika\/Chativat-Beynayim\/tashpaz\/prisa_\w+\.pdf$/);
+    }
+    // No local machine path is committed.
+    assert.doesNotMatch(JSON.stringify(file.source), /\/Users\/|Desktop|פרויקט/);
+  });
+
+  it('is what scripts/build-curriculum-alignment.py builds from the repo', () => {
+    const astroRoot = fileURLToPath(new URL('../', import.meta.url));
+    const dir = mkdtempSync(join(tmpdir(), 'curriculum-alignment-'));
+    try {
+      const routed = join(dir, 'routed.json');
+      writeFileSync(routed, JSON.stringify(Object.fromEntries(
+        TOPIC_PAGE_SLUGS.map((slug) => [slug, loadTopicPage(slug).grade]),
+      )));
+      const run = spawnSync('python3', ['scripts/build-curriculum-alignment.py', '--check', '--routed', routed], {
+        cwd: astroRoot, encoding: 'utf8',
+      });
+      assert.equal(run.status, 0, run.stderr || run.stdout);
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
     }
   });
 
@@ -96,7 +135,7 @@ describe('curriculum-alignment.v1.json', () => {
       assert.deepEqual(jsonLdBidiErrors(unit.name), [], id);
     }
     assert.equal(Object.keys(file.pages).length, 123);
-    assert.equal(Object.keys(file.units).length, 147);
+    assert.equal(Object.keys(file.units).length, 155);
   });
 
   it('applies the verifier corrections', () => {
@@ -115,10 +154,34 @@ describe('curriculum-alignment.v1.json', () => {
       units('square-grade-9').find((u) => u.id === 'st.g9r.square.def_properties_converse')?.alignmentType,
       'educationalSubject',
     );
-    assert.equal(
-      units('rhombus-grade-9').find((u) => u.id === 'st.g9r.rhombus.converse_theorems')?.alignmentType,
-      'educationalSubject',
-    );
+  });
+
+  it('re-judges the batch-02a rows against the merged landing copy', () => {
+    const type = (slug: string, id: string) => curriculumUnitsForTopicPage(slug).find((u) => u.id === id)?.alignmentType;
+    assert.match(file.source.rejudged.against, /118b4d90/);
+    // The merged rhombus copy states the converse theorems; the verifier's downgrade is lifted.
+    assert.equal(type('rhombus-grade-9', 'st.g9r.rhombus.converse_theorems'), 'teaches');
+    assert.ok(!file.source.corrections.applied.some((c) => c.unit === 'st.g9r.rhombus.converse_theorems'));
+    for (const id of ['st.g9r.powers.power_of_product', 'st.g9r.powers.power_of_quotient', 'st.g9r.powers.zero_exponent']) {
+      assert.equal(type('exponent-rules-grade-9', id), 'teaches', id);
+    }
+    assert.equal(type('exponent-rules-grade-9', 'st.g9r.powers.sqrt_laws'), 'educationalSubject');
+    assert.equal(type('triangle-median-grade-8', 'st.g8.triangle_parts.triangle_inequality'), 'teaches');
+    assert.equal(type('isosceles-triangle-properties-grade-8', 'st.g8.triangle_parts.isosceles_converse'), 'teaches');
+    assert.equal(type('isosceles-triangle-grade-8', 'st.g8.triangle_parts.isosceles_converse'), undefined);
+    assert.equal(type('equations-with-fractions-grade-8', 'st.g8.word_problems_eq.special_denominators'), 'teaches');
+    assert.equal(type('word-problems-grade-9', 'st.g9r.word_problems.motion_percent_literacy'), 'teaches');
+    assert.equal(type('word-problems-grade-9', 'st.g9r.word_problems.quadratic_geometric'), 'educationalSubject');
+    assert.equal(type('rhombus-grade-9', 'st.g9m.rhombus.area_pythagoras'), 'educationalSubject');
+    assert.equal(type('square-grade-9', 'st.g9m.square.area_pythagoras'), 'educationalSubject');
+    // Every re-judged row is in the mapping exactly as judged.
+    for (const row of file.source.rejudged.applied) {
+      const expected = row.status === 'covered_by_landing' ? 'teaches' : row.status === 'partial' ? 'educationalSubject' : undefined;
+      for (const slug of row.pages) {
+        if (!file.pages[slug] && !expected) continue;
+        assert.equal(type(slug, row.unit), expected, `${row.unit} on ${slug}`);
+      }
+    }
   });
 });
 
