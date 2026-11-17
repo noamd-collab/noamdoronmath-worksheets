@@ -2975,6 +2975,468 @@
           "revision": 1
         }
       ]
+    },
+    {
+      "grade": 7,
+      "topicId": 24,
+      "editionId": "ms-20261117-dat-01-r1",
+      "label": "איסוף וארגון נתונים: טבלאות שכיחות ובדיקת נתונים · PDF",
+      "nativePrefix": "G7-T64",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "status": "published",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "33727d26b4144b479d4d1747021a6748",
+          "pdfSha256": "fdf62835b078dd20ae1644da10a63c408275af710d20451f3909eb26348f83ea",
+          "sourceSha256": "032d0364f2aabcf39a3330ecfb0e829e28eca99fa656913015e76b238e766c44",
+          "nativeExportSha256": "6bb1cfb9c63a341eb5eac7cc752420e35689fc05907df7161207efaad6a53013",
+          "worksheetId": "ms-g7-dat-01-a-r1",
+          "revision": 1
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "16327a5ffa004c64a8e30e7464844218",
+          "pdfSha256": "d3cddbf99e1b7a1190c098591a023b34f4b87db42de62e6df1a9e6e03f44f252",
+          "sourceSha256": "2abc0ad0ba52979ca7d30a674daaadf1788a305566af130a2f09c26da1b8b6f3",
+          "nativeExportSha256": "4c37e9ed91fee6e91e425a6f6fb7fc4de0bfd7ff7770be89dbf43996237029c8",
+          "worksheetId": "ms-g7-dat-01-b-r1",
+          "revision": 1
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "40c7eaf9fe8f41f5a10731918f71a41b",
+          "pdfSha256": "2639db5fdf4f9f9a729e2e228e883af60df709e7a8bd0705d25b6368284d2d70",
+          "sourceSha256": "901504a37942264caed7f7511a378593aef79ef05cf47603ed7b8d061c92259d",
+          "nativeExportSha256": "2c73cd3c1e54c3d3d9440c1f148ad61c6ceb0f42974878d3eebead9359a721f1",
+          "worksheetId": "ms-g7-dat-01-c-r1",
+          "revision": 1
+        }
+      ]
+    },
+    {
+      "grade": 7,
+      "topicId": 41,
+      "editionId": "ms-20261117-wpm-01-r1",
+      "label": "בעיה מילולית למשוואה: בחירת נעלם ובניית מודל · PDF",
+      "nativePrefix": "G7-T70",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "status": "published",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "ef42d8c3dfcf4047bc337462b9e4c581",
+          "pdfSha256": "4f1184579d19a772dbdf16a1a55beee5c56b0f72f7bd46674f8290162379e76e",
+          "sourceSha256": "579de6736df5af0f1aab8b46f0b4baf459a96d2d9e5aceea52afcada5cea77e5",
+          "nativeExportSha256": "dfa35ed0029148d05dec1177829cc21667e52d39a7125094039cd3463de6cb43",
+          "worksheetId": "ms-g7-wpm-01-a-r1",
+          "revision": 1
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "0e3cfcbf03e3436cbc418295df22abee",
+          "pdfSha256": "224e3c0c93b26d10db6a09821ea06f5bd7db5a92710976874ff48b146bcda821",
+          "sourceSha256": "906d7210258a84518afec6da88ef6f5b5024b666b169464655ca9e912c0a22ef",
+          "nativeExportSha256": "ac2161cf002d559813300aae88ee8023d0d4ad1b8a9fa03543878618d2482165",
+          "worksheetId": "ms-g7-wpm-01-b-r1",
+          "revision": 1
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "e268ac6cb491411592789892e0e71a7a",
+          "pdfSha256": "5ec5ad5aa6ee9a5c396c65a53ce2ec9b8db57bb89e794416c1372d6fbfca695e",
+          "sourceSha256": "d95277945e3e727a0730524bfec54e64f96cfabe679d93d7dc89e0644e47e866",
+          "nativeExportSha256": "48f79f0c46f9487f35b7439478f88d2bc60b08635dd203d5cfb63d3fef3ee698",
+          "worksheetId": "ms-g7-wpm-01-c-r1",
+          "revision": 1
+        }
+      ]
+    },
+    {
+      "grade": 8,
+      "topicId": 21,
+      "editionId": "ms-20261117-fnc-01-r1",
+      "label": "מושג הפונקציה, ייצוגיה ותחומי עלייה וירידה · PDF",
+      "nativePrefix": "G8-T95",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "status": "published",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "e3f8f303adc34e16a148529378f16122",
+          "pdfSha256": "fc36863110cb86ec4767daa59621dc1b6f335605a5e7e59acf035f4acf6d8bfa",
+          "sourceSha256": "76c674a40bb88b9a0b5219f89cf08cf03cffb8641388a036b00088c479b2cfa5",
+          "nativeExportSha256": "f31830920ab9979299701fd3e57f2507af97a087182180ccdefef7d4a7048627",
+          "worksheetId": "ms-g8-fnc-01-a-r1",
+          "revision": 1
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "d0ac8a2c97c24d9e8677a585a9834dcb",
+          "pdfSha256": "4cb62f14efc061bfc391d01adef7b8f8b5a9cc84c2237b144ba73c5a6ffadfb8",
+          "sourceSha256": "81c7055556e5080091498ea467eec8d124b0022b09306fd1de73c29d584e1616",
+          "nativeExportSha256": "009163c727f1d2518055c1120473f1d2aeb1946a0c1c746ae0b4c595ad6ef055",
+          "worksheetId": "ms-g8-fnc-01-b-r1",
+          "revision": 1
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "11658ff1c4e0449a88c7b559bb4170b5",
+          "pdfSha256": "bd4b2995b5ef918af24385abce7141b30373e07593637d6aec72f5282ffb8ddd",
+          "sourceSha256": "49e592cce240abbd483098f787d5bcefd77a6f8b3024c3d70ff83920d8cacf83",
+          "nativeExportSha256": "e8c46f124879c78a05a60bc129eb4841e8464befb8bafb99042365dcebe8e8d2",
+          "worksheetId": "ms-g8-fnc-01-c-r1",
+          "revision": 1
+        }
+      ]
+    },
+    {
+      "grade": 8,
+      "topicId": 61,
+      "editionId": "ms-20261117-int-01-r1",
+      "label": "אינטרפולציה ואקסטרפולציה מתוך מדידות · PDF",
+      "nativePrefix": "G8-T69",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "status": "published",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "be21a80fa34a4c2ea450778d5e5e877e",
+          "pdfSha256": "55e712f84418b2bcf2cecb33557c185f8891295c27b4a6cfc9335cbb298bfb23",
+          "sourceSha256": "2221bcbd71dc3d7104378044c5364ead2d7634ba6c63ec108a342792394c6084",
+          "nativeExportSha256": "8a417f9599c9d5066b9903869ca155d4ff38d5acee93602f44e502b95a513745",
+          "worksheetId": "ms-g8-int-01-a-r1",
+          "revision": 1
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "b8aef22e17ac4b6da111c62ca177cd61",
+          "pdfSha256": "7bc1831a5037db6e4cb16aed08ea9cc80e50f20539352081a7567ddb1a14fe04",
+          "sourceSha256": "642837da62723d30cfa39067af97fa03af21b3d4e3be7aaa4ae266f9ca009102",
+          "nativeExportSha256": "f3f18e4ae1713566334276a27d800fcd5f590d3c97c9f6b3e9324b80fda8dd9e",
+          "worksheetId": "ms-g8-int-01-b-r1",
+          "revision": 1
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "79ca1ac0534f45d496139fdaf8ba5d6b",
+          "pdfSha256": "b948568fd26696a1b372b8d5195ad5758bd01d11a572ed95afa951ee25d544ac",
+          "sourceSha256": "f616d6f998717d5545d7ac28c55ff37de82e62adbec1aa5fec42c4f395d09ea6",
+          "nativeExportSha256": "0b4e593907639982d487659c4983a8764b84faa42c075c962fd1abafa6877827",
+          "worksheetId": "ms-g8-int-01-c-r1",
+          "revision": 1
+        }
+      ]
+    },
+    {
+      "grade": 8,
+      "topicId": 7,
+      "editionId": "ms-20261117-pct-01-r1",
+      "label": "אחוזים: חלק ושלם, שינוי ושני שלבים · PDF",
+      "nativePrefix": "G8-T98",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "status": "published",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "25ac5e70e90641f68cc0ca93530d6b46",
+          "pdfSha256": "f00a8f45446982a77278b064b3724b96619b80a53f73e9099a183378f82f4ba7",
+          "sourceSha256": "1fcd4c0f279a19b1e51df4adc67d38cab404bca54d655f18b1ce561556a4074d",
+          "nativeExportSha256": "1ccb1d78611da9dbf327ef61e234de91c06d4fb88e9c95f5fa54fc253b8ebcf1",
+          "worksheetId": "ms-g8-pct-01-a-r1",
+          "revision": 1
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "b868caa405744f8bba0cc69fe30689ea",
+          "pdfSha256": "c5622e3edc989aef92269470cba7e30990ae7abbc8bccd1eb2c699e26abae11d",
+          "sourceSha256": "8f7755e80d478dc52dfe0382dd3b1db7e26f2f3844d4db53efdf2b4063161fb5",
+          "nativeExportSha256": "1569678ea5b89b905192d858e8bdad1e5e8fff6f09dd8d7b4a1d097087b60e62",
+          "worksheetId": "ms-g8-pct-01-b-r1",
+          "revision": 1
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "436166eb0471404782ff94f35f271e00",
+          "pdfSha256": "726a44bf8825eb5b491f30831d5d3c1f73f75f98dc1927385bd00aa678714c9b",
+          "sourceSha256": "44e6ae5a5d4e798409cdef133fa057d4abd4c2072cf3206cd32430a77a77b395",
+          "nativeExportSha256": "dc915cf43a336171ef790497fb2aa6f94f6d0252e6afed93856b3ffd3b837e08",
+          "worksheetId": "ms-g8-pct-01-c-r1",
+          "revision": 1
+        }
+      ]
+    },
+    {
+      "grade": 8,
+      "topicId": 11,
+      "editionId": "ms-20261117-pyt-01-r1",
+      "label": "זוויות בין מקבילים, פיתגורס והמשפט ההפוך · PDF",
+      "nativePrefix": "G8-T93",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "status": "published",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "40df0cb01a9242b08d930b6f99b0c34e",
+          "pdfSha256": "e567dbbfdbc80a84b6ceeacd757ea203535d0ad9ef33cfb313122c31f4a61484",
+          "sourceSha256": "b324c0c6079894f900c38c2f121a38893054598574287e78e524e0d75b619749",
+          "nativeExportSha256": "6bf183c7f4614f9d58ed0b122ce7fd669b954a8ce49884e0a2a2565ea926aa13",
+          "worksheetId": "ms-g8-pyt-01-a-r1",
+          "revision": 1
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "8601eb6c92d5443cbc282d779364fc12",
+          "pdfSha256": "b620690ae52ea4355ef26b3e09200f27b038c09e8da780dfc1aded0dbe4ff328",
+          "sourceSha256": "9da7d333d4d4feae52a6d76aa81a23e003fd18077669eee3efa9095643663bd5",
+          "nativeExportSha256": "d8feb0645ca2ca458460be62f7c8be6b1f7771116b1fa464173c71640fc17c8c",
+          "worksheetId": "ms-g8-pyt-01-b-r1",
+          "revision": 1
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "4f59222ee84542d6a8cb624fc773aead",
+          "pdfSha256": "ecbd641564d5e497bed516f620466d73919a48fbe6b8d89ed72fc2b98833722f",
+          "sourceSha256": "3bef528f68e01158e25e8346f7fd069fcc33415395725384f0a295eca687a7ed",
+          "nativeExportSha256": "66372bc91eb9c468021e0907dd6fc4342550ae5d5e20332fe179335e31036a3f",
+          "worksheetId": "ms-g8-pyt-01-c-r1",
+          "revision": 1
+        }
+      ]
+    },
+    {
+      "grade": 9,
+      "topicId": 1,
+      "editionId": "ms-20261117-dis-01-r1",
+      "label": "ט׳ מצומצמת · חוק הפילוג ופישוט ביטויים · PDF",
+      "nativePrefix": "G9-T67",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "status": "published",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "ee0d4dd0533b40a19e17386af8eb696d",
+          "pdfSha256": "afadfcceb2aebc1c6b26745c682de3bcc98d0aa42c8ccd6ab3633b02880792c3",
+          "sourceSha256": "652ca74f8699da90e3c1d9d083f2fe82fb48f4b74c140d007bc9a15dbf5b95a5",
+          "nativeExportSha256": "64a500e2e8e23caf32f5abf02b507b4ede498e19518e1befa146e0ab3c17ff64",
+          "worksheetId": "ms-g9-dis-01-a-r1",
+          "revision": 1
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "14733102c72e4181a70fca521b03de33",
+          "pdfSha256": "355037762e9367e7f22af5f74a085417ed49c18cb465b47693125e8ae94dbfee",
+          "sourceSha256": "95725a91df52dbdf84eda3d01adbf75fb265dd9f1c539874c5c7b43f91e6b68c",
+          "nativeExportSha256": "77c1c94b43977d03cde988f6951b0a9f9f9096834d528137ae05ed34e9a3e019",
+          "worksheetId": "ms-g9-dis-01-b-r1",
+          "revision": 1
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "fd98c6b97b67462ead004e3ee3e7382b",
+          "pdfSha256": "cfb2eaa4548659ebfd6ef606e065dd15f89bfcbcdd3389b2e615f4b392f9ca73",
+          "sourceSha256": "c20daff24c7e3a7037f1a0e871ef326f28be188a0f1f8ee35a656c6246bfef6c",
+          "nativeExportSha256": "2bd0cda4972357c70746e866047012bf2918353594480937ec2bc0007ace7f22",
+          "worksheetId": "ms-g9-dis-01-c-r1",
+          "revision": 1
+        }
+      ]
+    },
+    {
+      "grade": 9,
+      "topicId": 1,
+      "editionId": "ms-20261117-eqd-01-r1",
+      "label": "ט׳ מצומצמת · משוואות בעזרת חוק הפילוג · PDF",
+      "nativePrefix": "G9-T68",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "status": "published",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "04049669705e4accba05aacc57da85ac",
+          "pdfSha256": "a4c12a8d3aa48ba64cf75afdec8821fee4130c9e1e4b9489243b69d69d48abe3",
+          "sourceSha256": "234cdc5ea3eb73dfa4825517575ce2a9748d95ede7c40a02aaa5431748ada5f2",
+          "nativeExportSha256": "0fa897121317cab9b0fc893bdbcf4f75f91772deb79b73f1c11eaf404bbee123",
+          "worksheetId": "ms-g9-eqd-01-a-r1",
+          "revision": 1
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "f67c9eadb024400db0a4e1c5f838d7f5",
+          "pdfSha256": "3b6c524850e2efa4e40414bd4ba0928214fed408edc338bf63785841a4865ec2",
+          "sourceSha256": "85c61e860afc618d4616b35f7960657e602474a77bd302810862eb6ee19c36cd",
+          "nativeExportSha256": "e07ec74833fa68e80826dd29464fa45559179484bbe2ab6ce7bccc844bb16a41",
+          "worksheetId": "ms-g9-eqd-01-b-r1",
+          "revision": 1
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "c2c9ce16e9b54f0d8a84a9f56ed55662",
+          "pdfSha256": "2367a1e7e5812498ef78b944b96b0a156e956ea18964a64fadfa831383784a7a",
+          "sourceSha256": "a9b34b64630dc57d66a7bb6f72b8da75ead3a6eea79bc61d9b6e3dafa56ff90c",
+          "nativeExportSha256": "3a95269a6ee7b4a93e73c6fd76b910768c45cb18a8fe32de8ffbb476289a29c5",
+          "worksheetId": "ms-g9-eqd-01-c-r1",
+          "revision": 1
+        }
+      ]
+    },
+    {
+      "grade": 9,
+      "topicId": 7,
+      "editionId": "ms-20261117-par-05-r1",
+      "label": "בניית מקבילית בסרגל ובמחוגה · PDF",
+      "nativePrefix": "G9-T66",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "status": "published",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "3cc25c74bd3649199f23d393ab730e23",
+          "pdfSha256": "67737c262dceea87ca9a1b017ad0ed8937828cf1d4956d7814abf3d61fad3495",
+          "sourceSha256": "b6a10ecb724652b49093b759f1854f2d9677c077d4c238d1d60744c4603eb5c7",
+          "nativeExportSha256": "51e4a129167dd875fcd24d9ead9e01bd5bf3f01a2b994509b4ccdfaa63d54033",
+          "worksheetId": "ms-g9-par-05-a-r1",
+          "revision": 1
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "6c55dbbd84a341268eb31531946e8ba9",
+          "pdfSha256": "f03e6f89a562608744b4034b31368592583468e19364fc41fc8fa3b5e73bb1f7",
+          "sourceSha256": "c90380895e45b47509cfd26a03a824b0cd8f97cbcfcb256dd54e73b35b0b2fa2",
+          "nativeExportSha256": "3c8b669a6f17e55249c76973b0b644ce9ceaae5ac9b1898201050a37815e8377",
+          "worksheetId": "ms-g9-par-05-b-r1",
+          "revision": 1
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "150e84e1a72945ac84e63db02f75a858",
+          "pdfSha256": "f4bcfa215b7083a32dbaa7f23a6ba9c644e6fa746653c24fb20f393a5e6df07d",
+          "sourceSha256": "07c46920385ac95a3c50b5448ff68115e91fca3c202af903d5205b17cba90d86",
+          "nativeExportSha256": "1d4789c4b10e20d147147395b63d73b09397ff59845d32b709dea50490325381",
+          "worksheetId": "ms-g9-par-05-c-r1",
+          "revision": 1
+        }
+      ]
+    },
+    {
+      "grade": 9,
+      "topicId": 16,
+      "editionId": "ms-20261117-pow-02-r1",
+      "label": "העשרה · כתיבה מדעית של מספרים גדולים · PDF",
+      "nativePrefix": "G9-T83",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "status": "published",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "91341f0388e140279c8b632040afbc22",
+          "pdfSha256": "ed7804764d77c4de954e4dbbc45af3b6ea168bc5ffcc6633a033719a18cc9d54",
+          "sourceSha256": "b3c03c5e2efe65f0664490b134c77930d3a19463d2b709fcf740ba0e37f0a01d",
+          "nativeExportSha256": "e7ecebd6006eb1dea574958d736cc0ceb23c01284d2171c2e29c8058a6644ea2",
+          "worksheetId": "ms-g9-pow-02-a-r1",
+          "revision": 1
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "a065c8ee1eb94643b7f09f62b38b1edc",
+          "pdfSha256": "6e1c6ef8a49413b50f52a5bf66ef3029bdd8bff86cf7b780a1e5ea03298cc318",
+          "sourceSha256": "dfa1e384f53b3732831dc01239502ffbff65d68c4365b6b84d81e1f82475096c",
+          "nativeExportSha256": "77ae386aaaf0cb2a6b02828119ccac597f9e7edeb1c35a471a2fa1a103f1c13c",
+          "worksheetId": "ms-g9-pow-02-b-r1",
+          "revision": 1
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "44e647c10a0b44aca8af3fea3d6d1e7a",
+          "pdfSha256": "b225afe4f8e49354d6558d01ab1a9921a7bc4e134f8870592db85b9243daf871",
+          "sourceSha256": "d997c0a9249bc6867c33f7cf4894ef31ea4dd0793e0cb657c820d4444fa34222",
+          "nativeExportSha256": "9d8125429b110a774f3e9e37c16902c832f72b48cf0e31d2a4dd6c58d56d332a",
+          "worksheetId": "ms-g9-pow-02-c-r1",
+          "revision": 1
+        }
+      ]
+    },
+    {
+      "grade": 9,
+      "topicId": 18,
+      "editionId": "ms-20261117-wqp-01-r1",
+      "label": "בעיות מילוליות המובילות למשוואה ריבועית · PDF",
+      "nativePrefix": "G9-T73",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "status": "published",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "eb6695a5ebce4205a09335873dec58b0",
+          "pdfSha256": "be8942a6c199c41225cdf8a216dcaa019282de33489a82eb6ebd6537c10414f1",
+          "sourceSha256": "0d00dc637dee896ffb72300610a0dbd5a343cc02d17b7306b546b316dd3fd6cd",
+          "nativeExportSha256": "2d1230b3bd2200eb68b503cc5dea37fe63d544dcf0fc4dd538231d0d34d3d7bd",
+          "worksheetId": "ms-g9-wqp-01-a-r1",
+          "revision": 1
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "80c58693aaf84ddc967da555f8c2f8b2",
+          "pdfSha256": "1ee3b6b18c8447dad4c7dfa9f1d0edb19711ea6515bde86a24735397361cc3a8",
+          "sourceSha256": "26037c53699c449987e6515cfa0c70779cff9d770173299d5869dcdbc2996d80",
+          "nativeExportSha256": "969667a4fc788964dc92fced80b0bd69aac7657f6e72b8b9f04cc47f0cd2c014",
+          "worksheetId": "ms-g9-wqp-01-b-r1",
+          "revision": 1
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "421ed812b2364810983e4fbb3b433a7f",
+          "pdfSha256": "d6ba39e50bda88eca806a4cdc26a605efcaef8bf4a2abd1f0bc30714d9264858",
+          "sourceSha256": "85b76e2b93b4624191f02ff3814b62945d2ac708e6e59259262cab6cf1849718",
+          "nativeExportSha256": "b4dddb4f026cca5433dabeb48a14313df91155edfb3adf13998d3c568bf12f59",
+          "worksheetId": "ms-g9-wqp-01-c-r1",
+          "revision": 1
+        }
+      ]
     }
   ]
 }

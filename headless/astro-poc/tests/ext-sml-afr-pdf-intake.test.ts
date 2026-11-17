@@ -13,6 +13,7 @@ import { collectViewerPdfIds } from '../scripts/sync-github-static.mjs';
 import { loadTopicPage, extractJsonLdFaq, synthesizeBodyFlow } from '../src/lib/topicPages';
 import { beforeExtSmlAfrCatalog, beforeExtSmlAfrRegistry, beforeExtSmlAfrCopy,
   reviewedExtSmlAfr as reviewed, reviewedExtSmlAfrIds as ids } from './fixtures/ext-sml-afr-pdf';
+import { beforeBatch05Copy } from './fixtures/batch05-pdf';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -41,8 +42,14 @@ test('three exact editions add nine verified PDFs and preserve the complete prec
     const topic = catalog.grades.find(g => g.grade === a.grade)!.topics.find(t => t.id === a.topicId)!;
     const edition = topic.editions!.find(e => e.editionId === a.editionId)!;
     const groups = topicWorksheetEditionLinks(catalog, a.grade, a.topicId, '/');
-    assert.deepEqual(groups.map(g => g.editionId), ['legacy', a.editionId]);
-    assert.deepEqual(groups[0], topicWorksheetEditionLinks(previous, a.grade, a.topicId, '/')[0]);
+    const laterIds = registry.editions.slice(registry.editions.findIndex((e: any) => e.editionId === a.editionId) + 1)
+      .filter((e: any) => e.grade === a.grade && e.topicId === a.topicId).map((e: any) => e.editionId);
+    const previousIds = topicWorksheetEditionLinks(previous, a.grade, a.topicId, '/').map(g => g.editionId);
+    assert.deepEqual(groups.map(g => g.editionId), [...previousIds, a.editionId, ...laterIds]);
+    assert.deepEqual(groups.filter(g => g.editionId !== a.editionId).map(g => g.editionId), [...previousIds, ...laterIds]);
+    for (const [index, group] of topicWorksheetEditionLinks(previous, a.grade, a.topicId, '/').entries()) {
+      assert.deepEqual(groups[index], group);
+    }
     assert.equal(topic.defaultEditionId, 'legacy'); assert.equal(edition.routing.usesViewer, false);
     assert.equal(edition.routing.aiHintShown, false);
     const proof = receipt.packages.find((p: any) => p.editionId === a.editionId);
@@ -74,7 +81,7 @@ test('all old teacher/learning/viewer sources stay identical and no additional P
 test('four exact landing deltas preserve old H1/title/primary CTAs and synchronize visible scope/FAQ', () => {
   for (const delta of reviewed.landingDeltas) {
     const rawPage = read(`headless/astro-poc/src/data/topic-pages/${delta.slug}.json`);
-    const restored = beforeExtSmlAfrCopy(delta.slug, rawPage) as any;
+    const restored = beforeExtSmlAfrCopy(delta.slug, beforeBatch05Copy(delta.slug, rawPage)) as any;
     assert.equal(digest(restored), delta.baselineSha256);
     assert.equal(rawPage.h1, restored.h1); assert.equal(rawPage.title, restored.title);
     assert.deepEqual(rawPage.catalogCta, restored.catalogCta);

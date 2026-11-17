@@ -12,6 +12,7 @@ import { buildTeacherLandingCatalog, getTeacherLandingScope } from '../src/lib/t
 import { collectViewerPdfIds } from '../scripts/sync-github-static.mjs';
 import { loadTopicPage, extractJsonLdFaq, synthesizeBodyFlow } from '../src/lib/topicPages';
 import { beforeSaoWpcCatalog, beforeSaoWpcCopy, reviewedSaoWpc as reviewed, reviewedSaoWpcIds as ids } from './fixtures/sao-wpc-pdf';
+import { beforeBatch05Copy, reviewedBatch05 } from './fixtures/batch05-pdf';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -49,8 +50,13 @@ test('six exact additional PDFs preserve every preceding catalog and registry by
     assert.equal(edition.publicationMode, 'pdf-only'); assert.equal(edition.routing.usesViewer, false);
     assert.equal(edition.routing.aiHintShown, false);
     const groups = topicWorksheetEditionLinks(catalog, a.grade, a.topicId, `/worksheets?grade=${a.grade}&topic=${a.topicId}`);
-    assert.deepEqual(groups.map(g => g.editionId), ['legacy', a.editionId]);
-    assert.deepEqual(groups[0], topicWorksheetEditionLinks(previous, a.grade, a.topicId, `/worksheets?grade=${a.grade}&topic=${a.topicId}`)[0]);
+    const laterIds = registry.editions.slice(registry.editions.findIndex((e: any) => e.editionId === a.editionId) + 1)
+      .filter((e: any) => e.grade === a.grade && e.topicId === a.topicId).map((e: any) => e.editionId);
+    const previousGroups = topicWorksheetEditionLinks(previous, a.grade, a.topicId, `/worksheets?grade=${a.grade}&topic=${a.topicId}`);
+    assert.deepEqual(groups.map(g => g.editionId), [...previousGroups.map(g => g.editionId), a.editionId, ...laterIds]);
+    assert.deepEqual(groups.filter(g => g.editionId !== a.editionId).map(g => g.editionId),
+      [...previousGroups.map(g => g.editionId), ...laterIds]);
+    for (const [index, group] of previousGroups.entries()) assert.deepEqual(groups[index], group);
     assert.deepEqual(groups[1].levels.map(l => l.href), a.pdfIds.map(id => `${catalog.config.pdfBase}${id}.pdf`));
     for (const level of edition.levels) {
       assert.equal(buildWorksheetHref({ catalog, grade: a.grade, topic, editionId: a.editionId, levelKey: level.key }), `${catalog.config.pdfBase}${level.pdfId}.pdf`);
@@ -84,12 +90,18 @@ test('teacher sources, learning regeneration and viewer dependencies reject all 
 test('SAO/WPC copy preserves old CTAs, visible flow, FAQ and scoped PDF availability', () => {
   for (const a of reviewed.additions) {
     const raw = read(`headless/astro-poc/src/data/topic-pages/${a.slug}.json`);
-    const restored = beforeSaoWpcCopy(a.slug, raw);
+    const restored = beforeSaoWpcCopy(a.slug, beforeBatch05Copy(a.slug, raw));
     const page = loadTopicPage(a.slug);
-    assert.equal(raw.updatedLine, 'נועם דורון מתמטיקה · עודכן 15.11.2026');
+    assert.equal(raw.updatedLine, a.slug === 'equations-both-sides-word-problems-grade-7'
+      ? 'נועם דורון מתמטיקה · עודכן 17.11.2026' : 'נועם דורון מתמטיקה · עודכן 15.11.2026');
     assert.deepEqual(raw.catalogCta, restored.catalogCta); assert.deepEqual(raw.catalogCtas, restored.catalogCtas);
     assert.equal(raw.h1, restored.h1); assert.equal(raw.title, restored.title);
-    const added = raw.sections.at(-1), flow = synthesizeBodyFlow(page);
+    const oldDelta = reviewed.landingDeltas.find(d => d.slug === a.slug)!;
+    const laterDelta = reviewedBatch05.landingDeltas.find(d => d.slug === a.slug);
+    const laterSection = laterDelta?.appendedSection;
+    const added = raw.sections.find((section: any) =>
+      JSON.stringify(section) === JSON.stringify(oldDelta.appendedSection));
+    const flow = synthesizeBodyFlow(page);
     const plain = (text: string | undefined) => text?.replace(/[\u2066-\u2069]/g, '');
     assert.equal(flow.filter(b => b.type === 'heading' && plain(b.text) === added.heading).length, 1);
     assert.equal(flow.filter(b => b.type === 'paragraph' && plain(b.text) === added.blocks[0].text).length, 1);
@@ -97,13 +109,22 @@ test('SAO/WPC copy preserves old CTAs, visible flow, FAQ and scoped PDF availabi
     for (const field of reviewed.landingDeltas.find(d => d.slug === a.slug)!.fields) {
       if (field.path[0] === 'bodyFlow') expectedOldFlow[Number(field.path[1])][String(field.path[2])] = field.after;
     }
-    assert.deepEqual(raw.bodyFlow.slice(0, -2), expectedOldFlow);
+    const currentFlow = reviewedBatch05.landingDeltas.find(d => d.slug === a.slug)?.fields
+      .find(field => field.path[0] === 'bodyFlow');
+    const laterFlow = currentFlow
+      ? currentFlow.after.slice(currentFlow.before.length) : [];
+    assert.deepEqual(raw.bodyFlow, [...expectedOldFlow, ...oldDelta.appendedFlow, ...laterFlow]);
+    if (laterSection) {
+      assert.equal(raw.sections.filter((section: any) => JSON.stringify(section) === JSON.stringify(laterSection)).length, 1);
+    }
     assert.deepEqual(extractJsonLdFaq(raw.jsonLd), extractJsonLdFaq(restored.jsonLd));
     assert.match(added.blocks[0].text, /PDF עם תשובות בסוף/);
   }
   const wpc = loadTopicPage('equations-both-sides-word-problems-grade-7');
   assert.deepEqual(wpc.catalogCtas.map(c => c.catalogTopicId), [41, 40, 39]);
-  assert.match(wpc.sections.at(-1)!.blocks[0].text!, /פתרון ובדיקת התאמת התוצאה להקשר/);
+  const wpcDelta = reviewed.landingDeltas.find(d => d.slug === 'equations-both-sides-word-problems-grade-7')!;
+  const wpcSection = wpc.sections.find(section => section.heading === wpcDelta.appendedSection.heading)!;
+  assert.match(wpcSection.blocks[0].text!, /פתרון ובדיקת התאמת התוצאה להקשר/);
   const sao = loadTopicPage('triangle-sides-angles-grade-9');
   assert.match(sao.sections.at(-1)!.blocks[0].text!, /התרגול ממוקד ביחסי הסדר/);
   assert.match(sao.sections[2].blocks[1].text!, /בדפים שנפתחים עם רמזי אפשר לקבל רמזים/);
