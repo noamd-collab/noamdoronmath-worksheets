@@ -94,7 +94,8 @@
 2. **אישור הצעות ה-SEO (`seo-proposals.json` / `seo-review.csv`)**: בחירת השורות להעברה ל-`approved: true`, והכרעה ב-3 נושאי כיתה א׳ (4, 19, 23 — `needsDecision`). כמו כן הכרעה אם להוסיף סבב הצעות ל-8 הפוסטים ולדף הדלתון שנוספו בבסיס אחרי #46/#52.
 3. **אינדוקס בייצור (`SITE_INDEXABLE=true`)**: הגדרת המשתנה ב-`wix env` בייצור בלבד בעת החיבור, והשארת preview על `noindex`.
 4. **הפניית `/privacy`**: אישור או הסרה של ההפניה `/privacy` → `/accessibilityadaptation#privacy-policy` ב-`redirects.json`.
-5. **`robots.txt` ו-`sitemap` ב-Wix Managed Hosting**: הוגדר `wix({ robots: false })` ב-`astro.config.mjs` ושורת `Sitemap:` ב-`robots.txt` מפנה ל-`https://www.noamdoronmath.co.il/sitemap-index.xml` (כי `/sitemap.xml` שמור ב-Wix). אין לערוך את SEO Tools > Robots.txt Editor בדשבורד ואין לכבות אינדוקס אתר בדשבורד Wix.
+5. **`robots.txt` ו-`sitemap` ב-Wix Managed Hosting**: ב-www, Wix מגיש את `/robots.txt` בעצמו, גם עם `wix({ robots: false })` ב-`astro.config.mjs`. הנתיב `src/pages/robots.txt.ts` עונה רק כשהבקשה מגיעה ל-Astro (מארחי preview ובנייה מקומית). במארחי preview הוא חוסם סריקה, ושורת ה-`Sitemap:` שלו מפנה ל-`https://www.noamdoronmath.co.il/sitemap-index.xml` (כי `/sitemap.xml` שמור ב-Wix). לכן צריך להוסיף בדשבורד, ב-SEO Tools > Robots.txt Editor, את השורה `Sitemap: https://www.noamdoronmath.co.il/sitemap-index.xml` ולהשאיר את שורות Wix. אין לכבות אינדוקס אתר בדשבורד Wix. `npm run check:live-robots` מדווח אם השורה כבר חיה.
+   **תיקון, 17.11.2026 (SEO-5):** עד התיקון נכתב כאן שאין לערוך את Robots.txt Editor ושה-`robots.txt` שלנו מגיע לייצור. בדיקה חיה ב-17.11.2026 הראתה ש-Wix מגיש את הקובץ שלו, ושורת ה-`Sitemap:` היחידה בו היא `/sitemap.xml` של Wix. ראו `SEO-REPORT.md`.
 6. **18 אזהרות `SEARCH_TERMS_MISPLACED` בקטלוג ו-7 שגיאות הטיפוס ב-`ConceptLoop.astro`**: החלטה אם לטפל בהן בסבב נפרד.
 
 ## 7. תוכנית הטמעה ו-Rollback (רק אחרי אישור נועם)
