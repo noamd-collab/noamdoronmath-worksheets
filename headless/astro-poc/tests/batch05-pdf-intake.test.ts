@@ -96,7 +96,7 @@ const PINS: Record<string, Array<[string, string]>> = {
     ['421ed812b2364810983e4fbb3b433a7f', 'd6ba39e50bda88eca806a4cdc26a605efcaef8bf4a2abd1f0bc30714d9264858']],
 };
 const RECEIPT_SHA256S: Record<string, string[]> = {
-  'G7-DAT-01': ['81eb21cdc130fe44d3591d9f8faded88af77f95bb6b6e47a46227b7e0f4ec310', '13e4e3c1cb704adc75f2e748d8baf6bd1ad5ec06ded89d82b78451e7037f727a', '5c2321436cc7120af678d836b25c9f0c4a647b339d9e8642158e47ee08db4bf8'],
+  'G7-DAT-01': ['81eb21cdc130fe44d3591d9f8faded88af77f95bb6b6e47a46227b7e0f4ec310', '13e4e3c1cb704adc75f2e748d8baf6bd1ad5ec06ded89d82b78451e7037f727a', 'e1020e8f02302581125f975ed714faf1710abf218941c55a01788dfb75e6c908'],
   'G7-WPM-01': ['266df3172353a88f5d6ebe3b3368d7d8967e91c39a8fab4be5526b064bc34bda', '14d0178ca8423b964a46190dd5735c83d1c619cf9ae9ea2956aae78f634f9797', 'dcb0d3e2bbfc6980e41e9d417bd8814040c2f5562fb3f4386494afcb66243cab'],
   'G8-FNC-01': ['b897d29e6359dd2b7acb4381ddcea61da33ec86992199f15bbef7e8ec40c9849', 'f56d193e18d71738b4146b3414b0c85286ac4a1e64af471853b6f262afc20e57', 'a7c44350fcde876884ea384767de703cda5fdd153120ae9e8fad01f0a7aa8e0d'],
   'G8-INT-01': ['e613e77b3a20a2778e6408764d76102f437076c3ea71037e946a8e89942ee836', '74b8c16cd9e5873c3ae2c7cdbd72ce868d4691c791cf675be476beed9711ff25', 'f0b4491829806395f5b8279310a1ba59a9962d4b2bcec78151bd1a7130bc0700'],
@@ -201,7 +201,8 @@ test('ten landing routes add only reviewed PDF copy and preserve their complete 
     assert.ok(sections[0].blocks.some(block => /רמה א׳/.test(block.text ?? '')));
     assert.ok(sections[0].blocks.some(block => /רמה ב׳/.test(block.text ?? '')));
     assert.ok(sections[0].blocks.some(block => /מצוינות/.test(block.text ?? '')));
-    assert.ok(sections[0].blocks.every(block => !/רמה ג׳|פתרונות מפורטים|רמזים/.test(block.text ?? '')));
+    const hintScope = 'בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים';
+    assert.ok(sections[0].blocks.every(block => !/רמה ג׳|פתרונות מפורטים|רמז/.test((block.text ?? '').replace(hintScope, ''))));
     assert.ok(!/בדקו|בדיקה/.test(delta.appendedSection.heading) && !/\?$/.test(delta.appendedSection.heading)
       && !/^(חשבו|פתרו|מהו|באיזה|מצאו)/.test(delta.appendedSection.heading), `${slug}: heading stays visible`);
     const flow = synthesizeBodyFlow(loaded);
@@ -219,7 +220,7 @@ test('ten landing routes add only reviewed PDF copy and preserve their complete 
       assert.ok(!text.includes('רמה ג׳'), `${slug}: no level ג׳`);
     }
     for (const text of [delta.appendedSection.heading, ...delta.appendedSection.blocks.map(block => block.text)]) {
-      for (const banned of ['פתרון מלא', 'פתרונות מלאים', 'דוגמה פתורה', 'דוגמאות פתורות', 'רמז מנועם']) {
+      for (const banned of ['פתרון מלא', 'פתרונות מלאים', 'דוגמה פתורה', 'דוגמאות פתורות', 'רמז מנועם', 'נועם AI']) {
         assert.ok(!text.includes(banned), `${slug}: ${banned}`);
       }
     }
