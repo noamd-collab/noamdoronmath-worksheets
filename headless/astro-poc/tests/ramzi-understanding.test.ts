@@ -10,6 +10,7 @@ import { dirname, join } from 'node:path';
 import { describe, it } from 'node:test';
 import { fileURLToPath } from 'node:url';
 import { runInNewContext } from 'node:vm';
+import { measuredViewerDependencies } from './helpers/measured-viewer-dependencies';
 import { parseHTML } from 'linkedom';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -186,12 +187,12 @@ describe('Ramzi understanding checks', () => {
   });
 
   it('keeps the הבנתי exchange in the thread, in order, without touching the draft', () => {
-    const helper = viewer.slice(viewer.indexOf('function noamAnswerUnderstood('), viewer.indexOf('function askNoam('));
+    const helper = measuredViewerDependencies(viewer) + viewer.slice(viewer.indexOf('function noamAnswerUnderstood('), viewer.indexOf('function askNoam('));
     const thread = { hintIndex: 1, history: [] as unknown[], messages: [{ role: 'assistant', text: 'רמז 1' }] as any[] };
     const drafts: Record<string, string> = { ex: 'טיוטה' };
     let renders = 0;
     const ctx = {
-      window: {} as Record<string, unknown>,
+      window: {} as Record<string, unknown>, manifestReady: false, manifest: null,
       selectedExercise: { id: 'ex', q: 1, part: 'א' }, busy: false, noamDrafts: drafts,
       exerciseThread: () => thread, saveNoamState() {}, renderNoamChat() { renders++; },
       announceNoam() {}, exerciseLabel: () => 'שאלה 1 · סעיף א',
@@ -326,9 +327,9 @@ it('the local understood exchange and closing message have no understanding pair
  const {document,window}=parseHTML('<html><body><div id="noamTranscript"></div></body></html>');
  const transcript=document.getElementById('noamTranscript')!,thread:any={hintIndex:1,history:[],messages:[{role:'assistant',text:'איזו צלע משותפת?'}]};
  (window as any).NoamDidacticGuides=guides;
- const c:any={document,window,selectedExercise:{id:'ex'},busy:false,pendingCheckFocus:false,noamStripMarkdownEmphasis:(s:string)=>s,noamCanOfferDrawing:()=>false,
+ const c:any={document,window,manifestReady:false,manifest:null,selectedExercise:{id:'ex'},busy:false,pendingCheckFocus:false,noamStripMarkdownEmphasis:(s:string)=>s,noamCanOfferDrawing:()=>false,
   exerciseThread:()=>thread,saveNoamState(){},announceNoam(){},exerciseLabel:()=> 'סעיף א'};
- runInNewContext(['addTranscriptBubble','rowText','rowQualifies','makeCheckGroup','placeUnderstandingChecks','noamAnswerUnderstood'].map(n=>namedFunction(viewer,n)).join('\n'),c);
+ runInNewContext(measuredViewerDependencies(viewer)+['addTranscriptBubble','rowText','rowQualifies','makeCheckGroup','placeUnderstandingChecks','noamAnswerUnderstood'].map(n=>namedFunction(viewer,n)).join('\n'),c);
  c.renderNoamChat=()=>{transcript.replaceChildren();thread.messages.forEach((m:any)=>c.addTranscriptBubble(transcript,m.role,m.text,'',null,m,thread));c.placeUnderstandingChecks(transcript);};
  c.renderNoamChat();assert.equal(transcript.querySelectorAll('.ramzi-check').length,1);
  assert.equal(c.noamAnswerUnderstood(guides.understoodText),true);assert.equal(transcript.querySelectorAll('.ramzi-check').length,0);assert.equal(transcript.querySelectorAll('[data-ramzi-understood="1"]').length,2);

@@ -45,8 +45,7 @@ describe('OPEN-15 redirects', () => {
       ['/contact', '/aboutus'],
       ['/learning', '/learning.html'],
       ['/worksheet-viewer', '/worksheet-viewer-noam.html'],
-      ['/privacy', '/accessibilityadaptation#privacy-policy'],
-      ['/privacy/', '/accessibilityadaptation#privacy-policy'],
+      ['/privacy/', '/privacy'],
     ];
     for (const [from, to] of cases) assert.equal(resolveRedirect(from), to, from);
   });
@@ -86,6 +85,7 @@ describe('OPEN-15 redirects', () => {
       '/api/blog-audio-info/',
       '/_wix/pages.json',
       '/learning.html',
+      '/privacy',
       '/triangular-prism-volume-grade-9',
       '/workflow',
     ])
@@ -128,7 +128,8 @@ describe('OPEN-15 redirects', () => {
       ['https://www.noamdoronmath.co.il/coordinate-plane-intro-grade-7#x', '/coordinate-plane-scale-grade-7#x'],
       ['https://www.noamdoronmath.co.il/worksheetsfor7thgrade', '/grade-7'],
       ['https://www.noamdoronmath.co.il/triangle-area-grade-7-worksheets', '/triangle-area-grade-7'],
-      ['https://www.noamdoronmath.co.il/privacy', '/accessibilityadaptation#privacy-policy'],
+      ['https://www.noamdoronmath.co.il/privacy', '/privacy'],
+      ['https://www.noamdoronmath.co.il/accessibilityadaptation#privacy-policy', '/accessibilityadaptation#privacy-policy'],
     ];
     for (const [href, want] of cases) {
       const r = resolveSiteHref(href);

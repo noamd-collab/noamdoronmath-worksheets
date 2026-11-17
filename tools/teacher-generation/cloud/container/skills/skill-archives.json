@@ -1,0 +1,18 @@
+{
+  "archives": {
+    "elementary": {
+      "bytes": 518306,
+      "files": 66,
+      "sha256": "577a95d1c37bf369bc70931b5272ea2dc7d4037d2bd2db7f3324669dea24179d",
+      "skillSha256": "582ce27fd320b3714a248f2ef7adcfd9d96b0faf6644af7be7c78bb566418d5f"
+    },
+    "middle": {
+      "bytes": 2874115,
+      "files": 178,
+      "sha256": "1387c7d25fd403747de4ebdb5aa5ddecb635bf6d34f374f9d500787afbf25be0",
+      "skillSha256": "cbd46b144421db5260b3cb1142bc0e126c01335ce6fee8c32a24baf50e98a7bd"
+    }
+  },
+  "skillLockSha256": "8c46e6af76bfd94d766199401cdf82862c577fb947f7ec7ab906769f69e05f81",
+  "version": 1
+}

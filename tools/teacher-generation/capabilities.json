@@ -1,0 +1,720 @@
+{
+  "version": 1,
+  "scope": "Text-only practice/review pilot; unsupported topic IDs fail closed. Pilot means adapter coverage, not human-approved output.",
+  "unsupported": [
+    "assessment",
+    "introduce",
+    "short sheets",
+    "geometry",
+    "free-form word problems",
+    "grade 4 column layouts",
+    "grade 8 systems/word problems",
+    "decimal numbers"
+  ],
+  "topics": [
+    {
+      "topicId": "א05",
+      "gradeNumber": 1,
+      "sourceTopicId": "א05",
+      "track": "א",
+      "title": "חיבור בתחום 10",
+      "family": "arithmetic",
+      "skill": "elementary",
+      "operations": [
+        "add"
+      ],
+      "maxNumber": 10,
+      "fractions": false,
+      "negative": false,
+      "noRegrouping": false,
+      "questionKinds": [
+        "calculate",
+        "missing_operand",
+        "check_solution",
+        "missing_right"
+      ],
+      "status": "adapter_candidate",
+      "domain": "operations",
+      "levels": [
+        "b"
+      ],
+      "e2eVerified": false,
+      "enabled": false
+    },
+    {
+      "topicId": "א06",
+      "gradeNumber": 1,
+      "sourceTopicId": "א06",
+      "track": "א",
+      "title": "חיסור בתחום 10",
+      "family": "arithmetic",
+      "skill": "elementary",
+      "operations": [
+        "subtract"
+      ],
+      "maxNumber": 10,
+      "fractions": false,
+      "negative": false,
+      "noRegrouping": false,
+      "questionKinds": [
+        "calculate",
+        "missing_operand",
+        "check_solution",
+        "missing_right"
+      ],
+      "status": "adapter_candidate",
+      "domain": "operations",
+      "levels": [
+        "b"
+      ],
+      "e2eVerified": false,
+      "enabled": false
+    },
+    {
+      "topicId": "א08",
+      "gradeNumber": 1,
+      "sourceTopicId": "א08",
+      "track": "א",
+      "title": "חיבור בתחום 20",
+      "family": "arithmetic",
+      "skill": "elementary",
+      "operations": [
+        "add"
+      ],
+      "maxNumber": 20,
+      "fractions": false,
+      "negative": false,
+      "noRegrouping": false,
+      "questionKinds": [
+        "calculate",
+        "missing_operand",
+        "check_solution",
+        "missing_right"
+      ],
+      "status": "adapter_candidate",
+      "domain": "operations",
+      "levels": [
+        "b"
+      ],
+      "e2eVerified": false,
+      "enabled": false
+    },
+    {
+      "topicId": "א09",
+      "gradeNumber": 1,
+      "sourceTopicId": "א09",
+      "track": "א",
+      "title": "חיסור בתחום 20",
+      "family": "arithmetic",
+      "skill": "elementary",
+      "operations": [
+        "subtract"
+      ],
+      "maxNumber": 20,
+      "fractions": false,
+      "negative": false,
+      "noRegrouping": false,
+      "questionKinds": [
+        "calculate",
+        "missing_operand",
+        "check_solution",
+        "missing_right"
+      ],
+      "status": "adapter_candidate",
+      "domain": "operations",
+      "levels": [
+        "b"
+      ],
+      "e2eVerified": false,
+      "enabled": false
+    },
+    {
+      "topicId": "ב05",
+      "gradeNumber": 2,
+      "sourceTopicId": "ב05",
+      "track": "ב",
+      "title": "חיבור דו-ספרתי ללא המרה",
+      "family": "arithmetic",
+      "skill": "elementary",
+      "operations": [
+        "add"
+      ],
+      "maxNumber": 99,
+      "fractions": false,
+      "negative": false,
+      "noRegrouping": true,
+      "questionKinds": [
+        "calculate",
+        "missing_operand",
+        "check_solution",
+        "missing_right"
+      ],
+      "status": "adapter_candidate",
+      "domain": "operations",
+      "levels": [
+        "b"
+      ],
+      "e2eVerified": false,
+      "enabled": false
+    },
+    {
+      "topicId": "ב06",
+      "gradeNumber": 2,
+      "sourceTopicId": "ב06",
+      "track": "ב",
+      "title": "חיבור דו-ספרתי עם המרה",
+      "family": "arithmetic",
+      "skill": "elementary",
+      "operations": [
+        "add"
+      ],
+      "maxNumber": 99,
+      "fractions": false,
+      "negative": false,
+      "noRegrouping": false,
+      "questionKinds": [
+        "calculate",
+        "missing_operand",
+        "check_solution",
+        "missing_right"
+      ],
+      "status": "adapter_candidate",
+      "domain": "operations",
+      "levels": [
+        "b"
+      ],
+      "e2eVerified": false,
+      "enabled": false
+    },
+    {
+      "topicId": "ב07",
+      "gradeNumber": 2,
+      "sourceTopicId": "ב07",
+      "track": "ב",
+      "title": "חיסור דו-ספרתי ללא פריטה",
+      "family": "arithmetic",
+      "skill": "elementary",
+      "operations": [
+        "subtract"
+      ],
+      "maxNumber": 99,
+      "fractions": false,
+      "negative": false,
+      "noRegrouping": true,
+      "questionKinds": [
+        "calculate",
+        "missing_operand",
+        "check_solution",
+        "missing_right"
+      ],
+      "status": "adapter_candidate",
+      "domain": "operations",
+      "levels": [
+        "b"
+      ],
+      "e2eVerified": false,
+      "enabled": false
+    },
+    {
+      "topicId": "ב08",
+      "gradeNumber": 2,
+      "sourceTopicId": "ב08",
+      "track": "ב",
+      "title": "חיסור דו-ספרתי עם פריטה",
+      "family": "arithmetic",
+      "skill": "elementary",
+      "operations": [
+        "subtract"
+      ],
+      "maxNumber": 99,
+      "fractions": false,
+      "negative": false,
+      "noRegrouping": false,
+      "questionKinds": [
+        "calculate",
+        "missing_operand",
+        "check_solution",
+        "missing_right"
+      ],
+      "status": "adapter_candidate",
+      "domain": "operations",
+      "levels": [
+        "b"
+      ],
+      "e2eVerified": false,
+      "enabled": false
+    },
+    {
+      "topicId": "ב10",
+      "gradeNumber": 2,
+      "sourceTopicId": "ב10",
+      "track": "ב",
+      "title": "שוויון משוואות ומספר חסר",
+      "family": "arithmetic",
+      "skill": "elementary",
+      "operations": [
+        "add",
+        "subtract"
+      ],
+      "maxNumber": 99,
+      "fractions": false,
+      "negative": false,
+      "noRegrouping": false,
+      "questionKinds": [
+        "calculate",
+        "missing_operand",
+        "check_solution",
+        "missing_right"
+      ],
+      "status": "adapter_candidate",
+      "domain": "operations",
+      "levels": [
+        "b"
+      ],
+      "e2eVerified": false,
+      "enabled": false
+    },
+    {
+      "topicId": "ב16",
+      "gradeNumber": 2,
+      "sourceTopicId": "ב16",
+      "track": "ב",
+      "title": "כפל קבוצות שוות ומערכים",
+      "family": "arithmetic",
+      "skill": "elementary",
+      "operations": [
+        "multiply"
+      ],
+      "maxNumber": 60,
+      "fractions": false,
+      "negative": false,
+      "noRegrouping": false,
+      "questionKinds": [
+        "calculate",
+        "missing_operand",
+        "check_solution",
+        "missing_right"
+      ],
+      "status": "adapter_candidate",
+      "domain": "operations",
+      "levels": [
+        "b"
+      ],
+      "e2eVerified": false,
+      "enabled": false
+    },
+    {
+      "topicId": "ב17",
+      "gradeNumber": 2,
+      "sourceTopicId": "ב17",
+      "track": "ב",
+      "title": "חילוק להכלה",
+      "family": "arithmetic",
+      "skill": "elementary",
+      "operations": [
+        "divide"
+      ],
+      "maxNumber": 60,
+      "fractions": false,
+      "negative": false,
+      "noRegrouping": false,
+      "questionKinds": [
+        "calculate",
+        "missing_operand",
+        "check_solution",
+        "missing_right"
+      ],
+      "status": "adapter_candidate",
+      "domain": "operations",
+      "levels": [
+        "b"
+      ],
+      "e2eVerified": false,
+      "enabled": false
+    },
+    {
+      "topicId": "ב18",
+      "gradeNumber": 2,
+      "sourceTopicId": "ב18",
+      "track": "ב",
+      "title": "חילוק לחלקים שווים",
+      "family": "arithmetic",
+      "skill": "elementary",
+      "operations": [
+        "divide"
+      ],
+      "maxNumber": 60,
+      "fractions": false,
+      "negative": false,
+      "noRegrouping": false,
+      "questionKinds": [
+        "calculate",
+        "missing_operand",
+        "check_solution",
+        "missing_right"
+      ],
+      "status": "adapter_candidate",
+      "domain": "operations",
+      "levels": [
+        "b"
+      ],
+      "e2eVerified": false,
+      "enabled": false
+    },
+    {
+      "topicId": "ב19",
+      "gradeNumber": 2,
+      "sourceTopicId": "ב19",
+      "track": "ב",
+      "title": "משפחת כפל וחילוק",
+      "family": "arithmetic",
+      "skill": "elementary",
+      "operations": [
+        "multiply",
+        "divide"
+      ],
+      "maxNumber": 60,
+      "fractions": false,
+      "negative": false,
+      "noRegrouping": false,
+      "questionKinds": [
+        "calculate",
+        "missing_operand",
+        "check_solution",
+        "missing_right"
+      ],
+      "status": "adapter_candidate",
+      "domain": "operations",
+      "levels": [
+        "b"
+      ],
+      "e2eVerified": false,
+      "enabled": false
+    },
+    {
+      "topicId": "ג09",
+      "gradeNumber": 3,
+      "sourceTopicId": "ג09",
+      "track": "ג",
+      "title": "כפל עובדות ומבנים",
+      "family": "arithmetic",
+      "skill": "elementary",
+      "operations": [
+        "multiply"
+      ],
+      "maxNumber": 1000,
+      "fractions": false,
+      "negative": false,
+      "noRegrouping": false,
+      "questionKinds": [
+        "calculate",
+        "missing_operand",
+        "check_solution",
+        "missing_right"
+      ],
+      "status": "adapter_candidate",
+      "domain": "operations",
+      "levels": [
+        "b"
+      ],
+      "e2eVerified": false,
+      "enabled": false
+    },
+    {
+      "topicId": "ג10",
+      "gradeNumber": 3,
+      "sourceTopicId": "ג10",
+      "track": "ג",
+      "title": "חילוק והקשר ההפוך לכפל",
+      "family": "arithmetic",
+      "skill": "elementary",
+      "operations": [
+        "divide"
+      ],
+      "maxNumber": 100,
+      "fractions": false,
+      "negative": false,
+      "noRegrouping": false,
+      "questionKinds": [
+        "calculate",
+        "missing_operand",
+        "check_solution",
+        "missing_right"
+      ],
+      "status": "ready_for_pilot",
+      "domain": "operations",
+      "levels": [
+        "b"
+      ],
+      "e2eVerified": true,
+      "enabled": true,
+      "questionCounts": [
+        12
+      ],
+      "requiredKindCounts": {
+        "calculate": 3,
+        "missing_operand": 3,
+        "check_solution": 3,
+        "missing_right": 3
+      },
+      "maxDivisor": 10,
+      "maxQuotient": 10
+    },
+    {
+      "topicId": "ה01",
+      "gradeNumber": 5,
+      "sourceTopicId": "ה01",
+      "track": "ה",
+      "title": "תובנה מספרית — כפל וחילוק בעשרות ומאות",
+      "family": "arithmetic",
+      "skill": "elementary",
+      "operations": [
+        "multiply",
+        "divide"
+      ],
+      "maxNumber": 100000,
+      "fractions": false,
+      "negative": false,
+      "noRegrouping": false,
+      "questionKinds": [
+        "calculate",
+        "missing_operand",
+        "check_solution",
+        "missing_right"
+      ],
+      "status": "adapter_candidate",
+      "domain": "operations",
+      "levels": [
+        "b"
+      ],
+      "e2eVerified": false,
+      "enabled": false
+    },
+    {
+      "topicId": "ה11",
+      "gradeNumber": 5,
+      "sourceTopicId": "ה11",
+      "track": "ה",
+      "title": "חיבור וחיסור שברים במכנים שונים",
+      "family": "arithmetic",
+      "skill": "elementary",
+      "operations": [
+        "add",
+        "subtract"
+      ],
+      "maxNumber": 30,
+      "fractions": true,
+      "negative": false,
+      "noRegrouping": false,
+      "questionKinds": [
+        "calculate",
+        "missing_operand",
+        "check_solution",
+        "missing_right"
+      ],
+      "status": "adapter_candidate",
+      "domain": "fractions",
+      "levels": [
+        "b"
+      ],
+      "e2eVerified": false,
+      "enabled": false
+    },
+    {
+      "topicId": "ה14",
+      "gradeNumber": 5,
+      "sourceTopicId": "ה14",
+      "track": "ה",
+      "title": "חיבור וחיסור מספרים מעורבים",
+      "family": "arithmetic",
+      "skill": "elementary",
+      "operations": [
+        "add",
+        "subtract"
+      ],
+      "maxNumber": 30,
+      "fractions": true,
+      "negative": false,
+      "noRegrouping": false,
+      "questionKinds": [
+        "calculate",
+        "missing_operand",
+        "check_solution",
+        "missing_right"
+      ],
+      "status": "adapter_candidate",
+      "domain": "fractions",
+      "levels": [
+        "b"
+      ],
+      "e2eVerified": false,
+      "enabled": false
+    },
+    {
+      "topicId": "ו01",
+      "gradeNumber": 6,
+      "sourceTopicId": "ו01",
+      "track": "ו",
+      "title": "כפל שבר במספר שלם",
+      "family": "arithmetic",
+      "skill": "elementary",
+      "operations": [
+        "multiply"
+      ],
+      "maxNumber": 30,
+      "fractions": true,
+      "negative": false,
+      "noRegrouping": false,
+      "questionKinds": [
+        "calculate",
+        "missing_operand",
+        "check_solution",
+        "missing_right"
+      ],
+      "status": "adapter_candidate",
+      "domain": "fractions",
+      "levels": [
+        "b"
+      ],
+      "e2eVerified": false,
+      "enabled": false
+    },
+    {
+      "topicId": "ו03",
+      "gradeNumber": 6,
+      "sourceTopicId": "ו03",
+      "track": "ו",
+      "title": "כפל שבר בשבר",
+      "family": "arithmetic",
+      "skill": "elementary",
+      "operations": [
+        "multiply"
+      ],
+      "maxNumber": 30,
+      "fractions": true,
+      "negative": false,
+      "noRegrouping": false,
+      "questionKinds": [
+        "calculate",
+        "missing_operand",
+        "check_solution",
+        "missing_right"
+      ],
+      "status": "adapter_candidate",
+      "domain": "fractions",
+      "levels": [
+        "b"
+      ],
+      "e2eVerified": false,
+      "enabled": false
+    },
+    {
+      "topicId": "ו06",
+      "gradeNumber": 6,
+      "sourceTopicId": "ו06",
+      "track": "ו",
+      "title": "משמעות חילוק שברים",
+      "family": "arithmetic",
+      "skill": "elementary",
+      "operations": [
+        "divide"
+      ],
+      "maxNumber": 30,
+      "fractions": true,
+      "negative": false,
+      "noRegrouping": false,
+      "questionKinds": [
+        "calculate",
+        "missing_operand",
+        "check_solution",
+        "missing_right"
+      ],
+      "status": "adapter_candidate",
+      "domain": "fractions",
+      "levels": [
+        "b"
+      ],
+      "e2eVerified": false,
+      "enabled": false
+    },
+    {
+      "topicId": "ו07",
+      "gradeNumber": 6,
+      "sourceTopicId": "ו07",
+      "track": "ו",
+      "title": "אלגוריתם חילוק שברים והופכי",
+      "family": "arithmetic",
+      "skill": "elementary",
+      "operations": [
+        "divide"
+      ],
+      "maxNumber": 30,
+      "fractions": true,
+      "negative": false,
+      "noRegrouping": false,
+      "questionKinds": [
+        "calculate",
+        "missing_operand",
+        "check_solution",
+        "missing_right"
+      ],
+      "status": "adapter_candidate",
+      "domain": "fractions",
+      "levels": [
+        "b"
+      ],
+      "e2eVerified": false,
+      "enabled": false
+    },
+    {
+      "topicId": "g7:equations",
+      "gradeNumber": 7,
+      "sourceTopicId": "equations",
+      "track": "ז",
+      "title": "משוואות ממעלה ראשונה",
+      "family": "linear_equation",
+      "skill": "middle",
+      "questionKinds": [
+        "solve",
+        "check_solution",
+        "construct"
+      ],
+      "status": "ready_for_pilot",
+      "scopeNote": "Integer solutions, positive integer coefficient; no fractions or multi-variable equations.",
+      "levels": [
+        "b"
+      ],
+      "e2eVerified": true,
+      "enabled": true,
+      "questionCounts": [
+        20
+      ],
+      "requiredKindCounts": {
+        "solve": 7,
+        "check_solution": 7,
+        "construct": 6
+      }
+    },
+    {
+      "topicId": "g9m:equations",
+      "gradeNumber": 9,
+      "sourceTopicId": "equations",
+      "track": "ט_מצומצמת",
+      "title": "משוואות ממעלה ראשונה",
+      "family": "linear_equation",
+      "skill": "middle",
+      "questionKinds": [
+        "solve",
+        "check_solution",
+        "construct"
+      ],
+      "status": "adapter_candidate",
+      "scopeNote": "Integer solutions, positive integer coefficient; no fractions or multi-variable equations.",
+      "levels": [
+        "b"
+      ],
+      "e2eVerified": false,
+      "enabled": false
+    }
+  ]
+}

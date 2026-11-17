@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { measuredViewerDependencies } from './helpers/measured-viewer-dependencies';
 import { readFileSync } from 'node:fs';
 import { runInNewContext } from 'node:vm';
 import { test } from 'node:test';
@@ -12,10 +13,10 @@ test('a failed chat keeps the original question and source figure accessible, wi
   const panelBody = document.querySelector('#panel')!;
   const selectedExercise = { id: 'g7-t19-a-q1b', q: 1, part: 'ב', text: 'העבירו גובה במשולש', crop: {} };
   const thread = { messages: [{ role: 'assistant', text: 'בדיקת האבטחה נכשלה', answerError: true }], history: [], hintIndex: 0 };
-  const api = runInNewContext(section('showExercisePreview', 'renderExercisePreview') + section('noamKeepComposerFocusForSend', 'setNoamBusy') + section('renderNoamChat', 'localVisualExerciseSource') + `
+  const api = runInNewContext(measuredViewerDependencies(viewer) + section('showExercisePreview', 'renderExercisePreview') + section('noamKeepComposerFocusForSend', 'setNoamBusy') + section('renderNoamChat', 'localVisualExerciseSource') + `
     function renderExercisePreview(exercise){showExercisePreview(exercise,'data:image/png;base64,original-question');}
     ({renderNoamChat})`, {
-    document, window, panelBody, selectedExercise, panelBack: document.querySelector('#back'), mobileLayout: { matches: false },
+    document, window, manifestReady: true, manifest: {}, panelBody, selectedExercise, panelBack: document.querySelector('#back'), mobileLayout: { matches: false },
     activeGlossaryEntryId: null, mathKeyboardOpen: false, noamDrafts: {}, busy: false,
     hideNoamGlossaryPopover() {}, exerciseThread: () => thread, noamLatestDrawingAnswer: () => null,
     exerciseLabel: () => 'שאלה 1 · סעיף ב', esc: (text: string) => text,
@@ -58,11 +59,11 @@ test('a failed chat keeps the original question and source figure accessible, wi
   assert.doesNotMatch(viewer, /\.panel-body\.is-previewing \.noam-picked-preview img\{width:720px/);
 });
 
-test('switching parts clears the previous announcement and cancels its queued live update', () => {
+test('switching parts cancels the old queued announcement and announces only the newly selected part', () => {
   const { document } = parseHTML('<html><body><div id="noamAnnouncements">שאלה 1 סעיף א: שגיאה</div><div id="panel"></div></body></html>');
   const pending = new Map<number, () => void>();
   let nextTimer = 0;
-  const api = runInNewContext(section('clearNoamAnnouncement', 'restoreNoamChatFocus') + section('selectManifestExercise', 'renderExercisePicker') + '\n({announceNoam,selectManifestExercise})', {
+  const api = runInNewContext(section('exerciseLabel', 'feedbackLocation') + section('clearNoamAnnouncement', 'restoreNoamChatFocus') + section('selectManifestExercise', 'renderExercisePicker') + '\n({announceNoam,selectManifestExercise})', {
     document, noamAnnouncementTimer: null, selectedExercise: { id: 'q1a' }, selectedPin: null,
     panelBody: document.getElementById('panel'), exerciseThread() {}, openNoamPanel() {}, renderNoamChat() {},
     setTimeout(fn: () => void) { const id = ++nextTimer; pending.set(id, fn); return id; },
@@ -70,9 +71,11 @@ test('switching parts clears the previous announcement and cancels its queued li
   });
   api.announceNoam('שאלה 1 סעיף א: הבקשה נכשלה');
   assert.equal(pending.size, 1);
-  api.selectManifestExercise({ id: 'q1b' }, null);
-  assert.equal(pending.size, 0);
+  api.selectManifestExercise({ id: 'q1b', q: 1, part: 'ב' }, null);
+  assert.equal(pending.size, 1, 'only the new selection has a queued live update');
   assert.equal(document.getElementById('noamAnnouncements')!.textContent, '');
+  for (const callback of pending.values()) callback();
+  assert.equal(document.getElementById('noamAnnouncements')!.textContent, 'שאלה 1 · סעיף ב. נבחר סעיף חדש.');
 });
 
 test('a late answer or failure does not announce the old part after the student switches', async () => {

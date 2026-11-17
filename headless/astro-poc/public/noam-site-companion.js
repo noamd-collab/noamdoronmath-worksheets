@@ -166,6 +166,9 @@
     "#noam-site-companion-chips a,#noam-site-companion-chips button{display:inline-flex;align-items:center;min-height:44px;padding:4px 8px;border:2px solid #22305a;border-radius:999px;background:#fff;color:#22305a;text-decoration:none;cursor:pointer}",
     "#noam-site-companion-details{margin:0;font-size:16px;font-weight:500;line-height:1.35;overflow:auto;white-space:pre-wrap}",
     "#noam-site-companion-form{display:flex;gap:6px;flex:none}",
+    "#noam-site-companion-privacy{margin:0;flex:none;font-size:13px;font-weight:500;line-height:1.35;color:#3d4870}",
+    "#noam-site-companion-privacy a{display:inline-flex;align-items:center;min-height:44px;vertical-align:middle;font-size:13px;font-weight:700;color:inherit;text-decoration:underline}",
+    "#noam-site-companion-panel.is-compact #noam-site-companion-privacy{display:none}",
     "#noam-site-companion-input{flex:1;min-width:0;height:44px;border:2px solid #22305a;border-radius:10px;padding:4px 8px;font-weight:500}",
     "#noam-site-companion-form button{min-height:44px;min-width:44px;border:2px solid #22305a;border-radius:10px;background:#22305a;color:#fff;padding:4px 8px;cursor:pointer;flex:none}",
     "#noam-site-companion-panel.is-compact{overflow:hidden;padding:3px;gap:1px}",
@@ -253,7 +256,8 @@
     '<p id="noam-site-companion-details" hidden tabindex="0"></p>' +
     '<form id="noam-site-companion-form"><label for="noam-site-companion-input" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">מה אתם מחפשים?</label>' +
     '<input id="noam-site-companion-input" type="text" maxlength="700" autocomplete="off" aria-label="מה אתם מחפשים?">' +
-    '<button type="submit" aria-label="שליחה">שליחה</button></form>';
+    '<button type="submit" aria-label="שליחה">שליחה</button></form>' +
+    '<p id="noam-site-companion-privacy" data-ai-privacy-note>נועם AI הוא בינה מלאכותית, לא אדם, ועלול לטעות. מה שכותבים נשלח לעיבוד אצל ספק AI חיצוני. לא לכתוב פרטים אישיים. <a href="/privacy#ai">מה קורה למידע?</a></p>';
   root.appendChild(panel);
   panel.querySelector("header img").src = avatarSrc;
   forceSiteFont(root);
@@ -727,6 +731,23 @@
     }).catch(function (error) {
       streaming = false;
       var text = (error && error.message) || FALLBACK;
+      var status = error && (error.status || error.httpStatus);
+      var authCode = error && error.code && error.code !== "HTTP_ERROR"
+        ? error.code : text;
+      var signInRequired = status === 401 && authCode === "TEACHER_SIGN_IN_REQUIRED";
+      var accessDenied = status === 403 && authCode === "TEACHER_ACCESS_DENIED";
+      if (signInRequired || accessDenied) {
+        var authMessage = signInRequired
+          ? "כדי לבנות שיעור, יש להתחבר לחשבון Google."
+          : "נדרש חשבון Google מאומת כדי להיכנס לאזור המורים.";
+        showResult({
+          answer: authMessage,
+          details: authMessage + "\nכלי המורים הקיימים זמינים לאחר התחברות עם Google.",
+          primary: { href: "/teachers/login", label: accessDenied ? "התחברות עם חשבון אחר" : "התחברות לאזור המורים" },
+          chips: [],
+        });
+        return;
+      }
       var teacher = pageKind() === "teachers";
       showResult({
         answer: text,

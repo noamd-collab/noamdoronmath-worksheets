@@ -1,3 +1,138 @@
+## 2026-11-16 — batch 01: four reviewed student PDF editions (candidate)
+
+- SYS-01 8:47, SYS-02 8:48, TRI-03 8:39 and P3D-01 8:54: 12 PDFs, 83 pages, 372 parts. Every existing default, legacy link and the 35 preceding editions are preserved; topic 8:54 keeps its legacy c2 level.
+- Four existing landings describe the exact practice scope of the new series. Titles, H1 and CTA order are unchanged.
+- Exact reviewed PDF bytes were uploaded and downloaded from both media routes: 24 matching reads. Independent PDF reviews (Astra r02 deltas; claude007 for P3D-01) are attributed by exact SHA-256, not repeated here. Details: `docs/batch01-pdf-first-20261116.json`.
+- New editions open PDFs directly. No Word, native assets, teacher selection, learning activation, hints or database activation.
+- This is a source candidate, not a publication claim. Build, tests and desktop/phone evidence are recorded in the PR package; the Wix payload has only a proxy estimate (+54,960 bytes, about 17.32 MB) and still needs a credentialed `npm run build`; the release job's postbuild budget check stops a release over 19,500,000 bytes.
+
+## 2026-11-15 — seven additional student PDF editions (candidate)
+
+- ATQ7:19, APT7:45, PYT7:42, PYA7:43, GRW7:6, CTM9:33 and Q1G7:31:21PDFs,137pages,405parts. Existing defaults,973legacy links and28preceding editions are preserved.
+- Seven existing landings describe the exact practice scope. APT retains separate CTA46 then45; Q1G retains31 then21. CTM remains explicitly reduced-track; GRW is focused growth/shrink practice.
+- Exact reviewed PDF bytes were frozen, uploaded and downloaded from both media routes:42matching reads. Independent PDF quality is attributed to the frozen reviews, not repeated here. Details: `docs/next21-pdf-first-20261115.json`.
+- New editions open PDFs directly. No Word, native assets, teacher selection, learning activation, hints or database activation. Q1G private-key HOLD and all retained review notes remain.
+- This is a source candidate, not a publication claim. Build, tests, bundle measurement, independent review and desktop/mobile evidence are recorded in the PR package.
+
+## 2026-11-15 — TRP / SIM9 / RSC / PER: twelve additional student PDFs (candidate)
+
+- Based on reviewed combined PR490; preserves all preceding editions, default PDFs, native/Ramzi, teacher and learning sources.
+- Four nondefault PDF-only editions: TRP9:39, SIM9:19, RSC7:18, PER7:44. Twelve distinct PDFs,96pages,288parts. RSC/PER share the existing landing and preserve CTA44then18; no new slug or legacy replacement.
+- Attributed independent review reports assess 72 parts and 24 pages per package; this integration rechecks exact source/PDF pins and 24 actual media downloads. No claim of repeated full visual/math review. SIM9 exportK6/D8 and all density/Word/hint holds remain.
+- Three existing landing pages distinguish printable PDFs from existing Ramzi worksheets. No sourcePDF edits, new native/hint activation, database writes, model changes or publication.
+- Exact sanitized binding: `docs/next12-pdf-first-20261115.json`. Focused checks are recorded externally; this draft does not claim full CI/build/UI completion.
+- Preview review found consecutive worksheet groups touching on `area-rectangle-perimeter-grade-7` and `equations-both-sides-word-problems-grade-7`. Selectors limited to these two routes add 24px before each following group, including both boundaries between the three WPC topics; first CTAs, links, internal controls and PDF bytes are unchanged. Visual rechecks are recorded separately.
+
+## 15 November 2026 — Combined EXT/SML/AFR/SAO/WPC PDF candidate
+
+- Combine the exact reviewed additions from PR487 and PR488 over the current canonical PR485 baseline: five nondefault editions, fifteen unique PDFs,97 pages and360 subitems. Keep every old PDF, edition and default. The six existing landing routes include the SML secondary link to the same three PDFs, counted once.
+- Both original source and PDF provenance records remain unchanged. Preserve their distinct visual-review scopes and unresolved native-export/density notes; this integration does not create a new full-PDF visual review or claim all-package PASS.
+- Regenerate catalog, search, guide and lossless worker data from their authoritative sources. Both exact reviewed reversals apply before every historical catalog/landing fence. Teacher sources, learning, native assets, prepared hints, database, models and security settings are unchanged.
+- This separate combined candidate replaces neither original draft without coordinator action and grants no merge/publication approval. Its full tests, build and preview require their own receipts; previous Node26 timeouts remain historical failures, separate from the passed original CI runs.
+
+## 15 November 2026 — EXT01, SML01 and AFR01 PDF candidate
+
+- Add nine nondefault PDF worksheets (55 pages, 216 subitems): extended distribution on grade9/topic1; integrated sum/difference squares and difference of squares on topic44; algebraic fraction domain, reduction, multiplication and division on topic3. Preserve every old PDF and default. Topic45 retains its original materials and links to the same topic44 addition; count the three shared SML PDFs once.
+- Independent intake reviewed all216 source subitems, observed55 page layout overviews and magnified all9 final-answer pages. This is not a glyph-by-glyph visual claim. Root accepted the bounded review and exact landing copy after its own limited visual sample. Six G94 workspace notes remain REVIEW with documented reasons to keep the original writing space. All source and student PDF bytes match the accepted receipts and pinned7.3.2 runtime. See [PDF provenance](ext-sml-afr-pdf-first-20261115.json).
+- Nine media files were read back through both CDN routes with exact SHA matches. Four landing pages gain precise scope and conditional wording for existing Ramzi support. EXT describes worded area comparison; SML describes algebraic practice. No geometric demonstration, whole-unit duration, Word, native, new Ramzi, teacher-question, learning or Supabase activation is promised.
+- This is an isolated site candidate based on PR485; it is not publication approval. WQP/WPM revisions and SAO/WPC are outside this change.
+
+## 15 November 2026 — SAO01 and WPC01 PDF candidate
+
+- Add six non-default student PDFs (42 pages, 144 parts) to the existing grade 9/topic 38 side-angle landing and grade 7/topic 41 word-equation landing. Preserve every legacy link, default and the 41/40/39 CTA order.
+- SAO covers side-angle order; WPC covers equation solving and checking the answer in context. The new copy distinguishes downloadable PDFs from existing viewer hints. Independent full-source reports and bounded 22-page visual review support PDF acceptance; Root separately sampled three of those same 22 pages (overlapping, not 25 unique). G94 density notes and all solution/diagram workspace are preserved.
+- All six media files were read back through two URLs with exact hashes. The public evidence contains hashes only; SAO N4/K22 native-export HOLD is retained. No private source, native/teacher/Ramzi/learning/Word activation, Supabase change or publication is included. See [PDF provenance](sao-wpc-pdf-first-20261115.json).
+
+## 15 November 2026 — EQN01, SGN01 and FAC01 PDF candidate
+
+- Add nine exact student PDFs as three non-default editions: equation meaning and substitution (grade7/topic32), signed-number addition/subtraction (grade7/topic2), and factoring/basic quadratic equations (grade9/topic2). Preserve all legacy PDFs and existing defaults, including the equations landing’s topics23/34/32.
+- 234 source subitems passed independent mathematical review (208 recomputations and26 open/conceptual checks);27 of56 PDF pages were visually sampled, plus Root’s separate7-page sample. The producer attributes a complete56-page review to another task; no separate reviewer artifact is bound. Source/PDF bytes and working areas are unchanged; one minor SGN wording note remains.
+- All nine CDN responses matched the frozen PDF hashes. Public evidence contains only source hashes and sanitized review scope, not private answers or local paths. See [PDF provenance](eqn-sgn-fac-pdf-first-20261115.json).
+- Existing landing pages gain precise PDF scope and the real update date15.11.2026; general hint promises distinguish legacy viewer support from the additional PDFs. No native, Ramzi, teacher-question, learning, Word or Supabase activation is included. This is a local candidate, not publication approval or a live-site claim.
+
+## 15 November 2026 — T90 isosceles trapezoid PDF candidate
+
+- Adds three non-default PDF worksheets on grade 9/topic 7, labelled “טרפז שווה־שוקיים: תוצאות מתכונות המקבילית · PDF”, through the existing parallelogram landing. The package has 72 subitems and 31 pages (10/10/11); original PDFs and writing space are unchanged.
+- Source acceptance retains 24 automated passes and 1 CLI visual-evidence skip, with the separate documented 31-page visual review and mathematical closure. Word and native M03 projection remain separate; no Ramzi, teacher-selection or learning activation is included.
+- Candidate integrates PR #478 at 6d1b68da, #480 at 9f60d1e1 and #481 at c2ba1375. Source review and tests do not represent merge or production publication. Evidence: `docs/g9-t90-pdf-first-20261115.json`.
+
+## 2026-11-15 — Passive compatibility for 15 reviewed first567 hint corrections
+
+- Prepare an optional, source-pinned correction evidence overlay for 15 subitems / 45 hints across five existing worksheet levels. The selected corrections passed independent semantic review and Root acceptance; the remaining 552 subitems are preserved, not newly certified as a whole.
+- Preserve every v1 readiness/receipt byte, PDF, native source, manifest and learning identity. Without a correction file the generated outputs are byte-identical. Shared build/SSR checks reject out-of-scope source changes and require exact before/after hint hashes, the original approval pins and a separately verified database readback.
+- Passive code only: no correction file, database write, import, activation or publication is included. Actual CAS, rollback, readback and subsequent evidence publication remain separate. See [correction evidence contract](first567-hint-correction-evidence.md).
+
+## 2026-11-15 — Temporary pause of drawing-request buttons
+
+- Hide the main drawing-request button and message-level request/retry controls in both viewer mirrors, including restored conversations. Preserve enlargement of existing source diagrams, original question graphics and textual hints.
+- This is a CSS-only UI pause. Drawing services, JavaScript handlers, topic restrictions, model settings, reCAPTCHA, permissions and stored data remain unchanged. Removing the exact two-line CSS block restores each previous viewer byte-for-byte, including the published `46232c6d…348d2` viewer.
+- The reviewed candidate requires its own publication approval. Browser checks cover desktop/phone visibility, keyboard focus, first/restored/retry controls and source-image enlargement; no database change is included.
+
+## 2026-11-15 — Frequency-table and relative-frequency student PDFs
+
+## 2026-11-15 — MED01, PRB01 and REC01 PDF candidate (not published)
+
+- Add nine independently reviewed PDFs: median to the hypotenuse (grade9, new logical topic48), probability estimated from experiments (grade7, topic27) and rectangle properties/converses (grade9, topic11). Total:180 subitems,56 pages.
+- MED01 uses the curriculum wording **משולש ישר זווית — התיכון ליתר** and `/median-to-hypotenuse-grade-9`; local `prisa_9A.pdf` page7 confirms the median and quadrilateral-practice scope. Topic47 and every preceding topic remain.
+- PRB01 and REC01 are nondefault PDF-only editions. Preserve all existing PDF links, native viewer routes, teacher choices and learning/progress identities.
+- All27 media readbacks match the frozen PDF hashes. Public integration contains no private solutions, source exports, Word files or hints; native package IDs are provenance only. REC's D12 native-export findings remain held.
+- Candidate implementation is local and uncommitted. Focused checks, build and UI review are recorded in the handoff; no merge or publication is claimed.
+- PR478 SEO review: retain MED's authored prerequisite/application links, add its reciprocal rectangle link, synchronize the legacy catalog spelling, and update the two expanded landings to 15.11.2026. Worked examples now use 16→8 and 11→22, distinct from the frozen PDF problems; worksheet bytes and activation remain unchanged.
+
+
+- Add a non-default PDF-only edition to grade-seven topic 26: **טבלאות שכיחות ושכיחות יחסית — PDF**. Three reviewed files contain 54 subitems across 17 pages, with final answers and preserved working areas. Four minor explanation notes remain documented; the student PDFs were accepted in this limited scope.
+- Keep every previous topic, PDF, routing and default, including topics 25–27. The new edition uses direct PDF links and is excluded from teacher exercise sources, learning/progress generation and viewer/hint activation. G7-T88 is a provenance binding; native exports, Word, hints and Supabase are outside this publication.
+- Both existing frequency landing pages expose the three additions: the relative-frequency page uses topic 26 directly, while the frequency page retains primary topic 25 and adds a clearly labeled secondary topic 26 action. Real component rendering verifies all six new links and preserves the previous downloads.
+- See [PDF provenance](g7-frq01-pdf-first-20261115.json). This remains a local review candidate until the batch receives its required release approval.
+
+## 2026-11-15 — Rational equations: three student PDFs and a dedicated topic
+
+- Add grade-nine topic 47, **משוואות רציונליות**, and `/rational-equations-grade-9`. The three 5-page PDFs cover domain and admissible solutions, with denominator factorization and equation solving; they do not replace the complete eight-hour unit. All old topics, links and PDFs remain, including algebraic-fraction reduction and quadratic equations.
+- All 54 subitems, 45 equations and 15 pages passed independent student-PDF review. Nine readbacks across returned media, CDN and site URLs match the exact PDFs. See [PDF provenance](g9-rat01-pdf-first-20261115.json). G94 b4/c4 remains documented REVIEW with writing space preserved; this is not an all-package PASS.
+- The explicit base-topic `pdf-only` mode preserves direct student downloads while excluding these files from teacher-picker sources, future teacher regeneration and future learning/progress IDs. No native prefix or fallback is activated. G9-T93/G9-RAT-01 and source hashes are provenance for later integration only; Word, hints, native exports and private solutions remain outside this publication.
+- Focused regressions exercise export/source validation, direct student and Noam-guide links, unavailable teacher scopes, full teacher/learning regeneration and unchanged old rows. Full site CI and desktop/mobile preview remain with the release coordinator. This is a review candidate, not a live-publication claim.
+
+## 2026-11-15 — Three grade-seven variable and expression-language PDFs
+
+- Add G7-ALG-01 / G7-T87 as an additional PDF-only edition of site topic 7/22, visible on the existing algebraic-expressions landing page and worksheet catalog. Keep the old PDFs and default unchanged; this focused opening unit does not replace substitution, patterns or the whole algebra sequence.
+- Three student PDFs contain 6 questions and 18 subitems per level (54 total), with final answers: 4, 4 and 5 pages. All nine downloads from the returned media, CDN and site URLs match the frozen PDF hashes. See [PDF publication evidence](middle-school-g7-alg01-pdf-20261115.json).
+- Fix multi-topic landing CTAs that all pointed to the primary topic: each topic now gets one distinct download group. The algebra landing exposes topics 30, 23 and 22 with their matching levels, including the new PDFs; single-topic direct level links retain their behavior.
+- Only the student PDFs are uploaded. Detailed worked solutions, source files and native JSON remain private. The new edition opens free PDFs directly; it does not enable Ramzi, Word, teacher-picker sources or database writes.
+- PDF essentials passed the author/reviewer release check; the full package is not claimed as PASS. D12 native-export checks remain open, G92 records the narrower reminder and embedded guided example, and G94 flags the last question pages while preserving writing space. These do not activate or publish the unfinished native export.
+- This is a publication candidate. Uploaded media alone does not mean the new catalog buttons are live; the new PR needs its own merge and publication approval.
+
+## 2026-11-14 — Prepared Ramzi hints for the first twelve middle-school editions
+
+- PR #461 was explicitly approved, merged at `cfe85a520af1e1a0a06526438dbd33c134cc21b1` and published through the release script. All eighteen new PDFs are live; the first twelve source-bound manifests and their native assets were published with activation disabled.
+- Imported 567 verified, PDF-bound subitem rows with 1,701 reviewed hints into Supabase, and added exactly twelve edition-specific learning identities. Full readback matches every imported field and hint. All 31,761 previous hint rows and all 956 previous learning identities were preserved.
+- The public Supabase API and the actual prepared-hint client returned all three expected hints for every subitem across twelve editions, after exact PDF/source binding. The remaining 346 reviewed subitems have not been imported.
+- This change prepares the first twelve editions for Ramzi in the catalog, matching landing pages and learning route. Build validation requires matching publication, manifest-review, exact database-readback and learning-identity evidence; runtime checks retain the verified edition identity. Previous edition links and teacher-picker contents remain intact.
+- Correct the glossary match for a right-angled trapezoid, which previously linked to the right-triangle definition. The reviewed hint text and worksheet content are unchanged.
+- New activation is a separate publication candidate. Its merge and publication require specific approval; the completed PR #461 approval is not reused. Live activation and its post-publication UI check remain pending.
+
+## 2026-11-13 — Six follow-up parallelogram PDFs, separate from PR456
+
+- Add MS-PROD-002 (G9-PAR-02 / G9-T88: proofs and symmetry) and MS-PROD-003 (G9-PAR-03 / G9-T89: converse theorems and identification), three levels each, to the existing grade-nine parallelogram topic. Focused labels describe the actual contents; no whole-topic replacement is claimed.
+- The six frozen PDFs total 69 pages and 274 subitems. Saved Wix upload receipts and 18 returned/CDN/site downloads match the exact frozen PDF SHA-256 digests; source sheet.json and native-export provenance are real. See [follow-up evidence](middle-school-followup-pdf-20261113.json).
+- Previous PDFs remain the default. All six links open PDFs directly; no Word download, Noam AI activation, teacher-picker entries, native asset publication or hint/DB import is introduced by these rows.
+- Included in PR #461, separate from the twelve PDFs in PR #456. Reviewed preview: https://zwqzfd-noam-math-astro-poc-amiramnoam-130a.wix-site-host.com/parallelogram-grade-9. Catalog, landing page and search were checked on phone and desktop; legacy viewer links remain unchanged. PR #461 was approved, merged and published on 14 November; see the entry above for the separate hint activation.
+- PR #461 also stages twelve disabled, source-bound measured manifests and their public native assets for the first batch, and fixes the selected-question card and single feedback pair. This prepares the connection; it does not activate the new editions or import hints.
+- Validation: all 2,379 unit tests, five isolated drawing tests and four live SSR checks passed; the build passed with 214,252 bytes of worker-payload headroom. Test TypeScript still has 342 existing baseline diagnostics, with zero new diagnostics. The regenerated search index includes these editions.
+
+## 2026-11-13 — Twelve middle-school PDFs, with previous editions retained
+
+- Add three levels each for grade 7 congruent shapes, transformations and symmetry; grade 8 cylinders; grade 8 cones; and grade 9 parallelograms. Show the additional editions in the worksheet catalog and all four matching landing pages.
+- All 12 media files were uploaded to Wix and downloaded through the site's PDF URLs; their SHA-256 digests match the reviewed, frozen 7.3.2 source release. See [publication evidence](middle-school-pdf-first-20261113.json).
+- Direct PDF publication does not require future measured manifests, Word integration or hint bundles. It records the actual PDF, source and native-export digests. Previous editions remain the default; the additions do not activate Noam AI, worksheet-viewer routing, the teacher picker or a database import.
+- This entry is a publication candidate in PR #456. Website buttons are not live until the approved merge and release. Gemini Flash in Antigravity will author three prepared hints per subpart; Codex will review, bind and integrate them into Supabase and Ramzi.
+
+## 2026-11-13 — Grade 8 T67 prepared-hint coverage repair
+
+- Normalize the excellence manifest and exercise IDs to runtime E; keep catalog level c, learning IDs, PDFs, question geometry and teacher selection intact.
+- Add 15 source-bound whole-question ladders after reading all 22 original question crops. Codex root independently reviewed all 45 hint texts; these are not separate ladders for each of the 76 printed subparts.
+- Preserve all existing hint content. Pin source and review hashes, regenerate the seed, and require full coverage, privacy and exact-PDF runtime checks. No external model call or live database write is part of this repair.
+- Candidate only: merge, seed deployment and publication are handled separately. See [source review and scope](ramzi-curated-hints-20261030.md#grade-8-t67-source-bound-repair--13-november-2026).
+
 ## 2026-11-09 — Grade 8 topic 67: question mapping, Ramzi and the teacher tool
 
 - Whole-question manifests for the three topic 67 PDFs (5 questions each, part letters listed), built only from the printed "שאלה N" headings, the fixed header and footer and the ink between headings. Questions that continue onto the next page keep both crops. Every crop and every answer rectangle was reviewed visually on the original pages.
@@ -634,3 +769,20 @@ Checks and publication evidence: `docs/teacher-answer-word-20261104.md`.
 - בעקבות הדיווח על „מונים בלי לפספס” בכיתה א׳, כפתורים שמובילים ישירות לקובץ מסומנים „פתיחת PDF” בדפי הנושא ובקטלוג. נוסף בדפי הנושא כפתור להעתקת הכתובת הקבועה באתר, כולל חלופה ידנית אם ההעתקה חסומה בדפדפן.
 - כפילויות SEO ש־Wix מוסיף מוסרות בתשובת השרת כאשר קיימת תגית מקור תואמת של האתר. הכותרת העברית, הכתובת הקנונית, הוראות האינדוקס ונתוני השיתוף נשמרים; תצוגות בדיקה נשארות noindex. בדיקת ההמשך מתועדת ב־PR ובדוח הפרסום.
 - נועם אישר בשיחה לתקן ולפרסם את התיקון הזה. תוכן קובצי ה־PDF, כתובות ההורדה, רמזים ומסד הנתונים אינם משתנים במסגרת תיקון הקישורים וה־SEO. בעיות הניסוח והעימוד בתשובות שב־PDF דורשות תיקון תוכן נפרד.
+
+## 2026-11-13 — הכנת קישור מהדורות החטיבה
+
+- נוספה תמיכה בקישור מפורש בין נושא באתר לבין חבילת המקור של דף חדש בכיתות ז׳–ט׳, עם חתימה נפרדת לייצוא Noam AI בכל רמה. מזהה הנושא באתר אינו מזהה חבילת המקור.
+- בדיקות משתמשות בנתונים סינתטיים לארבעת דפי האצווה הראשונה. מרשם הייצור, המהדורות הקודמות וברירות המחדל נשארו כפי שהם.
+- השלב הזה אינו מפעיל צופה, רמזים, ייבוא למאגר המורים או מסד נתונים. השלמת המדידות והקישורים, הרמזים של נועם ואישור PR מסוים נדרשים לפני פרסום האצווה.
+
+## 2026-11-15 — מניעת תקיעה במעבר סעיף ברמזי
+
+- בבדיקה חיה לאחר פרסום PR #463, מעבר מסעיף א׳ לסעיף ד׳ בדף מקבילית ברמה ב׳ הפעיל לולאת עדכונים בכפתור הדיווח. הכפתור מעדכן כעת את מצב ההסתרה רק כשהמצב משתנה, ולכן המעבר יכול להסתיים והרמזים מתאפסים לסעיף החדש.
+- בדיקת הרגרסיה מפעילה MutationObserver אמיתי, משחזרת את הכשל בקוד הקודם ובודקת התכנסות במעבר סעיף ושימור פעולת הדיווח. המסלול המקומי נבדק במחשב ובטלפון עם איור המקור, מיקוד הזוויות DBC/ABD והגדלה.
+- השינוי אינו משנה דפי PDF, תוכן רמזים, מזהי סעיפים או מדיניות שרטוטים. פרסום התיקון והבדיקה החיה שלו דורשים אישור נפרד ל־PR ולגרסת הפרסום.
+
+
+### First567 correction evidence v2 — passive packing
+
+Moved the exact 15-row source/old/new hash proof to a required content-addressed build-only file and fixed scope module. Public record/readback and SSR retain the pinned scope digest, 15/45 counts and all baseline/review/payload/readback pins. No applied receipt or DB update is included. Focused tamper, regeneration and loader checks cover the split; final build budget is recorded in the private handoff.

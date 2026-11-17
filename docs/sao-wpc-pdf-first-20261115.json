@@ -1,0 +1,217 @@
+{
+  "schema": "noam-student-pdf-publication-evidence/v1",
+  "status": "REVIEWED_MEDIA_SITE_CANDIDATE_NOT_PUBLISHED",
+  "preparedDate": "2026-11-15",
+  "publicationMode": "pdf-only",
+  "sourceProvenanceOnly": true,
+  "sitePublicationClaimed": false,
+  "mediaReadbackSha256": "5181c9af5b60daa0d5e2f2ca54d22ed5d0d21d2626e2a5d33db73c2cb8e0df17",
+  "frozenPublishManifestSha256": "adaeea552ff89b92b8ba6eee8ccede57ae6978b4b46e39d4501c7f7e2b91281e",
+  "rootAcceptanceSha256": "7b478f12393c6a95da55670c56348a7aee6c4eb1cb790b9f5d29eb9b02778d5e",
+  "review": {
+    "independentBoundedReviewSha256": "c0ae59411a8b753eeb727a2b55ff0f1150d20499fe068c88c36640a835c9d3af",
+    "mappingSha256": "78123a464dc73acd5b9733dbc3ea4da16e9f04f75c3a3f4e299437f2bbd6e9f6",
+    "densityReviewSha256": "478c79854ed178b1223151e73e4f2a75b28f003b7c7d182f8ab0e3257da5761b",
+    "sourceSubitemsReviewedByIndependentPeers": 144,
+    "sampledPages": 22,
+    "totalPages": 42,
+    "rootSampledPages": 3,
+    "scope": "PDF-only acceptance; peer reports cover all 144 parts, bounded reviewer directly viewed 22 pages and Root sampled 3. G94 sparse-page notes retained: whole next question would not fit without reducing workspace. Root's three pages overlap the 22, not 25 unique pages.",
+    "nativeExportStatus": "SAO N4/K22 HOLD retained. No native source, hints, Word or learning activation.",
+    "rootSampleOverlap": true
+  },
+  "packages": [
+    {
+      "sheetId": "G9-SAO-01",
+      "grade": 9,
+      "topicId": 38,
+      "editionId": "ms-20261115-sao-01-r1",
+      "label": "יחסי סדר בין צלעות וזוויות במשולש — PDF",
+      "nativePrefixProvenanceOnly": "G9-T74",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "levels": [
+        {
+          "viewerLevel": "A",
+          "pdfId": "ee21342759364dfe8944372bc97c8291",
+          "sourceSha256": "410c8cb0bca6184871142fde6a24e2c5ed7ac090a03b6c89a1d85fed464fdd22",
+          "nativeExportSha256": "494ea82e05c25847e809d4315007bb1d2184aaaa4c417dbf2b0919a97ad380c5",
+          "worksheetId": "ms-g9-sao-01-a-r1",
+          "revision": 1,
+          "key": "a",
+          "pdfSha256": "8a2c6108f255b3a46fe5e07ea0671660e7f8cab243dc5c35bbb529c335a7bb1f",
+          "pages": 8,
+          "subitems": 24,
+          "downloadChecks": [
+            {
+              "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_ee21342759364dfe8944372bc97c8291.pdf",
+              "status": 200,
+              "sha256": "8a2c6108f255b3a46fe5e07ea0671660e7f8cab243dc5c35bbb529c335a7bb1f",
+              "bytes": 85280,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_ee21342759364dfe8944372bc97c8291.pdf",
+              "status": 200,
+              "sha256": "8a2c6108f255b3a46fe5e07ea0671660e7f8cab243dc5c35bbb529c335a7bb1f",
+              "bytes": 85280,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "viewerLevel": "B",
+          "pdfId": "3f17f8456b0e4ac89302ccb4e446035b",
+          "sourceSha256": "cd56e5d46e1a3661fdac57c4b4f1e8c5e01b8ba81c1ef0a1336c607b9a14e7e7",
+          "nativeExportSha256": "7ef0337a69948482e2683abfcf6fd7c2a76ac1ac2b90778bef2a4bea951df96a",
+          "worksheetId": "ms-g9-sao-01-b-r1",
+          "revision": 1,
+          "key": "b",
+          "pdfSha256": "77b7fa9d0200540b7b65dff2c613e439af93925dffd7dd65650649163dbacf83",
+          "pages": 8,
+          "subitems": 24,
+          "downloadChecks": [
+            {
+              "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_3f17f8456b0e4ac89302ccb4e446035b.pdf",
+              "status": 200,
+              "sha256": "77b7fa9d0200540b7b65dff2c613e439af93925dffd7dd65650649163dbacf83",
+              "bytes": 89052,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_3f17f8456b0e4ac89302ccb4e446035b.pdf",
+              "status": 200,
+              "sha256": "77b7fa9d0200540b7b65dff2c613e439af93925dffd7dd65650649163dbacf83",
+              "bytes": 89052,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "viewerLevel": "E",
+          "pdfId": "7bb642d85512403c9833f969f5a8c308",
+          "sourceSha256": "5c5f7f0ce43ddf2e93783fc1b60f5fe886c5d53080914a4d5703fe909049dde4",
+          "nativeExportSha256": "985ab6ea347c9fdbdaae1f1d90f62ca892b9c5d03597e00627179dcd29b39e01",
+          "worksheetId": "ms-g9-sao-01-c-r1",
+          "revision": 1,
+          "key": "c",
+          "pdfSha256": "16f84551630f4426e91316bb376c6c790aef6c971a2190fa82606c73854ceb39",
+          "pages": 8,
+          "subitems": 24,
+          "downloadChecks": [
+            {
+              "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_7bb642d85512403c9833f969f5a8c308.pdf",
+              "status": 200,
+              "sha256": "16f84551630f4426e91316bb376c6c790aef6c971a2190fa82606c73854ceb39",
+              "bytes": 89938,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_7bb642d85512403c9833f969f5a8c308.pdf",
+              "status": 200,
+              "sha256": "16f84551630f4426e91316bb376c6c790aef6c971a2190fa82606c73854ceb39",
+              "bytes": 89938,
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sheetId": "G7-WPC-01",
+      "grade": 7,
+      "topicId": 41,
+      "editionId": "ms-20261115-wpc-01-r1",
+      "label": "פתרון בעיות מילוליות במשוואה ובדיקת התאמה להקשר — PDF",
+      "nativePrefixProvenanceOnly": "G7-T71",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "levels": [
+        {
+          "viewerLevel": "A",
+          "pdfId": "50901031d953471497b540fabdcf5da5",
+          "sourceSha256": "4c44f356358310f155f37335d923d7ab03ffcb6fbfcef3eecbda66d0d09dd8c7",
+          "nativeExportSha256": "6cb77c4f8b95d0fe29ae59ad39b24f73d984e70f8395a029c3ce18a96cbe9940",
+          "worksheetId": "ms-g7-wpc-01-a-r1",
+          "revision": 1,
+          "key": "a",
+          "pdfSha256": "c2334c1414e45f8b5c50e3988ebb35ae0f02cc029aeb7d49b8d1464d9ead19c2",
+          "pages": 6,
+          "subitems": 24,
+          "downloadChecks": [
+            {
+              "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_50901031d953471497b540fabdcf5da5.pdf",
+              "status": 200,
+              "sha256": "c2334c1414e45f8b5c50e3988ebb35ae0f02cc029aeb7d49b8d1464d9ead19c2",
+              "bytes": 43267,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_50901031d953471497b540fabdcf5da5.pdf",
+              "status": 200,
+              "sha256": "c2334c1414e45f8b5c50e3988ebb35ae0f02cc029aeb7d49b8d1464d9ead19c2",
+              "bytes": 43267,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "viewerLevel": "B",
+          "pdfId": "91a70d8e7fd946e3978383bf862b3bb5",
+          "sourceSha256": "d09d3796eea1631a6f631286b45edd7283284ca5d91bb8b8db8abbad43524831",
+          "nativeExportSha256": "86b4a62a2f0a86f283185440f956fe13b1588a98b14c61df2d1b9fb2ccdcfa69",
+          "worksheetId": "ms-g7-wpc-01-b-r1",
+          "revision": 1,
+          "key": "b",
+          "pdfSha256": "b407b5dd09930dd61dd7f57f20087f32d8cfca15851216f5a9cde9a47b446d83",
+          "pages": 6,
+          "subitems": 24,
+          "downloadChecks": [
+            {
+              "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_91a70d8e7fd946e3978383bf862b3bb5.pdf",
+              "status": 200,
+              "sha256": "b407b5dd09930dd61dd7f57f20087f32d8cfca15851216f5a9cde9a47b446d83",
+              "bytes": 43109,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_91a70d8e7fd946e3978383bf862b3bb5.pdf",
+              "status": 200,
+              "sha256": "b407b5dd09930dd61dd7f57f20087f32d8cfca15851216f5a9cde9a47b446d83",
+              "bytes": 43109,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "viewerLevel": "E",
+          "pdfId": "034912232f7f4b61a14e237c76ae8268",
+          "sourceSha256": "534869dea5f23dbd8367ded0e473aa3221b3f09bf4377a050a773b4cdd322915",
+          "nativeExportSha256": "3d3873a6bce1e8c01615a4c2e7c622bd6d62c36351283c5d14067b26aeb1a592",
+          "worksheetId": "ms-g7-wpc-01-c-r1",
+          "revision": 1,
+          "key": "c",
+          "pdfSha256": "23cae15c2bfe28f643bdf95855dcd2c28bd621d939a83f89193ee81d9232b851",
+          "pages": 6,
+          "subitems": 24,
+          "downloadChecks": [
+            {
+              "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_034912232f7f4b61a14e237c76ae8268.pdf",
+              "status": 200,
+              "sha256": "23cae15c2bfe28f643bdf95855dcd2c28bd621d939a83f89193ee81d9232b851",
+              "bytes": 44019,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_034912232f7f4b61a14e237c76ae8268.pdf",
+              "status": 200,
+              "sha256": "23cae15c2bfe28f643bdf95855dcd2c28bd621d939a83f89193ee81d9232b851",
+              "bytes": 44019,
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,325 @@
+{
+  "version": 3,
+  "questions": [
+    {
+      "items": [
+        {
+          "a": 3,
+          "solution": 4
+        },
+        {
+          "a": 4,
+          "solution": 9
+        },
+        {
+          "a": 7,
+          "solution": 7
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "a": 11,
+          "solution": 8
+        },
+        {
+          "a": 4,
+          "solution": -9
+        },
+        {
+          "a": 4,
+          "solution": -11
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "a": 3,
+          "solution": 14
+        },
+        {
+          "a": 10,
+          "solution": 4
+        },
+        {
+          "a": 4,
+          "solution": 10
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "a": 3,
+          "solution": -4
+        },
+        {
+          "a": 8,
+          "solution": -8
+        },
+        {
+          "a": 8,
+          "solution": -7
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "a": 3,
+          "solution": 1
+        },
+        {
+          "a": 9,
+          "solution": 6
+        },
+        {
+          "a": 2,
+          "solution": 14
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "a": 2,
+          "solution": 1
+        },
+        {
+          "a": 12,
+          "solution": 9
+        },
+        {
+          "a": 3,
+          "solution": 7
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "a": 11,
+          "solution": -5
+        },
+        {
+          "a": 12,
+          "solution": 13
+        },
+        {
+          "a": 6,
+          "solution": -10
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "a": 7,
+          "solution": -9
+        },
+        {
+          "a": 6,
+          "solution": 0
+        },
+        {
+          "a": 5,
+          "solution": 5
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "a": 6,
+          "solution": 12
+        },
+        {
+          "a": 1,
+          "solution": -5
+        },
+        {
+          "a": 2,
+          "solution": 12
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "a": 1,
+          "solution": -11
+        },
+        {
+          "a": 8,
+          "solution": 11
+        },
+        {
+          "a": 4,
+          "solution": 15
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "a": 5,
+          "solution": -7
+        },
+        {
+          "a": 11,
+          "solution": 3
+        },
+        {
+          "a": 10,
+          "solution": 2
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "a": 9,
+          "solution": -6
+        },
+        {
+          "a": 3,
+          "solution": 8
+        },
+        {
+          "a": 9,
+          "solution": -10
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "a": 4,
+          "solution": 0
+        },
+        {
+          "a": 9,
+          "solution": 1
+        },
+        {
+          "a": 1,
+          "solution": -8
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "a": 10,
+          "solution": -13
+        },
+        {
+          "a": 7,
+          "solution": 10
+        },
+        {
+          "a": 3,
+          "solution": 13
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "a": 4,
+          "solution": -1
+        },
+        {
+          "a": 5,
+          "solution": -5
+        },
+        {
+          "a": 2,
+          "solution": -7
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "a": 9,
+          "solution": -2
+        },
+        {
+          "a": 1,
+          "solution": -12
+        },
+        {
+          "a": 11,
+          "solution": -11
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "a": 5,
+          "solution": -4
+        },
+        {
+          "a": 7,
+          "solution": 0
+        },
+        {
+          "a": 7,
+          "solution": -7
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "a": 7,
+          "solution": 14
+        },
+        {
+          "a": 12,
+          "solution": 2
+        },
+        {
+          "a": 3,
+          "solution": -10
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "a": 5,
+          "solution": -14
+        },
+        {
+          "a": 8,
+          "solution": -3
+        },
+        {
+          "a": 10,
+          "solution": 15
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "a": 11,
+          "solution": -8
+        },
+        {
+          "a": 3,
+          "solution": -6
+        },
+        {
+          "a": 5,
+          "solution": 13
+        }
+      ]
+    }
+  ]
+}

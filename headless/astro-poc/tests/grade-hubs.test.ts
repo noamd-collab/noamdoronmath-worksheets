@@ -67,7 +67,7 @@ describe('grade hub routes (HEADLESS-MIGRATION-16/17)', () => {
       assert.equal(hub.faq.length, 0);
       assert.equal(hub.topicLinks.length, 0);
       assert.ok(hub.faqNote || hub.topicLinksNote);
-      assert.ok(hub.whatsapp?.href.includes('whatsapp') || hub.whatsapp?.href.startsWith(PROD));
+      assert.equal(hub.whatsapp, undefined); // WhatsApp group removed (Noam, 2026-11-15)
       assert.ok((hub.footerLinks || []).length >= 5);
     }
   });
@@ -162,6 +162,7 @@ describe('grade hub routes (HEADLESS-MIGRATION-16/17)', () => {
       '/isosceles-triangle-grade-9',
       '/triangle-calculations-grade-9',
       '/equilateral-triangle-grade-9',
+      '/median-to-hypotenuse-grade-9',
     ]);
 
     const flatQuads = hub.topicLinks

@@ -93,7 +93,17 @@ describe('grade 9 PDF v2 replacements', () => {
   it('counts rendered cards, not hidden children or the other grade 9 track', () => {
     const grade9 = catalog.grades.find((entry) => entry.grade === 9);
     assert.ok(grade9);
-    assert.equal(countRenderedTopicCards(grade9, 'reg'), 38);
+    const rational = grade9.topics.find((topic) => topic.id === 47);
+    assert.ok(rational, 'Reviewed rational-equation PDFs add topic 47');
+    assert.equal(rational.parent, undefined);
+    assert.equal(rational.publicationMode, 'pdf-only');
+    assert.equal(countRenderedTopicCards({ ...grade9, topics: grade9.topics.filter((topic) => ![47, 48].includes(topic.id)) }, 'reg'), 38,
+      'The original regular-track cards remain present');
+    const median = grade9.topics.find((topic) => topic.id === 48)!;
+    assert.equal(median.title, 'משולש ישר־זווית — התיכון ליתר');
+    assert.equal(median.publicationMode, 'pdf-only');
+    assert.equal(countRenderedTopicCards({ ...grade9, topics: grade9.topics.filter((topic) => topic.id !== 48) }, 'reg'), 39);
+    assert.equal(countRenderedTopicCards(grade9, 'reg'), 40);
     assert.equal(countRenderedTopicCards(grade9, 'red'), 4);
     for (const grade of catalog.grades) {
       if (grade.grade === 9) continue;

@@ -377,6 +377,14 @@
       "reason": "links to the topic, same grade, shared title word"
     },
     {
+      "key": "page:/difference-of-squares-grade-9",
+      "title": "הפרש ריבועים לכיתה ט׳",
+      "linkedTopic": "topic:9:44",
+      "linkedTitle": "דו־איבר בריבוע",
+      "verified": false,
+      "reason": "already attached to an earlier link"
+    },
+    {
       "key": "page:/algebraic-fractions-grade-9",
       "title": "צמצום שברים אלגבריים לכיתה ט׳",
       "linkedTopic": "topic:9:3",
@@ -903,6 +911,14 @@
       "linkedTitle": "שכיחות",
       "verified": true,
       "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/frequency-grade-7",
+      "title": "שכיחות לכיתה ז׳: טבלת שכיחות, שכיח ודיאגרמת נקודות",
+      "linkedTopic": "topic:7:26",
+      "linkedTitle": "שכיחות יחסית חלק 1 — היכרות",
+      "verified": false,
+      "reason": "already attached to an earlier link"
     },
     {
       "key": "page:/relative-frequency-grade-7",
@@ -2645,6 +2661,22 @@
       "title": "משולש שווה־צלעות לכיתה ט׳: זוויות של ⁦60°⁩, צורות מורכבות והיקפים",
       "linkedTopic": "topic:9:22",
       "linkedTitle": "משולש שווה־צלעות — העמקה ורשות — לכיתה ט׳",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/rational-equations-grade-9",
+      "title": "משוואות רציונליות לכיתה ט׳",
+      "linkedTopic": "topic:9:47",
+      "linkedTitle": "משוואות רציונליות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/median-to-hypotenuse-grade-9",
+      "title": "משולש ישר זווית — התיכון ליתר לכיתה ט׳",
+      "linkedTopic": "topic:9:48",
+      "linkedTitle": "משולש ישר־זווית — התיכון ליתר",
       "verified": true,
       "reason": "links to the topic, same grade, shared title word"
     },

@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Trusted worksheet author data, version 1",
+  "description": "Structure only. validation.py additionally enforces topic, grade, exact count, arithmetic, variation, stars, uniqueness and capability status.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "questions"],
+  "properties": {
+    "version": {"const": 1},
+    "questions": {
+      "type": "array", "minItems": 4, "maxItems": 40,
+      "items": {
+        "oneOf": [
+          {"type": "object", "additionalProperties": false, "required": ["kind", "star", "items"], "properties": {
+            "kind": {"enum": ["calculate", "missing_operand", "missing_right", "check_solution"]},
+            "star": {"type": "boolean"},
+            "items": {"type": "array", "minItems": 3, "maxItems": 6, "items": {"$ref": "#/$defs/arithmetic"}}
+          }},
+          {"type": "object", "additionalProperties": false, "required": ["kind", "star", "items"], "properties": {
+            "kind": {"enum": ["solve", "check_solution", "construct"]},
+            "star": {"type": "boolean"},
+            "items": {"type": "array", "minItems": 3, "maxItems": 6, "items": {"$ref": "#/$defs/equation"}}
+          }}
+        ]
+      }
+    }
+  },
+  "$defs": {
+    "number": {"oneOf": [
+      {"type": "integer", "minimum": -1000000, "maximum": 1000000},
+      {"type": "object", "additionalProperties": false, "required": ["numerator", "denominator"], "properties": {
+        "numerator": {"type": "integer", "minimum": 0, "maximum": 1000000},
+        "denominator": {"type": "integer", "minimum": 2, "maximum": 20}
+      }}
+    ]},
+    "arithmetic": {"type": "object", "additionalProperties": false, "required": ["left", "op", "right", "answer"], "properties": {
+      "left": {"$ref": "#/$defs/number"}, "right": {"$ref": "#/$defs/number"}, "answer": {"$ref": "#/$defs/number"},
+      "op": {"enum": ["add", "subtract", "multiply", "divide"]}
+    }},
+    "equation": {"type": "object", "additionalProperties": false, "required": ["a", "b", "c", "solution"], "properties": {
+      "a": {"type": "integer", "minimum": 1, "maximum": 12},
+      "b": {"type": "integer", "minimum": -100, "maximum": 100},
+      "c": {"type": "integer", "minimum": -250, "maximum": 250},
+      "solution": {"type": "integer", "minimum": -20, "maximum": 20}
+    }}
+  }
+}

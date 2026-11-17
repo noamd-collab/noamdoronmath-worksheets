@@ -38,7 +38,7 @@ test('the published teacher snapshot matches the real registry and can withdraw 
   assert.deepEqual(current, buildTeacherCatalog(raw, registry));
   assert.deepEqual(buildTeacherCatalog(committed, { version: 1, editions: [] }), buildTeacherCatalog(raw));
   assert.equal(catalogSheets(current).filter((s: any) => s.editionId).length,
-    registry.editions.filter((e: any) => e.status === 'published').length * 3);
+    registry.editions.filter((e: any) => e.status === 'published' && e.publicationMode !== 'pdf-only').length * 3);
 });
 
 test('teacher catalog appends only published editions and leaves every legacy field/order unchanged', () => {
@@ -222,6 +222,9 @@ test('the real static-sync CLI preserves historical public manifests absent from
  try {
   const put=(p:string,text:string)=>{const dest=join(dir,p);mkdirSync(dirname(dest),{recursive:true});writeFileSync(dest,text);};
   put('scripts/lib/worksheet-editions.cjs',read('../../../scripts/lib/worksheet-editions.cjs'));
+  put('scripts/lib/worksheet-editions.mjs',read('../../../scripts/lib/worksheet-editions.mjs'));
+  put('scripts/lib/worksheet-hint-correction.mjs',read('../../../scripts/lib/worksheet-hint-correction.mjs'));
+  put('headless/catalog/worksheet-ramzi-ready.v1.json',read('../../catalog/worksheet-ramzi-ready.v1.json'));
   put('headless/astro-poc/scripts/sync-github-static.mjs',read('../scripts/sync-github-static.mjs'));
   const active='a'.repeat(32),historical='b'.repeat(32);
   put('headless/astro-poc/src/data/catalog.v1.json',JSON.stringify({config:{elementaryGrades:[1]},grades:[{grade:1,topics:[{id:1,levels:[{pdfId:active}],routing:{usesViewer:true}}]}]}));

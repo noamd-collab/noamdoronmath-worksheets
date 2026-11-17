@@ -4,6 +4,7 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { tmpdir } from 'node:os';
 import { gzipSync, gunzipSync } from 'node:zlib';
+import { compactManifestStyleStrings } from './lib/compact-astro-manifest.mjs';
 
 export const projectRoot = fileURLToPath(new URL('../', import.meta.url));
 const prefix = 'noam-ai/native/';
@@ -191,12 +192,14 @@ export async function finalizeNativeSvg(root = projectRoot) {
   const remaining = files.filter((path) => !svgSet.has(path));
   const staticCount = remaining.filter((path) => !path.startsWith('_worker.js/')).length;
   if (staticCount >= 5000) throw new Error(`Static deployment still has ${staticCount} files`);
+  const compact = compactManifestStyleStrings(registration.source);
   // All checks precede mutation. Only these verified SVG copies and _routes.json
-  // plus the exact SVG manifest.assets entries are touched; originals stay put.
+  // plus SVG registrations/repeated manifest CSS serialization are touched.
+  // Compaction preserves the complete post-pruning manifest data tree.
   for (const path of svgPaths) await unlink(join(dist, path));
-  await writeFile(manifestPath, registration.source);
+  await writeFile(manifestPath, compact.source);
   await writeFile(join(dist, '_routes.json'), JSON.stringify(routes, null, 2));
-  return { removedSvg: svgPaths.length, removedAssetRegistrations: registration.removed, staticCount, sourceBytes: bundle.sourceBytes, bundleSha256: bundle.sha256 };
+  return { removedSvg: svgPaths.length, removedAssetRegistrations: registration.removed, staticCount, sourceBytes: bundle.sourceBytes, bundleSha256: bundle.sha256, manifestStyleBytesSaved: compact.savedBytes };
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

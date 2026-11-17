@@ -7,13 +7,14 @@ import { readFileSync } from 'node:fs';
 import { describe, it } from 'node:test';
 import { analyzeWord, buildLexicon, inflections, normalizeText, tokenize } from '../src/lib/siteSearch/normalize';
 import { parseQuery } from '../src/lib/siteSearch/query';
-import { catalogTargets, postGrade, reviewedSearchTerms, type TermsDecision } from '../src/lib/siteSearch/buildIndex';
+import { buildIndex, catalogTargets, postGrade, reviewedSearchTerms, type TermsDecision } from '../src/lib/siteSearch/buildIndex';
 import { editDistance, matchingTopicIds, prepareIndex, search } from '../src/lib/siteSearch/engine';
 import type { SearchIndex } from '../src/lib/siteSearch/types';
 import type { CatalogV1 } from '../src/lib/catalog/types';
 import { buildFromRepo } from '../scripts/build-search-index';
 import { bench, score, summarize } from '../scripts/search-eval';
 import { newEngineFor } from '../scripts/search-eval-new';
+import { TEACHER_LANDING_TITLE, TEACHER_LANDING_DESCRIPTION } from '../src/lib/teacherLandingContent';
 
 const root = new URL('../', import.meta.url);
 const readJson = <T>(p: string): T => JSON.parse(readFileSync(new URL(p, root), 'utf8'));
@@ -192,6 +193,42 @@ describe('results', () => {
   it('sub-topic worksheets are offered inside their parent card', () => {
     const r = search(p, 'פירוק לגורמים').results.find((x) => x.key === 'topic:9:2');
     assert.ok(r && r.levels.some((l) => l.of));
+  });
+});
+
+describe('public teacher landing search', () => {
+  it('indexes only the public landing, without inventing a grade or a worksheet association', () => {
+    const teachers = index.docs.filter((doc) => doc.href === '/teachers');
+    assert.equal(teachers.length, 1);
+    const [teacher] = teachers;
+    assert.equal(teacher.key, 'page:/teachers');
+    assert.equal(teacher.kind, 'page');
+    assert.equal(teacher.title, TEACHER_LANDING_TITLE);
+    assert.equal(teacher.description, TEACHER_LANDING_DESCRIPTION);
+    assert.equal(teacher.grade, null);
+    assert.equal(teacher.topicKey, undefined);
+    assert.equal(teacher.topic, undefined);
+    assert.equal(index.docs.some((doc) => /^\/teachers\//.test(doc.href)), false, 'The noindex tool and its assets are not public search results');
+    const result = search(p, 'מורים').results.find((row) => row.key === teacher.key);
+    assert.ok(result, 'A real teacher query must find the public landing');
+    assert.equal(result.href, '/teachers');
+    assert.equal(result.grade, null);
+    assert.equal(result.gradeLabel, null);
+    assert.deepEqual(result.levels, []);
+    assert.equal(keys('מורים', 3).includes(teacher.key), false, 'The existing binding grade filter remains unchanged');
+  });
+
+  it('allows an ungraded public page but rejects an ambiguous grade-specific association', () => {
+    const page = { path: '/general', grade: null, h1: 'עמוד כללי', catalogTopicIds: [] };
+    const input = { catalog, pages: [page], posts: [], termsDecisions: [] };
+    const built = buildIndex(input);
+    const result = built.index.docs.find((doc) => doc.key === 'page:/general');
+    assert.ok(result);
+    assert.equal(result.grade, null);
+    assert.equal(result.topicKey, undefined);
+    assert.equal(built.report.associations.some((row) => row.key === result.key), false);
+    assert.throws(() => buildIndex({ ...input, pages: [{ ...page, catalogTopicIds: [10] }] }),
+      /General page \/general cannot claim grade-specific catalog topics/);
   });
 });
 

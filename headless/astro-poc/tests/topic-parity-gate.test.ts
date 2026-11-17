@@ -38,6 +38,7 @@ import {
 } from '../src/lib/parity/topicParity.ts';
 import { contentToParitySnapshot } from '../src/lib/parity/contentToParitySnapshot.ts';
 import { applyContentCorrections, topicPageCorrections } from '../src/lib/parity/contentCorrections.ts';
+import { restoreBeforePdfCopy } from './fixtures/pdf-only-topic-copy';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const fixtureDir = join(root, 'tests', 'fixtures', 'topic-parity');
@@ -105,7 +106,7 @@ describe('topic SOURCE→content parity gate (M19/M20)', () => {
   it('migrated content matches production fixtures (SEO, intro, sections, FAQ, CTAs, JSON-LD)', () => {
     for (const slug of migratedSlugs) {
       const source = loadProductionFixture(slug);
-      const page = loadTopicPage(slug);
+      const page = restoreBeforePdfCopy(slug, loadTopicPage(slug));
       const preview = contentToParitySnapshot(page, 'preview');
 
       assert.ok(source.intro && source.intro.length >= 40, `${slug}: fixture intro`);
@@ -199,7 +200,7 @@ describe('topic SOURCE→content parity gate (M19/M20)', () => {
 
   it('distributive-law SOURCE→content preserves H2 before worksheet CTA in bodyFlow', () => {
     const source = loadProductionFixture('distributive-law-grade-9');
-    const page = loadTopicPage('distributive-law-grade-9');
+    const page = restoreBeforePdfCopy('distributive-law-grade-9', loadTopicPage('distributive-law-grade-9'));
     const preview = contentToParitySnapshot(page, 'preview');
     assert.ok(source.bodyFlow && source.bodyFlow.length, 'fixture must include bodyFlow');
     const diffs = diffTopicParity(source, preview).filter((d) => d.field.startsWith('bodyFlow'));
@@ -216,7 +217,7 @@ describe('topic SOURCE→content parity gate (M19/M20)', () => {
     for (const slug of ['binomial-square-grade-9', 'difference-of-squares-grade-9'] as const) {
       assert.ok((TOPIC_PAGE_SLUGS as readonly string[]).includes(slug));
       const source = loadProductionFixture(slug);
-      const page = loadTopicPage(slug);
+      const page = restoreBeforePdfCopy(slug, loadTopicPage(slug));
       assert.equal(source.sections.length, 1);
       assert.ok(hasParagraphSelfCheck(source));
       assert.ok(!source.sections.some((s) => hasSelfCheckHeading(s.heading)));
@@ -256,7 +257,7 @@ describe('topic SOURCE→content parity gate (M19/M20)', () => {
   it('same-origin worksheet CTAs use production github topic ids (all CTAs, DOM order)', () => {
     for (const slug of migratedSlugs) {
       const source = loadProductionFixture(slug);
-      const page = loadTopicPage(slug);
+      const page = restoreBeforePdfCopy(slug, loadTopicPage(slug));
       const srcCtas =
         (source as { catalogCtas?: { href: string; label: string }[] }).catalogCtas?.length
           ? (source as { catalogCtas: { href: string; label: string }[] }).catalogCtas
@@ -276,7 +277,7 @@ describe('topic SOURCE→content parity gate (M19/M20)', () => {
   it('FAQ parity is semantic Q&A (not markup-dependent on summary/details)', () => {
     for (const slug of migratedSlugs) {
       const source = loadProductionFixture(slug);
-      const page = loadTopicPage(slug);
+      const page = restoreBeforePdfCopy(slug, loadTopicPage(slug));
       const srcFaq = source.faqGroups.flatMap((g) => g.items);
       const pageFaq = page.faqGroups.flatMap((g) => g.items);
       for (const item of srcFaq) {
@@ -327,7 +328,7 @@ describe('triangle-area-grade-7 LD FAQ visibility correction (M30)', () => {
     assert.deepEqual([...TOPIC_PAGE_M20_UNMIGRATED], []);
     assert.ok((TOPIC_PAGE_SLUGS as readonly string[]).includes('triangle-area-grade-7'));
     const source = loadProductionFixture('triangle-area-grade-7');
-    const page = loadTopicPage('triangle-area-grade-7');
+    const page = restoreBeforePdfCopy('triangle-area-grade-7', loadTopicPage('triangle-area-grade-7'));
     const preview = contentToParitySnapshot(page, 'preview');
     // Production fixture FAQ was synced to LD for SOURCE→content; LD still authoritative
     assert.equal(source.jsonLd.faq.length, 3);
@@ -386,7 +387,7 @@ describe('M22 + M30 AA preH1 CTA + regressions', () => {
 
   it('distributive-law still H2-before-CTA after M22 (regression)', () => {
     const source = loadProductionFixture('distributive-law-grade-9');
-    const page = loadTopicPage('distributive-law-grade-9');
+    const page = restoreBeforePdfCopy('distributive-law-grade-9', loadTopicPage('distributive-law-grade-9'));
     const diffs = diffTopicParity(source, contentToParitySnapshot(page, 'preview')).filter((d) =>
       d.field.startsWith('bodyFlow')
     );
@@ -425,7 +426,7 @@ describe('M30 closes remaining topic-SEO gaps', () => {
     for (const slug of TOPIC_PAGE_M30_SLUGS) {
       assert.ok((TOPIC_PAGE_SLUGS as readonly string[]).includes(slug));
       const source = loadProductionFixture(slug);
-      const page = loadTopicPage(slug);
+      const page = restoreBeforePdfCopy(slug, loadTopicPage(slug));
       const diffs = diffTopicParity(source, contentToParitySnapshot(page, 'preview')).filter(
         (d) => d.field !== 'images'
       );

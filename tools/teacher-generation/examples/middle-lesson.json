@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "gradeNumber": 7,
+  "topicId": "g7:equations",
+  "level": "b",
+  "lessonGoal": "practice",
+  "lastLesson": "משוואות ממעלה ראשונה והצבה",
+  "alreadyLearned": [
+    "פעולות במספרים מכוונים",
+    "משתנים",
+    "משוואות"
+  ],
+  "minutes": 45,
+  "questionCount": 20,
+  "explicitShortSheet": false
+}

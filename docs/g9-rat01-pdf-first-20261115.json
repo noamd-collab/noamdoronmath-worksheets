@@ -1,0 +1,131 @@
+{
+  "schema": "noam-base-pdf-publication/v1",
+  "status": "review_candidate_not_published",
+  "grade": 9,
+  "topicId": 47,
+  "title": "משוואות רציונליות",
+  "scope": "תחום הצבה וקבילות פתרונות, עם פירוק מכנים ופתרון משוואות; תרגול ממוקד בתוך היחידה.",
+  "publicationMode": "pdf-only",
+  "sourcePackage": "G9-T93",
+  "sourceSheetId": "G9-RAT-01",
+  "sourceProvenanceOnly": true,
+  "landing": "/rational-equations-grade-9",
+  "levels": [
+    {
+      "level": "a",
+      "label": "רמה א׳",
+      "pdfId": "04786c9d5ed04b30a67480e192b4706f",
+      "pdfSha256": "22c5f23a7d488553c565abcca3bbd45f6946341c574b242ee7c34d016f2aad17",
+      "pages": 5,
+      "questions": 6,
+      "subitems": 18,
+      "sourceSha256": "362f4451cd67066438e1efd56316a051f2a8854dd528e517449e7ee6f4ac7d48",
+      "nativeExportSha256": "0708e5dfde21c2d43d898d08316d01406f502a0153872c0f7370120e34b3980e",
+      "downloadChecks": [
+        {
+          "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_04786c9d5ed04b30a67480e192b4706f.pdf",
+          "bytes": 38100,
+          "sha256": "22c5f23a7d488553c565abcca3bbd45f6946341c574b242ee7c34d016f2aad17"
+        },
+        {
+          "url": "https://static.wixstatic.com/ugd/d8e7ad_04786c9d5ed04b30a67480e192b4706f.pdf",
+          "bytes": 38100,
+          "sha256": "22c5f23a7d488553c565abcca3bbd45f6946341c574b242ee7c34d016f2aad17"
+        },
+        {
+          "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_04786c9d5ed04b30a67480e192b4706f.pdf",
+          "bytes": 38100,
+          "sha256": "22c5f23a7d488553c565abcca3bbd45f6946341c574b242ee7c34d016f2aad17"
+        }
+      ]
+    },
+    {
+      "level": "b",
+      "label": "רמה ב׳",
+      "pdfId": "54ed203698a141cda131ccf08f274a2c",
+      "pdfSha256": "0a138b72719a224de906c8cf39efa55c5e8c65eb7f6af035f1d41a42262cb4c0",
+      "pages": 5,
+      "questions": 6,
+      "subitems": 18,
+      "sourceSha256": "33c4a40e5a3093fabdfd60feebc440457427bb6d3dafcfed4c5363ff44263b8f",
+      "nativeExportSha256": "c1e014273dbdd57e72effb789ba7a28daad7603137787313c527b32b47b5f871",
+      "downloadChecks": [
+        {
+          "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_54ed203698a141cda131ccf08f274a2c.pdf",
+          "bytes": 37379,
+          "sha256": "0a138b72719a224de906c8cf39efa55c5e8c65eb7f6af035f1d41a42262cb4c0"
+        },
+        {
+          "url": "https://static.wixstatic.com/ugd/d8e7ad_54ed203698a141cda131ccf08f274a2c.pdf",
+          "bytes": 37379,
+          "sha256": "0a138b72719a224de906c8cf39efa55c5e8c65eb7f6af035f1d41a42262cb4c0"
+        },
+        {
+          "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_54ed203698a141cda131ccf08f274a2c.pdf",
+          "bytes": 37379,
+          "sha256": "0a138b72719a224de906c8cf39efa55c5e8c65eb7f6af035f1d41a42262cb4c0"
+        }
+      ]
+    },
+    {
+      "level": "c",
+      "label": "מצוינות",
+      "pdfId": "1bbc10333cf74e6fa251ed34575e6320",
+      "pdfSha256": "44a418b5429f9d7a462c8b38ae9abdf80b6c160efeb8c93e16b08f8ed0c47135",
+      "pages": 5,
+      "questions": 6,
+      "subitems": 18,
+      "sourceSha256": "ec2f152ced28efc3ac986b91f41c8b7fc8d68e14dc362ac345f4eedabdf5e388",
+      "nativeExportSha256": "1e6e7314c5d9819b65ae791cd203511e2b4424cefdca8880a962e71d40656e64",
+      "downloadChecks": [
+        {
+          "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_1bbc10333cf74e6fa251ed34575e6320.pdf",
+          "bytes": 39238,
+          "sha256": "44a418b5429f9d7a462c8b38ae9abdf80b6c160efeb8c93e16b08f8ed0c47135"
+        },
+        {
+          "url": "https://static.wixstatic.com/ugd/d8e7ad_1bbc10333cf74e6fa251ed34575e6320.pdf",
+          "bytes": 39238,
+          "sha256": "44a418b5429f9d7a462c8b38ae9abdf80b6c160efeb8c93e16b08f8ed0c47135"
+        },
+        {
+          "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_1bbc10333cf74e6fa251ed34575e6320.pdf",
+          "bytes": 39238,
+          "sha256": "44a418b5429f9d7a462c8b38ae9abdf80b6c160efeb8c93e16b08f8ed0c47135"
+        }
+      ]
+    }
+  ],
+  "review": {
+    "studentPdfMath": "54 domains and 45 equations independently derived; no mismatches",
+    "visual": "15 pages reviewed; all 15 QA images match fresh final-PDF renders",
+    "independentReviewSha256": "5f52766c54043991de9a049713b3698508c0c30ab2ce9c0b1fff5720ee493b18",
+    "independentMathSha256": "42f95454f6f4191e6653e47e43e609e6e447c2e01588408e413a17942293bd2d",
+    "mediaReadbackSha256": "00c6d2666251eb6a374baf8435744a2f354ee7eeec2216953a30527083d53276",
+    "producerReceiptSha256": "3aaac5f33e4ee30eeda712d08b5b29d02c07f515ab930c37c5a1560570f22e77",
+    "rawGateResult": "REVIEW",
+    "G94": "b/page4 and c/page4 reviewed; preserve the three-part final question and writing room. Raw gate unchanged.",
+    "wholePackagePass": false
+  },
+  "notActivated": [
+    "Ramzi or question-level hints",
+    "native viewer/question manifest",
+    "teacher question bank",
+    "learning/progress identities",
+    "Word",
+    "Supabase"
+  ],
+  "legacyPreserved": [
+    "all previous topic IDs and PDFs",
+    "topic 3 / G9-T04 algebraic-fractions-grade-9",
+    "topic 6 / G9-T31 quadratic-equations-grade-9"
+  ],
+  "officialSource": {
+    "file": "prisa_9A.pdf",
+    "sha256": "a6832b146c58323bcb427a483235a1af4e6dadf75e1dd5b70cf90f4415c33690",
+    "page": 5,
+    "heading": "משוואות רציונליות",
+    "unitHours": 8,
+    "completeUnitReplacement": false
+  }
+}

@@ -8,8 +8,7 @@ import type { APIRoute } from 'astro';
 import { monitoring } from '@wix/essentials';
 import { NOAM_RECAPTCHA_SECRET_KEY, NOAM_RECAPTCHA_V2_SITE_KEY, NOAM_RECAPTCHA_V2_SECRET_KEY, QWEN_API_KEY, QWEN_BASE_URL, QWEN_MODEL } from 'astro:env/server';
 import catalog from '../../data/catalog.v1.json';
-import guide from '../../data/site-guide.v1.json';
-import teacherIndex from '../../data/teacher-pick-index.json';
+import { loadCompanionWorkerData } from '../../lib/companionWorkerData';
 import {
   NOAM_RECAPTCHA_SECRET_NAME,
   NOAM_RECAPTCHA_V2_SITE_KEY_NAME,
@@ -26,6 +25,8 @@ import { secretFromEnv } from '../../lib/noamSecrets';
 import { runtimeProcessEnv } from '../../lib/runtimeEnv';
 import { createWixRateBackend } from '../../lib/noamRateStore';
 import { createWixCaptchaUseStore } from '../../lib/noamCaptchaUses';
+import { requireGoogleTeacher, teacherAccessFailure, TEACHER_PRIVATE_HEADERS } from '../../lib/teacherAccess';
+import { isTeacherToolRequest } from '../../lib/teacherRequest';
 
 export const prerender = false;
 
@@ -84,21 +85,32 @@ function requestHostOf(request: Request): string {
 
 async function respond(context: Parameters<APIRoute>[0]): Promise<Response> {
   const requestHost = requestHostOf(context.request);
+  let payload: unknown;
+  if (context.request.method === 'POST') {
+    try { payload = await context.request.json(); } catch { payload = {}; }
+  }
+  const teacherRequest = isTeacherToolRequest(payload);
+  if (teacherRequest) {
+    const access = await requireGoogleTeacher(context.request);
+    if (!access.ok) return teacherAccessFailure(access);
+  }
   const result = await handleNoamSiteCompanion(context.request, {
     ...keys(),
     origin: context.request.headers.get('origin') || '',
     requestHost,
     clientIp: clientIpOf(context),
     catalog,
-    guide,
-    teacherIndex,
+    loadStaticData: loadCompanionWorkerData,
+    payload,
     fetch: globalThis.fetch.bind(globalThis),
     recaptchaBypass: recaptchaBypassFromEnv(runtimeProcessEnv(), requestHost),
     rateBackend: sharedRate,
     captchaUses,
     log: logCompanionDiagnostic,
   });
-  return send(result);
+  const response = send(result);
+  if (teacherRequest) for (const [name, value] of Object.entries(TEACHER_PRIVATE_HEADERS)) response.headers.set(name, value);
+  return response;
 }
 
 export const POST: APIRoute = (context) => respond(context);

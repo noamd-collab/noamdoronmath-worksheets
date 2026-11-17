@@ -32,6 +32,12 @@ const NON_LANDING_PAGES = new Set([
   '404.astro',
   'worksheets.astro',
   'search.astro',
+  // Approved static teacher entries: public Coming Soon, private catalog picker,
+  // and Google sign-in. Topic/grade/marketing animation coverage is unchanged.
+  'teachers.astro',
+  'teachers/start.astro',
+  'teachers/login.astro',
+  'teachers/generate.astro', // Authenticated owner form; not a topic landing.
   'hero-loops/[variant].astro',
   'blog/index.astro',
   'blog/categories/[slug].astro',

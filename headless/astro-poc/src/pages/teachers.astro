@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import TeacherComingSoon from '../components/TeacherComingSoon.astro';
+import {
+  TEACHER_LANDING_TITLE,
+  TEACHER_LANDING_DESCRIPTION,
+  legacyTeacherToolRedirect,
+} from '../lib/teacherLandingContent';
+
+export const prerender = false;
+
+// Existing /teachers?grade=... links remain direct entries to the wizard.
+// Keep the full query, including pick/minutes, rather than rebuilding a subset.
+const legacyTarget = legacyTeacherToolRedirect(Astro.url);
+if (legacyTarget) {
+  // A returned Response does not inherit Astro.response headers.
+  return new Response(null, {
+    status: 307,
+    headers: { location: legacyTarget, 'cache-control': 'no-store' },
+  });
+}
+---
+<BaseLayout
+  title={TEACHER_LANDING_TITLE}
+  description={TEACHER_LANDING_DESCRIPTION}
+  activeNav="teachers"
+  skipHref="#teacher-start"
+>
+  <TeacherComingSoon />
+</BaseLayout>

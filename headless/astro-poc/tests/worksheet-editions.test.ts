@@ -1,9 +1,11 @@
+import { readFirst567Activation } from './helpers/first567Activation';
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { mkdirSync, readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { runInNewContext } from 'node:vm';
 import { build } from 'esbuild';
+import { parseHTML } from 'linkedom';
 import puppeteer from 'puppeteer-core';
 import { resolveTestBrowser } from './helpers/chromium';
 import type { CatalogTopic, CatalogV1 } from '../src/lib/catalog/types';
@@ -11,14 +13,16 @@ import { resolveEdition, topicEditions } from '../src/lib/catalog/editions';
 import { buildWorksheetHref } from '../src/lib/worksheetLinks';
 import { buildIndex } from '../src/lib/siteSearch/buildIndex';
 import { prepareIndex, search } from '../src/lib/siteSearch/engine';
-import { editionFixture } from './fixtures/worksheet-editions';
+import { editionFixture, middleEditionFixture } from './fixtures/worksheet-editions';
 import { mergeWorksheetEditions, worksheetLearningId } from '../../../scripts/lib/worksheet-editions.cjs';
 
 const require = createRequire(import.meta.url);
+const activation = readFirst567Activation();
 const committed = JSON.parse(readFileSync(new URL('../src/data/catalog.v1.json', import.meta.url), 'utf8')) as CatalogV1;
+const { ramziActivation: _activationSummary, ...committedWithoutActivation } = committed;
 // Synthetic registries start from legacy fields, regardless of which real
 // editions are currently published. Do not use the merger itself as this oracle.
-const base: CatalogV1 = { ...committed, grades: committed.grades.map(g => ({
+const base: CatalogV1 = { ...committedWithoutActivation, grades: committed.grades.map(g => ({
   ...g, topics: g.topics.map(t => {
     const { editions, defaultEditionId, ...legacy } = t;
     return legacy;
@@ -31,7 +35,7 @@ const registry = () => editionFixture();
 test('empty registry preserves all 169 elementary topics and 507 legacy links byte-for-byte', () => {
   const actual = JSON.parse(readFileSync(new URL('../../catalog/worksheet-editions.v1.json', import.meta.url), 'utf8'));
   const merged = mergeWorksheetEditions(base, { version: 1, editions: [] });
-  const production = mergeWorksheetEditions(base, actual);
+  const production = mergeWorksheetEditions(base, actual, activation.ready);
   assert.deepEqual(production, committed, 'the committed snapshot must include the actual registry');
   for (const g of base.grades) for (const t of g.topics) assert.deepEqual(topic(production, g.grade, t.id).levels, t.levels);
   assert.equal(JSON.stringify(merged), JSON.stringify(base));
@@ -138,6 +142,49 @@ test('new and previous elementary editions open their own PDF without AI or data
   assert.throws(() => buildWorksheetHref({ catalog: merged, grade: 1, topic: t, levelKey: 'a', editionId: 'missing' }), /Unavailable/);
 });
 
+test('middle-school native identities remain separate from topic IDs and preserve every existing edition', () => {
+  const actual = JSON.parse(readFileSync(new URL('../../catalog/worksheet-editions.v1.json', import.meta.url), 'utf8'));
+  const middle = middleEditionFixture();
+  const merged = mergeWorksheetEditions(committed, { version: 1, editions: [...actual.editions, ...middle.editions] }, activation.ready);
+  assert.deepEqual(elementary(merged), elementary(committed));
+  for (const g of committed.grades) for (const t of g.topics) {
+    assert.deepEqual(topic(merged, g.grade, t.id).levels, t.levels);
+    assert.deepEqual(topic(merged, g.grade, t.id).routing, t.routing);
+  }
+  for (const row of middle.editions) {
+    const t = topic(merged, row.grade, row.topicId);
+    assert.equal(resolveEdition(t).editionId, 'legacy');
+    const edition = resolveEdition(t, row.editionId);
+    assert.equal(edition.routing.resolvedNoamPrefix, row.nativePrefix);
+    assert.equal(edition.routing.usesViewer, false);
+    assert.equal(edition.routing.aiHintShown, false);
+    for (const level of edition.levels) {
+      assert.equal(buildWorksheetHref({ catalog: merged, grade: row.grade, topic: t, levelKey: level.key, editionId: row.editionId }),
+        base.config.pdfBase + level.pdfId + '.pdf');
+    }
+  }
+  assert.deepEqual(mergeWorksheetEditions(merged, actual, activation.ready), committed, 'withdrawing only the middle editions restores the prior catalog');
+  middle.editions.forEach(row => { row.status = 'reviewed'; });
+  assert.deepEqual(mergeWorksheetEditions(committed, { version: 1, editions: [...actual.editions, ...middle.editions] }, activation.ready), committed);
+});
+
+test('middle-school rows reject missing or cross-grade native provenance before publication', () => {
+  for (const prefix of [undefined, '', 'G8-T86', 'G7-T86\n', 'G7-T86/../../', 'G7-T8']) {
+    const rows = middleEditionFixture();
+    (rows.editions[0] as any).nativePrefix = prefix;
+    rows.editions[0].status = 'draft';
+    assert.throws(() => mergeWorksheetEditions(base, rows), /nativePrefix/);
+  }
+  for (const hash of [undefined, '', 'a'.repeat(63), 'a'.repeat(64) + '\n']) {
+    const rows = middleEditionFixture();
+    (rows.editions[0].levels[0] as any).nativeExportSha256 = hash;
+    assert.throws(() => mergeWorksheetEditions(base, rows), /nativeExportSha256/);
+  }
+  const rows = registry();
+  (rows.editions[0] as any).nativePrefix = 'G7-T86';
+  assert.throws(() => mergeWorksheetEditions(base, rows), /nativePrefix/);
+});
+
 test('the dormant viewer level switch preserves an explicit edition URL and its sibling set', () => {
   const html = readFileSync(new URL('../public/worksheet-viewer-noam.html', import.meta.url), 'utf8');
   const begin = html.indexOf('function buildLevelHref('); const end = html.indexOf('function renderLevelSwitch(', begin);
@@ -191,6 +238,34 @@ test('catalog UI renders new and previous links, and no technical metadata or un
   const grade2 = render(merged, 2);
   assert.ok(!grade2.includes('worksheet-editions'));
   for (const level of registry().editions[1].levels) assert.ok(!grade2.includes(level.pdfId));
+});
+
+test('catalog AI badge names only the selected edition and PDF-only additions state their print action', async () => {
+  const render = await renderer();
+  const card = (catalog: CatalogV1) => parseHTML(render(catalog, 7)).document.querySelector('[data-topic-id="17"]')!;
+  const current = card(committed);
+  assert.equal(current.querySelector('.aihint')?.textContent, activation.ready ? '✦ רמזי AI' : '✦ רמזי AI בדפים קודמים');
+  const addition = current.querySelector('.worksheet-editions details')!;
+  assert.equal(addition.querySelector('.note')?.textContent, activation.ready ? 'קובצי PDF להדפסה · רמזים בשלוש דרגות' : 'קובצי PDF להדפסה');
+  assert.equal(addition.querySelector('.aihint'), null);
+  assert.equal(addition.querySelectorAll('a.lvl--pdf').length, activation.ready ? 0 : 3);
+  if (activation.ready) for (const link of addition.querySelectorAll('a.lvl')) {
+    assert.match(link.getAttribute('href') || '', /edition=ms-20261113-trn-r1/);
+  }
+  assert.equal(card(base).querySelector('.aihint')?.textContent, '✦ רמזי AI זמין בדף הזה');
+
+  // An unready PDF-only set still must not inherit legacy AI badges.
+  const pdfDefault = mergeWorksheetEditions(committed, JSON.parse(readFileSync(new URL('../../catalog/worksheet-editions.v1.json', import.meta.url), 'utf8')));
+  const pdfTopic = topic(pdfDefault, 7, 17);
+  pdfTopic.defaultEditionId = pdfTopic.editions!.find(e => e.publicationMode === 'pdf-only')!.editionId;
+  assert.equal(card(pdfDefault).querySelector('.aihint'), null, 'legacy AI must not label a selected PDF-only set');
+  assert.equal(card(pdfDefault).querySelector('.worksheet-editions > .note')?.textContent, 'קובצי PDF להדפסה');
+
+  const other = mergeWorksheetEditions(base, middleEditionFixture());
+  const otherTopic = topic(other, 7, 17), selected = otherTopic.editions![0];
+  otherTopic.defaultEditionId = selected.editionId;
+  selected.routing.aiHintShown = true; // Synthetic future edition to check badge scoping, not a publication.
+  assert.equal(card(other).querySelector('.aihint')?.textContent, `✦ רמזי AI · ${selected.label}`);
 });
 
 test('desktop and phone let pupils expand previous worksheets without overflow or mixing links', async () => {

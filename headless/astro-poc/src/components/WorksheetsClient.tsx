@@ -16,7 +16,7 @@ import { searchHref } from '../lib/siteSearch/url';
 import { countRenderedTopicCards } from '../lib/catalog/renderedCards';
 import { buildWorksheetHref } from '../lib/worksheetLinks';
 import { isDirectWorksheetPdf, worksheetActionLabel } from '../lib/worksheetActions';
-import { resolveEdition, topicEditions } from '../lib/catalog/editions';
+import { resolveEdition, topicEditions, worksheetEditionNote, worksheetTopicHintLabel } from '../lib/catalog/editions';
 import {
   buildWorksheetsHref,
   parseWorksheetsUrlState,
@@ -349,10 +349,12 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
     const selected = resolveEdition(topic);
     return <div className="worksheet-editions">
       <strong className="worksheet-edition-label">{selected.label}</strong>
+      {worksheetEditionNote(selected) && <p className="note">{worksheetEditionNote(selected)}</p>}
       <div className="worksheet-links">{renderLevelButtons(topic, gNum, selected.editionId)}</div>
       {editions.filter(e => e.editionId !== selected.editionId).map(edition => (
         <details className="more-worksheets" key={edition.editionId}>
           <summary>{edition.label}</summary>
+          {worksheetEditionNote(edition) && <p className="note">{worksheetEditionNote(edition)}</p>}
           <div className="worksheet-links">{renderLevelButtons(topic, gNum, edition.editionId)}</div>
         </details>
       ))}
@@ -377,8 +379,8 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
         </div>
         {topic.description ? <p className="exact-card-description">{topic.description}</p> : null}
         {topic.note ? <p className="note">{topic.note}</p> : null}
-        {topic.routing.aiHintShown ? (
-          <span className="aihint">✦ רמזי AI זמין בדף הזה</span>
+        {worksheetTopicHintLabel(topic) ? (
+          <span className="aihint">{worksheetTopicHintLabel(topic)}</span>
         ) : null}
         <div className={`levels${children.length ? ' levels--bundle' : ''}`}>
           {children.length ? (

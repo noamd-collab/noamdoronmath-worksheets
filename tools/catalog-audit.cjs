@@ -27,6 +27,8 @@ const crypto = require('node:crypto');
 const { loadIndexCatalog, buildCatalog, validateCatalog, stableStringify, resolvedNoamPrefix } = require('../scripts/lib/headless-catalog.cjs');
 
 const { mergeWorksheetEditions } = require('../scripts/lib/worksheet-editions.cjs');
+const { isPdfOnlyTopic } = require('../scripts/lib/base-worksheet-publication.mjs');
+const { loadRamziActivationEvidence, validateRamziActivation } = require('../scripts/lib/worksheet-ramzi-activation.cjs');
 
 const SEVERITIES = ['error', 'warning', 'review', 'info'];
 const PDF_ID = /^[0-9a-f]{32}$/;
@@ -36,6 +38,7 @@ const HEB_GRADE = { 1: 'א', 2: 'ב', 3: 'ג', 4: 'ד', 5: 'ה', 6: 'ו', 7: 'ז
 const P = {
   index: 'index.html',
   editions: 'headless/catalog/worksheet-editions.v1.json',
+  activation: 'headless/catalog/worksheet-ramzi-ready.v1.json',
   legacyIndex: 'headless/astro-poc/public/legacy-github/index.html',
   export: 'headless/catalog/catalog.v1.json',
   snapshot: 'headless/astro-poc/src/data/catalog.v1.json',
@@ -364,8 +367,8 @@ function checkTitles(au, topicsByGrade) {
 }
 
 /** Generated copies must equal what their generators would write from index.html today. */
-function checkGenerated(au, raw, rawLegacy, registry) {
-  const built = mergeWorksheetEditions(buildCatalog(raw), registry);
+function checkGenerated(au, raw, rawLegacy, registry, activationEvidence) {
+  const built = mergeWorksheetEditions(buildCatalog(raw), registry, activationEvidence?.ready);
   const v = validateCatalog(built, raw);
   for (const e of v.errors) au.find('error', 'EXPORT_VALIDATION', { source: P.index, evidence: 'scripts/lib/headless-catalog.cjs validateCatalog' }, e);
   for (const w of v.warnings) au.find('warning', 'EXPORT_VALIDATION', { source: P.index, evidence: 'scripts/lib/headless-catalog.cjs validateCatalog' }, w);
@@ -409,7 +412,7 @@ function checkGenerated(au, raw, rawLegacy, registry) {
   }
 
   // learning catalog (built by scripts/build-learning-catalog.cjs)
-  const { items, learningText, seedText } = learningOutputs(raw, registry);
+  const { items, learningText, seedText } = learningOutputs(raw, registry, activationEvidence);
   for (const rel of [P.learning, P.learningPublic]) {
     const text = readText(au.root, rel);
     if (text != null && text !== learningText) au.find('error', 'LEARNING_CATALOG_STALE', { source: rel, evidence: describeLearningDiff(text, items) }, `${rel} is not what build-learning-catalog.cjs writes from index.html`);
@@ -420,10 +423,12 @@ function checkGenerated(au, raw, rawLegacy, registry) {
 }
 
 /** What scripts/build-learning-catalog.cjs writes for this index.html (same algorithm, in memory). */
-function learningOutputs(raw, registry) {
+function learningOutputs(raw, registry, activationEvidence) {
+  validateRamziActivation(registry, activationEvidence);
   const items = [];
   for (const [g, data] of Object.entries(raw.DATA)) {
     for (const t of data.topics) {
+      if (isPdfOnlyTopic(t)) continue;
       const row = data.links[t.id] || {};
       for (const l of ['a', 'b', 'c', 'c2', 'one']) {
         if (!row[l]) continue;
@@ -447,7 +452,7 @@ function learningOutputs(raw, registry) {
   // deliberately invalid legacy DATA (checkIndexData reports duplicate IDs).
   // Do not call the writer, which rejects such fixtures before the audit can
   // name the actual defect. Registry identity validation remains strict.
-  const catalog = mergeWorksheetEditions(buildCatalog(raw), registry);
+  const catalog = mergeWorksheetEditions(buildCatalog(raw), registry, activationEvidence?.ready);
   for (const grade of catalog.grades) for (const topic of grade.topics) {
     for (const edition of topic.editions || []) for (const level of edition.levels) {
       if (!edition.routing.usesViewer) continue;
@@ -533,6 +538,8 @@ function checkManifests(au, raw, pdfOwners) {
   for (const [id, owners] of [...pdfOwners.entries()].sort((a, b) => cmp(a[0], b[0]))) {
     for (const o of owners) {
       if (!middle.has(o.grade)) continue; // elementary sheets open as plain PDFs; no viewer manifest
+      const topic = raw.DATA[o.grade]?.topics?.find((item) => item.id === o.topicId);
+      if (isPdfOnlyTopic(topic)) continue; // explicitly validated first PDF publication, not viewer-ready
       const m = manifests.get(id);
       const src = `${P.manifests}/${id}.json`;
       if (!m) {
@@ -540,7 +547,6 @@ function checkManifests(au, raw, pdfOwners) {
         continue;
       }
       matched++;
-      const topic = raw.DATA[o.grade]?.topics?.find((item) => item.id === o.topicId);
       const row = raw.DATA[o.grade]?.links?.[o.topicId] || {};
       const sourceGrade = row.sourceGrade || o.grade;
       const prefix = row.sourcePrefix || (topic && resolvedNoamPrefix(topic, o.grade, raw.NOAM_PREFIX_FALLBACK));
@@ -860,12 +866,18 @@ async function runAudit(options = {}) {
 
   const raw = loadIndexCatalog(path.join(au.root, P.index));
   if (!au.input(P.editions, true)) return finish(au);
-  let registry;
+  let registry, activationEvidence, validationStage = 'registry';
   try {
     registry = readJson(au.root, P.editions);
-    mergeWorksheetEditions(buildCatalog(raw), registry);
+    validationStage = 'activation';
+    activationEvidence = loadRamziActivationEvidence(path.join(au.root, 'headless/catalog'), path.join(au.root, 'headless/astro-poc/public'));
+    validateRamziActivation(registry, activationEvidence);
+    if (activationEvidence) au.input(P.activation, true);
+    validationStage = 'registry';
+    mergeWorksheetEditions(buildCatalog(raw), registry, activationEvidence?.ready);
   } catch (error) {
-    au.find('error', 'EDITIONS_INVALID', { source: P.editions }, String(error.message));
+    au.find('error', validationStage === 'activation' ? 'RAMZI_ACTIVATION_INVALID' : 'EDITIONS_INVALID',
+      { source: validationStage === 'activation' ? P.activation : P.editions }, String(error.message));
     return finish(au);
   }
   let rawLegacy = null;
@@ -878,7 +890,7 @@ async function runAudit(options = {}) {
   }
   const { topicsByGrade, pdfOwners } = checkIndexData(au, raw);
   checkTitles(au, topicsByGrade);
-  checkGenerated(au, raw, rawLegacy, registry);
+  checkGenerated(au, raw, rawLegacy, registry, activationEvidence);
   checkMiddleFixture(au, raw);
   checkManifests(au, raw, pdfOwners);
   checkPages(au, raw, topicsByGrade);

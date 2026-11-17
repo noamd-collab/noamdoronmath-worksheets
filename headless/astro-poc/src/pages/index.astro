@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import HeroLoop from '../components/HeroLoop.astro';
 import ExactHeroControls from '../components/ExactHeroControls.astro';
 import GamePromoCard from '../components/GamePromoCard.astro';
+import KislevGreeting from '../components/KislevGreeting.astro';
 import { HERO_DEFAULT, heroChip, heroPanel } from '../lib/heroRotation';
 import { homePageJsonLd, loadHomePage } from '../lib/homePage';
 import { organizationJsonLd } from '../lib/structuredData';
@@ -16,6 +17,7 @@ const midGrades = home.grades.slice(6).map((grade,i)=>({...grade,l:letters[i+6],
 <BaseLayout title={home.title} description={home.description} crumbs={[{ name: 'בית', path: '/' }]} activeNav="home" skipHref="#home-main">
   {homeJsonLd.map(block=>(<script type="application/ld+json" set:html={JSON.stringify(block)} />))}
     <main id="home-main" class="exact-home" data-family="home" data-home-page data-screen-label="בית">
+      <KislevGreeting />
 
       <!-- HERO -->
       <section class="exact-hero">
@@ -167,7 +169,7 @@ const midGrades = home.grades.slice(6).map((grade,i)=>({...grade,l:letters[i+6],
         </div>
       </section>
 
-      <!-- LEARNING + WHATSAPP -->
+      <!-- LEARNING -->
       <section style="max-width:1200px;margin:0 auto;padding:72px 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:28px;">
         <div style="position:relative;background:#fff;border:2px solid #22305a;border-radius:22px 8px 26px 10px / 10px 26px 8px 22px;padding:32px;overflow:hidden;">
           <div data-doodle="robot" dir="ltr" style="position:absolute;left:8px;bottom:-6px;width:150px;z-index:0;pointer-events:none;"><div style="position:relative;overflow:hidden;aspect-ratio:.75;pointer-events:auto;"><button type="button" class="exact-doodle-btn" aria-label="הנפשת השרבוט"><img src="/design-exact/assets/doodles/notebook-doodles-v1.webp" alt="" width="600" height="400" loading="lazy" decoding="async" style="width:200%;height:auto;max-width:none;display:block;margin-left:-100%;cursor:pointer;"></button><span aria-hidden="true" style="position:absolute;left:96px;top:20px;width:54px;height:44px;background:#fff;"></span></div><span data-plane="1" aria-hidden="true" style="position:absolute;left:95px;top:25px;width:49px;height:33px;overflow:hidden;pointer-events:none;"><img src="/design-exact/assets/doodles/notebook-doodles-v1.webp" alt="" width="600" height="400" loading="lazy" decoding="async" style="position:absolute;left:-245.1px;top:-25.4px;width:300px;height:200px;max-width:none;"></span></div>
@@ -177,19 +179,6 @@ const midGrades = home.grades.slice(6).map((grade,i)=>({...grade,l:letters[i+6],
             <a data-peek="learn" href={home.learning.learningHref} style="font-weight:700;color:#2a7c7a;text-decoration:underline;text-underline-offset:4px;" data-exact-hover="exact-hover-11">הלמידה שלי — מעקב עבודה אישי</a>
             <p style="margin:6px 0 0;color:#4a5478;font-size:16px;line-height:1.6;max-width:30ch;">אפשר לסמן התקדמות גם בלי להתחבר.<br>עם Google אפשר להמשיך גם ממכשיר אחר.</p>
           </div>
-        </div>
-        <div data-home-whatsapp-card style="position:relative;background:#eaf4f3;border:2px solid #22305a;border-radius:8px 22px 10px 26px / 26px 10px 22px 8px;padding:32px;display:grid;grid-template-columns:1fr auto;gap:20px;align-items:start;overflow:hidden;">
-          <div style="position:relative;z-index:1;">
-            <h2 style="font-family:'Secular One','Secular One Fallback',sans-serif;font-weight:400;font-size:34px;margin:0 0 10px;">נפגשים גם בוואטסאפ</h2>
-            <p style="margin:0 0 20px;color:#3d4870;font-size:16px;line-height:1.6;">הצטרפו לקבוצת הוואטסאפ של נועם דורון מתמטיקה, והישארו בקשר גם בין דפי העבודה.</p>
-            <a data-home-whatsapp data-home-whatsapp-cta data-peek="whatsapp" href={home.whatsapp.ctaHref} rel="noopener noreferrer" style="display:inline-block;padding:12px 22px;background:#2a7c7a;color:#fff;font-weight:700;border:2px solid #22305a;border-radius:18px 6px 20px 8px / 8px 20px 6px 18px;box-shadow:3px 3px 0 #22305a;" data-exact-hover="exact-hover-12">להצטרפות לקבוצת הוואטסאפ</a>
-            <p style="margin:16px 0 0;font-size:13px;color:#4a5478;">ההצטרפות לבחירתכם. כל דפי העבודה פתוחים גם בלי להצטרף.</p>
-          </div>
-          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
-            <img src="/design-exact/assets/whatsapp-group-qr.png" alt="קוד QR להזמנה לקבוצת הוואטסאפ של נועם דורון מתמטיקה" width="120" height="120" loading="lazy" decoding="async" style="width:120px;height:120px;background:#fff;border:2px solid #22305a;border-radius:10px;padding:6px;">
-            <em style="font-family:'Amatic SC','Amatic SC Fallback',cursive;font-style:normal;font-size:22px;">אפשר גם לסרוק ולהצטרף</em>
-          </div>
-          <div data-doodle="boat" style="position:absolute;left:4%;bottom:-24px;width:130px;opacity:.9;"><button type="button" class="exact-doodle-btn" aria-label="הנפשת השרבוט"><img src="/design-exact/assets/doodles/paper-boat.webp" alt="" width="400" height="400" loading="lazy" decoding="async" style="width:100%;height:auto;display:block;mix-blend-mode:multiply;cursor:pointer;"></button></div>
         </div>
       </section>
     </main>
@@ -214,10 +203,6 @@ const midGrades = home.grades.slice(6).map((grade,i)=>({...grade,l:letters[i+6],
       /* Keep the title's last word off the parked robot (it wraps instead). */
       [data-home-learning] {
         padding-inline-end: 46px;
-      }
-      /* Room under the small print for the boat sailing along the bottom edge. */
-      [data-home-whatsapp-card] {
-        padding-block-end: 96px !important; /* inline style: padding:32px */
       }
     }
     /*

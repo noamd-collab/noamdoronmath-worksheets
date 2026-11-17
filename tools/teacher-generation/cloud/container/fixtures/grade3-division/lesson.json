@@ -1,0 +1,32 @@
+{
+  "version": 2,
+  "level": "b",
+  "lessonGoal": "practice",
+  "minutes": 40,
+  "explicitShortSheet": false,
+  "gradeNumber": 3,
+  "topicId": "ג10",
+  "questionCount": 12,
+  "lastLesson": "תרגלנו עובדות כפל וחילוק במחלקים 2 עד 10, וחילוק ללא שארית עד 100.",
+  "alreadyLearned": [
+    "הקשר ההפוך בין כפל לחילוק",
+    "השלמת גורם חסר",
+    "בדיקת חילוק באמצעות כפל"
+  ],
+  "lessonBoundary": {
+    "version": 1,
+    "kind": "division_facts",
+    "allowedDivisors": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "maxDividend": 100
+  }
+}

@@ -15,7 +15,7 @@ import {
 } from '../public/teachers/teacher-page-sections.js';
 
 const read = (path: string) => readFileSync(new URL(path, import.meta.url), 'utf8');
-const html = read('../public/teachers/index.html');
+const html = read('../src/teacher-pages/wizard.html');
 const printer = read('../public/teachers/teacher-factoring-print.js');
 const sections = read('../public/teachers/teacher-page-sections.js');
 

@@ -36,6 +36,8 @@ export interface CatalogTopic {
   icon: string;
   parent?: number;
   noamTopicId?: string;
+  /** First publication: files only, before teacher questions or progress integration. */
+  publicationMode?: 'pdf-only';
   levels: CatalogLevel[];
   routing: CatalogRouting;
   /** Published additions only; levels/routing above keep their legacy meaning. */
@@ -43,13 +45,43 @@ export interface CatalogTopic {
   defaultEditionId?: string;
 }
 
-export interface CatalogEdition {
+/** PDF-only provenance names existing files, not future measured/hint artifacts. */
+export interface CatalogRamziReadiness {
+  status: 'ready';
+  manifestSha256: string;
+  nativeExportSha256: string;
+  sourceNativeExportSha256: string;
+  canonicalSourceSha256: string;
+  itemCount: number;
+  hintCount: number;
+  payloadSha256: string;
+  verifiedDbReadbackReceiptSha256: string;
+}
+
+export interface CatalogPdfOnlyLevel extends CatalogLevel {
+  key: 'a' | 'b' | 'c';
+  viewerLevel: 'A' | 'B' | 'E';
+  worksheetId: string;
+  revision: number;
+  pdfSha256: string;
+  /** SHA-256 of the frozen worksheet source sheet.json bytes. */
+  sourceSha256: string;
+  nativeExportSha256: string;
+  /** Independently verified viewer readiness; it does not claim Word availability. */
+  ramzi?: CatalogRamziReadiness;
+}
+
+interface CatalogEditionBase {
   editionId: string;
   label: string;
   status: 'published';
-  levels: CatalogLevel[];
   routing: CatalogRouting;
 }
+
+export type CatalogEdition = CatalogEditionBase & (
+  | { publicationMode: 'pdf-only'; levels: CatalogPdfOnlyLevel[] }
+  | { publicationMode?: never; levels: CatalogLevel[] }
+);
 
 export interface CatalogGroup {
   key: string;
@@ -66,6 +98,10 @@ export interface CatalogGrade {
 }
 
 export interface CatalogV1 {
+  /** Build-verified, public-only activation proof summary; revalidated against registry at load. */
+  ramziActivation?: unknown;
+  /** Optional applied correction evidence; the original activation remains historical and immutable. */
+  ramziHintCorrection?: unknown;
   contractVersion: number;
   sourceOfTruth: { path: string; authoritative: boolean; note?: string };
   config: {

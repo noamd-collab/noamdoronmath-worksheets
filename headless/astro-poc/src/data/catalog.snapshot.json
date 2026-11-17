@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-11-09T16:17:55.630Z",
+  "generatedAt": "2026-11-16T21:36:57.662Z",
   "sourcePath": "headless/catalog/catalog.v1.json",
-  "sourceSha256": "acf687358dbf41f8b012117bb4f05fab92d3ad0a3c0c6ddb4078b4c0837dbfc7",
-  "bytes": 434509,
+  "sourceSha256": "1325042ee886bae39b8b17e8c69cb582d70898daa69844c66dc0c8096c697b94",
+  "bytes": 559104,
   "note": "Deterministic snapshot copied from authoritative generated catalog. Do not hand-edit. Refresh via npm run refresh:catalog."
 }

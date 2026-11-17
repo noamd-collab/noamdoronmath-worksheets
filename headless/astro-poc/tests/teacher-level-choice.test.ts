@@ -175,7 +175,7 @@ test('undo after narrowing a level cannot restore hidden questions or alter save
 });
 
 function wizardView() {
-  const { document } = parseHTML(read('../public/teachers/index.html'));
+  const { document } = parseHTML(read('../src/teacher-pages/wizard.html'));
   const state = {wizard:'setup',level:'b',selected:[] as string[],blocks:[] as {keys:string[]}[]};
   return new Function('document','state','groupWholeQuestions',`
     const topicSearch = null;

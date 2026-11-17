@@ -1,0 +1,78 @@
+{
+  "schema": "noam-activation-exact-reviewed-code-delta/v1",
+  "baselineCommit": "cfe85a520af1e1a0a06526438dbd33c134cc21b1",
+  "scope": "Explicit edition progress lookup, cache tags, and Root-reviewed glossary cache tag only; authentication and rendering logic unchanged.",
+  "files": [
+    {
+      "file": "src/lib/catalog/loadCatalog.ts",
+      "baselineSha256": "4c05a7c373e7bef46f47d8a5dd74a152eab160de7d46957dcb377ebeb2fdb786",
+      "candidateSha256": "d7879ca5f16c22cf1dc9a229a086c363eabc745cfe7708badb284fe7d42bb64c",
+      "hunks": [
+        {
+          "before": "import editionRegistry from '../../../../catalog/worksheet-editions.v1.json';\nimport { mergeWorksheetEditions } from '../../../../../scripts/lib/worksheet-editions.cjs';\n\n",
+          "after": "import editionRegistry from '../../../../catalog/worksheet-editions.v1.json';\nimport { mergeWorksheetEditions } from '../../../../../scripts/lib/worksheet-editions.mjs';\n\n"
+        },
+        {
+          "before": "  };\n  return mergeWorksheetEditions(data, editionRegistry) as CatalogV1;\n}\n",
+          "after": "  };\n  return mergeWorksheetEditions(data, editionRegistry, data.ramziActivation) as CatalogV1;\n}\n"
+        }
+      ]
+    },
+    {
+      "file": "public/noam-learning.js",
+      "baselineSha256": "7a2558634f0a8dde93d3d8d7144914d10671948917596bba452b2007dfaca5df",
+      "candidateSha256": "1dc6b08e7e8ec177888145a12c60191df216cb7cb2b5747494e70ca71642f4fd",
+      "hunks": [
+        {
+          "before": "  p.set('g',item.sourceGrade||item.g);p.set('x',item.sourcePrefix||item.x);p.set('lv',item.viewerLevel||(item.l==='one'?'b':item.l));p.set('pdf',raw);p.set('t',item.sourceTitle||item.title);p.set('topic',item.parent);p.set('back',new URL('learning.html',location.href).pathname);\n  catalog.filter(function(x){return x.g===item.g&&x.t===item.t;}).forEach(function(x){if(x.l!=='one')p.set('p'+x.l,x.pdf);});return u.href;\n }\n",
+          "after": "  p.set('g',item.sourceGrade||item.g);p.set('x',item.sourcePrefix||item.x);p.set('lv',item.viewerLevel||(item.l==='one'?'b':item.l));p.set('pdf',raw);p.set('t',item.sourceTitle||item.title);p.set('topic',item.parent);p.set('back',new URL('learning.html',location.href).pathname);\n  var edition=item.editionId||'legacy';\n  if(edition!=='legacy')p.set('edition',edition);\n  catalog.filter(function(x){return x.g===item.g&&x.t===item.t&&(x.editionId||'legacy')===edition;}).forEach(function(x){if(x.l!=='one')p.set('p'+x.l,x.pdf);});return u.href;\n }\n function viewerLearningItem(params){\n  var edition=params.has('edition')?params.get('edition'):'legacy';\n  if(!edition)return undefined;\n  return catalog.find(function(item){\n   if((item.editionId||'legacy')!==edition||item.g!==Number(params.get('g'))||item.pdf!==params.get('pdf')||(item.l!==params.get('lv')&&item.l!=='one'))return false;\n   // A new edition never borrows another package's progress identity.\n   return edition==='legacy'||(item.sourcePrefix||item.x)===params.get('x');\n  });\n }\n"
+        },
+        {
+          "before": " }else{\n  var p=new URL(location.href).searchParams,item=catalog.find(function(x){return x.g===Number(p.get('g'))&&x.pdf===p.get('pdf')&&(x.l===p.get('lv')||x.l==='one');});\n  var nav=document.querySelector('.header-actions')||document.querySelector('header');\n",
+          "after": " }else{\n  var p=new URL(location.href).searchParams,item=viewerLearningItem(p);\n  var nav=document.querySelector('.header-actions')||document.querySelector('header');\n"
+        }
+      ]
+    },
+    {
+      "file": "public/noam-learning-boot.js",
+      "baselineSha256": "85501834c77168a91ce41a1014271c8e329dbb4765d66aae32a83acd42c7463b",
+      "candidateSha256": "7b7b313c2e580ca15a886f789a65a4606b893feb03faf162ab75dac474cf1c68",
+      "hunks": [
+        {
+          "before": "    var s = document.createElement('script');\n    s.src = 'noam-learning.js?v=20261111-teacher-post-session';\n    document.body.append(s);\n",
+          "after": "    var s = document.createElement('script');\n    s.src = 'noam-learning.js?v=20261114-edition-learning1';\n    document.body.append(s);\n"
+        }
+      ]
+    },
+    {
+      "file": "public/learning.html",
+      "baselineSha256": "9b2cdda6f98ea6967be33829c0d6826e85c51b85cd24d3283fd661b483c9235e",
+      "candidateSha256": "3afddc9cf9aa12d5549d783ddf3d829d8153b6d0ce0631006703b590317de29b",
+      "hunks": [
+        {
+          "before": "</script>\n<script src=\"noam-learning-catalog.js?v=20260910-four-pdf-fixes\" defer></script><script src=\"noam-learning-config.js?v=20260924-m35-1\" defer></script><script src=\"noam-learning-core.js?v=20260908-1\" defer></script><script src=\"noam-learning-boot.js?v=20260924-m35-1\" defer></script><script src=\"/noam-accessibility.js\" defer></script><script src=\"noam-site-companion.js\" defer></script>\n</body></html>\n",
+          "after": "</script>\n<script src=\"noam-learning-catalog.js?v=20261114-edition-learning1\" defer></script><script src=\"noam-learning-config.js?v=20260924-m35-1\" defer></script><script src=\"noam-learning-core.js?v=20260908-1\" defer></script><script src=\"noam-learning-boot.js?v=20261114-edition-learning1\" defer></script><script src=\"/noam-accessibility.js\" defer></script><script src=\"noam-site-companion.js\" defer></script>\n</body></html>\n"
+        }
+      ]
+    },
+    {
+      "file": "public/worksheet-viewer-noam.html",
+      "baselineSha256": "97be285f24f4c4139d54300bcd0f79ac013af1eda5e398061b5d1ef93fe175c4",
+      "candidateSha256": "42a7576366db6c0c6cec1ad04c95d09e8ea9492877fd5aa6f3bab87fdf82f4ff",
+      "hunks": [
+        {
+          "before": "<script src=\"noam-glossary-curriculum.js?v=20261018-fracbar\"></script>\n<script src=\"noam-glossary.js?v=20261029-context6\"></script>\n<script src=\"noam-curated-hints.js?v=20261107-edition-bindings1\"></script>\n",
+          "after": "<script src=\"noam-glossary-curriculum.js?v=20261018-fracbar\"></script>\n<script src=\"noam-glossary.js?v=20261114-trapezoid-context1\"></script>\n<script src=\"noam-curated-hints.js?v=20261107-edition-bindings1\"></script>\n"
+        },
+        {
+          "before": "\n<script src=\"noam-learning-catalog.js?v=20260912-topic41\" defer></script>\n<script src=\"noam-learning-config.js?v=20260908-1\" defer></script>\n",
+          "after": "\n<script src=\"noam-learning-catalog.js?v=20261114-edition-learning1\" defer></script>\n<script src=\"noam-learning-config.js?v=20260908-1\" defer></script>\n"
+        },
+        {
+          "before": "<script src=\"noam-learning-core.js?v=20260908-1\" defer></script>\n<script src=\"noam-learning-boot.js?v=20261002-lazy-supabase\" defer></script>\n<script src=\"ramzi/ramzi-avatar.js\"></script>\n",
+          "after": "<script src=\"noam-learning-core.js?v=20260908-1\" defer></script>\n<script src=\"noam-learning-boot.js?v=20261114-edition-learning1\" defer></script>\n<script src=\"ramzi/ramzi-avatar.js\"></script>\n"
+        }
+      ]
+    }
+  ]
+}

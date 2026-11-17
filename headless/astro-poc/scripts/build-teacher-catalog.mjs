@@ -13,6 +13,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { measuredSheetFromManifest } from './lib/measured-worksheet.mjs';
 import { mergeWorksheetEditions } from '../../../scripts/lib/worksheet-editions.cjs';
+import { isPdfOnlyTopic } from '../../../scripts/lib/base-worksheet-publication.mjs';
 import { createHash } from 'node:crypto';
 
 const scriptDir = dirname(fileURLToPath(import.meta.url));
@@ -379,7 +380,7 @@ export function buildTeacherCatalog(catalog, registry) {
     topics: grade.topics.map((topic) => ({
       id: topic.id,
       title: topic.title,
-      sheets: [...topic.levels.map((level) => ({
+      sheets: [...(isPdfOnlyTopic(topic) ? [] : topic.levels).map((level) => ({
         pdfId: level.pdfId,
         pdfUrl: pdfUrl(level.pdfId),
         level: level.key,
@@ -387,7 +388,9 @@ export function buildTeacherCatalog(catalog, registry) {
         title: `${topic.title} · ${level.label}`,
         mode: 'exercise',
         ...(topic.routing?.sourceGrade ? { sourceGrade: topic.routing.sourceGrade, sourcePrefix: topic.routing.sourcePrefix, sourceTitle: topic.routing.sourceTitle } : {}),
-      })), ...(topic.editions || []).filter((edition) => edition.status === 'published').flatMap((edition) =>
+      })), ...(topic.editions || []).filter((edition) =>
+        // A downloadable PDF is not yet a measured exercise source.
+        edition.status === 'published' && edition.publicationMode !== 'pdf-only').flatMap((edition) =>
         edition.levels.map((level) => ({
           pdfId: level.pdfId, pdfUrl: pdfUrl(level.pdfId), level: level.key, levelLabel: level.label,
           title: `${topic.title} · ${level.label} · ${edition.label}`, mode: 'exercise',
@@ -396,7 +399,7 @@ export function buildTeacherCatalog(catalog, registry) {
           expectedSha256: level.pdfSha256, canonicalSourceSha256: level.canonicalSourceSha256,
           manifestSha256: level.manifestSha256,
         })))],
-    })),
+    })).filter(topic => topic.sheets.length > 0),
   }));
   return { pdfBase: PDF_BASE, grades };
 }

@@ -14,6 +14,7 @@ import { buildGradeLoopPool, gradeLoopCopy } from '../src/lib/gradeLoopPools';
 import { cssLoopIdea, topicLandingLoop } from '../src/lib/landingLoops';
 import { PK } from '../src/lib/linkPeek';
 import { PUBLIC_LESSON_DESCRIPTION, PUBLIC_LESSON_PATH, PUBLIC_LESSON_TITLE } from '../src/lib/publicLesson';
+import { TEACHER_LANDING_PATH, TEACHER_TOOL_PATH, TEACHER_LANDING_TITLE, TEACHER_LANDING_DESCRIPTION } from '../src/lib/teacherLandingContent';
 import {
   PYTHAGORAS_GAME_DESCRIPTION,
   PYTHAGORAS_GAME_PATH,
@@ -167,7 +168,7 @@ function main() {
   const home = readJson(join(root, 'src/data/home-page.json'));
   const manifests = loadManifests();
   const viewerHtml = readFileSync(join(root, 'public/worksheet-viewer-noam.html'), 'utf8');
-  const teachersHtml = readFileSync(join(root, 'public/teachers/index.html'), 'utf8');
+  const teachersHtml = readFileSync(join(root, 'src/teacher-pages/wizard.html'), 'utf8');
   const learningHtml = readFileSync(join(root, 'public/learning.html'), 'utf8');
   const lessonHtml = readFileSync(join(root, 'src/public-lesson/lesson.html'), 'utf8');
   const pythagorasHtml = readFileSync(join(root, 'src/games/eliyahu-pythagoras.html'), 'utf8');
@@ -336,19 +337,6 @@ function main() {
       contains: page.description,
       how,
     });
-    if (page.slug === 'accessibilityadaptation') {
-      const blocks = page.blocks || [];
-      const index = blocks.findIndex((block: { text?: string }) => block.text === 'מדיניות פרטיות');
-      const next = index >= 0 ? blocks.slice(index + 1).find((block: { type?: string; text?: string }) => block.type === 'p' && block.text) : null;
-      push(records, {
-        id: 'page-privacy',
-        type: 'page',
-        title: 'מדיניות פרטיות',
-        href: '/accessibilityadaptation#privacy-policy',
-        contains: next ? next.text : page.description,
-        how: next ? next.text : '',
-      });
-    }
   }
 
   push(records, {
@@ -391,11 +379,20 @@ function main() {
   push(records, {
     id: 'page-teachers',
     type: 'page',
-    title: textOf(teachersHtml, /<h1>([^<]+)<\/h1>/),
-    href: '/teachers',
+    title: TEACHER_LANDING_TITLE,
+    href: TEACHER_LANDING_PATH,
     audience: PK.teachers.tag + ' · ' + mustInclude(teachersHtml, 'כיתות א׳–ט׳'),
-    contains: PK.teachers.desc,
-    how: teachersHow,
+    contains: TEACHER_LANDING_DESCRIPTION,
+    how: 'עמוד ציבורי עם דוגמה מהמאגר הקיים. כלי בחירת השאלות, ההדפסה והייצוא ל־Word זמינים לכל מי שמתחבר עם Google. בקרוב: יצירת דפי עבודה חדשים עם AI; השירות החדש בפיתוח ומתוכנן להיות בתשלום. דפי העבודה הקיימים זמינים גם במאגר הציבורי.',
+  });
+  push(records, {
+    id: 'page-teachers-app',
+    type: 'page',
+    title: 'כלי המורים · ' + textOf(teachersHtml, /<h1>([^<]+)<\/h1>/),
+    href: TEACHER_TOOL_PATH,
+    audience: 'כל מי שמתחבר עם Google · ' + PK.teachers.tag + ' · ' + mustInclude(teachersHtml, 'כיתות א׳–ט׳'),
+    contains: 'בחירת שאלות, הדפסה וייצוא ל־Word מתוך המאגר הקיים לאחר התחברות עם Google.',
+    how: 'כלי העבודה הקיימים זמינים לכל מי שמתחבר עם Google. ' + teachersHow,
   });
   push(records, {
     id: 'page-learning',
@@ -433,16 +430,6 @@ function main() {
     contains: [PYTHAGORAS_GAME_DESCRIPTION, textOf(pythagorasHtml, /<title>([^<]+)<\/title>/)].join(' '),
     how: mustInclude(pythagorasHtml, 'שלב 1 מתוך 9'),
   });
-  if (home.whatsapp && home.whatsapp.ctaHref) {
-    push(records, {
-      id: 'page-whatsapp',
-      type: 'page',
-      title: home.whatsapp.heading,
-      href: home.whatsapp.ctaHref,
-      contains: home.whatsapp.body,
-      how: home.whatsapp.ctaLabel + ' · ' + home.whatsapp.note,
-    });
-  }
 
   const seen = new Set<string>();
   for (const record of records) {
@@ -463,7 +450,8 @@ function main() {
       'src/data/blog-archives',
       'src/data/site-pages',
       'src/data/home-page.json',
-      'public/teachers/index.html',
+      'src/lib/teacherLandingContent.ts',
+      'src/teacher-pages/wizard.html',
       'public/worksheet-viewer-noam.html',
       'public/learning.html',
     ],

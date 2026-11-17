@@ -99,7 +99,7 @@ test('short topics explain availability visibly before clicking AI, with an acce
   assert.match(note.textContent, /זמינות 8 שאלות לבחירה/);
   assert.match(note.textContent, /בקשה לכמות גדולה יותר תבחר את כולן/);
   assert.equal(buttons[2].title, 'זמינות 8 שאלות; כולן ייבחרו.');
-  const html = readFileSync(new URL('../public/teachers/index.html', import.meta.url), 'utf8');
+  const html = readFileSync(new URL('../src/teacher-pages/wizard.html', import.meta.url), 'utf8');
   assert.match(html, /id="ai-pick-group"[^>]*aria-describedby="ai-available-note"/);
 });
 

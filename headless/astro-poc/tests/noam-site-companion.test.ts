@@ -34,6 +34,7 @@ import { didacticSequence } from '../../../noam-ai/site-companion/topic-order.js
 import type { CatalogV1 } from '../src/lib/catalog/types.ts';
 import { loadGradeHub } from '../src/lib/gradeHubs.ts';
 import { bareTopicTitle, catalogQuadrilateralTitles } from '../src/lib/gradeHubQuadrilaterals.ts';
+import { TEACHER_LANDING_TITLE, TEACHER_LANDING_DESCRIPTION } from '../src/lib/teacherLandingContent';
 
 type GuideRecord = {
   id: string;
@@ -49,6 +50,7 @@ type GuideRecord = {
   audience: string;
 };
 type SiteGuideData = {
+  builtFrom: string[];
   records: GuideRecord[];
   counts: Record<string, number>;
   manifestMatches: number;
@@ -177,9 +179,38 @@ describe('Noam AI site manual', () => {
     assert.match(topic.contains, /בדקו את עצמכם/);
     assert.match(topic.how, /רמה א׳ מתאימה לביסוס/);
     assert.equal(topic.contains.includes('(x−3)(x+3)'), false);
-    const teachers = guide.records.find((row) => row.href === '/teachers')!;
-    assert.match(teachers.how, /כיתה, נושא ומטרת השיעור/);
-    assert.match(teachers.audience, /מרחב למורה/);
+    const teachers = guide.records.filter((row) => row.href === '/teachers');
+    const teacherApps = guide.records.filter((row) => row.href === '/teachers/app');
+    assert.equal(teachers.length, 1);
+    assert.equal(teacherApps.length, 1);
+    assert.equal(teachers[0].id, 'page-teachers');
+    assert.equal(teachers[0].title, TEACHER_LANDING_TITLE);
+    assert.equal(teachers[0].contains, TEACHER_LANDING_DESCRIPTION);
+    assert.match(teachers[0].how, /עמוד ציבורי/);
+    assert.match(teachers[0].how, /דוגמה מהמאגר הקיים/);
+    assert.match(teachers[0].how, /כלי בחירת השאלות.*זמינים לכל מי שמתחבר עם Google/);
+    assert.match(teachers[0].how, /מתוכנן להיות בתשלום/);
+    assert.match(teachers[0].how, /מתחבר עם Google/);
+    assert.match(teachers[0].how, /השירות החדש בפיתוח/);
+    assert.doesNotMatch(teachers[0].how, /בדיקות פרטיות|לבעלים בלבד/);
+    assert.doesNotMatch(teachers[0].how, /ממשיכים לכלי העבודה/);
+    assert.equal(teacherApps[0].id, 'page-teachers-app');
+    assert.match(teacherApps[0].title!, /^כלי המורים · /);
+    assert.match(teacherApps[0].audience, /כל מי שמתחבר עם Google/);
+    assert.match(teacherApps[0].contains, /מתוך המאגר הקיים לאחר התחברות עם Google/);
+    assert.match(teacherApps[0].how, /^כלי העבודה הקיימים זמינים לכל מי שמתחבר עם Google\./);
+    assert.match(teacherApps[0].how, /כיתה, נושא ומטרת השיעור/);
+    assert.match(teacherApps[0].how, /הדף המלא, עם סימון/);
+    assert.match(teacherApps[0].how, /דף מצומצם מהמקור/);
+    assert.match(teachers[0].audience, /כלי עבודה למורים/);
+    assert.match(teacherApps[0].audience, /כל מי שמתחבר עם Google/);
+    for (const row of [...teachers, ...teacherApps]) {
+      assert.match(row.audience, /כיתות א׳–ט׳/);
+      assert.equal(row.grade, undefined);
+    }
+    assert.ok(guide.builtFrom.includes('src/lib/teacherLandingContent.ts'));
+    assert.ok(guide.builtFrom.includes('src/teacher-pages/wizard.html'));
+    assert.equal(guide.builtFrom.includes('public/teachers/index.html'), false);
     assert.ok(guide.records.some((row) => row.type === 'game' && row.href === '/games/kefel-mekutsar-2'));
     assert.ok(guide.records.some((row) => row.id === 'game-pythagoras' && row.href === '/games/eliyahu-pythagoras'));
   });

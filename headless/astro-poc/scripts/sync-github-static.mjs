@@ -4,7 +4,8 @@
  * same-origin preview serving.
  *
  * Selection (generic, no worksheet exceptions):
- *   every published edition PDF needed by teacher tools, plus legacy topics
+ *   published non-PDF-only edition PDFs not explicitly disabled, or evidence-ready
+ *   PDF-only edition PDFs, plus legacy topics
  *   with routing.usesViewer (and siblingPdfQuery ids). PDFs are not copied.
  *
  * Source of truth: repo-root noam-ai/manifests/ (mirrors GitHub Pages).
@@ -47,7 +48,13 @@ export function collectViewerPdfIds(catalog) {
   for (const g of catalog.grades || []) {
     for (const t of g.topics || []) {
       for (const edition of t.editions || []) if (edition.status === 'published') {
-        for (const level of edition.levels) ids.add(level.pdfId);
+        if (edition.publicationMode === 'pdf-only') {
+          if (!edition.routing?.usesViewer || !edition.routing?.aiHintShown || edition.levels.length !== 3 ||
+              !edition.levels.every(level => level.ramzi?.status === 'ready')) continue;
+          for (const level of edition.levels) ids.add(level.pdfId);
+        } else {
+          for (const level of edition.levels) if (level.aiReady !== false) ids.add(level.pdfId);
+        }
       }
       if (!t.routing?.usesViewer) continue;
       for (const lv of t.levels || []) {
@@ -63,8 +70,9 @@ export function collectViewerPdfIds(catalog) {
 }
 
 function loadCatalog() {
-  return mergeWorksheetEditions(JSON.parse(readFileSync(catalogPath, 'utf8')),
-    JSON.parse(readFileSync(join(repoRoot, 'headless/catalog/worksheet-editions.v1.json'), 'utf8')));
+  const catalog = JSON.parse(readFileSync(catalogPath, 'utf8'));
+  return mergeWorksheetEditions(catalog,
+    JSON.parse(readFileSync(join(repoRoot, 'headless/catalog/worksheet-editions.v1.json'), 'utf8')), catalog.ramziActivation);
 }
 
 function buildFileMap(pdfIds) {
@@ -106,7 +114,7 @@ function writeProvenance(pdfIds, files, extras = {}) {
       note: 'Canonical bytes live in the repo; GitHub Pages serves the same tree. PDFs stay on Wix Media.',
     },
     selection: {
-      rule: 'published worksheet editions for teacher tools + legacy topics with routing.usesViewer (+ siblingPdfQuery)',
+      rule: 'published non-PDF-only editions unless level.aiReady=false; PDF-only editions only with validated viewer/hints routing and three ramzi-ready levels; legacy topics with routing.usesViewer (+ siblingPdfQuery)',
       catalogPath: 'src/data/catalog.v1.json',
       count: pdfIds.length,
     },

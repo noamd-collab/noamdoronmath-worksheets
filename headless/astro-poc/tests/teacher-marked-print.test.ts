@@ -4,6 +4,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { describe, it } from 'node:test';
 import { fileURLToPath } from 'node:url';
 import { loadCatalog } from '../src/lib/catalog/loadCatalog';
+import { TEACHER_PRIVATE_HEADERS } from '../src/lib/teacherAccess';
 import { labelAscent, labelLineBox, labelLineHeight, sheetFromManifest } from '../scripts/build-teacher-catalog.mjs';
 
 function servedGaps(questions: { id: string; inkTop: number | null; inkBottom?: number }[]) {
@@ -71,7 +72,7 @@ describe('grade 9 factoring marked source', () => {
     assert.match(printer, /printOpener/);
     assert.match(printer, /packShort/);
     assert.match(page, /rel="icon"/);
-    assert.match(readFileSync(new URL('../public/teachers/index.html', import.meta.url), 'utf8'), /rel="icon"/);
+    assert.match(readFileSync(new URL('../src/teacher-pages/wizard.html', import.meta.url), 'utf8'), /rel="icon"/);
   });
 
   it('shows every picked item and does not leave a bare digit after a letter', () => {
@@ -84,7 +85,7 @@ describe('grade 9 factoring marked source', () => {
     assert.match(printer, /<bdi dir="ltr" class="math">/);
     assert.match(page, /\.q-desc bdi\.math\{white-space:nowrap/);
     const previewJs = readFileSync(new URL('../public/teachers/teacher-factoring-print.js', import.meta.url), 'utf8');
-    const previewPage = readFileSync(new URL('../public/teachers/index.html', import.meta.url), 'utf8');
+    const previewPage = readFileSync(new URL('../src/teacher-pages/wizard.html', import.meta.url), 'utf8');
     assert.equal(previewJs, printer);
     assert.match(previewPage, /\.q-desc bdi\.math\{white-space:nowrap/);
     const questionTextHTML = new Function(
@@ -132,14 +133,21 @@ describe('grade 9 factoring marked source', () => {
     }
   });
 
-  it('serves /teachers and does not keep the temporary demo preview route', () => {
+  it('keeps the teacher tool private to indexing while the public entry uses the site layout', () => {
     assert.equal(existsSync(new URL('../src/pages/teachers-demo-preview.ts', import.meta.url)), false);
     assert.equal(existsSync(new URL('../public/teachers-demo-preview/index.html', import.meta.url)), false);
-    const route = readFileSync(new URL('../src/pages/teachers.ts', import.meta.url), 'utf8');
-    const preview = readFileSync(new URL('../public/teachers/index.html', import.meta.url), 'utf8');
+    const route = readFileSync(new URL('../src/pages/teachers/app.ts', import.meta.url), 'utf8');
+    const landing = readFileSync(new URL('../src/pages/teachers.astro', import.meta.url), 'utf8');
+    const preview = readFileSync(new URL('../src/teacher-pages/wizard.html', import.meta.url), 'utf8');
     const sitemap = readFileSync(new URL('../src/pages/sitemap-pages.xml.ts', import.meta.url), 'utf8');
     const sitemapLib = readFileSync(new URL('../src/lib/siteSitemaps.ts', import.meta.url), 'utf8');
-    assert.match(route, /x-robots-tag': 'noindex, nofollow'/);
+    assert.match(route, /\.\.\.TEACHER_PRIVATE_HEADERS/);
+    const privateHeaders = new Headers(TEACHER_PRIVATE_HEADERS);
+    assert.equal(privateHeaders.get('x-robots-tag'), 'noindex, nofollow');
+    assert.equal(privateHeaders.get('cache-control'), 'private, no-store');
+    assert.match(landing, /<BaseLayout/);
+    assert.match(landing, /legacyTeacherToolRedirect/);
+    assert.equal(existsSync(new URL('../src/pages/teachers.ts', import.meta.url)), false);
     assert.match(preview, /noindex, nofollow/);
     assert.match(preview, /\/teachers\/teacher-factoring-print\.js/);
     assert.equal(preview.includes('teachers-demo-preview'), false);
@@ -162,7 +170,7 @@ describe('grade 9 factoring marked source', () => {
     assert.match(page, /\.print-area \.crop-sheet\.has-teacher-note canvas\{width:auto;height:auto;max-width:180mm;max-height:calc\(246mm - var\(--note-h, 0mm\)\)/);
     assert.match(page, /\.print-area \.source-sheet\.has-teacher-note\{[^}]*overflow:visible/);
     assert.match(page, /\.print-area \.source-sheet\{[^}]*height:281mm/);
-    const served = readFileSync(new URL('../public/teachers/index.html', import.meta.url), 'utf8');
+    const served = readFileSync(new URL('../src/teacher-pages/wizard.html', import.meta.url), 'utf8');
     assert.match(served, /\.print-area \.teacher-print-note\{[^}]*direction:rtl[^}]*break-inside:avoid;page-break-inside:avoid/);
     assert.match(served, /הוראות לתלמיד — מודפסות/);
     assert.match(served, /\.print-area \.crop-sheet\.has-teacher-note canvas\{width:auto;height:auto;max-width:180mm/);
@@ -173,14 +181,17 @@ describe('grade 9 factoring marked source', () => {
 describe('teacher catalog picker', () => {
   const catalog = loadCatalog();
   const index = JSON.parse(readFileSync(new URL('../public/teachers/teacher-catalog.json', import.meta.url), 'utf8'));
-  const page = readFileSync(new URL('../public/teachers/index.html', import.meta.url), 'utf8');
+  const page = readFileSync(new URL('../src/teacher-pages/wizard.html', import.meta.url), 'utf8');
   const printer = readFileSync(new URL('../public/teachers/teacher-factoring-print.js', import.meta.url), 'utf8');
 
   function catalogSheets() {
     const sheets = [];
     for (const grade of catalog.grades) {
       for (const topic of grade.topics) {
-        for (const level of [...topic.levels, ...(topic.editions || []).flatMap(edition => edition.levels)]) {
+        if (topic.publicationMode === 'pdf-only') continue;
+        for (const level of [...topic.levels, ...(topic.editions || [])
+          .filter(edition => edition.status === 'published' && edition.publicationMode !== 'pdf-only')
+          .flatMap(edition => edition.levels)]) {
           sheets.push({ grade: grade.grade, topicId: topic.id, pdfId: level.pdfId, level: level.key });
         }
       }
@@ -200,19 +211,40 @@ describe('teacher catalog picker', () => {
     return sheets;
   }
 
-  it('reaches every catalog sheet for every grade in the picker', () => {
+  it('reaches every exercise-ready catalog sheet and excludes PDF-only topics and editions from the picker', () => {
     const fromCatalog = catalogSheets();
     const fromPicker = indexSheets();
     assert.ok(fromCatalog.length > 0);
     assert.deepEqual(
       fromPicker.map(({ grade, topicId, pdfId, level }) => ({ grade, topicId, pdfId, level })),
       fromCatalog,
-      'The teacher picker must use the same topics, PDF releases and levels as the worksheet catalog',
+      'The teacher picker must use exactly the exercise-ready catalog topics, PDFs and levels',
     );
+    const basePdfOnly = catalog.grades.flatMap(grade => grade.topics
+      .filter(topic => topic.publicationMode === 'pdf-only')
+      .map(topic => ({ grade: grade.grade, topicId: topic.id, pdfIds: topic.levels.map(level => level.pdfId) })));
+    assert.deepEqual(basePdfOnly, [{ grade: 9, topicId: 47, pdfIds: [
+      '04786c9d5ed04b30a67480e192b4706f',
+      '54ed203698a141cda131ccf08f274a2c',
+      '1bbc10333cf74e6fa251ed34575e6320',
+    ] }, { grade: 9, topicId: 48, pdfIds: ['eb99b4fb3e4d47f5b96e4f2dcfb10bf2', '703b2b73edb949e4a06efa8a02d7476e', 'ce41b853212749c09efc3d466a8e9ddf'] }], 'Only the exact RAT and MED base topics are PDF-only; every old exercise-ready topic retains teacher access');
+    const pdfOnly = catalog.grades.flatMap(grade => grade.topics.flatMap(topic => [
+      ...(topic.publicationMode === 'pdf-only' ? topic.levels : []),
+      ...(topic.editions || []).filter(edition => edition.publicationMode === 'pdf-only').flatMap(edition => edition.levels),
+    ]));
+    assert.ok(pdfOnly.length > 0, 'the current PDF-only publications exercise this boundary');
+    for (const level of pdfOnly) assert.ok(!fromPicker.some(sheet => sheet.pdfId === level.pdfId),
+      `PDF-only asset must not offer unavailable per-question crops: ${level.pdfId}`);
     for (const grade of catalog.grades) {
       const teacherGrade = index.grades.find((item) => item.grade === grade.grade);
+      assert.ok(teacherGrade, `Teacher grade ${grade.grade} remains available`);
       for (const topic of grade.topics) {
         const teacherTopic = teacherGrade.topics.find((item) => item.id === topic.id);
+        if (topic.publicationMode === 'pdf-only') {
+          assert.equal(teacherTopic, undefined, `PDF-only topic ${grade.grade}:${topic.id} must not offer teacher questions`);
+          continue;
+        }
+        assert.ok(teacherTopic, `Exercise-ready topic ${grade.grade}:${topic.id} remains available`);
         for (const sheet of teacherTopic.sheets) {
           for (const key of ['sourceGrade', 'sourcePrefix', 'sourceTitle'] as const) {
             assert.equal(sheet[key], topic.routing[key], `${grade.grade}:${topic.id} ${key}`);
@@ -362,7 +394,7 @@ describe('teacher catalog picker', () => {
     assert.match(resolve, /return questionsForKeys\(keys\)/);
     assert.doesNotMatch(preview, /mode === 'short' && band\(\) === 'elementary'/, 'Elementary questions use the same source-question print pipeline');
     assert.match(preview, /question\.rows && question\.rows\.length \? question\.rows : \[question\.row\]/);
-    const html = readFileSync(new URL('../public/teachers/index.html', import.meta.url), 'utf8');
+    const html = readFileSync(new URL('../src/teacher-pages/wizard.html', import.meta.url), 'utf8');
     assert.match(html, /\.skip\{display:none!important\}/);
     assert.match(html, /\.q-thumb\{[^}]*max-height:120px/);
     assert.match(html, /unicode-bidi:isolate/);
@@ -567,7 +599,7 @@ describe('teacher catalog picker', () => {
   });
 
   it('offers manual whole-question selection and AI counts 5, 10 and 15 with a visible status', () => {
-    const publicHtml = readFileSync(new URL('../public/teachers/index.html', import.meta.url), 'utf8');
+    const publicHtml = readFileSync(new URL('../src/teacher-pages/wizard.html', import.meta.url), 'utf8');
     for (const html of [page, publicHtml]) {
       for (const count of [5, 10, 15]) {
         assert.match(html, new RegExp(`id="ai-pick-${count}"[^>]*data-ai-pick="${count}"`));

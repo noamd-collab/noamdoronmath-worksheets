@@ -1,3 +1,5 @@
+import { readFirst567Activation } from './helpers/first567Activation';
+import { beforeEqnSgnFacCatalog } from './fixtures/eqn-sgn-fac-pdf';
 /**
  * Exact-design release fence. These SHA-256 values were read from the verified
  * live baseline 8a098020, not from the redesigned candidate. They protect the
@@ -33,6 +35,157 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const sha256 = (value: string | Buffer) => createHash('sha256').update(value).digest('hex');
 const read = (file: string) => readFileSync(join(root, file), 'utf8');
 
+// The activation changes only reviewed exact hunks. Reversing them restores the
+// already protected baseline; no historical whole-file hash is replaced.
+const activationDeltaText = read('tests/fixtures/ramzi-activation-reviewed-delta.json');
+assert.equal(sha256(activationDeltaText), 'c7bf20747e0a0e196f15474c283d91736843110c3299e13ad4cf465d3ce76606');
+const activationDeltas = JSON.parse(activationDeltaText).files;
+// Noam's legal audit, 2026-11-15: the privacy policy moved to its own /privacy
+// page and the Ramzi chat gained a short AI privacy notice. Reverse only these
+// reviewed exact hunks before every older fence; no historical hash is replaced.
+const legalPrivacyDeltaText = read('tests/fixtures/legal-privacy-reviewed-delta.json');
+assert.equal(sha256(legalPrivacyDeltaText), '3953c82c1b08b81cf1b2bf76d977f11d6457f0cdeed2c74c2de4cacbe0b38753');
+const legalPrivacyDeltas = JSON.parse(legalPrivacyDeltaText).files;
+function beforeLegalPrivacy(file: string, content: string): string {
+  const delta = legalPrivacyDeltas.find((entry: any) => entry.file === file);
+  if (!delta) return content;
+  assert.equal(sha256(content), delta.candidateSha256, file + ' exact legal privacy candidate');
+  for (const hunk of delta.hunks) {
+    const parts = content.split(hunk.after);
+    assert.equal(parts.length, 2, file + ' one exact legal privacy hunk');
+    content = parts.join(hunk.before);
+  }
+  assert.equal(sha256(content), delta.baselineSha256, file + ' unchanged bytes outside the legal privacy hunks');
+  return content;
+}
+// Noam, 2026-11-15: the WhatsApp group was removed from the site (home card,
+// footer link, home-page data and its type). Reverse only these reviewed exact
+// hunks before the legal privacy reversal; no historical hash is replaced.
+const whatsappRemovalDeltaText = read('tests/fixtures/whatsapp-removal-reviewed-delta.json');
+assert.equal(sha256(whatsappRemovalDeltaText), '34a79baa893980f0fee9d54f09d1d10ebd195fd89aa8b5775a5a4b95c70ffd6a');
+const whatsappRemovalDeltas = JSON.parse(whatsappRemovalDeltaText).files;
+function beforeWhatsappRemoval(file: string, content: string): string {
+  const delta = whatsappRemovalDeltas.find((entry: any) => entry.file === file);
+  if (!delta) return content;
+  assert.equal(sha256(content), delta.candidateSha256, file + ' exact WhatsApp removal candidate');
+  for (const hunk of delta.hunks) {
+    const parts = content.split(hunk.after);
+    assert.equal(parts.length, 2, file + ' one exact WhatsApp removal hunk');
+    content = parts.join(hunk.before);
+  }
+  assert.equal(sha256(content), delta.baselineSha256, file + ' unchanged bytes outside the WhatsApp removal hunks');
+  return content;
+}
+// First567 drawing policy changes exactly one allowlist line. Reverse only the
+// four reviewed geometry prefixes before the existing activation/file fences.
+// Unknown identities, title fallback, guards and all remaining bytes stay fenced.
+function beforeDrawingPolicy(content: string): string {
+  const lines = content.match(/^var NOAM_DRAWING_HINT_GEOMETRY='[^'\n]+';$/gm) || [];
+  assert.equal(lines.length, 1, 'one geometry allowlist');
+  assert.equal(sha256(lines[0]), '98499f802c9e026f7d76ca770705e5ddcd513d3498f67ba171fd7264b52a2966', 'exact first567 policy line');
+  let previous = lines[0];
+  for (const prefix of ['G7-T86', 'G8-T84', 'G8-T87', 'G9-T85']) {
+    assert.equal(previous.split(',' + prefix).length, 2, 'one added geometry prefix');
+    previous = previous.replace(',' + prefix, '');
+  }
+  assert.equal(sha256(previous), '5467306fc61baacfd636d58909ffa943357b85931efe63fcec9f5236b982c31f', 'unchanged historical policy');
+  return content.replace(lines[0], previous);
+}
+
+// Remove only the temporary CSS pause before every historical whole-file fence.
+function beforeDrawingControlPause(content: string): string {
+  const pause = '/* Temporary drawing-request pause; keep existing source-diagram enlargement available. */\n' +
+    '#noamDraw,.noam-draw-action:not(.noam-diagram-expand){display:none!important}\n';
+  assert.equal(content.split(pause).length, 2, 'one exact temporary drawing-request CSS block');
+  return content.replace(pause, '');
+}
+
+it('first567 drawing policy changes only the reviewed line in the root mirror', () => {
+  const current = beforeDrawingControlPause(readFileSync(join(root, '../../worksheet-viewer-noam.html'), 'utf8'));
+  assert.equal(sha256(current), '232f80e06dea7d7f410c2a03ad0c09ffbd6bfb9721bd5542e2a98260d7d2d6a9', 'exact root drawing policy candidate');
+  assert.equal(sha256(beforeDrawingPolicy(current)), '91433585be9d6d4ec2bf3887bbafecec5b310f235382f56ebfcbe23de645e05c');
+  assert.throws(() => beforeDrawingPolicy(current.replace('G7-T86', 'G7-T99')));
+  assert.throws(() => beforeDrawingPolicy(current.replace('G9-T85', 'G9-T85,G9-T88')));
+  const publicViewer = read('public/worksheet-viewer-noam.html');
+  assert.throws(() => beforeActivation('public/worksheet-viewer-noam.html', publicViewer + '\n'));
+  assert.throws(() => beforeActivation('public/worksheet-viewer-noam.html', publicViewer.replace('function noamPreparedHint(', 'function changedHint(')));
+});
+
+// The report-control observer fix changes only this exact assignment. Reverse
+// it to the published 12e activation candidate before all existing fences.
+function beforeReportObserverFix(content: string): string {
+  assert.equal(sha256(content), '46232c6d67eefdeed286f74895cce4b5c4a2463d1965427d32ce006b58d348d2', 'exact report observer candidate');
+  const previous = "    button.hidden=!document.querySelector('.noam-exercise-pin.is-active');";
+  const current = "    var hidden=!document.querySelector('.noam-exercise-pin.is-active');\n    if(button.hidden!==hidden){button.hidden=hidden;}";
+  assert.equal(content.split(current).length, 2, 'one exact report observer hunk');
+  const restored = content.replace(current, previous);
+  assert.equal(sha256(restored), '054e601e3aa5e653419f625d3d53c13fde31f47e0e1ed696e8334e5929605f7e', 'unchanged published activation candidate');
+  return restored;
+}
+
+function beforeActivation(file: string, content: string): string {
+  content = beforeLegalPrivacy(file, beforeWhatsappRemoval(file, content));
+  if (file === 'src/lib/catalog/loadCatalog.ts') {
+    // Reverse only the optional correction argument, then retain the complete
+    // previous activation and historical file hashes below.
+    const previous = '  return mergeWorksheetEditions(data, editionRegistry, data.ramziActivation) as CatalogV1;';
+    const current = '  return mergeWorksheetEditions(data, editionRegistry, data.ramziActivation, data.ramziHintCorrection) as CatalogV1;';
+    assert.equal(content.split(current).length, 2, 'one exact optional correction argument');
+    content = content.replace(current, previous);
+  }
+  if (file === 'public/worksheet-viewer-noam.html') {
+    content = beforeDrawingControlPause(content);
+    content = beforeReportObserverFix(content);
+    assert.equal(sha256(content), '054e601e3aa5e653419f625d3d53c13fde31f47e0e1ed696e8334e5929605f7e', 'exact public drawing policy candidate');
+    content = beforeDrawingPolicy(content);
+  }
+  const delta = activationDeltas.find((entry: any) => entry.file === file);
+  if (!delta) return content;
+  assert.equal(sha256(content), delta.candidateSha256, file + ' exact activation candidate');
+  for (const hunk of delta.hunks) {
+    assert.equal(content.split(hunk.after).length, 2, file + ' one exact activation hunk');
+    content = content.replace(hunk.after, hunk.before);
+  }
+  assert.equal(sha256(content), delta.baselineSha256, file + ' unchanged bytes outside activation');
+  return content;
+}
+
+it('hint-correction loader reversal preserves all earlier exact fences', () => {
+  const file = 'src/lib/catalog/loadCatalog.ts', current = read(file);
+  assert.doesNotThrow(() => beforeActivation(file, current));
+  assert.throws(() => beforeActivation(file, current.replace('data.ramziHintCorrection', 'data.unreviewedCorrection')));
+  assert.throws(() => beforeActivation(file, current + '\n'));
+});
+
+it('temporary drawing-control pause reverses exactly without weakening original figure or script fences', () => {
+  const current = read('public/worksheet-viewer-noam.html');
+  assert.equal(sha256(beforeDrawingControlPause(beforeLegalPrivacy('public/worksheet-viewer-noam.html', current))), '46232c6d67eefdeed286f74895cce4b5c4a2463d1965427d32ce006b58d348d2');
+  assert.throws(() => beforeDrawingControlPause(current.replace(':not(.noam-diagram-expand)', '')));
+  const pause = current.match(/\/\* Temporary drawing-request pause[^]*?display:none!important}\n/)![0];
+  assert.throws(() => beforeDrawingControlPause(current + '\n' + pause));
+  assert.throws(() => beforeActivation('public/worksheet-viewer-noam.html', current.replace('function noamAddDiagramExpansion(', 'function changedExpansion(')));
+});
+
+it('legal privacy reversal accepts only the reviewed exact hunks', () => {
+  for (const file of ['src/data/home-page.json', 'public/learning.html', 'public/worksheet-viewer-noam.html']) {
+    const current = beforeWhatsappRemoval(file, read(file));
+    assert.doesNotThrow(() => beforeLegalPrivacy(file, current));
+    assert.throws(() => beforeLegalPrivacy(file, current + '\n'));
+    assert.throws(() => beforeLegalPrivacy(file, current.replace('/privacy', '/privacy-unreviewed')));
+  }
+});
+
+it('WhatsApp removal reversal accepts only the reviewed exact hunks', () => {
+  for (const file of ['src/data/home-page.json', 'public/learning.html', 'src/lib/homePage.ts']) {
+    const current = read(file);
+    assert.ok(!current.includes('chat.whatsapp.com'), file + ' has no WhatsApp group link');
+    assert.doesNotThrow(() => beforeWhatsappRemoval(file, current));
+    assert.ok(beforeWhatsappRemoval(file, current).toLowerCase().includes('whatsapp'), file + ' reversal restores the removed hunks');
+    assert.throws(() => beforeWhatsappRemoval(file, current + '\n'));
+    assert.throws(() => beforeWhatsappRemoval(file, ' ' + current));
+  }
+});
+
 const protectedFiles: Record<string, string> = {
   // Optional server secrets QWEN_API_KEY and NOAM_RECAPTCHA_SECRET_KEY were
   // added so the headless Noam AI route can read Wix Secrets Manager.
@@ -48,7 +201,16 @@ const protectedFiles: Record<string, string> = {
   // exactly those additions restores 7db60ed4. All 40 client assets are identical;
   // 376 routes, 104 built-page checks and six motion/Stop checks were verified.
   // Preserve this exact-file fence; no other configuration is relaxed.
-  'astro.config.mjs': '674ebc6bc49af4471f7bc1439ae5643a39a57311a0faa89145a4011436799423',
+  // 2026-11-12: Noam requested private skill-based worksheet generation.
+  // Add only the optional server-secret TEACHER_GENERATION_SERVICE_KEY schema.
+  // Removing that single line restores the preceding protected hash exactly;
+  // no value is committed, client-exposed or required by existing teacher tools.
+  // 2026-11-14: Noam requested moving private generation off the Mac.
+  // Add only optional server-secret WORKER_URL and WORKER_WAKE_SECRET schemas.
+  // Removing those two exact lines restores ee86254e above; all other config
+  // bytes stay unchanged. Auth/API tests and the client bundle scan preserve
+  // owner-only generation and keep both fields out of browser assets.
+  'astro.config.mjs': '2b0d764bd82c356ee210b9ed80941192a7748c8141440d3a5ec8420a00aff707',
   // Noam requested restoring main's reviewed native PDF catalog on baseline
   // (30 October 2026), keeping the baseline Hebrew title corrections.
   // G9 PDF v2, G8 PDF v2 (two c2 levels), and G7 PDF v2.
@@ -92,6 +254,8 @@ const protectedFiles: Record<string, string> = {
   // above stays byte-identical; the home hero may lazy-load existing loops.
   // One readout line only: S = (a · h) : 2 school notation, PR #40 via PR #41.
   'src/components/TriangleAreaExplorer.astro': 'b2760424b5735dcf4340e5fe95aa306d19e2dd7043e841c5d12092c0fa6a01b6',
+  // Noam, 2026-11-15: WhatsApp group removed from homePage.ts, home-page.json and
+  // learning.html; beforeWhatsappRemoval reverses only those reviewed hunks.
   'src/lib/homePage.ts': '26a884245860716a5b6dd3aa6189c9d07fcd99e21dc50fca8cf70116a3ba67fb',
   'src/data/home-page.json': 'af14191d863d623cfb95e65f28ca258663d4b8be01a1ef07d520c8b1e47ff73b',
   // Head favicon/manifest/theme-color tags (b7eab08, PR #34) + noam-site-companion.js (20d0ad0f, PR #82).
@@ -115,12 +279,63 @@ const protectedFiles: Record<string, string> = {
 describe('exact-design protected live-baseline boundaries', () => {
   for (const [file, expected] of Object.entries(protectedFiles)) {
     it(`preserves ${file}`, () => {
-      let content = read(file);
+      let content = beforeActivation(file, read(file));
       if (file === 'src/data/catalog.v1.json') {
         // Noam's elementary renewal adds exactly these four grade-one editions.
         // Strip only that reviewed addition, then require the complete prior
         // snapshot hash below, including the already released grade-three edition.
-        const catalog = JSON.parse(content);
+        // Reverse the exact three additional PDF overlays before all older fences.
+        const catalog = beforeEqnSgnFacCatalog(JSON.parse(content));
+        // Reverse only the exact MED01 base topic; retain RAT47 and all older fences.
+        const medGrade = catalog.grades.find((g: any) => g.grade === 9);
+        const medIndex = medGrade.topics.findIndex((t: any) => t.id === 48);
+        assert.equal(medGrade.topics.filter((t: any) => t.id === 48).length, 1);
+        assert.equal(medGrade.topics[medIndex - 1].id, 10);
+        assert.equal(medGrade.topics[medIndex + 1].id, 11);
+        // The shared content gate requires the Hebrew maqaf in the catalog title.
+        // Reverse only that spelling correction before the original topic fence.
+        const medTopic = medGrade.topics[medIndex];
+        assert.equal(medTopic.title, 'משולש ישר־זווית — התיכון ליתר');
+        const medBeforeMaqaf = { ...medTopic, title: 'משולש ישר זווית — התיכון ליתר' };
+        assert.equal(sha256(JSON.stringify(medBeforeMaqaf)), 'd683e8256684af760b0bbb594139abf22d4593a35cc231832f9ab8c5765bf1b2');
+        assert.equal(catalog.searchTerms['9']['48'], 'משולש ישר זווית התיכון ליתר חצי היתר אמצע היתר משפט הפוך מרובעים מלבן מערכת צירים');
+        medGrade.topics.splice(medIndex, 1);
+        delete catalog.searchTerms['9']['48'];
+        // The first RAT01 publication adds one exact base PDF-only topic and its
+        // search terms. Reverse only this addition; keep every historical hash.
+        const ratGrade = catalog.grades.find((g: any) => g.grade === 9);
+        const ratIndex = ratGrade.topics.findIndex((t: any) => t.id === 47);
+        assert.equal(ratGrade.topics.filter((t: any) => t.id === 47).length, 1);
+        assert.equal(ratGrade.topics[ratIndex - 1].id, 6);
+        assert.equal(ratGrade.topics[ratIndex + 1].id, 46);
+        assert.equal(sha256(JSON.stringify(ratGrade.topics[ratIndex])),
+          'df7b3dc4135a9296bcd868cf03b19b1be231d5f09b146d04792640f280ea2685', 'exact RAT01 base topic');
+        assert.equal(catalog.searchTerms['9']['47'],
+          'משוואות רציונליות שברים אלגבריים מכנה משתנה פירוק מכנים תחום הצבה קבילות פתרונות פסילת פתרון מכנה משותף');
+        ratGrade.topics.splice(ratIndex, 1);
+        delete catalog.searchTerms['9']['47'];
+        const activation = readFirst567Activation();
+        assert.deepEqual(catalog.ramziActivation, activation.ready, 'snapshot matches the real receipt bundle');
+        assert.deepEqual(catalog.ramziHintCorrection, activation.hintCorrection, 'optional correction matches the verified receipt bundle');
+        if (activation.ready) {
+          delete catalog.ramziActivation;
+          // Strip only the correction already verified against its real readback.
+          delete catalog.ramziHintCorrection;
+          for (const grade of catalog.grades) for (const topic of grade.topics) for (const edition of topic.editions || []) {
+            const readyLevels = edition.levels.filter((level: any) => activation.ramzi.has(edition.editionId + ':' + level.key));
+            if (!readyLevels.length) continue;
+            assert.equal(readyLevels.length, 3, 'only complete three-level activation');
+            assert.equal(edition.routing.usesViewer, true); assert.equal(edition.routing.aiHintShown, true);
+            for (const level of readyLevels) {
+              assert.deepEqual(level.ramzi, activation.ramzi.get(edition.editionId + ':' + level.key));
+              delete level.ramzi;
+            }
+            // Reverse only the reviewed readiness overlay, retaining every old
+            // addition hash below and every legacy catalog byte.
+            edition.routing.usesViewer = false; edition.routing.aiHintShown = false;
+          }
+        }
+
         const grade = catalog.grades.find((g: any) => g.grade === 1);
         for (const id of [11, 12, 14, 15]) {
           const topic = grade.topics.find((t: any) => t.id === id);
@@ -132,7 +347,58 @@ describe('exact-design protected live-baseline boundaries', () => {
           delete topic.editions;
           delete topic.defaultEditionId;
         }
+        // Noam's 13 November PDF-first work adds four initial focused sets,
+        // plus two separately reviewed parallelogram follow-ups (not PR456).
+        // The 15 November G7 expression-language set is one further PDF-only
+        // overlay; its exact bytes are fenced without replacing any old hash.
+        // Bind every byte of each reviewed addition, strip only those overlays,
+        // and keep the original complete legacy catalog hash below unchanged.
+        // Bind the T90 PDF-only addition, then retain every preceding fence.
+        const parallelogram = catalog.grades.find((g: any) => g.grade === 9).topics.find((t: any) => t.id === 7);
+        const t90 = parallelogram.editions.filter((e: any) => e.editionId === 'ms-20261113-par-04-r1');
+        assert.equal(t90.length, 1);
+        assert.equal(sha256(JSON.stringify(t90[0])), 'aa6d8b18e75c1af716d4ae06b059831fc27c397cf4fd70bb992afea991a03ed9');
+        parallelogram.editions = parallelogram.editions.filter((e: any) => e.editionId !== 'ms-20261113-par-04-r1');
+        const middleAdditions = [
+          [7, 27, ['ms-20261115-prb-01-r1'], '09e21b513798a95301d3e36dafae17da22951560715163bcad102336010de544'],
+          [9, 11, ['ms-20261115-rec-01-r1'], '875222897fc221a7b3d3b245d4333fed9b88bdde86c7eba6d1eeb5c4eb4f292e'],
+          [7, 17, ['ms-20261113-trn-r1'], '3e3929a160636aabc2e27f8dedff16dbff4eda435b6c4155f50cb61134c5381c'],
+          [7, 22, ['ms-20261115-alg-01-r1'], 'b22196453ef7444643d3b428208d9f76a5108c0fa4cdbf6640da4f413d8b0b76'],
+          [7, 26, ['ms-20261115-frq-01-r1'], 'e68a3fce9c1de1ae2385341ead023c96066a8f20a52d35f34f03f6120b457000'],
+          [8, 14, ['ms-20261113-cyl-r1'], '3f476e3666dbb952773355bbb8b98d1a03d2ad3733cac819c0b210d0a792edbb'],
+          [8, 15, ['ms-20261113-con-r1'], 'e3e8dfde45ca70dbf15c20a264cf34cb329d9700f9e361917da796e454a9cc3d'],
+          [9, 7, ['ms-20261113-par-r1', 'ms-20261113-par-02-r1', 'ms-20261113-par-03-r1'], '659b7c7c0b509660b7ad814a9c99c41adab03a3b32036d1c0d4538e916273bf6'],
+        ] as const;
+        for (const [gradeId, topicId, editionIds, additionSha256] of middleAdditions) {
+          const topic = catalog.grades.find((g: any) => g.grade === gradeId).topics.find((t: any) => t.id === topicId);
+          assert.equal(topic.defaultEditionId, 'legacy');
+          assert.deepEqual(topic.editions.map((edition: any) => edition.editionId), editionIds);
+          for (const edition of topic.editions) {
+            assert.equal(edition.publicationMode, 'pdf-only');
+            assert.equal(edition.routing.usesViewer, false);
+            assert.equal(edition.routing.aiHintShown, false);
+          }
+          assert.equal(sha256(JSON.stringify(topic.editions)), additionSha256);
+          delete topic.editions;
+          delete topic.defaultEditionId;
+        }
         content = JSON.stringify(catalog, null, 2) + '\n';
+      }
+      if (file === 'public/noam-learning.js') {
+        // Noam's private teacher access adds exactly one same-origin JSON POST
+        // logout bridge to the existing learning auth listener (PR448). Reverse
+        // this reviewed addition, including its line breaks, then retain the
+        // pre-teacher c6d55b6c hash. Every other learning byte stays protected.
+        // teacher-session/client tests exercise the new logout behavior.
+        const approvedListener =
+          "  client.auth.onAuthStateChange(function(event,session){\n" +
+          "   if(event==='SIGNED_OUT')fetch('/api/teacherSession',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'logout'}),credentials:'same-origin',cache:'no-store'}).catch(function(){});\n" +
+          "   setTimeout(function(){engine.setUser(session&&session.user).catch(fail);},0);\n" +
+          "  });";
+        const priorListener =
+          "  client.auth.onAuthStateChange(function(event,session){setTimeout(function(){engine.setUser(session&&session.user).catch(fail);},0);});";
+        assert.equal(content.split(approvedListener).length, 2, 'exactly one approved JSON logout bridge');
+        content = content.replace(approvedListener, priorListener);
       }
       if (file === 'public/noam-learning-boot.js') {
         // Noam approved PDF-only elementary publication, without new DB/auth
@@ -140,6 +406,13 @@ describe('exact-design protected live-baseline boundaries', () => {
         const guard = '  if (window.NOAM_ELEMENTARY_PDF_ONLY) return;\n';
         assert.equal(content.split(guard).length, 2);
         content = content.replace(guard, '');
+        // The authorized teacher logout bridge requires a new client version.
+        // Normalize only that exact query; SDK loading, guest behavior and the
+        // existing elementary early exit remain independently fenced.
+        const approvedScript = "    s.src = 'noam-learning.js?v=20261111-teacher-post-session';";
+        const priorScript = "    s.src = 'noam-learning.js?v=20261002-lazy-supabase';";
+        assert.equal(content.split(approvedScript).length, 2, 'exactly one approved learning client version');
+        content = content.replace(approvedScript, priorScript);
       }
       assert.equal(sha256(content), expected, `${file} is outside the approved presentation-only scope`);
     });
@@ -168,7 +441,18 @@ describe('exact-design protected live-baseline boundaries', () => {
       '  document.body.textContent = window.NOAM_ELEMENTARY_PDF_URL\n' +
       '    ? "פותחים את דף העבודה…" : "הקישור לדף העבודה אינו תקין.";\n' +
       '  return;\n}\n\n';
-    const currentViewer = read('public/worksheet-viewer-noam.html');
+    // PR461 deliberately adds measured cards/feedback and a selection announcement.
+    // Reverse only the 12 reviewed, exact byte hunks; keep every pre-existing
+    // head/script SHA below. An edited/new/missing hunk or unrelated byte fails.
+    const deltaText = read('tests/fixtures/measured-viewer-reviewed-delta.json');
+    assert.equal(sha256(deltaText), '5263c24c35ea4fab909d6da593a365976778f7b75f82b276fa9e85da0c2d0482');
+    const delta = JSON.parse(deltaText);
+    let currentViewer = beforeActivation('public/worksheet-viewer-noam.html', read('public/worksheet-viewer-noam.html'));
+    for (const hunk of delta.hunks) {
+      assert.equal(currentViewer.split(hunk.after).length, 2, 'one exact reviewed viewer hunk');
+      currentViewer = currentViewer.replace(hunk.after, hunk.before);
+    }
+    assert.equal(sha256(currentViewer), delta.baseline_sha256, 'all bytes outside the reviewed delta retain the baseline');
     assert.equal(currentViewer.split(elementaryExit).length, 2);
     // The scoped exit is covered behaviorally; all prior middle-school script
     // bytes must still match their historical hashes after removing only it.
@@ -318,7 +602,7 @@ describe('exact-design protected live-baseline boundaries', () => {
     // This source-only recovery retains the error and never invokes a protected endpoint.
     // The reviewed glossary distinguishes shapes, powers and pronouns; refresh its asset only.
     assert.match(viewerWithNativeRelease, /noam-glossary\.js\?v=20261029-context6/);
-    assert.match(readFileSync(join(root, '../../worksheet-viewer-noam.html'), 'utf8'), /noam-glossary\.js\?v=20261029-context6/);
+    assert.match(readFileSync(join(root, '../../worksheet-viewer-noam.html'), 'utf8'), /noam-glossary\.js\?v=20261114-trapezoid-context1/);
     // Privately verified source facts add a bounded priority/no-disclosure instruction to the existing request.
     // 2026-10-29: image-read hints with fully verified native aids send a canonical source
     // analysis instead of OCR; the endpoint, auth, cache and request count are unchanged.

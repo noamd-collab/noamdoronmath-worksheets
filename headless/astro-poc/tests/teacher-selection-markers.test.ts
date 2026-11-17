@@ -55,7 +55,7 @@ test('printing draws only the check path, in the same bounds as the preview', ()
     assert.ok(x > mark.x * 1100 && x < (mark.x + mark.w) * 1100);
     assert.ok(y > mark.y * 1555 && y < (mark.y + mark.h) * 1555);
   }
-  for (const f of ['../public/teachers/index.html', '../../../demos/teacher-practice-picker-site-style.html']) {
+  for (const f of ['../src/teacher-pages/wizard.html', '../../../demos/teacher-practice-picker-site-style.html']) {
     const html = readFileSync(new URL(f, import.meta.url), 'utf8');
     assert.match(html, /\.print-area \.source-mark\{display:none/);
     assert.doesNotMatch(html, /\.source-mark\{[^}]*outline:3px/);

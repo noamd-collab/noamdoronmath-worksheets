@@ -206,8 +206,8 @@ test("the committed seed matches the committed public rows and hides unreviewed 
   const loaded=build.loadRows(rows,live);
   assert.deepEqual(loaded.rejected,[]);
   assert.deepEqual(build.publicRows(build.bindRows(site,loaded.rows).rows),rows);
-  assert.equal(rows.length,31670);
-  assert.equal(rows.filter(row=>row.status==="verified").length,31670);
+  assert.equal(rows.length,31685);
+  assert.equal(rows.filter(row=>row.status==="verified").length,31685);
   assert.equal(rows.filter(row=>row.status==="review").length,0);
   assert.deepEqual(build.firstPartCoverage(site,rows),{eligible:424,verified:424,missing:[]});
   rows.forEach(row=>{
@@ -388,6 +388,45 @@ test("every published ladder and source binding matches its recorded approval re
   }
 });
 
+test("T67 covers every whole-question selection with the reviewed PDF and canonical excellence IDs",()=>{
+  const root=path.join(__dirname,"..");
+  const rows=JSON.parse(fs.readFileSync(path.join(root,"learning/ramzi-hints.json")));
+  const ledger=JSON.parse(fs.readFileSync(path.join(root,"learning/ramzi-hints-review-20261031.json")));
+  const added=rows.filter(row=>row.exercise_id.startsWith("G8-T67-"));
+  assert.equal(added.length,15);
+  const sheets=[
+    ["A","f34602adb8e048aab957308c7e8c6fcb","8f2ca38f3963aa0a1d36b31d48980e988f23f3b65b4ea102b6017da7ebf51188"],
+    ["B","e67c24ee5b1e4f488c2241fd76d76162","1afa333f82cee57741c26bf30520c2a6ef43248618f74b10503121d57ba778eb"],
+    ["E","d612e5de3fd24ee1a826410e42c3cab0","6627da7d5528eff66ac0c97331eae3a7ff6a2486d2259f3aa185b289e3913dfb"]
+  ];
+  for(const [level,pdf,pdfBytes]of sheets){
+    const raw=fs.readFileSync(path.join(root,"noam-ai/manifests",pdf+".json"));
+    assert.deepEqual(fs.readFileSync(path.join(root,"headless/astro-poc/public/noam-ai/manifests",pdf+".json")),raw);
+    const manifest=JSON.parse(raw),ids=Array.from({length:5},(_,i)=>"G8-T67-"+level+"-Q0"+(i+1));
+    assert.equal(manifest.levelCode,level);
+    assert.equal(manifest.level,level==="E"?"c":level.toLowerCase(),"catalog/learning level c stays intact");
+    assert.equal(manifest.sourceSha256,pdfBytes);
+    assert.equal(manifest.wholeQuestionGeometry,true);
+    assert.deepEqual(manifest.exercises.map(ex=>ex.id),ids);
+    for(const ex of manifest.exercises){
+      const row=added.find(row=>row.exercise_id===ex.id),review=ledger.rows.find(row=>row.exercise_id===ex.id);
+      assert.ok(row,ex.id);assert.ok(review,ex.id);
+      assert.equal(row.source,"ramzi-printed-source-20261113");
+      assert.equal(row.source_pdf_hash,pdf);assert.equal(row.source_native_sha256,null);
+      assert.equal(row.source_exercise_sha256,build.sourceTaskHash(ex.text));
+      assert.equal(review.review_scope,"whole_question");
+      assert.equal(review.source_pdf_bytes_sha256,pdfBytes);
+      assert.equal(review.source_manifest_sha256,createHash('sha256').update(raw).digest('hex'));
+      assert.match(review.source_packet_sha256,/^[a-f0-9]{64}$/);
+      assert.equal(review.question_crop_sha256.length,ex.crops.length);
+      review.question_crop_sha256.forEach(digest=>assert.match(digest,/^[a-f0-9]{64}$/));
+      assert.equal(new Set(row.hints).size,3);
+      assert.equal(build.hintIssue(row.hints),null);
+    }
+  }
+  assert.ok(!added.some(row=>row.exercise_id.includes("-C-")));
+});
+
 test("all current Q01 parts have a source-bound ladder, including E2 and canonical T40",()=>{
   const root=path.join(__dirname,"..");
   const rows=JSON.parse(fs.readFileSync(path.join(root,"learning/ramzi-hints.json")));
@@ -401,7 +440,7 @@ test("all current Q01 parts have a source-bound ladder, including E2 and canonic
       expected.set(key,{id,level});
     }
   }
-  assert.equal(expected.size,1653);
+  assert.equal(expected.size,1656);
   for(const {id,level}of expected.values()){
     const row=byId.get(id);assert.ok(row,id+" is missing");
     assert.equal(row.status,"verified");
@@ -422,7 +461,7 @@ test("all current Q01 parts have a source-bound ladder, including E2 and canonic
   }
 });
 
-for(const [grade,coverage,sharedCoverage] of [[7,11942,0],[8,13673,0],[9,6055,2445]])test("every current grade "+grade+" part has a ladder bound to its exact PDF, native revision and selected text",()=>{
+for(const [grade,coverage,sharedCoverage] of [[7,11942,0],[8,13688,0],[9,6055,2445]])test("every current grade "+grade+" part has a ladder bound to its exact PDF, native revision and selected text",()=>{
   const rows=JSON.parse(fs.readFileSync(path.join(__dirname,"..","learning/ramzi-hints.json")));
   const byId=new Map(rows.map(row=>[row.exercise_id,row]));
   const expected=new Map();

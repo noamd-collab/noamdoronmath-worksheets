@@ -7,6 +7,62 @@ import { parseHTML } from 'linkedom';
 const viewer = readFileSync(new URL('../public/worksheet-viewer-noam.html', import.meta.url), 'utf8');
 const sourceModule = readFileSync(new URL('../public/noam-native-visual.js', import.meta.url), 'utf8');
 const authoredModule = readFileSync(new URL('../public/noam-authored-visual.js', import.meta.url), 'utf8');
+
+// Actual first-release packages, with static fetches only. This exercises the
+// page gate and real source-first renderer, not a substitute drawing function.
+it('all twelve first567 units reach source focus and preserve prepared text and source SVG', async () => {
+  const ready = JSON.parse(readFileSync(new URL('../../../headless/catalog/worksheet-ramzi-ready.v1.json', import.meta.url), 'utf8'));
+  assert.equal(ready.units.length, 12);
+  for (const viewerPath of ['../public/worksheet-viewer-noam.html', '../../../worksheet-viewer-noam.html']) {
+    const html = readFileSync(new URL(viewerPath, import.meta.url), 'utf8');
+    const take = (start: string, end: string) => html.slice(html.indexOf(start), html.indexOf(end, html.indexOf(start) + start.length));
+    const policy = take('var NOAM_DRAWING_HINT_GEOMETRY=', 'function noamCanOfferDrawing(');
+    const native = take('var noamSourceVisualPackages=', 'function noamNativeFigure(');
+    const request = take('function requestNoamDiagram(', 'function noamVisualAnswer(');
+    for (const unit of ready.units) {
+      const manifest = JSON.parse(readFileSync(new URL('../public/noam-ai/manifests/' + unit.pdfId + '.json', import.meta.url), 'utf8'));
+      const exercise = manifest.exercises.find((e: any) => e.q === 1 && e.part === 'א');
+      assert.ok(exercise?.nativeFigureUrl, unit.prefix + '/' + unit.level);
+      const body = readFileSync(new URL('../public' + manifest.nativeExportUrl, import.meta.url), 'utf8');
+      const data = JSON.parse(body), originalSvg = readFileSync(new URL('../public' + exercise.nativeFigureUrl, import.meta.url), 'utf8');
+      const point = unit.prefix === 'G8-T87' ? 'S' : 'A';
+      const answer = unit.prefix === 'G7-T86' && unit.level === 'a' ? 'התבוננו בקטע AB.' : 'התבוננו בנקודה ' + point + '.';
+      const options = { answer, studentMessage: 'אפשר רמז 1?', helpKind: 'hint' };
+      const { document, window } = parseHTML('<html><body></body></html>');
+      const message: any = { role: 'assistant', text: answer, preparedHint: true };
+      const thread = { messages: [message], history: [] };
+      const calls: string[] = [], runtime = { messages: new Map(), jobs: new Map(), cache: new Map() };
+      const c: any = { document, window, manifest, selectedExercise: exercise, Map, WeakMap, WeakSet, Promise,
+        noamDiagramSourceIdentity: (e: any) => manifest.pdfHash + ':' + e.id,
+        noamDiagramRuntime: () => runtime, noamDiagramRefresh() {}, saveNoamState() {}, renderNoamChat() {},
+        noamMessageVisualOptions: () => options, noamSourceCropRequested: () => false, noamNativeFocusUrl: () => null,
+        noamConstructedVisual: () => { throw new Error('source-first focus must not fall through'); },
+        fetch: async (url: string) => {
+          calls.push(url); assert.ok([manifest.nativeExportUrl, exercise.nativeFigureUrl].includes(url), url);
+          return { ok: true, json: async () => data, text: async () => originalSvg };
+        },
+      };
+      runInNewContext(sourceModule + '\n' + native + '\n' + policy + '\n' + request, c);
+      (window as any).NoamNativeVisual = c.NoamNativeVisual;
+      assert.equal(c.noamPageAllowsDrawingHint(), true);
+      const visual = await c.requestNoamDiagram(exercise, thread, message, options);
+      assert.equal(visual.type, 'native-source-visual', unit.prefix + '/' + unit.level);
+      assert.equal(visual.presentation, 'source-focus');
+      const figure = c.noamRenderSourceVisual(visual);
+      assert.ok(figure?.querySelector('[data-role="focus-point"], line, path'), unit.prefix + '/' + unit.level);
+      assert.equal(figure.querySelector('image').getAttribute('href'), exercise.nativeFigureUrl);
+      assert.equal(message.text, answer); assert.equal(message.preparedHint, true); assert.equal(thread.history.length, 0);
+      assert.deepEqual(calls, [manifest.nativeExportUrl, exercise.nativeFigureUrl]);
+      assert.equal(JSON.stringify(data), JSON.stringify(JSON.parse(body)), 'source unchanged');
+      for (const prefix of ['G8-T02', 'G9-T99', 'G9-T88', 'G9-T89', 'G9-T90']) {
+        c.manifest = { ...manifest, prefix, topic: 'גיאומטריה אנליטית' };
+        const before = calls.length;
+        assert.equal(await c.requestNoamDiagram(exercise, thread, message, { ...options, studentMessage: 'סמן בשרטוט את הנקודה A' }), null);
+        assert.equal(calls.length, before);
+      }
+    }
+  }
+});
 const helper = 'var noamSourceVisualPackages=' + viewer.split('var noamSourceVisualPackages=')[1].split('function noamNativeFigure(')[0];
 function fn(name: string) {
   const text = viewer.slice(viewer.indexOf('function ' + name + '('));

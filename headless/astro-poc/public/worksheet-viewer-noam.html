@@ -1561,6 +1561,8 @@ textarea:focus{
   outline-offset:2px;
 }
 .noam-draw-action:disabled{cursor:wait;opacity:.65}
+/* Temporary drawing-request pause; keep existing source-diagram enlargement available. */
+#noamDraw,.noam-draw-action:not(.noam-diagram-expand){display:none!important}
 /* Expand an existing diagram independently of the short chat scrollport. */
 .noam-diagram-expand{min-height:44px;font-size:15px}
 .noam-diagram-expandable{cursor:pointer}
@@ -1731,6 +1733,8 @@ textarea:focus{
 }
 .noam-compose textarea:focus,.noam-compose textarea:focus-visible{outline:none;box-shadow:none}
 .noam-compose-help{margin:4px 2px 0;color:var(--muted);font-size:12px}
+.noam-privacy-note{margin:2px 2px 0;color:#3d4870;font-size:12px;line-height:1.35}
+.noam-privacy-note a{display:inline-flex;align-items:center;min-height:44px;vertical-align:middle;color:inherit;font-weight:700;text-decoration:underline}
 .noam-ai-feedback{
   display:block;
   width:max-content;
@@ -2084,6 +2088,25 @@ textarea:focus{
   .pdf-tools .pdf-phone-hint{display:block;grid-column:1/-1;direction:rtl;text-align:center;font:12px/20px Heebo,sans-serif;color:#22305a}
   .pdf-scroll{padding-bottom:20px}
 }
+
+/* Measured/native card: the original question remains visible after hints. */
+.exact-viewer .panel-body.is-chat:not(.is-previewing)>.noam-picked.noam-native-question-card{max-height:34vh;overflow:auto;flex:0 0 auto;min-height:0}
+.exact-viewer .panel .noam-native-question-card .noam-picked-text{display:block;max-height:none;overflow:visible}
+.exact-viewer .noam-native-question-card [hidden]{display:none!important}
+.exact-viewer .noam-native-source{font:16px/1.65 Heebo,sans-serif;direction:rtl}
+.exact-viewer .noam-native-source p{margin:8px 0;white-space:pre-wrap}
+.exact-viewer .noam-native-selected-item{font-weight:700}
+.exact-viewer .noam-native-context>summary{border-top:1px solid #c9cfdc;font-size:14px}
+.exact-viewer .noam-native-context>summary::before{content:"＋";margin-inline-end:8px}
+.exact-viewer .noam-native-context[open]>summary::before{content:"−"}
+.exact-viewer .noam-native-question-figure{margin:10px 0}
+.exact-viewer .noam-native-source img{display:block;width:100%;max-width:100%;height:auto;background:#fff}
+.exact-viewer .noam-native-table-scroll{max-width:100%;overflow-x:auto}
+.exact-viewer .noam-native-question-table{border-collapse:collapse;width:100%;font-size:15px}
+.exact-viewer .noam-native-question-table th,.exact-viewer .noam-native-question-table td{border:1px solid #abb4c5;padding:7px;min-width:48px;vertical-align:top;text-align:right}
+.exact-viewer .noam-native-source summary{cursor:pointer;min-height:44px;display:flex;align-items:center;font-weight:700}
+.exact-viewer .panel-body.is-previewing>.noam-picked.noam-native-question-card{max-height:none;flex:1 1 auto;overflow:auto}
+
 </style>
 <link rel="stylesheet" href="noam-learning.css?v=20260910-mobile-1">
 <link rel="icon" href="/favicon.ico" sizes="48x48">
@@ -2392,6 +2415,7 @@ body.exact-viewer{
 }
 .exact-viewer .exact-message-row .noam-send:hover{background:#174b49}
 .exact-viewer .exact-compose .noam-compose-help{margin:0;padding:0 12px 8px;font-size:12px}
+.exact-viewer .exact-compose .noam-privacy-note{margin:0;padding:0 12px 2px}
 .exact-viewer.exact-narrow .exact-viewer-header{display:flex;gap:8px;padding:6px 12px;flex:none}
 .exact-viewer.exact-narrow .exact-viewer-header img{height:34px}
 .exact-viewer.exact-narrow .exact-viewer-header nav{display:none}
@@ -3259,7 +3283,7 @@ html.noam-a11y-motion .exact-viewer .panel-head .exact-ramzi-avatar ramzi-avatar
 <script src="noam-source-data-visual.js?v=20261028-source-data3"></script>
 <script src="noam-source-scaffold.js?v=20261029-scaffold1"></script>
 <script src="noam-glossary-curriculum.js?v=20261018-fracbar"></script>
-<script src="noam-glossary.js?v=20261029-context6"></script>
+<script src="noam-glossary.js?v=20261114-trapezoid-context1"></script>
 <script src="noam-curated-hints.js?v=20261107-edition-bindings1"></script>
 <script>
 (function(){
@@ -5834,6 +5858,7 @@ function selectManifestExercise(exercise, pin){
   clearNoamAnnouncement();
   panelBody.classList.remove("is-previewing");
   selectedExercise = exercise;
+  announceNoam(exerciseLabel(exercise)+". נבחר סעיף חדש.");
   if (selectedPin){ selectedPin.classList.remove("is-active"); }
   selectedPin = pin || null;
   if (selectedPin){ selectedPin.classList.add("is-active"); }
@@ -6251,6 +6276,117 @@ function noamEditionQuestionHtml(value){
   }).join("");
 }
 
+// BEGIN MEASURED QUESTION CARD: original source only, never answer AST.
+function noamHasMeasuredNativeQuestion(exercise){
+  return !!(manifestReady&&manifest&&manifest.geometryContract==='measured-v1'&&exercise&&noamNativeDataUrl(exercise));
+}
+function noamBuildMeasuredQuestion(data,exercise,sourceManifest){
+  if(!data||!sourceManifest||data.package!==sourceManifest.prefix||data.level!==exercise.nativeLevel||
+      data.level!==(sourceManifest.nativeLevel||sourceManifest.level)||!Array.isArray(data.questions)||!Array.isArray(data.figures)){return null;}
+  var questions=data.questions.filter(function(q){return q.id===exercise.nativeQuestionId;});
+  if(questions.length!==1){return null;}
+  var question=questions[0],items=(question.items||[]).filter(function(i){return i.id===exercise.nativeItemId;});
+  if(question.label!==exercise.q||items.length!==1||items[0].label!==exercise.part){return null;}
+  var item=items[0],stem=noamPrintedText(question.text),task=noamPrintedText(item.text);
+  if(stem===null||task===null||!task){return null;}
+  var root=document.createElement('div');root.className='noam-native-source';root.dataset.exerciseId=exercise.id;
+  function text(tag,value,className){
+    var el=document.createElement(tag);if(className){el.className=className;}
+    el.innerHTML=noamEditionQuestionHtml(String(value).replace(/\\para\b/g,'\\parallel').replace(/\\tri\b/g,'\\triangle').replace(/\\f\b/g,'\\frac'));return el;
+  }
+  function table(value){
+    if(!value){return null;}
+    if(!Array.isArray(value.head)||!value.head.length||!Array.isArray(value.rows)||!value.rows.length||
+        ![value.head].concat(value.rows).every(function(row){return Array.isArray(row)&&row.length===value.head.length&&row.every(function(c){return typeof c==='string';});})){throw new Error('INVALID_PRINTED_TABLE');}
+    var wrap=document.createElement('div');wrap.className='noam-native-table-scroll';
+    var el=document.createElement('table');el.className='noam-native-question-table';
+    var head=document.createElement('thead'),body=document.createElement('tbody'),hr=document.createElement('tr');
+    value.head.forEach(function(c){var cell=text('th',c);cell.scope='col';hr.appendChild(cell);});head.appendChild(hr);
+    value.rows.forEach(function(row){var tr=document.createElement('tr');row.forEach(function(c){tr.appendChild(text('td',c));});body.appendChild(tr);});
+    el.appendChild(head);el.appendChild(body);wrap.appendChild(el);return wrap;
+  }
+  // Keep the selected task visible before reminders, tables and figures.
+  root.appendChild(text('p',String(item.label)+'. '+task,'noam-native-selected-item'));
+  var context=document.createElement('details');context.className='noam-native-context';
+  var contextSummary=document.createElement('summary');contextSummary.textContent='פתיחת נתוני השאלה והשרטוטים';context.appendChild(contextSummary);
+  root.appendChild(context);
+  // Only literal printed fields. Do not render given/to_prove/solutions/visual-model target values.
+  if(question.example&&typeof question.example.title==='string'&&Array.isArray(question.example.lines)&&question.example.lines.every(function(s){return typeof s==='string';})){
+    var reminder=document.createElement('details');reminder.className='noam-native-reminder';
+    reminder.appendChild(text('summary',question.example.title));question.example.lines.forEach(function(s){reminder.appendChild(text('p',s));});context.appendChild(reminder);
+  }
+  context.appendChild(text('p',stem,'noam-native-stem'));
+  try{var qt=table(question.table);if(qt){context.appendChild(qt);}}catch(error){return null;}
+  var refs=exercise.nativeFigures;
+  if(!Array.isArray(refs)){return null;}
+  var seen=new Set(),base=String(sourceManifest.nativeExportUrl||'').replace(/noam-ai\.json$/,'');
+  if(!/^\/noam-ai\/native\/G[789]-T[0-9]+\/[abc]\/$/.test(base)){return null;}
+  for(var ref of refs){
+    if(!ref||seen.has(ref.id)){return null;}seen.add(ref.id);
+    var candidates=data.figures.filter(function(f){return f.id===ref.id&&f.question===question.id;});
+    if(candidates.length!==1||!/^figures\/[A-Za-z0-9_-]+\.svg$/.test(candidates[0].svg)||ref.url!==base+candidates[0].svg){return null;}
+    var fig=document.createElement('figure');fig.className='noam-native-question-figure';fig.dataset.figureId=ref.id;
+    var image=document.createElement('img');image.src=ref.url;image.alt='השרטוט המקורי של '+exerciseLabel(exercise)+(refs.length>1?' — לוח '+(seen.size):'');
+    image.addEventListener('error',function(){this.hidden=true;var note=document.createElement('p');note.textContent='השרטוט לא נטען. אפשר לפתוח את השאלה המקורית בדף.';this.parentNode.appendChild(note);});
+    fig.appendChild(image);context.appendChild(fig);
+  }
+  try{var it=table(item.table);if(it){context.appendChild(it);}}catch(error){return null;}
+  // The full PDF preserves printed captions, section headings and prior-part context,
+  // including information not represented by the native JSON. Never infer labels.
+  var original=document.createElement('details');original.className='noam-native-original';
+  var summary=document.createElement('summary');summary.textContent='השאלה המלאה כפי שמופיעה בדף';original.appendChild(summary);
+  original.addEventListener('toggle',function(){
+    if(!original.open||original.dataset.requested){return;}original.dataset.requested='1';
+    var status=document.createElement('p');status.textContent='טוען את צילום השאלה…';original.appendChild(status);
+    cropExerciseCanvas(exercise,{exactSourceCrops:true}).then(function(canvas){
+      if(!root.isConnected||manifest!==sourceManifest||!selectedExercise||selectedExercise.id!==exercise.id){return;}
+      var img=document.createElement('img');img.src=canvas.toDataURL('image/png');img.alt='השאלה המקורית, כולל כיתובי השרטוטים והטבלה';
+      status.replaceWith(img);
+    }).catch(function(){status.textContent='צילום השאלה לא נטען. אפשר להשתמש ב״הצג בדף״.';delete original.dataset.requested;});
+  });
+  context.appendChild(original);return root;
+}
+function noamSetMeasuredContextExpanded(expanded){
+  var context=document.querySelector('#noamNativeQuestion .noam-native-context');
+  if(context){context.open=!!expanded;}
+}
+function noamRenderMeasuredQuestion(exercise){
+  var host=document.getElementById('noamNativeQuestion'),fallback=document.getElementById('noamPickedText'),sourceManifest=manifest;
+  if(!host||!fallback){return Promise.resolve(false);}
+  return noamVerifiedNativeData(exercise).then(function(data){
+    if(!host.isConnected||manifest!==sourceManifest||!selectedExercise||selectedExercise.id!==exercise.id){return false;}
+    var content=noamBuildMeasuredQuestion(data,exercise,sourceManifest);
+    if(!content){return false;}
+    host.replaceChildren(content);host.hidden=false;fallback.hidden=true;
+    noamSetMeasuredContextExpanded(panelBody.classList.contains('is-previewing'));
+    renderPanelMath(host);return true;
+  }).catch(function(){return false;});
+}
+// The presentation adapter runs in a separate script. Export commands and an
+// immutable presentation snapshot only, never the manifest or mutable threads.
+function noamMeasuredFeedbackSnapshot(){
+  if(!noamHasMeasuredNativeQuestion(selectedExercise)){return null;}
+  var thread=exerciseThread(selectedExercise.id),messages=thread.messages||[],reply=messages.length?messages[messages.length-1]:null;
+  var eligible=!busy&&(!reply||(reply.role==='assistant'&&!reply.answerError&&!reply.understood&&!reply.closed&&String(reply.text||'').trim()));
+  return Object.freeze({binding:JSON.stringify([String(manifest.editionId||''),manifest.nativeExportSha256,selectedExercise.id]),target:eligible?(reply?'reply':'question'):null});
+}
+function noamRespondMeasuredFeedback(binding,intent){
+  var state=noamMeasuredFeedbackSnapshot();
+  if(!state||!state.target||state.binding!==binding||['understood','not-understood'].indexOf(intent)<0){return false;}
+  var thread=exerciseThread(selectedExercise.id),understood=intent==='understood';
+  if(!understood&&thread.hintIndex<3){askNoam('hint','');return true;}
+  var done=thread.hintIndex>=3;
+  var text=understood?(done?'יופי, מעולה שזה ברור. אפשר לעבור לסעיף הבא.':'יופי, מעולה שזה ברור. עכשיו נסו להמשיך לבד. אם תיתקעו, אפשר ללחוץ על ״רמז״.'):
+    'כבר פתחנו את שלושת הרמזים. אפשר לחזור לשאלה ולרמזים, ולבקש מהמורה עזרה בצעד שעדיין אינו ברור.';
+  thread.messages.push({role:'user',text:understood?'הבנתי':'לא הבנתי',kind:''});
+  thread.messages.push({role:'assistant',text:text,kind:'',understood:understood,closed:true});
+  saveNoamState();renderNoamChat();announceNoam(exerciseLabel(selectedExercise)+'. '+text);return true;
+}
+function noamInstallMeasuredFeedbackBridge(){
+  window.NoamMeasuredFeedback=Object.freeze({snapshot:noamMeasuredFeedbackSnapshot,respond:noamRespondMeasuredFeedback});
+}
+// END MEASURED QUESTION CARD
+
 // Prepared hints have a deliberately small UI and no model/diagram entry point.
 // The original worksheet remains visible; question text is bound by the manifest.
 function renderPreparedEditionChat(){
@@ -6297,6 +6433,7 @@ function renderNoamChat(){
   var drawingHintsAllowed=typeof noamPageAllowsDrawingHint!=='function'||noamPageAllowsDrawingHint();
   var drawingPending = !!(drawingAnswer&&drawingHintsAllowed&&noamDiagramRuntime().messages.has(drawingAnswer));
   var hasConversation = !!(thread.messages.length || thread.history.length || thread.hintIndex);
+  var measuredNativeQuestion = noamHasMeasuredNativeQuestion(selectedExercise);
   var previewing = panelBody.classList.contains("is-previewing");
   var text = selectedExercise.text || selectedExercise.prompt || selectedExercise.context || "";
   var hasAssistantAnswer = thread.messages.some(function(message){
@@ -6304,10 +6441,10 @@ function renderNoamChat(){
   });
 
   panelBody.innerHTML =
-    '<div class="noam-picked'+(hasConversation?' noam-picked-compact':'')+'">' +
+    '<div class="noam-picked'+(measuredNativeQuestion?' noam-native-question-card':hasConversation?' noam-picked-compact':'')+'">' +
       '<div class="noam-picked-heading"><div class="noam-picked-label">' + esc(exerciseLabel(selectedExercise)) + '</div>' +
-      '<button type="button" class="noam-preview-toggle" id="noamPreviewToggle" aria-controls="noamPickedPreview" aria-expanded="'+previewing+'">'+(previewing?'חזרה לשיחה':'הצגת השאלה')+'</button></div>' +
-      '<div class="noam-picked-preview" id="noamPickedPreview" hidden></div><div class="noam-picked-text" id="noamPickedText" role="status">טוען את השאלה מתוך ה־PDF…</div>' +
+      '<button type="button" class="noam-preview-toggle" id="noamPreviewToggle" aria-controls="'+(measuredNativeQuestion?'noamNativeQuestion':'noamPickedPreview')+'" aria-expanded="'+previewing+'">'+(previewing?'חזרה לשיחה':'הצגת השאלה')+'</button></div>' +
+      (measuredNativeQuestion?'<div id="noamNativeQuestion" hidden></div><div class="noam-picked-text" id="noamPickedText">'+noamEditionQuestionHtml(text)+'</div>':'<div class="noam-picked-preview" id="noamPickedPreview" hidden></div><div class="noam-picked-text" id="noamPickedText" role="status">טוען את השאלה מתוך ה־PDF…</div>') +
     '</div>' +
     '<div class="noam-thread-tools">' +
       '<button type="button" class="noam-link-button" id="noamNewThread">שיחה חדשה</button>' +
@@ -6323,7 +6460,7 @@ function renderNoamChat(){
           '<button type="button" class="noam-action" id="noamMistake" hidden>טעות נפוצה</button>' +
           '<span class="noam-input-spacer" aria-hidden="true"></span>' +
           '<button type="button" class="noam-math-toggle" id="noamMathToggle" aria-label="פתיחת סימנים מתמטיים" title="סימנים מתמטיים" aria-controls="noamMathKeys" aria-expanded="'+mathKeyboardOpen+'">x²</button>' +
-          '<button type="button" class="noam-attach-button" id="noamAttachButton" aria-label="צירוף צילום או קובץ" title="צירוף צילום או קובץ"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 12.5 15 6a3.5 3.5 0 0 1 5 5l-8.5 8.5a5 5 0 0 1-7-7L13 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>' +
+          '<button type="button" class="noam-attach-button" id="noamAttachButton" aria-label="צירוף צילום או קובץ. מצלמים רק את התרגיל, בלי שם, בלי פנים ובלי פרטים אישיים" title="מצלמים רק את התרגיל, בלי שם, בלי פנים ובלי פרטים אישיים. הקובץ נשלח לעיבוד אצל ספק AI"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 12.5 15 6a3.5 3.5 0 0 1 5 5l-8.5 8.5a5 5 0 0 1-7-7L13 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>' +
           '<input type="file" id="noamAttachInput" accept="image/*,application/pdf" multiple hidden>' +
         '</div>' +
         '<div class="noam-math-keys" id="noamMathKeys" role="group" aria-label="סימנים מתמטיים"'+(mathKeyboardOpen?'':' hidden')+'>' +
@@ -6342,6 +6479,7 @@ function renderNoamChat(){
         '<textarea id="noamQuestion" maxlength="700" placeholder="למשל: איך מתחילים?" aria-describedby="noamComposeHelp">'+esc(noamDrafts[selectedExercise.id]||"")+'</textarea>' +
       '</div>' +
       '<div class="noam-compose-help" id="noamComposeHelp"><span dir="ltr">Enter</span> לשליחה · <span dir="ltr">Shift+Enter</span> לשורה חדשה</div>' +
+      '<p class="noam-privacy-note" id="noamPrivacyNote" data-ai-privacy-note>רמזי הוא בינה מלאכותית ועלול לטעות. ההודעות והקבצים נשלחים לספק AI חיצוני, אז שולחים רק את התרגיל, בלי פרטים אישיים. <a href="/privacy#ai" target="_blank" rel="noopener">מה קורה למידע?</a></p>' +
       '<button type="button" class="noam-send" id="noamSend">שלח לרמזי</button>' +
     '</div>' +
     (hasAssistantAnswer
@@ -6366,6 +6504,7 @@ function renderNoamChat(){
     previewToggle.addEventListener("click",function(){
       var expanded = !panelBody.classList.contains("is-previewing");
       panelBody.classList.toggle("is-previewing",expanded);
+      if (measuredNativeQuestion){noamSetMeasuredContextExpanded(expanded);}
       this.setAttribute("aria-expanded",String(expanded));
       this.textContent = expanded ? "חזרה לשיחה" : "הצגת השאלה";
       panelBody.scrollTop = 0;
@@ -6457,7 +6596,8 @@ function renderNoamChat(){
   document.getElementById("noamDraw").disabled=!drawingHintsAllowed||busy||drawingPending;
   renderPanelMath(panelBody);
   panelBody.querySelectorAll(".noam-row.assistant .noam-bubble,#noamPickedText").forEach(enhanceNoamGlossary);
-  renderExercisePreview(selectedExercise,0);
+  if (measuredNativeQuestion){noamRenderMeasuredQuestion(selectedExercise);}
+  else {renderExercisePreview(selectedExercise,0);}
   restoreNoamChatFocus(focusId);
   transcript.scrollTop = transcript.scrollHeight;
 }
@@ -9350,7 +9490,7 @@ function noamResponseVisual(exercise,thread,studentMessage,answer,helpKind,hintI
 }
 
 // Noam, 29.10.2026: drawing hints (רמז בשרטוט) only on geometry and analytic geometry.
-var NOAM_DRAWING_HINT_GEOMETRY='G7-T11,G7-T12,G7-T13,G7-T14,G7-T15,G7-T16,G7-T17,G7-T18,G7-T19,G7-T20,G7-T42,G7-T43,G7-T44,G7-T45,G7-T46,G7-T47,G7-T48,G8-T38,G8-T39,G8-T40,G8-T41,G8-T42,G8-T43,G8-T44,G8-T45,G8-T46,G8-T47,G8-T49,G8-T50,G8-T51,G8-T52,G8-T53,G8-T54,G8-T55,G8-T62,G8-T63,G8-T65,G9-T15,G9-T17,G9-T18,G9-T19,G9-T20,G9-T21,G9-T22,G9-T23,G9-T24,G9-T25,G9-T26,G9-T27,G9-T28,G9-T29,G9-T30,G9-T32,G9-T33,G9-T35,G9-T37,G9-T38,G9-T39,G9-T40,G9-T46';
+var NOAM_DRAWING_HINT_GEOMETRY='G7-T11,G7-T12,G7-T13,G7-T14,G7-T15,G7-T16,G7-T17,G7-T18,G7-T19,G7-T20,G7-T42,G7-T43,G7-T44,G7-T45,G7-T46,G7-T47,G7-T48,G7-T86,G8-T38,G8-T39,G8-T40,G8-T41,G8-T42,G8-T43,G8-T44,G8-T45,G8-T46,G8-T47,G8-T49,G8-T50,G8-T51,G8-T52,G8-T53,G8-T54,G8-T55,G8-T62,G8-T63,G8-T65,G8-T84,G8-T87,G9-T15,G9-T17,G9-T18,G9-T19,G9-T20,G9-T21,G9-T22,G9-T23,G9-T24,G9-T25,G9-T26,G9-T27,G9-T28,G9-T29,G9-T30,G9-T32,G9-T33,G9-T35,G9-T37,G9-T38,G9-T39,G9-T40,G9-T46,G9-T85';
 var NOAM_DRAWING_HINT_ANALYTIC='G9-T08';
 function noamDrawingHintListed(list,prefix){
   return (','+list+',').indexOf(','+prefix+',')!==-1;
@@ -10064,8 +10204,9 @@ function noamAnswerUnderstood(reply){
   announceNoam(exerciseLabel(selectedExercise) + ". רמזי: " + text);
   return true;
 }
-// The exact-viewer adapter is a separate script; this is its only entry point.
+// The exact-viewer adapter is a separate script; expose bounded commands only.
 window.noamAnswerUnderstood=noamAnswerUnderstood;
+noamInstallMeasuredFeedbackBridge();
 
 function noamReconcilePreparedHints(source,exercise,thread){
   if(!source||manifest!==source||!exercise||!thread||busy){return false;}
@@ -10520,11 +10661,11 @@ function esc(s){
 
 <script src="noam-accessibility.js?v=20260907-1" defer></script>
 
-<script src="noam-learning-catalog.js?v=20260912-topic41" defer></script>
+<script src="noam-learning-catalog.js?v=20261114-edition-learning1" defer></script>
 <script src="noam-learning-config.js?v=20260908-1" defer></script>
 
 <script src="noam-learning-core.js?v=20260908-1" defer></script>
-<script src="noam-learning-boot.js?v=20261002-lazy-supabase" defer></script>
+<script src="noam-learning-boot.js?v=20261114-edition-learning1" defer></script>
 <script src="ramzi/ramzi-avatar.js"></script>
 <script id="exact-viewer-adapter">
 /* Presentation adapter only. The preceding released scripts retain ownership
@@ -10900,6 +11041,21 @@ function esc(s){
     return group;
   }
   function placeUnderstandingChecks(transcript){
+    // Keep the existing controls/delegation; the owner script supplies only an
+    // immutable presentation state and revalidates commands against its selection.
+    var bridge=window.NoamMeasuredFeedback,state=bridge&&bridge.snapshot();
+    if(state){
+      var replies=transcript.querySelectorAll('.noam-row.assistant');
+      var target=state.target==='reply'?(replies.length?replies[replies.length-1].querySelector('.noam-bubble'):null):state.target==='question'?panelBody.querySelector('.noam-picked'):null;
+      panelBody.querySelectorAll('.ramzi-check').forEach(function(group){
+        if(!target||!target.contains(group)||group.dataset.measuredBinding!==state.binding){group.remove();}
+      });
+      if(!target){pendingCheckFocus=false;return false;}
+      var group=target.querySelector('.ramzi-check');
+      if(!group){group=makeCheckGroup();group.dataset.measuredBinding=state.binding;target.appendChild(group);}
+      if(pendingCheckFocus){pendingCheckFocus=false;var yes=group.querySelector('.ramzi-check-yes');if(yes){yes.focus({preventScroll:true});}}
+      return true;
+    }
     var rows=Array.from(transcript.querySelectorAll('.noam-row.assistant'));
     var last=rows.length?rows[rows.length-1]:null;
     transcript.querySelectorAll('.ramzi-check').forEach(function(group){
@@ -11023,7 +11179,13 @@ function esc(s){
       transcript.classList.remove('is-empty');
     });
   }
-  function submitUnderstanding(intent){
+  function submitUnderstanding(intent,control){
+    var bridge=window.NoamMeasuredFeedback,state=bridge&&bridge.snapshot();
+    if(state){
+      var group=control&&control.closest('.ramzi-check');
+      if(!group||!group.isConnected||group.dataset.measuredBinding!==state.binding){return;}
+      pendingCheckFocus=false;bridge.respond(group.dataset.measuredBinding,intent);return;
+    }
     if(panelBody.querySelector('.noam-bubble.thinking')){return;}
     var replies=panelBody.querySelectorAll('.noam-row.assistant');
     var last=replies.length?replies[replies.length-1]:null;
@@ -11385,7 +11547,8 @@ function esc(s){
       });
       tools.appendChild(button);
     }
-    button.hidden=!document.querySelector('.noam-exercise-pin.is-active');
+    var hidden=!document.querySelector('.noam-exercise-pin.is-active');
+    if(button.hidden!==hidden){button.hidden=hidden;}
   }
   function layoutQuestionHits(){
     document.querySelectorAll('.pdf-page').forEach(function(page){
@@ -11737,7 +11900,7 @@ function esc(s){
     touchedCheck=tap.check;touchedAt=Date.now();
     // Close the keyboard as the native tap would.
     document.activeElement.blur();
-    submitUnderstanding(checkIntent(tap.check));
+    submitUnderstanding(checkIntent(tap.check),tap.check);
   },{passive:false});
   panelBody.addEventListener('click',function(event){
     var check=event.target&&event.target.closest&&event.target.closest('[data-ramzi-check]');
@@ -11746,7 +11909,7 @@ function esc(s){
       // Keyboard and programmatic clicks (detail 0) always count; a pointer
       // click on the same button right after a handled touch is that tap.
       if(event.detail>0&&check===touchedCheck&&Date.now()-touchedAt<800){return;}
-      submitUnderstanding(checkIntent(check));
+      submitUnderstanding(checkIntent(check),check);
       return;
     }
     if(event.target&&event.target.closest&&event.target.closest('#noamNewThread')){

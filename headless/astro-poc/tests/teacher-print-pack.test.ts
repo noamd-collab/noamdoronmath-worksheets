@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 
 const printer = readFileSync(new URL('../public/teachers/teacher-factoring-print.js', import.meta.url), 'utf8');
 const demo = readFileSync(new URL('../../../demos/teacher-factoring-print.js', import.meta.url), 'utf8');
-const pageHtml = readFileSync(new URL('../public/teachers/index.html', import.meta.url), 'utf8');
+const pageHtml = readFileSync(new URL('../src/teacher-pages/wizard.html', import.meta.url), 'utf8');
 
 const SHEET_IDS = {
   a: '4aba762b64b54af098827d1f386bcf68',

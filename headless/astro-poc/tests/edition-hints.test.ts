@@ -25,6 +25,18 @@ function fetchRows(rows:any,calls:any[]=[]){return async(url:string,init:any)=>{
 function context(m:any){return {gradeNumber:Number(m.prefix.slice(1,2)),editionId:m.editionId,pdfHash:m.pdfHash,prefix:m.prefix,levelCode:m.levelCode};}
 function clone(v:any){return structuredClone(v);}
 
+test('bounded dotted canonical IDs work through PDF validation and hint retrieval; unsafe IDs never query',async()=>{
+ const cases=JSON.parse(readFileSync(new URL('./fixtures/canonical-id-cases.json',import.meta.url),'utf8'));
+ for(const kind of ['accept','reject'])for(const value of cases[kind])for(const field of ['canonicalItemId','canonicalQuestionId']){
+  const m=manifest();m.exercises=[m.exercises[0]];m.exercises[0][field]=value;
+  const {bank}=setup(),calls:any[]=[];
+  assert.equal(await bank.validateViewerBinding(m,context(m),pdfBytes),kind==='accept',JSON.stringify({kind,value,field}));
+  assert.equal(await bank.prefetch(m,{fetch:fetchRows([row(m)],calls)}),kind==='accept'?1:0);
+  assert.equal(calls.length,kind==='accept'?1:0);
+  if(kind==='accept')assert.deepEqual(Array.from(bank.get(m,m.exercises[0].id).hints),texts);
+ }
+});
+
 test('edition query uses only the separate table, public columns and all source filters',async()=>{
  const m=manifest(),{bank}=setup(),calls:any[]=[];
  assert.equal(await bank.prefetch(m,{fetch:fetchRows([row(m)],calls)}),1);

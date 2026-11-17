@@ -50,9 +50,19 @@
           "links": []
         }
       ]
+    },
+    {
+      "heading": "תרגול נוסף: מלבן — תכונות ומשפטים הפוכים",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "נוספו שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות: תכונות המלבן, תנאים מספיקים לזיהויו, נימוקים ושילוב חישובים ומערכת צירים. בכל קובץ תשובות סופיות. דפי העבודה הקיימים נשארים זמינים לצד התרגול הנוסף.",
+          "links": []
+        }
+      ]
     }
   ],
-  "updatedLine": "נועם דורון מתמטיקה · עודכן 12.9.2026",
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 15.11.2026",
   "updatedLinePlacement": "after-sections",
   "faqHeading": "שאלות נפוצות",
   "faq": [
@@ -113,6 +123,11 @@
       "path": "/square-grade-9",
       "label": "ריבוע",
       "productionHref": "https://www.noamdoronmath.co.il/square-grade-9"
+    },
+    {
+      "path": "/median-to-hypotenuse-grade-9",
+      "label": "התיכון ליתר במשולש ישר זווית",
+      "productionHref": "https://www.noamdoronmath.co.il/median-to-hypotenuse-grade-9"
     }
   ],
   "catalogCta": {

@@ -9,7 +9,7 @@
   // beyond the site's publishable key are involved in this catalog read.
   var TABLE="noam_ramzi_hints",TIMEOUT_MS=4000,MAX_HINT=600;
   var EDITION_TABLE="noam_worksheet_edition_hints",SHA=/^[a-f0-9]{64}$(?![\s\S])/;
-  var EDITION=/^[a-z0-9][a-z0-9-]{0,63}$(?![\s\S])/,IDENTITY=/^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$(?![\s\S])/;
+  var EDITION=/^[a-z0-9][a-z0-9-]{0,63}$(?![\s\S])/,IDENTITY=/^(?=.{1,128}$(?![\s\S]))[A-Za-z0-9][A-Za-z0-9_-]*(?:\.[A-Za-z0-9][A-Za-z0-9_-]*)*$(?![\s\S])/;
   var loaded=Object.create(null);
   function config(value){
     var cfg=value||(root&&root.NOAM_LEARNING_CONFIG);

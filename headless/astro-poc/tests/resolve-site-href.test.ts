@@ -42,6 +42,24 @@ describe('resolveSiteHref (M32)', () => {
     assert.equal(r.reason, 'local');
   });
 
+  it('keeps the teacher landing and tool local with every scope and selection parameter intact', () => {
+    const suffix = '?grade=3&topic=10&level=a&edition=elementary-20261108-r1&minutes=45&pick=ex%3A3d7563584d774bf5958dc6a37ef7e210%3A1%D7%90&tag=one&tag=two#questions';
+    for (const path of ['/teachers', '/teachers/app']) {
+      assert.equal(isLocallyServedPath(path), true);
+      assert.equal(isLocallyServedPath(path + '/'), true);
+      for (const href of [path + suffix, PROD_ORIGIN + path + suffix, 'https://noamdoronmath.co.il' + path + '/' + suffix]) {
+        assert.deepEqual(resolveSiteHref(href), { href: path + suffix, local: true, reason: 'local' });
+      }
+    }
+    assert.equal(resolveSiteHrefString(PROD_ORIGIN + '/teachers?utm_source=menu'), '/teachers?utm_source=menu');
+    for (const path of ['/teachers/unknown', '/teachers/app/unknown', '/teachers-other']) {
+      assert.equal(isLocallyServedPath(path), false, 'Only the two exact teacher routes are added');
+      assert.equal(resolveSiteHref(PROD_ORIGIN + path).reason, 'unserved-prod');
+    }
+    const external = 'https://example.com/teachers/app' + suffix;
+    assert.equal(resolveSiteHrefString(external), external);
+  });
+
   it('preserves Wix Media PDF and github.io viewer URLs', () => {
     const pdf =
       'https://static.wixstatic.com/ugd/abcd1234.pdf';

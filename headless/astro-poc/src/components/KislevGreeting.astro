@@ -1,0 +1,141 @@
+---
+import { KISLEV_5787_END_MS, KISLEV_5787_START_MS } from '../lib/kislev5787';
+
+/** Eight mitzvah lights plus the shamash, drawn as ink-and-paper candles. */
+const candles = [
+  { x: 6, h: 15 },
+  { x: 20, h: 17 },
+  { x: 34, h: 15 },
+  { x: 48, h: 18 },
+  { x: 64, h: 26, shamash: true },
+  { x: 82, h: 18 },
+  { x: 96, h: 15 },
+  { x: 110, h: 17 },
+  { x: 124, h: 15 },
+];
+---
+<script is:inline define:vars={{ start: KISLEV_5787_START_MS, end: KISLEV_5787_END_MS }}>
+  if (Date.now() >= start && Date.now() < end) document.documentElement.classList.add('kislev-5787');
+</script>
+<div class="kislev-strip" id="kislev-5787" data-kislev-greeting>
+  <div class="kislev-strip__row">
+    <svg class="kislev-strip__menorah" viewBox="0 0 136 42" width="132" height="40" aria-hidden="true" focusable="false">
+      <path d="M4 37.2 H132" fill="none" stroke="#22305a" stroke-width="2.2" stroke-linecap="round"></path>
+      {candles.map((candle) => {
+        const y = 37 - candle.h;
+        return (
+          <rect x={candle.x} y={y} width="6" height={candle.h} rx="1.2" fill={candle.shamash ? '#e6a534' : '#fbfaf5'} stroke="#22305a" stroke-width="1.6"></rect>
+        );
+      })}
+      <g class="kislev-flames">
+        {candles.map((candle) => {
+          const flameY = 37 - candle.h - 4.2;
+          return (
+            <g class="kislev-flame">
+              <ellipse cx={candle.x + 3} cy={flameY} rx="2.3" ry="3.3" fill="#e6a534" stroke="#22305a" stroke-width="1.2"></ellipse>
+              <ellipse cx={candle.x + 3} cy={flameY + 0.6} rx="1" ry="1.6" fill="#fbfaf5"></ellipse>
+            </g>
+          );
+        })}
+      </g>
+    </svg>
+    <p class="kislev-strip__copy">
+      <strong class="kislev-strip__hello">חודש כסלו טוב!</strong>
+      <span class="kislev-strip__sum">שמונה לילות אור, וסכום נרות המצווה <span class="kislev-strip__eq" dir="ltr">1+2+…+8 = 36</span></span>
+    </p>
+    <svg class="kislev-strip__donut" viewBox="0 0 36 36" width="32" height="32" aria-hidden="true" focusable="false">
+      <circle cx="18" cy="18" r="13.5" fill="#f3d2a4" stroke="#22305a" stroke-width="2"></circle>
+      <circle cx="18" cy="18" r="4.6" fill="#e5735c" stroke="#22305a" stroke-width="1.5"></circle>
+      <circle cx="11" cy="12" r="1" fill="#fbfaf5"></circle>
+      <circle cx="23" cy="11" r="0.9" fill="#fbfaf5"></circle>
+      <circle cx="26" cy="18" r="0.8" fill="#fbfaf5"></circle>
+      <circle cx="12" cy="23" r="0.8" fill="#fbfaf5"></circle>
+    </svg>
+  </div>
+</div>
+<style>
+  .kislev-strip {
+    display: none;
+    scroll-margin-top: 96px;
+  }
+  :global(html.kislev-5787) .kislev-strip {
+    display: block;
+    background: #fdf6e8;
+    color: #22305a;
+    border-block-end: 2px solid #22305a;
+  }
+  .kislev-strip__row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: nowrap;
+    gap: 8px 10px;
+    box-sizing: border-box;
+    max-width: 1200px;
+    margin-inline: auto;
+    padding-block: 5px;
+    padding-inline: 12px;
+    min-height: 44px;
+  }
+  .kislev-strip__menorah,
+  .kislev-strip__donut {
+    display: block;
+    flex: none;
+  }
+  .kislev-strip__copy {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: center;
+    gap: 2px 10px;
+    margin: 0;
+    min-width: 0;
+    text-align: center;
+  }
+  .kislev-strip__hello {
+    font-family: 'Secular One', 'Secular One Fallback', sans-serif;
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 1.2;
+    color: #22305a;
+  }
+  .kislev-strip__sum {
+    font-family: Heebo, 'Heebo Fallback', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.35;
+    color: #22305a;
+  }
+  .kislev-strip__eq {
+    unicode-bidi: isolate;
+    font-weight: 700;
+    color: #1f6462;
+    white-space: nowrap;
+  }
+  .kislev-flame {
+    transform-box: fill-box;
+    transform-origin: center bottom;
+    animation: kislev-flame 1.6s ease-in-out infinite;
+  }
+  .kislev-flames > .kislev-flame:nth-child(3n + 2) { animation-delay: 0.28s; }
+  .kislev-flames > .kislev-flame:nth-child(3n) { animation-delay: 0.55s; }
+  @keyframes kislev-flame {
+    0%, 100% { transform: scaleY(1); opacity: 1; }
+    50% { transform: scaleY(0.84); opacity: 0.8; }
+  }
+  @media (max-width: 640px) {
+    .kislev-strip__row { gap: 6px 8px; padding-inline: 10px; }
+    .kislev-strip__menorah { width: 88px; height: 28px; }
+    .kislev-strip__donut { width: 26px; height: 26px; }
+    .kislev-strip__hello { font-size: 18px; }
+    .kislev-strip__sum { font-size: 14px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .kislev-flame { animation: none; }
+  }
+  :global(html.nd-motion-off) .kislev-flame,
+  :global(html.noam-a11y-motion) .kislev-flame,
+  :global(html[data-nd-motion="off"]) .kislev-flame {
+    animation: none;
+  }
+</style>
