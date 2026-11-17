@@ -57,7 +57,7 @@
     },
     "rejudged": {
       "path": "headless/astro-poc/scripts/build-curriculum-alignment.py",
-      "against": "headless/astro-poc-baseline 118b4d90 (batch 2a merged); the \"batch 3\" rows at 6039c61c (batch 3 merged)",
+      "against": "headless/astro-poc-baseline 118b4d90 (batch 2a merged); the \"batch 3\" rows at 6039c61c (batch 3 merged); the \"content train\" rows at 74449462 with batch 4 and topic 9/49 merged",
       "evidence": "headless/astro-poc/src/data/topic-pages",
       "applied": [
         {
@@ -259,6 +259,22 @@
             "trapezoid-grade-9"
           ],
           "reason": "batch 3: partial -> covered on trapezoid-grade-9, which now has the base-angles and diagonals section; parallelogram-grade-9 only reaches the isosceles trapezoid through parallelogram properties and is not aligned as teaching it"
+        },
+        {
+          "unit": "st.g9m.equations.numeric_denominator",
+          "status": "covered_by_landing",
+          "pages": [
+            "equations-numeric-denominator-grade-9"
+          ],
+          "reason": "content train: no_topic -> covered: the new reduced-track landing of base topic 9/49 teaches first-degree equations with numeric denominators"
+        },
+        {
+          "unit": "st.g9r.right_triangle_30_60_90.theorem_and_converse",
+          "status": "covered_by_landing",
+          "pages": [
+            "triangle-30-60-90-grade-9"
+          ],
+          "reason": "content train (batch 4): partial -> covered: the converse theorem, missing before (coverage note \"Theorem in copy; converse not\"), is now stated in the copy"
         }
       ]
     }
@@ -358,6 +374,7 @@
     "st.g9m.areas_and_perimeters.polygons_and_circle": {"track": "ט_מצומצמת", "name": "שטחים והיקפים של צורות גאומטריות ומעגל בשאלות אוריינות אינטגרטיביות"},
     "st.g9m.computational_triangle.angles_and_lines": {"track": "ט_מצומצמת", "name": "סכום זוויות במשולש וקטעים מיוחדים במשולש"},
     "st.g9m.computational_triangle.area_perim_coord": {"track": "ט_מצומצמת", "name": "שטח והיקף של משולש ויישום במערכת צירים"},
+    "st.g9m.equations.numeric_denominator": {"track": "ט_מצומצמת", "name": "פתרון משוואות ממעלה ראשונה עם מכנה מספרי"},
     "st.g9m.graph_reading.phenomena_axes": {"track": "ט_מצומצמת", "name": "קריאת מידע מגרפים של תופעות במערכת צירים"},
     "st.g9m.graph_reading.trends_questions": {"track": "ט_מצומצמת", "name": "מגמות שינוי (עלייה, ירידה וקביעות) ומענה על שאלות מתוך גרף"},
     "st.g9m.kite_and_isosceles.isosceles_converse": {"track": "ט_מצומצמת", "name": "משולש שווה־שוקיים: זוויות, קווים מיוחדים וזיהוי משולש שווה־שוקיים"},
@@ -460,6 +477,7 @@
     "equations-basics-grade-7": [{"unit": "st.g7.equations.solution_meaning", "alignmentType": "teaches"}],
     "equations-both-sides-word-problems-grade-7": [{"unit": "st.g7.equations.linear_solving", "alignmentType": "teaches"}, {"unit": "st.g7.word_problems.modeling_linear", "alignmentType": "educationalSubject"}, {"unit": "st.g7.word_problems.context_problems", "alignmentType": "educationalSubject"}],
     "equations-introduction-equivalence-grade-7": [{"unit": "st.g7.equations.solution_meaning", "alignmentType": "teaches"}],
+    "equations-numeric-denominator-grade-9": [{"unit": "st.g9m.equations.numeric_denominator", "alignmentType": "teaches"}],
     "equations-with-fractions-grade-8": [{"unit": "st.g8.word_problems_eq.special_denominators", "alignmentType": "teaches"}],
     "equilateral-triangle-grade-7": [{"unit": "st.g7.angles.equilateral", "alignmentType": "teaches"}],
     "exponent-rules-grade-9": [{"unit": "st.g9r.powers.natural_review", "alignmentType": "teaches"}, {"unit": "st.g9r.powers.product_same_base", "alignmentType": "teaches"}, {"unit": "st.g9r.powers.quotient_same_base", "alignmentType": "teaches"}, {"unit": "st.g9r.powers.power_of_product", "alignmentType": "teaches"}, {"unit": "st.g9r.powers.power_of_quotient", "alignmentType": "teaches"}, {"unit": "st.g9r.powers.power_of_power", "alignmentType": "teaches"}, {"unit": "st.g9r.powers.zero_exponent", "alignmentType": "teaches"}, {"unit": "st.g9r.powers.sqrt_laws", "alignmentType": "educationalSubject"}],
@@ -535,7 +553,7 @@
     "systems-of-equations-grade-8": [{"unit": "st.g8.systems_basic.graphical_meaning", "alignmentType": "teaches"}],
     "systems-word-problems-grade-8": [{"unit": "st.g8.systems_basic.algebraic_solving", "alignmentType": "teaches"}],
     "trapezoid-grade-9": [{"unit": "st.g9r.parallels_trapezoid.trapezoid_intro", "alignmentType": "educationalSubject"}, {"unit": "st.g9r.parallels_trapezoid.isosceles_trapezoid", "alignmentType": "teaches"}, {"unit": "st.g9r.parallels_trapezoid.trapezoid_area_perim", "alignmentType": "teaches"}, {"unit": "st.g9m.trapezoid.definition_properties", "alignmentType": "teaches"}, {"unit": "st.g9m.trapezoid.area_perimeter", "alignmentType": "teaches"}],
-    "triangle-30-60-90-grade-9": [{"unit": "st.g9r.right_triangle_30_60_90.theorem_and_converse", "alignmentType": "educationalSubject"}],
+    "triangle-30-60-90-grade-9": [{"unit": "st.g9r.right_triangle_30_60_90.theorem_and_converse", "alignmentType": "teaches"}],
     "triangle-area-grade-7": [{"unit": "st.g7.areas.triangle_ortho_quad", "alignmentType": "teaches"}],
     "triangle-area-grade-9": [{"unit": "st.g9m.computational_triangle.area_perim_coord", "alignmentType": "teaches"}],
     "triangle-calculations-grade-9": [{"unit": "st.g9m.computational_triangle.angles_and_lines", "alignmentType": "teaches"}, {"unit": "st.g9m.computational_triangle.area_perim_coord", "alignmentType": "teaches"}],

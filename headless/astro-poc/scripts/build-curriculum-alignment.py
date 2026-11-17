@@ -89,10 +89,15 @@ CORRECTIONS = [
 # The rows whose reason starts with "batch 3" were re-judged at 6039c61c,
 # where batch 3 added PDF sections to seven existing landings; a row was added
 # only where the new section clearly covers the unit.
+# The rows whose reason starts with "content train" were re-judged on the
+# content train (74449462 with batch 4 and topic 9/49 merged): the new
+# reduced-track landing of topic 9/49, and the one batch-4 section that closes
+# a partial row. The other three batch-4 landings already taught their units.
 # "pages" replaces the unit's page list; every "evidence" phrase must appear
 # in that landing's copy (bidi isolates ignored).
 REJUDGED_AT = ('headless/astro-poc-baseline 118b4d90 (batch 2a merged); '
-               'the "batch 3" rows at 6039c61c (batch 3 merged)')
+               'the "batch 3" rows at 6039c61c (batch 3 merged); '
+               'the "content train" rows at 74449462 with batch 4 and topic 9/49 merged')
 REJUDGED = [
     {'unit': 'st.g7.coordinate_system.segments_shapes_q1', 'status': 'covered_by_landing',
      'pages': ['coordinate-plane-applications-grade-7', 'coordinate-plane-scale-grade-7'],
@@ -216,6 +221,20 @@ REJUDGED = [
      'reason': 'batch 3: partial -> covered on trapezoid-grade-9, which now has the base-angles and diagonals '
                'section; parallelogram-grade-9 only reaches the isosceles trapezoid through parallelogram '
                'properties and is not aligned as teaching it'},
+    {'unit': 'st.g9m.equations.numeric_denominator', 'status': 'covered_by_landing',
+     'pages': ['equations-numeric-denominator-grade-9'],
+     'evidence': {'equations-numeric-denominator-grade-9': [
+         'משוואה ממעלה ראשונה עם מכנים מספריים פותרים בכפל של שני האגפים במכנה המשותף',
+         'בכל הרמות פותרים משוואות ממעלה ראשונה עם מכנים מספריים']},
+     'reason': 'content train: no_topic -> covered: the new reduced-track landing of base topic 9/49 '
+               'teaches first-degree equations with numeric denominators'},
+    {'unit': 'st.g9r.right_triangle_30_60_90.theorem_and_converse', 'status': 'covered_by_landing',
+     'pages': ['triangle-30-60-90-grade-9'],
+     'evidence': {'triangle-30-60-90-grade-9': [
+         'הניצב שמול זווית זו שווה למחצית היתר',
+         'לפי המשפט ההפוך, אם ניצב במשולש ישר־זווית שווה למחצית היתר, הזווית שמולו היא 30°']},
+     'reason': 'content train (batch 4): partial -> covered: the converse theorem, missing before '
+               '(coverage note "Theorem in copy; converse not"), is now stated in the copy'},
 ]
 
 BIDI = re.compile('[⁦-⁩]')
