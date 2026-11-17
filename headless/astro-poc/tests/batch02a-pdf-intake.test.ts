@@ -286,6 +286,10 @@ test('sixteen landing updates keep titles and CTAs and describe the actual serie
   const eqn02 = text('equations-advanced-grade-7');
   assert.ok(eqn02.includes('ברמה ב׳ יש גם מספרים עשרוניים ושברים ומשוואות עם כמה מכנים, ובמצוינות גם כמה סוגריים באותה משוואה.'));
   assert.ok(!eqn02.includes('כמה סוגריים או כמה מכנים'));
+  // Second review: two equal adjacent sides make a parallelogram a rhombus, not any quadrilateral.
+  const rhb = text('rhombus-grade-9');
+  assert.ok(rhb.includes('מרובע שכל ארבע צלעותיו שוות, או מקבילית שיש בה שתי צלעות סמוכות שוות, אלכסונים מאונכים או אלכסון שחוצה זווית.'));
+  assert.ok(!rhb.includes('מקבילית או מרובע הם מעוין: שתי צלעות סמוכות שוות'));
 });
 
 test('preservation fences reject changed old links, substitutions, reordering, duplicates and unsupported landing claims', () => {
