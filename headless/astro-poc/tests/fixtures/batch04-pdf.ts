@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import reviewed from './batch04-pdf-reviewed.json';
 import { beforeEqm49Catalog } from './eqm49-pdf';
+import { beforeBatch05Catalog, beforeBatch05Copy, beforeBatch05Registry } from './batch05-pdf';
 
 export { reviewed as reviewedBatch04 };
 export const reviewedBatch04Ids = reviewed.additions.map(a => a.editionId);
@@ -16,8 +17,8 @@ const plain = (value: unknown): unknown => typeof value === 'string' ? value.rep
  * topics gains its first edition); the remaining topic must equal the pinned baseline topic.
  */
 export function beforeBatch04Catalog<T>(catalog: T): T {
-  // EQM49 (base topic 9/49, 17 Nov 2026) is merged after batch 04: reverse it first.
-  const restored: any = beforeEqm49Catalog(catalog);
+  // Reverse batch 05 and then the later EQM49 base topic before batch 04.
+  const restored: any = beforeEqm49Catalog(beforeBatch05Catalog(catalog));
   const groups = new Map<string, typeof reviewed.additions>();
   for (const addition of reviewed.additions) {
     const key = `${addition.grade}:${addition.topicId}`;
@@ -47,7 +48,7 @@ export function beforeBatch04Catalog<T>(catalog: T): T {
 
 /** Exact rows, not a broad ID filter: substitutions and duplicate rows must fail. */
 export function beforeBatch04Registry<T>(registry: T): T {
-  const restored: any = structuredClone(registry);
+  const restored: any = structuredClone(beforeBatch05Registry(registry));
   for (const addition of reviewed.additions) {
     const matches = restored.editions.filter((e: any) => e.editionId === addition.editionId);
     assert.deepEqual(matches, [addition.edition], `${addition.editionId}: exact reviewed registry row`);
@@ -59,8 +60,9 @@ export function beforeBatch04Registry<T>(registry: T): T {
 /** Validate each reviewed landing field before reversing it to the exact baseline value. */
 export function beforeBatch04Copy<T>(slug: string, page: T): T {
   const delta = reviewed.landingDeltas.find(d => d.slug === slug);
-  if (!delta) return page;
-  const restored: any = structuredClone(page);
+  const afterBatch05 = beforeBatch05Copy(slug, page);
+  if (!delta) return afterBatch05;
+  const restored: any = structuredClone(afterBatch05);
   for (const change of delta.fields) {
     assert.equal(change.path.length, 1, `${slug}: reviewed top-level copy field`);
     const key = change.path[0];

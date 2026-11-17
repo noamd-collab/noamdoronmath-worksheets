@@ -12,6 +12,7 @@ import { collectViewerPdfIds } from '../scripts/sync-github-static.mjs';
 import { loadTopicPage, extractJsonLdFaq, synthesizeBodyFlow } from '../src/lib/topicPages';
 import { beforeBatch04Catalog, beforeBatch04Registry, beforeBatch04Copy,
   reviewedBatch04 as reviewed, reviewedBatch04Ids as ids } from './fixtures/batch04-pdf';
+import { beforeBatch05Registry } from './fixtures/batch05-pdf';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -27,6 +28,7 @@ const previous = beforeBatch04Catalog(raw) as ReturnType<typeof loadCatalog>;
 const previousSsr = { ...previous, config: { ...previous.config, pdfBase: 'https://static.wixstatic.com/ugd/d8e7ad_' } };
 const registry = read('headless/catalog/worksheet-editions.v1.json');
 const priorRegistry = beforeBatch04Registry(registry);
+const batch04Registry = beforeBatch05Registry(registry);
 const receipt = read('docs/batch04-pdf-first-20261117.json');
 const plain = (s: string) => s.replace(/[⁦-⁩]/g, '');
 
@@ -103,12 +105,12 @@ test('four fixed mappings add twelve frozen PDFs and recover the independently p
   }
   assert.equal(new Set(reviewed.additions.flatMap(a => a.pdfIds)).size, 12);
   assert.equal(new Set(reviewed.additions.flatMap(a => a.edition.levels.map(l => l.pdfSha256))).size, 12);
-  assert.equal(registry.editions.length, 70);
-  assert.equal(registry.editions.flatMap((e: any) => e.levels).length, 210);
+  assert.equal(batch04Registry.editions.length, 70);
+  assert.equal(batch04Registry.editions.flatMap((e: any) => e.levels).length, 210);
   assert.equal(priorRegistry.editions.length, 66);
   assert.equal(priorRegistry.editions.flatMap((e: any) => e.levels).length, 198);
-  assert.deepEqual(registry.editions.slice(0, 66), priorRegistry.editions);
-  assert.deepEqual(registry.editions.slice(66), reviewed.additions.map(a => a.edition));
+  assert.deepEqual(batch04Registry.editions.slice(0, 66), priorRegistry.editions);
+  assert.deepEqual(batch04Registry.editions.slice(66), reviewed.additions.map(a => a.edition));
   // Editions never add base levels; EQM49 (17.11) is the only later base topic (+3 levels).
   assert.equal(raw.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 976);
   assert.equal(previous.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 973);

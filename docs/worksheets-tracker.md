@@ -1,3 +1,11 @@
+## 2026-11-17 — batch 05: eleven reviewed student PDF editions (candidate)
+
+- G7-DAT-01, G7-WPM-01, G8-FNC-01, G8-INT-01, G8-PCT-01, G8-PYT-01, G9-DIS-01, G9-EQD-01, G9-PAR-05, G9-POW-02 and G9-WQP-01: 33 PDFs on ten existing topic pages. Every existing default and earlier edition stays in place.
+- Ten landing sections describe the PDF contents; DIS and EQD share the topic 9:1 section. DIS and EQD are labelled ט׳ מצומצמת. POW is identified as enrichment. Each PDF ends with final answers; no worked solutions or hints are claimed.
+- Exact PDF SHA-256 values match the recorded CDN read-back. The PDFs have primary review receipts and a Google Antigravity PASS_DELTA receipt; details and relative receipt paths: `docs/batch05-pdf-first-20261117.json`.
+- New entries are non-default, PDF-only editions. No native worksheet, Word file, hint, teacher, learning or database activation is added.
+- This is a site candidate, not a publication claim. Build, checks and desktop/phone evidence are recorded in the PR package.
+
 ## 2026-11-17 — EQM01: new reduced-track topic 49 and month group ינואר (candidate)
 
 - Noam (17.11.2026) approved opening a ט׳ מצומצמת month group when the first topic of that month arrives. G9-EQM-01 opens **r9jan ('ינואר')** as base topic 49 **משוואות עם מכנה מספרי**, pdf-only, after r9oct; prisa_9B page 4 places the unit in January (6 hours).

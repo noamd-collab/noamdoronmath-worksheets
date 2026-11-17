@@ -12,6 +12,7 @@ import { collectViewerPdfIds } from '../scripts/sync-github-static.mjs';
 import { loadTopicPage, extractJsonLdFaq, synthesizeBodyFlow } from '../src/lib/topicPages';
 import { beforeBatch02aCatalog, beforeBatch02aRegistry, beforeBatch02aCopy,
   reviewedBatch02a as reviewed, reviewedBatch02aIds as ids } from './fixtures/batch02a-pdf';
+import { reviewedBatch05 as reviewedBatch05 } from './fixtures/batch05-pdf';
 import { beforeBatch03Registry } from './fixtures/batch03-pdf';
 
 const require = createRequire(import.meta.url);
@@ -167,10 +168,16 @@ test('all forty-eight additions open their own reviewed PDF directly while every
     });
     const back = `/worksheets?grade=${addition.grade}&topic=${addition.topicId}`;
     const groups = topicWorksheetEditionLinks(catalog, addition.grade, addition.topicId, back);
-    assert.deepEqual(groups.map(g => g.editionId), ['legacy', ...addition.baselineEditionIds, addition.editionId]);
-    assert.deepEqual(groups.slice(0, -1), topicWorksheetEditionLinks(previousSsr, addition.grade, addition.topicId, back));
-    assert.deepEqual(groups.at(-1)!.levels.map(l => [l.key, l.label]), [['a', 'רמה א׳'], ['b', 'רמה ב׳'], ['c', 'מצוינות']]);
-    assert.equal(groups.at(-1)!.note, 'קובצי PDF להדפסה');
+    const laterIds = reviewedBatch05.additions
+      .filter(later => later.grade === addition.grade && later.topicId === addition.topicId)
+      .map(later => later.editionId);
+    assert.deepEqual(groups.map(g => g.editionId),
+      ['legacy', ...addition.baselineEditionIds, addition.editionId, ...laterIds]);
+    assert.deepEqual(groups.filter(g => g.editionId !== addition.editionId && !laterIds.includes(g.editionId)),
+      topicWorksheetEditionLinks(previousSsr, addition.grade, addition.topicId, back));
+    const ownGroup = groups.find(g => g.editionId === addition.editionId)!;
+    assert.deepEqual(ownGroup.levels.map(l => [l.key, l.label]), [['a', 'רמה א׳'], ['b', 'רמה ב׳'], ['c', 'מצוינות']]);
+    assert.equal(ownGroup.note, 'קובצי PDF להדפסה');
     assert.deepEqual(topic.levels.map(l => l.key), ['a', 'b', 'c']);
     const proof = receipt.packages.find((p: any) => p.editionId === addition.editionId);
     assert.ok(proof, `${addition.editionId}: public frozen evidence`);
@@ -247,9 +254,16 @@ test('sixteen landing updates keep titles and CTAs and describe the actual serie
     assert.ok([...pageRaw.description].length <= 155, delta.slug);
     for (const term of scope[delta.slug]) assert.ok(pageRaw.description.includes(term), `${delta.slug}: ${term}`);
     assert.match(pageRaw.intro, /בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה\.$/);
-    const added: any = pageRaw.sections.at(-1);
+    const laterSection = reviewedBatch05.landingDeltas.find(d => d.slug === delta.slug)?.appendedSection;
+    const expectedAdditions = [delta.appendedSection, ...(laterSection ? [laterSection] : [])];
+    for (const section of expectedAdditions) {
+      assert.equal(pageRaw.sections.filter((candidate: any) => JSON.stringify(candidate) === JSON.stringify(section)).length, 1);
+    }
+    const added: any = pageRaw.sections.find((candidate: any) =>
+      JSON.stringify(candidate) === JSON.stringify(delta.appendedSection));
     assert.deepEqual(added, delta.appendedSection as any);
-    assert.deepEqual(pageRaw.sections.slice(0, -1), restored.sections);
+    assert.deepEqual(pageRaw.sections.filter((candidate: any) =>
+      !expectedAdditions.some(section => JSON.stringify(candidate) === JSON.stringify(section))), restored.sections);
     assert.equal(added.blocks.at(-1).text, 'שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.');
     // TopicPage's setupSelfCheckReveal() hides the second paragraph of a section whose heading
     // looks like a self-check; the new sections are plain copy and must stay fully visible.
@@ -278,7 +292,13 @@ test('sixteen landing updates keep titles and CTAs and describe the actual serie
   // The reduced-track series says so; the reviewed copy corrections stay in place.
   const pyd = read('headless/astro-poc/src/data/topic-pages/pythagorean-theorem-grade-9.json');
   assert.match(pyd.intro, /סדרת PDF לתוכנית המצומצמת בכיתה ט׳/);
-  const text = (slug: string) => read(`headless/astro-poc/src/data/topic-pages/${slug}.json`).sections.at(-1).blocks.map((b: any) => b.text).join(' ');
+  const text = (slug: string) => {
+    const delta = reviewed.landingDeltas.find(d => d.slug === slug)!;
+    const page = read(`headless/astro-poc/src/data/topic-pages/${slug}.json`);
+    const section = page.sections.find((candidate: any) => JSON.stringify(candidate) === JSON.stringify(delta.appendedSection));
+    assert.ok(section, `${slug}: reviewed batch-02a section remains present`);
+    return section.blocks.map((block: any) => block.text).join(' ');
+  };
   assert.ok(text('linear-function-grade-8').includes('הייצוג האלגברי של פונקציה קווית'));
   assert.ok(text('triangle-median-grade-8').includes('אורכים שלמים אפשריים לתיכון'));
   assert.ok(text('word-problems-grade-9').startsWith('ברוב השאלות'));
