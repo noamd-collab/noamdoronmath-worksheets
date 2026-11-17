@@ -23,20 +23,23 @@
  *   node scripts/indexnow-ping.mjs --from <old commit> --to <new commit>
  *   node scripts/indexnow-ping.mjs --before-dir <old checkout> --after-dir <new checkout>
  *   node scripts/indexnow-ping.mjs --check-key
- * Add --submit to any of the first four to send the request.
+ * Add --submit to any of the first four to send the request. --dry-run wins
+ * over --submit wherever it appears.
  *
  * --from/--to and --before-dir/--after-dir compare two states of the site
  * data and list the landing URLs that changed: topic landing pages (their
- * JSON or route), grade hubs, and the landing pages linked to a catalog topic
- * whose catalog entry or published worksheet editions changed. Catalog query
- * URLs (/worksheets?...) are never listed; the landing page is the URL that
- * should rank.
+ * JSON or route), grade hubs (their JSON, or a landing of that grade added or
+ * removed), and the landing pages linked to a catalog topic whose catalog
+ * entry or published worksheet editions changed. Catalog query URLs
+ * (/worksheets?...) are never listed; the landing page is the URL that should
+ * rank. Changes to shared rendering code are not detected; the --help text
+ * lists these limits.
  */
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync, realpathSync, statSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
-import { fileURLToPath, pathToFileURL } from 'node:url';
+import { fileURLToPath } from 'node:url';
 
 export const SITE_HOST = 'www.noamdoronmath.co.il';
 export const SITE_ORIGIN = `https://${SITE_HOST}`;
@@ -57,6 +60,18 @@ export const STATE_PATHS = Object.freeze({
   catalog: 'headless/astro-poc/src/data/catalog.v1.json',
   editions: 'headless/catalog/worksheet-editions.v1.json',
 });
+
+/** The reduced-track grade-9 hub; listed only in a state whose src/pages has its route. */
+export const REDUCED_HUB_PATH = '/grade-9-reduced';
+const REDUCED_HUB_ROUTE = 'grade-9-reduced.astro';
+
+/**
+ * Waits before each retry of the key-file check. Right after a release the
+ * file can still answer 404 or 5xx for a short while; giving up at once would
+ * drop that release's ping.
+ */
+export const KEY_CHECK_RETRY_DELAYS_MS = Object.freeze([5_000, 15_000, 45_000]);
+const wait = ms => new Promise(done => setTimeout(done, ms));
 
 const STATUS_MEANING = {
   400: 'bad request: invalid format',
@@ -87,7 +102,11 @@ export function keyLocation(key) {
 
 // --------------------------------------------------------------------- URLs
 
-/** Accept a site path (/powers-grade-7) or an https URL on the site host; return the absolute URL. */
+/**
+ * Accept a site path (/powers-grade-7) or an https URL on the site host and
+ * return the canonical absolute URL: no fragment and no trailing slash except
+ * on the root, so no URL that answers with a 301 is submitted.
+ */
 export function normalizeUrl(input) {
   const raw = String(input ?? '').trim();
   if (!raw) throw new Error('Empty URL.');
@@ -105,6 +124,7 @@ export function normalizeUrl(input) {
     throw new Error(`Only ${SITE_ORIGIN} URLs can be sent with this key: ${raw}`);
   }
   url.hash = '';
+  if (url.pathname.length > 1) url.pathname = url.pathname.replace(/\/+$/, '') || '/';
   return url.href;
 }
 
@@ -256,7 +276,7 @@ export function collectLandingState(reader) {
     const match = name.match(/^([1-9])\.json$/);
     if (match) hubs.set(Number(match[1]), id);
   }
-  return { reader, pages, hubs };
+  return { reader, pages, hubs, reducedHub: routes.has(REDUCED_HUB_ROUTE) };
 }
 
 function parseJson(text, label) {
@@ -270,6 +290,19 @@ function parseJson(text, label) {
 function pagePath(slug, text) {
   const page = text == null ? {} : parseJson(text, `${slug}.json`);
   return typeof page.path === 'string' && page.path.startsWith('/') ? page.path : `/${slug}`;
+}
+
+/**
+ * The hubs whose topic list changes when this landing is added or removed:
+ * /grade-<n> for the landing's grade, plus the reduced-track hub for a grade-9
+ * landing when that hub exists. The reduced hub links each layout unit to
+ * whichever topic page covers it, so every grade-9 landing counts.
+ */
+function hubPathsForLanding(slug, text, state) {
+  const page = text == null ? {} : parseJson(text, `${slug}.json`);
+  const grade = Number.isInteger(page.grade) ? page.grade : Number(slug.match(/-grade-([1-9])$/)?.[1]);
+  if (!state.hubs.has(grade)) return [];
+  return grade === 9 && state.reducedHub ? [`/grade-${grade}`, REDUCED_HUB_PATH] : [`/grade-${grade}`];
 }
 
 /** Catalog keys "<grade>:<topic id>" that a landing page links to. */
@@ -329,13 +362,23 @@ export function diffLandingStates(before, after) {
   const afterTexts = after.reader.readMany([...after.pages.values()].map(page => page.file));
 
   for (const [slug, page] of after.pages) {
-    if (before.pages.get(slug)?.identity !== page.identity) paths.add(pagePath(slug, afterTexts.get(page.file)));
+    const previous = before.pages.get(slug);
+    if (previous?.identity === page.identity) continue;
+    const text = afterTexts.get(page.file);
+    paths.add(pagePath(slug, text));
+    // A new landing also appears in its grade hub's topic list.
+    if (!previous) for (const hub of hubPathsForLanding(slug, text, after)) paths.add(hub);
   }
   const removed = [...before.pages].filter(([slug]) => !after.pages.has(slug));
   if (removed.length) {
-    // Engines should also learn that a landing is gone (404 or redirect).
+    // Engines should also learn that a landing is gone (404 or redirect), and
+    // that its grade hub no longer lists it.
     const beforeTexts = before.reader.readMany(removed.map(([, page]) => page.file));
-    for (const [slug, page] of removed) paths.add(pagePath(slug, beforeTexts.get(page.file)));
+    for (const [slug, page] of removed) {
+      const text = beforeTexts.get(page.file);
+      paths.add(pagePath(slug, text));
+      for (const hub of hubPathsForLanding(slug, text, after)) paths.add(hub);
+    }
   }
 
   for (const grade of new Set([...before.hubs.keys(), ...after.hubs.keys()])) {
@@ -366,21 +409,46 @@ export function changedLandingUrls(beforeReader, afterReader) {
 
 // ------------------------------------------------------------------ network
 
-/** Fail unless https://www.noamdoronmath.co.il/<key>.txt is served directly and holds the key. */
-export async function checkKeyFileLive(key, { fetchImpl = globalThis.fetch } = {}) {
+/** Statuses that can clear up by themselves a few seconds after a release. */
+function isTransientStatus(status) {
+  return status === 404 || status === 408 || status === 429 || status >= 500;
+}
+
+/**
+ * Fail unless https://www.noamdoronmath.co.il/<key>.txt is served directly and
+ * holds the key. A network error, 404, 408, 429 or 5xx is retried after each
+ * delay in retryDelaysMs (5 s, 15 s, 45 s); a redirect, another status or a
+ * live file with other content fails at once.
+ */
+export async function checkKeyFileLive(
+  key,
+  { fetchImpl = globalThis.fetch, retryDelaysMs = KEY_CHECK_RETRY_DELAYS_MS, sleep = wait, log = () => {} } = {},
+) {
   const url = keyLocation(key);
-  let response;
-  try {
-    response = await fetchImpl(url, { method: 'GET', redirect: 'manual', headers: { 'cache-control': 'no-cache' } });
-  } catch (error) {
-    throw new Error(`Could not fetch ${url}: ${error.message}`);
+  const attempts = retryDelaysMs.length + 1;
+  for (let attempt = 1; ; attempt++) {
+    let failure;
+    let transient = true;
+    try {
+      const response = await fetchImpl(url, { method: 'GET', redirect: 'manual', headers: { 'cache-control': 'no-cache' } });
+      if (response.status === 200) {
+        const body = (await response.text()).trim();
+        if (body === key) return url;
+        failure = `${url} is live but does not contain the key. Nothing was sent.`;
+        transient = false;
+      } else {
+        failure = `${url} answered HTTP ${response.status}. Publish a release that serves public/${key}.txt before the first ping.`;
+        transient = isTransientStatus(response.status);
+      }
+    } catch (error) {
+      failure = `Could not fetch ${url}: ${error.message}`;
+    }
+    if (!transient) throw new Error(failure);
+    if (attempt === attempts) throw new Error(attempts > 1 ? `${failure} Gave up after ${attempts} attempts.` : failure);
+    const delay = retryDelaysMs[attempt - 1];
+    log(`IndexNow key check, attempt ${attempt} of ${attempts}: ${failure} Retrying in ${delay / 1000} s.`);
+    await sleep(delay);
   }
-  if (response.status !== 200) {
-    throw new Error(`${url} answered HTTP ${response.status}. Publish a release that serves public/${key}.txt before the first ping.`);
-  }
-  const body = (await response.text()).trim();
-  if (body !== key) throw new Error(`${url} is live but does not contain the key. Nothing was sent.`);
-  return url;
 }
 
 /** POST each payload; 200 (submitted) and 202 (received, key check pending) are success. */
@@ -425,20 +493,41 @@ Options:
   --repo <dir>        repository for --from/--to (default: the one that holds this script)
   --public-dir <dir>  folder with the <key>.txt file (default: headless/astro-poc/public)
   --submit            send the request (default: dry run, nothing is sent)
+  --dry-run           never send, even when --submit is also given (in any order)
   --check-key         only check that ${SITE_ORIGIN}/<key>.txt serves the key
   -h, --help          show this help
+
+The key check (--check-key, and the check that --submit runs before sending)
+retries a network error, 404, 408, 429 or 5xx after 5 s, 15 s and 45 s.
+
+What a diff lists:
+  - each routed topic landing (src/data/topic-pages/<slug>.json with
+    src/pages/<slug>.astro) that was added, changed or removed;
+  - /grade-<n> when src/data/grade-hubs/<n>.json changed, or a grade-<n>
+    landing was added or removed; for a grade-9 landing also ${REDUCED_HUB_PATH},
+    when that state has src/pages/${REDUCED_HUB_ROUTE};
+  - every landing linked to a catalog topic whose catalog entry or published
+    worksheet editions changed.
+What a diff does not see (pass those URLs as arguments or with --urls-file):
+  - shared rendering code: components, layouts, styles and src/lib (for
+    example TopicPage.astro, GradeHubPage.astro or BaseLayout.astro), which can
+    change every landing or hub at once;
+  - a hub's own route file, the hub content that comes from the catalog, and
+    the reduced-track hub's layout data;
+  - redirects, and pages that are neither topic landings nor grade hubs
+    (home, /worksheets, blog, teachers, tools).
 
 Exit codes: 0 done (or nothing to send), 1 failed, 2 wrong arguments.`;
 
 class UsageError extends Error {}
 
 export function parseArgs(argv) {
-  const options = { urls: [], urlsFiles: [], submit: false, checkKey: false, help: false };
+  const options = { urls: [], urlsFiles: [], submit: false, dryRun: false, checkKey: false, help: false };
   const valued = new Set(['--urls-file', '--from', '--to', '--before-dir', '--after-dir', '--repo', '--public-dir']);
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];
     if (arg === '--submit') options.submit = true;
-    else if (arg === '--dry-run') options.submit = false;
+    else if (arg === '--dry-run') options.dryRun = true;
     else if (arg === '--check-key') options.checkKey = true;
     else if (arg === '-h' || arg === '--help') options.help = true;
     else if (valued.has(arg)) {
@@ -456,6 +545,8 @@ export function parseArgs(argv) {
   const hasSource = options.urls.length || options.urlsFiles.length || options.from || options.beforeDir;
   if (options.checkKey && (hasSource || options.submit)) throw new UsageError('--check-key takes no URLs and no --submit.');
   if (!options.checkKey && !hasSource) throw new UsageError('Give URLs, --urls-file, --from/--to or --before-dir/--after-dir.');
+  // --dry-run is sticky: wherever it appears, nothing is sent.
+  if (options.dryRun) options.submit = false;
   return options;
 }
 
@@ -466,7 +557,7 @@ function defaultRepo() {
 }
 
 /** Run the CLI. Returns the exit code; never calls process.exit (tests call it directly). */
-export async function main(argv, { fetchImpl = globalThis.fetch, out = console.log, err = console.error } = {}) {
+export async function main(argv, { fetchImpl = globalThis.fetch, out = console.log, err = console.error, sleep = wait } = {}) {
   let options;
   try {
     options = parseArgs(argv);
@@ -481,8 +572,9 @@ export async function main(argv, { fetchImpl = globalThis.fetch, out = console.l
   }
   try {
     const key = readIndexNowKey(options.publicDir ?? DEFAULT_PUBLIC_DIR);
+    const keyCheck = { fetchImpl, sleep, log: err };
     if (options.checkKey) {
-      out(`IndexNow key file is live: ${await checkKeyFileLive(key, { fetchImpl })}`);
+      out(`IndexNow key file is live: ${await checkKeyFileLive(key, keyCheck)}`);
       return 0;
     }
 
@@ -519,7 +611,7 @@ export async function main(argv, { fetchImpl = globalThis.fetch, out = console.l
       return 0;
     }
 
-    await checkKeyFileLive(key, { fetchImpl });
+    await checkKeyFileLive(key, keyCheck);
     const results = await submitPayloads(payloads, { fetchImpl });
     for (const [index, result] of results.entries()) {
       const meaning = result.status === 200 ? 'submitted' : 'received, key validation pending';
@@ -533,6 +625,16 @@ export async function main(argv, { fetchImpl = globalThis.fetch, out = console.l
   }
 }
 
-if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
+/** True when Node was started with this file, also when through a symlinked path. */
+function isEntryPoint() {
+  if (!process.argv[1]) return false;
+  try {
+    return realpathSync(process.argv[1]) === realpathSync(fileURLToPath(import.meta.url));
+  } catch {
+    return false;
+  }
+}
+
+if (isEntryPoint()) {
   process.exitCode = await main(process.argv.slice(2));
 }

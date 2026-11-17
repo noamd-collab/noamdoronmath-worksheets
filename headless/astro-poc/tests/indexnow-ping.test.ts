@@ -1,18 +1,21 @@
 /**
  * SEO-6 IndexNow: key file, request body, changed-landing diff and CLI.
- * No test touches the network: every fetch is a local fake, and the one
- * subprocess run replaces fetch with a function that throws.
+ * No test touches the network or waits for a retry: every fetch and sleep is
+ * a local fake, and the subprocess runs replace fetch with a function that
+ * throws.
  */
 import assert from 'node:assert/strict';
 import { execFileSync, spawnSync } from 'node:child_process';
-import { mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { afterEach, describe, it } from 'node:test';
 import {
   INDEXNOW_ENDPOINT,
+  KEY_CHECK_RETRY_DELAYS_MS,
   MAX_URLS_PER_REQUEST,
+  REDUCED_HUB_PATH,
   SITE_HOST,
   STATE_PATHS,
   buildPayloads,
@@ -24,6 +27,7 @@ import {
   main,
   normalizeUrl,
   normalizeUrls,
+  parseArgs,
   parseUrlList,
   readIndexNowKey,
 } from '../scripts/indexnow-ping.mjs';
@@ -148,6 +152,15 @@ describe('IndexNow URLs and request body', () => {
     assert.deepEqual(normalizeUrls(['/a', url('/a'), '/b', '/a#x']), [url('/a'), url('/b')]);
   });
 
+  it('drops a trailing slash so the canonical URL is sent, not a 301, but keeps the root', () => {
+    assert.equal(normalizeUrl('/powers-grade-7/'), url('/powers-grade-7'));
+    assert.equal(normalizeUrl(`${ORIGIN}/grade-9//?tab=1#faq`), url('/grade-9?tab=1'));
+    assert.equal(normalizeUrl('/'), `${ORIGIN}/`);
+    assert.equal(normalizeUrl(ORIGIN), `${ORIGIN}/`);
+    assert.equal(normalizeUrl(`${ORIGIN}//`), `${ORIGIN}/`);
+    assert.deepEqual(normalizeUrls(['/grade-7/', '/grade-7', `${ORIGIN}/grade-7/`]), [url('/grade-7')]);
+  });
+
   it('rejects URLs IndexNow would refuse for this host', () => {
     for (const bad of [
       'http://www.noamdoronmath.co.il/a',
@@ -158,7 +171,7 @@ describe('IndexNow URLs and request body', () => {
       'powers-grade-7',
       '',
     ]) {
-      assert.throws(() => normalizeUrl(bad), undefined, bad);
+      assert.throws(() => normalizeUrl(bad), Error, bad);
     }
   });
 
@@ -200,7 +213,8 @@ describe('changed landing URLs between two states', () => {
     after.pages!['kite-grade-9'].extra = 'דלתון — עודכן';
     after.routes = { 'powers-grade-7': '<TopicPage slug="powers-grade-7" />\n<!-- changed -->\n' };
     after.pages!['new-topic-grade-9'] = { grade: 9, topic: 30 };
-    assert.deepEqual(diffDirs(BASE, after), [url('/kite-grade-9'), url('/new-topic-grade-9'), url('/powers-grade-7')]);
+    assert.deepEqual(diffDirs(BASE, after),
+      [url('/grade-9'), url('/kite-grade-9'), url('/new-topic-grade-9'), url('/powers-grade-7')]);
   });
 
   it('ignores a topic JSON with no route, and lists a removed landing so engines learn it is gone', () => {
@@ -211,13 +225,42 @@ describe('changed landing URLs between two states', () => {
     writeFileSync(path.join(after, STATE_PATHS.topicPages, 'angles-grade-7.json'), pageJson('angles-grade-7', { grade: 7, topic: 6 }));
     assert.deepEqual(changedLandingUrls(directoryReader(before), directoryReader(after)), []);
     rmSync(path.join(after, STATE_PATHS.routes, 'kite-grade-9.astro'));
-    assert.deepEqual(changedLandingUrls(directoryReader(before), directoryReader(after)), [url('/kite-grade-9')]);
+    assert.deepEqual(changedLandingUrls(directoryReader(before), directoryReader(after)), [url('/grade-9'), url('/kite-grade-9')]);
   });
 
   it('lists the grade hub when its data changes', () => {
     const after = clone(BASE);
     after.hubs![9] = '{"grade":9,"sections":["new"]}';
     assert.deepEqual(diffDirs(BASE, after), [url('/grade-9')]);
+  });
+
+  it('lists the grade hub of a landing that was added or removed, but not of one that only changed', () => {
+    const added = clone(BASE);
+    added.pages!['angles-in-polygon-grade-8'] = { grade: 8, topic: 60 };
+    assert.deepEqual(diffDirs(BASE, added), [url('/angles-in-polygon-grade-8'), url('/grade-8')]);
+    const removed = clone(BASE);
+    delete removed.pages!['powers-grade-7'];
+    assert.deepEqual(diffDirs(BASE, removed), [url('/grade-7'), url('/powers-grade-7')]);
+    const changed = clone(BASE);
+    changed.pages!['powers-grade-7'].extra = 'חזקות — עודכן';
+    assert.deepEqual(diffDirs(BASE, changed), [url('/powers-grade-7')]);
+  });
+
+  it('adds the reduced-track hub for a grade-9 landing only when that hub route exists', () => {
+    assert.equal(REDUCED_HUB_PATH, '/grade-9-reduced');
+    const withHub: State = { ...clone(BASE), routes: { 'grade-9-reduced': '<ReducedHub />\n' } };
+    const added = clone(withHub);
+    added.pages!['new-topic-grade-9'] = { grade: 9, topic: 30 };
+    assert.deepEqual(diffDirs(withHub, added), [url('/grade-9'), url('/grade-9-reduced'), url('/new-topic-grade-9')]);
+    const removed = clone(withHub);
+    delete removed.pages!['kite-grade-9'];
+    assert.deepEqual(diffDirs(withHub, removed), [url('/grade-9'), url('/grade-9-reduced'), url('/kite-grade-9')]);
+    const grade8 = clone(withHub);
+    grade8.pages!['angles-in-polygon-grade-8'] = { grade: 8, topic: 60 };
+    assert.deepEqual(diffDirs(withHub, grade8), [url('/angles-in-polygon-grade-8'), url('/grade-8')]);
+    const noHub = clone(BASE);
+    noHub.pages!['new-topic-grade-9'] = { grade: 9, topic: 30 };
+    assert.deepEqual(diffDirs(BASE, noHub), [url('/grade-9'), url('/new-topic-grade-9')]);
   });
 
   it('maps a changed catalog topic to the landings that link to it, by href or by topic id', () => {
@@ -273,26 +316,32 @@ describe('changed landing URLs between two states', () => {
     assert.ok(state.pages.has('powers-grade-7'));
     assert.ok(!state.pages.has('angles-grade-7'), 'the unrouted legacy slug is not a live landing');
     assert.deepEqual([...state.hubs.keys()].sort(), [1, 2, 3, 4, 5, 6, 7, 8, 9]);
+    assert.equal(state.reducedHub, existsSync(path.join(appDir, 'src/pages/grade-9-reduced.astro')));
     assert.deepEqual(changedLandingUrls(directoryReader(repoRoot), directoryReader(repoRoot)), []);
   });
 });
 
 describe('indexnow-ping CLI', () => {
   type Call = { url: string; init: { method?: string; headers?: Record<string, string>; body?: string } };
-  function fakeFetch(responses: Array<{ status: number; body?: string }>) {
+  type FakeResponse = { status: number; body?: string } | { networkError: string };
+  function fakeFetch(responses: FakeResponse[]) {
     const calls: Call[] = [];
-    const fetchImpl = async (target: string, init: Call['init'] = {}) => {
+    const fake = async (target: string, init: Call['init'] = {}) => {
       calls.push({ url: String(target), init });
       const next = responses.shift();
       assert.ok(next, `unexpected request to ${target}`);
+      if ('networkError' in next) throw new TypeError(next.networkError);
       return new Response(next.body ?? '', { status: next.status });
     };
-    return { calls, fetchImpl };
+    return { calls, fetchImpl: fake as unknown as typeof fetch };
   }
-  async function run(argv: string[], fetchImpl: unknown) {
+  async function run(argv: string[], fetchImpl: typeof fetch, waits: number[] = []) {
     const out: string[] = [];
     const err: string[] = [];
-    const code = await main(argv, { fetchImpl, out: (s: string) => out.push(s), err: (s: string) => err.push(s) });
+    const sleep = async (ms: number) => {
+      waits.push(ms);
+    };
+    const code = await main(argv, { fetchImpl, sleep, out: (s: string) => out.push(s), err: (s: string) => err.push(s) });
     return { code, out: out.join('\n'), err: err.join('\n') };
   }
   const key = readIndexNowKey(publicDir);
@@ -332,13 +381,45 @@ describe('indexnow-ping CLI', () => {
   });
 
   it('sends nothing until the key file is live and holds the key', async () => {
-    for (const keyResponse of [{ status: 404, body: 'not found' }, { status: 301 }, { status: 200, body: 'other' }]) {
+    for (const keyResponse of [{ status: 301 }, { status: 200, body: 'other' }]) {
       const { calls, fetchImpl } = fakeFetch([keyResponse]);
-      const result = await run(['--submit', '/grade-8'], fetchImpl);
+      const waits: number[] = [];
+      const result = await run(['--submit', '/grade-8'], fetchImpl, waits);
       assert.equal(result.code, 1);
-      assert.equal(calls.length, 1, 'no POST after a failed key check');
+      assert.equal(calls.length, 1, 'a redirect or other content is not retried, and nothing is POSTed');
+      assert.deepEqual(waits, []);
       assert.match(result.err, /Publish a release that serves|does not contain the key/);
     }
+    const missing = fakeFetch(Array.from({ length: 4 }, () => ({ status: 404, body: 'not found' })));
+    const waits: number[] = [];
+    const result = await run(['--submit', '/grade-8'], missing.fetchImpl, waits);
+    assert.equal(result.code, 1);
+    assert.equal(missing.calls.length, 4, 'four key checks, no POST');
+    assert.ok(missing.calls.every(call => call.init.method === 'GET'));
+    assert.deepEqual(waits, [5_000, 15_000, 45_000]);
+    assert.match(result.err, /answered HTTP 404\. Publish a release that serves .* Gave up after 4 attempts\./);
+  });
+
+  it('retries the key check after a transient 404, 5xx or network error, with 5, 15 and 45 s waits', async () => {
+    assert.deepEqual([...KEY_CHECK_RETRY_DELAYS_MS], [5_000, 15_000, 45_000]);
+    const { calls, fetchImpl } = fakeFetch([
+      { status: 404 }, { status: 503 }, { networkError: 'fetch failed' }, { status: 200, body: key }, { status: 200 },
+    ]);
+    const waits: number[] = [];
+    const result = await run(['--submit', '/grade-8'], fetchImpl, waits);
+    assert.equal(result.code, 0, result.err);
+    assert.deepEqual(calls.map(call => call.init.method), ['GET', 'GET', 'GET', 'GET', 'POST']);
+    assert.deepEqual(waits, [5_000, 15_000, 45_000]);
+    assert.match(result.err, /attempt 1 of 4: .*HTTP 404.* Retrying in 5 s\./);
+    assert.match(result.err, /attempt 3 of 4: Could not fetch .* Retrying in 45 s\./);
+    assert.match(result.out, /HTTP 200 \(submitted\), 1 URL\(s\)/);
+    const check = fakeFetch([{ status: 500 }, { status: 200, body: key }]);
+    const checkWaits: number[] = [];
+    const checked = await run(['--check-key'], check.fetchImpl, checkWaits);
+    assert.equal(checked.code, 0, checked.err);
+    assert.equal(check.calls.length, 2);
+    assert.deepEqual(checkWaits, [5_000]);
+    assert.match(checked.out, /key file is live/);
   });
 
   it('fails with the IndexNow meaning of an error status', async () => {
@@ -348,6 +429,18 @@ describe('indexnow-ping CLI', () => {
     assert.match(result.err, /HTTP 422 \(unprocessable: a URL is outside the host/);
     const limited = fakeFetch([{ status: 200, body: key }, { status: 429 }]);
     assert.match((await run(['--submit', '/grade-8'], limited.fetchImpl)).err, /HTTP 429 \(too many requests/);
+  });
+
+  it('never sends when --dry-run is given, before or after --submit', async () => {
+    for (const argv of [['--dry-run', '--submit', '/grade-8'], ['--submit', '/grade-8', '--dry-run']]) {
+      assert.equal(parseArgs(argv).submit, false, argv.join(' '));
+      const { calls, fetchImpl } = fakeFetch([]);
+      const result = await run(argv, fetchImpl);
+      assert.equal(result.code, 0, result.err);
+      assert.equal(calls.length, 0, argv.join(' '));
+      assert.match(result.out, /dry run: nothing was sent/);
+    }
+    assert.equal(parseArgs(['--submit', '/grade-8']).submit, true);
   });
 
   it('does not touch the network when a diff finds nothing, even with --submit', async () => {
@@ -387,11 +480,20 @@ describe('indexnow-ping CLI', () => {
     }
   });
 
+  const noNetwork = 'data:text/javascript,globalThis.fetch=()=>{throw new Error("network used")}';
+
   it('runs as a command without any network call in dry-run mode', () => {
-    const noNetwork = 'data:text/javascript,globalThis.fetch=()=>{throw new Error("network used")}';
     const result = spawnSync(process.execPath, ['--import', noNetwork, script, '/powers-grade-7'], { encoding: 'utf8' });
     assert.equal(result.status, 0, result.stderr);
     assert.match(result.stdout, /IndexNow dry run: nothing was sent/);
     assert.match(result.stdout, /"https:\/\/www\.noamdoronmath\.co\.il\/powers-grade-7"/);
+  });
+
+  it('runs as a command when started through a symlinked path', () => {
+    const link = path.join(tempDir('indexnow-link-'), 'indexnow-ping.mjs');
+    symlinkSync(script, link);
+    const result = spawnSync(process.execPath, ['--import', noNetwork, link, '/powers-grade-7'], { encoding: 'utf8' });
+    assert.equal(result.status, 0, result.stderr);
+    assert.match(result.stdout, /IndexNow dry run: nothing was sent/);
   });
 });
