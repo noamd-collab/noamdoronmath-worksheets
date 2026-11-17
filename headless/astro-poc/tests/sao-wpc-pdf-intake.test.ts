@@ -12,7 +12,7 @@ import { buildTeacherLandingCatalog, getTeacherLandingScope } from '../src/lib/t
 import { collectViewerPdfIds } from '../scripts/sync-github-static.mjs';
 import { loadTopicPage, extractJsonLdFaq, synthesizeBodyFlow } from '../src/lib/topicPages';
 import { beforeSaoWpcCatalog, beforeSaoWpcCopy, reviewedSaoWpc as reviewed, reviewedSaoWpcIds as ids } from './fixtures/sao-wpc-pdf';
-import { beforeBatch05Catalog, beforeBatch05Copy, reviewedBatch05 } from './fixtures/batch05-pdf';
+import { beforeBatch05Copy, reviewedBatch05 } from './fixtures/batch05-pdf';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -135,10 +135,10 @@ test('review reversal rejects legacy drift, unbound PDF and false hint claims', 
   assert.doesNotThrow(() => beforeExtra15Catalog(rawCatalog));
   const bad = structuredClone(rawCatalog);
   bad.grades.find((g: any) => g.grade === 9).topics.find((t: any) => t.id === 38).levels[0].pdfId = 'unreviewed-old-link';
-  assert.throws(() => beforeExtra15Catalog(beforeBatch05Catalog(bad)));
+  assert.throws(() => beforeExtra15Catalog(bad), assert.AssertionError);
   const moved = structuredClone(rawCatalog);
   moved.grades.find((g: any) => g.grade === 7).topics.find((t: any) => t.id === 41).editions[0].levels[0].pdfId = 'wrong-new-pdf';
-  assert.throws(() => beforeExtra15Catalog(beforeBatch05Catalog(moved)));
+  assert.throws(() => beforeExtra15Catalog(moved), assert.AssertionError);
   const page = read('headless/astro-poc/src/data/topic-pages/triangle-sides-angles-grade-9.json');
   page.description += ' כל PDF כולל רמזי';
   assert.throws(() => beforeSaoWpcCopy('triangle-sides-angles-grade-9', page));

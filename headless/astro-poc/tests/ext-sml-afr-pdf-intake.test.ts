@@ -13,7 +13,7 @@ import { collectViewerPdfIds } from '../scripts/sync-github-static.mjs';
 import { loadTopicPage, extractJsonLdFaq, synthesizeBodyFlow } from '../src/lib/topicPages';
 import { beforeExtSmlAfrCatalog, beforeExtSmlAfrRegistry, beforeExtSmlAfrCopy,
   reviewedExtSmlAfr as reviewed, reviewedExtSmlAfrIds as ids } from './fixtures/ext-sml-afr-pdf';
-import { beforeBatch05Catalog, beforeBatch05Copy, reviewedBatch05 } from './fixtures/batch05-pdf';
+import { beforeBatch05Copy, reviewedBatch05 } from './fixtures/batch05-pdf';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -113,10 +113,10 @@ test('exact reversals reject altered old materials, new media/source substitutio
   assert.doesNotThrow(() => beforeExtra15Catalog(raw));
   const altered = structuredClone(raw);
   altered.grades.find((g: any) => g.grade === 9).topics.find((t: any) => t.id === 44).levels[0].pdfId = 'changed-old-link';
-  assert.throws(() => beforeExtra15Catalog(beforeBatch05Catalog(altered)));
+  assert.throws(() => beforeExtra15Catalog(altered), assert.AssertionError);
   const substituted = structuredClone(raw);
   substituted.grades.find((g: any) => g.grade === 9).topics.find((t: any) => t.id === 1).editions[0].levels[0].sourceSha256 = '0'.repeat(64);
-  assert.throws(() => beforeExtra15Catalog(beforeBatch05Catalog(substituted)));
+  assert.throws(() => beforeExtra15Catalog(substituted), assert.AssertionError);
   const badRegistry = structuredClone(registry); badRegistry.editions.find((e: any) => e.editionId === ids[0]).isDefault = true;
   assert.throws(() => beforeExtSmlAfrRegistry(badRegistry));
   const page = read('headless/astro-poc/src/data/topic-pages/binomial-square-grade-9.json');
