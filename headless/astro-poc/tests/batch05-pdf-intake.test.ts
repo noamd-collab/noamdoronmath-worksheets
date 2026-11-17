@@ -273,7 +273,7 @@ test('preservation fences reject catalog, registry and landing substitutions and
   registryDuplicate.editions.push(structuredClone(reviewed.additions[0].edition));
   assert.throws(() => beforeBatch05Registry(registryDuplicate));
   const registryAltered = structuredClone(registry);
-  registryAltered.editions.at(-1).levels[0].pdfId = 'changed-pdf-id';
+  registryAltered.editions.find((e: any) => e.editionId === ids.at(-1)).levels[0].pdfId = 'changed-pdf-id';
   assert.throws(() => beforeBatch05Registry(registryAltered));
   for (const destinationId of [40, 39]) {
     const moved = structuredClone(raw);

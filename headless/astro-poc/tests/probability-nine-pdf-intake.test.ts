@@ -246,6 +246,6 @@ test('preservation fences reject changed old links, substitutions, reordering, d
   page.intro += ' כל PDF כולל רמזי ופתרון מלא';
   assert.throws(() => beforeProbabilityNineCopy(SLUG, page));
   const section = read(`headless/astro-poc/src/data/topic-pages/${SLUG}.json`);
-  section.sections.at(-1).blocks[1].text += ' עם דוגמה פתורה';
+  section.sections.find((s: any) => s.heading === reviewed.landingDeltas[0].appendedSection.heading).blocks[1].text += ' עם דוגמה פתורה';
   assert.throws(() => beforeProbabilityNineCopy(SLUG, section));
 });
