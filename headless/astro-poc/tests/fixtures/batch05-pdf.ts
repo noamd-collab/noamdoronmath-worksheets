@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import reviewed from './batch05-pdf-reviewed.json';
+import { beforeBatch06Catalog, beforeBatch06Copy, beforeBatch06Registry } from './batch06-pdf';
 
 export { reviewed as reviewedBatch05 };
 export const reviewedBatch05Ids = reviewed.additions.map(a => a.editionId);
@@ -12,7 +13,7 @@ const plain = (value: unknown): unknown => typeof value === 'string' ? value.rep
 
 /** Undo only reviewed appended editions and verify each topic returns to its pinned baseline. */
 export function beforeBatch05Catalog<T>(catalog: T): T {
-  const restored: any = structuredClone(catalog);
+  const restored: any = structuredClone(beforeBatch06Catalog(catalog));
   const groups = new Map<string, typeof reviewed.additions>();
   for (const addition of reviewed.additions) {
     const key = `${addition.grade}:${addition.topicId}`;
@@ -41,7 +42,7 @@ export function beforeBatch05Catalog<T>(catalog: T): T {
 
 /** Validate exact registry rows before removing them; substitutions and duplicates fail. */
 export function beforeBatch05Registry<T>(registry: T): T {
-  const restored: any = structuredClone(registry);
+  const restored: any = structuredClone(beforeBatch06Registry(registry));
   for (const addition of reviewed.additions) {
     const matches = restored.editions.filter((e: any) => e.editionId === addition.editionId);
     assert.deepEqual(matches, [addition.edition], `${addition.editionId}: exact reviewed registry row`);
@@ -53,8 +54,9 @@ export function beforeBatch05Registry<T>(registry: T): T {
 /** Verify changed landing fields and recover the exact pre-batch page. */
 export function beforeBatch05Copy<T>(slug: string, page: T): T {
   const delta = reviewed.landingDeltas.find(d => d.slug === slug);
-  if (!delta) return page;
-  const restored: any = structuredClone(page);
+  const afterBatch06 = beforeBatch06Copy(slug, page);
+  if (!delta) return afterBatch06;
+  const restored: any = structuredClone(afterBatch06);
   for (const change of delta.fields) {
     assert.equal(change.path.length, 1, `${slug}: reviewed top-level copy field`);
     const key = change.path[0];

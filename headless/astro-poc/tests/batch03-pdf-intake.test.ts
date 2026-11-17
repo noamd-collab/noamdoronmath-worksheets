@@ -13,6 +13,7 @@ import { loadTopicPage, extractJsonLdFaq, synthesizeBodyFlow } from '../src/lib/
 import { beforeBatch03Catalog, beforeBatch03Registry, beforeBatch03Copy,
   reviewedBatch03 as reviewed, reviewedBatch03Ids as ids } from './fixtures/batch03-pdf';
 import { beforeProbabilityNineRegistry } from './fixtures/probability-nine-pdf';
+import { beforeBatch06Copy, reviewedBatch06 } from './fixtures/batch06-pdf';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -140,7 +141,10 @@ test('all twenty-four additions open their own reviewed PDF directly while every
     const back = `/worksheets?grade=${addition.grade}&topic=${addition.topicId}`;
     const groups = topicWorksheetEditionLinks(catalog, addition.grade, addition.topicId, back);
     // Topic 9/8 gains two editions, QIN then SYQ, after the legacy links.
-    assert.deepEqual(groups.map(g => g.editionId), ['legacy', ...addition.baselineEditionIds, ...sameTopic(addition)]);
+    const laterBatch06 = reviewedBatch06.additions
+      .filter(a => a.grade === addition.grade && a.topicId === addition.topicId).map(a => a.editionId);
+    assert.deepEqual(groups.map(g => g.editionId),
+      ['legacy', ...addition.baselineEditionIds, ...sameTopic(addition), ...laterBatch06]);
     assert.deepEqual(groups.slice(0, 1 + addition.baselineEditionIds.length),
       topicWorksheetEditionLinks(previousSsr, addition.grade, addition.topicId, back));
     const group = groups.find(g => g.editionId === addition.editionId)!;
@@ -213,6 +217,7 @@ test('seven landing updates keep titles and CTAs and describe the actual series 
   for (const delta of reviewed.landingDeltas) {
     const pageRaw = read(`headless/astro-poc/src/data/topic-pages/${delta.slug}.json`);
     const restored = beforeBatch03Copy(delta.slug, pageRaw) as any;
+    const afterBatch06 = beforeBatch06Copy(delta.slug, pageRaw) as any;
     assert.equal(digest(restored), delta.baselineSha256);
     assert.equal(pageRaw.h1, restored.h1); assert.equal(pageRaw.title, restored.title);
     assert.deepEqual(pageRaw.catalogCta, restored.catalogCta);
@@ -223,9 +228,9 @@ test('seven landing updates keep titles and CTAs and describe the actual series 
     assert.ok([...pageRaw.description].length <= 155, delta.slug);
     for (const term of scope[delta.slug]) assert.ok(pageRaw.description.includes(term), `${delta.slug}: ${term}`);
     assert.match(pageRaw.intro, /בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה\.$/);
-    const added: any = pageRaw.sections.at(-1);
+    const added: any = afterBatch06.sections.at(-1);
     assert.deepEqual(added, delta.appendedSection as any);
-    assert.deepEqual(pageRaw.sections.slice(0, -1), restored.sections);
+    assert.deepEqual(afterBatch06.sections.slice(0, -1), restored.sections);
     // One landing describes two series (as next12 did on area-rectangle-perimeter-grade-7); on
     // powers-grade-7 the earlier GRW-01 section already ends with the standard sentence verbatim.
     assert.equal(added.blocks.at(-1).text, delta.editionIds.length === 2
@@ -270,7 +275,8 @@ test('seven landing updates keep titles and CTAs and describe the actual series 
   assert.match(page('trapezoid-grade-9').intro, /והשוואת שטחים, ברמות א׳, ב׳ ומצוינות\. נוספו גם קובצי PDF לטרפז שווה־שוקיים/);
   assert.match(page('quadratic-inequalities-systems-grade-9').intro, /נוספו שתי סדרות PDF ברמות א׳, ב׳ ומצוינות/);
   // The reviewed copy corrections stay in place.
-  const text = (slug: string) => page(slug).sections.at(-1).blocks.map((b: any) => b.text).join(' ');
+  const text = (slug: string) => (beforeBatch06Copy(slug, page(slug)) as any)
+    .sections.at(-1).blocks.map((b: any) => b.text).join(' ');
   const root7 = text('square-root-grade-7');
   assert.ok(root7.includes('ובמצוינות אומדים שורש גם בדיוק של עשירית, ויש יותר שורשים של חזקות.'));
   assert.ok(!root7.includes('במצוינות מחשבים שורשים של חזקות'));

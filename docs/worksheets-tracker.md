@@ -1,3 +1,11 @@
+## 2026-11-17 — batch 06: eleven reviewed student PDF editions (candidate)
+
+- G7-ALG-02, G7-ALG-04, G7-CRD-01, G8-INE-01, G9-FPR-01, G9-FSH-01, G9-GRD-01, G9-PBM-01, G9-QFM-01, G9-QVL-01 and G9-SMM-01: 33 PDFs on nine existing topic pages. Every existing default and earlier edition stays in place.
+- Nine landing sections describe the PDF content; reduced-track sheets are labelled ט׳ מצומצמת in the section and edition label. G9-QFM-01 fills the missing mandatory quadratic-formula unit. Each PDF ends with final answers; no worked solutions or hints are claimed.
+- Exact PDF SHA-256 values match the recorded CDN read-back. The PDFs carry Google Antigravity PASS receipts; details and relative receipt paths: `docs/batch06-pdf-first-20261117.json`.
+- New entries are non-default, PDF-only editions. No native worksheet, Word file, hint, teacher, learning or database activation is added.
+- This is a site candidate, not a publication claim. Build, checks and desktop/phone evidence are recorded in the PR package.
+
 ## 2026-11-17 — batch 05: eleven reviewed student PDF editions (candidate)
 
 - G7-DAT-01, G7-WPM-01, G8-FNC-01, G8-INT-01, G8-PCT-01, G8-PYT-01, G9-DIS-01, G9-EQD-01, G9-PAR-05, G9-POW-02 and G9-WQP-01: 33 PDFs on ten existing topic pages. Every existing default and earlier edition stays in place.

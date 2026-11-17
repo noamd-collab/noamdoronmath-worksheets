@@ -12,6 +12,7 @@ import { collectViewerPdfIds } from '../scripts/sync-github-static.mjs';
 import { loadTopicPage, extractJsonLdFaq, synthesizeBodyFlow } from '../src/lib/topicPages';
 import { beforeProbabilityNineCatalog, beforeProbabilityNineRegistry, beforeProbabilityNineCopy,
   reviewedProbabilityNine as reviewed, probabilityNineIds as ids } from './fixtures/probability-nine-pdf';
+import { beforeBatch06Copy, reviewedBatch06 } from './fixtures/batch06-pdf';
 import { beforeBatch04Registry } from './fixtures/batch04-pdf';
 
 const require = createRequire(import.meta.url);
@@ -107,7 +108,9 @@ test('all nine additions open their own reviewed PDF directly while the legacy c
   assert.equal(topic.defaultEditionId, 'legacy');
   const back = '/worksheets?grade=9&topic=10';
   const groups = topicWorksheetEditionLinks(catalog, 9, 10, back);
-  assert.deepEqual(groups.map(g => g.editionId), ['legacy', ...ids]);
+  const laterBatch06 = reviewedBatch06.additions
+    .filter(a => a.grade === 9 && a.topicId === 10).map(a => a.editionId);
+  assert.deepEqual(groups.map(g => g.editionId), ['legacy', ...ids, ...laterBatch06]);
   assert.deepEqual(groups.slice(0, 1), topicWorksheetEditionLinks(previousSsr, 9, 10, back));
   assert.deepEqual(topic.levels.map(l => l.key), ['a', 'b', 'c']);
   for (const [index, addition] of reviewed.additions.entries()) {
@@ -167,6 +170,7 @@ test('the probability landing keeps title, H1 and CTA and describes the three se
   assert.deepEqual(delta.editionIds, ids);
   const pageRaw = read(`headless/astro-poc/src/data/topic-pages/${SLUG}.json`);
   const restored = beforeProbabilityNineCopy(SLUG, pageRaw) as any;
+  const afterBatch06 = beforeBatch06Copy(SLUG, pageRaw) as any;
   assert.equal(digest(restored), delta.baselineSha256);
   assert.equal(delta.baselineSha256, '96b802d9e0a2adbaa1a11f6dac9711ab4a2ffa7b428a67150c69cd8d097bd042');
   assert.equal(pageRaw.h1, restored.h1); assert.equal(pageRaw.title, restored.title);
@@ -179,9 +183,9 @@ test('the probability landing keeps title, H1 and CTA and describes the three se
   for (const term of ['חד־שלבי', 'שכיחות יחסית', 'מאורע משלים', 'עם החזרה', 'בלי החזרה']) assert.ok(pageRaw.description.includes(term), term);
   assert.match(pageRaw.intro, /^לומדים לתאר מרחב תוצאות, לחשב הסתברות של מאורע ולבדוק תשובות\. /);
   assert.match(pageRaw.intro, /בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה\.$/);
-  const added: any = pageRaw.sections.at(-1);
+  const added: any = afterBatch06.sections.at(-1);
   assert.deepEqual(added, delta.appendedSection as any);
-  assert.deepEqual(pageRaw.sections.slice(0, -1), restored.sections);
+  assert.deepEqual(afterBatch06.sections.slice(0, -1), restored.sections);
   assert.equal(added.blocks.length, 4);
   assert.ok(added.blocks[0].text.startsWith('בסדרה על ניסוי חד־שלבי'));
   assert.ok(added.blocks[1].text.startsWith('בסדרה על ניסוי דו־שלבי עם החזרה'));
