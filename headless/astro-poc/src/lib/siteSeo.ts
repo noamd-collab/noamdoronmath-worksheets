@@ -118,6 +118,104 @@ const CANONICAL_PARAMS: Record<string, readonly string[]> = {
   '/worksheets': ['grade', 'topic'],
 };
 
+/**
+ * Brand and boilerplate tails that the old title template appended.
+ * Longest first, so a shorter tail is not cut out of a longer one.
+ */
+const TITLE_BOILERPLATE = [
+  ' | נועם דורון - מתמטיקה דפי מתמטיקה בחינם',
+  ' | דפי עבודה במתמטיקה – נועם דורון',
+  ' | דפי עבודה במתמטיקה - נועם דורון',
+  ' | דפי עבודה חינם – נועם דורון',
+  ' | דפי עבודה חינם - נועם דורון',
+  ' – נועם דורון מתמטיקה',
+  ' | נועם דורון מתמטיקה',
+  ' | דפי עבודה חינם',
+  ' | נועם דורון',
+  ' – נועם דורון',
+  ' - נועם דורון',
+  ' · נועם דורון',
+];
+
+/** Two pages share one H1. The angles page also covers complements and the bisector. */
+const UNIQUE_HEBREW_TITLES: Record<string, string> = {
+  '/angles-grade-7': 'זוויות צמודות, משלימות וחוצה זווית לכיתה ז׳',
+};
+
+function isEnglishSlug(value: string): boolean {
+  return /^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)+$/.test(value);
+}
+
+function titleParts(title: string): string[] {
+  return title
+    .split(/\s*[|–—·]\s*|\s+-\s+/)
+    .map((part) => part.trim())
+    .filter(Boolean);
+}
+
+/**
+ * One short Hebrew document title.
+ * Drops a repeated site-name tail and any English page slug. A path listed in
+ * UNIQUE_HEBREW_TITLES keeps its own wording when the shared H1 would collide.
+ */
+export function shortHebrewTitle(title: string, pathname = ''): string {
+  const path = (pathname.split('?')[0] || '').replace(/\/+$/, '') || '/';
+  const override = UNIQUE_HEBREW_TITLES[path];
+  if (override) return override;
+
+  const original = title.replace(/\s+/g, ' ').trim();
+  if (!original) return original;
+
+  let slug = '';
+  try {
+    slug = decodeURIComponent(path.split('/').filter(Boolean).pop() || '');
+  } catch {
+    slug = path.split('/').filter(Boolean).pop() || '';
+  }
+
+  let text = original;
+  let changed = true;
+  while (changed) {
+    changed = false;
+    for (const suffix of TITLE_BOILERPLATE) {
+      if (text.endsWith(suffix) && text.length > suffix.length) {
+        text = text.slice(0, -suffix.length).trim();
+        changed = true;
+      }
+    }
+  }
+
+  const parts = titleParts(text);
+  const kept = parts.filter((part) => {
+    if (isEnglishSlug(part)) return false;
+    if (slug && isEnglishSlug(slug) && part.toLowerCase() === slug.toLowerCase()) return false;
+    return true;
+  });
+  if (kept.length !== parts.length) text = kept.join(' | ');
+  text = text.replace(/\s*[|–—·-]+\s*$/u, '').trim();
+  if (text === 'נועם דורון' || text === 'נועם דורון מתמטיקה' || text === 'דפי עבודה חינם') text = '';
+
+  if (!/[\u0590-\u05FF]/.test(text)) {
+    const hebrew = titleParts(original).filter((part) => {
+      if (!/[\u0590-\u05FF]/.test(part)) return false;
+      if (part === 'נועם דורון' || part === 'נועם דורון מתמטיקה' || part === 'דפי עבודה חינם') return false;
+      return true;
+    });
+    text = hebrew.join(' | ').trim();
+  }
+
+  return text || 'דפי עבודה במתמטיקה';
+}
+
+/** Catalog worksheet title: the Hebrew topic when one is open, otherwise the grade. */
+export function worksheetsDocumentTitle(gradeLabel: string, topicTitle?: string | null): string {
+  const grade = gradeLabel.trim();
+  const topic = (topicTitle || '').replace(/\s+/g, ' ').trim();
+  if (topic && grade) return `${topic} · ${grade}`;
+  if (grade) return `דפי עבודה · ${grade}`;
+  return topic || 'דפי עבודה';
+}
+
 export function canonicalUrl(pathname: string, search = ''): string {
   const path = pathname.startsWith('/') ? pathname : `/${pathname}`;
   const normalized = path === '/' ? '/' : path.replace(/\/+$/, '');

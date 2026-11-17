@@ -114,7 +114,8 @@ describe('worksheetsUrlState contract (M32)', () => {
     const src = readFileSync('src/pages/worksheets.astro', 'utf8');
     assert.equal(src.includes('(Astro POC)'), false);
     assert.equal(src.includes('אב־טיפוס Astro'), false);
-    assert.ok(src.includes('title={`דפי עבודה · ${gradeEntry!.label}`}'));
+    assert.ok(src.includes('title={worksheetsTitle}'));
+    assert.ok(src.includes('worksheetsDocumentTitle'));
     assert.ok(src.includes('title="כיתה לא חוקית"'));
     assert.ok(src.includes('title="כיתה חסרה"'));
   });

@@ -121,12 +121,12 @@
     },
     {
       "type": "p",
-      "text": "בחירת כיתה ומאגר דפי העבודה",
+      "text": "בנו דף תרגול לפי כיתה, נושא ורמה",
       "segments": [
         {
           "type": "a",
-          "text": "בחירת כיתה ומאגר דפי העבודה",
-          "href": "https://www.noamdoronmath.co.il/"
+          "text": "בנו דף תרגול לפי כיתה, נושא ורמה",
+          "href": "https://www.noamdoronmath.co.il/teachers"
         }
       ]
     },

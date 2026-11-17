@@ -16,6 +16,7 @@ import {
   DEFAULT_SITE_TITLE,
   buildSocialMeta,
   canonicalUrl,
+  shortHebrewTitle,
   isPreviewHost,
   robotsContent,
   type OgType,
@@ -57,7 +58,7 @@ const resolvedNav: ActiveNavKey | null =
   activeNav !== undefined ? activeNav : resolveActiveNav(Astro.url.pathname);
 const useCompactBrand = compactBrand || resolvedNav === 'worksheets';
 const approvedCopy = approvedSeoProposal(seoPath);
-const resolvedTitle = approvedCopy?.title || title;
+const resolvedTitle = shortHebrewTitle(approvedCopy?.title || title, Astro.url.pathname);
 const resolvedDescription = approvedCopy?.description || description;
 const robots = noindex ? 'noindex, nofollow' : robotsContent(Astro.url.hostname);
 const canonical = canonicalUrl(Astro.url.pathname, Astro.url.search);
