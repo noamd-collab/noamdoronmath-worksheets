@@ -16,7 +16,8 @@
   color: #3d4870;
 }
 
-/* Track switch (grade 9): two native radios; their labels are the buttons. */
+/* Track switch (grade 9): a radiogroup ("מסלול") of two native radios, each
+   followed by its label; the labels are the buttons. */
 .prisa-switch__input {
   position: absolute;
   width: 1px;
@@ -62,21 +63,20 @@
   color: #22305a;
 }
 
-#prisa-track-g9r:checked ~ .prisa-switch .prisa-switch__option[data-track='g9r'],
-#prisa-track-g9m:checked ~ .prisa-switch .prisa-switch__option[data-track='g9m'],
+.prisa-switch__input:checked + .prisa-switch__option,
 .prisa-track-tab[aria-current='page'] {
   background: #22305a;
   color: #fbfaf5;
 }
 
-#prisa-track-g9r:focus-visible ~ .prisa-switch .prisa-switch__option[data-track='g9r'],
-#prisa-track-g9m:focus-visible ~ .prisa-switch .prisa-switch__option[data-track='g9m'] {
+/* Keyboard focus lands on the hidden radio; show it on that radio's label. */
+.prisa-switch__input:focus-visible + .prisa-switch__option {
   outline: 3px solid #e6a534;
   outline-offset: 2px;
 }
 
-#prisa-track-g9r:checked ~ .prisa-index__panel[data-track='g9m'],
-#prisa-track-g9m:checked ~ .prisa-index__panel[data-track='g9r'] {
+.prisa-index:has(#prisa-track-g9r:checked) .prisa-index__panel[data-track='g9m'],
+.prisa-index:has(#prisa-track-g9m:checked) .prisa-index__panel[data-track='g9r'] {
   display: none;
 }
 

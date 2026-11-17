@@ -1395,21 +1395,24 @@ export const TOPIC_SECTION_ANCHOR_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 /**
  * Section anchors must be safe fragment ids, unique on the page, clear of the
- * ids TopicPage already uses (topic-…), and attached to a rendered H2.
+ * ids TopicPage already uses (topic-…), and attached to a rendered H2. Returns
+ * every problem; empty when the page declares no anchor, in which case the
+ * body flow is not synthesized at all.
  */
-export function validateTopicSectionAnchors(page: TopicPageContent): void {
+export function topicSectionAnchorProblems(page: TopicPageContent): string[] {
   const declared = [
     ...(page.sections || []).filter((s) => s.anchor !== undefined).map((s) => s.anchor as string),
     ...(page.bodyFlow || [])
       .filter((b): b is Extract<TopicBodyFlowItem, { type: 'heading' }> => b.type === 'heading' && b.anchor !== undefined)
       .map((b) => b.anchor as string),
   ];
+  if (!declared.length) return [];
+  const problems: string[] = [];
   for (const anchor of declared) {
     if (typeof anchor !== 'string' || !TOPIC_SECTION_ANCHOR_PATTERN.test(anchor) || anchor.length > 64) {
-      throw new Error(`Topic page ${page.slug}: invalid section anchor ${JSON.stringify(anchor)}`);
-    }
-    if (anchor.startsWith('topic-')) {
-      throw new Error(`Topic page ${page.slug}: section anchor ${anchor} uses the reserved topic- prefix`);
+      problems.push(`invalid section anchor ${JSON.stringify(anchor)}`);
+    } else if (anchor.startsWith('topic-')) {
+      problems.push(`section anchor ${anchor} uses the reserved topic- prefix`);
     }
   }
   const rendered = synthesizeBodyFlow(page)
@@ -1417,15 +1420,42 @@ export function validateTopicSectionAnchors(page: TopicPageContent): void {
     .map((b) => b.anchor as string);
   const seen = new Set<string>();
   for (const anchor of rendered) {
-    if (seen.has(anchor)) throw new Error(`Topic page ${page.slug}: duplicate section anchor ${anchor}`);
+    if (seen.has(anchor)) problems.push(`duplicate section anchor ${anchor}`);
     seen.add(anchor);
   }
   for (const anchor of declared) {
-    if (!seen.has(anchor)) {
-      throw new Error(`Topic page ${page.slug}: section anchor ${anchor} is not on a rendered heading`);
-    }
+    if (!seen.has(anchor)) problems.push(`section anchor ${anchor} is not on a rendered heading`);
   }
+  return problems;
 }
+
+/**
+ * Strict form for tests and tools: throws on the first anchor problem.
+ * Request-time code uses topicSectionAnchorProblems and never throws.
+ */
+export function validateTopicSectionAnchors(page: TopicPageContent): void {
+  const [first] = topicSectionAnchorProblems(page);
+  if (first) throw new Error(`Topic page ${page.slug}: ${first}`);
+}
+
+/** The page with every section anchor removed, so its H2s render without ids. */
+function withoutSectionAnchors(page: TopicPageContent): TopicPageContent {
+  return {
+    ...page,
+    sections: (page.sections || []).map(({ anchor: _anchor, ...section }) => section),
+    ...(page.bodyFlow
+      ? {
+          bodyFlow: page.bodyFlow.map((b) => {
+            if (b.type !== 'heading' || b.anchor === undefined) return b;
+            const { anchor: _anchor, ...heading } = b;
+            return heading;
+          }),
+        }
+      : {}),
+  };
+}
+
+const anchorWarningsLogged = new Set<string>();
 
 /** Build legacy body order when capture predates bodyFlow. */
 export function synthesizeBodyFlow(page: TopicPageContent): TopicBodyFlowItem[] {
@@ -1568,7 +1598,17 @@ export function loadTopicPage(slug: string): TopicPageContent {
   if (!data.jsonLd) {
     throw new Error(`Topic page ${slug}: missing JSON-LD`);
   }
-  validateTopicSectionAnchors(data);
+  // A bad section anchor must not take a page or a hub down at request time:
+  // drop the page's anchors and log once. tests/prisa-index.test.ts holds every
+  // topic page to the strict rules, so CI fails instead.
+  const anchorProblems = topicSectionAnchorProblems(data);
+  if (anchorProblems.length) {
+    if (!anchorWarningsLogged.has(slug)) {
+      anchorWarningsLogged.add(slug);
+      console.warn(`[topic-pages] ${slug}: section anchors dropped (${anchorProblems.join('; ')})`);
+    }
+    return withVisibleMathIsolates(withoutSectionAnchors(data));
+  }
   return withVisibleMathIsolates(data);
 }
 

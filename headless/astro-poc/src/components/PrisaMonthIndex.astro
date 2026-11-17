@@ -2,8 +2,9 @@
 /**
  * SEO-2 — "לפי הפריסה": the official layout units of a grade, by month, on
  * /grade-7, /grade-8 and /grade-9. Grade 9 gets a רגילה / מצומצמת switch made
- * of two native radio buttons, so it works without JavaScript and both tracks
- * stay in the server-rendered HTML. The current school month starts open.
+ * of two native radio buttons in a radiogroup named "מסלול", so it works
+ * without JavaScript and both tracks stay in the server-rendered HTML (the
+ * CSS hides the unchecked track's panel). The current school month starts open.
  */
 import '../styles/prisa-index.css';
 import PrisaUnitList from './PrisaUnitList.astro';
@@ -38,27 +39,26 @@ const inputId = (key: string) => `prisa-track-${key}`;
     >
       <h2 id="prisa-heading" class="grade-hub__section-title">לפי הפריסה</h2>
       <p class="prisa-index__lead">
-        נושאי פריסת ההוראה של משרד החינוך לכיתה {gradeLabel} (תשפ״ז), לפי החודש שבו מתחילים ללמוד
-        כל נושא. שם הנושא הוא השם בתוכנית הלימודים, וכל נושא שיש לו דף באתר מקשר אליו.
+        הנושאים מסודרים לפי פריסת ההוראה של משרד החינוך לכיתה {gradeLabel} (תשפ״ז): כל נושא מופיע
+        בחודש שבו מתחילים ללמוד אותו. נושא שיש לו דף באתר מקשר אליו.
       </p>
-      {hasSwitch &&
-        tracks.map((track, index) => (
-          <input
-            class="prisa-switch__input"
-            type="radio"
-            name={`prisa-track-${grade}`}
-            id={inputId(track.key)}
-            value={track.key}
-            checked={index === 0}
-          />
-        ))}
       {hasSwitch && (
-        <div class="prisa-switch" data-prisa-switch>
-          <span class="prisa-switch__label">מסלול:</span>
-          {tracks.map((track) => (
-            <label class="prisa-switch__option" for={inputId(track.key)} data-track={track.key}>
-              {track.shortLabel}
-            </label>
+        <div class="prisa-switch" role="radiogroup" aria-label="מסלול" data-prisa-switch>
+          <span class="prisa-switch__label" aria-hidden="true">מסלול:</span>
+          {tracks.map((track, index) => (
+            <>
+              <input
+                class="prisa-switch__input"
+                type="radio"
+                name={`prisa-track-${grade}`}
+                id={inputId(track.key)}
+                value={track.key}
+                checked={index === 0}
+              />
+              <label class="prisa-switch__option" for={inputId(track.key)} data-track={track.key}>
+                {track.shortLabel}
+              </label>
+            </>
           ))}
         </div>
       )}

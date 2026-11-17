@@ -1,8 +1,9 @@
 ---
 /**
  * SEO-2 — the ט׳ מצומצמת hub: every unit of the official reduced-track layout
- * (prisa_9B, תשפ״ז), by month, with its official name. Units link to the
- * existing topic page that covers them; a unit without one stays plain text.
+ * (prisa_9B, תשפ״ז), by month, named as in the curriculum mapping (which
+ * spells out the layout's wording). Units link to the existing topic page that
+ * covers them; a unit without one stays plain text.
  * Server-rendered, ItemList + LearningResource here, BreadcrumbList from the
  * layout crumbs. No loop: the grade-9 loop pool includes topics this track
  * does not learn (vertex of a parabola, difference of squares).
@@ -24,7 +25,7 @@ export const prerender = false;
 const track = loadPrisaTrack('g9m');
 const title = 'מתמטיקה לכיתה ט׳ מצומצמת — דפי עבודה לפי הפריסה';
 const description =
-  'כל נושאי פריסת ההוראה לכיתה ט׳ מצומצמת (תשפ״ז) לפי חודשים, בשמם הרשמי, עם קישור לדף הנושא ולדפי העבודה באתר. בחינם וללא הרשמה.';
+  'כל נושאי פריסת ההוראה לכיתה ט׳ מצומצמת (תשפ״ז) לפי חודשים, עם קישור לדף הנושא ולדפי העבודה באתר. בחינם וללא הרשמה.';
 const crumbs = [
   { name: 'בית', path: '/' },
   { name: 'כיתה ט׳', path: '/grade-9' },
@@ -71,7 +72,7 @@ const resourceLd = learningResourceJsonLd({
         כאן מסודרים כל נושאי פריסת ההוראה של משרד החינוך לשנת תשפ״ז, לפי החודש שבו מתחילים ללמוד כל נושא.
       </p>
       <p class="prisa-hub__lead">
-        שם הנושא הוא השם בתוכנית הלימודים. נושא שיש לו דף באתר מקשר אליו, ושם יש הסבר ודפי עבודה להדפסה.
+        שמות הנושאים כאן מפורטים לפעמים יותר מהנוסח שבפריסה. נושא שיש לו דף באתר מקשר אליו, ושם יש הסבר ודפי עבודה להדפסה.
         הפונקציה הריבועית נלמדת השנה באופן חלקי בלבד, כמו שכתוב בפריסה.
       </p>
       <div class="prisa-hub__actions">
