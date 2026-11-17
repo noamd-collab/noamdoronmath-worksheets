@@ -34,7 +34,7 @@
       "deltaVerdict": "PASS_DELTA",
       "reviewReceipts": [
         {
-          "role": "fix review",
+          "role": "fix review (Claude Opus 5.5, not the fix author)",
           "path": "reports/CLAUDE-DELTA-G7-DAT-01-20261116/review.json",
           "sha256": "81eb21cdc130fe44d3591d9f8faded88af77f95bb6b6e47a46227b7e0f4ec310"
         },
@@ -42,6 +42,11 @@
           "role": "Antigravity delta review",
           "path": "reports/ANTIGRAVITY-DELTA-G7-DAT-01-20261117/review.json",
           "sha256": "13e4e3c1cb704adc75f2e748d8baf6bd1ad5ec06ded89d82b78451e7037f727a"
+        },
+        {
+          "role": "original review: Astra independent PDF review (levels a and c)",
+          "path": "reports/ASTRA-QWEN-G7-T64-independent-pdf-review-20261115.json",
+          "sha256": "5c2321436cc7120af678d836b25c9f0c4a647b339d9e8642158e47ee08db4bf8"
         }
       ],
       "producerReport": {
@@ -158,7 +163,7 @@
       "deltaVerdict": "PASS_DELTA",
       "reviewReceipts": [
         {
-          "role": "fix review",
+          "role": "fix review (Claude Opus 5.5, not the fix author)",
           "path": "reports/CLAUDE-DELTA-G7-WPM-01-20261116/review.json",
           "sha256": "266df3172353a88f5d6ebe3b3368d7d8967e91c39a8fab4be5526b064bc34bda"
         },
@@ -166,6 +171,10 @@
           "role": "Antigravity delta review",
           "path": "reports/ANTIGRAVITY-DELTA-G7-WPM-01-20261117/review.json",
           "sha256": "14d0178ca8423b964a46190dd5735c83d1c619cf9ae9ea2956aae78f634f9797"
+        },
+        {
+          "role": "original review: Codex independent PDF intake (levels a and c; external Codex workspace file, cited by hash)",
+          "sha256": "dcb0d3e2bbfc6980e41e9d417bd8814040c2f5562fb3f4386494afcb66243cab"
         }
       ],
       "producerReport": {
@@ -179,7 +188,7 @@
       "topicId": 41,
       "landing": "/equations-both-sides-word-problems-grade-7",
       "editionId": "ms-20261117-wpm-01-r1",
-      "label": "בעיה מילולית למשוואה: בחירת נעלם ובניית מודל · PDF",
+      "label": "מבעיה מילולית למשוואה: הגדרת נעלם ובניית מודל · PDF",
       "isDefault": false,
       "levels": [
         {
@@ -282,7 +291,7 @@
       "deltaVerdict": "PASS_DELTA",
       "reviewReceipts": [
         {
-          "role": "fix review",
+          "role": "fix review (Claude Opus 5.5, not the fix author)",
           "path": "reports/CLAUDE-DELTA-G8-FNC-01-20261116/review.json",
           "sha256": "b897d29e6359dd2b7acb4381ddcea61da33ec86992199f15bbef7e8ec40c9849"
         },
@@ -290,6 +299,11 @@
           "role": "Antigravity delta review",
           "path": "reports/ANTIGRAVITY-DELTA-G8-FNC-01-20261117/review.json",
           "sha256": "f56d193e18d71738b4146b3414b0c85286ac4a1e64af471853b6f262afc20e57"
+        },
+        {
+          "role": "original review: Claude independent full-package review",
+          "path": "reports/CLAUDE-INDEPENDENT-G8-FNC-01-20261116/review.json",
+          "sha256": "a7c44350fcde876884ea384767de703cda5fdd153120ae9e8fad01f0a7aa8e0d"
         }
       ],
       "producerReport": {
@@ -406,7 +420,7 @@
       "deltaVerdict": "PASS_DELTA",
       "reviewReceipts": [
         {
-          "role": "fix review",
+          "role": "fix review (Claude Opus 5.5, not the fix author)",
           "path": "reports/CLAUDE-DELTA-G8-INT-01-20261116/review.json",
           "sha256": "e613e77b3a20a2778e6408764d76102f437076c3ea71037e946a8e89942ee836"
         },
@@ -414,6 +428,11 @@
           "role": "Antigravity delta review",
           "path": "reports/ANTIGRAVITY-DELTA-G8-INT-01-20261117/review.json",
           "sha256": "74b8c16cd9e5873c3ae2c7cdbd72ce868d4691c791cf675be476beed9711ff25"
+        },
+        {
+          "role": "original review: Claude independent full-package review",
+          "path": "reports/CLAUDE-INDEPENDENT-G8-INT-01-20261116/review.json",
+          "sha256": "f0b4491829806395f5b8279310a1ba59a9962d4b2bcec78151bd1a7130bc0700"
         }
       ],
       "producerReport": {
@@ -530,7 +549,7 @@
       "deltaVerdict": "PASS_DELTA",
       "reviewReceipts": [
         {
-          "role": "fix review",
+          "role": "fix review (Claude Opus 5.5, not the fix author)",
           "path": "reports/CLAUDE-DELTA-G8-PCT-01-20261116/review.json",
           "sha256": "bed63293e3e02a9ec4789cca891b3ef9e9c52e4841f570490bb680f4f0709a0c"
         },
@@ -538,6 +557,11 @@
           "role": "Antigravity delta review",
           "path": "reports/ANTIGRAVITY-DELTA-G8-PCT-01-20261117/review.json",
           "sha256": "3b868f72aaf706da41e5bf70dd61b38de56cf5966912e762e62afd2f95215fbb"
+        },
+        {
+          "role": "original review: Claude independent full-package review",
+          "path": "reports/CLAUDE-INDEPENDENT-G8-PCT-01-20261116/review.json",
+          "sha256": "259378d45e1e3f05bdc5b97dd07eeab104445795f74f44802db4072ad4172391"
         }
       ],
       "producerReport": {
@@ -654,7 +678,7 @@
       "deltaVerdict": "PASS_DELTA",
       "reviewReceipts": [
         {
-          "role": "fix review",
+          "role": "fix review (Claude Opus 5.5, not the fix author)",
           "path": "reports/CLAUDE-DELTA-G8-PYT-01-20261116/review.json",
           "sha256": "7c285d528a1631d08a8dedde6f0d6e75d46e36a85c6b02bdd63ab967cb9a3590"
         },
@@ -662,6 +686,11 @@
           "role": "Antigravity delta review",
           "path": "reports/ANTIGRAVITY-DELTA-G8-PYT-01-20261117/review.json",
           "sha256": "9eaadb17d2928cb74fb72d62eedd17bcce85ce445a2f5ef85802e0e07d67217b"
+        },
+        {
+          "role": "original review: Claude independent full-package review",
+          "path": "reports/CLAUDE-INDEPENDENT-G8-PYT-01-20261116/review.json",
+          "sha256": "7e1e3174d7656c7b9ee685480e1aac2f3403625fedc4b81d8f6deba30aeded34"
         }
       ],
       "producerReport": {
@@ -778,7 +807,7 @@
       "deltaVerdict": "PASS_DELTA",
       "reviewReceipts": [
         {
-          "role": "fix review",
+          "role": "fix review (Claude Opus 5.5, not the fix author)",
           "path": "reports/CLAUDE-DELTA-G9-DIS-01-20261116/review.json",
           "sha256": "0915d33c01f7d49a5d4f2b3e108c049b21fc7188dfef265379c64af12729a4ba"
         },
@@ -786,6 +815,11 @@
           "role": "Antigravity delta review",
           "path": "reports/ANTIGRAVITY-DELTA-G9-DIS-01-20261117/review.json",
           "sha256": "af146be5ae872fc6ec36c72fbc5e043751aecd66531dbb90df2cf3a0be25c847"
+        },
+        {
+          "role": "original review: Claude independent full-package review",
+          "path": "reports/CLAUDE-INDEPENDENT-G9-DIS-01-20261116/review.json",
+          "sha256": "de829402ded52e48b3defdb4f29f5481c02ca738eb23ce28024d6b51b2ea8548"
         }
       ],
       "producerReport": {
@@ -902,7 +936,7 @@
       "deltaVerdict": "PASS_DELTA",
       "reviewReceipts": [
         {
-          "role": "fix review",
+          "role": "fix review (Claude Opus 5.5, not the fix author)",
           "path": "reports/CLAUDE-DELTA-G9-EQD-01-20261116/review.json",
           "sha256": "ccff1ba984ca1c1b33a3cc1ba91a2c1dfff3b07dd6d820f13bb4da08d2edb485"
         },
@@ -910,6 +944,11 @@
           "role": "Antigravity delta review",
           "path": "reports/ANTIGRAVITY-DELTA-G9-EQD-01-20261117/review.json",
           "sha256": "9af8968114bf86cd451934f651a6fae84cd65924b8babe62e373431cbfe45e80"
+        },
+        {
+          "role": "original review: Claude independent full-package review",
+          "path": "reports/CLAUDE-INDEPENDENT-G9-EQD-01-20261116/review.json",
+          "sha256": "987aa3eb3cc44d72f763c36a9f39ad0b60924f78e36753372de7bf9e105a04c1"
         }
       ],
       "producerReport": {
@@ -1026,7 +1065,7 @@
       "deltaVerdict": "PASS_DELTA",
       "reviewReceipts": [
         {
-          "role": "fix review",
+          "role": "fix review (Claude Opus 5.5, not the fix author)",
           "path": "reports/CLAUDE-DELTA-G9-PAR-05-20261116/review.json",
           "sha256": "d0042b39371b0310a3fa633dd93fd0bc0d03852ffe77dafbbaa75440891cb85e"
         },
@@ -1034,6 +1073,11 @@
           "role": "Antigravity delta review",
           "path": "reports/ANTIGRAVITY-DELTA-G9-PAR-05-20261117/review.json",
           "sha256": "77b489f35b9b1c2c13918b058e4cb7e30893bc70b0d542fe25b164bfdb2c4779"
+        },
+        {
+          "role": "original review: Astra independent QA of r02 (levels a and b)",
+          "path": "reports/ASTRA-CARBON-G9-PAR05-r02-independent-delta-20261116/review.json",
+          "sha256": "85db6971042fa6eeb95871f6355c281e6d02aa75866f7b0ad2dfbe095d7c8587"
         }
       ],
       "producerReport": {
@@ -1047,7 +1091,7 @@
       "topicId": 7,
       "landing": "/parallelogram-grade-9",
       "editionId": "ms-20261117-par-05-r1",
-      "label": "בניית מקבילית בסרגל ובמחוגה · PDF",
+      "label": "בניית מקבילית בסרגל, במחוגה ובמערכת צירים · PDF",
       "isDefault": false,
       "levels": [
         {
@@ -1150,7 +1194,7 @@
       "deltaVerdict": "PASS_DELTA",
       "reviewReceipts": [
         {
-          "role": "fix review",
+          "role": "fix review (Claude Opus 5.5, not the fix author)",
           "path": "reports/CLAUDE-DELTA-G9-POW-02-20261116/review.json",
           "sha256": "2a4ba9f8cc12bfcee2a5703f1f8ed9543837678c0eaa40dec6a46d8114988d32"
         },
@@ -1158,6 +1202,11 @@
           "role": "Antigravity delta review",
           "path": "reports/ANTIGRAVITY-DELTA-G9-POW-02-20261117/review.json",
           "sha256": "d1d2b6cbe227c409d2784d84fddf2c418237a1186e12a4eaace0027de960728d"
+        },
+        {
+          "role": "original review: Astra independent delta review of r03",
+          "path": "reports/ASTRA-CARBON-G9-POW02-r03-independent-delta-20261116/review.json",
+          "sha256": "b92819a71e5173128a616f4ca329738f3faa765527bc9080b0ed132300c97f56"
         }
       ],
       "producerReport": {
@@ -1274,7 +1323,7 @@
       "deltaVerdict": "PASS_DELTA",
       "reviewReceipts": [
         {
-          "role": "fix review",
+          "role": "fix review (Claude Opus 5.5, not the fix author)",
           "path": "reports/CLAUDE-DELTA-G9-WQP-01-20261116/review.json",
           "sha256": "934f4782ff1187e90ff7251bf98948ee16eb9d39e897667ea625f8e2a1d78810"
         },
@@ -1282,6 +1331,10 @@
           "role": "Antigravity delta review",
           "path": "reports/ANTIGRAVITY-DELTA-G9-WQP-01-20261117/review.json",
           "sha256": "ce331ac8cf8890afefc9f327dd17df350e58477be67f79a3204867e03cff514f"
+        },
+        {
+          "role": "original review: Codex independent PDF intake (levels b and c; external Codex workspace file, cited by hash)",
+          "sha256": "1c5e9b8aaeec810d75abeb7ac8e6ec259ba8c0fc4170496c67a9c7a6c2b553dc"
         }
       ],
       "producerReport": {
@@ -1511,7 +1564,7 @@
               "blocks": [
                 {
                   "type": "paragraph",
-                  "text": "מארגנים נתונים גולמיים בטבלאות שכיחות, משלימים פרטים חסרים, בודקים יחידות מידה ומאתרים טעויות בסיכום הנתונים.",
+                  "text": "מארגנים נתונים גולמיים בטבלאות שכיחות, מוסיפים יחידת מידה חסרה בכותרת הטבלה ומאתרים השמטת תשובות או ספירה כפולה לפי סכום השכיחויות.",
                   "links": []
                 },
                 {
@@ -1658,7 +1711,7 @@
             },
             {
               "type": "paragraph",
-              "text": "מארגנים נתונים גולמיים בטבלאות שכיחות, משלימים פרטים חסרים, בודקים יחידות מידה ומאתרים טעויות בסיכום הנתונים.",
+              "text": "מארגנים נתונים גולמיים בטבלאות שכיחות, מוסיפים יחידת מידה חסרה בכותרת הטבלה ומאתרים השמטת תשובות או ספירה כפולה לפי סכום השכיחויות.",
               "role": "body"
             },
             {
@@ -1687,7 +1740,7 @@
         "blocks": [
           {
             "type": "paragraph",
-            "text": "מארגנים נתונים גולמיים בטבלאות שכיחות, משלימים פרטים חסרים, בודקים יחידות מידה ומאתרים טעויות בסיכום הנתונים.",
+            "text": "מארגנים נתונים גולמיים בטבלאות שכיחות, מוסיפים יחידת מידה חסרה בכותרת הטבלה ומאתרים השמטת תשובות או ספירה כפולה לפי סכום השכיחויות.",
             "links": []
           },
           {
@@ -1825,7 +1878,7 @@
               "blocks": [
                 {
                   "type": "paragraph",
-                  "text": "בוחרים נעלם ומנסחים משוואה מתוך בעיות על כמויות, גילאים, מחירים ומידות. בודקים את הפתרון לפי הסיפור ומזהים משוואות שאינן מתארות נכון את הנתונים.",
+                  "text": "מגדירים נעלם ומנסחים משוואה מתוך בעיות על כמויות, גילים, מחירים ומידות, בלי לפתור אותה. מסבירים מה מייצג כל ביטוי או אגף בסיפור, מציינים יחידות ותנאים על הנעלם ומזהים משוואות שאינן מתארות נכון את הנתונים.",
                   "links": []
                 },
                 {
@@ -1984,7 +2037,7 @@
             },
             {
               "type": "paragraph",
-              "text": "בוחרים נעלם ומנסחים משוואה מתוך בעיות על כמויות, גילאים, מחירים ומידות. בודקים את הפתרון לפי הסיפור ומזהים משוואות שאינן מתארות נכון את הנתונים.",
+              "text": "מגדירים נעלם ומנסחים משוואה מתוך בעיות על כמויות, גילים, מחירים ומידות, בלי לפתור אותה. מסבירים מה מייצג כל ביטוי או אגף בסיפור, מציינים יחידות ותנאים על הנעלם ומזהים משוואות שאינן מתארות נכון את הנתונים.",
               "role": "body"
             },
             {
@@ -2013,7 +2066,7 @@
         "blocks": [
           {
             "type": "paragraph",
-            "text": "בוחרים נעלם ומנסחים משוואה מתוך בעיות על כמויות, גילאים, מחירים ומידות. בודקים את הפתרון לפי הסיפור ומזהים משוואות שאינן מתארות נכון את הנתונים.",
+            "text": "מגדירים נעלם ומנסחים משוואה מתוך בעיות על כמויות, גילים, מחירים ומידות, בלי לפתור אותה. מסבירים מה מייצג כל ביטוי או אגף בסיפור, מציינים יחידות ותנאים על הנעלם ומזהים משוואות שאינן מתארות נכון את הנתונים.",
             "links": []
           },
           {
@@ -2151,12 +2204,12 @@
               "blocks": [
                 {
                   "type": "paragraph",
-                  "text": "קוראים נקודות, גרפים וטבלאות, מתאימים בין תיאור מילולי, נוסחה וייצוג גרפי, ומזהים תחומי עלייה וירידה.",
+                  "text": "קוראים ומסרטטים נקודות וגרפים, עוברים בין תיאור מילולי, טבלה, נוסחה וגרף, ומזהים תחומי עלייה, תחומי ירידה ותחומים שבהם הפונקציה קבועה.",
                   "links": []
                 },
                 {
                   "type": "paragraph",
-                  "text": "מפרשים מצבים של חניה, תנועה, נר ומים באמצעות גרפים, ובודקים מתי התאמה מתארת פונקציה.",
+                  "text": "בודקים מתי התאמה מתארת פונקציה ומנתחים מצבים מילוליים וגרפיים, למשל תנועה, שינוי כמות במכל והשוואה בין שתי הצעות מחיר.",
                   "links": []
                 },
                 {
@@ -2298,12 +2351,12 @@
             },
             {
               "type": "paragraph",
-              "text": "קוראים נקודות, גרפים וטבלאות, מתאימים בין תיאור מילולי, נוסחה וייצוג גרפי, ומזהים תחומי עלייה וירידה.",
+              "text": "קוראים ומסרטטים נקודות וגרפים, עוברים בין תיאור מילולי, טבלה, נוסחה וגרף, ומזהים תחומי עלייה, תחומי ירידה ותחומים שבהם הפונקציה קבועה.",
               "role": "body"
             },
             {
               "type": "paragraph",
-              "text": "מפרשים מצבים של חניה, תנועה, נר ומים באמצעות גרפים, ובודקים מתי התאמה מתארת פונקציה.",
+              "text": "בודקים מתי התאמה מתארת פונקציה ומנתחים מצבים מילוליים וגרפיים, למשל תנועה, שינוי כמות במכל והשוואה בין שתי הצעות מחיר.",
               "role": "body"
             },
             {
@@ -2327,12 +2380,12 @@
         "blocks": [
           {
             "type": "paragraph",
-            "text": "קוראים נקודות, גרפים וטבלאות, מתאימים בין תיאור מילולי, נוסחה וייצוג גרפי, ומזהים תחומי עלייה וירידה.",
+            "text": "קוראים ומסרטטים נקודות וגרפים, עוברים בין תיאור מילולי, טבלה, נוסחה וגרף, ומזהים תחומי עלייה, תחומי ירידה ותחומים שבהם הפונקציה קבועה.",
             "links": []
           },
           {
             "type": "paragraph",
-            "text": "מפרשים מצבים של חניה, תנועה, נר ומים באמצעות גרפים, ובודקים מתי התאמה מתארת פונקציה.",
+            "text": "בודקים מתי התאמה מתארת פונקציה ומנתחים מצבים מילוליים וגרפיים, למשל תנועה, שינוי כמות במכל והשוואה בין שתי הצעות מחיר.",
             "links": []
           },
           {
@@ -2470,7 +2523,7 @@
                 },
                 {
                   "type": "paragraph",
-                  "text": "בודקים אם תחזית מתאימה לקצב הנתון. הדוגמאות עוסקות בצמיחה, חימום מים, נר, הליכה, איסוף ספרים, שלג ורחפן.",
+                  "text": "בוחרים את הקצב המתאים גם כשיש שינוי קצב בין קטעים, ובודקים מתי סביר להמשיך את המגמה במציאות — למשל בשאלות על תנועה, טמפרטורה, אורך נר ומפלס מים.",
                   "links": []
                 },
                 {
@@ -2617,7 +2670,7 @@
             },
             {
               "type": "paragraph",
-              "text": "בודקים אם תחזית מתאימה לקצב הנתון. הדוגמאות עוסקות בצמיחה, חימום מים, נר, הליכה, איסוף ספרים, שלג ורחפן.",
+              "text": "בוחרים את הקצב המתאים גם כשיש שינוי קצב בין קטעים, ובודקים מתי סביר להמשיך את המגמה במציאות — למשל בשאלות על תנועה, טמפרטורה, אורך נר ומפלס מים.",
               "role": "body"
             },
             {
@@ -2646,7 +2699,7 @@
           },
           {
             "type": "paragraph",
-            "text": "בודקים אם תחזית מתאימה לקצב הנתון. הדוגמאות עוסקות בצמיחה, חימום מים, נר, הליכה, איסוף ספרים, שלג ורחפן.",
+            "text": "בוחרים את הקצב המתאים גם כשיש שינוי קצב בין קטעים, ובודקים מתי סביר להמשיך את המגמה במציאות — למשל בשאלות על תנועה, טמפרטורה, אורך נר ומפלס מים.",
             "links": []
           },
           {
@@ -2759,17 +2812,17 @@
               "blocks": [
                 {
                   "type": "paragraph",
-                  "text": "ממירים בין אחוזים, שברים ומספרים עשרוניים, מחשבים חלק או שלם ובוחרים מהו השלם בכל שאלה.",
+                  "text": "ממירים בין אחוזים, שברים ומספרים עשרוניים, מזהים מהו השלם ומחשבים חלק, שלם או אחוז.",
                   "links": []
                 },
                 {
                   "type": "paragraph",
-                  "text": "מתרגלים עליות והנחות, חזרה למחיר המקורי, שני שינויי אחוזים בסדרים שונים והשוואה בין קופון להנחה.",
+                  "text": "מתרגלים התייקרות והוזלה, מציאת שיעור השינוי וחזרה למחיר המקורי, שני שינויי אחוזים רצופים ושילוב של הנחה באחוזים וקופון בשני סדרים שונים.",
                   "links": []
                 },
                 {
                   "type": "paragraph",
-                  "text": "שלושה קובצי PDF: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף.",
+                  "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף. העזרה של נועם AI זמינה רק בדפי העבודה שנפתחים באתר.",
                   "links": []
                 }
               ]
@@ -2790,17 +2843,17 @@
         "blocks": [
           {
             "type": "paragraph",
-            "text": "ממירים בין אחוזים, שברים ומספרים עשרוניים, מחשבים חלק או שלם ובוחרים מהו השלם בכל שאלה.",
+            "text": "ממירים בין אחוזים, שברים ומספרים עשרוניים, מזהים מהו השלם ומחשבים חלק, שלם או אחוז.",
             "links": []
           },
           {
             "type": "paragraph",
-            "text": "מתרגלים עליות והנחות, חזרה למחיר המקורי, שני שינויי אחוזים בסדרים שונים והשוואה בין קופון להנחה.",
+            "text": "מתרגלים התייקרות והוזלה, מציאת שיעור השינוי וחזרה למחיר המקורי, שני שינויי אחוזים רצופים ושילוב של הנחה באחוזים וקופון בשני סדרים שונים.",
             "links": []
           },
           {
             "type": "paragraph",
-            "text": "שלושה קובצי PDF: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף.",
+            "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף. העזרה של נועם AI זמינה רק בדפי העבודה שנפתחים באתר.",
             "links": []
           }
         ]
@@ -2913,12 +2966,12 @@
                 },
                 {
                   "type": "paragraph",
-                  "text": "משתמשים במשפט ההפוך כדי לבדוק אם משולש ישר־זווית, ופונים גם לבעיות עם סולם, מלבן ומשולשים במערכת צירים.",
+                  "text": "משתמשים במשפט ההפוך כדי לבדוק אם משולש הוא ישר־זווית, ופותרים גם בעיות במלבן, בטרפז, במשולשים במערכת צירים ועוד (למשל סולם הנשען על קיר).",
                   "links": []
                 },
                 {
                   "type": "paragraph",
-                  "text": "שלושה קובצי PDF: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף.",
+                  "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף. העזרה של נועם AI זמינה רק בדפי העבודה שנפתחים באתר.",
                   "links": []
                 }
               ]
@@ -2944,12 +2997,12 @@
           },
           {
             "type": "paragraph",
-            "text": "משתמשים במשפט ההפוך כדי לבדוק אם משולש ישר־זווית, ופונים גם לבעיות עם סולם, מלבן ומשולשים במערכת צירים.",
+            "text": "משתמשים במשפט ההפוך כדי לבדוק אם משולש הוא ישר־זווית, ופותרים גם בעיות במלבן, בטרפז, במשולשים במערכת צירים ועוד (למשל סולם הנשען על קיר).",
             "links": []
           },
           {
             "type": "paragraph",
-            "text": "שלושה קובצי PDF: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף.",
+            "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף. העזרה של נועם AI זמינה רק בדפי העבודה שנפתחים באתר.",
             "links": []
           }
         ]
@@ -3748,7 +3801,7 @@
               "blocks": [
                 {
                   "type": "paragraph",
-                  "text": "מתרגמים בעיות למשוואה ריבועית: מכפלת מספרים עוקבים, מידות ושטחים של מלבנים, מחיר ספרים וסידור כיסאות בשורות.",
+                  "text": "מתרגמים בעיות למשוואה ריבועית: שאלות על מספרים, מידות ושטחים של מלבנים, משולש ישר־זווית ואלכסון מלבן, שינוי מחיר בתקציב נתון וסידור בשורות.",
                   "links": []
                 },
                 {
@@ -3771,7 +3824,7 @@
         "blocks": [
           {
             "type": "paragraph",
-            "text": "מתרגמים בעיות למשוואה ריבועית: מכפלת מספרים עוקבים, מידות ושטחים של מלבנים, מחיר ספרים וסידור כיסאות בשורות.",
+            "text": "מתרגמים בעיות למשוואה ריבועית: שאלות על מספרים, מידות ושטחים של מלבנים, משולש ישר־זווית ואלכסון מלבן, שינוי מחיר בתקציב נתון וסידור בשורות.",
             "links": []
           },
           {
