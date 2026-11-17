@@ -82,7 +82,12 @@ function harness(options: { online?: boolean; waking?: boolean; jobs?: any[]; ca
     setTimeout: (callback: () => unknown, delay: number) => { timers.set(++timer, { callback, delay }); return timer; },
     clearTimeout: (id: number) => timers.delete(id), setInterval: () => ++timer, clearInterval: () => {},
   });
-  const flush = async () => { for(let i=0;i<8;i++)await new Promise(resolve => setImmediate(resolve)); };
+  const flush = async () => {
+    for (let i = 0; i < 12; i++) {
+      await new Promise(resolve => setImmediate(resolve));
+      await new Promise(resolve => setTimeout(resolve, 0));
+    }
+  };
   const element = (id: string) => document.getElementById(id) as any;
   const field = (name: string) => fields.get(name) as any;
   const dispatch = async (el: any, type: string) => { el.dispatchEvent(new window.Event(type, { bubbles: true, cancelable: true })); await flush(); };
