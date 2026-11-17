@@ -58,7 +58,9 @@ const NOW = new Date('2026-11-17T10:00:00Z');
 
 /**
  * Units with no same-grade page at 118b4d90 (the mapping's no_topic units,
- * minus the triangle inequality, which batch 2a added to the median page).
+ * minus the triangle inequality, which batch 2a added to the median page, and
+ * minus st.g9m.equations.numeric_denominator, whose planned landing
+ * equations-numeric-denominator-grade-9 is served since the content train).
  * A new landing may only shrink this list, after a regenerate.
  */
 const NO_PAGE_UNITS = [
@@ -71,7 +73,6 @@ const NO_PAGE_UNITS = [
   'st.g9m.percentages.part_of_whole',
   'st.g9m.percentages.increase_decrease',
   'st.g9m.parallels_and_parallelogram.review',
-  'st.g9m.equations.numeric_denominator',
   'st.g9m.word_problems_integrative.literacy_contexts',
 ];
 
@@ -204,6 +205,32 @@ describe('generator (scripts/build-prisa-units.ts)', () => {
     assert.ok(pagesOf('st.g9r.powers.sqrt_laws').includes('exponent-rules-grade-9'));
     assert.ok(pagesOf('st.g9m.pythagoras.composite_areas_perim').includes('pythagorean-theorem-grade-9'));
   });
+
+  it('links the first planned landing that became a served page (content train, topic 9/49)', () => {
+    const id = 'st.g9m.equations.numeric_denominator';
+    const slug = 'equations-numeric-denominator-grade-9';
+    const input = readUnitPagesInput();
+    // The input still names it as planned only; the generator links it because the page is served.
+    assert.deepEqual(input.units[id], { pages: [], planned: [slug] });
+    assert.ok(TOPIC_PAGE_SLUGS.includes(slug));
+    const reduced = raw.tracks.find((t: any) => t.key === 'g9m');
+    const january = reduced.months.find((m: any) => m.key === 'm01');
+    assert.equal(january.label, 'ינואר');
+    assert.deepEqual(january.units.find((u: any) => u.id === id).pages, [slug]);
+    // Batch 4 added PDF sections to four landings; each was already first for the units its section teaches.
+    const refresh = (input.origin as any).refresh.at(-1);
+    assert.equal(refresh.baseline, '74449462');
+    assert.deepEqual(refresh.pages, [{ unit: id, added: slug, position: 'first', section: 'planned landing, linked by the generator once it is served' }]);
+    assert.deepEqual(refresh.unchanged, ['kite-grade-9', 'triangle-30-60-90-grade-9', 'solids-box-cube-prism-grade-7', 'similar-triangles-grade-8']);
+    const firstPage = (unit: string) => raw.tracks.flatMap((t: any) => t.months.flatMap((m: any) => m.units)).find((u: any) => u.id === unit).pages[0];
+    for (const [unit, page] of [
+      ['st.g9r.kite.definition_angles', 'kite-grade-9'], ['st.g9r.kite.main_diagonal_area', 'kite-grade-9'],
+      ['st.g9m.kite_and_isosceles.kite_properties', 'kite-grade-9'],
+      ['st.g9r.right_triangle_30_60_90.theorem_and_converse', 'triangle-30-60-90-grade-9'],
+      ['st.g7.solids.triangular_prism', 'solids-box-cube-prism-grade-7'],
+      ['st.g8.similarity.similar_polygons_ratio', 'similar-triangles-grade-8'], ['st.g8.similarity.criteria', 'similar-triangles-grade-8'],
+    ]) assert.equal(firstPage(unit), page, unit);
+  });
 });
 
 describe('prisa links', () => {
@@ -241,7 +268,7 @@ describe('prisa links', () => {
     }
     // New landings may link more units; none may lose its link.
     for (const id of noPage) assert.ok(NO_PAGE_UNITS.includes(id), `${id} lost its page`);
-    assert.ok(loadPrisaTrack('g9m').linkedUnitCount >= 34);
+    assert.ok(loadPrisaTrack('g9m').linkedUnitCount >= 35);
     assert.ok(loadPrisaTrack('g8').linkedUnitCount >= 36);
     assert.ok(loadPrisaTrack('g9r').linkedUnitCount >= 43);
     assert.equal(loadPrisaTrack('g7').linkedUnitCount, 49);
