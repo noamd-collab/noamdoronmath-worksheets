@@ -82,10 +82,15 @@ async function checkPage(slug: string) {
   }
   if (slug === 'accessibilityadaptation') {
     if (!snap.bodyText.includes('מדיניות פרטיות')) issues.push('missing privacy H2');
-    if (!snap.bodyText.includes('איזה מידע נאסף באתר?')) issues.push('missing privacy H3 collect');
+    if (!snap.bodyText.includes('ת"י 5568')) issues.push('missing IS 5568 reference');
     if (snap.privacyAnchorId !== 'privacy-policy') {
       issues.push('missing #privacy-policy id on מדיניות פרטיות H2');
     }
+  }
+  if (slug === 'privacy') {
+    if (!snap.bodyText.includes('איזה מידע נאסף ולמה')) issues.push('missing privacy collection section');
+    if (!snap.bodyText.includes('Alibaba Cloud')) issues.push('missing AI provider disclosure');
+    if (!snap.bodyText.includes('noamd@noamdoronmath.co.il')) issues.push('missing privacy contact email');
   }
   if (slug === 'conditionforfreeworksheets') {
     if (!snap.bodyText.includes('שימוש מסחרי')) issues.push('missing policy commercial ban');

@@ -1,3 +1,4 @@
+import { beforeExtra15Catalog, beforeExtra15Registry } from './fixtures/extra15-pdf';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
@@ -22,14 +23,14 @@ const read = (p: string) => JSON.parse(readFileSync(new URL(p, root), 'utf8'));
 const digest = (v: unknown) => createHash('sha256').update(JSON.stringify(v, null, 2) + '\n').digest('hex');
 const raw = read('headless/astro-poc/src/data/catalog.v1.json');
 const catalog = loadCatalog();
-const previous = beforeExtSmlAfrCatalog(raw) as ReturnType<typeof loadCatalog>;
+const previous = beforeExtra15Catalog(raw) as ReturnType<typeof loadCatalog>;
 const registry = read('headless/catalog/worksheet-editions.v1.json');
-const priorRegistry = beforeExtSmlAfrRegistry(registry);
+const priorRegistry = beforeExtra15Registry(registry);
 const receipt = read('docs/ext-sml-afr-pdf-first-20261115.json');
 const plain = (s: string) => s.replace(/[\u2066-\u2069]/g, '');
 
 test('three exact editions add nine verified PDFs and preserve the complete preceding catalog and registry', () => {
-  assert.equal(digest(beforeExtSmlAfrCatalog(raw)), reviewed.baselineCatalogSha256);
+  assert.equal(digest(beforeExtra15Catalog(raw)), reviewed.baselineCatalogSha256);
   assert.equal(digest(priorRegistry), reviewed.baselineRegistrySha256);
   assert.deepEqual(registry.editions.filter((e: any) => ids.includes(e.editionId)), reviewed.additions.map(a => a.edition));
   assert.deepEqual(reviewed.additions.map(a => [a.grade, a.topicId]), [[9, 1], [9, 44], [9, 3]]);

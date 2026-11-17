@@ -1,3 +1,4 @@
+import { beforeNext21Copy } from './fixtures/next21-pdf';
 import { beforeExtSmlAfrCopy } from './fixtures/ext-sml-afr-pdf';
 /**
  * HEADLESS-MIGRATION-18/19/20 — topic SEO page module + CTA gates.
@@ -147,6 +148,9 @@ describe('topic page routes (HEADLESS-MIGRATION-18/19/20)', () => {
 
   it('preserves production or reviewed content update dates; absent when production has none', () => {
     const expectedPresent: Record<string, string> = {
+      // SAO/WPC additional PDF content is reviewed on this date.
+      'triangle-sides-angles-grade-9': 'נועם דורון מתמטיקה · עודכן 15.11.2026',
+      'equations-both-sides-word-problems-grade-7': 'נועם דורון מתמטיקה · עודכן 15.11.2026',
       // EQN01/SGN01/FAC01 PDF practice and scope sections added 15.11.2026.
       'signed-numbers-grade-7': 'נועם דורון מתמטיקה · עודכן 15.11.2026',
       'pythagorean-theorem-grade-8': 'נועם דורון מתמטיקה · עודכן 12.9.2026',
@@ -169,9 +173,12 @@ describe('topic page routes (HEADLESS-MIGRATION-18/19/20)', () => {
       // T90 PDF practice and scope section added 15.11.2026.
       'parallelogram-grade-9': 'נועם דורון מתמטיקה · עודכן 15.11.2026',
       'square-grade-9': 'נועם דורון מתמטיקה · עודכן 12.9.2026',
+      'trapezoid-grade-9': 'נועם דורון מתמטיקה · עודכן 15.11.2026',
+      'similar-triangles-grade-9': 'נועם דורון מתמטיקה · עודכן 15.11.2026',
+      'area-rectangle-perimeter-grade-7': 'נועם דורון מתמטיקה · עודכן 15.11.2026',
     };
     for (const [slug, line] of Object.entries(expectedPresent)) {
-      assert.equal(loadTopicPage(slug).updatedLine, line);
+      assert.equal(beforeNext21Copy(slug, loadTopicPage(slug)).updatedLine, line, slug);
     }
     for (const slug of ['coordinate-plane-quadrants-grade-7', 'geometric-proof-grade-8'] as const) {
       const page = loadTopicPage(slug);
@@ -212,7 +219,7 @@ describe('topic page routes (HEADLESS-MIGRATION-18/19/20)', () => {
 
   it('triangle-area-grade-7 migrated with LD FAQ visibility correction (exact Q&A)', () => {
     assert.ok((TOPIC_PAGE_SLUGS as readonly string[]).includes('triangle-area-grade-7'));
-    const page = loadTopicPage('triangle-area-grade-7');
+    const page = beforeNext21Copy('triangle-area-grade-7', loadTopicPage('triangle-area-grade-7'));
     const ld = extractJsonLdFaq(page.jsonLd);
     assert.equal(ld.length, 3);
     const visible = page.faqGroups.flatMap((g) => g.items);

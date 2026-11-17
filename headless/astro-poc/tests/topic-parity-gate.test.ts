@@ -328,7 +328,7 @@ describe('triangle-area-grade-7 LD FAQ visibility correction (M30)', () => {
     assert.deepEqual([...TOPIC_PAGE_M20_UNMIGRATED], []);
     assert.ok((TOPIC_PAGE_SLUGS as readonly string[]).includes('triangle-area-grade-7'));
     const source = loadProductionFixture('triangle-area-grade-7');
-    const page = loadTopicPage('triangle-area-grade-7');
+    const page = restoreBeforePdfCopy('triangle-area-grade-7', loadTopicPage('triangle-area-grade-7'));
     const preview = contentToParitySnapshot(page, 'preview');
     // Production fixture FAQ was synced to LD for SOURCE→content; LD still authoritative
     assert.equal(source.jsonLd.faq.length, 3);
@@ -426,7 +426,7 @@ describe('M30 closes remaining topic-SEO gaps', () => {
     for (const slug of TOPIC_PAGE_M30_SLUGS) {
       assert.ok((TOPIC_PAGE_SLUGS as readonly string[]).includes(slug));
       const source = loadProductionFixture(slug);
-      const page = loadTopicPage(slug);
+      const page = restoreBeforePdfCopy(slug, loadTopicPage(slug));
       const diffs = diffTopicParity(source, contentToParitySnapshot(page, 'preview')).filter(
         (d) => d.field !== 'images'
       );

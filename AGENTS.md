@@ -13,6 +13,11 @@
 - Never merge, auto-merge, enqueue, or delegate a merge without Noam's explicit approval for that specific pull request.
 - Approval to implement, review, or preview is not merge approval.
 - Publish needs its own approval, unless Noam approves both.
+- Standing approval for worksheet publication (Noam, 16 Nov 2026). Claude, as manager of middle-school worksheet production, may merge a worksheet pull request into `headless/astro-poc-baseline`, merge its release-controller pull request into `main`, and publish, without a separate question for each pull request. A worksheet pull request covers PDFs with final answers, catalog and edition entries, topic landing pages, and their SEO metadata. Each of these must hold first:
+  - every required check passes;
+  - the worksheet skill gates passed for every package;
+  - an independent review of the exact PDFs by an agent other than the author is cited in the pull request body.
+- The standing approval covers only that kind of pull request and only Claude. Every other change, and every other agent, still needs the per-pull-request approval above.
 
 ## Branches
 
@@ -31,7 +36,7 @@
 
 ## Publish
 
-- Publishing and deployment go only through `tools/release/release.sh`, after explicit approval for that pull request.
+- Publishing and deployment go only through `tools/release/release.sh`. They need explicit approval for that pull request, or the standing worksheet approval under Merge gate.
 - That script's `RELEASE_BRANCH` defaults to `headless/astro-poc-baseline`.
 - Never use a provider command, API, dashboard, or an old `release-NNN.sh` script.
 - Preview approval is not publish approval.

@@ -1,0 +1,437 @@
+{
+  "schema": "noam-student-pdf-publication-evidence/v1",
+  "status": "REVIEWED_MEDIA_SITE_CANDIDATE_NOT_PUBLISHED",
+  "preparedDate": "2026-11-15",
+  "publicationMode": "pdf-only",
+  "sourceProvenanceOnly": true,
+  "sitePublicationClaimed": false,
+  "scope": {
+    "packages": [
+      "TRP",
+      "SIM9",
+      "RSC",
+      "PER"
+    ],
+    "pdfs": 12,
+    "pages": 96,
+    "subitems": 288,
+    "landingRoutes": 3
+  },
+  "mediaReadbackSha256": "3666f1f84e745dc2c3972b1242a748221fdf561a7f50219da63903e2d1bc21e3",
+  "frozenPublishManifestSha256": "6239c9838f5ac3d74f15b0a5010afdb6e37f2c9a8c611122dae5ced5f90e4cb4",
+  "rootMediaAcceptanceSha256": "64e5259591b71124f5c1a49b79dfa8fdcd15309f8924e8b50755975fb6b21958",
+  "rootMappingSpecSha256": "58300934d428af755d3455865f451ccf9c571dbfd9ca53843102e3da29cc7be2",
+  "latestPerDeltaSha256": "1654bcbf1bcf90510d9093a8a27b34c46f303a8ded54d42a2adaa5603985368d",
+  "review": {
+    "attribution": "Attributed independent review reports assess 72 parts and 24 pages per package. Implementation independently verifies exact file pins and source mapping; no repeated full PDF visual/math review claimed.",
+    "totalPages": 96,
+    "subitems": 288,
+    "nativeOrHintsAcceptance": false,
+    "wholePackagePass": false,
+    "wordVisual": "NOT_RUN",
+    "preserveDensityReview": true
+  },
+  "packages": [
+    {
+      "sheetId": "G9-TRP-01",
+      "grade": 9,
+      "topicId": 39,
+      "editionId": "ms-20261115-trp-01-r1",
+      "label": "טרפז: שטח, גובה, היקף והשוואת שטחים — PDF",
+      "nativePrefixProvenanceOnly": "G9-T78",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "independentPdfReviewSha256": "31ba76a1d2b0555c6c3a3d62770a64a33b7cc11666ea38174bfdc01bf9d4f08f",
+      "holds": [
+        "No native semantic acceptance or hints acceptance derived from automatic PASS; Word visual NOT_RUN."
+      ],
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "e3a500d6b1514ffbb91d35568e49b1ca",
+          "pdfSha256": "0bf17fb174a7061b3a2524db06426395626d33215ce3449feadf769670466256",
+          "sourceSha256": "5d49114659de8a4f127f19175996602d28c238739e9874dc5f45df32217693a6",
+          "nativeExportSha256": "2711604fcb88201b2c3ff4da27418639cac1b5c49110c4733cc7cb70206fa229",
+          "worksheetId": "ms-g9-trp-01-a-r1",
+          "revision": 1,
+          "pages": 8,
+          "subitems": 24,
+          "downloadChecks": [
+            {
+              "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_e3a500d6b1514ffbb91d35568e49b1ca.pdf",
+              "status": 200,
+              "sha256": "0bf17fb174a7061b3a2524db06426395626d33215ce3449feadf769670466256",
+              "bytes": 81609,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_e3a500d6b1514ffbb91d35568e49b1ca.pdf",
+              "status": 200,
+              "sha256": "0bf17fb174a7061b3a2524db06426395626d33215ce3449feadf769670466256",
+              "bytes": 81609,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "1d1755c92ace438a9c9b1b5cc3e62f8e",
+          "pdfSha256": "6c95ca2df2d78583f8e61699f7a6d40f737d299c131d078710a89787bb2ef197",
+          "sourceSha256": "702d96365a2dd7b91623837d2629f14362bfe2f93faa5e7d80d39207829a105d",
+          "nativeExportSha256": "acd628113c2df9c95facf640165ff48cc7a35905b4db9751f607bf2f38524945",
+          "worksheetId": "ms-g9-trp-01-b-r1",
+          "revision": 1,
+          "pages": 8,
+          "subitems": 24,
+          "downloadChecks": [
+            {
+              "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_1d1755c92ace438a9c9b1b5cc3e62f8e.pdf",
+              "status": 200,
+              "sha256": "6c95ca2df2d78583f8e61699f7a6d40f737d299c131d078710a89787bb2ef197",
+              "bytes": 86032,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_1d1755c92ace438a9c9b1b5cc3e62f8e.pdf",
+              "status": 200,
+              "sha256": "6c95ca2df2d78583f8e61699f7a6d40f737d299c131d078710a89787bb2ef197",
+              "bytes": 86032,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "a2c928a7422b46e4a6e065357e396d53",
+          "pdfSha256": "bc24ca57c3659e41a5579a2e29c92c423342dbbc087f3ec093f016a9539cc5f1",
+          "sourceSha256": "9b93993e42861a8bfd63cef7689d958a807fe4517e323ea5d6fe17976e41e37f",
+          "nativeExportSha256": "c5c06e7e7eb28bebb7f7ae11fed8f8356e31856a8c44b256dec92d32591435d8",
+          "worksheetId": "ms-g9-trp-01-c-r1",
+          "revision": 1,
+          "pages": 8,
+          "subitems": 24,
+          "downloadChecks": [
+            {
+              "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_a2c928a7422b46e4a6e065357e396d53.pdf",
+              "status": 200,
+              "sha256": "bc24ca57c3659e41a5579a2e29c92c423342dbbc087f3ec093f016a9539cc5f1",
+              "bytes": 94391,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_a2c928a7422b46e4a6e065357e396d53.pdf",
+              "status": 200,
+              "sha256": "bc24ca57c3659e41a5579a2e29c92c423342dbbc087f3ec093f016a9539cc5f1",
+              "bytes": 94391,
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sheetId": "G9-SIM-01",
+      "grade": 9,
+      "topicId": 19,
+      "editionId": "ms-20261115-sim9-01-r1",
+      "label": "דמיון משולשים: יחס שטחים ושטחים שנותרו — PDF",
+      "nativePrefixProvenanceOnly": "G9-T79",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "independentPdfReviewSha256": "bee9ed8bd17ee138ad49bf74b493ab15c3cbb2d9d9737e0da7ad4a021fef3009",
+      "holds": [
+        "Noam export K6 FAIL on4items remains HOLD; not same package as G8 SIM.",
+        "D8 REVIEW and G94 Q7 at40/41/40percent retained; peer found adequate workspace."
+      ],
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "11e0c8c7852c40ae92322d93add6b065",
+          "pdfSha256": "5c7b1a8db41d2f004f3e915b3782d603cb2604c4014d2a615c55a5f0263de802",
+          "sourceSha256": "700897bcb68bb73c5fcad91385a94776239b71870cd78b16d432b4c5cd349f10",
+          "nativeExportSha256": "a374217eeca0baac7a2b2328d94d25b10c9cc6666f69ab84cd58b98c5e6ed417",
+          "worksheetId": "ms-g9-sim-01-a-r1",
+          "revision": 1,
+          "pages": 8,
+          "subitems": 24,
+          "downloadChecks": [
+            {
+              "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_11e0c8c7852c40ae92322d93add6b065.pdf",
+              "status": 200,
+              "sha256": "5c7b1a8db41d2f004f3e915b3782d603cb2604c4014d2a615c55a5f0263de802",
+              "bytes": 85381,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_11e0c8c7852c40ae92322d93add6b065.pdf",
+              "status": 200,
+              "sha256": "5c7b1a8db41d2f004f3e915b3782d603cb2604c4014d2a615c55a5f0263de802",
+              "bytes": 85381,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "d860019845524719af4b615bd86f79c7",
+          "pdfSha256": "71872b5cae73937c4a3fb38a8a2ac9b68b165675e3c33efcd6a390ff8f71e251",
+          "sourceSha256": "0fcd41a6279170d29654674e37fd383a7131b8b8a36ace4fee8cb867185e1fd4",
+          "nativeExportSha256": "4807075cc74348d30d707a042ec7e454ed929afa36f1b16286992583c4078de7",
+          "worksheetId": "ms-g9-sim-01-b-r1",
+          "revision": 1,
+          "pages": 8,
+          "subitems": 24,
+          "downloadChecks": [
+            {
+              "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_d860019845524719af4b615bd86f79c7.pdf",
+              "status": 200,
+              "sha256": "71872b5cae73937c4a3fb38a8a2ac9b68b165675e3c33efcd6a390ff8f71e251",
+              "bytes": 87006,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_d860019845524719af4b615bd86f79c7.pdf",
+              "status": 200,
+              "sha256": "71872b5cae73937c4a3fb38a8a2ac9b68b165675e3c33efcd6a390ff8f71e251",
+              "bytes": 87006,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "0c977c7773864510886049c01c92280e",
+          "pdfSha256": "195ebd2d8c32bbb294059254fbe26e71f287988f293867440377f69627983a9c",
+          "sourceSha256": "81212ac9320d8c1173f443ecaeba9bddfa3edf2e1e52e8c451afa38fbc682f43",
+          "nativeExportSha256": "c564ef8d2546fd5cb7ca1d513971c791996b18be926ba0c2c60370f0ae72447a",
+          "worksheetId": "ms-g9-sim-01-c-r1",
+          "revision": 1,
+          "pages": 8,
+          "subitems": 24,
+          "downloadChecks": [
+            {
+              "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_0c977c7773864510886049c01c92280e.pdf",
+              "status": 200,
+              "sha256": "195ebd2d8c32bbb294059254fbe26e71f287988f293867440377f69627983a9c",
+              "bytes": 92020,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_0c977c7773864510886049c01c92280e.pdf",
+              "status": 200,
+              "sha256": "195ebd2d8c32bbb294059254fbe26e71f287988f293867440377f69627983a9c",
+              "bytes": 92020,
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sheetId": "G7-RSC-01",
+      "grade": 7,
+      "topicId": 18,
+      "editionId": "ms-20261115-rsc-01-r1",
+      "label": "שטח והיקף של מלבן וריבוע — PDF",
+      "nativePrefixProvenanceOnly": "G7-T74",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "independentPdfReviewSha256": "e10d55bd9df330f81ac523f9ddffde75e1c4402be30af3e0022f4ea57bcd548a",
+      "holds": [
+        "No native semantic acceptance or hints acceptance derived from automatic PASS; Word visual NOT_RUN."
+      ],
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "81fbcf9f34e2473aac82467d74fd1466",
+          "pdfSha256": "1d323006d7392aa7b2f5deaa6eac58ec658fa8e99407f094b5b367d112ce79c1",
+          "sourceSha256": "aaf6db1994d37f567d801f51d7ed4fef0428aa9a98f1fdd612dc7b2b64df326c",
+          "nativeExportSha256": "cd67b548cb0e6383a620700cb317a5b58362a0686c9ea06deb21f6ac707ea66b",
+          "worksheetId": "ms-g7-rsc-01-a-r1",
+          "revision": 1,
+          "pages": 8,
+          "subitems": 24,
+          "downloadChecks": [
+            {
+              "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_81fbcf9f34e2473aac82467d74fd1466.pdf",
+              "status": 200,
+              "sha256": "1d323006d7392aa7b2f5deaa6eac58ec658fa8e99407f094b5b367d112ce79c1",
+              "bytes": 74676,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_81fbcf9f34e2473aac82467d74fd1466.pdf",
+              "status": 200,
+              "sha256": "1d323006d7392aa7b2f5deaa6eac58ec658fa8e99407f094b5b367d112ce79c1",
+              "bytes": 74676,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "77c2e0ac02ad43f3b6692e7f1fc53ca3",
+          "pdfSha256": "d47d71dc1aba20eed39709e7a8d086204b8adb48ea9e8e519dbd8bb56d52d2a4",
+          "sourceSha256": "8ddcdcf08a3aac3bf6a4993d57933798999854b274197df7e51ac0988bb3678b",
+          "nativeExportSha256": "fc30a91a8b80a7ab1388aa275ea7b4f14a4ce58cf0683638ebd3efc0610c5c80",
+          "worksheetId": "ms-g7-rsc-01-b-r1",
+          "revision": 1,
+          "pages": 8,
+          "subitems": 24,
+          "downloadChecks": [
+            {
+              "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_77c2e0ac02ad43f3b6692e7f1fc53ca3.pdf",
+              "status": 200,
+              "sha256": "d47d71dc1aba20eed39709e7a8d086204b8adb48ea9e8e519dbd8bb56d52d2a4",
+              "bytes": 75149,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_77c2e0ac02ad43f3b6692e7f1fc53ca3.pdf",
+              "status": 200,
+              "sha256": "d47d71dc1aba20eed39709e7a8d086204b8adb48ea9e8e519dbd8bb56d52d2a4",
+              "bytes": 75149,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "c8cc14aad06b4fd394caea61571c44a1",
+          "pdfSha256": "5bfc796d7cee59b945029771469473798fafec5753bfdb8700685e5df4ad27c0",
+          "sourceSha256": "7dd37a7e355576c5d6e5ebb5ef5c4443b2f0e6ba47896c3dcd9d0245775a8aeb",
+          "nativeExportSha256": "3f74d027d5b337635fb39165a536c0b12d4e5a6f3fe1a4980857e882e317cc31",
+          "worksheetId": "ms-g7-rsc-01-c-r1",
+          "revision": 1,
+          "pages": 8,
+          "subitems": 24,
+          "downloadChecks": [
+            {
+              "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_c8cc14aad06b4fd394caea61571c44a1.pdf",
+              "status": 200,
+              "sha256": "5bfc796d7cee59b945029771469473798fafec5753bfdb8700685e5df4ad27c0",
+              "bytes": 77954,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_c8cc14aad06b4fd394caea61571c44a1.pdf",
+              "status": 200,
+              "sha256": "5bfc796d7cee59b945029771469473798fafec5753bfdb8700685e5df4ad27c0",
+              "bytes": 77954,
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sheetId": "G7-PER-01",
+      "grade": 7,
+      "topicId": 44,
+      "editionId": "ms-20261115-per-01-r1",
+      "label": "היקפים של צורות מורכבות ואורכי מסלולים — PDF",
+      "nativePrefixProvenanceOnly": "G7-T75",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "independentPdfReviewSha256": "c6b3ef82197fc6aebbffc52869bb5b87321c4d386111de13322e19b5697904c9",
+      "holds": [
+        "G94 Q2/page2 and Q7/page6 sparse usable workspace; retained REVIEW, no automatic all-gates PASS"
+      ],
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "3bd8969ae28240e9bfe1b77e81170804",
+          "pdfSha256": "821dd1b9146e5874af5dd8ab00d6001fcdd49222793f18f4fb36a96dfbffd589",
+          "sourceSha256": "3e59b03ba783ae379154a3366695d66bb3b80ac67644c83be31f26e3414d0cb9",
+          "nativeExportSha256": "35a09dbeddc510163b85f8ac232a3072566bfa5e82ef04e60553c3bd6a1c4b05",
+          "worksheetId": "ms-g7-per-01-a-r1",
+          "revision": 1,
+          "pages": 8,
+          "subitems": 24,
+          "downloadChecks": [
+            {
+              "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_3bd8969ae28240e9bfe1b77e81170804.pdf",
+              "status": 200,
+              "sha256": "821dd1b9146e5874af5dd8ab00d6001fcdd49222793f18f4fb36a96dfbffd589",
+              "bytes": 80243,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_3bd8969ae28240e9bfe1b77e81170804.pdf",
+              "status": 200,
+              "sha256": "821dd1b9146e5874af5dd8ab00d6001fcdd49222793f18f4fb36a96dfbffd589",
+              "bytes": 80243,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "21cd875e8a8947afae1f0b3415a99942",
+          "pdfSha256": "2f6921868a11b97e31e88e9424984f6010f37b00b52c29ffa05071fa6db7c508",
+          "sourceSha256": "f4d0cc729ff77b1c8ca8a958a6e19c9a695e9096ed97c53138b5dab87f1a0fdf",
+          "nativeExportSha256": "230840ba3d2cbdad0a63b7e721213568103a95401e45337c8add28a0976a6cf8",
+          "worksheetId": "ms-g7-per-01-b-r1",
+          "revision": 1,
+          "pages": 8,
+          "subitems": 24,
+          "downloadChecks": [
+            {
+              "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_21cd875e8a8947afae1f0b3415a99942.pdf",
+              "status": 200,
+              "sha256": "2f6921868a11b97e31e88e9424984f6010f37b00b52c29ffa05071fa6db7c508",
+              "bytes": 81772,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_21cd875e8a8947afae1f0b3415a99942.pdf",
+              "status": 200,
+              "sha256": "2f6921868a11b97e31e88e9424984f6010f37b00b52c29ffa05071fa6db7c508",
+              "bytes": 81772,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "fb3125f910bb47d19a75e050bbbf0396",
+          "pdfSha256": "2758d599faef1b5e2fe95b8e2b566fde92082a4f6a767b5b99121e7d2f3801db",
+          "sourceSha256": "9344dd2180c3024806527a4e3784241e4aca3088d0ca92605cbfdf6aadeca0c5",
+          "nativeExportSha256": "a3269da526c7e0d3d2f5714e13f85b34e549ee4e153171e004853e24cd0afd57",
+          "worksheetId": "ms-g7-per-01-c-r1",
+          "revision": 1,
+          "pages": 8,
+          "subitems": 24,
+          "downloadChecks": [
+            {
+              "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_fb3125f910bb47d19a75e050bbbf0396.pdf",
+              "status": 200,
+              "sha256": "2758d599faef1b5e2fe95b8e2b566fde92082a4f6a767b5b99121e7d2f3801db",
+              "bytes": 83104,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_fb3125f910bb47d19a75e050bbbf0396.pdf",
+              "status": 200,
+              "sha256": "2758d599faef1b5e2fe95b8e2b566fde92082a4f6a767b5b99121e7d2f3801db",
+              "bytes": 83104,
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
