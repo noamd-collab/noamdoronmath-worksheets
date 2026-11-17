@@ -1,0 +1,1103 @@
+{
+  "schema": "noam-student-pdf-publication-evidence/v1",
+  "status": "REVIEWED_MEDIA_SITE_CANDIDATE_NOT_PUBLISHED",
+  "preparedDate": "2026-11-17",
+  "publicationMode": "pdf-only",
+  "sitePublicationClaimed": false,
+  "scope": {
+    "packages": 3,
+    "pdfs": 9,
+    "pages": 73,
+    "landingRoutes": 3
+  },
+  "baselineCommit": "b87d76521a13f38f8f4ce23d80b4472ce4278eb5",
+  "baselineCatalogSha256": "3c5c0bbf3807be2a0d2866960743c2616a063b73634657f32a7f7158ecc2ebe3",
+  "baselineRegistrySha256": "a0daffccf392dd7150b5527046c00bd98a21ec68d8d759b82e47744843550f2a",
+  "mediaReadback": {
+    "path": "submissions/Claude/MANAGER-20261116/batch-07/media-cdn-readback.json",
+    "sha256": "44797b059c5fceac34bb0d8d3e25e4d42f05bb20235a04f4da30f585433bfb7f",
+    "reads": 18
+  },
+  "packages": [
+    {
+      "sheetId": "G9-TRP-02",
+      "producerPackage": "G9-T82",
+      "title": "הכרת הטרפז, זוויות ליד שוק והוכחת טרפז",
+      "author": "Google Antigravity (Carbon wave 4 author); fix r02 by Qwen Code",
+      "reviewVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
+      "reviewReceipts": [
+        {
+          "role": "original independent review of r01, all three levels (Google Antigravity) (verdict HOLD_ESSENTIAL_FINDINGS)",
+          "path": "reports/ANTIGRAVITY-DELTA-G9-TRP-02-20261117/review.json",
+          "sha256": "355a7a0ec9c33cf32742ee0d6680bc138ecbb762e717766d9c2629042d079661"
+        },
+        {
+          "role": "delta review of the r02 fix, binds all three published PDFs (Google Antigravity) (verdict PASS_DELTA)",
+          "path": "reports/ANTIGRAVITY-DELTA-G9-TRP-02-r02-20261117/review.json",
+          "sha256": "d9499efed4346c7a1c1ee62c01af5f4e5aa862e8ddf2fca25599e7ae9b1447b4"
+        }
+      ],
+      "track": "ט_רגילה",
+      "grade": 9,
+      "topicId": 39,
+      "landing": "/trapezoid-grade-9",
+      "editionId": "ms-20261117-trp-02-r1",
+      "label": "הכרת הטרפז, זוויות ליד שוק והוכחת טרפז · PDF",
+      "isDefault": false,
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "7193f26728714f8d8636012ece48bfaa",
+          "pdfSha256": "60b1edb772e4be68f52a2916b682952c1706f6ef7d2f77204b47512603de6f2a",
+          "sourceSha256": "84e97b7d60d0a9a9f709fc9135c88cb23d26473fe2c8c4d5153357fae30ad2d3",
+          "nativeExportSha256": "d4a64c359270d59b702a4fca72d2e863c88bcf5036db9349bf3e25140ca05308",
+          "worksheetId": "ms-g9-trp-02-a-r1",
+          "revision": 1,
+          "pages": 6,
+          "bytes": 95602,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_7193f26728714f8d8636012ece48bfaa.pdf",
+              "status": 200,
+              "sha256": "60b1edb772e4be68f52a2916b682952c1706f6ef7d2f77204b47512603de6f2a",
+              "bytes": 95602,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_7193f26728714f8d8636012ece48bfaa.pdf",
+              "status": 200,
+              "sha256": "60b1edb772e4be68f52a2916b682952c1706f6ef7d2f77204b47512603de6f2a",
+              "bytes": 95602,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "43c42469f72148039315d7957076bb5c",
+          "pdfSha256": "058fb33976fc68af35e28f6a30844ffcddcb4f32ceecbd17467d1582ac7c6e18",
+          "sourceSha256": "6eac295610ef7c40ba47e3bd2633d5e322d3f63a549811344c01f1907f6bedfb",
+          "nativeExportSha256": "2931e14d8139c207398f87443f307abf503aa7a03f9306e12f62f97635aef370",
+          "worksheetId": "ms-g9-trp-02-b-r1",
+          "revision": 1,
+          "pages": 5,
+          "bytes": 95359,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_43c42469f72148039315d7957076bb5c.pdf",
+              "status": 200,
+              "sha256": "058fb33976fc68af35e28f6a30844ffcddcb4f32ceecbd17467d1582ac7c6e18",
+              "bytes": 95359,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_43c42469f72148039315d7957076bb5c.pdf",
+              "status": 200,
+              "sha256": "058fb33976fc68af35e28f6a30844ffcddcb4f32ceecbd17467d1582ac7c6e18",
+              "bytes": 95359,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "b5b5968044ec475ba118e62e1be3857f",
+          "pdfSha256": "103289876709627a13476863c42928327aeed375a5f47ee99130dd5124c3f608",
+          "sourceSha256": "cdb936cf7c77cd63cca9fc786aa218232060a11a404b252b4d11176477c74564",
+          "nativeExportSha256": "80196032bbf778b7fbdf2dfd53adc719217eb1d950f67d6fe69876dc3098fe1d",
+          "worksheetId": "ms-g9-trp-02-c-r1",
+          "revision": 1,
+          "pages": 5,
+          "bytes": 95682,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_b5b5968044ec475ba118e62e1be3857f.pdf",
+              "status": 200,
+              "sha256": "103289876709627a13476863c42928327aeed375a5f47ee99130dd5124c3f608",
+              "bytes": 95682,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_b5b5968044ec475ba118e62e1be3857f.pdf",
+              "status": 200,
+              "sha256": "103289876709627a13476863c42928327aeed375a5f47ee99130dd5124c3f608",
+              "bytes": 95682,
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sheetId": "G9-LNM-01",
+      "producerPackage": "G9-T64",
+      "title": "פונקציה קווית: השיפוע כקצב שינוי, נקודות, חיתוך עם הצירים וישרים מקבילים",
+      "author": "Claude (Anthropic) base; fix r02 by Qwen Code",
+      "reviewVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
+      "reviewReceipts": [
+        {
+          "role": "original independent review of r01 (Google Antigravity) (verdict HOLD_ESSENTIAL_FINDINGS)",
+          "path": "reports/ANTIGRAVITY-INDEPENDENT-G9-LNM-01-20261116/review.json",
+          "sha256": "470c4c784c71e80b601b9fb595d529e07307fa30707e5a71bd6d20585a349af4"
+        },
+        {
+          "role": "delta review of the r02 fix, binds all three published PDFs (Google Antigravity) (verdict PASS_DELTA)",
+          "path": "reports/ANTIGRAVITY-DELTA-G9-LNM-01-r02-20261117/review.json",
+          "sha256": "51103199d9cbb0390d488eb4182f484425474bda0565fdf8257da784dd1f4d1e"
+        }
+      ],
+      "track": "ט_מצומצמת",
+      "grade": 9,
+      "topicId": 34,
+      "landing": "/linear-function-grade-9",
+      "editionId": "ms-20261117-lnm-01-r1",
+      "label": "ט׳ מצומצמת · פונקציה קווית: שיפוע, חיתוך עם הצירים וישרים מקבילים · PDF",
+      "isDefault": false,
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "ecaf240714494fa5bc15fa436626587c",
+          "pdfSha256": "a504630bd5a158269712c8a668a42cd82086f0088951553026d60ed02c393b1e",
+          "sourceSha256": "910b174c1a64300163245b92ea8ce53903c788d19b789b09699a5001e157c2ef",
+          "nativeExportSha256": "9e74050670b4434f9c4d22e301ad3a3d2e138597d59ba496ef8284b20759dd7f",
+          "worksheetId": "ms-g9-lnm-01-a-r1",
+          "revision": 1,
+          "pages": 11,
+          "bytes": 114470,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_ecaf240714494fa5bc15fa436626587c.pdf",
+              "status": 200,
+              "sha256": "a504630bd5a158269712c8a668a42cd82086f0088951553026d60ed02c393b1e",
+              "bytes": 114470,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_ecaf240714494fa5bc15fa436626587c.pdf",
+              "status": 200,
+              "sha256": "a504630bd5a158269712c8a668a42cd82086f0088951553026d60ed02c393b1e",
+              "bytes": 114470,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "4b80c8a6e1604a4693ec3f2ddea59a66",
+          "pdfSha256": "d5afdc979c62980e3862586a2792b7964d887f790a24918109b48c6665ecbe5b",
+          "sourceSha256": "994b93c01af1619ba2f8661cde70f305c999cd5299946255242a7e05215ae668",
+          "nativeExportSha256": "e5fbbbf04f087a626a088130cc5332b196523fc052c07690a1a448aee09b87d3",
+          "worksheetId": "ms-g9-lnm-01-b-r1",
+          "revision": 1,
+          "pages": 12,
+          "bytes": 112880,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_4b80c8a6e1604a4693ec3f2ddea59a66.pdf",
+              "status": 200,
+              "sha256": "d5afdc979c62980e3862586a2792b7964d887f790a24918109b48c6665ecbe5b",
+              "bytes": 112880,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_4b80c8a6e1604a4693ec3f2ddea59a66.pdf",
+              "status": 200,
+              "sha256": "d5afdc979c62980e3862586a2792b7964d887f790a24918109b48c6665ecbe5b",
+              "bytes": 112880,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "c65d1550945c49a4acde12b8bd8a977b",
+          "pdfSha256": "c29b179148cc21d32488ee549342aaa2d2eaf64d2a4f99b8f887a7542a320b7d",
+          "sourceSha256": "a22f82157eb257a071b15d9e4a48b2e5e686d5993b07f46b11990a734dc8af3f",
+          "nativeExportSha256": "5d2b1a029bb54b0dc9f7802be7fb325eea458ab3434af21227b2afdc40e32111",
+          "worksheetId": "ms-g9-lnm-01-c-r1",
+          "revision": 1,
+          "pages": 11,
+          "bytes": 120745,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_c65d1550945c49a4acde12b8bd8a977b.pdf",
+              "status": 200,
+              "sha256": "c29b179148cc21d32488ee549342aaa2d2eaf64d2a4f99b8f887a7542a320b7d",
+              "bytes": 120745,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_c65d1550945c49a4acde12b8bd8a977b.pdf",
+              "status": 200,
+              "sha256": "c29b179148cc21d32488ee549342aaa2d2eaf64d2a4f99b8f887a7542a320b7d",
+              "bytes": 120745,
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sheetId": "G7-ALG-05",
+      "producerPackage": "G7-T105",
+      "title": "ביטוי אלגברי לחוקיות בסדרה וכינוס איברים דומים בשני משתנים",
+      "author": "Qwen Code",
+      "reviewVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
+      "reviewReceipts": [
+        {
+          "role": "original independent review (Google Antigravity) (verdict PASS_STUDENT_PDF_ESSENTIALS)",
+          "path": "reports/ANTIGRAVITY-INDEPENDENT-G7-ALG-05-r01-20261117/review.json",
+          "sha256": "698152a5a3a0fbc6c5918dd8f86bf367a6cb5a36e86b4b617d5e265644d69f7c"
+        },
+        {
+          "role": "independent numbers review (Google Antigravity) (verdict PASS_STUDENT_PDF_ESSENTIALS)",
+          "path": "reports/ANTIGRAVITY-INDEPENDENT-G7-ALG-05-r01-20261117/numbers-blind.json",
+          "sha256": "3eaf662c429dfe1d2b8a7243348704b9304e79114a525af14b0cc71b3ad64500"
+        }
+      ],
+      "track": "ז",
+      "grade": 7,
+      "topicId": 22,
+      "landing": "/algebraic-expressions-grade-7",
+      "editionId": "ms-20261117-alg-05-r1",
+      "label": "ביטוי אלגברי לחוקיות בסדרה וכינוס איברים בשני משתנים · PDF",
+      "isDefault": false,
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "770cbafac9ae4a4f8238b779f8f6eb6f",
+          "pdfSha256": "5c4c09520fe7711a12001297024912ff2388b3de2e0ba401767d56b7749c6708",
+          "sourceSha256": "7ac2c914dfb7b06fef1dc55d24753a1999602c839b6bc1c212db21d3b3170320",
+          "nativeExportSha256": "2ffff7e080186ac7d68db1fc1d02ee0c5f7bae8fa366a45e6b920a4a3dca4164",
+          "worksheetId": "ms-g7-alg-05-a-r1",
+          "revision": 1,
+          "pages": 7,
+          "bytes": 59934,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_770cbafac9ae4a4f8238b779f8f6eb6f.pdf",
+              "status": 200,
+              "sha256": "5c4c09520fe7711a12001297024912ff2388b3de2e0ba401767d56b7749c6708",
+              "bytes": 59934,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_770cbafac9ae4a4f8238b779f8f6eb6f.pdf",
+              "status": 200,
+              "sha256": "5c4c09520fe7711a12001297024912ff2388b3de2e0ba401767d56b7749c6708",
+              "bytes": 59934,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "1cf0a9ab309d4e189a1029b1a5b6fbef",
+          "pdfSha256": "ee19ba9f0749105638a4eb30ab845434220066ed0becd8fb98a088b069a10a93",
+          "sourceSha256": "1c4cabd4eeb4390800d79ffdb105f457250ebd4cf464cd4f74ed7256fbe6902f",
+          "nativeExportSha256": "7ad2be6875d8151546ae6d37e374b350b16b7c686d3b2949696debcb6335948d",
+          "worksheetId": "ms-g7-alg-05-b-r1",
+          "revision": 1,
+          "pages": 7,
+          "bytes": 59292,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_1cf0a9ab309d4e189a1029b1a5b6fbef.pdf",
+              "status": 200,
+              "sha256": "ee19ba9f0749105638a4eb30ab845434220066ed0becd8fb98a088b069a10a93",
+              "bytes": 59292,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_1cf0a9ab309d4e189a1029b1a5b6fbef.pdf",
+              "status": 200,
+              "sha256": "ee19ba9f0749105638a4eb30ab845434220066ed0becd8fb98a088b069a10a93",
+              "bytes": 59292,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "2f3e68107653463b94fefeb5c99d86b0",
+          "pdfSha256": "3f871b3e25d7ab0cf3d985b6bbd7a7512312adf103e546764140895dd0a381d8",
+          "sourceSha256": "c75c270b85ec122e43064aa1dbdc87d95fa88344f307850c2a90385be17be0af",
+          "nativeExportSha256": "c18bd427c778d609e5815fe11daa186d55bba86222d4fabaca1b488c5fe93bfa",
+          "worksheetId": "ms-g7-alg-05-c-r1",
+          "revision": 1,
+          "pages": 9,
+          "bytes": 66666,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_2f3e68107653463b94fefeb5c99d86b0.pdf",
+              "status": 200,
+              "sha256": "3f871b3e25d7ab0cf3d985b6bbd7a7512312adf103e546764140895dd0a381d8",
+              "bytes": 66666,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_2f3e68107653463b94fefeb5c99d86b0.pdf",
+              "status": 200,
+              "sha256": "3f871b3e25d7ab0cf3d985b6bbd7a7512312adf103e546764140895dd0a381d8",
+              "bytes": 66666,
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "landingDeltas": [
+    {
+      "slug": "trapezoid-grade-9",
+      "grade": 9,
+      "topicId": 39,
+      "editionIds": [
+        "ms-20261117-trp-02-r1"
+      ],
+      "baselineSha256": "338077b74b56a4b297de4e5b82dc96620276951e640763e655ea8995dc2dea27",
+      "fields": [
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בטרפז יש זוג אחד של צלעות נגדיות מקבילות, הנקראות בסיסים. הגובה הוא קטע המאונך לשני הבסיסים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: בטרפז בסיסים באורך 10 ו־6 ס״מ וגובה 4 ס״מ. השטח הוא (10+6)×4:2=32 סמ״ר.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "שוק הטרפז אינה בהכרח הגובה. בחישוב שטח משתמשים רק בקטע המאונך לבסיסים.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "לטרפז בסיסים באורך 12 ו־8 ס״מ וגובה 5 ס״מ. מה שטחו?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: 50 סמ״ר, כי (12+8)×5:2=50.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "דפי PDF נוספים: שטח והיקף בטרפז",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בדפים הנוספים מתרגלים חישובי שטח והיקף בטרפז, מציאת גובה ובסיס חסרים, קריאת קודקודים במערכת הצירים והשוואת שטחים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "התרגול כולל טרפז כללי וישר־זווית, שימוש במשפט פיתגורס, בעיות עלות ותכנון טרפז לפי נתונים. הוא מצטרף לדפים הקיימים בנושא.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF להורדה ולהדפסה ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טרפז שווה־שוקיים: זוויות הבסיס והאלכסונים — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "משתמשים בתכונות של טרפז שווה־שוקיים: זוויות הבסיס שוות זו לזו והאלכסונים שווים זה לזה. בעזרת המשפטים ההפוכים קובעים מתי טרפז הוא שווה־שוקיים, למשל כשהאלכסונים שלו שווים, ומוכיחים שוויון של זוויות ושל קטעים בעזרת חפיפת משולשים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בכל הרמות מורידים גבהים לבסיס, מחשבים זוויות ואורכים, בונים משוואות לפי שוויון של אלכסונים או של שוקיים ומשתמשים במשפט פיתגורס. יש גם סקיצה לפי נתונים ושאלה במערכת צירים משובצת; ברמה ב׳ ובמצוינות מוצאים בה שתי אפשרויות לקודקוד ובוחרים בנימוק את זו שיוצרת טרפז שווה־שוקיים. במצוינות מבטאים זוויות בעזרת פרמטרים, מוכיחים משפט הפוך בעזרת גבהים ובודקים טענה של תלמידה על טרפז שיש בו שתי זוויות שוות.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בטרפז יש זוג אחד של צלעות נגדיות מקבילות, הנקראות בסיסים. הגובה הוא קטע המאונך לשני הבסיסים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: בטרפז בסיסים באורך 10 ו־6 ס״מ וגובה 4 ס״מ. השטח הוא (10+6)×4:2=32 סמ״ר.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "שוק הטרפז אינה בהכרח הגובה. בחישוב שטח משתמשים רק בקטע המאונך לבסיסים.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "לטרפז בסיסים באורך 12 ו־8 ס״מ וגובה 5 ס״מ. מה שטחו?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: 50 סמ״ר, כי (12+8)×5:2=50.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "דפי PDF נוספים: שטח והיקף בטרפז",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בדפים הנוספים מתרגלים חישובי שטח והיקף בטרפז, מציאת גובה ובסיס חסרים, קריאת קודקודים במערכת הצירים והשוואת שטחים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "התרגול כולל טרפז כללי וישר־זווית, שימוש במשפט פיתגורס, בעיות עלות ותכנון טרפז לפי נתונים. הוא מצטרף לדפים הקיימים בנושא.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF להורדה ולהדפסה ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טרפז שווה־שוקיים: זוויות הבסיס והאלכסונים — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "משתמשים בתכונות של טרפז שווה־שוקיים: זוויות הבסיס שוות זו לזו והאלכסונים שווים זה לזה. בעזרת המשפטים ההפוכים קובעים מתי טרפז הוא שווה־שוקיים, למשל כשהאלכסונים שלו שווים, ומוכיחים שוויון של זוויות ושל קטעים בעזרת חפיפת משולשים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בכל הרמות מורידים גבהים לבסיס, מחשבים זוויות ואורכים, בונים משוואות לפי שוויון של אלכסונים או של שוקיים ומשתמשים במשפט פיתגורס. יש גם סקיצה לפי נתונים ושאלה במערכת צירים משובצת; ברמה ב׳ ובמצוינות מוצאים בה שתי אפשרויות לקודקוד ובוחרים בנימוק את זו שיוצרת טרפז שווה־שוקיים. במצוינות מבטאים זוויות בעזרת פרמטרים, מוכיחים משפט הפוך בעזרת גבהים ובודקים טענה של תלמידה על טרפז שיש בו שתי זוויות שוות.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "הכרת הטרפז והוכחה שמרובע הוא טרפז — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מזהים בטרפז את הבסיסים ואת השוקיים לפי ההגדרה (זוג אחד בלבד של צלעות נגדיות מקבילות) ומשתמשים בכך שסכום הזוויות שליד כל שוק הוא 180°.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "מוכיחים שמרובע הוא טרפז, ובמערכת צירים נעזרים גם בשיפועים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "bodyFlow"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "type": "paragraph",
+              "text": "לומדים לזהות טרפז, לעבוד עם בסיסים וזוויות ולחשב שטח. לצד הדפים הקיימים נוספו קובצי PDF לתרגול שטח, גובה, היקף והשוואת שטחים, ברמות א׳, ב׳ ומצוינות. נוספו גם קובצי PDF לטרפז שווה־שוקיים: זוויות הבסיס, האלכסונים והמשפטים ההפוכים, גם הם ברמות א׳, ב׳ ומצוינות. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "פתיחת דפי העבודה ובחירת רמה",
+              "href": "/worksheets?grade=9&topic=39",
+              "catalogTopicId": 39
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "בטרפז יש זוג אחד של צלעות נגדיות מקבילות, הנקראות בסיסים. הגובה הוא קטע המאונך לשני הבסיסים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "דוגמה: בטרפז בסיסים באורך 10 ו־6 ס״מ וגובה 4 ס״מ. השטח הוא (10+6)×4:2=32 סמ״ר.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טעויות נפוצות"
+            },
+            {
+              "type": "paragraph",
+              "text": "שוק הטרפז אינה בהכרח הגובה. בחישוב שטח משתמשים רק בקטע המאונך לבסיסים.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "לטרפז בסיסים באורך 12 ו־8 ס״מ וגובה 5 ס״מ. מה שטחו?",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "תשובה: 50 סמ״ר, כי (12+8)×5:2=50.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "דפי PDF נוספים: שטח והיקף בטרפז"
+            },
+            {
+              "type": "paragraph",
+              "text": "בדפים הנוספים מתרגלים חישובי שטח והיקף בטרפז, מציאת גובה ובסיס חסרים, קריאת קודקודים במערכת הצירים והשוואת שטחים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "התרגול כולל טרפז כללי וישר־זווית, שימוש במשפט פיתגורס, בעיות עלות ותכנון טרפז לפי נתונים. הוא מצטרף לדפים הקיימים בנושא.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "שלושה קובצי PDF להורדה ולהדפסה ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טרפז שווה־שוקיים: זוויות הבסיס והאלכסונים — דפי PDF נוספים"
+            },
+            {
+              "type": "paragraph",
+              "text": "משתמשים בתכונות של טרפז שווה־שוקיים: זוויות הבסיס שוות זו לזו והאלכסונים שווים זה לזה. בעזרת המשפטים ההפוכים קובעים מתי טרפז הוא שווה־שוקיים, למשל כשהאלכסונים שלו שווים, ומוכיחים שוויון של זוויות ושל קטעים בעזרת חפיפת משולשים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "בכל הרמות מורידים גבהים לבסיס, מחשבים זוויות ואורכים, בונים משוואות לפי שוויון של אלכסונים או של שוקיים ומשתמשים במשפט פיתגורס. יש גם סקיצה לפי נתונים ושאלה במערכת צירים משובצת; ברמה ב׳ ובמצוינות מוצאים בה שתי אפשרויות לקודקוד ובוחרים בנימוק את זו שיוצרת טרפז שווה־שוקיים. במצוינות מבטאים זוויות בעזרת פרמטרים, מוכיחים משפט הפוך בעזרת גבהים ובודקים טענה של תלמידה על טרפז שיש בו שתי זוויות שוות.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+              "role": "body"
+            }
+          ],
+          "after": [
+            {
+              "type": "paragraph",
+              "text": "לומדים לזהות טרפז, לעבוד עם בסיסים וזוויות ולחשב שטח. לצד הדפים הקיימים נוספו קובצי PDF לתרגול שטח, גובה, היקף והשוואת שטחים, ברמות א׳, ב׳ ומצוינות. נוספו גם קובצי PDF לטרפז שווה־שוקיים: זוויות הבסיס, האלכסונים והמשפטים ההפוכים, גם הם ברמות א׳, ב׳ ומצוינות. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "פתיחת דפי העבודה ובחירת רמה",
+              "href": "/worksheets?grade=9&topic=39",
+              "catalogTopicId": 39
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "בטרפז יש זוג אחד של צלעות נגדיות מקבילות, הנקראות בסיסים. הגובה הוא קטע המאונך לשני הבסיסים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "דוגמה: בטרפז בסיסים באורך 10 ו־6 ס״מ וגובה 4 ס״מ. השטח הוא (10+6)×4:2=32 סמ״ר.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טעויות נפוצות"
+            },
+            {
+              "type": "paragraph",
+              "text": "שוק הטרפז אינה בהכרח הגובה. בחישוב שטח משתמשים רק בקטע המאונך לבסיסים.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "לטרפז בסיסים באורך 12 ו־8 ס״מ וגובה 5 ס״מ. מה שטחו?",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "תשובה: 50 סמ״ר, כי (12+8)×5:2=50.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "דפי PDF נוספים: שטח והיקף בטרפז"
+            },
+            {
+              "type": "paragraph",
+              "text": "בדפים הנוספים מתרגלים חישובי שטח והיקף בטרפז, מציאת גובה ובסיס חסרים, קריאת קודקודים במערכת הצירים והשוואת שטחים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "התרגול כולל טרפז כללי וישר־זווית, שימוש במשפט פיתגורס, בעיות עלות ותכנון טרפז לפי נתונים. הוא מצטרף לדפים הקיימים בנושא.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "שלושה קובצי PDF להורדה ולהדפסה ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טרפז שווה־שוקיים: זוויות הבסיס והאלכסונים — דפי PDF נוספים"
+            },
+            {
+              "type": "paragraph",
+              "text": "משתמשים בתכונות של טרפז שווה־שוקיים: זוויות הבסיס שוות זו לזו והאלכסונים שווים זה לזה. בעזרת המשפטים ההפוכים קובעים מתי טרפז הוא שווה־שוקיים, למשל כשהאלכסונים שלו שווים, ומוכיחים שוויון של זוויות ושל קטעים בעזרת חפיפת משולשים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "בכל הרמות מורידים גבהים לבסיס, מחשבים זוויות ואורכים, בונים משוואות לפי שוויון של אלכסונים או של שוקיים ומשתמשים במשפט פיתגורס. יש גם סקיצה לפי נתונים ושאלה במערכת צירים משובצת; ברמה ב׳ ובמצוינות מוצאים בה שתי אפשרויות לקודקוד ובוחרים בנימוק את זו שיוצרת טרפז שווה־שוקיים. במצוינות מבטאים זוויות בעזרת פרמטרים, מוכיחים משפט הפוך בעזרת גבהים ובודקים טענה של תלמידה על טרפז שיש בו שתי זוויות שוות.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "הכרת הטרפז והוכחה שמרובע הוא טרפז — דפי PDF נוספים"
+            },
+            {
+              "type": "paragraph",
+              "text": "מזהים בטרפז את הבסיסים ואת השוקיים לפי ההגדרה (זוג אחד בלבד של צלעות נגדיות מקבילות) ומשתמשים בכך שסכום הזוויות שליד כל שוק הוא 180°.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "מוכיחים שמרובע הוא טרפז, ובמערכת צירים נעזרים גם בשיפועים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+              "role": "body"
+            }
+          ]
+        }
+      ],
+      "appendedSection": {
+        "heading": "הכרת הטרפז והוכחה שמרובע הוא טרפז — דפי PDF נוספים",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "מזהים בטרפז את הבסיסים ואת השוקיים לפי ההגדרה (זוג אחד בלבד של צלעות נגדיות מקבילות) ומשתמשים בכך שסכום הזוויות שליד כל שוק הוא 180°.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "מוכיחים שמרובע הוא טרפז, ובמערכת צירים נעזרים גם בשיפועים.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+            "links": []
+          }
+        ]
+      }
+    },
+    {
+      "slug": "linear-function-grade-9",
+      "grade": 9,
+      "topicId": 34,
+      "editionIds": [
+        "ms-20261117-lnm-01-r1"
+      ],
+      "baselineSha256": "c3aea9eddb68a40007af188f9e7af3046d8e042596d357843d5097b4427ca2c6",
+      "fields": [
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בפונקציה y=mx+n, המספר m הוא השיפוע. המספר n הוא שיעור ה־y של נקודת החיתוך עם ציר y; נקודת החיתוך היא (0,n).",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: בפונקציה y=3x−2, השיפוע הוא 3 ונקודת החיתוך עם ציר y היא (0,−2).",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "שיפוע אינו נקודת חיתוך. כשמחשבים שיפוע משתי נקודות שומרים על אותו סדר חיסור במונה ובמכנה.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בפונקציה y=−2x+7, מהו y כאשר x=3?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: 1, כי y=−2×3+7=1.",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בפונקציה y=mx+n, המספר m הוא השיפוע. המספר n הוא שיעור ה־y של נקודת החיתוך עם ציר y; נקודת החיתוך היא (0,n).",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: בפונקציה y=3x−2, השיפוע הוא 3 ונקודת החיתוך עם ציר y היא (0,−2).",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "שיפוע אינו נקודת חיתוך. כשמחשבים שיפוע משתי נקודות שומרים על אותו סדר חיסור במונה ובמכנה.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בפונקציה y=−2x+7, מהו y כאשר x=3?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: 1, כי y=−2×3+7=1.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "פונקציה קווית: שיפוע, חיתוך עם הצירים וישרים מקבילים — דפי PDF נוספים בט׳ מצומצמת",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מבינים את השיפוע כקצב שינוי קבוע ועוברים בין טבלה, גרף וכלל של פונקציה קווית.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בודקים אם נקודה נמצאת על ישר, מוצאים נקודות חיתוך עם הצירים ומזהים ישרים מקבילים, ובשאלות השילוב מוצאים מפגש של ישרים ושטח במערכת צירים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "updatedLine"
+          ],
+          "existedBefore": true,
+          "before": "נועם דורון מתמטיקה · עודכן 16.9.2026",
+          "after": "נועם דורון מתמטיקה · עודכן 17.11.2026"
+        }
+      ],
+      "appendedSection": {
+        "heading": "פונקציה קווית: שיפוע, חיתוך עם הצירים וישרים מקבילים — דפי PDF נוספים בט׳ מצומצמת",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "מבינים את השיפוע כקצב שינוי קבוע ועוברים בין טבלה, גרף וכלל של פונקציה קווית.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "בודקים אם נקודה נמצאת על ישר, מוצאים נקודות חיתוך עם הצירים ומזהים ישרים מקבילים, ובשאלות השילוב מוצאים מפגש של ישרים ושטח במערכת צירים.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+            "links": []
+          }
+        ]
+      }
+    },
+    {
+      "slug": "algebraic-expressions-grade-7",
+      "grade": 7,
+      "topicId": 22,
+      "editionIds": [
+        "ms-20261117-alg-05-r1"
+      ],
+      "baselineSha256": "f5ae249e76b8e63f6603cdfa764e3af25a44d855d8849be15179d630bf338003",
+      "fields": [
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "ביטוי אלגברי הוא תיאור מספרי עם נעלמים. בהצבה מחליפים כל נעלם במספר ומחשבים. בפישוט מכנסים איברים דומים, ולפעמים מוציאים גורם משותף או פותחים סוגריים אחרי מינוס.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמאות בביטויים אלגבריים דוגמה 1: הצבה בביטוי 3x + 5",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "אם מציבים את הערך x=2 בביטוי, מתקבל 3 × 2 + 5 = 11. לכן כאשר x=2, ערך הביטוי הוא 11. דוגמה 2: פישוט ביטוי נפשט את הביטוי: ‭2(x + 3) − x = 2x + 6 − x = x + 6‬",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "טעות נפוצה היא לשכוח לפתח את המינוס לפני הסוגריים, או להציב רק בחלק מהאיברים. כתבו את ההצבה שלב־שלב ובדקו יחידות/סימנים.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: פישוט ביטוי נפשט את הביטוי 4x · 2(x − 3)",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "4x · 2(x − 3) = 8x(x − 3) = 8x² − 24x",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: 8x² − 24x",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "ביטוי אלגברי הוא תיאור מספרי עם נעלמים. בהצבה מחליפים כל נעלם במספר ומחשבים. בפישוט מכנסים איברים דומים, ולפעמים מוציאים גורם משותף או פותחים סוגריים אחרי מינוס.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמאות בביטויים אלגבריים דוגמה 1: הצבה בביטוי 3x + 5",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "אם מציבים את הערך x=2 בביטוי, מתקבל 3 × 2 + 5 = 11. לכן כאשר x=2, ערך הביטוי הוא 11. דוגמה 2: פישוט ביטוי נפשט את הביטוי: ‭2(x + 3) − x = 2x + 6 − x = x + 6‬",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "טעות נפוצה היא לשכוח לפתח את המינוס לפני הסוגריים, או להציב רק בחלק מהאיברים. כתבו את ההצבה שלב־שלב ובדקו יחידות/סימנים.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: פישוט ביטוי נפשט את הביטוי 4x · 2(x − 3)",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "4x · 2(x − 3) = 8x(x − 3) = 8x² − 24x",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: 8x² − 24x",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "ביטוי אלגברי לחוקיות בסדרה וכינוס בשני משתנים — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "כותבים ביטוי אלגברי לאיבר במקום ה־n בסדרה, מציבים בו ובודקים אם מספר נתון הוא איבר בסדרה.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "מכנסים איברים דומים בביטויים עם שני משתנים, ובשאלות השילוב מחברים בין חוקיות בסדרה, הצבה וכינוס.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "updatedLine"
+          ],
+          "existedBefore": true,
+          "before": "נועם דורון מתמטיקה · עודכן 12.9.2026",
+          "after": "נועם דורון מתמטיקה · עודכן 17.11.2026"
+        }
+      ],
+      "appendedSection": {
+        "heading": "ביטוי אלגברי לחוקיות בסדרה וכינוס בשני משתנים — דפי PDF נוספים",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "כותבים ביטוי אלגברי לאיבר במקום ה־n בסדרה, מציבים בו ובודקים אם מספר נתון הוא איבר בסדרה.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "מכנסים איברים דומים בביטויים עם שני משתנים, ובשאלות השילוב מחברים בין חוקיות בסדרה, הצבה וכינוס.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+            "links": []
+          }
+        ]
+      }
+    }
+  ],
+  "mediaReadbackSha256": "44797b059c5fceac34bb0d8d3e25e4d42f05bb20235a04f4da30f585433bfb7f",
+  "note": "G9-LIT-01 (also reviewed) waits for a new topic page."
+}

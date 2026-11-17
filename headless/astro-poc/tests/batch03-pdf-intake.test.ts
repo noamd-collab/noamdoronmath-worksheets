@@ -14,6 +14,7 @@ import { beforeBatch03Catalog, beforeBatch03Registry, beforeBatch03Copy,
   reviewedBatch03 as reviewed, reviewedBatch03Ids as ids } from './fixtures/batch03-pdf';
 import { beforeProbabilityNineRegistry } from './fixtures/probability-nine-pdf';
 import { beforeBatch06Copy, reviewedBatch06 } from './fixtures/batch06-pdf';
+import { reviewedBatch07 } from './fixtures/batch07-pdf';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -143,8 +144,10 @@ test('all twenty-four additions open their own reviewed PDF directly while every
     // Topic 9/8 gains two editions, QIN then SYQ, after the legacy links.
     const laterBatch06 = reviewedBatch06.additions
       .filter(a => a.grade === addition.grade && a.topicId === addition.topicId).map(a => a.editionId);
+    const laterBatch07 = reviewedBatch07.additions
+      .filter(a => a.grade === addition.grade && a.topicId === addition.topicId).map(a => a.editionId);
     assert.deepEqual(groups.map(g => g.editionId),
-      ['legacy', ...addition.baselineEditionIds, ...sameTopic(addition), ...laterBatch06]);
+      ['legacy', ...addition.baselineEditionIds, ...sameTopic(addition), ...laterBatch06, ...laterBatch07]);
     assert.deepEqual(groups.slice(0, 1 + addition.baselineEditionIds.length),
       topicWorksheetEditionLinks(previousSsr, addition.grade, addition.topicId, back));
     const group = groups.find(g => g.editionId === addition.editionId)!;
