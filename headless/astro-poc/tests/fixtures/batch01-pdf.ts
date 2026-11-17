@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import reviewed from './batch01-pdf-reviewed.json';
+import { beforeBatch02aCatalog, beforeBatch02aRegistry, beforeBatch02aCopy } from './batch02a-pdf';
 
 export { reviewed as reviewedBatch01 };
 export const reviewedBatch01Ids = reviewed.additions.map(a => a.editionId);
@@ -15,7 +16,7 @@ const plain = (value: unknown): unknown => typeof value === 'string' ? value.rep
  * the pinned baseline topic.
  */
 export function beforeBatch01Catalog<T>(catalog: T): T {
-  const restored: any = structuredClone(catalog);
+  const restored: any = beforeBatch02aCatalog(catalog);
   for (const addition of reviewed.additions) {
     const topic = restored.grades.find((g: any) => g.grade === addition.grade)
       .topics.find((t: any) => t.id === addition.topicId);
@@ -35,7 +36,7 @@ export function beforeBatch01Catalog<T>(catalog: T): T {
 
 /** Exact rows, not a broad ID filter: substitutions and duplicate rows must fail. */
 export function beforeBatch01Registry<T>(registry: T): T {
-  const restored: any = structuredClone(registry);
+  const restored: any = beforeBatch02aRegistry(registry);
   for (const addition of reviewed.additions) {
     const matches = restored.editions.filter((e: any) => e.editionId === addition.editionId);
     assert.deepEqual(matches, [addition.edition], `${addition.editionId}: exact reviewed registry row`);
@@ -46,6 +47,7 @@ export function beforeBatch01Registry<T>(registry: T): T {
 
 /** Validate each reviewed landing field before reversing it to the exact baseline value. */
 export function beforeBatch01Copy<T>(slug: string, page: T): T {
+  page = beforeBatch02aCopy(slug, page);
   const delta = reviewed.landingDeltas.find(d => d.slug === slug);
   if (!delta) return page;
   const restored: any = structuredClone(page);
