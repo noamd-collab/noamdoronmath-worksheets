@@ -17,6 +17,7 @@ import {
   MINUS,
   NON_LANDING_SITE_SLUGS,
   POWERS_ROWS,
+  landingLoopHasDemo,
   marketingLandingLoop,
   powerMarkup,
   topicLandingLoop,
@@ -155,7 +156,8 @@ describe('landing loop coverage', () => {
     const home = read('src/pages/index.astro');
     const site = read('src/components/SitePage.astro');
 
-    assert.match(topic, /const hasDemo = landingLoop\.kind === 'concept' \|\| landingLoop\.kind === 'css'/);
+    assert.match(topic, /const hasDemo = landingLoopHasDemo\(landingLoop\);/);
+    for (const kind of ['concept', 'css', 'film'] as const) assert.equal(landingLoopHasDemo({ kind }), true, kind);
     assert.match(topic, /data-landing-loop=\{loopVariant \? landingLoop\.marker : undefined\}/);
     assert.match(topic, /\{cssVariant && <LandingLoop variant=\{cssVariant\} \/>\}/);
     assert.match(topic, /\{loopVariant && <ConceptLoop variant=\{loopVariant\} \/>\}/);

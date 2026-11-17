@@ -4,6 +4,7 @@
  * no bidi isolate controls; the home page names each entity once.
  */
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import { describe, it } from 'node:test';
 import alignmentFile from '../src/data/curriculum-alignment.v1.json';
 import { loadCatalog } from '../src/lib/catalog/loadCatalog.ts';
@@ -33,6 +34,7 @@ import {
   topicPageJsonLdBlocks,
   topicPagePdfParts,
 } from '../src/lib/topicStructuredData.ts';
+import { topicWorksheetEditionLinks } from '../src/lib/topicWorksheetEditions.ts';
 
 type Node = Record<string, unknown>;
 const LRI = '⁦';
@@ -210,6 +212,21 @@ describe('topic-page JSON-LD (SEO-4)', () => {
       }
     }
     assert.ok(withParts > 300, `pages with PDF parts: ${withParts}`);
+  });
+
+  it('reads the CTA walk TopicPage renders from and lists PDFs in level-button order', () => {
+    const template = readFileSync(new URL('../src/components/TopicPage.astro', import.meta.url), 'utf8');
+    assert.match(template, /const ctaWalk = topicPageCtaWalk\(page, bodyFlow, hasDemo\);/);
+    assert.match(template, /topicPageJsonLdBlocks\(page, catalog, ctaWalk\)/);
+    const pdfId = (url: string) =>
+      (/[?&]pdf=(?:d8e7ad_)?([0-9a-f]{32})/.exec(url) || /\/ugd\/(?:d8e7ad_)?([0-9a-f]{32})\.pdf/.exec(url))?.[1];
+    for (const page of pages) {
+      const ids = topicPageCatalogTopicIds(page);
+      const linked = ids.flatMap((id) => topicWorksheetEditionLinks(catalog, page.grade, id, page.path)
+        .flatMap((edition) => edition.levels.map((level) => pdfId(level.href))));
+      const { parts } = topicPagePdfParts(catalog, page.grade, ids);
+      assert.deepEqual(parts.map((part) => pdfId(part.contentUrl)), [...new Set(linked)], page.slug);
+    }
   });
 
   it('powers-grade-7: the stored graph gains alignment, PDFs and a publisher node', () => {

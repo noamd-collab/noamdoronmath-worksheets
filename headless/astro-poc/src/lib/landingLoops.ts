@@ -366,6 +366,11 @@ export function topicLandingLoop(page: Pick<TopicPageContent, 'slug' | 'grade' |
   return { kind: 'css', variant: css, marker: css };
 }
 
+/** A concept, CSS or film loop opens the topic page in a demo hero beside the intro. */
+export function landingLoopHasDemo(loop: Pick<LandingLoop, 'kind'>): boolean {
+  return loop.kind === 'concept' || loop.kind === 'css' || loop.kind === 'film';
+}
+
 export function marketingLandingLoop(slug: string): CssLoopVariant | undefined {
   return MARKETING_LANDING_LOOPS[slug as keyof typeof MARKETING_LANDING_LOOPS];
 }

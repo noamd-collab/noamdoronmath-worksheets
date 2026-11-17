@@ -14,7 +14,7 @@ import { worksheetActionLabel } from '../lib/worksheetActions';
 import TopicShareLink from './TopicShareLink.astro';
 import TopicWorksheetEditions from './TopicWorksheetEditions.astro';
 import { topicWorksheetEditionLinks } from '../lib/topicWorksheetEditions';
-import { LANDING_LOOP_ANCHORS, componentLandingLoop, topicLandingLoop } from '../lib/landingLoops';
+import { LANDING_LOOP_ANCHORS, componentLandingLoop, landingLoopHasDemo, topicLandingLoop } from '../lib/landingLoops';
 import AdjacentVerticalAnglesLoop from './AdjacentVerticalAnglesLoop.astro';
 import {
   loadTopicPage,
@@ -29,6 +29,7 @@ import { resolveSiteHrefString } from '../lib/resolveSiteHref';
 import TopicInline from './TopicInline.astro';
 import { nextGradeRelatedTopics } from '../lib/topicFamilies';
 import { topicPageJsonLdBlocks } from '../lib/topicStructuredData';
+import { ctaCatalogTopicId, topicPageCtaWalk } from '../lib/topicPageCtas';
 
 interface Props {
   slug: string;
@@ -56,55 +57,6 @@ function textParts(text: string): { text: string; nowrap: boolean }[] {
   return topicTextParts(text, NOWRAP_MATH);
 }
 
-/** Group flow so H2 sections nest following paragraphs/lists; CTAs stay ordered siblings. */
-type BodyUnit =
-  | { kind: 'intro'; text: string }
-  | { kind: 'cta'; item: Extract<TopicBodyFlowItem, { type: 'cta' }> }
-  | {
-      kind: 'section';
-      heading: string;
-      blocks: Extract<TopicBodyFlowItem, { type: 'paragraph' | 'list' }>[];
-    }
-  | { kind: 'orphan'; item: Extract<TopicBodyFlowItem, { type: 'paragraph' | 'list' }> };
-
-function groupBodyFlow(flow: TopicBodyFlowItem[]): BodyUnit[] {
-  const units: BodyUnit[] = [];
-  let current: {
-    heading: string;
-    blocks: Extract<TopicBodyFlowItem, { type: 'paragraph' | 'list' }>[];
-  } | null = null;
-  const flush = () => {
-    if (current) {
-      units.push({ kind: 'section', heading: current.heading, blocks: current.blocks });
-      current = null;
-    }
-  };
-  for (const b of flow) {
-    if (b.type === 'paragraph' && b.role === 'intro') {
-      flush();
-      units.push({ kind: 'intro', text: b.text });
-      continue;
-    }
-    if (b.type === 'cta') {
-      flush();
-      units.push({ kind: 'cta', item: b });
-      continue;
-    }
-    if (b.type === 'heading') {
-      flush();
-      current = { heading: b.text, blocks: [] };
-      continue;
-    }
-    if (b.type === 'paragraph' || b.type === 'list') {
-      if (current) current.blocks.push(b);
-      else units.push({ kind: 'orphan', item: b });
-    }
-  }
-  flush();
-  return units;
-}
-
-const bodyUnits = groupBodyFlow(bodyFlow);
 const gradeCrumbLabel = isGradeHubGrade(page.grade)
   ? `כיתה ${gradeHubLabel(page.grade)}`
   : `כיתה ${page.grade}`;
@@ -135,15 +87,14 @@ const bareFilm =
   (landingLoop.marker === 'triangle-angle-sum-vertex-descent' ||
     landingLoop.marker === 'parallel-cointerior-angles' ||
     landingLoop.marker === 'statistics-frequency');
-const hasDemo = landingLoop.kind === 'concept' || landingLoop.kind === 'css' || filmLoop;
-const bodyStart = bodyUnits.findIndex((unit) => unit.kind !== 'intro' && unit.kind !== 'cta');
-const heroEnd = bodyStart === -1 ? bodyUnits.length : bodyStart;
-const heroUnits = hasDemo ? bodyUnits.slice(0, heroEnd) : [];
-const flowUnits = hasDemo ? bodyUnits.slice(heroEnd) : bodyUnits;
+const hasDemo = landingLoopHasDemo(landingLoop);
+// Hero/body split and each CTA's catalog topic; the JSON-LD reads the same walk.
+const ctaWalk = topicPageCtaWalk(page, bodyFlow, hasDemo);
+const { heroUnits, flowUnits } = ctaWalk;
 const catalog = loadCatalog();
 // Stored graph plus curriculum alignment, PDF parts and publisher (SEO-4).
-const topicJsonLdBlocks = topicPageJsonLdBlocks(page, catalog, bodyFlow);
-const topicId = page.catalogCta?.catalogTopicId ?? null;
+const topicJsonLdBlocks = topicPageJsonLdBlocks(page, catalog, ctaWalk);
+const topicId = ctaWalk.topicId;
 function editionsForTopicId(catTopicId: number | null | undefined, backHref?: string) {
   return topicWorksheetEditionLinks(catalog, page.grade, catTopicId,
     resolveSiteHrefString(backHref || page.catalogCta.href));
@@ -156,27 +107,14 @@ function levelsForTopicId(catTopicId: number | null | undefined, backHref?: stri
 const topicEditions = editionsForTopicId(topicId, page.catalogCta?.href);
 const topicLevels = topicEditions[0]?.levels || [];
 // A hero may offer several topics; each CTA must reach its own downloads.
-const heroEditionGroups: Array<{
-  topicId: number | null;
-  targetId: string;
-  firstUnit: number;
-  editions: ReturnType<typeof editionsForTopicId>;
-}> = [];
-heroUnits.forEach((unit, index) => {
-  if (unit.kind !== 'cta') return;
-  const id = unit.item.catalogTopicId ?? topicId;
-  if (heroEditionGroups.some(group => group.topicId === id)) return;
-  heroEditionGroups.push({ topicId: id, firstUnit: index,
-    targetId: id === topicId ? 'topic-levels' : `topic-levels-hero-${id}`,
-    editions: editionsForTopicId(id, unit.item.href) });
-});
-if (!heroEditionGroups.length) {
-  heroEditionGroups.push({ topicId, targetId: 'topic-levels', firstUnit: -1, editions: topicEditions });
-}
+const heroEditionGroups = ctaWalk.heroGroups.map((group) => ({
+  ...group,
+  editions: editionsForTopicId(group.topicId, group.href),
+}));
 const multipleHeroTopics = heroEditionGroups.length > 1;
 
 function ctaTargetHref(cta: { label: string; href: string; catalogTopicId?: number | null }, targetId: string) {
-  const levels = levelsForTopicId(cta.catalogTopicId ?? topicId, cta.href);
+  const levels = levelsForTopicId(ctaCatalogTopicId(cta, topicId), cta.href);
   if (cta.label.includes('רמה ב')) {
     return levels.find((l) => l.key === 'b')?.href || `#${targetId}`;
   }
@@ -227,7 +165,7 @@ function faqHeadingId(groupIndex: number) {
 
     {
       (page.preH1Ctas || []).map((cta, idx) => {
-        const preEditions = editionsForTopicId(cta.catalogTopicId ?? topicId, cta.href);
+        const preEditions = editionsForTopicId(ctaCatalogTopicId(cta, topicId), cta.href);
         const targetId = idx === 0 && !hasDemo ? 'topic-levels' : `topic-levels-pre-${idx}`;
         const directHref = ctaTargetHref(cta, targetId);
         return (
@@ -290,7 +228,7 @@ function faqHeadingId(groupIndex: number) {
                 <p class="topic-page__intro" data-flow="paragraph" data-role="intro"><TopicInline text={unit.text} /></p>
               );
               if (unit.kind === 'cta') {
-                const group = heroEditionGroups.find(group => group.topicId === (unit.item.catalogTopicId ?? topicId))!;
+                const group = heroEditionGroups.find(group => group.topicId === ctaCatalogTopicId(unit.item, topicId))!;
                 const directHref = ctaTargetHref(unit.item, group.targetId);
                 return (
                   <Fragment>
@@ -332,7 +270,7 @@ function faqHeadingId(groupIndex: number) {
           }
           if (unit.kind === 'cta') {
             const block = unit.item;
-            const flowEditions = editionsForTopicId(block.catalogTopicId ?? topicId, block.href);
+            const flowEditions = editionsForTopicId(ctaCatalogTopicId(block, topicId), block.href);
             const targetId = !hasDemo && topicLevels.length > 0 && block.catalogTopicId === topicId
               ? 'topic-levels'
               : `topic-levels-${block.catalogTopicId ?? 'main'}`;

@@ -8,13 +8,9 @@
  */
 import curriculumAlignment from '../data/curriculum-alignment.v1.json';
 import type { CatalogV1 } from './catalog/types';
-import { resolveEdition, topicEditions } from './catalog/editions';
-import {
-  synthesizeBodyFlow,
-  updatedLineIsoDate,
-  type TopicBodyFlowItem,
-  type TopicPageContent,
-} from './topicPages';
+import { synthesizeBodyFlow, updatedLineIsoDate, type TopicPageContent } from './topicPages';
+import { topicPageCtaTopicIds, topicPageCtaWalk, type TopicPageCtaWalk } from './topicPageCtas';
+import { findCatalogTopic, topicEditionsSelectedFirst } from './topicWorksheetEditions';
 import {
   educationalLevelForGrade,
   enrichLearningResourceJsonLd,
@@ -53,21 +49,12 @@ export function curriculumUnitsForTopicPage(slug: string): CurriculumUnit[] {
   });
 }
 
-/** Catalog topics whose worksheet links the page renders: every CTA, before or after the H1. */
+/** Catalog topics whose worksheet links the page renders, by the walk TopicPage.astro renders from. */
 export function topicPageCatalogTopicIds(
   page: TopicPageContent,
-  bodyFlow: readonly TopicBodyFlowItem[] = synthesizeBodyFlow(page),
+  walk: TopicPageCtaWalk = topicPageCtaWalk(page, synthesizeBodyFlow(page)),
 ): number[] {
-  const fallback = page.catalogCta?.catalogTopicId ?? null;
-  const ids: number[] = [];
-  const add = (id: number | null | undefined) => {
-    const value = id ?? fallback;
-    if (value != null && !ids.includes(value)) ids.push(value);
-  };
-  for (const cta of page.preH1Ctas || []) add(cta.catalogTopicId);
-  for (const item of bodyFlow) if (item.type === 'cta') add(item.catalogTopicId);
-  for (const cta of page.catalogCtas || []) add(cta.catalogTopicId);
-  return ids;
+  return topicPageCtaTopicIds(page, walk);
 }
 
 const PDF_SUFFIX = /\s*[·—-]\s*PDF$/;
@@ -81,16 +68,14 @@ export function topicPagePdfParts(
   grade: number,
   topicIds: readonly number[],
 ): { topicTitles: string[]; parts: Array<{ name: string; contentUrl: string }> } {
-  const topics = catalog.grades.find((g) => g.grade === grade)?.topics || [];
   const topicTitles: string[] = [];
   const parts: Array<{ name: string; contentUrl: string }> = [];
   for (const id of topicIds) {
-    const topic = topics.find((t) => t.id === id);
+    const topic = findCatalogTopic(catalog, grade, id);
     if (!topic) continue;
     if (!topicTitles.includes(topic.title)) topicTitles.push(topic.title);
-    const selected = resolveEdition(topic);
-    const editions = [selected, ...topicEditions(topic).filter((e) => e.editionId !== selected.editionId)];
-    for (const edition of editions) {
+    // The edition order of the page's edition lists (topicWorksheetEditionLinks).
+    for (const edition of topicEditionsSelectedFirst(topic)) {
       const editionName = edition.editionId === 'legacy' ? '' : edition.label.replace(PDF_SUFFIX, '');
       for (const level of edition.levels) {
         const contentUrl = `${catalog.config.pdfBase}${level.pdfId}.pdf`;
@@ -109,7 +94,7 @@ export function topicPagePdfParts(
 export function topicPageJsonLdBlocks(
   page: TopicPageContent,
   catalog: CatalogV1,
-  bodyFlow: readonly TopicBodyFlowItem[] = synthesizeBodyFlow(page),
+  walk: TopicPageCtaWalk = topicPageCtaWalk(page, synthesizeBodyFlow(page)),
 ): Record<string, unknown>[] {
   const educationalLevel = educationalLevelForGrade(page.grade);
   const stored = page.jsonLd;
@@ -126,7 +111,7 @@ export function topicPageJsonLdBlocks(
         }),
       ];
   const units = curriculumUnitsForTopicPage(page.slug);
-  const { topicTitles, parts } = topicPagePdfParts(catalog, page.grade, topicPageCatalogTopicIds(page, bodyFlow));
+  const { topicTitles, parts } = topicPagePdfParts(catalog, page.grade, topicPageCatalogTopicIds(page, walk));
   const taught = units.filter((unit) => unit.alignmentType === 'teaches').map((unit) => unit.name);
   return enrichLearningResourceJsonLd(blocks, {
     educationalLevel,
