@@ -12,6 +12,7 @@ import { collectViewerPdfIds } from '../scripts/sync-github-static.mjs';
 import { loadTopicPage, extractJsonLdFaq, synthesizeBodyFlow } from '../src/lib/topicPages';
 import { beforeProbabilityNineCatalog, beforeProbabilityNineRegistry, beforeProbabilityNineCopy,
   reviewedProbabilityNine as reviewed, probabilityNineIds as ids } from './fixtures/probability-nine-pdf';
+import { beforeBatch04Registry } from './fixtures/batch04-pdf';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -78,13 +79,18 @@ test('three fixed probability editions add nine frozen PDFs and recover the inde
   }
   assert.equal(new Set(reviewed.additions.flatMap(a => a.pdfIds)).size, 9);
   assert.equal(new Set(reviewed.additions.flatMap(a => a.edition.levels.map(l => l.pdfSha256))).size, 9);
-  assert.equal(registry.editions.length, 66);
-  assert.equal(registry.editions.flatMap((e: any) => e.levels).length, 198);
+  // Batch 04 (tests/batch04-pdf-intake.test.ts) is appended after the probability series.
+  const afterProbabilityNineRegistry = beforeBatch04Registry(registry);
+  assert.equal(afterProbabilityNineRegistry.editions.length, 66);
+  assert.equal(afterProbabilityNineRegistry.editions.flatMap((e: any) => e.levels).length, 198);
   assert.equal(priorRegistry.editions.length, 63);
   assert.equal(priorRegistry.editions.flatMap((e: any) => e.levels).length, 189);
-  assert.deepEqual(registry.editions.slice(0, 63), priorRegistry.editions);
-  assert.deepEqual(registry.editions.slice(63), reviewed.additions.map(a => a.edition));
-  assert.equal(raw.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 973);
+  assert.deepEqual(afterProbabilityNineRegistry.editions.slice(0, 63), priorRegistry.editions);
+  assert.deepEqual(afterProbabilityNineRegistry.editions.slice(63), reviewed.additions.map(a => a.edition));
+  assert.deepEqual(registry.editions.slice(0, 66), afterProbabilityNineRegistry.editions);
+  // Editions never add base levels; EQM49 (17.11) is the only later base topic (+3 levels).
+  assert.equal(raw.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 976);
+  assert.equal(previous.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 973);
   assert.deepEqual(receipt.scope, { packages: 3, pdfs: 9, pages: 47, subitems: 169, landingRoutes: 1 });
   assert.deepEqual(receipt.packages.map((p: any) => p.editionId), ids);
   assert.equal(receipt.sitePublicationClaimed, false);

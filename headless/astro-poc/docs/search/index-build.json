@@ -2681,6 +2681,14 @@
       "reason": "links to the topic, same grade, shared title word"
     },
     {
+      "key": "page:/equations-numeric-denominator-grade-9",
+      "title": "משוואות עם מכנה מספרי לכיתה ט׳ מצומצמת",
+      "linkedTopic": "topic:9:49",
+      "linkedTitle": "משוואות עם מכנה מספרי",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
       "key": "page:/games/eliyahu-pythagoras",
       "title": "משחק משפט פיתגורס עם אליהו",
       "linkedTopic": "topic:8:11",

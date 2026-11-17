@@ -27,6 +27,11 @@
           "productionHref": "https://www.noamdoronmath.co.il/quadratic-equations-grade-9"
         },
         {
+          "path": "/equations-numeric-denominator-grade-9",
+          "label": "משוואות עם מכנה מספרי (ט׳ מצומצמת)",
+          "productionHref": "https://www.noamdoronmath.co.il/equations-numeric-denominator-grade-9"
+        },
+        {
           "path": "/rational-equations-grade-9",
           "label": "משוואות רציונליות",
           "productionHref": "https://www.noamdoronmath.co.il/rational-equations-grade-9"
@@ -269,6 +274,11 @@
       "path": "/quadratic-equations-grade-9",
       "label": "משוואות ריבועיות",
       "productionHref": "https://www.noamdoronmath.co.il/quadratic-equations-grade-9"
+    },
+    {
+      "path": "/equations-numeric-denominator-grade-9",
+      "label": "משוואות עם מכנה מספרי (ט׳ מצומצמת)",
+      "productionHref": "https://www.noamdoronmath.co.il/equations-numeric-denominator-grade-9"
     },
     {
       "path": "/rational-equations-grade-9",

@@ -134,17 +134,19 @@ describe('curriculum-alignment.v1.json', () => {
       assert.ok(unit.name && !unit.name.includes('/'), id);
       assert.deepEqual(jsonLdBidiErrors(unit.name), [], id);
     }
-    assert.equal(Object.keys(file.pages).length, 123);
-    assert.equal(Object.keys(file.units).length, 155);
+    assert.equal(Object.keys(file.pages).length, 124);
+    assert.equal(Object.keys(file.units).length, 156);
   });
 
   it('applies the verifier corrections', () => {
     const units = (slug: string) => curriculumUnitsForTopicPage(slug);
     // prisa_9B leaves quadratic-function properties out of the reduced track.
     assert.ok(!units('quadratic-function-grade-9').some((u) => u.id === 'st.g9m.quad_partial.table_and_graph'));
-    // EQM is not topic 18 (word problems) and has no landing yet.
+    // EQM is not topic 18 (word problems): only its own landing (base topic 9/49, served since
+    // the content train) is aligned to the unit, and no other page.
     for (const slug of Object.keys(file.pages)) {
-      assert.ok(!units(slug).some((u) => u.id === 'st.g9m.equations.numeric_denominator'), slug);
+      assert.equal(units(slug).some((u) => u.id === 'st.g9m.equations.numeric_denominator'),
+        slug === 'equations-numeric-denominator-grade-9', slug);
     }
     const bothSides = units('equations-both-sides-word-problems-grade-7');
     for (const id of ['st.g7.word_problems.modeling_linear', 'st.g7.word_problems.context_problems']) {
@@ -208,10 +210,39 @@ describe('curriculum-alignment.v1.json', () => {
     assert.equal(type('trapezoid-grade-9', 'st.g9r.parallels_trapezoid.trapezoid_intro'), 'educationalSubject');
     assert.equal(type('combining-like-terms-grade-7', 'st.g7.algebraic_expressions.equivalence_identity'), undefined);
     // One new unit-page pair (signed base on powers-grade-7); three pairs move to "teaches".
+    // The totals (210 pairs then: 186 teaches, 24 educationalSubject) are pinned in the next test.
+  });
+
+  it('re-judges two rows on the content train: the topic 9/49 landing and the batch-4 section that states the 30-60-90 converse', () => {
+    const type = (slug: string, id: string) => curriculumUnitsForTopicPage(slug).find((u) => u.id === id)?.alignmentType;
+    const unitIds = (slug: string) => curriculumUnitsForTopicPage(slug).map((u) => u.id);
+    assert.match(file.source.rejudged.against, /74449462/);
+    const rows = file.source.rejudged.applied.filter((row) => row.reason.startsWith('content train'));
+    assert.deepEqual(rows.map((row) => [row.unit, row.status, row.pages]), [
+      ['st.g9m.equations.numeric_denominator', 'covered_by_landing', ['equations-numeric-denominator-grade-9']],
+      ['st.g9r.right_triangle_30_60_90.theorem_and_converse', 'covered_by_landing', ['triangle-30-60-90-grade-9']],
+    ]);
+    // The new reduced-track landing teaches exactly its own unit; the grade-8 page keeps its grade-8 unit.
+    assert.deepEqual(unitIds('equations-numeric-denominator-grade-9'), ['st.g9m.equations.numeric_denominator']);
+    assert.equal(type('equations-numeric-denominator-grade-9', 'st.g9m.equations.numeric_denominator'), 'teaches');
+    assert.equal(file.units['st.g9m.equations.numeric_denominator'].track, 'ט_מצומצמת');
+    assert.equal(type('equations-with-fractions-grade-8', 'st.g9m.equations.numeric_denominator'), undefined);
+    assert.equal(type('word-problems-grade-9', 'st.g9m.equations.numeric_denominator'), undefined);
+    // Batch 4 states the converse theorem on the 30-60-90 landing; the partial row is closed.
+    assert.equal(type('triangle-30-60-90-grade-9', 'st.g9r.right_triangle_30_60_90.theorem_and_converse'), 'teaches');
+    // Left as they were: the other three batch-4 landings already taught every unit of their strand.
+    assert.deepEqual(unitIds('kite-grade-9'), ['st.g9r.kite.definition_angles', 'st.g9r.kite.main_diagonal_area', 'st.g9m.kite_and_isosceles.kite_properties']);
+    assert.deepEqual(unitIds('solids-box-cube-prism-grade-7'), ['st.g7.solids.cube_box_elements', 'st.g7.solids.box_surface_volume', 'st.g7.solids.triangular_prism']);
+    assert.deepEqual(unitIds('similar-triangles-grade-8'), ['st.g8.similarity.similar_polygons_ratio', 'st.g8.similarity.criteria']);
+    for (const slug of ['kite-grade-9', 'solids-box-cube-prism-grade-7', 'similar-triangles-grade-8']) {
+      assert.ok(curriculumUnitsForTopicPage(slug).every((u) => u.alignmentType === 'teaches'), slug);
+      assert.ok(!rows.some((row) => row.pages.includes(slug)), slug);
+    }
+    // One new unit-page pair (topic 9/49) and one pair moves to "teaches".
     const pairs = Object.values(file.pages).flat();
-    assert.equal(pairs.length, 210);
-    assert.equal(pairs.filter((entry) => entry.alignmentType === 'teaches').length, 186);
-    assert.equal(pairs.filter((entry) => entry.alignmentType === 'educationalSubject').length, 24);
+    assert.equal(pairs.length, 211);
+    assert.equal(pairs.filter((entry) => entry.alignmentType === 'teaches').length, 188);
+    assert.equal(pairs.filter((entry) => entry.alignmentType === 'educationalSubject').length, 23);
   });
 });
 
@@ -278,7 +309,7 @@ describe('topic-page JSON-LD (SEO-4)', () => {
         assert.ok(teaches.includes(unit.name), `${page.slug}: teaches ${unit.name}`);
       }
     }
-    assert.equal(aligned, 123);
+    assert.equal(aligned, 124);
   });
 
   it('lists every PDF behind the page level buttons as a MediaObject', () => {

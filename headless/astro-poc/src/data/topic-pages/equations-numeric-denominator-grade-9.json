@@ -1,0 +1,280 @@
+{
+  "slug": "equations-numeric-denominator-grade-9",
+  "path": "/equations-numeric-denominator-grade-9",
+  "grade": 9,
+  "sourceUrl": "https://www.noamdoronmath.co.il/equations-numeric-denominator-grade-9",
+  "fetchedAt": "2026-11-17T09:00:00.000000+00:00",
+  "verifiedVia": "authored-catalog-gap-eqm01-pdf-review-20261117",
+  "title": "משוואות עם מכנה מספרי לכיתה ט׳ מצומצמת — דפי עבודה עם תשובות | נועם דורון",
+  "description": "דפי עבודה במשוואות עם מכנה מספרי לכיתה ט׳ מצומצמת: כפל במכנה המשותף, מונה בסוגריים וסימן חיסור לפני שבר. שלוש רמות PDF להורדה ולהדפסה, עם תשובות סופיות.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "משוואות עם מכנה מספרי לכיתה ט׳ מצומצמת",
+  "intro": "משוואה ממעלה ראשונה עם מכנים מספריים פותרים בכפל של שני האגפים במכנה המשותף, עד שמתקבלת משוואה בלי שברים. הדפים כאן נכתבו לכיתה ט׳ מצומצמת, שבה הנושא נלמד בינואר לפי פריסת ההוראה. זמינים שלושה קובצי PDF ברמה א׳, ברמה ב׳ ובמצוינות, עם תשובות סופיות בסוף כל קובץ.",
+  "sections": [
+    {
+      "heading": "מה מתרגלים בדפים",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "בכל הרמות פותרים משוואות ממעלה ראשונה עם מכנים מספריים, כלומר משוואות עם שברים: בוחרים מכנה משותף, כופלים בו כל איבר בשני האגפים, שמים בסוגריים מונה שהוא ביטוי ושמים לב לסימן חיסור לפני שבר. זו חבילת תרגול ממוקדת למסלול ט׳ מצומצמת.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "בנוסף מזהים משוואות מיוחדות: משוואה שכל מספר הוא פתרון שלה, משוואה שאין לה פתרון ומשוואה שיש לה פתרון אחד. בכל רמה יש גם בעיה מילולית שבה כותבים משוואה עם שברים ופותרים אותה.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "מה יש בכל רמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "רמה א׳: שש שאלות ובהן תשעה־עשר סעיפים. בוחרים במה לכפול את שני האגפים, פותרים משוואות עם מכנים קטנים ועם מונה בסוגריים, מתרגלים סימן חיסור לפני שבר ובודקים אם שורה בפתרון של תלמידה נכונה. השאלה השנייה נפתחת בדוגמה פתורה, ושתי השאלות האחרונות הן משוואות מיוחדות ובעיה מילולית על תלמידי כיתה.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "רמה ב׳: שש שאלות ובהן תשעה־עשר סעיפים. מכנים גדולים יותר, סוגריים בשני האגפים, סימן חיסור לפני שבר ומציאת טעות, משוואות שהפתרון שלהן שלילי, משוואות מיוחדות עם פרמטר ובעיה מילולית על חוג מתמטיקה.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "מצוינות: שש שאלות ובהן שמונה־עשר סעיפים. שלושה שברים במשוואה אחת ומקדם עשרוני, סוגריים במונים, מציאת פרמטר לפי פתרון נתון או לפי מספר הפתרונות, טעות בכפל במכנה המשותף, בעיה מילולית על נסיעה ובניית משוואות לפי תנאי נתון.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "בתחילת כל קובץ יש תזכורת, ובסופו עמוד תשובות סופיות. רמה א׳ היא נקודת הפתיחה המומלצת במסלול המצומצם; רמה ב׳ ומצוינות מתאימות למי שרוצה להעמיק.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "דוגמה פתורה: סימן חיסור לפני שבר",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "פותרים את ⟨x¦3⟩ − ⟨x − 2¦4⟩ = 2. המכנה המשותף של 3 ו־4 הוא 12. כופלים כל איבר ב־12, ושמים את המונה x − 2 בסוגריים, כי סימן החיסור חל על כל המונה: 4x − 3(x − 2) = 24.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "פותחים סוגריים: 4x − 3x + 6 = 24, ולכן x + 6 = 24 ו־x = 18. בדיקה במשוואה המקורית: ⟨18¦3⟩ − ⟨16¦4⟩ = 6 − 4 = 2.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעות נפוצה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "כשכופלים שבר שיש לפניו סימן חיסור, המינוס חל על כל המונה. אם לפני ⟨x + 5¦6⟩ יש מינוס וכופלים ב־6, מקבלים −(x + 5), כלומר −x − 5, ולא −x + 5. טעות נוספת היא לכפול רק את השברים ולשכוח מספר שאין לו מכנה.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "פתרו: ⟨x + 4¦5⟩ = ⟨x¦2⟩ − 1.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה היא x = 6: כופלים ב־10 ומקבלים 2(x + 4) = 5x − 10, כלומר 2x + 8 = 5x − 10, ולכן 3x = 18.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "האם יש פתרון למשוואה ⟨2x¦4⟩ = ⟨x¦2⟩ + 1?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה: לא. אחרי כפל ב־4 מתקבל 2x = 2x + 4, ואין מספר שמקיים את השוויון.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 17.11.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "למי מתאימים הדפים?",
+      "answer": "לתלמידי כיתה ט׳ מצומצמת. בפריסת ההוראה של המסלול המצומצם, פתרון משוואות ממעלה ראשונה עם מכנה מספרי נלמד בינואר. רמה א׳ היא נקודת הפתיחה המומלצת; רמה ב׳ ומצוינות מתאימות למי שרוצה להעמיק."
+    },
+    {
+      "question": "במה כופלים משוואה שיש בה כמה מכנים?",
+      "answer": "במכנה משותף של כל המכנים, בדרך כלל הקטן ביותר. כופלים בו כל איבר בשני האגפים, גם מספר שאין לו מכנה, ומקבלים משוואה בלי שברים."
+    },
+    {
+      "question": "האם יש תשובות בדפי העבודה?",
+      "answer": "כן. בסוף כל קובץ PDF יש עמוד תשובות סופיות. בשאלות שבהן נדרש נימוק כותבים את הנימוק בעצמכם."
+    },
+    {
+      "question": "באילו רמות זמינים הדפים?",
+      "answer": "ברמה א׳, ברמה ב׳ ובמצוינות. בכל רמה שש שאלות: תשעה־עשר סעיפים ברמה א׳ וברמה ב׳, ושמונה־עשר סעיפים במצוינות."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "authored-visible+jsonld",
+      "items": [
+        {
+          "question": "למי מתאימים הדפים?",
+          "answer": "לתלמידי כיתה ט׳ מצומצמת. בפריסת ההוראה של המסלול המצומצם, פתרון משוואות ממעלה ראשונה עם מכנה מספרי נלמד בינואר. רמה א׳ היא נקודת הפתיחה המומלצת; רמה ב׳ ומצוינות מתאימות למי שרוצה להעמיק."
+        },
+        {
+          "question": "במה כופלים משוואה שיש בה כמה מכנים?",
+          "answer": "במכנה משותף של כל המכנים, בדרך כלל הקטן ביותר. כופלים בו כל איבר בשני האגפים, גם מספר שאין לו מכנה, ומקבלים משוואה בלי שברים."
+        },
+        {
+          "question": "האם יש תשובות בדפי העבודה?",
+          "answer": "כן. בסוף כל קובץ PDF יש עמוד תשובות סופיות. בשאלות שבהן נדרש נימוק כותבים את הנימוק בעצמכם."
+        },
+        {
+          "question": "באילו רמות זמינים הדפים?",
+          "answer": "ברמה א׳, ברמה ב׳ ובמצוינות. בכל רמה שש שאלות: תשעה־עשר סעיפים ברמה א׳ וברמה ב׳, ושמונה־עשר סעיפים במצוינות."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/distributive-law-grade-9",
+      "label": "חוק הפילוג המורחב",
+      "productionHref": "https://www.noamdoronmath.co.il/distributive-law-grade-9"
+    },
+    {
+      "path": "/linear-function-grade-9",
+      "label": "פונקציה קווית",
+      "productionHref": "https://www.noamdoronmath.co.il/linear-function-grade-9"
+    },
+    {
+      "path": "/word-problems-grade-9",
+      "label": "בעיות מילוליות",
+      "productionHref": "https://www.noamdoronmath.co.il/word-problems-grade-9"
+    },
+    {
+      "path": "/equations-with-fractions-grade-8",
+      "label": "משוואות עם מכנים מספריים לכיתה ח׳",
+      "productionHref": "https://www.noamdoronmath.co.il/equations-with-fractions-grade-8"
+    }
+  ],
+  "catalogCta": {
+    "href": "/worksheets?grade=9&topic=49",
+    "catalogTopicId": 49,
+    "catalogTopicTitle": "משוואות עם מכנה מספרי",
+    "label": "בחירת רמה ופתיחת PDF",
+    "source": "authored-reviewed-pdf-intake"
+  },
+  "catalogCtas": [
+    {
+      "href": "/worksheets?grade=9&topic=49",
+      "catalogTopicId": 49,
+      "catalogTopicTitle": "משוואות עם מכנה מספרי",
+      "label": "בחירת רמה ופתיחת PDF",
+      "source": "authored-reviewed-pdf-intake"
+    }
+  ],
+  "gradeHubHref": "/grade-9",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/equations-numeric-denominator-grade-9#webpage",
+        "url": "https://www.noamdoronmath.co.il/equations-numeric-denominator-grade-9",
+        "name": "משוואות עם מכנה מספרי לכיתה ט׳ מצומצמת — דפי עבודה עם תשובות | נועם דורון",
+        "description": "דפי עבודה במשוואות עם מכנה מספרי לכיתה ט׳ מצומצמת: כפל במכנה המשותף, מונה בסוגריים וסימן חיסור לפני שבר. שלוש רמות PDF להורדה ולהדפסה, עם תשובות סופיות.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/equations-numeric-denominator-grade-9#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/equations-numeric-denominator-grade-9#learning-resource",
+        "name": "משוואות עם מכנה מספרי לכיתה ט׳ מצומצמת",
+        "url": "https://www.noamdoronmath.co.il/equations-numeric-denominator-grade-9",
+        "description": "דפי עבודה במשוואות עם מכנה מספרי לכיתה ט׳ מצומצמת: כפל במכנה המשותף, מונה בסוגריים וסימן חיסור לפני שבר. שלוש רמות PDF להורדה ולהדפסה, עם תשובות סופיות.",
+        "educationalLevel": "כיתה ט׳",
+        "learningResourceType": "דפי עבודה",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/equations-numeric-denominator-grade-9#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "למי מתאימים הדפים?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לתלמידי כיתה ט׳ מצומצמת. בפריסת ההוראה של המסלול המצומצם, פתרון משוואות ממעלה ראשונה עם מכנה מספרי נלמד בינואר. רמה א׳ היא נקודת הפתיחה המומלצת; רמה ב׳ ומצוינות מתאימות למי שרוצה להעמיק."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "במה כופלים משוואה שיש בה כמה מכנים?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "במכנה משותף של כל המכנים, בדרך כלל הקטן ביותר. כופלים בו כל איבר בשני האגפים, גם מספר שאין לו מכנה, ומקבלים משוואה בלי שברים."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם יש תשובות בדפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. בסוף כל קובץ PDF יש עמוד תשובות סופיות. בשאלות שבהן נדרש נימוק כותבים את הנימוק בעצמכם."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "באילו רמות זמינים הדפים?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "ברמה א׳, ברמה ב׳ ובמצוינות. בכל רמה שש שאלות: תשעה־עשר סעיפים ברמה א׳ וברמה ב׳, ושמונה־עשר סעיפים במצוינות."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}
