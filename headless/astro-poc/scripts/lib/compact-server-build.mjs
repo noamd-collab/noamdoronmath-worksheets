@@ -1,4 +1,5 @@
 import { transform } from 'esbuild';
+import { omitWixSitemapPathsPlugin } from './omit-wix-sitemap-paths.mjs';
 
 /**
  * Wix sends server modules as base64 JSON. Compact generated JavaScript before
@@ -15,6 +16,12 @@ export default function compactServerBuild() {
   return {
     name: 'noam-compact-server-build',
     hooks: {
+      // SEO-1 (from PR #449): keep 404, noindex and redirecting routes out of the
+      // Wix page list behind /pages-sitemap.xml. Registered here so the fenced
+      // astro.config.mjs stays byte-identical; a no-op without @wix/astro-pages.
+      'astro:config:setup': ({ updateConfig }) => {
+        updateConfig({ vite: { plugins: [omitWixSitemapPathsPlugin()] } });
+      },
       'astro:build:setup': ({ target, updateConfig }) => {
         if (target !== 'server') return;
         updateConfig({
