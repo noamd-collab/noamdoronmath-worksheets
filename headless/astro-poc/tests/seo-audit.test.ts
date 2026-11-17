@@ -503,10 +503,33 @@ describe('seo audit', () => {
       withoutPromoClauses('בוחרים דפי עבודה קיימים ברמות א׳, ב׳ ומצוינות — בחינם וללא הרשמה.'),
       'בוחרים דפי עבודה קיימים ברמות א׳, ב׳ ומצוינות.',
     );
-    // A clause that joins with "ו…" is cut from that word.
+    // A clause that joins with a verb-like "ו…" word is cut from that word.
     assert.equal(
       withoutPromoClauses('למדו לחשב מעטפת ושני בסיסים, פתרו תרגילים וקבלו רמז מנועם AI ללא הרשמה בכל עת בבית.'),
       'למדו לחשב מעטפת ושני בסיסים, פתרו תרגילים.',
+    );
+    // The cut is at the verb, not at a noun "ו…" that follows it.
+    assert.equal(
+      withoutPromoClauses('למדו לחשב נפח גליל, פתרו תרגילים וקבלו רמז והסבר מנועם AI ללא הרשמה.'),
+      'למדו לחשב נפח גליל, פתרו תרגילים.',
+    );
+    // A noun conjunction is not a clause boundary: "חיבור וחיסור … בחינם" is never
+    // cut to "חיבור". The sentence is left alone and the caller keeps it in full.
+    for (const sentence of [
+      'חיבור וחיסור של שברים בחינם.',
+      'דפי תרגול על חיבור וחיסור של שברים בחינם.',
+      'תרגלו צמצום של שברים, חיבור וחיסור של שברים בחינם.',
+    ]) {
+      assert.equal(withoutPromoClauses(sentence), null, sentence);
+    }
+    assert.equal(
+      landingScopeSentence('תרגלו צמצום של שברים, חיבור וחיסור של שברים בחינם.'),
+      'תרגלו צמצום של שברים, חיבור וחיסור של שברים בחינם.',
+    );
+    // With no sentence to strip, the fallback stays the first sentence in full.
+    assert.equal(
+      landingScopeSentence('דפי עבודה חינמיים בשברים לכיתה ז׳. תרגלו חיבור וחיסור של שברים בחינם.'),
+      'דפי עבודה חינמיים בשברים לכיתה ז׳.',
     );
     // Nothing meaningful left, or the promo opens the sentence: not kept.
     assert.equal(withoutPromoClauses('דפי עבודה בחינם וללא הרשמה.'), null);

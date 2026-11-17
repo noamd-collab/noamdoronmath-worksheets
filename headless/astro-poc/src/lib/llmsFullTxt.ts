@@ -52,6 +52,13 @@ const BIDI_CONTROLS = /[\u200E\u200F\u202A-\u202E\u2066-\u2069]/g;
 const PROMO_PHRASE = /בחינם|ללא הרשמה|חינמי|להורדה/;
 /** Clause boundaries inside a sentence: a comma or semicolon, or a spaced dash. */
 const CLAUSE_SEPARATOR = /(\s*[,;]\s+|\s+[—–-]\s+)/u;
+/**
+ * A "ו…" word that opens a new verb clause. The landing copy is written in the
+ * plural imperative ("וקבלו", "והורידו", "ותרגלו"), so the word also ends in
+ * "ו". A noun conjunction ("חיבור וחיסור", "מעטפת ושני בסיסים") does not.
+ */
+const VERB_JOINER = /^ו\p{L}{2,}ו$/u;
+const AND_WORD = /^ו\S/u;
 
 /** Visible text without invisible direction marks, on one line. */
 export function plainText(value: string): string {
@@ -63,9 +70,13 @@ export function plainText(value: string): string {
 
 /**
  * The sentence without its promo clauses, or null when the promo is the
- * sentence itself. A clause that holds a promo phrase is dropped from its
- * last "ו…" word before the phrase ("…המשולש וקבלו רמז ללא הרשמה" keeps
- * "…המשולש"), or whole when no such word precedes it (", ללא הרשמה").
+ * sentence itself or cannot be taken out safely. A clause that holds a promo
+ * phrase is dropped from its last verb-like "ו…" word before the phrase
+ * ("…המשולש וקבלו רמז ללא הרשמה" keeps "…המשולש"), or whole when no "ו…"
+ * word precedes the phrase (", ללא הרשמה").
+ * A "ו…" word that is not verb-like joins nouns, not clauses: "חיבור וחיסור
+ * של שברים בחינם" is never cut to "חיבור". Where the promo clause begins is
+ * then unknown, so the result is null and the caller keeps the full sentence.
  * A promo in the opening clause ("דפי עבודה חינמיים ב…") means the sentence
  * is about the free sheets, so it is not kept. What remains must still be a
  * sentence of at least three words with no promo phrase.
@@ -84,13 +95,15 @@ export function withoutPromoClauses(sentence: string): string | null {
       const before = clause.slice(0, promo.index).trim().split(/\s+/u).filter(Boolean);
       let cut = -1;
       for (let word = before.length - 1; word >= 1; word -= 1) {
-        if (/^ו\S/u.test(before[word])) {
+        if (VERB_JOINER.test(before[word])) {
           cut = word;
           break;
         }
       }
       if (cut === -1) {
         if (index === 0) return null;
+        // Only noun conjunctions before the promo: no safe place to cut.
+        if (before.slice(1).some((word) => AND_WORD.test(word))) return null;
         continue;
       }
       keep = before.slice(0, cut).join(' ');
