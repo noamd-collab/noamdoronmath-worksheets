@@ -6,6 +6,8 @@ import { topicPageHrefByCatalogTopic } from '../lib/elementaryTopicNav';
 import { familyOf, resolveWorksheetsGrade, worksheetsHref, type GradeNum } from '../lib/grades';
 import { parseWorksheetsUrlState, trackForPinnedTopic } from '../lib/worksheetsUrlState';
 import { educationalLevelForGrade, learningResourceJsonLd } from '../lib/structuredData';
+import { worksheetsDocumentTitle } from '../lib/seoTitles';
+import { worksheetsSeo, type WorksheetsSeo } from '../lib/worksheetsSeo';
 
 export const prerender = false;
 
@@ -36,6 +38,22 @@ const hasExplicitGradeChoice =
   Astro.url.searchParams.has('q');
 const urlState = parseWorksheetsUrlState(Astro.url.searchParams, grade || 7);
 const highlightTopicId = urlState.topic;
+// SEO-1: a catalog URL points its canonical at the page that should rank (the
+// topic landing, its parent topic's landing, else the grade hub); an unknown
+// topic id is noindex,follow. See src/lib/worksheetsSeo.ts.
+const seo: WorksheetsSeo =
+  gradeEntry && grade
+    ? worksheetsSeo({
+        grade,
+        gradeExplicit: !parsed.defaulted,
+        topics: gradeEntry.topics,
+        topicId: highlightTopicId,
+        topicPageHrefs,
+      })
+    : { noindexFollow: false };
+const worksheetsTitle = gradeEntry
+  ? worksheetsDocumentTitle(gradeEntry.label, seo.topicTitle)
+  : 'דפי עבודה';
 const initialUrlState = {
   q: urlState.q,
   group: urlState.group,
@@ -82,7 +100,9 @@ const initialUrlState = {
     </BaseLayout>
   ) : (
     <BaseLayout
-      title={`דפי עבודה · ${gradeEntry!.label}`}
+      title={worksheetsTitle}
+      canonicalPath={seo.canonicalPath}
+      noindexFollow={seo.noindexFollow}
       crumbs={[
         { name: 'בית', path: '/' },
         { name: 'דפי עבודה', path: '/worksheets' },
