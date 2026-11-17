@@ -59,7 +59,7 @@
         ]
       },
       "track": "ז",
-      "generatedEditionSha256": "86344eef5cbf9bf71d29abfa0a7907ca9d9c5f1db946ad2c8fbbc6a0f00d23d1",
+      "generatedEditionSha256": "a1a614145ea3fcf6aabd4c9eb093e7cf90d49f71764e2cbc48b475c298a62f07",
       "baselineTopicSha256": "af714f59cb27cde14b0e83bc30afb9ab9c450a84717861192836dc8d3755ecc2",
       "baselineEditionIds": [
         "ms-20261117-alg-03-r1"
@@ -120,7 +120,7 @@
         ]
       },
       "track": "ז",
-      "generatedEditionSha256": "d029f3c4bba645d3af885d0ae64722d3e45deb21f16b7b76e678bbe374121496",
+      "generatedEditionSha256": "3df9e3f8fa1aeb80ffe0ecf3ff66061556ac6f443422b266d2371c85b692c69e",
       "baselineTopicSha256": "af714f59cb27cde14b0e83bc30afb9ab9c450a84717861192836dc8d3755ecc2",
       "baselineEditionIds": [
         "ms-20261117-alg-03-r1"
@@ -181,7 +181,7 @@
         ]
       },
       "track": "ז",
-      "generatedEditionSha256": "7f8ba93f28d30f44c5b72e146c35970eb2fd527fdc00cffc38df69c0ad1ebbb3",
+      "generatedEditionSha256": "44c547396fc7106c84461801cb44664a797e88daeb2624d84a2bfdcf6a5068dd",
       "baselineTopicSha256": "936967b814d8aa725e15474bbf8537bd302ea941f84d4682c5236588c65747fe",
       "baselineEditionIds": []
     },
@@ -240,7 +240,7 @@
         ]
       },
       "track": "ח",
-      "generatedEditionSha256": "8a8f02c14fcda7dac961fbfe28aa80c6abd4122daac1e8576419016c703dc651",
+      "generatedEditionSha256": "bd16a5874e7bf63b83146bfb29f4330ffb2096619d5f3cca5f252d4a94548b8c",
       "baselineTopicSha256": "8ad780de41c29a28851b000eadc9a45b51e2c1789c19225c3980a0a201a3624b",
       "baselineEditionIds": [
         "ms-20261117-ine-02-r1"
@@ -301,7 +301,7 @@
         ]
       },
       "track": "ט_רגילה",
-      "generatedEditionSha256": "0679b5fed8f10100bc7813448519f16ec601eb2db3ed7e9195a51331900630e8",
+      "generatedEditionSha256": "b54cd38b207613864a885bc1d286f8b3be659072f677586ac37bd5385c9fa77e",
       "baselineTopicSha256": "cacecb9bece56f55659163af8a5c021f2d0e9decfe91d1978b389cadbf1f8fe0",
       "baselineEditionIds": []
     },
@@ -360,7 +360,7 @@
         ]
       },
       "track": "ט_רגילה",
-      "generatedEditionSha256": "1c326ad60a4334ce8e6345f75f01c4540b42beceef7e99fa85993e331bfcd8dd",
+      "generatedEditionSha256": "2da310eff1c3cbb601a3936934364727a5d81dff4d508bd4f3b7ba9ba663f455",
       "baselineTopicSha256": "cacecb9bece56f55659163af8a5c021f2d0e9decfe91d1978b389cadbf1f8fe0",
       "baselineEditionIds": []
     },
@@ -419,7 +419,7 @@
         ]
       },
       "track": "ט_מצומצמת",
-      "generatedEditionSha256": "86cc2359983d212cd799e2465465f1e0b92cfd589dfcb9c4932138bd8a5da19c",
+      "generatedEditionSha256": "958b88ea152eca9724442a5ef3de09291149dccf9f54667a0270a57008f24ecb",
       "baselineTopicSha256": "22fb67b683c80feee03de043bd2409de0479d25c8dc9ff36075551cf70721aea",
       "baselineEditionIds": []
     },
@@ -478,7 +478,7 @@
         ]
       },
       "track": "ט_מצומצמת",
-      "generatedEditionSha256": "173e6ef28140b76f9453fedc6a7ee7fc1aacc3f8324ee10009795da23464c966",
+      "generatedEditionSha256": "305434f9b57bbdcc8a8e354e2031d49eba197bd8db100af6458ee96242378b78",
       "baselineTopicSha256": "9c8493a78c2e4cf6c33b6919f9f028d7363bd250ff553c6a15559c504766c370",
       "baselineEditionIds": [
         "ms-20261116-prc-01-r1",
@@ -541,7 +541,7 @@
         ]
       },
       "track": "ט_מצומצמת",
-      "generatedEditionSha256": "258e239266784b78f7f5a069d8156d79a399f524620db4b9df963886c12a974d",
+      "generatedEditionSha256": "00d879cc6da13ef693495d2cd5a840535f072dfd7ed322140305b900a59e357d",
       "baselineTopicSha256": "097fd1813ad3989f95e4f76d4dec9d9409230595ba4e60c2cfa09c9f5875045e",
       "baselineEditionIds": [
         "ms-20261117-qap-01-r1"
@@ -602,7 +602,7 @@
         ]
       },
       "track": "ט_מצומצמת",
-      "generatedEditionSha256": "e4a73a29ffef7be89aa43e634df667fa14e7cef4965fdb89cd1d17ebeed87580",
+      "generatedEditionSha256": "1bea92c091920aed86f30eca25c57484306202e423d9ce7497f7ef804728eba3",
       "baselineTopicSha256": "4332fdc917faee45d00ad3d12c239434cfd5c4326d90c477c9c275d549ece9d2",
       "baselineEditionIds": []
     },
@@ -661,7 +661,7 @@
         ]
       },
       "track": "ט_מצומצמת",
-      "generatedEditionSha256": "0519ebcdc89b7ca6099bd2201b8448f4873311c7d00d8631c5d7a278c3170ea4",
+      "generatedEditionSha256": "fc5dd072fa514829c6d764d84d1f4225ebfd47493bb575ac6ede8400fceec8d9",
       "baselineTopicSha256": "6d3b6a1e3dad804a408e9433617ca32b591661088a03e9fc3f2ccd2da0d3f7bd",
       "baselineEditionIds": []
     }
