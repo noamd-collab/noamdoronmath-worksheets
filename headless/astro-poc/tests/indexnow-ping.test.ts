@@ -322,7 +322,7 @@ describe('changed landing URLs between two states', () => {
 });
 
 describe('indexnow-ping CLI', () => {
-  type Call = { url: string; init: { method?: string; headers?: Record<string, string>; body?: string } };
+  type Call = { url: string; init: { method?: string; redirect?: string; headers?: Record<string, string>; body?: string } };
   type FakeResponse = { status: number; body?: string } | { networkError: string };
   function fakeFetch(responses: FakeResponse[]) {
     const calls: Call[] = [];
@@ -345,6 +345,15 @@ describe('indexnow-ping CLI', () => {
     return { code, out: out.join('\n'), err: err.join('\n') };
   }
   const key = readIndexNowKey(publicDir);
+  /** Every key-file request must be a GET that does not follow redirects. */
+  function assertKeyChecksDoNotFollowRedirects(calls: Call[], expected: number) {
+    const keyChecks = calls.filter(call => call.url === `${ORIGIN}/${key}.txt`);
+    assert.equal(keyChecks.length, expected, 'number of key-file requests');
+    for (const call of keyChecks) {
+      assert.equal(call.init.method, 'GET');
+      assert.equal(call.init.redirect, 'manual', 'the key check is fetched with redirect: "manual"');
+    }
+  }
 
   it('is a dry run by default and sends nothing', async () => {
     const { calls, fetchImpl } = fakeFetch([]);
@@ -362,6 +371,8 @@ describe('indexnow-ping CLI', () => {
     assert.equal(calls.length, 2);
     assert.equal(calls[0].url, `${ORIGIN}/${key}.txt`);
     assert.equal(calls[0].init.method, 'GET');
+    assert.equal(calls[0].init.redirect, 'manual');
+    assertKeyChecksDoNotFollowRedirects(calls, 1);
     assert.equal(calls[1].url, INDEXNOW_ENDPOINT);
     assert.equal(INDEXNOW_ENDPOINT, 'https://api.indexnow.org/indexnow');
     assert.equal(calls[1].init.method, 'POST');
@@ -387,6 +398,7 @@ describe('indexnow-ping CLI', () => {
       const result = await run(['--submit', '/grade-8'], fetchImpl, waits);
       assert.equal(result.code, 1);
       assert.equal(calls.length, 1, 'a redirect or other content is not retried, and nothing is POSTed');
+      assertKeyChecksDoNotFollowRedirects(calls, 1);
       assert.deepEqual(waits, []);
       assert.match(result.err, /Publish a release that serves|does not contain the key/);
     }
@@ -396,6 +408,7 @@ describe('indexnow-ping CLI', () => {
     assert.equal(result.code, 1);
     assert.equal(missing.calls.length, 4, 'four key checks, no POST');
     assert.ok(missing.calls.every(call => call.init.method === 'GET'));
+    assertKeyChecksDoNotFollowRedirects(missing.calls, 4);
     assert.deepEqual(waits, [5_000, 15_000, 45_000]);
     assert.match(result.err, /answered HTTP 404\. Publish a release that serves .* Gave up after 4 attempts\./);
   });
@@ -409,6 +422,7 @@ describe('indexnow-ping CLI', () => {
     const result = await run(['--submit', '/grade-8'], fetchImpl, waits);
     assert.equal(result.code, 0, result.err);
     assert.deepEqual(calls.map(call => call.init.method), ['GET', 'GET', 'GET', 'GET', 'POST']);
+    assertKeyChecksDoNotFollowRedirects(calls, 4);
     assert.deepEqual(waits, [5_000, 15_000, 45_000]);
     assert.match(result.err, /attempt 1 of 4: .*HTTP 404.* Retrying in 5 s\./);
     assert.match(result.err, /attempt 3 of 4: Could not fetch .* Retrying in 45 s\./);
@@ -418,6 +432,7 @@ describe('indexnow-ping CLI', () => {
     const checked = await run(['--check-key'], check.fetchImpl, checkWaits);
     assert.equal(checked.code, 0, checked.err);
     assert.equal(check.calls.length, 2);
+    assertKeyChecksDoNotFollowRedirects(check.calls, 2);
     assert.deepEqual(checkWaits, [5_000]);
     assert.match(checked.out, /key file is live/);
   });
@@ -461,6 +476,7 @@ describe('indexnow-ping CLI', () => {
     const check = await run(['--check-key'], fetchImpl);
     assert.equal(check.code, 0, check.err);
     assert.equal(calls.length, 1);
+    assertKeyChecksDoNotFollowRedirects(calls, 1);
     assert.match(check.out, /key file is live/);
   });
 
