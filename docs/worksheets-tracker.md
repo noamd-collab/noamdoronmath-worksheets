@@ -1,3 +1,11 @@
+## 2026-11-17 — grade-9 probability: three reviewed Claude-authored student PDF editions (candidate, replaces draft #500)
+
+- PRC9:10, PRT9:10 and PRW9:10 (single-stage with relative frequency and complement; two-stage with replacement; two-stage without replacement): 9 PDFs, 47 pages, 169 parts. The legacy default, its links and the 55 preceding editions are preserved.
+- The probability landing describes the exact practice scope of the three series in one appended section. Title, H1 and CTA are unchanged. All three series are regular-track.
+- Exact reviewed PDF bytes were downloaded from both media routes: 18 matching reads of Codex's 16.11 uploads. Claude authored all three sets; each passed an independent review by Astra (Codex gpt-6-astra), a non-Claude agent, attributed by exact SHA-256 and not repeated here. Details: `docs/probability-nine-pdf-first-20261117.json`.
+- New editions open PDFs directly. No Word, native assets, teacher selection, learning activation, hints or database activation.
+- Supersedes draft PR #500 by Noam's 17.11 decision; the same edition ids and pdfIds, regenerated on the current baseline. This is a source candidate, not a publication claim. Build, tests and desktop/phone evidence are recorded in the PR package; the Wix payload has only a proxy estimate (+45,936 bytes, about 17.61 MB) and still needs a credentialed `npm run build`; the release job's postbuild budget check stops a release over 19,500,000 bytes.
+
 ## 2026-11-17 — batch 02a: sixteen reviewed student PDF editions (candidate)
 
 - SQR9:14, RHB9:13, ISO9:4, POW9:16, MPL9:18, PYD9:35, TRI8:42, TRI8:40, WPE8:3, WPE8:46, DAT8:66, SLP8:29, PRB8:50, Q1C7:8, MUL7:3 and EQN7:37: 48 PDFs, 385 pages, 1431 parts. Every existing default, legacy link and the 39 preceding editions are preserved.

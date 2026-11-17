@@ -2,6 +2,7 @@ import { reviewedNext12 } from './fixtures/next12-pdf';
 import { reviewedNext21 } from './fixtures/next21-pdf';
 import { reviewedBatch01 } from './fixtures/batch01-pdf';
 import { reviewedBatch02a } from './fixtures/batch02a-pdf';
+import { reviewedProbabilityNine } from './fixtures/probability-nine-pdf';
 import { reviewedSaoWpc } from './fixtures/sao-wpc-pdf';
 import { reviewedExtSmlAfr } from './fixtures/ext-sml-afr-pdf';
 import assert from 'node:assert/strict';
@@ -456,4 +457,32 @@ test('real batch-02a pages expose forty-eight PDFs only in their mapped group an
     assert.equal(new Set(anchors).size, anchors.length, `${addition.slug}: unique anchors`);
   }
   assert.equal(urls.size, 48);
+});
+
+test('the real grade-9 probability page exposes nine PDFs in three series after the legacy links only', async () => {
+  const catalog = loadCatalog(), urls = new Set<string>();
+  const [first] = reviewedProbabilityNine.additions;
+  assert.ok(reviewedProbabilityNine.additions.every(a => a.slug === first.slug && a.grade === 9 && a.topicId === 10));
+  const document = await renderTopic(first.slug), hero = document.querySelector('.exact-topic-copy')!;
+  const ctas = [...hero.querySelectorAll('a[data-catalog-topic]')];
+  assert.deepEqual(ctas.map(a => Number(a.getAttribute('data-catalog-topic'))), [10]);
+  assert.equal(ctas[0].getAttribute('href'), '#topic-levels');
+  const controls = hero.querySelector('#topic-levels')!;
+  assert.ok(controls, 'topic group');
+  for (const addition of reviewedProbabilityNine.additions) {
+    assert.deepEqual(addition.ctaTopics, [10]);
+    const links = [...controls.querySelectorAll(`a[data-edition-id="${addition.editionId}"]`)];
+    assert.deepEqual(links.map(a => a.getAttribute('href')), addition.pdfIds.map(id => `${catalog.config.pdfBase}${id}.pdf`));
+    assert.ok(links.every(a => a.textContent.includes('פתיחת PDF') && !a.textContent.includes('רמזי')));
+    links.forEach(a => urls.add(a.getAttribute('href')!));
+  }
+  const groups = topicWorksheetEditionLinks(catalog, 9, 10, '/worksheets?grade=9&topic=10');
+  const legacy = [...controls.querySelectorAll('a[data-edition-id="legacy"]')].map(a => a.getAttribute('href'));
+  assert.deepEqual(legacy, groups[0].levels.map(l => l.href));
+  assert.equal(legacy.length, 3);
+  const order = [...controls.querySelectorAll('a[data-edition-id]')].map(a => a.getAttribute('data-edition-id'));
+  assert.deepEqual([...new Set(order)], ['legacy', ...reviewedProbabilityNine.additions.map(a => a.editionId)]);
+  const anchors = [...document.querySelectorAll('[id]')].map(e => e.id);
+  assert.equal(new Set(anchors).size, anchors.length, 'unique anchors');
+  assert.equal(urls.size, 9);
 });
