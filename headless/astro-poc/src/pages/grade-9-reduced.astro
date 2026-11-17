@@ -1,0 +1,111 @@
+---
+/**
+ * SEO-2 — the ט׳ מצומצמת hub: every unit of the official reduced-track layout
+ * (prisa_9B, תשפ״ז), by month, named as in the curriculum mapping (which
+ * spells out the layout's wording). Units link to the existing topic page that
+ * covers them; a unit without one stays plain text.
+ * Server-rendered, ItemList + LearningResource here, BreadcrumbList from the
+ * layout crumbs. No loop: the grade-9 loop pool includes topics this track
+ * does not learn (vertex of a parabola, difference of squares).
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PrisaUnitList from '../components/PrisaUnitList.astro';
+import '../styles/exact-grade.css';
+import '../styles/prisa-index.css';
+import {
+  PRISA_SECTION_ID,
+  REDUCED_HUB_PATH,
+  loadPrisaTrack,
+  prisaItemListJsonLd,
+  unitCountLabel,
+} from '../lib/prisaIndex';
+import { learningResourceJsonLd } from '../lib/structuredData';
+export const prerender = false;
+
+const track = loadPrisaTrack('g9m');
+const title = 'מתמטיקה לכיתה ט׳ מצומצמת — דפי עבודה לפי הפריסה';
+const description =
+  'כל נושאי פריסת ההוראה לכיתה ט׳ מצומצמת (תשפ״ז) לפי חודשים, עם קישור לדף הנושא ולדפי העבודה באתר. בחינם וללא הרשמה.';
+const crumbs = [
+  { name: 'בית', path: '/' },
+  { name: 'כיתה ט׳', path: '/grade-9' },
+  { name: 'ט׳ מצומצמת', path: REDUCED_HUB_PATH },
+];
+const itemListLd = prisaItemListJsonLd(track, {
+  name: 'נושאי פריסת ההוראה לכיתה ט׳ מצומצמת לפי חודשים',
+  path: REDUCED_HUB_PATH,
+});
+const resourceLd = learningResourceJsonLd({
+  name: title,
+  path: REDUCED_HUB_PATH,
+  description,
+  educationalLevel: 'כיתה ט׳',
+  learningResourceType: 'דפי עבודה לפי פריסת ההוראה',
+});
+---
+<BaseLayout
+  title={title}
+  description={description}
+  crumbs={crumbs}
+  activeNav="worksheets"
+  skipHref="#prisa-hub-main"
+>
+  <script type="application/ld+json" set:html={JSON.stringify(itemListLd)} />
+  <script type="application/ld+json" set:html={JSON.stringify(resourceLd)} />
+  <main class="grade-hub exact-grade prisa-hub" id="prisa-hub-main" data-grade="9" data-prisa-hub="g9m">
+    <nav class="grade-hub__crumbs" aria-label="מיקום">
+      <a href="/">בית</a>
+      <span aria-hidden="true">/</span>
+      <a href="/grade-9">כיתה ט׳</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">ט׳ מצומצמת</span>
+    </nav>
+    <nav class="prisa-hub__tracks" aria-label="מסלול">
+      <a class="prisa-track-tab" href={`/grade-9#${PRISA_SECTION_ID}`}>ט׳ רגילה</a>
+      <a class="prisa-track-tab" href={REDUCED_HUB_PATH} aria-current="page">ט׳ מצומצמת</a>
+    </nav>
+
+    <header class="prisa-hub__header">
+      <h1>{title}</h1>
+      <p class="prisa-hub__lead">
+        כיתה ט׳ מצומצמת היא מסלול הלימוד במתמטיקה לתלמידים שילמדו בתיכון ברמת 3 יחידות לימוד.
+        כאן מסודרים כל נושאי פריסת ההוראה של משרד החינוך לשנת תשפ״ז, לפי החודש שבו מתחילים ללמוד כל נושא.
+      </p>
+      <p class="prisa-hub__lead">
+        שמות הנושאים כאן מפורטים לפעמים יותר מהנוסח שבפריסה. נושא שיש לו דף באתר מקשר אליו, ושם יש הסבר ודפי עבודה להדפסה.
+        הפונקציה הריבועית נלמדת השנה באופן חלקי בלבד, כמו שכתוב בפריסה.
+      </p>
+      <div class="prisa-hub__actions">
+        <a class="prisa-hub__cta" href="/worksheets?grade=9&track=red">פתיחת דפי העבודה של ט׳ מצומצמת</a>
+        <a class="prisa-hub__secondary" href={`/grade-9#${PRISA_SECTION_ID}`}>הפריסה של ט׳ רגילה</a>
+      </div>
+    </header>
+
+    <div class="prisa-hub__months">
+      {
+        track.months.map((month) => (
+          <section class="prisa-hub__month" id={month.id} aria-labelledby={`${month.id}-heading`} data-month={month.key}>
+            <h2 id={`${month.id}-heading`}>
+              {month.label}
+              <span class="prisa-month__count">{unitCountLabel(month.units.length)}</span>
+            </h2>
+            <PrisaUnitList units={month.units} />
+          </section>
+        ))
+      }
+    </div>
+
+    <section class="prisa-hub__more" aria-labelledby="prisa-hub-more-heading">
+      <h2 id="prisa-hub-more-heading" class="grade-hub__section-title">עוד לכיתה ט׳</h2>
+      <p class="prisa-hub__lead">
+        כל הנושאים של כיתה ט׳, במסלול הרגיל ובמסלול המצומצם, מופיעים בדף של כיתה ט׳, מסודרים לפי תחומים.
+      </p>
+      <p class="prisa-hub__lead">
+        <a class="prisa-hub__secondary" href="/grade-9">דפי עבודה במתמטיקה לכיתה ט׳</a>
+      </p>
+      <p class="prisa-hub__source">
+        מקור: <a href={track.source.url} target="_blank" rel="noopener noreferrer">{track.source.title}</a>, הפיקוח על הוראת המתמטיקה, משרד החינוך.
+      </p>
+    </section>
+  </main>
+</BaseLayout>

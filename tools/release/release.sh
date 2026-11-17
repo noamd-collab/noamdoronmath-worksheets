@@ -48,5 +48,10 @@ fi
 $W npm run build </dev/null || exit 7
 release_rc=0
 run_release || release_rc=$?
+# SEO-5, report only: does production robots.txt (served by Wix) declare
+# /sitemap-index.xml? The result never changes this script's exit code.
+if [ "$release_rc" -eq 0 ]; then
+  $W node scripts/check-live-robots.mjs </dev/null || echo "LIVE_ROBOTS=not-run (report only)"
+fi
 echo "RELEASE_EXIT=$release_rc"
 exit "$release_rc"
