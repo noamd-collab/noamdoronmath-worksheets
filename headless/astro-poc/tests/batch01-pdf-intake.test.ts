@@ -12,6 +12,7 @@ import { collectViewerPdfIds } from '../scripts/sync-github-static.mjs';
 import { loadTopicPage, extractJsonLdFaq, synthesizeBodyFlow } from '../src/lib/topicPages';
 import { beforeBatch01Catalog, beforeBatch01Registry, beforeBatch01Copy,
   reviewedBatch01 as reviewed, reviewedBatch01Ids as ids } from './fixtures/batch01-pdf';
+import { beforeBatch02aRegistry } from './fixtures/batch02a-pdf';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -75,12 +76,13 @@ test('four fixed mappings add twelve frozen PDFs and recover the independently p
   }
   assert.equal(new Set(reviewed.additions.flatMap(a => a.pdfIds)).size, 12);
   assert.equal(new Set(reviewed.additions.flatMap(a => a.edition.levels.map(l => l.pdfSha256))).size, 12);
-  assert.equal(registry.editions.length, 39);
-  assert.equal(registry.editions.flatMap((e: any) => e.levels).length, 117);
+  const afterBatch01Registry = beforeBatch02aRegistry(registry);
+  assert.equal(afterBatch01Registry.editions.length, 39);
+  assert.equal(afterBatch01Registry.editions.flatMap((e: any) => e.levels).length, 117);
   assert.equal(priorRegistry.editions.length, 35);
   assert.equal(priorRegistry.editions.flatMap((e: any) => e.levels).length, 105);
-  assert.deepEqual(registry.editions.slice(0, 35), priorRegistry.editions);
-  assert.deepEqual(registry.editions.slice(35), reviewed.additions.map(a => a.edition));
+  assert.deepEqual(afterBatch01Registry.editions.slice(0, 35), priorRegistry.editions);
+  assert.deepEqual(afterBatch01Registry.editions.slice(35), reviewed.additions.map(a => a.edition));
   assert.equal(raw.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 973);
   assert.deepEqual(receipt.scope, { packages: 4, pdfs: 12, pages: 83, subitems: 372, landingRoutes: 4 });
   assert.deepEqual(receipt.packages.map((p: any) => p.editionId), ids);

@@ -1,6 +1,7 @@
 import { reviewedNext12 } from './fixtures/next12-pdf';
 import { reviewedNext21 } from './fixtures/next21-pdf';
 import { reviewedBatch01 } from './fixtures/batch01-pdf';
+import { reviewedBatch02a } from './fixtures/batch02a-pdf';
 import { reviewedSaoWpc } from './fixtures/sao-wpc-pdf';
 import { reviewedExtSmlAfr } from './fixtures/ext-sml-afr-pdf';
 import assert from 'node:assert/strict';
@@ -423,4 +424,36 @@ test('real batch-01 pages expose twelve PDFs in their single topic group after e
     assert.equal(new Set(anchors).size, anchors.length, `${addition.slug}: unique anchors`);
   }
   assert.equal(urls.size, 12);
+});
+
+test('real batch-02a pages expose forty-eight PDFs only in their mapped group and preserve every CTA and old link', async () => {
+  const catalog = loadCatalog(), urls = new Set<string>();
+  for (const addition of reviewedBatch02a.additions) {
+    const document = await renderTopic(addition.slug), hero = document.querySelector('.exact-topic-copy')!;
+    // equations-advanced-grade-7 keeps its four hero topics (38, 23, 37, 36); the edition joins 37 only.
+    const topics = addition.ctaTopics;
+    assert.ok(topics.includes(addition.topicId), addition.slug);
+    const ctas = [...hero.querySelectorAll('a[data-catalog-topic]')];
+    assert.deepEqual(ctas.map(a => Number(a.getAttribute('data-catalog-topic'))), topics);
+    for (const [index, topicId] of topics.entries()) {
+      const target = index === 0 ? '#topic-levels' : `#topic-levels-hero-${topicId}`;
+      assert.equal(ctas[index].getAttribute('href'), target);
+      const controls = hero.querySelector(target)!;
+      assert.ok(controls, `${addition.slug}: group${topicId}`);
+      const links = [...controls.querySelectorAll(`a[data-edition-id="${addition.editionId}"]`)];
+      assert.deepEqual(links.map(a => a.getAttribute('href')), topicId === addition.topicId
+        ? addition.pdfIds.map(id => `${catalog.config.pdfBase}${id}.pdf`) : []);
+      assert.ok(links.every(a => a.textContent.includes('פתיחת PDF') && !a.textContent.includes('רמזי')));
+      links.forEach(a => urls.add(a.getAttribute('href')!));
+      const groups = topicWorksheetEditionLinks(catalog, addition.grade, topicId, `/worksheets?grade=${addition.grade}&topic=${topicId}`);
+      assert.deepEqual([...controls.querySelectorAll('a[data-edition-id="legacy"]')].map(a => a.getAttribute('href')), groups[0].levels.map(l => l.href));
+      const order = [...controls.querySelectorAll('a[data-edition-id]')].map(a => a.getAttribute('data-edition-id'));
+      assert.deepEqual([...new Set(order)], topicId === addition.topicId
+        ? ['legacy', ...addition.baselineEditionIds, addition.editionId] : groups.map(g => g.editionId));
+    }
+    assert.equal(hero.querySelectorAll('a[data-edition-id="legacy"]').length, topics.length * 3);
+    const anchors = [...document.querySelectorAll('[id]')].map(e => e.id);
+    assert.equal(new Set(anchors).size, anchors.length, `${addition.slug}: unique anchors`);
+  }
+  assert.equal(urls.size, 48);
 });
