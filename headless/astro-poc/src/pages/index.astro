@@ -6,9 +6,10 @@ import GamePromoCard from '../components/GamePromoCard.astro';
 import KislevGreeting from '../components/KislevGreeting.astro';
 import { HERO_DEFAULT, heroChip, heroPanel } from '../lib/heroRotation';
 import { homePageJsonLd, loadHomePage } from '../lib/homePage';
-import { organizationJsonLd } from '../lib/structuredData';
+import { siteIdentityJsonLd } from '../lib/structuredData';
 const home = loadHomePage();
-const homeJsonLd = [...homePageJsonLd(), organizationJsonLd()];
+// One EducationalOrganization and one WebSite, linked by @id (SEO-4).
+const homeJsonLd = [siteIdentityJsonLd(homePageJsonLd())];
 const images = ['paper-boat','snail','curious-cat','kite','geometry-fish','cube-plant'];
 const letters = ['א׳','ב׳','ג׳','ד׳','ה׳','ו׳','ז׳','ח׳','ט׳'];
 const elemGrades = home.grades.slice(0,6).map((grade,i)=>({ ...grade,l:letters[i],img:'/design-exact/assets/doodles/'+images[i]+'.webp',delay:i*70,isSnail:i===1,isCat:i===2,isFish:i===4,isBoat:i===0,isCube:i===5 }));

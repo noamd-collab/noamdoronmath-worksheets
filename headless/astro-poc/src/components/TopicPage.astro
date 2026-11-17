@@ -19,7 +19,6 @@ import AdjacentVerticalAnglesLoop from './AdjacentVerticalAnglesLoop.astro';
 import {
   loadTopicPage,
   synthesizeBodyFlow,
-  updatedLineIsoDate,
   type TopicBodyFlowItem,
   type TopicPageFaqGroup,
 } from '../lib/topicPages';
@@ -29,11 +28,7 @@ import { gradeHubLabel, isGradeHubGrade } from '../lib/gradeHubs';
 import { resolveSiteHrefString } from '../lib/resolveSiteHref';
 import TopicInline from './TopicInline.astro';
 import { nextGradeRelatedTopics } from '../lib/topicFamilies';
-import {
-  educationalLevelForGrade,
-  jsonLdTypes,
-  learningResourceJsonLd,
-} from '../lib/structuredData';
+import { topicPageJsonLdBlocks } from '../lib/topicStructuredData';
 
 interface Props {
   slug: string;
@@ -119,17 +114,6 @@ const topicCrumbs = [
   { name: page.h1, path: page.path },
 ];
 const nextGradeTopics = nextGradeRelatedTopics(page.slug, page.grade);
-const topicJsonLdExtras = jsonLdTypes(page.jsonLd).includes('LearningResource')
-  ? []
-  : [
-      learningResourceJsonLd({
-        name: page.h1,
-        path: page.path,
-        description: page.description,
-        educationalLevel: educationalLevelForGrade(page.grade),
-        dateModified: updatedLineIsoDate(page.updatedLine),
-      }),
-    ];
 
 /* FAMILIES-B1: a family ConceptLoop (F01–F06, F21, F26, F38) stays in the
    card beside the intro. Other families get a CSS LandingLoop. F07–F14 film
@@ -157,6 +141,8 @@ const heroEnd = bodyStart === -1 ? bodyUnits.length : bodyStart;
 const heroUnits = hasDemo ? bodyUnits.slice(0, heroEnd) : [];
 const flowUnits = hasDemo ? bodyUnits.slice(heroEnd) : bodyUnits;
 const catalog = loadCatalog();
+// Stored graph plus curriculum alignment, PDF parts and publisher (SEO-4).
+const topicJsonLdBlocks = topicPageJsonLdBlocks(page, catalog, bodyFlow);
 const topicId = page.catalogCta?.catalogTopicId ?? null;
 function editionsForTopicId(catTopicId: number | null | undefined, backHref?: string) {
   return topicWorksheetEditionLinks(catalog, page.grade, catTopicId,
@@ -216,8 +202,7 @@ function faqHeadingId(groupIndex: number) {
   activeNav="worksheets"
   skipHref="#topic-page-main"
 >
-  <script type="application/ld+json" set:html={JSON.stringify(page.jsonLd)} />
-  {topicJsonLdExtras.map((node) => (
+  {topicJsonLdBlocks.map((node) => (
     <script type="application/ld+json" set:html={JSON.stringify(node)} />
   ))}
 
