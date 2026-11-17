@@ -17,7 +17,8 @@
     "next21-pdf-intake.test.ts",
     "batch01-pdf-intake.test.ts",
     "batch02a-pdf-intake.test.ts",
-    "batch03-pdf-intake.test.ts"
+    "batch03-pdf-intake.test.ts",
+    "probability-nine-pdf-intake.test.ts"
   ],
   "exclude": []
 }
