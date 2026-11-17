@@ -381,6 +381,12 @@ describe('seo audit', () => {
         '/triangle-calculations-grade-9',
       ],
     );
+    // The reduced-track note must not say every regular ט׳ page is in the reduced track.
+    const reducedNote = llmsFullTracks().find((track) => track.reduced)?.note ?? '';
+    assert.ok(reducedNote.includes('מסלול נפרד לקראת 3 יח״ל'), 'reduced track described in the site wording');
+    assert.ok(reducedNote.includes('חלק מדפי כיתה ט׳ רגילה'), 'only some regular pages are shared');
+    assert.equal(/משמשים גם|כל דפי/u.test(reducedNote), false, 'no claim that all regular pages are shared');
+    assert.ok(lines.includes(`> ${reducedNote}`), 'reduced-track note is printed under its heading');
     assert.deepEqual(
       llmsFullTracks().map((track) => track.groups.reduce((n, group) => n + group.pages.length, 0)),
       tracks.map((track) => track.groups.reduce((n, group) => n + group.paths.length, 0)),

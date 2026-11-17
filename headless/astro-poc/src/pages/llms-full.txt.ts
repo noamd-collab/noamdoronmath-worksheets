@@ -11,8 +11,11 @@ import { renderLlmsFullTxt } from '../lib/llmsFullTxt';
 
 export const prerender = false;
 
+/** The text only changes with a deploy, so build it once per worker instance. */
+let body: string | undefined;
+
 export const GET: APIRoute = () =>
-  new Response(renderLlmsFullTxt(), {
+  new Response((body ??= renderLlmsFullTxt()), {
     headers: {
       'content-type': 'text/plain; charset=utf-8',
       'cache-control': 'public, max-age=3600',

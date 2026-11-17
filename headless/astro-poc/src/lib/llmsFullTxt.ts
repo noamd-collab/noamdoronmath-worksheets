@@ -14,7 +14,7 @@ import { link, llmsBlogLines, llmsHeaderLines, oneLine } from './llmsTxt';
 import { REDIRECT_RULES } from './redirects';
 import { loadAllTopicPages, type TopicPageContent } from './topicPages';
 
-export const LLMS_FULL_TOPICS_HEADING = '## נושאים לפי כיתה, מסלול וסדר הלימוד';
+export const LLMS_FULL_TOPICS_HEADING = '## נושאים לפי כיתה, מסלול וסדר הקטלוג';
 /** Group heading for a landing whose worksheet topic is not in the catalog order. */
 export const LLMS_FULL_UNPLACED_GROUP = 'נושאים נוספים';
 
@@ -28,7 +28,7 @@ export interface LlmsFullTrack {
   grade: number;
   reduced: boolean;
   heading: string;
-  /** Set on a reduced track: its grade's regular pages are shared by both tracks. */
+  /** Set on a reduced track: what the track is, and that only some regular pages are also in it. */
   note?: string;
   groups: LlmsFullGroup[];
 }
@@ -135,7 +135,8 @@ export function llmsFullTracks(catalog: CatalogV1 = loadCatalog()): LlmsFullTrac
         heading: grade ? trackHeading(grade, reduced) : `כיתה ${gradeNumber}`,
         ...(reduced && grade
           ? {
-              note: `כאן מופיעים רק נושאי הקטלוג שסומנו למסלול המצומצם. דפי ${trackHeading(grade, false)} שלמעלה משמשים גם את המסלול המצומצם.`,
+              // The track description is the site's own wording (WorksheetsClient.tsx tracknote).
+              note: `כאן מופיעים רק נושאי הקטלוג שסומנו למסלול המצומצם (מסלול נפרד לקראת 3 יח״ל, לפי פריסת תשפ״ז). חלק מדפי ${trackHeading(grade, false)} שלמעלה נלמדים גם במסלול המצומצם.`,
             }
           : {}),
         groups,

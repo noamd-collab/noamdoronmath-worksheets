@@ -61,7 +61,7 @@ export function llmsBlogLines(): string[] {
 
 export function renderLlmsTxt(): string {
   const lines: string[] = llmsHeaderLines([
-    `- ${link('מפת כל דפי הנושא לפי כיתה, מסלול וסדר הלימוד', LLMS_FULL_PATH)}`,
+    `- ${link('מפת כל דפי הנושא לפי כיתה, מסלול וסדר הקטלוג', LLMS_FULL_PATH)}`,
   ]);
 
   lines.push('', '## נושאים');
