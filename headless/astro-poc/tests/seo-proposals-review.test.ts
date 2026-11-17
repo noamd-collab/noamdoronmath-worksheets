@@ -3,6 +3,7 @@ import { reviewedNext21 } from './fixtures/next21-pdf';
 import { reviewedBatch01 } from './fixtures/batch01-pdf';
 import { reviewedBatch02a } from './fixtures/batch02a-pdf';
 import { reviewedBatch03 } from './fixtures/batch03-pdf';
+import { reviewedBatch04 } from './fixtures/batch04-pdf';
 import { reviewedSaoWpc } from './fixtures/sao-wpc-pdf';
 import { reviewedExtSmlAfr } from './fixtures/ext-sml-afr-pdf';
 /**
@@ -215,6 +216,19 @@ describe('seo proposals – generator and coverage', () => {
         assert.match(row.source, /\|description:current$/);
         assert.equal(row.description, copy.before);
       }
+      row.description = String(copy.after);
+    }
+    // Batch 04: kite-grade-9 (authored 12.10.2026) is outside the frozen historical scope; the other
+    // three rows use current copy, with their complete old value asserted.
+    for (const delta of reviewedBatch04.landingDeltas) {
+      const copy = delta.fields.find(d => d.path.length === 1 && d.path[0] === 'description')!;
+      const row = expected.find(item => item.path === '/' + delta.slug);
+      if (delta.slug === 'kite-grade-9') { assert.equal(row, undefined, delta.slug); continue; }
+      assert.ok(row, delta.slug);
+      assert.equal(row.currentDescription, copy.before, `${delta.slug}: current description before batch 04`);
+      row.currentDescription = String(copy.after);
+      assert.match(row.source, /\|description:current$/);
+      assert.equal(row.description, copy.before);
       row.description = String(copy.after);
     }
     assert.deepEqual(proposals, expected);

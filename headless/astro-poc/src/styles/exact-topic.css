@@ -95,6 +95,7 @@
 .exact-topic[data-topic-slug="area-rectangle-perimeter-grade-7"] .exact-topic-copy > [data-topic-levels] + .topic-page__cta-row,
 .exact-topic[data-topic-slug="area-parallelogram-trapezoid-composite-grade-7"] .exact-topic-copy > [data-topic-levels] + .topic-page__cta-row,
 .exact-topic[data-topic-slug="patterns-and-graphs-grade-7"] .exact-topic-copy > [data-topic-levels] + .topic-page__cta-row,
+.exact-topic[data-topic-slug="solids-box-cube-prism-grade-7"] .exact-topic-copy > [data-topic-levels] + .topic-page__cta-row,
 .exact-topic[data-topic-slug="equations-both-sides-word-problems-grade-7"] .exact-topic-copy > [data-topic-levels] + .topic-page__cta-row {
   margin-block-start: 24px;
 }

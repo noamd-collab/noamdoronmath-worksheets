@@ -1,0 +1,767 @@
+{
+  "schema": "noam-student-pdf-publication-evidence/v1",
+  "status": "REVIEWED_MEDIA_SITE_CANDIDATE_NOT_PUBLISHED",
+  "preparedDate": "2026-11-17",
+  "publicationMode": "pdf-only",
+  "sourceProvenanceOnly": true,
+  "sitePublicationClaimed": false,
+  "scope": {
+    "packages": 4,
+    "pdfs": 12,
+    "pages": 114,
+    "subitems": 342,
+    "landingRoutes": 4
+  },
+  "baselineCommit": "5464497f03615239e56ddfc12dcf9fe122e0a686",
+  "mediaReadbackSha256": "aadd6cbb66a81415f6c3216b821ae4a49ea51ddceec964dda81a504de31886e6",
+  "pdfManifestSha256": "ea01754c79c69eb939d0277094e94f5d9910b545d0f5e979144a494162f94c14",
+  "review": {
+    "attribution": "Astra (Codex, gpt-6-astra) authored all four student PDF sets. Each set is bound by exact SHA-256 to a passing independent review by Claude (Claude Opus 5.5 for G9-KTE-01 and G8-SIM-01, Claude Fable 5.2 for G9-R30-01 and G7-PRS-01), which is not the author and not of the author's agent family. Earlier reviews by tasks of the Codex rollout are not counted as independent. This integration rechecks the byte pins against the frozen PDFs and reads the manager's media read-back; it made no new download and does not claim a new full math or visual review.",
+    "wordVisual": "NOT_RUN",
+    "nativeOrHintsAcceptance": false,
+    "allGatesPass": false,
+    "gateWaivers": {
+      "authority": "Noam, 17.11.2026: Claude decides per finding. A finding that the independent reviewer documented as a checker error is waived with documentation; a real finding is fixed.",
+      "decidedBy": "Claude (production manager)",
+      "decidedAt": "2026-11-17",
+      "addendum": {
+        "path": "submissions/Claude/MANAGER-20261116/batch-04/waivers/ADDENDUM-20261117.json",
+        "sha256": "e239cce36e327825b3aadd538043a366b9458d748b22274cce71873fdb0b6dc8"
+      },
+      "summary": "None of the four producer v72 reports is PASS. Every non-PASS gate and step is listed per package under gateWaivers with the decision and its basis: checker false positives documented by the independent reviewer (G9-KTE-01 D11, G9-R30-01 D4 and D8), G94 page-density rows the reviewer accepted (G9-KTE-01, G9-R30-01, G8-SIM-01), one export-metadata defect fixed in a rebuild with byte-identical PDFs (G9-KTE-01 D12), one gate that contradicts the official layout (G7-PRS-01 G87) and one skill-registry text error (G8-SIM-01 G92). The CLI step \"visual evidence\" is SKIP in all four.",
+      "skillFollowUps": [
+        "st.g8.similarity.criteria registry text (G92)",
+        "G87 sequence: solids before pythagoras in curriculum_tools.json for grade 7",
+        "D11 r3 S3 needs vertex letters in the item text",
+        "D12 false positives on printed coordinates and given angles"
+      ]
+    },
+    "retainedLimits": [
+      "PDF publication only. Word files, private keys, didactic notes, hints and native exports stay outside the site.",
+      "The waivers cover these exact PDF bytes only and change no engine, checker, registry or package file.",
+      "G9-KTE-01 pins the export-fix rebuild (sheet.json and noam-ai.json with the q8 metadata fix); its three PDFs are byte-identical to the released ones. The noam-ai export stays withheld.",
+      "G8-SIM-01 states the AA similarity theorem (ז.ז) only, as grade 8 teaches; the package's own landing.json is not used. Topic 8/43 keeps its four legacy levels a/b/c/c2.",
+      "Both grade-9 sets are regular-track (ט_רגילה) by sheet_meta.py and sheet.json. G7-PRS-01 joins topic 7/48 on a landing shared with topics 7/47 and 7/20.",
+      "Producer prefixes are provenance only; no new native assets, viewer routing, teacher selection, learning identities or AI activation."
+    ]
+  },
+  "packages": [
+    {
+      "sheetId": "G9-KTE-01",
+      "producerPackage": "G9-T96",
+      "title": "דלתון: זוויות, האלכסון הראשי ושטח",
+      "author": "Astra (Codex, gpt-6-astra)",
+      "reviewer": "Claude Opus 5.5 (independent; not the author)",
+      "reviewReceiptSha256": "bab859f3f62aa14364444b9a727a99898ad7dfe7c1427e6c5a643cdb35080a7e",
+      "reviewReceipts": [
+        {
+          "role": "independent PDF review by Claude, not the author and not of the author's agent family (PASS_STUDENT_PDF_ESSENTIALS)",
+          "path": "reports/CLAUDE-INDEPENDENT-G9-KTE-01-20261116/review.json",
+          "sha256": "bab859f3f62aa14364444b9a727a99898ad7dfe7c1427e6c5a643cdb35080a7e"
+        }
+      ],
+      "reviewVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
+      "reviewItemsChecked": 90,
+      "track": "ט_רגילה",
+      "grade": 9,
+      "topicId": 46,
+      "landing": "/kite-grade-9",
+      "editionId": "ms-20261117-kte-01-r1",
+      "nativePrefixProvenanceOnly": "G9-T96",
+      "label": "דלתון — זוויות, האלכסון הראשי ושטח · PDF",
+      "isDefault": false,
+      "sourceBuild": "export-fix-20261115/authoring/out",
+      "gateWaivers": {
+        "waiver": {
+          "path": "submissions/Claude/MANAGER-20261116/batch-04/waivers/G9-KTE-01.json",
+          "sha256": "f14b26269d0fc4a7899c10da3a94539916e49f42bc15da4e195dc872c79bc4f6"
+        },
+        "addendum": {
+          "path": "submissions/Claude/MANAGER-20261116/batch-04/waivers/ADDENDUM-20261117.json",
+          "sha256": "e239cce36e327825b3aadd538043a366b9458d748b22274cce71873fdb0b6dc8"
+        },
+        "decidedBy": "Claude (production manager)",
+        "authority": "Noam, 17.11.2026: Claude decides per finding. A finding that the independent reviewer documented as a checker error is waived with documentation; a real finding is fixed.",
+        "producerReports": [
+          {
+            "role": "pinned build",
+            "path": "batches/MS-PROD-ASTRA-G9-KTE01-20261115/export-fix-20261115/authoring/out/v72-report.json",
+            "sha256": "02a861757c66738c02007eed5922bb456cdc905a17f336550d1080671de47896",
+            "result": "REVIEW",
+            "stage": "built",
+            "gatesPass": 31,
+            "gates": 34,
+            "nonPassGates": [
+              "G94-page-density REVIEW"
+            ],
+            "nonPassSteps": [
+              "check_didactic.py REVIEW",
+              "gate_page_density G94 REVIEW",
+              "visual evidence SKIP"
+            ]
+          },
+          {
+            "role": "released build (students/ PDFs); its noam-ai.json carries the q8 metadata defect",
+            "path": "batches/MS-PROD-ASTRA-G9-KTE01-20261115/authoring/out/v72-report.json",
+            "sha256": "a99d5faf095c39deb4f750ee2a77d1d1f42d88ae9a70daf81982968d22004d6f",
+            "result": "FAIL",
+            "stage": "built",
+            "gatesPass": 31,
+            "gates": 34,
+            "nonPassGates": [
+              "G94-page-density REVIEW"
+            ],
+            "nonPassSteps": [
+              "check_didactic.py FAIL",
+              "gate_page_density G94 REVIEW",
+              "visual evidence SKIP"
+            ]
+          }
+        ],
+        "decisions": [
+          {
+            "gate": "check_didactic D11 q3c",
+            "levels": [
+              "a",
+              "b",
+              "c"
+            ],
+            "status": "REVIEW",
+            "decision": "waived as a checker false positive",
+            "basis": "The item prints \"הוכיחו כי המרובע הוא דלתון\"; the checker asks for the vertex letters inside the item text, and they are in the question stem. The independent review confirms it."
+          },
+          {
+            "gate": "check_didactic D12 q8b",
+            "levels": [
+              "a",
+              "b",
+              "c"
+            ],
+            "status": "FAIL in the released build, PASS in the export-fix rebuild",
+            "decision": "fixed in the export metadata; nothing to waive in the PDF",
+            "basis": "A real defect in the noam-ai export metadata of q8, not in the PDF (addendum). The export-fix rebuild declares the printed givens, passes D12 and produces byte-identical PDFs. This edition is PDF only and pins the fixed build."
+          },
+          {
+            "gate": "G94-page-density",
+            "levels": [
+              "a",
+              "b",
+              "c"
+            ],
+            "status": "REVIEW",
+            "decision": "accepted",
+            "basis": "Pages 2 and 7 are sparse and keep their writing room; the independent review accepts them as non-essential."
+          }
+        ]
+      },
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "e6d9fd16fec044bd98993bd67673cd08",
+          "pdfSha256": "afd952fc2baaebb2ec2ec8b06b477be190aa2abe6c80e71360a59f477e71c1b9",
+          "sourceSha256": "2b82ae96f6938f17ecafba8d8caa3704a23634267a8a9071db16e83d26655eec",
+          "nativeExportSha256": "a4140b30dadeb3c391392c0fcd63196b1536a7c6cae52c2db9955a2c9faa56a6",
+          "worksheetId": "ms-g9-kte-01-a-r1",
+          "revision": 1,
+          "pages": 9,
+          "subitems": 30,
+          "bytes": 108412,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_e6d9fd16fec044bd98993bd67673cd08.pdf",
+              "status": 200,
+              "sha256": "afd952fc2baaebb2ec2ec8b06b477be190aa2abe6c80e71360a59f477e71c1b9",
+              "bytes": 108412,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_e6d9fd16fec044bd98993bd67673cd08.pdf",
+              "status": 200,
+              "sha256": "afd952fc2baaebb2ec2ec8b06b477be190aa2abe6c80e71360a59f477e71c1b9",
+              "bytes": 108412,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "9fe7e16d054b47b3996916115fc1fedd",
+          "pdfSha256": "088d3eefdbd3db17d070ff7da6bec94d5470fbf34680ce242d336554563cff74",
+          "sourceSha256": "6ace1db0f55b2e679a922cd7841b913958cad45bb30f5d73919929b00e2ac656",
+          "nativeExportSha256": "4fa0eac5f535f4ce6bc73021b71634f206c8a5548162d490fd9d2aa0799310ae",
+          "worksheetId": "ms-g9-kte-01-b-r1",
+          "revision": 1,
+          "pages": 9,
+          "subitems": 30,
+          "bytes": 111762,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_9fe7e16d054b47b3996916115fc1fedd.pdf",
+              "status": 200,
+              "sha256": "088d3eefdbd3db17d070ff7da6bec94d5470fbf34680ce242d336554563cff74",
+              "bytes": 111762,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_9fe7e16d054b47b3996916115fc1fedd.pdf",
+              "status": 200,
+              "sha256": "088d3eefdbd3db17d070ff7da6bec94d5470fbf34680ce242d336554563cff74",
+              "bytes": 111762,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "ab74337f273443acac12e0b1597d6d30",
+          "pdfSha256": "52af5b7744cb6393dd5dccf50e6a888c7e000e61a8377effe50fc36b7253930d",
+          "sourceSha256": "e3461c8c5536c1c4dd96ea84e79e62d049b9421ea0fd690e407815c94ff2ec4f",
+          "nativeExportSha256": "c2bc93060d513054ec480149c0b854c5fcd544b97aa6795d5d69af5523027b6c",
+          "worksheetId": "ms-g9-kte-01-c-r1",
+          "revision": 1,
+          "pages": 9,
+          "subitems": 30,
+          "bytes": 108217,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_ab74337f273443acac12e0b1597d6d30.pdf",
+              "status": 200,
+              "sha256": "52af5b7744cb6393dd5dccf50e6a888c7e000e61a8377effe50fc36b7253930d",
+              "bytes": 108217,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_ab74337f273443acac12e0b1597d6d30.pdf",
+              "status": 200,
+              "sha256": "52af5b7744cb6393dd5dccf50e6a888c7e000e61a8377effe50fc36b7253930d",
+              "bytes": 108217,
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sheetId": "G9-R30-01",
+      "producerPackage": "G9-T75",
+      "title": "משולש ישר־זווית שזוויותיו 30°, 60°, 90° והמשפט ההפוך",
+      "author": "Astra (Codex, gpt-6-astra)",
+      "reviewer": "Claude Fable 5.2 independent reviewer (not the author; package authored by Astra)",
+      "reviewReceiptSha256": "eea132d428344abe6463e3a29e635c0b3a08ad002b9b8b2b1c5cdfd59855208a",
+      "reviewReceipts": [
+        {
+          "role": "independent PDF review by Claude, not the author and not of the author's agent family (PASS_STUDENT_PDF_ESSENTIALS)",
+          "path": "reports/CLAUDE-INDEPENDENT-G9-R30-01-20261117/review.json",
+          "sha256": "eea132d428344abe6463e3a29e635c0b3a08ad002b9b8b2b1c5cdfd59855208a"
+        }
+      ],
+      "reviewVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
+      "reviewItemsChecked": 72,
+      "track": "ט_רגילה",
+      "grade": 9,
+      "topicId": 37,
+      "landing": "/triangle-30-60-90-grade-9",
+      "editionId": "ms-20261117-r30-01-r1",
+      "nativePrefixProvenanceOnly": "G9-T75",
+      "label": "משולש ישר־זווית 30°, 60°, 90° והמשפט ההפוך · PDF",
+      "isDefault": false,
+      "sourceBuild": "authoring/out",
+      "gateWaivers": {
+        "waiver": {
+          "path": "submissions/Claude/MANAGER-20261116/batch-04/waivers/G9-R30-01.json",
+          "sha256": "70f97b2b2c120ae9fec0162001a72256e166518b34651ba76ab938161feaac90"
+        },
+        "addendum": {
+          "path": "submissions/Claude/MANAGER-20261116/batch-04/waivers/ADDENDUM-20261117.json",
+          "sha256": "e239cce36e327825b3aadd538043a366b9458d748b22274cce71873fdb0b6dc8"
+        },
+        "decidedBy": "Claude (production manager)",
+        "authority": "Noam, 17.11.2026: Claude decides per finding. A finding that the independent reviewer documented as a checker error is waived with documentation; a real finding is fixed.",
+        "producerReports": [
+          {
+            "role": "pinned build",
+            "path": "batches/MS-PROD-ASTRA-G9-R3001-20261115/authoring/out/v72-report.json",
+            "sha256": "48d9cd6d75081e7d5b67c32666c2f4fd91c8e787a66e45bda184ca71e4096905",
+            "result": "REVIEW",
+            "stage": "built",
+            "gatesPass": 31,
+            "gates": 34,
+            "nonPassGates": [
+              "G94-page-density REVIEW"
+            ],
+            "nonPassSteps": [
+              "check_didactic.py REVIEW",
+              "gate_page_density G94 REVIEW",
+              "visual evidence SKIP"
+            ]
+          }
+        ],
+        "decisions": [
+          {
+            "gate": "check_didactic D4 q4",
+            "levels": [
+              "a",
+              "b",
+              "c"
+            ],
+            "status": "REVIEW",
+            "decision": "waived as a checker false positive",
+            "basis": "The text says the triangle is equilateral (and gives the side in level a); the matcher does not read that as AB = BC = AC."
+          },
+          {
+            "gate": "check_didactic D4 q7",
+            "levels": [
+              "a",
+              "b",
+              "c"
+            ],
+            "status": "REVIEW",
+            "decision": "waived as a checker false positive",
+            "basis": "The chained given \"AB = BC = 8 ס״מ\" (10 and 14 in levels b and c) is printed; the matcher misses the chain."
+          },
+          {
+            "gate": "check_didactic D8 q4",
+            "levels": [
+              "c"
+            ],
+            "status": "REVIEW",
+            "decision": "waived as a checker false positive",
+            "basis": "The page prints AD = 9√3; the matcher read it as 93. No 93 is printed."
+          },
+          {
+            "gate": "G94-page-density",
+            "levels": [
+              "a",
+              "b",
+              "c"
+            ],
+            "status": "REVIEW",
+            "decision": "accepted",
+            "basis": "Page 6 holds question 7 alone with its answer space; the independent review accepts it."
+          }
+        ]
+      },
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "b3032891143c474684bf9dceb1c2aad2",
+          "pdfSha256": "427a076f8b26895ce469c172895e641346d2926e551b261ec3b23b3575d89655",
+          "sourceSha256": "3fd0cdc72aab0d61b67474723f9bb6a60d1fa77fde42460c085a9d64caa459ba",
+          "nativeExportSha256": "b89229c8e8f0d63b6d6f768cddb12ffc0a836d9496deee460eee791a4f83c67c",
+          "worksheetId": "ms-g9-r30-01-a-r1",
+          "revision": 1,
+          "pages": 8,
+          "subitems": 24,
+          "bytes": 80623,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_b3032891143c474684bf9dceb1c2aad2.pdf",
+              "status": 200,
+              "sha256": "427a076f8b26895ce469c172895e641346d2926e551b261ec3b23b3575d89655",
+              "bytes": 80623,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_b3032891143c474684bf9dceb1c2aad2.pdf",
+              "status": 200,
+              "sha256": "427a076f8b26895ce469c172895e641346d2926e551b261ec3b23b3575d89655",
+              "bytes": 80623,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "8480cdc35cd442c5b5a1565fce5c708d",
+          "pdfSha256": "3499319782baffccffdef12d7804bba5316ac4a1500e2308b1b578b017e5ea0d",
+          "sourceSha256": "a3ba800345be52a0b20b1d5488f930f649ccfaf67b6ac61ec55bc93d8f16412e",
+          "nativeExportSha256": "506994639c65a2660180ef8ed255288ae9eb529397357bbd974b28c05f8110cb",
+          "worksheetId": "ms-g9-r30-01-b-r1",
+          "revision": 1,
+          "pages": 8,
+          "subitems": 24,
+          "bytes": 82069,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_8480cdc35cd442c5b5a1565fce5c708d.pdf",
+              "status": 200,
+              "sha256": "3499319782baffccffdef12d7804bba5316ac4a1500e2308b1b578b017e5ea0d",
+              "bytes": 82069,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_8480cdc35cd442c5b5a1565fce5c708d.pdf",
+              "status": 200,
+              "sha256": "3499319782baffccffdef12d7804bba5316ac4a1500e2308b1b578b017e5ea0d",
+              "bytes": 82069,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "2a8c4de26b774d5e98f0874fbd305f5e",
+          "pdfSha256": "293ca1b4db3e20fe4452c48e12d7e542bb366d5d00dbfbfe029b7b6e52c3dbfe",
+          "sourceSha256": "d525d727d4547afdd774e38c28fe9e5721394b53d1e674e46359c9c35a4b8e00",
+          "nativeExportSha256": "d282f0a1cbbcfa0f89d8439c3f29daf24f2f8bbd5d5bcb9ed2dcc17d87d00ed2",
+          "worksheetId": "ms-g9-r30-01-c-r1",
+          "revision": 1,
+          "pages": 8,
+          "subitems": 24,
+          "bytes": 88365,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_2a8c4de26b774d5e98f0874fbd305f5e.pdf",
+              "status": 200,
+              "sha256": "293ca1b4db3e20fe4452c48e12d7e542bb366d5d00dbfbfe029b7b6e52c3dbfe",
+              "bytes": 88365,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_2a8c4de26b774d5e98f0874fbd305f5e.pdf",
+              "status": 200,
+              "sha256": "293ca1b4db3e20fe4452c48e12d7e542bb366d5d00dbfbfe029b7b6e52c3dbfe",
+              "bytes": 88365,
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sheetId": "G7-PRS-01",
+      "producerPackage": "G7-T73",
+      "title": "מנסרה משולשת ישרה: מבנה, פריסה, שטח פנים ונפח",
+      "author": "Astra (Codex, gpt-6-astra)",
+      "reviewer": "Claude Fable 5.2 independent reviewer (not the author; package authored by Astra)",
+      "reviewReceiptSha256": "6d0c92bdeba6bb0ad2223ab35ba762b5e47df5c8fa2619437e1bfaa29611eba7",
+      "reviewReceipts": [
+        {
+          "role": "independent PDF review by Claude, not the author and not of the author's agent family (PASS_STUDENT_PDF_ESSENTIALS)",
+          "path": "reports/CLAUDE-INDEPENDENT-G7-PRS-01-20261117/review.json",
+          "sha256": "6d0c92bdeba6bb0ad2223ab35ba762b5e47df5c8fa2619437e1bfaa29611eba7"
+        }
+      ],
+      "reviewVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
+      "reviewItemsChecked": 72,
+      "track": "ז",
+      "grade": 7,
+      "topicId": 48,
+      "landing": "/solids-box-cube-prism-grade-7",
+      "editionId": "ms-20261117-prs-01-r1",
+      "nativePrefixProvenanceOnly": "G7-T73",
+      "label": "מנסרה משולשת ישרה — מבנה, פריסה, שטח פנים ונפח · PDF",
+      "isDefault": false,
+      "sourceBuild": "authoring/out",
+      "gateWaivers": {
+        "waiver": {
+          "path": "submissions/Claude/MANAGER-20261116/batch-04/waivers/G7-PRS-01.json",
+          "sha256": "0a5ad66e1547cbfa924fc0218821690402308d4466c3d3cf69c25251d7b9048b"
+        },
+        "addendum": {
+          "path": "submissions/Claude/MANAGER-20261116/batch-04/waivers/ADDENDUM-20261117.json",
+          "sha256": "e239cce36e327825b3aadd538043a366b9458d748b22274cce71873fdb0b6dc8"
+        },
+        "decidedBy": "Claude (production manager)",
+        "authority": "Noam, 17.11.2026: Claude decides per finding. A finding that the independent reviewer documented as a checker error is waived with documentation; a real finding is fixed.",
+        "producerReports": [
+          {
+            "role": "pinned build",
+            "path": "batches/MS-PROD-ASTRA-G7-PRS01-20261115/authoring/out/v72-report.json",
+            "sha256": "2d00747f961eec787f55906f227797e8df32429795c652247fc9eaa0789e0926",
+            "result": "FAIL",
+            "stage": "built",
+            "gatesPass": 31,
+            "gates": 34,
+            "nonPassGates": [
+              "G87-subtopic-chronology FAIL"
+            ],
+            "nonPassSteps": [
+              "gate_sections G85–G92 FAIL",
+              "visual evidence SKIP"
+            ]
+          }
+        ],
+        "decisions": [
+          {
+            "gate": "G87-subtopic-chronology",
+            "levels": [
+              "a",
+              "b",
+              "c"
+            ],
+            "status": "FAIL",
+            "decision": "waived: the gate contradicts the official layout",
+            "basis": "Q5 and Q6 say \"השתמשו בפיתגורס אם צריך\". The official grade-7 layout (prisa_7.pdf p3) teaches משפט פיתגורס ושימושיו in March and the triangular prism in May, so Pythagoras is already known. A separate skeptic checked the quotes against the layout page and upheld the waiver (addendum)."
+          }
+        ]
+      },
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "591b47b0dee64085af5d995ea326f94a",
+          "pdfSha256": "d4c30a7fe8da8444bd4b4c6328277c3fa05053bc91bed134725c6697e8873efd",
+          "sourceSha256": "c475e9def4c0309a68f3ea9c94a544d8b3ddc417b6e7eb7ab7406fa81db52fc3",
+          "nativeExportSha256": "86f6fb7340622ebdd28d0ae237c05a9d7144976e5c433270cf070b6701ac4a3f",
+          "worksheetId": "ms-g7-prs-01-a-r1",
+          "revision": 1,
+          "pages": 9,
+          "subitems": 24,
+          "bytes": 64603,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_591b47b0dee64085af5d995ea326f94a.pdf",
+              "status": 200,
+              "sha256": "d4c30a7fe8da8444bd4b4c6328277c3fa05053bc91bed134725c6697e8873efd",
+              "bytes": 64603,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_591b47b0dee64085af5d995ea326f94a.pdf",
+              "status": 200,
+              "sha256": "d4c30a7fe8da8444bd4b4c6328277c3fa05053bc91bed134725c6697e8873efd",
+              "bytes": 64603,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "3e4d1d72f4f74b4ca12b2e602dd46453",
+          "pdfSha256": "dd7ccc1b2e5fc1ab313a8e59674c0617eeabf0c896416e0e46998bf60daafae7",
+          "sourceSha256": "91450f2e017a292cbbb060d3721b0abc94669f3d261ed9dcbbda8dc1f72424c7",
+          "nativeExportSha256": "b80dd2523e25bc929927e44e37aac444c10b5b0964c80ad24c038929a5283932",
+          "worksheetId": "ms-g7-prs-01-b-r1",
+          "revision": 1,
+          "pages": 9,
+          "subitems": 24,
+          "bytes": 72502,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_3e4d1d72f4f74b4ca12b2e602dd46453.pdf",
+              "status": 200,
+              "sha256": "dd7ccc1b2e5fc1ab313a8e59674c0617eeabf0c896416e0e46998bf60daafae7",
+              "bytes": 72502,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_3e4d1d72f4f74b4ca12b2e602dd46453.pdf",
+              "status": 200,
+              "sha256": "dd7ccc1b2e5fc1ab313a8e59674c0617eeabf0c896416e0e46998bf60daafae7",
+              "bytes": 72502,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "a194d9e6f4c24e588b8069af66fea49d",
+          "pdfSha256": "2d71c67e2ad26bfab74902e21be3da553dcddc0545461928e4b04b9acf7c14e7",
+          "sourceSha256": "91d85fd4010ac657662ac0e0c395244116174d41805796038198a34b5754f4d7",
+          "nativeExportSha256": "f1b84fb909ec0da7aa4e311cd3d5a50b467f80abcd73f15a1ad238dc9c66e6a6",
+          "worksheetId": "ms-g7-prs-01-c-r1",
+          "revision": 1,
+          "pages": 9,
+          "subitems": 24,
+          "bytes": 78248,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_a194d9e6f4c24e588b8069af66fea49d.pdf",
+              "status": 200,
+              "sha256": "2d71c67e2ad26bfab74902e21be3da553dcddc0545461928e4b04b9acf7c14e7",
+              "bytes": 78248,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_a194d9e6f4c24e588b8069af66fea49d.pdf",
+              "status": 200,
+              "sha256": "2d71c67e2ad26bfab74902e21be3da553dcddc0545461928e4b04b9acf7c14e7",
+              "bytes": 78248,
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sheetId": "G8-SIM-01",
+      "producerPackage": "G8-T99",
+      "title": "דמיון משולשים: התאמה, יחס ויישומים",
+      "author": "Astra (Codex, gpt-6-astra)",
+      "reviewer": "Claude Opus 5.5 independent reviewer (not the author; package authored by Astra)",
+      "reviewReceiptSha256": "d5e34037bec9dad716eda159cf8657d029d411839fcb8bfe55bebef96e57c8b5",
+      "reviewReceipts": [
+        {
+          "role": "independent PDF review by Claude, not the author and not of the author's agent family (PASS_STUDENT_PDF_ESSENTIALS)",
+          "path": "reports/CLAUDE-INDEPENDENT-G8-SIM-01-20261117/review.json",
+          "sha256": "d5e34037bec9dad716eda159cf8657d029d411839fcb8bfe55bebef96e57c8b5"
+        }
+      ],
+      "reviewVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
+      "reviewItemsChecked": 108,
+      "track": "ח",
+      "grade": 8,
+      "topicId": 43,
+      "landing": "/similar-triangles-grade-8",
+      "editionId": "ms-20261117-g8-sim-01-r1",
+      "nativePrefixProvenanceOnly": "G8-T99",
+      "label": "דמיון משולשים — התאמה, יחס הדמיון ויישומים · PDF",
+      "isDefault": false,
+      "sourceBuild": "authoring/out",
+      "gateWaivers": {
+        "waiver": {
+          "path": "submissions/Claude/MANAGER-20261116/batch-04/waivers/G8-SIM-01.json",
+          "sha256": "ccd985d0aff0b45bbe79f56228c673ea07c32b0cbe8be477aadbd47851f37187"
+        },
+        "addendum": {
+          "path": "submissions/Claude/MANAGER-20261116/batch-04/waivers/ADDENDUM-20261117.json",
+          "sha256": "e239cce36e327825b3aadd538043a366b9458d748b22274cce71873fdb0b6dc8"
+        },
+        "decidedBy": "Claude (production manager)",
+        "authority": "Noam, 17.11.2026: Claude decides per finding. A finding that the independent reviewer documented as a checker error is waived with documentation; a real finding is fixed.",
+        "producerReports": [
+          {
+            "role": "pinned build",
+            "path": "batches/MS-PROD-ASTRA-G8-SIM01-20261115/authoring/out/v72-report.json",
+            "sha256": "4f112ced7cb2822fc693e83d773c40c910f402e3bc663f0497a177cffdcb907b",
+            "result": "FAIL",
+            "stage": "built",
+            "gatesPass": 28,
+            "gates": 34,
+            "nonPassGates": [
+              "G92-section-structure FAIL",
+              "G94-page-density REVIEW"
+            ],
+            "nonPassSteps": [
+              "gate_page_density G94 REVIEW",
+              "gate_sections G85–G92 FAIL",
+              "visual evidence SKIP"
+            ]
+          }
+        ],
+        "decisions": [
+          {
+            "gate": "G92-section-structure",
+            "levels": [
+              "a",
+              "b",
+              "c"
+            ],
+            "status": "FAIL",
+            "decision": "waived: the error is in the skill registry text, not in the sheet",
+            "basis": "The printed reminder states the AA theorem (ז.ז) only; the registry text for st.g8.similarity.criteria adds SAS and SSS. A skeptic did not uphold this as a layout conflict: the grade-8 layout (prisa_8.pdf p3) only names the unit. The evidence that grade 8 teaches AA only is the official detailed curriculum geometry_8.pdf p75, and the registry's own cited pages do not state SAS or SSS similarity. The manager reclassified the finding as a registry error, waived G92 for this PDF-only publication under Noam's per-finding rule, and will correct the registry in the next skill revision. Reported to Noam as a judgment call (addendum)."
+          },
+          {
+            "gate": "G94-page-density",
+            "levels": [
+              "a",
+              "b",
+              "c"
+            ],
+            "status": "REVIEW",
+            "decision": "accepted",
+            "basis": "Page 3 holds question 3 with usable writing room and no clipping; the independent Claude review confirms it."
+          }
+        ]
+      },
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "690f5fcdce364f288c27a9326ef9a0cc",
+          "pdfSha256": "986de8f01ce92e5e35a5711f40ecd2c22cbd38187870e7f6f24dfd7d4d8990f5",
+          "sourceSha256": "b4ef9f48f48fc32f950132afd31cc4e7cfabdd64771b040aa85a7fd5a64e2687",
+          "nativeExportSha256": "9c9a89f8dd903b5037c3d45ff0925f5275d0b86e20d32ac2297a8b640461ecc8",
+          "worksheetId": "ms-g8-sim-01-a-r1",
+          "revision": 1,
+          "pages": 12,
+          "subitems": 36,
+          "bytes": 122853,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_690f5fcdce364f288c27a9326ef9a0cc.pdf",
+              "status": 200,
+              "sha256": "986de8f01ce92e5e35a5711f40ecd2c22cbd38187870e7f6f24dfd7d4d8990f5",
+              "bytes": 122853,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_690f5fcdce364f288c27a9326ef9a0cc.pdf",
+              "status": 200,
+              "sha256": "986de8f01ce92e5e35a5711f40ecd2c22cbd38187870e7f6f24dfd7d4d8990f5",
+              "bytes": 122853,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "6218e14b0d1c4a2db2f893ce92a50d74",
+          "pdfSha256": "e513c9580aee77b040b03043be7560c857e6e1d2ae9251dbfb50dda6c2dd3f5e",
+          "sourceSha256": "43587f7425395484f7664be2b0a1387820b6a25e83d911f10e6cb9643fc5ddf9",
+          "nativeExportSha256": "955868e1c5c2ca6d0d1d09e0b9a95139631b8b16f45aa6383ca805542d992755",
+          "worksheetId": "ms-g8-sim-01-b-r1",
+          "revision": 1,
+          "pages": 12,
+          "subitems": 36,
+          "bytes": 126188,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_6218e14b0d1c4a2db2f893ce92a50d74.pdf",
+              "status": 200,
+              "sha256": "e513c9580aee77b040b03043be7560c857e6e1d2ae9251dbfb50dda6c2dd3f5e",
+              "bytes": 126188,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_6218e14b0d1c4a2db2f893ce92a50d74.pdf",
+              "status": 200,
+              "sha256": "e513c9580aee77b040b03043be7560c857e6e1d2ae9251dbfb50dda6c2dd3f5e",
+              "bytes": 126188,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "3d030557d6ed444dafd26b25552a9eb2",
+          "pdfSha256": "6c24e2cac1c7c25738347c01c62b04a2ebcedb41744527888df492c53eb6d33b",
+          "sourceSha256": "f993f51f0fa0dac46f0132dc235a807234772fabd93c9a006dd072b4569c4778",
+          "nativeExportSha256": "66009fc82188d2efa186bb22957c072e1e9f28f74a4a1e20e0db8fccb527998b",
+          "worksheetId": "ms-g8-sim-01-c-r1",
+          "revision": 1,
+          "pages": 12,
+          "subitems": 36,
+          "bytes": 129347,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_3d030557d6ed444dafd26b25552a9eb2.pdf",
+              "status": 200,
+              "sha256": "6c24e2cac1c7c25738347c01c62b04a2ebcedb41744527888df492c53eb6d33b",
+              "bytes": 129347,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_3d030557d6ed444dafd26b25552a9eb2.pdf",
+              "status": 200,
+              "sha256": "6c24e2cac1c7c25738347c01c62b04a2ebcedb41744527888df492c53eb6d33b",
+              "bytes": 129347,
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
