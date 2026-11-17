@@ -3,6 +3,7 @@ import { reviewedNext21 } from './fixtures/next21-pdf';
 import { reviewedBatch01 } from './fixtures/batch01-pdf';
 import { reviewedBatch02a } from './fixtures/batch02a-pdf';
 import { reviewedBatch03 } from './fixtures/batch03-pdf';
+import { reviewedProbabilityNine } from './fixtures/probability-nine-pdf';
 import { reviewedSaoWpc } from './fixtures/sao-wpc-pdf';
 import { reviewedExtSmlAfr } from './fixtures/ext-sml-afr-pdf';
 /**
@@ -215,6 +216,18 @@ describe('seo proposals – generator and coverage', () => {
         assert.match(row.source, /\|description:current$/);
         assert.equal(row.description, copy.before);
       }
+      row.description = String(copy.after);
+    }
+    // Grade-9 probability (replaces draft #500): apply only the reviewed description delta.
+    assert.equal(reviewedProbabilityNine.landingDeltas.length, 1);
+    for (const delta of reviewedProbabilityNine.landingDeltas) {
+      const copy = delta.fields.find(d => d.path.length === 1 && d.path[0] === 'description')!;
+      const row = expected.find(item => item.path === '/' + delta.slug);
+      assert.ok(row, delta.slug);
+      assert.equal(row.currentDescription, copy.before, `${delta.slug}: historical current description`);
+      assert.equal(row.source, 'title:current|description:current');
+      assert.equal(row.description, copy.before);
+      row.currentDescription = String(copy.after);
       row.description = String(copy.after);
     }
     assert.deepEqual(proposals, expected);
