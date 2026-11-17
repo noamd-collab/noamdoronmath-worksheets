@@ -100,8 +100,22 @@ function beforeDrawingControlPause(content: string): string {
   return content.replace(pause, '');
 }
 
+// GitHub Pages copy of the viewer redirects to the canonical www page.
+function beforeGithubPagesViewerRedirect(content: string): string {
+  const redirect = '<link rel="canonical" href="https://www.noamdoronmath.co.il/worksheet-viewer-noam.html">\n' +
+    '<meta name="robots" content="noindex,follow">\n' +
+    '<script>\n' +
+    '(function () {\n' +
+    '  if (location.hostname !== "noamd-collab.github.io") return;\n' +
+    '  location.replace("https://www.noamdoronmath.co.il/worksheet-viewer-noam.html" + location.search + location.hash);\n' +
+    '})();\n' +
+    '</script>\n';
+  assert.equal(content.split(redirect).length, 2, 'one GitHub Pages viewer redirect');
+  return content.replace(redirect, '');
+}
+
 it('first567 drawing policy changes only the reviewed line in the root mirror', () => {
-  const current = beforeDrawingControlPause(readFileSync(join(root, '../../worksheet-viewer-noam.html'), 'utf8'));
+  const current = beforeDrawingControlPause(beforeGithubPagesViewerRedirect(readFileSync(join(root, '../../worksheet-viewer-noam.html'), 'utf8')));
   assert.equal(sha256(current), '232f80e06dea7d7f410c2a03ad0c09ffbd6bfb9721bd5542e2a98260d7d2d6a9', 'exact root drawing policy candidate');
   assert.equal(sha256(beforeDrawingPolicy(current)), '91433585be9d6d4ec2bf3887bbafecec5b310f235382f56ebfcbe23de645e05c');
   assert.throws(() => beforeDrawingPolicy(current.replace('G7-T86', 'G7-T99')));
