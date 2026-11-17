@@ -6,6 +6,7 @@ import { reviewedBatch03 } from './fixtures/batch03-pdf';
 import { reviewedProbabilityNine } from './fixtures/probability-nine-pdf';
 import { reviewedBatch04 } from './fixtures/batch04-pdf';
 import { reviewedBatch05 } from './fixtures/batch05-pdf';
+import { reviewedBatch06 } from './fixtures/batch06-pdf';
 import { reviewedSaoWpc } from './fixtures/sao-wpc-pdf';
 import { reviewedExtSmlAfr } from './fixtures/ext-sml-afr-pdf';
 import assert from 'node:assert/strict';
@@ -452,8 +453,8 @@ test('real batch-02a pages expose forty-eight PDFs only in their mapped group an
       const groups = topicWorksheetEditionLinks(catalog, addition.grade, topicId, `/worksheets?grade=${addition.grade}&topic=${topicId}`);
       assert.deepEqual([...controls.querySelectorAll('a[data-edition-id="legacy"]')].map(a => a.getAttribute('href')), groups[0].levels.map(l => l.href));
       const order = [...controls.querySelectorAll('a[data-edition-id]')].map(a => a.getAttribute('data-edition-id'));
-      const laterIds = reviewedBatch05.additions.filter(a => a.grade === addition.grade && a.topicId === topicId)
-        .map(a => a.editionId);
+      const laterIds = [...reviewedBatch05.additions, ...reviewedBatch06.additions]
+        .filter(a => a.grade === addition.grade && a.topicId === topicId).map(a => a.editionId);
       assert.deepEqual([...new Set(order)], topicId === addition.topicId
         ? ['legacy', ...addition.baselineEditionIds, addition.editionId, ...laterIds] : groups.map(g => g.editionId));
     }
@@ -484,8 +485,10 @@ test('real batch-03 pages expose twenty-four PDFs only in their mapped group, tw
     assert.equal(legacy.length, 3);
     // G9-QIN-01 and G9-SYQ-01 share topic 9/8: both follow the legacy links, in registry order.
     const sameTopic = reviewedBatch03.additions.filter(a => a.grade === addition.grade && a.topicId === addition.topicId).map(a => a.editionId);
+    const laterBatch06 = reviewedBatch06.additions
+      .filter(a => a.grade === addition.grade && a.topicId === addition.topicId).map(a => a.editionId);
     const order = [...controls.querySelectorAll('a[data-edition-id]')].map(a => a.getAttribute('data-edition-id'));
-    assert.deepEqual([...new Set(order)], ['legacy', ...addition.baselineEditionIds, ...sameTopic]);
+    assert.deepEqual([...new Set(order)], ['legacy', ...addition.baselineEditionIds, ...sameTopic, ...laterBatch06]);
     for (const earlier of addition.baselineEditionIds) assert.equal(controls.querySelectorAll(`a[data-edition-id="${earlier}"]`).length, 3);
     const anchors = [...document.querySelectorAll('[id]')].map(e => e.id);
     assert.equal(new Set(anchors).size, anchors.length, `${addition.slug}: unique anchors`);
@@ -515,7 +518,9 @@ test('the real grade-9 probability page exposes nine PDFs in three series after 
   assert.deepEqual(legacy, groups[0].levels.map(l => l.href));
   assert.equal(legacy.length, 3);
   const order = [...controls.querySelectorAll('a[data-edition-id]')].map(a => a.getAttribute('data-edition-id'));
-  assert.deepEqual([...new Set(order)], ['legacy', ...reviewedProbabilityNine.additions.map(a => a.editionId)]);
+  const laterBatch06 = reviewedBatch06.additions
+    .filter(a => a.grade === 9 && a.topicId === 10).map(a => a.editionId);
+  assert.deepEqual([...new Set(order)], ['legacy', ...reviewedProbabilityNine.additions.map(a => a.editionId), ...laterBatch06]);
   const anchors = [...document.querySelectorAll('[id]')].map(e => e.id);
   assert.equal(new Set(anchors).size, anchors.length, 'unique anchors');
   assert.equal(urls.size, 9);
@@ -594,4 +599,35 @@ test('real batch-05 pages expose all 33 direct PDFs in their mapped edition grou
   assert.ok(reduced.every(addition => addition.edition.label.includes('ט׳ מצומצמת')));
   const enrichment = reviewedBatch05.additions.find(addition => addition.sheetId === 'G9-POW-02')!;
   assert.ok(enrichment.edition.label.includes('העשרה'));
+});
+
+test('real batch-06 pages expose all 33 direct PDFs in their mapped edition groups', async () => {
+  const urls = new Set<string>();
+  const slugs = [...new Set(reviewedBatch06.additions.map(addition => addition.slug))];
+  for (const slug of slugs) {
+    const document = await renderTopic(slug), hero = document.querySelector('.exact-topic-copy')!;
+    const additions = reviewedBatch06.additions.filter(addition => addition.slug === slug);
+    for (const addition of additions) {
+      const links = [...hero.querySelectorAll(`a[data-edition-id="${addition.editionId}"]`)];
+      assert.deepEqual(links.map(link => link.getAttribute('href')),
+        addition.edition.levels.map(level => `https://static.wixstatic.com/ugd/d8e7ad_${level.pdfId}.pdf`));
+      assert.equal(links.length, 3, `${slug}/${addition.editionId}: all three levels`);
+      assert.ok(links.every(link => link.textContent.includes('פתיחת PDF')
+        && !link.textContent.includes('רמזי') && !link.getAttribute('href')!.includes('viewer')));
+      links.forEach(link => urls.add(link.getAttribute('href')!));
+    }
+    const delta = reviewedBatch06.landingDeltas.find(item => item.slug === slug)!;
+    const mainText = document.querySelector('main')!.textContent.replace(/[\u2066-\u2069]/g, '');
+    assert.ok(mainText.includes(delta.appendedSection.blocks[0].text), `${slug}: reviewed landing section`);
+    assert.ok(hero.querySelectorAll('a[data-edition-id="legacy"]').length >= 3, `${slug}: old downloads remain`);
+    const anchors = [...document.querySelectorAll('[id]')].map(element => element.id);
+    assert.equal(new Set(anchors).size, anchors.length, `${slug}: unique anchors`);
+  }
+  assert.equal(slugs.length, 9);
+  assert.equal(urls.size, 33);
+  const reduced = reviewedBatch06.additions.filter(addition =>
+    ['G9-GRD-01', 'G9-PBM-01', 'G9-QFM-01', 'G9-QVL-01', 'G9-SMM-01'].includes(addition.sheetId));
+  assert.equal(reduced.length, 5);
+  assert.ok(reduced.every(addition => addition.track === 'ט_מצומצמת'
+    && addition.edition.label.includes('ט׳ מצומצמת')));
 });

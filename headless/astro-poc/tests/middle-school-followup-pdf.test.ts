@@ -6,6 +6,7 @@ import { reviewedBatch03Ids } from './fixtures/batch03-pdf';
 import { probabilityNineIds, reviewedProbabilityNine } from './fixtures/probability-nine-pdf';
 import { reviewedBatch04Ids } from './fixtures/batch04-pdf';
 import { reviewedBatch05, reviewedBatch05Ids } from './fixtures/batch05-pdf';
+import { reviewedBatch06Ids } from './fixtures/batch06-pdf';
 import { reviewedSaoWpcIds } from './fixtures/sao-wpc-pdf';
 import { reviewedExtSmlAfrIds } from './fixtures/ext-sml-afr-pdf';
 import assert from 'node:assert/strict';
@@ -125,7 +126,7 @@ test('manifest sync omits unactivated PDFs while retaining legacy and verified e
   // later algebra and frequency PDFs, which must not gain viewer/hint activation.
   const algebraId = 'ms-20261115-alg-01-r1';
   const frequencyId = 'ms-20261115-frq-01-r1';
-  assert.equal(allPdfOnly.filter((e: any) => ![algebraId, frequencyId, 'ms-20261115-prb-01-r1', 'ms-20261115-rec-01-r1', 'ms-20261113-par-04-r1', ...reviewedEqnSgnFacIds, ...reviewedExtSmlAfrIds, ...reviewedSaoWpcIds, ...reviewedNext12Ids, ...reviewedNext21Ids, ...reviewedBatch01Ids, ...reviewedBatch02aIds, ...reviewedBatch03Ids, ...probabilityNineIds, ...reviewedBatch04Ids, ...reviewedBatch05Ids].includes(e.editionId)).flatMap((e: any) => e.levels).length, 18);
+  assert.equal(allPdfOnly.filter((e: any) => ![algebraId, frequencyId, 'ms-20261115-prb-01-r1', 'ms-20261115-rec-01-r1', 'ms-20261113-par-04-r1', ...reviewedEqnSgnFacIds, ...reviewedExtSmlAfrIds, ...reviewedSaoWpcIds, ...reviewedNext12Ids, ...reviewedNext21Ids, ...reviewedBatch01Ids, ...reviewedBatch02aIds, ...reviewedBatch03Ids, ...probabilityNineIds, ...reviewedBatch04Ids, ...reviewedBatch05Ids, ...reviewedBatch06Ids].includes(e.editionId)).flatMap((e: any) => e.levels).length, 18);
   // The three grade-9 probability series (G9-PRC-01, G9-PRT-01, G9-PRW-01) are exactly the reviewed rows: nine PDF-only levels.
   const probabilityNine = allPdfOnly.filter((e: any) => probabilityNineIds.includes(e.editionId));
   assert.deepEqual(probabilityNine, reviewedProbabilityNine.additions.map(a => a.edition));

@@ -9,6 +9,7 @@ import { buildTeacherCatalog } from '../scripts/build-teacher-catalog.mjs';
 import { buildTeacherLandingCatalog, getTeacherLandingScope } from '../src/lib/teacherLandingCatalog';
 import { collectViewerPdfIds } from '../scripts/sync-github-static.mjs';
 import { loadTopicPage, extractJsonLdFaq, synthesizeBodyFlow } from '../src/lib/topicPages';
+import { beforeBatch06Catalog, beforeBatch06Registry, reviewedBatch06 } from './fixtures/batch06-pdf';
 import { beforeBatch05Catalog, beforeBatch05Copy, beforeBatch05Registry,
   reviewedBatch05 as reviewed, reviewedBatch05Ids as ids } from './fixtures/batch05-pdf';
 import { createRequire } from 'node:module';
@@ -23,9 +24,15 @@ const read = (path: string) => JSON.parse(readFileSync(new URL(path, root), 'utf
 const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(value, null, 2) + '\n').digest('hex');
 const raw = read('headless/astro-poc/src/data/catalog.v1.json');
 const catalog = loadCatalog();
+const batch05Catalog: ReturnType<typeof loadCatalog> = structuredClone(catalog);
 const previous = beforeBatch05Catalog(raw) as ReturnType<typeof loadCatalog>;
 const previousSsr: any = structuredClone(catalog);
-for (const addition of reviewed.additions) {
+for (const addition of reviewedBatch06.additions) {
+  const topic = batch05Catalog.grades.find(g => g.grade === addition.grade)!
+    .topics.find(t => t.id === addition.topicId)!;
+  topic.editions = topic.editions!.filter(e => e.editionId !== addition.editionId);
+}
+for (const addition of [...reviewed.additions, ...reviewedBatch06.additions]) {
   const topic = previousSsr.grades.find((g: any) => g.grade === addition.grade)
     .topics.find((t: any) => t.id === addition.topicId);
   topic.editions = topic.editions?.filter((e: any) => !ids.includes(e.editionId));
@@ -35,6 +42,7 @@ for (const addition of reviewed.additions) {
   }
 }
 const registry = read('headless/catalog/worksheet-editions.v1.json');
+const batch05Registry = beforeBatch06Registry(registry);
 const priorRegistry = beforeBatch05Registry(registry);
 const receipt = read('docs/batch05-pdf-first-20261117.json');
 const expectedIds = ['dat-01', 'wpm-01', 'fnc-01', 'int-01', 'pct-01', 'pyt-01',
@@ -126,14 +134,14 @@ test('eleven additive editions recover the pinned 46765664 baseline without chan
   assert.equal(receipt.status, 'REVIEWED_MEDIA_SITE_CANDIDATE_NOT_PUBLISHED');
   assert.equal(receipt.sitePublicationClaimed, false);
   assert.deepEqual(receipt.scope, { packages: 11, pdfs: 33, pages: 231, subitems: 976, landingRoutes: 10 });
-  assert.equal(registry.editions.length, priorRegistry.editions.length + 11);
-  assert.deepEqual(registry.editions.slice(0, -11), priorRegistry.editions);
-  assert.deepEqual(registry.editions.slice(-11), reviewed.additions.map(a => a.edition));
+  assert.equal(batch05Registry.editions.length, priorRegistry.editions.length + 11);
+  assert.deepEqual(batch05Registry.editions.slice(0, -11), priorRegistry.editions);
+  assert.deepEqual(batch05Registry.editions.slice(-11), reviewed.additions.map(a => a.edition));
   assert.equal(raw.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 976);
   assert.equal(previous.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 976);
 
   for (const [index, addition] of reviewed.additions.entries()) {
-    const topic = catalog.grades.find(g => g.grade === addition.grade)!.topics.find(t => t.id === addition.topicId)!;
+    const topic = batch05Catalog.grades.find(g => g.grade === addition.grade)!.topics.find(t => t.id === addition.topicId)!;
     const oldTopic = previous.grades.find(g => g.grade === addition.grade)!.topics.find(t => t.id === addition.topicId)!;
     const edition = topic.editions!.find(e => e.editionId === addition.editionId)!;
     assert.equal(topic.defaultEditionId ?? 'legacy', oldTopic.defaultEditionId ?? 'legacy',

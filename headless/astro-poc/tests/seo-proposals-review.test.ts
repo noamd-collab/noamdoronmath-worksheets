@@ -6,6 +6,7 @@ import { reviewedBatch03 } from './fixtures/batch03-pdf';
 import { reviewedProbabilityNine } from './fixtures/probability-nine-pdf';
 import { reviewedBatch04 } from './fixtures/batch04-pdf';
 import { reviewedBatch05 } from './fixtures/batch05-pdf';
+import { reviewedBatch06 } from './fixtures/batch06-pdf';
 import { reviewedSaoWpc } from './fixtures/sao-wpc-pdf';
 import { reviewedExtSmlAfr } from './fixtures/ext-sml-afr-pdf';
 /**
@@ -245,10 +246,10 @@ describe('seo proposals – generator and coverage', () => {
       assert.equal(row.description, copy.before);
       row.description = String(copy.after);
     }
-    // Batch 05 adds visible sections without rewriting the existing metadata descriptions.
-    for (const delta of reviewedBatch05.landingDeltas) {
+    // Batches 05 and 06 add visible sections without rewriting the existing metadata descriptions.
+    for (const delta of [...reviewedBatch05.landingDeltas, ...reviewedBatch06.landingDeltas]) {
       assert.equal(delta.fields.some(d => d.path.length === 1 && d.path[0] === 'description'), false,
-        `${delta.slug}: batch 05 preserves the existing description`);
+        `${delta.slug}: PDF addition preserves the existing description`);
     }
     assert.deepEqual(proposals, expected);
   });
