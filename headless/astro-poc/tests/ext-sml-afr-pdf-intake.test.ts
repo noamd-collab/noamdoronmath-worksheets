@@ -13,7 +13,7 @@ import { collectViewerPdfIds } from '../scripts/sync-github-static.mjs';
 import { loadTopicPage, extractJsonLdFaq, synthesizeBodyFlow } from '../src/lib/topicPages';
 import { beforeExtSmlAfrCatalog, beforeExtSmlAfrRegistry, beforeExtSmlAfrCopy,
   reviewedExtSmlAfr as reviewed, reviewedExtSmlAfrIds as ids } from './fixtures/ext-sml-afr-pdf';
-import { beforeBatch05Copy } from './fixtures/batch05-pdf';
+import { beforeBatch05Catalog, beforeBatch05Copy, reviewedBatch05 } from './fixtures/batch05-pdf';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -42,8 +42,8 @@ test('three exact editions add nine verified PDFs and preserve the complete prec
     const topic = catalog.grades.find(g => g.grade === a.grade)!.topics.find(t => t.id === a.topicId)!;
     const edition = topic.editions!.find(e => e.editionId === a.editionId)!;
     const groups = topicWorksheetEditionLinks(catalog, a.grade, a.topicId, '/');
-    const laterIds = registry.editions.slice(registry.editions.findIndex((e: any) => e.editionId === a.editionId) + 1)
-      .filter((e: any) => e.grade === a.grade && e.topicId === a.topicId).map((e: any) => e.editionId);
+    const laterIds = reviewedBatch05.additions
+      .filter(later => later.grade === a.grade && later.topicId === a.topicId).map(later => later.editionId);
     const previousIds = topicWorksheetEditionLinks(previous, a.grade, a.topicId, '/').map(g => g.editionId);
     assert.deepEqual(groups.map(g => g.editionId), [...previousIds, a.editionId, ...laterIds]);
     assert.deepEqual(groups.filter(g => g.editionId !== a.editionId).map(g => g.editionId), [...previousIds, ...laterIds]);
@@ -87,7 +87,13 @@ test('four exact landing deltas preserve old H1/title/primary CTAs and synchroni
     assert.deepEqual(rawPage.catalogCta, restored.catalogCta);
     assert.deepEqual(rawPage.catalogCtas.slice(0, restored.catalogCtas.length), restored.catalogCtas);
     const page = loadTopicPage(delta.slug);
-    const added = rawPage.sections.at(-1);
+    const sectionsChange = delta.fields.find(field => field.path[0] === 'sections');
+    assert.ok(sectionsChange && Array.isArray(sectionsChange.before) && Array.isArray(sectionsChange.after));
+    const beforeSections = sectionsChange.before as any[];
+    const afterSections = sectionsChange.after as any[];
+    const added: any = afterSections.find((section: any) =>
+      !beforeSections.some((prior: any) => JSON.stringify(prior) === JSON.stringify(section)));
+    assert.ok(added, `${delta.slug}: reviewed section must be present in its delta`);
     const flow = synthesizeBodyFlow(page);
     assert.equal(flow.filter(b => b.type === 'heading' && plain(b.text) === added.heading).length, 1);
     assert.equal(flow.filter(b => b.type === 'paragraph' && plain(b.text) === added.blocks[0].text).length, 1);
@@ -104,12 +110,13 @@ test('four exact landing deltas preserve old H1/title/primary CTAs and synchroni
 });
 
 test('exact reversals reject altered old materials, new media/source substitutions and unsupported copy', () => {
+  assert.doesNotThrow(() => beforeExtra15Catalog(raw));
   const altered = structuredClone(raw);
   altered.grades.find((g: any) => g.grade === 9).topics.find((t: any) => t.id === 44).levels[0].pdfId = 'changed-old-link';
-  assert.throws(() => beforeExtSmlAfrCatalog(altered));
+  assert.throws(() => beforeExtra15Catalog(beforeBatch05Catalog(altered)));
   const substituted = structuredClone(raw);
   substituted.grades.find((g: any) => g.grade === 9).topics.find((t: any) => t.id === 1).editions[0].levels[0].sourceSha256 = '0'.repeat(64);
-  assert.throws(() => beforeExtSmlAfrCatalog(substituted));
+  assert.throws(() => beforeExtra15Catalog(beforeBatch05Catalog(substituted)));
   const badRegistry = structuredClone(registry); badRegistry.editions.find((e: any) => e.editionId === ids[0]).isDefault = true;
   assert.throws(() => beforeExtSmlAfrRegistry(badRegistry));
   const page = read('headless/astro-poc/src/data/topic-pages/binomial-square-grade-9.json');

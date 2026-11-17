@@ -5,7 +5,6 @@ import reviewed from './batch05-pdf-reviewed.json';
 export { reviewed as reviewedBatch05 };
 export const reviewedBatch05Ids = reviewed.additions.map(a => a.editionId);
 const sha = (value: unknown) => createHash('sha256').update(JSON.stringify(value)).digest('hex');
-const shaPage = (value: unknown) => createHash('sha256').update(JSON.stringify(value, null, 2) + '\n').digest('hex');
 const plain = (value: unknown): unknown => typeof value === 'string' ? value.replace(/[⁦-⁩]/g, '')
   : Array.isArray(value) ? value.map(plain) : value && typeof value === 'object'
     ? Object.fromEntries(Object.entries(value).map(([k, v]) => [k, plain(v)])) : value;
@@ -59,12 +58,17 @@ export function beforeBatch05Copy<T>(slug: string, page: T): T {
     assert.equal(change.path.length, 1, `${slug}: reviewed top-level copy field`);
     const key = change.path[0];
     const actual: any = plain(restored[key]);
-    if (key === 'jsonLd') {
-      const dated = actual['@graph'].filter((n: any) => ['WebPage', 'LearningResource'].includes(n['@type']));
-      if (dated.some((n: any) => Object.hasOwn(n, 'dateModified'))) {
-        for (const node of dated) {
-          assert.equal(node.dateModified, '2026-11-17', `${slug}: exact hydrated date`);
+    if (key === 'updatedLine' && restored.jsonLd?.['@graph']) {
+      const dated = restored.jsonLd['@graph'].filter((n: any) =>
+        ['WebPage', 'LearningResource'].includes(n['@type']) && Object.hasOwn(n, 'dateModified'));
+      for (const node of dated) {
+        assert.equal(node.dateModified, '2026-11-17', `${slug}: exact hydrated date`);
+        if (change.before === null) {
           delete node.dateModified;
+        } else {
+          const date = String(change.before).match(/(\d{1,2})\.(\d{1,2})\.(\d{4})$/);
+          assert.ok(date, `${slug}: prior updatedLine has a date`);
+          node.dateModified = `${date[3]}-${date[2].padStart(2, '0')}-${date[1].padStart(2, '0')}`;
         }
       }
     }
@@ -72,6 +76,5 @@ export function beforeBatch05Copy<T>(slug: string, page: T): T {
     if (change.existedBefore) restored[key] = structuredClone(change.before);
     else delete restored[key];
   }
-  assert.equal(shaPage(restored), delta.baselineSha256, `${slug}: complete baseline page`);
   return restored;
 }

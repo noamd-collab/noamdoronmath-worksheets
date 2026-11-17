@@ -8,6 +8,7 @@ import { topicWorksheetEditionLinks } from '../src/lib/topicWorksheetEditions';
 import { beforeExtra15Catalog, beforeExtra15Registry, reviewedExtra15 } from './fixtures/extra15-pdf';
 import { reviewedExtSmlAfr, beforeExtSmlAfrCatalog } from './fixtures/ext-sml-afr-pdf';
 import { reviewedSaoWpc, beforeSaoWpcCatalog } from './fixtures/sao-wpc-pdf';
+import { reviewedBatch05 } from './fixtures/batch05-pdf';
 
 const root = new URL('../../../', import.meta.url);
 const read = (path: string) => JSON.parse(readFileSync(new URL(path, root), 'utf8'));
@@ -30,7 +31,11 @@ test('all fifteen PDFs coexist and both exact reversals recover the complete can
   const links = new Set<string>();
   for (const addition of reviewedExtra15) {
     const groups = topicWorksheetEditionLinks(catalog, addition.grade, addition.topicId, '/');
-    assert.deepEqual(groups.map(g => g.editionId), ['legacy', addition.editionId]);
+    const laterIds = reviewedBatch05.additions
+      .filter(a => a.grade === addition.grade && a.topicId === addition.topicId)
+      .map(a => a.editionId);
+    assert.equal(groups[1].editionId, addition.editionId);
+    assert.deepEqual(groups.map(g => g.editionId), ['legacy', addition.editionId, ...laterIds]);
     assert.deepEqual(groups[0], topicWorksheetEditionLinks(previous, addition.grade, addition.topicId, '/')[0]);
     assert.equal(groups[1].pdfOnly, true);
     for (const level of groups[1].levels) {

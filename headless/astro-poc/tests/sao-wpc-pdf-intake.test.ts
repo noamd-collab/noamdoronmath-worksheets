@@ -12,7 +12,7 @@ import { buildTeacherLandingCatalog, getTeacherLandingScope } from '../src/lib/t
 import { collectViewerPdfIds } from '../scripts/sync-github-static.mjs';
 import { loadTopicPage, extractJsonLdFaq, synthesizeBodyFlow } from '../src/lib/topicPages';
 import { beforeSaoWpcCatalog, beforeSaoWpcCopy, reviewedSaoWpc as reviewed, reviewedSaoWpcIds as ids } from './fixtures/sao-wpc-pdf';
-import { beforeBatch05Copy, reviewedBatch05 } from './fixtures/batch05-pdf';
+import { beforeBatch05Catalog, beforeBatch05Copy, reviewedBatch05 } from './fixtures/batch05-pdf';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -50,8 +50,8 @@ test('six exact additional PDFs preserve every preceding catalog and registry by
     assert.equal(edition.publicationMode, 'pdf-only'); assert.equal(edition.routing.usesViewer, false);
     assert.equal(edition.routing.aiHintShown, false);
     const groups = topicWorksheetEditionLinks(catalog, a.grade, a.topicId, `/worksheets?grade=${a.grade}&topic=${a.topicId}`);
-    const laterIds = registry.editions.slice(registry.editions.findIndex((e: any) => e.editionId === a.editionId) + 1)
-      .filter((e: any) => e.grade === a.grade && e.topicId === a.topicId).map((e: any) => e.editionId);
+    const laterIds = reviewedBatch05.additions
+      .filter(later => later.grade === a.grade && later.topicId === a.topicId).map(later => later.editionId);
     const previousGroups = topicWorksheetEditionLinks(previous, a.grade, a.topicId, `/worksheets?grade=${a.grade}&topic=${a.topicId}`);
     assert.deepEqual(groups.map(g => g.editionId), [...previousGroups.map(g => g.editionId), a.editionId, ...laterIds]);
     assert.deepEqual(groups.filter(g => g.editionId !== a.editionId).map(g => g.editionId),
@@ -132,12 +132,13 @@ test('SAO/WPC copy preserves old CTAs, visible flow, FAQ and scoped PDF availabi
   assert.equal(graph[0].description, sao.description); assert.equal(graph[1].description, sao.description);
 });
 test('review reversal rejects legacy drift, unbound PDF and false hint claims', () => {
+  assert.doesNotThrow(() => beforeExtra15Catalog(rawCatalog));
   const bad = structuredClone(rawCatalog);
   bad.grades.find((g: any) => g.grade === 9).topics.find((t: any) => t.id === 38).levels[0].pdfId = 'unreviewed-old-link';
-  assert.throws(() => beforeSaoWpcCatalog(bad));
+  assert.throws(() => beforeExtra15Catalog(beforeBatch05Catalog(bad)));
   const moved = structuredClone(rawCatalog);
   moved.grades.find((g: any) => g.grade === 7).topics.find((t: any) => t.id === 41).editions[0].levels[0].pdfId = 'wrong-new-pdf';
-  assert.throws(() => beforeSaoWpcCatalog(moved));
+  assert.throws(() => beforeExtra15Catalog(beforeBatch05Catalog(moved)));
   const page = read('headless/astro-poc/src/data/topic-pages/triangle-sides-angles-grade-9.json');
   page.description += ' כל PDF כולל רמזי';
   assert.throws(() => beforeSaoWpcCopy('triangle-sides-angles-grade-9', page));

@@ -168,10 +168,9 @@ test('all forty-eight additions open their own reviewed PDF directly while every
     });
     const back = `/worksheets?grade=${addition.grade}&topic=${addition.topicId}`;
     const groups = topicWorksheetEditionLinks(catalog, addition.grade, addition.topicId, back);
-    const registryIndex = registry.editions.findIndex((entry: any) => entry.editionId === addition.editionId);
-    const laterIds = registry.editions.slice(registryIndex + 1)
-      .filter((entry: any) => entry.grade === addition.grade && entry.topicId === addition.topicId)
-      .map((entry: any) => entry.editionId);
+    const laterIds = reviewedBatch05.additions
+      .filter(later => later.grade === addition.grade && later.topicId === addition.topicId)
+      .map(later => later.editionId);
     assert.deepEqual(groups.map(g => g.editionId),
       ['legacy', ...addition.baselineEditionIds, addition.editionId, ...laterIds]);
     assert.deepEqual(groups.filter(g => g.editionId !== addition.editionId && !laterIds.includes(g.editionId)),
