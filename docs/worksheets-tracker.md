@@ -1,3 +1,11 @@
+## 2026-11-17 — batch 03: eight reviewed Claude-authored student PDF editions (candidate)
+
+- ALG7:29, POW7:6, ROOT7:7, INE8:52, QAP9:6, QIN9:8, SYQ9:8 and ITP9:39: 24 PDFs, 142 pages, 588 parts. Every existing default, legacy link and the 55 preceding editions are preserved.
+- Seven existing landings describe the exact practice scope of the new series; QIN and SYQ share topic 9:8 and one landing section. Titles, H1 and CTA order are unchanged. All four grade-9 series are regular-track.
+- Exact reviewed PDF bytes were downloaded from both media routes: 48 matching reads. Claude authored all eight sets; each passed an independent review by Google Antigravity (Gemini 4 Carbon High), a non-Claude agent, attributed by exact SHA-256 and not repeated here. Details: `docs/batch03-pdf-first-20261117.json`.
+- New editions open PDFs directly. No Word, native assets, teacher selection, learning activation, hints or database activation.
+- This is a source candidate, not a publication claim. Build, tests and desktop/phone evidence are recorded in the PR package; the Wix payload has only a proxy estimate (+117,432 bytes, about 17.68 MB) and still needs a credentialed `npm run build`; the release job's postbuild budget check stops a release over 19,500,000 bytes.
+
 ## 2026-11-17 — batch 02a: sixteen reviewed student PDF editions (candidate)
 
 - SQR9:14, RHB9:13, ISO9:4, POW9:16, MPL9:18, PYD9:35, TRI8:42, TRI8:40, WPE8:3, WPE8:46, DAT8:66, SLP8:29, PRB8:50, Q1C7:8, MUL7:3 and EQN7:37: 48 PDFs, 385 pages, 1431 parts. Every existing default, legacy link and the 39 preceding editions are preserved.

@@ -2,6 +2,7 @@ import { reviewedNext12 } from './fixtures/next12-pdf';
 import { reviewedNext21 } from './fixtures/next21-pdf';
 import { reviewedBatch01 } from './fixtures/batch01-pdf';
 import { reviewedBatch02a } from './fixtures/batch02a-pdf';
+import { reviewedBatch03 } from './fixtures/batch03-pdf';
 import { reviewedSaoWpc } from './fixtures/sao-wpc-pdf';
 import { reviewedExtSmlAfr } from './fixtures/ext-sml-afr-pdf';
 import assert from 'node:assert/strict';
@@ -456,4 +457,33 @@ test('real batch-02a pages expose forty-eight PDFs only in their mapped group an
     assert.equal(new Set(anchors).size, anchors.length, `${addition.slug}: unique anchors`);
   }
   assert.equal(urls.size, 48);
+});
+
+test('real batch-03 pages expose twenty-four PDFs only in their mapped group, two series on 9/8, after every earlier choice', async () => {
+  const catalog = loadCatalog(), urls = new Set<string>();
+  for (const addition of reviewedBatch03.additions) {
+    const document = await renderTopic(addition.slug), hero = document.querySelector('.exact-topic-copy')!;
+    assert.deepEqual(addition.ctaTopics, [addition.topicId]);
+    const ctas = [...hero.querySelectorAll('a[data-catalog-topic]')];
+    assert.deepEqual(ctas.map(a => Number(a.getAttribute('data-catalog-topic'))), [addition.topicId]);
+    assert.equal(ctas[0].getAttribute('href'), '#topic-levels');
+    const controls = hero.querySelector('#topic-levels')!;
+    assert.ok(controls, `${addition.slug}: topic group`);
+    const links = [...controls.querySelectorAll(`a[data-edition-id="${addition.editionId}"]`)];
+    assert.deepEqual(links.map(a => a.getAttribute('href')), addition.pdfIds.map(id => `${catalog.config.pdfBase}${id}.pdf`));
+    assert.ok(links.every(a => a.textContent.includes('פתיחת PDF') && !a.textContent.includes('רמזי')));
+    links.forEach(a => urls.add(a.getAttribute('href')!));
+    const groups = topicWorksheetEditionLinks(catalog, addition.grade, addition.topicId, `/worksheets?grade=${addition.grade}&topic=${addition.topicId}`);
+    const legacy = [...controls.querySelectorAll('a[data-edition-id="legacy"]')].map(a => a.getAttribute('href'));
+    assert.deepEqual(legacy, groups[0].levels.map(l => l.href));
+    assert.equal(legacy.length, 3);
+    // G9-QIN-01 and G9-SYQ-01 share topic 9/8: both follow the legacy links, in registry order.
+    const sameTopic = reviewedBatch03.additions.filter(a => a.grade === addition.grade && a.topicId === addition.topicId).map(a => a.editionId);
+    const order = [...controls.querySelectorAll('a[data-edition-id]')].map(a => a.getAttribute('data-edition-id'));
+    assert.deepEqual([...new Set(order)], ['legacy', ...addition.baselineEditionIds, ...sameTopic]);
+    for (const earlier of addition.baselineEditionIds) assert.equal(controls.querySelectorAll(`a[data-edition-id="${earlier}"]`).length, 3);
+    const anchors = [...document.querySelectorAll('[id]')].map(e => e.id);
+    assert.equal(new Set(anchors).size, anchors.length, `${addition.slug}: unique anchors`);
+  }
+  assert.equal(urls.size, 24);
 });
