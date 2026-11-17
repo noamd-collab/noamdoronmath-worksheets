@@ -12,6 +12,7 @@ import { loadTopicPage, extractJsonLdFaq, synthesizeBodyFlow } from '../src/lib/
 import { beforeBatch07Catalog, beforeBatch07Copy, beforeBatch07Registry,
   reviewedBatch07 as reviewed, reviewedBatch07Ids as ids } from './fixtures/batch07-pdf';
 import { createRequire } from 'node:module';
+import { beforeBatch08Registry } from './fixtures/batch08-pdf';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -35,6 +36,7 @@ for (const addition of reviewed.additions) {
   }
 }
 const registry = read('headless/catalog/worksheet-editions.v1.json');
+const batch07Registry = beforeBatch08Registry(registry);
 const priorRegistry = beforeBatch07Registry(registry);
 const receipt = read('docs/batch07-pdf-first-20261117.json');
 const expectedIds = ['trp-02', 'lnm-01', 'alg-05'].map(key => `ms-20261117-${key}-r1`);
@@ -80,9 +82,9 @@ test('three additive editions recover the pinned batch 6 head (b87d7652) without
   assert.equal(receipt.status, 'REVIEWED_MEDIA_SITE_CANDIDATE_NOT_PUBLISHED');
   assert.equal(receipt.sitePublicationClaimed, false);
   assert.deepEqual(receipt.scope, { packages: 3, pdfs: 9, pages: 73, landingRoutes: 3 });
-  assert.equal(registry.editions.length, priorRegistry.editions.length + 3);
-  assert.deepEqual(registry.editions.slice(0, -3), priorRegistry.editions);
-  assert.deepEqual(registry.editions.slice(-3), reviewed.additions.map(a => a.edition));
+  assert.equal(batch07Registry.editions.length, priorRegistry.editions.length + 3);
+  assert.deepEqual(batch07Registry.editions.slice(0, -3), priorRegistry.editions);
+  assert.deepEqual(batch07Registry.editions.slice(-3), reviewed.additions.map(a => a.edition));
   assert.equal(raw.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 976);
   assert.equal(previous.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 976);
 

@@ -13,6 +13,7 @@ import { loadTopicPage, extractJsonLdFaq, synthesizeBodyFlow } from '../src/lib/
 import { beforeBatch04Catalog, beforeBatch04Registry, beforeBatch04Copy,
   reviewedBatch04 as reviewed, reviewedBatch04Ids as ids } from './fixtures/batch04-pdf';
 import { beforeBatch05Registry } from './fixtures/batch05-pdf';
+import { beforeBatch08Copy } from './fixtures/batch08-pdf';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -252,8 +253,10 @@ test('four landing updates keep titles and CTAs and describe the actual series i
   assert.deepEqual(reviewed.landingDeltas.map(d => d.slug), Object.keys(scope));
   assert.deepEqual(reviewed.landingDeltas.map(d => d.editionIds), ids.map(id => [id]));
   for (const delta of reviewed.landingDeltas) {
-    const pageRaw = read(`headless/astro-poc/src/data/topic-pages/${delta.slug}.json`);
-    const restored = beforeBatch04Copy(delta.slug, pageRaw) as any;
+    const pageFile = read(`headless/astro-poc/src/data/topic-pages/${delta.slug}.json`);
+    const restored = beforeBatch04Copy(delta.slug, pageFile) as any;
+    // Batch 8 later appends its own section to some of these pages; compare this batch's state.
+    const pageRaw = beforeBatch08Copy(delta.slug, pageFile) as any;
     assert.equal(digest(restored), delta.baselineSha256);
     assert.equal(pageRaw.h1, restored.h1); assert.equal(pageRaw.title, restored.title);
     assert.deepEqual(pageRaw.catalogCta, restored.catalogCta);
@@ -306,7 +309,7 @@ test('four landing updates keep titles and CTAs and describe the actual series i
       assert.equal(node.dateModified, '2026-11-17');
     }
   }
-  const page = (slug: string) => read(`headless/astro-poc/src/data/topic-pages/${slug}.json`);
+  const page = (slug: string) => beforeBatch08Copy(slug, read(`headless/astro-poc/src/data/topic-pages/${slug}.json`)) as any;
   const text = (slug: string) => page(slug).sections.at(-1).blocks.map((b: any) => b.text).join(' ');
   // The official layout terms are used where the PDFs cover them.
   assert.ok(text('kite-grade-9').includes('תכונות הזוויות בדלתון') && text('kite-grade-9').includes('באלכסון הראשי בדלתון ובשטח דלתון'));

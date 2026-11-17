@@ -26,6 +26,7 @@ import { loadCatalog } from '../src/lib/catalog/loadCatalog';
 import { loadTopicPage } from '../src/lib/topicPages';
 import { reviewedEqnSgnFac } from './fixtures/eqn-sgn-fac-pdf';
 import { reviewedBatch07 } from './fixtures/batch07-pdf';
+import { reviewedBatch08 } from './fixtures/batch08-pdf';
 
 const require = createRequire(import.meta.url);
 const routes = [
@@ -454,7 +455,7 @@ test('real batch-02a pages expose forty-eight PDFs only in their mapped group an
       const groups = topicWorksheetEditionLinks(catalog, addition.grade, topicId, `/worksheets?grade=${addition.grade}&topic=${topicId}`);
       assert.deepEqual([...controls.querySelectorAll('a[data-edition-id="legacy"]')].map(a => a.getAttribute('href')), groups[0].levels.map(l => l.href));
       const order = [...controls.querySelectorAll('a[data-edition-id]')].map(a => a.getAttribute('data-edition-id'));
-      const laterIds = [...reviewedBatch05.additions, ...reviewedBatch06.additions]
+      const laterIds = [...reviewedBatch05.additions, ...reviewedBatch06.additions, ...reviewedBatch08.additions]
         .filter(a => a.grade === addition.grade && a.topicId === topicId).map(a => a.editionId);
       assert.deepEqual([...new Set(order)], topicId === addition.topicId
         ? ['legacy', ...addition.baselineEditionIds, addition.editionId, ...laterIds] : groups.map(g => g.editionId));

@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import reviewed from './batch07-pdf-reviewed.json';
+import { beforeBatch08Catalog, beforeBatch08Copy, beforeBatch08Registry } from './batch08-pdf';
 
 export { reviewed as reviewedBatch07 };
 export const reviewedBatch07Ids = reviewed.additions.map(a => a.editionId);
@@ -12,7 +13,7 @@ const plain = (value: unknown): unknown => typeof value === 'string' ? value.rep
 
 /** Undo only batch 7's reviewed overlays and return the exact batch 6 state. */
 export function beforeBatch07Catalog<T>(catalog: T): T {
-  const restored: any = structuredClone(catalog);
+  const restored: any = structuredClone(beforeBatch08Catalog(catalog));
   const groups = new Map<string, typeof reviewed.additions>();
   for (const addition of reviewed.additions) {
     const key = `${addition.grade}:${addition.topicId}`;
@@ -41,7 +42,7 @@ export function beforeBatch07Catalog<T>(catalog: T): T {
 
 /** Validate exact registry rows before removing batch 7. */
 export function beforeBatch07Registry<T>(registry: T): T {
-  const restored: any = structuredClone(registry);
+  const restored: any = structuredClone(beforeBatch08Registry(registry));
   for (const addition of reviewed.additions) {
     const matches = restored.editions.filter((e: any) => e.editionId === addition.editionId);
     assert.deepEqual(matches, [addition.edition], `${addition.editionId}: exact reviewed registry row`);
@@ -53,8 +54,9 @@ export function beforeBatch07Registry<T>(registry: T): T {
 /** Verify batch 7's exact changed fields and recover the batch 6 landing. */
 export function beforeBatch07Copy<T>(slug: string, page: T): T {
   const delta = reviewed.landingDeltas.find(d => d.slug === slug);
-  if (!delta) return page;
-  const restored: any = structuredClone(page);
+  const afterBatch08 = beforeBatch08Copy(slug, page);
+  if (!delta) return afterBatch08;
+  const restored: any = structuredClone(afterBatch08);
   for (const change of delta.fields) {
     assert.equal(change.path.length, 1, `${slug}: reviewed top-level copy field`);
     const key = change.path[0];
