@@ -2296,10 +2296,22 @@ a {
 }
 
 .site-page__contact-note,
+.site-page__contact-privacy,
 .site-page__contact-fields {
   font-size: 14px;
   color: var(--muted);
   font-weight: 600;
+}
+
+.site-page__contact-privacy {
+  margin: 4px 0 8px;
+  line-height: 1.5;
+}
+
+.site-page__contact-privacy a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
 }
 
 .site-page__footer-links {

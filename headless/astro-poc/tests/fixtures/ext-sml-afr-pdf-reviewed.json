@@ -1,0 +1,1787 @@
+{
+  "baselineHead": "ea53653c0b59162be29ac47acc5697ff149c4fc0",
+  "baselineCatalogSha256": "e02e81b75c81751954f2ba82f5bdba585f8452c958a7293d59088ac0b8c001ca",
+  "baselineRegistrySha256": "8703222bbedcf6d8084c42f20b10a4908ec0f2254d07de05436e5981f867a6c9",
+  "additions": [
+    {
+      "grade": 9,
+      "topicId": 1,
+      "editionId": "ms-20261115-ext-01-r1",
+      "slug": "distributive-law-grade-9",
+      "edition": {
+        "grade": 9,
+        "topicId": 1,
+        "editionId": "ms-20261115-ext-01-r1",
+        "label": "חוק הפילוג המורחב: פישוט, משוואות והשוואת שטחים — PDF",
+        "nativePrefix": "G9-T70",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "c915f782c63d4e10ab1e38589ca0b199",
+            "pdfSha256": "9e71f6fd6afe00347eb4e48e9bf18409fa367585db35c499e1770db565b710e8",
+            "sourceSha256": "4d2c2c0bd6c09f6507baddbcc21135c56e664033c5c62c6d7d570af44426c1a0",
+            "nativeExportSha256": "d30eebdb60aad198614ce0f09a3db765483275bd972268ba44ce1d1340b6c6fc",
+            "worksheetId": "ms-g9-ext-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "8dac449d76c840a18a8bb6bf9b3679ab",
+            "pdfSha256": "6f7988e31ccce6e72c84b7086ff155c2f108f13f6223b211653b377461c01bf6",
+            "sourceSha256": "0b06c82f3d8177bf273e2749059c4a919ccd2ce6fdb1c1a1ee049b6078ab53b1",
+            "nativeExportSha256": "c0f8d39f8363d75c5f1c71e88cdfe9a9851abe70808eecb4a0abe31e06d82006",
+            "worksheetId": "ms-g9-ext-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "6e2117181a8e43cfb8a8d5afaad21ab5",
+            "pdfSha256": "2ea4258eba9af1f31a8a04cde0e5102a4e97facc74bdadb3b6b62405b9f57dc9",
+            "sourceSha256": "2eee60d67d0859921b18088d7c3215a96603e7898710c49b64215310185244ab",
+            "nativeExportSha256": "b959c0ad5a5fb8d2afe61a7631d3309f5eff52cb2d0e45a6849ab4e051fb9686",
+            "worksheetId": "ms-g9-ext-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "pdfIds": [
+        "c915f782c63d4e10ab1e38589ca0b199",
+        "8dac449d76c840a18a8bb6bf9b3679ab",
+        "6e2117181a8e43cfb8a8d5afaad21ab5"
+      ],
+      "baselineTopicSha256": "bc6421e6b93591bd077835885db20c867ab5782ae896a6ee0bf75cafb61015d8",
+      "generatedEditionSha256": "13ec22bcaf2628023b2084f32d81e3bef62a968622992872ddf9070ff4131651"
+    },
+    {
+      "grade": 9,
+      "topicId": 44,
+      "editionId": "ms-20261115-sml-01-r1",
+      "slug": "binomial-square-grade-9",
+      "edition": {
+        "grade": 9,
+        "topicId": 44,
+        "editionId": "ms-20261115-sml-01-r1",
+        "label": "נוסחאות הכפל המקוצר: ריבוע סכום והפרש והפרש ריבועים — PDF",
+        "nativePrefix": "G9-T71",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "c6360174b8264607aaa768f9f029262a",
+            "pdfSha256": "226ffeeecba617eeaf655fc770392e6acb54d9174a9b716e17509ada4e79f61e",
+            "sourceSha256": "54fca9992debe3c7dbee94e1be564c80955b004a6a70a0efe8dbcf399ad1a5c6",
+            "nativeExportSha256": "8599ccfec1cf34e50a5f5e61f6aff8b6ff7c9c5da8a41274679ba8cd511654f9",
+            "worksheetId": "ms-g9-sml-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "8e8ecb6ff6cb4033bc442cd891a17515",
+            "pdfSha256": "ab4dc4d8f9a0c74816762b93e215a11bd53a717c188351c483a9ffa43b3d6888",
+            "sourceSha256": "8973614f7bbf41b7fc32f0b944576135c024703b15c5136a0adbe1fda16254fc",
+            "nativeExportSha256": "479ab745650a1f09950dad92eba75f5bbd88ae84d8100c2e890cbe661a1e7c19",
+            "worksheetId": "ms-g9-sml-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "00de21b0dd8e4c24bcc91b6a703a3be4",
+            "pdfSha256": "2597b4d8c394a74ac265bd2433bc8137d9b06545ba08e88604d60129a6a413e2",
+            "sourceSha256": "65bc46ca4bd3197049561f53bd314d87b4aba5236e9f0993eea618bfb00d67af",
+            "nativeExportSha256": "975cf7f280f103f69072f49f8e90728f7be20b42659c93069aee2aee6bd33622",
+            "worksheetId": "ms-g9-sml-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "pdfIds": [
+        "c6360174b8264607aaa768f9f029262a",
+        "8e8ecb6ff6cb4033bc442cd891a17515",
+        "00de21b0dd8e4c24bcc91b6a703a3be4"
+      ],
+      "baselineTopicSha256": "d3f42db46912a58d18d3c2316cd235176a1f6cad0b954b6e9328260c6f8a9a82",
+      "generatedEditionSha256": "d264731c116192790b13954fcd70f502a82fe96022ffc167dd35b61fac7ce2e1"
+    },
+    {
+      "grade": 9,
+      "topicId": 3,
+      "editionId": "ms-20261115-afr-01-r1",
+      "slug": "algebraic-fractions-grade-9",
+      "edition": {
+        "grade": 9,
+        "topicId": 3,
+        "editionId": "ms-20261115-afr-01-r1",
+        "label": "שברים אלגבריים: תחום הצבה, צמצום, כפל וחילוק — PDF",
+        "nativePrefix": "G9-T72",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "7ed50f3d7f8145acad25939beaabc293",
+            "pdfSha256": "369d853654e2cb74f7730afded5e1e4451317bf1febaa843707b555368ec6775",
+            "sourceSha256": "a405a265d6938d8472cc0f3e9b0e867475e40c1545f50a368b0ce330a9ce8b14",
+            "nativeExportSha256": "729de8daeb3b1ba33f6e4f1e398e56cd17cf401547dcf3c9c198d0c6a5d7378c",
+            "worksheetId": "ms-g9-afr-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "908c1f5a2ce5426d88fc03a67e6d4e29",
+            "pdfSha256": "920fdc2dc86f40d9a9465dee66cafd96fc3ee89bce984381b6c07b0aef876837",
+            "sourceSha256": "9beb686f8ea3b02f16bd80c95c8dde956f6a237aca44480750b6e1d538a92239",
+            "nativeExportSha256": "74aef2b5f0f0ecf9beee7b7ce17c0e8dd26df186421de2e3573f979975076e75",
+            "worksheetId": "ms-g9-afr-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "df74b8a1382c4bc3952f3c8a3d6bfa43",
+            "pdfSha256": "13c77ff370852e3168efa678a58a3a2d67a318901bdd8880a8cd3d220507abc3",
+            "sourceSha256": "52c60aa848bc8f1025296c2382ee3675eaaf0046f471527fd911f78cfa9223c5",
+            "nativeExportSha256": "30d2f0cb7d8a79defc95cc5982405f77555da1fcec39a2c75076bfb7431ce63c",
+            "worksheetId": "ms-g9-afr-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "pdfIds": [
+        "7ed50f3d7f8145acad25939beaabc293",
+        "908c1f5a2ce5426d88fc03a67e6d4e29",
+        "df74b8a1382c4bc3952f3c8a3d6bfa43"
+      ],
+      "baselineTopicSha256": "febab4896a56252d2c8a6a059710700d195670255d7a5d1fcca871835ce03294",
+      "generatedEditionSha256": "a4177225a8bb3e133def0135d8ca0832d53565399080605861cecd7e663c4984"
+    }
+  ],
+  "landingDeltas": [
+    {
+      "slug": "distributive-law-grade-9",
+      "baselineSha256": "c8212d890b67ee12306fe4368c671fb8691a7f8d7d38f8949cf2eff563af7406",
+      "fields": [
+        {
+          "path": [
+            "bodyFlow"
+          ],
+          "before": [
+            {
+              "type": "paragraph",
+              "text": "פותחים מכפלת סוגריים, מכנסים איברים ובודקים את התוצאה. דפי העבודה הקיימים ברמות א׳, ב׳ ומצוינות — בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+              "role": "intro"
+            },
+            {
+              "type": "heading",
+              "text": "מוכנים לתרגל? דפי העבודה מחכים לכם"
+            },
+            {
+              "type": "cta",
+              "label": "פתיחת דפי העבודה ובחירת רמה",
+              "href": "/worksheets?grade=9&topic=1",
+              "catalogTopicId": 1
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "כופלים כל איבר בסוגריים הראשונים בכל איבר בסוגריים השניים. רק אחר כך מכנסים איברים דומים. טעויות נפוצות: לא מדלגים על שתי המכפלות האמצעיות. x² ו־x אינם איברים דומים ואי אפשר לכנס אותם יחד.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "(x+2)(x−3) = x²−3x+2x−6 = x²−x−6",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "שאלת בדיקה"
+            },
+            {
+              "type": "paragraph",
+              "text": "פתחו (x+4)(x+1)",
+              "role": "body"
+            }
+          ],
+          "after": [
+            {
+              "type": "paragraph",
+              "text": "פותחים מכפלת סוגריים, מכנסים איברים ובודקים את התוצאה. לצד הדפים הקיימים נוספו קובצי PDF לפישוט, לפתרון משוואות ולהשוואת שטחי מלבנים לפי נתונים מילוליים. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה.",
+              "role": "intro"
+            },
+            {
+              "type": "heading",
+              "text": "מוכנים לתרגל? דפי העבודה מחכים לכם"
+            },
+            {
+              "type": "cta",
+              "label": "פתיחת דפי העבודה ובחירת רמה",
+              "href": "/worksheets?grade=9&topic=1",
+              "catalogTopicId": 1
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "כופלים כל איבר בסוגריים הראשונים בכל איבר בסוגריים השניים. רק אחר כך מכנסים איברים דומים. טעויות נפוצות: לא מדלגים על שתי המכפלות האמצעיות. x² ו־x אינם איברים דומים ואי אפשר לכנס אותם יחד.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "(x+2)(x−3) = x²−3x+2x−6 = x²−x−6",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "שאלת בדיקה"
+            },
+            {
+              "type": "paragraph",
+              "text": "פתחו (x+4)(x+1)",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "תרגול נוסף בחוק הפילוג המורחב — PDF"
+            },
+            {
+              "type": "paragraph",
+              "text": "בדפים החדשים מתרגלים פתיחת מכפלת סוגריים, פישוט, הצבה, השלמת מקדם בזהות ומשוואות שבהן האיברים הריבועיים מתבטלים. משווים גם שטחי מלבנים לפי אורכי צלעות המתוארים במילים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "שלושה דפים ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+              "role": "body"
+            }
+          ],
+          "existedBefore": true
+        },
+        {
+          "path": [
+            "description"
+          ],
+          "before": "חוק הפילוג המורחב לכיתה ט׳: לומדים לפתוח מכפלת סוגריים, לכנס איברים ולבדוק טעויות נפוצות. דוגמה פתורה וקישורים לדפי העבודה הקיימים — בחינם וללא הרשמה.",
+          "after": "חוק הפילוג המורחב לכיתה ט׳: פתיחת סוגריים, פישוט ביטויים, משוואות והשוואת שטחים לפי נתונים מילוליים. דפי PDF בשלוש רמות עם תשובות סופיות.",
+          "existedBefore": true
+        },
+        {
+          "path": [
+            "faq"
+          ],
+          "before": [
+            {
+              "question": "האם דפי העבודה בנושא חוק הפילוג המורחב לכיתה ט׳ מתאימים לכיתה ט׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          ],
+          "after": [
+            {
+              "question": "האם דפי העבודה בנושא חוק הפילוג המורחב לכיתה ט׳ מתאימים לכיתה ט׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            },
+            {
+              "question": "מה כוללים קובצי ה־PDF הנוספים?",
+              "answer": "בדפים החדשים מתרגלים פתיחת מכפלת סוגריים, פישוט, הצבה, השלמת מקדם בזהות ומשוואות שבהן האיברים הריבועיים מתבטלים. משווים גם שטחי מלבנים לפי אורכי צלעות המתוארים במילים. שלוש רמות להורדה ולהדפסה, עם תשובות סופיות."
+            }
+          ],
+          "existedBefore": true
+        },
+        {
+          "path": [
+            "faqGroups"
+          ],
+          "before": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא חוק הפילוג המורחב לכיתה ט׳ מתאימים לכיתה ט׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא חוק הפילוג המורחב לכיתה ט׳ מתאימים לכיתה ט׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                },
+                {
+                  "question": "מה כוללים קובצי ה־PDF הנוספים?",
+                  "answer": "בדפים החדשים מתרגלים פתיחת מכפלת סוגריים, פישוט, הצבה, השלמת מקדם בזהות ומשוואות שבהן האיברים הריבועיים מתבטלים. משווים גם שטחי מלבנים לפי אורכי צלעות המתוארים במילים. שלוש רמות להורדה ולהדפסה, עם תשובות סופיות."
+                }
+              ]
+            }
+          ],
+          "existedBefore": true
+        },
+        {
+          "path": [
+            "intro"
+          ],
+          "before": "פותחים מכפלת סוגריים, מכנסים איברים ובודקים את התוצאה. דפי העבודה הקיימים ברמות א׳, ב׳ ומצוינות — בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+          "after": "פותחים מכפלת סוגריים, מכנסים איברים ובודקים את התוצאה. לצד הדפים הקיימים נוספו קובצי PDF לפישוט, לפתרון משוואות ולהשוואת שטחי מלבנים לפי נתונים מילוליים. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה.",
+          "existedBefore": true
+        },
+        {
+          "path": [
+            "jsonLd"
+          ],
+          "before": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/distributive-law-grade-9#webpage",
+                "url": "https://www.noamdoronmath.co.il/distributive-law-grade-9",
+                "name": "חוק הפילוג המורחב לכיתה ט׳ | נועם דורון מתמטיקה",
+                "description": "חוק הפילוג המורחב לכיתה ט׳: לומדים לפתוח מכפלת סוגריים, לכנס איברים ולבדוק טעויות נפוצות. דוגמה פתורה וקישורים לדפי העבודה הקיימים — בחינם וללא הרשמה.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/distributive-law-grade-9#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/distributive-law-grade-9#learning-resource",
+                "name": "חוק הפילוג המורחב לכיתה ט׳",
+                "url": "https://www.noamdoronmath.co.il/distributive-law-grade-9",
+                "description": "חוק הפילוג המורחב לכיתה ט׳: לומדים לפתוח מכפלת סוגריים, לכנס איברים ולבדוק טעויות נפוצות. דוגמה פתורה וקישורים לדפי העבודה הקיימים — בחינם וללא הרשמה.",
+                "educationalLevel": "כיתה ט׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/distributive-law-grade-9#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא חוק הפילוג המורחב לכיתה ט׳ מתאימים לכיתה ט׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "after": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/distributive-law-grade-9#webpage",
+                "url": "https://www.noamdoronmath.co.il/distributive-law-grade-9",
+                "name": "חוק הפילוג המורחב לכיתה ט׳ | נועם דורון מתמטיקה",
+                "description": "חוק הפילוג המורחב לכיתה ט׳: פתיחת סוגריים, פישוט ביטויים, משוואות והשוואת שטחים לפי נתונים מילוליים. דפי PDF בשלוש רמות עם תשובות סופיות.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/distributive-law-grade-9#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/distributive-law-grade-9#learning-resource",
+                "name": "חוק הפילוג המורחב לכיתה ט׳",
+                "url": "https://www.noamdoronmath.co.il/distributive-law-grade-9",
+                "description": "חוק הפילוג המורחב לכיתה ט׳: פתיחת סוגריים, פישוט ביטויים, משוואות והשוואת שטחים לפי נתונים מילוליים. דפי PDF בשלוש רמות עם תשובות סופיות.",
+                "educationalLevel": "כיתה ט׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/distributive-law-grade-9#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא חוק הפילוג המורחב לכיתה ט׳ מתאימים לכיתה ט׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "מה כוללים קובצי ה־PDF הנוספים?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "בדפים החדשים מתרגלים פתיחת מכפלת סוגריים, פישוט, הצבה, השלמת מקדם בזהות ומשוואות שבהן האיברים הריבועיים מתבטלים. משווים גם שטחי מלבנים לפי אורכי צלעות המתוארים במילים. שלוש רמות להורדה ולהדפסה, עם תשובות סופיות."
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "existedBefore": true
+        },
+        {
+          "path": [
+            "sections"
+          ],
+          "before": [
+            {
+              "heading": "מוכנים לתרגל? דפי העבודה מחכים לכם",
+              "blocks": []
+            },
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "כופלים כל איבר בסוגריים הראשונים בכל איבר בסוגריים השניים. רק אחר כך מכנסים איברים דומים. טעויות נפוצות: לא מדלגים על שתי המכפלות האמצעיות. x² ו־x אינם איברים דומים ואי אפשר לכנס אותם יחד.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "(x+2)(x−3) = x²−3x+2x−6 = x²−x−6",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "שאלת בדיקה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "פתחו (x+4)(x+1)",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "מוכנים לתרגל? דפי העבודה מחכים לכם",
+              "blocks": []
+            },
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "כופלים כל איבר בסוגריים הראשונים בכל איבר בסוגריים השניים. רק אחר כך מכנסים איברים דומים. טעויות נפוצות: לא מדלגים על שתי המכפלות האמצעיות. x² ו־x אינם איברים דומים ואי אפשר לכנס אותם יחד.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "(x+2)(x−3) = x²−3x+2x−6 = x²−x−6",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "שאלת בדיקה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "פתחו (x+4)(x+1)",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "תרגול נוסף בחוק הפילוג המורחב — PDF",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בדפים החדשים מתרגלים פתיחת מכפלת סוגריים, פישוט, הצבה, השלמת מקדם בזהות ומשוואות שבהן האיברים הריבועיים מתבטלים. משווים גם שטחי מלבנים לפי אורכי צלעות המתוארים במילים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה דפים ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "existedBefore": true
+        },
+        {
+          "path": [
+            "updatedLine"
+          ],
+          "before": "נועם דורון מתמטיקה · עודכן 8.9.2026",
+          "after": "נועם דורון מתמטיקה · עודכן 15.11.2026",
+          "existedBefore": true
+        }
+      ]
+    },
+    {
+      "slug": "binomial-square-grade-9",
+      "baselineSha256": "bb9de08f6571864c4f6cec508fd998209a0f5704370b6bae9b14e3b8666c570d",
+      "fields": [
+        {
+          "path": [
+            "bodyFlow"
+          ],
+          "before": [
+            {
+              "type": "paragraph",
+              "text": "מתרגלים פיתוח של ריבוע סכום וריבוע הפרש, מזהים את האיבר האמצעי ובודקים את התוצאה בכפל סוגריים. שלוש רמות תרגול: א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "פתיחת דפי עבודה",
+              "href": "/worksheets?grade=9&topic=44",
+              "catalogTopicId": 44
+            },
+            {
+              "type": "heading",
+              "text": "דו־איבר בריבוע — הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "בריבוע סכום: (x+3)² = x²+6x+9. האיבר האמצעי הוא פעמיים מכפלת שני האיברים. אפשר לבדוק בכפל של שני סוגריים זהים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "טעות נפוצה: אין להשמיט את האיבר האמצעי. ריבוע של סכום אינו סכום הריבועים בלבד.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "בדקו את עצמכם: מהו הפיתוח של (x−4)²? תשובה: x²−8x+16.",
+              "role": "self-check"
+            }
+          ],
+          "after": [
+            {
+              "type": "paragraph",
+              "text": "מתרגלים פיתוח של ריבוע סכום וריבוע הפרש ומזהים את האיבר האמצעי. לצד הדפים הקיימים נוספה חבילת PDF משולבת, הכוללת גם הפרש ריבועים, פישוט ביטויים וחישובים מספריים. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "פתיחת דפי עבודה",
+              "href": "/worksheets?grade=9&topic=44",
+              "catalogTopicId": 44
+            },
+            {
+              "type": "heading",
+              "text": "דו־איבר בריבוע — הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "בריבוע סכום: (x+3)² = x²+6x+9. האיבר האמצעי הוא פעמיים מכפלת שני האיברים. אפשר לבדוק בכפל של שני סוגריים זהים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "טעות נפוצה: אין להשמיט את האיבר האמצעי. ריבוע של סכום אינו סכום הריבועים בלבד.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "בדקו את עצמכם: מהו הפיתוח של (x−4)²? תשובה: x²−8x+16.",
+              "role": "self-check"
+            },
+            {
+              "type": "heading",
+              "text": "נוסחאות הכפל המקוצר: תרגול אלגברי משולב — PDF"
+            },
+            {
+              "type": "paragraph",
+              "text": "חבילת ה־PDF משלבת ריבוע של סכום, ריבוע של הפרש ומכפלת סכום והפרש. מתרגלים פיתוח ופישוט ביטויים, חישובים מספריים, בדיקת טענות ובניית דוגמאות. זהו תרגול אלגברי ממוקד.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "שלושה דפים ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+              "role": "body"
+            }
+          ],
+          "existedBefore": true
+        },
+        {
+          "path": [
+            "description"
+          ],
+          "before": "דו־איבר בריבוע לכיתה ט׳: תרגול ריבוע סכום וריבוע הפרש, פיתוח ביטויים ואיבר אמצעי עם דפי עבודה בשלוש רמות — א׳, ב׳ ומצוינות. בחינם וללא הרשמה למורים ולתלמידים.",
+          "after": "דו־איבר בריבוע ונוסחאות הכפל המקוצר לכיתה ט׳: ריבוע סכום והפרש, הפרש ריבועים, פישוט וחישובים. דפי PDF בשלוש רמות עם תשובות סופיות.",
+          "existedBefore": true
+        },
+        {
+          "path": [
+            "faq"
+          ],
+          "before": [
+            {
+              "question": "האם דפי העבודה בנושא דו־איבר בריבוע לכיתה ט׳ מתאימים לכיתה ט׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          ],
+          "after": [
+            {
+              "question": "האם דפי העבודה בנושא דו־איבר בריבוע לכיתה ט׳ מתאימים לכיתה ט׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            },
+            {
+              "question": "מה כוללים קובצי ה־PDF הנוספים?",
+              "answer": "חבילת ה־PDF משלבת ריבוע של סכום, ריבוע של הפרש ומכפלת סכום והפרש. מתרגלים פיתוח ופישוט ביטויים, חישובים מספריים, בדיקת טענות ובניית דוגמאות. זהו תרגול אלגברי ממוקד. שלוש רמות להורדה ולהדפסה, עם תשובות סופיות."
+            }
+          ],
+          "existedBefore": true
+        },
+        {
+          "path": [
+            "faqGroups"
+          ],
+          "before": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא דו־איבר בריבוע לכיתה ט׳ מתאימים לכיתה ט׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא דו־איבר בריבוע לכיתה ט׳ מתאימים לכיתה ט׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                },
+                {
+                  "question": "מה כוללים קובצי ה־PDF הנוספים?",
+                  "answer": "חבילת ה־PDF משלבת ריבוע של סכום, ריבוע של הפרש ומכפלת סכום והפרש. מתרגלים פיתוח ופישוט ביטויים, חישובים מספריים, בדיקת טענות ובניית דוגמאות. זהו תרגול אלגברי ממוקד. שלוש רמות להורדה ולהדפסה, עם תשובות סופיות."
+                }
+              ]
+            }
+          ],
+          "existedBefore": true
+        },
+        {
+          "path": [
+            "intro"
+          ],
+          "before": "מתרגלים פיתוח של ריבוע סכום וריבוע הפרש, מזהים את האיבר האמצעי ובודקים את התוצאה בכפל סוגריים. שלוש רמות תרגול: א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+          "after": "מתרגלים פיתוח של ריבוע סכום וריבוע הפרש ומזהים את האיבר האמצעי. לצד הדפים הקיימים נוספה חבילת PDF משולבת, הכוללת גם הפרש ריבועים, פישוט ביטויים וחישובים מספריים. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה.",
+          "existedBefore": true
+        },
+        {
+          "path": [
+            "jsonLd"
+          ],
+          "before": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/binomial-square-grade-9#webpage",
+                "url": "https://www.noamdoronmath.co.il/binomial-square-grade-9",
+                "name": "דו־איבר בריבוע לכיתה ט׳ | נועם דורון - מתמטיקה דפי מתמטיקה בחינם",
+                "description": "דו־איבר בריבוע לכיתה ט׳: תרגול ריבוע סכום וריבוע הפרש, פיתוח ביטויים ואיבר אמצעי עם דפי עבודה בשלוש רמות — א׳, ב׳ ומצוינות. בחינם וללא הרשמה למורים ולתלמידים.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/binomial-square-grade-9#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/binomial-square-grade-9#learning-resource",
+                "name": "דו־איבר בריבוע לכיתה ט׳",
+                "url": "https://www.noamdoronmath.co.il/binomial-square-grade-9",
+                "description": "דו־איבר בריבוע לכיתה ט׳: תרגול ריבוע סכום וריבוע הפרש, פיתוח ביטויים ואיבר אמצעי עם דפי עבודה בשלוש רמות — א׳, ב׳ ומצוינות. בחינם וללא הרשמה למורים ולתלמידים.",
+                "educationalLevel": "כיתה ט׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/binomial-square-grade-9#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא דו־איבר בריבוע לכיתה ט׳ מתאימים לכיתה ט׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "after": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/binomial-square-grade-9#webpage",
+                "url": "https://www.noamdoronmath.co.il/binomial-square-grade-9",
+                "name": "דו־איבר בריבוע לכיתה ט׳ | נועם דורון - מתמטיקה דפי מתמטיקה בחינם",
+                "description": "דו־איבר בריבוע ונוסחאות הכפל המקוצר לכיתה ט׳: ריבוע סכום והפרש, הפרש ריבועים, פישוט וחישובים. דפי PDF בשלוש רמות עם תשובות סופיות.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/binomial-square-grade-9#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/binomial-square-grade-9#learning-resource",
+                "name": "דו־איבר בריבוע לכיתה ט׳",
+                "url": "https://www.noamdoronmath.co.il/binomial-square-grade-9",
+                "description": "דו־איבר בריבוע ונוסחאות הכפל המקוצר לכיתה ט׳: ריבוע סכום והפרש, הפרש ריבועים, פישוט וחישובים. דפי PDF בשלוש רמות עם תשובות סופיות.",
+                "educationalLevel": "כיתה ט׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/binomial-square-grade-9#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא דו־איבר בריבוע לכיתה ט׳ מתאימים לכיתה ט׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "מה כוללים קובצי ה־PDF הנוספים?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "חבילת ה־PDF משלבת ריבוע של סכום, ריבוע של הפרש ומכפלת סכום והפרש. מתרגלים פיתוח ופישוט ביטויים, חישובים מספריים, בדיקת טענות ובניית דוגמאות. זהו תרגול אלגברי ממוקד. שלוש רמות להורדה ולהדפסה, עם תשובות סופיות."
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "existedBefore": true
+        },
+        {
+          "path": [
+            "sections"
+          ],
+          "before": [
+            {
+              "heading": "דו־איבר בריבוע — הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בריבוע סכום: (x+3)² = x²+6x+9. האיבר האמצעי הוא פעמיים מכפלת שני האיברים. אפשר לבדוק בכפל של שני סוגריים זהים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "טעות נפוצה: אין להשמיט את האיבר האמצעי. ריבוע של סכום אינו סכום הריבועים בלבד.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בדקו את עצמכם: מהו הפיתוח של (x−4)²? תשובה: x²−8x+16.",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "דו־איבר בריבוע — הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בריבוע סכום: (x+3)² = x²+6x+9. האיבר האמצעי הוא פעמיים מכפלת שני האיברים. אפשר לבדוק בכפל של שני סוגריים זהים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "טעות נפוצה: אין להשמיט את האיבר האמצעי. ריבוע של סכום אינו סכום הריבועים בלבד.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בדקו את עצמכם: מהו הפיתוח של (x−4)²? תשובה: x²−8x+16.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "נוסחאות הכפל המקוצר: תרגול אלגברי משולב — PDF",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "חבילת ה־PDF משלבת ריבוע של סכום, ריבוע של הפרש ומכפלת סכום והפרש. מתרגלים פיתוח ופישוט ביטויים, חישובים מספריים, בדיקת טענות ובניית דוגמאות. זהו תרגול אלגברי ממוקד.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה דפים ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "existedBefore": true
+        },
+        {
+          "path": [
+            "updatedLine"
+          ],
+          "before": null,
+          "after": "נועם דורון מתמטיקה · עודכן 15.11.2026",
+          "existedBefore": true
+        },
+        {
+          "path": [
+            "updatedLinePlacement"
+          ],
+          "before": "absent",
+          "after": "after-sections",
+          "existedBefore": true
+        }
+      ]
+    },
+    {
+      "slug": "algebraic-fractions-grade-9",
+      "baselineSha256": "26daf7287b854137145e677707717cc0c787312c44d0cb282ccf582c0c0ece87",
+      "fields": [
+        {
+          "path": [
+            "description"
+          ],
+          "before": "תרגול צמצום שברים אלגבריים ותחום הצבה לכיתה ט׳. דפי עבודה חינמיים בשלוש רמות, דוגמה מוסברת ורמזי נועם AI, ללא הרשמה.",
+          "after": "שברים אלגבריים לכיתה ט׳: תחום הצבה, צמצום, כפל וחילוק, כולל בדיקה שהשבר המחלק אינו אפס. דפי PDF בשלוש רמות עם תשובות סופיות.",
+          "existedBefore": true
+        },
+        {
+          "path": [
+            "faq"
+          ],
+          "before": [
+            {
+              "question": "האם דפי העבודה בנושא צמצום שברים אלגבריים לכיתה ט׳ מתאימים לכיתה ט׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          ],
+          "after": [
+            {
+              "question": "האם דפי העבודה בנושא צמצום שברים אלגבריים לכיתה ט׳ מתאימים לכיתה ט׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            },
+            {
+              "question": "מה כוללים קובצי ה־PDF הנוספים?",
+              "answer": "לפני צמצום, כפל או חילוק של שברים אלגבריים קובעים את תחום ההצבה מן הביטוי המקורי. בחילוק בודקים גם שהשבר המחלק שונה מאפס. בדפים מתרגלים את ההגבלות המקוריות, פישוט, הצבה ובדיקת טענות. שלוש רמות להורדה ולהדפסה, עם תשובות סופיות."
+            }
+          ],
+          "existedBefore": true
+        },
+        {
+          "path": [
+            "faqGroups"
+          ],
+          "before": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא צמצום שברים אלגבריים לכיתה ט׳ מתאימים לכיתה ט׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא צמצום שברים אלגבריים לכיתה ט׳ מתאימים לכיתה ט׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                },
+                {
+                  "question": "מה כוללים קובצי ה־PDF הנוספים?",
+                  "answer": "לפני צמצום, כפל או חילוק של שברים אלגבריים קובעים את תחום ההצבה מן הביטוי המקורי. בחילוק בודקים גם שהשבר המחלק שונה מאפס. בדפים מתרגלים את ההגבלות המקוריות, פישוט, הצבה ובדיקת טענות. שלוש רמות להורדה ולהדפסה, עם תשובות סופיות."
+                }
+              ]
+            }
+          ],
+          "existedBefore": true
+        },
+        {
+          "path": [
+            "intro"
+          ],
+          "before": "מפרקים לגורמים, מצמצמים שברים אלגבריים ורושמים תחום הצבה. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+          "after": "מפרקים לגורמים, מצמצמים שברים אלגבריים ורושמים תחום הצבה. לצד הדפים הקיימים נוספו קובצי PDF המשלבים גם כפל וחילוק שברים אלגבריים. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה.",
+          "existedBefore": true
+        },
+        {
+          "path": [
+            "jsonLd"
+          ],
+          "before": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/algebraic-fractions-grade-9#webpage",
+                "url": "https://www.noamdoronmath.co.il/algebraic-fractions-grade-9",
+                "name": "צמצום שברים אלגבריים לכיתה ט׳ | נועם דורון",
+                "description": "תרגול צמצום שברים אלגבריים ותחום הצבה לכיתה ט׳. דפי עבודה חינמיים בשלוש רמות, דוגמה מוסברת ורמזי נועם AI, ללא הרשמה.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/algebraic-fractions-grade-9#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/algebraic-fractions-grade-9#learning-resource",
+                "name": "צמצום שברים אלגבריים לכיתה ט׳",
+                "url": "https://www.noamdoronmath.co.il/algebraic-fractions-grade-9",
+                "description": "תרגול צמצום שברים אלגבריים ותחום הצבה לכיתה ט׳. דפי עבודה חינמיים בשלוש רמות, דוגמה מוסברת ורמזי נועם AI, ללא הרשמה.",
+                "educationalLevel": "כיתה ט׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/algebraic-fractions-grade-9#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא צמצום שברים אלגבריים לכיתה ט׳ מתאימים לכיתה ט׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "after": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/algebraic-fractions-grade-9#webpage",
+                "url": "https://www.noamdoronmath.co.il/algebraic-fractions-grade-9",
+                "name": "צמצום שברים אלגבריים לכיתה ט׳ | נועם דורון",
+                "description": "שברים אלגבריים לכיתה ט׳: תחום הצבה, צמצום, כפל וחילוק, כולל בדיקה שהשבר המחלק אינו אפס. דפי PDF בשלוש רמות עם תשובות סופיות.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/algebraic-fractions-grade-9#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/algebraic-fractions-grade-9#learning-resource",
+                "name": "צמצום שברים אלגבריים לכיתה ט׳",
+                "url": "https://www.noamdoronmath.co.il/algebraic-fractions-grade-9",
+                "description": "שברים אלגבריים לכיתה ט׳: תחום הצבה, צמצום, כפל וחילוק, כולל בדיקה שהשבר המחלק אינו אפס. דפי PDF בשלוש רמות עם תשובות סופיות.",
+                "educationalLevel": "כיתה ט׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/algebraic-fractions-grade-9#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא צמצום שברים אלגבריים לכיתה ט׳ מתאימים לכיתה ט׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "מה כוללים קובצי ה־PDF הנוספים?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לפני צמצום, כפל או חילוק של שברים אלגבריים קובעים את תחום ההצבה מן הביטוי המקורי. בחילוק בודקים גם שהשבר המחלק שונה מאפס. בדפים מתרגלים את ההגבלות המקוריות, פישוט, הצבה ובדיקת טענות. שלוש רמות להורדה ולהדפסה, עם תשובות סופיות."
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "existedBefore": true
+        },
+        {
+          "path": [
+            "sections"
+          ],
+          "before": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בביטוי ⟨(x²−9)¦(x−3)⟩ תחילה קובעים x≠3. לאחר פירוק המונה לגורמים מצמצמים גורם משותף ומקבלים x+3, עם אותה הגבלה.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מצמצמים גורמים במכפלה, לא איברים בסכום. תחום ההצבה נשאר בתוקף גם אחרי הצמצום.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מה מקבלים מצמצום ⟨(x²−4)¦(x−2)⟩, ובאיזה תנאי? תשובה: x+2, בתנאי x≠2.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בביטוי ⟨(x²−9)¦(x−3)⟩ תחילה קובעים x≠3. לאחר פירוק המונה לגורמים מצמצמים גורם משותף ומקבלים x+3, עם אותה הגבלה.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מצמצמים גורמים במכפלה, לא איברים בסכום. תחום ההצבה נשאר בתוקף גם אחרי הצמצום.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מה מקבלים מצמצום ⟨(x²−4)¦(x−2)⟩, ובאיזה תנאי? תשובה: x+2, בתנאי x≠2.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "תחום הצבה, צמצום, כפל וחילוק — PDF",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "לפני צמצום, כפל או חילוק של שברים אלגבריים קובעים את תחום ההצבה מן הביטוי המקורי. בחילוק בודקים גם שהשבר המחלק שונה מאפס. בדפים מתרגלים את ההגבלות המקוריות, פישוט, הצבה ובדיקת טענות.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה דפים ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "existedBefore": true
+        },
+        {
+          "path": [
+            "updatedLine"
+          ],
+          "before": null,
+          "after": "נועם דורון מתמטיקה · עודכן 15.11.2026",
+          "existedBefore": true
+        },
+        {
+          "path": [
+            "updatedLinePlacement"
+          ],
+          "before": "absent",
+          "after": "after-sections",
+          "existedBefore": true
+        }
+      ]
+    },
+    {
+      "slug": "difference-of-squares-grade-9",
+      "baselineSha256": "2c09e816907fd7766ff350e73652e5b7c0c790ba3d2b95af4796182ea9266962",
+      "fields": [
+        {
+          "path": [
+            "bodyFlow"
+          ],
+          "before": [
+            {
+              "type": "paragraph",
+              "text": "מתרגלים פירוק לגורמים בעזרת נוסחת הפרש ריבועים, מזהים שני ריבועים ומוודאים את התוצאה בכפל. שלוש רמות תרגול: א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "פתיחת דפי עבודה",
+              "href": "/worksheets?grade=9&topic=45",
+              "catalogTopicId": 45
+            },
+            {
+              "type": "heading",
+              "text": "הפרש ריבועים — הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "הפרש ריבועים מתפרק למכפלת סכום בהפרש: a²−b²=(a−b)(a+b). לכן x²−25=(x−5)(x+5).",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "טעות נפוצה: הנוסחה חלה על הפרש ריבועים. אין להחיל אותה באותה צורה על סכום ריבועים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "בדקו את עצמכם: כיצד מפרקים את x²−49? תשובה: למכפלה של x−7 ושל x+7.",
+              "role": "self-check"
+            }
+          ],
+          "after": [
+            {
+              "type": "paragraph",
+              "text": "מתרגלים פירוק לגורמים בעזרת נוסחת הפרש ריבועים, מזהים שני ריבועים ומוודאים את התוצאה בכפל. נוסף קישור לחבילת PDF משולבת של נוסחאות הכפל המקוצר. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "פתיחת דפי עבודה",
+              "href": "/worksheets?grade=9&topic=45",
+              "catalogTopicId": 45
+            },
+            {
+              "type": "heading",
+              "text": "הפרש ריבועים — הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "הפרש ריבועים מתפרק למכפלת סכום בהפרש: a²−b²=(a−b)(a+b). לכן x²−25=(x−5)(x+5).",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "טעות נפוצה: הנוסחה חלה על הפרש ריבועים. אין להחיל אותה באותה צורה על סכום ריבועים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "בדקו את עצמכם: כיצד מפרקים את x²−49? תשובה: למכפלה של x−7 ושל x+7.",
+              "role": "self-check"
+            },
+            {
+              "type": "heading",
+              "text": "תרגול משולב של נוסחאות הכפל המקוצר — PDF"
+            },
+            {
+              "type": "paragraph",
+              "text": "חבילת ה־PDF הנוספת כוללת ריבוע של סכום והפרש, הפרש ריבועים, פישוט וחישובים, עם תשובות סופיות. אלה אותם שלושה קבצים המופיעים בעמוד דו־איבר בריבוע.",
+              "role": "body"
+            },
+            {
+              "type": "cta",
+              "label": "נוסחאות הכפל המקוצר — PDF משולב בשלוש רמות",
+              "href": "/worksheets?grade=9&topic=44",
+              "catalogTopicId": 44
+            }
+          ],
+          "existedBefore": true
+        },
+        {
+          "path": [
+            "catalogCtas"
+          ],
+          "before": [
+            {
+              "label": "פתיחת דפי עבודה",
+              "href": "/worksheets?grade=9&topic=45",
+              "source": "production-github-cta",
+              "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=9&topic=45",
+              "catalogTopicId": 45,
+              "catalogTopicTitle": "הפרש ריבועים"
+            }
+          ],
+          "after": [
+            {
+              "label": "פתיחת דפי עבודה",
+              "href": "/worksheets?grade=9&topic=45",
+              "source": "production-github-cta",
+              "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=9&topic=45",
+              "catalogTopicId": 45,
+              "catalogTopicTitle": "הפרש ריבועים"
+            },
+            {
+              "label": "נוסחאות הכפל המקוצר — PDF משולב בשלוש רמות",
+              "href": "/worksheets?grade=9&topic=44",
+              "source": "reviewed-pdf-edition-related-topic",
+              "catalogTopicId": 44,
+              "catalogTopicTitle": "דו־איבר בריבוע"
+            }
+          ],
+          "existedBefore": true
+        },
+        {
+          "path": [
+            "description"
+          ],
+          "before": "הפרש ריבועים לכיתה ט׳: זיהוי התבנית ופירוק לגורמים, עם דוגמה ותרגול. דפי עבודה חינמיים בשלוש רמות להורדה ולהדפסה, ללא הרשמה, עם רמזים של נועם AI.",
+          "after": "הפרש ריבועים לכיתה ט׳: זיהוי התבנית ופירוק לגורמים, עם דוגמה ודפי עבודה. קישור נוסף לחבילת PDF משולבת של נוסחאות הכפל המקוצר בשלוש רמות.",
+          "existedBefore": true
+        },
+        {
+          "path": [
+            "intro"
+          ],
+          "before": "מתרגלים פירוק לגורמים בעזרת נוסחת הפרש ריבועים, מזהים שני ריבועים ומוודאים את התוצאה בכפל. שלוש רמות תרגול: א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+          "after": "מתרגלים פירוק לגורמים בעזרת נוסחת הפרש ריבועים, מזהים שני ריבועים ומוודאים את התוצאה בכפל. נוסף קישור לחבילת PDF משולבת של נוסחאות הכפל המקוצר. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה.",
+          "existedBefore": true
+        },
+        {
+          "path": [
+            "jsonLd"
+          ],
+          "before": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/difference-of-squares-grade-9#webpage",
+                "url": "https://www.noamdoronmath.co.il/difference-of-squares-grade-9",
+                "name": "הפרש ריבועים לכיתה ט׳ | נועם דורון - מתמטיקה דפי מתמטיקה בחינם",
+                "description": "הפרש ריבועים לכיתה ט׳: זיהוי התבנית ופירוק לגורמים, עם דוגמה ותרגול. דפי עבודה חינמיים בשלוש רמות להורדה ולהדפסה, ללא הרשמה, עם רמזים של נועם AI.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/difference-of-squares-grade-9#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/difference-of-squares-grade-9#learning-resource",
+                "name": "הפרש ריבועים לכיתה ט׳",
+                "url": "https://www.noamdoronmath.co.il/difference-of-squares-grade-9",
+                "description": "הפרש ריבועים לכיתה ט׳: זיהוי התבנית ופירוק לגורמים, עם דוגמה ותרגול. דפי עבודה חינמיים בשלוש רמות להורדה ולהדפסה, ללא הרשמה, עם רמזים של נועם AI.",
+                "educationalLevel": "כיתה ט׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/difference-of-squares-grade-9#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא הפרש ריבועים לכיתה ט׳ מתאימים לכיתה ט׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "after": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/difference-of-squares-grade-9#webpage",
+                "url": "https://www.noamdoronmath.co.il/difference-of-squares-grade-9",
+                "name": "הפרש ריבועים לכיתה ט׳ | נועם דורון - מתמטיקה דפי מתמטיקה בחינם",
+                "description": "הפרש ריבועים לכיתה ט׳: זיהוי התבנית ופירוק לגורמים, עם דוגמה ודפי עבודה. קישור נוסף לחבילת PDF משולבת של נוסחאות הכפל המקוצר בשלוש רמות.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/difference-of-squares-grade-9#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/difference-of-squares-grade-9#learning-resource",
+                "name": "הפרש ריבועים לכיתה ט׳",
+                "url": "https://www.noamdoronmath.co.il/difference-of-squares-grade-9",
+                "description": "הפרש ריבועים לכיתה ט׳: זיהוי התבנית ופירוק לגורמים, עם דוגמה ודפי עבודה. קישור נוסף לחבילת PDF משולבת של נוסחאות הכפל המקוצר בשלוש רמות.",
+                "educationalLevel": "כיתה ט׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/difference-of-squares-grade-9#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא הפרש ריבועים לכיתה ט׳ מתאימים לכיתה ט׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "existedBefore": true
+        },
+        {
+          "path": [
+            "sections"
+          ],
+          "before": [
+            {
+              "heading": "הפרש ריבועים — הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "הפרש ריבועים מתפרק למכפלת סכום בהפרש: a²−b²=(a−b)(a+b). לכן x²−25=(x−5)(x+5).",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "טעות נפוצה: הנוסחה חלה על הפרש ריבועים. אין להחיל אותה באותה צורה על סכום ריבועים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בדקו את עצמכם: כיצד מפרקים את x²−49? תשובה: למכפלה של x−7 ושל x+7.",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "הפרש ריבועים — הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "הפרש ריבועים מתפרק למכפלת סכום בהפרש: a²−b²=(a−b)(a+b). לכן x²−25=(x−5)(x+5).",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "טעות נפוצה: הנוסחה חלה על הפרש ריבועים. אין להחיל אותה באותה צורה על סכום ריבועים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בדקו את עצמכם: כיצד מפרקים את x²−49? תשובה: למכפלה של x−7 ושל x+7.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "תרגול משולב של נוסחאות הכפל המקוצר — PDF",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "חבילת ה־PDF הנוספת כוללת ריבוע של סכום והפרש, הפרש ריבועים, פישוט וחישובים, עם תשובות סופיות. אלה אותם שלושה קבצים המופיעים בעמוד דו־איבר בריבוע.",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "existedBefore": true
+        },
+        {
+          "path": [
+            "updatedLine"
+          ],
+          "before": null,
+          "after": "נועם דורון מתמטיקה · עודכן 15.11.2026",
+          "existedBefore": true
+        },
+        {
+          "path": [
+            "updatedLinePlacement"
+          ],
+          "before": "absent",
+          "after": "after-sections",
+          "existedBefore": true
+        }
+      ]
+    }
+  ]
+}

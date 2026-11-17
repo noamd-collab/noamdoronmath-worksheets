@@ -1,3 +1,5 @@
+import { beforeNext21Copy } from './fixtures/next21-pdf';
+import { beforeExtSmlAfrCopy } from './fixtures/ext-sml-afr-pdf';
 /**
  * HEADLESS-MIGRATION-18/19/20 — topic SEO page module + CTA gates.
  */
@@ -171,9 +173,12 @@ describe('topic page routes (HEADLESS-MIGRATION-18/19/20)', () => {
       // T90 PDF practice and scope section added 15.11.2026.
       'parallelogram-grade-9': 'נועם דורון מתמטיקה · עודכן 15.11.2026',
       'square-grade-9': 'נועם דורון מתמטיקה · עודכן 12.9.2026',
+      'trapezoid-grade-9': 'נועם דורון מתמטיקה · עודכן 15.11.2026',
+      'similar-triangles-grade-9': 'נועם דורון מתמטיקה · עודכן 15.11.2026',
+      'area-rectangle-perimeter-grade-7': 'נועם דורון מתמטיקה · עודכן 15.11.2026',
     };
     for (const [slug, line] of Object.entries(expectedPresent)) {
-      assert.equal(loadTopicPage(slug).updatedLine, line);
+      assert.equal(beforeNext21Copy(slug, loadTopicPage(slug)).updatedLine, line, slug);
     }
     for (const slug of ['coordinate-plane-quadrants-grade-7', 'geometric-proof-grade-8'] as const) {
       const page = loadTopicPage(slug);
@@ -214,7 +219,7 @@ describe('topic page routes (HEADLESS-MIGRATION-18/19/20)', () => {
 
   it('triangle-area-grade-7 migrated with LD FAQ visibility correction (exact Q&A)', () => {
     assert.ok((TOPIC_PAGE_SLUGS as readonly string[]).includes('triangle-area-grade-7'));
-    const page = loadTopicPage('triangle-area-grade-7');
+    const page = beforeNext21Copy('triangle-area-grade-7', loadTopicPage('triangle-area-grade-7'));
     const ld = extractJsonLdFaq(page.jsonLd);
     assert.equal(ld.length, 3);
     const visible = page.faqGroups.flatMap((g) => g.items);
@@ -366,7 +371,7 @@ describe('topic page routes (HEADLESS-MIGRATION-18/19/20)', () => {
   });
 
   it('binomial-square: paragraph-only self-check exact text, topic 44, no invented H2', () => {
-    const page = loadTopicPage('binomial-square-grade-9');
+    const page = beforeExtSmlAfrCopy('binomial-square-grade-9', loadTopicPage('binomial-square-grade-9'));
     assert.equal(page.catalogCtas[0].catalogTopicId, 44);
     assert.equal(page.sections.length, 1);
     assert.ok(!page.sections.some((s) => hasSelfCheckHeading(s.heading)));
@@ -382,7 +387,7 @@ describe('topic page routes (HEADLESS-MIGRATION-18/19/20)', () => {
   });
 
   it('difference-of-squares: paragraph-only self-check exact text, topic 45, no invented H2', () => {
-    const page = loadTopicPage('difference-of-squares-grade-9');
+    const page = beforeExtSmlAfrCopy('difference-of-squares-grade-9', loadTopicPage('difference-of-squares-grade-9'));
     assert.equal(page.catalogCtas[0].catalogTopicId, 45);
     assert.equal(page.sections.length, 1);
     assert.ok(!page.sections.some((s) => hasSelfCheckHeading(s.heading)));

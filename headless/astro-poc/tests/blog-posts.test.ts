@@ -89,7 +89,7 @@ describe('M25 blog pilot', () => {
     assert.ok(withWix >= 5, `expected several Wix Media URLs, got ${withWix}`);
   });
 
-  it('annual-review preserves author/editor, FAQ, WhatsApp, category, recent, reading time', () => {
+  it('annual-review preserves author/editor, FAQ, category, recent, reading time (WhatsApp group removed)', () => {
     const post = loadBlogPostByPath('/post/annual-review-grade-7');
     assert.ok(post);
     const flags = expectedChromeFlags(post!);
@@ -97,7 +97,7 @@ describe('M25 blog pilot', () => {
       readingTime: true,
       authorEditor: true,
       faq: true,
-      whatsapp: true,
+      whatsapp: false,
       postCategory: true,
       recentPosts: true,
     });
@@ -105,7 +105,7 @@ describe('M25 blog pilot', () => {
     assert.ok(post!.authorEditor?.text.includes('נכתב ונערך'));
     assert.ok(/aboutus/.test(post!.authorEditor?.aboutHref || ''));
     assert.equal(post!.faq?.items.length, 3);
-    assert.ok(post!.whatsapp?.ctaHref?.includes('whatsapp'));
+    assert.equal(post!.whatsapp, undefined);
     assert.equal(post!.postCategory?.text, 'חטיבת הביניים');
     assert.equal(post!.recentPosts?.items.length, 3);
     assert.ok(post!.recentPosts!.items.every((i) => (i.description || '').length > 20));
@@ -136,11 +136,9 @@ describe('M25 blog pilot', () => {
           assert.ok(item.answer.length > 5);
         }
       }
-      if (baseline.whatsapp) {
-        assert.ok(post.whatsapp?.heading);
-        assert.ok(post.whatsapp?.body);
-        assert.ok(post.whatsapp?.ctaHref?.includes('whatsapp'));
-      }
+      // Noam removed the WhatsApp group (2026-11-15): no post links to it.
+      assert.equal(baseline.whatsapp, false);
+      assert.equal(post.whatsapp, undefined);
       if (baseline.postCategory) {
         assert.ok(post.postCategory?.text);
         assert.ok(/blog\/categories/.test(post.postCategory?.href || ''));

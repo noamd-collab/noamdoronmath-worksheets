@@ -284,6 +284,7 @@ export const NON_LANDING_SITE_SLUGS = [
   'accessibilityadaptation',
   'terms',
   'conditionforfreeworksheets',
+  'privacy',
 ] as const;
 
 /**

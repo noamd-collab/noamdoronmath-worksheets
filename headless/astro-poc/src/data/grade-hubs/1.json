@@ -19,13 +19,6 @@
   "faqHeading": null,
   "faq": [],
   "faqNote": "Production /grade-1…6 pages have no visible FAQ section (verified in browser). Not invented.",
-  "whatsapp": {
-    "heading": "נפגשים גם בוואטסאפ",
-    "body": "הצטרפו לקבוצת הוואטסאפ של נועם דורון מתמטיקה, והישארו בקשר גם בין דפי העבודה.",
-    "ctaLabel": "להצטרפות לקבוצת הוואטסאפ",
-    "href": "https://chat.whatsapp.com/DOepmlK5bKxCBbbGMusLdF?mode=gi_t",
-    "hrefSource": "production-whatsapp-link"
-  },
   "terms": {
     "label": "תקנון שימוש בדפי עבודה חינמיים",
     "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
@@ -53,7 +46,7 @@
     },
     {
       "label": "מדיניות הפרטיות",
-      "href": "https://www.noamdoronmath.co.il/accessibilityadaptation#privacy-policy"
+      "href": "https://www.noamdoronmath.co.il/privacy"
     },
     {
       "label": "תנאי השימוש",

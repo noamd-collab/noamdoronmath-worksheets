@@ -15,7 +15,8 @@ const page = loadSitePage(slug);
 const footerLinks = [
   { href: '/conditionforfreeworksheets', label: 'תקנון שימוש בדפי עבודה חינמיים' },
   { href: '/terms', label: 'תנאי השימוש' },
-  { href: '/accessibilityadaptation', label: 'הצהרת נגישות ומדיניות פרטיות' },
+  { href: '/accessibilityadaptation', label: 'הצהרת נגישות' },
+  { href: '/privacy', label: 'מדיניות פרטיות' },
   { href: '/aboutus', label: 'צור קשר' },
 ];
 
@@ -146,8 +147,9 @@ const marketingLoop = marketingLandingLoop(page.slug);
           }
           const block = unit.block;
           if (block.type === 'h2') {
-            // Stable anchor for combined accessibility+privacy page (verified content exists).
-            const id = block.text === 'מדיניות פרטיות' ? 'privacy-policy' : undefined;
+            // Stable anchors: explicit block.id (e.g. /privacy#ai), and the old #privacy-policy
+            // anchor on the accessibility statement, which now points to /privacy.
+            const id = block.id ?? (block.text === 'מדיניות פרטיות' ? 'privacy-policy' : undefined);
             return <h2 id={id}>{block.text}</h2>;
           }
           if (block.type === 'h3') return <h3>{block.text}</h3>;
@@ -258,6 +260,11 @@ const marketingLoop = marketingLandingLoop(page.slug);
                     הודעה*
                     <textarea name="message" required />
                   </label>
+                  <p class="site-page__contact-privacy" data-contact-privacy>
+                    מסירת הפרטים היא רשות, אבל בלי שם ודוא"ל לא נוכל לחזור אליכם. נשתמש בהם רק כדי לענות לפנייה. הפנייה
+                    נשמרת במערכת הטפסים של Wix, שהשרתים שלה מחוץ לישראל. אפשר לבקש לעיין במידע, לתקן אותו או למחוק אותו.
+                    מתחת לגיל 13? בקשו מהורה לשלוח את הפנייה. <a href="/privacy">מדיניות הפרטיות</a>
+                  </p>
                   <button type="submit">שליחה</button>
                 </form>
                 <p class="site-page__contact-status" data-contact-status role="status" aria-live="polite" />

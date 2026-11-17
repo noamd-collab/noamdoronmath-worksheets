@@ -1,4 +1,8 @@
+import { reviewedNext12Ids } from './fixtures/next12-pdf';
+import { reviewedNext21Ids } from './fixtures/next21-pdf';
+import { reviewedBatch01Ids } from './fixtures/batch01-pdf';
 import { reviewedSaoWpcIds } from './fixtures/sao-wpc-pdf';
+import { reviewedExtSmlAfrIds } from './fixtures/ext-sml-afr-pdf';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
@@ -115,7 +119,7 @@ test('manifest sync omits unactivated PDFs while retaining legacy and verified e
   // later algebra and frequency PDFs, which must not gain viewer/hint activation.
   const algebraId = 'ms-20261115-alg-01-r1';
   const frequencyId = 'ms-20261115-frq-01-r1';
-  assert.equal(allPdfOnly.filter((e: any) => ![algebraId, frequencyId, 'ms-20261115-prb-01-r1', 'ms-20261115-rec-01-r1', 'ms-20261113-par-04-r1', ...reviewedEqnSgnFacIds, ...reviewedSaoWpcIds].includes(e.editionId)).flatMap((e: any) => e.levels).length, 18);
+  assert.equal(allPdfOnly.filter((e: any) => ![algebraId, frequencyId, 'ms-20261115-prb-01-r1', 'ms-20261115-rec-01-r1', 'ms-20261113-par-04-r1', ...reviewedEqnSgnFacIds, ...reviewedExtSmlAfrIds, ...reviewedSaoWpcIds, ...reviewedNext12Ids, ...reviewedNext21Ids, ...reviewedBatch01Ids].includes(e.editionId)).flatMap((e: any) => e.levels).length, 18);
   const algebra = allPdfOnly.filter((e: any) => e.editionId === algebraId);
   assert.equal(algebra.length, 1);
   assert.equal(algebra[0].grade, 7); assert.equal(algebra[0].topicId, 22);

@@ -33,17 +33,6 @@ export type HomePageContent = {
     heading: string;
     items: { title: string; body: string; href: string }[];
   };
-  whatsapp: {
-    kicker: string;
-    heading: string;
-    body: string;
-    ctaLabel: string;
-    ctaHref: string;
-    note: string;
-    qrAlt: string;
-    qrSrc: string;
-    qrCaption: string;
-  };
   footer: {
     brandName: string;
     brandBlurb: string;
@@ -123,7 +112,6 @@ export function homePageRequiredHrefs(home: HomePageContent = loadHomePage()): s
     '/conditionforfreeworksheets',
     '/terms',
     '/accessibilityadaptation',
-    home.whatsapp.ctaHref,
     `mailto:${home.footer.email}`,
     ...home.grades.map((g) => g.href),
     ...home.valueSections.items.map((i) => i.href),

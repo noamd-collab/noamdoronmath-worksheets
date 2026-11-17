@@ -1,3 +1,8 @@
+import { reviewedNext12 } from './fixtures/next12-pdf';
+import { reviewedNext21 } from './fixtures/next21-pdf';
+import { reviewedBatch01 } from './fixtures/batch01-pdf';
+import { reviewedSaoWpc } from './fixtures/sao-wpc-pdf';
+import { reviewedExtSmlAfr } from './fixtures/ext-sml-afr-pdf';
 /**
  * Regression tests for the PR 46 content review of the SEO proposals (390 rows).
  * Each block maps to a review finding or one of the seven review criteria.
@@ -23,7 +28,6 @@ import {
 } from '../scripts/lib/seo-copy.mjs';
 import { EXACT, KEEP_CURRENT, NEEDS_DECISION } from '../scripts/lib/seo-overrides.mjs';
 import { PDF_ONLY_TOPIC_COPY } from './fixtures/pdf-only-topic-copy';
-import { reviewedSaoWpc } from './fixtures/sao-wpc-pdf';
 import { reviewedEqnSgnFac } from './fixtures/eqn-sgn-fac-pdf';
 
 type Item = {
@@ -79,6 +83,18 @@ describe('seo proposals – generator and coverage', () => {
     assert.equal(factoringRow.description, factoringCopy.before);
     factoringRow.currentDescription = factoringCopy.after;
     factoringRow.description = factoringCopy.after;
+    for (const delta of reviewedExtSmlAfr.landingDeltas) {
+      const copy = delta.fields.find(d => d.path.length === 1 && d.path[0] === 'description')!;
+      const row = expected.find(item => item.path === '/' + delta.slug)!;
+      assert.equal(row.currentDescription, copy.before);
+      row.currentDescription = copy.after as string;
+      // The pre-existing SML review override remains authoritative; the other
+      // three rows use current copy, with their complete old value asserted.
+      if (delta.slug !== 'binomial-square-grade-9') {
+        assert.equal(row.description, copy.before);
+        row.description = copy.after as string;
+      }
+    }
     const saoCopy = reviewedSaoWpc.landingDeltas.find(d => d.slug === 'triangle-sides-angles-grade-9')!
       .fields.find(d => d.path.length === 1 && d.path[0] === 'description')!;
     const saoRow = expected.find(item => item.path === '/triangle-sides-angles-grade-9')!;
@@ -88,6 +104,62 @@ describe('seo proposals – generator and coverage', () => {
     saoRow.currentDescription = String(saoCopy.after);
     saoRow.description = String(saoCopy.after);
     saoRow.source = 'title:current|description:current';
+    for (const delta of reviewedNext12.landingDeltas) {
+      const copy = delta.fields.find(d => d.path[0] === 'description')!;
+      const row = expected.find(item => item.path === '/' + delta.slug)!;
+      assert.equal(row.currentDescription, copy.before);
+      row.currentDescription = String(copy.after);
+      if (delta.slug === 'similar-triangles-grade-9') {
+        const intro = delta.fields.find(d => d.path[0] === 'intro')!;
+        assert.equal(row.description, intro.before);
+        assert.equal(row.source, 'title:current|description:page-intro');
+        row.source = 'title:current|description:current';
+      } else {
+        assert.equal(row.description, copy.before);
+        assert.equal(row.source, 'title:current|description:current');
+      }
+      row.description = String(copy.after);
+    }
+    for (const delta of reviewedNext21.landingDeltas) {
+      const copy = delta.fields.find(d => d.path.length === 1 && d.path[0] === 'description')!;
+      const row = expected.find(item => item.path === '/' + delta.slug)!;
+      assert.equal(row.currentDescription, copy.before, `${delta.slug}: historical current description`);
+      row.currentDescription = String(copy.after);
+      if (delta.slug === 'powers-grade-7') {
+        // The independently reviewed powers override stays authoritative.
+        assert.equal(row.source, 'title:current|description:review-fix');
+        assert.equal(row.description, 'חזקות לכיתה ז׳: כפל חוזר, בסיס ומעריך וחישוב ביטויים פשוטים. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.');
+      } else {
+        if (delta.slug === 'triangle-area-grade-7') {
+          assert.equal(row.source, 'title:current|description:page-intro');
+          assert.equal(row.description, 'לומדים לחשב שטח משולש לפי בסיס וגובה, ולזהות את הגובה המאונך גם בשרטוטים שונים. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.');
+          row.source = 'title:current|description:current';
+        } else {
+          assert.equal(row.source, 'title:current|description:current');
+          assert.equal(row.description, copy.before);
+        }
+        row.description = String(copy.after);
+      }
+    }
+    for (const delta of reviewedBatch01.landingDeltas) {
+      const copy = delta.fields.find(d => d.path.length === 1 && d.path[0] === 'description')!;
+      const row = expected.find(item => item.path === '/' + delta.slug);
+      // The newer algebraic-systems landing is outside the frozen historical batch.
+      if (delta.slug === 'systems-algebraic-solution-grade-8') { assert.equal(row, undefined); continue; }
+      assert.ok(row, delta.slug);
+      assert.equal(row.currentDescription, copy.before, `${delta.slug}: historical current description`);
+      row.currentDescription = String(copy.after);
+      if (delta.slug === 'exterior-angle-triangle-grade-8') {
+        // The longer historical description fell back to the page intro; the new one fits.
+        assert.equal(row.source, 'title:current|description:page-intro');
+        assert.equal(row.description, 'משתמשים במשפט הזווית החיצונית במשולש ומבחינים בינה לבין הזווית הפנימית הצמודה לה. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.');
+        row.source = 'title:current|description:current';
+      } else {
+        assert.match(row.source, /\|description:current$/);
+        assert.equal(row.description, copy.before);
+      }
+      row.description = String(copy.after);
+    }
     assert.deepEqual(proposals, expected);
   });
 

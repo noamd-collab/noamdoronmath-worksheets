@@ -1,3 +1,4 @@
+import { beforeExtra15Catalog, beforeExtra15Registry } from './fixtures/extra15-pdf';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
@@ -20,10 +21,10 @@ const root = new URL('../../../', import.meta.url);
 const read = (path: string) => JSON.parse(readFileSync(new URL(path, root), 'utf8'));
 const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(value, null, 2) + '\n').digest('hex');
 const registry = read('headless/catalog/worksheet-editions.v1.json');
-const priorRegistry = { ...registry, editions: registry.editions.filter((e: any) => !ids.includes(e.editionId)) };
+const priorRegistry = beforeExtra15Registry(registry);
 const catalog = loadCatalog();
 const rawCatalog = read('headless/astro-poc/src/data/catalog.v1.json');
-const previous = beforeSaoWpcCatalog(rawCatalog);
+const previous = beforeExtra15Catalog(rawCatalog);
 const receipt = read('docs/sao-wpc-pdf-first-20261115.json');
 
 test('six exact additional PDFs preserve every preceding catalog and registry byte', () => {
@@ -32,7 +33,7 @@ test('six exact additional PDFs preserve every preceding catalog and registry by
   const expectedSsr = structuredClone(rawCatalog);
   expectedSsr.config.pdfBase = 'https://static.wixstatic.com/ugd/d8e7ad_';
   assert.deepEqual(catalog, expectedSsr, 'SSR preserves all values except its existing CDN-base normalization');
-  assert.equal(digest(beforeSaoWpcCatalog(read('headless/astro-poc/src/data/catalog.v1.json'))), reviewed.baselineCatalogSha256);
+  assert.equal(digest(beforeExtra15Catalog(read('headless/astro-poc/src/data/catalog.v1.json'))), reviewed.baselineCatalogSha256);
   assert.equal(digest(priorRegistry), reviewed.baselineRegistrySha256);
   assert.deepEqual(registry.editions.filter((e: any) => ids.includes(e.editionId)), reviewed.additions.map(a => a.edition));
   assert.equal(new Set(reviewed.additions.flatMap(a => a.pdfIds)).size, 6);

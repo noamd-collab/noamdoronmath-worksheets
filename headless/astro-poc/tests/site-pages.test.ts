@@ -11,8 +11,8 @@ import {
 } from '../src/lib/sitePages';
 
 describe('M24 site / policy pages', () => {
-  it('manifest has 6 migrated exact pages + 2 redirects', () => {
-    assert.equal(SITE_PAGE_M24_SLUGS.length, 6);
+  it('manifest has 7 migrated exact pages (incl. standalone /privacy) + 2 redirects', () => {
+    assert.equal(SITE_PAGE_M24_SLUGS.length, 7);
     assert.equal(SITE_PAGE_M24_REDIRECTS.length, 2);
     assert.deepEqual(
       SITE_PAGE_M24_REDIRECTS.map((r) => r.from).sort(),
@@ -90,9 +90,13 @@ describe('M24 site / policy pages', () => {
     );
     assert.ok(service);
     const privacy = page.blocks.find(
-      (b) => b.type === 'p' && b.segments?.some((s) => s.type === 'a' && s.href.includes('accessibilityadaptation'))
+      (b) => b.type === 'p' && b.segments?.some((s) => s.type === 'a' && s.href.endsWith('/privacy'))
     );
     assert.ok(privacy);
+    assert.ok(
+      privacy?.type === 'p' && privacy.segments?.some((s) => s.type === 'a' && s.href.includes('accessibilityadaptation')),
+      'section 7 links both the privacy policy and the accessibility statement'
+    );
     const contact = page.blocks.find(
       (b) => b.type === 'p' && b.segments?.some((s) => s.type === 'a' && s.href.startsWith('mailto:'))
     );
@@ -102,26 +106,24 @@ describe('M24 site / policy pages', () => {
     assert.ok(html.includes('noamd@noamdoronmath.co.il'));
   });
 
-  it('accessibilityadaptation is a combined a11y+privacy page (existence only; not legal rewrite)', () => {
+  it('accessibilityadaptation is the accessibility statement; privacy lives on /privacy (legal audit 2026-11-15)', () => {
     const page = loadSitePage('accessibilityadaptation');
-    assert.match(page.h1, /נגישות.*פרטיות|פרטיות.*נגישות/);
-    const privacyH2 = page.blocks.find((b) => b.type === 'h2' && b.text === 'מדיניות פרטיות');
-    assert.ok(privacyH2);
-    for (const h3 of [
-      'איזה מידע נאסף באתר?',
-      'הגנה על קטינים',
-      'כיצד אנו משתמשים במידע?',
-      'אחסון המידע (Wix)',
-      'שימוש בעוגיות (Cookies)',
-      'זכויותיכם ופרטי קשר',
-    ]) {
-      assert.ok(
-        page.blocks.some((b) => b.type === 'h3' && b.text === h3),
-        `missing privacy H3: ${h3}`
-      );
-    }
+    assert.equal(page.h1, 'הצהרת נגישות');
+    const text = page.blocks.map((b) => ('text' in b ? b.text : '')).join('\n');
+    assert.ok(text.includes('ת"י 5568'));
+    assert.ok(text.includes('AA'));
+    assert.ok(page.blocks.some((b) => b.type === 'h3' && b.text === 'חלקים שעדיין לא נגישים במלואם'));
+    assert.ok(page.blocks.some((b) => b.type === 'h3' && b.text === 'יצירת קשר בנושא נגישות'));
+    assert.ok(text.includes('noamd@noamdoronmath.co.il'));
+    // The old combined privacy text is gone, so it cannot contradict /privacy.
+    assert.ok(!page.blocks.some((b) => b.type === 'h3' && b.text === 'איזה מידע נאסף באתר?'));
+    // Old #privacy-policy links still land on a heading that points to /privacy.
+    const privacyH2 = page.blocks.findIndex((b) => b.type === 'h2' && b.text === 'מדיניות פרטיות');
+    assert.ok(privacyH2 >= 0);
+    const pointer = page.blocks[privacyH2 + 1];
+    assert.ok(pointer?.type === 'p' && pointer.segments?.some((s) => s.type === 'a' && s.href === '/privacy'));
     const sitePage = readFileSync('src/components/SitePage.astro', 'utf8');
-    assert.ok(sitePage.includes("id = block.text === 'מדיניות פרטיות' ? 'privacy-policy'"));
+    assert.ok(sitePage.includes("id = block.id ?? (block.text === 'מדיניות פרטיות' ? 'privacy-policy' : undefined)"));
   });
 
 

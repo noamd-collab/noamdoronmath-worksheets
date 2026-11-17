@@ -239,7 +239,7 @@ describe('non-blocking site-development notice', () => {
     assert.equal(byLabel['תקנון שימוש בדפי עבודה חינמיים'], '/conditionforfreeworksheets');
     assert.equal(byLabel['תנאי השימוש'], '/terms');
     assert.equal(byLabel['הצהרת נגישות'], '/accessibilityadaptation');
-    assert.equal(byLabel['מדיניות פרטיות'], '/accessibilityadaptation#privacy-policy');
+    assert.equal(byLabel['מדיניות פרטיות'], '/privacy');
     assert.match(footer, /footer\.legal\.map\([\s\S]*?<a\s+href=\{item\.href\}/);
     assert.doesNotMatch(footer, /footer\.legal\.(?:filter|slice)\(/, 'Do not hide real legal links when removing the modal');
   });
