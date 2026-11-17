@@ -634,3 +634,33 @@ test('real batch-06 pages expose all 33 direct PDFs in their mapped edition grou
   assert.ok(reduced.every(addition => addition.track === 'ט_מצומצמת'
     && addition.edition.label.includes('ט׳ מצומצמת')));
 });
+
+test('real batch-07 pages expose all 9 direct PDFs in their mapped edition groups', async () => {
+  const urls = new Set<string>();
+  const slugs = [...new Set(reviewedBatch07.additions.map(addition => addition.slug))];
+  for (const slug of slugs) {
+    const document = await renderTopic(slug), hero = document.querySelector('.exact-topic-copy')!;
+    const additions = reviewedBatch07.additions.filter(addition => addition.slug === slug);
+    for (const addition of additions) {
+      const links = [...hero.querySelectorAll(`a[data-edition-id="${addition.editionId}"]`)];
+      assert.deepEqual(links.map(link => link.getAttribute('href')),
+        addition.edition.levels.map(level => `https://static.wixstatic.com/ugd/d8e7ad_${level.pdfId}.pdf`));
+      assert.equal(links.length, 3, `${slug}/${addition.editionId}: all three levels`);
+      assert.ok(links.every(link => link.textContent.includes('פתיחת PDF')
+        && !link.textContent.includes('רמזי') && !link.getAttribute('href')!.includes('viewer')));
+      links.forEach(link => urls.add(link.getAttribute('href')!));
+    }
+    const delta = reviewedBatch07.landingDeltas.find(item => item.slug === slug)!;
+    const mainText = document.querySelector('main')!.textContent.replace(/[\u2066-\u2069]/g, '');
+    assert.ok(mainText.includes(delta.appendedSection.blocks[0].text), `${slug}: reviewed landing section`);
+    assert.ok(hero.querySelectorAll('a[data-edition-id="legacy"]').length >= 3, `${slug}: old downloads remain`);
+    const anchors = [...document.querySelectorAll('[id]')].map(element => element.id);
+    assert.equal(new Set(anchors).size, anchors.length, `${slug}: unique anchors`);
+  }
+  assert.equal(slugs.length, 3);
+  assert.equal(urls.size, 9);
+  const reduced = reviewedBatch07.additions.filter(addition => addition.sheetId === 'G9-LNM-01');
+  assert.equal(reduced.length, 1);
+  assert.ok(reduced.every(addition => addition.track === 'ט_מצומצמת'
+    && addition.edition.label.includes('ט׳ מצומצמת')));
+});

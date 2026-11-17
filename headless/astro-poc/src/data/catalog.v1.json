@@ -8036,10 +8036,10 @@
                   "labelSource": "edition",
                   "viewerLevel": "A",
                   "learningId": "g7-t22-a-e-ms-20261117-alg-05-r1",
-                  "nativeExportSha256": "2ffff7e080186ac7d68db1fc1d02ee0c5f7bae8fa366a45e6b920a4a3dca4164",
+                  "nativeExportSha256": "90653eb94693c1ce946f935791c74978ded511eeddf1ddad232de70290258e14",
                   "pdfSha256": "5c4c09520fe7711a12001297024912ff2388b3de2e0ba401767d56b7749c6708",
                   "revision": 1,
-                  "sourceSha256": "7ac2c914dfb7b06fef1dc55d24753a1999602c839b6bc1c212db21d3b3170320",
+                  "sourceSha256": "8aea6f0d409ecc7c7e7a9699f77f999c3355b1960dfa8332e814def9f6bcd4c5",
                   "worksheetId": "ms-g7-alg-05-a-r1"
                 },
                 {
@@ -8049,10 +8049,10 @@
                   "labelSource": "edition",
                   "viewerLevel": "B",
                   "learningId": "g7-t22-b-e-ms-20261117-alg-05-r1",
-                  "nativeExportSha256": "7ad2be6875d8151546ae6d37e374b350b16b7c686d3b2949696debcb6335948d",
+                  "nativeExportSha256": "bc5ba56454ef6b8a2d1ec94eebc98f6f8afec522c74134e23218e37db5d3cba3",
                   "pdfSha256": "ee19ba9f0749105638a4eb30ab845434220066ed0becd8fb98a088b069a10a93",
                   "revision": 1,
-                  "sourceSha256": "1c4cabd4eeb4390800d79ffdb105f457250ebd4cf464cd4f74ed7256fbe6902f",
+                  "sourceSha256": "1cbc59d1cbe84ca31fda9c7c95807a4a230fdb12265b82f37f8b3c8384a6a37e",
                   "worksheetId": "ms-g7-alg-05-b-r1"
                 },
                 {
@@ -8062,10 +8062,10 @@
                   "labelSource": "edition",
                   "viewerLevel": "E",
                   "learningId": "g7-t22-c-e-ms-20261117-alg-05-r1",
-                  "nativeExportSha256": "c18bd427c778d609e5815fe11daa186d55bba86222d4fabaca1b488c5fe93bfa",
+                  "nativeExportSha256": "c1783a53367e320f5d484ff13bd43d10ed923e7934d512831f405f04d224cf64",
                   "pdfSha256": "3f871b3e25d7ab0cf3d985b6bbd7a7512312adf103e546764140895dd0a381d8",
                   "revision": 1,
-                  "sourceSha256": "c75c270b85ec122e43064aa1dbdc87d95fa88344f307850c2a90385be17be0af",
+                  "sourceSha256": "8e70df055fc6b45af7657c923cddcb3aa47abe6e30e79ce0edb859a2cc7aabf9",
                   "worksheetId": "ms-g7-alg-05-c-r1"
                 }
               ],
@@ -16752,10 +16752,10 @@
                   "labelSource": "edition",
                   "viewerLevel": "A",
                   "learningId": "g9-t39-a-e-ms-20261117-trp-02-r1",
-                  "nativeExportSha256": "d4a64c359270d59b702a4fca72d2e863c88bcf5036db9349bf3e25140ca05308",
+                  "nativeExportSha256": "57bba14775d198ab3c456db8d1479702a4dcb587cf83600a4a0799ff1e3ef345",
                   "pdfSha256": "60b1edb772e4be68f52a2916b682952c1706f6ef7d2f77204b47512603de6f2a",
                   "revision": 1,
-                  "sourceSha256": "84e97b7d60d0a9a9f709fc9135c88cb23d26473fe2c8c4d5153357fae30ad2d3",
+                  "sourceSha256": "30a0474cc12356baaf87e02e1fff3600f709f566dc51d6a5d4d093f396b54f78",
                   "worksheetId": "ms-g9-trp-02-a-r1"
                 },
                 {
@@ -16765,10 +16765,10 @@
                   "labelSource": "edition",
                   "viewerLevel": "B",
                   "learningId": "g9-t39-b-e-ms-20261117-trp-02-r1",
-                  "nativeExportSha256": "2931e14d8139c207398f87443f307abf503aa7a03f9306e12f62f97635aef370",
+                  "nativeExportSha256": "4697a32d7f7a0b6393f8fb3694099c56e266332968889f89d621cb753dbb6995",
                   "pdfSha256": "058fb33976fc68af35e28f6a30844ffcddcb4f32ceecbd17467d1582ac7c6e18",
                   "revision": 1,
-                  "sourceSha256": "6eac295610ef7c40ba47e3bd2633d5e322d3f63a549811344c01f1907f6bedfb",
+                  "sourceSha256": "591de0416982412b0af64b1ea33a441b8c7c38891c42232ed717c8fc10aba569",
                   "worksheetId": "ms-g9-trp-02-b-r1"
                 },
                 {
@@ -16778,10 +16778,10 @@
                   "labelSource": "edition",
                   "viewerLevel": "E",
                   "learningId": "g9-t39-c-e-ms-20261117-trp-02-r1",
-                  "nativeExportSha256": "80196032bbf778b7fbdf2dfd53adc719217eb1d950f67d6fe69876dc3098fe1d",
+                  "nativeExportSha256": "f7fadc9338add59a9aaf536cd70c5e78ce40afca56c3ea1b81b33a4dbb2d43ed",
                   "pdfSha256": "103289876709627a13476863c42928327aeed375a5f47ee99130dd5124c3f608",
                   "revision": 1,
-                  "sourceSha256": "cdb936cf7c77cd63cca9fc786aa218232060a11a404b252b4d11176477c74564",
+                  "sourceSha256": "4e513256ca5917a4d6515002aec0595988e70b7a8d48a658041aa48b96ed5b68",
                   "worksheetId": "ms-g9-trp-02-c-r1"
                 }
               ],
@@ -18043,10 +18043,10 @@
                   "labelSource": "edition",
                   "viewerLevel": "A",
                   "learningId": "g9-t34-a-e-ms-20261117-lnm-01-r1",
-                  "nativeExportSha256": "9e74050670b4434f9c4d22e301ad3a3d2e138597d59ba496ef8284b20759dd7f",
+                  "nativeExportSha256": "e8a69fc605cc7ddb3b111fea43ad28368ffbd190e5ae3348e58058a56fc36f0e",
                   "pdfSha256": "a504630bd5a158269712c8a668a42cd82086f0088951553026d60ed02c393b1e",
                   "revision": 1,
-                  "sourceSha256": "910b174c1a64300163245b92ea8ce53903c788d19b789b09699a5001e157c2ef",
+                  "sourceSha256": "3465422569e0add8135d854e9098200716636c1a3698e0676231fa15a6f2303b",
                   "worksheetId": "ms-g9-lnm-01-a-r1"
                 },
                 {
@@ -18056,10 +18056,10 @@
                   "labelSource": "edition",
                   "viewerLevel": "B",
                   "learningId": "g9-t34-b-e-ms-20261117-lnm-01-r1",
-                  "nativeExportSha256": "e5fbbbf04f087a626a088130cc5332b196523fc052c07690a1a448aee09b87d3",
+                  "nativeExportSha256": "d0c2dfbdb13e047402dac34eece772ca45f61dee994cb5b4ff96e70c59ceb90b",
                   "pdfSha256": "d5afdc979c62980e3862586a2792b7964d887f790a24918109b48c6665ecbe5b",
                   "revision": 1,
-                  "sourceSha256": "994b93c01af1619ba2f8661cde70f305c999cd5299946255242a7e05215ae668",
+                  "sourceSha256": "80f82ea7fc7aa272d5ae4c6be866d1699fee23a66da904d6450a8ea1781e5344",
                   "worksheetId": "ms-g9-lnm-01-b-r1"
                 },
                 {
@@ -18069,10 +18069,10 @@
                   "labelSource": "edition",
                   "viewerLevel": "E",
                   "learningId": "g9-t34-c-e-ms-20261117-lnm-01-r1",
-                  "nativeExportSha256": "5d2b1a029bb54b0dc9f7802be7fb325eea458ab3434af21227b2afdc40e32111",
+                  "nativeExportSha256": "0bded90cfa011b09ff8bf49720bbe220327f1b1bc40c9782136b32c00d3f403c",
                   "pdfSha256": "c29b179148cc21d32488ee549342aaa2d2eaf64d2a4f99b8f887a7542a320b7d",
                   "revision": 1,
-                  "sourceSha256": "a22f82157eb257a071b15d9e4a48b2e5e686d5993b07f46b11990a734dc8af3f",
+                  "sourceSha256": "23005bbd9a0ad34b56e9d95563107ce2c03242be6ea26cda161b29fced61c86c",
                   "worksheetId": "ms-g9-lnm-01-c-r1"
                 }
               ],

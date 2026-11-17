@@ -304,7 +304,7 @@ test('preservation fences reject changed old links, substitutions, reordering, d
   roots.editions.unshift({ ...structuredClone(roots.editions[0]), editionId: 'ms-unreviewed-r1' });
   assert.throws(() => beforeBatch03Catalog(inserted));
   const changed = structuredClone(raw);
-  topicOf(changed, 9, 39).editions.at(-1).levels[0].sourceSha256 = '0'.repeat(64);
+  topicOf(changed, 9, 39).editions.find((e: any) => e.editionId === 'ms-20261117-itp-01-r1').levels[0].sourceSha256 = '0'.repeat(64);
   assert.throws(() => beforeBatch03Catalog(changed));
   const earlier = structuredClone(raw);
   topicOf(earlier, 7, 6).editions[0].label = 'changed earlier edition';

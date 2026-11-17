@@ -2,7 +2,7 @@
 
 - G9-TRP-02 (9/39, trapezoid-grade-9), G9-LNM-01 (9/34, linear-function-grade-9, ט׳ מצומצמת) and G7-ALG-05 (7/22, algebraic-expressions-grade-7): 9 PDFs on three existing topic pages. Every existing default and earlier edition stays in place.
 - Each landing gets one short section that describes the PDFs; the last paragraph says the PDFs are for download and printing and that hints are in the earlier sheets, which open with Ramzi.
-- Exact PDF SHA-256 values match a fresh CDN read-back (two reads per file). Review receipts (Google Antigravity) are cited in `docs/batch07-pdf-first-20261117.json` by project-relative path.
+- Exact PDF SHA-256 values match a fresh CDN read-back (two reads per file). Review receipts (Astra and Google Antigravity) are cited in `docs/batch07-pdf-first-20261117.json` by project-relative path.
 - New entries are non-default, PDF-only editions. G9-LIT-01 waits for a new topic page.
 
 ## 2026-11-17 — batch 06: eleven reviewed student PDF editions (candidate)

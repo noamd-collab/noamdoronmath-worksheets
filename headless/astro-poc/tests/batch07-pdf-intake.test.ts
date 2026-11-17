@@ -58,8 +58,8 @@ const PINS: Record<string, Array<[string, string]>> = {
     ['2f3e68107653463b94fefeb5c99d86b0', '3f871b3e25d7ab0cf3d985b6bbd7a7512312adf103e546764140895dd0a381d8']],
 };
 const RECEIPT_SHA256S: Record<string, string[]> = {
-  'G9-TRP-02': ['355a7a0ec9c33cf32742ee0d6680bc138ecbb762e717766d9c2629042d079661', 'd9499efed4346c7a1c1ee62c01af5f4e5aa862e8ddf2fca25599e7ae9b1447b4'],
-  'G9-LNM-01': ['470c4c784c71e80b601b9fb595d529e07307fa30707e5a71bd6d20585a349af4', '51103199d9cbb0390d488eb4182f484425474bda0565fdf8257da784dd1f4d1e'],
+  'G9-TRP-02': ['7f4809cb91bd5be31e543323cc3f84b01129f265c3cda43294287a86a6870d15', '355a7a0ec9c33cf32742ee0d6680bc138ecbb762e717766d9c2629042d079661', 'd9499efed4346c7a1c1ee62c01af5f4e5aa862e8ddf2fca25599e7ae9b1447b4'],
+  'G9-LNM-01': ['fb892b6b8f67ed440812c9e1618887621b5096d1896f20f8b741d5879248af82', '51103199d9cbb0390d488eb4182f484425474bda0565fdf8257da784dd1f4d1e'],
   'G7-ALG-05': ['698152a5a3a0fbc6c5918dd8f86bf367a6cb5a36e86b4b617d5e265644d69f7c', '3eaf662c429dfe1d2b8a7243348704b9304e79114a525af14b0cc71b3ad64500'],
 };
 
@@ -110,8 +110,10 @@ test('three additive editions recover the pinned batch 6 head (b87d7652) without
     assert.equal(proof.reviewVerdict, 'PASS_STUDENT_PDF_ESSENTIALS');
     assert.ok(proof.author);
     
-    assert.ok(proof.reviewReceipts.every((r: any) => new RegExp(`^reports/ANTIGRAVITY-(INDEPENDENT|DELTA)-${proof.sheetId}(-r0[0-9])?-2026111[67]/(review|numbers-blind)\\.json$`).test(r.path)));
-    assert.match(proof.reviewReceipts[0].role, /^original independent review/);
+    assert.ok(proof.reviewReceipts.every((r: any) => r.path === undefined
+      ? /external Codex workspace file, cited by hash/.test(r.role) && /^[0-9a-f]{64}$/.test(r.sha256)
+      : new RegExp(`^reports/ANTIGRAVITY-(INDEPENDENT|DELTA)-${proof.sheetId}(-r0[0-9])?-2026111[67]/(review|numbers-blind)\\.json$`).test(r.path)));
+    assert.match(proof.reviewReceipts[0].role, /^original (independent )?review/);
     assert.match(proof.reviewReceipts.at(-1).role, /verdict (PASS_STUDENT_PDF_ESSENTIALS|PASS_DELTA)\)$/);
     assert.deepEqual(proof.reviewReceipts.map((r: any) => r.sha256), RECEIPT_SHA256S[proof.sheetId]);
     assert.deepEqual(proof.levels.map((l: any) => [l.key, l.pdfId, l.pdfSha256]),
@@ -232,6 +234,20 @@ test('preservation fences reject catalog, registry and landing substitutions and
     }
     destination.editions = [...(destination.editions || []), misplaced];
     assert.throws(() => beforeBatch07Catalog(moved), `LNM-01 must not move from 9/34 to 9/${destinationId}`);
+  }
+  for (const destinationId of [30, 23]) {
+    const moved = structuredClone(raw);
+    const grade = moved.grades.find((g: any) => g.grade === 7);
+    const source = grade.topics.find((t: any) => t.id === 22);
+    const destination = grade.topics.find((t: any) => t.id === destinationId);
+    const misplaced = source.editions.pop();
+    assert.equal(misplaced.editionId, 'ms-20261117-alg-05-r1');
+    if (!source.editions.length) {
+      delete source.editions;
+      delete source.defaultEditionId;
+    }
+    destination.editions = [...(destination.editions || []), misplaced];
+    assert.throws(() => beforeBatch07Catalog(moved), assert.AssertionError, `ALG-05 must not move from 7/22 to 7/${destinationId} on the shared page`);
   }
   const page = read('headless/astro-poc/src/data/topic-pages/linear-function-grade-9.json');
   page.sections.at(-1).blocks[0].text += ' כל PDF כולל רמזי ופתרון מלא';
