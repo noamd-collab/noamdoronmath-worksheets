@@ -12,6 +12,7 @@ import { collectViewerPdfIds } from '../scripts/sync-github-static.mjs';
 import { loadTopicPage, extractJsonLdFaq, synthesizeBodyFlow } from '../src/lib/topicPages';
 import { beforeBatch02aCatalog, beforeBatch02aRegistry, beforeBatch02aCopy,
   reviewedBatch02a as reviewed, reviewedBatch02aIds as ids } from './fixtures/batch02a-pdf';
+import { beforeBatch03Registry } from './fixtures/batch03-pdf';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -133,12 +134,13 @@ test('sixteen fixed mappings add forty-eight frozen PDFs and recover the indepen
   assert.match(reviewed.additions.find(a => a.slug === 'pythagorean-theorem-grade-9')!.edition.label, /תוכנית מצומצמת/);
   assert.equal(new Set(reviewed.additions.flatMap(a => a.pdfIds)).size, 48);
   assert.equal(new Set(reviewed.additions.flatMap(a => a.edition.levels.map(l => l.pdfSha256))).size, 48);
-  assert.equal(registry.editions.length, 55);
-  assert.equal(registry.editions.flatMap((e: any) => e.levels).length, 165);
+  const afterBatch02aRegistry = beforeBatch03Registry(registry);
+  assert.equal(afterBatch02aRegistry.editions.length, 55);
+  assert.equal(afterBatch02aRegistry.editions.flatMap((e: any) => e.levels).length, 165);
   assert.equal(priorRegistry.editions.length, 39);
   assert.equal(priorRegistry.editions.flatMap((e: any) => e.levels).length, 117);
-  assert.deepEqual(registry.editions.slice(0, 39), priorRegistry.editions);
-  assert.deepEqual(registry.editions.slice(39), reviewed.additions.map(a => a.edition));
+  assert.deepEqual(afterBatch02aRegistry.editions.slice(0, 39), priorRegistry.editions);
+  assert.deepEqual(afterBatch02aRegistry.editions.slice(39), reviewed.additions.map(a => a.edition));
   assert.equal(raw.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 973);
   assert.deepEqual(receipt.scope, { packages: 16, pdfs: 48, pages: 385, subitems: 1431, landingRoutes: 16 });
   assert.deepEqual(receipt.packages.map((p: any) => p.editionId), ids);

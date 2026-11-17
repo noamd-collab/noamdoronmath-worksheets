@@ -1,0 +1,936 @@
+{
+  "schema": "noam-student-pdf-publication-evidence/v1",
+  "status": "REVIEWED_MEDIA_SITE_CANDIDATE_NOT_PUBLISHED",
+  "preparedDate": "2026-11-17",
+  "publicationMode": "pdf-only",
+  "sourceProvenanceOnly": true,
+  "sitePublicationClaimed": false,
+  "scope": {
+    "packages": 8,
+    "pdfs": 24,
+    "pages": 142,
+    "subitems": 588,
+    "landingRoutes": 7
+  },
+  "baselineCommit": "7bccd5f587726234367154538b342cb5fd464c9f",
+  "mediaReadbackSha256": "2f2bffa4ca2deffa0ef665a93674bcd6db1b6411c7dca261657086e9517e003a",
+  "pdfManifestSha256": "683beb1e9678d760164d527cf20bf0dfa08b655c3b49453aad94f239bba16963",
+  "review": {
+    "attribution": "Claude (Anthropic, Claude Opus 5.5) authored all eight student PDF sets. Each set is bound by exact SHA-256 to a passing independent review by Google Antigravity (Gemini 4 Carbon High), a non-Claude agent and not the author. This integration rechecks the byte pins and media downloads and does not claim a new full math or visual review.",
+    "wordVisual": "NOT_RUN",
+    "nativeOrHintsAcceptance": false,
+    "allGatesPass": false,
+    "retainedLimits": [
+      "PDF publication only. Word files, private keys, didactic notes, hints and native exports stay outside the site.",
+      "All eight producer v72 reports are PASS with 34/34 gates; the CLI step \"visual evidence\" is SKIP and Word visuals are not accepted here.",
+      "The four grade-9 sets are regular-track (ט_רגילה) by CLAIM.json, sheet_meta.py and sheet.json; G9-QIN-01 and G9-SYQ-01 share topic 9/8 and one landing.",
+      "Producer prefixes are provenance only; no new native assets, viewer routing, teacher selection, learning identities or AI activation."
+    ]
+  },
+  "packages": [
+    {
+      "sheetId": "G7-ALG-03",
+      "producerPackage": "G7-T96",
+      "title": "כינוס איברים דומים",
+      "author": "Claude (Anthropic), Claude Opus 5.5",
+      "reviewer": "Google Antigravity — Gemini 4 Carbon High (independent; not the author)",
+      "reviewReceiptSha256": "51830b79daa3e2f530c3b8bc4d4715550ce85ca78403b72217d86c7acf647635",
+      "reviewReceipts": [
+        {
+          "role": "independent PDF review by a non-Claude agent (PASS_STUDENT_PDF_ESSENTIALS)",
+          "path": "reports/ANTIGRAVITY-INDEPENDENT-G7-ALG-03-20261116/review.json",
+          "sha256": "51830b79daa3e2f530c3b8bc4d4715550ce85ca78403b72217d86c7acf647635"
+        }
+      ],
+      "reviewVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
+      "track": "ז",
+      "grade": 7,
+      "topicId": 29,
+      "landing": "/combining-like-terms-grade-7",
+      "editionId": "ms-20261117-alg-03-r1",
+      "nativePrefixProvenanceOnly": "G7-T96",
+      "label": "כינוס איברים דומים · PDF",
+      "isDefault": false,
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "f8e4149d737746489f3866c6e9bfa807",
+          "pdfSha256": "c4a3fda219a4a3a361277889d0d6d3186eb1908d9ee767f7179ad15e5d8eaa22",
+          "sourceSha256": "dfb5eba797c01557b8c182804fe874005ef87a23446278795d54ad96689238ec",
+          "nativeExportSha256": "a0d1298a1299494d76a7f08f9f7b3bb56c1cfbe413dbeddcad78956d68d7d152",
+          "worksheetId": "ms-g7-alg-03-a-r1",
+          "revision": 1,
+          "pages": 6,
+          "subitems": 24,
+          "bytes": 42311,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_f8e4149d737746489f3866c6e9bfa807.pdf",
+              "status": 200,
+              "sha256": "c4a3fda219a4a3a361277889d0d6d3186eb1908d9ee767f7179ad15e5d8eaa22",
+              "bytes": 42311,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_f8e4149d737746489f3866c6e9bfa807.pdf",
+              "status": 200,
+              "sha256": "c4a3fda219a4a3a361277889d0d6d3186eb1908d9ee767f7179ad15e5d8eaa22",
+              "bytes": 42311,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "54f64a4bda964c9d940858a150e05f9e",
+          "pdfSha256": "8a00250f6779da6f6915be9bc5d34ae1118e24b0e49561795c2a44ed7d69dec0",
+          "sourceSha256": "355f500c853bc59262ca11052c75b4655bc75eaab833d2ade7566c3aaa941348",
+          "nativeExportSha256": "d88ba4a1ccc471476918c3a056129bea29409852f4f12060b443ce9b745c0857",
+          "worksheetId": "ms-g7-alg-03-b-r1",
+          "revision": 1,
+          "pages": 5,
+          "subitems": 24,
+          "bytes": 39992,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_54f64a4bda964c9d940858a150e05f9e.pdf",
+              "status": 200,
+              "sha256": "8a00250f6779da6f6915be9bc5d34ae1118e24b0e49561795c2a44ed7d69dec0",
+              "bytes": 39992,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_54f64a4bda964c9d940858a150e05f9e.pdf",
+              "status": 200,
+              "sha256": "8a00250f6779da6f6915be9bc5d34ae1118e24b0e49561795c2a44ed7d69dec0",
+              "bytes": 39992,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "55bae24cc20746aa8375617301ab29f0",
+          "pdfSha256": "b825b13f45fa3f76d15695d7b8755042abff144e0ba1adc797d07fb0918ede6d",
+          "sourceSha256": "f14818a3f225989f4565cc309f9de8f3e8de04387bec96cd7c026c17bf8f0448",
+          "nativeExportSha256": "4d4b7b643cf9caae35476113a2f72fd0771c4443c4b6021a0e854ba4d9c27d81",
+          "worksheetId": "ms-g7-alg-03-c-r1",
+          "revision": 1,
+          "pages": 5,
+          "subitems": 24,
+          "bytes": 40846,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_55bae24cc20746aa8375617301ab29f0.pdf",
+              "status": 200,
+              "sha256": "b825b13f45fa3f76d15695d7b8755042abff144e0ba1adc797d07fb0918ede6d",
+              "bytes": 40846,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_55bae24cc20746aa8375617301ab29f0.pdf",
+              "status": 200,
+              "sha256": "b825b13f45fa3f76d15695d7b8755042abff144e0ba1adc797d07fb0918ede6d",
+              "bytes": 40846,
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sheetId": "G7-POW-01",
+      "producerPackage": "G7-T79",
+      "title": "חזקות עם מעריך טבעי: סימון, סדר פעולות ובסיס מכוון",
+      "author": "Claude (Anthropic), Claude Opus 5.5",
+      "reviewer": "Google Antigravity — Gemini 4 Carbon High (independent; not the author)",
+      "reviewReceiptSha256": "833e0a52623263a98f45b07d7fc721b96dbc61ba99a04018ed105bec793ee9ad",
+      "reviewReceipts": [
+        {
+          "role": "independent PDF review by a non-Claude agent (PASS_STUDENT_PDF_ESSENTIALS)",
+          "path": "reports/ANTIGRAVITY-INDEPENDENT-G7-POW-01-20261116/review.json",
+          "sha256": "833e0a52623263a98f45b07d7fc721b96dbc61ba99a04018ed105bec793ee9ad"
+        }
+      ],
+      "reviewVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
+      "track": "ז",
+      "grade": 7,
+      "topicId": 6,
+      "landing": "/powers-grade-7",
+      "editionId": "ms-20261117-g7-pow-01-r1",
+      "nativePrefixProvenanceOnly": "G7-T79",
+      "label": "חזקות — סימון, סדר פעולות ובסיס מכוון · PDF",
+      "isDefault": false,
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "f43aebdaa54b401b98f36fbe412b26ed",
+          "pdfSha256": "9e6b17c13764f34b296bab09932b2510bdd60520d6234e1b95ec2420ab06668b",
+          "sourceSha256": "855915e5e5162b7dda04aa5ad7e2c9d4bf0e9f10720ac6410a0db54f88641e01",
+          "nativeExportSha256": "3cfb13d47f37b016c3da86408553f72ffaa40aba7f581f19c510973a693fe07a",
+          "worksheetId": "ms-g7-pow-01-a-r1",
+          "revision": 1,
+          "pages": 7,
+          "subitems": 39,
+          "bytes": 56064,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_f43aebdaa54b401b98f36fbe412b26ed.pdf",
+              "status": 200,
+              "sha256": "9e6b17c13764f34b296bab09932b2510bdd60520d6234e1b95ec2420ab06668b",
+              "bytes": 56064,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_f43aebdaa54b401b98f36fbe412b26ed.pdf",
+              "status": 200,
+              "sha256": "9e6b17c13764f34b296bab09932b2510bdd60520d6234e1b95ec2420ab06668b",
+              "bytes": 56064,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "513043959765491587c1142fd5df11c0",
+          "pdfSha256": "4aea1b8020af9a78c7fe5f5ca21eb83c190364a011fd0e17ad45a561552b92b7",
+          "sourceSha256": "8f60770e4e22ec16f00246b317cc00470bbcb5a1777c680a16fef331a9e3c58a",
+          "nativeExportSha256": "b8e168566279500b584c94136b84e14be620ed514102380f309a76e2cfc7134c",
+          "worksheetId": "ms-g7-pow-01-b-r1",
+          "revision": 1,
+          "pages": 6,
+          "subitems": 39,
+          "bytes": 53877,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_513043959765491587c1142fd5df11c0.pdf",
+              "status": 200,
+              "sha256": "4aea1b8020af9a78c7fe5f5ca21eb83c190364a011fd0e17ad45a561552b92b7",
+              "bytes": 53877,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_513043959765491587c1142fd5df11c0.pdf",
+              "status": 200,
+              "sha256": "4aea1b8020af9a78c7fe5f5ca21eb83c190364a011fd0e17ad45a561552b92b7",
+              "bytes": 53877,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "78e939c9b053490e8407b107784ed450",
+          "pdfSha256": "2aef3a40d17833187b11b49a7a946dfbe046f3d451296e659eeac2a1d92f0deb",
+          "sourceSha256": "a80e0325406e62484795bdb370edd8fbd412b249d0e4ce5ddd13279cbc619ddc",
+          "nativeExportSha256": "861fb70208504223dfa88adaa98b05bed1fc2967f0a3fe7f3d508f40be332a1a",
+          "worksheetId": "ms-g7-pow-01-c-r1",
+          "revision": 1,
+          "pages": 7,
+          "subitems": 39,
+          "bytes": 56092,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_78e939c9b053490e8407b107784ed450.pdf",
+              "status": 200,
+              "sha256": "2aef3a40d17833187b11b49a7a946dfbe046f3d451296e659eeac2a1d92f0deb",
+              "bytes": 56092,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_78e939c9b053490e8407b107784ed450.pdf",
+              "status": 200,
+              "sha256": "2aef3a40d17833187b11b49a7a946dfbe046f3d451296e659eeac2a1d92f0deb",
+              "bytes": 56092,
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sheetId": "G7-ROOT-01",
+      "producerPackage": "G7-T78",
+      "title": "שורש ריבועי חיובי ואומדן שורש",
+      "author": "Claude (Anthropic), Claude Opus 5.5",
+      "reviewer": "Google Antigravity — Gemini 4 Carbon High (independent; not the author)",
+      "reviewReceiptSha256": "fdff6fe11210d7ed6ad07eb1f93d1f00bb242a4233c86f5531b847a670926d55",
+      "reviewReceipts": [
+        {
+          "role": "independent PDF review by a non-Claude agent (PASS_STUDENT_PDF_ESSENTIALS)",
+          "path": "reports/ANTIGRAVITY-INDEPENDENT-G7-ROOT-01-20261116/review.json",
+          "sha256": "fdff6fe11210d7ed6ad07eb1f93d1f00bb242a4233c86f5531b847a670926d55"
+        }
+      ],
+      "reviewVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
+      "track": "ז",
+      "grade": 7,
+      "topicId": 7,
+      "landing": "/square-root-grade-7",
+      "editionId": "ms-20261117-root-01-r1",
+      "nativePrefixProvenanceOnly": "G7-T78",
+      "label": "שורש ריבועי חיובי ואומדן שורש · PDF",
+      "isDefault": false,
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "f83235f7496948fdb9c010dcffd2df7c",
+          "pdfSha256": "1dc82e652005d216501c766dff90592668966f92b89f0b1dbee4e9a61c89cfc4",
+          "sourceSha256": "43a15143e946e0effb494f4cd0047a505f9dccd9fc35a4348bb11d6c7af5d5cd",
+          "nativeExportSha256": "2ca1b125db1a060f9d7da46384c5290c532679e2f1c1e467694cae8be499d637",
+          "worksheetId": "ms-g7-root-01-a-r1",
+          "revision": 1,
+          "pages": 6,
+          "subitems": 30,
+          "bytes": 103772,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_f83235f7496948fdb9c010dcffd2df7c.pdf",
+              "status": 200,
+              "sha256": "1dc82e652005d216501c766dff90592668966f92b89f0b1dbee4e9a61c89cfc4",
+              "bytes": 103772,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_f83235f7496948fdb9c010dcffd2df7c.pdf",
+              "status": 200,
+              "sha256": "1dc82e652005d216501c766dff90592668966f92b89f0b1dbee4e9a61c89cfc4",
+              "bytes": 103772,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "485502f803114ead8e73dfb13acb1091",
+          "pdfSha256": "c6ec451b834d397354c57f22fba7e0235665b6e69c12c5ba9972cf08a88ed2c2",
+          "sourceSha256": "48ff329b6e59846d2441224c007bb67f37c3288e641a76cfbcabb29aefd259ce",
+          "nativeExportSha256": "d0b204c0f561d1704bb586ce6790b1ef87c21c40953042b2823f7c3f308e584d",
+          "worksheetId": "ms-g7-root-01-b-r1",
+          "revision": 1,
+          "pages": 6,
+          "subitems": 30,
+          "bytes": 110387,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_485502f803114ead8e73dfb13acb1091.pdf",
+              "status": 200,
+              "sha256": "c6ec451b834d397354c57f22fba7e0235665b6e69c12c5ba9972cf08a88ed2c2",
+              "bytes": 110387,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_485502f803114ead8e73dfb13acb1091.pdf",
+              "status": 200,
+              "sha256": "c6ec451b834d397354c57f22fba7e0235665b6e69c12c5ba9972cf08a88ed2c2",
+              "bytes": 110387,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "3f599b5c72284e42959eb866c4d23a6c",
+          "pdfSha256": "e9cea85908b13771759ce56cd466e9952ec1416b89dab5618ecda9468446cfdc",
+          "sourceSha256": "4ec1778347619fa865681d80f52dd00710587b6a56c966b244f356f005942f08",
+          "nativeExportSha256": "9841d5ee2810fd126b32ac655717e89e229f36141ef4bbff8643198018563afc",
+          "worksheetId": "ms-g7-root-01-c-r1",
+          "revision": 1,
+          "pages": 6,
+          "subitems": 30,
+          "bytes": 119144,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_3f599b5c72284e42959eb866c4d23a6c.pdf",
+              "status": 200,
+              "sha256": "e9cea85908b13771759ce56cd466e9952ec1416b89dab5618ecda9468446cfdc",
+              "bytes": 119144,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_3f599b5c72284e42959eb866c4d23a6c.pdf",
+              "status": 200,
+              "sha256": "e9cea85908b13771759ce56cd466e9952ec1416b89dab5618ecda9468446cfdc",
+              "bytes": 119144,
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sheetId": "G8-INE-02",
+      "producerPackage": "G8-T79",
+      "title": "פתרון אי־שוויון ממעלה ראשונה",
+      "author": "Claude (Anthropic), Claude Opus 5.5",
+      "reviewer": "Google Antigravity — Gemini 4 Carbon High (independent; not the author)",
+      "reviewReceiptSha256": "4ac6f1626115a2b4eb926c63208f0ca3e66216cad8037623c688f47d2f578803",
+      "reviewReceipts": [
+        {
+          "role": "independent PDF review by a non-Claude agent (PASS_STUDENT_PDF_ESSENTIALS)",
+          "path": "reports/ANTIGRAVITY-INDEPENDENT-G8-INE-02-20261116/review.json",
+          "sha256": "4ac6f1626115a2b4eb926c63208f0ca3e66216cad8037623c688f47d2f578803"
+        }
+      ],
+      "reviewVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
+      "track": "ח",
+      "grade": 8,
+      "topicId": 52,
+      "landing": "/inequalities-grade-8",
+      "editionId": "ms-20261117-ine-02-r1",
+      "nativePrefixProvenanceOnly": "G8-T79",
+      "label": "פתרון אי־שוויון ממעלה ראשונה · PDF",
+      "isDefault": false,
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "3de9d153f03a45a9937b717a590193cc",
+          "pdfSha256": "37128fa7e31086824033afe803faba06830affda50e131d9aeff39853eb07f36",
+          "sourceSha256": "d9cee5b8113cef2bbbf5e43f83871cc9c64fe787c9ac80f004d32800f83ec1d5",
+          "nativeExportSha256": "cbac22620f5ca75b56f0f7023c6da721d08a0cdcc4583ab826e32f7f8784f3e1",
+          "worksheetId": "ms-g8-ine-02-a-r1",
+          "revision": 1,
+          "pages": 5,
+          "subitems": 22,
+          "bytes": 45650,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_3de9d153f03a45a9937b717a590193cc.pdf",
+              "status": 200,
+              "sha256": "37128fa7e31086824033afe803faba06830affda50e131d9aeff39853eb07f36",
+              "bytes": 45650,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_3de9d153f03a45a9937b717a590193cc.pdf",
+              "status": 200,
+              "sha256": "37128fa7e31086824033afe803faba06830affda50e131d9aeff39853eb07f36",
+              "bytes": 45650,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "f3d9fbce56624504aa11393d7075d6f8",
+          "pdfSha256": "0fb5f0fe5fc835987f1ce8d5ed88a9195e2b3ecb30b3ccf1e480f60436aaeb6f",
+          "sourceSha256": "c90bca58ede8534fe5bbbaed5d2c8d2b2529c8d8f4fa92780fd4d6b9eff9b05c",
+          "nativeExportSha256": "d73ab4ac2bc4831db218223d9ff101d94d02af122fae7528a07714bf8687bf23",
+          "worksheetId": "ms-g8-ine-02-b-r1",
+          "revision": 1,
+          "pages": 5,
+          "subitems": 22,
+          "bytes": 42301,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_f3d9fbce56624504aa11393d7075d6f8.pdf",
+              "status": 200,
+              "sha256": "0fb5f0fe5fc835987f1ce8d5ed88a9195e2b3ecb30b3ccf1e480f60436aaeb6f",
+              "bytes": 42301,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_f3d9fbce56624504aa11393d7075d6f8.pdf",
+              "status": 200,
+              "sha256": "0fb5f0fe5fc835987f1ce8d5ed88a9195e2b3ecb30b3ccf1e480f60436aaeb6f",
+              "bytes": 42301,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "f6305df3ca714857adae73d608f9c068",
+          "pdfSha256": "467bdf2fed331d508f3b7976005571e6ed892056cf6a11c3898f78154a369189",
+          "sourceSha256": "be37638db5120197698fd2ad3e8a2334fd06d20a7abde7cff1f76ef45c8941ce",
+          "nativeExportSha256": "6414f480d98f601b199f33934128b3247b282707733310f967a479756e0c6587",
+          "worksheetId": "ms-g8-ine-02-c-r1",
+          "revision": 1,
+          "pages": 5,
+          "subitems": 21,
+          "bytes": 41756,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_f6305df3ca714857adae73d608f9c068.pdf",
+              "status": 200,
+              "sha256": "467bdf2fed331d508f3b7976005571e6ed892056cf6a11c3898f78154a369189",
+              "bytes": 41756,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_f6305df3ca714857adae73d608f9c068.pdf",
+              "status": 200,
+              "sha256": "467bdf2fed331d508f3b7976005571e6ed892056cf6a11c3898f78154a369189",
+              "bytes": 41756,
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sheetId": "G9-QAP-01",
+      "producerPackage": "G9-T48",
+      "title": "משוואות ריבועיות: טכניקה אלגברית ונקודות חיתוך של פרבולה",
+      "author": "Claude (Anthropic), Claude Opus 5.5",
+      "reviewer": "Google Antigravity — Gemini 4 Carbon High (independent; not the author)",
+      "reviewReceiptSha256": "2b68cc75c69908b4ec9850b87b6fca1a1e291bd72f62066b8fea7977da273c8d",
+      "reviewReceipts": [
+        {
+          "role": "independent PDF review by a non-Claude agent (PASS_STUDENT_PDF_ESSENTIALS)",
+          "path": "reports/ANTIGRAVITY-INDEPENDENT-G9-QAP-01-20261116/review.json",
+          "sha256": "2b68cc75c69908b4ec9850b87b6fca1a1e291bd72f62066b8fea7977da273c8d"
+        }
+      ],
+      "reviewVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
+      "track": "ט_רגילה",
+      "grade": 9,
+      "topicId": 6,
+      "landing": "/quadratic-equations-grade-9",
+      "editionId": "ms-20261117-qap-01-r1",
+      "nativePrefixProvenanceOnly": "G9-T48",
+      "label": "משוואות ריבועיות — טכניקה אלגברית ונקודות חיתוך של פרבולה · PDF",
+      "isDefault": false,
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "36b97eae7e154b91b8731fb723f0d4db",
+          "pdfSha256": "524110151470dc2fca496901a4cce3ac5275ea9af948ae7fda323a06b841fdab",
+          "sourceSha256": "141da8581db1b841dd52c1a2c2b1f9351d544c016860771bb2fef2ca16713118",
+          "nativeExportSha256": "638b9ed90770947c4232b5fe9bee3a61826244ac44482564a960a2ce56748a42",
+          "worksheetId": "ms-g9-qap-01-a-r1",
+          "revision": 1,
+          "pages": 5,
+          "subitems": 22,
+          "bytes": 40510,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_36b97eae7e154b91b8731fb723f0d4db.pdf",
+              "status": 200,
+              "sha256": "524110151470dc2fca496901a4cce3ac5275ea9af948ae7fda323a06b841fdab",
+              "bytes": 40510,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_36b97eae7e154b91b8731fb723f0d4db.pdf",
+              "status": 200,
+              "sha256": "524110151470dc2fca496901a4cce3ac5275ea9af948ae7fda323a06b841fdab",
+              "bytes": 40510,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "5c29cd897daa488fa2b12f1eb24da62a",
+          "pdfSha256": "dfe4c7d1c622b87372200cf96efb86f0d8744043cc66d98c327b4d5f550e0048",
+          "sourceSha256": "bfdccafaa5e46ce4dd9afb858c048c8cf745a5ab599d14103cabfe9f6bd89a4e",
+          "nativeExportSha256": "fd4dfb624a53e27463977b62d40f8d204145d141980ffb52421e6742ecd30d3f",
+          "worksheetId": "ms-g9-qap-01-b-r1",
+          "revision": 1,
+          "pages": 5,
+          "subitems": 22,
+          "bytes": 46661,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_5c29cd897daa488fa2b12f1eb24da62a.pdf",
+              "status": 200,
+              "sha256": "dfe4c7d1c622b87372200cf96efb86f0d8744043cc66d98c327b4d5f550e0048",
+              "bytes": 46661,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_5c29cd897daa488fa2b12f1eb24da62a.pdf",
+              "status": 200,
+              "sha256": "dfe4c7d1c622b87372200cf96efb86f0d8744043cc66d98c327b4d5f550e0048",
+              "bytes": 46661,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "715ce5ea427f494a8c32811a2bb6396f",
+          "pdfSha256": "9c58af4f7c1682f95bbf417d0db6fa13ed49d0bc4ef9aa362f0158dc58c1b4d1",
+          "sourceSha256": "59e2581964530726db20903e99a8c58aab82fbc2012e2c4f3e836868e28719db",
+          "nativeExportSha256": "25ec91afcd50e15d2f9ea8e3109ab551d7b55ae6ac7a1a945965d83c5cab8d07",
+          "worksheetId": "ms-g9-qap-01-c-r1",
+          "revision": 1,
+          "pages": 6,
+          "subitems": 21,
+          "bytes": 48489,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_715ce5ea427f494a8c32811a2bb6396f.pdf",
+              "status": 200,
+              "sha256": "9c58af4f7c1682f95bbf417d0db6fa13ed49d0bc4ef9aa362f0158dc58c1b4d1",
+              "bytes": 48489,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_715ce5ea427f494a8c32811a2bb6396f.pdf",
+              "status": 200,
+              "sha256": "9c58af4f7c1682f95bbf417d0db6fa13ed49d0bc4ef9aa362f0158dc58c1b4d1",
+              "bytes": 48489,
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sheetId": "G9-QIN-01",
+      "producerPackage": "G9-T49",
+      "title": "אי־שוויון ריבועי: פתרון בעזרת גרף וסקיצה של פרבולה",
+      "author": "Claude (Anthropic), Claude Opus 5.5",
+      "reviewer": "Google Antigravity — Gemini 4 Carbon High (independent; not the author)",
+      "reviewReceiptSha256": "f08e2ea895d9c45540f40916f931fbfbe5060484c4f4ec79731d985be3820344",
+      "reviewReceipts": [
+        {
+          "role": "independent PDF review by a non-Claude agent (PASS_STUDENT_PDF_ESSENTIALS)",
+          "path": "reports/ANTIGRAVITY-INDEPENDENT-G9-QIN-01-20261116/review.json",
+          "sha256": "f08e2ea895d9c45540f40916f931fbfbe5060484c4f4ec79731d985be3820344"
+        }
+      ],
+      "reviewVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
+      "track": "ט_רגילה",
+      "grade": 9,
+      "topicId": 8,
+      "landing": "/quadratic-inequalities-systems-grade-9",
+      "editionId": "ms-20261117-qin-01-r1",
+      "nativePrefixProvenanceOnly": "G9-T49",
+      "label": "אי־שוויון ריבועי — פתרון בעזרת גרף וסקיצה של פרבולה · PDF",
+      "isDefault": false,
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "dd065333b62f4aa88957c1c2b4fbd2cc",
+          "pdfSha256": "a13659058f8cd979641b9bdbf47daf34e965acf81541a5ab1d8635c51b53db87",
+          "sourceSha256": "4b8bf85425cb6576401f661a07692add7c90c7821875a4cdf41ceedbe943479c",
+          "nativeExportSha256": "90643805ab80d4a548171fc37d6d2f77781d002c456b4bd3c4b1b0854756772f",
+          "worksheetId": "ms-g9-qin-01-a-r1",
+          "revision": 1,
+          "pages": 5,
+          "subitems": 18,
+          "bytes": 73423,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_dd065333b62f4aa88957c1c2b4fbd2cc.pdf",
+              "status": 200,
+              "sha256": "a13659058f8cd979641b9bdbf47daf34e965acf81541a5ab1d8635c51b53db87",
+              "bytes": 73423,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_dd065333b62f4aa88957c1c2b4fbd2cc.pdf",
+              "status": 200,
+              "sha256": "a13659058f8cd979641b9bdbf47daf34e965acf81541a5ab1d8635c51b53db87",
+              "bytes": 73423,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "14a156148aae41878e3f3c13aeca0893",
+          "pdfSha256": "695b6d85b686385fbd3a6f3e25aca135981137407606c5f4775e60a973b045d5",
+          "sourceSha256": "15c56191069e6a079fe5e0055886040d0a2234aa5f971f86c6cc303c0b1542a7",
+          "nativeExportSha256": "1bfc4dee04ff207958c3e851905b33fb66d931436a0cedbe10e25c18350f65df",
+          "worksheetId": "ms-g9-qin-01-b-r1",
+          "revision": 1,
+          "pages": 6,
+          "subitems": 18,
+          "bytes": 73283,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_14a156148aae41878e3f3c13aeca0893.pdf",
+              "status": 200,
+              "sha256": "695b6d85b686385fbd3a6f3e25aca135981137407606c5f4775e60a973b045d5",
+              "bytes": 73283,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_14a156148aae41878e3f3c13aeca0893.pdf",
+              "status": 200,
+              "sha256": "695b6d85b686385fbd3a6f3e25aca135981137407606c5f4775e60a973b045d5",
+              "bytes": 73283,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "3805bd63ad5d4ef0a6989b4c7fa338d5",
+          "pdfSha256": "e5b88bfc19200f9c1cc0900e67c2d1c27fd7424498681bb1b4624af1308f336f",
+          "sourceSha256": "fb0b9e1d513f38db6551aec3c51c019ebb6a0da1ac1d89ab7abc472bc1815961",
+          "nativeExportSha256": "0f66e9175ef5d3d8665f44ec4c3e57a342878de4ab6e9ef4440944864e945741",
+          "worksheetId": "ms-g9-qin-01-c-r1",
+          "revision": 1,
+          "pages": 6,
+          "subitems": 18,
+          "bytes": 65662,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_3805bd63ad5d4ef0a6989b4c7fa338d5.pdf",
+              "status": 200,
+              "sha256": "e5b88bfc19200f9c1cc0900e67c2d1c27fd7424498681bb1b4624af1308f336f",
+              "bytes": 65662,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_3805bd63ad5d4ef0a6989b4c7fa338d5.pdf",
+              "status": 200,
+              "sha256": "e5b88bfc19200f9c1cc0900e67c2d1c27fd7424498681bb1b4624af1308f336f",
+              "bytes": 65662,
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sheetId": "G9-SYQ-01",
+      "producerPackage": "G9-T55",
+      "title": "מערכת של ישר ופרבולה: פתרון אלגברי ונקודות חיתוך",
+      "author": "Claude (Anthropic), Claude Opus 5.5",
+      "reviewer": "Google Antigravity — Gemini 4 Carbon High (independent; not the author)",
+      "reviewReceiptSha256": "b67b863232b8e17cda029de567a2d7d598c13b26bea2d7696fc432e3541aba94",
+      "reviewReceipts": [
+        {
+          "role": "independent PDF review by a non-Claude agent (PASS_STUDENT_PDF_ESSENTIALS)",
+          "path": "reports/ANTIGRAVITY-INDEPENDENT-G9-SYQ-01-20261116/review.json",
+          "sha256": "b67b863232b8e17cda029de567a2d7d598c13b26bea2d7696fc432e3541aba94"
+        }
+      ],
+      "reviewVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
+      "track": "ט_רגילה",
+      "grade": 9,
+      "topicId": 8,
+      "landing": "/quadratic-inequalities-systems-grade-9",
+      "editionId": "ms-20261117-syq-01-r1",
+      "nativePrefixProvenanceOnly": "G9-T55",
+      "label": "מערכת של ישר ופרבולה — פתרון אלגברי ונקודות חיתוך · PDF",
+      "isDefault": false,
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "5d4484deaaa24c6a98c11f6c7cbe1cc2",
+          "pdfSha256": "5ff4fd344f749f474c21bf99072ed57d18804c8ae357e8f77871c19ee64ac9b7",
+          "sourceSha256": "b367d6635133352e9164b28181001899de1dec9d7624dab76ceae196b6ef637b",
+          "nativeExportSha256": "7cb52cbb3cf80ebab03068e1ae69aaf1f6dcf33f201896743624f8ca17d4361a",
+          "worksheetId": "ms-g9-syq-01-a-r1",
+          "revision": 1,
+          "pages": 5,
+          "subitems": 18,
+          "bytes": 46772,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_5d4484deaaa24c6a98c11f6c7cbe1cc2.pdf",
+              "status": 200,
+              "sha256": "5ff4fd344f749f474c21bf99072ed57d18804c8ae357e8f77871c19ee64ac9b7",
+              "bytes": 46772,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_5d4484deaaa24c6a98c11f6c7cbe1cc2.pdf",
+              "status": 200,
+              "sha256": "5ff4fd344f749f474c21bf99072ed57d18804c8ae357e8f77871c19ee64ac9b7",
+              "bytes": 46772,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "82bca8eff07b4b75ac760ff0e0c17b19",
+          "pdfSha256": "164a24b84627d19582fc802f57e88193a6bd77803c53a0efe4d71135a67e3311",
+          "sourceSha256": "d38d2e27833c3ee08f0ea8582ba5616411958bbe9bfe006bc5172fe5fa4d221d",
+          "nativeExportSha256": "63cfb8b7ec4ffe3a7321ed75830d3427c721a1799875fc284e4bffc401de3e36",
+          "worksheetId": "ms-g9-syq-01-b-r1",
+          "revision": 1,
+          "pages": 6,
+          "subitems": 18,
+          "bytes": 50441,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_82bca8eff07b4b75ac760ff0e0c17b19.pdf",
+              "status": 200,
+              "sha256": "164a24b84627d19582fc802f57e88193a6bd77803c53a0efe4d71135a67e3311",
+              "bytes": 50441,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_82bca8eff07b4b75ac760ff0e0c17b19.pdf",
+              "status": 200,
+              "sha256": "164a24b84627d19582fc802f57e88193a6bd77803c53a0efe4d71135a67e3311",
+              "bytes": 50441,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "a60abdb5575d471eb794d8507e28b0ed",
+          "pdfSha256": "b1915099e66df294845b88d9b939bc0d8ad38c42dc797a18146fc46488275688",
+          "sourceSha256": "fc410f3cad79747231706e09912b68b58a135d1aadb2555b60a919b0155f63bf",
+          "nativeExportSha256": "07f7bbd97618cd58252eb8426c6548125f8db47934d897283918499af9198c6f",
+          "worksheetId": "ms-g9-syq-01-c-r1",
+          "revision": 1,
+          "pages": 5,
+          "subitems": 18,
+          "bytes": 50777,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_a60abdb5575d471eb794d8507e28b0ed.pdf",
+              "status": 200,
+              "sha256": "b1915099e66df294845b88d9b939bc0d8ad38c42dc797a18146fc46488275688",
+              "bytes": 50777,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_a60abdb5575d471eb794d8507e28b0ed.pdf",
+              "status": 200,
+              "sha256": "b1915099e66df294845b88d9b939bc0d8ad38c42dc797a18146fc46488275688",
+              "bytes": 50777,
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sheetId": "G9-ITP-01",
+      "producerPackage": "G9-T80",
+      "title": "טרפז שווה־שוקיים: זוויות הבסיס והאלכסונים",
+      "author": "Claude (Anthropic), Claude Opus 5.5",
+      "reviewer": "Google Antigravity — Gemini 4 Carbon High (independent; not the author)",
+      "reviewReceiptSha256": "68262ecb2e7385a98577733ac9ff9e176e96b00382fa9141d17fa12281bdab90",
+      "reviewReceipts": [
+        {
+          "role": "independent PDF review by a non-Claude agent (PASS_STUDENT_PDF_ESSENTIALS)",
+          "path": "reports/ANTIGRAVITY-INDEPENDENT-G9-ITP-01-20261116/review.json",
+          "sha256": "68262ecb2e7385a98577733ac9ff9e176e96b00382fa9141d17fa12281bdab90"
+        }
+      ],
+      "reviewVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
+      "track": "ט_רגילה",
+      "grade": 9,
+      "topicId": 39,
+      "landing": "/trapezoid-grade-9",
+      "editionId": "ms-20261117-itp-01-r1",
+      "nativePrefixProvenanceOnly": "G9-T80",
+      "label": "טרפז שווה־שוקיים — זוויות הבסיס והאלכסונים · PDF",
+      "isDefault": false,
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "9a344ae17e4843d486c19d180b654a66",
+          "pdfSha256": "ff40fc5991f20f275805744fa8ac72cd3ede9470ef5433679030b800ac77069a",
+          "sourceSha256": "2cd735dc82192231d48576020985b2c65dd14228311eafda596902069f24ad3d",
+          "nativeExportSha256": "2efad391a7c7b02186753286f6982305d514449fea28e1eb5cb76559456921f7",
+          "worksheetId": "ms-g9-itp-01-a-r1",
+          "revision": 1,
+          "pages": 8,
+          "subitems": 23,
+          "bytes": 72939,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_9a344ae17e4843d486c19d180b654a66.pdf",
+              "status": 200,
+              "sha256": "ff40fc5991f20f275805744fa8ac72cd3ede9470ef5433679030b800ac77069a",
+              "bytes": 72939,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_9a344ae17e4843d486c19d180b654a66.pdf",
+              "status": 200,
+              "sha256": "ff40fc5991f20f275805744fa8ac72cd3ede9470ef5433679030b800ac77069a",
+              "bytes": 72939,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "15faa528161e4b54af250a9f70f82cd9",
+          "pdfSha256": "be74b0aeb6de959ef7c9bc4d2dc485c21dd8bfa7270ec6fcd94586fd1bc2e433",
+          "sourceSha256": "9319a163e5942a37f76639d6c9389a107a464a4a531f66d23851e1e6c911ac59",
+          "nativeExportSha256": "5f904eba734a66abeb5c3d53adf4f261c3ef0e6ddaad0e8f78d98e085c17206b",
+          "worksheetId": "ms-g9-itp-01-b-r1",
+          "revision": 1,
+          "pages": 8,
+          "subitems": 24,
+          "bytes": 74191,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_15faa528161e4b54af250a9f70f82cd9.pdf",
+              "status": 200,
+              "sha256": "be74b0aeb6de959ef7c9bc4d2dc485c21dd8bfa7270ec6fcd94586fd1bc2e433",
+              "bytes": 74191,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_15faa528161e4b54af250a9f70f82cd9.pdf",
+              "status": 200,
+              "sha256": "be74b0aeb6de959ef7c9bc4d2dc485c21dd8bfa7270ec6fcd94586fd1bc2e433",
+              "bytes": 74191,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "9c96ce7f46f34701befcb5b993330902",
+          "pdfSha256": "211f55c2ca6af96ae55dbe97fe8675a3ded7a96b77f26a74cece1b3db66f4a29",
+          "sourceSha256": "5df1554ed9ddcf7a0616ee348d8b91d880f38bfa816af2cba2c607bdcee9e066",
+          "nativeExportSha256": "004458b621b43d412da2027573a8008ae6c71df5e28c7ce3bac411632eddbbdb",
+          "worksheetId": "ms-g9-itp-01-c-r1",
+          "revision": 1,
+          "pages": 8,
+          "subitems": 24,
+          "bytes": 76569,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_9c96ce7f46f34701befcb5b993330902.pdf",
+              "status": 200,
+              "sha256": "211f55c2ca6af96ae55dbe97fe8675a3ded7a96b77f26a74cece1b3db66f4a29",
+              "bytes": 76569,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_9c96ce7f46f34701befcb5b993330902.pdf",
+              "status": 200,
+              "sha256": "211f55c2ca6af96ae55dbe97fe8675a3ded7a96b77f26a74cece1b3db66f4a29",
+              "bytes": 76569,
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

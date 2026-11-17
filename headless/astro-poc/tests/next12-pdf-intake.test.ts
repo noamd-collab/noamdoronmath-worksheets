@@ -13,6 +13,7 @@ import { loadTopicPage, extractJsonLdFaq, synthesizeBodyFlow } from '../src/lib/
 import { beforeNext12Catalog, beforeNext12Registry, beforeNext12Copy,
   reviewedNext12 as reviewed, reviewedNext12Ids as ids } from './fixtures/next12-pdf';
 import { beforeNext21Registry } from './fixtures/next21-pdf';
+import { reviewedBatch03 } from './fixtures/batch03-pdf';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -41,7 +42,9 @@ test('four exact editions add twelve verified PDFs and preserve the complete pre
     const topic = catalog.grades.find(g => g.grade === a.grade)!.topics.find(t => t.id === a.topicId)!;
     const edition = topic.editions!.find(e => e.editionId === a.editionId)!;
     const groups = topicWorksheetEditionLinks(catalog, a.grade, a.topicId, '/');
-    assert.deepEqual(groups.map(g => g.editionId), ['legacy', a.editionId]);
+    // Batch 03 appends its own series after this one on 9/39 (ITP-01) and 7/6 (POW-01).
+    const later = reviewedBatch03.additions.filter(x => x.grade === a.grade && x.topicId === a.topicId).map(x => x.editionId);
+    assert.deepEqual(groups.map(g => g.editionId), ['legacy', a.editionId, ...later]);
     assert.deepEqual(groups[0], topicWorksheetEditionLinks(previous, a.grade, a.topicId, '/')[0]);
     assert.equal(topic.defaultEditionId, 'legacy'); assert.equal(edition.routing.usesViewer, false);
     assert.equal(edition.routing.aiHintShown, false);
