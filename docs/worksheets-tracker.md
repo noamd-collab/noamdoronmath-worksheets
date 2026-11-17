@@ -4,7 +4,7 @@
 - Sixteen existing landings describe the exact practice scope of the new series. Titles, H1 and CTA order are unchanged. PYD is labelled as a reduced-track (מצומצמת) series.
 - Exact reviewed PDF bytes were downloaded from both media routes: 96 matching reads. Independent PDF reviews (Claude Opus 5.5 for fifteen sets of other authors; claude007 for EQN-02) are attributed by exact SHA-256, not repeated here. Details: `docs/batch02a-pdf-first-20261117.json`.
 - New editions open PDFs directly. No Word, native assets, teacher selection, learning activation, hints or database activation.
-- This is a source candidate, not a publication claim. Build, tests and desktop/phone evidence are recorded in the PR package; the Wix payload has only a proxy estimate (+239,784 bytes, about 17.56 MB) and still needs a credentialed `npm run build`; the release job's postbuild budget check stops a release over 19,500,000 bytes.
+- This is a source candidate, not a publication claim. Build, tests and desktop/phone evidence are recorded in the PR package; the Wix payload has only a proxy estimate (+239,872 bytes, about 17.56 MB) and still needs a credentialed `npm run build`; the release job's postbuild budget check stops a release over 19,500,000 bytes.
 
 ## 2026-11-16 — batch 01: four reviewed student PDF editions (candidate)
 
