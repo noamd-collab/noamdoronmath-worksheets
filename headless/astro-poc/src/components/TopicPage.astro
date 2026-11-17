@@ -68,6 +68,8 @@ type BodyUnit =
   | {
       kind: 'section';
       heading: string;
+      /** Optional section anchor from the page data, rendered as the H2 id. */
+      anchor?: string;
       blocks: Extract<TopicBodyFlowItem, { type: 'paragraph' | 'list' }>[];
     }
   | { kind: 'orphan'; item: Extract<TopicBodyFlowItem, { type: 'paragraph' | 'list' }> };
@@ -76,11 +78,12 @@ function groupBodyFlow(flow: TopicBodyFlowItem[]): BodyUnit[] {
   const units: BodyUnit[] = [];
   let current: {
     heading: string;
+    anchor?: string;
     blocks: Extract<TopicBodyFlowItem, { type: 'paragraph' | 'list' }>[];
   } | null = null;
   const flush = () => {
     if (current) {
-      units.push({ kind: 'section', heading: current.heading, blocks: current.blocks });
+      units.push({ kind: 'section', heading: current.heading, anchor: current.anchor, blocks: current.blocks });
       current = null;
     }
   };
@@ -97,7 +100,7 @@ function groupBodyFlow(flow: TopicBodyFlowItem[]): BodyUnit[] {
     }
     if (b.type === 'heading') {
       flush();
-      current = { heading: b.text, blocks: [] };
+      current = { heading: b.text, anchor: b.anchor, blocks: [] };
       continue;
     }
     if (b.type === 'paragraph' || b.type === 'list') {
@@ -377,7 +380,7 @@ function faqHeadingId(groupIndex: number) {
           if (unit.kind === 'section') {
             return (
               <section class="topic-page__section" data-flow="heading">
-                <h2>{unit.heading}</h2>
+                <h2 id={unit.anchor}>{unit.heading}</h2>
                 {unit.blocks.map((block) => {
                   if (block.type === 'paragraph') {
                     const cls =

@@ -1,0 +1,38 @@
+---
+/**
+ * SEO-2 — one month of official layout units. The unit name is the link to
+ * its topic page; further pages for the same unit follow as chips. A unit
+ * with no served page stays plain text.
+ */
+import type { PrisaUnitView } from '../lib/prisaIndex';
+
+interface Props {
+  units: PrisaUnitView[];
+}
+const { units } = Astro.props;
+---
+<ul class="prisa-units">
+  {
+    units.map((unit) => (
+      <li class="prisa-unit" data-unit-id={unit.id} data-unit-linked={unit.primary ? 'yes' : 'no'}>
+        <span class="prisa-unit__head">
+          {unit.primary ? (
+            <a class="prisa-unit__link" href={unit.primary.href}>{unit.displayName}</a>
+          ) : (
+            <span class="prisa-unit__name">{unit.displayName}</span>
+          )}
+          {unit.optional && <span class="prisa-unit__tag">רשות</span>}
+        </span>
+        {unit.more.length > 0 && (
+          <span class="prisa-unit__more">
+            <span class="prisa-unit__more-label">דפים נוספים:</span>
+            {unit.more.map((link) => (
+              <a class="prisa-unit__chip" href={link.href}>{link.label}</a>
+            ))}
+          </span>
+        )}
+        {unit.note && <span class="prisa-unit__note">{unit.note}</span>}
+      </li>
+    ))
+  }
+</ul>

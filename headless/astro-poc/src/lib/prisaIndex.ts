@@ -1,0 +1,243 @@
+/**
+ * SEO-2 — the official teaching layout (פריסת הוראה תשפ״ז) as a month index.
+ *
+ * Source: src/data/prisa-units.v1.json, generated once from the curriculum
+ * mapping all-units.csv (unit ids and official names) and the four official
+ * prisa PDFs (months). The file records each source's path and sha256; the
+ * build reads only this in-repo copy.
+ *
+ * A unit links only to topic pages this site serves. A unit whose pages are
+ * all missing renders as plain text, never as a dead or "coming soon" link.
+ */
+import prisaData from '../data/prisa-units.v1.json';
+import { TOPIC_PAGE_SLUGS, loadTopicPage, synthesizeBodyFlow } from './topicPages';
+import { absolutePageUrl } from './structuredData';
+import { isolateMathRuns } from './mathDirection';
+
+export const REDUCED_HUB_PATH = '/grade-9-reduced';
+export const PRISA_SECTION_ID = 'prisa';
+
+export type PrisaTrackKey = 'g7' | 'g8' | 'g9r' | 'g9m';
+export const PRISA_TRACK_KEYS: readonly PrisaTrackKey[] = ['g7', 'g8', 'g9r', 'g9m'];
+
+/** Short track names for the רגילה / מצומצמת switch on /grade-9. */
+export const PRISA_TRACK_SHORT_LABEL: Record<PrisaTrackKey, string> = {
+  g7: 'כיתה ז׳',
+  g8: 'כיתה ח׳',
+  g9r: 'ט׳ רגילה',
+  g9m: 'ט׳ מצומצמת',
+};
+
+/** School-year order. July and August point at the coming September. */
+export const PRISA_MONTH_KEYS = ['m09', 'm10', 'm11', 'm12', 'm01', 'm02', 'm03', 'm04', 'm05', 'm06'] as const;
+
+interface RawUnit {
+  id: string;
+  name: string;
+  /** Topic page slugs, best first. `slug#anchor` targets a section anchor. */
+  pages: string[];
+  optional?: boolean;
+  note?: string;
+}
+
+interface RawMonth {
+  key: string;
+  label: string;
+  prisaPage: number;
+  units: RawUnit[];
+}
+
+interface RawTrack {
+  key: PrisaTrackKey;
+  grade: number;
+  label: string;
+  source: { title: string; url: string; sha256: string };
+  months: RawMonth[];
+}
+
+export interface PrisaPageLink {
+  slug: string;
+  href: string;
+  /** Topic page H1 without the grade words, for the extra-page chips. */
+  label: string;
+}
+
+export interface PrisaUnitView {
+  id: string;
+  /** Official name as stored; JSON-LD uses this. */
+  name: string;
+  /** The same name with math runs isolated, so "30°, 60°, 90°" reads left to right. */
+  displayName: string;
+  optional: boolean;
+  note?: string;
+  /** The page the unit name links to; null when no served page covers it. */
+  primary: PrisaPageLink | null;
+  /** Further served pages for the same unit. */
+  more: PrisaPageLink[];
+}
+
+export interface PrisaMonthView {
+  key: string;
+  label: string;
+  /** Stable element id, for example prisa-g9m-m01. */
+  id: string;
+  units: PrisaUnitView[];
+}
+
+export interface PrisaTrackView {
+  key: PrisaTrackKey;
+  grade: number;
+  label: string;
+  shortLabel: string;
+  source: { title: string; url: string };
+  months: PrisaMonthView[];
+  unitCount: number;
+  linkedUnitCount: number;
+}
+
+const TRACKS = (prisaData as { tracks: RawTrack[] }).tracks;
+const SERVED_SLUGS = new Set<string>(TOPIC_PAGE_SLUGS);
+const linkCache = new Map<string, PrisaPageLink | null>();
+
+/** "זוויות לכיתה ז׳ — היכרות, סימון ומדידה" → "זוויות — היכרות, סימון ומדידה". */
+export function pageLabelWithoutGrade(h1: string): string {
+  return h1
+    .replace(/\s*—?\s*לכיתה\s+[א-ת]׳\s*/u, ' ')
+    .replace(/\s+([:—])/gu, (_m, mark: string) => (mark === ':' ? ':' : ` ${mark}`))
+    .replace(/\s*—\s*$/u, '')
+    .replace(/\s{2,}/gu, ' ')
+    .trim();
+}
+
+function sectionAnchors(slug: string): Set<string> {
+  const anchors = new Set<string>();
+  for (const item of synthesizeBodyFlow(loadTopicPage(slug))) {
+    if (item.type === 'heading' && item.anchor) anchors.add(item.anchor);
+  }
+  return anchors;
+}
+
+/** Resolve `slug` or `slug#anchor` to a served page link, or null. */
+export function resolvePrisaPage(ref: string, grade: number): PrisaPageLink | null {
+  const key = `${grade}:${ref}`;
+  if (linkCache.has(key)) return linkCache.get(key)!;
+  const [slug, anchor] = ref.split('#');
+  let link: PrisaPageLink | null = null;
+  if (SERVED_SLUGS.has(slug)) {
+    const page = loadTopicPage(slug);
+    if (page.grade !== grade) {
+      throw new Error(`prisa unit page ${slug} is grade ${page.grade}, expected ${grade}`);
+    }
+    if (anchor && !sectionAnchors(slug).has(anchor)) {
+      throw new Error(`prisa unit page ${slug} has no section anchor #${anchor}`);
+    }
+    link = {
+      slug,
+      href: anchor ? `/${slug}#${anchor}` : `/${slug}`,
+      label: pageLabelWithoutGrade(page.h1),
+    };
+  }
+  linkCache.set(key, link);
+  return link;
+}
+
+function unitView(unit: RawUnit, grade: number): PrisaUnitView {
+  const links: PrisaPageLink[] = [];
+  for (const ref of unit.pages) {
+    const link = resolvePrisaPage(ref, grade);
+    if (link && !links.some((l) => l.href === link.href)) links.push(link);
+  }
+  return {
+    id: unit.id,
+    name: unit.name,
+    displayName: isolateMathRuns(unit.name),
+    optional: unit.optional === true,
+    ...(unit.note ? { note: isolateMathRuns(unit.note) } : {}),
+    primary: links[0] || null,
+    more: links.slice(1),
+  };
+}
+
+export function loadPrisaTrack(key: PrisaTrackKey): PrisaTrackView {
+  const raw = TRACKS.find((t) => t.key === key);
+  if (!raw) throw new Error(`Unknown prisa track ${key}`);
+  const months = raw.months.map((month) => ({
+    key: month.key,
+    label: month.label,
+    id: `prisa-${key}-${month.key}`,
+    units: month.units.map((unit) => unitView(unit, raw.grade)),
+  }));
+  const units = months.flatMap((m) => m.units);
+  return {
+    key,
+    grade: raw.grade,
+    label: raw.label,
+    shortLabel: PRISA_TRACK_SHORT_LABEL[key],
+    source: { title: raw.source.title, url: raw.source.url },
+    months,
+    unitCount: units.length,
+    linkedUnitCount: units.filter((u) => u.primary).length,
+  };
+}
+
+/** Grade 9 has two tracks: the regular track first, then the reduced one. */
+export function prisaTracksForGrade(grade: number): PrisaTrackView[] {
+  if (grade === 7) return [loadPrisaTrack('g7')];
+  if (grade === 8) return [loadPrisaTrack('g8')];
+  if (grade === 9) return [loadPrisaTrack('g9r'), loadPrisaTrack('g9m')];
+  return [];
+}
+
+/** Every href the prisa index renders, for the internal-link checks. */
+export function prisaHrefs(): string[] {
+  const out = new Set<string>([REDUCED_HUB_PATH]);
+  for (const key of PRISA_TRACK_KEYS) {
+    for (const month of loadPrisaTrack(key).months) {
+      for (const unit of month.units) {
+        if (unit.primary) out.add(unit.primary.href);
+        for (const link of unit.more) out.add(link.href);
+      }
+    }
+  }
+  return [...out];
+}
+
+/** The school month of `date` in Israel, as an m01–m12 key. */
+export function currentPrisaMonthKey(date: Date = new Date()): string {
+  let month = date.getUTCMonth() + 1;
+  try {
+    const part = new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Jerusalem', month: 'numeric' }).format(date);
+    const parsed = Number(part);
+    if (parsed >= 1 && parsed <= 12) month = parsed;
+  } catch {
+    // Keep the UTC month when the runtime has no time-zone data.
+  }
+  if (month === 7 || month === 8) month = 9;
+  return `m${String(month).padStart(2, '0')}`;
+}
+
+export function unitCountLabel(count: number): string {
+  return count === 1 ? 'נושא אחד' : `${count} נושאים`;
+}
+
+/**
+ * ItemList for a track page: every unit in layout order. A unit with a served
+ * page carries its URL; a unit without one keeps only its official name.
+ */
+export function prisaItemListJsonLd(track: PrisaTrackView, input: { name: string; path: string }): Record<string, unknown> {
+  const units = track.months.flatMap((month) => month.units.map((unit) => ({ unit, month })));
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: input.name,
+    url: absolutePageUrl(input.path),
+    numberOfItems: units.length,
+    itemListOrder: 'https://schema.org/ItemListOrderAscending',
+    itemListElement: units.map(({ unit, month }, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: `${unit.name} (${month.label})`,
+      ...(unit.primary ? { url: absolutePageUrl(unit.primary.href) } : {}),
+    })),
+  };
+}

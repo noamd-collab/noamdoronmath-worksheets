@@ -46,6 +46,9 @@ const NON_LANDING_PAGES = new Set([
   // The games corner: a card grid and the game wrappers, no marketing hero.
   'games/index.astro',
   'games/[slug]/index.astro',
+  // SEO-2: an index of the official reduced-track units by month. The grade-9
+  // loop pool shows topics this track does not learn, so it gets no loop.
+  'grade-9-reduced.astro',
 ]);
 
 function astroPages(dir: string): string[] {

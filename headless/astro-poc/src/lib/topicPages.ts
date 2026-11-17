@@ -818,6 +818,12 @@ export interface TopicPageBlock {
 
 export interface TopicPageSection {
   heading: string | null;
+  /**
+   * Optional fragment id for this section's H2 (rendered as <h2 id>), so a
+   * hub can link straight to a layout term: /slug#anchor. Lowercase ASCII
+   * words joined by hyphens; unique per page. Omit it to keep the plain H2.
+   */
+  anchor?: string;
   blocks: TopicPageBlock[];
 }
 
@@ -844,7 +850,7 @@ export interface TopicPageCatalogCta {
 /** Ordered pedagogical body after H1 (intro / headings / paragraphs / CTAs). */
 export type TopicBodyFlowItem =
   | { type: 'paragraph'; text: string; role?: 'intro' | 'self-check' | 'body' }
-  | { type: 'heading'; text: string }
+  | { type: 'heading'; text: string; anchor?: string }
   | {
       type: 'cta';
       label: string;
@@ -1365,9 +1371,67 @@ function withVisibleMathIsolates(data: TopicPageContent): TopicPageContent {
   };
 }
 
+/** Section anchors keyed by heading text (sections without an anchor are skipped). */
+function sectionAnchorsByHeading(page: TopicPageContent): Map<string, string> {
+  const out = new Map<string, string>();
+  for (const section of page.sections || []) {
+    if (section.heading && section.anchor) out.set(section.heading, section.anchor);
+  }
+  return out;
+}
+
+/** A captured bodyFlow heading takes its section's anchor unless it names its own. */
+function withSectionAnchors(flow: TopicBodyFlowItem[], page: TopicPageContent): TopicBodyFlowItem[] {
+  const anchors = sectionAnchorsByHeading(page);
+  if (!anchors.size) return flow;
+  return flow.map((b) => {
+    if (b.type !== 'heading' || b.anchor) return b;
+    const anchor = anchors.get(b.text);
+    return anchor ? { ...b, anchor } : b;
+  });
+}
+
+export const TOPIC_SECTION_ANCHOR_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+
+/**
+ * Section anchors must be safe fragment ids, unique on the page, clear of the
+ * ids TopicPage already uses (topic-…), and attached to a rendered H2.
+ */
+export function validateTopicSectionAnchors(page: TopicPageContent): void {
+  const declared = [
+    ...(page.sections || []).filter((s) => s.anchor !== undefined).map((s) => s.anchor as string),
+    ...(page.bodyFlow || [])
+      .filter((b): b is Extract<TopicBodyFlowItem, { type: 'heading' }> => b.type === 'heading' && b.anchor !== undefined)
+      .map((b) => b.anchor as string),
+  ];
+  for (const anchor of declared) {
+    if (typeof anchor !== 'string' || !TOPIC_SECTION_ANCHOR_PATTERN.test(anchor) || anchor.length > 64) {
+      throw new Error(`Topic page ${page.slug}: invalid section anchor ${JSON.stringify(anchor)}`);
+    }
+    if (anchor.startsWith('topic-')) {
+      throw new Error(`Topic page ${page.slug}: section anchor ${anchor} uses the reserved topic- prefix`);
+    }
+  }
+  const rendered = synthesizeBodyFlow(page)
+    .filter((b): b is Extract<TopicBodyFlowItem, { type: 'heading' }> => b.type === 'heading' && !!b.anchor)
+    .map((b) => b.anchor as string);
+  const seen = new Set<string>();
+  for (const anchor of rendered) {
+    if (seen.has(anchor)) throw new Error(`Topic page ${page.slug}: duplicate section anchor ${anchor}`);
+    seen.add(anchor);
+  }
+  for (const anchor of declared) {
+    if (!seen.has(anchor)) {
+      throw new Error(`Topic page ${page.slug}: section anchor ${anchor} is not on a rendered heading`);
+    }
+  }
+}
+
 /** Build legacy body order when capture predates bodyFlow. */
 export function synthesizeBodyFlow(page: TopicPageContent): TopicBodyFlowItem[] {
-  if (page.bodyFlow && page.bodyFlow.length) return presentBodyFlow(page.bodyFlow);
+  if (page.bodyFlow && page.bodyFlow.length) {
+    return presentBodyFlow(withSectionAnchors(page.bodyFlow, page));
+  }
   const flow: TopicBodyFlowItem[] = [];
   if (page.intro) flow.push({ type: 'paragraph', text: page.intro, role: 'intro' });
   // CTAs that live before H1 on source stay out of post-H1 bodyFlow
@@ -1382,7 +1446,13 @@ export function synthesizeBodyFlow(page: TopicPageContent): TopicBodyFlowItem[] 
     }
   }
   for (const section of page.sections || []) {
-    if (section.heading) flow.push({ type: 'heading', text: section.heading });
+    if (section.heading) {
+      flow.push(
+        section.anchor
+          ? { type: 'heading', text: section.heading, anchor: section.anchor }
+          : { type: 'heading', text: section.heading }
+      );
+    }
     for (const block of section.blocks || []) {
       if (block.type === 'paragraph' && block.text) {
         const role = block.text.includes('בדקו את עצמכם') ? 'self-check' : 'body';
@@ -1498,6 +1568,7 @@ export function loadTopicPage(slug: string): TopicPageContent {
   if (!data.jsonLd) {
     throw new Error(`Topic page ${slug}: missing JSON-LD`);
   }
+  validateTopicSectionAnchors(data);
   return withVisibleMathIsolates(data);
 }
 

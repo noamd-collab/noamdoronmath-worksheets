@@ -1,0 +1,283 @@
+{
+  "schema": "noam-prisa-units/v1",
+  "generatedAt": "2026-11-17",
+  "note": "Official teaching-layout (פריסת הוראה תשפ״ז) units by month. Generated once; the build reads only this file.",
+  "sources": {"units": {"path": "פרויקט החלפת דפי חטיבת הביניים/reports/curriculum-mapping-20261116/all-units.csv", "sha256": "ea7641d4a492833a933c4e4f9d05d49b2f206c0755c771b479d09753fa9e232e", "columns": ["יחידה", "מסלול", "נושא", "חובה"], "rows": 173}, "months": "Each track source below: the month in which the official PDF table first lists the unit (prisaPage is the PDF page).", "landings": {"path": "פרויקט החלפת דפי חטיבת הביניים/submissions/Claude/MANAGER-20261116/landing-plan/coverage.json", "sha256": "25a776f0dadb5ec971c1ec735c5b2490a13dae28736355844c3299ecfe2e1a07", "corrections": {"path": "פרויקט החלפת דפי חטיבת הביניים/submissions/Claude/MANAGER-20261116/landing-plan/verify.json", "sha256": "040ab35a5779a218e42cca029507d77e213b02d76268adcab922488cb2e38805"}, "baseline": "37213b1c", "rule": "pages = routed same-grade landing pages from coverage existing_pages, best first; empty = no landing yet (no_topic)"}},
+  "tracks": [
+    {
+      "key": "g7",
+      "grade": 7,
+      "label": "כיתה ז׳",
+      "source": {"title": "פריסת הוראה כיתה ז׳ — תשפ״ז", "url": "https://meyda.education.gov.il/files/Pop/0files/matmatika/Chativat-Beynayim/tashpaz/prisa_7.pdf", "sha256": "9a75dcb554fc69991bdec67b2bb56e1a26ca051bbebe54bb3150580ea677076f"},
+      "months": [
+        {"key": "m09", "label": "ספטמבר", "prisaPage": 2, "units": [
+          {"id": "st.g7.coordinate_system.first_quadrant", "name": "מערכת צירים ברביע הראשון: קריאה וסימון נקודות", "pages": ["coordinate-plane-scale-grade-7", "patterns-and-graphs-grade-7"]},
+          {"id": "st.g7.coordinate_system.segments_shapes_q1", "name": "אורך קטע מקביל לצירים ומלבנים ברביע הראשון", "pages": ["coordinate-plane-applications-grade-7", "coordinate-plane-scale-grade-7"]},
+          {"id": "st.g7.directed_numbers.intro_number_line", "name": "הכרת המספרים השליליים וסדר על ציר המספרים", "pages": ["number-line-absolute-value-grade-7"]},
+          {"id": "st.g7.angles.what_is_angle", "name": "מהי זווית", "pages": ["angles-introduction-measurement-grade-7"]},
+          {"id": "st.g7.angles.naming", "name": "סימון זוויות", "pages": ["angles-introduction-measurement-grade-7"]},
+          {"id": "st.g7.angles.types", "name": "סוגי זוויות", "pages": ["angles-introduction-measurement-grade-7"]},
+          {"id": "st.g7.angles.measure", "name": "מדידת זוויות", "pages": ["angles-introduction-measurement-grade-7"]}
+        ]},
+        {"key": "m10", "label": "אוקטובר", "prisaPage": 2, "units": [
+          {"id": "st.g7.directed_numbers.opposite_abs", "name": "מספרים נגדיים וערך מוחלט", "pages": ["number-line-absolute-value-grade-7"]},
+          {"id": "st.g7.directed_numbers.addition", "name": "חיבור מספרים מכוונים", "pages": ["signed-numbers-grade-7"]},
+          {"id": "st.g7.directed_numbers.subtraction", "name": "חיסור מספרים מכוונים והקשר לחיבור המספר הנגדי", "pages": ["signed-numbers-grade-7"]},
+          {"id": "st.g7.coordinate_system.four_quadrants", "name": "הרחבת מערכת הצירים לכל ארבעת הרביעים", "pages": ["coordinate-plane-four-quadrants-grade-7", "coordinate-plane-quadrants-grade-7"]},
+          {"id": "st.g7.angles.bisector", "name": "חוצה זווית", "pages": ["adjacent-vertical-angles-grade-7", "angles-review-grade-7"]},
+          {"id": "st.g7.angles.sum_diff", "name": "סכום והפרש זוויות", "pages": ["adjacent-vertical-angles-grade-7"]},
+          {"id": "st.g7.angles.adjacent", "name": "זוויות צמודות", "pages": ["adjacent-vertical-angles-grade-7"]},
+          {"id": "st.g7.angles.vertical", "name": "זוויות קודקודיות", "pages": ["adjacent-vertical-angles-grade-7"]}
+        ]},
+        {"key": "m11", "label": "נובמבר", "prisaPage": 2, "units": [
+          {"id": "st.g7.directed_numbers.mul_div", "name": "כפל וחילוק מספרים מכוונים, מספרים הופכיים וסדר פעולות", "pages": ["multiplying-signed-numbers-grade-7", "dividing-signed-numbers-grade-7", "order-of-operations-signed-numbers-grade-7"]},
+          {"id": "st.g7.angles.equilateral", "name": "זוויות במשולש שווה צלעות", "pages": ["special-triangles-grade-7-new", "equilateral-triangle-grade-7"]},
+          {"id": "st.g7.angles.isosceles", "name": "זוויות במשולש שווה שוקיים", "pages": ["special-triangles-grade-7-new"]},
+          {"id": "st.g7.angles.triangle_sum", "name": "סכום הזוויות במשולש", "pages": ["triangle-quadrilateral-angle-sum-grade-7"]},
+          {"id": "st.g7.angles.quad_sum", "name": "סכום הזוויות במרובע", "pages": ["triangle-quadrilateral-angle-sum-grade-7"]},
+          {"id": "st.g7.transformations.congruent_figures", "name": "צורות חופפות במישור והתאמה בין קודקודים, צלעות וזוויות", "pages": ["congruent-polygons-transformations-grade-7"]},
+          {"id": "st.g7.transformations.isometries", "name": "הזזה, שיקוף וסיבוב במישור ובמערכת צירים", "pages": ["congruent-polygons-transformations-grade-7", "coordinate-plane-four-quadrants-grade-7"]}
+        ]},
+        {"key": "m12", "label": "דצמבר", "prisaPage": 2, "units": [
+          {"id": "st.g7.powers_roots.power_notation", "name": "חזקה: בסיס ומעריך", "pages": ["powers-grade-7"]},
+          {"id": "st.g7.powers_roots.order_of_operations", "name": "סדר פעולות חשבון עם חזקות", "pages": ["powers-grade-7", "order-of-operations-signed-numbers-grade-7"]},
+          {"id": "st.g7.powers_roots.growth_contexts", "name": "חזקות בהקשר שטח ריבוע", "pages": ["powers-grade-7", "square-root-grade-7"]},
+          {"id": "st.g7.powers_roots.signed_base", "name": "חזקה שבסיסה מספר מכוון", "pages": ["order-of-operations-signed-numbers-grade-7"]},
+          {"id": "st.g7.powers_roots.square_root", "name": "שורש ריבועי", "pages": ["square-root-grade-7"]},
+          {"id": "st.g7.powers_roots.irrational_estimate", "name": "שורש ריבועי אי־רציונלי ואומדן שורש ריבועי", "pages": ["square-root-grade-7"]},
+          {"id": "st.g7.areas.rect_square", "name": "שטח והיקף של מלבן וריבוע (כולל במערכת צירים)", "pages": ["area-rectangle-perimeter-grade-7", "coordinate-plane-applications-grade-7"]},
+          {"id": "st.g7.areas.triangle_ortho_quad", "name": "שטח משולש ושטח מרובע שאלכסוניו מאונכים", "pages": ["triangle-area-grade-7"]},
+          {"id": "st.g7.algebraic_expressions.variables_expressions", "name": "משתנים, ביטויים אלגבריים, הצבה וחוקיות", "pages": ["algebraic-expressions-grade-7", "patterns-and-graphs-grade-7"]}
+        ]},
+        {"key": "m01", "label": "ינואר", "prisaPage": 3, "units": [
+          {"id": "st.g7.algebraic_expressions.equivalence_identity", "name": "שוויון בין ביטויים אלגבריים (זהות)", "pages": ["combining-like-terms-grade-7", "algebraic-expressions-grade-7"]},
+          {"id": "st.g7.solids.cube_box_elements", "name": "קובייה ותיבה: פאות, מקצועות, קודקודים ופריסה", "pages": ["solids-box-cube-prism-grade-7"]},
+          {"id": "st.g7.solids.box_surface_volume", "name": "שטח פנים ונפח של תיבה וקובייה", "pages": ["solids-box-cube-prism-grade-7"]},
+          {"id": "st.g7.data_frequency.collect_represent", "name": "איסוף, ארגון, ייצוג וקריאת נתונים בטבלה ובדיאגרמות", "pages": ["data-collection-reading-grade-7", "frequency-grade-7"]}
+        ]},
+        {"key": "m02", "label": "פברואר", "prisaPage": 3, "units": [
+          {"id": "st.g7.data_frequency.frequency_relative", "name": "שכיחות ושכיחות יחסית", "pages": ["frequency-grade-7", "relative-frequency-grade-7"]},
+          {"id": "st.g7.data_frequency.probability_relative_freq", "name": "הסתברות של מאורע בהקשר של שכיחות יחסית", "pages": ["probability-introduction-grade-7", "relative-frequency-experiments-grade-7"]},
+          {"id": "st.g7.algebraic_expressions.like_terms", "name": "כינוס איברים דומים", "pages": ["combining-like-terms-grade-7"]},
+          {"id": "st.g7.algebraic_expressions.distributive", "name": "חוק הפילוג ופתיחת סוגריים בביטויים אלגבריים", "pages": ["combining-like-terms-grade-7", "equations-advanced-grade-7"]}
+        ]},
+        {"key": "m03", "label": "מרץ", "prisaPage": 3, "units": [
+          {"id": "st.g7.equations.solution_meaning", "name": "מושג המשוואה ופתרון משוואה על ידי הצבה ושיקולי מאזניים", "pages": ["equations-introduction-equivalence-grade-7", "equations-basics-grade-7"]},
+          {"id": "st.g7.equations.linear_solving", "name": "פתרון משוואות ממעלה ראשונה (כולל כינוס איברים וחוק הפילוג)", "pages": ["two-step-equations-grade-7", "equations-advanced-grade-7", "equations-both-sides-word-problems-grade-7"]},
+          {"id": "st.g7.pythagoras.right_triangle_legs", "name": "משולש ישר־זווית: ניצבים, יתר ומשפט פיתגורס", "pages": ["pythagorean-theorem-grade-7"]},
+          {"id": "st.g7.pythagoras.applications", "name": "שימושי משפט פיתגורס במצולעים ובמערכת צירים", "pages": ["pythagoras-applications-grade-7"]}
+        ]},
+        {"key": "m04", "label": "אפריל", "prisaPage": 3, "units": [
+          {"id": "st.g7.areas.parallelogram_trapezoid", "name": "שטחים ב׳: שטח מקבילית, שטח טרפז ושטחי צורות מורכבות", "pages": ["area-parallelogram-trapezoid-composite-grade-7"]}
+        ]},
+        {"key": "m05", "label": "מאי", "prisaPage": 3, "units": [
+          {"id": "st.g7.word_problems.modeling_linear", "name": "בניית משוואה ממעלה ראשונה מתוך בעיה מילולית", "pages": ["equations-both-sides-word-problems-grade-7"]},
+          {"id": "st.g7.word_problems.context_problems", "name": "פתרון שאלות מילוליות בהקשרים גאומטריים ויומיומיים ובדיקת סבירות", "pages": ["equations-both-sides-word-problems-grade-7"]},
+          {"id": "st.g7.points_on_graph.reading_graph_q1", "name": "קריאת מידע ונקודות על גרף שימושי ברביע הראשון", "pages": ["patterns-and-graphs-grade-7"]},
+          {"id": "st.g7.areas.perimeters", "name": "חישוב היקפים של מצולעים וצורות מורכבות", "pages": ["area-rectangle-perimeter-grade-7"]},
+          {"id": "st.g7.solids.triangular_prism", "name": "מנסרה משולשת ישרה: הכרה, שטח פנים ונפח", "pages": ["solids-box-cube-prism-grade-7"]}
+        ]}
+      ]
+    },
+    {
+      "key": "g8",
+      "grade": 8,
+      "label": "כיתה ח׳",
+      "source": {"title": "פריסת הוראה כיתה ח׳ — תשפ״ז", "url": "https://meyda.education.gov.il/files/Pop/0files/matmatika/Chativat-Beynayim/tashpaz/prisa_8.pdf", "sha256": "f80a4876acd304f9405a9e11074ddb3845e8b782d0d5cdc65f313537ebbcedf8"},
+      "months": [
+        {"key": "m09", "label": "ספטמבר", "prisaPage": 2, "units": [
+          {"id": "st.g8.ratio_scale.ratio_division", "name": "יחס, יחסים שקולים וחלוקה ביחס נתון", "pages": ["ratio-proportion-grade-8"]},
+          {"id": "st.g8.ratio_scale.proportion", "name": "פרופורציה ויחס ישר", "pages": ["ratio-proportion-grade-8", "slope-line-through-origin-grade-8"]},
+          {"id": "st.g8.ratio_scale.scale", "name": "קנה מידה במפות, בסרטוטים ובמודלים", "pages": ["scale-grade-8"]},
+          {"id": "st.g8.pythagoras.parallel_angles_completion", "name": "השלמת זוויות מתאימות וזוויות מתחלפות בין ישרים מקבילים", "pages": ["parallel-lines-angles-grade-8"]},
+          {"id": "st.g8.pythagoras.theorem_converse", "name": "משפט פיתגורס במישור והמשפט ההפוך לו", "pages": ["pythagorean-theorem-grade-8", "advanced-pythagoras-grade-8"]}
+        ]},
+        {"key": "m10", "label": "אוקטובר", "prisaPage": 2, "units": [
+          {"id": "st.g8.percentages.part_whole", "name": "אחוזים במצבים סטטיים: חישוב אחוז, ערך האחוז והשלם", "pages": ["percentage-problems-grade-8", "percent-representations-grade-8"]},
+          {"id": "st.g8.percentages.change_multiplier", "name": "אחוזים במצבים דינמיים: התייקרות, הוזלה ושינוי רב־שלבי", "pages": ["percent-change-grade-8", "successive-percent-changes-grade-8"]},
+          {"id": "st.g8.cylinder_cone.circle_review", "name": "מעגל ועיגול: רדיוס, קוטר, היקף מעגל ושטח עיגול", "pages": ["circle-area-circumference-grade-8"]},
+          {"id": "st.g8.cylinder_cone.cylinder", "name": "גליל ישר: פריסה, שטח מעטפת, שטח פנים ונפח", "pages": ["cylinder-surface-area-grade-8", "cylinder-volume-grade-8"]},
+          {"id": "st.g8.cylinder_cone.cone", "name": "חרוט ישר: הכרה ונפח חרוט", "pages": ["cone-grade-8"]},
+          {"id": "st.g8.data_center.freq_relative_review", "name": "איסוף וארגון מידע, שכיחות ושכיחות יחסית", "pages": ["statistics-data-frequency-grade-8", "statistics-grade-8"]}
+        ]},
+        {"key": "m11", "label": "נובמבר", "prisaPage": 2, "units": [
+          {"id": "st.g8.transformations.isometries_congruence", "name": "טרנספורמציות איזומטריות (הזזה, שיקוף, סיבוב) וצורות חופפות", "pages": []},
+          {"id": "st.g8.functions_intro.concept_representations", "name": "מושג הפונקציה וייצוגיה (מילולי, טבלה, גרף וביטוי אלגברי)", "pages": ["function-concept-grade-8", "function-representations-grade-8", "function-notation-grade-8"]},
+          {"id": "st.g8.functions_intro.inc_dec_linear_graphs", "name": "תחומי עלייה, ירידה וקביעות וגרפים קוויים", "pages": ["function-representations-grade-8", "linear-function-grade-8"]}
+        ]},
+        {"key": "m12", "label": "דצמבר", "prisaPage": 3, "units": [
+          {"id": "st.g8.slope_linear.rate_and_slope", "name": "קצב שינוי אחיד ושיפוע של ישר", "pages": ["rate-of-change-grade-8", "slope-line-through-origin-grade-8"]},
+          {"id": "st.g8.slope_linear.algebraic_linear", "name": "ייצוג אלגברי של פונקציה קווית וחיתוך עם הצירים", "pages": ["linear-function-grade-8", "axis-intercepts-grade-8", "equation-of-a-line-grade-8"]},
+          {"id": "st.g8.word_problems_eq.special_denominators", "name": "משוואות ממעלה ראשונה עם מכנים מספריים ומשוואות מיוחדות", "pages": ["equations-with-fractions-grade-8"]},
+          {"id": "st.g8.word_problems_eq.motion_percent_problems", "name": "שאלות מילוליות בעזרת משוואות: תנועה, אחוזים ויחס", "pages": ["word-problems-choosing-unknowns-grade-8", "motion-problems-grade-8", "percentage-problems-grade-8"]},
+          {"id": "st.g8.data_center.range_central_tendency", "name": "טווח נתונים ומדדי מרכז: ממוצע, חציון ושכיח", "pages": ["data-range-grade-8", "mean-grade-8", "median-grade-8", "choosing-measure-of-center-grade-8"]}
+        ]},
+        {"key": "m01", "label": "ינואר", "prisaPage": 3, "units": [
+          {"id": "st.g8.data_center.two_sources", "name": "השוואה ומיזוג מידע משני מקורות נתונים", "pages": ["two-data-sources-grade-8"]},
+          {"id": "st.g8.inter_extrapolation.estimate_from_trend", "name": "אינטרפולציה ואקסטרפולציה מתוך גרף או טבלת מגמה", "pages": ["interpolation-extrapolation-grade-8"]},
+          {"id": "st.g8.congruence.criteria_sas_asa_sss", "name": "משפטי חפיפת משולשים: צ.ז.צ, ז.צ.ז ו־צ.צ.צ", "pages": ["congruence-theorems-grade-8", "triangle-congruence-grade-8"]},
+          {"id": "st.g8.congruence.deductive_proof", "name": "רישום הוכחה היסקית (טענה ונימוק) באמצעות חפיפת משולשים", "pages": ["geometric-proof-grade-8", "triangle-congruence-proofs-grade-8"]}
+        ]},
+        {"key": "m02", "label": "פברואר", "prisaPage": 3, "units": [
+          {"id": "st.g8.triangle_parts.triangle_inequality", "name": "צלעות המשולש (אי־שוויון המשולש)", "pages": []},
+          {"id": "st.g8.triangle_parts.median", "name": "תיכון במשולש וחלוקת שטח המשולש", "pages": ["triangle-median-grade-8"]},
+          {"id": "st.g8.systems_basic.graphical_meaning", "name": "מערכת של שתי משוואות קוויות בשני נעלמים ומשמעותה הגרפית", "pages": ["systems-of-equations-grade-8"]},
+          {"id": "st.g8.systems_basic.algebraic_solving", "name": "פתרון אלגברי של מערכת משוואות (הצבה והשוואת מקדמים) ושאלות מילוליות", "pages": ["systems-algebraic-solution-grade-8", "systems-word-problems-grade-8"]}
+        ]},
+        {"key": "m03", "label": "מרץ", "prisaPage": 3, "units": [
+          {"id": "st.g8.triangle_parts.exterior_angle", "name": "זווית חיצונית למשולש ותכונתה", "pages": ["exterior-angle-triangle-grade-8"]},
+          {"id": "st.g8.triangle_parts.isosceles_properties", "name": "משולש שווה־שוקיים: זוויות הבסיס והתלכדות תיכון, גובה וחוצה זווית הראש", "pages": ["isosceles-triangle-properties-grade-8", "isosceles-triangle-grade-8"]},
+          {"id": "st.g8.triangle_parts.isosceles_converse", "name": "משפטים הפוכים לזיהוי משולש שווה־שוקיים", "pages": ["isosceles-triangle-grade-8"]},
+          {"id": "st.g8.similarity.similar_polygons_ratio", "name": "מצולעים דומים, משולשים דומים ויחס הדמיון", "pages": ["similar-triangles-grade-8"]},
+          {"id": "st.g8.similarity.criteria", "name": "דמיון משולשים לפי זוויות (ז.ז) ויישומים", "pages": ["similar-triangles-grade-8", "triangle-similarity-proof-grade-8"]},
+          {"id": "st.g8.probability.sample_space_events", "name": "הסתברות מנתוני ניסוי וממרחב תוצאות שוות־סיכוי", "pages": ["probability-sample-space-grade-8", "probability-experiments-fairness-grade-8"]},
+          {"id": "st.g8.probability.complementary_event", "name": "הסתברות ב׳: מאורע משלים ואיחוד מאורעות זרים", "pages": ["probability-sample-space-grade-8"]}
+        ]},
+        {"key": "m05", "label": "מאי", "prisaPage": 4, "units": [
+          {"id": "st.g8.pythagoras_3d.space_diagonals", "name": "משפט פיתגורס במרחב: אלכסוני פאות ואלכסון תיבה ומנסרה", "pages": ["pythagoras-in-space-grade-8"]},
+          {"id": "st.g8.inequalities.concept_number_line", "name": "מושג האי־שוויון והצגת קבוצת הפתרונות על ציר המספרים", "pages": ["inequalities-grade-8"]},
+          {"id": "st.g8.inequalities.linear_solving", "name": "פתרון אי־שוויונות ממעלה ראשונה (כולל כפל וחילוק במספר שלילי)", "pages": ["inequalities-grade-8", "graphical-inequalities-grade-8"]}
+        ]}
+      ]
+    },
+    {
+      "key": "g9r",
+      "grade": 9,
+      "label": "כיתה ט׳ רגילה",
+      "source": {"title": "פריסת הוראה כיתה ט׳ — תשפ״ז", "url": "https://meyda.education.gov.il/files/Pop/0files/matmatika/Chativat-Beynayim/tashpaz/prisa_9A.pdf", "sha256": "a6832b146c58323bcb427a483235a1af4e6dadf75e1dd5b70cf90f4415c33690"},
+      "months": [
+        {"key": "m09", "label": "ספטמבר", "prisaPage": 2, "units": [
+          {"id": "st.g9r.alg_technique.extended_distributive", "name": "חוק הפילוג המורחב, פישוט ביטויים, משוואות והשוואת שטחים", "pages": ["distributive-law-grade-9"]},
+          {"id": "st.g9r.alg_technique.short_multiplication", "name": "נוסחאות הכפל המקוצר (הפרש ריבועים וריבוע של סכום או הפרש)", "pages": ["binomial-square-grade-9", "difference-of-squares-grade-9"]},
+          {"id": "st.g9r.kite.definition_angles", "name": "הכרת הדלתון, הגדרתו ותכונות הזוויות בדלתון", "pages": ["kite-grade-9"]},
+          {"id": "st.g9r.kite.main_diagonal_area", "name": "האלכסון הראשי בדלתון ושטח דלתון", "pages": ["kite-grade-9"]}
+        ]},
+        {"key": "m10", "label": "אוקטובר", "prisaPage": 2, "units": [
+          {"id": "st.g9r.alg_technique.factoring", "name": "פירוק לגורמים (גורם משותף, נוסחאות כפל מקוצר וטרינום) ופתרון משוואות ריבועיות בסיסיות", "pages": ["factoring-grade-9"]},
+          {"id": "st.g9r.alg_technique.algebraic_fractions", "name": "שברים אלגבריים: תחום הצבה, צמצום, כפל וחילוק", "pages": ["algebraic-fractions-grade-9"]},
+          {"id": "st.g9r.isosceles_converse.theorems_and_coord", "name": "משפטים הפוכים להוכחה שמשולש הוא שווה־שוקיים (כולל במערכת צירים)", "pages": ["isosceles-triangle-grade-9"]}
+        ]},
+        {"key": "m11", "label": "נובמבר", "prisaPage": 3, "units": [
+          {"id": "st.g9r.quad_func_and_eq.parabola_intro_qualitative", "name": "הפונקציה הריבועית ותכונות הפרבולה באופן איכותני", "pages": ["quadratic-function-grade-9"]},
+          {"id": "st.g9r.quad_func_and_eq.shifts_vertex_form", "name": "הזזה אנכית והזזה אופקית של פרבולה (הצגת קודקוד)", "pages": ["quadratic-function-grade-9"]},
+          {"id": "st.g9r.quad_func_and_eq.factored_standard_formula", "name": "הצגה כמכפלה, הצגה סטנדרטית ופתרון משוואות ריבועיות בנוסחת השורשים", "pages": ["quadratic-equations-grade-9", "quadratic-function-grade-9"]},
+          {"id": "st.g9r.side_angle_relations.order_theorems", "name": "יחסי סדר בין צלעות וזוויות במשולש", "pages": ["triangle-sides-angles-grade-9"]},
+          {"id": "st.g9r.right_triangle_30_60_90.theorem_and_converse", "name": "משולש ישר־זווית שזוויותיו 30°, 60°, 90° והמשפט ההפוך", "pages": ["triangle-30-60-90-grade-9"]},
+          {"id": "st.g9r.parallels_trapezoid.properties", "name": "ישרים מקבילים: הגדרה ותכונות", "pages": []},
+          {"id": "st.g9r.parallels_trapezoid.alternate_corresponding", "name": "זוויות מתחלפות וזוויות מתאימות בין ישרים מקבילים", "pages": []},
+          {"id": "st.g9r.parallels_trapezoid.converse", "name": "משפט הפוך: תנאים להקבלה", "pages": []},
+          {"id": "st.g9r.parallels_trapezoid.co_interior", "name": "זוויות חד־צדדיות בין ישרים מקבילים", "pages": [], "optional": true},
+          {"id": "st.g9r.parallels_trapezoid.trapezoid_intro", "name": "הכרת הטרפז, תכונות זוויות בטרפז והוכחה שמרובע הוא טרפז", "pages": ["trapezoid-grade-9"]},
+          {"id": "st.g9r.parallels_trapezoid.isosceles_trapezoid", "name": "טרפז שווה־שוקיים: זוויות הבסיס והאלכסונים", "pages": ["parallelogram-grade-9"]},
+          {"id": "st.g9r.parallels_trapezoid.trapezoid_area_perim", "name": "שטח והיקף של טרפז (כולל במערכת צירים)", "pages": ["trapezoid-grade-9", "parallelogram-trapezoid-area-grade-9"]}
+        ]},
+        {"key": "m12", "label": "דצמבר", "prisaPage": 4, "units": [
+          {"id": "st.g9r.quad_eq_applications.technique_and_graphs", "name": "פתרון משוואות ריבועיות משולבות בטכניקה אלגברית ויישומים בפרבולות", "pages": ["quadratic-equations-grade-9"]},
+          {"id": "st.g9r.quad_inequalities.graphical_parabola", "name": "פתרון אי־שוויונות ריבועיים באמצעות סקיצה של פונקציה ריבועית", "pages": ["quadratic-inequalities-systems-grade-9"]},
+          {"id": "st.g9r.parallelogram.def_properties", "name": "הגדרת המקבילית ותכונות הצלעות, הזוויות והאלכסונים", "pages": ["parallelogram-grade-9"]},
+          {"id": "st.g9r.parallelogram.converse_theorems", "name": "משפטים הפוכים להוכחה שמרובע הוא מקבילית", "pages": ["parallelogram-grade-9"]}
+        ]},
+        {"key": "m01", "label": "ינואר", "prisaPage": 5, "units": [
+          {"id": "st.g9r.rational_equations.domain_and_solving", "name": "משוואות רציונליות: תחום הצבה, פירוק מכנים לגורמים ובדיקת קבילות פתרונות", "pages": ["rational-equations-grade-9"]},
+          {"id": "st.g9r.rectangle.def_properties", "name": "הגדרת המלבן ותכונות הצלעות, הזוויות והאלכסונים", "pages": ["rectangle-grade-9"]},
+          {"id": "st.g9r.rectangle.converse_theorems", "name": "משפטים הפוכים להוכחה שמרובע או מקבילית הם מלבן", "pages": ["rectangle-grade-9"]},
+          {"id": "st.g9r.probability.single_stage_complement", "name": "מושגי יסוד בהסתברות, שכיחות יחסית ומאורע משלים", "pages": ["probability-grade-9"]},
+          {"id": "st.g9r.probability.two_stage_representations", "name": "ניסויים דו־שלביים: טבלה דו־ממדית, דיאגרמת עץ ומודל השטח", "pages": ["probability-grade-9"]},
+          {"id": "st.g9r.integrative_literacy.real_world_tasks", "name": "משימות אורייניות אינטגרטיביות המשלבות אלגברה, פונקציות וגאומטריה", "pages": []}
+        ]},
+        {"key": "m02", "label": "פברואר", "prisaPage": 5, "units": [
+          {"id": "st.g9r.system_degree_2.line_parabola_system", "name": "מערכת משוואות ממעלה שנייה (ישר ופרבולה או שתי פרבולות): פתרון אלגברי וגרפי", "pages": ["quadratic-inequalities-systems-grade-9"]}
+        ]},
+        {"key": "m03", "label": "מרץ", "prisaPage": 6, "units": [
+          {"id": "st.g9r.function_properties.graph_features_equations", "name": "תכונות של פונקציה מתוך גרף והקשר בין משוואות לגרפים", "pages": ["precalculus-functions-graphs-grade-9"]},
+          {"id": "st.g9r.function_properties.shifts_reflection", "name": "הזזה אנכית, הזזה אופקית ושיקוף ביחס לציר האופקי של פונקציה כללית", "pages": ["precalculus-functions-graphs-grade-9"]},
+          {"id": "st.g9r.rhombus.def_properties", "name": "הגדרת המעוין ותכונות הצלעות, הזוויות והאלכסונים", "pages": ["rhombus-grade-9"]},
+          {"id": "st.g9r.rhombus.converse_theorems", "name": "משפטים הפוכים להוכחה שמרובע או מקבילית הם מעוין", "pages": ["rhombus-grade-9"]},
+          {"id": "st.g9r.square.def_properties_converse", "name": "הגדרת הריבוע, תכונותיו ומשפטים הפוכים להוכחה שמרובע הוא ריבוע", "pages": ["square-grade-9"]}
+        ]},
+        {"key": "m04", "label": "אפריל", "prisaPage": 7, "units": [
+          {"id": "st.g9r.right_triangle_median.theorem_and_quads", "name": "התיכון ליתר במשולש ישר־זווית, המשפט ההפוך ושילוב במרובעים", "pages": ["median-to-hypotenuse-grade-9"]}
+        ]},
+        {"key": "m05", "label": "מאי", "prisaPage": 7, "units": [
+          {"id": "st.g9r.powers.natural_review", "name": "חזקה עם מעריך טבעי: חזרה", "pages": ["exponent-rules-grade-9"]},
+          {"id": "st.g9r.powers.scientific_notation_large", "name": "כתיבה מדעית של מספרים גדולים", "pages": ["exponent-rules-grade-9"]},
+          {"id": "st.g9r.powers.product_same_base", "name": "כפל חזקות בעלות בסיס שווה", "pages": ["exponent-rules-grade-9"]},
+          {"id": "st.g9r.powers.quotient_same_base", "name": "חילוק חזקות בעלות בסיס שווה", "pages": ["exponent-rules-grade-9"]},
+          {"id": "st.g9r.powers.power_of_product", "name": "חזקה של מכפלה", "pages": ["exponent-rules-grade-9"]},
+          {"id": "st.g9r.powers.power_of_quotient", "name": "חזקה של מנה", "pages": ["exponent-rules-grade-9"]},
+          {"id": "st.g9r.powers.power_of_power", "name": "חזקה של חזקה", "pages": ["exponent-rules-grade-9"]},
+          {"id": "st.g9r.powers.zero_exponent", "name": "חזקה עם מעריך אפס", "pages": ["exponent-rules-grade-9"]},
+          {"id": "st.g9r.powers.sqrt_laws", "name": "חוקי שורש ריבועי", "pages": ["square-roots-grade-9"]},
+          {"id": "st.g9r.word_problems.quadratic_geometric", "name": "שאלות מילוליות הנדסיות וכלליות בעזרת משוואה ריבועית או מערכת משוואות", "pages": ["word-problems-grade-9"]},
+          {"id": "st.g9r.word_problems.motion_percent_literacy", "name": "שאלות תנועה, אחוזים ושאלות אוריינות", "pages": ["word-problems-grade-9"]},
+          {"id": "st.g9r.similarity.area_ratio", "name": "דמיון משולשים ויחס השטחים בין משולשים דומים", "pages": ["similar-triangles-grade-9"]}
+        ]}
+      ]
+    },
+    {
+      "key": "g9m",
+      "grade": 9,
+      "label": "כיתה ט׳ מצומצמת",
+      "source": {"title": "פריסת הוראה כיתה ט׳ מצומצמת — תשפ״ז", "url": "https://meyda.education.gov.il/files/Pop/0files/matmatika/Chativat-Beynayim/tashpaz/prisa_9B.pdf", "sha256": "f137ce2940e858cc5380a4a27e3634c9a6192a75d36b04a287ffae4db4e23a08"},
+      "months": [
+        {"key": "m09", "label": "ספטמבר", "prisaPage": 2, "units": [
+          {"id": "st.g9m.graph_reading.phenomena_axes", "name": "קריאת מידע מגרפים של תופעות במערכת צירים", "pages": ["reading-graphs-grade-9"]},
+          {"id": "st.g9m.graph_reading.trends_questions", "name": "מגמות שינוי (עלייה, ירידה וקביעות) ומענה על שאלות מתוך גרף", "pages": ["reading-graphs-grade-9"]},
+          {"id": "st.g9m.computational_triangle.angles_and_lines", "name": "סכום זוויות במשולש וקטעים מיוחדים במשולש", "pages": ["triangle-calculations-grade-9"]},
+          {"id": "st.g9m.computational_triangle.area_perim_coord", "name": "שטח והיקף של משולש ויישום במערכת צירים", "pages": ["triangle-calculations-grade-9", "triangle-area-grade-9"]}
+        ]},
+        {"key": "m10", "label": "אוקטובר", "prisaPage": 2, "units": [
+          {"id": "st.g9m.linear_function.slope_rate_meaning", "name": "משמעות השיפוע כקצב שינוי וייצוג גרפי ואלגברי של פונקציה קווית", "pages": ["linear-function-grade-9"]},
+          {"id": "st.g9m.linear_function.points_intercepts_parallels", "name": "נקודה על ישר, חיתוך עם הצירים וישרים מקבילים בהקשר פונקציונלי", "pages": ["linear-function-grade-9"]},
+          {"id": "st.g9m.linear_function.line_equation_optional", "name": "מציאת משוואת ישר לפי נקודה ושיפוע או שתי נקודות (בקבוצות מתאימות)", "pages": ["linear-function-grade-9"], "optional": true},
+          {"id": "st.g9m.alg_technique_basic.distributive_extended", "name": "חוק הפילוג וחוק הפילוג המורחב", "pages": ["distributive-law-grade-9"]},
+          {"id": "st.g9m.alg_technique_basic.simple_equations_distributive", "name": "פתרון משוואות פשוטות בעזרת חוק הפילוג", "pages": ["distributive-law-grade-9"]},
+          {"id": "st.g9m.pythagoras.right_triangle_sides", "name": "משפט פיתגורס וחישובי צלעות במשולשים ישרי־זווית", "pages": ["pythagorean-theorem-grade-9", "pythagoras-basics-grade-9"]},
+          {"id": "st.g9m.pythagoras.composite_areas_perim", "name": "חישובי צלעות, היקפים ושטחים בצורות מורכבות ובמערכת צירים", "pages": ["pythagoras-applications-grade-9", "composite-polygons-area-grade-9"]}
+        ]},
+        {"key": "m11", "label": "נובמבר", "prisaPage": 3, "units": [
+          {"id": "st.g9m.statistics.tables_diagrams_freq", "name": "איסוף וארגון נתונים בטבלה, ברשימה ובדיאגרמות, שכיחות ושכיחות יחסית", "pages": ["statistics-grade-9"]},
+          {"id": "st.g9m.statistics.central_measures_range", "name": "טווח נתונים ומדדי מרכז: ממוצע, שכיח וחציון", "pages": ["statistics-grade-9"]},
+          {"id": "st.g9m.kite_and_isosceles.isosceles_converse", "name": "משולש שווה־שוקיים: זוויות, קווים מיוחדים וזיהוי משולש שווה־שוקיים", "pages": ["isosceles-triangle-grade-9"]},
+          {"id": "st.g9m.kite_and_isosceles.kite_properties", "name": "תכונות הדלתון וחישובי שטחים והיקפים", "pages": ["kite-grade-9"]},
+          {"id": "st.g9m.percentages.part_of_whole", "name": "החלק היחסי מהשלם וחישוב ערך האחוז", "pages": []},
+          {"id": "st.g9m.percentages.increase_decrease", "name": "הגדלה והקטנה באחוזים (הנחה והתייקרות)", "pages": []}
+        ]},
+        {"key": "m12", "label": "דצמבר", "prisaPage": 4, "units": [
+          {"id": "st.g9m.similarity.concept_scale", "name": "המושג צורות דומות, הגדלה והקטנה וצלעות פרופורציונליות", "pages": ["similar-triangles-grade-9"]},
+          {"id": "st.g9m.similarity.aa_calculations", "name": "משפט דמיון ז.ז וחישובי צלעות וזוויות במשולשים דומים", "pages": ["triangle-similarity-aa-grade-9"]}
+        ]},
+        {"key": "m01", "label": "ינואר", "prisaPage": 4, "units": [
+          {"id": "st.g9m.parallels_and_parallelogram.review", "name": "חזרה על ישרים מקבילים", "pages": []},
+          {"id": "st.g9m.parallels_and_parallelogram.parallelogram_def", "name": "הגדרת המקבילית וחישובי היקף ושטח בסיסיים", "pages": ["parallelogram-grade-9", "parallelogram-trapezoid-area-grade-9"]},
+          {"id": "st.g9m.parallels_and_parallelogram.parallelogram_props", "name": "תכונות הצלעות, הזוויות והאלכסונים במקבילית", "pages": ["parallelogram-grade-9"]},
+          {"id": "st.g9m.parallels_and_parallelogram.parallelogram_identify", "name": "זיהוי מקבילית לפי תכונות הצלעות, הזוויות והאלכסונים", "pages": ["parallelogram-grade-9"]},
+          {"id": "st.g9m.equations.numeric_denominator", "name": "פתרון משוואות ממעלה ראשונה עם מכנה מספרי", "pages": []},
+          {"id": "st.g9m.probability.basic_concepts_relative_freq", "name": "מושגים בסיסיים בהסתברות והקשר לשכיחות יחסית", "pages": ["probability-grade-9"]},
+          {"id": "st.g9m.probability.events_complement", "name": "מאורע משלים, מאורע ודאי ומאורע בלתי־אפשרי", "pages": ["probability-grade-9"]}
+        ]},
+        {"key": "m02", "label": "פברואר", "prisaPage": 4, "units": [
+          {"id": "st.g9m.rectangle.def_properties", "name": "הגדרת המלבן ותכונות הצלעות, הזוויות והאלכסונים", "pages": ["rectangle-grade-9"]},
+          {"id": "st.g9m.rectangle.sides_perim_area", "name": "חישובי צלעות, אלכסונים, היקפים ושטחים במלבן", "pages": ["rectangle-grade-9", "rectangle-square-area-grade-9"]},
+          {"id": "st.g9m.quad_partial.table_and_graph", "name": "הצבת ערכים בפונקציה ריבועית והקשר למשוואה ריבועית", "pages": ["quadratic-function-grade-9"], "note": "במסלול המצומצם מציבים ערכים בלבד. תכונות הפונקציה הריבועית לא נלמדות השנה."},
+          {"id": "st.g9m.quad_partial.quadratic_formula", "name": "פתרון משוואות ריבועיות באמצעות נוסחת השורשים", "pages": ["quadratic-equations-grade-9"]}
+        ]},
+        {"key": "m03", "label": "מרץ", "prisaPage": 5, "units": [
+          {"id": "st.g9m.word_problems.general_and_quadratic", "name": "שאלות מילוליות ושאלות אוריינות בנושאים שונים (כולל משוואה ריבועית)", "pages": ["word-problems-grade-9"]},
+          {"id": "st.g9m.rhombus.def_properties", "name": "הגדרת המעוין ותכונות הצלעות, הזוויות והאלכסונים", "pages": ["rhombus-grade-9"]},
+          {"id": "st.g9m.rhombus.area_pythagoras", "name": "חישובי שטח והיקף של מעוין (כולל מחצית מכפלת האלכסונים ומשפט פיתגורס)", "pages": ["rhombus-grade-9"]}
+        ]},
+        {"key": "m04", "label": "אפריל", "prisaPage": 5, "units": [
+          {"id": "st.g9m.square.def_properties", "name": "הגדרת הריבוע ותכונות הצלעות, הזוויות והאלכסונים", "pages": ["square-grade-9"]},
+          {"id": "st.g9m.square.area_pythagoras", "name": "שטח והיקף של ריבוע (כולל מחצית מכפלת האלכסונים ומשפט פיתגורס)", "pages": ["square-grade-9"]}
+        ]},
+        {"key": "m05", "label": "מאי", "prisaPage": 5, "units": [
+          {"id": "st.g9m.word_problems_integrative.literacy_contexts", "name": "שאלות מילוליות אורייניות אינטגרטיביות מהעולם האמיתי", "pages": []},
+          {"id": "st.g9m.trapezoid.definition_properties", "name": "הגדרת הטרפז ותכונות הצלעות, הזוויות והאלכסונים", "pages": ["trapezoid-grade-9"]},
+          {"id": "st.g9m.trapezoid.area_perimeter", "name": "שטח והיקף של טרפז בשילוב משפט פיתגורס", "pages": ["trapezoid-grade-9", "parallelogram-trapezoid-area-grade-9"]},
+          {"id": "st.g9m.areas_and_perimeters.polygons_and_circle", "name": "שטחים והיקפים של צורות גאומטריות ומעגל בשאלות אוריינות אינטגרטיביות", "pages": ["composite-polygons-area-grade-9"]}
+        ]}
+      ]
+    }
+  ]
+}
