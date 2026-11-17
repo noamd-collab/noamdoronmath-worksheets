@@ -29,6 +29,8 @@ It reads reports/curriculum-mapping-20261116/all-units.csv and
 submissions/Claude/MANAGER-20261116/landing-plan/coverage.json, hashes
 verify.json, and records file names, sha256 and the official layout URLs.
 """
+from __future__ import annotations  # "str | None" annotations must load on Python 3.9
+
 import argparse
 import csv
 import hashlib
