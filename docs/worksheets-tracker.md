@@ -1,10 +1,18 @@
 ## 2026-11-17 — grade-9 probability: three reviewed Claude-authored student PDF editions (candidate, replaces draft #500)
 
-- PRC9:10, PRT9:10 and PRW9:10 (single-stage with relative frequency and complement; two-stage with replacement; two-stage without replacement): 9 PDFs, 47 pages, 169 parts. The legacy default, its links and the 55 preceding editions are preserved.
+- PRC9:10, PRT9:10 and PRW9:10 (single-stage with relative frequency and complement; two-stage with replacement; two-stage without replacement): 9 PDFs, 47 pages, 169 parts. The legacy default, its links and the 63 preceding editions are preserved.
 - The probability landing describes the exact practice scope of the three series in one appended section. Title, H1 and CTA are unchanged. All three series are regular-track.
 - Exact reviewed PDF bytes were downloaded from both media routes: 18 matching reads of Codex's 16.11 uploads. Claude authored all three sets; each passed an independent review by Astra (Codex gpt-6-astra), a non-Claude agent, attributed by exact SHA-256 and not repeated here. Details: `docs/probability-nine-pdf-first-20261117.json`.
 - New editions open PDFs directly. No Word, native assets, teacher selection, learning activation, hints or database activation.
-- Supersedes draft PR #500 by Noam's 17.11 decision; the same edition ids and pdfIds, regenerated on the current baseline. This is a source candidate, not a publication claim. Build, tests and desktop/phone evidence are recorded in the PR package; the Wix payload has only a proxy estimate (+45,936 bytes, about 17.61 MB) and still needs a credentialed `npm run build`; the release job's postbuild budget check stops a release over 19,500,000 bytes.
+- Supersedes draft PR #500 by Noam's 17.11 decision; the same edition ids and pdfIds, regenerated on the current baseline. This is a source candidate, not a publication claim. Build, tests and desktop/phone evidence are recorded in the PR package; the Wix payload has only a proxy estimate (+45,936 bytes, about 17.73 MB) and still needs a credentialed `npm run build`; the release job's postbuild budget check stops a release over 19,500,000 bytes.
+
+## 2026-11-17 — batch 03: eight reviewed Claude-authored student PDF editions (candidate)
+
+- ALG7:29, POW7:6, ROOT7:7, INE8:52, QAP9:6, QIN9:8, SYQ9:8 and ITP9:39: 24 PDFs, 142 pages, 588 parts. Every existing default, legacy link and the 55 preceding editions are preserved.
+- Seven existing landings describe the exact practice scope of the new series; QIN and SYQ share topic 9:8 and one landing section. Titles, H1 and CTA order are unchanged. All four grade-9 series are regular-track.
+- Exact reviewed PDF bytes were downloaded from both media routes: 48 matching reads. Claude authored all eight sets; each passed an independent review by Google Antigravity (Gemini 4 Carbon High), a non-Claude agent, attributed by exact SHA-256 and not repeated here. Details: `docs/batch03-pdf-first-20261117.json`.
+- New editions open PDFs directly. No Word, native assets, teacher selection, learning activation, hints or database activation.
+- This is a source candidate, not a publication claim. Build, tests and desktop/phone evidence are recorded in the PR package; the Wix payload has only a proxy estimate (+117,432 bytes, about 17.68 MB) and still needs a credentialed `npm run build`; the release job's postbuild budget check stops a release over 19,500,000 bytes.
 
 ## 2026-11-17 — batch 02a: sixteen reviewed student PDF editions (candidate)
 

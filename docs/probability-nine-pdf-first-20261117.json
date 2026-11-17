@@ -12,7 +12,7 @@
     "subitems": 169,
     "landingRoutes": 1
   },
-  "baselineCommit": "118b4d90b4b80556543291b5909f4b87bd95e01e",
+  "baselineCommit": "6039c61cb6b7c606c2aca0a453907a1908503431",
   "supersedes": {
     "pr": 500,
     "branch": "codex/probability-nine-pdf-20261116",

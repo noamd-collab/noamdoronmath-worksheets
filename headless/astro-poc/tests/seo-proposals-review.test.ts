@@ -2,6 +2,7 @@ import { reviewedNext12 } from './fixtures/next12-pdf';
 import { reviewedNext21 } from './fixtures/next21-pdf';
 import { reviewedBatch01 } from './fixtures/batch01-pdf';
 import { reviewedBatch02a } from './fixtures/batch02a-pdf';
+import { reviewedBatch03 } from './fixtures/batch03-pdf';
 import { reviewedProbabilityNine } from './fixtures/probability-nine-pdf';
 import { reviewedSaoWpc } from './fixtures/sao-wpc-pdf';
 import { reviewedExtSmlAfr } from './fixtures/ext-sml-afr-pdf';
@@ -185,6 +186,31 @@ describe('seo proposals – generator and coverage', () => {
         // The longer historical description fell back to the page intro; the new one fits.
         assert.match(row.source, /\|description:page-intro$/);
         assert.equal(row.description, batch02aPageIntro[delta.slug]);
+        row.source = row.source.replace('description:page-intro', 'description:current');
+      } else {
+        assert.match(row.source, /\|description:current$/);
+        assert.equal(row.description, copy.before);
+      }
+      row.description = String(copy.after);
+    }
+    // Batch 03: the reviewed overrides for powers 7 and quadratic equations 9 stay authoritative.
+    const batch03PageIntro: Record<string, string> = {
+      'combining-like-terms-grade-7': 'לומדים לזהות איברים דומים, לכנס אותם ולהשתמש נכון בחוק הפילוג. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.',
+    };
+    for (const delta of reviewedBatch03.landingDeltas) {
+      const copy = delta.fields.find(d => d.path.length === 1 && d.path[0] === 'description')!;
+      const row = expected.find(item => item.path === '/' + delta.slug);
+      assert.ok(row, delta.slug);
+      assert.equal(row.currentDescription, copy.before, `${delta.slug}: current description before batch 03`);
+      row.currentDescription = String(copy.after);
+      if (/\|description:review-fix$/.test(row.source)) {
+        assert.ok(['powers-grade-7', 'quadratic-equations-grade-9'].includes(delta.slug), delta.slug);
+        continue;
+      }
+      if (Object.hasOwn(batch03PageIntro, delta.slug)) {
+        // The longer historical description fell back to the page intro; the new one fits.
+        assert.match(row.source, /\|description:page-intro$/);
+        assert.equal(row.description, batch03PageIntro[delta.slug]);
         row.source = row.source.replace('description:page-intro', 'description:current');
       } else {
         assert.match(row.source, /\|description:current$/);

@@ -1,12 +1,12 @@
 {
   "schema": "probability-nine-reviewed-additive-pdf-fixture/v1",
-  "baselineCommit": "118b4d90b4b80556543291b5909f4b87bd95e01e",
+  "baselineCommit": "6039c61cb6b7c606c2aca0a453907a1908503431",
   "supersedesDraft": {
     "pr": 500,
     "head": "4724dd654153858cb3963ea3d6a5041aa6f810b2"
   },
-  "baselineCatalogSha256": "907d855f00fec11c41b159842c73bdc94be867ad7e9b8e1d8b1d29e22e1bcf93",
-  "baselineRegistrySha256": "6c3fa7e3523155d885a15450b1327c9aefe853bdaf7bdae009aeb6593f8575a9",
+  "baselineCatalogSha256": "59a5df29034a43fab667fa8fc45abf81c91bb501e807272eab0c0ab0cdda5a1f",
+  "baselineRegistrySha256": "a34a79f54037fb5b30a647c29badac28ac2e602860545dd9cb5ccd3578c7151e",
   "additions": [
     {
       "grade": 9,

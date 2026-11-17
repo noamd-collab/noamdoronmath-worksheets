@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import reviewed from './batch02a-pdf-reviewed.json';
-import { beforeProbabilityNineCatalog, beforeProbabilityNineRegistry, beforeProbabilityNineCopy } from './probability-nine-pdf';
+import { beforeBatch03Catalog, beforeBatch03Registry, beforeBatch03Copy } from './batch03-pdf';
 
 export { reviewed as reviewedBatch02a };
 export const reviewedBatch02aIds = reviewed.additions.map(a => a.editionId);
@@ -16,7 +16,7 @@ const plain = (value: unknown): unknown => typeof value === 'string' ? value.rep
  * the pinned baseline topic.
  */
 export function beforeBatch02aCatalog<T>(catalog: T): T {
-  const restored: any = beforeProbabilityNineCatalog(catalog);
+  const restored: any = beforeBatch03Catalog(catalog);
   for (const addition of reviewed.additions) {
     const topic = restored.grades.find((g: any) => g.grade === addition.grade)
       .topics.find((t: any) => t.id === addition.topicId);
@@ -36,7 +36,7 @@ export function beforeBatch02aCatalog<T>(catalog: T): T {
 
 /** Exact rows, not a broad ID filter: substitutions and duplicate rows must fail. */
 export function beforeBatch02aRegistry<T>(registry: T): T {
-  const restored: any = beforeProbabilityNineRegistry(registry);
+  const restored: any = beforeBatch03Registry(registry);
   for (const addition of reviewed.additions) {
     const matches = restored.editions.filter((e: any) => e.editionId === addition.editionId);
     assert.deepEqual(matches, [addition.edition], `${addition.editionId}: exact reviewed registry row`);
@@ -47,7 +47,7 @@ export function beforeBatch02aRegistry<T>(registry: T): T {
 
 /** Validate each reviewed landing field before reversing it to the exact baseline value. */
 export function beforeBatch02aCopy<T>(slug: string, page: T): T {
-  page = beforeProbabilityNineCopy(slug, page);
+  page = beforeBatch03Copy(slug, page);
   const delta = reviewed.landingDeltas.find(d => d.slug === slug);
   if (!delta) return page;
   const restored: any = structuredClone(page);

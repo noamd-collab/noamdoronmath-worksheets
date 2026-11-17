@@ -54,11 +54,11 @@ const RECEIPTS: Record<string, string> = {
   'ms-20261116-prw-01-r1': '49ecbd19c35123afb1ad583b9e79a7d9f44e95dbaac0216993fdd061a2a6faa7',
 };
 
-test('three fixed probability editions add nine frozen PDFs and recover the independently pinned 118b4d90 baseline', () => {
-  // Read from the exact baseline git blobs (headless/astro-poc-baseline after #505 and #507) before implementation.
-  const baselineCatalog = '907d855f00fec11c41b159842c73bdc94be867ad7e9b8e1d8b1d29e22e1bcf93';
-  const baselineRegistry = '6c3fa7e3523155d885a15450b1327c9aefe853bdaf7bdae009aeb6593f8575a9';
-  assert.equal(reviewed.baselineCommit, '118b4d90b4b80556543291b5909f4b87bd95e01e');
+test('three fixed probability editions add nine frozen PDFs and recover the independently pinned 6039c61c baseline', () => {
+  // Read from the exact baseline git blobs (headless/astro-poc-baseline after #505, #507 and #509, batch 3), not from the regenerated tree.
+  const baselineCatalog = '59a5df29034a43fab667fa8fc45abf81c91bb501e807272eab0c0ab0cdda5a1f';
+  const baselineRegistry = 'a34a79f54037fb5b30a647c29badac28ac2e602860545dd9cb5ccd3578c7151e';
+  assert.equal(reviewed.baselineCommit, '6039c61cb6b7c606c2aca0a453907a1908503431');
   assert.equal(reviewed.baselineCatalogSha256, baselineCatalog);
   assert.equal(reviewed.baselineRegistrySha256, baselineRegistry);
   assert.deepEqual(reviewed.supersedesDraft, { pr: 500, head: '4724dd654153858cb3963ea3d6a5041aa6f810b2' });
@@ -78,12 +78,12 @@ test('three fixed probability editions add nine frozen PDFs and recover the inde
   }
   assert.equal(new Set(reviewed.additions.flatMap(a => a.pdfIds)).size, 9);
   assert.equal(new Set(reviewed.additions.flatMap(a => a.edition.levels.map(l => l.pdfSha256))).size, 9);
-  assert.equal(registry.editions.length, 58);
-  assert.equal(registry.editions.flatMap((e: any) => e.levels).length, 174);
-  assert.equal(priorRegistry.editions.length, 55);
-  assert.equal(priorRegistry.editions.flatMap((e: any) => e.levels).length, 165);
-  assert.deepEqual(registry.editions.slice(0, 55), priorRegistry.editions);
-  assert.deepEqual(registry.editions.slice(55), reviewed.additions.map(a => a.edition));
+  assert.equal(registry.editions.length, 66);
+  assert.equal(registry.editions.flatMap((e: any) => e.levels).length, 198);
+  assert.equal(priorRegistry.editions.length, 63);
+  assert.equal(priorRegistry.editions.flatMap((e: any) => e.levels).length, 189);
+  assert.deepEqual(registry.editions.slice(0, 63), priorRegistry.editions);
+  assert.deepEqual(registry.editions.slice(63), reviewed.additions.map(a => a.edition));
   assert.equal(raw.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 973);
   assert.deepEqual(receipt.scope, { packages: 3, pdfs: 9, pages: 47, subitems: 169, landingRoutes: 1 });
   assert.deepEqual(receipt.packages.map((p: any) => p.editionId), ids);

@@ -13,6 +13,7 @@ import { loadTopicPage, extractJsonLdFaq, synthesizeBodyFlow } from '../src/lib/
 import { beforeNext21Catalog, beforeNext21Registry, beforeNext21Copy,
   reviewedNext21 as reviewed, reviewedNext21Ids as ids } from './fixtures/next21-pdf';
 import { beforeBatch01Registry } from './fixtures/batch01-pdf';
+import { reviewedBatch03 } from './fixtures/batch03-pdf';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -63,7 +64,9 @@ test('all twenty-one additions have direct PDF routing and exact media/source bi
     assert.equal(edition.routing.aiHintShown, false);
     assert.equal(edition.publicationMode, 'pdf-only');
     const groups = topicWorksheetEditionLinks(catalog, addition.grade, addition.topicId, '/');
-    assert.deepEqual(groups.map(g => g.editionId), ['legacy', addition.editionId]);
+    // Batch 03 appends its own series after this one on 9/39 (ITP-01) and 7/6 (POW-01).
+    const later = reviewedBatch03.additions.filter(x => x.grade === addition.grade && x.topicId === addition.topicId).map(x => x.editionId);
+    assert.deepEqual(groups.map(g => g.editionId), ['legacy', addition.editionId, ...later]);
     assert.deepEqual(groups[0], topicWorksheetEditionLinks(previous, addition.grade, addition.topicId, '/')[0]);
     const proof = receipt.packages.find((p: any) => p.editionId === addition.editionId);
     assert.ok(proof, `${addition.editionId}: public frozen evidence`);
