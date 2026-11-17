@@ -278,6 +278,14 @@ test('sixteen landing updates keep titles and CTAs and describe the actual serie
   assert.ok(text('linear-function-grade-8').includes('הייצוג האלגברי של פונקציה קווית'));
   assert.ok(text('triangle-median-grade-8').includes('אורכים שלמים אפשריים לתיכון'));
   assert.ok(text('word-problems-grade-9').startsWith('ברוב השאלות'));
+  // Independent review of the first push: only the meeting question has a motion table, and several
+  // denominators in one equation already appear at level b (several brackets only at excellence).
+  const wpe02 = text('word-problems-choosing-unknowns-grade-8');
+  assert.ok(wpe02.includes('בשאלת המפגש משלימים טבלה של מהירות, זמן ודרך לשניים שיוצאים זה לקראת זה; יש גם שאלת תנועה הלוך וחזור.'));
+  assert.ok(!wpe02.includes('בשאלות התנועה משלימים טבלה'));
+  const eqn02 = text('equations-advanced-grade-7');
+  assert.ok(eqn02.includes('ברמה ב׳ יש גם מספרים עשרוניים ושברים ומשוואות עם כמה מכנים, ובמצוינות גם כמה סוגריים באותה משוואה.'));
+  assert.ok(!eqn02.includes('כמה סוגריים או כמה מכנים'));
 });
 
 test('preservation fences reject changed old links, substitutions, reordering, duplicates and unsupported landing claims', () => {
