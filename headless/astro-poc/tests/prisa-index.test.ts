@@ -393,10 +393,16 @@ describe('rendered HTML', () => {
     assert.deepEqual(open, ['prisa-g9r-m11', 'prisa-g9m-m11']);
     assert.equal(panels[1].querySelector(`a[href="${REDUCED_HUB_PATH}"]`)!.textContent.trim(), 'כל נושאי ט׳ מצומצמת בדף אחד');
     assert.equal(panels[0].querySelector(`a[href="${REDUCED_HUB_PATH}"]`), null);
+    // "30°, 60°, 90°" is one unbroken LTR run inside the RTL link.
+    const angles = section.querySelector('li[data-unit-id="st.g9r.right_triangle_30_60_90.theorem_and_converse"] a.prisa-unit__link')!;
+    const math = [...angles.querySelectorAll('.prisa-math[dir="ltr"]')].map((m) => m.textContent);
+    assert.deepEqual(math, ['30°, 60°, 90°']);
+    assert.equal(/[\u2066-\u2069]/.test(angles.textContent), false);
     const css = readFileSync(fromTest('../src/styles/prisa-index.css'), 'utf8');
     assert.match(css, /#prisa-track-g9r:checked ~ \.prisa-index__panel\[data-track='g9m'\]/);
     assert.match(css, /#prisa-track-g9m:checked ~ \.prisa-index__panel\[data-track='g9r'\]/);
     assert.match(css, /min-height: 44px/);
+    assert.match(css, /\.prisa-math \{\s*white-space: nowrap;/);
   });
 
   it('grade 7 and 8 indexes have one track and no switch', async () => {

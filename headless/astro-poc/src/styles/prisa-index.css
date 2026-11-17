@@ -419,3 +419,9 @@
   align-items: center;
   min-height: 44px;
 }
+
+/* A math run ("30°, 60°, 90°") stays on one line, left to right. */
+.prisa-math {
+  white-space: nowrap;
+  unicode-bidi: isolate;
+}
