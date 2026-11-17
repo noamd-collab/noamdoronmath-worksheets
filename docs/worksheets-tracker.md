@@ -4,7 +4,7 @@
 - Seven existing landings describe the exact practice scope of the new series; QIN and SYQ share topic 9:8 and one landing section. Titles, H1 and CTA order are unchanged. All four grade-9 series are regular-track.
 - Exact reviewed PDF bytes were downloaded from both media routes: 48 matching reads. Claude authored all eight sets; each passed an independent review by Google Antigravity (Gemini 4 Carbon High), a non-Claude agent, attributed by exact SHA-256 and not repeated here. Details: `docs/batch03-pdf-first-20261117.json`.
 - New editions open PDFs directly. No Word, native assets, teacher selection, learning activation, hints or database activation.
-- This is a source candidate, not a publication claim. Build, tests and desktop/phone evidence are recorded in the PR package; the Wix payload has only a proxy estimate (+117,404 bytes, about 17.68 MB) and still needs a credentialed `npm run build`; the release job's postbuild budget check stops a release over 19,500,000 bytes.
+- This is a source candidate, not a publication claim. Build, tests and desktop/phone evidence are recorded in the PR package; the Wix payload has only a proxy estimate (+117,432 bytes, about 17.68 MB) and still needs a credentialed `npm run build`; the release job's postbuild budget check stops a release over 19,500,000 bytes.
 
 ## 2026-11-17 — batch 02a: sixteen reviewed student PDF editions (candidate)
 

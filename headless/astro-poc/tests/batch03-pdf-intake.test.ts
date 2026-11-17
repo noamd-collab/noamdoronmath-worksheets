@@ -272,7 +272,11 @@ test('seven landing updates keep titles and CTAs and describe the actual series 
   const ine8 = text('inequalities-grade-8');
   assert.ok(ine8.includes('פותרים אי־שוויונות שיש בהם כמה מכנים,') && ine8.includes('וסופרים פתרונות שלמים.'));
   assert.ok(!ine8.includes('עם מכנים וסוגריים') && !ine8.includes('ומוצאים פתרונות שלמים'));
-  // QAP does not teach the quadratic formula as a unit; the new copy makes no formula claim.
+  // The independent review's wording fixes stay in place.
+  assert.ok(text('quadratic-equations-grade-9').includes('מוצאים גם לאילו ערכי x שני ביטויים שווים.'));
+  assert.ok(text('powers-grade-7').includes('ומבדילים בין חזקה של מספר שלילי בסוגריים') && !text('powers-grade-7').includes('ומבחינים בין חזקה'));
+  assert.ok(text('quadratic-inequalities-systems-grade-9').includes('סקיצה שמסרטטים לבד') && !text('quadratic-inequalities-systems-grade-9').includes('בעצמכם'));
+  // Per the pdfs.json mapping caution, QAP must not be claimed as covering the quadratic-formula unit; the new copy makes no formula claim.
   assert.ok(!text('quadratic-equations-grade-9').includes('נוסחת השורשים'));
 });
 
