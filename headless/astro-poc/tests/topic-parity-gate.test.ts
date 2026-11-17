@@ -375,7 +375,7 @@ describe('M22 + M30 AA preH1 CTA + regressions', () => {
     assert.deepEqual([...TOPIC_PAGE_M22_UNMIGRATED], []);
     assert.ok((TOPIC_PAGE_SLUGS as readonly string[]).includes('triangle-similarity-aa-grade-9'));
     const source = loadProductionFixture('triangle-similarity-aa-grade-9');
-    const page = loadTopicPage('triangle-similarity-aa-grade-9');
+    const page = restoreBeforePdfCopy('triangle-similarity-aa-grade-9', loadTopicPage('triangle-similarity-aa-grade-9'));
     assert.ok(page.preH1Ctas && page.preH1Ctas.length > 0);
     assert.ok(!(source.bodyFlow || []).some((b) => b.type === 'cta'));
     assert.ok(!(page.bodyFlow || []).some((b) => b.type === 'cta'));
