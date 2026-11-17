@@ -86,9 +86,13 @@ CORRECTIONS = [
 # Rows re-judged against the landing copy at headless/astro-poc-baseline
 # 118b4d90, where the batch-02a landing drafts are merged. coverage.json
 # named those drafts in pending_fix and judged the unmerged baseline.
+# The rows whose reason starts with "batch 3" were re-judged at 6039c61c,
+# where batch 3 added PDF sections to seven existing landings; a row was added
+# only where the new section clearly covers the unit.
 # "pages" replaces the unit's page list; every "evidence" phrase must appear
 # in that landing's copy (bidi isolates ignored).
-REJUDGED_AT = 'headless/astro-poc-baseline 118b4d90 (batch 2a merged)'
+REJUDGED_AT = ('headless/astro-poc-baseline 118b4d90 (batch 2a merged); '
+               'the "batch 3" rows at 6039c61c (batch 3 merged)')
 REJUDGED = [
     {'unit': 'st.g7.coordinate_system.segments_shapes_q1', 'status': 'covered_by_landing',
      'pages': ['coordinate-plane-applications-grade-7', 'coordinate-plane-scale-grade-7'],
@@ -188,6 +192,30 @@ REJUDGED = [
          'מרובע שכל ארבע צלעותיו שוות, או מקבילית שיש בה שתי צלעות סמוכות שוות, אלכסונים מאונכים או אלכסון שחוצה זווית']},
      'reason': 'verify.json coverage_errors[1] made this partial because rhombus-grade-9 stated no converse; '
                'the merged copy states them, so the coverage status (covered) stands'},
+    {'unit': 'st.g7.powers_roots.signed_base', 'status': 'covered_by_landing',
+     'pages': ['powers-grade-7', 'order-of-operations-signed-numbers-grade-7'],
+     'evidence': {'powers-grade-7': ['חזקה שבסיסה מספר מכוון',
+                                     'ומבדילים בין חזקה של מספר שלילי בסוגריים']},
+     'reason': 'batch 3: unchanged, powers-grade-7 added: its new PDF series has a part on a power with a signed base'},
+    {'unit': 'st.g7.powers_roots.irrational_estimate', 'status': 'covered_by_landing',
+     'pages': ['square-root-grade-7'],
+     'evidence': {'square-root-grade-7': [
+         'באומדן מוצאים בין אילו שני מספרים שלמים עוקבים נמצא שורש, בודקים אילו מספרים הם אי־רציונליים']},
+     'reason': 'batch 3: partial -> covered: irrational numbers, missing before, are now in the copy next to the estimate'},
+    {'unit': 'st.g9r.quad_eq_applications.technique_and_graphs', 'status': 'covered_by_landing',
+     'pages': ['quadratic-equations-grade-9'],
+     'evidence': {'quadratic-equations-grade-9': [
+         'בעזרת פתיחת סוגריים, כפל מקוצר וכינוס איברים, ופותרים אותן',
+         'ומקשרים בין מספר הפתרונות של משוואה לבין מספר נקודות החיתוך']},
+     'reason': 'batch 3: partial -> covered: the applications to parabolas, missing before, are now in the copy'},
+    {'unit': 'st.g9r.parallels_trapezoid.isosceles_trapezoid', 'status': 'covered_by_landing',
+     'pages': ['trapezoid-grade-9'],
+     'evidence': {'trapezoid-grade-9': [
+         'זוויות הבסיס שוות זו לזו והאלכסונים שווים זה לזה',
+         'בעזרת המשפטים ההפוכים קובעים מתי טרפז הוא שווה־שוקיים']},
+     'reason': 'batch 3: partial -> covered on trapezoid-grade-9, which now has the base-angles and diagonals '
+               'section; parallelogram-grade-9 only reaches the isosceles trapezoid through parallelogram '
+               'properties and is not aligned as teaching it'},
 ]
 
 BIDI = re.compile('[⁦-⁩]')

@@ -57,7 +57,7 @@
     },
     "rejudged": {
       "path": "headless/astro-poc/scripts/build-curriculum-alignment.py",
-      "against": "headless/astro-poc-baseline 118b4d90 (batch 2a merged)",
+      "against": "headless/astro-poc-baseline 118b4d90 (batch 2a merged); the \"batch 3\" rows at 6039c61c (batch 3 merged)",
       "evidence": "headless/astro-poc/src/data/topic-pages",
       "applied": [
         {
@@ -226,6 +226,39 @@
             "rhombus-grade-9"
           ],
           "reason": "verify.json coverage_errors[1] made this partial because rhombus-grade-9 stated no converse; the merged copy states them, so the coverage status (covered) stands"
+        },
+        {
+          "unit": "st.g7.powers_roots.signed_base",
+          "status": "covered_by_landing",
+          "pages": [
+            "powers-grade-7",
+            "order-of-operations-signed-numbers-grade-7"
+          ],
+          "reason": "batch 3: unchanged, powers-grade-7 added: its new PDF series has a part on a power with a signed base"
+        },
+        {
+          "unit": "st.g7.powers_roots.irrational_estimate",
+          "status": "covered_by_landing",
+          "pages": [
+            "square-root-grade-7"
+          ],
+          "reason": "batch 3: partial -> covered: irrational numbers, missing before, are now in the copy next to the estimate"
+        },
+        {
+          "unit": "st.g9r.quad_eq_applications.technique_and_graphs",
+          "status": "covered_by_landing",
+          "pages": [
+            "quadratic-equations-grade-9"
+          ],
+          "reason": "batch 3: partial -> covered: the applications to parabolas, missing before, are now in the copy"
+        },
+        {
+          "unit": "st.g9r.parallels_trapezoid.isosceles_trapezoid",
+          "status": "covered_by_landing",
+          "pages": [
+            "trapezoid-grade-9"
+          ],
+          "reason": "batch 3: partial -> covered on trapezoid-grade-9, which now has the base-angles and diagonals section; parallelogram-grade-9 only reaches the isosceles trapezoid through parallelogram properties and is not aligned as teaching it"
         }
       ]
     }
@@ -454,13 +487,13 @@
     "number-line-absolute-value-grade-7": [{"unit": "st.g7.directed_numbers.intro_number_line", "alignmentType": "teaches"}, {"unit": "st.g7.directed_numbers.opposite_abs", "alignmentType": "teaches"}],
     "order-of-operations-signed-numbers-grade-7": [{"unit": "st.g7.directed_numbers.mul_div", "alignmentType": "teaches"}, {"unit": "st.g7.powers_roots.order_of_operations", "alignmentType": "teaches"}, {"unit": "st.g7.powers_roots.signed_base", "alignmentType": "teaches"}],
     "parallel-lines-angles-grade-8": [{"unit": "st.g8.pythagoras.parallel_angles_completion", "alignmentType": "teaches"}],
-    "parallelogram-grade-9": [{"unit": "st.g9r.parallels_trapezoid.isosceles_trapezoid", "alignmentType": "educationalSubject"}, {"unit": "st.g9r.parallelogram.def_properties", "alignmentType": "teaches"}, {"unit": "st.g9r.parallelogram.converse_theorems", "alignmentType": "teaches"}, {"unit": "st.g9m.parallels_and_parallelogram.parallelogram_def", "alignmentType": "teaches"}, {"unit": "st.g9m.parallels_and_parallelogram.parallelogram_props", "alignmentType": "teaches"}, {"unit": "st.g9m.parallels_and_parallelogram.parallelogram_identify", "alignmentType": "teaches"}],
+    "parallelogram-grade-9": [{"unit": "st.g9r.parallelogram.def_properties", "alignmentType": "teaches"}, {"unit": "st.g9r.parallelogram.converse_theorems", "alignmentType": "teaches"}, {"unit": "st.g9m.parallels_and_parallelogram.parallelogram_def", "alignmentType": "teaches"}, {"unit": "st.g9m.parallels_and_parallelogram.parallelogram_props", "alignmentType": "teaches"}, {"unit": "st.g9m.parallels_and_parallelogram.parallelogram_identify", "alignmentType": "teaches"}],
     "parallelogram-trapezoid-area-grade-9": [{"unit": "st.g9r.parallels_trapezoid.trapezoid_area_perim", "alignmentType": "teaches"}, {"unit": "st.g9m.parallels_and_parallelogram.parallelogram_def", "alignmentType": "teaches"}, {"unit": "st.g9m.trapezoid.area_perimeter", "alignmentType": "teaches"}],
     "patterns-and-graphs-grade-7": [{"unit": "st.g7.coordinate_system.first_quadrant", "alignmentType": "teaches"}, {"unit": "st.g7.algebraic_expressions.variables_expressions", "alignmentType": "teaches"}, {"unit": "st.g7.points_on_graph.reading_graph_q1", "alignmentType": "teaches"}],
     "percent-change-grade-8": [{"unit": "st.g8.percentages.change_multiplier", "alignmentType": "teaches"}],
     "percent-representations-grade-8": [{"unit": "st.g8.percentages.part_whole", "alignmentType": "teaches"}],
     "percentage-problems-grade-8": [{"unit": "st.g8.percentages.part_whole", "alignmentType": "teaches"}, {"unit": "st.g8.word_problems_eq.motion_percent_problems", "alignmentType": "teaches"}],
-    "powers-grade-7": [{"unit": "st.g7.powers_roots.power_notation", "alignmentType": "teaches"}, {"unit": "st.g7.powers_roots.order_of_operations", "alignmentType": "teaches"}, {"unit": "st.g7.powers_roots.growth_contexts", "alignmentType": "teaches"}],
+    "powers-grade-7": [{"unit": "st.g7.powers_roots.power_notation", "alignmentType": "teaches"}, {"unit": "st.g7.powers_roots.order_of_operations", "alignmentType": "teaches"}, {"unit": "st.g7.powers_roots.growth_contexts", "alignmentType": "teaches"}, {"unit": "st.g7.powers_roots.signed_base", "alignmentType": "teaches"}],
     "probability-experiments-fairness-grade-8": [{"unit": "st.g8.probability.sample_space_events", "alignmentType": "teaches"}],
     "probability-grade-9": [{"unit": "st.g9r.probability.single_stage_complement", "alignmentType": "educationalSubject"}, {"unit": "st.g9m.probability.basic_concepts_relative_freq", "alignmentType": "educationalSubject"}, {"unit": "st.g9m.probability.events_complement", "alignmentType": "educationalSubject"}],
     "probability-introduction-grade-7": [{"unit": "st.g7.data_frequency.probability_relative_freq", "alignmentType": "teaches"}],
@@ -472,7 +505,7 @@
     "pythagorean-theorem-grade-7": [{"unit": "st.g7.pythagoras.right_triangle_legs", "alignmentType": "teaches"}],
     "pythagorean-theorem-grade-8": [{"unit": "st.g8.pythagoras.theorem_converse", "alignmentType": "teaches"}],
     "pythagorean-theorem-grade-9": [{"unit": "st.g9m.pythagoras.right_triangle_sides", "alignmentType": "teaches"}, {"unit": "st.g9m.pythagoras.composite_areas_perim", "alignmentType": "teaches"}],
-    "quadratic-equations-grade-9": [{"unit": "st.g9r.quad_func_and_eq.factored_standard_formula", "alignmentType": "teaches"}, {"unit": "st.g9r.quad_eq_applications.technique_and_graphs", "alignmentType": "educationalSubject"}, {"unit": "st.g9m.quad_partial.quadratic_formula", "alignmentType": "teaches"}],
+    "quadratic-equations-grade-9": [{"unit": "st.g9r.quad_func_and_eq.factored_standard_formula", "alignmentType": "teaches"}, {"unit": "st.g9r.quad_eq_applications.technique_and_graphs", "alignmentType": "teaches"}, {"unit": "st.g9m.quad_partial.quadratic_formula", "alignmentType": "teaches"}],
     "quadratic-function-grade-9": [{"unit": "st.g9r.quad_func_and_eq.parabola_intro_qualitative", "alignmentType": "teaches"}, {"unit": "st.g9r.quad_func_and_eq.shifts_vertex_form", "alignmentType": "educationalSubject"}, {"unit": "st.g9r.quad_func_and_eq.factored_standard_formula", "alignmentType": "teaches"}],
     "quadratic-inequalities-systems-grade-9": [{"unit": "st.g9r.quad_inequalities.graphical_parabola", "alignmentType": "teaches"}, {"unit": "st.g9r.system_degree_2.line_parabola_system", "alignmentType": "teaches"}],
     "rate-of-change-grade-8": [{"unit": "st.g8.slope_linear.rate_and_slope", "alignmentType": "teaches"}],
@@ -492,7 +525,7 @@
     "solids-box-cube-prism-grade-7": [{"unit": "st.g7.solids.cube_box_elements", "alignmentType": "teaches"}, {"unit": "st.g7.solids.box_surface_volume", "alignmentType": "teaches"}, {"unit": "st.g7.solids.triangular_prism", "alignmentType": "teaches"}],
     "special-triangles-grade-7-new": [{"unit": "st.g7.angles.equilateral", "alignmentType": "teaches"}, {"unit": "st.g7.angles.isosceles", "alignmentType": "teaches"}],
     "square-grade-9": [{"unit": "st.g9r.square.def_properties_converse", "alignmentType": "educationalSubject"}, {"unit": "st.g9m.square.def_properties", "alignmentType": "teaches"}, {"unit": "st.g9m.square.area_pythagoras", "alignmentType": "educationalSubject"}],
-    "square-root-grade-7": [{"unit": "st.g7.powers_roots.growth_contexts", "alignmentType": "teaches"}, {"unit": "st.g7.powers_roots.square_root", "alignmentType": "teaches"}, {"unit": "st.g7.powers_roots.irrational_estimate", "alignmentType": "educationalSubject"}],
+    "square-root-grade-7": [{"unit": "st.g7.powers_roots.growth_contexts", "alignmentType": "teaches"}, {"unit": "st.g7.powers_roots.square_root", "alignmentType": "teaches"}, {"unit": "st.g7.powers_roots.irrational_estimate", "alignmentType": "teaches"}],
     "square-roots-grade-9": [{"unit": "st.g9r.powers.sqrt_laws", "alignmentType": "educationalSubject"}],
     "statistics-data-frequency-grade-8": [{"unit": "st.g8.data_center.freq_relative_review", "alignmentType": "teaches"}],
     "statistics-grade-8": [{"unit": "st.g8.data_center.freq_relative_review", "alignmentType": "teaches"}],
@@ -501,7 +534,7 @@
     "systems-algebraic-solution-grade-8": [{"unit": "st.g8.systems_basic.algebraic_solving", "alignmentType": "teaches"}],
     "systems-of-equations-grade-8": [{"unit": "st.g8.systems_basic.graphical_meaning", "alignmentType": "teaches"}],
     "systems-word-problems-grade-8": [{"unit": "st.g8.systems_basic.algebraic_solving", "alignmentType": "teaches"}],
-    "trapezoid-grade-9": [{"unit": "st.g9r.parallels_trapezoid.trapezoid_intro", "alignmentType": "educationalSubject"}, {"unit": "st.g9r.parallels_trapezoid.trapezoid_area_perim", "alignmentType": "teaches"}, {"unit": "st.g9m.trapezoid.definition_properties", "alignmentType": "teaches"}, {"unit": "st.g9m.trapezoid.area_perimeter", "alignmentType": "teaches"}],
+    "trapezoid-grade-9": [{"unit": "st.g9r.parallels_trapezoid.trapezoid_intro", "alignmentType": "educationalSubject"}, {"unit": "st.g9r.parallels_trapezoid.isosceles_trapezoid", "alignmentType": "teaches"}, {"unit": "st.g9r.parallels_trapezoid.trapezoid_area_perim", "alignmentType": "teaches"}, {"unit": "st.g9m.trapezoid.definition_properties", "alignmentType": "teaches"}, {"unit": "st.g9m.trapezoid.area_perimeter", "alignmentType": "teaches"}],
     "triangle-30-60-90-grade-9": [{"unit": "st.g9r.right_triangle_30_60_90.theorem_and_converse", "alignmentType": "educationalSubject"}],
     "triangle-area-grade-7": [{"unit": "st.g7.areas.triangle_ortho_quad", "alignmentType": "teaches"}],
     "triangle-area-grade-9": [{"unit": "st.g9m.computational_triangle.area_perim_coord", "alignmentType": "teaches"}],

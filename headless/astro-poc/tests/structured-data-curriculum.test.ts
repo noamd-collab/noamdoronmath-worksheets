@@ -52,7 +52,7 @@ const file = alignmentFile as {
     units: { path: string; sha256: string; rows: number; officialLayouts: Record<string, string> };
     pages: { path: string; sha256: string };
     corrections: { path: string; applied: Array<{ unit: string }> };
-    rejudged: { path: string; against: string; applied: Array<{ unit: string; status: string; pages: string[] }> };
+    rejudged: { path: string; against: string; applied: Array<{ unit: string; status: string; pages: string[]; reason: string }> };
   };
   tracks: Record<string, string>;
   units: Record<string, { track: string; name: string }>;
@@ -182,6 +182,36 @@ describe('curriculum-alignment.v1.json', () => {
         assert.equal(type(slug, row.unit), expected, `${row.unit} on ${slug}`);
       }
     }
+  });
+
+  it('re-judges four rows against the batch-3 sections, and only where a section clearly covers the unit', () => {
+    const type = (slug: string, id: string) => curriculumUnitsForTopicPage(slug).find((u) => u.id === id)?.alignmentType;
+    assert.match(file.source.rejudged.against, /6039c61c/);
+    const batch3 = file.source.rejudged.applied.filter((row) => row.reason.startsWith('batch 3'));
+    assert.deepEqual(batch3.map((row) => row.unit).sort(), [
+      'st.g7.powers_roots.irrational_estimate',
+      'st.g7.powers_roots.signed_base',
+      'st.g9r.parallels_trapezoid.isosceles_trapezoid',
+      'st.g9r.quad_eq_applications.technique_and_graphs',
+    ]);
+    // trapezoid-grade-9 now has the isosceles-trapezoid series; the parallelogram page reaches
+    // the isosceles trapezoid only through parallelogram properties and no longer claims the unit.
+    assert.equal(type('trapezoid-grade-9', 'st.g9r.parallels_trapezoid.isosceles_trapezoid'), 'teaches');
+    assert.equal(type('parallelogram-grade-9', 'st.g9r.parallels_trapezoid.isosceles_trapezoid'), undefined);
+    // powers-grade-7 joins the page that already taught a power with a signed base.
+    assert.equal(type('powers-grade-7', 'st.g7.powers_roots.signed_base'), 'teaches');
+    assert.equal(type('order-of-operations-signed-numbers-grade-7', 'st.g7.powers_roots.signed_base'), 'teaches');
+    // Two partial rows are closed by the new copy.
+    assert.equal(type('square-root-grade-7', 'st.g7.powers_roots.irrational_estimate'), 'teaches');
+    assert.equal(type('quadratic-equations-grade-9', 'st.g9r.quad_eq_applications.technique_and_graphs'), 'teaches');
+    // Left as they were: the new sections do not clearly cover these units.
+    assert.equal(type('trapezoid-grade-9', 'st.g9r.parallels_trapezoid.trapezoid_intro'), 'educationalSubject');
+    assert.equal(type('combining-like-terms-grade-7', 'st.g7.algebraic_expressions.equivalence_identity'), undefined);
+    // One new unit-page pair (signed base on powers-grade-7); three pairs move to "teaches".
+    const pairs = Object.values(file.pages).flat();
+    assert.equal(pairs.length, 210);
+    assert.equal(pairs.filter((entry) => entry.alignmentType === 'teaches').length, 186);
+    assert.equal(pairs.filter((entry) => entry.alignmentType === 'educationalSubject').length, 24);
   });
 });
 
