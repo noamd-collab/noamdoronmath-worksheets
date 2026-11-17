@@ -37,7 +37,8 @@ import {
   educationalLevelForGrade,
   jsonLdTypes,
   learningResourceJsonLd,
-  organizationJsonLd,
+  siteIdentityJsonLd,
+  validateEmittedJsonLd,
   validateJsonLdDocument,
 } from '../src/lib/structuredData.ts';
 import { nextGradeRelatedTopics } from '../src/lib/topicFamilies.ts';
@@ -186,10 +187,10 @@ describe('seo audit', () => {
       assert.match(readFileSync(fromTest(file), 'utf8'), /crumbs=/);
     }
 
-    const homeDocs = [...homePageJsonLd(), organizationJsonLd()];
+    const homeDocs = [siteIdentityJsonLd(homePageJsonLd())];
     assert.deepEqual(validateJsonLdDocument(homeDocs), []);
-    assert.ok(jsonLdTypes(homeDocs).includes('WebSite'));
-    assert.ok(jsonLdTypes(homeDocs).includes('Organization'));
+    assert.deepEqual(validateEmittedJsonLd(homeDocs), []);
+    assert.deepEqual(homeDocs.flatMap((doc) => jsonLdTypes(doc)), ['EducationalOrganization', 'WebSite']);
 
     const topics = loadAllTopicPages();
     const missingResource = topics.filter((page) => !jsonLdTypes(page.jsonLd).includes('LearningResource'));

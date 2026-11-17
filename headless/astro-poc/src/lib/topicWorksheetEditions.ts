@@ -1,4 +1,4 @@
-import type { CatalogV1 } from './catalog/types';
+import type { CatalogEdition, CatalogTopic, CatalogV1 } from './catalog/types';
 import { resolveEdition, topicEditions, worksheetEditionNote } from './catalog/editions';
 import { buildWorksheetHref } from './worksheetLinks';
 
@@ -10,6 +10,22 @@ export interface TopicWorksheetEditionLinks {
   levels: Array<{ key: string; label: string; href: string }>;
 }
 
+/** The catalog topic behind a topic page's level buttons, or null when there is none. */
+export function findCatalogTopic(
+  catalog: CatalogV1,
+  grade: number,
+  topicId: number | null | undefined,
+): CatalogTopic | null {
+  if (topicId == null) return null;
+  return catalog.grades.find(g => g.grade === grade)?.topics.find(t => t.id === topicId) || null;
+}
+
+/** Every published edition of a topic in page order: the selected edition first. */
+export function topicEditionsSelectedFirst(topic: CatalogTopic): CatalogEdition[] {
+  const selected = resolveEdition(topic);
+  return [selected, ...topicEditions(topic).filter(e => e.editionId !== selected.editionId)];
+}
+
 /** Keep the selected edition first while exposing every published addition. */
 export function topicWorksheetEditionLinks(
   catalog: CatalogV1,
@@ -17,12 +33,9 @@ export function topicWorksheetEditionLinks(
   topicId: number | null | undefined,
   backPath: string,
 ): TopicWorksheetEditionLinks[] {
-  if (topicId == null) return [];
-  const topic = catalog.grades.find(g => g.grade === grade)?.topics.find(t => t.id === topicId);
+  const topic = findCatalogTopic(catalog, grade, topicId);
   if (!topic) return [];
-  const selected = resolveEdition(topic);
-  const editions = [selected, ...topicEditions(topic).filter(e => e.editionId !== selected.editionId)];
-  return editions.map(edition => ({
+  return topicEditionsSelectedFirst(topic).map(edition => ({
     editionId: edition.editionId,
     label: edition.label,
     pdfOnly: edition.publicationMode === 'pdf-only',

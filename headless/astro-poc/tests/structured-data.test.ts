@@ -15,7 +15,8 @@ import {
   educationalLevelForGrade,
   jsonLdTypes,
   learningResourceJsonLd,
-  organizationJsonLd,
+  siteIdentityJsonLd,
+  validateJsonLdDocument,
   validateJsonLdNode,
 } from '../src/lib/structuredData';
 
@@ -39,9 +40,10 @@ describe('structured data builders', () => {
       datePublished: '2026-01-01',
       dateModified: '2026-01-02',
     });
-    for (const node of [crumbs, resource, article, organizationJsonLd()]) {
+    for (const node of [crumbs, resource, article]) {
       assert.deepEqual(validateJsonLdNode(node), [], String(node['@type']));
     }
+    assert.deepEqual(validateJsonLdDocument(siteIdentityJsonLd(homePageJsonLd())), []);
     assert.equal(resource.inLanguage, 'he');
     assert.equal(resource.educationalLevel, 'כיתה ז׳');
   });
@@ -53,7 +55,9 @@ describe('structured data builders', () => {
 
   it('topic pages already carry LearningResource, or the page adds one', () => {
     const topic = readFileSync(new URL('../src/components/TopicPage.astro', import.meta.url), 'utf8');
-    assert.match(topic, /learningResourceJsonLd/);
+    assert.match(topic, /topicPageJsonLdBlocks/);
+    const builder = readFileSync(new URL('../src/lib/topicStructuredData.ts', import.meta.url), 'utf8');
+    assert.match(builder, /learningResourceJsonLd/);
     let supplemented = 0;
     for (const slug of TOPIC_PAGE_SLUGS) {
       const page = loadTopicPage(slug);
@@ -73,7 +77,7 @@ describe('structured data builders', () => {
     assert.equal(supplemented, 1);
   });
 
-  it('every served post is an Article via BlogPosting, and the home page has WebSite plus Organization', () => {
+  it('every served post is an Article via BlogPosting, and the home page has WebSite plus EducationalOrganization', () => {
     for (const post of listServedBlogPosts()) {
       const types = jsonLdTypes(post.jsonLd);
       assert.ok(types.includes('BlogPosting') || types.includes('Article'), post.path);
@@ -81,9 +85,10 @@ describe('structured data builders', () => {
     assert.equal(listBlogArchives().length, 4);
     const homeTypes = homePageJsonLd().map((block) => block['@type']);
     assert.ok(homeTypes.includes('WebSite'));
-    assert.equal(organizationJsonLd()['@type'], 'Organization');
+    assert.deepEqual(jsonLdTypes(siteIdentityJsonLd(homePageJsonLd())), ['EducationalOrganization', 'WebSite']);
     const index = readFileSync(new URL('../src/pages/index.astro', import.meta.url), 'utf8');
-    assert.match(index, /organizationJsonLd/);
+    assert.match(index, /siteIdentityJsonLd\(homePageJsonLd\(\)\)/);
+    assert.doesNotMatch(index, /organizationJsonLd/);
     const layout = readFileSync(new URL('../src/layouts/BaseLayout.astro', import.meta.url), 'utf8');
     assert.match(layout, /breadcrumbList/);
     assert.doesNotMatch(layout, /EducationalOrganization/);
