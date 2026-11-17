@@ -1505,6 +1505,174 @@
           "revision": 1
         }
       ]
+    },
+    {
+      "grade": 8,
+      "topicId": 47,
+      "editionId": "ms-20261116-sys-01-r1",
+      "label": "מערכת שתי משוואות — משמעות גרפית ונקודת חיתוך · PDF",
+      "nativePrefix": "G8-T76",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "status": "published",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "9f34fe91d16048e4a01182a4225ef8dd",
+          "pdfSha256": "2c4d7593f268f48155ea093c8661334fb56e9b34bbb601ec40673cb542c6f354",
+          "sourceSha256": "b1cefd37a269837794a1352d295320fb4531269c41d49564ece438deedc62710",
+          "nativeExportSha256": "2a7b63ee1dca7efa35c0bd0b8ff71b7c59a39a7f7f2bceec036fa753ec6f534f",
+          "worksheetId": "ms-g8-sys-01-a-r1",
+          "revision": 1
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "99d49eb57b3f44c1b9da694de64dd784",
+          "pdfSha256": "7220fb8cf22ddf3794860d946c01038fb6d884f4f77693ed52f5773d3bb9c7cb",
+          "sourceSha256": "ed2549783b87f8bb1700c0546024440688cc17b3fc544b4b80b65cfe02a941ac",
+          "nativeExportSha256": "2e196e16967877b8a7eedbb12d078b061a6923481703815d0a90bfdfb3f87ce7",
+          "worksheetId": "ms-g8-sys-01-b-r1",
+          "revision": 1
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "0da4a3b18ac542cba22c8d6ef261f14a",
+          "pdfSha256": "47a3e6ed6c094a237274ed358940363a52b0ed6d0499f24771dbf12fe8be66ae",
+          "sourceSha256": "f4f59ff6ec79f46b848ff0df3b3ae71fbed5a59e529b3779c9ee7555215ae20b",
+          "nativeExportSha256": "1ad54065fd5031677dbb15cd4931031f1350bb438e4f090696a525271817d3ca",
+          "worksheetId": "ms-g8-sys-01-c-r1",
+          "revision": 1
+        }
+      ]
+    },
+    {
+      "grade": 8,
+      "topicId": 48,
+      "editionId": "ms-20261116-sys-02-r1",
+      "label": "פתרון אלגברי של מערכת משוואות ושאלות מילוליות · PDF",
+      "nativePrefix": "G8-T77",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "status": "published",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "41331d06b2fd4252b9ba4ca4d821c1bc",
+          "pdfSha256": "efb4faed8e122809e9079acdbf52d3f8166d8a0eaa69090f96daa1eea9cbf64a",
+          "sourceSha256": "9e7124d0ed54cd7a0931cf6630fed5ba964e49a61624a145d8cc1dfc8dffe511",
+          "nativeExportSha256": "081f03d51faa88747b3237838b8537c1de341d48b1a92c9e7a8a7d823ad125dc",
+          "worksheetId": "ms-g8-sys-02-a-r1",
+          "revision": 1
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "8fd491d30fb94f34b8b360e72940b8cf",
+          "pdfSha256": "985a85bc6cbd939ba3f03d00373b274b53eb0cbc84941eab71b66efe5cc1122d",
+          "sourceSha256": "6fe50cd5922dfb47c5f2286f36c46c5a6f917253c24fdd50dc09a1c0ba133eaa",
+          "nativeExportSha256": "f947385ba714916a4d2c215fc3368d864de3e47f9aa34551024bd816786dfd49",
+          "worksheetId": "ms-g8-sys-02-b-r1",
+          "revision": 1
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "3cd341ef5c2f4f029ef2cb18de0a482f",
+          "pdfSha256": "bfd27c6279ec62a2c1e963e73ef7597f2d5f85df31bea9a67a6eececc8430a39",
+          "sourceSha256": "4f7d78aad2b31dd5c83e54ea529386ce063eb6fdf6e89c48b577388856927d92",
+          "nativeExportSha256": "8f8f4e3f5ec9e555e7edcb8b57dc0892e85313b196a248fad8bcd5bbed01e7ee",
+          "worksheetId": "ms-g8-sys-02-c-r1",
+          "revision": 1
+        }
+      ]
+    },
+    {
+      "grade": 8,
+      "topicId": 39,
+      "editionId": "ms-20261116-tri-03-r1",
+      "label": "זווית חיצונית למשולש — חישוב, משוואות והוכחה · PDF",
+      "nativePrefix": "G8-T74",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "status": "published",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "5644fcd61f6147b5a5b951933aae2484",
+          "pdfSha256": "5dc990973034bcb88f31723af700e29046de61ecf77dc4fba9a1ce24915d6d31",
+          "sourceSha256": "fcce57307ca8555719fc989f4a631988467e1bf6bc9ddf3cad4474d14ef9bf81",
+          "nativeExportSha256": "b278aa0c9e1aedd26ae06803356d698d45bcecf50686e0c3d31ff980b35eefc9",
+          "worksheetId": "ms-g8-tri-03-a-r1",
+          "revision": 1
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "aba931d4fa104724861715f6371ea6a8",
+          "pdfSha256": "83ec5a5f73a90a614aed3c9be05a49a38a926f196300a3d2693b6bcad9f9b767",
+          "sourceSha256": "f05c086a361af7966998809f3a063e3ec829f31b7cd2ae0eed2cfc4bef7debcc",
+          "nativeExportSha256": "7ffb39d26682bd980a02febbdda5d158a2ada437e7f10b5e41154a889526a4fe",
+          "worksheetId": "ms-g8-tri-03-b-r1",
+          "revision": 1
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "1cd7f1fd17dd452b9cfbf9ac67ced3e2",
+          "pdfSha256": "33c04186f533db3e2fa0c2a384f7445130cb92bb00140dbd4c41bf161f035f5b",
+          "sourceSha256": "c16341904e404cac1593980cde2ea6ac0741f47368cbccb83fbeadca1d89e1e5",
+          "nativeExportSha256": "f65b40e8a9efe934d046832f8b36c86d90a6a043f9fee674d75c9b64bfe77191",
+          "worksheetId": "ms-g8-tri-03-c-r1",
+          "revision": 1
+        }
+      ]
+    },
+    {
+      "grade": 8,
+      "topicId": 54,
+      "editionId": "ms-20261116-p3d-01-r1",
+      "label": "משפט פיתגורס במרחב — תיבה, קובייה, מנסרה, חרוט וגליל · PDF",
+      "nativePrefix": "G8-T90",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "status": "published",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "72aa12ad8cc14765b5d5e0b6b8f14d2d",
+          "pdfSha256": "3c1a868fb763de1b55e1979e5cca0188e92be0fb245b5aa25d1b37c455fb5320",
+          "sourceSha256": "8f585152d370d26b6422ad7002d6bea681bfebddc9efa645c7ca26b1e657dbe0",
+          "nativeExportSha256": "3107c38cdb6704ac549007fe43e75793915d2bbef8f608a2a016b748f00b6a4b",
+          "worksheetId": "ms-g8-p3d-01-a-r1",
+          "revision": 1
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "f28834f3cb914480a03d0ea1ece2b8de",
+          "pdfSha256": "0607feb15c41a69e7b4f3d04bf975123bcc1a09f2f41212dc36229fedf8d1a77",
+          "sourceSha256": "4d8addf7e08bf95224dc8aa346b36b425770915434b0c9231d0130a7a6c67488",
+          "nativeExportSha256": "529acf7462783c920d3d7589bb3956d3aa3fb60a39a997269827e20b2b5f9f9a",
+          "worksheetId": "ms-g8-p3d-01-b-r1",
+          "revision": 1
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "7f03347f55494219ac80d1f98bda317b",
+          "pdfSha256": "c0f0f305265db3dacf1ab2f93ca2ecc5b2811bf6c0adaf93f976c98628b31f5c",
+          "sourceSha256": "9c3f4fc6cf2fa6c11e6eb4ed40c5994af39d4292edcf1b062efa6de37c3ed666",
+          "nativeExportSha256": "2a86dd7af878791031877720717d693b880a2b7f70c0c6ccd2364ec83bb70923",
+          "worksheetId": "ms-g8-p3d-01-c-r1",
+          "revision": 1
+        }
+      ]
     }
   ]
 }

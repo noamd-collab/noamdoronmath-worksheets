@@ -1,5 +1,6 @@
 import { reviewedNext12 } from './fixtures/next12-pdf';
 import { reviewedNext21 } from './fixtures/next21-pdf';
+import { reviewedBatch01 } from './fixtures/batch01-pdf';
 import { reviewedSaoWpc } from './fixtures/sao-wpc-pdf';
 import { reviewedExtSmlAfr } from './fixtures/ext-sml-afr-pdf';
 /**
@@ -139,6 +140,25 @@ describe('seo proposals – generator and coverage', () => {
         }
         row.description = String(copy.after);
       }
+    }
+    for (const delta of reviewedBatch01.landingDeltas) {
+      const copy = delta.fields.find(d => d.path.length === 1 && d.path[0] === 'description')!;
+      const row = expected.find(item => item.path === '/' + delta.slug);
+      // The newer algebraic-systems landing is outside the frozen historical batch.
+      if (delta.slug === 'systems-algebraic-solution-grade-8') { assert.equal(row, undefined); continue; }
+      assert.ok(row, delta.slug);
+      assert.equal(row.currentDescription, copy.before, `${delta.slug}: historical current description`);
+      row.currentDescription = String(copy.after);
+      if (delta.slug === 'exterior-angle-triangle-grade-8') {
+        // The longer historical description fell back to the page intro; the new one fits.
+        assert.equal(row.source, 'title:current|description:page-intro');
+        assert.equal(row.description, 'משתמשים במשפט הזווית החיצונית במשולש ומבחינים בינה לבין הזווית הפנימית הצמודה לה. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.');
+        row.source = 'title:current|description:current';
+      } else {
+        assert.match(row.source, /\|description:current$/);
+        assert.equal(row.description, copy.before);
+      }
+      row.description = String(copy.after);
     }
     assert.deepEqual(proposals, expected);
   });
