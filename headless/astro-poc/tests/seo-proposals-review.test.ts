@@ -1,6 +1,7 @@
 import { reviewedNext12 } from './fixtures/next12-pdf';
 import { reviewedNext21 } from './fixtures/next21-pdf';
 import { reviewedBatch01 } from './fixtures/batch01-pdf';
+import { reviewedBatch02a } from './fixtures/batch02a-pdf';
 import { reviewedSaoWpc } from './fixtures/sao-wpc-pdf';
 import { reviewedExtSmlAfr } from './fixtures/ext-sml-afr-pdf';
 /**
@@ -154,6 +155,36 @@ describe('seo proposals – generator and coverage', () => {
         assert.equal(row.source, 'title:current|description:page-intro');
         assert.equal(row.description, 'משתמשים במשפט הזווית החיצונית במשולש ומבחינים בינה לבין הזווית הפנימית הצמודה לה. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.');
         row.source = 'title:current|description:current';
+      } else {
+        assert.match(row.source, /\|description:current$/);
+        assert.equal(row.description, copy.before);
+      }
+      row.description = String(copy.after);
+    }
+    // Batch 02a: four newer grade-8 landings are outside the frozen historical scope.
+    const batch02aOutOfScope = ['equations-with-fractions-grade-8', 'word-problems-choosing-unknowns-grade-8',
+      'two-data-sources-grade-8', 'probability-sample-space-grade-8'];
+    const batch02aPageIntro: Record<string, string> = {
+      'triangle-median-grade-8': 'מזהים תיכון במשולש ומשתמשים בהגדרתו כדי לחשב אורכים ולנמק שוויון קטעים. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.',
+      'linear-function-grade-8': 'מקשרים בין נוסחה, טבלה וגרף ומבינים שיפוע וחיתוך עם הצירים. דפי העבודה זמינים בשלוש רמות — א׳, ב׳ ומצוינות — בחינם וללא הרשמה.',
+    };
+    for (const delta of reviewedBatch02a.landingDeltas) {
+      const copy = delta.fields.find(d => d.path.length === 1 && d.path[0] === 'description')!;
+      const row = expected.find(item => item.path === '/' + delta.slug);
+      if (batch02aOutOfScope.includes(delta.slug)) { assert.equal(row, undefined, delta.slug); continue; }
+      assert.ok(row, delta.slug);
+      assert.equal(row.currentDescription, copy.before, `${delta.slug}: historical current description`);
+      row.currentDescription = String(copy.after);
+      if (/\|description:review-fix$/.test(row.source)) {
+        // The independently reviewed override stays authoritative (word problems 9, isosceles 8, signed numbers 7).
+        assert.ok(['word-problems-grade-9', 'isosceles-triangle-properties-grade-8', 'multiplying-signed-numbers-grade-7'].includes(delta.slug), delta.slug);
+        continue;
+      }
+      if (Object.hasOwn(batch02aPageIntro, delta.slug)) {
+        // The longer historical description fell back to the page intro; the new one fits.
+        assert.match(row.source, /\|description:page-intro$/);
+        assert.equal(row.description, batch02aPageIntro[delta.slug]);
+        row.source = row.source.replace('description:page-intro', 'description:current');
       } else {
         assert.match(row.source, /\|description:current$/);
         assert.equal(row.description, copy.before);
