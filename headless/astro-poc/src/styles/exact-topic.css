@@ -223,3 +223,8 @@
 .exact-topic .topic-page__reveal-btn:hover {
   background: #fdf1d8;
 }
+/* SEO-2: a section H2 with an anchor is a link target (/slug#anchor); keep it
+   clear of the sticky header. */
+.exact-topic .topic-page__section h2[id] {
+  scroll-margin-top: 120px;
+}

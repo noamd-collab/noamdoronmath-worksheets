@@ -21,6 +21,8 @@ const LOCAL_SITE_PATHS = new Set([
   '/conditionforfreeworksheets',
   '/high-school-math',
   '/worksheets',
+  // SEO-2: the ט׳ מצומצמת hub (official layout units by month).
+  '/grade-9-reduced',
   '/teachers',
   '/teachers/app',
   '/learning.html',

@@ -300,7 +300,7 @@ function faqHeadingId(groupIndex: number) {
           if (unit.kind === 'section') {
             return (
               <section class="topic-page__section" data-flow="heading">
-                <h2>{unit.heading}</h2>
+                <h2 id={unit.anchor}>{unit.heading}</h2>
                 {unit.blocks.map((block) => {
                   if (block.type === 'paragraph') {
                     const cls =

@@ -15,15 +15,21 @@ type TopicTextBlock = Extract<TopicBodyFlowItem, { type: 'paragraph' | 'list' }>
 export type TopicBodyUnit =
   | { kind: 'intro'; text: string }
   | { kind: 'cta'; item: TopicCtaItem }
-  | { kind: 'section'; heading: string; blocks: TopicTextBlock[] }
+  | {
+      kind: 'section';
+      heading: string;
+      /** Optional section anchor from the page data, rendered as the H2 id (SEO-2). */
+      anchor?: string;
+      blocks: TopicTextBlock[];
+    }
   | { kind: 'orphan'; item: TopicTextBlock };
 
 export function groupTopicBodyFlow(flow: readonly TopicBodyFlowItem[]): TopicBodyUnit[] {
   const units: TopicBodyUnit[] = [];
-  let current: { heading: string; blocks: TopicTextBlock[] } | null = null;
+  let current: { heading: string; anchor?: string; blocks: TopicTextBlock[] } | null = null;
   const flush = () => {
     if (current) {
-      units.push({ kind: 'section', heading: current.heading, blocks: current.blocks });
+      units.push({ kind: 'section', heading: current.heading, anchor: current.anchor, blocks: current.blocks });
       current = null;
     }
   };
@@ -40,7 +46,7 @@ export function groupTopicBodyFlow(flow: readonly TopicBodyFlowItem[]): TopicBod
     }
     if (b.type === 'heading') {
       flush();
-      current = { heading: b.text, blocks: [] };
+      current = { heading: b.text, anchor: b.anchor, blocks: [] };
       continue;
     }
     if (b.type === 'paragraph' || b.type === 'list') {

@@ -44,6 +44,7 @@ import {
 import { nextGradeRelatedTopics } from '../src/lib/topicFamilies.ts';
 import { loadAllTopicPages } from '../src/lib/topicPages.ts';
 import { GET as getLlmsFullTxt } from '../src/pages/llms-full.txt.ts';
+import { REDUCED_HUB_PATH, prisaHrefs } from '../src/lib/prisaIndex.ts';
 
 function fromTest(relativePath: string): string {
   return fileURLToPath(new URL(relativePath, import.meta.url));
@@ -106,6 +107,7 @@ describe('seo audit', () => {
     for (const hub of loadAllGradeHubs()) assert.ok(pagePaths.has(hub.path), hub.path);
     for (const page of loadAllTopicPages()) assert.ok(pagePaths.has(page.path), page.path);
     assert.ok(pagePaths.has('/worksheets'));
+    assert.ok(pagePaths.has(REDUCED_HUB_PATH));
     assert.ok(pagePaths.has('/aboutus'));
     assert.equal(pagePaths.has('/404'), false);
     assert.equal(pagePaths.has('/dev-loops'), false);
@@ -168,6 +170,9 @@ describe('seo audit', () => {
       for (const item of archive.nav) check(`${archive.path} nav`, localizeBlogHref(item.href));
       for (const card of archive.cards) check(`${archive.path} card`, localizeBlogHref(card.href));
     }
+
+    // SEO-2: the "לפי הפריסה" month index and the /grade-9-reduced hub.
+    for (const href of prisaHrefs()) check(`${REDUCED_HUB_PATH} prisa`, href);
 
     assert.deepEqual(broken, []);
   });
