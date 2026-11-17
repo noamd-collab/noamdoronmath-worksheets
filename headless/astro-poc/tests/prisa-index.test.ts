@@ -634,6 +634,43 @@ describe('rendered HTML', () => {
     assert.match(css, /\.prisa-math \{\s*white-space: nowrap;/);
   });
 
+  it('content train: /grade-9-reduced and the grade-9 index link topic 9/49 in ינואר with no code change', async () => {
+    const id = 'st.g9m.equations.numeric_denominator';
+    const href = '/equations-numeric-denominator-grade-9';
+    const name = 'פתרון משוואות ממעלה ראשונה עם מכנה מספרי';
+    // The reduced hub: the unit is a link in the January section, and its URL is in the ItemList.
+    const hub = await render('../src/pages/grade-9-reduced.astro', {}, REDUCED_HUB_PATH);
+    const row = hub.querySelector(`li.prisa-unit[data-unit-id="${id}"]`)!;
+    assert.equal(row.getAttribute('data-unit-linked'), 'yes');
+    const link = row.querySelector('a.prisa-unit__link')!;
+    assert.equal(link.getAttribute('href'), href);
+    assert.equal(link.textContent.trim(), name);
+    assert.equal(row.querySelectorAll('a').length, 1, 'one page for this unit, no extra chips');
+    const month = row.closest('.prisa-hub__month')!;
+    assert.equal(month.getAttribute('id'), 'prisa-g9m-m01');
+    assert.equal(month.getAttribute('data-month'), 'm01');
+    assert.match(month.querySelector('h2')!.textContent.replace(/\s+/g, ' ').trim(), /^ינואר /);
+    assert.equal(hub.querySelectorAll(`a[href="${href}"]`).length, 1);
+    const itemList = [...hub.querySelectorAll('script[type="application/ld+json"]')].map((s) => JSON.parse(s.textContent))
+      .find((ld) => ld['@type'] === 'ItemList');
+    assert.equal(itemList.itemListElement.filter((item: Record<string, unknown>) => item.url === `https://www.noamdoronmath.co.il${href}`).length, 1);
+    // Four reduced-track units still wait for a landing; they stay plain text.
+    assert.equal(hub.querySelectorAll('li.prisa-unit[data-unit-linked="no"]').length, 4);
+    assert.equal(loadPrisaTrack('g9m').linkedUnitCount, 35);
+    // The grade-9 hub index: the same link, in the reduced panel only, inside its January month.
+    const index = await render('../src/components/PrisaMonthIndex.astro', { grade: 9, now: NOW }, '/grade-9');
+    const [regular, reduced] = [...index.querySelectorAll('.prisa-index__panel')];
+    assert.deepEqual([regular.getAttribute('data-track'), reduced.getAttribute('data-track')], ['g9r', 'g9m']);
+    assert.equal(regular.querySelectorAll(`a[href="${href}"]`).length, 0);
+    const january = reduced.querySelector('details#prisa-g9m-m01')!;
+    assert.equal(january.getAttribute('data-month'), 'm01');
+    assert.match(january.querySelector('summary')!.textContent.replace(/\s+/g, ' ').trim(), /^ינואר /);
+    const indexLinks = [...reduced.querySelectorAll(`a[href="${href}"]`)];
+    assert.equal(indexLinks.length, 1);
+    assert.ok(january.contains(indexLinks[0]));
+    assert.equal(indexLinks[0].closest('li.prisa-unit')!.getAttribute('data-unit-id'), id);
+  });
+
   it('grade 7 and 8 indexes have one track and no switch', async () => {
     for (const [grade, count] of [[7, 49], [8, 37]] as const) {
       const doc = await render('../src/components/PrisaMonthIndex.astro', { grade, now: new Date('2027-04-10T09:00:00Z') });

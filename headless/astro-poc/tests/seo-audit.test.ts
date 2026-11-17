@@ -452,6 +452,36 @@ describe('seo audit', () => {
     }
   });
 
+  it('llms-full.txt picks up the content-train landing of topic 9/49 under כיתה ט׳ מצומצמת, ינואר', () => {
+    const path = '/equations-numeric-denominator-grade-9';
+    const tracks = llmsFullTracks();
+    const reduced = tracks.filter((track) => track.reduced);
+    assert.deepEqual(reduced.map((track) => [track.grade, track.heading]), [[9, 'כיתה ט׳ מצומצמת']]);
+    // r9jan is a new catalog month group; it follows ספטמבר and אוקטובר with this one landing.
+    assert.deepEqual(reduced[0].groups.map((group) => [group.key, group.label]), [['r9sep', 'ספטמבר'], ['r9oct', 'אוקטובר'], ['r9jan', 'ינואר']]);
+    assert.deepEqual(reduced[0].groups.at(-1)?.pages.map((page) => page.path), [path]);
+    for (const track of tracks.filter((entry) => !entry.reduced)) {
+      assert.equal(track.groups.some((group) => group.pages.some((page) => page.path === path)), false, track.heading);
+    }
+    const lines = renderLlmsFullTxt().split('\n');
+    const line = `- [משוואות עם מכנה מספרי לכיתה ט׳ מצומצמת](${SITE_CANONICAL_ORIGIN}${path}): דפי עבודה במשוואות עם מכנה מספרי לכיתה ט׳ מצומצמת: כפל במכנה המשותף, מונה בסוגריים וסימן חיסור לפני שבר.`;
+    assert.equal(lines.filter((entry) => entry === line).length, 1);
+    const at = lines.indexOf(line);
+    assert.equal(lines[at - 1], '#### ינואר');
+    assert.ok(lines.lastIndexOf('### כיתה ט׳ מצומצמת') < at && lines.lastIndexOf('### כיתה ט׳ מצומצמת') > lines.indexOf('### כיתה ט׳ רגילה'));
+    // The four batch-4 landings stay listed once each, with the first sentence of their new description.
+    for (const [slug, scope] of [
+      ['kite-grade-9', 'דלתון לכיתה ט׳: הגדרת הדלתון, תכונות הזוויות, האלכסון הראשי ושטח דלתון.'],
+      ['triangle-30-60-90-grade-9', 'משולש 30–60–90 לכיתה ט׳: יחסי הצלעות, הניצב שמול הזווית בת 30° שווה למחצית היתר, והמשפט ההפוך.'],
+      ['solids-box-cube-prism-grade-7', 'נפח ושטח פנים של תיבה, קובייה ומנסרה משולשת לכיתה ז׳.'],
+      ['similar-triangles-grade-8', 'דמיון משולשים לכיתה ח׳: יחס הדמיון, דמיון משולשים לפי זוויות (ז.ז) ויחס שטחים.'],
+    ]) {
+      const matches = lines.filter((entry) => entry.includes(`(${SITE_CANONICAL_ORIGIN}/${slug}): `));
+      assert.equal(matches.length, 1, slug);
+      assert.ok(matches[0].endsWith(`: ${scope}`), `${slug}: ${matches[0]}`);
+    }
+  });
+
   it('llms-full scope sentence skips sentences that only advertise the sheets', () => {
     assert.equal(
       landingScopeSentence('דפי עבודה בזוויות לכיתה ז׳ בשלוש רמות, בחינם וללא הרשמה. מזהים זוויות צמודות וקודקודיות.'),
