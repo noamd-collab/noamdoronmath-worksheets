@@ -1,3 +1,11 @@
+## 2026-11-17 — EQM01: new reduced-track topic 49 and month group ינואר (candidate)
+
+- Noam (17.11.2026) approved opening a ט׳ מצומצמת month group when the first topic of that month arrives. G9-EQM-01 opens **r9jan ('ינואר')** as base topic 49 **משוואות עם מכנה מספרי**, pdf-only, after r9oct; prisa_9B page 4 places the unit in January (6 hours).
+- Three PDFs (a/b/c), 15 pages, 56 parts (19 + 19 + 18), with final answers. Bound by SHA-256 to an independent Antigravity review (PASS_STUDENT_PDF_ESSENTIALS, receipt 8a00cd8b…); nine media readbacks (three routes per PDF) match. Details: `docs/g9-eqm01-pdf-first-20261117.json`.
+- New landing `/equations-numeric-denominator-grade-9`, H1 **משוואות עם מכנה מספרי לכיתה ט׳ מצומצמת**, linked from the grade-9 hub. Its worked example, self-check and calculation lesson (minus before a fraction) differ from the grade-8 page and from the sheet questions. The CTA opens the reduced track without a track parameter.
+- PDF-only: no Noam prefix, Ramzi, drawing hints, viewer manifests, teacher questions, learning identities, Word or Supabase. Topic 18 and every earlier topic, group and PDF are unchanged; the learning catalog has no diff.
+- This is a source candidate, not a publication claim. Tests, build and phone/desktop evidence are recorded in the PR package; the Wix payload has only a proxy estimate (+23,340 bytes against 6039c61c, about 16.90 MB) and still needs a credentialed `npm run build`; the release job's postbuild budget check stops a release over 19,500,000 bytes.
+
 ## 2026-11-17 — batch 03: eight reviewed Claude-authored student PDF editions (candidate)
 
 - ALG7:29, POW7:6, ROOT7:7, INE8:52, QAP9:6, QIN9:8, SYQ9:8 and ITP9:39: 24 PDFs, 142 pages, 588 parts. Every existing default, legacy link and the 55 preceding editions are preserved.
