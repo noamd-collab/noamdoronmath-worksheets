@@ -1334,6 +1334,23 @@ function withJsonLdDateModified(
 }
 
 /**
+ * Topic path -> dateModified (YYYY-MM-DD) for pages that show a visible
+ * update line. It is the same date TopicPage writes into JSON-LD, so the
+ * sitemap lastmod matches the page. Pages without the line are left out.
+ * Reads the raw JSON only (no validation or text processing), so the
+ * sitemap routes stay cheap.
+ */
+export function topicPageDateModifiedByPath(): Map<string, string> {
+  const out = new Map<string, string>();
+  for (const slug of TOPIC_PAGE_SLUGS) {
+    const data = BY_SLUG[slug];
+    const iso = data ? updatedLineIsoDate(data.updatedLine) : null;
+    if (data && iso) out.set(data.path, iso);
+  }
+  return out;
+}
+
+/**
  * Visible strings TopicPage renders outside bodyFlow (h1, FAQ, related labels).
  * Sections, intro, and stored bodyFlow stay as captured; synthesizeBodyFlow
  * isolates those when the page is rendered.

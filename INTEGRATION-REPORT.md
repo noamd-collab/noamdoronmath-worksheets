@@ -95,6 +95,7 @@
 3. **אינדוקס בייצור (`SITE_INDEXABLE=true`)**: הגדרת המשתנה ב-`wix env` בייצור בלבד בעת החיבור, והשארת preview על `noindex`.
 4. **הפניית `/privacy`**: אישור או הסרה של ההפניה `/privacy` → `/accessibilityadaptation#privacy-policy` ב-`redirects.json`.
 5. **`robots.txt` ו-`sitemap` ב-Wix Managed Hosting**: הוגדר `wix({ robots: false })` ב-`astro.config.mjs` ושורת `Sitemap:` ב-`robots.txt` מפנה ל-`https://www.noamdoronmath.co.il/sitemap-index.xml` (כי `/sitemap.xml` שמור ב-Wix). אין לערוך את SEO Tools > Robots.txt Editor בדשבורד ואין לכבות אינדוקס אתר בדשבורד Wix.
+   **תיקון, 17.11.2026 (SEO-5):** ב-www, Wix מגיש את `robots.txt` שלו ולא את שלנו, והשורה שלמעלה לא מגיעה לייצור. לכן כן צריך להוסיף ב-Robots.txt Editor את השורה `Sitemap: https://www.noamdoronmath.co.il/sitemap-index.xml`, ולהשאיר את שורות Wix. ראו `SEO-REPORT.md`.
 6. **18 אזהרות `SEARCH_TERMS_MISPLACED` בקטלוג ו-7 שגיאות הטיפוס ב-`ConceptLoop.astro`**: החלטה אם לטפל בהן בסבב נפרד.
 
 ## 7. תוכנית הטמעה ו-Rollback (רק אחרי אישור נועם)

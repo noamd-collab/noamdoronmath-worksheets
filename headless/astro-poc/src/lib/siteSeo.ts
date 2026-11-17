@@ -68,6 +68,8 @@ export function robotsContent(hostname: string, env: SiteIndexEnv = readSiteInde
  * robots.txt body. Sitemap always points at the production origin.
  * Wix reserves /sitemap.xml (generatedBy="WIX", preview host on preview).
  * The index this app serves, on www, is /sitemap-index.xml.
+ * On www, Wix serves its own /robots.txt instead of this body; see
+ * src/pages/robots.txt.ts and scripts/check-live-robots.mjs.
  */
 export function renderRobotsTxt(indexable: boolean): string {
   const lines = indexable
