@@ -6,6 +6,8 @@ on:
       - 'learning/**'
       - 'tools/ramzi-hints/**'
       - 'tools/security/**'
+      - 'supabase/migrations/*teacher_generation*.sql'
+      - 'headless/astro-poc/src/lib/teacherGenerationContract.ts'
       - 'tests/ramzi-hints-build.test.cjs'
       - 'tests/fixtures/ramzi-security-roles.sql'
       - '.github/workflows/ramzi-hints-privacy.yml'
@@ -15,6 +17,8 @@ on:
       - 'learning/**'
       - 'tools/ramzi-hints/**'
       - 'tools/security/**'
+      - 'supabase/migrations/*teacher_generation*.sql'
+      - 'headless/astro-poc/src/lib/teacherGenerationContract.ts'
       - 'tests/ramzi-hints-build.test.cjs'
       - 'tests/fixtures/ramzi-security-roles.sql'
       - '.github/workflows/ramzi-hints-privacy.yml'
@@ -40,3 +44,7 @@ jobs:
         env:
           NOAM_PGLITE_MODULE: ${{ runner.temp }}/ramzi-rls/node_modules/@electric-sql/pglite/dist/index.js
         run: node tools/security/verify-rls-postgres.mjs
+      - name: Verify owner-only worksheet draft downloads
+        env:
+          NOAM_PGLITE_MODULE: ${{ runner.temp }}/ramzi-rls/node_modules/@electric-sql/pglite/dist/index.js
+        run: node --experimental-strip-types tools/security/verify-teacher-generation-storage-postgres.mjs

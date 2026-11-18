@@ -37,7 +37,9 @@ def render_job(lesson, model_payload, workdir, skill_paths=None, *, allow_legacy
     job leasing and storage. skill_paths is trusted operator configuration only.
     """
     cap=validate_model(lesson,model_payload,allow_legacy=allow_legacy)
-    if cap['skill']=='middle' and not (
+    general=lesson['version']==3
+    adapter=HERE/('general_adapters.py' if general else 'adapters.py')
+    if not general and cap['skill']=='middle' and not (
         lesson['gradeNumber']==7 and lesson['topicId']=='g7:equations'
         and lesson['level']=='b' and cap['family']=='linear_equation'
     ):
@@ -49,9 +51,16 @@ def render_job(lesson, model_payload, workdir, skill_paths=None, *, allow_legacy
     if work.exists() and any(work.iterdir()): reject('OUTPUT_EXISTS','Each job needs an empty isolated output directory')
     work.mkdir(parents=True,exist_ok=True)
     dump(work/'lesson.json',lesson);dump(work/'model-output.json',model_payload)
+    if general:
+        from runtime_catalog import scope_for_lesson
+        dump(work/'curriculum-scope.json',scope_for_lesson(lesson))
     (work/'logs').mkdir()
     env={k:v for k,v in os.environ.items() if k in ('PATH','HOME','TMPDIR','LANG','LC_ALL','DYLD_FALLBACK_LIBRARY_PATH','FONTCONFIG_PATH')}
     env['PYTHONDONTWRITEBYTECODE']='1'
+    # Fixed, reviewed OCR adapter; model input and ambient environment cannot
+    # select an executable. It emits actual Tesseract observations to G79.
+    if general:
+        env['WSPEC_OCR']=str(HERE/'wspec_ocr_tesseract.py')
     if sys.platform=='darwin': env.setdefault('DYLD_FALLBACK_LIBRARY_PATH','/opt/homebrew/lib')
     steps=[]
     def run(name,args):
@@ -64,8 +73,9 @@ def render_job(lesson, model_payload, workdir, skill_paths=None, *, allow_legacy
             return ok
         except subprocess.TimeoutExpired:
             steps.append({'name':name,'status':'FAIL','reason':'RENDER_TIMEOUT'});return False
-    ok=run('trusted-adapter',[HERE/'adapters.py','--skill',skill,'--work',work]+(['--allow-legacy-intake'] if allow_legacy else []))
+    ok=run('trusted-adapter',[adapter,'--skill',skill,'--work',work]+(['--allow-legacy-intake'] if allow_legacy else []))
     outputs=[]
+    review_findings=[]
     word_postprocess=None
     if ok and cap['skill']=='elementary':
         for name,args in [
@@ -74,21 +84,36 @@ def render_job(lesson, model_payload, workdir, skill_paths=None, *, allow_legacy
             ('word',[skill/'scripts/build_docx.py',work/'sheet.html',work/'sheet.docx']),
             ('word-layout',[HERE/'docx_layout.py','--docx',work/'sheet.docx','--content',work/'content.json']),
             ('worksheet',[skill/'scripts/check_worksheet.py',work/'sheet.pdf',work/'preview','--band','elementary-ab' if lesson['gradeNumber']<=2 else 'elementary']),
-            ('output-gates',[HERE/'output_gates.py','--skill',skill,'--pdf',work/'sheet.pdf','--band','elementary-ab' if lesson['gradeNumber']<=2 else 'elementary']),
-            ('house-gates',[skill/'scripts/lib/house_gates.py','--html',work/'sheet.html','--pdf',work/'sheet.pdf','--gen',HERE/'adapters.py','--content',work/'content.json','--figdir',work/'figures','--grade','אבגדהו'[lesson['gradeNumber']-1],'--level',{'a':'א','b':'ב','e':'מצוינות'}[lesson['level']],'--docx',work/'sheet.docx']),
+            ('output-gates',[HERE/'output_gates.py','--skill',skill,'--pdf',work/'sheet.pdf','--band','elementary-ab' if lesson['gradeNumber']<=2 else 'elementary']+(['--general'] if general else [])),
+            ('house-gates',[skill/'scripts/lib/house_gates.py','--html',work/'sheet.html','--pdf',work/'sheet.pdf','--gen',adapter,'--content',work/'content.json','--figdir',work/'figures','--grade','אבגדהו'[lesson['gradeNumber']-1],'--level',{'a':'א','b':'ב','e':'מצוינות'}[lesson['level']],'--docx',work/'sheet.docx']),
         ]:
+            if general and name=='word-layout':
+                # This postprocessor only understands the old fixed pilot
+                # wording; native Word and house gates cover general source.
+                continue
             # Run all applicable gates; a previous failure is not erased.
             result=run(name,args);ok=result and ok
         outputs=['sheet.pdf','sheet.docx']
     elif ok:
         ok=run('middle-build',[skill/'build_v72.py','--pkg',work])
         key={'a':'a','b':'b','e':'c'}[lesson['level']]
+        if general and not ok and (work/'out/v72-report.json').is_file():
+            middle_step=steps[-1]
+            # This fixed reconciliation is limited to the documented didactic
+            # REVIEW-only case. All true FAIL findings remain unavailable.
+            ok=run('didactic-review-reconciliation',[HERE/'didactic_review.py',
+                '--skill',skill,'--work',work,'--level',key])
+            if ok:
+                evidence=read_json(work/'logs/didactic-review.json')
+                middle_step['status']='REVIEW'
+                middle_step['reason']='PINNED_DRIVER_REVIEW_EXIT_DISCREPANCY'
+                review_findings.append({'code':'DIDACTIC_REVIEW','count':evidence['count']})
         original=f'out/docx/{key}/sheet.docx'
         final=f'out/docx/{key}/sheet-web.docx'
         upstream_report=work/'out/v72-report.json'
         if ok and (not (work/original).is_file() or not upstream_report.is_file()):
             ok=False;steps.append({'name':'word-upstream-presence','status':'FAIL'})
-        if ok:
+        if ok and not general:
             original_sha=sha(work/original)
             upstream_sha=sha(upstream_report)
             ok=run('word-web-layout',[HERE/'docx_web_layout.py','--input',work/original,
@@ -115,7 +140,7 @@ def render_job(lesson, model_payload, workdir, skill_paths=None, *, allow_legacy
                     'finalDocx':{'path':final,'sha256':sha(work/final)},
                     'provenanceReport':'logs/word-web-layout.json',
                     'finalGateReport':'logs/word-web-rtl-parity.json'}
-        outputs=[f'out/deliver/{key}/sheet.pdf',final]
+        outputs=[f'out/deliver/{key}/sheet.pdf',original if general else final]
     artifacts=[]
     if ok:
         for name in outputs:
@@ -124,6 +149,16 @@ def render_job(lesson, model_payload, workdir, skill_paths=None, *, allow_legacy
             artifacts.append({'path':name,'sha256':sha(path),'bytes':path.stat().st_size,'kind':'pdf' if name.endswith('.pdf') else 'docx'})
     manifest={'version':1,'status':'needs_review' if ok else 'failed','automatedChecksPassed':bool(ok and len(artifacts)==2 and all(s['status']=='PASS' for s in steps)),'skill':{'name':cap['skill'],'version':pin['version'],'sha256':pin['sha256']},'topicId':lesson['topicId'],'gradeNumber':lesson['gradeNumber'],'modelInputSha256':sha(work/'model-output.json'),'adapterSha256':sha(HERE/'adapters.py'),'steps':steps,'artifacts':artifacts if ok else [],'review':{'mathematical':'exact typed arithmetic verified; prose/template review pending','visual':'pending; every final PDF page and actual Word rendering must be inspected','curriculum':'bounded topic allowlist; free-text progress is not independently verified','publication':'not approved; private owner preview only'}}
     manifest['lessonBoundary']=lesson.get('lessonBoundary')
+    if general:
+        manifest['adapterSha256']=sha(adapter)
+        manifest['authoringProfile']='general-skill-source/v1'
+        manifest['renderingChecksPassed']=bool(ok and len(artifacts)==2 and all(s['status'] in ('PASS','REVIEW') for s in steps))
+        manifest['reviewFindings']=review_findings
+        manifest['review']={
+            'mathematical':'typed computations independently evaluated; prose and proof review pending',
+            'visual':'pending; every final PDF page and actual Word rendering must be inspected',
+            'curriculum':'selected pinned concepts supplied to author; teacher must verify actual pedagogical fit',
+            'publication':'not approved; private owner draft only'}
     manifest['legacyIntakeOffline']=bool(allow_legacy and lesson.get('version')==1)
     manifest['docxLayoutSha256']=sha(HERE/'docx_layout.py')
     if word_postprocess is not None:

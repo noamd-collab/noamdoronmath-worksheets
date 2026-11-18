@@ -1,11 +1,17 @@
 import { TEACHER_ACCESS_CONFIG } from './teacherAccessConfig';
 import { TEACHER_SESSION_COOKIE } from './teacherAccess';
+import { GENERAL_GENERATION_PROFILE, GENERATION_CURRICULUM_SHA256 } from './teacherGenerationContract';
 
 export const GENERATION_BUCKET = 'teacher-generation-private';
 export const GENERATION_STATES = ['queued', 'running', 'needs_review', 'failed'] as const;
 /** A fresh heartbeat alone is not enough during an intake-contract rollout. */
 export function workerAcceptsCurrentIntake(capabilities: any): boolean {
-  return Array.isArray(capabilities?.acceptedIntakeVersions) && capabilities.acceptedIntakeVersions.includes(2);
+  return Array.isArray(capabilities?.acceptedIntakeVersions) &&
+    (capabilities.acceptedIntakeVersions.includes(2) || workerAcceptsCurriculumIntake(capabilities));
+}
+export function workerAcceptsCurriculumIntake(capabilities: any): boolean {
+  return capabilities?.profile === GENERAL_GENERATION_PROFILE && capabilities.curriculumSha256 === GENERATION_CURRICULUM_SHA256 &&
+    Array.isArray(capabilities.acceptedIntakeVersions) && capabilities.acceptedIntakeVersions.includes(3);
 }
 export type GenerationState = typeof GENERATION_STATES[number];
 export const uuid = (v: unknown): v is string => typeof v === 'string' && /^[a-f0-9]{8}-[a-f0-9]{4}-[1-5][a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/.test(v);

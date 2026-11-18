@@ -73,6 +73,36 @@
       "debSha256": "7d1947665fa40e55f218fefad773dc6de66458d0b39eaa292cdcadfc7c996632",
       "archive": "debian",
       "filename": "pool/main/t/tini/tini_0.19.0-1+b3_amd64.deb"
+    },
+    "liblept5": {
+      "version": "1.82.0-3+b3",
+      "debSha256": "cddc18cffc38bb1839f2b5336822646b34dafc5dd40468b658d26c20e0eb97af",
+      "archive": "debian",
+      "filename": "pool/main/l/leptonlib/liblept5_1.82.0-3+b3_amd64.deb"
+    },
+    "libtesseract5": {
+      "version": "5.3.0-2",
+      "debSha256": "19b1719f30235eaf209866b219d4dbdd4dddd813758a8d5b9715c78c40702ff1",
+      "archive": "debian",
+      "filename": "pool/main/t/tesseract/libtesseract5_5.3.0-2_amd64.deb"
+    },
+    "tesseract-ocr": {
+      "version": "5.3.0-2",
+      "debSha256": "311fed91c7311cfee54c28a0f21d700377b8131a9d114628d36d2563f99e1730",
+      "archive": "debian",
+      "filename": "pool/main/t/tesseract/tesseract-ocr_5.3.0-2_amd64.deb"
+    },
+    "tesseract-ocr-eng": {
+      "version": "1:4.1.0-2",
+      "debSha256": "9242d054563262398f8cf41fbd96fcc72f9dde70db16de18539882a6cff74f9d",
+      "archive": "debian",
+      "filename": "pool/main/t/tesseract-lang/tesseract-ocr-eng_4.1.0-2_all.deb"
+    },
+    "tesseract-ocr-osd": {
+      "version": "1:4.1.0-2",
+      "debSha256": "72cc0ba5a04e4d38e5d7901ae2f0319f4941fddaa4a77d1a86110909c036bacb",
+      "archive": "debian",
+      "filename": "pool/main/t/tesseract-lang/tesseract-ocr-osd_4.1.0-2_all.deb"
     }
   }
 }
