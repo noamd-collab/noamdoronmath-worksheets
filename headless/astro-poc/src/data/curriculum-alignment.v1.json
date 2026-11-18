@@ -275,6 +275,54 @@
             "triangle-30-60-90-grade-9"
           ],
           "reason": "content train (batch 4): partial -> covered: the converse theorem, missing before (coverage note \"Theorem in copy; converse not\"), is now stated in the copy"
+        },
+        {
+          "unit": "st.g8.transformations.isometries_congruence",
+          "status": "partial",
+          "pages": [
+            "isometric-transformations-grade-8"
+          ],
+          "reason": "new topics 18.11: no_topic -> partial: the new grade-8 landing of base topic 8/68 teaches translation, reflection and rotation and congruent shapes; self-symmetry and symmetry axes of the unit are outside G8-TRF-01"
+        },
+        {
+          "unit": "st.g9r.parallels_trapezoid.properties",
+          "status": "covered_by_landing",
+          "pages": [
+            "parallel-lines-angles-grade-9"
+          ],
+          "reason": "new topics 18.11: no_topic -> covered by the new landing of base topic 9/50"
+        },
+        {
+          "unit": "st.g9r.parallels_trapezoid.alternate_corresponding",
+          "status": "covered_by_landing",
+          "pages": [
+            "parallel-lines-angles-grade-9"
+          ],
+          "reason": "new topics 18.11: no_topic -> covered by the new landing of base topic 9/50"
+        },
+        {
+          "unit": "st.g9r.parallels_trapezoid.converse",
+          "status": "covered_by_landing",
+          "pages": [
+            "parallel-lines-angles-grade-9"
+          ],
+          "reason": "new topics 18.11: no_topic -> covered by the new landing of base topic 9/50"
+        },
+        {
+          "unit": "st.g9r.parallels_trapezoid.co_interior",
+          "status": "covered_by_landing",
+          "pages": [
+            "co-interior-angles-grade-9"
+          ],
+          "reason": "new topics 18.11: no_topic -> covered by the new landing of base topic 9/51"
+        },
+        {
+          "unit": "st.g9r.integrative_literacy.real_world_tasks",
+          "status": "covered_by_landing",
+          "pages": [
+            "math-literacy-tasks-grade-9"
+          ],
+          "reason": "new topics 18.11: no_topic -> covered by the new landing of base topic 9/52"
         }
       ]
     }
@@ -362,6 +410,7 @@
     "st.g8.slope_linear.rate_and_slope": {"track": "ח", "name": "קצב שינוי אחיד ושיפוע של ישר"},
     "st.g8.systems_basic.algebraic_solving": {"track": "ח", "name": "פתרון אלגברי של מערכת משוואות (הצבה והשוואת מקדמים) ושאלות מילוליות"},
     "st.g8.systems_basic.graphical_meaning": {"track": "ח", "name": "מערכת של שתי משוואות קוויות בשני נעלמים ומשמעותה הגרפית"},
+    "st.g8.transformations.isometries_congruence": {"track": "ח", "name": "טרנספורמציות איזומטריות (הזזה, שיקוף, סיבוב) וצורות חופפות"},
     "st.g8.triangle_parts.exterior_angle": {"track": "ח", "name": "זווית חיצונית למשולש ותכונתה"},
     "st.g8.triangle_parts.isosceles_converse": {"track": "ח", "name": "משפטים הפוכים לזיהוי משולש שווה־שוקיים"},
     "st.g8.triangle_parts.isosceles_properties": {"track": "ח", "name": "משולש שווה־שוקיים: זוויות הבסיס והתלכדות תיכון, גובה וחוצה זווית הראש"},
@@ -407,12 +456,17 @@
     "st.g9r.alg_technique.extended_distributive": {"track": "ט_רגילה", "name": "חוק הפילוג המורחב, פישוט ביטויים, משוואות והשוואת שטחים"},
     "st.g9r.alg_technique.factoring": {"track": "ט_רגילה", "name": "פירוק לגורמים (גורם משותף, נוסחאות כפל מקוצר וטרינום) ופתרון משוואות ריבועיות בסיסיות"},
     "st.g9r.alg_technique.short_multiplication": {"track": "ט_רגילה", "name": "נוסחאות הכפל המקוצר (הפרש ריבועים וריבוע של סכום או הפרש)"},
+    "st.g9r.integrative_literacy.real_world_tasks": {"track": "ט_רגילה", "name": "משימות אורייניות אינטגרטיביות המשלבות אלגברה, פונקציות וגאומטריה"},
     "st.g9r.isosceles_converse.theorems_and_coord": {"track": "ט_רגילה", "name": "משפטים הפוכים להוכחה שמשולש הוא שווה־שוקיים (כולל במערכת צירים)"},
     "st.g9r.kite.definition_angles": {"track": "ט_רגילה", "name": "הכרת הדלתון, הגדרתו ותכונות הזוויות בדלתון"},
     "st.g9r.kite.main_diagonal_area": {"track": "ט_רגילה", "name": "האלכסון הראשי בדלתון ושטח דלתון"},
     "st.g9r.parallelogram.converse_theorems": {"track": "ט_רגילה", "name": "משפטים הפוכים להוכחה שמרובע הוא מקבילית"},
     "st.g9r.parallelogram.def_properties": {"track": "ט_רגילה", "name": "הגדרת המקבילית ותכונות הצלעות, הזוויות והאלכסונים"},
+    "st.g9r.parallels_trapezoid.alternate_corresponding": {"track": "ט_רגילה", "name": "זוויות מתחלפות וזוויות מתאימות בין ישרים מקבילים"},
+    "st.g9r.parallels_trapezoid.co_interior": {"track": "ט_רגילה", "name": "זוויות חד־צדדיות בין ישרים מקבילים"},
+    "st.g9r.parallels_trapezoid.converse": {"track": "ט_רגילה", "name": "משפט הפוך: תנאים להקבלה"},
     "st.g9r.parallels_trapezoid.isosceles_trapezoid": {"track": "ט_רגילה", "name": "טרפז שווה־שוקיים: זוויות הבסיס והאלכסונים"},
+    "st.g9r.parallels_trapezoid.properties": {"track": "ט_רגילה", "name": "ישרים מקבילים: הגדרה ותכונות"},
     "st.g9r.parallels_trapezoid.trapezoid_area_perim": {"track": "ט_רגילה", "name": "שטח והיקף של טרפז (כולל במערכת צירים)"},
     "st.g9r.parallels_trapezoid.trapezoid_intro": {"track": "ט_רגילה", "name": "הכרת הטרפז, תכונות זוויות בטרפז והוכחה שמרובע הוא טרפז"},
     "st.g9r.powers.natural_review": {"track": "ט_רגילה", "name": "חזקה עם מעריך טבעי: חזרה"},
@@ -456,6 +510,7 @@
     "binomial-square-grade-9": [{"unit": "st.g9r.alg_technique.short_multiplication", "alignmentType": "teaches"}],
     "choosing-measure-of-center-grade-8": [{"unit": "st.g8.data_center.range_central_tendency", "alignmentType": "teaches"}],
     "circle-area-circumference-grade-8": [{"unit": "st.g8.cylinder_cone.circle_review", "alignmentType": "teaches"}],
+    "co-interior-angles-grade-9": [{"unit": "st.g9r.parallels_trapezoid.co_interior", "alignmentType": "teaches"}],
     "combining-like-terms-grade-7": [{"unit": "st.g7.algebraic_expressions.like_terms", "alignmentType": "teaches"}, {"unit": "st.g7.algebraic_expressions.distributive", "alignmentType": "teaches"}],
     "composite-polygons-area-grade-9": [{"unit": "st.g9m.pythagoras.composite_areas_perim", "alignmentType": "teaches"}, {"unit": "st.g9m.areas_and_perimeters.polygons_and_circle", "alignmentType": "educationalSubject"}],
     "cone-grade-8": [{"unit": "st.g8.cylinder_cone.cone", "alignmentType": "teaches"}],
@@ -491,12 +546,14 @@
     "graphical-inequalities-grade-8": [{"unit": "st.g8.inequalities.linear_solving", "alignmentType": "teaches"}],
     "inequalities-grade-8": [{"unit": "st.g8.inequalities.concept_number_line", "alignmentType": "teaches"}, {"unit": "st.g8.inequalities.linear_solving", "alignmentType": "teaches"}],
     "interpolation-extrapolation-grade-8": [{"unit": "st.g8.inter_extrapolation.estimate_from_trend", "alignmentType": "teaches"}],
+    "isometric-transformations-grade-8": [{"unit": "st.g8.transformations.isometries_congruence", "alignmentType": "educationalSubject"}],
     "isosceles-triangle-grade-8": [{"unit": "st.g8.triangle_parts.isosceles_properties", "alignmentType": "teaches"}],
     "isosceles-triangle-grade-9": [{"unit": "st.g9r.isosceles_converse.theorems_and_coord", "alignmentType": "teaches"}, {"unit": "st.g9m.kite_and_isosceles.isosceles_converse", "alignmentType": "teaches"}],
     "isosceles-triangle-properties-grade-8": [{"unit": "st.g8.triangle_parts.isosceles_properties", "alignmentType": "teaches"}, {"unit": "st.g8.triangle_parts.isosceles_converse", "alignmentType": "teaches"}],
     "kite-grade-9": [{"unit": "st.g9r.kite.definition_angles", "alignmentType": "teaches"}, {"unit": "st.g9r.kite.main_diagonal_area", "alignmentType": "teaches"}, {"unit": "st.g9m.kite_and_isosceles.kite_properties", "alignmentType": "teaches"}],
     "linear-function-grade-8": [{"unit": "st.g8.functions_intro.inc_dec_linear_graphs", "alignmentType": "educationalSubject"}, {"unit": "st.g8.slope_linear.algebraic_linear", "alignmentType": "teaches"}],
     "linear-function-grade-9": [{"unit": "st.g9m.linear_function.slope_rate_meaning", "alignmentType": "educationalSubject"}, {"unit": "st.g9m.linear_function.points_intercepts_parallels", "alignmentType": "educationalSubject"}, {"unit": "st.g9m.linear_function.line_equation_optional", "alignmentType": "educationalSubject"}],
+    "math-literacy-tasks-grade-9": [{"unit": "st.g9r.integrative_literacy.real_world_tasks", "alignmentType": "teaches"}],
     "mean-grade-8": [{"unit": "st.g8.data_center.range_central_tendency", "alignmentType": "teaches"}],
     "median-grade-8": [{"unit": "st.g8.data_center.range_central_tendency", "alignmentType": "teaches"}],
     "median-to-hypotenuse-grade-9": [{"unit": "st.g9r.right_triangle_median.theorem_and_quads", "alignmentType": "teaches"}],
@@ -505,6 +562,7 @@
     "number-line-absolute-value-grade-7": [{"unit": "st.g7.directed_numbers.intro_number_line", "alignmentType": "teaches"}, {"unit": "st.g7.directed_numbers.opposite_abs", "alignmentType": "teaches"}],
     "order-of-operations-signed-numbers-grade-7": [{"unit": "st.g7.directed_numbers.mul_div", "alignmentType": "teaches"}, {"unit": "st.g7.powers_roots.order_of_operations", "alignmentType": "teaches"}, {"unit": "st.g7.powers_roots.signed_base", "alignmentType": "teaches"}],
     "parallel-lines-angles-grade-8": [{"unit": "st.g8.pythagoras.parallel_angles_completion", "alignmentType": "teaches"}],
+    "parallel-lines-angles-grade-9": [{"unit": "st.g9r.parallels_trapezoid.properties", "alignmentType": "teaches"}, {"unit": "st.g9r.parallels_trapezoid.alternate_corresponding", "alignmentType": "teaches"}, {"unit": "st.g9r.parallels_trapezoid.converse", "alignmentType": "teaches"}],
     "parallelogram-grade-9": [{"unit": "st.g9r.parallelogram.def_properties", "alignmentType": "teaches"}, {"unit": "st.g9r.parallelogram.converse_theorems", "alignmentType": "teaches"}, {"unit": "st.g9m.parallels_and_parallelogram.parallelogram_def", "alignmentType": "teaches"}, {"unit": "st.g9m.parallels_and_parallelogram.parallelogram_props", "alignmentType": "teaches"}, {"unit": "st.g9m.parallels_and_parallelogram.parallelogram_identify", "alignmentType": "teaches"}],
     "parallelogram-trapezoid-area-grade-9": [{"unit": "st.g9r.parallels_trapezoid.trapezoid_area_perim", "alignmentType": "teaches"}, {"unit": "st.g9m.parallels_and_parallelogram.parallelogram_def", "alignmentType": "teaches"}, {"unit": "st.g9m.trapezoid.area_perimeter", "alignmentType": "teaches"}],
     "patterns-and-graphs-grade-7": [{"unit": "st.g7.coordinate_system.first_quadrant", "alignmentType": "teaches"}, {"unit": "st.g7.algebraic_expressions.variables_expressions", "alignmentType": "teaches"}, {"unit": "st.g7.points_on_graph.reading_graph_q1", "alignmentType": "teaches"}],

@@ -235,6 +235,32 @@ REJUDGED = [
          'לפי המשפט ההפוך, אם ניצב במשולש ישר־זווית שווה למחצית היתר, הזווית שמולו היא 30°']},
      'reason': 'content train (batch 4): partial -> covered: the converse theorem, missing before '
                '(coverage note "Theorem in copy; converse not"), is now stated in the copy'},
+    {'unit': 'st.g8.transformations.isometries_congruence', 'status': 'partial',
+     'pages': ['isometric-transformations-grade-8'],
+     'evidence': {'isometric-transformations-grade-8': ['הזזה, שיקוף וסיבוב הן העתקות איזומטריות']},
+     'reason': 'new topics 18.11: no_topic -> partial: the new grade-8 landing of base topic 8/68 teaches '
+               'translation, reflection and rotation and congruent shapes; self-symmetry and symmetry axes '
+               'of the unit are outside G8-TRF-01'},
+    {'unit': 'st.g9r.parallels_trapezoid.properties', 'status': 'covered_by_landing',
+     'pages': ['parallel-lines-angles-grade-9'],
+     'evidence': {'parallel-lines-angles-grade-9': ['ישרים מקבילים והמרחק ביניהם']},
+     'reason': 'new topics 18.11: no_topic -> covered by the new landing of base topic 9/50'},
+    {'unit': 'st.g9r.parallels_trapezoid.alternate_corresponding', 'status': 'covered_by_landing',
+     'pages': ['parallel-lines-angles-grade-9'],
+     'evidence': {'parallel-lines-angles-grade-9': ['הזוויות המתאימות שוות זו לזו והזוויות המתחלפות שוות זו לזו']},
+     'reason': 'new topics 18.11: no_topic -> covered by the new landing of base topic 9/50'},
+    {'unit': 'st.g9r.parallels_trapezoid.converse', 'status': 'covered_by_landing',
+     'pages': ['parallel-lines-angles-grade-9'],
+     'evidence': {'parallel-lines-angles-grade-9': ['המשפט ההפוך מאפשר להוכיח שישרים מקבילים לפי הזוויות']},
+     'reason': 'new topics 18.11: no_topic -> covered by the new landing of base topic 9/50'},
+    {'unit': 'st.g9r.parallels_trapezoid.co_interior', 'status': 'covered_by_landing',
+     'pages': ['co-interior-angles-grade-9'],
+     'evidence': {'co-interior-angles-grade-9': ['זוויות חד־צדדיות הן זוג זוויות שנמצאות באותו צד של הישר החותך ובין שני הישרים']},
+     'reason': 'new topics 18.11: no_topic -> covered by the new landing of base topic 9/51'},
+    {'unit': 'st.g9r.integrative_literacy.real_world_tasks', 'status': 'covered_by_landing',
+     'pages': ['math-literacy-tasks-grade-9'],
+     'evidence': {'math-literacy-tasks-grade-9': ['במשימת אוריינות שולפים נתונים מטבלה או מתיאור']},
+     'reason': 'new topics 18.11: no_topic -> covered by the new landing of base topic 9/52'},
 ]
 
 BIDI = re.compile('[⁦-⁩]')

@@ -85,7 +85,7 @@ test('three additive editions recover the pinned batch 6 head (b87d7652) without
   assert.equal(batch07Registry.editions.length, priorRegistry.editions.length + 3);
   assert.deepEqual(batch07Registry.editions.slice(0, -3), priorRegistry.editions);
   assert.deepEqual(batch07Registry.editions.slice(-3), reviewed.additions.map(a => a.edition));
-  assert.equal(raw.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 976);
+  assert.equal(raw.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 988); // NEW4 (18.11): four later base topics, +12 levels
   assert.equal(previous.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 976);
 
   for (const [index, addition] of reviewed.additions.entries()) {

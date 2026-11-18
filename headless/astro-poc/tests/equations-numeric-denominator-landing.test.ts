@@ -188,7 +188,8 @@ test('the EQM49 fence reverses exactly the reviewed addition and rejects substit
   delete expected.searchTerms['9']['49'];
   assert.deepEqual(restored, expected);
   assert.equal(grade9(restored).topics.length, grade9(raw).topics.length - 1);
-  assert.equal(restored.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 973);
+  // The four NEW4 base topics (18.11, +12 levels) are newer than EQM49 and stay in place here.
+  assert.equal(restored.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 973 + 12);
   assert.deepEqual(reviewedEqm49.pdfIds, PDF_IDS);
   // With EQM49 reversed first, the batch-03 fence still recovers its independently pinned baseline.
   assert.equal(digest(beforeBatch03Catalog(raw)), reviewedBatch03.baselineCatalogSha256);

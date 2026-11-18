@@ -97,13 +97,16 @@ describe('grade 9 PDF v2 replacements', () => {
     assert.ok(rational, 'Reviewed rational-equation PDFs add topic 47');
     assert.equal(rational.parent, undefined);
     assert.equal(rational.publicationMode, 'pdf-only');
-    assert.equal(countRenderedTopicCards({ ...grade9, topics: grade9.topics.filter((topic) => ![47, 48, 49].includes(topic.id)) }, 'reg'), 38,
+    assert.equal(countRenderedTopicCards({ ...grade9, topics: grade9.topics.filter((topic) => ![47, 48, 49, 50, 51, 52].includes(topic.id)) }, 'reg'), 38,
       'The original regular-track cards remain present');
     const median = grade9.topics.find((topic) => topic.id === 48)!;
     assert.equal(median.title, 'משולש ישר־זווית — התיכון ליתר');
     assert.equal(median.publicationMode, 'pdf-only');
-    assert.equal(countRenderedTopicCards({ ...grade9, topics: grade9.topics.filter((topic) => topic.id !== 48) }, 'reg'), 39);
-    assert.equal(countRenderedTopicCards(grade9, 'reg'), 40);
+    const withoutNew4 = { ...grade9, topics: grade9.topics.filter((topic) => ![50, 51, 52].includes(topic.id)) };
+    assert.equal(countRenderedTopicCards({ ...withoutNew4, topics: withoutNew4.topics.filter((topic) => topic.id !== 48) }, 'reg'), 39);
+    assert.equal(countRenderedTopicCards(withoutNew4, 'reg'), 40);
+    // NEW4 (18.11): topics 50, 51 (group geopar) and 52 add three regular-track cards.
+    assert.equal(countRenderedTopicCards(grade9, 'reg'), 43);
     // EQM01 (topic 49) is the first card of the new reduced-track month group r9jan.
     const eqm = grade9.topics.find((topic) => topic.id === 49)!;
     assert.equal(eqm.title, 'משוואות עם מכנה מספרי');

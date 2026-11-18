@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import reviewed from './batch09-pdf-reviewed.json';
+import { beforeNew4Catalog } from './new4-pdf';
 
 export { reviewed as reviewedBatch09 };
 export const reviewedBatch09Ids = reviewed.additions.map(a => a.editionId);
@@ -12,7 +13,8 @@ const plain = (value: unknown): unknown => typeof value === 'string' ? value.rep
 
 /** Undo only batch 9's reviewed overlays and return the exact batch 8 state. */
 export function beforeBatch09Catalog<T>(catalog: T): T {
-  const restored: any = structuredClone(catalog);
+  // The four new base topics (NEW4, 18 Nov 2026) are newer than batch 09: reverse them first.
+  const restored: any = structuredClone(beforeNew4Catalog(catalog));
   const groups = new Map<string, typeof reviewed.additions>();
   for (const addition of reviewed.additions) {
     const key = `${addition.grade}:${addition.topicId}`;

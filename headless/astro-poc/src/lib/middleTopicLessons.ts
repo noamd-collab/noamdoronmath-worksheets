@@ -29,12 +29,20 @@ export const MIDDLE_TOPIC_LESSONS = {
   'system-model': { picture: 'calculation', idea: 'שני תנאים על הכמויות מתורגמים לשתי משוואות באותם נעלמים', steps: [step('b הוא מספר הבנים ו־g מספר הבנות; יחד 32', 'b + g = 32'), step('מספר הבנות גדול ב־6 ממספר הבנים', 'g = b + 6'), step('מציבים ופותרים; בודקים סכום והפרש', 'b = 13; g = 19')] },
   'compare-sources': { picture: 'source-data', idea: 'כששתי מדידות אמינות במידה שווה מתארות אותה כמות, הממוצע נותן הערכה משולבת', steps: [step('שני מקורות ספרו אותה קבוצה', '23, 27'), step('הפער בין הדיווחים הוא ארבעה', '27 − 23 = 4'), step('בהנחת אמינות שווה, ההערכה המשולבת היא 25', '(23 + 27)/2 = 25')] },
   'choose-unknown': { picture: 'calculation', idea: 'בוחרים נעלם אחד וכותבים באמצעותו את שאר הגדלים בסיפור', steps: [step('אורך החבל הקצר x, והארוך גדול ממנו ב־2.4 מטרים', 'x; x + 2.4'), step('סכום האורכים הוא 13.6 מטרים', 'x + (x + 2.4) = 13.6'), step('פותרים וחוזרים לגדלים בסיפור', 'x = 5.6; x + 2.4 = 8')] },
+  'rotation-90-origin': { picture: 'calculation', idea: 'בסיבוב ב־90° נגד כיוון השעון סביב ראשית הצירים הנקודה (x, y) עוברת אל (−y, x), והאורכים נשמרים', steps: [step('הקטע אנכי, ואורכו הפרש השיעורים', 'P(7, 3); Q(7, 8); PQ = 5'), step('מסובבים כל קצה ב־90° נגד כיוון השעון', 'P′(−3, 7); Q′(−8, 7)'), step('התמונה אופקית, והאורך נשמר', 'P′Q′ = −3 − (−8) = 5')] },
+  'corresponding-converse': { picture: 'calculation', idea: 'אם שתי זוויות מתאימות שוות, הישרים מקבילים לפי המשפט ההפוך, ולא לפי מראה הסרטוט', steps: [step('ליד הישר הראשון נתונה זווית', '112°'), step('ליד הישר השני נתונה הזווית הצמודה לזווית המתאימה', '180° − 68° = 112°'), step('שתי זוויות מתאימות שוות, ולכן הישרים מקבילים', '112° = 112°')] },
+  'co-interior-sum': { picture: 'calculation', idea: 'זוויות חד־צדדיות בין ישרים מקבילים משלימות ל־180°, ולכן מחברים אותן ולא משווים ביניהן', steps: [step('מחברים את שתי הזוויות החד־צדדיות, שסכומן 180°', '8x + 20 = 180'), step('מחסרים 20 ומחלקים ב־8', '8x = 160; x = 20'), step('מציבים ובודקים', '104° + 76° = 180°')] },
+  'compare-offers': { picture: 'calculation', idea: 'כותבים ביטוי לכל הצעה, מוצאים מתי המחירים שווים ומחליטים לפי מספר השעות', steps: [step('חברה א׳: 50 ש״ח ועוד 4 ש״ח לשעה; חברה ב׳: 6 ש״ח לשעה', '50 + 4t ; 6t'), step('המחירים שווים כאשר', '50 + 4t = 6t; t = 25'), step('ב־10 שעות חברה ב׳ זולה יותר', '90 > 60')] },
 } satisfies Record<string, Lesson>;
 
 export const MIDDLE_LESSON_TOPIC_MAP = {
   'rational-equations-grade-9': 'rational-domain',
   'median-to-hypotenuse-grade-9': 'hypotenuse-median',
   'equations-numeric-denominator-grade-9': 'minus-before-fraction',
+  'isometric-transformations-grade-8': 'rotation-90-origin',
+  'parallel-lines-angles-grade-9': 'corresponding-converse',
+  'co-interior-angles-grade-9': 'co-interior-sum',
+  'math-literacy-tasks-grade-9': 'compare-offers',
   'equilateral-triangle-grade-7': 'equilateral-60',
   'equilateral-triangle-grade-9': 'equilateral-60',
   'relative-frequency-experiments-grade-7': 'experimental-frequency',

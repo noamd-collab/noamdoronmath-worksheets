@@ -11,19 +11,25 @@ describe('preview-only gallery focus preserves the original inventory and cards'
     const page = await browser.newPage();
     try {
       await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]);
-      for (const [gallery, count] of [['a', 42], ['b', 70], ['c', 61]] as const) {
+      for (const [gallery, count] of [['a', 42], ['b', 74], ['c', 61]] as const) {
         const response = await page.goto(`${server.origin}/review/landing-loops-pr-${gallery}`, { waitUntil: 'load' });
         assert.equal(response?.status(), 200);
         const inventory = await page.$$eval('[data-review-slug]', cards => cards.map(card => card.getAttribute('data-review-slug')));
         if (gallery === 'b') {
+          // NEW4 (18.11) appends four cards; every earlier pin is taken on the inventory without them.
+          const new4 = ['isometric-transformations-grade-8', 'parallel-lines-angles-grade-9', 'co-interior-angles-grade-9', 'math-literacy-tasks-grade-9'];
+          for (const slug of new4) assert.deepEqual(inventory.filter(value => value === slug), [slug], 'Each NEW4 card appears exactly once');
+          const eqmAt = inventory.indexOf('equations-numeric-denominator-grade-9');
+          assert.deepEqual(inventory.slice(eqmAt + 1, eqmAt + 5), new4, 'NEW4 cards follow the EQM card as one block');
+          const earlier = inventory.filter(slug => !new4.includes(slug!));
           const added = ['rational-equations-grade-9', 'median-to-hypotenuse-grade-9', 'equations-numeric-denominator-grade-9'];
-          for (const slug of added) assert.deepEqual(inventory.filter(value => value === slug), [slug], 'Each added card appears exactly once');
-          assert.equal(createHash('sha256').update(JSON.stringify(inventory.filter(slug => slug !== 'equations-numeric-denominator-grade-9'))).digest('hex'),
+          for (const slug of added) assert.deepEqual(earlier.filter(value => value === slug), [slug], 'Each added card appears exactly once');
+          assert.equal(createHash('sha256').update(JSON.stringify(earlier.filter(slug => slug !== 'equations-numeric-denominator-grade-9'))).digest('hex'),
             'ee92f22948d3e40aa9c6dae17b93138628a0f732f0cc087960bf1c08af9c7910', 'All 69 cards, including RAT and MED, keep their order before EQM');
-          assert.equal(createHash('sha256').update(JSON.stringify(inventory.filter(slug => !['median-to-hypotenuse-grade-9', 'equations-numeric-denominator-grade-9'].includes(slug!)))).digest('hex'),
+          assert.equal(createHash('sha256').update(JSON.stringify(earlier.filter(slug => !['median-to-hypotenuse-grade-9', 'equations-numeric-denominator-grade-9'].includes(slug!)))).digest('hex'),
             '9732a1824825af8d9d1214ad189247b46a44e4ff80d3c00147c4a8f669ee3a59', 'All 68 cards, including RAT, keep their order before MED');
           // Pin the ordered 67-card inventory from b74c3ab4 before the RAT addition.
-          assert.equal(createHash('sha256').update(JSON.stringify(inventory.filter(slug => !added.includes(slug!)))).digest('hex'),
+          assert.equal(createHash('sha256').update(JSON.stringify(earlier.filter(slug => !added.includes(slug!)))).digest('hex'),
             '263fe42e7f8b75b4c6590003775f0fca7bf2367c04bfb57f0c3d6dcaaf2f93ef', 'Every original B card remains in its original order');
         }
         assert.equal(inventory.length, count);
@@ -32,7 +38,7 @@ describe('preview-only gallery focus preserves the original inventory and cards'
         assert.equal(await page.$$eval('.rv-index li', rows => rows.length), count);
       }
       // Existing CSS/film, a new missing-before page, and B's taller lesson.
-      for (const [gallery, slug, count] of [['a', 'percentage-problems-grade-8', 42], ['a', 'frequency-chance-grade-5', 42], ['a', 'percent-change-grade-8', 42], ['b', 'rational-equations-grade-9', 70], ['b', 'median-to-hypotenuse-grade-9', 70], ['b', 'equations-numeric-denominator-grade-9', 70], ['b', 'median-grade-8', 70]] as const) {
+      for (const [gallery, slug, count] of [['a', 'percentage-problems-grade-8', 42], ['a', 'frequency-chance-grade-5', 42], ['a', 'percent-change-grade-8', 42], ['b', 'rational-equations-grade-9', 74], ['b', 'median-to-hypotenuse-grade-9', 74], ['b', 'equations-numeric-denominator-grade-9', 74], ['b', 'median-grade-8', 74], ['b', 'co-interior-angles-grade-9', 74]] as const) {
         const url = `${server.origin}/review/landing-loops-pr-${gallery}`;
         const fullHtml = await (await fetch(url)).text();
         const focusedUrl = `${url}?focus=${encodeURIComponent(slug)}`;

@@ -100,7 +100,7 @@
           {"id": "st.g8.data_center.freq_relative_review", "name": "איסוף וארגון מידע, שכיחות ושכיחות יחסית", "pages": ["statistics-data-frequency-grade-8", "statistics-grade-8"]}
         ]},
         {"key": "m11", "label": "נובמבר", "prisaPage": 2, "units": [
-          {"id": "st.g8.transformations.isometries_congruence", "name": "טרנספורמציות איזומטריות (הזזה, שיקוף, סיבוב) וצורות חופפות", "pages": []},
+          {"id": "st.g8.transformations.isometries_congruence", "name": "טרנספורמציות איזומטריות (הזזה, שיקוף, סיבוב) וצורות חופפות", "pages": ["isometric-transformations-grade-8"]},
           {"id": "st.g8.functions_intro.concept_representations", "name": "מושג הפונקציה וייצוגיה (מילולי, טבלה, גרף וביטוי אלגברי)", "pages": ["function-concept-grade-8", "function-representations-grade-8", "function-notation-grade-8"]},
           {"id": "st.g8.functions_intro.inc_dec_linear_graphs", "name": "תחומי עלייה, ירידה וקביעות וגרפים קוויים", "pages": ["function-representations-grade-8", "linear-function-grade-8"]}
         ]},
@@ -162,10 +162,10 @@
           {"id": "st.g9r.quad_func_and_eq.factored_standard_formula", "name": "הצגה כמכפלה, הצגה סטנדרטית ופתרון משוואות ריבועיות בנוסחת השורשים", "pages": ["quadratic-equations-grade-9", "quadratic-function-grade-9"]},
           {"id": "st.g9r.side_angle_relations.order_theorems", "name": "יחסי סדר בין צלעות וזוויות במשולש", "pages": ["triangle-sides-angles-grade-9"]},
           {"id": "st.g9r.right_triangle_30_60_90.theorem_and_converse", "name": "משולש ישר־זווית שזוויותיו 30°, 60°, 90° והמשפט ההפוך", "pages": ["triangle-30-60-90-grade-9"]},
-          {"id": "st.g9r.parallels_trapezoid.properties", "name": "ישרים מקבילים: הגדרה ותכונות", "pages": []},
-          {"id": "st.g9r.parallels_trapezoid.alternate_corresponding", "name": "זוויות מתחלפות וזוויות מתאימות בין ישרים מקבילים", "pages": []},
-          {"id": "st.g9r.parallels_trapezoid.converse", "name": "משפט הפוך: תנאים להקבלה", "pages": []},
-          {"id": "st.g9r.parallels_trapezoid.co_interior", "name": "זוויות חד־צדדיות בין ישרים מקבילים", "pages": [], "optional": true},
+          {"id": "st.g9r.parallels_trapezoid.properties", "name": "ישרים מקבילים: הגדרה ותכונות", "pages": ["parallel-lines-angles-grade-9"]},
+          {"id": "st.g9r.parallels_trapezoid.alternate_corresponding", "name": "זוויות מתחלפות וזוויות מתאימות בין ישרים מקבילים", "pages": ["parallel-lines-angles-grade-9"]},
+          {"id": "st.g9r.parallels_trapezoid.converse", "name": "משפט הפוך: תנאים להקבלה", "pages": ["parallel-lines-angles-grade-9"]},
+          {"id": "st.g9r.parallels_trapezoid.co_interior", "name": "זוויות חד־צדדיות בין ישרים מקבילים", "pages": ["co-interior-angles-grade-9"], "optional": true},
           {"id": "st.g9r.parallels_trapezoid.trapezoid_intro", "name": "הכרת הטרפז, תכונות זוויות בטרפז והוכחה שמרובע הוא טרפז", "pages": ["trapezoid-grade-9"]},
           {"id": "st.g9r.parallels_trapezoid.isosceles_trapezoid", "name": "טרפז שווה־שוקיים: זוויות הבסיס והאלכסונים", "pages": ["trapezoid-grade-9", "parallelogram-grade-9"]},
           {"id": "st.g9r.parallels_trapezoid.trapezoid_area_perim", "name": "שטח והיקף של טרפז (כולל במערכת צירים)", "pages": ["trapezoid-grade-9", "parallelogram-trapezoid-area-grade-9"]}
@@ -182,7 +182,7 @@
           {"id": "st.g9r.rectangle.converse_theorems", "name": "משפטים הפוכים להוכחה שמרובע או מקבילית הם מלבן", "pages": ["rectangle-grade-9"]},
           {"id": "st.g9r.probability.single_stage_complement", "name": "מושגי יסוד בהסתברות, שכיחות יחסית ומאורע משלים", "pages": ["probability-grade-9"]},
           {"id": "st.g9r.probability.two_stage_representations", "name": "ניסויים דו־שלביים: טבלה דו־ממדית, דיאגרמת עץ ומודל השטח", "pages": ["probability-grade-9"]},
-          {"id": "st.g9r.integrative_literacy.real_world_tasks", "name": "משימות אורייניות אינטגרטיביות המשלבות אלגברה, פונקציות וגאומטריה", "pages": []}
+          {"id": "st.g9r.integrative_literacy.real_world_tasks", "name": "משימות אורייניות אינטגרטיביות המשלבות אלגברה, פונקציות וגאומטריה", "pages": ["math-literacy-tasks-grade-9"]}
         ]},
         {"key": "m02", "label": "פברואר", "prisaPage": 5, "units": [
           {"id": "st.g9r.system_degree_2.line_parabola_system", "name": "מערכת משוואות ממעלה שנייה (ישר ופרבולה או שתי פרבולות): פתרון אלגברי וגרפי", "pages": ["quadratic-inequalities-systems-grade-9"]}

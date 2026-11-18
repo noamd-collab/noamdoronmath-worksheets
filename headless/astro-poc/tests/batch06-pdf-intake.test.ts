@@ -131,7 +131,7 @@ test('eleven additive editions recover the pinned baseline after batch 5 (4db6f5
   assert.equal(batch06Registry.editions.length, priorRegistry.editions.length + 11);
   assert.deepEqual(batch06Registry.editions.slice(0, -11), priorRegistry.editions);
   assert.deepEqual(batch06Registry.editions.slice(-11), reviewed.additions.map(a => a.edition));
-  assert.equal(raw.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 976);
+  assert.equal(raw.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 988); // NEW4 (18.11): four later base topics, +12 levels
   assert.equal(previous.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 976);
 
   for (const [index, addition] of reviewed.additions.entries()) {

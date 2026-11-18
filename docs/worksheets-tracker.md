@@ -1,3 +1,11 @@
+## 2026-11-18 — four new PDF-only base topics with landings: 8/68, 9/50, 9/51, 9/52 (candidate)
+
+- Noam (18.11.2026) approved a new base topic with its own landing for each of four reviewed packages that had no topic to attach to: **G8-TRF-01** as grade-8 topic 68 **טרנספורמציות איזומטריות וצורות חופפות** (group geo), **G9-PLN-01** as grade-9 topic 50 **ישרים מקבילים — זוויות מתאימות ומתחלפות** and **G9-COI-01** as topic 51 **זוויות חד־צדדיות בין ישרים מקבילים** (both in a new regular grade-9 group, `geopar` **גיאומטריה — ישרים מקבילים וזוויות**, between fun and geo, so they are not listed among the quadrilaterals) and **G9-LIT-01** as topic 52 **משימות אוריינות — מודל מתמטי בהקשר מציאותי** (stat). All four are `publicationMode: "pdf-only"`.
+- Twelve PDFs, 102 pages, with final answers. Each is bound by SHA-256 to an independent review that binds the published bytes: Kimi Work for TRF-01 and PLN-01, and Google Antigravity for COI-01 and LIT-01. Two media readbacks per PDF match. Details: `docs/new-topics-four-pdf-first-20261118.json`.
+- New landings: `/isometric-transformations-grade-8`, `/parallel-lines-angles-grade-9`, `/co-interior-angles-grade-9` and `/math-literacy-tasks-grade-9`, each linked once from its grade hub, with its own worked example, common mistake, self-check and calculation lesson.
+- PDF-only: no Noam prefix, Ramzi, viewer manifests, teacher questions, learning identities, Word or Supabase. Every earlier topic, group, track group and PDF is unchanged; the NEW4 fence reverses exactly these four topics, their search terms and the geopar group before every older catalog fence.
+- This is a source candidate, not a publication claim.
+
 ## 2026-11-18 — batch 09: six reviewed student PDF editions (candidate)
 
 - G7-SGM-01 (7/2, signed-numbers-grade-7), G9-STR-01 (9/9, statistics-grade-9, ט׳ מצומצמת), G8-FNC-02 (8/21, function-representations-grade-8), G7-EQN-03 (7/37, equations-advanced-grade-7), G7-CRT-01 (7/20, solids-box-cube-prism-grade-7) and G7-PGA-01 (7/42, pythagorean-theorem-grade-7): 18 non-default pdf-only PDFs, 219 pages, on six existing topic pages. Every existing default and earlier edition stays in place.
