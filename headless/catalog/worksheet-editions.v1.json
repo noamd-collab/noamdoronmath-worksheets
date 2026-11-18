@@ -4235,6 +4235,258 @@
           "revision": 1
         }
       ]
+    },
+    {
+      "grade": 7,
+      "topicId": 2,
+      "editionId": "ms-20261118-sgm-01-r1",
+      "label": "מספרים מכוונים: תנועות על ציר המספרים, רווח והפסד וכללי הפעולות · PDF",
+      "nativePrefix": "G7-T104",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "status": "published",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "87fdda260dd04ae5accbb003ad348dec",
+          "pdfSha256": "9486827ae4373bfb77cf7dd696c1c618b42a00611c4192909cf3c463d5986f10",
+          "sourceSha256": "4cf37f0b7a877ccf569ccced7367bc351f6c86cae1d6f55fb72656781a1489a6",
+          "nativeExportSha256": "a1aa057e5f919cf6587ac588ef901566ce2c3b4fcf6897b09ad08e38bf6f5cbf",
+          "worksheetId": "ms-g7-sgm-01-a-r1",
+          "revision": 1
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "df8ee1c286ab495b955332ca7cbe9a09",
+          "pdfSha256": "9087643a13e62a72822f4b4711261689edba7c01cba7640949ff53990d91d57a",
+          "sourceSha256": "d5ffb37390944599e7d0ba8746527c438e97f383a3109cdde35718d47620a516",
+          "nativeExportSha256": "07c167c4395f31d333b2fe78dbcd24f94cb2ca848599223d74808ae2d3c76ef7",
+          "worksheetId": "ms-g7-sgm-01-b-r1",
+          "revision": 1
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "38f236b06be548df9f0c47086874b5e8",
+          "pdfSha256": "d7a44e3c78a383f0eadca045b60c0e0a505b39fa414ffb77e7ba9e48dec58984",
+          "sourceSha256": "b0f86758d14ac0e654e765fd35974069c14938d9d4ec31c6c2b4058572d7754d",
+          "nativeExportSha256": "5ccacd73b0fd75bebb1d60bb4052d164f3f2dbec1f8fcf827435de4dba407ba7",
+          "worksheetId": "ms-g7-sgm-01-c-r1",
+          "revision": 1
+        }
+      ]
+    },
+    {
+      "grade": 9,
+      "topicId": 9,
+      "editionId": "ms-20261118-str-01-r1",
+      "label": "ט׳ מצומצמת · ארגון נתונים, שכיחות יחסית, טווח ומדדי מרכז · PDF",
+      "nativePrefix": "G9-T110",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "status": "published",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "9970baaec3ff46bfbbab9c838cb1db75",
+          "pdfSha256": "5e46097394bb78aa8c1630ae8daacb94e71039915e91932bac9dfc1fb593c687",
+          "sourceSha256": "5ecb094dd291c9fbfd6113d396dc9bd24b2ca7efeb8b2a99ea8903a319c01815",
+          "nativeExportSha256": "c95cd459dc763d1083e3707c8a8636d485deda166cbecb5e876495d104b0897e",
+          "worksheetId": "ms-g9-str-01-a-r1",
+          "revision": 1
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "35568da347874b54921bce0fb67dc8ae",
+          "pdfSha256": "fb173cfc5a073aa5a0724be36fea83a9b1d3d0121d2ee20396e07f470f6f5baf",
+          "sourceSha256": "13d5b68fda1fe2195cc4acae84976fc3d816851267f83c1e7d0557b944e3814f",
+          "nativeExportSha256": "cc7df1c016163d34d2fd46aefc6bf52de57d7ed725d1d867871a699d95fd645c",
+          "worksheetId": "ms-g9-str-01-b-r1",
+          "revision": 1
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "237d094786f04c9a893650132a131053",
+          "pdfSha256": "65a5e064404e6ac9dbb22f14d9872516b1fa67d745a53682eec8f5f444530832",
+          "sourceSha256": "39f89d7b73715255725045b06abc6dbc41ad6bb062a95754bb9a6b464eb5f020",
+          "nativeExportSha256": "1b7815d28ff1ad6f6d94a4e6bda5848ef6a8f1ddfc7814cee91931a9de4d8cb5",
+          "worksheetId": "ms-g9-str-01-c-r1",
+          "revision": 1
+        }
+      ]
+    },
+    {
+      "grade": 8,
+      "topicId": 21,
+      "editionId": "ms-20261118-fnc-02-r1",
+      "label": "מושג הפונקציה בהקשר: משתנה תלוי ובלתי תלוי ותחום הגדרה · PDF",
+      "nativePrefix": "G8-T102",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "status": "published",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "c68a15204c974103add3c8b6b41bfa06",
+          "pdfSha256": "ff22104f75d7bbcaaa140703d1750235beb370d8d2444093c10a9fb6fc788751",
+          "sourceSha256": "ea14ea3da2ce68caf1ce3315e5c0cfc49b0b1afe9c4d5df62f32076bb9fda3cd",
+          "nativeExportSha256": "a08c491422ff882babf95d71559fcc584aa9afdae19eb3295b4fab281916731c",
+          "worksheetId": "ms-g8-fnc-02-a-r1",
+          "revision": 1
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "7617adc56ccd48efabbebad045016e0a",
+          "pdfSha256": "1666ba5bd001d59b08cf09551c530432a752a9038e4b74daf87d6786248965a6",
+          "sourceSha256": "3a3955c1d04cf015d70212e48c444897c67bfcfa8d067d6e7b7e9e427b9425ab",
+          "nativeExportSha256": "2acc9f5861c38c5d146b81ae29daa85e6b20ea6fa8f6c356a9a69b2a3c1d4d84",
+          "worksheetId": "ms-g8-fnc-02-b-r1",
+          "revision": 1
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "669ac31129a74be39da12df5ebc0e083",
+          "pdfSha256": "dcd47ff0d102a9e9557a01f9f3530c1a3c4ae541d8667a4fbc1f6539a6b552bb",
+          "sourceSha256": "ca57a765aef27eefd853f0093b42fb11a3b28e31088e2bae4bb7be357f026150",
+          "nativeExportSha256": "ba3255576f3885c71f7221d4157422678b22e3553b3b0a166fcde022bc1218b5",
+          "worksheetId": "ms-g8-fnc-02-c-r1",
+          "revision": 1
+        }
+      ]
+    },
+    {
+      "grade": 7,
+      "topicId": 37,
+      "editionId": "ms-20261118-eqn-03-r1",
+      "label": "משוואות ממעלה ראשונה: פתרון יחיד, אין פתרון ואינסוף פתרונות · PDF",
+      "nativePrefix": "G7-T106",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "status": "published",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "d630be1df47b4d4b81497adbef4c6cda",
+          "pdfSha256": "bf981b1bfd51b55ad5f1f08fbb5534709276671c3fc0a4babd61b58d5d4a051a",
+          "sourceSha256": "7bff33a54d709b622b796b50344e6b1ef7414d3f9f1fe2d807178a20fd55d141",
+          "nativeExportSha256": "7964fa4c9c8a7606bed463096d071c6834585dc4f0af42bf2e31fed6c11338ee",
+          "worksheetId": "ms-g7-eqn-03-a-r1",
+          "revision": 1
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "1bfef61820814ba7ac7e984d5510132f",
+          "pdfSha256": "0fb30db4d0836c220291b03f1b5f156b5888656e8707d4c1f621ac5536c548db",
+          "sourceSha256": "a2f2995931a653a46b7e303c73e93084cd2d7ba2fac428c6831795f7daf6e9d0",
+          "nativeExportSha256": "2966bb26a7938d8922a0c13cacf4547381ecd6b3736c384b4d7ebd6f8e7383f0",
+          "worksheetId": "ms-g7-eqn-03-b-r1",
+          "revision": 1
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "97f73bee4aae4d8d867bfe77d09fd568",
+          "pdfSha256": "e5255dd88122401f1878bf4398bf7970dda783d82e7d2d304790a44bc1291bbc",
+          "sourceSha256": "a405dc80f35f931d155773d6d3e777d987d3d72762e3df0e558571abe9dfeda1",
+          "nativeExportSha256": "dfdb48ae063730d9a292405482c65dd6e5a095778dba7ae23fbb0f262bbf8fc7",
+          "worksheetId": "ms-g7-eqn-03-c-r1",
+          "revision": 1
+        }
+      ]
+    },
+    {
+      "grade": 7,
+      "topicId": 20,
+      "editionId": "ms-20261118-crt-01-r1",
+      "label": "שורש שלישי ושינוי מידות בקובייה, בתיבה ובמנסרה · PDF",
+      "nativePrefix": "G7-T103",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "status": "published",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "82bbbec709fe4f489c8ee20b005b7b70",
+          "pdfSha256": "6a06e4f89b857c98e482788fce78e02446a11d08cb43789d017629126ae26b1d",
+          "sourceSha256": "33bf4ff6417f043f5eb2ca9fe82eed2315dd7877b54c97ee385977114047885f",
+          "nativeExportSha256": "60f2e3bfa4293eafef8f8097ddc40873582029d0e0ef7870fc874c06ec1cb28d",
+          "worksheetId": "ms-g7-crt-01-a-r1",
+          "revision": 1
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "8b322fc66e4b476db1b742532a1b46b3",
+          "pdfSha256": "e62fd9d386b7bd2ad0dcbf9d4cd5b0c1fb1d5343d131f04bd34db693d0724bdd",
+          "sourceSha256": "08727a5996c595f7321069d61a47feaf1cef6bd75812758ee4cee4a22c9ab419",
+          "nativeExportSha256": "ca359f4e550b69812c80d75e6d3f8f20de565c44d69f6eec81c6ebaef646e5c4",
+          "worksheetId": "ms-g7-crt-01-b-r1",
+          "revision": 1
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "01a221982ed64475bc84d73048e08bde",
+          "pdfSha256": "7d7017da20f932e229b9dc1e925f75971f3289fc34fb955000051d35f3840ec0",
+          "sourceSha256": "1253d6e3a6aaab5f83c098eceb74ab7f98d1c27e95d58e9c8382d6bbef65530f",
+          "nativeExportSha256": "fe64287a08a9ef1d5fb649e0b92f756bc0d16b15270f8eb9e7fba3f93746443f",
+          "worksheetId": "ms-g7-crt-01-c-r1",
+          "revision": 1
+        }
+      ]
+    },
+    {
+      "grade": 7,
+      "topicId": 42,
+      "editionId": "ms-20261118-pga-01-r1",
+      "label": "משפט פיתגורס בחישובי שטח והיקף · PDF",
+      "nativePrefix": "G7-T101",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "status": "published",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "478bfe4418f842b5a78fc12886038b2b",
+          "pdfSha256": "390bb0d0de9565db6836dacbf6d9b994f2d6bdef35963f4b418a6e1558ff97fc",
+          "sourceSha256": "373bd06a0e34d87ddbf4c44715612a3cc0f70e7b513ffebcea7be5e1cae0e725",
+          "nativeExportSha256": "57ca43380347562a4e182ecf7836fae663fcbb8dc5dbe44977214a91ee31d8cc",
+          "worksheetId": "ms-g7-pga-01-a-r1",
+          "revision": 1
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "a12dafcf047a439a9d26d3cc6ed61c0e",
+          "pdfSha256": "61b84afe8c84335ea660848fbe395699f856d400548f225e7c599caa8359c2ac",
+          "sourceSha256": "fff8a7d55c18164461e9f4d9855226c404487d3af8e458e587704a2db0486252",
+          "nativeExportSha256": "ffed03528deab9bee88032d426dcfda94b9a6f787b6008f0dd8b347e4322f618",
+          "worksheetId": "ms-g7-pga-01-b-r1",
+          "revision": 1
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "2d74cb6dda6e4b5280f822ec332eac10",
+          "pdfSha256": "a3b8adda0fb407ad9f5cc913b127b2deeb1dc17c2ac14fb061cc5eff3c38b586",
+          "sourceSha256": "d072671dc28c0a126a43242db83ff17998db6682a02bb39ef09cff8f8b6df018",
+          "nativeExportSha256": "96bdf9ee5b488555b158ffe12b41086ef37b8f70ee9a9d365401401a23e9f980",
+          "worksheetId": "ms-g7-pga-01-c-r1",
+          "revision": 1
+        }
+      ]
     }
   ]
 }

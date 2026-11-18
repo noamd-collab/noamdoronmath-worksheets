@@ -1,3 +1,10 @@
+## 2026-11-18 — batch 09: six reviewed student PDF editions (candidate)
+
+- G7-SGM-01 (7/2, signed-numbers-grade-7), G9-STR-01 (9/9, statistics-grade-9, ט׳ מצומצמת), G8-FNC-02 (8/21, function-representations-grade-8), G7-EQN-03 (7/37, equations-advanced-grade-7), G7-CRT-01 (7/20, solids-box-cube-prism-grade-7) and G7-PGA-01 (7/42, pythagorean-theorem-grade-7): 18 non-default pdf-only PDFs, 219 pages, on six existing topic pages. Every existing default and earlier edition stays in place.
+- Each landing gets one short section; its last paragraph says the PDFs are for download and printing, with final answers at the end of each file, and, on topics whose earlier sheets open with Ramzi, that hints are in those earlier sheets.
+- Review receipts are cited in `docs/batch09-pdf-first-20261118.json` by project-relative path and SHA-256: Google Antigravity for G7-SGM-01, G8-FNC-02 r02, G7-EQN-03 r02, G7-CRT-01 r03 and G7-PGA-01 r03 (full and blind-numbers reviews for the last two), and Kimi Work for the Antigravity-authored G9-STR-01. The registry source and native hashes are the real build files of each package.
+- Older tests that read the same pages or topics unwind batch 09 first.
+
 ## 2026-11-18 — batch 08: five reviewed student PDF editions (candidate)
 
 - G7-SOL-01 (7/20, solids-box-cube-prism-grade-7), G8-DAT-01 (8/67, statistics-data-frequency-grade-8), G8-RAT-01 (8/4, ratio-proportion-grade-8), G9-RHM-01 (9/13, rhombus-grade-9, ט׳ מצומצמת) and G9-SQM-01 (9/14, square-grade-9, ט׳ מצומצמת): 15 PDFs on five existing topic pages. Every existing default and earlier edition stays in place.
