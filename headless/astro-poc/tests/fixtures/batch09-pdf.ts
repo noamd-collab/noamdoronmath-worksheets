@@ -3,6 +3,7 @@ import { createHash } from 'node:crypto';
 import reviewed from './batch09-pdf-reviewed.json';
 import { beforeNew4Catalog } from './new4-pdf';
 import { beforeLandingCorrections } from './landing-corrections-20261118';
+import { beforeBatch10Copy, beforeBatch10Registry } from './batch10-pdf';
 
 export { reviewed as reviewedBatch09 };
 export const reviewedBatch09Ids = reviewed.additions.map(a => a.editionId);
@@ -44,7 +45,8 @@ export function beforeBatch09Catalog<T>(catalog: T): T {
 
 /** Validate exact registry rows before removing batch 9. */
 export function beforeBatch09Registry<T>(registry: T): T {
-  const restored: any = structuredClone(registry);
+  // Batch 10 is newer: remove its rows first.
+  const restored: any = structuredClone(beforeBatch10Registry(registry));
   for (const addition of reviewed.additions) {
     const matches = restored.editions.filter((e: any) => e.editionId === addition.editionId);
     assert.deepEqual(matches, [addition.edition], `${addition.editionId}: exact reviewed registry row`);
@@ -55,8 +57,8 @@ export function beforeBatch09Registry<T>(registry: T): T {
 
 /** Verify batch 9's exact changed fields and recover the batch 8 landing. */
 export function beforeBatch09Copy<T>(slug: string, page: T): T {
-  // The 18 Nov landing corrections are newer than batch 09: reverse them first.
-  page = beforeLandingCorrections(slug, page);
+  // Batch 10 and then the 18 Nov landing corrections are newer than batch 09: reverse them first.
+  page = beforeLandingCorrections(slug, beforeBatch10Copy(slug, page));
   const delta = reviewed.landingDeltas.find(d => d.slug === slug);
   if (!delta) return page;
   const restored: any = structuredClone(page);

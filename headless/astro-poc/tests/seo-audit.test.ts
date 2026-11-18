@@ -457,8 +457,9 @@ describe('seo audit', () => {
     const tracks = llmsFullTracks();
     const reduced = tracks.filter((track) => track.reduced);
     assert.deepEqual(reduced.map((track) => [track.grade, track.heading]), [[9, 'כיתה ט׳ מצומצמת']]);
-    // r9jan is a new catalog month group; it follows ספטמבר and אוקטובר with this one landing.
-    assert.deepEqual(reduced[0].groups.map((group) => [group.key, group.label]), [['r9sep', 'ספטמבר'], ['r9oct', 'אוקטובר'], ['r9jan', 'ינואר']]);
+    // r9jan is a catalog month group with this one landing; it follows ספטמבר, אוקטובר and נובמבר
+    // (r9nov, opened by topic 53 in batch 10, 18.11).
+    assert.deepEqual(reduced[0].groups.map((group) => [group.key, group.label]), [['r9sep', 'ספטמבר'], ['r9oct', 'אוקטובר'], ['r9nov', 'נובמבר'], ['r9jan', 'ינואר']]);
     assert.deepEqual(reduced[0].groups.at(-1)?.pages.map((page) => page.path), [path]);
     for (const track of tracks.filter((entry) => !entry.reduced)) {
       assert.equal(track.groups.some((group) => group.pages.some((page) => page.path === path)), false, track.heading);

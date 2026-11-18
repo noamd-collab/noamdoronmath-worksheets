@@ -13,6 +13,7 @@ import { beforeBatch09Catalog, beforeBatch09Copy, beforeBatch09Registry,
   reviewedBatch09 as reviewed, reviewedBatch09Ids as ids } from './fixtures/batch09-pdf';
 import { createRequire } from 'node:module';
 import { beforeLandingCorrections } from './fixtures/landing-corrections-20261118';
+import { beforeBatch10Registry } from './fixtures/batch10-pdf';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -101,10 +102,12 @@ test('six additive editions recover the pinned baseline after batch 8 (c45a033c)
   assert.equal(receipt.status, 'REVIEWED_MEDIA_SITE_CANDIDATE_NOT_PUBLISHED');
   assert.equal(receipt.sitePublicationClaimed, false);
   assert.deepEqual(receipt.scope, { packages: 6, pdfs: 18, pages: 219, landingRoutes: 6 });
-  assert.equal(registry.editions.length, priorRegistry.editions.length + 6);
-  assert.deepEqual(registry.editions.slice(0, -6), priorRegistry.editions);
-  assert.deepEqual(registry.editions.slice(-6), reviewed.additions.map(a => a.edition));
-  assert.equal(raw.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 988); // NEW4 (18.11): four later base topics, +12 levels
+  // Batch 10 appends later rows; compare this batch's registry state.
+  const batch09Registry = beforeBatch10Registry(registry);
+  assert.equal(batch09Registry.editions.length, priorRegistry.editions.length + 6);
+  assert.deepEqual(batch09Registry.editions.slice(0, -6), priorRegistry.editions);
+  assert.deepEqual(batch09Registry.editions.slice(-6), reviewed.additions.map(a => a.edition));
+  assert.equal(raw.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 991); // NEW4 (18.11): four later base topics, +12 levels; batch 10 topic 9/53, +3
   assert.equal(previous.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 976);
 
   for (const [index, addition] of reviewed.additions.entries()) {

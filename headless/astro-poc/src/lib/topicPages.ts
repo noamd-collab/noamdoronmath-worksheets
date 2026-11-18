@@ -288,6 +288,7 @@ import isometricTransformationsGrade8 from '../data/topic-pages/isometric-transf
 import parallelLinesAnglesGrade9 from '../data/topic-pages/parallel-lines-angles-grade-9.json';
 import coInteriorAnglesGrade9 from '../data/topic-pages/co-interior-angles-grade-9.json';
 import mathLiteracyTasksGrade9 from '../data/topic-pages/math-literacy-tasks-grade-9.json';
+import percentagesGrade9 from '../data/topic-pages/percentages-grade-9.json';
 import statisticsDataFrequencyGrade8 from '../data/topic-pages/statistics-data-frequency-grade-8.json';
 import priorKnowledgeDiagnosticGrade8 from '../data/topic-pages/prior-knowledge-diagnostic-grade-8.json';
 import equationsWithFractionsGrade8 from '../data/topic-pages/equations-with-fractions-grade-8.json';
@@ -639,6 +640,7 @@ export const TOPIC_PAGE_G9_AUTHORED_SLUGS = [
   'parallel-lines-angles-grade-9',
   'co-interior-angles-grade-9',
   'math-literacy-tasks-grade-9',
+  'percentages-grade-9',
 ] as const;
 
 export const TOPIC_PAGE_G5_SLUGS = [
@@ -1042,6 +1044,7 @@ const BY_SLUG: Record<string, TopicPageContent> = {
   'parallel-lines-angles-grade-9': parallelLinesAnglesGrade9 as TopicPageContent,
   'co-interior-angles-grade-9': coInteriorAnglesGrade9 as TopicPageContent,
   'math-literacy-tasks-grade-9': mathLiteracyTasksGrade9 as TopicPageContent,
+  'percentages-grade-9': percentagesGrade9 as TopicPageContent,
   'statistics-data-frequency-grade-8': statisticsDataFrequencyGrade8 as TopicPageContent,
   // Grade-8 catalog gaps (כיתה ח׳)
   'prior-knowledge-diagnostic-grade-8': priorKnowledgeDiagnosticGrade8 as TopicPageContent,
@@ -1294,7 +1297,8 @@ function isolateRelatedLabel(rel: FamilyRelatedTopic): FamilyRelatedTopic {
 
 /** Classified related block for rendering. Captured links stay on sourceRelatedTopics. */
 const AUTHORED_RELATED_SLUGS = new Set<string>(['median-to-hypotenuse-grade-9', 'equations-numeric-denominator-grade-9',
-  'isometric-transformations-grade-8', 'parallel-lines-angles-grade-9', 'co-interior-angles-grade-9', 'math-literacy-tasks-grade-9']);
+  'isometric-transformations-grade-8', 'parallel-lines-angles-grade-9', 'co-interior-angles-grade-9', 'math-literacy-tasks-grade-9',
+  'percentages-grade-9']);
 
 function presentRelatedTopics(data: TopicPageContent): FamilyRelatedTopic[] {
   const classified = familyRelatedTopics(data.slug, data.grade);

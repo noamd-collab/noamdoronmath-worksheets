@@ -11,7 +11,7 @@ describe('preview-only gallery focus preserves the original inventory and cards'
     const page = await browser.newPage();
     try {
       await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]);
-      for (const [gallery, count] of [['a', 42], ['b', 74], ['c', 61]] as const) {
+      for (const [gallery, count] of [['a', 42], ['b', 75], ['c', 61]] as const) {
         const response = await page.goto(`${server.origin}/review/landing-loops-pr-${gallery}`, { waitUntil: 'load' });
         assert.equal(response?.status(), 200);
         const inventory = await page.$$eval('[data-review-slug]', cards => cards.map(card => card.getAttribute('data-review-slug')));
@@ -21,7 +21,9 @@ describe('preview-only gallery focus preserves the original inventory and cards'
           for (const slug of new4) assert.deepEqual(inventory.filter(value => value === slug), [slug], 'Each NEW4 card appears exactly once');
           const eqmAt = inventory.indexOf('equations-numeric-denominator-grade-9');
           assert.deepEqual(inventory.slice(eqmAt + 1, eqmAt + 5), new4, 'NEW4 cards follow the EQM card as one block');
-          const earlier = inventory.filter(slug => !new4.includes(slug!));
+          // Batch 10 adds the PCM53 card after them.
+          assert.deepEqual(inventory.filter(slug => slug === 'percentages-grade-9'), ['percentages-grade-9']);
+          const earlier = inventory.filter(slug => !new4.includes(slug!) && slug !== 'percentages-grade-9');
           const added = ['rational-equations-grade-9', 'median-to-hypotenuse-grade-9', 'equations-numeric-denominator-grade-9'];
           for (const slug of added) assert.deepEqual(earlier.filter(value => value === slug), [slug], 'Each added card appears exactly once');
           assert.equal(createHash('sha256').update(JSON.stringify(earlier.filter(slug => slug !== 'equations-numeric-denominator-grade-9'))).digest('hex'),
@@ -38,7 +40,7 @@ describe('preview-only gallery focus preserves the original inventory and cards'
         assert.equal(await page.$$eval('.rv-index li', rows => rows.length), count);
       }
       // Existing CSS/film, a new missing-before page, and B's taller lesson.
-      for (const [gallery, slug, count] of [['a', 'percentage-problems-grade-8', 42], ['a', 'frequency-chance-grade-5', 42], ['a', 'percent-change-grade-8', 42], ['b', 'rational-equations-grade-9', 74], ['b', 'median-to-hypotenuse-grade-9', 74], ['b', 'equations-numeric-denominator-grade-9', 74], ['b', 'median-grade-8', 74], ['b', 'co-interior-angles-grade-9', 74]] as const) {
+      for (const [gallery, slug, count] of [['a', 'percentage-problems-grade-8', 42], ['a', 'frequency-chance-grade-5', 42], ['a', 'percent-change-grade-8', 42], ['b', 'rational-equations-grade-9', 75], ['b', 'median-to-hypotenuse-grade-9', 75], ['b', 'equations-numeric-denominator-grade-9', 75], ['b', 'median-grade-8', 75], ['b', 'co-interior-angles-grade-9', 75]] as const) {
         const url = `${server.origin}/review/landing-loops-pr-${gallery}`;
         const fullHtml = await (await fetch(url)).text();
         const focusedUrl = `${url}?focus=${encodeURIComponent(slug)}`;
