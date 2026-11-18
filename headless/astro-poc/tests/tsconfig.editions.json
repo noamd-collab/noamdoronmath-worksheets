@@ -23,6 +23,7 @@
     "batch05-pdf-intake.test.ts",
     "batch06-pdf-intake.test.ts",
     "batch07-pdf-intake.test.ts",
+    "batch08-pdf-intake.test.ts",
     "equations-numeric-denominator-landing.test.ts"
   ],
   "exclude": []

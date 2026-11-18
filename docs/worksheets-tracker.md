@@ -1,3 +1,10 @@
+## 2026-11-18 — batch 08: five reviewed student PDF editions (candidate)
+
+- G7-SOL-01 (7/20, solids-box-cube-prism-grade-7), G8-DAT-01 (8/67, statistics-data-frequency-grade-8), G8-RAT-01 (8/4, ratio-proportion-grade-8), G9-RHM-01 (9/13, rhombus-grade-9, ט׳ מצומצמת) and G9-SQM-01 (9/14, square-grade-9, ט׳ מצומצמת): 15 PDFs on five existing topic pages. Every existing default and earlier edition stays in place.
+- Each landing gets one short section; the last paragraph says the PDFs are for download and printing and that hints are in the earlier sheets, which open with Ramzi.
+- Review receipts (Kimi Work for the four Antigravity-authored packages, Claude for the Astra-authored G7-SOL-01) are cited in `docs/batch08-pdf-first-20261118.json` by project-relative path and SHA-256. The registry source and native hashes are the real build files of each package.
+- G7-ANG-02 (reviewed) waits for a frozen build with its deliver tree.
+
 ## 2026-11-17 — batch 07: three reviewed student PDF editions (candidate)
 
 - G9-TRP-02 (9/39, trapezoid-grade-9), G9-LNM-01 (9/34, linear-function-grade-9, ט׳ מצומצמת) and G7-ALG-05 (7/22, algebraic-expressions-grade-7): 9 PDFs on three existing topic pages. Every existing default and earlier edition stays in place.

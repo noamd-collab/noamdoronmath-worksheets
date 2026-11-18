@@ -4025,6 +4025,216 @@
           "revision": 1
         }
       ]
+    },
+    {
+      "grade": 7,
+      "topicId": 20,
+      "editionId": "ms-20261118-sol-01-r1",
+      "label": "תיבה וקובייה: מבנה, פריסה, שטח פנים ונפח · PDF",
+      "nativePrefix": "G7-T92",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "status": "published",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "f55d140f6b1a4dc2ad748cf517f330e4",
+          "pdfSha256": "b8cf86b5a1ae29ef9d6c9a09aeaf03ff9f94e4f2e0ac35e01ee5c28a3a913be9",
+          "sourceSha256": "d33e59c3a522e72f94994000f85aa9bb995c155b9ff5f7f213fd457ee6e071b2",
+          "nativeExportSha256": "48530698cbdb1f913287b372612928d9172330d3676278aaa0c3cbf1a2f76a8b",
+          "worksheetId": "ms-g7-sol-01-a-r1",
+          "revision": 1
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "df43b2fd2f1a403a9aa23a03546f8056",
+          "pdfSha256": "b09f90d8409cb304259f0bffd4c30239fd84504713583b0a2cc0968f294a80be",
+          "sourceSha256": "2ea1dc1d03a19487f37010ede128c63640a5eb2f1008692df97a30790c4e154c",
+          "nativeExportSha256": "ee195118f9a49a8e2f929e8257afc32e385e76931ab67482994429d6c43a5674",
+          "worksheetId": "ms-g7-sol-01-b-r1",
+          "revision": 1
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "2ef19184204d42f1872b63251560d7fc",
+          "pdfSha256": "286fa9eff549d678fbfece88ab139a96cdbded2f15579a75d07870139bf29ca5",
+          "sourceSha256": "bbd2076d40b03bc78077006e2e5ce38b31224d15dd21b0ad977ba403c46592b8",
+          "nativeExportSha256": "c47cdcd4a04022b7505a1ef40fd87170cf0536c550f21c1831367ff0e2d7fa04",
+          "worksheetId": "ms-g7-sol-01-c-r1",
+          "revision": 1
+        }
+      ]
+    },
+    {
+      "grade": 8,
+      "topicId": 67,
+      "editionId": "ms-20261118-g8-dat-01-r1",
+      "label": "ארגון מידע, שכיחות יחסית, טווח ומדדי מרכז · PDF",
+      "nativePrefix": "G8-T96",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "status": "published",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "23c731fa942843519f2cfc1232e3d503",
+          "pdfSha256": "c44668dc4e00b7076b10c097a15ef75c23f9d98e41b15c1ebdc343dea67cb788",
+          "sourceSha256": "beac4b340b1ff58002711284219f3024476a157543f5bfbf14a7ebabe0238337",
+          "nativeExportSha256": "b81f50870f1131bbd7971664fac81f5882e1acf163000851804a2eef22ce0d0a",
+          "worksheetId": "ms-g8-dat-01-a-r1",
+          "revision": 1
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "b4226383875b4715b7a38203c2ab479a",
+          "pdfSha256": "43debd9c31c47f20e8e218582e8969e645de6f785673267ebd60367bf2b2b35e",
+          "sourceSha256": "fba1f88a4c2d78832f8f28a99af84a3dac0e7e0459af0e5ec54be61cd6e6c5f2",
+          "nativeExportSha256": "749dde264d9b9459337564e922f19e1837fd2d0dce2acedfbe18ef5459239eaa",
+          "worksheetId": "ms-g8-dat-01-b-r1",
+          "revision": 1
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "e416913b10484b6289d5479818749755",
+          "pdfSha256": "d1d959c3d719c425b714b1d587ca7333f6dc47d6c0a7e731dcc7475d9376d46d",
+          "sourceSha256": "8fdea6b3cc68d0f9592fe8149b993b95c7988a46f6533ae1680a4d1c1ae179fc",
+          "nativeExportSha256": "01e3380bbb2a5cc6e95654c1e34c1d6ac96071d799e8a05d1e9bb0a36c9a83a4",
+          "worksheetId": "ms-g8-dat-01-c-r1",
+          "revision": 1
+        }
+      ]
+    },
+    {
+      "grade": 8,
+      "topicId": 4,
+      "editionId": "ms-20261118-rat-01-r1",
+      "label": "יחס וחלוקה ביחס נתון, פרופורציה וקנה מידה · PDF",
+      "nativePrefix": "G8-T94",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "status": "published",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "eb5c82cdae23439192002a2ae5a09987",
+          "pdfSha256": "c888827e47c5cc329a7bf7c0cb72067a7e4ca50b7bc7b2c49696961b9f8b2998",
+          "sourceSha256": "ff099fe8f3dd2787ef0c41b934e3a2beceb0445ef3c5085c78c1979099376d76",
+          "nativeExportSha256": "6e2ded9e676ed97bbbd9f5539e134d7c2ab603296b80d7ebcf19f9685aee122f",
+          "worksheetId": "ms-g8-rat-01-a-r1",
+          "revision": 1
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "51ca7fa23d764c71adbbcaa24586e3c7",
+          "pdfSha256": "8e776b88352adb6a6df79080063b296d9664a29ea03776c5ce3bad8300b8870a",
+          "sourceSha256": "4e8024a64f5852feba1dee61dac10b17b1de13d4b1dcc0acd35ed60c65c951b7",
+          "nativeExportSha256": "bb4cbab21e1280301314a3c58670ceda008473a2c94a85edf728ec402ba3171b",
+          "worksheetId": "ms-g8-rat-01-b-r1",
+          "revision": 1
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "0ea79c5b38184007a3d7862c1339164b",
+          "pdfSha256": "94bfccbd90b7c79c697f0cb26cd6aeb5e922db8b7b60e43fe749783c8eb65ec3",
+          "sourceSha256": "6bfb7e1b052ab783254c5b7e9bbd9fa2fa0b8fb82762a8d75c53cd413ff93388",
+          "nativeExportSha256": "f0f41f58626084d748508aa61576e200c29dba816f09bd5e331b644fc2dc2a4b",
+          "worksheetId": "ms-g8-rat-01-c-r1",
+          "revision": 1
+        }
+      ]
+    },
+    {
+      "grade": 9,
+      "topicId": 13,
+      "editionId": "ms-20261118-rhm-01-r1",
+      "label": "ט׳ מצומצמת · מעוין: תכונות, אלכסונים ושטח עם משפט פיתגורס · PDF",
+      "nativePrefix": "G9-T81",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "status": "published",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "7a2d0143a74942f187edb0e517722367",
+          "pdfSha256": "6071bcd72dc646f392c4f0f3e3a82e7e524f3470350f334f6181b8dfb60391f4",
+          "sourceSha256": "62532a08cc180f70ae0bf18c2daaf07dea6a9df9c92ad8ae536ffe86bba78073",
+          "nativeExportSha256": "bb64ed0482311c35274d0912d6d63ff8e4cf3482917a1a9765cc241d05b7a5da",
+          "worksheetId": "ms-g9-rhm-01-a-r1",
+          "revision": 1
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "0011a1c0893c4a0d84a92efb3d8f4dc8",
+          "pdfSha256": "ee457f36b8a2375399b4d69bd3342b342e4c667fa974b58ddee4fd24526512b7",
+          "sourceSha256": "9fe22d06fa94d8db442e098de63f9044085cadd52703e7edfe34020be6fb1d75",
+          "nativeExportSha256": "bf9a29a1013bba816f6c56d6ee2e7a79dc7201e92973e2461fb309f3f3c69747",
+          "worksheetId": "ms-g9-rhm-01-b-r1",
+          "revision": 1
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "fc1da3d14c5549d28f1f49411ca13fea",
+          "pdfSha256": "3407efffccd2fdae0a6b769e8c2d4277d3639e1aba190df53c9817979c109e32",
+          "sourceSha256": "b195bfe98f595f8158b3441de28bb82a84167b7ae79a0531c4009210539346fb",
+          "nativeExportSha256": "617b48889c7b28bd9a95e5581775a6e0f6543bc3e5f53a223a43a3447e3a519b",
+          "worksheetId": "ms-g9-rhm-01-c-r1",
+          "revision": 1
+        }
+      ]
+    },
+    {
+      "grade": 9,
+      "topicId": 14,
+      "editionId": "ms-20261118-sqm-01-r1",
+      "label": "ט׳ מצומצמת · ריבוע: תכונות, אלכסונים, שטח ומשפט פיתגורס · PDF",
+      "nativePrefix": "G9-T84",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "status": "published",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "334c469b45ec4819a94e1f7ea2dfcb36",
+          "pdfSha256": "6e617c57f71bf31eba278d47f25198b7382cf7858c41549e2be51fc4d1388f94",
+          "sourceSha256": "3cfd88b970883e66c997044511fe4f9a3418a8c22b018bc4b0e7a5ab92415f59",
+          "nativeExportSha256": "97402a00cbe0a5b88c2bf0998cbc8bd2694c332d5dc6df5f7b60115d818eb53e",
+          "worksheetId": "ms-g9-sqm-01-a-r1",
+          "revision": 1
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "ff70835c7aac44fc93237bcf0025886d",
+          "pdfSha256": "11d9e3eeecf61ca480881e0e21b59fe321e17b7b4dca36b301704c8412d4a8cd",
+          "sourceSha256": "c9b223d978d75c5c7adb0a3bba21d8d96a503ce1d174bb43ea1c53fd6cda1cc9",
+          "nativeExportSha256": "17beb201f9a81a22a4010813369819755c2471665fc57b10cf2ff7a62c3291af",
+          "worksheetId": "ms-g9-sqm-01-b-r1",
+          "revision": 1
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "37d77b5f26ee4055ad294e15dc1f4c0c",
+          "pdfSha256": "00f0faedf4e2025b7bb2253fb6c8fb8503fb54ac0a61613e36fbb008bf2bc907",
+          "sourceSha256": "6e0a88a04d6bac8e0df3f5b6ecff371c9e8715a662b6dd954aad1848edd2ae49",
+          "nativeExportSha256": "c30e7eea9d5957bde6a28a5be24cd626dd0a59b6fc73ec97ab65915082e5ab61",
+          "worksheetId": "ms-g9-sqm-01-c-r1",
+          "revision": 1
+        }
+      ]
     }
   ]
 }
