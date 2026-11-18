@@ -64,7 +64,33 @@ function beforeLegalPrivacy(file: string, content: string): string {
 const whatsappRemovalDeltaText = read('tests/fixtures/whatsapp-removal-reviewed-delta.json');
 assert.equal(sha256(whatsappRemovalDeltaText), '34a79baa893980f0fee9d54f09d1d10ebd195fd89aa8b5775a5a4b95c70ffd6a');
 const whatsappRemovalDeltas = JSON.parse(whatsappRemovalDeltaText).files;
+// Learning header: the same per-letter משחקים label as SiteHeader. Reverse only
+// these exact hunks before the WhatsApp candidate hash; no historical hash changes.
+function beforeLearningNavRainbow(file: string, content: string): string {
+  if (file !== 'public/learning.html') return content;
+  const hunks = [
+    ['noam-learning.css?v=20261118-nav-rainbow-1', 'noam-learning.css?v=20260910-mobile-1'],
+    [
+      'aria-haspopup="true" aria-label="משחקים"><span class="exact-nav-rainbow" aria-hidden="true"><span>מ</span><span>ש</span><span>ח</span><span>ק</span><span>י</span><span>ם</span></span></button>',
+      'aria-haspopup="true">משחקים</button>',
+    ],
+    [
+      '<a class="exact-nav-game exact-nav-game--orange" href="/games/kefel-mekutsar-2">',
+      '<a class="exact-nav-game" href="/games/kefel-mekutsar-2">',
+    ],
+    [
+      '<a class="exact-nav-game exact-nav-game--green" href="/games/eliyahu-pythagoras">',
+      '<a class="exact-nav-game" href="/games/eliyahu-pythagoras">',
+    ],
+  ];
+  for (const [after, before] of hunks) {
+    assert.equal(content.split(after).length, 2, 'one exact learning games rainbow hunk');
+    content = content.replace(after, before);
+  }
+  return content;
+}
 function beforeWhatsappRemoval(file: string, content: string): string {
+  content = beforeLearningNavRainbow(file, content);
   const delta = whatsappRemovalDeltas.find((entry: any) => entry.file === file);
   if (!delta) return content;
   assert.equal(sha256(content), delta.candidateSha256, file + ' exact WhatsApp removal candidate');
