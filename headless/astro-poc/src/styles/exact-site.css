@@ -35,6 +35,17 @@ body.exact-site {
   line-height:1.3;text-align:start;white-space:nowrap;
 }
 .exact-nav-drop a:hover {background:rgba(42,124,122,.1);}
+/* Games menu: Toys"R"Us-style colours (colour only), slightly larger type.
+   Shades are deepened just enough to stay readable (>=4.5:1) on #fbfaf5. */
+.exact-nav-tools__btn .exact-nav-rainbow {font-size:1.2em;font-weight:800;letter-spacing:.01em;}
+.exact-nav-rainbow > span:nth-child(4n+1) {color:#c92f55;}
+.exact-nav-rainbow > span:nth-child(4n+2) {color:#b85513;}
+.exact-nav-rainbow > span:nth-child(4n+3) {color:#3f7f2a;}
+.exact-nav-rainbow > span:nth-child(4n+4) {color:#2a60a7;}
+.exact-header .exact-nav-drop a.exact-nav-game {font-size:17px;font-weight:700;}
+.exact-header .exact-nav-drop a.exact-nav-game--pink {color:#c92f55;}
+.exact-header .exact-nav-drop a.exact-nav-game--orange {color:#b85513;}
+.exact-header .exact-nav-drop a.exact-nav-game--green {color:#3f7f2a;}
 .exact-nav-drop a:focus-visible {outline:3px solid #2a7c7a;outline-offset:2px;}
 @media (hover:hover) {
   .exact-nav-tools:hover:not([data-shut]) .exact-nav-drop {opacity:1;visibility:visible;pointer-events:auto;}
