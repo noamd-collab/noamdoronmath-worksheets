@@ -36,7 +36,7 @@ const additions = registry.editions.filter((row: any) => ids.includes(row.editio
 const activation = readFirst567Activation();
 assert.deepEqual(catalog.ramziActivation, activation.ready);
 const previous = mergeWorksheetEditions(catalog, { version: 1,
-  editions: registry.editions.filter((row: any) => !ids.includes(row.editionId)) }, activation.ready);
+  editions: registry.editions.filter((row: any) => !ids.includes(row.editionId)) }, activation.ready, activation.hintCorrection);
 const topic = (value: CatalogV1) => value.grades.find(g => g.grade === 9)!.topics.find(t => t.id === 7)!;
 
 test('six follow-up PDF files retain frozen provenance and are separate from PR456', () => {
