@@ -109,6 +109,21 @@
       ]
     },
     {
+      "heading": "ישרים מקבילים וזוויות",
+      "links": [
+        {
+          "path": "/parallel-lines-angles-grade-9",
+          "label": "ישרים מקבילים — זוויות מתאימות ומתחלפות",
+          "productionHref": "https://www.noamdoronmath.co.il/parallel-lines-angles-grade-9"
+        },
+        {
+          "path": "/co-interior-angles-grade-9",
+          "label": "זוויות חד־צדדיות",
+          "productionHref": "https://www.noamdoronmath.co.il/co-interior-angles-grade-9"
+        }
+      ]
+    },
+    {
       "heading": "מרובעים ומשולשים",
       "links": [
         {
@@ -250,6 +265,11 @@
           "path": "/probability-grade-9",
           "label": "הסתברות",
           "productionHref": "https://www.noamdoronmath.co.il/probability-grade-9"
+        },
+        {
+          "path": "/math-literacy-tasks-grade-9",
+          "label": "משימות אוריינות",
+          "productionHref": "https://www.noamdoronmath.co.il/math-literacy-tasks-grade-9"
         },
         {
           "path": "/transition-to-high-school-grade-9",
@@ -484,6 +504,21 @@
       "path": "/median-to-hypotenuse-grade-9",
       "label": "משולש ישר זווית — התיכון ליתר",
       "productionHref": "https://www.noamdoronmath.co.il/median-to-hypotenuse-grade-9"
+    },
+    {
+      "path": "/parallel-lines-angles-grade-9",
+      "label": "ישרים מקבילים — זוויות מתאימות ומתחלפות",
+      "productionHref": "https://www.noamdoronmath.co.il/parallel-lines-angles-grade-9"
+    },
+    {
+      "path": "/co-interior-angles-grade-9",
+      "label": "זוויות חד־צדדיות",
+      "productionHref": "https://www.noamdoronmath.co.il/co-interior-angles-grade-9"
+    },
+    {
+      "path": "/math-literacy-tasks-grade-9",
+      "label": "משימות אוריינות",
+      "productionHref": "https://www.noamdoronmath.co.il/math-literacy-tasks-grade-9"
     }
   ],
   "catalogCta": {

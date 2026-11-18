@@ -1,0 +1,418 @@
+{
+  "schema": "noam-base-pdf-publication-set/v1",
+  "status": "REVIEWED_MEDIA_SITE_CANDIDATE_NOT_PUBLISHED",
+  "sitePublicationClaimed": false,
+  "preparedDate": "2026-11-18",
+  "approval": {
+    "by": "Noam",
+    "date": "2026-11-18",
+    "decision": "Open a new PDF-only base topic with its own landing page for each of G8-TRF-01, G9-LIT-01, G9-PLN-01 and G9-COI-01, in the same way as topic 49."
+  },
+  "scope": {
+    "topics": 4,
+    "pdfs": 12,
+    "pages": 102,
+    "landingRoutes": 4
+  },
+  "topics": [
+    {
+      "grade": 8,
+      "topicId": 68,
+      "title": "טרנספורמציות איזומטריות וצורות חופפות",
+      "group": "geo",
+      "track": "ח",
+      "publicationMode": "pdf-only",
+      "sourceSheetId": "G8-TRF-01",
+      "sourcePackage": "G8-T68",
+      "sourceFolder": "submissions/Claude/MS-FIX-G8-TRF-01-20261116-r01",
+      "author": "Google Antigravity (Gemini 4 Carbon High); fix r01 by Claude",
+      "landing": "/isometric-transformations-grade-8",
+      "programSubtopics": [
+        "st.g8.transformations.isometries_congruence"
+      ],
+      "levels": [
+        {
+          "level": "a",
+          "label": "רמה א׳",
+          "pdfId": "afaa5abcd06844629f6916203a910dce",
+          "pdfSha256": "c7b1df630cd848c22ac2a96a253a585d05907ba1ffe08b16786ac46bf973bf60",
+          "pages": 9,
+          "path": "submissions/Claude/MS-FIX-G8-TRF-01-20261116-r01/release/documents/G8-TRF-01/a/sheet.pdf",
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_afaa5abcd06844629f6916203a910dce.pdf",
+              "status": 200,
+              "sha256": "c7b1df630cd848c22ac2a96a253a585d05907ba1ffe08b16786ac46bf973bf60",
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_afaa5abcd06844629f6916203a910dce.pdf",
+              "status": 200,
+              "sha256": "c7b1df630cd848c22ac2a96a253a585d05907ba1ffe08b16786ac46bf973bf60",
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "level": "b",
+          "label": "רמה ב׳",
+          "pdfId": "3910adaab83f48698e496177a24a3416",
+          "pdfSha256": "ac3a210c616226e1f13620cb964a5d641c74daaef26fdc39f43ae58bf4423c1c",
+          "pages": 10,
+          "path": "submissions/Claude/MS-FIX-G8-TRF-01-20261116-r01/release/documents/G8-TRF-01/b/sheet.pdf",
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_3910adaab83f48698e496177a24a3416.pdf",
+              "status": 200,
+              "sha256": "ac3a210c616226e1f13620cb964a5d641c74daaef26fdc39f43ae58bf4423c1c",
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_3910adaab83f48698e496177a24a3416.pdf",
+              "status": 200,
+              "sha256": "ac3a210c616226e1f13620cb964a5d641c74daaef26fdc39f43ae58bf4423c1c",
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "level": "c",
+          "label": "מצוינות",
+          "pdfId": "4f585164428346d8972abf102c1f61a7",
+          "pdfSha256": "d9e443f973b71f09115a2c8ad4a6f090a78bd14ad9ee07cf2c553eb50e555d37",
+          "pages": 10,
+          "path": "submissions/Claude/MS-FIX-G8-TRF-01-20261116-r01/release/documents/G8-TRF-01/c/sheet.pdf",
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_4f585164428346d8972abf102c1f61a7.pdf",
+              "status": 200,
+              "sha256": "d9e443f973b71f09115a2c8ad4a6f090a78bd14ad9ee07cf2c553eb50e555d37",
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_4f585164428346d8972abf102c1f61a7.pdf",
+              "status": 200,
+              "sha256": "d9e443f973b71f09115a2c8ad4a6f090a78bd14ad9ee07cf2c553eb50e555d37",
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ],
+      "reviewReceipts": [
+        {
+          "role": "independent review of the published PDFs (Kimi Work; neither author nor fix author) (verdict PASS_STUDENT_PDF_ESSENTIALS)",
+          "path": "reports/KIMI-INDEPENDENT-G8-TRF-01-20261118/review.json",
+          "sha256": "e1aac882f10757dcf737e0ba3c3337df0036fdf8eadaf5c5dc2cee996200e7bb"
+        }
+      ]
+    },
+    {
+      "grade": 9,
+      "topicId": 50,
+      "title": "ישרים מקבילים — זוויות מתאימות ומתחלפות",
+      "group": "geopar",
+      "track": "ט_רגילה",
+      "publicationMode": "pdf-only",
+      "sourceSheetId": "G9-PLN-01",
+      "sourcePackage": "G9-T77",
+      "sourceFolder": "submissions/Claude/MS-FIX-G9-PLN-01-20261116-r01",
+      "author": "Astra; metadata-only fix r01 by Claude (student PDFs byte-identical to the base)",
+      "landing": "/parallel-lines-angles-grade-9",
+      "programSubtopics": [
+        "st.g9r.parallels_trapezoid.properties",
+        "st.g9r.parallels_trapezoid.alternate_corresponding",
+        "st.g9r.parallels_trapezoid.converse"
+      ],
+      "levels": [
+        {
+          "level": "a",
+          "label": "רמה א׳",
+          "pdfId": "221e8bbea775437bbe4ab68b4ef870fd",
+          "pdfSha256": "bf616485ceece90f1601593ca7ce47deda6ca9244143a4e15583f5580fffd0cb",
+          "pages": 12,
+          "path": "submissions/Claude/MS-FIX-G9-PLN-01-20261116-r01/release/documents/G9-PLN-01/a/sheet.pdf",
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_221e8bbea775437bbe4ab68b4ef870fd.pdf",
+              "status": 200,
+              "sha256": "bf616485ceece90f1601593ca7ce47deda6ca9244143a4e15583f5580fffd0cb",
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_221e8bbea775437bbe4ab68b4ef870fd.pdf",
+              "status": 200,
+              "sha256": "bf616485ceece90f1601593ca7ce47deda6ca9244143a4e15583f5580fffd0cb",
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "level": "b",
+          "label": "רמה ב׳",
+          "pdfId": "c273ce799c22473ea9baaf67404e0803",
+          "pdfSha256": "372de38f86cd3d1672552d64e84378139bb52419f95f43f12e73c231132d15a5",
+          "pages": 12,
+          "path": "submissions/Claude/MS-FIX-G9-PLN-01-20261116-r01/release/documents/G9-PLN-01/b/sheet.pdf",
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_c273ce799c22473ea9baaf67404e0803.pdf",
+              "status": 200,
+              "sha256": "372de38f86cd3d1672552d64e84378139bb52419f95f43f12e73c231132d15a5",
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_c273ce799c22473ea9baaf67404e0803.pdf",
+              "status": 200,
+              "sha256": "372de38f86cd3d1672552d64e84378139bb52419f95f43f12e73c231132d15a5",
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "level": "c",
+          "label": "מצוינות",
+          "pdfId": "c68c316690dd4ea485e0b24bdbd677fb",
+          "pdfSha256": "e623a33a29b39ac056877e783ebfb9e1dfc1b60ea00e3519702c3332db82a5fb",
+          "pages": 12,
+          "path": "submissions/Claude/MS-FIX-G9-PLN-01-20261116-r01/release/documents/G9-PLN-01/c/sheet.pdf",
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_c68c316690dd4ea485e0b24bdbd677fb.pdf",
+              "status": 200,
+              "sha256": "e623a33a29b39ac056877e783ebfb9e1dfc1b60ea00e3519702c3332db82a5fb",
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_c68c316690dd4ea485e0b24bdbd677fb.pdf",
+              "status": 200,
+              "sha256": "e623a33a29b39ac056877e783ebfb9e1dfc1b60ea00e3519702c3332db82a5fb",
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ],
+      "reviewReceipts": [
+        {
+          "role": "independent review of the published PDFs (Kimi Work; neither author nor fix author) (verdict PASS_STUDENT_PDF_ESSENTIALS)",
+          "path": "reports/KIMI-INDEPENDENT-G9-PLN-01-20261118/review.json",
+          "sha256": "d205d68748d0e2e204d0ac75aea9bd65e60351251bd7f68296d249d52d7225e4"
+        }
+      ]
+    },
+    {
+      "grade": 9,
+      "topicId": 51,
+      "title": "זוויות חד־צדדיות בין ישרים מקבילים",
+      "group": "geopar",
+      "track": "ט_רגילה",
+      "publicationMode": "pdf-only",
+      "sourceSheetId": "G9-COI-01",
+      "sourcePackage": "G9-T59",
+      "sourceFolder": "submissions/Claude/MS-PROD-CLAUDE-033-r02",
+      "author": "Claude (Anthropic), Claude Opus 5.5",
+      "landing": "/co-interior-angles-grade-9",
+      "programSubtopics": [
+        "st.g9r.parallels_trapezoid.co_interior"
+      ],
+      "levels": [
+        {
+          "level": "a",
+          "label": "רמה א׳",
+          "pdfId": "69f6ddca043f42a4bfba28ebb4914b35",
+          "pdfSha256": "9cfc4ce31f702bbe2e3308c92d426dd9a461c0171b95723a3ab9da8949bbdd1b",
+          "pages": 7,
+          "path": "submissions/Claude/MS-PROD-CLAUDE-033-r02/release/documents/G9-COI-01/a/sheet.pdf",
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_69f6ddca043f42a4bfba28ebb4914b35.pdf",
+              "status": 200,
+              "sha256": "9cfc4ce31f702bbe2e3308c92d426dd9a461c0171b95723a3ab9da8949bbdd1b",
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_69f6ddca043f42a4bfba28ebb4914b35.pdf",
+              "status": 200,
+              "sha256": "9cfc4ce31f702bbe2e3308c92d426dd9a461c0171b95723a3ab9da8949bbdd1b",
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "level": "b",
+          "label": "רמה ב׳",
+          "pdfId": "dc02a54d258e4e55990640ca1b850193",
+          "pdfSha256": "017797ce5340c26b0ce2b7d23caf7d10e676f2d9ea64a892c898c655bb1df726",
+          "pages": 7,
+          "path": "submissions/Claude/MS-PROD-CLAUDE-033-r02/release/documents/G9-COI-01/b/sheet.pdf",
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_dc02a54d258e4e55990640ca1b850193.pdf",
+              "status": 200,
+              "sha256": "017797ce5340c26b0ce2b7d23caf7d10e676f2d9ea64a892c898c655bb1df726",
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_dc02a54d258e4e55990640ca1b850193.pdf",
+              "status": 200,
+              "sha256": "017797ce5340c26b0ce2b7d23caf7d10e676f2d9ea64a892c898c655bb1df726",
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "level": "c",
+          "label": "מצוינות",
+          "pdfId": "a808a520c70c499e94d0d1654b4c4692",
+          "pdfSha256": "ecc65d8486b14a59f15b1d7272bec1b142a63e51da1c17e2fd5729436eee5173",
+          "pages": 8,
+          "path": "submissions/Claude/MS-PROD-CLAUDE-033-r02/release/documents/G9-COI-01/c/sheet.pdf",
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_a808a520c70c499e94d0d1654b4c4692.pdf",
+              "status": 200,
+              "sha256": "ecc65d8486b14a59f15b1d7272bec1b142a63e51da1c17e2fd5729436eee5173",
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_a808a520c70c499e94d0d1654b4c4692.pdf",
+              "status": 200,
+              "sha256": "ecc65d8486b14a59f15b1d7272bec1b142a63e51da1c17e2fd5729436eee5173",
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ],
+      "reviewReceipts": [
+        {
+          "role": "independent review of r01 (Google Antigravity) (verdict HOLD_ESSENTIAL_FINDINGS)",
+          "path": "reports/ANTIGRAVITY-INDEPENDENT-G9-COI-01-20261116/review.json",
+          "sha256": "5562648fbeda37365cc6ed8d0bfeeede7f069de2e7da93298362f0be75556a94"
+        },
+        {
+          "role": "independent review of the r02 fix (Google Antigravity) (verdict PASS_STUDENT_PDF_ESSENTIALS)",
+          "path": "reports/ANTIGRAVITY-DELTA-G9-COI-01-20261117/review.json",
+          "sha256": "da4c332df6575d98849f98029f0573b0bc29dd49a884090e6a0b03daee2a8882"
+        }
+      ]
+    },
+    {
+      "grade": 9,
+      "topicId": 52,
+      "title": "משימות אוריינות — מודל מתמטי בהקשר מציאותי",
+      "group": "stat",
+      "track": "ט_רגילה",
+      "publicationMode": "pdf-only",
+      "sourceSheetId": "G9-LIT-01",
+      "sourcePackage": "G9-T51",
+      "sourceFolder": "submissions/Qwen/MS-FIX-G9-LIT-01-20261117-r02",
+      "author": "Claude (Anthropic); fix r02 by Qwen Code",
+      "landing": "/math-literacy-tasks-grade-9",
+      "programSubtopics": [
+        "st.g9r.integrative_literacy.real_world_tasks",
+        "st.g9m.word_problems_integrative.literacy_contexts"
+      ],
+      "levels": [
+        {
+          "level": "a",
+          "label": "רמה א׳",
+          "pdfId": "4b17f470a73c4aa481c37ed580475f64",
+          "pdfSha256": "6d4d914d455b11454906e6974ec1904dc67be43b4289eb8d90a7bedc29696fd0",
+          "pages": 5,
+          "path": "submissions/Qwen/MS-FIX-G9-LIT-01-20261117-r02/release/documents/G9-LIT-01/a/sheet.pdf",
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_4b17f470a73c4aa481c37ed580475f64.pdf",
+              "status": 200,
+              "sha256": "6d4d914d455b11454906e6974ec1904dc67be43b4289eb8d90a7bedc29696fd0",
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_4b17f470a73c4aa481c37ed580475f64.pdf",
+              "status": 200,
+              "sha256": "6d4d914d455b11454906e6974ec1904dc67be43b4289eb8d90a7bedc29696fd0",
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "level": "b",
+          "label": "רמה ב׳",
+          "pdfId": "19fe882096f24455b25d132832048557",
+          "pdfSha256": "263ae131db0f93fbf4d1c5210e8fb29252ba1ef6bcb80dcd58adabadfd5db6df",
+          "pages": 5,
+          "path": "submissions/Qwen/MS-FIX-G9-LIT-01-20261117-r02/release/documents/G9-LIT-01/b/sheet.pdf",
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_19fe882096f24455b25d132832048557.pdf",
+              "status": 200,
+              "sha256": "263ae131db0f93fbf4d1c5210e8fb29252ba1ef6bcb80dcd58adabadfd5db6df",
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_19fe882096f24455b25d132832048557.pdf",
+              "status": 200,
+              "sha256": "263ae131db0f93fbf4d1c5210e8fb29252ba1ef6bcb80dcd58adabadfd5db6df",
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "level": "c",
+          "label": "מצוינות",
+          "pdfId": "956a9a595952409ab7c5bc92aba46515",
+          "pdfSha256": "3c20f58c6fc977b2a9b432a7ad65e71a7ac4054a6ffd09e1a98f0e9e1d967075",
+          "pages": 5,
+          "path": "submissions/Qwen/MS-FIX-G9-LIT-01-20261117-r02/release/documents/G9-LIT-01/c/sheet.pdf",
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_956a9a595952409ab7c5bc92aba46515.pdf",
+              "status": 200,
+              "sha256": "3c20f58c6fc977b2a9b432a7ad65e71a7ac4054a6ffd09e1a98f0e9e1d967075",
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_956a9a595952409ab7c5bc92aba46515.pdf",
+              "status": 200,
+              "sha256": "3c20f58c6fc977b2a9b432a7ad65e71a7ac4054a6ffd09e1a98f0e9e1d967075",
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ],
+      "reviewReceipts": [
+        {
+          "role": "independent review of r01 (Google Antigravity) (verdict HOLD_ESSENTIAL_FINDINGS)",
+          "path": "reports/ANTIGRAVITY-INDEPENDENT-G9-LIT-01-20261117/review.json",
+          "sha256": "ac66dadba2b153928c45a26c560227fa361ac78b2efba92068eecbaf362b7249"
+        },
+        {
+          "role": "independent review of the r02 fix (Google Antigravity) (verdict PASS_DELTA)",
+          "path": "reports/ANTIGRAVITY-DELTA-G9-LIT-01-r02-20261117/review.json",
+          "sha256": "9d595e6906b4297c15cc3387dd91b495a2f5b585e9468f1d67e1c647f5f3b989"
+        }
+      ]
+    }
+  ],
+  "notActivated": [
+    "Ramzi or question-level hints",
+    "native viewer or question manifest",
+    "teacher question bank",
+    "learning or progress identities",
+    "Word",
+    "Supabase",
+    "Noam prefix"
+  ],
+  "legacyPreserved": [
+    "all previous topic ids, groups (the new grade-9 group geopar is added between fun and geo), track groups and PDFs",
+    "grade 8 topic 62 (parallel lines) and its landing",
+    "grade 9 topic 23 and grade 7 topic 17 (transformations) and their landings"
+  ],
+  "newGroup": {
+    "grade": 9,
+    "key": "geopar",
+    "label": "גיאומטריה — ישרים מקבילים וזוויות",
+    "reducedProgram": false,
+    "position": "between fun and geo",
+    "reason": "Parallel lines and angles are not quadrilaterals or triangles; a group of their own keeps them out of the quadrilateral lists of the grade hub and the site companion."
+  }
+}

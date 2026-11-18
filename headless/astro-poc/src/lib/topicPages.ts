@@ -284,6 +284,10 @@ import equilateralTriangleGrade9 from '../data/topic-pages/equilateral-triangle-
 import rationalEquationsGrade9 from '../data/topic-pages/rational-equations-grade-9.json';
 import medianToHypotenuseGrade9 from '../data/topic-pages/median-to-hypotenuse-grade-9.json';
 import equationsNumericDenominatorGrade9 from '../data/topic-pages/equations-numeric-denominator-grade-9.json';
+import isometricTransformationsGrade8 from '../data/topic-pages/isometric-transformations-grade-8.json';
+import parallelLinesAnglesGrade9 from '../data/topic-pages/parallel-lines-angles-grade-9.json';
+import coInteriorAnglesGrade9 from '../data/topic-pages/co-interior-angles-grade-9.json';
+import mathLiteracyTasksGrade9 from '../data/topic-pages/math-literacy-tasks-grade-9.json';
 import statisticsDataFrequencyGrade8 from '../data/topic-pages/statistics-data-frequency-grade-8.json';
 import priorKnowledgeDiagnosticGrade8 from '../data/topic-pages/prior-knowledge-diagnostic-grade-8.json';
 import equationsWithFractionsGrade8 from '../data/topic-pages/equations-with-fractions-grade-8.json';
@@ -543,6 +547,8 @@ export const TOPIC_PAGE_G8_CATALOG_GAP_SLUGS = [
   'interpolation-extrapolation-grade-8',
   'assessment-task-1-grade-8',
   'two-data-sources-grade-8',
+  // t68 (18.11.2026): reviewed PDF-only base topic with its own landing.
+  'isometric-transformations-grade-8',
 ] as const;
 
 export const TOPIC_PAGE_G8_AUTHORED_SLUGS = [
@@ -630,6 +636,9 @@ export const TOPIC_PAGE_G9_AUTHORED_SLUGS = [
   'rational-equations-grade-9',
   'median-to-hypotenuse-grade-9',
   'equations-numeric-denominator-grade-9',
+  'parallel-lines-angles-grade-9',
+  'co-interior-angles-grade-9',
+  'math-literacy-tasks-grade-9',
 ] as const;
 
 export const TOPIC_PAGE_G5_SLUGS = [
@@ -1029,6 +1038,10 @@ const BY_SLUG: Record<string, TopicPageContent> = {
   'rational-equations-grade-9': rationalEquationsGrade9 as TopicPageContent,
   'median-to-hypotenuse-grade-9': medianToHypotenuseGrade9 as TopicPageContent,
   'equations-numeric-denominator-grade-9': equationsNumericDenominatorGrade9 as TopicPageContent,
+  'isometric-transformations-grade-8': isometricTransformationsGrade8 as TopicPageContent,
+  'parallel-lines-angles-grade-9': parallelLinesAnglesGrade9 as TopicPageContent,
+  'co-interior-angles-grade-9': coInteriorAnglesGrade9 as TopicPageContent,
+  'math-literacy-tasks-grade-9': mathLiteracyTasksGrade9 as TopicPageContent,
   'statistics-data-frequency-grade-8': statisticsDataFrequencyGrade8 as TopicPageContent,
   // Grade-8 catalog gaps (כיתה ח׳)
   'prior-knowledge-diagnostic-grade-8': priorKnowledgeDiagnosticGrade8 as TopicPageContent,
@@ -1280,7 +1293,8 @@ function isolateRelatedLabel(rel: FamilyRelatedTopic): FamilyRelatedTopic {
 }
 
 /** Classified related block for rendering. Captured links stay on sourceRelatedTopics. */
-const AUTHORED_RELATED_SLUGS = new Set<string>(['median-to-hypotenuse-grade-9', 'equations-numeric-denominator-grade-9']);
+const AUTHORED_RELATED_SLUGS = new Set<string>(['median-to-hypotenuse-grade-9', 'equations-numeric-denominator-grade-9',
+  'isometric-transformations-grade-8', 'parallel-lines-angles-grade-9', 'co-interior-angles-grade-9', 'math-literacy-tasks-grade-9']);
 
 function presentRelatedTopics(data: TopicPageContent): FamilyRelatedTopic[] {
   const classified = familyRelatedTopics(data.slug, data.grade);

@@ -11,7 +11,7 @@
     "catalogPath": "src/data/catalog.v1.json",
     "count": 456
   },
-  "generatedAt": "2026-11-17T05:47:39.727Z",
+  "generatedAt": "2026-11-18T06:16:51.678Z",
   "aggregateSha256": "e347d74dec97c8ba06c8ec703d90e6cd7658ec64fd2d0aee08bb97df1fd25a56",
   "files": {
     "00469caa9cc343ab945e5a4a826b6a88": {
@@ -2298,8 +2298,8 @@
   "legacyIndex": {
     "path": "public/legacy-github/index.html",
     "source": "index.html",
-    "sha256": "3c2e8a3a01c2db5a7f66e52dceb685473b3cfe5743e3b5597112b98ad7596aec",
-    "bytes": 189349,
+    "sha256": "89c8371233a59949da4b994021ace0d9294a6fb4c8ae878911144d66243552be",
+    "bytes": 192356,
     "note": "Sibling-level discovery fallback when pa/pb/pc are incomplete; not the Astro home route."
   },
   "retainedLegacy": {

@@ -1,0 +1,280 @@
+{
+  "slug": "co-interior-angles-grade-9",
+  "path": "/co-interior-angles-grade-9",
+  "grade": 9,
+  "sourceUrl": "https://www.noamdoronmath.co.il/co-interior-angles-grade-9",
+  "fetchedAt": "2026-11-18T09:00:00.000000+00:00",
+  "verifiedVia": "authored-catalog-gap-coi01-pdf-review-20261118",
+  "title": "זוויות חד־צדדיות בין ישרים מקבילים לכיתה ט׳ — דפי עבודה עם תשובות | נועם דורון",
+  "description": "דפי עבודה בזוויות חד־צדדיות לכיתה ט׳: זיהוי, סכום של 180°, משוואות, בדיקת הקבלה ומערכת צירים. שלוש רמות PDF להורדה ולהדפסה, עם תשובות סופיות.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "זוויות חד־צדדיות בין ישרים מקבילים לכיתה ט׳",
+  "intro": "זוויות חד־צדדיות הן זוג זוויות שנמצאות באותו צד של הישר החותך ובין שני הישרים. כשהישרים מקבילים, סכומן 180°. הדפים כאן נכתבו לכיתה ט׳. זמינים שלושה קובצי PDF ברמה א׳, ברמה ב׳ ובמצוינות, עם תשובות סופיות בסוף כל קובץ.",
+  "sections": [
+    {
+      "heading": "מה מתרגלים בדפים",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "בכל הרמות מזהים זוויות חד־צדדיות בסרטוט, מחשבים זווית לפי סכום של 180°, פותרים משוואה שבה הזוויות מבוטאות בעזרת x, ובודקים לפי סכום הזוויות אם שני ישרים מקבילים.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "בכל רמה יש גם שאלה שבה מסרטטים סקיצה לפי הנתונים, ושאלה במערכת צירים שבה מחשבים זוויות בעזרת המשבצות.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "מה יש בכל רמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "רמה א׳: חמש שאלות ובהן עשרים סעיפים. מזהים זוויות חד־צדדיות ומחשבים זווית גם בעזרת זוויות מתחלפות, בונים משוואה מזוג זוויות חד־צדדיות, בודקים אם ישרים מקבילים ומחשבים את הזווית שבין שני חוצי זוויות. לפני השאלה השנייה יש דוגמה פתורה.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "רמה ב׳: חמש שאלות ובהן עשרים סעיפים. משלבים זוויות חד־צדדיות עם זוויות קודקודיות, צמודות ומתחלפות, מציינים את המשפט שבו השתמשתם, ומחשבים זווית בנקודה שבין שני ישרים מקבילים בעזרת ישר עזר מקביל.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "מצוינות: חמש שאלות ובהן עשרים סעיפים. הוכחות כלליות שבהן הזווית מסומנת באות, הזוג החיצוני של זוויות בין ישרים מקבילים, מרובע עם זוג צלעות מקבילות, ושלוש זוויות סביב נקודה שבין שני ישרים מקבילים.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "בתחילת כל קובץ יש תזכורת, ובסופו עמוד תשובות סופיות. רמה א׳ היא נקודת הפתיחה המומלצת; רמה ב׳ ומצוינות מתאימות למי שרוצה להעמיק.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "דוגמה פתורה: משוואה מזוג זוויות חד־צדדיות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "שני ישרים מקבילים נחתכים בישר שלישי, וזוג זוויות חד־צדדיות הן (5x + 4)° ו־(3x + 16)°. בין ישרים מקבילים סכומן 180°, ולכן 8x + 20 = 180, כלומר 8x = 160 ו־x = 20.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "מציבים x = 20: הזוויות הן 104° ו־76°. בדיקה: 104° + 76° = 180°.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעות נפוצה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "זוויות חד־צדדיות אינן שוות זו לזו: בין ישרים מקבילים הסכום שלהן 180°. מי שמשווה ביניהן, כמו בזוויות מתחלפות, מקבל משוואה שגויה. טעות נוספת היא להניח שהישרים מקבילים בלי לבדוק את הסכום: אם הסכום שונה מ־180°, הישרים אינם מקבילים.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "שני ישרים מקבילים נחתכים בישר שלישי, ואחת משתי זוויות חד־צדדיות היא 57°. מה גודל השנייה?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה: 180° − 57° = 123°.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "זוג זוויות חד־צדדיות בין שני ישרים הן 97° ו־81°. האם הישרים מקבילים?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה: לא. הסכום הוא 178°, ולא 180°.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 18.11.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "למי מתאימים הדפים?",
+      "answer": "לתלמידי כיתה ט׳ שלומדים זוויות בין ישרים מקבילים. רמה א׳ היא נקודת הפתיחה המומלצת; רמה ב׳ ומצוינות מתאימות למי שרוצה להעמיק."
+    },
+    {
+      "question": "איך מזהים זוויות חד־צדדיות?",
+      "answer": "שתי הזוויות נמצאות באותו צד של הישר החותך, ושתיהן בין שני הישרים. כשהישרים מקבילים, סכום שתי הזוויות 180°."
+    },
+    {
+      "question": "האם יש תשובות בדפי העבודה?",
+      "answer": "כן. בסוף כל קובץ PDF יש עמוד תשובות סופיות. בשאלות שבהן נדרש נימוק, הסבר או הוכחה כותבים אותם בעצמכם."
+    },
+    {
+      "question": "באילו רמות זמינים הדפים?",
+      "answer": "ברמה א׳, ברמה ב׳ ובמצוינות. בכל רמה חמש שאלות ובהן עשרים סעיפים."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "authored-visible+jsonld",
+      "items": [
+        {
+          "question": "למי מתאימים הדפים?",
+          "answer": "לתלמידי כיתה ט׳ שלומדים זוויות בין ישרים מקבילים. רמה א׳ היא נקודת הפתיחה המומלצת; רמה ב׳ ומצוינות מתאימות למי שרוצה להעמיק."
+        },
+        {
+          "question": "איך מזהים זוויות חד־צדדיות?",
+          "answer": "שתי הזוויות נמצאות באותו צד של הישר החותך, ושתיהן בין שני הישרים. כשהישרים מקבילים, סכום שתי הזוויות 180°."
+        },
+        {
+          "question": "האם יש תשובות בדפי העבודה?",
+          "answer": "כן. בסוף כל קובץ PDF יש עמוד תשובות סופיות. בשאלות שבהן נדרש נימוק, הסבר או הוכחה כותבים אותם בעצמכם."
+        },
+        {
+          "question": "באילו רמות זמינים הדפים?",
+          "answer": "ברמה א׳, ברמה ב׳ ובמצוינות. בכל רמה חמש שאלות ובהן עשרים סעיפים."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/parallel-lines-angles-grade-9",
+      "label": "ישרים מקבילים: זוויות מתאימות ומתחלפות",
+      "productionHref": "https://www.noamdoronmath.co.il/parallel-lines-angles-grade-9"
+    },
+    {
+      "path": "/parallel-lines-angles-grade-8",
+      "label": "זוויות בין ישרים מקבילים לכיתה ח׳",
+      "productionHref": "https://www.noamdoronmath.co.il/parallel-lines-angles-grade-8"
+    },
+    {
+      "path": "/trapezoid-grade-9",
+      "label": "טרפז לכיתה ט׳",
+      "productionHref": "https://www.noamdoronmath.co.il/trapezoid-grade-9"
+    },
+    {
+      "path": "/parallelogram-grade-9",
+      "label": "מקבילית לכיתה ט׳",
+      "productionHref": "https://www.noamdoronmath.co.il/parallelogram-grade-9"
+    }
+  ],
+  "catalogCta": {
+    "href": "/worksheets?grade=9&topic=51",
+    "catalogTopicId": 51,
+    "catalogTopicTitle": "זוויות חד־צדדיות בין ישרים מקבילים",
+    "label": "בחירת רמה ופתיחת PDF",
+    "source": "authored-reviewed-pdf-intake"
+  },
+  "catalogCtas": [
+    {
+      "href": "/worksheets?grade=9&topic=51",
+      "catalogTopicId": 51,
+      "catalogTopicTitle": "זוויות חד־צדדיות בין ישרים מקבילים",
+      "label": "בחירת רמה ופתיחת PDF",
+      "source": "authored-reviewed-pdf-intake"
+    }
+  ],
+  "gradeHubHref": "/grade-9",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/co-interior-angles-grade-9#webpage",
+        "url": "https://www.noamdoronmath.co.il/co-interior-angles-grade-9",
+        "name": "זוויות חד־צדדיות בין ישרים מקבילים לכיתה ט׳ — דפי עבודה עם תשובות | נועם דורון",
+        "description": "דפי עבודה בזוויות חד־צדדיות לכיתה ט׳: זיהוי, סכום של 180°, משוואות, בדיקת הקבלה ומערכת צירים. שלוש רמות PDF להורדה ולהדפסה, עם תשובות סופיות.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/co-interior-angles-grade-9#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/co-interior-angles-grade-9#learning-resource",
+        "name": "זוויות חד־צדדיות בין ישרים מקבילים לכיתה ט׳",
+        "url": "https://www.noamdoronmath.co.il/co-interior-angles-grade-9",
+        "description": "דפי עבודה בזוויות חד־צדדיות לכיתה ט׳: זיהוי, סכום של 180°, משוואות, בדיקת הקבלה ומערכת צירים. שלוש רמות PDF להורדה ולהדפסה, עם תשובות סופיות.",
+        "educationalLevel": "כיתה ט׳",
+        "learningResourceType": "דפי עבודה",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/co-interior-angles-grade-9#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "למי מתאימים הדפים?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לתלמידי כיתה ט׳ שלומדים זוויות בין ישרים מקבילים. רמה א׳ היא נקודת הפתיחה המומלצת; רמה ב׳ ומצוינות מתאימות למי שרוצה להעמיק."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך מזהים זוויות חד־צדדיות?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "שתי הזוויות נמצאות באותו צד של הישר החותך, ושתיהן בין שני הישרים. כשהישרים מקבילים, סכום שתי הזוויות 180°."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם יש תשובות בדפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. בסוף כל קובץ PDF יש עמוד תשובות סופיות. בשאלות שבהן נדרש נימוק, הסבר או הוכחה כותבים אותם בעצמכם."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "באילו רמות זמינים הדפים?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "ברמה א׳, ברמה ב׳ ובמצוינות. בכל רמה חמש שאלות ובהן עשרים סעיפים."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

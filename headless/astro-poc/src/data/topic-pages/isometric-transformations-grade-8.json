@@ -1,0 +1,280 @@
+{
+  "slug": "isometric-transformations-grade-8",
+  "path": "/isometric-transformations-grade-8",
+  "grade": 8,
+  "sourceUrl": "https://www.noamdoronmath.co.il/isometric-transformations-grade-8",
+  "fetchedAt": "2026-11-18T09:00:00.000000+00:00",
+  "verifiedVia": "authored-catalog-gap-trf01-pdf-review-20261118",
+  "title": "טרנספורמציות איזומטריות וצורות חופפות לכיתה ח׳ — דפי עבודה עם תשובות | נועם דורון",
+  "description": "דפי עבודה בטרנספורמציות לכיתה ח׳: הזזה, שיקוף וסיבוב במערכת צירים ובמישור, שמירת אורכים וזוויות וצורות חופפות. שלוש רמות PDF להורדה ולהדפסה, עם תשובות סופיות.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "טרנספורמציות איזומטריות וצורות חופפות לכיתה ח׳",
+  "intro": "הזזה, שיקוף וסיבוב הן העתקות איזומטריות: הן שומרות על אורכי קטעים ועל גדלי זוויות, ולכן הצורה המתקבלת חופפת לצורה המקורית. הדפים כאן נכתבו לכיתה ח׳ ומתרגלים את שלוש ההעתקות במערכת צירים ובמישור. זמינים שלושה קובצי PDF ברמה א׳, ברמה ב׳ ובמצוינות, עם תשובות סופיות בסוף כל קובץ.",
+  "sections": [
+    {
+      "heading": "מה מתרגלים בדפים",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "בכל הרמות מוצאים שיעורי קודקודים אחרי הזזה, שיקוף או סיבוב, ומשתמשים בכך שההעתקה שומרת על אורכים ועל זוויות כדי למצוא צלעות וזוויות בצורה המתקבלת. בכל רמה מחשבים גם היקפים ושטחים, ומוצאים צלע בעזרת משפט פיתגורס.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "בשאלות יש משולשים ישרי־זווית ומרובעים, וברובן יש סרטוט או מערכת צירים. בכל רמה יש גם שאלה שבה מסרטטים בעצמכם מערכת צירים ומסמנים בה את הצורה ואת תמונתה.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "מה יש בכל רמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "רמה א׳: שמונה שאלות ובהן שלושים ושניים סעיפים. הזזה במערכת צירים ובמישור, שיקוף ביחס לציר ה־x, לציר ה־y ולישר, סיבוב ב־180° סביב ראשית הצירים וסיבוב ב־90° סביב קודקוד. לפני השאלה השנייה יש דוגמה פתורה על שיקוף קטע ביחס לצירים.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "רמה ב׳: שמונה שאלות ובהן שלושים ושניים סעיפים. שיקוף ביחס לישר אנכי ולישרים במישור, סיבוב ב־90° סביב ראשית הצירים ופעמיים ברציפות, שתי העתקות בזו אחר זו וההעתקה היחידה שמחליפה אותן, ומשוואות לפי שמירת אורכים וזוויות.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "מצוינות: שמונה שאלות ובהן שלושים ושניים סעיפים. שיקוף כפול ביחס לשני ישרים מקבילים והקשר להזזה, סיבוב סביב נקודה שאינה ראשית הצירים, סיבוב ואחריו הזזה, ובעיות עם פרמטרים: מוצאים את גודל ההזזה או את ישר השיקוף לפי תמונה נתונה.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "בתחילת כל קובץ יש תזכורת, ובסופו עמוד תשובות סופיות. רמה א׳ היא נקודת הפתיחה המומלצת; רמה ב׳ ומצוינות מתאימות למי שרוצה להעמיק.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "דוגמה פתורה: סיבוב ב־90° סביב ראשית הצירים",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "מסובבים את הקטע שקצותיו P(7, 3) ו־Q(7, 8) ב־90° נגד כיוון השעון סביב ראשית הצירים. בסיבוב כזה הנקודה (x, y) עוברת אל (−y, x), ולכן P עוברת אל (−3, 7) ו־Q עוברת אל (−8, 7).",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "הקטע המקורי אנכי ואורכו 8 − 3 = 5. התמונה שלו אופקית, ואורכה −3 − (−8) = 5. הסיבוב שינה את כיוון הקטע, אבל שמר על האורך שלו.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעות נפוצה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "טעות נפוצה היא להחליף בין הצירים: בשיקוף ביחס לציר ה־x שיעור ה־x נשאר כמו שהוא, ומתהפך הסימן של שיעור ה־y. טעות נוספת היא לבלבל בין סיבוב ב־180° סביב ראשית הצירים לבין שיקוף ביחס לאחד הצירים: בסיבוב כזה מתהפכים הסימנים של שני השיעורים.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "המשולש שקודקודיו (10, 1), (18, 1) ו־(10, 16) מוזז 4 יחידות שמאלה ו־2 יחידות למעלה. מהם שיעורי הקודקודים החדשים, ומה אורך היתר של המשולש המתקבל?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה: (6, 3), (14, 3) ו־(6, 18). הניצבים הם 8 ו־15, ולפי משפט פיתגורס היתר הוא 17 יחידות אורך, כמו במשולש המקורי, כי הזזה שומרת על אורכים.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "לאן עוברת הנקודה (−2, 6) בסיבוב ב־180° סביב ראשית הצירים?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה: אל (2, −6). בסיבוב ב־180° סביב ראשית הצירים מתהפכים הסימנים של שני השיעורים.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 18.11.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "למי מתאימים הדפים?",
+      "answer": "לתלמידי כיתה ח׳ שלומדים טרנספורמציות איזומטריות וצורות חופפות. רמה א׳ היא נקודת הפתיחה המומלצת; רמה ב׳ ומצוינות מתאימות למי שרוצה להעמיק."
+    },
+    {
+      "question": "מה שומרת העתקה איזומטרית?",
+      "answer": "הזזה, שיקוף וסיבוב שומרים על אורכי קטעים ועל גדלי זוויות. לכן הצורה המתקבלת חופפת לצורה המקורית, ויש לה אותו היקף ואותו שטח."
+    },
+    {
+      "question": "האם יש תשובות בדפי העבודה?",
+      "answer": "כן. בסוף כל קובץ PDF יש עמוד תשובות סופיות. בשאלות שבהן נדרש נימוק כותבים את הנימוק בעצמכם."
+    },
+    {
+      "question": "באילו רמות זמינים הדפים?",
+      "answer": "ברמה א׳, ברמה ב׳ ובמצוינות. בכל רמה שמונה שאלות ובהן שלושים ושניים סעיפים."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "authored-visible+jsonld",
+      "items": [
+        {
+          "question": "למי מתאימים הדפים?",
+          "answer": "לתלמידי כיתה ח׳ שלומדים טרנספורמציות איזומטריות וצורות חופפות. רמה א׳ היא נקודת הפתיחה המומלצת; רמה ב׳ ומצוינות מתאימות למי שרוצה להעמיק."
+        },
+        {
+          "question": "מה שומרת העתקה איזומטרית?",
+          "answer": "הזזה, שיקוף וסיבוב שומרים על אורכי קטעים ועל גדלי זוויות. לכן הצורה המתקבלת חופפת לצורה המקורית, ויש לה אותו היקף ואותו שטח."
+        },
+        {
+          "question": "האם יש תשובות בדפי העבודה?",
+          "answer": "כן. בסוף כל קובץ PDF יש עמוד תשובות סופיות. בשאלות שבהן נדרש נימוק כותבים את הנימוק בעצמכם."
+        },
+        {
+          "question": "באילו רמות זמינים הדפים?",
+          "answer": "ברמה א׳, ברמה ב׳ ובמצוינות. בכל רמה שמונה שאלות ובהן שלושים ושניים סעיפים."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/triangle-congruence-grade-8",
+      "label": "חפיפת משולשים לכיתה ח׳",
+      "productionHref": "https://www.noamdoronmath.co.il/triangle-congruence-grade-8"
+    },
+    {
+      "path": "/congruence-theorems-grade-8",
+      "label": "משפטי חפיפה לכיתה ח׳",
+      "productionHref": "https://www.noamdoronmath.co.il/congruence-theorems-grade-8"
+    },
+    {
+      "path": "/pythagorean-theorem-grade-8",
+      "label": "משפט פיתגורס לכיתה ח׳",
+      "productionHref": "https://www.noamdoronmath.co.il/pythagorean-theorem-grade-8"
+    },
+    {
+      "path": "/congruent-polygons-transformations-grade-7",
+      "label": "מצולעים חופפים וטרנספורמציות לכיתה ז׳",
+      "productionHref": "https://www.noamdoronmath.co.il/congruent-polygons-transformations-grade-7"
+    }
+  ],
+  "catalogCta": {
+    "href": "/worksheets?grade=8&topic=68",
+    "catalogTopicId": 68,
+    "catalogTopicTitle": "טרנספורמציות איזומטריות וצורות חופפות",
+    "label": "בחירת רמה ופתיחת PDF",
+    "source": "authored-reviewed-pdf-intake"
+  },
+  "catalogCtas": [
+    {
+      "href": "/worksheets?grade=8&topic=68",
+      "catalogTopicId": 68,
+      "catalogTopicTitle": "טרנספורמציות איזומטריות וצורות חופפות",
+      "label": "בחירת רמה ופתיחת PDF",
+      "source": "authored-reviewed-pdf-intake"
+    }
+  ],
+  "gradeHubHref": "/grade-8",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/isometric-transformations-grade-8#webpage",
+        "url": "https://www.noamdoronmath.co.il/isometric-transformations-grade-8",
+        "name": "טרנספורמציות איזומטריות וצורות חופפות לכיתה ח׳ — דפי עבודה עם תשובות | נועם דורון",
+        "description": "דפי עבודה בטרנספורמציות לכיתה ח׳: הזזה, שיקוף וסיבוב במערכת צירים ובמישור, שמירת אורכים וזוויות וצורות חופפות. שלוש רמות PDF להורדה ולהדפסה, עם תשובות סופיות.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/isometric-transformations-grade-8#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/isometric-transformations-grade-8#learning-resource",
+        "name": "טרנספורמציות איזומטריות וצורות חופפות לכיתה ח׳",
+        "url": "https://www.noamdoronmath.co.il/isometric-transformations-grade-8",
+        "description": "דפי עבודה בטרנספורמציות לכיתה ח׳: הזזה, שיקוף וסיבוב במערכת צירים ובמישור, שמירת אורכים וזוויות וצורות חופפות. שלוש רמות PDF להורדה ולהדפסה, עם תשובות סופיות.",
+        "educationalLevel": "כיתה ח׳",
+        "learningResourceType": "דפי עבודה",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/isometric-transformations-grade-8#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "למי מתאימים הדפים?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לתלמידי כיתה ח׳ שלומדים טרנספורמציות איזומטריות וצורות חופפות. רמה א׳ היא נקודת הפתיחה המומלצת; רמה ב׳ ומצוינות מתאימות למי שרוצה להעמיק."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "מה שומרת העתקה איזומטרית?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "הזזה, שיקוף וסיבוב שומרים על אורכי קטעים ועל גדלי זוויות. לכן הצורה המתקבלת חופפת לצורה המקורית, ויש לה אותו היקף ואותו שטח."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם יש תשובות בדפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. בסוף כל קובץ PDF יש עמוד תשובות סופיות. בשאלות שבהן נדרש נימוק כותבים את הנימוק בעצמכם."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "באילו רמות זמינים הדפים?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "ברמה א׳, ברמה ב׳ ובמצוינות. בכל רמה שמונה שאלות ובהן שלושים ושניים סעיפים."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

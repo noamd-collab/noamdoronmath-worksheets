@@ -1,0 +1,280 @@
+{
+  "slug": "math-literacy-tasks-grade-9",
+  "path": "/math-literacy-tasks-grade-9",
+  "grade": 9,
+  "sourceUrl": "https://www.noamdoronmath.co.il/math-literacy-tasks-grade-9",
+  "fetchedAt": "2026-11-18T09:00:00.000000+00:00",
+  "verifiedVia": "authored-catalog-gap-lit01-pdf-review-20261118",
+  "title": "משימות אוריינות במתמטיקה לכיתה ט׳ — דפי עבודה עם תשובות | נועם דורון",
+  "description": "דפי עבודה במשימות אוריינות לכיתה ט׳: השוואת הצעות מחיר, שטחים, משפט פיתגורס ומשוואה ריבועית בהקשר מציאותי, עם החלטה מנומקת. שלוש רמות PDF להורדה ולהדפסה, עם תשובות סופיות.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "משימות אוריינות במתמטיקה לכיתה ט׳",
+  "intro": "במשימת אוריינות שולפים נתונים מטבלה או מתיאור, בונים מודל מתמטי, כמו ביטוי, משוואה או חישוב שטח, ומנמקים החלטה בהקשר מציאותי. הדפים כאן נכתבו לכיתה ט׳. זמינים שלושה קובצי PDF ברמה א׳, ברמה ב׳ ובמצוינות, עם תשובות סופיות בסוף כל קובץ.",
+  "sections": [
+    {
+      "heading": "מה מתרגלים בדפים",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "בכל הרמות יש שש משימות מהחיים: משווים בין שתי הצעות מחיר, כותבים משוואה ריבועית לפי שטח, מוצאים אורך בעזרת משפט פיתגורס, מחשבים שטח של טרפז ומחליטים לפי טבלת תעריפים מה משתלם יותר.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "בכל משימה כותבים ביטוי או משוואה מתוך הסיפור, פותרים, בודקים אם הפתרון מתאים להקשר, למשל פוסלים אורך שלילי, ומנמקים את ההחלטה.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "מה יש בכל רמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "רמה א׳: שש שאלות ובהן שמונה־עשר סעיפים. מחירי מוניות, שביל סביב גינה, סולם שנשען על קיר, צביעת קיר בצורת טרפז, הכנסה של חנות לפי מחיר המחברת וכניסות לבריכה. לפני השאלה השנייה יש דוגמה פתורה.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "רמה ב׳: שש שאלות ובהן שמונה־עשר סעיפים. מסלולים של חדר כושר, מסגרת לתמונה, אלכסון של מסך, חתך של תעלה בצורת טרפז שווה־שוקיים, דיר צמוד לקיר ותעריף מים במדרגות.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "מצוינות: שש שאלות ובהן שמונה־עשר סעיפים. השכרת רכב עם אי־שוויון, השטח הגדול ביותר של מלבן שמוקף בגדר, ערוגה בצורת משולש ישר־זווית, שדה בצורת טרפז, הכנסה של תיאטרון והחלטה על חבילת גלישה לפי נתונים של חצי שנה.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "בתחילת כל קובץ יש תזכורת, ובסופו עמוד תשובות סופיות. רמה א׳ היא נקודת הפתיחה המומלצת; רמה ב׳ ומצוינות מתאימות למי שרוצה להעמיק.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "דוגמה פתורה: איזו הצעה זולה יותר",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "חברה א׳ גובה 50 ש״ח ועוד 4 ש״ח לכל שעה, וחברה ב׳ גובה 6 ש״ח לכל שעה בלי תשלום פתיחה. אחרי t שעות המחיר בחברה א׳ הוא 50 + 4t, ובחברה ב׳ הוא 6t. המחירים שווים כאשר 50 + 4t = 6t, כלומר t = 25.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "בפחות מ־25 שעות חברה ב׳ זולה יותר, ובמעל 25 שעות חברה א׳ זולה יותר. בדיקה ל־10 שעות: בחברה א׳ 90 ש״ח ובחברה ב׳ 60 ש״ח.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעות נפוצה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "טעות נפוצה היא לעצור אחרי פתרון המשוואה. במשימת אוריינות בודקים אם הפתרון מתאים להקשר: אורך או מחיר אינם יכולים להיות שליליים, ומספר פחיות או שקים שצריך לקנות מעגלים כלפי מעלה, גם אם התוצאה קרובה למספר שלם קטן יותר.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "מלבן שאורכו גדול מרוחבו ב־3 מטרים, ושטחו 40 מ״ר. מה מידותיו?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה: 8 מטרים על 5 מטרים. אם הרוחב x, אז x(x + 3) = 40, כלומר (x + 8)(x − 5) = 0. הפתרון x = −8 נפסל, כי רוחב אינו שלילי.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "צבע נמכר בפחיות של 3 ליטרים, וצריך 10 ליטרים. כמה פחיות קונים?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה: 4 פחיות. שלוש פחיות נותנות רק 9 ליטרים.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 18.11.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "למי מתאימים הדפים?",
+      "answer": "לתלמידי כיתה ט׳ שמתרגלים משימות אוריינות, כלומר בעיות מהחיים שמשלבות כמה נושאים. רמה א׳ היא נקודת הפתיחה המומלצת; רמה ב׳ ומצוינות מתאימות למי שרוצה להעמיק."
+    },
+    {
+      "question": "מה זו משימת אוריינות במתמטיקה?",
+      "answer": "משימה שבה קוראים נתונים מטבלה או מתיאור של מצב מהחיים, בונים מודל מתמטי, פותרים, ומנמקים החלטה בהקשר, למשל איזו הצעה זולה יותר."
+    },
+    {
+      "question": "האם יש תשובות בדפי העבודה?",
+      "answer": "כן. בסוף כל קובץ PDF יש עמוד תשובות סופיות. בשאלות שבהן נדרש נימוק כותבים את הנימוק בעצמכם."
+    },
+    {
+      "question": "באילו רמות זמינים הדפים?",
+      "answer": "ברמה א׳, ברמה ב׳ ובמצוינות. בכל רמה שש שאלות ובהן שמונה־עשר סעיפים."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "authored-visible+jsonld",
+      "items": [
+        {
+          "question": "למי מתאימים הדפים?",
+          "answer": "לתלמידי כיתה ט׳ שמתרגלים משימות אוריינות, כלומר בעיות מהחיים שמשלבות כמה נושאים. רמה א׳ היא נקודת הפתיחה המומלצת; רמה ב׳ ומצוינות מתאימות למי שרוצה להעמיק."
+        },
+        {
+          "question": "מה זו משימת אוריינות במתמטיקה?",
+          "answer": "משימה שבה קוראים נתונים מטבלה או מתיאור של מצב מהחיים, בונים מודל מתמטי, פותרים, ומנמקים החלטה בהקשר, למשל איזו הצעה זולה יותר."
+        },
+        {
+          "question": "האם יש תשובות בדפי העבודה?",
+          "answer": "כן. בסוף כל קובץ PDF יש עמוד תשובות סופיות. בשאלות שבהן נדרש נימוק כותבים את הנימוק בעצמכם."
+        },
+        {
+          "question": "באילו רמות זמינים הדפים?",
+          "answer": "ברמה א׳, ברמה ב׳ ובמצוינות. בכל רמה שש שאלות ובהן שמונה־עשר סעיפים."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/word-problems-grade-9",
+      "label": "בעיות מילוליות לכיתה ט׳",
+      "productionHref": "https://www.noamdoronmath.co.il/word-problems-grade-9"
+    },
+    {
+      "path": "/quadratic-equations-grade-9",
+      "label": "משוואות ריבועיות לכיתה ט׳",
+      "productionHref": "https://www.noamdoronmath.co.il/quadratic-equations-grade-9"
+    },
+    {
+      "path": "/pythagoras-applications-grade-9",
+      "label": "פיתגורס חלק 2 — שימושים",
+      "productionHref": "https://www.noamdoronmath.co.il/pythagoras-applications-grade-9"
+    },
+    {
+      "path": "/composite-polygons-area-grade-9",
+      "label": "שטחים ב׳ חלק 2 — מצולעים מורכבים",
+      "productionHref": "https://www.noamdoronmath.co.il/composite-polygons-area-grade-9"
+    }
+  ],
+  "catalogCta": {
+    "href": "/worksheets?grade=9&topic=52",
+    "catalogTopicId": 52,
+    "catalogTopicTitle": "משימות אוריינות — מודל מתמטי בהקשר מציאותי",
+    "label": "בחירת רמה ופתיחת PDF",
+    "source": "authored-reviewed-pdf-intake"
+  },
+  "catalogCtas": [
+    {
+      "href": "/worksheets?grade=9&topic=52",
+      "catalogTopicId": 52,
+      "catalogTopicTitle": "משימות אוריינות — מודל מתמטי בהקשר מציאותי",
+      "label": "בחירת רמה ופתיחת PDF",
+      "source": "authored-reviewed-pdf-intake"
+    }
+  ],
+  "gradeHubHref": "/grade-9",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/math-literacy-tasks-grade-9#webpage",
+        "url": "https://www.noamdoronmath.co.il/math-literacy-tasks-grade-9",
+        "name": "משימות אוריינות במתמטיקה לכיתה ט׳ — דפי עבודה עם תשובות | נועם דורון",
+        "description": "דפי עבודה במשימות אוריינות לכיתה ט׳: השוואת הצעות מחיר, שטחים, משפט פיתגורס ומשוואה ריבועית בהקשר מציאותי, עם החלטה מנומקת. שלוש רמות PDF להורדה ולהדפסה, עם תשובות סופיות.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/math-literacy-tasks-grade-9#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/math-literacy-tasks-grade-9#learning-resource",
+        "name": "משימות אוריינות במתמטיקה לכיתה ט׳",
+        "url": "https://www.noamdoronmath.co.il/math-literacy-tasks-grade-9",
+        "description": "דפי עבודה במשימות אוריינות לכיתה ט׳: השוואת הצעות מחיר, שטחים, משפט פיתגורס ומשוואה ריבועית בהקשר מציאותי, עם החלטה מנומקת. שלוש רמות PDF להורדה ולהדפסה, עם תשובות סופיות.",
+        "educationalLevel": "כיתה ט׳",
+        "learningResourceType": "דפי עבודה",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/math-literacy-tasks-grade-9#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "למי מתאימים הדפים?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לתלמידי כיתה ט׳ שמתרגלים משימות אוריינות, כלומר בעיות מהחיים שמשלבות כמה נושאים. רמה א׳ היא נקודת הפתיחה המומלצת; רמה ב׳ ומצוינות מתאימות למי שרוצה להעמיק."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "מה זו משימת אוריינות במתמטיקה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "משימה שבה קוראים נתונים מטבלה או מתיאור של מצב מהחיים, בונים מודל מתמטי, פותרים, ומנמקים החלטה בהקשר, למשל איזו הצעה זולה יותר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם יש תשובות בדפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. בסוף כל קובץ PDF יש עמוד תשובות סופיות. בשאלות שבהן נדרש נימוק כותבים את הנימוק בעצמכם."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "באילו רמות זמינים הדפים?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "ברמה א׳, ברמה ב׳ ובמצוינות. בכל רמה שש שאלות ובהן שמונה־עשר סעיפים."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}
