@@ -1,0 +1,2474 @@
+{
+  "schema": "noam-student-pdf-publication-evidence/v1",
+  "status": "REVIEWED_MEDIA_SITE_CANDIDATE_NOT_PUBLISHED",
+  "preparedDate": "2026-11-18",
+  "publicationMode": "pdf-only",
+  "sitePublicationClaimed": false,
+  "scope": {
+    "packages": 6,
+    "pdfs": 18,
+    "pages": 219,
+    "landingRoutes": 6
+  },
+  "baselineCommit": "c45a033ccb7c011b51b54470debd176dc0b3e342",
+  "baselineCatalogSha256": "ba67566b2a84e7575223de2d9591396636926bc91c789fa43d3ec724e05444f8",
+  "baselineRegistrySha256": "ea89ae175a04ae4c7c0a4495812e0e6118a111433cf08b9988ae053fbe8c1cf5",
+  "mediaReadback": {
+    "path": "submissions/Claude/MANAGER-20261116/batch-10/media-cdn-readback.json",
+    "sha256": "389f1799e5cb35f2ffa962c0e5a25973d58d51a3a212fd84adc407e63efb635b",
+    "reads": 36
+  },
+  "packages": [
+    {
+      "sheetId": "G7-SGM-01",
+      "producerPackage": "G7-T104",
+      "title": "מספרים מכוונים: תנועות על ציר המספרים, רווח והפסד וכללי הפעולות",
+      "author": "Claude (Anthropic)",
+      "reviewVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
+      "reviewReceipts": [
+        {
+          "role": "independent review (Google Antigravity; not the author) (verdict PASS_STUDENT_PDF_ESSENTIALS)",
+          "path": "reports/ANTIGRAVITY-INDEPENDENT-G7-SGM-01-20261117/review.json",
+          "sha256": "7bc4819718957576312569d0f9219a02f90edd3dca51994644066230c329c82f"
+        }
+      ],
+      "track": "ז",
+      "grade": 7,
+      "topicId": 2,
+      "landing": "/signed-numbers-grade-7",
+      "editionId": "ms-20261118-sgm-01-r1",
+      "label": "מספרים מכוונים: תנועות על ציר המספרים, רווח והפסד וכללי הפעולות · PDF",
+      "isDefault": false,
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "87fdda260dd04ae5accbb003ad348dec",
+          "pdfSha256": "9486827ae4373bfb77cf7dd696c1c618b42a00611c4192909cf3c463d5986f10",
+          "sourceSha256": "4cf37f0b7a877ccf569ccced7367bc351f6c86cae1d6f55fb72656781a1489a6",
+          "nativeExportSha256": "a1aa057e5f919cf6587ac588ef901566ce2c3b4fcf6897b09ad08e38bf6f5cbf",
+          "worksheetId": "ms-g7-sgm-01-a-r1",
+          "revision": 1,
+          "pages": 11,
+          "bytes": 90841,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_87fdda260dd04ae5accbb003ad348dec.pdf",
+              "status": 200,
+              "sha256": "9486827ae4373bfb77cf7dd696c1c618b42a00611c4192909cf3c463d5986f10",
+              "bytes": 90841,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_87fdda260dd04ae5accbb003ad348dec.pdf",
+              "status": 200,
+              "sha256": "9486827ae4373bfb77cf7dd696c1c618b42a00611c4192909cf3c463d5986f10",
+              "bytes": 90841,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "df8ee1c286ab495b955332ca7cbe9a09",
+          "pdfSha256": "9087643a13e62a72822f4b4711261689edba7c01cba7640949ff53990d91d57a",
+          "sourceSha256": "d5ffb37390944599e7d0ba8746527c438e97f383a3109cdde35718d47620a516",
+          "nativeExportSha256": "07c167c4395f31d333b2fe78dbcd24f94cb2ca848599223d74808ae2d3c76ef7",
+          "worksheetId": "ms-g7-sgm-01-b-r1",
+          "revision": 1,
+          "pages": 11,
+          "bytes": 89505,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_df8ee1c286ab495b955332ca7cbe9a09.pdf",
+              "status": 200,
+              "sha256": "9087643a13e62a72822f4b4711261689edba7c01cba7640949ff53990d91d57a",
+              "bytes": 89505,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_df8ee1c286ab495b955332ca7cbe9a09.pdf",
+              "status": 200,
+              "sha256": "9087643a13e62a72822f4b4711261689edba7c01cba7640949ff53990d91d57a",
+              "bytes": 89505,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "38f236b06be548df9f0c47086874b5e8",
+          "pdfSha256": "d7a44e3c78a383f0eadca045b60c0e0a505b39fa414ffb77e7ba9e48dec58984",
+          "sourceSha256": "b0f86758d14ac0e654e765fd35974069c14938d9d4ec31c6c2b4058572d7754d",
+          "nativeExportSha256": "5ccacd73b0fd75bebb1d60bb4052d164f3f2dbec1f8fcf827435de4dba407ba7",
+          "worksheetId": "ms-g7-sgm-01-c-r1",
+          "revision": 1,
+          "pages": 12,
+          "bytes": 76881,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_38f236b06be548df9f0c47086874b5e8.pdf",
+              "status": 200,
+              "sha256": "d7a44e3c78a383f0eadca045b60c0e0a505b39fa414ffb77e7ba9e48dec58984",
+              "bytes": 76881,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_38f236b06be548df9f0c47086874b5e8.pdf",
+              "status": 200,
+              "sha256": "d7a44e3c78a383f0eadca045b60c0e0a505b39fa414ffb77e7ba9e48dec58984",
+              "bytes": 76881,
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sheetId": "G9-STR-01",
+      "producerPackage": "G9-T110",
+      "title": "ארגון נתונים, שכיחות יחסית, טווח ומדדי מרכז",
+      "author": "Google Antigravity (Gemini 4 Carbon High)",
+      "reviewVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
+      "reviewReceipts": [
+        {
+          "role": "independent review (Kimi Work; not the author) (verdict PASS_STUDENT_PDF_ESSENTIALS)",
+          "path": "reports/KIMI-INDEPENDENT-G9-STR-01-20261118/review.json",
+          "sha256": "fd15be0f54bff1269dd034544bfdbc4c9b5e3d9ae6f1839664915911617911bc"
+        }
+      ],
+      "track": "ט_מצומצמת",
+      "grade": 9,
+      "topicId": 9,
+      "landing": "/statistics-grade-9",
+      "editionId": "ms-20261118-str-01-r1",
+      "label": "ט׳ מצומצמת · ארגון נתונים, שכיחות יחסית, טווח ומדדי מרכז · PDF",
+      "isDefault": false,
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "9970baaec3ff46bfbbab9c838cb1db75",
+          "pdfSha256": "5e46097394bb78aa8c1630ae8daacb94e71039915e91932bac9dfc1fb593c687",
+          "sourceSha256": "5ecb094dd291c9fbfd6113d396dc9bd24b2ca7efeb8b2a99ea8903a319c01815",
+          "nativeExportSha256": "c95cd459dc763d1083e3707c8a8636d485deda166cbecb5e876495d104b0897e",
+          "worksheetId": "ms-g9-str-01-a-r1",
+          "revision": 1,
+          "pages": 11,
+          "bytes": 99782,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_9970baaec3ff46bfbbab9c838cb1db75.pdf",
+              "status": 200,
+              "sha256": "5e46097394bb78aa8c1630ae8daacb94e71039915e91932bac9dfc1fb593c687",
+              "bytes": 99782,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_9970baaec3ff46bfbbab9c838cb1db75.pdf",
+              "status": 200,
+              "sha256": "5e46097394bb78aa8c1630ae8daacb94e71039915e91932bac9dfc1fb593c687",
+              "bytes": 99782,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "35568da347874b54921bce0fb67dc8ae",
+          "pdfSha256": "fb173cfc5a073aa5a0724be36fea83a9b1d3d0121d2ee20396e07f470f6f5baf",
+          "sourceSha256": "13d5b68fda1fe2195cc4acae84976fc3d816851267f83c1e7d0557b944e3814f",
+          "nativeExportSha256": "cc7df1c016163d34d2fd46aefc6bf52de57d7ed725d1d867871a699d95fd645c",
+          "worksheetId": "ms-g9-str-01-b-r1",
+          "revision": 1,
+          "pages": 13,
+          "bytes": 93797,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_35568da347874b54921bce0fb67dc8ae.pdf",
+              "status": 200,
+              "sha256": "fb173cfc5a073aa5a0724be36fea83a9b1d3d0121d2ee20396e07f470f6f5baf",
+              "bytes": 93797,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_35568da347874b54921bce0fb67dc8ae.pdf",
+              "status": 200,
+              "sha256": "fb173cfc5a073aa5a0724be36fea83a9b1d3d0121d2ee20396e07f470f6f5baf",
+              "bytes": 93797,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "237d094786f04c9a893650132a131053",
+          "pdfSha256": "65a5e064404e6ac9dbb22f14d9872516b1fa67d745a53682eec8f5f444530832",
+          "sourceSha256": "39f89d7b73715255725045b06abc6dbc41ad6bb062a95754bb9a6b464eb5f020",
+          "nativeExportSha256": "1b7815d28ff1ad6f6d94a4e6bda5848ef6a8f1ddfc7814cee91931a9de4d8cb5",
+          "worksheetId": "ms-g9-str-01-c-r1",
+          "revision": 1,
+          "pages": 13,
+          "bytes": 108532,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_237d094786f04c9a893650132a131053.pdf",
+              "status": 200,
+              "sha256": "65a5e064404e6ac9dbb22f14d9872516b1fa67d745a53682eec8f5f444530832",
+              "bytes": 108532,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_237d094786f04c9a893650132a131053.pdf",
+              "status": 200,
+              "sha256": "65a5e064404e6ac9dbb22f14d9872516b1fa67d745a53682eec8f5f444530832",
+              "bytes": 108532,
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sheetId": "G8-FNC-02",
+      "producerPackage": "G8-T102",
+      "title": "מושג הפונקציה בהקשר: משתנה תלוי ובלתי תלוי ותחום הגדרה",
+      "author": "Kimi Work",
+      "reviewVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
+      "reviewReceipts": [
+        {
+          "role": "independent review of r01 (Google Antigravity) (verdict HOLD_ESSENTIAL_FINDINGS)",
+          "path": "reports/ANTIGRAVITY-INDEPENDENT-G8-FNC-02-r01-20261117/review.json",
+          "sha256": "51bb5fa04db55784bce889d365f799b03fa0e7e31e5aa2144987ef54e972107a"
+        },
+        {
+          "role": "independent review of the r02 fix (Google Antigravity) (verdict PASS_STUDENT_PDF_ESSENTIALS)",
+          "path": "reports/ANTIGRAVITY-INDEPENDENT-G8-FNC-02-r02-20261117/review.json",
+          "sha256": "ebfcad7140a57b756d6013e0ff3feb8aa6df5882e82f51e9df07ca2072c0ad14"
+        }
+      ],
+      "track": "ח",
+      "grade": 8,
+      "topicId": 21,
+      "landing": "/function-representations-grade-8",
+      "editionId": "ms-20261118-fnc-02-r1",
+      "label": "מושג הפונקציה בהקשר: משתנה תלוי ובלתי תלוי ותחום הגדרה · PDF",
+      "isDefault": false,
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "c68a15204c974103add3c8b6b41bfa06",
+          "pdfSha256": "ff22104f75d7bbcaaa140703d1750235beb370d8d2444093c10a9fb6fc788751",
+          "sourceSha256": "ea14ea3da2ce68caf1ce3315e5c0cfc49b0b1afe9c4d5df62f32076bb9fda3cd",
+          "nativeExportSha256": "a08c491422ff882babf95d71559fcc584aa9afdae19eb3295b4fab281916731c",
+          "worksheetId": "ms-g8-fnc-02-a-r1",
+          "revision": 1,
+          "pages": 9,
+          "bytes": 115671,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_c68a15204c974103add3c8b6b41bfa06.pdf",
+              "status": 200,
+              "sha256": "ff22104f75d7bbcaaa140703d1750235beb370d8d2444093c10a9fb6fc788751",
+              "bytes": 115671,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_c68a15204c974103add3c8b6b41bfa06.pdf",
+              "status": 200,
+              "sha256": "ff22104f75d7bbcaaa140703d1750235beb370d8d2444093c10a9fb6fc788751",
+              "bytes": 115671,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "7617adc56ccd48efabbebad045016e0a",
+          "pdfSha256": "1666ba5bd001d59b08cf09551c530432a752a9038e4b74daf87d6786248965a6",
+          "sourceSha256": "3a3955c1d04cf015d70212e48c444897c67bfcfa8d067d6e7b7e9e427b9425ab",
+          "nativeExportSha256": "2acc9f5861c38c5d146b81ae29daa85e6b20ea6fa8f6c356a9a69b2a3c1d4d84",
+          "worksheetId": "ms-g8-fnc-02-b-r1",
+          "revision": 1,
+          "pages": 9,
+          "bytes": 92364,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_7617adc56ccd48efabbebad045016e0a.pdf",
+              "status": 200,
+              "sha256": "1666ba5bd001d59b08cf09551c530432a752a9038e4b74daf87d6786248965a6",
+              "bytes": 92364,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_7617adc56ccd48efabbebad045016e0a.pdf",
+              "status": 200,
+              "sha256": "1666ba5bd001d59b08cf09551c530432a752a9038e4b74daf87d6786248965a6",
+              "bytes": 92364,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "669ac31129a74be39da12df5ebc0e083",
+          "pdfSha256": "dcd47ff0d102a9e9557a01f9f3530c1a3c4ae541d8667a4fbc1f6539a6b552bb",
+          "sourceSha256": "ca57a765aef27eefd853f0093b42fb11a3b28e31088e2bae4bb7be357f026150",
+          "nativeExportSha256": "ba3255576f3885c71f7221d4157422678b22e3553b3b0a166fcde022bc1218b5",
+          "worksheetId": "ms-g8-fnc-02-c-r1",
+          "revision": 1,
+          "pages": 9,
+          "bytes": 117610,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_669ac31129a74be39da12df5ebc0e083.pdf",
+              "status": 200,
+              "sha256": "dcd47ff0d102a9e9557a01f9f3530c1a3c4ae541d8667a4fbc1f6539a6b552bb",
+              "bytes": 117610,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_669ac31129a74be39da12df5ebc0e083.pdf",
+              "status": 200,
+              "sha256": "dcd47ff0d102a9e9557a01f9f3530c1a3c4ae541d8667a4fbc1f6539a6b552bb",
+              "bytes": 117610,
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sheetId": "G7-EQN-03",
+      "producerPackage": "G7-T106",
+      "title": "משוואות ממעלה ראשונה: פתרון יחיד, אין פתרון ואינסוף פתרונות",
+      "author": "Qwen Code",
+      "reviewVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
+      "reviewReceipts": [
+        {
+          "role": "independent review of r01 (Google Antigravity) (verdict HOLD_ESSENTIAL_FINDINGS)",
+          "path": "reports/ANTIGRAVITY-INDEPENDENT-G7-EQN-03-r01-20261117/review.json",
+          "sha256": "e5536cf3cf1195d77767319fa2d750b93be3b9d57ce25512f2c670bd0b52af4a"
+        },
+        {
+          "role": "independent review of the r02 fix (Google Antigravity) (verdict PASS_STUDENT_PDF_ESSENTIALS)",
+          "path": "reports/ANTIGRAVITY-INDEPENDENT-G7-EQN-03-r02-20261117/review.json",
+          "sha256": "6389f3d8d04aca7f468fa0d06784754499380d84b7bda83da4895d393488a3d9"
+        }
+      ],
+      "track": "ז",
+      "grade": 7,
+      "topicId": 37,
+      "landing": "/equations-advanced-grade-7",
+      "editionId": "ms-20261118-eqn-03-r1",
+      "label": "משוואות ממעלה ראשונה: פתרון יחיד, אין פתרון ואינסוף פתרונות · PDF",
+      "isDefault": false,
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "d630be1df47b4d4b81497adbef4c6cda",
+          "pdfSha256": "bf981b1bfd51b55ad5f1f08fbb5534709276671c3fc0a4babd61b58d5d4a051a",
+          "sourceSha256": "7bff33a54d709b622b796b50344e6b1ef7414d3f9f1fe2d807178a20fd55d141",
+          "nativeExportSha256": "7964fa4c9c8a7606bed463096d071c6834585dc4f0af42bf2e31fed6c11338ee",
+          "worksheetId": "ms-g7-eqn-03-a-r1",
+          "revision": 1,
+          "pages": 11,
+          "bytes": 70094,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_d630be1df47b4d4b81497adbef4c6cda.pdf",
+              "status": 200,
+              "sha256": "bf981b1bfd51b55ad5f1f08fbb5534709276671c3fc0a4babd61b58d5d4a051a",
+              "bytes": 70094,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_d630be1df47b4d4b81497adbef4c6cda.pdf",
+              "status": 200,
+              "sha256": "bf981b1bfd51b55ad5f1f08fbb5534709276671c3fc0a4babd61b58d5d4a051a",
+              "bytes": 70094,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "1bfef61820814ba7ac7e984d5510132f",
+          "pdfSha256": "0fb30db4d0836c220291b03f1b5f156b5888656e8707d4c1f621ac5536c548db",
+          "sourceSha256": "a2f2995931a653a46b7e303c73e93084cd2d7ba2fac428c6831795f7daf6e9d0",
+          "nativeExportSha256": "2966bb26a7938d8922a0c13cacf4547381ecd6b3736c384b4d7ebd6f8e7383f0",
+          "worksheetId": "ms-g7-eqn-03-b-r1",
+          "revision": 1,
+          "pages": 9,
+          "bytes": 63662,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_1bfef61820814ba7ac7e984d5510132f.pdf",
+              "status": 200,
+              "sha256": "0fb30db4d0836c220291b03f1b5f156b5888656e8707d4c1f621ac5536c548db",
+              "bytes": 63662,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_1bfef61820814ba7ac7e984d5510132f.pdf",
+              "status": 200,
+              "sha256": "0fb30db4d0836c220291b03f1b5f156b5888656e8707d4c1f621ac5536c548db",
+              "bytes": 63662,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "97f73bee4aae4d8d867bfe77d09fd568",
+          "pdfSha256": "e5255dd88122401f1878bf4398bf7970dda783d82e7d2d304790a44bc1291bbc",
+          "sourceSha256": "a405dc80f35f931d155773d6d3e777d987d3d72762e3df0e558571abe9dfeda1",
+          "nativeExportSha256": "dfdb48ae063730d9a292405482c65dd6e5a095778dba7ae23fbb0f262bbf8fc7",
+          "worksheetId": "ms-g7-eqn-03-c-r1",
+          "revision": 1,
+          "pages": 11,
+          "bytes": 68175,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_97f73bee4aae4d8d867bfe77d09fd568.pdf",
+              "status": 200,
+              "sha256": "e5255dd88122401f1878bf4398bf7970dda783d82e7d2d304790a44bc1291bbc",
+              "bytes": 68175,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_97f73bee4aae4d8d867bfe77d09fd568.pdf",
+              "status": 200,
+              "sha256": "e5255dd88122401f1878bf4398bf7970dda783d82e7d2d304790a44bc1291bbc",
+              "bytes": 68175,
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sheetId": "G7-CRT-01",
+      "producerPackage": "G7-T103",
+      "title": "שורש שלישי ושינוי מידות בקובייה, בתיבה ובמנסרה",
+      "author": "Qwen Code",
+      "reviewVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
+      "reviewReceipts": [
+        {
+          "role": "independent full review of r03 (Google Antigravity) (verdict PASS_STUDENT_PDF_ESSENTIALS)",
+          "path": "reports/ANTIGRAVITY-INDEPENDENT-G7-CRT-01-r03-20261117/review.json",
+          "sha256": "29f8fbad8ed7fdfbe83ec1aad715295625de2a50f1d938aac91976f756889aef"
+        },
+        {
+          "role": "independent numbers review of r03 (Google Antigravity) (verdict PASS_STUDENT_PDF_ESSENTIALS)",
+          "path": "reports/ANTIGRAVITY-INDEPENDENT-G7-CRT-01-r03-20261117/numbers-blind.json",
+          "sha256": "fe2e527485d21a755fb91500043f234b044f3f76ee5f01e7e29ebd24678ce403"
+        }
+      ],
+      "track": "ז",
+      "grade": 7,
+      "topicId": 20,
+      "landing": "/solids-box-cube-prism-grade-7",
+      "editionId": "ms-20261118-crt-01-r1",
+      "label": "שורש שלישי ושינוי מידות בקובייה, בתיבה ובמנסרה · PDF",
+      "isDefault": false,
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "82bbbec709fe4f489c8ee20b005b7b70",
+          "pdfSha256": "6a06e4f89b857c98e482788fce78e02446a11d08cb43789d017629126ae26b1d",
+          "sourceSha256": "33bf4ff6417f043f5eb2ca9fe82eed2315dd7877b54c97ee385977114047885f",
+          "nativeExportSha256": "60f2e3bfa4293eafef8f8097ddc40873582029d0e0ef7870fc874c06ec1cb28d",
+          "worksheetId": "ms-g7-crt-01-a-r1",
+          "revision": 1,
+          "pages": 14,
+          "bytes": 97119,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_82bbbec709fe4f489c8ee20b005b7b70.pdf",
+              "status": 200,
+              "sha256": "6a06e4f89b857c98e482788fce78e02446a11d08cb43789d017629126ae26b1d",
+              "bytes": 97119,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_82bbbec709fe4f489c8ee20b005b7b70.pdf",
+              "status": 200,
+              "sha256": "6a06e4f89b857c98e482788fce78e02446a11d08cb43789d017629126ae26b1d",
+              "bytes": 97119,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "8b322fc66e4b476db1b742532a1b46b3",
+          "pdfSha256": "e62fd9d386b7bd2ad0dcbf9d4cd5b0c1fb1d5343d131f04bd34db693d0724bdd",
+          "sourceSha256": "08727a5996c595f7321069d61a47feaf1cef6bd75812758ee4cee4a22c9ab419",
+          "nativeExportSha256": "ca359f4e550b69812c80d75e6d3f8f20de565c44d69f6eec81c6ebaef646e5c4",
+          "worksheetId": "ms-g7-crt-01-b-r1",
+          "revision": 1,
+          "pages": 14,
+          "bytes": 98876,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_8b322fc66e4b476db1b742532a1b46b3.pdf",
+              "status": 200,
+              "sha256": "e62fd9d386b7bd2ad0dcbf9d4cd5b0c1fb1d5343d131f04bd34db693d0724bdd",
+              "bytes": 98876,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_8b322fc66e4b476db1b742532a1b46b3.pdf",
+              "status": 200,
+              "sha256": "e62fd9d386b7bd2ad0dcbf9d4cd5b0c1fb1d5343d131f04bd34db693d0724bdd",
+              "bytes": 98876,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "01a221982ed64475bc84d73048e08bde",
+          "pdfSha256": "7d7017da20f932e229b9dc1e925f75971f3289fc34fb955000051d35f3840ec0",
+          "sourceSha256": "1253d6e3a6aaab5f83c098eceb74ab7f98d1c27e95d58e9c8382d6bbef65530f",
+          "nativeExportSha256": "fe64287a08a9ef1d5fb649e0b92f756bc0d16b15270f8eb9e7fba3f93746443f",
+          "worksheetId": "ms-g7-crt-01-c-r1",
+          "revision": 1,
+          "pages": 14,
+          "bytes": 99101,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_01a221982ed64475bc84d73048e08bde.pdf",
+              "status": 200,
+              "sha256": "7d7017da20f932e229b9dc1e925f75971f3289fc34fb955000051d35f3840ec0",
+              "bytes": 99101,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_01a221982ed64475bc84d73048e08bde.pdf",
+              "status": 200,
+              "sha256": "7d7017da20f932e229b9dc1e925f75971f3289fc34fb955000051d35f3840ec0",
+              "bytes": 99101,
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sheetId": "G7-PGA-01",
+      "producerPackage": "G7-T101",
+      "title": "משפט פיתגורס בחישובי שטח והיקף",
+      "author": "Qwen Code",
+      "reviewVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
+      "reviewReceipts": [
+        {
+          "role": "independent full review of r03 (Google Antigravity) (verdict PASS_STUDENT_PDF_ESSENTIALS)",
+          "path": "reports/ANTIGRAVITY-INDEPENDENT-G7-PGA-01-r03-20261117/review.json",
+          "sha256": "d9a0f087d6a1993da742becac1f9a251f8a26c4e97397dfa5cf4423b41c3ca02"
+        },
+        {
+          "role": "independent numbers review of r03 (Google Antigravity) (verdict PASS_STUDENT_PDF_ESSENTIALS)",
+          "path": "reports/ANTIGRAVITY-INDEPENDENT-G7-PGA-01-r03-20261117/numbers-blind.json",
+          "sha256": "48f30c77eb2d07fa216115e85e1a5ad5c296de0b58f3b9c8553eca4b09cf84fe"
+        }
+      ],
+      "track": "ז",
+      "grade": 7,
+      "topicId": 42,
+      "landing": "/pythagorean-theorem-grade-7",
+      "editionId": "ms-20261118-pga-01-r1",
+      "label": "משפט פיתגורס בחישובי שטח והיקף · PDF",
+      "isDefault": false,
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "478bfe4418f842b5a78fc12886038b2b",
+          "pdfSha256": "390bb0d0de9565db6836dacbf6d9b994f2d6bdef35963f4b418a6e1558ff97fc",
+          "sourceSha256": "373bd06a0e34d87ddbf4c44715612a3cc0f70e7b513ffebcea7be5e1cae0e725",
+          "nativeExportSha256": "57ca43380347562a4e182ecf7836fae663fcbb8dc5dbe44977214a91ee31d8cc",
+          "worksheetId": "ms-g7-pga-01-a-r1",
+          "revision": 1,
+          "pages": 16,
+          "bytes": 161975,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_478bfe4418f842b5a78fc12886038b2b.pdf",
+              "status": 200,
+              "sha256": "390bb0d0de9565db6836dacbf6d9b994f2d6bdef35963f4b418a6e1558ff97fc",
+              "bytes": 161975,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_478bfe4418f842b5a78fc12886038b2b.pdf",
+              "status": 200,
+              "sha256": "390bb0d0de9565db6836dacbf6d9b994f2d6bdef35963f4b418a6e1558ff97fc",
+              "bytes": 161975,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "a12dafcf047a439a9d26d3cc6ed61c0e",
+          "pdfSha256": "61b84afe8c84335ea660848fbe395699f856d400548f225e7c599caa8359c2ac",
+          "sourceSha256": "fff8a7d55c18164461e9f4d9855226c404487d3af8e458e587704a2db0486252",
+          "nativeExportSha256": "ffed03528deab9bee88032d426dcfda94b9a6f787b6008f0dd8b347e4322f618",
+          "worksheetId": "ms-g7-pga-01-b-r1",
+          "revision": 1,
+          "pages": 16,
+          "bytes": 163249,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_a12dafcf047a439a9d26d3cc6ed61c0e.pdf",
+              "status": 200,
+              "sha256": "61b84afe8c84335ea660848fbe395699f856d400548f225e7c599caa8359c2ac",
+              "bytes": 163249,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_a12dafcf047a439a9d26d3cc6ed61c0e.pdf",
+              "status": 200,
+              "sha256": "61b84afe8c84335ea660848fbe395699f856d400548f225e7c599caa8359c2ac",
+              "bytes": 163249,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "2d74cb6dda6e4b5280f822ec332eac10",
+          "pdfSha256": "a3b8adda0fb407ad9f5cc913b127b2deeb1dc17c2ac14fb061cc5eff3c38b586",
+          "sourceSha256": "d072671dc28c0a126a43242db83ff17998db6682a02bb39ef09cff8f8b6df018",
+          "nativeExportSha256": "96bdf9ee5b488555b158ffe12b41086ef37b8f70ee9a9d365401401a23e9f980",
+          "worksheetId": "ms-g7-pga-01-c-r1",
+          "revision": 1,
+          "pages": 16,
+          "bytes": 172622,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_2d74cb6dda6e4b5280f822ec332eac10.pdf",
+              "status": 200,
+              "sha256": "a3b8adda0fb407ad9f5cc913b127b2deeb1dc17c2ac14fb061cc5eff3c38b586",
+              "bytes": 172622,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_2d74cb6dda6e4b5280f822ec332eac10.pdf",
+              "status": 200,
+              "sha256": "a3b8adda0fb407ad9f5cc913b127b2deeb1dc17c2ac14fb061cc5eff3c38b586",
+              "bytes": 172622,
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "landingDeltas": [
+    {
+      "slug": "signed-numbers-grade-7",
+      "grade": 7,
+      "topicId": 2,
+      "editionIds": [
+        "ms-20261118-sgm-01-r1"
+      ],
+      "baselineSha256": "6d1778c20e89a22fa1d996adca19de3e49ba6b6a1a665eb33078bc3bc40d370d",
+      "fields": [
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בחיבור מספר חיובי נעים ימינה על ציר המספרים, ובחיבור מספר שלילי נעים שמאלה. חיסור מספר הוא חיבור המספר הנגדי. טעות נפוצה: לשנות לנגדי את שני המספרים. משנים לנגדי רק את המספר שאחרי סימן החיסור. חיסור מספר שלילי אינו מבטיח תוצאה חיובית, למשל מינוס שבע פחות מינוס ארבע שווה מינוס שלוש.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "(−3) − (−5) = (−3) + 5 = 2",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מהו (−7)+4?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "התשובה היא −3, כי מתקדמים 4 צעדים ימינה מ־−7.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "חיבור וחיסור מספרים מכוונים — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "המהדורה הנוספת כוללת שלושה דפי PDF עם תשובות בסוף, לתרגול חיבור וחיסור מספרים מכוונים, בדיקת סימנים, קריאת טבלאות, שינויי טמפרטורה ומשימות פתוחות. התרגול ממוקד בחיבור ובחיסור.",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בחיבור מספר חיובי נעים ימינה על ציר המספרים, ובחיבור מספר שלילי נעים שמאלה. חיסור מספר הוא חיבור המספר הנגדי. טעות נפוצה: לשנות לנגדי את שני המספרים. משנים לנגדי רק את המספר שאחרי סימן החיסור. חיסור מספר שלילי אינו מבטיח תוצאה חיובית, למשל מינוס שבע פחות מינוס ארבע שווה מינוס שלוש.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "(−3) − (−5) = (−3) + 5 = 2",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מהו (−7)+4?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "התשובה היא −3, כי מתקדמים 4 צעדים ימינה מ־−7.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "חיבור וחיסור מספרים מכוונים — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "המהדורה הנוספת כוללת שלושה דפי PDF עם תשובות בסוף, לתרגול חיבור וחיסור מספרים מכוונים, בדיקת סימנים, קריאת טבלאות, שינויי טמפרטורה ומשימות פתוחות. התרגול ממוקד בחיבור ובחיסור.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "חיבור, חיסור, כפל וחילוק של מספרים מכוונים — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מחברים ומחסרים מספרים מכוונים בעזרת תנועות על ציר המספרים ובהקשרים של רווח והפסד.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "מצדיקים את כללי הכפל והחילוק של מספרים מכוונים, מנסחים תרגיל מתוך שאלה מילולית, ובשאלות השילוב מחברים בין תנועה על הציר, מאזן ושאלות מילוליות.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "appendedSection": {
+        "heading": "חיבור, חיסור, כפל וחילוק של מספרים מכוונים — דפי PDF נוספים",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "מחברים ומחסרים מספרים מכוונים בעזרת תנועות על ציר המספרים ובהקשרים של רווח והפסד.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "מצדיקים את כללי הכפל והחילוק של מספרים מכוונים, מנסחים תרגיל מתוך שאלה מילולית, ובשאלות השילוב מחברים בין תנועה על הציר, מאזן ושאלות מילוליות.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+            "links": []
+          }
+        ]
+      }
+    },
+    {
+      "slug": "statistics-grade-9",
+      "grade": 9,
+      "topicId": 9,
+      "editionIds": [
+        "ms-20261118-str-01-r1"
+      ],
+      "baselineSha256": "5a433963bc53c246e5090c00950cd335890be83499a6898c0e279faf46de2052",
+      "fields": [
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בסטטיסטיקה מתארים נתונים בעזרת טבלאות וגרפים ומשתמשים במדדים כמו ממוצע, חציון ושכיח.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: עבור הנתונים 4, 6, 6, 8, 11 הממוצע הוא 7 והשכיח הוא 6.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "הממוצע אינו תמיד הערך השכיח, וכאשר מספר הנתונים אי־זוגי, החציון הוא הנתון האמצעי (אחרי סידור הנתונים) ולא ממוצע של שני נתונים.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מהו הממוצע של 5, 7, 9 ו־11?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: 8, כי (5+7+9+11):4=8.",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בסטטיסטיקה מתארים נתונים בעזרת טבלאות וגרפים ומשתמשים במדדים כמו ממוצע, חציון ושכיח.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: עבור הנתונים 4, 6, 6, 8, 11 הממוצע הוא 7 והשכיח הוא 6.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "הממוצע אינו תמיד הערך השכיח, וכאשר מספר הנתונים אי־זוגי, החציון הוא הנתון האמצעי (אחרי סידור הנתונים) ולא ממוצע של שני נתונים.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מהו הממוצע של 5, 7, 9 ו־11?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: 8, כי (5+7+9+11):4=8.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "ארגון נתונים, שכיחות יחסית, טווח ומדדי מרכז — דפי PDF נוספים בט׳ מצומצמת",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מארגנים נתונים בטבלה, ברשימה ובדיאגרמות, ומחשבים שכיחות ושכיחות יחסית.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "מחשבים טווח ומדדי מרכז: ממוצע, שכיח וחציון.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "bodyFlow"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "type": "paragraph",
+              "text": "לומדים לארגן נתונים, לקרוא גרפים ולחשב מדדים סטטיסטיים. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "פתיחת דפי העבודה ובחירת רמה",
+              "href": "/worksheets?grade=9&topic=9",
+              "catalogTopicId": 9
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "בסטטיסטיקה מתארים נתונים בעזרת טבלאות וגרפים ומשתמשים במדדים כמו ממוצע, חציון ושכיח.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "דוגמה: עבור הנתונים 4, 6, 6, 8, 11 הממוצע הוא 7 והשכיח הוא 6.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טעויות נפוצות"
+            },
+            {
+              "type": "paragraph",
+              "text": "הממוצע אינו תמיד הערך השכיח, וכאשר מספר הנתונים אי־זוגי, החציון הוא הנתון האמצעי (אחרי סידור הנתונים) ולא ממוצע של שני נתונים.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "מהו הממוצע של 5, 7, 9 ו־11?",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "תשובה: 8, כי (5+7+9+11):4=8.",
+              "role": "body"
+            }
+          ],
+          "after": [
+            {
+              "type": "paragraph",
+              "text": "לומדים לארגן נתונים, לקרוא גרפים ולחשב מדדים סטטיסטיים. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "פתיחת דפי העבודה ובחירת רמה",
+              "href": "/worksheets?grade=9&topic=9",
+              "catalogTopicId": 9
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "בסטטיסטיקה מתארים נתונים בעזרת טבלאות וגרפים ומשתמשים במדדים כמו ממוצע, חציון ושכיח.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "דוגמה: עבור הנתונים 4, 6, 6, 8, 11 הממוצע הוא 7 והשכיח הוא 6.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טעויות נפוצות"
+            },
+            {
+              "type": "paragraph",
+              "text": "הממוצע אינו תמיד הערך השכיח, וכאשר מספר הנתונים אי־זוגי, החציון הוא הנתון האמצעי (אחרי סידור הנתונים) ולא ממוצע של שני נתונים.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "מהו הממוצע של 5, 7, 9 ו־11?",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "תשובה: 8, כי (5+7+9+11):4=8.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "ארגון נתונים, שכיחות יחסית, טווח ומדדי מרכז — דפי PDF נוספים בט׳ מצומצמת"
+            },
+            {
+              "type": "paragraph",
+              "text": "מארגנים נתונים בטבלה, ברשימה ובדיאגרמות, ומחשבים שכיחות ושכיחות יחסית.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "מחשבים טווח ומדדי מרכז: ממוצע, שכיח וחציון.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+              "role": "body"
+            }
+          ]
+        },
+        {
+          "path": [
+            "updatedLine"
+          ],
+          "existedBefore": true,
+          "before": "נועם דורון מתמטיקה · עודכן 12.9.2026",
+          "after": "נועם דורון מתמטיקה · עודכן 18.11.2026"
+        }
+      ],
+      "appendedSection": {
+        "heading": "ארגון נתונים, שכיחות יחסית, טווח ומדדי מרכז — דפי PDF נוספים בט׳ מצומצמת",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "מארגנים נתונים בטבלה, ברשימה ובדיאגרמות, ומחשבים שכיחות ושכיחות יחסית.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "מחשבים טווח ומדדי מרכז: ממוצע, שכיח וחציון.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+            "links": []
+          }
+        ]
+      }
+    },
+    {
+      "slug": "function-representations-grade-8",
+      "grade": 8,
+      "topicId": 21,
+      "editionIds": [
+        "ms-20261118-fnc-02-r1"
+      ],
+      "baselineSha256": "289e67654074e07489d4f200dff936e1211448994204f0fa58553b7f6dc837ae",
+      "fields": [
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "כל ייצוג מראה משהו אחר: הנוסחה נותנת כל ערך בחישוב, הטבלה מראה ערכים בודדים, והגרף מראה את המגמה, עלייה, ירידה או קצב קבוע.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בפונקציה קווית, במעבר ממילים לנוסחה מזהים את הערך ההתחלתי ואת קצב השינוי הקבוע. במעבר מטבלה לנוסחה מוצאים בכמה משתנה הפלט כשהקלט גדל ב־1.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: מונית גובה 12 שקלים בכניסה ועוד 4 שקלים לכל ק״מ. הנוסחה היא y = 4x + 12. בטבלה: x = 0 נותן 12, x = 1 נותן 16, x = 2 נותן 20. בגרף זה ישר שחותך את הציר האנכי ב־12.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בודקים התאמה בין נוסחה לטבלה בשורה אחת בלבד. שתי נוסחאות שונות יכולות להסכים בשורה אחת, ולכן בודקים כמה שורות.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בגרף מדרגות מתעלמים מנקודה חלולה. נקודה מלאה שייכת לגרף, ונקודה חלולה אינה שייכת לו.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בטבלה של פונקציה קווית: x = 0 נותן y = 5, x = 1 נותן y = 8, x = 2 נותן y = 11. כתבו נוסחה.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "התשובה היא y = 3x + 5, כי y גדל ב־3 בכל צעד, וב־x = 0 הוא 5.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "מושג הפונקציה וייצוגיה — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "קוראים ומסרטטים נקודות וגרפים, עוברים בין תיאור מילולי, טבלה, נוסחה וגרף, ומזהים תחומי עלייה, תחומי ירידה ותחומים שבהם הפונקציה קבועה.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בודקים מתי התאמה מתארת פונקציה ומנתחים מצבים מילוליים וגרפיים, למשל תנועה, שינוי כמות במכל והשוואה בין שתי הצעות מחיר.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "כל ייצוג מראה משהו אחר: הנוסחה נותנת כל ערך בחישוב, הטבלה מראה ערכים בודדים, והגרף מראה את המגמה, עלייה, ירידה או קצב קבוע.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בפונקציה קווית, במעבר ממילים לנוסחה מזהים את הערך ההתחלתי ואת קצב השינוי הקבוע. במעבר מטבלה לנוסחה מוצאים בכמה משתנה הפלט כשהקלט גדל ב־1.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: מונית גובה 12 שקלים בכניסה ועוד 4 שקלים לכל ק״מ. הנוסחה היא y = 4x + 12. בטבלה: x = 0 נותן 12, x = 1 נותן 16, x = 2 נותן 20. בגרף זה ישר שחותך את הציר האנכי ב־12.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בודקים התאמה בין נוסחה לטבלה בשורה אחת בלבד. שתי נוסחאות שונות יכולות להסכים בשורה אחת, ולכן בודקים כמה שורות.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בגרף מדרגות מתעלמים מנקודה חלולה. נקודה מלאה שייכת לגרף, ונקודה חלולה אינה שייכת לו.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בטבלה של פונקציה קווית: x = 0 נותן y = 5, x = 1 נותן y = 8, x = 2 נותן y = 11. כתבו נוסחה.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "התשובה היא y = 3x + 5, כי y גדל ב־3 בכל צעד, וב־x = 0 הוא 5.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "מושג הפונקציה וייצוגיה — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "קוראים ומסרטטים נקודות וגרפים, עוברים בין תיאור מילולי, טבלה, נוסחה וגרף, ומזהים תחומי עלייה, תחומי ירידה ותחומים שבהם הפונקציה קבועה.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בודקים מתי התאמה מתארת פונקציה ומנתחים מצבים מילוליים וגרפיים, למשל תנועה, שינוי כמות במכל והשוואה בין שתי הצעות מחיר.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "מושג הפונקציה בהקשר: משתנה תלוי ובלתי תלוי ותחום הגדרה — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מזהים משתנה תלוי ומשתנה בלתי תלוי, קובעים תחום הגדרה וטווח בהקשר ובודקים אם התאמה היא פונקציה.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "עוברים בין ייצוגים של פונקציה: תיאור מילולי, טבלה, גרף וביטוי אלגברי.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "bodyFlow"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "type": "paragraph",
+              "text": "אותה פונקציה אפשר לתאר במילים, בטבלה, בגרף ובנוסחה. לומדים לעבור מייצוג לייצוג ולבדוק אם שני ייצוגים מתארים את אותה פונקציה. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "פתיחת דפי העבודה ובחירת רמה",
+              "href": "/worksheets?grade=8&topic=21",
+              "catalogTopicId": 21
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "כל ייצוג מראה משהו אחר: הנוסחה נותנת כל ערך בחישוב, הטבלה מראה ערכים בודדים, והגרף מראה את המגמה, עלייה, ירידה או קצב קבוע.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "בפונקציה קווית, במעבר ממילים לנוסחה מזהים את הערך ההתחלתי ואת קצב השינוי הקבוע. במעבר מטבלה לנוסחה מוצאים בכמה משתנה הפלט כשהקלט גדל ב־1.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "דוגמה: מונית גובה 12 שקלים בכניסה ועוד 4 שקלים לכל ק״מ. הנוסחה היא y = 4x + 12. בטבלה: x = 0 נותן 12, x = 1 נותן 16, x = 2 נותן 20. בגרף זה ישר שחותך את הציר האנכי ב־12.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טעויות נפוצות"
+            },
+            {
+              "type": "paragraph",
+              "text": "בודקים התאמה בין נוסחה לטבלה בשורה אחת בלבד. שתי נוסחאות שונות יכולות להסכים בשורה אחת, ולכן בודקים כמה שורות.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "בגרף מדרגות מתעלמים מנקודה חלולה. נקודה מלאה שייכת לגרף, ונקודה חלולה אינה שייכת לו.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "בטבלה של פונקציה קווית: x = 0 נותן y = 5, x = 1 נותן y = 8, x = 2 נותן y = 11. כתבו נוסחה.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "התשובה היא y = 3x + 5, כי y גדל ב־3 בכל צעד, וב־x = 0 הוא 5.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "מושג הפונקציה וייצוגיה — דפי PDF נוספים"
+            },
+            {
+              "type": "paragraph",
+              "text": "קוראים ומסרטטים נקודות וגרפים, עוברים בין תיאור מילולי, טבלה, נוסחה וגרף, ומזהים תחומי עלייה, תחומי ירידה ותחומים שבהם הפונקציה קבועה.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "בודקים מתי התאמה מתארת פונקציה ומנתחים מצבים מילוליים וגרפיים, למשל תנועה, שינוי כמות במכל והשוואה בין שתי הצעות מחיר.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "שלושה קובצי PDF: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף.",
+              "role": "body"
+            }
+          ],
+          "after": [
+            {
+              "type": "paragraph",
+              "text": "אותה פונקציה אפשר לתאר במילים, בטבלה, בגרף ובנוסחה. לומדים לעבור מייצוג לייצוג ולבדוק אם שני ייצוגים מתארים את אותה פונקציה. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "פתיחת דפי העבודה ובחירת רמה",
+              "href": "/worksheets?grade=8&topic=21",
+              "catalogTopicId": 21
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "כל ייצוג מראה משהו אחר: הנוסחה נותנת כל ערך בחישוב, הטבלה מראה ערכים בודדים, והגרף מראה את המגמה, עלייה, ירידה או קצב קבוע.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "בפונקציה קווית, במעבר ממילים לנוסחה מזהים את הערך ההתחלתי ואת קצב השינוי הקבוע. במעבר מטבלה לנוסחה מוצאים בכמה משתנה הפלט כשהקלט גדל ב־1.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "דוגמה: מונית גובה 12 שקלים בכניסה ועוד 4 שקלים לכל ק״מ. הנוסחה היא y = 4x + 12. בטבלה: x = 0 נותן 12, x = 1 נותן 16, x = 2 נותן 20. בגרף זה ישר שחותך את הציר האנכי ב־12.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טעויות נפוצות"
+            },
+            {
+              "type": "paragraph",
+              "text": "בודקים התאמה בין נוסחה לטבלה בשורה אחת בלבד. שתי נוסחאות שונות יכולות להסכים בשורה אחת, ולכן בודקים כמה שורות.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "בגרף מדרגות מתעלמים מנקודה חלולה. נקודה מלאה שייכת לגרף, ונקודה חלולה אינה שייכת לו.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "בטבלה של פונקציה קווית: x = 0 נותן y = 5, x = 1 נותן y = 8, x = 2 נותן y = 11. כתבו נוסחה.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "התשובה היא y = 3x + 5, כי y גדל ב־3 בכל צעד, וב־x = 0 הוא 5.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "מושג הפונקציה וייצוגיה — דפי PDF נוספים"
+            },
+            {
+              "type": "paragraph",
+              "text": "קוראים ומסרטטים נקודות וגרפים, עוברים בין תיאור מילולי, טבלה, נוסחה וגרף, ומזהים תחומי עלייה, תחומי ירידה ותחומים שבהם הפונקציה קבועה.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "בודקים מתי התאמה מתארת פונקציה ומנתחים מצבים מילוליים וגרפיים, למשל תנועה, שינוי כמות במכל והשוואה בין שתי הצעות מחיר.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "שלושה קובצי PDF: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "מושג הפונקציה בהקשר: משתנה תלוי ובלתי תלוי ותחום הגדרה — דפי PDF נוספים"
+            },
+            {
+              "type": "paragraph",
+              "text": "מזהים משתנה תלוי ומשתנה בלתי תלוי, קובעים תחום הגדרה וטווח בהקשר ובודקים אם התאמה היא פונקציה.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "עוברים בין ייצוגים של פונקציה: תיאור מילולי, טבלה, גרף וביטוי אלגברי.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+              "role": "body"
+            }
+          ]
+        }
+      ],
+      "appendedSection": {
+        "heading": "מושג הפונקציה בהקשר: משתנה תלוי ובלתי תלוי ותחום הגדרה — דפי PDF נוספים",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "מזהים משתנה תלוי ומשתנה בלתי תלוי, קובעים תחום הגדרה וטווח בהקשר ובודקים אם התאמה היא פונקציה.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "עוברים בין ייצוגים של פונקציה: תיאור מילולי, טבלה, גרף וביטוי אלגברי.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+            "links": []
+          }
+        ]
+      }
+    },
+    {
+      "slug": "equations-advanced-grade-7",
+      "grade": 7,
+      "topicId": 37,
+      "editionIds": [
+        "ms-20261118-eqn-03-r1"
+      ],
+      "baselineSha256": "6cf51810ae32f4ea3dd0d59a04dd3445c96782fb23d053f1a2f23b3681ba4d8d",
+      "fields": [
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "לפעמים קודם מכנסים איברים או פותחים סוגריים, ורק אחר כך פותרים. חוק הפילוג: a(b+c)=ab+ac.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "2(x+4)=18 → 2x+8=18 → 2x=10 → x=5.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "טעות נפוצה: לפתוח סוגריים רק באגף אחד, או לשכוח לכפול את כל האיברים שבתוך הסוגריים.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "פתרו: 3(x−2)=12.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: x=6.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "פעולות שקולות בפתרון משוואות — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "פותרים משוואות ממעלה ראשונה בעזרת אותה פעולה בשני האגפים: חיבור או חיסור, וכפל או חילוק במספר שאינו אפס. מתקדמים למשוואות בכמה שלבים, למשוואות שבהן הנעלם בשני האגפים, לפישוט בעזרת חוק הפילוג וכינוס איברים, ולמשוואות עם מכנים מספריים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בכל רמה בודקים פתרון בהצבה, מוצאים צעד שגוי בפתרון של תלמיד ובונים משוואות שהפתרון שלהן נתון. ברמה א׳ המקדמים בעיקר שלמים, ברמה ב׳ יש גם מספרים עשרוניים ושברים ומשוואות עם כמה מכנים, ובמצוינות גם כמה סוגריים באותה משוואה.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "לפעמים קודם מכנסים איברים או פותחים סוגריים, ורק אחר כך פותרים. חוק הפילוג: a(b+c)=ab+ac.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "2(x+4)=18 → 2x+8=18 → 2x=10 → x=5.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "טעות נפוצה: לפתוח סוגריים רק באגף אחד, או לשכוח לכפול את כל האיברים שבתוך הסוגריים.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "פתרו: 3(x−2)=12.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: x=6.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "פעולות שקולות בפתרון משוואות — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "פותרים משוואות ממעלה ראשונה בעזרת אותה פעולה בשני האגפים: חיבור או חיסור, וכפל או חילוק במספר שאינו אפס. מתקדמים למשוואות בכמה שלבים, למשוואות שבהן הנעלם בשני האגפים, לפישוט בעזרת חוק הפילוג וכינוס איברים, ולמשוואות עם מכנים מספריים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בכל רמה בודקים פתרון בהצבה, מוצאים צעד שגוי בפתרון של תלמיד ובונים משוואות שהפתרון שלהן נתון. ברמה א׳ המקדמים בעיקר שלמים, ברמה ב׳ יש גם מספרים עשרוניים ושברים ומשוואות עם כמה מכנים, ובמצוינות גם כמה סוגריים באותה משוואה.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "משוואות עם פתרון יחיד, בלי פתרון ועם אינסוף פתרונות — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בודקים בהצבה ובהשוואת האגפים כמה פתרונות יש למשוואה, ופותרים משוואות מיוחדות בפעולות על שני האגפים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "ממיינים משוואות לפי מספר הפתרונות, ובשאלות השילוב מפרשים את מספר הפתרונות בסיפורים ובשאלות על מספרים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "bodyFlow"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "type": "paragraph",
+              "text": "לפני הפתרון מפשטים איברים, פותחים סוגריים בעזרת חוק הפילוג ובודקים שקילות. בנושא משוואות עם סוגריים ושקילות נוספו קובצי PDF לפתרון משוואות בפעולות שקולות, ברמות א׳, ב׳ ומצוינות. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "סוגריים וחוק הפילוג — בחירת דף ורמה",
+              "href": "/worksheets?grade=7&topic=38",
+              "catalogTopicId": 38
+            },
+            {
+              "type": "cta",
+              "label": "הצבה בביטויים אלגבריים — בחירת דף ורמה",
+              "href": "/worksheets?grade=7&topic=23",
+              "catalogTopicId": 23
+            },
+            {
+              "type": "cta",
+              "label": "משוואות עם סוגריים ושקילות — בחירת דף ורמה",
+              "href": "/worksheets?grade=7&topic=37",
+              "catalogTopicId": 37
+            },
+            {
+              "type": "cta",
+              "label": "מפשטים ואז פותרים — בחירת דף ורמה",
+              "href": "/worksheets?grade=7&topic=36",
+              "catalogTopicId": 36
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "לפעמים קודם מכנסים איברים או פותחים סוגריים, ורק אחר כך פותרים. חוק הפילוג: a(b+c)=ab+ac.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "2(x+4)=18 → 2x+8=18 → 2x=10 → x=5.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טעויות נפוצות"
+            },
+            {
+              "type": "paragraph",
+              "text": "טעות נפוצה: לפתוח סוגריים רק באגף אחד, או לשכוח לכפול את כל האיברים שבתוך הסוגריים.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "פתרו: 3(x−2)=12.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "פעולות שקולות בפתרון משוואות — דפי PDF נוספים"
+            },
+            {
+              "type": "paragraph",
+              "text": "פותרים משוואות ממעלה ראשונה בעזרת אותה פעולה בשני האגפים: חיבור או חיסור, וכפל או חילוק במספר שאינו אפס. מתקדמים למשוואות בכמה שלבים, למשוואות שבהן הנעלם בשני האגפים, לפישוט בעזרת חוק הפילוג וכינוס איברים, ולמשוואות עם מכנים מספריים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "בכל רמה בודקים פתרון בהצבה, מוצאים צעד שגוי בפתרון של תלמיד ובונים משוואות שהפתרון שלהן נתון. ברמה א׳ המקדמים בעיקר שלמים, ברמה ב׳ יש גם מספרים עשרוניים ושברים ומשוואות עם כמה מכנים, ובמצוינות גם כמה סוגריים באותה משוואה.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+              "role": "body"
+            }
+          ],
+          "after": [
+            {
+              "type": "paragraph",
+              "text": "לפני הפתרון מפשטים איברים, פותחים סוגריים בעזרת חוק הפילוג ובודקים שקילות. בנושא משוואות עם סוגריים ושקילות נוספו קובצי PDF לפתרון משוואות בפעולות שקולות, ברמות א׳, ב׳ ומצוינות. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "סוגריים וחוק הפילוג — בחירת דף ורמה",
+              "href": "/worksheets?grade=7&topic=38",
+              "catalogTopicId": 38
+            },
+            {
+              "type": "cta",
+              "label": "הצבה בביטויים אלגבריים — בחירת דף ורמה",
+              "href": "/worksheets?grade=7&topic=23",
+              "catalogTopicId": 23
+            },
+            {
+              "type": "cta",
+              "label": "משוואות עם סוגריים ושקילות — בחירת דף ורמה",
+              "href": "/worksheets?grade=7&topic=37",
+              "catalogTopicId": 37
+            },
+            {
+              "type": "cta",
+              "label": "מפשטים ואז פותרים — בחירת דף ורמה",
+              "href": "/worksheets?grade=7&topic=36",
+              "catalogTopicId": 36
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "לפעמים קודם מכנסים איברים או פותחים סוגריים, ורק אחר כך פותרים. חוק הפילוג: a(b+c)=ab+ac.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "2(x+4)=18 → 2x+8=18 → 2x=10 → x=5.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טעויות נפוצות"
+            },
+            {
+              "type": "paragraph",
+              "text": "טעות נפוצה: לפתוח סוגריים רק באגף אחד, או לשכוח לכפול את כל האיברים שבתוך הסוגריים.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "פתרו: 3(x−2)=12.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "פעולות שקולות בפתרון משוואות — דפי PDF נוספים"
+            },
+            {
+              "type": "paragraph",
+              "text": "פותרים משוואות ממעלה ראשונה בעזרת אותה פעולה בשני האגפים: חיבור או חיסור, וכפל או חילוק במספר שאינו אפס. מתקדמים למשוואות בכמה שלבים, למשוואות שבהן הנעלם בשני האגפים, לפישוט בעזרת חוק הפילוג וכינוס איברים, ולמשוואות עם מכנים מספריים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "בכל רמה בודקים פתרון בהצבה, מוצאים צעד שגוי בפתרון של תלמיד ובונים משוואות שהפתרון שלהן נתון. ברמה א׳ המקדמים בעיקר שלמים, ברמה ב׳ יש גם מספרים עשרוניים ושברים ומשוואות עם כמה מכנים, ובמצוינות גם כמה סוגריים באותה משוואה.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "משוואות עם פתרון יחיד, בלי פתרון ועם אינסוף פתרונות — דפי PDF נוספים"
+            },
+            {
+              "type": "paragraph",
+              "text": "בודקים בהצבה ובהשוואת האגפים כמה פתרונות יש למשוואה, ופותרים משוואות מיוחדות בפעולות על שני האגפים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "ממיינים משוואות לפי מספר הפתרונות, ובשאלות השילוב מפרשים את מספר הפתרונות בסיפורים ובשאלות על מספרים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+              "role": "body"
+            }
+          ]
+        }
+      ],
+      "appendedSection": {
+        "heading": "משוואות עם פתרון יחיד, בלי פתרון ועם אינסוף פתרונות — דפי PDF נוספים",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "בודקים בהצבה ובהשוואת האגפים כמה פתרונות יש למשוואה, ופותרים משוואות מיוחדות בפעולות על שני האגפים.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "ממיינים משוואות לפי מספר הפתרונות, ובשאלות השילוב מפרשים את מספר הפתרונות בסיפורים ובשאלות על מספרים.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+            "links": []
+          }
+        ]
+      }
+    },
+    {
+      "slug": "solids-box-cube-prism-grade-7",
+      "grade": 7,
+      "topicId": 20,
+      "editionIds": [
+        "ms-20261118-crt-01-r1"
+      ],
+      "baselineSha256": "d19ba4ea27a7159d3c880337032b2fa7cc7e89e895cf0a781eaafa619abfaf1b",
+      "fields": [
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "נפח תיבה = אורך×רוחב×גובה. בקובייה: נפח = צלע³. במנסרה משולשת, הנפח הוא שטח הבסיס המשולש כפול גובה המנסרה. שטח הפנים הוא סכום שטחי כל הפאות.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תיבה 2×3×4: נפח 24. קובייה צלע 3: נפח 27.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "טעות נפוצה: לערבב בין שטח פנים לנפח, או לשכוח פאה בפריסה.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "קובייה צלע 5. מה הנפח?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: 125.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "מנסרה משולשת ישרה: מבנה, פריסה, שטח פנים ונפח — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מכירים את המבנה של מנסרה משולשת ישרה: שני בסיסים משולשים זהים ושלוש פאות מלבניות, ומבחינים בין גובה המשולש שבבסיס לבין גובה המנסרה. מחשבים את שטח הבסיס, את הנפח, את שטח המעטפת ואת שטח הפנים הכולל, וקוראים מידות מתוך פריסה.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בכל הרמות כותבים ביטויים אלגבריים לנפח ולשטח הפנים, עובדים עם בסיס משולש שמשורטט במערכת צירים, ומוצאים פי כמה גדלים השטח והנפח כשכל המקצועות ארוכים פי 2 או פי 3. בסוף משרטטים פריסה לפי תיאור במילים. ברמה ב׳ ובמצוינות מחשבים גם בכיוון ההפוך: מוצאים את גובה המנסרה או את הנעלם מתוך נפח או שטח נתונים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "תיבה וקובייה: מבנה, פריסה, שטח פנים ונפח — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מזהים את המבנה של תיבה וקובייה, מתאימים בין גוף לפריסה שלו ומחשבים שטח פנים ונפח של תיבה וקובייה.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בשאלות השילוב עוברים מפריסה לתיבה ובונים גופים מקוביות, ומבחינים בין ס״מ, סמ״ר וסמ״ק.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "נפח תיבה = אורך×רוחב×גובה. בקובייה: נפח = צלע³. במנסרה משולשת, הנפח הוא שטח הבסיס המשולש כפול גובה המנסרה. שטח הפנים הוא סכום שטחי כל הפאות.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תיבה 2×3×4: נפח 24. קובייה צלע 3: נפח 27.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "טעות נפוצה: לערבב בין שטח פנים לנפח, או לשכוח פאה בפריסה.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "קובייה צלע 5. מה הנפח?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: 125.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "מנסרה משולשת ישרה: מבנה, פריסה, שטח פנים ונפח — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מכירים את המבנה של מנסרה משולשת ישרה: שני בסיסים משולשים זהים ושלוש פאות מלבניות, ומבחינים בין גובה המשולש שבבסיס לבין גובה המנסרה. מחשבים את שטח הבסיס, את הנפח, את שטח המעטפת ואת שטח הפנים הכולל, וקוראים מידות מתוך פריסה.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בכל הרמות כותבים ביטויים אלגבריים לנפח ולשטח הפנים, עובדים עם בסיס משולש שמשורטט במערכת צירים, ומוצאים פי כמה גדלים השטח והנפח כשכל המקצועות ארוכים פי 2 או פי 3. בסוף משרטטים פריסה לפי תיאור במילים. ברמה ב׳ ובמצוינות מחשבים גם בכיוון ההפוך: מוצאים את גובה המנסרה או את הנעלם מתוך נפח או שטח נתונים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "תיבה וקובייה: מבנה, פריסה, שטח פנים ונפח — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מזהים את המבנה של תיבה וקובייה, מתאימים בין גוף לפריסה שלו ומחשבים שטח פנים ונפח של תיבה וקובייה.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בשאלות השילוב עוברים מפריסה לתיבה ובונים גופים מקוביות, ומבחינים בין ס״מ, סמ״ר וסמ״ק.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "שורש שלישי ושינוי מידות בקובייה, בתיבה ובמנסרה — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מוצאים צלע של קובייה מתוך נפחה בעזרת שורש שלישי, ופותרים בעיות הפוכות בקובייה ובתיבה.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בודקים את השינוי כשמוסיפים מידה קבועה למידות של תיבה ושל מנסרה משולשת ישרה, ומבחינים בין תוספת קבועה למידה לבין הכפלה שלה.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "גם לסדרה זו יש שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "bodyFlow"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "type": "paragraph",
+              "text": "מזהים מבנה ופריסה, מחשבים נפח ושטח פנים של תיבה, קובייה ומנסרה משולשת. בנושא מנסרה משולשת נוספו קובצי PDF על מבנה, פריסה, שטח פנים ונפח של מנסרה משולשת ישרה, ברמות א׳, ב׳ ומצוינות. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "מנסרה משולשת — שטח פנים — בחירת דף ורמה",
+              "href": "/worksheets?grade=7&topic=48",
+              "catalogTopicId": 48
+            },
+            {
+              "type": "cta",
+              "label": "מנסרה משולשת — נפח — בחירת דף ורמה",
+              "href": "/worksheets?grade=7&topic=47",
+              "catalogTopicId": 47
+            },
+            {
+              "type": "cta",
+              "label": "תיבה וקובייה — בחירת דף ורמה",
+              "href": "/worksheets?grade=7&topic=20",
+              "catalogTopicId": 20
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "נפח תיבה = אורך×רוחב×גובה. בקובייה: נפח = צלע³. במנסרה משולשת, הנפח הוא שטח הבסיס המשולש כפול גובה המנסרה. שטח הפנים הוא סכום שטחי כל הפאות.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "תיבה 2×3×4: נפח 24. קובייה צלע 3: נפח 27.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טעויות נפוצות"
+            },
+            {
+              "type": "paragraph",
+              "text": "טעות נפוצה: לערבב בין שטח פנים לנפח, או לשכוח פאה בפריסה.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "קובייה צלע 5. מה הנפח?",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "מנסרה משולשת ישרה: מבנה, פריסה, שטח פנים ונפח — דפי PDF נוספים"
+            },
+            {
+              "type": "paragraph",
+              "text": "מכירים את המבנה של מנסרה משולשת ישרה: שני בסיסים משולשים זהים ושלוש פאות מלבניות, ומבחינים בין גובה המשולש שבבסיס לבין גובה המנסרה. מחשבים את שטח הבסיס, את הנפח, את שטח המעטפת ואת שטח הפנים הכולל, וקוראים מידות מתוך פריסה.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "בכל הרמות כותבים ביטויים אלגבריים לנפח ולשטח הפנים, עובדים עם בסיס משולש שמשורטט במערכת צירים, ומוצאים פי כמה גדלים השטח והנפח כשכל המקצועות ארוכים פי 2 או פי 3. בסוף משרטטים פריסה לפי תיאור במילים. ברמה ב׳ ובמצוינות מחשבים גם בכיוון ההפוך: מוצאים את גובה המנסרה או את הנעלם מתוך נפח או שטח נתונים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "תיבה וקובייה: מבנה, פריסה, שטח פנים ונפח — דפי PDF נוספים"
+            },
+            {
+              "type": "paragraph",
+              "text": "מזהים את המבנה של תיבה וקובייה, מתאימים בין גוף לפריסה שלו ומחשבים שטח פנים ונפח של תיבה וקובייה.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "בשאלות השילוב עוברים מפריסה לתיבה ובונים גופים מקוביות, ומבחינים בין ס״מ, סמ״ר וסמ״ק.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+              "role": "body"
+            }
+          ],
+          "after": [
+            {
+              "type": "paragraph",
+              "text": "מזהים מבנה ופריסה, מחשבים נפח ושטח פנים של תיבה, קובייה ומנסרה משולשת. בנושא מנסרה משולשת נוספו קובצי PDF על מבנה, פריסה, שטח פנים ונפח של מנסרה משולשת ישרה, ברמות א׳, ב׳ ומצוינות. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "מנסרה משולשת — שטח פנים — בחירת דף ורמה",
+              "href": "/worksheets?grade=7&topic=48",
+              "catalogTopicId": 48
+            },
+            {
+              "type": "cta",
+              "label": "מנסרה משולשת — נפח — בחירת דף ורמה",
+              "href": "/worksheets?grade=7&topic=47",
+              "catalogTopicId": 47
+            },
+            {
+              "type": "cta",
+              "label": "תיבה וקובייה — בחירת דף ורמה",
+              "href": "/worksheets?grade=7&topic=20",
+              "catalogTopicId": 20
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "נפח תיבה = אורך×רוחב×גובה. בקובייה: נפח = צלע³. במנסרה משולשת, הנפח הוא שטח הבסיס המשולש כפול גובה המנסרה. שטח הפנים הוא סכום שטחי כל הפאות.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "תיבה 2×3×4: נפח 24. קובייה צלע 3: נפח 27.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טעויות נפוצות"
+            },
+            {
+              "type": "paragraph",
+              "text": "טעות נפוצה: לערבב בין שטח פנים לנפח, או לשכוח פאה בפריסה.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "קובייה צלע 5. מה הנפח?",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "מנסרה משולשת ישרה: מבנה, פריסה, שטח פנים ונפח — דפי PDF נוספים"
+            },
+            {
+              "type": "paragraph",
+              "text": "מכירים את המבנה של מנסרה משולשת ישרה: שני בסיסים משולשים זהים ושלוש פאות מלבניות, ומבחינים בין גובה המשולש שבבסיס לבין גובה המנסרה. מחשבים את שטח הבסיס, את הנפח, את שטח המעטפת ואת שטח הפנים הכולל, וקוראים מידות מתוך פריסה.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "בכל הרמות כותבים ביטויים אלגבריים לנפח ולשטח הפנים, עובדים עם בסיס משולש שמשורטט במערכת צירים, ומוצאים פי כמה גדלים השטח והנפח כשכל המקצועות ארוכים פי 2 או פי 3. בסוף משרטטים פריסה לפי תיאור במילים. ברמה ב׳ ובמצוינות מחשבים גם בכיוון ההפוך: מוצאים את גובה המנסרה או את הנעלם מתוך נפח או שטח נתונים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "תיבה וקובייה: מבנה, פריסה, שטח פנים ונפח — דפי PDF נוספים"
+            },
+            {
+              "type": "paragraph",
+              "text": "מזהים את המבנה של תיבה וקובייה, מתאימים בין גוף לפריסה שלו ומחשבים שטח פנים ונפח של תיבה וקובייה.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "בשאלות השילוב עוברים מפריסה לתיבה ובונים גופים מקוביות, ומבחינים בין ס״מ, סמ״ר וסמ״ק.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "שורש שלישי ושינוי מידות בקובייה, בתיבה ובמנסרה — דפי PDF נוספים"
+            },
+            {
+              "type": "paragraph",
+              "text": "מוצאים צלע של קובייה מתוך נפחה בעזרת שורש שלישי, ופותרים בעיות הפוכות בקובייה ובתיבה.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "בודקים את השינוי כשמוסיפים מידה קבועה למידות של תיבה ושל מנסרה משולשת ישרה, ומבחינים בין תוספת קבועה למידה לבין הכפלה שלה.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "גם לסדרה זו יש שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+              "role": "body"
+            }
+          ]
+        }
+      ],
+      "appendedSection": {
+        "heading": "שורש שלישי ושינוי מידות בקובייה, בתיבה ובמנסרה — דפי PDF נוספים",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "מוצאים צלע של קובייה מתוך נפחה בעזרת שורש שלישי, ופותרים בעיות הפוכות בקובייה ובתיבה.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "בודקים את השינוי כשמוסיפים מידה קבועה למידות של תיבה ושל מנסרה משולשת ישרה, ומבחינים בין תוספת קבועה למידה לבין הכפלה שלה.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "גם לסדרה זו יש שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+            "links": []
+          }
+        ]
+      }
+    },
+    {
+      "slug": "pythagorean-theorem-grade-7",
+      "grade": 7,
+      "topicId": 42,
+      "editionIds": [
+        "ms-20261118-pga-01-r1"
+      ],
+      "baselineSha256": "33c9f1bd1cc3c579454da880ba0d86f62de49efb131289b23030b5fa56f6c03e",
+      "fields": [
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "במשולש ישר־זווית, אם a ו־b הם הניצבים ו־c הוא היתר שמול הזווית הישרה, אז a²+b²=c².",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: אורכי הניצבים הם 6 ו־8. לכן c²=6²+8²=36+64=100, ומכאן שאורך היתר הוא c=10.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "לפני החישוב מזהים את היתר: זו הצלע שמול הזווית הישרה. המשפט מתאים רק למשולש ישר־זווית, ואורך של צלע תמיד חיובי.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "במשולש ישר־זווית אורכי הניצבים הם 5 ו־12. מהו אורך היתר?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: 13, כי 5²+12²=25+144=169=13².",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "משפט פיתגורס — היכרות וחישוב בדפי PDF",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מתרגלים זיהוי היתר והניצבים, התאמת הקשר בין ריבועי אורכי הצלעות וחישוב אורך חסר.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "הדפים משלבים שרטוטים ונתונים גיאומטריים כדי לתרגל בחירת משולש ישר־זווית מתאים ובדיקת התוצאה.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "במשולש ישר־זווית, אם a ו־b הם הניצבים ו־c הוא היתר שמול הזווית הישרה, אז a²+b²=c².",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: אורכי הניצבים הם 6 ו־8. לכן c²=6²+8²=36+64=100, ומכאן שאורך היתר הוא c=10.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "לפני החישוב מזהים את היתר: זו הצלע שמול הזווית הישרה. המשפט מתאים רק למשולש ישר־זווית, ואורך של צלע תמיד חיובי.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "במשולש ישר־זווית אורכי הניצבים הם 5 ו־12. מהו אורך היתר?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: 13, כי 5²+12²=25+144=169=13².",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "משפט פיתגורס — היכרות וחישוב בדפי PDF",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מתרגלים זיהוי היתר והניצבים, התאמת הקשר בין ריבועי אורכי הצלעות וחישוב אורך חסר.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "הדפים משלבים שרטוטים ונתונים גיאומטריים כדי לתרגל בחירת משולש ישר־זווית מתאים ובדיקת התוצאה.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "משפט פיתגורס בחישובי שטח והיקף — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "ממחישים את משפט פיתגורס באמצעות שוויון שטחים של ריבועים על צלעות המשולש.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "משתמשים במשפט פיתגורס כדי לחשב שטחים והיקפים של צורות.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "appendedSection": {
+        "heading": "משפט פיתגורס בחישובי שטח והיקף — דפי PDF נוספים",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "ממחישים את משפט פיתגורס באמצעות שוויון שטחים של ריבועים על צלעות המשולש.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "משתמשים במשפט פיתגורס כדי לחשב שטחים והיקפים של צורות.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+            "links": []
+          }
+        ]
+      }
+    }
+  ],
+  "mediaReadbackSha256": "389f1799e5cb35f2ffa962c0e5a25973d58d51a3a212fd84adc407e63efb635b"
+}

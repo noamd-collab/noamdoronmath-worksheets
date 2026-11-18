@@ -23,6 +23,7 @@ import { readFirst567Activation } from './helpers/first567Activation';
 import { reviewedEqnSgnFacIds } from './fixtures/eqn-sgn-fac-pdf';
 import { reviewedBatch07Ids } from './fixtures/batch07-pdf';
 import { reviewedBatch08Ids } from './fixtures/batch08-pdf';
+import { reviewedBatch09Ids } from './fixtures/batch09-pdf';
 
 const read = (path: string) => JSON.parse(readFileSync(new URL(path, import.meta.url), 'utf8'));
 const registry = read('../../catalog/worksheet-editions.v1.json');
@@ -128,7 +129,7 @@ test('manifest sync omits unactivated PDFs while retaining legacy and verified e
   // later algebra and frequency PDFs, which must not gain viewer/hint activation.
   const algebraId = 'ms-20261115-alg-01-r1';
   const frequencyId = 'ms-20261115-frq-01-r1';
-  assert.equal(allPdfOnly.filter((e: any) => ![algebraId, frequencyId, 'ms-20261115-prb-01-r1', 'ms-20261115-rec-01-r1', 'ms-20261113-par-04-r1', ...reviewedEqnSgnFacIds, ...reviewedExtSmlAfrIds, ...reviewedSaoWpcIds, ...reviewedNext12Ids, ...reviewedNext21Ids, ...reviewedBatch01Ids, ...reviewedBatch02aIds, ...reviewedBatch03Ids, ...probabilityNineIds, ...reviewedBatch04Ids, ...reviewedBatch05Ids, ...reviewedBatch06Ids, ...reviewedBatch07Ids, ...reviewedBatch08Ids].includes(e.editionId)).flatMap((e: any) => e.levels).length, 18);
+  assert.equal(allPdfOnly.filter((e: any) => ![algebraId, frequencyId, 'ms-20261115-prb-01-r1', 'ms-20261115-rec-01-r1', 'ms-20261113-par-04-r1', ...reviewedEqnSgnFacIds, ...reviewedExtSmlAfrIds, ...reviewedSaoWpcIds, ...reviewedNext12Ids, ...reviewedNext21Ids, ...reviewedBatch01Ids, ...reviewedBatch02aIds, ...reviewedBatch03Ids, ...probabilityNineIds, ...reviewedBatch04Ids, ...reviewedBatch05Ids, ...reviewedBatch06Ids, ...reviewedBatch07Ids, ...reviewedBatch08Ids, ...reviewedBatch09Ids].includes(e.editionId)).flatMap((e: any) => e.levels).length, 18);
   // The three grade-9 probability series (G9-PRC-01, G9-PRT-01, G9-PRW-01) are exactly the reviewed rows: nine PDF-only levels.
   const probabilityNine = allPdfOnly.filter((e: any) => probabilityNineIds.includes(e.editionId));
   assert.deepEqual(probabilityNine, reviewedProbabilityNine.additions.map(a => a.edition));

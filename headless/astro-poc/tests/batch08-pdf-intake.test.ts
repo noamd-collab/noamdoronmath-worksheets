@@ -12,6 +12,7 @@ import { loadTopicPage, extractJsonLdFaq, synthesizeBodyFlow } from '../src/lib/
 import { beforeBatch08Catalog, beforeBatch08Copy, beforeBatch08Registry,
   reviewedBatch08 as reviewed, reviewedBatch08Ids as ids } from './fixtures/batch08-pdf';
 import { createRequire } from 'node:module';
+import { beforeBatch09Copy, beforeBatch09Registry, reviewedBatch09 } from './fixtures/batch09-pdf';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -34,7 +35,17 @@ for (const addition of reviewed.additions) {
     delete topic.defaultEditionId;
   }
 }
+for (const addition of reviewedBatch09.additions) {
+  const topic = previousSsr.grades.find((g: any) => g.grade === addition.grade)
+    .topics.find((t: any) => t.id === addition.topicId);
+  topic.editions = topic.editions?.filter((e: any) => e.editionId !== addition.editionId);
+  if (!topic.editions?.length) {
+    delete topic.editions;
+    delete topic.defaultEditionId;
+  }
+}
 const registry = read('headless/catalog/worksheet-editions.v1.json');
+const batch08Registry = beforeBatch09Registry(registry);
 const priorRegistry = beforeBatch08Registry(registry);
 const receipt = read('docs/batch08-pdf-first-20261118.json');
 const expectedIds = ['ms-20261118-sol-01-r1',  'ms-20261118-g8-dat-01-r1',  'ms-20261118-rat-01-r1',  'ms-20261118-rhm-01-r1',  'ms-20261118-sqm-01-r1'];
@@ -94,9 +105,9 @@ test('five additive editions recover the pinned baseline after batch 7 (6e94a979
   assert.equal(receipt.status, 'REVIEWED_MEDIA_SITE_CANDIDATE_NOT_PUBLISHED');
   assert.equal(receipt.sitePublicationClaimed, false);
   assert.deepEqual(receipt.scope, { packages: 5, pdfs: 15, pages: 139, landingRoutes: 5 });
-  assert.equal(registry.editions.length, priorRegistry.editions.length + 5);
-  assert.deepEqual(registry.editions.slice(0, -5), priorRegistry.editions);
-  assert.deepEqual(registry.editions.slice(-5), reviewed.additions.map(a => a.edition));
+  assert.equal(batch08Registry.editions.length, priorRegistry.editions.length + 5);
+  assert.deepEqual(batch08Registry.editions.slice(0, -5), priorRegistry.editions);
+  assert.deepEqual(batch08Registry.editions.slice(-5), reviewed.additions.map(a => a.edition));
   assert.equal(raw.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 976);
   assert.equal(previous.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 976);
 
@@ -143,7 +154,8 @@ test('five additive editions recover the pinned baseline after batch 7 (6e94a979
     const selectedId = oldTopic.defaultEditionId ?? 'legacy';
     const topicAdditions = reviewed.additions.filter(a => a.grade === addition.grade && a.topicId === addition.topicId);
     assert.deepEqual(groups.map(g => g.editionId),
-      [selectedId, ...oldIds.filter(id => id !== selectedId), ...topicAdditions.map(a => a.editionId)]);
+      [selectedId, ...oldIds.filter(id => id !== selectedId), ...topicAdditions.map(a => a.editionId),
+        ...reviewedBatch09.additions.filter(a => a.grade === addition.grade && a.topicId === addition.topicId).map(a => a.editionId)]);
     const oldGroupCount = oldIds.length + 1;
     assert.deepEqual(groups.slice(0, oldGroupCount), topicWorksheetEditionLinks(previousSsr, addition.grade, addition.topicId, back));
     assert.deepEqual(groups.find(g => g.editionId === addition.editionId)!.levels.map(l => l.key), ['a', 'b', 'c']);
@@ -164,7 +176,7 @@ test('five landing routes add only reviewed PDF copy and preserve their complete
     assert.equal(page.title, restored.title);
     assert.deepEqual(page.catalogCta, restored.catalogCta);
     assert.deepEqual(page.catalogCtas, restored.catalogCtas);
-    assert.deepEqual(page.sections.at(-1), delta.appendedSection);
+    assert.deepEqual((beforeBatch09Copy(slug, page) as any).sections.at(-1), delta.appendedSection);
     const loaded = loadTopicPage(slug)!;
     const sections = loaded.sections.filter(section => section.heading === delta.appendedSection.heading);
     assert.equal(sections.length, 1);
@@ -253,7 +265,7 @@ test('preservation fences reject catalog, registry and landing substitutions and
     const grade = moved.grades.find((g: any) => g.grade === 7);
     const source = grade.topics.find((t: any) => t.id === 20);
     const destination = grade.topics.find((t: any) => t.id === destinationId);
-    const misplaced = source.editions.pop();
+    const misplaced = source.editions.splice(source.editions.findIndex((e: any) => e.editionId === 'ms-20261118-sol-01-r1'), 1)[0];
     assert.equal(misplaced.editionId, 'ms-20261118-sol-01-r1');
     if (!source.editions.length) {
       delete source.editions;

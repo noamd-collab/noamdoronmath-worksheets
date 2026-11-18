@@ -15,6 +15,7 @@ import { beforeBatch02aCatalog, beforeBatch02aRegistry, beforeBatch02aCopy,
 import { reviewedBatch05 as reviewedBatch05 } from './fixtures/batch05-pdf';
 import { beforeBatch03Registry } from './fixtures/batch03-pdf';
 import { beforeBatch08Copy, reviewedBatch08 } from './fixtures/batch08-pdf';
+import { reviewedBatch09 } from './fixtures/batch09-pdf';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -169,7 +170,7 @@ test('all forty-eight additions open their own reviewed PDF directly while every
     });
     const back = `/worksheets?grade=${addition.grade}&topic=${addition.topicId}`;
     const groups = topicWorksheetEditionLinks(catalog, addition.grade, addition.topicId, back);
-    const laterIds = [...reviewedBatch05.additions, ...reviewedBatch08.additions]
+    const laterIds = [...reviewedBatch05.additions, ...reviewedBatch08.additions, ...reviewedBatch09.additions]
       .filter(later => later.grade === addition.grade && later.topicId === addition.topicId)
       .map(later => later.editionId);
     assert.deepEqual(groups.map(g => g.editionId),

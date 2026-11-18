@@ -12,6 +12,7 @@ import { buildTeacherLandingCatalog, getTeacherLandingScope } from '../src/lib/t
 import { collectViewerPdfIds } from '../scripts/sync-github-static.mjs';
 import { loadTopicPage, extractJsonLdFaq, synthesizeBodyFlow } from '../src/lib/topicPages';
 import { beforeEqnSgnFacCatalog, beforeEqnSgnFacCopy, reviewedEqnSgnFac as reviewed, reviewedEqnSgnFacIds as ids } from './fixtures/eqn-sgn-fac-pdf';
+import { beforeBatch09Copy, reviewedBatch09 } from './fixtures/batch09-pdf';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -49,7 +50,8 @@ test('nine exact additional PDFs preserve every preceding catalog and registry b
     assert.equal(edition.publicationMode, 'pdf-only'); assert.equal(edition.routing.usesViewer, false);
     assert.equal(edition.routing.aiHintShown, false);
     const groups = topicWorksheetEditionLinks(catalog, a.grade, a.topicId, `/worksheets?grade=${a.grade}&topic=${a.topicId}`);
-    assert.deepEqual(groups.map(g => g.editionId), ['legacy', a.editionId]);
+    assert.deepEqual(groups.map(g => g.editionId), ['legacy', a.editionId,
+      ...reviewedBatch09.additions.filter(x => x.grade === a.grade && x.topicId === a.topicId).map(x => x.editionId)]);
     assert.deepEqual(groups[0], topicWorksheetEditionLinks(previous, a.grade, a.topicId, `/worksheets?grade=${a.grade}&topic=${a.topicId}`)[0]);
     assert.deepEqual(groups[1].levels.map(l => l.href), a.pdfIds.map(id => `${catalog.config.pdfBase}${id}.pdf`));
     for (const level of edition.levels) {
@@ -84,11 +86,11 @@ test('landing additions describe actual scope, retain all old CTAs and keep FAQ 
   for (const a of reviewed.additions) {
     const raw = read(`headless/astro-poc/src/data/topic-pages/${a.slug}.json`);
     const page = loadTopicPage(a.slug);
-    const restored = beforeEqnSgnFacCopy(a.slug, raw);
+    const restored = beforeEqnSgnFacCopy(a.slug, beforeBatch09Copy(a.slug, raw));
     assert.equal(raw.updatedLine, 'נועם דורון מתמטיקה · עודכן 15.11.2026');
     assert.deepEqual(raw.catalogCta, restored.catalogCta); assert.deepEqual(raw.catalogCtas, restored.catalogCtas);
     assert.equal(raw.h1, restored.h1); assert.equal(raw.title, restored.title);
-    const added = raw.sections.at(-1);
+    const added = (beforeBatch09Copy(a.slug, raw) as any).sections.at(-1);
     const flow = synthesizeBodyFlow(page);
     const plain = (text: string | undefined) => text?.replace(/[\u2066-\u2069]/g, '');
     assert.equal(flow.filter(b => b.type === 'heading' && plain(b.text) === added.heading).length, 1);

@@ -13,6 +13,7 @@ import { beforeBatch06Catalog, beforeBatch06Registry, reviewedBatch06 } from './
 import { beforeBatch05Catalog, beforeBatch05Copy, beforeBatch05Registry,
   reviewedBatch05 as reviewed, reviewedBatch05Ids as ids } from './fixtures/batch05-pdf';
 import { createRequire } from 'node:module';
+import { beforeBatch09Copy, reviewedBatch09 } from './fixtures/batch09-pdf';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -36,6 +37,15 @@ for (const addition of [...reviewed.additions, ...reviewedBatch06.additions]) {
   const topic = previousSsr.grades.find((g: any) => g.grade === addition.grade)
     .topics.find((t: any) => t.id === addition.topicId);
   topic.editions = topic.editions?.filter((e: any) => !ids.includes(e.editionId));
+  if (!topic.editions?.length) {
+    delete topic.editions;
+    delete topic.defaultEditionId;
+  }
+}
+for (const addition of reviewedBatch09.additions) {
+  const topic = previousSsr.grades.find((g: any) => g.grade === addition.grade)
+    .topics.find((t: any) => t.id === addition.topicId);
+  topic.editions = topic.editions?.filter((e: any) => e.editionId !== addition.editionId);
   if (!topic.editions?.length) {
     delete topic.editions;
     delete topic.defaultEditionId;
@@ -181,7 +191,8 @@ test('eleven additive editions recover the pinned 46765664 baseline without chan
     const selectedId = oldTopic.defaultEditionId ?? 'legacy';
     const topicAdditions = reviewed.additions.filter(a => a.grade === addition.grade && a.topicId === addition.topicId);
     assert.deepEqual(groups.map(g => g.editionId),
-      [selectedId, ...oldIds.filter(id => id !== selectedId), ...topicAdditions.map(a => a.editionId)]);
+      [selectedId, ...oldIds.filter(id => id !== selectedId), ...topicAdditions.map(a => a.editionId),
+        ...reviewedBatch09.additions.filter(a => a.grade === addition.grade && a.topicId === addition.topicId).map(a => a.editionId)]);
     const oldGroupCount = oldIds.length + 1;
     assert.deepEqual(groups.slice(0, oldGroupCount), topicWorksheetEditionLinks(previousSsr, addition.grade, addition.topicId, back));
     assert.deepEqual(groups.find(g => g.editionId === addition.editionId)!.levels.map(l => l.key), ['a', 'b', 'c']);
@@ -202,7 +213,7 @@ test('ten landing routes add only reviewed PDF copy and preserve their complete 
     assert.equal(page.title, restored.title);
     assert.deepEqual(page.catalogCta, restored.catalogCta);
     assert.deepEqual(page.catalogCtas, restored.catalogCtas);
-    assert.deepEqual(page.sections.at(-1), delta.appendedSection);
+    assert.deepEqual((beforeBatch09Copy(slug, page) as any).sections.at(-1), delta.appendedSection);
     const loaded = loadTopicPage(slug)!;
     const sections = loaded.sections.filter(section => section.heading === delta.appendedSection.heading);
     assert.equal(sections.length, 1);
