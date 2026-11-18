@@ -29,6 +29,7 @@ import { reviewedBatch07 } from './fixtures/batch07-pdf';
 import { reviewedBatch08 } from './fixtures/batch08-pdf';
 import { reviewedBatch09 } from './fixtures/batch09-pdf';
 import { reviewedBatch10 } from './fixtures/batch10-pdf';
+import { reviewedBatch11 } from './fixtures/batch11-pdf';
 import { reviewedPcm53 } from './fixtures/pcm53-pdf';
 import { afterLandingCorrections } from './fixtures/landing-corrections-20261118';
 
@@ -496,7 +497,10 @@ test('real batch-03 pages expose twenty-four PDFs only in their mapped group, tw
     const laterBatch07 = reviewedBatch07.additions
       .filter(a => a.grade === addition.grade && a.topicId === addition.topicId).map(a => a.editionId);
     const order = [...controls.querySelectorAll('a[data-edition-id]')].map(a => a.getAttribute('data-edition-id'));
-    assert.deepEqual([...new Set(order)], ['legacy', ...addition.baselineEditionIds, ...sameTopic, ...laterBatch06, ...laterBatch07]);
+    // Batch 11 (18.11) adds G9-QFR-01 on 9/6 after G9-QFM-01.
+    const laterBatch11 = reviewedBatch11.additions
+      .filter(a => a.grade === addition.grade && a.topicId === addition.topicId).map(a => a.editionId);
+    assert.deepEqual([...new Set(order)], ['legacy', ...addition.baselineEditionIds, ...sameTopic, ...laterBatch06, ...laterBatch07, ...laterBatch11]);
     for (const earlier of addition.baselineEditionIds) assert.equal(controls.querySelectorAll(`a[data-edition-id="${earlier}"]`).length, 3);
     const anchors = [...document.querySelectorAll('[id]')].map(e => e.id);
     assert.equal(new Set(anchors).size, anchors.length, `${addition.slug}: unique anchors`);
@@ -761,6 +765,32 @@ test('real batch-10 pages expose all 18 direct PDFs in their mapped edition grou
   const groups = [...new Set([...quadratic.querySelector('.exact-topic-copy')!.querySelectorAll('a[data-edition-id]')]
     .map(link => link.getAttribute('data-edition-id')))];
   assert.deepEqual(groups, ['legacy', 'ms-20261117-qvl-01-r1', 'ms-20261118-qsh-01-r1']);
+});
+
+test('real batch-11 pages expose all 12 direct PDFs after the earlier editions of their topics', async () => {
+  const urls = new Set<string>();
+  const slugs = [...new Set(reviewedBatch11.additions.map(addition => addition.slug))];
+  for (const slug of slugs) {
+    const document = await renderTopic(slug), hero = document.querySelector('.exact-topic-copy')!;
+    for (const addition of reviewedBatch11.additions.filter(item => item.slug === slug)) {
+      const links = [...hero.querySelectorAll(`a[data-edition-id="${addition.editionId}"]`)];
+      assert.deepEqual(links.map(link => link.getAttribute('href')),
+        addition.edition.levels.map(level => `https://static.wixstatic.com/ugd/d8e7ad_${level.pdfId}.pdf`));
+      assert.ok(links.every(link => link.textContent.includes('פתיחת PDF')
+        && !link.textContent.includes('רמזי') && !link.getAttribute('href')!.includes('viewer')));
+      links.forEach(link => urls.add(link.getAttribute('href')!));
+      const groups = [...new Set([...hero.querySelectorAll('a[data-edition-id]')].map(link => link.getAttribute('data-edition-id')))];
+      assert.deepEqual(groups, ['legacy', ...addition.baselineEditionIds, addition.editionId], `${slug}: later edition after the earlier ones`);
+    }
+    const delta = reviewedBatch11.landingDeltas.find(item => item.slug === slug)!;
+    const mainText = document.querySelector('main')!.textContent.replace(/[⁦-⁩]/g, '');
+    for (const block of delta.appendedSection.blocks) assert.ok(mainText.includes(block.text), `${slug}: reviewed landing section`);
+    assert.ok(!mainText.includes('נועם AI'), `${slug}: no Noam AI hint copy`);
+    const anchors = [...document.querySelectorAll('[id]')].map(element => element.id);
+    assert.equal(new Set(anchors).size, anchors.length, `${slug}: unique anchors`);
+  }
+  assert.equal(slugs.length, 4);
+  assert.equal(urls.size, 12);
 });
 
 test('the new reduced-track landing percentages-grade-9 exposes exactly the three reviewed PCM PDFs and no hint tool', async () => {

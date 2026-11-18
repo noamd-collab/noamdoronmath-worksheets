@@ -4739,6 +4739,174 @@
           "revision": 1
         }
       ]
+    },
+    {
+      "grade": 9,
+      "topicId": 6,
+      "editionId": "ms-20261118-qfr-01-r1",
+      "label": "נוסחת השורשים לט׳ רגילה: פתרון משוואות ריבועיות ומספר הפתרונות · PDF",
+      "nativePrefix": "G9-T102",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "status": "published",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "696c707d9e4f42049ead576bc0563f6e",
+          "pdfSha256": "577f43706bedd87be1e07445538bc4dcd40401bb6a3d65a4ce0685661b897a5b",
+          "sourceSha256": "0c8e5f8ebef0da26640579ce70189df360a27520b8d29bca2b57cb3b9edb5e0b",
+          "nativeExportSha256": "16fb553809cf5ef88e5e6f20d4788610ef788552bd9e7132c2e6d1376c3c01c1",
+          "worksheetId": "ms-g9-qfr-01-a-r1",
+          "revision": 1
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "bc52e89c74dc4cbfaddd2e90c293a8d7",
+          "pdfSha256": "f585c2084f2e155e83db67768909ceb42f6c97a61c41e7ba7e99def1376d36b2",
+          "sourceSha256": "bccdd4c3f079b38ad76db5269172b7efa5d5095254882c11b1a4726f958c5627",
+          "nativeExportSha256": "97715f6248c0cd55fb110ebc22b0227a714d63c758de1a7d89b99d94228389e1",
+          "worksheetId": "ms-g9-qfr-01-b-r1",
+          "revision": 1
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "1f19c56dde9748f588a47aca92615f60",
+          "pdfSha256": "4d8e0213d425c2f74b97b2a5ae09a8e871b0353effdaf4e3ba5917dc34033a37",
+          "sourceSha256": "e3236c158d383d9032c88e4f5caa13893e5461b80eb8dbb09a765f52dc1f3e3f",
+          "nativeExportSha256": "094284c6883ecc2595ad6a0f576dc4a960dbec4bd57d22a9b0e785d3595a4450",
+          "worksheetId": "ms-g9-qfr-01-c-r1",
+          "revision": 1
+        }
+      ]
+    },
+    {
+      "grade": 7,
+      "topicId": 26,
+      "editionId": "ms-20261118-dgm-01-r1",
+      "label": "דיאגרמות סטטיסטיות: עמודות ועיגול, שכיחות יחסית והערכת הסתברות · PDF",
+      "nativePrefix": "G7-T102",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "status": "published",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "67785355a263444f831fbce6431ef939",
+          "pdfSha256": "6514cd9fab787eedc665616e70b6cfd3df0703e3d21baadbe6252ec673722d88",
+          "sourceSha256": "ee237869e72b9c52138477f404e9f8a3b453e7eb28ad79c43faac293b0f111ee",
+          "nativeExportSha256": "6782b76746e7aa38a93ee0e9b3325d5c0efb53743eb00965d66b54c8e28dfb83",
+          "worksheetId": "ms-g7-dgm-01-a-r1",
+          "revision": 1
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "3751febc9e2e43dba6bbab3e65631fbe",
+          "pdfSha256": "f96d72f89c9a72886a76430fc75954993ec75f0208af7191c47456b1bfea4b1e",
+          "sourceSha256": "5f848402cbabcf6491bd125ce6e139f498f86743a81011ff8d9465b2b840a22b",
+          "nativeExportSha256": "3fd327422612146b358f28b85840064c4628b8716e8e4d51cbb20884fc2ff813",
+          "worksheetId": "ms-g7-dgm-01-b-r1",
+          "revision": 1
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "78cb8aac50f0479db087f298f6ba59bf",
+          "pdfSha256": "08a529b6ca6502881f0cacac16269f336b633f35ce931d1b9130edc407e7d32f",
+          "sourceSha256": "7e97ade3c765ddca431af745bdf5eafc58e047f687b254a7fc8dff0fbee613eb",
+          "nativeExportSha256": "a85752132aff2c4dcf10c482c1d56dde3a73b4d0f1fcc7736b6a8f2d5167de8a",
+          "worksheetId": "ms-g7-dgm-01-c-r1",
+          "revision": 1
+        }
+      ]
+    },
+    {
+      "grade": 7,
+      "topicId": 11,
+      "editionId": "ms-20261118-ang-01-r1",
+      "label": "מהי זווית, סימון זוויות, סוגי זוויות ומדידת זוויות · PDF",
+      "nativePrefix": "G7-T53",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "status": "published",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "f5ebdde1cefc4b9483d48894ed9f419d",
+          "pdfSha256": "88d03cda26c913407793645db26c2201372827d2d9f4175e9c8585aac5cf7eee",
+          "sourceSha256": "373c7b0794353177ff14c1570e97f69480922091c170211081570308f24ca445",
+          "nativeExportSha256": "41fa906d9de43122d16526070ce6d7b9aa5d2533d08acadd3fcf3c5b3d2397a9",
+          "worksheetId": "ms-g7-ang-01-a-r1",
+          "revision": 1
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "be4d3aa8e1244697895cbf263b549827",
+          "pdfSha256": "814096b23249275593e7b52273dfdd602d844c332510dfadfaa6839af1a68474",
+          "sourceSha256": "ea6c1f42458890b2a01c801324eb8aade5b5a4129958bbc1c131aebf00b2d0b7",
+          "nativeExportSha256": "76ab21e28a0c878f9a6d407bae8136d972fe2c13a50cd8951d0b452ad4d96533",
+          "worksheetId": "ms-g7-ang-01-b-r1",
+          "revision": 1
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "c91d007982374cd19f47a714486c85bf",
+          "pdfSha256": "2303ae152fa7b13b7c0d8b88830aa81ef24889ceac894bb28f2ccb5d26cb1a73",
+          "sourceSha256": "01c4906f5d2a4aee434b0eec840a6657bda889a40f0737b2e73357338f0a848b",
+          "nativeExportSha256": "0d4e92f715654fb2ad5acfd19312353634233836df7a43cd7f39713ce249164c",
+          "worksheetId": "ms-g7-ang-01-c-r1",
+          "revision": 1
+        }
+      ]
+    },
+    {
+      "grade": 7,
+      "topicId": 14,
+      "editionId": "ms-20261118-ang-04-r1",
+      "label": "זוויות במשולשים ובמרובעים · PDF",
+      "nativePrefix": "G7-T56",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "status": "published",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "5f86e81c30d4433b880b6722a816911d",
+          "pdfSha256": "fef3d289243e7b21115228661268b8cb8b700b8cb074bfd8e1cd0145a6bdd094",
+          "sourceSha256": "244b7b0af47fc7f9a1a92d3b6282c3e6addc88009d9702e2e870a9d08b4d0301",
+          "nativeExportSha256": "7390b2c57c98edcabb832d146fa25afc8e720afa010e375e5ee7ab604da17f65",
+          "worksheetId": "ms-g7-ang-04-a-r1",
+          "revision": 1
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "a02da047e95e47b5bf14dcc8f2fbe18a",
+          "pdfSha256": "6af863c296cf24899318b5d3afa0ad7aabf3e788ec464d2262b32196480fff8b",
+          "sourceSha256": "da31f9120843b6c831fb7b496ad5507fa9d46d174eae8f227caf5e04c6392455",
+          "nativeExportSha256": "8bbbf57308a0559f579fa81a371932458b30b1585b03062797cd42f7c4705e09",
+          "worksheetId": "ms-g7-ang-04-b-r1",
+          "revision": 1
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "42860fc585fd431e86097ef79317e189",
+          "pdfSha256": "1c750641921dea4c36af53cf0460f5c6aa170e6de473d32ff0a422fb357a03c2",
+          "sourceSha256": "9bde1b33253588c3f5fba48b5beaa626517b0f4e570dc6ff2b2d662166d057c4",
+          "nativeExportSha256": "2c43c916807e498e4cb6972753d09525368d385144da0ebc47eb452b668bc529",
+          "worksheetId": "ms-g7-ang-04-c-r1",
+          "revision": 1
+        }
+      ]
     }
   ]
 }

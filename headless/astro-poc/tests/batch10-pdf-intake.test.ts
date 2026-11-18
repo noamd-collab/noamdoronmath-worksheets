@@ -11,6 +11,7 @@ import { collectViewerPdfIds } from '../scripts/sync-github-static.mjs';
 import { loadTopicPage, extractJsonLdFaq, synthesizeBodyFlow } from '../src/lib/topicPages';
 import { beforeBatch10Catalog, beforeBatch10Copy, beforeBatch10Registry,
   reviewedBatch10 as reviewed, reviewedBatch10Ids as ids } from './fixtures/batch10-pdf';
+import { beforeBatch11Registry } from './fixtures/batch11-pdf';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
@@ -35,6 +36,8 @@ for (const addition of reviewed.additions) {
   }
 }
 const registry = read('headless/catalog/worksheet-editions.v1.json');
+// Batch 11 (18.11) is newer: its rows come after batch 10's.
+const batch10Registry = beforeBatch11Registry(registry);
 const priorRegistry = beforeBatch10Registry(registry);
 const receipt = read('docs/batch10-pdf-first-20261118.json');
 const expectedIds = ['ms-20261118-dat-03-r1', 'ms-20261118-crc-01-r1', 'ms-20261118-cng-01-r1', 'ms-20261118-dir-01-r1', 'ms-20261118-ang-03-r1', 'ms-20261118-qsh-01-r1'];
@@ -100,9 +103,9 @@ test('six additive editions recover the pinned baseline after the landing correc
   assert.equal(receipt.status, 'REVIEWED_MEDIA_SITE_CANDIDATE_NOT_PUBLISHED');
   assert.equal(receipt.sitePublicationClaimed, false);
   assert.deepEqual(receipt.scope, { packages: 6, pdfs: 18, pages: 183, landingRoutes: 6 });
-  assert.equal(registry.editions.length, priorRegistry.editions.length + 6);
-  assert.deepEqual(registry.editions.slice(0, -6), priorRegistry.editions);
-  assert.deepEqual(registry.editions.slice(-6), reviewed.additions.map(a => a.edition));
+  assert.equal(batch10Registry.editions.length, priorRegistry.editions.length + 6);
+  assert.deepEqual(batch10Registry.editions.slice(0, -6), priorRegistry.editions);
+  assert.deepEqual(batch10Registry.editions.slice(-6), reviewed.additions.map(a => a.edition));
   assert.equal(raw.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 991); // batch 10 adds base topic 9/53 (+3 levels)
   assert.equal(previous.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 988);
 

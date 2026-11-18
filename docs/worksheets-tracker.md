@@ -1,3 +1,10 @@
+## 2026-11-18 — batch 11: four reviewed PDF editions; the grade 7 angle units go live (candidate)
+
+- G9-QFR-01 (9/6, quadratic-equations-grade-9, ט׳ רגילה; the third extra edition on that topic after QAP-01 and QFM-01), G7-DGM-01 (7/26, relative-frequency-grade-7, after FRQ-01), G7-ANG-01 (7/11, angles-introduction-measurement-grade-7) and G7-ANG-04 (7/14, triangle-quadrilateral-angle-sum-grade-7): twelve pdf-only PDFs, non-default; each landing gets one short section. Every existing default and earlier edition stays in place.
+- G7-DGM-01 maps to 7/26 rather than 7/24: most of the series is relative frequency and probability estimation (drafter and two independent checkers agreed). Its r05 and r06 are two small language fixes on top of the reviewed r04 ("מד־זווית" for a non-word, and the percent sign after its number); G7-ANG-04 r03 removes a page that held only "בהצלחה!". Both were checked by independent delta reviews.
+- The two angle pages get their first PDF edition; their legacy sentence that named Noam AI as the hint tool now reads like the landing corrections.
+- Review receipts (Google Antigravity) are cited in `docs/batch11-pdf-first-20261118.json` by project-relative path and SHA-256; registry source and native hashes are the deliver files of the same build as each published PDF; two media readbacks per PDF match.
+
 ## 2026-11-18 — batch 10: six reviewed PDF editions and reduced-track topic 9/53 in a new month group נובמבר (candidate)
 
 - Six non-default pdf-only editions on six existing topic pages (18 PDFs): G8-DAT-03 (8/18, pie-charts-grade-8), G8-CRC-01 (8/63, circle-area-circumference-grade-8), G8-CNG-01 (8/36, triangle-congruence-grade-8), G7-DIR-01 (7/1, number-line-absolute-value-grade-7), G7-ANG-03 (7/12, adjacent-vertical-angles-grade-7) and G9-QSH-01 (9/5, quadratic-function-grade-9). Every existing default and earlier edition stays in place; each landing gets one short section.

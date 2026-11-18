@@ -15,6 +15,7 @@ import { beforeBatch03Catalog, beforeBatch03Registry, beforeBatch03Copy,
 import { beforeProbabilityNineRegistry } from './fixtures/probability-nine-pdf';
 import { beforeBatch06Copy, reviewedBatch06 } from './fixtures/batch06-pdf';
 import { reviewedBatch07 } from './fixtures/batch07-pdf';
+import { reviewedBatch11 } from './fixtures/batch11-pdf';
 import { beforeLandingCorrections } from './fixtures/landing-corrections-20261118';
 
 const require = createRequire(import.meta.url);
@@ -147,8 +148,11 @@ test('all twenty-four additions open their own reviewed PDF directly while every
       .filter(a => a.grade === addition.grade && a.topicId === addition.topicId).map(a => a.editionId);
     const laterBatch07 = reviewedBatch07.additions
       .filter(a => a.grade === addition.grade && a.topicId === addition.topicId).map(a => a.editionId);
+    // Batch 11 (18.11) adds G9-QFR-01 on 9/6 after G9-QFM-01.
+    const laterBatch11 = reviewedBatch11.additions
+      .filter(a => a.grade === addition.grade && a.topicId === addition.topicId).map(a => a.editionId);
     assert.deepEqual(groups.map(g => g.editionId),
-      ['legacy', ...addition.baselineEditionIds, ...sameTopic(addition), ...laterBatch06, ...laterBatch07]);
+      ['legacy', ...addition.baselineEditionIds, ...sameTopic(addition), ...laterBatch06, ...laterBatch07, ...laterBatch11]);
     assert.deepEqual(groups.slice(0, 1 + addition.baselineEditionIds.length),
       topicWorksheetEditionLinks(previousSsr, addition.grade, addition.topicId, back));
     const group = groups.find(g => g.editionId === addition.editionId)!;
