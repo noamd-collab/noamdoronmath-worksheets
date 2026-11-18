@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import reviewed from './batch10-pdf-reviewed.json';
 import { beforePcm53Catalog } from './pcm53-pdf';
+import { beforeBatch11Catalog, beforeBatch11Copy, beforeBatch11Registry } from './batch11-pdf';
 
 export { reviewed as reviewedBatch10 };
 export const reviewedBatch10Ids = reviewed.additions.map(a => a.editionId);
@@ -14,7 +15,8 @@ const plain = (value: unknown): unknown => typeof value === 'string' ? value.rep
 /** Undo only batch 10's reviewed overlays (and its new base topic 9/53) and return the exact earlier state. */
 export function beforeBatch10Catalog<T>(catalog: T): T {
   // Topic 9/53 and its month group r9nov belong to batch 10: reverse them together with the editions.
-  const restored: any = structuredClone(beforePcm53Catalog(catalog));
+  // Batch 11 (18.11) is newer: reverse it first.
+  const restored: any = structuredClone(beforePcm53Catalog(beforeBatch11Catalog(catalog)));
   const groups = new Map<string, typeof reviewed.additions>();
   for (const addition of reviewed.additions) {
     const key = `${addition.grade}:${addition.topicId}`;
@@ -43,7 +45,8 @@ export function beforeBatch10Catalog<T>(catalog: T): T {
 
 /** Validate exact registry rows before removing batch 10. */
 export function beforeBatch10Registry<T>(registry: T): T {
-  const restored: any = structuredClone(registry);
+  // Batch 11 (18.11) is newer: reverse it first.
+  const restored: any = structuredClone(beforeBatch11Registry(registry));
   for (const addition of reviewed.additions) {
     const matches = restored.editions.filter((e: any) => e.editionId === addition.editionId);
     assert.deepEqual(matches, [addition.edition], `${addition.editionId}: exact reviewed registry row`);
@@ -54,6 +57,8 @@ export function beforeBatch10Registry<T>(registry: T): T {
 
 /** Verify batch 10's exact changed fields and recover the earlier landing. */
 export function beforeBatch10Copy<T>(slug: string, page: T): T {
+  // Batch 11 (18.11) is newer: unwind it first. Older tests never call beforeBatch11Copy themselves.
+  page = beforeBatch11Copy(slug, page);
   const delta = reviewed.landingDeltas.find(d => d.slug === slug);
   if (!delta) return page;
   const restored: any = structuredClone(page);

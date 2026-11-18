@@ -10,6 +10,7 @@ import { buildTeacherCatalog } from '../scripts/build-teacher-catalog.mjs';
 import { buildTeacherLandingCatalog, getTeacherLandingScope } from '../src/lib/teacherLandingCatalog';
 import { collectViewerPdfIds } from '../scripts/sync-github-static.mjs';
 import { beforeEqnSgnFacCatalog } from './fixtures/eqn-sgn-fac-pdf';
+import { reviewedBatch11 } from './fixtures/batch11-pdf';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -40,7 +41,10 @@ test('FRQ adds exact reviewed PDFs while preserving the legacy default and every
   assert.deepEqual(edition.levels.map(l => l.pdfSha256), hashes);
   assert.ok(edition.levels.every(l => !l.ramzi));
   const groups = topicWorksheetEditionLinks(catalog, 7, 26, '/worksheets?grade=7&topic=26');
-  assert.deepEqual(groups.map(g => g.editionId), ['legacy', id]);
+  // Batch 11 (18.11) adds G7-DGM-01 on 7/26 after FRQ-01.
+  const later = reviewedBatch11.additions.filter(a => a.grade === 7 && a.topicId === 26).map(a => a.editionId);
+  assert.deepEqual(later, ['ms-20261118-dgm-01-r1']);
+  assert.deepEqual(groups.map(g => g.editionId), ['legacy', id, ...later]);
   assert.deepEqual(groups[1].levels.map(l => l.href), pdfs.map(pdf => `${catalog.config.pdfBase}${pdf}.pdf`));
   for (const level of topic.levels) {
     assert.equal(buildWorksheetHref({ catalog, grade: 7, topic, levelKey: level.key }),

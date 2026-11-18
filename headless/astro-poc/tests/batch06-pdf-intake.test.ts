@@ -14,6 +14,7 @@ import { beforeBatch06Catalog, beforeBatch06Copy, beforeBatch06Registry,
 import { createRequire } from 'node:module';
 import { beforeBatch07Copy, beforeBatch07Registry } from './fixtures/batch07-pdf';
 import { reviewedBatch10 } from './fixtures/batch10-pdf';
+import { reviewedBatch11 } from './fixtures/batch11-pdf';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -36,8 +37,8 @@ for (const addition of reviewed.additions) {
     delete topic.defaultEditionId;
   }
 }
-// Batch 10 (18.11) adds a later edition on topic 9/5 (G9-QSH-01, after G9-QVL-01).
-for (const addition of reviewedBatch10.additions) {
+// Batch 10 (18.11) adds a later edition on topic 9/5 (G9-QSH-01, after G9-QVL-01); batch 11 one on 9/6 (G9-QFR-01).
+for (const addition of [...reviewedBatch10.additions, ...reviewedBatch11.additions]) {
   const topic = previousSsr.grades.find((g: any) => g.grade === addition.grade)
     .topics.find((t: any) => t.id === addition.topicId);
   topic.editions = topic.editions?.filter((e: any) => e.editionId !== addition.editionId);
@@ -189,7 +190,8 @@ test('eleven additive editions recover the pinned baseline after batch 5 (4db6f5
     const topicAdditions = reviewed.additions.filter(a => a.grade === addition.grade && a.topicId === addition.topicId);
     assert.deepEqual(groups.map(g => g.editionId),
       [selectedId, ...oldIds.filter(id => id !== selectedId), ...topicAdditions.map(a => a.editionId),
-        ...reviewedBatch10.additions.filter(a => a.grade === addition.grade && a.topicId === addition.topicId).map(a => a.editionId)]);
+        ...reviewedBatch10.additions.filter(a => a.grade === addition.grade && a.topicId === addition.topicId).map(a => a.editionId),
+        ...reviewedBatch11.additions.filter(a => a.grade === addition.grade && a.topicId === addition.topicId).map(a => a.editionId)]);
     const oldGroupCount = oldIds.length + 1;
     assert.deepEqual(groups.slice(0, oldGroupCount), topicWorksheetEditionLinks(previousSsr, addition.grade, addition.topicId, back));
     assert.deepEqual(groups.find(g => g.editionId === addition.editionId)!.levels.map(l => l.key), ['a', 'b', 'c']);
