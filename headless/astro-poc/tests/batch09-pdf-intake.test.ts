@@ -15,6 +15,7 @@ import { createRequire } from 'node:module';
 import { beforeLandingCorrections } from './fixtures/landing-corrections-20261118';
 import { beforeBatch10Registry } from './fixtures/batch10-pdf';
 import { beforeReviewedRamziActivation } from './helpers/beforeReviewedRamziActivation';
+import { beforeRamziActivationCopy } from './fixtures/ramzi-activation-copy-20261119';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -191,7 +192,8 @@ test('six landing routes add only reviewed PDF copy and preserve their complete 
     for (const block of delta.appendedSection.blocks) {
       assert.equal(flow.filter(item => item.type === 'paragraph' && item.text?.replace(/[⁦-⁩]/g, '') === block.text).length, 1);
     }
-    const faq = extractJsonLdFaq(loaded.jsonLd).map(item => ({
+    // The 19.11 copy after the additional Ramzi activation is newer than batch 9: compare without it.
+    const faq = extractJsonLdFaq((beforeRamziActivationCopy(slug, loaded) as any).jsonLd).map(item => ({
       question: item.question.replace(/[⁦-⁩]/g, ''), answer: item.answer.replace(/[⁦-⁩]/g, ''),
     }));
     const baselineFaq = extractJsonLdFaq((beforeBatch09Copy(slug, loaded) as any).jsonLd).map(item => ({

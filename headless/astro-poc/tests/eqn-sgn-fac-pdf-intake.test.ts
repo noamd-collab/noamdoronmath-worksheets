@@ -14,6 +14,7 @@ import { loadTopicPage, extractJsonLdFaq, synthesizeBodyFlow } from '../src/lib/
 import { beforeEqnSgnFacCatalog, beforeEqnSgnFacCopy, reviewedEqnSgnFac as reviewed, reviewedEqnSgnFacIds as ids } from './fixtures/eqn-sgn-fac-pdf';
 import { beforeBatch09Copy, reviewedBatch09 } from './fixtures/batch09-pdf';
 import { beforeReviewedRamziActivation } from './helpers/beforeReviewedRamziActivation';
+import { beforeRamziActivationCopy } from './fixtures/ramzi-activation-copy-20261119';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -109,8 +110,11 @@ test('landing additions describe actual scope, retain all old CTAs and keep FAQ 
   assert.deepEqual(equations.catalogCtas.map(c => c.catalogTopicId), [23, 34, 32]);
   assert.match(equations.sections.at(-1)!.blocks[0].text!, /משמעות הפתרון/);
   const factoring = loadTopicPage('factoring-grade-9');
-  assert.match(factoring.intro, /בדפים שנפתחים עם רמזי אפשר לקבל רמזים/);
-  assert.match(factoring.intro.replace(/[\u2066-\u2069]/g, ''), /קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה/);
+  // The 19.11 copy after the additional Ramzi activation names the series that now opens with Ramzi.
+  const factoringBefore = beforeRamziActivationCopy('factoring-grade-9', factoring) as typeof factoring;
+  assert.match(factoringBefore.intro, /בדפים שנפתחים עם רמזי אפשר לקבל רמזים/);
+  assert.match(factoringBefore.intro.replace(/[\u2066-\u2069]/g, ''), /קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה/);
+  assert.match(factoring.intro.replace(/[\u2066-\u2069]/g, ''), /מהדורת ה־PDF הנוספת נפתחים באתר עם רמזי/);
   const graph = factoring.jsonLd['@graph'] as Array<{ description: string }>;
   assert.equal(graph[0].description, factoring.description);
   assert.equal(graph[1].description, factoring.description);

@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import reviewed from './batch12-pdf-reviewed.json';
 import { beforeReviewedRamziActivation } from '../helpers/beforeReviewedRamziActivation';
+import { beforeRamziActivationCopy } from './ramzi-activation-copy-20261119';
 
 export { reviewed as reviewedBatch12 };
 export const reviewedBatch12Ids = reviewed.additions.map(a => a.editionId);
@@ -54,6 +55,8 @@ export function beforeBatch12Registry<T>(registry: T): T {
 
 /** Verify batch 12's exact changed fields and recover the earlier landing. */
 export function beforeBatch12Copy<T>(slug: string, page: T): T {
+  // The landing copy after the additional Ramzi activation (19.11) is newer: unwind it first, for every slug.
+  page = beforeRamziActivationCopy(slug, page);
   const delta = reviewed.landingDeltas.find(d => d.slug === slug);
   if (!delta) return page;
   const restored: any = structuredClone(page);
