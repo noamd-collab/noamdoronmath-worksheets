@@ -10,12 +10,13 @@ import { topicEditions, worksheetEditionNote, worksheetTopicHintLabel } from '..
 import { topicWorksheetEditionLinks } from '../src/lib/topicWorksheetEditions';
 import { buildTeacherLandingCatalog } from '../src/lib/teacherLandingCatalog';
 import { buildTeacherCatalog } from '../scripts/build-teacher-catalog.mjs';
+import { beforeReviewedRamziActivation } from './helpers/beforeReviewedRamziActivation';
 const require=createRequire(import.meta.url),root=fileURLToPath(new URL('../../../',import.meta.url));
 const {fixture}=require('../../../tests/fixtures/reviewed-ramzi-additional.cjs');
 const {validateAdditionalEvidence}=require('../../../scripts/lib/reviewed-ramzi-activation-build.cjs');
 const {mergeReviewedCatalog}=require('../../../scripts/lib/reviewed-ramzi-activation.mjs');
 const registry=JSON.parse(readFileSync(join(root,'headless/catalog/worksheet-editions.v1.json'),'utf8'));
-const before=loadCatalog(),bundle=fixture(registry),projection=validateAdditionalEvidence(before,registry,bundle);
+const before=beforeReviewedRamziActivation(loadCatalog()),bundle=fixture(registry),projection=validateAdditionalEvidence(before,registry,bundle);
 const active=mergeReviewedCatalog(before,registry,before.ramziActivation,before.ramziHintCorrection,projection,bundle.trust);
 
 test('RAT base has one three-link group with its real nonlegacy native edition',()=>{

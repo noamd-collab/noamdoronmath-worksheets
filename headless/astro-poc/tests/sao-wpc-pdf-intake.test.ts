@@ -13,6 +13,7 @@ import { collectViewerPdfIds } from '../scripts/sync-github-static.mjs';
 import { loadTopicPage, extractJsonLdFaq, synthesizeBodyFlow } from '../src/lib/topicPages';
 import { beforeSaoWpcCatalog, beforeSaoWpcCopy, reviewedSaoWpc as reviewed, reviewedSaoWpcIds as ids } from './fixtures/sao-wpc-pdf';
 import { beforeBatch05Copy, reviewedBatch05 } from './fixtures/batch05-pdf';
+import { beforeReviewedRamziActivation } from './helpers/beforeReviewedRamziActivation';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -23,8 +24,8 @@ const read = (path: string) => JSON.parse(readFileSync(new URL(path, root), 'utf
 const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(value, null, 2) + '\n').digest('hex');
 const registry = read('headless/catalog/worksheet-editions.v1.json');
 const priorRegistry = beforeExtra15Registry(registry);
-const catalog = loadCatalog();
-const rawCatalog = read('headless/astro-poc/src/data/catalog.v1.json');
+const catalog = beforeReviewedRamziActivation(loadCatalog());
+const rawCatalog = beforeReviewedRamziActivation(read('headless/astro-poc/src/data/catalog.v1.json'));
 const previous = beforeExtra15Catalog(rawCatalog);
 const receipt = read('docs/sao-wpc-pdf-first-20261115.json');
 

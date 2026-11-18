@@ -12,6 +12,7 @@ import { loadTopicPage, extractJsonLdFaq, synthesizeBodyFlow } from '../src/lib/
 import { beforeBatch11Catalog, beforeBatch11Copy, beforeBatch11Registry,
   reviewedBatch11 as reviewed, reviewedBatch11Ids as ids } from './fixtures/batch11-pdf';
 import { createRequire } from 'node:module';
+import { beforeReviewedRamziActivation } from './helpers/beforeReviewedRamziActivation';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -21,8 +22,8 @@ const { loadRamziActivationEvidence } = require('../../../scripts/lib/worksheet-
 const root = new URL('../../../', import.meta.url);
 const read = (path: string) => JSON.parse(readFileSync(new URL(path, root), 'utf8'));
 const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(value, null, 2) + '\n').digest('hex');
-const raw = read('headless/astro-poc/src/data/catalog.v1.json');
-const catalog = loadCatalog();
+const raw = beforeReviewedRamziActivation(read('headless/astro-poc/src/data/catalog.v1.json'));
+const catalog = beforeReviewedRamziActivation(loadCatalog());
 const previous = beforeBatch11Catalog(raw) as ReturnType<typeof loadCatalog>;
 const previousSsr: any = structuredClone(catalog);
 for (const addition of reviewed.additions) {

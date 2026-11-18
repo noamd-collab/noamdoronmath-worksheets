@@ -15,6 +15,7 @@ import { beforeBatch05Catalog, beforeBatch05Copy, beforeBatch05Registry,
 import { createRequire } from 'node:module';
 import { beforeBatch09Copy, reviewedBatch09 } from './fixtures/batch09-pdf';
 import { beforeLandingCorrections } from './fixtures/landing-corrections-20261118';
+import { beforeReviewedRamziActivation } from './helpers/beforeReviewedRamziActivation';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -24,8 +25,8 @@ const { loadRamziActivationEvidence } = require('../../../scripts/lib/worksheet-
 const root = new URL('../../../', import.meta.url);
 const read = (path: string) => JSON.parse(readFileSync(new URL(path, root), 'utf8'));
 const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(value, null, 2) + '\n').digest('hex');
-const raw = read('headless/astro-poc/src/data/catalog.v1.json');
-const catalog = loadCatalog();
+const raw = beforeReviewedRamziActivation(read('headless/astro-poc/src/data/catalog.v1.json'));
+const catalog = beforeReviewedRamziActivation(loadCatalog());
 const batch05Catalog: ReturnType<typeof loadCatalog> = structuredClone(catalog);
 const previous = beforeBatch05Catalog(raw) as ReturnType<typeof loadCatalog>;
 const previousSsr: any = structuredClone(catalog);

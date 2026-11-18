@@ -14,6 +14,7 @@ import { loadTopicPage, extractJsonLdFaq, synthesizeBodyFlow } from '../src/lib/
 import { beforeExtSmlAfrCatalog, beforeExtSmlAfrRegistry, beforeExtSmlAfrCopy,
   reviewedExtSmlAfr as reviewed, reviewedExtSmlAfrIds as ids } from './fixtures/ext-sml-afr-pdf';
 import { beforeBatch05Copy, reviewedBatch05 } from './fixtures/batch05-pdf';
+import { beforeReviewedRamziActivation } from './helpers/beforeReviewedRamziActivation';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -22,8 +23,8 @@ const { loadRamziActivationEvidence } = require('../../../scripts/lib/worksheet-
 const root = new URL('../../../', import.meta.url);
 const read = (p: string) => JSON.parse(readFileSync(new URL(p, root), 'utf8'));
 const digest = (v: unknown) => createHash('sha256').update(JSON.stringify(v, null, 2) + '\n').digest('hex');
-const raw = read('headless/astro-poc/src/data/catalog.v1.json');
-const catalog = loadCatalog();
+const raw = beforeReviewedRamziActivation(read('headless/astro-poc/src/data/catalog.v1.json'));
+const catalog = beforeReviewedRamziActivation(loadCatalog());
 const previous = beforeExtra15Catalog(raw) as ReturnType<typeof loadCatalog>;
 const registry = read('headless/catalog/worksheet-editions.v1.json');
 const priorRegistry = beforeExtra15Registry(registry);

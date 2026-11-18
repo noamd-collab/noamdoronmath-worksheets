@@ -13,6 +13,7 @@ import { collectViewerPdfIds } from '../scripts/sync-github-static.mjs';
 import { loadTopicPage, extractJsonLdFaq, synthesizeBodyFlow } from '../src/lib/topicPages';
 import { beforeEqnSgnFacCatalog, beforeEqnSgnFacCopy, reviewedEqnSgnFac as reviewed, reviewedEqnSgnFacIds as ids } from './fixtures/eqn-sgn-fac-pdf';
 import { beforeBatch09Copy, reviewedBatch09 } from './fixtures/batch09-pdf';
+import { beforeReviewedRamziActivation } from './helpers/beforeReviewedRamziActivation';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -23,8 +24,8 @@ const read = (path: string) => JSON.parse(readFileSync(new URL(path, root), 'utf
 const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(value, null, 2) + '\n').digest('hex');
 const registry = read('headless/catalog/worksheet-editions.v1.json');
 const priorRegistry = { ...registry, editions: beforeExtra15Registry(registry).editions.filter((e: any) => !ids.includes(e.editionId)) };
-const catalog = loadCatalog();
-const rawCatalog = read('headless/astro-poc/src/data/catalog.v1.json');
+const catalog = beforeReviewedRamziActivation(loadCatalog());
+const rawCatalog = beforeReviewedRamziActivation(read('headless/astro-poc/src/data/catalog.v1.json'));
 const previous = beforeEqnSgnFacCatalog(rawCatalog);
 const receipt = read('docs/eqn-sgn-fac-pdf-first-20261115.json');
 

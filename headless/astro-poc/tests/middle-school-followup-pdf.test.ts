@@ -26,10 +26,11 @@ import { reviewedBatch08Ids } from './fixtures/batch08-pdf';
 import { reviewedBatch09Ids } from './fixtures/batch09-pdf';
 import { reviewedBatch10Ids } from './fixtures/batch10-pdf';
 import { reviewedBatch11Ids } from './fixtures/batch11-pdf';
+import { beforeReviewedRamziActivation } from './helpers/beforeReviewedRamziActivation';
 
 const read = (path: string) => JSON.parse(readFileSync(new URL(path, import.meta.url), 'utf8'));
 const registry = read('../../catalog/worksheet-editions.v1.json');
-const catalog = read('../src/data/catalog.v1.json') as CatalogV1;
+const catalog = beforeReviewedRamziActivation(read('../src/data/catalog.v1.json')) as CatalogV1;
 const evidence = read('../../../docs/middle-school-followup-pdf-20261113.json');
 const ids = ['ms-20261113-par-02-r1', 'ms-20261113-par-03-r1'];
 const additions = registry.editions.filter((row: any) => ids.includes(row.editionId));

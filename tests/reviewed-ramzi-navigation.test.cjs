@@ -4,7 +4,9 @@ const {fixture}=require('./fixtures/reviewed-ramzi-additional.cjs');
 const {validateAdditionalEvidence}=require('../scripts/lib/reviewed-ramzi-activation-build.cjs');
 const {mergeReviewedCatalog}=require('../scripts/lib/reviewed-ramzi-activation.mjs');
 const nav=require('../noam-ai/site-companion/retrieve.js');
-const catalog=JSON.parse(fs.readFileSync(path.join(root,'headless/catalog/catalog.v1.json'))),registry=JSON.parse(fs.readFileSync(path.join(root,'headless/catalog/worksheet-editions.v1.json')));
+const committed=JSON.parse(fs.readFileSync(path.join(root,'headless/catalog/catalog.v1.json'))),registry=JSON.parse(fs.readFileSync(path.join(root,'headless/catalog/worksheet-editions.v1.json')));
+// Synthetic fixtures start from the committed catalog with its real reviewed activations withdrawn.
+const catalog=mergeReviewedCatalog(committed,registry,committed.ramziActivation,committed.ramziHintCorrection,undefined,{version:1,scopes:[]});
 const bundle=fixture(registry),projection=validateAdditionalEvidence(catalog,registry,bundle),active=mergeReviewedCatalog(catalog,registry,catalog.ramziActivation,catalog.ramziHintCorrection,projection,bundle.trust);
 const ids=new Set(['ms-20261115-rat-01-r1','ms-20261115-frq-01-r1']);
 const isNew=r=>[...ids].some(id=>r.id.endsWith('-e-'+id));
@@ -20,8 +22,9 @@ function generate(input){
  await import(pathToFileURL(path.resolve('scripts/build-site-guide.ts')).href);if(!captured)throw Error('No guide captured');process.stdout.write('\\n__REVIEW_GUIDE__'+captured);`;
  const stdout=execFileSync(process.execPath,['--import','tsx','--input-type=module','-e',script],{cwd:astro,input:JSON.stringify(input),encoding:'utf8',maxBuffer:8_000_000});return JSON.parse(stdout.split('__REVIEW_GUIDE__').at(-1));
 }
-let generated;
+let generated,withdrawnGuide;
 function guide(){return generated||(generated=generate(active));}
+function baseGuide(){return withdrawnGuide||(withdrawnGuide=generate(catalog));}
 
 test('all previous catalog records and their relative order are exact; only six new records',async()=>{
  const old=(await previous).buildCatalogRecords(catalog),current=nav.buildCatalogRecords(active);assert.deepEqual(current.filter(r=>!isNew(r)),old);assert.equal(current.length,old.length+6);assert.equal(new Set(current.map(r=>r.id)).size,current.length);
@@ -46,7 +49,7 @@ for(const [name,change,remaining]of [
  ['dangling binding',c=>delete c.grades.find(g=>g.grade===9).topics.find(t=>t.id===47).reviewedBaseBinding,3],
 ])test('does not create unresolved/disabled additions: '+name,()=>{const c=structuredClone(active);change(c);assert.equal(nav.buildCatalogRecords(c).filter(isNew).length,remaining);});
 test('real guide generator preserves every old record and order and adds exactly six',()=>{
- const old=JSON.parse(fs.readFileSync(path.join(astro,'src/data/site-guide.v1.json'))),current=guide();assert.deepEqual(current.records.filter(r=>!isNew(r)),old.records);assert.equal(current.records.length,old.records.length+6);assert.equal(current.counts.worksheet,old.counts.worksheet+6);assert.equal(new Set(current.records.map(r=>r.id)).size,current.records.length);
+ const old=baseGuide(),current=guide();assert.deepEqual(current.records.filter(r=>!isNew(r)),old.records);assert.equal(current.records.length,old.records.length+6);assert.equal(current.counts.worksheet,old.counts.worksheet+6);assert.equal(new Set(current.records.map(r=>r.id)).size,current.records.length);
  for(const r of current.records.filter(isNew)){const expected=nav.buildCatalogRecords(active).find(x=>x.id===r.id);assert.equal(r.href,expected.href);assert.equal(r.pdfId,expected.pdfId);}
 });
 test('real generator --check without activation does not alter its source snapshot',()=>{

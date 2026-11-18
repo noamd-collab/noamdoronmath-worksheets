@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import reviewed from './batch11-pdf-reviewed.json';
 import { beforeFirst15Correction } from '../helpers/beforeFirst15Correction';
+import { beforeReviewedRamziActivation } from '../helpers/beforeReviewedRamziActivation';
 
 export { reviewed as reviewedBatch11 };
 export const reviewedBatch11Ids = reviewed.additions.map(a => a.editionId);
@@ -15,7 +16,8 @@ const plain = (value: unknown): unknown => typeof value === 'string' ? value.rep
 export function beforeBatch11Catalog<T>(catalog: T): T {
   // The verified first15 hint-correction metadata (Codex #499, ported 18.11) is newer than
   // batch 11: reverse it first, exactly once, for every older catalog fence.
-  const restored: any = structuredClone(beforeFirst15Correction(catalog));
+  // The receipt-backed additional Ramzi activation is newer still: reverse it before that.
+  const restored: any = structuredClone(beforeFirst15Correction(beforeReviewedRamziActivation(catalog)));
   const groups = new Map<string, typeof reviewed.additions>();
   for (const addition of reviewed.additions) {
     const key = `${addition.grade}:${addition.topicId}`;
