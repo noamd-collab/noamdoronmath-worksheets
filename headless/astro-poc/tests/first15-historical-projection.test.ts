@@ -45,5 +45,6 @@ test('historical rollback does not erase an unrelated legacy change', () => {
   bad.grades[0].topics[0].title += ' changed';
   const historical = beforeFirst15Correction(bad);
   assert.equal(historical.grades[0].topics[0].title, bad.grades[0].topics[0].title);
-  assert.notEqual(digest(historical), '17bedac54256640c2de45a4d311af4cd7c1d56e7fe7473313d30ef19f6dc4ce8');
+  // The unrelated change keeps the rollback away from the published baseline catalog.
+  assert.notEqual(digest(historical), '7b09f211cddfd16dd334b7c886fb616794ec258bc231b7e07a5aeda5ef137bbb');
 });
