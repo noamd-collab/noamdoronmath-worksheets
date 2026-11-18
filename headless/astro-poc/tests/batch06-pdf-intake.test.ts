@@ -12,7 +12,8 @@ import { loadTopicPage, extractJsonLdFaq, synthesizeBodyFlow } from '../src/lib/
 import { beforeBatch06Catalog, beforeBatch06Copy, beforeBatch06Registry,
   reviewedBatch06 as reviewed, reviewedBatch06Ids as ids } from './fixtures/batch06-pdf';
 import { createRequire } from 'node:module';
-import { beforeBatch07Registry } from './fixtures/batch07-pdf';
+import { beforeBatch07Copy, beforeBatch07Registry } from './fixtures/batch07-pdf';
+import { reviewedBatch10 } from './fixtures/batch10-pdf';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -30,6 +31,16 @@ for (const addition of reviewed.additions) {
   const topic = previousSsr.grades.find((g: any) => g.grade === addition.grade)
     .topics.find((t: any) => t.id === addition.topicId);
   topic.editions = topic.editions?.filter((e: any) => !ids.includes(e.editionId));
+  if (!topic.editions?.length) {
+    delete topic.editions;
+    delete topic.defaultEditionId;
+  }
+}
+// Batch 10 (18.11) adds a later edition on topic 9/5 (G9-QSH-01, after G9-QVL-01).
+for (const addition of reviewedBatch10.additions) {
+  const topic = previousSsr.grades.find((g: any) => g.grade === addition.grade)
+    .topics.find((t: any) => t.id === addition.topicId);
+  topic.editions = topic.editions?.filter((e: any) => e.editionId !== addition.editionId);
   if (!topic.editions?.length) {
     delete topic.editions;
     delete topic.defaultEditionId;
@@ -131,7 +142,7 @@ test('eleven additive editions recover the pinned baseline after batch 5 (4db6f5
   assert.equal(batch06Registry.editions.length, priorRegistry.editions.length + 11);
   assert.deepEqual(batch06Registry.editions.slice(0, -11), priorRegistry.editions);
   assert.deepEqual(batch06Registry.editions.slice(-11), reviewed.additions.map(a => a.edition));
-  assert.equal(raw.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 988); // NEW4 (18.11): four later base topics, +12 levels
+  assert.equal(raw.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 991); // NEW4 (18.11): four later base topics, +12 levels; batch 10 topic 9/53, +3
   assert.equal(previous.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 976);
 
   for (const [index, addition] of reviewed.additions.entries()) {
@@ -177,7 +188,8 @@ test('eleven additive editions recover the pinned baseline after batch 5 (4db6f5
     const selectedId = oldTopic.defaultEditionId ?? 'legacy';
     const topicAdditions = reviewed.additions.filter(a => a.grade === addition.grade && a.topicId === addition.topicId);
     assert.deepEqual(groups.map(g => g.editionId),
-      [selectedId, ...oldIds.filter(id => id !== selectedId), ...topicAdditions.map(a => a.editionId)]);
+      [selectedId, ...oldIds.filter(id => id !== selectedId), ...topicAdditions.map(a => a.editionId),
+        ...reviewedBatch10.additions.filter(a => a.grade === addition.grade && a.topicId === addition.topicId).map(a => a.editionId)]);
     const oldGroupCount = oldIds.length + 1;
     assert.deepEqual(groups.slice(0, oldGroupCount), topicWorksheetEditionLinks(previousSsr, addition.grade, addition.topicId, back));
     assert.deepEqual(groups.find(g => g.editionId === addition.editionId)!.levels.map(l => l.key), ['a', 'b', 'c']);
@@ -198,7 +210,8 @@ test('nine landing routes add only reviewed PDF copy and preserve their complete
     assert.equal(page.title, restored.title);
     assert.deepEqual(page.catalogCta, restored.catalogCta);
     assert.deepEqual(page.catalogCtas, restored.catalogCtas);
-    assert.deepEqual(page.sections.at(-1), delta.appendedSection);
+    // Later batches may append their own section after this one (batch 10 on quadratic-function-grade-9).
+    assert.deepEqual((beforeBatch07Copy(slug, page) as any).sections.at(-1), delta.appendedSection);
     const loaded = loadTopicPage(slug)!;
     const sections = loaded.sections.filter(section => section.heading === delta.appendedSection.heading);
     assert.equal(sections.length, 1);

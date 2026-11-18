@@ -2721,6 +2721,14 @@
       "reason": "links to the topic, same grade, shared title word"
     },
     {
+      "key": "page:/percentages-grade-9",
+      "title": "אחוזים: חלק מהשלם, הגדלה והקטנה לכיתה ט׳ מצומצמת",
+      "linkedTopic": "topic:9:53",
+      "linkedTitle": "אחוזים: חלק מהשלם, הגדלה והקטנה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
       "key": "page:/games/eliyahu-pythagoras",
       "title": "משחק משפט פיתגורס עם אליהו",
       "linkedTopic": "topic:8:11",

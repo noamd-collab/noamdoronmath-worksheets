@@ -4,9 +4,12 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { test } from 'node:test';
 import { loadTopicPage, extractJsonLdFaq } from '../src/lib/topicPages.ts';
 import { assertCorrectedRawPage, beforeLandingCorrections, reviewedLandingCorrections as reviewed } from './fixtures/landing-corrections-20261118.ts';
+import { beforeBatch10Copy } from './fixtures/batch10-pdf.ts';
 
 const root = new URL('../src/data/topic-pages/', import.meta.url);
-const readPage = (slug: string) => JSON.parse(readFileSync(new URL(`${slug}.json`, root), 'utf8'));
+const readCurrent = (slug: string) => JSON.parse(readFileSync(new URL(`${slug}.json`, root), 'utf8'));
+// Batch 10 (18.11) is newer than the corrections and appends to some corrected pages: unwind it first.
+const readPage = (slug: string) => beforeBatch10Copy(slug, readCurrent(slug));
 const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(value, null, 2) + '\n').digest('hex');
 const plain = (text: string) => text.replace(/[⁦-⁩]/g, '');
 const allText = (value: unknown) => JSON.stringify(value);
@@ -52,7 +55,7 @@ test('no page keeps an ungrammatical "כוללים רמזי" question; each cent
   const slugs = readdirSync(root).filter(name => name.endsWith('.json')).map(name => name.slice(0, -5));
   let pages = 0;
   for (const slug of slugs) {
-    const raw = readPage(slug);
+    const raw = readCurrent(slug);
     assert.ok(!allText(raw).includes(OLD_QUESTION), `${slug}: old FAQ question`);
     // Series-specific FAQ questions used the same construction ('האם דפי ה־PDF … כוללים רמזי?').
     assert.doesNotMatch(allText(raw), /כוללים רמזי/, `${slug}: ungrammatical hint question`);
@@ -84,10 +87,10 @@ test('no corrected page, and no page with an extra PDF edition, names Noam AI in
   // The site review found legacy body sentences that still named Noam AI as the worksheet hint tool on
   // corrected pages and on other pages with extra PDF editions; none may remain in visible body copy.
   const pdfPages = readdirSync(root).filter(name => name.endsWith('.json')).map(name => name.slice(0, -5))
-    .filter(slug => topicsOf(readPage(slug)).some(topic => pdfTopics.has(topic)));
+    .filter(slug => topicsOf(readCurrent(slug)).some(topic => pdfTopics.has(topic)));
   assert.ok(pdfPages.length >= 60, `${pdfPages.length} pages with extra PDF editions`);
   for (const slug of new Set([...reviewed.pages.map(page => page.slug), ...pdfPages])) {
-    for (const text of bodyTexts(readPage(slug))) assert.ok(!text.includes('נועם AI'), `${slug}: ${text.slice(0, 60)}`);
+    for (const text of bodyTexts(readCurrent(slug))) assert.ok(!text.includes('נועם AI'), `${slug}: ${text.slice(0, 60)}`);
   }
 });
 

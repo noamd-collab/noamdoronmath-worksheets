@@ -50,7 +50,7 @@ test('seven fixed mappings add twenty-one frozen PDFs and recover the independen
   assert.equal(priorRegistry.editions.length, 28);
   assert.equal(priorRegistry.editions.flatMap((e: any) => e.levels).length, 84);
   // Editions never add base levels; EQM49 (17.11, +3 levels) and NEW4 (18.11, +12 levels) are the later base topics.
-  assert.equal(raw.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 988); // NEW4 (18.11): four later base topics, +12 levels
+  assert.equal(raw.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 991); // NEW4 (18.11): four later base topics, +12 levels; batch 10 topic 9/53, +3
   assert.equal(previous.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 973);
   assert.equal(receipt.scope.pages, 137);
   assert.equal(receipt.scope.subitems, 405);

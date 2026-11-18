@@ -37,7 +37,7 @@ describe(`grade ${GRADE} catalog landing coverage`, () => {
 
   it('new pages are registered, authored, and point at a real catalog topic with PDFs', () => {
     assert.deepEqual(NEW, ['equilateral-triangle-grade-9', 'rational-equations-grade-9', 'median-to-hypotenuse-grade-9', 'equations-numeric-denominator-grade-9',
-      'parallel-lines-angles-grade-9', 'co-interior-angles-grade-9', 'math-literacy-tasks-grade-9']);
+      'parallel-lines-angles-grade-9', 'co-interior-angles-grade-9', 'math-literacy-tasks-grade-9', 'percentages-grade-9']);
     const topics = new Map(loadCatalog().grades.find((g) => g.grade === GRADE)!.topics.map((t) => [t.id, t]));
     const topicIds = new Set<number>();
     for (const slug of NEW) {

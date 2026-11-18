@@ -148,7 +148,7 @@ test('eleven additive editions recover the pinned 46765664 baseline without chan
   assert.equal(batch05Registry.editions.length, priorRegistry.editions.length + 11);
   assert.deepEqual(batch05Registry.editions.slice(0, -11), priorRegistry.editions);
   assert.deepEqual(batch05Registry.editions.slice(-11), reviewed.additions.map(a => a.edition));
-  assert.equal(raw.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 988); // NEW4 (18.11): four later base topics, +12 levels
+  assert.equal(raw.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 991); // NEW4 (18.11): four later base topics, +12 levels; batch 10 topic 9/53, +3
   assert.equal(previous.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 976);
 
   for (const [index, addition] of reviewed.additions.entries()) {

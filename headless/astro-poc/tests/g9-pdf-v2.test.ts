@@ -112,9 +112,10 @@ describe('grade 9 PDF v2 replacements', () => {
     assert.equal(eqm.title, 'משוואות עם מכנה מספרי');
     assert.equal(eqm.group, 'r9jan');
     assert.equal(eqm.publicationMode, 'pdf-only');
-    assert.equal(countRenderedTopicCards({ ...grade9, topics: grade9.topics.filter((topic) => topic.id !== 49) }, 'red'), 4,
+    assert.equal(countRenderedTopicCards({ ...grade9, topics: grade9.topics.filter((topic) => ![49, 53].includes(topic.id)) }, 'red'), 4,
       'The four original reduced-track cards remain present');
-    assert.equal(countRenderedTopicCards(grade9, 'red'), 5);
+    // PCM01 (topic 53, batch 10) is the first card of the reduced-track month group r9nov.
+    assert.equal(countRenderedTopicCards(grade9, 'red'), 6);
     for (const grade of catalog.grades) {
       if (grade.grade === 9) continue;
       const topLevel = grade.topics.filter((topic) => topic.parent === undefined).length;

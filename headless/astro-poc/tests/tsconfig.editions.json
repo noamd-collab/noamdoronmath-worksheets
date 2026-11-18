@@ -27,7 +27,9 @@
     "batch09-pdf-intake.test.ts",
     "equations-numeric-denominator-landing.test.ts",
     "new-topics-four-landing.test.ts",
-    "landing-corrections-20261118.test.ts"
+    "landing-corrections-20261118.test.ts",
+    "batch10-pdf-intake.test.ts",
+    "percentages-landing.test.ts"
   ],
   "exclude": []
 }
