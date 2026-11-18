@@ -1,0 +1,166 @@
+{
+  "schema": "additional-source-fixtures/v1",
+  "sourceAcceptanceSha256": "c2cf035d1ad1c828314b3e67162c6714e8e9c6f1b2852f1e9b3502f06c0b7683",
+  "boundHandoffSha256": "f7eb432e7916f3bc5bda5a20811a49c7775c35165c816f12e6f7e04bf51a7933",
+  "ready": false,
+  "files": [
+    {
+      "file": "G9-T93-a.manifest.json.gz",
+      "uncompressedSha256": "56c1d614367bb9f56e09dc1619d96137704c4383431c8bf8d8cd55169ac06900",
+      "gzipSha256": "ec8d5cda37ceaba3daa9a8086a8064da145de68462fe1922eda8572fca0b4b18",
+      "bytes": 182976,
+      "kind": "manifest",
+      "status": "unchanged-disabled-source-fixture"
+    },
+    {
+      "file": "G9-T93-a.native.json.gz",
+      "uncompressedSha256": "0708e5dfde21c2d43d898d08316d01406f502a0153872c0f7370120e34b3980e",
+      "gzipSha256": "0931f8d1e835b49b9f152e75a24914b2f9f3699578d22047341ebff6fe34c04f",
+      "bytes": 38161,
+      "kind": "native",
+      "status": "unchanged-disabled-source-fixture"
+    },
+    {
+      "file": "G9-T93-b.manifest.json.gz",
+      "uncompressedSha256": "476c7fa77dcb873f79b38aae48dce823b0e2b58c827b9ff81bcb2ffebe2b0df4",
+      "gzipSha256": "6d7b4567cffb4b7d4d9d25d15a7cf2df7c270290aa254999cefe13d88975d513",
+      "bytes": 181100,
+      "kind": "manifest",
+      "status": "unchanged-disabled-source-fixture"
+    },
+    {
+      "file": "G9-T93-b.native.json.gz",
+      "uncompressedSha256": "c1e014273dbdd57e72effb789ba7a28daad7603137787313c527b32b47b5f871",
+      "gzipSha256": "fec93cc8ca70e7664cc1d8125dcb9b18fa91e9016be6ef1bd9c202d1ffe3f22d",
+      "bytes": 37877,
+      "kind": "native",
+      "status": "unchanged-disabled-source-fixture"
+    },
+    {
+      "file": "G9-T93-c.manifest.json.gz",
+      "uncompressedSha256": "838547084939e70e925752b086ea372541b13304e3f29c9c046c218057a61736",
+      "gzipSha256": "04c1dd796030b76e7bed7b7085315934a233b83284a4bf8ceb6f1c7b9e7b4ca7",
+      "bytes": 181751,
+      "kind": "manifest",
+      "status": "unchanged-disabled-source-fixture"
+    },
+    {
+      "file": "G9-T93-c.native.json.gz",
+      "uncompressedSha256": "1e6e7314c5d9819b65ae791cd203511e2b4424cefdca8880a962e71d40656e64",
+      "gzipSha256": "aa0b167663f38fd7bc9b053cce38b0946e2b70eec12fa1cd082f45d56c7367a7",
+      "bytes": 38013,
+      "kind": "native",
+      "status": "unchanged-disabled-source-fixture"
+    },
+    {
+      "file": "G7-T88-a.manifest.json.gz",
+      "uncompressedSha256": "49ab2225f64338b19284a84c94b72261e22cab213298c2919f4554527ba8067e",
+      "gzipSha256": "5ba3ac403b47f7e6286b69aa7738662ea426d4cbb52776351c23fbb9f44e51ab",
+      "bytes": 290323,
+      "kind": "manifest",
+      "status": "unchanged-disabled-source-fixture"
+    },
+    {
+      "file": "G7-T88-a.native.json.gz",
+      "uncompressedSha256": "afb1bb278a4d3ddf999e237ee467e8e4e554bf55944e5f11ef18853bcd853670",
+      "gzipSha256": "4f0d5a31bfb07543f85448b00811ddc90bdd79c99ab2ad1dd2cb317fee743646",
+      "bytes": 54823,
+      "kind": "native",
+      "status": "unchanged-disabled-source-fixture"
+    },
+    {
+      "file": "G7-T88-b.manifest.json.gz",
+      "uncompressedSha256": "67b0a0cbbdd341836cd2b93f802dd7bac91b0bf237c4991d644e1122371f3243",
+      "gzipSha256": "f1d24bee548aef2419de2e1c803f1594f3347ba1a087cb333adfc903cdc2f3c2",
+      "bytes": 285640,
+      "kind": "manifest",
+      "status": "unchanged-disabled-source-fixture"
+    },
+    {
+      "file": "G7-T88-b.native.json.gz",
+      "uncompressedSha256": "621b26a78b958b750610494d56ca1f5d782392705b0868c32b1d53933c7ea3d4",
+      "gzipSha256": "7c1ea4c26d79b185dabfbeb2d33ee0a6908dbff11d9c3703a70da41afb45bcf6",
+      "bytes": 54575,
+      "kind": "native",
+      "status": "unchanged-disabled-source-fixture"
+    },
+    {
+      "file": "G7-T88-c.manifest.json.gz",
+      "uncompressedSha256": "5234b452d65d2d7c691802d2da2c5d2206120f128c2d5d8183da3668060f6eb4",
+      "gzipSha256": "095a9e4eb201e40fafec7cdf2afdc9f57cfe9b5daddfbdb5da2cf64ae13c6411",
+      "bytes": 295506,
+      "kind": "manifest",
+      "status": "unchanged-disabled-source-fixture"
+    },
+    {
+      "file": "G7-T88-c.native.json.gz",
+      "uncompressedSha256": "6e7003641486b86681c439548dd210088aea37584c87f57e57fc9005d90e5963",
+      "gzipSha256": "689fb12c45db6719b334ef2512d700ce6baab43bfc7bb8303d72277d9041748d",
+      "bytes": 55771,
+      "kind": "native",
+      "status": "unchanged-disabled-source-fixture"
+    },
+    {
+      "file": "G7-T61-a.manifest.json.gz",
+      "gzipSha256": "c29db1ffe64e9b476f03b23f94da04c8f85a832cd0bf64a1a48b3abb0cab6225",
+      "uncompressedSha256": "02b37ed1d4c34b86a35ac655d8472091bdf31087bebad643e39a0246af329903",
+      "bytes": 192941,
+      "kind": "manifest",
+      "status": "unchanged-disabled-source-fixture"
+    },
+    {
+      "file": "G7-T61-a.native.json.gz",
+      "gzipSha256": "4452121ead55fa76a68b4751c2c0e79f3c2f031e4164d506d29da449475bc8f2",
+      "uncompressedSha256": "fc568746bccbdbeb01402e0feef9b9afaf6477e77572a3237c98bf93396f711b",
+      "bytes": 41623,
+      "kind": "native",
+      "status": "unchanged-disabled-source-fixture"
+    },
+    {
+      "file": "G7-T61-b.manifest.json.gz",
+      "gzipSha256": "7fa69d15b5cb649177070a994c5796f7e8af115dc077bbb6727f388713177768",
+      "uncompressedSha256": "a5434b0443dbea9502aee1cde097284ce6bfc591b40d07fe9b3d29399125aa0f",
+      "bytes": 190732,
+      "kind": "manifest",
+      "status": "unchanged-disabled-source-fixture"
+    },
+    {
+      "file": "G7-T61-b.native.json.gz",
+      "gzipSha256": "6230509933146adec0ffac877d50b82d40a1f7eca2155481f9d66218e3ece508",
+      "uncompressedSha256": "d624ac684319b2751a556b7649b58e04b951ae0dc220850d9e0ac68042ade4f5",
+      "bytes": 41284,
+      "kind": "native",
+      "status": "unchanged-disabled-source-fixture"
+    },
+    {
+      "file": "G7-T61-c.manifest.json.gz",
+      "gzipSha256": "10c0b596c89822fb4512416dbd5d238b274216672e32bb644b0929ee72fabc53",
+      "uncompressedSha256": "37d80d4483a68b3e3dfc228fd3aedfc46f3ea84e7af4180dca011755f6a42cb9",
+      "bytes": 190697,
+      "kind": "manifest",
+      "status": "unchanged-disabled-source-fixture"
+    },
+    {
+      "file": "G7-T61-c.native.json.gz",
+      "gzipSha256": "5022940bcd343625694e08b59df92492a60ee84e8b6b25a93417aafc33b33bd2",
+      "uncompressedSha256": "89187c675b7393ce1b3f58778474546ad8ff4900f0d7a0e6284875dd5fa4e382",
+      "bytes": 41246,
+      "kind": "native",
+      "status": "unchanged-disabled-source-fixture"
+    }
+  ],
+  "sourceAcceptanceScope": [
+    "G9-T93",
+    "G7-T88"
+  ],
+  "additionalSourceReviews": [
+    {
+      "prefix": "G7-T61",
+      "parts": 54,
+      "status": "disabled-offline-integration-candidate",
+      "rootDraftAcceptanceSha256": "c40d1bd709589cb80fe5cd6a3df5cb2600f52f12dcc3bfc54ff4612d24821b94",
+      "independentSourceReviewSha256": "280c70566c697a9208f01caa747c5f194aea2b3dff83fddee2259bcfcf104df5",
+      "activationEvidence": false
+    }
+  ]
+}

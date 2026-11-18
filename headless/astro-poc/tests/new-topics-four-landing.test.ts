@@ -240,7 +240,7 @@ test('the NEW4 fence reverses exactly the four topics and rejects substitutions,
   rejects(cat => { topicOf(cat, 9, 50).noamTopicId = 'G9-T77'; }, 'NEW4: exact base topic 9/50');
   rejects(cat => { topicOf(cat, 8, 68).routing.usesViewer = true; }, 'NEW4: exact base topic 8/68');
   rejects(cat => { delete topicOf(cat, 9, 51).publicationMode; }, 'NEW4: exact base topic 9/51');
-  rejects(cat => { topicOf(cat, 9, 52).editions = [{ editionId: 'ms-unreviewed-r1' }]; }, 'NEW4: exact base topic 9/52');
+  rejects(cat => { topicOf(cat, 9, 52).editions = [{ editionId: 'ms-unreviewed-r1', levels: [] }]; }, 'NEW4: exact base topic 9/52');
   rejects(cat => {
     const topics = gradeOf(cat, 9).topics, at = topics.findIndex((t: any) => t.id === 52);
     [topics[at], topics[at + 1]] = [topics[at + 1], topics[at]];

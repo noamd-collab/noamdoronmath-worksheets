@@ -10,6 +10,8 @@ const path = require('node:path');
 const vm = require('node:vm');
 const crypto = require('node:crypto');
 const { mergeWorksheetEditions } = require('./worksheet-editions.cjs');
+const { mergeReviewedCatalog } = require('./reviewed-ramzi-activation.mjs');
+const { loadAdditionalEvidence, validateAdditionalEvidence } = require('./reviewed-ramzi-activation-build.cjs');
 const { basePublicationErrors } = require('./base-worksheet-publication.mjs');
 const { loadRamziActivationEvidence, validateRamziActivation } = require('./worksheet-ramzi-activation.cjs');
 
@@ -733,7 +735,11 @@ function exportCatalog(options) {
   const activationEvidence = Object.hasOwn(opts, 'ramziActivation') ? opts.ramziActivation :
     loadRamziActivationEvidence(catalogDir, path.join(path.dirname(path.resolve(indexPath)), 'headless/astro-poc/public'));
   validateRamziActivation(registry, activationEvidence);
-  const catalog = mergeWorksheetEditions(buildCatalog(raw), registry, activationEvidence?.ready, activationEvidence?.hintCorrection);
+  const initial = mergeWorksheetEditions(buildCatalog(raw), registry, activationEvidence?.ready, activationEvidence?.hintCorrection);
+  const additional = Object.hasOwn(opts, 'additionalRamzi') ? opts.additionalRamzi :
+    loadAdditionalEvidence(catalogDir, path.join(path.dirname(path.resolve(indexPath)), 'headless/astro-poc/public'));
+  const projection = validateAdditionalEvidence(initial, registry, additional.bundle);
+  const catalog = mergeReviewedCatalog(initial, registry, activationEvidence?.ready, activationEvidence?.hintCorrection, projection, additional.trust);
   const validation = validateCatalog(catalog, raw);
   const text = stableStringify(catalog);
   const hash = crypto.createHash('sha256').update(text).digest('hex');

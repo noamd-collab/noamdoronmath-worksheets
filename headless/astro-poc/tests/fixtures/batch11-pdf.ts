@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import reviewed from './batch11-pdf-reviewed.json';
+import { beforeFirst15Correction } from '../helpers/beforeFirst15Correction';
 
 export { reviewed as reviewedBatch11 };
 export const reviewedBatch11Ids = reviewed.additions.map(a => a.editionId);
@@ -12,7 +13,9 @@ const plain = (value: unknown): unknown => typeof value === 'string' ? value.rep
 
 /** Undo only batch 11's reviewed overlays and return the exact earlier state. */
 export function beforeBatch11Catalog<T>(catalog: T): T {
-  const restored: any = structuredClone(catalog);
+  // The verified first15 hint-correction metadata (Codex #499, ported 18.11) is newer than
+  // batch 11: reverse it first, exactly once, for every older catalog fence.
+  const restored: any = structuredClone(beforeFirst15Correction(catalog));
   const groups = new Map<string, typeof reviewed.additions>();
   for (const addition of reviewed.additions) {
     const key = `${addition.grade}:${addition.topicId}`;

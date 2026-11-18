@@ -1,0 +1,975 @@
+{
+  "schema": "noam-passive-source-assets/v1",
+  "status": "disabled-source-preparation",
+  "baseCommit": "aecb5f96794604de18b16dfe5671c9e98689e1e0",
+  "pdfLevels": 33,
+  "exerciseIdentities": 904,
+  "manifestCount": 33,
+  "nativeExportCount": 33,
+  "originalGeometrySvgCount": 71,
+  "publishable": false,
+  "reviewRequired": true,
+  "catalogChanged": false,
+  "activationRequested": false,
+  "assets": [
+    {
+      "sheetId": "G7-SGN-01",
+      "level": "a",
+      "url": "/noam-ai/manifests/17d11119121447229e07c86da98ef6c5.json",
+      "sha256": "5e2f26ed928a2a1cb4701ebe9efc19a220e3e0211ebf49c0a2a31b8c24d7679f",
+      "kind": "manifest"
+    },
+    {
+      "sheetId": "G7-SGN-01",
+      "level": "a",
+      "url": "/noam-ai/native/G7-T91/a/noam-ai.json",
+      "sha256": "9a5248c2ab509ff2c63d7c894aa679d38f8f6b0051a4a83701afbea6c1310227",
+      "kind": "native"
+    },
+    {
+      "sheetId": "G7-SGN-01",
+      "level": "b",
+      "url": "/noam-ai/manifests/02768a8216e04f3cb2ef06e168d2fb3d.json",
+      "sha256": "5936e31cb69fed53122eb690f47a189cd14d4e6c24b15abc650e8218ae08e1e0",
+      "kind": "manifest"
+    },
+    {
+      "sheetId": "G7-SGN-01",
+      "level": "b",
+      "url": "/noam-ai/native/G7-T91/b/noam-ai.json",
+      "sha256": "baef5e6533988d702904dcdfcf2e63c2e0185be71eb0b3242c6967acc6134c83",
+      "kind": "native"
+    },
+    {
+      "sheetId": "G7-SGN-01",
+      "level": "c",
+      "url": "/noam-ai/manifests/9bcde832879d4dd785b2ad8b94d62ac9.json",
+      "sha256": "68c84185dc3178006c3176077b41ef70a3629611e662614bdd9de17181bbd8ad",
+      "kind": "manifest"
+    },
+    {
+      "sheetId": "G7-SGN-01",
+      "level": "c",
+      "url": "/noam-ai/native/G7-T91/c/noam-ai.json",
+      "sha256": "58c208bddb74f7ed77da5a2399ba4946f299416dca266268a65b702635293761",
+      "kind": "native"
+    },
+    {
+      "sheetId": "G7-ALG-01",
+      "level": "a",
+      "url": "/noam-ai/manifests/b376976911234b758027329c9ea05cbf.json",
+      "sha256": "731d924d5c589c1146e896787d6f468034f842cb18cc05c525cb9cbfac1a07f2",
+      "kind": "manifest"
+    },
+    {
+      "sheetId": "G7-ALG-01",
+      "level": "a",
+      "url": "/noam-ai/native/G7-T87/a/noam-ai.json",
+      "sha256": "6368fcc065859f822b490c3275edfb2ef780840b23f5ad8dc7265d6681f3ed03",
+      "kind": "native"
+    },
+    {
+      "sheetId": "G7-ALG-01",
+      "level": "b",
+      "url": "/noam-ai/manifests/b6a76fb3eccd477b9788958efefbded2.json",
+      "sha256": "cad7c58dab99d99437f6ac14b20afde108118f80389287caecebf9b59310464b",
+      "kind": "manifest"
+    },
+    {
+      "sheetId": "G7-ALG-01",
+      "level": "b",
+      "url": "/noam-ai/native/G7-T87/b/noam-ai.json",
+      "sha256": "bb565c626d77abaf5fd89d9b6c0762c16ff5e245735f523eeaf361448aa07765",
+      "kind": "native"
+    },
+    {
+      "sheetId": "G7-ALG-01",
+      "level": "c",
+      "url": "/noam-ai/manifests/0fe476657595498194b93cdc46e39e5f.json",
+      "sha256": "dc2a8e2c7200c6081f40b5ff042559f10c30a0ee2b03449464689fc7ee7f40c6",
+      "kind": "manifest"
+    },
+    {
+      "sheetId": "G7-ALG-01",
+      "level": "c",
+      "url": "/noam-ai/native/G7-T87/c/noam-ai.json",
+      "sha256": "400122554c711f4170f9ae3ef52c43625ba911cbb70eba9bd2e3bfb2171bcada",
+      "kind": "native"
+    },
+    {
+      "sheetId": "G7-PRB-01",
+      "level": "a",
+      "url": "/noam-ai/manifests/763682ee83fd45fb97d463ad89dfebcc.json",
+      "sha256": "a3d944ccb089ac6e70d16f0a716579d7ee7c9af2090d1d98f8f61742a141756d",
+      "kind": "manifest"
+    },
+    {
+      "sheetId": "G7-PRB-01",
+      "level": "a",
+      "url": "/noam-ai/native/G7-T89/a/noam-ai.json",
+      "sha256": "9c164afc180f47b265e644c383a4503f3ddb89ac2338b9e66f82283d7bb61cdc",
+      "kind": "native"
+    },
+    {
+      "sheetId": "G7-PRB-01",
+      "level": "b",
+      "url": "/noam-ai/manifests/152537d8312b4902a23b53d68e21004a.json",
+      "sha256": "02928f2c7f3974685691a107b9bedebc383fc58f95879ff0f3311fd175a32044",
+      "kind": "manifest"
+    },
+    {
+      "sheetId": "G7-PRB-01",
+      "level": "b",
+      "url": "/noam-ai/native/G7-T89/b/noam-ai.json",
+      "sha256": "0f3d40ed08464271a76d7fd6744a8973a02dc5cb3ec4c785aca24df4d6df30e1",
+      "kind": "native"
+    },
+    {
+      "sheetId": "G7-PRB-01",
+      "level": "c",
+      "url": "/noam-ai/manifests/3fce9fe16ea24b419abc6e25b987e066.json",
+      "sha256": "7d7e142d6640cf6b669fe26144d517a6386c6c1778b8f681b38c7317218ee41b",
+      "kind": "manifest"
+    },
+    {
+      "sheetId": "G7-PRB-01",
+      "level": "c",
+      "url": "/noam-ai/native/G7-T89/c/noam-ai.json",
+      "sha256": "40b9712a3c17a8cc5c16f42a33463ed58e66006a737cf417bd85191158119bfd",
+      "kind": "native"
+    },
+    {
+      "sheetId": "G7-EQN-01",
+      "level": "a",
+      "url": "/noam-ai/manifests/d71017280a0a4961bbe47cdc90b28799.json",
+      "sha256": "aac67a8bc6a58443b67ac4737cad782ac2a1e8940d2177225785d6585c2058b9",
+      "kind": "manifest"
+    },
+    {
+      "sheetId": "G7-EQN-01",
+      "level": "a",
+      "url": "/noam-ai/native/G7-T90/a/noam-ai.json",
+      "sha256": "9f2036522d8094eba9253f9f8f2b1acec72a9f3af838a13b7eb798e55fd7e5d9",
+      "kind": "native"
+    },
+    {
+      "sheetId": "G7-EQN-01",
+      "level": "b",
+      "url": "/noam-ai/manifests/05f5738c957d49109e8941a6c107b6c1.json",
+      "sha256": "5036ead913989127c46f26cef600eb3490934f25d88e0ec2e83710c9c43f718b",
+      "kind": "manifest"
+    },
+    {
+      "sheetId": "G7-EQN-01",
+      "level": "b",
+      "url": "/noam-ai/native/G7-T90/b/noam-ai.json",
+      "sha256": "bd6535e61bc0c3f973f637019b94264835203de3028adc0a0c9c7c4dbbf40bdf",
+      "kind": "native"
+    },
+    {
+      "sheetId": "G7-EQN-01",
+      "level": "c",
+      "url": "/noam-ai/manifests/a6012afd8d2f4766a2b664163e468280.json",
+      "sha256": "9d2089207ae9a27d471b40e51ecccda5ae3557af5c6c015052e5176c3add1b84",
+      "kind": "manifest"
+    },
+    {
+      "sheetId": "G7-EQN-01",
+      "level": "c",
+      "url": "/noam-ai/native/G7-T90/c/noam-ai.json",
+      "sha256": "347d4e61a9571a1d9435ed6f4aae83b4f7dba944bae651313195722007846883",
+      "kind": "native"
+    },
+    {
+      "sheetId": "G9-EXT-01",
+      "level": "a",
+      "url": "/noam-ai/manifests/c915f782c63d4e10ab1e38589ca0b199.json",
+      "sha256": "bec470f9d02d25a720e6598f725e135384c2948a331bdab9731aff95776fe1de",
+      "kind": "manifest"
+    },
+    {
+      "sheetId": "G9-EXT-01",
+      "level": "a",
+      "url": "/noam-ai/native/G9-T70/a/noam-ai.json",
+      "sha256": "d30eebdb60aad198614ce0f09a3db765483275bd972268ba44ce1d1340b6c6fc",
+      "kind": "native"
+    },
+    {
+      "sheetId": "G9-EXT-01",
+      "level": "b",
+      "url": "/noam-ai/manifests/8dac449d76c840a18a8bb6bf9b3679ab.json",
+      "sha256": "cf4c1c6f6bd1b6054729f21d1666c207ea5f836ad2a77164d20df240bcd2641f",
+      "kind": "manifest"
+    },
+    {
+      "sheetId": "G9-EXT-01",
+      "level": "b",
+      "url": "/noam-ai/native/G9-T70/b/noam-ai.json",
+      "sha256": "c0f8d39f8363d75c5f1c71e88cdfe9a9851abe70808eecb4a0abe31e06d82006",
+      "kind": "native"
+    },
+    {
+      "sheetId": "G9-EXT-01",
+      "level": "c",
+      "url": "/noam-ai/manifests/6e2117181a8e43cfb8a8d5afaad21ab5.json",
+      "sha256": "a6eec9a40618e1fd636f07d29e4a68a8277d4b40217138310c00e54c22a3f651",
+      "kind": "manifest"
+    },
+    {
+      "sheetId": "G9-EXT-01",
+      "level": "c",
+      "url": "/noam-ai/native/G9-T70/c/noam-ai.json",
+      "sha256": "b959c0ad5a5fb8d2afe61a7631d3309f5eff52cb2d0e45a6849ab4e051fb9686",
+      "kind": "native"
+    },
+    {
+      "sheetId": "G9-SML-01",
+      "level": "a",
+      "url": "/noam-ai/manifests/c6360174b8264607aaa768f9f029262a.json",
+      "sha256": "ad6cdec952e478f1cf8f1b431c19881f4b1f463534465bfb8e7e7cccc0edf24a",
+      "kind": "manifest"
+    },
+    {
+      "sheetId": "G9-SML-01",
+      "level": "a",
+      "url": "/noam-ai/native/G9-T71/a/noam-ai.json",
+      "sha256": "8599ccfec1cf34e50a5f5e61f6aff8b6ff7c9c5da8a41274679ba8cd511654f9",
+      "kind": "native"
+    },
+    {
+      "sheetId": "G9-SML-01",
+      "level": "b",
+      "url": "/noam-ai/manifests/8e8ecb6ff6cb4033bc442cd891a17515.json",
+      "sha256": "190dd1ca83acfafc0c05bac842fccbdf38d9ba1977f4ef1bccf5c31778ac9ba3",
+      "kind": "manifest"
+    },
+    {
+      "sheetId": "G9-SML-01",
+      "level": "b",
+      "url": "/noam-ai/native/G9-T71/b/noam-ai.json",
+      "sha256": "479ab745650a1f09950dad92eba75f5bbd88ae84d8100c2e890cbe661a1e7c19",
+      "kind": "native"
+    },
+    {
+      "sheetId": "G9-SML-01",
+      "level": "c",
+      "url": "/noam-ai/manifests/00de21b0dd8e4c24bcc91b6a703a3be4.json",
+      "sha256": "c37d5144007fa306a74ec09c2caf56ec08ad1163eee3f0cf52c1498a20760b4c",
+      "kind": "manifest"
+    },
+    {
+      "sheetId": "G9-SML-01",
+      "level": "c",
+      "url": "/noam-ai/native/G9-T71/c/noam-ai.json",
+      "sha256": "975cf7f280f103f69072f49f8e90728f7be20b42659c93069aee2aee6bd33622",
+      "kind": "native"
+    },
+    {
+      "sheetId": "G9-FAC-01",
+      "level": "a",
+      "url": "/noam-ai/manifests/2d4ba0fc410d4aadb67c9a2caa548b02.json",
+      "sha256": "c1bca8ed72a99d50ae972d068e5b4a28a81309844c61334e3dcf7afab85b0af0",
+      "kind": "manifest"
+    },
+    {
+      "sheetId": "G9-FAC-01",
+      "level": "a",
+      "url": "/noam-ai/native/G9-T87/a/noam-ai.json",
+      "sha256": "516cb93b598e70c29baa121887f2b9995dabeeac9899b31daba8593ca5bea2cd",
+      "kind": "native"
+    },
+    {
+      "sheetId": "G9-FAC-01",
+      "level": "b",
+      "url": "/noam-ai/manifests/0b462c30ee8844c5b4d131c84ba73b4d.json",
+      "sha256": "d744f84123e5e95b49de71f8aa2e7db850a817c209bfdc82894cc31b8aeea71a",
+      "kind": "manifest"
+    },
+    {
+      "sheetId": "G9-FAC-01",
+      "level": "b",
+      "url": "/noam-ai/native/G9-T87/b/noam-ai.json",
+      "sha256": "9032f33650a4b4b679a0308c1643f70c16e698d578e3502318ea1f302cc99abe",
+      "kind": "native"
+    },
+    {
+      "sheetId": "G9-FAC-01",
+      "level": "c",
+      "url": "/noam-ai/manifests/7480f758805b4ae9aea2cc4bcc57100a.json",
+      "sha256": "c2ed0ae164b454fb95df6432f9a96b2a56d873f8ac364aa90d9c93a40c6c2bfb",
+      "kind": "manifest"
+    },
+    {
+      "sheetId": "G9-FAC-01",
+      "level": "c",
+      "url": "/noam-ai/native/G9-T87/c/noam-ai.json",
+      "sha256": "585e043032618e705b1e13844d196e08992b1bf9419c47daa21cf09d7e0c4b82",
+      "kind": "native"
+    },
+    {
+      "sheetId": "G9-AFR-01",
+      "level": "a",
+      "url": "/noam-ai/manifests/7ed50f3d7f8145acad25939beaabc293.json",
+      "sha256": "0eeccb2db7d78f2935caa6d0b37ff327e219c2df030ab1b7b94cce49627f6d27",
+      "kind": "manifest"
+    },
+    {
+      "sheetId": "G9-AFR-01",
+      "level": "a",
+      "url": "/noam-ai/native/G9-T72/a/noam-ai.json",
+      "sha256": "729de8daeb3b1ba33f6e4f1e398e56cd17cf401547dcf3c9c198d0c6a5d7378c",
+      "kind": "native"
+    },
+    {
+      "sheetId": "G9-AFR-01",
+      "level": "b",
+      "url": "/noam-ai/manifests/908c1f5a2ce5426d88fc03a67e6d4e29.json",
+      "sha256": "f5a207abac4ccc9d2df2ae9224a4be7bd29743f7df228c412328bb42894e0193",
+      "kind": "manifest"
+    },
+    {
+      "sheetId": "G9-AFR-01",
+      "level": "b",
+      "url": "/noam-ai/native/G9-T72/b/noam-ai.json",
+      "sha256": "74aef2b5f0f0ecf9beee7b7ce17c0e8dd26df186421de2e3573f979975076e75",
+      "kind": "native"
+    },
+    {
+      "sheetId": "G9-AFR-01",
+      "level": "c",
+      "url": "/noam-ai/manifests/df74b8a1382c4bc3952f3c8a3d6bfa43.json",
+      "sha256": "3f77f748203db9138cca7c8452afb8b752d30f46cbfd77a06eda56491faf8269",
+      "kind": "manifest"
+    },
+    {
+      "sheetId": "G9-AFR-01",
+      "level": "c",
+      "url": "/noam-ai/native/G9-T72/c/noam-ai.json",
+      "sha256": "30d2f0cb7d8a79defc95cc5982405f77555da1fcec39a2c75076bfb7431ce63c",
+      "kind": "native"
+    },
+    {
+      "sheetId": "G9-PAR-02",
+      "level": "a",
+      "url": "/noam-ai/manifests/b1e2fc9246c24ab5a2893fb47edab594.json",
+      "sha256": "1e931d5431468df01ef2d52fd179c0771298536b0ff8c0b922ca9a86774c8c96",
+      "kind": "manifest"
+    },
+    {
+      "sheetId": "G9-PAR-02",
+      "level": "a",
+      "url": "/noam-ai/native/G9-T88/a/noam-ai.json",
+      "sha256": "f7a69ccb8449fe057647acf8ae9890ba897477eac591baf665f4c3a32ea9e4b1",
+      "kind": "native"
+    },
+    {
+      "sheetId": "G9-PAR-02",
+      "level": "b",
+      "url": "/noam-ai/manifests/23fff0c52ad54c9abebd49c036a5cb16.json",
+      "sha256": "eea9a6afbce8234d9b4826a41adcfaed5c701585ff1f04e28bf10402bab47e27",
+      "kind": "manifest"
+    },
+    {
+      "sheetId": "G9-PAR-02",
+      "level": "b",
+      "url": "/noam-ai/native/G9-T88/b/noam-ai.json",
+      "sha256": "b79a64c03118035e7cbdb0c27c5034fda8a440de688a5d1c0bc04da69fab2be0",
+      "kind": "native"
+    },
+    {
+      "sheetId": "G9-PAR-02",
+      "level": "c",
+      "url": "/noam-ai/manifests/75d689c5b5a349e694c2e4f63978daac.json",
+      "sha256": "6d330d2790f5b66b38dd30a70a1a9ac999e1c174e3e64cf34e301ffdbab6db62",
+      "kind": "manifest"
+    },
+    {
+      "sheetId": "G9-PAR-02",
+      "level": "c",
+      "url": "/noam-ai/native/G9-T88/c/noam-ai.json",
+      "sha256": "cbe32fc7110295013ca4f3b3f52b356db29eb50b093547450823ede40184735e",
+      "kind": "native"
+    },
+    {
+      "sheetId": "G9-PAR-03",
+      "level": "a",
+      "url": "/noam-ai/manifests/26c3fb6b6b834a4b83a00a1f3efcbba5.json",
+      "sha256": "b1360db49b4e981bc38cf47eba8aeb5b95473c86bb081dc9215713aa0b4e8060",
+      "kind": "manifest"
+    },
+    {
+      "sheetId": "G9-PAR-03",
+      "level": "a",
+      "url": "/noam-ai/native/G9-T89/a/noam-ai.json",
+      "sha256": "0c49adb75827048e527dcc56d04dbcba593a83cd2899f1428437dcbf917666f9",
+      "kind": "native"
+    },
+    {
+      "sheetId": "G9-PAR-03",
+      "level": "b",
+      "url": "/noam-ai/manifests/4a20f98d630b4c478a0876dd52b9ed40.json",
+      "sha256": "6252245ab80288982d6cd8992aa06581dc0b5b90cd7a99bd858542d5567c9f2b",
+      "kind": "manifest"
+    },
+    {
+      "sheetId": "G9-PAR-03",
+      "level": "b",
+      "url": "/noam-ai/native/G9-T89/b/noam-ai.json",
+      "sha256": "12eda126b6cc58cfafe31addb83e2205d94a1df23750c4c82df3c741455874a5",
+      "kind": "native"
+    },
+    {
+      "sheetId": "G9-PAR-03",
+      "level": "c",
+      "url": "/noam-ai/manifests/46f9202e918441928447db3c441f3d3f.json",
+      "sha256": "d7f9f58df6a30def5a6a2676ed26d9ea0b7c323d40ef26bd8df9481357f0ae24",
+      "kind": "manifest"
+    },
+    {
+      "sheetId": "G9-PAR-03",
+      "level": "c",
+      "url": "/noam-ai/native/G9-T89/c/noam-ai.json",
+      "sha256": "7c9880699a5df78938955518ddc211b27b593d21a5e55d8442a9ece529045e97",
+      "kind": "native"
+    },
+    {
+      "sheetId": "G9-PAR-04",
+      "level": "a",
+      "url": "/noam-ai/manifests/d1af58a5e73745faba0aba254b4e2c6c.json",
+      "sha256": "51eef4204ce9d8e705e773e659bd4b4d6f4fb634401c4135789e341810bddeb9",
+      "kind": "manifest"
+    },
+    {
+      "sheetId": "G9-PAR-04",
+      "level": "a",
+      "url": "/noam-ai/native/G9-T90/a/noam-ai.json",
+      "sha256": "bf4173c66f955848864d9d9e5b58927277cbfe0251d53ac79148eb7c8692fd54",
+      "kind": "native"
+    },
+    {
+      "sheetId": "G9-PAR-04",
+      "level": "b",
+      "url": "/noam-ai/manifests/e957f5b06d514375a1fc32c468a250a1.json",
+      "sha256": "6617e219ca2a9728409cce164b3ded36e5425923b9166f04ad761b110364048f",
+      "kind": "manifest"
+    },
+    {
+      "sheetId": "G9-PAR-04",
+      "level": "b",
+      "url": "/noam-ai/native/G9-T90/b/noam-ai.json",
+      "sha256": "f94b6288907f3dbf96c078f1a57b6e2654ccc59dee2f2193ec2eef90015e574a",
+      "kind": "native"
+    },
+    {
+      "sheetId": "G9-PAR-04",
+      "level": "c",
+      "url": "/noam-ai/manifests/bf58cc24b85643c798c77049ebf619b8.json",
+      "sha256": "cb16dbb9dec491e4740df868d42be39259c06ea64b73418a622b939f1f2e0e30",
+      "kind": "manifest"
+    },
+    {
+      "sheetId": "G9-PAR-04",
+      "level": "c",
+      "url": "/noam-ai/native/G9-T90/c/noam-ai.json",
+      "sha256": "20ab9c26aabd95c9dcc6fe292e6b750035d62cbea0978baabc18297e8a648a6b",
+      "kind": "native"
+    },
+    {
+      "sheetId": "G9-PAR-02",
+      "level": "a",
+      "url": "/noam-ai/native/G9-T88/a/figures/q1_head.svg",
+      "sha256": "d5f39258743704ba4ca81885cb41c474b661f3d623a35f215f2100c6eb3855f2",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-02",
+      "level": "a",
+      "url": "/noam-ai/native/G9-T88/a/figures/q2_head.svg",
+      "sha256": "7806c14cb3c61d8cb8992e860faf2ba6d95f0ca643f89533bf268b2e381a0ee6",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-02",
+      "level": "a",
+      "url": "/noam-ai/native/G9-T88/a/figures/q3_head.svg",
+      "sha256": "69547ebc4558ca4a81fb0ab3eb9171d58a8da017e8affa120bf2cdb9addfd4c0",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-02",
+      "level": "a",
+      "url": "/noam-ai/native/G9-T88/a/figures/q4_head.svg",
+      "sha256": "29e1ad7e4ca93e8f2503d215e18ed6b52200d3f512464e52db672b78bbc9c8b9",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-02",
+      "level": "a",
+      "url": "/noam-ai/native/G9-T88/a/figures/q5_head.svg",
+      "sha256": "163ec87a256eb1220b93636f15d145afd278d9e8880cee7a3518ad8dde17457c",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-02",
+      "level": "a",
+      "url": "/noam-ai/native/G9-T88/a/figures/q6_head.svg",
+      "sha256": "152e27e00936fba2eba8f2a3cf88b8a3d82a1cd5ab0680c75562ca54c41c6250",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-02",
+      "level": "a",
+      "url": "/noam-ai/native/G9-T88/a/figures/q8_head.svg",
+      "sha256": "ba22a9977bb261bc8435d11ff73053df1bc191a11185024efa71908d1b8cf2c4",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-02",
+      "level": "a",
+      "url": "/noam-ai/native/G9-T88/a/figures/q9_head.svg",
+      "sha256": "6dc2af98a2d59631ece816e8488aeb9dcb806d41591882ab06ef8dc442161de6",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-02",
+      "level": "a",
+      "url": "/noam-ai/native/G9-T88/a/figures/q10_head.svg",
+      "sha256": "a15cd4853d489bdf0bb729ae3a09aca9f99f5e3564fd59b1a89a4764fceadf41",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-02",
+      "level": "a",
+      "url": "/noam-ai/native/G9-T88/a/figures/q11_head.svg",
+      "sha256": "d33429dd8791cd67963646613d5b7225c6f88ffa29118b5e3d3f66e8a5121ce3",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-02",
+      "level": "a",
+      "url": "/noam-ai/native/G9-T88/a/figures/q12_head.svg",
+      "sha256": "94fd576665544d409aa6edc030c5d443073a3cc0fe5216e5a2f52669cac4d69d",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-02",
+      "level": "a",
+      "url": "/noam-ai/native/G9-T88/a/figures/q13_head.svg",
+      "sha256": "50eb12a771942e193b2ebe518db1dc5d0c5ad02cf0be5dc47cf567a174d032df",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-02",
+      "level": "b",
+      "url": "/noam-ai/native/G9-T88/b/figures/q1_head.svg",
+      "sha256": "4b79c80fbce90ce33d884bd5b061acea5ccfd4ad3da4669173b27a0b5353123e",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-02",
+      "level": "b",
+      "url": "/noam-ai/native/G9-T88/b/figures/q2_head.svg",
+      "sha256": "679bf084918924a4bfcf9dffaa30651b6696a89f52fa4c0e5c61f254a3c46373",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-02",
+      "level": "b",
+      "url": "/noam-ai/native/G9-T88/b/figures/q3_head.svg",
+      "sha256": "bfcf4b0aeb1fecf90e8e85b75d2a221624780bf0871372942424c2f9bebba3d3",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-02",
+      "level": "b",
+      "url": "/noam-ai/native/G9-T88/b/figures/q4_head.svg",
+      "sha256": "ca0085af11592a53bda26b605d39581d54a78d5a5db8b0b480bd3ac9c01ee9a7",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-02",
+      "level": "b",
+      "url": "/noam-ai/native/G9-T88/b/figures/q5_head.svg",
+      "sha256": "8ffa6a74b2d5bc222856ea199b9ac04e140d6d274cc07a8e0510b8ee82b24caa",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-02",
+      "level": "b",
+      "url": "/noam-ai/native/G9-T88/b/figures/q6_head.svg",
+      "sha256": "961c6736a831dbd7d2358342be5be25aa5692bf4bb30ca0dd89cb4eb72b450c6",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-02",
+      "level": "b",
+      "url": "/noam-ai/native/G9-T88/b/figures/q8_head.svg",
+      "sha256": "691849e70c6c23faa8be5da90c45a43d72745cf29fcc8a0dddb2c0d29bcb9606",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-02",
+      "level": "b",
+      "url": "/noam-ai/native/G9-T88/b/figures/q9_head.svg",
+      "sha256": "cbeb5a6b5af2e67003f3dadd2d6af17a0873333db1a59e2da522271512c647f7",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-02",
+      "level": "b",
+      "url": "/noam-ai/native/G9-T88/b/figures/q10_head.svg",
+      "sha256": "158a64c451a165b82b3571eb100068e46f07628a6c290c17dc0e4c35c849e656",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-02",
+      "level": "b",
+      "url": "/noam-ai/native/G9-T88/b/figures/q12_head.svg",
+      "sha256": "dbb3d0a0b5705c973d4d2685cf1deccf3e7814fa736bbfff452ba87a478ed871",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-02",
+      "level": "b",
+      "url": "/noam-ai/native/G9-T88/b/figures/q13_head.svg",
+      "sha256": "932e78f9e38c97c6d4859c15acf96d942ca07e479455b23ca8e093f9f77b8faf",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-02",
+      "level": "c",
+      "url": "/noam-ai/native/G9-T88/c/figures/q1_head.svg",
+      "sha256": "4ceb0daf84320804ccdab2386ad9ca118df44ba161b753ea71b18f5899b62d18",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-02",
+      "level": "c",
+      "url": "/noam-ai/native/G9-T88/c/figures/q2_head.svg",
+      "sha256": "1d482f61654e6f80dd9ece5376a26487261dd336e2b8c71db22bcb1d9ea31df1",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-02",
+      "level": "c",
+      "url": "/noam-ai/native/G9-T88/c/figures/q3_head.svg",
+      "sha256": "5677aa50a0f2c95982b70d03cf28896cfa4f3588d0531d6373eb0de62f0ee6de",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-02",
+      "level": "c",
+      "url": "/noam-ai/native/G9-T88/c/figures/q4_head.svg",
+      "sha256": "b87751d11424b4785876989863c9a1bb5659ec2b8d4c86d00c8f7821f5f3ff04",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-02",
+      "level": "c",
+      "url": "/noam-ai/native/G9-T88/c/figures/q5_head.svg",
+      "sha256": "dbcf82a8cd24fe87f4b536f29a772e8be291052804a9b6a22b2d441466bd1984",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-02",
+      "level": "c",
+      "url": "/noam-ai/native/G9-T88/c/figures/q6_head.svg",
+      "sha256": "5953179f136c5aeed2aab2ab436202398843cfe3c53a47af6b924b30ab1cc5e9",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-02",
+      "level": "c",
+      "url": "/noam-ai/native/G9-T88/c/figures/q8_head.svg",
+      "sha256": "859a9c9849402723f47d6dd5d5fe66689e4fdb8c78f122e678a3026ab16369d3",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-02",
+      "level": "c",
+      "url": "/noam-ai/native/G9-T88/c/figures/q9_head.svg",
+      "sha256": "7408e5dddf47161f616525882d57ff63d9c19784410eb08f0c87f5b00737ce7e",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-02",
+      "level": "c",
+      "url": "/noam-ai/native/G9-T88/c/figures/q10_head.svg",
+      "sha256": "82801a17f00b232e162a0960f7fb10961d11640b31860cc2164f988ebd46bc6d",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-02",
+      "level": "c",
+      "url": "/noam-ai/native/G9-T88/c/figures/q11_head.svg",
+      "sha256": "159d8536dab504a4ea14de6399a0aaca62f05d38c3567cb0ab66a82717432751",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-02",
+      "level": "c",
+      "url": "/noam-ai/native/G9-T88/c/figures/q12_head.svg",
+      "sha256": "26141212f204fc657081faa6ea016c40f707a7b237f73dab837437454ce99b12",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-02",
+      "level": "c",
+      "url": "/noam-ai/native/G9-T88/c/figures/q13_head.svg",
+      "sha256": "ef1e9b5f8f3a8ac109a0883f1b75d719215ce4938888271d94754b2608671d18",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-03",
+      "level": "a",
+      "url": "/noam-ai/native/G9-T89/a/figures/q1_head.svg",
+      "sha256": "a19fec4668dedf4a3c12c81dabc83efe0a3d28051fa44974605c843fe669de1b",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-03",
+      "level": "a",
+      "url": "/noam-ai/native/G9-T89/a/figures/q2_head.svg",
+      "sha256": "af692960dd5380221dc7682d31095ec1349d1e571293fbabf88d71919569822b",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-03",
+      "level": "a",
+      "url": "/noam-ai/native/G9-T89/a/figures/q3_head.svg",
+      "sha256": "a7676c0eb3a2f9962947e4e8ad05e434353900726e5bfa28260c4bb5630d2092",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-03",
+      "level": "a",
+      "url": "/noam-ai/native/G9-T89/a/figures/q4_head.svg",
+      "sha256": "772cb4b1ccc9b1c8e09fbc1bca3d1c0d01014533218d10f0d62336f62edcc994",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-03",
+      "level": "a",
+      "url": "/noam-ai/native/G9-T89/a/figures/q5_head.svg",
+      "sha256": "1133f6a7afb89905b359f3f47a1c4f31452b19e39a570cf9d1b7d1753736b60b",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-03",
+      "level": "a",
+      "url": "/noam-ai/native/G9-T89/a/figures/q7_head.svg",
+      "sha256": "43843bd81e6b080b5f0729a65d51ebbfaf568748703aeab1c0c4aa5772694a9c",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-03",
+      "level": "a",
+      "url": "/noam-ai/native/G9-T89/a/figures/q8_head.svg",
+      "sha256": "869e300b8c98a472921ce300a3071e0856306aa0372d7967d7ec867a59160cbc",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-03",
+      "level": "b",
+      "url": "/noam-ai/native/G9-T89/b/figures/q1_head.svg",
+      "sha256": "dc9132de18f73998000d558a5a2e85dcc7308fc66f928cf617313e45f7bcd184",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-03",
+      "level": "b",
+      "url": "/noam-ai/native/G9-T89/b/figures/q2_head.svg",
+      "sha256": "7acf2ab3912a047971490bc005d59775f199eaa62de134c9003c46165aa5c074",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-03",
+      "level": "b",
+      "url": "/noam-ai/native/G9-T89/b/figures/q3_head.svg",
+      "sha256": "c81be1ed4e931945a65b186ca315e85a84100734496a3bdc1bb4d47adeafc9ae",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-03",
+      "level": "b",
+      "url": "/noam-ai/native/G9-T89/b/figures/q4_head.svg",
+      "sha256": "bb827dec7ddcfd92bc47a66b1cf0827c598243849a21af6a333b2abc3692b2bf",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-03",
+      "level": "b",
+      "url": "/noam-ai/native/G9-T89/b/figures/q5_head.svg",
+      "sha256": "d31b508a911954b66f9ee01bd1bce3006fde5394fb978c9101d9ac74daf738a0",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-03",
+      "level": "b",
+      "url": "/noam-ai/native/G9-T89/b/figures/q7_head.svg",
+      "sha256": "9c14edeb5bebaa0b97830cc6a34aa1b29281eeb29b44bac147f99f9103cecd38",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-03",
+      "level": "b",
+      "url": "/noam-ai/native/G9-T89/b/figures/q8_head.svg",
+      "sha256": "57fea1de2330635443fc18990243702f38222929259bd43f672eeb43e0092226",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-03",
+      "level": "c",
+      "url": "/noam-ai/native/G9-T89/c/figures/q1_head.svg",
+      "sha256": "da608e5470ae6ea7bcb9d94c9e520b91e01746f6ddde270a2a4c2d06412acb91",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-03",
+      "level": "c",
+      "url": "/noam-ai/native/G9-T89/c/figures/q2_head.svg",
+      "sha256": "2a80e1c8c7e3fa9c57d5b21ec455d3c7bbf499412d6de8f86e286673cc8c5611",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-03",
+      "level": "c",
+      "url": "/noam-ai/native/G9-T89/c/figures/q3_head.svg",
+      "sha256": "34f6cac9e541b7c847e633196632febf62e24dc5252b8b0c40eea55578c053ba",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-03",
+      "level": "c",
+      "url": "/noam-ai/native/G9-T89/c/figures/q4_head.svg",
+      "sha256": "11bc9fcbe10710e6072fe99e2eb006aea6b741f1417aa006337e6edeadd08ebd",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-03",
+      "level": "c",
+      "url": "/noam-ai/native/G9-T89/c/figures/q5_head.svg",
+      "sha256": "2e2486bd275c819bf960d1761cf9a4e1ee14f36596e1713cb2d68b25013c50d0",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-03",
+      "level": "c",
+      "url": "/noam-ai/native/G9-T89/c/figures/q7_head.svg",
+      "sha256": "4ed53853dd1dabfd076f03bc32339b1732f6921213c631530c2bf61f48a6677f",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-03",
+      "level": "c",
+      "url": "/noam-ai/native/G9-T89/c/figures/q8_head.svg",
+      "sha256": "add1e96a7692f62e0cf7ca099b36c10ecef9ff5e85b786e19f7a514f35f3e4c1",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-04",
+      "level": "a",
+      "url": "/noam-ai/native/G9-T90/a/figures/q1_head.svg",
+      "sha256": "795b323f2eb21051d70b56cb229bc5a5514f64b7ef93ee515844cf58f6ba8076",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-04",
+      "level": "a",
+      "url": "/noam-ai/native/G9-T90/a/figures/q2_head.svg",
+      "sha256": "7e642ddc9c8c390ef1042018824ab9b2a46b59629406c5fc5801446f8f3a47ed",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-04",
+      "level": "a",
+      "url": "/noam-ai/native/G9-T90/a/figures/q3_head.svg",
+      "sha256": "9ea70ee40cedc027c32a7f6e76a66dadade2e3118bc66ffad7371958b544a521",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-04",
+      "level": "a",
+      "url": "/noam-ai/native/G9-T90/a/figures/q5_head.svg",
+      "sha256": "3ee3d1c9f4a9d38981fe8a28205965536f7eb5e5488614aa064abc8e2fde584d",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-04",
+      "level": "a",
+      "url": "/noam-ai/native/G9-T90/a/figures/q6_head.svg",
+      "sha256": "b63cfa2255ad45bb87db97db9670141a2e2fdef24631eec234228315e413d31c",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-04",
+      "level": "b",
+      "url": "/noam-ai/native/G9-T90/b/figures/q1_head.svg",
+      "sha256": "65354506ac73a4afb8986121ffafcc396bcff16744758f505842e411014ae8aa",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-04",
+      "level": "b",
+      "url": "/noam-ai/native/G9-T90/b/figures/q2_head.svg",
+      "sha256": "2cb70baf4c69117de311a86a68cc990581cd732e797b9793d3cb4f86e8bf6d36",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-04",
+      "level": "b",
+      "url": "/noam-ai/native/G9-T90/b/figures/q3_head.svg",
+      "sha256": "ade7a5159dadd1401b94d52e31dd65e97f00bd6290a11ceb3fc4f16d62184b51",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-04",
+      "level": "b",
+      "url": "/noam-ai/native/G9-T90/b/figures/q5_head.svg",
+      "sha256": "27875d8494d2a6f8899111c37ea2a27e7a9ef48d852c16a8b4d7c027f625f5ec",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-04",
+      "level": "b",
+      "url": "/noam-ai/native/G9-T90/b/figures/q6_head.svg",
+      "sha256": "64a2cc0cce2709f43dd9e47446d36f3d7f09ef48fa1fb703d09a2ccb9f50579f",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-04",
+      "level": "c",
+      "url": "/noam-ai/native/G9-T90/c/figures/q1_head.svg",
+      "sha256": "a80c8e8ce04b666b9b750665bae01abf30a69612b6e03357999efe6f4b1093a9",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-04",
+      "level": "c",
+      "url": "/noam-ai/native/G9-T90/c/figures/q2_head.svg",
+      "sha256": "737b97cc474c9555766f287c3a3c6c5b48aadf6fdd88a3fe15b49b70fdf1f3b0",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-04",
+      "level": "c",
+      "url": "/noam-ai/native/G9-T90/c/figures/q3_head.svg",
+      "sha256": "144122d283dcecd751372fd13226cd543092616201258be158729d3776b9815f",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-04",
+      "level": "c",
+      "url": "/noam-ai/native/G9-T90/c/figures/q5_head.svg",
+      "sha256": "e63efc623c2d017c5b4f2e6922c7d4875d49b93c7483bef4c41864380070c89b",
+      "kind": "original-svg"
+    },
+    {
+      "sheetId": "G9-PAR-04",
+      "level": "c",
+      "url": "/noam-ai/native/G9-T90/c/figures/q6_head.svg",
+      "sha256": "f071671cad7da600c9906be3196a878782bb8e89e52fbb53b5315f765685cdc5",
+      "kind": "original-svg"
+    }
+  ]
+}
